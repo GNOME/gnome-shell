@@ -76,7 +76,8 @@ enum
   PROP_CURSOR,
   PROP_TEXT_VISIBLE,
   PROP_MAX_LENGTH,
-  PROP_ENTRY_PADDING
+  PROP_ENTRY_PADDING,
+  PROP_X_ALIGN
 };
 
 enum
@@ -108,6 +109,9 @@ struct _ClutterEntryPrivate
   gint                  extents_width;
   gint                  extents_height;
 
+  gint                  width;
+  gint                  n_chars;
+
   guint                 alignment        : 2;
   guint                 wrap             : 1;
   guint                 use_underline    : 1;
@@ -119,6 +123,7 @@ struct _ClutterEntryPrivate
   gint                  text_x;
   gint                  max_length;
   gint                  entry_padding;
+  gdouble               x_align;
 
   PangoAttrList        *attrs;
   PangoAttrList        *effective_attrs;
@@ -188,6 +193,9 @@ clutter_entry_set_property (GObject      *object,
     case PROP_ENTRY_PADDING:
       clutter_entry_set_entry_padding (entry, g_value_get_uint (value));
       break;
+    case PROP_X_ALIGN:
+      entry->priv->x_align = g_value_get_double (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -237,6 +245,9 @@ clutter_entry_get_property (GObject    *object,
     case PROP_ENTRY_PADDING:
       g_value_set_uint (value, priv->entry_padding);
       break;
+    case PROP_X_ALIGN:
+      g_value_set_double (value, priv->x_align);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -265,14 +276,17 @@ clutter_entry_ensure_layout (ClutterEntry *entry, gint width)
       pango_layout_set_font_description (priv->layout, priv->desc);
 
       if (priv->text_visible)
-        pango_layout_set_text (priv->layout, priv->text, -1);
+        pango_layout_set_text (priv->layout, priv->text, priv->n_chars);
       else
         {
           gint len = g_utf8_strlen (priv->text, -1);
           gchar *invisible = g_strnfill (len, priv->priv_char);
-          pango_layout_set_markup (priv->layout, invisible, -1);
+
+          pango_layout_set_text (priv->layout, invisible, len);
+          
           g_free (invisible);
         }
+
       if (priv->wrap)
 	pango_layout_set_wrap  (priv->layout, priv->wrap_mode);
 
@@ -379,7 +393,7 @@ clutter_entry_paint (ClutterActor *self)
   ClutterEntry         *entry;
   ClutterEntryPrivate  *priv;
   PangoRectangle        logical;
-  gint                  actor_width;
+  gint                  width, actor_width;
   gint                  text_width;
   gint                  cursor_x;
 
@@ -395,11 +409,16 @@ clutter_entry_paint (ClutterActor *self)
       return;
     }
 
+  if (priv->width < 0)
+    width = clutter_actor_get_width (self);
+  else
+    width = priv->width;
+
   clutter_actor_set_clip (self, 0, 0,
-                          clutter_actor_get_width (self),
+                          width,
                           clutter_actor_get_height (self));
 
-  actor_width = clutter_actor_get_width (self) - (2 * priv->entry_padding);
+  actor_width = width - (2 * priv->entry_padding);
   clutter_entry_ensure_layout (entry, actor_width);
   clutter_entry_ensure_cursor_position (entry);
 
@@ -442,14 +461,14 @@ clutter_entry_paint (ClutterActor *self)
     }
   else
     {
-      priv->text_x = 0;
+      priv->text_x = (actor_width - text_width) * priv->x_align;
       priv->cursor_pos.x += priv->entry_padding;
     }
 
   priv->fgcol.alpha = clutter_actor_get_opacity (self);
   pango_clutter_render_layout (priv->layout,
-                               priv->text_x + priv->entry_padding,
-                               0, &priv->fgcol, 0);
+                               priv->text_x + priv->entry_padding, 0,
+                               &priv->fgcol, 0);
 
   if (CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor)
     CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor (entry);
@@ -459,8 +478,19 @@ static void
 clutter_entry_request_coords (ClutterActor    *self,
 			      ClutterActorBox *box)
 {
-  /* do we need to do anything ? */
-  clutter_entry_clear_layout (CLUTTER_ENTRY (self));
+  ClutterEntry *entry = CLUTTER_ENTRY (self);
+  ClutterEntryPrivate *priv = entry->priv;
+  gint width;
+
+  width = CLUTTER_UNITS_TO_INT (box->x2 - box->x1);
+
+  if (priv->width != width)
+    {
+      clutter_entry_clear_layout (entry);
+      clutter_entry_ensure_layout (entry, width);
+
+      priv->width = width;
+    }
 }
 
 static void
@@ -530,7 +560,7 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			  "Font Name",
 			  "Pango font description",
 			  NULL,
-			  G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+			  CLUTTER_PARAM_READWRITE));
   /**
    * ClutterEntry:text:
    *
@@ -544,7 +574,7 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			  "Text",
 			  "Text to render",
 			  NULL,
-			  G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+			  CLUTTER_PARAM_READWRITE));
   /**
    * ClutterEntry:color:
    *
@@ -652,7 +682,21 @@ clutter_entry_class_init (ClutterEntryClass *klass)
                         0, G_MAXUINT,
                         ENTRY_PADDING,
                         CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterEntry:x-align:
+   * 
+   * Horizontal alignment to be used for the text (0.0 for left alignment,
+   * 1.0 for right alignment).
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_X_ALIGN,
+                                   g_param_spec_double ("x-align",
+                                                        "Horizontal Alignment",
+                                                        "The horizontal alignment to be used for the text",
+                                                        0.0, 1.0, 0.0,
+                                                        CLUTTER_PARAM_READWRITE));
   /**
    * ClutterEntry::text-changed:
    * @entry: the actor which received the event
@@ -748,6 +792,7 @@ clutter_entry_init (ClutterEntry *self)
   priv->text_x        = 0;
   priv->max_length    = 0;
   priv->entry_padding = ENTRY_PADDING;
+  priv->x_align       = 0.0;
 
   priv->fgcol.red     = 0;
   priv->fgcol.green   = 0;
@@ -874,6 +919,7 @@ clutter_entry_set_text (ClutterEntry *entry,
   ClutterEntryPrivate  *priv;
 
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
+  g_return_if_fail (text != NULL);
 
   priv = entry->priv;
 
@@ -901,7 +947,9 @@ clutter_entry_set_text (ClutterEntry *entry,
   else
     {
       g_free (priv->text);
+
       priv->text = g_strdup (text);
+      priv->n_chars = g_utf8_strlen (priv->text, -1);
     }
 
   clutter_entry_clear_layout (entry);
@@ -1114,6 +1162,7 @@ clutter_entry_set_alignment (ClutterEntry   *entry,
       g_object_ref (entry);
 
       priv->alignment = alignment;
+
       clutter_entry_clear_layout (entry);
 
       if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))

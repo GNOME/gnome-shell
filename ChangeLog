@@ -1,5 +1,11 @@
 2007-10-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-entry.c: Add a :x-align property for aligning
+	the text in the entry, in case the actor is wider than the
+	text it shows.
+
+2007-10-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-main.c: Add a --clutter-default-fps run-time
 	switch and CLUTTER_DEFAULT_FPS environment variable support for
 	setting the default frame-rate at run-time.
