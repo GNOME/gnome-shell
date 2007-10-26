@@ -1,5 +1,11 @@
 2007-10-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-main.c: Add a --clutter-default-fps run-time
+	switch and CLUTTER_DEFAULT_FPS environment variable support for
+	setting the default frame-rate at run-time.
+
+2007-10-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-script.h:
 	* clutter/clutter-script.c: Add a ::get_type_from_name() virtual
 	function for bindings to override. The current implementation

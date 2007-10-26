@@ -60,6 +60,8 @@ static gboolean clutter_is_initialized = FALSE;
 static gboolean clutter_show_fps       = FALSE;
 static gboolean clutter_fatal_warnings = FALSE;
 
+static gint clutter_default_fps = 60;
+
 static guint clutter_main_loop_level = 0;
 static GSList *main_loops = NULL;
 
@@ -727,6 +729,8 @@ clutter_arg_no_debug_cb (const char *key,
 static GOptionEntry clutter_args[] = {
   { "clutter-show-fps", 0, 0, G_OPTION_ARG_NONE, &clutter_show_fps,
     "Show frames per second", NULL },
+  { "clutter-default-fps", 0, 0, G_OPTION_ARG_INT, &clutter_default_fps,
+    "Default frame rate", "FPS" },
   { "g-fatal-warnings", 0, 0, G_OPTION_ARG_NONE, &clutter_fatal_warnings,
     "Make all warnings fatal", NULL },
 #ifdef CLUTTER_ENABLE_DEBUG
@@ -760,7 +764,6 @@ pre_parse_hook (GOptionContext  *context,
   clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
   pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
 
-  clutter_context->frame_rate = 60;
 
   clutter_context->actor_hash = g_hash_table_new (NULL, NULL);
 
@@ -782,6 +785,14 @@ pre_parse_hook (GOptionContext  *context,
   env_string = g_getenv ("CLUTTER_SHOW_FPS");
   if (env_string)
     clutter_show_fps = TRUE;
+
+  env_string = g_getenv ("CLUTTER_DEFAULT_FPS");
+  if (env_string)
+    {
+      gint default_fps = g_ascii_strtoll (env_string, NULL, 10);
+
+      clutter_default_fps = CLAMP (default_fps, 1, 1000);
+    }
 
   if (CLUTTER_BACKEND_GET_CLASS (backend)->pre_parse)
     return CLUTTER_BACKEND_GET_CLASS (backend)->pre_parse (backend, error);
@@ -817,6 +828,8 @@ post_parse_hook (GOptionContext  *context,
       fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
       g_log_set_always_fatal (fatal_mask);
     }
+
+  clutter_context->frame_rate = clutter_default_fps;
 
   if (CLUTTER_BACKEND_GET_CLASS (backend)->post_parse)
     retval = CLUTTER_BACKEND_GET_CLASS (backend)->post_parse (backend, error);
