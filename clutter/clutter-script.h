@@ -35,7 +35,7 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_SCRIPT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_SCRIPT))
 #define CLUTTER_SCRIPT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_SCRIPT, ClutterScriptClass))
 #define CLUTTER_IS_SCRIPT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_SCRIPT))
-#define CLUTTER_SCRIPT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_SCRIPT, ClutterScript))
+#define CLUTTER_SCRIPT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_SCRIPT, ClutterScriptClass))
 
 typedef struct _ClutterScript           ClutterScript;
 typedef struct _ClutterScriptPrivate    ClutterScriptPrivate;
@@ -71,6 +71,11 @@ struct _ClutterScriptClass
   /*< private >*/
   GObjectClass parent_class;
 
+  /*< public >*/
+  GType (* get_type_from_name) (ClutterScript *script,
+                                const gchar   *type_name);
+
+  /*< private >*/
   /* padding, for future expansion */
   void (*_clutter_reserved1) (void);
   void (*_clutter_reserved2) (void);
@@ -84,22 +89,25 @@ struct _ClutterScriptClass
 
 GType          clutter_script_get_type        (void) G_GNUC_CONST;
 
-ClutterScript *clutter_script_new             (void);
-guint          clutter_script_load_from_file  (ClutterScript  *script,
-                                               const gchar    *filename,
-                                               GError        **error);
-guint          clutter_script_load_from_data  (ClutterScript  *script,
-                                               const gchar    *data,
-                                               gsize           length,
-                                               GError        **error);
-GObject *      clutter_script_get_object      (ClutterScript  *script,
-                                               const gchar    *name);
-GList *        clutter_script_get_objects     (ClutterScript  *script,
-                                               const gchar    *first_name,
-                                               ...) G_GNUC_NULL_TERMINATED;
-void           clutter_script_unmerge_objects (ClutterScript  *script,
-                                               guint           merge_id);
-void           clutter_script_ensure_objects  (ClutterScript  *script);
+ClutterScript *clutter_script_new                (void);
+guint          clutter_script_load_from_file     (ClutterScript  *script,
+                                                  const gchar    *filename,
+                                                  GError        **error);
+guint          clutter_script_load_from_data     (ClutterScript  *script,
+                                                  const gchar    *data,
+                                                  gsize           length,
+                                                  GError        **error);
+GObject *      clutter_script_get_object         (ClutterScript  *script,
+                                                  const gchar    *name);
+GList *        clutter_script_get_objects        (ClutterScript  *script,
+                                                  const gchar    *first_name,
+                                                  ...) G_GNUC_NULL_TERMINATED;
+void           clutter_script_unmerge_objects    (ClutterScript  *script,
+                                                  guint           merge_id);
+void           clutter_script_ensure_objects     (ClutterScript  *script);
+
+GType          clutter_script_get_type_from_name (ClutterScript  *script,
+                                                  const gchar    *type_name);
 
 G_END_DECLS
 

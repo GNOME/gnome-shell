@@ -1100,6 +1100,7 @@ clutter_script_get_object
 clutter_script_get_objects
 clutter_script_unmerge_objects
 clutter_script_ensure_objects
+clutter_script_get_type_from_name
 <SUBSECTION Standard>
 CLUTTER_TYPE_SCRIPT
 CLUTTER_SCRIPT

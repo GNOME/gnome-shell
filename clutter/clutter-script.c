@@ -1043,13 +1043,13 @@ clutter_script_construct_object (ClutterScript *script,
 
   if (oinfo->gtype == G_TYPE_INVALID)
     {
-      if (oinfo->type_func)
+      if (G_UNLIKELY (oinfo->type_func))
         oinfo->gtype = clutter_script_get_type_from_symbol (oinfo->type_func);
       else
-        oinfo->gtype = clutter_script_get_type_from_class (oinfo->class_name);
+        oinfo->gtype = clutter_script_get_type_from_name (script, oinfo->class_name);
     }
 
-  if (oinfo->gtype == G_TYPE_INVALID)
+  if (G_UNLIKELY (oinfo->gtype == G_TYPE_INVALID))
     return NULL;
 
   if (oinfo->object)
@@ -1191,6 +1191,19 @@ json_parse_end (JsonParser *parser,
   g_hash_table_foreach (priv->objects, construct_each_object, script);
 }
 
+static GType
+clutter_script_real_get_type_from_name (ClutterScript *script,
+                                        const gchar   *type_name)
+{
+  GType gtype;
+
+  gtype = g_type_from_name (type_name);
+  if (gtype != G_TYPE_INVALID)
+    return gtype;
+
+  return clutter_script_get_type_from_class (type_name);
+}
+
 void
 property_info_free (gpointer data)
 {
@@ -1262,6 +1275,8 @@ clutter_script_class_init (ClutterScriptClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (ClutterScriptPrivate));
+
+  klass->get_type_from_name = clutter_script_real_get_type_from_name;
 
   gobject_class->finalize = clutter_script_finalize;
 }
@@ -1565,6 +1580,30 @@ clutter_script_ensure_objects (ClutterScript *script)
 
   priv = script->priv;
   g_hash_table_foreach (priv->objects, construct_each_object, script);  
+}
+
+/**
+ * clutter_script_get_type_from_name:
+ * @script: a #ClutterScript
+ * @type_name: name of the type to look up
+ *
+ * Looks up a type by name, using the virtual function that 
+ * #ClutterScript has for that purpose. This function should
+ * rarely be used.
+ *
+ * Return value: the type for the requested type name, or
+ *   %G_TYPE_INVALID if not corresponding type was found.
+ *
+ * Since: 0.6
+ */
+GType
+clutter_script_get_type_from_name (ClutterScript *script,
+                                   const gchar   *type_name)
+{
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), G_TYPE_INVALID);
+  g_return_val_if_fail (type_name != NULL, G_TYPE_INVALID);
+
+  return CLUTTER_SCRIPT_GET_CLASS (script)->get_type_from_name (script, type_name);
 }
 
 GQuark

@@ -1,3 +1,14 @@
+2007-10-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-script.h:
+	* clutter/clutter-script.c: Add a ::get_type_from_name() virtual
+	function for bindings to override. The current implementation
+	calls g_type_from_name() and our lazy class resolver.
+
+	* clutter.symbols: Update.
+
+	* doc/reference/clutter-sections.txt: Update.
+
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-path.c: Reverse the list of
