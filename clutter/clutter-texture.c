@@ -90,7 +90,7 @@ struct _ClutterTexturePrivate
   ClutterTextureTileDimension *y_tiles;
   gint                         n_x_tiles;
   gint                         n_y_tiles;
-  guint                       *tiles;
+  COGLuint                    *tiles;
 };
 
 enum
@@ -440,7 +440,7 @@ texture_upload_data (ClutterTexture *texture,
       /* Single Texture */
       if (!priv->tiles)
 	{
-	  priv->tiles = g_new (guint, 1);
+	  priv->tiles = g_new (COGLuint, 1);
 	  glGenTextures (1, priv->tiles);
 	  create_textures = TRUE;
 	}
@@ -511,7 +511,7 @@ texture_upload_data (ClutterTexture *texture,
 
   if (priv->tiles == NULL)
     {
-      priv->tiles = g_new (guint, priv->n_x_tiles * priv->n_y_tiles);
+      priv->tiles = g_new (COGLuint, priv->n_x_tiles * priv->n_y_tiles);
       glGenTextures (priv->n_x_tiles * priv->n_y_tiles, priv->tiles);
       create_textures = TRUE;
     }
@@ -1423,7 +1423,7 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 
   if (!priv->tiles)
     {
-      priv->tiles = g_new (guint, 1);
+      priv->tiles = g_new (COGLuint, 1);
       glGenTextures (1, priv->tiles);
     }
 

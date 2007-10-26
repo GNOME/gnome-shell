@@ -323,19 +323,19 @@ cogl_texture_quad (gint   x1,
 }
 
 void
-cogl_textures_create (guint num, guint *textures)
+cogl_textures_create (guint num, COGLuint *textures)
 {
   GE( glGenTextures (num, textures) );
 }
 
 void
-cogl_textures_destroy (guint num, const guint *textures)
+cogl_textures_destroy (guint num, const COGLuint *textures)
 {
   GE( glDeleteTextures (num, textures) );
 }
 
 void
-cogl_texture_bind (COGLenum target, guint texture)
+cogl_texture_bind (COGLenum target, COGLuint texture)
 {
   GE( glBindTexture (target, texture) );
 }

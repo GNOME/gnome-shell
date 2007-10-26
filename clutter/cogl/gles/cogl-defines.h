@@ -439,6 +439,7 @@ G_BEGIN_DECLS
 
 typedef GLenum COGLenum;
 typedef GLint  COGLint;
+typedef GLuint COGLuint;
 
 /* extras */
 

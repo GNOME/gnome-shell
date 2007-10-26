@@ -1,3 +1,26 @@
+2007-10-26  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c:
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl-defines.h:
+	* clutter/cogl/gles/cogl-defines.h:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c:
+	Switch from use of guint to COGLuint. Avoids problems when 
+        guint != GLuint on some platforms, i.e OSX.
+	(Tommi Komulainen, #526)
+
+	* clutter/Makefile.am:
+	* clutter/osx/Makefile.am:
+	* clutter/osx/clutter-backend-osx.c:
+	* clutter/osx/clutter-backend-osx.h:
+	* clutter/osx/clutter-event-osx.c:
+	* clutter/osx/clutter-osx.h:
+	* clutter/osx/clutter-stage-osx.c:
+	* clutter/osx/clutter-stage-osx.h:
+	* configure.ac:
+	Add initial Cocoa/OSX Backend (by Tommi Komulainen, see #526)
+
 2007-10-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-entry.c: Add a :x-align property for aligning

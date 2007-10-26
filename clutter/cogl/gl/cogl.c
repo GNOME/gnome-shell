@@ -29,12 +29,6 @@
 
 #include "cogl.h"
 
-#ifdef WIN32
-#include <windows.h>
-#include <GL/Glee.h>
-#else
-#include <GL/gl.h>
-#endif
 #include <string.h>
 
 #ifdef HAVE_CLUTTER_GLX
@@ -333,7 +327,7 @@ cogl_texture_can_size (COGLenum       target,
 #ifdef GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB
   if (target == CGL_TEXTURE_RECTANGLE_ARB)
     {
-      gint max_size = 0;
+      GLint max_size = 0;
 
       GE( glGetIntegerv(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB, &max_size) );
 
@@ -381,19 +375,19 @@ cogl_texture_quad (gint   x1,
 }
 
 void
-cogl_textures_create (guint num, guint *textures)
+cogl_textures_create (guint num, COGLuint *textures)
 {
   GE( glGenTextures (num, textures) );
 }
 
 void
-cogl_textures_destroy (guint num, const guint *textures)
+cogl_textures_destroy (guint num, const COGLuint *textures)
 {
   GE( glDeleteTextures (num, textures) );
 }
 
 void
-cogl_texture_bind (COGLenum target, guint texture)
+cogl_texture_bind (COGLenum target, COGLuint texture)
 {
   GE( glBindTexture (target, texture) );
 }
@@ -696,12 +690,25 @@ cogl_get_viewport (ClutterFixed v[4])
 void
 cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 {
+  GLint value;
   if (red)
-    GE( glGetIntegerv(GL_RED_BITS, red) );
+    {
+      GE( glGetIntegerv(GL_RED_BITS, &value) );
+      *red = value;
+    }
   if (green)
-    GE( glGetIntegerv(GL_GREEN_BITS, green) );
+    {
+      GE( glGetIntegerv(GL_GREEN_BITS, &value) );
+      *green = value;
+    }
   if (blue)
-    GE( glGetIntegerv(GL_BLUE_BITS, blue) );
+    {
+      GE( glGetIntegerv(GL_BLUE_BITS, &value) );
+      *blue = value;
+    }
   if (alpha)
-    GE( glGetIntegerv(GL_ALPHA_BITS, alpha ) );
+    {
+      GE( glGetIntegerv(GL_ALPHA_BITS, &value ) );
+      *alpha = value;
+    }
 }

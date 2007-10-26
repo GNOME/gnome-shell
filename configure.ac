@@ -258,8 +258,20 @@ case $clutterbackend in
     EGL_CFLAGS="$TSLIB_CFLAGS"
     ;;
 
+  osx)
 
-  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx,sdl, eglx or eglnative])
+    CLUTTER_FLAVOUR="osx"
+    AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
+
+    CLUTTER_COGL="gl"
+    AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
+
+    OSX_LIBS="-framework Cocoa -framework OpenGL"
+    AC_CHECK_HEADERS([OpenGL/gl.h],,
+                     [AC_MSG_ERROR([Unable to locate required GL headers])])
+    ;;
+
+  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx,sdl,osx,eglx or eglnative])
     ;;
 
 esac
@@ -351,8 +363,8 @@ dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
 
-CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $CLUTTER_DEPS_CFLAGS "
-CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $CLUTTER_DEPS_LIBS"
+CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $CLUTTER_DEPS_CFLAGS "
+CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $OSX_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
@@ -364,6 +376,7 @@ AC_CONFIG_FILES([
         clutter/glx/Makefile
         clutter/eglx/Makefile
         clutter/eglnative/Makefile
+        clutter/osx/Makefile
         clutter/sdl/Makefile
         clutter/cogl/Makefile
         clutter/cogl/gl/Makefile
