@@ -27,16 +27,25 @@
 #define __COGL_DEFINES_H__
 
 #ifdef WIN32
+
 #include <windows.h>
 #include <GL/Glee.h>
+
 #else
+
+#if defined(HAVE_GL_GL_H)
 #include <GL/gl.h>
+#elif defined(HAVE_OPENGL_GL_H)
+#include <OpenGL/gl.h>
 #endif
+
+#endif /* WIN32 */
 
 G_BEGIN_DECLS
 
 typedef GLenum COGLenum;
 typedef GLint COGLint;
+typedef GLuint COGLuint;
 
 /* FIXME + DOCUMENT */
 

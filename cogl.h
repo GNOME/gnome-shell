@@ -43,10 +43,7 @@
 #define __COGL_H__
 
 #include <glib.h>
-#include <clutter/clutter-color.h>
-#include <clutter/clutter-feature.h>
-#include <clutter/clutter-fixed.h>
-#include <clutter/clutter-types.h>
+#include <clutter/clutter.h>
 
 #include "cogl-defines.h"
 
@@ -133,13 +130,13 @@ cogl_texture_quad (gint   x1,
 		   ClutterFixed ty2);
 
 void
-cogl_textures_create (guint num, guint *textures);
+cogl_textures_create (guint num, COGLuint *textures);
 
 void
-cogl_textures_destroy (guint num, const guint *textures);
+cogl_textures_destroy (guint num, const COGLuint *textures);
 
 void
-cogl_texture_bind (COGLenum target, guint texture);
+cogl_texture_bind (COGLenum target, COGLuint texture);
 
 void
 cogl_texture_set_alignment (COGLenum target, 
