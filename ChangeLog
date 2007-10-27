@@ -54,7 +54,7 @@
 	* clutter/cogl/gles/cogl.c:
 	Switch from use of guint to COGLuint. Avoids problems when 
         guint != GLuint on some platforms, i.e OSX.
-	(Tommi Komulainen, #526)
+	(Tommi Komulainen, #525, #523)
 
 	* clutter/Makefile.am:
 	* clutter/osx/Makefile.am:
