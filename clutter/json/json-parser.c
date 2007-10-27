@@ -49,6 +49,8 @@ struct _JsonParserPrivate
   JsonNode *current_node;
 
   GScanner *scanner;
+
+  GError *last_error;
 };
 
 static const GScannerConfig json_scanner_config =
@@ -142,6 +144,12 @@ json_parser_dispose (GObject *gobject)
     {
       json_node_free (priv->root);
       priv->root = NULL;
+    }
+
+  if (priv->last_error)
+    {
+      g_error_free (priv->last_error);
+      priv->last_error = NULL;
     }
 
   G_OBJECT_CLASS (json_parser_parent_class)->dispose (gobject);
@@ -543,7 +551,10 @@ json_parse_object (JsonParser *parser,
           if (token != G_TOKEN_NONE)
             {
               g_free (name);
-              json_node_free (node);
+              
+              if (node)
+                json_node_free (node);
+
               json_object_unref (object);
               return token;
             }
@@ -628,7 +639,7 @@ json_parse_object (JsonParser *parser,
           break;
 
         default:
-          return G_TOKEN_RIGHT_BRACE;
+          return G_TOKEN_SYMBOL;
         }
 
       if (node)
@@ -717,9 +728,8 @@ json_scanner_msg_handler (GScanner *scanner,
                    scanner->line,
                    message);
       
+      parser->priv->last_error = error;
       g_signal_emit (parser, parser_signals[ERROR], 0, error);
-
-      g_error_free (error);
     }
   else
     g_warning ("Line %d: %s", scanner->line, message);
@@ -871,10 +881,10 @@ json_parser_load_from_data (JsonParser   *parser,
                     {
                       for (i = 0; i < n_symbols; i++)
                         if (symbols[i].token == expected_token)
-                          msg = (gchar *) symbol_names + symbols[i].name_offset;
+                          symbol_name = symbol_names + symbols[i].name_offset;
 
                       if (msg)
-                        msg = g_strconcat ("e.g. `", msg, "'", NULL);
+                        msg = g_strconcat ("e.g. `", symbol_name, "'", NULL);
                     }
 
                   if (scanner->token > JSON_TOKEN_INVALID &&
@@ -895,7 +905,13 @@ json_parser_load_from_data (JsonParser   *parser,
                                      NULL, "keyword",
                                      symbol_name, msg,
                                      TRUE);
-              
+
+              if (parser->priv->last_error)
+                {
+                  g_propagate_error (error, parser->priv->last_error);
+                  parser->priv->last_error = NULL;
+                }
+#if 0
               /* we set a generic error here; the message from
                * GScanner is relayed in the ::error signal
                */
@@ -904,7 +920,7 @@ json_parser_load_from_data (JsonParser   *parser,
                            "Invalid token `%s' found: expecting %s",
                            symbol_name ? symbol_name : "???",
                            msg ? msg : "unknown");
-
+#endif
               retval = FALSE;
 
               g_free (msg);

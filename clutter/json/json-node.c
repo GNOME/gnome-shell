@@ -332,11 +332,13 @@ json_node_free (JsonNode *node)
       switch (node->type)
         {
         case JSON_NODE_OBJECT:
-          json_object_unref (node->data.object);
+          if (node->data.object)
+            json_object_unref (node->data.object);
           break;
 
         case JSON_NODE_ARRAY:
-          json_array_unref (node->data.array);
+          if (node->data.array)
+            json_array_unref (node->data.array);
           break;
 
         case JSON_NODE_VALUE:

@@ -22,6 +22,8 @@
         "id" : "green-button",
         "type" : "ClutterRectangle",
         "color" : "#00ff00ff",
+        "border-width" : 5,
+        "border-color" : "#00cc00ff",
         "x" : 200,
         "y" : 50,
         "width" : 100,

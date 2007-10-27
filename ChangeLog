@@ -1,5 +1,23 @@
 2007-10-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/json/json-parser.c:
+	(json_scanner_msg_handler): Set the GError to be returned by
+	the parsing functions into the GScanner error message handler.
+
+	(json_parser_object): Return the symbol token in case we have
+	a parse error after the member name.
+
+	(json_parser_load_from_data): Propagate the error set in the
+	message handler, if any.
+
+	* clutter/json/json-node.c (json_node_free): Unref the objects
+	only if are set, to avoid a couple of needless criticals we
+	get on error.
+
+	* tests/test-script.json: More properties.
+
+2007-10-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-script.[ch]: Slight API change in the
 	clutter_script_get_objects() function: now it takes
 	object name/object return location pairs and returns the
