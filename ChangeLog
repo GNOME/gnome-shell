@@ -1,5 +1,11 @@
 2007-10-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-rectangle.c (clutter_rectangle_paint): Use
+	CGL_ENABLE_BLEND flag instead of CGL_BLEND value. (#580,
+	Gwenole Beauchesne)
+
+2007-10-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-color.c (clutter_color_to_string): Update the
 	documentation for the format of the returned string, and remove
 	the note: now clutter_color_parse() can parse the string this
