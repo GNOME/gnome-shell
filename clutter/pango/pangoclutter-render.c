@@ -49,7 +49,7 @@ typedef struct {
 
 typedef struct tc_texture {
   struct tc_texture *next;
-  guint name;
+  COGLuint name;
   int avail;
 } tc_texture;
 
