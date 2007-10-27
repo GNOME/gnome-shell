@@ -96,6 +96,7 @@ main (int argc, char *argv[])
 {
   GObject *stage, *timeline, *blue_button, *red_button;
   GError *error = NULL;
+  gint res;
 
   clutter_init (&argc, &argv);
 
@@ -132,16 +133,20 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  stage = clutter_script_get_object (script, "main-stage");
+  res = clutter_script_get_objects (script,
+                                    "main-stage", &stage,
+                                    "red-button", &red_button,
+                                    "blue-button", &blue_button,
+                                    NULL);
+  g_assert (res == 3);
+
   clutter_actor_show (CLUTTER_ACTOR (stage));
 
-  red_button = clutter_script_get_object (script, "red-button");
   g_signal_connect (red_button,
                     "button-press-event",
                     G_CALLBACK (red_button_press),
                     NULL);
 
-  blue_button = clutter_script_get_object (script, "blue-button");
   g_signal_connect (blue_button,
                     "button-press-event",
                     G_CALLBACK (blue_button_press),

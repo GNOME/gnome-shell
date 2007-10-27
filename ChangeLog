@@ -1,5 +1,15 @@
 2007-10-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script.[ch]: Slight API change in the
+	clutter_script_get_objects() function: now it takes
+	object name/object return location pairs and returns the
+	number of objects found and returned.
+
+	* tests/test-script.c: Exercise the clutter_script_get_objects()
+	function.
+
+2007-10-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-rectangle.c (clutter_rectangle_paint): Use
 	CGL_ENABLE_BLEND flag instead of CGL_BLEND value. (#580,
 	Gwenole Beauchesne)

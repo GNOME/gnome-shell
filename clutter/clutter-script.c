@@ -1446,50 +1446,69 @@ clutter_script_get_object (ClutterScript *script,
   return clutter_script_construct_object (script, oinfo);
 }
 
-static GList *
+static gint
 clutter_script_get_objects_valist (ClutterScript *script,
                                    const gchar   *first_name,
                                    va_list        args)
 {
-  GList *retval = NULL;
+  gint retval = 0;
   const gchar *name;
 
   name = first_name;
   while (name)
     {
-      retval =
-        g_list_prepend (retval, clutter_script_get_object (script, name));
+      GObject **obj = NULL;
+      
+      obj = va_arg (args, GObject**);
+
+      *obj = clutter_script_get_object (script, name);
+      if (*obj)
+        retval += 1;
 
       name = va_arg (args, gchar*);
     }
 
-  return g_list_reverse (retval);
+  return retval;
 }
 
 /**
  * clutter_script_get_objects:
  * @script: a #ClutterScript
  * @first_name: the name of the first object to retrieve
- * @Varargs: a %NULL-terminated list of names
+ * @Varargs: return location for a #GObject, then additional names, ending
+ *   with %NULL
  *
- * Retrieves a list of objects for the given names. This function does
- * not increment the reference count of the returned objects.
+ * Retrieves a list of objects for the given names. After @script, object
+ * names/return location pairs should be listed, with a %NULL pointer
+ * ending the list, like:
  *
- * Return value: a newly allocated #GList containing the found objects,
- *   or %NULL. Use g_list_free() when done using it.
+ * <informalexample><programlisting>
+ *   GObject *my_label, *a_button, *main_timeline;
+ *
+ *   clutter_script_get_objects (script,
+ *                               "my-label", &amp;my_label,
+ *                               "a-button", &amp;a_button,
+ *                               "main-timeline", &amp;main_timeline,
+ *                               NULL);
+ * </programlisting</informalexample>
+ *
+ * Note: This function does not increment the reference count of the
+ * returned objects.
+ *
+ * Return value: the number of objects returned.
  *
  * Since: 0.6
  */
-GList *
+gint
 clutter_script_get_objects (ClutterScript *script,
                             const gchar   *first_name,
                             ...)
 {
-  GList *retval = NULL;
+  gint retval;
   va_list var_args;
 
-  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), NULL);
-  g_return_val_if_fail (first_name != NULL, NULL);
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), 0);
+  g_return_val_if_fail (first_name != NULL, 0);
 
   va_start (var_args, first_name);
   retval = clutter_script_get_objects_valist (script, first_name, var_args);

@@ -99,7 +99,7 @@ guint          clutter_script_load_from_data     (ClutterScript  *script,
                                                   GError        **error);
 GObject *      clutter_script_get_object         (ClutterScript  *script,
                                                   const gchar    *name);
-GList *        clutter_script_get_objects        (ClutterScript  *script,
+gint           clutter_script_get_objects        (ClutterScript  *script,
                                                   const gchar    *first_name,
                                                   ...) G_GNUC_NULL_TERMINATED;
 void           clutter_script_unmerge_objects    (ClutterScript  *script,
