@@ -1,5 +1,12 @@
 2007-10-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-color.c (clutter_color_to_string): Update the
+	documentation for the format of the returned string, and remove
+	the note: now clutter_color_parse() can parse the string this
+	function returns.
+
+2007-10-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/pango/pangoclutter-render.c: Last usage of guint
 	replaced with COGLuint. (Tommi Komulainen)
 

@@ -485,22 +485,24 @@ clutter_color_parse (const gchar  *color,
     {
       gint32 result;
 
-      if (sscanf (color+1, "%x", &result))
+      if (sscanf (color + 1, "%x", &result))
 	{
-	  if (strlen(color) == 9)
+	  if (strlen (color) == 9)
 	    {
 	      dest->red   = result >> 24 & 0xff;
 	      dest->green = (result >> 16) & 0xff;
 	      dest->blue  = (result >> 8) & 0xff;
 	      dest->alpha = result & 0xff;
+
 	      return TRUE;
 	    }
-	  else if (strlen(color) == 7)
+	  else if (strlen (color) == 7)
 	    {
 	      dest->red   = (result >> 16) & 0xff;
 	      dest->green = (result >> 8) & 0xff;
 	      dest->blue  = result & 0xff;
 	      dest->alpha = 0xff;
+
 	      return TRUE;
 	    }
 	}
@@ -513,6 +515,7 @@ clutter_color_parse (const gchar  *color,
       dest->green = pango_color.green;
       dest->blue  = pango_color.blue;
       dest->alpha = 0xff;
+
       return TRUE;
     }
 
@@ -524,13 +527,10 @@ clutter_color_parse (const gchar  *color,
  * @color: a #ClutterColor
  *
  * Returns a textual specification of @color in the hexadecimal form
- * <literal>&num;rrrrggggbbbbaaaa</literal>, where <literal>r</literal>,
+ * <literal>&num;rrggbbaa</literal>, where <literal>r</literal>,
  * <literal>g</literal>, <literal>b</literal> and <literal>a</literal> are
  * hex digits representing the red, green, blue and alpha components
  * respectively.
- *
- * Note: the returned string cannot be used to get the color back with
- * clutter_color_parse().
  *
  * Return value: a newly-allocated text string
  *
