@@ -156,31 +156,34 @@ tab_entry_new (const MetaTabEntry *entry,
   te->title = NULL;
   if (entry->title)
     {
+      gchar *str;
       gchar *tmp;
+      gchar *formatter = "%s";
+
+      str = meta_g_utf8_strndup (entry->title, max_chars_per_title);
+
       if (entry->hidden)
         {
-          tmp = g_markup_printf_escaped ("[%s]", entry->title);
+          formatter = "[%s]";
         }
-      else 
-        {
-          tmp = g_markup_printf_escaped ("%s", entry->title);
-        }
-      
+
+      tmp = g_markup_printf_escaped (formatter, str);
+      g_free (str);
+      str = tmp;
+
       if (entry->demands_attention) 
         {         
           /* Escape the whole line of text then markup the text and 
            * copy it back into the original buffer.
            */
-          gchar *markup, *escaped;
-          escaped = g_markup_escape_text (tmp, -1);
-          markup = g_strdup_printf ("<b>%s</b>", escaped);
-          g_free (escaped);
-          g_free (tmp);
-          tmp = markup;
+          tmp = g_strdup_printf ("<b>%s</b>", str);
+          g_free (str);
+          str = tmp;
         }
 
-      te->title = meta_g_utf8_strndup (tmp, max_chars_per_title);
-      g_free (tmp);
+        te->title=g_strdup(str);
+
+      g_free (str);
     }
   te->widget = NULL;
   te->icon = entry->icon;

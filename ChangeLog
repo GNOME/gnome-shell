@@ -1,3 +1,9 @@
+2007-10-27  Alex R.M. Turner  <armtuk@gmail.com>
+
+        * src/tabpopup.c (tab_entry_new): Truncate the string to 
+        max_char_per_title before adding bold tags and fix general flow of
+        function.
+
 2007-10-16  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/window.c (window_would_be_covered): new function.
