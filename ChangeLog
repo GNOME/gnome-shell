@@ -1,3 +1,8 @@
+2007-10-28  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-effect.c:
+	Small doc fix (#584)
+
 2007-10-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/json/json-parser.c:

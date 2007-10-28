@@ -673,7 +673,7 @@ clutter_effect_scale (ClutterEffectTemplate     *template_,
  * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
  *   or NULL
  *
- * Simple effect for rotating a single #ClutterActor about y axis.
+ * Simple effect for rotating a single #ClutterActor about x axis.
  *
  * Return value: a #ClutterTimeline for the effect. Will be unreferenced by
  *   the effect when completed.
