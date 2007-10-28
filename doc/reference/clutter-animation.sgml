@@ -170,6 +170,7 @@ main (int argc, char *argv[])
 					  200,   /* center y */
 					  400,   /* width */
 					  300,   /* height */
+					  CLUTTER_ROTATE_CW, /* direction */
 					  0.0,   /* angle begin */
 					  360.0); /* angle end */
 

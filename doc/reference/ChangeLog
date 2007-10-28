@@ -1,3 +1,8 @@
+2007-10-28  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter-animation.sgml:
+	Fix missing func param (#583)
+
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Ignore clutter-json.h header.
