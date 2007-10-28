@@ -128,6 +128,13 @@ meta_preview_new (void)
 static void
 meta_preview_finalize (GObject *object)
 {
+  MetaPreview *preview;
+
+  preview = META_PREVIEW (object);
+
+  g_free (preview->title);
+  preview->title = NULL;
+  
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 

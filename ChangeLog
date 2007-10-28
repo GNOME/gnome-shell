@@ -1,3 +1,8 @@
+2007-10-28  Jans Granseuer  <jensgr@gmx.net>
+
+        * src/preview-widget.c (meta_preview_finalize): Free title of
+	preview when the preview is destroyed. Closes #469682.
+
 2007-10-27  Alex R.M. Turner  <armtuk@gmail.com>
 
         * src/tabpopup.c (tab_entry_new): Truncate the string to 
