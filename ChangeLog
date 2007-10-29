@@ -1,5 +1,15 @@
 2007-10-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac:
+	* clutter/cogl/gl/cogl-defines.h.in: The OS X backend has a funny
+	OpenGL header location, so it basically did break every application
+	including clutter/cogl.h because the GL header inclusion depended
+	on symbols defined into Clutter's config.h. Now, we define the
+	GL header into the configure template and use it to create the
+	cogl-defines.h file cogl.h includes.
+
+2007-10-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/json/json-parser.c: Enable parsing of negative numbers;
 	GScanner splits negative numbers into two tokens, so we need to
 	special case them.

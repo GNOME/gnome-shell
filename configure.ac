@@ -119,9 +119,13 @@ if test x$have_xfixes = xyes; then
       X11_LIBS="$X11_LIBS -lXfixes"
 fi
 
+clutter_gl_header=""
+
 case $clutterbackend in
 
   sdl)
+
+    clutter_gl_header="GL/gl.h"
     CLUTTER_FLAVOUR="sdl"
     AC_DEFINE([HAVE_CLUTTER_SDL], 1, [Have the SDL backend])
 
@@ -134,11 +138,15 @@ case $clutterbackend in
     else
        SDL_CFLAGS=`$SDL_CONFIG --cflags`
        SDL_LIBS=`$SDL_CONFIG --libs`
-       AC_CHECK_HEADERS([GL/gl.h],,[AC_MSG_ERROR([Unable to locate required GL headers])])
+
+       AC_CHECK_HEADERS([$clutter_gl_header],,
+                        [AC_MSG_ERROR([Unable to locate required GL headers])])
+       
        AC_CHECK_LIB(GL, glEnable, HAVE_LIBGL=yes, HAVE_LIBGL=no)
        if test "x$HAVE_LIBGL" = "xno"; then
          AC_MSG_ERROR([libGL not found]);
        fi
+       
        SDL_LIBS="$SDL_LIBS -lGL"
      fi
     ;;
@@ -174,14 +182,17 @@ case $clutterbackend in
 
   glx)
 
+    clutter_gl_header="GL/gl.h"
     CLUTTER_FLAVOUR="glx"
     AC_DEFINE([HAVE_CLUTTER_GLX], 1, [Have the GLX backend])
 
     CLUTTER_COGL="gl"
     AC_DEFINE([HAVE_COGL_GL], 1, [Have GL for rendering])
 
-    AC_CHECK_HEADERS([GL/gl.h GL/glx.h],,
-	         [AC_MSG_ERROR([Unable to locate required GL headers])])
+    AC_CHECK_HEADERS([$clutter_gl_header],,
+                     [AC_MSG_ERROR([Unable to locate required GL headers])])
+    AC_CHECK_HEADERS([GL/glx.h],,
+                     [AC_MSG_ERROR([Unable to locate required GLX headers])])
 
     AC_CHECK_LIB(GL, glXCreateContext, HAVE_LIBGLX=yes, HAVE_LIBGLX=no)
 
@@ -198,6 +209,7 @@ case $clutterbackend in
 
   eglx)
     
+    $clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglx"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
 
@@ -208,7 +220,7 @@ case $clutterbackend in
     # try for libvincent first (though its not so good)
     PKG_CHECK_MODULES(EGL, libvincent, HAVE_OGLES=yes, HAVE_OGLES=no)
     if test "x$HAVE_OGLES" = "xno"; then
-      AC_CHECK_HEADERS([GLES/egl.h GLES/gl.h],,
+      AC_CHECK_HEADERS([GLES/egl.h $clutter_gl_header],,
 	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
       # No libvincent so start checking for upper/lower case libgles_em
@@ -233,6 +245,7 @@ case $clutterbackend in
 
   eglnative)
     
+    clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglnative"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
 
@@ -240,8 +253,10 @@ case $clutterbackend in
     CLUTTER_COGL="gles"
     AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
 
-    AC_CHECK_HEADERS([GLES/egl.h GLES/gl.h],,
-	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
+    AC_CHECK_HEADERS([clutter_gl_header],,
+                     [AC_MSG_ERROR([Unable to locate require GL header])])
+    AC_CHECK_HEADERS([GLES/egl.h],,
+	             [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
     AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
 
@@ -260,6 +275,7 @@ case $clutterbackend in
 
   osx)
 
+    clutter_gl_header="OpenGL/gl.h"
     CLUTTER_FLAVOUR="osx"
     AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
 
@@ -267,7 +283,7 @@ case $clutterbackend in
     AC_DEFINE([HAVE_COGL_GL], [1], [Have GL for rendering])
 
     OSX_LIBS="-framework Cocoa -framework OpenGL"
-    AC_CHECK_HEADERS([OpenGL/gl.h],,
+    AC_CHECK_HEADERS([$clutter_gl_header],,
                      [AC_MSG_ERROR([Unable to locate required GL headers])])
     ;;
 
@@ -276,9 +292,12 @@ case $clutterbackend in
 
 esac
 
+CLUTTER_GL_HEADER=$clutter_gl_header
+
 AC_SUBST([clutterbackend])
 AC_SUBST(CLUTTER_FLAVOUR)
 AC_SUBST(CLUTTER_COGL)
+AC_SUBST(CLUTTER_GL_HEADER)
 
 clutterbackendlib=libclutter$CLUTTER_REAL-$clutterbackend-$CLUTTER_MAJORMINOR.la
 AC_SUBST([clutterbackendlib])
@@ -380,6 +399,7 @@ AC_CONFIG_FILES([
         clutter/sdl/Makefile
         clutter/cogl/Makefile
         clutter/cogl/gl/Makefile
+        clutter/cogl/gl/cogl-defines.h
         clutter/cogl/gles/Makefile
         clutter/json/Makefile
         clutter/pango/Makefile
@@ -403,6 +423,7 @@ echo ""
 echo "                   prefix:   ${prefix}"
 echo ""
 echo "                  Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
+echo "               GL Headers:   ${CLUTTER_GL_HEADER}"
 echo "           Target library:   ${clutterbackendlib}"
 echo "              Debug level:   ${enable_debug}"
 echo "      Fast FP conversions:   ${enable_fast_fp_conversions}"
