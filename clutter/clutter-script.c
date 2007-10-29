@@ -154,6 +154,14 @@
 
 #include "json/json-parser.h"
 
+enum
+{
+  PROP_0,
+
+  PROP_FILENAME_SET,
+  PROP_FILENAME
+};
+
 #define CLUTTER_SCRIPT_GET_PRIVATE(obj) \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_SCRIPT, ClutterScriptPrivate))
 
@@ -1270,6 +1278,28 @@ clutter_script_finalize (GObject *gobject)
 }
 
 static void
+clutter_script_get_property (GObject    *gobject,
+                             guint       prop_id,
+                             GValue     *value,
+                             GParamSpec *pspec)
+{
+  ClutterScript *script = CLUTTER_SCRIPT (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_FILENAME_SET:
+      g_value_set_boolean (value, script->priv->is_filename);
+      break;
+    case PROP_FILENAME:
+      g_value_set_string (value, script->priv->filename);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 clutter_script_class_init (ClutterScriptClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -1278,7 +1308,40 @@ clutter_script_class_init (ClutterScriptClass *klass)
 
   klass->get_type_from_name = clutter_script_real_get_type_from_name;
 
+  gobject_class->get_property = clutter_script_get_property;
   gobject_class->finalize = clutter_script_finalize;
+
+  /**
+   * ClutterScript:filename-set:
+   *
+   * Whether the ClutterScript:filename property is set. If this property
+   * is %TRUE then the currently parsed data comes from a file, and the
+   * file name is stored inside the ClutterScript:filename property.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_FILENAME_SET,
+                                   g_param_spec_boolean ("filename-set",
+                                                         "Filename Set",
+                                                         "Whether the :filename property is set",
+                                                         FALSE,
+                                                         CLUTTER_PARAM_READABLE));
+  /**
+   * ClutterScript:filename:
+   *
+   * The path of the currently parsed file. If ClutterScript:filename-set
+   * is %FALSE then the value of this property is undefined.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_FILENAME,
+                                   g_param_spec_string ("filename",
+                                                        "Filename",
+                                                        "The path of the currently parsed file",
+                                                        NULL,
+                                                        CLUTTER_PARAM_READABLE));
 }
 
 static void
@@ -1490,7 +1553,7 @@ clutter_script_get_objects_valist (ClutterScript *script,
  *                               "a-button", &amp;a_button,
  *                               "main-timeline", &amp;main_timeline,
  *                               NULL);
- * </programlisting</informalexample>
+ * </programlisting></informalexample>
  *
  * Note: This function does not increment the reference count of the
  * returned objects.

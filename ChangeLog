@@ -1,3 +1,9 @@
+2007-10-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-script.c: Add the :filename and :filename-set
+	properties, to retrieve the path of the currently parsed file (if
+	:filename-set is TRUE) from the ClutterScriptable implementations.
+
 2007-10-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-effect.c:
