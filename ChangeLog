@@ -1,5 +1,11 @@
 2007-10-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/json/json-parser.c: Enable parsing of negative numbers;
+	GScanner splits negative numbers into two tokens, so we need to
+	special case them.
+
+2007-10-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-script.c: Add the :filename and :filename-set
 	properties, to retrieve the path of the currently parsed file (if
 	:filename-set is TRUE) from the ClutterScriptable implementations.

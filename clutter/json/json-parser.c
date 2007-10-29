@@ -353,6 +353,7 @@ json_parse_array (JsonParser *parser,
   while (token != G_TOKEN_RIGHT_BRACE)
     {
       JsonNode *node = NULL;
+      gboolean negative = FALSE;
 
       if (token == G_TOKEN_COMMA)
         {
@@ -427,16 +428,34 @@ json_parse_array (JsonParser *parser,
           continue;
         }
 
+      if (token == '-')
+        {
+          guint next_token = g_scanner_peek_next_token (scanner);
+
+          if (next_token == G_TOKEN_INT ||
+              next_token == G_TOKEN_FLOAT)
+            {
+              negative = TRUE;
+              token = g_scanner_get_next_token (scanner);
+            }
+          else
+            {
+              return G_TOKEN_INT;
+            }
+        }
+
       switch (token)
         {
         case G_TOKEN_INT:
           node = json_node_new (JSON_NODE_VALUE);
-          json_node_set_int (node, scanner->value.v_int);
+          json_node_set_int (node, negative ? scanner->value.v_int * -1
+                                            : scanner->value.v_int);
           break;
 
         case G_TOKEN_FLOAT:
           node = json_node_new (JSON_NODE_VALUE);
-          json_node_set_double (node, scanner->value.v_float);
+          json_node_set_double (node, negative ? scanner->value.v_float * -1.0
+                                               : scanner->value.v_float);
           break;
 
         case G_TOKEN_STRING:
@@ -505,6 +524,7 @@ json_parse_object (JsonParser *parser,
     {
       JsonNode *node = NULL;
       gchar *name = NULL;
+      gboolean negative = FALSE;
 
       if (token == G_TOKEN_COMMA)
         {
@@ -610,16 +630,33 @@ json_parse_object (JsonParser *parser,
           continue;
         }
 
+      if (token == '-')
+        {
+          guint next_token = g_scanner_peek_next_token (scanner);
+
+          if (next_token == G_TOKEN_INT || next_token == G_TOKEN_FLOAT)
+            {
+              negative = TRUE;
+              token = g_scanner_get_next_token (scanner);
+            }
+          else
+            {
+              return G_TOKEN_INT;
+            }
+        }
+
       switch (token)
         {
         case G_TOKEN_INT:
           node = json_node_new (JSON_NODE_VALUE);
-          json_node_set_int (node, scanner->value.v_int);
+          json_node_set_int (node, negative ? scanner->value.v_int * -1
+                                            : scanner->value.v_int);
           break;
 
         case G_TOKEN_FLOAT:
           node = json_node_new (JSON_NODE_VALUE);
-          json_node_set_double (node, scanner->value.v_float);
+          json_node_set_double (node, negative ? scanner->value.v_float * -1.0
+                                               : scanner->value.v_float);
           break;
 
         case G_TOKEN_STRING:
@@ -692,6 +729,34 @@ json_parse_statement (JsonParser *parser,
       json_node_set_boolean (priv->current_node,
                              token == JSON_TOKEN_TRUE ? TRUE : FALSE);
       return G_TOKEN_NONE;
+
+    case '-':
+      {
+        guint next_token = g_scanner_peek_next_token (scanner);
+
+        if (next_token == G_TOKEN_INT || next_token == G_TOKEN_FLOAT)
+          {
+            priv->root = priv->current_node = json_node_new (JSON_NODE_VALUE);
+            
+            token = g_scanner_get_next_token (scanner);
+            switch (token)
+              {
+              case G_TOKEN_INT:
+                json_node_set_int (priv->current_node, scanner->value.v_int);
+                break;
+              case G_TOKEN_FLOAT:
+                json_node_set_double (priv->current_node, scanner->value.v_float);
+                break;
+              default:
+                break;
+              }
+
+            return G_TOKEN_NONE;
+          }
+        else
+          return G_TOKEN_INT;
+      }
+      break;
 
     case G_TOKEN_INT:
     case G_TOKEN_FLOAT:
