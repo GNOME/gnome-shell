@@ -33,11 +33,7 @@
 
 #else
 
-#if defined(HAVE_GL_GL_H)
-#include <GL/gl.h>
-#elif defined(HAVE_OPENGL_GL_H)
-#include <OpenGL/gl.h>
-#endif
+#include <@CLUTTER_GL_HEADER@>
 
 #endif /* WIN32 */
 
