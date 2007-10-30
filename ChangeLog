@@ -1,3 +1,9 @@
+2007-10-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-layout.c: Fix documentation, with regards to
+	the containers handling of the children implementing the
+	ClutterLayout interface.
+
 2007-10-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac:

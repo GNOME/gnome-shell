@@ -73,10 +73,10 @@
  * will be queried multiple times until it's satisfied with the size
  * given.
  *
- * A #ClutterGroup subclass that honours the #ClutterLayout interface
- * should check whether an actor is implementing this interface when
- * adding it, by using the %CLUTTER_IS_LAYOUT type check macro. If the
- * actor does implement the interface, the #ClutterGroup should get
+ * A #ClutterContainer implementation that honours the #ClutterLayout
+ * interface should check whether an actor is implementing this interface
+ * when adding it, by using the %CLUTTER_IS_LAYOUT type check macro. If the
+ * actor does implement the interface, the #ClutterContainer should get
  * the supported layouts using clutter_layout_get_layout_flags() and
  * verify which layout is compatible with the group's own layout; for
  * instance, vertical containers should check for actors implementing the
