@@ -148,6 +148,7 @@ typedef struct
   gboolean replace_wm;
   gboolean disable_sm;
   gboolean print_version;
+  gboolean sync;
 } MetaArguments;
 
 /**
@@ -200,6 +201,12 @@ meta_parse_options (int *argc, char ***argv,
       N_("Print version"),
       NULL
     },
+    {
+      "sync", 0, 0, G_OPTION_ARG_NONE,
+      &my_args.sync,
+      N_("Make X calls synchronous"),
+      NULL
+    },
     {NULL}
   };
   GOptionContext *ctx;
@@ -243,7 +250,7 @@ main (int argc, char **argv)
   struct sigaction act;
   sigset_t empty_mask;
   MetaArguments meta_args;
-
+  
   if (setlocale (LC_ALL, "") == NULL)
     meta_warning ("Locale not understood by C library, internationalization will not work\n");
   
@@ -264,7 +271,6 @@ main (int argc, char **argv)
     meta_set_verbose (TRUE);
   if (g_getenv ("METACITY_DEBUG"))
     meta_set_debugging (TRUE);
-  meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
 
   if (g_get_home_dir ())
     chdir (g_get_home_dir ());
@@ -277,6 +283,8 @@ main (int argc, char **argv)
 
   /* Parse command line arguments.*/
   meta_parse_options (&argc, &argv, &meta_args);
+
+  meta_set_syncing (meta_args.sync || (g_getenv ("METACITY_SYNC") != NULL));
 
   if (meta_args.print_version)
     version ();

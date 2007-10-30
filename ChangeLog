@@ -1,3 +1,8 @@
+2207-10-30  iain Holmes <iain@gnome.org>
+
+	* src/main.c (meta_parse_options): Add --sync option
+	(main): Check if the --sync option was passed on command line.
+
 2007-10-28  Jans Granseuer  <jensgr@gmx.net>
 
         * src/preview-widget.c (meta_preview_finalize): Free title of
