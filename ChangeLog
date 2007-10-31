@@ -1,3 +1,8 @@
+2007-10-31  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-main.c: (_clutter_do_pick): disable dithering
+	when painting in pick mode.
+
 2007-10-31  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-score.c:

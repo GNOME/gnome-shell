@@ -209,6 +209,9 @@ _clutter_do_pick (ClutterStage   *stage,
   cogl_paint_init (&white);
   cogl_enable (0);
 
+  /* Disable dithering (if any) when doing the painting in pick mode */
+  glDisable (GL_DITHER);
+
   /* Render the entire scence in pick mode - just single colored silhouette's  
    * are drawn offscreen (as we never swap buffers)
   */
@@ -223,6 +226,7 @@ _clutter_do_pick (ClutterStage   *stage,
    * could be nicer.  
   */
   glFinish(); 		
+  glEnable (GL_DITHER);
 
   glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
