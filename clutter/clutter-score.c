@@ -308,7 +308,9 @@ on_timeline_finish (ClutterTimeline   *timeline,
 
   g_signal_handler_disconnect (timeline, entry->handler_id);
 
-  printf("completed %p %li\n", entry->timeline, entry->handler_id);
+  CLUTTER_NOTE (SCHEDULER,
+		"completed %p %li\n", 
+		entry->timeline, entry->handler_id);
 
   for (item = entry->child_entries; item != NULL; item = item->next)
     {
@@ -320,7 +322,7 @@ on_timeline_finish (ClutterTimeline   *timeline,
     {
       /* Score has finished - fire 'completed' signal */
       /* Also check if looped etc */
-      printf("looks like we finished\n");
+      CLUTTER_NOTE (SCHEDULER, "looks like we finished\n");
       
       g_signal_emit (entry->score, score_signals[COMPLETED], 0);
     }
@@ -334,7 +336,8 @@ start_entry (ClutterScoreEntry *entry)
 					G_CALLBACK (on_timeline_finish),
 					entry);
 
-  printf("started %p %li\n", entry->timeline, entry->handler_id);
+    CLUTTER_NOTE (SCHEDULER, 
+		  "started %p %li\n", entry->timeline, entry->handler_id);
 
   g_hash_table_insert (entry->score->priv->running_timelines,
 		       GINT_TO_POINTER(entry->handler_id),
@@ -394,7 +397,7 @@ on_foreach_running_timeline_stop (gpointer key,
 				  gpointer value,
 				  gpointer user_data)
 {
-  clutter_timeline_stop (CLUTTER_TIMELINE(value));
+  clutter_timeline_stop (((ClutterScoreEntry*)value)->timeline);
   return TRUE; 
 }
 
@@ -445,7 +448,7 @@ on_foreach_running_timeline_pause (gpointer key,
 				   gpointer value,
 				  gpointer user_data)
 {
-  clutter_timeline_pause (CLUTTER_TIMELINE(value));
+  clutter_timeline_pause (((ClutterScoreEntry*)value)->timeline);
 }
 
 void
@@ -522,6 +525,8 @@ clutter_score_append (ClutterScore    *score,
       entry_new->score    = score;
 
       entry->child_entries = g_slist_append (entry->child_entries, entry_new);
+
+      clutter_timeline_stop (timeline_new); /* stop it */
     }
 }
 
@@ -548,7 +553,31 @@ clutter_score_add (ClutterScore    *score,
   entry->score = score;
   score->priv->entries = g_slist_append (score->priv->entries, entry);
 
-  printf("added %p\n", entry->timeline);
+  clutter_timeline_stop (timeline); /* stop it */
+
+  CLUTTER_NOTE (SCHEDULER, "added timeline %p\n", entry->timeline);
+}
+
+static void
+remove_entrys (GSList *list)
+{
+  GSList             *item;
+
+  if (list == NULL)
+    return;
+
+  for (item = list; item != NULL; item = item->next)
+    {
+      ClutterScoreEntry *entry = item->data;
+
+      g_object_unref (entry->timeline);
+
+      if (entry->child_entries)
+	remove_entrys (entry->child_entries);
+
+      g_slist_free (entry->child_entries);
+      g_free(entry);
+    }
 }
 
 void
@@ -562,9 +591,9 @@ clutter_score_remove (ClutterScore    *score,
 void
 clutter_score_remove_all (ClutterScore *score)
 {
-
+  clutter_score_stop (score);
+  remove_entrys (score->priv->entries);
 }
-
 
 /**
  * clutter_score_new:

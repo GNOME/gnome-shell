@@ -1,3 +1,8 @@
+2007-10-31  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-score.c:
+	Various minor improvements to ClutterScore.
+
 2007-10-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-layout.c: Fix documentation, with regards to
