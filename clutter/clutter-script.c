@@ -768,7 +768,7 @@ clutter_script_parse_node (ClutterScript *script,
                     }
                   else
                     {
-                      g_value_set_object (value, pixbuf);
+                      g_value_take_object (value, pixbuf);
                       retval = TRUE;
                     }
 

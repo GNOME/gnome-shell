@@ -1,3 +1,8 @@
+2007-11-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-script.c: Do not keep ownership of the
+	pixbufs we load.
+
 2007-10-31  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-main.c: (_clutter_do_pick): disable dithering
