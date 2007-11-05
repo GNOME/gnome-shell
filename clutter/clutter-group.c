@@ -285,41 +285,6 @@ clutter_group_real_foreach (ClutterContainer *container,
     (* callback) (CLUTTER_ACTOR (l->data), user_data);
 }
 
-static ClutterActor *
-clutter_group_real_find_child_by_id (ClutterContainer *container,
-                                     guint             child_id)
-{
-  ClutterGroup *self = CLUTTER_GROUP (container);
-  ClutterGroupPrivate *priv = self->priv;
-  ClutterActor *actor = NULL;
-  GList *l;
-
-  if (clutter_actor_get_id (CLUTTER_ACTOR (self)) == child_id)
-    return CLUTTER_ACTOR (self);
-
-  for (l = priv->children; l; l = l->next)
-    {
-      ClutterActor *child = l->data;
-
-      if (clutter_actor_get_id (child) == child_id)
-        {
-          actor = child;
-          break;
-        }
-
-      if (CLUTTER_IS_CONTAINER (child))
-        {
-          ClutterContainer *c = CLUTTER_CONTAINER (child);
-
-          actor = clutter_container_find_child_by_id (c, child_id);
-          if (actor)
-            break;
-	}
-    }
-
-  return actor;
-}
-
 static void
 clutter_group_real_raise (ClutterContainer *container,
                           ClutterActor     *actor,
@@ -440,7 +405,6 @@ clutter_container_iface_init (ClutterContainerIface *iface)
   iface->add = clutter_group_real_add;
   iface->remove = clutter_group_real_remove;
   iface->foreach = clutter_group_real_foreach;
-  iface->find_child_by_id = clutter_group_real_find_child_by_id;
   iface->raise = clutter_group_real_raise;
   iface->lower = clutter_group_real_lower;
   iface->sort_depth_order = clutter_group_real_sort_depth_order;
@@ -679,27 +643,6 @@ clutter_group_get_nth_child (ClutterGroup *self,
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
 
   return g_list_nth_data (self->priv->children, index_);
-}
-
-/**
- * clutter_group_find_child_by_id:
- * @self: A #ClutterGroup
- * @id: A unique #Clutteractor ID
- *
- * Finds a child actor of a group by its unique ID. Search recurses
- * into any child groups.
- *
- * Returns: the #ClutterActor if found, or NULL.
- *
- * Deprecated: 0.6: Use clutter_container_find_child_by_id() instead.
- */
-ClutterActor *
-clutter_group_find_child_by_id (ClutterGroup *self,
-				guint         id)
-{
-  g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
-
-  return clutter_container_find_child_by_id (CLUTTER_CONTAINER (self), id);
 }
 
 /**

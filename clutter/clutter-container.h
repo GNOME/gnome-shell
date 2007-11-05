@@ -46,9 +46,6 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  * @add: virtual function for adding an actor to the container
  * @remove: virtual function for removing an actor from the container
  * @foreach: virtual function for iterating over the container's children
- * @find_child_by_id: virtual function for searching a container children
- *   using its unique id. Should recurse through its children. This function
- *   is used when "picking" actors (e.g. by clutter_stage_get_actor_at_pos())
  * @raise: virtual function for raising a child
  * @lower: virtual function for lowering a child
  * @sort_depth_order: virtual function for sorting the children of a
@@ -73,8 +70,6 @@ struct _ClutterContainerIface
   void          (* foreach)          (ClutterContainer *container,
                                       ClutterCallback   callback,
                                       gpointer          user_data);
-  ClutterActor *(* find_child_by_id) (ClutterContainer *container,
-                                      guint             child_id);
   void          (* raise)            (ClutterContainer *container,
                                       ClutterActor     *actor,
                                       ClutterActor     *sibling);
@@ -112,8 +107,6 @@ GList *       clutter_container_get_children     (ClutterContainer *container);
 void          clutter_container_foreach          (ClutterContainer *container,
                                                   ClutterCallback   callback,
                                                   gpointer          user_data);
-ClutterActor *clutter_container_find_child_by_id (ClutterContainer *container,
-                                                  guint             child_id);
 ClutterActor *clutter_container_find_child_by_name(ClutterContainer *container,
                                                   const gchar      *child_name);
 void          clutter_container_raise_child      (ClutterContainer *container,

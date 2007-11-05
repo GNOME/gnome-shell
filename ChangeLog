@@ -1,3 +1,11 @@
+2007-11-05  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-container.[ch]: removed find_child_by_id method
+	from interface (and all implementations of it) since this
+	functionality is now implemented using a global hash.
+	* clutter/clutter-box.c: 
+	* clutter/clutter-group.c:
+
 2007-11-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script.c: Do not keep ownership of the
