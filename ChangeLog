@@ -1,5 +1,10 @@
 2007-11-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-layout.h: Add commodity macros to test for
+	a specific layout flag in one line.
+
+2007-11-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-box.c (clutter_box_dispose): Call unparent()
 	on the children, instead of destroy(), to avoid a double free
 	and a crash when destroying a ClutterBox.

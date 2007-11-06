@@ -40,6 +40,19 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_LAYOUT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_LAYOUT))
 #define CLUTTER_LAYOUT_GET_IFACE(obj)   (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_LAYOUT, ClutterLayoutIface))
 
+#define CLUTTER_LAYOUT_HAS(layout,f)                    \
+        (CLUTTER_IS_LAYOUT ((layout)) && \
+         (clutter_layout_get_layout_flags ((ClutterLayout *) (layout)) & (f)))
+
+#define CLUTTER_LAYOUT_HAS_WIDTH_FOR_HEIGHT(layout)     \
+        (CLUTTER_LAYOUT_HAS ((layout), CLUTTER_LAYOUT_WIDTH_FOR_HEIGHT))
+#define CLUTTER_LAYOUT_HAS_HEIGHT_FOR_WIDTH(layout)     \
+        (CLUTTER_LAYOUT_HAS ((layout), CLUTTER_LAYOUT_HEIGHT_FOR_WIDTH))
+#define CLUTTER_LAYOUT_HAS_NATURAL_SIZE(layout)         \
+        (CLUTTER_LAYOUT_HAS ((layout), CLUTTER_LAYOUT_NATURAL))
+#define CLUTTER_LAYOUT_HAS_TUNABLE_SIZE(layout)         \
+        (CLUTTER_LAYOUT_HAS ((layout), CLUTTER_LAYOUT_TUNABLE))
+
 /**
  * ClutterLayoutFlags
  * @CLUTTER_LAYOUT_NONE: No layout (default behaviour)
