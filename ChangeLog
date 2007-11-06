@@ -1,3 +1,8 @@
+2007-11-06  Peter Bloomfield  <pbloomfield@bellsouth.net>
+
+	* src/window.c (meta_window_move_resize_internal): do not save
+	client root coords while window is maximized.
+
 2207-10-30  iain Holmes <iain@gnome.org>
 
 	* src/main.c (meta_parse_options): Add --sync option
