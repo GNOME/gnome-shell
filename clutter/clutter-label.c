@@ -346,19 +346,7 @@ clutter_label_dispose (GObject *object)
       g_object_unref (priv->layout);
       priv->layout = NULL;
     }
-  
-  if (priv->desc)
-    {
-      pango_font_description_free (priv->desc);    
-      priv->desc = NULL;
-    }
 
-  g_free (priv->text);
-  priv->text = NULL;
-
-  g_free (priv->font_name);
-  priv->font_name = NULL;
-      
   if (priv->context)
     {
       g_object_unref (priv->context);
@@ -371,6 +359,17 @@ clutter_label_dispose (GObject *object)
 static void 
 clutter_label_finalize (GObject *object)
 {
+  ClutterLabel         *self = CLUTTER_LABEL(object);
+  ClutterLabelPrivate  *priv;  
+
+  priv = self->priv;
+  
+  if (priv->desc)
+    pango_font_description_free (priv->desc);    
+
+  g_free (priv->text);
+  g_free (priv->font_name);
+
   G_OBJECT_CLASS (clutter_label_parent_class)->finalize (object);
 }
 

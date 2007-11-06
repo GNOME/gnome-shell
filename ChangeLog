@@ -1,3 +1,8 @@
+2007-11-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-label.c: Break the references in ::dispose,
+	and free the resources in ::finalize.
+
 2007-11-05  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-container.[ch]: removed find_child_by_id method
