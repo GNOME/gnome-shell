@@ -608,7 +608,9 @@ clutter_sqrtx (ClutterFixed x)
  *
  * This function is about 10x faster than clib sqrt() on x86, and (this is
  * not a typo!) more than 800x faster on ARM without FPU. It's error is < 5%
- * for arguments < 132 and < 10% for arguments < 5591.
+ * for arguments < #CLUTTER_SQRTI_ARG_5_PERCENT and < 10% for arguments <
+ * #CLUTTER_SQRTI_ARG_10_PERCENT. The maximum argument that can be passed to
+ * this function is CLUTTER_SQRTI_ARG_MAX.
  *
  * Return value: integer square root.
  *

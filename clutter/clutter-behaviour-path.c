@@ -59,7 +59,7 @@
 
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (ClutterBehaviourPath, 
+G_DEFINE_TYPE_WITH_CODE (ClutterBehaviourPath,
                          clutter_behaviour_path,
 	                 CLUTTER_TYPE_BEHAVIOUR,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
@@ -92,7 +92,7 @@ enum
   PROP_KNOT
 };
 
-static void 
+static void
 clutter_behaviour_path_finalize (GObject *object)
 {
   ClutterBehaviourPath *self = CLUTTER_BEHAVIOUR_PATH(object);
@@ -104,8 +104,8 @@ clutter_behaviour_path_finalize (GObject *object)
 }
 
 static inline void
-interpolate (const ClutterKnot *begin, 
-	     const ClutterKnot *end, 
+interpolate (const ClutterKnot *begin,
+	     const ClutterKnot *end,
 	     ClutterKnot       *out,
 	     ClutterFixed       t)
 {
@@ -117,18 +117,28 @@ static gint
 node_distance (const ClutterKnot *begin,
                const ClutterKnot *end)
 {
+  gint t;
+
   g_return_val_if_fail (begin != NULL, 0);
   g_return_val_if_fail (end != NULL, 0);
 
   if (clutter_knot_equal (begin, end))
         return 0;
 
-#if 1
-  return clutter_sqrti ((end->x - begin->x) * (end->x - begin->x) +
-			(end->y - begin->y) * (end->y - begin->y));
+  t = (end->x - begin->x) * (end->x - begin->x) +
+    (end->y - begin->y) * (end->y - begin->y);
+
+  /*
+   * If we are using limited precision sqrti implementation, fallback on
+   * clib sqrt if the precission would be less than 10%
+   */
+#if INT_MAX > CLUTTER_SQRTI_ARG_10_PERCENT
+  if (t <= CLUTTER_SQRTI_ARG_10_PERCENT)
+    return clutter_sqrti (t);
+  else
+    return CLUTTER_FLOAT_TO_INT(sqrt(t));
 #else
-  return CLUTTER_FLOAT_TO_INT(sqrt((end->x - begin->x) * (end->x - begin->x) +
-				   (end->y - begin->y) * (end->y - begin->y)));
+    return clutter_sqrti (t);
 #endif
 }
 
@@ -166,7 +176,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
   GSList  *l;
   gint     total_len, offset, dist = 0;
 
-  /* FIXME: Optimise. Much of the data used here can be pre-generated  
+  /* FIXME: Optimise. Much of the data used here can be pre-generated
    *        ( total_len, dist between knots ) when knots are added/removed.
   */
 
@@ -181,29 +191,29 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
   total_len = path_total_length (behave);
   offset = (alpha * total_len) / CLUTTER_ALPHA_MAX_ALPHA;
 
-  CLUTTER_NOTE (BEHAVIOUR, "alpha %i vs %i, len: %i vs %i", 
+  CLUTTER_NOTE (BEHAVIOUR, "alpha %i vs %i, len: %i vs %i",
 		alpha, CLUTTER_ALPHA_MAX_ALPHA,
 		offset, total_len);
 
   if (offset == 0)
     {
       /* first knot */
-      clutter_behaviour_actors_foreach (behaviour, 
+      clutter_behaviour_actors_foreach (behaviour,
 					actor_apply_knot_foreach,
 					priv->knots->data);
-      
+
       priv->last_knot_passed = (ClutterKnot*)priv->knots->data;
       g_signal_emit (behave, path_signals[KNOT_REACHED], 0,
                      priv->knots->data);
       return;
     }
-  
+
   if (offset == total_len)
     {
       /* Special case for last knot */
       ClutterKnot *last_knot = (g_slist_last (priv->knots))->data;
 
-      clutter_behaviour_actors_foreach (behaviour, 
+      clutter_behaviour_actors_foreach (behaviour,
 					actor_apply_knot_foreach,
 					last_knot);
 
@@ -217,7 +227,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
     {
       gint dist_to_next = 0;
       ClutterKnot *knot = l->data;
-      
+
       if (l->next)
         {
           ClutterKnot *next = l->next->data;
@@ -228,12 +238,12 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
             {
 	      ClutterKnot new;
 	      ClutterFixed t;
-	    
+
 	      t = CLUTTER_INT_TO_FIXED (offset - dist) / dist_to_next;
 
               interpolate (knot, next, &new, t);
 
-              clutter_behaviour_actors_foreach (behaviour, 
+              clutter_behaviour_actors_foreach (behaviour,
 					        actor_apply_knot_foreach,
 					        &new);
 
@@ -323,7 +333,7 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
                   CLUTTER_TYPE_KNOT);
 
   behave_class->alpha_notify = clutter_behaviour_path_alpha_notify;
-  
+
   g_type_class_add_private (klass, sizeof (ClutterBehaviourPathPrivate));
 }
 
@@ -379,7 +389,7 @@ clutter_behaviour_path_parse_custom_node (ClutterScriptable *scriptable,
 
       array = json_node_get_array (node);
       knots_len = json_array_get_length (array);
-      
+
       for (i = 0; i < knots_len; i++)
         {
           JsonNode *val = json_array_get_element (array, i);
@@ -430,8 +440,8 @@ clutter_behaviour_path_new (ClutterAlpha      *alpha,
 {
   ClutterBehaviourPath *behave;
   gint i;
-     
-  behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_PATH, 
+
+  behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_PATH,
                          "alpha", alpha,
 			 NULL);
 
@@ -449,7 +459,7 @@ clutter_behaviour_path_new (ClutterAlpha      *alpha,
  * clutter_behaviour_path_get_knots:
  * @pathb: a #ClutterBehvaiourPath
  *
- * Returns a copy of the list of knots contained by @pathb 
+ * Returns a copy of the list of knots contained by @pathb
  *
  * Return value: a #GSList of the paths knots.
  *
@@ -465,7 +475,7 @@ clutter_behaviour_path_get_knots (ClutterBehaviourPath *pathb)
   retval = NULL;
   for (l = pathb->priv->knots; l != NULL; l = l->next)
     retval = g_slist_prepend (retval, l->data);
-  
+
   return g_slist_reverse (retval);
 }
 
@@ -473,7 +483,7 @@ clutter_behaviour_path_get_knots (ClutterBehaviourPath *pathb)
  * clutter_behaviour_path_append_knot:
  * @pathb: a #ClutterBehvaiourPath
  * @knot:  a #ClutterKnot to append.
- *   
+ *
  * Appends a #ClutterKnot to the path
  *
  * Since: 0.2
@@ -494,9 +504,9 @@ clutter_behaviour_path_append_knot (ClutterBehaviourPath  *pathb,
 /**
  * clutter_behaviour_path_insert_knot:
  * @pathb: a #ClutterBehvaiourPath
- * @offset: position in path to insert knot. 
+ * @offset: position in path to insert knot.
  * @knot:  a #ClutterKnot to append.
- *   
+ *
  * Inserts a #ClutterKnot in the path at specified position. Values greater
  * than total number of knots will append the knot at the end of path.
  *
@@ -520,7 +530,7 @@ clutter_behaviour_path_insert_knot (ClutterBehaviourPath  *pathb,
  * clutter_behaviour_path_remove_knot:
  * @pathb: a #ClutterBehvaiourPath
  * @offset: position in path to remove knot.
- *   
+ *
  * Removes a #ClutterKnot in the path at specified offset.
  *
  * Since: 0.2
@@ -567,7 +577,7 @@ clutter_behaviour_path_append_knots_valist (ClutterBehaviourPath *pathb,
  * @Varargs: additional knots to add to the path
  *
  * Adds a NULL-terminated list of knots to a path.  This function is
- * equivalent to calling clutter_behaviour_path_append_knot() for each 
+ * equivalent to calling clutter_behaviour_path_append_knot() for each
  * member of the list.
  *
  * Since: 0.2
@@ -590,7 +600,7 @@ clutter_behaviour_path_append_knots (ClutterBehaviourPath *pathb,
 /**
  * clutter_behaviour_path_clear:
  * @pathb: a #ClutterBehvaiourPath
- *   
+ *
  * Removes all knots from a path
  *
  * Since: 0.2

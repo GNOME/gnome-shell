@@ -33,14 +33,14 @@ G_BEGIN_DECLS
 
 /**
  * ClutterFixed:
- * 
+ *
  * Fixed point number (16.16)
  */
 typedef gint32 ClutterFixed;
 
 /**
  * ClutterAngle:
- * 
+ *
  * Integer representation of an angle such that 1024 corresponds to
  * full circle (i.e., 2*Pi).
  */
@@ -59,96 +59,96 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CFX_Q:
- * 
+ *
  * Size in bits of decimal part of floating point value.
  */
 #define CFX_Q      16		/* Decimal part size in bits */
 
 /**
  * CFX_ONE:
- * 
+ *
  * 1.0 represented as a fixed point value.
  */
 #define CFX_ONE    (1 << CFX_Q)	/* 1 */
 
 /**
  * CFX_HALF:
- * 
+ *
  * 0.5 represented as a fixed point value.
  */
 #define CFX_HALF   32768
 
 /**
  * CFX_MAX:
- * 
+ *
  * Maximum fixed point value.
  */
 #define CFX_MAX    0x7fffffff
 
 /**
  * CFX_MIN:
- * 
+ *
  * Minimum fixed point value.
  */
 #define CFX_MIN    0x80000000
 
 /**
  * CFX_PI:
- * 
+ *
  * Fixed point representation of Pi
  */
 #define CFX_PI     0x0003243f
 /**
  * CFX_2PI:
- * 
+ *
  * Fixed point representation of Pi*2
  */
 #define CFX_2PI    0x0006487f
 /**
  * CFX_PI_2:
- * 
+ *
  * Fixed point representation of Pi/2
  */
 #define CFX_PI_2   0x00019220   /* pi/2 */
 /**
  * CFX_PI_4:
- * 
+ *
  * Fixed point representation of Pi/4
  */
 #define CFX_PI_4   0x0000c910   /* pi/4 */
 /**
  * CFX_360:
- * 
+ *
  * Fixed point representation of the number 360
  */
 #define CFX_360 CLUTTER_INT_TO_FIXED (360)
 /**
  * CFX_240:
- * 
+ *
  * Fixed point representation of the number 240
  */
 #define CFX_240 CLUTTER_INT_TO_FIXED (240)
 /**
  * CFX_180:
- * 
+ *
  * Fixed point representation of the number 180
  */
 #define CFX_180 CLUTTER_INT_TO_FIXED (180)
 /**
  * CFX_120:
- * 
+ *
  * Fixed point representation of the number 120
  */
 #define CFX_120 CLUTTER_INT_TO_FIXED (120)
 /**
  * CFX_60:
- * 
+ *
  * Fixed point representation of the number 60
  */
 #define CFX_60  CLUTTER_INT_TO_FIXED (60)
 /**
  * CFX_255:
- * 
+ *
  * Fixed point representation of the number 255
  */
 #define CFX_255 CLUTTER_INT_TO_FIXED (255)
@@ -156,7 +156,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_FIXED_TO_FLOAT:
  * @x: a fixed point value
- * 
+ *
  * Convert a fixed point value to float.
  */
 #define CLUTTER_FIXED_TO_FLOAT(x)       ((float) ((int)(x) / 65536.0))
@@ -164,7 +164,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_FIXED_TO_DOUBLE:
  * @x: a fixed point value
- * 
+ *
  * Convert a fixed point value to double.
  */
 #define CLUTTER_FIXED_TO_DOUBLE(x)      ((double) ((int)(x) / 65536.0))
@@ -172,7 +172,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_FLOAT_TO_FIXED:
  * @x: a floating point value
- * 
+ *
  * Convert a float value to fixed.
  */
 #define CLUTTER_FLOAT_TO_FIXED(x)       (_clutter_double_to_fixed ((x)))
@@ -180,7 +180,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_FLOAT_TO_INT:
  * @x: a floating point value
- * 
+ *
  * Convert a float value to int.
  */
 #define CLUTTER_FLOAT_TO_INT(x)         (_clutter_double_to_int ((x)))
@@ -188,7 +188,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_FLOAT_TO_UINT:
  * @x: a floating point value
- * 
+ *
  * Convert a float value to unsigned int.
  */
 #define CLUTTER_FLOAT_TO_UINT(x)         (_clutter_double_to_uint ((x)))
@@ -196,7 +196,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_INT_TO_FIXED:
  * @x: an integer value
- * 
+ *
  * Convert an integer value to fixed point.
  */
 #define CLUTTER_INT_TO_FIXED(x)         ((x) << CFX_Q)
@@ -216,7 +216,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_FIXED_INT:
  * @x: a fixed point value
- * 
+ *
  * Convert a fixed point value to integer (removing decimal part).
  *
  * Deprecated:0.6: Use %CLUTTER_FIXED_TO_INT instead
@@ -228,7 +228,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_FIXED_FRACTION:
  * @x: a fixed point value
- * 
+ *
  * Retrieves the fractionary part of a fixed point value
  */
 #define CLUTTER_FIXED_FRACTION(x)       ((x) & ((1 << CFX_Q) - 1))
@@ -236,7 +236,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_FIXED_FLOOR:
  * @x: a fixed point value
- * 
+ *
  * Round down a fixed point value to an integer.
  */
 #define CLUTTER_FIXED_FLOOR(x)          (((x) >= 0) ? ((x) >> CFX_Q) \
@@ -244,7 +244,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /**
  * CLUTTER_FIXED_CEIL:
  * @x: a fixed point value
- * 
+ *
  * Round up a fixed point value to an integer.
  */
 #define CLUTTER_FIXED_CEIL(x)           (CLUTTER_FIXED_FLOOR (x + 0xffff))
@@ -253,7 +253,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  * CLUTTER_FIXED_MUL:
  * @x: a fixed point value
  * @y: a fixed point value
- * 
+ *
  * Multiply two fixed point values
  */
 #define CLUTTER_FIXED_MUL(x,y) ((x) >> 8) * ((y) >> 8)
@@ -262,7 +262,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  * CLUTTER_FIXED_DIV:
  * @x: a fixed point value
  * @y: a fixed point value
- * 
+ *
  * Divide two fixed point values
  */
 #define CLUTTER_FIXED_DIV(x,y) ((((x) << 8)/(y)) << 8)
@@ -290,7 +290,7 @@ ClutterFixed clutter_tani (ClutterAngle angle);
  * @angle: a #ClutterFixed angle in radians
  *
  * Fixed point cosine function
- * 
+ *
  * Return value: #ClutterFixed cosine value.
  *
  * Note: Implemneted as a macro.
@@ -307,7 +307,7 @@ ClutterFixed clutter_tani (ClutterAngle angle);
  *
  * ClutterAngle is an integer such that 1024 represents
  * full circle.
- * 
+ *
  * Return value: #ClutterFixed cosine value.
  *
  * Note: Implemneted as a macro.
@@ -315,6 +315,47 @@ ClutterFixed clutter_tani (ClutterAngle angle);
  * Since: 0.2
  */
 #define clutter_cosi(angle) (clutter_sini ((angle) + 256))
+
+/**
+ * CLUTTER_SQRTI_ARG_MAX
+ *
+ * Maximum argument that can be passed to #clutter_sqrti function.
+ *
+ * Since: 0.6
+ */
+#ifndef __SSE2__
+#define CLUTTER_SQRTI_ARG_MAX 0x3fffff
+#else
+#define CLUTTER_SQRTI_ARG_MAX INT_MAX
+#endif
+
+/**
+ * CLUTTER_SQRTI_ARG_5_PERCENT
+ *
+ * Maximum argument that can be passed to #clutter_sqrti for which the
+ * resulting error is < 5%
+ *
+ * Since: 0.6
+ */
+#ifndef __SSE2__
+#define CLUTTER_SQRTI_ARG_5_PERCENT  131
+#else
+#define CLUTTER_SQRTI_ARG_5_PERCENT INT_MAX
+#endif
+
+/**
+ * CLUTTER_SQRTI_ARG_10_PERCENT
+ *
+ * Maximum argument that can be passed to #clutter_sqrti for which the
+ * resulting error is < 10%
+ *
+ * Since: 0.6
+ */
+#ifndef __SSE2__
+#define CLUTTER_SQRTI_ARG_10_PERCENT 5590
+#else
+#define CLUTTER_SQRTI_ARG_10_PERCENT INT_MAX
+#endif
 
 ClutterFixed clutter_sqrtx (ClutterFixed x);
 gint         clutter_sqrti (gint         x);
