@@ -349,7 +349,7 @@ clutter_box_dispose (GObject *gobject)
     {
       ClutterBoxChild *child = l->data;
 
-      clutter_actor_destroy (child->actor);
+      clutter_actor_unparent (child->actor);
       g_slice_free (ClutterBoxChild, child);
     }
 
