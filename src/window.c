@@ -3481,8 +3481,24 @@ meta_window_move_resize_internal (MetaWindow          *window,
    * we want user_rect to reflect user position/size changes OR the initial
    * placement of the window.
    */
-  if ((is_user_action || !window->placed) && !META_WINDOW_MAXIMIZED (window))
-    meta_window_get_client_root_coords (window, &window->user_rect);
+  if (is_user_action || !window->placed)
+    {
+      MetaRectangle user_rect;
+
+      meta_window_get_client_root_coords (window, &user_rect);
+
+      if (!window->maximized_horizontally)
+	{
+	  window->user_rect.x = user_rect.x;
+	  window->user_rect.width = user_rect.width;
+	}
+
+      if (!window->maximized_vertically)
+	{
+	  window->user_rect.y = user_rect.y;
+	  window->user_rect.height = user_rect.height;
+	}
+    }
   
   if (need_move_frame || need_resize_frame ||
       need_move_client || need_resize_client)
