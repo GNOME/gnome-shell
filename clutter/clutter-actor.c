@@ -129,19 +129,20 @@ enum
   HIDE,
   DESTROY,
   PARENT_SET,
+  FOCUS_IN,
+  FOCUS_OUT,
 
   EVENT,
-  EVENT_CAPTURED,
+  CAPTURED_EVENT,
   BUTTON_PRESS_EVENT,
   BUTTON_RELEASE_EVENT,
   SCROLL_EVENT,
   KEY_PRESS_EVENT,
   KEY_RELEASE_EVENT,
   MOTION_EVENT,
-  FOCUS_IN,
-  FOCUS_OUT,
   ENTER_EVENT,
   LEAVE_EVENT,
+
   LAST_SIGNAL
 };
 
@@ -1538,7 +1539,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_signal_new ("enter-event",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ClutterActorClass, enter),
+		  G_STRUCT_OFFSET (ClutterActorClass, enter_event),
 		  _clutter_boolean_handled_accumulator, NULL,
 		  clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
@@ -1556,7 +1557,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
     g_signal_new ("leave-event",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ClutterActorClass, leave),
+		  G_STRUCT_OFFSET (ClutterActorClass, leave_event),
 		  _clutter_boolean_handled_accumulator, NULL,
 		  clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
@@ -1571,11 +1572,11 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.6
    */
-  actor_signals[EVENT_CAPTURED] =
+  actor_signals[CAPTURED_EVENT] =
     g_signal_new ("captured-event",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ClutterActorClass, captured),
+		  G_STRUCT_OFFSET (ClutterActorClass, captured_event),
 		  _clutter_boolean_handled_accumulator, NULL,
 		  clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
@@ -3122,7 +3123,7 @@ clutter_actor_event (ClutterActor *actor,
 
   if (capture)
     {
-      g_signal_emit (actor, actor_signals[EVENT_CAPTURED], 0,
+      g_signal_emit (actor, actor_signals[CAPTURED_EVENT], 0,
 		     event,
                      &retval);
       goto out;

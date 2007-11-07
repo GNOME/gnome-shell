@@ -193,28 +193,28 @@ struct _ClutterActorClass
                             const ClutterColor  *color);
 
   /* event signals */
-  gboolean (* event)                (ClutterActor       *actor,
-				     ClutterEvent       *event);
-  gboolean (* button_press_event)   (ClutterActor       *actor,
-				     ClutterButtonEvent *event);
-  gboolean (* button_release_event) (ClutterActor       *actor,
-				     ClutterButtonEvent *event);
-  gboolean (* scroll_event)         (ClutterActor       *actor,
-				     ClutterScrollEvent *event);
-  gboolean (* key_press_event)      (ClutterActor       *actor,
-				     ClutterKeyEvent    *event);
-  gboolean (* key_release_event)    (ClutterActor       *actor,
-				     ClutterKeyEvent    *event);
-  gboolean (* motion_event)         (ClutterActor       *actor,
-				     ClutterMotionEvent *event);
-  void     (* enter)                (ClutterActor         *actor,
-				     ClutterCrossingEvent *event);
-  void     (* leave)                (ClutterActor         *actor,
-				     ClutterCrossingEvent *event);
-  void     (* captured)             (ClutterActor         *actor,
+  gboolean (* event)                (ClutterActor         *actor,
 				     ClutterEvent         *event);
-  void     (* focus_in)             (ClutterActor       *actor);
-  void     (* focus_out)            (ClutterActor       *actor);
+  gboolean (* button_press_event)   (ClutterActor         *actor,
+				     ClutterButtonEvent   *event);
+  gboolean (* button_release_event) (ClutterActor         *actor,
+				     ClutterButtonEvent   *event);
+  gboolean (* scroll_event)         (ClutterActor         *actor,
+				     ClutterScrollEvent   *event);
+  gboolean (* key_press_event)      (ClutterActor         *actor,
+				     ClutterKeyEvent      *event);
+  gboolean (* key_release_event)    (ClutterActor         *actor,
+				     ClutterKeyEvent      *event);
+  gboolean (* motion_event)         (ClutterActor         *actor,
+				     ClutterMotionEvent   *event);
+  gboolean (* enter_event)          (ClutterActor         *actor,
+				     ClutterCrossingEvent *event);
+  gboolean (* leave_event)          (ClutterActor         *actor,
+				     ClutterCrossingEvent *event);
+  gboolean (* captured_event)       (ClutterActor         *actor,
+				     ClutterEvent         *event);
+  void     (* focus_in)             (ClutterActor         *actor);
+  void     (* focus_out)            (ClutterActor         *actor);
 
   /*< private >*/
   /* padding for future expansion */

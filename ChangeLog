@@ -1,3 +1,12 @@
+2007-11-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.[ch]: Fix the declaration of the
+	class handlers for the ::captured-event, ::enter-event and
+	::leave-event signals; the function signatures were missing
+	the return value the signals marshallers were expecting, and
+	their names weren't respecting the convention for event-related
+	signals.
+
 2007-11-06  Tomas Frydrych  <tf@o-hand.com>
 
         * clutter/clutter-fixed.h:
