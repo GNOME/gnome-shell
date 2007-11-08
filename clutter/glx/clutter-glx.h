@@ -40,6 +40,7 @@
 #include <glib.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <X11/Xutil.h>
 #include <clutter/clutter-stage.h>
 
 G_BEGIN_DECLS

@@ -1,5 +1,10 @@
 2007-11-08  Rob Bradford  <rob@openedhand.com>
 
+	* clutter/glx/clutter-glx.h:
+	Include <X11/Xutil.h> needed for the definition of XVisualInfo.
+
+2007-11-08  Rob Bradford  <rob@openedhand.com>
+
 	* clutter/cogl/gles/cogl.c: (cogl_color):
 	Switch over to using glColor4ub in the GLES backend. It's available in
 	the header file but missing in the reference manual.
