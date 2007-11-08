@@ -239,10 +239,16 @@ cogl_enable (gulong flags)
 void
 cogl_color (const ClutterColor *color)
 {
-  GE( glColor4x ((color->red << 16) / 0xff, 
-		 (color->green << 16) / 0xff,
-		 (color->blue << 16) / 0xff, 
-		 (color->alpha << 16) / 0xff) );  
+  /* 
+   * GLES 1.1 does actually have this function, it's in the header file but
+   * missing in the reference manual:
+   *
+   * http://www.khronos.org/egl/headers/1_1/gl.h
+   */
+  GE( glColor4ub (color->red,
+		  color->green,
+		  color->blue,
+		  color->alpha) );
 }
 
 void
