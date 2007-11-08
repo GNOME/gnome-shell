@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-11 12:50+0200\n"
-"PO-Revision-Date: 2007-08-11 12:50+0100\n"
+"POT-Creation-Date: 2007-11-08 12:30+0100\n"
+"PO-Revision-Date: 2007-11-08 12:31+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -177,41 +177,45 @@ msgstr ""
 "Det här är fri programvara; se källkoden för kopieringsvillkor.\n"
 "Det finns INGA garantier; inte ens för SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL.\n"
 
-#: ../src/main.c:171
+#: ../src/main.c:172
 msgid "Disable connection to session manager"
 msgstr "Inaktivera anslutning till sessionshanteraren"
 
-#: ../src/main.c:177
+#: ../src/main.c:178
 msgid "Replace the running window manager with Metacity"
 msgstr "Ersätt den körande fönsterhanteraren med Metacity"
 
-#: ../src/main.c:183
+#: ../src/main.c:184
 msgid "Specify session management ID"
 msgstr "Ange sessionshanteringsid"
 
-#: ../src/main.c:188
+#: ../src/main.c:189
 msgid "X Display to use"
 msgstr "X-display att använda"
 
-#: ../src/main.c:194
+#: ../src/main.c:195
 msgid "Initialize session from savefile"
 msgstr "Initiera session från sparandefil"
 
-#: ../src/main.c:200
+#: ../src/main.c:201
 msgid "Print version"
 msgstr "Skriv ut version"
 
-#: ../src/main.c:353
+#: ../src/main.c:207
+msgid "Make X calls synchronous"
+msgstr "Gör X-anrop synkrona"
+
+#: ../src/main.c:361
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Misslyckades med att genomsöka temakatalogen: %s\n"
 
-#: ../src/main.c:369
+#: ../src/main.c:377
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Kunde inte hitta ett tema! Försäkra dig om att %s finns och innehåller vanliga teman.\n"
 
-#: ../src/main.c:429
+#: ../src/main.c:437
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
@@ -2539,10 +2543,10 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ogiltigt WM_TRANSIENT_FOR-fönster 0x%lx angivet för %s.\n"
 
 #. first time through
-#: ../src/window.c:5551
+#: ../src/window.c:5617
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
-msgstr "Fönster %s ställer in SM_CLIENT_ID på sig själv, istället för på WM_CLIENT_LEADER-fönstret som är angivet i ICCCM.\n"
+msgstr "Fönstret %s ställer in SM_CLIENT_ID på sig själv, istället för på WM_CLIENT_LEADER-fönstret som är angivet i ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2551,10 +2555,10 @@ msgstr "Fönster %s ställer in SM_CLIENT_ID på sig själv, istället för på 
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6116
+#: ../src/window.c:6182
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr "Fönster %s ställer in ett MWM-tips som anger att det inte går att ändra storlek på, men ställer in minsta storleken %d × %d och största storleken %d × %d; detta verkar inte vettigt.\n"
+msgstr "Fönstret %s ställer in ett MWM-tips som anger att det inte går att ändra storlek på, men ställer in minsta storleken %d × %d och största storleken %d × %d; detta verkar inte vettigt.\n"
 
 #: ../src/xprops.c:155
 #, c-format
