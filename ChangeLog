@@ -1,3 +1,9 @@
+2007-11-08  Rob Bradford  <rob@openedhand.com>
+
+	* clutter/cogl/gles/cogl.c: (cogl_color):
+	Switch over to using glColor4ub in the GLES backend. It's available in
+	the header file but missing in the reference manual.
+
 2007-11-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.[ch]: Fix the declaration of the
