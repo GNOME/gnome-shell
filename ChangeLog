@@ -1,12 +1,12 @@
 2007-11-06  Peter Bloomfield  <pbloomfield@bellsouth.net>
 
 	* src/window.c (meta_window_move_resize_internal): save
-	unmaximized part of client root coords.
+	unmaximized part of client root coords. (#461927)
 
 2007-11-06  Peter Bloomfield  <pbloomfield@bellsouth.net>
 
 	* src/window.c (meta_window_move_resize_internal): do not save
-	client root coords while window is maximized.
+	client root coords while window is maximized. (#461927)
 
 2207-10-30  iain Holmes <iain@gnome.org>
 
