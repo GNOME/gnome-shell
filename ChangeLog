@@ -1,11 +1,3 @@
-2007-11-09  Federico Mena Quintero  <federico@novell.com>
-
-	* src/window.c (intervening_user_event_occurred): When the window
-	doesn't have a user time nor an initial timestamp set, act as if
-	there always was an intervening user event.  This causes
-	un-timestamped windows to *not* get the focus.  Fixes
-	http://bugzilla.gnome.org/show_bug.cgi?id=488468
-
 2007-11-07  Federico Mena Quintero  <federico@novell.com>
 
 	* src/window-props.c (reload_net_wm_user_time_window): Fix typo;

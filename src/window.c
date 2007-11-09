@@ -1789,7 +1789,7 @@ intervening_user_event_occurred (MetaWindow *window)
       meta_topic (META_DEBUG_STARTUP,
                   "no information about window %s found\n",
                   window->desc);
-      return TRUE;
+      return FALSE;
     }
 
   if (focus_window != NULL &&
