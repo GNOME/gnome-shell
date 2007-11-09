@@ -1,3 +1,11 @@
+2007-11-09  Elijah Newren  <newren gmail com>
+
+	* src/window.c (meta_window_new_with_attrs): If a window is
+	launched without any kind of launch timestamp, grab the current
+	time and stash it away.  When transients of that window are also
+	launched without a timestamp, we can use the stashed timestamp
+	from the parent.  Fixes #488468.
+
 2007-11-07  Federico Mena Quintero  <federico@novell.com>
 
 	* src/window-props.c (reload_net_wm_user_time_window): Fix typo;
