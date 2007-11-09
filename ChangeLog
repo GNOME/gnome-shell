@@ -1,3 +1,19 @@
+2007-11-09  Federico Mena Quintero  <federico@novell.com>
+
+	* src/window.c (intervening_user_event_occurred): When the window
+	doesn't have a user time nor an initial timestamp set, act as if
+	there always was an intervening user event.  This causes
+	un-timestamped windows to *not* get the focus.  Fixes
+	http://bugzilla.gnome.org/show_bug.cgi?id=488468
+
+2007-11-07  Federico Mena Quintero  <federico@novell.com>
+
+	* src/window-props.c (reload_net_wm_user_time_window): Fix typo;
+	the arguments to meta_window_reload_property_from_xwindow() were
+	reversed.  This is why the wm_user_time wasn't getting initialized
+	properly from the _NET_WM_USER_TIME_WINDOW.  Fixes part of 
+	http://bugzilla.gnome.org/show_bug.cgi?id=488468
+
 2007-11-06  Peter Bloomfield  <pbloomfield@bellsouth.net>
 
 	* src/window.c (meta_window_move_resize_internal): save

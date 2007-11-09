@@ -278,8 +278,8 @@ reload_net_wm_user_time_window (MetaWindow    *window,
            */
           meta_window_reload_property_from_xwindow (
             window,
-            window->display->atom_net_wm_user_time,
-            window->user_time_window);
+            window->user_time_window,
+            window->display->atom_net_wm_user_time);
         }
     }
 }
