@@ -145,11 +145,6 @@ tab_entry_new (const MetaTabEntry *entry,
                gboolean            outline)
 {
   TabEntry *te;
-
-  /* FIXME: make max title size some random relationship to the
-   * screen, avg char width of our font would be a better number.
-   */
-  int max_chars_per_title = screen_width / 15;
   
   te = g_new (TabEntry, 1);
   te->key = entry->key;
@@ -160,7 +155,7 @@ tab_entry_new (const MetaTabEntry *entry,
       gchar *tmp;
       gchar *formatter = "%s";
 
-      str = meta_g_utf8_strndup (entry->title, max_chars_per_title);
+      str = meta_g_utf8_strndup (entry->title, 4096);
 
       if (entry->hidden)
         {
@@ -377,6 +372,14 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
 
   /* remove all the temporary text */
   gtk_label_set_text (GTK_LABEL (popup->label), "");
+  /* Make it so that we ellipsize if the text is too long */
+  gtk_label_set_ellipsize (GTK_LABEL (popup->label), PANGO_ELLIPSIZE_END);
+
+  /* Limit the window size to no bigger than screen_width/4 */
+  if (max_label_width>(screen_width/4)) 
+    {
+      max_label_width = screen_width/4;
+    }
 
   max_label_width += 20; /* add random padding */
   

@@ -1,3 +1,10 @@
+2007-11-11  Alex R.M. Turner  <armtuk@gmail.com>
+
+        * src/tabpopup.c (tab_entry_new, meta_ui_tab_popup_new): Instruct the
+        GtkLabel in the tabpopup to ellipsize text that is too big.  Set the 
+        maximum window width of the tabpopup to screen_width/4, which seems a 
+        sensible size for the popup.
+
 2007-11-09  Elijah Newren  <newren gmail com>
 
 	* src/window.c (meta_window_new_with_attrs): If a window is
