@@ -24,7 +24,7 @@
 	* src/window.c (meta_window_move_resize_internal): do not save
 	client root coords while window is maximized. (#461927)
 
-2207-10-30  iain Holmes <iain@gnome.org>
+2007-10-30  iain Holmes <iain@gnome.org>
 
 	* src/main.c (meta_parse_options): Add --sync option
 	(main): Check if the --sync option was passed on command line.
