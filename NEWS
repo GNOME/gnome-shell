@@ -1,3 +1,29 @@
+2.21.1
+======
+
+Thanks to Elijah Newren, Alex R.M. Turner, Peter Bloomfield, Iain Holmes,
+Jans Granseuer, Federico Mena Quintero and Thomas Thurman for improvements
+in this release.
+
+ - Add --sync option, like all other GTK apps (Iain)
+ - Don't save window's position if it's maximised (Peter) (#461927)
+ - Memory leak fix in preview (Jans) (#469682)
+ - Truncate tab popup string correctly, and refactor function (Alex)
+ - Windows which pop up under always-on-top windows don't get the
+   focus, but do get the "needs attention" hint (Thomas) (#486445)
+ - Fix error in function call which caused focus problems (Federico)
+   (partial fix of #488468)
+
+Translations
+  Djihed Afifi (ar), Metin Amiroff (az), Alexander Shopov (bg),
+  Jordi Mallach (ca), David Lodge (en_GB), Jorge González (es),
+  Iñaki Larrañaga Murgoitio (eu), Vincent Untz (fr), Alastair McKinstry (ga),
+  Ankit Patel (gu), Rajesh Ranjan (hi), auto (hr), Changwoo Ryu (ko),
+  Raivis Dejus (lv), Wouter Bolsterlee (nl), Gora Mohanty (or),
+  ASB (pa), wadim dziedzic (pl), Duarte Loreto (pt),
+  Og Maciel (pt_BR), Peter Tuhársky (sk), Matej Urbančič (sl),
+  Daniel Nylander (sv), Maxim Dziumanenko (uk), Funda Wang (zh_CN)
+
 2.20.0
 ======
 
