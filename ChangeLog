@@ -1,5 +1,13 @@
 2007-11-11  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * configure.in: Post-release bump to 2.21.2.
+
+2007-11-11  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * NEWS: 2.21.1 release.
+
+2007-11-11  Thomas Thurman  <thomas@thurman.org.uk>
+
         * src/window.c (meta_window_show): adjust expression which decides
         whether new windows should not go on top, so that restacking happens
         only the first time a window is mapped. Thanks to Olav Vitters for
