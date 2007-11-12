@@ -104,6 +104,7 @@ struct _ClutterAnyEvent
   ClutterEventType  type;
   guint32           time;
   ClutterEventFlags flags;
+  ClutterActor *source;
 };
 
 struct _ClutterKeyEvent
@@ -111,10 +112,10 @@ struct _ClutterKeyEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterActor *source;
   ClutterModifierType modifier_state;
   guint keyval;
   guint16 hardware_keycode;
-  ClutterActor *source;
 };
 
 struct _ClutterButtonEvent
@@ -122,6 +123,7 @@ struct _ClutterButtonEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterActor *source;
   gint x;
   gint y;
   ClutterModifierType modifier_state;
@@ -129,7 +131,6 @@ struct _ClutterButtonEvent
   guint click_count;
   gdouble *axes; /* Future use */
   ClutterInputDevice *device; /* Future use */
-  ClutterActor *source;
 };
 
 struct _ClutterCrossingEvent
@@ -137,9 +138,9 @@ struct _ClutterCrossingEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterActor *source;
   gint x;
   gint y;
-  ClutterActor *source;
   ClutterActor *related;
 };
 
@@ -149,12 +150,12 @@ struct _ClutterMotionEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterActor *source;
   gint x;
   gint y;
   ClutterModifierType modifier_state;
   gdouble *axes; /* Future use */
   ClutterInputDevice *device; /* Future use */
-  ClutterActor *source;
 };
 
 struct _ClutterScrollEvent
@@ -162,13 +163,13 @@ struct _ClutterScrollEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterActor *source;
   gint x;
   gint y;
   ClutterScrollDirection direction;
   ClutterModifierType modifier_state;
   gdouble *axes; /* future use */
   ClutterInputDevice *device; /* future use */
-  ClutterActor *source;
 };
 
 struct _ClutterStageStateEvent
@@ -176,6 +177,7 @@ struct _ClutterStageStateEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterActor *source; /* unused XXX: should probably be the stage itself */
   ClutterStageState changed_mask;
   ClutterStageState new_state;
 };

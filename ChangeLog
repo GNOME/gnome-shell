@@ -1,3 +1,13 @@
+2007-11-06  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-event.h: made ClutterEventAny have a source field,
+	rearanged other structs to have source in the same position.
+	* clutter/clutter-event.c: (clutter_event_get_source): modified to use
+	the any event.
+	(clutter_event_free): removed unused variable.
+	* clutter/clutter-main.c: (deliver_event), (clutter_do_event): reduced
+	amount of code. As well as deliver button-release events to the stage. 
+
 2007-11-08  Rob Bradford  <rob@openedhand.com>
 
 	* clutter/glx/clutter-glx.h:

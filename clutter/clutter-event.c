@@ -173,34 +173,9 @@ clutter_event_get_coords (ClutterEvent *event,
 ClutterActor*
 clutter_event_get_source (ClutterEvent *event)
 {
-  ClutterActor *res = NULL;
-  gint event_x, event_y;
-
   g_return_val_if_fail (event != NULL, NULL);
 
-  event_x = event_y = 0;
-
-  switch (event->type)
-    {
-    case CLUTTER_KEY_PRESS:
-    case CLUTTER_KEY_RELEASE:
-      res = event->key.source;
-      break;
-    case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_BUTTON_RELEASE:
-      res = event->button.source;
-      break;
-    case CLUTTER_MOTION:
-      res = event->motion.source;
-      break;
-    case CLUTTER_SCROLL:
-      res = event->scroll.source;
-      break;
-    default:
-      break;
-    }
-
-  return res;
+  return event->any.source;
 }
 
 /**
@@ -378,7 +353,6 @@ clutter_event_free (ClutterEvent *event)
 {
   if (G_LIKELY (event))
     {
-      ClutterActor *source = NULL;
       if (event->type == CLUTTER_LEAVE || event->type == CLUTTER_ENTER)
 	g_object_unref (event->crossing.related);
       g_slice_free (ClutterEvent, event);
