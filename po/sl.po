@@ -1,4 +1,3 @@
-# Copyright (C) 2002-2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 #
 # Andraz Tori <andraz.tori1@guest.arnes.si>, 2000.
@@ -10,7 +9,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-03 03:39+0100\n"
-"PO-Revision-Date: 2007-10-25 15:03+0100\n"
+"PO-Revision-Date: 2007-11-12 15:29+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -114,7 +113,7 @@ msgstr "Menu oken"
 # G:0 K:1 O:0
 #: ../src/frames.c:1084
 msgid "Minimize Window"
-msgstr "Pomanjšaj okno"
+msgstr "Skrči okno"
 
 #: ../src/frames.c:1087
 msgid "Maximize Window"
@@ -184,41 +183,45 @@ msgstr ""
 "To je prosto programje; za pogoje kopiranja si poglejte izvorno kodo.\n"
 "Program prihaja BREZ KAKRŠNIHKOLI ZAGOTOVIL\n"
 
-#: ../src/main.c:171
+#: ../src/main.c:172
 msgid "Disable connection to session manager"
 msgstr "Onemogoči povezavo z upraviteljem sej"
 
-#: ../src/main.c:177
+#: ../src/main.c:178
 msgid "Replace the running window manager with Metacity"
 msgstr "Zamenjaj trenutnega upravitelja oken z Metacity"
 
-#: ../src/main.c:183
+#: ../src/main.c:184
 msgid "Specify session management ID"
 msgstr "Navedite ID upravljanja seje"
 
-#: ../src/main.c:188
+#: ../src/main.c:189
 msgid "X Display to use"
 msgstr "Zaslon X za uporabo"
 
-#: ../src/main.c:194
+#: ../src/main.c:195
 msgid "Initialize session from savefile"
 msgstr "Zagon seje iz datoteke"
 
-#: ../src/main.c:200
+#: ../src/main.c:201
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/main.c:353
+#: ../src/main.c:207
+msgid "Make X calls synchronous"
+msgstr "Naredi klice X usklajene"
+
+#: ../src/main.c:361
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Ni mogoče preiskati mape tem: %s\n"
 
-#: ../src/main.c:369
+#: ../src/main.c:377
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Ni mogoče najti teme! Prepričajte se, da %s obstaja in vsebuje običajne teme.\n"
 
-#: ../src/main.c:429
+#: ../src/main.c:437
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ni mogoče znova pognati: %s\n"
@@ -1570,7 +1573,7 @@ msgstr "ime <%s> \"%s\" je uporabljeno drugič"
 #: ../src/theme-parser.c:1158
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "starš <%s> \"%s\" ni bil naveden"
+msgstr "nadrejeni predmet <%s> \"%s\" ni bil naveden"
 
 #: ../src/theme-parser.c:1060
 #, c-format
@@ -1580,7 +1583,7 @@ msgstr "geometrija <%s> \"%s\" ni bila navedena"
 #: ../src/theme-parser.c:1073
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> mora navesti ali geometrijo ali starša, ki ima geometrijo"
+msgstr "<%s> mora navesti ali geometrijo ali nadrejeni predmet, ki ima geometrijo"
 
 #: ../src/theme-parser.c:1115
 msgid "You must specify a background for an alpha value to be meaningful"
@@ -2521,7 +2524,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Neveljaven WM_TRANSIENT_FOR za okno 0x%lx naveden za %s.\n"
 
 #. first time through
-#: ../src/window.c:5601
+#: ../src/window.c:5641
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je zavedeno v ICCCM.\n"
@@ -2533,7 +2536,7 @@ msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6166
+#: ../src/window.c:6206
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni smiselna.\n"
