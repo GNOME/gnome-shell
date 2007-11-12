@@ -2055,7 +2055,7 @@ meta_window_show (MetaWindow *window)
               place_on_top_on_map ? "does" : "does not");
 
   /* Now, in some rare cases we should *not* put a new window on top.
-   * These cases include certain types of windows showing for the firat
+   * These cases include certain types of windows showing for the first
    * time, and any window which would be covered because of another window
    * being set "above" ("always on top").
    *
@@ -2065,13 +2065,10 @@ meta_window_show (MetaWindow *window)
    * probably rather be a term in the "if" condition below.
    */
 
-  if ( focus_window != NULL &&
-       (
-        (window->showing_for_first_time &&
-         !place_on_top_on_map &&
-         !takes_focus_on_map) ||
-        window_would_be_covered (window))
-     ) {
+  if ( focus_window != NULL && window->showing_for_first_time &&
+      ( (!place_on_top_on_map && !takes_focus_on_map) ||
+      window_would_be_covered (window) )
+    ) {
       if (meta_window_is_ancestor_of_transient (focus_window, window))
         {
           /* This happens for error dialogs or alerts; these need to remain on

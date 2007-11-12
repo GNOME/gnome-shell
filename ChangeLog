@@ -1,3 +1,10 @@
+2007-11-11  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * src/window.c (meta_window_show): adjust expression which decides
+        whether new windows should not go on top, so that restacking happens
+        only the first time a window is mapped. Thanks to Olav Vitters for
+        pointing out the problem. Re-fixes #486445.
+
 2007-11-11  Alex R.M. Turner  <armtuk@gmail.com>
 
         * src/tabpopup.c (tab_entry_new, meta_ui_tab_popup_new): Instruct the
