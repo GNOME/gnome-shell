@@ -1,5 +1,13 @@
 2007-11-13  Øyvind Kolås  <pippin@o-hand.com>
 
+	* clutter/Makefile.am:
+	* clutter/clutter.h: include clutter-deprecated.h
+	* clutter/clutter-deprecated.h: added file containing macros that
+	provides more meaningful errors when compiling clutter using code that
+	uses deprecated functions.
+
+2007-11-13  Øyvind Kolås  <pippin@o-hand.com>
+
 	Renamed all properties of behaviours (and related
 	functions/variables/parameters)
 	to match the pattern something-start, something-end. Fixes bug #577.

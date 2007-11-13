@@ -54,6 +54,7 @@ source_h =					\
 	$(srcdir)/clutter-clone-texture.h 	\
 	$(srcdir)/clutter-color.h		\
         $(srcdir)/clutter-container.h		\
+        $(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-effect.h 		\
         $(srcdir)/clutter-entry.h               \
 	$(srcdir)/clutter-event.h 		\

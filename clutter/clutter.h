@@ -41,6 +41,7 @@
 #include "clutter-behaviour-scale.h"
 #include "clutter-box.h"
 #include "clutter-clone-texture.h"
+#include "clutter-deprecated.h"
 #include "clutter-effect.h"
 #include "clutter-entry.h"
 #include "clutter-event.h"
