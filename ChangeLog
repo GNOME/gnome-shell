@@ -1,5 +1,13 @@
 2007-11-13  Øyvind Kolås  <pippin@o-hand.com>
 
+	* clutter/clutter-behaviour-bspline.[ch]:
+	Replaced clutter_behaviour_bspline_append with
+	clutter_behaviour_bspline_append_knots. Fixes bug #582.
+	* clutter/clutter-deprecated.h: added deprecation macro reflecting the
+	API change.
+
+2007-11-13  Øyvind Kolås  <pippin@o-hand.com>
+
 	* clutter/Makefile.am:
 	* clutter/clutter.h: include clutter-deprecated.h
 	* clutter/clutter-deprecated.h: added file containing macros that

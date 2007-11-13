@@ -860,7 +860,7 @@ clutter_behaviour_bspline_append_knots_valist (ClutterBehaviourBspline *bs,
 }
 
 /**
- * clutter_behaviour_bspline_append:
+ * clutter_behaviour_bspline_append_knots
  * @bs: a #ClutterBehaviourBspline
  * @first_knot: first #ClutterKnot
  * @VarArgs: a NULL-terminated array of #ClutterKnot control points.
@@ -869,12 +869,12 @@ clutter_behaviour_bspline_append_knots_valist (ClutterBehaviourBspline *bs,
  * bs and the array of #ClutterKnot control points to the orginal bezier spline
  * bs.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 void
-clutter_behaviour_bspline_append (ClutterBehaviourBspline * bs,
-				  const ClutterKnot       * first_knot,
-                                  ...)
+clutter_behaviour_bspline_append_knots (ClutterBehaviourBspline * bs,
+                                        const ClutterKnot       * first_knot,
+                                        ...)
 {
   va_list args;
 
