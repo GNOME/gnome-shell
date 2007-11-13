@@ -75,6 +75,7 @@ static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
 
 static void     meta_window_save_rect         (MetaWindow    *window);
+static void     meta_window_save_user_rect    (MetaWindow    *window);
 
 static void meta_window_move_resize_internal (MetaWindow         *window,
                                               MetaMoveResizeFlags flags,
@@ -2431,6 +2432,30 @@ meta_window_save_rect (MetaWindow *window)
     }
 }
 
+static void
+meta_window_save_user_rect (MetaWindow *window)
+{
+  /* We do not save maximized or fullscreen dimensions, otherwise the
+   * window may snap back to those dimensions (Bug #461927). */
+  if (!(META_WINDOW_MAXIMIZED (window) || window->fullscreen))
+    {
+      MetaRectangle user_rect;
+
+      meta_window_get_client_root_coords (window, &user_rect);
+
+      if (!window->maximized_horizontally)
+	{
+	  window->user_rect.x     = user_rect.x;
+	  window->user_rect.width = user_rect.width;
+	}
+      if (!window->maximized_vertically)
+	{
+	  window->user_rect.y      = user_rect.y;
+	  window->user_rect.height = user_rect.height;
+	}
+    }
+}
+
 void
 meta_window_maximize_internal (MetaWindow        *window,
                                MetaMaximizeFlags  directions,
@@ -3506,23 +3531,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
    * placement of the window.
    */
   if (is_user_action || !window->placed)
-    {
-      MetaRectangle user_rect;
-
-      meta_window_get_client_root_coords (window, &user_rect);
-
-      if (!window->maximized_horizontally)
-	{
-	  window->user_rect.x = user_rect.x;
-	  window->user_rect.width = user_rect.width;
-	}
-
-      if (!window->maximized_vertically)
-	{
-	  window->user_rect.y = user_rect.y;
-	  window->user_rect.height = user_rect.height;
-	}
-    }
+    meta_window_save_user_rect(window);
   
   if (need_move_frame || need_resize_frame ||
       need_move_client || need_resize_client)
@@ -4566,7 +4575,7 @@ meta_window_move_resize_request (MetaWindow *window,
    *
    * See also bug 426519.
    */
-  meta_window_get_client_root_coords (window, &window->user_rect);
+  meta_window_save_user_rect(window);
 }
 
 gboolean
