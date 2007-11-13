@@ -70,7 +70,7 @@ enum
   PROP_CENTER,
   PROP_WIDTH,
   PROP_HEIGHT,
-  PROP_ANGLE_BEGIN,
+  PROP_ANGLE_START,
   PROP_ANGLE_END,
   PROP_ANGLE_TILT_X,
   PROP_ANGLE_TILT_Y,
@@ -85,7 +85,7 @@ struct _ClutterBehaviourEllipsePrivate
   gint         a;
   gint         b;
 
-  ClutterAngle angle_begin;
+  ClutterAngle angle_start;
   ClutterAngle angle_end;
   ClutterAngle angle_tilt_x;
   ClutterAngle angle_tilt_y;
@@ -192,20 +192,20 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
   knot3d knot;
   ClutterAngle angle = 0;
 
-  if ((priv->angle_end >= priv->angle_begin &&
+  if ((priv->angle_end >= priv->angle_start &&
        priv->direction == CLUTTER_ROTATE_CW) ||
-      (priv->angle_end < priv->angle_begin &&
+      (priv->angle_end < priv->angle_start &&
        priv->direction == CLUTTER_ROTATE_CCW))
     {
-      angle = (priv->angle_end - priv->angle_begin) * alpha
+      angle = (priv->angle_end - priv->angle_start) * alpha
               / CLUTTER_ALPHA_MAX_ALPHA
-              + priv->angle_begin;
+              + priv->angle_start;
     }
-  else if (priv->angle_end >= priv->angle_begin &&
+  else if (priv->angle_end >= priv->angle_start &&
            priv->direction == CLUTTER_ROTATE_CCW)
     {
       ClutterAngle diff;
-      ClutterAngle angle_begin = priv->angle_begin + 256;
+      ClutterAngle angle_start = priv->angle_start + 256;
       ClutterAngle angle_end   = priv->angle_end + 256;
       
       /* Work out the angular length of the arch represented by the
@@ -217,39 +217,39 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
           ClutterAngle a1 = rounds * 1024;
           ClutterAngle a2 = - (angle_end - a1);
 
-          diff = a1 + a2 + angle_begin;
+          diff = a1 + a2 + angle_start;
         }
       else
         {
-          diff = 1024 - angle_end + angle_begin;
+          diff = 1024 - angle_end + angle_start;
         }
       
-      angle = priv->angle_begin - (diff * alpha / CLUTTER_ALPHA_MAX_ALPHA);
+      angle = priv->angle_start - (diff * alpha / CLUTTER_ALPHA_MAX_ALPHA);
     }
-  else if (priv->angle_end < priv->angle_begin &&
+  else if (priv->angle_end < priv->angle_start &&
            priv->direction == CLUTTER_ROTATE_CW)
     {
       ClutterAngle diff;
-      ClutterAngle angle_begin = priv->angle_begin + 256;
+      ClutterAngle angle_start = priv->angle_start + 256;
       ClutterAngle angle_end   = priv->angle_end + 256;
 
       /* Work out the angular length of the arch represented by the
-       * begin angle in CW direction
+       * start angle in CW direction
        */
-      if (angle_begin >= 1024)
+      if (angle_start >= 1024)
         {
-          gint rounds = angle_begin / 1024;
+          gint rounds = angle_start / 1024;
           ClutterAngle a1 = rounds * 1024;
-          ClutterAngle a2 = - (angle_begin - a1);
+          ClutterAngle a2 = - (angle_start - a1);
 
           diff = a1 + a2 + angle_end;
         }
       else
         {
-          diff = 1024 - angle_begin + angle_end;
+          diff = 1024 - angle_start + angle_end;
         }
 
-      angle = priv->angle_begin + (diff * alpha / CLUTTER_ALPHA_MAX_ALPHA);
+      angle = priv->angle_start + (diff * alpha / CLUTTER_ALPHA_MAX_ALPHA);
     }
   
   clutter_behaviour_ellipse_advance (self, angle, &knot);
@@ -271,8 +271,8 @@ clutter_behaviour_ellipse_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_ANGLE_BEGIN:
-      priv->angle_begin =
+    case PROP_ANGLE_START:
+      priv->angle_start =
         CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value)) - 256;
       break;
     case PROP_ANGLE_END:
@@ -325,9 +325,9 @@ clutter_behaviour_ellipse_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_ANGLE_BEGIN:
+    case PROP_ANGLE_START:
       g_value_set_double (value,
-                          CLUTTER_ANGLE_TO_DEG (priv->angle_begin + 256));
+                          CLUTTER_ANGLE_TO_DEG (priv->angle_start + 256));
       break;
     case PROP_ANGLE_END:
       g_value_set_double (value,
@@ -370,7 +370,7 @@ clutter_behaviour_ellipse_applied (ClutterBehaviour *behave,
   ClutterBehaviourEllipse *e = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
   knot3d knot;
 
-  clutter_behaviour_ellipse_advance (e, e->priv->angle_begin, &knot);
+  clutter_behaviour_ellipse_advance (e, e->priv->angle_start, &knot);
 
   clutter_actor_set_position (actor, knot.x, knot.y);
   clutter_actor_set_depth (actor, knot.z);
@@ -397,16 +397,16 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
   behave_class->applied = clutter_behaviour_ellipse_applied;
 
   /**
-   * ClutterBehaviourEllipse:angle-begin:
+   * ClutterBehaviourEllipse:angle-start:
    *
-   * The initial angle from where the rotation should begin.
+   * The initial angle from where the rotation should start.
    *
    * Since: 0.4
    */
   g_object_class_install_property (object_class,
-                                   PROP_ANGLE_BEGIN,
-                                   g_param_spec_double ("angle-begin",
-                                                        "Angle Begin",
+                                   PROP_ANGLE_START,
+                                   g_param_spec_double ("angle-start",
+                                                        "Start Angle",
                                                         "Initial angle",
                                                         0.0,
                                                         CLUTTER_ANGLE_MAX_DEG,
@@ -422,7 +422,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_ANGLE_END,
                                    g_param_spec_double ("angle-end",
-                                                        "Angle End",
+                                                        "End Angle",
                                                         "Final angle",
                                                         0.0,
                                                         CLUTTER_ANGLE_MAX_DEG,
@@ -549,11 +549,11 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
  * @width: width of the ellipse
  * @height: height of the ellipse
  * @direction: #ClutterRotateDirection of rotation
- * @begin: angle in degrees at which movement begins
+ * @start: angle in degrees at which movement starts
  * @end: angle in degrees at which movement ends
  *
  * Creates a behaviour that drives actors along an elliptical path with
- * given center, width and height; the movement begins at @angle_begin
+ * given center, width and height; the movement starts at @angle_start
  * degrees (with 0 corresponding to 12 o'clock) and ends at @angle_end degrees;
  * Return value: the newly created #ClutterBehaviourEllipse
  *
@@ -566,7 +566,7 @@ clutter_behaviour_ellipse_new (ClutterAlpha          *alpha,
                                gint                   width,
                                gint                   height,
                                ClutterRotateDirection direction,
-                               gdouble                begin,
+                               gdouble                start,
                                gdouble                end)
 {
   ClutterKnot center;
@@ -582,7 +582,7 @@ clutter_behaviour_ellipse_new (ClutterAlpha          *alpha,
                        "width", width,
                        "height", height,
                        "direction", direction,
-                       "angle-begin", begin,
+                       "angle-start", start,
                        "angle-end", end,
                        NULL);
 }
@@ -595,7 +595,7 @@ clutter_behaviour_ellipse_new (ClutterAlpha          *alpha,
  * @width: width of the ellipse
  * @height: height of the ellipse
  * @direction: #ClutterRotateDirection of rotation
- * @begin: #ClutterFixed angle in degrees at which movement begins
+ * @start: #ClutterFixed angle in degrees at which movement starts
  * @end: #ClutterFixed angle in degrees at which movement ends
  *
  * Creates a behaviour that drives actors along an elliptical path. This
@@ -612,7 +612,7 @@ clutter_behaviour_ellipse_newx (ClutterAlpha          * alpha,
                                 gint                    width,
                                 gint                    height,
                                 ClutterRotateDirection  direction,
-                                ClutterFixed            begin,
+                                ClutterFixed            start,
                                 ClutterFixed            end)
 {
   ClutterKnot center;
@@ -628,7 +628,7 @@ clutter_behaviour_ellipse_newx (ClutterAlpha          * alpha,
                        "width", width,
                        "height", height,
                        "direction", direction,
-                       "angle-begin", CLUTTER_ANGLE_FROM_DEGX (begin),
+                       "angle-start", CLUTTER_ANGLE_FROM_DEGX (start),
                        "angle-end", CLUTTER_ANGLE_FROM_DEGX (end),
                        NULL);
 }
@@ -784,86 +784,86 @@ clutter_behaviour_ellipse_get_height (ClutterBehaviourEllipse *self)
 }
 
 /**
- * clutter_behaviour_ellipse_set_angle_begin
+ * clutter_behaviour_ellipse_set_angle_start
  * @self: a #ClutterBehaviourEllipse
- * @angle_begin: angle at which movement begins in degrees
+ * @angle_start: angle at which movement starts in degrees
  *
- * Sets the angle at which movement begins.
+ * Sets the angle at which movement starts.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 void
-clutter_behaviour_ellipse_set_angle_begin (ClutterBehaviourEllipse *self,
-                                           gdouble                  angle_begin)
+clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
+                                           gdouble                  angle_start)
 {
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  clutter_behaviour_ellipse_set_angle_beginx (self,
-                                              CLUTTER_ANGLE_FROM_DEG (angle_begin));
+  clutter_behaviour_ellipse_set_angle_startx (self,
+                                              CLUTTER_ANGLE_FROM_DEG (angle_start));
 }
 
 /**
- * clutter_behaviour_ellipse_set_angle_beginx
+ * clutter_behaviour_ellipse_set_angle_startx
  * @self: a #ClutterBehaviourEllipse
- * @angle_begin: #ClutterAngle at which movement begins
+ * @angle_start: #ClutterAngle at which movement starts
  *
- * Sets the angle at which movement begins.
+ * Sets the angle at which movement starts.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 void
-clutter_behaviour_ellipse_set_angle_beginx (ClutterBehaviourEllipse *self,
-                                            ClutterAngle             angle_begin)
+clutter_behaviour_ellipse_set_angle_startx (ClutterBehaviourEllipse *self,
+                                            ClutterAngle             angle_start)
 {
   ClutterBehaviourEllipsePrivate *priv;
   ClutterAngle new_angle;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle = angle_begin - 256;
+  new_angle = angle_start - 256;
 
   priv = self->priv;
-  if (priv->angle_begin != new_angle)
+  if (priv->angle_start != new_angle)
     {
-      priv->angle_begin = new_angle;
-      g_object_notify (G_OBJECT (self), "angle-begin");
+      priv->angle_start = new_angle;
+      g_object_notify (G_OBJECT (self), "angle-start");
     }
 }
 
 /**
- * clutter_behaviour_ellipse_get_angle_begin
+ * clutter_behaviour_ellipse_get_angle_start
  * @self: a #ClutterBehaviourEllipse
  *
- * Gets the angle at which movements begins.
+ * Gets the angle at which movements starts.
  *
  * Return value: angle in degrees
  *
- * Since: 0.4
+ * Since: 0.6
  */
 gdouble
-clutter_behaviour_ellipse_get_angle_begin (ClutterBehaviourEllipse *self)
+clutter_behaviour_ellipse_get_angle_start (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
 
-  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_begin + 256);
+  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_start + 256);
 }
 
 /**
- * clutter_behaviour_ellipse_get_angle_beginx
+ * clutter_behaviour_ellipse_get_angle_startx
  * @self: a #ClutterBehaviourEllipse
  *
- * Gets the angle at which movements begins.
+ * Gets the angle at which movements starts.
  *
  * Return value: a #ClutterAngle
  *
- * Since: 0.4
+ * Since: 0.6
  */
 ClutterAngle
-clutter_behaviour_ellipse_get_angle_beginx (ClutterBehaviourEllipse *self)
+clutter_behaviour_ellipse_get_angle_startx (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
 
-  return self->priv->angle_begin;
+  return self->priv->angle_start;
 }
 
 /**

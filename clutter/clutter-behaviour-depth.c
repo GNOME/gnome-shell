@@ -52,16 +52,16 @@ G_DEFINE_TYPE (ClutterBehaviourDepth,
 
 struct _ClutterBehaviourDepthPrivate
 {
-  gint start_depth;
-  gint end_depth;
+  gint depth_start;
+  gint depth_end;
 };
 
 enum
 {
   PROP_0,
 
-  PROP_START_DEPTH,
-  PROP_END_DEPTH
+  PROP_DEPTH_START,
+  PROP_DEPTH_END
 };
 
 static void
@@ -84,9 +84,9 @@ clutter_behaviour_depth_alpha_notify (ClutterBehaviour *behaviour,
 
   /* Need to create factor as to avoid borking signedness */
   factor = CLUTTER_INT_TO_FIXED (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
-  depth  = priv->start_depth
+  depth  = priv->depth_start
            + CLUTTER_FIXED_TO_INT (factor
-                                   * (priv->end_depth - priv->start_depth));
+                                   * (priv->depth_end - priv->depth_start));
 
   CLUTTER_NOTE (BEHAVIOUR, "alpha: %d, depth: %d", alpha_value, depth);
 
@@ -101,7 +101,7 @@ clutter_behaviour_depth_applied (ClutterBehaviour *behaviour,
 {
   ClutterBehaviourDepth *depth = CLUTTER_BEHAVIOUR_DEPTH (behaviour);
 
-  clutter_actor_set_depth (actor, depth->priv->start_depth);
+  clutter_actor_set_depth (actor, depth->priv->depth_start);
 }
 
 static void
@@ -114,11 +114,11 @@ clutter_behaviour_depth_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_START_DEPTH:
-      depth->priv->start_depth = g_value_get_int (value);
+    case PROP_DEPTH_START:
+      depth->priv->depth_start = g_value_get_int (value);
       break;
-    case PROP_END_DEPTH:
-      depth->priv->end_depth = g_value_get_int (value);
+    case PROP_DEPTH_END:
+      depth->priv->depth_end = g_value_get_int (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -136,11 +136,11 @@ clutter_behaviour_depth_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_START_DEPTH:
-      g_value_set_int (value, depth->priv->start_depth);
+    case PROP_DEPTH_START:
+      g_value_set_int (value, depth->priv->depth_start);
       break;
-    case PROP_END_DEPTH:
-      g_value_set_int (value, depth->priv->end_depth);
+    case PROP_DEPTH_END:
+      g_value_set_int (value, depth->priv->depth_end);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -163,31 +163,31 @@ clutter_behaviour_depth_class_init (ClutterBehaviourDepthClass *klass)
   behaviour_class->applied = clutter_behaviour_depth_applied;
 
   /**
-   * ClutterBehaviourDepth:start-depth:
+   * ClutterBehaviourDepth:depth-start:
    *
    * Start depth level to apply to the actors.
    *
    * Since: 0.4
    */
   g_object_class_install_property (gobject_class,
-                                   PROP_START_DEPTH,
-                                   g_param_spec_int ("start-depth",
+                                   PROP_DEPTH_START,
+                                   g_param_spec_int ("depth-start",
                                                      "Start Depth",
-                                                     "Start depth to apply",
+                                                     "Initial depth to apply",
                                                      G_MININT, G_MAXINT, 0,
                                                      CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterBehaviourDepth:end-depth:
+   * ClutterBehaviourDepth:depth-end:
    *
    * End depth level to apply to the actors.
    *
    * Since: 0.4
    */
   g_object_class_install_property (gobject_class,
-                                   PROP_END_DEPTH,
-                                   g_param_spec_int ("end-depth",
+                                   PROP_DEPTH_END,
+                                   g_param_spec_int ("depth-end",
                                                      "End Depth",
-                                                     "End depth to apply",
+                                                     "Final depth to apply",
                                                      G_MININT, G_MAXINT, 0,
                                                      CLUTTER_PARAM_READWRITE));
 }
@@ -203,8 +203,8 @@ clutter_behaviour_depth_init (ClutterBehaviourDepth *depth)
 /**
  * clutter_behaviour_depth_new:
  * @alpha: a #ClutterAlpha or %NULL
- * @start_depth: start depth
- * @end_depth: end depth 
+ * @depth_start: start depth
+ * @depth_end: end depth 
  *
  * Creates a new #ClutterBehaviourDepth which can be used to control
  * the ClutterActor:depth property of a set of #ClutterActor<!-- -->s.
@@ -215,14 +215,14 @@ clutter_behaviour_depth_init (ClutterBehaviourDepth *depth)
  */
 ClutterBehaviour *
 clutter_behaviour_depth_new (ClutterAlpha *alpha,
-                             gint          start_depth,
-                             gint          end_depth)
+                             gint          depth_start,
+                             gint          depth_end)
 {
   g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
 
   return g_object_new (CLUTTER_TYPE_BEHAVIOUR_DEPTH,
                        "alpha", alpha,
-                       "start-depth", start_depth,
-                       "end-depth", end_depth,
+                       "depth-start", depth_start,
+                       "depth-end", depth_end,
                        NULL);
 }

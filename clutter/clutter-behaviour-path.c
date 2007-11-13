@@ -104,29 +104,29 @@ clutter_behaviour_path_finalize (GObject *object)
 }
 
 static inline void
-interpolate (const ClutterKnot *begin,
+interpolate (const ClutterKnot *start,
 	     const ClutterKnot *end,
 	     ClutterKnot       *out,
 	     ClutterFixed       t)
 {
-  out->x = begin->x + CLUTTER_FIXED_TO_INT (t * (end->x - begin->x));
-  out->y = begin->y + CLUTTER_FIXED_TO_INT (t * (end->y - begin->y));
+  out->x = start->x + CLUTTER_FIXED_TO_INT (t * (end->x - start->x));
+  out->y = start->y + CLUTTER_FIXED_TO_INT (t * (end->y - start->y));
 }
 
 static gint
-node_distance (const ClutterKnot *begin,
+node_distance (const ClutterKnot *start,
                const ClutterKnot *end)
 {
   gint t;
 
-  g_return_val_if_fail (begin != NULL, 0);
+  g_return_val_if_fail (start != NULL, 0);
   g_return_val_if_fail (end != NULL, 0);
 
-  if (clutter_knot_equal (begin, end))
+  if (clutter_knot_equal (start, end))
         return 0;
 
-  t = (end->x - begin->x) * (end->x - begin->x) +
-    (end->y - begin->y) * (end->y - begin->y);
+  t = (end->x - start->x) * (end->x - start->x) +
+    (end->y - start->y) * (end->y - start->y);
 
   /*
    * If we are using limited precision sqrti implementation, fallback on

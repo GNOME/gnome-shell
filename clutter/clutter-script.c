@@ -80,7 +80,7 @@
  * {
  *   "id"          : "rotate-behaviour",
  *   "type"        : "ClutterBehaviourRotate",
- *   "angle-begin" : 0.0,
+ *   "angle-start" : 0.0,
  *   "angle-end"   : 360.0,
  *   "axis"        : "z-axis",
  *   "alpha"       : {

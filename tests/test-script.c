@@ -41,7 +41,7 @@ static const gchar *test_behaviour =
 "  {"
 "    \"id\"          : \"rotate-behaviour\","
 "    \"type\"        : \"ClutterBehaviourRotate\","
-"    \"angle-begin\" : 0.0,"
+"    \"angle-start\" : 0.0,"
 "    \"angle-end\"   : 360.0,"
 "    \"axis\"        : \"y-axis\","
 "    \"alpha\"       : {"

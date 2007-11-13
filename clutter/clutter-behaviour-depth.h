@@ -59,8 +59,8 @@ struct _ClutterBehaviourDepthClass
 
 GType             clutter_behaviour_depth_get_type (void) G_GNUC_CONST;
 ClutterBehaviour *clutter_behaviour_depth_new      (ClutterAlpha *alpha,
-                                                    gint          start_depth,
-                                                    gint          end_depth);
+                                                    gint          depth_start,
+                                                    gint          depth_end);
 
 G_END_DECLS
 

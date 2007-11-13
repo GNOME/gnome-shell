@@ -61,12 +61,12 @@ GType clutter_behaviour_rotate_get_type (void) G_GNUC_CONST;
 ClutterBehaviour *clutter_behaviour_rotate_new  (ClutterAlpha           *alpha,
                                                  ClutterRotateAxis       axis,
                                                  ClutterRotateDirection  direction,
-                                                 gdouble                 angle_begin,
+                                                 gdouble                 angle_start,
                                                  gdouble                 angle_end);
 ClutterBehaviour *clutter_behaviour_rotate_newx (ClutterAlpha           *alpha,
                                                  ClutterRotateAxis       axis,
                                                  ClutterRotateDirection  direction,
-                                                 ClutterFixed            angle_begin,
+                                                 ClutterFixed            angle_start,
                                                  ClutterFixed            angle_end);
 
 void                   clutter_behaviour_rotate_get_center    (ClutterBehaviourRotate *rotate,
@@ -85,16 +85,16 @@ ClutterRotateDirection clutter_behaviour_rotate_get_direction (ClutterBehaviourR
 void                   clutter_behaviour_rotate_set_direction (ClutterBehaviourRotate *rotate,
                                                                ClutterRotateDirection  direction);
 void                   clutter_behaviour_rotate_get_bounds    (ClutterBehaviourRotate *rotate,
-                                                               gdouble                *angle_begin,
+                                                               gdouble                *angle_start,
                                                                gdouble                *angle_end);
 void                   clutter_behaviour_rotate_set_bounds    (ClutterBehaviourRotate *rotate,
-                                                               gdouble                 angle_begin,
+                                                               gdouble                 angle_start,
                                                                gdouble                 angle_end);
 void                   clutter_behaviour_rotate_get_boundsx   (ClutterBehaviourRotate *rotate,
-                                                               ClutterFixed           *angle_begin,
+                                                               ClutterFixed           *angle_start,
                                                                ClutterFixed           *angle_end);
 void                   clutter_behaviour_rotate_set_boundsx   (ClutterBehaviourRotate *rotate,
-                                                               ClutterFixed            angle_begin,
+                                                               ClutterFixed            angle_start,
                                                                ClutterFixed            angle_end);
 
 G_END_DECLS

@@ -8,24 +8,24 @@ static void
 timeline_completed (ClutterTimeline *timeline,
                     gpointer         user_data)
 {
-  gint start_depth, end_depth;
+  gint depth_start, depth_end;
 
   if (zoom_in)
     {
-      start_depth = 100;
-      end_depth = 0;
+      depth_start = 100;
+      depth_end = 0;
       zoom_in = FALSE;
     }
   else
     {
-      start_depth = 0;
-      end_depth = 100;
+      depth_start = 0;
+      depth_end = 100;
       zoom_in = TRUE;
     }
 
   g_object_set (G_OBJECT (d_behave),
-                "start-depth", start_depth,
-                "end-depth", end_depth,
+                "depth-start", depth_start,
+                "depth-end", depth_end,
                 NULL);
 
   clutter_timeline_rewind (timeline);

@@ -1,3 +1,24 @@
+2007-11-13  Øyvind Kolås  <pippin@o-hand.com>
+
+	Renamed all properties of behaviours (and related
+	functions/variables/parameters)
+	to match the pattern something-start, something-end. Fixes bug #577.
+
+	* clutter/clutter-behaviour-depth.c:
+	* clutter/clutter-behaviour-depth.h:
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter-behaviour-ellipse.h:
+	* clutter/clutter-behaviour-path.c: 
+	* clutter/clutter-behaviour-rotate.c:
+	* clutter/clutter-behaviour-rotate.h:
+	* clutter/clutter-behaviour-scale.c:
+	* clutter/clutter-behaviour-scale.h:
+	* clutter/clutter-effect.c: 
+	* clutter/clutter-effect.h:
+	* clutter/clutter-script.c:
+	* tests/test-depth.c: 
+	* tests/test-script.c:
+
 2007-11-06  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-event.h: made ClutterEventAny have a source field,
