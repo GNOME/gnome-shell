@@ -1168,9 +1168,9 @@ clutter_script_construct_object (ClutterScript *script,
     oinfo->has_unresolved = FALSE;
 
   if (scriptable)
-    clutter_scriptable_set_name (scriptable, oinfo->id);
+    clutter_scriptable_set_id (scriptable, oinfo->id);
   else
-    g_object_set_data_full (object, "clutter-script-name",
+    g_object_set_data_full (object, "clutter-script-id",
                             g_strdup (oinfo->id),
                             g_free);
 
@@ -1686,6 +1686,29 @@ clutter_script_get_type_from_name (ClutterScript *script,
   g_return_val_if_fail (type_name != NULL, G_TYPE_INVALID);
 
   return CLUTTER_SCRIPT_GET_CLASS (script)->get_type_from_name (script, type_name);
+}
+
+/**
+ * clutter_get_script_id:
+ * @gobject: a #GObject
+ *
+ * Retrieves the Clutter script id, if any.
+ *
+ * Return value: the script id, or %NULL if @object was not defined inside
+ *   a UI definition file. The returned string is owned by the object and
+ *   should never be modified or freed.
+ *
+ * Since: 0.6
+ */
+G_CONST_RETURN gchar *
+clutter_get_script_id (GObject *gobject)
+{
+  g_return_val_if_fail (G_IS_OBJECT (gobject), NULL);
+
+  if (CLUTTER_IS_SCRIPTABLE (gobject))
+    return clutter_scriptable_get_id (CLUTTER_SCRIPTABLE (gobject));
+  else
+    return g_object_get_data (gobject, "clutter-script-id");
 }
 
 GQuark

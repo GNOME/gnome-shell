@@ -1101,6 +1101,7 @@ clutter_script_get_objects
 clutter_script_unmerge_objects
 clutter_script_ensure_objects
 clutter_script_get_type_from_name
+clutter_get_script_id
 <SUBSECTION Standard>
 CLUTTER_TYPE_SCRIPT
 CLUTTER_SCRIPT
@@ -1119,8 +1120,8 @@ clutter_script_error_quark
 <FILE>clutter-scriptable</FILE>
 <TITLE>ClutterScriptable</TITLE>
 ClutterScriptableIface
-clutter_scriptable_set_name
-clutter_scriptable_get_name
+clutter_scriptable_set_id
+clutter_scriptable_get_id
 clutter_scriptable_parse_custom_node
 clutter_scriptable_set_custom_property
 <SUBSECTION Standard>

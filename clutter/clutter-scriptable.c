@@ -66,57 +66,61 @@ clutter_scriptable_get_type (void)
 }
 
 /**
- * clutter_scriptable_set_name:
+ * clutter_scriptable_set_id:
  * @scriptable: a #ClutterScriptable
- * @name: the name of the object
+ * @id: the #ClutterScript id of the object
  *
- * Sets @name as the name for this instance of #ClutterScriptableIface.
- * This name can be used by user interface designer applications.
+ * Sets @id as the unique Clutter script it for this instance of
+ * #ClutterScriptableIface.
+ *
+ * This name can be used by user interface designer applications to
+ * define a unique name for an object constructable using the UI
+ * definition language parsed by #ClutterScript.
  *
  * Since: 0.6
  */
 void
-clutter_scriptable_set_name (ClutterScriptable *scriptable,
-                             const gchar       *name)
+clutter_scriptable_set_id (ClutterScriptable *scriptable,
+                           const gchar       *id)
 {
   ClutterScriptableIface *iface;
 
   g_return_if_fail (CLUTTER_IS_SCRIPTABLE (scriptable));
-  g_return_if_fail (name != NULL);
+  g_return_if_fail (id != NULL);
 
   iface = CLUTTER_SCRIPTABLE_GET_IFACE (scriptable);
-  if (iface->set_name)
-    iface->set_name (scriptable, name);
+  if (iface->set_id)
+    iface->set_id (scriptable, id);
   else
     g_object_set_data_full (G_OBJECT (scriptable),
-                            "clutter-script-name",
-                            g_strdup (name),
+                            "clutter-script-id",
+                            g_strdup (id),
                             g_free);
 }
 
 /**
- * clutter_scriptable_get_name:
+ * clutter_scriptable_get_id:
  * @scriptable: a #ClutterScriptable
  *
- * Retrieves the name of @scriptable set using clutter_scriptable_set_name().
+ * Retrieves the id of @scriptable set using clutter_scriptable_set_id().
  *
- * Return value: the name of the object. The returned string is owned by
+ * Return value: the id of the object. The returned string is owned by
  *   the scriptable object and should never be modified of freed
  *
  * Since: 0.6
  */
 G_CONST_RETURN gchar *
-clutter_scriptable_get_name (ClutterScriptable *scriptable)
+clutter_scriptable_get_id (ClutterScriptable *scriptable)
 {
   ClutterScriptableIface *iface;
 
   g_return_val_if_fail (CLUTTER_IS_SCRIPTABLE (scriptable), NULL);
 
   iface = CLUTTER_SCRIPTABLE_GET_IFACE (scriptable);
-  if (iface->get_name)
-    return iface->get_name (scriptable);
+  if (iface->get_id)
+    return iface->get_id (scriptable);
   else
-    return g_object_get_data (G_OBJECT (scriptable), "clutter-script-name");
+    return g_object_get_data (G_OBJECT (scriptable), "clutter-script-id");
 }
 
 /**

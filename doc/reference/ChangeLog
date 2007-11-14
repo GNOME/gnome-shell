@@ -1,3 +1,8 @@
+2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Update with the ClutterScriptable changes
+	and add clutter_get_script_id().
+
 2007-10-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter-animation.sgml:

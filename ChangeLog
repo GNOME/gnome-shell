@@ -1,5 +1,25 @@
 2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-scriptable.[ch]: Rename ::set_name and ::get_name
+	to ::set_id and ::get_id, to avoid potential confusion with the
+	ClutterActor:name property.
+
+	* clutter/clutter-script.h:
+	* clutter/clutter-script.c (clutter_script_construct_object): Use
+	clutter_scriptable_set_id().
+
+	(clutter_get_script_id): Add a public function to retrieve the ID
+	used in the UI definition files from an object.
+
+	* clutter/clutter-actor.c: Do not set the name of the actor with
+	the ID set in the UI definition files.
+
+	* tests/test-script.c: Test clutter_get_script_id().
+
+	* clutter.symbols: Update with the new symbols.
+
+2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/cutter-deprecated.h: Don't let everyone know from where
 	we have stolen^Wtaken inspiration for the deprecation warnings.
 

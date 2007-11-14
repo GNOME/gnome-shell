@@ -75,13 +75,9 @@
 #include "clutter-units.h"
 #include "cogl.h"
 
-static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
-
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
-                                  clutter_actor,
-                                  G_TYPE_INITIALLY_UNOWNED,
-                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
-                                                         clutter_scriptable_iface_init));
+G_DEFINE_ABSTRACT_TYPE (ClutterActor,
+                        clutter_actor,
+                        G_TYPE_INITIALLY_UNOWNED);
 
 static guint32 __id = 0;
 
@@ -147,26 +143,6 @@ enum
 };
 
 static guint actor_signals[LAST_SIGNAL] = { 0, };
-
-static void
-clutter_actor_scriptable_set_name (ClutterScriptable *scriptable,
-                                   const gchar       *name)
-{
-  clutter_actor_set_name (CLUTTER_ACTOR (scriptable), name);
-}
-
-static const gchar *
-clutter_actor_scriptable_get_name (ClutterScriptable *scriptable)
-{
-  return clutter_actor_get_name (CLUTTER_ACTOR (scriptable));
-}
-
-static void
-clutter_scriptable_iface_init (ClutterScriptableIface *iface)
-{
-  iface->set_name = clutter_actor_scriptable_set_name;
-  iface->get_name = clutter_actor_scriptable_get_name;
-}
 
 static void
 _clutter_actor_apply_modelview_transform (ClutterActor * self);

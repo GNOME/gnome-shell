@@ -43,8 +43,8 @@ typedef struct _ClutterScriptableIface          ClutterScriptableIface;
 
 /**
  * ClutterScriptableIface:
- * @set_name: virtual function for setting the name of a scriptable object
- * @get_name: virtual function for getting the name of a scriptable object
+ * @set_id: virtual function for setting the id of a scriptable object
+ * @get_id: virtual function for getting the id of a scriptable object
  * @parse_custom_node: virtual function for parsing complex data containers
  *   into GObject properties
  * @set_custom_property: virtual function for setting a custom property
@@ -59,9 +59,9 @@ struct _ClutterScriptableIface
 {
   GTypeInterface g_iface;
 
-  void         (* set_name)            (ClutterScriptable *scriptable,
+  void         (* set_id)              (ClutterScriptable *scriptable,
                                         const gchar       *name);
-  const gchar *(* get_name)            (ClutterScriptable *scriptable);
+  const gchar *(* get_id)              (ClutterScriptable *scriptable);
 
   gboolean     (* parse_custom_node)   (ClutterScriptable *scriptable,
                                         ClutterScript     *script,
@@ -76,9 +76,9 @@ struct _ClutterScriptableIface
 
 GType                 clutter_scriptable_get_type            (void) G_GNUC_CONST;
 
-void                  clutter_scriptable_set_name            (ClutterScriptable *scriptable,
-                                                              const gchar       *name);
-G_CONST_RETURN gchar *clutter_scriptable_get_name            (ClutterScriptable *scriptable);
+void                  clutter_scriptable_set_id              (ClutterScriptable *scriptable,
+                                                              const gchar       *id);
+G_CONST_RETURN gchar *clutter_scriptable_get_id              (ClutterScriptable *scriptable);
 gboolean              clutter_scriptable_parse_custom_node   (ClutterScriptable *scriptable,
                                                               ClutterScript     *script,
                                                               GValue            *value,
