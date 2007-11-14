@@ -1,5 +1,18 @@
 2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.[ch]: Rename clutter_actor_get_id() to
+	clutter_actor_get_gid().
+
+	(clutter_actor_set_parent): Use GUINT_TO_POINTER().
+
+	* clutter/clutter-deprecated.h: Add a replacement warning for
+	clutter_actor_get_id().
+
+	* clutter/clutter-texture.c (texture_upload_data): Use
+	clutter_actor_get_gid(), and don't leak the filename string.
+
+2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-scriptable.[ch]: Rename ::set_name and ::get_name
 	to ::set_id and ::get_id, to avoid potential confusion with the
 	ClutterActor:name property.

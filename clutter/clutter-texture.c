@@ -548,11 +548,15 @@ texture_upload_data (ClutterTexture *texture,
 	{
 	  gchar  *filename;
 
-	  filename = g_strdup_printf("/tmp/%i-%i-%i.png",
-				     clutter_actor_get_id(CLUTTER_ACTOR(texture)),
-				     x, y);
-	  printf("saving %s\n", filename);
+	  filename =
+            g_strdup_printf("/tmp/%i-%i-%i.png",
+                            clutter_actor_get_gid (CLUTTER_ACTOR (texture)),
+                            x, y);
+
+	  printf ("saving %s\n", filename);
+
 	  gdk_pixbuf_save (pixtmp, filename , "png", NULL, NULL);
+          g_free (filename);
 	}
 #endif
 

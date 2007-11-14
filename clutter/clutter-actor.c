@@ -745,7 +745,7 @@ clutter_actor_paint (ClutterActor *self)
 	  || (context->pick_mode == CLUTTER_PICK_REACTIVE
 	      && CLUTTER_ACTOR_IS_REACTIVE(self)))
 	{
-	  id = clutter_actor_get_id (self);
+	  id = clutter_actor_get_gid (self);
 
 	  cogl_get_bitmasks (&r, &g, &b, NULL);
 
@@ -2376,15 +2376,17 @@ clutter_actor_get_name (ClutterActor *self)
 }
 
 /**
- * clutter_actor_get_id:
+ * clutter_actor_get_gid:
  * @self: A #ClutterActor
  *
  * Retrieves the unique id for @self.
  *
  * Return value: Globally unique value for object instance.
+ *
+ * Since: 0.6
  */
 guint32
-clutter_actor_get_id (ClutterActor *self)
+clutter_actor_get_gid (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
@@ -2817,7 +2819,7 @@ clutter_actor_set_parent (ClutterActor *self,
     }
 
   g_hash_table_insert (clutter_context->actor_hash,
-		       (gpointer)clutter_actor_get_id(self),
+		       GUINT_TO_POINTER (clutter_actor_get_gid (self)),
 		       (gpointer)self);
 
   g_object_ref_sink (self);
@@ -2888,7 +2890,7 @@ clutter_actor_unparent (ClutterActor *self)
   g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
   g_hash_table_remove (clutter_context->actor_hash,
-		       GUINT_TO_POINTER (clutter_actor_get_id(self)));
+		       GUINT_TO_POINTER (clutter_actor_get_gid (self)));
 
   g_object_unref (self);
 }

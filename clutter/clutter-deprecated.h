@@ -16,5 +16,6 @@
 #define clutter_behaviour_ellipse_get_angle_begin    clutter_behaviour_ellipse_get_angle_begin_REPLACED_BY_clutter_behaviour_get_angle_start
 #define clutter_behaviour_ellipse_get_angle_beginx   clutter_behaviour_ellipse_get_angle_beginx_REPLACED_BY_clutter_behaviour_get_angle_startx
 #define clutter_behaviour_bspline_append             clutter_behaviour_bspline_append_REPLACED_BY_clutter_behaviour_bspline_append_knots
+#define clutter_actor_get_id                         clutter_actor_get_id_REPLACED_BY_clutter_actor_get_gid
 
 #endif /* CLUTTER_DEPRECATED_H */

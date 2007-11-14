@@ -303,7 +303,7 @@ guint8                clutter_actor_get_opacity      (ClutterActor          *sel
 void                  clutter_actor_set_name         (ClutterActor          *self,
 						      const gchar           *name);
 G_CONST_RETURN gchar *clutter_actor_get_name         (ClutterActor          *self);
-guint32               clutter_actor_get_id           (ClutterActor          *self);
+guint32               clutter_actor_get_gid          (ClutterActor          *self);
 void                  clutter_actor_set_clip         (ClutterActor          *self,
 						      gint                   xoff, 
 						      gint                   yoff, 
