@@ -1,3 +1,8 @@
+2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/cutter-deprecated.h: Don't let everyone know from where
+	we have stolen^Wtaken inspiration for the deprecation warnings.
+
 2007-11-13  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-behaviour-bspline.[ch]:
