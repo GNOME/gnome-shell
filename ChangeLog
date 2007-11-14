@@ -1,5 +1,13 @@
 2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-clone-texture.c (set_parent_texture): Hide the
+	clone texture only if it was visible, and show it again if we
+	are adding a visible texture.
+
+	* tests/test-script.json: Test the CloneTexture actor.
+
+2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.[ch]: Rename clutter_actor_get_id() to
 	clutter_actor_get_gid().
 

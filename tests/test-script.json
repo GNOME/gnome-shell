@@ -10,13 +10,10 @@
         "id" : "red-button",
         "type" : "ClutterRectangle",
         "color" : "#ff0000ff",
-        "x" : 50,
-        "y" : 50,
-        "width" : 100,
-        "height" : 100,
+        "x" : 50, "y" : 50, "width" : 100, "height" : 100,
         "visible" : true,
         "reactive" : true,
-        "behaviours" : [ "fade-behaviour", "path-behaviour" ]
+        "behaviours" : [ "fade-behaviour", "path-behaviour" ],
       },
       {
         "id" : "green-button",
@@ -36,10 +33,19 @@
         "type" : "ClutterTexture",
         "pixbuf" : "redhand.png",
         "x" : 50,
-        "y" : 50,
+        "y" : 150,
         "opacity" : 100,
         "visible" : true,
         "behaviours" : [ "rotate-behaviour", "fade-behaviour" ]
+      },
+      {
+        "id" : "red-hand-clone",
+        "type" : "ClutterCloneTexture",
+        "parent-texture" : "red-hand",
+        "x" : 250,
+        "y" : 150,
+        "opacity" : 100,
+        "visible" : true
       },
       {
         "id" : "label",

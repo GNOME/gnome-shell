@@ -236,14 +236,16 @@ set_parent_texture (ClutterCloneTexture *ctexture,
 {
   ClutterCloneTexturePrivate *priv = ctexture->priv;
   ClutterActor *actor = CLUTTER_ACTOR (ctexture);
+  gboolean was_visible = CLUTTER_ACTOR_IS_VISIBLE (ctexture);
 
   if (priv->parent_texture)
     {
       g_object_unref (priv->parent_texture);
       priv->parent_texture = NULL;
-    }
 
-  clutter_actor_hide (actor);
+      if (was_visible)
+        clutter_actor_hide (actor);
+    }
 
   if (texture) 
     {
@@ -256,9 +258,12 @@ set_parent_texture (ClutterCloneTexture *ctexture,
       clutter_actor_set_size (actor, width, height);
 
       /* queue a redraw if the cloned texture is already visible */
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (priv->parent_texture)) &&
-          CLUTTER_ACTOR_IS_VISIBLE (actor))
-        clutter_actor_queue_redraw (actor);
+      if (CLUTTER_ACTOR_IS_VISIBLE (priv->parent_texture) &&
+          was_visible)
+        {
+          clutter_actor_show (actor);
+          clutter_actor_queue_redraw (actor);
+        }
     }
       
 }
