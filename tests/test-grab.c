@@ -177,7 +177,7 @@ main (int argc, char *argv[])
   actor = clutter_rectangle_new_with_color (&rcol);
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 100, 100);
-  clutter_actor_set_reactive (actor);
+  clutter_actor_set_reactive (actor, TRUE);
   clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
   g_signal_connect (actor, "event", G_CALLBACK (debug_event_cb), "red box");
   g_signal_connect (actor, "button-press-event",
@@ -188,7 +188,7 @@ main (int argc, char *argv[])
   actor = clutter_rectangle_new_with_color (&ycol);
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 100, 300);
-  clutter_actor_set_reactive (actor);
+  clutter_actor_set_reactive (actor, TRUE);
   clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
   g_signal_connect (actor, "event", G_CALLBACK (debug_event_cb), "yellow box");
   g_signal_connect (actor, "button-press-event",
@@ -197,7 +197,7 @@ main (int argc, char *argv[])
   actor = clutter_rectangle_new_with_color (&bcol);
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 300, 100);
-  clutter_actor_set_reactive (actor);
+  clutter_actor_set_reactive (actor, TRUE);
   clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
   g_signal_connect (actor, "event",
                     G_CALLBACK (debug_event_cb), "blue box");
@@ -209,7 +209,7 @@ main (int argc, char *argv[])
   actor = clutter_rectangle_new_with_color (&gcol);
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 300, 300);
-  clutter_actor_set_reactive (actor);
+  clutter_actor_set_reactive (actor, TRUE);
   clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
   g_signal_connect (actor, "event",
                     G_CALLBACK (debug_event_cb), "green box");
