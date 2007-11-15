@@ -54,6 +54,7 @@
 #include "clutter-layout.h"
 #include "clutter-main.h"
 #include "clutter-media.h"
+#include "clutter-model.h"
 #include "clutter-stage.h"
 #include "clutter-texture.h"
 #include "clutter-timeout-pool.h"

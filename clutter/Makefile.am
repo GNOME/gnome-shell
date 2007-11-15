@@ -67,6 +67,7 @@ source_h =					\
         $(srcdir)/clutter-layout.h		\
 	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
+	$(srcdir)/clutter-model.h		\
 	$(srcdir)/clutter-rectangle.h		\
 	$(srcdir)/clutter-score.h 		\
 	$(srcdir)/clutter-script.h		\
@@ -153,6 +154,7 @@ source_c = \
 	clutter-main.c 			\
 	clutter-marshal.c		\
 	clutter-media.c 		\
+	clutter-model.c			\
 	clutter-rectangle.c 		\
 	clutter-score.c 		\
 	clutter-script.c		\

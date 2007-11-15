@@ -145,6 +145,8 @@
       <xi:include href="xml/clutter-color.xml"/>
       <xi:include href="xml/clutter-util.xml"/>
       <xi:include href="xml/clutter-fixed.xml"/>
+      <xi:include href="xml/clutter-model.xml"/>
+      <xi:include href="xml/clutter-model-iter.xml"/>
       <xi:include href="xml/clutter-version.xml"/>
       <xi:include href="xml/clutter-units.xml"/>
     </chapter>

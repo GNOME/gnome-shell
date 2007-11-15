@@ -1,3 +1,13 @@
+2007-11-15  Neil J. Patel  <njp@o-hand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-model.c: 
+	* clutter/clutter-model.h:
+	* clutter/clutter.h:
+	* tests/Makefile.am:
+	* tests/test-model.c:
+	Merged ClutterModel, which closes #443. 	
+
 2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-clone-texture.c (set_parent_texture): Hide the

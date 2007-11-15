@@ -1,3 +1,10 @@
+2007-11-15  Neil J. Patel  <njp@o-hand.com>
+
+	* clutter-docs.sgml:
+	* clutter-sections.txt:
+	* clutter.types:
+	Added support for ClutterModel.
+
 2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Update with the ClutterScriptable changes
