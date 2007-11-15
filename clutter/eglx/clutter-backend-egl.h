@@ -23,12 +23,16 @@
 #define __CLUTTER_BACKEND_EGL_H__
 
 #include <glib-object.h>
+#include <clutter/clutter-event.h>
 #include <clutter/clutter-backend.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
 #include <GLES/gl.h>
 #include <GLES/egl.h>
+
+#include "../x11/clutter-backend-x11.h"
+#include "clutter-eglx.h"
 
 G_BEGIN_DECLS
 
@@ -44,36 +48,20 @@ typedef struct _ClutterBackendEGLClass  ClutterBackendEGLClass;
 
 struct _ClutterBackendEGL
 {
-  ClutterBackend parent_instance;
-
-  Display *xdpy;
-  gchar   *display_name;
-  Window   xwin_root;
-  int      xscreen_num;
-  Screen  *xscreen;
+  ClutterBackendX11 parent_instance;
 
   /* EGL Specific */
   EGLDisplay edpy;
   gint       egl_version_major, egl_version_minor;
 
-  /* main stage singleton */
-  ClutterActor *stage;
-
-  /* event source */
-  GSource *event_source;
-
-  /*< private >*/
 };
 
 struct _ClutterBackendEGLClass
 {
-  ClutterBackendClass parent_class;
+  ClutterBackendX11Class parent_class;
 };
 
 GType clutter_backend_egl_get_type (void) G_GNUC_CONST;
-
-void _clutter_events_init (ClutterBackend *backend);
-void _clutter_events_uninit (ClutterBackend *backend);
 
 G_END_DECLS
 

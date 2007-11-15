@@ -10,79 +10,20 @@
 
 static ClutterBackendEGL *backend_singleton = NULL;
 
-/* options */
-static gchar *clutter_display_name = NULL;
-static gint clutter_screen = 0;
-
-/* X error trap */
-static int TrappedErrorCode = 0;
-static int (*old_error_handler) (Display *, XErrorEvent *);
-
-G_DEFINE_TYPE (ClutterBackendEGL, clutter_backend_egl, CLUTTER_TYPE_BACKEND);
-
-static gboolean
-clutter_backend_egl_pre_parse (ClutterBackend  *backend,
-                               GError         **error)
-{
-  const gchar *env_string;
-
-  /* we don't fail here if DISPLAY is not set, as the user
-   * might pass the --display command line switch
-   */
-  env_string = g_getenv ("DISPLAY");
-  if (env_string)
-    {
-      clutter_display_name = g_strdup (env_string);
-      env_string = NULL;
-    }
-
-  return TRUE;
-}
+G_DEFINE_TYPE (ClutterBackendEGL, clutter_backend_egl, CLUTTER_TYPE_BACKEND_X11);
 
 static gboolean
 clutter_backend_egl_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  if (clutter_display_name)
-    {
-      backend_egl->xdpy = XOpenDisplay (clutter_display_name);
-    }
-  else
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to open display. You have to set the DISPLAY "
-                   "environment variable, or use the --display command "
-                   "line argument");
-      return FALSE;
-    }
-
-  if (backend_egl->xdpy)
+  if (clutter_backend_x11_post_parse (backend, error))
     {
       EGLBoolean status;
-      double dpi;
 
-      CLUTTER_NOTE (MISC, "Getting the X screen");
-
-      if (clutter_screen == 0)
-        backend_egl->xscreen = DefaultScreenOfDisplay (backend_egl->xdpy);
-      else
-        backend_egl->xscreen = ScreenOfDisplay (backend_egl->xdpy,
-                                                clutter_screen);
-
-      backend_egl->xscreen_num = XScreenNumberOfScreen (backend_egl->xscreen);
-      backend_egl->xwin_root = RootWindow (backend_egl->xdpy,
-                                           backend_egl->xscreen_num);
-
-      backend_egl->display_name = g_strdup (clutter_display_name);
-
-      backend_egl->edpy = eglGetDisplay((NativeDisplayType)backend_egl->xdpy);
-
-      dpi = (((double) DisplayHeight (backend_egl->xdpy, backend_egl->xscreen_num) * 25.4)
-            / (double) DisplayHeightMM (backend_egl->xdpy, backend_egl->xscreen_num));
-      clutter_backend_set_resolution (backend, dpi);
+      backend_egl->edpy = eglGetDisplay((NativeDisplayType)backend_x11->xdpy);
 
       status = eglInitialize(backend_egl->edpy,
 			     &backend_egl->egl_version_major,
@@ -98,14 +39,6 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
 
     }
 
-  g_free (clutter_display_name);
-
-  CLUTTER_NOTE (BACKEND, "X Display `%s' [%p] opened (screen:%d, root:%u)",
-                backend_egl->display_name,
-                backend_egl->xdpy,
-                backend_egl->xscreen_num,
-                (unsigned int) backend_egl->xwin_root);
-
   CLUTTER_NOTE (BACKEND, "EGL Reports version %i.%i",
 		backend_egl->egl_version_major,
 		backend_egl->egl_version_minor);
@@ -113,80 +46,23 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
-static gboolean
-clutter_backend_egl_init_stage (ClutterBackend  *backend,
-                                GError         **error)
-{
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-
-  if (!backend_egl->stage)
-    {
-      ClutterStageEGL *stage_egl;
-      ClutterActor *stage;
-
-      stage = g_object_new (CLUTTER_TYPE_STAGE_EGL, NULL);
-
-      /* copy backend data into the stage */
-      stage_egl = CLUTTER_STAGE_EGL (stage);
-      stage_egl->xdpy = backend_egl->xdpy;
-      stage_egl->xwin_root = backend_egl->xwin_root;
-      stage_egl->xscreen = backend_egl->xscreen_num;
-
-      g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
-
-      backend_egl->stage = g_object_ref_sink (stage);
-    }
-
-  clutter_actor_realize (backend_egl->stage);
-  if (!CLUTTER_ACTOR_IS_REALIZED (backend_egl->stage))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_INTERNAL,
-                   "Unable to realize the main stage");
-      return FALSE;
-    }
-
-  return TRUE;
-}
-
-static void
-clutter_backend_egl_init_events (ClutterBackend *backend)
-{
-  _clutter_events_init (backend);
-
-}
-
-static const GOptionEntry entries[] =
-{
-  {
-    "display", 0,
-    G_OPTION_FLAG_IN_MAIN,
-    G_OPTION_ARG_STRING, &clutter_display_name,
-    "X display to use", "DISPLAY"
-  },
-  {
-    "screen", 0,
-    G_OPTION_FLAG_IN_MAIN,
-    G_OPTION_ARG_INT, &clutter_screen,
-    "X screen to use", "SCREEN"
-  },
-  { NULL }
-};
-
 static void
 clutter_backend_egl_redraw (ClutterBackend *backend)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterStageEGL   *stage_egl;
+  ClutterStageX11   *stage_x11;
 
-  stage_egl = CLUTTER_STAGE_EGL(backend_egl->stage);
+  stage_x11 = CLUTTER_STAGE_X11(backend_x11->stage);
+  stage_egl = CLUTTER_STAGE_EGL(backend_x11->stage);
 
   clutter_actor_paint (CLUTTER_ACTOR(stage_egl));
 
   /* Why this paint is done in backend as likely GL windowing system
    * specific calls, like swapping buffers.
   */
-  if (stage_egl->xwin)
+  if (stage_x11->xwin)
     {
       /* clutter_feature_wait_for_vblank (); */
       eglSwapBuffers (backend_egl->edpy,  stage_egl->egl_surface);
@@ -199,29 +75,8 @@ clutter_backend_egl_redraw (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_egl_add_options (ClutterBackend *backend,
-                                 GOptionGroup   *group)
-{
-  g_option_group_add_entries (group, entries);
-}
-
-static ClutterActor *
-clutter_backend_egl_get_stage (ClutterBackend *backend)
-{
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-
-  return backend_egl->stage;
-}
-
-static void
 clutter_backend_egl_finalize (GObject *gobject)
 {
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
-
-  g_free (backend_egl->display_name);
-
-  XCloseDisplay (backend_egl->xdpy);
-
   if (backend_singleton)
     backend_singleton = NULL;
 
@@ -231,16 +86,6 @@ clutter_backend_egl_finalize (GObject *gobject)
 static void
 clutter_backend_egl_dispose (GObject *gobject)
 {
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
-
-  _clutter_events_uninit (CLUTTER_BACKEND (backend_egl));
-
-  if (backend_egl->stage)
-    {
-      clutter_actor_destroy (backend_egl->stage);
-      backend_egl->stage = NULL;
-    }
-
   G_OBJECT_CLASS (clutter_backend_egl_parent_class)->dispose (gobject);
 }
 
@@ -275,6 +120,49 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
   return CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
+static gboolean
+clutter_backend_egl_init_stage (ClutterBackend  *backend,
+                                GError         **error)
+{
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
+  if (!backend_x11->stage)
+    {
+      ClutterStageX11 *stage_x11;
+      ClutterActor *stage;
+
+      stage = g_object_new (CLUTTER_TYPE_STAGE_EGL, NULL);
+
+      /* copy backend data into the stage */
+      stage_x11 = CLUTTER_STAGE_X11 (stage);
+      stage_x11->xdpy = backend_x11->xdpy;
+      stage_x11->xwin_root = backend_x11->xwin_root;
+      stage_x11->xscreen = backend_x11->xscreen_num;
+      stage_x11->backend = backend_x11;
+
+      CLUTTER_NOTE (MISC, "X11 stage created (display:%p, screen:%d, root:%u)",
+                    stage_x11->xdpy,
+                    stage_x11->xscreen,
+                    (unsigned int) stage_x11->xwin_root);
+
+      g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
+
+      backend_x11->stage = g_object_ref_sink (stage);
+    }
+
+  clutter_actor_realize (backend_x11->stage);
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (backend_x11->stage))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_INTERNAL,
+                   "Unable to realize the main stage");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 static void
 clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 {
@@ -285,133 +173,22 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   gobject_class->dispose = clutter_backend_egl_dispose;
   gobject_class->finalize = clutter_backend_egl_finalize;
 
-  backend_class->pre_parse   = clutter_backend_egl_pre_parse;
   backend_class->post_parse  = clutter_backend_egl_post_parse;
-  backend_class->init_stage  = clutter_backend_egl_init_stage;
-  backend_class->init_events = clutter_backend_egl_init_events;
-  backend_class->get_stage   = clutter_backend_egl_get_stage;
-  backend_class->add_options = clutter_backend_egl_add_options;
   backend_class->redraw      = clutter_backend_egl_redraw;
   backend_class->get_features = clutter_backend_egl_get_features;
+  backend_class->init_stage = clutter_backend_egl_init_stage;
 }
 
 static void
 clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
-  ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
-
-  /* FIXME: get from xsettings */
-  clutter_backend_set_resolution (backend, 96.0);
-  clutter_backend_set_double_click_time (backend, 250);
-  clutter_backend_set_double_click_distance (backend, 5);
+  ;
 }
 
 GType
 _clutter_backend_impl_get_type (void)
 {
   return clutter_backend_egl_get_type ();
-}
-
-static int
-error_handler(Display     *xdpy,
-	      XErrorEvent *error)
-{
-  TrappedErrorCode = error->error_code;
-  return 0;
-}
-
-/**
- * clutter_eglx_trap_x_errors:
- *
- * FIXME
- *
- * Since: 0.4
- */
-void
-clutter_eglx_trap_x_errors (void)
-{
-  TrappedErrorCode  = 0;
-  old_error_handler = XSetErrorHandler (error_handler);
-}
-
-/**
- * clutter_eglx_untrap_x_errors:
- *
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-gint
-clutter_eglx_untrap_x_errors (void)
-{
-  XSetErrorHandler (old_error_handler);
-
-  return TrappedErrorCode;
-}
-
-/**
- * clutter_eglx_get_default_xdisplay:
- *
- * Returns the default X Display
- *
- * Return value: A Display pointer
- *
- * Since: 0.4
- */
-Display *
-clutter_eglx_get_default_xdisplay (void)
-{
-  if (!backend_singleton)
-    {
-      g_critical ("EGL backend has not been initialised");
-      return NULL;
-    }
-
-  return backend_singleton->xdpy;
-}
-
-/**
- * clutter_eglx_get_default_screen:
- *
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-gint
-clutter_eglx_get_default_screen (void)
-{
-  if (!backend_singleton)
-    {
-      g_critical ("EGL backend has not been initialised");
-      return -1;
-    }
-
-  return backend_singleton->xscreen_num;
-}
-
-/**
- * clutter_eglx_get_default_root_window:
- *
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-Window
-clutter_eglx_get_default_root_window (void)
-{
-  if (!backend_singleton)
-    {
-      g_critical ("EGL backend has not been initialised");
-      return None;
-    }
-
-  return backend_singleton->xwin_root;
 }
 
 /**

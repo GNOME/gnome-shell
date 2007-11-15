@@ -37,8 +37,6 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
-
-
 #include "clutter-backend-glx.h"
 #include "clutter-stage-glx.h"
 #include "clutter-glx.h"
@@ -50,19 +48,10 @@
 
 #include "cogl.h"
 
-G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND);
+G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND_X11);
 
 /* singleton object */
 static ClutterBackendGLX *backend_singleton = NULL;
-
-/* options */
-static gchar *clutter_display_name = NULL;
-static gint clutter_screen = 0;
-static gboolean clutter_synchronise = FALSE;
-
-/* X error trap */
-static int TrappedErrorCode = 0;
-static int (* old_error_handler) (Display *, XErrorEvent *);
 
 static gchar *clutter_vblank_name = NULL;
 
@@ -120,16 +109,6 @@ clutter_backend_glx_pre_parse (ClutterBackend  *backend,
 {
   const gchar *env_string;
 
-  /* we don't fail here if DISPLAY is not set, as the user
-   * might pass the --display command line switch
-   */
-  env_string = g_getenv ("DISPLAY");
-  if (env_string)
-    {
-      clutter_display_name = g_strdup (env_string);
-      env_string = NULL;
-    }
-
   env_string = g_getenv ("CLUTTER_VBLANK");
   if (env_string)
     {
@@ -137,53 +116,19 @@ clutter_backend_glx_pre_parse (ClutterBackend  *backend,
       env_string = NULL;
     }
 
-  return TRUE;
+  return clutter_backend_x11_pre_parse (backend, error);
 }
 
 static gboolean
 clutter_backend_glx_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  int glx_major, glx_minor;
 
-  if (clutter_display_name)
+  if (clutter_backend_x11_post_parse (backend, error))
     {
-      CLUTTER_NOTE (BACKEND, "XOpenDisplay on `%s'", clutter_display_name);
-      backend_glx->xdpy = XOpenDisplay (clutter_display_name);
-    }
-  else
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to open display. You have to set the DISPLAY "
-                   "environment variable, or use the --display command "
-                   "line argument");
-      return FALSE;
-    }
-
-  if (backend_glx->xdpy)
-    {
-      int glx_major, glx_minor;
-      double dpi;
-
-      CLUTTER_NOTE (BACKEND, "Getting the X screen");
-
-      if (clutter_screen == 0)
-        backend_glx->xscreen = DefaultScreenOfDisplay (backend_glx->xdpy);
-      else
-        backend_glx->xscreen = ScreenOfDisplay (backend_glx->xdpy,
-                                                clutter_screen);
-      
-      backend_glx->xscreen_num = XScreenNumberOfScreen (backend_glx->xscreen);
-
-      backend_glx->xwin_root = RootWindow (backend_glx->xdpy,
-                                           backend_glx->xscreen_num);
-      
-      backend_glx->display_name = g_strdup (clutter_display_name);
-
-      CLUTTER_NOTE (BACKEND, "Checking GLX info");
-
-      if (!glXQueryVersion (backend_glx->xdpy, &glx_major, &glx_minor) 
+      if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor) 
 	  || !(glx_major > 1 || glx_minor > 1)) 
 	{
 	  g_set_error (error, CLUTTER_INIT_ERROR,
@@ -191,127 +136,18 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 		       "XServer appears to lack required GLX support");
 	  return 1;
 	}
-
-#if 0
-      /* Prefer current GLX specs over current violations */
-      if (!(glx_major > 1 || glx_minor > 2)) 
-	{
-	  
-	  const char* exts = glXQueryExtensionsString (display, screen);
-	  if (!exts || !strstr (exts, "GLX_SGIX_fbconfig"))
-	    have_fbconfig = 0;
-	}
-#endif
-      
-      dpi = (((double) DisplayHeight (backend_glx->xdpy, backend_glx->xscreen_num) * 25.4)
-            / (double) DisplayHeightMM (backend_glx->xdpy, backend_glx->xscreen_num));
-
-      clutter_backend_set_resolution (backend, dpi);
-
-      if (clutter_synchronise)
-        XSynchronize (backend_glx->xdpy, True);
-
-      backend_glx->atom_WM_STATE 
-	= XInternAtom (backend_glx->xdpy, "_NET_WM_STATE", False);
-      backend_glx->atom_WM_STATE_FULLSCREEN 
-	= XInternAtom (backend_glx->xdpy, "_NET_WM_STATE_FULLSCREEN", False);
-    }
-
-  g_free (clutter_display_name);
-  
-  CLUTTER_NOTE (BACKEND,
-                "X Display `%s'[%p] opened (screen:%d, root:%u, dpi:%f)",
-                backend_glx->display_name,
-                backend_glx->xdpy,
-                backend_glx->xscreen_num,
-                (unsigned int) backend_glx->xwin_root,
-                clutter_backend_get_resolution (backend));
-
-  return TRUE;
-}
-
-
-static gboolean
-clutter_backend_glx_init_stage (ClutterBackend  *backend,
-                                GError         **error)
-{
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
-
-  if (!backend_glx->stage)
-    {
-      ClutterStageGLX *stage_glx;
-      ClutterActor *stage;
-
-      stage = g_object_new (CLUTTER_TYPE_STAGE_GLX, NULL);
-
-      /* copy backend data into the stage */
-      stage_glx = CLUTTER_STAGE_GLX (stage);
-      stage_glx->xdpy = backend_glx->xdpy;
-      stage_glx->xwin_root = backend_glx->xwin_root;
-      stage_glx->xscreen = backend_glx->xscreen_num;
-      stage_glx->backend = backend_glx;
-
-      CLUTTER_NOTE (MISC, "GLX stage created (display:%p, screen:%d, root:%u)",
-                    stage_glx->xdpy,
-                    stage_glx->xscreen,
-                    (unsigned int) stage_glx->xwin_root);
-
-      g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
-
-      backend_glx->stage = g_object_ref_sink (stage);
-    }
-
-  clutter_actor_realize (backend_glx->stage);
-  if (!CLUTTER_ACTOR_IS_REALIZED (backend_glx->stage))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_INTERNAL,
-                   "Unable to realize the main stage");
-      return FALSE;
     }
 
   return TRUE;
 }
 
-static void
-clutter_backend_glx_init_events (ClutterBackend *backend)
-{
-  CLUTTER_NOTE (EVENT, "initialising the event loop");
-
-  _clutter_backend_glx_events_init (backend);
-}
-
-static ClutterActor *
-clutter_backend_glx_get_stage (ClutterBackend *backend)
-{
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
-
-  return backend_glx->stage;
-}
 
 static const GOptionEntry entries[] =
 {
-  {
-    "display", 0,
-    G_OPTION_FLAG_IN_MAIN,
-    G_OPTION_ARG_STRING, &clutter_display_name,
-    "X display to use", "DISPLAY"
-  },
-  {
-    "screen", 0,
-    G_OPTION_FLAG_IN_MAIN,
-    G_OPTION_ARG_INT, &clutter_screen,
-    "X screen to use", "SCREEN"
-  },
   { "vblank", 0, 
     0, 
     G_OPTION_ARG_STRING, &clutter_vblank_name,
     "VBlank method to be used (none, dri or glx)", "METHOD" 
-  },
-  { "synch", 0,
-    0,
-    G_OPTION_ARG_NONE, &clutter_synchronise,
-    "Make X calls synchronous", NULL,
   },
   { NULL }
 };
@@ -321,17 +157,12 @@ clutter_backend_glx_add_options (ClutterBackend *backend,
                                  GOptionGroup   *group)
 {
   g_option_group_add_entries (group, entries);
+  clutter_backend_x11_add_options (backend, group);
 }
 
 static void
 clutter_backend_glx_finalize (GObject *gobject)
 {
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (gobject);
-
-  g_free (backend_glx->display_name);
-
-  XCloseDisplay (backend_glx->xdpy);
-
   if (backend_singleton)
     backend_singleton = NULL;
 
@@ -341,19 +172,6 @@ clutter_backend_glx_finalize (GObject *gobject)
 static void
 clutter_backend_glx_dispose (GObject *gobject)
 {
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (gobject);
-
-  if (backend_glx->stage)
-    {
-      CLUTTER_NOTE (BACKEND, "Disposing the main stage");
-
-      clutter_actor_destroy (backend_glx->stage);
-      backend_glx->stage = NULL;
-    }
- 
-  CLUTTER_NOTE (BACKEND, "Removing the event source");
-  _clutter_backend_glx_events_uninit (CLUTTER_BACKEND (backend_glx));
-
   G_OBJECT_CLASS (clutter_backend_glx_parent_class)->dispose (gobject);
 }
 
@@ -390,7 +208,6 @@ check_vblank_env (const char *name)
   return FALSE;
 }
 
-
 static ClutterFeatureFlags
 clutter_backend_glx_get_features (ClutterBackend *backend)
 {
@@ -399,8 +216,6 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   ClutterFeatureFlags flags = 0;
 
   /* FIXME: we really need to check if gl context is set */
-
-  flags = CLUTTER_FEATURE_STAGE_USER_RESIZE|CLUTTER_FEATURE_STAGE_CURSOR;
 
   CLUTTER_NOTE (BACKEND, "Checking features\n"
 		"GL_VENDOR: %s\n"
@@ -413,8 +228,8 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 		glGetString (GL_EXTENSIONS));
 
   glx_extensions = 
-    glXQueryExtensionsString (clutter_glx_get_default_display (),
-			      clutter_glx_get_default_screen ());
+    glXQueryExtensionsString (clutter_x11_get_default_display (),
+			      clutter_x11_get_default_screen ());
 
   CLUTTER_NOTE (BACKEND, "GLX Extensions: %s", glx_extensions);
 
@@ -512,26 +327,28 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
   CLUTTER_NOTE (MISC, "backend features checked");
 
-  return flags;
+  return flags|clutter_backend_x11_get_features (backend);
 }
 
 static void
 clutter_backend_glx_redraw (ClutterBackend *backend)
 {
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterStageGLX   *stage_glx;
+  ClutterStageX11   *stage_x11;
 
-  stage_glx = CLUTTER_STAGE_GLX(backend_glx->stage);
+  stage_x11 = CLUTTER_STAGE_X11(backend_x11->stage);
+  stage_glx = CLUTTER_STAGE_GLX(backend_x11->stage);
 
   clutter_actor_paint (CLUTTER_ACTOR (stage_glx));
 
   /* Why this paint is done in backend as likely GL windowing system
    * specific calls, like swapping buffers.
   */
-  if (stage_glx->xwin)
+  if (stage_x11->xwin)
     {
-      clutter_backend_glx_wait_for_vblank (stage_glx->backend);
-      glXSwapBuffers (stage_glx->xdpy, stage_glx->xwin);
+      clutter_backend_glx_wait_for_vblank (CLUTTER_BACKEND_GLX(backend));
+      glXSwapBuffers (stage_x11->xdpy, stage_x11->xwin);
     }
   else
     {
@@ -539,8 +356,51 @@ clutter_backend_glx_redraw (ClutterBackend *backend)
       glXWaitGL ();
       CLUTTER_GLERR ();
     }
-
 }
+
+gboolean
+clutter_backend_glx_init_stage (ClutterBackend  *backend,
+                                GError         **error)
+{
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+
+  if (!backend_x11->stage)
+    {
+      ClutterStageX11 *stage_x11;
+      ClutterActor *stage;
+
+      stage = g_object_new (CLUTTER_TYPE_STAGE_GLX, NULL);
+
+      /* copy backend data into the stage */
+      stage_x11 = CLUTTER_STAGE_X11 (stage);
+      stage_x11->xdpy = backend_x11->xdpy;
+      stage_x11->xwin_root = backend_x11->xwin_root;
+      stage_x11->xscreen = backend_x11->xscreen_num;
+      stage_x11->backend = backend_x11;
+
+      CLUTTER_NOTE (MISC, "X11 stage created (display:%p, screen:%d, root:%u)",
+                    stage_x11->xdpy,
+                    stage_x11->xscreen,
+                    (unsigned int) stage_x11->xwin_root);
+
+      g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
+
+      backend_x11->stage = g_object_ref_sink (stage);
+    }
+
+  clutter_actor_realize (backend_x11->stage);
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (backend_x11->stage))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_INTERNAL,
+                   "Unable to realize the main stage");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 
 static void
 clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
@@ -555,8 +415,6 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   backend_class->pre_parse   = clutter_backend_glx_pre_parse;
   backend_class->post_parse   = clutter_backend_glx_post_parse;
   backend_class->init_stage   = clutter_backend_glx_init_stage;
-  backend_class->init_events  = clutter_backend_glx_init_events;
-  backend_class->get_stage    = clutter_backend_glx_get_stage;
   backend_class->add_options  = clutter_backend_glx_add_options;
   backend_class->get_features = clutter_backend_glx_get_features;
   backend_class->redraw       = clutter_backend_glx_redraw;
@@ -565,12 +423,7 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
 static void
 clutter_backend_glx_init (ClutterBackendGLX *backend_glx)
 {
-  ClutterBackend *backend = CLUTTER_BACKEND (backend_glx);
-
-  /* FIXME: get from xsettings */
-  clutter_backend_set_double_click_time (backend, 250);
-  clutter_backend_set_double_click_distance (backend, 5);
-  clutter_backend_set_resolution (backend, 96.0);
+  ;
 }
 
 /* every backend must implement this function */
@@ -578,14 +431,6 @@ GType
 _clutter_backend_impl_get_type (void)
 {
   return clutter_backend_glx_get_type ();
-}
-
-static int
-error_handler(Display     *xdpy,
-	      XErrorEvent *error)
-{
-  TrappedErrorCode = error->error_code;
-  return 0;
 }
 
 void
@@ -621,177 +466,5 @@ clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
     case CLUTTER_VBLANK_NONE:
     default:
       break;
-    }
-}
-
-
-/**
- * clutter_glx_trap_x_errors:
- *
- * FIXME
- *
- * Since: 0.4
- */
-void
-clutter_glx_trap_x_errors (void)
-{
-  TrappedErrorCode  = 0;
-  old_error_handler = XSetErrorHandler (error_handler);
-}
-
-/**
- * clutter_glx_untrap_x_errors:
- *
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-gint
-clutter_glx_untrap_x_errors (void)
-{
-  XSetErrorHandler (old_error_handler);
-
-  return TrappedErrorCode;
-}
-
-/**
- * clutter_glx_get_default_display:
- * 
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-Display *
-clutter_glx_get_default_display (void)
-{
-  if (!backend_singleton)
-    {
-      g_critical ("GLX backend has not been initialised");
-      return NULL;
-    }
-
-  return backend_singleton->xdpy;
-}
-
-/**
- * clutter_glx_get_default_screen:
- * 
- * Gets the number of the default X Screen object.
- *
- * Return value: the number of the default Screen object.
- *
- * Since: 0.4
- */
-int
-clutter_glx_get_default_screen (void)
-{
-  if (!backend_singleton)
-    {
-      g_critical ("GLX backend has not been initialised");
-      return 0;
-    }
-
-  return backend_singleton->xscreen_num;
-}
-
-/**
- * clutter_glx_get_root_window:
- * 
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-Window
-clutter_glx_get_root_window (void)
-{
-  if (!backend_singleton)
-    {
-      g_critical ("GLX backend has not been initialised");
-      return None;
-    }
-
-  return backend_singleton->xwin_root;
-}
-
-/**
- * clutter_glx_add_filter:
- * @func: an event filter function
- * @data: user data to pass to the function, or %NULL
- *
- * Adds @func to the list of event filters. Filter functions
- * receive the raw events and must return %CLUTTER_GLX_FILTER_CONTINUE
- * if the event should be processed by Clutter, %CLUTTER_GLX_FILTER_TRANSLATE
- * if the event has been translated by the function and it's ready
- * to be sent to the stage, or %CLUTTER_GLX_FILTER_REMOVE if the event should
- * not be sent to the stage.
- *
- * Since: 0.4
- */
-void
-clutter_glx_add_filter (ClutterGLXFilterFunc func,
-                        gpointer             data)
-{
-  ClutterGLXEventFilter *filter;
-
-  g_return_if_fail (func != NULL);
-
-  if (!backend_singleton)
-    {
-      g_critical ("GLX backend has not been initialised");
-      return;
-    }
-
-  filter = g_new0(ClutterGLXEventFilter, 1);
-  filter->func = func;
-  filter->data = data;
-
-  backend_singleton->event_filters =
-    g_slist_append (backend_singleton->event_filters, filter);
-
-  return;
-}
-
-/**
- * clutter_glx_remove_filter:
- * @func: the filter function to remove
- * @data: user data of the filter function, or %NULL
- * 
- * Removes @func from the list of filter functions installed
- *
- * Since: 0.4
- */
-void
-clutter_glx_remove_filter (ClutterGLXFilterFunc func,
-                           gpointer             data)
-{
-  GSList                *tmp_list, *this;
-  ClutterGLXEventFilter *filter;
-
-  g_return_if_fail (func == NULL);
-
-  tmp_list = backend_singleton->event_filters;
-
-  while (tmp_list)
-    {
-      filter = (ClutterGLXEventFilter *)tmp_list->data;
-      this     =  tmp_list;
-      tmp_list = tmp_list->next;
-
-      if (filter->func == func && filter->data == data)
-        {
-	  backend_singleton->event_filters =
-            g_slist_remove_link (backend_singleton->event_filters, this);
-
-          g_slist_free_1 (this);
-          g_free (filter);
-
-          return;
-        }
     }
 }

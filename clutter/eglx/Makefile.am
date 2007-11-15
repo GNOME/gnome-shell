@@ -8,14 +8,14 @@ INCLUDES = \
 	$(CLUTTER_DEBUG_CFLAGS) \
 	$(GCC_FLAGS)
 
-LDADD = $(CLUTTER_LIBS)
+LDADD = $(CLUTTER_LIBS) \
+	$(top_srcdir)/clutter/x11/libclutter-x11.la
 
 noinst_LTLIBRARIES = libclutter-eglx.la
 
 libclutter_eglx_la_SOURCES = \
 	clutter-backend-egl.h \
 	clutter-backend-egl.c \
-	clutter-event-egl.c \
 	clutter-stage-egl.h \
 	clutter-stage-egl.c \
 	clutter-eglx.h

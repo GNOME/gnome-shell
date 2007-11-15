@@ -1,3 +1,34 @@
+2007-11-15  Matthew Allum  <mallum@openedhand.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* clutter/Makefile.am:
+	* clutter/cogl/gles/cogl.c: (cogl_color):
+	* clutter/eglx/Makefile.am:
+	* clutter/eglx/clutter-backend-egl.c:
+	* clutter/eglx/clutter-backend-egl.h:
+	* clutter/eglx/clutter-eglx.h:
+	* clutter/eglx/clutter-event-egl.c:
+	* clutter/eglx/clutter-stage-egl.c: (clutter_stage_egl_realize):
+	* clutter/eglx/clutter-stage-egl.h:
+	* clutter/glx/Makefile.am:
+	* clutter/glx/clutter-backend-glx.c:
+	(clutter_backend_glx_pre_parse):
+	* clutter/glx/clutter-backend-glx.h:
+	* clutter/glx/clutter-event-glx.c:
+	* clutter/glx/clutter-glx.h:
+	* clutter/glx/clutter-stage-glx.c: (clutter_stage_glx_realize):
+	* clutter/glx/clutter-stage-glx.h:
+	* clutter/x11/Makefile.am:
+	* clutter/x11/clutter-backend-x11-private.h:
+	* clutter/x11/clutter-backend-x11.c:
+	* clutter/x11/clutter-backend-x11.h:
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/x11/clutter-stage-x11.c:
+	* clutter/x11/clutter-stage-x11.h:
+	* clutter/x11/clutter-x11.h:
+	* configure.ac:
+
 2007-11-15  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/Makefile.am:

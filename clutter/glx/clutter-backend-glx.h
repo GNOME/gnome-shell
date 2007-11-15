@@ -30,6 +30,7 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
+#include "../x11/clutter-backend-x11.h"
 #include "clutter-glx.h"
 
 G_BEGIN_DECLS
@@ -59,29 +60,9 @@ typedef int (*WaitVideoSyncProc) (int           divisor,
 				  unsigned int *count);
 typedef int (*SwapIntervalProc) (int interval);
 
-typedef struct _ClutterGLXEventFilter
-{
-  ClutterGLXFilterFunc func;
-  gpointer             data;
-
-} ClutterGLXEventFilter;
-
 struct _ClutterBackendGLX
 {
-  ClutterBackend parent_instance;
-
-  Display *xdpy;
-  Window xwin_root;
-  Screen *xscreen;
-  int xscreen_num;
-  gchar *display_name;
-
-  /* main stage singleton */
-  ClutterActor *stage;
-
-  /* event source */
-  GSource *event_source;
-  GSList  *event_filters;
+  ClutterBackendX11 parent_instance;
 
   /* Vblank stuff */
   GetVideoSyncProc       get_video_sync;
@@ -89,21 +70,14 @@ struct _ClutterBackendGLX
   SwapIntervalProc       swap_interval;
   gint                   dri_fd;
   ClutterGLXVBlankType   vblank_type;
-
-  /* props */
-  Atom atom_WM_STATE;
-  Atom atom_WM_STATE_FULLSCREEN;
 };
 
 struct _ClutterBackendGLXClass
 {
-  ClutterBackendClass parent_class;
+  ClutterBackendX11Class parent_class;
 };
 
-void   _clutter_backend_glx_events_init (ClutterBackend *backend);
-void   _clutter_backend_glx_events_uninit (ClutterBackend *backend);
-
-void   clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx);
+void  clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx);
 
 GType clutter_backend_glx_get_type (void) G_GNUC_CONST;
 

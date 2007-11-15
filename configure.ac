@@ -87,6 +87,8 @@ fi
 
 AC_SUBST(CLUTTER_NO_FPU)
 
+backendextra=
+backendextralib=
 clutterbackend=glx
 AC_ARG_WITH([flavour],
             AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl@:>@],
@@ -151,35 +153,6 @@ case $clutterbackend in
      fi
     ;;
 
-  sdles)
-#
-# Temp Hack for building with dgles (runs atop SDL)
-#
-    clutterbackend=sdl
-    CLUTTER_FLAVOUR="sdl"
-    AC_DEFINE([HAVE_CLUTTER_SDL], 1, [Have the SDL backend])
-
-    CLUTTER_COGL="gles"
-    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL for rendering])
-
-    AC_PATH_PROG(SDL_CONFIG, sdl-config)
-    if test "x$SDL_CONFIG" = "x"; then
-       AC_MSG_ERROR([[No sdl-config binary found in path and SDL flavour requested.]])
-    else
-       SDL_CFLAGS=`$SDL_CONFIG --cflags`
-       SDL_LIBS=`$SDL_CONFIG --libs`
-     fi
-
-# FIXME: Obviously we need some real detection here
-     SDL_CFLAGS="-I/usr/local/include $SDL_CFLAGS"
-     SDL_LIBS="-L/usr/local/lib -lGLES_CM $SDL_LIBS"
-
-     AC_MSG_WARN([])
-     AC_MSG_WARN([The SDL/Open GL ES Backend is purely for experimental])
-     AC_MSG_WARN([and devlopment purposes. Do not use in production code!!])
-     AC_MSG_WARN([])
-     ;;
-
   glx)
 
     clutter_gl_header="GL/gl.h"
@@ -205,11 +178,13 @@ case $clutterbackend in
  
     GLX_LIBS="$X11_LIBS -lGL"
     GLX_CFLAGS="$X11_CFLAGS"
+    backendextra=x11	
+    backendextralib="x11/libclutter-x11.la"
     ;;
 
   eglx)
     
-    $clutter_gl_header="GLES/gl.h"
+    clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglx"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
 
@@ -217,30 +192,33 @@ case $clutterbackend in
     CLUTTER_COGL="gles"
     AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
 
-    # try for libvincent first (though its not so good)
-    PKG_CHECK_MODULES(EGL, libvincent, HAVE_OGLES=yes, HAVE_OGLES=no)
-    if test "x$HAVE_OGLES" = "xno"; then
-      AC_CHECK_HEADERS([GLES/egl.h $clutter_gl_header],,
+    AC_CHECK_HEADERS([GLES/egl.h $clutter_gl_header],,
 	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
-      # No libvincent so start checking for upper/lower case libgles_em
-      # The powervr sdk uses lower case.
+    # check for upper/lower case libgles_em
+    # The powervr sdk uses lower case.
+    AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+    if test "x$HAVE_LIBGLES" = "xno"; then
 
-      AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
-      if test "x$HAVE_LIBGLES" = "xno"; then
-        
         AC_CHECK_LIB(gles_cm, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
 	if test "x$HAVE_LIBGLES" = "xno"; then
 	  AC_MSG_ERROR([GLES library not found and egl backend requested.]);
 	fi
-        EGL_LIBS="-lgles_cm"  
-      else
-        EGL_LIBS="-lGLES_CM"  
-      fi
-    fi
+        EGL_LIBS="gles_cm"  
 
-    EGL_LIBS="$EGL_LIBS $X11_LIBS"
+   else
+        EGL_LIBS="GLES_CM"  
+   fi
+
+    # glColor4ub needed for more precise picking, seems presence is a 
+    # bit random in egl 1.1 (in SDK header, but not lib)
+    AC_CHECK_LIB($EGL_LIBS, glColor4ub, COLOR4UB=1, COLOR4UB=0)
+    AC_DEFINE([HAVE_GLES_COLOR4UB], $COLOR4UB, [Have GL/ES glColor4ub])
+
+    EGL_LIBS="-l$EGL_LIBS $X11_LIBS"
     EGL_CFLAGS="$EGL_CFLAGS $X11_CFLAGS"
+    backendextra=x11
+    backendextralib="x11/libclutter-x11.la"
     ;;
 
   eglnative)
@@ -263,6 +241,9 @@ case $clutterbackend in
     if test "x$HAVE_LIBGLES" = "xno"; then
       AC_MSG_ERROR([libGLES_CM not found and egl backend requested.]);
     fi
+
+    AC_CHECK_LIB(GLES_CM, glColor4ub, COLOR4UB=1, COLOR4UB=0)
+    AC_DEFINE([HAVE_GLES_COLOR4UB], COLOR4UB, [Have GL/ES glColor4ub])
 
     PKG_CHECK_MODULES(TSLIB, tslib-1.0, [have_tslib=yes], [have_tslib=no])
     if test x$have_tslib = xyes; then
@@ -295,6 +276,8 @@ esac
 CLUTTER_GL_HEADER=$clutter_gl_header
 
 AC_SUBST([clutterbackend])
+AC_SUBST([backendextra])
+AC_SUBST([backendextralib])
 AC_SUBST(CLUTTER_FLAVOUR)
 AC_SUBST(CLUTTER_COGL)
 AC_SUBST(CLUTTER_GL_HEADER)
@@ -392,6 +375,7 @@ AC_CONFIG_FILES([
         Makefile
         clutter/Makefile
         clutter/clutter-version.h
+        clutter/x11/Makefile
         clutter/glx/Makefile
         clutter/eglx/Makefile
         clutter/eglnative/Makefile

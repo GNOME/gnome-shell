@@ -30,6 +30,7 @@
 #include <GL/gl.h>
 
 #include "clutter-backend-glx.h"
+#include "../x11/clutter-stage-x11.h"
 
 G_BEGIN_DECLS
 
@@ -45,32 +46,15 @@ typedef struct _ClutterStageGLXClass    ClutterStageGLXClass;
 
 struct _ClutterStageGLX
 {
-  ClutterStage parent_instance;
-
-  /* from the backend */
-  Display *xdpy;
-  Window xwin_root;
-  int xscreen;
-
-  XVisualInfo *xvisinfo;
-  Window xwin;  
-  gint xwin_width;
-  gint xwin_height; /* FIXME target_width / height */
-  Pixmap xpixmap;
+  ClutterStageX11 parent_instance;
 
   GLXPixmap glxpixmap;
   GLXContext gl_context;
-
-  guint is_foreign_xwin : 1;
-
-  ClutterBackendGLX *backend;
-
-  ClutterStageState  state;
 };
 
 struct _ClutterStageGLXClass
 {
-  ClutterStageClass parent_class;
+  ClutterStageX11Class parent_class;
 };
 
 GType clutter_stage_glx_get_type (void) G_GNUC_CONST;

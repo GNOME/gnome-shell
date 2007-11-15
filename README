@@ -129,6 +129,12 @@ RELEASE NOTES
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (See NEWS for general new feature info).
 
+Release Notes for Clutter 0.6.0
+-------------------------------
+
+* X11 related called for glx and eglx backends are now shared and moved into
+  a clutter_x11 prefix.
+
 Release Notes for Clutter 0.4.0
 -------------------------------
 

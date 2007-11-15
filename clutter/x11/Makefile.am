@@ -1,8 +1,8 @@
 libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
-libclutterinclude_HEADERS = clutter-glx.h
+libclutterinclude_HEADERS = clutter-x11.h
 
 INCLUDES = \
-	-DG_LOG_DOMAIN=\"ClutterGLX\" \
+	-DG_LOG_DOMAIN=\"ClutterX11\" \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter/cogl 	        \
 	-I$(top_srcdir)/clutter/cogl/@CLUTTER_COGL@ \
@@ -12,11 +12,12 @@ INCLUDES = \
 
 LDADD = $(CLUTTER_LIBS)
 
-noinst_LTLIBRARIES = libclutter-glx.la
+noinst_LTLIBRARIES = libclutter-x11.la
 
-libclutter_glx_la_SOURCES = \
-	clutter-backend-glx.h \
-	clutter-backend-glx.c \
-	clutter-stage-glx.h \
-	clutter-stage-glx.c \
-	clutter-glx.h
+libclutter_x11_la_SOURCES = \
+	clutter-backend-x11.h \
+	clutter-backend-x11.c \
+	clutter-event-x11.c \
+	clutter-stage-x11.h \
+	clutter-stage-x11.c \
+	clutter-x11.h

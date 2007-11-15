@@ -27,9 +27,8 @@
  * SECTION:clutter-glx
  * @short_description: GLX specific API
  *
- * The GLX backend for Clutter provides some specific API, allowing
- * integration with the Xlibs API for embedding and manipulating the
- * stage window, or for trapping X errors.
+ * The GLX backend for Clutter provides some specific API for GLX 
+ * related calls.
  *
  * The ClutterGLX API is available since Clutter 0.4
  */
@@ -40,40 +39,10 @@
 #include <glib.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
-#include <X11/Xutil.h>
 #include <clutter/clutter-stage.h>
 
 G_BEGIN_DECLS
 
-typedef enum {
-  CLUTTER_GLX_FILTER_CONTINUE,   /* Event not handled, continue processesing */
-  CLUTTER_GLX_FILTER_TRANSLATE,  /* Native event translated into a Clutter 
-                                    event and stored in the "event" structure 
-                                    that was passed in */
-  CLUTTER_GLX_FILTER_REMOVE      /* Terminate processing, removing event */
-} ClutterGLXFilterReturn;
-
-typedef ClutterGLXFilterReturn (*ClutterGLXFilterFunc) (XEvent        *xev, 
-							ClutterEvent  *cev,
-							gpointer      *data);
-
-void     clutter_glx_trap_x_errors       (void);
-gint     clutter_glx_untrap_x_errors     (void);
-
-Display *clutter_glx_get_default_display (void);
-int      clutter_glx_get_default_screen  (void);
-Window   clutter_glx_get_root_window     (void);
-
-Window       clutter_glx_get_stage_window (ClutterStage *stage);
-XVisualInfo *clutter_glx_get_stage_visual (ClutterStage *stage);
-
-gboolean     clutter_glx_set_stage_foreign (ClutterStage *stage,
-                                            Window        xwindow);
-
-void         clutter_glx_add_filter (ClutterGLXFilterFunc func, gpointer data);
-
-void         clutter_glx_remove_filter (ClutterGLXFilterFunc func, 
-					gpointer data);
 
 G_END_DECLS
 

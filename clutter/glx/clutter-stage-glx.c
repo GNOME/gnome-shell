@@ -39,172 +39,71 @@
 
 #include "cogl.h"
 
-#ifdef HAVE_XFIXES
-#include <X11/extensions/Xfixes.h>
-#endif
-
 #include <GL/glx.h>
 #include <GL/gl.h>
 
 #include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
-G_DEFINE_TYPE (ClutterStageGLX, clutter_stage_glx, CLUTTER_TYPE_STAGE);
-
-#define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
-#define _NET_WM_STATE_ADD           1    /* add/set property */
-#define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
-
-static void
-send_wmspec_change_state (ClutterBackendGLX *backend_glx,
-			  Window             window,
-			  Atom               state,
-			  gboolean           add)
-{
-  XClientMessageEvent xclient;
-
-  memset (&xclient, 0, sizeof (xclient));
-
-  xclient.type         = ClientMessage;
-  xclient.window       = window;
-  xclient.message_type = backend_glx->atom_WM_STATE;
-  xclient.format       = 32;
-
-  xclient.data.l[0] = add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
-  xclient.data.l[1] = state;
-  xclient.data.l[2] = 0;
-  xclient.data.l[3] = 0;
-  xclient.data.l[4] = 0;
-
-  XSendEvent (backend_glx->xdpy, 
-	      DefaultRootWindow(backend_glx->xdpy), 
-	      False,
-              SubstructureRedirectMask|SubstructureNotifyMask,
-              (XEvent *)&xclient);
-}
-
-static void
-fix_window_size (ClutterStageGLX *stage_glx)
-{
-  gboolean resize;
-
-  resize = clutter_stage_get_user_resizable (CLUTTER_STAGE (stage_glx));
-
-  if (stage_glx->xwin != None && stage_glx->is_foreign_xwin == FALSE)
-    {
-      XSizeHints *size_hints;
-
-      size_hints = XAllocSizeHints();
-
-      if (!resize)
-	{
-	  size_hints->max_width  
-	    = size_hints->min_width = stage_glx->xwin_width;
-	  size_hints->max_height 
-	    = size_hints->min_height = stage_glx->xwin_height;
-	  size_hints->flags = PMinSize|PMaxSize;
-	}
-
-      XSetWMNormalHints (stage_glx->xdpy, stage_glx->xwin, size_hints);
-
-      XFree(size_hints);
-    }
-}
-
-static void
-clutter_stage_glx_show (ClutterActor *actor)
-{
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
-
-  /* Chain up to set mapped flags */
-  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->show(actor);
-
-  if (stage_glx->xwin)
-    {
-      /* Fire off a redraw to avoid flicker on first map.
-       * Appears not to work perfectly on intel drivers at least.
-      */
-      clutter_redraw();
-      XSync (stage_glx->xdpy, FALSE);
-      XMapWindow (stage_glx->xdpy, stage_glx->xwin);
-    }
-}
-
-static void
-clutter_stage_glx_hide (ClutterActor *actor)
-{
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
-
-  if (stage_glx->xwin)
-    XUnmapWindow (stage_glx->xdpy, stage_glx->xwin);
-}
+G_DEFINE_TYPE (ClutterStageGLX, clutter_stage_glx, CLUTTER_TYPE_STAGE_X11);
 
 static void
 clutter_stage_glx_unrealize (ClutterActor *actor)
 {
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
+
   gboolean was_offscreen;
 
   CLUTTER_MARK();
 
   g_object_get (actor, "offscreen", &was_offscreen, NULL);
 
-  clutter_glx_trap_x_errors ();
+  clutter_x11_trap_x_errors ();
 
   if (G_UNLIKELY (was_offscreen))
     {
       if (stage_glx->glxpixmap)
 	{
-	  glXDestroyGLXPixmap (stage_glx->xdpy, stage_glx->glxpixmap);
+	  glXDestroyGLXPixmap (stage_x11->xdpy,stage_glx->glxpixmap);
 	  stage_glx->glxpixmap = None;
 	}
 
-      if (stage_glx->xpixmap)
+      if (stage_x11->xpixmap)
 	{
-	  XFreePixmap (stage_glx->xdpy, stage_glx->xpixmap);
-	  stage_glx->xpixmap = None;
+	  XFreePixmap (stage_x11->xdpy, stage_x11->xpixmap);
+	  stage_x11->xpixmap = None;
 	}
     }
   else
     {
-      if (!stage_glx->is_foreign_xwin && stage_glx->xwin != None)
+      if (!stage_x11->is_foreign_xwin && stage_x11->xwin != None)
 	{
-	  XDestroyWindow (stage_glx->xdpy, stage_glx->xwin);
-	  stage_glx->xwin = None;
+	  XDestroyWindow (stage_x11->xdpy, stage_x11->xwin);
+	  stage_x11->xwin = None;
 	}
       else
-	stage_glx->xwin = None;
+	stage_x11->xwin = None;
     }
 
-  glXMakeCurrent (stage_glx->xdpy, None, NULL);
+  glXMakeCurrent (stage_x11->xdpy, None, NULL);
+
   if (stage_glx->gl_context != None)
     {
-      glXDestroyContext (stage_glx->xdpy, stage_glx->gl_context);
+      glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
       stage_glx->gl_context = None;
     }
 
-  XSync (stage_glx->xdpy, False);
+  XSync (stage_x11->xdpy, False);
 
-  clutter_glx_untrap_x_errors ();
+  clutter_x11_untrap_x_errors ();
 
   CLUTTER_MARK ();
 }
 
 static void
-set_wm_protocols (Display *xdisplay,
-                  Window   xwindow)
-{
-  Atom protocols[2];
-  int n = 0;
-  
-  protocols[n++] = XInternAtom (xdisplay, "WM_DELETE_WINDOW", False);
-  protocols[n++] = XInternAtom (xdisplay, "_NET_WM_PING", False);
-
-  XSetWMProtocols (xdisplay, xwindow, protocols, n);
-}
-
-static void
 clutter_stage_glx_realize (ClutterActor *actor)
 {
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
   gboolean is_offscreen;
 
@@ -225,50 +124,50 @@ clutter_stage_glx_realize (ClutterActor *actor)
 	  0
 	};
 
-      if (stage_glx->xvisinfo)
-	XFree (stage_glx->xvisinfo);
+      if (stage_x11->xvisinfo)
+	XFree (stage_x11->xvisinfo);
 
-      if (stage_glx->xvisinfo == None)
-	stage_glx->xvisinfo = glXChooseVisual (stage_glx->xdpy,
-                                               stage_glx->xscreen,
+      if (stage_x11->xvisinfo == None)
+	stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
+                                               stage_x11->xscreen,
 					       gl_attributes);
-      if (!stage_glx->xvisinfo)
+      if (!stage_x11->xvisinfo)
 	{
 	  g_critical ("Unable to find suitable GL visual.");
 	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 	  return;
 	}
 
-      if (stage_glx->xwin == None)
+      if (stage_x11->xwin == None)
         {
- 	XSetWindowAttributes xattr;
-	unsigned long mask;
+	  XSetWindowAttributes xattr;
+	  unsigned long mask;
 	
-        CLUTTER_NOTE (MISC, "Creating stage X window");
+	  CLUTTER_NOTE (MISC, "Creating stage X window");
 
-	/* window attributes */  
-	xattr.background_pixel = WhitePixel (stage_glx->xdpy,
-					     stage_glx->xscreen);
+	  /* window attributes */  
+	  xattr.background_pixel = WhitePixel (stage_x11->xdpy,
+					       stage_x11->xscreen);
 	xattr.border_pixel = 0;
-	xattr.colormap = XCreateColormap (stage_glx->xdpy, 
-					  stage_glx->xwin_root,
-					  stage_glx->xvisinfo->visual,
+	xattr.colormap = XCreateColormap (stage_x11->xdpy, 
+					  stage_x11->xwin_root,
+					  stage_x11->xvisinfo->visual,
 					  AllocNone);
 	mask = CWBackPixel | CWBorderPixel | CWColormap;
-	stage_glx->xwin = XCreateWindow (stage_glx->xdpy,
-                                            stage_glx->xwin_root,
+	stage_x11->xwin = XCreateWindow (stage_x11->xdpy,
+                                            stage_x11->xwin_root,
                                             0, 0,
-                                            stage_glx->xwin_width,
-                                            stage_glx->xwin_height,
+                                            stage_x11->xwin_width,
+                                            stage_x11->xwin_height,
                                             0,
-                                            stage_glx->xvisinfo->depth,
+                                            stage_x11->xvisinfo->depth,
                                             InputOutput,
-                                            stage_glx->xvisinfo->visual,
+                                            stage_x11->xvisinfo->visual,
                                             mask, &xattr);
         }
       
       CLUTTER_NOTE (MISC, "XSelectInput");
-      XSelectInput (stage_glx->xdpy, stage_glx->xwin,
+      XSelectInput (stage_x11->xdpy, stage_x11->xwin,
                     StructureNotifyMask |
 		    FocusChangeMask |
                     ExposureMask |
@@ -279,16 +178,16 @@ clutter_stage_glx_realize (ClutterActor *actor)
 		    PropertyChangeMask);
 
       /* no user resize.. */
-      fix_window_size (stage_glx);
+      clutter_stage_x11_fix_window_size (stage_x11);
 
-      set_wm_protocols (stage_glx->xdpy, stage_glx->xwin);
+      clutter_stage_x11_set_wm_protocols (stage_x11->xdpy, stage_x11->xwin);
 
       if (stage_glx->gl_context)
-	glXDestroyContext (stage_glx->xdpy, stage_glx->gl_context);
+	glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
 
       CLUTTER_NOTE (GL, "Creating GL Context");
-      stage_glx->gl_context = glXCreateContext (stage_glx->xdpy, 
-					        stage_glx->xvisinfo, 
+      stage_glx->gl_context = glXCreateContext (stage_x11->xdpy, 
+					        stage_x11->xvisinfo, 
 					        0, 
 					        True);
       
@@ -302,7 +201,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
 	}
 
       CLUTTER_NOTE (GL, "glXMakeCurrent");
-      glXMakeCurrent (stage_glx->xdpy, stage_glx->xwin, stage_glx->gl_context);
+      glXMakeCurrent (stage_x11->xdpy, stage_x11->xwin, stage_glx->gl_context);
     }
   else
     {
@@ -317,82 +216,54 @@ clutter_stage_glx_realize (ClutterActor *actor)
 	0
       };
 
-      if (stage_glx->xvisinfo)
-	XFree (stage_glx->xvisinfo);
+      if (stage_x11->xvisinfo)
+	XFree (stage_x11->xvisinfo);
 
       CLUTTER_NOTE (GL, "glXChooseVisual");
-      stage_glx->xvisinfo = glXChooseVisual (stage_glx->xdpy,
-					     stage_glx->xscreen,
+      stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
+					     stage_x11->xscreen,
 					     gl_attributes);
-      if (!stage_glx->xvisinfo)
+      if (!stage_x11->xvisinfo)
 	{
 	  g_critical ("Unable to find suitable GL visual.");
 	  goto fail;
 	}
 
       if (stage_glx->gl_context)
-	glXDestroyContext (stage_glx->xdpy, stage_glx->gl_context);
+	glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
 
-      stage_glx->xpixmap = XCreatePixmap (stage_glx->xdpy,
-				          stage_glx->xwin_root,
-				          stage_glx->xwin_width, 
-				          stage_glx->xwin_height,
-					  DefaultDepth (stage_glx->xdpy,
-							stage_glx->xscreen));
+      stage_x11->xpixmap = XCreatePixmap (stage_x11->xdpy,
+				          stage_x11->xwin_root,
+				          stage_x11->xwin_width, 
+				          stage_x11->xwin_height,
+					  DefaultDepth (stage_x11->xdpy,
+							stage_x11->xscreen));
 
-      stage_glx->glxpixmap = glXCreateGLXPixmap (stage_glx->xdpy,
-					         stage_glx->xvisinfo,
-					         stage_glx->xpixmap);
+      stage_glx->glxpixmap = glXCreateGLXPixmap (stage_x11->xdpy,
+					         stage_x11->xvisinfo,
+					         stage_x11->xpixmap);
       
       /* indirect */
-      stage_glx->gl_context = glXCreateContext (stage_glx->xdpy, 
-					        stage_glx->xvisinfo, 
+      stage_glx->gl_context = glXCreateContext (stage_x11->xdpy, 
+					        stage_x11->xvisinfo, 
 					        0, 
 					        False);
 
-      clutter_glx_trap_x_errors ();
+      clutter_x11_trap_x_errors ();
 
-      glXMakeCurrent (stage_glx->xdpy,
+      glXMakeCurrent (stage_x11->xdpy,
                       stage_glx->glxpixmap,
                       stage_glx->gl_context);
 
-      if (clutter_glx_untrap_x_errors ())
+      if (clutter_x11_untrap_x_errors ())
 	{
 	  g_critical ("Unable to set up offscreen context.");
 	  goto fail;
 	}
-
-#if 0
-      /* Debug code for monitoring a off screen pixmap via window */
-      {
-	Colormap cmap;
-	XSetWindowAttributes swa;
-
-	cmap = XCreateColormap(clutter_glx_display(),
-			       clutter_glx_root_window(), 
-			       backend->xvisinfo->visual, AllocNone);
-
-	/* create a window */
-	swa.colormap = cmap; 
-
-	foo_win = XCreateWindow(clutter_glx_display(),
-				clutter_glx_root_window(), 
-				0, 0, 
-				backend->xwin_width, backend->xwin_height,
-				0, 
-				backend->xvisinfo->depth, 
-				InputOutput, 
-				backend->xvisinfo->visual,
-				CWColormap, &swa);
-
-	XMapWindow(clutter_glx_display(), foo_win);
-      }
-#endif
-
     }
 
   /* Make sure the viewport gets set up correctly */
-  CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
   return;
   
  fail:
@@ -400,235 +271,6 @@ clutter_stage_glx_realize (ClutterActor *actor)
   /* For one reason or another we cant realize the stage.. */
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
   return;
-}
-
-static void
-clutter_stage_glx_query_coords (ClutterActor        *self,
-				ClutterActorBox     *box)
-{
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (self);
-
-  box->x1 = box->y1 = 0;
-  box->x2 = box->x1 + CLUTTER_UNITS_FROM_INT (stage_glx->xwin_width);
-  box->y2 = box->y1 + CLUTTER_UNITS_FROM_INT (stage_glx->xwin_height);
-}
-
-static void
-clutter_stage_glx_request_coords (ClutterActor        *self,
-				  ClutterActorBox     *box)
-{
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (self);
-  gint new_width, new_height;
-
-  new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
-  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
-
-  if (new_width != stage_glx->xwin_width ||
-      new_height != stage_glx->xwin_height)
-    {
-      stage_glx->xwin_width  = new_width;
-      stage_glx->xwin_height = new_height;
-
-      if (stage_glx->xwin != None)
-	{
-	  XResizeWindow (stage_glx->xdpy, 
-			 stage_glx->xwin,
-			 stage_glx->xwin_width,
-			 stage_glx->xwin_height);
-
-	  fix_window_size (stage_glx);
-	}
-      
-      if (stage_glx->xpixmap != None)
-	{
-	  /* Need to recreate to resize */
-	  clutter_actor_unrealize (self);
-	  clutter_actor_realize (self);
-	}
-
-      CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
-    }
-
-  if (stage_glx->xwin != None) /* Do we want to bother ? */
-    XMoveWindow (stage_glx->xdpy,
-		 stage_glx->xwin,
-		 CLUTTER_UNITS_TO_INT (box->x1),
-		 CLUTTER_UNITS_TO_INT (box->y1));
-
- 
-}
-
-static void
-clutter_stage_glx_set_fullscreen (ClutterStage *stage,
-                                  gboolean      fullscreen)
-{
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage);
-  ClutterBackendGLX *backend_glx = stage_glx->backend;
-
-  static gboolean was_resizeable = FALSE;
-
-  if (fullscreen)
-    {
-      if (stage_glx->xwin != None)
-	{
-	  if (!CLUTTER_ACTOR_IS_MAPPED(CLUTTER_ACTOR (stage_glx)))
-	    {
-	      gint width, height;
-
-	      width  = DisplayWidth (stage_glx->xdpy, stage_glx->xscreen);
-	      height = DisplayHeight (stage_glx->xdpy, stage_glx->xscreen);
-
-	      clutter_actor_set_size (CLUTTER_ACTOR (stage_glx), 
-				      width, height);
-	      /* FIXME: This wont work if we support more states */
-	      XChangeProperty 
-		(stage_glx->xdpy,
-		 stage_glx->xwin,
-		 backend_glx->atom_WM_STATE, XA_ATOM, 32,
-		 PropModeReplace,
-		 (unsigned char *)&backend_glx->atom_WM_STATE_FULLSCREEN,
-		 1);
-	    }
-	  else
-	    {
-	      /* We need to set window user resize-able for metacity at 
-	       * at least to allow the window to fullscreen *sigh* 	 
-	      */
-	      if (clutter_stage_get_user_resizable (stage) == TRUE)
-		was_resizeable = TRUE;
-	      else
-		clutter_stage_set_user_resizable (stage, TRUE);
-
-	      send_wmspec_change_state(backend_glx,
-				       stage_glx->xwin,
-				       backend_glx->atom_WM_STATE_FULLSCREEN,
-				       TRUE);
-	    }
-	}
-    }
-  else
-    {
-      if (stage_glx->xwin != None)
-	{
-	  if (!CLUTTER_ACTOR_IS_MAPPED(CLUTTER_ACTOR (stage_glx)))
-	    {
-	      /* FIXME: This wont work if we support more states */
-	      XDeleteProperty (stage_glx->xdpy, 
-			       stage_glx->xwin, 
-			       backend_glx->atom_WM_STATE);
-	    }
-	  else
-	    {
-	      clutter_stage_set_user_resizable (stage, TRUE);
-
-	      send_wmspec_change_state(backend_glx,
-				       stage_glx->xwin,
-				       backend_glx->atom_WM_STATE_FULLSCREEN,
-				       FALSE);
-
-	      /* reset the windows state - this isn't fun - see above */
-	      if (!was_resizeable)
-		clutter_stage_set_user_resizable (stage, FALSE);
-
-	      was_resizeable = FALSE;
-	    }
-	}
-    }
-
-  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
-}
-
-static void
-clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
-                                      gboolean      show_cursor)
-{
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage);
-
-  if (stage_glx->xwin == None)
-    return;
-
-  CLUTTER_NOTE (BACKEND, "setting cursor state ('%s') over stage window (%u)",
-                show_cursor ? "visible" : "invisible",
-                (unsigned int) stage_glx->xwin);
-
-  if (show_cursor)
-    {
-#if 0 /* HAVE_XFIXES - borked on fiesty at least so disabled until further 
-       *               investigation.	 
-       */
-      XFixesShowCursor (stage_glx->xdpy, stage_glx->xwin);
-#else
-      XUndefineCursor (stage_glx->xdpy, stage_glx->xwin);
-#endif /* HAVE_XFIXES */
-    }
-  else
-    {
-#if 0 /* HAVE_XFIXES - borked */
-      XFixesHideCursor (stage_glx->xdpy, stage_glx->xwin);
-#else
-      XColor col;
-      Pixmap pix;
-      Cursor curs;
-
-      pix = XCreatePixmap (stage_glx->xdpy, stage_glx->xwin, 1, 1, 1);
-      memset (&col, 0, sizeof (col));
-      curs = XCreatePixmapCursor (stage_glx->xdpy, 
-                                  pix, pix,
-                                  &col, &col,
-                                  1, 1);
-      XFreePixmap (stage_glx->xdpy, pix);
-      XDefineCursor (stage_glx->xdpy, stage_glx->xwin, curs);
-#endif /* HAVE_XFIXES */
-    }
-}
-
-static void
-clutter_stage_glx_set_title (ClutterStage *stage,
-			     const gchar  *title)
-{
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage);
-  Atom             atom_NET_WM_NAME, atom_UTF8_STRING;
-
-  if (stage_glx->xwin == None)
-    return;
-
-  /* FIXME: pre create these to avoid too many round trips */
-  atom_NET_WM_NAME  = XInternAtom (stage_glx->xdpy, "_NET_WM_NAME", False);
-  atom_UTF8_STRING  = XInternAtom (stage_glx->xdpy, "UTF8_STRING", False);
-
-  if (title == NULL)
-    {
-      XDeleteProperty (stage_glx->xdpy, 
-		       stage_glx->xwin, 
-		       atom_NET_WM_NAME);
-    }
-  else
-    {
-      XChangeProperty (stage_glx->xdpy, 
-		       stage_glx->xwin, 
-		       atom_NET_WM_NAME, 
-		       atom_UTF8_STRING, 
-		       8, 
-		       PropModeReplace, 
-		       (unsigned char*)title, 
-		       (int)strlen(title));
-    }
-}
-
-static void
-clutter_stage_glx_set_user_resize (ClutterStage *stage,
-				   gboolean      value)
-{
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage);
-
-  fix_window_size (stage_glx);
-}
-
-static void
-clutter_stage_glx_set_offscreen (ClutterStage *stage,
-                                 gboolean      offscreen)
-{
-  /* Do nothing ? */
 }
 
 static void
@@ -649,9 +291,11 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
   GdkPixbuf *pixb;
   ClutterActor *actor;
   ClutterStageGLX *stage_glx;
+  ClutterStageX11 *stage_x11;
   gboolean is_offscreen = FALSE;
 
   stage_glx = CLUTTER_STAGE_GLX (stage);
+  stage_x11 = CLUTTER_STAGE_X11 (stage);
   actor = CLUTTER_ACTOR (stage);
 
   if (width < 0)
@@ -664,13 +308,13 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
 
   if (G_UNLIKELY (is_offscreen))
     {
-      gdk_pixbuf_xlib_init (stage_glx->xdpy, stage_glx->xscreen);
+      gdk_pixbuf_xlib_init (stage_x11->xdpy, stage_x11->xscreen);
 
       pixb = gdk_pixbuf_xlib_get_from_drawable (NULL,
-                                                (Drawable) stage_glx->xpixmap,
-                                                DefaultColormap (stage_glx->xdpy,
-                                                                 stage_glx->xscreen),
-                                                stage_glx->xvisinfo->visual,
+                                                (Drawable) stage_x11->xpixmap,
+                                                DefaultColormap (stage_x11->xdpy,
+                                                                 stage_x11->xscreen),
+                                                stage_x11->xvisinfo->visual,
                                                 x, y,
                                                 0, 0,
                                                 width, height);
@@ -712,8 +356,9 @@ static void
 clutter_stage_glx_dispose (GObject *gobject)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (gobject);
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (gobject);
 
-  if (stage_glx->xwin)
+  if (stage_x11->xwin)
     clutter_actor_unrealize (CLUTTER_ACTOR (stage_glx));
 
   G_OBJECT_CLASS (clutter_stage_glx_parent_class)->dispose (gobject);
@@ -728,133 +373,13 @@ clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
 
   gobject_class->dispose = clutter_stage_glx_dispose;
   
-  actor_class->show = clutter_stage_glx_show;
-  actor_class->hide = clutter_stage_glx_hide;
   actor_class->realize = clutter_stage_glx_realize;
   actor_class->unrealize = clutter_stage_glx_unrealize;
-  actor_class->request_coords = clutter_stage_glx_request_coords;
-  actor_class->query_coords = clutter_stage_glx_query_coords;
-  
-  stage_class->set_fullscreen = clutter_stage_glx_set_fullscreen;
-  stage_class->set_cursor_visible = clutter_stage_glx_set_cursor_visible;
-  stage_class->set_offscreen = clutter_stage_glx_set_offscreen;
   stage_class->draw_to_pixbuf = clutter_stage_glx_draw_to_pixbuf;
-  stage_class->set_title = clutter_stage_glx_set_title;
-  stage_class->set_user_resize = clutter_stage_glx_set_user_resize;
 }
 
 static void
 clutter_stage_glx_init (ClutterStageGLX *stage)
 {
-  stage->xdpy = NULL;
-  stage->xwin_root = None;
-  stage->xscreen = 0;
-
-  stage->xwin = None;
-  stage->xwin_width = 640;
-  stage->xwin_height = 480;
-  stage->xvisinfo = None;
-
-  stage->is_foreign_xwin = FALSE;
-
-  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
-}
-
-/**
- * clutter_glx_get_stage_window:
- * @stage: a #ClutterStage
- *
- * Gets the stages X Window. 
- *
- * Return value: An XID for the stage window.
- *
- * Since: 0.4
- */
-Window
-clutter_glx_get_stage_window (ClutterStage *stage)
-{
-  g_return_val_if_fail (CLUTTER_IS_STAGE_GLX (stage), None);
-
-  return CLUTTER_STAGE_GLX (stage)->xwin;
-}
-
-/**
- * clutter_glx_get_stage_visual:
- * @stage: a #ClutterStage
- *
- * Returns the stage XVisualInfo
- *
- * Return value: The XVisualInfo for the stage.
- *
- * Since: 0.4
- */
-XVisualInfo *
-clutter_glx_get_stage_visual (ClutterStage *stage)
-{
-  g_return_val_if_fail (CLUTTER_IS_STAGE_GLX (stage), NULL);
-
-  return CLUTTER_STAGE_GLX (stage)->xvisinfo;
-}
-
-/**
- * clutter_glx_set_stage_foreign:
- * @stage: a #ClutterStage
- * @xwindow: an existing X Window id
- *
- * Target the #ClutterStage to use an existing external X Window
- *
- * Return value: %TRUE if foreign window is valid
- *
- * Since: 0.4
- */
-gboolean
-clutter_glx_set_stage_foreign (ClutterStage *stage,
-                               Window        xwindow)
-{
-  ClutterStageGLX *stage_glx;
-  ClutterActor *actor;
-  gint x, y;
-  guint width, height, border, depth;
-  Window root_return;
-  Status status;
-  ClutterGeometry geom;
-
-  g_return_val_if_fail (CLUTTER_IS_STAGE_GLX (stage), FALSE);
-  g_return_val_if_fail (xwindow != None, FALSE);
-
-  stage_glx = CLUTTER_STAGE_GLX (stage);
-  actor = CLUTTER_ACTOR (stage);
-
-  clutter_glx_trap_x_errors ();
-
-  status = XGetGeometry (stage_glx->xdpy,
-                         xwindow,
-                         &root_return,
-                         &x, &y,
-                         &width, &height,
-                         &border,
-                         &depth);
-  
-  if (clutter_glx_untrap_x_errors () ||
-      !status ||
-      width == 0 || height == 0 ||
-      depth != stage_glx->xvisinfo->depth)
-    {
-      return FALSE;
-    }
-
-  clutter_actor_unrealize (actor);
-
-  stage_glx->xwin = xwindow;
-  stage_glx->is_foreign_xwin = TRUE;
-
-  geom.x = x;
-  geom.y = y;
-  geom.width = stage_glx->xwin_width = width;
-  geom.height = stage_glx->xwin_height = height;
-
-  clutter_actor_set_geometry (actor, &geom);
-  clutter_actor_realize (actor);
-
-  return TRUE;
+  ;
 }

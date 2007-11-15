@@ -19,13 +19,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
-#include "clutter-stage-glx.h"
-#include "clutter-backend-glx.h"
-#include "clutter-glx.h"
+#include "clutter-stage-x11.h"
+#include "clutter-backend-x11.h"
+#include "clutter-x11.h"
 
 #include "../clutter-backend.h"
 #include "../clutter-event.h"
@@ -107,7 +105,7 @@ clutter_event_source_new (ClutterBackend *backend)
 static gboolean
 check_xpending (ClutterBackend *backend)
 {
-  return XPending (CLUTTER_BACKEND_GLX (backend)->xdpy);
+  return XPending (CLUTTER_BACKEND_X11 (backend)->xdpy);
 }
 
 static gboolean
@@ -132,12 +130,12 @@ xembed_send_message (Display *xdisplay,
   ev.xclient.data.l[3] = data1;
   ev.xclient.data.l[4] = data2;
 
-  clutter_glx_trap_x_errors ();
+  clutter_x11_trap_x_errors ();
 
   XSendEvent (xdisplay, window, False, NoEventMask, &ev);
   XSync (xdisplay, False);
 
-  if (clutter_glx_untrap_x_errors ())
+  if (clutter_x11_untrap_x_errors ())
     return False;
 
   return True;
@@ -156,29 +154,29 @@ xembed_set_info (Display *xdisplay,
   list[0] = MAX_SUPPORTED_XEMBED_VERSION;
   list[1] = XEMBED_MAPPED;
 
-  clutter_glx_trap_x_errors ();
+  clutter_x11_trap_x_errors ();
   XChangeProperty (xdisplay, window,
                    atom_XEMBED_INFO,
                    atom_XEMBED_INFO, 32,
                    PropModeReplace, (unsigned char *) list, 2);
-  clutter_glx_untrap_x_errors ();
+  clutter_x11_untrap_x_errors ();
 }
 
 void
-_clutter_backend_glx_events_init (ClutterBackend *backend)
+_clutter_backend_x11_events_init (ClutterBackend *backend)
 {
   GSource *source;
   ClutterEventSource *event_source;
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   int connection_number;
   
-  connection_number = ConnectionNumber (backend_glx->xdpy);
+  connection_number = ConnectionNumber (backend_x11->xdpy);
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
 
-  Atom_XEMBED = XInternAtom (backend_glx->xdpy, "_XEMBED", False);
-  Atom_WM_PROTOCOLS = XInternAtom (backend_glx->xdpy, "WM_PROTOCOLS", False);
+  Atom_XEMBED = XInternAtom (backend_x11->xdpy, "_XEMBED", False);
+  Atom_WM_PROTOCOLS = XInternAtom (backend_x11->xdpy, "WM_PROTOCOLS", False);
 
-  source = backend_glx->event_source = clutter_event_source_new (backend);
+  source = backend_x11->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
 
@@ -191,29 +189,29 @@ _clutter_backend_glx_events_init (ClutterBackend *backend)
   g_source_set_can_recurse (source, TRUE);
   g_source_attach (source, NULL);
 
-  xembed_set_info (backend_glx->xdpy,
-                   clutter_glx_get_stage_window (CLUTTER_STAGE (backend_glx->stage)),
+  xembed_set_info (backend_x11->xdpy,
+                   clutter_x11_get_stage_window 
+                             (CLUTTER_STAGE (backend_x11->stage)),
                    0);
 }
 
 void
-_clutter_backend_glx_events_uninit (ClutterBackend *backend)
+_clutter_backend_x11_events_uninit (ClutterBackend *backend)
 {
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  if (backend_glx->event_source)
+  if (backend_x11->event_source)
     {
       CLUTTER_NOTE (EVENT, "Destroying the event source");
 
       event_sources = g_list_remove (event_sources,
-                                     backend_glx->event_source);
+                                     backend_x11->event_source);
 
-      g_source_destroy (backend_glx->event_source);
-      g_source_unref (backend_glx->event_source);
-      backend_glx->event_source = NULL;
+      g_source_destroy (backend_x11->event_source);
+      g_source_unref (backend_x11->event_source);
+      backend_x11->event_source = NULL;
     }
 }
-
 
 static void
 set_user_time (Display *display,
@@ -256,20 +254,20 @@ translate_key_event (ClutterBackend *backend,
 }
 
 static gboolean
-handle_wm_protocols_event (ClutterBackendGLX *backend_glx,
+handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
                            XEvent            *xevent)
 {
   Atom atom = (Atom) xevent->xclient.data.l[0];
   Atom Atom_WM_DELETE_WINDOW;
   Atom Atom_NEW_WM_PING;
 
-  ClutterStage *stage = CLUTTER_STAGE (backend_glx->stage);
-  Window stage_xwindow = clutter_glx_get_stage_window (stage);
+  ClutterStage *stage = CLUTTER_STAGE (backend_x11->stage);
+  Window stage_xwindow = clutter_x11_get_stage_window (stage);
 
-  Atom_WM_DELETE_WINDOW = XInternAtom (backend_glx->xdpy,
+  Atom_WM_DELETE_WINDOW = XInternAtom (backend_x11->xdpy,
                                        "WM_DELETE_WINDOW",
                                         False);
-  Atom_NEW_WM_PING = XInternAtom (backend_glx->xdpy, "_NET_WM_PING", False);
+  Atom_NEW_WM_PING = XInternAtom (backend_x11->xdpy, "_NET_WM_PING", False);
 
   if (atom == Atom_WM_DELETE_WINDOW &&
       xevent->xany.window == stage_xwindow)
@@ -282,7 +280,7 @@ handle_wm_protocols_event (ClutterBackendGLX *backend_glx,
       CLUTTER_NOTE (EVENT, "delete window:\twindow: %ld",
                     xevent->xclient.window);
 
-      set_user_time (backend_glx->xdpy,
+      set_user_time (backend_x11->xdpy,
                      &stage_xwindow,
                      xevent->xclient.data.l[1]);
 
@@ -293,8 +291,8 @@ handle_wm_protocols_event (ClutterBackendGLX *backend_glx,
     {
       XClientMessageEvent xclient = xevent->xclient;
 
-      xclient.window = backend_glx->xwin_root;
-      XSendEvent (backend_glx->xdpy, xclient.window,
+      xclient.window = backend_x11->xwin_root;
+      XSendEvent (backend_x11->xdpy, xclient.window,
                   False,
                   SubstructureRedirectMask | SubstructureNotifyMask,
                   (XEvent *) &xclient);
@@ -307,12 +305,12 @@ handle_wm_protocols_event (ClutterBackendGLX *backend_glx,
 }
 
 static gboolean
-handle_xembed_event (ClutterBackendGLX *backend_glx,
+handle_xembed_event (ClutterBackendX11 *backend_x11,
                      XEvent            *xevent)
 {
   ClutterActor *stage;
 
-  stage = _clutter_backend_get_stage (CLUTTER_BACKEND (backend_glx));
+  stage = _clutter_backend_get_stage (CLUTTER_BACKEND (backend_x11));
 
   switch (xevent->xclient.data.l[1])
     {
@@ -325,8 +323,8 @@ handle_xembed_event (ClutterBackendGLX *backend_glx,
       clutter_actor_realize (stage);
       clutter_actor_show (stage);
 
-      xembed_set_info (backend_glx->xdpy,
-                       clutter_glx_get_stage_window (CLUTTER_STAGE (stage)),
+      xembed_set_info (backend_x11->xdpy,
+                       clutter_x11_get_stage_window (CLUTTER_STAGE (stage)),
                        XEMBED_MAPPED);
       break;
     case XEMBED_WINDOW_ACTIVATE:
@@ -338,7 +336,7 @@ handle_xembed_event (ClutterBackendGLX *backend_glx,
     case XEMBED_FOCUS_IN:
       CLUTTER_NOTE (EVENT, "got XEMBED_FOCUS_IN");
       if (ParentEmbedderWin)
-        xembed_send_message (backend_glx->xdpy, ParentEmbedderWin,
+        xembed_send_message (backend_x11->xdpy, ParentEmbedderWin,
                              XEMBED_FOCUS_NEXT,
                              0, 0, 0);
       break;
@@ -356,39 +354,39 @@ event_translate (ClutterBackend *backend,
 		 ClutterEvent   *event,
 		 XEvent         *xevent)
 {
-  ClutterBackendGLX *backend_glx;
-  ClutterStageGLX   *stage_glx;
+  ClutterBackendX11 *backend_x11;
+  ClutterStageX11   *stage_x11;
   ClutterStage      *stage;
   gboolean           res;
   Window             xwindow, stage_xwindow;
 
-  backend_glx    = CLUTTER_BACKEND_GLX (backend);
+  backend_x11    = CLUTTER_BACKEND_X11 (backend);
   stage          = CLUTTER_STAGE (_clutter_backend_get_stage (backend));
-  stage_glx      = CLUTTER_STAGE_GLX (stage);
-  stage_xwindow  = clutter_glx_get_stage_window (stage);
+  stage_x11      = CLUTTER_STAGE_X11 (stage);
+  stage_xwindow  = clutter_x11_get_stage_window (stage);
 
   xwindow = xevent->xany.window;
   if (xwindow == None)
     xwindow = stage_xwindow;
 
-  if (backend_glx->event_filters)
+  if (backend_x11->event_filters)
     {
       GSList                *node;
-      ClutterGLXEventFilter *filter;
+      ClutterX11EventFilter *filter;
 
-      node = backend_glx->event_filters;
+      node = backend_x11->event_filters;
 
       while (node)
 	{
-	  filter = (ClutterGLXEventFilter *)node->data;
+	  filter = (ClutterX11EventFilter *)node->data;
 
 	  switch (filter->func(xevent, event, filter->data))
 	    {
-	    case CLUTTER_GLX_FILTER_CONTINUE:
+	    case CLUTTER_X11_FILTER_CONTINUE:
 	      break;
-	    case CLUTTER_GLX_FILTER_TRANSLATE:
+	    case CLUTTER_X11_FILTER_TRANSLATE:
 	      return TRUE;
-	    case CLUTTER_GLX_FILTER_REMOVE:
+	    case CLUTTER_X11_FILTER_REMOVE:
 	      return FALSE;
 	    default:
 	      break;
@@ -414,7 +412,7 @@ event_translate (ClutterBackend *backend,
       break;
     case PropertyNotify:
       {
-	if (xevent->xproperty.atom == backend_glx->atom_WM_STATE)
+	if (xevent->xproperty.atom == backend_x11->atom_WM_STATE)
 	  {
 	    Atom     type;
 	    gint     format;
@@ -424,15 +422,15 @@ event_translate (ClutterBackend *backend,
 	    gulong   i;
 	    gboolean fullscreen_set = FALSE;
 
-	    clutter_glx_trap_x_errors ();
-	    XGetWindowProperty (backend_glx->xdpy, 
+	    clutter_x11_trap_x_errors ();
+	    XGetWindowProperty (backend_x11->xdpy, 
 				stage_xwindow,
-				backend_glx->atom_WM_STATE,
+				backend_x11->atom_WM_STATE,
 				0, G_MAXLONG, 
 				False, XA_ATOM, 
 				&type, &format, &nitems,
 				&bytes_after, &data);
-	    clutter_glx_untrap_x_errors ();
+	    clutter_x11_untrap_x_errors ();
 
 	    if (type != None && data != NULL)
 	      {
@@ -441,23 +439,23 @@ event_translate (ClutterBackend *backend,
 		i = 0;
 		while (i < nitems)
 		  {
-		    if (atoms[i] == backend_glx->atom_WM_STATE_FULLSCREEN)
+		    if (atoms[i] == backend_x11->atom_WM_STATE_FULLSCREEN)
 		      fullscreen_set = TRUE;
 		    i++;
 		  }
 
 		if (fullscreen_set 
-		      != !!(stage_glx->state & CLUTTER_STAGE_STATE_FULLSCREEN))
+		      != !!(stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN))
 		  {
 		    if (fullscreen_set)
-		      stage_glx->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
+		      stage_x11->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
 		    else
-		      stage_glx->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
+		      stage_x11->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
 
 		    event->type = CLUTTER_STAGE_STATE;
 		    event->stage_state.changed_mask 
 		                = CLUTTER_STAGE_STATE_FULLSCREEN;
-		    event->stage_state.new_state = stage_glx->state;
+		    event->stage_state.new_state = stage_x11->state;
 		  }
 		else
 		  res = FALSE;
@@ -470,26 +468,26 @@ event_translate (ClutterBackend *backend,
       }
       break;
     case FocusIn:
-      if (!(stage_glx->state & CLUTTER_STAGE_STATE_ACTIVATED))
+      if (!(stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED))
 	{
 	  /* TODO: check xevent->xfocus.detail ? */
-	  stage_glx->state |= CLUTTER_STAGE_STATE_ACTIVATED;
+	  stage_x11->state |= CLUTTER_STAGE_STATE_ACTIVATED;
 
 	  event->type = CLUTTER_STAGE_STATE;
 	  event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-	  event->stage_state.new_state = stage_glx->state;
+	  event->stage_state.new_state = stage_x11->state;
 	}
       else
 	res = FALSE;
       break;
     case FocusOut:
-      if (stage_glx->state & CLUTTER_STAGE_STATE_ACTIVATED)
+      if (stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED)
 	{
-	  stage_glx->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
+	  stage_x11->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
 
 	  event->type = CLUTTER_STAGE_STATE;
 	  event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-	  event->stage_state.new_state = stage_glx->state;
+	  event->stage_state.new_state = stage_x11->state;
 	}
       else
 	res = FALSE;
@@ -499,7 +497,7 @@ event_translate (ClutterBackend *backend,
         XEvent foo_xev;
 
         /* Cheap compress */
-        while (XCheckTypedWindowEvent (backend_glx->xdpy, 
+        while (XCheckTypedWindowEvent (backend_x11->xdpy, 
                                        xevent->xexpose.window,
                                        Expose, 
                                        &foo_xev));
@@ -514,7 +512,7 @@ event_translate (ClutterBackend *backend,
     case KeyPress:
       event->type = CLUTTER_KEY_PRESS;
       translate_key_event (backend, event, xevent);
-      set_user_time (backend_glx->xdpy, &xwindow, xevent->xkey.time);
+      set_user_time (backend_x11->xdpy, &xwindow, xevent->xkey.time);
       break;
     case KeyRelease:
       event->type = CLUTTER_KEY_RELEASE;
@@ -555,7 +553,7 @@ event_translate (ClutterBackend *backend,
           break;
         }
 
-      set_user_time (backend_glx->xdpy, &xwindow, event->button.time);
+      set_user_time (backend_x11->xdpy, &xwindow, event->button.time);
       break;
     case ButtonRelease:
       /* scroll events don't have a corresponding release */
@@ -593,10 +591,10 @@ event_translate (ClutterBackend *backend,
       event->type = event->any.type = CLUTTER_CLIENT_MESSAGE;
       
       if (xevent->xclient.message_type == Atom_XEMBED)
-        res = handle_xembed_event (backend_glx, xevent);
+        res = handle_xembed_event (backend_x11, xevent);
       else if (xevent->xclient.message_type == Atom_WM_PROTOCOLS)
         {
-          res = handle_wm_protocols_event (backend_glx, xevent);
+          res = handle_wm_protocols_event (backend_x11, xevent);
           event->type = event->any.type = CLUTTER_DELETE;
         }
       break;
@@ -612,9 +610,9 @@ event_translate (ClutterBackend *backend,
 static void
 events_queue (ClutterBackend *backend)
 {
-  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterEvent      *event;
-  Display           *xdisplay = backend_glx->xdpy;
+  Display           *xdisplay = backend_x11->xdpy;
   XEvent             xevent;
   ClutterMainContext  *clutter_context;
 

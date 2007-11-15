@@ -1,8 +1,8 @@
 NULL =
 
-SUBDIRS = cogl pango json $(clutterbackend) 
+SUBDIRS = cogl pango json $(clutterbackend) $(backendextra)
 
-DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx
+DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11
 
 target = $(clutterbackend)
 
@@ -181,7 +181,8 @@ libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
   pango/libpangoclutter.la \
   @CLUTTER_FLAVOUR@/libclutter-@CLUTTER_FLAVOUR@.la \
   cogl/@CLUTTER_COGL@/libclutter-cogl.la \
-  json/libclutter-json.la
+  json/libclutter-json.la \
+  $(backendextralib)	
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
   $(source_c) $(source_h) $(source_h_priv)                      
