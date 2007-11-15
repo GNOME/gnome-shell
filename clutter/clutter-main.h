@@ -106,6 +106,11 @@ gboolean         clutter_get_motion_events_enabled  (void);
 guint            clutter_get_default_frame_rate     (void);
 void             clutter_set_default_frame_rate     (guint frames_per_sec);
 
+
+void             clutter_grab_pointer               (ClutterActor *actor);
+void             clutter_ungrab_pointer             (void);
+ClutterActor *   clutter_get_pointer_grab           (void);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_MAIN_H */

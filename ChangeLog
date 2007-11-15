@@ -1,3 +1,13 @@
+2007-11-15  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-main.[ch]: added clutter_grab_pointer,
+	clutter_ungrab_pointer and clutter_get_pointer_grab, in
+	clutter_do_event deliver pointer related events only to the
+	actor with the pointer grab if a grab exists.
+	* clutter/clutter-private.h: added pointer_grab_actor to context.
+	* tests/Makefile.am:
+	* tests/test-grab.c: added test for testing the pointer grab.
+
 2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-timeline.[ch]: Add ClutterTimeline:direction

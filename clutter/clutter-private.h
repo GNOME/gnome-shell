@@ -69,11 +69,11 @@ typedef struct _ClutterMainContext ClutterMainContext;
 
 struct _ClutterMainContext
 {
-  ClutterBackend  *backend;              /* holds a pointer to the windowing 
-                                            system backend */
-  GQueue          *events_queue;        /* the main event queue */
+  ClutterBackend  *backend;            /* holds a pointer to the windowing 
+                                          system backend */
+  GQueue          *events_queue;       /* the main event queue */
   PangoFT2FontMap *font_map;
-  guint            update_idle;	        /* repaint idler id */
+  guint            update_idle;	       /* repaint idler id */
   
   guint            is_initialized : 1;  
   GTimer          *timer;	       /* Used for debugging scheduler */
@@ -85,6 +85,10 @@ struct _ClutterMainContext
   GHashTable      *actor_hash;	       /* Hash of all actors mapped to id */
 
   guint            frame_rate;         /* Default FPS */
+
+  ClutterActor    *pointer_grab_actor; /* The actor having the pointer grab
+                                          (or NULL if there is no pointer grab) 
+                                        */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())

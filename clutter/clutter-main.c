@@ -1240,9 +1240,14 @@ clutter_do_event (ClutterEvent *event)
       break;
     case CLUTTER_ENTER:
     case CLUTTER_LEAVE:
-      {
-	deliver_event (event);
-      }
+
+      if (context->pointer_grab_actor != NULL)
+        {
+          clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+          return;
+        }
+
+      deliver_event (event);
       break;
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_DELETE:
@@ -1269,6 +1274,12 @@ clutter_do_event (ClutterEvent *event)
 	  /* Only stage gets motion events */
 	  event->any.source = stage;
 
+          if (context->pointer_grab_actor != NULL)
+            {
+              clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+              return;
+            }
+
           /* Trigger handlers on stage in both capture .. */
           if (!clutter_actor_event (stage, event, TRUE))
             {
@@ -1288,14 +1299,24 @@ clutter_do_event (ClutterEvent *event)
 	clutter_event_get_coords (event, &x, &y);
 
 	/* Handle release off stage */
-	if (x >= CLUTTER_STAGE_WIDTH () ||
-	    y >= CLUTTER_STAGE_HEIGHT() ||
-	    x < 0 || y < 0)
+	if ((x >= CLUTTER_STAGE_WIDTH () ||
+	     y >= CLUTTER_STAGE_HEIGHT() ||
+	     x < 0 || y < 0))
           {
+
             if (event->type == CLUTTER_BUTTON_RELEASE)
               {
                 CLUTTER_NOTE (EVENT, "Release off stage received at %i, %i", x, y);
+
                 event->button.source = stage;
+
+                if (context->pointer_grab_actor != NULL)
+                  {
+                    clutter_actor_event (context->pointer_grab_actor,
+                                         event, FALSE);
+                    return;
+                  }
+
 	        deliver_event (event);
               }
             break;
@@ -1305,6 +1326,9 @@ clutter_do_event (ClutterEvent *event)
 	actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
 				  x, y, 
 				  CLUTTER_PICK_REACTIVE);
+
+        event->any.source = actor;
+
         if (!actor)
           break;
 
@@ -1316,7 +1340,6 @@ clutter_do_event (ClutterEvent *event)
 	CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
 		      x, y, actor);
 
-    event->any.source = actor;
 
 	/* Motion enter leave events */
 	if (event->type == CLUTTER_MOTION)
@@ -1355,7 +1378,13 @@ clutter_do_event (ClutterEvent *event)
 	  }
 	else
 	  event_click_count_generate (event);
-	
+
+          if (context->pointer_grab_actor != NULL)
+            {
+              clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+              return;
+            }
+
 	  deliver_event (event);
       }
       break;
@@ -1428,4 +1457,89 @@ clutter_set_default_frame_rate (guint frames_per_sec)
 
   if (context->frame_rate != frames_per_sec)
     context->frame_rate = frames_per_sec;
+}
+
+
+static void
+on_pointer_grab_weak_notify (gpointer data,
+                             GObject *where_the_object_was)
+{
+  ClutterMainContext *context;
+
+  context = clutter_context_get_default ();
+  context->pointer_grab_actor = NULL;
+
+  clutter_ungrab_pointer ();
+}
+
+/**
+ * clutter_grab_pointer:
+ * @actor: a #ClutterActor
+ *
+ * Grabs pointer events, after the grab is done all pointer related events
+ * (press, motion, release, enter, leave and scroll) are delivered to this
+ * actor directly. The source set in the event will be the actor that would
+ * have received the event if the pointer grab was not in effect.
+ *
+ * Since: 0.6
+ */
+void
+clutter_grab_pointer (ClutterActor *actor)
+{
+  ClutterMainContext *context;
+
+  g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
+  
+  context = clutter_context_get_default ();
+
+  if (context->pointer_grab_actor == actor)
+    return;
+
+  if (context->pointer_grab_actor)
+    {
+      g_object_weak_unref (G_OBJECT (context->pointer_grab_actor),
+			   on_pointer_grab_weak_notify,
+			   NULL);
+      context->pointer_grab_actor = NULL;
+    }
+
+  if (actor)
+    {
+      context->pointer_grab_actor = actor;
+
+      g_object_weak_ref (G_OBJECT (actor),
+			 on_pointer_grab_weak_notify,
+			 NULL);
+    }
+}
+
+/**
+ * clutter_ungrab_pointer:
+ *
+ * Removes an existing grab of the pointer.
+ *
+ * Since: 0.6
+ */
+void
+clutter_ungrab_pointer (void)
+{
+  clutter_grab_pointer (NULL);
+}
+
+/**
+ * clutter_get_pointer_grab:
+ *
+ * Queries the current pointer grab of clutter.
+ *
+ * Return value: the actor currently holding the pointer grab, or NULL if there is no grab.
+ *
+ * Since: 0.6
+ */
+ClutterActor *
+clutter_get_pointer_grab (void)
+{
+  ClutterMainContext *context;
+  context = clutter_context_get_default ();
+
+  return context->pointer_grab_actor;
 }
