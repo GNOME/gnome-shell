@@ -768,6 +768,20 @@ clutter_texture_paint (ClutterActor *self)
 }
 
 static void
+clutter_texture_request_coords (ClutterActor    *self,
+                                ClutterActorBox *box)
+{
+  ClutterTexture *texture = CLUTTER_TEXTURE (self);
+  ClutterActorBox old_request;
+
+  clutter_actor_query_coords (self, &old_request);
+
+  if (((box->x2 - box->x1) != (old_request.x2 - old_request.x1)) ||
+      ((box->y2 - box->y1) != (old_request.y2 - old_request.y1)))
+    texture->priv->sync_actor_size = FALSE;
+}
+
+static void
 clutter_texture_dispose (GObject *object)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (object);
@@ -899,11 +913,12 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterTexturePrivate));
 
-  actor_class->paint      = clutter_texture_paint;
-  actor_class->realize    = clutter_texture_realize;
-  actor_class->unrealize  = clutter_texture_unrealize;
-  actor_class->show       = clutter_texture_show;
-  actor_class->hide       = clutter_texture_hide;
+  actor_class->paint          = clutter_texture_paint;
+  actor_class->realize        = clutter_texture_realize;
+  actor_class->unrealize      = clutter_texture_unrealize;
+  actor_class->show           = clutter_texture_show;
+  actor_class->hide           = clutter_texture_hide;
+  actor_class->request_coords = clutter_texture_request_coords;
 
   gobject_class->dispose      = clutter_texture_dispose;
   gobject_class->set_property = clutter_texture_set_property;
@@ -938,7 +953,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Auto sync size of actor to underlying pixbuf"
 			   "dimentions",
 			   TRUE,
-			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+			   CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_REPEAT_X,
@@ -947,7 +962,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Reapeat underlying pixbuf rather than scale"
 			   "in x direction. Currently UNWORKING",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+			   CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_REPEAT_Y,
@@ -956,7 +971,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Reapeat underlying pixbuf rather than scale"
 			   "in y direction. Currently UNWORKING",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+			   CLUTTER_PARAM_READWRITE));
 
   /* FIXME: Ideally this option needs to have some kind of global
    *        overide as to imporve performance.
@@ -972,7 +987,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       0,
 		       G_MAXINT,
 		       1,
-		       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+		       CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_MAX_TILE_WASTE,
@@ -1050,18 +1065,19 @@ clutter_texture_init (ClutterTexture *self)
 
   self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
-  priv->max_tile_waste = 64;
-  priv->filter_quality = 0;
-  priv->is_tiled     = TRUE;
-  priv->pixel_type   = PIXEL_TYPE;
-  priv->pixel_format = CGL_RGBA;
-  priv->repeat_x     = FALSE;
-  priv->repeat_y     = FALSE;
+  priv->max_tile_waste  = 64;
+  priv->filter_quality  = 0;
+  priv->is_tiled        = TRUE;
+  priv->pixel_type      = PIXEL_TYPE;
+  priv->pixel_format    = CGL_RGBA;
+  priv->repeat_x        = FALSE;
+  priv->repeat_y        = FALSE;
+  priv->sync_actor_size = TRUE;
 
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
     {
-      priv->target_type  = CGL_TEXTURE_RECTANGLE_ARB;
-      priv->is_tiled     = FALSE;
+      priv->target_type = CGL_TEXTURE_RECTANGLE_ARB;
+      priv->is_tiled    = FALSE;
     }
   else
     priv->target_type = CGL_TEXTURE_2D;

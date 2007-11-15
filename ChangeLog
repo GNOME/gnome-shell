@@ -1,5 +1,12 @@
 2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-texture.c:
+	(clutter_texture_request_coords), (clutter_texture_class_init),
+	(clutter_texture_init): Unset :sync-size if explicitly setting
+	the texture size. (#616)
+
+2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.[ch]: Massive API clean-ups. Initial
 	fixes for bugs #614 and #628.
 
