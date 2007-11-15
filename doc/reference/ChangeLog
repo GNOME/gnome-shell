@@ -1,5 +1,10 @@
 2007-11-15  Neil J. Patel  <njp@o-hand.com>
 
+	* clutter-sections.txt:
+	Fix typo.
+
+2007-11-15  Neil J. Patel  <njp@o-hand.com>
+
 	* clutter-docs.sgml:
 	* clutter-sections.txt:
 	* clutter.types:
