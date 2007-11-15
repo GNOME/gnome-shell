@@ -64,6 +64,46 @@
  * }
  * </programlisting>
  *
+ * Iterating through the model consists of retrieving a new #ClutterModelIter
+ * pointing to the starting row, and calling #clutter_model_iter_next or
+ * #clutter_model_iter_prev to move forward or backwards, repectively.
+ *
+ * A valid #ClutterModelIter represents the position between two rows in the
+ * model. For example, the @begin iterator represents the gap immediately 
+ * before the first row, and the @end iterator represents the gap immediately
+ * after the last row. In an empty sequence, the begin and end iterators are
+ * the same.
+ *
+ * Iterating a #ClutterModel:
+  * <programlisting>
+ * enum {
+ *   COLUMN_INT,
+ *   COLUMN_STRING.
+ *   N_COLUMNS
+ * };
+ * 
+ * {
+ *   ClutterModel *model;
+ *   ClutterModelIter *iter = NULL;
+ *
+ *   model = clutter_model_new (2, G_TYPE_INT, G_TYPE_STRING);
+ *  
+ *   /<!-- -->*  Fill the model *<!-- -->/
+ *   populate_model (model);
+ *
+ *   /<!-- -->* Get the first iter *<!-- -->/
+ *   iter = clutter_model_get_first_iter (model);
+ *   while (!clutter_model_iter_is_last (iter))
+ *     {
+ *       print_row (iter);
+ *       
+ *       iter = clutter_model_iter_next (iter);
+ *     }
+ *
+ *   /<!-- -->* Make sure to unref the iter *<!-- -->/
+ *   g_object_unref (iter);
+ * }
+ * </programlisting>
  *
  * #ClutterModel is available since Clutter 0.6
  */

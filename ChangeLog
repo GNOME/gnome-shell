@@ -1,3 +1,9 @@
+2007-11-15  Neil J. Patel  <njp@o-hand.com>
+
+	* clutter/clutter-model.c:
+	Added some more examples to the documentation, plus explained how the
+	iters work internally.
+
 2007-11-15  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-main.[ch]: added clutter_grab_pointer,
