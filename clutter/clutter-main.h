@@ -111,6 +111,10 @@ void             clutter_grab_pointer               (ClutterActor *actor);
 void             clutter_ungrab_pointer             (void);
 ClutterActor *   clutter_get_pointer_grab           (void);
 
+void             clutter_grab_keyboard              (ClutterActor *actor);
+void             clutter_ungrab_keyboard            (void);
+ClutterActor *   clutter_get_keyboard_grab          (void);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_MAIN_H */

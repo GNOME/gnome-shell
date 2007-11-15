@@ -1285,7 +1285,6 @@ clutter_do_event (ClutterEvent *event)
           clutter_actor_event (context->pointer_grab_actor, event, FALSE);
           return;
         }
-
       deliver_event (event);
       break;
     case CLUTTER_DESTROY_NOTIFY:
@@ -1304,6 +1303,11 @@ clutter_do_event (ClutterEvent *event)
 
 	g_return_if_fail (actor != NULL);
 
+        if (context->keyboard_grab_actor != NULL)
+          {
+            clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
+            return;
+          }
 	deliver_event (event);
       }
       break;
@@ -1355,7 +1359,6 @@ clutter_do_event (ClutterEvent *event)
                                          event, FALSE);
                     return;
                   }
-
 	        deliver_event (event);
               }
             break;
@@ -1556,4 +1559,89 @@ clutter_get_pointer_grab (void)
   context = clutter_context_get_default ();
 
   return context->pointer_grab_actor;
+}
+
+
+static void
+on_keyboard_grab_weak_notify (gpointer data,
+                              GObject *where_the_object_was)
+{
+  ClutterMainContext *context;
+
+  context = clutter_context_get_default ();
+  context->keyboard_grab_actor = NULL;
+
+  clutter_ungrab_keyboard ();
+}
+
+/**
+ * clutter_grab_keyboard:
+ * @actor: a #ClutterActor
+ *
+ * Grabs keyboard events, after the grab is done keyboard events ("key-press-event"
+ * and "key-release-event") are delivered to this actor directly. The source
+ * set in the event will be the actor that would have received the event if the
+ * keyboard grab was not in effect.
+ *
+ * Since: 0.6
+ */
+void
+clutter_grab_keyboard (ClutterActor *actor)
+{
+  ClutterMainContext *context;
+
+  g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
+  
+  context = clutter_context_get_default ();
+
+  if (context->keyboard_grab_actor == actor)
+    return;
+
+  if (context->keyboard_grab_actor)
+    {
+      g_object_weak_unref (G_OBJECT (context->keyboard_grab_actor),
+			   on_keyboard_grab_weak_notify,
+			   NULL);
+      context->keyboard_grab_actor = NULL;
+    }
+
+  if (actor)
+    {
+      context->keyboard_grab_actor = actor;
+
+      g_object_weak_ref (G_OBJECT (actor),
+			 on_keyboard_grab_weak_notify,
+			 NULL);
+    }
+}
+
+/**
+ * clutter_ungrab_keyboard:
+ *
+ * Removes an existing grab of the keyboard.
+ *
+ * Since: 0.6
+ */
+void
+clutter_ungrab_keyboard (void)
+{
+  clutter_grab_keyboard (NULL);
+}
+
+/**
+ * clutter_get_keyboard_grab:
+ *
+ * Queries the current keyboard grab of clutter.
+ *
+ * Return value: the actor currently holding the keyboard grab, or NULL if there is no grab.
+ *
+ * Since: 0.6
+ */
+ClutterActor *
+clutter_get_keyboard_grab (void)
+{
+  ClutterMainContext *context;
+  context = clutter_context_get_default ();
+
+  return context->keyboard_grab_actor;
 }

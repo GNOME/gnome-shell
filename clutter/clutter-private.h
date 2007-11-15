@@ -89,6 +89,9 @@ struct _ClutterMainContext
   ClutterActor    *pointer_grab_actor; /* The actor having the pointer grab
                                           (or NULL if there is no pointer grab) 
                                         */
+  ClutterActor    *keyboard_grab_actor; /* The actor having the pointer grab
+                                          (or NULL if there is no pointer grab) 
+                                        */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())

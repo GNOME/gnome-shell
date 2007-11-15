@@ -47,10 +47,6 @@ debug_event_cb (ClutterActor *actor,
       break;
     case CLUTTER_BUTTON_RELEASE:
       printf("[%s] BUTTON RELEASE", source);
-      if (clutter_event_get_source (event) == CLUTTER_ACTOR (stage))
-        clutter_stage_set_key_focus (stage, NULL);
-      else if (clutter_event_get_source (event) == actor)
-	clutter_stage_set_key_focus (stage, actor);
       break;
     case CLUTTER_SCROLL:
       printf("[%s] BUTTON SCROLL", source);
@@ -133,6 +129,19 @@ toggle_grab_pointer_cb (ClutterActor    *actor,
   return FALSE;
 }
 
+static gboolean
+cyan_press_cb (ClutterActor    *actor,
+               ClutterEvent    *event,
+               gpointer         data)
+{
+  if (clutter_get_keyboard_grab () != NULL)
+    clutter_ungrab_keyboard ();
+  else
+    clutter_grab_keyboard (actor);
+  return FALSE;
+}
+
+
 
 int
 main (int argc, char *argv[])
@@ -141,6 +150,7 @@ main (int argc, char *argv[])
   ClutterColor    rcol = { 0xff, 0, 0, 0xff}, 
                   bcol = { 0, 0, 0xff, 0xff },
 		  gcol = { 0, 0xff, 0, 0xff },
+		  ccol = { 0, 0xff, 0xff, 0xff },
 		  ycol = { 0xff, 0xff, 0, 0xff },
 		  ncol = { 0, 0, 0, 0xff };
 
@@ -150,6 +160,7 @@ main (int argc, char *argv[])
   g_print ("Blue box:   aquire grab on press, destroys the blue box actor on release\n");
   g_print ("Yellow box: aquire grab on press, releases grab on next press on yellow box\n");
   g_print ("Green box:  toggle per actor motion events.\n\n");
+  g_print ("Cyan  box:  toggle grab (from cyan box) for keyboard events.\n\n");
 
   stage = clutter_stage_get_default ();
   g_signal_connect (stage, "event", G_CALLBACK (debug_event_cb), "stage");
@@ -204,6 +215,17 @@ main (int argc, char *argv[])
                     G_CALLBACK (debug_event_cb), "green box");
   g_signal_connect (actor, "button-press-event",
                     G_CALLBACK (green_press_cb), NULL);
+
+
+  actor = clutter_rectangle_new_with_color (&ccol);
+  clutter_actor_set_size (actor, 100, 100);
+  clutter_actor_set_position (actor, 500, 100);
+  clutter_actor_set_reactive (actor);
+  clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
+  g_signal_connect (actor, "event",
+                    G_CALLBACK (debug_event_cb), "cyan box");
+  g_signal_connect (actor, "button-press-event",
+                    G_CALLBACK (cyan_press_cb), NULL);
 
   clutter_actor_show_all (CLUTTER_ACTOR (stage));
 

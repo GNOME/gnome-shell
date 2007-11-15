@@ -1,3 +1,12 @@
+2007-11-15  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-main.[ch]: added clutter_grab_keyboard,
+	clutter_ungrab_keyboard and clutter_get_keyboard_grab, in
+	clutter_do_event deliver keyboard related events only to the
+	actor with the keyboard grab if a grab exists.
+	* clutter/clutter-private.h: added keyboard_grab_actor to context.
+	* tests/test-grab.c: added testing for testing the keyboard grab.
+
 2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-texture.c:
