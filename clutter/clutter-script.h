@@ -42,6 +42,31 @@ typedef struct _ClutterScriptPrivate    ClutterScriptPrivate;
 typedef struct _ClutterScriptClass      ClutterScriptClass;
 
 /**
+ * ClutterScriptConnectFunc:
+ * @script: a #ClutterScript
+ * @object: the object to connect
+ * @signal_name: the name of the signal
+ * @handler_name: the name of the signal handler
+ * @connect_object: the object to connect the signal to, or %NULL
+ * @flags: signal connection flags
+ * @user_data: user data to pass to the signal handler
+ *
+ * This is the signature of a function used to connect signals.  It is used
+ * by the clutter_script_connect_signals_full() function.  It is mainly
+ * intended for interpreted language bindings, but could be useful where the
+ * programmer wants more control over the signal connection process.
+ *
+ * Since: 0.6
+ */
+typedef void (* ClutterScriptConnectFunc) (ClutterScript *script,
+                                           GObject       *object,
+                                           const gchar   *signal_name,
+                                           const gchar   *handler_name,
+                                           GObject       *connect_object,
+                                           GConnectFlags  flags,
+                                           gpointer       user_data);
+
+/**
  * ClutterScriptError:
  * @CLUTTER_SCRIPT_ERROR_INVALID_VALUE: Invalid value
  *
@@ -89,27 +114,33 @@ struct _ClutterScriptClass
 
 GType          clutter_script_get_type        (void) G_GNUC_CONST;
 
-ClutterScript *clutter_script_new                (void);
-guint          clutter_script_load_from_file     (ClutterScript  *script,
-                                                  const gchar    *filename,
-                                                  GError        **error);
-guint          clutter_script_load_from_data     (ClutterScript  *script,
-                                                  const gchar    *data,
-                                                  gsize           length,
-                                                  GError        **error);
-GObject *      clutter_script_get_object         (ClutterScript  *script,
-                                                  const gchar    *name);
-gint           clutter_script_get_objects        (ClutterScript  *script,
-                                                  const gchar    *first_name,
-                                                  ...) G_GNUC_NULL_TERMINATED;
-void           clutter_script_unmerge_objects    (ClutterScript  *script,
-                                                  guint           merge_id);
-void           clutter_script_ensure_objects     (ClutterScript  *script);
+ClutterScript *clutter_script_new                  (void);
+guint          clutter_script_load_from_file       (ClutterScript  *script,
+                                                    const gchar    *filename,
+                                                    GError        **error);
+guint          clutter_script_load_from_data       (ClutterScript  *script,
+                                                    const gchar    *data,
+                                                    gsize           length,
+                                                    GError        **error);
+GObject *      clutter_script_get_object           (ClutterScript  *script,
+                                                    const gchar    *name);
+gint           clutter_script_get_objects          (ClutterScript  *script,
+                                                    const gchar    *first_name,
+                                                    ...) G_GNUC_NULL_TERMINATED;
+void           clutter_script_unmerge_objects      (ClutterScript  *script,
+                                                    guint           merge_id);
+void           clutter_script_ensure_objects       (ClutterScript  *script);
 
-GType          clutter_script_get_type_from_name (ClutterScript  *script,
-                                                  const gchar    *type_name);
+GType          clutter_script_get_type_from_name   (ClutterScript  *script,
+                                                    const gchar    *type_name);
 
-G_CONST_RETURN gchar *clutter_get_script_id      (GObject        *object);
+G_CONST_RETURN gchar *clutter_get_script_id        (GObject        *object);
+
+void           clutter_script_connect_signals      (ClutterScript  *script,
+                                                    gpointer        user_data);
+void           clutter_script_connect_signals_full (ClutterScript  *script,
+                                                    ClutterScriptConnectFunc func,
+                                                    gpointer        user_data);
 
 G_END_DECLS
 

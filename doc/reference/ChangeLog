@@ -1,3 +1,8 @@
+2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add new ClutterScript signal connection
+	functions.
+
 2007-11-15  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter-sections.txt:

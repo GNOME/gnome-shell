@@ -111,6 +111,28 @@
  * however, be extracted using the #ClutterBehaviour and #ClutterAlpha
  * API respectively).
  *
+ * Signal handlers can be defined inside a Clutter UI definition file and
+ * then autoconnected to their respective signals using the
+ * clutter_script_connect_signals() function:
+ *
+ * <programlisting>
+ *   ...
+ *   "signals" : [
+ *     { "name" : "button-press-event", "handler" : "on_button_press" },
+ *     {
+ *       "name" : "foo-signal",
+ *       "handler" : "after_foo",
+ *       "after" : true
+ *     },
+ *   ]
+ * </programlisting>
+ *
+ * Signal handler definitions must have a "name" and a "handler" members;
+ * they can also have the "after" and "swapped" boolean members (for the
+ * signal connection flags %G_CONNECT_AFTER and %G_CONNECT_SWAPPED
+ * respectively) and the "object" string member for calling
+ * g_signal_connect_object() instead of g_signal_connect().
+ *
  * Clutter reserves the following names, so classes defining properties
  * through the usual GObject registration process should avoid using these
  * names to avoid collisions:
@@ -121,6 +143,7 @@
  *   "type_func"  := the GType function name, for non-standard classes
  *   "children"   := an array of names or objects to add as children
  *   "behaviours" := an array of names or objects to apply to an actor
+ *   "signals"    := an array of signal definitions to connect to an object
  * ]]></programlisting>
  *
  * #ClutterScript is available since Clutter 0.6
@@ -283,6 +306,125 @@ parse_children (JsonNode *node)
     }
 
   return g_list_reverse (retval);
+}
+
+static GList *
+parse_signals (JsonNode *node)
+{
+  JsonArray *array;
+  GList *retval;
+  guint array_len, i;
+
+  if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
+    {
+      g_warning ("Expecting an array for signal definitions");
+      return NULL;
+    }
+
+  retval = NULL;
+  array = json_node_get_array (node);
+  array_len = json_array_get_length (array);
+
+  for (i = 0; i < array_len; i++)
+    {
+      JsonNode *val = json_array_get_element (array, i);
+      JsonObject *object;
+      SignalInfo *sinfo;
+      const gchar *name;
+      const gchar *handler;
+      const gchar *connect;
+      GConnectFlags flags = 0;
+
+      if (JSON_NODE_TYPE (val) != JSON_NODE_OBJECT)
+        {
+          g_warning ("Expecting an array of objects");
+          continue;
+        }
+
+      object = json_node_get_object (val);
+
+      /* mandatory: "name" */
+      if (!json_object_has_member (object, "name"))
+        {
+          g_warning ("Missing `name' attribute in signal definition");
+          continue;
+        }
+      else
+        {
+          val = json_object_get_member (object, "name");
+          if ((JSON_NODE_TYPE (val) == JSON_NODE_VALUE) &&
+              json_node_get_string (val) != NULL)
+            name = json_node_get_string (val);
+          else
+            {
+              g_warning ("Signal `name' member must be a string");
+              continue;
+            }
+        }
+
+      /* mandatory: "handler" */
+      if (!json_object_has_member (object, "handler"))
+        {
+          g_warning ("Missing `handler' attribute in signal definition");
+          continue;
+        }
+      else
+        {
+          val = json_object_get_member (object, "handler");
+          if ((JSON_NODE_TYPE (val) == JSON_NODE_VALUE) &&
+              json_node_get_string (val) != NULL)
+            handler = json_node_get_string (val);
+          else
+            {
+              g_warning ("Signal `handler' member must be a string");
+              continue;
+            }
+        }
+
+      /* optional: "object" */
+      if (json_object_has_member (object, "object"))
+        {
+          val = json_object_get_member (object, "object");
+          if ((JSON_NODE_TYPE (val) == JSON_NODE_VALUE) &&
+              json_node_get_string (val) != NULL)
+            connect = json_node_get_string (val);
+          else
+            connect = NULL;
+        }
+      else
+        connect = NULL;
+
+      /* optional: "after" */
+      if (json_object_has_member (object, "after"))
+        {
+          val = json_object_get_member (object, "after");
+          if (json_node_get_boolean (val))
+            flags |= G_CONNECT_AFTER;
+        }
+
+      /* optional: "swapped" */
+      if (json_object_has_member (object, "swapped"))
+        {
+          val = json_object_get_member (object, "swapped");
+          if (json_node_get_boolean (val))
+            flags |= G_CONNECT_SWAPPED;
+        }
+
+      CLUTTER_NOTE (SCRIPT, 
+                    "Parsing signal `%s' (handler:%s, object:%s, flags:%d)",
+                    name,
+                    handler, connect, flags);
+
+      sinfo = g_slice_new0 (SignalInfo);
+      sinfo->name = g_strdup (name);
+      sinfo->handler = g_strdup (handler);
+      sinfo->object = g_strdup (connect);
+      sinfo->flags = flags;
+
+      retval = g_list_prepend (retval, sinfo);
+    }
+
+  return retval;
 }
 
 static GList *
@@ -516,6 +658,14 @@ json_object_end (JsonParser *parser,
       json_object_remove_member (object, "behaviours");
     }
 
+  if (json_object_has_member (object, "signals"))
+    {
+      val = json_object_get_member (object, "signals");
+      oinfo->signals = parse_signals (val);
+
+      json_object_remove_member (object, "signals");
+    }
+
   oinfo->is_toplevel = FALSE;
   oinfo->is_unmerged = FALSE;
   oinfo->has_unresolved = TRUE;
@@ -544,11 +694,13 @@ json_object_end (JsonParser *parser,
 
   g_list_free (members);
 
-  CLUTTER_NOTE (SCRIPT, "Added object `%s' (type:%s, id:%d) with %d properties",
+  CLUTTER_NOTE (SCRIPT,
+                "Added object `%s' (type:%s, id:%d, props:%d, signals:%d)",
                 oinfo->id,
                 oinfo->class_name,
                 oinfo->merge_id,
-                g_list_length (oinfo->properties));
+                g_list_length (oinfo->properties),
+                g_list_length (oinfo->signals));
 
   g_hash_table_replace (priv->objects, g_strdup (oinfo->id), oinfo);
 
@@ -1229,6 +1381,21 @@ property_info_free (gpointer data)
 }
 
 void
+signal_info_free (gpointer data)
+{
+  if (G_LIKELY (data))
+    {
+      SignalInfo *sinfo = data;
+
+      g_free (sinfo->name);
+      g_free (sinfo->handler);
+      g_free (sinfo->object);
+
+      g_slice_free (SignalInfo, sinfo);
+    }
+}
+
+void
 object_info_free (gpointer data)
 {
   if (G_LIKELY (data))
@@ -1241,6 +1408,9 @@ object_info_free (gpointer data)
 
       g_list_foreach (oinfo->properties, (GFunc) property_info_free, NULL);
       g_list_free (oinfo->properties);
+
+      g_list_foreach (oinfo->signals, (GFunc) signal_info_free, NULL);
+      g_list_free (oinfo->signals);
 
       /* these are ids */
       g_list_foreach (oinfo->children, (GFunc) g_free, NULL);
@@ -1709,6 +1879,171 @@ clutter_get_script_id (GObject *gobject)
     return clutter_scriptable_get_id (CLUTTER_SCRIPTABLE (gobject));
   else
     return g_object_get_data (gobject, "clutter-script-id");
+}
+
+typedef struct {
+  GModule *module;
+  gpointer data;
+} ConnectData;
+
+static void
+clutter_script_default_connect (ClutterScript *script,
+                                GObject       *object,
+                                const gchar   *signal_name,
+                                const gchar   *signal_handler,
+                                GObject       *connect_object,
+                                GConnectFlags  flags,
+                                gpointer       user_data)
+{
+  ConnectData *cd = user_data;
+  GCallback func;
+  
+  if (!g_module_symbol (cd->module, signal_handler, (gpointer)&func))
+    {
+      g_warning ("Could not find signal handler '%s'", signal_handler);
+      return;
+    }
+
+  CLUTTER_NOTE (SCRIPT,
+                "connecting `%s::%s to %s (a:%d,s:%d,o:%s)",
+                (connect_object ? g_type_name (G_OBJECT_TYPE (connect_object))
+                                : g_type_name (G_OBJECT_TYPE (object))),
+                signal_name,
+                signal_handler,
+                (flags & G_CONNECT_AFTER),
+                (flags & G_CONNECT_SWAPPED),
+                connect_object ? g_type_name (G_OBJECT_TYPE (connect_object))
+                               : "<none>");
+
+  if (connect_object)
+    g_signal_connect_object (object, signal_name, func, connect_object, flags);
+  else
+    g_signal_connect_data (object, signal_name, func, cd->data, NULL, flags);
+}
+
+/**
+ * clutter_script_connect_signals:
+ * @script: a #ClutterScript
+ * @user_data: data to be passed to the signal handlers, or %NULL
+ *
+ * Connects all the signals defined into a UI definition file to their
+ * handlers.
+ *
+ * This method is a simpler variation of clutter_script_connect_signals_full().
+ * It uses #GModule's introspective features (by opening the module %NULL) 
+ * to look at the application's symbol table. From here it tries to match
+ * the signal handler names given in the interface description with
+ * symbols in the application and connects the signals.
+ * 
+ * Note that this function will not work correctly if #GModule is not
+ * supported on the platform.
+ *
+ * Since: 0.6
+ */
+void
+clutter_script_connect_signals (ClutterScript *script,
+                                gpointer       user_data)
+{
+  ConnectData *cd;
+
+  g_return_if_fail (CLUTTER_IS_SCRIPT (script));
+
+  if (!g_module_supported ())
+    g_critical ("clutter_script_connect_signals() requires working GModule");
+
+  cd = g_new (ConnectData, 1);
+  cd->module = g_module_open (NULL, G_MODULE_BIND_LAZY);
+  cd->data = user_data;
+
+  clutter_script_connect_signals_full (script,
+                                       clutter_script_default_connect,
+                                       cd);
+
+  g_module_close (cd->module);
+
+  g_free (cd);
+}
+
+typedef struct {
+  ClutterScript *script;
+  ClutterScriptConnectFunc func;
+  gpointer user_data;
+} SignalConnectData;
+
+static void
+connect_each_object (gpointer key,
+                     gpointer value,
+                     gpointer data)
+{
+  SignalConnectData *connect_data = data;
+  ClutterScript *script = connect_data->script;
+  ObjectInfo *oinfo = value;
+  GObject *object = oinfo->object;
+  GList *unresolved, *l;
+
+  if (G_UNLIKELY (!oinfo->object))
+    oinfo->object = clutter_script_construct_object (script, oinfo);
+
+  unresolved = NULL;
+  for (l = oinfo->signals; l != NULL; l = l->next)
+    {
+      SignalInfo *sinfo = l->data;
+      GObject *connect_object;
+
+      if (sinfo->object)
+        connect_object = clutter_script_get_object (script, sinfo->object);
+      else
+        connect_object = NULL;
+
+      if (sinfo->object && !connect_object)
+        unresolved = g_list_prepend (unresolved, sinfo);
+      else
+        {
+          connect_data->func (script, object,
+                              sinfo->name,
+                              sinfo->handler,
+                              connect_object,
+                              sinfo->flags,
+                              connect_data->user_data);
+
+          signal_info_free (sinfo);
+        }
+    }
+
+  g_list_free (oinfo->signals);
+  oinfo->signals = unresolved;
+}
+
+/**
+ * clutter_script_connect_signals_full:
+ * @script: a #ClutterScript
+ * @func: signal connection function
+ * @user_data: data to be passed to the signal handlers, or %NULL
+ *
+ * Connects all the signals defined into a UI definition file to their
+ * handlers.
+ *
+ * This function is similar to clutter_script_connect_signals() but it
+ * does not require GModule to be supported. It is mainly targeted at
+ * interpreted languages for controlling the signal connection.
+ *
+ * Since: 0.6
+ */
+void
+clutter_script_connect_signals_full (ClutterScript            *script,
+                                     ClutterScriptConnectFunc  func,
+                                     gpointer                  user_data)
+{
+  SignalConnectData data;
+
+  g_return_if_fail (CLUTTER_IS_SCRIPT (script));
+  g_return_if_fail (func != NULL);
+
+  data.script = script;
+  data.func = func;
+  data.user_data = user_data;
+
+  g_hash_table_foreach (script->priv->objects, connect_each_object, &data);
 }
 
 GQuark

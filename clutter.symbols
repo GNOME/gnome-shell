@@ -23,7 +23,9 @@ clutter_actor_get_height
 clutter_actor_set_width
 clutter_actor_set_height
 clutter_actor_get_x
+clutter_actor_set_x
 clutter_actor_get_y
+clutter_actor_set_y
 clutter_actor_rotate_x
 clutter_actor_rotate_y
 clutter_actor_rotate_z
@@ -44,6 +46,7 @@ clutter_actor_get_id
 clutter_actor_set_clip
 clutter_actor_remove_clip
 clutter_actor_has_clip
+clutter_actor_get_clip
 clutter_actor_set_parent
 clutter_actor_get_parent
 clutter_actor_reparent
@@ -66,8 +69,7 @@ clutter_actor_move_by
 clutter_actor_get_vertices
 clutter_actor_apply_transform_to_point
 clutter_actor_set_reactive 
-clutter_actor_unset_reactive 
-clutter_actor_is_reactive 
+clutter_actor_get_reactive 
 clutter_get_actor_by_id 
 clutter_alpha_get_type
 clutter_alpha_new
@@ -512,6 +514,8 @@ clutter_script_get_object
 clutter_script_get_objects
 clutter_script_unmerge_objects
 clutter_script_ensure_objects
+clutter_script_connect_signals
+clutter_script_connect_signals_full
 clutter_script_get_type_from_name
 clutter_get_script_id
 clutter_scriptable_get_type

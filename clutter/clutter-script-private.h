@@ -43,6 +43,7 @@ typedef struct {
   GList *properties;
   GList *children;
   GList *behaviours;
+  GList *signals;
 
   GType gtype;
   GObject *object;
@@ -61,6 +62,14 @@ typedef struct {
   JsonNode *node;
   GParamSpec *pspec;
 } PropertyInfo;
+
+typedef struct {
+  gchar *name;
+  gchar *handler;
+  gchar *object;
+
+  GConnectFlags flags;
+} SignalInfo;
 
 void property_info_free (gpointer data);
 

@@ -1096,12 +1096,22 @@ clutter_script_new
 ClutterScriptError
 clutter_script_load_from_data
 clutter_script_load_from_file
+
+<SUBSECTION>
 clutter_script_get_object
 clutter_script_get_objects
 clutter_script_unmerge_objects
 clutter_script_ensure_objects
+
+<SUBSECTION>
+ClutterScriptConnectFunc
+clutter_script_connect_signals
+clutter_script_connect_signals_full
+
+<SUBSECTION>
 clutter_script_get_type_from_name
 clutter_get_script_id
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_SCRIPT
 CLUTTER_SCRIPT

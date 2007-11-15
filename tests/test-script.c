@@ -136,6 +136,8 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
+  clutter_script_connect_signals (script, NULL);
+
   res = clutter_script_get_objects (script,
                                     "main-stage", &stage,
                                     "red-button", &red_button,
