@@ -1,3 +1,9 @@
+2007-11-15  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-main.c: (generate_enter_leave_events),
+	(clutter_do_event): moved the generation of enter/leave events
+	to a utility function.
+
 2007-11-15  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-model.c:

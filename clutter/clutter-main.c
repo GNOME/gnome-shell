@@ -1203,6 +1203,46 @@ done:
 #undef MAX_EVENT_DEPTH
 }
 
+
+static void generate_enter_leave_events (ClutterMainContext *context,
+                                         ClutterActor       *motion_current_actor,
+                                         ClutterEvent       *event)
+{
+  static ClutterActor *motion_last_actor = NULL; 
+
+  if (motion_last_actor != motion_current_actor)
+    {
+      if (motion_last_actor && motion_current_actor)
+        {
+          ClutterEvent cev;
+
+          cev.crossing.type    = CLUTTER_LEAVE;
+          cev.crossing.time    = event->any.time;
+          cev.crossing.flags   = 0; 
+          cev.crossing.x       = event->motion.x;
+          cev.crossing.y       = event->motion.y;
+          cev.crossing.source  = motion_last_actor;
+          /* unref in free  */
+          cev.crossing.related = g_object_ref (motion_current_actor);
+
+          g_queue_push_head (context->events_queue, 
+          clutter_event_copy (&cev));
+
+          cev.crossing.type    = CLUTTER_ENTER;
+          cev.crossing.time    = event->any.time;
+          cev.crossing.flags   = 0; 
+          cev.crossing.x       = event->motion.x;
+          cev.crossing.y       = event->motion.y;
+          cev.crossing.source  = motion_current_actor;
+          cev.crossing.related = g_object_ref (motion_last_actor);
+
+          g_queue_push_head (context->events_queue, 
+          clutter_event_copy (&cev));
+        }
+    }
+  motion_last_actor = motion_current_actor;
+}
+
 /** 
  * clutter_do_event
  * @event: a #ClutterEvent.
@@ -1222,7 +1262,6 @@ clutter_do_event (ClutterEvent *event)
   ClutterBackend      *backend;
   ClutterActor        *stage;
 
-  static ClutterActor *motion_last_actor = NULL; 
 
   context = clutter_context_get_default ();
   backend = context->backend;
@@ -1341,50 +1380,22 @@ clutter_do_event (ClutterEvent *event)
 		      x, y, actor);
 
 
-	/* Motion enter leave events */
 	if (event->type == CLUTTER_MOTION)
 	  {
-	    if (motion_last_actor != actor)
-	      {
-		if (motion_last_actor && actor)
-		  {
-		    ClutterEvent cev;
-
-		    cev.crossing.type    = CLUTTER_LEAVE;
-		    cev.crossing.time    = event->any.time;
-		    cev.crossing.flags   = 0; 
-		    cev.crossing.x       = x;
-		    cev.crossing.y       = y;
-		    cev.crossing.source  = motion_last_actor;
-		    /* unref in free  */
-		    cev.crossing.related = g_object_ref (actor);
-
-		    g_queue_push_head (context->events_queue, 
-				       clutter_event_copy (&cev));
-
-		    cev.crossing.type    = CLUTTER_ENTER;
-		    cev.crossing.time    = event->any.time;
-		    cev.crossing.flags   = 0; 
-		    cev.crossing.x       = x;
-		    cev.crossing.y       = y;
-		    cev.crossing.source  = actor;
-		    cev.crossing.related = g_object_ref (motion_last_actor);
-
-		    g_queue_push_head (context->events_queue, 
-				       clutter_event_copy (&cev));
-		  }
-	      }
-	    motion_last_actor = actor;
+	    /* Generate enter leave events (if any) */
+            generate_enter_leave_events (context, actor, event);
 	  }
-	else
-	  event_click_count_generate (event);
+	else /* (button event) */
+          {
+            /* Generate click count */
+	    event_click_count_generate (event);
+          }
 
           if (context->pointer_grab_actor != NULL)
             {
               clutter_actor_event (context->pointer_grab_actor, event, FALSE);
               return;
             }
-
 	  deliver_event (event);
       }
       break;
