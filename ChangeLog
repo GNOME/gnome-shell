@@ -1,5 +1,12 @@
 2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-effect.h:
+	* clutter/clutter-effect.c:
+	(clutter_effect_template_new_for_duration): Add a simple constructor
+	for implicitly creating a ClutterTimeline with a given duration.
+
+2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter.symbols: Update with the new public symbols
 
 	* clutter/clutter-script.h:

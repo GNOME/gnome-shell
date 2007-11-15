@@ -1,5 +1,9 @@
 2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-sections.txt: Add new ClutterEffectTemplate constructor.
+
+2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-sections.txt: Add new ClutterScript signal connection
 	functions.
 

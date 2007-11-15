@@ -93,14 +93,15 @@ struct _ClutterEffectTemplateClass
   void (*_clutter_reserved4) (void);
 };
 
-GType                  clutter_effect_template_get_type (void) G_GNUC_CONST;
-ClutterEffectTemplate *clutter_effect_template_new      (ClutterTimeline  *timeline,
-                                                         ClutterAlphaFunc  alpha_func);
-ClutterEffectTemplate *clutter_effect_template_new_full (ClutterTimeline  *timeline,
-                                                         ClutterAlphaFunc  alpha_func,
-                                                         gpointer          user_data,
-                                                         GDestroyNotify    notify);
-
+GType                  clutter_effect_template_get_type           (void) G_GNUC_CONST;
+ClutterEffectTemplate *clutter_effect_template_new                (ClutterTimeline       *timeline,
+                                                                   ClutterAlphaFunc       alpha_func);
+ClutterEffectTemplate *clutter_effect_template_new_full           (ClutterTimeline       *timeline,
+                                                                   ClutterAlphaFunc       alpha_func,
+                                                                   gpointer               user_data,
+                                                                   GDestroyNotify         notify);
+ClutterEffectTemplate *clutter_effect_template_new_for_duration   (guint                  msecs,
+                                                                   ClutterAlphaFunc       alpha_func);
 void                   clutter_effect_template_set_timeline_clone (ClutterEffectTemplate *template_,
 								   gboolean               setting);
 gboolean               clutter_effect_template_get_timeline_clone (ClutterEffectTemplate *template_);

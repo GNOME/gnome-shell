@@ -411,6 +411,48 @@ clutter_effect_template_new_full (ClutterTimeline  *timeline,
   return retval;
 }
 
+/**
+ * clutter_effect_template_new_for_duration:
+ * @msecs: the duration of the effects, in milliseconds
+ * @alpha_func: an alpha function to use for the template
+ *
+ * Creates a new #ClutterEffectTemplate, to be used with the effects API.
+ *
+ * A #ClutterEffectTemplate binds a timeline and an alpha function and can
+ * be used as a template for multiple calls of clutter_effect_fade(),
+ * clutter_effect_move() and clutter_effect_scale().
+ *
+ * This API is intended for simple animations involving a single actor;
+ * for more complex animations, you should see #ClutterBehaviour and the
+ * derived classes.
+ *
+ * This function creates a #ClutterTimeline with a duration of @msecs
+ * milliseconds and transfers ownership of the timeline object to the
+ * returned #ClutterEffectTemplate.
+ *
+ * Return value: the newly created #ClutterEffectTemplate object
+ *
+ * Since: 0.6
+ */
+ClutterEffectTemplate *
+clutter_effect_template_new_for_duration (guint            msecs,
+                                          ClutterAlphaFunc alpha_func)
+{
+  ClutterTimeline *timeline;
+  ClutterEffectTemplate *retval;
+
+  g_return_val_if_fail (msecs > 0, NULL);
+  g_return_val_if_fail (alpha_func != NULL, NULL);
+
+  timeline = clutter_timeline_new_for_duration (msecs);
+  retval = clutter_effect_template_new (timeline, alpha_func);
+
+  /* the effect template takes ownership of the timeline */
+  g_object_unref (timeline);
+
+  return retval;
+}
+
 static void
 clutter_effect_closure_destroy (ClutterEffectClosure *c)
 {

@@ -1008,6 +1008,7 @@ clutter_padding_get_type
 <TITLE>Clutter Effects</TITLE>
 clutter_effect_template_new
 clutter_effect_template_new_full
+clutter_effect_template_new_for_duration
 clutter_effect_template_get_timeline_clone
 clutter_effect_template_set_timeline_clone
 
