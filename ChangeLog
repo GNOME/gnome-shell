@@ -1,3 +1,14 @@
+2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.[ch]: Massive API clean-ups. Initial
+	fixes for bugs #614 and #628.
+
+	* clutter/clutter-main.c:
+	* clutter/clutter-stage.c: Update internal usage of the actor
+	API.
+
+	* tests/test-events.c: Update test suite.
+
 2007-11-15  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-main.c: (generate_enter_leave_events),

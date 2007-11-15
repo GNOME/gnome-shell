@@ -42,7 +42,8 @@ FIXXREF_OPTIONS=
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/clutter/*.h $(top_srcdir)/clutter/glx/clutter-glx.h
+HFILE_GLOB=$(top_srcdir)/clutter/*.h \
+	$(top_srcdir)/clutter/x11/clutter-x11.h
 CFILE_GLOB=$(top_srcdir)/clutter/*.c
 
 # Header files to ignore when scanning.
@@ -62,6 +63,8 @@ IGNORE_HFILES=\
 	eglnative \
 	eglx \
 	glx \
+	osx \
+	x11 \
 	json \
 	pango \
 	sdl

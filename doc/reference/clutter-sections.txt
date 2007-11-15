@@ -44,6 +44,8 @@ CLUTTER_UNITS_TO_INT
 <SECTION>
 <FILE>clutter-label</FILE>
 <TITLE>ClutterLabel</TITLE>
+ClutterLabel
+ClutterLabelClass
 clutter_label_new
 clutter_label_new_with_text
 clutter_label_new_full
@@ -67,8 +69,6 @@ clutter_label_get_use_markup
 clutter_label_set_alignment
 clutter_label_get_alignment
 <SUBSECTION Standard>
-ClutterLabel
-ClutterLabelClass
 CLUTTER_LABEL
 CLUTTER_IS_LABEL
 CLUTTER_TYPE_LABEL
@@ -307,9 +307,6 @@ clutter_actor_queue_redraw
 clutter_actor_destroy
 clutter_actor_request_coords
 clutter_actor_query_coords
-clutter_actor_set_reactive
-clutter_actor_unset_reactive
-clutter_actor_is_reactive
 clutter_actor_event
 
 <SUBSECTION>
@@ -319,12 +316,15 @@ clutter_actor_get_coords
 clutter_actor_set_size
 clutter_actor_get_size
 clutter_actor_set_position
+clutter_actor_get_position
 clutter_actor_get_abs_position
 clutter_actor_set_width
 clutter_actor_get_width
 clutter_actor_set_height
 clutter_actor_get_height
+clutter_actor_set_x
 clutter_actor_get_x
+clutter_actor_set_y
 clutter_actor_get_y
 clutter_actor_move_by
 clutter_actor_rotate_x
@@ -334,10 +334,13 @@ clutter_actor_set_opacity
 clutter_actor_get_opacity
 clutter_actor_set_name
 clutter_actor_get_name
-clutter_actor_get_id
+clutter_actor_get_gid
+
+<SUBSECTION>
 clutter_actor_set_clip
 clutter_actor_remove_clip
 clutter_actor_has_clip
+clutter_actor_get_clip
 
 <SUBSECTION>
 clutter_actor_set_parent
@@ -375,6 +378,10 @@ clutter_actor_rotate_zx
 clutter_actor_set_scale_with_gravity
 clutter_actor_set_scale_with_gravityx
 
+<SUBSECTION>
+clutter_actor_set_reactive
+clutter_actor_get_reactive
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
 CLUTTER_TYPE_ACTOR_BOX
@@ -396,6 +403,8 @@ clutter_vertex_get_type
 <SECTION>
 <FILE>clutter-texture</FILE>
 <TITLE>ClutterTexture</TITLE>
+ClutterTexture
+ClutterTextureClass
 ClutterTextureFlags
 clutter_texture_new
 clutter_texture_new_from_pixbuf
@@ -414,15 +423,15 @@ clutter_texture_get_x_tile_detail
 clutter_texture_get_y_tile_detail
 clutter_texture_has_generated_tiles
 clutter_texture_is_tiled
+
 <SUBSECTION Standard>
-ClutterTexture
-ClutterTextureClass
 CLUTTER_TEXTURE
 CLUTTER_IS_TEXTURE
 CLUTTER_TYPE_TEXTURE
 CLUTTER_TEXTURE_CLASS
 CLUTTER_IS_TEXTURE_CLASS
 CLUTTER_TEXTURE_GET_CLASS
+
 <SUBSECTION Private>
 ClutterTexturePrivate
 clutter_texture_error_quark
@@ -502,7 +511,7 @@ ClutterTimelineDirection
 clutter_timeline_set_direction
 clutter_timeline_get_direction
 
-<SUBSECTION
+<SUBSECTION>
 clutter_timeline_start
 clutter_timeline_pause
 clutter_timeline_stop
@@ -883,7 +892,9 @@ clutter_main_level
 clutter_get_debug_enabled
 clutter_get_show_fps
 clutter_get_timestamp
-clutter_get_actor_by_id
+clutter_get_actor_by_gid
+clutter_get_default_frame_rate
+clutter_set_default_frame_rate
 clutter_get_motion_events_enabled
 clutter_enable_motion_events
 <SUBSECTION>
@@ -904,22 +915,22 @@ clutter_redraw
 </SECTION>
 
 <SECTION>
-<FILE>clutter-glx</FILE>
-<TITLE>GLX Specific Support</TITLE>
-clutter_glx_get_default_display
-clutter_glx_get_default_screen
-clutter_glx_get_root_window
-clutter_glx_get_stage_visual
-clutter_glx_get_stage_window
-clutter_glx_set_stage_foreign
-clutter_glx_trap_x_errors
-clutter_glx_untrap_x_errors
+<FILE>clutter-x11</FILE>
+<TITLE>X11 Specific Support</TITLE>
+clutter_x11_get_default_display
+clutter_x11_get_default_screen
+clutter_x11_get_root_window
+clutter_x11_get_stage_visual
+clutter_x11_get_stage_window
+clutter_x11_set_stage_foreign
+clutter_x11_trap_x_errors
+clutter_x11_untrap_x_errors
 
 <SUBSECTION>
-ClutterGLXFilterFunc
-ClutterGLXFilterReturn
-clutter_glx_add_filter
-clutter_glx_remove_filter
+ClutterX11FilterFunc
+ClutterX11FilterReturn
+clutter_x11_add_filter
+clutter_x11_remove_filter
 </SECTION>
 
 <SECTION>
@@ -1192,6 +1203,7 @@ CLUTTER_IS_MODEL_CLASS
 CLUTTER_MODEL_GET_CLASS
 <SUBSECTION Private>
 ClutterModelPrivate
+clutter_model_get_type
 </SECTION>
 
 <SECTION>
@@ -1220,6 +1232,7 @@ CLUTTER_IS_MODEL_ITER_CLASS
 CLUTTER_MODEL_GET_CLASS
 <SUBSECTION Private>
 ClutterModelIterPrivate
+clutter_model_iter_get_type
 </SECTION>
 
 

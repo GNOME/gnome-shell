@@ -169,7 +169,7 @@
     </partintro>
     
     <xi:include href="xml/clutter-backend.xml"/>
-    <xi:include href="xml/clutter-glx.xml"/>
+    <xi:include href="xml/clutter-x11.xml"/>
 
   </part>
 

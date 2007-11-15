@@ -1,5 +1,13 @@
 2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* Makefile.am: Ignore the OSX backend subdirectory and
+	scan the clutter-x11.h header
+
+	* clutter-docs.sgml:
+	* clutter-sections.txt: Update.
+
+2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-sections.txt: Add new ClutterTimeline API
 
 2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>

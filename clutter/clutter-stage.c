@@ -398,7 +398,7 @@ clutter_stage_init (ClutterStage *self)
   priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED (100.0);
 
   clutter_actor_set_size (CLUTTER_ACTOR (self), 640, 480);
-  clutter_actor_set_reactive (CLUTTER_ACTOR (self));
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
   clutter_stage_set_key_focus (self, NULL);
 }
 

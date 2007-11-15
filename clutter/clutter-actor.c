@@ -794,6 +794,9 @@ clutter_actor_request_coords (ClutterActor    *self,
   ClutterActorClass *klass;
   gboolean x_change, y_change, width_change, height_change;
 
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (box != NULL);
+
   klass = CLUTTER_ACTOR_GET_CLASS (self);
 
   if (klass->request_coords)
@@ -853,6 +856,9 @@ clutter_actor_query_coords (ClutterActor    *self,
 {
   ClutterActorClass *klass;
 
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (box != NULL);
+
   klass = CLUTTER_ACTOR_GET_CLASS (self);
 
   box->x1 = self->priv->coords.x1;
@@ -892,24 +898,16 @@ clutter_actor_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_X:
-      clutter_actor_set_position (actor,
-				  g_value_get_int (value),
-				  clutter_actor_get_y (actor));
+      clutter_actor_set_x (actor, g_value_get_int (value));
       break;
     case PROP_Y:
-      clutter_actor_set_position (actor,
-				  clutter_actor_get_x (actor),
-				  g_value_get_int (value));
+      clutter_actor_set_y (actor, g_value_get_int (value));
       break;
     case PROP_WIDTH:
-      clutter_actor_set_size (actor,
-			      g_value_get_int (value),
-			      clutter_actor_get_height (actor));
+      clutter_actor_set_width (actor, g_value_get_int (value));
       break;
     case PROP_HEIGHT:
-      clutter_actor_set_size (actor,
-			      clutter_actor_get_width (actor),
-			      g_value_get_int (value));
+      clutter_actor_set_height (actor, g_value_get_int (value));
       break;
     case PROP_DEPTH:
       clutter_actor_set_depth (actor, g_value_get_int (value));
@@ -948,10 +946,7 @@ clutter_actor_set_property (GObject      *object,
       }
       break;
     case PROP_REACTIVE:
-      if (g_value_get_boolean (value) == TRUE)
-        clutter_actor_set_reactive (actor);
-      else
-        clutter_actor_unset_reactive (actor);
+      clutter_actor_set_reactive (actor, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1785,29 +1780,45 @@ clutter_actor_move_by (ClutterActor *self,
   clutter_actor_request_coords (self, &box);
 }
 
+/* local inline version, without type checking to be used by
+ * set_width() and set_height(). if one of the dimensions is < 0
+ * it will not be changed
+ */
+static inline void
+clutter_actor_set_size_internal (ClutterActor *self,
+                                 gint          width,
+                                 gint          height)
+{
+  ClutterActorBox box;
+
+  clutter_actor_query_coords (self, &box);
+
+  if (width > 0)
+    box.x2 = box.x1 + CLUTTER_UNITS_FROM_INT (width);
+
+  if (height > 0)
+    box.y2 = box.y1 + CLUTTER_UNITS_FROM_INT (height);
+
+  clutter_actor_request_coords (self, &box);
+}
+
 /**
  * clutter_actor_set_size
  * @self: A #ClutterActor
- * @width: New width of actor in pixels
- * @height: New height of actor in pixels
+ * @width: New width of actor in pixels, or -1
+ * @height: New height of actor in pixels, or -1
  *
- * Sets the actors size in pixels.
+ * Sets the actors size in pixels. If @width and/or @height are -1 the
+ * actor will assume the same size of its bounding box.
  */
 void
 clutter_actor_set_size (ClutterActor *self,
 			gint          width,
 			gint          height)
 {
-  ClutterActorBox box;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_query_coords (self, &box);
-
-  box.x2 = box.x1 + CLUTTER_UNITS_FROM_INT (width);
-  box.y2 = box.y1 + CLUTTER_UNITS_FROM_INT (height);
-
-  clutter_actor_request_coords (self, &box);
+  clutter_actor_set_size_internal (self, width, height);
 }
 
 /**
@@ -1836,6 +1847,34 @@ clutter_actor_get_size (ClutterActor *self,
 
   if (height)
     *height = CLUTTER_UNITS_TO_INT (box.y2 - box.y1);
+}
+
+/**
+ * clutter_actor_get_position:
+ * @self: a #ClutterActor
+ * @x: return location for the X coordinate, or %NULL
+ * @y: return location for the Y coordinate, or %NULL
+ *
+ * Retrieves the position of an actor.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_get_position (ClutterActor *self,
+                            gint         *x,
+                            gint         *y)
+{
+  ClutterActorBox box = { 0, };
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_query_coords (self, &box);
+
+  if (x)
+    *x = CLUTTER_UNITS_TO_INT (box.x1);
+
+  if (y)
+    *y = CLUTTER_UNITS_TO_INT (box.y1);
 }
 
 /*
@@ -2021,11 +2060,12 @@ clutter_actor_get_height (ClutterActor *self)
  * since: 2.0
  **/
 void
-clutter_actor_set_width (ClutterActor *self, guint width)
+clutter_actor_set_width (ClutterActor *self,
+                         guint         width)
 {
-  clutter_actor_set_size (self,
-			  width,
-			  clutter_actor_get_height (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_size_internal (self, width, -1);
 }
 
 /**
@@ -2038,13 +2078,53 @@ clutter_actor_set_width (ClutterActor *self, guint width)
  * since: 2.0
  **/
 void
-clutter_actor_set_height (ClutterActor *self, guint height)
+clutter_actor_set_height (ClutterActor *self,
+                          guint         height)
 {
-  clutter_actor_set_size (self,
-			  clutter_actor_get_width (self),
-			  height);
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_size_internal (self, -1, height);
 }
 
+/**
+ * clutter_actor_set_x:
+ * @self: a #ClutterActor
+ * @x: the actors position on the X axis
+ *
+ * Sets the actor's x position relative to its parent.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_set_x (ClutterActor *self,
+                     gint          x)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_position (self,
+                              x,
+                              clutter_actor_get_y (self));
+}
+
+/**
+ * clutter_actor_set_y:
+ * @self: a #ClutterActor
+ * @y: the actors position on the Y axis
+ *
+ * Sets the actor's y position relative to its parent.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_set_y (ClutterActor *self,
+                     gint          y)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_position (self,
+                              clutter_actor_get_x (self),
+                              y);
+}
 
 /**
  * clutter_actor_get_x
@@ -2780,6 +2860,47 @@ clutter_actor_has_clip (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_get_clip:
+ * @self: a #ClutterActor
+ * @xoff: return location for the X offset of the clip rectangle, or %NULL
+ * @yoff: return location for the Y offset of the clip rectangle, or %NULL
+ * @width: return location for the width of the clip rectangle, or %NULL
+ * @height: return location for the height of the clip rectangle, or %NULL
+ *
+ * Gets the clip area for @self, in pixels.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_get_clip (ClutterActor *self,
+			gint         *xoff,
+			gint         *yoff,
+			gint         *width,
+			gint         *height)
+{
+  ClutterActorPrivate *priv;
+  ClutterGeometry clip = { 0, };
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (!priv->has_clip)
+    return;
+
+  clip = priv->clip;
+
+  if (xoff)
+    *xoff = clip.x;
+  if (yoff)
+    *yoff = clip.y;
+  if (width)
+    *width = clip.width;
+  if (height)
+    *height = clip.height;
+}
+
+/**
  * clutter_actor_set_parent:
  * @self: A #ClutterActor
  * @parent: A new #ClutterActor parent
@@ -3161,37 +3282,29 @@ out:
 /**
  * clutter_actor_set_reactive:
  * @actor: a #ClutterActor
+ * @reactive: whether the actor should be reactive to events
  *
  * Sets @actor as reactive. Reactive actors will receive events.
  *
  * Since: 0.6
  */
 void
-clutter_actor_set_reactive (ClutterActor *actor)
+clutter_actor_set_reactive (ClutterActor *actor,
+                            gboolean      reactive)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
+  if (reactive == CLUTTER_ACTOR_IS_REACTIVE (actor))
+    return;
+
+  if (reactive)
+    CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
+  else
+    CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
 }
 
 /**
- * clutter_actor_unset_reactive:
- * @actor: a #ClutterActor
- *
- * Sets @actor as not reactive.
- *
- * Since: 0.6
- */
-void
-clutter_actor_unset_reactive (ClutterActor *actor)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
-}
-
-/**
- * clutter_actor_is_reactive:
+ * clutter_actor_get_reactive:
  * @actor: a #ClutterActor
  *
  * Checks whether @actor is marked as reactive.
@@ -3201,53 +3314,11 @@ clutter_actor_unset_reactive (ClutterActor *actor)
  * Since: 0.6
  */
 gboolean
-clutter_actor_is_reactive (ClutterActor *actor)
+clutter_actor_get_reactive (ClutterActor *actor)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
 
   return CLUTTER_ACTOR_IS_REACTIVE (actor);
-}
-
-/**
- * clutter_actor_push_transform_child:
- *
- * Makes all the children follow the parent's transformation matrix
- * until clutter_actor_pop_transform_child().
- *
- * This function should be used by every actor with children inside
- * its paint function, in order to make its children transform (that is:
- * rotate, scale, etc.) with its parent, like:
- *
- * <informalexample><programlisting>
- * clutter_actor_push_transform_child (<!-- -->);
- * for (l = my_actor-&gt;children; l != NULL; l = l-&gt;next)
- *   {
- *     ClutterActor *actor = l-&gt;data;
- *     clutter_actor_paint (child);
- *   }
- * clutter_actor_pop_transform_child (<!-- -->);
- * </programlisting></informalexample>
- *
- * Since: 0.6
- */
-void
-clutter_actor_push_transform_child (void)
-{
-  cogl_push_matrix ();
-}
-
-/**
- * clutter_actor_pop_transform_child:
- *
- * Cancels the effects of a previous clutter_actor_push_transform_child()
- * call.
- *
- * Since: 0.6
- */
-void
-clutter_actor_pop_transform_child (void)
-{
-  cogl_pop_matrix ();
 }
 
 /*

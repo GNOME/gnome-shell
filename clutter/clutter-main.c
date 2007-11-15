@@ -238,7 +238,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* Decode color back into an ID, taking into account fb depth */
   id = pixel[2]>>(8-b) | pixel[1]<<b>>(8-g) | pixel[0]<<(g+b)>>(8-r);
 
-  return clutter_get_actor_by_id (id);
+  return clutter_get_actor_by_gid (id);
 }
 
 /**
@@ -1176,7 +1176,7 @@ deliver_event (ClutterEvent *event)
   /* Build 'tree' of events */
   while (actor && n_tree_events < MAX_EVENT_DEPTH)
     {
-      if (clutter_actor_is_reactive (actor) ||
+      if (clutter_actor_get_reactive (actor) ||
 	  clutter_actor_get_parent (actor) == NULL)
 	event_tree[n_tree_events++] = g_object_ref (actor);
 
@@ -1410,15 +1410,18 @@ clutter_do_event (ClutterEvent *event)
 }
 
 /** 
- * clutter_get_actor_by_id
+ * clutter_get_actor_by_gid
  * @id: a #ClutterActor ID.
  *
- * FIXME.
+ * Retrieves the #ClutterActor with @id.
+ *
+ * Return value: the actor with the passed id or %NULL. The returned
+ *   actor does not have its reference count increased.
  *
  * Since: 0.6
  */
 ClutterActor*
-clutter_get_actor_by_id (guint32 id)
+clutter_get_actor_by_gid (guint32 id)
 {
   ClutterMainContext *context;
 

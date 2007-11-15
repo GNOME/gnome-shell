@@ -183,7 +183,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 100, 100);
 
-  clutter_actor_set_reactive (actor);
+  clutter_actor_set_reactive (actor, TRUE);
 
   clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
 
@@ -200,7 +200,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 250, 100);
 
-  clutter_actor_set_reactive (actor);
+  clutter_actor_set_reactive (actor, TRUE);
 
   clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
 
@@ -214,7 +214,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 400, 100);
 
-  clutter_actor_set_reactive (actor);
+  clutter_actor_set_reactive (actor, TRUE);
 
   clutter_container_add (CLUTTER_CONTAINER(stage), actor, NULL);
 
