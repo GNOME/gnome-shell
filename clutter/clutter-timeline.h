@@ -55,6 +55,20 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_TIMELINE, ClutterTimelineClass))
 
+/**
+ * ClutterTimelineDirection:
+ * @CLUTTER_TIMELINE_FORWARD: forward direction for a timeline
+ * @CLUTTER_TIMELINE_BACKWARD: backward direction for a timeline
+ *
+ * The direction of a #ClutterTimeline
+ *
+ * Since: 0.6
+ */
+typedef enum {
+  CLUTTER_TIMELINE_FORWARD,
+  CLUTTER_TIMELINE_BACKWARD
+} ClutterTimelineDirection;
+
 typedef struct _ClutterTimeline        ClutterTimeline;
 typedef struct _ClutterTimelineClass   ClutterTimelineClass; 
 typedef struct _ClutterTimelinePrivate ClutterTimelinePrivate;
@@ -89,38 +103,41 @@ struct _ClutterTimelineClass
 
 GType clutter_timeline_get_type (void) G_GNUC_CONST;
 
-ClutterTimeline *clutter_timeline_new               (guint            n_frames,
-                                                     guint            fps);
-ClutterTimeline *clutter_timeline_new_for_duration  (guint            msecs);
-ClutterTimeline *clutter_timeline_clone             (ClutterTimeline *timeline);
+ClutterTimeline *clutter_timeline_new                   (guint            n_frames,
+                                                         guint            fps);
+ClutterTimeline *clutter_timeline_new_for_duration      (guint            msecs);
+ClutterTimeline *clutter_timeline_clone                 (ClutterTimeline *timeline);
 
-guint            clutter_timeline_get_duration      (ClutterTimeline *timeline);
-void             clutter_timeline_set_duration      (ClutterTimeline *timeline,
-                                                     guint            msecs);
-guint            clutter_timeline_get_speed         (ClutterTimeline *timeline);
-void             clutter_timeline_set_speed         (ClutterTimeline *timeline,
-                                                     guint            fps);
-void             clutter_timeline_start             (ClutterTimeline *timeline);
-void             clutter_timeline_pause             (ClutterTimeline *timeline);
-void             clutter_timeline_stop              (ClutterTimeline *timeline);
-void             clutter_timeline_set_loop          (ClutterTimeline *timeline,
-                                                     gboolean         loop);
-gboolean         clutter_timeline_get_loop          (ClutterTimeline *timeline);
-void             clutter_timeline_rewind            (ClutterTimeline *timeline);
-void             clutter_timeline_skip              (ClutterTimeline *timeline,
-                                                     guint            n_frames);
-void             clutter_timeline_advance           (ClutterTimeline *timeline,
-                                                     guint            frame_num);
-gint             clutter_timeline_get_current_frame (ClutterTimeline *timeline);
-gdouble          clutter_timeline_get_progress      (ClutterTimeline *timeline);
-ClutterFixed     clutter_timeline_get_progressx     (ClutterTimeline *timeline);
-void             clutter_timeline_set_n_frames      (ClutterTimeline *timeline,
-                                                     guint            n_frames);
-guint            clutter_timeline_get_n_frames      (ClutterTimeline *timeline);
-gboolean         clutter_timeline_is_playing        (ClutterTimeline *timeline);
-void             clutter_timeline_set_delay         (ClutterTimeline *timeline,
-                                                     guint            msecs);
-guint            clutter_timeline_get_delay         (ClutterTimeline *timeline);
+guint            clutter_timeline_get_duration          (ClutterTimeline *timeline);
+void             clutter_timeline_set_duration          (ClutterTimeline *timeline,
+                                                         guint            msecs);
+guint            clutter_timeline_get_speed             (ClutterTimeline *timeline);
+void             clutter_timeline_set_speed             (ClutterTimeline *timeline,
+                                                         guint            fps);
+ClutterTimelineDirection clutter_timeline_get_direction (ClutterTimeline *timeline);
+void             clutter_timeline_set_direction         (ClutterTimeline *timeline,
+                                                         ClutterTimelineDirection direction);
+void             clutter_timeline_start                 (ClutterTimeline *timeline);
+void             clutter_timeline_pause                 (ClutterTimeline *timeline);
+void             clutter_timeline_stop                  (ClutterTimeline *timeline);
+void             clutter_timeline_set_loop              (ClutterTimeline *timeline,
+                                                         gboolean         loop);
+gboolean         clutter_timeline_get_loop              (ClutterTimeline *timeline);
+void             clutter_timeline_rewind                (ClutterTimeline *timeline);
+void             clutter_timeline_skip                  (ClutterTimeline *timeline,
+                                                         guint            n_frames);
+void             clutter_timeline_advance               (ClutterTimeline *timeline,
+                                                         guint            frame_num);
+gint             clutter_timeline_get_current_frame     (ClutterTimeline *timeline);
+gdouble          clutter_timeline_get_progress          (ClutterTimeline *timeline);
+ClutterFixed     clutter_timeline_get_progressx         (ClutterTimeline *timeline);
+void             clutter_timeline_set_n_frames          (ClutterTimeline *timeline,
+                                                         guint            n_frames);
+guint            clutter_timeline_get_n_frames          (ClutterTimeline *timeline);
+gboolean         clutter_timeline_is_playing            (ClutterTimeline *timeline);
+void             clutter_timeline_set_delay             (ClutterTimeline *timeline,
+                                                         guint            msecs);
+guint            clutter_timeline_get_delay             (ClutterTimeline *timeline);
 
 G_END_DECLS
 

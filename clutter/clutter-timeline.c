@@ -49,6 +49,7 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+#include "clutter-enum-types.h"
 
 G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
@@ -57,12 +58,15 @@ G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
 struct _ClutterTimelinePrivate
 {
+  ClutterTimelineDirection direction;
+
   guint timeout_id;
   guint delay_id;
 
+  gint current_frame_num;
+
   guint fps;
   guint n_frames;
-  guint current_frame_num;
   guint delay;
   guint duration;
 
@@ -80,7 +84,8 @@ enum
   PROP_NUM_FRAMES,
   PROP_LOOP,
   PROP_DELAY,
-  PROP_DURATION
+  PROP_DURATION,
+  PROP_DIRECTION
 };
 
 enum
@@ -186,6 +191,9 @@ clutter_timeline_set_property (GObject      *object,
     case PROP_DURATION:
       clutter_timeline_set_duration (timeline, g_value_get_uint (value));
       break;
+    case PROP_DIRECTION:
+      clutter_timeline_set_direction (timeline, g_value_get_enum (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -220,6 +228,9 @@ clutter_timeline_get_property (GObject    *object,
       break;
     case PROP_DURATION:
       g_value_set_uint (value, priv->duration);
+      break;
+    case PROP_DIRECTION:
+      g_value_set_enum (value, priv->direction);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -340,6 +351,22 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                                                       "Duration of the timeline in milliseconds",
                                                       0, G_MAXUINT,
                                                       1000,
+                                                      CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterTimeline:direction:
+   * 
+   * The direction of the timeline, either %CLUTTER_TIMELINE_FORWARD or
+   * %CLUTTER_TIMELINE_BACKWARD.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_DIRECTION,
+                                   g_param_spec_enum ("direction",
+                                                      "Direction",
+                                                      "Direction of the timeline",
+                                                      CLUTTER_TYPE_TIMELINE_DIRECTION,
+                                                      CLUTTER_TIMELINE_FORWARD,
                                                       CLUTTER_PARAM_READWRITE));
 
   /**
@@ -499,10 +526,16 @@ timeline_timeout_func (gpointer data)
   priv->last_frame_msecs = msecs;
 
   /* Advance frames */
-  priv->current_frame_num += n_frames;;
+  if (priv->direction == CLUTTER_TIMELINE_FORWARD)
+    priv->current_frame_num += n_frames;
+  else
+    priv->current_frame_num -= n_frames;
 
   /* Handle loop or stop */
-  if (priv->current_frame_num > priv->n_frames)
+  if (((priv->direction == CLUTTER_TIMELINE_FORWARD) &&
+       (priv->current_frame_num > priv->n_frames)) ||
+      ((priv->direction == CLUTTER_TIMELINE_BACKWARD) &&
+       (priv->current_frame_num < 0)))
     {
       guint frame_diff;
 
@@ -513,8 +546,16 @@ timeline_timeout_func (gpointer data)
                     priv->n_frames,
                     n_frames - 1);
 
-      frame_diff = priv->current_frame_num - priv->n_frames;
-      priv->current_frame_num = priv->n_frames;
+      if (priv->direction == CLUTTER_TIMELINE_FORWARD)
+        {
+          frame_diff = priv->current_frame_num - priv->n_frames;
+          priv->current_frame_num = priv->n_frames;
+        }
+      else
+        {
+          frame_diff = priv->n_frames - priv->current_frame_num;
+          priv->current_frame_num = 0;
+        }
 
       /* if we skipped some frame to get here let's see whether we still need
        * to emit the last new-frame signal with the last frame
@@ -699,9 +740,16 @@ clutter_timeline_get_loop (ClutterTimeline *timeline)
 void
 clutter_timeline_rewind (ClutterTimeline *timeline)
 {
+  ClutterTimelinePrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
 
-  clutter_timeline_advance (timeline, 0);
+  priv = timeline->priv;
+
+  if (priv->direction == CLUTTER_TIMELINE_FORWARD)
+    clutter_timeline_advance (timeline, 0);
+  else if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
+    clutter_timeline_advance (timeline, priv->n_frames);
 }
 
 /**
@@ -723,8 +771,20 @@ clutter_timeline_skip (ClutterTimeline *timeline,
 
   priv->current_frame_num += n_frames;
 
-  if (priv->current_frame_num > priv->n_frames)
-    priv->current_frame_num = 1;
+  if (priv->direction == CLUTTER_TIMELINE_FORWARD)
+    {
+      priv->current_frame_num += n_frames;
+
+      if (priv->current_frame_num > priv->n_frames)
+        priv->current_frame_num = 1;
+    }
+  else if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
+    {
+      priv->current_frame_num -= n_frames;
+
+      if (priv->current_frame_num < 1)
+        priv->current_frame_num = priv->n_frames - 1;
+    }
 }
 
 /**
@@ -744,8 +804,7 @@ clutter_timeline_advance (ClutterTimeline *timeline,
 
   priv = timeline->priv;
 
-  if (frame_num < priv->n_frames)
-    priv->current_frame_num = frame_num;
+  priv->current_frame_num = CLAMP (frame_num, 0, priv->n_frames);
 }
 
 /**
@@ -800,12 +859,9 @@ clutter_timeline_set_n_frames (ClutterTimeline *timeline,
 
   if (priv->n_frames != n_frames)
     {
-      g_object_ref (timeline);
-
       priv->n_frames = n_frames;
 
       g_object_notify (G_OBJECT (timeline), "num-frames");
-      g_object_unref (timeline);
     }
 }
 
@@ -905,6 +961,7 @@ clutter_timeline_clone (ClutterTimeline *timeline)
                        "num-frames", clutter_timeline_get_n_frames (timeline),
                        "loop", clutter_timeline_get_loop (timeline),
                        "delay", clutter_timeline_get_delay (timeline),
+                       "direction", clutter_timeline_get_direction (timeline),
                        NULL);
 
   return copy;
@@ -1091,6 +1148,60 @@ clutter_timeline_get_progressx (ClutterTimeline *timeline)
 
   priv = timeline->priv;
 
-  return CLUTTER_FIXED_DIV (CLUTTER_INT_TO_FIXED (priv->current_frame_num),
-                            CLUTTER_INT_TO_FIXED (priv->n_frames));
+  if (priv->direction == CLUTTER_TIMELINE_FORWARD)
+    return CLUTTER_FIXED_DIV (CLUTTER_INT_TO_FIXED (priv->current_frame_num),
+                              CLUTTER_INT_TO_FIXED (priv->n_frames));
+  else
+    return CLUTTER_FIXED_DIV (CLUTTER_INT_TO_FIXED (priv->n_frames),
+                              CLUTTER_INT_TO_FIXED (priv->current_frame_num));
+}
+
+/**
+ * clutter_timeline_get_direction:
+ * @timeline: a #ClutterTimeline
+ *
+ * Retrieves the direction of the timeline set with
+ * clutter_timeline_set_direction().
+ *
+ * Return value: the direction of the timeline
+ *
+ * Since: 0.6
+ */
+ClutterTimelineDirection
+clutter_timeline_get_direction (ClutterTimeline *timeline)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), CLUTTER_TIMELINE_FORWARD);
+
+  return timeline->priv->direction;
+}
+
+/**
+ * clutter_timeline_set_direction:
+ * @timeline: a #ClutterTimeline
+ * @direction: the direction of the timeline
+ *
+ * Sets the direction of @timeline, either %CLUTTER_TIMELINE_FORWARD or
+ * %CLUTTER_TIMELINE_BACKWARD.
+ *
+ * Since: 0.6
+ */
+void
+clutter_timeline_set_direction (ClutterTimeline          *timeline,
+                                ClutterTimelineDirection  direction)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+
+  priv = timeline->priv;
+
+  if (priv->direction != direction)
+    {
+      priv->direction = direction;
+
+      if (priv->current_frame_num == 0)
+        priv->current_frame_num = priv->n_frames;
+
+      g_object_notify (G_OBJECT (timeline), "direction");
+    }
 }

@@ -1,5 +1,15 @@
 2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-timeline.[ch]: Add ClutterTimeline:direction
+	property, defining the direction (forward or backward) of the
+	timeline.
+
+	* tests/test-timeline.c: Test the direction property.
+
+	* clutter.symbols: Update exported symbols
+
+2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-effect.h:
 	* clutter/clutter-effect.c:
 	(clutter_effect_template_new_for_duration): Add a simple constructor

@@ -422,9 +422,12 @@ clutter_texture_has_generated_tiles
 clutter_texture_is_tiled
 clutter_timeline_get_type
 clutter_timeline_new               
+clutter_timeline_new_for_duration
 clutter_timeline_clone             
 clutter_timeline_get_speed
 clutter_timeline_set_speed
+clutter_timeline_get_direction
+clutter_timeline_set_direction
 clutter_timeline_start
 clutter_timeline_pause
 clutter_timeline_stop
@@ -439,6 +442,8 @@ clutter_timeline_get_n_frames
 clutter_timeline_is_playing
 clutter_timeline_set_delay
 clutter_timeline_get_delay
+clutter_timeline_set_duration
+clutter_timeline_get_duration
 clutter_timeout_pool_new    
 clutter_timeout_pool_add
 clutter_timeout_pool_remove

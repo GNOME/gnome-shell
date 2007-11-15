@@ -48,8 +48,11 @@ main (int argc, char **argv)
   clutter_init (&argc, &argv);
 
   timeline_1 = clutter_timeline_new (10, 120);
+
   timeline_2 = clutter_timeline_clone (timeline_1);
+
   timeline_3 = clutter_timeline_clone (timeline_1);
+  clutter_timeline_set_direction (timeline_3, CLUTTER_TIMELINE_BACKWARD);
 
   g_signal_connect (timeline_1,
                     "new-frame", G_CALLBACK (timeline_1_new_frame_cb),
