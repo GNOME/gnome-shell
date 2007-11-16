@@ -1,3 +1,7 @@
+2007-11-16  Øyvind Kolås  <pippin@gimp.org>
+
+	* tests/test-grab.c: (main): fix use of clutter_actor_set_reactive
+
 2007-11-15  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-main.[ch]: added clutter_grab_keyboard,

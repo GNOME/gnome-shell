@@ -220,7 +220,7 @@ main (int argc, char *argv[])
   actor = clutter_rectangle_new_with_color (&ccol);
   clutter_actor_set_size (actor, 100, 100);
   clutter_actor_set_position (actor, 500, 100);
-  clutter_actor_set_reactive (actor);
+  clutter_actor_set_reactive (actor, TRUE);
   clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
   g_signal_connect (actor, "event",
                     G_CALLBACK (debug_event_cb), "cyan box");
