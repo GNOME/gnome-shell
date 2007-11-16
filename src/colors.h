@@ -24,13 +24,17 @@
 #ifndef META_COLORS_H
 #define META_COLORS_H
 
+/* Colors/state stuff matches GTK.
+ */
+typedef struct _MetaUIColors MetaUIColors;
+
 /* This stuff will all just be XlibRGB eventually. Right now
  * it has a stub implementation.
  */
 
 #include "screen.h"
 #include "util.h"
-#include "api.h"
+
 gulong              meta_screen_get_x_pixel      (MetaScreen         *screen,
                                                   const PangoColor   *color);
 void                meta_screen_init_visual_info (MetaScreen         *screen);

@@ -23,6 +23,17 @@
 
 #include "colors.h"
 
+struct _MetaUIColors
+{
+  PangoColor fg[5];
+  PangoColor bg[5];
+  PangoColor light[5];
+  PangoColor dark[5];
+  PangoColor mid[5];
+  PangoColor text[5];
+  PangoColor base[5];
+  PangoColor text_aa[5];
+};
 
 static void
 visual_decompose_mask (gulong  mask,

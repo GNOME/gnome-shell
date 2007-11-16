@@ -1,9 +1,15 @@
+2007-11-15  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/api.[ch]: remove almost-unused files.
+	* src/colors.[ch]: move the used parts of api.[ch] in here.
+	Closes #496947.
+	
 2007-11-13  Peter Bloomfield  <pbloomfield@bellsouth.net>
 
         * src/window.c: (meta_window_save_user_rect): new helper, saves
-        only unmaximized dimensions, and not when fullscreen.
+	only unmaximized dimensions, and not when fullscreen.
         (meta_window_move_resize_internal,
-        meta_window_move_resize_request): use it.  (#461927)
+	meta_window_move_resize_request): use it.  (#461927)
 
 2007-11-11  Thomas Thurman  <thomas@thurman.org.uk>
 
