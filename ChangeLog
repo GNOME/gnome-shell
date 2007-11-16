@@ -1,4 +1,14 @@
-2007-11-16  Øyvind Kolås  <pippin@gimp.org>
+2007-11-16  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-main.c: (emit_event): renamed from deliver_event,
+	(emit_pointer_event): utility function to emit pointer event signals
+	(which takes pointer grab into account).
+	(emit_keyboard_event): utility function to emit keyboard event signals
+	(which takes keyboard grab into account).
+	(clutter_do_event): use the above utility functions, also reindented
+	the source.
+
+2007-11-16  Øyvind Kolås  <pippin@o-hand.com>
 
 	* tests/test-grab.c: (main): fix use of clutter_actor_set_reactive
 

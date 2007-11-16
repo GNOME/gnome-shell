@@ -1151,16 +1151,18 @@ event_click_count_generate (ClutterEvent *event)
     }
 }
 
+
 static inline void 
-deliver_event (ClutterEvent *event)
+emit_event (ClutterEvent *event,
+            gboolean      is_key_event)
 {
 #define MAX_EVENT_DEPTH 512
 
-  static ClutterActor  **event_tree = NULL;
-  static gboolean        lock = FALSE;
+  static ClutterActor **event_tree = NULL;
+  static gboolean       lock = FALSE;
 
-  ClutterActor          *actor;
-  gint                   i = 0, n_tree_events = 0;
+  ClutterActor         *actor;
+  gint                  i = 0, n_tree_events = 0;
 
   g_return_if_fail (event->any.source != NULL);
   g_return_if_fail (lock == FALSE);
@@ -1173,14 +1175,21 @@ deliver_event (ClutterEvent *event)
 
   actor = event->any.source;
 
-  /* Build 'tree' of events */
+  /* Build 'tree' of emitters for the event */
   while (actor && n_tree_events < MAX_EVENT_DEPTH)
     {
-      if (clutter_actor_get_reactive (actor) ||
-	  clutter_actor_get_parent (actor) == NULL)
-	event_tree[n_tree_events++] = g_object_ref (actor);
+      ClutterActor *parent;
+      
+      parent = clutter_actor_get_parent (actor);
 
-      actor = clutter_actor_get_parent (actor);
+      if (clutter_actor_get_reactive (actor) ||
+          parent == NULL ||         /* stage gets all events */
+          is_key_event)             /* keyboard events are always emitted */
+        {
+          event_tree[n_tree_events++] = g_object_ref (actor);
+        }
+
+      actor = parent;
     }
 
   /* Capture */
@@ -1203,12 +1212,38 @@ done:
 #undef MAX_EVENT_DEPTH
 }
 
-static inline void
-generate_enter_leave_events (ClutterMainContext *context,
-                             ClutterActor       *motion_current_actor,
-                             ClutterEvent       *event)
+static inline void 
+emit_pointer_event (ClutterEvent *event)
 {
-  static ClutterActor *motion_last_actor = NULL; 
+  /* Using the global variable directly, since it has to be initialized
+   * at this point
+   */
+  ClutterMainContext *context = ClutterCntx;
+
+
+  if (G_UNLIKELY (context->pointer_grab_actor != NULL))
+    clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+  else
+    emit_event (event, FALSE);
+}
+
+static inline void 
+emit_keyboard_event (ClutterEvent *event)
+{
+  ClutterMainContext *context = ClutterCntx;
+
+  if (G_UNLIKELY (context->keyboard_grab_actor != NULL))
+    clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
+  else
+    emit_event (event, TRUE);
+}
+
+static inline void
+generate_enter_leave_events (ClutterEvent *event)
+{
+  ClutterMainContext  *context              = ClutterCntx;
+  static ClutterActor *motion_last_actor    = NULL; 
+  ClutterActor        *motion_current_actor = event->motion.source;
 
   if (motion_last_actor != motion_current_actor)
     {
@@ -1262,7 +1297,6 @@ clutter_do_event (ClutterEvent *event)
   ClutterBackend      *backend;
   ClutterActor        *stage;
 
-
   context = clutter_context_get_default ();
   backend = context->backend;
   stage   = _clutter_backend_get_stage (backend);
@@ -1274,141 +1308,124 @@ clutter_do_event (ClutterEvent *event)
 
   switch (event->type)
     {
-    case CLUTTER_NOTHING:
-      event->any.source = stage;
-      break;
-    case CLUTTER_ENTER:
-    case CLUTTER_LEAVE:
+      case CLUTTER_NOTHING:
+        event->any.source = stage;
+        break;
 
-      if (context->pointer_grab_actor != NULL)
+      case CLUTTER_ENTER:
+      case CLUTTER_LEAVE:
+        emit_pointer_event (event);
+        break;
+
+      case CLUTTER_DESTROY_NOTIFY:
+      case CLUTTER_DELETE:
+        event->any.source = stage;
+        if (clutter_stage_event (CLUTTER_STAGE (stage), event))
+          clutter_main_quit ();
+        break;
+
+      case CLUTTER_KEY_PRESS:
+      case CLUTTER_KEY_RELEASE:
         {
-          clutter_actor_event (context->pointer_grab_actor, event, FALSE);
-          return;
+          ClutterActor *actor = NULL;
+
+          actor = clutter_stage_get_key_focus (CLUTTER_STAGE (stage));
+          event->any.source = actor;
+
+          g_return_if_fail (actor != NULL);
+
+          emit_keyboard_event (event);
         }
-      deliver_event (event);
-      break;
-    case CLUTTER_DESTROY_NOTIFY:
-    case CLUTTER_DELETE:
-      event->any.source = stage;
-      if (clutter_stage_event (CLUTTER_STAGE (stage), event))
-        clutter_main_quit ();
-      break;
-    case CLUTTER_KEY_PRESS:
-    case CLUTTER_KEY_RELEASE:
-      {
-	ClutterActor *actor = NULL;
+        break;
 
-	actor = clutter_stage_get_key_focus (CLUTTER_STAGE (stage));
-	event->any.source = actor;
-
-	g_return_if_fail (actor != NULL);
-
-        if (context->keyboard_grab_actor != NULL)
+      case CLUTTER_MOTION:
+        if (context->motion_events_per_actor == FALSE)
           {
-            clutter_actor_event (context->keyboard_grab_actor, event, FALSE);
-            return;
-          }
-	deliver_event (event);
-      }
-      break;
-    case CLUTTER_MOTION:
-      if (context->motion_events_per_actor == FALSE)
-	{
-	  /* Only stage gets motion events */
-	  event->any.source = stage;
+            /* Only stage gets motion events */
+            event->any.source = stage;
 
-          if (context->pointer_grab_actor != NULL)
-            {
-              clutter_actor_event (context->pointer_grab_actor, event, FALSE);
-              return;
-            }
-
-          /* Trigger handlers on stage in both capture .. */
-          if (!clutter_actor_event (stage, event, TRUE))
-            {
-              /* and bubbling phase */
-              clutter_actor_event (stage, event, FALSE);
-            }
-
-	  break;
-	}
-    case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_BUTTON_RELEASE:
-    case CLUTTER_SCROLL:
-      {
-	ClutterActor *actor;
-	gint          x,y;
-
-	clutter_event_get_coords (event, &x, &y);
-
-	/* Handle release off stage */
-	if ((x >= CLUTTER_STAGE_WIDTH () ||
-	     y >= CLUTTER_STAGE_HEIGHT() ||
-	     x < 0 || y < 0))
-          {
-
-            if (event->type == CLUTTER_BUTTON_RELEASE)
+            if (context->pointer_grab_actor != NULL)
               {
-                CLUTTER_NOTE (EVENT, "Release off stage received at %i, %i", x, y);
+                clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+                break;
+              }
 
-                event->button.source = stage;
-
-                if (context->pointer_grab_actor != NULL)
-                  {
-                    clutter_actor_event (context->pointer_grab_actor,
-                                         event, FALSE);
-                    return;
-                  }
-	        deliver_event (event);
+            /* Trigger handlers on stage in both capture .. */
+            if (!clutter_actor_event (stage, event, TRUE))
+              {
+                /* and bubbling phase */
+                clutter_actor_event (stage, event, FALSE);
               }
             break;
           }
 
-	/* Map the event to a reactive actor */
-	actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
-				  x, y, 
-				  CLUTTER_PICK_REACTIVE);
+        /* fallthrough */
 
-        event->any.source = actor;
+      case CLUTTER_BUTTON_PRESS:
+      case CLUTTER_BUTTON_RELEASE:
+      case CLUTTER_SCROLL:
+        {
+          ClutterActor *actor;
+          gint          x,y;
 
-        if (!actor)
-          break;
+          clutter_event_get_coords (event, &x, &y);
 
-	 /* FIXME: for an optimisation should check if there are
-	 * actually any reactive actors and avoid the pick all togeather
-	 * (signalling just the stage). Should be big help for gles.
-	 */
-
-	CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
-		      x, y, actor);
-
-
-	if (event->type == CLUTTER_MOTION)
-	  {
-	    /* Generate enter leave events (if any) */
-            generate_enter_leave_events (context, actor, event);
-	  }
-	else /* (button event) */
-          {
-            /* Generate click count */
-	    event_click_count_generate (event);
-          }
-
-          if (context->pointer_grab_actor != NULL)
+          /* Handle release off stage */
+          if ((x >= CLUTTER_STAGE_WIDTH () ||
+               y >= CLUTTER_STAGE_HEIGHT() ||
+               x < 0 || y < 0))
             {
-              clutter_actor_event (context->pointer_grab_actor, event, FALSE);
-              return;
+              if (event->type == CLUTTER_BUTTON_RELEASE)
+                {
+                  CLUTTER_NOTE (EVENT, "Release off stage received at %i, %i",
+                                x, y);
+
+                  event->button.source = stage;
+                  emit_pointer_event (event);
+                }
+              break;
             }
-	  deliver_event (event);
-      }
-      break;
-    case CLUTTER_STAGE_STATE:
-      /* fullscreen / focus - forward to stage */
-      event->any.source = stage;
-      clutter_stage_event (CLUTTER_STAGE (stage), event);
-      break;
-    case CLUTTER_CLIENT_MESSAGE:
-      break;
+
+          /* Map the event to a reactive actor */
+          actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
+                                    x, y, 
+                                    CLUTTER_PICK_REACTIVE);
+
+          event->any.source = actor;
+
+          if (!actor)
+            break;
+
+          /* FIXME: for an optimisation should check if there are
+           * actually any reactive actors and avoid the pick all togeather
+           * (signalling just the stage). Should be big help for gles.
+           */
+
+          CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
+                        x, y, actor);
+
+          if (event->type == CLUTTER_MOTION)
+            {
+              /* Generate enter leave events (if any) */
+              generate_enter_leave_events (event);
+            }
+          else /* (button event) */
+            {
+              /* Generate click count */
+              event_click_count_generate (event);
+            }
+            emit_pointer_event (event);
+          break;
+        }
+
+      case CLUTTER_STAGE_STATE:
+        /* fullscreen / focus - forward to stage */
+        event->any.source = stage;
+        clutter_stage_event (CLUTTER_STAGE (stage), event);
+        break;
+
+      case CLUTTER_CLIENT_MESSAGE:
+        break;
     }
 }
 
