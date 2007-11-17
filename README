@@ -6,7 +6,7 @@ rich and animated graphical user interfaces.
 
 Clutter currently requires:
 
-  * GLib >= 2.10.0
+  * GLib >= 2.14.0
   * GdkPixbuf
   * Pango 1.x
   * OpenGL >= 1.2 or OpenGL ES 1.1
