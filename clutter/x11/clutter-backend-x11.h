@@ -67,8 +67,16 @@ struct _ClutterBackendX11
   GSList  *event_filters;
 
   /* props */
-  Atom atom_WM_STATE;
-  Atom atom_WM_STATE_FULLSCREEN;
+  Atom atom_NET_WM_PING;
+  Atom atom_NET_WM_STATE;
+  Atom atom_NET_WM_STATE_FULLSCREEN;
+  Atom atom_NET_WM_USER_TIME;
+  Atom atom_WM_PROTOCOLS;
+  Atom atom_WM_DELETE_WINDOW;
+  Atom atom_XEMBED;
+  Atom atom_XEMBED_INFO;
+  Atom atom_NET_WM_NAME;
+  Atom atom_UTF8_STRING;
 };
 
 struct _ClutterBackendX11Class

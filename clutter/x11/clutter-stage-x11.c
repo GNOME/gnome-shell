@@ -63,7 +63,7 @@ send_wmspec_change_state (ClutterBackendX11 *backend_x11,
 
   xclient.type         = ClientMessage;
   xclient.window       = window;
-  xclient.message_type = backend_x11->atom_WM_STATE;
+  xclient.message_type = backend_x11->atom_NET_WM_STATE;
   xclient.format       = 32;
 
   xclient.data.l[0] = add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
@@ -136,16 +136,16 @@ clutter_stage_x11_hide (ClutterActor *actor)
 }
 
 void
-clutter_stage_x11_set_wm_protocols (Display *xdisplay,
-				    Window   xwindow)
+clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11)
 {
+  ClutterBackendX11 *backend_x11 = stage_x11->backend;
   Atom protocols[2];
   int n = 0;
   
-  protocols[n++] = XInternAtom (xdisplay, "WM_DELETE_WINDOW", False);
-  protocols[n++] = XInternAtom (xdisplay, "_NET_WM_PING", False);
+  protocols[n++] = backend_x11->atom_WM_DELETE_WINDOW;
+  protocols[n++] = backend_x11->atom_NET_WM_PING;
 
-  XSetWMProtocols (xdisplay, xwindow, protocols, n);
+  XSetWMProtocols (stage_x11->xdpy, stage_x11->xwin, protocols, n);
 }
 
 static void
@@ -228,9 +228,9 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
 	      XChangeProperty 
 		(stage_x11->xdpy,
 		 stage_x11->xwin,
-		 backend_x11->atom_WM_STATE, XA_ATOM, 32,
+		 backend_x11->atom_NET_WM_STATE, XA_ATOM, 32,
 		 PropModeReplace,
-		 (unsigned char *)&backend_x11->atom_WM_STATE_FULLSCREEN,
+		 (unsigned char *)&backend_x11->atom_NET_WM_STATE_FULLSCREEN,
 		 1);
 	    }
 	  else
@@ -245,7 +245,7 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
 
 	      send_wmspec_change_state(backend_x11,
 				       stage_x11->xwin,
-				       backend_x11->atom_WM_STATE_FULLSCREEN,
+				       backend_x11->atom_NET_WM_STATE_FULLSCREEN,
 				       TRUE);
 	    }
 	}
@@ -259,7 +259,7 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
 	      /* FIXME: This wont work if we support more states */
 	      XDeleteProperty (stage_x11->xdpy, 
 			       stage_x11->xwin, 
-			       backend_x11->atom_WM_STATE);
+			       backend_x11->atom_NET_WM_STATE);
 	    }
 	  else
 	    {
@@ -267,7 +267,7 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
 
 	      send_wmspec_change_state(backend_x11,
 				       stage_x11->xwin,
-				       backend_x11->atom_WM_STATE_FULLSCREEN,
+				       backend_x11->atom_NET_WM_STATE_FULLSCREEN,
 				       FALSE);
 
 	      /* reset the windows state - this isn't fun - see above */
@@ -331,27 +331,23 @@ clutter_stage_x11_set_title (ClutterStage *stage,
 			     const gchar  *title)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage);
-  Atom             atom_NET_WM_NAME, atom_UTF8_STRING;
+  ClutterBackendX11 *backend_x11 = stage_x11->backend;
 
   if (stage_x11->xwin == None)
     return;
-
-  /* FIXME: pre create these to avoid too many round trips */
-  atom_NET_WM_NAME  = XInternAtom (stage_x11->xdpy, "_NET_WM_NAME", False);
-  atom_UTF8_STRING  = XInternAtom (stage_x11->xdpy, "UTF8_STRING", False);
 
   if (title == NULL)
     {
       XDeleteProperty (stage_x11->xdpy, 
 		       stage_x11->xwin, 
-		       atom_NET_WM_NAME);
+		       backend_x11->atom_NET_WM_NAME);
     }
   else
     {
       XChangeProperty (stage_x11->xdpy, 
 		       stage_x11->xwin, 
-		       atom_NET_WM_NAME, 
-		       atom_UTF8_STRING, 
+		       backend_x11->atom_NET_WM_NAME, 
+		       backend_x11->atom_UTF8_STRING, 
 		       8, 
 		       PropModeReplace, 
 		       (unsigned char*)title, 

@@ -1,5 +1,38 @@
 2007-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Optimise Atoms usage in the X11 and X11-based backends.
+
+	* clutter/x11/clutter-backend-x11.c:
+	(clutter_backend_x11_post_parse): Call XInternAtoms() here and
+	get all the atoms from X in one call.
+
+	* clutter/x11/clutter-backend-x11.h: Store all the atoms inside
+	the ClutterBackendX11 structure.
+
+	* clutter/x11/clutter-event-x11.c:
+	(xembed_send_message), (xembed_set_info),
+	(_clutter_backend_x11_events_init),
+	(set_user_time), (handle_wm_protocols_event),
+	(handle_xembed_event), (event_translate): Do not cache atoms
+	or call XInternAtom() directly, and use the atoms off the X11
+	backend structure instead.
+
+	* clutter/x11/clutter-stage-x11.c:
+	(send_wmspec_change_state), (clutter_stage_x11_set_wm_protocols),
+	(clutter_stage_x11_set_fullscreen),
+	(clutter_stage_x11_set_title): Ditto as above.
+
+	* clutter/x11/clutter-stage-x11.h: Update the set_wm_protocols()
+	method to take the X11 stage implementation.
+
+	* clutter/glx/clutter-stage-glx.c:
+	(clutter_stage_glx_realize): Update for the set_wm_protocols()
+	change.
+
+	* tests/test-project.c: (main): Test clutter_stage_set_title().
+
+2007-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac: Depend on GLib >= 2.14 because of ClutterModel
 	usage of GSequence.
 

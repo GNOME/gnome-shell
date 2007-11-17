@@ -72,8 +72,7 @@ void
 clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11);
 
 void
-clutter_stage_x11_set_wm_protocols (Display *xdisplay,
-				    Window   xwindow);
+clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11);
 
 G_END_DECLS
 

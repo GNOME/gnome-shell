@@ -86,10 +86,11 @@ frame_cb (ClutterTimeline *timeline,
   gint            i;
 
   /* Rotate everything clockwise about stage center*/
-  clutter_actor_rotate_z (CLUTTER_ACTOR (oh->group),
-			  frame_num,
-			  CLUTTER_STAGE_WIDTH() / 2,
-			  CLUTTER_STAGE_HEIGHT() / 2);
+  clutter_actor_set_rotation (CLUTTER_ACTOR (oh->group), frame_num,
+                              CLUTTER_Z_AXIS,
+                              CLUTTER_STAGE_WIDTH() / 2,
+                              CLUTTER_STAGE_HEIGHT() / 2,
+                              0);
 
   for (i = 0; i < n_hands; i++)
     {
@@ -103,15 +104,16 @@ frame_cb (ClutterTimeline *timeline,
        * FIXME: scaling causes drift so disabled for now. Need rotation
        * unit based functions to fix.
       */
-      clutter_actor_rotate_z 
-	      (oh->hand[i],
-	       - 6.0 * frame_num,
+      clutter_actor_set_rotation (oh->hand[i], - 6.0 * frame_num,
+                                  CLUTTER_Z_AXIS,
 #if 0
 	       (clutter_actor_get_width (oh->hand[i]) / 2) * scale_x,
-	       (clutter_actor_get_height (oh->hand[i]) / 2) * scale_y
-#endif
+	       (clutter_actor_get_height (oh->hand[i]) / 2) * scale_y,
+#else
 	       (clutter_actor_get_width (oh->hand[i]) / 2),
-	       (clutter_actor_get_height (oh->hand[i]) / 2));
+	       (clutter_actor_get_height (oh->hand[i]) / 2),
+#endif
+               0);
     }
 }
 
@@ -152,6 +154,7 @@ main (int argc, char *argv[])
   if (!pixbuf)
     g_error("pixbuf load failed");
 
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Actors Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage),
 		           &stage_color);
 

@@ -180,7 +180,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
       /* no user resize.. */
       clutter_stage_x11_fix_window_size (stage_x11);
 
-      clutter_stage_x11_set_wm_protocols (stage_x11->xdpy, stage_x11->xwin);
+      clutter_stage_x11_set_wm_protocols (stage_x11);
 
       if (stage_glx->gl_context)
 	glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);

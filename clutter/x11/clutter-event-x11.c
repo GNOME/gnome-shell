@@ -60,9 +60,6 @@
 #define XEMBED_UNREGISTER_ACCELERATOR   13
 #define XEMBED_ACTIVATE_ACCELERATOR     14
 
-static Atom Atom_XEMBED       = 0;
-static Atom Atom_WM_PROTOCOLS = 0;
-
 static Window ParentEmbedderWin = None;
 
 typedef struct _ClutterEventSource      ClutterEventSource;
@@ -109,12 +106,12 @@ check_xpending (ClutterBackend *backend)
 }
 
 static gboolean
-xembed_send_message (Display *xdisplay,
-                     Window   window,
-		     long     message,
-		     long     detail,
-		     long     data1, 
-		     long     data2)
+xembed_send_message (ClutterBackendX11 *backend_x11,
+                     Window             window,
+		     long               message,
+		     long               detail,
+		     long               data1, 
+		     long               data2)
 {
   XEvent ev;
 
@@ -122,7 +119,7 @@ xembed_send_message (Display *xdisplay,
 
   ev.xclient.type = ClientMessage;
   ev.xclient.window = window;
-  ev.xclient.message_type = Atom_XEMBED;
+  ev.xclient.message_type = backend_x11->atom_XEMBED;
   ev.xclient.format = 32;
   ev.xclient.data.l[0] = CurrentTime;
   ev.xclient.data.l[1] = message;
@@ -132,8 +129,8 @@ xembed_send_message (Display *xdisplay,
 
   clutter_x11_trap_x_errors ();
 
-  XSendEvent (xdisplay, window, False, NoEventMask, &ev);
-  XSync (xdisplay, False);
+  XSendEvent (backend_x11->xdpy, window, False, NoEventMask, &ev);
+  XSync (backend_x11->xdpy, False);
 
   if (clutter_x11_untrap_x_errors ())
     return False;
@@ -142,22 +139,19 @@ xembed_send_message (Display *xdisplay,
 }
 
 static void
-xembed_set_info (Display *xdisplay,
-                 Window   window,
-                 gint     flags)
+xembed_set_info (ClutterBackendX11 *backend_x11,
+                 Window             window,
+                 gint               flags)
 {
   gint32 list[2];
-  Atom atom_XEMBED_INFO;
-  
-  atom_XEMBED_INFO = XInternAtom (xdisplay, "_XEMBED_INFO", False);
 
   list[0] = MAX_SUPPORTED_XEMBED_VERSION;
   list[1] = XEMBED_MAPPED;
 
   clutter_x11_trap_x_errors ();
-  XChangeProperty (xdisplay, window,
-                   atom_XEMBED_INFO,
-                   atom_XEMBED_INFO, 32,
+  XChangeProperty (backend_x11->xdpy, window,
+                   backend_x11->atom_XEMBED_INFO,
+                   backend_x11->atom_XEMBED_INFO, 32,
                    PropModeReplace, (unsigned char *) list, 2);
   clutter_x11_untrap_x_errors ();
 }
@@ -165,16 +159,14 @@ xembed_set_info (Display *xdisplay,
 void
 _clutter_backend_x11_events_init (ClutterBackend *backend)
 {
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterStage *stage = CLUTTER_STAGE (backend_x11->stage);
   GSource *source;
   ClutterEventSource *event_source;
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   int connection_number;
   
   connection_number = ConnectionNumber (backend_x11->xdpy);
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
-
-  Atom_XEMBED = XInternAtom (backend_x11->xdpy, "_XEMBED", False);
-  Atom_WM_PROTOCOLS = XInternAtom (backend_x11->xdpy, "WM_PROTOCOLS", False);
 
   source = backend_x11->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
@@ -189,9 +181,8 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   g_source_set_can_recurse (source, TRUE);
   g_source_attach (source, NULL);
 
-  xembed_set_info (backend_x11->xdpy,
-                   clutter_x11_get_stage_window 
-                             (CLUTTER_STAGE (backend_x11->stage)),
+  xembed_set_info (backend_x11,
+                   clutter_x11_get_stage_window (stage), 
                    0);
 }
 
@@ -214,18 +205,14 @@ _clutter_backend_x11_events_uninit (ClutterBackend *backend)
 }
 
 static void
-set_user_time (Display *display,
-               Window  *xwindow,
-               long     timestamp)
+set_user_time (ClutterBackendX11 *backend_x11,
+               Window            *xwindow,
+               long               timestamp)
 {
   if (timestamp != CLUTTER_CURRENT_TIME)
     {
-      Atom atom_WM_USER_TIME;
-
-      atom_WM_USER_TIME = XInternAtom (display, "_NET_WM_USER_TIME", False);
-
-      XChangeProperty (display, *xwindow,
-                       atom_WM_USER_TIME,
+      XChangeProperty (backend_x11->xdpy, *xwindow,
+                       backend_x11->atom_NET_WM_USER_TIME,
                        XA_CARDINAL, 32, PropModeReplace,
                        (unsigned char *) &timestamp, 1);
     }
@@ -258,18 +245,10 @@ handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
                            XEvent            *xevent)
 {
   Atom atom = (Atom) xevent->xclient.data.l[0];
-  Atom Atom_WM_DELETE_WINDOW;
-  Atom Atom_NEW_WM_PING;
-
   ClutterStage *stage = CLUTTER_STAGE (backend_x11->stage);
   Window stage_xwindow = clutter_x11_get_stage_window (stage);
 
-  Atom_WM_DELETE_WINDOW = XInternAtom (backend_x11->xdpy,
-                                       "WM_DELETE_WINDOW",
-                                        False);
-  Atom_NEW_WM_PING = XInternAtom (backend_x11->xdpy, "_NET_WM_PING", False);
-
-  if (atom == Atom_WM_DELETE_WINDOW &&
+  if (atom == backend_x11->atom_WM_DELETE_WINDOW &&
       xevent->xany.window == stage_xwindow)
     {
       /* the WM_DELETE_WINDOW is a request: we do not destroy
@@ -280,13 +259,13 @@ handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
       CLUTTER_NOTE (EVENT, "delete window:\twindow: %ld",
                     xevent->xclient.window);
 
-      set_user_time (backend_x11->xdpy,
+      set_user_time (backend_x11,
                      &stage_xwindow,
                      xevent->xclient.data.l[1]);
 
       return TRUE;
     }
-  else if (atom == Atom_NEW_WM_PING &&
+  else if (atom == backend_x11->atom_NET_WM_PING &&
            xevent->xany.window == stage_xwindow)
     {
       XClientMessageEvent xclient = xevent->xclient;
@@ -323,7 +302,7 @@ handle_xembed_event (ClutterBackendX11 *backend_x11,
       clutter_actor_realize (stage);
       clutter_actor_show (stage);
 
-      xembed_set_info (backend_x11->xdpy,
+      xembed_set_info (backend_x11,
                        clutter_x11_get_stage_window (CLUTTER_STAGE (stage)),
                        XEMBED_MAPPED);
       break;
@@ -336,7 +315,7 @@ handle_xembed_event (ClutterBackendX11 *backend_x11,
     case XEMBED_FOCUS_IN:
       CLUTTER_NOTE (EVENT, "got XEMBED_FOCUS_IN");
       if (ParentEmbedderWin)
-        xembed_send_message (backend_x11->xdpy, ParentEmbedderWin,
+        xembed_send_message (backend_x11, ParentEmbedderWin,
                              XEMBED_FOCUS_NEXT,
                              0, 0, 0);
       break;
@@ -412,7 +391,7 @@ event_translate (ClutterBackend *backend,
       break;
     case PropertyNotify:
       {
-	if (xevent->xproperty.atom == backend_x11->atom_WM_STATE)
+	if (xevent->xproperty.atom == backend_x11->atom_NET_WM_STATE)
 	  {
 	    Atom     type;
 	    gint     format;
@@ -425,7 +404,7 @@ event_translate (ClutterBackend *backend,
 	    clutter_x11_trap_x_errors ();
 	    XGetWindowProperty (backend_x11->xdpy, 
 				stage_xwindow,
-				backend_x11->atom_WM_STATE,
+				backend_x11->atom_NET_WM_STATE,
 				0, G_MAXLONG, 
 				False, XA_ATOM, 
 				&type, &format, &nitems,
@@ -439,7 +418,7 @@ event_translate (ClutterBackend *backend,
 		i = 0;
 		while (i < nitems)
 		  {
-		    if (atoms[i] == backend_x11->atom_WM_STATE_FULLSCREEN)
+		    if (atoms[i] == backend_x11->atom_NET_WM_STATE_FULLSCREEN)
 		      fullscreen_set = TRUE;
 		    i++;
 		  }
@@ -512,7 +491,7 @@ event_translate (ClutterBackend *backend,
     case KeyPress:
       event->type = CLUTTER_KEY_PRESS;
       translate_key_event (backend, event, xevent);
-      set_user_time (backend_x11->xdpy, &xwindow, xevent->xkey.time);
+      set_user_time (backend_x11, &xwindow, xevent->xkey.time);
       break;
     case KeyRelease:
       event->type = CLUTTER_KEY_RELEASE;
@@ -553,7 +532,7 @@ event_translate (ClutterBackend *backend,
           break;
         }
 
-      set_user_time (backend_x11->xdpy, &xwindow, event->button.time);
+      set_user_time (backend_x11, &xwindow, event->button.time);
       break;
     case ButtonRelease:
       /* scroll events don't have a corresponding release */
@@ -590,9 +569,9 @@ event_translate (ClutterBackend *backend,
       
       event->type = event->any.type = CLUTTER_CLIENT_MESSAGE;
       
-      if (xevent->xclient.message_type == Atom_XEMBED)
+      if (xevent->xclient.message_type == backend_x11->atom_XEMBED)
         res = handle_xembed_event (backend_x11, xevent);
-      else if (xevent->xclient.message_type == Atom_WM_PROTOCOLS)
+      else if (xevent->xclient.message_type == backend_x11->atom_WM_PROTOCOLS)
         {
           res = handle_wm_protocols_event (backend_x11, xevent);
           event->type = event->any.type = CLUTTER_DELETE;

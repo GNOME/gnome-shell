@@ -47,6 +47,25 @@
 
 G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND);
 
+/* atoms; remember to add the code that assigns the atom value to
+ * the member of the ClutterBackendX11 structure if you add an
+ * atom name here. do not change the order!
+ */
+static const gchar *atom_names[] = {
+  "_NET_WM_PING",
+  "_NET_WM_STATE",
+  "_NET_WM_STATE_FULLSCREEN",
+  "_NET_WM_USER_TIME",
+  "WM_PROTOCOLS",
+  "WM_DELETE_WINDOW",
+  "_XEMBED",
+  "_XEMBED_INFO",
+  "_NET_WM_NAME",
+  "UTF8_STRING",
+};
+
+static const guint n_atom_names = G_N_ELEMENTS (atom_names);
+
 /* singleton object */
 static ClutterBackendX11 *backend_singleton = NULL;
 
@@ -101,6 +120,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
   if (backend_x11->xdpy)
     {
+      Atom atoms[n_atom_names];
       double dpi;
 
       CLUTTER_NOTE (BACKEND, "Getting the X screen");
@@ -126,10 +146,20 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
       if (clutter_synchronise)
         XSynchronize (backend_x11->xdpy, True);
 
-      backend_x11->atom_WM_STATE 
-	= XInternAtom (backend_x11->xdpy, "_NET_WM_STATE", False);
-      backend_x11->atom_WM_STATE_FULLSCREEN 
-	= XInternAtom (backend_x11->xdpy, "_NET_WM_STATE_FULLSCREEN", False);
+      XInternAtoms (backend_x11->xdpy,
+                    (char **) atom_names, n_atom_names,
+                    False, atoms);
+
+      backend_x11->atom_NET_WM_PING = atoms[0];
+      backend_x11->atom_NET_WM_STATE = atoms[1];
+      backend_x11->atom_NET_WM_STATE_FULLSCREEN = atoms[2];
+      backend_x11->atom_NET_WM_USER_TIME = atoms[3];
+      backend_x11->atom_WM_PROTOCOLS = atoms[4];
+      backend_x11->atom_WM_DELETE_WINDOW = atoms[5];
+      backend_x11->atom_XEMBED = atoms[6];
+      backend_x11->atom_XEMBED_INFO = atoms[7];
+      backend_x11->atom_NET_WM_NAME = atoms[8];
+      backend_x11->atom_UTF8_STRING = atoms[9];
     }
 
   g_free (clutter_display_name);
