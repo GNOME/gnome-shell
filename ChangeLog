@@ -1,3 +1,8 @@
+2007-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac: Depend on GLib >= 2.14 because of ClutterModel
+	usage of GSequence.
+
 2007-11-16  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-main.c: (emit_event): renamed from deliver_event,
