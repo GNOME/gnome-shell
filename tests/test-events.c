@@ -119,7 +119,8 @@ input_cb (ClutterActor    *actor,
       printf("[%s] BUTTON RELEASE", source);
       if (clutter_event_get_source (event) == CLUTTER_ACTOR (stage))
         clutter_stage_set_key_focus (stage, NULL);
-      else if (clutter_event_get_source (event) == actor)
+      else if (clutter_event_get_source (event) == actor
+	       && clutter_actor_get_parent (actor) == stage)
 	clutter_stage_set_key_focus (stage, actor);
       break;
     case CLUTTER_SCROLL:
@@ -152,10 +153,11 @@ input_cb (ClutterActor    *actor,
 int
 main (int argc, char *argv[])
 {
-  ClutterActor    *stage, *actor, *focus_box;
+  ClutterActor    *stage, *actor, *focus_box, *group;
   ClutterColor    rcol = { 0xff, 0, 0, 0xff}, 
                   bcol = { 0, 0, 0xff, 0xff },
 		  gcol = { 0, 0xff, 0, 0xff },
+		  ycol = { 0xff, 0xff, 0, 0xff },
 		  ncol = { 0, 0, 0, 0xff };
 
   clutter_init (&argc, &argv);
@@ -224,6 +226,7 @@ main (int argc, char *argv[])
   /* Fullscreen */
   g_signal_connect (actor, "button-press-event", G_CALLBACK (blue_button_cb), NULL);
 
+  /* non reactive */
   actor = clutter_rectangle_new_with_color (&ncol);
   clutter_actor_set_size (actor, 400, 50);
   clutter_actor_set_position (actor, 100, 250);
@@ -237,6 +240,19 @@ main (int argc, char *argv[])
   g_signal_connect (stage, "focus-in", G_CALLBACK (key_focus_in_cb), 
 		    focus_box);
 
+  /* non reactive group, with reactive child */
+  actor = clutter_rectangle_new_with_color (&ycol);
+  clutter_actor_set_size (actor, 100, 100);
+  clutter_actor_set_reactive (actor, TRUE);
+
+  g_signal_connect (actor, "event", G_CALLBACK (input_cb), "yellow box");
+
+  /* note group not reactive */
+  group = clutter_group_new ();
+  clutter_container_add (CLUTTER_CONTAINER(group), actor, NULL);
+  clutter_container_add (CLUTTER_CONTAINER(stage), group, NULL);
+  clutter_actor_set_position (group, 100, 350);
+  clutter_actor_show_all (group);
 
   clutter_actor_show_all (CLUTTER_ACTOR (stage));
 

@@ -32,12 +32,13 @@
  * be a #ClutterActor, either by using one of the classes provided by
  * Clutter, or by implementing a new #ClutterActor subclass.
  *
- * Ordering of tranformations. FIXME.
+ * Ordering on/Notes on tranformations. FIXME.
  *
  * Notes on clutter actor events:
  * <orderedlist>
  *   <listitem><para>Actors emit pointer events if set reactive, see
  *   clutter_actor_set_reactive()</para></listitem>
+ *   <listitem><para>The stage is always reactive</para></listitem>
  *   <listitem><para>Events are handled by connecting signal handlers to
  *   the numerous event signal types.</para></listitem>
  *   <listitem><para>Event handlers must return %TRUE if they handled
@@ -56,6 +57,8 @@
  *   phase transversing back up via parents to the stage. An event
  *   handler can abort this chain at point by returning
  *   %TRUE.</para></listitem> 
+ *   <listitem><para>Pointer events will 'pass through' non reactive actors.
+ *   </para></listitem> 
  * </orderedlist>
  */
 
@@ -322,31 +325,11 @@ clutter_actor_unrealize (ClutterActor *self)
     (klass->unrealize) (self);
 }
 
-/**
- * clutter_actor_pick:
- * @self: A #ClutterActor
- * @color: A #ClutterColor
- *
- * Renders a silhouette of the actor in supplied color.
- *
- * This function should not never be called directly by applications.
- **/
-void
-clutter_actor_pick (ClutterActor       *self,
-		    const ClutterColor *color)
+static void
+clutter_actor_real_pick (ClutterActor       *self,
+			 const ClutterColor *color)
 {
-  ClutterActorClass *klass;
-
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
-
-  if (G_UNLIKELY(klass->pick))
-    {
-      /* Its pretty unlikely anything other than a container actor
-       * would need to supply its own pick method.
-      */
-      (klass->pick) (self, color);
-    }
-  else
+  if (clutter_actor_should_pick_paint (self))
     {
       cogl_color (color);
       cogl_rectangle (0,
@@ -354,6 +337,60 @@ clutter_actor_pick (ClutterActor       *self,
 		      clutter_actor_get_width(self),
 		      clutter_actor_get_height(self));
     }
+}
+
+/**
+ * clutter_actor_pick:
+ * @self: A #ClutterActor
+ * @color: A #ClutterColor
+ *
+ * Renders a silhouette of the actor in supplied color. Used internally for
+ * mapping pointer events to actors.
+ *
+ * This function should not never be called directly by applications.
+ * 
+ * Subclasses overiding this method should call
+ * #clutter_actor_should_pick_paint to decide if to render there
+ * silhouette but in any case should still recursively call pick for
+ * any children.
+ *
+ * Since 0.4
+ **/
+void
+clutter_actor_pick (ClutterActor       *self,
+		    const ClutterColor *color)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (color != NULL);
+
+  CLUTTER_ACTOR_GET_CLASS (self)->pick(self, color);
+}
+
+/**
+ * clutter_actor_should_pick_paint:
+ * @self: A #ClutterActor
+ *
+ * Utility call for subclasses overiding the pick method.
+ *
+ * This function should not never be called directly by applications.
+ *
+ * Return value: TRUE if the actor should paint its silhouette, FALSE otherwise
+ */
+gboolean
+clutter_actor_should_pick_paint (ClutterActor *self)
+{
+  ClutterMainContext *context;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  context = clutter_context_get_default ();
+
+  if (CLUTTER_ACTOR_IS_MAPPED (self) 
+      && (G_UNLIKELY(context->pick_mode == CLUTTER_PICK_ALL)
+	  || CLUTTER_ACTOR_IS_REACTIVE (self)))
+    return TRUE;
+
+  return FALSE;
 }
 
 /*
@@ -741,26 +778,21 @@ clutter_actor_paint (ClutterActor *self)
       ClutterColor col;
       guint32      id;
 
-      if (context->pick_mode == CLUTTER_PICK_ALL
-	  || (context->pick_mode == CLUTTER_PICK_REACTIVE
-	      && CLUTTER_ACTOR_IS_REACTIVE(self)))
-	{
-	  id = clutter_actor_get_gid (self);
+      id = clutter_actor_get_gid (self);
 
-	  cogl_get_bitmasks (&r, &g, &b, NULL);
+      cogl_get_bitmasks (&r, &g, &b, NULL);
 
-	  /* Encode the actor id into a color, taking into account bpp */
-	  col.red = ((id >> (g+b)) & (0xff>>(8-r)))<<(8-r);
-	  col.green = ((id >> b)  & (0xff>>(8-g))) << (8-g);
-	  col.blue = (id & (0xff>>(8-b)))<<(8-b);
-	  col.alpha = 0xff;
-
-	  /* Actor will then paint silhouette of itself in supplied
-	   * color.  See clutter_stage_get_actor_at_pos() for where
-	   * picking is enabled.
-	   */
-	  clutter_actor_pick (self, &col);
-	}
+      /* Encode the actor id into a color, taking into account bpp */
+      col.red = ((id >> (g+b)) & (0xff>>(8-r)))<<(8-r);
+      col.green = ((id >> b)  & (0xff>>(8-g))) << (8-g);
+      col.blue = (id & (0xff>>(8-b)))<<(8-b);
+      col.alpha = 0xff;
+      
+      /* Actor will then paint silhouette of itself in supplied
+       * color.  See clutter_stage_get_actor_at_pos() for where
+       * picking is enabled.
+       */
+      clutter_actor_pick (self, &col);
     }
   else
     {
@@ -1557,6 +1589,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->show_all = clutter_actor_show;
   klass->hide = clutter_actor_real_hide;
   klass->hide_all = clutter_actor_hide;
+  klass->pick = clutter_actor_real_pick;
 }
 
 static void

@@ -102,6 +102,18 @@ clutter_stage_paint (ClutterActor *self)
 }
 
 static void
+clutter_stage_pick (ClutterActor       *self,
+		    const ClutterColor *color)
+{
+  /* Paint nothing, cogl_paint_init() effectively paints the stage
+   * silhouette for us - see _clutter_do_pick().
+   * Chain up to the groups paint howerer so our children get picked
+   * - clutter_group_pick
+   */
+  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
+}
+
+static void
 clutter_stage_set_property (GObject      *object,
 			    guint         prop_id,
 			    const GValue *value,
@@ -218,6 +230,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   gobject_class->get_property = clutter_stage_get_property;
 
   actor_class->paint = clutter_stage_paint;
+  actor_class->pick = clutter_stage_pick;
 
   /**
    * ClutterStage:fullscreen:

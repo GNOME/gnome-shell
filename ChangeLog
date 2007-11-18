@@ -1,3 +1,22 @@
+2007-11-18  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-group.c:
+	* clutter/clutter-main.c:
+	* clutter/clutter-stage.c:
+	* tests/test-events.c: 
+	Parent Actors no longer need to be set reactive for reactive
+        children to get events. Also makes groups now pickable. 
+	(#597, #423)	
+
+	* clutter/clutter-texture.c:
+	Handle case when 1x1 tiled texture is created,
+	falling 'back' to being non tiled. (#596) 
+
+	* clutter/eglx/clutter-backend-egl.c:
+	Call EglTerminate on backend shutdown.
+
 2007-11-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter.pc.in: Bump up glib-2.0 dependency.

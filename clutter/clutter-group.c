@@ -112,12 +112,14 @@ static void
 clutter_group_pick (ClutterActor       *actor,
 		    const ClutterColor *color)
 {
+  /* Chain up so we get a bounding box pained (if we are reactive) */
+  CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->pick (actor, color);
+
   /* Just forward to the paint call which in turn will trigger
-   * the child actors also getting 'picked'. To make ourselves
-   * 'sensitive' to clicks we could also paint a bounding rect
-   * but this is not currently done.
-  */
-  clutter_group_paint (actor);
+   * the child actors also getting 'picked'.
+   */
+  if (CLUTTER_ACTOR_IS_MAPPED (actor))
+    clutter_group_paint (actor);
 }
 
 

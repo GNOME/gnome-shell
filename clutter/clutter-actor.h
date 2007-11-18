@@ -406,7 +406,9 @@ gboolean              clutter_actor_event          (ClutterActor *actor,
                                                     ClutterEvent *event,
                                                     gboolean      capture);
 ClutterActor *        clutter_get_actor_by_gid     (guint32       id);
-     
+
+gboolean              clutter_actor_should_pick_paint (ClutterActor *self);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_ACTOR_H */

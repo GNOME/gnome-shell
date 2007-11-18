@@ -274,14 +274,22 @@ texture_init_tiles (ClutterTexture *texture)
 
   priv->n_x_tiles = tile_dimension (priv->width, x_pot,
 				    priv->max_tile_waste, NULL);
+  if (priv->y_tiles)
+    g_free (priv->y_tiles);
+  priv->n_y_tiles = tile_dimension (priv->height, y_pot,
+				    priv->max_tile_waste, NULL);
+
+  if (priv->n_x_tiles == 1 && priv->n_y_tiles == 1)
+    {
+      /* So were not actually tiled... */
+      priv->n_x_tiles = priv->n_y_tiles = 0;
+      priv->is_tiled = FALSE;
+      return;
+    }
+
   priv->x_tiles = g_new (ClutterTextureTileDimension, priv->n_x_tiles);
   tile_dimension (priv->width, x_pot, priv->max_tile_waste, priv->x_tiles);
 
-  if (priv->y_tiles)
-    g_free (priv->y_tiles);
-
-  priv->n_y_tiles = tile_dimension (priv->height, y_pot,
-				    priv->max_tile_waste, NULL);
   priv->y_tiles = g_new (ClutterTextureTileDimension, priv->n_y_tiles);
   tile_dimension (priv->height, y_pot, priv->max_tile_waste, priv->y_tiles);
 
@@ -291,7 +299,6 @@ texture_init_tiles (ClutterTexture *texture)
 		x_pot, priv->width, y_pot, priv->height,
 		priv->max_tile_waste,
 		priv->n_x_tiles, priv->n_y_tiles);
-
 }
 
 static void

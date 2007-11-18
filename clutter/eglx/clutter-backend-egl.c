@@ -86,6 +86,14 @@ clutter_backend_egl_finalize (GObject *gobject)
 static void
 clutter_backend_egl_dispose (GObject *gobject)
 {
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
+
+  if (backend_egl->edpy)
+    {
+      eglTerminate (backend_egl->edpy);
+      backend_egl->edpy = NULL;
+    }
+
   G_OBJECT_CLASS (clutter_backend_egl_parent_class)->dispose (gobject);
 }
 
