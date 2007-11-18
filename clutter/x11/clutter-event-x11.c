@@ -357,9 +357,9 @@ event_translate (ClutterBackend *backend,
 
       while (node)
 	{
-	  filter = (ClutterX11EventFilter *)node->data;
+	  filter = node->data;
 
-	  switch (filter->func(xevent, event, filter->data))
+	  switch (filter->func (xevent, event, filter->data))
 	    {
 	    case CLUTTER_X11_FILTER_CONTINUE:
 	      break;
@@ -370,6 +370,7 @@ event_translate (ClutterBackend *backend,
 	    default:
 	      break;
 	    }
+
 	  node = node->next;
 	}
     }

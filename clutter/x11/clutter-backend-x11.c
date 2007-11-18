@@ -331,9 +331,9 @@ error_handler(Display     *xdpy,
 /**
  * clutter_x11_trap_x_errors:
  *
- * FIXME
+ * Traps every X error until clutter_x11_untrap_x_errors() is called.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 void
 clutter_x11_trap_x_errors (void)
@@ -345,9 +345,9 @@ clutter_x11_trap_x_errors (void)
 /**
  * clutter_x11_untrap_x_errors:
  *
- * FIXME
+ * Removes the X error trap and returns the current status.
  *
- * Return value: FIXME
+ * Return value: the trapped error code, or 0 for success
  *
  * Since: 0.4
  */
@@ -362,11 +362,11 @@ clutter_x11_untrap_x_errors (void)
 /**
  * clutter_x11_get_default_display:
  * 
- * FIXME
+ * Retrieves the pointer to the default display.
  *
- * Return value: FIXME
+ * Return value: the default display
  *
- * Since: 0.4
+ * Since: 0.6
  */
 Display *
 clutter_x11_get_default_display (void)
@@ -383,11 +383,11 @@ clutter_x11_get_default_display (void)
 /**
  * clutter_x11_get_default_screen:
  * 
- * Gets the pointer to the default X Screen object.
+ * Gets the number of the default X Screen object.
  *
- * Return value: FIXME
+ * Return value: the number of the default screen
  *
- * Since: 0.4
+ * Since: 0.6
  */
 int
 clutter_x11_get_default_screen (void)
@@ -404,11 +404,11 @@ clutter_x11_get_default_screen (void)
 /**
  * clutter_x11_get_root_window:
  * 
- * FIXME
+ * Retrieves the root window.
  *
- * Return value: FIXME
+ * Return value: the id of the root window
  *
- * Since: 0.4
+ * Since: 0.6
  */
 Window
 clutter_x11_get_root_window (void)
@@ -424,15 +424,16 @@ clutter_x11_get_root_window (void)
 
 /**
  * clutter_x11_add_filter:
- * 
- * FIXME
+ * @func: a filter function
+ * @data: user data to be passed to the filter function, or %NULL
  *
- * Return value: FIXME
+ * Adds an event filter function.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 void
-clutter_x11_add_filter (ClutterX11FilterFunc func, gpointer data)
+clutter_x11_add_filter (ClutterX11FilterFunc func,
+                        gpointer             data)
 {
   ClutterX11EventFilter *filter;
 
@@ -444,27 +445,28 @@ clutter_x11_add_filter (ClutterX11FilterFunc func, gpointer data)
       return;
     }
 
-  filter = g_new0(ClutterX11EventFilter, 1);
+  filter = g_new0 (ClutterX11EventFilter, 1);
   filter->func = func;
   filter->data = data;
 
-  backend_singleton->event_filters 
-     = g_slist_append (backend_singleton->event_filters, filter);
+  backend_singleton->event_filters =
+    g_slist_append (backend_singleton->event_filters, filter);
 
   return;
 }
 
 /**
  * clutter_x11_remove_filter:
- * 
- * FIXME
+ * @func: a filter function
+ * @data: user data to be passed to the filter function, or %NULL
  *
- * Return value: FIXME
+ * Removes the given filter function.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 void
-clutter_x11_remove_filter (ClutterX11FilterFunc func, gpointer data)
+clutter_x11_remove_filter (ClutterX11FilterFunc func,
+                           gpointer             data)
 {
   GSList                *tmp_list, *this;
   ClutterX11EventFilter *filter;
@@ -475,14 +477,14 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func, gpointer data)
 
   while (tmp_list)
     {
-      filter = (ClutterX11EventFilter *)tmp_list->data;
+      filter   = tmp_list->data;
       this     =  tmp_list;
       tmp_list = tmp_list->next;
 
       if (filter->func == func && filter->data == data)
         {
-	  backend_singleton->event_filters 
-	      = g_slist_remove_link (backend_singleton->event_filters, this);
+	  backend_singleton->event_filters =
+	    g_slist_remove_link (backend_singleton->event_filters, this);
 
           g_slist_free_1 (this);
           g_free (filter);

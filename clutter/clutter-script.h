@@ -134,7 +134,7 @@ void           clutter_script_ensure_objects       (ClutterScript  *script);
 GType          clutter_script_get_type_from_name   (ClutterScript  *script,
                                                     const gchar    *type_name);
 
-G_CONST_RETURN gchar *clutter_get_script_id        (GObject        *object);
+G_CONST_RETURN gchar *clutter_get_script_id        (GObject        *gobject);
 
 void           clutter_script_connect_signals      (ClutterScript  *script,
                                                     gpointer        user_data);

@@ -45,17 +45,39 @@
 
 G_BEGIN_DECLS
 
+/**
+ * ClutterX11FilterReturn:
+ * @CLUTTER_X11_FILTER_CONTINUE: The event was not handled, continues the
+ *   processing
+ * @CLUTTER_X11_FILTER_TRANSLATE: Native event translated into a Clutter
+ *   event, stops the processing
+ * @CLUTTER_X11_FILTER_REMOVE: Remove the event, stops the processing
+ *
+ * Return values for the #ClutterX11FilterFunc function.
+ *
+ * Since: 0.6
+ */
 typedef enum {
-  CLUTTER_X11_FILTER_CONTINUE,   /* Event not handled, continue processesing */
-  CLUTTER_X11_FILTER_TRANSLATE,  /* Native event translated into a Clutter 
-                                    event and stored in the "event" structure 
-                                    that was passed in */
-  CLUTTER_X11_FILTER_REMOVE      /* Terminate processing, removing event */
+  CLUTTER_X11_FILTER_CONTINUE,
+  CLUTTER_X11_FILTER_TRANSLATE,
+  CLUTTER_X11_FILTER_REMOVE
 } ClutterX11FilterReturn;
 
+/**
+ * ClutterX11FilterFunc:
+ * @xev: Native X11 event structure
+ * @cev: Clutter event structure
+ * @data: user data passed to the filter function
+ *
+ * Filter function for X11 native events.
+ *
+ * Return value: the result of the filtering
+ *
+ * Since: 0.6
+ */
 typedef ClutterX11FilterReturn (*ClutterX11FilterFunc) (XEvent        *xev, 
 							ClutterEvent  *cev,
-							gpointer      *data);
+							gpointer       data);
 
 void     clutter_x11_trap_x_errors       (void);
 gint     clutter_x11_untrap_x_errors     (void);
@@ -64,16 +86,15 @@ Display *clutter_x11_get_default_display (void);
 int      clutter_x11_get_default_screen  (void);
 Window   clutter_x11_get_root_window     (void);
 
-Window       clutter_x11_get_stage_window (ClutterStage *stage);
-XVisualInfo *clutter_x11_get_stage_visual (ClutterStage *stage);
-
+Window       clutter_x11_get_stage_window  (ClutterStage *stage);
+XVisualInfo *clutter_x11_get_stage_visual  (ClutterStage *stage);
 gboolean     clutter_x11_set_stage_foreign (ClutterStage *stage,
                                             Window        xwindow);
 
-void         clutter_x11_add_filter (ClutterX11FilterFunc func, gpointer data);
-
+void         clutter_x11_add_filter    (ClutterX11FilterFunc func,
+                                        gpointer             data);
 void         clutter_x11_remove_filter (ClutterX11FilterFunc func, 
-					gpointer data);
+					gpointer             data);
 
 G_END_DECLS
 

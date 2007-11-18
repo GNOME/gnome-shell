@@ -1109,6 +1109,27 @@ clutter_model_set_filter (ClutterModel           *model,
  * ClutterModelIter Object 
  */
 
+/**
+ * SECTION:clutter-model-iter
+ * @short_description: Iterates through a model
+ *
+ * #ClutterModelIter is an object used for iterating through all the rows
+ * of a #ClutterModel. It allows setting and getting values on the row
+ * which is currently pointing at.
+ *
+ * A #ClutterModelIter represents a position between two elements
+ * of the sequence. For example, the iterator returned by
+ * clutter_model_get_first_iter() represents the gap immediately before
+ * the first row of the #ClutterModel, and the iterator returned by
+ * clutter_model_get_last_iter() represents the gap immediately after the
+ * last row.
+ *
+ * A #ClutterModelIter can only be created by a #ClutterModel and it is
+ * valid as long as the model does not change.
+ *
+ * #ClutterModelIter is available since Clutter 0.6
+ */
+
 G_DEFINE_TYPE (ClutterModelIter, clutter_model_iter, G_TYPE_OBJECT);
 
 #define CLUTTER_MODEL_ITER_GET_PRIVATE(obj) \
@@ -1470,10 +1491,11 @@ _model_iter_is_last (ClutterModelIter *iter)
     {
       temp_iter->priv->seq_iter = begin;
       if (_model_filter (model, temp_iter))
-      {
-        end = begin;
-        break;
-      }
+        {
+          end = begin;
+          break;
+        }
+
       begin = g_sequence_iter_prev (begin);
     }
   /* This is because the 'end_iter' is always *after* the last valid iter.
@@ -1508,9 +1530,8 @@ _model_iter_next (ClutterModelIter *iter)
     {
       g_object_set (temp_iter, "iter", filter_next, NULL);
       if (_model_filter (model, temp_iter))
-        {
-          break;
-        }
+        break;
+
       filter_next = g_sequence_iter_next (filter_next);
     }
   
@@ -1549,9 +1570,8 @@ _model_iter_prev (ClutterModelIter *iter)
     {
       g_object_set (temp_iter, "iter", filter_prev, NULL);
       if (_model_filter (model, temp_iter))
-        {
-          break;
-        }
+        break;
+
       filter_prev = g_sequence_iter_prev (filter_prev);
     }
   
@@ -1608,6 +1628,7 @@ _model_iter_get_row (ClutterModelIter *iter)
         {
           if (iter_priv->seq_iter == temp_iter->priv->seq_iter)
             break;
+
           row++;
         }
       filter_next = g_sequence_iter_next (filter_next);
@@ -1699,7 +1720,9 @@ clutter_model_iter_set_valist (ClutterModelIter *iter,
 
       if (column < 0 || column >= model_priv->n_columns)
         { 
-          g_warning ("%s: Invalid column number %d added to iter (remember to end you list of columns with a -1)", G_STRLOC, column);
+          g_warning ("%s: Invalid column number %d added to iter "
+                     "(remember to end you list of columns with a -1)",
+                     G_STRLOC, column);
           break;
         }
       g_value_init (&value, model_priv->column_types[column]);
@@ -1820,7 +1843,9 @@ clutter_model_iter_get_valist (ClutterModelIter *iter,
 
       if (column < 0 || column >= model_priv->n_columns)
         { 
-          g_warning ("%s: Invalid column number %d added to iter (remember to end you list of columns with a -1)", G_STRLOC, column);
+          g_warning ("%s: Invalid column number %d added to iter "
+                     "(remember to end you list of columns with a -1)",
+                     G_STRLOC, column);
           break;
         }
           

@@ -1,5 +1,17 @@
 2007-11-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model.c: Add gtk-doc section for
+	ClutterModelIter
+
+	* clutter/clutter-script.h: Fix argument name.
+
+	* clutter/x11/clutter-x11.h:
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/x11/clutter-backend-x11.c: Document functions and
+	types.
+
+2007-11-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter.symbols: Update exported symbols.
 
 	* clutter/clutter-actor.[ch]: Remove clutter_actor_rotate_*

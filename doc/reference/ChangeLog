@@ -1,3 +1,10 @@
+2007-11-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* Makefile.am: Add clutter-x11.h to the headers scanned.
+
+	* clutter-sections.txt: Update with the newly added and removed
+	symbols.
+
 2007-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Ignore the OSX backend subdirectory and
