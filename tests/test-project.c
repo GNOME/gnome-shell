@@ -216,7 +216,7 @@ main (int argc, char *argv[])
   rect = clutter_rectangle_new_with_color (&white);
   clutter_actor_set_size (rect, 320, 240);
   clutter_actor_set_position (rect, 180, 120);
-  clutter_actor_rotate_y (rect, 60, 0, 0);
+  clutter_actor_set_rotation (rect, 60, CLUTTER_Y_AXIS, 0, 0, 0);
   clutter_group_add (CLUTTER_GROUP (main_stage), rect);
 
   label = clutter_label_new_with_text ("Mono 8pt", "Drag the blue rectangles");

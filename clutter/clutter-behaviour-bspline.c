@@ -35,7 +35,7 @@
  * control points given when creating a new #ClutterBehaviourBspline instance.
  *
  * Additional bezier curves can be added to the end of the bspline using
- * clutter_behaviour_bspline_append() family of functions, control points can
+ * clutter_behaviour_bspline_append_* family of functions, control points can
  * be moved using clutter_behaviour_bspline_adjust(). The bspline can be split
  * into two with clutter_behaviour_bspline_split(), and bsplines can be
  * concatenated using clutter_behaviour_bspline_join().
@@ -725,7 +725,7 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
  *
  * Bspline is defined by 3n + 1 points, n >=1; any trailing points passed
  * into this function are stored internally and used during any subsequent
- * clutter_behaviour_bspline_append() operations.
+ * clutter_behaviour_bspline_append_* operations.
  *
  * Return value: a #ClutterBehaviour
  *
@@ -860,7 +860,7 @@ clutter_behaviour_bspline_append_knots_valist (ClutterBehaviourBspline *bs,
 }
 
 /**
- * clutter_behaviour_bspline_append_knots
+ * clutter_behaviour_bspline_append_knots:
  * @bs: a #ClutterBehaviourBspline
  * @first_knot: first #ClutterKnot
  * @VarArgs: a NULL-terminated array of #ClutterKnot control points.

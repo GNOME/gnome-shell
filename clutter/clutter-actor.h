@@ -273,6 +273,27 @@ void                  clutter_actor_set_x            (ClutterActor          *sel
 void                  clutter_actor_set_y            (ClutterActor          *self,
                                                       gint                   y);
 
+void                  clutter_actor_set_rotation     (ClutterActor          *self,
+                                                      gdouble                angle,
+                                                      ClutterRotateAxis      axis,
+                                                      gint                   x,
+                                                      gint                   y,
+                                                      gint                   z);void                  clutter_actor_set_rotationx    (ClutterActor          *self,
+                                                      ClutterFixed           fixed,
+                                                      ClutterRotateAxis      axis,
+                                                      gint                   x,
+                                                      gint                   y,
+                                                      gint                   z);
+gdouble               clutter_actor_get_rotation     (ClutterActor          *self,
+                                                      ClutterRotateAxis      axis,
+                                                      gint                  *x,
+                                                      gint                  *y,
+                                                      gint                  *z);
+ClutterFixed          clutter_actor_get_rotationx    (ClutterActor          *self,
+                                                      ClutterRotateAxis      axis,
+                                                      gint                  *x,
+                                                      gint                  *y,
+                                                      gint                  *z);
 void                  clutter_actor_rotate_x         (ClutterActor          *self,
 						      gfloat                 angle,
 						      gint                   y,

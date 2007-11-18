@@ -743,7 +743,9 @@ clutter_effect_rotate_x (ClutterEffectTemplate     *template_,
   c->completed_data = completed_data;
 
 
-  clutter_actor_rotate_x (actor, angle_start, center_y, center_y);
+  clutter_actor_set_rotation (actor, angle_start,
+                              CLUTTER_X_AXIS,
+                              0, center_y, center_z);
 
   c->behave = clutter_behaviour_rotate_new (c->alpha,
 					    CLUTTER_X_AXIS,
@@ -803,7 +805,9 @@ clutter_effect_rotate_y (ClutterEffectTemplate     *template_,
   c->completed_data = completed_data;
 
 
-  clutter_actor_rotate_y (actor, angle_start, center_x, center_z);
+  clutter_actor_set_rotation (actor, angle_start,
+                              CLUTTER_Y_AXIS,
+                              center_x, 0, center_z);
 
   c->behave = clutter_behaviour_rotate_new (c->alpha,
 					    CLUTTER_Y_AXIS,
@@ -863,7 +867,9 @@ clutter_effect_rotate_z (ClutterEffectTemplate     *template_,
   c->completed_data = completed_data;
 
 
-  clutter_actor_rotate_z (actor, angle_start, center_x, center_y);
+  clutter_actor_set_rotation (actor, angle_start,
+                              CLUTTER_Z_AXIS,
+                              center_x, center_y, 0);
 
   c->behave = clutter_behaviour_rotate_new (c->alpha,
 					    CLUTTER_Z_AXIS,

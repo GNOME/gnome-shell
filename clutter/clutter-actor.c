@@ -2534,261 +2534,184 @@ clutter_actor_get_depth (ClutterActor *self)
 }
 
 /**
- * clutter_actor_rotate_z:
- * @self: A #ClutterActor
- * @angle: Angle of rotation
- * @x:     X co-ord to rotate actor around ( relative to actor position )
- * @y:     Y co-ord to rotate actor around ( relative to actor position )
+ * clutter_actor_set_rotationx:
+ * @self: a #ClutterActor
+ * @angle: the angle of rotation
+ * @axis: the axis of rotation
+ * @x: X coordinate of the rotation center
+ * @y: Y coordinate of the rotation center
+ * @z: Z coordinate of the rotation center
  *
- * Rotates actor around the Z axis.
+ * Sets the rotation angle of @self around the given axis.
+ *
+ * This function is the fixed point variant of clutter_actor_set_rotation().
+ *
+ * Since: 0.6
  */
 void
-clutter_actor_rotate_z (ClutterActor *self,
-			gfloat        angle,
-			gint          x,
-			gint          y)
+clutter_actor_set_rotationx (ClutterActor      *self,
+                             ClutterFixed       angle,
+                             ClutterRotateAxis  axis,
+                             gint               x,
+                             gint               y,
+                             gint               z)
 {
+  ClutterActorPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  self->priv->rzang = CLUTTER_FLOAT_TO_FIXED (angle);
-  self->priv->rzx   = x;
-  self->priv->rzy   = y;
+  priv = self->priv;
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      priv->rxang = angle;
+      priv->rxy = y;
+      priv->rxz = z;
+      break;
+
+    case CLUTTER_Y_AXIS:
+      priv->ryang = angle;
+      priv->ryx = x;
+      priv->ryz = z;
+      break;
+
+    case CLUTTER_Z_AXIS:
+      priv->rzang = angle;
+      priv->rzx = x;
+      priv->rzy = y;
+      break;
+    }
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);
 }
 
 /**
- * clutter_actor_rotate_x:
- * @self:  A #ClutterActor
- * @angle: Angle of rotation
- * @y:     Y co-ord to rotate actor around ( relative to actor position )
- * @z:     Z co-ord to rotate actor around ( relative to actor position )
+ * clutter_actor_set_rotation:
+ * @self: a #ClutterActor
+ * @angle: the angle of rotation
+ * @axis: the axis of rotation
+ * @x: X coordinate of the rotation center
+ * @y: Y coordinate of the rotation center
+ * @z: Z coordinate of the rotation center
  *
- * Rotates actor around the X axis.
+ * Sets the rotation angle of @self around the given axis.
+ *
+ * The rotation center coordinates depend on the value of @axis:
+ * <itemizedlist>
+ *   <listitem><para>%CLUTTER_X_AXIS requires @y and @z</para></listitem>
+ *   <listitem><para>%CLUTTER_Y_AXIS requires @x and @z</para></listitem>
+ *   <listitem><para>%CLUTTER_Z_AXIS requires @x and @y</para></listitem>
+ * </itemizedlist>
+ *
+ * Since: 0.6
  */
 void
-clutter_actor_rotate_x (ClutterActor *self,
-			gfloat        angle,
-			gint          y,
-			gint          z)
+clutter_actor_set_rotation (ClutterActor      *self,
+                            gdouble            angle,
+                            ClutterRotateAxis  axis,
+                            gint               x,
+                            gint               y,
+                            gint               z)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  self->priv->rxang = CLUTTER_FLOAT_TO_FIXED(angle);
-  self->priv->rxy   = y;
-  self->priv->rxz   = z;
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
+  clutter_actor_set_rotationx (self, CLUTTER_FLOAT_TO_FIXED (angle),
+                               axis,
+                               x, y, z);
 }
 
 /**
- * clutter_actor_rotate_y:
- * @self:  A #ClutterActor
- * @angle: Angle of rotation
- * @x:     X co-ord to rotate actor around ( relative to actor position )
- * @z:     Z co-ord to rotate actor around ( relative to actor position )
+ * clutter_actor_get_rotationx:
+ * @self: a #ClutterActor
+ * @axis: the axis of rotation
+ * @x: return value for the X coordinate of the center of rotation
+ * @y: return value for the Y coordinate of the center of rotation
+ * @z: return value for the Z coordinate of the center of rotation
  *
- * Rotates actor around the X axis.
- */
-void
-clutter_actor_rotate_y (ClutterActor *self,
-			gfloat        angle,
-			gint          x,
-			gint          z)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  self->priv->ryang = CLUTTER_FLOAT_TO_FIXED(angle);
-
-  self->priv->ryx   = x;
-  self->priv->ryz   = z;
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
-}
-
-/**
- * clutter_actor_rotate_zx:
- * @self: A #ClutterActor
- * @angle: Angle of rotation
- * @x:     X co-ord to rotate actor around ( relative to actor position )
- * @y:     Y co-ord to rotate actor around ( relative to actor position )
+ * Retrieves the angle and center of rotation on the given axis,
+ * set using clutter_actor_set_rotation().
  *
- * Rotates actor around the Z axis.
- */
-void
-clutter_actor_rotate_zx (ClutterActor *self,
-			 ClutterFixed  angle,
-			 gint          x,
-			 gint          y)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  self->priv->rzang = angle;
-  self->priv->rzx   = x;
-  self->priv->rzy   = y;
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
-}
-
-/**
- * clutter_actor_rotate_xx:
- * @self:  A #ClutterActor
- * @angle: Angle of rotation
- * @y:     Y co-ord to rotate actor around ( relative to actor position )
- * @z:     Z co-ord to rotate actor around ( relative to actor position )
+ * This function is the fixed point variant of clutter_actor_get_rotation().
  *
- * Rotates actor around the X axis.
- */
-void
-clutter_actor_rotate_xx (ClutterActor *self,
-			 ClutterFixed  angle,
-			 gint          y,
-			 gint          z)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  self->priv->rxang = angle;
-  self->priv->rxy   = y;
-  self->priv->rxz   = z;
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
-}
-
-/**
- * clutter_actor_rotate_yx:
- * @self:  A #ClutterActor
- * @angle: Angle of rotation
- * @x:     X co-ord to rotate actor around ( relative to actor position )
- * @z:     Z co-ord to rotate actor around ( relative to actor position )
+ * Return value: the angle of rotation as a fixed point value.
  *
- * Rotates actor around the X axis.
- */
-void
-clutter_actor_rotate_yx (ClutterActor *self,
-			 ClutterFixed  angle,
-			 gint          x,
-			 gint          z)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  self->priv->ryang = angle;
-  self->priv->ryx   = x;
-  self->priv->ryz   = z;
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
-}
-
-/**
- * clutter_actor_get_rxangx:
- * @self: A #ClutterActor
- *
- * Gets the angle of rotation around the X axis.
- *
- * Returns: the angle or rotation, as a fixed point value
- *
- * Since: 0.4
+ * Since: 0.6
  */
 ClutterFixed
-clutter_actor_get_rxangx (ClutterActor *self)
+clutter_actor_get_rotationx (ClutterActor      *self,
+                             ClutterRotateAxis  axis,
+                             gint              *x,
+                             gint              *y,
+                             gint              *z)
 {
+  ClutterActorPrivate *priv;
+  ClutterFixed retval = 0;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  return self->priv->rxang;
+  priv = self->priv;
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      retval = priv->rxang;
+      if (y)
+        *y = priv->rxy;
+      if (z)
+        *z = priv->rxz;
+      break;
+
+    case CLUTTER_Y_AXIS:
+      retval = priv->ryang;
+      if (x)
+        *x = priv->ryx;
+      if (z)
+        *z = priv->ryz;
+      break;
+
+    case CLUTTER_Z_AXIS:
+      retval = priv->rzang;
+      if (x)
+        *x = priv->rzx;
+      if (y)
+        *y = priv->rzy;
+      break;
+    }
+
+  return retval;
 }
 
 /**
- * clutter_actor_get_rxang:
+ * clutter_actor_get_rotation:
  * @self: a #ClutterActor
+ * @axis: the axis of rotation
+ * @x: return value for the X coordinate of the center of rotation
+ * @y: return value for the Y coordinate of the center of rotation
+ * @z: return value for the Z coordinate of the center of rotation
  *
- * Gets the angle of rotation around the X axis.
+ * Retrieves the angle and center of rotation on the given axis,
+ * set using clutter_actor_set_angle().
  *
- * Return value: the angle of rotation
+ * The coordinates of the center depend on the axis used.
  *
- * Since: 0.4
+ * Return value: the angle of rotation.
+ *
+ * Since: 0.6
  */
 gdouble
-clutter_actor_get_rxang (ClutterActor *self)
+clutter_actor_get_rotation (ClutterActor      *self,
+                            ClutterRotateAxis  axis,
+                            gint              *x,
+                            gint              *y,
+                            gint              *z)
 {
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.0);
 
-  return CLUTTER_FIXED_TO_FLOAT (self->priv->rxang);
-}
-
-/**
- * clutter_actor_get_ryangx:
- * @self: A #ClutterActor
- *
- * Gets the angle of rotation around the Y axis.
- *
- * Return value: the angle of rotation, as a fixed point value
- *
- * Since: 0.4
- */
-ClutterFixed
-clutter_actor_get_ryangx (ClutterActor *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
-
-  return self->priv->ryang;
-}
-
-/**
- * clutter_actor_get_ryang:
- * @self: a #ClutterActor
- *
- * Gets the angle of rotation around the Y axis.
- *
- * Return value: the angle of rotation
- *
- * Since: 0.4
- */
-gdouble
-clutter_actor_get_ryang (ClutterActor *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.);
-
-  return CLUTTER_FIXED_TO_FLOAT (self->priv->ryang);
-}
-
-/**
- * clutter_actor_get_rzangx:
- * @self: A #ClutterActor
- *
- * Gets the angle of rotation around x axis in degrees.
- *
- * Return value: the angle of rotation, as a fixed point value
- *
- * Since: 0.4
- */
-ClutterFixed
-clutter_actor_get_rzangx (ClutterActor *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
-  return self->priv->rzang;
-}
-
-/**
- * clutter_actor_get_rzang:
- * @self: a #ClutterActor
- *
- * Gets the angle of rotation around the Z axis.
- *
- * Return value: the angle of rotation
- *
- * Since: 0.4
- */
-gdouble
-clutter_actor_get_rzang (ClutterActor *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.);
-
-  return CLUTTER_FIXED_TO_FLOAT (self->priv->rzang);
+  return CLUTTER_FIXED_TO_FLOAT (clutter_actor_get_rotationx (self,
+                                                              axis,
+                                                              x, y, z));
 }
 
 /**

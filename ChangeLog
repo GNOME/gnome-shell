@@ -1,3 +1,20 @@
+2007-11-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter.symbols: Update exported symbols.
+
+	* clutter/clutter-actor.[ch]: Remove clutter_actor_rotate_*
+	and clutter_actor_get_rx* and provide a simpler rotation API:
+	clutter_actor_set_rotation() and clutter_actor_get_rotation().
+
+	* clutter/clutter-deprecated.h: Deprecate the old rotation API.
+
+	* clutter/clutter-behaviour-bspline.c:
+	* clutter/clutter-behaviour-rotate.c:
+	* clutter/clutter-effect.c: Update internal usage of the
+	rotation API.
+
+	* tests/test-project.c: Ditto as above.
+
 2007-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Optimise Atoms usage in the X11 and X11-based backends.

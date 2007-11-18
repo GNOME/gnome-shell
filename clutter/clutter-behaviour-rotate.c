@@ -88,33 +88,18 @@ alpha_notify_foreach (ClutterBehaviour *behaviour,
 		      ClutterActor     *actor,
 		      gpointer          data)
 {
-  ClutterFixed                   angle;
-  ClutterBehaviourRotate        *rotate_behaviour;
+  ClutterFixed angle = GPOINTER_TO_UINT (data);
+  ClutterBehaviourRotate *rotate_behaviour;
   ClutterBehaviourRotatePrivate *priv;
 
   rotate_behaviour = CLUTTER_BEHAVIOUR_ROTATE (behaviour);
   priv = rotate_behaviour->priv;
 
-  angle = GPOINTER_TO_UINT(data);
-
-  switch (priv->axis)
-    {
-    case CLUTTER_X_AXIS:
-      clutter_actor_rotate_xx (actor,
-			       angle,
-			       priv->center_y, priv->center_z);
-      break;
-    case CLUTTER_Y_AXIS:
-      clutter_actor_rotate_yx (actor,
-			       angle,
-			       priv->center_x, priv->center_z);
-      break;
-    case CLUTTER_Z_AXIS:
-      clutter_actor_rotate_zx (actor,
-			       angle,
-			       priv->center_x, priv->center_y);
-      break;
-    }
+  clutter_actor_set_rotationx (actor, angle,
+                               priv->axis,
+                               priv->center_x,
+                               priv->center_y,
+                               priv->center_z);
 }
 
 static void
