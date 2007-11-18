@@ -4466,6 +4466,8 @@ meta_theme_load (const char *theme_name,
   char *theme_dir;
   MetaTheme *retval;
   guint version;
+  const gchar* const* xdg_data_dirs;
+  int i;
 
   text = NULL;
   length = 0;
@@ -4511,8 +4513,9 @@ meta_theme_load (const char *theme_name,
       gchar *theme_filename = g_strdup_printf (METACITY_THEME_FILENAME_FORMAT,
                                                version);
       
-      /* We try in home dir, then system dir for themes */
-  
+      /* We try first in home dir, XDG_DATA_DIRS, then system dir for themes */
+
+      /* Try home dir for themes */
       theme_dir = g_build_filename (g_get_home_dir (),
                                     ".themes",
                                     theme_name,
@@ -4537,6 +4540,43 @@ meta_theme_load (const char *theme_name,
           theme_file = NULL;
         }
 
+      /* Try each XDG_DATA_DIRS for theme */
+      xdg_data_dirs = g_get_system_data_dirs();
+      for(i = 0; xdg_data_dirs[i] != NULL; i++)
+        {
+          if (text == NULL)
+            {
+              theme_dir = g_build_filename (xdg_data_dirs[i],
+                                            "themes",
+                                            theme_name,
+                                            THEME_SUBDIR,
+                                            NULL);
+
+              theme_file = g_build_filename (theme_dir,
+                                             theme_filename,
+                                             NULL);
+
+              error = NULL;
+              if (!g_file_get_contents (theme_file,
+                                        &text,
+                                        &length,
+                                        &error))
+                {
+                  meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
+                              theme_file, error->message);
+                  g_error_free (error);
+                  g_free (theme_dir);
+                  g_free (theme_file);
+                  theme_file = NULL;
+                }
+              else
+                {
+                  break;
+                }
+            }
+        }
+
+      /* Look for themes in METACITY_DATADIR */
       if (text == NULL)
         {
           theme_dir = g_build_filename (METACITY_DATADIR,

@@ -1,3 +1,9 @@
+2007-11-17  Benjamin Gramlich  <benjamin.gramlich@gmail.com>
+
+        * src/theme-parser.c (meta_theme_load): make our theme
+        search compliant to the XDG Base Directory Specification.
+        Closes #480026.
+
 2007-11-15  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/api.[ch]: remove almost-unused files.
