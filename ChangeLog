@@ -1,5 +1,9 @@
 2007-11-17  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * configure.in: Post-release bump to 2.21.3.
+
+2007-11-17  Thomas Thurman  <thomas@thurman.org.uk>
+
         * NEWS: 2.21.2 release.
 
 2007-11-17  Benjamin Gramlich  <benjamin.gramlich@gmail.com>
