@@ -1,3 +1,9 @@
+2007-11-19  Lucas Rocha  <lucasr@gnome.org>
+
+	* src/main.c (main): try to get the session client ID from 
+	DESKTOP_AUTOSTART_ID environment variable in case the --sm-client-id 
+	is not used. Closes #498033.
+
 2007-11-17  Thomas Thurman  <thomas@thurman.org.uk>
 
         * configure.in: Post-release bump to 2.21.3.

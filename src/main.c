@@ -382,8 +382,23 @@ main (int argc, char **argv)
    * info
    */
   if (!meta_args.disable_sm)
-    meta_session_init (meta_args.client_id, meta_args.save_file);
+    {
+      if (meta_args.client_id == NULL)
+        {
+          const gchar *desktop_autostart_id;
+  
+          desktop_autostart_id = g_getenv ("DESKTOP_AUTOSTART_ID");
+ 
+          if (desktop_autostart_id != NULL)
+            meta_args.client_id = g_strdup (desktop_autostart_id);
+        }
 
+      /* Unset DESKTOP_AUTOSTART_ID in order to avoid child processes to
+       * use the same client id. */
+      g_unsetenv ("DESKTOP_AUTOSTART_ID");
+
+      meta_session_init (meta_args.client_id, meta_args.save_file);
+    }
   /* Free memory possibly allocated by the argument parsing which are
    * no longer needed.
    */
