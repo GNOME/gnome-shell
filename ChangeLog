@@ -1,5 +1,9 @@
 2007-11-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter.pc.in: Bump up glib-2.0 dependency.
+
+2007-11-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model.c: Add gtk-doc section for
 	ClutterModelIter
 
