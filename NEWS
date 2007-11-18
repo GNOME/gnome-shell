@@ -1,3 +1,19 @@
+2.21.2
+======
+
+Thanks to Benjamin Gramlich, Thomas Thurman, and Peter Bloomfield
+for improvements in this release.
+
+ - Theme parser is compliant to XDG Base Directory Specification
+   in searching for theme files. (Benjamin) (#480026)
+ - Some source files which didn't get used were removed (Thomas)
+   (#496947)
+ - Fullscreen and maximise windows don't try to save their position
+   (Peter) (#461927)
+
+Translations
+  Matej Urbančič (sl)
+
 2.21.1
 ======
 
