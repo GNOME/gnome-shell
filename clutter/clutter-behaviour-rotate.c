@@ -25,7 +25,7 @@
 
 /**
  * SECTION:clutter-behaviour-rotate
- * @short_description: A behaviour class to rotate actors
+ * @short_description: A behaviour controlling rotation
  *
  * A #ClutterBehaviourRotate rotate actors between a starting and ending
  * angle on a given axis.

@@ -38,7 +38,7 @@
 
 /**
  * SECTION:clutter-behaviour-depth
- * @short_description: Behaviour controlling the depth
+ * @short_description: A behaviour controlling the Z position
  *
  * #ClutterBehaviourDepth is a simple #ClutterBehaviour controlling the
  * depth of a set of actors between a start and end depth.

@@ -25,8 +25,7 @@
 
 /**
  * SECTION:clutter-behaviour-path
- * @short_description: A behaviour class interpolating actors along a defined
- * path.
+ * @short_description: A behaviour interpolating position along a path
  *
  * #ClutterBehaviourPath interpolates actors along a defined path.
  *

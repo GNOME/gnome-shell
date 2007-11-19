@@ -25,8 +25,7 @@
 
 /**
  * SECTION:clutter-behaviour-scale
- * @short_description: A behaviour class interpolating actors size between
- * two values.
+ * @short_description: A behaviour controlling scale
  *
  * A #ClutterBehaviourScale interpolates actors size between two values.
  *

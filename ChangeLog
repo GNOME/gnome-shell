@@ -1,5 +1,15 @@
 2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-bspline.c:
+	* clutter/clutter-behaviour-depth.c:
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter-behaviour-opacity.c:
+	* clutter/clutter-behaviour-path.c:
+	* clutter/clutter-behaviour-rotate.c:
+	* clutter/clutter-behaviour-scale.c: Fix gtk-doc short description.
+
+2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter.symbols: Update
 
 	* clutter/clutter-actor.h: Rename the angle argument for

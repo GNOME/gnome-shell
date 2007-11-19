@@ -26,10 +26,9 @@
 
 /**
  * SECTION:clutter-behaviour-bspline
- * @short_description: A behaviour class interpolating actors along a path
- * defined by bezier spline.
+ * @short_description: A behaviour interpolating position along a B-Spline
  *
- * #ClutterBehaviourBspline interpolates actors along a defined bspline path.
+ * #ClutterBehaviourBspline interpolates actors along a defined B-Spline path.
  *
  * A bezier spline is a set of cubic bezier curves defined by a sequence of
  * control points given when creating a new #ClutterBehaviourBspline instance.

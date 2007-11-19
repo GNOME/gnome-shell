@@ -25,8 +25,7 @@
 
 /**
  * SECTION:clutter-behaviour-opacity
- * @short_description: A behaviour class interpolating actors opacity between
- * two values.
+ * @short_description: A behaviour controlling opacity
  *
  * #ClutterBehaviourPath interpolates actors opacity between two values.
  *

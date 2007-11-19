@@ -27,7 +27,7 @@
 
 /**
  * SECTION:clutter-behaviour-ellipse
- * @short_description: elliptic path behaviour.
+ * @short_description: A behaviour interpolating position along an ellipse
  *
  * #ClutterBehaviourEllipse interpolates actors along a path defined by
  *  an ellipse.
