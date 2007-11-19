@@ -1,3 +1,8 @@
+2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-timeline.c (timeline_timeout_func): Do not emit the
+	::new-frame signal twice for the last frame. (#531)
+
 2007-11-19  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-actor.[ch]: (clutter_actor_set_rotationx),
