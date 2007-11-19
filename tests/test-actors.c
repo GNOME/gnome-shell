@@ -86,8 +86,9 @@ frame_cb (ClutterTimeline *timeline,
   gint            i;
 
   /* Rotate everything clockwise about stage center*/
-  clutter_actor_set_rotation (CLUTTER_ACTOR (oh->group), frame_num,
+  clutter_actor_set_rotation (CLUTTER_ACTOR (oh->group),
                               CLUTTER_Z_AXIS,
+                              frame_num,
                               CLUTTER_STAGE_WIDTH() / 2,
                               CLUTTER_STAGE_HEIGHT() / 2,
                               0);
@@ -104,8 +105,8 @@ frame_cb (ClutterTimeline *timeline,
        * FIXME: scaling causes drift so disabled for now. Need rotation
        * unit based functions to fix.
       */
-      clutter_actor_set_rotation (oh->hand[i], - 6.0 * frame_num,
-                                  CLUTTER_Z_AXIS,
+      clutter_actor_set_rotation (oh->hand[i], CLUTTER_Z_AXIS,
+                                  - 6.0 * frame_num,
 #if 0
 	       (clutter_actor_get_width (oh->hand[i]) / 2) * scale_x,
 	       (clutter_actor_get_height (oh->hand[i]) / 2) * scale_y,

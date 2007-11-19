@@ -2569,8 +2569,8 @@ clutter_actor_get_depth (ClutterActor *self)
 /**
  * clutter_actor_set_rotationx:
  * @self: a #ClutterActor
- * @angle: the angle of rotation
  * @axis: the axis of rotation
+ * @angle: the angle of rotation
  * @x: X coordinate of the rotation center
  * @y: Y coordinate of the rotation center
  * @z: Z coordinate of the rotation center
@@ -2583,8 +2583,8 @@ clutter_actor_get_depth (ClutterActor *self)
  */
 void
 clutter_actor_set_rotationx (ClutterActor      *self,
-                             ClutterFixed       angle,
                              ClutterRotateAxis  axis,
+                             ClutterFixed       angle,
                              gint               x,
                              gint               y,
                              gint               z)
@@ -2623,8 +2623,8 @@ clutter_actor_set_rotationx (ClutterActor      *self,
 /**
  * clutter_actor_set_rotation:
  * @self: a #ClutterActor
- * @angle: the angle of rotation
  * @axis: the axis of rotation
+ * @angle: the angle of rotation
  * @x: X coordinate of the rotation center
  * @y: Y coordinate of the rotation center
  * @z: Z coordinate of the rotation center
@@ -2642,16 +2642,16 @@ clutter_actor_set_rotationx (ClutterActor      *self,
  */
 void
 clutter_actor_set_rotation (ClutterActor      *self,
-                            gdouble            angle,
                             ClutterRotateAxis  axis,
+                            gdouble            angle,
                             gint               x,
                             gint               y,
                             gint               z)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_rotationx (self, CLUTTER_FLOAT_TO_FIXED (angle),
-                               axis,
+  clutter_actor_set_rotationx (self, axis,
+                               CLUTTER_FLOAT_TO_FIXED (angle),
                                x, y, z);
 }
 

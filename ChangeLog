@@ -1,3 +1,17 @@
+2007-11-19  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-actor.[ch]: (clutter_actor_set_rotationx),
+	(clutter_actor_set_rotation): swapped axis and angle around,
+	the new argument order is: (axis, angle, x, y, z). Also removed
+	deprecated rotation functions from header.
+
+	Updated use of clutter_actor_set_rotation? in the following files:
+
+	* clutter/clutter-behaviour-rotate.c: 
+	* clutter/clutter-effect.c: 
+	* tests/test-actors.c: 
+	* tests/test-project.c:
+
 2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-label.[ch]: Constify the color argument
@@ -12,7 +26,7 @@
 	* clutter/clutter-stage.c:
 	* tests/test-events.c: 
 	Parent Actors no longer need to be set reactive for reactive
-        children to get events. Also makes groups now pickable. 
+	children to get events. Also makes groups now pickable. 
 	(#597, #423)	
 
 	* clutter/clutter-texture.c:
