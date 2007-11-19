@@ -49,21 +49,21 @@
 #include "cogl.h"
 
 /* main context */
-static ClutterMainContext *ClutterCntx = NULL;
+static ClutterMainContext *ClutterCntx  = NULL;
 
 /* main lock and locking/unlocking functions */
 static GMutex *clutter_threads_mutex    = NULL;
 static GCallback clutter_threads_lock   = NULL;
 static GCallback clutter_threads_unlock = NULL;
 
-static gboolean clutter_is_initialized = FALSE;
-static gboolean clutter_show_fps       = FALSE;
-static gboolean clutter_fatal_warnings = FALSE;
+static gboolean clutter_is_initialized  = FALSE;
+static gboolean clutter_show_fps        = FALSE;
+static gboolean clutter_fatal_warnings  = FALSE;
 
-static gint clutter_default_fps = 60;
+static guint clutter_default_fps        = 60;
 
-static guint clutter_main_loop_level = 0;
-static GSList *main_loops = NULL;
+static guint clutter_main_loop_level    = 0;
+static GSList *main_loops               = NULL;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
 
@@ -175,18 +175,44 @@ clutter_redraw (void)
   CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finish");
 }
 
+/**
+ * clutter_set_motion_events_enabled:
+ * @enable: %TRUE to enable per-actor motion events
+ *
+ * Sets whether per-actor motion events should be enabled or not (the
+ * default is to enable them).
+ *
+ * If @enable is %FALSE the following events will not work:
+ * <itemizedlist>
+ *   <listitem><para>ClutterActor::motion-event, unless on the
+ *     #ClutterStage</para></listitem>
+ *   <listitem><para>ClutterActor::enter-event</para></listitem>
+ *   <listitem><para>ClutterActor::leave-event</para></listitem>
+ * </itemizedlist>
+ *
+ * Since: 0.6
+ */
 void
-clutter_enable_motion_events (gboolean enable)
+clutter_set_motion_events_enabled (gboolean enable)
 {
-  ClutterMainContext  *context = clutter_context_get_default ();
+  ClutterMainContext *context = clutter_context_get_default ();
 
   context->motion_events_per_actor = enable;
 }
 
+/**
+ * clutter_get_motion_events_enabled:
+ *
+ * Gets whether the per-actor motion events are enabled.
+ *
+ * Return value: %TRUE if the motion events are enabled
+ *
+ * Since: 0.6
+ */
 gboolean
 clutter_get_motion_events_enabled (void)
 {
-  ClutterMainContext  *context = clutter_context_get_default ();
+  ClutterMainContext *context = clutter_context_get_default ();
 
   return context->motion_events_per_actor;
 }
@@ -668,10 +694,13 @@ clutter_context_get_default (void)
       ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
 
       ctx->is_initialized = FALSE;
+      ctx->motion_events_per_actor = TRUE;
+
 #ifdef CLUTTER_ENABLE_DEBUG
       ctx->timer          =  g_timer_new ();
       g_timer_start (ctx->timer);
 #endif
+
       ClutterCntx = ctx;
     }
 
@@ -1297,6 +1326,7 @@ clutter_do_event (ClutterEvent *event)
   ClutterMainContext  *context;
   ClutterBackend      *backend;
   ClutterActor        *stage;
+  static gint32        motion_last_time = 0L;
 
   context = clutter_context_get_default ();
   backend = context->backend;
@@ -1340,7 +1370,29 @@ clutter_do_event (ClutterEvent *event)
         break;
 
       case CLUTTER_MOTION:
-        if (context->motion_events_per_actor == FALSE)
+        {
+          gint32 frame_rate, delta;
+
+          /* avoid issuing too many motion events, which leads to many redraws
+           * in pick mode (performance penalty)
+           */
+          frame_rate = clutter_get_motion_events_frequency ();
+          delta = 1000 / frame_rate;
+
+          CLUTTER_NOTE (EVENT,
+                        "skip motion event: %s (last:%d, delta:%d, time:%d)",
+                        (event->any.time < (motion_last_time + delta) ? "yes" : "no"),
+                        motion_last_time,
+                        delta,
+                        event->any.time);
+
+          if (event->any.time < (motion_last_time + delta))
+            break;
+          else
+            motion_last_time = event->any.time;
+        }
+
+        if (!context->motion_events_per_actor)
           {
             /* Only stage gets motion events */
             event->any.source = stage;
@@ -1473,6 +1525,19 @@ clutter_base_init (void)
     }
 }
 
+/**
+ * clutter_get_default_frame_rate:
+ *
+ * Retrieves the default frame rate used when creating #ClutterTimeline<!--
+ * -->s.
+ *
+ * This value is also used to compute the default frequency of motion
+ * events.
+ *
+ * Return value: the default frame rate
+ *
+ * Since: 0.6
+ */
 guint
 clutter_get_default_frame_rate (void)
 {
@@ -1483,6 +1548,15 @@ clutter_get_default_frame_rate (void)
   return context->frame_rate;
 }
 
+/**
+ * clutter_set_default_frame_rate:
+ * @frames_per_sec: the new default frame rate
+ *
+ * Sets the default frame rate to be used when creating #ClutterTimeline<!--
+ * -->s
+ *
+ * Since: 0.6
+ */
 void
 clutter_set_default_frame_rate (guint frames_per_sec)
 {
@@ -1662,4 +1736,57 @@ clutter_get_keyboard_grab (void)
   context = clutter_context_get_default ();
 
   return context->keyboard_grab_actor;
+}
+
+/**
+ * clutter_get_motion_events_frequency:
+ * 
+ * Retrieves the number of motion events per second that are delivered
+ * to the stage.
+ *
+ * See clutter_set_motion_events_frequency().
+ *
+ * Return value: the number of motion events per second
+ *
+ * Since: 0.6
+ */
+guint
+clutter_get_motion_events_frequency (void)
+{
+  ClutterMainContext *context = clutter_context_get_default ();
+
+  if (G_LIKELY (context->motion_frequency == 0))
+    {
+      guint frequency;
+      
+      frequency = clutter_default_fps / 4;
+      frequency = CLAMP (frequency, 20, 45);
+
+      return frequency;
+    }
+  else
+    return context->motion_frequency;
+}
+
+/**
+ * clutter_set_motion_events_frequency:
+ * @frequency: the number of motion events per second
+ *
+ * Sets the motion events frequency. Setting this to a non-zero value
+ * will override the default setting, so it should be rarely used.
+ *
+ * Motion events are delivered from the default backend to the stage
+ * and are used to generate the enter/leave events pair. This might lead
+ * to a performance penalty due to the way the actors are identified.
+ * Using this function is possible to reduce the frequency of the motion
+ * events delivery to the stage.
+ *
+ * Since: 0.6
+ */
+void
+clutter_set_motion_events_frequency (guint frequency)
+{
+  ClutterMainContext *context = clutter_context_get_default ();
+
+  context->motion_frequency = frequency;
 }

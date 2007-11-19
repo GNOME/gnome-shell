@@ -100,20 +100,21 @@ guint            clutter_threads_add_timeout_full   (gint           priority,
                                                      gpointer       data,
                                                      GDestroyNotify notify);
 
-void             clutter_enable_motion_events       (gboolean enable);
-gboolean         clutter_get_motion_events_enabled  (void);
+void             clutter_set_motion_events_enabled   (gboolean enable);
+gboolean         clutter_get_motion_events_enabled   (void);
+void             clutter_set_motion_events_frequency (guint    frequency);
+guint            clutter_get_motion_events_frequency (void);
 
-guint            clutter_get_default_frame_rate     (void);
-void             clutter_set_default_frame_rate     (guint frames_per_sec);
+void             clutter_set_default_frame_rate      (guint    frames_per_sec);
+guint            clutter_get_default_frame_rate      (void);
 
+void             clutter_grab_pointer                (ClutterActor *actor);
+void             clutter_ungrab_pointer              (void);
+ClutterActor *   clutter_get_pointer_grab            (void);
 
-void             clutter_grab_pointer               (ClutterActor *actor);
-void             clutter_ungrab_pointer             (void);
-ClutterActor *   clutter_get_pointer_grab           (void);
-
-void             clutter_grab_keyboard              (ClutterActor *actor);
-void             clutter_ungrab_keyboard            (void);
-ClutterActor *   clutter_get_keyboard_grab          (void);
+void             clutter_grab_keyboard               (ClutterActor *actor);
+void             clutter_ungrab_keyboard             (void);
+ClutterActor *   clutter_get_keyboard_grab           (void);
 
 G_END_DECLS
 

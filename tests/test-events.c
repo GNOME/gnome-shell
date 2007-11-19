@@ -1,6 +1,6 @@
 #include <clutter/clutter.h>
 
-gboolean IsFullScreen = FALSE, IsMotion = FALSE;
+gboolean IsFullScreen = FALSE, IsMotion = TRUE;
 
 static void
 stage_state_cb (ClutterStage    *stage,
@@ -41,7 +41,7 @@ red_button_cb (ClutterActor    *actor,
   else
     IsMotion = TRUE;
 
-  clutter_enable_motion_events (IsMotion);
+  clutter_set_motion_events_enabled (IsMotion);
 
   return FALSE;
 }

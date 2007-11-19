@@ -354,8 +354,16 @@ clutter_threads_add_idle
 clutter_threads_add_idle_full
 clutter_threads_add_timeout
 clutter_threads_add_timeout_full
-clutter_enable_motion_events
+clutter_set_motion_events_enabled
 clutter_get_motion_events_enabled
+clutter_set_motion_events_frequency
+clutter_get_motion_events_frequency
+clutter_grab_pointer
+clutter_ungrab_pointer
+clutter_get_pointer_grab
+clutter_grab_keyboard
+clutter_ungrab_keyboard
+clutter_get_keyboard_grab
 clutter_media_get_type
 clutter_media_get_uri            
 clutter_media_get_playing        

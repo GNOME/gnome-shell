@@ -1,3 +1,8 @@
+2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Remove clutter_behaviour_bspline_append() and
+	add the new motion events settings API.
+
 2007-11-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Add clutter-x11.h to the headers scanned.

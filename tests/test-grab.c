@@ -107,9 +107,11 @@ green_press_cb (ClutterActor    *actor,
                 ClutterEvent    *event,
                 gpointer         data)
 {
-  clutter_enable_motion_events (!clutter_get_motion_events_enabled ());
+  clutter_set_motion_events_enabled (!clutter_get_motion_events_enabled ());
+
   g_print ("per actor motion events are now %s\n",
-    clutter_get_motion_events_enabled ()?"enabled":"disabled");
+           clutter_get_motion_events_enabled () ? "enabled" : "disabled");
+
   return FALSE;
 }
 

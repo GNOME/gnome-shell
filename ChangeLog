@@ -1,5 +1,29 @@
 2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter.symbols: Update
+
+	* clutter/clutter-actor.h: Rename the angle argument for
+	set_rotationx() to avoid gtk-doc complaining
+
+	* clutter/clutter-main.h:
+	* clutter/clutter-main.c:
+	(clutter_set_motion_events_enabled): Rename for consistency
+
+	(clutter_get_motion_events_frequency),
+	(clutter_set_motion_events_frequency): Add accessors for the default
+	motion events deliver frequency.
+	
+	(clutter_do_event): Throttle down motion events delivery using the
+	motion events frequency setting, to avoid excessive redraws. (#608)
+
+	(clutter_context_get_default): Enable per-actor motion events, at
+	least for now.
+
+	* tests/test-events.c (red_button_cb):
+	* tests/test-grab.c (green_press_cb): Update.
+
+2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-timeline.c (timeline_timeout_func): Do not emit the
 	::new-frame signal twice for the last frame. (#531)
 
