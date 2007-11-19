@@ -583,9 +583,9 @@ clutter_label_new_with_text (const gchar *font_name,
  * Return value: a #ClutterLabel
  */
 ClutterActor*
-clutter_label_new_full (const gchar  *font_name,
-			const gchar  *text,
-			ClutterColor *color)
+clutter_label_new_full (const gchar        *font_name,
+			const gchar        *text,
+			const ClutterColor *color)
 {
   /* FIXME: really new_with_text should take color argument... */
   ClutterActor *label;

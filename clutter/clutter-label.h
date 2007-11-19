@@ -82,9 +82,9 @@ GType clutter_label_get_type (void) G_GNUC_CONST;
 
 ClutterActor *        clutter_label_new                (void);
 
-ClutterActor*         clutter_label_new_full           (const gchar  *font_name,
-							const gchar  *text,
-							ClutterColor *color);
+ClutterActor*         clutter_label_new_full           (const gchar        *font_name,
+							const gchar        *text,
+							const ClutterColor *color);
 
 ClutterActor *        clutter_label_new_with_text      (const gchar        *font_name,
                                                         const gchar        *text);

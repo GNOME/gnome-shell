@@ -1,3 +1,8 @@
+2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-label.[ch]: Constify the color argument
+	for the ClutterLabel ctor. (#604)
+
 2007-11-18  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
