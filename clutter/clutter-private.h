@@ -80,6 +80,7 @@ struct _ClutterMainContext
 
   ClutterPickMode  pick_mode;          /* Indicates pick render mode   */
   guint            motion_events_per_actor : 1;/* set for enter/leave events */
+  guint            motion_frequency;   /* Motion events per second */
   gint             num_reactives;      /* Num of reactive actors */
 
   GHashTable      *actor_hash;	       /* Hash of all actors mapped to id */
