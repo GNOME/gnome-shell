@@ -35,9 +35,7 @@ main (int argc, char *argv[])
   clutter_actor_show (hand);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), hand);
 
-  label = clutter_label_new_with_text ("Mono 16",
-				       "The Wonder of the Spinning Hand\n\n  ");
-  
+  label = clutter_label_new_with_text ("Mono 16", "The Wonder of the Spinning Hand");
   clutter_actor_set_position (label, 150, 150);
   clutter_actor_show (label);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);

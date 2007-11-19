@@ -81,7 +81,8 @@ typedef gint32 ClutterUnit;
 #define CLUTTER_UNITS_FROM_FIXED(x)      (x)
 #define CLUTTER_UNITS_TO_FIXED(x)        (x)
 
-#define CLUTTER_UNITS_FROM_PANGO_UNIT(x) (x << 6)
+#define CLUTTER_UNITS_FROM_PANGO_UNIT(x) ((x) << 6)
+#define CLUTTER_UNITS_TO_PANGO_UNIT(x)   ((x) >> 6)
 
 G_END_DECLS
 

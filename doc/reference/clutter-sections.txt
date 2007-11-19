@@ -29,16 +29,17 @@ clutter_media_get_type
 <TITLE>Unit conversion</TITLE>
 ClutterUnit
 CLUTTER_UNITS_FROM_DEVICE
+CLUTTER_UNITS_TO_DEVICE
 CLUTTER_UNITS_FROM_FIXED
+CLUTTER_UNITS_TO_FIXED
 CLUTTER_UNITS_FROM_FLOAT
+CLUTTER_UNITS_TO_FLOAT
 CLUTTER_UNITS_FROM_INT
+CLUTTER_UNITS_TO_INT
 CLUTTER_UNITS_FROM_PANGO_UNIT
+CLUTTER_UNITS_TO_PANGO_UNIT
 CLUTTER_UNITS_TMP_FROM_DEVICE
 CLUTTER_UNITS_TMP_TO_DEVICE
-CLUTTER_UNITS_TO_DEVICE
-CLUTTER_UNITS_TO_FIXED
-CLUTTER_UNITS_TO_FLOAT
-CLUTTER_UNITS_TO_INT
 </SECTION>
 
 <SECTION>
@@ -68,6 +69,9 @@ clutter_label_set_use_markup
 clutter_label_get_use_markup
 clutter_label_set_alignment
 clutter_label_get_alignment
+clutter_label_get_justify
+clutter_label_set_justify
+
 <SUBSECTION Standard>
 CLUTTER_LABEL
 CLUTTER_IS_LABEL
@@ -238,6 +242,11 @@ clutter_container_get_type
 ClutterLayout
 ClutterLayoutIface
 ClutterLayoutFlags
+CLUTTER_LAYOUT_HAS
+CLUTTER_LAYOUT_HAS_HEIGHT_FOR_WIDTH
+CLUTTER_LAYOUT_HAS_NATURAL_SIZE
+CLUTTER_LAYOUT_HAS_TUNABLE_SIZE
+CLUTTER_LAYOUT_HAS_WIDTH_FOR_HEIGHT
 clutter_layout_get_layout_flags
 clutter_layout_height_for_width
 clutter_layout_natural_request
@@ -307,6 +316,8 @@ clutter_actor_destroy
 clutter_actor_request_coords
 clutter_actor_query_coords
 clutter_actor_event
+clutter_actor_pick
+clutter_actor_should_pick_paint
 
 <SUBSECTION>
 clutter_actor_set_geometry
@@ -1242,4 +1253,37 @@ CLUTTER_MODEL_ITER_GET_CLASS
 <SUBSECTION Private>
 ClutterModelIterPrivate
 clutter_model_iter_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-score</FILE>
+<TITLE>ClutterScore</TITLE>
+ClutterScore
+ClutterScoreClass
+clutter_score_new
+clutter_score_add
+clutter_score_append
+clutter_score_remove
+clutter_score_remove_all
+clutter_score_set_loop
+clutter_score_get_loop
+
+<SUBSECTION>
+clutter_score_start
+clutter_score_pause
+clutter_score_stop
+clutter_score_is_playing
+clutter_score_rewind
+
+<SUBSECTION Standard>
+CLUTTER_IS_SCORE
+CLUTTER_IS_SCORE_CLASS
+CLUTTER_SCORE
+CLUTTER_SCORE_CLASS
+CLUTTER_SCORE_GET_CLASS
+CLUTTER_TYPE_SCORE
+
+<SUBSECTION Private>
+ClutterScorePrivate
+clutter_score_get_type
 </SECTION>

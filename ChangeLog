@@ -1,5 +1,19 @@
 2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-label.[ch]: Fix ClutterLabel size allocation when
+	no bounding box has been provided, and store the box set by the
+	user so that it can be reused when recomputing the layout. (#600)
+
+	(clutter_label_class_init),
+	(clutter_label_init): Set the :wrap property default to FALSE.
+	
+	* clutter/clutter-units.h: Add ClutterUnit-to-PangoUnit conversion
+	macro.
+
+	* tests/test-rotate.c: Fix string.
+
+2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour-bspline.c:
 	* clutter/clutter-behaviour-depth.c:
 	* clutter/clutter-behaviour-ellipse.c:
