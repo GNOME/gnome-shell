@@ -1,5 +1,12 @@
 2007-11-20  Øyvind Kolås  <pippin@o-hand.com>
 
+	* clutter/clutter-main.c: (event_click_count_generate): generalized
+	click_count generation code.
+	* tests/test-events.c: (input_cb): extended test to report click_count
+	for release and scroll events as well as press events.
+
+2007-11-20  Øyvind Kolås  <pippin@o-hand.com>
+
 	* clutter/clutter-main.c: (clutter_do_event): avoid computing source
 	of events if it is already set (for synthetic events.)
 	* clutter/clutter-event.c: Add more information to the documentation

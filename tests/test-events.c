@@ -116,15 +116,18 @@ input_cb (ClutterActor    *actor,
 	     source, event->button.click_count);
       break;
     case CLUTTER_BUTTON_RELEASE:
-      printf("[%s] BUTTON RELEASE", source);
+      printf("[%s] BUTTON RELEASE (click count:%i)", 
+	     source, event->button.click_count);
+
       if (clutter_event_get_source (event) == CLUTTER_ACTOR (stage))
         clutter_stage_set_key_focus (stage, NULL);
       else if (clutter_event_get_source (event) == actor
-	       && clutter_actor_get_parent (actor) == stage)
+	       && clutter_actor_get_parent (actor) == CLUTTER_ACTOR (stage))
 	clutter_stage_set_key_focus (stage, actor);
       break;
     case CLUTTER_SCROLL:
-      printf("[%s] BUTTON SCROLL", source);
+      printf("[%s] BUTTON SCROLL (click count:%i)", 
+	     source, event->button.click_count);
       break;
     case CLUTTER_STAGE_STATE:
       printf("[%s] STAGE STATE", source);
