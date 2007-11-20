@@ -124,7 +124,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
 	  0
 	};
 
-      if (stage_x11->xvisinfo && stage_x11->is_foreign_xwin == 0)
+      if (stage_x11->xvisinfo)
 	XFree (stage_x11->xvisinfo);
 
       if (stage_x11->xvisinfo == None)
