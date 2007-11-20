@@ -1120,56 +1120,64 @@ static void
 event_click_count_generate (ClutterEvent *event)
 {
   /* multiple button click detection */
-  static gint    click_count[2]            = {0,   0};
-  static gint    previous_x[2]             = {-1, -1};
-  static gint    previous_y[2]             = {-1, -1};
-  static guint32 previous_time[2]          = {0,   0};
-  static gint    previous_button_number[2] = {-1, -1};
-  gint           s; /* index into the state variable's arrays, 0 for normal
-                     * events and 1 for synthetic events
-                     */
+  static guint32 button_click_time[2] = { 0, 0 };
+  static guint32 button_number[2] = { -1, -1 };
+  static gint    button_x[2] = { 0, 0 };
+  static gint    button_y[2] = { 0, 0 };
 
-  ClutterBackend *backend;
-  guint           double_click_time;
-  guint           double_click_distance;
+  guint double_click_time, double_click_distance;
+  ClutterBackend      *backend;
+  ClutterMainContext  *context;
 
-  backend = clutter_context_get_default ()->backend;
+  context = clutter_context_get_default ();
+  backend = context->backend;
+
   double_click_distance = clutter_backend_get_double_click_distance (backend);
   double_click_time = clutter_backend_get_double_click_time (backend);
 
-  s = (event->button.flags & CLUTTER_EVENT_FLAG_SYNTHETIC)?1:0;
-
-  switch (event->type)
+  /* FIXME: below could be reduced in lines and handle >3 clicks */
+  if ((event->button.time < (button_click_time[1] + 2 * double_click_time)) 
+      && (event->button.button == button_number[1]) 
+      && (ABS (event->button.x - button_x[1]) <= double_click_distance) 
+      && (ABS (event->button.y - button_y[1]) <= double_click_distance))
     {
-      case CLUTTER_BUTTON_PRESS:
-      case CLUTTER_SCROLL:
-        /* check if we are in time and within distance to increment an
-         * existing click count
-         */
-        if (event->button.time < previous_time[s] + double_click_time &&
-            (ABS (event->button.x - previous_x[s]) <= double_click_distance) && 
-            (ABS (event->button.y - previous_y[s]) <= double_click_distance)
-            && event->button.button == previous_button_number[s])
-          {
-            click_count[s] ++;
-          }
-        else /* start a new click count*/
-          {
-            click_count[s]=1;
-            previous_button_number[s] = event->button.button;
-          }
+      event->button.click_count = 2;
+            
+      button_click_time[1] = 0;
+      button_click_time[0] = 0;
+      button_number[1] = -1;
+      button_number[0] = -1;
+      button_x[0] = button_x[1] = 0;
+      button_y[0] = button_y[1] = 0;
+    }
+  else if ((event->button.time < (button_click_time[0] + double_click_time)) &&
+      (event->button.button == button_number[0]) &&
+      (ABS (event->button.x - button_x[0]) <= double_click_distance) &&
+      (ABS (event->button.y - button_y[0]) <= double_click_distance))
+    {
+      event->button.click_count = 3;
       
-        /* store time and position for this click for comparison with next event */
-        previous_time[s] = event->button.time;
-        previous_x[s]    = event->button.x;
-        previous_y[s]    = event->button.y;
+      button_click_time[1] = button_click_time[0];
+      button_click_time[0] = event->button.time;
+      button_number[1] = button_number[0];
+      button_number[0] = event->button.button;
+      button_x[1] = button_x[0];
+      button_x[0] = event->button.x;
+      button_y[1] = button_y[0];
+      button_y[0] = event->button.y;
+    }
+  else
+    {
+      event->button.click_count = 1;
 
-        /* fallthrough */
-      case CLUTTER_BUTTON_RELEASE:
-        event->button.click_count=click_count[s];
-        break;
-      default:
-        g_assert (NULL);
+      button_click_time[1] = 0;
+      button_click_time[0] = event->button.time;
+      button_number[1] = -1;
+      button_number[0] = event->button.button;
+      button_x[1] = 0;
+      button_x[0] = event->button.x;
+      button_y[1] = 0;
+      button_y[0] = event->button.y;
     }
 }
 
