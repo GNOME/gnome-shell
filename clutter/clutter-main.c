@@ -1120,64 +1120,56 @@ static void
 event_click_count_generate (ClutterEvent *event)
 {
   /* multiple button click detection */
-  static guint32 button_click_time[2] = { 0, 0 };
-  static guint32 button_number[2] = { -1, -1 };
-  static gint    button_x[2] = { 0, 0 };
-  static gint    button_y[2] = { 0, 0 };
+  static gint    click_count[2]            = {0,   0};
+  static gint    previous_x[2]             = {-1, -1};
+  static gint    previous_y[2]             = {-1, -1};
+  static guint32 previous_time[2]          = {0,   0};
+  static gint    previous_button_number[2] = {-1, -1};
+  gint           s; /* index into the state variable's arrays, 0 for normal
+                     * events and 1 for synthetic events
+                     */
 
-  guint double_click_time, double_click_distance;
-  ClutterBackend      *backend;
-  ClutterMainContext  *context;
+  ClutterBackend *backend;
+  guint           double_click_time;
+  guint           double_click_distance;
 
-  context = clutter_context_get_default ();
-  backend = context->backend;
-
+  backend = clutter_context_get_default ()->backend;
   double_click_distance = clutter_backend_get_double_click_distance (backend);
   double_click_time = clutter_backend_get_double_click_time (backend);
 
-  /* FIXME: below could be reduced in lines and handle >3 clicks */
-  if ((event->button.time < (button_click_time[1] + 2 * double_click_time)) 
-      && (event->button.button == button_number[1]) 
-      && (ABS (event->button.x - button_x[1]) <= double_click_distance) 
-      && (ABS (event->button.y - button_y[1]) <= double_click_distance))
-    {
-      event->button.click_count = 2;
-            
-      button_click_time[1] = 0;
-      button_click_time[0] = 0;
-      button_number[1] = -1;
-      button_number[0] = -1;
-      button_x[0] = button_x[1] = 0;
-      button_y[0] = button_y[1] = 0;
-    }
-  else if ((event->button.time < (button_click_time[0] + double_click_time)) &&
-      (event->button.button == button_number[0]) &&
-      (ABS (event->button.x - button_x[0]) <= double_click_distance) &&
-      (ABS (event->button.y - button_y[0]) <= double_click_distance))
-    {
-      event->button.click_count = 3;
-      
-      button_click_time[1] = button_click_time[0];
-      button_click_time[0] = event->button.time;
-      button_number[1] = button_number[0];
-      button_number[0] = event->button.button;
-      button_x[1] = button_x[0];
-      button_x[0] = event->button.x;
-      button_y[1] = button_y[0];
-      button_y[0] = event->button.y;
-    }
-  else
-    {
-      event->button.click_count = 1;
+  s = (event->button.flags & CLUTTER_EVENT_FLAG_SYNTHETIC)?1:0;
 
-      button_click_time[1] = 0;
-      button_click_time[0] = event->button.time;
-      button_number[1] = -1;
-      button_number[0] = event->button.button;
-      button_x[1] = 0;
-      button_x[0] = event->button.x;
-      button_y[1] = 0;
-      button_y[0] = event->button.y;
+  switch (event->type)
+    {
+      case CLUTTER_BUTTON_PRESS:
+      case CLUTTER_SCROLL:
+        /* check if we are in time and within distance to increment an
+         * existing click count
+         */
+        if (event->button.time < previous_time[s] + double_click_time &&
+            (ABS (event->button.x - previous_x[s]) <= double_click_distance) && 
+            (ABS (event->button.y - previous_y[s]) <= double_click_distance)
+            && event->button.button == previous_button_number[s])
+          {
+            click_count[s] ++;
+          }
+        else /* start a new click count*/
+          {
+            click_count[s]=1;
+            previous_button_number[s] = event->button.button;
+          }
+      
+        /* store time and position for this click for comparison with next event */
+        previous_time[s] = event->button.time;
+        previous_x[s]    = event->button.x;
+        previous_y[s]    = event->button.y;
+
+        /* fallthrough */
+      case CLUTTER_BUTTON_RELEASE:
+        event->button.click_count=click_count[s];
+        break;
+      default:
+        g_assert (NULL);
     }
 }
 
@@ -1360,39 +1352,50 @@ clutter_do_event (ClutterEvent *event)
         {
           ClutterActor *actor = NULL;
 
-          actor = clutter_stage_get_key_focus (CLUTTER_STAGE (stage));
-          event->any.source = actor;
+          /* check that we're not a synthetic event with source set */
+          if (event->any.source == NULL)
+            {
+              actor = clutter_stage_get_key_focus (CLUTTER_STAGE (stage));
+              event->any.source = actor;
+              g_return_if_fail (actor != NULL);
+            }
 
-          g_return_if_fail (actor != NULL);
 
           emit_keyboard_event (event);
         }
         break;
 
       case CLUTTER_MOTION:
-        {
-          gint32 frame_rate, delta;
 
-          /* avoid issuing too many motion events, which leads to many redraws
-           * in pick mode (performance penalty)
-           */
-          frame_rate = clutter_get_motion_events_frequency ();
-          delta = 1000 / frame_rate;
+        /* avoid rate throttling for synthetic motion events */
+        if (! (event->any.flags & CLUTTER_EVENT_FLAG_SYNTHETIC))
+          {
+            gint32 frame_rate, delta;
 
-          CLUTTER_NOTE (EVENT,
-                        "skip motion event: %s (last:%d, delta:%d, time:%d)",
-                        (event->any.time < (motion_last_time + delta) ? "yes" : "no"),
-                        motion_last_time,
-                        delta,
-                        event->any.time);
+            /* avoid issuing too many motion events, which leads to many
+             * redraws in pick mode (performance penalty)
+             */
+            frame_rate = clutter_get_motion_events_frequency ();
+            delta = 1000 / frame_rate;
 
-          if (event->any.time < (motion_last_time + delta))
-            break;
-          else
-            motion_last_time = event->any.time;
-        }
+            CLUTTER_NOTE (EVENT,
+                  "skip motion event: %s (last:%d, delta:%d, time:%d)",
+                  (event->any.time < (motion_last_time + delta) ? "yes" : "no"),
+                  motion_last_time,
+                  delta,
+                  event->any.time);
 
-        if (!context->motion_events_per_actor)
+            if (event->any.time < (motion_last_time + delta))
+              break;
+            else
+              motion_last_time = event->any.time;
+          }
+
+        /* Only stage gets motion events if clutter_set_motion_events is TRUE,
+         * and the event is not a synthetic event with source set.
+         */
+        if (!context->motion_events_per_actor &&
+            event->any.source == NULL)
           {
             /* Only stage gets motion events */
             event->any.source = stage;
@@ -1423,31 +1426,42 @@ clutter_do_event (ClutterEvent *event)
 
           clutter_event_get_coords (event, &x, &y);
 
-          /* Handle release off stage */
-          if ((x >= CLUTTER_STAGE_WIDTH () ||
-               y >= CLUTTER_STAGE_HEIGHT() ||
-               x < 0 || y < 0))
+          /* Only do a pick to find the source if source is not already set
+           * (as it could be in a synthetic event)
+           */
+          if (event->any.source == NULL)
             {
-              if (event->type == CLUTTER_BUTTON_RELEASE)
+              /* Handle release off stage */
+              if ((x >= CLUTTER_STAGE_WIDTH () ||
+                   y >= CLUTTER_STAGE_HEIGHT() ||
+                   x < 0 || y < 0))
                 {
-                  CLUTTER_NOTE (EVENT, "Release off stage received at %i, %i",
-                                x, y);
+                  if (event->type == CLUTTER_BUTTON_RELEASE)
+                    {
+                      CLUTTER_NOTE (EVENT,"Release off stage received at %i, %i",
+                                    x, y);
 
-                  event->button.source = stage;
-                  emit_pointer_event (event);
+                      event->button.source = stage;
+                      emit_pointer_event (event);
+                    }
+                  break;
                 }
-              break;
+
+              /* Map the event to a reactive actor */
+              actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
+                                        x, y, 
+                                        CLUTTER_PICK_REACTIVE);
+
+              event->any.source = actor;
+              if (!actor)
+                break;
+            }
+          else 
+            {
+              /* use the source already set in the synthetic event */
+              actor = event->any.source;
             }
 
-          /* Map the event to a reactive actor */
-          actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
-                                    x, y, 
-                                    CLUTTER_PICK_REACTIVE);
-
-          event->any.source = actor;
-
-          if (!actor)
-            break;
 
           /* FIXME: for an optimisation should check if there are
            * actually any reactive actors and avoid the pick all togeather
