@@ -627,14 +627,14 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			  "Font Name",
 			  "Pango font description",
 			  NULL,
-			  G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+			  CLUTTER_PARAM_READWRITE));
   g_object_class_install_property
     (gobject_class, PROP_TEXT,
      g_param_spec_string ("text",
 			  "Text",
 			  "Text to render",
 			  NULL,
-			  G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+			  CLUTTER_PARAM_READWRITE));
   g_object_class_install_property
     (gobject_class, PROP_COLOR,
      g_param_spec_boxed ("color",

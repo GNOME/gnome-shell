@@ -345,7 +345,7 @@ clutter_clone_texture_class_init (ClutterCloneTextureClass *klass)
 					   		"Parent Texture",
 							"The parent texture to clone",
 							CLUTTER_TYPE_TEXTURE,
-							(G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE)));
+							CLUTTER_PARAM_READWRITE));
 
   g_type_class_add_private (gobject_class, sizeof (ClutterCloneTexturePrivate));
 }

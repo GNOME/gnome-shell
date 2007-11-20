@@ -252,7 +252,6 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
 				  "Clone",
 				  "controls if effects should clone or reference the templated timeline",
 				  TRUE,
-				  G_PARAM_CONSTRUCT |
 				  CLUTTER_PARAM_READWRITE));
 
 }

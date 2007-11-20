@@ -1169,7 +1169,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                        "Opacity of actor",
                                                        0, 0xff,
                                                        0xff,
-                                                       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+                                                       CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:visible:
    *

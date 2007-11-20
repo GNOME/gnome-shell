@@ -175,9 +175,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
                                                       "Initial opacity level",
                                                       0, 255,
                                                       0,
-                                                      CLUTTER_PARAM_READWRITE |
-                                                      G_PARAM_CONSTRUCT));
-  
+                                                      CLUTTER_PARAM_READWRITE));
   /**
    * ClutterBehaviourOpacity:opacity-end:
    *
@@ -192,8 +190,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
                                                       "Final opacity level",
                                                       0, 255,
                                                       0,
-                                                      CLUTTER_PARAM_READWRITE |
-                                                      G_PARAM_CONSTRUCT));
+                                                      CLUTTER_PARAM_READWRITE));
 
   behave_class->alpha_notify = clutter_behaviour_alpha_notify;
 
@@ -204,6 +201,9 @@ static void
 clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
 {
   self->priv = CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE (self);
+
+  self->priv->opacity_start = 0;
+  self->priv->opacity_end = 0;
 }
 
 /**

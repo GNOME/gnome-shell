@@ -1,5 +1,17 @@
 2007-11-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c::
+	* clutter/clutter-behaviour-opacity.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-effect.c:
+	* clutter/clutter-label.c: Remove the usage of G_PARAM_CONSTRUCT
+	without an override for the ::construct virtual function; using
+	G_PARAM_CONSTRUCT to set the default value of a property is not
+	the recommended approach; default values are set inside the
+	instance init function.
+
+2007-11-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-texture.c (clutter_texture_init): Set filter-quality
 	value to 1, to fix the regression caused when applying the patch for
 	buf #616.
