@@ -1,5 +1,9 @@
 2007-11-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* README: Add diff example command lines for submitting patches.
+
+2007-11-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c::
 	* clutter/clutter-behaviour-opacity.c:
 	* clutter/clutter-clone-texture.c:

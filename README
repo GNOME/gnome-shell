@@ -120,7 +120,13 @@ PATCHES
 Patches should be submitted using Bugzilla. Patches fixing a bug should be
 attached to the bug report; patches for new features or for fixing bugs not
 yet reported should be attached to a newly opened bug. Patches should always
-be in the unified diff format.
+be in the unified diff format, using:
+
+  diff -Nuarp clutter.source clutter.patched > clutter-patch.diff
+
+If diffing against the SVN repository, you should use:
+
+  svn diff --diff-cmd=diff -x -Nuarp > clutter-patch.diff
 
 
 RELEASE NOTES
