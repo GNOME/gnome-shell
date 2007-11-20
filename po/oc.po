@@ -1,21 +1,24 @@
+# translation of oc.po to Occitan
 # Occitan translation of metacity.
-# Copyright (C) 2002-2006 Free Software Foundation, Inc.
+# Copyright (C) 2002-2006, 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 #
 # Yannig MARCHEGAY (yannig@marchegay.org) - 2006-2007
 #
+# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.16.5\n"
+"Project-Id-Version: oc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-08-21 12:15+0100\n"
-"PO-Revision-Date: 2007-09-01 19:08+0200\n"
-"Last-Translator: Yannig MARCHEGAY (Kokoyaya) <yannig@marchegay.org>\n"
-"Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
+"PO-Revision-Date: 2007-11-20 14:32+0100\n"
+"Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
+"Language-Team: Occitan <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
@@ -63,8 +66,7 @@ msgstr ""
 
 #: ../src/delete.c:350
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 
 #: ../src/delete.c:459
@@ -196,8 +198,7 @@ msgstr ""
 
 #: ../src/main.c:369
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 
 #: ../src/main.c:429
@@ -1876,8 +1877,7 @@ msgstr ""
 
 #: ../src/screen.c:453
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
 #: ../src/screen.c:511
@@ -2093,8 +2093,7 @@ msgstr ""
 
 #: ../src/theme-parser.c:1414 ../src/theme-parser.c:1428
 #: ../src/theme-parser.c:1487
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 
 #: ../src/theme-parser.c:1437
@@ -2382,8 +2381,7 @@ msgstr ""
 
 #: ../src/theme-parser.c:3639
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 
 #: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
@@ -2421,8 +2419,7 @@ msgstr ""
 
 #: ../src/theme-parser.c:3869
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 
 #: ../src/theme-parser.c:3874
@@ -2432,8 +2429,7 @@ msgstr ""
 
 #: ../src/theme-parser.c:3886
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 
 #: ../src/theme-parser.c:3908
@@ -2766,8 +2762,7 @@ msgstr ""
 
 #: ../src/theme.c:1187
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 
 #: ../src/theme.c:1198
@@ -2818,14 +2813,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr ""
 
 #: ../src/theme.c:1850
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 
 #: ../src/theme.c:1906
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 
 #: ../src/theme.c:1915
@@ -2878,8 +2871,7 @@ msgstr ""
 
 #: ../src/theme.c:4422 ../src/theme.c:4447
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 
 #: ../src/theme.c:4493
@@ -2902,8 +2894,7 @@ msgstr ""
 
 #: ../src/theme.c:5006 ../src/theme.c:5068 ../src/theme.c:5131
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 
 #: ../src/theme.c:5014 ../src/theme.c:5076 ../src/theme.c:5139
@@ -2996,7 +2987,6 @@ msgstr ""
 
 #: ../src/xprops.c:484
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 
