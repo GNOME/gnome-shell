@@ -1073,7 +1073,7 @@ clutter_texture_init (ClutterTexture *self)
   self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
   priv->max_tile_waste  = 64;
-  priv->filter_quality  = 0;
+  priv->filter_quality  = 1;
   priv->is_tiled        = TRUE;
   priv->pixel_type      = PIXEL_TYPE;
   priv->pixel_format    = CGL_RGBA;

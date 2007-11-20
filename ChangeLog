@@ -1,3 +1,9 @@
+2007-11-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-texture.c (clutter_texture_init): Set filter-quality
+	value to 1, to fix the regression caused when applying the patch for
+	buf #616.
+
 2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-label.[ch]: Fix ClutterLabel size allocation when
