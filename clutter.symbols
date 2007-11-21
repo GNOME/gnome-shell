@@ -404,6 +404,12 @@ clutter_stage_get_title
 clutter_stage_set_user_resizable
 clutter_stage_get_user_resizable
 clutter_stage_set_key_focus 
+clutter_stage_set_use_fog
+clutter_stage_get_use_fog
+clutter_stage_set_fog
+clutter_stage_get_fog
+clutter_stage_set_fogx
+clutter_stage_get_fogx
 clutter_texture_error_quark
 clutter_texture_get_type
 clutter_texture_new                 

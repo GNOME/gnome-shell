@@ -33,8 +33,9 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_PERSPECTIVE  (clutter_perspective_get_type ())
-#define CLUTTER_TYPE_STAGE (clutter_stage_get_type())
+#define CLUTTER_TYPE_PERSPECTIVE        (clutter_perspective_get_type ())
+#define CLUTTER_TYPE_FOG                (clutter_fog_get_type ())
+#define CLUTTER_TYPE_STAGE              (clutter_stage_get_type())
 
 #define CLUTTER_STAGE(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
@@ -63,6 +64,8 @@ G_BEGIN_DECLS
  clutter_actor_get_height (clutter_stage_get_default ())
 
 typedef struct _ClutterPerspective  ClutterPerspective;
+typedef struct _ClutterFog          ClutterFog;
+
 typedef struct _ClutterStage        ClutterStage;
 typedef struct _ClutterStageClass   ClutterStageClass;
 typedef struct _ClutterStagePrivate ClutterStagePrivate;
@@ -118,7 +121,7 @@ struct _ClutterStageClass
  * @z_near: FIXME
  * @z_far: FIXME
  *
- * Stage perspective definition
+ * Stage perspective definition.
  *
  * Since: 0.4
  */
@@ -130,10 +133,26 @@ struct _ClutterPerspective
   ClutterFixed z_far;
 };
 
-GType               clutter_perspective_get_type (void) G_GNUC_CONST;
-ClutterPerspective *clutter_perspective_copy     (const ClutterPerspective *perspective);
-void                clutter_perspective_free     (ClutterPerspective       *perspective);
+/**
+ * ClutterFog:
+ * @density: density of the fog
+ * @z_near: start point of the depth cueing
+ * @z_far: end point of the depth cueing
+ *
+ * Fog settings used to create the depth cueing effect. This
+ * structure is useful only when using the fixed point API.
+ *
+ * Since: 0.6
+ */
+struct _ClutterFog
+{
+  ClutterFixed density;
+  ClutterFixed z_near;
+  ClutterFixed z_far;
+};
 
+GType         clutter_perspective_get_type    (void) G_GNUC_CONST;
+GType         clutter_fog_get_type            (void) G_GNUC_CONST;
 GType         clutter_stage_get_type          (void) G_GNUC_CONST;
 
 ClutterActor *clutter_stage_get_default       (void);
@@ -177,14 +196,26 @@ G_CONST_RETURN gchar *clutter_stage_get_title          (ClutterStage *stage);
 void                  clutter_stage_set_user_resizable (ClutterStage *stage, 
 						        gboolean      resizable);
 gboolean              clutter_stage_get_user_resizable (ClutterStage *stage);
+void                  clutter_stage_set_use_fog        (ClutterStage *stage,
+                                                        gboolean      fog);
+gboolean              clutter_stage_get_use_fog        (ClutterStage *stage);
+void                  clutter_stage_set_fog            (ClutterStage *stage,
+                                                        gdouble       density,
+                                                        gdouble       z_near,
+                                                        gdouble       z_far);
+void                  clutter_stage_get_fog            (ClutterStage *stage,
+                                                        gdouble      *density,
+                                                        gdouble      *z_near,
+                                                        gdouble      *z_far);
+void                  clutter_stage_set_fogx           (ClutterStage *stage,
+                                                        ClutterFog   *fog);
+void                  clutter_stage_get_fogx           (ClutterStage *stage,
+                                                        ClutterFog   *fog);
 
 /* New experiental calls */
-void
-clutter_stage_set_key_focus (ClutterStage       *stage,
-			     ClutterActor       *actor);
-
-ClutterActor*
-clutter_stage_get_key_focus (ClutterStage       *stage);
+void                  clutter_stage_set_key_focus      (ClutterStage *stage,
+                                                        ClutterActor *actor);
+ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
 
 G_END_DECLS
 

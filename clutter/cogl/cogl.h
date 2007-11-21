@@ -201,6 +201,12 @@ cogl_get_viewport (ClutterFixed v[4]);
 void
 cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha);
 
+void
+cogl_fog_set (const ClutterColor *fog_color,
+              ClutterFixed        density,
+              ClutterFixed        z_near,
+              ClutterFixed        z_far);
+
 G_END_DECLS
 
 #endif /* __COGL_H__ */

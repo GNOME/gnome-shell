@@ -1,3 +1,24 @@
+2007-11-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/cogl/cogl.h: Add cogl_fog_set() abstracting the
+	glFog() functions and enabling the GL_FOG flag.
+
+	* clutter/cogl/gl/cogl.c: Add GL implementation of cogl_fog_set().
+	
+	* clutter/cogl/gles/cogl.c: Add GL/ES implementation of
+	cogl_fog_set().
+
+	* clutter.symbols: Add new symbols.
+
+	* clutter/clutter-stage.h: Add API to enable depth cueing on
+	the stage using a linear GL fog, and to set the parameters
+	for it (#637).
+
+	* clutter/clutter-stage.c (clutter_stage_paint): Enable the
+	GL fog if the ClutterStage:use-fog property is true.
+
+	* tests/test-depth.c: Test the new stage API.
+
 2007-11-20  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-main.c: (event_click_count_generate): generalized

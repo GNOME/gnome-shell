@@ -165,7 +165,10 @@ cogl_paint_init (const ClutterColor *color)
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   glDisable (GL_LIGHTING);
-  glDisable (GL_DEPTH_TEST);
+  glDisable (GL_FOG);
+
+  glEnable (GL_DEPTH_TEST);
+  glDepthFunc (GL_LEQUAL);
 
   cogl_enable (CGL_ENABLE_BLEND);
 
@@ -234,8 +237,9 @@ cogl_enable (gulong flags)
 	{
 	  glEnable (GL_BLEND);
 	  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	}
-      __enable_flags |= CGL_ENABLE_BLEND;
+	
+          __enable_flags |= CGL_ENABLE_BLEND;
+        }
     }
   else if (__enable_flags & CGL_ENABLE_BLEND)
     {
@@ -246,21 +250,25 @@ cogl_enable (gulong flags)
   if (flags & CGL_ENABLE_TEXTURE_2D)
     {
       if (!(__enable_flags & CGL_ENABLE_TEXTURE_2D))
-	glEnable (GL_TEXTURE_2D);
-      __enable_flags |= CGL_ENABLE_TEXTURE_2D;
+        {
+	  glEnable (GL_TEXTURE_2D);
+          __enable_flags |= CGL_ENABLE_TEXTURE_2D;
+        }
     }
   else if (__enable_flags & CGL_ENABLE_TEXTURE_2D)
     {
       glDisable (GL_TEXTURE_2D);
-      __enable_flags &= ~CGL_ENABLE_TEXTURE_2D;
+       __enable_flags &= ~CGL_ENABLE_TEXTURE_2D;
     }
 
 #ifdef GL_TEXTURE_RECTANGLE_ARB
   if (flags & CGL_ENABLE_TEXTURE_RECT)
     {
       if (!(__enable_flags & CGL_ENABLE_TEXTURE_RECT))
+        {
 	  glEnable (GL_TEXTURE_RECTANGLE_ARB);
-      __enable_flags |= CGL_ENABLE_TEXTURE_RECT;
+          __enable_flags |= CGL_ENABLE_TEXTURE_RECT;
+        }
     }
   else if (__enable_flags & CGL_ENABLE_TEXTURE_RECT)
     {
@@ -272,14 +280,15 @@ cogl_enable (gulong flags)
   if (flags & CGL_ENABLE_ALPHA_TEST)
     {
       if (!(__enable_flags & CGL_ENABLE_ALPHA_TEST))
-	glEnable (GL_ALPHA_TEST);
-
-      __enable_flags |= CGL_ENABLE_ALPHA_TEST;
+        {
+	  glEnable (GL_ALPHA_TEST);
+          __enable_flags |= CGL_ENABLE_ALPHA_TEST;
+        }
     }
   else if (__enable_flags & CGL_ENABLE_ALPHA_TEST)
     {
       glDisable (GL_ALPHA_TEST);
-      __enable_flags &= ~CGL_ENABLE_ALPHA_TEST;
+       __enable_flags &= ~CGL_ENABLE_ALPHA_TEST;
     }
 }
 
@@ -711,4 +720,29 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
       GE( glGetIntegerv(GL_ALPHA_BITS, &value ) );
       *alpha = value;
     }
+}
+
+void
+cogl_fog_set (const ClutterColor *fog_color,
+              ClutterFixed        density,
+              ClutterFixed        start,
+              ClutterFixed        stop)
+{
+  GLfloat fogColor[4];
+
+  fogColor[0] = ((float) fog_color->red   / 0xff * 1.0);
+  fogColor[1] = ((float) fog_color->green / 0xff * 1.0);
+  fogColor[2] = ((float) fog_color->blue  / 0xff * 1.0);
+  fogColor[3] = ((float) fog_color->alpha / 0xff * 1.0);
+
+  glEnable (GL_FOG);
+
+  glFogfv (GL_FOG_COLOR, fogColor);
+
+  glFogi (GL_FOG_MODE, GL_LINEAR);
+  glHint (GL_FOG_HINT, GL_NICEST);
+
+  glFogf (GL_FOG_DENSITY, CLUTTER_FIXED_TO_FLOAT (density));
+  glFogf (GL_FOG_START, CLUTTER_FIXED_TO_FLOAT (start));
+  glFogf (GL_FOG_END, CLUTTER_FIXED_TO_FLOAT (stop));
 }

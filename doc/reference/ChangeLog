@@ -1,3 +1,7 @@
+2007-11-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add the new ClutterStage fog API.
+
 2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add ClutterScore symbols and

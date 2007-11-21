@@ -57,11 +57,13 @@ struct _ClutterStagePrivate
 {
   ClutterColor        color;
   ClutterPerspective  perspective;
+  ClutterFog          fog;
 
   guint is_fullscreen     : 1;
   guint is_offscreen      : 1;
   guint is_cursor_visible : 1;
   guint is_user_resizable : 1;
+  guint use_fog           : 1;
 
   gchar              *title;
   ClutterActor       *key_focused_actor;
@@ -77,7 +79,8 @@ enum
   PROP_CURSOR_VISIBLE,
   PROP_PERSPECTIVE,
   PROP_TITLE,
-  PROP_USER_RESIZE
+  PROP_USER_RESIZE,
+  PROP_USE_FOG
 };
 
 enum
@@ -97,6 +100,14 @@ clutter_stage_paint (ClutterActor *self)
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
   cogl_paint_init (&priv->color);
+
+  if (priv->use_fog)
+    {
+      cogl_fog_set (&priv->color,
+                    priv->fog.density,
+                    priv->fog.z_near,
+                    priv->fog.z_far);
+    }
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
 }
@@ -169,6 +180,9 @@ clutter_stage_set_property (GObject      *object,
     case PROP_USER_RESIZE:
       clutter_stage_set_user_resizable (stage, g_value_get_boolean (value));
       break;
+    case PROP_USE_FOG:
+      clutter_stage_set_use_fog (stage, g_value_get_boolean (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -213,6 +227,9 @@ clutter_stage_get_property (GObject    *object,
       break;
     case PROP_USER_RESIZE:
       g_value_set_boolean (value, priv->is_user_resizable);
+      break;
+    case PROP_USE_FOG:
+      g_value_set_boolean (value, priv->use_fog);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -309,6 +326,22 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			  "Stage Title",
 			  NULL,
 			  CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterStage:use-fog:
+   *
+   * Whether the stage should use a linear GL "fog" for creating the
+   * depth-cueing effect to enhance the perception of depth by fading
+   * actors farther from the viewpoing.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_USE_FOG,
+                                   g_param_spec_boolean ("use-fog",
+                                                         "Use Fog",
+                                                         "Whether to enable depth cueing",
+                                                         FALSE,
+                                                         CLUTTER_PARAM_READWRITE));
 
   /**
    * ClutterStage::fullscreen
@@ -326,7 +359,6 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
   /**
    * ClutterStage::unfullscreen
    * @stage: the stage which has left a fullscreen state.
@@ -344,8 +376,6 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
-
   /**
    * ClutterStage::activate
    * @stage: the stage which was activated
@@ -363,7 +393,6 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
   /**
    * ClutterStage::deactivate
    * @stage: the stage which was deactivated
@@ -399,6 +428,7 @@ clutter_stage_init (ClutterStage *self)
   priv->is_fullscreen     = FALSE;
   priv->is_user_resizable = FALSE;
   priv->is_cursor_visible = TRUE;
+  priv->use_fog           = FALSE;
 
   priv->color.red   = 0xff;
   priv->color.green = 0xff;
@@ -409,6 +439,11 @@ clutter_stage_init (ClutterStage *self)
   priv->perspective.aspect = CFX_ONE;
   priv->perspective.z_near = CLUTTER_FLOAT_TO_FIXED (0.1);
   priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED (100.0);
+
+  /* depth cueing */
+  priv->fog.density = CLUTTER_FLOAT_TO_FIXED (0.1);
+  priv->fog.z_near  = CLUTTER_FLOAT_TO_FIXED (1.0);
+  priv->fog.z_far   = CLUTTER_FLOAT_TO_FIXED (2.0);
 
   clutter_actor_set_size (CLUTTER_ACTOR (self), 640, 480);
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
@@ -460,7 +495,7 @@ clutter_stage_set_color (ClutterStage       *stage,
   priv->color.blue = color->blue;
   priv->color.alpha = color->alpha;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (stage)))
+  if (CLUTTER_ACTOR_IS_VISIBLE (stage))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
   g_object_notify (G_OBJECT (stage), "color");
@@ -504,14 +539,13 @@ clutter_stage_set_perspectivex (ClutterStage       *stage,
   ClutterStagePrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail (perspective != NULL);
 
   priv = stage->priv;
-  priv->perspective.fovy   = perspective->fovy;
-  priv->perspective.aspect = perspective->aspect;
-  priv->perspective.z_near = perspective->z_near;
-  priv->perspective.z_far  = perspective->z_far;
 
-  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
+  priv->perspective = *perspective;
+
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 /**
@@ -525,15 +559,10 @@ void
 clutter_stage_get_perspectivex (ClutterStage       *stage,
 				ClutterPerspective *perspective)
 {
-  ClutterStagePrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail (perspective != NULL);
 
-  priv = stage->priv;
-  perspective->fovy   = priv->perspective.fovy;
-  perspective->aspect = priv->perspective.aspect;
-  perspective->z_near = priv->perspective.z_near;
-  perspective->z_far  = priv->perspective.z_far;
+  *perspective = stage->priv->perspective;
 }
 
 /**
@@ -560,12 +589,13 @@ clutter_stage_set_perspective (ClutterStage *stage,
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   priv = stage->priv;
+
   priv->perspective.fovy   = CLUTTER_FLOAT_TO_FIXED(fovy);
   priv->perspective.aspect = CLUTTER_FLOAT_TO_FIXED(aspect);
   priv->perspective.z_near = CLUTTER_FLOAT_TO_FIXED(z_near);
   priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED(z_far);
 
-  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 /**
@@ -991,21 +1021,183 @@ clutter_stage_get_key_focus (ClutterStage *stage)
   return CLUTTER_ACTOR (stage);
 }
 
+/**
+ * clutter_stage_get_use_fog:
+ * @stage: the #ClutterStage
+ *
+ * Gets whether the depth cueing effect is enabled on @stage.
+ *
+ * Return value: %TRUE if the the depth cueing effect is enabled
+ *
+ * Since: 0.6
+ */
+gboolean
+clutter_stage_get_use_fog (ClutterStage *stage)
+{
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  return stage->priv->use_fog;
+}
+
+/**
+ * clutter_stage_set_use_fog:
+ * @stage: the #ClutterStage
+ * @fog: %TRUE for enabling the depth cueing effect
+ *
+ * Sets whether the depth cueing effect on the stage should be enabled
+ * or not.
+ *
+ * Depth cueing is a 3D effect that makes actors farther away from the
+ * viewing point less opaque, by fading them with the stage color.
+
+ * The parameters of the GL fog used can be changed using the
+ * clutter_stage_set_fog() function.
+ *
+ * Since: 0.6
+ */
+void
+clutter_stage_set_use_fog (ClutterStage *stage,
+                           gboolean      fog)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (priv->use_fog != fog)
+    {
+      priv->use_fog = fog;
+
+      CLUTTER_NOTE (MISC, "%s depth-cueing inside stage",
+                    priv->use_fog ? "enabling" : "disabling");
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (stage))
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+
+      g_object_notify (G_OBJECT (stage), "use-fog");
+    }
+}
+
+/**
+ * clutter_stage_get_fog:
+ * @stage: a #ClutterStage
+ * @density: return location for the intensity dampening
+ * @z_near: return location for the starting point of the depth cueing
+ * @z_far: return location for the ending point of the depth cueing
+ *
+ * Retrieves the settings used by the GL fog to create the
+ * depth cueing effect on the @stage.
+ *
+ * Since: 0.6
+ */
+void
+clutter_stage_get_fog (ClutterStage *stage,
+                       gdouble      *density,
+                       gdouble      *z_near,
+                       gdouble      *z_far)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (density)
+    *density = CLUTTER_FIXED_TO_FLOAT (priv->fog.density);
+  if (z_near)
+    *z_near = CLUTTER_FIXED_TO_FLOAT (priv->fog.z_near);
+  if (z_far)
+    *z_far = CLUTTER_FIXED_TO_FLOAT (priv->fog.z_far);
+}
+
+/**
+ * clutter_stage_set_fog:
+ * @stage: the #ClutterStage
+ * @density: density of the intensity dampening
+ * @z_near: starting point of the depth cueing
+ * @z_far: ending point of the depth cueing
+ *
+ * Sets the GL fog settings used to create the depth cueing effect 
+ * on the @stage.
+ *
+ * If the actors are all near the view point you will need a higher @density
+ * and a smaller interval between @z_near and @z_far. On the other hand, if
+ * actors are placed far away from the view point you will need a lower
+ * @density but a bigger interval between @z_near and @z_far.
+ *
+ * Since: 0.6
+ */
+void
+clutter_stage_set_fog (ClutterStage *stage,
+                       gdouble       density,
+                       gdouble       z_near,
+                       gdouble       z_far)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  priv->fog.density = CLUTTER_FLOAT_TO_FIXED (density);
+  priv->fog.z_near  = CLUTTER_FLOAT_TO_FIXED (z_near);
+  priv->fog.z_far   = CLUTTER_FLOAT_TO_FIXED (z_far);
+
+  if (priv->use_fog && CLUTTER_ACTOR_IS_VISIBLE (stage))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+}
+
+/**
+ * clutter_stage_set_fogx:
+ * @stage: the #ClutterStage
+ * @fog: a #ClutterFog structure
+ *
+ * Sets the depth cueing settings for the @stage. This is the fixed point
+ * version of clutter_stage_set_fog().
+ *
+ * Since: 0.6
+ */
+void
+clutter_stage_set_fogx (ClutterStage *stage,
+                        ClutterFog   *fog)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail (fog != NULL);
+
+  priv = stage->priv;
+
+  priv->fog = *fog;
+
+  if (priv->use_fog && CLUTTER_ACTOR_IS_VISIBLE (stage))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+}
+
+/**
+ * clutter_stage_get_fogx:
+ * @stage: the #ClutterStage
+ * @fog: return location for a #ClutterFog structure
+ *
+ * Retrieves the current depth cueing settings from the stage. This is the
+ * fixed point version of clutter_stage_get_fog().
+ *
+ * Since: 0.6
+ */
+void
+clutter_stage_get_fogx (ClutterStage *stage,
+                        ClutterFog   *fog)
+{
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail (fog != NULL);
+
+  *fog = stage->priv->fog;
+}
 
 /*** Perspective boxed type ******/
 
-/**
- * clutter_perspective_copy:
- * @perspective: a #ClutterPerspective
- *
- * Makes a copy of the perspective structure.  The result must be
- * freed using clutter_perspective_free().
- *
- * Return value: an allocated copy of @perspective.
- *
- * Since: 0.4
- */
-ClutterPerspective *
+static ClutterPerspective *
 clutter_perspective_copy (const ClutterPerspective *perspective)
 {
   ClutterPerspective *result;
@@ -1018,20 +1210,11 @@ clutter_perspective_copy (const ClutterPerspective *perspective)
   return result;
 }
 
-/**
- * clutter_perspective_free:
- * @perspective: a #ClutterPerspective
- *
- * Frees a perspective structure created with clutter_perspective_copy().
- *
- * Since: 0.4
- */
-void
+static void
 clutter_perspective_free (ClutterPerspective *perspective)
 {
-  g_return_if_fail (perspective != NULL);
-
-  g_slice_free (ClutterPerspective, perspective);
+  if (G_LIKELY (perspective))
+    g_slice_free (ClutterPerspective, perspective);
 }
 
 GType
@@ -1040,10 +1223,43 @@ clutter_perspective_get_type (void)
   static GType our_type = 0;
 
   if (!our_type)
-    our_type = g_boxed_type_register_static
-                       ("ClutterPerspective",
-			(GBoxedCopyFunc) clutter_perspective_copy,
-			(GBoxedFreeFunc) clutter_perspective_free);
+    our_type =
+      g_boxed_type_register_static ("ClutterPerspective",
+                                    (GBoxedCopyFunc) clutter_perspective_copy,
+                                    (GBoxedFreeFunc) clutter_perspective_free);
   return our_type;
 }
 
+static ClutterFog *
+clutter_fog_copy (const ClutterFog *fog)
+{
+  ClutterFog *copy;
+
+  g_return_val_if_fail (fog != NULL, NULL);
+
+  copy = g_slice_new0 (ClutterFog);
+  *copy = *fog;
+
+  return copy;
+}
+
+static void
+clutter_fog_free (ClutterFog *fog)
+{
+  if (G_LIKELY (fog))
+    g_slice_free (ClutterFog, fog);
+}
+
+GType
+clutter_fog_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (G_UNLIKELY (our_type == 0))
+    our_type =
+      g_boxed_type_register_static ("ClutterFog",
+                                    (GBoxedCopyFunc) clutter_fog_copy,
+                                    (GBoxedFreeFunc) clutter_fog_free);
+
+  return our_type;
+}
