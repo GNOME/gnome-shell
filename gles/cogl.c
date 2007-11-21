@@ -623,10 +623,10 @@ cogl_fog_set (const ClutterColor *fog_color,
 
   glFogxv (GL_FOG_COLOR, fogColor);
 
-  glFogi (GL_FOG_MODE, GL_LINEAR);
+  glFogx (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
   glFogx (GL_FOG_DENSITY, (GLfixed) density);
   glFogx (GL_FOG_START, (GLfixed) z_near);
-  glFogx (GL_FOG_STOP, (GLfixed) z_far);
+  glFogx (GL_FOG_END, (GLfixed) z_far);
 }
