@@ -589,7 +589,7 @@ clutter_actor_transform_vertices (ClutterActor    * self,
  * store the result.
  *
  * Calculates the tranformed screen coordinates of the four corners of
- * the actor; the returned vertices relate t the ClutterActorBox
+ * the actor; the returned vertices relate to the ClutterActorBox
  * coordinates  as follows:
  *
  *  v[0] contains (x1, y1)
