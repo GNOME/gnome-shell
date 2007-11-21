@@ -115,8 +115,11 @@ cogl_paint_init (const ClutterColor *color)
 		 0xff);
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  glDisable (GL_LIGHTING); 
-  glDisable (GL_DEPTH_TEST);
+  glDisable (GL_LIGHTING);
+  glDisable (GL_FOG);
+
+  glEnable (GL_DEPTH_TEST);
+  glDepthFunc (GL_LEQUAL);
 
   cogl_enable (CGL_ENABLE_BLEND);
 
@@ -601,4 +604,29 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
     GE( glGetIntegerv(GL_BLUE_BITS, blue) );
   if (alpha)
     GE( glGetIntegerv(GL_ALPHA_BITS, alpha ) );
+}
+
+void
+cogl_fog_set (const ClutterColor *fog_color,
+              ClutterFixed        density,
+              ClutterFixed        z_near,
+              ClutterFixed        z_far)
+{
+  GLfixed fogColor[4];
+
+  fogColor[0] = (fog_color->red   << 16) / 0xff;
+  fogColor[1] = (fog_color->green << 16) / 0xff;
+  fogColor[2] = (fog_color->blue  << 16) / 0xff;
+  fogColor[3] = (fog_color->alpha << 16) / 0xff;
+
+  glEnable (GL_FOG);
+
+  glFogxv (GL_FOG_COLOR, fogColor);
+
+  glFogi (GL_FOG_MODE, GL_LINEAR);
+  glHint (GL_FOG_HINT, GL_NICEST);
+
+  glFogx (GL_FOG_DENSITY, (GLfixed) density);
+  glFogx (GL_FOG_START, (GLfixed) z_near);
+  glFogx (GL_FOG_STOP, (GLfixed) z_far);
 }
