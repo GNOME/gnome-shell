@@ -1,3 +1,7 @@
+2007-11-22  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-actor.c: mended a couple of typos in documentation.
+
 2007-11-21  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gles/cogl.c: (cogl_fog_set):
