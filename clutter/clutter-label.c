@@ -800,7 +800,8 @@ clutter_label_new_full (const gchar        *font_name,
   return g_object_new (CLUTTER_TYPE_LABEL,
                        "font-name", font_name,
                        "text", text,
-                       "color", color);
+                       "color", color,
+                       NULL);
 }
 
 /**

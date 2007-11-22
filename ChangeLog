@@ -1,3 +1,9 @@
+2007-11-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-label.c (clutter_label_new_full): Set the
+	terminating NULL which was removed when applying patch for
+	fixing #606. (#645, Gwenole Beauchesne)
+
 2007-11-22  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-actor.c: mended a couple of typos in documentation.
