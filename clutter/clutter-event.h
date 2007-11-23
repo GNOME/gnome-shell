@@ -51,6 +51,26 @@
 
 G_BEGIN_DECLS
 
+/**
+ * ClutterModifierType:
+ * @CLUTTER_SHIFT_MASK: Mask applied by the Shift key
+ * @CLUTTER_LOCK_MASK: Mask applied by the Caps Lock key
+ * @CLUTTER_CONTROL_MASK: Mask applied by the Control key
+ * @CLUTTER_MOD1_MASK: Mask applied by the first Mod key
+ * @CLUTTER_MOD2_MASK: Mask applied by the second Mod key
+ * @CLUTTER_MOD3_MASK: Mask applied by the third Mod key
+ * @CLUTTER_MOD4_MASK: Mask applied by the fourth Mod key
+ * @CLUTTER_MOD5_MASK: Mask applied by the fifth Mod key
+ * @CLUTTER_BUTTON1_MASK: Mask applied by the first pointer button
+ * @CLUTTER_BUTTON2_MASK: Mask applied by the second pointer button
+ * @CLUTTER_BUTTON3_MASK: Mask applied by the third pointer button
+ * @CLUTTER_BUTTON4_MASK: Mask applied by the fourth pointer button
+ * @CLUTTER_BUTTON5_MASK: Mask applied by the fifth pointer button
+ *
+ * Masks applied to a #ClutterEvent by modifiers.
+ *
+ * Since: 0.4
+ */
 typedef enum {
   CLUTTER_SHIFT_MASK    = 1 << 0,
   CLUTTER_LOCK_MASK     = 1 << 1,
@@ -67,10 +87,38 @@ typedef enum {
   CLUTTER_BUTTON5_MASK  = 1 << 12
 } ClutterModifierType;
 
+/**
+ * ClutterEventFlags:
+ * @CLUTTER_EVENT_FLAG_SYNTHETIC: Synthetic event
+ *
+ * Flags for the #ClutterEvent
+ *
+ * Since: 0.6
+ */
 typedef enum {
   CLUTTER_EVENT_FLAG_SYNTHETIC = 1 << 0,
 } ClutterEventFlags;
 
+/**
+ * ClutterEventType:
+ * @CLUTTER_NOTHING: Empty event
+ * @CLUTTER_KEY_PRESS: Key press event
+ * @CLUTTER_KEY_RELEASE: Key release event
+ * @CLUTTER_MOTION: Pointer motion event
+ * @CLUTTER_ENTER: Actor enter event
+ * @CLUTTER_LEAVE: Actor leave event
+ * @CLUTTER_BUTTON_PRESS: Pointer button press event
+ * @CLUTTER_BUTTON_RELEASE: Pointer button release event
+ * @CLUTTER_SCROLL: Pointer scroll event
+ * @CLUTTER_STAGE_STATE: Stage stage change event
+ * @CLUTTER_DESTROY_NOTIFY: Destroy notification event
+ * @CLUTTER_CLIENT_MESSAGE: Client message event
+ * @CLUTTER_DELETE: Stage delete event
+ *
+ * Types of events.
+ *
+ * Since: 0.4
+ */
 typedef enum 
 {
   CLUTTER_NOTHING = 0,
@@ -88,6 +136,17 @@ typedef enum
   CLUTTER_DELETE
 } ClutterEventType;
 
+/**
+ * ClutterScrollDirection:
+ * @CLUTTER_SCROLL_UP: Scroll up
+ * @CLUTTER_SCROLL_DOWN: Scroll down
+ * @CLUTTER_SCROLL_LEFT: Scroll left
+ * @CLUTTER_SCROLL_RIGHT: Scroll right
+ *
+ * Direction of a pointer scroll event.
+ *
+ * Since: 0.4
+ */
 typedef enum
 {
   CLUTTER_SCROLL_UP,
@@ -96,6 +155,16 @@ typedef enum
   CLUTTER_SCROLL_RIGHT
 } ClutterScrollDirection;
 
+/**
+ * ClutterStageState:
+ * @CLUTTER_STAGE_STATE_FULLSCREEN: Fullscreen mask
+ * @CLUTTER_STAGE_STATE_OFFSCREEN: Offscreen mask
+ * @CLUTTER_STAGE_STATE_ACTIVATED: Activated mask
+ *
+ * Stage state masks
+ *
+ * Since: 0.4
+ */
 typedef enum
 {
   CLUTTER_STAGE_STATE_FULLSCREEN       = (1<<1),
@@ -213,29 +282,29 @@ union _ClutterEvent
 
 GType clutter_event_get_type (void) G_GNUC_CONST;
 
-gboolean            clutter_events_pending   (void);
-ClutterEvent *      clutter_event_get        (void);
-ClutterEvent *      clutter_event_peek       (void);
-void                clutter_event_put        (ClutterEvent     *event);
-ClutterEvent *      clutter_event_new        (ClutterEventType  type);
-ClutterEvent *      clutter_event_copy       (ClutterEvent     *event);
-void                clutter_event_free       (ClutterEvent     *event);
-ClutterEventType    clutter_event_type       (ClutterEvent     *event);
-guint32             clutter_event_get_time   (ClutterEvent     *event);
-ClutterModifierType clutter_event_get_state  (ClutterEvent     *event);
-void                clutter_event_get_coords (ClutterEvent     *event,
-                                              gint             *x,
-                                              gint             *y);
+gboolean            clutter_events_pending      (void);
+ClutterEvent *      clutter_event_get           (void);
+ClutterEvent *      clutter_event_peek          (void);
+void                clutter_event_put           (ClutterEvent       *event);
+ClutterEvent *      clutter_event_new           (ClutterEventType    type);
+ClutterEvent *      clutter_event_copy          (ClutterEvent       *event);
+void                clutter_event_free          (ClutterEvent       *event);
+ClutterEventType    clutter_event_type          (ClutterEvent       *event);
+guint32             clutter_event_get_time      (ClutterEvent       *event);
+ClutterModifierType clutter_event_get_state     (ClutterEvent       *event);
+void                clutter_event_get_coords    (ClutterEvent       *event,
+                                                 gint               *x,
+                                                 gint               *y);
+ClutterActor*       clutter_event_get_source    (ClutterEvent       *event);
 
-guint   clutter_key_event_symbol  (ClutterKeyEvent *keyev);
-guint16 clutter_key_event_code    (ClutterKeyEvent *keyev);
-guint32 clutter_key_event_unicode (ClutterKeyEvent *keyev);
+guint               clutter_key_event_symbol    (ClutterKeyEvent    *keyev);
+guint16             clutter_key_event_code      (ClutterKeyEvent    *keyev);
+guint32             clutter_key_event_unicode   (ClutterKeyEvent    *keyev);
 
-guint32 clutter_button_event_button (ClutterButtonEvent *buttev);
+guint32             clutter_button_event_button (ClutterButtonEvent *buttev);
 
-guint32 clutter_keysym_to_unicode (guint keyval);
+guint32             clutter_keysym_to_unicode   (guint               keyval);
 
-ClutterActor* clutter_event_get_source (ClutterEvent *event);
 
 G_END_DECLS
 
