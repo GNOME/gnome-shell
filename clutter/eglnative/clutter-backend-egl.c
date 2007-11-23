@@ -132,6 +132,8 @@ clutter_backend_egl_dispose (GObject *gobject)
 
   if (backend_egl->stage)
     {
+      CLUTTER_UNSET_PRIVATE_FLAGS (backend_egl->stage,
+                                   CLUTTER_ACTOR_IS_TOPLEVEL);
       clutter_actor_destroy (backend_egl->stage);
       backend_egl->stage = NULL;
     }

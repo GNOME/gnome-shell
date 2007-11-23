@@ -148,6 +148,8 @@ clutter_backend_sdl_dispose (GObject *gobject)
 
   if (backend_sdl->stage)
     {
+      CLUTTER_UNSET_PRIVATE_FLAGS (backend_sdl->stage,
+                                   CLUTTER_ACTOR_IS_TOPLEVEL);
       clutter_actor_destroy (backend_sdl->stage);
       backend_sdl->stage = NULL;
     }

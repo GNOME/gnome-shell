@@ -244,7 +244,12 @@ clutter_backend_x11_dispose (GObject *gobject)
   if (backend_x11->stage)
     {
       CLUTTER_NOTE (BACKEND, "Disposing the main stage");
-
+      
+      /* we unset the private flag on the stage so we can safely
+       * destroy it without a warning from clutter_actor_destroy()
+       */
+      CLUTTER_UNSET_PRIVATE_FLAGS (backend_x11->stage,
+                                   CLUTTER_ACTOR_IS_TOPLEVEL);
       clutter_actor_destroy (backend_x11->stage);
       backend_x11->stage = NULL;
     }

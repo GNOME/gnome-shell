@@ -1,3 +1,19 @@
+2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_destroy): Bail out
+	if clutter_actor_destroy() was called on the stage: the stage
+	is not for the user to destroy.
+
+	* clutter/x11/clutter-backend-x11.c:
+	* clutter/eglnative/clutter-backend-egl.c:
+	* clutter/sdl/clutter-backend-sdl.c:
+	* clutter/osx/clutter-backend-osx.c: Unset the top-level private
+	flag on the stage when disposing it, so the backends can safely
+	call clutter_actor_destroy().
+
+	* clutter/clutter-private.h: Tweak the private flags accessors,
+	to avoid the typecheck.
+
 2007-11-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-label.c (clutter_label_new_full): Set the

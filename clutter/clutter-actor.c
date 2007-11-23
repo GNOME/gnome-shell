@@ -1619,15 +1619,30 @@ clutter_actor_init (ClutterActor *self)
  * container, the actor will be removed.
  *
  * When you destroy a container its children will be destroyed as well.
+ *
+ * Note: you cannot destroy the #ClutterStage returned by
+ * clutter_stage_get_default().
  */
 void
 clutter_actor_destroy (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (self->priv->parent_actor)
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
     {
-      ClutterActor *parent = self->priv->parent_actor;
+      g_warning ("Calling clutter_actor_destroy() on an actor of type `%s' "
+                 "is not possible. This is usually an application bug.",
+                 g_type_name (G_OBJECT_TYPE (self)));
+      return;
+    }
+
+  priv = self->priv;
+
+  if (priv->parent_actor)
+    {
+      ClutterActor *parent = priv->parent_actor;
 
       if (CLUTTER_IS_CONTAINER (parent))
         {
@@ -1635,7 +1650,7 @@ clutter_actor_destroy (ClutterActor *self)
           clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
         }
       else
-        self->priv->parent_actor = NULL;
+        priv->parent_actor = NULL;
     }
 
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))

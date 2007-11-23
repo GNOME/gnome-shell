@@ -98,9 +98,9 @@ struct _ClutterMainContext
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
 ClutterMainContext *clutter_context_get_default (void);
 
-#define CLUTTER_PRIVATE_FLAGS(a)	 (CLUTTER_ACTOR ((a))->private_flags)
-#define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 G_STMT_START{ (CLUTTER_PRIVATE_FLAGS (a) |= (f)); }G_STMT_END
-#define CLUTTER_UNSET_PRIVATE_FLAGS(a,f) G_STMT_START{ (CLUTTER_PRIVATE_FLAGS (a) &= ~(f)); }G_STMT_END
+#define CLUTTER_PRIVATE_FLAGS(a)	 (((ClutterActor *) (a))->private_flags)
+#define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 (CLUTTER_PRIVATE_FLAGS (a) |= (f))
+#define CLUTTER_UNSET_PRIVATE_FLAGS(a,f) (CLUTTER_PRIVATE_FLAGS (a) &= ~(f))
 
 #define CLUTTER_PARAM_READABLE  \
         G_PARAM_READABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB

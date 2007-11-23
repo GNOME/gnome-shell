@@ -24,6 +24,7 @@
 #include "clutter-osx.h"
 #include "clutter-backend-osx.h"
 #include "clutter-stage-osx.h"
+#include "../clutter-private.h"
 
 #include <clutter/clutter-debug.h>
 #import <AppKit/AppKit.h>
@@ -145,6 +146,7 @@ clutter_backend_osx_dispose (GObject *object)
 
   if (self->stage)
     {
+      CLUTTER_UNSET_PRIVATE_FLAGS (self->stage, CLUTTER_ACTOR_IS_TOPLEVEL);
       clutter_actor_destroy (self->stage);
       self->stage = NULL;
     }
