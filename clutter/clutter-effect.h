@@ -111,60 +111,44 @@ gboolean               clutter_effect_template_get_timeline_clone (ClutterEffect
  * Clutter effects
  */
 
-ClutterTimeline *clutter_effect_fade  (ClutterEffectTemplate     *template_,
-                                       ClutterActor              *actor,
-                                       guint8                     opacity_start,
-                                       guint8                     opacity_end,
-                                       ClutterEffectCompleteFunc  completed_func,
-                                       gpointer                   completed_data);
-ClutterTimeline *clutter_effect_depth (ClutterEffectTemplate     *template_,
-                                       ClutterActor               *actor,
-                                       gint                       depth_start,
-                                       gint                       depth_end,
-                                       ClutterEffectCompleteFunc  completed_func,
-                                       gpointer                   completed_data);
-ClutterTimeline *clutter_effect_move  (ClutterEffectTemplate     *template_,
-                                       ClutterActor              *actor,
-                                       const ClutterKnot         *knots,
-                                       guint                      n_knots,
-                                       ClutterEffectCompleteFunc  completed_func,
-                                       gpointer                   completed_data);
-ClutterTimeline *clutter_effect_scale (ClutterEffectTemplate     *template_,
-                                       ClutterActor              *actor,
-                                       gdouble                    scale_start,
-                                       gdouble                    scale_end,
-                                       ClutterGravity             gravity,
-                                       ClutterEffectCompleteFunc  completed_func,
-                                       gpointer                   completed_data);
-
-ClutterTimeline *clutter_effect_rotate_x (ClutterEffectTemplate     *template_,
-					  ClutterActor              *actor,
-					  gdouble                    angle_start,
-					  gdouble                    angle_end,
-					  gint                       center_y,
-					  gint                       center_z,
-					  ClutterRotateDirection     direction,
-					  ClutterEffectCompleteFunc  completed_func,
-					  gpointer                   completed_data);
-ClutterTimeline *clutter_effect_rotate_y (ClutterEffectTemplate     *template_,
-					  ClutterActor              *actor,
-					  gdouble                    angle_start,
-					  gdouble                    angle_end,
-					  gint                       center_x,
-					  gint                       center_z,
-					  ClutterRotateDirection     direction,
-					  ClutterEffectCompleteFunc  completed_func,
-					  gpointer                   completed_data);
-
-ClutterTimeline *clutter_effect_rotate_z (ClutterEffectTemplate     *template_,
-					  ClutterActor              *actor,
-					  gdouble                    angle_start,
-					  gdouble                    angle_end,
-					  gint                       center_x,
-					  gint                       center_y,
-					  ClutterRotateDirection     direction,
-					  ClutterEffectCompleteFunc  completed_func,
-					  gpointer                   completed_data);
+ClutterTimeline *clutter_effect_fade   (ClutterEffectTemplate     *template_,
+                                        ClutterActor              *actor,
+                                        guint8                     opacity_end,
+                                        ClutterEffectCompleteFunc  func,
+                                        gpointer                   data);
+ClutterTimeline *clutter_effect_depth  (ClutterEffectTemplate     *template_,
+                                        ClutterActor              *actor,
+                                        gint                       depth_end,
+                                        ClutterEffectCompleteFunc  func,
+                                        gpointer                   data);
+ClutterTimeline *clutter_effect_move   (ClutterEffectTemplate     *template_,
+                                        ClutterActor              *actor,
+                                        gint                       x,
+                                        gint                       y,
+                                        ClutterEffectCompleteFunc  func,
+                                        gpointer                   data);
+ClutterTimeline *clutter_effect_path   (ClutterEffectTemplate     *template_,
+                                        ClutterActor              *actor,
+                                        const ClutterKnot         *knots,
+                                        guint                      n_knots,
+                                        ClutterEffectCompleteFunc  func,
+                                        gpointer                   data);
+ClutterTimeline *clutter_effect_scale  (ClutterEffectTemplate     *template_,
+                                        ClutterActor              *actor,
+                                        gdouble                    scale_end,
+                                        ClutterGravity             gravity,
+                                        ClutterEffectCompleteFunc  func,
+                                        gpointer                   data);
+ClutterTimeline *clutter_effect_rotate (ClutterEffectTemplate     *template_,
+                                        ClutterActor              *actor,
+                                        ClutterRotateAxis          axis,
+                                        gdouble                    angle,
+                                        gint                       center_x,
+                                        gint                       center_y,
+                                        gint                       center_z,
+                                        ClutterRotateDirection     direction,
+                                        ClutterEffectCompleteFunc  func,
+                                        gpointer                   data);
 
 G_END_DECLS
 

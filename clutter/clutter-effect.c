@@ -517,11 +517,10 @@ on_effect_complete (ClutterTimeline *timeline,
  * clutter_effect_fade:
  * @template_: A #ClutterEffectTemplate
  * @actor: A #ClutterActor to apply the effect to.
- * @opacity_start: Initial opacity value to apply to actor
  * @opacity_end: Final opacity value to apply to actor
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect
+ * @func: A #ClutterEffectCompleteFunc to call on effect
  *   completion or %NULL
- * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
+ * @data: Data to pass to supplied  #ClutterEffectCompleteFunc
  *   or %NULL
  *
  * Simple effect for fading a single #ClutterActor.
@@ -529,26 +528,26 @@ on_effect_complete (ClutterTimeline *timeline,
  * Return value: a #ClutterTimeline for the effect. Will be unrefed by
  * the effect when completed.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 ClutterTimeline *
 clutter_effect_fade (ClutterEffectTemplate     *template_,
 		     ClutterActor              *actor,
-		     guint8                     opacity_start,
 		     guint8                     opacity_end,
-		     ClutterEffectCompleteFunc  completed_func,
-		     gpointer                   completed_data)
+		     ClutterEffectCompleteFunc  func,
+		     gpointer                   data)
 {
   ClutterEffectClosure *c;
+  guint8 opacity_start;
 
   c = clutter_effect_closure_new (template_,
 				  actor, 
 				  G_CALLBACK (on_effect_complete));
 
-  c->completed_func = completed_func;
-  c->completed_data = completed_data;
+  c->completed_func = func;
+  c->completed_data = data;
 
-  clutter_actor_set_opacity (actor, opacity_start);
+  opacity_start = clutter_actor_get_opacity (actor);
 
   c->behave = clutter_behaviour_opacity_new (c->alpha, 
 					     opacity_start, 
@@ -564,11 +563,10 @@ clutter_effect_fade (ClutterEffectTemplate     *template_,
  * clutter_effect_depth:
  * @template_: A #ClutterEffectTemplate
  * @actor: A #ClutterActor to apply the effect to.
- * @depth_start: Initial depth value to apply to actor
  * @depth_end: Final depth value to apply to actor
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect
+ * @func: A #ClutterEffectCompleteFunc to call on effect
  *   completion or %NULL
- * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
+ * @data: Data to pass to supplied  #ClutterEffectCompleteFunc
  *   or %NULL
  *
  * Simple effect for changing the depth of a single #ClutterActor.
@@ -576,24 +574,26 @@ clutter_effect_fade (ClutterEffectTemplate     *template_,
  * Return value: a #ClutterTimeline for the effect. Will be unrefed by
  * the effect when completed.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 ClutterTimeline *
 clutter_effect_depth (ClutterEffectTemplate     *template_,
-		     ClutterActor               *actor,
-		     gint                       depth_start,
-		     gint                       depth_end,
-		     ClutterEffectCompleteFunc  completed_func,
-		     gpointer                   completed_data)
+		      ClutterActor               *actor,
+		      gint                       depth_end,
+		      ClutterEffectCompleteFunc  func,
+		      gpointer                   data)
 {
   ClutterEffectClosure *c;
+  gint depth_start;
 
   c = clutter_effect_closure_new (template_,
 				  actor, 
 				  G_CALLBACK (on_effect_complete));
 
-  c->completed_func = completed_func;
-  c->completed_data = completed_data;
+  c->completed_func = func;
+  c->completed_data = data;
+
+  depth_start = clutter_actor_get_depth (actor);
 
   c->behave = clutter_behaviour_depth_new (c->alpha, depth_start, depth_end);
   
@@ -607,11 +607,61 @@ clutter_effect_depth (ClutterEffectTemplate     *template_,
  * clutter_effect_move:
  * @template_: A #ClutterEffectTemplate
  * @actor: A #ClutterActor to apply the effect to.
+ * @x: X coordinate of the destination
+ * @y: Y coordinate of the destination
+ * @func: A #ClutterEffectCompleteFunc to call on effect
+ *   completion or %NULL
+ * @data: Data to pass to supplied  #ClutterEffectCompleteFunc
+ *   or %NULL
+ *
+ * Simple effect for moving a single #ClutterActor along to a
+ * destination point.
+ *
+ * Return value: a #ClutterTimeline for the effect. Will be unreferenced by
+ *   the effect when completed.
+ *
+ * Since: 0.6
+ */
+ClutterTimeline *
+clutter_effect_move (ClutterEffectTemplate     *template_,
+		     ClutterActor              *actor,
+                     gint                       x,
+                     gint                       y,
+		     ClutterEffectCompleteFunc  func,
+		     gpointer                   data)
+{
+  ClutterEffectClosure *c;
+  ClutterKnot knots[2];
+
+  c = clutter_effect_closure_new (template_,
+				  actor, 
+				  G_CALLBACK (on_effect_complete));
+
+  c->completed_func = func;
+  c->completed_data = data;
+
+  knots[0].x = clutter_actor_get_x (actor);
+  knots[0].y = clutter_actor_get_y (actor);
+
+  knots[1].x = x;
+  knots[1].y = y;
+
+  c->behave = clutter_behaviour_path_new (c->alpha, knots, 2);
+  
+  clutter_behaviour_apply (c->behave, actor);
+  clutter_timeline_start (c->timeline);
+  
+  return c->timeline;
+}
+/**
+ * clutter_effect_path:
+ * @template_: A #ClutterEffectTemplate
+ * @actor: A #ClutterActor to apply the effect to.
  * @knots: An array of #ClutterKnots representing path for the actor
  * @n_knots: Number of #ClutterKnots in passed array.
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect
+ * @func: A #ClutterEffectCompleteFunc to call on effect
  *   completion or %NULL
- * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
+ * @data: Data to pass to supplied  #ClutterEffectCompleteFunc
  *   or %NULL
  *
  * Simple effect for moving a single #ClutterActor along a path.
@@ -619,15 +669,15 @@ clutter_effect_depth (ClutterEffectTemplate     *template_,
  * Return value: a #ClutterTimeline for the effect. Will be unreferenced by
  *   the effect when completed.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 ClutterTimeline *
-clutter_effect_move (ClutterEffectTemplate     *template_,
+clutter_effect_path (ClutterEffectTemplate     *template_,
 		     ClutterActor              *actor,
 		     const ClutterKnot         *knots,
 		     guint                      n_knots,
-		     ClutterEffectCompleteFunc  completed_func,
-		     gpointer                   completed_data)
+		     ClutterEffectCompleteFunc  func,
+		     gpointer                   data)
 {
   ClutterEffectClosure *c;
 
@@ -635,8 +685,8 @@ clutter_effect_move (ClutterEffectTemplate     *template_,
 				  actor, 
 				  G_CALLBACK (on_effect_complete));
 
-  c->completed_func = completed_func;
-  c->completed_data = completed_data;
+  c->completed_func = func;
+  c->completed_data = data;
 
   if (n_knots)
     clutter_actor_set_position (actor, knots[0].x, knots[0].y);
@@ -653,12 +703,11 @@ clutter_effect_move (ClutterEffectTemplate     *template_,
  * clutter_effect_scale:
  * @template_: A #ClutterEffectTemplate
  * @actor: A #ClutterActor to apply the effect to.
- * @scale_start: Initial scale factor to apply to actor
  * @scale_end: Final scale factor to apply to actor
  * @gravity: A #ClutterGravity for the scale.
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect
+ * @func: A #ClutterEffectCompleteFunc to call on effect
  *   completion or NULL
- * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
+ * @data: Data to pass to supplied  #ClutterEffectCompleteFunc
  *   or NULL
  *
  * Simple effect for scaling a single #ClutterActor.
@@ -666,29 +715,27 @@ clutter_effect_move (ClutterEffectTemplate     *template_,
  * Return value: a #ClutterTimeline for the effect. Will be unreferenced by
  *   the effect when completed.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 ClutterTimeline *
 clutter_effect_scale (ClutterEffectTemplate     *template_,
 		      ClutterActor              *actor,
-		      gdouble                    scale_start,
 		      gdouble                    scale_end,
 		      ClutterGravity             gravity,
-		      ClutterEffectCompleteFunc  completed_func,
-		      gpointer                   completed_data)
+		      ClutterEffectCompleteFunc  func,
+		      gpointer                   data)
 {
   ClutterEffectClosure *c;
+  gdouble scale_start;
 
   c = clutter_effect_closure_new (template_,
 				  actor, 
 				  G_CALLBACK (on_effect_complete));
 
-  c->completed_func = completed_func;
-  c->completed_data = completed_data;
+  c->completed_func = func;
+  c->completed_data = data;
 
-  clutter_actor_set_scale_with_gravity (actor, 
-					scale_start, scale_start, gravity);
-
+  clutter_actor_get_scale (actor, &scale_start, NULL);
   c->behave = clutter_behaviour_scale_new (c->alpha, 
 					   scale_start,
 					   scale_end,
@@ -701,183 +748,59 @@ clutter_effect_scale (ClutterEffectTemplate     *template_,
 }
 
 /**
- * clutter_effect_rotate_x:
- * @template_: A #ClutterEffectTemplate
- * @actor: A #ClutterActor to apply the effect to.
- * @angle_start: Initial angle to apply to actor
- * @angle_end: Final angle to apply to actor
- * @center_y: Position on Y axis to rotate about.
- * @center_z: Position on Z axis to rotate about.
- * @direction: A #ClutterRotateDirection for the rotation.
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect
- *   completion or NULL
- * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
- *   or NULL
+ * clutter_effect_rotate:
+ * @template_: a #ClutterEffectTemplate
+ * @actor: a #ClutterActor to apply the effect to.
+ * @axis: axis of rotation
+ * @angle: final angle to apply to actor
+ * @center_z: position on Z axis to rotate about.
+ * @center_y: position on Y axis to rotate about.
+ * @center_z: position on Z axis to rotate about.
+ * @direction: a #ClutterRotateDirection for the rotation.
+ * @func: a #ClutterEffectCompleteFunc to call on effect
+ *   completion or %NULL
+ * @data: user data to pass to supplied @func or %NULL
  *
- * Simple effect for rotating a single #ClutterActor about x axis.
+ * Simple effect for rotating a single #ClutterActor.
  *
  * Return value: a #ClutterTimeline for the effect. Will be unreferenced by
  *   the effect when completed.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 ClutterTimeline *
-clutter_effect_rotate_x (ClutterEffectTemplate     *template_,
-			 ClutterActor              *actor,
-			 gdouble                    angle_start,
-			 gdouble                    angle_end,
-			 gint                       center_y,
-			 gint                       center_z,
-			 ClutterRotateDirection     direction,
-			 ClutterEffectCompleteFunc  completed_func,
-			 gpointer                   completed_data)
+clutter_effect_rotate (ClutterEffectTemplate     *template_,
+                       ClutterActor              *actor,
+                       ClutterRotateAxis          axis,
+                       gdouble                    angle_end,
+                       gint                       center_x,
+                       gint                       center_y,
+                       gint                       center_z,
+                       ClutterRotateDirection     direction,
+                       ClutterEffectCompleteFunc  func,
+                       gpointer                   data)
 {
   ClutterEffectClosure *c;
+  gdouble angle_start;
 
   c = clutter_effect_closure_new (template_,
 				  actor, 
 				  G_CALLBACK (on_effect_complete));
 
-  c->completed_func = completed_func;
-  c->completed_data = completed_data;
+  c->completed_func = func;
+  c->completed_data = data;
 
-
-  clutter_actor_set_rotation (actor, CLUTTER_X_AXIS,
-                              angle_start,
-                              0, center_y, center_z);
-
+  angle_start = clutter_actor_get_rotation (actor, axis, NULL, NULL, NULL);
+  
   c->behave = clutter_behaviour_rotate_new (c->alpha,
 					    CLUTTER_X_AXIS,
 					    direction,
 					    angle_start,
 					    angle_end);
   g_object_set (c->behave,
+                "center-x", center_x,
 		"center-y", center_y,
 		"center-z", center_z,
-		NULL);
-  
-  clutter_behaviour_apply (c->behave, actor);
-  clutter_timeline_start (c->timeline);
-  
-  return c->timeline;
-}
-
-/**
- * clutter_effect_rotate_y:
- * @template_: A #ClutterEffectTemplate
- * @actor: A #ClutterActor to apply the effect to.
- * @angle_start: Initial angle to apply to actor
- * @angle_end: Final angle to apply to actor
- * @center_x: Position on X axis to rotate about.
- * @center_z: Position on Z axis to rotate about.
- * @direction: A #ClutterRotateDirection for the rotation.
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect
- *   completion or NULL
- * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
- *   or NULL
- *
- * Simple effect for rotating a single #ClutterActor about y axis.
- *
- * Return value: a #ClutterTimeline for the effect. Will be unreferenced by
- *   the effect when completed.
- *
- * Since: 0.4
- */
-ClutterTimeline *
-clutter_effect_rotate_y (ClutterEffectTemplate     *template_,
-			 ClutterActor              *actor,
-			 gdouble                    angle_start,
-			 gdouble                    angle_end,
-			 gint                       center_x,
-			 gint                       center_z,
-			 ClutterRotateDirection     direction,
-			 ClutterEffectCompleteFunc  completed_func,
-			 gpointer                   completed_data)
-{
-  ClutterEffectClosure *c;
-
-  c = clutter_effect_closure_new (template_,
-				  actor, 
-				  G_CALLBACK (on_effect_complete));
-
-  c->completed_func = completed_func;
-  c->completed_data = completed_data;
-
-
-  clutter_actor_set_rotation (actor, CLUTTER_Y_AXIS,
-                              angle_start,
-                              center_x, 0, center_z);
-
-  c->behave = clutter_behaviour_rotate_new (c->alpha,
-					    CLUTTER_Y_AXIS,
-					    direction,
-					    angle_start,
-					    angle_end);
-  g_object_set (c->behave,
-		"center-x", center_x,
-		"center-z", center_z,
-		NULL);
-  
-  clutter_behaviour_apply (c->behave, actor);
-  clutter_timeline_start (c->timeline);
-  
-  return c->timeline;
-}
-
-/**
- * clutter_effect_rotate_z:
- * @template_: A #ClutterEffectTemplate
- * @actor: A #ClutterActor to apply the effect to.
- * @angle_start: Initial angle to apply to actor
- * @angle_end: Final angle to apply to actor
- * @center_x: Position on X axis to rotate about.
- * @center_y: Position on Y axis to rotate about.
- * @direction: A #ClutterRotateDirection for the rotation.
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect
- *   completion or NULL
- * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
- *   or NULL
- *
- * Simple effect for rotating a single #ClutterActor about z axis.
- *
- * Return value: a #ClutterTimeline for the effect. Will be unreferenced by
- *   the effect when completed.
- *
- * Since: 0.4
- */
-ClutterTimeline *
-clutter_effect_rotate_z (ClutterEffectTemplate     *template_,
-			 ClutterActor              *actor,
-			 gdouble                    angle_start,
-			 gdouble                    angle_end,
-			 gint                       center_x,
-			 gint                       center_y,
-			 ClutterRotateDirection     direction,
-			 ClutterEffectCompleteFunc  completed_func,
-			 gpointer                   completed_data)
-{
-  ClutterEffectClosure *c;
-
-  c = clutter_effect_closure_new (template_,
-				  actor, 
-				  G_CALLBACK (on_effect_complete));
-
-  c->completed_func = completed_func;
-  c->completed_data = completed_data;
-
-
-  clutter_actor_set_rotation (actor, CLUTTER_Z_AXIS,
-                              angle_start,
-                              center_x, center_y, 0);
-
-  c->behave = clutter_behaviour_rotate_new (c->alpha,
-					    CLUTTER_Z_AXIS,
-					    direction,
-					    angle_start,
-					    angle_end);
-  g_object_set (c->behave,
-		"center-x", center_x,
-		"center-y", center_y,
 		NULL);
   
   clutter_behaviour_apply (c->behave, actor);

@@ -1,5 +1,24 @@
 2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-effect.[ch]: Update the effects API to remove
+	the start value for most of them.
+
+	(clutter_effect_move): Make it a simple "move from current
+	position to new coordinates" effect.
+
+	(clutter_effect_path): Rename from clutter_effect_move().
+
+	(clutter_effect_rotate): Sync up with the new actor rotation API.
+
+	* tests/test-effects.c: Regression test for the effects.
+
+	* tests/Makefile.am: Build glue for test-effects
+
+	* tests/test-behave.c: Emulate a full ramp by using a looping
+	timeline changing its direction when reaching the last frame.
+
+2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c (clutter_actor_destroy): Bail out
 	if clutter_actor_destroy() was called on the stage: the stage
 	is not for the user to destroy.
