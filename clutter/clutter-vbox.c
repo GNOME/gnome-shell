@@ -102,6 +102,8 @@ clutter_vbox_request_coords (ClutterActor    *actor,
   box->allocation.y1 = coords->y1;
   box->allocation.x2 = -1;
   box->allocation.y2 = -1;
+
+  CLUTTER_ACTOR_CLASS (clutter_vbox_parent_class)->request_coords (actor, coords);
 }
 
 static void

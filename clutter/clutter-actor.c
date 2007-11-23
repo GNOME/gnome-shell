@@ -42,21 +42,21 @@
  *   <listitem><para>Events are handled by connecting signal handlers to
  *   the numerous event signal types.</para></listitem>
  *   <listitem><para>Event handlers must return %TRUE if they handled
- *   the event and wish to block the event emission chain; and %FALSE
+ *   the event and wish to block the event emission chain, or %FALSE
  *   if the emission chain must continue</para></listitem>
  *   <listitem><para>Keyboard events are emitted if actor has focus, see
- *   clutter_stage_set_focus()</para></listitem>
- *   <listitem><para>Motion events (motion, enter, leave) are only emitted
- *   per actor if clutter_enable_motion_events() was called with %TRUE. If
- *   set to %FALSE (the default) then only the stage emits motion
- *   events (no enter or leave events).</para></listitem>
- *   <listitem><para>Once emitted, an event emmision chain has two
+ *   clutter_stage_set_key_focus()</para></listitem>
+ *   <listitem><para>Motion events (motion, enter, leave) are not emitted
+ *   if clutter_set_motion_events_enabled() is called with %FALSE.
+ *   See clutter_set_motion_events_enabled() documentation for more
+ *   information.</para></listitem>
+ *   <listitem><para>Once emitted, an event emission chain has two
  *   phases: capture and bubble. A emitted event starts in the capture
- *   phase beginning at the stage and transversing child actors until
- *   the event source actor is reached. The emmision then enters the bubble
- *   phase transversing back up via parents to the stage. An event
- *   handler can abort this chain at point by returning
- *   %TRUE.</para></listitem> 
+ *   phase beginning at the stage and traversing every child actor until
+ *   the event source actor is reached. The emission then enters the bubble
+ *   phase, traversing back up the chain via parents until it reaches the
+ *   stage. Any event handler can abort this chain by returning
+ *   %TRUE (meaning "event handled").</para></listitem> 
  *   <listitem><para>Pointer events will 'pass through' non reactive actors.
  *   </para></listitem> 
  * </orderedlist>
@@ -864,51 +864,58 @@ clutter_actor_paint (ClutterActor *self)
 
 #undef M
 
+static void
+clutter_actor_real_request_coords (ClutterActor    *self,
+                                   ClutterActorBox *box)
+{
+  self->priv->coords = *box;
+}
+
 /**
  * clutter_actor_request_coords:
  * @self: A #ClutterActor
- * @box: A #ClutterActorBox with requested new co-ordinates in ClutterUnits
+ * @box: A #ClutterActorBox with the new coordinates, in ClutterUnits
  *
- * Requests new untransformed co-ordinates for the #ClutterActor
- * ralative to any parent.
+ * Requests new untransformed coordinates for the bounding box of
+ * a #ClutterActor. The coordinates must be relative to the current
+ * parent of the actor.
  *
- * This function should not be called directly by applications instead
- * the various position/geometry methods should be used.
- **/
+ * This function should not be called directly by applications;
+ * instead, the various position/geometry methods should be used.
+ *
+ * Note: Actors overriding the ClutterActor::request_coords() virtual
+ * function should always chain up to the parent class request_coords()
+ * method. Actors should override this function only if they need to
+ * recompute some internal state or need to reposition their evental
+ * children.
+ */
 void
 clutter_actor_request_coords (ClutterActor    *self,
 			      ClutterActorBox *box)
 {
-  ClutterActorClass *klass;
+  ClutterActorPrivate *priv;
   gboolean x_change, y_change, width_change, height_change;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (box != NULL);
 
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
+  priv = self->priv;
 
-  if (klass->request_coords)
-    klass->request_coords (self, box);
-
-  x_change     = (self->priv->coords.x1 != box->x1);
-  y_change     = (self->priv->coords.y1 != box->y1);
-  width_change = ((self->priv->coords.x2 - self->priv->coords.x1) !=
-      (box->x2 - box->x1));
-  height_change = ((self->priv->coords.y2 - self->priv->coords.y1) !=
-		   (box->y2 - box->y1));
+  /* avoid calling request coords if the coordinates did not change */
+  x_change      = (priv->coords.x1 != box->x1);
+  y_change      = (priv->coords.y1 != box->y1);
+  width_change  = ((priv->coords.x2 - priv->coords.x1) != (box->x2 - box->x1));
+  height_change = ((priv->coords.y2 - priv->coords.y1) != (box->y2 - box->y1));
 
   if (x_change || y_change || width_change || height_change)
     {
-      self->priv->coords.x1 = box->x1;
-      self->priv->coords.y1 = box->y1;
-      self->priv->coords.x2 = box->x2;
-      self->priv->coords.y2 = box->y2;
+      g_object_ref (self);
+      g_object_freeze_notify (G_OBJECT (self));
+
+      CLUTTER_ACTOR_GET_CLASS (self)->request_coords (self, box);
 
       if (CLUTTER_ACTOR_IS_VISIBLE (self))
 	clutter_actor_queue_redraw (self);
-
-      g_object_ref (self);
-      g_object_freeze_notify (G_OBJECT (self));
 
       if (x_change)
 	g_object_notify (G_OBJECT (self), "x");
@@ -1646,6 +1653,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->hide = clutter_actor_real_hide;
   klass->hide_all = clutter_actor_hide;
   klass->pick = clutter_actor_real_pick;
+  klass->request_coords = clutter_actor_real_request_coords;
 }
 
 static void

@@ -786,6 +786,8 @@ clutter_texture_request_coords (ClutterActor    *self,
   if (((box->x2 - box->x1) != (old_request.x2 - old_request.x1)) ||
       ((box->y2 - box->y1) != (old_request.y2 - old_request.y1)))
     texture->priv->sync_actor_size = FALSE;
+
+  CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)->request_coords (self, box);
 }
 
 static void

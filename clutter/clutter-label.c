@@ -362,6 +362,8 @@ clutter_label_request_coords (ClutterActor    *self,
     clutter_label_clear_layout (label);
 
   priv->allocation = *box;
+
+  CLUTTER_ACTOR_CLASS (clutter_label_parent_class)->request_coords (self, box);
 }
 
 static void 

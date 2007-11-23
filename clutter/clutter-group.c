@@ -124,8 +124,8 @@ clutter_group_pick (ClutterActor       *actor,
 
 
 static void
-clutter_group_request_coords (ClutterActor        *self,
-			      ClutterActorBox     *box)
+clutter_group_request_coords (ClutterActor    *self,
+			      ClutterActorBox *box)
 {
   ClutterActorBox cbox;
 
@@ -136,6 +136,8 @@ clutter_group_request_coords (ClutterActor        *self,
   */
   box->x2 = box->x1 + (cbox.x2 - cbox.x1);
   box->y2 = box->y1 + (cbox.y2 - cbox.y1);
+
+  CLUTTER_ACTOR_CLASS (clutter_group_parent_class)->request_coords (self, box);
 }
 
 static void

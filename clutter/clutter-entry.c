@@ -491,6 +491,8 @@ clutter_entry_request_coords (ClutterActor    *self,
 
       priv->width = width;
     }
+
+  CLUTTER_ACTOR_CLASS (clutter_entry_parent_class)->request_coords (self, box);
 }
 
 static void

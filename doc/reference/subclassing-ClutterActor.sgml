@@ -77,8 +77,10 @@ foo_actor_query_coords (ClutterActor    *actor,
   is invoked when clutter_actor_request_coords() is called on an instance
   of that actor class. It is used to set the coordinates of the bounding
   box for the actor. Container actors, or composite actors with internal
-  children, should call clutter_actor_request_coords() on each visible
-  child.</para>
+  children, should override the request_coords() virtual function and call
+  clutter_actor_request_coords() on each visible child. Every actor class
+  overriding the request_coords() virtual function must chain up to the
+  parent class request_coords() method.</para>
 
   <para>The ClutterActor::paint() method should be overridden if the
   actor needs to control its drawing process, by using the GL API

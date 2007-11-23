@@ -1,5 +1,27 @@
 2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	(clutter_actor_real_request_coords),
+	(clutter_actor_request_coords),
+	(clutter_actor_class_init): Provide a default ::request_coords()
+	implementation in ClutterActor and use it to store the bounding
+	box passed to clutter_actor_request_coords(). This makes the code
+	more reliable and clean, and avoids a call to the subclass
+	request_coords() method if the bounding box did not change. Now,
+	every class overriding ClutterActor::request_coords() *must* chain
+	up to the parent class method or the bounding box will not be
+	saved inside the ClutterActor structure.
+	
+	* clutter/clutter-entry.c:
+	* clutter/clutter-group.c:
+	* clutter/clutter-hbox.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-vbox.c: Chain up to the parent class
+	request_coords() method.
+
+2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-event.h: Add more documentation.
 
 2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
