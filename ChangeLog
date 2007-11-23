@@ -1,5 +1,10 @@
 2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/x11/clutter-stage-x11.c: Chain up the hide and show
+	to the parent's implementation.
+
+2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-effect.[ch]: Update the effects API to remove
 	the start value for most of them.
 
