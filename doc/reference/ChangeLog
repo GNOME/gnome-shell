@@ -1,5 +1,9 @@
 2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-docs.sgml: Shuffle around non-actor classes.
+
+2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* subclassing-ClutterActor.sgml: Mention the chain-up needed when
 	overriding the request_coords() vfunc of ClutterActor.
 
