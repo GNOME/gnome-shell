@@ -20,16 +20,12 @@ blue_button_cb (ClutterActor    *actor,
 
   stage = clutter_stage_get_default ();
 
-#if 0
   if (IsFullScreen)
     IsFullScreen = FALSE;
   else
     IsFullScreen = TRUE;
 
   g_object_set (stage, "fullscreen", IsFullScreen, NULL);
-#endif
-
-  clutter_actor_hide (stage);
 
   return FALSE;
 }
@@ -172,7 +168,6 @@ main (int argc, char *argv[])
 
 
   stage = clutter_stage_get_default ();
-  clutter_stage_fullscreen (stage);
   g_signal_connect (stage, "event", G_CALLBACK (input_cb), "stage");
 
   g_signal_connect (stage, "fullscreen", 

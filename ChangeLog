@@ -1,5 +1,9 @@
 2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/test-event.c: Back out an accidental commit.
+
+2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	* clutter/clutter-alpha.c:
 	* clutter/clutter-effect.c:
