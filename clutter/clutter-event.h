@@ -30,7 +30,23 @@
 #include <clutter/clutter-types.h>
 
 #define CLUTTER_TYPE_EVENT	(clutter_event_get_type ())
+
+/**
+ * CLUTTER_PRIORITY_EVENTS:
+ *
+ * Priority for event handling.
+ *
+ * Since: 0.4
+ */
 #define CLUTTER_PRIORITY_EVENTS (G_PRIORITY_DEFAULT)
+
+/**
+ * CLUTTER_CURRENT_TIME:
+ *
+ * Default value for "now".
+ *
+ * Since: 0.4
+ */
 #define CLUTTER_CURRENT_TIME    0L
 
 G_BEGIN_DECLS

@@ -197,7 +197,6 @@ clutter_group_get_nth_child
 clutter_group_raise
 clutter_group_lower
 clutter_group_sort_depth_order
-clutter_group_find_child_by_id
 <SUBSECTION Standard>
 CLUTTER_GROUP
 CLUTTER_IS_GROUP
@@ -489,6 +488,7 @@ CLUTTER_STAGE_CLASS
 CLUTTER_IS_STAGE_CLASS
 CLUTTER_STAGE_GET_CLASS
 CLUTTER_TYPE_PERSPECTIVE
+CLUTTER_TYPE_FOG
 <SUBSECTION Private>
 ClutterStagePrivate
 clutter_stage_get_type
@@ -1070,11 +1070,10 @@ clutter_effect_template_set_timeline_clone
 ClutterEffectCompleteFunc
 clutter_effect_fade
 clutter_effect_move
+clutter_effect_path
 clutter_effect_scale
 clutter_effect_depth
-clutter_effect_rotate_x
-clutter_effect_rotate_y
-clutter_effect_rotate_z
+clutter_effect_rotate
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_EFFECT_TEMPLATE

@@ -971,6 +971,17 @@ on_key_focused_weak_notify (gpointer data,
   clutter_stage_set_key_focus (stage, NULL);
 }
 
+/**
+ * clutter_stage_set_key_focus:
+ * @stage: the #ClutterStage
+ * @actor: the actor to set key focus to, or %NULL
+ *
+ * Sets the key focus on @actor. An actor with key focus will receive
+ * all the key events. If @actor is %NULL, the stage will receive
+ * focus.
+ *
+ * Since: 0.6
+ */
 void
 clutter_stage_set_key_focus (ClutterStage *stage,
 			     ClutterActor *actor)
@@ -1010,6 +1021,16 @@ clutter_stage_set_key_focus (ClutterStage *stage,
     g_signal_emit_by_name (stage, "focus-in");
 }
 
+/**
+ * clutter_stage_get_key_focus:
+ * @stage: the #ClutterStage
+ *
+ * Retrieves the actor that is currently under key focus.
+ *
+ * Return value: the actor with key focus, or the stage
+ *
+ * Since: 0.6
+ */
 ClutterActor *
 clutter_stage_get_key_focus (ClutterStage *stage)
 {

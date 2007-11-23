@@ -1,5 +1,20 @@
 2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	* clutter/clutter-alpha.c:
+	* clutter/clutter-effect.c:
+	* clutter/clutter-event.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-group.h:
+	* clutter/clutter-model.c:,
+	* clutter/clutter-script.c:
+	* clutter/clutter-scriptable.h:
+	* clutter/clutter-stage.c: Documentation fixes.
+
+	* clutter/clutter-score.c: Fix implementation.
+
+2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/x11/clutter-stage-x11.c: Chain up the hide and show
 	to the parent's implementation.
 

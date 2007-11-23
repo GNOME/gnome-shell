@@ -62,6 +62,62 @@
  * </orderedlist>
  */
 
+/**
+ * CLUTTER_ACTOR_IS_MAPPED:
+ * @e: a #ClutterActor
+ *
+ * Evaluates to %TRUE if the %CLUTTER_ACTOR_MAPPED flag is set.
+ *
+ * Since: 0.2
+ */
+
+/**
+ * CLUTTER_ACTOR_IS_REALIZED:
+ * @e: a #ClutterActor
+ *
+ * Evaluates to %TRUE if the %CLUTTER_ACTOR_REALIZED flag is set.
+ *
+ * Since: 0.2
+ */
+
+/**
+ * CLUTTER_ACTOR_IS_VISIBLE:
+ * @e: a #ClutterActor
+ *
+ * Evaluates to %TRUE if the actor is both realized and mapped.
+ *
+ * Since: 0.2
+ */
+
+/**
+ * CLUTTER_ACTOR_IS_REACTIVE:
+ * @e: a #ClutterActor
+ *
+ * Evaluates to %TRUE if the %CLUTTER_ACTOR_REACTIVE flag is set.
+ *
+ * Since: 0.6
+ */
+
+/**
+ * CLUTTER_ACTOR_SET_FLAGS:
+ * @e: a #ClutterActor
+ * @f: the flags to set
+ *
+ * Sets flags on the given #ClutterActor
+ *
+ * Since: 0.2
+ */
+
+/**
+ * CLUTTER_ACTOR_UNSET_FLAGS:
+ * @e: a #ClutterActor
+ * @f: the flags to unset
+ *
+ * Unsets flags on the given #ClutterActor
+ *
+ * Since: 0.2
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

@@ -1815,7 +1815,7 @@ clutter_script_unmerge_objects (ClutterScript *script,
 }
 
 /**
- * clutter_script_ensure_object:
+ * clutter_script_ensure_objects:
  * @script: a #ClutterScript
  *
  * Ensure that every object defined inside @script is correctly

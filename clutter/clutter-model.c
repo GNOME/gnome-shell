@@ -916,8 +916,10 @@ clutter_model_get_last_iter (ClutterModel *model)
  * clutter_model_get_n_rows:
  * @model: a #ClutterModel
  *
- * Return value: The length of the @model. If there is a filter set, then the
- * length of the filtered @model is returned.
+ * Retrieves the number of rows inside @model.
+ *
+ * Return value: The length of the @model. If there is a filter set, then
+ *   thelength of the filtered @model is returned.
  *
  * Since 0.6
  */
@@ -974,6 +976,7 @@ clutter_model_set_sorting_column (ClutterModel *model,
       g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
       return;
     }
+
   priv->sort_column = column;
 
   _model_sort (model);
@@ -984,19 +987,18 @@ clutter_model_set_sorting_column (ClutterModel *model,
  * clutter_model_get_sorting_column:
  * @model: a #ClutterModelIter
  *
- * Return value: The column number that the @model sorts.
+ * Retrieves the number of column used for sorting the @model.
+ *
+ * Return value: a column number
  *
  * Since 0.6
  */
 guint              
 clutter_model_get_sorting_column (ClutterModel *model)
 {
-  ClutterModelPrivate *priv;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (model), 0);
-  priv = model->priv;
 
-  return priv->sort_column;
+  return model->priv->sort_column;
 }
 
 /**
@@ -1924,8 +1926,11 @@ clutter_model_iter_set_value (ClutterModelIter *iter,
 /**
  * clutter_model_iter_is_first:
  * @iter: a #ClutterModelIter
- * 
- * Return value: #TRUE if @iter is the first iter in the filtered model.
+ *
+ * Gets whether the current iterator is at the beginning of the model
+ * to which it belongs.
+ *
+ * Return value: #TRUE if @iter is the first iter in the filtered model
  *
  * Since 0.6
  */
@@ -1946,6 +1951,9 @@ clutter_model_iter_is_first (ClutterModelIter *iter)
  * clutter_model_iter_is_last:
  * @iter: a #ClutterModelIter
  * 
+ * Gets whether the iterator is at the end of the model to which it
+ * belongs.
+ *
  * Return value: #TRUE if @iter is the last iter in the filtered model.
  *
  * Since 0.6

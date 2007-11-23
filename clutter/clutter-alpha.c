@@ -398,6 +398,14 @@ clutter_alpha_new_full (ClutterTimeline  *timeline,
 }
 
 /**
+ * CLUTTER_ALPHA_RAMP_INC:
+ *
+ * Convenience symbol for clutter_ramp_inc_func().
+ *
+ * Since: 0.2
+ */
+
+/**
  * clutter_ramp_inc_func:
  * @alpha: a #ClutterAlpha
  * @dummy: unused argument
@@ -423,6 +431,14 @@ clutter_ramp_inc_func (ClutterAlpha *alpha,
 
   return (current_frame_num * CLUTTER_ALPHA_MAX_ALPHA) / n_frames;
 }
+
+/**
+ * CLUTTER_ALPHA_RAMP_DEC:
+ *
+ * Convenience symbol for clutter_ramp_dec_func().
+ *
+ * Since: 0.2
+ */
 
 /**
  * clutter_ramp_dec_func:
@@ -452,6 +468,14 @@ clutter_ramp_dec_func (ClutterAlpha *alpha,
          * CLUTTER_ALPHA_MAX_ALPHA
          / n_frames;
 }
+
+/**
+ * CLUTTER_ALPHA_RAMP:
+ *
+ * Convenience symbol for clutter_ramp_func().
+ *
+ * Since: 0.2
+ */
 
 /**
  * clutter_ramp_func:
@@ -575,6 +599,14 @@ sinc_func (ClutterAlpha *alpha,
 #endif
 
 /**
+ * CLUTTER_ALPHA_SINE:
+ *
+ * Convenience symbol for clutter_sine_func().
+ *
+ * Since: 0.2
+ */
+
+/**
  * clutter_sine_func:
  * @alpha: a #ClutterAlpha
  * @dummy: unused argument
@@ -597,6 +629,14 @@ clutter_sine_func (ClutterAlpha *alpha,
     return sincx1024_func (alpha, 1024, CFX_ONE);
 #endif
 }
+
+/**
+ * CLUTTER_ALPHA_SINE_INC:
+ *
+ * Convenience symbol for clutter_sine_inc_func().
+ *
+ * Since: 0.2
+ */
 
 /**
  * clutter_sine_inc_func:
@@ -633,6 +673,14 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
 }
 
 /**
+ * CLUTTER_ALPHA_SINE_DEC:
+ *
+ * Convenience symbol for clutter_sine_dec_func().
+ *
+ * Since: 0.2
+ */
+
+/**
  * clutter_sine_dec_func:
  * @alpha: a #ClutterAlpha
  * @dummy: unused argument
@@ -665,6 +713,14 @@ clutter_sine_dec_func (ClutterAlpha *alpha,
 
   return ((guint32)sine) >> CFX_Q;
 }
+
+/**
+ * CLUTTER_ALPHA_SINE_HALF:
+ *
+ * Convenience symbol for clutter_sine_half_func().
+ *
+ * Since: 0.4
+ */
 
 /**
  * clutter_sine_half_func:
@@ -701,6 +757,14 @@ clutter_sine_half_func (ClutterAlpha *alpha,
 }
 
 /**
+ * CLUTTER_ALPHA_SQUARE:
+ *
+ * Convenience symbol for clutter_square_func().
+ *
+ * Since: 0.4
+ */
+
+/**
  * clutter_square_func:
  * @alpha: a #ClutterAlpha
  * @dummy: unused argument
@@ -728,6 +792,13 @@ clutter_square_func (ClutterAlpha *alpha,
                                               : 0;
 }
 
+/**
+ * CLUTTER_ALPHA_SMOOTHSTEP_INC:
+ *
+ * Convenience symbol for clutter_smoothstep_inc_func().
+ *
+ * Since: 0.4
+ */
 
 /**
  * clutter_smoothstep_inc_func:
@@ -777,6 +848,14 @@ clutter_smoothstep_inc_func (ClutterAlpha  *alpha,
 }
 
 /**
+ * CLUTTER_ALPHA_SMOOTHSTEP_DEC:
+ *
+ * Convenience symbol for clutter_smoothstep_dec_func().
+ *
+ * Since: 0.4
+ */
+
+/**
  * clutter_smoothstep_dec_func:
  * @alpha: a #ClutterAlpha
  * @dummy: unused
@@ -794,6 +873,14 @@ clutter_smoothstep_dec_func (ClutterAlpha  *alpha,
 {
   return CLUTTER_ALPHA_MAX_ALPHA - clutter_smoothstep_inc_func (alpha, dummy);
 }
+
+/**
+ * CLUTTER_ALPHA_EXP_INC:
+ *
+ * Convenience symbol for clutter_exp_inc_func()
+ *
+ * Since: 0.4
+ */
 
 /**
  * clutter_exp_inc_func:
@@ -838,6 +925,13 @@ clutter_exp_inc_func (ClutterAlpha *alpha,
   return result;
 }
 
+/**
+ * CLUTTER_ALPHA_EXP_DEC:
+ *
+ * Convenience symbold for clutter_exp_dec_func().
+ *
+ * Since: 0.4
+ */
 
 /**
  * clutter_exp_dec_func:

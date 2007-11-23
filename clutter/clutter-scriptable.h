@@ -57,8 +57,10 @@ typedef struct _ClutterScriptableIface          ClutterScriptableIface;
  */
 struct _ClutterScriptableIface
 {
+  /*< private >*/
   GTypeInterface g_iface;
 
+  /*< public >*/
   void         (* set_id)              (ClutterScriptable *scriptable,
                                         const gchar       *name);
   const gchar *(* get_id)              (ClutterScriptable *scriptable);

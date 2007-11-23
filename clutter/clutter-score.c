@@ -35,7 +35,7 @@
  *   {
  *     Timeline *base;
  *     GList    *next_timelines; - to start on completion of base,
- *                                 (points to score entrys)
+ *                                 (points to score entries)
  *     Callback  id;
  *     delay
  *   }
@@ -48,6 +48,8 @@
  * @short_description: Sequencing multiple #ClutterTimelines in order
  *
  * #ClutterScore is a base class for sequencing multiple timelines in order.
+ *
+ * #ClutterScore is available since Clutter 0.6
  */
 
 #ifdef HAVE_CONFIG_H
@@ -150,6 +152,9 @@ clutter_score_get_property (GObject    *object,
 static void
 clutter_score_finalize (GObject *object)
 {
+  ClutterScorePrivate *priv = CLUTTER_SCORE (object)->priv;
+
+  g_hash_table_destroy (priv->running_timelines);
   G_OBJECT_CLASS (clutter_score_parent_class)->finalize (object);
 }
 
@@ -160,11 +165,6 @@ clutter_score_dispose (GObject *object)
   ClutterScorePrivate *priv;
 
   priv = self->priv;
-
-  if (priv != NULL)
-    {
-
-    }
 
   G_OBJECT_CLASS (clutter_score_parent_class)->dispose (object);
 }
@@ -254,12 +254,9 @@ clutter_score_set_loop (ClutterScore *score,
 
   if (score->priv->loop != loop)
     {
-      g_object_ref (score);
-
       score->priv->loop = loop;
 
       g_object_notify (G_OBJECT (score), "loop");
-      g_object_unref (score);
     }
 }
 
@@ -294,7 +291,7 @@ clutter_score_is_playing (ClutterScore *score)
 
   /* FIXME: paused state currently counts as playing */
 
-  return !!g_hash_table_size(score->priv->running_timelines);
+  return !!g_hash_table_size (score->priv->running_timelines);
 }
 
 static void
@@ -361,9 +358,9 @@ on_foreach_running_timeline_start (gpointer key,
  * clutter_score_start:
  * @score: A #ClutterScore
  *
- * Query state of a #ClutterScore instance.
+ * Starts the score.
  *
- * Return Value: TRUE if score is currently playing, FALSE if not.
+ * Since: 0.6
  */
 void
 clutter_score_start (ClutterScore *score)
@@ -536,7 +533,6 @@ clutter_score_append (ClutterScore    *score,
  * @timeline: A #ClutterTimeline
  *
  * Adds a new initial timeline to start when the score is started.
- *
  */
 void
 clutter_score_add (ClutterScore    *score,
@@ -559,11 +555,11 @@ clutter_score_add (ClutterScore    *score,
 }
 
 static void
-remove_entrys (GSList *list)
+remove_entries (GSList *list)
 {
-  GSList             *item;
+  GSList *item;
 
-  if (list == NULL)
+  if (!list)
     return;
 
   for (item = list; item != NULL; item = item->next)
@@ -573,7 +569,7 @@ remove_entrys (GSList *list)
       g_object_unref (entry->timeline);
 
       if (entry->child_entries)
-	remove_entrys (entry->child_entries);
+	remove_entries (entry->child_entries);
 
       g_slist_free (entry->child_entries);
       g_free(entry);
@@ -588,22 +584,32 @@ clutter_score_remove (ClutterScore    *score,
 
 }
 
+/**
+ * clutter_score_remove_all:
+ * @score: a #ClutterScore
+ *
+ * Removes all the timelines inside @score.
+ *
+ * Since: 0.6
+ */
 void
 clutter_score_remove_all (ClutterScore *score)
 {
   clutter_score_stop (score);
-  remove_entrys (score->priv->entries);
+  remove_entries (score->priv->entries);
 }
 
 /**
  * clutter_score_new:
  *
- * Create a new #ClutterScore instance.
+ * Creates a new #ClutterScore.
  *
- * Return Value: a new #ClutterScore
+ * Return value: the newly created #ClutterScore
+ *
+ * Since: 0.6
  */
-ClutterScore*
-clutter_score_new ()
+ClutterScore *
+clutter_score_new (void)
 {
   return g_object_new (CLUTTER_TYPE_SCORE,  NULL);
 }

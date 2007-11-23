@@ -753,7 +753,7 @@ clutter_effect_scale (ClutterEffectTemplate     *template_,
  * @actor: a #ClutterActor to apply the effect to.
  * @axis: axis of rotation
  * @angle: final angle to apply to actor
- * @center_z: position on Z axis to rotate about.
+ * @center_x: position on X axis to rotate about.
  * @center_y: position on Y axis to rotate about.
  * @center_z: position on Z axis to rotate about.
  * @direction: a #ClutterRotateDirection for the rotation.

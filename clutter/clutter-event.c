@@ -168,6 +168,8 @@ clutter_event_get_coords (ClutterEvent *event,
  * Retrieves the source #ClutterActor the event originated from, or
  * NULL if the event has no source.
  *
+ * Return value: a #ClutterActor
+ *
  * Since: 0.6
  */
 ClutterActor*

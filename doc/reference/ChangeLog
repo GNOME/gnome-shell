@@ -1,3 +1,7 @@
+2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add unused API.
+
 2007-11-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add the new ClutterStage fog API.
