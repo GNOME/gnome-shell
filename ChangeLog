@@ -1,5 +1,11 @@
 2007-11-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/x11/clutter-stage-x11.c:
+	(clutter_stage_x11_set_cursor_visible): Restore the XFixes usage,
+	as it now seems to be have been fixed.
+
+2007-11-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	(clutter_actor_real_show),
 	(clutter_actor_real_hide): Do not set the MAPPED flag on the actor

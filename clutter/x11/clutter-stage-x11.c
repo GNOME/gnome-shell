@@ -308,7 +308,7 @@ clutter_stage_x11_set_cursor_visible (ClutterStage *stage,
 
   if (show_cursor)
     {
-#if 0 /* HAVE_XFIXES */
+#if HAVE_XFIXES
       XFixesShowCursor (stage_x11->xdpy, stage_x11->xwin);
 #else
       XUndefineCursor (stage_x11->xdpy, stage_x11->xwin);
@@ -316,7 +316,7 @@ clutter_stage_x11_set_cursor_visible (ClutterStage *stage,
     }
   else
     {
-#if 0 /* HAVE_XFIXES */
+#if HAVE_XFIXES
       XFixesHideCursor (stage_x11->xdpy, stage_x11->xwin);
 #else
       XColor col;
