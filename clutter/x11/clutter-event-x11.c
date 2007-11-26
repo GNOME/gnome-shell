@@ -233,11 +233,11 @@ translate_key_event (ClutterBackend *backend,
   event->key.hardware_keycode = xevent->xkey.keycode;
 
   /* FIXME: We need to handle other modifiers rather than just shift */
-  event->key.keyval 
-    = XKeycodeToKeysym (xevent->xkey.display, 
-			xevent->xkey.keycode,
-			(event->key.modifier_state & CLUTTER_SHIFT_MASK) 
-			   ? 1 : 0);
+  event->key.keyval = 
+    XKeycodeToKeysym (xevent->xkey.display, 
+                      xevent->xkey.keycode,
+                      (event->key.modifier_state & CLUTTER_SHIFT_MASK) ? 1
+                                                                       : 0);
 }
 
 static gboolean
@@ -256,7 +256,7 @@ handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
        * we relay the event to the application and we let it
        * handle the request
        */
-      CLUTTER_NOTE (EVENT, "delete window:\twindow: %ld",
+      CLUTTER_NOTE (EVENT, "delete window:\txid: %ld",
                     xevent->xclient.window);
 
       set_user_time (backend_x11,
@@ -380,73 +380,89 @@ event_translate (ClutterBackend *backend,
   switch (xevent->type)
     {
     case ConfigureNotify:
-      if (xevent->xconfigure.width 
-	  != clutter_actor_get_width (CLUTTER_ACTOR (stage))
-	  ||
-	  xevent->xconfigure.height 
-	  != clutter_actor_get_height (CLUTTER_ACTOR (stage)))
-	clutter_actor_set_size (CLUTTER_ACTOR (stage),
-				xevent->xconfigure.width,
-				xevent->xconfigure.height);
+      {
+        guint stage_width, stage_height;
+
+        clutter_actor_get_size (CLUTTER_ACTOR (stage),
+                                &stage_width,
+                                &stage_height);
+
+        if (xevent->xconfigure.width != stage_width ||
+            xevent->xconfigure.height != stage_height)
+          {
+	    clutter_actor_set_size (CLUTTER_ACTOR (stage),
+                                    xevent->xconfigure.width,
+                                    xevent->xconfigure.height);
+          }
+      }
       res = FALSE;
       break;
+
     case PropertyNotify:
-      {
-	if (xevent->xproperty.atom == backend_x11->atom_NET_WM_STATE)
-	  {
-	    Atom     type;
-	    gint     format;
-	    gulong   nitems, bytes_after;
-	    guchar  *data = NULL;
-	    Atom    *atoms = NULL;
-	    gulong   i;
-	    gboolean fullscreen_set = FALSE;
+      if (xevent->xproperty.atom == backend_x11->atom_NET_WM_STATE)
+        {
+          Atom     type;
+          gint     format;
+          gulong   n_items, bytes_after;
+          guchar  *data = NULL;
+          gboolean fullscreen_set = FALSE;
 
-	    clutter_x11_trap_x_errors ();
-	    XGetWindowProperty (backend_x11->xdpy, 
-				stage_xwindow,
-				backend_x11->atom_NET_WM_STATE,
-				0, G_MAXLONG, 
-				False, XA_ATOM, 
-				&type, &format, &nitems,
-				&bytes_after, &data);
-	    clutter_x11_untrap_x_errors ();
+          clutter_x11_trap_x_errors ();
+          XGetWindowProperty (backend_x11->xdpy, stage_xwindow,
+                              backend_x11->atom_NET_WM_STATE,
+                              0, G_MAXLONG, 
+                              False, XA_ATOM,
+                              &type, &format, &n_items,
+                              &bytes_after, &data);
+          clutter_x11_untrap_x_errors ();
 
-	    if (type != None && data != NULL)
-	      {
-		atoms = (Atom *)data;
+          if (type != None && data != NULL)
+            {
+              Atom *atoms = (Atom *) data;
+              gulong i;
+              gboolean is_fullscreen = FALSE;
 
-		i = 0;
-		while (i < nitems)
-		  {
-		    if (atoms[i] == backend_x11->atom_NET_WM_STATE_FULLSCREEN)
-		      fullscreen_set = TRUE;
-		    i++;
-		  }
+              for (i = 0; i < n_items; i++)
+                {
+                  if (atoms[i] == backend_x11->atom_NET_WM_STATE_FULLSCREEN)
+                    fullscreen_set = TRUE;
+		}
 
-		if (fullscreen_set 
-		      != !!(stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN))
-		  {
-		    if (fullscreen_set)
-		      stage_x11->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
-		    else
-		      stage_x11->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
+              is_fullscreen =
+                (stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN);
 
-		    event->type = CLUTTER_STAGE_STATE;
-		    event->stage_state.changed_mask 
-		                = CLUTTER_STAGE_STATE_FULLSCREEN;
-		    event->stage_state.new_state = stage_x11->state;
-		  }
-		else
-		  res = FALSE;
+              if (fullscreen_set != is_fullscreen)
+		{
+		  if (fullscreen_set)
+                    stage_x11->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
+		  else
+                    stage_x11->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
 
-		XFree (data);
-	      }
-	  }
-	else
-	  res = FALSE;
-      }
+                  event->type = CLUTTER_STAGE_STATE;
+                  event->stage_state.changed_mask =
+                    CLUTTER_STAGE_STATE_FULLSCREEN;
+                  event->stage_state.new_state = stage_x11->state;
+                }
+              else
+                res = FALSE;
+              
+              XFree (data);
+	    }
+	  else
+            res = FALSE;
+        }
       break;
+
+    case MapNotify:
+      clutter_stage_x11_map (stage_x11);
+      res = FALSE;
+      break;
+
+    case UnmapNotify:
+      clutter_stage_x11_unmap (stage_x11);
+      res = FALSE;
+      break;
+
     case FocusIn:
       if (!(stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED))
 	{
@@ -460,6 +476,7 @@ event_translate (ClutterBackend *backend,
       else
 	res = FALSE;
       break;
+
     case FocusOut:
       if (stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED)
 	{
@@ -472,6 +489,7 @@ event_translate (ClutterBackend *backend,
       else
 	res = FALSE;
       break;
+
     case Expose:
       {
         XEvent foo_xev;
@@ -489,15 +507,18 @@ event_translate (ClutterBackend *backend,
         res = FALSE;
       }
       break;
+
     case KeyPress:
       event->type = CLUTTER_KEY_PRESS;
       translate_key_event (backend, event, xevent);
       set_user_time (backend_x11, &xwindow, xevent->xkey.time);
       break;
+
     case KeyRelease:
       event->type = CLUTTER_KEY_RELEASE;
       translate_key_event (backend, event, xevent);
       break;
+
     case ButtonPress:
       switch (xevent->xbutton.button)
         {
@@ -535,6 +556,7 @@ event_translate (ClutterBackend *backend,
 
       set_user_time (backend_x11, &xwindow, event->button.time);
       break;
+
     case ButtonRelease:
       /* scroll events don't have a corresponding release */
       if (xevent->xbutton.button == 4 ||
@@ -553,6 +575,7 @@ event_translate (ClutterBackend *backend,
       event->button.modifier_state = xevent->xbutton.state;
       event->button.button = xevent->xbutton.button;
       break;
+
     case MotionNotify:
       event->motion.type = event->type = CLUTTER_MOTION;
       event->motion.time = xevent->xmotion.time;
@@ -560,11 +583,13 @@ event_translate (ClutterBackend *backend,
       event->motion.y = xevent->xmotion.y;
       event->motion.modifier_state = xevent->xmotion.state;
       break;
+
     case DestroyNotify:
-      CLUTTER_NOTE (EVENT, "destroy notify:\twindow: %ld",
+      CLUTTER_NOTE (EVENT, "destroy notify:\txid: %ld",
                     xevent->xdestroywindow.window);
       event->type = event->any.type = CLUTTER_DESTROY_NOTIFY;
       break;
+
     case ClientMessage:
       CLUTTER_NOTE (EVENT, "client message");
       
@@ -578,6 +603,7 @@ event_translate (ClutterBackend *backend,
           event->type = event->any.type = CLUTTER_DELETE;
         }
       break;
+
     default:
       /* ignore every other event */
       res = FALSE;

@@ -22,9 +22,7 @@ clutter_stage_egl_show (ClutterActor *actor)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
 
-  /* we are always shown... */
-
-  return;
+  CLUTTER_ACTOR_SET_FLAGS (stage_egl, CLUTTER_ACTOR_MAPPED);
 }
 
 static void
@@ -32,9 +30,7 @@ clutter_stage_egl_hide (ClutterActor *actor)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
 
-  /* we are always shown... */
-
-  return;
+  CLUTTER_ACTOR_UNSET_FLAGS (stage_egl, CLUTTER_ACTOR_MAPPED);
 }
 
 static void

@@ -2,7 +2,7 @@ noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
                   test-actors test-behave test-text test-entry test-project \
 		  test-boxes test-perspective test-rotate test-depth \
 		  test-threads test-timeline test-score test-script \
-		  test-model test-grab test-effects
+		  test-model test-grab test-effects test-fullscreen
 
 INCLUDES = -I$(top_srcdir)/
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
@@ -29,5 +29,6 @@ test_score_SOURCES       = test-score.c
 test_script_SOURCES      = test-script.c
 test_model_SOURCES       = test-model.c
 test_effects_SOURCES     = test-effects.c
+test_fullscreen_SOURCES  = test-fullscreen.c
 
 EXTRA_DIST = redhand.png test-script.json

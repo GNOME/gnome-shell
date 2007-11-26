@@ -22,14 +22,18 @@ G_DEFINE_TYPE (ClutterStageSDL, clutter_stage_sdl, CLUTTER_TYPE_STAGE);
 static void
 clutter_stage_sdl_show (ClutterActor *actor)
 {
-  ;
+  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+
+  CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class)->show (actor);
 }
 
 static void
 clutter_stage_sdl_hide (ClutterActor *actor)
 {
   /* No way to easily unmap SDL window ? */
-  ;
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+
+  CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class)->hide (actor);
 }
 
 static void

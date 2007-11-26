@@ -233,7 +233,11 @@ clutter_actor_real_show (ClutterActor *self)
       if (!CLUTTER_ACTOR_IS_REALIZED (self))
         clutter_actor_realize (self);
 
-      CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+      /* the mapped flag on the top-level actors is set by the
+       * per-backend implementation because it might be asynchronous
+       */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+        CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
 
       if (CLUTTER_ACTOR_IS_VISIBLE (self))
         clutter_actor_queue_redraw (self);
@@ -286,7 +290,12 @@ clutter_actor_real_hide (ClutterActor *self)
 {
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     {
-      CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+      /* see comment in clutter_actor_real_show() on why we don't set
+       * the mapped flag on the top-level actors
+       */
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
+        CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+
       clutter_actor_queue_redraw (self);
     }
 }

@@ -94,10 +94,10 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
 
       if (!resize)
 	{
-	  size_hints->max_width  
-	    = size_hints->min_width = stage_x11->xwin_width;
-	  size_hints->max_height 
-	    = size_hints->min_height = stage_x11->xwin_height;
+	  size_hints->max_width = size_hints->min_width =
+            stage_x11->xwin_width;
+	  size_hints->max_height = size_hints->min_height =
+            stage_x11->xwin_height;
 	  size_hints->flags = PMinSize|PMaxSize;
 	}
 
@@ -112,19 +112,18 @@ clutter_stage_x11_show (ClutterActor *actor)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
 
-  /* Chain up to set mapped flags */
-  CLUTTER_ACTOR_CLASS (clutter_stage_x11_parent_class)->show(actor);
-
   if (stage_x11->xwin)
     {
       /* Fire off a redraw to avoid flicker on first map.
        * Appears not to work perfectly on intel drivers at least.
       */
       clutter_redraw();
+
       XSync (stage_x11->xdpy, FALSE);
       XMapWindow (stage_x11->xdpy, stage_x11->xwin);
     }
 
+  /* chain up */
   CLUTTER_ACTOR_CLASS (clutter_stage_x11_parent_class)->show (actor);
 }
 
@@ -136,6 +135,7 @@ clutter_stage_x11_hide (ClutterActor *actor)
   if (stage_x11->xwin)
     XUnmapWindow (stage_x11->xdpy, stage_x11->xwin);
 
+  /* chain up */
   CLUTTER_ACTOR_CLASS (clutter_stage_x11_parent_class)->hide (actor);
 }
 
@@ -219,7 +219,12 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
     {
       if (stage_x11->xwin != None)
 	{
-	  if (!CLUTTER_ACTOR_IS_MAPPED(CLUTTER_ACTOR (stage_x11)))
+          /* if the actor is not mapped we resize the stage window to match
+           * the size of the screen; this is useful for e.g. EGLX to avoid
+           * a resize when calling clutter_stage_fullscreen() before showing
+           * the stage
+           */
+	  if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
 	    {
 	      gint width, height;
 
@@ -228,14 +233,13 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
 
 	      clutter_actor_set_size (CLUTTER_ACTOR (stage_x11), 
 				      width, height);
+
 	      /* FIXME: This wont work if we support more states */
-	      XChangeProperty 
-		(stage_x11->xdpy,
-		 stage_x11->xwin,
-		 backend_x11->atom_NET_WM_STATE, XA_ATOM, 32,
-		 PropModeReplace,
-		 (unsigned char *)&backend_x11->atom_NET_WM_STATE_FULLSCREEN,
-		 1);
+	      XChangeProperty (stage_x11->xdpy,
+                               stage_x11->xwin,
+                               backend_x11->atom_NET_WM_STATE, XA_ATOM, 32,
+                               PropModeReplace,
+                               (unsigned char *) &backend_x11->atom_NET_WM_STATE_FULLSCREEN, 1);
 	    }
 	  else
 	    {
@@ -247,18 +251,19 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
 	      else
 		clutter_stage_set_user_resizable (stage, TRUE);
 
-	      send_wmspec_change_state(backend_x11,
-				       stage_x11->xwin,
+	      send_wmspec_change_state(backend_x11, stage_x11->xwin,
 				       backend_x11->atom_NET_WM_STATE_FULLSCREEN,
 				       TRUE);
 	    }
+
+          stage_x11->fullscreen_on_map = TRUE;
 	}
     }
   else
     {
       if (stage_x11->xwin != None)
 	{
-	  if (!CLUTTER_ACTOR_IS_MAPPED(CLUTTER_ACTOR (stage_x11)))
+	  if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
 	    {
 	      /* FIXME: This wont work if we support more states */
 	      XDeleteProperty (stage_x11->xdpy, 
@@ -280,10 +285,12 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
 
 	      was_resizeable = FALSE;
 	    }
+
+          stage_x11->fullscreen_on_map = FALSE;
 	}
     }
 
-  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void
@@ -301,9 +308,7 @@ clutter_stage_x11_set_cursor_visible (ClutterStage *stage,
 
   if (show_cursor)
     {
-#if 0 /* HAVE_XFIXES - borked on fiesty at least so disabled until further 
-       *               investigation.	 
-       */
+#if 0 /* HAVE_XFIXES */
       XFixesShowCursor (stage_x11->xdpy, stage_x11->xwin);
 #else
       XUndefineCursor (stage_x11->xdpy, stage_x11->xwin);
@@ -311,7 +316,7 @@ clutter_stage_x11_set_cursor_visible (ClutterStage *stage,
     }
   else
     {
-#if 0 /* HAVE_XFIXES - borked */
+#if 0 /* HAVE_XFIXES */
       XFixesHideCursor (stage_x11->xdpy, stage_x11->xwin);
 #else
       XColor col;
@@ -420,8 +425,9 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->xvisinfo = None;
 
   stage->is_foreign_xwin = FALSE;
+  stage->fullscreen_on_map = FALSE;
 
-  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 /**
@@ -522,3 +528,23 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 
   return TRUE;
 }
+
+void
+clutter_stage_x11_map (ClutterStageX11 *stage_x11)
+{
+  CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
+
+  if (stage_x11->fullscreen_on_map)
+    clutter_stage_fullscreen (CLUTTER_STAGE (stage_x11));
+  else
+    clutter_stage_unfullscreen (CLUTTER_STAGE (stage_x11));
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage_x11));
+}
+
+void
+clutter_stage_x11_unmap (ClutterStageX11 *stage_x11)
+{
+  CLUTTER_ACTOR_UNSET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
+}
+

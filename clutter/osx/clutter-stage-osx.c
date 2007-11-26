@@ -322,6 +322,8 @@ clutter_stage_osx_show (ClutterActor *actor)
 
   CLUTTER_NOTE (BACKEND, "show");
 
+  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+
   if (CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->show)
     CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->show (actor);
 
@@ -346,6 +348,8 @@ clutter_stage_osx_hide (ClutterActor *actor)
   [self->window orderOut: nil];
 
   CLUTTER_OSX_POOL_RELEASE();
+
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
 
   if (CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->hide)
     CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->hide (actor);

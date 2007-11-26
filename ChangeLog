@@ -1,3 +1,41 @@
+2007-11-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_real_show),
+	(clutter_actor_real_hide): Do not set the MAPPED flag on the actor
+	if it is a top-level one (like ClutterStage); the backends are
+	responsible for setting that flag, as it might be the result of an
+	asynchronous operation (e.g. on X11).
+	
+	* clutter/eglnative/clutter-stage-egl.c:
+	(clutter_stage_egl_show),
+	(clutter_stage_egl_hide): Set/unset the CLUTTER_ACTOR_MAPPED flag
+	on show and hide respectively.
+
+	* clutter/osx/clutter-stage-osx.c:
+	(clutter_stage_osx_show),
+	(clutter_stage_osx_hide): Ditto as above.
+
+	* clutter/sdl/clutter-stage-sdl.c:
+	(clutter_stage_sdl_show),
+	(clutter_stage_sdl_hide): Ditto as above, plus chain up to the
+	parent class show/hide virtual functions.
+
+	* clutter/x11/clutter-event-x11.c (event_translate): Use the MapNotify
+	and UnmapNotify events to call the X11 stage map/unmap functions.
+
+	* clutter/x11/clutter-stage-x11.[ch]:
+	(clutter_stage_x11_set_fullscreen): Set the fullscreen_on_map flag
+	with the fullscreen value.
+
+	(clutter_stage_x11_map), (clutter_stage_x11_unmap): Set the MAPPED
+	flag on the stage actor and redraw; also, if the fullscreen_on_map
+	flag was set, call clutter_stage_fullscreen() as well. (#648)
+
+	* tests/Makefile.am:
+	* tests/test-fullscreen.c: Add a fullscreen test case for checking
+	whether fullscreen works on every backend/platform.
+
 2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c:
