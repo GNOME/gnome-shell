@@ -1,3 +1,15 @@
+2007-11-27  Tomas Frydrych  <tf@openedhand.com>
+        * clutter/clutter-behaviour-ellipse.c:
+        * clutter/clutter-behaviour-ellipse.h:
+	(clutter_behaviour_ellipse_get_angle_startx):
+	(clutter_behaviour_ellipse_set_angle_startx):
+	(clutter_behaviour_ellipse_get_angle_endx):
+	(clutter_behaviour_ellipse_set_angle_endx):
+	(clutter_behaviour_ellipse_get_angle_tiltx):
+	(clutter_behaviour_ellipse_set_angle_tiltx):
+	Changed to take and return angles in degrees represented as
+	ClutterFixed.
+
 2007-11-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c (clutter_actor_destroy): Remove the
@@ -18,7 +30,7 @@
 	if it is a top-level one (like ClutterStage); the backends are
 	responsible for setting that flag, as it might be the result of an
 	asynchronous operation (e.g. on X11).
-	
+
 	* clutter/eglnative/clutter-stage-egl.c:
 	(clutter_stage_egl_show),
 	(clutter_stage_egl_hide): Set/unset the CLUTTER_ACTOR_MAPPED flag
@@ -61,7 +73,7 @@
 	every class overriding ClutterActor::request_coords() *must* chain
 	up to the parent class method or the bounding box will not be
 	saved inside the ClutterActor structure.
-	
+
 	* clutter/clutter-entry.c:
 	* clutter/clutter-group.c:
 	* clutter/clutter-hbox.c:
@@ -154,7 +166,7 @@
 	glFog() functions and enabling the GL_FOG flag.
 
 	* clutter/cogl/gl/cogl.c: Add GL implementation of cogl_fog_set().
-	
+
 	* clutter/cogl/gles/cogl.c: Add GL/ES implementation of
 	cogl_fog_set().
 
@@ -213,7 +225,7 @@
 
 	(clutter_label_class_init),
 	(clutter_label_init): Set the :wrap property default to FALSE.
-	
+
 	* clutter/clutter-units.h: Add ClutterUnit-to-PangoUnit conversion
 	macro.
 
@@ -243,7 +255,7 @@
 	(clutter_get_motion_events_frequency),
 	(clutter_set_motion_events_frequency): Add accessors for the default
 	motion events deliver frequency.
-	
+
 	(clutter_do_event): Throttle down motion events delivery using the
 	motion events frequency setting, to avoid excessive redraws. (#608)
 
@@ -267,9 +279,9 @@
 
 	Updated use of clutter_actor_set_rotation? in the following files:
 
-	* clutter/clutter-behaviour-rotate.c: 
-	* clutter/clutter-effect.c: 
-	* tests/test-actors.c: 
+	* clutter/clutter-behaviour-rotate.c:
+	* clutter/clutter-effect.c:
+	* tests/test-actors.c:
 	* tests/test-project.c:
 
 2007-11-19  Emmanuele Bassi  <ebassi@openedhand.com>
@@ -284,14 +296,14 @@
 	* clutter/clutter-group.c:
 	* clutter/clutter-main.c:
 	* clutter/clutter-stage.c:
-	* tests/test-events.c: 
+	* tests/test-events.c:
 	Parent Actors no longer need to be set reactive for reactive
-	children to get events. Also makes groups now pickable. 
-	(#597, #423)	
+	children to get events. Also makes groups now pickable.
+	(#597, #423)
 
 	* clutter/clutter-texture.c:
 	Handle case when 1x1 tiled texture is created,
-	falling 'back' to being non tiled. (#596) 
+	falling 'back' to being non tiled. (#596)
 
 	* clutter/eglx/clutter-backend-egl.c:
 	Call EglTerminate on backend shutdown.
@@ -507,12 +519,12 @@
 2007-11-15  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/Makefile.am:
-	* clutter/clutter-model.c: 
+	* clutter/clutter-model.c:
 	* clutter/clutter-model.h:
 	* clutter/clutter.h:
 	* tests/Makefile.am:
 	* tests/test-model.c:
-	Merged ClutterModel, which closes #443. 	
+	Merged ClutterModel, which closes #443.
 
 2007-11-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -586,15 +598,15 @@
 	* clutter/clutter-behaviour-depth.h:
 	* clutter/clutter-behaviour-ellipse.c:
 	* clutter/clutter-behaviour-ellipse.h:
-	* clutter/clutter-behaviour-path.c: 
+	* clutter/clutter-behaviour-path.c:
 	* clutter/clutter-behaviour-rotate.c:
 	* clutter/clutter-behaviour-rotate.h:
 	* clutter/clutter-behaviour-scale.c:
 	* clutter/clutter-behaviour-scale.h:
-	* clutter/clutter-effect.c: 
+	* clutter/clutter-effect.c:
 	* clutter/clutter-effect.h:
 	* clutter/clutter-script.c:
-	* tests/test-depth.c: 
+	* tests/test-depth.c:
 	* tests/test-script.c:
 
 2007-11-06  Øyvind Kolås  <pippin@o-hand.com>
@@ -605,7 +617,7 @@
 	the any event.
 	(clutter_event_free): removed unused variable.
 	* clutter/clutter-main.c: (deliver_event), (clutter_do_event): reduced
-	amount of code. As well as deliver button-release events to the stage. 
+	amount of code. As well as deliver button-release events to the stage.
 
 2007-11-08  Rob Bradford  <rob@openedhand.com>
 

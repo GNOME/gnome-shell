@@ -207,7 +207,7 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
       ClutterAngle diff;
       ClutterAngle angle_start = priv->angle_start + 256;
       ClutterAngle angle_end   = priv->angle_end + 256;
-      
+
       /* Work out the angular length of the arch represented by the
        * end angle in CCW direction
        */
@@ -223,7 +223,7 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
         {
           diff = 1024 - angle_end + angle_start;
         }
-      
+
       angle = priv->angle_start - (diff * alpha / CLUTTER_ALPHA_MAX_ALPHA);
     }
   else if (priv->angle_end < priv->angle_start &&
@@ -251,7 +251,7 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
 
       angle = priv->angle_start + (diff * alpha / CLUTTER_ALPHA_MAX_ALPHA);
     }
-  
+
   clutter_behaviour_ellipse_advance (self, angle, &knot);
 
   knot.x += priv->center.x;
@@ -805,7 +805,7 @@ clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_set_angle_startx
  * @self: a #ClutterBehaviourEllipse
- * @angle_start: #ClutterAngle at which movement starts
+ * @angle_start: An angle, as #ClutterFixed, at which movement starts, in degrees.
  *
  * Sets the angle at which movement starts.
  *
@@ -813,14 +813,13 @@ clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
  */
 void
 clutter_behaviour_ellipse_set_angle_startx (ClutterBehaviourEllipse *self,
-                                            ClutterAngle             angle_start)
+                                            ClutterFixed             angle_start)
 {
   ClutterBehaviourEllipsePrivate *priv;
   ClutterAngle new_angle;
-
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle = angle_start - 256;
+  new_angle = CLUTTER_ANGLE_FROM_DEGX (angle_start) - 256;
 
   priv = self->priv;
   if (priv->angle_start != new_angle)
@@ -854,16 +853,16 @@ clutter_behaviour_ellipse_get_angle_start (ClutterBehaviourEllipse *self)
  *
  * Gets the angle at which movements starts.
  *
- * Return value: a #ClutterAngle
+ * Return value: angle, as #ClutterFixed, in degrees.
  *
  * Since: 0.6
  */
-ClutterAngle
+ClutterFixed
 clutter_behaviour_ellipse_get_angle_startx (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
 
-  return self->priv->angle_start;
+  return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_start);
 }
 
 /**
@@ -888,7 +887,7 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_set_angle_endx
  * @self: a #ClutterBehaviourEllipse
- * @angle_end: #ClutterAngle at which movement ends
+ * @angle_end: angle, as #ClutterFixed, at which movement ends, in degrees.
  *
  * Sets the angle at which movement ends.
  *
@@ -896,14 +895,14 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
  */
 void
 clutter_behaviour_ellipse_set_angle_endx (ClutterBehaviourEllipse *self,
-                                          ClutterAngle             angle_end)
+                                          ClutterFixed             angle_end)
 {
   ClutterBehaviourEllipsePrivate *priv;
   ClutterAngle new_angle;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle = angle_end - 256;
+  new_angle = CLUTTER_ANGLE_FROM_DEGX (angle_end) - 256;
 
   priv = self->priv;
 
@@ -939,16 +938,16 @@ clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse *self)
  *
  * Gets the angle at which movements ends.
  *
- * Return value: a #ClutterAngle
+ * Return value: angle, as #ClutterFixed, in degrees
  *
  * Since: 0.4
  */
-ClutterAngle
+ClutterFixed
 clutter_behaviour_ellipse_get_angle_endx (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
 
-  return self->priv->angle_end;
+  return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_end);
 }
 
 /**
@@ -978,8 +977,8 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
  * clutter_behaviour_ellipse_set_angle_tiltx
  * @self: a #ClutterBehaviourEllipse
  * @axis: a #ClutterRoateAxis
- * @angle_tilt: #ClutterAngle tilt of the elipse around the center in the given
- * axis
+ * @angle_tilt: tilt, as #ClutterFixed, of the elipse around the center in the given
+ * axis in degrees.
  *
  * Sets the angle at which the ellipse should be tilted around it's center.
  *
@@ -988,14 +987,14 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
 void
 clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse *self,
                                            ClutterRotateAxis        axis,
-                                           ClutterAngle             angle_tilt)
+                                           ClutterFixed             angle_tilt)
 {
   ClutterBehaviourEllipsePrivate *priv;
   ClutterAngle new_angle;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle = angle_tilt - 256;
+  new_angle = CLUTTER_ANGLE_FROM_DEGX (angle_tilt) - 256;
 
   priv = self->priv;
 
@@ -1058,11 +1057,11 @@ clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self,
  *
  * Gets the tilt of the ellipse around the center in the given axis.
  *
- * Return value: a #ClutterAngle
+ * Return value: angle, as #ClutterFixed, in degrees
  *
  * Since: 0.4
  */
-ClutterAngle
+ClutterFixed
 clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse *self,
                                            ClutterRotateAxis        axis)
 {
@@ -1071,11 +1070,11 @@ clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse *self,
   switch (axis)
     {
     case CLUTTER_X_AXIS:
-      return self->priv->angle_tilt_x + 256;
+      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_x + 256);
     case CLUTTER_Y_AXIS:
-      return self->priv->angle_tilt_y + 256;
+      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_y + 256);
     case CLUTTER_Z_AXIS:
-      return self->priv->angle_tilt_z + 256;
+      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_z + 256);
     default:
       break;
     }
@@ -1111,9 +1110,9 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_set_tiltx
  * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: #ClutterAngle tilt of the elipse around the center in X axis
- * @angle_tilt_y: #ClutterAngle tilt of the elipse around the center in Y axis
- * @angle_tilt_z: #ClutterAngle tilt of the elipse around the center in Z axis
+ * @angle_tilt_x: tilt of the elipse in degrees, as #ClutterFixed, around the center in X axis
+ * @angle_tilt_y: tilt of the elipse in degrees, as #ClutterFixed, around the center in Y axis
+ * @angle_tilt_z: tilt of the elipse in degrees, as #ClutterFixed, around the center in Z axis
  *
  * Sets the angle at which the ellipse should be tilted around it's center.
  *
@@ -1121,18 +1120,18 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
  */
 void
 clutter_behaviour_ellipse_set_tiltx (ClutterBehaviourEllipse *self,
-                                     ClutterAngle             angle_tilt_x,
-                                     ClutterAngle             angle_tilt_y,
-                                     ClutterAngle             angle_tilt_z)
+                                     ClutterFixed             angle_tilt_x,
+                                     ClutterFixed             angle_tilt_y,
+                                     ClutterFixed             angle_tilt_z)
 {
   ClutterBehaviourEllipsePrivate *priv;
   ClutterAngle new_angle_x, new_angle_y, new_angle_z;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle_x = angle_tilt_x - 256;
-  new_angle_y = angle_tilt_y - 256;
-  new_angle_z = angle_tilt_z - 256;
+  new_angle_x = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_x) - 256;
+  new_angle_y = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_y) - 256;
+  new_angle_z = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_z) - 256;
 
   priv = self->priv;
 
@@ -1158,7 +1157,7 @@ clutter_behaviour_ellipse_set_tiltx (ClutterBehaviourEllipse *self,
 
       g_object_notify (G_OBJECT (self), "angle-tilt-z");
     }
-  
+
   g_object_thaw_notify (G_OBJECT (self));
 }
 
@@ -1202,12 +1201,12 @@ clutter_behaviour_ellipse_get_tilt (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_get_tiltx
  * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: #ClutterAngle location for tilt of the elipse around the
- * center in X axis, or NULL.
- * @angle_tilt_y: #ClutterAngle location for tilt of the elipse around the
- * center in Y axis, or NULL.
- * @angle_tilt_z: #ClutterAngle location for tilt of the elipse around the
- * center in Z axis, or NULL.
+ * @angle_tilt_x: location for tilt of the elipse, as #ClutterFixed, around the
+ * center in X axis in degrees, or NULL.
+ * @angle_tilt_y: location for tilt of the elipse, as #ClutterFixed, around the
+ * center in Y axis in degress, or NULL.
+ * @angle_tilt_z: location for tilt of the elipse, as #ClutterFixed, around the
+ * center in Z axis in degrees, or NULL.
  *
  * Gets the tilt of the ellipse around the center in Y axis.
  *
@@ -1215,9 +1214,9 @@ clutter_behaviour_ellipse_get_tilt (ClutterBehaviourEllipse *self,
  */
 void
 clutter_behaviour_ellipse_get_tiltx (ClutterBehaviourEllipse *self,
-                                     ClutterAngle            *angle_tilt_x,
-                                     ClutterAngle            *angle_tilt_y,
-                                     ClutterAngle            *angle_tilt_z)
+                                     ClutterFixed            *angle_tilt_x,
+                                     ClutterFixed            *angle_tilt_y,
+                                     ClutterFixed            *angle_tilt_z)
 {
   ClutterBehaviourEllipsePrivate *priv;
 
@@ -1226,13 +1225,13 @@ clutter_behaviour_ellipse_get_tiltx (ClutterBehaviourEllipse *self,
   priv = self->priv;
 
   if (angle_tilt_x)
-    *angle_tilt_x = priv->angle_tilt_x + 256;
+    *angle_tilt_x = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_x + 256);
 
   if (angle_tilt_y)
-    *angle_tilt_y = priv->angle_tilt_y + 256;
+    *angle_tilt_y = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_y + 256);
 
   if (angle_tilt_z)
-    *angle_tilt_z = priv->angle_tilt_z + 256;
+    *angle_tilt_z = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_z + 256);
 }
 
 /**
