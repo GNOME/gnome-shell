@@ -1124,9 +1124,10 @@ clutter_actor_dispose (GObject *object)
 {
   ClutterActor *self = CLUTTER_ACTOR (object);
 
-  CLUTTER_NOTE (MISC, "Disposing of object (id=%d) of type `%s'",
+  CLUTTER_NOTE (MISC, "Disposing of object (id=%d) of type `%s' (ref_count:%d)",
 		self->priv->id,
-		g_type_name (G_OBJECT_TYPE (self)));
+		g_type_name (G_OBJECT_TYPE (self)),
+                object->ref_count);
 
  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
     {
@@ -1144,6 +1145,10 @@ static void
 clutter_actor_finalize (GObject *object)
 {
   ClutterActor *actor = CLUTTER_ACTOR (object);
+
+  CLUTTER_NOTE (MISC, "Finalize object (id=%d) of type `%s'",
+		actor->priv->id,
+		g_type_name (G_OBJECT_TYPE (actor)));
 
   g_free (actor->priv->name);
 
@@ -1728,6 +1733,8 @@ clutter_actor_destroy (ClutterActor *self)
 
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
     g_object_run_dispose (G_OBJECT (self));
+
+  g_object_unref (self);
 }
 
 /**

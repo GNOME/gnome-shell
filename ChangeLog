@@ -1,3 +1,9 @@
+2007-11-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_destroy): Remove the
+	reference we hold on the actor, as it was preventing the finalization
+	of every child on the stage.
+
 2007-11-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/x11/clutter-stage-x11.c:
