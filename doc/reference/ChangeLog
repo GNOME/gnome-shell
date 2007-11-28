@@ -1,3 +1,7 @@
+2007-11-28  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter-sections.txt: added new CLUTTER_UNITS_FROM_* macros.
+
 2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Documentation fixes.
@@ -169,7 +173,7 @@
 
 2007-07-28  Emmanuele Bassi  <ebasso@openedhand.com>
 
-	* clutter-sections.txt: Add new ClutterBehaviourEllipse 
+	* clutter-sections.txt: Add new ClutterBehaviourEllipse
 	and ClutterStage API.
 
 2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
@@ -181,7 +185,7 @@
 	* Makefile.am:
 	* clutter-animation.sgml:
 	* clutter-docs.sgml:
-	An initial shot at some general animation documentation. 
+	An initial shot at some general animation documentation.
 	Needs some love.
 
 2007-07-25  Emmanuele Bassi  <ebassi@openedhand.com>
@@ -285,7 +289,7 @@
 	* tmpl/clutter-behaviour-bspline.sgml:
 	* tmpl/clutter-behaviour-ellipse.sgml:
 	Updated templates.
-	
+
 2007-05-31  Neil J Patel  <njp@o-hand.com>
 
 	* clutter-docs.sgml:
@@ -297,12 +301,12 @@
 
 	* tmpl/clutter-behaviour-ellipse.sgml:
 	Updated template.
-	
+
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter.types:
 	Added clutter_vertices_get_type.
-	
+
 2007-05-30  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter.types:
@@ -312,11 +316,11 @@
 	* tmpl/clutter-actor.sgml:
 	* tmpl/clutter-media.sgml:
 	Updated templates.
-	
+
 2007-05-22  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter-sections.txt:
-	* clutter-docs.sgml: 
+	* clutter-docs.sgml:
 	* tmpl/clutter-units.sgml:
 	Added clutter-units.
 
@@ -325,7 +329,7 @@
 	* tmpl/clutter-media.sgml:
 	* tmpl/clutter-behaviour-ellipse.sgml:
 	Updated templates.
-	
+
 2007-05-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Ignore the sdl backend.
@@ -383,7 +387,7 @@
 
 	* clutter-docs.sgml: added clutter-fixed
 	* tmpl/clutter-fixed.sgml: added intro to fixed point math
-	
+
 2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Remove old cruft.

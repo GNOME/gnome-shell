@@ -1,3 +1,45 @@
+2007-11-28  Tomas Frydrych  <tf@openedhand.com>
+
+        * clutter/clutter-actor.c:
+        * clutter/clutter-actor.h:
+	(clutter_actor_set_positionu):
+	(clutter_actor_set_sizeu):
+	(clutter_actor_get_widthu):
+	(clutter_actor_get_heightu):
+	(clutter_actor_set_widthu):
+	(clutter_actor_set_heightu):
+	(clutter_actor_get_xu):
+	(clutter_actor_get_yu):
+	(clutter_actor_set_xu):
+	(clutter_actor_set_yu):
+	Expanded ClutterActor API with new ClutterUnit-base functions.
+
+        * clutter/clutter-stage.c:
+        * clutter/clutter-stage.h:
+	(clutter_stage_get_resolution):
+	(clutter_stage_get_resolutionx):
+	New function to query stage resolution (floating and fixed point
+	versions).
+
+        * clutter/clutter-units.h:
+	(CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE):
+	(CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE):
+	(CLUTTER_UNITS_FROM_PARENT_WIDTH_PERCENTAGE):
+	(CLUTTER_UNITS_FROM_PARENT_HEIGHT_PERCENTAGE):
+	(CLUTTER_UNITS_FROM_MM):
+	(CLUTTER_UNITS_FROM_MMX):
+	(CLUTTER_UNITS_FROM_POINTS):
+	(CLUTTER_UNITS_FROM_POINTSX):
+	New macros for conversions to ClutterUnits.
+
+	* clutter.symbols:
+	Added:
+	        ClutterActor anchor_point functions,
+                clutter_stage_get_resolution functions.
+
+	Removed:
+                clutter_actor_scale_with_gravity functions.
+
 2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.[ch]: Documentation fixes.
@@ -13,12 +55,12 @@
 
 	* clutter/clutter-layout.[ch]: Remove the ClutterLayout
 	interface.
-	
+
 	* clutter/clutter-box.[ch]:
 	* clutter/clutter-hbox.[ch]:
 	* clutter/clutter-vbox.[ch]: Remove ClutterBox and its
 	subclasses.
-	
+
 	* clutter/clutter-label.c: Remove ClutterLayout implementation
 
 	* clutter/clutter-script-private.h:

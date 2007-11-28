@@ -251,9 +251,15 @@ void                  clutter_actor_get_coords       (ClutterActor          *sel
 void                  clutter_actor_set_size         (ClutterActor          *self,
 						      gint                   width,
 						      gint                   height);
+void                  clutter_actor_set_sizeu        (ClutterActor          *self,
+						      ClutterUnit            width,
+						      ClutterUnit            height);
 void                  clutter_actor_set_position     (ClutterActor          *self,
 						      gint                   x,
 						      gint                   y);
+void                  clutter_actor_set_positionu    (ClutterActor          *self,
+						      ClutterUnit            x,
+						      ClutterUnit            y);
 void                  clutter_actor_get_position     (ClutterActor          *self,
                                                       gint                  *x,
                                                       gint                  *y);
@@ -261,17 +267,29 @@ void                  clutter_actor_get_abs_position (ClutterActor          *sel
 						      gint                  *x,
 						      gint                  *y);
 guint                 clutter_actor_get_width        (ClutterActor          *self);
+ClutterUnit           clutter_actor_get_widthu       (ClutterActor          *self);
 guint                 clutter_actor_get_height       (ClutterActor          *self);
+ClutterUnit           clutter_actor_get_heightu      (ClutterActor          *self);
 void                  clutter_actor_set_width        (ClutterActor          *self,
 						      guint                  width);
+void                  clutter_actor_set_widthu       (ClutterActor          *self,
+						      ClutterUnit            width);
 void                  clutter_actor_set_height       (ClutterActor          *self,
 						      guint                  height);
+void                  clutter_actor_set_heightu      (ClutterActor          *self,
+						      ClutterUnit            height);
 gint                  clutter_actor_get_x            (ClutterActor          *self);
+ClutterUnit           clutter_actor_get_xu           (ClutterActor          *self);
 gint                  clutter_actor_get_y            (ClutterActor          *self);
+ClutterUnit           clutter_actor_get_yu           (ClutterActor          *self);
 void                  clutter_actor_set_x            (ClutterActor          *self,
                                                       gint                   x);
+void                  clutter_actor_set_xu           (ClutterActor          *self,
+                                                      ClutterUnit            x);
 void                  clutter_actor_set_y            (ClutterActor          *self,
                                                       gint                   y);
+void                  clutter_actor_set_yu           (ClutterActor          *self,
+                                                      ClutterUnit            y);
 void                  clutter_actor_set_rotation     (ClutterActor          *self,
                                                       ClutterRotateAxis      axis,
                                                       gdouble                angle,

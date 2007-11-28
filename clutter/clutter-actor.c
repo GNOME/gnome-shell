@@ -1904,6 +1904,37 @@ clutter_actor_set_position (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_set_positionu
+ * @self: A #ClutterActor
+ * @x: New left position of actor in #ClutterUnit
+ * @y: New top position of actor in #ClutterUnit
+ *
+ * Sets the actors position in #ClutterUnit relative to any
+ * parent actor.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_set_positionu (ClutterActor *self,
+			     ClutterUnit   x,
+			     ClutterUnit   y)
+{
+  ClutterActorBox box;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_query_coords (self, &box);
+
+  box.x2 += (x - box.x1);
+  box.y2 += (y - box.y1);
+
+  box.x1 = x;
+  box.y1 = y;
+
+  clutter_actor_request_coords (self, &box);
+}
+
+/**
  * clutter_actor_move_by
  * @self: A #ClutterActor
  * @dx: Distance to move Actor on X axis.
@@ -1957,6 +1988,28 @@ clutter_actor_set_size_internal (ClutterActor *self,
   clutter_actor_request_coords (self, &box);
 }
 
+/* local inline unit version, without type checking to be used by
+ * set_width() and set_height(). if one of the dimensions is < 0
+ * it will not be changed
+ */
+static inline void
+clutter_actor_set_size_internalu (ClutterActor *self,
+				  ClutterUnit   width,
+                                  ClutterUnit   height)
+{
+  ClutterActorBox box;
+
+  clutter_actor_query_coords (self, &box);
+
+  if (width > 0)
+    box.x2 = box.x1 + width;
+
+  if (height > 0)
+    box.y2 = box.y1 + height;
+
+  clutter_actor_request_coords (self, &box);
+}
+
 /**
  * clutter_actor_set_size
  * @self: A #ClutterActor
@@ -1974,6 +2027,27 @@ clutter_actor_set_size (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   clutter_actor_set_size_internal (self, width, height);
+}
+
+/**
+ * clutter_actor_set_sizeu
+ * @self: A #ClutterActor
+ * @width: New width of actor in #ClutterUnit, or -1
+ * @height: New height of actor in #ClutterUnit, or -1
+ *
+ * Sets the actors size in #ClutterUnit. If @width and/or @height are -1 the
+ * actor will assume the same size of its bounding box.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_set_sizeu (ClutterActor *self,
+			 ClutterUnit   width,
+			 ClutterUnit   height)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_size_internalu (self, width, height);
 }
 
 /**
@@ -2186,6 +2260,28 @@ clutter_actor_get_width (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_get_widthu
+ * @self: A #ClutterActor
+ *
+ * Retrieves the actors width ignoring any scaling factors.
+ *
+ * Return value: The actor width in #ClutterUnit
+ *
+ * since: 0.6
+ **/
+ClutterUnit
+clutter_actor_get_widthu (ClutterActor *self)
+{
+  ClutterActorBox box;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  clutter_actor_query_coords (self, &box);
+
+  return box.x2 - box.x1;
+}
+
+/**
  * clutter_actor_get_height
  * @self: A #ClutterActor
  *
@@ -2206,13 +2302,35 @@ clutter_actor_get_height (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_get_heightu
+ * @self: A #ClutterActor
+ *
+ * Retrieves the actors height ignoring any scaling factors.
+ *
+ * Return value: The actor height in #ClutterUnit
+ *
+ * since: 0.6
+ **/
+ClutterUnit
+clutter_actor_get_heightu (ClutterActor *self)
+{
+  ClutterActorBox box;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  clutter_actor_query_coords (self, &box);
+
+  return box.y2 - box.y1;
+}
+
+/**
  * clutter_actor_set_width
  * @self: A #ClutterActor
  * @width: Requested new width for actor
  *
  * Requests a new width for actor
  *
- * since: 2.0
+ * since: 0.2
  **/
 void
 clutter_actor_set_width (ClutterActor *self,
@@ -2224,13 +2342,31 @@ clutter_actor_set_width (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_set_widthu
+ * @self: A #ClutterActor
+ * @width: Requested new width for actor in #ClutterUnit
+ *
+ * Requests a new width for actor
+ *
+ * since: 0.6
+ **/
+void
+clutter_actor_set_widthu (ClutterActor *self,
+                          ClutterUnit   width)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_size_internalu (self, width, -1);
+}
+
+/**
  * clutter_actor_set_height
  * @self: A #ClutterActor
  * @height: Requested new height for actor
  *
  * Requests a new height for actor
  *
- * since: 2.0
+ * since: 0.2
  **/
 void
 clutter_actor_set_height (ClutterActor *self,
@@ -2239,6 +2375,24 @@ clutter_actor_set_height (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   clutter_actor_set_size_internal (self, -1, height);
+}
+
+/**
+ * clutter_actor_set_heightu
+ * @self: A #ClutterActor
+ * @height: Requested new height for actor in #ClutterUnit
+ *
+ * Requests a new height for actor
+ *
+ * since: 0.6
+ **/
+void
+clutter_actor_set_heightu (ClutterActor *self,
+                           ClutterUnit   height)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_size_internalu (self, -1, height);
 }
 
 /**
@@ -2262,6 +2416,26 @@ clutter_actor_set_x (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_set_xu:
+ * @self: a #ClutterActor
+ * @x: the actors position on the X axis in #ClutterUnit
+ *
+ * Sets the actor's x position relative to its parent.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_set_xu (ClutterActor *self,
+		      ClutterUnit   x)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_positionu (self,
+			       x,
+			       clutter_actor_get_yu (self));
+}
+
+/**
  * clutter_actor_set_y:
  * @self: a #ClutterActor
  * @y: the actors position on the Y axis
@@ -2279,6 +2453,26 @@ clutter_actor_set_y (ClutterActor *self,
   clutter_actor_set_position (self,
                               clutter_actor_get_x (self),
                               y);
+}
+
+/**
+ * clutter_actor_set_yu:
+ * @self: a #ClutterActor
+ * @y: the actors position on the Y axis in #ClutterUnit
+ *
+ * Sets the actor's y position relative to its parent.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_set_yu (ClutterActor *self,
+		      ClutterUnit   y)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_positionu (self,
+			       clutter_actor_get_xu (self),
+			       y);
 }
 
 /**
@@ -2303,6 +2497,29 @@ clutter_actor_get_x (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_get_xu
+ * @self: A #ClutterActor
+ *
+ * Retrieves the actors x position relative to any parent, in #ClutterUnit
+ *
+ * Return value: The actor x position in #ClutterUnit ignoring any tranforms
+ * (i.e scaling, rotation).
+ *
+ * Since: 0.6
+ **/
+ClutterUnit
+clutter_actor_get_xu (ClutterActor *self)
+{
+  ClutterActorBox box;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  clutter_actor_query_coords (self, &box);
+
+  return box.x1;
+}
+
+/**
  * clutter_actor_get_y:
  * @self: A #ClutterActor
  *
@@ -2321,6 +2538,27 @@ clutter_actor_get_y (ClutterActor *self)
   clutter_actor_query_coords (self, &box);
 
   return CLUTTER_UNITS_TO_INT (box.y1);
+}
+
+/**
+ * clutter_actor_get_yu:
+ * @self: A #ClutterActor
+ *
+ * Retrieves the actors y position relative to any parent, in #ClutterUnit
+ *
+ * Return value: The actor y position in #ClutterUnit ignoring any tranforms
+ * (i.e scaling, rotation).
+ **/
+ClutterUnit
+clutter_actor_get_yu (ClutterActor *self)
+{
+  ClutterActorBox box;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  clutter_actor_query_coords (self, &box);
+
+  return box.y1;
 }
 
 /**

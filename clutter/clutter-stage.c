@@ -1139,7 +1139,7 @@ clutter_stage_get_fog (ClutterStage *stage,
  * @z_near: starting point of the depth cueing
  * @z_far: ending point of the depth cueing
  *
- * Sets the GL fog settings used to create the depth cueing effect 
+ * Sets the GL fog settings used to create the depth cueing effect
  * on the @stage.
  *
  * If the actors are all near the view point you will need a higher @density
@@ -1214,6 +1214,31 @@ clutter_stage_get_fogx (ClutterStage *stage,
   g_return_if_fail (fog != NULL);
 
   *fog = stage->priv->fog;
+}
+
+gdouble
+clutter_stage_get_resolution (ClutterStage *stage)
+{
+  ClutterMainContext *context;
+
+  context = clutter_context_get_default ();
+  g_assert (context != NULL);
+
+  return clutter_backend_get_resolution (context->backend);
+}
+
+ClutterFixed
+clutter_stage_get_resolutionx (ClutterStage *stage)
+{
+  ClutterFixed res;
+  ClutterMainContext *context;
+
+  context = clutter_context_get_default ();
+  g_assert (context != NULL);
+
+  res = clutter_backend_get_resolution (context->backend);
+
+  return CLUTTER_FLOAT_TO_FIXED (res);
 }
 
 /*** Perspective boxed type ******/

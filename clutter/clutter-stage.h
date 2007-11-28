@@ -74,11 +74,11 @@ struct _ClutterStage
 {
   /*< private >*/
   ClutterGroup parent_instance;
-  
-  ClutterStagePrivate *priv;
-}; 
 
-struct _ClutterStageClass 
+  ClutterStagePrivate *priv;
+};
+
+struct _ClutterStageClass
 {
   /*< private >*/
   ClutterGroupClass parent_class;
@@ -193,7 +193,7 @@ gboolean      clutter_stage_event             (ClutterStage       *stage,
 void                  clutter_stage_set_title          (ClutterStage *stage,
                                                         const gchar  *title);
 G_CONST_RETURN gchar *clutter_stage_get_title          (ClutterStage *stage);
-void                  clutter_stage_set_user_resizable (ClutterStage *stage, 
+void                  clutter_stage_set_user_resizable (ClutterStage *stage,
 						        gboolean      resizable);
 gboolean              clutter_stage_get_user_resizable (ClutterStage *stage);
 void                  clutter_stage_set_use_fog        (ClutterStage *stage,
@@ -211,6 +211,8 @@ void                  clutter_stage_set_fogx           (ClutterStage *stage,
                                                         ClutterFog   *fog);
 void                  clutter_stage_get_fogx           (ClutterStage *stage,
                                                         ClutterFog   *fog);
+gdouble               clutter_stage_get_resolution     (ClutterStage *stage);
+ClutterFixed          clutter_stage_get_resolutionx    (ClutterStage *stage);
 
 /* New experiental calls */
 void                  clutter_stage_set_key_focus      (ClutterStage *stage,
