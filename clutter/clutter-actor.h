@@ -370,17 +370,17 @@ ClutterActor *        clutter_get_actor_by_gid     (guint32       id);
 gboolean              clutter_actor_should_pick_paint (ClutterActor *self);
 
 void                  clutter_actor_set_anchor_point  (ClutterActor          *self,
-						       gint                   offset_x,
-                                                       gint                   offset_y);
+						       gint                   anchor_x,
+                                                       gint                   anchor_y);
 void                  clutter_actor_get_anchor_point  (ClutterActor          *self,
-						       gint                  *offset_x,
-						       gint                  *offset_y);
+						       gint                  *anchor_x,
+						       gint                  *anchor_y);
 void                  clutter_actor_set_anchor_pointu (ClutterActor          *self,
-						       ClutterUnit            offset_x,
-						       ClutterUnit            offset_y);
+						       ClutterUnit            anchor_x,
+						       ClutterUnit            anchor_y);
 void                  clutter_actor_get_anchor_pointu (ClutterActor          *self,
-						       ClutterUnit           *offset_x,
-						       ClutterUnit           *offset_y);
+						       ClutterUnit           *anchor_x,
+						       ClutterUnit           *anchor_y);
 void                  clutter_actor_set_anchor_point_from_gravity (ClutterActor          *self,
 								   ClutterGravity         gravity);
 

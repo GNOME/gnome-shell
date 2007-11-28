@@ -1,5 +1,9 @@
 2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.[ch]: Documentation fixes.
+
+2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Remove the layout containers: they will be moved to a
 	high-level library.
 

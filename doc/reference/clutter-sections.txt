@@ -350,8 +350,13 @@ clutter_actor_apply_transform_to_point
 <SUBSECTION>
 ClutterVertex
 clutter_actor_get_vertices
-clutter_actor_set_scale_with_gravity
-clutter_actor_set_scale_with_gravityx
+
+<SUBSECTION>
+clutter_actor_set_anchor_point
+clutter_actor_get_anchor_point
+clutter_actor_set_anchor_pointu
+clutter_actor_get_anchor_pointu
+clutter_actor_set_anchor_point_from_gravity
 
 <SUBSECTION>
 clutter_actor_set_reactive

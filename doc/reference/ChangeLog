@@ -1,8 +1,8 @@
-2007-11-28  Emmanuele Bassi,,,  <ebassi@sprite>
+2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
-	reviewed by: <delete if not using a buddy>
+	* clutter-sections.txt: Documentation fixes.
 
-	* clutter.types:
+	* clutter.types: Remove layout and boxes types.
 
 2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
 

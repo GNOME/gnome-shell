@@ -3296,19 +3296,21 @@ clutter_actor_get_reactive (ClutterActor *actor)
 
 /**
  * clutter_actor_set_anchor_point:
- * @actor: a #ClutterActor
- * @anchor_x: X coordinace of the anchor point.
- * @anchor_y: Y coordinace of the anchor point.
+ * @self: a #ClutterActor
+ * @anchor_x: X coordinate of the anchor point
+ * @anchor_y: Y coordinate of the anchor point
  *
  * Sets an anchor point for the @actor. The anchor point is a point in the
- * coordianate space of the actor to which the actor position within its
- * parent is relative; the default is 0,0, i.e., the top-left corner.
+ * coordinate space of an actor to which the actor position within its
+ * parent is relative; the default is (0, 0), i.e. the top-left corner of
+ * the actor.
  *
  * Since: 0.6
  */
 void
 clutter_actor_set_anchor_point (ClutterActor *self,
-				gint anchor_x, gint anchor_y)
+				gint          anchor_x,
+                                gint          anchor_y)
 {
   ClutterActorPrivate *priv;
 
@@ -3322,17 +3324,18 @@ clutter_actor_set_anchor_point (ClutterActor *self,
 
 /**
  * clutter_actor_get_anchor_point:
- * @actor: a #ClutterActor
- * @anchor_x: location for the X coordinace of the anchor point.
- * @anchor_y: location for the X coordinace of the anchor point.
+ * @self: a #ClutterActor
+ * @anchor_x: return location for the X coordinate of the anchor point
+ * @anchor_y: return location for the y coordinate of the anchor point
  *
- * Gets the current anchor point of the @actor.
+ * Gets the current anchor point of the @actor in pixels.
  *
  * Since: 0.6
  */
 void
 clutter_actor_get_anchor_point (ClutterActor *self,
-				gint *anchor_x, gint *anchor_y)
+				gint         *anchor_x,
+                                gint         *anchor_y)
 {
   ClutterActorPrivate *priv;
 
@@ -3349,20 +3352,21 @@ clutter_actor_get_anchor_point (ClutterActor *self,
 
 /**
  * clutter_actor_set_anchor_pointu:
- * @actor: a #ClutterActor
- * @anchor_x: X coordinace of the anchor point, in multiples of #ClutterUnit.
- * @anchor_y: Y coordinace of the anchor point, in multiples of #ClutterUnit.
+ * @self: a #ClutterActor
+ * @anchor_x: X coordinate of the anchor point, in #ClutterUnit<!-- -->s
+ * @anchor_y: Y coordinate of the anchor point, in #ClutterUnit<!-- -->s
  *
- * Sets an anchor point for the @actor. The anchor point is a point in the
- * coordinate space of the actor to which the actor position within its
- * parent is relative; the default is 0,0, i.e., the top-left corner, of the
- * actor.
+ * Sets an anchor point for the @self. The anchor point is a point in the
+ * coordinate space of an actor to which the actor position within its
+ * parent is relative; the default is (0, 0), i.e. the top-left corner
+ * of the actor.
  *
  * Since: 0.6
  */
 void
 clutter_actor_set_anchor_pointu (ClutterActor *self,
-				 ClutterUnit anchor_x, ClutterUnit anchor_y)
+				 ClutterUnit   anchor_x,
+                                 ClutterUnit   anchor_y)
 {
   ClutterActorPrivate *priv;
 
@@ -3376,17 +3380,18 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
 
 /**
  * clutter_actor_get_anchor_pointu:
- * @actor: a #ClutterActor
- * @anchor_x: location for the X coordinace of the anchor point, #ClutterUnit.
- * @anchor_y: location for the X coordinace of the anchor point, #ClutterUnit.
+ * @self: a #ClutterActor
+ * @anchor_x: return location for the X coordinace of the anchor point
+ * @anchor_y: return location for the X coordinace of the anchor point
  *
- * Gets the current anchor point of the @actor.
+ * Gets the current anchor point of the @actor in #ClutterUnit<!-- -->s.
  *
  * Since: 0.6
  */
 void
 clutter_actor_get_anchor_pointu (ClutterActor *self,
-				 ClutterUnit *anchor_x, ClutterUnit *anchor_y)
+				 ClutterUnit  *anchor_x,
+                                 ClutterUnit  *anchor_y)
 {
   ClutterActorPrivate *priv;
 
@@ -3403,17 +3408,17 @@ clutter_actor_get_anchor_pointu (ClutterActor *self,
 
 /**
  * clutter_actor_set_anchor_point_from_gravity:
- * @actor: a #ClutterActor
+ * @self: a #ClutterActor
  * @gravity: #ClutterGravity.
  *
  * Sets an anchor point the actor based on the given gravity (this is a
- * convenience function wrapping #clutter_actor_set_anchor_point).
+ * convenience function wrapping clutter_actor_set_anchor_point()).
  *
  * Since: 0.6
  */
 void
-clutter_actor_set_anchor_point_from_gravity (ClutterActor *self,
-					     ClutterGravity gravity)
+clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
+					     ClutterGravity  gravity)
 {
   ClutterActorPrivate *priv;
   ClutterActorBox box;
@@ -3496,11 +3501,11 @@ clutter_geometry_get_type (void)
 {
   static GType our_type = 0;
 
-  if (our_type == 0)
-    our_type = g_boxed_type_register_static
-                   (g_intern_static_string ("ClutterGeometry"),
-		    (GBoxedCopyFunc) clutter_geometry_copy,
-		    (GBoxedFreeFunc) clutter_geometry_free);
+  if (G_UNLIKELY (our_type == 0))
+    our_type =
+      g_boxed_type_register_static (g_intern_static_string ("ClutterGeometry"),
+                                    (GBoxedCopyFunc) clutter_geometry_copy,
+                                    (GBoxedFreeFunc) clutter_geometry_free);
 
   return our_type;
 }
@@ -3531,11 +3536,11 @@ clutter_vertex_get_type (void)
 {
   static GType our_type = 0;
 
-  if (our_type == 0)
-    our_type = g_boxed_type_register_static
-                   (g_intern_static_string ("ClutterVertex"),
-		    (GBoxedCopyFunc) clutter_vertex_copy,
-		    (GBoxedFreeFunc) clutter_vertex_free);
+  if (G_UNLIKELY (our_type == 0))
+    our_type =
+      g_boxed_type_register_static (g_intern_static_string ("ClutterVertex"),
+                                    (GBoxedCopyFunc) clutter_vertex_copy,
+                                    (GBoxedFreeFunc) clutter_vertex_free);
 
   return our_type;
 }
@@ -3565,10 +3570,10 @@ clutter_actor_box_get_type (void)
 {
   static GType our_type = 0;
 
-  if (our_type == 0)
-    our_type = g_boxed_type_register_static
-                   (g_intern_static_string ("ClutterActorBox"),
-		    (GBoxedCopyFunc) clutter_actor_box_copy,
-		    (GBoxedFreeFunc) clutter_actor_box_free);
+  if (G_UNLIKELY (our_type == 0))
+    our_type =
+      g_boxed_type_register_static (g_intern_static_string ("ClutterActorBox"),
+                                    (GBoxedCopyFunc) clutter_actor_box_copy,
+                                    (GBoxedFreeFunc) clutter_actor_box_free);
   return our_type;
 }
