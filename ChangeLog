@@ -1,3 +1,25 @@
+2007-11-28  Tomas Frydrych  <tf@openedhand.com>
+
+        * clutter/NEWS:
+	Started 0.6.0 section with comment on actor anchor point.
+
+        * clutter/clutter/clutter-actor.c:
+        * clutter/clutter/clutter-actor.h:
+        * clutter/clutter/clutter-behaviour-scale.c:
+        * clutter/clutter/clutter-deprecated.h:
+	(clutter_actor_set_anchor_point):
+	(clutter_actor_set_anchor_pointu):
+	(clutter_actor_get_anchor_point):
+	(clutter_actor_get_anchor_pointu):
+	(clutter_actor_set_anchor_point_from_gravity):
+	New anchor point API deprecating old gravity scaling, added
+	comments on modelview matrix construction to ClutterActor
+	documentation.
+
+	(clutter_actor_set_scale_with_gravity):
+	(clutter_actor_set_scale_with_gravityx):
+	Deprecated; use clutter_actor_set_anchor_point_from_gravity() instead.
+
 2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-effect.[ch]: Add clutter_effect_template_construct()

@@ -82,7 +82,13 @@ scale_frame_foreach (ClutterBehaviour *behaviour,
   ClutterFixed scale = GPOINTER_TO_UINT (data);
   ClutterGravity gravity = priv->gravity;
 
-  clutter_actor_set_scale_with_gravityx (actor, scale, scale, gravity);
+  /* Don't mess with the actor anchor point of gravity is set to
+   * none
+   */
+  if (gravity != CLUTTER_GRAVITY_NONE)
+    clutter_actor_set_anchor_point_from_gravity (actor, gravity);
+
+  clutter_actor_set_scalex (actor, scale, scale);
 }
 
 static void
@@ -170,7 +176,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * ClutterBehaviourScale:scale-start:
    *
    * The initial scaling factor for the actors.
-   * 
+   *
    * Since: 0.2
    */
   g_object_class_install_property (gobject_class,
@@ -275,8 +281,8 @@ clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
   ClutterBehaviourScale *behave;
 
   g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
-  
-  behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_SCALE, 
+
+  behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_SCALE,
                          "alpha", alpha,
 			 NULL);
 

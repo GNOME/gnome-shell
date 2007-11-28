@@ -31,5 +31,7 @@
 #define clutter_actor_get_rxangx                     clutter_actor_get_rxangx_DEPRECATED_BY_clutter_actor_get_rotationx
 #define clutter_actor_get_ryangx                     clutter_actor_get_ryangx_DEPRECATED_BY_clutter_actor_get_rotationx
 #define clutter_actor_get_rzangx                     clutter_actor_get_rzangx_DEPRECATED_BY_clutter_actor_get_rotationx
+#define clutter_actor_set_scale_with_gravity         clutter_actor_set_scale_with_gravity_DEPRECATED_BY_clutter_actor_set_anchor_point_from_gravity
+#define clutter_actor_set_scale_with_gravityx        clutter_actor_set_scale_with_gravity_DEPRECATED_BY_clutter_actor_set_anchor_point_from_gravity
 
 #endif /* CLUTTER_DEPRECATED_H */

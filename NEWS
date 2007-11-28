@@ -1,3 +1,11 @@
+Clutter 0.6.0 (??/??/????)
+========================
+
+ * List of changes between 0.4.0 and 0.6.0
+
+   o Scaling with gravity functionality was replaced by more generic and
+     powerful anchor point.
+
 Clutter 0.4.0 (07/08/2007)
 ========================
 
@@ -5,7 +13,7 @@ Clutter 0.4.0 (07/08/2007)
 
    o Many documentation additions and improvements.
 
-   o Display DPI now honours on backends its can be queried. 
+   o Display DPI now honours on backends its can be queried.
 
    o Various big endian related fixes.
 
@@ -36,13 +44,13 @@ Clutter 0.4.0 (07/08/2007)
    o #390 - clutter_stage_get_actor_at_pos broken on 16bpp displays.
    o #398 - inconsistent type for return value of clutter_event_get_state
    o #403 - Critical error when removing texture actor
-   o #404 - Solaris build error with OpenGL, missing 
+   o #404 - Solaris build error with OpenGL, missing
             GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB and GL_TEXTURE_RECTANGLE_ARB
    o #409 - depth mismatch between visual (32) and window (24)
    o #407 - metadata-available signal #ifdef'ed out
    o #413 - Clutter compile error with Sun Studio C compiler
    o #426 - typo in sdl_backend
-   o #414 - ClutterEntry invisible if size not set		
+   o #414 - ClutterEntry invisible if size not set
    o #434 - clutter_color_from_pixel incorrectly interprets alpha value
    o #435 - clutter_color_subtract does the opposite of its documentation
    o #436 - clutter-behaviour-depth always perform "from deep to shallow"
@@ -54,12 +62,12 @@ Clutter 0.3.1 (06/07/2007)
    o EGL. There are now 2 experimental EGL backends;
      - 'eglx', the former EGL on X11 implementation (now renamed)
      - 'eglnative', a new EGL 'native' backend which supporting non
-       X11 EGL implementations (i.e framebuffer). 
+       X11 EGL implementations (i.e framebuffer).
 
-   o ClutterGroup now returns correct size when a child is removed. 
+   o ClutterGroup now returns correct size when a child is removed.
 
-   o Missing redhand.png added to distro tarball (fixing tests that require 
-     it)  
+   o Missing redhand.png added to distro tarball (fixing tests that require
+     it)
 
    o Fix picking in ClutterBox
 
@@ -69,7 +77,7 @@ Clutter 0.3.1 (06/07/2007)
 
    o Many API documentation fixes and improvements.
 
-   o ClutterEffect cleanups. 
+   o ClutterEffect cleanups.
 
    o ClutterEntry cleanups.
 
@@ -81,8 +89,8 @@ Clutter 0.3 (29/06/2007)
 ========================
 
  * List of changes between 0.2.3 and 0.3
-   o Clutter now supports both switchable windowing system and GL backends. 
-     Window systems supported include GLX, EGL and SDL. 
+   o Clutter now supports both switchable windowing system and GL backends.
+     Window systems supported include GLX, EGL and SDL.
 
      GL support includes OpenGL 1.2+ and OpenGL ES 1.1. This is
      provided by a small basic abstraction layer 'cogl.h'. Cogl is not
@@ -92,8 +100,8 @@ Clutter 0.3 (29/06/2007)
 
      Notes;
 
-     GLX 
-     --- 
+     GLX
+     ---
      The GLX backend is built by default and is currently the most
      developed, supported and featured windowing system backend. Only
      OpenGL is supported via GLX.
@@ -104,16 +112,16 @@ Clutter 0.3 (29/06/2007)
      is OpenGL ES via Dogles (very experimental).
 
      EGL
-     --- 
+     ---
      Clutter has experimental support for using EGL. Only Open GL ES
      is supported by EGL.
 
-     EGL support assumes an EGL implementation running atop X Windows. 
+     EGL support assumes an EGL implementation running atop X Windows.
 
      Open GL ES.
      -----------
 
-     Clutter now has experimental support for Open GL ES. 
+     Clutter now has experimental support for Open GL ES.
      Current known issues;
 
      + Unrealising a ClutterTexture will not move pixel data from video
@@ -126,8 +134,8 @@ Clutter 0.3 (29/06/2007)
      include `Vincent' and `dgles'.  Support for commerical
      implementations may require modifications to the configure.ac
      script.
-     
-     vincent: http://ogl-es.sourceforge.net/ 
+
+     vincent: http://ogl-es.sourceforge.net/
               (Also see: http://svn.o-hand.com/repos/misc/trunk/ogles/ )
 
      dgles: http://developer.hybrid.fi/dgles/index.html
@@ -136,14 +144,14 @@ Clutter 0.3 (29/06/2007)
      API wrapping around behaviours, alphas and timelines.
    o New Behaviours - bspline, ellipsis, rotation.
    o New built in Alpha functions;
-      CLUTTER_ALPHA_SINE_INC       
-      CLUTTER_ALPHA_SINE_DEC       
-      CLUTTER_ALPHA_SINE_HALF      
-      CLUTTER_ALPHA_SQUARE         
-      CLUTTER_ALPHA_SMOOTHSTEP_INC 
-      CLUTTER_ALPHA_SMOOTHSTEP_DEC 
-      CLUTTER_ALPHA_EXP_INC        
-      CLUTTER_ALPHA_EXP_DEC        
+      CLUTTER_ALPHA_SINE_INC
+      CLUTTER_ALPHA_SINE_DEC
+      CLUTTER_ALPHA_SINE_HALF
+      CLUTTER_ALPHA_SQUARE
+      CLUTTER_ALPHA_SMOOTHSTEP_INC
+      CLUTTER_ALPHA_SMOOTHSTEP_DEC
+      CLUTTER_ALPHA_EXP_INC
+      CLUTTER_ALPHA_EXP_DEC
    o New Actors and interfaces
      + ClutterLayout, for writing extended layout support in actors
      + ClutterContainer, for generic container actors
@@ -157,8 +165,8 @@ Clutter 0.3 (29/06/2007)
      + Perspective setting - The stages perspective can now be modified.
    o New Clutter_actor *project API calls allow for querying of tranformed
      actor vertices and points.
-   o New Clutter Feature checks.   
-   o Initial ClutterUnit implementation for device independant positioning.  
+   o New Clutter Feature checks.
+   o Initial ClutterUnit implementation for device independant positioning.
  * List of Bugs fixed
    o Various issues with very poor performance and Intel drivers.
    o #138 Fix typo in x rotation transform.
@@ -218,7 +226,7 @@ Clutter 0.2 (18-01-2007)
      switches.
    o Add Pango GL renderer for Clutter, and use it to render text
      inside the ClutterLabel actor; this decrease texture memory
-     usage. 
+     usage.
    o Redo Clutter Label widget, using the new Pango renderer.
    o Clutter Textures do not store local pixbuf copy (of texture).
    o Redo group and actor scale/sizing API and functionality.
@@ -244,7 +252,7 @@ Clutter 0.1 (22/06/2006)
  * Contains:
    o Hopefully enough functionality to build things.
    o Basic gstreamer 0.10 video playback support.
-   o Fairly stable API, though in no way totally stable. 
+   o Fairly stable API, though in no way totally stable.
      Expect CHANGES in future versions.
    o Some simple examples ( also see OPT ).
    o An experimental GTK-Clutter widget.

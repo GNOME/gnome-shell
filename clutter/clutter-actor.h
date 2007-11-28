@@ -51,14 +51,14 @@ G_BEGIN_DECLS
 #define CLUTTER_ACTOR_GET_CLASS(obj) \
  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ACTOR, ClutterActorClass))
 
-#define CLUTTER_ACTOR_SET_FLAGS(e,f)    (((ClutterActor*)(e))->flags |= (f))  
-#define CLUTTER_ACTOR_UNSET_FLAGS(e,f)  (((ClutterActor*)(e))->flags &= ~(f))  
+#define CLUTTER_ACTOR_SET_FLAGS(e,f)    (((ClutterActor*)(e))->flags |= (f))
+#define CLUTTER_ACTOR_UNSET_FLAGS(e,f)  (((ClutterActor*)(e))->flags &= ~(f))
 
-#define CLUTTER_ACTOR_IS_MAPPED(e)      (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_MAPPED)  
+#define CLUTTER_ACTOR_IS_MAPPED(e)      (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_MAPPED)
 #define CLUTTER_ACTOR_IS_REALIZED(e)    (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REALIZED)
 #define CLUTTER_ACTOR_IS_VISIBLE(e)     (CLUTTER_ACTOR_IS_MAPPED (e) && \
                                          CLUTTER_ACTOR_IS_REALIZED (e))
-#define CLUTTER_ACTOR_IS_REACTIVE(e)    (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REACTIVE) 
+#define CLUTTER_ACTOR_IS_REACTIVE(e)    (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REACTIVE)
 /*                                        && CLUTTER_ACTOR_IS_VISIBLE(e)) */
 
 
@@ -125,13 +125,13 @@ struct _ClutterActor
 {
   /*< private >*/
   GInitiallyUnowned parent_instance;
-  
+
   /*< public >*/
   guint32 flags;
 
   /*< private >*/
   guint32 private_flags;
-  
+
   ClutterActorPrivate *priv;
 };
 
@@ -230,7 +230,7 @@ void                  clutter_actor_hide_all         (ClutterActor          *sel
 void                  clutter_actor_realize          (ClutterActor          *self);
 void                  clutter_actor_unrealize        (ClutterActor          *self);
 void                  clutter_actor_paint            (ClutterActor          *self);
-void                  clutter_actor_pick             (ClutterActor          *self, 
+void                  clutter_actor_pick             (ClutterActor          *self,
 						      const ClutterColor    *color);
 void                  clutter_actor_queue_redraw     (ClutterActor          *self);
 void                  clutter_actor_destroy          (ClutterActor          *self);
@@ -262,9 +262,9 @@ void                  clutter_actor_get_abs_position (ClutterActor          *sel
 						      gint                  *y);
 guint                 clutter_actor_get_width        (ClutterActor          *self);
 guint                 clutter_actor_get_height       (ClutterActor          *self);
-void                  clutter_actor_set_width        (ClutterActor          *self, 
+void                  clutter_actor_set_width        (ClutterActor          *self,
 						      guint                  width);
-void                  clutter_actor_set_height       (ClutterActor          *self, 
+void                  clutter_actor_set_height       (ClutterActor          *self,
 						      guint                  height);
 gint                  clutter_actor_get_x            (ClutterActor          *self);
 gint                  clutter_actor_get_y            (ClutterActor          *self);
@@ -303,9 +303,9 @@ void                  clutter_actor_set_name         (ClutterActor          *sel
 G_CONST_RETURN gchar *clutter_actor_get_name         (ClutterActor          *self);
 guint32               clutter_actor_get_gid          (ClutterActor          *self);
 void                  clutter_actor_set_clip         (ClutterActor          *self,
-						      gint                   xoff, 
-						      gint                   yoff, 
-						      gint                   width, 
+						      gint                   xoff,
+						      gint                   yoff,
+						      gint                   width,
 						      gint                   height);
 void                  clutter_actor_remove_clip      (ClutterActor          *self);
 gboolean              clutter_actor_has_clip         (ClutterActor          *self);
@@ -345,16 +345,6 @@ void                  clutter_actor_get_scale        (ClutterActor          *sel
                                                       gdouble               *scale_x,
                                                       gdouble               *scale_y);
 
-void                  clutter_actor_set_scale_with_gravityx  (ClutterActor          *self,
-							      ClutterFixed      scale_x,
-							      ClutterFixed      scale_y,
-							      ClutterGravity    gravity);
-
-void                  clutter_actor_set_scale_with_gravity   (ClutterActor          *self,
-							      gfloat                 scale_x,
-							      gfloat                 scale_y,
-							      ClutterGravity         gravity);
-
 void                  clutter_actor_get_abs_size             (ClutterActor          *self,
                                                               guint                 *width,
                                                               guint                 *height);
@@ -368,7 +358,7 @@ void                  clutter_actor_move_by                  (ClutterActor      
 void                  clutter_actor_get_vertices             (ClutterActor          *self,
 						              ClutterVertex          verts[4]);
 
-void                  clutter_actor_apply_transform_to_point (ClutterActor          *self, 
+void                  clutter_actor_apply_transform_to_point (ClutterActor          *self,
 						              ClutterVertex         *point,
 							      ClutterVertex         *vertex);
 
@@ -378,6 +368,21 @@ gboolean              clutter_actor_event          (ClutterActor *actor,
 ClutterActor *        clutter_get_actor_by_gid     (guint32       id);
 
 gboolean              clutter_actor_should_pick_paint (ClutterActor *self);
+
+void                  clutter_actor_set_anchor_point  (ClutterActor          *self,
+						       gint                   offset_x,
+                                                       gint                   offset_y);
+void                  clutter_actor_get_anchor_point  (ClutterActor          *self,
+						       gint                  *offset_x,
+						       gint                  *offset_y);
+void                  clutter_actor_set_anchor_pointu (ClutterActor          *self,
+						       ClutterUnit            offset_x,
+						       ClutterUnit            offset_y);
+void                  clutter_actor_get_anchor_pointu (ClutterActor          *self,
+						       ClutterUnit           *offset_x,
+						       ClutterUnit           *offset_y);
+void                  clutter_actor_set_anchor_point_from_gravity (ClutterActor          *self,
+								   ClutterGravity         gravity);
 
 G_END_DECLS
 

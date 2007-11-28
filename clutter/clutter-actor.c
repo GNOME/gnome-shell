@@ -32,7 +32,23 @@
  * be a #ClutterActor, either by using one of the classes provided by
  * Clutter, or by implementing a new #ClutterActor subclass.
  *
- * Ordering on/Notes on tranformations. FIXME.
+ * * Notes on actor transformation matrix
+ *
+ * The OpenGL modelview matrix for the actor is constructed from the actor
+ * settings by the following order of operations:
+ * <orderedlist>
+ *   <listitem><para>Translation by actor x, y coords,</para></listitem>
+ *   <listitem><para>Scaling by scale_x, scale_y,</para></listitem>
+ *   <listitem><para>Negative translation by anchor point x, y,</para>
+ *   </listitem>
+ *   <listitem><para>Rotation around z axis,</para></listitem>
+ *   <listitem><para>Rotation around y axis,</para></listitem>
+ *   <listitem><para>Rotation around x axis,</para></listitem>
+ *   <listitem><para>Translation by actor depth (z),</para></listitem>
+ *   <listitem><para>Clip stencil is applied (not an operation on the matrix as
+ *   such, but done as part of the transform set up).</para>
+ *   </listitem>
+ * </orderedlist>
  *
  * Notes on clutter actor events:
  * <orderedlist>
@@ -56,9 +72,9 @@
  *   the event source actor is reached. The emission then enters the bubble
  *   phase, traversing back up the chain via parents until it reaches the
  *   stage. Any event handler can abort this chain by returning
- *   %TRUE (meaning "event handled").</para></listitem> 
+ *   %TRUE (meaning "event handled").</para></listitem>
  *   <listitem><para>Pointer events will 'pass through' non reactive actors.
- *   </para></listitem> 
+ *   </para></listitem>
  * </orderedlist>
  */
 
@@ -158,6 +174,7 @@ struct _ClutterActorPrivate
   gchar          *name;
   ClutterFixed    scale_x, scale_y;
   guint32         id; /* Unique ID */
+  ClutterUnit     anchor_x, anchor_y;
 };
 
 enum
@@ -413,7 +430,7 @@ clutter_actor_real_pick (ClutterActor       *self,
  * mapping pointer events to actors.
  *
  * This function should not never be called directly by applications.
- * 
+ *
  * Subclasses overiding this method should call
  * #clutter_actor_should_pick_paint to decide if to render there
  * silhouette but in any case should still recursively call pick for
@@ -450,7 +467,7 @@ clutter_actor_should_pick_paint (ClutterActor *self)
 
   context = clutter_context_get_default ();
 
-  if (CLUTTER_ACTOR_IS_MAPPED (self) 
+  if (CLUTTER_ACTOR_IS_MAPPED (self)
       && (G_UNLIKELY(context->pick_mode == CLUTTER_PICK_ALL)
 	  || CLUTTER_ACTOR_IS_REACTIVE (self)))
     return TRUE;
@@ -733,8 +750,11 @@ static void
 _clutter_actor_apply_modelview_transform (ClutterActor * self)
 {
   ClutterActorPrivate *priv = self->priv;
+  ClutterActor        *parent;
 
-  if (clutter_actor_get_parent (self) != NULL)
+  parent = clutter_actor_get_parent (self);
+
+  if (parent != NULL)
     {
       cogl_translate (CLUTTER_UNITS_TO_INT (priv->coords.x1),
 		      CLUTTER_UNITS_TO_INT (priv->coords.y1),
@@ -751,6 +771,13 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
       priv->scale_y != CFX_ONE)
     {
       cogl_scale (priv->scale_x, priv->scale_y);
+    }
+
+  if (parent && (priv->anchor_x || priv->anchor_y))
+    {
+      cogl_translate (CLUTTER_UNITS_TO_INT (-priv->anchor_x),
+		      CLUTTER_UNITS_TO_INT (-priv->anchor_y),
+		      0);
     }
 
    if (priv->rzang)
@@ -852,7 +879,7 @@ clutter_actor_paint (ClutterActor *self)
       col.green = ((id >> b)  & (0xff>>(8-g))) << (8-g);
       col.blue = (id & (0xff>>(8-b)))<<(8-b);
       col.alpha = 0xff;
-      
+
       /* Actor will then paint silhouette of itself in supplied
        * color.  See clutter_stage_get_actor_at_pos() for where
        * picking is enabled.
@@ -2394,111 +2421,6 @@ clutter_actor_get_scale (ClutterActor *self,
 }
 
 /**
- * clutter_actor_set_scale_with_gravity:
- * @self: A #ClutterActor
- * @scale_x: scaling factor for x axis
- * @scale_y: scaling factor for y axis
- * @gravity: #ClutterGravity to apply to scaling.
- *
- * Scales the actor by scale_x, scale_y taking into consideration the
- * required gravity.
- *
- * Since: 0.4
- */
-void
-clutter_actor_set_scale_with_gravity (ClutterActor     *self,
-				      gfloat            scale_x,
-				      gfloat            scale_y,
-				      ClutterGravity    gravity)
-{
-  clutter_actor_set_scale_with_gravityx (self,
-					 CLUTTER_FLOAT_TO_FIXED (scale_x),
-					 CLUTTER_FLOAT_TO_FIXED (scale_y),
-					 gravity);
-}
-
-/**
- * clutter_actor_set_scale_with_gravityx:
- * @self: A #ClutterActor
- * @scale_x: #ClutterFixed scaling factor for x axis
- * @scale_y: #ClutterFixed scaling factor for y axis
- * @gravity: #ClutterGravity to apply to scaling.
- *
- * Scales the actor by scale_x, scale_y taking into consideration the
- * required gravity.
- *
- * Since: 0.4
- */
-void
-clutter_actor_set_scale_with_gravityx (ClutterActor     *self,
-				       ClutterFixed      scale_x,
-				       ClutterFixed      scale_y,
-				       ClutterGravity    gravity)
-{
-  ClutterActorBox box;
-  ClutterFixed sw, sh, w, h, x, y;
-  ClutterFixed old_scale_x, old_scale_y;
-
-  clutter_actor_get_scalex (self, &old_scale_x, &old_scale_y);
-  clutter_actor_set_scalex (self, scale_x, scale_y);
-
-  if (gravity == CLUTTER_GRAVITY_NONE ||
-      gravity == CLUTTER_GRAVITY_NORTH_WEST)
-    return;
-
-  clutter_actor_query_coords (self, &box);
-
-  w  = CFX_QMUL (box.x2 - box.x1, old_scale_x);
-  h  = CFX_QMUL (box.y2 - box.y1, old_scale_y);
-  sw = CFX_QMUL (box.x2 - box.x1, scale_x);
-  sh = CFX_QMUL (box.y2 - box.y1, scale_y);
-
-
-  x = box.x1;
-  y = box.y1;
-
-  switch (gravity)
-    {
-    case CLUTTER_GRAVITY_NORTH:
-      x = x - ((sw - w) / 2);
-      break;
-    case CLUTTER_GRAVITY_NORTH_EAST:
-      x = x + w - sw;
-      break;
-    case CLUTTER_GRAVITY_EAST:
-      x = x + w - sw;
-      y = y - ((sh - h) / 2);
-      break;
-    case CLUTTER_GRAVITY_SOUTH_EAST:
-      x = x + w - sw;
-      y = y + h - sh;
-      break;
-    case CLUTTER_GRAVITY_SOUTH:
-      x = x - ((sw - w) / 2);
-      y = y + h - sh;
-      break;
-    case CLUTTER_GRAVITY_SOUTH_WEST:
-      y = y + h - sh;
-      break;
-    case CLUTTER_GRAVITY_WEST:
-      y = y - ((sh - h) / 2);
-      break;
-    case CLUTTER_GRAVITY_CENTER:
-      x = x - ((sw - w) / 2);
-      y = y - ((sh - h) / 2);
-    default:
-      break;
-    }
-
-  box.x2 += (x - box.x1);
-  box.y2 += (y - box.y1);
-  box.x1 = x;
-  box.y1 = y;
-
-  clutter_actor_request_coords (self, &box);
-}
-
-/**
  * clutter_actor_set_opacity:
  * @self: A #ClutterActor
  * @opacity: New opacity value for actor.
@@ -2618,7 +2540,7 @@ clutter_actor_set_depth (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
-  
+
   if (priv->z != depth)
     {
       /* Sets Z value. - FIXME: should invert ?*/
@@ -3370,6 +3292,182 @@ clutter_actor_get_reactive (ClutterActor *actor)
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
 
   return CLUTTER_ACTOR_IS_REACTIVE (actor);
+}
+
+/**
+ * clutter_actor_set_anchor_point:
+ * @actor: a #ClutterActor
+ * @anchor_x: X coordinace of the anchor point.
+ * @anchor_y: Y coordinace of the anchor point.
+ *
+ * Sets an anchor point for the @actor. The anchor point is a point in the
+ * coordianate space of the actor to which the actor position within its
+ * parent is relative; the default is 0,0, i.e., the top-left corner.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_set_anchor_point (ClutterActor *self,
+				gint anchor_x, gint anchor_y)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  priv->anchor_x = CLUTTER_UNITS_FROM_DEVICE (anchor_x);
+  priv->anchor_y = CLUTTER_UNITS_FROM_DEVICE (anchor_y);
+}
+
+/**
+ * clutter_actor_get_anchor_point:
+ * @actor: a #ClutterActor
+ * @anchor_x: location for the X coordinace of the anchor point.
+ * @anchor_y: location for the X coordinace of the anchor point.
+ *
+ * Gets the current anchor point of the @actor.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_get_anchor_point (ClutterActor *self,
+				gint *anchor_x, gint *anchor_y)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (anchor_x)
+    *anchor_x = CLUTTER_UNITS_TO_DEVICE (priv->anchor_x);
+
+  if (anchor_y)
+    *anchor_y = CLUTTER_UNITS_TO_DEVICE (priv->anchor_y);
+}
+
+/**
+ * clutter_actor_set_anchor_pointu:
+ * @actor: a #ClutterActor
+ * @anchor_x: X coordinace of the anchor point, in multiples of #ClutterUnit.
+ * @anchor_y: Y coordinace of the anchor point, in multiples of #ClutterUnit.
+ *
+ * Sets an anchor point for the @actor. The anchor point is a point in the
+ * coordinate space of the actor to which the actor position within its
+ * parent is relative; the default is 0,0, i.e., the top-left corner, of the
+ * actor.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_set_anchor_pointu (ClutterActor *self,
+				 ClutterUnit anchor_x, ClutterUnit anchor_y)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  priv->anchor_x = anchor_x;
+  priv->anchor_y = anchor_y;
+}
+
+/**
+ * clutter_actor_get_anchor_pointu:
+ * @actor: a #ClutterActor
+ * @anchor_x: location for the X coordinace of the anchor point, #ClutterUnit.
+ * @anchor_y: location for the X coordinace of the anchor point, #ClutterUnit.
+ *
+ * Gets the current anchor point of the @actor.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_get_anchor_pointu (ClutterActor *self,
+				 ClutterUnit *anchor_x, ClutterUnit *anchor_y)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (anchor_x)
+    *anchor_x = priv->anchor_x;
+
+  if (anchor_y)
+    *anchor_y = priv->anchor_y;
+}
+
+/**
+ * clutter_actor_set_anchor_point_from_gravity:
+ * @actor: a #ClutterActor
+ * @gravity: #ClutterGravity.
+ *
+ * Sets an anchor point the actor based on the given gravity (this is a
+ * convenience function wrapping #clutter_actor_set_anchor_point).
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_set_anchor_point_from_gravity (ClutterActor *self,
+					     ClutterGravity gravity)
+{
+  ClutterActorPrivate *priv;
+  ClutterActorBox box;
+  ClutterUnit w, h, x, y;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  clutter_actor_query_coords (self, &box);
+
+  x = 0;
+  y = 0;
+  w  = box.x2 - box.x1;
+  h  = box.y2 - box.y1;
+
+  switch (gravity)
+    {
+    case CLUTTER_GRAVITY_NORTH:
+      x = w/2;
+      break;
+    case CLUTTER_GRAVITY_SOUTH:
+      x = w/2;
+      y = h;
+      break;
+    case CLUTTER_GRAVITY_EAST:
+      x = w;
+      y = h/2;
+      break;
+    case CLUTTER_GRAVITY_NORTH_EAST:
+      x = w;
+      break;
+    case CLUTTER_GRAVITY_SOUTH_EAST:
+      x = w;
+      y = h;
+      break;
+    case CLUTTER_GRAVITY_SOUTH_WEST:
+      y = h;
+      break;
+    case CLUTTER_GRAVITY_WEST:
+      y = h/2;
+      break;
+    case CLUTTER_GRAVITY_CENTER:
+      x = w/2;
+      y = h/2;
+      break;
+    case CLUTTER_GRAVITY_NONE:
+    case CLUTTER_GRAVITY_NORTH_WEST:
+    default:
+      break;
+    }
+
+  priv->anchor_x = x;
+  priv->anchor_y = y;
 }
 
 /*
