@@ -141,6 +141,31 @@ Release Notes for Clutter 0.6.0
 * X11 related called for glx and eglx backends are now shared and moved into
   a clutter_x11 prefix.
 
+* Scaling with gravity functionality was replaced by more generic and
+  powerful anchor point.
+
+* The ClutterLayout interface, the ClutterBox and its implementations have
+  been moved outside Clutter core.
+
+* The Effects API has been simplified, and it only requires the final value
+  of the effect instead of both the start and end value.
+
+* The per-axis rotation API has been deprecated in favour of a single
+  pair of accessors, clutter_actor_set_rotation() and
+  clutter_actor_get_rotation().
+
+* Every actor sub-class that is overriding the ClutterActor::request_coords()
+  virtual function *must* chain up to the parent's implementation in order
+  to store the bounding box inside the ClutterActor private data.
+
+* It is now impossible to call clutter_actor_destroy() on the stage.
+
+* The default value of the ClutterLabel:wrap property has been changed from
+  TRUE to FALSE.
+
+* All the behaviours properties have been renamed to match the $PROPERTY-start
+  and $PROPERTY-end convention.
+
 Release Notes for Clutter 0.4.0
 -------------------------------
 
