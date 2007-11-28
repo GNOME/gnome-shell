@@ -35,8 +35,6 @@ G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_GEOMETRY   (clutter_geometry_get_type ())
 #define CLUTTER_TYPE_KNOT       (clutter_knot_get_type ())
-#define CLUTTER_TYPE_MARGIN     (clutter_margin_get_type ())
-#define CLUTTER_TYPE_PADDING    (clutter_padding_get_type ())
 #define CLUTTER_TYPE_VERTEX     (clutter_vertex_get_type ())
 
 /* Forward delarations to avoid header catch 22's */
@@ -76,8 +74,6 @@ typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
 
 typedef struct _ClutterGeometry         ClutterGeometry;
 typedef struct _ClutterKnot             ClutterKnot;
-typedef struct _ClutterMargin           ClutterMargin;
-typedef struct _ClutterPadding          ClutterPadding;
 typedef struct _ClutterVertex           ClutterVertex;
 
 /**
@@ -170,48 +166,6 @@ typedef enum { /*< prefix=CLUTTER_ROTATE >*/
   CLUTTER_ROTATE_CW,
   CLUTTER_ROTATE_CCW
 } ClutterRotateDirection;
-
-/**
- * ClutterMargin:
- * @top: top margin
- * @right: right margin
- * @bottom: bottom margin
- * @left: left margin
- *
- * Margins from the inner borders of a container
- *
- * Since: 0.4
- */
-struct _ClutterMargin
-{
-  ClutterUnit top;
-  ClutterUnit right;
-  ClutterUnit bottom;
-  ClutterUnit left;
-};
-
-GType clutter_margin_get_type (void) G_GNUC_CONST;
-
-/**
- * ClutterPadding
- * @top: top padding
- * @right: right padding
- * @bottom: bottom padding
- * @left: left padding
- *
- * Padding of the children of a container
- *
- * Since: 0.4
- */
-struct _ClutterPadding
-{
-  ClutterUnit top;
-  ClutterUnit right;
-  ClutterUnit bottom;
-  ClutterUnit left;
-};
-
-GType clutter_padding_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 

@@ -95,12 +95,6 @@ gboolean clutter_script_flags_from_string (GType          gtype,
 gboolean clutter_script_parse_knot        (ClutterScript   *script,
                                            JsonNode        *node,
                                            ClutterKnot     *knot);
-gboolean clutter_script_parse_padding     (ClutterScript   *script,
-                                           JsonNode        *node,
-                                           ClutterPadding  *padding);
-gboolean clutter_script_parse_margin      (ClutterScript   *script,
-                                           JsonNode        *node,
-                                           ClutterMargin   *margin);
 gboolean clutter_script_parse_geometry    (ClutterScript   *script,
                                            JsonNode        *node,
                                            ClutterGeometry *geometry);

@@ -1,12 +1,42 @@
+2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Remove the layout containers: they will be moved to a
+	high-level library.
+
+	* clutter/clutter.h:
+	* clutter/Makefile.am: Remove layout and boxes from the
+	build.
+
+	* clutter/clutter-layout.[ch]: Remove the ClutterLayout
+	interface.
+	
+	* clutter/clutter-box.[ch]:
+	* clutter/clutter-hbox.[ch]:
+	* clutter/clutter-vbox.[ch]: Remove ClutterBox and its
+	subclasses.
+	
+	* clutter/clutter-label.c: Remove ClutterLayout implementation
+
+	* clutter/clutter-script-private.h:
+	* clutter/clutter-script-parser.c:
+	* clutter/clutter-script.c:
+	(clutter_script_parse_node): Remove special parsing for
+	ClutterMargin and ClutterPadding.
+
+	* clutter/clutter-types.h: Remove ClutterPadding and ClutterMargin.
+
+	* tests/Makefile.am:
+	* tests/test-boxes.c: Remove the boxes test case.
+
 2007-11-28  Tomas Frydrych  <tf@openedhand.com>
 
-        * clutter/NEWS:
+	* clutter/NEWS:
 	Started 0.6.0 section with comment on actor anchor point.
 
-        * clutter/clutter/clutter-actor.c:
-        * clutter/clutter/clutter-actor.h:
-        * clutter/clutter/clutter-behaviour-scale.c:
-        * clutter/clutter/clutter-deprecated.h:
+	* clutter/clutter/clutter-actor.c:
+	* clutter/clutter/clutter-actor.h:
+	* clutter/clutter/clutter-behaviour-scale.c:
+	* clutter/clutter/clutter-deprecated.h:
 	(clutter_actor_set_anchor_point):
 	(clutter_actor_set_anchor_pointu):
 	(clutter_actor_get_anchor_point):

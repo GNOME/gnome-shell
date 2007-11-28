@@ -50,7 +50,6 @@ source_h =					\
 	$(srcdir)/clutter-behaviour-path.h 	\
 	$(srcdir)/clutter-behaviour-rotate.h 	\
 	$(srcdir)/clutter-behaviour-scale.h 	\
-	$(srcdir)/clutter-box.h			\
 	$(srcdir)/clutter-clone-texture.h 	\
 	$(srcdir)/clutter-color.h		\
         $(srcdir)/clutter-container.h		\
@@ -61,10 +60,8 @@ source_h =					\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-group.h 		\
-	$(srcdir)/clutter-hbox.h		\
 	$(srcdir)/clutter-keysyms.h 		\
 	$(srcdir)/clutter-label.h 		\
-        $(srcdir)/clutter-layout.h		\
 	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
 	$(srcdir)/clutter-model.h		\
@@ -79,7 +76,6 @@ source_h =					\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
-	$(srcdir)/clutter-vbox.h		\
 	$(srcdir)/clutter-version.h		\
 	$(NULL)
 
@@ -137,7 +133,6 @@ source_c = \
 	clutter-behaviour-path.c	\
 	clutter-behaviour-rotate.c	\
 	clutter-behaviour-scale.c	\
-	clutter-box.c			\
 	clutter-color.c 		\
 	clutter-container.c		\
 	clutter-clone-texture.c 	\
@@ -148,9 +143,7 @@ source_c = \
 	clutter-feature.c 		\
 	clutter-fixed.c			\
 	clutter-group.c 		\
-	clutter-hbox.c			\
 	clutter-label.c 		\
-	clutter-layout.c		\
 	clutter-main.c 			\
 	clutter-marshal.c		\
 	clutter-media.c 		\
@@ -165,7 +158,6 @@ source_c = \
 	clutter-timeline.c 		\
 	clutter-timeout-pool.c		\
 	clutter-util.c 			\
-	clutter-vbox.c			\
 	$(NULL)
 
 source_h_priv = \

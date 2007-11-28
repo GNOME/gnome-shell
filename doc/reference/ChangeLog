@@ -1,3 +1,9 @@
+2007-11-28  Emmanuele Bassi,,,  <ebassi@sprite>
+
+	reviewed by: <delete if not using a buddy>
+
+	* clutter.types:
+
 2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add the new ClutterEffectTemplate::construct

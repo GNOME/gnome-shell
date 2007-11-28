@@ -7,7 +7,6 @@ clutter_rectangle_get_type
 clutter_texture_get_type
 clutter_clone_texture_get_type
 clutter_label_get_type
-clutter_layout_get_type
 clutter_timeline_get_type
 clutter_media_get_type
 clutter_behaviour_get_type
@@ -21,9 +20,6 @@ clutter_behaviour_rotate_get_type
 clutter_behaviour_scale_get_type
 clutter_backend_get_type
 clutter_entry_get_type
-clutter_box_get_type
-clutter_hbox_get_type
-clutter_vbox_get_type
 clutter_script_get_type
 clutter_scriptable_get_type
 clutter_model_get_type

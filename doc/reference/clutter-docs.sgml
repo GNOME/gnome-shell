@@ -78,8 +78,6 @@
       <title>Abstract classes and interfaces</title>
       <xi:include href="xml/clutter-actor.xml"/>
       <xi:include href="xml/clutter-container.xml"/>
-      <xi:include href="xml/clutter-layout.xml"/>
-      <xi:include href="xml/clutter-box.xml"/>
       <xi:include href="xml/clutter-media.xml"/>
     </chapter>
 
@@ -97,8 +95,6 @@
       <title>Container actors</title>
 
       <xi:include href="xml/clutter-group.xml"/>
-      <xi:include href="xml/clutter-hbox.xml"/>
-      <xi:include href="xml/clutter-vbox.xml"/>
     </chapter>
 
   </part>

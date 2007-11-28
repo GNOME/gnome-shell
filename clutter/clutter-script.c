@@ -761,26 +761,6 @@ clutter_script_parse_node (ClutterScript *script,
                   return TRUE;
                 }
             }
-          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_PADDING))
-            {
-              ClutterPadding padding = { 0, };
-
-              if (clutter_script_parse_padding (script, node, &padding))
-                {
-                  g_value_set_boxed (value, &padding);
-                  return TRUE;
-                }
-            }
-          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_MARGIN))
-            {
-              ClutterMargin margin = { 0, };
-
-              if (clutter_script_parse_margin (script, node, &margin))
-                {
-                  g_value_set_boxed (value, &margin);
-                  return TRUE;
-                }
-            }
           else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_GEOMETRY))
             {
               ClutterGeometry geom = { 0, };

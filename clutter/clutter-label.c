@@ -35,7 +35,6 @@
 #endif
 
 #include "clutter-label.h"
-#include "clutter-layout.h"
 #include "clutter-main.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
@@ -46,13 +45,7 @@
 
 #define DEFAULT_FONT_NAME	"Sans 10"
 
-static void clutter_layout_iface_init (ClutterLayoutIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterLabel,
-                         clutter_label,
-                         CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_LAYOUT,
-                                                clutter_layout_iface_init));
+G_DEFINE_TYPE (ClutterLabel, clutter_label, CLUTTER_TYPE_ACTOR)
 
 /* Probably move into main */
 static PangoClutterFontMap  *_font_map = NULL;
@@ -71,7 +64,6 @@ enum
   PROP_WRAP_MODE,
   PROP_JUSTIFY,
   PROP_ELLIPSIZE,
-  PROP_LAYOUT_FLAGS
 };
 
 #define CLUTTER_LABEL_GET_PRIVATE(obj) \
@@ -406,102 +398,6 @@ clutter_label_finalize (GObject *object)
   G_OBJECT_CLASS (clutter_label_parent_class)->finalize (object);
 }
 
-static ClutterLayoutFlags
-clutter_label_get_layout_flags (ClutterLayout *layout)
-{
-  ClutterLayoutFlags flags;
-  ClutterFixed angle;
-
-  flags = CLUTTER_LAYOUT_NATURAL;
-
-  angle = clutter_actor_get_rotationx (CLUTTER_ACTOR (layout),
-                                       CLUTTER_Z_AXIS,
-                                       NULL, NULL, NULL);
-
-  if (angle == 0 || angle == CLUTTER_INT_TO_FIXED (180))
-    flags |= CLUTTER_LAYOUT_HEIGHT_FOR_WIDTH;
-  else if (angle == CLUTTER_INT_TO_FIXED (90) || angle == CLUTTER_INT_TO_FIXED (270))
-    flags |= CLUTTER_LAYOUT_WIDTH_FOR_HEIGHT;
-
-  return flags;
-}
-
-static void
-clutter_label_width_for_height (ClutterLayout *layout,
-                                ClutterUnit   *width,
-                                ClutterUnit    height)
-{
-  ClutterLabel *label = CLUTTER_LABEL (layout);
-  PangoLayout *tmp;
-  gint layout_height;
-
-  clutter_label_ensure_layout (label);
-
-  tmp = pango_layout_copy (label->priv->layout);
-  pango_layout_set_width (tmp, CLUTTER_UNITS_TO_PANGO_UNIT (height));
-  pango_layout_get_pixel_size (tmp, NULL, &layout_height);
-
-  if (width)
-    *width = CLUTTER_UNITS_FROM_INT (layout_height);
-
-  g_object_unref (tmp);
-}
-
-static void
-clutter_label_height_for_width (ClutterLayout *layout,
-                                ClutterUnit    width,
-                                ClutterUnit   *height)
-{
-  ClutterLabel *label = CLUTTER_LABEL (layout);
-  PangoLayout *tmp;
-  gint layout_height;
-
-  clutter_label_ensure_layout (label);
-
-  tmp = pango_layout_copy (label->priv->layout);
-  pango_layout_set_width (tmp, CLUTTER_UNITS_TO_PANGO_UNIT (width));
-  pango_layout_get_pixel_size (tmp, NULL, &layout_height);
-
-  if (height)
-    *height = CLUTTER_UNITS_FROM_INT (layout_height);
-
-  g_object_unref (tmp);
-}
-
-static void
-clutter_label_natural_request (ClutterLayout *layout,
-                               ClutterUnit   *width,
-                               ClutterUnit   *height)
-{
-  ClutterLabel *label = CLUTTER_LABEL (layout);
-  PangoLayout *tmp;
-  PangoRectangle logical_rect = { 0, };
-
-  clutter_label_ensure_layout (label);
-
-  tmp = pango_layout_copy (label->priv->layout);
-  pango_layout_set_width (tmp, -1);
-  pango_layout_set_ellipsize (tmp, PANGO_ELLIPSIZE_NONE);
-
-  pango_layout_get_extents (tmp, NULL, &logical_rect);
-
-  if (width)
-    *width = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.width);
-  if (height)
-    *height = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.height);
-
-  g_object_unref (tmp);
-}
-
-static void
-clutter_layout_iface_init (ClutterLayoutIface *iface)
-{
-  iface->get_layout_flags = clutter_label_get_layout_flags;
-  iface->height_for_width = clutter_label_height_for_width;
-  iface->width_for_height = clutter_label_width_for_height;
-  iface->natural_request  = clutter_label_natural_request;
-}
-
 static void
 clutter_label_set_property (GObject      *object, 
 			    guint         prop_id,
@@ -597,10 +493,6 @@ clutter_label_get_property (GObject    *object,
       break;
     case PROP_ELLIPSIZE:
       g_value_set_enum (value, priv->ellipsize);
-      break;
-    case PROP_LAYOUT_FLAGS:
-      g_value_set_flags (value,
-                         clutter_label_get_layout_flags (CLUTTER_LAYOUT (label)));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -709,10 +601,6 @@ clutter_label_class_init (ClutterLabelClass *klass)
                                                          FALSE,
                                                          CLUTTER_PARAM_READWRITE));
 
-  g_object_class_override_property (gobject_class,
-                                    PROP_LAYOUT_FLAGS,
-                                    "layout-flags");
-
   g_type_class_add_private (gobject_class, sizeof (ClutterLabelPrivate));
 }
 
@@ -760,8 +648,6 @@ clutter_label_init (ClutterLabel *self)
 
   priv->font_name     = g_strdup (DEFAULT_FONT_NAME);
   priv->font_desc     = pango_font_description_from_string (priv->font_name);
-
-  CLUTTER_MARK();
 }
 
 /**
