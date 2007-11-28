@@ -1,3 +1,10 @@
+2007-11-29  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-main.c: (generate_enter_leave_events):
+	Minor formatting tweak.
+	* configure.ac:
+	Typo fix from Damien Lespiau (via mailing list)
+
 2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Add more introspection capabilities to the base model class

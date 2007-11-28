@@ -1278,7 +1278,7 @@ generate_enter_leave_events (ClutterEvent *event)
           cev.crossing.related = g_object_ref (motion_current_actor);
 
           g_queue_push_head (context->events_queue, 
-          clutter_event_copy (&cev));
+			     clutter_event_copy (&cev));
 
           cev.crossing.type    = CLUTTER_ENTER;
           cev.crossing.time    = event->any.time;
@@ -1289,7 +1289,7 @@ generate_enter_leave_events (ClutterEvent *event)
           cev.crossing.related = g_object_ref (motion_last_actor);
 
           g_queue_push_head (context->events_queue, 
-          clutter_event_copy (&cev));
+			     clutter_event_copy (&cev));
         }
     }
   motion_last_actor = motion_current_actor;

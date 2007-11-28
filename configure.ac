@@ -231,7 +231,7 @@ case $clutterbackend in
     CLUTTER_COGL="gles"
     AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
 
-    AC_CHECK_HEADERS([clutter_gl_header],,
+    AC_CHECK_HEADERS([$clutter_gl_header],,
                      [AC_MSG_ERROR([Unable to locate require GL header])])
     AC_CHECK_HEADERS([GLES/egl.h],,
 	             [AC_MSG_ERROR([Unable to locate required GLES headers])])
