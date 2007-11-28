@@ -1,7 +1,32 @@
+2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Add more introspection capabilities to the base model class
+
+	* clutter/clutter-model.h:
+	* clutter/clutter-model.c:
+	(clutter_model_finalize): Do no leak the column types array.
+
+	(clutter_model_get_n_columns): Function for getting the number
+	of columns inside a model.
+
+	(clutter_model_set_names): Add API for setting the names of the
+	columns.
+
+	(clutter_model_get_column_name),
+	(_model_get_column_type): Add API for getting each column's name
+	and the default implementation for ClutterModel.
+
+	(clutter_model_get_column_type),
+	(_model_get_iter_at_row): Add API for getting each column's type
+	and the default implementation for ClutterModel.
+
+	* clutter.symbols: Add ClutterModel and ClutterModelIter symbols,
+	and keep the symbols file sorted.
+
 2007-11-28  Tomas Frydrych  <tf@openedhand.com>
 
-        * clutter/clutter-actor.c:
-        * clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
 	(clutter_actor_set_positionu):
 	(clutter_actor_set_sizeu):
 	(clutter_actor_get_widthu):
@@ -14,14 +39,14 @@
 	(clutter_actor_set_yu):
 	Expanded ClutterActor API with new ClutterUnit-base functions.
 
-        * clutter/clutter-stage.c:
-        * clutter/clutter-stage.h:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
 	(clutter_stage_get_resolution):
 	(clutter_stage_get_resolutionx):
 	New function to query stage resolution (floating and fixed point
 	versions).
 
-        * clutter/clutter-units.h:
+	* clutter/clutter-units.h:
 	(CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE):
 	(CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE):
 	(CLUTTER_UNITS_FROM_PARENT_WIDTH_PERCENTAGE):
@@ -34,11 +59,11 @@
 
 	* clutter.symbols:
 	Added:
-	        ClutterActor anchor_point functions,
-                clutter_stage_get_resolution functions.
+		ClutterActor anchor_point functions,
+		clutter_stage_get_resolution functions.
 
 	Removed:
-                clutter_actor_scale_with_gravity functions.
+		clutter_actor_scale_with_gravity functions.
 
 2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
 

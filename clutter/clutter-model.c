@@ -144,6 +144,7 @@ struct _ClutterModelPrivate
   GSequence              *sequence;
 
   GType                  *column_types;
+  gchar                 **column_names;
   gint                    n_columns; 
   
   ClutterModelFilterFunc  filter;
@@ -157,22 +158,14 @@ struct _ClutterModelPrivate
 };
 
 /* Forwards */
+static const gchar *      _model_get_column_name    (ClutterModel *model,
+                                                     guint         column);
+static GType              _model_get_column_type    (ClutterModel *model,
+                                                     guint         column);
 static ClutterModelIter * _model_get_iter_at_row    (ClutterModel *model, 
-                                                     guint         index_);
+                                                     guint         row);
 static void               clutter_model_real_remove (ClutterModel  *model,
                                                      GSequenceIter *iter);
-
-/* GObject stuff */
-static void 
-clutter_model_dispose (GObject *object)
-{
-  ClutterModel         *self = CLUTTER_MODEL(object);
-  ClutterModelPrivate  *priv;  
-
-  priv = self->priv;
-  
-  G_OBJECT_CLASS (clutter_model_parent_class)->dispose (object);
-}
 
 static void 
 clutter_model_finalize (GObject *object)
@@ -188,12 +181,14 @@ clutter_model_finalize (GObject *object)
     }
   g_sequence_free (priv->sequence);
 
-  if (priv->sort && priv->sort_data && priv->sort_notify)
+  if (priv->sort_notify)
     priv->sort_notify (priv->sort_data);
   
-  if (priv->filter && priv->filter_data && priv->filter_notify)
+  if (priv->filter_notify)
     priv->filter_notify (priv->filter_data);
 
+  g_free (priv->column_types);
+  g_strfreev (priv->column_names);
 
   G_OBJECT_CLASS (clutter_model_parent_class)->finalize (object);
 }
@@ -201,12 +196,13 @@ clutter_model_finalize (GObject *object)
 static void
 clutter_model_class_init (ClutterModelClass *klass)
 {
-  GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->finalize     = clutter_model_finalize;
-  gobject_class->dispose      = clutter_model_dispose;
+  gobject_class->finalize = clutter_model_finalize;
 
-  klass->get_iter_at_row      = _model_get_iter_at_row;
+  klass->get_iter_at_row  = _model_get_iter_at_row;
+  klass->get_column_name  = _model_get_column_name;
+  klass->get_column_type  = _model_get_column_type;
 
    /**
    * ClutterModel::row-added:
@@ -414,13 +410,11 @@ _model_filter (ClutterModel *model, ClutterModelIter *iter)
 
 
 static void
-clutter_model_set_n_columns (ClutterModel *model, gint n_columns)
+clutter_model_set_n_columns (ClutterModel *model,
+                             gint          n_columns)
 {
-  ClutterModelPrivate *priv;
+  ClutterModelPrivate *priv = model->priv;
   GType *new_columns;
-
-  g_return_if_fail (CLUTTER_IS_MODEL (model));
-  priv = model->priv;
 
   new_columns = g_new0 (GType, n_columns);
 
@@ -433,10 +427,7 @@ clutter_model_set_column_type (ClutterModel *model,
                                gint          column,
                                GType         type)
 {
-  ClutterModelPrivate *priv;
-  
-  g_return_if_fail (CLUTTER_IS_MODEL (model));
-  priv = model->priv;
+  ClutterModelPrivate *priv = model->priv;
 
   priv->column_types[column] = type;
 }
@@ -532,9 +523,11 @@ clutter_model_newv (guint n_columns,
  * @n_columns: number of columns for the model
  * @types: an array of #GType types
  *
+ * Sets the types of the columns inside a #ClutterModel.
+ *
  * This function is meant primarily for #GObjects that inherit from
- * #ClutterModel, and should only be used when contructing a #ClutterModel. It
- * will not work after the initial creation of the #ClutterModel.
+ * #ClutterModel, and should only be used when contructing a #ClutterModel.
+ * It will not work after the initial creation of the #ClutterModel.
  *
  * Since 0.6
  */
@@ -565,6 +558,55 @@ clutter_model_set_types (ClutterModel *model,
     }
 }
 
+/**
+ * clutter_model_set_names:
+ * @model: a #ClutterModel
+ * @n_columns: the number of column names
+ * @names: an array of strings
+ *
+ * Assigns a name to the columns of a #ClutterModel. This function
+ * cannot be called twice on the same model.
+ *
+ * Since: 0.6
+ */
+void
+clutter_model_set_names (ClutterModel        *model,
+                         guint                n_columns,
+                         const gchar * const  names[])
+{
+  ClutterModelPrivate *priv;
+  gint i;
+
+  g_return_if_fail (CLUTTER_IS_MODEL (model));
+  g_return_if_fail (n_columns > 0);
+
+  priv = model->priv;
+
+  g_return_if_fail (priv->column_names == NULL);
+  g_return_if_fail (n_columns <= priv->n_columns);
+
+  priv->column_names = g_new (gchar*, n_columns);
+  for (i = 0; i < n_columns; i++)
+    priv->column_names[i] = g_strdup (names[i]);
+}
+
+/**
+ * clutter_model_get_n_columns:
+ * @model: a #ClutterModel
+ *
+ * Retrieves the number of columns inside @model.
+ *
+ * Return value: the number of columns
+ *
+ * Since: 0.6
+ */
+guint
+clutter_model_get_n_columns (ClutterModel *model)
+{
+  g_return_val_if_fail (CLUTTER_IS_MODEL (model), 0);
+
+  return model->priv->n_columns;
+}
 
 static GValueArray *
 clutter_model_new_row (ClutterModel *model)
@@ -624,6 +666,7 @@ clutter_model_append (ClutterModel *model,
                        "model", model,
                        "iter", seq_iter,
                        NULL);
+
   va_start (args, model);
   clutter_model_iter_set_valist (iter, args);
   va_end (args);
@@ -683,10 +726,10 @@ clutter_model_prepend (ClutterModel *model,
 /**
  * clutter_model_insert:
  * @model: a #ClutterModel
- * @index_: the position to insert the new row
+ * @row: the position to insert the new row
  * @Varargs: pairs of column number and value, terminated with -1
  *
- * Inserts a new row to the #ClutterModel at @index_, setting the rows values
+ * Inserts a new row to the #ClutterModel at @row, setting the rows values
  * upon creation. For example, to insert a new row at index 100, where column 0 
  * is type G_TYPE_INT and column 1 is of type G_TYPE_STRING, you would write 
  * <literal>clutter_model_insert (model, 100, 0, 100, 1, "string", -1);
@@ -698,29 +741,29 @@ clutter_model_prepend (ClutterModel *model,
  */
 gboolean
 clutter_model_insert (ClutterModel *model,
-                      guint         index_,
+                      guint         row,
                       ...)
 {
   ClutterModelPrivate *priv;
   ClutterModelIter *iter;
-  GValueArray *row;
+  GValueArray *row_array;
   GSequenceIter *seq_iter;
   va_list args;
 
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), FALSE);
   priv = model->priv;
 
-  row = clutter_model_new_row (model);
+  row_array = clutter_model_new_row (model);
 
-  seq_iter = g_sequence_get_iter_at_pos (priv->sequence, index_);
-  seq_iter = g_sequence_insert_before (seq_iter, row);
+  seq_iter = g_sequence_get_iter_at_pos (priv->sequence, row);
+  seq_iter = g_sequence_insert_before (seq_iter, row_array);
 
   iter = g_object_new (CLUTTER_TYPE_MODEL_ITER, 
                        "model", model,
                        "iter", seq_iter,
                        NULL);
 
-  va_start (args, index_);
+  va_start (args, row);
   clutter_model_iter_set_valist (iter, args);
   va_end (args);
 
@@ -734,7 +777,7 @@ clutter_model_insert (ClutterModel *model,
 /**
  * clutter_model_insert_value:
  * @model: a #ClutterModel
- * @index_: position of the row to modify
+ * @row: position of the row to modify
  * @column: column to modify
  * @value: new value for the cell
  *
@@ -747,7 +790,7 @@ clutter_model_insert (ClutterModel *model,
  */
 gboolean
 clutter_model_insert_value (ClutterModel *model,
-                            guint         index_,
+                            guint         row,
                             guint         column,
                             const GValue *value)
 {
@@ -758,7 +801,7 @@ clutter_model_insert_value (ClutterModel *model,
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), FALSE);
   priv = model->priv;
 
-  seq_iter = g_sequence_get_iter_at_pos (priv->sequence, index_);
+  seq_iter = g_sequence_get_iter_at_pos (priv->sequence, row);
   
   iter = g_object_new (CLUTTER_TYPE_MODEL_ITER,
                        "model", model,
@@ -791,15 +834,15 @@ clutter_model_real_remove (ClutterModel  *model,
 /**
  * clutter_model_remove:
  * @model: a #ClutterModel
- * @index_: position of row to remove
+ * @row: position of row to remove
  *
- * Removes a row at @index_ from the model.
+ * Removes the row at the given position from the model.
  *
  * Since 0.6
  */
 void
 clutter_model_remove (ClutterModel *model,
-                      guint        index_)
+                      guint         row)
 {
   ClutterModelPrivate *priv;
   ClutterModelIter *iter;
@@ -817,7 +860,7 @@ clutter_model_remove (ClutterModel *model,
       g_object_set (iter, "iter", seq_iter, NULL);
       if (_model_filter (model, iter))
         {
-          if (i == index_)
+          if (i == row)
             {  
               g_signal_emit (model, model_signals[ROW_REMOVED], 0, iter);
               clutter_model_real_remove (model, seq_iter);
@@ -831,32 +874,126 @@ clutter_model_remove (ClutterModel *model,
   g_object_unref (iter);
 }
 
-static ClutterModelIter * 
-_model_get_iter_at_row (ClutterModel *model, 
-                        guint         index_)
+static const gchar *
+_model_get_column_name (ClutterModel *model,
+                        guint         column)
 {
+  ClutterModelPrivate *priv = model->priv;
+
+  if (column < 0 || column >= priv->n_columns)
+    return NULL;
+
+  if (priv->column_names && priv->column_names[column])
+    return priv->column_names[column];
+
+  return g_type_name (priv->column_types[column]);
+}
+
+/**
+ * clutter_model_get_column_name:
+ * @model: #ClutterModel
+ * @column: the column number
+ *
+ * Retrieves the name of the @column
+ *
+ * Return value: the name of the column. The model holds the returned
+ *   string, and it should not be modified or freed
+ *
+ * Since: 0.6
+ */
+G_CONST_RETURN gchar *
+clutter_model_get_column_name (ClutterModel *model,
+                               guint         column)
+{
+  ClutterModelPrivate *priv;
+  ClutterModelClass *klass;
+
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), NULL);
 
+  priv = model->priv;
+  if (column < 0 || column > priv->n_columns)
+    {
+      g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
+      return NULL;
+    }
+
+  klass = CLUTTER_MODEL_GET_CLASS (model);
+  if (klass->get_column_name)
+    return klass->get_column_name (model, column);
+
+  return NULL;
+}
+
+static GType
+_model_get_column_type (ClutterModel *model,
+                        guint         column)
+{
+  ClutterModelPrivate *priv = model->priv;
+
+  if (column < 0 || column >= priv->n_columns)
+    return G_TYPE_INVALID;
+
+  return priv->column_types[column];
+}
+
+/**
+ * clutter_model_get_column_type:
+ * @model: #ClutterModel
+ * @column: the column number
+ *
+ * Retrieves the type of the @column.
+ *
+ * Return value: the type of the column.
+ *
+ * Since: 0.6
+ */
+GType
+clutter_model_get_column_type (ClutterModel *model,
+                               guint         column)
+{
+  ClutterModelPrivate *priv;
+  ClutterModelClass *klass;
+
+  g_return_val_if_fail (CLUTTER_IS_MODEL (model), G_TYPE_INVALID);
+
+  priv = model->priv;
+  if (column < 0 || column > priv->n_columns)
+    {
+      g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
+      return G_TYPE_INVALID;
+    }
+
+  klass = CLUTTER_MODEL_GET_CLASS (model);
+  if (klass->get_column_type)
+    return klass->get_column_type (model, column);
+
+  return G_TYPE_INVALID;
+}
+
+static ClutterModelIter * 
+_model_get_iter_at_row (ClutterModel *model, 
+                        guint         row)
+{
   return g_object_new (CLUTTER_TYPE_MODEL_ITER,
                        "model", model,
-                       "row", index_,
+                       "row", row,
                        NULL);
 }
 
 /**
  * clutter_model_get_iter_at_row:
  * @model: a #ClutterModel
- * @index_: position of the row to retrieve
+ * @row: position of the row to retrieve
  *
- * Retrieves a #ClutterModelIter representing the row at @index_.
+ * Retrieves a #ClutterModelIter representing the row at the given position.
  *
- * Return value: A new #ClutterModelIter, or NULL if @index_ was out-of-bounds
+ * Return value: A new #ClutterModelIter, or %NULL if @row was out-of-bounds
  *
  * Since 0.6
  **/
 ClutterModelIter * 
-clutter_model_get_iter_at_row (ClutterModel    *model,
-                               guint            index_)
+clutter_model_get_iter_at_row (ClutterModel *model,
+                               guint         row)
 {
   ClutterModelClass *klass;
 
@@ -864,7 +1001,7 @@ clutter_model_get_iter_at_row (ClutterModel    *model,
 
   klass = CLUTTER_MODEL_GET_CLASS (model);
   if (klass->get_iter_at_row)
-    return klass->get_iter_at_row (model, index_);
+    return klass->get_iter_at_row (model, row);
 
   return NULL;
 }
@@ -874,8 +1011,7 @@ clutter_model_get_iter_at_row (ClutterModel    *model,
  * clutter_model_get_first_iter:
  * @model: a #ClutterModel
  *
- * Retrieves a #ClutterModelIter representing the first row in @model. It calls
- * #clutter_model_get_iter_at_row with 0 as the index_ parameter.
+ * Retrieves a #ClutterModelIter representing the first row in @model.
  *
  * Return value: A new #ClutterModelIter
  *
@@ -893,14 +1029,13 @@ clutter_model_get_first_iter (ClutterModel *model)
  * clutter_model_get_last_iter:
  * @model: a #ClutterModel
  *
- * Retrieves a #ClutterModelIter representing the last row in @model. It calls
- * #clutter_model_get_iter_at_row with model_length -1 as the index_ parameter.
+ * Retrieves a #ClutterModelIter representing the last row in @model.
  *
  * Return value: A new #ClutterModelIter
  *
  * Since 0.6
  **/
-  ClutterModelIter *
+ClutterModelIter *
 clutter_model_get_last_iter (ClutterModel *model)
 {
   guint length;
@@ -1658,10 +1793,11 @@ _model_iter_set_row (ClutterModelIter *iter, guint row)
   g_return_if_fail (CLUTTER_IS_MODEL (model));
   model_priv = model->priv;
 
-  filter_next = g_sequence_get_begin_iter (model_priv->sequence);
   temp_iter = g_object_new (CLUTTER_TYPE_MODEL_ITER, 
-                            "model", model, NULL);
+                            "model", model,
+                            NULL);
 
+  filter_next = g_sequence_get_begin_iter (model_priv->sequence);
   while (!g_sequence_iter_is_end (filter_next))
     {
       g_object_set (temp_iter, "iter", filter_next, NULL);
@@ -1672,10 +1808,13 @@ _model_iter_set_row (ClutterModelIter *iter, guint row)
               iter_priv->seq_iter = filter_next;             
               break;
             }
+
           i++;
         }
+
       filter_next = g_sequence_iter_next (filter_next);
     }
+
   g_object_unref (temp_iter);
 }
 
