@@ -1,6 +1,13 @@
+2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-effect.[ch]: Add clutter_effect_template_construct()
+	function, for language bindings that need to set the alpha function
+	but cannot call the clutter_effect_template_new() ctor themselves.
+
 2007-11-27  Tomas Frydrych  <tf@openedhand.com>
-        * clutter/clutter-behaviour-ellipse.c:
-        * clutter/clutter-behaviour-ellipse.h:
+
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter-behaviour-ellipse.h:
 	(clutter_behaviour_ellipse_get_angle_startx):
 	(clutter_behaviour_ellipse_set_angle_startx):
 	(clutter_behaviour_ellipse_get_angle_endx):

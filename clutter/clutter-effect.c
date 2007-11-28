@@ -82,7 +82,9 @@ G_DEFINE_TYPE (ClutterEffectTemplate, clutter_effect_template, G_TYPE_OBJECT);
 struct _ClutterEffectTemplatePrivate
 {
   ClutterTimeline *timeline;
-  gboolean         do_clone;
+
+  guint do_clone : 1;
+  guint dirty    : 1;
 
   ClutterAlphaFunc alpha_func;
   gpointer alpha_data;
@@ -93,7 +95,6 @@ enum
 {
   PROP_0,
 
-  PROP_ALPHA_FUNC,
   PROP_TIMELINE,
   PROP_DO_CLONE
 };
@@ -148,12 +149,8 @@ clutter_effect_template_set_property (GObject      *object,
 
   switch (prop_id) 
     {
-    case PROP_ALPHA_FUNC:
-      priv->alpha_func = g_value_get_pointer (value);
-      break;
     case PROP_TIMELINE:
-      priv->timeline = g_value_get_object (value);
-      g_object_ref(priv->timeline);
+      priv->timeline = g_value_dup_object (value);
       break;
     case PROP_DO_CLONE:
       clutter_effect_template_set_timeline_clone (template, 
@@ -179,9 +176,6 @@ clutter_effect_template_get_property (GObject    *object,
 
   switch (prop_id) 
     {
-    case PROP_ALPHA_FUNC:
-      g_value_set_pointer (value, priv->alpha_func);
-      break;
     case PROP_TIMELINE:
       g_value_set_object (value, priv->timeline);
       break;
@@ -206,21 +200,6 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
   object_class->set_property = clutter_effect_template_set_property;
   object_class->get_property = clutter_effect_template_get_property;
 
-  /**
-   * ClutterEffectTemplate:alpha-func:
-   *
-   * #ClutterAlphaFunc to be used by the template
-   *
-   * Since: 0.4
-   */
-  g_object_class_install_property 
-           (object_class,
-	    PROP_ALPHA_FUNC,
-	    g_param_spec_pointer ("alpha-func",
-				  "Alpha-Function",
-				  "Alpha reference Function", 
-				  G_PARAM_CONSTRUCT_ONLY |
-				  CLUTTER_PARAM_READWRITE));
   /**
    * ClutterEffectTemplate:timeline:
    *
@@ -260,7 +239,9 @@ static void
 clutter_effect_template_init (ClutterEffectTemplate *self)
 {
   self->priv = EFFECT_TEMPLATE_PRIVATE (self);
+
   self->priv->do_clone = TRUE;
+  self->priv->dirty = TRUE;
 }
 
 static void
@@ -282,6 +263,8 @@ clutter_effect_template_set_alpha_func (ClutterEffectTemplate *self,
   priv->alpha_data = alpha_data;
   priv->alpha_notify = alpha_notify;
   priv->alpha_func = alpha_func;
+
+  priv->dirty = FALSE;
 }
 
 /**
@@ -405,7 +388,9 @@ clutter_effect_template_new_full (ClutterTimeline  *timeline,
                          "timeline", timeline,
                          NULL);
 
-  clutter_effect_template_set_alpha_func (retval, alpha_func, user_data, notify);
+  clutter_effect_template_set_alpha_func (retval,
+                                          alpha_func,
+                                          user_data, notify);
 
   return retval;
 }
@@ -450,6 +435,49 @@ clutter_effect_template_new_for_duration (guint            msecs,
   g_object_unref (timeline);
 
   return retval;
+}
+
+/**
+ * clutter_effect_template_construct:
+ * @template_: a #ClutterEffectTemplate
+ * @timeline: a #ClutterTimeline
+ * @alpha_func: an alpha function to use for the template
+ * @user_data: data to be passed to the alpha function, or %NULL
+ * @notify: function to be called when disposing the alpha function's use
+ *   data, or %NULL
+ *
+ * Constructs a #ClutterEffectTemplate, to be used with the effects API.
+ *
+ * This function can only be called once after the creation of @template_
+ * and is only useful for language bindings.
+ *
+ * Since: 0.6
+ */
+void
+clutter_effect_template_construct (ClutterEffectTemplate *template_,
+                                   ClutterTimeline       *timeline,
+                                   ClutterAlphaFunc       alpha_func,
+                                   gpointer               user_data,
+                                   GDestroyNotify         notify)
+{
+  ClutterEffectTemplatePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_EFFECT_TEMPLATE (template_));
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (alpha_func != NULL);
+
+  if (!template_->priv->dirty)
+    return;
+
+  priv = template_->priv;
+
+  if (priv->timeline)
+    g_object_unref (priv->timeline);
+
+  priv->timeline = g_object_ref (timeline);
+  clutter_effect_template_set_alpha_func (template_,
+                                          alpha_func,
+                                          user_data, notify);
 }
 
 static void

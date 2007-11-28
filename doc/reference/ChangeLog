@@ -1,3 +1,8 @@
+2007-11-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add the new ClutterEffectTemplate::construct
+	method.
+
 2007-11-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-docs.sgml: Shuffle around non-actor classes.

@@ -236,31 +236,6 @@ clutter_container_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-layout</FILE>
-<TITLE>ClutterLayout</TITLE>
-ClutterLayout
-ClutterLayoutIface
-ClutterLayoutFlags
-CLUTTER_LAYOUT_HAS
-CLUTTER_LAYOUT_HAS_HEIGHT_FOR_WIDTH
-CLUTTER_LAYOUT_HAS_NATURAL_SIZE
-CLUTTER_LAYOUT_HAS_TUNABLE_SIZE
-CLUTTER_LAYOUT_HAS_WIDTH_FOR_HEIGHT
-clutter_layout_get_layout_flags
-clutter_layout_height_for_width
-clutter_layout_natural_request
-clutter_layout_tune_request
-clutter_layout_width_for_height
-<SUBSECTION Standard>
-CLUTTER_TYPE_LAYOUT
-CLUTTER_LAYOUT
-CLUTTER_IS_LAYOUT
-CLUTTER_LAYOUT_GET_IFACE
-<SUBSECTION Private>
-clutter_layout_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-rectangle</FILE>
 <TITLE>ClutterRectangle</TITLE>
 ClutterRectangle
@@ -1021,41 +996,6 @@ clutter_entry_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-box</FILE>
-<TITLE>ClutterBox</TITLE>
-ClutterBox
-ClutterBoxClass
-ClutterPackType
-clutter_box_set_color
-clutter_box_get_color
-ClutterPadding
-clutter_box_pack
-clutter_box_set_default_padding
-clutter_box_get_default_padding
-clutter_box_pack_defaults
-clutter_box_remove_all
-ClutterMargin
-clutter_box_set_margin
-clutter_box_get_margin
-ClutterBoxChild
-clutter_box_query_child
-clutter_box_query_nth_child
-<SUBSECTION Standard>
-CLUTTER_TYPE_BOX
-CLUTTER_BOX
-CLUTTER_IS_BOX
-CLUTTER_BOX_CLASS
-CLUTTER_IS_BOX_CLASS
-CLUTTER_BOX_GET_CLASS
-CLUTTER_TYPE_MARGIN
-CLUTTER_TYPE_PADDING
-<SUBSECTION Private>
-clutter_box_get_type
-clutter_margin_get_type
-clutter_padding_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-effect</FILE>
 <TITLE>Clutter Effects</TITLE>
 ClutterEffectTemplate
@@ -1063,6 +1003,7 @@ ClutterEffectTemplateClass
 clutter_effect_template_new
 clutter_effect_template_new_full
 clutter_effect_template_new_for_duration
+clutter_effect_template_construct
 clutter_effect_template_get_timeline_clone
 clutter_effect_template_set_timeline_clone
 
@@ -1085,40 +1026,6 @@ CLUTTER_EFFECT_TEMPLATE_GET_CLASS
 <SUBSECTION Private>
 ClutterEffectTemplatePrivate
 clutter_effect_template_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-hbox</FILE>
-<TITLE>ClutterHBox</TITLE>
-ClutterHBox
-ClutterHBoxClass
-clutter_hbox_new
-<SUBSECTION Standard>
-CLUTTER_TYPE_HBOX
-CLUTTER_HBOX
-CLUTTER_IS_HBOX
-CLUTTER_HBOX_CLASS
-CLUTTER_IS_HBOX_CLASS
-CLUTTER_HBOX_GET_CLASS
-<SUBSECTION Private>
-clutter_hbox_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-vbox</FILE>
-<TITLE>ClutterVBox</TITLE>
-ClutterVBox
-ClutterVBoxClass
-clutter_vbox_new
-<SUBSECTION Standard>
-CLUTTER_TYPE_VBOX
-CLUTTER_VBOX
-CLUTTER_IS_VBOX
-CLUTTER_VBOX_CLASS
-CLUTTER_IS_VBOX_CLASS
-CLUTTER_VBOX_GET_CLASS
-<SUBSECTION Private>
-clutter_vbox_get_type
 </SECTION>
 
 <SECTION>
