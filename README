@@ -259,4 +259,4 @@ Release Notes for Clutter 0.3
   ClutterContainer::actor-added and ClutterContainer::actor-removed should
   be used instead.
 
-Last update: $LastChangedDate$ (rev: $Revision$)
+$LastChangedDate$ ($Revision$)
