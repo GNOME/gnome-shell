@@ -49,7 +49,9 @@
  *   ClutterModel *model;
  *   gint i;
  *
- *   model = clutter_model_new (2, G_TYPE_INT, G_TYPE_STRING);
+ *   model = clutter_model_new (N_COLUMNS,
+ *                              G_TYPE_INT,    "int",
+ *                              G_TYPE_STRING, "string");
  *   for (i = 0; i < 10; i++)
  *     {
  *       gchar *string = g_strdup_printf ("String %d", i);
@@ -79,6 +81,7 @@
  * enum {
  *   COLUMN_INT,
  *   COLUMN_STRING.
+ *
  *   N_COLUMNS
  * };
  * 
@@ -86,10 +89,8 @@
  *   ClutterModel *model;
  *   ClutterModelIter *iter = NULL;
  *
- *   model = clutter_model_new (2, G_TYPE_INT, G_TYPE_STRING);
- *  
  *   /<!-- -->*  Fill the model *<!-- -->/
- *   populate_model (model);
+ *   model = populate_model ();
  *
  *   /<!-- -->* Get the first iter *<!-- -->/
  *   iter = clutter_model_get_first_iter (model);
@@ -305,7 +306,7 @@ clutter_model_init (ClutterModel *self)
   priv->sequence = g_sequence_new (NULL);
 
   priv->column_types = NULL;
-  priv->n_columns = 0;
+  priv->n_columns = -1;
 
   priv->filter = NULL;
   priv->filter_data = NULL;
@@ -411,15 +412,26 @@ _model_filter (ClutterModel *model, ClutterModelIter *iter)
 
 static void
 clutter_model_set_n_columns (ClutterModel *model,
-                             gint          n_columns)
+                             gint          n_columns,
+                             gboolean      set_types,
+                             gboolean      set_names)
 {
   ClutterModelPrivate *priv = model->priv;
-  GType *new_columns;
+  gboolean types_set, names_set;
 
-  new_columns = g_new0 (GType, n_columns);
+  types_set = (priv->column_types != NULL);
+  names_set = (priv->column_names != NULL);
 
-  priv->column_types = new_columns;
+  if (priv->n_columns > 0 && priv->n_columns != n_columns)
+    return;
+
   priv->n_columns = n_columns;
+  
+  if (set_types && !priv->column_types)
+    priv->column_types = g_new0 (GType,  n_columns);
+
+  if (set_names && !priv->column_names)
+    priv->column_names = g_new0 (gchar*, n_columns + 1);
 }
 
 static void
@@ -432,16 +444,35 @@ clutter_model_set_column_type (ClutterModel *model,
   priv->column_types[column] = type;
 }
 
+static void
+clutter_model_set_column_name (ClutterModel *model,
+                               gint          column,
+                               const gchar  *name)
+{
+  ClutterModelPrivate *priv = model->priv;
+
+  priv->column_names[column] = g_strdup (name);
+}
+
 /**
  * clutter_model_new:
  * @n_columns: number of columns in the model
- * @Varargs: all #GType types for the columns, from first to last
+ * @Varargs: @n_columns number of #GType and string pairs
  *
- * Creates a new model with @n_columns columns with the types passed in.
+ * Creates a new model with @n_columns columns with the types 
+ * and names passed in.
  *
- * For example, <literal>clutter_model_new (3, G_TYPE_INT, G_TYPE_STRING,
- * GDK_TYPE_PIXBUF);</literal> will create a new #ClutterModel with three
- * columns of type int, string and #GdkPixbuf respectively.
+ * For example:
+ * 
+ * <informalexample><programlisting>
+ * model = clutter_model_new (3,
+ *                            G_TYPE_INT, "int column",
+ *                            G_TYPE_STRING, "string column",
+ *                            GDK_TYPE_PIXBUF, "pixbuf column");
+ * </programlisting></informalexample>
+ *
+ * will create a new #ClutterModel with three columns of type int,
+ * string and #GdkPixbuf respectively.
  *
  * Return value: a new #ClutterModel
  *
@@ -458,13 +489,14 @@ clutter_model_new (guint n_columns,
   g_return_val_if_fail (n_columns > 0, NULL);
 
   model = g_object_new (CLUTTER_TYPE_MODEL, NULL);
-  clutter_model_set_n_columns (model, n_columns);
+  clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
 
   va_start (args, n_columns);
 
   for (i = 0; i < n_columns; i++)
     { 
       GType type = va_arg (args, GType);
+      const gchar *name = va_arg (args, gchar*);
  
       if (!clutter_model_check_type (type))
         {
@@ -472,7 +504,9 @@ clutter_model_new (guint n_columns,
           g_object_unref (model);
           return NULL;
         }
+
       clutter_model_set_column_type (model, i, type);
+      clutter_model_set_column_name (model, i, name);
     }
 
   va_end (args);
@@ -484,6 +518,7 @@ clutter_model_new (guint n_columns,
  * clutter_model_newv:
  * @n_columns: number of columns in the model
  * @types: an array of #GType types for the columns, from first to last
+ * @names: an array of names for the columns, from first to last
  *
  * Non-vararg creation function. Used primarily by language bindings.
  *
@@ -492,8 +527,9 @@ clutter_model_new (guint n_columns,
  * Since 0.6
  */
 ClutterModel *
-clutter_model_newv (guint n_columns,
-                    GType *types)
+clutter_model_newv (guint                n_columns,
+                    GType               *types,
+                    const gchar * const  names[])
 {
   ClutterModel *model;
   gint i;
@@ -501,7 +537,7 @@ clutter_model_newv (guint n_columns,
   g_return_val_if_fail (n_columns > 0, NULL);
 
   model = g_object_new (CLUTTER_TYPE_MODEL, NULL);
-  clutter_model_set_n_columns (model, n_columns);
+  clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
 
   for (i = 0; i < n_columns; i++)
     {
@@ -511,7 +547,9 @@ clutter_model_newv (guint n_columns,
           g_object_unref (model);
           return NULL;
         }
+
       clutter_model_set_column_type (model, i, types[i]);
+      clutter_model_set_column_name (model, i, names[i]);
     }
 
   return model;
@@ -541,11 +579,13 @@ clutter_model_set_types (ClutterModel *model,
 
   g_return_if_fail (CLUTTER_IS_MODEL (model));
   g_return_if_fail (n_columns > 0);
-  priv = model->priv;
-  
-  g_return_if_fail (priv->n_columns > 0);
 
-  clutter_model_set_n_columns (model, n_columns);
+  priv = model->priv;
+
+  g_return_if_fail (priv->n_columns < 0 || priv->n_columns == n_columns);
+  g_return_if_fail (priv->column_types == NULL);
+
+  clutter_model_set_n_columns (model, n_columns, TRUE, FALSE);
 
   for (i = 0; i < n_columns; i++)
     {
@@ -554,6 +594,7 @@ clutter_model_set_types (ClutterModel *model,
           g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (types[i]));
           return;
         }
+
       clutter_model_set_column_type (model, i, types[i]);
     }
 }
@@ -564,8 +605,11 @@ clutter_model_set_types (ClutterModel *model,
  * @n_columns: the number of column names
  * @names: an array of strings
  *
- * Assigns a name to the columns of a #ClutterModel. This function
- * cannot be called twice on the same model.
+ * Assigns a name to the columns of a #ClutterModel.
+ *
+ * This function is meant primarily for #GObjects that inherit from
+ * #ClutterModel, and should only be used when contructing a #ClutterModel.
+ * It will not work after the initial creation of the #ClutterModel.
  *
  * Since: 0.6
  */
@@ -582,12 +626,13 @@ clutter_model_set_names (ClutterModel        *model,
 
   priv = model->priv;
 
+  g_return_if_fail (priv->n_columns < 0 || priv->n_columns == n_columns);
   g_return_if_fail (priv->column_names == NULL);
-  g_return_if_fail (n_columns <= priv->n_columns);
 
-  priv->column_names = g_new (gchar*, n_columns);
+  clutter_model_set_n_columns (model, n_columns, FALSE, TRUE);
+
   for (i = 0; i < n_columns; i++)
-    priv->column_names[i] = g_strdup (names[i]);
+    clutter_model_set_column_name (model, i, names[i]);
 }
 
 /**

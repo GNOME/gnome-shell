@@ -1,14 +1,29 @@
 #include <clutter/clutter.h>
 #include <string.h>
 
+enum
+{
+  COLUMN_FOO,
+  COLUMN_BAR,
+
+  N_COLUMNS
+};
+
 static void
 print_iter (ClutterModelIter *iter, const gchar *text)
 {
+  ClutterModel *model;
   gint i;
   gchar *string;
 
-  clutter_model_iter_get (iter, 0, &i, 1, &string, -1);
-  g_print ("%s: %d, %s\n", text, i, string);
+  model = clutter_model_iter_get_model (iter);
+  clutter_model_iter_get (iter, COLUMN_FOO, &i, COLUMN_BAR, &string, -1);
+
+  g_print ("%s: (%s: %d), (%s: %s)\n",
+           text,
+           clutter_model_get_column_name (model, COLUMN_FOO), i,
+           clutter_model_get_column_name (model, COLUMN_BAR), string);
+
   g_free (string);
 }
 
@@ -18,7 +33,7 @@ foreach_func (ClutterModel *model, ClutterModelIter *iter, gpointer null)
   gint i;
   gchar *string;
 
-  clutter_model_iter_get (iter, 0, &i, 1, &string, -1);
+  clutter_model_iter_get (iter, COLUMN_FOO, &i, COLUMN_BAR, &string, -1);
   g_print ("Foreach: %d: %s\n", i, string);
   
   g_free (string);
@@ -30,7 +45,7 @@ filter_func (ClutterModel *model, ClutterModelIter *iter, gpointer null)
 {
   gint i = 0;
 
-  clutter_model_iter_get (iter, 0, &i, -1);
+  clutter_model_iter_get (iter, COLUMN_FOO, &i, -1);
 
   return !(i % 2);
 }
@@ -66,14 +81,15 @@ filter_model (ClutterModel *model)
   }
   g_object_unref (iter);
 
-  clutter_model_set_sort (model, 1, sort_func, NULL, NULL);
+  clutter_model_set_sort (model, COLUMN_BAR, sort_func, NULL, NULL);
 
   g_signal_connect (model, "row-changed",
                     G_CALLBACK (on_row_changed), NULL);
   
   iter = clutter_model_get_iter_at_row (model, 0);
-  clutter_model_iter_set (iter, 1, "Changed string of 0th row, automatically"
-                                   " gets sorted", -1);
+  clutter_model_iter_set (iter, COLUMN_BAR, "Changed string of 0th row, "
+                                            "automatically gets sorted",
+                                -1);
   g_object_unref (iter);
 
   clutter_model_foreach (model, foreach_func, NULL);
@@ -126,8 +142,8 @@ populate_model (ClutterModel *model)
       gchar *string = g_strdup_printf ("String %d", i);
 
       clutter_model_append (model,
-                            0, i,
-                            1, string,
+                            COLUMN_FOO, i,
+                            COLUMN_BAR, string,
                             -1);
       g_free (string);
     }
@@ -144,7 +160,7 @@ on_row_added (ClutterModel *model, ClutterModelIter *iter, gpointer null)
   gint i;
   gchar *string;
 
-  clutter_model_iter_get (iter, 0, &i, 1, &string, -1);
+  clutter_model_iter_get (iter, COLUMN_FOO, &i, COLUMN_BAR, &string, -1);
 
   g_print ("Added: %d, %s\n", i, string);
 
@@ -177,7 +193,9 @@ main (int argc, char *argv[])
 
   clutter_init (&argc, &argv);
 
-  model = clutter_model_new (2, G_TYPE_INT, G_TYPE_STRING);
+  model = clutter_model_new (N_COLUMNS,
+                             G_TYPE_INT,    "Foo",
+                             G_TYPE_STRING, "Bar");
 
   g_timeout_add (1000, (GSourceFunc)populate_model, model);
 

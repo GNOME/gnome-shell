@@ -1,7 +1,22 @@
+2007-11-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-model.[ch]: Slight API change in the constructor
+	functions for ClutterModel: clutter_model_new() now takes a list
+	of GType/string pairs for both the column type and the column name.
+
+	(clutter_model_set_n_columns),
+	(clutter_model_set_names),
+	(clutter_model_set_types): Subclasses of ClutterModel will be able
+	to call clutter_model_set_types() and clutter_model_set_names() in
+	any order, provided that they don't call each function more than
+	once.
+
+	* tests/test-model.c: Update the test case.
+
 2007-11-29  Tomas Frydrych  <tf@openedhand.com>
 
-        * clutter/clutter-actor.h:
-        * clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
 	Converted depth and rotation offsets to ClutterUnit.
 
 	(clutter_actor_set_depthu):
@@ -38,11 +53,11 @@
 	columns.
 
 	(clutter_model_get_column_name),
-	(_model_get_column_type): Add API for getting each column's name
+	(_model_get_column_type): Add API for getting each column's name,
 	and the default implementation for ClutterModel.
 
 	(clutter_model_get_column_type),
-	(_model_get_iter_at_row): Add API for getting each column's type
+	(_model_get_iter_at_row): Add API for getting each column's type,
 	and the default implementation for ClutterModel.
 
 	* clutter.symbols: Add ClutterModel and ClutterModelIter symbols,

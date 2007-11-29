@@ -168,7 +168,8 @@ GType clutter_model_get_type (void) G_GNUC_CONST;
 ClutterModel *        clutter_model_new                (guint           n_columns,
                                                         ...);
 ClutterModel *        clutter_model_newv               (guint           n_columns,
-                                                        GType          *types);
+                                                        GType          *types,
+                                                        const gchar * const names[]);
 void                  clutter_model_set_types          (ClutterModel   *model,
                                                         guint           n_columns,
                                                         GType          *types);
