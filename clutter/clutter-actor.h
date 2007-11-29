@@ -347,6 +347,9 @@ void                  clutter_actor_lower_bottom     (ClutterActor          *sel
 void                  clutter_actor_set_depth        (ClutterActor          *self,
 						      gint                   depth);
 gint                  clutter_actor_get_depth        (ClutterActor          *self);
+void                  clutter_actor_set_depthu       (ClutterActor          *self,
+						      ClutterUnit            depth);
+ClutterUnit           clutter_actor_get_depthu       (ClutterActor          *self);
 void                  clutter_actor_set_reactive     (ClutterActor          *actor,
                                                       gboolean               reactive);
 gboolean              clutter_actor_get_reactive     (ClutterActor          *actor);

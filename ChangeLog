@@ -1,3 +1,16 @@
+2007-11-29  Tomas Frydrych  <tf@openedhand.com>
+
+        * clutter/clutter-actor.h:
+        * clutter/clutter-actor.c:
+	Converted depth and rotation offsets to ClutterUnit.
+
+	(clutter_actor_set_depthu):
+	(clutter_actor_get_depthu):
+	Additional ClutterUnit API.
+
+	(_clutter_actor_apply_modelview_transform):
+	Use cogl_translatex() in place of cogl_translate().
+
 2007-11-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* *: Add svn:ignore property to every directory, so that

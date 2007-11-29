@@ -167,8 +167,8 @@ struct _ClutterActorPrivate
   ClutterGeometry clip;                          /* FIXME: Should be Units */
   guint           has_clip : 1;
   ClutterFixed    rxang, ryang, rzang;           /* Rotation*/
-  gint            rzx, rzy, rxy, rxz, ryx, ryz;	 /* FIXME: Should be Units */
-  gint            z;
+  ClutterUnit     rzx, rzy, rxy, rxz, ryx, ryz;	 /* FIXME: Should be Units */
+  ClutterUnit     z;
   guint8          opacity;
   ClutterActor   *parent_actor;
   gchar          *name;
@@ -756,9 +756,9 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
 
   if (parent != NULL)
     {
-      cogl_translate (CLUTTER_UNITS_TO_INT (priv->coords.x1),
-		      CLUTTER_UNITS_TO_INT (priv->coords.y1),
-		      0);
+      cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->coords.x1),
+		       CLUTTER_UNITS_TO_FIXED (priv->coords.y1),
+		       0);
     }
 
   /*
@@ -775,34 +775,52 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
 
   if (parent && (priv->anchor_x || priv->anchor_y))
     {
-      cogl_translate (CLUTTER_UNITS_TO_INT (-priv->anchor_x),
-		      CLUTTER_UNITS_TO_INT (-priv->anchor_y),
-		      0);
+      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->anchor_x),
+		       CLUTTER_UNITS_TO_FIXED (-priv->anchor_y),
+		       0);
     }
 
    if (priv->rzang)
     {
-      cogl_translate (priv->rzx, priv->rzy, 0);
+      cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->rzx),
+		       CLUTTER_UNITS_TO_FIXED (priv->rzy),
+		       0);
+
       cogl_rotatex (priv->rzang, 0, 0, CFX_ONE);
-      cogl_translate (-priv->rzx, -priv->rzy, 0);
+
+      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->rzx),
+		       CLUTTER_UNITS_TO_FIXED (-priv->rzy),
+		       0);
     }
 
   if (priv->ryang)
     {
-      cogl_translate (priv->ryx, 0, priv->z + priv->ryz);
+      cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->ryx),
+		       0,
+		       CLUTTER_UNITS_TO_FIXED (priv->z + priv->ryz));
+
       cogl_rotatex (priv->ryang, 0, CFX_ONE, 0);
-      cogl_translate (-priv->ryx, 0, -(priv->z + priv->ryz));
+
+      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->ryx),
+		       0,
+		       CLUTTER_UNITS_TO_FIXED (-(priv->z + priv->ryz)));
     }
 
   if (priv->rxang)
     {
-      cogl_translate (0, priv->rxy, priv->z + priv->rxz);
+      cogl_translatex (0,
+		       CLUTTER_UNITS_TO_FIXED (priv->rxy),
+		       CLUTTER_UNITS_TO_FIXED (priv->z + priv->rxz));
+
       cogl_rotatex (priv->rxang, CFX_ONE, 0, 0);
-      cogl_translate (0, -priv->rxy, -(priv->z + priv->rxz));
+
+      cogl_translatex (0,
+		       CLUTTER_UNITS_TO_FIXED (-priv->rxy),
+		       CLUTTER_UNITS_TO_FIXED (-(priv->z + priv->rxz)));
     }
 
   if (priv->z)
-    cogl_translate (0, 0, priv->z);
+    cogl_translatex (0, 0, priv->z);
 
   if (priv->has_clip)
     cogl_clip_set (&(priv->clip));
@@ -2773,6 +2791,21 @@ void
 clutter_actor_set_depth (ClutterActor *self,
                          gint          depth)
 {
+  clutter_actor_set_depthu (self, CLUTTER_UNITS_FROM_DEVICE (depth));
+}
+
+/**
+ * clutter_actor_set_depthu:
+ * @self: a #ClutterActor
+ * @depth: Z co-ord in #ClutterUnit
+ *
+ * Sets the Z co-ordinate of @self to @depth in #ClutterUnit, the Units of
+ * which are dependant on the perspective setup.
+ */
+void
+clutter_actor_set_depthu (ClutterActor *self,
+			  ClutterUnit   depth)
+{
   ClutterActorPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
@@ -2818,6 +2851,24 @@ clutter_actor_get_depth (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), -1);
 
+  return CLUTTER_UNITS_TO_DEVICE (self->priv->z);
+}
+
+/**
+ * clutter_actor_get_depthu:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the depth of @self.
+ *
+ * Return value: the depth of a #ClutterActor in #ClutterUnit
+ *
+ * Since: 0.6
+ */
+ClutterUnit
+clutter_actor_get_depthu (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), -1);
+
   return self->priv->z;
 }
 
@@ -2854,20 +2905,20 @@ clutter_actor_set_rotationx (ClutterActor      *self,
     {
     case CLUTTER_X_AXIS:
       priv->rxang = angle;
-      priv->rxy = y;
-      priv->rxz = z;
+      priv->rxy = CLUTTER_UNITS_FROM_DEVICE (y);
+      priv->rxz = CLUTTER_UNITS_FROM_DEVICE (z);
       break;
 
     case CLUTTER_Y_AXIS:
       priv->ryang = angle;
-      priv->ryx = x;
-      priv->ryz = z;
+      priv->ryx = CLUTTER_UNITS_FROM_DEVICE (x);
+      priv->ryz = CLUTTER_UNITS_FROM_DEVICE (z);
       break;
 
     case CLUTTER_Z_AXIS:
       priv->rzang = angle;
-      priv->rzx = x;
-      priv->rzy = y;
+      priv->rzx = CLUTTER_UNITS_FROM_DEVICE (x);
+      priv->rzy = CLUTTER_UNITS_FROM_DEVICE (y);
       break;
     }
 
@@ -2946,25 +2997,25 @@ clutter_actor_get_rotationx (ClutterActor      *self,
     case CLUTTER_X_AXIS:
       retval = priv->rxang;
       if (y)
-        *y = priv->rxy;
+        *y = CLUTTER_UNITS_TO_DEVICE (priv->rxy);
       if (z)
-        *z = priv->rxz;
+        *z = CLUTTER_UNITS_TO_DEVICE (priv->rxz);
       break;
 
     case CLUTTER_Y_AXIS:
       retval = priv->ryang;
       if (x)
-        *x = priv->ryx;
+        *x = CLUTTER_UNITS_TO_DEVICE (priv->ryx);
       if (z)
-        *z = priv->ryz;
+        *z = CLUTTER_UNITS_TO_DEVICE (priv->ryz);
       break;
 
     case CLUTTER_Z_AXIS:
       retval = priv->rzang;
       if (x)
-        *x = priv->rzx;
+        *x = CLUTTER_UNITS_TO_DEVICE (priv->rzx);
       if (y)
-        *y = priv->rzy;
+        *y = CLUTTER_UNITS_TO_DEVICE (priv->rzy);
       break;
     }
 
