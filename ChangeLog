@@ -1,3 +1,8 @@
+2007-11-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* *: Add svn:ignore property to every directory, so that
+	svn status starts being useful.
+
 2007-11-29  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-main.c: (generate_enter_leave_events):
