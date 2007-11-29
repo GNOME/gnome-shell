@@ -1,4 +1,4 @@
-Clutter 0.4 README.
+Clutter 0.6 README.
 ===================
 
 Clutter it an open source software library for creating fast, visually
@@ -259,3 +259,4 @@ Release Notes for Clutter 0.3
   ClutterContainer::actor-added and ClutterContainer::actor-removed should
   be used instead.
 
+Last update: $LastChangedDate$ (rev: $Revision$)
