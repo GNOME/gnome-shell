@@ -74,6 +74,7 @@ struct _ClutterTimelinePrivate
 
   gulong last_frame_msecs;
   gulong start_frame_secs;
+  guint  msecs_delta;
 
   guint loop : 1;
 };
@@ -445,6 +446,7 @@ clutter_timeline_init (ClutterTimeline *self)
 
   self->priv->fps = clutter_get_default_frame_rate ();
   self->priv->n_frames = 0;
+  self->priv->msecs_delta = 0;
 }
 
 static gboolean
@@ -505,6 +507,7 @@ timeline_timeout_func (gpointer data)
               + (timeval.tv_usec / 1000);
       n_frames = (msecs - priv->last_frame_msecs)
                  / (1000 / priv->fps);
+      priv->msecs_delta = msecs - priv->last_frame_msecs;
 
       if (n_frames <= 0)
         {
@@ -528,6 +531,7 @@ timeline_timeout_func (gpointer data)
       /* First frame, set up timings.*/
       priv->start_frame_secs = timeval.tv_sec;
       priv->skipped_frames   = 0;
+	  priv->msecs_delta = 0;
 
       msecs     = timeval.tv_usec / 1000;
       n_frames  = 1;
@@ -1254,19 +1258,7 @@ clutter_timeline_get_delta (ClutterTimeline *timeline,
 
   if (msecs)
     {
-      GTimeVal timeval;
-
-      g_get_current_time (&timeval);
-
-      if (priv->last_frame_msecs)
-        {
-          *msecs = ((timeval.tv_sec - priv->start_frame_secs) * 1000)
-                   + (timeval.tv_usec / 1000);
-        }
-      else
-        {
-          *msecs = timeval.tv_usec / 1000;
-        }
+      *msecs = timeline->priv->msecs_delta;
     }
 
   return priv->skipped_frames + 1;

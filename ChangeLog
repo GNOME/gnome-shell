@@ -1,3 +1,10 @@
+2007-11-30  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-timeline.c: (clutter_timeline_get_delta): return the
+	number of milliseconds passed between new-frame events instead of
+	since new-frame events, thus making sure that the sum of _get_delta's
+	returned for all new-frame events is equal to total time elapsed.
+
 2007-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c (parse_units),
