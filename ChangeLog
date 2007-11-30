@@ -1,5 +1,16 @@
 2007-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-timeline.h:
+	* clutter/clutter-timeline.c
+	(timeline_timeout_func),
+	(clutter_timeline_get_delta): Add a function for retrieving
+	the number of frames and the time (in milliseconds) elapsed
+	since the last timeline ::new-frame signal. This can be useful
+	for implementing a physics engine or just for knowing how if
+	and how many frames have been skipped.
+
+2007-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c (parse_units),
 	(clutter_actor_parse_custom_node),
 	(clutter_scriptable_iface_init): Override the parsing code

@@ -320,9 +320,7 @@ clutter_actor_set_y
 clutter_actor_get_y
 clutter_actor_move_by
 clutter_actor_set_rotation
-clutter_actor_set_rotationx
 clutter_actor_get_rotation
-clutter_actor_get_rotationx
 clutter_actor_set_opacity
 clutter_actor_get_opacity
 clutter_actor_set_name
@@ -348,9 +346,7 @@ clutter_actor_lower_bottom
 <SUBSECTION>
 clutter_actor_set_depth
 clutter_actor_get_depth
-clutter_actor_set_scalex
 clutter_actor_set_scale
-clutter_actor_get_scalex
 clutter_actor_get_scale
 clutter_actor_get_abs_size
 clutter_actor_apply_transform_to_point
@@ -362,13 +358,33 @@ clutter_actor_get_vertices
 <SUBSECTION>
 clutter_actor_set_anchor_point
 clutter_actor_get_anchor_point
-clutter_actor_set_anchor_pointu
-clutter_actor_get_anchor_pointu
 clutter_actor_set_anchor_point_from_gravity
 
 <SUBSECTION>
 clutter_actor_set_reactive
 clutter_actor_get_reactive
+
+<SUBSECTION>
+clutter_actor_set_depthu
+clutter_actor_get_depthu
+clutter_actor_set_heightu
+clutter_actor_get_heightu
+clutter_actor_set_widthu
+clutter_actor_get_widthu
+clutter_actor_set_xu
+clutter_actor_get_xu
+clutter_actor_set_yu
+clutter_actor_get_yu
+clutter_actor_set_positionu
+clutter_actor_set_sizeu
+clutter_actor_set_anchor_pointu
+clutter_actor_get_anchor_pointu
+
+<SUBSECTION>
+clutter_actor_set_scalex
+clutter_actor_get_scalex
+clutter_actor_set_rotationx
+clutter_actor_get_rotationx
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
@@ -445,6 +461,8 @@ clutter_stage_snapshot
 clutter_stage_event
 clutter_stage_set_key_focus
 clutter_stage_get_key_focus
+clutter_stage_get_resolution
+clutter_stage_get_resolutionx
 
 <SUBSECTION>
 ClutterPerspective
@@ -516,6 +534,7 @@ clutter_timeline_rewind
 clutter_timeline_skip
 clutter_timeline_advance
 clutter_timeline_get_current_frame
+clutter_timeline_get_delta
 clutter_timeline_get_progress
 clutter_timeline_get_progressx
 clutter_timeline_is_playing
@@ -1126,12 +1145,16 @@ ClutterModelSortFunc
 ClutterModelForeachFunc
 clutter_model_new
 clutter_model_newv
+clutter_model_set_names
 clutter_model_set_types
 clutter_model_append
 clutter_model_prepend
 clutter_model_insert
 clutter_model_insert_value
 clutter_model_remove
+clutter_model_get_column_name
+clutter_model_get_column_type
+clutter_model_get_n_columns
 clutter_model_get_n_rows
 clutter_model_get_first_iter
 clutter_model_get_last_iter

@@ -1,3 +1,7 @@
+2007-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Update with the newly added API.
+
 2007-11-28  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter-sections.txt: added new CLUTTER_UNITS_FROM_* macros.

@@ -70,6 +70,8 @@ struct _ClutterTimelinePrivate
   guint delay;
   guint duration;
 
+  gint skipped_frames;
+
   gulong last_frame_msecs;
   gulong start_frame_secs;
 
@@ -505,19 +507,27 @@ timeline_timeout_func (gpointer data)
                  / (1000 / priv->fps);
 
       if (n_frames <= 0)
-        n_frames = 1;
+        {
+          n_frames = 1;
+          priv->skipped_frames = 0;
+        }
       else if (n_frames > 1)
 	{
 	  CLUTTER_TIMESTAMP (SCHEDULER,
 			     "Timeline [%p], skipping %d frames\n",
 			     timeline,
                              n_frames);
+
+          priv->skipped_frames = n_frames - 1;
 	}
+      else
+        priv->skipped_frames = 0;
     }
   else
     {
       /* First frame, set up timings.*/
       priv->start_frame_secs = timeval.tv_sec;
+      priv->skipped_frames   = 0;
 
       msecs     = timeval.tv_usec / 1000;
       n_frames  = 1;
@@ -1205,4 +1215,59 @@ clutter_timeline_set_direction (ClutterTimeline          *timeline,
 
       g_object_notify (G_OBJECT (timeline), "direction");
     }
+}
+
+/**
+ * clutter_timeline_get_delta:
+ * @timeline: a #ClutterTimeline
+ * @msecs: return location for the milliseconds elapsed since the last
+ *   frame, or %NULL
+ *
+ * Retrieves the number of frames and the amount of time elapsed since
+ * the last ClutterTimeline::new-frame signal.
+ *
+ * This function is only useful inside handlers for the ::new-frame
+ * signal, and its behaviour is undefined if the timeline is not
+ * playing.
+ *
+ * Return value: the amount of frames elapsed since the last one
+ *
+ * Since: 0.6
+ */
+guint
+clutter_timeline_get_delta (ClutterTimeline *timeline,
+                            guint           *msecs)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
+
+  if (!clutter_timeline_is_playing (timeline))
+    {
+      if (msecs)
+        *msecs = 0;
+
+      return 0;
+    }
+
+  priv = timeline->priv;
+
+  if (msecs)
+    {
+      GTimeVal timeval;
+
+      g_get_current_time (&timeval);
+
+      if (priv->last_frame_msecs)
+        {
+          *msecs = ((timeval.tv_sec - priv->start_frame_secs) * 1000)
+                   + (timeval.tv_usec / 1000);
+        }
+      else
+        {
+          *msecs = timeval.tv_usec / 1000;
+        }
+    }
+
+  return priv->skipped_frames + 1;
 }
