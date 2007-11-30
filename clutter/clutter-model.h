@@ -123,6 +123,10 @@ struct _ClutterModel
  * @row_changed: signal class handler for ClutterModel::row-changed
  * @sort_changed: signal class handler for ClutterModel::sort-changed
  * @filter_changed: signal class handler for ClutterModel::filter-changed
+ * @get_column_name: virtual function for returning the name of a column
+ * @get_column_type: virtual function for returning the type of a column
+ * @get_iter_at_row: virtual function for returning an iterator for the
+ *   given row
  *
  * Class for #ClutterModel instances.
  *

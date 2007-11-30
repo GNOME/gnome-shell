@@ -1,5 +1,10 @@
 2007-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model.h: Complete the documentation of
+	the ClutterModelClass structure members.
+
+2007-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-timeline.h:
 	* clutter/clutter-timeline.c
 	(timeline_timeout_func),
