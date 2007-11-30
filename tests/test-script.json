@@ -3,8 +3,6 @@
     "id" : "main-stage",
     "type" : "ClutterStage",
     "color" : "white",
-    "width" : 500,
-    "height" : "400px",
     "signals" : [
       { "name" : "key-press-event", "handler" : "clutter_main_quit" }
     ],

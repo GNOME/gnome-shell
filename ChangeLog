@@ -1,5 +1,18 @@
 2007-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c (parse_units),
+	(clutter_actor_parse_custom_node): Do not allow using percentages
+	of the stage on the stage itself, as it makes little to no
+	sense.
+
+	* clutter/clutter-script.c:
+	(clutter_script_construct_object): Rearrange code.
+
+	* tests/test-script.json: Do not set the size of the stage, to
+	test for the stage size percentage.
+
+2007-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model.h: Complete the documentation of
 	the ClutterModelClass structure members.
 

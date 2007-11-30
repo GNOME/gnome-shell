@@ -1244,6 +1244,15 @@ clutter_script_construct_object (ClutterScript *script,
       g_array_free (construct_params, TRUE);
    }
 
+  /* then we get the rest of the parameters, asking the object itself
+   * to translate them for us, if we cannot do that
+   */
+  oinfo->properties = clutter_script_translate_parameters (script,
+                                                           object,
+                                                           oinfo->id,
+                                                           oinfo->properties,
+                                                           &params);
+
   /* shortcut, to avoid typechecking every time */
   if (CLUTTER_IS_SCRIPTABLE (object))
     {
@@ -1253,15 +1262,6 @@ clutter_script_construct_object (ClutterScript *script,
       if (iface->set_custom_property)
         set_custom_property = TRUE;
     }
-
-  /* then we get the rest of the parameters, asking the object itself
-   * to translate them for us, if we cannot do that
-   */
-  oinfo->properties = clutter_script_translate_parameters (script,
-                                                           object,
-                                                           oinfo->id,
-                                                           oinfo->properties,
-                                                           &params);
 
   /* consume all the properties we could translate in this pass */
   for (i = 0; i < params->len; i++)

@@ -3774,7 +3774,8 @@ typedef enum
 } ParseDimension;
 
 static ClutterUnit
-parse_units (ParseDimension  dimension,
+parse_units (ClutterActor   *self,
+             ParseDimension  dimension,
              JsonNode       *node)
 {
   GValue value = { 0, };
@@ -3825,6 +3826,17 @@ parse_units (ParseDimension  dimension,
 
       if (end[0] == '%' && end[1] == '\0')
         {
+          if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+            {
+              g_warning ("Unable to set percentage of %s on a top-level "
+                         "actor of type `%s'",
+                         (dimension == PARSE_X || dimension == PARSE_WIDTH) ? "width"
+                                                                            : "height",
+                         g_type_name (G_OBJECT_TYPE (self)));
+              retval = 0;
+              goto out;
+            }
+
           if (dimension == PARSE_X || dimension == PARSE_WIDTH)
             retval = CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE (val);
           else
@@ -3843,7 +3855,20 @@ parse_units (ParseDimension  dimension,
     }
   else if (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE))
     {
-      gint val = CLAMP (g_value_get_double (&value) * 100, 0, 100);
+      gint val;
+      
+      if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+        {
+          g_warning ("Unable to set percentage of %s on a top-level "
+                     "actor of type `%s'",
+                     (dimension == PARSE_X || dimension == PARSE_WIDTH) ? "width"
+                                                                        : "height",
+                     g_type_name (G_OBJECT_TYPE (self)));
+          retval = 0;
+          goto out;
+        }
+
+      val = CLAMP (g_value_get_double (&value) * 100, 0, 100);
 
       if (dimension == PARSE_X || dimension == PARSE_WIDTH)
         retval = CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE (val);
@@ -3871,6 +3896,7 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
                                  const gchar       *name,
                                  JsonNode          *node)
 {
+  ClutterActor *actor = CLUTTER_ACTOR (scriptable);
   gboolean retval = FALSE;
 
   if ((name[0] == 'x' && name[1] == '\0') ||
@@ -3890,7 +3916,7 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
       else
         dimension = PARSE_HEIGHT;
 
-      units = parse_units (dimension, node);
+      units = parse_units (actor, dimension, node);
 
       /* convert back to pixels */
       g_value_init (value, G_TYPE_INT);
