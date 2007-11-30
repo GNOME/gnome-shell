@@ -86,28 +86,28 @@ typedef gint32 ClutterUnit;
 #define CLUTTER_UNITS_TO_PANGO_UNIT(x)   ((x) >> 6)
 
 #define CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE(x) \
-    ((clutter_actor_get_widthu (clutter_stage_get_default ()) * x)/100)
+  ((clutter_actor_get_widthu (clutter_stage_get_default ()) * x) / 100)
 
 #define CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE(x) \
-    ((clutter_actor_get_heightu (clutter_stage_get_default ()) * x)/100)
+  ((clutter_actor_get_heightu (clutter_stage_get_default ()) * x) / 100)
 
 #define CLUTTER_UNITS_FROM_PARENT_WIDTH_PERCENTAGE(a, x) \
-    ((clutter_actor_get_widthu (clutter_actor_get_parent (a)) * x)/100)
+  ((clutter_actor_get_widthu (clutter_actor_get_parent (a)) * x) / 100)
 
 #define CLUTTER_UNITS_FROM_PARENT_HEIGHT_PERCENTAGE(a, x) \
-    ((clutter_actor_get_heightu (clutter_actor_get_parent (a)) * x)/100)
+  ((clutter_actor_get_heightu (clutter_actor_get_parent (a)) * x) / 100)
 
 #define CLUTTER_UNITS_FROM_MM(x) \
-  CLUTTER_UNITS_FROM_FLOAT(((x*clutter_stage_get_resolution (clutter_stage_get_default ())) / 25.4))
+  (CLUTTER_UNITS_FROM_FLOAT ((((x) * clutter_stage_get_resolution ((ClutterStage *) clutter_stage_get_default ())) / 25.4)))
 
 #define CLUTTER_UNITS_FROM_MMX(x) \
-  CFX_DIV(CFX_MUL(x,clutter_stage_get_resolutionx(clutter_stage_get_default())),0x196666)
+  (CFX_DIV (CFX_MUL ((x), clutter_stage_get_resolutionx ((ClutterStage *) clutter_stage_get_default ())), 0x196666))
 
 #define CLUTTER_UNITS_FROM_POINTS(x) \
-  CLUTTER_UNITS_FROM_FLOAT(((x*clutter_stage_get_resolution(clutter_stage_get_default()))/72.0))
+  CLUTTER_UNITS_FROM_FLOAT ((((x) * clutter_stage_get_resolution ((ClutterStage *) clutter_stage_get_default ())) / 72.0))
 
 #define CLUTTER_UNITS_FROM_POINTSX(x) \
-  (CFX_MUL(x,clutter_stage_get_resolutionx(clutter_stage_get_default()))/72)
+  (CFX_MUL ((x), clutter_stage_get_resolutionx ((ClutterStage *) clutter_stage_get_default ())) / 72)
 
 G_END_DECLS
 

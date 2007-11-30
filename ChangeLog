@@ -1,3 +1,23 @@
+2007-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c (parse_units),
+	(clutter_actor_parse_custom_node),
+	(clutter_scriptable_iface_init): Override the parsing code
+	for the x, y, width and height properties of ClutterActor,
+	to allow strings with modifiers when defining the position
+	and/or the dimensions of an actor. Bare integers are assumed
+	as pixels; floating point values in the [0, 1] interval are
+	assumed as percentages; strings can have these modifiers:
+
+	  - px - pixels
+	  - mm - millimeters
+	  - pt - points (at the current resolution)
+	  - %  - percentage of the stage
+
+	* clutter/clutter-units.h: Fix the conversion macros
+
+	* tests/test-script.json: Test the new values.
+
 2007-11-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-model.[ch]: Slight API change in the constructor

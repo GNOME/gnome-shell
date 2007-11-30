@@ -150,10 +150,6 @@
 #include "clutter-units.h"
 #include "cogl.h"
 
-G_DEFINE_ABSTRACT_TYPE (ClutterActor,
-                        clutter_actor,
-                        G_TYPE_INITIALLY_UNOWNED);
-
 static guint32 __id = 0;
 
 
@@ -220,11 +216,16 @@ enum
 
 static guint actor_signals[LAST_SIGNAL] = { 0, };
 
-static void
-_clutter_actor_apply_modelview_transform (ClutterActor * self);
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
-static void
-_clutter_actor_apply_modelview_transform_recursive (ClutterActor * self);
+static void _clutter_actor_apply_modelview_transform           (ClutterActor *self);
+static void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self);
+
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
+                                  clutter_actor,
+                                  G_TYPE_INITIALLY_UNOWNED,
+                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                         clutter_scriptable_iface_init));
 
 static gboolean
 redraw_update_idle (gpointer data)
@@ -3762,6 +3763,149 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
 
   priv->anchor_x = x;
   priv->anchor_y = y;
+}
+
+typedef enum
+{
+  PARSE_X,
+  PARSE_Y,
+  PARSE_WIDTH,
+  PARSE_HEIGHT
+} ParseDimension;
+
+static ClutterUnit
+parse_units (ParseDimension  dimension,
+             JsonNode       *node)
+{
+  GValue value = { 0, };
+  ClutterUnit retval = 0;
+
+  if (JSON_NODE_TYPE (node) != JSON_NODE_VALUE)
+    return 0;
+
+  json_node_get_value (node, &value);
+
+  if (G_VALUE_HOLDS (&value, G_TYPE_INT))
+    {
+      gint pixels = g_value_get_int (&value);
+
+      retval = CLUTTER_UNITS_FROM_DEVICE (pixels);
+    }
+  else if (G_VALUE_HOLDS (&value, G_TYPE_STRING))
+    {
+      gint64 val;
+      gchar *end;
+
+      val = g_ascii_strtoll (g_value_get_string (&value), &end, 10);
+
+      /* assume pixels */
+      if (*end == '\0')
+        {
+          retval = CLUTTER_UNITS_FROM_DEVICE (val);
+          goto out;
+        }
+
+      if (strcmp (end, "px") == 0)
+        {
+          retval = CLUTTER_UNITS_FROM_DEVICE (val);
+          goto out;
+        }
+
+      if (strcmp (end, "mm") == 0)
+        {
+          retval = CLUTTER_UNITS_FROM_MM (val);
+          goto out;
+        }
+
+      if (strcmp (end, "pt") == 0)
+        {
+          retval = CLUTTER_UNITS_FROM_POINTS (val);
+          goto out;
+        }
+
+      if (end[0] == '%' && end[1] == '\0')
+        {
+          if (dimension == PARSE_X || dimension == PARSE_WIDTH)
+            retval = CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE (val);
+          else
+            retval = CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE (val);
+
+          goto out;
+        }
+
+      g_warning ("Invalid value `%s': integers, strings or floating point "
+                 "values can be used for the x, y, width and height "
+                 "properties. Valid modifiers for strings are `px', 'mm' "
+                 "and '%%'.",
+                 g_value_get_string (&value));
+
+      retval = 0;
+    }
+  else if (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE))
+    {
+      gint val = CLAMP (g_value_get_double (&value) * 100, 0, 100);
+
+      if (dimension == PARSE_X || dimension == PARSE_WIDTH)
+        retval = CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE (val);
+      else
+        retval = CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE (val);
+    }
+  else
+    {
+      g_warning ("Invalid value of type `%s': integers, strings of floating "
+                 "point values can be used for the x, y, width and height "
+                 "properties.",
+                 g_type_name (G_VALUE_TYPE (&value)));
+    }
+
+out:
+  g_value_unset (&value);
+
+  return retval;
+}
+
+static gboolean
+clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
+                                 ClutterScript     *script,
+                                 GValue            *value,
+                                 const gchar       *name,
+                                 JsonNode          *node)
+{
+  gboolean retval = FALSE;
+
+  if ((name[0] == 'x' && name[1] == '\0') ||
+      (name[0] == 'y' && name[1] == '\0') ||
+      (strcmp (name, "width") == 0) ||
+      (strcmp (name, "height") == 0))
+    {
+      ClutterUnit units;
+      ParseDimension dimension;
+
+      if (name[0] == 'x')
+        dimension = PARSE_X;
+      else if (name[0] == 'y')
+        dimension = PARSE_Y;
+      else if (name[0] == 'w')
+        dimension = PARSE_WIDTH;
+      else
+        dimension = PARSE_HEIGHT;
+
+      units = parse_units (dimension, node);
+
+      /* convert back to pixels */
+      g_value_init (value, G_TYPE_INT);
+      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE (units));
+
+      retval = TRUE;
+    }
+
+  return retval;
+}
+
+static void
+clutter_scriptable_iface_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_actor_parse_custom_node;
 }
 
 /*
