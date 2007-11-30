@@ -528,6 +528,7 @@ clutter_timeline_advance
 clutter_timeline_clone
 clutter_timeline_get_current_frame
 clutter_timeline_get_delay
+clutter_timeline_get_delta
 clutter_timeline_get_direction
 clutter_timeline_get_duration
 clutter_timeline_get_loop
