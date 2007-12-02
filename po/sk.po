@@ -9,21 +9,19 @@
 # Stanislav Visnovsky <visnovsky@kde.org>, 2003.
 # Marcel Telka <marcel@telka.sk>, 2005.
 # Peter Tuharsky <tuharsky@misbb.sk>, 2007.
+# Pavol Šimo <palo.simo@gmail.com>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: sk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-15 16:11+0200\n"
-"PO-Revision-Date: 2007-09-14 15:59+0100\n"
-"Last-Translator: Peter Tuhársky <tuharsky@misbb.sk>\n"
+"POT-Creation-Date: 2007-10-30 18:12+0000\n"
+"PO-Revision-Date: 2007-11-17 21:42+0100\n"
+"Last-Translator: Pavol Šimo <palo.simo@gmail.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=3; plural= (n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Poedit-Language: Slovak\n"
-"X-Poedit-Country: SLOVAKIA\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
@@ -183,43 +181,47 @@ msgstr ""
 "kódoch.\n"
 "Záruka sa NEPOSKYTUJE; ani pre PREDAJNOSŤ alebo VHODNOSŤ PRE URČITÝ ÚČEL.\n"
 
-#: ../src/main.c:171
+#: ../src/main.c:172
 msgid "Disable connection to session manager"
 msgstr "Zakázať spojenia na správcu relácií"
 
-#: ../src/main.c:177
+#: ../src/main.c:178
 msgid "Replace the running window manager with Metacity"
 msgstr "Nahradiť bežiaceho správcu okien správcom Metacity"
 
-#: ../src/main.c:183
+#: ../src/main.c:184
 msgid "Specify session management ID"
 msgstr "Zadať ID správy relácií"
 
-#: ../src/main.c:188
+#: ../src/main.c:189
 msgid "X Display to use"
 msgstr "X displej, ktorý bude použitý"
 
-#: ../src/main.c:194
+#: ../src/main.c:195
 msgid "Initialize session from savefile"
 msgstr "Inicializovať reláciu z uloženého súboru"
 
-#: ../src/main.c:200
+#: ../src/main.c:201
 msgid "Print version"
 msgstr "Vypísať verziu"
 
-#: ../src/main.c:353
+#: ../src/main.c:207
+msgid "Make X calls synchronous"
+msgstr "Používať synchrónne volania X"
+
+#: ../src/main.c:361
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Nepodarilo sa prehľadať adresár s témami: %s\n"
 
-#: ../src/main.c:369
+#: ../src/main.c:377
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Nepodarilo sa nájsť tému. Overte, že %s existuje a obsahuje obvyklé témy.\n"
 
-#: ../src/main.c:429
+#: ../src/main.c:437
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nepodarilo znovu spustiť: %s\n"
@@ -227,7 +229,7 @@ msgstr "Nepodarilo znovu spustiť: %s\n"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:70
 msgid "Mi_nimize"
-msgstr "_Minimalizovať"
+msgstr "Mi_nimalizovať"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:72
@@ -237,7 +239,7 @@ msgstr "Ma_ximalizovať"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:74
 msgid "Unma_ximize"
-msgstr "_Odmaximalizovať"
+msgstr "Zrušiť ma_ximalizáciu"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:76
@@ -252,12 +254,12 @@ msgstr "_Rozbaliť"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:80
 msgid "_Move"
-msgstr "_Presunúť"
+msgstr "Pre_miestniť"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:82
 msgid "_Resize"
-msgstr "Zmeniť _veľkosť"
+msgstr "Zmeniť veľko_sť"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:84
@@ -273,7 +275,7 @@ msgstr "Vždy na _vrchu"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:91
 msgid "_Always on Visible Workspace"
-msgstr "_Vždy na viditeľnej pracovnej ploche"
+msgstr "Vž_dy na viditeľnej pracovnej ploche"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:93
@@ -283,7 +285,7 @@ msgstr "_Len na tejto pracovnej ploche"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:95
 msgid "Move to Workspace _Left"
-msgstr "Presunúť na pracovnú plochu _vľavo"
+msgstr "Presunúť na pracovnú plochu vľav_o"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:97
@@ -322,7 +324,7 @@ msgstr "Pracovná plocha %s%d"
 
 #: ../src/menu.c:390
 msgid "Move to Another _Workspace"
-msgstr "Presunúť na inú _pracovnú plochu"
+msgstr "P_resunúť na inú pracovnú plochu"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -3561,7 +3563,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Neplatné WM_TRANSIENT_FOR okno 0x%lx nastavené pre %s.\n"
 
 #. first time through
-#: ../src/window.c:5551
+#: ../src/window.c:5601
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3577,7 +3579,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6116
+#: ../src/window.c:6166
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
