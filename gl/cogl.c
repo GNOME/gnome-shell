@@ -621,6 +621,12 @@ cogl_get_features ()
     }
 #endif
 
+  if (cogl_check_extension ("GL_ARB_vertex_shader", gl_extensions) &&
+      cogl_check_extension ("GL_ARB_fragment_shader", gl_extensions))
+    {
+      flags |= CLUTTER_FEATURE_SHADERS_GLSL;
+    }
+
   return flags;
 }
 
@@ -745,4 +751,135 @@ cogl_fog_set (const ClutterColor *fog_color,
   glFogf (GL_FOG_DENSITY, CLUTTER_FIXED_TO_FLOAT (density));
   glFogf (GL_FOG_START, CLUTTER_FIXED_TO_FLOAT (start));
   glFogf (GL_FOG_END, CLUTTER_FIXED_TO_FLOAT (stop));
+}
+
+#ifdef __GNUC__
+
+#define PROC(rettype, retval, procname, args...) \
+  static rettype (*proc) (args) = NULL;  \
+   if (proc == NULL) \
+     { \
+       proc = (void*)cogl_get_proc_address (#procname);\
+       if (!proc)\
+         {\
+           g_warning ("failed to lookup proc: %s", #procname);\
+           return retval;\
+         }\
+     }
+#else
+
+#define PROC(rettype, retval, procname, ...) \
+  static rettype (*proc) (__VA_ARGS__) = NULL;  \
+   if (proc == NULL) \
+     { \
+       proc = (void*)cogl_get_proc_address (#procname);\
+       if (!proc)\
+         {\
+           g_warning ("failed to lookup proc: %s", #procname);\
+           return retval;\
+         }\
+     }
+
+#endif
+
+COGLint
+cogl_create_program (void)
+{
+  PROC (GLhandleARB, 0, glCreateProgramObjectARB, void);
+  return proc ();
+}
+
+COGLint
+cogl_create_shader (COGLenum shaderType)
+{
+  PROC (GLhandleARB, 0, glCreateShaderObjectARB, GLenum);
+  return proc (shaderType);
+}
+
+void
+cogl_shader_source (COGLint      shader,
+                    const gchar *source)
+{
+  PROC (GLvoid,, glShaderSourceARB, GLhandleARB, GLsizei, const GLcharARB **, const GLint *)
+  proc (shader, 1, &source, NULL);
+}
+
+void
+cogl_shader_compile (COGLint shader_handle)
+{
+  PROC (GLvoid,, glCompileShaderARB, GLhandleARB);
+  proc (shader_handle);
+}
+
+void
+cogl_program_attach_shader (COGLint program_handle,
+                            COGLint shader_handle)
+{
+  PROC (GLvoid,, glAttachObjectARB, GLhandleARB, GLhandleARB);
+  proc (program_handle, shader_handle);
+}
+
+void
+cogl_program_link (COGLint program_handle)
+{
+  PROC (GLvoid,, glLinkProgramARB, GLhandleARB);
+  proc (program_handle);
+}
+
+void
+cogl_program_use (COGLint program_handle)
+{
+  PROC (GLvoid,, glUseProgramObjectARB, GLhandleARB);
+  proc (program_handle);
+}
+
+COGLint
+cogl_program_get_uniform_location (COGLint      program_handle,
+                                   const gchar *uniform_name)
+{
+  PROC (GLint,0, glGetUniformLocationARB, GLhandleARB, const GLcharARB *)
+  return proc (program_handle, uniform_name);
+}
+
+void
+cogl_program_destroy (COGLint      handle)
+{
+  PROC (GLvoid,, glDeleteObjectARB, GLhandleARB);
+  proc (handle);
+}
+
+void
+cogl_shader_destroy (COGLint handle)
+{
+  PROC (GLvoid,, glDeleteObjectARB, GLhandleARB);
+  proc (handle);
+}
+
+void
+cogl_shader_get_info_log (COGLint      handle,
+                          guint        size,
+                          gchar       *buffer)
+{
+  gint len;
+  PROC (GLvoid,, glGetInfoLogARB, GLhandleARB, GLsizei, GLsizei *, GLcharARB *);
+  proc (handle, size-1, &len, buffer);
+  buffer[len]='\0';
+}
+
+void
+cogl_shader_get_parameteriv (COGLint      handle,
+                             COGLenum     pname,
+                             COGLint     *dest)
+{
+  PROC (GLvoid,, glGetObjectParameterivARB, GLhandleARB, GLenum, GLint*)
+  proc (handle, pname, dest);
+}
+
+
+void
+cogl_program_uniform_1f (COGLint uniform_no,
+                         gfloat  value)
+{
+  PROC (GLvoid,, glUniform1fARB, GLint, GLfloat);
+  proc (uniform_no, value);
 }

@@ -207,6 +207,58 @@ cogl_fog_set (const ClutterColor *fog_color,
               ClutterFixed        z_near,
               ClutterFixed        z_far);
 
+
+COGLint
+cogl_create_shader               (COGLenum     shaderType);
+
+void
+cogl_shader_destroy              (COGLint      handle);
+
+
+void
+cogl_shader_source               (COGLint      shader,
+                                  const gchar *source);
+void
+cogl_shader_compile               (COGLint      shader_handle);
+
+void
+cogl_shader_get_info_log          (COGLint      handle,
+                                   guint        size,
+                                   gchar       *buffer);
+
+void
+cogl_shader_get_parameteriv       (COGLint      handle,
+                                   COGLenum     pname,
+                                   COGLint     *dest);
+
+
+COGLint
+cogl_create_program               (void);
+
+void
+cogl_program_destroy              (COGLint      handle);
+
+void
+cogl_program_attach_shader        (COGLint      program_handle,
+                                   COGLint      shader_handle);
+
+/* 0 to use none */
+void
+cogl_program_link                 (COGLint      program_handle);
+
+void
+cogl_program_use                  (COGLint      program_handle);
+
+COGLint
+cogl_program_get_uniform_location (COGLint      program_int,
+                                   const gchar *uniform_name);
+
+
+void
+cogl_program_uniform_1f           (COGLint      uniform_no,
+                                   gfloat       value);
+
+
 G_END_DECLS
 
 #endif /* __COGL_H__ */
