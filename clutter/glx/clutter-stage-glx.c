@@ -125,11 +125,13 @@ clutter_stage_glx_realize (ClutterActor *actor)
 	};
 
       if (stage_x11->xvisinfo)
-	XFree (stage_x11->xvisinfo);
+        XFree (stage_x11->xvisinfo);
+      stage_x11->xvisinfo = NULL;
 
+	  /* The following check seems strange */
       if (stage_x11->xvisinfo == None)
 	stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
-                                               stage_x11->xscreen,
+                                           stage_x11->xscreen,
 					       gl_attributes);
       if (!stage_x11->xvisinfo)
 	{
@@ -216,8 +218,9 @@ clutter_stage_glx_realize (ClutterActor *actor)
 	0
       };
 
-      if (stage_x11->xvisinfo)
-	XFree (stage_x11->xvisinfo);
+    if (stage_x11->xvisinfo )
+       XFree (stage_x11->xvisinfo);
+    stage_x11->xvisinfo = NULL;
 
       CLUTTER_NOTE (GL, "glXChooseVisual");
       stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,

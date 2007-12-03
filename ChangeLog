@@ -1,3 +1,9 @@
+2007-12-03  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/glx/clutter-stage-glx.c: for extra sanity, set
+	stage_x11->xvisinfo = NULL after XFree. Makes using the root window
+	as foreign window possible.
+
 2007-11-30  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-timeline.c: (clutter_timeline_get_delta): return the
