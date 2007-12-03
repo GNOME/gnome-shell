@@ -1,5 +1,9 @@
 2007-12-03  Øyvind Kolås  <pippin@o-hand.com>
 
+	* clutter/clutter-shader.[ch]: do not include GL.h.
+
+2007-12-03  Øyvind Kolås  <pippin@o-hand.com>
+
 	Support for shaders in clutter. At the moment limited to drivers
 	providing GLSL support.
 

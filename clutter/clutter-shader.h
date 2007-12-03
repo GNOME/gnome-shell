@@ -28,7 +28,6 @@
 #ifndef CLUTTER_SHADER_H
 #define CLUTTER_SHADER_H
 
-#include <GL/gl.h>
 #include <glib.h>
 #include <glib-object.h>
 
@@ -72,7 +71,6 @@ void            clutter_shader_set_uniform_1f   (ClutterShader *self,
                                                  gfloat         value);
 /* should be private and internal */
 void            clutter_shader_release_all    (void);
-gboolean        clutter_shader_has_glsl         (void);
 
 
 G_END_DECLS

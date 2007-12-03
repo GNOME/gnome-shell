@@ -57,16 +57,16 @@ static void     clutter_shader_get_property (GObject               *object,
 
 struct _ClutterShaderPrivate
 {
-  gboolean     glsl;   /* The shader is a GLSL shader */
-  gboolean     bound;  /* The shader is bound to the GL context */
+  gboolean  glsl;   /* The shader is a GLSL shader */
+  gboolean  bound;  /* The shader is bound to the GL context */
 
-  gchar       *vertex_shader_source;  /* source (or asm) for vertex shader  */
-  gchar       *fragment_shader_source;/* source (or asm) for fragment shader*/
+  gchar    *vertex_shader_source;  /* source (or asm) for vertex shader  */
+  gchar    *fragment_shader_source;/* source (or asm) for fragment shader*/
 
-  GLhandleARB  program;
+  COGLint   program;
 
-  GLhandleARB  vertex_shader;
-  GLhandleARB  fragment_shader;
+  COGLint   vertex_shader;
+  COGLint   fragment_shader;
 };
 
 enum 
