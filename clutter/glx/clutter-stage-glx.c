@@ -36,6 +36,7 @@
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
 #include "../clutter-units.h"
+#include "../clutter-shader.h"
 
 #include "cogl.h"
 
@@ -59,6 +60,9 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
   g_object_get (actor, "offscreen", &was_offscreen, NULL);
 
   clutter_x11_trap_x_errors ();
+
+  /* Unrealize all shaders, since the GL context is going away */
+  clutter_shader_release_all ();
 
   if (G_UNLIKELY (was_offscreen))
     {

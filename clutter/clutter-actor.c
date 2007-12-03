@@ -156,6 +156,8 @@ static guint32 __id = 0;
 #define CLUTTER_ACTOR_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ACTOR, ClutterActorPrivate))
 
+typedef struct _ShaderData ShaderData;
+
 struct _ClutterActorPrivate
 {
   ClutterActorBox coords;
@@ -170,6 +172,8 @@ struct _ClutterActorPrivate
   gchar          *name;
   ClutterFixed    scale_x, scale_y;
   guint32         id; /* Unique ID */
+
+  ShaderData     *shader_data;
   ClutterUnit     anchor_x, anchor_y;
 };
 
@@ -220,6 +224,11 @@ static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
 static void _clutter_actor_apply_modelview_transform           (ClutterActor *self);
 static void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self);
+
+static void clutter_actor_shader_pre_paint (ClutterActor *actor,
+                                            gboolean      repeat);
+static void clutter_actor_shader_post_paint (ClutterActor *actor);
+static void destroy_shader_data (ClutterActor *self);
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   clutter_actor,
@@ -907,8 +916,10 @@ clutter_actor_paint (ClutterActor *self)
     }
   else
     {
+      clutter_actor_shader_pre_paint (self, FALSE);
       if (G_LIKELY(klass->paint))
 	(klass->paint) (self);
+      clutter_actor_shader_post_paint (self);
     }
 
   if (priv->has_clip)
@@ -1174,6 +1185,8 @@ clutter_actor_dispose (GObject *object)
 		self->priv->id,
 		g_type_name (G_OBJECT_TYPE (self)),
                 object->ref_count);
+
+  destroy_shader_data (self);
 
  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
     {
@@ -1730,6 +1743,7 @@ clutter_actor_init (ClutterActor *self)
   priv->id           = __id++;
   priv->scale_x      = CFX_ONE;
   priv->scale_y      = CFX_ONE;
+  priv->shader_data     = NULL;
 
   clutter_actor_request_coords (self, &box);
 }
@@ -4035,4 +4049,176 @@ clutter_actor_box_get_type (void)
                                     (GBoxedCopyFunc) clutter_actor_box_copy,
                                     (GBoxedFreeFunc) clutter_actor_box_free);
   return our_type;
+}
+
+/******************************************************************************/
+
+typedef struct _BoxedFloat BoxedFloat;
+struct _BoxedFloat
+{
+  gfloat value;
+};
+
+struct _ShaderData
+{
+  ClutterShader *shader;
+  GHashTable    *float1f_hash; /*< list of values that should be set
+                                *  on the shader before each paint cycle
+                                */
+};
+
+static void
+destroy_shader_data (ClutterActor *self)
+{
+  ClutterActorPrivate *actor_priv = self->priv;
+  ShaderData          *shader_data   = actor_priv->shader_data;
+
+  if (!shader_data)
+    return;
+
+  if (shader_data->shader)
+    {
+      g_object_unref (shader_data->shader);
+    }
+  shader_data->shader = NULL;
+  if (shader_data->float1f_hash)
+    {
+      g_hash_table_destroy (shader_data->float1f_hash);
+      shader_data->float1f_hash = NULL;
+    }
+  g_free (shader_data);
+  actor_priv->shader_data = NULL;
+}
+
+gboolean clutter_actor_apply_shader (ClutterActor  *self,
+                                     ClutterShader *shader)
+{
+  ClutterActorPrivate *actor_priv;
+  ShaderData     *shader_data;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+ 
+  actor_priv = self->priv;
+  shader_data = actor_priv->shader_data;
+
+  if (shader_data == NULL)
+    {
+      actor_priv->shader_data = shader_data = g_new0 (ShaderData, 1);
+      shader_data->float1f_hash = g_hash_table_new_full (
+                                        g_str_hash, g_str_equal,
+                                        g_free, g_free);
+    }
+  if (shader_data->shader)
+    {
+      g_object_unref (shader_data->shader);
+    }
+  if (shader)
+    {
+      shader_data->shader = g_object_ref (shader);
+    }
+  else
+    {
+      shader_data->shader = NULL;
+    }
+  return TRUE;
+}
+
+static void
+each_param (gpointer key,
+            gpointer value,
+            gpointer user_data)
+{
+  ClutterShader *shader = CLUTTER_SHADER (user_data);
+  BoxedFloat *box = value;
+  clutter_shader_set_uniform_1f (shader, key, box->value);
+}
+
+static void
+clutter_actor_shader_pre_paint (ClutterActor *actor,
+                                gboolean      repeat)
+{
+  ClutterActorPrivate *actor_priv;
+  ShaderData          *shader_data;
+  ClutterShader       *shader;
+  ClutterMainContext  *context;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+ 
+  actor_priv = actor->priv;
+  shader_data = actor_priv->shader_data;
+
+  if (!shader_data)
+    return;
+
+  context = clutter_context_get_default ();
+  shader = shader_data->shader;
+
+  if (shader)
+    {
+      clutter_shader_enable (shader);
+
+      g_hash_table_foreach (shader_data->float1f_hash, each_param, shader);
+
+        if (!repeat)
+        {
+          context->shaders = g_slist_prepend (context->shaders, actor);
+        }
+    }
+}
+
+static void
+clutter_actor_shader_post_paint (ClutterActor *actor)
+{
+  ClutterActorPrivate *actor_priv;
+  ShaderData          *shader_data;
+  ClutterShader       *shader;
+  ClutterMainContext  *context;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+ 
+  actor_priv = actor->priv;
+  shader_data = actor_priv->shader_data;
+
+  if (!shader_data)
+    return;
+
+  context = clutter_context_get_default ();
+  shader = shader_data->shader;
+
+  if (shader)
+    {
+      clutter_shader_disable (shader);
+
+      context->shaders = g_slist_remove (context->shaders, actor);
+      if (context->shaders)
+        {
+          /* call pre-paint again, this time with the second argument being
+           * TRUE, indicating that we are reapplying the shader and thus
+           * should not be prepended to the stack
+           */
+          clutter_actor_shader_pre_paint (context->shaders->data, TRUE);
+        }
+    }
+}
+
+void
+clutter_actor_set_shader_param (ClutterActor *actor,
+                                const gchar  *param,
+                                gfloat        value)
+{
+  ClutterActorPrivate *actor_priv;
+  ShaderData *shader_data;
+  BoxedFloat             *box;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+ 
+  actor_priv = actor->priv;
+  shader_data = actor_priv->shader_data;
+
+  if (!shader_data)
+    return;
+
+  box        = g_malloc (sizeof (BoxedFloat));
+  box->value = value;
+  g_hash_table_insert (shader_data->float1f_hash, g_strdup (param), box);
 }

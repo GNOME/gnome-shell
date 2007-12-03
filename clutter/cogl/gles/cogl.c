@@ -214,13 +214,13 @@ cogl_enable (gulong flags)
   if (flags & CGL_ENABLE_TEXTURE_RECT)
     {
       if (!(__enable_flags & CGL_ENABLE_TEXTURE_RECT))
-	  glEnable (GL_TEXTURE_RECTANGLE_ARB);
+	  glEnable (GL_TEXTURE_RECTANGLE_);
 
       __enable_flags |= CGL_ENABLE_TEXTURE_RECT;
     }
   else if (__enable_flags & CGL_ENABLE_TEXTURE_RECT)
     {
-      glDisable (GL_TEXTURE_RECTANGLE_ARB);
+      glDisable (GL_TEXTURE_RECTANGLE_);
       __enable_flags &= ~CGL_ENABLE_TEXTURE_RECT;
     }
 #endif
@@ -629,4 +629,68 @@ cogl_fog_set (const ClutterColor *fog_color,
   glFogx (GL_FOG_DENSITY, (GLfixed) density);
   glFogx (GL_FOG_START, (GLfixed) z_near);
   glFogx (GL_FOG_END, (GLfixed) z_far);
+}
+
+COGLint cogl_create_program (void)
+{
+  return 0;
+}
+
+COGLint cogl_create_shader  (COGLenum     shaderType)
+{
+  return 0;
+}
+
+void    cogl_shader_source         (COGLint      shader,
+                                    const gchar *source)
+{
+}
+
+void    cogl_shader_compile        (COGLint      shader_handle)
+{
+}
+
+void    cogl_program_attach_shader (COGLint      program_handle,
+                                    COGLint      shader_handle)
+{
+}
+
+void    cogl_program_link          (COGLint      program_handle)
+{
+}
+
+void    cogl_program_use    (COGLint      program_handle)
+{
+}
+
+COGLint cogl_program_get_uniform_location  (COGLint      program_handle,
+                                            const gchar *uniform_name)
+{
+  return 0;
+}
+
+void    cogl_program_destroy         (COGLint      handle)
+{
+}
+
+void    cogl_shader_destroy         (COGLint      handle)
+{
+}
+
+void    cogl_shader_get_info_log   (COGLint      handle,
+                                    guint        size,
+                                    gchar       *buffer)
+{
+}
+
+void    cogl_shader_get_parameteriv  (COGLint      handle,
+                                      COGLenum     pname,
+                                      COGLint     *dest)
+{
+}
+
+
+void    cogl_program_uniform_1f (COGLint uniform_no,
+                         gfloat  value)
+{
 }

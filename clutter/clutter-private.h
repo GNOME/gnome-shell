@@ -93,6 +93,7 @@ struct _ClutterMainContext
   ClutterActor    *keyboard_grab_actor; /* The actor having the pointer grab
                                           (or NULL if there is no pointer grab) 
                                         */
+  GSList          *shaders;            /* stack of overridden shaders */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())

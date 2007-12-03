@@ -1,5 +1,32 @@
 2007-12-03  Øyvind Kolås  <pippin@o-hand.com>
 
+	Support for shaders in clutter. At the moment limited to drivers
+	providing GLSL support.
+
+	* clutter/cogl/cogl.h: added rather direct binding of needed for glsl
+	shaders.
+	* clutter/cogl/gl/cogl-defines.h.in:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl-defines.h: added stubs.
+	* clutter/cogl/gles/cogl.c: added stubs.
+
+	* clutter/glx/clutter-stage-glx.c:
+	(clutter_stage_glx_realize): unrelated memory management sanity fix.
+	(clutter_stage_glx_unrealize): unbind all shaders on stage unrealize.
+
+	* clutter/Makefile.am: added clutter-shader.[ch]
+	* clutter/clutter-actor.[ch]: adding shader capability to 
+	actors.
+	* clutter/clutter-feature.h: added CLUTTER_FEATURE_SHADERS_GLSL
+	* clutter/clutter-private.h: added stack of shaders to context.
+	* clutter/clutter-shader.[ch]: new.
+
+	* tests/Makefile.am: added shader test.
+	* tests/test-shader.c: (frame_cb), (main): simple shader test,
+	cycle through the inline shader with right/left mouse buttons.
+
+2007-12-03  Øyvind Kolås  <pippin@o-hand.com>
+
 	* clutter/glx/clutter-stage-glx.c: for extra sanity, set
 	stage_x11->xvisinfo = NULL after XFree. Makes using the root window
 	as foreign window possible.

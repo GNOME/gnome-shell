@@ -34,6 +34,7 @@
 #include <clutter/clutter-types.h>
 #include <clutter/clutter-units.h>
 #include <clutter/clutter-event.h>
+#include <clutter/clutter-shader.h>
 
 G_BEGIN_DECLS
 
@@ -216,9 +217,10 @@ struct _ClutterActorClass
   void     (* focus_in)             (ClutterActor         *actor);
   void     (* focus_out)            (ClutterActor         *actor);
 
+  gboolean shadable;
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[32];
+  gpointer _padding_dummy[31];
 };
 
 GType                 clutter_actor_get_type         (void) G_GNUC_CONST;
@@ -389,6 +391,14 @@ gboolean              clutter_actor_event          (ClutterActor *actor,
 ClutterActor *        clutter_get_actor_by_gid     (guint32       id);
 
 gboolean              clutter_actor_should_pick_paint (ClutterActor *self);
+
+gboolean              clutter_actor_apply_shader (ClutterActor  *self,
+                                                  ClutterShader *shader);
+
+void                  clutter_actor_set_shader_param (ClutterActor *self,
+                                                      const gchar  *param,
+                                                      gfloat        value);
+
 
 void                  clutter_actor_set_anchor_point  (ClutterActor          *self,
 						       gint                   anchor_x,
