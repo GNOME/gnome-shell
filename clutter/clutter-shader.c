@@ -154,8 +154,9 @@ static gboolean bind_glsl_shader (ClutterShader *self)
                                    &compiled);
       if (compiled != CGL_TRUE)
         {
-          GLcharARB *buffer;
-          gint       max_length = 512;
+          gchar *buffer;
+          gint   max_length = 512;
+
           buffer = g_malloc (max_length);
           cogl_shader_get_info_log (priv->fragment_shader, max_length, buffer);
           g_print ("Shader compilation failed:\n%s", buffer);
