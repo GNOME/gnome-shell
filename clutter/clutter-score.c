@@ -25,9 +25,37 @@
 
 /**
  * SECTION:clutter-score
- * @short_description: Sequencing multiple #ClutterTimelines in order
+ * @short_description: Controller for multiple timelines
  *
  * #ClutterScore is a base class for sequencing multiple timelines in order.
+ * Using #ClutterScore it is possible to start multiple timelines at the
+ * same time or launch multiple timelines when a particular timeline has
+ * emitted the ClutterTimeline::completed signal.
+ *
+ * Each time a #ClutterTimeline is started and completed, a signal will be
+ * emitted.
+ *
+ * For example, this code will start two #ClutterTimeline<!-- -->s after
+ * a third timeline terminates:
+ *
+ * <informalexample><programlisting>
+ *   ClutterTimeline *timeline_1, *timeline_2, *timeline_3;
+ *   ClutterScore *score;
+ *
+ *   timeline_1 = clutter_timeline_new_for_duration (1000);
+ *   timeline_2 = clutter_timeline_new_for_duration (500);
+ *   timeline_3 = clutter_timeline_new_for_duration (500);
+ *
+ *   score = clutter_score_new ();
+ *   clutter_score_append (score, NULL, timeline_1);
+ *   clutter_score_append (score, timeline_1, timeline_2);
+ *   clutter_score_append (score, timeline_1, timeline_3);
+ *
+ *   clutter_score_start ();
+ * </programlisting></informalexample>
+ *
+ * New timelines can be added to the #ClutterScore using
+ * clutter_score_append() and removed using clutter_score_remove().
  *
  * #ClutterScore is available since Clutter 0.6
  */
@@ -314,7 +342,10 @@ clutter_score_new (void)
  * @score: a #ClutterScore
  * @loop: %TRUE for enable looping
  *
- * Sets whether @score should loop.
+ * Sets whether @score should loop. A looping #ClutterScore will start
+ * from its initial state after the ::complete signal has been fired.
+ *
+ * Since: 0.6
  */
 void
 clutter_score_set_loop (ClutterScore *score,
@@ -337,6 +368,8 @@ clutter_score_set_loop (ClutterScore *score,
  * Gets whether @score is looping
  *
  * Return value: %TRUE if the score is looping
+ *
+ * Since: 0.6
  */
 gboolean
 clutter_score_get_loop (ClutterScore *score)
@@ -353,6 +386,8 @@ clutter_score_get_loop (ClutterScore *score)
  * Query state of a #ClutterScore instance.
  *
  * Return Value: %TRUE if score is currently playing
+ *
+ * Since: 0.6
  */
 gboolean
 clutter_score_is_playing (ClutterScore *score)
@@ -507,6 +542,7 @@ foreach_running_timeline_stop (gpointer key,
  *
  * Stops and rewinds a playing #ClutterScore instance.
  *
+ * Since: 0.6
  */
 void
 clutter_score_stop (ClutterScore *score)
@@ -528,8 +564,10 @@ clutter_score_stop (ClutterScore *score)
  * clutter_score_rewind:
  * @score: A #ClutterScore
  *
- * Rewinds a #ClutterScore to inital timeline.
- **/
+ * Rewinds a #ClutterScore to its initial state.
+ *
+ * Since: 0.6
+ */
 void
 clutter_score_rewind (ClutterScore *score)
 {
@@ -555,6 +593,14 @@ foreach_running_timeline_pause (gpointer key,
   clutter_timeline_pause (entry->timeline);
 }
 
+/**
+ * clutter_score_pause:
+ * @score: a #ClutterScore
+ *
+ * Pauses a playing score @score.
+ *
+ * Since: 0.6
+ */
 void
 clutter_score_pause (ClutterScore *score)
 {
@@ -588,6 +634,7 @@ typedef struct {
 
   ClutterScore *score;
 
+  /* parameters */
   union {
     ClutterTimeline *timeline;
     guint id;
@@ -618,6 +665,7 @@ destroy_entry (GNode                  *node,
   return FALSE;
 }
 
+/* multi-purpose traversal function for the N-ary tree used by the score */
 static gboolean
 traverse_children (GNode    *node,
                    gpointer  data)
@@ -736,6 +784,8 @@ find_entry_by_id (ClutterScore *score,
  *
  * If @parent is %NULL, the new #ClutterTimeline will be started when
  * clutter_score_start() is called.
+ *
+ * #ClutterScore will take a reference on @timeline.
  *
  * Return value: the id of the newly added timeline, to be used with
  *   clutter_score_get_timeline() and clutter_score_remove().
@@ -865,10 +915,22 @@ clutter_score_remove_all (ClutterScore *score)
                    destroy_entry, NULL);
   g_node_destroy (priv->root);
 
-  /* sentinel */
+  /* recreate the sentinel */
   priv->root = g_node_new (NULL);
 }
 
+/**
+ * clutter_score_get_timeline:
+ * @score: a #ClutterScore
+ * @id: the id of the timeline
+ *
+ * Retrieves the #ClutterTimeline for @id inside @score.
+ *
+ * Return value: the requested timeline, or %NULL. This function does
+ *   not increase the reference count on the returned #ClutterTimeline
+ *
+ * Since: 0.6
+ */
 ClutterTimeline *
 clutter_score_get_timeline (ClutterScore *score,
                             guint         id)
@@ -888,6 +950,19 @@ clutter_score_get_timeline (ClutterScore *score,
   return entry->timeline;
 }
 
+/**
+ * clutter_score_list_timelines:
+ * @score: a #ClutterScore
+ *
+ * Retrieves a list of all the #ClutterTimelines managed by @score.
+ *
+ * Return value: a #GSList containing all the timelines in the score.
+ *   This function does not increase the reference count of the
+ *   returned timelines. Use g_slist_free() on the returned list to
+ *   deallocate its resources.
+ *
+ * Since: 0.6
+ */
 GSList *
 clutter_score_list_timelines (ClutterScore *score)
 {

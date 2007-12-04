@@ -1,5 +1,10 @@
 2007-12-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-score.c: Better document ClutterScore
+	and its API.
+
+2007-12-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-score.[ch]: Reimplement ClutterScore using
 	a N-ary tree to store the timelines. Remove clutter_score_add():
 	the same functionality can be achieved by passing a NULL
