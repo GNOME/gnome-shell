@@ -23,41 +23,24 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef _HAVE_CLUTTER_SCORE_H
-#define _HAVE_CLUTTER_SCORE_H
+#ifndef __CLUTTER_SCORE_H__
+#define __CLUTTER_SCORE_H__
 
-/* clutter-score.h */
-
-#include <glib-object.h>
 #include <clutter/clutter-timeline.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_SCORE clutter_score_get_type()
+#define CLUTTER_TYPE_SCORE              (clutter_score_get_type ())
 
-#define CLUTTER_SCORE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_SCORE, ClutterScore))
-
-#define CLUTTER_SCORE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CLUTTER_TYPE_SCORE, ClutterScoreClass))
-
-#define CLUTTER_IS_SCORE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_SCORE))
-
-#define CLUTTER_IS_SCORE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CLUTTER_TYPE_SCORE))
-
-#define CLUTTER_SCORE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CLUTTER_TYPE_SCORE, ClutterScoreClass))
+#define CLUTTER_SCORE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_SCORE, ClutterScore))
+#define CLUTTER_SCORE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_SCORE, ClutterScoreClass))
+#define CLUTTER_IS_SCORE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_SCORE))
+#define CLUTTER_IS_SCORE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_SCORE))
+#define CLUTTER_SCORE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_SCORE, ClutterScoreClass))
 
 typedef struct _ClutterScore        ClutterScore;
-typedef struct _ClutterScoreClass   ClutterScoreClass; 
 typedef struct _ClutterScorePrivate ClutterScorePrivate;
+typedef struct _ClutterScoreClass   ClutterScoreClass; 
 
 struct _ClutterScore
 {
@@ -68,13 +51,21 @@ struct _ClutterScore
 
 struct _ClutterScoreClass
 {
+  /*< private >*/
   GObjectClass parent_class;
-  
-  void (*new_timeline) (ClutterScore *score, ClutterTimeline *timeline);
-  void (*started)   (ClutterScore *score);
-  void (*completed) (ClutterScore *score);
-  void (*paused)    (ClutterScore *score);
 
+  /*< public >*/
+  void (* timeline_started)   (ClutterScore    *score,
+                               ClutterTimeline *timeline);
+  void (* timeline_completed) (ClutterScore    *score,
+                               ClutterTimeline *timeline);
+
+  void (* started)            (ClutterScore    *score);
+  void (* completed)          (ClutterScore    *score);
+  void (* paused)             (ClutterScore    *score);
+
+  /*< private >*/
+  /* padding for future expansion */
   void (*_clutter_score_1) (void);
   void (*_clutter_score_2) (void);
   void (*_clutter_score_3) (void);
@@ -84,48 +75,27 @@ struct _ClutterScoreClass
 
 GType clutter_score_get_type (void) G_GNUC_CONST;
 
-ClutterScore *clutter_score_new               (void);
+ClutterScore *   clutter_score_new            (void);
+void             clutter_score_set_loop       (ClutterScore    *score,
+                                               gboolean         loop);
+gboolean         clutter_score_get_loop       (ClutterScore    *score);
+gboolean         clutter_score_is_playing     (ClutterScore    *score);
 
-void
-clutter_score_set_loop (ClutterScore *score,
-			gboolean         loop);
+guint            clutter_score_append         (ClutterScore    *score, 
+                                               ClutterTimeline *parent,
+                                               ClutterTimeline *timeline);
+void             clutter_score_remove         (ClutterScore    *score,
+                                               guint            id);
+void             clutter_score_remove_all     (ClutterScore    *score);
+ClutterTimeline *clutter_score_get_timeline   (ClutterScore    *score,
+                                               guint            id);
+GSList *         clutter_score_list_timelines (ClutterScore    *score);
 
-gboolean
-clutter_score_get_loop (ClutterScore *score);
-
-void
-clutter_score_rewind (ClutterScore *score);
-
-gboolean
-clutter_score_is_playing (ClutterScore *score);
-
-void
-clutter_score_start (ClutterScore *score);
-
-void
-clutter_score_stop (ClutterScore *score);
-
-void
-clutter_score_pause (ClutterScore *score);
-
-void
-clutter_score_append (ClutterScore    *score, 
-		      ClutterTimeline *timeline_existing,
-		      ClutterTimeline *timeline_new);
-
-void
-clutter_score_add (ClutterScore    *score, 
-		   ClutterTimeline *timeline);
-
-void
-clutter_score_remove (ClutterScore    *score,
-		      ClutterTimeline *timeline_parent,
-		      ClutterTimeline *timeline);
-
-void
-clutter_score_remove_all (ClutterScore *score);
-
+void             clutter_score_start          (ClutterScore    *score);
+void             clutter_score_stop           (ClutterScore    *score);
+void             clutter_score_pause          (ClutterScore    *score);
+void             clutter_score_rewind         (ClutterScore    *score);
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_SCORE_H__ */

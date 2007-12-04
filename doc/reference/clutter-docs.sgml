@@ -106,6 +106,7 @@
       <title>Base classes</title>
 
       <xi:include href="xml/clutter-timeline.xml"/>
+      <xi:include href="xml/clutter-score.xml"/>
       <xi:include href="xml/clutter-alpha.xml"/>
       <xi:include href="xml/clutter-behaviour.xml"/>
     </chapter>

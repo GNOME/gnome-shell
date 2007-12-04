@@ -2,6 +2,38 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
+static gint level = 1;
+
+static void
+on_timeline_started (ClutterScore    *score,
+                     ClutterTimeline *timeline)
+{
+  gint i;
+
+  for (i = 0; i < level; i++)
+    g_print (" ");
+
+  g_print ("Started timeline: `%s'\n",
+           g_object_get_data (G_OBJECT (timeline), "timeline-name"));
+
+  level += 1;
+}
+
+static void
+on_timeline_completed (ClutterScore    *score,
+                       ClutterTimeline *timeline)
+{
+  gint i;
+
+  level -= 1;
+
+  for (i = 0; i < level; i++)
+    g_print (" ");
+
+  g_print ("Completed timeline: `%s'\n",
+           g_object_get_data (G_OBJECT (timeline), "timeline-name"));
+}
+
 int
 main (int argc, char **argv)
 {
@@ -14,12 +46,38 @@ main (int argc, char **argv)
   clutter_init (&argc, &argv);
 
   timeline_1 = clutter_timeline_new (10, 120);
+  g_object_set_data_full (G_OBJECT (timeline_1),
+                          "timeline-name", g_strdup ("Timeline 1"),
+                          g_free);
+
   timeline_2 = clutter_timeline_clone (timeline_1);
+  g_object_set_data_full (G_OBJECT (timeline_2),
+                          "timeline-name", g_strdup ("Timeline 2"),
+                          g_free);
+
   timeline_3 = clutter_timeline_clone (timeline_1);
+  g_object_set_data_full (G_OBJECT (timeline_3),
+                          "timeline-name", g_strdup ("Timeline 3"),
+                          g_free);
+
   timeline_4 = clutter_timeline_clone (timeline_1);
+  g_object_set_data_full (G_OBJECT (timeline_4),
+                          "timeline-name", g_strdup ("Timeline 4"),
+                          g_free);
+
 
   score = clutter_score_new();
-  clutter_score_add (score, timeline_1);
+  g_signal_connect (score, "timeline-started",
+                    G_CALLBACK (on_timeline_started),
+                    NULL);
+  g_signal_connect (score, "timeline-completed",
+                    G_CALLBACK (on_timeline_completed),
+                    NULL);
+  g_signal_connect (score, "completed",
+                    G_CALLBACK (clutter_main_quit),
+                    NULL);
+
+  clutter_score_append (score, NULL, timeline_1);
   clutter_score_append (score, timeline_1, timeline_2);
   clutter_score_append (score, timeline_1, timeline_3);
   clutter_score_append (score, timeline_3, timeline_4);
@@ -32,6 +90,7 @@ main (int argc, char **argv)
   g_object_unref (timeline_1);
   g_object_unref (timeline_2);
   g_object_unref (timeline_3);
+  g_object_unref (timeline_4);
 
   return EXIT_SUCCESS;
 }

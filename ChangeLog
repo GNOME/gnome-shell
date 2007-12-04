@@ -1,3 +1,13 @@
+2007-12-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-score.[ch]: Reimplement ClutterScore using
+	a N-ary tree to store the timelines. Remove clutter_score_add():
+	the same functionality can be achieved by passing a NULL
+	parent to clutter_score_append().
+
+	* tests/test-score.c: Update ClutterScore test unit, and add
+	debug printouts.
+
 2007-12-04  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-shader.c: (bind_glsl_shader): use gchar instead of

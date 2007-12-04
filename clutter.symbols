@@ -427,12 +427,14 @@ clutter_rectangle_set_color
 clutter_redraw
 clutter_rotate_axis_get_type
 clutter_rotate_direction_get_type
-clutter_score_add
 clutter_score_append
 clutter_score_get_loop
+clutter_score_get_timeline
 clutter_score_get_type
 clutter_score_is_playing
+clutter_score_list_timelines
 clutter_score_new
+clutter_score_remove
 clutter_score_remove_all
 clutter_score_rewind
 clutter_score_start

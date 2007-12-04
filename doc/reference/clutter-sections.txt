@@ -1212,12 +1212,15 @@ clutter_model_iter_get_type
 ClutterScore
 ClutterScoreClass
 clutter_score_new
-clutter_score_add
+clutter_score_set_loop
+clutter_score_get_loop
+
+<SUBSECTION>
 clutter_score_append
 clutter_score_remove
 clutter_score_remove_all
-clutter_score_set_loop
-clutter_score_get_loop
+clutter_score_get_timeline
+clutter_score_list_timelines
 
 <SUBSECTION>
 clutter_score_start
