@@ -415,6 +415,12 @@ void                  clutter_actor_get_anchor_pointu (ClutterActor          *se
 void                  clutter_actor_set_anchor_point_from_gravity (ClutterActor          *self,
 								   ClutterGravity         gravity);
 
+gboolean              clutter_actor_transform_stage_point (ClutterActor  *self,
+							   ClutterUnit    x,
+							   ClutterUnit    y,
+							   ClutterUnit   *x_out,
+							   ClutterUnit   *y_out);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_ACTOR_H */

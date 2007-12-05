@@ -928,8 +928,6 @@ clutter_actor_paint (ClutterActor *self)
   cogl_pop_matrix();
 }
 
-#undef M
-
 static void
 clutter_actor_real_request_coords (ClutterActor    *self,
                                    ClutterActorBox *box)
@@ -3870,7 +3868,7 @@ parse_units (ClutterActor   *self,
   else if (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE))
     {
       gint val;
-      
+
       if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
         {
           g_warning ("Unable to set percentage of %s on a top-level "
@@ -3946,6 +3944,191 @@ static void
 clutter_scriptable_iface_init (ClutterScriptableIface *iface)
 {
   iface->parse_custom_node = clutter_actor_parse_custom_node;
+}
+
+/**
+ * clutter_actor_transform_stage_point
+ * @self: A #ClutterActor
+ * @x: x screen coordiance of point to unproject, in #ClutterUnit
+ * @y: y screen coordiance of point to unproject, in #ClutterUnit
+ * @x: x_out location where to store the unprojected x coordinance, in
+ * #ClutterUnit.
+ * @y: y_out location where to store the unprojected y coordinance, in
+ * #ClutterUnit.
+ *
+ * Return value: TRUE if conversion was successful.
+ *
+ * The function translates point with screen coordinates x,y to coordinates
+ * relative to the actor, i.e., it can be used, to translate screen events
+ * from global screen coordinates into local coordinates.
+ *
+ * The conversion can fail, notably if the transform stack results in the
+ * actor being projected on the screen as a mere line.
+ *
+ * The conversion should not be expected to be pixel-perfect due to the nature
+ * of the operation. In general the error grows when the skewing of the actor
+ * rectangle on screen increases.
+ *
+ * WARNING: This function is fairly computationally intensive.
+ *
+ * Since: 0.6
+ */
+gboolean
+clutter_actor_transform_stage_point (ClutterActor  *self,
+				     ClutterUnit    x,
+				     ClutterUnit    y,
+				     ClutterUnit   *x_out,
+				     ClutterUnit   *y_out)
+{
+  ClutterVertex v[4];
+  ClutterFixed  ST[3][3];
+  ClutterFixed  RQ[3][3];
+  int du, dv, xi, yi;
+  ClutterFixed xf, yf, wf, px, py, det;
+  ClutterActorPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  priv = self->priv;
+
+  /*
+   * This implementation is based on the quad -> quad projection algorithm
+   * described by Paul Heckbert in
+   *
+   * http://www.cs.cmu.edu/~ph/texfund/texfund.pdf
+   *
+   * and the sample implementaion at http://www.cs.cmu.edu/~ph/src/texfund/.
+   *
+   * Our texture is a rectangle with origin [0,0], so we are mapping from quad
+   * to rectangle only, which significantly simplifies things; the function
+   * calls have been unrolled, and most of the math is done in fixed point.
+   */
+
+  clutter_actor_get_vertices (self, v);
+
+  /*
+   * Keeping these as ints simplifies the multiplication (no significant loss
+   * of precission here).
+   */
+  du = CLUTTER_UNITS_TO_DEVICE (priv->coords.x2 - priv->coords.x1);
+  dv = CLUTTER_UNITS_TO_DEVICE (priv->coords.y2 - priv->coords.y1);
+
+  if (!du || !dv)
+    return FALSE;
+
+#define FP2FX CLUTTER_FLOAT_TO_FIXED
+#define FX2FP CLUTTER_FIXED_TO_DOUBLE
+#define FP2INT CLUTTER_FLOAT_TO_INT
+#define DET2X(a,b, c,d) (CFX_QMUL(a,d) - CFX_QMUL(b,c))
+
+  /*
+   * First, find mapping from unit uv square to xy quadrilateral; this
+   * equivalent to the pmap_square_quad() functions in the sample
+   * implementation, which we can simplify, since our target is always
+   * a rectangle.
+   */
+  px = v[0].x - v[1].x + v[3].x - v[2].x;
+  py = v[0].y - v[1].y + v[3].y - v[2].y;
+
+  if (!px && !py)
+    { /* affine transform */
+      RQ[0][0] = v[1].x - v[0].x;
+      RQ[1][0] = v[3].x - v[1].x;
+      RQ[2][0] = v[0].x;
+      RQ[0][1] = v[1].y - v[0].y;
+      RQ[1][1] = v[3].y - v[1].y;
+      RQ[2][1] = v[0].y;
+      RQ[0][2] = 0;
+      RQ[1][2] = 0;
+      RQ[2][2] = CFX_ONE;
+    }
+  else
+    { /* projective transform */
+      ClutterFixed dx1, dx2, dy1, dy2, del;
+
+      dx1 = v[1].x - v[3].x;
+      dx2 = v[2].x - v[3].x;
+      dy1 = v[1].y - v[3].y;
+      dy2 = v[2].y - v[3].y;
+
+      del = DET2X (dx1,dx2, dy1,dy2);
+
+      if (!del)
+	return FALSE;
+
+      /*
+       * The division here needs to be done in floating point for
+       * precisions reasons.
+       */
+      RQ[0][2] = FP2FX (FX2FP (DET2X (px,dx2, py,dy2) / FX2FP (del)));
+      RQ[1][2] = FP2FX (FX2FP (DET2X (dx1,px, dy1,py) / FX2FP (del)));
+      RQ[1][2] = CFX_DIV (DET2X(dx1,px, dy1,py), del);
+      RQ[2][2] = CFX_ONE;
+      RQ[0][0] = v[1].x - v[0].x + CFX_QMUL (RQ[0][2], v[1].x);
+      RQ[1][0] = v[2].x - v[0].x + CFX_QMUL (RQ[1][2], v[2].x);
+      RQ[2][0] = v[0].x;
+      RQ[0][1] = v[1].y - v[0].y + CFX_QMUL (RQ[0][2], v[1].y);
+      RQ[1][1] = v[2].y - v[0].y + CFX_QMUL (RQ[1][2], v[2].y);
+      RQ[2][1] = v[0].y;
+    }
+
+  /*
+   * Now combine with transform from our rectangle (u0,v0,u1,v1) to unit
+   * square. Since our rectangle is based at 0,0 we only need to scale.
+   */
+  RQ[0][0] /= du;
+  RQ[1][0] /= dv;
+  RQ[0][1] /= du;
+  RQ[1][1] /= dv;
+  RQ[0][2] /= du;
+  RQ[1][2] /= dv;
+
+  /*
+   * Now RQ is transform from uv rectangle to xy quadrilateral; we need an
+   * inverse of that.
+   */
+  ST[0][0] = DET2X(RQ[1][1], RQ[1][2], RQ[2][1], RQ[2][2]);
+  ST[1][0] = DET2X(RQ[1][2], RQ[1][0], RQ[2][2], RQ[2][0]);
+  ST[2][0] = DET2X(RQ[1][0], RQ[1][1], RQ[2][0], RQ[2][1]);
+  ST[0][1] = DET2X(RQ[2][1], RQ[2][2], RQ[0][1], RQ[0][2]);
+  ST[1][1] = DET2X(RQ[2][2], RQ[2][0], RQ[0][2], RQ[0][0]);
+  ST[2][1] = DET2X(RQ[2][0], RQ[2][1], RQ[0][0], RQ[0][1]);
+  ST[0][2] = DET2X(RQ[0][1], RQ[0][2], RQ[1][1], RQ[1][2]);
+  ST[1][2] = DET2X(RQ[0][2], RQ[0][0], RQ[1][2], RQ[1][0]);
+  ST[2][2] = DET2X(RQ[0][0], RQ[0][1], RQ[1][0], RQ[1][1]);
+
+  /*
+   * Check the resutling martix is OK.
+   */
+  det = CFX_QMUL (RQ[0][0], ST[0][0]) + CFX_QMUL (RQ[0][1], ST[0][1]) +
+    CFX_QMUL (RQ[0][2], ST[0][2]);
+
+  if (!det)
+    return FALSE;
+
+  /*
+   * Now transform our point with the ST matrix; the notional w coordiance
+   * is 1, hence the last part is simply added.
+   */
+  xi = CLUTTER_UNITS_TO_DEVICE (x);
+  yi = CLUTTER_UNITS_TO_DEVICE (y);
+
+  xf = xi*ST[0][0] + yi*ST[1][0] + ST[2][0];
+  yf = xi*ST[0][1] + yi*ST[1][1] + ST[2][1];
+  wf = xi*ST[0][2] + yi*ST[1][2] + ST[2][2];
+
+  /*
+   * The division needs to be done in floating point for precission reasons.
+   */
+  *x_out = CLUTTER_UNITS_FROM_FLOAT (FX2FP (xf) / FX2FP (wf));
+  *y_out = CLUTTER_UNITS_FROM_FLOAT (FX2FP (yf) / FX2FP (wf));
+
+#undef FP2FX
+#undef FX2FP
+#undef FP2INT
+#undef DET2X
+
+  return TRUE;
 }
 
 /*
@@ -4097,7 +4280,7 @@ gboolean clutter_actor_apply_shader (ClutterActor  *self,
   ShaderData     *shader_data;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
- 
+
   actor_priv = self->priv;
   shader_data = actor_priv->shader_data;
 
@@ -4143,7 +4326,7 @@ clutter_actor_shader_pre_paint (ClutterActor *actor,
   ClutterMainContext  *context;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
- 
+
   actor_priv = actor->priv;
   shader_data = actor_priv->shader_data;
 
@@ -4175,7 +4358,7 @@ clutter_actor_shader_post_paint (ClutterActor *actor)
   ClutterMainContext  *context;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
- 
+
   actor_priv = actor->priv;
   shader_data = actor_priv->shader_data;
 
@@ -4211,7 +4394,7 @@ clutter_actor_set_shader_param (ClutterActor *actor,
   BoxedFloat             *box;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
- 
+
   actor_priv = actor->priv;
   shader_data = actor_priv->shader_data;
 
@@ -4222,3 +4405,5 @@ clutter_actor_set_shader_param (ClutterActor *actor,
   box->value = value;
   g_hash_table_insert (shader_data->float1f_hash, g_strdup (param), box);
 }
+
+#undef M
