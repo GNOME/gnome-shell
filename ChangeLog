@@ -1,3 +1,19 @@
+2007-12-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-score.h: Rearrange declarations.
+
+	* clutter/clutter-score.c: More documentation in the long
+	description of the ClutterScore section.
+
+	* clutter/clutter-debug.h:
+	* clutter/clutter-main.c: Add the CLUTTER_DEBUG_SHADER flag,
+	for debugging the shader calls.
+
+	* clutter/clutter-feature.h: Fix the documentation of the
+	feature flags.
+
+	* clutter/Makefile.am: Remove trailing whitespace.
+
 2007-12-05  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

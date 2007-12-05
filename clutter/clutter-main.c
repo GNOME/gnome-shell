@@ -81,6 +81,7 @@ static const GDebugKey clutter_debug_keys[] = {
   { "backend", CLUTTER_DEBUG_BACKEND },
   { "scheduler", CLUTTER_DEBUG_SCHEDULER },
   { "script", CLUTTER_DEBUG_SCRIPT },
+  { "shader", CLUTTER_DEBUG_SHADER },
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 

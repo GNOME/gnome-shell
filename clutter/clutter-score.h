@@ -79,7 +79,6 @@ ClutterScore *   clutter_score_new            (void);
 void             clutter_score_set_loop       (ClutterScore    *score,
                                                gboolean         loop);
 gboolean         clutter_score_get_loop       (ClutterScore    *score);
-gboolean         clutter_score_is_playing     (ClutterScore    *score);
 
 guint            clutter_score_append         (ClutterScore    *score, 
                                                ClutterTimeline *parent,
@@ -95,6 +94,7 @@ void             clutter_score_start          (ClutterScore    *score);
 void             clutter_score_stop           (ClutterScore    *score);
 void             clutter_score_pause          (ClutterScore    *score);
 void             clutter_score_rewind         (ClutterScore    *score);
+gboolean         clutter_score_is_playing     (ClutterScore    *score);
 
 G_END_DECLS
 

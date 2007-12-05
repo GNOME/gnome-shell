@@ -69,7 +69,7 @@ source_h =					\
 	$(srcdir)/clutter-score.h 		\
 	$(srcdir)/clutter-script.h		\
 	$(srcdir)/clutter-scriptable.h		\
-	$(srcdir)/clutter-shader.h		\	
+	$(srcdir)/clutter-shader.h		\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-timeline.h 		\
@@ -154,7 +154,7 @@ source_c = \
 	clutter-script.c		\
 	clutter-script-parser.c		\
 	clutter-scriptable.c		\
-	clutter-shader.c		\	
+	clutter-shader.c		\
 	clutter-stage.c			\
 	clutter-texture.c 		\
 	clutter-timeline.c 		\

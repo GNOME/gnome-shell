@@ -46,7 +46,7 @@ G_BEGIN_DECLS
  * @CLUTTER_FEATURE_STAGE_STATIC: Set if stage size if fixed (i.e framebuffer)
  * @CLUTTER_FEATURE_STAGE_USER_RESIZE: Set if stage is able to be user resized.
  * @CLUTTER_FEATURE_STAGE_CURSOR: Set if stage has a graphical cursor.
- * @CLUTTER_FEATURE_SHADER_GLSL: Set if the backend supports GLSL shaders.
+ * @CLUTTER_FEATURE_SHADERS_GLSL: Set if the backend supports GLSL shaders.
  *
  * Runtime flags indicating specific features available via Clutter window
  * sysytem and graphics backend.

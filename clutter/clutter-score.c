@@ -54,8 +54,19 @@
  *   clutter_score_start ();
  * </programlisting></informalexample>
  *
+ * A #ClutterScore takes a reference on the timelines it manages.
+ *
  * New timelines can be added to the #ClutterScore using
  * clutter_score_append() and removed using clutter_score_remove().
+ *
+ * The score can be cleared using clutter_score_remove_all().
+ *
+ * The list of timelines can be retrieved using
+ * clutter_score_list_timelines().
+ *
+ * The score state is controlled using clutter_score_start(),
+ * clutter_score_pause(), clutter_score_stop() and clutter_score_rewind().
+ * The state can be queried using clutter_score_is_playing().
  *
  * #ClutterScore is available since Clutter 0.6
  */
