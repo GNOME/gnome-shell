@@ -1,3 +1,12 @@
+2007-12-05  Matthew Allum  <mallum@openedhand.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* clutter/pango/pangoclutter-render.c: (tc_get), (free_glyph_info),
+	(draw_glyph), (draw_trapezoid), (pango_clutter_render_layout),
+	(pango_clutter_render_layout_line),
+	(pango_clutter_render_clear_caches), (prepare_run), (draw_begin):
+
 2007-12-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-score.h: Rearrange declarations.
