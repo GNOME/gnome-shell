@@ -338,7 +338,7 @@ ClutterFixed clutter_tani (ClutterAngle angle);
  * Since: 0.6
  */
 #ifndef __SSE2__
-#define CLUTTER_SQRTI_ARG_5_PERCENT  131
+#define CLUTTER_SQRTI_ARG_5_PERCENT 210
 #else
 #define CLUTTER_SQRTI_ARG_5_PERCENT INT_MAX
 #endif

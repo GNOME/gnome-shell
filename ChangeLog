@@ -1,3 +1,11 @@
+2007-12-06  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.c:
+	* clutter/clutter-fixed.h:
+	(clutter_sqrti):
+	Added extra iteration to the Newton-Rapson algorithm for arguments
+	lesser than 342 to improve precission.
+
 2007-12-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.c:

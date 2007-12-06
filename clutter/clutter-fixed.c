@@ -606,8 +606,8 @@ clutter_sqrtx (ClutterFixed x)
  *
  * Very fast fixed point implementation of square root for integers.
  *
- * This function is about 10x faster than clib sqrt() on x86, and (this is
- * not a typo!) more than 800x faster on ARM without FPU. It's error is < 5%
+ * This function is at least 6x faster than clib sqrt() on x86, and (this is
+ * not a typo!) about 500x faster on ARM without FPU. It's error is < 5%
  * for arguments < #CLUTTER_SQRTI_ARG_5_PERCENT and < 10% for arguments <
  * #CLUTTER_SQRTI_ARG_10_PERCENT. The maximum argument that can be passed to
  * this function is CLUTTER_SQRTI_ARG_MAX.
@@ -673,12 +673,25 @@ clutter_sqrti (gint number)
     flt2.f = flt.f + 2.0;
     flt2.i &= 0x7FFFFF;
 
-    /* Now we correct the estimate, only single iterration is needed */
+    /* Now we correct the estimate */
     y_1 = (flt2.i >> 11) * (flt2.i >> 11);
     y_1 = (y_1 >> 8) * (x >> 8);
 
     y_1 = f - y_1;
     flt2.i = (flt2.i >> 11) * (y_1 >> 11);
+
+    /* If the original argument is less than 342, we do another
+     * iteration to improve precission (for arguments >= 342, the single
+     * iteration produces generally better results).
+     */
+    if (x < 171)
+      {
+	y_1 = (flt2.i >> 11) * (flt2.i >> 11);
+	y_1 = (y_1 >> 8) * (x >> 8);
+
+	y_1 = f - y_1;
+	flt2.i = (flt2.i >> 11) * (y_1 >> 11);
+      }
 
     /* Invert, round and convert from 10.22 to an integer
      * 0x1e3c68 is a magical rounding constant that produces slightly
