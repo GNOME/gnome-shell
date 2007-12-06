@@ -1,5 +1,11 @@
 2007-12-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-main.c:
+	(clutter_set_motion_events_frequency): Never allow the motion
+	events devlivery frequency to exceed the default frame rate.
+
+2007-12-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/json/json-parser.[ch]: Use gssize, size we allow -1
 	as a length (meaning "use the whole string").
 

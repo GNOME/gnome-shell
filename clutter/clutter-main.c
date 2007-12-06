@@ -1780,7 +1780,8 @@ clutter_get_motion_events_frequency (void)
 
 /**
  * clutter_set_motion_events_frequency:
- * @frequency: the number of motion events per second
+ * @frequency: the number of motion events per second, or 0 for the
+ *   default value
  *
  * Sets the motion events frequency. Setting this to a non-zero value
  * will override the default setting, so it should be rarely used.
@@ -1798,5 +1799,6 @@ clutter_set_motion_events_frequency (guint frequency)
 {
   ClutterMainContext *context = clutter_context_get_default ();
 
-  context->motion_frequency = frequency;
+  /* never allow the motion events to exceed the default frame rate */
+  context->motion_frequency = CLAMP (frequency, 1, clutter_default_fps);
 }
