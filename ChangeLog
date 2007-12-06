@@ -1,3 +1,9 @@
+2007-12-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* tests/test-unproject.c: Fix type comparison.
+
+	* tests/test-score.c: Save the returned ids.
+
 2007-12-05  Matthew Allum  <mallum@openedhand.com>
 
 	reviewed by: <delete if not using a buddy>
