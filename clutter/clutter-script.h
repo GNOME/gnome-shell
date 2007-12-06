@@ -120,7 +120,7 @@ guint          clutter_script_load_from_file       (ClutterScript  *script,
                                                     GError        **error);
 guint          clutter_script_load_from_data       (ClutterScript  *script,
                                                     const gchar    *data,
-                                                    gsize           length,
+                                                    gssize          length,
                                                     GError        **error);
 GObject *      clutter_script_get_object           (ClutterScript  *script,
                                                     const gchar    *name);

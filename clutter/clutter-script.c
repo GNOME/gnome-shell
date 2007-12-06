@@ -1602,7 +1602,7 @@ clutter_script_load_from_file (ClutterScript  *script,
 guint
 clutter_script_load_from_data (ClutterScript  *script,
                                const gchar    *data,
-                               gsize           length,
+                               gssize          length,
                                GError        **error)
 {
   ClutterScriptPrivate *priv;
@@ -1610,6 +1610,9 @@ clutter_script_load_from_data (ClutterScript  *script,
 
   g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), 0);
   g_return_val_if_fail (data != NULL, 0);
+
+  if (length < 0)
+    length = strlen (data);
 
   priv = script->priv;
 

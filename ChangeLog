@@ -1,5 +1,15 @@
 2007-12-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/json/json-parser.[ch]: Use gssize, size we allow -1
+	as a length (meaning "use the whole string").
+
+	(json_parser_load_from_data): Use the passed length instead of
+	using strlen() all the time.
+
+	* clutter/clutter-script.[ch]: Ditto as above.
+
+2007-12-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/pango/pangoclutter-render.c: Hush a compiler warning
 	by removing a unused variable.
 
