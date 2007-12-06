@@ -1,5 +1,10 @@
 2007-12-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-label.c (clutter_label_ensure_layout): If the
+	label has a requested size, force it when ensuring the layout.
+
+2007-12-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* tests/test-unproject.c: Fix type comparison.
 
 	* tests/test-score.c: Save the returned ids.

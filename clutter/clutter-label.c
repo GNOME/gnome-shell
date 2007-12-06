@@ -264,7 +264,8 @@ clutter_label_ensure_layout (ClutterLabel *label)
             }
 	}
       else
-	pango_layout_set_width (priv->layout, -1);
+	pango_layout_set_width (priv->layout, (width > 0 ? width * PANGO_SCALE
+                                                         : -1));
     }
 
   CLUTTER_NOTE (ACTOR, "Label width set to %d pixels", width);
