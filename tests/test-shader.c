@@ -127,7 +127,7 @@ static ShaderSource shaders[]=
     {NULL, NULL}
 };
 
-static gint shader_no = 2;
+static gint shader_no=0;
 
 static gboolean
 button_release_cb (ClutterActor    *actor,
@@ -135,48 +135,27 @@ button_release_cb (ClutterActor    *actor,
                    gpointer         data)
 {
   gint new_no;
-
   if (event->button.button == 1)
     {
-      new_no = shader_no - 1;
+      new_no = shader_no-1;
     }
   else
     {
-      new_no = shader_no + 1;
+      new_no = shader_no+1;
     }
 
   if (new_no >= 0 && shaders[new_no].name)
     {
       ClutterShader *shader;
-      GError *error;
       shader_no = new_no;
       
-      g_print ("setting shaders[%i] named '%s'\n",
-               shader_no,
-               shaders[shader_no].name);
-
-      shader = clutter_shader_new ();
+      g_print ("setting shaders[%i] named '%s'\n", shader_no, shaders[shader_no].name);
+      shader = clutter_shader_new_from_strings (NULL, shaders[shader_no].source);
+      clutter_actor_apply_shader (actor, shader);
       
-      error = NULL;
-      clutter_shader_load_from_data (shader, CLUTTER_FRAGMENT_SHADER,
-                                     shaders[shader_no].source, -1,
-                                     &error);
-      if (error)
-        {
-          g_print ("unable to set shaders[%i] named '%s': %s",
-                   error->message);
-          g_error_free (error);
-          g_object_unref (shader);
-        }
-      else
-        {
-          clutter_actor_apply_shader (actor, shader);
-          clutter_actor_set_shader_param (actor, "radius", 3.0);
-
-          clutter_actor_queue_redraw (actor);
-        }
+      clutter_actor_set_shader_param (actor, "radius", 3.0);
+      clutter_redraw();
     }
-
   return FALSE;
 }
 
@@ -194,35 +173,19 @@ main (gint   argc,
   GError           *error;
   ClutterShader    *shader;
 
+  error = NULL;
+
   clutter_init (&argc, &argv);
+  g_print ("applying shaders[%i] named '%s'\n", shader_no, shaders[shader_no].name);
+  shader = clutter_shader_new_from_strings (NULL, shaders[shader_no].source);
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 512, 384);
 
-  g_print ("applying shaders[%i] named '%s'\n",
-           shader_no,
-           shaders[shader_no].name);
+  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", NULL);
 
-  shader = clutter_shader_new ();
-
-  error = NULL;
-  clutter_shader_load_from_data (shader, CLUTTER_FRAGMENT_SHADER,
-                                 shaders[shader_no].source, -1,
-                                 &error);
-  if (error)
-    {
-      g_print ("unable to load shaders[%d] named '%s': %s\n",
-               shader_no,
-               shaders[shader_no].name,
-               error->message);
-      g_error_free (error);
-
-      return EXIT_FAILURE;
-    }
-
-  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", &error);
   if (!pixbuf)
-    g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
+    g_error("pixbuf load failed");
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Shader Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
@@ -237,7 +200,7 @@ main (gint   argc,
   actor = clutter_group_new ();
     {
       ClutterActor *child1, *child2, *child3, *child4;
-      ClutterColor  color = { 0xff, 0x22, 0x66, 0x99 };
+      ClutterColor  color={0xff, 0x22, 0x66, 0x99};
 
       child1 = clutter_texture_new_from_pixbuf (pixbuf);
       child2 = clutter_texture_new_from_pixbuf (pixbuf);
@@ -255,11 +218,9 @@ main (gint   argc,
       clutter_group_add (CLUTTER_GROUP (actor), child2);
       clutter_group_add (CLUTTER_GROUP (actor), child3);
       clutter_group_add (CLUTTER_GROUP (actor), child4);
-
       clutter_actor_show_all (actor);
     }
 #endif
-
   clutter_actor_set_position (actor, 100, 100);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
@@ -281,5 +242,5 @@ main (gint   argc,
 
   clutter_main ();
 
-  return EXIT_SUCCESS;
+  return 0;
 }
