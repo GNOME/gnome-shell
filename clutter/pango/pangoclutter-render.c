@@ -335,7 +335,6 @@ draw_glyph (PangoRenderer *renderer_,
   PangoClutterRenderer *renderer = PANGO_CLUTTER_RENDERER (renderer_);
   glyph_info           *g;
   gint                  x = (gint)xd, y = (gint)yd;
-  struct { float x1, y1, x2, y2; } box;
 
   if (glyph & PANGO_GLYPH_UNKNOWN_FLAG)
     {
