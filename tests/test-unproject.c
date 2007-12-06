@@ -36,7 +36,7 @@ on_event (ClutterStage *stage,
 	  {
 	    gchar *txt;
 
-	    if (actor != stage)
+	    if (actor != CLUTTER_ACTOR (stage))
 	      txt = g_strdup_printf ("Click on rectangle\n"
 				     "Screen coords: [%d, %d]\n"
 				     "Local coords : [%d, %d]",

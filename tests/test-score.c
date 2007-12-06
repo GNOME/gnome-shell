@@ -42,6 +42,7 @@ main (int argc, char **argv)
   ClutterTimeline *timeline_2;
   ClutterTimeline *timeline_3;
   ClutterTimeline *timeline_4;
+  guint t1, t2, t3, t4;
 
   clutter_init (&argc, &argv);
 
@@ -77,20 +78,20 @@ main (int argc, char **argv)
                     G_CALLBACK (clutter_main_quit),
                     NULL);
 
-  clutter_score_append (score, NULL, timeline_1);
-  clutter_score_append (score, timeline_1, timeline_2);
-  clutter_score_append (score, timeline_1, timeline_3);
-  clutter_score_append (score, timeline_3, timeline_4);
+  t1 = clutter_score_append (score, NULL, timeline_1);
+  t2 = clutter_score_append (score, timeline_1, timeline_2);
+  t3 = clutter_score_append (score, timeline_1, timeline_3);
+  t4 = clutter_score_append (score, timeline_3, timeline_4);
 
   clutter_score_start (score);
 
   clutter_main ();
 
-  g_object_unref (score);
   g_object_unref (timeline_1);
   g_object_unref (timeline_2);
   g_object_unref (timeline_3);
   g_object_unref (timeline_4);
+  g_object_unref (score);
 
   return EXIT_SUCCESS;
 }
