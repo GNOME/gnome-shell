@@ -281,15 +281,15 @@ clutter_behaviour_ellipse_set_property (GObject      *gobject,
       break;
     case PROP_ANGLE_TILT_X:
       priv->angle_tilt_x =
-        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value)) - 256;
+        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value));
       break;
     case PROP_ANGLE_TILT_Y:
       priv->angle_tilt_y =
-        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value)) - 256;
+        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value));
       break;
     case PROP_ANGLE_TILT_Z:
       priv->angle_tilt_z =
-        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value)) - 256;
+        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value));
       break;
     case PROP_WIDTH:
       priv->a = g_value_get_int (value) >> 1;
@@ -335,15 +335,15 @@ clutter_behaviour_ellipse_get_property (GObject    *gobject,
       break;
     case PROP_ANGLE_TILT_X:
       g_value_set_double (value,
-                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_x + 256));
+                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_x));
       break;
     case PROP_ANGLE_TILT_Y:
       g_value_set_double (value,
-                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_y + 256));
+                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_y));
       break;
     case PROP_ANGLE_TILT_Z:
       g_value_set_double (value,
-                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_z + 256));
+                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_z));
       break;
     case PROP_WIDTH:
       g_value_set_int (value, (priv->a << 1));
@@ -994,7 +994,9 @@ clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse *self,
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle = CLUTTER_ANGLE_FROM_DEGX (angle_tilt) - 256;
+  new_angle = CLUTTER_ANGLE_FROM_DEGX (angle_tilt);
+
+  printf ("==== new angle %d ====\n", new_angle);
 
   priv = self->priv;
 
@@ -1070,11 +1072,11 @@ clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse *self,
   switch (axis)
     {
     case CLUTTER_X_AXIS:
-      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_x + 256);
+      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_x);
     case CLUTTER_Y_AXIS:
-      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_y + 256);
+      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_y);
     case CLUTTER_Z_AXIS:
-      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_z + 256);
+      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_z);
     default:
       break;
     }
@@ -1129,9 +1131,9 @@ clutter_behaviour_ellipse_set_tiltx (ClutterBehaviourEllipse *self,
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle_x = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_x) - 256;
-  new_angle_y = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_y) - 256;
-  new_angle_z = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_z) - 256;
+  new_angle_x = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_x);
+  new_angle_y = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_y);
+  new_angle_z = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_z);
 
   priv = self->priv;
 
@@ -1189,13 +1191,13 @@ clutter_behaviour_ellipse_get_tilt (ClutterBehaviourEllipse *self,
   priv = self->priv;
 
   if (angle_tilt_x)
-    *angle_tilt_x = CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_x + 256);
+    *angle_tilt_x = CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_x);
 
   if (angle_tilt_y)
-    *angle_tilt_y = CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_y + 256);
+    *angle_tilt_y = CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_y);
 
   if (angle_tilt_z)
-    *angle_tilt_z = CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_z + 256);
+    *angle_tilt_z = CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_z);
 }
 
 /**
@@ -1225,13 +1227,13 @@ clutter_behaviour_ellipse_get_tiltx (ClutterBehaviourEllipse *self,
   priv = self->priv;
 
   if (angle_tilt_x)
-    *angle_tilt_x = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_x + 256);
+    *angle_tilt_x = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_x);
 
   if (angle_tilt_y)
-    *angle_tilt_y = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_y + 256);
+    *angle_tilt_y = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_y);
 
   if (angle_tilt_z)
-    *angle_tilt_z = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_z + 256);
+    *angle_tilt_z = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_z);
 }
 
 /**
