@@ -256,6 +256,15 @@ void                  clutter_actor_set_size         (ClutterActor          *sel
 void                  clutter_actor_set_sizeu        (ClutterActor          *self,
 						      ClutterUnit            width,
 						      ClutterUnit            height);
+void                  clutter_actor_get_size         (ClutterActor          *self,
+                                                      guint                 *width,
+                                                      guint                 *height);
+void                  clutter_actor_get_sizeu        (ClutterActor          *self,
+                                                      ClutterUnit           *width,
+                                                      ClutterUnit           *height);
+void                  clutter_actor_get_abs_size     (ClutterActor          *self,
+                                                      guint                 *width,
+                                                      guint                 *height);
 void                  clutter_actor_set_position     (ClutterActor          *self,
 						      gint                   x,
 						      gint                   y);
@@ -265,6 +274,9 @@ void                  clutter_actor_set_positionu    (ClutterActor          *sel
 void                  clutter_actor_get_position     (ClutterActor          *self,
                                                       gint                  *x,
                                                       gint                  *y);
+void                  clutter_actor_get_positionu    (ClutterActor          *self,
+                                                      ClutterUnit           *x,
+                                                      ClutterUnit           *y);
 void                  clutter_actor_get_abs_position (ClutterActor          *self,
 						      gint                  *x,
 						      gint                  *y);
@@ -368,12 +380,6 @@ void                  clutter_actor_get_scale        (ClutterActor          *sel
                                                       gdouble               *scale_x,
                                                       gdouble               *scale_y);
 
-void                  clutter_actor_get_abs_size             (ClutterActor          *self,
-                                                              guint                 *width,
-                                                              guint                 *height);
-void                  clutter_actor_get_size                 (ClutterActor          *self,
-                                                              guint                 *width,
-                                                              guint                 *height);
 void                  clutter_actor_move_by                  (ClutterActor          *self,
                                                               gint                   dx,
                                                               gint                   dy);

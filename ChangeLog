@@ -1,3 +1,11 @@
+2007-12-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	(clutter_actor_get_sizeu),
+	(clutter_actor_get_positionu): Add unit-based accessors to
+	the size and position.
+
 2007-12-07  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:

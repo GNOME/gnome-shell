@@ -2110,6 +2110,35 @@ clutter_actor_get_size (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_get_sizeu:
+ * @self: A #ClutterActor
+ * @width: Location to store width if non NULL.
+ * @height: Location to store height if non NULL.
+ *
+ * Gets the size of an actor in #ClutterUnit<!-- -->s ignoring any scaling
+ * factors.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_get_sizeu (ClutterActor *self,
+                         ClutterUnit  *width,
+                         ClutterUnit  *height)
+{
+  ClutterActorBox box;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_query_coords (self, &box);
+
+  if (width)
+    *width = box.x2 - box.x1;
+
+  if (height)
+    *height = box.y2 - box.y1;
+}
+
+/**
  * clutter_actor_get_position:
  * @self: a #ClutterActor
  * @x: return location for the X coordinate, or %NULL
@@ -2135,6 +2164,34 @@ clutter_actor_get_position (ClutterActor *self,
 
   if (y)
     *y = CLUTTER_UNITS_TO_INT (box.y1);
+}
+
+/**
+ * clutter_actor_get_positionu:
+ * @self: a #ClutterActor
+ * @x: return location for the X coordinate, or %NULL
+ * @y: return location for the Y coordinate, or %NULL
+ *
+ * Retrieves the position of an actor in #ClutterUnit<!-- -->s.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_get_positionu (ClutterActor *self,
+                             ClutterUnit  *x,
+                             ClutterUnit  *y)
+{
+  ClutterActorBox box = { 0, };
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_query_coords (self, &box);
+
+  if (x)
+    *x = box.x1;
+
+  if (y)
+    *y = box.y1;
 }
 
 /*
@@ -3949,27 +4006,27 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
 /**
  * clutter_actor_transform_stage_point
  * @self: A #ClutterActor
- * @x: x screen coordiance of point to unproject, in #ClutterUnit
- * @y: y screen coordiance of point to unproject, in #ClutterUnit
- * @x: x_out location where to store the unprojected x coordinance, in
- * #ClutterUnit.
- * @y: y_out location where to store the unprojected y coordinance, in
- * #ClutterUnit.
+ * @x: x screen coordinate of the point to unproject, in #ClutterUnit<!-- -->s
+ * @y: y screen coordinate of the point to unproject, in #ClutterUnit<!-- -->s
+ * @x_out: return location for the unprojected x coordinance, in
+ *   #ClutterUnit<!-- -->s
+ * @y_out: return location for the unprojected y coordinance, in
+ *   #ClutterUnit<!-- -->s
  *
- * Return value: TRUE if conversion was successful.
- *
- * The function translates point with screen coordinates x,y to coordinates
- * relative to the actor, i.e., it can be used, to translate screen events
- * from global screen coordinates into local coordinates.
+ * The function translates point with screen coordinates (@x, @y) to
+ * coordinates relative to the actor, i.e. it can be used to translate
+ * screen events from global screen coordinates into local coordinates.
  *
  * The conversion can fail, notably if the transform stack results in the
  * actor being projected on the screen as a mere line.
  *
- * The conversion should not be expected to be pixel-perfect due to the nature
- * of the operation. In general the error grows when the skewing of the actor
- * rectangle on screen increases.
+ * The conversion should not be expected to be pixel-perfect due to the
+ * nature of the operation. In general the error grows when the skewing
+ * of the actor rectangle on screen increases.
  *
- * WARNING: This function is fairly computationally intensive.
+ * Note: This function is fairly computationally intensive.
+ *
+ * Return value: %TRUE if conversion was successful.
  *
  * Since: 0.6
  */
