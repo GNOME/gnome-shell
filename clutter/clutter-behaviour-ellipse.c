@@ -799,7 +799,7 @@ clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   clutter_behaviour_ellipse_set_angle_startx (self,
-                                              CLUTTER_ANGLE_FROM_DEG (angle_start));
+                                        CLUTTER_FLOAT_TO_FIXED (angle_start));
 }
 
 /**
@@ -881,7 +881,7 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   clutter_behaviour_ellipse_set_angle_endx (self,
-                                            CLUTTER_ANGLE_FROM_DEG (angle_end));
+                                          CLUTTER_FLOAT_TO_FIXED (angle_end));
 }
 
 /**
@@ -969,8 +969,8 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   clutter_behaviour_ellipse_set_angle_tiltx (self,
-                                             axis,
-                                             CLUTTER_ANGLE_FROM_DEG (angle_tilt));
+                                         axis,
+                                         CLUTTER_FLOAT_TO_FIXED (angle_tilt));
 }
 
 /**
@@ -995,8 +995,6 @@ clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   new_angle = CLUTTER_ANGLE_FROM_DEGX (angle_tilt);
-
-  printf ("==== new angle %d ====\n", new_angle);
 
   priv = self->priv;
 
@@ -1104,9 +1102,9 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   clutter_behaviour_ellipse_set_tiltx (self,
-                                       CLUTTER_ANGLE_FROM_DEG (angle_tilt_x),
-                                       CLUTTER_ANGLE_FROM_DEG (angle_tilt_y),
-                                       CLUTTER_ANGLE_FROM_DEG (angle_tilt_z));
+                                       CLUTTER_FLOAT_TO_FIXED (angle_tilt_x),
+                                       CLUTTER_FLOAT_TO_FIXED (angle_tilt_y),
+                                       CLUTTER_FLOAT_TO_FIXED (angle_tilt_z));
 }
 
 /**

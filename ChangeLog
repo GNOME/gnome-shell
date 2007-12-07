@@ -1,6 +1,19 @@
 2007-12-07  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:
+	(clutter_behaviour_ellipse_set_angle_start):
+	(clutter_behaviour_ellipse_set_angle_end):
+	(clutter_behaviour_ellipse_set_angle_tilt):
+	(clutter_behaviour_ellipse_set_tilt):
+	Removed strayed degree -> ClutterAngle conversions left over from
+	API changes.
+
+	(clutter_behaviour_ellipse_set_angle_tiltx):
+	Removed stray printf.
+
+2007-12-07  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.c:
 	Fixed tilt setters and getters.
 
 2007-12-06  Tomas Frydrych  <tf@openedhand.com>
