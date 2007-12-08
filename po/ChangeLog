@@ -1,3 +1,8 @@
+2007-12-07  Leonardo Ferreira Fontenelle  <leonardof@svn.gnome.org>
+
+	* pt_BR.po: Fixed attributes in Brazilian Portuguese translation by
+	Rodrigo Flores.
+
 2007-12-02  Marcel Telka  <marcel@telka.sk>
 
 	* sk.po: Updated Slovak translation by Pavol Šimo.
