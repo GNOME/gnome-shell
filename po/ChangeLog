@@ -1,3 +1,7 @@
+2007-12-08  Jakub Friedl  <jfriedl@suse.cz>
+
+	* cs.po: Czech Translation updated by Petr Kovar.
+
 2007-12-08  Ihar Hrachyshka <booxter@lacinka.org>
 
 	* be@latin.po: Updated Belarusian Latin translation.
@@ -29,7 +33,7 @@
 
 2007-11-01  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
-        * es/es.po: Updated Spanish translation
+	* es.po: Updated Spanish translation
 
 2007-10-25  Matej Urbančič  <mateju@svn.gnome.org>
 
