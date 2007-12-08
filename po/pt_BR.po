@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-07 22:57-0200\n"
-"PO-Revision-Date: 2007-12-07 23:07-0200\n"
+"POT-Creation-Date: 2007-12-07 23:59-0200\n"
+"PO-Revision-Date: 2007-12-08 00:22-0200\n"
 "Last-Translator: Rodrigo Flores <rodrigomarquesflores@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -898,7 +898,7 @@ msgstr ""
 "focus). Note que a lista de formas de levantar janelas quando raise_on_click "
 "é falso não inclui pedidos programáticos de aplicações para levantar "
 "janelas; tais pedidos serão ignorados independente do motivo de solicitação. "
-"Se você for um desenvolvidor de aplicações e possui um usuário reclamando "
+"Se você for um desenvolvedor de aplicações e possui um usuário reclamando "
 "que sua aplicação não funciona com esta opção desabilitada, diga a eles que "
 "a culpa é deles por ter quebrado o gerenciador de janelas e que eles "
 "precisam mudar esta opção para verdadeiro ou viver com o erro que eles "
@@ -921,7 +921,7 @@ msgid ""
 msgstr ""
 "Algumas aplicações desprezam especificações formais de modo a prejudicar o "
 "funcionamento do gerenciador de janelas. Esta opção põe Metacity em um modo "
-"rigorosamente corret, o qual dá mais consistencia à interface de usuário, "
+"rigorosamente correta, o qual dá mais consistência à interface de usuário, "
 "desde que ele não precise executar aplicações mal comportadas."
 
 #: ../src/metacity.schemas.in.h:82
@@ -1061,7 +1061,7 @@ msgstr ""
 "ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, "
 "permitindo letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;"
 "\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a stringo valor especial "
-"\"disabled\" (desativada), não haverá tecla de atalho para essa ação."
+"\"disabled\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:106
 msgid ""
@@ -1076,8 +1076,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:107
 msgid ""
@@ -1092,7 +1092,7 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "O analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas "
 "e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:108
@@ -1108,8 +1108,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:109
 msgid ""
@@ -1124,8 +1124,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:110
 msgid ""
@@ -1139,7 +1139,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:111
@@ -1154,7 +1154,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:112
@@ -1169,7 +1169,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:113
@@ -1184,7 +1184,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:114
@@ -1199,7 +1199,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:115
@@ -1214,7 +1214,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:116
@@ -1229,7 +1229,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:117
@@ -1244,7 +1244,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:118
@@ -1259,7 +1259,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:119
@@ -1274,7 +1274,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:120
@@ -1289,7 +1289,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:121
@@ -1304,7 +1304,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:122
@@ -1319,7 +1319,7 @@ msgstr ""
 "a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:123
@@ -1334,7 +1334,7 @@ msgstr ""
 "\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:124
@@ -1351,7 +1351,7 @@ msgstr ""
 "a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, "
 "permitindo letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;"
 "\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor especial "
-"\"disabled\" (desativada), não haverá tecla de atalho para essa ação."
+"\"disabled\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:125
 msgid ""
@@ -1367,7 +1367,7 @@ msgstr ""
 "a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:126
@@ -1384,7 +1384,7 @@ msgstr ""
 "\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:127
@@ -1399,7 +1399,7 @@ msgstr ""
 "\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:128
@@ -1414,7 +1414,7 @@ msgstr ""
 "\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:129
@@ -1430,8 +1430,8 @@ msgstr ""
 "O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:130
 msgid ""
@@ -1446,8 +1446,8 @@ msgstr ""
 "esquerda. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\". O analisador é bastante flexível, permitindo letras "
 "minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
-"\". Se você definir a opção como o valor especial \"disabled\" (desativada), "
-"não haverá tecla de atalho para essa ação."
+"\". Se você definir a opção como o valor especial \"disabled"
+"\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:131
 msgid ""
@@ -1462,7 +1462,7 @@ msgstr ""
 "direita. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1\". O analisador é bastante flexível, permitindo letras minúsculas "
 "ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se "
-"você definir a opção como o valor especial \"disabled\" (desativada), não "
+"você definir a opção como o valor especial \"disabled\" (desabilitada), não "
 "haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:132
@@ -1477,8 +1477,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:133
 msgid ""
@@ -1492,8 +1492,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:134
 msgid ""
@@ -1507,8 +1507,8 @@ msgstr ""
 "O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:135
 msgid ""
@@ -1522,8 +1522,8 @@ msgstr ""
 "O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:136
 msgid ""
@@ -1537,8 +1537,8 @@ msgstr ""
 "O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:137
 msgid ""
@@ -1552,8 +1552,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:138
 msgid ""
@@ -1567,8 +1567,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:139
 msgid ""
@@ -1582,8 +1582,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:140
 msgid ""
@@ -1597,8 +1597,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:141
 msgid ""
@@ -1612,8 +1612,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:142
 msgid ""
@@ -1627,8 +1627,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:143
 msgid ""
@@ -1642,8 +1642,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:144
 msgid ""
@@ -1657,8 +1657,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:145
 msgid ""
@@ -1674,7 +1674,7 @@ msgstr ""
 "\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a "
-"string especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"string especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:146
@@ -1691,7 +1691,7 @@ msgstr ""
 "\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a "
-"string especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"string especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:147
@@ -1710,7 +1710,7 @@ msgstr ""
 "\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:148
@@ -1729,7 +1729,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:149
@@ -1747,7 +1747,7 @@ msgstr ""
 "\"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, permitindo "
 "letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;"
 "Ctrl&gt;\". Se você definir a opção como o valor especial \"disabled"
-"\" (desativada), não haverá tecla de atalho para essa ação."
+"\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:150
 msgid ""
@@ -1764,7 +1764,7 @@ msgstr ""
 "ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, "
 "permitindo letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;"
 "\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor especial "
-"\"disabled\" (desativada), não haverá tecla de atalho para essa ação."
+"\"disabled\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:151
 msgid ""
@@ -1780,7 +1780,7 @@ msgstr ""
 "Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante "
 "flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
 "\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor "
-"especial \"disabled\" (desativada), não haverá tecla de atalho para essa "
+"especial \"disabled\" (desabilitada), não haverá tecla de atalho para essa "
 "ação."
 
 #: ../src/metacity.schemas.in.h:152
@@ -1797,7 +1797,7 @@ msgstr ""
 "Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante "
 "flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
 "\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor "
-"especial \"disabled\" (desativada), não haverá tecla de atalho para essa "
+"especial \"disabled\" (desabilitada), não haverá tecla de atalho para essa "
 "ação."
 
 #: ../src/metacity.schemas.in.h:153
@@ -1816,7 +1816,7 @@ msgstr ""
 "\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, "
 "permitindo letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;"
 "\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor especial "
-"\"disabled\" (desativada), não haverá tecla de atalho para essa ação."
+"\"disabled\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:154
 msgid ""
@@ -1834,8 +1834,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:155
 msgid ""
@@ -1853,7 +1853,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:156
@@ -1872,7 +1872,7 @@ msgstr ""
 "a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:157
@@ -1889,7 +1889,7 @@ msgstr ""
 "é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:158
@@ -1904,7 +1904,7 @@ msgstr ""
 "é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:159
@@ -1919,7 +1919,7 @@ msgstr ""
 "a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:160
@@ -1934,8 +1934,8 @@ msgstr ""
 "sombreado. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\". O analisador é bastante flexível, permitindo letras "
 "minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
-"\". Se você definir a opção como o valor especial \"disabled\" (desativada), "
-"não haverá tecla de atalho para essa ação."
+"\". Se você definir a opção como o valor especial \"disabled"
+"\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:161
 msgid ""
@@ -1951,7 +1951,7 @@ msgstr ""
 "\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, "
 "permitindo letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;"
 "\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor especial "
-"\"disabled\" (desativada), não haverá tecla de atalho para essa ação."
+"\"disabled\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:162
 msgid ""
@@ -1965,7 +1965,7 @@ msgstr ""
 "a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
 "como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
-"valor especial \"disabled\" (desativada), não haverá tecla de atalho para "
+"valor especial \"disabled\" (desabilitada), não haverá tecla de atalho para "
 "essa ação."
 
 #: ../src/metacity.schemas.in.h:163
@@ -1981,8 +1981,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:164
 msgid ""
@@ -1996,7 +1996,7 @@ msgstr ""
 "Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante "
 "flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
 "\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor "
-"especial \"disabled\" (desativada), não haverá tecla de atalho para essa "
+"especial \"disabled\" (desabilitada), não haverá tecla de atalho para essa "
 "ação."
 
 #: ../src/metacity.schemas.in.h:165
@@ -2013,7 +2013,7 @@ msgstr ""
 "\"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, permitindo "
 "letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;"
 "Ctrl&gt;\". Se você definir a opção como o valor especial \"disabled"
-"\" (desativada), não haverá tecla de atalho para essa ação."
+"\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:166
 msgid ""
@@ -2028,8 +2028,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:167
 msgid ""
@@ -2043,7 +2043,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:168
@@ -2106,8 +2106,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:175
 msgid ""
@@ -2121,7 +2121,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:176
@@ -2137,7 +2137,7 @@ msgstr ""
 "é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:177
@@ -2153,7 +2153,7 @@ msgstr ""
 "é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:178
@@ -2169,8 +2169,8 @@ msgstr ""
 "O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:179
 msgid ""
@@ -2185,8 +2185,8 @@ msgstr ""
 "O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:180
 msgid ""
@@ -2201,7 +2201,7 @@ msgstr ""
 "é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:181
@@ -2217,8 +2217,8 @@ msgstr ""
 "O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:182
 msgid ""
@@ -2233,8 +2233,8 @@ msgstr ""
 "O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:183
 msgid ""
@@ -2249,8 +2249,8 @@ msgstr ""
 "formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
 "\". O analisador é bastante flexível, permitindo letras minúsculas ou "
 "maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\" (desativada), não haverá "
-"tecla de atalho para essa ação."
+"definir a opção como o valor especial \"disabled\" (desabilitada), não "
+"haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:184
 msgid ""
@@ -2264,7 +2264,7 @@ msgstr ""
 "semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
 "abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\" (desativada), não haverá tecla de "
+"opção como o valor especial \"disabled\" (desabilitada), não haverá tecla de "
 "atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:185
@@ -2281,7 +2281,7 @@ msgstr ""
 "Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, permitindo "
 "letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;"
 "Ctrl&gt;\". Se você definir a opção como o valor especial \"disabled"
-"\" (desativada), não haverá tecla de atalho para essa ação."
+"\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:186
 msgid ""
@@ -2297,7 +2297,7 @@ msgstr ""
 "Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, permitindo "
 "letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;"
 "Ctrl&gt;\". Se você definir a opção como o valor especial \"disabled"
-"\" (desativada), não haverá tecla de atalho para essa ação."
+"\" (desabilitada), não haverá tecla de atalho para essa ação."
 
 #: ../src/metacity.schemas.in.h:187
 msgid ""
@@ -3264,12 +3264,12 @@ msgstr "Borda"
 #: ../src/theme-viewer.c:725
 #, c-format
 msgid "Button layout test %d"
-msgstr "Teste de layout de botões %d"
+msgstr "Teste de disposição dos botões %d"
 
 #: ../src/theme-viewer.c:754
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr "%g milisegundos para desenhar um quadro de janela"
+msgstr "%g milissegundos para desenhar um quadro de janela"
 
 #: ../src/theme-viewer.c:797
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
@@ -3299,7 +3299,7 @@ msgstr "Fonte de Título Grande"
 
 #: ../src/theme-viewer.c:850
 msgid "Button Layouts"
-msgstr "Layouts de Botões"
+msgstr "Disposições de Botões"
 
 #: ../src/theme-viewer.c:855
 msgid "Benchmark"
@@ -3316,9 +3316,9 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"%d quadros desenhados em %g segundos do lado cliente (%g milisegundos por "
+"%d quadros desenhados em %g segundos do lado cliente (%g milissegundos por "
 "quadro) e %g segundos no relógio, incluindo recursos do servidor X (%g "
-"milisegundos por quadro)\n"
+"milissegundos por quadro)\n"
 
 #: ../src/theme-viewer.c:1219
 msgid "position expression test returned TRUE but set error"
@@ -3356,7 +3356,7 @@ msgstr "o valor y era %d, mas %d era esperado"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
-"%d expressões de coordenadas analizadas em %g segundos (%g segundos em "
+"%d expressões de coordenadas analisadas em %g segundos (%g segundos em "
 "média)\n"
 
 #: ../src/theme.c:206
