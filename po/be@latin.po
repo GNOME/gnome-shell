@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: atk.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-13 02:06+0300\n"
-"PO-Revision-Date: 2007-09-13 02:09+0300\n"
+"POT-Creation-Date: 2007-12-08 11:07+0200\n"
+"PO-Revision-Date: 2007-12-08 11:08+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: i18n@mova.org <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,6 +32,7 @@ msgid "Usage: %s\n"
 msgstr "Užyćcio: %s\n"
 
 #: ../src/tools/metacity-message.c:176 ../src/util.c:133
+#, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 "Prahrama Metacity skampilavanaja biez absłuhoŭvańnia režymu z pašyranaj "
@@ -162,6 +163,7 @@ msgid "No command %d has been defined.\n"
 msgstr "Zahad %d nie akreśleny.\n"
 
 #: ../src/keybindings.c:3849
+#, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Zahad terminału nie akreśleny.\n"
 
@@ -176,42 +178,46 @@ msgid ""
 msgstr ""
 "metacity %s\n"
 "Aŭtarskija pravy (C) 2001-2007 Havoc Pennington, Red Hat, Inc. dy inšyja\n"
-"Heta volnaja prahrama; kab paznajomicca z umovami, pry jakich "
-"dapuščalna jaje kapijavać, zazirni ŭ jaje krynicy.\n"
-"Na prahramu nie dajuć NIJAKAJ HARANTYI, navat harantyi "
-"HANDLOVAJ PRYDATNAŚCI albo PRYDATNAŚCI DLA AKREŚLENYCH METAŬ.\n"
+"Heta volnaja prahrama; kab paznajomicca z umovami, pry jakich dapuščalna "
+"jaje kapijavać, zazirni ŭ jaje krynicy.\n"
+"Na prahramu nie dajuć NIJAKAJ HARANTYI, navat harantyi HANDLOVAJ PRYDATNAŚCI "
+"albo PRYDATNAŚCI DLA AKREŚLENYCH METAŬ.\n"
 
-#: ../src/main.c:171
+#: ../src/main.c:172
 msgid "Disable connection to session manager"
 msgstr "Uklučaje spałučeńnie z kiraŭnikom sesijaŭ"
 
-#: ../src/main.c:177
+#: ../src/main.c:178
 msgid "Replace the running window manager with Metacity"
 msgstr "Zamianiaje ŭruchomlenaha kiraŭnika voknaŭ na Metacity"
 
-#: ../src/main.c:183
+#: ../src/main.c:184
 msgid "Specify session management ID"
 msgstr "Akreślivaje ID haspadarańnia sesijami"
 
 # #FIXME Słova "display" -- nie samameta, ale lepšaj versii nie pryniali. Varyjanty byli: dyspłej, dysplej. Nivodaje nie spadabałasia.
-#: ../src/main.c:188
+#: ../src/main.c:189
 msgid "X Display to use"
 msgstr "Užyvany dysplej X"
 
-#: ../src/main.c:194
+#: ../src/main.c:195
 msgid "Initialize session from savefile"
 msgstr "Inicyjavańnie sesii z zapisanaha fajłu"
 
-#: ../src/main.c:200
+#: ../src/main.c:201
 msgid "Print version"
 msgstr "Pakazvaje versiju"
 
-#: ../src/main.c:353
+#: ../src/main.c:207
+msgid "Make X calls synchronous"
+msgstr "Synchranizuj vykliki X"
+
+#: ../src/main.c:361
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Niemahčyma prahledzieć kataloh z matyvami: %s\n"
 
-#: ../src/main.c:369
+#: ../src/main.c:377
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -219,7 +225,7 @@ msgstr ""
 "Niemahčyma znajści nivodnaha z matyvaŭ. Spraŭdź, kali łaska, ci isnuje "
 "kataloh %s i ci jość u im standartnyja matyvy.\n"
 
-#: ../src/main.c:429
+#: ../src/main.c:452
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Restart nie ŭdaŭsia: %s\n"
@@ -312,6 +318,7 @@ msgid "Workspace %d"
 msgstr "Rabočy abšar %d"
 
 #: ../src/menu.c:208
+#, c-format
 msgid "Workspace 1_0"
 msgstr "Rabočy abšar 1_0"
 
@@ -2558,6 +2565,7 @@ msgid "Failed to parse saved session file: %s\n"
 msgstr "Niemahčyma razabrać zapisany fajł sesii: %s\n"
 
 #: ../src/session.c:1159
+#, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "Znojdzieny atrybut <metacity_session>, kali ID sesii byŭ užo akreśleny"
 
@@ -2568,6 +2576,7 @@ msgstr "Nieviadomy atrybut %s unutry elementu <metacity_session>"
 
 # #FIXME nia ŭpeŭnieny ŭ terminie
 #: ../src/session.c:1189
+#, c-format
 msgid "nested <window> tag"
 msgstr "zahnieždžany značnik <window>"
 
@@ -3141,12 +3150,12 @@ msgstr "Dvojčy akreślili element <date> dla hetaha matyvu"
 msgid "<description> specified twice for this theme"
 msgstr "Dvojčy akreślili element <description> dla hetaha matyvu"
 
-#: ../src/theme-parser.c:4573
+#: ../src/theme-parser.c:4613
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Nielha znajści pravilny fajł dla matyvu %s\n"
 
-#: ../src/theme-parser.c:4629
+#: ../src/theme-parser.c:4669
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Fajł matyvu %s nia maje ŭ sabie hałoŭnaha elementu <metacity_theme>"
@@ -3263,6 +3272,7 @@ msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisekund(y) dziela stvareńnia adnoj ramki vakna"
 
 #: ../src/theme-viewer.c:797
+#, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Užyćcio: methacity-theme-viewer [NAZVA_MATYVU]\n"
 
@@ -3382,10 +3392,12 @@ msgid "Button aspect ratio %g is not reasonable"
 msgstr "Kaeficyjent praporcyjaŭ knopki %g nie źmiaščajecca ŭ rezonnych miežach"
 
 #: ../src/theme.c:294
+#, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Pamier ramki nie akreślivaje ličby knopak"
 
 #: ../src/theme.c:925
+#, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Hradyjenty pavinny składacca prynamsi z dvuch koleraŭ"
 
@@ -3493,14 +3505,17 @@ msgstr ""
 "tekstu: \"%s\""
 
 #: ../src/theme.c:1661
+#, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Vyraz, jaki akreślivaje kaardynaty, pusty albo niezrazumieły"
 
 #: ../src/theme.c:1798 ../src/theme.c:1808 ../src/theme.c:1842
+#, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Vyraz, jaki akreślivaje kaardynaty, maje dzialeńnie praz nul"
 
 #: ../src/theme.c:1850
+#, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
@@ -3514,12 +3529,14 @@ msgid ""
 msgstr "Vyraz maje aperatar \"%s\" u miescy, dzie čakali arhumentu"
 
 #: ../src/theme.c:1915
+#, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, maje arhument u miescy, dzie čakali "
 "aperatara"
 
 #: ../src/theme.c:1923
+#, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, zakančvajecca aperataram zamiest arhumentu"
@@ -3534,11 +3551,13 @@ msgstr ""
 "\"%c\" biez aperatara pamiž imi"
 
 #: ../src/theme.c:2051
+#, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr ""
 "Parser vyrazaŭ, jakija akreślivajuć kaardynaty, pierapoŭniŭ svoj bufer."
 
 #: ../src/theme.c:2080
+#, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, začyniaje dužka biez adpaviednaj dužki na "
@@ -3552,12 +3571,14 @@ msgstr ""
 "s\""
 
 #: ../src/theme.c:2197
+#, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, adčyniaje dužka biez adpaviednaj dužki na "
 "kancy"
 
 #: ../src/theme.c:2208
+#, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, nia maje ani aperataraŭ, ani arhumentaŭ"
@@ -3664,7 +3685,7 @@ msgstr ""
 "Niapravilnaja vartaść WM_TRANSIENT_FOR dla vakna 0x%lx akreślenaja ŭ %s.\n"
 
 #. first time through
-#: ../src/window.c:5551
+#: ../src/window.c:5650
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3680,7 +3701,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6116
+#: ../src/window.c:6215
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
