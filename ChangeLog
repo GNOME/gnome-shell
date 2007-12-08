@@ -1,3 +1,8 @@
+2007-12-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac: Make libtool respect the -s switch of make
+	and be quiet.
+
 2007-12-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.h:
