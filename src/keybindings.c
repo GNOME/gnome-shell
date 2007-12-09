@@ -1644,6 +1644,17 @@ process_event (MetaKeyBinding       *bindings,
               "No handler found for this event in this binding table\n");
 }
 
+/* Handle a key event. May be called recursively: some key events cause
+ * grabs to be ended and then need to be processed again in their own
+ * right. This cannot cause infinite recursion because we never call
+ * ourselves when there wasn't a grab, and we always clear the grab
+ * first; the invariant is enforced using an assertion. See #112560.
+ * FIXME: We need to prove there are no race conditions here.
+ * FIXME: Does it correctly handle alt-Tab being followed by another
+ * grabbing keypress without letting go of alt?
+ * FIXME: An iterative solution would probably be simpler to understand
+ * (and help us solve the other fixmes).
+ */
 void
 meta_display_process_key_event (MetaDisplay *display,
                                 MetaWindow  *window,
@@ -1791,6 +1802,12 @@ meta_display_process_key_event (MetaDisplay *display,
                   "Ending grab op %u on key event sym %s\n",
                   display->grab_op, XKeysymToString (keysym));
       meta_display_end_grab_op (display, event->xkey.time);
+
+      g_assert (display->grab_op == META_GRAB_OP_NONE);
+
+      /* and go round again: #112560 */
+      meta_display_process_key_event (display, window, event);
+
     }
 }
 

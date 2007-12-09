@@ -1,3 +1,9 @@
+2007-12-08  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/keybindings.c (meta_display_process_key_event): Recur if the
+	keypress ended a grab, so it can be processed in its own right.
+	Closes #112560.
+
 2007-12-08  Martin Meyer  <elreydetodo@gmail.com>
 
 	* src/theme-parser.c (parse_draw_op_element): Fix
