@@ -1,3 +1,9 @@
+2007-12-08  Martin Meyer  <elreydetodo@gmail.com>
+
+	* src/theme-parser.c (parse_draw_op_element): Fix
+	typo where wrong variable was checked (reported by
+	Kjartan Maraas). Closes #501362.
+	
 2007-11-19  Lucas Rocha  <lucasr@gnome.org>
 
 	* src/main.c (main): try to get the session client ID from 

@@ -3182,7 +3182,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (tile_xoffset && !check_expression (tile_xoffset, FALSE, info->theme, context, error))
         return;
 
-      if (tile_yoffset && !check_expression (tile_xoffset, FALSE, info->theme, context, error))
+      if (tile_yoffset && !check_expression (tile_yoffset, FALSE, info->theme, context, error))
         return;
       
       /* x/y/width/height default to 0,0,width,height - should
