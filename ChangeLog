@@ -1,3 +1,9 @@
+2007-12-08  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/metacity.schemas.in: rewrite long description of
+	/schemas/apps/metacity/general/focus_new_windows because we
+	love the translators really. Closes #474889.
+
 2007-12-08  Matthias Clasen  <mclasen@redhat.com>
 
 	* src/menu.c (meta_window_menu_new): check for null before adding
