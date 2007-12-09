@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-30 18:12+0000\n"
-"PO-Revision-Date: 2007-11-01 14:21+0100\n"
+"POT-Creation-Date: 2007-11-01 13:24+0000\n"
+"PO-Revision-Date: 2007-12-09 21:41+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -280,7 +280,7 @@ msgstr "_Siempre en el área de trabajo visible"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:93
 msgid "_Only on This Workspace"
-msgstr "_Sólo en este área de trabajo"
+msgstr "S_ólo en este área de trabajo"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:95
