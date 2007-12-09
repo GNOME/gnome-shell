@@ -474,10 +474,12 @@ meta_window_menu_new   (MetaFrames         *frames,
                                        g_free, FALSE, FALSE);
             }
 
-
-          gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu), mi);
+          if (mi)
+            {
+              gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu), mi);
           
-          gtk_widget_show (mi);
+              gtk_widget_show (mi);
+            }
         }
     }
 
