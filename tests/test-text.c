@@ -1,5 +1,8 @@
 #include <clutter/clutter.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 #define STAGE_WIDTH  640
 #define STAGE_HEIGHT 480
 
@@ -10,8 +13,6 @@ int
 main (int argc, char *argv[])
 {
   ClutterActor    *stage;
-  gchar           *text;
-  gsize            size;
   ClutterColor     stage_color = { 0x00, 0x00, 0x00, 0xff };
   ClutterColor     label_color = { 0xff, 0xff, 0xff, 0xff };
 
@@ -22,18 +23,16 @@ main (int argc, char *argv[])
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
   {
-    gint    font_size;
-    gdouble scale;
-    gint    row, col;
+    gint row, col;
 
     for (row=0; row<ROWS; row++)
       for (col=0; col<COLS; col++)
         {
-          ClutterActor    *label;
+          ClutterActor *label;
           gchar font_name[64];
           gchar text[64];
-          gint    font_size = row+10;
-          gdouble scale = 0.17 + (1.5*col/COLS);
+          gint  font_size = row+10;
+          gdouble scale = 0.17 + (1.5 * col / COLS);
 
           sprintf (font_name, "Sans %ipx", font_size);
           sprintf (text, "OH");
@@ -49,8 +48,8 @@ main (int argc, char *argv[])
             {
               sprintf (font_name, "Sans 10px");
               sprintf (text, "%ipx", font_size);
-              if (row==0)
-                sprintf (text, "");
+              if (row == 0)
+                strcpy (text, "");
               font_size = 10;
               scale = 1.0;
             }

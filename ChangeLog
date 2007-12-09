@@ -1,5 +1,11 @@
 2007-12-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/test-events.c (input_cb):
+	* tests/test-text.c (main): Fix compiler errors. (#592,
+	Gwenole Beauchesne)
+
+2007-12-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Document the values for full
 	transparency and full opacity in the set_opacity()
 	method. (#662)

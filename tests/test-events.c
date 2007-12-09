@@ -142,7 +142,7 @@ input_cb (ClutterActor    *actor,
       printf("[%s] DELETE", source);
       break;
     case CLUTTER_NOTHING:
-      return;
+      return FALSE;
     }
 
   if (clutter_event_get_source (event) == actor)
