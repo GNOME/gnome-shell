@@ -2751,7 +2751,8 @@ clutter_actor_get_scale (ClutterActor *self,
  * @self: A #ClutterActor
  * @opacity: New opacity value for actor.
  *
- * Sets the actors opacity, with zero being completely transparent.
+ * Sets the actors opacity, with zero being completely transparent and
+ * 255 (0xff) as fully opaque.
  */
 void
 clutter_actor_set_opacity (ClutterActor *self,

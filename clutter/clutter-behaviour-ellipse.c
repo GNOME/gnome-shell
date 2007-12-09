@@ -1164,15 +1164,11 @@ clutter_behaviour_ellipse_set_tiltx (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_get_tilt
  * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: location for tilt of the elipse around the center in X axis in
- * degrees, or NULL.
- * @angle_tilt_y: location for tilt of the elipse around the center in Y axis in
- * degrees, or NULL.
- * @angle_tilt_z: location for tilt of the elipse around the center in Z axis in
- * degrees, or NULL.
+ * @angle_tilt_x: return location for tilt angle on the X axis, or %NULL.
+ * @angle_tilt_y: return location for tilt angle on the Y axis, or %NULL.
+ * @angle_tilt_z: return location for tilt angle on the Z axis, or %NULL.
  *
  * Gets the tilt of the ellipse around the center in Y axis.
- *
  *
  * Since: 0.4
  */

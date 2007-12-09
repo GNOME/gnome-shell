@@ -1,3 +1,12 @@
+2007-12-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c: Document the values for full
+	transparency and full opacity in the set_opacity()
+	method. (#662)
+
+	* clutter/clutter-behaviour-ellipse.c: Improve consistency
+	in the apidoc.
+
 2007-12-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Make libtool respect the -s switch of make
