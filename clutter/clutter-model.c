@@ -153,7 +153,7 @@ struct _ClutterModelPrivate
   GDestroyNotify          filter_notify;
 
   ClutterModelSortFunc    sort;
-  guint                   sort_column;
+  gint                    sort_column;
   gpointer                sort_data;
   GDestroyNotify          sort_notify;
 };
@@ -313,7 +313,7 @@ clutter_model_init (ClutterModel *self)
   priv->filter_notify = NULL;
   priv->sort = NULL;
   priv->sort_data = NULL;
-  priv->sort_column = 0;
+  priv->sort_column = -1;
   priv->sort_notify = NULL;
 }
 
@@ -1232,22 +1232,23 @@ clutter_model_get_n_rows (ClutterModel *model)
 /**
  * clutter_model_set_sorting_column:
  * @model: a #ClutterModel
- * @column: the column of the @model to sort
+ * @column: the column of the @model to sort, or -1
  *
- * Sets the model to sort by @column.
+ * Sets the model to sort by @column. If @column is a negative value
+ * the sorting column will be unset.
  *
  * Since 0.6
  */
 void               
 clutter_model_set_sorting_column (ClutterModel *model,
-                                  guint        column)
+                                  gint          column)
 {
   ClutterModelPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_MODEL (model));
   priv = model->priv;
 
-  if (column < 0 || column > priv->n_columns)
+  if (column > priv->n_columns)
     {
       g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
       return;
@@ -1255,7 +1256,9 @@ clutter_model_set_sorting_column (ClutterModel *model,
 
   priv->sort_column = column;
 
-  _model_sort (model);
+  if (priv->sort_column > 0)
+    _model_sort (model);
+
   g_signal_emit (model, model_signals[SORT_CHANGED], 0);
 }
 
@@ -1265,14 +1268,14 @@ clutter_model_set_sorting_column (ClutterModel *model,
  *
  * Retrieves the number of column used for sorting the @model.
  *
- * Return value: a column number
+ * Return value: a column number, or -1 if the model is not sorted
  *
  * Since 0.6
  */
-guint              
+gint
 clutter_model_get_sorting_column (ClutterModel *model)
 {
-  g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (model), 0);
+  g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (model), -1);
 
   return model->priv->sort_column;
 }
@@ -1690,9 +1693,8 @@ _model_iter_set_value (ClutterModelIter *iter,
   if (!priv->ignore_sort)
     {
       if (model_priv->sort_column == column && model_priv->sort)
-      {
         _model_sort (priv->model);
-      }
+
       g_signal_emit (priv->model, model_signals[ROW_CHANGED], 0, iter);
     }
 }
@@ -2028,6 +2030,7 @@ clutter_model_iter_set_valist (ClutterModelIter *iter,
       
       column = va_arg (args, gint);
     }
+
   priv->ignore_sort = FALSE;
   if (sort)
     _model_sort (model);
@@ -2133,8 +2136,10 @@ clutter_model_iter_get_valist (ClutterModelIter *iter,
                      G_STRLOC, column);
           break;
         }
-          
-      g_value_init (&value, model_priv->column_types[column]);
+
+      /* this one will take care of initialising value to the
+       * correct type
+       */
       clutter_model_iter_get_value (iter, column, &value);
 
       G_VALUE_LCOPY (&value, args, 0, &error);

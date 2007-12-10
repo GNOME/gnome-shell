@@ -215,8 +215,8 @@ ClutterModelIter *    clutter_model_get_iter_at_row    (ClutterModel   *model,
                                                         guint           row);
 
 void                  clutter_model_set_sorting_column (ClutterModel   *model,
-                                                        guint           column);
-guint                 clutter_model_get_sorting_column (ClutterModel   *model);
+                                                        gint            column);
+gint                  clutter_model_get_sorting_column (ClutterModel   *model);
 
 void                  clutter_model_foreach            (ClutterModel   *model,
                                                         ClutterModelForeachFunc func, 

@@ -1,5 +1,13 @@
 2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model.[ch]: Allow unsorting the model (passing
+	-1 as the sorting column)
+
+	(clutter_model_iter_get_valist): Do not initialise twice che
+	return value.
+
+2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model.c (clutter_model_iter_get_value): Initialise
 	the passed GValue like the other getters do.
 
