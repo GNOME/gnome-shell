@@ -1,9 +1,14 @@
 2007-12-10  Tomas Frydrych  <tf@openedhand.com>
 
+	* tests/Makefile.am:
+	Fixed a typo.
+
+2007-12-10  Tomas Frydrych  <tf@openedhand.com>
+
 	* tests/test-viewport.c:
 	* tests/Makefile.am:
 	Added a simple viewport test.
-	
+
 2007-12-10  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

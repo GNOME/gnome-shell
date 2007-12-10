@@ -32,6 +32,6 @@ test_script_SOURCES      = test-script.c
 test_model_SOURCES       = test-model.c
 test_effects_SOURCES     = test-effects.c
 test_fullscreen_SOURCES  = test-fullscreen.c
-test_vieport_SOURCES     = test-viewport.c
+test_viewport_SOURCES    = test-viewport.c
 
 EXTRA_DIST = redhand.png test-script.json
