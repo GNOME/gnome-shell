@@ -1,5 +1,10 @@
 2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model.c:
+	(clutter_model_get_sorting_column): Fix wrong type check.
+
+2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model.[ch]: Allow unsorting the model (passing
 	-1 as the sorting column)
 

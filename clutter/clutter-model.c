@@ -1264,7 +1264,7 @@ clutter_model_set_sorting_column (ClutterModel *model,
 
 /**
  * clutter_model_get_sorting_column:
- * @model: a #ClutterModelIter
+ * @model: a #ClutterModel
  *
  * Retrieves the number of column used for sorting the @model.
  *
@@ -1275,7 +1275,7 @@ clutter_model_set_sorting_column (ClutterModel *model,
 gint
 clutter_model_get_sorting_column (ClutterModel *model)
 {
-  g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (model), -1);
+  g_return_val_if_fail (CLUTTER_IS_MODEL (model), -1);
 
   return model->priv->sort_column;
 }
