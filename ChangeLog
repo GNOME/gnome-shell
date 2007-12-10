@@ -1,3 +1,39 @@
+2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_property),
+	(clutter_actor_get_property),
+	(clutter_actor_class_init): Add the rotation-* properties,
+	controlling the rotation angle and center on each axis. (#614)
+
+	(parse_rotation_array), (parse_rotation),
+	(clutter_actor_parse_custom_node),
+	(clutter_actor_set_custom_property),
+	(clutter_scriptable_iface_init): Add a new "rotation" custom
+	property for expressing the rotation along each axis in a
+	compact way:
+
+	  "rotation" : [
+	    { "x-axis" : [ <angle>, [ <y>, <z> ] ] },
+	    { "y-axis" : [ <angle>, [ <x>, <z> ] ] },
+	    { "z-axis" : [ <angle>, [ <x>, <y> ] ] }
+	  ]
+
+	(clutter_geometry_get_type),(clutter_vertex_get_type),
+	(clutter_actor_box_get_type): Use the I_() macro instead of
+	directly calling g_intern_static_string().
+	
+	* clutter/clutter-entry.c (clutter_entry_request_coords):
+	* clutter/clutter-label.c (clutter_label_ensure_layout),
+	(clutter_label_request_coords): Use CLUTTER_UNITS_FROM_DEVICE()
+	instead of CLUTTER_UNITS_FROM_INT(), as "device" means "pixels".
+
+	* clutter/clutter-private.h: Add the I_() macro for intern
+	static strings.
+
+	* tests/test-script.json: Test the newly added "rotation"
+	custom property.
+
 2007-12-10  Tomas Frydrych  <tf@openedhand.com>
 
 	* tests/Makefile.am:

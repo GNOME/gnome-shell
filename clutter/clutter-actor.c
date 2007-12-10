@@ -32,8 +32,7 @@
  * be a #ClutterActor, either by using one of the classes provided by
  * Clutter, or by implementing a new #ClutterActor subclass.
  *
- * * Notes on actor transformation matrix
- *
+ * Actor Transformations
  * The OpenGL modelview matrix for the actor is constructed from the actor
  * settings by the following order of operations:
  * <orderedlist>
@@ -50,7 +49,7 @@
  *   </listitem>
  * </orderedlist>
  *
- * Notes on clutter actor events:
+ * Event handling
  * <orderedlist>
  *   <listitem><para>Actors emit pointer events if set reactive, see
  *   clutter_actor_set_reactive()</para></listitem>
@@ -165,7 +164,7 @@ struct _ClutterActorPrivate
   ClutterGeometry clip;                          /* FIXME: Should be Units */
   guint           has_clip : 1;
   ClutterFixed    rxang, ryang, rzang;           /* Rotation*/
-  ClutterUnit     rzx, rzy, rxy, rxz, ryx, ryz;	 /* FIXME: Should be Units */
+  ClutterUnit     rzx, rzy, rxy, rxz, ryx, ryz;
   ClutterUnit     z;
   guint8          opacity;
   ClutterActor   *parent_actor;
@@ -180,19 +179,31 @@ struct _ClutterActorPrivate
 enum
 {
   PROP_0,
+  
+  PROP_NAME,
+
   PROP_X,
   PROP_Y,
   PROP_WIDTH,
   PROP_HEIGHT,
   PROP_DEPTH,
+
   PROP_CLIP,
   PROP_HAS_CLIP,
+  
   PROP_OPACITY,
-  PROP_NAME,
   PROP_VISIBLE,
+  PROP_REACTIVE,
+
   PROP_SCALE_X,
   PROP_SCALE_Y,
-  PROP_REACTIVE
+
+  PROP_ROTATION_ANGLE_X,
+  PROP_ROTATION_ANGLE_Y,
+  PROP_ROTATION_ANGLE_Z,
+  PROP_ROTATION_CENTER_X,
+  PROP_ROTATION_CENTER_Y,
+  PROP_ROTATION_CENTER_Z
 };
 
 enum
@@ -1107,6 +1118,63 @@ clutter_actor_set_property (GObject      *object,
     case PROP_REACTIVE:
       clutter_actor_set_reactive (actor, g_value_get_boolean (value));
       break;
+    case PROP_ROTATION_ANGLE_X:
+      clutter_actor_set_rotation (actor,
+                                  CLUTTER_X_AXIS,
+                                  g_value_get_double (value),
+                                  0, priv->rxy, priv->rxz);
+      break;
+    case PROP_ROTATION_ANGLE_Y:
+      clutter_actor_set_rotation (actor,
+                                  CLUTTER_Y_AXIS,
+                                  g_value_get_double (value),
+                                  priv->ryx, 0, priv->ryz);
+      break;
+    case PROP_ROTATION_ANGLE_Z:
+      clutter_actor_set_rotation (actor,
+                                  CLUTTER_Z_AXIS,
+                                  g_value_get_double (value),
+                                  priv->rzx, priv->rzy, 0);
+      break;
+    case PROP_ROTATION_CENTER_X:
+      {
+        ClutterVertex *center;
+
+        center = g_value_get_boxed (value);
+        clutter_actor_set_rotationx (actor,
+                                     CLUTTER_X_AXIS,
+                                     priv->rxang,
+                                     0,
+                                     CLUTTER_UNITS_TO_DEVICE (center->y),
+                                     CLUTTER_UNITS_TO_DEVICE (center->z));
+      }
+      break;
+    case PROP_ROTATION_CENTER_Y:
+      {
+        ClutterVertex *center;
+
+        center = g_value_get_boxed (value);
+        clutter_actor_set_rotationx (actor,
+                                     CLUTTER_X_AXIS,
+                                     priv->ryang,
+                                     CLUTTER_UNITS_TO_DEVICE (center->x),
+                                     0,
+                                     CLUTTER_UNITS_TO_DEVICE (center->z));
+      }
+      break;
+    case PROP_ROTATION_CENTER_Z:
+      {
+        ClutterVertex *center;
+
+        center = g_value_get_boxed (value);
+        clutter_actor_set_rotationx (actor,
+                                     CLUTTER_X_AXIS,
+                                     priv->rzang,
+                                     CLUTTER_UNITS_TO_DEVICE (center->x),
+                                     CLUTTER_UNITS_TO_DEVICE (center->y),
+                                     0);
+      }
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1167,6 +1235,45 @@ clutter_actor_get_property (GObject    *object,
     case PROP_REACTIVE:
       g_value_set_boolean (value,
                            (CLUTTER_ACTOR_IS_REACTIVE (actor) != FALSE));
+      break;
+    case PROP_ROTATION_ANGLE_X:
+      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->rxang));
+      break;
+    case PROP_ROTATION_ANGLE_Y:
+      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->ryang));
+      break;
+    case PROP_ROTATION_ANGLE_Z:
+      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->rzang));
+      break;
+    case PROP_ROTATION_CENTER_X:
+      {
+        ClutterVertex center = { 0, };
+
+        center.y = priv->rxy;
+        center.z = priv->rxz;
+
+        g_value_set_boxed (value, &center);
+      }
+      break;
+    case PROP_ROTATION_CENTER_Y:
+      {
+        ClutterVertex center = { 0, };
+
+        center.x = priv->ryx;
+        center.z = priv->ryz;
+
+        g_value_set_boxed (value, &center);
+      }
+      break;
+    case PROP_ROTATION_CENTER_Z:
+      {
+        ClutterVertex center = { 0, };
+
+        center.x = priv->rzx;
+        center.y = priv->rzy;
+
+        g_value_set_boxed (value, &center);
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1368,7 +1475,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                         "Name of the actor",
                                                         NULL,
                                                         CLUTTER_PARAM_READWRITE));
-
   /**
    * ClutterActor::scale-x:
    *
@@ -1386,7 +1492,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					     G_MAXDOUBLE,
 					     1.0,
 					     CLUTTER_PARAM_READWRITE));
-
   /**
    * ClutterActor::scale-y:
    *
@@ -1404,7 +1509,102 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					     G_MAXDOUBLE,
 					     1.0,
 					     CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterActor::rotation-angle-x:
+   *
+   * The rotation angle on the X axis.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property
+                       (object_class,
+			PROP_ROTATION_ANGLE_X,
+			g_param_spec_double ("rotation-angle-x",
+					     "Rotation Angle X",
+					     "The rotation angle on the X axis",
+					     0.0,
+					     G_MAXDOUBLE,
+					     0.0,
+					     CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor::rotation-angle-y:
+   *
+   * The rotation angle on the Y axis.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property
+                       (object_class,
+			PROP_ROTATION_ANGLE_Y,
+			g_param_spec_double ("rotation-angle-y",
+					     "Rotation Angle Y",
+					     "The rotation angle on the Y axis",
+					     0.0,
+					     G_MAXDOUBLE,
+					     0.0,
+					     CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor::rotation-angle-z:
+   *
+   * The rotation angle on the Z axis.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property
+                       (object_class,
+			PROP_ROTATION_ANGLE_Z,
+			g_param_spec_double ("rotation-angle-z",
+					     "Rotation Angle Z",
+					     "The rotation angle on the Z axis",
+					     0.0,
+					     G_MAXDOUBLE,
+					     0.0,
+					     CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor::rotation-center-x:
+   *
+   * The rotation center on the X axis.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property
+                       (object_class,
+			PROP_ROTATION_CENTER_X,
+			g_param_spec_boxed ("rotation-center-x",
+					    "Rotation Center X",
+					    "The rotation center on the X axis",
+					    CLUTTER_TYPE_VERTEX,
+					    CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor::rotation-center-y:
+   *
+   * The rotation center on the Y axis.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property
+                       (object_class,
+			PROP_ROTATION_CENTER_Y,
+			g_param_spec_boxed ("rotation-center-y",
+					    "Rotation Center Y",
+					    "The rotation center on the Y axis",
+					    CLUTTER_TYPE_VERTEX,
+					    CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor::rotation-center-z:
+   *
+   * The rotation center on the Z axis.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property
+                       (object_class,
+			PROP_ROTATION_CENTER_Z,
+			g_param_spec_boxed ("rotation-center-z",
+					    "Rotation Center Z",
+					    "The rotation center on the Z axis",
+					    CLUTTER_TYPE_VERTEX,
+					    CLUTTER_PARAM_READWRITE));
 
   /**
    * ClutterActor::destroy:
@@ -1862,10 +2062,10 @@ clutter_actor_get_geometry (ClutterActor    *self,
 
   clutter_actor_query_coords (self, &box);
 
-  geometry->x      = CLUTTER_UNITS_TO_INT (box.x1);
-  geometry->y      = CLUTTER_UNITS_TO_INT (box.y1);
-  geometry->width  = CLUTTER_UNITS_TO_INT (box.x2 - box.x1);
-  geometry->height = CLUTTER_UNITS_TO_INT (box.y2 - box.y1);
+  geometry->x      = CLUTTER_UNITS_TO_DEVICE (box.x1);
+  geometry->y      = CLUTTER_UNITS_TO_DEVICE (box.y1);
+  geometry->width  = CLUTTER_UNITS_TO_DEVICE (box.x2 - box.x1);
+  geometry->height = CLUTTER_UNITS_TO_DEVICE (box.y2 - box.y1);
 }
 
 /**
@@ -1893,16 +2093,16 @@ clutter_actor_get_coords (ClutterActor *self,
   clutter_actor_query_coords (self, &box);
 
   if (x_1)
-    *x_1 = CLUTTER_UNITS_TO_INT (box.x1);
+    *x_1 = CLUTTER_UNITS_TO_DEVICE (box.x1);
 
   if (y_1)
-    *y_1 = CLUTTER_UNITS_TO_INT (box.y1);
+    *y_1 = CLUTTER_UNITS_TO_DEVICE (box.y1);
 
   if (x_2)
-    *x_2 = CLUTTER_UNITS_TO_INT (box.x2);
+    *x_2 = CLUTTER_UNITS_TO_DEVICE (box.x2);
 
   if (y_2)
-    *y_2 = CLUTTER_UNITS_TO_INT (box.y2);
+    *y_2 = CLUTTER_UNITS_TO_DEVICE (box.y2);
 }
 
 /**
@@ -2103,10 +2303,10 @@ clutter_actor_get_size (ClutterActor *self,
   clutter_actor_query_coords (self, &box);
 
   if (width)
-    *width = CLUTTER_UNITS_TO_INT (box.x2 - box.x1);
+    *width = CLUTTER_UNITS_TO_DEVICE (box.x2 - box.x1);
 
   if (height)
-    *height = CLUTTER_UNITS_TO_INT (box.y2 - box.y1);
+    *height = CLUTTER_UNITS_TO_DEVICE (box.y2 - box.y1);
 }
 
 /**
@@ -2160,10 +2360,10 @@ clutter_actor_get_position (ClutterActor *self,
   clutter_actor_query_coords (self, &box);
 
   if (x)
-    *x = CLUTTER_UNITS_TO_INT (box.x1);
+    *x = CLUTTER_UNITS_TO_DEVICE (box.x1);
 
   if (y)
-    *y = CLUTTER_UNITS_TO_INT (box.y1);
+    *y = CLUTTER_UNITS_TO_DEVICE (box.y1);
 }
 
 /**
@@ -2246,9 +2446,9 @@ clutter_actor_get_abs_position (ClutterActor *self,
   clutter_actor_get_abs_position_units (self, &xu, &yu);
 
   if (x)
-    *x = CLUTTER_UNITS_TO_INT (xu);
+    *x = CLUTTER_UNITS_TO_DEVICE (xu);
   if (y)
-    *y = CLUTTER_UNITS_TO_INT (yu);
+    *y = CLUTTER_UNITS_TO_DEVICE (yu);
 }
 
 /*
@@ -2322,8 +2522,8 @@ clutter_actor_get_abs_size (ClutterActor *self,
   gint32 wu, hu;
   clutter_actor_get_abs_size_units (self, &wu, &hu);
 
-  *width  = CLUTTER_UNITS_TO_INT (wu);
-  *height = CLUTTER_UNITS_TO_INT (hu);
+  *width  = CLUTTER_UNITS_TO_DEVICE (wu);
+  *height = CLUTTER_UNITS_TO_DEVICE (hu);
 }
 
 
@@ -2344,7 +2544,7 @@ clutter_actor_get_width (ClutterActor *self)
 
   clutter_actor_query_coords (self, &box);
 
-  return CLUTTER_UNITS_TO_INT (box.x2 - box.x1);
+  return CLUTTER_UNITS_TO_DEVICE (box.x2 - box.x1);
 }
 
 /**
@@ -2386,7 +2586,7 @@ clutter_actor_get_height (ClutterActor *self)
 
   clutter_actor_query_coords (self, &box);
 
-  return CLUTTER_UNITS_TO_INT (box.y2 - box.y1);
+  return CLUTTER_UNITS_TO_DEVICE (box.y2 - box.y1);
 }
 
 /**
@@ -2581,7 +2781,7 @@ clutter_actor_get_x (ClutterActor *self)
 
   clutter_actor_query_coords (self, &box);
 
-  return CLUTTER_UNITS_TO_INT (box.x1);
+  return CLUTTER_UNITS_TO_DEVICE (box.x1);
 }
 
 /**
@@ -2625,7 +2825,7 @@ clutter_actor_get_y (ClutterActor *self)
 
   clutter_actor_query_coords (self, &box);
 
-  return CLUTTER_UNITS_TO_INT (box.y1);
+  return CLUTTER_UNITS_TO_DEVICE (box.y1);
 }
 
 /**
@@ -3959,6 +4159,158 @@ out:
   return retval;
 }
 
+typedef struct {
+  ClutterRotateAxis axis;
+
+  gdouble angle;
+
+  ClutterUnit center_x;
+  ClutterUnit center_y;
+  ClutterUnit center_z;
+} RotationInfo;
+
+static gboolean
+parse_rotation_array (ClutterActor *actor,
+                      JsonNode     *node,
+                      RotationInfo *info)
+{
+  JsonArray *array = json_node_get_array (node);
+  JsonNode *element;
+
+  if (json_array_get_length (array) != 2)
+    return FALSE;
+
+  /* angle */
+  element = json_array_get_element (array, 0);
+  if (JSON_NODE_TYPE (element) == JSON_NODE_VALUE)
+    info->angle = json_node_get_double (element);
+  else
+    return FALSE;
+
+  /* center */
+  element = json_array_get_element (array, 1);
+  if (JSON_NODE_TYPE (element) == JSON_NODE_ARRAY)
+    {
+      JsonArray *array = json_node_get_array (element);
+
+      if (json_array_get_length (array) != 2)
+        return FALSE;
+
+      switch (info->axis)
+        {
+        case CLUTTER_X_AXIS:
+          info->center_y = parse_units (actor, PARSE_Y,
+                                        json_array_get_element (array, 0));
+          info->center_z = parse_units (actor, PARSE_Y,
+                                        json_array_get_element (array, 1));
+          return TRUE;
+
+        case CLUTTER_Y_AXIS:
+          info->center_x = parse_units (actor, PARSE_X,
+                                        json_array_get_element (array, 0));
+          info->center_z = parse_units (actor, PARSE_X,
+                                        json_array_get_element (array, 1));
+          return TRUE;
+
+        case CLUTTER_Z_AXIS:
+          info->center_x = parse_units (actor, PARSE_X,
+                                        json_array_get_element (array, 0));
+          info->center_y = parse_units (actor, PARSE_Y,
+                                        json_array_get_element (array, 1));
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+static gboolean
+parse_rotation (ClutterActor *actor,
+                JsonNode     *node,
+                RotationInfo *info)
+{
+  JsonArray *array;
+  guint len, i;
+  gboolean retval = FALSE;
+
+  if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
+    {
+      g_warning ("Invalid node of type `%s' found, expecting an array",
+                 json_node_type_name (node));
+      return FALSE;
+    }
+
+  array = json_node_get_array (node);
+  len = json_array_get_length (array);
+
+  for (i = 0; i < len; i++)
+    {
+      JsonNode *element = json_array_get_element (array, i);
+      JsonObject *object;
+      JsonNode *member;
+
+      if (JSON_NODE_TYPE (element) != JSON_NODE_OBJECT)
+        {
+          g_warning ("Invalid node of type `%s' found, expecting an object",
+                     json_node_type_name (element));
+          return FALSE;
+        }
+
+      object = json_node_get_object (element);
+
+      if (json_object_has_member (object, "x-axis"))
+        {
+          member = json_object_get_member (object, "x-axis");
+
+          info->axis = CLUTTER_X_AXIS;
+
+          if (JSON_NODE_TYPE (member) == JSON_NODE_VALUE)
+            {
+              info->angle = json_node_get_double (member);
+              retval = TRUE;
+            }
+          else if (JSON_NODE_TYPE (member) == JSON_NODE_ARRAY)
+            retval = parse_rotation_array (actor, member, info);
+          else
+            retval = FALSE;
+        }
+      else if (json_object_has_member (object, "y-axis"))
+        {
+          member = json_object_get_member (object, "y-axis");
+
+          info->axis = CLUTTER_Y_AXIS;
+
+          if (JSON_NODE_TYPE (member) == JSON_NODE_VALUE)
+            {
+              info->angle = json_node_get_double (member);
+              retval = TRUE;
+            }
+          else if (JSON_NODE_TYPE (member) == JSON_NODE_ARRAY)
+            retval = parse_rotation_array (actor, member, info);
+          else
+            retval = FALSE;
+        }
+      else if (json_object_has_member (object, "z-axis"))
+        {
+          member = json_object_get_member (object, "z-axis");
+
+          info->axis = CLUTTER_Z_AXIS;
+
+          if (JSON_NODE_TYPE (member) == JSON_NODE_VALUE)
+            {
+              info->angle = json_node_get_double (member);
+              retval = TRUE;
+            }
+          else if (JSON_NODE_TYPE (member) == JSON_NODE_ARRAY)
+            retval = parse_rotation_array (actor, member, info);
+          else
+            retval = FALSE;
+        }
+    }
+
+  return retval;
+}
+
 static gboolean
 clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
                                  ClutterScript     *script,
@@ -3994,14 +4346,57 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
 
       retval = TRUE;
     }
+  else if (strcmp (name, "rotation") == 0)
+    {
+      RotationInfo *info;
+
+      info = g_slice_new0 (RotationInfo);
+      retval = parse_rotation (actor, node, info);
+
+      if (retval)
+        {
+          g_value_init (value, G_TYPE_POINTER);
+          g_value_set_pointer (value, info);
+        }
+      else
+        g_slice_free (RotationInfo, info);
+    }
 
   return retval;
+}
+
+static void
+clutter_actor_set_custom_property (ClutterScriptable *scriptable,
+                                   ClutterScript     *script,
+                                   const gchar       *name,
+                                   const GValue      *value)
+{
+  if (strcmp (name, "rotation") == 0)
+    {
+      RotationInfo *info;
+
+      if (!G_VALUE_HOLDS (value, G_TYPE_POINTER))
+        return;
+
+      info = g_value_get_pointer (value);
+
+      clutter_actor_set_rotation (CLUTTER_ACTOR (scriptable),
+                                  info->axis, info->angle,
+                                  CLUTTER_UNITS_TO_DEVICE (info->center_x),
+                                  CLUTTER_UNITS_TO_DEVICE (info->center_y),
+                                  CLUTTER_UNITS_TO_DEVICE (info->center_z));
+
+      g_slice_free (RotationInfo, info);
+    }
+  else
+    g_object_set_property (G_OBJECT (scriptable), name, value);
 }
 
 static void
 clutter_scriptable_iface_init (ClutterScriptableIface *iface)
 {
   iface->parse_custom_node = clutter_actor_parse_custom_node;
+  iface->set_custom_property = clutter_actor_set_custom_property;
 }
 
 /**
@@ -4217,7 +4612,7 @@ clutter_geometry_get_type (void)
 
   if (G_UNLIKELY (our_type == 0))
     our_type =
-      g_boxed_type_register_static (g_intern_static_string ("ClutterGeometry"),
+      g_boxed_type_register_static (I_("ClutterGeometry"),
                                     (GBoxedCopyFunc) clutter_geometry_copy,
                                     (GBoxedFreeFunc) clutter_geometry_free);
 
@@ -4252,7 +4647,7 @@ clutter_vertex_get_type (void)
 
   if (G_UNLIKELY (our_type == 0))
     our_type =
-      g_boxed_type_register_static (g_intern_static_string ("ClutterVertex"),
+      g_boxed_type_register_static (I_("ClutterVertex"),
                                     (GBoxedCopyFunc) clutter_vertex_copy,
                                     (GBoxedFreeFunc) clutter_vertex_free);
 
@@ -4286,7 +4681,7 @@ clutter_actor_box_get_type (void)
 
   if (G_UNLIKELY (our_type == 0))
     our_type =
-      g_boxed_type_register_static (g_intern_static_string ("ClutterActorBox"),
+      g_boxed_type_register_static (I_("ClutterActorBox"),
                                     (GBoxedCopyFunc) clutter_actor_box_copy,
                                     (GBoxedFreeFunc) clutter_actor_box_free);
   return our_type;
@@ -4295,10 +4690,18 @@ clutter_actor_box_get_type (void)
 /******************************************************************************/
 
 typedef struct _BoxedFloat BoxedFloat;
+
 struct _BoxedFloat
 {
   gfloat value;
 };
+
+static void
+boxed_float_free (gpointer data)
+{
+  if (G_LIKELY (data))
+    g_slice_free (BoxedFloat, data);
+}
 
 struct _ShaderData
 {
@@ -4320,57 +4723,60 @@ destroy_shader_data (ClutterActor *self)
   if (shader_data->shader)
     {
       g_object_unref (shader_data->shader);
+      shader_data->shader = NULL;
     }
-  shader_data->shader = NULL;
+
   if (shader_data->float1f_hash)
     {
       g_hash_table_destroy (shader_data->float1f_hash);
       shader_data->float1f_hash = NULL;
     }
+
   g_free (shader_data);
   actor_priv->shader_data = NULL;
 }
 
-gboolean clutter_actor_apply_shader (ClutterActor  *self,
-                                     ClutterShader *shader)
+gboolean
+clutter_actor_apply_shader (ClutterActor  *self,
+                            ClutterShader *shader)
 {
   ClutterActorPrivate *actor_priv;
   ShaderData     *shader_data;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+  g_return_val_if_fail (shader == NULL || CLUTTER_IS_SHADER (shader), FALSE);
 
   actor_priv = self->priv;
   shader_data = actor_priv->shader_data;
 
-  if (shader_data == NULL)
+  if (!shader_data)
     {
       actor_priv->shader_data = shader_data = g_new0 (ShaderData, 1);
-      shader_data->float1f_hash = g_hash_table_new_full (
-                                        g_str_hash, g_str_equal,
-                                        g_free, g_free);
+      shader_data->float1f_hash =
+        g_hash_table_new_full (g_str_hash, g_str_equal,
+                               g_free,
+                               boxed_float_free);
     }
   if (shader_data->shader)
     {
       g_object_unref (shader_data->shader);
-    }
-  if (shader)
-    {
-      shader_data->shader = g_object_ref (shader);
-    }
-  else
-    {
       shader_data->shader = NULL;
     }
+
+  if (shader)
+    shader_data->shader = g_object_ref (shader);
+
   return TRUE;
 }
 
 static void
-each_param (gpointer key,
-            gpointer value,
-            gpointer user_data)
+set_each_param (gpointer key,
+                gpointer value,
+                gpointer user_data)
 {
   ClutterShader *shader = CLUTTER_SHADER (user_data);
   BoxedFloat *box = value;
+
   clutter_shader_set_uniform_1f (shader, key, box->value);
 }
 
@@ -4378,15 +4784,15 @@ static void
 clutter_actor_shader_pre_paint (ClutterActor *actor,
                                 gboolean      repeat)
 {
-  ClutterActorPrivate *actor_priv;
+  ClutterActorPrivate *priv;
   ShaderData          *shader_data;
   ClutterShader       *shader;
   ClutterMainContext  *context;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  actor_priv = actor->priv;
-  shader_data = actor_priv->shader_data;
+  priv = actor->priv;
+  shader_data = priv->shader_data;
 
   if (!shader_data)
     return;
@@ -4398,27 +4804,25 @@ clutter_actor_shader_pre_paint (ClutterActor *actor,
     {
       clutter_shader_enable (shader);
 
-      g_hash_table_foreach (shader_data->float1f_hash, each_param, shader);
+      g_hash_table_foreach (shader_data->float1f_hash, set_each_param, shader);
 
-        if (!repeat)
-        {
-          context->shaders = g_slist_prepend (context->shaders, actor);
-        }
+      if (!repeat)
+        context->shaders = g_slist_prepend (context->shaders, actor);
     }
 }
 
 static void
 clutter_actor_shader_post_paint (ClutterActor *actor)
 {
-  ClutterActorPrivate *actor_priv;
+  ClutterActorPrivate *priv;
   ShaderData          *shader_data;
   ClutterShader       *shader;
   ClutterMainContext  *context;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  actor_priv = actor->priv;
-  shader_data = actor_priv->shader_data;
+  priv = actor->priv;
+  shader_data = priv->shader_data;
 
   if (!shader_data)
     return;
@@ -4447,19 +4851,20 @@ clutter_actor_set_shader_param (ClutterActor *actor,
                                 const gchar  *param,
                                 gfloat        value)
 {
-  ClutterActorPrivate *actor_priv;
+  ClutterActorPrivate *priv;
   ShaderData *shader_data;
-  BoxedFloat             *box;
+  BoxedFloat *box;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (param != NULL);
 
-  actor_priv = actor->priv;
-  shader_data = actor_priv->shader_data;
+  priv = actor->priv;
+  shader_data = priv->shader_data;
 
   if (!shader_data)
     return;
 
-  box        = g_malloc (sizeof (BoxedFloat));
+  box = g_slice_new (BoxedFloat);
   box->value = value;
   g_hash_table_insert (shader_data->float1f_hash, g_strdup (param), box);
 }

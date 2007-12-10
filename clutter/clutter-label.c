@@ -170,7 +170,7 @@ clutter_label_ensure_layout (ClutterLabel *label)
   priv  = label->priv;
 
   /* use the last size requested, if any */
-  width = CLUTTER_UNITS_TO_INT (priv->allocation.x2 - priv->allocation.x1);
+  width = CLUTTER_UNITS_TO_DEVICE (priv->allocation.x2 - priv->allocation.x1);
 
   if (!priv->layout)
     {
@@ -342,7 +342,7 @@ clutter_label_request_coords (ClutterActor    *self,
           gint width;
           PangoRectangle logical;
 
-          width = CLUTTER_UNITS_TO_INT (box->x2 - box->x1) * PANGO_SCALE;
+          width = CLUTTER_UNITS_TO_DEVICE (box->x2 - box->x1) * PANGO_SCALE;
 
           pango_layout_set_width (priv->layout, -1);
           pango_layout_get_extents (priv->layout, NULL, &logical);

@@ -14,6 +14,9 @@
         "x" : 50, "y" : 50, "width" : 100, "height" : 100,
         "visible" : true,
         "reactive" : true,
+        "rotation" : [
+          { "z-axis" : [ 45.0, [ 75, 75 ] ] }
+        ],
         "behaviours" : [ "fade-behaviour", "path-behaviour" ],
       },
       {
@@ -66,6 +69,10 @@
         "wrap" : false,
         "ellipsize" : "none",
         "visible" : true
+        "rotation" : [
+          { "y-axis" : [ 60.0, [ 275, 100 ] ] },
+          { "z-axis" : [ 45.0, [  75,  75 ] ] }
+        ],
       }
       "blue-button",
     ]

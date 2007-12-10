@@ -482,7 +482,7 @@ clutter_entry_request_coords (ClutterActor    *self,
   ClutterEntryPrivate *priv = entry->priv;
   gint width;
 
-  width = CLUTTER_UNITS_TO_INT (box->x2 - box->x1);
+  width = CLUTTER_UNITS_TO_DEVICE (box->x2 - box->x1);
 
   if (priv->width != width)
     {

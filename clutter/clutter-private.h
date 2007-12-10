@@ -110,6 +110,8 @@ ClutterMainContext *clutter_context_get_default (void);
 #define CLUTTER_PARAM_READWRITE \
         G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |G_PARAM_STATIC_BLURB
 
+#define I_(str)  (g_intern_static_string ((str)))
+
 /* vfuncs implemnted by backend */
 
 GType _clutter_backend_impl_get_type (void);
