@@ -678,20 +678,67 @@ clutter_model_new_row (ClutterModel *model)
 }
 
 /**
+ * clutter_model_append_value:
+ * @model: a #ClutterModel
+ * @column: the column to set
+ * @value: the value of the cell
+ *
+ * Creates and appends a new row to the #ClutterModel, setting the row
+ * value for the given @column upon creation.
+ *
+ * Since 0.6
+ */
+void
+clutter_model_append_value (ClutterModel *model,
+                            guint         column,
+                            const GValue *value)
+{
+  ClutterModelPrivate *priv;
+  ClutterModelIter *iter;
+  GSequenceIter *seq_iter;
+  GValueArray *row;
+
+  g_return_if_fail (CLUTTER_IS_MODEL (model));
+
+  priv = model->priv;
+
+  row = clutter_model_new_row (model);
+  seq_iter = g_sequence_append (priv->sequence, row);
+
+  iter = g_object_new (CLUTTER_TYPE_MODEL_ITER,
+                       "model", model,
+                       "iter", seq_iter,
+                       NULL);
+
+  clutter_model_iter_set_value (iter, column, value);
+
+  if (priv->sort_column == column)
+    _model_sort (model);
+
+  g_signal_emit (model, model_signals[ROW_ADDED], 0, iter);
+  g_object_unref (iter);
+}
+
+/**
  * clutter_model_append:
  * @model: a #ClutterModel
  * @Varargs: pairs of column number and value, terminated with -1
  *
- * Creates and appends a new row to the #ClutterModel, setting the rows values
- * upon creation. For example, to append a new row where column 0 is type
- * G_TYPE_INT and column 1 is of type G_TYPE_STRING, you would write 
- * <literal>clutter_model_append (model, 0, 100, 1, "foo", -1);</literal>.
+ * Creates and appends a new row to the #ClutterModel, setting the
+ * row values upon creation. For example, to append a new row where
+ * column 0 is type %G_TYPE_INT and column 1 is of type %G_TYPE_STRING:
  *
- * Return value: #TRUE if a new row was successfully added.
+ * <informalexample><programlisting>
+ *   ClutterModel *model;
+ *   model = clutter_model_new (2,
+ *                              G_TYPE_INT,    "My integers",
+ *                              G_TYPE_STRING, "My strings");
+ *   clutter_model_append (model, 0, 42, 1, "string", -1);
+ * </programlisting></informalexample>
  *
  * Since 0.6
  */
-gboolean
+void
 clutter_model_append (ClutterModel *model,
                       ...)
 {
@@ -701,7 +748,7 @@ clutter_model_append (ClutterModel *model,
   GValueArray *row;
   va_list args;
 
-  g_return_val_if_fail (CLUTTER_IS_MODEL (model), FALSE);
+  g_return_if_fail (CLUTTER_IS_MODEL (model));
   priv = model->priv;
 
   row = clutter_model_new_row (model);
@@ -719,25 +766,70 @@ clutter_model_append (ClutterModel *model,
   /*FIXME: Sort the model if necessary */
   g_signal_emit (model, model_signals[ROW_ADDED], 0, iter);
   g_object_unref (iter);
-  return TRUE;
 }
 
+/**
+ * clutter_model_prepend_value:
+ * @model: a #ClutterModel
+ * @column: column to set
+ * @value: new value for the cell
+ *
+ * Creates and prepends a new row to the #ClutterModel, setting the row
+ * value for the given @column upon creation.
+ *
+ * Since 0.6
+ */
+void
+clutter_model_prepend_value (ClutterModel *model,
+                             guint         column,
+                             const GValue *value)
+{
+  ClutterModelPrivate *priv;
+  ClutterModelIter *iter;
+  GSequenceIter *seq_iter;
+  GValueArray *row;
+
+  g_return_if_fail (CLUTTER_IS_MODEL (model));
+
+  priv = model->priv;
+
+  row = clutter_model_new_row (model);
+  seq_iter = g_sequence_prepend (priv->sequence, row);
+
+  iter = g_object_new (CLUTTER_TYPE_MODEL_ITER,
+                       "model", model,
+                       "iter", seq_iter,
+                       NULL);
+
+  clutter_model_iter_set_value (iter, column, value);
+
+  if (priv->sort_column == column)
+    _model_sort (model);
+
+  g_signal_emit (model, model_signals[ROW_ADDED], 0, iter); 
+  g_object_unref (iter);
+}
 
 /**
  * clutter_model_prepend:
  * @model: a #ClutterModel
  * @Varargs: pairs of column number and value, terminated with -1
  *
- * Creates and prepends a new row to the #ClutterModel, setting the rows values
- * upon creation. For example, to prepend a new row where column 0 is type
- * G_TYPE_INT and column 1 is of type G_TYPE_STRING, you would write 
- * <literal>clutter_model_prepend (model, 0, 100, 1, "string", -1);</literal>.
+ * Creates and prepends a new row to the #ClutterModel, setting the row
+ * values upon creation. For example, to prepend a new row where column 0
+ * is type %G_TYPE_INT and column 1 is of type %G_TYPE_STRING:
  *
- * Return value: #TRUE if a new row was successfully added.
+ * <informalexample><programlisting>
+ *   ClutterModel *model;
+ *   model = clutter_model_new (2,
+ *                              G_TYPE_INT,    "My integers",
+ *                              G_TYPE_STRING, "My strings");
+ *   clutter_model_prepend (model, 0, 42, 1, "string", -1);
+ * </programlisting></informalexample>
  *
  * Since 0.6
  */
-gboolean
+void
 clutter_model_prepend (ClutterModel *model,
                        ...)
 {
@@ -747,7 +839,8 @@ clutter_model_prepend (ClutterModel *model,
   GValueArray *row;
   va_list args;
 
-  g_return_val_if_fail (CLUTTER_IS_MODEL (model), FALSE);
+  g_return_if_fail (CLUTTER_IS_MODEL (model));
+
   priv = model->priv;
 
   row = clutter_model_new_row (model);
@@ -764,7 +857,6 @@ clutter_model_prepend (ClutterModel *model,
   /*FIXME: Sort the model if necessary */
   g_signal_emit (model, model_signals[ROW_ADDED], 0, iter); 
   g_object_unref (iter);
-  return TRUE;
 }
 
 
@@ -774,17 +866,22 @@ clutter_model_prepend (ClutterModel *model,
  * @row: the position to insert the new row
  * @Varargs: pairs of column number and value, terminated with -1
  *
- * Inserts a new row to the #ClutterModel at @row, setting the rows values
- * upon creation. For example, to insert a new row at index 100, where column 0 
- * is type G_TYPE_INT and column 1 is of type G_TYPE_STRING, you would write 
- * <literal>clutter_model_insert (model, 100, 0, 100, 1, "string", -1);
- * </literal>.
+ * Inserts a new row to the #ClutterModel at @row, setting the row
+ * values upon creation. For example, to insert a new row at index 100,
+ * where column 0 is type %G_TYPE_INT and column 1 is of type
+ * %G_TYPE_STRING:
  *
- * Return value: #TRUE if a new row was successfully added.
+ * <informalexample><programlisting>
+ *   ClutterModel *model;
+ *   model = clutter_model_new (2,
+ *                              G_TYPE_INT,    "My integers",
+ *                              G_TYPE_STRING, "My strings");
+ *   clutter_model_insert (model, 100, 0, 42, 1, "string", -1);
+ * </programlisting></informalexample>
  *
  * Since 0.6
  */
-gboolean
+void
 clutter_model_insert (ClutterModel *model,
                       guint         row,
                       ...)
@@ -795,7 +892,8 @@ clutter_model_insert (ClutterModel *model,
   GSequenceIter *seq_iter;
   va_list args;
 
-  g_return_val_if_fail (CLUTTER_IS_MODEL (model), FALSE);
+  g_return_if_fail (CLUTTER_IS_MODEL (model));
+
   priv = model->priv;
 
   row_array = clutter_model_new_row (model);
@@ -816,7 +914,6 @@ clutter_model_insert (ClutterModel *model,
 
   g_signal_emit (model, model_signals[ROW_ADDED], 0, iter);
   g_object_unref (iter);
-  return TRUE;
 }
 
 /**
@@ -829,11 +926,9 @@ clutter_model_insert (ClutterModel *model,
  * Sets the data in the cell specified by @iter and @column. The type of 
  * @value must be convertable to the type of the column.
  *
- * Return value: #TRUE if the @value was successfully inserted.
- *
  * Since 0.6
  */
-gboolean
+void
 clutter_model_insert_value (ClutterModel *model,
                             guint         row,
                             guint         column,
@@ -843,7 +938,8 @@ clutter_model_insert_value (ClutterModel *model,
   ClutterModelIter *iter;
   GSequenceIter *seq_iter;
   
-  g_return_val_if_fail (CLUTTER_IS_MODEL (model), FALSE);
+  g_return_if_fail (CLUTTER_IS_MODEL (model));
+
   priv = model->priv;
 
   seq_iter = g_sequence_get_iter_at_pos (priv->sequence, row);
@@ -852,6 +948,7 @@ clutter_model_insert_value (ClutterModel *model,
                        "model", model,
                        "iter", seq_iter,
                        NULL);
+
   clutter_model_iter_set_value (iter, column, value);
 
   if (priv->sort_column == column)
@@ -859,7 +956,6 @@ clutter_model_insert_value (ClutterModel *model,
 
   g_signal_emit (model, model_signals[ROW_CHANGED], 0, iter);  
   g_object_unref (iter);
-  return TRUE;
 }
 
 static void

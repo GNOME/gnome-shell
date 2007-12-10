@@ -1,5 +1,20 @@
 2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model.h:
+	* clutter/clutter-model.c:
+	(clutter_model_append_value),
+	(clutter_model_prepend_value),
+	(clutter_model_insert_value): Add a _value() variant for the
+	insertion methods, for use of the language bindings.
+
+	(clutter_model_append), 
+	(clutter_model_prepend),
+	(clutter_model_insert): Do not return a boolean: insertion should
+	never fail unless for a programming error, in which case we have
+	plenty of warnings.
+
+2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour-ellipse.c:
 	(clutter_behaviour_ellipse_get_angle_tilt),
 	(clutter_behaviour_ellipse_get_angle_tiltx),

@@ -1,5 +1,9 @@
 2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-sections.txt: Add the new ClutterModel API.
+
+2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-docs.sgml: Add ClutterShader...
 
 	* clutter.types: ... and its type function.

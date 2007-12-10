@@ -181,14 +181,20 @@ void                  clutter_model_set_names          (ClutterModel   *model,
                                                         guint           n_columns,
                                                         const gchar * const names[]);
 
-gboolean              clutter_model_append             (ClutterModel   *model,
+void                  clutter_model_append             (ClutterModel   *model,
                                                         ...);
-gboolean              clutter_model_prepend            (ClutterModel   *model,
+void                  clutter_model_append_value       (ClutterModel   *model,
+                                                        guint           column,
+                                                        const GValue   *value);
+void                  clutter_model_prepend            (ClutterModel   *model,
                                                         ...);
-gboolean              clutter_model_insert             (ClutterModel   *model,
+void                  clutter_model_prepend_value      (ClutterModel   *model,
+                                                        guint           column,
+                                                        const GValue   *value);
+void                  clutter_model_insert             (ClutterModel   *model,
                                                         guint           row,
                                                         ...);
-gboolean              clutter_model_insert_value       (ClutterModel   *model,
+void                  clutter_model_insert_value       (ClutterModel   *model,
                                                         guint           row,
                                                         guint           column,
                                                         const GValue   *value);
