@@ -783,13 +783,6 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
       cogl_scale (priv->scale_x, priv->scale_y);
     }
 
-  if (parent && (priv->anchor_x || priv->anchor_y))
-    {
-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->anchor_x),
-		       CLUTTER_UNITS_TO_FIXED (-priv->anchor_y),
-		       0);
-    }
-
    if (priv->rzang)
     {
       cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->rzx),
@@ -827,6 +820,13 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
       cogl_translatex (0,
 		       CLUTTER_UNITS_TO_FIXED (-priv->rxy),
 		       CLUTTER_UNITS_TO_FIXED (-(priv->z + priv->rxz)));
+    }
+
+  if (parent && (priv->anchor_x || priv->anchor_y))
+    {
+      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->anchor_x),
+		       CLUTTER_UNITS_TO_FIXED (-priv->anchor_y),
+		       0);
     }
 
   if (priv->z)

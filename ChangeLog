@@ -28,6 +28,13 @@
 
 2007-12-07  Tomas Frydrych  <tf@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	(_clutter_actor_apply_modelview_transform):
+	Moved offset translation after rotation so that rotation coords
+	are also relative to the offset point.
+
+2007-12-07  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter/clutter-behaviour-ellipse.c:
 	(clutter_behaviour_ellipse_set_angle_start):
 	(clutter_behaviour_ellipse_set_angle_end):
