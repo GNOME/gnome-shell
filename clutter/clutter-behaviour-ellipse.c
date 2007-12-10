@@ -1046,8 +1046,17 @@ clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self,
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
 
-  return CLUTTER_ANGLE_TO_DEG (clutter_behaviour_ellipse_get_angle_tiltx (self,
-                                                                          axis));
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt_x);
+    case CLUTTER_Y_AXIS:
+      return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt_y);
+    case CLUTTER_Z_AXIS:
+      return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt_z);
+    }
+
+  return 0;
 }
 
 /**
@@ -1075,8 +1084,6 @@ clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse *self,
       return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_y);
     case CLUTTER_Z_AXIS:
       return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_z);
-    default:
-      break;
     }
 
   return 0;
@@ -1099,12 +1106,41 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
                                     gdouble                  angle_tilt_y,
                                     gdouble                  angle_tilt_z)
 {
+  ClutterBehaviourEllipsePrivate *priv;
+  ClutterAngle new_angle_x, new_angle_y, new_angle_z;
+
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  clutter_behaviour_ellipse_set_tiltx (self,
-                                       CLUTTER_FLOAT_TO_FIXED (angle_tilt_x),
-                                       CLUTTER_FLOAT_TO_FIXED (angle_tilt_y),
-                                       CLUTTER_FLOAT_TO_FIXED (angle_tilt_z));
+  new_angle_x = CLUTTER_ANGLE_FROM_DEG (angle_tilt_x);
+  new_angle_y = CLUTTER_ANGLE_FROM_DEG (angle_tilt_y);
+  new_angle_z = CLUTTER_ANGLE_FROM_DEG (angle_tilt_z);
+
+  priv = self->priv;
+
+  g_object_freeze_notify (G_OBJECT (self));
+
+  if (priv->angle_tilt_x != new_angle_x)
+    {
+      priv->angle_tilt_x = new_angle_x;
+
+      g_object_notify (G_OBJECT (self), "angle-tilt-x");
+    }
+
+  if (priv->angle_tilt_y != new_angle_y)
+    {
+      priv->angle_tilt_y = new_angle_y;
+
+      g_object_notify (G_OBJECT (self), "angle-tilt-y");
+    }
+
+  if (priv->angle_tilt_z != new_angle_z)
+    {
+      priv->angle_tilt_z = new_angle_z;
+
+      g_object_notify (G_OBJECT (self), "angle-tilt-z");
+    }
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**

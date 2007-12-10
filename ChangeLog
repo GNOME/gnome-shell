@@ -1,3 +1,11 @@
+2007-12-10  Emmanuele Bassi,,,  <ebassi@sprite>
+
+	* clutter/clutter-behaviour-ellipse.c:
+	(clutter_behaviour_ellipse_get_angle_tilt),
+	(clutter_behaviour_ellipse_get_angle_tiltx),
+	(clutter_behaviour_ellipse_set_tilt): Fix a double conversion
+	that was messing up the returned results. (#665)
+
 2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c:
