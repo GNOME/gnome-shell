@@ -2081,12 +2081,15 @@ clutter_model_iter_get_value (ClutterModelIter *iter,
                               GValue           *value)
 {
   ClutterModelIterClass *klass;
+  ClutterModel *model;
 
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
   
   klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
   g_return_if_fail (klass->get_value != NULL);
-  
+
+  model = iter->priv->model;
+  g_value_init (value, clutter_model_get_column_type (model, column));
   klass->get_value (iter, column, value);
 }
 

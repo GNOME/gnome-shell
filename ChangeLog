@@ -1,5 +1,10 @@
 2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model.c (clutter_model_iter_get_value): Initialise
+	the passed GValue like the other getters do.
+
+2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model.h:
 	* clutter/clutter-model.c:
 	(clutter_model_append_value),
