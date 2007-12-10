@@ -1,4 +1,4 @@
-2007-12-10  Emmanuele Bassi,,,  <ebassi@sprite>
+2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:
 	(clutter_behaviour_ellipse_get_angle_tilt),
