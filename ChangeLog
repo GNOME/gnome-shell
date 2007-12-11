@@ -1,3 +1,15 @@
+2007-12-11  Øyvind Kolås  <pippin@o-hand.com>
+
+	Refined the ClutterShader API based on a patch from Emmanuele Bassi.
+
+	* clutter/clutter-actor.c: (clutter_actor_paint),
+	(clutter_actor_apply_shader): queue a redraw of actor when shader is
+	set.
+	* clutter/clutter-actor.h: indentation.
+	* clutter/clutter-shader.[ch]: made the fragment and vertex shader
+	sources properties. Report error through GError when binding shaders.
+	* tests/test-shader.c: modified to use newer API.
+
 2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-model.c:

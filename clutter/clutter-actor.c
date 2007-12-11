@@ -928,8 +928,10 @@ clutter_actor_paint (ClutterActor *self)
   else
     {
       clutter_actor_shader_pre_paint (self, FALSE);
-      if (G_LIKELY(klass->paint))
-	(klass->paint) (self);
+
+      if (G_LIKELY (klass->paint))
+         klass->paint (self);
+
       clutter_actor_shader_post_paint (self);
     }
 
@@ -4766,6 +4768,8 @@ clutter_actor_apply_shader (ClutterActor  *self,
   if (shader)
     shader_data->shader = g_object_ref (shader);
 
+  clutter_actor_queue_redraw (self);
+
   return TRUE;
 }
 
@@ -4802,7 +4806,7 @@ clutter_actor_shader_pre_paint (ClutterActor *actor,
 
   if (shader)
     {
-      clutter_shader_enable (shader);
+      clutter_shader_set_is_enabled (shader, TRUE);
 
       g_hash_table_foreach (shader_data->float1f_hash, set_each_param, shader);
 
@@ -4832,7 +4836,7 @@ clutter_actor_shader_post_paint (ClutterActor *actor)
 
   if (shader)
     {
-      clutter_shader_disable (shader);
+      clutter_shader_set_is_enabled (shader, FALSE);
 
       context->shaders = g_slist_remove (context->shaders, actor);
       if (context->shaders)

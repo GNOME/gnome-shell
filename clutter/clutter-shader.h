@@ -25,10 +25,9 @@
  */
 
 
-#ifndef CLUTTER_SHADER_H
-#define CLUTTER_SHADER_H
+#ifndef __CLUTTER_SHADER_H__
+#define __CLUTTER_SHADER_H__
 
-#include <glib.h>
 #include <glib-object.h>
 
 G_BEGIN_DECLS
@@ -40,39 +39,61 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_SHADER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), CLUTTER_TYPE_SHADER))
 #define CLUTTER_SHADER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), CLUTTER_TYPE_SHADER, ClutterShaderClass))
 
+#define CLUTTER_SHADER_ERROR        (clutter_shader_error_quark ())
+
+typedef enum {
+  CLUTTER_SHADER_ERROR_NO_ASM,
+  CLUTTER_SHADER_ERROR_NO_GLSL,
+  CLUTTER_SHADER_ERROR_COMPILE
+} ClutterShaderError;
+
 typedef struct _ClutterShader        ClutterShader;
 typedef struct _ClutterShaderPrivate ClutterShaderPrivate;
 typedef struct _ClutterShaderClass   ClutterShaderClass;
 
 struct _ClutterShader
 {
+  /*< private >*/
   GObject               parent;
   ClutterShaderPrivate *priv;
 };
 
 struct _ClutterShaderClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 };
 
-GType           clutter_shader_get_type         ();
+GQuark                clutter_shader_error_quark         (void);
+GType                 clutter_shader_get_type            (void) G_GNUC_CONST;
 
-ClutterShader * clutter_shader_new_from_files   (const gchar *vertex_file,
-                                                 const gchar *fragment_file);
-ClutterShader * clutter_shader_new_from_strings (const gchar *vertex_file,
-                                                 const gchar *fragment_file);
-void            clutter_shader_enable           (ClutterShader *self);
-void            clutter_shader_disable          (ClutterShader *self);
+ClutterShader *       clutter_shader_new                 (void);
 
-gboolean        clutter_shader_bind             (ClutterShader *self);
-void            clutter_shader_release          (ClutterShader *self);
-void            clutter_shader_set_uniform_1f   (ClutterShader *self, 
-                                                 const gchar   *name,
-                                                 gfloat         value);
+void                  clutter_shader_set_is_enabled      (ClutterShader      *shader,
+                                                          gboolean            enabled);
+gboolean              clutter_shader_get_is_enabled      (ClutterShader      *shader);
+
+gboolean              clutter_shader_bind                (ClutterShader      *shader,
+                                                          GError            **error);
+void                  clutter_shader_release             (ClutterShader      *shader);
+gboolean              clutter_shader_is_bound            (ClutterShader      *shader);
+
+void                  clutter_shader_set_vertex_source   (ClutterShader      *shader,
+                                                          const gchar        *data,
+                                                          gssize              length);
+void                  clutter_shader_set_fragment_source (ClutterShader      *shader,
+                                                          const gchar        *data,
+                                                          gssize              length);
+
+G_CONST_RETURN gchar *clutter_shader_get_vertex_source   (ClutterShader      *shader);
+G_CONST_RETURN gchar *clutter_shader_get_fragment_source (ClutterShader      *shader);
+
+void                  clutter_shader_set_uniform_1f      (ClutterShader      *shader,
+                                                          const gchar        *name,
+                                                          gfloat              value);
 /* should be private and internal */
-void            clutter_shader_release_all    (void);
-
+void                  clutter_shader_release_all         (void);
 
 G_END_DECLS
 
-#endif /* CLUTTER_SHADER_H */
+#endif /* __CLUTTER_SHADER_H__ */
