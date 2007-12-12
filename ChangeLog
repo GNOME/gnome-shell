@@ -1,3 +1,7 @@
+2007-12-11  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/theme-parser.c: remove dead code; closes #501365.
+
 2007-12-08  Thomas Thurman  <tthurman@gnome.org>
 
 	* src/metacity.schemas.in: rewrite long description of

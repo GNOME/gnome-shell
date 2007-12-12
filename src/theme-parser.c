@@ -374,9 +374,6 @@ locate_attributes (GMarkupParseContext *context,
 
   va_end (args);
 
-  if (!retval)
-    return retval;
-
   i = 0;
   while (attribute_names[i])
     {
