@@ -478,6 +478,8 @@ typedef GLuint COGLuint;
 #define CGL_OBJECT_COMPILE_STATUS 0
 #endif
 
+#define CLUTTER_COGL_HAS_GLES 1
+
 G_END_DECLS
 
 #endif
