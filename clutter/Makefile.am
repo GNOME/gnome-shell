@@ -65,6 +65,7 @@ source_h =					\
 	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
 	$(srcdir)/clutter-model.h		\
+	$(srcdir)/clutter-model-default.h	\
 	$(srcdir)/clutter-rectangle.h		\
 	$(srcdir)/clutter-score.h 		\
 	$(srcdir)/clutter-script.h		\
@@ -149,6 +150,7 @@ source_c = \
 	clutter-marshal.c		\
 	clutter-media.c 		\
 	clutter-model.c			\
+	clutter-model-default.c		\
 	clutter-rectangle.c 		\
 	clutter-score.c 		\
 	clutter-script.c		\
@@ -163,8 +165,8 @@ source_c = \
 	$(NULL)
 
 source_h_priv = \
-	clutter-keysyms-table.h		\
 	clutter-debug.h 		\
+	clutter-keysyms-table.h		\
 	clutter-private.h 		\
 	clutter-script-private.h	\
 	$(NULL)

@@ -78,10 +78,10 @@ typedef gboolean (*ClutterModelFilterFunc) (ClutterModel     *model,
  *
  * Since: 0.6
  */
-typedef gboolean (*ClutterModelSortFunc) (ClutterModel *model,
-                                          const GValue *a,
-                                          const GValue *b,
-                                          gpointer      user_data);
+typedef gint (*ClutterModelSortFunc) (ClutterModel *model,
+                                      const GValue *a,
+                                      const GValue *b,
+                                      gpointer      user_data);
 
 /**
  * ClutterModelForeachFunc:
@@ -127,6 +127,16 @@ struct _ClutterModel
  * @get_column_type: virtual function for returning the type of a column
  * @get_iter_at_row: virtual function for returning an iterator for the
  *   given row
+ * @get_n_rows: virtual function for returning the number of rows
+ *   of the model, not considering any filter function if present
+ * @get_n_columns: virtual function for retuning the number of columns
+ *   of the model
+ * @resort: virtual function for sorting the model using the passed
+ *   sorting function
+ * @insert_row: virtual function for inserting a row at the given index
+ *   and returning an iterator pointing to it; if the index is a negative
+ *   integer, the row should be appended to the model
+ * @remove_row: virtual function for removing a row at the given index
  *
  * Class for #ClutterModel instances.
  *
@@ -139,12 +149,21 @@ struct _ClutterModelClass
 
   /*< public >*/
   /* vtable */
-  const gchar *     (* get_column_name) (ClutterModel     *model,
-                                         guint             column);
-  GType             (* get_column_type) (ClutterModel     *model,
-                                         guint             column);
-  ClutterModelIter *(* get_iter_at_row) (ClutterModel     *model,
-                                         guint             row);
+  guint             (* get_n_rows)      (ClutterModel         *model);
+  guint             (* get_n_columns)   (ClutterModel         *model);
+  const gchar *     (* get_column_name) (ClutterModel         *model,
+                                         guint                 column);
+  GType             (* get_column_type) (ClutterModel         *model,
+                                         guint                 column);
+  ClutterModelIter *(* insert_row)      (ClutterModel         *model,
+                                         gint                  index_);
+  void              (* remove_row)      (ClutterModel         *model,
+                                         guint                 row);
+  ClutterModelIter *(* get_iter_at_row) (ClutterModel         *model,
+                                         guint                 row);
+  void              (* resort)          (ClutterModel         *model,
+                                         ClutterModelSortFunc  func,
+                                         gpointer              data);
 
   /* signals */
   void              (* row_added)       (ClutterModel     *model,
@@ -153,7 +172,6 @@ struct _ClutterModelClass
                                          ClutterModelIter *iter);
   void              (* row_changed)     (ClutterModel     *model,
                                          ClutterModelIter *iter);
-
   void              (* sort_changed)    (ClutterModel     *model);
   void              (* filter_changed)  (ClutterModel     *model);
 
@@ -165,90 +183,87 @@ struct _ClutterModelClass
   void (*_clutter_model_4) (void);
 };
 
+GType                 clutter_model_get_type           (void) G_GNUC_CONST;
 
-
-GType clutter_model_get_type (void) G_GNUC_CONST;
-
-ClutterModel *        clutter_model_new                (guint           n_columns,
-                                                        ...);
-ClutterModel *        clutter_model_newv               (guint           n_columns,
-                                                        GType          *types,
-                                                        const gchar * const names[]);
-void                  clutter_model_set_types          (ClutterModel   *model,
-                                                        guint           n_columns,
-                                                        GType          *types);
-void                  clutter_model_set_names          (ClutterModel   *model,
-                                                        guint           n_columns,
+void                  clutter_model_set_types          (ClutterModel     *model,
+                                                        guint             n_columns,
+                                                        GType            *types);
+void                  clutter_model_set_names          (ClutterModel     *model,
+                                                        guint             n_columns,
                                                         const gchar * const names[]);
 
-void                  clutter_model_append             (ClutterModel   *model,
+void                  clutter_model_append             (ClutterModel     *model,
                                                         ...);
-void                  clutter_model_append_value       (ClutterModel   *model,
-                                                        guint           column,
-                                                        const GValue   *value);
-void                  clutter_model_prepend            (ClutterModel   *model,
+void                  clutter_model_append_value       (ClutterModel     *model,
+                                                        guint             column,
+                                                        const GValue     *value);
+void                  clutter_model_prepend            (ClutterModel     *model,
                                                         ...);
-void                  clutter_model_prepend_value      (ClutterModel   *model,
-                                                        guint           column,
-                                                        const GValue   *value);
-void                  clutter_model_insert             (ClutterModel   *model,
-                                                        guint           row,
+void                  clutter_model_prepend_value      (ClutterModel     *model,
+                                                        guint             column,
+                                                        const GValue     *value);
+void                  clutter_model_insert             (ClutterModel     *model,
+                                                        guint             row,
                                                         ...);
-void                  clutter_model_insert_value       (ClutterModel   *model,
-                                                        guint           row,
-                                                        guint           column,
-                                                        const GValue   *value);
-void                  clutter_model_remove             (ClutterModel   *model,
-                                                        guint           row);
+void                  clutter_model_insert_value       (ClutterModel     *model,
+                                                        guint             row,
+                                                        guint             column,
+                                                        const GValue     *value);
+void                  clutter_model_remove             (ClutterModel     *model,
+                                                        guint             row);
 
-guint                 clutter_model_get_n_rows         (ClutterModel   *model);
+guint                 clutter_model_get_n_rows         (ClutterModel     *model);
+guint                 clutter_model_get_n_columns      (ClutterModel     *model);
+G_CONST_RETURN gchar *clutter_model_get_column_name    (ClutterModel     *model,
+                                                        guint             column);
+GType                 clutter_model_get_column_type    (ClutterModel     *model,
+                                                        guint             column);
 
-G_CONST_RETURN gchar *clutter_model_get_column_name    (ClutterModel   *model,
-                                                        guint           column);
-GType                 clutter_model_get_column_type    (ClutterModel   *model,
-                                                        guint           column);
-guint                 clutter_model_get_n_columns      (ClutterModel   *model);
+ClutterModelIter *    clutter_model_get_first_iter     (ClutterModel     *model);
+ClutterModelIter *    clutter_model_get_last_iter      (ClutterModel     *model);
+ClutterModelIter *    clutter_model_get_iter_at_row    (ClutterModel     *model,
+                                                        guint             row);
 
-ClutterModelIter *    clutter_model_get_first_iter     (ClutterModel   *model);
-ClutterModelIter *    clutter_model_get_last_iter      (ClutterModel   *model);
-ClutterModelIter *    clutter_model_get_iter_at_row    (ClutterModel   *model,
-                                                        guint           row);
+void                  clutter_model_set_sorting_column (ClutterModel     *model,
+                                                        gint              column);
+gint                  clutter_model_get_sorting_column (ClutterModel     *model);
 
-void                  clutter_model_set_sorting_column (ClutterModel   *model,
-                                                        gint            column);
-gint                  clutter_model_get_sorting_column (ClutterModel   *model);
-
-void                  clutter_model_foreach            (ClutterModel   *model,
+void                  clutter_model_foreach            (ClutterModel     *model,
                                                         ClutterModelForeachFunc func, 
-                                                        gpointer        user_data);
-void                  clutter_model_set_sort           (ClutterModel   *model, 
-                                                        guint           column,
+                                                        gpointer          user_data);
+void                  clutter_model_set_sort           (ClutterModel     *model, 
+                                                        guint             column,
                                                         ClutterModelSortFunc func, 
-                                                        gpointer        user_data,
-                                                        GDestroyNotify  notify);
-void                  clutter_model_set_filter         (ClutterModel   *model, 
+                                                        gpointer          user_data,
+                                                        GDestroyNotify    notify);
+void                  clutter_model_set_filter         (ClutterModel     *model, 
                                                         ClutterModelFilterFunc func, 
-                                                        gpointer        user_data,
-                                                        GDestroyNotify  notify);
+                                                        gpointer          user_data,
+                                                        GDestroyNotify    notify);
 
+void                  clutter_model_resort             (ClutterModel     *model);
+gboolean              clutter_model_filter_row         (ClutterModel     *model,
+                                                        guint             row);
+gboolean              clutter_model_filter_iter        (ClutterModel     *model,
+                                                        ClutterModelIter *iter);
 
 /*
  * ClutterModelIter 
  */
 
-#define CLUTTER_TYPE_MODEL_ITER         (clutter_model_iter_get_type ())
-#define CLUTTER_MODEL_ITER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_MODEL_ITER, ClutterModelIter))
-#define CLUTTER_MODEL_ITER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_MODEL_ITER, ClutterModelIterClass))
-#define CLUTTER_IS_MODEL_ITER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_MODEL_ITER))
-#define CLUTTER_IS_MODEL_ITER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_MODEL_ITER))
-#define CLUTTER_MODEL_ITER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_MODEL_ITER, ClutterModelIterClass))
+#define CLUTTER_TYPE_MODEL_ITER                 (clutter_model_iter_get_type ())
+#define CLUTTER_MODEL_ITER(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_MODEL_ITER, ClutterModelIter))
+#define CLUTTER_MODEL_ITER_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_MODEL_ITER, ClutterModelIterClass))
+#define CLUTTER_IS_MODEL_ITER(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_MODEL_ITER))
+#define CLUTTER_IS_MODEL_ITER_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_MODEL_ITER))
+#define CLUTTER_MODEL_ITER_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_MODEL_ITER, ClutterModelIterClass))
 
 /**
  * ClutterModelIter:
  *
- * Base class for list models iters. The #ClutterModelIter structure contains
- * only private data and should be manipulated using the provided
- * API.
+ * Base class for list models iters. The #ClutterModelIter structure
+ * contains only private data and should be manipulated using the
+ * provided API.
  *
  * Since: 0.6
  */
@@ -262,6 +277,18 @@ struct _ClutterModelIter
 
 /**
  * ClutterModelIterClass:
+ * @get_value: Virtual function for retrieving the value at the given
+ *   column of the row pointed by the iterator
+ * @set_value: Virtual function for setting the value at the given
+ *   column of the row pointer by the iterator
+ * @is_last: Virtual function for knowing whether the iterator points
+ *   at the last row in the model
+ * @is_first: Virtual function for knowing whether the iterator points
+ *   at the first row in the model
+ * @get_model: Virtual function for getting the model to which the
+ *   iterator belongs to
+ * @get_row: Virtual function for getting the row to which the iterator
+ *   points
  *
  * Class for #ClutterModelIter instances.
  *
@@ -273,7 +300,6 @@ struct _ClutterModelIterClass
   GObjectClass parent_class;
 
   /*< public >*/
-
   /* vtable not signals */
   void              (* get_value) (ClutterModelIter *iter, 
                                    guint             column, 
@@ -287,7 +313,7 @@ struct _ClutterModelIterClass
 
   ClutterModelIter *(* next)      (ClutterModelIter *iter);
   ClutterModelIter *(* prev)      (ClutterModelIter *iter);
-  
+
   ClutterModel*     (* get_model) (ClutterModelIter *iter);
   guint             (* get_row)   (ClutterModelIter *iter);
 
@@ -299,8 +325,7 @@ struct _ClutterModelIterClass
   void (*_clutter_model_iter_4) (void);
 };
 
-GType clutter_model_iter_get_type (void) G_GNUC_CONST;
-
+GType             clutter_model_iter_get_type   (void) G_GNUC_CONST;
 
 void              clutter_model_iter_get        (ClutterModelIter *iter,
                                                  ...);
@@ -316,10 +341,15 @@ void              clutter_model_iter_set_valist (ClutterModelIter *iter,
 void              clutter_model_iter_set_value  (ClutterModelIter *iter,
                                                  guint             column,
                                                  const GValue     *value);
+
 gboolean          clutter_model_iter_is_first   (ClutterModelIter *iter);
 gboolean          clutter_model_iter_is_last    (ClutterModelIter *iter);
+gboolean          clutter_model_iter_has_next   (ClutterModelIter *iter);
+gboolean          clutter_model_iter_has_prev   (ClutterModelIter *iter);
+
 ClutterModelIter *clutter_model_iter_next       (ClutterModelIter *iter);
 ClutterModelIter *clutter_model_iter_prev       (ClutterModelIter *iter);
+
 ClutterModel *    clutter_model_iter_get_model  (ClutterModelIter *iter);
 guint             clutter_model_iter_get_row    (ClutterModelIter *iter);
 

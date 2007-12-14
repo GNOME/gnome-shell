@@ -210,7 +210,7 @@ main (gint   argc,
   shader = clutter_shader_new ();
 
   error = NULL;
-  clutter_shader_set_fragment_source (shader, shaders[shader_no].source, NULL);
+  clutter_shader_set_fragment_source (shader, shaders[shader_no].source, -1);
   clutter_shader_bind (shader, &error);
   if (error)
     {

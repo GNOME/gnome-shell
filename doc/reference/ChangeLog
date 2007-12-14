@@ -1,3 +1,10 @@
+2007-12-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* Makefile.am:
+	* clutter-docs.sgml:
+	* clutter-sections.txt:
+	* clutter.types: Update for ClutterModel changes.
+
 2007-12-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add the new ClutterModel API.

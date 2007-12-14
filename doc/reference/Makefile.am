@@ -51,14 +51,14 @@ CFILE_GLOB=$(top_srcdir)/clutter/*.c
 IGNORE_HFILES=\
 	clutter.h \
 	clutter-debug.h \
-	clutter-private.h \
-	clutter-marshal.h \
+	clutter-deprecated.h \
+	clutter-enum-types.h \
+	clutter-json.h \
 	clutter-keysyms.h \
 	clutter-keysyms-table.h \
-	clutter-enum-types.h \
+	clutter-marshal.h \
+	clutter-private.h \
 	clutter-script-private.h \
-	clutter-json.h \
-	clutter-deprecated.h \
 	stamp-clutter-enum-types.h \
 	stamp-clutter-marshal.h \
 	cogl \

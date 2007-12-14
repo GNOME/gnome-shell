@@ -159,6 +159,7 @@
 
       <xi:include href="xml/clutter-model.xml"/>
       <xi:include href="xml/clutter-model-iter.xml"/>
+      <xi:include href="xml/clutter-model-default.xml"/>
     </chapter>
   </part>
 

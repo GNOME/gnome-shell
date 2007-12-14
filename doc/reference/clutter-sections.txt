@@ -1143,8 +1143,6 @@ ClutterModelClass
 ClutterModelFilterFunc
 ClutterModelSortFunc
 ClutterModelForeachFunc
-clutter_model_new
-clutter_model_newv
 clutter_model_set_names
 clutter_model_set_types
 clutter_model_append
@@ -1206,6 +1204,25 @@ CLUTTER_MODEL_ITER_GET_CLASS
 <SUBSECTION Private>
 ClutterModelIterPrivate
 clutter_model_iter_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-model-default</FILE>
+<TITLE>ClutterModelDefault</TITLE>
+ClutterModelDefault
+ClutterModelDefaultIter
+clutter_model_default_new
+clutter_model_default_newv
+<SUBSECTION Standard>
+CLUTTER_TYPE_MODEL_DEFAULT
+CLUTTER_TYPE_MODEL_DEFAULT_ITER
+CLUTTER_MODEL_DEFAULT
+CLUTTER_MODEL_DEFAULT_ITER
+CLUTTER_IS_MODEL_DEFAULT
+CLUTTER_IS_MODEL_DEFAULT_ITER
+<SUBSECTION Private>
+clutter_model_default_get_type
+clutter_model_default_iter_get_type
 </SECTION>
 
 <SECTION>

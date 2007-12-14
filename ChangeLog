@@ -1,3 +1,25 @@
+2007-12-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour.c:
+	(clutter_knot_get_type): Use the I_() macro.
+
+	* clutter/clutter-model.[ch]: Make ClutterModel and ClutterModelIter
+	abstract classes; also, provide more virtual functions inside the
+	ClutterModel vtable, to allow subclasses and language bindings to
+	override the entire ClutterModel using other/native data types
+	to store the rows.
+	
+	* clutter/clutter-model-default.[ch]: ClutterModelDefault is a
+	default implementation of ClutterModel and ClutterModelIter using
+	GSequence.
+
+	* clutter/Makefile.am:
+	* clutter/clutter.h: Build glue for ClutterModelDefault.
+
+	* tests/test-model.c: Update for constructor changes.
+
+	* tests/test-shader.c: Fix a typo.
+
 2007-12-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gl/cogl-defines.h.in:

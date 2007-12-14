@@ -131,7 +131,7 @@ clutter_knot_get_type (void)
   if (G_UNLIKELY (!our_type))
     {
       our_type =
-        g_boxed_type_register_static ("ClutterKnot",
+        g_boxed_type_register_static (I_("ClutterKnot"),
                                       (GBoxedCopyFunc) clutter_knot_copy,
                                       (GBoxedFreeFunc) clutter_knot_free);
     }
