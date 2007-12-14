@@ -1,3 +1,9 @@
+2007-12-14  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/cogl/gl/cogl-defines.h.in:
+	* clutter/cogl/gles/cogl-defines.h:
+	Add CLUTTER_COGL_HAS_GL/GLES defines
+
 2007-12-11  Øyvind Kolås  <pippin@o-hand.com>
 
 	Refined the ClutterShader API based on a patch from Emmanuele Bassi.
