@@ -350,6 +350,7 @@ clutter_actor_set_scale
 clutter_actor_get_scale
 clutter_actor_get_abs_size
 clutter_actor_apply_transform_to_point
+clutter_actor_transform_stage_point
 
 <SUBSECTION>
 ClutterVertex
@@ -363,6 +364,8 @@ clutter_actor_set_anchor_point_from_gravity
 <SUBSECTION>
 clutter_actor_set_reactive
 clutter_actor_get_reactive
+clutter_actor_apply_shader
+clutter_actor_set_shader_param
 
 <SUBSECTION>
 clutter_actor_set_depthu
@@ -376,7 +379,9 @@ clutter_actor_get_xu
 clutter_actor_set_yu
 clutter_actor_get_yu
 clutter_actor_set_positionu
+clutter_actor_get_positionu
 clutter_actor_set_sizeu
+clutter_actor_get_sizeu
 clutter_actor_set_anchor_pointu
 clutter_actor_get_anchor_pointu
 
@@ -1140,11 +1145,14 @@ clutter_scriptable_get_type
 <TITLE>ClutterModel</TITLE>
 ClutterModel
 ClutterModelClass
-ClutterModelFilterFunc
-ClutterModelSortFunc
-ClutterModelForeachFunc
 clutter_model_set_names
 clutter_model_set_types
+clutter_model_get_column_name
+clutter_model_get_column_type
+clutter_model_get_n_columns
+clutter_model_get_n_rows
+
+<SUBSECTION>
 clutter_model_append
 clutter_model_append_value
 clutter_model_prepend
@@ -1152,18 +1160,25 @@ clutter_model_prepend_value
 clutter_model_insert
 clutter_model_insert_value
 clutter_model_remove
-clutter_model_get_column_name
-clutter_model_get_column_type
-clutter_model_get_n_columns
-clutter_model_get_n_rows
+
+<SUBSECTION>
+ClutterModelForeachFunc
+clutter_model_foreach
+clutter_model_set_sorting_column
+clutter_model_get_sorting_column
+ClutterModelSortFunc
+clutter_model_set_sort
+clutter_model_resort
+ClutterModelFilterFunc
+clutter_model_set_filter
+clutter_model_filter_iter
+clutter_model_filter_row
+
+<SUBSECTION>
 clutter_model_get_first_iter
 clutter_model_get_last_iter
 clutter_model_get_iter_at_row
-clutter_model_set_sorting_column
-clutter_model_get_sorting_column
-clutter_model_foreach
-clutter_model_set_sort
-clutter_model_set_filter
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_MODEL
 CLUTTER_MODEL
@@ -1187,12 +1202,17 @@ clutter_model_iter_get_value
 clutter_model_iter_set
 clutter_model_iter_set_valist
 clutter_model_iter_set_value
+
+<SUBSECTION>
 clutter_model_iter_is_first
 clutter_model_iter_is_last
 clutter_model_iter_next
 clutter_model_iter_prev
+
+<SUBSECTION>
 clutter_model_iter_get_model
 clutter_model_iter_get_row
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_MODEL_ITER
 CLUTTER_MODEL_ITER
@@ -1259,4 +1279,37 @@ CLUTTER_TYPE_SCORE
 <SUBSECTION Private>
 ClutterScorePrivate
 clutter_score_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-shader</FILE>
+<TITLE>ClutterShader</TITLE>
+ClutterShaderError
+ClutterShader
+ClutterShaderClass
+clutter_shader_new
+clutter_shader_set_vertex_source
+clutter_shader_get_vertex_source
+clutter_shader_set_fragment_source
+clutter_shader_get_fragment_source
+clutter_shader_bind
+clutter_shader_release
+clutter_shader_is_bound
+clutter_shader_set_is_enabled
+clutter_shader_get_is_enabled
+clutter_shader_set_uniform_1f
+
+<SUBSECTION Standard>
+CLUTTER_IS_SHADER
+CLUTTER_IS_SHADER_CLASS
+CLUTTER_SHADER
+CLUTTER_SHADER_CLASS
+CLUTTER_SHADER_ERROR
+CLUTTER_SHADER_GET_CLASS
+CLUTTER_TYPE_SHADER
+<SUBSECTION Private>
+ClutterShaderPrivate
+clutter_shader_get_type
+clutter_shader_error_quark
+clutter_shader_release_all
 </SECTION>

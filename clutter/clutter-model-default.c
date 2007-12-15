@@ -26,7 +26,7 @@
  */
 
 /**
- * SECTION:clutter-model-default:
+ * SECTION:clutter-model-default
  * @short_description: Default model implementation
  *
  * #ClutterModelDefault is a #ClutterModel implementation provided by
@@ -313,7 +313,6 @@ static ClutterModelIter *
 clutter_model_default_iter_next (ClutterModelIter *iter)
 {
   ClutterModelDefaultIter *iter_default;
-  ClutterModelDefaultIter *retval;
   ClutterModelIter *temp_iter;
   ClutterModel *model = NULL;
   GSequenceIter *filter_next;
@@ -352,20 +351,17 @@ clutter_model_default_iter_next (ClutterModelIter *iter)
   if (filter_next == iter_default->seq_iter)
     filter_next = g_sequence_iter_next (filter_next);
 
-  retval = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
-                         "model", model,
-                         "row", row,
-                         NULL);
-  retval->seq_iter = filter_next;
+  /* update the iterator and return it */
+  g_object_set (G_OBJECT (iter_default), "model", model, "row", row, NULL);
+  iter_default->seq_iter = filter_next;
 
-  return CLUTTER_MODEL_ITER (retval);
+  return CLUTTER_MODEL_ITER (iter_default);
 }
 
 static ClutterModelIter *
 clutter_model_default_iter_prev (ClutterModelIter *iter)
 {
   ClutterModelDefaultIter *iter_default;
-  ClutterModelDefaultIter *retval;
   ClutterModelIter *temp_iter;
   ClutterModel *model;
   GSequenceIter *filter_prev;
@@ -404,13 +400,11 @@ clutter_model_default_iter_prev (ClutterModelIter *iter)
   if (filter_prev == iter_default->seq_iter)
     filter_prev = g_sequence_iter_prev (filter_prev);
 
-  retval = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
-                         "model", model,
-                         "row", row,
-                         NULL);
-  retval->seq_iter = filter_prev;
+  /* update the iterator and return it */
+  g_object_set (G_OBJECT (iter_default), "model", model, "row", row, NULL);
+  iter_default->seq_iter = filter_prev;
 
-  return CLUTTER_MODEL_ITER (retval);
+  return CLUTTER_MODEL_ITER (iter_default);
 }
 static void
 clutter_model_default_iter_class_init (ClutterModelDefaultIterClass *klass)

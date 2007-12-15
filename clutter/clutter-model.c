@@ -245,9 +245,9 @@ clutter_model_class_init (ClutterModelClass *klass)
    * @model: the #ClutterModel on which the signal is emitted
    * @iter: a #ClutterModelIter pointing to the new row
    *
-   * The ::row-added signal is emitted when a new row has been added 
+   * The ::row-added signal is emitted when a new row has been added.
    *
-   * Since 0.6
+   * Since: 0.6
    */
   model_signals[ROW_ADDED] =
     g_signal_new ("row-added",
@@ -263,9 +263,10 @@ clutter_model_class_init (ClutterModelClass *klass)
    * @model: the #ClutterModel on which the signal is emitted
    * @iter: a #ClutterModelIter pointing to the removed row
    *
-   * The ::row-removed signal is emitted when a row has been removed
+   * The ::row-removed signal is emitted when a row has been removed.
+   * The data on the row pointed by the passed iterator is still valid.
    *
-   * Since 0.6
+   * Since: 0.6
    */
   model_signals[ROW_REMOVED] =
     g_signal_new ("row-removed",
@@ -283,7 +284,7 @@ clutter_model_class_init (ClutterModelClass *klass)
    *
    * The ::row-removed signal is emitted when a row has been changed
    *
-   * Since 0.6
+   * Since: 0.6
    */
   model_signals[ROW_CHANGED] =
     g_signal_new ("row-changed",
@@ -300,7 +301,7 @@ clutter_model_class_init (ClutterModelClass *klass)
    * 
    * The ::sort-changed signal is emitted after the model has been sorted
    *
-   * Since 0.6
+   * Since: 0.6
    */
   model_signals[SORT_CHANGED] =
     g_signal_new ("sort-changed",
@@ -316,7 +317,7 @@ clutter_model_class_init (ClutterModelClass *klass)
    *
    * The ::filter-changed signal is emitted when a new filter has been applied
    *
-   * Since 0.6
+   * Since: 0.6
    */
   model_signals[FILTER_CHANGED] =
     g_signal_new ("filter-changed",
@@ -536,8 +537,9 @@ clutter_model_set_column_name (ClutterModel *model,
 
 /* we implement the constructors of the default model here because
  * we need the private accessors to the column names and types
- * vectors inside ClutterModelPrivate; the ClutterModelDefault ctors
- * are declared inside clutter-model-default.h
+ * vectors inside ClutterModelPrivate, to avoid having them inside
+ * a private header; the ClutterModelDefault ctors are declared inside
+ * clutter-model-default.h
  */
 
 /**
@@ -560,9 +562,13 @@ clutter_model_set_column_name (ClutterModel *model,
  * will create a new #ClutterModel with three columns of type int,
  * string and #GdkPixbuf respectively.
  *
- * Return value: a new #ClutterModel
+ * Note that the name of the column can be set to %NULL, in which case
+ * the canonical name of the type held by the column will be used as
+ * the title.
  *
- * Since 0.6
+ * Return value: a new default #ClutterModel
+ *
+ * Since: 0.6
  */
 ClutterModel *
 clutter_model_default_new (guint n_columns,
@@ -606,11 +612,12 @@ clutter_model_default_new (guint n_columns,
  * @types: an array of #GType types for the columns, from first to last
  * @names: an array of names for the columns, from first to last
  *
- * Non-vararg creation function. Useful primarily by language bindings.
+ * Non-vararg version of clutter_model_default_new(). This function is
+ * useful for language bindings.
  *
- * Return value: a new #ClutterModel
+ * Return value: a new default #ClutterModel
  *
- * Since 0.6
+ * Since: 0.6
  */
 ClutterModel *
 clutter_model_default_newv (guint                n_columns,
@@ -653,12 +660,12 @@ clutter_model_default_newv (guint                n_columns,
  * #ClutterModel, and should only be used when contructing a #ClutterModel.
  * It will not work after the initial creation of the #ClutterModel.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_set_types (ClutterModel *model,
                          guint         n_columns,
-                         GType         *types)
+                         GType        *types)
 {
   ClutterModelPrivate *priv;
   gint i;
@@ -748,7 +755,7 @@ clutter_model_get_n_columns (ClutterModel *model)
  * Creates and appends a new row to the #ClutterModel, setting the row
  * value for the given @column upon creation.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_append_value (ClutterModel *model,
@@ -787,12 +794,12 @@ clutter_model_append_value (ClutterModel *model,
  * <informalexample><programlisting>
  *   ClutterModel *model;
  *   model = clutter_model_default_new (2,
- *                                      G_TYPE_INT,    "My integers",
- *                                      G_TYPE_STRING, "My strings");
- *   clutter_model_append (model, 0, 42, 1, "string", -1);
+ *                                      G_TYPE_INT,    "Score",
+ *                                      G_TYPE_STRING, "Team");
+ *   clutter_model_append (model, 0, 42, 1, "Team #1", -1);
  * </programlisting></informalexample>
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_append (ClutterModel *model,
@@ -826,7 +833,7 @@ clutter_model_append (ClutterModel *model,
  * Creates and prepends a new row to the #ClutterModel, setting the row
  * value for the given @column upon creation.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_prepend_value (ClutterModel *model,
@@ -865,12 +872,12 @@ clutter_model_prepend_value (ClutterModel *model,
  * <informalexample><programlisting>
  *   ClutterModel *model;
  *   model = clutter_model_default_new (2,
- *                                      G_TYPE_INT,    "My integers",
- *                                      G_TYPE_STRING, "My strings");
- *   clutter_model_prepend (model, 0, 42, 1, "string", -1);
+ *                                      G_TYPE_INT,    "Score",
+ *                                      G_TYPE_STRING, "Team");
+ *   clutter_model_prepend (model, 0, 42, 1, "Team #1", -1);
  * </programlisting></informalexample>
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_prepend (ClutterModel *model,
@@ -908,12 +915,12 @@ clutter_model_prepend (ClutterModel *model,
  * <informalexample><programlisting>
  *   ClutterModel *model;
  *   model = clutter_model_default_new (2,
- *                                      G_TYPE_INT,    "My integers",
- *                                      G_TYPE_STRING, "My strings");
- *   clutter_model_insert (model, 100, 0, 42, 1, "string", -1);
+ *                                      G_TYPE_INT,    "Score",
+ *                                      G_TYPE_STRING, "Team");
+ *   clutter_model_insert (model, 3, 0, 42, 1, "Team #1", -1);
  * </programlisting></informalexample>
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_insert (ClutterModel *model,
@@ -951,7 +958,7 @@ clutter_model_insert (ClutterModel *model,
  * @value must be convertable to the type of the column. If the row does
  * not exist then it is created.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_insert_value (ClutterModel *model,
@@ -996,7 +1003,7 @@ clutter_model_insert_value (ClutterModel *model,
  *
  * Removes the row at the given position from the model.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_remove (ClutterModel *model,
@@ -1085,12 +1092,14 @@ clutter_model_get_column_type (ClutterModel *model,
  * @model: a #ClutterModel
  * @row: position of the row to retrieve
  *
- * Retrieves a #ClutterModelIter representing the row at the given position.
+ * Retrieves a #ClutterModelIter representing the row at the given index.
  *
- * Return value: A new #ClutterModelIter, or %NULL if @row was out-of-bounds
+ * Return value: A new #ClutterModelIter, or %NULL if @row was out of bounds.
+ *   When done using the iterator object, call g_object_unref() to deallocate
+ *   its resources
  *
- * Since 0.6
- **/
+ * Since: 0.6
+ */
 ClutterModelIter * 
 clutter_model_get_iter_at_row (ClutterModel *model,
                                guint         row)
@@ -1113,10 +1122,11 @@ clutter_model_get_iter_at_row (ClutterModel *model,
  *
  * Retrieves a #ClutterModelIter representing the first row in @model.
  *
- * Return value: A new #ClutterModelIter
+ * Return value: A new #ClutterModelIter. Call g_object_unref() when
+ *   done using it
  *
- * Since 0.6
- **/
+ * Since: 0.6
+ */
 ClutterModelIter *
 clutter_model_get_first_iter (ClutterModel *model)
 {
@@ -1131,10 +1141,11 @@ clutter_model_get_first_iter (ClutterModel *model)
  *
  * Retrieves a #ClutterModelIter representing the last row in @model.
  *
- * Return value: A new #ClutterModelIter
+ * Return value: A new #ClutterModelIter. Call g_object_unref() when
+ *   done using it
  *
- * Since 0.6
- **/
+ * Since: 0.6
+ */
 ClutterModelIter *
 clutter_model_get_last_iter (ClutterModel *model)
 {
@@ -1156,7 +1167,7 @@ clutter_model_get_last_iter (ClutterModel *model)
  * Return value: The length of the @model. If there is a filter set, then
  *   the length of the filtered @model is returned.
  *
- * Since 0.6
+ * Since: 0.6
  */
 guint
 clutter_model_get_n_rows (ClutterModel *model)
@@ -1200,7 +1211,7 @@ clutter_model_get_n_rows (ClutterModel *model)
  * Sets the model to sort by @column. If @column is a negative value
  * the sorting column will be unset.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void               
 clutter_model_set_sorting_column (ClutterModel *model,
@@ -1233,7 +1244,7 @@ clutter_model_set_sorting_column (ClutterModel *model,
  *
  * Return value: a column number, or -1 if the model is not sorted
  *
- * Since 0.6
+ * Since: 0.6
  */
 gint
 clutter_model_get_sorting_column (ClutterModel *model)
@@ -1251,7 +1262,7 @@ clutter_model_get_sorting_column (ClutterModel *model)
  *
  * Calls @func for each row in the model. 
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_foreach (ClutterModel            *model,
@@ -1288,9 +1299,9 @@ clutter_model_foreach (ClutterModel            *model,
  * @user_data: user data to pass to @func, or #NULL
  * @notify: destroy notifier of @user_data, or #NULL
  *
- * Sorts the @model using @func.
+ * Sorts @model using the given sorting function.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_set_sort (ClutterModel         *model,
@@ -1322,9 +1333,9 @@ clutter_model_set_sort (ClutterModel         *model,
  * @user_data: user data to pass to @func, or #NULL
  * @notify: destroy notifier of @user_data, or #NULL
  *
- * Filters the @model using @func.
+ * Filters the @model using the given filtering function.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_set_filter (ClutterModel           *model,
@@ -1589,28 +1600,26 @@ clutter_model_iter_init (ClutterModelIter *self)
  * @iter: a #ClutterModelIter
  * @args: va_list of column/value pairs, terminiated by -1
  *
- * See #clutter_model_iter_set; this version takes a va_list for language
+ * See clutter_model_iter_set(); this version takes a va_list for language
  * bindings.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void 
 clutter_model_iter_set_valist (ClutterModelIter *iter,
                                va_list           args)
 {
   ClutterModel *model;
-  ClutterModelPrivate *model_priv;
   ClutterModelIterPrivate *priv;
   guint column = 0;
   gboolean sort = FALSE;
   
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
+
   priv = iter->priv;
   model = priv->model;
+  g_assert (CLUTTER_IS_MODEL (model));
 
-  g_return_if_fail (CLUTTER_IS_MODEL (model));
-  model_priv = model->priv;
- 
   column = va_arg (args, gint);
   
   /* Don't want to sort while setting lots of fields, leave that till the end
@@ -1621,14 +1630,14 @@ clutter_model_iter_set_valist (ClutterModelIter *iter,
       GValue value = { 0, };
       gchar *error = NULL;
 
-      if (column < 0 || column >= model_priv->n_columns)
+      if (column < 0 || column >= clutter_model_get_n_columns (model))
         { 
           g_warning ("%s: Invalid column number %d added to iter "
                      "(remember to end you list of columns with a -1)",
                      G_STRLOC, column);
           break;
         }
-      g_value_init (&value, model_priv->column_types[column]);
+      g_value_init (&value, clutter_model_get_column_type (model, column));
 
       G_VALUE_COLLECT (&value, args, 0, &error);
       if (error)
@@ -1644,7 +1653,7 @@ clutter_model_iter_set_valist (ClutterModelIter *iter,
       
       g_value_unset (&value);
       
-      if (column == model_priv->sort_column)
+      if (column == clutter_model_get_sorting_column (model))
         sort = TRUE;
       
       column = va_arg (args, gint);
@@ -1660,18 +1669,22 @@ clutter_model_iter_set_valist (ClutterModelIter *iter,
 /**
  * clutter_model_iter_get:
  * @iter: a #ClutterModelIter
- * @Varargs: va_list of column/return location pairs, terminiated by -1
+ * @Varargs: a list of column/return location pairs, terminated by -1
  *
  * Gets the value of one or more cells in the row referenced by @iter. The
  * variable argument list should contain integer column numbers, each column
  * column number followed by a place to store the value being retrieved. The
- * list is terminated by a -1. For example, to get a value from column 0
- * with type G_TYPE_STRING, you would write: <literal>clutter_model_iter_get
- * (iter, 0, &place_string_here, -1);</literal>, where place_string_here is
- * a gchar* to be filled with the string. If appropriate, the returned values
- * have to be freed or unreferenced.
+ * list is terminated by a -1.
  *
- * Since 0.6
+ * For example, to get a value from column 0 with type %G_TYPE_STRING use:
+ * <informalexample><programlisting>
+ *   clutter_model_iter_get (iter, 0, &place_string_here, -1);
+ * </programlisting></informalexample>
+ * 
+ * where place_string_here is a gchar* to be filled with the string. If
+ * appropriate, the returned values have to be freed or unreferenced.
+ *
+ * Since: 0.6
  */
 void
 clutter_model_iter_get (ClutterModelIter *iter,
@@ -1693,9 +1706,9 @@ clutter_model_iter_get (ClutterModelIter *iter,
  * @value: an empty #GValue to set
  *
  * Sets an initializes @value to that at @column. When done with @value, 
- * #g_value_unset() needs to be called to free any allocated memory.
+ * g_value_unset() needs to be called to free any allocated memory.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_iter_get_value (ClutterModelIter *iter,
@@ -1719,29 +1732,27 @@ clutter_model_iter_get_value (ClutterModelIter *iter,
 /**
  * clutter_model_iter_get_valist:
  * @iter: a #ClutterModelIter
- * @args: va_list of column/return location pairs, terminiated by -1
+ * @args: a list of column/return location pairs, terminated by -1
  *
- * See #clutter_model_iter_get; this version takes a va_list for language
+ * See clutter_model_iter_get(). This version takes a va_list for language
  * bindings.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void 
 clutter_model_iter_get_valist (ClutterModelIter *iter,
                                va_list           args)
 {
-  ClutterModel *model;
-  ClutterModelPrivate *model_priv;
   ClutterModelIterPrivate *priv;
+  ClutterModel *model;
   guint column = 0;
   
   g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
+
   priv = iter->priv;
   model = priv->model;
+  g_assert (CLUTTER_IS_MODEL (model));
 
-  g_return_if_fail (CLUTTER_IS_MODEL (model));
-  model_priv = model->priv;
- 
   column = va_arg (args, gint);
 
   while (column != -1)
@@ -1749,7 +1760,7 @@ clutter_model_iter_get_valist (ClutterModelIter *iter,
       GValue value = { 0, };
       gchar *error = NULL;
 
-      if (column < 0 || column >= model_priv->n_columns)
+      if (column < 0 || column >= clutter_model_get_n_columns (model))
         { 
           g_warning ("%s: Invalid column number %d added to iter "
                      "(remember to end you list of columns with a -1)",
@@ -1781,15 +1792,19 @@ clutter_model_iter_get_valist (ClutterModelIter *iter,
 /**
  * clutter_model_iter_set:
  * @iter: a #ClutterModelIter
- * @Varargs: va_list of column/return location pairs, terminiated by -1
+ * @Varargs: a list of column/return location pairs, terminated by -1
  *
  * Sets the value of one or more cells in the row referenced by @iter. The
  * variable argument list should contain integer column numbers, each column
  * column number followed by the value to be set. The  list is terminated by a
- * -1. For example, to set column 0 with type G_TYPE_STRING, you would write:
- * <literal>clutter_model_iter_set (iter, 0, "foo", -1);</literal>.
+ * -1.
  *
- * Since 0.6
+ * For example, to set column 0 with type %G_TYPE_STRING, use:
+ * <informalexample><programlisting>
+ *   clutter_model_iter_set (iter, 0, "foo", -1);
+ * </programlisting></informalexample>
+ *
+ * Since: 0.6
  */
 void
 clutter_model_iter_set (ClutterModelIter *iter,
@@ -1811,10 +1826,10 @@ clutter_model_iter_set (ClutterModelIter *iter,
  * @column: column number to retrieve the value from
  * @value: new value for the cell
  *
- * Sets the data in the cell specified by @iter and @column. The type of @value
- * must be convertable to the type of the column.
+ * Sets the data in the cell specified by @iter and @column. The type of
+ * @value must be convertable to the type of the column.
  *
- * Since 0.6
+ * Since: 0.6
  */
 void
 clutter_model_iter_set_value (ClutterModelIter *iter,
@@ -1839,7 +1854,7 @@ clutter_model_iter_set_value (ClutterModelIter *iter,
  *
  * Return value: #TRUE if @iter is the first iter in the filtered model
  *
- * Since 0.6
+ * Since: 0.6
  */
 gboolean
 clutter_model_iter_is_first (ClutterModelIter *iter)
@@ -1864,7 +1879,7 @@ clutter_model_iter_is_first (ClutterModelIter *iter)
  *
  * Return value: #TRUE if @iter is the last iter in the filtered model.
  *
- * Since 0.6
+ * Since: 0.6
  */
 gboolean
 clutter_model_iter_is_last (ClutterModelIter *iter)
@@ -1884,11 +1899,14 @@ clutter_model_iter_is_last (ClutterModelIter *iter)
  * clutter_model_iter_next:
  * @iter: a #ClutterModelIter
  * 
- * Sets the @iter to point at the next position in the model after @iter.
+ * Updates the @iter to point at the next position in the model.
+ * The model implementation should take into account the presence of
+ * a filter function.
  *
- * Return value: @iter, pointing at the next position.
+ * Return value: The passed iterator, updated to point at the next
+ *   row in the model.
  *
- * Since 0.6
+ * Since: 0.6
  */
 ClutterModelIter *
 clutter_model_iter_next (ClutterModelIter *iter)
@@ -1908,11 +1926,14 @@ clutter_model_iter_next (ClutterModelIter *iter)
  * clutter_model_iter_prev:
  * @iter: a #ClutterModelIter
  * 
- * Sets the @iter to point at the previous position in the model after @iter.
+ * Sets the @iter to point at the previous position in the model.
+ * The model implementation should take into account the presence of
+ * a filter function.
  *
- * Return value: @iter, pointing at the previous position.
+ * Return value: The passed iterator, updated to point at the previous
+ *   row in the model.
  *
- * Since 0.6
+ * Since: 0.6
  */
 ClutterModelIter *
 clutter_model_iter_prev (ClutterModelIter *iter)
@@ -1932,11 +1953,11 @@ clutter_model_iter_prev (ClutterModelIter *iter)
  * clutter_model_iter_get_model:
  * @iter: a #ClutterModelIter
  * 
- * Returns a pointer to the #ClutterModel that this iter is part of.
+ * Retrieves a pointer to the #ClutterModel that this iter is part of.
  *
  * Return value: a pointer to a #ClutterModel.
  *
- * Since 0.6
+ * Since: 0.6
  */
 ClutterModel *
 clutter_model_iter_get_model (ClutterModelIter *iter)
@@ -1956,11 +1977,11 @@ clutter_model_iter_get_model (ClutterModelIter *iter)
  * clutter_model_iter_get_row:
  * @iter: a #ClutterModelIter
  * 
- * Returns the position of the row that the @iter points to.
+ * Retrieves the position of the row that the @iter points to.
  *
- * Return value: the position of the @iter in the model.
+ * Return value: the position of the @iter in the model
  *
- * Since 0.6
+ * Since: 0.6
  */
 guint
 clutter_model_iter_get_row (ClutterModelIter *iter)

@@ -344,9 +344,6 @@ void              clutter_model_iter_set_value  (ClutterModelIter *iter,
 
 gboolean          clutter_model_iter_is_first   (ClutterModelIter *iter);
 gboolean          clutter_model_iter_is_last    (ClutterModelIter *iter);
-gboolean          clutter_model_iter_has_next   (ClutterModelIter *iter);
-gboolean          clutter_model_iter_has_prev   (ClutterModelIter *iter);
-
 ClutterModelIter *clutter_model_iter_next       (ClutterModelIter *iter);
 ClutterModelIter *clutter_model_iter_prev       (ClutterModelIter *iter);
 

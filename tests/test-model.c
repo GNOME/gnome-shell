@@ -82,7 +82,7 @@ filter_model (ClutterModel *model)
 {
   ClutterModelIter *iter;
 
-  g_print ("* Filter function: even rows\n");
+  g_print ("\n* Filter function: even rows\n");
   clutter_model_set_filter (model, filter_func, NULL, NULL);
 
   iter = clutter_model_get_first_iter (model);
@@ -94,7 +94,7 @@ filter_model (ClutterModel *model)
     }
   g_object_unref (iter);
 
-  g_print ("* Sorting function: reverse alpha\n");
+  g_print ("\n* Sorting function: reverse alpha\n");
   clutter_model_set_sort (model, COLUMN_BAR, sort_func, NULL, NULL);
 
   g_signal_connect (model, "row-changed", G_CALLBACK (on_row_changed), NULL);
@@ -107,7 +107,7 @@ filter_model (ClutterModel *model)
 
   clutter_model_foreach (model, foreach_func, NULL);
 
-  g_print ("* Unset filter\n");
+  g_print ("\n* Unset filter\n");
   clutter_model_set_filter (model, NULL, NULL, NULL);
 
   while (clutter_model_get_n_rows (model))
@@ -195,14 +195,14 @@ on_row_removed (ClutterModel     *model,
 static void
 on_sort_changed (ClutterModel *model)
 {
-  g_print ("\n*** Sort Changed   ***\n\n");
+  g_print ("*** Sort Changed   ***\n\n");
   clutter_model_foreach (model, foreach_func, NULL);
 }
 
 static void
 on_filter_changed (ClutterModel *model)
 {
-  g_print ("\n*** Filter Changed ***\n\n");
+  g_print ("*** Filter Changed ***\n\n");
 }
  
 int
