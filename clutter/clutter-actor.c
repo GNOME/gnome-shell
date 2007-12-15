@@ -501,7 +501,7 @@ clutter_actor_should_pick_paint (ClutterActor *self)
  *
  * Matrix: 4x4 of ClutterFixed
  */
-#define M(m,row,col)  (m)[col*4+row]
+#define M(m,row,col)  (m)[(col) * 4 + (row)]
 
 /* Transform point (x,y,z) by matrix */
 static void
@@ -532,6 +532,8 @@ mtx_transform (ClutterFixed m[16],
      * think of anything at all to say ;)
      */
 }
+
+#undef M
 
 /* Applies the transforms associated with this actor and its ancestors,
  * retrieves the resulting OpenGL modelview matrix, and uses the matrix
@@ -4738,6 +4740,17 @@ destroy_shader_data (ClutterActor *self)
   actor_priv->shader_data = NULL;
 }
 
+/**
+ * clutter_actor_apply_shader:
+ * @self: a #ClutterActor
+ * @shader: a #ClutterShader or %NULL
+ *
+ * Sets the #ClutterShader to be applied on @self.
+ *
+ * Return value: %TRUE if the shader was successfully applied
+ *
+ * Since: 0.6
+ */
 gboolean
 clutter_actor_apply_shader (ClutterActor  *self,
                             ClutterShader *shader)
@@ -4850,8 +4863,19 @@ clutter_actor_shader_post_paint (ClutterActor *actor)
     }
 }
 
+/**
+ * clutter_actor_set_shader_param:
+ * @self: a #ClutterActor
+ * @param: the name of the parameter
+ * @value: the value of the parameter
+ *
+ * Sets the value for a named parameter of the shader applied
+ * to @actor.
+ *
+ * Since: 0.6
+ */
 void
-clutter_actor_set_shader_param (ClutterActor *actor,
+clutter_actor_set_shader_param (ClutterActor *self,
                                 const gchar  *param,
                                 gfloat        value)
 {
@@ -4859,10 +4883,10 @@ clutter_actor_set_shader_param (ClutterActor *actor,
   ShaderData *shader_data;
   BoxedFloat *box;
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (param != NULL);
 
-  priv = actor->priv;
+  priv = self->priv;
   shader_data = priv->shader_data;
 
   if (!shader_data)
@@ -4872,5 +4896,3 @@ clutter_actor_set_shader_param (ClutterActor *actor,
   box->value = value;
   g_hash_table_insert (shader_data->float1f_hash, g_strdup (param), box);
 }
-
-#undef M

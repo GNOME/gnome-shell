@@ -269,11 +269,13 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /* Some handy fixed point short aliases to avoid exessively long lines */
 /* FIXME: Remove from public API */
+/*< private >*/
 #define CFX_INT         CLUTTER_FIXED_INT
 #define CFX_MUL         CLUTTER_FIXED_MUL
 #define CFX_DIV         CLUTTER_FIXED_DIV
 #define CFX_QMUL(x,y)   clutter_qmulx (x,y)
 
+/*< public >*/
 /* Fixed point math routines */
 extern inline
 ClutterFixed clutter_qmulx (ClutterFixed op1, ClutterFixed op2);

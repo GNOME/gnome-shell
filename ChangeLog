@@ -1,3 +1,13 @@
+2007-12-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-event.h:
+	* clutter/clutter-fixed.[ch]:
+	* clutter/clutter-model.h:
+	* clutter/clutter-shader.[ch]:
+	* clutter/clutter-stage.c: Documentation fixes.
+
 2007-12-15  Emmanuele Bassi <ebassi@openedhand.com>
 
 	* clutter/clutter-model-default.c:

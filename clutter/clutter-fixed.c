@@ -706,14 +706,14 @@ clutter_sqrti (gint number)
  * @op1: #ClutterFixed
  * @op2: #ClutterFixed
  *
- * Return value: #ClutterFixed.
- *
  * Multiplies two fixed values using 64bit arithmetic; this provides
  * significantly better precission than the #CLUTTER_FIXED_MUL macro,
  * but at performance cost (about 2.7 times slowdown on ARMv5e, and 2 times
  * on x86).
  *
- * Since: 0.3
+ * Return value: the result of the operation
+ *
+ * Since: 0.4
  */
 ClutterFixed
 clutter_qmulx (ClutterFixed op1, ClutterFixed op2)

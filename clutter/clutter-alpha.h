@@ -77,6 +77,15 @@ typedef struct _ClutterAlphaPrivate ClutterAlphaPrivate;
 typedef guint32 (*ClutterAlphaFunc) (ClutterAlpha *alpha,
                                      gpointer      user_data); 
 
+/**
+ * ClutterAlpha:
+ *
+ * #ClutterAlpha combines a #ClutterTimeline and a function.
+ * The contents of the #ClutterAlpha structure are private and should
+ * only be accessed using the provided API.
+ *
+ * Since: 0.2
+ */
 struct _ClutterAlpha
 {
   /*< private >*/
@@ -84,8 +93,16 @@ struct _ClutterAlpha
   ClutterAlphaPrivate *priv;
 };
 
+/**
+ * ClutterAlphaClass:
+ *
+ * Base class for #ClutterAlpha
+ *
+ * Since: 0.2
+ */
 struct _ClutterAlphaClass
 {
+  /*< private >*/
   GInitiallyUnownedClass parent_class;
   
   void (*_clutter_alpha_1) (void);

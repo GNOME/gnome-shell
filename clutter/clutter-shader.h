@@ -41,6 +41,16 @@ G_BEGIN_DECLS
 
 #define CLUTTER_SHADER_ERROR        (clutter_shader_error_quark ())
 
+/**
+ * ClutterShaderError:
+ * @CLUTTER_SHADER_ERROR_NO_ASM: No ASM shaders support
+ * @CLUTTER_SHADER_ERROR_NO_GLSL: No GLSL shaders support
+ * @CLUTTER_SHADER_ERROR_COMPILE: Compilation error
+ *
+ * #ClutterShader error enumeration
+ *
+ * Since: 0.6
+ */
 typedef enum {
   CLUTTER_SHADER_ERROR_NO_ASM,
   CLUTTER_SHADER_ERROR_NO_GLSL,

@@ -24,6 +24,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-shader
+ * @short_description: Programmable pipeline abstraction
+ *
+ * #ClutterShader is an object providing an abstraction over the
+ * OpenGL programmable pipeline. By using #ClutterShader<!-- -->s is
+ * possible to override the drawing pipeline by using small programs
+ * also known as "shaders".
+ *
+ * #ClutterShader is available since Clutter 0.6
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -438,6 +450,7 @@ bind_glsl_shader (ClutterShader  *self,
 /**
  * clutter_shader_bind:
  * @shader: a #ClutterShader
+ * @error: return location for a #GError, or %NULL
  *
  * FIXME
  *

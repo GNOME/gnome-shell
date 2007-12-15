@@ -184,6 +184,17 @@ typedef struct _ClutterCrossingEvent    ClutterCrossingEvent;
 
 typedef struct _ClutterInputDevice      ClutterInputDevice;
 
+/**
+ * ClutterAnyEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @source: event source actor
+ *
+ * Common members for a #ClutterEvent
+ *
+ * Since: 0.2
+ */
 struct _ClutterAnyEvent
 {
   ClutterEventType  type;
@@ -192,6 +203,20 @@ struct _ClutterAnyEvent
   ClutterActor *source;
 };
 
+/**
+ * ClutterKeyEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @source: event source actor
+ * @modifier_state: key modifiers
+ * @keyval: raw key value
+ * @hardware_keycode: raw hardware key value
+ *
+ * Key event
+ *
+ * Since: 0.2
+ */
 struct _ClutterKeyEvent
 {
   ClutterEventType type;
@@ -203,6 +228,25 @@ struct _ClutterKeyEvent
   guint16 hardware_keycode;
 };
 
+/**
+ * ClutterButtonEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @source: event source actor
+ * @x: event X coordinate
+ * @y: event Y coordinate
+ * @modifier_state: button modifiers
+ * @button: event button
+ * @click_count: number of button presses within the default time
+ *   and radius
+ * @axes: reserved for future use
+ * @device: reserved for future use
+ *
+ * Button event
+ *
+ * Since: 0.2
+ */
 struct _ClutterButtonEvent
 {
   ClutterEventType type;

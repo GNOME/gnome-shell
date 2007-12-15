@@ -285,6 +285,10 @@ struct _ClutterModelIter
  *   at the last row in the model
  * @is_first: Virtual function for knowing whether the iterator points
  *   at the first row in the model
+ * @next: Virtual function for moving the iterator to the following
+ *   row in the model
+ * @prev: Virtual function for moving the iterator toe the previous
+ *   row in the model
  * @get_model: Virtual function for getting the model to which the
  *   iterator belongs to
  * @get_row: Virtual function for getting the row to which the iterator

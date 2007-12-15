@@ -1,5 +1,10 @@
 2007-12-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-sections.txt: Move the shorthand fixed point macros
+	in the private section
+
+2007-12-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-sections.txt: Added all the unused symbols.
 
 2007-12-14  Emmanuele Bassi  <ebassi@openedhand.com>
