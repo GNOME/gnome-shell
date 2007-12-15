@@ -1,3 +1,7 @@
+2007-12-14  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * configure.in: Post-release bump to 2.21.5.
+
 2007-12-14  Thomas Thurman  <tthurman@gnome.org>
 
         * NEWS: 2.21.3 release.
