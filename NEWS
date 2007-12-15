@@ -1,3 +1,23 @@
+2.21.3
+======
+
+Thanks to Matthias Clasen, Martin Meyer, Kjartan Maraas, Thomas Thurman,
+and Lucas Rocha for improvements in this version.
+
+  - remove dead code (pointed out by Kjartan) (501365)
+  - rewrote long key binding description for the sake of
+    the translators (Thomas) (474889)
+  - check for null before adding menu (Matthias) (496054)
+  - let keys which end a grab also begin a grab (Thomas) (112560)
+  - check the right variable in theme sanity check (Martin) (501362)
+  - get session ID from environment if it's not passed in on the command
+    line (Lucas) (498033)
+
+Translations
+  Ihar Hrachyshka (be@latin), Petr Kovar (cs), Jorge González (es),
+  Ignacio Casal Quinteiro (gl), Rodrigo Flores (pt_BR), Pavol Šimo (sk),
+  Matej Urbančič (sl)
+
 2.21.2
 ======
 

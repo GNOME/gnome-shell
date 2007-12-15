@@ -1,3 +1,7 @@
+2007-12-14  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.21.3 release.
+
 2007-12-11  Thomas Thurman  <tthurman@gnome.org>
 
         * src/theme-parser.c: remove dead code; closes #501365.
