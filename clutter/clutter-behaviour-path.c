@@ -35,9 +35,13 @@
  * cleared using clutter_behaviour_path_clear().  Each time the behaviour
  * reaches a knot in the path, the "knot-reached" signal is emitted.
  *
- * Since: 0.2
+ * This first knot in the path is reached with the lower bound value
+ * provided by the #ClutterAlpha objectused by the behaviour; the last
+ * knot in the path is reached with the upper bound value provided by
+ * the #ClutterAlpha object used by the behaviour.
+ *
+ * #ClutterBehaviourPath is available since Clutter 0.2
  */
-
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"

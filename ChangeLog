@@ -1,5 +1,11 @@
 2007-12-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-path.c: Clarify the equivalence
+	between the upper and lower bounds of the ClutterAlpha and
+	the position in the path. (#634)
+
+2007-12-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-texture.c: Mention the fact that a ClutterTexture
 	will scale its contents to fit inside the requested bounding
 	box. (#661)
