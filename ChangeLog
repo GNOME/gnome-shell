@@ -1,5 +1,11 @@
 2007-12-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-texture.c: Mention the fact that a ClutterTexture
+	will scale its contents to fit inside the requested bounding
+	box. (#661)
+
+2007-12-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Fix documentation for
 	the ::captured-event signal. (#673)
 

@@ -39,6 +39,11 @@
  * system memory. Re-realizing then performs the opposite operation.
  * This process allows basic management of commonly limited available texture
  * memory.
+ *
+ * Note: a ClutterTexture will scale its contents to fit the bounding box
+ * requested using clutter_actor_request_coords() and its wrappers. To
+ * display an area of a texture without scaling, you should set the clip
+ * area using clutter_actor_set_clip().
  */
 
 #ifdef HAVE_CONFIG_H
