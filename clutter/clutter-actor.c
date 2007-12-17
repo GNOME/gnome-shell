@@ -453,7 +453,7 @@ clutter_actor_real_pick (ClutterActor       *self,
  * This function should not never be called directly by applications.
  *
  * Subclasses overiding this method should call
- * #clutter_actor_should_pick_paint to decide if to render there
+ * clutter_actor_should_pick_paint() to decide if to render there
  * silhouette but in any case should still recursively call pick for
  * any children.
  *
@@ -477,7 +477,8 @@ clutter_actor_pick (ClutterActor       *self,
  *
  * This function should not never be called directly by applications.
  *
- * Return value: TRUE if the actor should paint its silhouette, FALSE otherwise
+ * Return value: %TRUE if the actor should paint its silhouette,
+ *   %FALSE otherwise
  */
 gboolean
 clutter_actor_should_pick_paint (ClutterActor *self)
@@ -488,9 +489,9 @@ clutter_actor_should_pick_paint (ClutterActor *self)
 
   context = clutter_context_get_default ();
 
-  if (CLUTTER_ACTOR_IS_MAPPED (self)
-      && (G_UNLIKELY(context->pick_mode == CLUTTER_PICK_ALL)
-	  || CLUTTER_ACTOR_IS_REACTIVE (self)))
+  if (CLUTTER_ACTOR_IS_MAPPED (self) &&
+      (G_UNLIKELY (context->pick_mode == CLUTTER_PICK_ALL) ||
+       CLUTTER_ACTOR_IS_REACTIVE (self)))
     return TRUE;
 
   return FALSE;
@@ -566,15 +567,9 @@ clutter_actor_transform_point (ClutterActor *actor,
 /* Help macros to scale from OpenGL <-1,1> coordinates system to our
  * X-window based <0,window-size> coordinates
  */
-#define MTX_GL_SCALE_X(x,w,v1,v2) (CFX_MUL( \
-                                      ((CFX_DIV (x,w) + CFX_ONE) >> 1), v1) \
-				         + v2)
-
-#define MTX_GL_SCALE_Y(y,w,v1,v2) (v1 - CFX_MUL( \
-                                      ((CFX_DIV (y,w) + CFX_ONE) >> 1), v1) \
-				         + v2)
-
-#define MTX_GL_SCALE_Z(z,w,v1,v2) MTX_GL_SCALE_X(z,w,v1,v2)
+#define MTX_GL_SCALE_X(x,w,v1,v2) (CFX_MUL (((CFX_DIV ((x), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - CFX_MUL (((CFX_DIV ((y), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
+#define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
 
 /**
  * clutter_actor_apply_transform_to_point:
@@ -609,9 +604,9 @@ clutter_actor_apply_transform_to_point (ClutterActor  *self,
   mtx_transform (mtx_p, &point->x, &point->y, &point->z, &w);
 
   /* Finaly translate from OpenGL coords to window coords */
-  vertex->x = MTX_GL_SCALE_X(point->x,w,v[2],v[0]);
-  vertex->y = MTX_GL_SCALE_Y(point->y,w,v[3],v[1]);
-  vertex->z = MTX_GL_SCALE_Z(point->z,w,v[2],v[0]);
+  vertex->x = MTX_GL_SCALE_X (point->x, w, v[2], v[0]);
+  vertex->y = MTX_GL_SCALE_Y (point->y, w, v[3], v[1]);
+  vertex->z = MTX_GL_SCALE_Z (point->z, w, v[2], v[0]);
 }
 
 /* Recursively tranform supplied vertices with the tranform for the current
@@ -3231,12 +3226,16 @@ clutter_actor_set_rotationx (ClutterActor      *self,
  *
  * Sets the rotation angle of @self around the given axis.
  *
- * The rotation center coordinates depend on the value of @axis:
+ * The rotation center coordinates used depend on the value of @axis:
  * <itemizedlist>
  *   <listitem><para>%CLUTTER_X_AXIS requires @y and @z</para></listitem>
  *   <listitem><para>%CLUTTER_Y_AXIS requires @x and @z</para></listitem>
  *   <listitem><para>%CLUTTER_Z_AXIS requires @x and @y</para></listitem>
  * </itemizedlist>
+ *
+ * The rotation coordinates are relative to the anchor point of the
+ * actor, set using clutter_actor_set_anchor_point(). If no anchor
+ * point is set, the upper left corner is assumed as the origin.
  *
  * Since: 0.6
  */
@@ -3327,7 +3326,8 @@ clutter_actor_get_rotationx (ClutterActor      *self,
  * Retrieves the angle and center of rotation on the given axis,
  * set using clutter_actor_set_angle().
  *
- * The coordinates of the center depend on the axis used.
+ * The coordinates of the center returned by this function depend on
+ * the axis passed.
  *
  * Return value: the angle of rotation.
  *

@@ -1,3 +1,13 @@
+2007-12-17  Emmanuele Bassi <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_should_pick_paint),
+	(clutter_actor_apply_transform_to_point): Fix the whitespace.
+
+	(clutter_actor_set_rotation): Clarify that the coordinates of
+	the centre of rotation are relative to the anchor point or,
+	if not set, to the upper left corner of the bounding box.
+
 2007-12-17  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:
