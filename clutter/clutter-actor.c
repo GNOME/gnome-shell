@@ -3336,7 +3336,9 @@ clutter_actor_get_rotation (ClutterActor      *self,
  * @width: Width of the clip rectangle
  * @height: Height of the clip rectangle
  *
- * Sets clip area in pixels for @self.
+ * Sets clip area in pixels for @self. The clip area is always computed
+ * from the upper left corner of the actor, even if the anchor point is
+ * set otherwise.
  */
 void
 clutter_actor_set_clip (ClutterActor *self,
