@@ -1,3 +1,9 @@
+2007-12-17  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter-behaviour-rotate.c:
+	Clamping of start and end angles to <0, 360).
+
 2007-12-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-path.c: Clarify the equivalence
@@ -53,7 +59,7 @@
 	ClutterModel vtable, to allow subclasses and language bindings to
 	override the entire ClutterModel using other/native data types
 	to store the rows.
-	
+
 	* clutter/clutter-model-default.[ch]: ClutterModelDefault is a
 	default implementation of ClutterModel and ClutterModelIter using
 	GSequence.
@@ -110,7 +116,7 @@
 	(clutter_model_insert_value): Add a _value() variant for the
 	insertion methods, for use of the language bindings.
 
-	(clutter_model_append), 
+	(clutter_model_append),
 	(clutter_model_prepend),
 	(clutter_model_insert): Do not return a boolean: insertion should
 	never fail unless for a programming error, in which case we have
@@ -148,7 +154,7 @@
 	(clutter_geometry_get_type),(clutter_vertex_get_type),
 	(clutter_actor_box_get_type): Use the I_() macro instead of
 	directly calling g_intern_static_string().
-	
+
 	* clutter/clutter-entry.c (clutter_entry_request_coords):
 	* clutter/clutter-label.c (clutter_label_ensure_layout),
 	(clutter_label_request_coords): Use CLUTTER_UNITS_FROM_DEVICE()

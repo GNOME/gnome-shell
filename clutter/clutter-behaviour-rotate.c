@@ -83,7 +83,7 @@ enum
   PROP_CENTER_Z
 };
 
-static void 
+static void
 alpha_notify_foreach (ClutterBehaviour *behaviour,
 		      ClutterActor     *actor,
 		      gpointer          data)
@@ -102,11 +102,24 @@ alpha_notify_foreach (ClutterBehaviour *behaviour,
                                priv->center_z);
 }
 
+static inline
+ClutterFixed clamp_angle (ClutterFixed a)
+{
+  ClutterFixed a1, a2;
+  gint rounds;
+
+  rounds = a / CFX_360;
+  a1 = rounds * CFX_360;
+  a2 = a - a1;
+
+  return a2;
+}
+
 static void
 clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
                                        guint32           alpha_value)
 {
-  ClutterFixed factor, angle, diff;
+  ClutterFixed factor, angle, start, end;
   ClutterBehaviourRotate *rotate_behaviour;
   ClutterBehaviourRotatePrivate *priv;
 
@@ -115,74 +128,20 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
 
   factor = CLUTTER_INT_TO_FIXED (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
   angle = 0;
-  
-  switch (priv->direction)
+
+  start = priv->angle_start;
+  end   = priv->angle_end;
+
+  if (priv->direction == CLUTTER_ROTATE_CW && start >= end)
     {
-    case CLUTTER_ROTATE_CW:
-      if (priv->angle_end >= priv->angle_start)
-	{
-	  angle = CLUTTER_FIXED_MUL (factor, 
-				     (priv->angle_end - priv->angle_start));
-	  angle += priv->angle_start;
-	}
-      else
-	{
-	  /* Work out the angular length of the arch represented by the
-	   * end angle in CCW direction
-	   */
-	  if (priv->angle_start >= CLUTTER_INT_TO_FIXED (360))
-	    {
-	      ClutterFixed rounds, a1, a2;
-
-	      rounds = priv->angle_start / 360;
-	      a1 = rounds * 360;
-	      a2 = - (priv->angle_start - a1);
-
-	      diff = a1 + a2 + priv->angle_end;
-	    }
-	  else
-	    {
-	      diff = CLUTTER_INT_TO_FIXED (360) 
-		     - priv->angle_start
-                     + priv->angle_end;
-	    }
-      
-	  angle = CLUTTER_FIXED_MUL (diff, factor);
-	  angle += priv->angle_start;
-	}
-      break;
-    case CLUTTER_ROTATE_CCW:
-      if (priv->angle_end <= priv->angle_start)
-	{
-	  angle = CLUTTER_FIXED_MUL (factor, 
-				     (priv->angle_start - priv->angle_end));
-	  angle = priv->angle_start - angle;
-	}
-      else
-	{
-	  /* Work out the angular length of the arch represented by the
-	   * end angle in CCW direction
-	   */
-	  if (priv->angle_end >= CLUTTER_INT_TO_FIXED (360))
-	    {
-	      ClutterFixed rounds, a1, a2;
-
-	      rounds = priv->angle_end / 360;
-	      a1 = rounds * 360;
-	      a2 = - (priv->angle_end - a1);
-
-	      diff = a1 + a2 + priv->angle_start;
-	    }
-	  else
-	    {
-	      diff = CLUTTER_INT_TO_FIXED (360) 
-		     - priv->angle_end
-                     + priv->angle_start;
-	    }
-	  angle = priv->angle_start - CLUTTER_FIXED_MUL (diff, factor);
-	}
-      break;
+      end += CFX_360;
     }
+  else if (priv->direction == CLUTTER_ROTATE_CCW && start <= end)
+    {
+      end -= CFX_360;
+    }
+
+  angle = CFX_MUL ((end - start), factor)  + start;
 
   clutter_behaviour_actors_foreach (behaviour,
 				    alpha_notify_foreach,
@@ -302,14 +261,14 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                                                         "Angle Begin",
                                                         "Initial angle",
                                                         0.0,
-                                                        CLUTTER_ANGLE_MAX_DEG,
+                                                        360.0,
                                                         0.0,
                                                         CLUTTER_PARAM_READWRITE));
   /**
    * ClutterBehaviourRotate:angle-end:
    *
    * The final angle to where the rotation should end.
-   * 
+   *
    * Since: 0.4
    */
   g_object_class_install_property (gobject_class,
@@ -318,8 +277,8 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                                                         "Angle End",
                                                         "Final angle",
                                                         0.0,
-                                                        CLUTTER_ANGLE_MAX_DEG,
                                                         360.0,
+                                                        0.0,
                                                         CLUTTER_PARAM_READWRITE));
   /**
    * ClutterBehaviourRotate:axis:
@@ -354,7 +313,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
   /**
    * ClutterBehaviourRotate:center-x:
    *
-   * The x center of rotation. 
+   * The x center of rotation.
    *
    * Since: 0.4
    */
@@ -370,7 +329,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
   /**
    * ClutterBehaviourRotate:center-y:
    *
-   * The y center of rotation. 
+   * The y center of rotation.
    *
    * Since: 0.4
    */
@@ -385,7 +344,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
   /**
    * ClutterBehaviourRotate:center-z:
    *
-   * The z center of rotation. 
+   * The z center of rotation.
    *
    * Since: 0.4
    */
@@ -409,7 +368,7 @@ clutter_behaviour_rotate_init (ClutterBehaviourRotate *rotate)
   rotate->priv = priv = CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE (rotate);
 
   priv->angle_start = CLUTTER_FLOAT_TO_FIXED (0.0);
-  priv->angle_end = CLUTTER_FLOAT_TO_FIXED (360.0);
+  priv->angle_end = CLUTTER_FLOAT_TO_FIXED (0.0);
   priv->axis = CLUTTER_Z_AXIS;
   priv->direction = CLUTTER_ROTATE_CW;
   priv->center_x = priv->center_y = priv->center_z = 0;
@@ -420,12 +379,14 @@ clutter_behaviour_rotate_init (ClutterBehaviourRotate *rotate)
  * @alpha: a #ClutterAlpha, or %NULL
  * @axis: the rotation axis
  * @direction: the rotation direction
- * @angle_start: the starting angle
- * @angle_end: the final angle
+ * @angle_start: the starting angle in degrees, between 0 and 360.
+ * @angle_end: the final angle in degrees, between 0 and 360.
  *
  * Creates a new #ClutterBehaviourRotate. This behaviour will rotate actors
  * bound to it on @axis, following @direction, between @angle_start and
- * @angle_end.
+ * @angle_end. Angles >= 360 degrees will be clamped to the canonical interval
+ * <0, 360), if angle_start == angle_end, the behaviour will carry out a
+ * single rotation of 360 degrees.
  *
  * Return value: the newly created #ClutterBehaviourRotate.
  *
@@ -454,8 +415,10 @@ clutter_behaviour_rotate_new (ClutterAlpha           *alpha,
  * @alpha: a #ClutterAlpha or %NULL
  * @axis: the rotation axis
  * @direction: the rotation direction
- * @angle_start: the starting angle, in fixed point notation
- * @angle_end: the final angle, in fixed point notation
+ * @angle_start: the starting angle, in fixed point notation in degrees,
+ * between 0 and 360.
+ * @angle_end: the final angle, in fixed point notation in degrees, between 0
+ * and 360.
  *
  * Creates a new #ClutterBehaviourRotate. This is the fixed point version
  * of clutter_behaviour_rotate_new().
@@ -486,8 +449,8 @@ clutter_behaviour_rotate_newx (ClutterAlpha           *alpha,
    * and then back again to fixed.
    */
   priv = CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE (retval);
-  priv->angle_start = angle_start;
-  priv->angle_end = angle_end;
+  priv->angle_start = clamp_angle (angle_start);
+  priv->angle_end   = clamp_angle (angle_end);
 
   return retval;
 }
@@ -614,10 +577,11 @@ clutter_behaviour_rotate_get_bounds (ClutterBehaviourRotate *rotate,
 /**
  * clutter_behaviour_rotate_set_bounds:
  * @rotate: a #ClutterBehaviourRotate
- * @angle_start: initial angle
- * @angle_end: final angle
+ * @angle_start: initial angle in degrees, between 0 and 360.
+ * @angle_end: final angle in degrees, between 0 and 360.
  *
- * Sets the initial and final angles of a rotation behaviour.
+ * Sets the initial and final angles of a rotation behaviour; angles >= 360
+ * degrees get clamped to the canonical interval <0, 360).
  *
  * Since: 0.4
  */
@@ -650,9 +614,9 @@ clutter_behaviour_rotate_get_boundsx (ClutterBehaviourRotate *rotate,
                                       ClutterFixed           *angle_end)
 {
   ClutterBehaviourRotatePrivate *priv;
-  
+
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ROTATE (rotate));
-  
+
   priv = rotate->priv;
 
   if (angle_start);
@@ -665,8 +629,10 @@ clutter_behaviour_rotate_get_boundsx (ClutterBehaviourRotate *rotate,
 /**
  * clutter_behaviour_rotate_set_boundsx:
  * @rotate: a #ClutterBehaviourRotate
- * @angle_start: initial angle, in fixed point notation
- * @angle_end: final angle, in fixed point notation
+ * @angle_start: initial angle, in fixed point notation in degrees, between 0
+ * and 360.
+ * @angle_end: final angle, in fixed point notation in degress, between 0 and
+ * 360.
  *
  * Fixed point version of clutter_behaviour_rotate_set_bounds().
  *
@@ -678,7 +644,7 @@ clutter_behaviour_rotate_set_boundsx (ClutterBehaviourRotate *rotate,
                                       ClutterFixed            angle_end)
 {
   ClutterBehaviourRotatePrivate *priv;
-  
+
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ROTATE (rotate));
 
   priv = rotate->priv;
@@ -688,14 +654,14 @@ clutter_behaviour_rotate_set_boundsx (ClutterBehaviourRotate *rotate,
 
   if (priv->angle_start != angle_start)
     {
-      priv->angle_start = angle_start;
+      priv->angle_start = clamp_angle (angle_start);
 
       g_object_notify (G_OBJECT (rotate), "angle-start");
     }
 
   if (priv->angle_end != angle_end)
     {
-      priv->angle_end = angle_end;
+      priv->angle_end = clamp_angle (angle_end);
 
       g_object_notify (G_OBJECT (rotate), "angle-end");
     }
