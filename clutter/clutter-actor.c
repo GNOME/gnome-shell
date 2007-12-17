@@ -44,8 +44,8 @@
  *   <listitem><para>Rotation around y axis,</para></listitem>
  *   <listitem><para>Rotation around x axis,</para></listitem>
  *   <listitem><para>Translation by actor depth (z),</para></listitem>
- *   <listitem><para>Clip stencil is applied (not an operation on the matrix as
- *   such, but done as part of the transform set up).</para>
+ *   <listitem><para>Clip stencil is applied (not an operation on the matrix
+ *   as such, but done as part of the transform set up).</para>
  *   </listitem>
  * </orderedlist>
  *
@@ -72,8 +72,8 @@
  *   phase, traversing back up the chain via parents until it reaches the
  *   stage. Any event handler can abort this chain by returning
  *   %TRUE (meaning "event handled").</para></listitem>
- *   <listitem><para>Pointer events will 'pass through' non reactive actors.
- *   </para></listitem>
+ *   <listitem><para>Pointer events will 'pass through' non reactive
+ *   overlapping actors.</para></listitem>
  * </orderedlist>
  */
 
@@ -1685,7 +1685,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * @event: a #ClutterEvent
    *
    * The ::event signal is emitted each time and event is received
-   * by the @actor.
+   * by the @actor. This signal will be emitted on every actor,
+   * following the hierarchy chain, until it reaches the top-level
+   * container (the #ClutterStage).
    *
    * Return value: %TRUE if the event has been handled by the actor,
    *   or %FALSE to continue the emission.
@@ -1871,8 +1873,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor::enter-event:
    * @actor: the actor which the pointer has entered.
+   * @event: a #ClutterCrossingEvent
    *
    * The ::enter-event signal is emitted when the pointer enters the @actor
+   *
+   * Return value: %TRUE if the event has been handled by the actor,
+   *   or %FALSE to continue the emission.
    *
    * Since: 0.6
    */
@@ -1889,8 +1895,12 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor::leave-event:
    * @actor: the actor which the pointer has left
+   * @event: a #ClutterCrossingEvent
    *
    * The ::leave-event signal is emitted when the pointer leaves the @actor.
+   *
+   * Return value: %TRUE if the event has been handled by the actor,
+   *   or %FALSE to continue the emission.
    *
    * Since: 0.6
    */
@@ -1906,10 +1916,19 @@ clutter_actor_class_init (ClutterActorClass *klass)
 
   /**
    * ClutterActor::captured-event:
-   * @actor: the actor which the pointer has left
+   * @actor: the actor which received the signal
+   * @event: a #ClutterEvent
    *
    * The ::captured-event signal is emitted when an event is captured
-   * by Clutter.
+   * by Clutter. This signal will be emitted starting from the top-level
+   * container (the #ClutterStage) to the actor which received the event
+   * going down the hierarchy. This signal can be used to intercept every
+   * event before the specialized events (like
+   * ClutterActor::button-press-event or ::key-released-event) are
+   * emitted.
+   *
+   * Return value: %TRUE if the event has been handled by the actor,
+   *   or %FALSE to continue the emission.
    *
    * Since: 0.6
    */

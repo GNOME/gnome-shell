@@ -1,5 +1,10 @@
 2007-12-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c: Fix documentation for
+	the ::captured-event signal. (#673)
+
+2007-12-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Clarify the set_clip() method
 	documentation, pointing out that the clip area origin is
 	always the top-left corner of an actor.
