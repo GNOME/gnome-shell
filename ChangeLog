@@ -1,3 +1,14 @@
+2007-12-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-main.c:
+	(unset_motion_last_actor),
+	(generate_enter_leave_events): Attach a callback to the destroy
+	signal on the last motion actor, so if it goes away while the
+	pointer is in the middle of it we can unset the pointer.
+
+	* clutter/clutter-private.h: Store the last motion actor inside
+	the global context.
+
 2007-12-17  Emmanuele Bassi <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c:

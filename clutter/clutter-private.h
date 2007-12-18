@@ -94,6 +94,8 @@ struct _ClutterMainContext
                                           (or NULL if there is no pointer grab) 
                                         */
   GSList          *shaders;            /* stack of overridden shaders */
+
+  ClutterActor    *motion_last_actor;
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())

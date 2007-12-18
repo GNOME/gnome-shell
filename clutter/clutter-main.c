@@ -1256,16 +1256,23 @@ emit_keyboard_event (ClutterEvent *event)
     emit_event (event, TRUE);
 }
 
+static void
+unset_motion_last_actor (ClutterActor *actor)
+{
+  ClutterMainContext *context = ClutterCntx;
+
+  context->motion_last_actor = NULL;
+}
+
 static inline void
 generate_enter_leave_events (ClutterEvent *event)
 {
-  ClutterMainContext  *context              = ClutterCntx;
-  static ClutterActor *motion_last_actor    = NULL; 
-  ClutterActor        *motion_current_actor = event->motion.source;
+  ClutterMainContext *context              = ClutterCntx;
+  ClutterActor       *motion_current_actor = event->motion.source;
 
-  if (motion_last_actor != motion_current_actor)
+  if (context->motion_last_actor != motion_current_actor)
     {
-      if (motion_last_actor && motion_current_actor)
+      if (context->motion_last_actor && motion_current_actor)
         {
           ClutterEvent cev;
 
@@ -1274,7 +1281,7 @@ generate_enter_leave_events (ClutterEvent *event)
           cev.crossing.flags   = 0; 
           cev.crossing.x       = event->motion.x;
           cev.crossing.y       = event->motion.y;
-          cev.crossing.source  = motion_last_actor;
+          cev.crossing.source  = context->motion_last_actor;
           /* unref in free  */
           cev.crossing.related = g_object_ref (motion_current_actor);
 
@@ -1287,13 +1294,30 @@ generate_enter_leave_events (ClutterEvent *event)
           cev.crossing.x       = event->motion.x;
           cev.crossing.y       = event->motion.y;
           cev.crossing.source  = motion_current_actor;
-          cev.crossing.related = g_object_ref (motion_last_actor);
+          cev.crossing.related = g_object_ref (context->motion_last_actor);
 
           g_queue_push_head (context->events_queue, 
 			     clutter_event_copy (&cev));
         }
     }
-  motion_last_actor = motion_current_actor;
+
+  if (context->motion_last_actor &&
+      context->motion_last_actor != motion_current_actor)
+    {
+      g_signal_handlers_disconnect_by_func (context->motion_last_actor,
+                                            G_CALLBACK (unset_motion_last_actor),
+                                            NULL);
+    }
+
+  if (motion_current_actor &&
+      context->motion_last_actor != motion_current_actor)
+    {
+      g_signal_connect (motion_current_actor, "destroy",
+                        G_CALLBACK (unset_motion_last_actor),
+                        NULL);
+    }
+
+  context->motion_last_actor = motion_current_actor;
 }
 
 /** 
