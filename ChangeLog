@@ -1,3 +1,11 @@
+2007-12-18  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-main.c: (generate_enter_leave_events): synthesize
+	enter event (without related) and corresponding leave event when the
+	actor the cursor is over has been destroyed.
+	* clutter/clutter-event.c: (clutter_event_free): only unref the
+	related_actor when it actually is set.
+
 2007-12-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.c:
