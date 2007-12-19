@@ -1,3 +1,7 @@
+2007-12-19  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: print "Subversion" and not "CVS".
+
 2007-12-18  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: compositor enabled by default.
