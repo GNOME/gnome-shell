@@ -11,7 +11,7 @@ m4_define([metacity_version],
 AC_INIT([metacity], [metacity_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=metacity])
 
-AC_CONFIG_SRCDIR(src/display.c)
+AC_CONFIG_SRCDIR(src/core/display.c)
 AC_CONFIG_HEADERS(config.h)
 
 AM_INIT_AUTOMAKE

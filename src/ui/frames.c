@@ -33,7 +33,6 @@
 #include "fixedtip.h"
 #include "theme.h"
 #include "prefs.h"
-#include "errors.h"
 #include "ui.h"
 
 #ifdef HAVE_SHAPE

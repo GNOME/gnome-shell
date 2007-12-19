@@ -1,3 +1,22 @@
+2007-12-19  Havoc Pennington  <hp@redhat.com>
+
+	* src/ui, src/core, src/include: sort source files into these
+	directories according to which part of the WM they are supposed to
+	be in. In an eventual plan, we should also create
+	src/compositor/render, src/compositor/fallback and move some of
+	the compositor stuff into that.
+	
+	* autogen.sh: require a newer automake, so we don't have to use
+	a recursive build
+
+	* src/ui/tabpopup.c: put in a hack to make the build temporarily
+	work, want to commit the large rearrangement before fixing this
+	not to include workspace.h or frame.h
+
+	* src/core/iconcache.c (meta_read_icons): temporarily break this
+	to get the build to work, want to commit the large rearrangement
+	before fixing this file not to include theme.h
+
 2007-12-19  Thomas Thurman  <thomas@thurman.org.uk>
 
         * configure.in: Post-release bump to 2.21.8.

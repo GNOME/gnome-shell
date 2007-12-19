@@ -25,7 +25,6 @@
 #include "iconcache.h"
 #include "ui.h"
 #include "errors.h"
-#include "theme.h"
 
 #include <X11/Xatom.h>
 
@@ -818,6 +817,8 @@ meta_read_icons (MetaScreen     *screen,
   if (icon_cache->want_fallback &&
       icon_cache->origin < USING_FALLBACK_ICON)
     {
+#if 0
+      /* FIXME this code requires GTK and thus does not belong here in core/ */
       MetaTheme *theme = meta_theme_get_current ();
 
       if (theme->fallback_icon == NULL || theme->fallback_mini_icon == NULL)
@@ -840,6 +841,9 @@ meta_read_icons (MetaScreen     *screen,
                      *iconp, *mini_iconp);
 
       return TRUE;
+#else
+      return FALSE;
+#endif
     }
 
   if (!icon_cache->want_fallback &&

@@ -2,132 +2,132 @@ lib_LTLIBRARIES = libmetacity-private.la
 
 SUBDIRS=wm-tester tools themes
 
-INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\" -DMETACITY_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"metacity\" -DSN_API_NOT_YET_FROZEN=1
+INCLUDES=@METACITY_CFLAGS@ -I $(srcdir)/include -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\" -DMETACITY_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"metacity\" -DSN_API_NOT_YET_FROZEN=1
 
 metacity_SOURCES= 				\
-	async-getprop.c				\
-	async-getprop.h				\
-	bell.h					\
-	bell.c					\
-	boxes.h					\
-	boxes.c					\
-	common.h				\
-	compositor.c				\
-	compositor.h				\
-	constraints.c				\
-	constraints.h				\
-	core.c					\
-	core.h					\
-	delete.c				\
-	display.c				\
-	display.h				\
-	draw-workspace.c			\
-	draw-workspace.h			\
-	edge-resistance.c			\
-	edge-resistance.h			\
-	effects.c				\
-	effects.h				\
-	errors.c				\
-	errors.h				\
-	eventqueue.c				\
-	eventqueue.h				\
-	fixedtip.c				\
-	fixedtip.h				\
-	frame.c					\
-	frame.h					\
-	frames.c				\
-	frames.h				\
-	gradient.c				\
-	gradient.h				\
-	group.c					\
-	group.h					\
-	group-private.h				\
-	group-props.c				\
-	group-props.h				\
-	iconcache.c				\
-	iconcache.h				\
+	core/async-getprop.c			\
+	core/async-getprop.h			\
+	core/bell.c				\
+	core/bell.h				\
+	core/boxes.c				\
+	include/boxes.h				\
+	core/compositor.c			\
+	core/compositor.h			\
+	core/constraints.c			\
+	core/constraints.h			\
+	core/core.c				\
+	core/delete.c				\
+	core/display.c				\
+	core/display.h				\
+	ui/draw-workspace.c			\
+	core/draw-workspace.h			\
+	core/edge-resistance.c			\
+	core/edge-resistance.h			\
+	core/effects.c				\
+	core/effects.h				\
+	core/errors.c				\
+	core/errors.h				\
+	core/eventqueue.c			\
+	core/eventqueue.h			\
+	core/frame.c				\
+	core/frame.h				\
+	ui/gradient.c				\
+	ui/gradient.h				\
+	core/group-private.h			\
+	core/group-props.c			\
+	core/group-props.h			\
+	core/group.c				\
+	core/group.h				\
+	core/iconcache.c			\
+	core/iconcache.h			\
+	core/keybindings.c			\
+	core/keybindings.h			\
+	core/main.c				\
+	core/main.h				\
+	core/metacity-Xatomtype.h		\
+	core/place.c				\
+	core/place.h				\
+	core/prefs.c				\
+	core/prefs.h				\
+	core/screen.c				\
+	core/screen.h				\
+	core/session.c				\
+	core/session.h				\
+	core/spring-model.c			\
+	core/spring-model.h			\
+	core/stack.c				\
+	core/stack.h				\
+	core/util.c				\
+	include/util.h				\
+	core/window-props.c			\
+	core/window-props.h			\
+	core/window.c				\
+	core/window.h				\
+	core/workspace.c			\
+	core/workspace.h			\
+	core/xprops.c				\
+	core/xprops.h				\
+	include/common.h			\
+	include/core.h				\
+	include/ui.h				\
 	inlinepixbufs.h				\
-	keybindings.c				\
-	keybindings.h				\
-	main.c					\
-	main.h					\
-	menu.c					\
-	menu.h					\
-	metaaccellabel.c			\
-	metaaccellabel.h			\
-	metacity-Xatomtype.h			\
-	place.c					\
-	place.h					\
-	prefs.c					\
-	prefs.h					\
-	resizepopup.c				\
-	resizepopup.h				\
-	screen.c				\
-	screen.h				\
-	session.c				\
-	session.h				\
-	spring-model.c				\
-	spring-model.h				\
-	stack.c					\
-	stack.h					\
-	tabpopup.c				\
-	tabpopup.h				\
-	theme.c					\
-	theme.h					\
-	theme-parser.c				\
-	theme-parser.h				\
-	themewidget.c				\
-	themewidget.h				\
-	ui.c					\
-	ui.h					\
-	util.c					\
-	util.h					\
-	window.c				\
-	window.h				\
-	window-props.c				\
-	window-props.h				\
-	workspace.c				\
-	workspace.h				\
-	xprops.c				\
-	xprops.h
+	ui/fixedtip.c				\
+	ui/fixedtip.h				\
+	ui/frames.c				\
+	ui/frames.h				\
+	ui/menu.c				\
+	ui/menu.h				\
+	ui/metaaccellabel.c			\
+	ui/metaaccellabel.h			\
+	ui/resizepopup.c			\
+	include/resizepopup.h			\
+	ui/tabpopup.c				\
+	include/tabpopup.h				\
+	ui/theme-parser.c			\
+	ui/theme-parser.h			\
+	ui/theme.c				\
+	ui/theme.h				\
+	ui/themewidget.c			\
+	ui/themewidget.h			\
+	ui/ui.c
 
 # by setting libmetacity_private_la_CFLAGS, the files shared with
 # metacity proper will be compiled with different names.
 libmetacity_private_la_CFLAGS =
-libmetacity_private_la_SOURCES=	\
-	boxes.c			\
-	boxes.h			\
-	gradient.c		\
-	gradient.h		\
-	preview-widget.c	\
-	preview-widget.h	\
-	theme.c			\
-	theme.h			\
-	theme-parser.c		\
-	theme-parser.h		\
-	util.c			\
-	util.h			\
-	common.h
+libmetacity_private_la_SOURCES=			\
+	core/boxes.c				\
+	include/boxes.h				\
+	ui/gradient.c				\
+	ui/gradient.h				\
+	core/util.c				\
+	include/util.h				\
+	include/common.h			\
+	ui/preview-widget.c			\
+	ui/preview-widget.h			\
+	ui/theme-parser.c			\
+	ui/theme-parser.h			\
+	ui/theme.c				\
+	ui/theme.h
 
 libmetacity_private_la_LDFLAGS = -no-undefined
 libmetacity_private_la_LIBADD  = @METACITY_LIBS@
 
 libmetacityincludedir = $(includedir)/metacity-1/metacity-private
 
-libmetacityinclude_HEADERS =	\
-	boxes.h			\
-	common.h		\
-	gradient.h		\
-	preview-widget.h	\
-	theme.h			\
-	theme-parser.h		\
-	util.h
+libmetacityinclude_HEADERS =			\
+	include/boxes.h				\
+	ui/gradient.h				\
+	include/util.h				\
+	include/common.h			\
+	ui/preview-widget.h			\
+	ui/theme-parser.h			\
+	ui/theme.h
 
 metacity_theme_viewer_SOURCES=  \
-	theme-viewer.c
+	ui/theme-viewer.c
 
 metacity_dialog_SOURCES= 	\
-	metacity-dialog.c
+	ui/metacity-dialog.c
 
 bin_PROGRAMS=metacity metacity-theme-viewer
 libexec_PROGRAMS=metacity-dialog
@@ -137,9 +137,9 @@ metacity_LDADD=@METACITY_LIBS@ $(EFENCE)
 metacity_theme_viewer_LDADD= @METACITY_LIBS@ libmetacity-private.la
 metacity_dialog_LDADD=@METACITY_LIBS@
 
-testboxes_SOURCES=util.h util.c boxes.h boxes.c testboxes.c
-testgradient_SOURCES=gradient.h gradient.c testgradient.c
-testasyncgetprop_SOURCES=async-getprop.h async-getprop.c testasyncgetprop.c
+testboxes_SOURCES=include/util.h core/util.c include/boxes.h core/boxes.c core/testboxes.c
+testgradient_SOURCES=ui/gradient.h ui/gradient.c ui/testgradient.c
+testasyncgetprop_SOURCES=core/async-getprop.h core/async-getprop.c core/testasyncgetprop.c
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
@@ -182,7 +182,7 @@ BUILT_SOURCES = inlinepixbufs.h
 CLEANFILES = inlinepixbufs.h metacity.desktop metacity.schemas 50-metacity-desktop-key.xml 50-metacity-key.xml
 
 inlinepixbufs.h: $(IMAGES)
-	   $(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
+	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 

@@ -28,9 +28,11 @@
 #include "util.h"
 #include "core.h"
 #include "tabpopup.h"
-#include "workspace.h" /* FIXME should not be included in this file */
+/* FIXME these two includes are 100% broken ...
+ */
+#include "../core/workspace.h"
+#include "../core/frame.h"
 #include "draw-workspace.h"
-#include "frame.h"
 #include <gtk/gtk.h>
 #include <math.h>
 

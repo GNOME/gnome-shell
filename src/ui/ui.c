@@ -30,7 +30,6 @@
 #include "menu.h"
 #include "core.h"
 #include "theme.h"
-#include "iconcache.h"
 
 #include "inlinepixbufs.h"
 
