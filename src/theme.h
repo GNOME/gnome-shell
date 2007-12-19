@@ -214,10 +214,16 @@ struct _MetaColorSpec
       MetaColorSpec *foreground;
       MetaColorSpec *background;
       double alpha;
+
+      gboolean color_set;
+      GdkColor color;
     } blend;
     struct {
       MetaColorSpec *base;
       double factor;
+
+      gboolean color_set;
+      GdkColor color;
     } shade;
   } data;
 };
@@ -275,6 +281,64 @@ typedef enum
   META_DRAW_TILE
 } MetaDrawType;
 
+typedef enum
+{
+  POS_TOKEN_INT,
+  POS_TOKEN_DOUBLE,
+  POS_TOKEN_OPERATOR,
+  POS_TOKEN_VARIABLE,
+  POS_TOKEN_OPEN_PAREN,
+  POS_TOKEN_CLOSE_PAREN
+} PosTokenType;
+
+typedef enum
+{
+  POS_OP_NONE,
+  POS_OP_ADD,
+  POS_OP_SUBTRACT,
+  POS_OP_MULTIPLY,
+  POS_OP_DIVIDE,
+  POS_OP_MOD,
+  POS_OP_MAX,
+  POS_OP_MIN
+} PosOperatorType;
+
+typedef struct
+{
+  PosTokenType type;
+
+  union
+  {
+    struct {
+      int val;
+    } i;
+
+    struct {
+      double val;
+    } d;
+
+    struct {
+      PosOperatorType op;
+    } o;
+
+    struct {
+      char *name;
+      GQuark name_quark;
+    } v;
+
+  } d;
+} PosToken;
+
+typedef struct _MetaDrawSpec
+{
+  int value;
+  
+  PosToken *tokens;
+  int n_tokens;
+
+  gboolean constant : 1; /* Does the expression contain any variables? */
+} MetaDrawSpec;
+  
 struct _MetaDrawOp
 {
   MetaDrawType type;
@@ -287,65 +351,66 @@ struct _MetaDrawOp
       int dash_on_length;
       int dash_off_length;
       int width;
-      char *x1;
-      char *y1;
-      char *x2;
-      char *y2;
+      MetaDrawSpec *x1;
+      MetaDrawSpec *y1;
+      MetaDrawSpec *x2;
+      MetaDrawSpec *y2;
     } line;
 
     struct {
       MetaColorSpec *color_spec;
       gboolean filled;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
     } rectangle;
 
     struct {
       MetaColorSpec *color_spec;
       gboolean filled;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
       double start_angle;
       double extent_angle;
     } arc;
 
     struct {
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
     } clip;
     
     struct {
       MetaColorSpec *color_spec;
       MetaAlphaGradientSpec *alpha_spec;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
     } tint;
 
     struct {
       MetaGradientSpec *gradient_spec;
       MetaAlphaGradientSpec *alpha_spec;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
     } gradient;
 
     struct {
       MetaColorSpec *colorize_spec;
       MetaAlphaGradientSpec *alpha_spec;
       GdkPixbuf *pixbuf;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
+
       guint32 colorize_cache_pixel;
       GdkPixbuf *colorize_cache_pixbuf;
       MetaImageFillType fill_type;
@@ -358,61 +423,62 @@ struct _MetaDrawOp
       GtkShadowType shadow;
       GtkArrowType arrow;
       gboolean filled;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
     } gtk_arrow;
 
     struct {
       GtkStateType state;
       GtkShadowType shadow;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
     } gtk_box;
 
     struct {
       GtkStateType state;
-      char *x;
-      char *y1;
-      char *y2;  
+      MetaDrawSpec *x;
+      MetaDrawSpec *y1;
+      MetaDrawSpec *y2;  
     } gtk_vline;
 
     struct {
       MetaAlphaGradientSpec *alpha_spec;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
       MetaImageFillType fill_type;
     } icon;
 
     struct {
       MetaColorSpec *color_spec;
-      char *x;
-      char *y;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
     } title;
 
     struct {
       MetaDrawOpList *op_list;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
     } op_list;
 
     struct {
       MetaDrawOpList *op_list;
-      char *x;
-      char *y;
-      char *width;
-      char *height;
-      char *tile_xoffset;
-      char *tile_yoffset;
-      char *tile_width;
-      char *tile_height;
+      MetaDrawSpec *x;
+      MetaDrawSpec *y;
+      MetaDrawSpec *width;
+      MetaDrawSpec *height;
+      MetaDrawSpec *tile_xoffset;
+      MetaDrawSpec *tile_yoffset;
+      MetaDrawSpec *tile_width;
+      MetaDrawSpec *tile_height;
     } tile;
     
   } data;
@@ -597,6 +663,21 @@ struct _MetaTheme
   MetaFrameStyleSet *style_sets_by_type[META_FRAME_TYPE_LAST];
 
   GdkPixbuf *fallback_icon, *fallback_mini_icon;
+
+  GQuark quark_width;
+  GQuark quark_height;
+  GQuark quark_object_width;
+  GQuark quark_object_height;
+  GQuark quark_left_width;
+  GQuark quark_right_width;
+  GQuark quark_top_height;
+  GQuark quark_bottom_height;
+  GQuark quark_mini_icon_width;
+  GQuark quark_mini_icon_height;
+  GQuark quark_icon_width;
+  GQuark quark_icon_height;
+  GQuark quark_title_width;
+  GQuark quark_title_height;
 };
 
 struct _MetaPositionExprEnv
@@ -643,15 +724,20 @@ void             meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout
 gboolean         meta_frame_layout_validate      (const MetaFrameLayout *layout,
                                                   GError               **error);
 
-gboolean meta_parse_position_expression (const char                 *expr,
+gboolean meta_parse_position_expression (MetaDrawSpec               *spec,
                                          const MetaPositionExprEnv  *env,
                                          int                        *x_return,
                                          int                        *y_return,
                                          GError                    **err);
-gboolean meta_parse_size_expression     (const char                 *expr,
+gboolean meta_parse_size_expression     (MetaDrawSpec               *spec,
                                          const MetaPositionExprEnv  *env,
                                          int                        *val_return,
                                          GError                    **err);
+
+MetaDrawSpec* meta_draw_spec_new (MetaTheme  *theme,
+                                  const char *expr,
+                                  GError    **error);
+void          meta_draw_spec_free (MetaDrawSpec *spec);
 
 MetaColorSpec* meta_color_spec_new             (MetaColorSpecType  type);
 MetaColorSpec* meta_color_spec_new_from_string (const char        *str,
@@ -833,9 +919,10 @@ gboolean meta_theme_lookup_color_constant (MetaTheme   *theme,
                                            const char  *name,
                                            char       **value);
 
-char*    meta_theme_replace_constants     (MetaTheme   *theme,
-                                           const char  *expr,
-                                           GError     **err);
+gboolean     meta_theme_replace_constants     (MetaTheme    *theme,
+                                               PosToken     *tokens,
+                                               int           n_tokens,
+                                               GError      **err);
 
 /* random stuff */
 
@@ -876,6 +963,7 @@ MetaImageFillType     meta_image_fill_type_from_string (const char            *s
 const char*           meta_image_fill_type_to_string   (MetaImageFillType      fill_type);
 
 guint meta_theme_earliest_version_with_button (MetaButtonType type);
+
 
 #define META_THEME_ALLOWS(theme, feature) (theme->format_version >= feature)
 

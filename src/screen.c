@@ -535,7 +535,12 @@ meta_screen_new (MetaDisplay *display,
   screen->wm_sn_selection_window = new_wm_sn_owner;
   screen->wm_sn_atom = wm_sn_atom;
   screen->wm_sn_timestamp = manager_timestamp;
-  
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  screen->wm_cm_selection_window = meta_create_offscreen_window (xdisplay, 
+                                                                 xroot, 
+                                                                 NoEventMask);
+#endif
   screen->work_area_idle = 0;
 
   screen->active_workspace = NULL;
@@ -807,9 +812,23 @@ meta_screen_manage_all_windows (MetaScreen *screen)
   for (list = windows; list != NULL; list = list->next)
     {
       WindowInfo *info = list->data;
+      MetaWindow *window;
 
-      meta_window_new_with_attrs (screen->display, info->xwindow, TRUE,
-				  &info->attrs);
+      window = meta_window_new_with_attrs (screen->display, info->xwindow, TRUE,
+                                           &info->attrs);
+      if (info->xwindow == screen->no_focus_window ||
+          info->xwindow == screen->flash_window ||
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+          info->xwindow == screen->wm_cm_selection_window ||
+#endif
+          info->xwindow == screen->wm_sn_selection_window) {
+        meta_verbose ("Not managing our own windows\n");
+        continue;
+      }
+
+      if (screen->display->compositor)
+        meta_compositor_add_window (screen->display->compositor, window,
+                                    info->xwindow, &info->attrs);
     }
   meta_stack_thaw (screen->stack);
 
@@ -822,9 +841,12 @@ meta_screen_manage_all_windows (MetaScreen *screen)
 void
 meta_screen_composite_all_windows (MetaScreen *screen)
 {
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaDisplay *display;
   GList *windows, *list;
 
-  if (!screen->display->compositor)
+  display = screen->display;
+  if (!display->compositor)
     return;
 
   windows = list_windows (screen);
@@ -835,7 +857,17 @@ meta_screen_composite_all_windows (MetaScreen *screen)
     {
       WindowInfo *info = list->data;
 
-      meta_compositor_add_window (screen->display->compositor,
+      if (info->xwindow == screen->no_focus_window ||
+          info->xwindow == screen->flash_window ||
+          info->xwindow == screen->wm_sn_selection_window ||
+          info->xwindow == screen->wm_cm_selection_window) {
+        meta_verbose ("Not managing our own windows\n");
+        continue;
+      }
+
+      meta_compositor_add_window (display->compositor,
+                                  meta_display_lookup_x_window (display,
+                                                                info->xwindow),
 				  info->xwindow, &info->attrs);
     }
 
@@ -843,6 +875,7 @@ meta_screen_composite_all_windows (MetaScreen *screen)
 
   g_list_foreach (windows, (GFunc)g_free, NULL);
   g_list_free (windows);
+#endif
 }
 
 MetaScreen*
@@ -1215,6 +1248,49 @@ meta_screen_update_cursor (MetaScreen *screen)
   XFreeCursor (screen->display->xdisplay, xcursor);
 }
 
+#define MAX_PREVIEW_SIZE 150.0
+
+static GdkPixbuf *
+get_window_pixbuf (MetaWindow *window,
+                   int        *width,
+                   int        *height)
+{
+  Pixmap pmap;
+  GdkPixbuf *pixbuf, *scaled;
+  double ratio;
+
+  pmap = meta_compositor_get_window_pixmap (window->display->compositor,
+                                            window);
+  if (pmap == None)
+    return NULL;
+
+  pixbuf = meta_ui_get_pixbuf_from_pixmap (pmap);
+  if (pixbuf == NULL) 
+    return NULL;
+
+  *width = gdk_pixbuf_get_width (pixbuf);
+  *height = gdk_pixbuf_get_height (pixbuf);
+
+  /* Scale pixbuf to max dimension MAX_PREVIEW_SIZE */
+  if (*width > *height)
+    {
+      ratio = ((double) *width) / MAX_PREVIEW_SIZE;
+      *width = (int) MAX_PREVIEW_SIZE;
+      *height = (int) (((double) *height) / ratio);
+    }
+  else
+    {
+      ratio = ((double) *height) / MAX_PREVIEW_SIZE;
+      *height = (int) MAX_PREVIEW_SIZE;
+      *width = (int) (((double) *width) / ratio);
+    }
+
+  scaled = gdk_pixbuf_scale_simple (pixbuf, *width, *height,
+                                    GDK_INTERP_BILINEAR);
+  g_object_unref (pixbuf);
+  return scaled;
+}
+                                         
 void
 meta_screen_ensure_tab_popup (MetaScreen      *screen,
                               MetaTabList      list_type,
@@ -1247,12 +1323,41 @@ meta_screen_ensure_tab_popup (MetaScreen      *screen,
     {
       MetaWindow *window;
       MetaRectangle r;
-      
+      GdkPixbuf *win_pixbuf;
+      int width, height;
+
       window = tmp->data;
       
       entries[i].key = (MetaTabEntryKey) window->xwindow;
       entries[i].title = window->title;
-      entries[i].icon = window->icon;
+
+      win_pixbuf = get_window_pixbuf (window, &width, &height);
+      if (win_pixbuf == NULL)
+        entries[i].icon = g_object_ref (window->icon);
+      else
+        {
+          int icon_width, icon_height, t_width, t_height;
+#define ICON_OFFSET 6
+
+          icon_width = gdk_pixbuf_get_width (window->icon);
+          icon_height = gdk_pixbuf_get_height (window->icon);
+
+          t_width = width + ICON_OFFSET;
+          t_height = height + ICON_OFFSET;
+
+          entries[i].icon = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
+                                            t_width, t_height);
+          gdk_pixbuf_fill (entries[i].icon, 0x00000000);
+          gdk_pixbuf_copy_area (win_pixbuf, 0, 0, width, height,
+                                entries[i].icon, 0, 0);
+          g_object_unref (win_pixbuf);
+          gdk_pixbuf_composite (window->icon, entries[i].icon, 
+                                t_width - icon_width, t_height - icon_height,
+                                icon_width, icon_height,
+                                t_width - icon_width, t_height - icon_height, 
+                                1.0, 1.0, GDK_INTERP_BILINEAR, 255);
+        }
+                                
       entries[i].blank = FALSE;
       entries[i].hidden = !meta_window_showing_on_its_workspace (window);
       entries[i].demands_attention = window->wm_state_demands_attention;
@@ -1312,6 +1417,10 @@ meta_screen_ensure_tab_popup (MetaScreen      *screen,
                                              len,
                                              5, /* FIXME */
                                              TRUE);
+
+  for (i = 0; i < len; i++) 
+    g_object_unref (entries[i].icon);
+
   g_free (entries);
 
   g_list_free (tab_list);
@@ -2686,3 +2795,28 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
   return FALSE;
 }
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+void
+meta_screen_set_cm_selection (MetaScreen *screen)
+{
+  char selection[32];
+  Atom a;
+
+  g_snprintf (selection, sizeof(selection), "_NET_WM_CM_S%d", screen->number);
+  meta_verbose ("Setting selection: %s\n", selection);
+  a = XInternAtom (screen->display->xdisplay, selection, FALSE);
+  XSetSelectionOwner (screen->display->xdisplay, a, 
+                      screen->wm_cm_selection_window, CurrentTime);
+}
+
+void
+meta_screen_unset_cm_selection (MetaScreen *screen)
+{
+  char selection[32];
+  Atom a;
+
+  g_snprintf (selection, sizeof(selection), "_NET_WM_CM_S%d", screen->number);
+  a = XInternAtom (screen->display->xdisplay, selection, FALSE);
+  XSetSelectionOwner (screen->display->xdisplay, a, None, CurrentTime);
+}
+#endif /* HAVE_COMPOSITE_EXTENSIONS */

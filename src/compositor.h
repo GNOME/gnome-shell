@@ -28,23 +28,12 @@
 #include "display.h"
 #include "spring-model.h"
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-#include "cm/deform.h"
-/* FIXME: Needs namespacing. */
-void get_patch_points (Model *model, CmPoint points[4][4]);
-#endif
-
-typedef void (* MetaAnimationFinishedFunc) (gpointer data);
-
-/* XXX namespace me */
-void compute_window_rect (MetaWindow *window, MetaRectangle *rect);
-
 MetaCompositor* meta_compositor_new           (MetaDisplay       *display);
-void            meta_compositor_unref         (MetaCompositor    *compositor);
 void            meta_compositor_process_event (MetaCompositor    *compositor,
                                                XEvent            *xevent,
                                                MetaWindow        *window);
 void            meta_compositor_add_window    (MetaCompositor    *compositor,
+                                               MetaWindow        *window,
                                                Window             xwindow,
                                                XWindowAttributes *attrs);
 void            meta_compositor_remove_window (MetaCompositor    *compositor,
@@ -57,23 +46,11 @@ void meta_compositor_manage_screen   (MetaCompositor *compositor,
 void meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                       MetaScreen     *screen);
 
-#if 0
-void meta_compositor_minimize (MetaCompositor            *compositor,
-			       MetaWindow                *window,
-			       int                        x,
-			       int                        y,
-			       int                        width,
-			       int                        height,
-			       MetaAnimationFinishedFunc  finished_cb,
-			       gpointer                   finished_data);
-#endif
+void meta_compositor_set_updates (MetaCompositor *compositor,
+                                  MetaWindow     *window,
+                                  gboolean        updates);
 
-void
-meta_compositor_set_updates (MetaCompositor *compositor,
-			     MetaWindow *window,
-			     gboolean updates);
-void
-meta_compositor_destroy (MetaCompositor *compositor);
+void meta_compositor_destroy (MetaCompositor *compositor);
 
 void meta_compositor_begin_move (MetaCompositor *compositor,
 				 MetaWindow *window,
@@ -86,7 +63,7 @@ void meta_compositor_end_move (MetaCompositor *compositor,
 			       MetaWindow *window);
 void meta_compositor_free_window (MetaCompositor *compositor,
 				  MetaWindow *window);
-void meta_compositor_free_window (MetaCompositor *compositor,
-				  MetaWindow *window);
+Pixmap meta_compositor_get_window_pixmap (MetaCompositor *compositor,
+                                          MetaWindow     *window);
 
 #endif /* META_COMPOSITOR_H */

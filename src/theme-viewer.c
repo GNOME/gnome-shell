@@ -1175,6 +1175,7 @@ static const PositionExpressionTest position_expression_tests[] = {
 static void
 run_position_expression_tests (void)
 {
+#if 0
   int i;
   MetaPositionExprEnv env;
 
@@ -1184,6 +1185,8 @@ run_position_expression_tests (void)
       GError *err;
       gboolean retval;
       const PositionExpressionTest *test;
+      PosToken *tokens;
+      int n_tokens;
       int x, y;
 
       test = &position_expression_tests[i];
@@ -1210,10 +1213,13 @@ run_position_expression_tests (void)
       env.mini_icon_height = 16;
       env.theme = NULL;
 
-      retval = meta_parse_position_expression (test->expr,
-                                               &env,
-                                               &x, &y,
-                                               &err);
+      if (err == NULL)
+        {
+          retval = meta_parse_position_expression (tokens, n_tokens,
+                                                   &env,
+                                                   &x, &y,
+                                                   &err);
+        }
 
       if (retval && err)
         g_error (_("position expression test returned TRUE but set error"));
@@ -1243,8 +1249,10 @@ run_position_expression_tests (void)
       if (err)
         g_error_free (err);
 
+      meta_pos_tokens_free (tokens, n_tokens);
       ++i;
     }
+#endif
 }
 
 #if 0

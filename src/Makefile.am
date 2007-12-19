@@ -12,10 +12,6 @@ metacity_SOURCES= 				\
 	boxes.h					\
 	boxes.c					\
 	common.h				\
-	c-screen.c				\
-	c-screen.h				\
-	c-window.c				\
-	c-window.h				\
 	compositor.c				\
 	compositor.h				\
 	constraints.c				\

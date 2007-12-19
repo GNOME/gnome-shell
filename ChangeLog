@@ -1,3 +1,12 @@
+2007-12-18  Iain Holmes  <iain@gnome.org>
+
+        * configure.in, src/theme.c, src/display.c,
+      src/theme.h, src/display.h, src/theme-parser.c,
+      src/compositor.c, src/c-screen.c, src/compositor.h,
+      src/c-screen.h, src/ui.c, src/screen.c, src/ui.h,
+      src/screen.h, src/c-window.c, src/c-window.h,
+      src/theme-viewer.c, src/Makefile.am: Merge compositor branch.
+
 2007-12-14  Thomas Thurman  <thomas@thurman.org.uk>
 
         * configure.in: Post-release bump to 2.21.5.

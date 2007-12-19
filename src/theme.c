@@ -60,6 +60,8 @@ static void hls_to_rgb			(gdouble	 *h,
 					 gdouble	 *l,
 					 gdouble	 *s);
 
+static MetaTheme *meta_current_theme = NULL;
+
 static GdkPixbuf *
 colorize_pixbuf (GdkPixbuf *orig,
                  GdkColor  *new_color)
@@ -1167,6 +1169,7 @@ meta_color_spec_new_from_string (const char *str,
       spec->data.blend.alpha = alpha;
       spec->data.blend.background = bg;
       spec->data.blend.foreground = fg;
+      spec->data.blend.color_set = FALSE;
     }
   else if (str[0] == 's' && str[1] == 'h' && str[2] == 'a' && str[3] == 'd' &&
            str[4] == 'e' && str[5] == '/')
@@ -1225,6 +1228,7 @@ meta_color_spec_new_from_string (const char *str,
       spec = meta_color_spec_new (META_COLOR_SPEC_SHADE);
       spec->data.shade.factor = factor;
       spec->data.shade.base = base;
+      spec->data.shade.color_set = FALSE;
     }
   else
     {
@@ -1312,48 +1316,37 @@ meta_color_spec_render (MetaColorSpec *spec,
       {
         GdkColor bg, fg;
 
-        meta_color_spec_render (spec->data.blend.background, widget, &bg);
-        meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
+        if (spec->data.blend.color_set == FALSE)
+          {
+            meta_color_spec_render (spec->data.blend.background, widget, &bg);
+            meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
 
-        color_composite (&bg, &fg, spec->data.blend.alpha, color);
+            color_composite (&bg, &fg, spec->data.blend.alpha, 
+                             &spec->data.blend.color);
+            spec->data.blend.color_set = TRUE;
+          }
+
+        *color = spec->data.blend.color;
       }
       break;
 
     case META_COLOR_SPEC_SHADE:
       {
-        GdkColor base;
-        
-        meta_color_spec_render (spec->data.shade.base, widget, &base);
-        
-        gtk_style_shade (&base, &base, spec->data.shade.factor);
+        if (spec->data.shade.color_set == FALSE)
+          {
+            meta_color_spec_render (spec->data.shade.base, widget, 
+                                    &spec->data.shade.color);
+            
+            gtk_style_shade (&spec->data.shade.color, 
+                             &spec->data.shade.color, spec->data.shade.factor);
+            spec->data.shade.color_set = TRUE;
+          }
 
-        *color = base;
+        *color = spec->data.shade.color;
       }
       break;
     }
 }
-
-typedef enum
-{
-  POS_TOKEN_INT,
-  POS_TOKEN_DOUBLE,
-  POS_TOKEN_OPERATOR,
-  POS_TOKEN_VARIABLE,
-  POS_TOKEN_OPEN_PAREN,
-  POS_TOKEN_CLOSE_PAREN
-} PosTokenType;
-
-typedef enum
-{
-  POS_OP_NONE,
-  POS_OP_ADD,
-  POS_OP_SUBTRACT,
-  POS_OP_MULTIPLY,
-  POS_OP_DIVIDE,
-  POS_OP_MOD,
-  POS_OP_MAX,
-  POS_OP_MIN
-} PosOperatorType;
 
 static const char*
 op_name (PosOperatorType type)
@@ -1428,33 +1421,6 @@ op_from_string (const char *p,
 
   return POS_OP_NONE;
 }
-
-typedef struct
-{
-  PosTokenType type;
-
-  union
-  {
-    struct {
-      int val;
-    } i;
-
-    struct {
-      double val;
-    } d;
-
-    struct {
-      PosOperatorType op;
-    } o;
-
-    struct {
-      char *name;
-    } v;
-
-  } d;
-
-} PosToken;
-
 
 static void
 free_tokens (PosToken *tokens,
@@ -1549,6 +1515,46 @@ parse_number (const char  *p,
 }
 
 #define IS_VARIABLE_CHAR(c) (g_ascii_isalpha ((c)) || (c) == '_')
+
+#if 0
+static void
+debug_print_tokens (PosToken *tokens,
+                    int       n_tokens)
+{
+  int i;
+  
+  for (i = 0; i < n_tokens; i++)
+    {
+      PosToken *t = &tokens[i];
+
+      g_print (" ");
+
+      switch (t->type)
+        {
+        case POS_TOKEN_INT:
+          g_print ("\"%d\"", t->d.i.val);
+          break;
+        case POS_TOKEN_DOUBLE:
+          g_print ("\"%g\"", t->d.d.val);
+          break;
+        case POS_TOKEN_OPEN_PAREN:
+          g_print ("\"(\"");
+          break;
+        case POS_TOKEN_CLOSE_PAREN:
+          g_print ("\")\"");
+          break;
+        case POS_TOKEN_VARIABLE:
+          g_print ("\"%s\"", t->d.v.name);
+          break;
+        case POS_TOKEN_OPERATOR:
+          g_print ("\"%s\"", op_name (t->d.o.op));
+          break;
+        }
+    }
+
+  g_print ("\n");
+}
+#endif
 
 static gboolean
 pos_tokenize (const char  *expr,
@@ -1674,46 +1680,6 @@ pos_tokenize (const char  *expr,
   free_tokens (tokens, n_tokens);
   return FALSE;
 }
-
-#if 0
-static void
-debug_print_tokens (PosToken *tokens,
-                    int       n_tokens)
-{
-  int i;
-  
-  for (i = 0; i < n_tokens; i++)
-    {
-      PosToken *t = &tokens[i];
-
-      g_print (" ");
-
-      switch (t->type)
-        {
-        case POS_TOKEN_INT:
-          g_print ("\"%d\"", t->d.i.val);
-          break;
-        case POS_TOKEN_DOUBLE:
-          g_print ("\"%g\"", t->d.d.val);
-          break;
-        case POS_TOKEN_OPEN_PAREN:
-          g_print ("\"(\"");
-          break;
-        case POS_TOKEN_CLOSE_PAREN:
-          g_print ("\")\"");
-          break;
-        case POS_TOKEN_VARIABLE:
-          g_print ("\"%s\"", t->d.v.name);
-          break;
-        case POS_TOKEN_OPERATOR:
-          g_print ("\"%s\"", op_name (t->d.o.op));
-          break;
-        }
-    }
-
-  g_print ("\n");
-}
-#endif
 
 typedef enum
 {
@@ -2011,6 +1977,100 @@ do_operations (PosExpr *exprs,
 }
 
 static gboolean
+pos_eval_get_variable (PosToken                  *t,
+                       int                       *result,
+                       const MetaPositionExprEnv *env,
+                       GError                   **err)
+{
+  /* In certain circumstances (when the theme parser is used outside
+     of metacity) env->theme will be NULL so we run the slow variable search */
+  if (env->theme)
+    {
+      if (t->d.v.name_quark == env->theme->quark_width)
+        *result = env->rect.width;
+      else if (t->d.v.name_quark == env->theme->quark_height)
+        *result = env->rect.height;
+      else if (env->object_width >= 0 &&
+               t->d.v.name_quark == env->theme->quark_object_width)
+        *result = env->object_width;
+      else if (env->object_height >= 0 &&
+               t->d.v.name_quark == env->theme->quark_object_height)
+        *result = env->object_height;
+      else if (t->d.v.name_quark == env->theme->quark_left_width)
+        *result = env->left_width;
+      else if (t->d.v.name_quark == env->theme->quark_right_width)
+        *result = env->right_width;
+      else if (t->d.v.name_quark == env->theme->quark_top_height)
+        *result = env->top_height;
+      else if (t->d.v.name_quark == env->theme->quark_bottom_height)
+        *result = env->bottom_height;
+      else if (t->d.v.name_quark == env->theme->quark_mini_icon_width)
+        *result = env->mini_icon_width;
+      else if (t->d.v.name_quark == env->theme->quark_mini_icon_height)
+        *result = env->mini_icon_height;
+      else if (t->d.v.name_quark == env->theme->quark_icon_width)
+        *result = env->icon_width;
+      else if (t->d.v.name_quark == env->theme->quark_icon_height)
+        *result = env->icon_height;
+      else if (t->d.v.name_quark == env->theme->quark_title_width)
+        *result = env->title_width;
+      else if (t->d.v.name_quark == env->theme->quark_title_height)
+        *result = env->title_height;
+      else
+        {
+          g_set_error (err, META_THEME_ERROR,
+                       META_THEME_ERROR_UNKNOWN_VARIABLE,
+                       _("Coordinate expression had unknown variable or constant \"%s\""),
+                       t->d.v.name);
+          return FALSE;
+        }
+    }
+  else 
+    {
+      if (strcmp (t->d.v.name, "width") == 0)
+        *result = env->rect.width;
+      else if (strcmp (t->d.v.name, "height") == 0)
+        *result = env->rect.height;
+      else if (env->object_width >= 0 &&
+               strcmp (t->d.v.name, "object_width") == 0)
+        *result = env->object_width;
+      else if (env->object_height >= 0 &&
+               strcmp (t->d.v.name, "object_height") == 0)
+        *result = env->object_height;
+      else if (strcmp (t->d.v.name, "left_width") == 0)
+        *result = env->left_width;
+      else if (strcmp (t->d.v.name, "right_width") == 0)
+        *result = env->right_width;
+      else if (strcmp (t->d.v.name, "top_height") == 0)
+        *result = env->top_height;
+      else if (strcmp (t->d.v.name, "bottom_height") == 0)
+        *result = env->bottom_height;
+      else if (strcmp (t->d.v.name, "mini_icon_width") == 0)
+        *result = env->mini_icon_width;
+      else if (strcmp (t->d.v.name, "mini_icon_height") == 0)
+        *result = env->mini_icon_height;
+      else if (strcmp (t->d.v.name, "icon_width") == 0)
+        *result = env->icon_width;
+      else if (strcmp (t->d.v.name, "icon_height") == 0)
+        *result = env->icon_height;
+      else if (strcmp (t->d.v.name, "title_width") == 0)
+        *result = env->title_width;
+      else if (strcmp (t->d.v.name, "title_height") == 0)
+        *result = env->title_height;
+      else
+        {
+          g_set_error (err, META_THEME_ERROR,
+                       META_THEME_ERROR_UNKNOWN_VARIABLE,
+                       _("Coordinate expression had unknown variable or constant \"%s\""),
+                       t->d.v.name);
+          return FALSE;
+        }
+    }
+
+  return TRUE;
+}
+
+static gboolean
 pos_eval_helper (PosToken                   *tokens,
                  int                         n_tokens,
                  const MetaPositionExprEnv  *env,
@@ -2024,13 +2084,10 @@ pos_eval_helper (PosToken                   *tokens,
   int i;
   PosExpr exprs[MAX_EXPRS];
   int n_exprs;
-  int ival;
-  double dval;
   int precedence;
   
 #if 0
   g_print ("Pos eval helper on %d tokens:\n", n_tokens);
-  debug_print_tokens (tokens, n_tokens);
 #endif
 
   /* Our first goal is to get a list of PosExpr, essentially
@@ -2087,62 +2144,9 @@ pos_eval_helper (PosToken                   *tokens,
                * in a hash, maybe keep width/height out
                * for optimization purposes
                */
-              if (strcmp (t->d.v.name, "width") == 0)
-                exprs[n_exprs].d.int_val = env->rect.width;
-              else if (strcmp (t->d.v.name, "height") == 0)
-                exprs[n_exprs].d.int_val = env->rect.height;
-              else if (env->object_width >= 0 &&
-                       strcmp (t->d.v.name, "object_width") == 0)
-                exprs[n_exprs].d.int_val = env->object_width;
-              else if (env->object_height >= 0 &&
-                       strcmp (t->d.v.name, "object_height") == 0)
-                exprs[n_exprs].d.int_val = env->object_height;
-              else if (strcmp (t->d.v.name, "left_width") == 0)
-                exprs[n_exprs].d.int_val = env->left_width;
-              else if (strcmp (t->d.v.name, "right_width") == 0)
-                exprs[n_exprs].d.int_val = env->right_width;
-              else if (strcmp (t->d.v.name, "top_height") == 0)
-                exprs[n_exprs].d.int_val = env->top_height;
-              else if (strcmp (t->d.v.name, "bottom_height") == 0)
-                exprs[n_exprs].d.int_val = env->bottom_height;
-              else if (strcmp (t->d.v.name, "mini_icon_width") == 0)
-                exprs[n_exprs].d.int_val = env->mini_icon_width;
-              else if (strcmp (t->d.v.name, "mini_icon_height") == 0)
-                exprs[n_exprs].d.int_val = env->mini_icon_height;
-              else if (strcmp (t->d.v.name, "icon_width") == 0)
-                exprs[n_exprs].d.int_val = env->icon_width;
-              else if (strcmp (t->d.v.name, "icon_height") == 0)
-                exprs[n_exprs].d.int_val = env->icon_height;
-              else if (strcmp (t->d.v.name, "title_width") == 0)
-                exprs[n_exprs].d.int_val = env->title_width;
-              else if (strcmp (t->d.v.name, "title_height") == 0)
-                exprs[n_exprs].d.int_val = env->title_height;
-              /* In practice we only hit this code on initial theme
-               * parse; after that we always optimize constants away
-               */
-              else if (env->theme &&
-                       meta_theme_lookup_int_constant (env->theme,
-                                                       t->d.v.name,
-                                                       &ival))
-                {
-                  exprs[n_exprs].d.int_val = ival;
-                }
-              else if (env->theme &&
-                       meta_theme_lookup_float_constant (env->theme,
-                                                         t->d.v.name,
-                                                         &dval))
-                {
-                  exprs[n_exprs].type = POS_EXPR_DOUBLE;
-                  exprs[n_exprs].d.double_val = dval;
-                }
-              else
-                {
-                  g_set_error (err, META_THEME_ERROR,
-                               META_THEME_ERROR_UNKNOWN_VARIABLE,
-                               _("Coordinate expression had unknown variable or constant \"%s\""),
-                               t->d.v.name);
-                  return FALSE;
-                }
+              if (!pos_eval_get_variable (t, &exprs[n_exprs].d.int_val, env, err))
+                return FALSE;
+                  
               ++n_exprs;
               break;
 
@@ -2232,8 +2236,7 @@ pos_eval_helper (PosToken                   *tokens,
  *   so very not worth fooling with bison, yet so very painful by hand.
  */
 static gboolean
-pos_eval (PosToken                  *tokens,
-          int                        n_tokens,
+pos_eval (MetaDrawSpec              *spec,
           const MetaPositionExprEnv *env,
           int                       *val_p,
           GError                   **err)
@@ -2242,7 +2245,7 @@ pos_eval (PosToken                  *tokens,
 
   *val_p = 0;
 
-  if (pos_eval_helper (tokens, n_tokens, env, &expr, err))
+  if (pos_eval_helper (spec->tokens, spec->n_tokens, env, &expr, err))
     {
       switch (expr.type)
         {
@@ -2269,7 +2272,7 @@ pos_eval (PosToken                  *tokens,
  */
 
 gboolean
-meta_parse_position_expression (const char                *expr,
+meta_parse_position_expression (MetaDrawSpec              *spec,
                                 const MetaPositionExprEnv *env,
                                 int                       *x_return,
                                 int                       *y_return,
@@ -2281,73 +2284,55 @@ meta_parse_position_expression (const char                *expr,
    * optionally "object_width" and object_height". Negative numbers
    * aren't allowed.
    */
-  PosToken *tokens;
-  int n_tokens;
   int val;
 
-  if (!pos_tokenize (expr, &tokens, &n_tokens, err))
-    {
-      g_assert (err == NULL || *err != NULL);
-      return FALSE;
-    }
-
-#if 0
-  g_print ("Tokenized \"%s\" to --->\n", expr);
-  debug_print_tokens (tokens, n_tokens);
-#endif
-
-  if (pos_eval (tokens, n_tokens, env, &val, err))
-    {
-      if (x_return)
-        *x_return = env->rect.x + val;
-      if (y_return)
-        *y_return = env->rect.y + val;
-      free_tokens (tokens, n_tokens);
-      return TRUE;
-    }
+  if (spec->constant)
+    val = spec->value;
   else
     {
-      g_assert (err == NULL || *err != NULL);
-      free_tokens (tokens, n_tokens);
-      return FALSE;
+      if (pos_eval (spec, env, &spec->value, err) == FALSE)
+        {
+          g_assert (err == NULL || *err != NULL);
+          return FALSE;
+        }
+
+      val = spec->value;
     }
+
+  if (x_return)
+    *x_return = env->rect.x + val;
+  if (y_return)
+    *y_return = env->rect.y + val;
+
+  return TRUE;
 }
 
 
 gboolean
-meta_parse_size_expression (const char                *expr,
+meta_parse_size_expression (MetaDrawSpec              *spec,
                             const MetaPositionExprEnv *env,
                             int                       *val_return,
                             GError                   **err)
 {
-  PosToken *tokens;
-  int n_tokens;
   int val;
 
-  if (!pos_tokenize (expr, &tokens, &n_tokens, err))
+  if (spec->constant)
+    val = spec->value;
+  else 
     {
-      g_assert (err == NULL || *err != NULL);
-      return FALSE;
+      if (pos_eval (spec, env, &spec->value, err) == FALSE)
+        {
+          g_assert (err == NULL || *err != NULL);
+          return FALSE;
+        }
+
+      val = spec->value;
     }
 
-#if 0
-  g_print ("Tokenized \"%s\" to --->\n", expr);
-  debug_print_tokens (tokens, n_tokens);
-#endif
+  if (val_return)
+    *val_return = MAX (val, 1); /* require that sizes be at least 1x1 */
 
-  if (pos_eval (tokens, n_tokens, env, &val, err))
-    {
-      if (val_return)
-        *val_return = MAX (val, 1); /* require that sizes be at least 1x1 */
-      free_tokens (tokens, n_tokens);
-      return TRUE;
-    }
-  else
-    {
-      g_assert (err == NULL || *err != NULL);
-      free_tokens (tokens, n_tokens);
-      return FALSE;
-    }
+  return TRUE;
 }
 
 /* To do this we tokenize, replace variable tokens
@@ -2356,85 +2341,71 @@ meta_parse_size_expression (const char                *expr,
  * lookups to eval them. Obviously it's a tradeoff that
  * slows down theme load times.
  */
-char*
+gboolean
 meta_theme_replace_constants (MetaTheme   *theme,
-                              const char  *expr,
+                              PosToken    *tokens,
+                              int          n_tokens,
                               GError     **err)
 {
-  PosToken *tokens;
-  int n_tokens;
   int i;
-  GString *str;
-  char buf[G_ASCII_DTOSTR_BUF_SIZE];
   double dval;
   int ival;
+  gboolean is_constant = TRUE;
   
-  if (!pos_tokenize (expr, &tokens, &n_tokens, err))
-    {
-      g_assert (err == NULL || *err != NULL);
-      return NULL;
-    }
-
-#if 0
-  g_print ("Tokenized \"%s\" to --->\n", expr);
-  debug_print_tokens (tokens, n_tokens);
-#endif
-
-  str = g_string_new (NULL);
-
+  /* Loop through tokenized string looking for variables to replace */
   for (i = 0; i < n_tokens; i++)
     {
       PosToken *t = &tokens[i];      
 
-      /* spaces so we don't accidentally merge variables
-       * or anything like that
-       */
-      if (i > 0)
-        g_string_append_c (str, ' ');
-      
-      switch (t->type)
+      if (t->type == POS_TOKEN_VARIABLE)
         {
-        case POS_TOKEN_INT:
-          g_string_append_printf (str, "%d", t->d.i.val);
-          break;
-        case POS_TOKEN_DOUBLE:
-          g_ascii_formatd (buf, G_ASCII_DTOSTR_BUF_SIZE,
-                           "%g", t->d.d.val);
-          g_string_append (str, buf);
-          break;
-        case POS_TOKEN_OPEN_PAREN:
-          g_string_append_c (str, '(');
-          break;
-        case POS_TOKEN_CLOSE_PAREN:
-          g_string_append_c (str, ')');
-          break;
-        case POS_TOKEN_VARIABLE:
           if (meta_theme_lookup_int_constant (theme, t->d.v.name, &ival))
-            g_string_append_printf (str, "%d", ival);
+            {
+              t->type = POS_TOKEN_INT;
+              t->d.i.val = ival;
+            }
           else if (meta_theme_lookup_float_constant (theme, t->d.v.name, &dval))
             {
-              g_ascii_formatd (buf, G_ASCII_DTOSTR_BUF_SIZE,
-                               "%g", dval);
-              g_string_append (str, buf);
+              t->type = POS_TOKEN_DOUBLE;
+              t->d.d.val = dval;
             }
-          else
+          else 
             {
-              g_string_append (str, t->d.v.name);
+              /* If we've found a variable that cannot be replaced then the
+                 expression is not a constant expression and we want to 
+                 replace it with a GQuark */
+
+              t->d.v.name_quark = g_quark_from_string (t->d.v.name);
+              is_constant = FALSE;
             }
-          break;
-        case POS_TOKEN_OPERATOR:
-          g_string_append (str, op_name (t->d.o.op));
-          break;
         }
     }  
+
+  return is_constant;
+}
+
+static int
+parse_x_position_unchecked (MetaDrawSpec              *spec,
+                            const MetaPositionExprEnv *env)
+{
+  int retval;
+  GError *error;
+
+  retval = 0;
+  error = NULL;
+  if (!meta_parse_position_expression (spec, env, &retval, NULL, &error))
+    {
+      meta_warning (_("Theme contained an expression that resulted in an error: %s\n"),
+                    error->message);
+      
+      g_error_free (error);
+    }
   
-  free_tokens (tokens, n_tokens);
-
-  return g_string_free (str, FALSE);
+  return retval;
 }
 
 static int
-parse_x_position_unchecked (const char                *expr,
+parse_y_position_unchecked (MetaDrawSpec              *spec,
                             const MetaPositionExprEnv *env)
 {
   int retval;
@@ -2442,12 +2413,10 @@ parse_x_position_unchecked (const char                *expr,
 
   retval = 0;
   error = NULL;
-  if (!meta_parse_position_expression (expr, env,
-                                       &retval, NULL,
-                                       &error))
+  if (!meta_parse_position_expression (spec, env, NULL, &retval, &error))
     {
-      meta_warning (_("Theme contained an expression \"%s\" that resulted in an error: %s\n"),
-                    expr, error->message);
+      meta_warning (_("Theme contained an expression that resulted in an error: %s\n"),
+                    error->message);
 
       g_error_free (error);
     }
@@ -2456,29 +2425,7 @@ parse_x_position_unchecked (const char                *expr,
 }
 
 static int
-parse_y_position_unchecked (const char                *expr,
-                            const MetaPositionExprEnv *env)
-{
-  int retval;
-  GError *error;
-
-  retval = 0;
-  error = NULL;
-  if (!meta_parse_position_expression (expr, env,
-                                       NULL, &retval,
-                                       &error))
-    {
-      meta_warning (_("Theme contained an expression \"%s\" that resulted in an error: %s\n"),
-                    expr, error->message);
-
-      g_error_free (error);
-    }
-
-  return retval;
-}
-
-static int
-parse_size_unchecked (const char          *expr,
+parse_size_unchecked (MetaDrawSpec        *spec,
                       MetaPositionExprEnv *env)
 {
   int retval;
@@ -2486,16 +2433,50 @@ parse_size_unchecked (const char          *expr,
 
   retval = 0;
   error = NULL;
-  if (!meta_parse_size_expression (expr, env,
-                                   &retval, &error))
+  if (!meta_parse_size_expression (spec, env, &retval, &error))
     {
-      meta_warning (_("Theme contained an expression \"%s\" that resulted in an error: %s\n"),
-                    expr, error->message);
+      meta_warning (_("Theme contained an expression that resulted in an error: %s\n"),
+                    error->message);
 
       g_error_free (error);
     }
 
   return retval;
+}
+
+void
+meta_draw_spec_free (MetaDrawSpec *spec)
+{
+  free_tokens (spec->tokens, spec->n_tokens);
+  g_slice_free (MetaDrawSpec, spec);
+}
+
+MetaDrawSpec *
+meta_draw_spec_new (MetaTheme  *theme,
+                    const char *expr,
+                    GError    **error)
+{
+  MetaDrawSpec *spec;
+
+  spec = g_slice_new0 (MetaDrawSpec);
+
+  pos_tokenize (expr, &spec->tokens, &spec->n_tokens, NULL);
+  
+  spec->constant = meta_theme_replace_constants (theme, spec->tokens, 
+                                                 spec->n_tokens, NULL);
+  if (spec->constant) 
+    {
+      gboolean result;
+
+      result = pos_eval (spec, NULL, &spec->value, error);
+      if (result == FALSE)
+        {
+          meta_draw_spec_free (spec);
+          return NULL;
+        }
+    }
+    
+  return spec;
 }
 
 MetaDrawOp*
@@ -2581,130 +2562,145 @@ meta_draw_op_free (MetaDrawOp *op)
     case META_DRAW_LINE:
       if (op->data.line.color_spec)
         meta_color_spec_free (op->data.line.color_spec);
-      g_free (op->data.line.x1);
-      g_free (op->data.line.y1);
-      g_free (op->data.line.x2);
-      g_free (op->data.line.y2);
+
+      meta_draw_spec_free (op->data.line.x1);
+      meta_draw_spec_free (op->data.line.y1);
+      meta_draw_spec_free (op->data.line.x2);
+      meta_draw_spec_free (op->data.line.y2);
       break;
 
     case META_DRAW_RECTANGLE:
       if (op->data.rectangle.color_spec)
         g_free (op->data.rectangle.color_spec);
-      g_free (op->data.rectangle.x);
-      g_free (op->data.rectangle.y);
-      g_free (op->data.rectangle.width);
-      g_free (op->data.rectangle.height);
+
+      meta_draw_spec_free (op->data.rectangle.x);
+      meta_draw_spec_free (op->data.rectangle.y);
+      meta_draw_spec_free (op->data.rectangle.width);
+      meta_draw_spec_free (op->data.rectangle.height);
       break;
 
     case META_DRAW_ARC:
       if (op->data.arc.color_spec)
         g_free (op->data.arc.color_spec);
-      g_free (op->data.arc.x);
-      g_free (op->data.arc.y);
-      g_free (op->data.arc.width);
-      g_free (op->data.arc.height);
+
+      meta_draw_spec_free (op->data.arc.x);
+      meta_draw_spec_free (op->data.arc.y);
+      meta_draw_spec_free (op->data.arc.width);
+      meta_draw_spec_free (op->data.arc.height);
       break;
 
     case META_DRAW_CLIP:
-      g_free (op->data.clip.x);
-      g_free (op->data.clip.y);
-      g_free (op->data.clip.width);
-      g_free (op->data.clip.height);
+      meta_draw_spec_free (op->data.clip.x);
+      meta_draw_spec_free (op->data.clip.y);
+      meta_draw_spec_free (op->data.clip.width);
+      meta_draw_spec_free (op->data.clip.height);
       break;
       
     case META_DRAW_TINT:
       if (op->data.tint.color_spec)
         meta_color_spec_free (op->data.tint.color_spec);
+
       if (op->data.tint.alpha_spec)
         meta_alpha_gradient_spec_free (op->data.tint.alpha_spec);
-      g_free (op->data.tint.x);
-      g_free (op->data.tint.y);
-      g_free (op->data.tint.width);
-      g_free (op->data.tint.height);
+
+      meta_draw_spec_free (op->data.tint.x);
+      meta_draw_spec_free (op->data.tint.y);
+      meta_draw_spec_free (op->data.tint.width);
+      meta_draw_spec_free (op->data.tint.height);
       break;
 
     case META_DRAW_GRADIENT:
       if (op->data.gradient.gradient_spec)
         meta_gradient_spec_free (op->data.gradient.gradient_spec);
+
       if (op->data.gradient.alpha_spec)
         meta_alpha_gradient_spec_free (op->data.gradient.alpha_spec);
-      g_free (op->data.gradient.x);
-      g_free (op->data.gradient.y);
-      g_free (op->data.gradient.width);
-      g_free (op->data.gradient.height);
+
+      meta_draw_spec_free (op->data.gradient.x);
+      meta_draw_spec_free (op->data.gradient.y);
+      meta_draw_spec_free (op->data.gradient.width);
+      meta_draw_spec_free (op->data.gradient.height);
       break;
 
     case META_DRAW_IMAGE:
       if (op->data.image.alpha_spec)
         meta_alpha_gradient_spec_free (op->data.image.alpha_spec);
+
       if (op->data.image.pixbuf)
         g_object_unref (G_OBJECT (op->data.image.pixbuf));
+
       if (op->data.image.colorize_spec)
 	meta_color_spec_free (op->data.image.colorize_spec);
+
       if (op->data.image.colorize_cache_pixbuf)
         g_object_unref (G_OBJECT (op->data.image.colorize_cache_pixbuf));
-      g_free (op->data.image.x);
-      g_free (op->data.image.y);
-      g_free (op->data.image.width);
-      g_free (op->data.image.height);
+
+      meta_draw_spec_free (op->data.image.x);
+      meta_draw_spec_free (op->data.image.y);
+      meta_draw_spec_free (op->data.image.width);
+      meta_draw_spec_free (op->data.image.height);
       break;
 
     case META_DRAW_GTK_ARROW:
-      g_free (op->data.gtk_arrow.x);
-      g_free (op->data.gtk_arrow.y);
-      g_free (op->data.gtk_arrow.width);
-      g_free (op->data.gtk_arrow.height);
+      meta_draw_spec_free (op->data.gtk_arrow.x);
+      meta_draw_spec_free (op->data.gtk_arrow.y);
+      meta_draw_spec_free (op->data.gtk_arrow.width);
+      meta_draw_spec_free (op->data.gtk_arrow.height);
       break;
 
     case META_DRAW_GTK_BOX:
-      g_free (op->data.gtk_box.x);
-      g_free (op->data.gtk_box.y);
-      g_free (op->data.gtk_box.width);
-      g_free (op->data.gtk_box.height);
+      meta_draw_spec_free (op->data.gtk_box.x);
+      meta_draw_spec_free (op->data.gtk_box.y);
+      meta_draw_spec_free (op->data.gtk_box.width);
+      meta_draw_spec_free (op->data.gtk_box.height);
       break;
 
     case META_DRAW_GTK_VLINE:
-      g_free (op->data.gtk_vline.x);
-      g_free (op->data.gtk_vline.y1);
-      g_free (op->data.gtk_vline.y2);
+      meta_draw_spec_free (op->data.gtk_vline.x);
+      meta_draw_spec_free (op->data.gtk_vline.y1);
+      meta_draw_spec_free (op->data.gtk_vline.y2);
       break;
 
     case META_DRAW_ICON:
       if (op->data.icon.alpha_spec)
         meta_alpha_gradient_spec_free (op->data.icon.alpha_spec);
-      g_free (op->data.icon.x);
-      g_free (op->data.icon.y);
-      g_free (op->data.icon.width);
-      g_free (op->data.icon.height);
+
+      meta_draw_spec_free (op->data.icon.x);
+      meta_draw_spec_free (op->data.icon.y);
+      meta_draw_spec_free (op->data.icon.width);
+      meta_draw_spec_free (op->data.icon.height);
       break;
 
     case META_DRAW_TITLE:
       if (op->data.title.color_spec)
         meta_color_spec_free (op->data.title.color_spec);
-      g_free (op->data.title.x);
-      g_free (op->data.title.y);
+
+      meta_draw_spec_free (op->data.title.x);
+      meta_draw_spec_free (op->data.title.y);
       break;
 
     case META_DRAW_OP_LIST:
       if (op->data.op_list.op_list)
         meta_draw_op_list_unref (op->data.op_list.op_list);
-      g_free (op->data.op_list.x);
-      g_free (op->data.op_list.y);
-      g_free (op->data.op_list.width);
-      g_free (op->data.op_list.height);
+
+      meta_draw_spec_free (op->data.op_list.x);
+      meta_draw_spec_free (op->data.op_list.y);
+      meta_draw_spec_free (op->data.op_list.width);
+      meta_draw_spec_free (op->data.op_list.height);
       break;
 
     case META_DRAW_TILE:
       if (op->data.tile.op_list)
         meta_draw_op_list_unref (op->data.tile.op_list);
-      g_free (op->data.tile.x);
-      g_free (op->data.tile.y);
-      g_free (op->data.tile.width);
-      g_free (op->data.tile.height);
-      g_free (op->data.tile.tile_xoffset);
-      g_free (op->data.tile.tile_yoffset);
-      g_free (op->data.tile.tile_width);
-      g_free (op->data.tile.tile_height);
+
+      meta_draw_spec_free (op->data.tile.x);
+      meta_draw_spec_free (op->data.tile.y);
+      meta_draw_spec_free (op->data.tile.width);
+      meta_draw_spec_free (op->data.tile.height);
+      meta_draw_spec_free (op->data.tile.tile_xoffset);
+      meta_draw_spec_free (op->data.tile.tile_yoffset);
+      meta_draw_spec_free (op->data.tile.tile_width);
+      meta_draw_spec_free (op->data.tile.tile_height);
       break;
     }
 
@@ -3258,7 +3254,7 @@ fill_env (MetaPositionExprEnv *env,
 
   env->title_width = info->title_layout_width;
   env->title_height = info->title_layout_height;
-  env->theme = NULL; /* not required, constants have been optimized out */
+  env->theme = meta_current_theme;
 }
 
 static void
@@ -3293,7 +3289,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
           }
 
         x1 = parse_x_position_unchecked (op->data.line.x1, env);
-        y1 = parse_y_position_unchecked (op->data.line.y1, env);
+        y1 = parse_y_position_unchecked (op->data.line.y1, env); 
         x2 = parse_x_position_unchecked (op->data.line.x2, env);
         y2 = parse_y_position_unchecked (op->data.line.y2, env);
 
@@ -4463,8 +4459,6 @@ meta_frame_style_set_validate  (MetaFrameStyleSet *style_set,
   return TRUE;
 }
 
-static MetaTheme *meta_current_theme = NULL;
-
 MetaTheme*
 meta_theme_get_current (void)
 {
@@ -4542,6 +4536,22 @@ meta_theme_new (void)
                            g_free,
                            (GDestroyNotify) meta_frame_style_set_unref);
   
+  /* Create our variable quarks so we can look up variables without
+     having to strcmp for the names */
+  theme->quark_width = g_quark_from_static_string ("width");
+  theme->quark_height = g_quark_from_static_string ("height");
+  theme->quark_object_width = g_quark_from_static_string ("object_width");
+  theme->quark_object_height = g_quark_from_static_string ("object_height");
+  theme->quark_left_width = g_quark_from_static_string ("left_width");
+  theme->quark_right_width = g_quark_from_static_string ("right_width");
+  theme->quark_top_height = g_quark_from_static_string ("top_height");
+  theme->quark_bottom_height = g_quark_from_static_string ("bottom_height");
+  theme->quark_mini_icon_width = g_quark_from_static_string ("mini_icon_width");
+  theme->quark_mini_icon_height = g_quark_from_static_string ("mini_icon_height");
+  theme->quark_icon_width = g_quark_from_static_string ("icon_width");
+  theme->quark_icon_height = g_quark_from_static_string ("icon_height");
+  theme->quark_title_width = g_quark_from_static_string ("title_width");
+  theme->quark_title_height = g_quark_from_static_string ("title_height");
   return theme;
 }
 

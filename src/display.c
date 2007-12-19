@@ -65,6 +65,11 @@
 #ifdef HAVE_XCURSOR
 #include <X11/Xcursor/Xcursor.h>
 #endif
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+#include <X11/extensions/Xcomposite.h>
+#include <X11/extensions/Xdamage.h>
+#include <X11/extensions/Xfixes.h>
+#endif
 #include <string.h>
 
 #define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
@@ -186,9 +191,22 @@ sn_error_trap_pop (SnDisplay *sn_display,
 #endif
 
 static void
-enable_compositor (MetaDisplay *display)
+enable_compositor (MetaDisplay *display,
+                   gboolean     composite_windows)
 {
   GSList *list;
+
+  if (!META_DISPLAY_HAS_COMPOSITE (display) ||
+      !META_DISPLAY_HAS_DAMAGE (display) ||
+      !META_DISPLAY_HAS_XFIXES (display) ||
+      !META_DISPLAY_HAS_RENDER (display))
+    {
+      meta_warning (_("Missing %s extension required for compositing"),
+                    !META_DISPLAY_HAS_COMPOSITE (display) ? "composite" :
+                    !META_DISPLAY_HAS_DAMAGE (display) ? "damage" :
+                    !META_DISPLAY_HAS_XFIXES (display) ? "xfixes" : "render");
+      return;
+    }
 
   if (!display->compositor)
       display->compositor = meta_compositor_new (display);
@@ -203,7 +221,8 @@ enable_compositor (MetaDisplay *display)
       meta_compositor_manage_screen (screen->display->compositor,
 				     screen);
 
-      meta_screen_composite_all_windows (screen);
+      if (composite_windows)
+        meta_screen_composite_all_windows (screen);
     }
 }
 
@@ -336,7 +355,7 @@ meta_display_open (void)
     "_NET_WM_VISIBLE_ICON_NAME",
     "_NET_WM_USER_TIME_WINDOW",
     "_NET_WM_ACTION_ABOVE",
-    "_NET_WM_ACTION_BELOW"
+    "_NET_WM_ACTION_BELOW",
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -398,7 +417,8 @@ meta_display_open (void)
   update_window_grab_modifiers (display);
 
   meta_prefs_add_listener (prefs_changed_callback, display);
-  
+
+  meta_verbose ("Creating %d atoms\n", G_N_ELEMENTS (atom_names));
   XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
   display->atom_net_wm_name = atoms[0];
@@ -647,6 +667,69 @@ meta_display_open (void)
   meta_verbose ("Not compiled with Render support\n");
 #endif /* !HAVE_RENDER */
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  {
+    display->have_composite = FALSE;
+
+    display->composite_error_base = 0;
+    display->composite_event_base = 0;
+
+    if (!XCompositeQueryExtension (display->xdisplay,
+                                   &display->composite_event_base,
+                                   &display->composite_error_base))
+      {
+        display->composite_error_base = 0;
+        display->composite_event_base = 0;
+      } 
+    else
+      display->have_composite = TRUE;
+
+    meta_verbose ("Attempted to init Composite, found error base %d event base %d\n",
+                  display->composite_error_base, 
+                  display->composite_event_base);
+
+    display->have_damage = FALSE;
+
+    display->damage_error_base = 0;
+    display->damage_event_base = 0;
+
+    if (!XDamageQueryExtension (display->xdisplay,
+                                &display->damage_event_base,
+                                &display->damage_error_base))
+      {
+        display->damage_error_base = 0;
+        display->damage_event_base = 0;
+      } 
+    else
+      display->have_damage = TRUE;
+
+    meta_verbose ("Attempted to init Damage, found error base %d event base %d\n",
+                  display->damage_error_base, 
+                  display->damage_event_base);
+
+    display->have_xfixes = FALSE;
+
+    display->xfixes_error_base = 0;
+    display->xfixes_event_base = 0;
+
+    if (!XFixesQueryExtension (display->xdisplay,
+                               &display->xfixes_event_base,
+                               &display->xfixes_error_base))
+      {
+        display->xfixes_error_base = 0;
+        display->xfixes_event_base = 0;
+      } 
+    else
+      display->have_xfixes = TRUE;
+
+    meta_verbose ("Attempted to init XFixes, found error base %d event base %d\n",
+                  display->xfixes_error_base, 
+                  display->xfixes_event_base);
+  }
+#else /* HAVE_COMPOSITE_EXTENSIONS */
+  meta_verbose ("Not compiled with Composite support\n");
+#endif /* !HAVE_COMPOSITE_EXTENSIONS */
+      
 #ifdef HAVE_XCURSOR
   {
     XcursorSetTheme (display->xdisplay, meta_prefs_get_cursor_theme ());
@@ -742,7 +825,13 @@ meta_display_open (void)
       meta_display_close (display, timestamp);
       return FALSE;
     }
- 
+
+  /* We don't composite the windows here because they will be composited 
+     faster with the call to meta_screen_manage_all_windows further down 
+     the code */
+  if (meta_prefs_get_compositing_manager ())
+    enable_compositor (display, FALSE);
+   
   meta_display_grab (display);
   
   /* Now manage all existing windows */
@@ -796,9 +885,6 @@ meta_display_open (void)
   
   meta_display_ungrab (display);  
 
-  if (meta_prefs_get_compositing_manager ())
-    enable_compositor (display);
-  
   /* Done opening new display */
   display->display_opening = FALSE;
 
@@ -939,7 +1025,7 @@ meta_display_close (MetaDisplay *display,
   meta_display_shutdown_keys (display);
 
   if (display->compositor)
-    meta_compositor_unref (display->compositor);
+    meta_compositor_destroy (display->compositor);
   
   g_free (display);
 
@@ -4830,7 +4916,7 @@ prefs_changed_callback (MetaPreference pref,
       gboolean cm = meta_prefs_get_compositing_manager ();
 
       if (cm)
-	enable_compositor (display);
+        enable_compositor (display, TRUE);
       else
 	disable_compositor (display);
     }

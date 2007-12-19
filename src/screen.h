@@ -102,7 +102,11 @@ struct _MetaScreen
   GSList *startup_sequences;
   guint startup_sequence_timeout;
 #endif
-  
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  Window wm_cm_selection_window;
+#endif
+
   guint work_area_idle;
 
   int rows_of_workspaces;
@@ -210,5 +214,10 @@ void     meta_screen_update_showing_desktop_hint          (MetaScreen *screen);
 gboolean meta_screen_apply_startup_properties (MetaScreen *screen,
                                                MetaWindow *window);
 void	 meta_screen_composite_all_windows (MetaScreen *screen);
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+void meta_screen_set_cm_selection (MetaScreen *screen);
+void meta_screen_unset_cm_selection (MetaScreen *screen);
+#endif
 
 #endif
