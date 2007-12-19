@@ -988,6 +988,16 @@ meta_ui_get_pixbuf_from_pixmap (Pixmap   pmap)
 
   return pixbuf;
 }
+  
+void
+meta_ui_get_fallback_icons (GdkPixbuf **fallback_icon_p,
+                            GdkPixbuf **fallback_mini_icon_p)
+{
+  MetaTheme *theme = meta_theme_get_current ();
 
-  
-  
+  if (fallback_icon_p)
+    *fallback_icon_p = theme->fallback_icon;
+
+  if (fallback_mini_icon_p)
+    *fallback_mini_icon_p = theme->fallback_mini_icon;  
+}

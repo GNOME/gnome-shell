@@ -2216,7 +2216,7 @@ meta_compositor_new (MetaDisplay *display)
   compositor = g_new (MetaCompositor, 1);
   compositor->display = display;
 
-  meta_verbose ("Creating %d atoms\n", G_N_ELEMENTS (atom_names));
+  meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
   XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
   compositor->atom_x_root_pixmap = atoms[0];

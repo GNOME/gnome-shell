@@ -817,11 +817,15 @@ meta_read_icons (MetaScreen     *screen,
   if (icon_cache->want_fallback &&
       icon_cache->origin < USING_FALLBACK_ICON)
     {
-#if 0
-      /* FIXME this code requires GTK and thus does not belong here in core/ */
-      MetaTheme *theme = meta_theme_get_current ();
+      GdkPixbuf *fallback_icon;
+      GdkPixbuf *fallback_mini_icon;
+      
+      fallback_icon = NULL;
+      fallback_mini_icon = NULL;
 
-      if (theme->fallback_icon == NULL || theme->fallback_mini_icon == NULL)
+      meta_ui_get_fallback_icons(&fallback_icon, &fallback_mini_icon);
+
+      if (fallback_icon == NULL || fallback_mini_icon == NULL)
         {
           get_fallback_icons (screen,
                               iconp,
@@ -832,18 +836,15 @@ meta_read_icons (MetaScreen     *screen,
                               ideal_mini_height);
         }
 
-      if (theme->fallback_icon != NULL)
-        *iconp = theme->fallback_icon;
-      if (theme->fallback_mini_icon != NULL)
-        *mini_iconp = theme->fallback_mini_icon;
-
+      if (fallback_icon != NULL)
+        *iconp = fallback_icon;
+      if (fallback_mini_icon != NULL)
+        *mini_iconp = fallback_mini_icon;
+      
       replace_cache (icon_cache, USING_FALLBACK_ICON,
                      *iconp, *mini_iconp);
-
+      
       return TRUE;
-#else
-      return FALSE;
-#endif
     }
 
   if (!icon_cache->want_fallback &&

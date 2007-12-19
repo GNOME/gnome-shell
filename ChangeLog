@@ -1,5 +1,21 @@
 2007-12-19  Havoc Pennington  <hp@redhat.com>
 
+	* src/core/display.c (meta_display_open): fix a third warning
+	about %d and long int
+
+	* src/core/delete.c (io_from_ping_dialog): fix another warning
+	about long int to %d
+
+	* src/core/compositor.c (meta_compositor_new): fix a warning about
+	long int to %d
+
+	* src/core/iconcache.c (meta_read_icons): use
+	meta_ui_get_fallback_icons() instead of incorrectly including theme.h
+
+	* src/ui/ui.c (meta_ui_get_fallback_icons): new function
+
+2007-12-19  Havoc Pennington  <hp@redhat.com>
+
 	* src/ui, src/core, src/include: sort source files into these
 	directories according to which part of the WM they are supposed to
 	be in. In an eventual plan, we should also create

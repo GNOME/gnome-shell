@@ -418,7 +418,7 @@ meta_display_open (void)
 
   meta_prefs_add_listener (prefs_changed_callback, display);
 
-  meta_verbose ("Creating %d atoms\n", G_N_ELEMENTS (atom_names));
+  meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
   XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
   display->atom_net_wm_name = atoms[0];

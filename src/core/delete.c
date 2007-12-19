@@ -271,7 +271,7 @@ io_from_ping_dialog (GIOChannel   *channel,
 
       meta_topic (META_DEBUG_PING,
                   "Read %d bytes strlen %d \"%s\" from child\n",
-                  len, str ? strlen (str) : 0, str ? str : "NULL");
+                  len, str ? (int) strlen (str) : 0, str ? str : "NULL");
       
       if (len > 0)
         {
