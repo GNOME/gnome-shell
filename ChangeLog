@@ -1,3 +1,7 @@
+2007-12-18  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: compositor enabled by default.
+
 2007-12-18  Iain Holmes  <iain@gnome.org>
 
         * configure.in, src/theme.c, src/display.c,
