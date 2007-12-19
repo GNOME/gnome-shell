@@ -1,3 +1,17 @@
+2.21.5
+======
+
+Thanks to Iain Holmes and Thomas Thurman for improvements in this version.
+This contains the new compositor; downstream maintainers should note that
+its GConf key is initially turned off in src/metacity.schemas.in and consider
+whether to turn it on by default in their packages.
+
+  - merge compositor branch! (Iain) (499081)
+  - print "Subversion" and not "CVS" when building (Thomas)
+
+Translations
+  Jorge González (es), Kjartan Maraas (nb), Daniel Nylander (sv)
+
 2.21.3
 ======
 
