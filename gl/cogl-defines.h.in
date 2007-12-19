@@ -29,7 +29,7 @@
 #ifdef WIN32
 
 #include <windows.h>
-#include <GL/Glee.h>
+#include <GL/GLee.h>
 
 #else
 
@@ -688,8 +688,8 @@ typedef GLuint COGLuint;
 #define CGL_TEXTURE_RECTANGLE_ARB 0
 #endif
 
-#ifdef GL_YCBCR_MESA 
-#define CGL_YCBCR_MESA GL_YCBCR_MESA 
+#ifdef GL_YCBCR_MESA
+#define CGL_YCBCR_MESA GL_YCBCR_MESA
 #define CGL_UNSIGNED_SHORT_8_8_REV_MESA GL_UNSIGNED_SHORT_8_8_REV_MESA
 #define CGL_UNSIGNED_SHORT_8_8_MESA GL_UNSIGNED_SHORT_8_8_MESA
 #else
