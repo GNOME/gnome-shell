@@ -18,7 +18,7 @@ m4_define([clutter_binary_age],
 
 AC_PREREQ(2.53)
 
-AC_INIT([clutter], 
+AC_INIT([clutter],
         [clutter_version],
         [http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter])
 AC_CONFIG_SRCDIR([clutter/clutter.h])
@@ -114,12 +114,12 @@ if test x$have_x11 = xno; then
      fi
      if test x"$x_includes" != x"NONE" && test -n "$x_includes" ; then
 	X11_CFLAGS=-I`echo $x_includes | sed -e "s/:/ -I/g"`
-     fi	     
+     fi
      if test x"$x_libraries" != x"NONE" && test -n "$x_libraries" ; then
 	X11_LIBS=-L`echo $x_libraries | sed -e "s/:/ -L/g"`
      fi
 fi
-   
+
 PKG_CHECK_MODULES(XFIXES, xfixes >= 4, [have_xfixes=yes], [have_xfixes=no])
 if test x$have_xfixes = xyes; then
       AC_DEFINE(HAVE_XFIXES, 1, Have the XFIXES X extension)
@@ -148,14 +148,26 @@ case $clutterbackend in
 
        AC_CHECK_HEADERS([$clutter_gl_header],,
                         [AC_MSG_ERROR([Unable to locate required GL headers])])
-       
-       AC_CHECK_LIB(GL, glEnable, HAVE_LIBGL=yes, HAVE_LIBGL=no)
-       if test "x$HAVE_LIBGL" = "xno"; then
-         AC_MSG_ERROR([libGL not found]);
-       fi
-       
-       SDL_LIBS="$SDL_LIBS -lGL"
-     fi
+
+       dnl Use GLee under Windows instead of GL
+       case "$host" in
+         *mingw32*)
+           AC_CHECK_LIB(GLee, GLeeInit, HAVE_LIBGLEE=yes, HAVE_LIBGLEE=no, -lopengl32)
+	   if test "x$HAVE_LIBGLEE" = "xno"; then
+	     AC_MSG_ERROR([libGLee not found]);
+	   fi
+
+           SDL_LIBS="$SDL_LIBS -lGLee -lopengl32"
+           ;;
+         *)
+	   AC_CHECK_LIB(GL, glEnable, HAVE_LIBGL=yes, HAVE_LIBGL=no)
+	   if test "x$HAVE_LIBGL" = "xno"; then
+	     AC_MSG_ERROR([libGL not found]);
+	   fi
+           SDL_LIBS="$SDL_LIBS -lGL"
+           ;;
+       esac
+    fi
     ;;
 
   glx)
@@ -180,15 +192,15 @@ case $clutterbackend in
 
     # xlib pixbuf needed for exporting the stage
     BACKEND_PC_FILES="gdk-pixbuf-xlib-2.0"
- 
+
     GLX_LIBS="$X11_LIBS -lGL"
     GLX_CFLAGS="$X11_CFLAGS"
-    backendextra=x11	
+    backendextra=x11
     backendextralib="x11/libclutter-x11.la"
     ;;
 
   eglx)
-    
+
     clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglx"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
@@ -209,13 +221,13 @@ case $clutterbackend in
 	if test "x$HAVE_LIBGLES" = "xno"; then
 	  AC_MSG_ERROR([GLES library not found and egl backend requested.]);
 	fi
-        EGL_LIBS="gles_cm"  
+        EGL_LIBS="gles_cm"
 
    else
-        EGL_LIBS="GLES_CM"  
+        EGL_LIBS="GLES_CM"
    fi
 
-    # glColor4ub needed for more precise picking, seems presence is a 
+    # glColor4ub needed for more precise picking, seems presence is a
     # bit random in egl 1.1 (in SDK header, but not lib)
     AC_CHECK_LIB($EGL_LIBS, glColor4ub, COLOR4UB=1, COLOR4UB=0)
     AC_DEFINE([HAVE_GLES_COLOR4UB], $COLOR4UB, [Have GL/ES glColor4ub])
@@ -227,7 +239,7 @@ case $clutterbackend in
     ;;
 
   eglnative)
-    
+
     clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglnative"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])

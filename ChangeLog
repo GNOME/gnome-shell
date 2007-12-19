@@ -1,3 +1,13 @@
+2007-12-19  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/cogl/gl/cogl-defines.h.in:
+	* clutter/pango/pangoclutter-render.c:
+	* configure.ac:
+	Fixes to allow cross-compilation with mingw (patch by Neil
+	Roberts).
+	Removed trailing whitespace.
+
 2007-12-18  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-main.c: (generate_enter_leave_events): synthesize

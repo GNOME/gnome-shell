@@ -18,9 +18,9 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/cogl 	        \
 	-I$(top_srcdir)/clutter/cogl/@CLUTTER_COGL@ \
 	-I$(top_srcdir)/clutter/json 		\
-	-DPREFIX=\""$(prefix)"\" 		\
-	-DLIBDIR=\""$(libdir)"\" 		\
-	-DDATADIR=\""$(datadir)"\" 		\
+	-DCLUTTER_PREFIX=\""$(prefix)"\" 	\
+	-DCLUTTER_LIBDIR=\""$(libdir)"\" 	\
+	-DCLUTTER_DATADIR=\""$(datadir)"\"	\
 	-DG_DISABLE_DEPRECATED 			\
 	-DG_LOG_DOMAIN=\"Clutter\" 		\
 	-DCLUTTER_JSON_API=1			\
@@ -178,10 +178,10 @@ libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
   @CLUTTER_FLAVOUR@/libclutter-@CLUTTER_FLAVOUR@.la \
   cogl/@CLUTTER_COGL@/libclutter-cogl.la \
   json/libclutter-json.la \
-  $(backendextralib)	
+  $(backendextralib)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
-  $(source_c) $(source_h) $(source_h_priv)                      
+  $(source_c) $(source_h) $(source_h_priv)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
 

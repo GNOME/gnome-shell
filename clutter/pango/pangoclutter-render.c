@@ -86,7 +86,7 @@ tc_clear ()
 static void
 tc_get (tc_area *area, int width, int height)
 {
-  int       slice_height; 
+  int       slice_height;
   tc_slice *slice;
 
   area->w = width;
@@ -120,8 +120,8 @@ tc_get (tc_area *area, int width, int height)
 	  CLUTTER_NOTE (PANGO, "creating new texture %i x %i",
 			TC_WIDTH, TC_HEIGHT);
 
-	  /* Use NPOTS if available as it simply makes shaders easier to 
-	   * work with on text. 
+	  /* Use NPOTS if available as it simply makes shaders easier to
+	   * work with on text.
 	  */
 	  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
 	    texture_target_type = CGL_TEXTURE_RECTANGLE_ARB;
@@ -139,7 +139,7 @@ tc_get (tc_area *area, int width, int height)
          * that should allow rerendering of glyphs to look nice even at scales
          * far below 50%.
          */
-	  cogl_texture_set_filters (texture_target_type, 
+	  cogl_texture_set_filters (texture_target_type,
 				    CGL_LINEAR, CGL_NEAREST);
 
 	  cogl_texture_image_2d (texture_target_type,
@@ -219,9 +219,9 @@ temp_buffer (size_t size)
   if (size > alloc)
     {
       size = (size + 4095) & ~4095;
-      free (buffer);
+      g_free (buffer);
       alloc = size;
-      buffer = malloc (size);
+      buffer = g_malloc (size);
     }
 
   return buffer;
@@ -371,7 +371,7 @@ draw_glyph (PangoRenderer *renderer_,
 
       cogl_texture_bind (renderer->texture_target_type, g->tex.name);
 
-      cogl_texture_set_alignment (renderer->texture_target_type, 
+      cogl_texture_set_alignment (renderer->texture_target_type,
 				  1, bm.stride);
 
       cogl_texture_sub_image_2d (renderer->texture_target_type,
@@ -383,7 +383,7 @@ draw_glyph (PangoRenderer *renderer_,
 				 CGL_UNSIGNED_BYTE,
 				 bm.bitmap);
 
-      glTexParameteri (renderer->texture_target_type, 
+      glTexParameteri (renderer->texture_target_type,
 		       GL_GENERATE_MIPMAP, FALSE);
 
       renderer->curtex = g->tex.name;
