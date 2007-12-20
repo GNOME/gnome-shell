@@ -1,3 +1,8 @@
+2007-12-20  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* POTFILES.in: Rearrange after stuff moved around.
+	* nb.po: Update
+
 2007-12-19  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
