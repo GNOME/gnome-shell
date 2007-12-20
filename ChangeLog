@@ -1,3 +1,9 @@
+2007-12-19  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-texture.[ch]: (bug #675) added
+	clutter_texture_set_area_from_rgb_data, sharing some of the
+	initialization infrastructure with clutter_texture_set_from_rgb_data.
+
 2007-12-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-container.c:

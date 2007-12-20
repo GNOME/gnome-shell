@@ -426,14 +426,14 @@ texture_free_gl_resources (ClutterTexture *texture)
     }
 }
 
-static void
+static void inline
 texture_upload_data (ClutterTexture *texture,
-		     const guchar   *data,
-		     gboolean        has_alpha,
-		     gint            width,
-		     gint            height,
-		     gint            rowstride,
-		     gint            bpp)
+		             const guchar   *data,
+                     gboolean        has_alpha,
+                     gint            width,
+                     gint            height,
+                     gint            rowstride,
+                     gint            bpp)
 {
   ClutterTexturePrivate *priv;
   gint x, y;
@@ -1247,6 +1247,79 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 #endif
 }
 
+/* internal helper function for initialization of
+ * clutter_texture_set_from_rgb_data and clutter_texture_set_area_from_rgb_data.
+ */
+static inline gboolean
+texture_prepare_upload (gboolean            initialize,
+                        ClutterTexture     *texture,
+                        const guchar       *data,
+                        gboolean            has_alpha,
+                        gint                width,
+                        gint                height,
+                        gint                rowstride,
+                        gint                bpp,
+                        ClutterTextureFlags flags,
+                        guchar            **copy_data,
+                        gboolean           *texture_dirty,
+                        gboolean           *size_change)
+{
+  ClutterTexturePrivate *priv;
+  COGLenum               prev_format;
+  priv = texture->priv;
+
+  g_return_val_if_fail (data != NULL, FALSE);
+  /* Needed for GL_RGBA (internal format) and gdk pixbuf usage */
+  g_return_val_if_fail (bpp == 4, FALSE);
+
+  if (initialize)
+    {
+      *texture_dirty = *size_change =
+        (width != priv->width || height != priv->height) ;
+    }
+
+  prev_format = priv->pixel_format;
+
+  if (has_alpha)
+    priv->pixel_format = CGL_RGBA;
+  else
+    priv->pixel_format = CGL_RGB;
+
+  if (flags & CLUTTER_TEXTURE_RGB_FLAG_BGR)
+    {
+#if HAVE_COGL_GL
+      if (has_alpha)
+	priv->pixel_format = CGL_BGRA;
+      else
+	priv->pixel_format = CGL_BGR;
+#else
+      /* GLES has no BGR format*/
+      *copy_data = rgb_to_bgr (data, has_alpha, width, height, rowstride);
+#endif /* HAVE_COGL_GL */
+    }
+
+  if (flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT)
+    *copy_data = un_pre_multiply_alpha (data, width, height, rowstride);
+
+  if (initialize)
+    {
+      if (prev_format != priv->pixel_format || priv->pixel_type != PIXEL_TYPE)
+        *texture_dirty = TRUE;
+    }
+  else
+    {
+      if (prev_format != priv->pixel_format || priv->pixel_type != PIXEL_TYPE)
+        {
+          g_warning ("%s: pixel format or type mismatch", G_STRFUNC);
+          return FALSE;
+        }
+    }
+
+  priv->pixel_type = PIXEL_TYPE;
+
+  return TRUE;
+}
+
 /**
  * clutter_texture_set_from_rgb_data:
  * @texture: A #ClutterTexture
@@ -1277,47 +1350,16 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 				     GError            **error)
 {
   ClutterTexturePrivate *priv;
-  gboolean               texture_dirty = TRUE, size_change = FALSE;
-  COGLenum               prev_format;
   guchar                *copy_data = NULL;
+  gboolean               texture_dirty = TRUE, size_change = FALSE;
 
   priv = texture->priv;
-
-  g_return_val_if_fail (data != NULL, FALSE);
-
-  /* Needed for GL_RGBA (internal format) and gdk pixbuf usage */
-  g_return_val_if_fail (bpp == 4, FALSE);
-
-  texture_dirty = size_change =
-    (width != priv->width || height != priv->height) ;
-
-  prev_format = priv->pixel_format;
-
-  if (has_alpha)
-    priv->pixel_format = CGL_RGBA;
-  else
-    priv->pixel_format = CGL_RGB;
-
-  if (flags & CLUTTER_TEXTURE_RGB_FLAG_BGR)
+  if (!texture_prepare_upload (TRUE, texture, data, has_alpha, width, height, rowstride,
+                               bpp, flags, &copy_data, &texture_dirty, &size_change))
     {
-#if HAVE_COGL_GL
-      if (has_alpha)
-	priv->pixel_format = CGL_BGRA;
-      else
-	priv->pixel_format = CGL_BGR;
-#else
-      /* GLES has no BGR format*/
-      copy_data = rgb_to_bgr (data, has_alpha, width, height, rowstride);
-#endif /* HAVE_COGL_GL */
+      return FALSE;
     }
 
-  if (flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT)
-    copy_data = un_pre_multiply_alpha (data, width, height, rowstride);
-
-  if (prev_format != priv->pixel_format || priv->pixel_type != PIXEL_TYPE)
-    texture_dirty = TRUE;
-
-  priv->pixel_type = PIXEL_TYPE;
   priv->width      = width;
   priv->height     = height;
 
@@ -1780,4 +1822,254 @@ clutter_texture_is_tiled (ClutterTexture *texture)
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
 
   return texture->priv->is_tiled;
+}
+
+
+static void inline
+texture_update_data (ClutterTexture *texture,
+		     const guchar   *data,
+		     gboolean        has_alpha,
+                     gint            x0,
+                     gint            y0,
+		     gint            width,
+		     gint            height,
+		     gint            rowstride,
+		     gint            bpp)
+{
+  ClutterTexturePrivate *priv;
+  gint x, y;
+  gint i = 0;
+  gboolean create_textures = FALSE;
+
+  priv = texture->priv;
+
+  g_return_if_fail (data != NULL);
+
+  CLUTTER_MARK();
+
+  if (!priv->is_tiled)
+    {
+      g_assert (priv->tiles);
+
+      CLUTTER_NOTE (TEXTURE, "syncing for single tile");
+
+      cogl_texture_bind (priv->target_type, priv->tiles[0]);
+      cogl_texture_set_alignment (priv->target_type, 4, width);
+
+      cogl_texture_set_filters
+	(priv->target_type,
+	 priv->filter_quality ? CGL_LINEAR : CGL_NEAREST,
+	 priv->filter_quality ? CGL_LINEAR : CGL_NEAREST);
+
+      cogl_texture_set_wrap (priv->target_type,
+			     priv->repeat_x ? CGL_REPEAT : CGL_CLAMP_TO_EDGE,
+			     priv->repeat_y ? CGL_REPEAT : CGL_CLAMP_TO_EDGE);
+
+      priv->filter_quality = 1;
+
+      cogl_texture_sub_image_2d (priv->target_type,
+				 x0,
+				 y0,
+				 width,
+				 height,
+				 priv->pixel_format,
+				 priv->pixel_type,
+				 data);
+      return;
+    }
+
+  /* Multiple tiled texture */
+
+  CLUTTER_NOTE (TEXTURE,
+                "syncing for multiple tiles for %ix%i pixbuf",
+		priv->width, priv->height);
+
+  g_return_if_fail (priv->x_tiles != NULL && priv->y_tiles != NULL);
+
+  if (priv->tiles == NULL)
+    {
+      g_assert (0);
+      priv->tiles = g_new (COGLuint, priv->n_x_tiles * priv->n_y_tiles);
+      glGenTextures (priv->n_x_tiles * priv->n_y_tiles, priv->tiles);
+      create_textures = TRUE;
+    }
+
+  for (x = 0; x < priv->n_x_tiles; x++)
+    for (y = 0; y < priv->n_y_tiles; y++)
+      {
+        gint master_offset_x;
+        gint effective_x;
+        gint effective_width;
+
+        gint master_offset_y;
+        gint effective_y;
+        gint effective_height;
+
+
+/*
+-- first tile --
+|--------------------- priv->width ------------------------------|
+| <- priv->x_tiles[x].pos
+|-----------| <- priv->x_tiles[x].size
+|-------| <- x0
+        |------------| <- width
+|--------------------| <- x0 + width
+|-------| <- master_offset = -8
+|-------| <- effective_x = 8
+        |---| <- effective_width
+
+-- second tile ---
+
+|--------------------- priv->width ------------------------------|
+|-----------|  <- priv->x_tiles[x].pos
+            |-----------| <- priv->x_tiles[x].size (src_w)
+|-------| <- x0
+        |------------| <- width
+|--------------------| <- x0 + width
+        |---| <- master_offset = 4 
+            | <- effective_x (0 in between)
+            |--------| <- effective_width
+
+
+        XXXXXXXXXXXXXX    <- master       
+|___________|___________|___________|___________|___________|_____%%%%%%|
+*/
+
+        gint src_w, src_h;
+
+	src_w = priv->x_tiles[x].size;
+	src_h = priv->y_tiles[y].size;
+
+        /* skip tiles that do not intersect the updated region */
+        if ((priv->x_tiles[x].pos + src_w < x0 ||
+             priv->y_tiles[y].pos + src_h < y0 ||
+             priv->x_tiles[x].pos >= x0 + width ||
+             priv->y_tiles[y].pos >= y0 + height))
+          {
+            i++;
+            continue;
+          }
+
+        master_offset_x = priv->x_tiles[x].pos - x0;
+
+        if (priv->x_tiles[x].pos > x0)
+          effective_x = 0;
+        else
+          effective_x = x0 - priv->x_tiles[x].pos;
+
+        effective_width = (x0 + width) - priv->x_tiles[x].pos;
+
+        if (effective_width > src_w - effective_x)
+          effective_width = src_w - effective_x;
+
+        master_offset_y = priv->y_tiles[y].pos - y0;
+
+        if (priv->y_tiles[y].pos > y0)
+          effective_y = 0;
+        else
+          effective_y = y0 - priv->y_tiles[y].pos;
+
+        effective_height = (y0 + height) - priv->y_tiles[y].pos;
+        if (effective_height > src_h - effective_y)
+          effective_height = src_h - effective_y;
+
+        if (master_offset_x < 0)
+          master_offset_x = 0;
+        if (master_offset_y < 0)
+          master_offset_y = 0;
+
+        if (master_offset_x + effective_width > width)
+          effective_width = width - master_offset_x;
+        if (master_offset_y + effective_height > height)
+          effective_height = height - master_offset_y;
+
+	cogl_texture_bind (priv->target_type, priv->tiles[i]);
+
+	cogl_texture_set_alignment (priv->target_type, 4, rowstride/4);
+
+	cogl_texture_set_filters
+	  (priv->target_type,
+	   priv->filter_quality ? CGL_LINEAR : CGL_NEAREST,
+	   priv->filter_quality ? CGL_LINEAR : CGL_NEAREST);
+
+	cogl_texture_set_wrap (priv->target_type,
+			       priv->repeat_x ? CGL_REPEAT : CGL_CLAMP_TO_EDGE,
+			       priv->repeat_y ? CGL_REPEAT : CGL_CLAMP_TO_EDGE);
+	cogl_texture_sub_image_2d (priv->target_type,
+				   effective_x,
+				   effective_y,
+				   effective_width,
+				   effective_height,
+				   priv->pixel_format,
+				   priv->pixel_type,
+                                   data + (master_offset_y * width + master_offset_x) * 4);
+
+	i++;
+      }
+}
+
+/**
+ * clutter_texture_set_area_from_rgb_data:
+ * @texture: A #ClutterTexture
+ * @data: Image data in RGB type colorspace.
+ * @has_alpha: Set to TRUE if image data has a alpha channel.
+ * @x: X coordinate of upper left corner of region to update.
+ * @y: Y coordinate of upper left corner of region to update.
+ * @width: Width in pixels of region to update.
+ * @height: Height in pixels of region to update.
+ * @rowstride: Distance in bytes between row starts.
+ * @bpp: bytes per pixel ( Currently only 4 supported )
+ * @flags: #ClutterTextureFlags
+ * @error: FIXME.
+ *
+ * Updates a subregion of the pixel data in a #ClutterTexture.
+ *
+ * Return value: TRUE on success, FALSE on failure.
+ *
+ * Since 0.6. 
+ **/
+gboolean
+clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
+                                        const guchar       *data,
+                                        gboolean            has_alpha,
+                                        gint                x,
+                                        gint                y,
+                                        gint                width,
+                                        gint                height,
+                                        gint                rowstride,
+                                        gint                bpp,
+                                        ClutterTextureFlags flags,
+                                        GError            **error)
+{
+  ClutterTexturePrivate *priv;
+  guchar                *copy_data = NULL;
+
+  priv = texture->priv;
+
+  if (!texture_prepare_upload (FALSE, texture, data, has_alpha, width, height, rowstride,
+                               bpp, flags, &copy_data, NULL, NULL))
+    {
+      return FALSE;
+    }
+
+  texture_update_data (texture,
+                       copy_data != NULL ? copy_data : data,
+                       has_alpha,
+                       x, y,
+                       width, height,
+                       rowstride,
+                       bpp);
+
+  CLUTTER_ACTOR_SET_FLAGS (CLUTTER_ACTOR (texture), CLUTTER_ACTOR_REALIZED);
+
+  /* rename signal */
+  g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
+
+  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
+
+  if (copy_data != NULL)
+    g_free (copy_data);
+
+  return TRUE;
 }

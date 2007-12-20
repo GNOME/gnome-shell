@@ -94,7 +94,7 @@ struct _ClutterTextureClass
  * @CLUTTER_TEXTURE_YUV_FLAG_YUV2: FIXME
  *
  * Flags for clutter_texture_set_from_rgb_data() and
- * clutter_texture_set_from_rgb_data().
+ * clutter_texture_set_from_yuv_data().
  *
  * Since: 0.4
  */
@@ -119,6 +119,19 @@ gboolean      clutter_texture_set_from_rgb_data   (ClutterTexture *texture,
 						   gint            bpp,
 						   ClutterTextureFlags  flags,
 						   GError        **error);
+
+gboolean      clutter_texture_set_area_from_rgb_data (ClutterTexture *texture,
+                                                   const guchar   *data,
+                                                   gboolean        has_alpha,
+                                                   gint            x,
+                                                   gint            y,
+                                                   gint            width,
+                                                   gint            height,
+                                                   gint            rowstride,
+                                                   gint            bpp,
+                                                   ClutterTextureFlags flags,
+                                                   GError         **error);
+
 gboolean      clutter_texture_set_from_yuv_data   (ClutterTexture *texture,
 						   const guchar   *data,
 						   gint            width,
