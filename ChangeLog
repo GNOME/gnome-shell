@@ -1,5 +1,12 @@
 2007-12-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-container.c:
+	(clutter_container_lower_child): Fix interface method call
+	to actually call ClutterContainer::lower. (#670, Gwenole
+	Beauchesne)
+
+2007-12-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-label.c:
 	(clutter_label_query_coords): Return the bounding box set inside
 	request_coords(), if any; otherwise, return the natural allocation

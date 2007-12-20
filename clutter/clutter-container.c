@@ -464,7 +464,7 @@ clutter_container_lower_child (ClutterContainer *container,
       return;
     }
 
-  CLUTTER_CONTAINER_GET_IFACE (container)->raise (container, actor, sibling);
+  CLUTTER_CONTAINER_GET_IFACE (container)->lower (container, actor, sibling);
 }
 
 /**
