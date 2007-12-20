@@ -315,6 +315,12 @@ clutter_label_query_coords (ClutterActor    *self,
 
   priv = label->priv;
 
+  if ((priv->allocation.x2 - priv->allocation.x1) > 0)
+    {
+      *box = priv->allocation;
+      return;
+    }
+
   if (priv->wrap)
     clutter_label_clear_layout (label);
 
@@ -324,8 +330,6 @@ clutter_label_query_coords (ClutterActor    *self,
 
   box->x2 = box->x1 + CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.width);
   box->y2 = box->y1 + CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.height);
-
-  return;
 }
 
 static void

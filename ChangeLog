@@ -1,3 +1,12 @@
+2007-12-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-label.c:
+	(clutter_label_query_coords): Return the bounding box set inside
+	request_coords(), if any; otherwise, return the natural allocation
+	of the label. (#678, reported by Gwenole Beauchesne)
+
+	* tests/test-rotate.c: Align the label
+
 2007-12-19  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/Makefile.am:
