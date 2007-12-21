@@ -43,7 +43,10 @@
 #define __COGL_H__
 
 #include <glib.h>
-#include <clutter/clutter.h>
+#include <clutter/clutter-color.h>
+#include <clutter/clutter-feature.h>
+#include <clutter/clutter-fixed.h>
+#include <clutter/clutter-types.h>
 
 #include "cogl-defines.h"
 
