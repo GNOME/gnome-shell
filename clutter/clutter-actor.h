@@ -157,8 +157,6 @@ struct _ClutterActor
  *   of an actor
  * @query_coords: virtual function, used when querying the actor for
  *   its coordinates
- * @set_depth: virtual function, used when setting the depth
- * @get_depth: virtual function, used when getting the depth
  * @parent_set: signal class closure for the ClutterActor::parent-set
  *   signal
  * @destroy: signal class closure for the ClutterActor::destroy signal
@@ -183,9 +181,6 @@ struct _ClutterActorClass
 			    ClutterActorBox     *box);
   void (* query_coords)    (ClutterActor        *actor,
 			    ClutterActorBox     *box);
-  void (* set_depth)       (ClutterActor        *actor,
-		            gint                 depth);
-  gint (* get_depth)       (ClutterActor        *actor);
   void (* parent_set)      (ClutterActor        *actor,
                             ClutterActor        *old_parent);
 

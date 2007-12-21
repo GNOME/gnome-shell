@@ -1,5 +1,10 @@
 2007-12-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.h: Remove the unused ::set_depth() and
+	::get_depth() virtual functions. (#674, Murray Cumming)
+
+2007-12-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-group.c:
 	* clutter/clutter-group.h: Add the clutter_group_add() convenience
 	function; it's now "undeprecated" and implemented as a macro
