@@ -421,6 +421,7 @@ CLUTTER_TEXTURE_ERROR
 ClutterTextureError
 clutter_texture_set_from_rgb_data
 clutter_texture_set_from_yuv_data
+clutter_texture_set_area_from_rgb_data
 clutter_texture_set_pixbuf
 clutter_texture_get_pixbuf
 clutter_texture_get_base_size
