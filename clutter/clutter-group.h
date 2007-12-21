@@ -23,8 +23,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef _HAVE_CLUTTER_GROUP_H
-#define _HAVE_CLUTTER_GROUP_H
+#ifndef __CLUTTER_GROUP_H__
+#define __CLUTTER_GROUP_H__
 
 #include <glib-object.h>
 #include <clutter/clutter-actor.h>
@@ -76,12 +76,12 @@ struct _ClutterGroupClass
 		  ClutterActor *child);
 
   /* padding for future expansion */
-  void (*_clutter_group_1) (void);
-  void (*_clutter_group_2) (void);
-  void (*_clutter_group_3) (void);
-  void (*_clutter_group_4) (void);
-  void (*_clutter_group_5) (void);
-  void (*_clutter_group_6) (void);
+  void (*_clutter_reserved1) (void);
+  void (*_clutter_reserved2) (void);
+  void (*_clutter_reserved3) (void);
+  void (*_clutter_reserved4) (void);
+  void (*_clutter_reserved5) (void);
+  void (*_clutter_reserved6) (void);
 };
 
 GType         clutter_group_get_type         (void) G_GNUC_CONST;
@@ -91,9 +91,15 @@ ClutterActor *clutter_group_get_nth_child    (ClutterGroup    *self,
 gint          clutter_group_get_n_children   (ClutterGroup    *self);
 void          clutter_group_remove_all       (ClutterGroup    *group);
 
+#define clutter_group_add(group,actor)                  G_STMT_START {  \
+  if (CLUTTER_IS_GROUP ((group)) && CLUTTER_IS_ACTOR ((actor)))         \
+    {                                                                   \
+      ClutterContainer *_container = (ClutterContainer *) (group);      \
+      ClutterActor *_actor = (ClutterActor *) (actor);                  \
+      clutter_container_add_actor (_container, _actor);                 \
+    }                                                   } G_STMT_END
+
 #ifndef CLUTTER_DISABLE_DEPRECATED
-void          clutter_group_add              (ClutterGroup    *group,
-                                              ClutterActor    *actor);
 void          clutter_group_add_many         (ClutterGroup    *group,
                                               ClutterActor    *first_actor,
                                               ...) G_GNUC_NULL_TERMINATED;
@@ -113,4 +119,4 @@ void          clutter_group_sort_depth_order (ClutterGroup    *self);
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_GROUP_H__ */

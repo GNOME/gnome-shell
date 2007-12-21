@@ -493,23 +493,6 @@ clutter_group_new (void)
 }
 
 /**
- * clutter_group_add:
- * @group: A #ClutterGroup
- * @actor: A #ClutterActor
- *
- * Adds a new child #ClutterActor to the #ClutterGroup.
- *
- * @Deprecated: 0.4: This function is obsolete, use
- *   clutter_container_add_actor() instead.
- */
-void
-clutter_group_add (ClutterGroup *group,
-                   ClutterActor *actor)
-{
-  clutter_container_add_actor (CLUTTER_CONTAINER (group), actor);
-}
-
-/**
  * clutter_group_add_many_valist:
  * @group: a #ClutterGroup
  * @first_actor: the #ClutterActor actor to add to the group

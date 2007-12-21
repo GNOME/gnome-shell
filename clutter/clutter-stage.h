@@ -219,6 +219,15 @@ void                  clutter_stage_set_key_focus      (ClutterStage *stage,
                                                         ClutterActor *actor);
 ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
 
+/* Commodity macro */
+#define clutter_stage_add(stage,actor)                  G_STMT_START {  \
+  if (CLUTTER_IS_STAGE ((stage)) && CLUTTER_IS_ACTOR ((actor)))         \
+    {                                                                   \
+      ClutterContainer *_container = (ClutterContainer *) (stage);      \
+      ClutterActor *_actor = (ClutterActor *) (actor);                  \
+      clutter_container_add_actor (_container, _actor);                 \
+    }                                                   } G_STMT_END
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_H__ */

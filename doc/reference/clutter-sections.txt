@@ -195,7 +195,6 @@ clutter_clone_texture_get_type
 ClutterGroup
 ClutterGroupClass
 clutter_group_new
-clutter_group_add
 clutter_group_add_many
 clutter_group_add_many_valist
 clutter_group_remove
@@ -215,6 +214,7 @@ CLUTTER_GROUP_GET_CLASS
 <SUBSECTION Private>
 ClutterGroupPrivate
 clutter_group_get_type
+clutter_group_add
 </SECTION>
 
 <SECTION>
@@ -506,6 +506,7 @@ ClutterStagePrivate
 clutter_stage_get_type
 clutter_perspective_get_type
 clutter_fog_get_type
+clutter_stage_add
 </SECTION>
 
 <SECTION>
