@@ -165,12 +165,14 @@ static void
 clutter_label_ensure_layout (ClutterLabel *label)
 {
   ClutterLabelPrivate *priv;
+  ClutterUnit raw_width;
   gint width;
 
   priv  = label->priv;
 
   /* use the last size requested, if any */
-  width = CLUTTER_UNITS_TO_DEVICE (priv->allocation.x2 - priv->allocation.x1);
+  raw_width = priv->allocation.x2 - priv->allocation.x1;
+  width = CLUTTER_UNITS_TO_DEVICE (raw_width);
 
   if (!priv->layout)
     {
@@ -195,15 +197,15 @@ clutter_label_ensure_layout (ClutterLabel *label)
             pango_layout_set_markup (priv->layout, priv->text, -1);
         }
       
-      if (priv->ellipsize)
-        pango_layout_set_width (priv->layout, width > 0 ? width * PANGO_SCALE
+      if (priv->ellipsize != PANGO_ELLIPSIZE_NONE)
+        pango_layout_set_width (priv->layout, width > 0 ? CLUTTER_UNITS_TO_PANGO_UNIT (raw_width)
                                                         : -1);
       else if (priv->wrap)
         {
           pango_layout_set_wrap  (priv->layout, priv->wrap_mode);
 
           if (width > 0)
-	    pango_layout_set_width (priv->layout, width * PANGO_SCALE);
+	    pango_layout_set_width (priv->layout, CLUTTER_UNITS_TO_PANGO_UNIT (raw_width));
           else
             {
               /* this was adapted from the GtkLabel code */
@@ -264,8 +266,8 @@ clutter_label_ensure_layout (ClutterLabel *label)
             }
 	}
       else
-	pango_layout_set_width (priv->layout, (width > 0 ? width * PANGO_SCALE
-                                                         : -1));
+	pango_layout_set_width (priv->layout, width > 0 ? CLUTTER_UNITS_FROM_PANGO_UNIT (raw_width) 
+                                                        : -1);
     }
 
   CLUTTER_NOTE (ACTOR, "Label width set to %d pixels", width);
@@ -346,7 +348,7 @@ clutter_label_request_coords (ClutterActor    *self,
           gint width;
           PangoRectangle logical;
 
-          width = CLUTTER_UNITS_TO_DEVICE (box->x2 - box->x1) * PANGO_SCALE;
+          width = CLUTTER_UNITS_TO_PANGO_UNIT (box->x2 - box->x1);
 
           pango_layout_set_width (priv->layout, -1);
           pango_layout_get_extents (priv->layout, NULL, &logical);
@@ -508,15 +510,15 @@ clutter_label_get_property (GObject    *object,
 static void
 clutter_label_class_init (ClutterLabelClass *klass)
 {
-  GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   actor_class->paint           = clutter_label_paint;
   actor_class->request_coords  = clutter_label_request_coords;
   actor_class->query_coords    = clutter_label_query_coords;
 
-  gobject_class->finalize   = clutter_label_finalize;
-  gobject_class->dispose    = clutter_label_dispose;
+  gobject_class->finalize     = clutter_label_finalize;
+  gobject_class->dispose      = clutter_label_dispose;
   gobject_class->set_property = clutter_label_set_property;
   gobject_class->get_property = clutter_label_get_property;
 

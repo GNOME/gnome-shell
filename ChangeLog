@@ -1,3 +1,9 @@
+2007-12-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-label.c:
+	(clutter_label_ensure_layout): Avoid rounding errors in the layout
+	computing when switching between Clutter units and Pango units.
+
 2007-12-19  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-texture.[ch]: (bug #675) added
