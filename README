@@ -138,6 +138,12 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 0.6.0
 -------------------------------
 
+* Now that every actor has events, the class signal handlers have been
+  removed from ClutterStageClass and moved into ClutterActorClass.
+
+* The CLUTTER_2BUTTON_PRESS and CLUTTER_3BUTTON_PRESS event types have been
+  removed in favour of the ClutterButtonEvent:click_count counter
+
 * X11 related called for glx and eglx backends are now shared and moved into
   a clutter_x11 prefix.
 
@@ -158,13 +164,42 @@ Release Notes for Clutter 0.6.0
   virtual function *must* chain up to the parent's implementation in order
   to store the bounding box inside the ClutterActor private data.
 
-* It is now impossible to call clutter_actor_destroy() on the stage.
+* It is now impossible to call clutter_actor_destroy() on the stage. Backends
+  will have to unset the CLUTTER_ACTOR_IS_TOPLEVEL private flag to actually
+  destroy the stage.
 
 * The default value of the ClutterLabel:wrap property has been changed from
   TRUE to FALSE.
 
 * All the behaviours properties have been renamed to match the $PROPERTY-start
   and $PROPERTY-end convention.
+
+* The clutter_group_add() function has been "undeprecated" and reimplemented
+  as a commodity macro; a clutter_stage_add() commodity macro has also been
+  added. Both macros just safely wrap clutter_container_add_actor().
+
+* The ClutterContainer::find_child_by_id() virtual function has been removed;
+  Clutter keeps track of every actor, so there's no need to recurse into
+  containers anymore.
+
+* The unused ClutterActor::set_depth() and ClutterActor::get_depth() virtual
+  functions have been removed.
+
+* It is now possible to roundtrip the string created by
+  clutter_color_to_string() to clutter_color_parse().
+
+* The amount of motion events is now being throttled using the default frame
+  rate setting as the base value to compute the default and maximum frequency
+  of motion events to be delivered to every actor.
+
+* ClutterAngle usage has been removed from the public API: it is an internal
+  optimization, which can be used for faster angle computations; users of
+  ClutterAngle now take a fixed point number in form of a ClutterFixed.
+
+* ClutterGravity usage when scaling has been superceded by the anchor point.
+
+* The precision of the clutter_sqrti() algorithm has been improved for small
+  values.
 
 Release Notes for Clutter 0.4.0
 -------------------------------

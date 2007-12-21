@@ -1,7 +1,80 @@
-Clutter 0.6.0 (??/??/????)
+Clutter 0.5.0 (??/??/????)
 ========================
 
- * List of changes between 0.4.0 and 0.6.0
+ * List of changes between 0.4.2 and 0.5.0
+
+   o New event handling system: every actor with the CLUTTER_ACTOR_REACTIVE
+     flag set will receive events from the underlying backend; the event
+     propagation chain will be walked in two directions (from the actor to
+     the top-level container and back) with the ability to block it in
+     both phases.
+
+   o ClutterShader, an abstraction over the programmable OpenGL pipeline.
+
+   o ClutterScore, an object for controlling timelines; using a score
+     instance is possible to start multiple timelines at once, or start
+     a timeline after another has emitted the ::complete signal.
+
+   o ClutterScript, an object for parsing a scene from an external file or
+     a buffer; the scene is described using JSON (JavaScript Object Notation):
+     every object is defined using its class and properties, and container
+     objects can have their children defined as well. It is also possible
+     do describe top-level objects such as timelines and behaviours, and to
+     automatically connect signal handlers to signal names.
+
+   o ClutterTimelines duration can now be set in milliseconds using the
+     :duration property; the default framerate will be used to compute the
+     actual duration in frames. The default framerate will be set by the
+     backend, and can be overridden by the application.
+
+   o ClutterTimelines direction can now be set using the :direction
+     property; a timeline can be set to proceed forward or backward,
+     and the direction can also be change while the timeline is still
+     running.
+
+   o New, experimental OSX backend.
+
+   o Build environment for MS VisualStudio 2005.
+
+   o ClutterModel, a generic list-based model object that can be used to
+     implement actors following the Model-Viewer-Controller design pattern.
+     Clutter provides a default implementation of ClutterModel, called
+     ClutterModelDefault and using the GSequence data structure from GLib
+     to optimize insertion and look up.
+
+   o Add the ability to grab pointer and keyboard events: if an actor
+     is set to have a grab it'll be the only one receiving events until
+     it releases the grab.
+
+   o Add the ability for an actor to receive the key focus; an actor
+     with key focus will always receive the key events, even if it did
+     not acquire the keyboard grab.
+
+   o It is now possible to set the GL "fog" (also known as "depth cueing")
+     effect on the ClutterStage; if the fog is enabled, actors farther
+     away from the view point will fade into the stage background color.
+
+   o Each actor now has an "anchor point", a point defined in the actor's
+     coordinate space that will be used as the origin when scaling and
+     rotation transformations.
+
+   o Every pixel-based API has been doubled with a corresponding
+     ClutterUnits-based function (postfixed with a '-u'), for instance:
+
+       clutter_actor_set_position() - clutter_actor_set_positionu()
+       clutter_actor_set_size()     - clutter_actor_set_sizeu()
+       clutter_actor_set_depth()    - clutter_actor_set_depthu()
+
+     This allows sub-pixel precision and device independence.
+
+   o The ClutterLabel actor now tries very hard to provide a sane
+     default size, if no bounding box has been requested; this fixes
+     the :alignment property and allows the addition of the :justify
+     property.
+
+ * List of bugs fixed
+
+   o
 
 Clutter 0.4.0 (07/08/2007)
 ========================
