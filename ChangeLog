@@ -1,5 +1,24 @@
 2007-12-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* Makefile.am: Move tests build before docs, to cut down the
+	distcheck failure discovery
+
+	* clutter.symbols: Add clutter_texture_set_area_from_rgb_data()
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-script.c:
+	* clutter/clutter-texture.c:
+	* clutter/json/json-generator.c:
+	* clutter/json/json-parser.c: Compilation fixes for passing distcheck
+
+	* tests/test-grab.c:
+	* tests/test-score.c:
+	* tests/test-script.c:
+	* tests/test-shader.c:
+	* tests/test-unproject.c: Ditto as above
+
+2007-12-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-label.c:
 	(clutter_label_ensure_layout): Avoid rounding errors in the layout
 	computing when switching between Clutter units and Pango units.

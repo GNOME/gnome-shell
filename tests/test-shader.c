@@ -128,7 +128,6 @@ static ShaderSource shaders[]=
 };
 
 static gint shader_no = 0;
-  ClutterShader    *shader;
 
 static gboolean
 button_release_cb (ClutterActor    *actor,
@@ -191,10 +190,10 @@ main (gint   argc,
       gchar *argv[])
 {
   ClutterTimeline  *timeline;
-  ClutterAlpha     *alpha;
   ClutterActor     *actor;
   ClutterActor     *stage;
   ClutterColor      stage_color = { 0x61, 0x64, 0x8c, 0xff };
+  ClutterShader    *shader;
   GdkPixbuf        *pixbuf;
   GError           *error;
 

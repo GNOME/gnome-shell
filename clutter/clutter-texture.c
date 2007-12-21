@@ -1829,8 +1829,8 @@ static void inline
 texture_update_data (ClutterTexture *texture,
 		     const guchar   *data,
 		     gboolean        has_alpha,
-                     gint            x0,
-                     gint            y0,
+                     gint            x_0,
+                     gint            y_0,
 		     gint            width,
 		     gint            height,
 		     gint            rowstride,
@@ -1868,8 +1868,8 @@ texture_update_data (ClutterTexture *texture,
       priv->filter_quality = 1;
 
       cogl_texture_sub_image_2d (priv->target_type,
-				 x0,
-				 y0,
+				 x_0,
+				 y_0,
 				 width,
 				 height,
 				 priv->pixel_format,
@@ -1911,9 +1911,9 @@ texture_update_data (ClutterTexture *texture,
 |--------------------- priv->width ------------------------------|
 | <- priv->x_tiles[x].pos
 |-----------| <- priv->x_tiles[x].size
-|-------| <- x0
+|-------| <- x_0
         |------------| <- width
-|--------------------| <- x0 + width
+|--------------------| <- x_0 + width
 |-------| <- master_offset = -8
 |-------| <- effective_x = 8
         |---| <- effective_width
@@ -1923,9 +1923,9 @@ texture_update_data (ClutterTexture *texture,
 |--------------------- priv->width ------------------------------|
 |-----------|  <- priv->x_tiles[x].pos
             |-----------| <- priv->x_tiles[x].size (src_w)
-|-------| <- x0
+|-------| <- x_0
         |------------| <- width
-|--------------------| <- x0 + width
+|--------------------| <- x_0 + width
         |---| <- master_offset = 4 
             | <- effective_x (0 in between)
             |--------| <- effective_width
@@ -1941,35 +1941,35 @@ texture_update_data (ClutterTexture *texture,
 	src_h = priv->y_tiles[y].size;
 
         /* skip tiles that do not intersect the updated region */
-        if ((priv->x_tiles[x].pos + src_w < x0 ||
-             priv->y_tiles[y].pos + src_h < y0 ||
-             priv->x_tiles[x].pos >= x0 + width ||
-             priv->y_tiles[y].pos >= y0 + height))
+        if ((priv->x_tiles[x].pos + src_w < x_0 ||
+             priv->y_tiles[y].pos + src_h < y_0 ||
+             priv->x_tiles[x].pos >= x_0 + width ||
+             priv->y_tiles[y].pos >= y_0 + height))
           {
             i++;
             continue;
           }
 
-        master_offset_x = priv->x_tiles[x].pos - x0;
+        master_offset_x = priv->x_tiles[x].pos - x_0;
 
-        if (priv->x_tiles[x].pos > x0)
+        if (priv->x_tiles[x].pos > x_0)
           effective_x = 0;
         else
-          effective_x = x0 - priv->x_tiles[x].pos;
+          effective_x = x_0 - priv->x_tiles[x].pos;
 
-        effective_width = (x0 + width) - priv->x_tiles[x].pos;
+        effective_width = (x_0 + width) - priv->x_tiles[x].pos;
 
         if (effective_width > src_w - effective_x)
           effective_width = src_w - effective_x;
 
-        master_offset_y = priv->y_tiles[y].pos - y0;
+        master_offset_y = priv->y_tiles[y].pos - y_0;
 
-        if (priv->y_tiles[y].pos > y0)
+        if (priv->y_tiles[y].pos > y_0)
           effective_y = 0;
         else
-          effective_y = y0 - priv->y_tiles[y].pos;
+          effective_y = y_0 - priv->y_tiles[y].pos;
 
-        effective_height = (y0 + height) - priv->y_tiles[y].pos;
+        effective_height = (y_0 + height) - priv->y_tiles[y].pos;
         if (effective_height > src_h - effective_y)
           effective_height = src_h - effective_y;
 

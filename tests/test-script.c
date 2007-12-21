@@ -97,7 +97,7 @@ red_button_press (ClutterActor *actor,
 int
 main (int argc, char *argv[])
 {
-  GObject *stage, *timeline, *blue_button, *red_button;
+  GObject *stage, *blue_button, *red_button;
   GError *error = NULL;
   gint res;
 

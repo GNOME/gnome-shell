@@ -4216,32 +4216,32 @@ parse_rotation_array (ClutterActor *actor,
   element = json_array_get_element (array, 1);
   if (JSON_NODE_TYPE (element) == JSON_NODE_ARRAY)
     {
-      JsonArray *array = json_node_get_array (element);
+      JsonArray *center = json_node_get_array (element);
 
-      if (json_array_get_length (array) != 2)
+      if (json_array_get_length (center) != 2)
         return FALSE;
 
       switch (info->axis)
         {
         case CLUTTER_X_AXIS:
           info->center_y = parse_units (actor, PARSE_Y,
-                                        json_array_get_element (array, 0));
+                                        json_array_get_element (center, 0));
           info->center_z = parse_units (actor, PARSE_Y,
-                                        json_array_get_element (array, 1));
+                                        json_array_get_element (center, 1));
           return TRUE;
 
         case CLUTTER_Y_AXIS:
           info->center_x = parse_units (actor, PARSE_X,
-                                        json_array_get_element (array, 0));
+                                        json_array_get_element (center, 0));
           info->center_z = parse_units (actor, PARSE_X,
-                                        json_array_get_element (array, 1));
+                                        json_array_get_element (center, 1));
           return TRUE;
 
         case CLUTTER_Z_AXIS:
           info->center_x = parse_units (actor, PARSE_X,
-                                        json_array_get_element (array, 0));
+                                        json_array_get_element (center, 0));
           info->center_y = parse_units (actor, PARSE_Y,
-                                        json_array_get_element (array, 1));
+                                        json_array_get_element (center, 1));
           return TRUE;
         }
     }

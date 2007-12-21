@@ -14,7 +14,6 @@ debug_event_cb (ClutterActor *actor,
                 ClutterEvent *event,
                 gpointer      data)
 {
-  ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
   gchar keybuf[9], *source = (gchar*)data;
   int   len = 0;
 
@@ -64,7 +63,7 @@ debug_event_cb (ClutterActor *actor,
       printf("[%s] DELETE", source);
       break;
     case CLUTTER_NOTHING:
-      return;
+      return FALSE;
     }
 
   if (clutter_event_get_source (event) == actor)
@@ -153,8 +152,7 @@ main (int argc, char *argv[])
                   bcol = { 0, 0, 0xff, 0xff },
 		  gcol = { 0, 0xff, 0, 0xff },
 		  ccol = { 0, 0xff, 0xff, 0xff },
-		  ycol = { 0xff, 0xff, 0, 0xff },
-		  ncol = { 0, 0, 0, 0xff };
+		  ycol = { 0xff, 0xff, 0, 0xff };
 
   clutter_init (&argc, &argv);
 

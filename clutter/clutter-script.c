@@ -1094,11 +1094,11 @@ apply_behaviours (ClutterScript *script,
       object = clutter_script_get_object (script, name);
       if (!object)
         {
-          ObjectInfo *oinfo;
+          ObjectInfo *behaviour_info;
 
-          oinfo = g_hash_table_lookup (script->priv->objects, name);
-          if (oinfo)
-            object = clutter_script_construct_object (script, oinfo);
+          behaviour_info = g_hash_table_lookup (script->priv->objects, name);
+          if (behaviour_info)
+            object = clutter_script_construct_object (script, behaviour_info);
         }
 
       if (!object)
@@ -1136,11 +1136,11 @@ add_children (ClutterScript    *script,
       object = clutter_script_get_object (script, name);
       if (!object)
         {
-          ObjectInfo *oinfo;
+          ObjectInfo *child_info;
 
-          oinfo = g_hash_table_lookup (script->priv->objects, name);
-          if (oinfo)
-            object = clutter_script_construct_object (script, oinfo);
+          child_info = g_hash_table_lookup (script->priv->objects, name);
+          if (child_info)
+            object = clutter_script_construct_object (script, child_info);
         }
 
       if (!object)

@@ -1,6 +1,8 @@
 #include <clutter/clutter.h>
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 ClutterActor *label;
 
@@ -14,8 +16,6 @@ on_event (ClutterStage *stage,
 	  ClutterEvent *event,
 	  gpointer      user_data)
 {
-  static ClutterActor * dragging = NULL;
-
   switch (event->type)
     {
     case CLUTTER_BUTTON_PRESS:

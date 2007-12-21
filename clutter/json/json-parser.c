@@ -779,11 +779,11 @@ json_parse_statement (JsonParser *parser,
 static void
 json_scanner_msg_handler (GScanner *scanner,
                           gchar    *message,
-                          gboolean  error)
+                          gboolean  is_error)
 {
   JsonParser *parser = scanner->user_data;
 
-  if (error)
+  if (is_error)
     {
       GError *error = NULL;
 
