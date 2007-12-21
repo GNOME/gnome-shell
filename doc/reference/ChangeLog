@@ -1,8 +1,7 @@
-2007-12-21  Emmanuele Bassi,,,  <ebassi@sprite>
+2007-12-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
-	reviewed by: <delete if not using a buddy>
-
-	* clutter-sections.txt:
+	* clutter-sections.txt: Add clutter_group_add() and
+	clutter_stage_add() convenience macros.
 
 2007-12-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
