@@ -1,3 +1,13 @@
+2007-12-21  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/core/core.c (meta_invalidate_default_icons): do not leak list.
+
+	* src/core/edge-resistance.c 
+	(meta_display_compute_resistance_and_snapping_edges): ditto.
+
+	* src/core/workspace.c (meta_workspace_index): small cleanup in list
+	handling.
+
 2007-12-19  Havoc Pennington  <hp@redhat.com>
 
 	* src/core/display.c (meta_display_open): fix a third warning

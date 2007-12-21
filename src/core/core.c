@@ -718,19 +718,18 @@ meta_core_increment_event_serial (Display *xdisplay)
 void
 meta_invalidate_default_icons (void)
 {
-  GSList *displays, *windows;
+  GSList *displays;
 
   for (displays = meta_displays_list ();
        displays != NULL;
        displays = displays->next)
     {
+      GSList *windows, *l;
 
-      for (windows = meta_display_list_windows (displays->data);
-           windows != NULL;
-           windows = windows->next)
+      windows = meta_display_list_windows (displays->data);
+      for (l = windows; l != NULL; l = l->next)
         {
-
-          MetaWindow *window = (MetaWindow*)windows->data;
+          MetaWindow *window = (MetaWindow*)l->data;
 
           if (window->icon_cache.origin == USING_FALLBACK_ICON)
             {

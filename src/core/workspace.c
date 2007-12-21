@@ -357,23 +357,14 @@ meta_workspace_activate (MetaWorkspace *workspace,
 int
 meta_workspace_index (MetaWorkspace *workspace)
 {
-  GList *tmp;
-  int i;
+  int ret;
 
-  i = 0;
-  tmp = workspace->screen->workspaces;
-  while (tmp != NULL)
-    {
-      if (tmp->data == workspace)
-        return i;
+  ret = g_list_index (workspace->screen->workspaces, workspace);
 
-      ++i;
-                    
-      tmp = tmp->next;
-    }
+  if (ret < 0)
+    meta_bug ("Workspace does not exist to index!\n");
 
-  meta_bug ("Workspace does not exist to index!\n");
-  return -1; /* compiler warnings */
+  return ret;
 }
 
 /* get windows contained on workspace, including workspace->windows

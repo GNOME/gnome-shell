@@ -1091,6 +1091,7 @@ meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
   /*
    * 4th: Free the extra memory not needed and sort the list
    */
+  g_list_free (stacked_windows);
   /* Free the memory used by the obscuring windows/docks lists */
   g_slist_free (window_stacking);
   /* FIXME: Shouldn't there be a helper function to make this one line of code
