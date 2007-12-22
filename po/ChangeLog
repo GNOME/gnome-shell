@@ -1,6 +1,10 @@
 2007-12-22  Seán de Búrca  <sdeburca@svn.gnome.org>
 
-	* ga.po: Remove dead files.
+	* ga.po: Updated Irish translation.
+
+2007-12-22  Seán de Búrca  <sdeburca@svn.gnome.org>
+
+	* POTFILES.in: Remove dead files.
 
 2007-12-20  Kjartan Maraas  <kmaraas@gnome.org>
 

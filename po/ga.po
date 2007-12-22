@@ -1,16 +1,17 @@
-# Irish Translation of Metacity
-# Copyright (C) 2003,2004 Free Software Foundation Inc.
-# This file is distributed under the same license as the PACKAGE package.
-# Paul Duffy <dubhthach@zion.nuigalway.ie> 2003
-# Alastair McKinstry <mckinstry@debian.org> 2004
+# Irish translations for metacity package.
+# Copyright (C) 2003-2007 Free Software Foundation Inc.
+# This file is distributed under the same license as the metacity package.
+# Paul Duffy <dubhthach@zion.nuigalway.ie>, 2003.
+# Alastair McKinstry <mckinstry@debian.org>, 2004.
+# Seán de Búrca <leftmostcat@gmail.com>, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Metacity HEAD\n"
+"Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-22 02:10-0700\n"
-"PO-Revision-Date: 2004-03-08 19:05 GMT\n"
-"Last-Translator: Alastair McKinstry <mckinstry@computer.org>\n"
+"POT-Creation-Date: 2007-12-22 02:51-0700\n"
+"PO-Revision-Date: 2007-12-22 02:51-0700\n"
+"Last-Translator: Seán de Búrca <leftmostcat@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,12 +19,11 @@ msgstr ""
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
-msgstr ""
+msgstr "Deasc"
 
 #: ../src/50-metacity-key.xml.in.h:1
-#, fuzzy
 msgid "Window Management"
-msgstr "Roghchlár an Fhuinneog"
+msgstr "Bainisteoireacht Fuinneog"
 
 #: ../src/core/core.c:206
 #, c-format
@@ -132,7 +132,7 @@ msgstr ""
 
 #: ../src/core/main.c:189
 msgid "X Display to use"
-msgstr ""
+msgstr "Taispeáint X le húsáid"
 
 #: ../src/core/main.c:195
 msgid "Initialize session from savefile"
@@ -140,11 +140,11 @@ msgstr ""
 
 #: ../src/core/main.c:201
 msgid "Print version"
-msgstr ""
+msgstr "Priontáil leagan"
 
 #: ../src/core/main.c:207
 msgid "Make X calls synchronous"
-msgstr ""
+msgstr "Déan sioncronach glaonna X"
 
 #: ../src/core/main.c:361
 #, fuzzy, c-format
@@ -231,7 +231,7 @@ msgstr ""
 #: ../src/core/prefs.c:2246 ../src/core/prefs.c:2780 ../src/ui/menu.c:199
 #, c-format
 msgid "Workspace %d"
-msgstr "Deasc %d"
+msgstr "Spás Oibre %d"
 
 #: ../src/core/prefs.c:2276 ../src/core/prefs.c:2446
 #, c-format
@@ -356,7 +356,7 @@ msgstr ""
 #: ../src/core/util.c:114
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "Oscail comhad log %s\n"
+msgstr "D'oscail comhad loga %s\n"
 
 #: ../src/core/util.c:133 ../src/tools/metacity-message.c:176
 msgid "Metacity was compiled without support for verbose mode\n"
@@ -364,7 +364,7 @@ msgstr ""
 
 #: ../src/core/util.c:231
 msgid "Window manager: "
-msgstr ""
+msgstr "Bainisteoir fuinneog:"
 
 #: ../src/core/util.c:379
 msgid "Bug in window manager: "
@@ -386,7 +386,7 @@ msgstr ""
 #: ../src/core/window-props.c:324
 #, c-format
 msgid "%s (on %s)"
-msgstr ""
+msgstr "%s (ar %s)"
 
 #: ../src/core/window-props.c:1406
 #, c-format
@@ -495,9 +495,8 @@ msgid ""
 msgstr ""
 
 #: ../src/metacity.schemas.in.h:11
-#, fuzzy
 msgid "Close window"
-msgstr "Dún an Fhuinneog"
+msgstr "Dún fuinneog"
 
 #: ../src/metacity.schemas.in.h:12
 msgid "Commands to run in response to keybindings"
@@ -661,9 +660,8 @@ msgid "Move focus backwards between windows using popup display"
 msgstr ""
 
 #: ../src/metacity.schemas.in.h:46
-#, fuzzy
 msgid "Move window"
-msgstr "Dún an Fhuinneog"
+msgstr "Bog fuinneog"
 
 #: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace down"
@@ -723,59 +721,59 @@ msgstr "Chuir an fhuinneog seo ar deasc a 1"
 
 #: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 1"
-msgstr "Chuir an fhuinneog seo ar deasc a 1"
+msgstr "Bog fuinneog go spás oibre 1"
 
 #: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 10"
-msgstr "Chuir an fhuinneog seo ar deasc a 10"
+msgstr "Bog fuinneog go spás oibre 10"
 
 #: ../src/metacity.schemas.in.h:61
 msgid "Move window to workspace 11"
-msgstr "Chuir an fhuinneog seo ar deasc a 11"
+msgstr "Bog fuinneog go spás oibre 11"
 
 #: ../src/metacity.schemas.in.h:62
 msgid "Move window to workspace 12"
-msgstr "Chuir an fhuinneog seo ar deasc a 12"
+msgstr "Bog fuinneog go spás oibre 12"
 
 #: ../src/metacity.schemas.in.h:63
 msgid "Move window to workspace 2"
-msgstr "Chuir an fhuinneog seo ar deasc a 2"
+msgstr "Bog fuinneog go spás oibre 2"
 
 #: ../src/metacity.schemas.in.h:64
 msgid "Move window to workspace 3"
-msgstr "Chuir an fhuinneog seo ar deasc a 3"
+msgstr "Bog fuinneog go spás oibre 3"
 
 #: ../src/metacity.schemas.in.h:65
 msgid "Move window to workspace 4"
-msgstr "Chuir an fhuinneog seo ar deasc a 4"
+msgstr "Bog fuinneog go spás oibre 4"
 
 #: ../src/metacity.schemas.in.h:66
 msgid "Move window to workspace 5"
-msgstr "Chuir an fhuinneog seo ar deasc a 5"
+msgstr "Bog fuinneog go spás oibre 5"
 
 #: ../src/metacity.schemas.in.h:67
 msgid "Move window to workspace 6"
-msgstr "Chuir an fhuinneog seo ar deasc a 6"
+msgstr "Bog fuinneog go spás oibre 6"
 
 #: ../src/metacity.schemas.in.h:68
 msgid "Move window to workspace 7"
-msgstr "Chuir an fhuinneog seo ar deasc a 7"
+msgstr "Bog fuinneog go spás oibre 7"
 
 #: ../src/metacity.schemas.in.h:69
 msgid "Move window to workspace 8"
-msgstr "Chuir an fhuinneog seo ar deasc a 8"
+msgstr "Bog fuinneog go spás oibre 8"
 
 #: ../src/metacity.schemas.in.h:70
 msgid "Move window to workspace 9"
-msgstr "Chuir an fhuinneog seo ar deasc a 9"
+msgstr "Bog fuinneog go spás oibre 9"
 
 #: ../src/metacity.schemas.in.h:71
 msgid "Name of workspace"
-msgstr "Ainm an deasc"
+msgstr "Ainm spás oibre"
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Number of workspaces"
-msgstr "na méid deascanna"
+msgstr "Líon spásanna oibre"
 
 #: ../src/metacity.schemas.in.h:73
 msgid ""
@@ -793,9 +791,8 @@ msgid "Raise window above other windows"
 msgstr ""
 
 #: ../src/metacity.schemas.in.h:76
-#, fuzzy
 msgid "Resize window"
-msgstr "Dún an Fhuinneog"
+msgstr "Athmhéadaigh fuinneog"
 
 #: ../src/metacity.schemas.in.h:77
 msgid "Run a defined command"
@@ -803,7 +800,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:78
 msgid "Run a terminal"
-msgstr ""
+msgstr "Rith teirminéal"
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -823,51 +820,51 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace 1"
-msgstr "Cas go dtí deasc a 1"
+msgstr "Athraigh go spás oibre 1"
 
 #: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 10"
-msgstr "Cas go dtí deasc a 10"
+msgstr "Athraigh go spás oibre 10"
 
 #: ../src/metacity.schemas.in.h:84
 msgid "Switch to workspace 11"
-msgstr "Cas go dtí deasc a 11"
+msgstr "Athraigh go spás oibre 11"
 
 #: ../src/metacity.schemas.in.h:85
 msgid "Switch to workspace 12"
-msgstr "Cas go dtí deasc a 12"
+msgstr "Athraigh go spás oibre 12"
 
 #: ../src/metacity.schemas.in.h:86
 msgid "Switch to workspace 2"
-msgstr "Cas go dtí deasc a 2"
+msgstr "Athraigh go spás oibre 2"
 
 #: ../src/metacity.schemas.in.h:87
 msgid "Switch to workspace 3"
-msgstr "Cas go dtí deasc a 3"
+msgstr "Athraigh go spás oibre 3"
 
 #: ../src/metacity.schemas.in.h:88
 msgid "Switch to workspace 4"
-msgstr "Cas go dtí deasc a 4"
+msgstr "Athraigh go spás oibre 4"
 
 #: ../src/metacity.schemas.in.h:89
 msgid "Switch to workspace 5"
-msgstr "Cas go dtí deasc a 5"
+msgstr "Athraigh go spás oibre 5"
 
 #: ../src/metacity.schemas.in.h:90
 msgid "Switch to workspace 6"
-msgstr "Cas go dtí deasc a 6"
+msgstr "Athraigh go spás oibre 6"
 
 #: ../src/metacity.schemas.in.h:91
 msgid "Switch to workspace 7"
-msgstr "Cas go dtí deasc a 7"
+msgstr "Athraigh go spás oibre 7"
 
 #: ../src/metacity.schemas.in.h:92
 msgid "Switch to workspace 8"
-msgstr "Cas go dtí deasc a 8"
+msgstr "Athraigh go spás oibre 8"
 
 #: ../src/metacity.schemas.in.h:93
 msgid "Switch to workspace 9"
-msgstr "Cas go dtí deasc a 9"
+msgstr "Athraigh go spás oibre 9"
 
 #: ../src/metacity.schemas.in.h:94
 msgid "Switch to workspace above this one"
@@ -879,11 +876,11 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:96
 msgid "Switch to workspace on the left"
-msgstr "Cas go dtí deasc a bhfuil ar clé"
+msgstr "Athraigh go spás oibre ar chlé"
 
 #: ../src/metacity.schemas.in.h:97
 msgid "Switch to workspace on the right"
-msgstr "Cas go dtí deasc a bhfuil ar deas"
+msgstr "Athraigh go spás oibre ar dheis"
 
 #: ../src/metacity.schemas.in.h:98
 msgid "System Bell is Audible"
@@ -1533,7 +1530,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:168
 msgid "The name of a workspace."
-msgstr ""
+msgstr "An t-ainm spás oibre."
 
 #: ../src/metacity.schemas.in.h:169
 msgid "The screenshot command"
@@ -1782,33 +1779,31 @@ msgstr ""
 
 #: ../src/ui/frames.c:1077
 msgid "Close Window"
-msgstr "Dún an Fhuinneog"
+msgstr "Dún Fuinneog"
 
 #: ../src/ui/frames.c:1080
 msgid "Window Menu"
-msgstr "Roghchlár an Fhuinneog"
+msgstr "Roghchlár Fuinneoige"
 
 #: ../src/ui/frames.c:1083
 msgid "Minimize Window"
-msgstr ""
+msgstr "Íoslaghdaigh Fuinneog"
 
 #: ../src/ui/frames.c:1086
 msgid "Maximize Window"
-msgstr ""
+msgstr "Uasmhéadaigh Fuinneog"
 
 #: ../src/ui/frames.c:1089
 msgid "Unmaximize Window"
-msgstr ""
+msgstr "Díhuasmhéadaigh Fuinneog"
 
 #: ../src/ui/frames.c:1092
-#, fuzzy
 msgid "Roll Up Window"
-msgstr "Dún an Fhuinneog"
+msgstr "Roll Fuinneog Isteach"
 
 #: ../src/ui/frames.c:1095
-#, fuzzy
 msgid "Unroll Window"
-msgstr "Dún an Fhuinneog"
+msgstr "Roll Fuinneog Amach"
 
 #: ../src/ui/frames.c:1098
 msgid "Keep Window On Top"
@@ -1819,49 +1814,47 @@ msgid "Remove Window From Top"
 msgstr ""
 
 #: ../src/ui/frames.c:1104
-#, fuzzy
 msgid "Always On Visible Workspace"
-msgstr "Ar an Deas _Seo amhain"
+msgstr "Ar Spás Oibre Infheicthe i gCónaí"
 
 #: ../src/ui/frames.c:1107
-#, fuzzy
 msgid "Put Window On Only One Workspace"
-msgstr "Chuir an fhuinneog aon deasc suas"
+msgstr "Cuir Fuinneog ar Aon Spás Oibre Amháin"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:70
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Íos_laghdaigh"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:72
 msgid "Ma_ximize"
-msgstr ""
+msgstr "_Uasmhéadaigh"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:74
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Díhuas_mhéadaigh"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:76
 msgid "Roll _Up"
-msgstr ""
+msgstr "Roll _Isteach"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:78
 msgid "_Unroll"
-msgstr ""
+msgstr "Roll _Amach"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:80
 msgid "_Move"
-msgstr ""
+msgstr "_Bog"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:82
 msgid "_Resize"
-msgstr ""
+msgstr "_Athmhéadaigh"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:84
@@ -1872,43 +1865,37 @@ msgstr ""
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:87 ../src/ui/menu.c:89
 msgid "Always on _Top"
-msgstr ""
+msgstr "Ar Barr i gCónaí"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:91
-#, fuzzy
 msgid "_Always on Visible Workspace"
-msgstr "Ar an Deas _Seo amhain"
+msgstr "Ar Spás Oibre Infheicthe i _gCónaí"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:93
-#, fuzzy
 msgid "_Only on This Workspace"
-msgstr "Ar an Deas _Seo amhain"
+msgstr "Ar an Spás _Oibre Seo Amháin"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:95
-#, fuzzy
 msgid "Move to Workspace _Left"
-msgstr "Chuir an fhuinneog seo ar deasc a 9"
+msgstr "Bog go Spás Oibre ar _Chlé"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:97
-#, fuzzy
 msgid "Move to Workspace R_ight"
-msgstr "Chuir an fhuinneog seo ar deasc a 1"
+msgstr "Bog go Spás Oibre ar _Dheis"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:99
-#, fuzzy
 msgid "Move to Workspace _Up"
-msgstr "Chuir an fhuinneog seo ar deasc a 1"
+msgstr "Bog go Spás Oibre Os C_ionn"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:101
-#, fuzzy
 msgid "Move to Workspace _Down"
-msgstr "Chuir an fhuinneog aon deasc síos"
+msgstr "Bog go Spás Oibre _Faoi Bhun"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
@@ -1917,19 +1904,17 @@ msgid "_Close"
 msgstr "_Dún"
 
 #: ../src/ui/menu.c:208
-#, fuzzy
 msgid "Workspace 1_0"
-msgstr "Deasc %d"
+msgstr "Spás Oibre 1_0"
 
 #: ../src/ui/menu.c:210
 #, c-format
 msgid "Workspace %s%d"
-msgstr "Deasc %s%d"
+msgstr "Spás Oibre %s%d"
 
 #: ../src/ui/menu.c:390
-#, fuzzy
 msgid "Move to Another _Workspace"
-msgstr "Chuir an fhuinneog aon deasc suas"
+msgstr "Bog go _Spás Oibre Eile"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -2034,19 +2019,19 @@ msgstr ""
 
 #: ../src/ui/metacity-dialog.c:107
 msgid "_Wait"
-msgstr ""
+msgstr "_Fan"
 
 #: ../src/ui/metacity-dialog.c:109
 msgid "_Force Quit"
-msgstr ""
+msgstr "Éignigh _Scor"
 
 #: ../src/ui/metacity-dialog.c:206
 msgid "Title"
-msgstr "Teidel"
+msgstr "Teideal"
 
 #: ../src/ui/metacity-dialog.c:218
 msgid "Class"
-msgstr "Rang"
+msgstr "Aicme"
 
 #: ../src/ui/metacity-dialog.c:244
 msgid ""
@@ -2060,7 +2045,7 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
-"Bhí feadbh ag rith \"%s\":\n"
+"Tharla earráid ag rith \"%s\":\n"
 "%s."
 
 #: ../src/ui/resizepopup.c:113
@@ -2673,7 +2658,7 @@ msgstr ""
 
 #: ../src/ui/theme-viewer.c:360
 msgid "Bar"
-msgstr ""
+msgstr "Barra"
 
 #: ../src/ui/theme-viewer.c:377
 msgid "Normal Application Window"
@@ -2697,7 +2682,7 @@ msgstr ""
 
 #: ../src/ui/theme-viewer.c:397
 msgid "Border"
-msgstr ""
+msgstr "Imlíne"
 
 #: ../src/ui/theme-viewer.c:725
 #, c-format
@@ -2794,19 +2779,19 @@ msgstr ""
 
 #: ../src/ui/theme.c:208
 msgid "top"
-msgstr ""
+msgstr "barr"
 
 #: ../src/ui/theme.c:210
 msgid "bottom"
-msgstr ""
+msgstr "bun"
 
 #: ../src/ui/theme.c:212
 msgid "left"
-msgstr "clé"
+msgstr "ar chlé"
 
 #: ../src/ui/theme.c:214
 msgid "right"
-msgstr "deas"
+msgstr "ar dheis"
 
 #: ../src/ui/theme.c:228
 #, c-format
