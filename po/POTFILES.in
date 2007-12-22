@@ -1,10 +1,5 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-src/display.c
-src/prefs.c
-src/screen.c
-src/theme-viewer.c
-src/window.c
 src/50-metacity-desktop-key.xml.in
 src/50-metacity-key.xml.in
 src/core/core.c
