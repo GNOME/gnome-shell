@@ -298,7 +298,7 @@ clutter_event_get_type (void)
   static GType our_type = 0;
 
   if (!our_type)
-    our_type = g_boxed_type_register_static ("ClutterEvent",
+    our_type = g_boxed_type_register_static (I_("ClutterEvent"),
 		    			     (GBoxedCopyFunc) clutter_event_copy,
 					     (GBoxedFreeFunc) clutter_event_free);
   return our_type;

@@ -10,8 +10,8 @@
 /*** BEGIN value-header ***/
 GType
 @enum_name@_get_type(void) {
-  static GType enum_type_id = 0;
-  if (G_UNLIKELY (!enum_type_id))
+  static GType etype = 0;
+  if (G_UNLIKELY (!etype))
     {
       static const G@Type@Value values[] = {
 /*** END value-header ***/
@@ -23,7 +23,7 @@ GType
 /*** BEGIN value-tail ***/
         { 0, NULL, NULL }
       };
-      enum_type_id = g_@type@_register_static("@EnumName@", values);
+      etype = g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
     }
   return enum_type_id;
 }

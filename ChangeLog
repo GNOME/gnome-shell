@@ -1,5 +1,14 @@
 2007-12-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-color.c:
+	* clutter/clutter-event.c:
+	* clutter/clutter-stage.c: Intern more strings using the I_() macro
+
+	* clutter/clutter-enum-types.c.in: Call g_intern_static_string()
+	in the enum types template
+
+2007-12-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter.symbols: Add clutter_actor_set_clipu() and
 	clutter_actor_get_clipu()
 

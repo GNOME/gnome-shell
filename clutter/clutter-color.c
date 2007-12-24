@@ -621,7 +621,7 @@ clutter_color_get_type (void)
   static GType our_type = 0;
   
   if (!our_type)
-    our_type = g_boxed_type_register_static ("ClutterColor",
+    our_type = g_boxed_type_register_static (I_("ClutterColor"),
 		    			     (GBoxedCopyFunc) clutter_color_copy,
 					     (GBoxedFreeFunc) clutter_color_free);
   return our_type;

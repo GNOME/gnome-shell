@@ -1291,7 +1291,7 @@ clutter_perspective_get_type (void)
 
   if (!our_type)
     our_type =
-      g_boxed_type_register_static ("ClutterPerspective",
+      g_boxed_type_register_static (I_("ClutterPerspective"),
                                     (GBoxedCopyFunc) clutter_perspective_copy,
                                     (GBoxedFreeFunc) clutter_perspective_free);
   return our_type;
@@ -1324,7 +1324,7 @@ clutter_fog_get_type (void)
 
   if (G_UNLIKELY (our_type == 0))
     our_type =
-      g_boxed_type_register_static ("ClutterFog",
+      g_boxed_type_register_static (I_("ClutterFog"),
                                     (GBoxedCopyFunc) clutter_fog_copy,
                                     (GBoxedFreeFunc) clutter_fog_free);
 
