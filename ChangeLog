@@ -1,3 +1,32 @@
+2007-12-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/cogl/cogl.h: Update cogl_clip_set() to accept the
+	clip components as ClutterFixed values
+
+	* clutter/cogl/gl/cogl.c (cogl_clip_set): Update the GL implementation
+	of cogl_clip_set()
+
+	* clutter/cogl/gles/cogl.c:
+	(cogl_rectangle_internal): Provide an internal, inlined rectangle
+	drawing	function using fixed point values, to be shared by
+	cogl_clip_set() and cogl_rectangle()
+
+	(cogl_clip_set), (cogl_rectangle): Update the GLES implementation
+	of cogl_clip_set() and cogl_rectangle() to use the new internal
+	rectangle drawing function
+
+	* clutter/clutter-actor.c: Make the clip an array of ClutterUnit
+	values instead of pixel-based; this allows higher precision and
+	device independence
+
+	(_clutter_actor_apply_modelview_transform): Pass the clip
+	components converting from units to fixed point values, using
+	the new cogl_clip_set() signature
+
+	(clutter_actor_get_property), (clutter_actor_set_clip),
+	(clutter_actor_get_clip): Update the accessors of the clip
+	property
+
 2007-12-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.h: Remove the unused ::set_depth() and

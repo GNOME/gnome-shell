@@ -107,7 +107,10 @@ void
 cogl_color (const ClutterColor *color);
 
 void
-cogl_clip_set (const ClutterGeometry *clip);
+cogl_clip_set (ClutterFixed x_offset,
+               ClutterFixed y_offset,
+               ClutterFixed width,
+               ClutterFixed height);
 
 void
 cogl_clip_unset (void);

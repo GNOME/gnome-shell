@@ -151,29 +151,53 @@
 
 static guint32 __id = 0;
 
+typedef struct _ShaderData ShaderData;
 
 #define CLUTTER_ACTOR_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ACTOR, ClutterActorPrivate))
-
-typedef struct _ShaderData ShaderData;
 
 struct _ClutterActorPrivate
 {
   ClutterActorBox coords;
 
-  ClutterGeometry clip;                          /* FIXME: Should be Units */
+  ClutterUnit     clip[4];
   guint           has_clip : 1;
-  ClutterFixed    rxang, ryang, rzang;           /* Rotation*/
-  ClutterUnit     rzx, rzy, rxy, rxz, ryx, ryz;
+
+  /* Rotation angles */
+  ClutterFixed    rxang;
+  ClutterFixed    ryang;
+  ClutterFixed    rzang;
+
+  /* Rotation center: X axis */
+  ClutterUnit     rxy;
+  ClutterUnit     rxz;
+
+  /* Rotation center: Y axis */
+  ClutterUnit     ryx;
+  ClutterUnit     ryz;
+
+  /* Rotation center: Z axis */
+  ClutterUnit     rzx;
+  ClutterUnit     rzy;
+
+  /* Anchor point coordinates */
+  ClutterUnit     anchor_x;
+  ClutterUnit     anchor_y;
+
+  /* depth */
   ClutterUnit     z;
+  
   guint8          opacity;
+  
   ClutterActor   *parent_actor;
+  
   gchar          *name;
-  ClutterFixed    scale_x, scale_y;
   guint32         id; /* Unique ID */
+  
+  ClutterFixed    scale_x;
+  ClutterFixed    scale_y;
 
   ShaderData     *shader_data;
-  ClutterUnit     anchor_x, anchor_y;
 };
 
 enum
@@ -841,7 +865,10 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
     cogl_translatex (0, 0, priv->z);
 
   if (priv->has_clip)
-    cogl_clip_set (&(priv->clip));
+    cogl_clip_set (CLUTTER_UNITS_TO_FIXED (priv->clip[0]),
+                   CLUTTER_UNITS_TO_FIXED (priv->clip[1]),
+                   CLUTTER_UNITS_TO_FIXED (priv->clip[2]),
+                   CLUTTER_UNITS_TO_FIXED (priv->clip[3]));
 }
 
 /* Recursively applies the transforms associated with this actor and
@@ -1223,7 +1250,16 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_boolean (value, priv->has_clip);
       break;
     case PROP_CLIP:
-      g_value_set_boxed (value, &(priv->clip));
+      {
+        ClutterGeometry clip = { 0, };
+
+        clip.x      = CLUTTER_UNITS_TO_DEVICE (priv->clip[0]);
+        clip.y      = CLUTTER_UNITS_TO_DEVICE (priv->clip[1]);
+        clip.width  = CLUTTER_UNITS_TO_DEVICE (priv->clip[2]);
+        clip.height = CLUTTER_UNITS_TO_DEVICE (priv->clip[3]);
+
+        g_value_set_boxed (value, &clip);
+      }
       break;
     case PROP_SCALE_X:
       g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->scale_x));
@@ -3366,18 +3402,18 @@ clutter_actor_set_clip (ClutterActor *self,
 			gint          width,
 			gint          height)
 {
-  ClutterGeometry *clip;
+  ClutterActorPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clip = &(self->priv->clip);
+  priv = self->priv;
 
-  clip->x      = xoff;
-  clip->y      = yoff;
-  clip->width  = width;
-  clip->height = height;
+  priv->clip[0] = CLUTTER_UNITS_FROM_DEVICE (xoff);
+  priv->clip[1] = CLUTTER_UNITS_FROM_DEVICE (yoff);
+  priv->clip[2] = CLUTTER_UNITS_FROM_DEVICE (width);
+  priv->clip[3] = CLUTTER_UNITS_FROM_DEVICE (height);
 
-  self->priv->has_clip = TRUE;
+  priv->has_clip = TRUE;
 
   g_object_notify (G_OBJECT (self), "has-clip");
   g_object_notify (G_OBJECT (self), "clip");
@@ -3437,7 +3473,6 @@ clutter_actor_get_clip (ClutterActor *self,
 			gint         *height)
 {
   ClutterActorPrivate *priv;
-  ClutterGeometry clip = { 0, };
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -3446,16 +3481,17 @@ clutter_actor_get_clip (ClutterActor *self,
   if (!priv->has_clip)
     return;
 
-  clip = priv->clip;
-
   if (xoff)
-    *xoff = clip.x;
+    *xoff = CLUTTER_UNITS_TO_DEVICE (priv->clip[0]);
+
   if (yoff)
-    *yoff = clip.y;
+    *yoff = CLUTTER_UNITS_TO_DEVICE (priv->clip[1]);
+
   if (width)
-    *width = clip.width;
+    *width = CLUTTER_UNITS_TO_DEVICE (priv->clip[2]);
+
   if (height)
-    *height = clip.height;
+    *height = CLUTTER_UNITS_TO_DEVICE (priv->clip[3]);
 }
 
 /**

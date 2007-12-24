@@ -262,8 +262,30 @@ cogl_color (const ClutterColor *color)
 #endif
 }
 
+static inline void
+cogl_rectangle_internal (ClutterFixed x,
+                         ClutterFixed y,
+                         ClutterFixed width,
+                         ClutterFixed height)
+{
+  GLfixed rect_verts[4] = {
+    x,         y,
+    x + width, y,
+    x,         y + height,
+    x + width, y + height
+  };
+
+  GE( glEnableClientState (GL_VERTEX_ARRAY) );
+  GE( glVertexPointer (2, GL_FIXED, 0, rect_verts) );
+  GE( glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
+  GE( glDisableClientState (GL_VERTEX_ARRAY) );
+}
+
 void
-cogl_clip_set (const ClutterGeometry *clip)
+cogl_clip_set (ClutterFixed x_offset,
+               ClutterFixed y_offset,
+               ClutterFixed width,
+               ClutterFixed height)
 {
   GE( glEnable (GL_STENCIL_TEST) );
 
@@ -275,8 +297,8 @@ cogl_clip_set (const ClutterGeometry *clip)
 
   GE( glColor4x (CFX_ONE, CFX_ONE, CFX_ONE, CFX_ONE ) );
 
-  cogl_rectangle (clip->x, clip->y, clip->width, clip->height);
-  
+  cogl_rectangle_internal (x_offset, y_offset, width, height);
+
   GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
   GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
 }
@@ -432,23 +454,15 @@ cogl_texture_sub_image_2d (COGLenum      target,
 }
 
 void
-cogl_rectangle (gint x, gint y, guint width, guint height)
+cogl_rectangle (gint x,
+                gint y,
+                guint width,
+                guint height)
 {
-#define FIX CLUTTER_INT_TO_FIXED
-
-  GLfixed rect_verts[] = {
-    FIX(x), FIX(y), 
-    FIX((x + width)), FIX(y), 
-    FIX(x), FIX((y + height)), 
-    FIX((x + width)), FIX((y + height)), 
-  };
-
-#undef FIX
-
-  GE( glEnableClientState(GL_VERTEX_ARRAY) );
-  GE( glVertexPointer(2, GL_FIXED, 0, rect_verts) );
-  GE( glDrawArrays(GL_TRIANGLE_STRIP, 0, 4) );
-  GE( glDisableClientState(GL_VERTEX_ARRAY) );
+  cogl_rectangle_internal (CLUTTER_INT_TO_FIXED (x),
+                           CLUTTER_INT_TO_FIXED (y),
+                           CLUTTER_INT_TO_FIXED (width),
+                           CLUTTER_INT_TO_FIXED (height));
 }
 
 /* FIXME: Should use ClutterReal or Fixed */
