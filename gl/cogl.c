@@ -299,7 +299,10 @@ cogl_color (const ClutterColor *color)
 }
 
 void
-cogl_clip_set (const ClutterGeometry *clip)
+cogl_clip_set (ClutterFixed x_offset,
+               ClutterFixed y_offset,
+               ClutterFixed width,
+               ClutterFixed height)
 {
   GE( glEnable (GL_STENCIL_TEST) );
 
@@ -311,13 +314,13 @@ cogl_clip_set (const ClutterGeometry *clip)
 
   GE( glColor3f (1.0f, 1.0f, 1.0f) );
 
-  GE( glRecti (clip->x,
-	       clip->y,
-	       clip->x + clip->width,
-	       clip->y + clip->height) );
+  GE( glRectf (CLUTTER_FIXED_TO_FLOAT (x_offset),
+	       CLUTTER_FIXED_TO_FLOAT (y_offset),
+	       CLUTTER_FIXED_TO_FLOAT (x_offset + width),
+	       CLUTTER_FIXED_TO_FLOAT (y_offset + height)) );
 
   GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
-; GE(  glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
 }
 
 void
