@@ -384,6 +384,8 @@ clutter_actor_set_sizeu
 clutter_actor_get_sizeu
 clutter_actor_set_anchor_pointu
 clutter_actor_get_anchor_pointu
+clutter_actor_set_clipu
+clutter_actor_get_clipu
 
 <SUBSECTION>
 clutter_actor_set_scalex

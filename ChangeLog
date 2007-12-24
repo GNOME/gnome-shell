@@ -1,5 +1,19 @@
 2007-12-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter.symbols: Add clutter_actor_set_clipu() and
+	clutter_actor_get_clipu()
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_clipu), (clutter_actor_get_clipu): Add the
+	new units-based versions of the clip accessors
+
+	(clutter_actor_set_clip), (clutter_actor_get_clip): Reimplement
+	the pixels-based clip accessors as proxies for the units-based
+	ones
+
+2007-12-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/cogl/cogl.h: Update cogl_clip_set() to accept the
 	clip components as ClutterFixed values
 

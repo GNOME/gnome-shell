@@ -334,6 +334,11 @@ void                  clutter_actor_set_clip         (ClutterActor          *sel
 						      gint                   yoff,
 						      gint                   width,
 						      gint                   height);
+void                  clutter_actor_set_clipu        (ClutterActor          *self,
+						      ClutterUnit            xoff,
+						      ClutterUnit            yoff,
+						      ClutterUnit            width,
+						      ClutterUnit            height);
 void                  clutter_actor_remove_clip      (ClutterActor          *self);
 gboolean              clutter_actor_has_clip         (ClutterActor          *self);
 void                  clutter_actor_get_clip         (ClutterActor          *self,
@@ -341,6 +346,11 @@ void                  clutter_actor_get_clip         (ClutterActor          *sel
                                                       gint                  *yoff,
                                                       gint                  *width,
                                                       gint                  *height);
+void                  clutter_actor_get_clipu        (ClutterActor          *self,
+                                                      ClutterUnit           *xoff,
+                                                      ClutterUnit           *yoff,
+                                                      ClutterUnit           *width,
+                                                      ClutterUnit           *height);
 void                  clutter_actor_set_parent       (ClutterActor          *self,
 						      ClutterActor          *parent);
 ClutterActor *        clutter_actor_get_parent       (ClutterActor          *self);

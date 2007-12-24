@@ -1,3 +1,9 @@
+2007-12-24  Emmanuele Bassi,,,  <ebassi@sprite>
+
+	reviewed by: <delete if not using a buddy>
+
+	* clutter-sections.txt:
+
 2007-12-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add clutter_group_add() and

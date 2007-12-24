@@ -3384,23 +3384,27 @@ clutter_actor_get_rotation (ClutterActor      *self,
 }
 
 /**
- * clutter_actor_set_clip:
+ * clutter_actor_set_clipu:
  * @self: A #ClutterActor
- * @xoff: X offset of the clip rectangle
- * @yoff: Y offset of the clip rectangle
- * @width: Width of the clip rectangle
- * @height: Height of the clip rectangle
+ * @xoff: X offset of the clip rectangle, in #ClutterUnit<!-- -->s
+ * @yoff: Y offset of the clip rectangle, in #ClutterUnit<!-- -->s
+ * @width: Width of the clip rectangle, in #ClutterUnit<!-- -->s
+ * @height: Height of the clip rectangle, in #ClutterUnit<!-- -->s
  *
- * Sets clip area in pixels for @self. The clip area is always computed
- * from the upper left corner of the actor, even if the anchor point is
- * set otherwise.
+ * Unit-based variant of clutter_actor_set_clip()
+ *
+ * Sets clip area for @self. The clip area is always computed from the
+ * upper left corner of the actor, even if the anchor point is set
+ * otherwise.
+ *
+ * Since: 0.6
  */
 void
-clutter_actor_set_clip (ClutterActor *self,
-			gint          xoff,
-			gint          yoff,
-			gint          width,
-			gint          height)
+clutter_actor_set_clipu (ClutterActor *self,
+			 ClutterUnit   xoff,
+			 ClutterUnit   yoff,
+			 ClutterUnit   width,
+			 ClutterUnit   height)
 {
   ClutterActorPrivate *priv;
 
@@ -3408,15 +3412,43 @@ clutter_actor_set_clip (ClutterActor *self,
 
   priv = self->priv;
 
-  priv->clip[0] = CLUTTER_UNITS_FROM_DEVICE (xoff);
-  priv->clip[1] = CLUTTER_UNITS_FROM_DEVICE (yoff);
-  priv->clip[2] = CLUTTER_UNITS_FROM_DEVICE (width);
-  priv->clip[3] = CLUTTER_UNITS_FROM_DEVICE (height);
+  priv->clip[0] = xoff;
+  priv->clip[1] = yoff;
+  priv->clip[2] = width;
+  priv->clip[3] = height;
 
   priv->has_clip = TRUE;
 
   g_object_notify (G_OBJECT (self), "has-clip");
   g_object_notify (G_OBJECT (self), "clip");
+}
+
+/**
+ * clutter_actor_set_clip:
+ * @self: A #ClutterActor
+ * @xoff: X offset of the clip rectangle, in pixels
+ * @yoff: Y offset of the clip rectangle, in pixels
+ * @width: Width of the clip rectangle, in pixels
+ * @height: Height of the clip rectangle, in pixels
+ *
+ * Sets clip area in pixels for @self. The clip area is always computed
+ * from the upper left corner of the actor, even if the anchor point is
+ * set otherwise.
+ */
+void
+clutter_actor_set_clip (ClutterActor *self,
+                        gint          xoff,
+                        gint          yoff,
+                        gint          width,
+                        gint          height)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_clipu (self,
+                           CLUTTER_UNITS_FROM_DEVICE (xoff),
+                           CLUTTER_UNITS_FROM_DEVICE (yoff),
+                           CLUTTER_UNITS_FROM_DEVICE (width),
+                           CLUTTER_UNITS_FROM_DEVICE (height));
 }
 
 /**
@@ -3454,6 +3486,49 @@ clutter_actor_has_clip (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_get_clipu:
+ * @self: a #ClutterActor
+ * @xoff: return location for the X offset of the clip rectangle, or %NULL
+ * @yoff: return location for the Y offset of the clip rectangle, or %NULL
+ * @width: return location for the width of the clip rectangle, or %NULL
+ * @height: return location for the height of the clip rectangle, or %NULL
+ *
+ * Unit-based variant of clutter_actor_get_clip().
+ *
+ * Gets the clip area for @self, in #ClutterUnit<!-- -->s.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_get_clipu (ClutterActor *self,
+                         ClutterUnit  *xoff,
+			 ClutterUnit  *yoff,
+			 ClutterUnit  *width,
+			 ClutterUnit  *height)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (!priv->has_clip)
+    return;
+
+  if (xoff)
+    *xoff = priv->clip[0];
+
+  if (yoff)
+    *yoff = priv->clip[1];
+
+  if (width)
+    *width = priv->clip[2];
+
+  if (height)
+    *height = priv->clip[3];
+}
+
+/**
  * clutter_actor_get_clip:
  * @self: a #ClutterActor
  * @xoff: return location for the X offset of the clip rectangle, or %NULL
@@ -3467,31 +3542,28 @@ clutter_actor_has_clip (ClutterActor *self)
  */
 void
 clutter_actor_get_clip (ClutterActor *self,
-			gint         *xoff,
-			gint         *yoff,
-			gint         *width,
-			gint         *height)
+                        gint         *xoff,
+                        gint         *yoff,
+                        gint         *width,
+                        gint         *height)
 {
-  ClutterActorPrivate *priv;
+  struct clipu { ClutterUnit x, y, width, height; } c = { 0, };
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
-
-  if (!priv->has_clip)
-    return;
+  clutter_actor_get_clipu (self, &c.x, &c.y, &c.width, &c.height);
 
   if (xoff)
-    *xoff = CLUTTER_UNITS_TO_DEVICE (priv->clip[0]);
+    *xoff = CLUTTER_UNITS_TO_DEVICE (c.x);
 
   if (yoff)
-    *yoff = CLUTTER_UNITS_TO_DEVICE (priv->clip[1]);
+    *yoff = CLUTTER_UNITS_TO_DEVICE (c.y);
 
   if (width)
-    *width = CLUTTER_UNITS_TO_DEVICE (priv->clip[2]);
+    *width = CLUTTER_UNITS_TO_DEVICE (c.width);
 
   if (height)
-    *height = CLUTTER_UNITS_TO_DEVICE (priv->clip[3]);
+    *height = CLUTTER_UNITS_TO_DEVICE (c.height);
 }
 
 /**
