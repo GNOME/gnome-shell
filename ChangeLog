@@ -1,5 +1,12 @@
 2007-12-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-texture.c: Remove some of the remaining FIXMEs
+	in the API documentation
+
+2007-12-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-color.c:
 	* clutter/clutter-event.c:
 	* clutter/clutter-stage.c: Intern more strings using the I_() macro

@@ -568,10 +568,13 @@ clutter_stage_get_perspectivex (ClutterStage       *stage,
 /**
  * clutter_stage_set_perspective
  * @stage: A #ClutterStage
- * @fovy: FIXME
- * @aspect: FIXME
- * @z_near: FIXME
- * @z_far: FIXME
+ * @fovy: the field of view angle, in degrees, in the y direction
+ * @aspect: the aspect ratio that determines the field of view in the x
+ *   direction. The aspect ratio is the ratio of x (width) to y (height)
+ * @z_near: the distance from the viewer to the near clipping
+ *   plane (always positive)
+ * @z_far: the  distance from the viewer to the far clipping
+ *   plane (always positive)
  *
  * Set the stage perspective.
  *
@@ -601,12 +604,16 @@ clutter_stage_set_perspective (ClutterStage *stage,
 /**
  * clutter_stage_get_perspective
  * @stage: A #ClutterStage
- * @fovy: FIXME
- * @aspect: FIXME
- * @z_near: FIXME
- * @z_far: FIXME
+ * @fovy: return location for the field of view, in degrees, or %NULL
+ * @aspect: return location for the aspect ratio, or %NULL
+ * @z_near: return location for the distance of the viewer from the
+ *   near clipping plane, or %NULL
+ * @z_far: return location for the distance of the viewer from the
+ *   far clipping plane, or %NULL
  *
  * Retrieves the stage perspective.
+ *
+ * Since: 0.4
  */
 void
 clutter_stage_get_perspective (ClutterStage       *stage,

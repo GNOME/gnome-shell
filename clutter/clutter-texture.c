@@ -1330,13 +1330,15 @@ texture_prepare_upload (gboolean            initialize,
  * @rowstride: Distance in bytes between row starts.
  * @bpp: bytes per pixel ( Currently only 4 supported )
  * @flags: #ClutterTextureFlags
- * @error: FIXME.
+ * @error: return location for a #GError, or %NULL.
  *
  * Sets #ClutterTexture image data.
  *
- * Return value: TRUE on success, FALSE on failure.
+ * Note: This function is likely to change in future versions.
  *
- * Since 0.4. This function is likely to change in future versions.
+ * Return value: %TRUE on success, %FALSE on failure.
+ *
+ * Since: 0.4.
  **/
 gboolean
 clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
@@ -2020,14 +2022,14 @@ texture_update_data (ClutterTexture *texture,
  * @rowstride: Distance in bytes between row starts.
  * @bpp: bytes per pixel ( Currently only 4 supported )
  * @flags: #ClutterTextureFlags
- * @error: FIXME.
+ * @error: return location for a #GError, or %NULL
  *
  * Updates a subregion of the pixel data in a #ClutterTexture.
  *
- * Return value: TRUE on success, FALSE on failure.
+ * Return value: %TRUE on success, %FALSE on failure.
  *
  * Since 0.6. 
- **/
+ */
 gboolean
 clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
                                         const guchar       *data,

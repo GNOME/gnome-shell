@@ -116,12 +116,16 @@ struct _ClutterStageClass
 
 /**
  * ClutterPerspective:
- * @fovy: FIXME
- * @aspect: FIXME
- * @z_near: FIXME
- * @z_far: FIXME
+ * @fovy: the field of view angle, in degrees, in the y direction
+ * @aspect: the aspect ratio that determines the field of view in the x
+ *   direction. The aspect ratio is the ratio of x (width) to y (height)
+ * @z_near: the distance from the viewer to the near clipping
+ *   plane (always positive)
+ * @z_far: the distance from the viewer to the far clipping
+ *   plane (always positive)
  *
- * Stage perspective definition.
+ * Stage perspective definition. #ClutterPerspective is only used by
+ * the fixed point version of clutter_stage_set_perspective().
  *
  * Since: 0.4
  */
@@ -136,11 +140,13 @@ struct _ClutterPerspective
 /**
  * ClutterFog:
  * @density: density of the fog
- * @z_near: start point of the depth cueing
- * @z_far: end point of the depth cueing
+ * @z_near: starting distance from the viewer to the near clipping
+ *   plane (always positive)
+ * @z_far: final distance from the viewer to the far clipping
+ *   plane (always positive)
  *
- * Fog settings used to create the depth cueing effect. This
- * structure is useful only when using the fixed point API.
+ * Fog settings used to create the depth cueing effect. #ClutterFox is
+ * useful only when using the fixed point API.
  *
  * Since: 0.6
  */
