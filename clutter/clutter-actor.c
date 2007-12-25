@@ -4302,12 +4302,11 @@ typedef struct {
   ClutterUnit center_z;
 } RotationInfo;
 
-static gboolean
+static inline gboolean
 parse_rotation_array (ClutterActor *actor,
-                      JsonNode     *node,
+                      JsonArray    *array,
                       RotationInfo *info)
 {
-  JsonArray *array = json_node_get_array (node);
   JsonNode *element;
 
   if (json_array_get_length (array) != 2)
@@ -4403,7 +4402,9 @@ parse_rotation (ClutterActor *actor,
               retval = TRUE;
             }
           else if (JSON_NODE_TYPE (member) == JSON_NODE_ARRAY)
-            retval = parse_rotation_array (actor, member, info);
+            retval = parse_rotation_array (actor,
+                                           json_node_get_array (member),
+                                           info);
           else
             retval = FALSE;
         }
@@ -4419,7 +4420,9 @@ parse_rotation (ClutterActor *actor,
               retval = TRUE;
             }
           else if (JSON_NODE_TYPE (member) == JSON_NODE_ARRAY)
-            retval = parse_rotation_array (actor, member, info);
+            retval = parse_rotation_array (actor,
+                                           json_node_get_array (member),
+                                           info);
           else
             retval = FALSE;
         }
@@ -4435,7 +4438,9 @@ parse_rotation (ClutterActor *actor,
               retval = TRUE;
             }
           else if (JSON_NODE_TYPE (member) == JSON_NODE_ARRAY)
-            retval = parse_rotation_array (actor, member, info);
+            retval = parse_rotation_array (actor,
+                                           json_node_get_array (member),
+                                           info);
           else
             retval = FALSE;
         }

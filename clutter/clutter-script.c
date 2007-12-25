@@ -212,7 +212,7 @@ warn_missing_attribute (ClutterScript *script,
 
   if (G_LIKELY (id))
     {
-      g_warning ("%s: %d: object `%s' has no `%s' attribute",
+      g_warning ("%s:%d: object `%s' has no `%s' attribute",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
                  id,
@@ -220,7 +220,7 @@ warn_missing_attribute (ClutterScript *script,
     }
   else
     {
-      g_warning ("%s: %d: object has no `%s' attribute",
+      g_warning ("%s:%d: object has no `%s' attribute",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
                  attribute);
@@ -237,7 +237,7 @@ warn_invalid_value (ClutterScript *script,
 
   if (G_LIKELY (node))
     {
-      g_warning ("%s: %d: invalid value of type `%s' for attribute `%s'",
+      g_warning ("%s:%d: invalid value of type `%s' for attribute `%s'",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
                  json_node_type_name (node),
@@ -245,7 +245,7 @@ warn_invalid_value (ClutterScript *script,
     }
   else
     {
-      g_warning ("%s: %d: invalid value for attribute `%s'",
+      g_warning ("%s:%d: invalid value for attribute `%s'",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
                  attribute);
@@ -931,17 +931,6 @@ clutter_script_parse_node (ClutterScript *script,
       break;
     }
 
-#if 0
-  if (!retval)
-    {
-      if (pspec)
-        {
-          g_param_value_defaults (pspec, value);
-          retval = TRUE;
-        }
-    }
-#endif
-
   return retval;
 }
 
@@ -1010,11 +999,11 @@ clutter_script_translate_parameters (ClutterScript  *script,
 }
 
 static GList *
-clutter_script_get_parameters (ClutterScript  *script,
-                               GType           gtype,
-                               const gchar    *name,
-                               GList          *properties,
-                               GArray        **construct_params)
+clutter_script_construct_parameters (ClutterScript  *script,
+                                     GType           gtype,
+                                     const gchar    *name,
+                                     GList          *properties,
+                                     GArray        **construct_params)
 {
   GObjectClass *klass;
   GList *l, *unparsed;
@@ -1039,9 +1028,7 @@ clutter_script_get_parameters (ClutterScript  *script,
        */
       pspec = g_object_class_find_property (klass, pinfo->name);
       if (pspec)
-        {
-          pinfo->pspec = g_param_spec_ref (pspec);
-        }
+        pinfo->pspec = g_param_spec_ref (pspec);
       else
         {
           pinfo->pspec = NULL;
@@ -1055,6 +1042,8 @@ clutter_script_get_parameters (ClutterScript  *script,
           continue;
         }
 
+      param.name = g_strdup (pinfo->name);
+      
       if (!clutter_script_parse_node (script, &param.value,
                                       pinfo->name,
                                       pinfo->node,
@@ -1064,8 +1053,6 @@ clutter_script_get_parameters (ClutterScript  *script,
           continue;
         }
 
-      param.name = g_strdup (pinfo->name);
-      
       g_array_append_val (*construct_params, param);
 
       property_info_free (pinfo);
@@ -1197,23 +1184,24 @@ clutter_script_construct_object (ClutterScript *script,
   else if (oinfo->gtype == CLUTTER_TYPE_STAGE)
     {
       /* the stage is a complex beast: we cannot create it using
-       * g_object_newv() but we need clutter_script_get_parameters()
+       * g_object_newv() but we need clutter_script_construct_parameters()
        * to add the GParamSpec to the PropertyInfo pspec member, so
        * that we don't have to implement every complex property (like
        * the "color" one) directly inside the ClutterStage class.
        */
-      oinfo->properties = clutter_script_get_parameters (script,
-                                                         oinfo->gtype,
-                                                         oinfo->id,
-                                                         oinfo->properties,
-                                                         &construct_params);
+      oinfo->properties =
+        clutter_script_construct_parameters (script,
+                                             oinfo->gtype,
+                                             oinfo->id,
+                                             oinfo->properties,
+                                             &construct_params);
 
       object = G_OBJECT (clutter_stage_get_default ());
-      
+
       for (i = 0; i < construct_params->len; i++)
         {
           GParameter *param = &g_array_index (construct_params, GParameter, i);
-      
+
           g_free ((gchar *) param->name);
           g_value_unset (&param->value);
         }
@@ -1223,11 +1211,12 @@ clutter_script_construct_object (ClutterScript *script,
   else
     {
       /* every other object: first, we get the construction parameters */
-      oinfo->properties = clutter_script_get_parameters (script,
-                                                         oinfo->gtype,
-                                                         oinfo->id,
-                                                         oinfo->properties,
-                                                         &construct_params);
+      oinfo->properties =
+        clutter_script_construct_parameters (script,
+                                             oinfo->gtype,
+                                             oinfo->id,
+                                             oinfo->properties,
+                                             &construct_params);
 
       object = g_object_newv (oinfo->gtype,
                               construct_params->len,
@@ -1244,15 +1233,6 @@ clutter_script_construct_object (ClutterScript *script,
       g_array_free (construct_params, TRUE);
    }
 
-  /* then we get the rest of the parameters, asking the object itself
-   * to translate them for us, if we cannot do that
-   */
-  oinfo->properties = clutter_script_translate_parameters (script,
-                                                           object,
-                                                           oinfo->id,
-                                                           oinfo->properties,
-                                                           &params);
-
   /* shortcut, to avoid typechecking every time */
   if (CLUTTER_IS_SCRIPTABLE (object))
     {
@@ -1262,6 +1242,15 @@ clutter_script_construct_object (ClutterScript *script,
       if (iface->set_custom_property)
         set_custom_property = TRUE;
     }
+
+  /* then we get the rest of the parameters, asking the object itself
+   * to translate them for us, if we cannot do that
+   */
+  oinfo->properties = clutter_script_translate_parameters (script,
+                                                           object,
+                                                           oinfo->id,
+                                                           oinfo->properties,
+                                                           &params);
 
   /* consume all the properties we could translate in this pass */
   for (i = 0; i < params->len; i++)
