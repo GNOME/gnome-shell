@@ -25,6 +25,6 @@ GType
       };
       etype = g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
     }
-  return enum_type_id;
+  return etype;
 }
 /*** END value-tail ***/
