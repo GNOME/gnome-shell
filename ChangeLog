@@ -1,5 +1,9 @@
 2007-12-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/test-script.json: Fix the JSON syntax
+
+2007-12-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-enum-types.c.in: Fix the template
 
 2007-12-24  Emmanuele Bassi  <ebassi@openedhand.com>

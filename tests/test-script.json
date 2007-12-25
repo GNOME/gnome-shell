@@ -30,7 +30,7 @@
         "width" : 100,
         "height" : 100,
         "visible" : true,
-        "reactive" : true
+        "reactive" : true,
         "signals" : [
           { "name" : "button-press-event", "handler" : "clutter_main_quit" }
         ]
@@ -68,12 +68,12 @@
         "alignment" : "center",
         "wrap" : false,
         "ellipsize" : "none",
-        "visible" : true
+        "visible" : true,
         "rotation" : [
           { "y-axis" : [ 60.0, [ 275, 100 ] ] },
           { "z-axis" : [ 45.0, [  75,  75 ] ] }
-        ],
-      }
+        ]
+      },
       "blue-button",
     ]
   }
