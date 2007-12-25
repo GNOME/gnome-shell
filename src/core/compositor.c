@@ -47,6 +47,12 @@
 #define HAVE_NAME_WINDOW_PIXMAP 1
 #endif
 
+#if COMPOSITE_MAJOR > 0 || COMPOSITE_MINOR >= 3
+#define HAVE_COW 1
+#else
+/* Don't have a cow man...HAAHAAHAA */
+#endif
+
 #define USE_IDLE_REPAINT 1
 
 typedef enum _MetaCompWindowType
@@ -85,6 +91,8 @@ typedef struct _MetaCompScreen
   MetaScreen *screen;
   GList *windows;
   GHashTable *windows_by_xid;
+
+  Window output;
 
   gboolean have_shadows;
   conv *gaussian_map;
@@ -695,6 +703,7 @@ static Picture
 create_root_buffer (MetaScreen *screen) 
 {
   MetaDisplay *display = screen->display;
+  MetaCompScreen *info = screen->compositor_data;
   Picture pict;
   XRenderPictFormat *format;
   Pixmap root_pixmap;
@@ -711,7 +720,7 @@ create_root_buffer (MetaScreen *screen)
   g_return_val_if_fail (format != NULL, None);
 
   root_pixmap = XCreatePixmap (display->xdisplay,
-                               screen->xroot,
+                               info->output,
                                screen_width, screen_height, depth);
   g_return_val_if_fail (root_pixmap != None, None);
 
@@ -1590,16 +1599,16 @@ add_win (MetaScreen *screen,
 {
   MetaDisplay *display = screen->display;
   MetaCompScreen *info = screen->compositor_data;
-  MetaCompWindow *cw = g_new0 (MetaCompWindow, 1);
+  MetaCompWindow *cw;
   gulong event_mask;
 
   if (info == NULL) 
-    {
-      g_warning ("Screen not managed");
-      g_free (cw);
-      return;
-    }
+    return;
 
+  if (xwindow == info->output) 
+    return;
+
+  cw = g_new0 (MetaCompWindow, 1);
   cw->screen = screen;
   cw->window = window;
   cw->id = xwindow;
@@ -2260,6 +2269,50 @@ meta_compositor_remove_window (MetaCompositor *compositor,
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 #endif
 }
+#ifdef HAVE_COW
+static void
+show_overlay_window (MetaScreen *screen,
+                     Window      cow)
+{
+  MetaDisplay *display = screen->display;
+  XserverRegion region;
+
+  region = XFixesCreateRegion (display->xdisplay, NULL, 0);
+
+  XFixesSetWindowShapeRegion (display->xdisplay, cow, ShapeBounding, 0, 0, 0);
+  XFixesSetWindowShapeRegion (display->xdisplay, cow, ShapeInput, 0, 0, region);
+
+  XFixesDestroyRegion (display->xdisplay, region);
+
+  damage_screen (screen);
+}
+
+static void
+hide_overlay_window (MetaScreen *screen,
+                     Window      cow)
+{
+  MetaDisplay *display = screen->display;
+  XserverRegion region;
+
+  region = XFixesCreateRegion (display->xdisplay, NULL, 0);
+  XFixesSetWindowShapeRegion (display->xdisplay,
+                              cow, ShapeBounding,
+                              0, 0, region);
+  XFixesDestroyRegion (display->xdisplay, region);
+}
+
+static Window
+get_overlay_window (MetaScreen *screen)
+{
+  MetaDisplay *display = screen->display;
+  Window cow;
+
+  cow = XCompositeGetOverlayWindow (display->xdisplay, screen->xroot);
+  XSelectInput (display->xdisplay, cow, ExposureMask);
+
+  return cow;
+}
+#endif
 
 void
 meta_compositor_manage_screen (MetaCompositor *compositor,
@@ -2291,6 +2344,8 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   info = g_new0 (MetaCompScreen, 1);
   info->screen = screen;
   
+  screen->compositor_data = info;
+
   visual_format = XRenderFindVisualFormat (display->xdisplay,
                                            DefaultVisual (display->xdisplay,
                                                           screen->number));
@@ -2300,8 +2355,14 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
       return;
     }
 
+#ifdef HAVE_COW
+  info->output = get_overlay_window (screen);
+#else
+  info->output = screen->xroot;
+#endif
+
   pa.subwindow_mode = IncludeInferiors;
-  info->root_picture = XRenderCreatePicture (display->xdisplay, screen->xroot,
+  info->root_picture = XRenderCreatePicture (display->xdisplay, info->output,
                                              visual_format, 
                                              CPSubwindowMode, &pa);
   if (info->root_picture == None) 
@@ -2327,11 +2388,15 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   info->gaussian_map = make_gaussian_map (SHADOW_RADIUS);
   presum_gaussian (info);
 
-  XClearArea (display->xdisplay, screen->xroot, 0, 0, 0, 0, TRUE);
+  XClearArea (display->xdisplay, info->output, 0, 0, 0, 0, TRUE);
 
   meta_screen_set_cm_selection (screen);
 
-  screen->compositor_data = info;
+#ifdef HAVE_COW
+  /* Now we're up and running we can show the output if needed */
+  show_overlay_window (screen, info->output);
+#endif
+
 #endif
 }
 

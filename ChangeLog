@@ -1,3 +1,8 @@
+2007-12-25  Iain Holmes  <iain@gnome.org>
+
+	* src/core/compositor.c: USe the compositor overlay window instead of
+	the root window. 
+	
 2007-12-21  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/core/core.c (meta_invalidate_default_icons): do not leak list.
