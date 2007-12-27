@@ -1029,7 +1029,7 @@ paint_windows (MetaScreen   *screen,
               cw->border_size = None;
             }
 
-#if 0          
+#if 0
           if (cw->extents) 
             {
               XFixesDestroyRegion (xdisplay, cw->extents);
@@ -1453,7 +1453,7 @@ map_win (MetaDisplay *display,
 #endif
 
   cw->attrs.map_state = IsViewable;
-  cw->damaged = TRUE;
+  cw->damaged = FALSE;
 }
 
 static void
