@@ -1,5 +1,11 @@
 2007-12-27  Iain Holmes  <iain@gnome.org>
 
+	* src/core/compositor.c: Don't do anything in 
+	meta_compositor_free_window, it doesn't seem to be needed and breaks
+	things very badly. http://bugzilla.gnome.org/show_bug.cgi?id=504876
+
+2007-12-27  Iain Holmes  <iain@gnome.org>
+
 	* src/core/compositor.c: When a window is mapped, don't set damaged to
 	TRUE. Fixes a bug when redrawing shadows.
 

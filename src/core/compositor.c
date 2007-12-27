@@ -1684,7 +1684,7 @@ destroy_win (MetaDisplay *display,
   MetaCompWindow *cw;
 
   cw = find_window_in_display (display, xwindow);
-  
+
   if (cw == NULL)
     return;
 
@@ -2106,6 +2106,7 @@ process_unmap (MetaCompositor *compositor,
       return;
     }
   
+
   cw = find_window_in_display (compositor->display, event->window);
   if (cw)
     unmap_win (compositor->display, cw->screen, event->window);
@@ -2493,7 +2494,14 @@ meta_compositor_free_window (MetaCompositor *compositor,
                              MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  destroy_win (compositor->display, window->xwindow, FALSE);
+  /* FIXME: When an undecorated window is hidden this is called, 
+     but the window does not get readded if it is subsequentally shown again 
+     See http://bugzilla.gnome.org/show_bug.cgi?id=504876 
+
+     I don't *think* theres any need for this call anyway, leaving it out
+     does not seem to cause any side effects so far, but I should check with
+     someone who understands more. */
+  /* destroy_win (compositor->display, window->xwindow, FALSE); */
 #endif
 }
    
