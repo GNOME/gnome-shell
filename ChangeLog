@@ -1,5 +1,11 @@
 2007-12-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-texture.c:
+	(clutter_texture_unrealize): Do not read the pixels back if the
+	texture is being destroyed
+
+2007-12-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model.c:
 	(clutter_model_real_get_n_rows), (clutter_model_class_init),
 	(clutter_model_get_n_rows): Provide a default implementation of

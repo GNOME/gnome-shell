@@ -629,6 +629,13 @@ clutter_texture_unrealize (ClutterActor *actor)
   if (priv->tiles == NULL)
     return;
 
+  /* there's no need to read the pixels back when unrealizing inside
+   * a dispose run, and the dispose() call will release the GL
+   * texture data as well, so we can safely bail out now
+   */
+  if (CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IN_DESTRUCTION)
+    return;
+
   CLUTTER_MARK();
 
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_READ_PIXELS))
