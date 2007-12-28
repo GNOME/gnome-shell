@@ -1,6 +1,12 @@
-2007-12-25  Emmanuele Bassi  <ebassi@openedhand.com>
+2007-12-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
-	reviewed by: <delete if not using a buddy>
+	* clutter/clutter-model.c:
+	(clutter_model_real_get_n_rows), (clutter_model_class_init),
+	(clutter_model_get_n_rows): Provide a default implementation of
+	the get_n_rows() method, so that subclasses do not strictly need
+	to override it
+
+2007-12-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c:
 	(parse_rotation_array): Inline, and get the JsonArray as a parameter

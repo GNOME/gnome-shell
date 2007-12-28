@@ -202,6 +202,28 @@ clutter_model_real_get_n_columns (ClutterModel *model)
   return model->priv->n_columns;
 }
 
+static guint
+clutter_model_real_get_n_rows (ClutterModel *model)
+{
+  ClutterModelIter *iter;
+  guint n_rows = 0;
+
+  iter = clutter_model_get_first_iter (model);
+  if (!iter)
+    return 0;
+
+  while (!clutter_model_iter_is_last (iter))
+    {
+      n_rows += 1;
+
+      clutter_model_iter_next (iter);
+    }
+
+  g_object_unref (iter);
+
+  return n_rows;
+}
+
 static void 
 clutter_model_finalize (GObject *object)
 {
@@ -239,6 +261,7 @@ clutter_model_class_init (ClutterModelClass *klass)
   klass->get_column_name  = clutter_model_real_get_column_name;
   klass->get_column_type  = clutter_model_real_get_column_type;
   klass->get_n_columns    = clutter_model_real_get_n_columns;
+  klass->get_n_rows       = clutter_model_real_get_n_rows;
 
    /**
    * ClutterModel::row-added:
@@ -246,6 +269,8 @@ clutter_model_class_init (ClutterModelClass *klass)
    * @iter: a #ClutterModelIter pointing to the new row
    *
    * The ::row-added signal is emitted when a new row has been added.
+   * The data on the row has already been set when the ::row-added signal
+   * has been emitted.
    *
    * Since: 0.6
    */
@@ -264,7 +289,8 @@ clutter_model_class_init (ClutterModelClass *klass)
    * @iter: a #ClutterModelIter pointing to the removed row
    *
    * The ::row-removed signal is emitted when a row has been removed.
-   * The data on the row pointed by the passed iterator is still valid.
+   * The data on the row pointed by the passed iterator is still valid
+   * when the ::row-removed signal has been emitted.
    *
    * Since: 0.6
    */
@@ -282,7 +308,9 @@ clutter_model_class_init (ClutterModelClass *klass)
    * @model: the #ClutterModel on which the signal is emitted
    * @iter: a #ClutterModelIter pointing to the changed row
    *
-   * The ::row-removed signal is emitted when a row has been changed
+   * The ::row-removed signal is emitted when a row has been changed.
+   * The data on the row has already been updated when the ::row-changed
+   * signal has been emitted.
    *
    * Since: 0.6
    */
@@ -1172,34 +1200,9 @@ clutter_model_get_last_iter (ClutterModel *model)
 guint
 clutter_model_get_n_rows (ClutterModel *model)
 {
-  ClutterModelPrivate *priv;
-  ClutterModelIter *iter;
-  guint n_rows;
-
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), 0);
 
-  priv = model->priv;
-
-  /* if there's no filter set, just get the full number of rows */
-  if (!priv->filter_func)
-    return CLUTTER_MODEL_GET_CLASS (model)->get_n_rows (model);
-
-  iter = clutter_model_get_first_iter (model);
-  if (!iter)
-    return 0;
-
-  n_rows = 0;
-  while (!clutter_model_iter_is_last (iter))
-    {
-      if (clutter_model_filter_iter (model, iter))
-        n_rows += 1;
-
-      iter = clutter_model_iter_next (iter);
-    }
-
-  g_object_unref (iter);
-
-  return n_rows;
+  return CLUTTER_MODEL_GET_CLASS (model)->get_n_rows (model);
 }
 
 
