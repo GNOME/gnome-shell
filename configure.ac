@@ -304,8 +304,10 @@ AC_SUBST([clutterbackendlib])
 
 dnl ========================================================================
 
-pkg_modules="pangoft2 glib-2.0 >= 2.14 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 $BACKEND_PC_FILES"
-PKG_CHECK_MODULES(CLUTTER_DEPS, [$pkg_modules])
+CLUTTER_REQUIRES="pangoft2 glib-2.0 >= 2.14 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 $BACKEND_PC_FILES"
+PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
+
+AC_SUBST(CLUTTER_REQUIRES)
 
 dnl ========================================================================
 

@@ -1,3 +1,10 @@
+2007-12-31  Tomas Frydrych  <tf@openedhand.com>
+
+	* configure.ac:
+	* clutter.pc.in:
+	Added CLUTTER_REQUIRES automake var to allow deps in clutter.pc to
+	be backend-specific.
+
 2007-12-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-texture.c:
@@ -21,7 +28,7 @@
 
 	* clutter/clutter-script.c:
 	(warn_missing_attribute): Fix for emacs-style warnings
-	
+
 	(clutter_script_parse_node): Remove an ifdeffed out section
 
 	(clutter_script_construct_parameters),
