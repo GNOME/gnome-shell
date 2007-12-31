@@ -1,24 +1,21 @@
-# translation of oc.po to Occitan
+# Translation of oc.po to Occitan
 # Occitan translation of metacity.
 # Copyright (C) 2002-2006, 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 #
-# Yannig MARCHEGAY (yannig@marchegay.org) - 2006-2007
-#
-# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2007.
+# Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>, 2006-2008
 msgid ""
 msgstr ""
 "Project-Id-Version: oc\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-08-21 12:15+0100\n"
-"PO-Revision-Date: 2007-11-20 14:32+0100\n"
+"PO-Revision-Date: 2007-12-30 21:44+0100\n"
 "Last-Translator: Yannig Marchegay (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);"
-"X-Generator: KBabel 1.11.4\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
@@ -130,7 +127,7 @@ msgstr ""
 
 #: ../src/frames.c:1105
 msgid "Always On Visible Workspace"
-msgstr ""
+msgstr "Totjorn sul espaci de trabalh visible"
 
 #: ../src/frames.c:1108
 msgid "Put Window On Only One Workspace"
@@ -275,12 +272,12 @@ msgstr ""
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:99
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Desplaçar dins l'espaci de trabalh _superior"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:101
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Desplaçar dins l'espaci de trabalh _inferior"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
@@ -399,7 +396,7 @@ msgstr "Mod5"
 #: ../src/metacity-dialog.c:90
 #, c-format
 msgid "\"%s\" is not responding."
-msgstr ""
+msgstr "\"%s\" respon pas."
 
 #: ../src/metacity-dialog.c:97
 msgid ""
@@ -435,7 +432,7 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
-"I a agut una error al moment d'executar \"%s\" :\n"
+"I a aguda una error al moment d'executar \"%s\" :\n"
 "%s."
 
 #: ../src/metacity.desktop.in.h:1
@@ -873,19 +870,19 @@ msgstr "Anar al espaci de trabalh 9"
 
 #: ../src/metacity.schemas.in.h:94
 msgid "Switch to workspace above this one"
-msgstr ""
+msgstr "Passar a l'espaci de trabalh ennaut d'aqueste"
 
 #: ../src/metacity.schemas.in.h:95
 msgid "Switch to workspace below this one"
-msgstr ""
+msgstr "Passar a l'espaci de trabalh enbàs d'aqueste"
 
 #: ../src/metacity.schemas.in.h:96
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "Passar a l'espaci de trabalh a l'esquèrra"
 
 #: ../src/metacity.schemas.in.h:97
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "Passar a l'espaci de trabalh a la drecha"
 
 #: ../src/metacity.schemas.in.h:98
 msgid "System Bell is Audible"
@@ -2479,7 +2476,7 @@ msgstr ""
 #: ../src/theme-parser.c:4573
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr ""
+msgstr "Impossible de trobar un fichièr valid pel tèma %s\n"
 
 #: ../src/theme-parser.c:4629
 #, c-format
