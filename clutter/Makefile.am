@@ -30,7 +30,7 @@ INCLUDES = \
 	$(NULL)
 
 LDADD = \
-	-version-info $(CLUTTER_LT_VERSION) \
+	$(CLUTTER_LT_LDFLAGS) \
 	-export-dynamic \
 	-rpath $(libdir) \
 	$(NULL)

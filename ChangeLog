@@ -1,6 +1,13 @@
 2007-12-31  Tomas Frydrych  <tf@openedhand.com>
 
 	* configure.ac:
+	* clutter/Makefile.am:
+	Added -no-undefined to libtool LDFLAGS for mingw/SDL backend, to
+	allow building of shared libraries for win32.
+
+2007-12-31  Tomas Frydrych  <tf@openedhand.com>
+
+	* configure.ac:
 	* clutter.pc.in:
 	Added CLUTTER_REQUIRES automake var to allow deps in clutter.pc to
 	be backend-specific.

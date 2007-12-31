@@ -158,6 +158,7 @@ case $clutterbackend in
 	   fi
 
            SDL_LIBS="$SDL_LIBS -lGLee -lopengl32"
+	   CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
            ;;
          *)
 	   AC_CHECK_LIB(GL, glEnable, HAVE_LIBGL=yes, HAVE_LIBGL=no)
