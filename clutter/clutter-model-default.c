@@ -438,7 +438,7 @@ clutter_model_default_get_iter_at_row (ClutterModel *model,
   ClutterModelDefault *model_default = CLUTTER_MODEL_DEFAULT (model);
   ClutterModelDefaultIter *retval;
 
-  if (row > g_sequence_get_length (model_default->sequence))
+  if (row >= g_sequence_get_length (model_default->sequence))
     return NULL;
 
   retval = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
@@ -476,7 +476,7 @@ clutter_model_default_insert_row (ClutterModel *model,
   if (index_ < 0)
     {
       seq_iter = g_sequence_append (model_default->sequence, array);
-      pos = g_sequence_get_length (model_default->sequence) - 1;
+      pos = g_sequence_get_length (model_default->sequence);
     }
   else if (index_ == 0)
     {
@@ -515,7 +515,6 @@ clutter_model_default_remove_row (ClutterModel *model,
           if (pos == row)
             {  
               ClutterModelIter *iter;
-              GValueArray *array;
 
               iter = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
                                    "model", model,
@@ -523,14 +522,16 @@ clutter_model_default_remove_row (ClutterModel *model,
                                    NULL);
               CLUTTER_MODEL_DEFAULT_ITER (iter)->seq_iter = seq_iter;
 
+              /* the actual row is removed from the sequence inside
+               * the ::row-removed signal class handler, so that every
+               * handler connected to ::row-removed will still get
+               * a valid iterator, and every signal connected to
+               * ::row-removed with the AFTER flag will get an updated
+               * model
+               */
               g_signal_emit_by_name (model, "row-removed", iter);
 
               g_object_unref (iter);
-
-              array = g_sequence_get (seq_iter);
-              g_value_array_free (array);
-
-              g_sequence_remove (seq_iter); 
 
               break;
             }
@@ -590,6 +591,22 @@ clutter_model_default_resort (ClutterModel         *model,
 }
 
 static void
+clutter_model_default_row_removed (ClutterModel     *model,
+                                   ClutterModelIter *iter)
+{
+  ClutterModelDefaultIter *iter_default;
+  GValueArray *array;
+
+  iter_default = CLUTTER_MODEL_DEFAULT_ITER (iter);
+
+  array = g_sequence_get (iter_default->seq_iter);
+  g_value_array_free (array);
+
+  g_sequence_remove (iter_default->seq_iter);
+  iter_default->seq_iter = NULL;
+}
+
+static void
 clutter_model_default_finalize (GObject *gobject)
 {
   ClutterModelDefault *model = CLUTTER_MODEL_DEFAULT (gobject);
@@ -621,6 +638,8 @@ clutter_model_default_class_init (ClutterModelDefaultClass *klass)
   model_class->insert_row      = clutter_model_default_insert_row;
   model_class->remove_row      = clutter_model_default_remove_row;
   model_class->resort          = clutter_model_default_resort;
+
+  model_class->row_removed     = clutter_model_default_row_removed;
 }
 
 static void
