@@ -1,4 +1,4 @@
-Clutter 0.5.0 (??/??/????)
+Clutter 0.5.0 (02/01/2008)
 ========================
 
  * List of changes between 0.4.2 and 0.5.0
@@ -72,9 +72,78 @@ Clutter 0.5.0 (??/??/????)
      the :alignment property and allows the addition of the :justify
      property.
 
+   o The SDL backend can now be compiled under win32 with MingW; this
+     backend is still marked as experimental.
+
+   o The OSX backend allows the compilation of Clutter under OS X; this
+     backend is experimental.
+
  * List of bugs fixed
 
-   o
+   o #423 - All actors should emit events rather than just the stage
+   o #424 - Interface definition files
+   o #443 - ClutterModel implementation
+   o #480 - Uninitialized variable in
+     path_alpha_to_position() [Gwenole Beauchesne]
+   o #511 - clutter_stage_get_actor_at_pos problem
+   o #512 - clutter window moves when stage actor is scaled
+   o #518 - XEMBED not supported in eglx backend
+   o #519 - Should have an Atom cache initialized on start up
+   o #520 - Delete after multibyte unicode chars in
+     ClutterEntry [Tommi Komulainen]
+   o #522 - Array out of bounds indexing [Tommi Komulainen]
+   o #523 - cogl portability fixes [Tommi Komulainen]
+   o #524 - missing config.h includes [Tommi Komulainen]
+   o #525 - Redundant include in cogl/gl [Tommi Komulainen]
+   o #531 - Extraneous "new-frame" signal generated
+   o #532 - clutter_actor_set_scale_with_gravityx()
+     precision [Gwenole Beauchesne]
+   o #544 - clutter_color_to_hlsx is broken [Neil Roberts]
+   o #546 - ClutterStageState doesn't make sense
+   o #550 - Wanted: Set Actor's position based on center or other
+     edges/corners of quadrangle
+   o #557 - ClutterScript should support complex properties for third
+     party classes
+   o #558 - Unmerge UI definitions
+   o #566 - ClutterEntry does not scroll the text to the
+     right [Gwenole Beauchesne]
+   o #577 - Inconsistent naming of behaviour properties
+   o #580 - Fix call to cogl_enable() [Gwenole Beauchesne]
+   o #582 - api naming inconsistence between
+            clutter_behaviour_path_append_knots and
+            clutter_behaviour_bspline_append
+   o #584 - Typo on clutter_effect_rotate_x documentation page
+   o #592 - Fix build on trunk [Gwenole Beauchesne]
+   o #596 - ClutterTexture tileing logic is a little borked 
+   o #597 - ClutterGroups not pickable
+   o #600 - fix ClutterLabel layout computing when no box has been set
+   o #604 - Color param for Label constructor should be
+     const [Jonathon Jongsma]
+   o #606 - enable depth test in GL
+   o #608 - Control motion events frequency
+   o #614 - ClutterActor API inconsistencies
+   o #616 - ClutterTexture doesn't respect width set from clutterscript
+   o #617 - ClutterEffect Improvements
+   o #618 - ClutterScript name/id confusion
+   o #619 - clutter_behavior_rotate angle properties should accept
+     negative values
+   o #628 - clutter_actor_rotate_x() is a setter, not a modifier
+   o #629 - There is no clutter_actor_get_position()
+   o #634 - clutter_behaviour_path_new() documentation unclear
+   o #637 - add depth cueing support to the stage
+   o #645 - Fix crash in clutter_label_new_full() [Gwenole Beauchesne]
+   o #647 - Cannot hide the stage
+   o #648 - Hidden fullscreen stage doesn't come back as fullscreen
+   o #652 - reference needed on actor being source of last motion_event
+   o #661 - clutter_actor_set_width() documentation is vague
+   o #662 - clutter_actor_set_opacity() documentation doesn't describe values
+   o #665 - ClutterBehaviourEllipse tilts are broken
+   o #670 - Fix clutter_container_lower_child() [Gwenole Beauchesne]
+   o #673 - ClutterActor "captured-events" signal documentation wrong
+   o #674 - ClutterActor::get_depth() and set_depth() vfuncs not
+     used [Murray Cumming]
+   o #675 - update subregions of cluttertextures
+   o #678 - ClutterLabel size allocation still bogus
 
 Clutter 0.4.0 (07/08/2007)
 ========================

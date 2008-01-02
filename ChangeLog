@@ -1,5 +1,10 @@
 2008-01-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* README:
+	* NEWS: Release 0.5.0
+
+2008-01-02  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model-default.c:
 	(clutter_model_default_get_iter_at_row),
 	(clutter_model_default_insert_row): Fix off-by-one errors
