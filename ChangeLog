@@ -1,3 +1,10 @@
+2008-01-02  Johan Bilien  <jobi@via.ecp.fr>
+
+	reviewed by: Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac: Use AC_DEFINE_UNQUOTED to expand the
+	variable. Fixes EGL backend build
+
 2008-01-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Post release bump to 0.5.1

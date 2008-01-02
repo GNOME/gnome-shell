@@ -231,7 +231,7 @@ case $clutterbackend in
     # glColor4ub needed for more precise picking, seems presence is a
     # bit random in egl 1.1 (in SDK header, but not lib)
     AC_CHECK_LIB($EGL_LIBS, glColor4ub, COLOR4UB=1, COLOR4UB=0)
-    AC_DEFINE([HAVE_GLES_COLOR4UB], $COLOR4UB, [Have GL/ES glColor4ub])
+    AC_DEFINE_UNQUOTED([HAVE_GLES_COLOR4UB], $COLOR4UB, [Have GL/ES glColor4ub])
 
     EGL_LIBS="-l$EGL_LIBS $X11_LIBS"
     EGL_CFLAGS="$EGL_CFLAGS $X11_CFLAGS"
