@@ -1,5 +1,9 @@
 2008-01-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Post release bump to 0.5.1
+
+2008-01-02  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* README:
 	* NEWS: Release 0.5.0
 
