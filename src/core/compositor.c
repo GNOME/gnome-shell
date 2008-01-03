@@ -2202,7 +2202,8 @@ process_shape (MetaCompositor *compositor,
     }
 }
 
-static int timeout_debug (MetaCompositor *compositor)
+static int
+timeout_debug (MetaCompositor *compositor)
 {
   compositor->show_redraw = (g_getenv ("METACITY_DEBUG_REDRAWS") != NULL);
   compositor->debug = (g_getenv ("METACITY_DEBUG_COMPOSITOR") != NULL);

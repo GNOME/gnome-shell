@@ -594,7 +594,6 @@ meta_prop_get_cardinal (MetaDisplay   *display,
                         Window         xwindow,
                         Atom           xatom,
                         gulong        *cardinal_p)
-
 {
   return meta_prop_get_cardinal_with_atom_type (display, xwindow, xatom,
                                                 XA_CARDINAL, cardinal_p);

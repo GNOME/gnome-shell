@@ -1,3 +1,8 @@
+2008-01-02  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/xprops.c (meta_prop_get_cardinal), src/core/compositor.c
+	(timeout_debug): Two really minor coding standards layout tweaks.
+
 2007-12-27  Iain Holmes  <iain@gnome.org>
 
 	* src/core/compositor.c: Don't do anything in 
