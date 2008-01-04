@@ -2220,7 +2220,7 @@ clutter_actor_set_positionu (ClutterActor *self,
 }
 
 /**
- * clutter_actor_move_by
+ * clutter_actor_move_by:
  * @self: A #ClutterActor
  * @dx: Distance to move Actor on X axis.
  * @dy: Distance to move Actor on Y axis.
@@ -2235,18 +2235,38 @@ clutter_actor_move_by (ClutterActor *self,
 		       gint          dx,
 		       gint          dy)
 {
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_move_byu (self,
+                          CLUTTER_UNITS_FROM_DEVICE (dx),
+                          CLUTTER_UNITS_FROM_DEVICE (dy));
+}
+
+/**
+ * clutter_actor_move_byu:
+ * @self: A #ClutterActor
+ * @dx: Distance to move Actor on X axis, in #ClutterUnit<!-- -->s.
+ * @dy: Distance to move Actor on Y axis, in #ClutterUnit<!-- -->s.
+ *
+ * Moves an actor by specified distance relative to the current position.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_move_byu (ClutterActor *self,
+                        ClutterUnit   dx,
+                        ClutterUnit   dy)
+{
   ClutterActorBox box;
-  gint32 dxu = CLUTTER_UNITS_FROM_INT (dx);
-  gint32 dyu = CLUTTER_UNITS_FROM_INT (dy);
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   clutter_actor_query_coords (self, &box);
 
-  box.x2 += dxu;
-  box.y2 += dyu;
-  box.x1 += dxu;
-  box.y1 += dyu;
+  box.x2 += dx;
+  box.y2 += dy;
+  box.x1 += dx;
+  box.y1 += dy;
 
   clutter_actor_request_coords (self, &box);
 }

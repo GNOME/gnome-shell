@@ -386,6 +386,7 @@ clutter_actor_set_anchor_pointu
 clutter_actor_get_anchor_pointu
 clutter_actor_set_clipu
 clutter_actor_get_clipu
+clutter_actor_move_byu
 
 <SUBSECTION>
 clutter_actor_set_scalex

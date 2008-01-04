@@ -388,6 +388,9 @@ void                  clutter_actor_get_scale        (ClutterActor          *sel
 void                  clutter_actor_move_by                  (ClutterActor          *self,
                                                               gint                   dx,
                                                               gint                   dy);
+void                  clutter_actor_move_byu                 (ClutterActor          *self,
+                                                              ClutterUnit            dx,
+                                                              ClutterUnit            dy);
 
 void                  clutter_actor_get_vertices             (ClutterActor          *self,
 						              ClutterVertex          verts[4]);

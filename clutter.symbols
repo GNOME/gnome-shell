@@ -37,6 +37,7 @@ clutter_actor_hide_all
 clutter_actor_lower
 clutter_actor_lower_bottom
 clutter_actor_move_by
+clutter_actor_move_byu
 clutter_actor_paint
 clutter_actor_pick
 clutter_actor_query_coords

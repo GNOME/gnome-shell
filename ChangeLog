@@ -1,3 +1,13 @@
+2008-01-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter.symbols: Add clutter_actor_move_byu()
+	
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	(clutter_actor_move_by),
+	(clutter_actor_move_byu): Add a units-based variant of the
+	clutter_actor_move_by() function
+
 2008-01-02  Johan Bilien  <jobi@via.ecp.fr>
 
 	reviewed by: Emmanuele Bassi  <ebassi@openedhand.com>

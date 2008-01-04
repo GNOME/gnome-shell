@@ -1,3 +1,7 @@
+2008-01-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add clutter_actor_move_byu()
+
 2007-12-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add the units-based clip accessors
