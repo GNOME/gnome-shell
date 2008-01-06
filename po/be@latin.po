@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: atk.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-08 11:07+0200\n"
-"PO-Revision-Date: 2007-12-08 11:08+0200\n"
+"POT-Creation-Date: 2008-01-06 02:36+0200\n"
+"PO-Revision-Date: 2008-01-06 02:40+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: i18n@mova.org <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,46 +26,35 @@ msgstr "Stoł"
 msgid "Window Management"
 msgstr "Kiravańnie voknami "
 
-#: ../src/tools/metacity-message.c:150
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Užyćcio: %s\n"
-
-#: ../src/tools/metacity-message.c:176 ../src/util.c:133
-#, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-"Prahrama Metacity skampilavanaja biez absłuhoŭvańnia režymu z pašyranaj "
-"infarmacyjaj\n"
-
-#: ../src/core.c:206
+#: ../src/core/core.c:206
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "Zapyt źviestak ab nieviadomym aknie: %d"
 
-#: ../src/delete.c:67 ../src/delete.c:94 ../src/metacity-dialog.c:50
-#: ../src/theme-parser.c:484
+#: ../src/core/delete.c:67 ../src/core/delete.c:94
+#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:481
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Nielha razabrać \"%s\" u jakaści cełaj ličby (int)"
 
-#: ../src/delete.c:74 ../src/delete.c:101 ../src/metacity-dialog.c:57
-#: ../src/theme-parser.c:493 ../src/theme-parser.c:548
+#: ../src/core/delete.c:74 ../src/core/delete.c:101
+#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:490
+#: ../src/ui/theme-parser.c:545
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Nielha raspaznać kancavych znakaŭ \"%s\" u radku \"%s\""
 
-#: ../src/delete.c:132
+#: ../src/core/delete.c:132
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Niemahčyma razabrać paviedamleńnie \"%s\" ad pracesu akna\n"
 
-#: ../src/delete.c:267
+#: ../src/core/delete.c:267
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Pamyłka pry čytańni z pracesu, jaki absłuhoŭvaje vakno: %s\n"
 
-#: ../src/delete.c:350
+#: ../src/core/delete.c:350
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -73,17 +62,22 @@ msgstr ""
 "Pry ŭklučeńni metacity-dialog (jaki pytaŭsia pra źniščeńnie akna) adbyłasia "
 "pamyłka: %s\n"
 
-#: ../src/delete.c:459
+#: ../src/core/delete.c:459
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nielha atrymać nazvu kamputara: %s\n"
 
-#: ../src/display.c:349
+#: ../src/core/display.c:204
+#, c-format
+msgid "Missing %s extension required for compositing"
+msgstr "Nie staje pašyreńnia %s, vymahanaha dziela kampazycyi"
+
+#: ../src/core/display.c:368
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Niemahčyma adčynić spałučeńnie z ekranam \"%s\" systemy X Window\n"
 
-#: ../src/errors.c:271
+#: ../src/core/errors.c:271
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -94,80 +88,36 @@ msgstr ""
 "Vierahodna, pierastaŭ funkcyjanavać server X, albo dzejańnie kiraŭnika "
 "voknaŭ pierapynienaje.\n"
 
-#: ../src/errors.c:278
+#: ../src/core/errors.c:278
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Surjoznaja pamyłka ŭvachodu/vychadu %d (%s) na ekranie \"%s\".\n"
 
-#: ../src/frames.c:1078
-msgid "Close Window"
-msgstr "Začyni vakno"
-
-#: ../src/frames.c:1081
-msgid "Window Menu"
-msgstr "Menu vakna"
-
-#: ../src/frames.c:1084
-msgid "Minimize Window"
-msgstr "Minimalizuje vakno"
-
-#: ../src/frames.c:1087
-msgid "Maximize Window"
-msgstr "Maksymalizuje vakno"
-
-#: ../src/frames.c:1090
-msgid "Unmaximize Window"
-msgstr "Viartaje zmaksymalizavanaje vakno"
-
-#: ../src/frames.c:1093
-msgid "Roll Up Window"
-msgstr "Zharni vakno"
-
-#: ../src/frames.c:1096
-msgid "Unroll Window"
-msgstr "Razharni vakno"
-
-#: ../src/frames.c:1099
-msgid "Keep Window On Top"
-msgstr "Trymaj vakno naviersie"
-
-#: ../src/frames.c:1102
-msgid "Remove Window From Top"
-msgstr "Pierasuń vakno źvierchu"
-
-#: ../src/frames.c:1105
-msgid "Always On Visible Workspace"
-msgstr "Zaŭždy na bačnym rabočym abšary"
-
-#: ../src/frames.c:1108
-msgid "Put Window On Only One Workspace"
-msgstr "Raźmiaści vakno tolki na adnym rabočym abšary"
-
-#: ../src/keybindings.c:1087
+#: ../src/core/keybindings.c:1087
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Skarot z klavišaj %s i madyfikatarami %x užo ŭžyvaje inšaja prahrama\n"
 
-#: ../src/keybindings.c:2716
+#: ../src/core/keybindings.c:2733
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Pry ŭruchamleńni metacity-dialog (z infarmacyjaj pra pamyłku, datyčnuju "
 "zahadu) adbyłasia pamyłka: %s\n"
 
-#: ../src/keybindings.c:2821
+#: ../src/core/keybindings.c:2838
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Zahad %d nie akreśleny.\n"
 
-#: ../src/keybindings.c:3849
+#: ../src/core/keybindings.c:3866
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Zahad terminału nie akreśleny.\n"
 
-#: ../src/main.c:67
+#: ../src/core/main.c:67
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -183,41 +133,41 @@ msgstr ""
 "Na prahramu nie dajuć NIJAKAJ HARANTYI, navat harantyi HANDLOVAJ PRYDATNAŚCI "
 "albo PRYDATNAŚCI DLA AKREŚLENYCH METAŬ.\n"
 
-#: ../src/main.c:172
+#: ../src/core/main.c:172
 msgid "Disable connection to session manager"
 msgstr "Uklučaje spałučeńnie z kiraŭnikom sesijaŭ"
 
-#: ../src/main.c:178
+#: ../src/core/main.c:178
 msgid "Replace the running window manager with Metacity"
 msgstr "Zamianiaje ŭruchomlenaha kiraŭnika voknaŭ na Metacity"
 
-#: ../src/main.c:184
+#: ../src/core/main.c:184
 msgid "Specify session management ID"
 msgstr "Akreślivaje ID haspadarańnia sesijami"
 
 # #FIXME Słova "display" -- nie samameta, ale lepšaj versii nie pryniali. Varyjanty byli: dyspłej, dysplej. Nivodaje nie spadabałasia.
-#: ../src/main.c:189
+#: ../src/core/main.c:189
 msgid "X Display to use"
 msgstr "Užyvany dysplej X"
 
-#: ../src/main.c:195
+#: ../src/core/main.c:195
 msgid "Initialize session from savefile"
 msgstr "Inicyjavańnie sesii z zapisanaha fajłu"
 
-#: ../src/main.c:201
+#: ../src/core/main.c:201
 msgid "Print version"
 msgstr "Pakazvaje versiju"
 
-#: ../src/main.c:207
+#: ../src/core/main.c:207
 msgid "Make X calls synchronous"
 msgstr "Synchranizuj vykliki X"
 
-#: ../src/main.c:361
+#: ../src/core/main.c:361
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Niemahčyma prahledzieć kataloh z matyvami: %s\n"
 
-#: ../src/main.c:377
+#: ../src/core/main.c:377
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -225,245 +175,323 @@ msgstr ""
 "Niemahčyma znajści nivodnaha z matyvaŭ. Spraŭdź, kali łaska, ci isnuje "
 "kataloh %s i ci jość u im standartnyja matyvy.\n"
 
-#: ../src/main.c:452
+#: ../src/core/main.c:452
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Restart nie ŭdaŭsia: %s\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:70
-msgid "Mi_nimize"
-msgstr "M_inimalizuj"
+#: ../src/core/prefs.c:434
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "Typ %s nia ceły"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:72
-msgid "Ma_ximize"
-msgstr "M_aksymalizuj"
+#: ../src/core/prefs.c:572 ../src/core/prefs.c:600 ../src/core/prefs.c:616
+#: ../src/core/prefs.c:632 ../src/core/prefs.c:648 ../src/core/prefs.c:664
+#: ../src/core/prefs.c:680 ../src/core/prefs.c:696 ../src/core/prefs.c:716
+#: ../src/core/prefs.c:732 ../src/core/prefs.c:748 ../src/core/prefs.c:766
+#: ../src/core/prefs.c:782 ../src/core/prefs.c:801 ../src/core/prefs.c:817
+#: ../src/core/prefs.c:852 ../src/core/prefs.c:868 ../src/core/prefs.c:885
+#: ../src/core/prefs.c:901 ../src/core/prefs.c:917 ../src/core/prefs.c:933
+#: ../src/core/prefs.c:949 ../src/core/prefs.c:964 ../src/core/prefs.c:979
+#: ../src/core/prefs.c:994 ../src/core/prefs.c:1010 ../src/core/prefs.c:1026
+#: ../src/core/prefs.c:1042 ../src/core/prefs.c:1058
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "Kluč GConfa \"%s\" nieadpaviednaha typu\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:74
-msgid "Unma_ximize"
-msgstr "Viarni m_aksymalizavanaje"
+#: ../src/core/prefs.c:1103
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"Vartaść \"%s\", znojdzienaja ŭ bazie źviestak kanfihuracyi, nie apisvaje "
+"pravilna madyfikatara knopki myšy\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:76
-msgid "Roll _Up"
-msgstr "_Zharni"
+#: ../src/core/prefs.c:1127 ../src/core/prefs.c:1148 ../src/core/prefs.c:1705
+#, c-format
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "Kluču GConfa \"%s\" prypisanaja niapravilnaja vartaść\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:78
-msgid "_Unroll"
-msgstr "Ra_zharni"
+#: ../src/core/prefs.c:1277
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
+"range 1..128\n"
+msgstr ""
+"Vartaść %d, zapisanaja ŭ klučy GConfa %s, nie źjaŭlajecca prydatnaj "
+"vartaściu dla \"cursor_size\", jana musić być u dyjapazonie 1...128\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:80
-msgid "_Move"
-msgstr "Pier_asuń"
+#: ../src/core/prefs.c:1357
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Niemahčyma razabrać apisańnie \"%s\", paviazanaje z klučom GConfa %s\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:82
-msgid "_Resize"
-msgstr "Źmiani _pamier"
+#: ../src/core/prefs.c:1599
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr ""
+"Vartaść %d, zapisanaja ŭ klučy GConfa %s, nie źjaŭlajecca pravilnaj ličbaj "
+"stałoŭ; maksymum składaje ciapier %d\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:84
-msgid "Move Titlebar On_screen"
-msgstr "Piera_nos tytulnaj paneli na ekranie"
+#: ../src/core/prefs.c:1659
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+"Abychody dla papsavanych aplikacyjaŭ nieaktyŭnyja. Tamu niekatoryja ź ich "
+"mohuć pavodzić siabie nieadpaviedna.\n"
 
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:87 ../src/menu.c:89
-msgid "Always on _Top"
-msgstr "Zaŭždy na_viersie"
+#: ../src/core/prefs.c:1732
+#, c-format
+msgid "%d stored in GConf key %s is out of range 0 to %d\n"
+msgstr ""
+"Vartaść %d, zapisanaja ŭ klučy GConfa %s, pa-za dyjapazonam ad 0 da %d\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:91
-msgid "_Always on Visible Workspace"
-msgstr "_Zaŭždy na bačnym rabočym abšary"
+#: ../src/core/prefs.c:1881
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr ""
+"Padčas vyznačeńnia kolkaści rabočych abšaraŭ na %d adbyłasia pamyłka: %s\n"
 
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:93
-msgid "_Only on This Workspace"
-msgstr "_Tolki na hetym rabočym abšary"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:95
-msgid "Move to Workspace _Left"
-msgstr "Pieraniasi na _levy rabočy abšar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:97
-msgid "Move to Workspace R_ight"
-msgstr "Pieran_iasi na pravy rabočy abšar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:99
-msgid "Move to Workspace _Up"
-msgstr "Pieraniasi na _vierchni rabočy abšar"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:101
-msgid "Move to Workspace _Down"
-msgstr "Pieraniasi na _nižni rabočy abšar"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:105
-msgid "_Close"
-msgstr "Za_čyni"
-
-#: ../src/menu.c:199 ../src/prefs.c:2246 ../src/prefs.c:2780
+#: ../src/core/prefs.c:2246 ../src/core/prefs.c:2780 ../src/ui/menu.c:199
 #, c-format
 msgid "Workspace %d"
 msgstr "Rabočy abšar %d"
 
-#: ../src/menu.c:208
+#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2446
 #, c-format
-msgid "Workspace 1_0"
-msgstr "Rabočy abšar 1_0"
-
-#: ../src/menu.c:210
-#, c-format
-msgid "Workspace %s%d"
-msgstr "Rabočy abšar %s%d"
-
-#: ../src/menu.c:390
-msgid "Move to Another _Workspace"
-msgstr "Pieranos na inšy _rabočy abšar"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the shift key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:105
-msgid "Shift"
-msgstr "Shift"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the control key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:111
-msgid "Ctrl"
-msgstr "Ctrl"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the alt key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:117
-msgid "Alt"
-msgstr "Alt"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the meta key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:123
-msgid "Meta"
-msgstr "Meta"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the super key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:129
-msgid "Super"
-msgstr "Super"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the hyper key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:135
-msgid "Hyper"
-msgstr "Hyper"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod2 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:141
-msgid "Mod2"
-msgstr "Mod2"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod3 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:147
-msgid "Mod3"
-msgstr "Mod3"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod4 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:153
-msgid "Mod4"
-msgstr "Mod4"
-
-#. This is the text that should appear next to menu accelerators
-#. * that use the mod5 key. If the text on this key isn't typically
-#. * translated on keyboards used for your language, don't translate
-#. * this.
-#.
-#: ../src/metaaccellabel.c:159
-msgid "Mod5"
-msgstr "Mod5"
-
-#: ../src/metacity-dialog.c:90
-#, c-format
-msgid "\"%s\" is not responding."
-msgstr "Vakno \"%s\" nie adkazvaje."
-
-#: ../src/metacity-dialog.c:97
 msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr "Možna pačakać troški daŭžej, albo prymusić zusim zakončyć aplikacyju."
-
-#: ../src/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "_Čakaj"
-
-#: ../src/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "_Zakonč"
-
-#: ../src/metacity-dialog.c:206
-msgid "Title"
-msgstr "Zahałovak"
-
-#: ../src/metacity-dialog.c:218
-msgid "Class"
-msgstr "Klasa"
-
-#: ../src/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
 msgstr ""
-"Hetyja vokny nie absłuhoŭvajuć opcyi zapisu dziejnaha stanu (\"save current "
-"setup\"), tamu pry nastupnaj aŭtaryzacyi treba ich budzie ŭklučyć uručnuju."
+"Vartaść \"%s\", znojdzienaja ŭ bazie źviestak kanfihuracyi, nie apisvaje "
+"pravilna klavišny skarot \"%s\"\n"
 
-#: ../src/metacity-dialog.c:310
+#: ../src/core/prefs.c:2861
+#, c-format
+msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "Pamyłka pry vyznačeńni rabočaha abšaru %d na \"%s\": %s\n"
+
+#: ../src/core/screen.c:410
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "Padekran %d ekranu \"%s\" niapravilny\n"
+
+#: ../src/core/screen.c:426
 #, c-format
 msgid ""
-"There was an error running \"%s\":\n"
-"%s."
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
 msgstr ""
-"Pry vykanańni \"%s\" adbyłasia pamyłka:\n"
-"%s."
+"Na padekranie %d ekranu \"%s\" užo pracuje kiraŭnik voknaŭ. Kab zamianić "
+"dziejnaha kiraŭnika voknaŭ, pasprabuj skarystać opcyju --replace.\n"
+
+#: ../src/core/screen.c:453
+#, c-format
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"Niemahčyma atrymać zaznačeńnie kiraŭnika voknaŭ na padekranie %d ekranu \"%s"
+"\"\n"
+
+#: ../src/core/screen.c:511
+#, c-format
+msgid "Screen %d on display \"%s\" already has a window manager\n"
+msgstr "Na padekranie %d ekranu \"%s\" užo dziejničaje kiraŭnik voknaŭ\n"
+
+#: ../src/core/screen.c:721
+#, c-format
+msgid "Could not release screen %d on display \"%s\"\n"
+msgstr "Nielha zvolnić padekran %d ekranu \"%s\"\n"
+
+#: ../src/core/session.c:826 ../src/core/session.c:833
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "Niemahčyma stvaryć kataloh \"%s\": %s\n"
+
+#: ../src/core/session.c:843
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr "Niemahčyma adčynić fajł sesii \"%s\" dziela zapisu: %s\n"
+
+#: ../src/core/session.c:995
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "Pamyłka pry zapisie ŭ fajł sesii \"%s\": %s\n"
+
+#: ../src/core/session.c:1000
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "Pamyłka pry začynieńni fajłu sesii \"%s\": %s\n"
+
+#: ../src/core/session.c:1075
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "Niemahčyma adčytać zapisany fajł sesii \"%s\": %s\n"
+
+#: ../src/core/session.c:1110
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "Niemahčyma razabrać zapisany fajł sesii: %s\n"
+
+#: ../src/core/session.c:1159
+#, c-format
+msgid "<metacity_session> attribute seen but we already have the session ID"
+msgstr "Znojdzieny atrybut <metacity_session>, kali ID sesii byŭ užo akreśleny"
+
+#: ../src/core/session.c:1172
+#, c-format
+msgid "Unknown attribute %s on <metacity_session> element"
+msgstr "Nieviadomy atrybut %s unutry elementu <metacity_session>"
+
+# #FIXME nia ŭpeŭnieny ŭ terminie
+#: ../src/core/session.c:1189
+#, c-format
+msgid "nested <window> tag"
+msgstr "zahnieždžany značnik <window>"
+
+#: ../src/core/session.c:1247 ../src/core/session.c:1279
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr "Nieviadomy atrybut %s unutry elementu <window>"
+
+#: ../src/core/session.c:1351
+#, c-format
+msgid "Unknown attribute %s on <maximized> element"
+msgstr "Nieviadomy atrybut %s unutry elementu <maximized>"
+
+#: ../src/core/session.c:1411
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr "Nieviadomy atrybut %s unutry elementu <geometry>"
+
+#: ../src/core/session.c:1431
+#, c-format
+msgid "Unknown element %s"
+msgstr "Nieviadomy element %s"
+
+#: ../src/core/session.c:1868
+#, c-format
+msgid ""
+"Error launching metacity-dialog to warn about apps that don't support "
+"session management: %s\n"
+msgstr ""
+"Pry ŭklučeńni metacity-dialog (z aściarohaj na temu aplikacyi biez absłuhi "
+"sesijaŭ) adbyłasia pamyłka: %s\n"
+
+#: ../src/core/util.c:98
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr "Niemahčyma adčynić historyju z zapisam vykanańnia: %s\n"
+
+#: ../src/core/util.c:108
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr "Niemahčyma vykanać fdopen() na fajle historyi %s: %s\n"
+
+#: ../src/core/util.c:114
+#, c-format
+msgid "Opened log file %s\n"
+msgstr "Adčynieny fajł historyi %s\n"
+
+#: ../src/core/util.c:133 ../src/tools/metacity-message.c:176
+#, c-format
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr ""
+"Prahrama Metacity skampilavanaja biez absłuhoŭvańnia režymu z pašyranaj "
+"infarmacyjaj\n"
+
+#: ../src/core/util.c:231
+msgid "Window manager: "
+msgstr "Kiraŭnik voknaŭ: "
+
+#: ../src/core/util.c:379
+msgid "Bug in window manager: "
+msgstr "Pamyłka ŭ prahramie kiraŭnika voknaŭ: "
+
+#: ../src/core/util.c:408
+msgid "Window manager warning: "
+msgstr "Aściaroha kiraŭnika voknaŭ: "
+
+#: ../src/core/util.c:432
+msgid "Window manager error: "
+msgstr "Pamyłka kiraŭnika voknaŭ: "
+
+#: ../src/core/window-props.c:192
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "Aplikacyja abrała pamyłkovuju vartaść _NET_WM_PID %lu\n"
+
+#: ../src/core/window-props.c:324
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (na %s)"
+
+#: ../src/core/window-props.c:1406
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr ""
+"Niapravilnaja vartaść WM_TRANSIENT_FOR dla vakna 0x%lx akreślenaja ŭ %s.\n"
+
+#. first time through
+#: ../src/core/window.c:5650
+#, c-format
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr ""
+"Vakno %s abiraje na sabie SM_CLIENT_ID, a nie na vaknie WM_CLIENT_LEADER, "
+"zhodna sa specyfikacyjaj ICCCM.\n"
+
+#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
+#. * authoritative source for that info. Some apps such as mplayer or
+#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
+#. * leads to e.g. us not fullscreening their windows.  Apps that set
+#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
+#. * about these apps but make them work.
+#.
+#: ../src/core/window.c:6215
+#, c-format
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr ""
+"Vakno %s abiraje atrybut MWM, jaki akreślivaje, što jahony pamier vakna "
+"niaźmienny, ale adnačasova abiraje minimalny pamier na %d x %d, a maksymalny "
+"pamier na %d x %d. Heta nia maje nijakaha sensu.\n"
+
+#: ../src/core/xprops.c:155
+#, c-format
+msgid ""
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+msgstr ""
+"Vakno 0x%lx maje ŭłaścivaść %s,\n"
+"čakanym typam jakoj žjaŭlajecca %s z farmatam %d.\n"
+"U sapraŭdnaści ŭłaścivaść maje typ %s z farmatam %d pry n_items %d.\n"
+"Vierahodna, heta pamyłka aplikacyi, a nie kiraŭnika voknaŭ.\n"
+"Ułaścivaści vakna: zahałovak=\"%s\" klasa=\"%s\" nazva=\"%s\"\n"
+
+#: ../src/core/xprops.c:401
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr ""
+"Ułaścivaść %s, jakaja adnosicca da vakna 0x%lx, maje niapravilny łancužok "
+"UTF-8\n"
+
+#: ../src/core/xprops.c:484
+#, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr ""
+"Ułaścivaść %s, jakaja adnosicca da vakna 0x%lx, maje niapravilny łancužok "
+"UTF-8 u %d elemencie śpisu\n"
 
 #: ../src/metacity.desktop.in.h:1
 msgid "Metacity"
@@ -655,185 +683,200 @@ msgid "Lower window below other windows"
 msgstr "Pieraniasieńnie vakna pad astatnija"
 
 #: ../src/metacity.schemas.in.h:28
+msgid ""
+"Many actions (e.g. clicking in the client area, moving or resizing the "
+"window) normally raise the window as a side-effect. Setting this option to "
+"false, which is strongly discouraged, will decouple raising from other user "
+"actions, and ignore raise requests generated by applications. See http://"
+"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+msgstr ""
+"Mnohija dziejańni (napr. klik u klijencki abšar, pieranos albo źmiena "
+"pamieru vakna) zvyčajna majuć pabočnyja nastupstvy ŭ vyhladzie pieranosu "
+"vakna navierch. Vyklučeńnie hetaj opcyi, zusim nie rekamendavanaje, viadzie "
+"da taho, što pieranos navierch nia budzie źviazany ź inšymi dziejańniami "
+"karystalnika, a taksama buduć ihnaravacca zapyty na pieranos navierch ad "
+"aplikacyj. Hladzi http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+
+#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window"
 msgstr "Maksymalizacyja vakna"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:30
 msgid "Maximize window horizontally"
 msgstr "Haryzantalnaja maksymalizacyja vakna"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:31
 msgid "Maximize window vertically"
 msgstr "Vertykalnaja maksymalizacyja vakna"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:32
 msgid "Minimize window"
 msgstr "Minimalizacyja vakna"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:33
 msgid "Modifier to use for modified window click actions"
 msgstr ""
 "Madyfikatar, užyvany dziela vykonvańnia aperacyi pry dapamozie kliku vakna"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:34
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Pierachod nazad pamiž panelami i stałom"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:35
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
 "Pierachod nazad pamiž panelami i stałom z vykarystańniem vypłyŭnoha vakna"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:36
 msgid "Move backwards between windows immediately"
 msgstr "Nieadkładny prachod nazad pamiž voknami"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:37
 msgid "Move backwards between windows of an application immediately"
 msgstr "Nieadkładny prachod nazad pamiž voknami aplikacyjaŭ"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:38
 msgid "Move backwards between windows of an application with popup"
 msgstr ""
 "Pierachod nazad pamiž voknami aplikacyjaŭ z vykarystańniem vypłyŭnoha vakna"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:39
 msgid "Move between panels and the desktop immediately"
 msgstr "Nieadkładny prachod pamiž panelami j stałom"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:40
 msgid "Move between panels and the desktop with popup"
 msgstr "Pierachod pamiž panelami j stałom z vykarystańniem vypłyŭnoha vakna"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:41
 msgid "Move between windows immediately"
 msgstr "Nieadkładny prachod pamiž voknami"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:42
 msgid "Move between windows of an application immediately"
 msgstr "Nieadkładny prachod pamiž voknami aplikacyjaŭ"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:43
 msgid "Move between windows of an application with popup"
 msgstr "Prachod pamiž voknami aplikacyjaŭ z vykarystańniem vypłyŭnoha vakna"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:44
 msgid "Move between windows with popup"
 msgstr "Pierachod pamiž voknami z vykarystańniem vypłyŭnoha vakna"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:45
 msgid "Move focus backwards between windows using popup display"
 msgstr "Pieranos fokusu nazad pamiž voknami z vykarystańniem vypłyŭnoha vakna"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window"
 msgstr "Pieranos vakna"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace down"
 msgstr "Pieranos vakna na rabočy abšar uniz"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window one workspace to the left"
 msgstr "Pieranos vakna na rabočy abšar uleva"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window one workspace to the right"
 msgstr "Pieranos vakna na rabočy abšar uprava"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window one workspace up"
 msgstr "Pieranos vakna na rabočy abšar uvierch"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to east side of screen"
 msgstr "Pieranos vakna na ŭschodni bok ekranu"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to north side of screen"
 msgstr "Pieranos vakna na paŭnočny bok ekranu"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to north-east corner"
 msgstr "Pieranos vakna na paŭnočna-ŭschodni roh ekranu"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to north-west corner"
 msgstr "Pieranos vakna na paŭnočna-zachodni roh ekranu"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to south side of screen"
 msgstr "Pieranos vakna na paŭdniovy bok ekranu"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:56
 msgid "Move window to south-east corner"
 msgstr "Pieranos vakna na paŭdniova-ŭschodni roh ekranu"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:57
 msgid "Move window to south-west corner"
 msgstr "Pieranos vakna na paŭdniova-zachodni roh ekranu"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:58
 msgid "Move window to west side of screen"
 msgstr "Pieranos vakna na zachodni bok ekranu"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 1"
 msgstr "Pieranos vakna na pieršy rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 10"
 msgstr "Pieranos vakna na 10-ty rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:61
 msgid "Move window to workspace 11"
 msgstr "Pieranos vakna na 11-ty rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:62
 msgid "Move window to workspace 12"
 msgstr "Pieranos vakna na 12-ty rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:63
 msgid "Move window to workspace 2"
 msgstr "Pieranos vakna na 2-hi rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:64
 msgid "Move window to workspace 3"
 msgstr "Pieranos vakna na 3-ci rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:65
 msgid "Move window to workspace 4"
 msgstr "Pieranos vakna na 4-ty rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:66
 msgid "Move window to workspace 5"
 msgstr "Pieranos vakna na 5-ty rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:67
 msgid "Move window to workspace 6"
 msgstr "Pieranos vakna na 6-ty rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:68
 msgid "Move window to workspace 7"
 msgstr "Pieranos vakna na 7-my rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:69
 msgid "Move window to workspace 8"
 msgstr "Pieranos vakna na 8-my rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:70
 msgid "Move window to workspace 9"
 msgstr "Pieranos vakna na 9-ty rabočy abšar"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:71
 msgid "Name of workspace"
 msgstr "Nazva rabočaha abšaru"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:72
 msgid "Number of workspaces"
 msgstr "Kolkaść rabočych abšaraŭ"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:73
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -843,46 +886,26 @@ msgstr ""
 "maksymum, kab papiaredzić vypadkovy zator asiarodździa ad praźmierna "
 "vialikaj kolkaści rabočych abšaraŭ."
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:74
 msgid "Raise obscured window, otherwise lower"
 msgstr ""
 "Vysoŭvańnie vakna, kali jano zasłonienaje, u advarotnym vypadku adsoŭvańnie."
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:75
 msgid "Raise window above other windows"
 msgstr "Vysoŭvańnie vakna pierad astatnimi"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:76
 msgid "Resize window"
 msgstr "Źmiena pamieru vakna"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:77
 msgid "Run a defined command"
 msgstr "Uruchamleńnie aznačanaha zahadu"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:78
 msgid "Run a terminal"
 msgstr "Uruchamleńnie terminału"
-
-#: ../src/metacity.schemas.in.h:78
-msgid ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Set this option to false to decouple "
-"raising from other user actions. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the bug "
-"they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-msgstr ""
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -2409,254 +2432,333 @@ msgstr "Režym fokusu vakna"
 msgid "Window title font"
 msgstr "Šryft zahałoŭku vakna"
 
-#: ../src/prefs.c:434
-#, c-format
-msgid "Type of %s was not integer"
-msgstr "Typ %s nia ceły"
+#: ../src/ui/frames.c:1077
+msgid "Close Window"
+msgstr "Začyni vakno"
 
-#: ../src/prefs.c:572 ../src/prefs.c:600 ../src/prefs.c:616 ../src/prefs.c:632
-#: ../src/prefs.c:648 ../src/prefs.c:664 ../src/prefs.c:680 ../src/prefs.c:696
-#: ../src/prefs.c:716 ../src/prefs.c:732 ../src/prefs.c:748 ../src/prefs.c:766
-#: ../src/prefs.c:782 ../src/prefs.c:801 ../src/prefs.c:817 ../src/prefs.c:852
-#: ../src/prefs.c:868 ../src/prefs.c:885 ../src/prefs.c:901 ../src/prefs.c:917
-#: ../src/prefs.c:933 ../src/prefs.c:949 ../src/prefs.c:964 ../src/prefs.c:979
-#: ../src/prefs.c:994 ../src/prefs.c:1010 ../src/prefs.c:1026
-#: ../src/prefs.c:1042 ../src/prefs.c:1058
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "Kluč GConfa \"%s\" nieadpaviednaha typu\n"
+#: ../src/ui/frames.c:1080
+msgid "Window Menu"
+msgstr "Menu vakna"
 
-#: ../src/prefs.c:1103
+#: ../src/ui/frames.c:1083
+msgid "Minimize Window"
+msgstr "Minimalizuje vakno"
+
+#: ../src/ui/frames.c:1086
+msgid "Maximize Window"
+msgstr "Maksymalizuje vakno"
+
+#: ../src/ui/frames.c:1089
+msgid "Unmaximize Window"
+msgstr "Viartaje zmaksymalizavanaje vakno"
+
+#: ../src/ui/frames.c:1092
+msgid "Roll Up Window"
+msgstr "Zharni vakno"
+
+#: ../src/ui/frames.c:1095
+msgid "Unroll Window"
+msgstr "Razharni vakno"
+
+#: ../src/ui/frames.c:1098
+msgid "Keep Window On Top"
+msgstr "Trymaj vakno naviersie"
+
+#: ../src/ui/frames.c:1101
+msgid "Remove Window From Top"
+msgstr "Pierasuń vakno źvierchu"
+
+#: ../src/ui/frames.c:1104
+msgid "Always On Visible Workspace"
+msgstr "Zaŭždy na bačnym rabočym abšary"
+
+#: ../src/ui/frames.c:1107
+msgid "Put Window On Only One Workspace"
+msgstr "Raźmiaści vakno tolki na adnym rabočym abšary"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:70
+msgid "Mi_nimize"
+msgstr "M_inimalizuj"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:72
+msgid "Ma_ximize"
+msgstr "M_aksymalizuj"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:74
+msgid "Unma_ximize"
+msgstr "Viarni m_aksymalizavanaje"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:76
+msgid "Roll _Up"
+msgstr "_Zharni"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:78
+msgid "_Unroll"
+msgstr "Ra_zharni"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:80
+msgid "_Move"
+msgstr "Pier_asuń"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:82
+msgid "_Resize"
+msgstr "Źmiani _pamier"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:84
+msgid "Move Titlebar On_screen"
+msgstr "Piera_nos tytulnaj paneli na ekranie"
+
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
+msgid "Always on _Top"
+msgstr "Zaŭždy na_viersie"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:91
+msgid "_Always on Visible Workspace"
+msgstr "_Zaŭždy na bačnym rabočym abšary"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:93
+msgid "_Only on This Workspace"
+msgstr "_Tolki na hetym rabočym abšary"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:95
+msgid "Move to Workspace _Left"
+msgstr "Pieraniasi na _levy rabočy abšar"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:97
+msgid "Move to Workspace R_ight"
+msgstr "Pieran_iasi na pravy rabočy abšar"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:99
+msgid "Move to Workspace _Up"
+msgstr "Pieraniasi na _vierchni rabočy abšar"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:101
+msgid "Move to Workspace _Down"
+msgstr "Pieraniasi na _nižni rabočy abšar"
+
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/ui/menu.c:105
+msgid "_Close"
+msgstr "Za_čyni"
+
+#: ../src/ui/menu.c:208
+#, c-format
+msgid "Workspace 1_0"
+msgstr "Rabočy abšar 1_0"
+
+#: ../src/ui/menu.c:210
+#, c-format
+msgid "Workspace %s%d"
+msgstr "Rabočy abšar %s%d"
+
+#: ../src/ui/menu.c:390
+msgid "Move to Another _Workspace"
+msgstr "Pieranos na inšy _rabočy abšar"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the shift key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:105
+msgid "Shift"
+msgstr "Shift"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:111
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the alt key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:117
+msgid "Alt"
+msgstr "Alt"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the meta key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:123
+msgid "Meta"
+msgstr "Meta"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the super key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:129
+msgid "Super"
+msgstr "Super"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the hyper key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:135
+msgid "Hyper"
+msgstr "Hyper"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod2 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:141
+msgid "Mod2"
+msgstr "Mod2"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod3 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:147
+msgid "Mod3"
+msgstr "Mod3"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod4 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:153
+msgid "Mod4"
+msgstr "Mod4"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod5 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/ui/metaaccellabel.c:159
+msgid "Mod5"
+msgstr "Mod5"
+
+#: ../src/ui/metacity-dialog.c:90
+#, c-format
+msgid "\"%s\" is not responding."
+msgstr "Vakno \"%s\" nie adkazvaje."
+
+#: ../src/ui/metacity-dialog.c:97
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "Možna pačakać troški daŭžej, albo prymusić zusim zakončyć aplikacyju."
+
+#: ../src/ui/metacity-dialog.c:107
+msgid "_Wait"
+msgstr "_Čakaj"
+
+#: ../src/ui/metacity-dialog.c:109
+msgid "_Force Quit"
+msgstr "_Zakonč"
+
+#: ../src/ui/metacity-dialog.c:206
+msgid "Title"
+msgstr "Zahałovak"
+
+#: ../src/ui/metacity-dialog.c:218
+msgid "Class"
+msgstr "Klasa"
+
+#: ../src/ui/metacity-dialog.c:244
+msgid ""
+"These windows do not support \"save current setup\" and will have to be "
+"restarted manually next time you log in."
+msgstr ""
+"Hetyja vokny nie absłuhoŭvajuć opcyi zapisu dziejnaha stanu (\"save current "
+"setup\"), tamu pry nastupnaj aŭtaryzacyi treba ich budzie ŭklučyć uručnuju."
+
+#: ../src/ui/metacity-dialog.c:310
 #, c-format
 msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
+"There was an error running \"%s\":\n"
+"%s."
 msgstr ""
-"Vartaść \"%s\", znojdzienaja ŭ bazie źviestak kanfihuracyi, nie apisvaje "
-"pravilna madyfikatara knopki myšy\n"
+"Pry vykanańni \"%s\" adbyłasia pamyłka:\n"
+"%s."
 
-#: ../src/prefs.c:1127 ../src/prefs.c:1148 ../src/prefs.c:1705
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "Kluču GConfa \"%s\" prypisanaja niapravilnaja vartaść\n"
-
-#: ../src/prefs.c:1277
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-"range 1..128\n"
-msgstr ""
-"Vartaść %d, zapisanaja ŭ klučy GConfa %s, nie źjaŭlajecca prydatnaj "
-"vartaściu dla \"cursor_size\", jana musić być u dyjapazonie 1...128\n"
-
-#: ../src/prefs.c:1357
-#, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Niemahčyma razabrać apisańnie \"%s\", paviazanaje z klučom GConfa %s\n"
-
-#: ../src/prefs.c:1599
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-"Vartaść %d, zapisanaja ŭ klučy GConfa %s, nie źjaŭlajecca pravilnaj ličbaj "
-"stałoŭ; maksymum składaje ciapier %d\n"
-
-#: ../src/prefs.c:1659
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"Abychody dla papsavanych aplikacyjaŭ nieaktyŭnyja. Tamu niekatoryja ź ich "
-"mohuć pavodzić siabie nieadpaviedna.\n"
-
-#: ../src/prefs.c:1732
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
-"Vartaść %d, zapisanaja ŭ klučy GConfa %s, pa-za dyjapazonam ad 0 da %d\n"
-
-#: ../src/prefs.c:1881
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
-"Padčas vyznačeńnia kolkaści rabočych abšaraŭ na %d adbyłasia pamyłka: %s\n"
-
-#: ../src/prefs.c:2276 ../src/prefs.c:2446
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-"Vartaść \"%s\", znojdzienaja ŭ bazie źviestak kanfihuracyi, nie apisvaje "
-"pravilna klavišny skarot \"%s\"\n"
-
-#: ../src/prefs.c:2861
-#, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Pamyłka pry vyznačeńni rabočaha abšaru %d na \"%s\": %s\n"
-
-#: ../src/resizepopup.c:113
+#: ../src/ui/resizepopup.c:113
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:410
-#, c-format
-msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Padekran %d ekranu \"%s\" niapravilny\n"
-
-#: ../src/screen.c:426
-#, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"Na padekranie %d ekranu \"%s\" užo pracuje kiraŭnik voknaŭ. Kab zamianić "
-"dziejnaha kiraŭnika voknaŭ, pasprabuj skarystać opcyju --replace.\n"
-
-#: ../src/screen.c:453
-#, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"Niemahčyma atrymać zaznačeńnie kiraŭnika voknaŭ na padekranie %d ekranu \"%s"
-"\"\n"
-
-#: ../src/screen.c:511
-#, c-format
-msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Na padekranie %d ekranu \"%s\" užo dziejničaje kiraŭnik voknaŭ\n"
-
-#: ../src/screen.c:716
-#, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Nielha zvolnić padekran %d ekranu \"%s\"\n"
-
-#: ../src/session.c:826 ../src/session.c:833
-#, c-format
-msgid "Could not create directory '%s': %s\n"
-msgstr "Niemahčyma stvaryć kataloh \"%s\": %s\n"
-
-#: ../src/session.c:843
-#, c-format
-msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Niemahčyma adčynić fajł sesii \"%s\" dziela zapisu: %s\n"
-
-#: ../src/session.c:995
-#, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr "Pamyłka pry zapisie ŭ fajł sesii \"%s\": %s\n"
-
-#: ../src/session.c:1000
-#, c-format
-msgid "Error closing session file '%s': %s\n"
-msgstr "Pamyłka pry začynieńni fajłu sesii \"%s\": %s\n"
-
-#: ../src/session.c:1075
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Niemahčyma adčytać zapisany fajł sesii \"%s\": %s\n"
-
-#: ../src/session.c:1110
-#, c-format
-msgid "Failed to parse saved session file: %s\n"
-msgstr "Niemahčyma razabrać zapisany fajł sesii: %s\n"
-
-#: ../src/session.c:1159
-#, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "Znojdzieny atrybut <metacity_session>, kali ID sesii byŭ užo akreśleny"
-
-#: ../src/session.c:1172
-#, c-format
-msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "Nieviadomy atrybut %s unutry elementu <metacity_session>"
-
-# #FIXME nia ŭpeŭnieny ŭ terminie
-#: ../src/session.c:1189
-#, c-format
-msgid "nested <window> tag"
-msgstr "zahnieždžany značnik <window>"
-
-#: ../src/session.c:1247 ../src/session.c:1279
-#, c-format
-msgid "Unknown attribute %s on <window> element"
-msgstr "Nieviadomy atrybut %s unutry elementu <window>"
-
-#: ../src/session.c:1351
-#, c-format
-msgid "Unknown attribute %s on <maximized> element"
-msgstr "Nieviadomy atrybut %s unutry elementu <maximized>"
-
-#: ../src/session.c:1411
-#, c-format
-msgid "Unknown attribute %s on <geometry> element"
-msgstr "Nieviadomy atrybut %s unutry elementu <geometry>"
-
-#: ../src/session.c:1431
-#, c-format
-msgid "Unknown element %s"
-msgstr "Nieviadomy element %s"
-
-#: ../src/session.c:1868
-#, c-format
-msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
-msgstr ""
-"Pry ŭklučeńni metacity-dialog (z aściarohaj na temu aplikacyi biez absłuhi "
-"sesijaŭ) adbyłasia pamyłka: %s\n"
-
-#: ../src/theme-parser.c:227 ../src/theme-parser.c:245
+#: ../src/ui/theme-parser.c:227 ../src/ui/theme-parser.c:245
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Radok %d, znak %d: %s"
 
-#: ../src/theme-parser.c:399
+#: ../src/ui/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Atrybut \"%s\" pajaviŭsia dvojčy ŭnutry adnaho elementu <%s>"
 
-#: ../src/theme-parser.c:417 ../src/theme-parser.c:442
+#: ../src/ui/theme-parser.c:414 ../src/ui/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Atrybut \"%s\" niapravilny ŭnutry elementu <%s> ŭ dadzienym kantekście"
 
-#: ../src/theme-parser.c:503
+#: ../src/ui/theme-parser.c:500
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Cełaja ličba %ld musić być dadatnaj"
 
-#: ../src/theme-parser.c:511
+#: ../src/ui/theme-parser.c:508
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Cełaja ličba %ld zavialikaja, ciapier maksymum składaje %d"
 
-#: ../src/theme-parser.c:539 ../src/theme-parser.c:655
+#: ../src/ui/theme-parser.c:536 ../src/ui/theme-parser.c:652
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Zapis \"%s\" nie źjaŭlajecca zapisam niefiksavanaj koski"
 
-#: ../src/theme-parser.c:570 ../src/theme-parser.c:598
+#: ../src/ui/theme-parser.c:567 ../src/ui/theme-parser.c:595
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Lahičnymi vartaściami źjaŭlajucca \"true\" i \"false\", a nie \"%s\""
 
-#: ../src/theme-parser.c:625
+#: ../src/ui/theme-parser.c:622
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Vartaść kuta musić źmiaščacca pamiž 0,0 i 360,0, adčytanaja %g\n"
 
-#: ../src/theme-parser.c:688
+#: ../src/ui/theme-parser.c:685
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "Vartaść alfa musić źmiaščacca pamiž 0,0 (niabačnaje) i 1,0 (całkam "
 "prazrystaje), adčytanaja %g\n"
 
-#: ../src/theme-parser.c:753
+#: ../src/ui/theme-parser.c:750
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -2665,374 +2767,374 @@ msgstr ""
 "Nieadpaviedny pamier zahałoŭka \"%s\" (jon musić być adnoj z vartaściaŭ: xx-"
 "small, x-small, small, medium, large, x-large, xx-large)\n"
 
-#: ../src/theme-parser.c:798 ../src/theme-parser.c:806
-#: ../src/theme-parser.c:888 ../src/theme-parser.c:985
-#: ../src/theme-parser.c:1027 ../src/theme-parser.c:1138
-#: ../src/theme-parser.c:1188 ../src/theme-parser.c:1196
-#: ../src/theme-parser.c:3074 ../src/theme-parser.c:3163
-#: ../src/theme-parser.c:3170 ../src/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:795 ../src/ui/theme-parser.c:803
+#: ../src/ui/theme-parser.c:885 ../src/ui/theme-parser.c:982
+#: ../src/ui/theme-parser.c:1024 ../src/ui/theme-parser.c:1135
+#: ../src/ui/theme-parser.c:1185 ../src/ui/theme-parser.c:1193
+#: ../src/ui/theme-parser.c:3093 ../src/ui/theme-parser.c:3184
+#: ../src/ui/theme-parser.c:3191 ../src/ui/theme-parser.c:3198
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Niama atrybutu \"%s\" u elemencie <%s>"
 
-#: ../src/theme-parser.c:922 ../src/theme-parser.c:993
-#: ../src/theme-parser.c:1035 ../src/theme-parser.c:1146
+#: ../src/ui/theme-parser.c:919 ../src/ui/theme-parser.c:990
+#: ../src/ui/theme-parser.c:1032 ../src/ui/theme-parser.c:1143
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s>: užytaja nazva \"%s\" druhi raz"
 
-#: ../src/theme-parser.c:934 ../src/theme-parser.c:1047
-#: ../src/theme-parser.c:1158
+#: ../src/ui/theme-parser.c:931 ../src/ui/theme-parser.c:1044
+#: ../src/ui/theme-parser.c:1155
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s>: nie akreśleny element-baćka z nazvaj \"%s\""
 
-#: ../src/theme-parser.c:1060
+#: ../src/ui/theme-parser.c:1057
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s>: nie akreślenaja hieametryja z nazvaj \"%s\""
 
-#: ../src/theme-parser.c:1073
+#: ../src/ui/theme-parser.c:1070
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
 "<%s> musić albo akreślivać hieametryju, albo element-baćku z hieametryjaj"
 
-#: ../src/theme-parser.c:1115
+#: ../src/ui/theme-parser.c:1112
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "Kab vartaść alfa mieła sens, treba akreślić fon"
 
-#: ../src/theme-parser.c:1206
+#: ../src/ui/theme-parser.c:1203
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Nieviadomy typ \"%s\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1217
+#: ../src/ui/theme-parser.c:1214
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Nieviadommaja vartaść atrybutu \"style_set\" (%s) unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1225
+#: ../src/ui/theme-parser.c:1222
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Z typam vakna \"%s\" užo paviazany nabor stylaŭ"
 
-#: ../src/theme-parser.c:1261
+#: ../src/ui/theme-parser.c:1258
 msgid "Theme already has a fallback icon"
 msgstr "Matyŭ užo maje zmoŭčanuju ikonu \"icon\""
 
-#: ../src/theme-parser.c:1273
+#: ../src/ui/theme-parser.c:1270
 msgid "Theme already has a fallback mini_icon"
 msgstr "Matyŭ užo maje zmoŭčanuju mini_ikonu \"mini_icon\""
 
-#: ../src/theme-parser.c:1286 ../src/theme-parser.c:1350
-#: ../src/theme-parser.c:1639 ../src/theme-parser.c:3262
-#: ../src/theme-parser.c:3316 ../src/theme-parser.c:3488
-#: ../src/theme-parser.c:3704 ../src/theme-parser.c:3742
-#: ../src/theme-parser.c:3780 ../src/theme-parser.c:3818
+#: ../src/ui/theme-parser.c:1283 ../src/ui/theme-parser.c:1347
+#: ../src/ui/theme-parser.c:1636 ../src/ui/theme-parser.c:3285
+#: ../src/ui/theme-parser.c:3339 ../src/ui/theme-parser.c:3511
+#: ../src/ui/theme-parser.c:3727 ../src/ui/theme-parser.c:3765
+#: ../src/ui/theme-parser.c:3803 ../src/ui/theme-parser.c:3841
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Element <%s> niedapuščalny nižej za <%s>"
 
-#: ../src/theme-parser.c:1376 ../src/theme-parser.c:1463
-#: ../src/theme-parser.c:1533
+#: ../src/ui/theme-parser.c:1373 ../src/ui/theme-parser.c:1460
+#: ../src/ui/theme-parser.c:1530
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
 msgstr "Niama atrybutu \"name\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1383 ../src/theme-parser.c:1470
+#: ../src/ui/theme-parser.c:1380 ../src/ui/theme-parser.c:1467
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
 msgstr "Niama atrybutu \"value\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1414 ../src/theme-parser.c:1428
-#: ../src/theme-parser.c:1487
+#: ../src/ui/theme-parser.c:1411 ../src/ui/theme-parser.c:1425
+#: ../src/ui/theme-parser.c:1484
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Nielha adnačasova akreślivać dla knopki jaje šyryni, vyšyni i kaeficyjentu "
 "praporcyjaŭ"
 
-#: ../src/theme-parser.c:1437
+#: ../src/ui/theme-parser.c:1434
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Adlehłaść \"%s\" nieviadomaja"
 
-#: ../src/theme-parser.c:1496
+#: ../src/ui/theme-parser.c:1493
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Kaeficyjent praporcyjaŭ \"%s\" nieviadomy"
 
-#: ../src/theme-parser.c:1540
+#: ../src/ui/theme-parser.c:1537
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
 msgstr "Niama atrybutu \"top\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1547
+#: ../src/ui/theme-parser.c:1544
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
 msgstr "Niama atrybutu \"bottom\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1554
+#: ../src/ui/theme-parser.c:1551
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
 msgstr "Niama atrybutu \"left\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1561
+#: ../src/ui/theme-parser.c:1558
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
 msgstr "Niama atrybutu \"right\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1593
+#: ../src/ui/theme-parser.c:1590
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Kraj \"%s\" nieviadomy"
 
-#: ../src/theme-parser.c:1746 ../src/theme-parser.c:1856
-#: ../src/theme-parser.c:1963 ../src/theme-parser.c:2190
-#: ../src/theme-parser.c:3007
+#: ../src/ui/theme-parser.c:1736 ../src/ui/theme-parser.c:1850
+#: ../src/ui/theme-parser.c:1961 ../src/ui/theme-parser.c:2192
+#: ../src/ui/theme-parser.c:3023
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
 msgstr "Niama atrybutu \"color\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1753
+#: ../src/ui/theme-parser.c:1743
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
 msgstr "Niama atrybutu \"x1\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1760 ../src/theme-parser.c:2852
+#: ../src/ui/theme-parser.c:1750 ../src/ui/theme-parser.c:2864
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
 msgstr "Niama atrybutu \"y1\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1767
+#: ../src/ui/theme-parser.c:1757
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
 msgstr "Niama atrybutu \"x2\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1774 ../src/theme-parser.c:2859
+#: ../src/ui/theme-parser.c:1764 ../src/ui/theme-parser.c:2871
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
 msgstr "Niama atrybutu \"y2\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1863 ../src/theme-parser.c:1970
-#: ../src/theme-parser.c:2116 ../src/theme-parser.c:2197
-#: ../src/theme-parser.c:2303 ../src/theme-parser.c:2401
-#: ../src/theme-parser.c:2621 ../src/theme-parser.c:2747
-#: ../src/theme-parser.c:2845 ../src/theme-parser.c:2919
-#: ../src/theme-parser.c:3014
+#: ../src/ui/theme-parser.c:1857 ../src/ui/theme-parser.c:1968
+#: ../src/ui/theme-parser.c:2117 ../src/ui/theme-parser.c:2199
+#: ../src/ui/theme-parser.c:2306 ../src/ui/theme-parser.c:2408
+#: ../src/ui/theme-parser.c:2630 ../src/ui/theme-parser.c:2758
+#: ../src/ui/theme-parser.c:2857 ../src/ui/theme-parser.c:2934
+#: ../src/ui/theme-parser.c:3030
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
 msgstr "Niama atrybutu \"x\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1870 ../src/theme-parser.c:1977
-#: ../src/theme-parser.c:2123 ../src/theme-parser.c:2204
-#: ../src/theme-parser.c:2310 ../src/theme-parser.c:2408
-#: ../src/theme-parser.c:2628 ../src/theme-parser.c:2754
-#: ../src/theme-parser.c:2926 ../src/theme-parser.c:3021
+#: ../src/ui/theme-parser.c:1864 ../src/ui/theme-parser.c:1975
+#: ../src/ui/theme-parser.c:2124 ../src/ui/theme-parser.c:2206
+#: ../src/ui/theme-parser.c:2313 ../src/ui/theme-parser.c:2415
+#: ../src/ui/theme-parser.c:2637 ../src/ui/theme-parser.c:2765
+#: ../src/ui/theme-parser.c:2941 ../src/ui/theme-parser.c:3037
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
 msgstr "Niama atrybutu \"y\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1877 ../src/theme-parser.c:1984
-#: ../src/theme-parser.c:2130 ../src/theme-parser.c:2211
-#: ../src/theme-parser.c:2317 ../src/theme-parser.c:2415
-#: ../src/theme-parser.c:2635 ../src/theme-parser.c:2761
-#: ../src/theme-parser.c:2933
+#: ../src/ui/theme-parser.c:1871 ../src/ui/theme-parser.c:1982
+#: ../src/ui/theme-parser.c:2131 ../src/ui/theme-parser.c:2213
+#: ../src/ui/theme-parser.c:2320 ../src/ui/theme-parser.c:2422
+#: ../src/ui/theme-parser.c:2644 ../src/ui/theme-parser.c:2772
+#: ../src/ui/theme-parser.c:2948
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
 msgstr "Niama atrybutu \"width\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:1884 ../src/theme-parser.c:1991
-#: ../src/theme-parser.c:2137 ../src/theme-parser.c:2218
-#: ../src/theme-parser.c:2324 ../src/theme-parser.c:2422
-#: ../src/theme-parser.c:2642 ../src/theme-parser.c:2768
-#: ../src/theme-parser.c:2940
+#: ../src/ui/theme-parser.c:1878 ../src/ui/theme-parser.c:1989
+#: ../src/ui/theme-parser.c:2138 ../src/ui/theme-parser.c:2220
+#: ../src/ui/theme-parser.c:2327 ../src/ui/theme-parser.c:2429
+#: ../src/ui/theme-parser.c:2651 ../src/ui/theme-parser.c:2779
+#: ../src/ui/theme-parser.c:2955
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
 msgstr "Niama atrybutu \"height\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2000
+#: ../src/ui/theme-parser.c:1998
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Niama atrybutu \"start_angle\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2007
+#: ../src/ui/theme-parser.c:2005
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Niama atrybutu \"extent_angle\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2016
+#: ../src/ui/theme-parser.c:2014
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
 msgstr "Niama atrybutu \"start_angle\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2021
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
 msgstr "Niama atrybutu \"extent_angle\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2225
+#: ../src/ui/theme-parser.c:2227
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
 msgstr "Niama atrybutu \"alpha\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2296
+#: ../src/ui/theme-parser.c:2299
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
 msgstr "Niama atrybutu \"type\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2344
+#: ../src/ui/theme-parser.c:2349
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Niezrazumiełaja vartaść \"%s\" typu hradyjentu"
 
-#: ../src/theme-parser.c:2429
+#: ../src/ui/theme-parser.c:2436
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
 msgstr "Niama atrybutu \"filename\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2454 ../src/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:2461 ../src/ui/theme-parser.c:2980
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Niezrazumieły typ zapaŭnieńnia \"%s\" elementu <%s>"
 
-#: ../src/theme-parser.c:2600 ../src/theme-parser.c:2733
-#: ../src/theme-parser.c:2838
+#: ../src/ui/theme-parser.c:2609 ../src/ui/theme-parser.c:2744
+#: ../src/ui/theme-parser.c:2850
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
 msgstr "Niama atrybutu \"state\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2607 ../src/theme-parser.c:2740
+#: ../src/ui/theme-parser.c:2616 ../src/ui/theme-parser.c:2751
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
 msgstr "Niama atrybutu \"shadow\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2614
+#: ../src/ui/theme-parser.c:2623
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
 msgstr "Niama atrybutu \"array\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:2667 ../src/theme-parser.c:2789
-#: ../src/theme-parser.c:2877
+#: ../src/ui/theme-parser.c:2676 ../src/ui/theme-parser.c:2800
+#: ../src/ui/theme-parser.c:2891
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Niezrazumieły stan \"%s\" (atrybut state) elementu <%s>"
 
-#: ../src/theme-parser.c:2677 ../src/theme-parser.c:2799
+#: ../src/ui/theme-parser.c:2686 ../src/ui/theme-parser.c:2810
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Niezrazumieły cień \"%s\" (atrybut shadow) elementu <%s>"
 
-#: ../src/theme-parser.c:2687
+#: ../src/ui/theme-parser.c:2696
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Niezrazumiełaja strełka \"%s\" (atrybut arrow) elementu <%s>"
 
-#: ../src/theme-parser.c:3100 ../src/theme-parser.c:3216
+#: ../src/ui/theme-parser.c:3120 ../src/ui/theme-parser.c:3237
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Nie akreśleny element <draw_ops> z nazvaj \"%s\""
 
-#: ../src/theme-parser.c:3112 ../src/theme-parser.c:3228
+#: ../src/ui/theme-parser.c:3132 ../src/ui/theme-parser.c:3249
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr ""
 "Uklučeńnie tut elementu draw_ops z nazvaj \"%s\" stvaryła b zapiatleńnie "
 "spasyłki"
 
-#: ../src/theme-parser.c:3291
+#: ../src/ui/theme-parser.c:3314
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
 msgstr "Niama atrybutu \"value\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:3348
+#: ../src/ui/theme-parser.c:3371
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
 msgstr "Niama atrybutu \"position\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:3357
+#: ../src/ui/theme-parser.c:3380
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Nieviadomaje pałažeńnie \"%s\" elementu ramki"
 
-#: ../src/theme-parser.c:3365
+#: ../src/ui/theme-parser.c:3388
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Styl ramki ŭžo maje element z pałažeńniem %s"
 
-#: ../src/theme-parser.c:3382 ../src/theme-parser.c:3473
+#: ../src/ui/theme-parser.c:3405 ../src/ui/theme-parser.c:3496
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Nie akreśleny element <draw_ops> z nazvaj \"%s\""
 
-#: ../src/theme-parser.c:3410
+#: ../src/ui/theme-parser.c:3433
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
 msgstr "Niama atrybutu \"function\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:3418 ../src/theme-parser.c:3534
+#: ../src/ui/theme-parser.c:3441 ../src/ui/theme-parser.c:3557
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
 msgstr "Niama atrybutu \"state\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:3427
+#: ../src/ui/theme-parser.c:3450
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Nieviadomaja funkcyja \"%s\" źviazanaja z knopkaj"
 
-#: ../src/theme-parser.c:3436
+#: ../src/ui/theme-parser.c:3459
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "Funkcyja \"%s\" knopki nie isnuje ŭ hetaj versii (%d, vymahaje %d)"
 
-#: ../src/theme-parser.c:3448
+#: ../src/ui/theme-parser.c:3471
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Nieviadomy stan \"%s\" źviazany z knopkaj"
 
-#: ../src/theme-parser.c:3456
+#: ../src/ui/theme-parser.c:3479
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr ""
 "Dla stylu ramki ŭžo akreślenaja knopka, źviazanaja z funkcyjaj %s i stanam %s"
 
-#: ../src/theme-parser.c:3526
+#: ../src/ui/theme-parser.c:3549
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
 msgstr "Niama atrybutu \"focus\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:3542
+#: ../src/ui/theme-parser.c:3565
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
 msgstr "Niama atrybutu \"style\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:3551
+#: ../src/ui/theme-parser.c:3574
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" nie źjaŭlajecca pravilnaj vartaściu atrybutu \"focus\""
 
-#: ../src/theme-parser.c:3560
+#: ../src/ui/theme-parser.c:3583
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" nie źjaŭlajecca pravilnaj vartaściu atrybutu \"state\""
 
-#: ../src/theme-parser.c:3570
+#: ../src/ui/theme-parser.c:3593
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "Nie akreślili stylu z nazvaj \"%s\""
 
-#: ../src/theme-parser.c:3581
+#: ../src/ui/theme-parser.c:3604
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
 msgstr "Niama atrybutu \"resize\" unutry elementu <%s>"
 
-#: ../src/theme-parser.c:3591 ../src/theme-parser.c:3614
+#: ../src/ui/theme-parser.c:3614 ../src/ui/theme-parser.c:3637
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" nie źjaŭlajecca pravilnaj vartaściu atrybutu \"resize\""
 
-#: ../src/theme-parser.c:3625
+#: ../src/ui/theme-parser.c:3648
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -3041,24 +3143,24 @@ msgstr ""
 "Element <%s> nie pavinien mieć u sabie atrybutu \"resize\" pry razhornutym "
 "albo zhornutym stanie"
 
-#: ../src/theme-parser.c:3639
+#: ../src/ui/theme-parser.c:3662
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "Nie pavinna być atrybutu \"resize\" u elemencie <%s> pry razhornutym stanie"
 
-#: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
+#: ../src/ui/theme-parser.c:3676 ../src/ui/theme-parser.c:3698
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Užo akreśleny styl dla stanu %s, pamieru %s i fokusu %s"
 
-#: ../src/theme-parser.c:3664 ../src/theme-parser.c:3686
+#: ../src/ui/theme-parser.c:3687 ../src/ui/theme-parser.c:3709
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Užo akreśleny styl dla stanu %s i fokusu %s"
 
-#: ../src/theme-parser.c:3725
+#: ../src/ui/theme-parser.c:3748
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -3066,7 +3168,7 @@ msgstr ""
 "Element <piece> nia moža mieć u sabie dvuch draw_ops (matyŭ maje ŭ sabie "
 "atrybut draw_ops i element <draw_ops> albo dva elementy)"
 
-#: ../src/theme-parser.c:3763
+#: ../src/ui/theme-parser.c:3786
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -3074,7 +3176,7 @@ msgstr ""
 "Element <button> nia moža mieć u sabie dvuch draw_ops (matyŭ maje ŭ sabie "
 "atrybut draw_ops i element <draw_ops> albo dva elementy)"
 
-#: ../src/theme-parser.c:3801
+#: ../src/ui/theme-parser.c:3824
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -3082,236 +3184,236 @@ msgstr ""
 "Element <menu_icon> nia moža mieć u sabie dvuch draw_ops (matyŭ maje ŭ sabie "
 "atrybut draw_ops i element <draw_ops> albo dva elementy)"
 
-#: ../src/theme-parser.c:3849
+#: ../src/ui/theme-parser.c:3872
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Hałoŭnym elementam matyvu musić być <metacity_theme>, a nie <%s>"
 
-#: ../src/theme-parser.c:3869
+#: ../src/ui/theme-parser.c:3892
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Element <%s> niedapuščalny ŭnutry elementu name/author/date/description"
 
-#: ../src/theme-parser.c:3874
+#: ../src/ui/theme-parser.c:3897
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Element <%s> niedapuščalny ŭnutry elementu <constant>"
 
-#: ../src/theme-parser.c:3886
+#: ../src/ui/theme-parser.c:3909
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Element <%s> niedapuščalny ŭnutry elementu distance/border/aspect_ratio"
 
-#: ../src/theme-parser.c:3908
+#: ../src/ui/theme-parser.c:3931
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Element <%s> niedapuščalny ŭnutry elementu aperacyi rysavańnia"
 
-#: ../src/theme-parser.c:3918 ../src/theme-parser.c:3948
-#: ../src/theme-parser.c:3953 ../src/theme-parser.c:3958
+#: ../src/ui/theme-parser.c:3941 ../src/ui/theme-parser.c:3971
+#: ../src/ui/theme-parser.c:3976 ../src/ui/theme-parser.c:3981
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Element <%s> niedapuščalny ŭnutry elementu <%s>"
 
-#: ../src/theme-parser.c:4180
+#: ../src/ui/theme-parser.c:4203
 msgid "No draw_ops provided for frame piece"
 msgstr "Z elementam ramki nie paviazany element <draw_ops>"
 
-#: ../src/theme-parser.c:4195
+#: ../src/ui/theme-parser.c:4218
 msgid "No draw_ops provided for button"
 msgstr "Z knopkaj nie paviazany element <draw_ops>"
 
-#: ../src/theme-parser.c:4247
+#: ../src/ui/theme-parser.c:4270
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Unutry elementu <%s> nie dazvoleny tekst"
 
-#: ../src/theme-parser.c:4302
+#: ../src/ui/theme-parser.c:4325
 msgid "<name> specified twice for this theme"
 msgstr "Dvojčy akreślili element <name> dla hetaha matyvu"
 
-#: ../src/theme-parser.c:4313
+#: ../src/ui/theme-parser.c:4336
 msgid "<author> specified twice for this theme"
 msgstr "Dvojčy akreślili element <author> dla hetaha matyvu"
 
-#: ../src/theme-parser.c:4324
+#: ../src/ui/theme-parser.c:4347
 msgid "<copyright> specified twice for this theme"
 msgstr "Dvojčy akreślili element <copyright> dla hetaha matyvu"
 
-#: ../src/theme-parser.c:4335
+#: ../src/ui/theme-parser.c:4358
 msgid "<date> specified twice for this theme"
 msgstr "Dvojčy akreślili element <date> dla hetaha matyvu"
 
-#: ../src/theme-parser.c:4346
+#: ../src/ui/theme-parser.c:4369
 msgid "<description> specified twice for this theme"
 msgstr "Dvojčy akreślili element <description> dla hetaha matyvu"
 
-#: ../src/theme-parser.c:4613
+#: ../src/ui/theme-parser.c:4636
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Nielha znajści pravilny fajł dla matyvu %s\n"
 
-#: ../src/theme-parser.c:4669
+#: ../src/ui/theme-parser.c:4692
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Fajł matyvu %s nia maje ŭ sabie hałoŭnaha elementu <metacity_theme>"
 
-#: ../src/theme-viewer.c:74
+#: ../src/ui/theme-viewer.c:74
 msgid "/_Windows"
 msgstr "/_Vokny"
 
-#: ../src/theme-viewer.c:75
+#: ../src/ui/theme-viewer.c:75
 msgid "/Windows/tearoff"
 msgstr "/Vokny/adklučeńnie"
 
-#: ../src/theme-viewer.c:76
+#: ../src/ui/theme-viewer.c:76
 msgid "/Windows/_Dialog"
 msgstr "/Vokny/Vakno _dyjalohu"
 
-#: ../src/theme-viewer.c:77
+#: ../src/ui/theme-viewer.c:77
 msgid "/Windows/_Modal dialog"
 msgstr "/Vokny/_Madalnaje vakno dyjalohu"
 
-#: ../src/theme-viewer.c:78
+#: ../src/ui/theme-viewer.c:78
 msgid "/Windows/_Utility"
 msgstr "/Vokny/_Pryłada"
 
-#: ../src/theme-viewer.c:79
+#: ../src/ui/theme-viewer.c:79
 msgid "/Windows/_Splashscreen"
 msgstr "/Vokny/_Vitalny ekran"
 
-#: ../src/theme-viewer.c:80
+#: ../src/ui/theme-viewer.c:80
 msgid "/Windows/_Top dock"
 msgstr "/Vokny/_Vierchni dok"
 
-#: ../src/theme-viewer.c:81
+#: ../src/ui/theme-viewer.c:81
 msgid "/Windows/_Bottom dock"
 msgstr "/Vokny/_Nižni dok"
 
-#: ../src/theme-viewer.c:82
+#: ../src/ui/theme-viewer.c:82
 msgid "/Windows/_Left dock"
 msgstr "/Vokny/_Levy dok"
 
-#: ../src/theme-viewer.c:83
+#: ../src/ui/theme-viewer.c:83
 msgid "/Windows/_Right dock"
 msgstr "/Vokny/_Pravy dok"
 
-#: ../src/theme-viewer.c:84
+#: ../src/ui/theme-viewer.c:84
 msgid "/Windows/_All docks"
 msgstr "/Vokny/_Usie doki"
 
-#: ../src/theme-viewer.c:85
+#: ../src/ui/theme-viewer.c:85
 msgid "/Windows/Des_ktop"
 msgstr "/Vokny/St_oł"
 
-#: ../src/theme-viewer.c:134
+#: ../src/ui/theme-viewer.c:134
 msgid "Open another one of these windows"
 msgstr "Adčyniaje čarhovyja z hetych voknaŭ"
 
-#: ../src/theme-viewer.c:141
+#: ../src/ui/theme-viewer.c:141
 msgid "This is a demo button with an 'open' icon"
 msgstr "Heta demanstracyjnaja knopka z ikonaj \"adčyni\""
 
-#: ../src/theme-viewer.c:148
+#: ../src/ui/theme-viewer.c:148
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Heta demanstracyjnaja knopka z ikonaj \"zakonč\""
 
-#: ../src/theme-viewer.c:241
+#: ../src/ui/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
 msgstr "Heta prykład paiedamleńnia ŭ prostym vaknie dyjalohu"
 
-#: ../src/theme-viewer.c:324
+#: ../src/ui/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Imitacyja elementu menu %d\n"
 
-#: ../src/theme-viewer.c:358
+#: ../src/ui/theme-viewer.c:358
 msgid "Border-only window"
 msgstr "Vakno z adnymi krajami"
 
-#: ../src/theme-viewer.c:360
+#: ../src/ui/theme-viewer.c:360
 msgid "Bar"
 msgstr "Panel"
 
-#: ../src/theme-viewer.c:377
+#: ../src/ui/theme-viewer.c:377
 msgid "Normal Application Window"
 msgstr "Zvyčajnaje vakno aplikacyi"
 
-#: ../src/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:381
 msgid "Dialog Box"
 msgstr "Vakno dyjalohu"
 
-#: ../src/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:385
 msgid "Modal Dialog Box"
 msgstr "Madalnaje vakno dyjalohu"
 
-#: ../src/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:389
 msgid "Utility Palette"
 msgstr "Palitra pryładaŭ"
 
-#: ../src/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:393
 msgid "Torn-off Menu"
 msgstr "Razhortvalnaje menu"
 
-#: ../src/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:397
 msgid "Border"
 msgstr "Kraj"
 
-#: ../src/theme-viewer.c:725
+#: ../src/ui/theme-viewer.c:725
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test schiemy knopak %d"
 
-#: ../src/theme-viewer.c:754
+#: ../src/ui/theme-viewer.c:754
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisekund(y) dziela stvareńnia adnoj ramki vakna"
 
-#: ../src/theme-viewer.c:797
+#: ../src/ui/theme-viewer.c:797
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Užyćcio: methacity-theme-viewer [NAZVA_MATYVU]\n"
 
-#: ../src/theme-viewer.c:804
+#: ../src/ui/theme-viewer.c:804
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Pamyłka pry zahruzcy matyvu: %s\n"
 
-#: ../src/theme-viewer.c:810
+#: ../src/ui/theme-viewer.c:810
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Zahružany matyŭ \"%s\" ciaham %g sekund(y)\n"
 
-#: ../src/theme-viewer.c:833
+#: ../src/ui/theme-viewer.c:833
 msgid "Normal Title Font"
 msgstr "Zvyčajny šryft zahałoŭku"
 
-#: ../src/theme-viewer.c:839
+#: ../src/ui/theme-viewer.c:839
 msgid "Small Title Font"
 msgstr "Mały šryft zahałoŭku"
 
-#: ../src/theme-viewer.c:845
+#: ../src/ui/theme-viewer.c:845
 msgid "Large Title Font"
 msgstr "Vialiki šryft zahałoŭku"
 
-#: ../src/theme-viewer.c:850
+#: ../src/ui/theme-viewer.c:850
 msgid "Button Layouts"
 msgstr "Schiemy knopak"
 
-#: ../src/theme-viewer.c:855
+#: ../src/ui/theme-viewer.c:855
 msgid "Benchmark"
 msgstr "Test chutkaści"
 
-#: ../src/theme-viewer.c:902
+#: ../src/ui/theme-viewer.c:902
 msgid "Window Title Goes Here"
 msgstr "Tut znachodzicca zahałovak vakna"
 
 # FIXME - moža niejak lepiej udasca?
-#: ../src/theme-viewer.c:1006
+#: ../src/ui/theme-viewer.c:1006
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -3321,87 +3423,87 @@ msgstr ""
 "Narysavana %d ramak ciaham %g sekund klijenta (%g milisekund na ramku) i %g "
 "sapraŭdnych sekund, uklučajučy resursy servera X (%g milisekund na ramku)\n"
 
-#: ../src/theme-viewer.c:1219
+#: ../src/ui/theme-viewer.c:1225
 msgid "position expression test returned TRUE but set error"
 msgstr "test vyražeńnia pazycyi vyvieŭ vartaść PRAŬDA, ale pakazaŭ pamyłku"
 
-#: ../src/theme-viewer.c:1221
+#: ../src/ui/theme-viewer.c:1227
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "test vyražeńnia pazycyi vyvieŭ vartaść NIAPRAŬDA, ale nie pakazaŭ pamyłki"
 
-#: ../src/theme-viewer.c:1225
+#: ../src/ui/theme-viewer.c:1231
 msgid "Error was expected but none given"
 msgstr "Čakałasia pamyłka, ale nijakaj nie paviedamili"
 
-#: ../src/theme-viewer.c:1227
+#: ../src/ui/theme-viewer.c:1233
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Čakali pamyłki %d, a atrymali %d"
 
-#: ../src/theme-viewer.c:1233
+#: ../src/ui/theme-viewer.c:1239
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Nie čakali pamyłki, ale jana była vyviedzienaja: %s"
 
-#: ../src/theme-viewer.c:1237
+#: ../src/ui/theme-viewer.c:1243
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "vartaściu x było %d, čakali vartaści %d"
 
-#: ../src/theme-viewer.c:1240
+#: ../src/ui/theme-viewer.c:1246
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "Vartaściu y było %d, čakali vartaści %d"
 
-#: ../src/theme-viewer.c:1303
+#: ../src/ui/theme-viewer.c:1311
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "vyraz kaardynataŭ %d praanalizavany ŭ %g sekund (u siarednim %g sekund(y))\n"
 
-#: ../src/theme.c:206
+#: ../src/ui/theme.c:208
 msgid "top"
 msgstr "vierch"
 
-#: ../src/theme.c:208
+#: ../src/ui/theme.c:210
 msgid "bottom"
 msgstr "niz"
 
-#: ../src/theme.c:210
+#: ../src/ui/theme.c:212
 msgid "left"
 msgstr "levy"
 
-#: ../src/theme.c:212
+#: ../src/ui/theme.c:214
 msgid "right"
 msgstr "pravy"
 
-#: ../src/theme.c:226
+#: ../src/ui/theme.c:228
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "Pamier ramki nie akreślivaje pamieru \"%s\""
 
-#: ../src/theme.c:245
+#: ../src/ui/theme.c:247
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "Pamier ramki nie akreślivaje pamieru \"%s\" dla kraju \"%s\""
 
-#: ../src/theme.c:282
+#: ../src/ui/theme.c:284
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Kaeficyjent praporcyjaŭ knopki %g nie źmiaščajecca ŭ rezonnych miežach"
 
-#: ../src/theme.c:294
+#: ../src/ui/theme.c:296
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Pamier ramki nie akreślivaje ličby knopak"
 
-#: ../src/theme.c:925
+#: ../src/ui/theme.c:927
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Hradyjenty pavinny składacca prynamsi z dvuch koleraŭ"
 
-#: ../src/theme.c:1051
+#: ../src/ui/theme.c:1053
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3411,7 +3513,7 @@ msgstr ""
 "napr. gtk:fg[NORMAL], dzie NORMAL źjaŭlajecca nazvaj stanu; niemahčyma "
 "praanalizavać \"%s\""
 
-#: ../src/theme.c:1065
+#: ../src/ui/theme.c:1067
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3421,17 +3523,17 @@ msgstr ""
 "dužku, napr. gtk:fg[NORMAL], dzie NORMAL heta nazva stanu; niemahčyma "
 "praanalizavać \"%s\""
 
-#: ../src/theme.c:1076
+#: ../src/ui/theme.c:1078
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Niezrazumieły stan \"%s\" u specyfikacyi koleru"
 
-#: ../src/theme.c:1089
+#: ../src/ui/theme.c:1091
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Niezrazumiełaje aznačeńnie koleru \"%s\" ŭ specyfikacyi"
 
-#: ../src/theme.c:1119
+#: ../src/ui/theme.c:1121
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -3440,18 +3542,18 @@ msgstr ""
 "Farmatam pranikańnia źjaŭlajecca \"blend/bg_color/fg_color/alpha\", \"%s\" "
 "nie pasuje da farmatu"
 
-#: ../src/theme.c:1130
+#: ../src/ui/theme.c:1132
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Niemahčyma razabrać vartaść alfa \"%s\" koleru pranikańnia"
 
-#: ../src/theme.c:1140
+#: ../src/ui/theme.c:1142
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr ""
 "Vartaść alfa \"%s\" koleru pranikańnia nie źmiaščajecca pamiž 0,0 i 1,0"
 
-#: ../src/theme.c:1187
+#: ../src/ui/theme.c:1190
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -3459,28 +3561,28 @@ msgstr ""
 "Farmatam pranikańnia źjaŭlajecca \"shade/base_color/factor\", \"%s\" nie "
 "pasuje da farmatu"
 
-#: ../src/theme.c:1198
+#: ../src/ui/theme.c:1201
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Niemahčyma razabrać kaeficyjent pranikańnia \"%s\" koleru pranikańnia"
 
-#: ../src/theme.c:1208
+#: ../src/ui/theme.c:1211
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Kaeficyjent pranikańnia \"%s\" koleru pranikańnia admoŭny"
 
-#: ../src/theme.c:1237
+#: ../src/ui/theme.c:1241
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Niemahčyma razabrać koler \"%s\""
 
-#: ../src/theme.c:1496
+#: ../src/ui/theme.c:1462
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, maje ŭ sabie niedazvoleny znak '%s'"
 
-#: ../src/theme.c:1523
+#: ../src/ui/theme.c:1489
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -3489,13 +3591,13 @@ msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, maje nierazborlivy numar niefiksavanaj "
 "koski '%s'"
 
-#: ../src/theme.c:1537
+#: ../src/ui/theme.c:1503
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, maje nierazborlivuju cełuju ličbu '%s'"
 
-#: ../src/theme.c:1604
+#: ../src/ui/theme.c:1610
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -3504,17 +3606,17 @@ msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, maje nieviadomy aperatar na pačatku "
 "tekstu: \"%s\""
 
-#: ../src/theme.c:1661
+#: ../src/ui/theme.c:1667
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Vyraz, jaki akreślivaje kaardynaty, pusty albo niezrazumieły"
 
-#: ../src/theme.c:1798 ../src/theme.c:1808 ../src/theme.c:1842
+#: ../src/ui/theme.c:1764 ../src/ui/theme.c:1774 ../src/ui/theme.c:1808
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Vyraz, jaki akreślivaje kaardynaty, maje dzialeńnie praz nul"
 
-#: ../src/theme.c:1850
+#: ../src/ui/theme.c:1816
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -3522,26 +3624,26 @@ msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, užyvaje aperatara dzialeńnia pa moduli z "
 "arhumentam niefiksavanaj koski"
 
-#: ../src/theme.c:1906
+#: ../src/ui/theme.c:1872
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Vyraz maje aperatar \"%s\" u miescy, dzie čakali arhumentu"
 
-#: ../src/theme.c:1915
+#: ../src/ui/theme.c:1881
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, maje arhument u miescy, dzie čakali "
 "aperatara"
 
-#: ../src/theme.c:1923
+#: ../src/ui/theme.c:1889
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, zakančvajecca aperataram zamiest arhumentu"
 
-#: ../src/theme.c:1933
+#: ../src/ui/theme.c:1899
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3550,45 +3652,45 @@ msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, maje arhument \"%c\" adrazu paśla arhumentu "
 "\"%c\" biez aperatara pamiž imi"
 
-#: ../src/theme.c:2051
-#, c-format
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr ""
-"Parser vyrazaŭ, jakija akreślivajuć kaardynaty, pierapoŭniŭ svoj bufer."
-
-#: ../src/theme.c:2080
-#, c-format
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-"Vyraz, jaki apisvaje pałažeńnie, začyniaje dužka biez adpaviednaj dužki na "
-"pačatku"
-
-#: ../src/theme.c:2142
+#: ../src/ui/theme.c:2023 ../src/ui/theme.c:2064
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, maje nieviadomuju źmiennuju albo stałuju \"%"
 "s\""
 
-#: ../src/theme.c:2197
+#: ../src/ui/theme.c:2108
+#, c-format
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr ""
+"Parser vyrazaŭ, jakija akreślivajuć kaardynaty, pierapoŭniŭ svoj bufer."
+
+#: ../src/ui/theme.c:2137
+#, c-format
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+"Vyraz, jaki apisvaje pałažeńnie, začyniaje dužka biez adpaviednaj dužki na "
+"pačatku"
+
+#: ../src/ui/theme.c:2201
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, adčyniaje dužka biez adpaviednaj dužki na "
 "kancy"
 
-#: ../src/theme.c:2208
+#: ../src/ui/theme.c:2212
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, nia maje ani aperataraŭ, ani arhumentaŭ"
 
-#: ../src/theme.c:2449 ../src/theme.c:2471 ../src/theme.c:2492
+#: ../src/ui/theme.c:2398 ../src/ui/theme.c:2418 ../src/ui/theme.c:2438
 #, c-format
-msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "Matyŭ maje vyraz \"%s\", pry abličvańni jakoha adbyłasia pamyłka: %s\n"
+msgid "Theme contained an expression that resulted in an error: %s\n"
+msgstr "Matyŭ źmiaščaŭ vyraz, jaki staŭ pryčynaj pamyłki: %s\n"
 
-#: ../src/theme.c:3946
+#: ../src/ui/theme.c:3942
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3597,25 +3699,25 @@ msgstr ""
 "Pry hetym styli ramki treba padać <button function=\"%s\" state=\"%s\" "
 "draw_ops=\"niešta\"/>"
 
-#: ../src/theme.c:4422 ../src/theme.c:4447
+#: ../src/ui/theme.c:4418 ../src/ui/theme.c:4443
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Niama <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"niešta\"/>"
 
-#: ../src/theme.c:4493
+#: ../src/ui/theme.c:4487
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Niemahčyma adčytać matyŭ \"%s\": %s\n"
 
-#: ../src/theme.c:4603 ../src/theme.c:4610 ../src/theme.c:4617
-#: ../src/theme.c:4624 ../src/theme.c:4631
+#: ../src/ui/theme.c:4613 ../src/ui/theme.c:4620 ../src/ui/theme.c:4627
+#: ../src/ui/theme.c:4634 ../src/ui/theme.c:4641
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nie akreśleny element <%s> dla matyvu \"%s\""
 
-#: ../src/theme.c:4639
+#: ../src/ui/theme.c:4649
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3624,7 +3726,7 @@ msgstr ""
 "Pry typie vakna \"%s\" u matyvie \"%s\" nia vyznačany styl ramki. Dadaj "
 "element <window type=\"%s\" style_set=\"niešta\"/>"
 
-#: ../src/theme.c:5006 ../src/theme.c:5068 ../src/theme.c:5131
+#: ../src/ui/theme.c:5016 ../src/ui/theme.c:5078 ../src/ui/theme.c:5141
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3632,133 +3734,15 @@ msgstr ""
 "Stałyja, aznačanyja karystalnikam, pavinny pačynacca vialikaj litaraj, a \"%s"
 "\" nie vykonvaje hetaj umovy"
 
-#: ../src/theme.c:5014 ../src/theme.c:5076 ../src/theme.c:5139
+#: ../src/ui/theme.c:5024 ../src/ui/theme.c:5086 ../src/ui/theme.c:5149
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Stałaja \"%s\" užo aznačanaja"
 
-#: ../src/util.c:98
+#: ../src/tools/metacity-message.c:150
 #, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr "Niemahčyma adčynić historyju z zapisam vykanańnia: %s\n"
-
-#: ../src/util.c:108
-#, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Niemahčyma vykanać fdopen() na fajle historyi %s: %s\n"
-
-#: ../src/util.c:114
-#, c-format
-msgid "Opened log file %s\n"
-msgstr "Adčynieny fajł historyi %s\n"
-
-#: ../src/util.c:231
-msgid "Window manager: "
-msgstr "Kiraŭnik voknaŭ: "
-
-#: ../src/util.c:379
-msgid "Bug in window manager: "
-msgstr "Pamyłka ŭ prahramie kiraŭnika voknaŭ: "
-
-#: ../src/util.c:408
-msgid "Window manager warning: "
-msgstr "Aściaroha kiraŭnika voknaŭ: "
-
-#: ../src/util.c:432
-msgid "Window manager error: "
-msgstr "Pamyłka kiraŭnika voknaŭ: "
-
-#: ../src/window-props.c:192
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "Aplikacyja abrała pamyłkovuju vartaść _NET_WM_PID %lu\n"
-
-#: ../src/window-props.c:324
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (na %s)"
-
-#: ../src/window-props.c:1406
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr ""
-"Niapravilnaja vartaść WM_TRANSIENT_FOR dla vakna 0x%lx akreślenaja ŭ %s.\n"
-
-#. first time through
-#: ../src/window.c:5650
-#, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"Vakno %s abiraje na sabie SM_CLIENT_ID, a nie na vaknie WM_CLIENT_LEADER, "
-"zhodna sa specyfikacyjaj ICCCM.\n"
-
-#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
-#. * authoritative source for that info. Some apps such as mplayer or
-#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
-#. * leads to e.g. us not fullscreening their windows.  Apps that set
-#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
-#. * about these apps but make them work.
-#.
-#: ../src/window.c:6215
-#, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"Vakno %s abiraje atrybut MWM, jaki akreślivaje, što jahony pamier vakna "
-"niaźmienny, ale adnačasova abiraje minimalny pamier na %d x %d, a maksymalny "
-"pamier na %d x %d. Heta nia maje nijakaha sensu.\n"
-
-#: ../src/xprops.c:155
-#, c-format
-msgid ""
-"Window 0x%lx has property %s\n"
-"that was expected to have type %s format %d\n"
-"and actually has type %s format %d n_items %d.\n"
-"This is most likely an application bug, not a window manager bug.\n"
-"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-msgstr ""
-"Vakno 0x%lx maje ŭłaścivaść %s,\n"
-"čakanym typam jakoj žjaŭlajecca %s z farmatam %d.\n"
-"U sapraŭdnaści ŭłaścivaść maje typ %s z farmatam %d pry n_items %d.\n"
-"Vierahodna, heta pamyłka aplikacyi, a nie kiraŭnika voknaŭ.\n"
-"Ułaścivaści vakna: zahałovak=\"%s\" klasa=\"%s\" nazva=\"%s\"\n"
-
-#: ../src/xprops.c:401
-#, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
-"Ułaścivaść %s, jakaja adnosicca da vakna 0x%lx, maje niapravilny łancužok "
-"UTF-8\n"
-
-#: ../src/xprops.c:484
-#, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"Ułaścivaść %s, jakaja adnosicca da vakna 0x%lx, maje niapravilny łancužok "
-"UTF-8 u %d elemencie śpisu\n"
-
-#~ msgid ""
-#~ "Many actions (e.g. clicking in the client area, moving or resizing the "
-#~ "window) normally raise the window as a side-effect. Set this option to "
-#~ "false to decouple raising from other user actions. Even when this option "
-#~ "is false, windows can still be raised by an alt-left-click anywhere on "
-#~ "the window, a normal click on the window decorations, or by special "
-#~ "messages, such as activation requests from pagers. This option is "
-#~ "currently disabled in click-to-focus mode."
-#~ msgstr ""
-#~ "Mnohija dziejańni (napr. klik u klijencki abšar, pieranos albo źmiena "
-#~ "pamieru vakna) zvyčajna majuć pabočnyja nastupstvy ŭ vyhladzie pieranosu "
-#~ "vakna navierch. Abrańnie hetaj opcyi na vartaść NIAPRAŬDA viadzie da "
-#~ "taho, što pieranos navierch nia budzie źviazany ź inšymi dziejańniami. "
-#~ "Navat kali hetaja opcyja maje vartaść NIAPRAŬDA, vokny možna pieranieści "
-#~ "navierch, klikajučy pa ich levaj klavišaj myšy z nacisnutaj klavišaj Alt, "
-#~ "klikajučy dekaracyju vakna, albo ŭ vyniku admysłovaha paviedamleńnia, jak "
-#~ "patrabavańnie aktyvacyi. Hetaja opcyja ciapier vyklučnaja ŭ režymie "
-#~ "\"klikni, kab pakazać fokus\"."
+msgid "Usage: %s\n"
+msgstr "Užyćcio: %s\n"
 
 #~ msgid "On _Top"
 #~ msgstr "Na wierzc_hu"
