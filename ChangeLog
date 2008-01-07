@@ -1,5 +1,13 @@
 2008-01-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model-default.[ch]: Remove the ClutterModelDefault
+	iterator symbols from the public API; the iterator implementation
+	is a detail of the default ClutterModel class
+
+	* clutter.symbols: Update
+
+2008-01-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model.h:
 	* clutter/clutter-model.c:
 	(clutter_model_appendv),

@@ -373,6 +373,9 @@ clutter_media_get_uri
 clutter_media_get_volume
 clutter_model_append
 clutter_model_appendv
+clutter_model_default_get_type
+clutter_model_default_new
+clutter_model_default_newv
 clutter_model_foreach
 clutter_model_get_column_name
 clutter_model_get_column_type
@@ -398,8 +401,6 @@ clutter_model_iter_prev
 clutter_model_iter_set
 clutter_model_iter_set_valist
 clutter_model_iter_set_value
-clutter_model_new
-clutter_model_newv
 clutter_model_prepend
 clutter_model_prependv
 clutter_model_set_filter

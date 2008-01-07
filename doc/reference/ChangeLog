@@ -1,5 +1,10 @@
 2008-01-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-sections.txt: Remove symbols of the ClutterModelDefault
+	iterator class.
+
+2008-01-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-sections.txt: Remove clutter_model_append_value()
 	and clutter_model_prepend_value(), and add clutter_model_appendv()
 	and clutter_model_prependv().

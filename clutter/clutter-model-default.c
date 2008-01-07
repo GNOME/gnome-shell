@@ -54,6 +54,15 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
+#define CLUTTER_TYPE_MODEL_DEFAULT_ITER                 \
+        (clutter_model_default_iter_get_type())
+#define CLUTTER_MODEL_DEFAULT_ITER(obj)                 \
+        (G_TYPE_CHECK_INSTANCE_CAST((obj),              \
+         CLUTTER_TYPE_MODEL_DEFAULT_ITER,               \
+         ClutterModelDefaultIter))
+#define CLUTTER_IS_MODEL_DEFAULT_ITER(obj)              \
+        (G_TYPE_CHECK_INSTANCE_TYPE((obj),              \
+         CLUTTER_TYPE_MODEL_DEFAULT_ITER))
 #define CLUTTER_MODEL_DEFAULT_ITER_CLASS(klass)         \
         (G_TYPE_CHECK_CLASS_CAST ((klass),              \
          CLUTTER_TYPE_MODEL_DEFAULT_ITER,               \
@@ -78,7 +87,9 @@
          CLUTTER_TYPE_MODEL_DEFAULT,                    \
          ClutterModelDefaultClass))
 
+typedef struct _ClutterModelDefaultIter ClutterModelDefaultIter;
 typedef struct _ClutterModelIterClass   ClutterModelDefaultIterClass;
+
 typedef struct _ClutterModelClass       ClutterModelDefaultClass;
 
 struct _ClutterModelDefault

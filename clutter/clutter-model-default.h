@@ -34,25 +34,19 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_MODEL_DEFAULT_ITER         (clutter_model_default_iter_get_type ())
-#define CLUTTER_MODEL_DEFAULT_ITER(obj)         (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_MODEL_DEFAULT_ITER, ClutterModelDefaultIter))
-#define CLUTTER_IS_MODEL_DEFAULT_ITER(obj)      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_MODEL_DEFAULT_ITER))
-
 #define CLUTTER_TYPE_MODEL_DEFAULT              (clutter_model_default_get_type ())
 #define CLUTTER_MODEL_DEFAULT(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_MODEL_DEFAULT, ClutterModelDefault))
 #define CLUTTER_IS_MODEL_DEFAULT(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_MODEL_DEFAULT))
 
-typedef struct _ClutterModelDefaultIter ClutterModelDefaultIter;
 typedef struct _ClutterModelDefault     ClutterModelDefault;
 
-GType clutter_model_default_iter_get_type (void) G_GNUC_CONST;
-GType clutter_model_default_get_type      (void) G_GNUC_CONST;
+GType         clutter_model_default_get_type (void) G_GNUC_CONST;
 
-ClutterModel *clutter_model_default_new  (guint                n_columns,
-                                          ...);
-ClutterModel *clutter_model_default_newv (guint                n_columns,
-                                          GType               *types,
-                                          const gchar * const  names[]);
+ClutterModel *clutter_model_default_new      (guint                n_columns,
+                                              ...);
+ClutterModel *clutter_model_default_newv     (guint                n_columns,
+                                              GType               *types,
+                                              const gchar * const  names[]);
 
 G_END_DECLS
 
