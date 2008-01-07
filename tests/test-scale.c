@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
-ClutterGravity gravitys[] = {
+ClutterGravity gravities[] = {
   CLUTTER_GRAVITY_NORTH_EAST,
   CLUTTER_GRAVITY_NORTH,
   CLUTTER_GRAVITY_NORTH_WEST,
@@ -22,10 +22,10 @@ on_timeline_completed (ClutterTimeline *cluttertimeline,
 {
   ClutterBehaviourScale *behave = CLUTTER_BEHAVIOUR_SCALE(data);
 
-  if (++gindex >= G_N_ELEMENTS(gravitys))
+  if (++gindex >= G_N_ELEMENTS (gravities))
     gindex = 0;
 
-  g_object_set (behave, "scale-gravity", gravitys[gindex], NULL);
+  g_object_set (behave, "scale-gravity", gravities[gindex], NULL);
 }
 
 int
@@ -66,7 +66,7 @@ main (int argc, char *argv[])
   behave = clutter_behaviour_scale_new (alpha,
 					0.0,
 					1.0,
-					gravitys[gindex]);
+					gravities[gindex]);
 
   clutter_behaviour_apply (behave, rect); 
 

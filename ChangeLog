@@ -1,3 +1,19 @@
+2008-01-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-model.h:
+	* clutter/clutter-model.c:
+	(clutter_model_appendv),
+	(clutter_model_prependv): Add vector based API for bindings.
+	
+	(clutter_model_get_column_name),
+	(clutter_model_get_column_type),
+	(clutter_model_set_sorting_column): Fix the check in the condition
+	on the column index.
+
+	* tests/test-scale.c (on_timeline_completed), (main): Fix spelling
+
+	* clutter.symbols: Update public symbols
+
 2008-01-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter.symbols: Add clutter_actor_move_byu()

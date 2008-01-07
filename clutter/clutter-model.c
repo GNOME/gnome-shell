@@ -775,36 +775,49 @@ clutter_model_get_n_columns (ClutterModel *model)
 }
 
 /**
- * clutter_model_append_value:
+ * clutter_model_appendv:
  * @model: a #ClutterModel
- * @column: the column to set
- * @value: the value of the cell
+ * @n_columns: the number of columns and values
+ * @columns: a vector with the columns to set
+ * @values: a vector with the values
  *
  * Creates and appends a new row to the #ClutterModel, setting the row
- * value for the given @column upon creation.
+ * values for the given @columns upon creation.
  *
  * Since: 0.6
  */
 void
-clutter_model_append_value (ClutterModel *model,
-                            guint         column,
-                            const GValue *value)
+clutter_model_appendv (ClutterModel *model,
+                       guint         n_columns,
+                       guint        *columns,
+                       GValue       *values)
 {
   ClutterModelPrivate *priv;
   ClutterModelIter *iter;
+  gint i;
+  gboolean resort = FALSE;
 
   g_return_if_fail (CLUTTER_IS_MODEL (model));
+  g_return_if_fail (n_columns < clutter_model_get_n_columns (model));
+  g_return_if_fail (columns != NULL);
+  g_return_if_fail (values != NULL);
 
   priv = model->priv;
 
   iter = CLUTTER_MODEL_GET_CLASS (model)->insert_row (model, -1);
   g_assert (CLUTTER_IS_MODEL_ITER (iter));
 
-  clutter_model_iter_set_value (iter, column, value);
+  for (i = 0; i < n_columns; i++)
+    {
+      if (priv->sort_column == columns[i])
+        resort = TRUE;
+
+      clutter_model_iter_set_value (iter, columns[i], &values[i]);
+    }
 
   g_signal_emit (model, model_signals[ROW_ADDED], 0, iter);
 
-  if (priv->sort_column == column)
+  if (resort)
     clutter_model_resort (model);
 
   g_object_unref (iter);
@@ -853,36 +866,49 @@ clutter_model_append (ClutterModel *model,
 }
 
 /**
- * clutter_model_prepend_value:
+ * clutter_model_prependv:
  * @model: a #ClutterModel
- * @column: column to set
- * @value: new value for the cell
+ * @n_columns: the number of columns and values to set
+ * @columns: a vector containing the columns to set
+ * @values: a vector containing the values for the cells
  *
  * Creates and prepends a new row to the #ClutterModel, setting the row
- * value for the given @column upon creation.
+ * values for the given @columns upon creation.
  *
  * Since: 0.6
  */
 void
-clutter_model_prepend_value (ClutterModel *model,
-                             guint         column,
-                             const GValue *value)
+clutter_model_prependv (ClutterModel *model,
+                        guint         n_columns,
+                        guint        *columns,
+                        GValue       *values)
 {
   ClutterModelPrivate *priv;
   ClutterModelIter *iter;
+  gint i;
+  gboolean resort = FALSE;
 
   g_return_if_fail (CLUTTER_IS_MODEL (model));
+  g_return_if_fail (n_columns < clutter_model_get_n_columns (model));
+  g_return_if_fail (columns != NULL);
+  g_return_if_fail (values != NULL);
 
   priv = model->priv;
 
   iter = CLUTTER_MODEL_GET_CLASS (model)->insert_row (model, 0);
   g_assert (CLUTTER_IS_MODEL_ITER (iter));
 
-  clutter_model_iter_set_value (iter, column, value);
+  for (i = 0; i < n_columns; i++)
+    {
+      if (priv->sort_column == columns[i])
+        resort = TRUE;
+
+      clutter_model_iter_set_value (iter, columns[i], &values[i]);
+    }
 
   g_signal_emit (model, model_signals[ROW_ADDED], 0, iter);
 
-  if (priv->sort_column == column)
+  if (resort)
     clutter_model_resort (model);
 
   g_object_unref (iter);
@@ -1068,7 +1094,7 @@ clutter_model_get_column_name (ClutterModel *model,
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), NULL);
 
   priv = model->priv;
-  if (column < 0 || column > clutter_model_get_n_columns (model))
+  if (column < 0 || column >= clutter_model_get_n_columns (model))
     {
       g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
       return NULL;
@@ -1102,7 +1128,7 @@ clutter_model_get_column_type (ClutterModel *model,
   g_return_val_if_fail (CLUTTER_IS_MODEL (model), G_TYPE_INVALID);
 
   priv = model->priv;
-  if (column < 0 || column > clutter_model_get_n_columns (model))
+  if (column < 0 || column >= clutter_model_get_n_columns (model))
     {
       g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
       return G_TYPE_INVALID;
@@ -1225,7 +1251,7 @@ clutter_model_set_sorting_column (ClutterModel *model,
   g_return_if_fail (CLUTTER_IS_MODEL (model));
   priv = model->priv;
 
-  if (column > clutter_model_get_n_columns (model))
+  if (column >= clutter_model_get_n_columns (model))
     {
       g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
       return;

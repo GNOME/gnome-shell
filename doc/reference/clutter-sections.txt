@@ -1160,9 +1160,9 @@ clutter_model_get_n_rows
 
 <SUBSECTION>
 clutter_model_append
-clutter_model_append_value
+clutter_model_appendv
 clutter_model_prepend
-clutter_model_prepend_value
+clutter_model_prependv
 clutter_model_insert
 clutter_model_insert_value
 clutter_model_remove
