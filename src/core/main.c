@@ -402,12 +402,9 @@ main (int argc, char **argv)
   /* Free memory possibly allocated by the argument parsing which are
    * no longer needed.
    */
-  if (meta_args.save_file)
-    g_free (meta_args.save_file);
-  if (meta_args.display_name)
-    g_free (meta_args.display_name);
-  if (meta_args.client_id)
-    g_free (meta_args.client_id);
+  g_free (meta_args.save_file);
+  g_free (meta_args.display_name);
+  g_free (meta_args.client_id);
   
   if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);
