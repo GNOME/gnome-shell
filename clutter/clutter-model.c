@@ -798,7 +798,7 @@ clutter_model_appendv (ClutterModel *model,
   gboolean resort = FALSE;
 
   g_return_if_fail (CLUTTER_IS_MODEL (model));
-  g_return_if_fail (n_columns < clutter_model_get_n_columns (model));
+  g_return_if_fail (n_columns <= clutter_model_get_n_columns (model));
   g_return_if_fail (columns != NULL);
   g_return_if_fail (values != NULL);
 
@@ -889,7 +889,7 @@ clutter_model_prependv (ClutterModel *model,
   gboolean resort = FALSE;
 
   g_return_if_fail (CLUTTER_IS_MODEL (model));
-  g_return_if_fail (n_columns < clutter_model_get_n_columns (model));
+  g_return_if_fail (n_columns <= clutter_model_get_n_columns (model));
   g_return_if_fail (columns != NULL);
   g_return_if_fail (values != NULL);
 
