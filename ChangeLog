@@ -1,5 +1,11 @@
 2008-01-07  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/display.c: further commenting (trying to keep comment
+	    addings down to once a day at most so you don't all get spammed
+	    too much).
+
+2008-01-07  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/main.c (main): g_free is a no-op on nulls; there is no
 	need to test.
 

@@ -24,6 +24,20 @@
  * 02111-1307, USA.
  */
 
+
+/*! \file display.c
+ *
+ * \brief Handles operations on an X display.
+ *
+ * The display is represented as a MetaDisplay struct.
+ *
+ * \bug Originally we had the idea that there could be multiple MetaDisplay
+ * structs in one Metacity process, but as the code currently stands, only
+ * one can be initialised; it is a singleton class. We should go through and
+ * remove all the code that iterates over the lists of displays later.
+ * See <http://bugzilla.gnome.org/show_bug.cgi?id=499301>.
+ */
+
 #include <config.h>
 #include "display.h"
 #include "util.h"
@@ -80,7 +94,8 @@
          g == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK   ||  \
          g == META_GRAB_OP_KEYBOARD_ESCAPING_GROUP)
 
-/*! \defgroup pings
+/*! \defgroup pings Pings
+ *
  * Sometimes we want to see whether a window is responding,
  * so we send it a "ping" message and see whether it sends us back a "pong"
  * message within a reasonable time. Here we have a system which lets us
@@ -281,6 +296,23 @@ disable_compositor (MetaDisplay *display)
   display->compositor = NULL;
 }
 
+/*! Opens a new display, sets it up, initialises all the X extensions
+ * we will need, and adds it to the list of displays.
+ *
+ * \return True if the display was opened successfully, and False
+ * otherwise-- that is, if the display doesn't exist or it already
+ * has a window manager.
+ *
+ * \bug The list of atom_names is prone to get out of sync with the
+ * main list; I'd rather include them in that list using the stringify
+ * operator or something.
+ *
+ * \bug MetaDisplay is (currently) a singleton, but the code pretends
+ * it isn't; at some point we will decide whether to acknowledge this
+ * and simplify.
+ *
+ * \ingroup main
+ */
 gboolean
 meta_display_open (void)
 {
@@ -1527,6 +1559,20 @@ handle_net_restack_window (MetaDisplay* display,
 }
 #endif
 
+/*! This is the most important function in the whole program. It is the heart,
+ * it is the nexus, it is the Grand Central Station of Metacity's world.
+ * When we create a MetaDisplay, we ask GDK to pass *all* events for *all*
+ * windows to this function. So every time anything happens that we might
+ * want to know about, this function gets called. You see why it gets a bit
+ * busy around here. Most of this function is a ginormous switch statement
+ * dealing with all the kinds of events that might turn up.
+ *
+ * \param event The event that just happened
+ * \param data  The MetaDisplay that events are coming from, cast to a gpointer
+ *              so that it can be sent to a callback
+ *
+ * \ingroup main
+ */
 static gboolean
 event_callback (XEvent   *event,
                 gpointer  data)
@@ -4177,6 +4223,8 @@ meta_display_ping_timeout (gpointer data)
  * a response, we call a different callback. The window must have
  * the hint showing that it can respond to a ping; if it doesn't,
  * we call the "got a response" callback immediately and return.
+ * This function returns straight away after setting things up;
+ * the callbacks will be called from the event loop.
  *
  * \param display  The MetaDisplay that the window is on
  * \param window   The MetaWindow to send the ping to
@@ -4371,6 +4419,8 @@ process_pong_message (MetaDisplay    *display,
  *
  * \bug This should probably be a method on windows, rather than displays
  *      for one of their windows.
+ *
+ * \ingroup pings
  */
 gboolean
 meta_display_window_has_pending_pings (MetaDisplay *display,
