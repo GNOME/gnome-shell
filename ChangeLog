@@ -1,5 +1,12 @@
 2008-01-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/Makefile.am:
+	* clutter/clutter.h:
+	* clutter/clutter-list-model.[ch]: Complete the ClutterModelDefault
+	to ClutterListModel rename by renaming the source files
+
+2008-01-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model-default.[ch]: Rename ClutterModelDefault
 	into ClutterListModel, to make it clear that the default
 	ClutterModel implementation is list-based

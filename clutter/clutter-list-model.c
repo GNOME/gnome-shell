@@ -51,7 +51,7 @@
 
 #include "clutter-model.h"
 #include "clutter-model-private.h"
-#include "clutter-model-default.h"
+#include "clutter-list-model.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
