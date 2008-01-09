@@ -1,5 +1,13 @@
 2008-01-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model-default.[ch]: Rename ClutterModelDefault
+	into ClutterListModel, to make it clear that the default
+	ClutterModel implementation is list-based
+
+	* tests/test-model.c: Update call
+
+2008-01-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-model-default.c:
 	(clutter_model_default_new),
 	(clutter_model_default_newv): Move the constructors in the

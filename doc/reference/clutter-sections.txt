@@ -1233,17 +1233,17 @@ clutter_model_iter_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-model-default</FILE>
-<TITLE>ClutterModelDefault</TITLE>
-ClutterModelDefault
-clutter_model_default_new
-clutter_model_default_newv
+<FILE>clutter-list-model</FILE>
+<TITLE>ClutterListModel</TITLE>
+ClutterListModel
+clutter_list_model_new
+clutter_list_model_newv
 <SUBSECTION Standard>
-CLUTTER_TYPE_MODEL_DEFAULT
-CLUTTER_MODEL_DEFAULT
-CLUTTER_IS_MODEL_DEFAULT
+CLUTTER_TYPE_LIST_MODEL
+CLUTTER_LIST_MODEL
+CLUTTER_IS_LIST_MODEL
 <SUBSECTION Private>
-clutter_model_default_get_type
+clutter_list_model_get_type
 </SECTION>
 
 <SECTION>

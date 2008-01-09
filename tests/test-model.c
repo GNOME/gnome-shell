@@ -212,9 +212,9 @@ main (int argc, char *argv[])
 
   clutter_init (&argc, &argv);
 
-  model = clutter_model_default_new (N_COLUMNS,
-                                     G_TYPE_INT,    "Foo",
-                                     G_TYPE_STRING, "Bar");
+  model = clutter_list_model_new (N_COLUMNS,
+                                  G_TYPE_INT,    "Foo",
+                                  G_TYPE_STRING, "Bar");
 
   g_timeout_add (1000, (GSourceFunc) populate_model, model);
 

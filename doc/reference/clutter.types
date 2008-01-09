@@ -24,7 +24,6 @@ clutter_script_get_type
 clutter_scriptable_get_type
 clutter_model_get_type
 clutter_model_iter_get_type
-clutter_model_default_get_type
-clutter_model_default_iter_get_type
+clutter_list_model_get_type
 clutter_score_get_type
 clutter_shader_get_type

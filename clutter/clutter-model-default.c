@@ -26,18 +26,18 @@
  */
 
 /**
- * SECTION:clutter-model-default
- * @short_description: Default model implementation
+ * SECTION:clutter-list-model
+ * @short_description: List model implementation
  *
- * #ClutterModelDefault is a #ClutterModel implementation provided by
- * Clutter. #ClutterModelDefault uses a #GSequence for storing the
+ * #ClutterListModel is a #ClutterModel implementation provided by
+ * Clutter. #ClutterListModel uses a #GSequence for storing the
  * values for each row, so it's optimized for insertion and look up
  * in sorted lists.
  *
- * #ClutterModelDefault is a terminal class: it cannot be subclassed,
+ * #ClutterListModel is a terminal class: it cannot be subclassed,
  * only instantiated. 
  *
- * #ClutterModelDefault is available since Clutter 0.6
+ * #ClutterListModel is available since Clutter 0.6
  */
 
 #ifdef HAVE_CONFIG_H
@@ -55,52 +55,52 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-#define CLUTTER_TYPE_MODEL_DEFAULT_ITER                 \
-        (clutter_model_default_iter_get_type())
-#define CLUTTER_MODEL_DEFAULT_ITER(obj)                 \
-        (G_TYPE_CHECK_INSTANCE_CAST((obj),              \
-         CLUTTER_TYPE_MODEL_DEFAULT_ITER,               \
-         ClutterModelDefaultIter))
-#define CLUTTER_IS_MODEL_DEFAULT_ITER(obj)              \
-        (G_TYPE_CHECK_INSTANCE_TYPE((obj),              \
-         CLUTTER_TYPE_MODEL_DEFAULT_ITER))
-#define CLUTTER_MODEL_DEFAULT_ITER_CLASS(klass)         \
-        (G_TYPE_CHECK_CLASS_CAST ((klass),              \
-         CLUTTER_TYPE_MODEL_DEFAULT_ITER,               \
-         ClutterModelDefaultIterClass))
-#define CLUTTER_IS_MODEL_DEFAULT_ITER_CLASS(klass)      \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass),              \
-         CLUTTER_TYPE_MODEL_DEFAULT_ITER))
-#define CLUTTER_MODEL_DEFAULT_ITER_GET_CLASS(obj)       \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj),              \
-         CLUTTER_TYPE_MODEL_DEFAULT_ITER,               \
-         ClutterModelDefaultIterClass))
+#define CLUTTER_TYPE_LIST_MODEL_ITER                 \
+        (clutter_list_model_iter_get_type())
+#define CLUTTER_LIST_MODEL_ITER(obj)                 \
+        (G_TYPE_CHECK_INSTANCE_CAST((obj),           \
+         CLUTTER_TYPE_LIST_MODEL_ITER,               \
+         ClutterListModelIter))
+#define CLUTTER_IS_LIST_MODEL_ITER(obj)              \
+        (G_TYPE_CHECK_INSTANCE_TYPE((obj),           \
+         CLUTTER_TYPE_LIST_MODEL_ITER))
+#define CLUTTER_LIST_MODEL_ITER_CLASS(klass)         \
+        (G_TYPE_CHECK_CLASS_CAST ((klass),           \
+         CLUTTER_TYPE_LIST_MODEL_ITER,               \
+         ClutterListModelIterClass))
+#define CLUTTER_IS_LIST_MODEL_ITER_CLASS(klass)      \
+        (G_TYPE_CHECK_CLASS_TYPE ((klass),           \
+         CLUTTER_TYPE_LIST_MODEL_ITER))
+#define CLUTTER_LIST_MODEL_ITER_GET_CLASS(obj)       \
+        (G_TYPE_INSTANCE_GET_CLASS ((obj),           \
+         CLUTTER_TYPE_LIST_MODEL_ITER,               \
+         ClutterListModelIterClass))
 
-#define CLUTTER_MODEL_DEFAULT_CLASS(klass)              \
-        (G_TYPE_CHECK_CLASS_CAST ((klass),              \
-         CLUTTER_TYPE_MODEL_DEFAULT,                    \
-         ClutterModelDefaultClass))
-#define CLUTTER_IS_MODEL_DEFAULT_CLASS(klass)           \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass),              \
-         CLUTTER_TYPE_MODEL_DEFAULT))
-#define CLUTTER_MODEL_DEFAULT_GET_CLASS(obj)            \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj),              \
-         CLUTTER_TYPE_MODEL_DEFAULT,                    \
-         ClutterModelDefaultClass))
+#define CLUTTER_LIST_MODEL_CLASS(klass)              \
+        (G_TYPE_CHECK_CLASS_CAST ((klass),           \
+         CLUTTER_TYPE_LIST_MODEL,                    \
+         ClutterListModelClass))
+#define CLUTTER_IS_LIST_MODEL_CLASS(klass)           \
+        (G_TYPE_CHECK_CLASS_TYPE ((klass),           \
+         CLUTTER_TYPE_LIST_MODEL))
+#define CLUTTER_LIST_MODEL_GET_CLASS(obj)            \
+        (G_TYPE_INSTANCE_GET_CLASS ((obj),           \
+         CLUTTER_TYPE_LIST_MODEL,                    \
+         ClutterListModelClass))
 
-typedef struct _ClutterModelDefaultIter ClutterModelDefaultIter;
-typedef struct _ClutterModelIterClass   ClutterModelDefaultIterClass;
+typedef struct _ClutterListModelIter    ClutterListModelIter;
+typedef struct _ClutterModelIterClass   ClutterListModelIterClass;
 
-typedef struct _ClutterModelClass       ClutterModelDefaultClass;
+typedef struct _ClutterModelClass       ClutterListModelClass;
 
-struct _ClutterModelDefault
+struct _ClutterListModel
 {
   ClutterModel parent_instance;
 
   GSequence *sequence;
 };
 
-struct _ClutterModelDefaultIter
+struct _ClutterListModelIter
 {
   ClutterModelIter parent_instance;
 
@@ -110,25 +110,25 @@ struct _ClutterModelDefaultIter
 
 
 /*
- * ClutterModelDefault
+ * ClutterListModel
  */
 
-G_DEFINE_TYPE (ClutterModelDefaultIter,
-               clutter_model_default_iter,
+G_DEFINE_TYPE (ClutterListModelIter,
+               clutter_list_model_iter,
                CLUTTER_TYPE_MODEL_ITER);
 
 static void
-clutter_model_default_iter_get_value (ClutterModelIter *iter,
-                                      guint             column,
-                                      GValue           *value)
+clutter_list_model_iter_get_value (ClutterModelIter *iter,
+                                   guint             column,
+                                   GValue           *value)
 {
-  ClutterModelDefaultIter *iter_default;
+  ClutterListModelIter *iter_default;
   GValueArray *value_array;
   GValue *iter_value;
   GValue real_value = { 0, };
   gboolean converted = FALSE;
 
-  iter_default = CLUTTER_MODEL_DEFAULT_ITER (iter);
+  iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
 
   value_array = g_sequence_get (iter_default->seq_iter);
@@ -171,17 +171,17 @@ clutter_model_default_iter_get_value (ClutterModelIter *iter,
 }
 
 static void
-clutter_model_default_iter_set_value (ClutterModelIter *iter,
-                                      guint             column,
-                                      const GValue     *value)
+clutter_list_model_iter_set_value (ClutterModelIter *iter,
+                                   guint             column,
+                                   const GValue     *value)
 {
-  ClutterModelDefaultIter *iter_default;
+  ClutterListModelIter *iter_default;
   GValueArray *value_array;
   GValue *iter_value;
   GValue real_value = { 0, };
   gboolean converted = FALSE;
 
-  iter_default = CLUTTER_MODEL_DEFAULT_ITER (iter);
+  iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
 
   value_array = g_sequence_get (iter_default->seq_iter);
@@ -224,30 +224,30 @@ clutter_model_default_iter_set_value (ClutterModelIter *iter,
 }
 
 static gboolean
-clutter_model_default_iter_is_first (ClutterModelIter *iter)
+clutter_list_model_iter_is_first (ClutterModelIter *iter)
 {
-  ClutterModelDefaultIter *iter_default;
+  ClutterListModelIter *iter_default;
   ClutterModel *model;
   ClutterModelIter *temp_iter;
   GSequenceIter *begin, *end;
   guint row;
 
-  iter_default = CLUTTER_MODEL_DEFAULT_ITER (iter);
+  iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
 
   model = clutter_model_iter_get_model (iter);
   row   = clutter_model_iter_get_row (iter);
 
-  begin = g_sequence_get_begin_iter (CLUTTER_MODEL_DEFAULT (model)->sequence);
+  begin = g_sequence_get_begin_iter (CLUTTER_LIST_MODEL (model)->sequence);
   end   = iter_default->seq_iter;
 
-  temp_iter = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
+  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
                             "model", model,
                             NULL);
 
   while (!g_sequence_iter_is_begin (begin))
     {
-      CLUTTER_MODEL_DEFAULT_ITER (temp_iter)->seq_iter = begin;
+      CLUTTER_LIST_MODEL_ITER (temp_iter)->seq_iter = begin;
       g_object_set (G_OBJECT (temp_iter), "row", row, NULL);
 
       if (clutter_model_filter_iter (model, temp_iter))
@@ -271,15 +271,15 @@ clutter_model_default_iter_is_first (ClutterModelIter *iter)
 }
 
 static gboolean
-clutter_model_default_iter_is_last (ClutterModelIter *iter)
+clutter_list_model_iter_is_last (ClutterModelIter *iter)
 {
-  ClutterModelDefaultIter *iter_default;
+  ClutterListModelIter *iter_default;
   ClutterModelIter *temp_iter;
   ClutterModel *model;
   GSequenceIter *begin, *end;
   guint row;
 
-  iter_default = CLUTTER_MODEL_DEFAULT_ITER (iter);
+  iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
 
   if (g_sequence_iter_is_end (iter_default->seq_iter))
@@ -288,17 +288,17 @@ clutter_model_default_iter_is_last (ClutterModelIter *iter)
   model = clutter_model_iter_get_model (iter);
   row   = clutter_model_iter_get_row (iter);
 
-  begin = g_sequence_get_end_iter (CLUTTER_MODEL_DEFAULT (model)->sequence);
+  begin = g_sequence_get_end_iter (CLUTTER_LIST_MODEL (model)->sequence);
   begin = g_sequence_iter_prev (begin);
   end   = iter_default->seq_iter;
 
-  temp_iter = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
+  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
                             "model", model,
                             NULL);
 
   while (!g_sequence_iter_is_begin (begin))
     {
-      CLUTTER_MODEL_DEFAULT_ITER (temp_iter)->seq_iter = begin;
+      CLUTTER_LIST_MODEL_ITER (temp_iter)->seq_iter = begin;
       g_object_set (G_OBJECT (temp_iter), "row", row, NULL);
 
       if (clutter_model_filter_iter (model, temp_iter))
@@ -322,15 +322,15 @@ clutter_model_default_iter_is_last (ClutterModelIter *iter)
 }
 
 static ClutterModelIter *
-clutter_model_default_iter_next (ClutterModelIter *iter)
+clutter_list_model_iter_next (ClutterModelIter *iter)
 {
-  ClutterModelDefaultIter *iter_default;
+  ClutterListModelIter *iter_default;
   ClutterModelIter *temp_iter;
   ClutterModel *model = NULL;
   GSequenceIter *filter_next;
   guint row;
 
-  iter_default = CLUTTER_MODEL_DEFAULT_ITER (iter);
+  iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
 
   model = clutter_model_iter_get_model (iter);
@@ -339,13 +339,13 @@ clutter_model_default_iter_next (ClutterModelIter *iter)
   filter_next = g_sequence_iter_next (iter_default->seq_iter);
   g_assert (filter_next != NULL);
 
-  temp_iter = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
+  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
                             "model", model,
                             NULL);
 
   while (!g_sequence_iter_is_end (filter_next))
     {
-      CLUTTER_MODEL_DEFAULT_ITER (temp_iter)->seq_iter = filter_next;
+      CLUTTER_LIST_MODEL_ITER (temp_iter)->seq_iter = filter_next;
       g_object_set (G_OBJECT (temp_iter), "row", row, NULL);
 
       if (clutter_model_filter_iter (model, temp_iter))
@@ -371,15 +371,15 @@ clutter_model_default_iter_next (ClutterModelIter *iter)
 }
 
 static ClutterModelIter *
-clutter_model_default_iter_prev (ClutterModelIter *iter)
+clutter_list_model_iter_prev (ClutterModelIter *iter)
 {
-  ClutterModelDefaultIter *iter_default;
+  ClutterListModelIter *iter_default;
   ClutterModelIter *temp_iter;
   ClutterModel *model;
   GSequenceIter *filter_prev;
   guint row;
 
-  iter_default = CLUTTER_MODEL_DEFAULT_ITER (iter);
+  iter_default = CLUTTER_LIST_MODEL_ITER (iter);
   g_assert (iter_default->seq_iter != NULL);
 
   model = clutter_model_iter_get_model (iter);
@@ -388,13 +388,13 @@ clutter_model_default_iter_prev (ClutterModelIter *iter)
   filter_prev = g_sequence_iter_prev (iter_default->seq_iter);
   g_assert (filter_prev != NULL);
 
-  temp_iter = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
+  temp_iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
                             "model", model,
                             NULL);
 
   while (!g_sequence_iter_is_begin (filter_prev))
     {
-      CLUTTER_MODEL_DEFAULT_ITER (temp_iter)->seq_iter = filter_prev;
+      CLUTTER_LIST_MODEL_ITER (temp_iter)->seq_iter = filter_prev;
       g_object_set (G_OBJECT (temp_iter), "row", row, NULL);
 
       if (clutter_model_filter_iter (model, temp_iter))
@@ -419,41 +419,41 @@ clutter_model_default_iter_prev (ClutterModelIter *iter)
   return CLUTTER_MODEL_ITER (iter_default);
 }
 static void
-clutter_model_default_iter_class_init (ClutterModelDefaultIterClass *klass)
+clutter_list_model_iter_class_init (ClutterListModelIterClass *klass)
 {
   ClutterModelIterClass *iter_class = CLUTTER_MODEL_ITER_CLASS (klass);
 
-  iter_class->get_value = clutter_model_default_iter_get_value;
-  iter_class->set_value = clutter_model_default_iter_set_value;
-  iter_class->is_first  = clutter_model_default_iter_is_first;
-  iter_class->is_last   = clutter_model_default_iter_is_last;
-  iter_class->next      = clutter_model_default_iter_next;
-  iter_class->prev      = clutter_model_default_iter_prev;
+  iter_class->get_value = clutter_list_model_iter_get_value;
+  iter_class->set_value = clutter_list_model_iter_set_value;
+  iter_class->is_first  = clutter_list_model_iter_is_first;
+  iter_class->is_last   = clutter_list_model_iter_is_last;
+  iter_class->next      = clutter_list_model_iter_next;
+  iter_class->prev      = clutter_list_model_iter_prev;
 }
 
 static void
-clutter_model_default_iter_init (ClutterModelDefaultIter *iter)
+clutter_list_model_iter_init (ClutterListModelIter *iter)
 {
   iter->seq_iter = NULL;
 }
 
 /*
- * ClutterModelDefault
+ * ClutterListModel
  */
 
-G_DEFINE_TYPE (ClutterModelDefault, clutter_model_default, CLUTTER_TYPE_MODEL);
+G_DEFINE_TYPE (ClutterListModel, clutter_list_model, CLUTTER_TYPE_MODEL);
 
 static ClutterModelIter *
-clutter_model_default_get_iter_at_row (ClutterModel *model,
-                                       guint         row)
+clutter_list_model_get_iter_at_row (ClutterModel *model,
+                                    guint         row)
 {
-  ClutterModelDefault *model_default = CLUTTER_MODEL_DEFAULT (model);
-  ClutterModelDefaultIter *retval;
+  ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
+  ClutterListModelIter *retval;
 
   if (row >= g_sequence_get_length (model_default->sequence))
     return NULL;
 
-  retval = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
+  retval = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
                          "model", model,
                          "row", row,
                          NULL);
@@ -463,11 +463,11 @@ clutter_model_default_get_iter_at_row (ClutterModel *model,
 }
 
 static ClutterModelIter *
-clutter_model_default_insert_row (ClutterModel *model,
-                                  gint          index_)
+clutter_list_model_insert_row (ClutterModel *model,
+                               gint          index_)
 {
-  ClutterModelDefault *model_default = CLUTTER_MODEL_DEFAULT (model);
-  ClutterModelDefaultIter *retval;
+  ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
+  ClutterListModelIter *retval;
   guint n_columns, i, pos;
   GValueArray *array;
   GSequenceIter *seq_iter;
@@ -502,7 +502,7 @@ clutter_model_default_insert_row (ClutterModel *model,
       pos = index_;
     }
 
-  retval = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
+  retval = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
                          "model", model,
                          "row", pos,
                          NULL);
@@ -512,10 +512,10 @@ clutter_model_default_insert_row (ClutterModel *model,
 }
 
 static void
-clutter_model_default_remove_row (ClutterModel *model,
-                                  guint         row)
+clutter_list_model_remove_row (ClutterModel *model,
+                               guint         row)
 {
-  ClutterModelDefault *model_default = CLUTTER_MODEL_DEFAULT (model);
+  ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
   GSequenceIter *seq_iter;
   guint pos = 0;
 
@@ -528,11 +528,11 @@ clutter_model_default_remove_row (ClutterModel *model,
             {  
               ClutterModelIter *iter;
 
-              iter = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT_ITER,
+              iter = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
                                    "model", model,
                                    "row", pos,
                                    NULL);
-              CLUTTER_MODEL_DEFAULT_ITER (iter)->seq_iter = seq_iter;
+              CLUTTER_LIST_MODEL_ITER (iter)->seq_iter = seq_iter;
 
               /* the actual row is removed from the sequence inside
                * the ::row-removed signal class handler, so that every
@@ -555,9 +555,9 @@ clutter_model_default_remove_row (ClutterModel *model,
 }
 
 static guint
-clutter_model_default_get_n_rows (ClutterModel *model)
+clutter_list_model_get_n_rows (ClutterModel *model)
 {
-  ClutterModelDefault *model_default = CLUTTER_MODEL_DEFAULT (model);
+  ClutterListModel *model_default = CLUTTER_LIST_MODEL (model);
 
   return g_sequence_get_length (model_default->sequence);
 }
@@ -586,9 +586,9 @@ sort_model_default (gconstpointer a,
 }
 
 static void
-clutter_model_default_resort (ClutterModel         *model,
-                              ClutterModelSortFunc  func,
-                              gpointer              data)
+clutter_list_model_resort (ClutterModel         *model,
+                           ClutterModelSortFunc  func,
+                           gpointer              data)
 {
   SortClosure sort_closure = { NULL, 0, NULL, NULL };
 
@@ -597,19 +597,19 @@ clutter_model_default_resort (ClutterModel         *model,
   sort_closure.func   = func;
   sort_closure.data   = data;
 
-  g_sequence_sort (CLUTTER_MODEL_DEFAULT (model)->sequence,
+  g_sequence_sort (CLUTTER_LIST_MODEL (model)->sequence,
                    sort_model_default,
                    &sort_closure);
 }
 
 static void
-clutter_model_default_row_removed (ClutterModel     *model,
-                                   ClutterModelIter *iter)
+clutter_list_model_row_removed (ClutterModel     *model,
+                                ClutterModelIter *iter)
 {
-  ClutterModelDefaultIter *iter_default;
+  ClutterListModelIter *iter_default;
   GValueArray *array;
 
-  iter_default = CLUTTER_MODEL_DEFAULT_ITER (iter);
+  iter_default = CLUTTER_LIST_MODEL_ITER (iter);
 
   array = g_sequence_get (iter_default->seq_iter);
   g_value_array_free (array);
@@ -619,9 +619,9 @@ clutter_model_default_row_removed (ClutterModel     *model,
 }
 
 static void
-clutter_model_default_finalize (GObject *gobject)
+clutter_list_model_finalize (GObject *gobject)
 {
-  ClutterModelDefault *model = CLUTTER_MODEL_DEFAULT (gobject);
+  ClutterListModel *model = CLUTTER_LIST_MODEL (gobject);
   GSequenceIter *iter;
 
   iter = g_sequence_get_begin_iter (model->sequence);
@@ -634,34 +634,34 @@ clutter_model_default_finalize (GObject *gobject)
     }
   g_sequence_free (model->sequence);
 
-  G_OBJECT_CLASS (clutter_model_default_parent_class)->finalize (gobject);
+  G_OBJECT_CLASS (clutter_list_model_parent_class)->finalize (gobject);
 }
 
 static void
-clutter_model_default_class_init (ClutterModelDefaultClass *klass)
+clutter_list_model_class_init (ClutterListModelClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterModelClass *model_class = CLUTTER_MODEL_CLASS (klass);
 
-  gobject_class->finalize = clutter_model_default_finalize;
+  gobject_class->finalize = clutter_list_model_finalize;
 
-  model_class->get_n_rows      = clutter_model_default_get_n_rows;
-  model_class->get_iter_at_row = clutter_model_default_get_iter_at_row;
-  model_class->insert_row      = clutter_model_default_insert_row;
-  model_class->remove_row      = clutter_model_default_remove_row;
-  model_class->resort          = clutter_model_default_resort;
+  model_class->get_n_rows      = clutter_list_model_get_n_rows;
+  model_class->get_iter_at_row = clutter_list_model_get_iter_at_row;
+  model_class->insert_row      = clutter_list_model_insert_row;
+  model_class->remove_row      = clutter_list_model_remove_row;
+  model_class->resort          = clutter_list_model_resort;
 
-  model_class->row_removed     = clutter_model_default_row_removed;
+  model_class->row_removed     = clutter_list_model_row_removed;
 }
 
 static void
-clutter_model_default_init (ClutterModelDefault *model)
+clutter_list_model_init (ClutterListModel *model)
 {
   model->sequence = g_sequence_new (NULL);
 }
 
 /**
- * clutter_model_default_new:
+ * clutter_list_model_new:
  * @n_columns: number of columns in the model
  * @Varargs: @n_columns number of #GType and string pairs
  *
@@ -671,10 +671,10 @@ clutter_model_default_init (ClutterModelDefault *model)
  * For example:
  * 
  * <informalexample><programlisting>
- * model = clutter_model_default_new (3,
- *                                    G_TYPE_INT,      "Score",
- *                                    G_TYPE_STRING,   "Team",
- *                                    GDK_TYPE_PIXBUF, "Logo");
+ * model = clutter_list_model_new (3,
+ *                                 G_TYPE_INT,      "Score",
+ *                                 G_TYPE_STRING,   "Team",
+ *                                 GDK_TYPE_PIXBUF, "Logo");
  * </programlisting></informalexample>
  *
  * will create a new #ClutterModel with three columns of type int,
@@ -684,13 +684,13 @@ clutter_model_default_init (ClutterModelDefault *model)
  * the canonical name of the type held by the column will be used as
  * the title.
  *
- * Return value: a new default #ClutterModel
+ * Return value: a new #ClutterListModel
  *
  * Since: 0.6
  */
 ClutterModel *
-clutter_model_default_new (guint n_columns,
-                           ...)
+clutter_list_model_new (guint n_columns,
+                        ...)
 {
   ClutterModel *model;
   va_list args;
@@ -698,7 +698,7 @@ clutter_model_default_new (guint n_columns,
 
   g_return_val_if_fail (n_columns > 0, NULL);
 
-  model = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT, NULL);
+  model = g_object_new (CLUTTER_TYPE_LIST_MODEL, NULL);
   clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
 
   va_start (args, n_columns);
@@ -725,12 +725,12 @@ clutter_model_default_new (guint n_columns,
 }
 
 /**
- * clutter_model_default_newv:
+ * clutter_list_model_newv:
  * @n_columns: number of columns in the model
  * @types: an array of #GType types for the columns, from first to last
  * @names: an array of names for the columns, from first to last
  *
- * Non-vararg version of clutter_model_default_new(). This function is
+ * Non-vararg version of clutter_list_model_new(). This function is
  * useful for language bindings.
  *
  * Return value: a new default #ClutterModel
@@ -738,16 +738,16 @@ clutter_model_default_new (guint n_columns,
  * Since: 0.6
  */
 ClutterModel *
-clutter_model_default_newv (guint                n_columns,
-                            GType               *types,
-                            const gchar * const  names[])
+clutter_list_model_newv (guint                n_columns,
+                         GType               *types,
+                         const gchar * const  names[])
 {
   ClutterModel *model;
   gint i;
 
   g_return_val_if_fail (n_columns > 0, NULL);
 
-  model = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT, NULL);
+  model = g_object_new (CLUTTER_TYPE_LIST_MODEL, NULL);
   clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
 
   for (i = 0; i < n_columns; i++)
