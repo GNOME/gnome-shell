@@ -50,6 +50,7 @@
 #include <glib-object.h>
 
 #include "clutter-model.h"
+#include "clutter-model-private.h"
 #include "clutter-model-default.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
@@ -657,4 +658,110 @@ static void
 clutter_model_default_init (ClutterModelDefault *model)
 {
   model->sequence = g_sequence_new (NULL);
+}
+
+/**
+ * clutter_model_default_new:
+ * @n_columns: number of columns in the model
+ * @Varargs: @n_columns number of #GType and string pairs
+ *
+ * Creates a new default model with @n_columns columns with the types 
+ * and names passed in.
+ *
+ * For example:
+ * 
+ * <informalexample><programlisting>
+ * model = clutter_model_default_new (3,
+ *                                    G_TYPE_INT,      "Score",
+ *                                    G_TYPE_STRING,   "Team",
+ *                                    GDK_TYPE_PIXBUF, "Logo");
+ * </programlisting></informalexample>
+ *
+ * will create a new #ClutterModel with three columns of type int,
+ * string and #GdkPixbuf respectively.
+ *
+ * Note that the name of the column can be set to %NULL, in which case
+ * the canonical name of the type held by the column will be used as
+ * the title.
+ *
+ * Return value: a new default #ClutterModel
+ *
+ * Since: 0.6
+ */
+ClutterModel *
+clutter_model_default_new (guint n_columns,
+                           ...)
+{
+  ClutterModel *model;
+  va_list args;
+  gint i;
+
+  g_return_val_if_fail (n_columns > 0, NULL);
+
+  model = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT, NULL);
+  clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
+
+  va_start (args, n_columns);
+
+  for (i = 0; i < n_columns; i++)
+    { 
+      GType type = va_arg (args, GType);
+      const gchar *name = va_arg (args, gchar*);
+
+      if (!clutter_model_check_type (type))
+        {
+          g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (type));
+          g_object_unref (model);
+          return NULL;
+        }
+
+      clutter_model_set_column_type (model, i, type);
+      clutter_model_set_column_name (model, i, name);
+    }
+
+  va_end (args);
+
+  return model;
+}
+
+/**
+ * clutter_model_default_newv:
+ * @n_columns: number of columns in the model
+ * @types: an array of #GType types for the columns, from first to last
+ * @names: an array of names for the columns, from first to last
+ *
+ * Non-vararg version of clutter_model_default_new(). This function is
+ * useful for language bindings.
+ *
+ * Return value: a new default #ClutterModel
+ *
+ * Since: 0.6
+ */
+ClutterModel *
+clutter_model_default_newv (guint                n_columns,
+                            GType               *types,
+                            const gchar * const  names[])
+{
+  ClutterModel *model;
+  gint i;
+
+  g_return_val_if_fail (n_columns > 0, NULL);
+
+  model = g_object_new (CLUTTER_TYPE_MODEL_DEFAULT, NULL);
+  clutter_model_set_n_columns (model, n_columns, TRUE, TRUE);
+
+  for (i = 0; i < n_columns; i++)
+    {
+      if (!clutter_model_check_type (types[i]))
+        {
+          g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (types[i]));
+          g_object_unref (model);
+          return NULL;
+        }
+
+      clutter_model_set_column_type (model, i, types[i]);
+      clutter_model_set_column_name (model, i, names[i]);
+    }
+
+  return model;
 }

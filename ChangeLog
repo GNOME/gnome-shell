@@ -1,5 +1,23 @@
 2008-01-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model-default.c:
+	(clutter_model_default_new),
+	(clutter_model_default_newv): Move the constructors in the
+	right file
+
+	* clutter/clutter-model-private.h: Add a private header for
+	the ClutterModel implementations
+
+	* clutter/clutter-model.c:
+	(clutter_model_check_type),
+	(clutter_model_set_n_columns),
+	(clutter_model_set_column_type): Mark as private to Clutter,
+	not static to ClutterModel
+
+	* clutter/Makefile.am: Add clutter-model-private.h
+
+2008-01-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-label.c:
 	(clutter_label_ensure_layout): Fix the ClutterUnits to Pango
 	scale conversion.

@@ -57,6 +57,7 @@ IGNORE_HFILES=\
 	clutter-keysyms.h \
 	clutter-keysyms-table.h \
 	clutter-marshal.h \
+	clutter-model-private.h \
 	clutter-private.h \
 	clutter-script-private.h \
 	stamp-clutter-enum-types.h \

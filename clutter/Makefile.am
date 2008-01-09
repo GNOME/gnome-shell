@@ -167,6 +167,7 @@ source_c = \
 source_h_priv = \
 	clutter-debug.h 		\
 	clutter-keysyms-table.h		\
+	clutter-model-private.h		\
 	clutter-private.h 		\
 	clutter-script-private.h	\
 	$(NULL)
