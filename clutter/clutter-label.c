@@ -198,8 +198,8 @@ clutter_label_ensure_layout (ClutterLabel *label)
         }
       
       if (priv->ellipsize != PANGO_ELLIPSIZE_NONE)
-        pango_layout_set_width (priv->layout, width > 0 ? CLUTTER_UNITS_TO_PANGO_UNIT (raw_width)
-                                                        : -1);
+        pango_layout_set_width (priv->layout, raw_width > 0 ? CLUTTER_UNITS_TO_PANGO_UNIT (raw_width)
+                                                            : -1);
       else if (priv->wrap)
         {
           pango_layout_set_wrap  (priv->layout, priv->wrap_mode);
@@ -266,8 +266,8 @@ clutter_label_ensure_layout (ClutterLabel *label)
             }
 	}
       else
-	pango_layout_set_width (priv->layout, width > 0 ? CLUTTER_UNITS_FROM_PANGO_UNIT (raw_width) 
-                                                        : -1);
+	pango_layout_set_width (priv->layout, raw_width > 0 ? CLUTTER_UNITS_TO_PANGO_UNIT (raw_width) 
+                                                            : -1);
     }
 
   CLUTTER_NOTE (ACTOR, "Label width set to %d pixels", width);

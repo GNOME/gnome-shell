@@ -1,3 +1,9 @@
+2008-01-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-label.c:
+	(clutter_label_ensure_layout): Fix the ClutterUnits to Pango
+	scale conversion.
+
 2008-01-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-model.c:
