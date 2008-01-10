@@ -1,3 +1,14 @@
+2008-01-10  Øyvind Kolås  <pippin@gimp.org>
+
+	Added COGLhandleARB since the underlying type on OSX is void*,
+	patch from Tommi Komulainen <tommi.komulainen@iki.fi>, (#694)
+
+	* clutter/cogl/gl/cogl-defines.h.in: Added COGLhandleARB typedef.
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/clutter-shader.c: Use COGLhandleARB instead of COGLint when
+	referring to program or shader handles.
+
 2008-01-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/Makefile.am:
