@@ -821,7 +821,7 @@ clutter_effect_rotate (ClutterEffectTemplate     *template_,
   angle_start = clutter_actor_get_rotation (actor, axis, NULL, NULL, NULL);
   
   c->behave = clutter_behaviour_rotate_new (c->alpha,
-					    CLUTTER_X_AXIS,
+                                            axis,
 					    direction,
 					    angle_start,
 					    angle_end);

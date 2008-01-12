@@ -1,3 +1,9 @@
+2008-01-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-effect.c (clutter_effect_rotate): Make the
+	rotate effect work on the passed axis, instead of hardcoding
+	the X axis. (#700, Neil Roberts)
+
 2008-01-10  Øyvind Kolås  <pippin@gimp.org>
 
 	Added COGLhandleARB since the underlying type on OSX is void*,
