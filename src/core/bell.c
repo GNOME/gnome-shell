@@ -22,11 +22,57 @@
  * 02111-1307, USA.
  */
 
+/**
+ * \file core/bell.c Ring the bell or flash the screen
+ *
+ * Sometimes, X programs "ring the bell", whatever that means. Metacity lets
+ * the user configure the bell to be audible or visible (aka visual), and
+ * if it's visual it can be configured to be frame-flash or fullscreen-flash.
+ * We never get told about audible bells; X handles them just fine by itself.
+ *
+ * Visual bells come in at meta_bell_notify(), which checks we are actually
+ * in visual mode and calls through to meta_bell_visual_notify(). That
+ * function then checks what kind of visual flash you like, and calls either
+ * meta_bell_flash_fullscreen()-- which calls meta_bell_flash_screen() to do
+ * its work-- or meta_bell_flash_frame(), which flashes the focussed window
+ * using meta_bell_flash_window_frame(), unless there is no such window, in
+ * which case it flashes the screen instead. meta_bell_flash_window_frame()
+ * flashes the frame and calls meta_bell_unflash_frame() as a timeout to
+ * remove the flash.
+ *
+ * The visual bell was the result of a discussion in Bugzilla here:
+ * <http://bugzilla.gnome.org/show_bug.cgi?id=99886>.
+ *
+ * Several of the functions in this file are ifdeffed out entirely if we are
+ * found not to have the XKB extension, which is required to do these clever
+ * things with bells; some others are entirely no-ops in that case.
+ *
+ * \bug Static functions should not be called meta_*.
+ */
+
 #include <config.h>
 #include "bell.h"
 #include "screen.h"
 #include "prefs.h"
 
+/**
+ * Flashes one entire screen.  This is done by making a window the size of the
+ * whole screen (or reusing the old one, if it's still around), mapping it,
+ * painting it white and then black, and then unmapping it. We set saveunder so
+ * that all the windows behind it come back immediately.
+ *
+ * Unlike frame flashes, we don't do fullscreen flashes with a timeout; rather,
+ * we do them in one go, because we don't have to rely on the theme code
+ * redrawing the frame for us in order to do the flash.
+ *
+ * \param display  The display which owns the screen (rather redundant)
+ * \param screen   The screen to flash
+ *
+ * \bug The way I read it, this appears not to do the flash
+ * the first time we flash a particular display. Am I wrong?
+ *
+ * \bug This appears to destroy our current XSync status.
+ */
 static void
 meta_bell_flash_screen (MetaDisplay *display, 
 			MetaScreen  *screen)
@@ -89,6 +135,16 @@ meta_bell_flash_screen (MetaDisplay *display,
   XFlush (display->xdisplay);
 }
 
+/**
+ * Flashes one screen, or all screens, in response to a bell event.
+ * If the event is on a particular window, flash the screen that
+ * window is on. Otherwise, flash every screen on this display.
+ *
+ * If the configure script found we had no XKB, this does not exist.
+ *
+ * \param display  The display the event came in on
+ * \param xkb_ev   The bell event
+ */
 #ifdef HAVE_XKB
 static void
 meta_bell_flash_fullscreen (MetaDisplay *display, 
@@ -116,6 +172,20 @@ meta_bell_flash_fullscreen (MetaDisplay *display,
     }
 }
 
+/**
+ * Makes a frame be not flashed; this is the timeout half of
+ * meta_frame_flash(). This is done simply by clearing the flash flag and
+ * queuing a redraw of the frame.
+ *
+ * If the configure script found we had no XKB, this does not exist.
+ *
+ * \param data  The frame to unflash, cast to a gpointer so it can go into
+ *              a callback function.
+ * \return Always FALSE, so we don't get called again.
+ *
+ * \bug This is the parallel to meta_bell_flash_window_frame(), so it should
+ * really be called meta_bell_unflash_window_frame().
+ */
 static gboolean 
 meta_bell_unflash_frame (gpointer data)
 {
@@ -125,6 +195,17 @@ meta_bell_unflash_frame (gpointer data)
   return FALSE;
 }
 
+/**
+ * Makes a frame flash and then return to normal shortly afterwards.
+ * This is done by setting a flag so that the theme
+ * code will temporarily draw the frame as focussed if it's unfocussed and
+ * vice versa, and then queueing a redraw. Lastly, we create a timeout so
+ * that the flag can be unset and the frame re-redrawn.
+ *
+ * If the configure script found we had no XKB, this does not exist.
+ *
+ * \param window  The window to flash
+ */
 static void
 meta_bell_flash_window_frame (MetaWindow *window)
 {
@@ -135,6 +216,13 @@ meta_bell_flash_window_frame (MetaWindow *window)
       meta_bell_unflash_frame, window->frame, NULL);
 }
 
+/**
+ * Flashes the frame of the focussed window. If there is no focussed window,
+ * flashes the screen.
+ *
+ * \param display  The display the bell event came in on
+ * \param xkb_ev   The bell event we just received
+ */
 static void
 meta_bell_flash_frame (MetaDisplay *display, 
 		       XkbAnyEvent *xkb_ev)
@@ -158,6 +246,17 @@ meta_bell_flash_frame (MetaDisplay *display,
     }
 }
 
+/**
+ * Gives the user some kind of visual bell substitute, in response to a
+ * bell event. What this is depends on the "visual bell type" pref.
+ *
+ * If the configure script found we had no XKB, this does not exist.
+ *
+ * \param display  The display the bell event came in on
+ * \param xkb_ev   The bell event we just received
+ *
+ * \bug This should be merged with meta_bell_notify().
+ */
 static void
 meta_bell_visual_notify (MetaDisplay *display, 
 			 XkbAnyEvent *xkb_ev)
@@ -176,6 +275,16 @@ meta_bell_visual_notify (MetaDisplay *display,
     }
 }
 
+/**
+ * Gives the user some kind of visual bell; in fact, this is our response
+ * to any kind of bell request, but we set it up so that we only get
+ * notified about visual bells, and X deals with audible ones.
+ *
+ * If the configure script found we had no XKB, this does not exist.
+ *
+ * \param display  The display the bell event came in on
+ * \param xkb_ev   The bell event we just received
+ */
 void
 meta_bell_notify (MetaDisplay *display, 
 		  XkbAnyEvent *xkb_ev)
@@ -184,8 +293,17 @@ meta_bell_notify (MetaDisplay *display,
   if (meta_prefs_get_visual_bell ()) 
     meta_bell_visual_notify (display, xkb_ev);
 }
-#endif
+#endif /* HAVE_XKB */
 
+/**
+ * Turns the bell to audible or visual. This tells X what to do, but
+ * not Metacity; you will need to set the "visual bell" pref for that.
+ *
+ * If the configure script found we had no XKB, this is a no-op.
+ *
+ * \param display  The display we're configuring
+ * \param audible  True for an audible bell, false for a visual bell
+ */
 void
 meta_bell_set_audible (MetaDisplay *display, gboolean audible)
 {
@@ -197,6 +315,27 @@ meta_bell_set_audible (MetaDisplay *display, gboolean audible)
 #endif  
 }
 
+/**
+ * Initialises the bell subsystem. This involves intialising
+ * XKB (which, despite being a keyboard extension, is the
+ * place to look for bell notifications), then asking it
+ * to send us bell notifications, and then also switching
+ * off the audible bell if we're using a visual one ourselves.
+ *
+ * Unlike most X extensions we use, we only initialise XKB here
+ * (rather than in main()). It's possible that XKB is not
+ * installed at all, but if that was known at build time
+ * we will have HAVE_XKB undefined, which will cause this
+ * function to be a no-op.
+ *
+ * \param display  The display which is opening
+ *
+ * \bug There is a line of code that's never run that tells
+ * XKB to reset the bell status after we quit. Bill H said
+ * (<http://bugzilla.gnome.org/show_bug.cgi?id=99886#c12>)
+ * that XFree86's implementation is broken so we shouldn't
+ * call it, but that was in 2002. Is it working now?
+ */
 gboolean
 meta_bell_init (MetaDisplay *display)
 {
@@ -238,6 +377,15 @@ meta_bell_init (MetaDisplay *display)
   return FALSE;
 }
 
+/**
+ * Shuts down the bell subsystem.
+ *
+ * \param display  The display which is closing
+ *
+ * \bug This is never called! If we had XkbSetAutoResetControls
+ * enabled in meta_bell_init(), this wouldn't be a problem, but
+ * we don't.
+ */
 void
 meta_bell_shutdown (MetaDisplay *display)
 {
@@ -250,6 +398,14 @@ meta_bell_shutdown (MetaDisplay *display)
 #endif
 }
 
+/**
+ * Deals with a frame being destroyed. This is important because if we're
+ * using a visual bell, we might be flashing the edges of the frame, and
+ * so we'd have a timeout function waiting ready to un-flash them. If the
+ * frame's going away, we can tell the timeout not to bother.
+ *
+ * \param frame  The frame which is being destroyed
+ */
 void
 meta_bell_notify_frame_destroy (MetaFrame *frame)
 {

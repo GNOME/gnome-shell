@@ -29,6 +29,17 @@
  * kick everything off and then close down Metacity when it's time to go.
  */
 
+/**
+ * \mainpage Metacity - a boring window manager for the adult in you
+ *
+ * Many window managers are like Marshmallow Froot Loops; Metacity
+ * is like Cheerios.
+ *
+ * The best way to get a handle on how the whole system fits together
+ * is discussed in doc/code-overview.txt; if you're looking for functions
+ * to investigate, read main(), meta_display_open(), and event_callback().
+ */
+
 #include <config.h>
 #include "main.h"
 #include "util.h"
@@ -74,6 +85,12 @@ static void prefs_changed_callback (MetaPreference pref,
 /**
  * Prints log messages. If Metacity was compiled with backtrace support,
  * also prints a backtrace (see meta_print_backtrace()).
+ *
+ * \param log_domain  the domain the error occurred in (we ignore this)
+ * \param log_level   the log level so that we can filter out less
+ *                    important messages
+ * \param message     the message to log
+ * \param user_data   arbitrary data (we ignore this)
  */
 static void
 log_handler (const gchar   *log_domain,
@@ -185,7 +202,7 @@ meta_print_self_identity (void)
 /**
  * The set of possible options that can be set on Metacity's
  * command line. This type exists so that meta_parse_options() can
- * return an instance of it.
+ * write to an instance of it.
  */
 typedef struct
 {
@@ -205,6 +222,10 @@ typedef struct
  * The strange call signature has to be written like it is so
  * that g_option_context_parse() gets a chance to modify argc and
  * argv.
+ *
+ * \param argc  Pointer to the number of arguments Metacity was given
+ * \param argv  Pointer to the array of arguments Metacity was given
+ * \param meta_args  The result of parsing the arguments.
  **/
 static void
 meta_parse_options (int *argc, char ***argv,
@@ -271,8 +292,7 @@ meta_parse_options (int *argc, char ***argv,
 }
 
 /**
- * Helper function that selects
- * which display Metacity should use. It first tries to use
+ * Selects which display Metacity should use. It first tries to use
  * display_name as the display. If display_name is NULL then
  * try to use the environment variable METACITY_DISPLAY. If that
  * also is NULL, use the default - :0.0
@@ -294,6 +314,9 @@ void meta_select_display (gchar *display_name)
  * This is where the story begins. It parses commandline options and
  * environment variables, sets up the screen, hands control off to
  * GTK, and cleans up afterwards.
+ *
+ * \param argc Number of arguments (as usual)
+ * \param argv Array of arguments (as usual)
  *
  * \bug It's a bit long. It would be good to split it out into separate
  * functions.
@@ -503,6 +526,8 @@ main (int argc, char **argv)
  * the user with no window manager. We generally do this only if, for example,
  * the session manager asks us to; we assume the session manager knows what
  * it's talking about.
+ *
+ * \param code The success or failure code to return to the calling process.
  */
 void
 meta_quit (MetaExitCode code)
@@ -531,6 +556,9 @@ meta_restart (void)
  *
  * \bug Why are these particular prefs handled in main.c and not others?
  * Should they be?
+ *
+ * \param pref  Which preference has changed
+ * \param pref  Arbitrary data (which we ignore)
  */
 static void
 prefs_changed_callback (MetaPreference pref,
