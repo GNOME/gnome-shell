@@ -304,6 +304,11 @@ main (int argc, char **argv)
   struct sigaction act;
   sigset_t empty_mask;
   MetaArguments meta_args;
+  const gchar *log_domains[] = {
+    NULL, G_LOG_DOMAIN, "Gtk", "Gdk", "GLib",
+    "Pango", "GLib-GObject", "GThread"
+  };
+  gint i;
   
   if (setlocale (LC_ALL, "") == NULL)
     meta_warning ("Locale not understood by C library, internationalization will not work\n");
@@ -366,30 +371,12 @@ main (int argc, char **argv)
 
 
 #if 1
-  g_log_set_handler (NULL,
-                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
-                     log_handler, NULL);
-  g_log_set_handler (G_LOG_DOMAIN,
-                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
-                     log_handler, NULL);
-  g_log_set_handler ("Gtk",
-                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
-                     log_handler, NULL);
-  g_log_set_handler ("Gdk",
-                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
-                     log_handler, NULL);
-  g_log_set_handler ("GLib",
-                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
-                     log_handler, NULL);
-  g_log_set_handler ("Pango",
-                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
-                     log_handler, NULL);
-  g_log_set_handler ("GLib-GObject",
-                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
-                     log_handler, NULL);
-  g_log_set_handler ("GThread",
-                     G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
-                     log_handler, NULL);
+
+  for (i=0; i<G_N_ELEMENTS(log_domains); i++)
+    g_log_set_handler (log_domains[i],
+                       G_LOG_LEVEL_MASK | G_LOG_FLAG_FATAL | G_LOG_FLAG_RECURSION,
+                       log_handler, NULL);
+
 #endif
 
   if (g_getenv ("METACITY_G_FATAL_WARNINGS") != NULL)

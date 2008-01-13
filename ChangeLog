@@ -1,5 +1,10 @@
 2008-01-12  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/main.c: Refactor repeated lines in main() to
+	iterate instead.
+
+2008-01-12  Thomas Thurman  <tthurman@gnome.org>
+
 	* src/core/main.[ch] (meta_get_main_loop): removed as it
 	was never used.
 	* src/core/main.c: lots of comments.
