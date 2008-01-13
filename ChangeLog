@@ -1,9 +1,15 @@
 2008-01-12  Thomas Thurman  <tthurman@gnome.org>
 
+	* src/core/display.c: reinstated missing first character!
+	* Doxyfile: correct reordering of blank fields.
+
+2008-01-12  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/display.c: change comments from /*! to /** because the
 	other way makes doxygen think they are Qt comments, which messes
 	up brief descriptions.
-	* Doxyfile: check in so other people can generate documentation too.
+	* Doxyfile: check in so other people can generate documentation
+	too.
 
 2008-01-07  Thomas Thurman  <tthurman@gnome.org>
 

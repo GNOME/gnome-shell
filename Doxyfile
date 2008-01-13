@@ -27,14 +27,14 @@ DOXYFILE_ENCODING      = UTF-8
 # The PROJECT_NAME tag is a single word (or a sequence of words surrounded 
 # by quotes) that should identify the project.
 
-# Do not enter a setting here; it will only get out of date.
-PROJECT_NAME           =
+PROJECT_NAME           = metacity
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. 
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 2.21
+# Do not enter a setting here; it will only get out of date.
+PROJECT_NUMBER         = 
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
