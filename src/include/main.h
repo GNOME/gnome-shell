@@ -40,6 +40,4 @@ void meta_quit (MetaExitCode code);
 
 void meta_restart (void);
 
-GMainLoop* meta_get_main_loop (void);
-
 #endif

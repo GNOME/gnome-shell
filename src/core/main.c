@@ -22,6 +22,13 @@
  * 02111-1307, USA.
  */
 
+/**
+ * \file core/main.c Program startup
+ *
+ * Functions which parse the command-line arguments, create the display,
+ * kick everything off and then close down Metacity when it's time to go.
+ */
+
 #include <config.h>
 #include "main.h"
 #include "util.h"
@@ -44,13 +51,30 @@
 #include <locale.h>
 #include <time.h>
 
+/**
+ * The exit code we'll return to our parent process when we eventually die.
+ */
 static MetaExitCode meta_exit_code = META_EXIT_SUCCESS;
+
+/**
+ * Handle on the main loop, so that we have an easy way of shutting Metacity
+ * down.
+ */
 static GMainLoop *meta_main_loop = NULL;
+
+/**
+ * If set, Metacity will spawn an identical copy of itself immediately
+ * before quitting.
+ */
 static gboolean meta_restart_after_quit = FALSE;
 
 static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
 
+/**
+ * Prints log messages. If Metacity was compiled with backtrace support,
+ * also prints a backtrace (see meta_print_backtrace()).
+ */
 static void
 log_handler (const gchar   *log_domain,
              GLogLevelFlags log_level,
@@ -61,17 +85,27 @@ log_handler (const gchar   *log_domain,
   meta_print_backtrace ();
 }
 
+/**
+ * Prints the version notice. This is shown when Metacity is called
+ * with the --version switch.
+ */
 static void
 version (void)
 {
   g_print (_("metacity %s\n"
-             "Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., and others\n"
+             "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
              "This is free software; see the source for copying conditions.\n"
              "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"),
            VERSION);
   exit (0);
 }
 
+/**
+ * Prints a list of which configure script options were used to
+ * build this copy of Metacity. This is actually always called
+ * on startup, but it's all no-op unless we're in verbose mode
+ * (see meta_set_verbose).
+ */
 static void
 meta_print_compilation_info (void)
 {
@@ -117,6 +151,14 @@ meta_print_compilation_info (void)
 #endif
 }
 
+/**
+ * Prints the version number, the current timestamp (not the
+ * build date), the locale, the character encoding, and a list
+ * of configure script options that were used to build this
+ * copy of Metacity. This is actually always called
+ * on startup, but it's all no-op unless we're in verbose mode
+ * (see meta_set_verbose).
+ */
 static void
 meta_print_self_identity (void)
 {
@@ -140,6 +182,11 @@ meta_print_self_identity (void)
   meta_print_compilation_info ();
 }
 
+/**
+ * The set of possible options that can be set on Metacity's
+ * command line. This type exists so that meta_parse_options() can
+ * return an instance of it.
+ */
 typedef struct
 {
   gchar *save_file;
@@ -152,9 +199,8 @@ typedef struct
 } MetaArguments;
 
 /**
- * meta_parse_options() parses argc and argv and returns the
- * arguments that Metacity understands in struct
- * MetaArguments. In meta_args.
+ * Parses argc and argv and returns the
+ * arguments that Metacity understands in meta_args.
  *
  * The strange call signature has to be written like it is so
  * that g_option_context_parse() gets a chance to modify argc and
@@ -225,7 +271,7 @@ meta_parse_options (int *argc, char ***argv,
 }
 
 /**
- * meta_select_display() is a helper function that selects
+ * Helper function that selects
  * which display Metacity should use. It first tries to use
  * display_name as the display. If display_name is NULL then
  * try to use the environment variable METACITY_DISPLAY. If that
@@ -244,6 +290,14 @@ void meta_select_display (gchar *display_name)
   putenv (envVar);
 }
     
+/**
+ * This is where the story begins. It parses commandline options and
+ * environment variables, sets up the screen, hands control off to
+ * GTK, and cleans up afterwards.
+ *
+ * \bug It's a bit long. It would be good to split it out into separate
+ * functions.
+ */
 int
 main (int argc, char **argv)
 {
@@ -456,12 +510,13 @@ main (int argc, char **argv)
   return meta_exit_code;
 }
 
-GMainLoop*
-meta_get_main_loop (void)
-{
-  return meta_main_loop;
-}
-
+/**
+ * Stops Metacity. This tells the event loop to stop processing; it is rather
+ * dangerous to use this rather than meta_restart() because this will leave
+ * the user with no window manager. We generally do this only if, for example,
+ * the session manager asks us to; we assume the session manager knows what
+ * it's talking about.
+ */
 void
 meta_quit (MetaExitCode code)
 {
@@ -471,6 +526,12 @@ meta_quit (MetaExitCode code)
     g_main_loop_quit (meta_main_loop);
 }
 
+/**
+ * Restarts Metacity. In practice, this tells the event loop to stop
+ * processing, having first set the meta_restart_after_quit flag which
+ * tells Metacity to spawn an identical copy of itself before quitting.
+ * This happens on receipt of a _METACITY_RESTART_MESSAGE client event.
+ */
 void
 meta_restart (void)
 {
@@ -478,6 +539,12 @@ meta_restart (void)
   meta_quit (META_EXIT_SUCCESS);
 }
 
+/**
+ * Called on pref changes. (One of several functions of its kind and purpose.)
+ *
+ * \bug Why are these particular prefs handled in main.c and not others?
+ * Should they be?
+ */
 static void
 prefs_changed_callback (MetaPreference pref,
                         gpointer       data)

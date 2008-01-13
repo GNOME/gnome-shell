@@ -1,5 +1,17 @@
 2008-01-12  Thomas Thurman  <tthurman@gnome.org>
 
+	* src/core/main.[ch] (meta_get_main_loop): removed as it
+	was never used.
+	* src/core/main.c: lots of comments.
+	* src/core/main.c (version): copyright year is 2008.
+        * src/core/c-screen.[ch], src/core/c-window.[ch]: removed
+	files from Søren's compositor which were removed by the
+	merge with Iain's compositor but reintroduced by the split
+	to separate subdirectories.
+	* src/core/display.c: fix comments.
+
+2008-01-12  Thomas Thurman  <tthurman@gnome.org>
+
 	* src/core/display.c: reinstated missing first character!
 	* Doxyfile: correct reordering of blank fields.
 

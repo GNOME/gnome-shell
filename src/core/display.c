@@ -24,11 +24,8 @@
  * 02111-1307, USA.
  */
 
-
 /**
- * \file display.c
- *
- * \brief Handles operations on an X display.
+ * \file display.c Handles operations on an X display.
  *
  * The display is represented as a MetaDisplay struct.
  *
