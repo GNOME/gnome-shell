@@ -1,3 +1,10 @@
+2008-01-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter.symbols: Add clutter_model_insertv()
+
+	* clutter/clutter-model.[ch] (clutter_model_insertv): Add a vector
+	based insertion API, for language bindings
+
 2008-01-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-effect.c (clutter_effect_rotate): Make the

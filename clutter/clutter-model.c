@@ -918,6 +918,57 @@ clutter_model_insert (ClutterModel *model,
 }
 
 /**
+ * clutter_model_insertv:
+ * @model: a #ClutterModel
+ * @row: row index
+ * @n_columns: the number of columns and values to set
+ * @columns: a vector containing the columns to set
+ * @values: a vector containing the values for the cells
+ *
+ * Inserts data at @row into the #ClutterModel, setting the row
+ * values for the given @columns upon creation.
+ *
+ * Since: 0.6
+ */
+void
+clutter_model_insertv (ClutterModel *model,
+                       guint         row,
+                       guint         n_columns,
+                       guint        *columns,
+                       GValue       *values)
+{
+  ClutterModelPrivate *priv;
+  ClutterModelIter *iter;
+  gint i;
+  gboolean resort = FALSE;
+
+  g_return_if_fail (CLUTTER_IS_MODEL (model));
+  g_return_if_fail (n_columns <= clutter_model_get_n_columns (model));
+  g_return_if_fail (columns != NULL);
+  g_return_if_fail (values != NULL);
+
+  priv = model->priv;
+
+  iter = CLUTTER_MODEL_GET_CLASS (model)->insert_row (model, row);
+  g_assert (CLUTTER_IS_MODEL_ITER (iter));
+
+  for (i = 0; i < n_columns; i++)
+    {
+      if (priv->sort_column == columns[i])
+        resort = TRUE;
+
+      clutter_model_iter_set_value (iter, columns[i], &values[i]);
+    }
+
+  g_signal_emit (model, model_signals[ROW_ADDED], 0, iter);
+
+  if (resort)
+    clutter_model_resort (model);
+
+  g_object_unref (iter);
+}
+
+/**
  * clutter_model_insert_value:
  * @model: a #ClutterModel
  * @row: position of the row to modify

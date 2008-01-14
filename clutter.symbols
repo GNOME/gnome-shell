@@ -387,6 +387,7 @@ clutter_model_get_n_rows
 clutter_model_get_sorting_column
 clutter_model_get_type
 clutter_model_insert
+clutter_model_insertv
 clutter_model_insert_value
 clutter_model_iter_get
 clutter_model_iter_get_model

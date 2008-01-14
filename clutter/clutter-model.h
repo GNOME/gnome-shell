@@ -207,6 +207,11 @@ void                  clutter_model_prependv           (ClutterModel     *model,
 void                  clutter_model_insert             (ClutterModel     *model,
                                                         guint             row,
                                                         ...);
+void                  clutter_model_insertv            (ClutterModel     *model,
+                                                        guint             row,
+                                                        guint             n_columns,
+                                                        guint            *columns,
+                                                        GValue           *values);
 void                  clutter_model_insert_value       (ClutterModel     *model,
                                                         guint             row,
                                                         guint             column,
