@@ -6,383 +6,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.15.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-20 09:03+0100\n"
-"PO-Revision-Date: 2007-12-19 12:38+0100\n"
+"POT-Creation-Date: 2008-01-14 12:43+0100\n"
+"PO-Revision-Date: 2008-01-14 12:44+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: ../src/display.c:204 ../src/core/display.c:204
-#, c-format
-msgid "Missing %s extension required for compositing"
-msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
-
-#: ../src/display.c:368 ../src/core/display.c:368
-#, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr "Feil under åpning av X Window System skjerm «%s»\n"
-
-#: ../src/prefs.c:432 ../src/core/prefs.c:434
-#, c-format
-msgid "Type of %s was not integer"
-msgstr "Typen for «%s» var ikke heltall"
-
-#: ../src/prefs.c:570 ../src/prefs.c:598 ../src/prefs.c:614 ../src/prefs.c:630
-#: ../src/prefs.c:646 ../src/prefs.c:662 ../src/prefs.c:678 ../src/prefs.c:694
-#: ../src/prefs.c:714 ../src/prefs.c:730 ../src/prefs.c:746 ../src/prefs.c:764
-#: ../src/prefs.c:780 ../src/prefs.c:799 ../src/prefs.c:815 ../src/prefs.c:850
-#: ../src/prefs.c:866 ../src/prefs.c:883 ../src/prefs.c:899 ../src/prefs.c:915
-#: ../src/prefs.c:931 ../src/prefs.c:947 ../src/prefs.c:962 ../src/prefs.c:977
-#: ../src/prefs.c:992 ../src/prefs.c:1008 ../src/prefs.c:1024
-#: ../src/prefs.c:1040 ../src/prefs.c:1056 ../src/core/prefs.c:572
-#: ../src/core/prefs.c:600 ../src/core/prefs.c:616 ../src/core/prefs.c:632
-#: ../src/core/prefs.c:648 ../src/core/prefs.c:664 ../src/core/prefs.c:680
-#: ../src/core/prefs.c:696 ../src/core/prefs.c:716 ../src/core/prefs.c:732
-#: ../src/core/prefs.c:748 ../src/core/prefs.c:766 ../src/core/prefs.c:782
-#: ../src/core/prefs.c:801 ../src/core/prefs.c:817 ../src/core/prefs.c:852
-#: ../src/core/prefs.c:868 ../src/core/prefs.c:885 ../src/core/prefs.c:901
-#: ../src/core/prefs.c:917 ../src/core/prefs.c:933 ../src/core/prefs.c:949
-#: ../src/core/prefs.c:964 ../src/core/prefs.c:979 ../src/core/prefs.c:994
-#: ../src/core/prefs.c:1010 ../src/core/prefs.c:1026 ../src/core/prefs.c:1042
-#: ../src/core/prefs.c:1058
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
-
-#: ../src/prefs.c:1101 ../src/core/prefs.c:1103
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-"«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
-"musknapp\n"
-
-#: ../src/prefs.c:1125 ../src/prefs.c:1146 ../src/prefs.c:1703
-#: ../src/core/prefs.c:1127 ../src/core/prefs.c:1148 ../src/core/prefs.c:1705
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi\n"
-
-#: ../src/prefs.c:1275 ../src/core/prefs.c:1277
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-"range 1..128\n"
-msgstr ""
-"%d lagret i GConf-nøkkel %s er ikke en fornuftig verdi for cursor_size. Må "
-"være i området 1..128\n"
-
-#: ../src/prefs.c:1355 ../src/core/prefs.c:1357
-#, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
-
-#: ../src/prefs.c:1597 ../src/core/prefs.c:1599
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-"%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
-"maksimum er %d\n"
-
-#: ../src/prefs.c:1657 ../src/core/prefs.c:1659
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
-"programmer vil kanskje ikke oppføre seg korrekt.\n"
-
-#: ../src/prefs.c:1730 ../src/core/prefs.c:1732
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "%d lagret i GConf-nøkkel %s er utenfor området 0 til %d\n"
-
-#: ../src/prefs.c:1879 ../src/core/prefs.c:1881
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
-
-#: ../src/prefs.c:2244 ../src/prefs.c:2778 ../src/core/prefs.c:2246
-#: ../src/core/prefs.c:2780 ../src/ui/menu.c:199
-#, c-format
-msgid "Workspace %d"
-msgstr "Arbeidsområde %d"
-
-#: ../src/prefs.c:2274 ../src/prefs.c:2444 ../src/core/prefs.c:2276
-#: ../src/core/prefs.c:2446
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-"«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
-"tastaturbinding «%s»\n"
-
-#: ../src/prefs.c:2859 ../src/core/prefs.c:2861
-#, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
-
-#: ../src/screen.c:410 ../src/core/screen.c:410
-#, c-format
-msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Skjerm %d på display «%s» er ugyldig\n"
-
-#: ../src/screen.c:426 ../src/core/screen.c:426
-#, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke "
-"flagget --replace for å erstatte aktiv vindushåndterer.\n"
-
-#: ../src/screen.c:453 ../src/core/screen.c:453
-#, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
-
-#: ../src/screen.c:511 ../src/core/screen.c:511
-#, c-format
-msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Skjerm %d på display «%s» har allerede en vinduhåndterer\n"
-
-#: ../src/screen.c:721 ../src/core/screen.c:721
-#, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
-
-#: ../src/theme-viewer.c:74 ../src/ui/theme-viewer.c:74
-msgid "/_Windows"
-msgstr "/_Vinduer"
-
-#: ../src/theme-viewer.c:75 ../src/ui/theme-viewer.c:75
-msgid "/Windows/tearoff"
-msgstr "/Vinduer/avriving"
-
-#: ../src/theme-viewer.c:76 ../src/ui/theme-viewer.c:76
-msgid "/Windows/_Dialog"
-msgstr "/Vinduer/_Dialog"
-
-#: ../src/theme-viewer.c:77 ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Modal dialog"
-msgstr "/Vinduer/_Modal dialog"
-
-#: ../src/theme-viewer.c:78 ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Utility"
-msgstr "/Vinduer/_Verktøy"
-
-#: ../src/theme-viewer.c:79 ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Splashscreen"
-msgstr "/Vinduer/Opp_startskjerm"
-
-#: ../src/theme-viewer.c:80 ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Top dock"
-msgstr "/Vinduer/_Toppdokk"
-
-#: ../src/theme-viewer.c:81 ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Bottom dock"
-msgstr "/Vinduer/_Bunndokk"
-
-#: ../src/theme-viewer.c:82 ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Left dock"
-msgstr "/Vinduer/_Venstre dokk"
-
-#: ../src/theme-viewer.c:83 ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Right dock"
-msgstr "/Vinduer/Høy_re dokk"
-
-#: ../src/theme-viewer.c:84 ../src/ui/theme-viewer.c:84
-msgid "/Windows/_All docks"
-msgstr "/Vinduer/_Alle dokker"
-
-#: ../src/theme-viewer.c:85 ../src/ui/theme-viewer.c:85
-msgid "/Windows/Des_ktop"
-msgstr "/Vinduer/S_krivebord"
-
-#: ../src/theme-viewer.c:134 ../src/ui/theme-viewer.c:134
-msgid "Open another one of these windows"
-msgstr "Åpne et til av disse vinduene"
-
-#: ../src/theme-viewer.c:141 ../src/ui/theme-viewer.c:141
-msgid "This is a demo button with an 'open' icon"
-msgstr "Dette er en demoknapp med et «åpne»-ikon"
-
-#: ../src/theme-viewer.c:148 ../src/ui/theme-viewer.c:148
-msgid "This is a demo button with a 'quit' icon"
-msgstr "Dette er en demoknapp med et «avslutt»-ikon"
-
-#: ../src/theme-viewer.c:241 ../src/ui/theme-viewer.c:241
-msgid "This is a sample message in a sample dialog"
-msgstr "Dette er en eksempelbeskjed i en eksempeldialog"
-
-#: ../src/theme-viewer.c:324 ../src/ui/theme-viewer.c:324
-#, c-format
-msgid "Fake menu item %d\n"
-msgstr "Falsk menyoppføring %d\n"
-
-#: ../src/theme-viewer.c:358 ../src/ui/theme-viewer.c:358
-msgid "Border-only window"
-msgstr "Vindu uten innhold"
-
-#: ../src/theme-viewer.c:360 ../src/ui/theme-viewer.c:360
-msgid "Bar"
-msgstr "Linje"
-
-#: ../src/theme-viewer.c:377 ../src/ui/theme-viewer.c:377
-msgid "Normal Application Window"
-msgstr "Normalt programvindu"
-
-#: ../src/theme-viewer.c:381 ../src/ui/theme-viewer.c:381
-msgid "Dialog Box"
-msgstr "Dialogboks"
-
-#: ../src/theme-viewer.c:385 ../src/ui/theme-viewer.c:385
-msgid "Modal Dialog Box"
-msgstr "Modal dialogboks"
-
-#: ../src/theme-viewer.c:389 ../src/ui/theme-viewer.c:389
-msgid "Utility Palette"
-msgstr "Verktøypalett"
-
-#: ../src/theme-viewer.c:393 ../src/ui/theme-viewer.c:393
-msgid "Torn-off Menu"
-msgstr "Avrevet meny"
-
-#: ../src/theme-viewer.c:397 ../src/ui/theme-viewer.c:397
-msgid "Border"
-msgstr "Kant"
-
-#: ../src/theme-viewer.c:725 ../src/ui/theme-viewer.c:725
-#, c-format
-msgid "Button layout test %d"
-msgstr "Test av knappeplassering %d"
-
-#: ../src/theme-viewer.c:754 ../src/ui/theme-viewer.c:754
-#, c-format
-msgid "%g milliseconds to draw one window frame"
-msgstr "%g millisekunder for å tegne en vindusramme"
-
-#: ../src/theme-viewer.c:797 ../src/ui/theme-viewer.c:797
-#, c-format
-msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Bruk: metacity-theme-viewer [TEMANAVN]\n"
-
-#: ../src/theme-viewer.c:804 ../src/ui/theme-viewer.c:804
-#, c-format
-msgid "Error loading theme: %s\n"
-msgstr "Feil under lasting av tema: %s\n"
-
-#: ../src/theme-viewer.c:810 ../src/ui/theme-viewer.c:810
-#, c-format
-msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Lastet tema «%s» på %g sekunder\n"
-
-#: ../src/theme-viewer.c:833 ../src/ui/theme-viewer.c:833
-msgid "Normal Title Font"
-msgstr "Normal tittelskrift"
-
-#: ../src/theme-viewer.c:839 ../src/ui/theme-viewer.c:839
-msgid "Small Title Font"
-msgstr "Liten tittelskrift"
-
-#: ../src/theme-viewer.c:845 ../src/ui/theme-viewer.c:845
-msgid "Large Title Font"
-msgstr "Stor tittelskrift"
-
-#: ../src/theme-viewer.c:850 ../src/ui/theme-viewer.c:850
-msgid "Button Layouts"
-msgstr "Knappeplasseringer"
-
-#: ../src/theme-viewer.c:855 ../src/ui/theme-viewer.c:855
-msgid "Benchmark"
-msgstr "Ytelsestest"
-
-#: ../src/theme-viewer.c:902 ../src/ui/theme-viewer.c:902
-msgid "Window Title Goes Here"
-msgstr "Vindutittel skal her"
-
-#: ../src/theme-viewer.c:1006 ../src/ui/theme-viewer.c:1006
-#, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"Tegnet %d rammer på %g sekunder hos klienten (%g millisekunder per ramme) og "
-"%g sekunder på klokken inklusive ressurser på X-tjener (%g millisekunder per "
-"ramme)\n"
-
-#: ../src/theme-viewer.c:1225 ../src/ui/theme-viewer.c:1225
-msgid "position expression test returned TRUE but set error"
-msgstr "test av posisjonsuttrykk returnerte TRUE, men satte en feilkode"
-
-#: ../src/theme-viewer.c:1227 ../src/ui/theme-viewer.c:1227
-msgid "position expression test returned FALSE but didn't set error"
-msgstr "test av posisjonsuttrykk returnerte FALSE, men satte ikke en feilkode"
-
-#: ../src/theme-viewer.c:1231 ../src/ui/theme-viewer.c:1231
-msgid "Error was expected but none given"
-msgstr "Feil var ventet men ingen ble gitt"
-
-#: ../src/theme-viewer.c:1233 ../src/ui/theme-viewer.c:1233
-#, c-format
-msgid "Error %d was expected but %d given"
-msgstr "Feil %d var ventet men %d ble gitt"
-
-#: ../src/theme-viewer.c:1239 ../src/ui/theme-viewer.c:1239
-#, c-format
-msgid "Error not expected but one was returned: %s"
-msgstr "Feil ikke ventet men en ble returnert: %s"
-
-#: ../src/theme-viewer.c:1243 ../src/ui/theme-viewer.c:1243
-#, c-format
-msgid "x value was %d, %d was expected"
-msgstr "x-verdi var %d, %d var ventet"
-
-#: ../src/theme-viewer.c:1246 ../src/ui/theme-viewer.c:1246
-#, c-format
-msgid "y value was %d, %d was expected"
-msgstr "y-verdi var %d, %d var ventet"
-
-#: ../src/theme-viewer.c:1311 ../src/ui/theme-viewer.c:1311
-#, c-format
-msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d koordinatuttrykk lest på %g sekunder (%g sekunder i snitt)\n"
-
-#. first time through
-#: ../src/window.c:5649 ../src/core/window.c:5650
-#, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"Vindu %s setter SM_CLIENT_ID på seg selv i steden for på WM_CLIENT_LEADER-"
-"vinduet som spesifisert i ICCCM.\n"
-
-#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
-#. * authoritative source for that info. Some apps such as mplayer or
-#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
-#. * leads to e.g. us not fullscreening their windows.  Apps that set
-#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
-#. * about these apps but make them work.
-#.
-#: ../src/window.c:6214 ../src/core/window.c:6215
-#, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"Vindu %s setter et MWM-hint som indikerer at det ikke kan endre størrelse, "
-"men setter minste størrelse %d x %d og maks størrelse %d x %d; dette virker "
-"ikke fornuftig.\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
@@ -433,6 +63,16 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Feil under henting av vertsnavn: %s\n"
 
+#: ../src/core/display.c:256
+#, c-format
+msgid "Missing %s extension required for compositing"
+msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
+
+#: ../src/core/display.c:438
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "Feil under åpning av X Window System skjerm «%s»\n"
+
 #: ../src/core/errors.c:271
 #, c-format
 msgid ""
@@ -475,54 +115,54 @@ msgstr "Ingen kommando %d er definert\n"
 msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminalkommando er definert\n"
 
-#: ../src/core/main.c:67
+#: ../src/core/main.c:112
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Opphavsrett © 2001-2007 Havoc Pennington, Red Hat, Inc, og andre\n"
+"Opphavsrett © 2001-2008 Havoc Pennington, Red Hat, Inc, og andre\n"
 "Dette er fri programvare; se i kildekoden for kopibetingelser.\n"
 "Det gis INGEN garanti.\n"
 
-#: ../src/core/main.c:172
+#: ../src/core/main.c:239
 msgid "Disable connection to session manager"
 msgstr "Deaktiver tilkobling til sesjonshåndtereren"
 
-#: ../src/core/main.c:178
+#: ../src/core/main.c:245
 msgid "Replace the running window manager with Metacity"
 msgstr "Erstatt kjørende vindushåndterer med Metacity"
 
-#: ../src/core/main.c:184
+#: ../src/core/main.c:251
 msgid "Specify session management ID"
 msgstr "Oppgi sesjonshåndterings-ID"
 
-#: ../src/core/main.c:189
+#: ../src/core/main.c:256
 msgid "X Display to use"
 msgstr "X-skjerm som skal brukes"
 
-#: ../src/core/main.c:195
+#: ../src/core/main.c:262
 msgid "Initialize session from savefile"
 msgstr "Initier sesjonen fra en lagret fil"
 
-#: ../src/core/main.c:201
+#: ../src/core/main.c:268
 msgid "Print version"
 msgstr "Skriv versjonsnummer"
 
-#: ../src/core/main.c:207
+#: ../src/core/main.c:274
 msgid "Make X calls synchronous"
 msgstr "Gjør X-kall synkrone"
 
-#: ../src/core/main.c:361
+#: ../src/core/main.c:425
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Feil under søk i temakatalog: %s\n"
 
-#: ../src/core/main.c:377
+#: ../src/core/main.c:441
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -530,10 +170,134 @@ msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene.\n"
 
-#: ../src/core/main.c:452
+#: ../src/core/main.c:513
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
+
+#: ../src/core/prefs.c:435
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "Typen for «%s» var ikke heltall"
+
+#: ../src/core/prefs.c:573 ../src/core/prefs.c:601 ../src/core/prefs.c:617
+#: ../src/core/prefs.c:633 ../src/core/prefs.c:649 ../src/core/prefs.c:665
+#: ../src/core/prefs.c:681 ../src/core/prefs.c:697 ../src/core/prefs.c:717
+#: ../src/core/prefs.c:733 ../src/core/prefs.c:749 ../src/core/prefs.c:767
+#: ../src/core/prefs.c:783 ../src/core/prefs.c:802 ../src/core/prefs.c:818
+#: ../src/core/prefs.c:853 ../src/core/prefs.c:869 ../src/core/prefs.c:886
+#: ../src/core/prefs.c:902 ../src/core/prefs.c:918 ../src/core/prefs.c:934
+#: ../src/core/prefs.c:950 ../src/core/prefs.c:965 ../src/core/prefs.c:980
+#: ../src/core/prefs.c:995 ../src/core/prefs.c:1011 ../src/core/prefs.c:1027
+#: ../src/core/prefs.c:1043 ../src/core/prefs.c:1059
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
+
+#: ../src/core/prefs.c:1104
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
+"musknapp\n"
+
+#: ../src/core/prefs.c:1128 ../src/core/prefs.c:1149 ../src/core/prefs.c:1706
+#, c-format
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi\n"
+
+#: ../src/core/prefs.c:1278
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
+"range 1..128\n"
+msgstr ""
+"%d lagret i GConf-nøkkel %s er ikke en fornuftig verdi for cursor_size. Må "
+"være i området 1..128\n"
+
+#: ../src/core/prefs.c:1358
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
+
+#: ../src/core/prefs.c:1600
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
+msgstr ""
+"%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
+"maksimum er %d\n"
+
+#: ../src/core/prefs.c:1660
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+"Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
+"programmer vil kanskje ikke oppføre seg korrekt.\n"
+
+#: ../src/core/prefs.c:1733
+#, c-format
+msgid "%d stored in GConf key %s is out of range 0 to %d\n"
+msgstr "%d lagret i GConf-nøkkel %s er utenfor området 0 til %d\n"
+
+#: ../src/core/prefs.c:1882
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
+
+#: ../src/core/prefs.c:2247 ../src/core/prefs.c:2781 ../src/ui/menu.c:199
+#, c-format
+msgid "Workspace %d"
+msgstr "Arbeidsområde %d"
+
+#: ../src/core/prefs.c:2277 ../src/core/prefs.c:2447
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
+msgstr ""
+"«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
+"tastaturbinding «%s»\n"
+
+#: ../src/core/prefs.c:2862
+#, c-format
+msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
+
+#: ../src/core/screen.c:410
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "Skjerm %d på display «%s» er ugyldig\n"
+
+#: ../src/core/screen.c:426
+#, c-format
+msgid ""
+"Screen %d on display \"%s\" already has a window manager; try using the --"
+"replace option to replace the current window manager.\n"
+msgstr ""
+"Skjerm %d på display «%s» har allerede en vindushåndterer; prøv å bruke "
+"flagget --replace for å erstatte aktiv vindushåndterer.\n"
+
+#: ../src/core/screen.c:453
+#, c-format
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr ""
+"Kunne ikke hente utvalg fra vinduhåndterer på skjerm %d, display «%s»\n"
+
+#: ../src/core/screen.c:511
+#, c-format
+msgid "Screen %d on display \"%s\" already has a window manager\n"
+msgstr "Skjerm %d på display «%s» har allerede en vinduhåndterer\n"
+
+#: ../src/core/screen.c:721
+#, c-format
+msgid "Could not release screen %d on display \"%s\"\n"
+msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 
 #: ../src/core/session.c:826 ../src/core/session.c:833
 #, c-format
@@ -659,6 +423,33 @@ msgstr "%s (på %s)"
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindu 0x%lx oppgitt for %s.\n"
+
+#. first time through
+#: ../src/core/window.c:5650
+#, c-format
+msgid ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
+msgstr ""
+"Vindu %s setter SM_CLIENT_ID på seg selv i steden for på WM_CLIENT_LEADER-"
+"vinduet som spesifisert i ICCCM.\n"
+
+#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
+#. * authoritative source for that info. Some apps such as mplayer or
+#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
+#. * leads to e.g. us not fullscreening their windows.  Apps that set
+#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
+#. * about these apps but make them work.
+#.
+#: ../src/core/window.c:6215
+#, c-format
+msgid ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr ""
+"Vindu %s setter et MWM-hint som indikerer at det ikke kan endre størrelse, "
+"men setter minste størrelse %d x %d og maks størrelse %d x %d; dette virker "
+"ikke fornuftig.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -3391,6 +3182,204 @@ msgstr "Fant ikke en gyldig fil for tema %s\n"
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temafil %s inneholdt ikke et rotelement <metacity_theme>"
+
+#: ../src/ui/theme-viewer.c:74
+msgid "/_Windows"
+msgstr "/_Vinduer"
+
+#: ../src/ui/theme-viewer.c:75
+msgid "/Windows/tearoff"
+msgstr "/Vinduer/avriving"
+
+#: ../src/ui/theme-viewer.c:76
+msgid "/Windows/_Dialog"
+msgstr "/Vinduer/_Dialog"
+
+#: ../src/ui/theme-viewer.c:77
+msgid "/Windows/_Modal dialog"
+msgstr "/Vinduer/_Modal dialog"
+
+#: ../src/ui/theme-viewer.c:78
+msgid "/Windows/_Utility"
+msgstr "/Vinduer/_Verktøy"
+
+#: ../src/ui/theme-viewer.c:79
+msgid "/Windows/_Splashscreen"
+msgstr "/Vinduer/Opp_startskjerm"
+
+#: ../src/ui/theme-viewer.c:80
+msgid "/Windows/_Top dock"
+msgstr "/Vinduer/_Toppdokk"
+
+#: ../src/ui/theme-viewer.c:81
+msgid "/Windows/_Bottom dock"
+msgstr "/Vinduer/_Bunndokk"
+
+#: ../src/ui/theme-viewer.c:82
+msgid "/Windows/_Left dock"
+msgstr "/Vinduer/_Venstre dokk"
+
+#: ../src/ui/theme-viewer.c:83
+msgid "/Windows/_Right dock"
+msgstr "/Vinduer/Høy_re dokk"
+
+#: ../src/ui/theme-viewer.c:84
+msgid "/Windows/_All docks"
+msgstr "/Vinduer/_Alle dokker"
+
+#: ../src/ui/theme-viewer.c:85
+msgid "/Windows/Des_ktop"
+msgstr "/Vinduer/S_krivebord"
+
+#: ../src/ui/theme-viewer.c:134
+msgid "Open another one of these windows"
+msgstr "Åpne et til av disse vinduene"
+
+#: ../src/ui/theme-viewer.c:141
+msgid "This is a demo button with an 'open' icon"
+msgstr "Dette er en demoknapp med et «åpne»-ikon"
+
+#: ../src/ui/theme-viewer.c:148
+msgid "This is a demo button with a 'quit' icon"
+msgstr "Dette er en demoknapp med et «avslutt»-ikon"
+
+#: ../src/ui/theme-viewer.c:241
+msgid "This is a sample message in a sample dialog"
+msgstr "Dette er en eksempelbeskjed i en eksempeldialog"
+
+#: ../src/ui/theme-viewer.c:324
+#, c-format
+msgid "Fake menu item %d\n"
+msgstr "Falsk menyoppføring %d\n"
+
+#: ../src/ui/theme-viewer.c:358
+msgid "Border-only window"
+msgstr "Vindu uten innhold"
+
+#: ../src/ui/theme-viewer.c:360
+msgid "Bar"
+msgstr "Linje"
+
+#: ../src/ui/theme-viewer.c:377
+msgid "Normal Application Window"
+msgstr "Normalt programvindu"
+
+#: ../src/ui/theme-viewer.c:381
+msgid "Dialog Box"
+msgstr "Dialogboks"
+
+#: ../src/ui/theme-viewer.c:385
+msgid "Modal Dialog Box"
+msgstr "Modal dialogboks"
+
+#: ../src/ui/theme-viewer.c:389
+msgid "Utility Palette"
+msgstr "Verktøypalett"
+
+#: ../src/ui/theme-viewer.c:393
+msgid "Torn-off Menu"
+msgstr "Avrevet meny"
+
+#: ../src/ui/theme-viewer.c:397
+msgid "Border"
+msgstr "Kant"
+
+#: ../src/ui/theme-viewer.c:725
+#, c-format
+msgid "Button layout test %d"
+msgstr "Test av knappeplassering %d"
+
+#: ../src/ui/theme-viewer.c:754
+#, c-format
+msgid "%g milliseconds to draw one window frame"
+msgstr "%g millisekunder for å tegne en vindusramme"
+
+#: ../src/ui/theme-viewer.c:797
+#, c-format
+msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+msgstr "Bruk: metacity-theme-viewer [TEMANAVN]\n"
+
+#: ../src/ui/theme-viewer.c:804
+#, c-format
+msgid "Error loading theme: %s\n"
+msgstr "Feil under lasting av tema: %s\n"
+
+#: ../src/ui/theme-viewer.c:810
+#, c-format
+msgid "Loaded theme \"%s\" in %g seconds\n"
+msgstr "Lastet tema «%s» på %g sekunder\n"
+
+#: ../src/ui/theme-viewer.c:833
+msgid "Normal Title Font"
+msgstr "Normal tittelskrift"
+
+#: ../src/ui/theme-viewer.c:839
+msgid "Small Title Font"
+msgstr "Liten tittelskrift"
+
+#: ../src/ui/theme-viewer.c:845
+msgid "Large Title Font"
+msgstr "Stor tittelskrift"
+
+#: ../src/ui/theme-viewer.c:850
+msgid "Button Layouts"
+msgstr "Knappeplasseringer"
+
+#: ../src/ui/theme-viewer.c:855
+msgid "Benchmark"
+msgstr "Ytelsestest"
+
+#: ../src/ui/theme-viewer.c:902
+msgid "Window Title Goes Here"
+msgstr "Vindutittel skal her"
+
+#: ../src/ui/theme-viewer.c:1006
+#, c-format
+msgid ""
+"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
+"seconds wall clock time including X server resources (%g milliseconds per "
+"frame)\n"
+msgstr ""
+"Tegnet %d rammer på %g sekunder hos klienten (%g millisekunder per ramme) og "
+"%g sekunder på klokken inklusive ressurser på X-tjener (%g millisekunder per "
+"ramme)\n"
+
+#: ../src/ui/theme-viewer.c:1225
+msgid "position expression test returned TRUE but set error"
+msgstr "test av posisjonsuttrykk returnerte TRUE, men satte en feilkode"
+
+#: ../src/ui/theme-viewer.c:1227
+msgid "position expression test returned FALSE but didn't set error"
+msgstr "test av posisjonsuttrykk returnerte FALSE, men satte ikke en feilkode"
+
+#: ../src/ui/theme-viewer.c:1231
+msgid "Error was expected but none given"
+msgstr "Feil var ventet men ingen ble gitt"
+
+#: ../src/ui/theme-viewer.c:1233
+#, c-format
+msgid "Error %d was expected but %d given"
+msgstr "Feil %d var ventet men %d ble gitt"
+
+#: ../src/ui/theme-viewer.c:1239
+#, c-format
+msgid "Error not expected but one was returned: %s"
+msgstr "Feil ikke ventet men en ble returnert: %s"
+
+#: ../src/ui/theme-viewer.c:1243
+#, c-format
+msgid "x value was %d, %d was expected"
+msgstr "x-verdi var %d, %d var ventet"
+
+#: ../src/ui/theme-viewer.c:1246
+#, c-format
+msgid "y value was %d, %d was expected"
+msgstr "y-verdi var %d, %d var ventet"
+
+#: ../src/ui/theme-viewer.c:1311
+#, c-format
+msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr "%d koordinatuttrykk lest på %g sekunder (%g sekunder i snitt)\n"
 
 #: ../src/ui/theme.c:208
 msgid "top"
