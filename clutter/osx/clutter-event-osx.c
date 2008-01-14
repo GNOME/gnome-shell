@@ -231,9 +231,8 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
 void
 _clutter_event_osx_put (NSEvent *nsevent)
 {
-  ClutterEvent event;
-  event.type = CLUTTER_NOTHING;
-
+  ClutterEvent event = { 0, };
+   
   if (clutter_event_osx_translate (nsevent, &event))
     {
       g_assert (event.type != CLUTTER_NOTHING);

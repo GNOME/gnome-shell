@@ -1,3 +1,13 @@
+2008-01-14  Tommi Komulainen  <tommi.komulainen@iki.fi>
+
+	reviewed by: Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/osx/clutter-event-osx.c (_clutter_event_osx_put):
+	Initialize ClutterEvent structure with zeroes (#672)
+
+	The 'source' member was uninitialized and being referenced in
+	clutter_do_event leading to crash.
+
 2008-01-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* tests/test-scale.c: Improve test case for scaling (#684,
