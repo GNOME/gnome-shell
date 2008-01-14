@@ -30,6 +30,7 @@
 #include "cogl.h"
 
 #include <string.h>
+#include <gmodule.h>
 
 #ifdef HAVE_CLUTTER_GLX
 #include <dlfcn.h>
@@ -125,7 +126,24 @@ cogl_get_proc_address (const gchar* name)
 
   if (get_proc_func)
     return get_proc_func ((unsigned char*) name);
-#endif
+
+#else /* !HAVE_CLUTTER_GLX */
+
+  /* this should find the right function if the program is linked against a
+   * library providing it */
+  static GModule *module = NULL;
+  if (module == NULL)
+    module = g_module_open (NULL, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
+
+  if (module)
+    {
+      gpointer symbol;
+
+      if (g_module_symbol (module, name, &symbol))
+        return symbol;
+    }
+
+#endif /* HAVE_CLUTTER_GLX */
 
   return NULL;
 }
