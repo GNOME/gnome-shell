@@ -8,7 +8,7 @@ Clutter currently requires:
 
   * GLib >= 2.14.0
   * GdkPixbuf
-  * Pango 1.x
+  * Pango 1.18
   * OpenGL >= 1.2 or OpenGL ES 1.1
   * GLX, SDL or an EGL Implementation
 
@@ -84,6 +84,9 @@ expected to be ABI compatible with other micro versions. Though this
 is not guarenteed, especially for odd numbered minor releases, we'll
 try our very hardest (promise).
 
+The micro version indicates the origin of the release: even micro
+numbers are only used for released archives; odd micro numbers are
+only used on the SVN repository.
 
 HACKING
 ====
@@ -102,6 +105,7 @@ You will need an account.
 
 In the report you should include:
 * what system you're running Clutter on;
+* which version of Clutter you are using;
 * which version of GLib, GdkPixbuf and OpenGL you are using;
 * which video card and which drivers you are using, including output of
   glxinfo and xdpyinfo.

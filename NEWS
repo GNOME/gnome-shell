@@ -1,5 +1,22 @@
+Clutter 0.5.2 (14/01/2008)
+==========================
+
+ * List of changes between 0.5.0 and 0.5.2
+
+   o ClutterModelDefault has been renamed to ClutterListModel
+
+   o ClutterModel now has vector-based variants for append, prepend and
+     insert methods; these methods are useful for bindings
+
+   o Add units-based variant for clutter_actor_move_by()
+
+ * List of bugs fixed
+
+   o #694 - Handle GLhandleARB on OS X [Tommi Komulainen]
+   o #700 - Fix for clutter_effect_rotate() [Neil Roberts]
+
 Clutter 0.5.0 (02/01/2008)
-========================
+==========================
 
  * List of changes between 0.4.2 and 0.5.0
 
