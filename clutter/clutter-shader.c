@@ -335,7 +335,7 @@ clutter_shader_set_fragment_source (ClutterShader      *shader,
       g_free (priv->fragment_source);
     }
 
-  CLUTTER_NOTE (SHADER, "setting fragment shader (GLSL:%s, len:%d)",
+  CLUTTER_NOTE (SHADER, "setting fragment shader (GLSL:%s, len:%" G_GSSIZE_FORMAT ")",
                 is_glsl ? "yes" : "no",
                 length);
 
@@ -384,7 +384,7 @@ clutter_shader_set_vertex_source (ClutterShader      *shader,
       g_free (priv->vertex_source);
     }
 
-  CLUTTER_NOTE (SHADER, "setting vertex shader (GLSL:%s, len:%d)",
+  CLUTTER_NOTE (SHADER, "setting vertex shader (GLSL:%s, len:%" G_GSSIZE_FORMAT ")",
                 is_glsl ? "yes" : "no",
                 length);
 

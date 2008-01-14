@@ -1,5 +1,10 @@
 2008-01-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-shader.c: Use correct format string for
+	gssize. (#695, Tommi Komulainen)
+
+2008-01-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/cogl/gl/cogl.c (cogl_get_proc_address): Implement non-GLX
 	version using GModule and looking up the symbol from the running
 	process. It should work when linked to library providing the
