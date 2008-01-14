@@ -1,5 +1,11 @@
 2008-01-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-timeline.c (timeline_timeout_func): Fix
+	check if the last frame was reached by skipping a frame (#654,
+	Johan Bilien)
+
+2008-01-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-shader.c: Use correct format string for
 	gssize. (#695, Tommi Komulainen)
 

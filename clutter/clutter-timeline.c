@@ -551,31 +551,26 @@ timeline_timeout_func (gpointer data)
       ((priv->direction == CLUTTER_TIMELINE_BACKWARD) &&
        (priv->current_frame_num < 0)))
     {
-      guint frame_diff = 0;
-
       if (priv->direction == CLUTTER_TIMELINE_FORWARD)
         {
-          frame_diff = priv->current_frame_num - priv->n_frames;
           priv->current_frame_num = priv->n_frames;
         }
       else if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
         {
-          frame_diff = priv->current_frame_num * -1;
           priv->current_frame_num = 0;
         }
 
       CLUTTER_NOTE (SCHEDULER,
-                    "Timeline [%p] completed (cur: %d, tot: %d, drop: %d, diff: %d)",
+                    "Timeline [%p] completed (cur: %d, tot: %d, drop: %d)",
                     timeline,
                     priv->current_frame_num,
                     priv->n_frames,
-                    n_frames - 1,
-                    frame_diff);
+                    n_frames - 1);
 
       /* if we skipped some frame to get here let's see whether we still need
        * to emit the last new-frame signal with the last frame
        */
-      if (frame_diff > 1)
+      if (n_frames > 1)
 	{
 	  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
                          priv->current_frame_num);
