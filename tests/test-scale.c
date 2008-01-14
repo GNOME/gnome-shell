@@ -45,18 +45,19 @@ main (int argc, char *argv[])
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   clutter_actor_set_size (stage, 300, 300);
 
-  rect = clutter_rectangle_new_with_color(&rect_color);
+  rect = clutter_rectangle_new_with_color (&rect_color);
   clutter_actor_set_size (rect, 100, 100);
   clutter_actor_set_position (rect, 100, 100);
 
-  clutter_group_add (CLUTTER_GROUP(stage), rect);
+  clutter_group_add (CLUTTER_GROUP (stage), rect);
 
   rect_color.alpha = 0xff;
-  rect = clutter_rectangle_new_with_color(&rect_color);
+  rect = clutter_rectangle_new_with_color (&rect_color);
+  clutter_actor_set_anchor_point_from_gravity (rect, CLUTTER_GRAVITY_CENTER);
   clutter_actor_set_size (rect, 100, 100);
-  clutter_actor_set_position (rect, 100, 100);
+  clutter_actor_set_position (rect, 150, 150);
 
-  clutter_group_add (CLUTTER_GROUP(stage), rect);
+  clutter_group_add (CLUTTER_GROUP (stage), rect);
 
   timeline = clutter_timeline_new (20, 30);
   alpha    = clutter_alpha_new_full (timeline,
