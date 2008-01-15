@@ -1,16 +1,14 @@
 # Swedish messages for metacity.
-# Copyright (C) 2001-2007 Free Software Foundation, Inc.
-# Daniel Nylander <po@danielnylander.se>, 2006, 2007.
+# Copyright (C) 2001-2008 Free Software Foundation, Inc.
+# Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008.
 # Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004, 2005.
-#
-# $Id: sv.po,v 1.82 2006/08/20 14:36:24 dnylande Exp $
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-31 01:00+0100\n"
-"PO-Revision-Date: 2007-12-31 01:02+0100\n"
+"POT-Creation-Date: 2008-01-15 04:11+0100\n"
+"PO-Revision-Date: 2008-01-15 04:12+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -68,12 +66,12 @@ msgstr "Fel vid start av metacity-dialog för att fråga om ett program skulle d
 msgid "Failed to get hostname: %s\n"
 msgstr "Misslyckades med att få tag i värdnamn: %s\n"
 
-#: ../src/core/display.c:204
+#: ../src/core/display.c:256
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Saknar %s-tillägg som krävs för kompositing"
 
-#: ../src/core/display.c:368
+#: ../src/core/display.c:438
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -114,58 +112,58 @@ msgstr "Inget kommando %d har definierats.\n"
 msgid "No terminal command has been defined.\n"
 msgstr "Inget terminalkommando har definierats.\n"
 
-#: ../src/core/main.c:67
+#: ../src/core/main.c:112
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright © 2001-2007 Havoc Pennington, Red Hat, Inc., och andra\n"
+"Copyright © 2001-2008 Havoc Pennington, Red Hat, Inc. och andra\n"
 "Det här är fri programvara; se källkoden för kopieringsvillkor.\n"
 "Det finns INGA garantier; inte ens för SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL.\n"
 
-#: ../src/core/main.c:172
+#: ../src/core/main.c:239
 msgid "Disable connection to session manager"
 msgstr "Inaktivera anslutning till sessionshanteraren"
 
-#: ../src/core/main.c:178
+#: ../src/core/main.c:245
 msgid "Replace the running window manager with Metacity"
 msgstr "Ersätt den körande fönsterhanteraren med Metacity"
 
-#: ../src/core/main.c:184
+#: ../src/core/main.c:251
 msgid "Specify session management ID"
 msgstr "Ange sessionshanteringsid"
 
-#: ../src/core/main.c:189
+#: ../src/core/main.c:256
 msgid "X Display to use"
 msgstr "X-display att använda"
 
-#: ../src/core/main.c:195
+#: ../src/core/main.c:262
 msgid "Initialize session from savefile"
 msgstr "Initiera session från sparandefil"
 
-#: ../src/core/main.c:201
+#: ../src/core/main.c:268
 msgid "Print version"
 msgstr "Skriv ut version"
 
-#: ../src/core/main.c:207
+#: ../src/core/main.c:274
 msgid "Make X calls synchronous"
 msgstr "Gör X-anrop synkrona"
 
-#: ../src/core/main.c:361
+#: ../src/core/main.c:425
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Misslyckades med att genomsöka temakatalogen: %s\n"
 
-#: ../src/core/main.c:377
+#: ../src/core/main.c:441
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Kunde inte hitta ett tema! Försäkra dig om att %s finns och innehåller vanliga teman.\n"
 
-#: ../src/core/main.c:452
+#: ../src/core/main.c:513
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
@@ -2231,7 +2229,7 @@ msgstr "Detta är ett exempelmeddelande i en exempelkatalog"
 #: ../src/ui/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr "Falsk menypost %d\n"
+msgstr "Falskt menyobjekt %d\n"
 
 #: ../src/ui/theme-viewer.c:358
 msgid "Border-only window"
