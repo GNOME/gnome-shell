@@ -214,50 +214,50 @@ cogl_fog_set (const ClutterColor *fog_color,
               ClutterFixed        z_far);
 
 
-COGLhandleARB
-cogl_create_shader               (COGLenum     shaderType);
+COGLhandle
+cogl_create_shader                (COGLenum     shaderType);
 
 void
-cogl_shader_destroy              (COGLhandleARB handle);
+cogl_shader_destroy               (COGLhandle   handle);
 
 
 void
-cogl_shader_source               (COGLhandleARB  shader,
-                                  const gchar   *source);
+cogl_shader_source                (COGLhandle   shader,
+                                   const gchar *source);
 void
-cogl_shader_compile               (COGLhandleARB shader_handle);
-
-void
-cogl_shader_get_info_log          (COGLhandleARB handle,
-                                   guint         size,
-                                   gchar        *buffer);
+cogl_shader_compile               (COGLhandle   shader_handle);
 
 void
-cogl_shader_get_parameteriv       (COGLhandleARB handle,
-                                   COGLenum      pname,
-                                   COGLint      *dest);
+cogl_shader_get_info_log          (COGLhandle   handle,
+                                   guint        size,
+                                   gchar       *buffer);
+
+void
+cogl_shader_get_parameteriv       (COGLhandle   handle,
+                                   COGLenum     pname,
+                                   COGLint     *dest);
 
 
-COGLhandleARB
+COGLhandle
 cogl_create_program               (void);
 
 void
-cogl_program_destroy              (COGLhandleARB handle);
+cogl_program_destroy              (COGLhandle   handle);
 
 void
-cogl_program_attach_shader        (COGLhandleARB program_handle,
-                                   COGLhandleARB shader_handle);
+cogl_program_attach_shader        (COGLhandle   program_handle,
+                                   COGLhandle   shader_handle);
 
 /* 0 to use none */
 void
-cogl_program_link                 (COGLhandleARB program_handle);
+cogl_program_link                 (COGLhandle   program_handle);
 
 void
-cogl_program_use                  (COGLhandleARB program_handle);
+cogl_program_use                  (COGLhandle   program_handle);
 
 COGLint
-cogl_program_get_uniform_location (COGLhandleARB  program_int,
-                                   const gchar   *uniform_name);
+cogl_program_get_uniform_location (COGLhandle   program_int,
+                                   const gchar *uniform_name);
 
 
 void
@@ -268,4 +268,3 @@ cogl_program_uniform_1f           (COGLint      uniform_no,
 G_END_DECLS
 
 #endif /* __COGL_H__ */
-
