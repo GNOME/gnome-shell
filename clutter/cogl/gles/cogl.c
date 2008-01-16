@@ -645,73 +645,73 @@ cogl_fog_set (const ClutterColor *fog_color,
   glFogx (GL_FOG_END, (GLfixed) z_far);
 }
 
-COGLhandleARB
+COGLhandle
 cogl_create_program (void)
 {
   return 0;
 }
 
-COGLhandleARB
+COGLhandle
 cogl_create_shader (COGLenum shaderType)
 {
   return 0;
 }
 
 void
-cogl_shader_source (COGLhandleARB  shader,
+cogl_shader_source (COGLhandle  shader,
                     const gchar   *source)
 {
 }
 
 void
-cogl_shader_compile (COGLhandleARB shader_handle)
+cogl_shader_compile (COGLhandle shader_handle)
 {
 }
 
 void
-cogl_program_attach_shader (COGLhandleARB program_handle,
-                            COGLhandleARB shader_handle)
+cogl_program_attach_shader (COGLhandle program_handle,
+                            COGLhandle shader_handle)
 {
 }
 
 void
-cogl_program_link (COGLhandleARB program_handle)
+cogl_program_link (COGLhandle program_handle)
 {
 }
 
 void
-cogl_program_use (COGLhandleARB program_handle)
+cogl_program_use (COGLhandle program_handle)
 {
 }
 
 COGLint
-cogl_program_get_uniform_location (COGLhandleARB  program_handle,
-                                   const gchar   *uniform_name)
+cogl_program_get_uniform_location (COGLhandle   program_handle,
+                                   const gchar *uniform_name)
 {
   return 0;
 }
 
 void
-cogl_program_destroy (COGLhandleARB handle)
+cogl_program_destroy (COGLhandle handle)
 {
 }
 
 void
-cogl_shader_destroy (COGLhandleARB handle)
+cogl_shader_destroy (COGLhandle handle)
 {
 }
 
 void
-cogl_shader_get_info_log (COGLhandleARB  handle,
-                          guint          size,
-                          gchar         *buffer)
+cogl_shader_get_info_log (COGLhandle  handle,
+                          guint       size,
+                          gchar      *buffer)
 {
 }
 
 void
-cogl_shader_get_parameteriv (COGLhandleARB  handle,
-                             COGLenum       pname,
-                             COGLint       *dest)
+cogl_shader_get_parameteriv (COGLhandle  handle,
+                             COGLenum    pname,
+                             COGLint    *dest)
 {
 }
 

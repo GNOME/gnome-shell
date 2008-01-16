@@ -68,19 +68,19 @@ typedef enum {
 
 struct _ClutterShaderPrivate
 {
-  guint         bound            : 1; /* Shader is bound to the GL context */
-  guint         is_enabled       : 1;
+  guint       bound            : 1; /* Shader is bound to the GL context */
+  guint       is_enabled       : 1;
 
-  guint         vertex_is_glsl   : 1;
-  guint         fragment_is_glsl : 1;
+  guint       vertex_is_glsl   : 1;
+  guint       fragment_is_glsl : 1;
 
-  gchar        *vertex_source;        /* GLSL source for vertex shader */
-  gchar        *fragment_source;      /* GLSL source for fragment shader */
+  gchar      *vertex_source;        /* GLSL source for vertex shader */
+  gchar      *fragment_source;      /* GLSL source for fragment shader */
 
-  COGLhandleARB program;
+  COGLhandle  program;
 
-  COGLhandleARB vertex_shader;
-  COGLhandleARB fragment_shader;
+  COGLhandle  vertex_shader;
+  COGLhandle  fragment_shader;
 };
 
 enum 

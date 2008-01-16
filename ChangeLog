@@ -1,5 +1,18 @@
 2008-01-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/cogl/cogl.h: Rename COGLhandleARB to COGLhandle.
+
+	* clutter/cogl/gl/cogl-defines.h.in:
+	* clutter/cogl/gl/cogl.c: Update GL implementation of COGL.
+
+	* clutter/cogl/gles/cogl-defines.h:
+	* clutter/cogl/gles/cogl.c: Update GLES implementation of COGL.
+
+	* clutter/clutter-shader.c: Fix ClutterShader to use the new
+	COGLhandle type instead of COGLhandlerARB.
+
+2008-01-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Define COGLhandleARB. (patch by Johan Bilien)
 
 	* clutter/cogl/gles/cogl-defines.h: Define COGLhandleARB on
