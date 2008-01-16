@@ -1,3 +1,12 @@
+2008-01-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Define COGLhandleARB. (patch by Johan Bilien)
+
+	* clutter/cogl/gles/cogl-defines.h: Define COGLhandleARB on
+	GLES as well (using GLuint)
+
+	* clutter/cogl/gles/cogl.c: Use COGLhandleARB.
+
 2008-01-14  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
 	reviewed by: Emmanuele Bassi  <ebassi@openedhand.com>
