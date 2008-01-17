@@ -556,7 +556,7 @@ clutter_behaviour_scale_set_gravity (ClutterBehaviourScale *scale,
     {
       scale->priv->gravity = gravity;
 
-      g_object_notify (G_OBJECT (scale), "gravity");
+      g_object_notify (G_OBJECT (scale), "scale-gravity");
     }
 }
 /**
