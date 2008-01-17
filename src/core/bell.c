@@ -174,8 +174,8 @@ meta_bell_flash_fullscreen (MetaDisplay *display,
 
 /**
  * Makes a frame be not flashed; this is the timeout half of
- * meta_frame_flash(). This is done simply by clearing the flash flag and
- * queuing a redraw of the frame.
+ * meta_bell_flash_window_frame(). This is done simply by clearing the
+ * flash flag and queuing a redraw of the frame.
  *
  * If the configure script found we had no XKB, this does not exist.
  *

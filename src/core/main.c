@@ -558,7 +558,7 @@ meta_restart (void)
  * Should they be?
  *
  * \param pref  Which preference has changed
- * \param pref  Arbitrary data (which we ignore)
+ * \param data  Arbitrary data (which we ignore)
  */
 static void
 prefs_changed_callback (MetaPreference pref,

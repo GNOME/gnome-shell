@@ -56,6 +56,13 @@ typedef enum
   META_THEME_ERROR_FAILED
 } MetaThemeError;
 
+/**
+ * Whether a button's size is calculated from the area around it (aspect
+ * sizing) or is given as a fixed height and width in pixels (fixed sizing).
+ *
+ * \bug This could be done away with; see the comment at the top of
+ * MetaFrameLayout.
+ */
 typedef enum
 {
   META_BUTTON_SIZING_ASPECT,
@@ -63,65 +70,102 @@ typedef enum
   META_BUTTON_SIZING_LAST
 } MetaButtonSizing;
 
-/* Parameters used to calculate the geometry of the frame */
+/**
+ * Various parameters used to calculate the geometry of a frame.
+ *
+ * \bug button_sizing isn't really necessary, because we could easily say
+ * that if button_aspect is zero, the height and width are fixed values.
+ * This would also mean that MetaButtonSizing didn't need to exist, and
+ * save code.
+ **/
 struct _MetaFrameLayout
 {
+  /** Reference count. */
   int refcount;
   
-  /* Size of left/right/bottom sides */
+  /** Size of left side */
   int left_width;
+  /** Size of right side */
   int right_width;
+  /** Size of bottom side */
   int bottom_height;
   
-  /* Border of blue title region */
+  /** Border of blue title region
+   * \bug (blue?!)
+   **/
   GtkBorder title_border;
 
-  /* Extra height for inside of title region, above the font height */
+  /** Extra height for inside of title region, above the font height */
   int title_vertical_pad;
   
-  /* indent of buttons from edges of frame */
+  /** Right indent of buttons from edges of frame */
   int right_titlebar_edge;
+  /** Left indent of buttons from edges of frame */
   int left_titlebar_edge;
   
-  /* Size of buttons */
+  /**
+   * Sizing rule of buttons, either META_BUTTON_SIZING_ASPECT
+   * (in which case button_aspect will be honoured, and
+   * button_width and button_height set from it), or
+   * META_BUTTON_SIZING_FIXED (in which case we read the width
+   * and height directly).
+   */
   MetaButtonSizing button_sizing;
 
-  double button_aspect; /* height / width */
+  /**
+   * Ratio of height/width. Honoured only if
+   * button_sizing==META_BUTTON_SIZING_ASPECT.
+   * Otherwise we figure out the height from the button_border.
+   */
+  double button_aspect;
   
+  /** Width of a button; set even when we are using aspect sizing */
   int button_width;
+
+  /** Height of a button; set even when we are using aspect sizing */
   int button_height;
 
-  /* Space around buttons */
+  /** Space around buttons */
   GtkBorder button_border;
 
-  /* scale factor for title text */
+  /** scale factor for title text */
   double title_scale;
   
-  /* Whether title text will be displayed */
+  /** Whether title text will be displayed */
   guint has_title : 1;
 
-  /* Whether we should hide the buttons */
+  /** Whether we should hide the buttons */
   guint hide_buttons : 1;
 
-  /* Round corners */
+  /** Radius of the top left-hand corner; 0 if not rounded */
   guint top_left_corner_rounded_radius;
+  /** Radius of the top right-hand corner; 0 if not rounded */
   guint top_right_corner_rounded_radius;
+  /** Radius of the bottom left-hand corner; 0 if not rounded */
   guint bottom_left_corner_rounded_radius;
+  /** Radius of the bottom right-hand corner; 0 if not rounded */
   guint bottom_right_corner_rounded_radius;
 };
 
+/**
+ * The size of a button (FIXME: In general? Or on one frame?).
+ * The reason for two different rectangles here is Fitts' law & maximized
+ * windows; see bug #97703 for more details.
+ *
+ * \bug In general? Or on one frame? FIXME
+ * \bug Bugs should be hyperlinked: talk to doxygen people
+ */
 struct _MetaButtonSpace
 {
-  /* The reason for two different rectangles here is Fitts' law & maximized
-   * windows; see #97703 for more details.
-   *   visible   - The screen area where the button's image is drawn
-   *   clickable - The screen area where the button can be activated by clicking
-   */
+  /** The screen area where the button's image is drawn */
   GdkRectangle visible;
+  /** The screen area where the button can be activated by clicking */
   GdkRectangle clickable;
 };
 
-/* Calculated actual geometry of the frame */
+/**
+ * Calculated actual geometry of the frame
+ */
 struct _MetaFrameGeometry
 {
   int left_width;

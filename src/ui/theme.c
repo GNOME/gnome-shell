@@ -21,6 +21,37 @@
  * 02111-1307, USA.
  */
 
+/**
+ * \file theme.c    Making Metacity look pretty
+ *
+ * The window decorations drawn by Metacity are described by files on disk
+ * known internally as "themes" (externally as "window border themes" on
+ * http://art.gnome.org/themes/metacity/ or "Metacity themes"). This file
+ * contains most of the code necessary to support themes; it does not
+ * contain the XML parser, which is in theme-parser.c.
+ *
+ * \bug This is a big file with lots of different subsystems, which might
+ * be better split out into separate files.
+ */
+
+/**
+ * \defgroup tokenizer   The theme expression tokenizer
+ *
+ * Themes can use a simple expression language to represent the values of
+ * things. This is the tokeniser used for that language.
+ *
+ * \bug We could remove almost all this code by using GScanner instead,
+ * but we would also have to find every expression in every existing theme
+ * we could and make sure the parse trees were the same.
+ */
+
+/**
+ * \defgroup parser  The theme expression parser
+ *
+ * Themes can use a simple expression language to represent the values of
+ * things. This is the parser used for that language.
+ */
+
 #include <config.h>
 #include "theme.h"
 #include "theme-parser.h"
@@ -60,6 +91,9 @@ static void hls_to_rgb			(gdouble	 *h,
 					 gdouble	 *l,
 					 gdouble	 *s);
 
+/**
+ * The current theme. (Themes are singleton.)
+ */
 static MetaTheme *meta_current_theme = NULL;
 
 static GdkPixbuf *
@@ -155,6 +189,11 @@ color_composite (const GdkColor *bg,
   color->blue = color->blue + (((fg->blue - color->blue) * alpha + 0x8000) >> 16);
 }
 
+/**
+ * Sets all the fields of a border to dummy values.
+ *
+ * \param border The border whose fields should be reset.
+ */
 static void
 init_border (GtkBorder *border)
 {
@@ -164,6 +203,12 @@ init_border (GtkBorder *border)
   border->right = -1;
 }
 
+/**
+ * Creates a new, empty MetaFrameLayout. The fields will be set to dummy
+ * values.
+ *
+ * \return The newly created MetaFrameLayout.
+ */
 MetaFrameLayout*
 meta_frame_layout_new  (void)
 {
@@ -198,6 +243,9 @@ meta_frame_layout_new  (void)
   return layout;
 }
 
+/**
+ *
+ */
 static gboolean
 validate_border (const GtkBorder *border,
                  const char     **bad)
@@ -216,6 +264,19 @@ validate_border (const GtkBorder *border,
   return *bad == NULL;
 }
 
+/**
+ * Ensures that the theme supplied a particular dimension. When a
+ * MetaFrameLayout is created, all its integer fields are set to -1
+ * by meta_frame_layout_new(). After an instance of this type
+ * should have been initialised, this function checks that
+ * a given field is not still at -1. It is never called directly, but
+ * rather via the CHECK_GEOMETRY_VALUE and CHECK_GEOMETRY_BORDER
+ * macros.
+ *
+ * \param      val    The value to check
+ * \param      name   The name to use in the error message
+ * \param[out] error  Set to an error if val was not initialised
+ */
 static gboolean
 validate_geometry_value (int         val,
                          const char *name,
@@ -1348,6 +1409,12 @@ meta_color_spec_render (MetaColorSpec *spec,
     }
 }
 
+/**
+ * Represents an operation as a string.
+ *
+ * \param type  an operation, such as addition
+ * \return  a string, such as "+"
+ */
 static const char*
 op_name (PosOperatorType type)
 {
@@ -1374,6 +1441,14 @@ op_name (PosOperatorType type)
   return "<unknown>";
 }
 
+/**
+ * Parses a string and returns an operation.
+ *
+ * \param p  a pointer into a string representing an operation; part of an
+ *           expression somewhere, so not null-terminated
+ * \param len  set to the length of the string found. Set to 0 if none is.
+ * \return  the operation found. If none was, returns POS_OP_NONE.
+ */
 static PosOperatorType
 op_from_string (const char *p,
                 int        *len)
@@ -1422,6 +1497,13 @@ op_from_string (const char *p,
   return POS_OP_NONE;
 }
 
+/**
+ * Frees an array of tokens. All the tokens and their associated memory
+ * will be freed.
+ *
+ * \param tokens  an array of tokens to be freed
+ * \param n_tokens  how many tokens are in the array.
+ */
 static void
 free_tokens (PosToken *tokens,
              int       n_tokens)
@@ -1439,6 +1521,22 @@ free_tokens (PosToken *tokens,
   g_free (tokens);
 }
 
+/**
+ * Tokenises a number in an expression.
+ *
+ * \param p  a pointer into a string representing an operation; part of an
+ *           expression somewhere, so not null-terminated
+ * \param end_return  set to a pointer to the end of the number found; but
+ *                    not updated if no number was found at all
+ * \param next  set to either an integer or a float token
+ * \param[out] err  set to the problem if there was a problem
+ * \return TRUE if a valid number was found, FALSE otherwise (and "err" will
+ *         have been set)
+ *
+ * \bug The "while (*start)..." part: what's wrong with strchr-ish things?
+ * \bug The name is wrong: it doesn't parse anything.
+ * \ingroup tokenizer
+ */
 static gboolean
 parse_number (const char  *p,
               const char **end_return,
@@ -1514,6 +1612,9 @@ parse_number (const char  *p,
   return TRUE;
 }
 
+/**
+ * Whether a variable can validly appear as part of the name of a variable.
+ */
 #define IS_VARIABLE_CHAR(c) (g_ascii_isalpha ((c)) || (c) == '_')
 
 #if 0
@@ -1556,6 +1657,18 @@ debug_print_tokens (PosToken *tokens,
 }
 #endif
 
+/**
+ * Tokenises an expression.
+ *
+ * \param      expr        The expression
+ * \param[out] token_p     The resulting tokens
+ * \param[out] n_tokens_p  The number of resulting tokens
+ * \param[out] err  set to the problem if there was a problem
+ *
+ * \return  True if the expression was successfully tokenised; false otherwise.
+ *
+ * \ingroup tokenizer
+ */
 static gboolean
 pos_tokenize (const char  *expr,
               PosToken   **tokens_p,
@@ -1688,6 +1801,10 @@ typedef enum
   POS_EXPR_OPERATOR
 } PosExprType;
 
+/**
+ *
+ * \bug operator is char; it should really be of PosOperatorType.
+ */
 typedef struct
 {
   PosExprType type;
@@ -1976,14 +2093,37 @@ do_operations (PosExpr *exprs,
   return TRUE;
 }
 
+/**
+ * There is a predefined set of variables which can appear in an expression.
+ * Here we take a token representing a variable, and return the current value
+ * of that variable in a particular environment.
+ * (The value is always an integer.)
+ *
+ * There are supposedly some circumstances in which this function can be
+ * called from outside Metacity, in which case env->theme will be NULL, and
+ * therefore we can't use it to find out quark values, so we do the comparison
+ * using strcmp, which is slower.
+ *
+ * \param t  The token representing a variable
+ * \param[out] result  The value of that variable; not set if the token did
+ *                     not represent a known variable
+ * \param env  The environment within which t should be evaluated
+ * \param[out] err  set to the problem if there was a problem
+ *
+ * \return true if we found the variable asked for, false if we didn't
+ *
+ * \bug shouldn't t be const?
+ * \bug we should perhaps consider some sort of lookup arrangement into an
+ *      array; also, the duplication of code is unlovely; perhaps using glib
+ *      string hashes instead of quarks would fix both problems?
+ * \ingroup parser
+ */
 static gboolean
 pos_eval_get_variable (PosToken                  *t,
                        int                       *result,
                        const MetaPositionExprEnv *env,
                        GError                   **err)
 {
-  /* In certain circumstances (when the theme parser is used outside
-     of metacity) env->theme will be NULL so we run the slow variable search */
   if (env->theme)
     {
       if (t->d.v.name_quark == env->theme->quark_width)
@@ -2070,6 +2210,12 @@ pos_eval_get_variable (PosToken                  *t,
   return TRUE;
 }
 
+/**
+ * foo
+ *
+ * \param tokens
+ * \bug FIXME write this
+ */
 static gboolean
 pos_eval_helper (PosToken                   *tokens,
                  int                         n_tokens,
@@ -2077,7 +2223,7 @@ pos_eval_helper (PosToken                   *tokens,
                  PosExpr                    *result,
                  GError                    **err)
 {
-  /* lazy-ass hardcoded limit on expression size */
+  /* Lazy-ass hardcoded limit on number of terms in expression */
 #define MAX_EXPRS 32
   int paren_level;
   int first_paren;
@@ -2086,10 +2232,6 @@ pos_eval_helper (PosToken                   *tokens,
   int n_exprs;
   int precedence;
   
-#if 0
-  g_print ("Pos eval helper on %d tokens:\n", n_tokens);
-#endif
-
   /* Our first goal is to get a list of PosExpr, essentially
    * substituting variables and handling parentheses.
    */

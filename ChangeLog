@@ -1,3 +1,10 @@
+2008-01-16  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/bell.c: Correct comment.
+	* src/core/main.c: Correct comment.
+	* src/core/theme.c: Much commenting; #ifdeffed-out debug code removed.
+	* src/core/theme.h: Much commenting.
+
 2008-01-13  Thomas Thurman  <tthurman@gnome.org>
 
 	* src/core/bell.c: Commenting.
