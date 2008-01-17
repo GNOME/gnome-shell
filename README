@@ -205,6 +205,12 @@ Release Notes for Clutter 0.6.0
 * The precision of the clutter_sqrti() algorithm has been improved for small
   values.
 
+* ClutterBehaviourScale constructor, scale properties and accessors have
+  been changed to accomodate the scaling factors on both the X and Y axis,
+  matching the clutter_actor_set_scale() function. This also changed the
+  clutter_effect_scale() function, which now accepts the final scale
+  factor on both the X and Y axis.
+
 Release Notes for Clutter 0.4.0
 -------------------------------
 
