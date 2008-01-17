@@ -38,6 +38,7 @@ main (int argc, char *argv[])
   label = clutter_label_new_with_text ("Mono 16", "The Wonder of the Spinning Hand");
   clutter_label_set_alignment (CLUTTER_LABEL (label), PANGO_ALIGN_CENTER);
   clutter_actor_set_position (label, 150, 150);
+  clutter_actor_set_size (label, 500, 100);
   clutter_actor_show (label);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
   

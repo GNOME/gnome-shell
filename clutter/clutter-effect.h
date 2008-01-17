@@ -140,7 +140,8 @@ ClutterTimeline *clutter_effect_path   (ClutterEffectTemplate     *template_,
                                         gpointer                   data);
 ClutterTimeline *clutter_effect_scale  (ClutterEffectTemplate     *template_,
                                         ClutterActor              *actor,
-                                        gdouble                    scale_end,
+                                        gdouble                    x_scale_end,
+                                        gdouble                    y_scale_end,
                                         ClutterGravity             gravity,
                                         ClutterEffectCompleteFunc  func,
                                         gpointer                   data);

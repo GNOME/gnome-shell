@@ -69,7 +69,8 @@ main (int argc, char *argv[])
   clutter_container_add_actor (container, actor);
   clutter_actor_set_size (actor, 50, 50);
   clutter_actor_set_position (actor, 50, 280);
-  clutter_effect_scale (tmpl, actor, 2.0, CLUTTER_GRAVITY_CENTER, NULL, NULL);
+  clutter_effect_scale (tmpl, actor, 2.0, 2.0,
+                        CLUTTER_GRAVITY_CENTER, NULL, NULL);
   clutter_actor_show (actor);
 
   actor = clutter_rectangle_new_with_color (&rect_color);

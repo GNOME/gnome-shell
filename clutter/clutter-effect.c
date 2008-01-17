@@ -731,7 +731,8 @@ clutter_effect_path (ClutterEffectTemplate     *template_,
  * clutter_effect_scale:
  * @template_: A #ClutterEffectTemplate
  * @actor: A #ClutterActor to apply the effect to.
- * @scale_end: Final scale factor to apply to actor
+ * @x_scale_end: Final X axis scale factor to apply to actor
+ * @y_scale_end: Final Y axis scale factor to apply to actor
  * @gravity: A #ClutterGravity for the scale.
  * @func: A #ClutterEffectCompleteFunc to call on effect
  *   completion or NULL
@@ -748,13 +749,14 @@ clutter_effect_path (ClutterEffectTemplate     *template_,
 ClutterTimeline *
 clutter_effect_scale (ClutterEffectTemplate     *template_,
 		      ClutterActor              *actor,
-		      gdouble                    scale_end,
+		      gdouble                    x_scale_end,
+		      gdouble                    y_scale_end,
 		      ClutterGravity             gravity,
 		      ClutterEffectCompleteFunc  func,
 		      gpointer                   data)
 {
   ClutterEffectClosure *c;
-  gdouble scale_start;
+  gdouble x_scale_start, y_scale_start;
 
   c = clutter_effect_closure_new (template_,
 				  actor, 
@@ -763,10 +765,10 @@ clutter_effect_scale (ClutterEffectTemplate     *template_,
   c->completed_func = func;
   c->completed_data = data;
 
-  clutter_actor_get_scale (actor, &scale_start, NULL);
+  clutter_actor_get_scale (actor, &x_scale_start, &y_scale_start);
   c->behave = clutter_behaviour_scale_new (c->alpha, 
-					   scale_start,
-					   scale_end,
+					   x_scale_start, y_scale_start,
+					   x_scale_end, y_scale_end,
 					   gravity);
   
   clutter_behaviour_apply (c->behave, actor);

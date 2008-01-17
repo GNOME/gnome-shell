@@ -172,13 +172,13 @@ main (int argc, char *argv[])
   alpha = clutter_alpha_new_full (timeline, CLUTTER_ALPHA_SINE, NULL, NULL);
 
   scaler_1 = clutter_behaviour_scale_new (alpha, 
-					  0.5, 
-					  1.0, 
+					  0.5, 0.5, 
+					  1.0, 1.0,
 					  CLUTTER_GRAVITY_CENTER);
 
   scaler_2 = clutter_behaviour_scale_new (alpha, 
-					  1.0, 
-					  0.5, 
+					  1.0, 1.0,
+					  0.5, 0.5,
 					  CLUTTER_GRAVITY_CENTER);
 
   /* create a new group to hold multiple actors in a group */
