@@ -2211,9 +2211,16 @@ pos_eval_get_variable (PosToken                  *t,
 }
 
 /**
- * foo
+ * Evaluates a sequence of tokens within a particular environment context,
+ * and returns the current value. May recur if parantheses are found.
  *
- * \param tokens
+ * \param tokens  A list of tokens to evaluate.
+ * \param n_tokens  How many tokens are in the list.
+ * \param env  The environment context in which to evaluate the expression.
+ * \param[out] result  The current value of the expression
+ * \bug Yes, we really do reparse the expression every time it's evaluated.
+ *      We should keep the parse tree around all the time and just
+ *      run the new values through it.
  * \bug FIXME write this
  */
 static gboolean
@@ -2376,6 +2383,21 @@ pos_eval_helper (PosToken                   *tokens,
  *          expr + expr | expr - expr | (expr)
  *
  *   so very not worth fooling with bison, yet so very painful by hand.
+ */
+/**
+ * Evaluates an expression.
+ *
+ * \param spec  The expression to evaluate.
+ * \param env   The environment context to evaluate the expression in.
+ * \param[out] val_p  The integer value of the expression; if the expression
+ *                    is of type float, this will be rounded. If we return
+ *                    FALSE because the expression is invalid, this will be
+ *                    zero.
+ * \param[out] err    The error, if anything went wrong.
+ *
+ * \return  True if we evaluated the expression successfully; false otherwise.
+ *
+ * \bug Shouldn't spec be const?
  */
 static gboolean
 pos_eval (MetaDrawSpec              *spec,

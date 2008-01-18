@@ -373,14 +373,29 @@ typedef struct
   } d;
 } PosToken;
 
+/**
+ *
+ * Created by meta_draw_spec_new(), destroyed by meta_draw_spec_free().
+ * pos_eval() fills this with ...FIXME. Are tokens a tree or a list?
+ * \bug FIXME finish filling this in
+ * \ingroup tokenizer
+ */
 typedef struct _MetaDrawSpec
 {
+  /**
+   * If this spec is constant, this is the value of the constant;
+   * otherwise it is zero.
+   */
   int value;
   
+  /** A list of tokens in the expression. */
   PosToken *tokens;
+
+  /** How many tokens are in the tokens list. */
   int n_tokens;
 
-  gboolean constant : 1; /* Does the expression contain any variables? */
+  /** Does the expression contain any variables? */
+  gboolean constant : 1;
 } MetaDrawSpec;
   
 struct _MetaDrawOp
