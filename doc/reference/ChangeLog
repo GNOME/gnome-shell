@@ -1,5 +1,11 @@
 2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* subclassing-ClutterActor.sgml: Fix up the wording and the
+	examples a bit; add a paragraph about the ClutterActor::pick()
+	virtual method.
+
+2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-sections.txt: Add the new ClutterBehaviourOpacity
 	accessors.
 

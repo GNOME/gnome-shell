@@ -42,7 +42,7 @@ foo_actor_query_coords (ClutterActor    *actor,
 {
   FooActor *foo_actor = FOO_ACTOR (actor);
   GList *child;
-  guint width, height;
+  ClutterUnit width, height;
 
   /* initialize our size */
   width = height = 0;
@@ -54,21 +54,17 @@ foo_actor_query_coords (ClutterActor    *actor,
       /* we return only visible actors */
       if (CLUTTER_ACTOR_IS_VISIBLE (child_actor))
         {
-          ClutterActorBox child_box;
+          ClutterActorBox child_box = { 0, };
 
           clutter_actor_query_coords (child_actor, &amp;child_box);
           
-          width += child_box.x2 - child_box.x2;
+          width  += child_box.x2 - child_box.x2;
           height += child_box.y2 - child_box.y1;
         }
     }
 
-  /* internally, the coordinates are all expressed in generic
-   * "units", but the public API converts them into pixels,
-   * so we need to juggle around with conversions
-   */ 
-  box-&gt;x2 = box-&gt;x1 + CLUTTER_UNITS_FROM_INT (width);
-  box-&gt;y2 = box-&gt;y1 + CLUTTER_UNITS_FROM_INT (height);
+  box-&gt;x2 = box-&gt;x1 + width
+  box-&gt;y2 = box-&gt;y1 + height;
 }
     </programlisting>
   </example>
@@ -97,16 +93,58 @@ foo_actor_paint (ClutterActor *actor)
   FooActor *foo_actor = FOO_ACTOR (actor);
   GList *child;
 
-  glPushMatrix ();
+  /* by including &lt;clutter/cogl.h&gt; it's possible to use the internal
+   * COGL abstraction API, which is also used by Clutter itself and avoids
+   * changing the GL calls depending on the target platform (GL or GL/ES).
+   */
+  cogl_push_matrix ();
 
   for (child = foo_actor-&gt;children; child != NULL; child = child-&gt;next)
     {
       ClutterActor *child_actor = child-&gt;data;
 
-      clutter_actor_paint (child_actor);
+      if (CLUTTER_ACTOR_IS_MAPPED (child_actor))
+        clutter_actor_paint (child_actor);
     }
 
-  glPopMatrix ();
+  cogl_pop_matrix ();
+}
+    </programlisting>
+  </example>
+
+  <para>If the actor has a non-rectangular shape, or it has internal childrens
+  that needs to be distinguished by the events delivery mechanism, the
+  ClutterActor::pick() method should also be overridden. The ::pick() method
+  works exactly like the ::paint() method, but the actor should paint just
+  its shape with the passed colour:</para>
+
+  <example id="clutter-actor-pick-example">
+    <programlisting>
+static void
+foo_actor_pick (ClutterActor       *actor,
+                const ClutterColor *pick_color)
+{
+  FooActor *foo_actor = FOO_ACTOR (actor);
+  guint width, height;
+
+  /* by including &lt;clutter/cogl.h&gt; it's possible to use the internal
+   * COGL abstraction API, which is also used by Clutter itself and avoids
+   * changing the GL calls depending on the target platform (GL or GL/ES).
+   */
+  cogl_color (pick_color);
+
+  clutter_actor_get_size (actor, &amp;width, &amp;height); 
+
+  glEnable (GL_BLEND);
+
+  /* draw a triangular shape */
+  glBegin (GL_POLYGON);
+    glVertex2i (width / 2, 0     );
+    glVertex2i (width    , height);
+    glVertex2i (0        , height);
+  glEnd ();
+
+  cogl_pop_matrix ();
 }
     </programlisting>
   </example>
