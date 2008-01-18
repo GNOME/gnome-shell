@@ -1,6 +1,11 @@
 2007-01-18  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:
+	Added missing proto for clutter_fixed_qdivx().
+
+2007-01-18  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h:
 	* clutter/clutter-fixed.c:
 	Added CLUTTER_QDIV() for 64-bit division (bug 564, patch by
 	Gwenole Beauchesne).

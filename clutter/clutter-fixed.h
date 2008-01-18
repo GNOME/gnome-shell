@@ -281,6 +281,9 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 extern inline
 ClutterFixed clutter_qmulx (ClutterFixed op1, ClutterFixed op2);
 
+extern inline
+ClutterFixed clutter_qdivx (ClutterFixed op1, ClutterFixed op2);
+
 ClutterFixed clutter_sinx (ClutterFixed angle);
 ClutterFixed clutter_sini (ClutterAngle angle);
 
