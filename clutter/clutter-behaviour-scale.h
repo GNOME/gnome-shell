@@ -76,12 +76,12 @@ struct _ClutterBehaviourScaleClass
 
 GType clutter_behaviour_scale_get_type (void) G_GNUC_CONST;
 
-ClutterBehaviour *clutter_behaviour_scale_new  (ClutterAlpha  *alpha,
-                                                gdouble        x_scale_start,
-                                                gdouble        y_scale_start,
-                                                gdouble        x_scale_end,
-                                                gdouble        z_scale_end,
-                                                ClutterGravity gravity);
+ClutterBehaviour *clutter_behaviour_scale_new  (ClutterAlpha   *alpha,
+                                                gdouble         x_scale_start,
+                                                gdouble         y_scale_start,
+                                                gdouble         x_scale_end,
+                                                gdouble         y_scale_end,
+                                                ClutterGravity  gravity);
 ClutterBehaviour *clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
                                                 ClutterFixed    x_scale_start,
                                                 ClutterFixed    y_scale_start,

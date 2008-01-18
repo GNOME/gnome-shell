@@ -77,6 +77,13 @@ ClutterBehaviour *clutter_behaviour_opacity_new (ClutterAlpha *alpha,
                                                  guint8        opacity_start,
                                                  guint8        opacity_end);
 
+void clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
+                                           guint8                   opacity_start,
+                                           guint8                   opacity_end);
+void clutter_behaviour_opacity_get_bounds (ClutterBehaviourOpacity *behaviour,
+                                           guint8                  *opacity_start,
+                                           guint8                  *opacity_end);
+
 G_END_DECLS
 
 

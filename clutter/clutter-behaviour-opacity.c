@@ -232,3 +232,68 @@ clutter_behaviour_opacity_new (ClutterAlpha *alpha,
                        NULL);
 }
 
+/**
+ * clutter_behaviour_opacity_set_bounds:
+ * @behaviour: a #ClutterBehaviourOpacity
+ * @opacity_start: minimum level of opacity
+ * @opacity_end: maximum level of opacity
+ *
+ * Sets the initial and final levels of the opacity applied by @behaviour
+ * on each actor it controls.
+ *
+ * Since: 0.6
+ */
+void
+clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
+                                      guint8                   opacity_start,
+                                      guint8                   opacity_end)
+{
+  ClutterBehaviourOpacityPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_OPACITY (behaviour));
+
+  priv = behaviour->priv;
+
+  g_object_freeze_notify (G_OBJECT (behaviour));
+
+  if (priv->opacity_start != opacity_start)
+    {
+      priv->opacity_start = opacity_start;
+
+      g_object_notify (G_OBJECT (behaviour), "opacity-start");
+    }
+
+  if (priv->opacity_end != opacity_end)
+    {
+      priv->opacity_end = opacity_end;
+
+      g_object_notify (G_OBJECT (behaviour), "opacity-end");
+    }
+
+  g_object_thaw_notify (G_OBJECT (behaviour));
+}
+
+/**
+ * clutter_behaviour_opacity_get_bounds:
+ * @behaviour: a #ClutterBehaviourOpacity
+ * @opacity_start: return location for the minimum level of opacity, or %NULL
+ * @opacity_end: return location for the maximum level of opacity, or %NULL
+ *
+ * Gets the initial and final levels of the opacity applied by @behaviour
+ * on each actor it controls.
+ *
+ * Since: 0.6
+ */
+void
+clutter_behaviour_opacity_get_bounds (ClutterBehaviourOpacity *behaviour,
+                                      guint8                  *opacity_start,
+                                      guint8                  *opacity_end)
+{
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_OPACITY (behaviour));
+
+  if (opacity_start)
+    *opacity_start = behaviour->priv->opacity_start;
+
+  if (opacity_end)
+    *opacity_end = behaviour->priv->opacity_end;
+}

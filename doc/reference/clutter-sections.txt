@@ -600,6 +600,8 @@ clutter_behaviour_path_get_type
 ClutterBehaviourOpacity
 ClutterBehaviourOpacityClass
 clutter_behaviour_opacity_new
+clutter_behaviour_opacity_set_bounds
+clutter_behaviour_opacity_get_bounds
 <SUBSECTION Standard>
 CLUTTER_BEHAVIOUR_OPACITY
 CLUTTER_IS_BEHAVIOUR_OPACITY
