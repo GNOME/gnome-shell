@@ -68,6 +68,9 @@ typedef void (* ClutterScriptConnectFunc) (ClutterScript *script,
 
 /**
  * ClutterScriptError:
+ * @CLUTTER_SCRIPT_ERROR_INVALID_TYPE_FUNCTION: Type function not found
+ *   or invalid
+ * @CLUTTER_SCRIPT_ERROR_INVALID_PROPERTY: Property not found or invalid
  * @CLUTTER_SCRIPT_ERROR_INVALID_VALUE: Invalid value
  *
  * #ClutterScript error enumeration.

@@ -67,22 +67,56 @@ typedef gint32 ClutterUnit;
  * decide to change this relationship in the future.
  */
 
-#define CLUTTER_UNITS_FROM_DEVICE(x)     CLUTTER_UNITS_FROM_INT (x)
-#define CLUTTER_UNITS_TO_DEVICE(x)       CLUTTER_UNITS_TO_INT (x)
+#define CLUTTER_UNITS_FROM_INT(x)        CLUTTER_INT_TO_FIXED ((x))
+#define CLUTTER_UNITS_TO_INT(x)          CLUTTER_FIXED_TO_INT ((x))
 
-#define CLUTTER_UNITS_TMP_FROM_DEVICE(x) (x)
-#define CLUTTER_UNITS_TMP_TO_DEVICE(x)   (x)
-
-#define CLUTTER_UNITS_FROM_INT(x)        CLUTTER_INT_TO_FIXED (x)
-#define CLUTTER_UNITS_TO_INT(x)          CFX_INT (x)
-
-#define CLUTTER_UNITS_FROM_FLOAT(x)      CLUTTER_FLOAT_TO_FIXED (x)
-#define CLUTTER_UNITS_TO_FLOAT(x)        CLUTTER_FIXED_TO_FLOAT (x)
+#define CLUTTER_UNITS_FROM_FLOAT(x)      CLUTTER_FLOAT_TO_FIXED ((x))
+#define CLUTTER_UNITS_TO_FLOAT(x)        CLUTTER_FIXED_TO_FLOAT ((x))
 
 #define CLUTTER_UNITS_FROM_FIXED(x)      (x)
 #define CLUTTER_UNITS_TO_FIXED(x)        (x)
 
+/**
+ * CLUTTER_UNITS_FROM_DEVICE:
+ * @x: value in pixels
+ *
+ * Converts @x from pixels to #ClutterUnit<!-- -->s
+ *
+ * Since: 0.6
+ */
+#define CLUTTER_UNITS_FROM_DEVICE(x)     CLUTTER_UNITS_FROM_INT ((x))
+
+/**
+ * CLUTTER_UNITS_TO_DEVICE:
+ * @x: value in #ClutterUnit<!-- -->s
+ *
+ * Converts @x from #ClutterUnit<!-- -->s to pixels
+ *
+ * Since: 0.6
+ */
+#define CLUTTER_UNITS_TO_DEVICE(x)       CLUTTER_UNITS_TO_INT ((x))
+
+#define CLUTTER_UNITS_TMP_FROM_DEVICE(x) (x)
+#define CLUTTER_UNITS_TMP_TO_DEVICE(x)   (x)
+
+/**
+ * CLUTTER_UNITS_FROM_PANGO_UNIT:
+ * @x: value in Pango units
+ *
+ * Converts a value in Pango units to #ClutterUnit<!-- -->s
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_FROM_PANGO_UNIT(x) ((x) << 6)
+
+/**
+ * CLUTTER_UNITS_TO_PANGO_UNIT:
+ * @x: value in #ClutterUnit<!-- -->s
+ *
+ * Converts a value in #ClutterUnit<!-- -->s to Pango units
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_TO_PANGO_UNIT(x)   ((x) >> 6)
 
 #define CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE(x) \
@@ -97,12 +131,28 @@ typedef gint32 ClutterUnit;
 #define CLUTTER_UNITS_FROM_PARENT_HEIGHT_PERCENTAGE(a, x) \
   ((clutter_actor_get_heightu (clutter_actor_get_parent (a)) * x) / 100)
 
+/**
+ * CLUTTER_UNITS_FROM_MM:
+ * @x: a value in millimeters
+ *
+ * Converts a value in millimeters into #ClutterUnit<!-- -->s
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_FROM_MM(x) \
   (CLUTTER_UNITS_FROM_FLOAT ((((x) * clutter_stage_get_resolution ((ClutterStage *) clutter_stage_get_default ())) / 25.4)))
 
 #define CLUTTER_UNITS_FROM_MMX(x) \
   (CFX_DIV (CFX_MUL ((x), clutter_stage_get_resolutionx ((ClutterStage *) clutter_stage_get_default ())), 0x196666))
 
+/**
+ * CLUTTER_UNITS_FROM_POINTS:
+ * @x: a value in typographic points
+ *
+ * Converts a value in typographic points into #ClutterUnit<!-- -->s
+ *
+ * Since: 0.6
+ */
 #define CLUTTER_UNITS_FROM_POINTS(x) \
   CLUTTER_UNITS_FROM_FLOAT ((((x) * clutter_stage_get_resolution ((ClutterStage *) clutter_stage_get_default ())) / 72.0))
 

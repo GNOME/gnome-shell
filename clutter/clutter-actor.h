@@ -138,12 +138,14 @@ struct _ClutterActor
 
 /**
  * ClutterActorClass:
- * @show: signal class handler for the ClutterActor::show signal
+ * @show: signal class handler for ClutterActor::show; it must chain
+ *   up to the parent's implementation
  * @show_all: virtual function for containers and composite actors, to
  *   determine which children should be shown when calling
  *   clutter_actor_show_all() on the actor. Defaults to calling
  *   clutter_actor_show().
- * @hide: signal class handler for the ClutterActor::hide signal
+ * @hide: signal class handler for ClutterActor::hide; it must chain
+ *   up to the parent's implementation
  * @hide_all: virtual function for containers and composite actors, to
  *   determine which children should be shown when calling
  *   clutter_actor_hide_all() on the actor. Defaults to calling
@@ -156,11 +158,26 @@ struct _ClutterActor
  * @request_coords: virtual function, used when setting the coordinates
  *   of an actor
  * @query_coords: virtual function, used when querying the actor for
- *   its coordinates
+ *   its coordinates; it must chain up to the parent's implementation
  * @parent_set: signal class closure for the ClutterActor::parent-set
- *   signal
- * @destroy: signal class closure for the ClutterActor::destroy signal
- * @pick: virtual functions, used to draw an outline of the actor
+ * @destroy: signal class closure for ClutterActor::destroy
+ * @pick: virtual functions, used to draw an outline of the actor with
+ *   the given colour
+ * @event: signal class closure for ClutterActor::event
+ * @button_press_event: signal class closure for
+ *   ClutterActor::button-press-event
+ * @button_release_event: signal class closure for
+ *   ClutterActor::button-release-event
+ * @scroll_event: signal class closure for ClutterActor::scroll-event
+ * @key_press_event: signal class closure for ClutterActor::key-press-event
+ * @key_release_event: signal class closure for
+ *   ClutterActor::key-release-event
+ * @motion_event: signal class closure for ClutterActor::motion-event
+ * @enter_event: signal class closure for ClutterActor::enter-event
+ * @leave_event: signal class closure for ClutterActor::leave-event
+ * @captured_event: signal class closure for ClutterActor::captured-event
+ * @focus_in: signal class closure for ClutterActor::focus-in
+ * @focus_out: signal class closure for ClutterActor::focus-out
  *
  * Base class for actors.
  */
@@ -212,10 +229,9 @@ struct _ClutterActorClass
   void     (* focus_in)             (ClutterActor         *actor);
   void     (* focus_out)            (ClutterActor         *actor);
 
-  gboolean shadable;
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[31];
+  gpointer _padding_dummy[32];
 };
 
 GType                 clutter_actor_get_type         (void) G_GNUC_CONST;

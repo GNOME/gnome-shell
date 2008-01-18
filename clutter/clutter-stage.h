@@ -57,11 +57,25 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_STAGE, ClutterStageClass))
 
+/**
+ * CLUTTER_STAGE_WIDTH:
+ *
+ * Macro that evaluates to the current stage width
+ *
+ * Since: 0.2
+ */
 #define CLUTTER_STAGE_WIDTH() \
- clutter_actor_get_width (clutter_stage_get_default ())
+ (clutter_actor_get_width (clutter_stage_get_default ()))
 
+/**
+ * CLUTTER_STAGE_HEIGHT:
+ *
+ * Macro that evaluates to the current stage height
+ *
+ * Since: 0.2
+ */
 #define CLUTTER_STAGE_HEIGHT() \
- clutter_actor_get_height (clutter_stage_get_default ())
+ (clutter_actor_get_height (clutter_stage_get_default ()))
 
 typedef struct _ClutterPerspective  ClutterPerspective;
 typedef struct _ClutterFog          ClutterFog;

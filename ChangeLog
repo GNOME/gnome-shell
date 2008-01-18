@@ -1,5 +1,12 @@
 2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.h:
+	* clutter/clutter-script.h:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-units.h: Documentation fixes and additions.
+
+2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter.symbols: Add ClutterBehaviourOpacity accessors.
 
 	* clutter/clutter-behaviour-opacity.h:
