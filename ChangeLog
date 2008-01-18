@@ -1,5 +1,10 @@
 2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-event.h: Add a gunichar field for the Unicode
+	representation of the key. (#555)
+
+2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.h:
 	* clutter/clutter-script.h:
 	* clutter/clutter-stage.h:

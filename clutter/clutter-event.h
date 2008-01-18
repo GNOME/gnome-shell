@@ -212,6 +212,7 @@ struct _ClutterAnyEvent
  * @modifier_state: key modifiers
  * @keyval: raw key value
  * @hardware_keycode: raw hardware key value
+ * @unicode_value: Unicode representation
  *
  * Key event
  *
@@ -226,6 +227,7 @@ struct _ClutterKeyEvent
   ClutterModifierType modifier_state;
   guint keyval;
   guint16 hardware_keycode;
+  gunichar unicode_value;
 };
 
 /**
