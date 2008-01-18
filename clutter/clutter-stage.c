@@ -874,7 +874,13 @@ clutter_stage_event (ClutterStage *stage,
   priv = stage->priv;
 
   if (event->type == CLUTTER_DELETE)
-    return TRUE;
+    {
+      gboolean retval = FALSE;
+
+      g_signal_emit_by_name (stage, "event", event, &retval);
+
+      return retval;
+    }
 
   if (event->type != CLUTTER_STAGE_STATE)
     return FALSE;

@@ -1,3 +1,13 @@
+2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-main.c (clutter_do_event): Check the
+	return value of the ::event signal for the CLUTTER_DELETE
+	event type.
+
+	* clutter/clutter-stage.c (clutter_stage_event): Emit the
+	::event signal when receiving the CLUTTER_DELETE event; this
+	allows to intercept the user's closing of the stage window.
+
 2007-01-18  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:

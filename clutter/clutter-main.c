@@ -1376,7 +1376,8 @@ clutter_do_event (ClutterEvent *event)
       case CLUTTER_DESTROY_NOTIFY:
       case CLUTTER_DELETE:
         event->any.source = stage;
-        if (clutter_stage_event (CLUTTER_STAGE (stage), event))
+        /* the stage did not handle the event, so we just quit */
+        if (!clutter_stage_event (CLUTTER_STAGE (stage), event))
           clutter_main_quit ();
         break;
 
