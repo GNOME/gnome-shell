@@ -40,7 +40,7 @@ get_radius (void)
 }
 
 /* input handler */
-void 
+static gboolean 
 input_cb (ClutterStage *stage, 
 	  ClutterEvent *event,
 	  gpointer      data)
@@ -59,9 +59,11 @@ input_cb (ClutterStage *stage,
 
       e = clutter_stage_get_actor_at_pos (stage, x, y);
 
-      if (e)
-	clutter_actor_hide (e);
-
+      if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE_TEXTURE (e)))
+        {
+	  clutter_actor_hide (e);
+          return TRUE;
+        }
     }
   else if (event->type == CLUTTER_KEY_RELEASE)
     {
@@ -71,13 +73,18 @@ input_cb (ClutterStage *stage,
 	       clutter_key_event_symbol (kev));
       
       if (clutter_key_event_symbol (kev) == CLUTTER_q)
-	clutter_main_quit ();
+        {
+	  clutter_main_quit ();
+          return TRUE;
+        }
     }
+
+  return FALSE;
 }
 
 
 /* Timeline handler */
-void
+static void
 frame_cb (ClutterTimeline *timeline, 
 	  gint             frame_num, 
 	  gpointer         data)

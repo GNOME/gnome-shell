@@ -1,5 +1,10 @@
 2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/test-actors.c (input_cb): Fix the callback signature;
+	hide the clicked actor only if it's a hand.
+
+2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-main.c (clutter_do_event): Check the
 	return value of the ::event signal for the CLUTTER_DELETE
 	event type.
