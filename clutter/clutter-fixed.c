@@ -741,6 +741,24 @@ clutter_qmulx (ClutterFixed op1, ClutterFixed op2)
 #endif
 }
 
+/**
+ * clutter_fixed_qdivx:
+ * @op1: #ClutterFixed
+ * @op2: #ClutterFixed
+ *
+ * Return value: #ClutterFixed.
+ *
+ * Divides two fixed values using 64bit arithmetic; this provides
+ * significantly better precission than the #CLUTTER_FIXED_DIV macro,
+ * but at performance cost.
+ *
+ * Since: 0.4
+ */
+ClutterFixed
+clutter_qdivx (ClutterFixed op1, ClutterFixed op2)
+{
+  return (ClutterFixed)((((gint64)op1) << CFX_Q) / op2);
+}
 
 /*
  * The log2x() and pow2x() functions

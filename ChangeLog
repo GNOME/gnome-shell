@@ -1,3 +1,10 @@
+2007-01-18  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-fixed.c:
+	Added CLUTTER_QDIV() for 64-bit division (bug 564, patch by
+	Gwenole Beauchesne).
+
 2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-event.h: Add a gunichar field for the Unicode
@@ -39,7 +46,7 @@
 	* clutter/clutter-effect.h:
 	* clutter/clutter-effect.c (clutter_effect_scale): Split the
 	final scale factor to match the ClutterBehaviourScale changes. (#709)
-	
+
 	* tests/test-actors.c:
 	* tests/test-effects.c:
 	* tests/test-rotate.c:
@@ -190,7 +197,7 @@
 	* clutter/clutter-model.c:
 	(clutter_model_appendv),
 	(clutter_model_prependv): Add vector based API for bindings.
-	
+
 	(clutter_model_get_column_name),
 	(clutter_model_get_column_type),
 	(clutter_model_set_sorting_column): Fix the check in the condition
@@ -203,7 +210,7 @@
 2008-01-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter.symbols: Add clutter_actor_move_byu()
-	
+
 	* clutter/clutter-actor.h:
 	* clutter/clutter-actor.c:
 	(clutter_actor_move_by),
