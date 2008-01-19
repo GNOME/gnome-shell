@@ -1,3 +1,9 @@
+2008-01-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-event.c (clutter_event_copy): Take an extra
+	reference on the related actor in ClutterEventCrossing that we
+	explicitly unref in clutter_event_free(). (#714, Neil Roberts)
+
 2008-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* tests/test-actors.c (input_cb): Fix the callback signature;
