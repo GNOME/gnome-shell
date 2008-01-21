@@ -52,8 +52,10 @@ G_DEFINE_TYPE (ClutterBehaviourScale,
 
 struct _ClutterBehaviourScalePrivate
 {
-  ClutterFixed scale_start[2];
-  ClutterFixed scale_end[2];
+  ClutterFixed x_scale_start;
+  ClutterFixed y_scale_start;
+  ClutterFixed x_scale_end;
+  ClutterFixed y_scale_end;
 
   ClutterGravity gravity;
 };
@@ -111,12 +113,12 @@ clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
   factor = CLUTTER_INT_TO_FIXED (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
 
   scale_x = CLUTTER_FIXED_MUL (factor,
-                               (priv->scale_end[0] - priv->scale_start[0]));
-  scale_x += priv->scale_start[0];
+                               (priv->x_scale_end - priv->x_scale_start));
+  scale_x += priv->x_scale_start;
 
   scale_y = CLUTTER_FIXED_MUL (factor,
-                               (priv->scale_end[1] - priv->scale_start[1]));
-  scale_y += priv->scale_start[1];
+                               (priv->y_scale_end - priv->y_scale_start));
+  scale_y += priv->y_scale_start;
 
   closure.scale_x = scale_x;
   closure.scale_y = scale_y;
@@ -139,19 +141,19 @@ clutter_behaviour_scale_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_X_SCALE_START:
-      priv->scale_start[0] =
+      priv->x_scale_start =
         CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
       break;
     case PROP_X_SCALE_END:
-      priv->scale_end[0] =
+      priv->x_scale_end =
         CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
       break;
     case PROP_Y_SCALE_START:
-      priv->scale_start[1] =
+      priv->y_scale_start =
         CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
       break;
     case PROP_Y_SCALE_END:
-      priv->scale_end[1] =
+      priv->y_scale_end =
         CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
       break;
     case PROP_SCALE_GRAVITY:
@@ -176,16 +178,16 @@ clutter_behaviour_scale_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_X_SCALE_START:
-      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->scale_start[0]));
+      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->x_scale_start));
       break;
     case PROP_X_SCALE_END:
-      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->scale_end[0]));
+      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->x_scale_end));
       break;
     case PROP_Y_SCALE_START:
-      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->scale_start[1]));
+      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->y_scale_start));
       break;
     case PROP_Y_SCALE_END:
-      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->scale_end[1]));
+      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->y_scale_end));
       break;
     case PROP_SCALE_GRAVITY:
       g_value_set_enum (value, priv->gravity);
@@ -293,6 +295,10 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
   ClutterBehaviourScalePrivate *priv;
 
   self->priv = priv = CLUTTER_BEHAVIOUR_SCALE_GET_PRIVATE (self);
+
+  priv->x_scale_start = priv->x_scale_end = CFX_ONE;
+  priv->y_scale_start = priv->y_scale_end = CFX_ONE;
+  priv->gravity = CLUTTER_GRAVITY_CENTER;
 }
 
 /**
@@ -357,10 +363,10 @@ clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
 
   behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_SCALE, "alpha", alpha, NULL);
 
-  behave->priv->scale_start[0] = x_scale_start;
-  behave->priv->scale_start[1] = y_scale_start;
-  behave->priv->scale_end[0]   = x_scale_end;
-  behave->priv->scale_end[1]   = y_scale_end;
+  behave->priv->x_scale_start = x_scale_start;
+  behave->priv->y_scale_start = y_scale_start;
+  behave->priv->x_scale_end   = x_scale_end;
+  behave->priv->y_scale_end   = y_scale_end;
 
   behave->priv->gravity = gravity;
 
@@ -425,16 +431,16 @@ clutter_behaviour_scale_get_bounds (ClutterBehaviourScale *scale,
   priv = scale->priv;
 
   if (x_scale_start)
-    *x_scale_start = CLUTTER_FIXED_TO_DOUBLE (priv->scale_start[0]);
+    *x_scale_start = CLUTTER_FIXED_TO_DOUBLE (priv->x_scale_start);
 
   if (x_scale_end)
-    *x_scale_end = CLUTTER_FIXED_TO_DOUBLE (priv->scale_end[0]);
+    *x_scale_end = CLUTTER_FIXED_TO_DOUBLE (priv->x_scale_end);
 
   if (y_scale_start)
-    *y_scale_start = CLUTTER_FIXED_TO_DOUBLE (priv->scale_start[1]);
+    *y_scale_start = CLUTTER_FIXED_TO_DOUBLE (priv->y_scale_start);
 
   if (y_scale_end)
-    *y_scale_end = CLUTTER_FIXED_TO_DOUBLE (priv->scale_end[1]);
+    *y_scale_end = CLUTTER_FIXED_TO_DOUBLE (priv->y_scale_end);
 }
 
 /**
@@ -466,27 +472,27 @@ clutter_behaviour_scale_set_boundsx (ClutterBehaviourScale *scale,
 
   g_object_freeze_notify (G_OBJECT (scale));
 
-  if (priv->scale_start[0] != x_scale_start)
+  if (priv->x_scale_start != x_scale_start)
     {
-      priv->scale_start[0] = x_scale_start;
+      priv->x_scale_start = x_scale_start;
       g_object_notify (G_OBJECT (scale), "x-scale-start");
     }
 
-  if (priv->scale_start[1] != y_scale_start)
+  if (priv->y_scale_start != y_scale_start)
     {
-      priv->scale_start[1] = y_scale_start;
+      priv->y_scale_start = y_scale_start;
       g_object_notify (G_OBJECT (scale), "y-scale-start");
     }
 
-  if (priv->scale_end[0] != x_scale_end)
+  if (priv->x_scale_end != x_scale_end)
     {
-      priv->scale_end[0]   = x_scale_end;
+      priv->x_scale_end = x_scale_end;
       g_object_notify (G_OBJECT (scale), "x-scale-end");
     }
 
-  if (priv->scale_end[1] != y_scale_end)
+  if (priv->y_scale_end != y_scale_end)
     {
-      priv->scale_end[1]   = y_scale_end;
+      priv->y_scale_end = y_scale_end;
       g_object_notify (G_OBJECT (scale), "y-scale-end");
     }
 
@@ -525,16 +531,16 @@ clutter_behaviour_scale_get_boundsx (ClutterBehaviourScale *scale,
   priv = scale->priv;
 
   if (x_scale_start)
-    *x_scale_start = priv->scale_start[0];
+    *x_scale_start = priv->x_scale_start;
 
   if (x_scale_end)
-    *x_scale_end = priv->scale_end[0];
+    *x_scale_end = priv->x_scale_end;
 
   if (y_scale_start)
-    *y_scale_start = priv->scale_start[1];
+    *y_scale_start = priv->y_scale_start;
 
   if (y_scale_end)
-    *y_scale_end = priv->scale_end[1];
+    *y_scale_end = priv->y_scale_end;
 }
 
 /**

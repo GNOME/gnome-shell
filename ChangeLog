@@ -1,3 +1,9 @@
+2008-01-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-scale.c: Use separate variables for
+	storing the scale boundaries; apparently, using arrays broke
+	the python bindings. (#720)
+
 2008-01-21  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-group.c:
