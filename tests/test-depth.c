@@ -23,10 +23,8 @@ timeline_completed (ClutterTimeline *timeline,
       zoom_in = TRUE;
     }
 
-  g_object_set (G_OBJECT (d_behave),
-                "depth-start", depth_start,
-                "depth-end", depth_end,
-                NULL);
+  clutter_behaviour_depth_set_bounds (CLUTTER_BEHAVIOUR_DEPTH (d_behave),
+                                      depth_start, depth_end);
 
   clutter_timeline_rewind (timeline);
   clutter_timeline_start (timeline);

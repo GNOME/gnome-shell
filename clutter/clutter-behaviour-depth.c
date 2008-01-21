@@ -203,8 +203,8 @@ clutter_behaviour_depth_init (ClutterBehaviourDepth *depth)
 /**
  * clutter_behaviour_depth_new:
  * @alpha: a #ClutterAlpha or %NULL
- * @depth_start: start depth
- * @depth_end: end depth 
+ * @depth_start: initial value of the depth
+ * @depth_end: final value of the depth
  *
  * Creates a new #ClutterBehaviourDepth which can be used to control
  * the ClutterActor:depth property of a set of #ClutterActor<!-- -->s.
@@ -225,4 +225,66 @@ clutter_behaviour_depth_new (ClutterAlpha *alpha,
                        "depth-start", depth_start,
                        "depth-end", depth_end,
                        NULL);
+}
+
+/**
+ * clutter_behaviour_depth_set_bounds:
+ * @behaviour: a #ClutterBehaviourDepth
+ * @depth_start: initial value of the depth
+ * @depth_end: final value of the depth
+ *
+ * Sets the boundaries of the @behaviour.
+ *
+ * Since: 0.6
+ */
+void
+clutter_behaviour_depth_set_bounds (ClutterBehaviourDepth *behaviour,
+                                    gint                   depth_start,
+                                    gint                   depth_end)
+{
+  ClutterBehaviourDepthPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_DEPTH (behaviour));
+
+  priv = behaviour->priv;
+
+  g_object_freeze_notify (G_OBJECT (behaviour));
+
+  if (priv->depth_start != depth_start)
+    {
+      priv->depth_start = depth_start;
+      g_object_notify (G_OBJECT (behaviour), "depth-start");
+    }
+
+  if (priv->depth_end != depth_end)
+    {
+      priv->depth_end = depth_end;
+      g_object_notify (G_OBJECT (behaviour), "depth-end");
+    }
+
+  g_object_thaw_notify (G_OBJECT (behaviour));
+}
+
+/**
+ * clutter_behaviour_depth_get_bounds:
+ * @behaviour: a #ClutterBehaviourDepth
+ * @depth_start: return location for the initial depth value, or %NULL
+ * @depth_end: return location for the final depth value, or %NULL
+ *
+ * Gets the boundaries of the @behaviour
+ *
+ * Since: 0.6
+ */
+void
+clutter_behaviour_depth_get_bounds (ClutterBehaviourDepth *behaviour,
+                                    gint                  *depth_start,
+                                    gint                  *depth_end)
+{
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_DEPTH (behaviour));
+
+  if (depth_start)
+    *depth_start = behaviour->priv->depth_start;
+
+  if (depth_end)
+    *depth_end = behaviour->priv->depth_end;
 }

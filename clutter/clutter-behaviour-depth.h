@@ -62,6 +62,13 @@ ClutterBehaviour *clutter_behaviour_depth_new      (ClutterAlpha *alpha,
                                                     gint          depth_start,
                                                     gint          depth_end);
 
+void clutter_behaviour_depth_set_bounds (ClutterBehaviourDepth *behaviour,
+                                         gint                   depth_start,
+                                         gint                   depth_end);
+void clutter_behaviour_depth_get_bounds (ClutterBehaviourDepth *behaviour,
+                                         gint                  *depth_start,
+                                         gint                  *depth_end);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BEHAVIOUR_DEPTH__ */

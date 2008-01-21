@@ -838,12 +838,15 @@ clutter_log2x
 clutter_pow2x
 clutter_powx
 clutter_qmulx
+clutter_qdivx
 clutter_tani
+
 <SUBSECTION Private>
 CFX_DIV
 CFX_INT
 CFX_MUL
 CFX_QMUL
+CFX_QDIV
 </SECTION>
 
 <SECTION>
@@ -1082,6 +1085,8 @@ clutter_effect_template_get_type
 ClutterBehaviourDepth
 ClutterBehaviourDepthClass
 clutter_behaviour_depth_new
+clutter_behaviour_depth_set_bounds
+clutter_behaviour_depth_get_bounds
 <SUBSECTION Standard>
 CLUTTER_BEHAVIOUR_DEPTH
 CLUTTER_IS_BEHAVIOUR_DEPTH

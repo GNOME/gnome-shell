@@ -1,3 +1,18 @@
+2008-01-21  Emmanuele Bassi,,,  <ebassi@sprite>
+
+	* clutter/clutter-behaviour-depth.h:
+	* clutter/clutter-behaviour-depth.c:
+	(clutter_behaviour_depth_set_bounds),
+	(clutter_behaviour_depth_get_bounds): Add the depth-start and
+	depth-end accessors.
+
+	* tests/test-depth.c (timeline_completed): Use set_bounds()
+	instead of g_object_set().
+
+	* clutter.symbols: Add clutter_behaviour_depth_set_bounds()
+	and clutter_behaviour_opacity_get_bounds() to the list of
+	public symbols.
+
 2008-01-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-scale.c: Use separate variables for
