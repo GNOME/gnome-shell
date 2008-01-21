@@ -141,20 +141,16 @@ clutter_behaviour_scale_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_X_SCALE_START:
-      priv->x_scale_start =
-        CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+      priv->x_scale_start = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
       break;
     case PROP_X_SCALE_END:
-      priv->x_scale_end =
-        CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+      priv->x_scale_end = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
       break;
     case PROP_Y_SCALE_START:
-      priv->y_scale_start =
-        CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+      priv->y_scale_start = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
       break;
     case PROP_Y_SCALE_END:
-      priv->y_scale_end =
-        CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+      priv->y_scale_end = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
       break;
     case PROP_SCALE_GRAVITY:
       priv->gravity = g_value_get_enum (value);
@@ -260,7 +256,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    * Since: 0.6
    */
   g_object_class_install_property (gobject_class,
-                                   PROP_X_SCALE_END,
+                                   PROP_Y_SCALE_END,
                                    g_param_spec_double ("y-scale-end",
                                                         "Y End Scale",
                                                         "Final scale on the Y axis",
