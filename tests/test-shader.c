@@ -44,11 +44,11 @@ static ShaderSource shaders[]=
         "    for (u=-radius;u<radius;u++)"
         "      for (v=-radius;v<radius;v++)"
         "        {"
-        "          color += texture2DRect(rectTexture, vec2(gl_TexCoord[0].s + u * 2, gl_TexCoord[0].t +v * 2));"
+        "          color += texture2DRect(rectTexture, vec2(gl_TexCoord[0].s + u * 2.0, gl_TexCoord[0].t +v * 2.0));"
         "          count ++;"
         "        }"
         ""
-        "    gl_FragColor = color / count;"
+        "    gl_FragColor = color / float(count);"
         "}"
     },
     {"brightness-contrast.asm",
@@ -103,7 +103,7 @@ static ShaderSource shaders[]=
       "void main ()"
       "{"
       "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));"
-      "  float avg = (color.r + color.g + color.b) / 3;"
+      "  float avg = (color.r + color.g + color.b) / 3.0;"
       "  color.r = avg;"
       "  color.g = avg;"
       "  color.b = avg;"
@@ -116,11 +116,11 @@ static ShaderSource shaders[]=
       "{"
       "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));"
       "  vec4 colorB = texture2DRect (tex, vec2(gl_TexCoord[0].ts));"
-      "  float avg = (color.r + color.g + color.b) / 3;"
+      "  float avg = (color.r + color.g + color.b) / 3.0;"
       "  color.r = avg;"
       "  color.g = avg;"
       "  color.b = avg;"
-      "  color = (color + colorB)/2;"
+      "  color = (color + colorB)/2.0;"
       "  gl_FragColor = color;"
       "}",
     },

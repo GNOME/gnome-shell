@@ -1,3 +1,11 @@
+2008-01-21  Øyvind Kolås  <pippin@gimp.org>
+
+	* tests/test-shader.c: fix incompatible types in shader programs
+
+	Apparently floats can't be multiplied or divided with ints without
+	explicit type casts. Use 2.0 or float(var) where appropriate. Patch
+	from Tommi Komulainen (#715).
+
 2008-01-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.c (generate_enter_leave_events): Do not
