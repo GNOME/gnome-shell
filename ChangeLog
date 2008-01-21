@@ -1,3 +1,15 @@
+2008-01-21  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-group.c:
+	Make sure unrealizing a group also unrealizes children.
+
+	* clutter/glx/clutter-stage-glx.c:
+	Chain up to group unrealize to make sure textures get unrealized
+	when changing context (see #718)
+
+	* clutter/clutter-texture.c:
+	Formatting cleanups
+
 2008-01-21  Øyvind Kolås  <pippin@gimp.org>
 
 	* tests/test-shader.c: fix incompatible types in shader programs

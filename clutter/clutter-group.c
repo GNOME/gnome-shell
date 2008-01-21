@@ -109,6 +109,14 @@ clutter_group_paint (ClutterActor *actor)
 }
 
 static void
+clutter_group_unrealize (ClutterActor *actor)
+{
+  clutter_container_foreach (CLUTTER_CONTAINER (actor),
+                             CLUTTER_CALLBACK (clutter_actor_unrealize),
+                             NULL);
+}
+
+static void
 clutter_group_pick (ClutterActor       *actor,
 		    const ClutterColor *color)
 {
@@ -428,6 +436,7 @@ clutter_group_class_init (ClutterGroupClass *klass)
   actor_class->hide_all        = clutter_group_real_hide_all;
   actor_class->request_coords  = clutter_group_request_coords;
   actor_class->query_coords    = clutter_group_query_coords;
+  actor_class->unrealize       = clutter_group_unrealize;
 
   /**
    * ClutterGroup::add:

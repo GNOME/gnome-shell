@@ -37,6 +37,8 @@
 #include "../clutter-debug.h"
 #include "../clutter-units.h"
 #include "../clutter-shader.h"
+#include "../clutter-group.h"
+#include "../clutter-container.h"
 
 #include "cogl.h"
 
@@ -58,6 +60,11 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
   CLUTTER_MARK();
 
   g_object_get (actor, "offscreen", &was_offscreen, NULL);
+
+  /* Chain up so all children get unrealized, needed to move texture data
+   * across contexts
+  */
+  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->unrealize (actor);
 
   clutter_x11_trap_x_errors ();
 

@@ -1117,7 +1117,9 @@ pixbuf_destroy_notify (guchar  *pixels, gpointer data)
  * Gets a #GdkPixbuf representation of the #ClutterTexture data.
  * The created #GdkPixbuf is not owned by the texture but the caller.
  *
- * Return value: A #GdkPixbuf
+ * Note: NULL is always returned with OpenGL ES. 
+ *
+ * Return value: A #GdkPixbuf or NULL on fail.
  **/
 GdkPixbuf*
 clutter_texture_get_pixbuf (ClutterTexture* texture)
@@ -1363,8 +1365,9 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   gboolean               texture_dirty = TRUE, size_change = FALSE;
 
   priv = texture->priv;
-  if (!texture_prepare_upload (TRUE, texture, data, has_alpha, width, height, rowstride,
-                               bpp, flags, &copy_data, &texture_dirty, &size_change))
+  if (!texture_prepare_upload (TRUE, texture, data, has_alpha, 
+			       width, height, rowstride, bpp, flags, 
+			       &copy_data, &texture_dirty, &size_change))
     {
       return FALSE;
     }
@@ -1914,35 +1917,33 @@ texture_update_data (ClutterTexture *texture,
         gint effective_y;
         gint effective_height;
 
-
 /*
--- first tile --
-|--------------------- priv->width ------------------------------|
-| <- priv->x_tiles[x].pos
-|-----------| <- priv->x_tiles[x].size
-|-------| <- x_0
-        |------------| <- width
-|--------------------| <- x_0 + width
-|-------| <- master_offset = -8
-|-------| <- effective_x = 8
-        |---| <- effective_width
-
--- second tile ---
-
-|--------------------- priv->width ------------------------------|
-|-----------|  <- priv->x_tiles[x].pos
-            |-----------| <- priv->x_tiles[x].size (src_w)
-|-------| <- x_0
-        |------------| <- width
-|--------------------| <- x_0 + width
-        |---| <- master_offset = 4 
-            | <- effective_x (0 in between)
-            |--------| <- effective_width
-
-
-        XXXXXXXXXXXXXX    <- master       
-|___________|___________|___________|___________|___________|_____%%%%%%|
-*/
+ *  -- first tile --
+ *  |--------------------- priv->width ------------------------------|
+ *  | <- priv->x_tiles[x].pos
+ *  |-----------| <- priv->x_tiles[x].size
+ *  |-------| <- x_0
+ *          |------------| <- width
+ *  |--------------------| <- x_0 + width
+ *  |-------| <- master_offset = -8
+ *  |-------| <- effective_x = 8
+ *          |---| <- effective_width
+ *  
+ *  -- second tile ---
+ *  
+ *  |--------------------- priv->width ------------------------------|
+ *  |-----------|  <- priv->x_tiles[x].pos
+ *              |-----------| <- priv->x_tiles[x].size (src_w)
+ *  |-------| <- x_0
+ *          |------------| <- width
+ *  |--------------------| <- x_0 + width
+ *          |---| <- master_offset = 4 
+ *              | <- effective_x (0 in between)
+ *              |--------| <- effective_width
+ *  
+ *         XXXXXXXXXXXXXX    <- master       
+ *  |___________|___________|___________|___________|___________|_____%%%%%%|
+ */
 
         gint src_w, src_h;
 
