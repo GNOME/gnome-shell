@@ -72,6 +72,8 @@ typedef enum
 
 /**
  * Various parameters used to calculate the geometry of a frame.
+ * They are used inside a MetaFrameStyle.
+ * This corresponds closely to the <frame_geometry> tag in a theme file.
  *
  * \bug button_sizing isn't really necessary, because we could easily say
  * that if button_aspect is zero, the height and width are fixed values.
@@ -148,12 +150,10 @@ struct _MetaFrameLayout
 };
 
 /**
- * The size of a button (FIXME: In general? Or on one frame?).
+ * The computed size of a button (really just a way of tying its
+ * visible and clickable areas together).
  * The reason for two different rectangles here is Fitts' law & maximized
  * windows; see bug #97703 for more details.
- *
- * \bug In general? Or on one frame? FIXME
- * \bug Bugs should be hyperlinked: talk to doxygen people
  */
 struct _MetaButtonSpace
 {
@@ -295,33 +295,40 @@ struct _MetaDrawInfo
   const MetaFrameGeometry *fgeom;
 };
 
+/**
+ * A drawing operation in our simple vector drawing language.
+ */
 typedef enum
 {
-  /* Basic drawing */
+  /** Basic drawing-- line */
   META_DRAW_LINE,
+  /** Basic drawing-- rectangle */
   META_DRAW_RECTANGLE,
+  /** Basic drawing-- arc */
   META_DRAW_ARC,
 
-  /* Clip to a rectangle */
+  /** Clip to a rectangle */
   META_DRAW_CLIP,
   
   /* Texture thingies */
-  META_DRAW_TINT, /* just a filled rectangle with alpha */
+
+  /** Just a filled rectangle with alpha */
+  META_DRAW_TINT,
   META_DRAW_GRADIENT,
   META_DRAW_IMAGE,
   
-  /* GTK theme engine stuff */
+  /** GTK theme engine stuff */
   META_DRAW_GTK_ARROW,
   META_DRAW_GTK_BOX,
   META_DRAW_GTK_VLINE,
 
-  /* App's window icon */
+  /** App's window icon */
   META_DRAW_ICON,
-  /* App's window title */
+  /** App's window title */
   META_DRAW_TITLE,
-  /* a draw op list */
+  /** a draw op list */
   META_DRAW_OP_LIST,
-  /* tiled draw op list */
+  /** tiled draw op list */
   META_DRAW_TILE
 } MetaDrawType;
 
@@ -347,6 +354,11 @@ typedef enum
   POS_OP_MIN
 } PosOperatorType;
 
+/**
+ * A token, as output by the tokeniser.
+ *
+ * \ingroup tokenizer
+ */
 typedef struct
 {
   PosTokenType type;
@@ -374,11 +386,14 @@ typedef struct
 } PosToken;
 
 /**
+ * A computed expression in our simple vector drawing language.
+ * While it appears to take the form of a tree, this is actually
+ * merely a list; concerns such as precedence of operators are
+ * currently recomputed on every recalculation.
  *
  * Created by meta_draw_spec_new(), destroyed by meta_draw_spec_free().
  * pos_eval() fills this with ...FIXME. Are tokens a tree or a list?
- * \bug FIXME finish filling this in
- * \ingroup tokenizer
+ * \ingroup parser
  */
 typedef struct _MetaDrawSpec
 {
@@ -397,7 +412,10 @@ typedef struct _MetaDrawSpec
   /** Does the expression contain any variables? */
   gboolean constant : 1;
 } MetaDrawSpec;
-  
+
+/**
+ * A single drawing operation in our simple vector drawing language.
+ */
 struct _MetaDrawOp
 {
   MetaDrawType type;
@@ -543,6 +561,14 @@ struct _MetaDrawOp
   } data;
 };
 
+/**
+ * A list of MetaDrawOp objects. Maintains a reference count.
+ * Grows as necessary and allows the allocation of unused spaces
+ * to keep reallocations to a minimum.
+ *
+ * \bug Do we really win anything from not using the equivalent
+ * GLib structures?
+ */
 struct _MetaDrawOpList
 {
   int refcount;
@@ -636,16 +662,39 @@ typedef enum
 } MetaFramePiece;
 
 #define N_GTK_STATES 5
+
+/**
+ * How to draw a frame in a particular state (say, a focussed, non-maximised,
+ * resizable frame). This corresponds closely to the <frame_style> tag
+ * in a theme file.
+ */
 struct _MetaFrameStyle
 {
+  /** Reference count. */
   int refcount;
+  /**
+   * Parent style.
+   * Settings which are unspecified here will be taken from there.
+   */
   MetaFrameStyle *parent;
+  /** Operations for drawing each kind of button in each state. */
   MetaDrawOpList *buttons[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
+  /** Operations for drawing each piece of the frame. */
   MetaDrawOpList *pieces[META_FRAME_PIECE_LAST];
+  /**
+   * Details such as the height and width of each edge, the corner rounding,
+   * and the aspect ratio of the buttons.
+   */
   MetaFrameLayout *layout;
-  MetaColorSpec *window_background_color; /* can be NULL to use the standard
-                                             GTK theme engine */
-  guint8 window_background_alpha; /* 0=transparent; 255=opaque */
+  /**
+   * Background colour of the window. Only present in theme formats
+   * 2 and above. Can be NULL to use the standard GTK theme engine.
+   */
+  MetaColorSpec *window_background_color;
+  /**
+   * Transparency of the window background. 0=transparent; 255=opaque.
+   */
+  guint8 window_background_alpha;
 };
 
 /* Kinds of frame...
@@ -688,7 +737,17 @@ typedef enum
   META_FRAME_FOCUS_LAST
 } MetaFrameFocus;
 
-/* One StyleSet per window type (for window types that get a frame) */
+/**
+ * How to draw frames at different times: when it's maximised or not, shaded
+ * or not, when it's focussed or not, and (for non-maximised windows), when
+ * it can be horizontally or vertically resized, both, or neither.
+ * Not all window types actually get a frame.
+ *
+ * A theme contains one of these objects for each type of window (each
+ * MetaFrameType), that is, normal, dialogue (modal and non-modal), etc.
+ *
+ * This corresponds closely to the <frame_style_set> tag in a theme file.
+ */
 struct _MetaFrameStyleSet
 {
   int refcount;
@@ -699,20 +758,47 @@ struct _MetaFrameStyleSet
   MetaFrameStyle *maximized_and_shaded_styles[META_FRAME_FOCUS_LAST];
 };
 
+/**
+ * A theme. This is a singleton class which groups all settings from a theme
+ * on disk together.
+ *
+ * \bug It is rather useless to keep the metadata fields in core, I think.
+ */
 struct _MetaTheme
 {
+  /** Name of the theme (on disk), e.g. "Crux" */
   char *name;
+  /** Path to the files associated with the theme */
   char *dirname;
+  /**
+   * Filename of the XML theme file.
+   * \bug Kept lying around for no discernable reason.
+   */
   char *filename;
+  /** Metadata: Human-readable name of the theme. */
   char *readable_name;
+  /** Metadata: Author of the theme. */
   char *author;
+  /** Metadata: Copyright holder. */
   char *copyright;
+  /** Metadata: Date of the theme. */
   char *date;
+  /** Metadata: Description of the theme. */
   char *description;
+  /** Version of the theme format. Older versions cannot use the features
+   * of newer versions even if they think they can (this is to allow forward
+   * and backward compatibility.
+   */
   guint format_version;
 
+  /** Symbol table of integer constants. */
   GHashTable *integer_constants;
+  /** Symbol table of float constants. */
   GHashTable *float_constants;
+  /**
+   * Symbol table of colour constants (hex triples, and triples
+   * plus alpha).
+   * */
   GHashTable *color_constants;
   GHashTable *images_by_filename;
   GHashTable *layouts_by_name;

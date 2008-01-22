@@ -1,3 +1,7 @@
+2008-01-21  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/ui/theme.[ch]: more commenting.
+
 2008-01-18  Thomas Thurman  <tthurman@gnome.org>
 
 	* src/ui/theme.[ch]: some more commenting.

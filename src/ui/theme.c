@@ -1661,7 +1661,7 @@ debug_print_tokens (PosToken *tokens,
  * Tokenises an expression.
  *
  * \param      expr        The expression
- * \param[out] token_p     The resulting tokens
+ * \param[out] tokens_p    The resulting tokens
  * \param[out] n_tokens_p  The number of resulting tokens
  * \param[out] err  set to the problem if there was a problem
  *
@@ -1794,6 +1794,10 @@ pos_tokenize (const char  *expr,
   return FALSE;
 }
 
+/**
+ * The type of a PosExpr: either integer, double, or an operation.
+ * \ingroup parser
+ */
 typedef enum
 {
   POS_EXPR_INT,
@@ -1802,8 +1806,14 @@ typedef enum
 } PosExprType;
 
 /**
+ * Type and value of an expression in a parsed sequence. We don't
+ * keep expressions in a tree; if this is of type POS_EXPR_OPERATOR,
+ * the arguments of the operator will be in the array positions
+ * immediately preceding and following this operator; they cannot
+ * themselves be operators.
  *
  * \bug operator is char; it should really be of PosOperatorType.
+ * \ingroup parser
  */
 typedef struct
 {
@@ -2218,10 +2228,11 @@ pos_eval_get_variable (PosToken                  *t,
  * \param n_tokens  How many tokens are in the list.
  * \param env  The environment context in which to evaluate the expression.
  * \param[out] result  The current value of the expression
+ * 
  * \bug Yes, we really do reparse the expression every time it's evaluated.
  *      We should keep the parse tree around all the time and just
  *      run the new values through it.
- * \bug FIXME write this
+ * \ingroup parser
  */
 static gboolean
 pos_eval_helper (PosToken                   *tokens,
@@ -2398,6 +2409,7 @@ pos_eval_helper (PosToken                   *tokens,
  * \return  True if we evaluated the expression successfully; false otherwise.
  *
  * \bug Shouldn't spec be const?
+ * \ingroup parser
  */
 static gboolean
 pos_eval (MetaDrawSpec              *spec,
@@ -3969,6 +3981,15 @@ meta_draw_op_list_contains (MetaDrawOpList    *op_list,
   return FALSE;
 }
 
+/**
+ * Constructor for a MetaFrameStyle.
+ *
+ * \param parent  The parent style. Data not filled in here will be
+ *                looked for in the parent style, and in its parent
+ *                style, and so on.
+ *
+ * \return The newly-constructed style.
+ */
 MetaFrameStyle*
 meta_frame_style_new (MetaFrameStyle *parent)
 {
@@ -3988,6 +4009,12 @@ meta_frame_style_new (MetaFrameStyle *parent)
   return style;
 }
 
+/**
+ * Increases the reference count of a frame style.
+ * If the style is NULL, this is a no-op.
+ *
+ * \param style  The style.
+ */
 void
 meta_frame_style_ref (MetaFrameStyle *style)
 {
