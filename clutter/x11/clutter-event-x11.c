@@ -587,7 +587,11 @@ event_translate (ClutterBackend *backend,
     case DestroyNotify:
       CLUTTER_NOTE (EVENT, "destroy notify:\txid: %ld",
                     xevent->xdestroywindow.window);
-      event->type = event->any.type = CLUTTER_DESTROY_NOTIFY;
+      if (xevent->xdestroywindow.window == stage_xwindow &&
+          !stage_x11->is_foreign_xwin)
+        event->type = event->any.type = CLUTTER_DESTROY_NOTIFY;
+      else
+        res = FALSE;
       break;
 
     case ClientMessage:

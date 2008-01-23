@@ -24,7 +24,7 @@ AC_INIT([clutter],
 AC_CONFIG_SRCDIR([clutter/clutter.h])
 AM_CONFIG_HEADER([config.h])
 
-AM_INIT_AUTOMAKE([1.7])
+AM_INIT_AUTOMAKE([1.9])
 
 CLUTTER_MAJOR_VERSION=clutter_major_version
 CLUTTER_MINOR_VERSION=clutter_minor_version
@@ -396,6 +396,7 @@ AC_CONFIG_FILES([
         clutter/Makefile
         clutter/clutter-version.h
         clutter/x11/Makefile
+        clutter/x11/clutter-x11.pc
         clutter/glx/Makefile
         clutter/eglx/Makefile
         clutter/eglnative/Makefile

@@ -1,8 +1,8 @@
 SUBDIRS = clutter tests doc
 
-pcfiles = clutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.pc
+pcfiles = clutter-$(CLUTTER_FLAVOUR)-$(CLUTTER_API_VERSION).pc
 
-%-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.pc: %.pc
+clutter-$(CLUTTER_FLAVOUR)-$(CLUTTER_API_VERSION).pc: clutter.pc
 	cp $< $@
 
 pkgconfig_DATA = $(pcfiles)
@@ -12,7 +12,8 @@ DEFAULT_FLAVOUR = @CLUTTER_FLAVOUR@
 install-data-hook:
 	(cd $(DESTDIR)$(pkgconfigdir) && \
 	 test -f clutter-$(DEFAULT_FLAVOUR)-@CLUTTER_MAJORMINOR@.pc && \
-	 rm -f clutter-@CLUTTER_MAJORMINOR@.pc && cp -f clutter-$(DEFAULT_FLAVOUR)-@CLUTTER_MAJORMINOR@.pc clutter-@CLUTTER_MAJORMINOR@.pc)
+	 rm -f clutter-@CLUTTER_MAJORMINOR@.pc && \
+	 cp -f clutter-$(DEFAULT_FLAVOUR)-@CLUTTER_MAJORMINOR@.pc clutter-@CLUTTER_MAJORMINOR@.pc)
 
 uninstall-local:
 	rm -f $(DESTDIR)$(pkgconfigdir)/clutter-@CLUTTER_MAJORMINOR@.pc

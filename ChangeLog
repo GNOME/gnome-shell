@@ -1,3 +1,23 @@
+2008-01-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* Makefile.am: Use variables, instead of substitutions.
+
+	* clutter/clutter-private.h:
+	* clutter/clutter-main.h: Make clutter_do_event() public again,
+	as we need it in clutter-gtk.
+
+	* configure.ac:
+	* clutter/x11/Makefile.am:
+	* clutter/x11/clutter-x11.pc.in: Add a clutter-x11 pkg-config
+	file for clutter-gtk, as it depends on the X11 backend API, as
+	implemented by the GLX and EGLX backends.
+
+	* clutter/x11/clutter-event-x11.c (event_translate): Do not
+	propagate DestroyNotify events if the stage doesn't own the
+	window.
+
+	* tests/test-scale.c (main): Set values different from the default.
+
 2008-01-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-scale.c:

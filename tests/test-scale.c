@@ -66,7 +66,7 @@ main (int argc, char *argv[])
 
   behave = clutter_behaviour_scale_new (alpha,
 					0.0, 0.0, /* scale start */
-					1.0, 1.0, /* scale end */
+					1.5, 1.5, /* scale end */
 					gravities[gindex]);
 
   clutter_behaviour_apply (behave, rect); 

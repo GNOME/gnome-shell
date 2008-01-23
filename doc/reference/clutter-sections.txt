@@ -960,6 +960,9 @@ clutter_grab_pointer
 clutter_ungrab_keyboard
 clutter_ungrab_pointer
 
+<SUBSECTION>
+clutter_do_event
+
 <SUBSECTION Standard>
 CLUTTER_INIT_ERROR
 <SUBSECTION Private>

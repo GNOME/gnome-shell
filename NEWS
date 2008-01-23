@@ -1,3 +1,27 @@
+Clutter 0.5.4 (xx/01/2008)
+==========================
+
+ * List of changes between 0.5.2 and 0.5.4
+
+ * List of bugs fixed
+
+   o #564 - Add more precise clutter_qdivx() [Gwenole Beauchesne]
+   o #614 - ClutterActor API inconsistencies
+   o #640 - ClutterTexture unrealized with no GL context
+   o #654 - Under heavy load clutter sometimes drops the last frame of
+     a timeline [Johan Bilien]
+   o #672 - Event handling in osx backend is broken [Tommi Komulainen]
+   o #684 - Improve test-scale by also using anchor point [Jaap A. Haitsma]
+   o #695 - clutter-shader: Invalid format string for
+     gssize [Tommi Komulainen]
+   o #696 - cogl_get_proc_address requires GLX [Tommi Komulainen]
+   o #709 - clutter_effect_scale inconsistent with clutter_actor_set_scale
+   o #714 - clutter_event_copy for enter/leave event generates
+     extra unref [Neil Roberts]
+   o #715 - Type errors in test-shader
+   o #720 - BehaviourScale not working in python after recent
+     API change [Josh Stewart]
+
 Clutter 0.5.2 (14/01/2008)
 ==========================
 

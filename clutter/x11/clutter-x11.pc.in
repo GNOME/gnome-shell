@@ -1,0 +1,14 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+backend=@clutterbackend@
+apiversion=@CLUTTER_API_VERSION@
+requires=@CLUTTER_REQUIRES@
+
+Name: Clutter
+Description: Clutter Core Library (${backend} backend)
+Version: @VERSION@
+Libs: -L${libdir} -lclutter-${backend}-${apiversion}
+Cflags: -I${includedir}/clutter-${apiversion}
+Requires: ${requires}

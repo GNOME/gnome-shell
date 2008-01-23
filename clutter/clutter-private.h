@@ -150,9 +150,6 @@ gboolean      _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint
                                                     const GValue          *handler_return,
                                                     gpointer               dummy);
 
-/* Does this need to be private ? */
-void clutter_do_event (ClutterEvent *event);
-
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_PRIVATE_H */

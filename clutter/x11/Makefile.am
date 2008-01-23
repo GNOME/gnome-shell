@@ -1,6 +1,12 @@
 libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
 libclutterinclude_HEADERS = clutter-x11.h
 
+clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-x11.pc
+	@cp -f $< $(@F)
+
+pkgconfig_DATA = clutter-x11-@CLUTTER_API_VERSION@.pc
+pkgconfigdir   = $(libdir)/pkgconfig
+
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterX11\" \
 	-I$(top_srcdir) \
@@ -21,3 +27,5 @@ libclutter_x11_la_SOURCES = \
 	clutter-stage-x11.h \
 	clutter-stage-x11.c \
 	clutter-x11.h
+
+EXTRA_DIST = clutter-x11.pc.in
