@@ -1,3 +1,8 @@
+2008-01-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-group.c: Use a shorter Z order sorting function,
+	avoiding the checks.
+
 2008-01-25  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-shader.c: added documentation strings for
