@@ -1,7 +1,22 @@
-Clutter 0.5.4 (xx/01/2008)
+Clutter 0.5.4 (25/01/2008)
 ==========================
 
  * List of changes between 0.5.2 and 0.5.4
+
+   o A clutter-x11-<major>.<minor> pkg-config file is installed along
+     with the clutter-<major>.<minor> and clutter-<backend>-<major>.<minor>
+     ones, for libraries and applications depending on the X11-based
+     backends (GLX and EGLX).
+
+   o Textures are correctly unrealized before changing and freeing the
+     main GL context.
+
+   o It is now possible to block the automatic call to clutter_main_quit()
+     when closing the stage window using the frame controls by connecting
+     an handler for the ::event signal on the Clutter stage and checking
+     for the CLUTTER_DELETE event type and returning TRUE. This allows
+     the usage of other main loops with GLib reactors (like Python's twisted)
+     with Clutter without triggering assertions by closing the stage window.
 
  * List of bugs fixed
 

@@ -1,5 +1,18 @@
 2008-01-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/x11/Makefile.am: Add the generated clutter-x11 pkg-config
+	file to CLEANFILES, to pass distcheck.
+
+	* Makefile.am:
+	* clutter/Makefile.am: Tweak up the Makefiles.
+
+	* README:
+	* NEWS: Release 0.5.4
+
+	* configure.ac: Post-release bump to 0.5.5
+
+2008-01-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-group.c: Use a shorter Z order sorting function,
 	avoiding the checks.
 

@@ -8,7 +8,7 @@ Clutter currently requires:
 
   * GLib >= 2.14.0
   * GdkPixbuf
-  * Pango 1.18
+  * Pango >= 1.18
   * OpenGL >= 1.2 or OpenGL ES 1.1
   * GLX, SDL or an EGL Implementation
 
@@ -210,6 +210,13 @@ Release Notes for Clutter 0.6.0
   matching the clutter_actor_set_scale() function. This also changed the
   clutter_effect_scale() function, which now accepts the final scale
   factor on both the X and Y axis.
+
+* The clutter_do_event() is now public; it can be used to feed an event to
+  Clutter and let it generate the capture-bubble signal emissions; it should
+  not be used by applications.
+
+* In the X11-based backends, the DestroyNotify event is not propagated to
+  Clutter core if the stage is using a foreign window.
 
 Release Notes for Clutter 0.4.0
 -------------------------------

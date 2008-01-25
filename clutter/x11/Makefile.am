@@ -28,4 +28,6 @@ libclutter_x11_la_SOURCES = \
 	clutter-stage-x11.c \
 	clutter-x11.h
 
+CLEANFILES = clutter-x11-$(CLUTTER_API_VERSION).pc
+
 EXTRA_DIST = clutter-x11.pc.in

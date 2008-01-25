@@ -13,20 +13,20 @@ GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
 INCLUDES = \
-	-I$(top_srcdir) 			\
-	-I$(top_srcdir)/clutter/pango 		\
-	-I$(top_srcdir)/clutter/cogl 	        \
-	-I$(top_srcdir)/clutter/cogl/@CLUTTER_COGL@ \
-	-I$(top_srcdir)/clutter/json 		\
-	-DCLUTTER_PREFIX=\""$(prefix)"\" 	\
-	-DCLUTTER_LIBDIR=\""$(libdir)"\" 	\
-	-DCLUTTER_DATADIR=\""$(datadir)"\"	\
-	-DG_DISABLE_DEPRECATED 			\
-	-DG_LOG_DOMAIN=\"Clutter\" 		\
-	-DCLUTTER_JSON_API=1			\
-	$(GCC_FLAGS) 				\
-	$(CLUTTER_CFLAGS) 			\
-	$(CLUTTER_DEBUG_CFLAGS)			\
+	-I$(top_srcdir) 				\
+	-I$(top_srcdir)/clutter/pango			\
+	-I$(top_srcdir)/clutter/cogl			\
+	-I$(top_srcdir)/clutter/cogl/$(CLUTTER_COGL)	\
+	-I$(top_srcdir)/clutter/json 			\
+	-DCLUTTER_PREFIX=\""$(prefix)"\"		\
+	-DCLUTTER_LIBDIR=\""$(libdir)"\"		\
+	-DCLUTTER_DATADIR=\""$(datadir)"\"		\
+	-DG_DISABLE_DEPRECATED 				\
+	-DG_LOG_DOMAIN=\"Clutter\" 			\
+	-DCLUTTER_JSON_API=1				\
+	$(GCC_FLAGS) 					\
+	$(CLUTTER_CFLAGS) 				\
+	$(CLUTTER_DEBUG_CFLAGS)				\
 	$(NULL)
 
 LDADD = \
@@ -172,17 +172,18 @@ source_h_priv = \
 	clutter-script-private.h	\
 	$(NULL)
 
-
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
   $(CLUTTER_LIBS) \
   pango/libpangoclutter.la \
-  @CLUTTER_FLAVOUR@/libclutter-@CLUTTER_FLAVOUR@.la \
-  cogl/@CLUTTER_COGL@/libclutter-cogl.la \
+  $(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
+  cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
   json/libclutter-json.la \
   $(backendextralib)
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
-  $(source_c) $(source_h) $(source_h_priv)
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES = \
+	$(source_c) \
+	$(source_h) \
+	$(source_h_priv)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
 
@@ -190,7 +191,7 @@ lib_LTLIBRARIES = $(clutterbackendlib)
 
 EXTRA_LTLIBRARIES = libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 
-clutterdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
+clutterdir = $(includedir)/clutter-$(CLUTTER_API_VERSION)/clutter
 
 clutter_HEADERS = \
 	$(source_h) \
@@ -209,4 +210,5 @@ EXTRA_DIST = \
 	clutter-marshal.list \
 	clutter-version.h.in \
 	clutter-enum-types.h.in \
-	clutter-enum-types.c.in
+	clutter-enum-types.c.in \
+	$(NULL)
