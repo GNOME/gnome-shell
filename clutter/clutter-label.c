@@ -312,16 +312,11 @@ clutter_label_query_coords (ClutterActor    *self,
 			    ClutterActorBox *box)
 {
   ClutterLabel *label = CLUTTER_LABEL(self);
-  ClutterLabelPrivate *priv;  
+  ClutterLabelPrivate *priv;
+  ClutterActorBox layout_box = { 0, };
   PangoRectangle logical_rect;
 
   priv = label->priv;
-
-  if ((priv->allocation.x2 - priv->allocation.x1) > 0)
-    {
-      *box = priv->allocation;
-      return;
-    }
 
   if (priv->wrap)
     clutter_label_clear_layout (label);
@@ -330,8 +325,28 @@ clutter_label_query_coords (ClutterActor    *self,
 
   pango_layout_get_extents (priv->layout, NULL, &logical_rect);
 
-  box->x2 = box->x1 + CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.width);
-  box->y2 = box->y1 + CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.height);
+  layout_box.x1 = box->x1;
+  layout_box.x2 = box->x1 + CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.width);
+  layout_box.y1 = box->y1;
+  layout_box.y2 = box->y1 + CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.height);
+
+  if ((priv->allocation.x2 - priv->allocation.x1) > 0)
+    {
+      ClutterUnit alloc_width, alloc_height;
+
+      alloc_width = priv->allocation.x2 - priv->allocation.x1;
+      alloc_height = priv->allocation.y2 - priv->allocation.y1;
+
+      if ((alloc_width >= (layout_box.x2 - layout_box.x1)) &&
+          (alloc_height >= (layout_box.y2 - layout_box.y1)))
+        *box = priv->allocation;
+      else
+        *box = layout_box;
+
+      return;
+    }
+  else
+    *box = layout_box;
 }
 
 static void

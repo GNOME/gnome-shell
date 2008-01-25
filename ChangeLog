@@ -1,3 +1,11 @@
+2008-01-25  Emmanuele Bassi  <ebassi@sprite>
+
+	* clutter/clutter-label.c (clutter_label_query_coords): Check
+	if the layout logical rectangle size is bigger than the bounding
+	box; this usually means that the bounding box changed in one
+	point and the label private allocation needs to be
+	updated. (#724)
+
 2008-01-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/x11/Makefile.am: Add the generated clutter-x11 pkg-config
