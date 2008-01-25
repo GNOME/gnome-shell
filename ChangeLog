@@ -1,5 +1,10 @@
 2008-01-25  Emmanuele Bassi  <ebassi@sprite>
 
+	* clutter/clutter-group.c (sort_z_order): Invert condition to
+	return to the same as in revision 1976.
+
+2008-01-25  Emmanuele Bassi  <ebassi@sprite>
+
 	* clutter/clutter-label.c (clutter_label_query_coords): Check
 	if the layout logical rectangle size is bigger than the bounding
 	box; this usually means that the bounding box changed in one

@@ -389,7 +389,7 @@ sort_z_order (gconstpointer a,
   depth_a = clutter_actor_get_depth (CLUTTER_ACTOR(a));
   depth_b = clutter_actor_get_depth (CLUTTER_ACTOR(b));
 
-  return (depth_b - depth_a);
+  return (depth_a - depth_b);
 }
 
 static void
