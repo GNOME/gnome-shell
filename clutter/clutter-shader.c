@@ -207,7 +207,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
   /**
    * ClutterShader:vertex-source:
    *
-   * FIXME
+   * GLSL source code for the vertex shader part of the shader program, if any.
    *
    * Since: 0.6
    */
@@ -221,7 +221,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
   /**
    * ClutterShader:fragment-source:
    *
-   * FIXME
+   * GLSL source code for the fragment shader part of the shader program.
    *
    * Since: 0.6
    */
@@ -235,7 +235,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
   /**
    * ClutterShader:bound:
    *
-   * FIXME
+   * Whether the shader is bound (compiled and linked, ready for use in the GL context).
    *
    * Since: 0.6
    */
@@ -249,7 +249,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
   /**
    * ClutterShader:enabled:
    *
-   * FIXME
+   * Whether the shader is currently used in the GL rendering pipeline.
    *
    * Since: 0.6
    */
@@ -282,9 +282,9 @@ clutter_shader_init (ClutterShader *self)
 /**
  * clutter_shader_new:
  *
- * FIXME
+ * Create a new #ClutterShader instance.
  *
- * Return value: FIXME
+ * Return value: a new #ClutterShader.
  *
  * Since: 0.6
  */
@@ -298,11 +298,11 @@ clutter_shader_new (void)
 /**
  * clutter_shader_set_fragment_source:
  * @shader: a #ClutterShader
- * @data: FIXME
- * @length: FIXME (currently ignored)
+ * @data: GLSL source code.
+ * @length: length of source buffer (currently ignored)
  *
- * FIXME
- *
+ * Sets the GLSL source code to be used by a #ClutterShader for the fragment
+ * program.
  *
  * Since: 0.6
  */
@@ -313,6 +313,8 @@ clutter_shader_set_fragment_source (ClutterShader      *shader,
 {
   ClutterShaderPrivate *priv;
   gboolean is_glsl;
+
+  /* FIXME: do not ignore length, since we are exposing it in the API */
 
   if (shader == NULL)
     g_error ("quack!");
@@ -347,10 +349,11 @@ clutter_shader_set_fragment_source (ClutterShader      *shader,
 /**
  * clutter_shader_set_vertex_source:
  * @shader: a #ClutterShader
- * @data: FIXME
- * @length: FIXME (currently ignored)
+ * @data: GLSL source code.
+ * @length: length of source buffer (currently ignored)
  *
- * FIXME
+ * Sets the GLSL source code to be used by a #ClutterShader for the vertex
+ * program.
  *
  * Since: 0.6
  */
@@ -452,9 +455,11 @@ bind_glsl_shader (ClutterShader  *self,
  * @shader: a #ClutterShader
  * @error: return location for a #GError, or %NULL
  *
- * FIXME
+ * Compile and link GLSL sources set for vertex and fragment shaders for
+ * a #ClutterShader. If the compilation fails and a #GError return location is
+ * provided the error will contain the errors from the compiler, if any.
  *
- * Return value: FIXME
+ * Return value: returns TRUE if the shader was succesfully bound.
  *
  * Since: 0.6
  */
@@ -474,9 +479,8 @@ clutter_shader_bind (ClutterShader  *shader,
   if ((priv->vertex_source   && !priv->vertex_is_glsl) ||
       (priv->fragment_source && !priv->fragment_is_glsl))
     {
-      /* XXX: maybe this error message should be about only GLSL
-shaders supportes as of now
-       */
+      /* XXX: Could remove this check, since we only advertise support for GLSL
+       * shaders anyways. */
       g_set_error (error, CLUTTER_SHADER_ERROR,
                    CLUTTER_SHADER_ERROR_NO_ASM,
                    "ASM shaders not supported");
@@ -505,7 +509,7 @@ shaders supportes as of now
  * clutter_shader_release:
  * @shader: a #ClutterShader
  *
- * FIXME
+ * Free up any GL context resources held by the shader.
  *
  * Since: 0.6
  */
@@ -544,9 +548,9 @@ clutter_shader_release (ClutterShader *shader)
  * clutter_shader_is_bound:
  * @shader: a #ClutterShader
  *
- * FIXME
+ * Checks whether @shader is is currently compiled, linked and bound to the GL context.
  *
- * Return value: FIXME
+ * Return value: %TRUE if the shader is compiled, linked and ready for use.
  *
  * Since: 0.6
  */
@@ -561,9 +565,11 @@ clutter_shader_is_bound (ClutterShader *shader)
 /**
  * clutter_shader_set_is_enabled:
  * @shader: a #ClutterShader
- * @enabled: FIXME
+ * @enabled: The new state of the shader.
  *
- * FIXME
+ * Enable a shader, will attempt to bind the shader if it isn't already bound.
+ * When FALSE is passed in the default state of the GL pipeline will be used
+ * instead.
  *
  * Since: 0.6
  */
@@ -608,9 +614,9 @@ clutter_shader_set_is_enabled (ClutterShader *shader,
  * clutter_shader_get_is_enabled:
  * @shader: a #ClutterShader
  *
- * FIXME
+ * Checks whether @shader is enabled.
  *
- * Return value: FIXME
+ * Return value: %TRUE if the shader is enabled.
  *
  * Since: 0.6
  */
@@ -625,10 +631,11 @@ clutter_shader_get_is_enabled (ClutterShader *shader)
 /**
  * clutter_shader_set_uniform_1f:
  * @shader: a #ClutterShader
- * @name: FIXME
- * @value: FIXME
+ * @name: name of uniform in vertex or fragment program to set.
+ * @value: the new value of the uniform.
  *
- * FIXME
+ * Sets a user configurable variable in the shader programs attached
+ * to a #ClutterShader.
  *
  * Since: 0.6
  */
@@ -652,7 +659,8 @@ clutter_shader_set_uniform_1f (ClutterShader *shader,
 /**
  * clutter_shader_release_all:
  *
- * FIXME
+ * Iterate through all #ClutterShaders and tell them to release GL context
+ * related sources.
  *
  * Since: 0.6
  */
@@ -669,7 +677,7 @@ clutter_shader_release_all (void)
  * clutter_shader_get_fragment_source:
  * @shader: a #ClutterShader
  *
- * FIXME
+ * Query the current GLSL fragment source set on @shader.
  *
  * Return value: the source of the fragment shader for this ClutterShader object
  * or %NULL. The returned string is owned by the shader object and should never
@@ -688,7 +696,7 @@ clutter_shader_get_fragment_source (ClutterShader *shader)
  * clutter_shader_get_vertex_source:
  * @shader: a #ClutterShader
  *
- * FIXME
+ * Query the current GLSL vertex source set on @shader.
  *
  * Return value: the source of the vertex shader for this ClutterShader object
  * or %NULL. The returned string is owned by the shader object and should never

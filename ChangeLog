@@ -1,3 +1,8 @@
+2008-01-25  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-shader.c: added documentation strings for
+	ClutterShader.
+
 2008-01-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Use variables, instead of substitutions.
