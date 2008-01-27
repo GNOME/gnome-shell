@@ -35,7 +35,7 @@ main (int argc, char *argv[])
 {
   ClutterTimeline *timeline;
   ClutterActor *stage;
-  ClutterActor *hand, *label, *rect;
+  ClutterActor *group, *hand, *label, *rect;
   ClutterColor stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
   ClutterColor rect_color = { 0, 0, 0, 0x88 };
   GdkPixbuf *pixbuf;
@@ -56,6 +56,10 @@ main (int argc, char *argv[])
                     "button-press-event", G_CALLBACK (clutter_main_quit),
                     NULL);
 
+  group = clutter_group_new ();
+  clutter_stage_add (stage, group);
+  clutter_actor_show (group);
+
   label = clutter_label_new_with_text ("Mono 26", "Clutter");
   clutter_actor_set_position (label, 40, 140);
   clutter_actor_show (label);
@@ -69,7 +73,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (rect, 200, 200);
   clutter_actor_show (rect);
 
-  clutter_container_add (CLUTTER_CONTAINER (stage), hand, label, rect, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (group), hand, label, rect, NULL);
 
   /* 3 seconds, at 60 fps */
   timeline = clutter_timeline_new (180, 60);
@@ -81,9 +85,7 @@ main (int argc, char *argv[])
                                                                   CLUTTER_ALPHA_RAMP_INC,
                                                                   NULL, NULL),
                                           -500, 0);
-  clutter_behaviour_apply (d_behave, hand);
-  clutter_behaviour_apply (d_behave, label);
-  clutter_behaviour_apply (d_behave, rect);
+  clutter_behaviour_apply (d_behave, group);
 
   clutter_actor_show (stage);
 

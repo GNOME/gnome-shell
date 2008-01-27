@@ -1,9 +1,14 @@
-2008-01-25  Emmanuele Bassi  <ebassi@sprite>
+2008-01-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* tests/test-depth.c (main): Use a group instead of pushing
+	the actors on the stage.
+
+2008-01-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-group.c (sort_z_order): Invert condition to
 	return to the same as in revision 1976.
 
-2008-01-25  Emmanuele Bassi  <ebassi@sprite>
+2008-01-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-label.c (clutter_label_query_coords): Check
 	if the layout logical rectangle size is bigger than the bounding
