@@ -4785,7 +4785,7 @@ convert_property (MetaDisplay *display,
    * can send SelectionNotify
    */
   /* FIXME the error trap pop synced anyway, right? */
-  meta_topic (META_DEBUG_SYNC, "Syncing on %s\n", G_GNUC_FUNCTION);
+  meta_topic (META_DEBUG_SYNC, "Syncing on %s\n", G_STRFUNC);
   XSync (display->xdisplay, False);
 
   return TRUE;

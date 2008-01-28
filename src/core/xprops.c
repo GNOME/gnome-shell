@@ -965,7 +965,7 @@ meta_prop_get_values (MetaDisplay   *display,
                * property notify on an atom we don't care about.
                */
               if (values[i].atom != None)
-                meta_bug ("META_PROP_VALUE_INVALID requested in %s\n", G_GNUC_FUNCTION);
+                meta_bug ("META_PROP_VALUE_INVALID requested in %s\n", G_STRFUNC);
               break;
             case META_PROP_VALUE_UTF8_LIST:
             case META_PROP_VALUE_UTF8:
@@ -1015,7 +1015,7 @@ meta_prop_get_values (MetaDisplay   *display,
   
   /* Get replies for all our tasks */
   meta_topic (META_DEBUG_SYNC, "Syncing to get %d GetProperty replies in %s\n",
-              n_values, G_GNUC_FUNCTION);
+              n_values, G_STRFUNC);
   XSync (display->xdisplay, False);
   
   /* Collect results, should arrive in order requested */

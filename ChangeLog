@@ -1,3 +1,10 @@
+2008-01-28  Christian Persch  <chpe@gnome.org>
+
+	* src/core/display.c: (convert_property):
+	* src/core/screen.c: (meta_screen_calc_workspace_layout):
+	* src/core/xprops.c: (meta_prop_get_values): 
+	Use G_STRFUNC instead of the deprecated G_GNUC_FUNCTION. Bug #512561.
+
 2008-01-21  Thomas Thurman  <tthurman@gnome.org>
 
 	* src/ui/theme.[ch]: more commenting.
