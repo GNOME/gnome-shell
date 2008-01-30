@@ -5,18 +5,24 @@ General notes and rules on clutter core hacking;
 
  - GNU style indentation, please wrap at 80 chars. 
 
- - All non static public API funcs should be documented in the .c via gtk-doc
+ - All non static public API funcs should be documented in the source files
+   via gtk-doc. Structures, enumerations and macros should be documented in
+   the header files.
+
+ - All non-trivial static and private API should be documented, especially
+   the eventual lifetime handling of the arguments/return values or locking
+   of mutexes.
 
  - All public functions with float parameters should also provide a fixed
    point version. Fixed point should be used internally.
 
- - Propertys should always be float (never fixed). 
+ - Properties should always be float (never fixed). 
 
- - API funcs should always use g_return_*
+ - API funcs should always check their arguments with g_return_*().
 
  - Really try to avoid if possible additions to clutter-private.h
 
- - Dont add direct GL calls but wrap with cogl (also adding GL ES Version)
+ - Don't add direct GL calls but wrap with cogl (also adding GL ES Version)
 
  - Use CLUTTER_NOTE() macro for debug statements.
 
@@ -39,13 +45,17 @@ In making a new release;
 
  - Add a Release entry to the ChangeLog noting version.
 
- - make distcheck and fix if fails. 
+ - Call make distcheck and fix if fails. 
 
- - commit.
+ - Upload the tarball.
 
- - Make tarballs, upload.
+ - Bump to the next odd number version.
+
+ - Commit.
  
  - Announce release to waiting world on blog and mailing list.
 
  - Release any dependant add-ons following similar rules to above. 
    Dont forget to check *.pc file version deps!
+
+$LastChangedDate$

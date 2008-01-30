@@ -209,7 +209,11 @@ Release Notes for Clutter 0.6.0
   been changed to accomodate the scaling factors on both the X and Y axis,
   matching the clutter_actor_set_scale() function. This also changed the
   clutter_effect_scale() function, which now accepts the final scale
-  factor on both the X and Y axis.
+  factor on both the X and Y axis. The gravity property has also been
+  removed, as it behaved incorrectly with regards to the anchor point. When
+  scaling an actor using a BehaviourScale, the anchor point should be set
+  before applying the behaviour (remember to adjust the positioning as
+  well by factoring in the anchor point).
 
 * The clutter_do_event() is now public; it can be used to feed an event to
   Clutter and let it generate the capture-bubble signal emissions; it should

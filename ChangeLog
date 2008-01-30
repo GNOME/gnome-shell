@@ -1,3 +1,11 @@
+2008-01-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* HACKING: Expand the "document API" point, and the release
+	process.
+
+	* README: Update the release notes regarding the scale behaviour,
+	now that the gravity has been removed.
+
 2007-01-30  Tomas Frydrych  <tf@openedhand.com>
 
         * clutter/clutter-actor.c:
