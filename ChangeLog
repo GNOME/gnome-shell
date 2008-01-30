@@ -1,5 +1,12 @@
 2008-01-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* README: Add the osx flavour, and mark it experimental,
+	along with the sdl backend. EGL-based backends should not be
+	considered experimental anymore, even though they might require
+	tweaking.
+
+2008-01-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* HACKING: Expand the "document API" point, and the release
 	process.
 

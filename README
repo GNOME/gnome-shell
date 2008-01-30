@@ -53,22 +53,22 @@ See the INSTALL file. Info on specific Clutter options;
 	Assume target hardware has no floating point unit. Useful only
 	for embedded targets such as ARM.
 
-  --with-flavour=[glx/eglx/eglnative/sdl]
-        Select the Clutter backend: (defualt=glx)
+  --with-flavour=[glx/eglx/eglnative/sdl/osx]
+        Select the Clutter backend: (default=glx)
 
 	  glx: Fully featured GLX backend. Using Open GL.
 
 	  eglx: EGL/Open GL ES backend for EGL on X windows implementations
-		(experimental)
 
 	  eglnative: EGL/Open GL ES backend on 'native windowing system' - i.e
 		     raw framebuffer. Expects EGL implementation to provide a 
 		     createNativeWindow () call. Also optionally supports 
 		     tslib for touchscreen events.
-		     (experimental)
 
 	  sdl: Basic SDL backend, using Open GL. Should provide portability
-	       to windows and possibly other OS's. 
+	       to Windows and possibly other OS's. (experimental)
+
+          osx: OS X backend. (experimental)
 
 
 VERSIONING
