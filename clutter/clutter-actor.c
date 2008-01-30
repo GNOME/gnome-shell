@@ -49,6 +49,9 @@
  *   </listitem>
  * </orderedlist>
  *
+ * NB: the position of any children is referenced from the top-left corner of
+ * the parent, not the parent's anchor point.
+ *
  * Event handling
  * <orderedlist>
  *   <listitem><para>Actors emit pointer events if set reactive, see
@@ -186,14 +189,14 @@ struct _ClutterActorPrivate
 
   /* depth */
   ClutterUnit     z;
-  
+
   guint8          opacity;
-  
+
   ClutterActor   *parent_actor;
-  
+
   gchar          *name;
   guint32         id; /* Unique ID */
-  
+
   ClutterFixed    scale_x;
   ClutterFixed    scale_y;
 
@@ -203,7 +206,7 @@ struct _ClutterActorPrivate
 enum
 {
   PROP_0,
-  
+
   PROP_NAME,
 
   PROP_X,
@@ -214,7 +217,7 @@ enum
 
   PROP_CLIP,
   PROP_HAS_CLIP,
-  
+
   PROP_OPACITY,
   PROP_VISIBLE,
   PROP_REACTIVE,
@@ -4036,6 +4039,44 @@ clutter_actor_set_anchor_point (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_move_anchor_point:
+ * @self: a #ClutterActor
+ * @anchor_x: X coordinate of the anchor point
+ * @anchor_y: Y coordinate of the anchor point
+ *
+ * Sets an anchor point for the @actor, and adjusts the actor postion so that
+ * the relative position of the actor toward its parent remains the same.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_move_anchor_point (ClutterActor *self,
+				 gint          anchor_x,
+				 gint          anchor_y)
+{
+  ClutterActorPrivate *priv;
+  ClutterUnit ax = CLUTTER_UNITS_FROM_DEVICE (anchor_x);
+  ClutterUnit ay = CLUTTER_UNITS_FROM_DEVICE (anchor_y);
+  ClutterUnit dx;
+  ClutterUnit dy;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  dx = ax - priv->anchor_x;
+  dy = ay - priv->anchor_y;
+
+  priv->anchor_x = ax;
+  priv->anchor_y = ay;
+
+  priv->coords.x1 -= dx;
+  priv->coords.x2 -= dx;
+  priv->coords.y1 -= dy;
+  priv->coords.y2 -= dy;
+}
+
+/**
  * clutter_actor_get_anchor_point:
  * @self: a #ClutterActor
  * @anchor_x: return location for the X coordinate of the anchor point
@@ -4092,6 +4133,42 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_move_anchor_pointu:
+ * @self: a #ClutterActor
+ * @anchor_x: X coordinate of the anchor point
+ * @anchor_y: Y coordinate of the anchor point
+ *
+ * Sets an anchor point for the @actor, and adjusts the actor postion so that
+ * the relative position of the actor toward its parent remains the same.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_move_anchor_pointu (ClutterActor *self,
+				  ClutterUnit   anchor_x,
+				  ClutterUnit   anchor_y)
+{
+  ClutterActorPrivate *priv;
+  ClutterUnit dx;
+  ClutterUnit dy;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  dx = anchor_x - priv->anchor_x;
+  dy = anchor_y - priv->anchor_y;
+
+  priv->anchor_x = anchor_x;
+  priv->anchor_y = anchor_y;
+
+  priv->coords.x1 -= dx;
+  priv->coords.x2 -= dx;
+  priv->coords.y1 -= dy;
+  priv->coords.y2 -= dy;
+}
+
+/**
  * clutter_actor_get_anchor_pointu:
  * @self: a #ClutterActor
  * @anchor_x: return location for the X coordinace of the anchor point
@@ -4117,6 +4194,42 @@ clutter_actor_get_anchor_pointu (ClutterActor *self,
 
   if (anchor_y)
     *anchor_y = priv->anchor_y;
+}
+
+/**
+ * clutter_actor_move_anchor_point_from_gravity:
+ * @self: a #ClutterActor
+ * @gravity: #ClutterGravity.
+ *
+ * Sets an anchor point of the actor based on the given gravity, adjusting the
+ * actor postion so that its relative position within its parent remainst
+ * unchanged.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
+					      ClutterGravity  gravity)
+{
+  ClutterUnit ax, ay, dx, dy;
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  ax = priv->anchor_x;
+  ay = priv->anchor_y;
+
+  clutter_actor_set_anchor_point_from_gravity (self, gravity);
+
+  dx = ax - priv->anchor_x;
+  dy = ay - priv->anchor_y;
+
+  priv->coords.x1 -= dx;
+  priv->coords.x2 -= dx;
+  priv->coords.y1 -= dy;
+  priv->coords.y2 -= dy;
 }
 
 /**

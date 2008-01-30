@@ -142,7 +142,6 @@ ClutterTimeline *clutter_effect_scale  (ClutterEffectTemplate     *template_,
                                         ClutterActor              *actor,
                                         gdouble                    x_scale_end,
                                         gdouble                    y_scale_end,
-                                        ClutterGravity             gravity,
                                         ClutterEffectCompleteFunc  func,
                                         gpointer                   data);
 ClutterTimeline *clutter_effect_rotate (ClutterEffectTemplate     *template_,

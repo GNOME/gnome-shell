@@ -19,7 +19,7 @@ typedef struct SuperOH
   ClutterActor    *group;
   GdkPixbuf       *bgpixb;
 
-} SuperOH; 
+} SuperOH;
 
 static gint n_hands = NHANDS;
 
@@ -40,8 +40,8 @@ get_radius (void)
 }
 
 /* input handler */
-static gboolean 
-input_cb (ClutterStage *stage, 
+static gboolean
+input_cb (ClutterStage *stage,
 	  ClutterEvent *event,
 	  gpointer      data)
 {
@@ -71,7 +71,7 @@ input_cb (ClutterStage *stage,
 
       g_print ("*** key press event (key:%c) ***\n",
 	       clutter_key_event_symbol (kev));
-      
+
       if (clutter_key_event_symbol (kev) == CLUTTER_q)
         {
 	  clutter_main_quit ();
@@ -85,8 +85,8 @@ input_cb (ClutterStage *stage,
 
 /* Timeline handler */
 static void
-frame_cb (ClutterTimeline *timeline, 
-	  gint             frame_num, 
+frame_cb (ClutterTimeline *timeline,
+	  gint             frame_num,
 	  gpointer         data)
 {
   SuperOH        *oh = (SuperOH *)data;
@@ -178,15 +178,13 @@ main (int argc, char *argv[])
   /* Set up some behaviours to handle scaling  */
   alpha = clutter_alpha_new_full (timeline, CLUTTER_ALPHA_SINE, NULL, NULL);
 
-  scaler_1 = clutter_behaviour_scale_new (alpha, 
-					  0.5, 0.5, 
-					  1.0, 1.0,
-					  CLUTTER_GRAVITY_CENTER);
-
-  scaler_2 = clutter_behaviour_scale_new (alpha, 
-					  1.0, 1.0,
+  scaler_1 = clutter_behaviour_scale_new (alpha,
 					  0.5, 0.5,
-					  CLUTTER_GRAVITY_CENTER);
+					  1.0, 1.0);
+
+  scaler_2 = clutter_behaviour_scale_new (alpha,
+					  1.0, 1.0,
+					  0.5, 0.5);
 
   /* create a new group to hold multiple actors in a group */
   oh->group = clutter_group_new();
@@ -207,16 +205,20 @@ main (int argc, char *argv[])
       w = clutter_actor_get_width (oh->hand[0]);
       h = clutter_actor_get_height (oh->hand[0]);
 
-      x = CLUTTER_STAGE_WIDTH () / 2 
+      x = CLUTTER_STAGE_WIDTH () / 2
           + radius
           * cos (i * M_PI / (n_hands / 2))
           - w / 2;
-      y = CLUTTER_STAGE_HEIGHT () / 2 
+      y = CLUTTER_STAGE_HEIGHT () / 2
           + radius
           * sin (i * M_PI / (n_hands / 2))
           - h / 2;
 
       clutter_actor_set_position (oh->hand[i], x, y);
+
+      clutter_actor_set_anchor_point_from_gravity (oh->hand[i],
+						   CLUTTER_GRAVITY_CENTER);
+
 
       /* Add to our group group */
       clutter_container_add_actor (CLUTTER_CONTAINER (oh->group), oh->hand[i]);
@@ -240,7 +242,7 @@ main (int argc, char *argv[])
 
 
   g_signal_connect (stage, "button-press-event",
-		    G_CALLBACK (input_cb), 
+		    G_CALLBACK (input_cb),
 		    oh);
   g_signal_connect (stage, "key-release-event",
 		    G_CALLBACK (input_cb),

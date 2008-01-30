@@ -432,18 +432,26 @@ void                  clutter_actor_set_shader_param  (ClutterActor *self,
 void                  clutter_actor_set_anchor_point  (ClutterActor          *self,
 						       gint                   anchor_x,
                                                        gint                   anchor_y);
+void                  clutter_actor_move_anchor_point  (ClutterActor          *self,
+							gint                   anchor_x,
+							gint                   anchor_y);
 void                  clutter_actor_get_anchor_point  (ClutterActor          *self,
 						       gint                  *anchor_x,
 						       gint                  *anchor_y);
 void                  clutter_actor_set_anchor_pointu (ClutterActor          *self,
 						       ClutterUnit            anchor_x,
 						       ClutterUnit            anchor_y);
+void                  clutter_actor_move_anchor_pointu (ClutterActor          *self,
+							ClutterUnit            anchor_x,
+							ClutterUnit            anchor_y);
 void                  clutter_actor_get_anchor_pointu (ClutterActor          *self,
 						       ClutterUnit           *anchor_x,
 						       ClutterUnit           *anchor_y);
 void                  clutter_actor_set_anchor_point_from_gravity (ClutterActor          *self,
 								   ClutterGravity         gravity);
 
+void                  clutter_actor_move_anchor_point_from_gravity (ClutterActor          *self,
+								    ClutterGravity         gravity);
 gboolean              clutter_actor_transform_stage_point (ClutterActor  *self,
 							   ClutterUnit    x,
 							   ClutterUnit    y,

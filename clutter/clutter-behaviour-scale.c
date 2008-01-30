@@ -56,8 +56,6 @@ struct _ClutterBehaviourScalePrivate
   ClutterFixed y_scale_start;
   ClutterFixed x_scale_end;
   ClutterFixed y_scale_end;
-
-  ClutterGravity gravity;
 };
 
 #define CLUTTER_BEHAVIOUR_SCALE_GET_PRIVATE(obj)        \
@@ -73,7 +71,6 @@ enum
   PROP_Y_SCALE_START,
   PROP_X_SCALE_END,
   PROP_Y_SCALE_END,
-  PROP_SCALE_GRAVITY
 };
 
 typedef struct {
@@ -89,13 +86,6 @@ scale_frame_foreach (ClutterBehaviour *behaviour,
   ClutterBehaviourScalePrivate *priv =
       CLUTTER_BEHAVIOUR_SCALE (behaviour)->priv;
   ScaleFrameClosure *closure = data;
-  ClutterGravity gravity = priv->gravity;
-
-  /* Don't mess with the actor anchor point of gravity is set to
-   * none
-   */
-  if (gravity != CLUTTER_GRAVITY_NONE)
-    clutter_actor_set_anchor_point_from_gravity (actor, gravity);
 
   clutter_actor_set_scalex (actor, closure->scale_x, closure->scale_y);
 }
@@ -152,9 +142,6 @@ clutter_behaviour_scale_set_property (GObject      *gobject,
     case PROP_Y_SCALE_END:
       priv->y_scale_end = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
       break;
-    case PROP_SCALE_GRAVITY:
-      priv->gravity = g_value_get_enum (value);
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -184,9 +171,6 @@ clutter_behaviour_scale_get_property (GObject    *gobject,
       break;
     case PROP_Y_SCALE_END:
       g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->y_scale_end));
-      break;
-    case PROP_SCALE_GRAVITY:
-      g_value_set_enum (value, priv->gravity);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -263,22 +247,6 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
                                                         0.0, G_MAXDOUBLE,
                                                         1.0,
                                                         CLUTTER_PARAM_READWRITE));
-  /**
-   * ClutterBehaviourScale:gravity:
-   *
-   * The gravity of the scaling.
-   *
-   * Since: 0.2
-   */
-  g_object_class_install_property (gobject_class,
-                                   PROP_SCALE_GRAVITY,
-                                   g_param_spec_enum ("scale-gravity",
-                                                      "Scale Gravity",
-                                                      "The gravity of the scaling",
-                                                      CLUTTER_TYPE_GRAVITY,
-                                                      CLUTTER_GRAVITY_CENTER,
-                                                      CLUTTER_PARAM_READWRITE));
-
 
   behave_class->alpha_notify = clutter_behaviour_scale_alpha_notify;
 
@@ -294,7 +262,6 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
 
   priv->x_scale_start = priv->x_scale_end = CFX_ONE;
   priv->y_scale_start = priv->y_scale_end = CFX_ONE;
-  priv->gravity = CLUTTER_GRAVITY_CENTER;
 }
 
 /**
@@ -304,7 +271,6 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
  * @y_scale_start: initial scale factor on the Y axis
  * @x_scale_end: final scale factor on the X axis
  * @y_scale_end: final scale factor on the Y axis
- * @gravity: a #ClutterGravity for the scale.
  *
  * Creates a new  #ClutterBehaviourScale instance.
  *
@@ -317,8 +283,7 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
 			     gdouble         x_scale_start,
 			     gdouble         y_scale_start,
 			     gdouble         x_scale_end,
-			     gdouble         y_scale_end,
-			     ClutterGravity  gravity)
+			     gdouble         y_scale_end)
 {
   g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
 
@@ -326,8 +291,7 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
 				       CLUTTER_FLOAT_TO_FIXED (x_scale_start),
 				       CLUTTER_FLOAT_TO_FIXED (y_scale_start),
 				       CLUTTER_FLOAT_TO_FIXED (x_scale_end),
-				       CLUTTER_FLOAT_TO_FIXED (y_scale_end),
-				       gravity);
+				       CLUTTER_FLOAT_TO_FIXED (y_scale_end));
 }
 
 /**
@@ -337,7 +301,6 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
  * @y_scale_start: initial scale factor on the Y axis
  * @x_scale_end: final scale factor on the X axis
  * @y_scale_end: final scale factor on the Y axis
- * @gravity: a #ClutterGravity for the scale.
  *
  * A fixed point implementation of clutter_behaviour_scale_new()
  *
@@ -350,8 +313,7 @@ clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
 			      ClutterFixed    x_scale_start,
 			      ClutterFixed    y_scale_start,
 			      ClutterFixed    x_scale_end,
-			      ClutterFixed    y_scale_end,
-			      ClutterGravity  gravity)
+			      ClutterFixed    y_scale_end)
 {
   ClutterBehaviourScale *behave;
 
@@ -363,8 +325,6 @@ clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
   behave->priv->y_scale_start = y_scale_start;
   behave->priv->x_scale_end   = x_scale_end;
   behave->priv->y_scale_end   = y_scale_end;
-
-  behave->priv->gravity = gravity;
 
   return CLUTTER_BEHAVIOUR (behave);
 }
@@ -539,42 +499,3 @@ clutter_behaviour_scale_get_boundsx (ClutterBehaviourScale *scale,
     *y_scale_end = priv->y_scale_end;
 }
 
-/**
- * clutter_behaviour_scale_set_gravity:
- * @scale: a #ClutterBehaviourScale
- * @gravity: the gravity of the scaling
- *
- * Sets the #ClutterGravity applied by the scale behaviour.
- *
- * Since: 0.6
- */
-void
-clutter_behaviour_scale_set_gravity (ClutterBehaviourScale *scale,
-                                     ClutterGravity         gravity)
-{
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_SCALE (scale));
-
-  if (scale->priv->gravity != gravity)
-    {
-      scale->priv->gravity = gravity;
-
-      g_object_notify (G_OBJECT (scale), "scale-gravity");
-    }
-}
-/**
- * clutter_behaviour_scale_get_gravity:
- * @scale: a #ClutterBehaviourScale
- *
- * Retrieves the #ClutterGravity applied by the scale behaviour.
- *
- * Return value: the gravity used by the behaviour
- *
- * Since: 0.4
- */
-ClutterGravity
-clutter_behaviour_scale_get_gravity (ClutterBehaviourScale *scale)
-{
-  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_SCALE (scale), CLUTTER_GRAVITY_NONE);
-
-  return scale->priv->gravity;
-}

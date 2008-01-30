@@ -31,7 +31,7 @@
  *
  * The #ClutterEffectTemplate class provides a simple API for applying
  * pre-defined effects to a single actor. It works as a wrapper around
- * the #ClutterBehaviour objects 
+ * the #ClutterBehaviour objects
  *
  * Since: 0.4
  */
@@ -63,9 +63,9 @@ typedef struct ClutterEffectClosure
   ClutterTimeline          *timeline;
   ClutterAlpha             *alpha;
   ClutterBehaviour         *behave;
-  
+
   gulong                    signal_id;
-  
+
   ClutterEffectCompleteFunc completed_func;
   gpointer                  completed_data;
   ClutterEffectTemplate     *template;
@@ -136,24 +136,24 @@ clutter_effect_template_dispose (GObject *object)
 }
 
 static void
-clutter_effect_template_set_property (GObject      *object, 
+clutter_effect_template_set_property (GObject      *object,
 				      guint         prop_id,
-				      const GValue *value, 
+				      const GValue *value,
 				      GParamSpec   *pspec)
 {
   ClutterEffectTemplate        *template;
   ClutterEffectTemplatePrivate *priv;
 
   template  = CLUTTER_EFFECT_TEMPLATE (object);
-  priv      = template->priv; 
+  priv      = template->priv;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_TIMELINE:
       priv->timeline = g_value_dup_object (value);
       break;
     case PROP_DO_CLONE:
-      clutter_effect_template_set_timeline_clone (template, 
+      clutter_effect_template_set_timeline_clone (template,
 						  g_value_get_boolean (value));
       break;
     default:
@@ -163,9 +163,9 @@ clutter_effect_template_set_property (GObject      *object,
 }
 
 static void
-clutter_effect_template_get_property (GObject    *object, 
+clutter_effect_template_get_property (GObject    *object,
 				      guint       prop_id,
-				      GValue     *value, 
+				      GValue     *value,
 				      GParamSpec *pspec)
 {
   ClutterEffectTemplate        *template;
@@ -174,7 +174,7 @@ clutter_effect_template_get_property (GObject    *object,
   template  = CLUTTER_EFFECT_TEMPLATE (object);
   priv      = template->priv;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_TIMELINE:
       g_value_set_object (value, priv->timeline);
@@ -185,7 +185,7 @@ clutter_effect_template_get_property (GObject    *object,
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
-    } 
+    }
 }
 
 static void
@@ -207,7 +207,7 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
    *
    * Since: 0.4
    */
-  g_object_class_install_property 
+  g_object_class_install_property
            (object_class,
 	    PROP_TIMELINE,
 	    g_param_spec_object ("timeline",
@@ -224,7 +224,7 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property 
+  g_object_class_install_property
            (object_class,
 	    PROP_DO_CLONE,
 	    g_param_spec_boolean ("clone",
@@ -272,9 +272,9 @@ clutter_effect_template_set_alpha_func (ClutterEffectTemplate *self,
  * @template_:  A #ClutterEffectTemplate
  * @setting: A boolean indicating if effects should clone the timeline.
  *
- * Sets if effects using this template should make a copy of the 
+ * Sets if effects using this template should make a copy of the
  * templates timeline (default) or reference the effects timeline.
- * 
+ *
  * Since: 0.6
  */
 void
@@ -331,7 +331,7 @@ clutter_effect_template_get_timeline_clone (ClutterEffectTemplate *template_)
  * Since: 0.4
  */
 ClutterEffectTemplate*
-clutter_effect_template_new (ClutterTimeline *timeline, 
+clutter_effect_template_new (ClutterTimeline *timeline,
 			     ClutterAlphaFunc alpha_func)
 {
   ClutterEffectTemplate *retval;
@@ -339,7 +339,7 @@ clutter_effect_template_new (ClutterTimeline *timeline,
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
   g_return_val_if_fail (alpha_func != NULL, NULL);
 
-  retval = g_object_new (CLUTTER_TYPE_EFFECT_TEMPLATE, 
+  retval = g_object_new (CLUTTER_TYPE_EFFECT_TEMPLATE,
                          "timeline", timeline,
                          NULL);
 
@@ -496,7 +496,7 @@ clutter_effect_closure_destroy (ClutterEffectClosure *c)
 
 static ClutterEffectClosure *
 clutter_effect_closure_new (ClutterEffectTemplate *template,
-			    ClutterActor          *actor, 
+			    ClutterActor          *actor,
 			    GCallback              complete)
 {
   ClutterEffectClosure *c;
@@ -517,7 +517,7 @@ clutter_effect_closure_new (ClutterEffectTemplate *template,
       c->timeline = priv->timeline;
       g_object_ref (priv->timeline);
     }
-      
+
   c->alpha    = clutter_alpha_new_full (c->timeline,
 					priv->alpha_func,
 					priv->alpha_data,
@@ -569,7 +569,7 @@ clutter_effect_fade (ClutterEffectTemplate     *template_,
   guint8 opacity_start;
 
   c = clutter_effect_closure_new (template_,
-				  actor, 
+				  actor,
 				  G_CALLBACK (on_effect_complete));
 
   c->completed_func = func;
@@ -577,13 +577,13 @@ clutter_effect_fade (ClutterEffectTemplate     *template_,
 
   opacity_start = clutter_actor_get_opacity (actor);
 
-  c->behave = clutter_behaviour_opacity_new (c->alpha, 
-					     opacity_start, 
+  c->behave = clutter_behaviour_opacity_new (c->alpha,
+					     opacity_start,
 					     opacity_end);
-  
+
   clutter_behaviour_apply (c->behave, actor);
   clutter_timeline_start (c->timeline);
-  
+
   return c->timeline;
 }
 
@@ -615,7 +615,7 @@ clutter_effect_depth (ClutterEffectTemplate     *template_,
   gint depth_start;
 
   c = clutter_effect_closure_new (template_,
-				  actor, 
+				  actor,
 				  G_CALLBACK (on_effect_complete));
 
   c->completed_func = func;
@@ -624,10 +624,10 @@ clutter_effect_depth (ClutterEffectTemplate     *template_,
   depth_start = clutter_actor_get_depth (actor);
 
   c->behave = clutter_behaviour_depth_new (c->alpha, depth_start, depth_end);
-  
+
   clutter_behaviour_apply (c->behave, actor);
   clutter_timeline_start (c->timeline);
-  
+
   return c->timeline;
 }
 
@@ -662,7 +662,7 @@ clutter_effect_move (ClutterEffectTemplate     *template_,
   ClutterKnot knots[2];
 
   c = clutter_effect_closure_new (template_,
-				  actor, 
+				  actor,
 				  G_CALLBACK (on_effect_complete));
 
   c->completed_func = func;
@@ -675,10 +675,10 @@ clutter_effect_move (ClutterEffectTemplate     *template_,
   knots[1].y = y;
 
   c->behave = clutter_behaviour_path_new (c->alpha, knots, 2);
-  
+
   clutter_behaviour_apply (c->behave, actor);
   clutter_timeline_start (c->timeline);
-  
+
   return c->timeline;
 }
 /**
@@ -710,7 +710,7 @@ clutter_effect_path (ClutterEffectTemplate     *template_,
   ClutterEffectClosure *c;
 
   c = clutter_effect_closure_new (template_,
-				  actor, 
+				  actor,
 				  G_CALLBACK (on_effect_complete));
 
   c->completed_func = func;
@@ -720,10 +720,10 @@ clutter_effect_path (ClutterEffectTemplate     *template_,
     clutter_actor_set_position (actor, knots[0].x, knots[0].y);
 
   c->behave = clutter_behaviour_path_new (c->alpha, knots, n_knots);
-  
+
   clutter_behaviour_apply (c->behave, actor);
   clutter_timeline_start (c->timeline);
-  
+
   return c->timeline;
 }
 
@@ -733,7 +733,6 @@ clutter_effect_path (ClutterEffectTemplate     *template_,
  * @actor: A #ClutterActor to apply the effect to.
  * @x_scale_end: Final X axis scale factor to apply to actor
  * @y_scale_end: Final Y axis scale factor to apply to actor
- * @gravity: A #ClutterGravity for the scale.
  * @func: A #ClutterEffectCompleteFunc to call on effect
  *   completion or NULL
  * @data: Data to pass to supplied  #ClutterEffectCompleteFunc
@@ -751,7 +750,6 @@ clutter_effect_scale (ClutterEffectTemplate     *template_,
 		      ClutterActor              *actor,
 		      gdouble                    x_scale_end,
 		      gdouble                    y_scale_end,
-		      ClutterGravity             gravity,
 		      ClutterEffectCompleteFunc  func,
 		      gpointer                   data)
 {
@@ -759,21 +757,20 @@ clutter_effect_scale (ClutterEffectTemplate     *template_,
   gdouble x_scale_start, y_scale_start;
 
   c = clutter_effect_closure_new (template_,
-				  actor, 
+				  actor,
 				  G_CALLBACK (on_effect_complete));
 
   c->completed_func = func;
   c->completed_data = data;
 
   clutter_actor_get_scale (actor, &x_scale_start, &y_scale_start);
-  c->behave = clutter_behaviour_scale_new (c->alpha, 
+  c->behave = clutter_behaviour_scale_new (c->alpha,
 					   x_scale_start, y_scale_start,
-					   x_scale_end, y_scale_end,
-					   gravity);
-  
+					   x_scale_end, y_scale_end);
+
   clutter_behaviour_apply (c->behave, actor);
   clutter_timeline_start (c->timeline);
-  
+
   return c->timeline;
 }
 
@@ -814,14 +811,14 @@ clutter_effect_rotate (ClutterEffectTemplate     *template_,
   gdouble angle_start;
 
   c = clutter_effect_closure_new (template_,
-				  actor, 
+				  actor,
 				  G_CALLBACK (on_effect_complete));
 
   c->completed_func = func;
   c->completed_data = data;
 
   angle_start = clutter_actor_get_rotation (actor, axis, NULL, NULL, NULL);
-  
+
   c->behave = clutter_behaviour_rotate_new (c->alpha,
                                             axis,
 					    direction,
@@ -832,9 +829,9 @@ clutter_effect_rotate (ClutterEffectTemplate     *template_,
 		"center-y", center_y,
 		"center-z", center_z,
 		NULL);
-  
+
   clutter_behaviour_apply (c->behave, actor);
   clutter_timeline_start (c->timeline);
-  
+
   return c->timeline;
 }

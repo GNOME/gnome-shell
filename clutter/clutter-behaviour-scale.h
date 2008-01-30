@@ -80,14 +80,12 @@ ClutterBehaviour *clutter_behaviour_scale_new  (ClutterAlpha   *alpha,
                                                 gdouble         x_scale_start,
                                                 gdouble         y_scale_start,
                                                 gdouble         x_scale_end,
-                                                gdouble         y_scale_end,
-                                                ClutterGravity  gravity);
+                                                gdouble         y_scale_end);
 ClutterBehaviour *clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
                                                 ClutterFixed    x_scale_start,
                                                 ClutterFixed    y_scale_start,
                                                 ClutterFixed    x_scale_end,
-                                                ClutterFixed    y_scale_end,
-                                                ClutterGravity  gravity);
+                                                ClutterFixed    y_scale_end);
 
 void clutter_behaviour_scale_set_bounds  (ClutterBehaviourScale *scale,
                                           gdouble                x_scale_start,
@@ -109,10 +107,6 @@ void clutter_behaviour_scale_get_boundsx (ClutterBehaviourScale *scale,
                                           ClutterFixed          *y_scale_start,
                                           ClutterFixed          *x_scale_end,
                                           ClutterFixed          *y_scale_end);
-
-void           clutter_behaviour_scale_set_gravity (ClutterBehaviourScale *scale,
-                                                    ClutterGravity         gravity);
-ClutterGravity clutter_behaviour_scale_get_gravity (ClutterBehaviourScale *scale);
 
 G_END_DECLS
 

@@ -1,3 +1,18 @@
+2007-01-30  Tomas Frydrych  <tf@openedhand.com>
+
+        * clutter/clutter-actor.c:
+        * clutter/clutter-actor.h:
+	Added new clutter_actor_move_anchor_point_ API.
+	
+        * clutter/clutter-behaviour-scale.c:
+        * clutter/clutter-behaviour-scale.h:
+        * clutter/clutter-effect.c:
+        * clutter/clutter-effect.h:
+        * tests/test-actors.c:
+        * tests/test-effects.c:
+        * tests/test-scale.c:
+	Removed gravity from ClutterBehaviourScale.
+
 2008-01-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* tests/test-depth.c (main): Use a group instead of pushing

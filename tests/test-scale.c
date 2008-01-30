@@ -20,12 +20,12 @@ void
 on_timeline_completed (ClutterTimeline *cluttertimeline,
 		       gpointer         data)
 {
-  ClutterBehaviourScale *behave = CLUTTER_BEHAVIOUR_SCALE(data);
+  ClutterActor *actor = CLUTTER_ACTOR (data);
 
   if (++gindex >= G_N_ELEMENTS (gravities))
     gindex = 0;
 
-  g_object_set (behave, "scale-gravity", gravities[gindex], NULL);
+  clutter_actor_move_anchor_point_from_gravity (actor, gravities[gindex]);
 }
 
 int
@@ -53,9 +53,9 @@ main (int argc, char *argv[])
 
   rect_color.alpha = 0xff;
   rect = clutter_rectangle_new_with_color (&rect_color);
-  clutter_actor_set_anchor_point_from_gravity (rect, CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_position (rect, 100, 100);
   clutter_actor_set_size (rect, 100, 100);
-  clutter_actor_set_position (rect, 150, 150);
+  clutter_actor_move_anchor_point_from_gravity (rect, CLUTTER_GRAVITY_CENTER);
 
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
@@ -65,15 +65,14 @@ main (int argc, char *argv[])
 				     NULL, NULL);
 
   behave = clutter_behaviour_scale_new (alpha,
-					0.0, 0.0, /* scale start */
-					1.5, 1.5, /* scale end */
-					gravities[gindex]);
+					0.0, 0.0,  /* scale start */
+					1.0, 1.0); /* scale end */
 
-  clutter_behaviour_apply (behave, rect); 
+  clutter_behaviour_apply (behave, rect);
 
   clutter_timeline_set_loop (timeline, TRUE);
-  g_signal_connect (timeline, "completed", 
-		    G_CALLBACK(on_timeline_completed), behave);
+  g_signal_connect (timeline, "completed",
+		    G_CALLBACK(on_timeline_completed), rect);
   clutter_timeline_start (timeline);
 
   clutter_actor_show_all (stage);
