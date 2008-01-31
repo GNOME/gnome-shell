@@ -327,7 +327,7 @@ clutter_backend_x11_init (ClutterBackendX11 *backend_x11)
 
 static int
 error_handler(Display     *xdpy,
-	      XErrorEvent *error)
+              XErrorEvent *error)
 {
   TrappedErrorCode = error->error_code;
   return 0;
@@ -488,8 +488,8 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
 
       if (filter->func == func && filter->data == data)
         {
-	  backend_singleton->event_filters =
-	    g_slist_remove_link (backend_singleton->event_filters, this);
+          backend_singleton->event_filters =
+            g_slist_remove_link (backend_singleton->event_filters, this);
 
           g_slist_free_1 (this);
           g_free (filter);

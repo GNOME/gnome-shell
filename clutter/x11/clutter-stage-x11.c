@@ -53,9 +53,9 @@ G_DEFINE_TYPE (ClutterStageX11, clutter_stage_x11, CLUTTER_TYPE_STAGE);
 
 static void
 send_wmspec_change_state (ClutterBackendX11 *backend_x11,
-			  Window             window,
-			  Atom               state,
-			  gboolean           add)
+                          Window             window,
+                          Atom               state,
+                          gboolean           add)
 {
   XClientMessageEvent xclient;
 
@@ -73,8 +73,8 @@ send_wmspec_change_state (ClutterBackendX11 *backend_x11,
   xclient.data.l[4] = 0;
 
   XSendEvent (backend_x11->xdpy, 
-	      DefaultRootWindow(backend_x11->xdpy), 
-	      False,
+              DefaultRootWindow(backend_x11->xdpy), 
+              False,
               SubstructureRedirectMask|SubstructureNotifyMask,
               (XEvent *)&xclient);
 }
@@ -93,13 +93,13 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
       size_hints = XAllocSizeHints();
 
       if (!resize)
-	{
-	  size_hints->max_width = size_hints->min_width =
+        {
+          size_hints->max_width = size_hints->min_width =
             stage_x11->xwin_width;
-	  size_hints->max_height = size_hints->min_height =
+          size_hints->max_height = size_hints->min_height =
             stage_x11->xwin_height;
-	  size_hints->flags = PMinSize|PMaxSize;
-	}
+          size_hints->flags = PMinSize|PMaxSize;
+        }
 
       XSetWMNormalHints (stage_x11->xdpy, stage_x11->xwin, size_hints);
 
@@ -154,7 +154,7 @@ clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11)
 
 static void
 clutter_stage_x11_query_coords (ClutterActor        *self,
-				ClutterActorBox     *box)
+                                ClutterActorBox     *box)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
 
@@ -165,7 +165,7 @@ clutter_stage_x11_query_coords (ClutterActor        *self,
 
 static void
 clutter_stage_x11_request_coords (ClutterActor        *self,
-				  ClutterActorBox     *box)
+                                  ClutterActorBox     *box)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
   gint new_width, new_height;
@@ -180,30 +180,30 @@ clutter_stage_x11_request_coords (ClutterActor        *self,
       stage_x11->xwin_height = new_height;
 
       if (stage_x11->xwin != None)
-	{
-	  XResizeWindow (stage_x11->xdpy, 
-			 stage_x11->xwin,
-			 stage_x11->xwin_width,
-			 stage_x11->xwin_height);
+        {
+          XResizeWindow (stage_x11->xdpy, 
+                         stage_x11->xwin,
+                         stage_x11->xwin_width,
+                         stage_x11->xwin_height);
 
-	  clutter_stage_x11_fix_window_size (stage_x11);
-	}
+          clutter_stage_x11_fix_window_size (stage_x11);
+        }
       
       if (stage_x11->xpixmap != None)
-	{
-	  /* Need to recreate to resize */
-	  clutter_actor_unrealize (self);
-	  clutter_actor_realize (self);
-	}
+        {
+          /* Need to recreate to resize */
+          clutter_actor_unrealize (self);
+          clutter_actor_realize (self);
+        }
 
       CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
   if (stage_x11->xwin != None) /* Do we want to bother ? */
     XMoveWindow (stage_x11->xdpy,
-		 stage_x11->xwin,
-		 CLUTTER_UNITS_TO_INT (box->x1),
-		 CLUTTER_UNITS_TO_INT (box->y1));
+                 stage_x11->xwin,
+                 CLUTTER_UNITS_TO_INT (box->x1),
+                 CLUTTER_UNITS_TO_INT (box->y1));
 }
 
 static void
@@ -218,76 +218,76 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
   if (fullscreen)
     {
       if (stage_x11->xwin != None)
-	{
+        {
           /* if the actor is not mapped we resize the stage window to match
            * the size of the screen; this is useful for e.g. EGLX to avoid
            * a resize when calling clutter_stage_fullscreen() before showing
            * the stage
            */
-	  if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
-	    {
-	      gint width, height;
+          if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
+            {
+              gint width, height;
 
-	      width  = DisplayWidth (stage_x11->xdpy, stage_x11->xscreen);
-	      height = DisplayHeight (stage_x11->xdpy, stage_x11->xscreen);
+              width  = DisplayWidth (stage_x11->xdpy, stage_x11->xscreen);
+              height = DisplayHeight (stage_x11->xdpy, stage_x11->xscreen);
 
-	      clutter_actor_set_size (CLUTTER_ACTOR (stage_x11), 
-				      width, height);
+              clutter_actor_set_size (CLUTTER_ACTOR (stage_x11), 
+                                      width, height);
 
-	      /* FIXME: This wont work if we support more states */
-	      XChangeProperty (stage_x11->xdpy,
+              /* FIXME: This wont work if we support more states */
+              XChangeProperty (stage_x11->xdpy,
                                stage_x11->xwin,
                                backend_x11->atom_NET_WM_STATE, XA_ATOM, 32,
                                PropModeReplace,
                                (unsigned char *) &backend_x11->atom_NET_WM_STATE_FULLSCREEN, 1);
-	    }
-	  else
-	    {
-	      /* We need to set window user resize-able for metacity at 
-	       * at least to allow the window to fullscreen *sigh* 	 
-	      */
-	      if (clutter_stage_get_user_resizable (stage) == TRUE)
-		was_resizeable = TRUE;
-	      else
-		clutter_stage_set_user_resizable (stage, TRUE);
+            }
+          else
+            {
+              /* We need to set window user resize-able for metacity at 
+               * at least to allow the window to fullscreen *sigh*  
+              */
+              if (clutter_stage_get_user_resizable (stage) == TRUE)
+                was_resizeable = TRUE;
+              else
+                 clutter_stage_set_user_resizable (stage, TRUE);
 
-	      send_wmspec_change_state(backend_x11, stage_x11->xwin,
-				       backend_x11->atom_NET_WM_STATE_FULLSCREEN,
-				       TRUE);
-	    }
+              send_wmspec_change_state(backend_x11, stage_x11->xwin,
+                                       backend_x11->atom_NET_WM_STATE_FULLSCREEN,
+                                       TRUE);
+            }
 
           stage_x11->fullscreen_on_map = TRUE;
-	}
+        }
     }
   else
     {
       if (stage_x11->xwin != None)
-	{
-	  if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
-	    {
-	      /* FIXME: This wont work if we support more states */
-	      XDeleteProperty (stage_x11->xdpy, 
-			       stage_x11->xwin, 
-			       backend_x11->atom_NET_WM_STATE);
-	    }
-	  else
-	    {
-	      clutter_stage_set_user_resizable (stage, TRUE);
+        {
+          if (!CLUTTER_ACTOR_IS_MAPPED (stage_x11))
+            {
+              /* FIXME: This wont work if we support more states */
+              XDeleteProperty (stage_x11->xdpy, 
+                               stage_x11->xwin, 
+                               backend_x11->atom_NET_WM_STATE);
+            }
+          else
+            {
+              clutter_stage_set_user_resizable (stage, TRUE);
 
-	      send_wmspec_change_state(backend_x11,
-				       stage_x11->xwin,
-				       backend_x11->atom_NET_WM_STATE_FULLSCREEN,
-				       FALSE);
+              send_wmspec_change_state(backend_x11,
+                                       stage_x11->xwin,
+                                       backend_x11->atom_NET_WM_STATE_FULLSCREEN,
+                                       FALSE);
 
-	      /* reset the windows state - this isn't fun - see above */
-	      if (!was_resizeable)
-		clutter_stage_set_user_resizable (stage, FALSE);
+              /* reset the windows state - this isn't fun - see above */
+              if (!was_resizeable)
+                clutter_stage_set_user_resizable (stage, FALSE);
 
-	      was_resizeable = FALSE;
-	    }
+              was_resizeable = FALSE;
+            }
 
           stage_x11->fullscreen_on_map = FALSE;
-	}
+        }
     }
 
   CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
@@ -337,7 +337,7 @@ clutter_stage_x11_set_cursor_visible (ClutterStage *stage,
 
 static void
 clutter_stage_x11_set_title (ClutterStage *stage,
-			     const gchar  *title)
+                             const gchar  *title)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage);
   ClutterBackendX11 *backend_x11 = stage_x11->backend;
@@ -348,25 +348,25 @@ clutter_stage_x11_set_title (ClutterStage *stage,
   if (title == NULL)
     {
       XDeleteProperty (stage_x11->xdpy, 
-		       stage_x11->xwin, 
-		       backend_x11->atom_NET_WM_NAME);
+                       stage_x11->xwin, 
+                       backend_x11->atom_NET_WM_NAME);
     }
   else
     {
       XChangeProperty (stage_x11->xdpy, 
-		       stage_x11->xwin, 
-		       backend_x11->atom_NET_WM_NAME, 
-		       backend_x11->atom_UTF8_STRING, 
-		       8, 
-		       PropModeReplace, 
-		       (unsigned char*)title, 
-		       (int)strlen(title));
+                       stage_x11->xwin, 
+                       backend_x11->atom_NET_WM_NAME, 
+                       backend_x11->atom_UTF8_STRING, 
+                       8, 
+                       PropModeReplace, 
+                       (unsigned char*)title, 
+                       (int)strlen(title));
     }
 }
 
 static void
 clutter_stage_x11_set_user_resize (ClutterStage *stage,
-				   gboolean      value)
+                                   gboolean      value)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage);
 

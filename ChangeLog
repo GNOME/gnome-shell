@@ -1,3 +1,14 @@
+2008-01-31  Rob Bradford  <rob@openedhand.com>
+
+	* clutter/x11/clutter-backend-x11-private.h:
+	Add missing start to comment
+
+	* clutter/x11/clutter-backend-x11.c:
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/x11/clutter-stage-x11.c:
+	* clutter/x11/clutter-x11.h:
+	Remove tabs.
+
 2008-01-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* README: Add the osx flavour, and mark it experimental,

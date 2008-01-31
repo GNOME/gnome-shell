@@ -76,8 +76,8 @@ typedef enum {
  * Since: 0.6
  */
 typedef ClutterX11FilterReturn (*ClutterX11FilterFunc) (XEvent        *xev, 
-							ClutterEvent  *cev,
-							gpointer       data);
+                                                        ClutterEvent  *cev,
+                                                        gpointer       data);
 
 void     clutter_x11_trap_x_errors       (void);
 gint     clutter_x11_untrap_x_errors     (void);
@@ -94,7 +94,7 @@ gboolean     clutter_x11_set_stage_foreign (ClutterStage *stage,
 void         clutter_x11_add_filter    (ClutterX11FilterFunc func,
                                         gpointer             data);
 void         clutter_x11_remove_filter (ClutterX11FilterFunc func, 
-					gpointer             data);
+                                        gpointer             data);
 
 G_END_DECLS
 

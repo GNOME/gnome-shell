@@ -108,10 +108,10 @@ check_xpending (ClutterBackend *backend)
 static gboolean
 xembed_send_message (ClutterBackendX11 *backend_x11,
                      Window             window,
-		     long               message,
-		     long               detail,
-		     long               data1, 
-		     long               data2)
+                     long               message,
+                     long               detail,
+                     long               data1, 
+                     long               data2)
 {
   XEvent ev;
 
@@ -330,8 +330,8 @@ handle_xembed_event (ClutterBackendX11 *backend_x11,
 
 static gboolean
 event_translate (ClutterBackend *backend,
-		 ClutterEvent   *event,
-		 XEvent         *xevent)
+                 ClutterEvent   *event,
+                 XEvent         *xevent)
 {
   ClutterBackendX11 *backend_x11;
   ClutterStageX11   *stage_x11;
@@ -356,23 +356,23 @@ event_translate (ClutterBackend *backend,
       node = backend_x11->event_filters;
 
       while (node)
-	{
-	  filter = node->data;
+        {
+          filter = node->data;
 
-	  switch (filter->func (xevent, event, filter->data))
-	    {
-	    case CLUTTER_X11_FILTER_CONTINUE:
-	      break;
-	    case CLUTTER_X11_FILTER_TRANSLATE:
-	      return TRUE;
-	    case CLUTTER_X11_FILTER_REMOVE:
-	      return FALSE;
-	    default:
-	      break;
-	    }
+          switch (filter->func (xevent, event, filter->data))
+            {
+            case CLUTTER_X11_FILTER_CONTINUE:
+              break;
+            case CLUTTER_X11_FILTER_TRANSLATE:
+              return TRUE;
+            case CLUTTER_X11_FILTER_REMOVE:
+              return FALSE;
+            default:
+              break;
+            }
 
-	  node = node->next;
-	}
+          node = node->next;
+        }
     }
   
   res = TRUE;
@@ -390,7 +390,7 @@ event_translate (ClutterBackend *backend,
         if (xevent->xconfigure.width != stage_width ||
             xevent->xconfigure.height != stage_height)
           {
-	    clutter_actor_set_size (CLUTTER_ACTOR (stage),
+            clutter_actor_set_size (CLUTTER_ACTOR (stage),
                                     xevent->xconfigure.width,
                                     xevent->xconfigure.height);
           }
@@ -426,16 +426,16 @@ event_translate (ClutterBackend *backend,
                 {
                   if (atoms[i] == backend_x11->atom_NET_WM_STATE_FULLSCREEN)
                     fullscreen_set = TRUE;
-		}
+                }
 
               is_fullscreen =
                 (stage_x11->state & CLUTTER_STAGE_STATE_FULLSCREEN);
 
               if (fullscreen_set != is_fullscreen)
-		{
-		  if (fullscreen_set)
+                {
+                  if (fullscreen_set)
                     stage_x11->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
-		  else
+                  else
                     stage_x11->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
 
                   event->type = CLUTTER_STAGE_STATE;
@@ -447,8 +447,8 @@ event_translate (ClutterBackend *backend,
                 res = FALSE;
               
               XFree (data);
-	    }
-	  else
+            }
+          else
             res = FALSE;
         }
       break;
@@ -465,29 +465,29 @@ event_translate (ClutterBackend *backend,
 
     case FocusIn:
       if (!(stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED))
-	{
-	  /* TODO: check xevent->xfocus.detail ? */
-	  stage_x11->state |= CLUTTER_STAGE_STATE_ACTIVATED;
+        {
+          /* TODO: check xevent->xfocus.detail ? */
+          stage_x11->state |= CLUTTER_STAGE_STATE_ACTIVATED;
 
-	  event->type = CLUTTER_STAGE_STATE;
-	  event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-	  event->stage_state.new_state = stage_x11->state;
-	}
+          event->type = CLUTTER_STAGE_STATE;
+          event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
+          event->stage_state.new_state = stage_x11->state;
+        }
       else
-	res = FALSE;
+        res = FALSE;
       break;
 
     case FocusOut:
       if (stage_x11->state & CLUTTER_STAGE_STATE_ACTIVATED)
-	{
-	  stage_x11->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
+        {
+          stage_x11->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
 
-	  event->type = CLUTTER_STAGE_STATE;
-	  event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
-	  event->stage_state.new_state = stage_x11->state;
-	}
+          event->type = CLUTTER_STAGE_STATE;
+          event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
+          event->stage_state.new_state = stage_x11->state;
+        }
       else
-	res = FALSE;
+        res = FALSE;
       break;
 
     case Expose:

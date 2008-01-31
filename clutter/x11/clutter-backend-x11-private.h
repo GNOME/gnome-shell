@@ -1,4 +1,4 @@
- * An OpenGL based 'interactive canvas' library.
+/* An OpenGL based 'interactive canvas' library.
  * Authored By Matthew Allum  <mallum@openedhand.com>
  * Copyright (C) 2006-2007 OpenedHand
  *
