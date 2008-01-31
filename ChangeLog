@@ -1,5 +1,10 @@
 2008-01-31  Øyvind Kolås  <pippin@o-hand.com>
 
+	* tests/test-depth.c: added a box of cloned hands to further expand
+	the scope of depth testing scenarios exercised by test-depth.
+
+2008-01-31  Øyvind Kolås  <pippin@o-hand.com>
+
 	* tests/test-depth.c: (timeline_completed): make use of
 	clutter_timeline_set_direction instead of static state.
 	(raise_top): made rectangle remain at fixed depth and raise
