@@ -1,3 +1,12 @@
+2008-01-31  Øyvind Kolås  <pippin@o-hand.com>
+
+	* tests/test-depth.c: (timeline_completed): make use of
+	clutter_timeline_set_direction instead of static state.
+	(raise_top): made rectangle remain at fixed depth and raise
+	above each other.
+	(janus_group): added a rectangle with two faces, one red and
+	one green, that spins around.
+
 2008-01-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-entry.h:

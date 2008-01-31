@@ -1,45 +1,75 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
-static gboolean zoom_in = TRUE;
-static ClutterBehaviour *d_behave = NULL;
-
+/* each time the timeline animating the label completes, swap the direction */
 static void
 timeline_completed (ClutterTimeline *timeline,
                     gpointer         user_data)
 {
-  gint depth_start, depth_end;
-
-  if (zoom_in)
-    {
-      depth_start = 0;
-      depth_end = -500;
-      zoom_in = FALSE;
-    }
-  else
-    {
-      depth_start = -500;
-      depth_end = 0;
-      zoom_in = TRUE;
-    }
-
-  clutter_behaviour_depth_set_bounds (CLUTTER_BEHAVIOUR_DEPTH (d_behave),
-                                      depth_start, depth_end);
-
-  clutter_timeline_rewind (timeline);
+  clutter_timeline_set_direction (timeline,
+                                  !clutter_timeline_get_direction (timeline));
   clutter_timeline_start (timeline);
 }
+
+static ClutterActor *raise[2];
+static gboolean raise_no = 0;
+
+static gboolean
+raise_top (gpointer ignored)
+{
+  clutter_actor_raise_top (raise[raise_no]);
+  raise_no = !raise_no;
+  return TRUE;
+}
+
+static ClutterActor *
+janus_group (const gchar *front_text,
+             const gchar *back_text)
+{
+  ClutterColor  slide_color = {0x00, 0x00, 0x00, 0x55};
+  ClutterColor  red = {0xff, 0x00, 0x00, 0xff};
+  ClutterColor  green = {0x00, 0xff, 0x00, 0xff};
+  ClutterActor *group, *rectangle, *front, *back;
+  guint width, height;
+  guint width2, height2;
+
+  group = clutter_group_new ();
+  rectangle = clutter_rectangle_new_with_color (&slide_color);
+  front = clutter_label_new_with_text ("Sans 50px", front_text);
+  back = clutter_label_new_with_text ("Sans 50px", back_text);
+  clutter_label_set_color (CLUTTER_LABEL (front), &red);
+  clutter_label_set_color (CLUTTER_LABEL (back), &green);
+
+  clutter_actor_get_size (front, &width, &height);
+  clutter_actor_get_size (back, &width2, &height2);
+
+  if (width2 > width)
+    width = width2;
+  if (height> height)
+    height = height2;
+
+  clutter_actor_set_size (rectangle, width, height);
+  clutter_actor_set_rotation (back, CLUTTER_Y_AXIS, 180, width/2, 0, 0);
+
+  clutter_container_add (group, back, rectangle, front, NULL);
+
+  clutter_actor_show_all (group);
+  return group;
+}
+
 
 int
 main (int argc, char *argv[])
 {
-  ClutterTimeline *timeline;
-  ClutterActor *stage;
-  ClutterActor *group, *hand, *label, *rect;
-  ClutterColor stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
-  ClutterColor rect_color = { 0, 0, 0, 0x88 };
-  GdkPixbuf *pixbuf;
-  GError *error;
+  ClutterTimeline  *timeline;
+  ClutterBehaviour *d_behave;
+  ClutterBehaviour *r_behave;
+  ClutterActor     *stage;
+  ClutterActor     *group, *hand, *label, *rect, *janus;
+  ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
+  ClutterColor      rect_color  = { 0, 0, 0, 0x88 };
+  GdkPixbuf        *pixbuf;
+  GError           *error;
 
   clutter_init (&argc, &argv);
 
@@ -51,6 +81,7 @@ main (int argc, char *argv[])
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   clutter_stage_set_use_fog (CLUTTER_STAGE (stage), TRUE);
+  clutter_stage_set_fog (CLUTTER_STAGE (stage), 1.0, 10, -50);
 
   g_signal_connect (stage,
                     "button-press-event", G_CALLBACK (clutter_main_quit),
@@ -61,7 +92,7 @@ main (int argc, char *argv[])
   clutter_actor_show (group);
 
   label = clutter_label_new_with_text ("Mono 26", "Clutter");
-  clutter_actor_set_position (label, 40, 140);
+  clutter_actor_set_position (label, 120, 180);
   clutter_actor_show (label);
 
   hand = clutter_texture_new_from_pixbuf (pixbuf);
@@ -69,11 +100,12 @@ main (int argc, char *argv[])
   clutter_actor_show (hand);
 
   rect = clutter_rectangle_new_with_color (&rect_color);
-  clutter_actor_set_position (rect, 440, 140);
+  clutter_actor_set_position (rect, 340, 140);
   clutter_actor_set_size (rect, 200, 200);
   clutter_actor_show (rect);
 
-  clutter_container_add (CLUTTER_CONTAINER (group), hand, label, rect, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (group), hand, rect, NULL);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
 
   /* 3 seconds, at 60 fps */
   timeline = clutter_timeline_new (180, 60);
@@ -84,12 +116,30 @@ main (int argc, char *argv[])
   d_behave = clutter_behaviour_depth_new (clutter_alpha_new_full (timeline,
                                                                   CLUTTER_ALPHA_RAMP_INC,
                                                                   NULL, NULL),
-                                          -500, 0);
-  clutter_behaviour_apply (d_behave, group);
+                                          -100, 100);
+  clutter_behaviour_apply (d_behave, label);
+
+
+  /* add two faced actor */
+  janus = janus_group ("GREEN", "RED");
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), janus);
+  clutter_actor_set_position (janus, 300, 350);
+
+  r_behave = clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
+                                                                  CLUTTER_ALPHA_RAMP_INC,
+                                                                  NULL, NULL),
+                                          CLUTTER_Y_AXIS,
+                                          CLUTTER_ROTATE_CW,
+                                          0, 360);
+  clutter_behaviour_apply (r_behave, janus);
 
   clutter_actor_show (stage);
 
   clutter_timeline_start (timeline);
+
+  raise[0] = rect;
+  raise[1] = hand;
+  g_timeout_add (2000, raise_top, NULL);
 
   clutter_main ();
 
