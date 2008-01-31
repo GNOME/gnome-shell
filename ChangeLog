@@ -1,3 +1,9 @@
+2008-01-31  Emmanuele Bassi  <ebassi@sprite>
+
+	* clutter/clutter-timeline.c (clutter_timeline_skip): Don't
+	add the frames outside the direction check. (thanks to benoar
+	on clutter-list for spotting it)
+
 2007-01-31  Tomas Frydrych  <tf@openedhand.com>
 
         * clutter/clutter-actor.c:

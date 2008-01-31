@@ -779,8 +779,6 @@ clutter_timeline_skip (ClutterTimeline *timeline,
 
   priv = timeline->priv;
 
-  priv->current_frame_num += n_frames;
-
   if (priv->direction == CLUTTER_TIMELINE_FORWARD)
     {
       priv->current_frame_num += n_frames;
