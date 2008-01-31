@@ -74,26 +74,26 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
   if (G_UNLIKELY (was_offscreen))
     {
       if (stage_glx->glxpixmap)
-	{
-	  glXDestroyGLXPixmap (stage_x11->xdpy,stage_glx->glxpixmap);
-	  stage_glx->glxpixmap = None;
-	}
+        {
+          glXDestroyGLXPixmap (stage_x11->xdpy,stage_glx->glxpixmap);
+          stage_glx->glxpixmap = None;
+        }
 
       if (stage_x11->xpixmap)
-	{
-	  XFreePixmap (stage_x11->xdpy, stage_x11->xpixmap);
-	  stage_x11->xpixmap = None;
-	}
+        {
+          XFreePixmap (stage_x11->xdpy, stage_x11->xpixmap);
+          stage_x11->xpixmap = None;
+        }
     }
   else
     {
       if (!stage_x11->is_foreign_xwin && stage_x11->xwin != None)
-	{
-	  XDestroyWindow (stage_x11->xdpy, stage_x11->xwin);
-	  stage_x11->xwin = None;
-	}
+        {
+          XDestroyWindow (stage_x11->xdpy, stage_x11->xwin);
+          stage_x11->xwin = None;
+        }
       else
-	stage_x11->xwin = None;
+        stage_x11->xwin = None;
     }
 
   glXMakeCurrent (stage_x11->xdpy, None, NULL);
@@ -125,70 +125,70 @@ clutter_stage_glx_realize (ClutterActor *actor)
   if (G_LIKELY (!is_offscreen))
     {
       int gl_attributes[] = 
-	{
-	  GLX_RGBA, 
-	  GLX_DOUBLEBUFFER,
-	  GLX_RED_SIZE, 1,
-	  GLX_GREEN_SIZE, 1,
-	  GLX_BLUE_SIZE, 1,
-	  GLX_STENCIL_SIZE, 1,
-	  0
-	};
+        {
+          GLX_RGBA, 
+          GLX_DOUBLEBUFFER,
+          GLX_RED_SIZE, 1,
+          GLX_GREEN_SIZE, 1,
+          GLX_BLUE_SIZE, 1,
+          GLX_STENCIL_SIZE, 1,
+          0
+        };
 
       if (stage_x11->xvisinfo)
         XFree (stage_x11->xvisinfo);
       stage_x11->xvisinfo = NULL;
 
-	  /* The following check seems strange */
+      /* The following check seems strange */
       if (stage_x11->xvisinfo == None)
-	stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
+        stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
                                            stage_x11->xscreen,
-					       gl_attributes);
+                                               gl_attributes);
       if (!stage_x11->xvisinfo)
-	{
-	  g_critical ("Unable to find suitable GL visual.");
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-	  return;
-	}
+        {
+          g_critical ("Unable to find suitable GL visual.");
+          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+          return;
+        }
 
       if (stage_x11->xwin == None)
         {
-	  XSetWindowAttributes xattr;
-	  unsigned long mask;
-	
-	  CLUTTER_NOTE (MISC, "Creating stage X window");
+          XSetWindowAttributes xattr;
+          unsigned long mask;
 
-	  /* window attributes */  
-	  xattr.background_pixel = WhitePixel (stage_x11->xdpy,
-					       stage_x11->xscreen);
-	xattr.border_pixel = 0;
-	xattr.colormap = XCreateColormap (stage_x11->xdpy, 
-					  stage_x11->xwin_root,
-					  stage_x11->xvisinfo->visual,
-					  AllocNone);
-	mask = CWBackPixel | CWBorderPixel | CWColormap;
-	stage_x11->xwin = XCreateWindow (stage_x11->xdpy,
+          CLUTTER_NOTE (MISC, "Creating stage X window");
+
+          /* window attributes */  
+          xattr.background_pixel = WhitePixel (stage_x11->xdpy,
+                                               stage_x11->xscreen);
+          xattr.border_pixel = 0;
+          xattr.colormap = XCreateColormap (stage_x11->xdpy, 
                                             stage_x11->xwin_root,
-                                            0, 0,
-                                            stage_x11->xwin_width,
-                                            stage_x11->xwin_height,
-                                            0,
-                                            stage_x11->xvisinfo->depth,
-                                            InputOutput,
                                             stage_x11->xvisinfo->visual,
-                                            mask, &xattr);
+                                            AllocNone);
+          mask = CWBackPixel | CWBorderPixel | CWColormap;
+          stage_x11->xwin = XCreateWindow (stage_x11->xdpy,
+                                              stage_x11->xwin_root,
+                                              0, 0,
+                                              stage_x11->xwin_width,
+                                              stage_x11->xwin_height,
+                                              0,
+                                              stage_x11->xvisinfo->depth,
+                                              InputOutput,
+                                              stage_x11->xvisinfo->visual,
+                                              mask, &xattr);
         }
-      
+
       CLUTTER_NOTE (MISC, "XSelectInput");
       XSelectInput (stage_x11->xdpy, stage_x11->xwin,
                     StructureNotifyMask |
-		    FocusChangeMask |
+                    FocusChangeMask |
                     ExposureMask |
-		   /* FIXME: we may want to eplicity enable MotionMask */
-		    PointerMotionMask |
-		    KeyPressMask | KeyReleaseMask |
-		    ButtonPressMask | ButtonReleaseMask |
-		    PropertyChangeMask);
+                    /* FIXME: we may want to eplicity enable MotionMask */
+                    PointerMotionMask |
+                    KeyPressMask | KeyReleaseMask |
+                    ButtonPressMask | ButtonReleaseMask |
+                    PropertyChangeMask);
 
       /* no user resize.. */
       clutter_stage_x11_fix_window_size (stage_x11);
@@ -196,22 +196,22 @@ clutter_stage_glx_realize (ClutterActor *actor)
       clutter_stage_x11_set_wm_protocols (stage_x11);
 
       if (stage_glx->gl_context)
-	glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
+        glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
 
       CLUTTER_NOTE (GL, "Creating GL Context");
       stage_glx->gl_context = glXCreateContext (stage_x11->xdpy, 
-					        stage_x11->xvisinfo, 
-					        0, 
-					        True);
-      
-      if (stage_glx->gl_context == None)
-	{
-	  g_critical ("Unable to create suitable GL context.");
+                                                stage_x11->xvisinfo, 
+                                                0, 
+                                                True);
 
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-	  
+      if (stage_glx->gl_context == None)
+        {
+          g_critical ("Unable to create suitable GL context.");
+
+          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+
           return;
-	}
+        }
 
       CLUTTER_NOTE (GL, "glXMakeCurrent");
       glXMakeCurrent (stage_x11->xdpy, stage_x11->xwin, stage_glx->gl_context);
@@ -219,49 +219,50 @@ clutter_stage_glx_realize (ClutterActor *actor)
   else
     {
       int gl_attributes[] = {
-	GLX_DEPTH_SIZE,    0,
-	GLX_ALPHA_SIZE,    0,
-	GLX_RED_SIZE, 1,
-	GLX_GREEN_SIZE, 1,
-	GLX_BLUE_SIZE, 1,
-	GLX_USE_GL,
-	GLX_RGBA,
-	0
+        GLX_DEPTH_SIZE,    0,
+        GLX_ALPHA_SIZE,    0,
+        GLX_RED_SIZE, 1,
+        GLX_GREEN_SIZE, 1,
+        GLX_BLUE_SIZE, 1,
+        GLX_USE_GL,
+        GLX_RGBA,
+        0
       };
 
-    if (stage_x11->xvisinfo )
-       XFree (stage_x11->xvisinfo);
-    stage_x11->xvisinfo = NULL;
+      if (stage_x11->xvisinfo)
+         XFree (stage_x11->xvisinfo);
+
+      stage_x11->xvisinfo = NULL;
 
       CLUTTER_NOTE (GL, "glXChooseVisual");
       stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
-					     stage_x11->xscreen,
-					     gl_attributes);
+                                             stage_x11->xscreen,
+                                             gl_attributes);
       if (!stage_x11->xvisinfo)
-	{
-	  g_critical ("Unable to find suitable GL visual.");
-	  goto fail;
-	}
+        {
+          g_critical ("Unable to find suitable GL visual.");
+          goto fail;
+        }
 
       if (stage_glx->gl_context)
-	glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
+        glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
 
       stage_x11->xpixmap = XCreatePixmap (stage_x11->xdpy,
-				          stage_x11->xwin_root,
-				          stage_x11->xwin_width, 
-				          stage_x11->xwin_height,
-					  DefaultDepth (stage_x11->xdpy,
-							stage_x11->xscreen));
+                                          stage_x11->xwin_root,
+                                          stage_x11->xwin_width, 
+                                          stage_x11->xwin_height,
+                                          DefaultDepth (stage_x11->xdpy,
+                                                        stage_x11->xscreen));
 
       stage_glx->glxpixmap = glXCreateGLXPixmap (stage_x11->xdpy,
-					         stage_x11->xvisinfo,
-					         stage_x11->xpixmap);
-      
+                                                 stage_x11->xvisinfo,
+                                                 stage_x11->xpixmap);
+
       /* indirect */
       stage_glx->gl_context = glXCreateContext (stage_x11->xdpy, 
-					        stage_x11->xvisinfo, 
-					        0, 
-					        False);
+                                                stage_x11->xvisinfo, 
+                                                0, 
+                                                False);
 
       clutter_x11_trap_x_errors ();
 
@@ -270,10 +271,10 @@ clutter_stage_glx_realize (ClutterActor *actor)
                       stage_glx->gl_context);
 
       if (clutter_x11_untrap_x_errors ())
-	{
-	  g_critical ("Unable to set up offscreen context.");
-	  goto fail;
-	}
+        {
+          g_critical ("Unable to set up offscreen context.");
+          goto fail;
+        }
     }
 
   /* Make sure the viewport gets set up correctly */
@@ -289,7 +290,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
 
 static void
 snapshot_pixbuf_free (guchar   *pixels,
-		      gpointer  data)
+                      gpointer  data)
 {
   g_free (pixels);
 }
@@ -343,19 +344,19 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
       data = g_malloc0 (sizeof (guchar) * stride * height);
 
       glReadPixels (x, 
-		    clutter_actor_get_height (actor) - y - height,
-		    width, 
-		    height, GL_RGBA, GL_UNSIGNED_BYTE, data);
-      
+                    clutter_actor_get_height (actor) - y - height,
+                    width, 
+                    height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
       tmp = gdk_pixbuf_new_from_data (data,
-				      GDK_COLORSPACE_RGB, 
-				      TRUE, 
-				      8, 
-				      width, height,
-				      stride,
-				      snapshot_pixbuf_free,
-				      NULL);
-      
+                                      GDK_COLORSPACE_RGB, 
+                                      TRUE, 
+                                      8, 
+                                      width, height,
+                                      stride,
+                                      snapshot_pixbuf_free,
+                                      NULL);
+
       tmp2 = gdk_pixbuf_flip (tmp, TRUE); 
       g_object_unref (tmp);
 

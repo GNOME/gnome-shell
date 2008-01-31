@@ -56,8 +56,8 @@ typedef enum ClutterGLXVBlankType
 
 typedef int (*GetVideoSyncProc)  (unsigned int *count);
 typedef int (*WaitVideoSyncProc) (int           divisor,
-				  int          remainder,
-				  unsigned int *count);
+                                  int          remainder,
+                                  unsigned int *count);
 typedef int (*SwapIntervalProc) (int interval);
 
 struct _ClutterBackendGLX

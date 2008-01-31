@@ -86,9 +86,9 @@ static int drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
 
     do 
       {
-	ret = ioctl(fd, DRM_IOCTL_WAIT_VBLANK, vbl);
-	vbl->request.type &= ~DRM_VBLANK_RELATIVE;
-	rc = errno;
+        ret = ioctl(fd, DRM_IOCTL_WAIT_VBLANK, vbl);
+        vbl->request.type &= ~DRM_VBLANK_RELATIVE;
+        rc = errno;
       } 
     while (ret && rc == EINTR);
     
@@ -129,13 +129,13 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
   if (clutter_backend_x11_post_parse (backend, error))
     {
       if (!glXQueryVersion (backend_x11->xdpy, &glx_major, &glx_minor) 
-	  || !(glx_major > 1 || glx_minor > 1)) 
-	{
-	  g_set_error (error, CLUTTER_INIT_ERROR,
-		       CLUTTER_INIT_ERROR_BACKEND,
-		       "XServer appears to lack required GLX support");
-	  return 1;
-	}
+          || !(glx_major > 1 || glx_minor > 1)) 
+        {
+          g_set_error (error, CLUTTER_INIT_ERROR,
+                       CLUTTER_INIT_ERROR_BACKEND,
+                       "XServer appears to lack required GLX support");
+          return 1;
+        }
     }
 
   return TRUE;
@@ -218,14 +218,14 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   /* FIXME: we really need to check if gl context is set */
 
   CLUTTER_NOTE (BACKEND, "Checking features\n"
-		"GL_VENDOR: %s\n"
-		"GL_RENDERER: %s\n"
-		"GL_VERSION: %s\n"
-		"GL_EXTENSIONS: %s\n",
-		glGetString (GL_VENDOR),
-		glGetString (GL_RENDERER),
-		glGetString (GL_VERSION),
-		glGetString (GL_EXTENSIONS));
+                "GL_VENDOR: %s\n"
+                "GL_RENDERER: %s\n"
+                "GL_VERSION: %s\n"
+                "GL_EXTENSIONS: %s\n",
+                glGetString (GL_VENDOR),
+                glGetString (GL_RENDERER),
+                glGetString (GL_VERSION),
+                glGetString (GL_EXTENSIONS));
 
   glx_extensions = 
     glXQueryExtensionsString (clutter_x11_get_default_display (),
@@ -253,70 +253,70 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
        * no effect.
       */
       if (!check_vblank_env ("dri") && 
-	  cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
-	{
-	  backend_glx->swap_interval = 
-	    (SwapIntervalProc) cogl_get_proc_address ("glXSwapIntervalSGI");
+          cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
+        {
+          backend_glx->swap_interval = 
+            (SwapIntervalProc) cogl_get_proc_address ("glXSwapIntervalSGI");
 
-	  CLUTTER_NOTE (BACKEND, "attempting glXSwapIntervalSGI vblank setup");
+          CLUTTER_NOTE (BACKEND, "attempting glXSwapIntervalSGI vblank setup");
 
-	  if (backend_glx->swap_interval != NULL)
-	    {
-	      if (backend_glx->swap_interval (1) == 0)
-		{
-		  backend_glx->vblank_type = CLUTTER_VBLANK_GLX_SWAP;
-		  flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-		  CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI setup success");
-		}
-	    }
+          if (backend_glx->swap_interval != NULL)
+            {
+              if (backend_glx->swap_interval (1) == 0)
+                {
+                  backend_glx->vblank_type = CLUTTER_VBLANK_GLX_SWAP;
+                  flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+                  CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI setup success");
+                }
+            }
 
-	  if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-	    CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI vblank setup failed");
-	}
+          if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
+            CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI vblank setup failed");
+        }
 
       if (!check_vblank_env ("dri") && 
-	  !(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
-	  cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
-	{
-	  CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
+          !(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
+          cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
+        {
+          CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
 
-	  backend_glx->get_video_sync = 
-	    (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
+          backend_glx->get_video_sync = 
+            (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
 
-	  backend_glx->wait_video_sync = 
-	    (WaitVideoSyncProc) cogl_get_proc_address ("glXWaitVideoSyncSGI");
+          backend_glx->wait_video_sync = 
+            (WaitVideoSyncProc) cogl_get_proc_address ("glXWaitVideoSyncSGI");
 
-	  if ((backend_glx->get_video_sync != NULL) &&
-	      (backend_glx->wait_video_sync != NULL))
-	    {
-	      CLUTTER_NOTE (BACKEND, 
-			    "glXGetVideoSyncSGI vblank setup success");
-	      
+          if ((backend_glx->get_video_sync != NULL) &&
+              (backend_glx->wait_video_sync != NULL))
+            {
+              CLUTTER_NOTE (BACKEND, 
+                            "glXGetVideoSyncSGI vblank setup success");
+
               backend_glx->vblank_type = CLUTTER_VBLANK_GLX;
-	      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-	    }
+              flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+            }
 
-	  if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-	    CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup failed");
-	}
+          if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
+            CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup failed");
+        }
 #ifdef __linux__
       /* 
        * DRI is really an extreme fallback -rumoured to work with Via chipsets
       */
       if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-	{
-	  CLUTTER_NOTE (BACKEND, "attempting DRI vblank setup");
-	  backend_glx->dri_fd = open("/dev/dri/card0", O_RDWR);
-	  if (backend_glx->dri_fd >= 0)
-	    {
-	      CLUTTER_NOTE (BACKEND, "DRI vblank setup success");
-	      backend_glx->vblank_type = CLUTTER_VBLANK_DRI;
-	      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-	    }
+        {
+          CLUTTER_NOTE (BACKEND, "attempting DRI vblank setup");
+          backend_glx->dri_fd = open("/dev/dri/card0", O_RDWR);
+          if (backend_glx->dri_fd >= 0)
+            {
+              CLUTTER_NOTE (BACKEND, "DRI vblank setup success");
+              backend_glx->vblank_type = CLUTTER_VBLANK_DRI;
+              flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+            }
 
-	  if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-	    CLUTTER_NOTE (BACKEND, "DRI vblank setup failed");
-	}
+          if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
+            CLUTTER_NOTE (BACKEND, "DRI vblank setup failed");
+        }
 #endif
       if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
         {
@@ -440,26 +440,26 @@ clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
     {
     case CLUTTER_VBLANK_GLX_SWAP:
       {
-	/* Nothing */
-	break;
+        /* Nothing */
+        break;
       }
     case CLUTTER_VBLANK_GLX:
       {
-	unsigned int retraceCount;
-	backend_glx->get_video_sync (&retraceCount);
-	backend_glx->wait_video_sync (2, 
-				      (retraceCount + 1) % 2,
-				      &retraceCount); 
+        unsigned int retraceCount;
+        backend_glx->get_video_sync (&retraceCount);
+        backend_glx->wait_video_sync (2, 
+                                      (retraceCount + 1) % 2,
+                                      &retraceCount); 
       }
       break;
     case CLUTTER_VBLANK_DRI:
 #ifdef __linux__
       {
-	drm_wait_vblank_t blank;
-	blank.request.type     = DRM_VBLANK_RELATIVE;
-	blank.request.sequence = 1;
-	blank.request.signal   = 0;
-	drm_wait_vblank (backend_glx->dri_fd, &blank);
+        drm_wait_vblank_t blank;
+        blank.request.type     = DRM_VBLANK_RELATIVE;
+        blank.request.sequence = 1;
+        blank.request.signal   = 0;
+        drm_wait_vblank (backend_glx->dri_fd, &blank);
       }
 #endif
       break;
