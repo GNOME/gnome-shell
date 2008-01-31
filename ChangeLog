@@ -1,3 +1,9 @@
+2008-01-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_init): Explicitly
+	memset() to 0 the clip container, so if you get the clip without
+	having set it, you won't get garbage.
+
 2008-01-31  Rob Bradford  <rob@openedhand.com>
 
 	* clutter/x11/clutter-backend-x11-private.h:

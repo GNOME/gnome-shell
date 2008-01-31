@@ -2000,6 +2000,8 @@ clutter_actor_init (ClutterActor *self)
   priv->scale_y      = CFX_ONE;
   priv->shader_data     = NULL;
 
+  memset (priv->clip, 0, sizeof (ClutterUnit) * 4);
+
   clutter_actor_request_coords (self, &box);
 }
 
