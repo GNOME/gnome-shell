@@ -34,4 +34,7 @@
 #define clutter_actor_set_scale_with_gravity         clutter_actor_set_scale_with_gravity_DEPRECATED_BY_clutter_actor_set_anchor_point_from_gravity
 #define clutter_actor_set_scale_with_gravityx        clutter_actor_set_scale_with_gravity_DEPRECATED_BY_clutter_actor_set_anchor_point_from_gravity
 
+#define clutter_entry_set_position              clutter_entry_set_position_REPLACED_BY_clutter_entry_set_cursor_position
+#define clutter_entry_get_position              clutter_entry_get_position_REPLACED_BY_clutter_entry_get_cursor_position
+
 #endif /* CLUTTER_DEPRECATED_H */

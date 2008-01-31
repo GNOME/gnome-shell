@@ -1,5 +1,17 @@
 2008-01-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-entry.h:
+	* clutter/clutter-entry.c:
+	(clutter_entry_set_cursor_position),
+	(clutter_entry_get_cursor_position): Rename [gs]et_position()
+	to [gs]set_cursor_position(), and avoid method name collisions
+	with bindings for high-level languages.
+
+	* clutter/clutter-deprecated.h: Add replacement warnings for the
+	renamed methods.
+
+2008-01-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c (clutter_actor_init): Explicitly
 	memset() to 0 the clip container, so if you get the clip without
 	having set it, you won't get garbage.

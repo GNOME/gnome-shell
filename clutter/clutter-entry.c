@@ -145,7 +145,7 @@ clutter_entry_set_entry_padding (ClutterEntry *entry,
     {
       priv->entry_padding = padding;
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+      if (CLUTTER_ACTOR_IS_VISIBLE (entry))
         clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
 
       g_object_notify (G_OBJECT (entry), "entry-padding");
@@ -179,7 +179,7 @@ clutter_entry_set_property (GObject      *object,
       clutter_entry_set_alignment (entry, g_value_get_enum (value));
       break;
     case PROP_POSITION:
-      clutter_entry_set_position (entry, g_value_get_int (value));
+      clutter_entry_set_cursor_position (entry, g_value_get_int (value));
       break;
     case PROP_CURSOR:
       clutter_entry_set_visible_cursor (entry, g_value_get_boolean (value));
@@ -957,8 +957,8 @@ clutter_entry_set_text (ClutterEntry *entry,
   clutter_entry_clear_layout (entry);
   clutter_entry_clear_cursor_position (entry);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));
+  if (CLUTTER_ACTOR_IS_VISIBLE (entry))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
 
   g_signal_emit (G_OBJECT (entry), entry_signals[TEXT_CHANGED], 0);
 
@@ -1040,7 +1040,7 @@ clutter_entry_set_font_name (ClutterEntry *entry,
     {
       clutter_entry_clear_layout (entry);
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+      if (CLUTTER_ACTOR_IS_VISIBLE (entry))
 	clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
     }
 
@@ -1167,7 +1167,7 @@ clutter_entry_set_alignment (ClutterEntry   *entry,
 
       clutter_entry_clear_layout (entry);
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+      if (CLUTTER_ACTOR_IS_VISIBLE (entry))
 	clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
 
       g_object_notify (G_OBJECT (entry), "alignment");
@@ -1194,7 +1194,7 @@ clutter_entry_get_alignment (ClutterEntry *entry)
 }
 
 /**
- * clutter_entry_set_position:
+ * clutter_entry_set_cursor_position:
  * @entry: a #ClutterEntry
  * @position: the position of the cursor.
  *
@@ -1203,10 +1203,11 @@ clutter_entry_get_alignment (ClutterEntry *entry)
  * that the position should be set after the last character in the entry.
  * Note that this position is in characters, not in bytes.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 void
-clutter_entry_set_position (ClutterEntry *entry, gint position)
+clutter_entry_set_cursor_position (ClutterEntry *entry,
+                                   gint          position)
 {
   ClutterEntryPrivate *priv;
   gint len;
@@ -1227,22 +1228,22 @@ clutter_entry_set_position (ClutterEntry *entry, gint position)
 
   clutter_entry_clear_cursor_position (entry);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+  if (CLUTTER_ACTOR_IS_VISIBLE (entry))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
 }
 
 /**
- * clutter_entry_get_position:
+ * clutter_entry_get_cursor_position:
  * @entry: a #ClutterEntry
  *
  * Gets the position, in characters, of the cursor in @entry.
  *
  * Return value: the position of the cursor.
  *
- * Since: 0.4
+ * Since: 0.6
  */
 gint
-clutter_entry_get_position (ClutterEntry *entry)
+clutter_entry_get_cursor_position (ClutterEntry *entry)
 {
   ClutterEntryPrivate *priv;
 
@@ -1313,9 +1314,9 @@ clutter_entry_handle_key_event (ClutterEntry    *entry,
         if (pos != 0 && len != 0)
           {
             if (pos == -1)
-              clutter_entry_set_position (entry, len - 1);
+              clutter_entry_set_cursor_position (entry, len - 1);
             else
-              clutter_entry_set_position (entry, pos - 1);
+              clutter_entry_set_cursor_position (entry, pos - 1);
           }
         break;
       case CLUTTER_Right:
@@ -1323,17 +1324,17 @@ clutter_entry_handle_key_event (ClutterEntry    *entry,
         if (pos != -1 && len != 0)
           {
             if (pos != len)
-              clutter_entry_set_position (entry, pos + 1);
+              clutter_entry_set_cursor_position (entry, pos + 1);
           }
         break;
       case CLUTTER_End:
       case CLUTTER_KP_End:
-        clutter_entry_set_position (entry, -1);
+        clutter_entry_set_cursor_position (entry, -1);
         break;
       case CLUTTER_Begin:
       case CLUTTER_Home:
       case CLUTTER_KP_Home:
-        clutter_entry_set_position (entry, 0);
+        clutter_entry_set_cursor_position (entry, 0);
         break;
       default:
         clutter_entry_insert_unichar (entry,
@@ -1377,7 +1378,7 @@ clutter_entry_insert_unichar (ClutterEntry *entry,
   clutter_entry_set_text (entry, new->str);
 
   if (priv->position >= 0)
-    clutter_entry_set_position (entry, priv->position + 1);
+    clutter_entry_set_cursor_position (entry, priv->position + 1);
 
   g_string_free (new, TRUE);
 
@@ -1430,7 +1431,7 @@ clutter_entry_delete_chars (ClutterEntry *entry,
   clutter_entry_set_text (entry, new->str);
 
   if (priv->position > 0)
-    clutter_entry_set_position (entry, priv->position - num);
+    clutter_entry_set_cursor_position (entry, priv->position - num);
 
   g_string_free (new, TRUE);
 
@@ -1538,7 +1539,7 @@ clutter_entry_set_visible_cursor (ClutterEntry *entry,
 
       g_object_notify (G_OBJECT (entry), "cursor-visible");
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+      if (CLUTTER_ACTOR_IS_VISIBLE (entry))
         clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
     }
 }
@@ -1589,7 +1590,7 @@ clutter_entry_set_visibility (ClutterEntry *entry, gboolean visible)
   clutter_entry_clear_layout (entry);
   clutter_entry_clear_cursor_position (entry);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+  if (CLUTTER_ACTOR_IS_VISIBLE (entry))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
 }
 
@@ -1642,8 +1643,8 @@ clutter_entry_set_invisible_char (ClutterEntry *entry, gunichar wc)
   clutter_entry_clear_layout (entry);
   clutter_entry_clear_cursor_position (entry);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));
+  if (CLUTTER_ACTOR_IS_VISIBLE (entry))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
 }
 
 /**

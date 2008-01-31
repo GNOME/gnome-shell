@@ -106,54 +106,54 @@ struct _ClutterEntryClass
 
 GType clutter_entry_get_type (void) G_GNUC_CONST;
 
-ClutterActor *        clutter_entry_new                (void);
-ClutterActor *        clutter_entry_new_full           (const gchar        *font_name,
-							const gchar        *text,
-							const ClutterColor *color);
-ClutterActor *        clutter_entry_new_with_text      (const gchar        *font_name,
-                                                        const gchar        *text);
-void                  clutter_entry_set_text           (ClutterEntry       *entry,
-						        const gchar        *text);
-G_CONST_RETURN gchar *clutter_entry_get_text           (ClutterEntry       *entry);
-void                  clutter_entry_set_font_name      (ClutterEntry       *entry,
-						        const gchar        *font_name);
-G_CONST_RETURN gchar *clutter_entry_get_font_name      (ClutterEntry       *entry);
-void                  clutter_entry_set_color          (ClutterEntry       *entry,
-						        const ClutterColor *color);
-void                  clutter_entry_get_color          (ClutterEntry       *entry,
-						        ClutterColor       *color);
-PangoLayout *         clutter_entry_get_layout         (ClutterEntry       *entry);
-void                  clutter_entry_set_alignment      (ClutterEntry       *entry,
-                                                        PangoAlignment      alignment);
-PangoAlignment        clutter_entry_get_alignment      (ClutterEntry       *entry);
-void                  clutter_entry_set_position       (ClutterEntry       *entry,
-                                                        gint                position);
-gint                  clutter_entry_get_position       (ClutterEntry       *entry);
-void                  clutter_entry_handle_key_event   (ClutterEntry       *entry,
-                                                        ClutterKeyEvent    *kev);
-void                  clutter_entry_insert_unichar     (ClutterEntry       *entry,
-                                                        gunichar            wc);
-void                  clutter_entry_delete_chars       (ClutterEntry       *entry,
-                                                        guint               len);
-void                  clutter_entry_insert_text        (ClutterEntry       *entry,
-                                                        const gchar        *text,
-                                                        gssize              position);
-void                  clutter_entry_delete_text        (ClutterEntry       *entry,
-                                                        gssize              start_pos,
-                                                        gssize              end_pos);
-void                  clutter_entry_set_visible_cursor (ClutterEntry       *entry,
-                                                        gboolean            visible);
-gboolean              clutter_entry_get_visible_cursor (ClutterEntry       *entry);
+ClutterActor *        clutter_entry_new                 (void);
+ClutterActor *        clutter_entry_new_full            (const gchar        *font_name,
+							 const gchar        *text,
+							 const ClutterColor *color);
+ClutterActor *        clutter_entry_new_with_text       (const gchar        *font_name,
+                                                         const gchar        *text);
+void                  clutter_entry_set_text            (ClutterEntry       *entry,
+						         const gchar        *text);
+G_CONST_RETURN gchar *clutter_entry_get_text            (ClutterEntry       *entry);
+void                  clutter_entry_set_font_name       (ClutterEntry       *entry,
+						         const gchar        *font_name);
+G_CONST_RETURN gchar *clutter_entry_get_font_name       (ClutterEntry       *entry);
+void                  clutter_entry_set_color           (ClutterEntry       *entry,
+						         const ClutterColor *color);
+void                  clutter_entry_get_color           (ClutterEntry       *entry,
+						         ClutterColor       *color);
+PangoLayout *         clutter_entry_get_layout          (ClutterEntry       *entry);
+void                  clutter_entry_set_alignment       (ClutterEntry       *entry,
+                                                         PangoAlignment      alignment);
+PangoAlignment        clutter_entry_get_alignment       (ClutterEntry       *entry);
+void                  clutter_entry_set_cursor_position (ClutterEntry       *entry,
+                                                         gint                position);
+gint                  clutter_entry_get_cursor_position (ClutterEntry       *entry);
+void                  clutter_entry_handle_key_event    (ClutterEntry       *entry,
+                                                         ClutterKeyEvent    *kev);
+void                  clutter_entry_insert_unichar      (ClutterEntry       *entry,
+                                                         gunichar            wc);
+void                  clutter_entry_delete_chars        (ClutterEntry       *entry,
+                                                         guint               len);
+void                  clutter_entry_insert_text         (ClutterEntry       *entry,
+                                                         const gchar        *text,
+                                                         gssize              position);
+void                  clutter_entry_delete_text         (ClutterEntry       *entry,
+                                                         gssize              start_pos,
+                                                         gssize              end_pos);
+void                  clutter_entry_set_visible_cursor  (ClutterEntry       *entry,
+                                                         gboolean            visible);
+gboolean              clutter_entry_get_visible_cursor  (ClutterEntry       *entry);
 
-void                  clutter_entry_set_visibility     (ClutterEntry       *entry,
-                                                        gboolean            visible);
-gboolean              clutter_entry_get_visibility     (ClutterEntry       *entry);
-void                  clutter_entry_set_invisible_char (ClutterEntry       *entry,
-                                                        gunichar            wc);
-gunichar              clutter_entry_get_invisible_char (ClutterEntry       *entry);
-void                  clutter_entry_set_max_length     (ClutterEntry       *entry,
-                                                        gint                max);
-gint                  clutter_entry_get_max_length     (ClutterEntry       *entry);
+void                  clutter_entry_set_visibility      (ClutterEntry       *entry,
+                                                         gboolean            visible);
+gboolean              clutter_entry_get_visibility      (ClutterEntry       *entry);
+void                  clutter_entry_set_invisible_char  (ClutterEntry       *entry,
+                                                         gunichar            wc);
+gunichar              clutter_entry_get_invisible_char  (ClutterEntry       *entry);
+void                  clutter_entry_set_max_length      (ClutterEntry       *entry,
+                                                         gint                max);
+gint                  clutter_entry_get_max_length      (ClutterEntry       *entry);
 
 G_END_DECLS
 
