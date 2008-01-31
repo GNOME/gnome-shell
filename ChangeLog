@@ -1,3 +1,14 @@
+2007-01-31  Tomas Frydrych  <tf@openedhand.com>
+
+        * clutter/clutter-actor.c:
+	(clutter_actor_transform_vertices):
+	Call clutter_actor_query_coords() instead of accessing the actor
+	box, so that actors that calculate their bounding box on the fly
+	(like ClutterGroup) work.
+
+	* (_clutter_actor_apply_modelview_transform_recursive):
+	Made to work for parentless actors.
+	
 2008-01-31  Øyvind Kolås  <pippin@o-hand.com>
 
 	* tests/test-depth.c: added a box of cloned hands to further expand

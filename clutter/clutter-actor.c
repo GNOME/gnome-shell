@@ -647,11 +647,15 @@ clutter_actor_transform_vertices (ClutterActor    * self,
 {
   ClutterFixed           mtx[16];
   ClutterFixed           _x, _y, _z, _w;
-  ClutterActorPrivate   *priv;
+  ClutterActorBox        coords;
 
+  /*
+   * Need to query coords here, so that we get coorect values for actors that
+   * do not modify priv->coords.
+   */
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
+  clutter_actor_query_coords (self, &coords);
 
   cogl_push_matrix();
   _clutter_actor_apply_modelview_transform_recursive (self);
@@ -670,7 +674,7 @@ clutter_actor_transform_vertices (ClutterActor    * self,
   verts[0].z = _z;
   w[0] = _w;
 
-  _x = priv->coords.x2 - priv->coords.x1;
+  _x = coords.x2 - coords.x1;
   _y = 0;
   _z = 0;
   _w = CFX_ONE;
@@ -683,7 +687,7 @@ clutter_actor_transform_vertices (ClutterActor    * self,
   w[1] = _w;
 
   _x = 0;
-  _y = priv->coords.y2 - priv->coords.y1;
+  _y = coords.y2 - coords.y1;
   _z = 0;
   _w = CFX_ONE;
 
@@ -694,8 +698,8 @@ clutter_actor_transform_vertices (ClutterActor    * self,
   verts[2].z = _z;
   w[2] = _w;
 
-  _x = priv->coords.x2 - priv->coords.x1;
-  _y = priv->coords.y2 - priv->coords.y1;
+  _x = coords.x2 - coords.x1;
+  _y = coords.y2 - coords.y1;
   _z = 0;
   _w = CFX_ONE;
 
@@ -889,6 +893,8 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor * self)
 
   if (parent)
     _clutter_actor_apply_modelview_transform_recursive (parent);
+  else if (self != clutter_stage_get_default ())
+    _clutter_actor_apply_modelview_transform (clutter_stage_get_default());
 
   _clutter_actor_apply_modelview_transform (self);
 }
