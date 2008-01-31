@@ -222,6 +222,12 @@ Release Notes for Clutter 0.6.0
 * In the X11-based backends, the DestroyNotify event is not propagated to
   Clutter core if the stage is using a foreign window.
 
+* To avoid method name collisions between ClutterActor and ClutterEntry
+  in high-level languages, the clutter_entry_set_position() and
+  clutter_entry_get_position() functions have been renamed to
+  clutter_entry_set_cursor_position() and clutter_entry_get_cursor_position()
+  respectively.
+
 Release Notes for Clutter 0.4.0
 -------------------------------
 
