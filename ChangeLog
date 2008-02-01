@@ -1,5 +1,9 @@
 2008-02-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.h: Clean up a bit the flag-related macros.
+
+2008-02-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	(clutter_actor_get_property): Use clutter_actor_get_reactive()
 	instead of the IS_REACTIVE() macro.

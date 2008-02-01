@@ -57,11 +57,8 @@ G_BEGIN_DECLS
 
 #define CLUTTER_ACTOR_IS_MAPPED(e)      (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_MAPPED)
 #define CLUTTER_ACTOR_IS_REALIZED(e)    (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REALIZED)
-#define CLUTTER_ACTOR_IS_VISIBLE(e)     (CLUTTER_ACTOR_IS_MAPPED (e) && \
-                                         CLUTTER_ACTOR_IS_REALIZED (e))
+#define CLUTTER_ACTOR_IS_VISIBLE(e)     (CLUTTER_ACTOR_IS_MAPPED (e) && CLUTTER_ACTOR_IS_REALIZED (e))
 #define CLUTTER_ACTOR_IS_REACTIVE(e)    (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REACTIVE)
-/*                                        && CLUTTER_ACTOR_IS_VISIBLE(e)) */
-
 
 typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
