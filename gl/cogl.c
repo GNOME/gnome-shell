@@ -200,8 +200,19 @@ cogl_paint_init (const ClutterColor *color)
   glDisable (GL_LIGHTING);
   glDisable (GL_FOG);
 
-  glEnable (GL_DEPTH_TEST);
-  glDepthFunc (GL_LEQUAL);
+  /* 
+   *  Disable the depth test for now as has some strange side effects,
+   *  mainly on x/y axis rotation with multiple layers at same depth 
+   *  (eg rotating text on a bg has very strange effect). Seems no clean  
+   *  100% effective way to fix without other odd issues.. So for now 
+   *  move to application to handle and add cogl_enable_depth_test()
+   *  as for custom actors (i.e groups) to enable if need be.
+   *
+   * glEnable (GL_DEPTH_TEST);                                                 
+   * glEnable (GL_ALPHA_TEST)                                                  
+   * glDepthFunc (GL_LEQUAL);
+   * glAlphaFunc (GL_GREATER, 0.1);
+   */
 
   cogl_enable (CGL_ENABLE_BLEND);
   glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -308,22 +319,23 @@ cogl_enable (gulong flags)
       __enable_flags &= ~CGL_ENABLE_TEXTURE_RECT;
     }
 #endif
+}
 
-#if 0
-  if (flags & CGL_ENABLE_ALPHA_TEST)
+void
+cogl_enable_depth_test (gboolean setting)
+{
+  if (setting)
     {
-      if (!(__enable_flags & CGL_ENABLE_ALPHA_TEST))
-        {
-	  glEnable (GL_ALPHA_TEST);
-          __enable_flags |= CGL_ENABLE_ALPHA_TEST;
-        }
+      glEnable (GL_DEPTH_TEST);                                               
+      glEnable (GL_ALPHA_TEST);
+      glDepthFunc (GL_LEQUAL);
+      glAlphaFunc (GL_GREATER, 0.1);
     }
-  else if (__enable_flags & CGL_ENABLE_ALPHA_TEST)
+  else
     {
+      glDisable (GL_DEPTH_TEST);                                               
       glDisable (GL_ALPHA_TEST);
-       __enable_flags &= ~CGL_ENABLE_ALPHA_TEST;
     }
-#endif
 }
 
 void
