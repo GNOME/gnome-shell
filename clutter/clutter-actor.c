@@ -1277,8 +1277,7 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->scale_y));
       break;
     case PROP_REACTIVE:
-      g_value_set_boolean (value,
-                           (CLUTTER_ACTOR_IS_REACTIVE (actor) != FALSE));
+      g_value_set_boolean (value, clutter_actor_get_reactive (actor));
       break;
     case PROP_ROTATION_ANGLE_X:
       g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->rxang));
@@ -3998,6 +3997,8 @@ clutter_actor_set_reactive (ClutterActor *actor,
     CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
   else
     CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
+
+  g_object_notify (G_OBJECT (actor), "reactive");
 }
 
 /**

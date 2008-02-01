@@ -1,3 +1,16 @@
+2008-02-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_get_property): Use clutter_actor_get_reactive()
+	instead of the IS_REACTIVE() macro.
+
+	(clutter_actor_set_reactive): Emit the notify signal for the
+	reactive property.
+
+	* clutter/clutter-timeline.c:
+	(timeline_timeout_func),
+	(clutter_timeline_get_delta): Coding style fixes.
+
 2008-01-31  Rob Bradford  <rob@openedhand.com>
 
 	* clutter/glx/clutter-stage-glx.c:

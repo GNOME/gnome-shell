@@ -531,7 +531,7 @@ timeline_timeout_func (gpointer data)
       /* First frame, set up timings.*/
       priv->start_frame_secs = timeval.tv_sec;
       priv->skipped_frames   = 0;
-	  priv->msecs_delta = 0;
+      priv->msecs_delta      = 0;
 
       msecs     = timeval.tv_usec / 1000;
       n_frames  = 1;
@@ -571,10 +571,8 @@ timeline_timeout_func (gpointer data)
        * to emit the last new-frame signal with the last frame
        */
       if (n_frames > 1)
-	{
-	  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
-                         priv->current_frame_num);
-	}
+	g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
+                       priv->current_frame_num);
 
       if (priv->loop)
 	{
@@ -1250,9 +1248,7 @@ clutter_timeline_get_delta (ClutterTimeline *timeline,
   priv = timeline->priv;
 
   if (msecs)
-    {
-      *msecs = timeline->priv->msecs_delta;
-    }
+    *msecs = timeline->priv->msecs_delta;
 
   return priv->skipped_frames + 1;
 }
