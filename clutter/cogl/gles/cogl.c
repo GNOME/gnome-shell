@@ -268,7 +268,7 @@ cogl_rectangle_internal (ClutterFixed x,
                          ClutterFixed width,
                          ClutterFixed height)
 {
-  GLfixed rect_verts[4] = {
+  GLfixed rect_verts[8] = {
     x,         y,
     x + width, y,
     x,         y + height,

@@ -1,3 +1,8 @@
+2008-02-01  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/gles/cogl.c: (cogl_rectangle_internal): increase size
+	of GLfixed[] array to make contents fit.
+
 2008-02-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.h: Clean up a bit the flag-related macros.
