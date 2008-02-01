@@ -41,6 +41,21 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 
 static gulong __enable_flags = 0;
 
+/* FBO Procs */
+typedef void (*GenFramebuffers) (GLsizei n, GLuint *ids);
+typedef void (*BindFramebuffer) (GLenum target, GLuint framebuffer);
+typedef void (*FramebufferTexture2D) (GLenum target, GLenum attachment,
+				      GLenum textarget, GLuint texture,
+				      GLint level);
+typedef GLenum (*CheckFramebufferStatus)(GLenum target);
+typedef void (*DeleteFramebuffers) (GLsizei n, const GLuint *framebuffers);
+
+static GenFramebuffers        _gen_framebuffers = NULL;
+static BindFramebuffer        _bind_framebuffer = NULL;
+static FramebufferTexture2D   _framebuffer_texture_2d = NULL;
+static CheckFramebufferStatus _check_framebuffer_status = NULL;
+static DeleteFramebuffers     _delete_framebuffers = NULL;
+
 #if COGL_DEBUG
 struct token_string
 {
@@ -189,7 +204,6 @@ cogl_paint_init (const ClutterColor *color)
   glDepthFunc (GL_LEQUAL);
 
   cogl_enable (CGL_ENABLE_BLEND);
-
   glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 }
 
@@ -295,6 +309,7 @@ cogl_enable (gulong flags)
     }
 #endif
 
+#if 0
   if (flags & CGL_ENABLE_ALPHA_TEST)
     {
       if (!(__enable_flags & CGL_ENABLE_ALPHA_TEST))
@@ -308,6 +323,7 @@ cogl_enable (gulong flags)
       glDisable (GL_ALPHA_TEST);
        __enable_flags &= ~CGL_ENABLE_ALPHA_TEST;
     }
+#endif
 }
 
 void
@@ -648,6 +664,35 @@ cogl_get_features ()
       flags |= CLUTTER_FEATURE_SHADERS_GLSL;
     }
 
+  if (cogl_check_extension ("GL_EXT_framebuffer_object", gl_extensions) ||
+      cogl_check_extension ("GL_ARB_framebuffer_object", gl_extensions))
+    {
+      _gen_framebuffers = 
+	(GenFramebuffers) cogl_get_proc_address ("glGenFramebuffersEXT");
+
+      _bind_framebuffer = 
+	(BindFramebuffer) cogl_get_proc_address ("glBindFramebufferEXT");
+
+      _framebuffer_texture_2d =
+	(FramebufferTexture2D) 
+	   cogl_get_proc_address ("glFramebufferTexture2DEXT");
+
+      _check_framebuffer_status =
+	(CheckFramebufferStatus)
+	   cogl_get_proc_address ("glCheckFramebufferStatusEXT");
+
+      _delete_framebuffers =
+	(DeleteFramebuffers)
+	   cogl_get_proc_address ("glDeleteFramebuffersEXT");
+
+      if (_gen_framebuffers 
+	  && _bind_framebuffer
+	  && _framebuffer_texture_2d
+	  && _check_framebuffer_status
+	  && _delete_framebuffers)
+	flags |= CLUTTER_FEATURE_OFFSCREEN;
+    }
+
   return flags;
 }
 
@@ -773,6 +818,112 @@ cogl_fog_set (const ClutterColor *fog_color,
   glFogf (GL_FOG_START, CLUTTER_FIXED_TO_FLOAT (start));
   glFogf (GL_FOG_END, CLUTTER_FIXED_TO_FLOAT (stop));
 }
+
+/* FBOs - offscreen */
+
+COGLuint
+cogl_offscreen_create (COGLuint target_texture)
+{
+#ifdef GL_FRAMEBUFFER_EXT
+  COGLuint handle;
+  GLenum status;
+
+  if (_gen_framebuffers == NULL
+      || _bind_framebuffer == NULL
+      || _framebuffer_texture_2d == NULL
+      || _check_framebuffer_status == NULL)
+    {
+      /* tmp warning - need error reporting */
+      g_warning("Missing GL_FRAMEBUFFER_EXT API\n");
+      return 0;
+    }
+
+  _gen_framebuffers (1, &handle);
+  _bind_framebuffer (GL_FRAMEBUFFER_EXT, handle);
+
+  _framebuffer_texture_2d (GL_FRAMEBUFFER_EXT, 
+			   GL_COLOR_ATTACHMENT0_EXT,
+			   GL_TEXTURE_RECTANGLE_ARB, 
+			   target_texture,
+			   0);
+
+  status = _check_framebuffer_status (GL_FRAMEBUFFER_EXT);
+
+  if (status != GL_FRAMEBUFFER_COMPLETE_EXT)
+    {
+      _delete_framebuffers (1, &handle);
+      return 0;
+    }
+
+  _bind_framebuffer (GL_FRAMEBUFFER_EXT, 0);
+
+  return handle;
+#else
+  /* tmp warning - need error reporting */
+  g_warning("No GL_FRAMEBUFFER_EXT\n");
+  return 0;
+#endif
+}
+
+void
+cogl_offscreen_destroy (COGLuint offscreen_handle)
+{
+  if (_delete_framebuffers)
+    _delete_framebuffers (1, &offscreen_handle);
+}
+
+void
+cogl_offscreen_redirect_start (COGLuint offscreen_handle,
+			       gint     width,
+			       gint     height)
+{
+  /* FIXME: silly we need to pass width / height to init viewport */
+#ifdef GL_FRAMEBUFFER_EXT
+
+  if (_bind_framebuffer == NULL)
+    return;
+
+  _bind_framebuffer (GL_FRAMEBUFFER_EXT, offscreen_handle);
+
+  glViewport (0, 0, width, height);
+
+  glMatrixMode (GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity ();
+
+  glMatrixMode (GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity ();
+
+  glTranslatef (-1.0f, -1.0f, 0.0f);
+  glScalef (2.0f / (float)width, 2.0f / (float)height, 1.0f);
+#endif
+}
+
+void
+cogl_offscreen_redirect_end (COGLuint offscreen_handle,
+			     gint     width,
+			     gint     height)
+{
+  /* FIXME: silly we need to pass width / height to reset to */
+  if (_bind_framebuffer == NULL)
+    return;
+
+#ifdef GL_FRAMEBUFFER_EXT
+  glViewport (0, 0, width, height);
+
+  glMatrixMode (GL_PROJECTION);
+  glPopMatrix();
+
+  glMatrixMode (GL_MODELVIEW);
+  glPopMatrix();
+
+  _bind_framebuffer (GL_FRAMEBUFFER_EXT, 0);
+#endif
+}
+
+
+/* Shader Magic follows */
 
 #ifdef __GNUC__
 

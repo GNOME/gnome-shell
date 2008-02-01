@@ -264,6 +264,23 @@ void
 cogl_program_uniform_1f           (COGLint      uniform_no,
                                    gfloat       value);
 
+/* Offscreen - FBO support */
+
+COGLuint
+cogl_offscreen_create (COGLuint target_texture);
+
+void
+cogl_offscreen_destroy (COGLuint offscreen_handle);
+
+void
+cogl_offscreen_redirect_start (COGLuint offscreen_handle,
+			       gint     width,
+			       gint     height);
+
+void
+cogl_offscreen_redirect_end (COGLuint offscreen_handle,
+			     gint     width,
+			     gint     height);
 
 G_END_DECLS
 
