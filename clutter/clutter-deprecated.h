@@ -11,6 +11,8 @@
  * new functionality should giver errors containing _DEPRECATED_BY_.
  */
 
+#define clutter_group_find_child_by_id               clutter_group_find_child_by_id_REPLACED_BY_clutter_container_find_child_by_name
+
 #define clutter_behaviour_ellipse_set_angle_begin    clutter_behaviour_ellipse_set_angle_begin_REPLACED_BY_clutter_behaviour_set_angle_start
 #define clutter_behaviour_ellipse_set_angle_beginx   clutter_behaviour_ellipse_set_angle_beginx_REPLACED_BY_clutter_behaviour_set_angle_startx
 #define clutter_behaviour_ellipse_get_angle_begin    clutter_behaviour_ellipse_get_angle_begin_REPLACED_BY_clutter_behaviour_get_angle_start

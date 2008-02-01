@@ -96,6 +96,9 @@ struct _ClutterTexturePrivate
   gint                         n_x_tiles;
   gint                         n_y_tiles;
   COGLuint                    *tiles;
+
+  ClutterActor                *fbo_source;
+  COGLuint                     fbo_handle;
 };
 
 enum
@@ -668,6 +671,9 @@ clutter_texture_realize (ClutterActor *actor)
   texture = CLUTTER_TEXTURE(actor);
   priv = texture->priv;
 
+  if (priv->fbo_handle)
+    return;   /* handle better */
+
   CLUTTER_MARK();
 
   if (priv->local_pixbuf != NULL)
@@ -750,6 +756,19 @@ clutter_texture_paint (ClutterActor *self)
 		           : "unknown");
       return;
     }
+
+  if (priv->fbo_handle)
+    {
+      cogl_offscreen_redirect_start (priv->fbo_handle, 
+				     priv->width, priv->height);
+      clutter_actor_paint (priv->fbo_source);
+      cogl_offscreen_redirect_end (priv->fbo_handle,
+				   CLUTTER_STAGE_WIDTH(),
+				   CLUTTER_STAGE_HEIGHT());
+
+      glBindTexture(CGL_TEXTURE_RECTANGLE_ARB, priv->tiles[0]);
+    }
+
 
   CLUTTER_NOTE (PAINT,
                 "painting texture '%s'",
@@ -2082,4 +2101,91 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
     g_free (copy_data);
 
   return TRUE;
+}
+
+/**
+ * clutter_texture_new_from_actor:
+ * @actor: A #ClutterActor 
+ *
+ * Creates a new #ClutterTexture object with its source a prexisting 
+ * actor (and associated children).
+ *
+ * Note this function is intented as a utility call for uniformly applying
+ * shaders to groups and other potentail visual effects. It requires the
+ * #CLUTTER_FEATURE_TEXTURE_RECTANGLE & #CLUTTER_FEATURE_OFFSCREEN features
+ * are supported by both the current backend and target system
+ *
+ * Return value: A newly created #ClutterTexture object or NULL on fail.
+ **/
+ClutterActor *
+clutter_texture_new_from_actor (ClutterActor *actor)
+{
+  ClutterTexture        *texture;
+  ClutterTexturePrivate *priv;
+  guint                  w, h;
+
+
+  /*  TODO (before 0.6 release):
+   *
+   *   - Figure out getting source actor size correctly.
+   *   - Figure out refing/reparenting source actor. 
+   *   - Handle source actor resizing.
+   *   - Handle failure better.
+   *   - Handle cleanup on destruction.
+   *   - Beef up test-fbo.
+   *   - Have the source actor as a prop?
+   */
+
+  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE) == FALSE)
+    return NULL;
+
+  if (clutter_feature_available (CLUTTER_FEATURE_OFFSCREEN) == FALSE)
+    return NULL;
+
+  texture = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
+
+  priv = texture->priv;
+
+  priv->fbo_source = actor;
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (priv->fbo_source))
+    clutter_actor_realize (priv->fbo_source);
+
+
+  /* FIXME: just ref ? */
+  clutter_actor_set_parent (actor, CLUTTER_ACTOR(texture));
+
+  /* FIXME abs size */
+  /*clutter_actor_get_abs_size (priv->fbo_source, &w, &h);*/
+  clutter_actor_get_size (actor, &w, &h);
+
+  /* FIXME: Check we can actually create a texture this large */
+  priv->width = w;
+  priv->height = h;
+
+  priv->target_type  = CGL_TEXTURE_RECTANGLE_ARB;
+  priv->pixel_format = CGL_RGBA;
+  priv->pixel_type = PIXEL_TYPE;
+  priv->is_tiled     = 0;
+
+  priv->tiles = g_new (COGLuint, 1);
+
+  /* FIXME: needs a cogl wrapper */
+  glGenTextures (1, priv->tiles);
+
+  cogl_texture_bind (priv->target_type, priv->tiles[0]);
+
+  cogl_texture_image_2d (priv->target_type,
+			 CGL_RGBA,
+			 w,
+			 h,
+			 priv->pixel_format,
+			 priv->pixel_type,
+			 NULL);
+
+  priv->fbo_handle = cogl_offscreen_create (priv->tiles[0]);
+
+  clutter_actor_set_size (actor, w, h);
+
+  return CLUTTER_ACTOR(texture);
 }

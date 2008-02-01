@@ -645,6 +645,36 @@ cogl_fog_set (const ClutterColor *fog_color,
   glFogx (GL_FOG_END, (GLfixed) z_far);
 }
 
+/* Offscreen - TODO: possible support from FBO's */
+
+COGLuint
+cogl_offscreen_create (COGLuint target_texture)
+{
+  return 0;
+}
+
+void
+cogl_offscreen_destroy (COGLuint offscreen_handle)
+{
+}
+
+void
+cogl_offscreen_redirect_start (COGLuint offscreen_handle,
+			       gint     width,
+			       gint     height)
+{
+}
+
+void
+cogl_offscreen_redirect_end (COGLuint offscreen_handle,
+			     gint     width,
+			     gint     height)
+{
+}
+
+
+/* Shaders, no support on regular OpenGL 1.1 */
+
 COGLhandle
 cogl_create_program (void)
 {

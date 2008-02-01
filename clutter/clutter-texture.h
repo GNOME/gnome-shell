@@ -119,7 +119,7 @@ gboolean      clutter_texture_set_from_rgb_data   (ClutterTexture *texture,
 						   gint            bpp,
 						   ClutterTextureFlags  flags,
 						   GError        **error);
-
+ClutterActor *clutter_texture_new_from_actor      (ClutterActor *actor);
 gboolean      clutter_texture_set_area_from_rgb_data (ClutterTexture *texture,
                                                    const guchar   *data,
                                                    gboolean        has_alpha,

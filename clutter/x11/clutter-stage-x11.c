@@ -308,7 +308,7 @@ clutter_stage_x11_set_cursor_visible (ClutterStage *stage,
 
   if (show_cursor)
     {
-#if HAVE_XFIXES
+#if 0 /* HAVE_XFIXES - seems buggy/unreliable */
       XFixesShowCursor (stage_x11->xdpy, stage_x11->xwin);
 #else
       XUndefineCursor (stage_x11->xdpy, stage_x11->xwin);
@@ -316,7 +316,9 @@ clutter_stage_x11_set_cursor_visible (ClutterStage *stage,
     }
   else
     {
-#if HAVE_XFIXES
+#if 0 /* HAVE_XFIXES - seems buggy/unreliable, check cursor in firefox 
+       *               loading page after hiding.  
+      */
       XFixesHideCursor (stage_x11->xdpy, stage_x11->xwin);
 #else
       XColor col;

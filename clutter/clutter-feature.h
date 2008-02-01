@@ -47,6 +47,7 @@ G_BEGIN_DECLS
  * @CLUTTER_FEATURE_STAGE_USER_RESIZE: Set if stage is able to be user resized.
  * @CLUTTER_FEATURE_STAGE_CURSOR: Set if stage has a graphical cursor.
  * @CLUTTER_FEATURE_SHADERS_GLSL: Set if the backend supports GLSL shaders.
+ * @CLUTTER_FEATURE_OFFSCREEN: Set if the backend supports offscreen rendering.
  *
  * Runtime flags indicating specific features available via Clutter window
  * sysytem and graphics backend.
@@ -62,7 +63,8 @@ typedef enum
   CLUTTER_FEATURE_STAGE_STATIC           = (1 << 5),
   CLUTTER_FEATURE_STAGE_USER_RESIZE      = (1 << 6),
   CLUTTER_FEATURE_STAGE_CURSOR           = (1 << 7),
-  CLUTTER_FEATURE_SHADERS_GLSL           = (1 << 8)
+  CLUTTER_FEATURE_SHADERS_GLSL           = (1 << 8),
+  CLUTTER_FEATURE_OFFSCREEN              = (1 << 9)
 } ClutterFeatureFlags;
 
 gboolean            clutter_feature_available       (ClutterFeatureFlags feature);
