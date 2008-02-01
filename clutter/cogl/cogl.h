@@ -118,6 +118,9 @@ cogl_clip_unset (void);
 void
 cogl_enable (gulong flags);
 
+void
+cogl_enable_depth_test (gboolean setting);
+
 gboolean
 cogl_texture_can_size (COGLenum       target,
 		       COGLenum pixel_format,

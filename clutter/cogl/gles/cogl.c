@@ -224,18 +224,22 @@ cogl_enable (gulong flags)
       __enable_flags &= ~CGL_ENABLE_TEXTURE_RECT;
     }
 #endif
+}
 
-  if (flags & CGL_ENABLE_ALPHA_TEST)
+void
+cogl_enable_depth_test (gboolean setting)
+{
+  if (setting)
     {
-      if (!(__enable_flags & CGL_ENABLE_ALPHA_TEST))
-	glEnable (GL_ALPHA_TEST);
-
-      __enable_flags |= CGL_ENABLE_ALPHA_TEST;
+      glEnable (GL_DEPTH_TEST);                                               
+      glEnable (GL_ALPHA_TEST);
+      glDepthFunc (GL_LEQUAL);
+      glAlphaFunc (GL_GREATER, 0.1);
     }
-  else if (__enable_flags & CGL_ENABLE_ALPHA_TEST)
+  else
     {
+      glDisable (GL_DEPTH_TEST);                                               
       glDisable (GL_ALPHA_TEST);
-      __enable_flags &= ~CGL_ENABLE_ALPHA_TEST;
     }
 }
 

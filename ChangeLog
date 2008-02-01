@@ -1,5 +1,20 @@
 2008-02-01  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl.c: (cogl_paint_init), (cogl_enable):
+	* clutter/cogl/gles/cogl.c: (cogl_enable):
+
+       Disable the depth test and buffer as has some strange side
+       effects, mainly on x/y axis rotation with multiple layers at
+       same depth (eg rotating text on a bg has very strange
+       effect). Seems no clean 100% effective way to fix without other
+       odd issues.. So for now move to application to handle and add
+       cogl_enable_depth_test() as for custom actors (i.e groups) to
+       enable if need be.
+
+
+2008-02-01  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-texture.c: (clutter_texture_new_from_actor):
 	Fix typo breaking FBO rendering on anything other than a cloned
 	texture.
