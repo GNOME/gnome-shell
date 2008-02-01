@@ -1,5 +1,11 @@
 2008-02-01  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-texture.c: (clutter_texture_new_from_actor):
+	Fix typo breaking FBO rendering on anything other than a cloned
+	texture.
+
+2008-02-01  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-feature.h:
 	* clutter/clutter-texture.c:
 	* clutter/clutter-texture.h:

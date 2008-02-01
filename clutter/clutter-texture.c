@@ -2185,7 +2185,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 
   priv->fbo_handle = cogl_offscreen_create (priv->tiles[0]);
 
-  clutter_actor_set_size (actor, w, h);
+  clutter_actor_set_size (texture, w, h);
 
   return CLUTTER_ACTOR(texture);
 }
