@@ -4596,6 +4596,29 @@ meta_display_get_tab_list (MetaDisplay   *display,
   }
 
   tab_list = g_list_reverse (tab_list);
+
+  {
+    GSList *tmp;
+    MetaWindow *l_window;
+
+    tmp = meta_display_list_windows (display);
+
+    /* Go through all windows */
+    while (tmp != NULL)
+      {
+        l_window=tmp->data;
+
+        /* Check to see if it demands attention */
+        if (l_window->wm_state_demands_attention && 
+            l_window->workspace!=workspace) 
+          {
+            /* if it does, add it to the popup */
+            tab_list = g_list_prepend (tab_list, l_window);
+          }
+
+        tmp = tmp->next;
+      } /* End while tmp!=NULL */
+  }
   
   return tab_list;
 }

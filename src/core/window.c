@@ -8056,37 +8056,38 @@ meta_window_set_demands_attention (MetaWindow *window)
   MetaWindow *other_window;
   gboolean obscured = FALSE;
   
-  /* Does the window have any other window on this workspace
-   * overlapping it?
-   */
-
-  meta_window_get_outer_rect (window, &candidate_rect);
-
-  /* The stack is sorted with the top windows first. */
-  
-  while (stack != NULL && stack->data != window)
+  MetaWorkspace *workspace = window->screen->active_workspace;
+  if (workspace!=window->workspace)
     {
-      other_window = stack->data;
-      stack = stack->next;
-     
-      if (other_window->on_all_workspaces ||
-          window->on_all_workspaces ||
-          other_window->workspace == window->workspace)
-        {
-          meta_window_get_outer_rect (other_window, &other_rect);
+      /* windows on other workspaces are necessarily obscured */
+      obscured = TRUE;
+    }
+  else
+    {
+      meta_window_get_outer_rect (window, &candidate_rect);
 
-          if (meta_rectangle_overlap (&candidate_rect, &other_rect))
+      /* The stack is sorted with the top windows first. */
+      
+      while (stack != NULL && stack->data != window)
+        {
+          other_window = stack->data;
+          stack = stack->next;
+         
+          if (other_window->on_all_workspaces ||
+              window->on_all_workspaces ||
+              other_window->workspace == window->workspace)
             {
-              obscured = TRUE;
-              break;
+              meta_window_get_outer_rect (other_window, &other_rect);
+
+              if (meta_rectangle_overlap (&candidate_rect, &other_rect))
+                {
+                  obscured = TRUE;
+                  break;
+                }
             }
         }
-    }
-
-  /* If the window's in full view, there's no point setting the flag. */
+      /* If the window's in full view, there's no point setting the flag. */
   
-  if (!obscured)
-    {
       meta_topic (META_DEBUG_WINDOW_OPS,
           "Not marking %s as needing attention because it's in full view\n",
           window->desc);
