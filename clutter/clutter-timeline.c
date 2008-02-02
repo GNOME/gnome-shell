@@ -37,6 +37,7 @@
  * In that case you might disable the common timeline pool by setting
  * the %CLUTTER_TIMELINE=no-pool environment variable prior to launching
  * your application.
+ *
  */
 
 #ifdef HAVE_CONFIG_H
@@ -375,7 +376,8 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
   /**
    * ClutterTimeline::new-frame:
    * @timeline: the timeline which received the signal
-   * @frame_num: the number of the new frame
+   * @frame_num: the number of the new frame between 0 and 
+   * ClutterTimeline:num-frames
    *
    * The ::new-frame signal is emitted each time a new frame in the
    * timeline is reached.
@@ -979,7 +981,7 @@ clutter_timeline_clone (ClutterTimeline *timeline)
  *
  * Creates a new #ClutterTimeline with a duration of @msecs using
  * the value of the ClutterTimeline:fps property to compute the
- * equivalent number of frames.
+ * equivalent number of frames. 
  *
  * Return value: the newly created #ClutterTimeline
  *

@@ -148,12 +148,10 @@ xembed_set_info (ClutterBackendX11 *backend_x11,
   list[0] = MAX_SUPPORTED_XEMBED_VERSION;
   list[1] = XEMBED_MAPPED;
 
-  clutter_x11_trap_x_errors ();
   XChangeProperty (backend_x11->xdpy, window,
                    backend_x11->atom_XEMBED_INFO,
                    backend_x11->atom_XEMBED_INFO, 32,
                    PropModeReplace, (unsigned char *) list, 2);
-  clutter_x11_untrap_x_errors ();
 }
 
 void
@@ -275,7 +273,6 @@ handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
                   False,
                   SubstructureRedirectMask | SubstructureNotifyMask,
                   (XEvent *) &xclient);
-
       return FALSE;
     }
 

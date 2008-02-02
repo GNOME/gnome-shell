@@ -1,3 +1,11 @@
+2008-02-02  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-timeline.c:
+	Document frame number limits in new-frame signal.
+
+	* clutter/x11/clutter-event-x11.c:
+	Remove uneeded error trap (#751)
+
 2008-02-01  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/cogl.h:
