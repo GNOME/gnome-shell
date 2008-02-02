@@ -1,3 +1,7 @@
+2008-02-02  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/Makefile.am: draw-workspace.h is in ui, not core.
+
 2008-02-01  Alex R.M. Turner  <armtuk@gmail.com>
 
 	* src/core/display.c (meta_get_tab_entry_list): Have the list also pull 

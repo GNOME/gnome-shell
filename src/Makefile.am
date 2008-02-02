@@ -20,7 +20,7 @@ metacity_SOURCES= 				\
 	core/display.c				\
 	core/display.h				\
 	ui/draw-workspace.c			\
-	core/draw-workspace.h			\
+	ui/draw-workspace.h			\
 	core/edge-resistance.c			\
 	core/edge-resistance.h			\
 	core/effects.c				\
