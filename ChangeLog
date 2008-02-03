@@ -1,3 +1,17 @@
+2008-02-03  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-shader.c:
+	Minor formatting cleanups to fit in 80 cols.
+
+	* clutter/clutter-texture.c:
+	More safety checks, clean ups in clutter_texture_new_from_actor()
+
+	* clutter/cogl/gl/cogl.c:
+	Always clear the FBO initially when rendering
+
+	* tests/test-fbo.c:
+	Overhall the test as to be more useful (and show current issues)
+
 2008-02-02  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-timeline.c:

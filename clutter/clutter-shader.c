@@ -93,8 +93,6 @@ enum
   PROP_ENABLED
 };
 
-
-
 G_DEFINE_TYPE (ClutterShader, clutter_shader, G_TYPE_OBJECT);
 
 G_CONST_RETURN gchar *clutter_shader_get_source (ClutterShader      *shader,
@@ -130,10 +128,12 @@ clutter_shader_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_VERTEX_SOURCE:
-      clutter_shader_set_vertex_source (shader, g_value_get_string (value), -1);
+      clutter_shader_set_vertex_source (shader, 
+					g_value_get_string (value), -1);
       break;
     case PROP_FRAGMENT_SOURCE:
-      clutter_shader_set_fragment_source (shader, g_value_get_string (value), -1);
+      clutter_shader_set_fragment_source (shader, 
+					  g_value_get_string (value), -1);
       break;
     case PROP_ENABLED:
       clutter_shader_set_is_enabled (shader, g_value_get_boolean (value));
@@ -183,7 +183,10 @@ clutter_shader_constructor (GType                  type,
 {
   GObject         *object;
 
-  object = G_OBJECT_CLASS (clutter_shader_parent_class)->constructor (type, n_params, params);
+  object 
+    = G_OBJECT_CLASS (clutter_shader_parent_class)->constructor (type, 
+								 n_params, 
+								 params);
 
   /* add this instance to the global list of shaders */
   clutter_shaders_list = g_list_prepend (clutter_shaders_list, object);
@@ -211,13 +214,14 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property (object_class,
-                                   PROP_VERTEX_SOURCE,
-                                   g_param_spec_string ("vertex-source",
-                                                        "Vertex Source",
-                                                        "Source of vertex shader",
-                                                        NULL,
-                                                        CLUTTER_PARAM_READWRITE));
+  g_object_class_install_property 
+    (object_class,
+     PROP_VERTEX_SOURCE,
+     g_param_spec_string ("vertex-source",
+			  "Vertex Source",
+			  "Source of vertex shader",
+			  NULL,
+			  CLUTTER_PARAM_READWRITE));
   /**
    * ClutterShader:fragment-source:
    *
@@ -225,27 +229,30 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property (object_class,
-                                   PROP_FRAGMENT_SOURCE,
-                                   g_param_spec_string ("fragment-source",
-                                                        "Fragment Source",
-                                                        "Source of fragment shader",
-                                                        NULL,
-                                                        CLUTTER_PARAM_READWRITE));
+  g_object_class_install_property 
+    (object_class,
+     PROP_FRAGMENT_SOURCE,
+     g_param_spec_string ("fragment-source",
+			  "Fragment Source",
+			  "Source of fragment shader",
+			  NULL,
+			  CLUTTER_PARAM_READWRITE));
   /**
    * ClutterShader:bound:
    *
-   * Whether the shader is bound (compiled and linked, ready for use in the GL context).
+   * Whether the shader is bound (compiled and linked, ready for use
+   * in the GL context).
    *
    * Since: 0.6
    */
-  g_object_class_install_property (object_class,
-                                   PROP_BOUND,
-                                   g_param_spec_boolean ("bound",
-                                                         "Bound",
-                                                         "Whether the shader is bound",
-                                                         FALSE,
-                                                         CLUTTER_PARAM_READABLE));
+  g_object_class_install_property 
+    (object_class,
+     PROP_BOUND,
+     g_param_spec_boolean ("bound",
+			   "Bound",
+			   "Whether the shader is bound",
+			   FALSE,
+			   CLUTTER_PARAM_READABLE));
   /**
    * ClutterShader:enabled:
    *
@@ -253,13 +260,14 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property (object_class,
-                                   PROP_ENABLED,
-                                   g_param_spec_boolean ("enabled",
-                                                         "Enabled",
-                                                         "Whether the shader is enabled",
-                                                         FALSE,
-                                                         CLUTTER_PARAM_READWRITE));
+  g_object_class_install_property 
+    (object_class,
+     PROP_ENABLED,
+     g_param_spec_boolean ("enabled",
+			   "Enabled",
+			   "Whether the shader is enabled",
+			   FALSE,
+			   CLUTTER_PARAM_READWRITE));
 }
 
 static void
@@ -337,14 +345,14 @@ clutter_shader_set_fragment_source (ClutterShader      *shader,
       g_free (priv->fragment_source);
     }
 
-  CLUTTER_NOTE (SHADER, "setting fragment shader (GLSL:%s, len:%" G_GSSIZE_FORMAT ")",
+  CLUTTER_NOTE (SHADER, "setting fragment shader (GLSL:%s, len:%" 
+		G_GSSIZE_FORMAT ")",
                 is_glsl ? "yes" : "no",
                 length);
 
   priv->fragment_source = g_strdup (data);
   priv->fragment_is_glsl = is_glsl;
 }
-
 
 /**
  * clutter_shader_set_vertex_source:
@@ -387,7 +395,8 @@ clutter_shader_set_vertex_source (ClutterShader      *shader,
       g_free (priv->vertex_source);
     }
 
-  CLUTTER_NOTE (SHADER, "setting vertex shader (GLSL:%s, len:%" G_GSSIZE_FORMAT ")",
+  CLUTTER_NOTE (SHADER, "setting vertex shader (GLSL:%s, len:%" 
+		G_GSSIZE_FORMAT ")",
                 is_glsl ? "yes" : "no",
                 length);
 
@@ -548,7 +557,8 @@ clutter_shader_release (ClutterShader *shader)
  * clutter_shader_is_bound:
  * @shader: a #ClutterShader
  *
- * Checks whether @shader is is currently compiled, linked and bound to the GL context.
+ * Checks whether @shader is is currently compiled, linked and bound
+ * to the GL context.
  *
  * Return value: %TRUE if the shader is compiled, linked and ready for use.
  *
@@ -679,9 +689,9 @@ clutter_shader_release_all (void)
  *
  * Query the current GLSL fragment source set on @shader.
  *
- * Return value: the source of the fragment shader for this ClutterShader object
- * or %NULL. The returned string is owned by the shader object and should never
- * be modified or freed
+ * Return value: the source of the fragment shader for this
+ * ClutterShader object or %NULL. The returned string is owned by the
+ * shader object and should never be modified or freed
  *
  * Since: 0.6
  */
@@ -698,9 +708,9 @@ clutter_shader_get_fragment_source (ClutterShader *shader)
  *
  * Query the current GLSL vertex source set on @shader.
  *
- * Return value: the source of the vertex shader for this ClutterShader object
- * or %NULL. The returned string is owned by the shader object and should never
- * be modified or freed
+ * Return value: the source of the vertex shader for this
+ * ClutterShader object or %NULL. The returned string is owned by the
+ * shader object and should never be modified or freed
  *
  * Since: 0.6
  */

@@ -2103,6 +2103,7 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
   return TRUE;
 }
 
+
 /**
  * clutter_texture_new_from_actor:
  * @actor: A #ClutterActor 
@@ -2136,36 +2137,47 @@ clutter_texture_new_from_actor (ClutterActor *actor)
    *   - Have the source actor as a prop?
    */
 
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
+
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE) == FALSE)
     return NULL;
 
   if (clutter_feature_available (CLUTTER_FEATURE_OFFSCREEN) == FALSE)
     return NULL;
 
+  if (!CLUTTER_ACTOR_IS_REALIZED (actor))
+    {
+      clutter_actor_realize (actor);
+
+      if (!CLUTTER_ACTOR_IS_REALIZED (actor))
+	return NULL;
+    }
+
+  /* FIXME abs size - usually fails with 0,0 */
+  clutter_actor_get_abs_size (actor, &w, &h);
+  // printf("abs size is %ix%i\n", w, h);
+
+  /* Wont work with any kind of transform on actor */
+  clutter_actor_get_size (actor, &w, &h); 
+
+  if (w == 0 || h == 0)
+    return NULL;
+
+   if (!cogl_texture_can_size (CGL_TEXTURE_RECTANGLE_ARB,
+			       CGL_RGBA, PIXEL_TYPE, w, h))
+     return NULL;
+
   texture = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
 
   priv = texture->priv;
 
-  priv->fbo_source = actor;
+  priv->fbo_source = g_object_ref(actor);
 
-  if (!CLUTTER_ACTOR_IS_REALIZED (priv->fbo_source))
-    clutter_actor_realize (priv->fbo_source);
-
-
-  /* FIXME: just ref ? */
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR(texture));
-
-  /* FIXME abs size */
-  /*clutter_actor_get_abs_size (priv->fbo_source, &w, &h);*/
-  clutter_actor_get_size (actor, &w, &h);
-
-  /* FIXME: Check we can actually create a texture this large */
-  priv->width = w;
-  priv->height = h;
-
+  priv->width        = w;
+  priv->height       = h;
   priv->target_type  = CGL_TEXTURE_RECTANGLE_ARB;
   priv->pixel_format = CGL_RGBA;
-  priv->pixel_type = PIXEL_TYPE;
+  priv->pixel_type   = PIXEL_TYPE;
   priv->is_tiled     = 0;
 
   priv->tiles = g_new (COGLuint, 1);
@@ -2185,7 +2197,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 
   priv->fbo_handle = cogl_offscreen_create (priv->tiles[0]);
 
-  clutter_actor_set_size (texture, w, h);
+  clutter_actor_set_size (CLUTTER_ACTOR(texture), w, h);
 
   return CLUTTER_ACTOR(texture);
 }
