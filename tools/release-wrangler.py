@@ -21,136 +21,148 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 # 02111-1307, USA.
 
-# This script doesn't do all the work yet, but it will soon.
-
 import os
 import posixpath
 import re
 import sys
 import commands
+import time
 
-# First step is always to get up to date.
-os.system("svn up")
-
-################################################################
-
-# Are we up to date now?
-
-changed = []
-for line in commands.getoutput('/usr/bin/svn status').split('\n'):
-  if line!='' and (line[0]=='C' or line[0]=='M'):
-    changed.append(line[1:].lstrip())
-
-if changed:
-  print 'These files are out of date; I can\'t continue until you fix them.'
-  print ', '.join(changed)
+def report_error(message):
+  print message
   sys.exit(255)
 
-################################################################
+def get_up_to_date():
+  "First step is always to get up to date."
+  os.system("svn up")
 
-# FIXME: This is all very metacity-specific. Compare fusa, etc
-#
-# Okay, read through configure.in and find who and where we are.
-#
-# We also try to figure out where the next micro version number
-# will be; some programs (e.g. Metacity) use a custom numbering
-# scheme, and if they have a list of numbers on the line before the
-# micro version then that will be used. Otherwise we will just
-# increment.
-version = {}
-previous_line = ''
-for line in file("configure.in").readlines():
-  product_name = re.search("^AC_INIT\(\[([^\]]*)\]", line)
-  if product_name:
-    version['name'] = product_name.group(1)
+# yes, I know this is MY username. I will come back and fix it
+# later, but for now there is a lot else to do. FIXME
+your_username = 'Thomas Thurman  <tthurman@gnome.org>'
 
-  version_number = re.search("^m4_define\(\[.*_(.*)_version\], \[(\d+)\]", line)
+def changelog_and_checkin(filename, message):
+  changelog = open('ChangeLog.tmp', 'w')
+  changelog.write('%s  %s\n\n        * %s: %s\n\n' % (
+    time.strftime('%Y-%m-%d',time.gmtime()),
+    your_username,
+    filename,
+    message))
 
-  if version_number:
-    version_type = version_number.group(1)
-    version_value = int(version_number.group(2))
+  for line in open('ChangeLog').readlines():
+    changelog.write(line)
 
-    version[version_type] = version_value
+  changelog.close()
+  os.rename('ChangeLog.tmp', 'ChangeLog')
 
-    if version_type == 'micro':
-      group_of_digits = re.search("^\#\s*([0-9, ]+)\n$", previous_line)
-      if group_of_digits:
-        versions = [int(x) for x in group_of_digits.group(1).split(',')]
+  os.system('svn commit -m \\"%s\\"' % (message.replace('"','\\"')))
 
-        if version_value in versions:
-          try:
-            version['micro_next'] = versions[versions.index(version_value)+1]
-          except:
-            print "You gave a list of micro version numbers, but we've used them up!"
-            sys.exit(255)
-        else:
-          print "You gave a list of micro version numbers, but the current one wasn't in it!"
-          print "Current is ",version_value
-          print "Your list is ",versions
-          sys.exit(255)
+def check_we_are_up_to_date():
+  changed = []
+  for line in commands.getoutput('/usr/bin/svn status').split('\n'):
+    if line!='' and (line[0]=='C' or line[0]=='M'):
+      changed.append(line[1:].lstrip())
 
-  previous_line = line
+  if changed:
+    report_error('These files are out of date; I can\'t continue until you fix them: ' + \
+      ', '.join(changed))
 
-if not 'micro_next' in version:
-  version['micro_next'] = version['micro']+1
+def version_numbers():
+  # FIXME: This is all very metacity-specific. Compare fusa, etc
+  """Okay, read through configure.in and find who and where we are.
 
-################################################################
+  We also try to figure out where the next micro version number
+  will be; some programs (e.g. Metacity) use a custom numbering
+  scheme, and if they have a list of numbers on the line before the
+  micro version then that will be used. Otherwise we will just
+  increment."""
 
-archive_filename = '%(name)s-%(major)s.%(minor)s.%(micro)s.tar.gz' % (version)
-if os.access(archive_filename, os.F_OK):
-  print "Sorry, you already have a file called %s! Please delete it or move it first." % (archive_filename)
-  sys.exit(255)
+  version = {}
+  previous_line = ''
+  for line in file("configure.in").readlines():
+    product_name = re.search("^AC_INIT\(\[([^\]]*)\]", line)
+    if product_name:
+      version['name'] = product_name.group(1)
 
-################################################################
+    version_number = re.search("^m4_define\(\[.*_(.*)_version\], \[(\d+)\]", line)
 
-changelog = file("ChangeLog").readlines()
+    if version_number:
+      version_type = version_number.group(1)
+      version_value = int(version_number.group(2))
 
-# Find the most recent release.
+      version[version_type] = version_value
+
+      if version_type == 'micro':
+        group_of_digits = re.search("^\#\s*([0-9, ]+)\n$", previous_line)
+        if group_of_digits:
+          versions = [int(x) for x in group_of_digits.group(1).split(',')]
+
+          if version_value in versions:
+            try:
+              version['micro_next'] = versions[versions.index(version_value)+1]
+            except:
+              report_error("You gave a list of micro version numbers, but we've used them up!")
+          else:
+            report_error("You gave a list of micro version numbers, but the current one wasn't in it! Current is %s and your list is %s" % (
+              `version_value`, `versions`))
+
+    previous_line = line
+
+  if not 'micro_next' in version:
+    version['micro_next'] = version['micro']+1
+
+  version['string'] = '%(major)s.%(minor)s.%(micro)s' % (version)
+  version['filename'] = '%(name)s-%(string)s.tar.gz' % (version)
+  return version
+
+def check_file_does_not_exist(version):
+  if os.access(version['filename'], os.F_OK):
+    report_error("Sorry, you already have a file called %s! Please delete it or move it first." % (version['filename']))
 
 def is_date(str):
   return len(str)>3 and str[4]=='-'
 
-release_date = None
+def scan_changelog(version):
+  changelog = file("ChangeLog").readlines()
 
-for line in changelog:
-  if is_date(line):
-    release_date = line[:10]
-  if "Post-release bump to %s.%s.%s." % (version['major'], version['minor'], version['micro']) in line:
-    changelog = changelog[:changelog.index(line)+1]
-    break
+  # Find the most recent release.
 
-contributors = {}
-thanks = ''
-entries = []
+  release_date = None
 
-def assumed_surname(name):
-  # might get more complicated later, but for now...
-  return name.split()[-1]
+  for line in changelog:
+    if is_date(line):
+      release_date = line[:10]
+    if "Post-release bump to %s.%s.%s." % (version['major'], version['minor'], version['micro']) in line:
+      changelog = changelog[:changelog.index(line)+1]
+      break
 
-def assumed_forename(name):
-  return name.split()[0]
+  contributors = {}
+  thanks = ''
+  entries = []
 
-bug_re = re.compile('bug \#?(\d+)', re.IGNORECASE)
-hash_re = re.compile('\#(\d+)')
+  def assumed_surname(name):
+    # might get more complicated later, but for now...
+    return name.split()[-1]
 
-for line in changelog:
-  if is_date(line):
-    line = line[10:].lstrip()
-    line = line[:line.find('<')].rstrip()
-    contributors[assumed_surname(line)] = line
-    entries.append('(%s)' % (assumed_forename(line)))
-  else:
-    match = bug_re.search(line)
-    if not match: match = hash_re.search(line)
-    if match:
-      entries[-1] += ' (#%s)' % (match.group(1))
+  def assumed_forename(name):
+    return name.split()[0]
 
-contributors_list = contributors.keys()
-contributors_list.sort()
-thanksline = ', '.join([contributors[x] for x in contributors_list])
-thanksline = thanksline.replace(contributors[contributors_list[-1]], 'and '+contributors[contributors_list[-1]])
+  bug_re = re.compile('bug \#?(\d+)', re.IGNORECASE)
+  hash_re = re.compile('\#(\d+)')
 
-version_string = '%(major)s.%(minor)s.%(micro)s' % (version)
+  for line in changelog:
+    if is_date(line):
+      line = line[10:].lstrip()
+      line = line[:line.find('<')].rstrip()
+      contributors[assumed_surname(line)] = line
+      entries.append('(%s)' % (assumed_forename(line)))
+    else:
+      match = bug_re.search(line)
+      if not match: match = hash_re.search(line)
+      if match:
+        entries[-1] += ' (#%s)' % (match.group(1))
+
+  # FIXME: getting complex enough we should be returning a dictionary
+  return (contributors, changelog, entries, release_date)
 
 def wordwrap(str, prefix=''):
   "Really simple wordwrap"
@@ -175,103 +187,155 @@ def wordwrap(str, prefix=''):
 
   return '\n'.join(result).replace('(',' (')
 
-thanks = '%s\n%s\n\n' % (version_string, '='*len(version_string))
-thanks += wordwrap('Thanks to %s for improvements in this version.' % (thanksline))
-thanks += '\n\n'
-for line in entries:
-  thanks += '  - xxx %s\n' % (line)
+def favourite_editor():
+  e = os.environ
+  if e.has_key('VISUAL'): return e['VISUAL']
+  if e.has_key('EDITOR'): return e['EDITOR']
+  if os.access('/usr/bin/nano', os.F_OK):
+    return '/usr/bin/nano'
+  report_error("I can't find an editor for you!")
 
-# and now pick up the translations.
+def edit_news_entry(version):
 
-translations = {}
-language_re = re.compile('\*\s*(.+)\.po')
+  # FIXME: still needs a lot of tidying up. Translator stuff especially needs to be
+  # factored out into a separate function.
 
-for line in file("po/ChangeLog").readlines():
-  match = language_re.search(line)
-  if match:
-    translations[match.group(1)] = 1
-  if is_date(line) and line[:10]<release_date:
-    break
+  (contributors, changelog, entries, release_date) = scan_changelog(version)
 
-translator_list = translations.keys()
-translator_list.sort()
+  contributors_list = contributors.keys()
+  contributors_list.sort()
+  thanksline = ', '.join([contributors[x] for x in contributors_list])
+  thanksline = thanksline.replace(contributors[contributors_list[-1]], 'and '+contributors[contributors_list[-1]])
 
-last_translator_re = re.compile('Last-Translator:([^<"]*)', re.IGNORECASE)
+  thanks = '%s\n%s\n\n' % (version['string'], '='*len(version['string']))
+  thanks += wordwrap('Thanks to %s for improvements in this version.' % (thanksline))
+  thanks += '\n\n'
+  for line in entries:
+    thanks += '  - xxx %s\n' % (line)
 
-def translator_name(language):
-  name = 'unknown'
-  for line in file('po/%s.po' % (language)).readlines():
-    match = last_translator_re.search(line)
+  # and now pick up the translations.
+
+  translations = {}
+  language_re = re.compile('\*\s*(.+)\.po')
+
+  for line in file("po/ChangeLog").readlines():
+    match = language_re.search(line)
     if match:
-      name = match.group(1).rstrip().lstrip()
+      translations[match.group(1)] = 1
+    if is_date(line) and line[:10]<release_date:
       break
-  return "%s (%s)" % (name, language)
 
-thanks += '\nTranslations\n'
-thanks += wordwrap(', '.join([translator_name(x) for x in translator_list]), '  ')
-thanks += '\n\n'
+  translator_list = translations.keys()
+  translator_list.sort()
 
-changes = '## '+ ' '.join(changelog).replace('\n', '\n## ')
+  last_translator_re = re.compile('Last-Translator:([^<"]*)', re.IGNORECASE)
 
-filename = posixpath.expanduser("~/.release-wrangler-%(name)s-%(major)s-%(minor)s-%(micro)s.txt" % version)
-tmp = open(filename, 'w')
-tmp.write('## You are releasing %(name)s, version %(major)s.%(minor)s.%(micro)s.\n' % version)
-tmp.write('## The text at the foot of the page is the part of the ChangeLog which\n')
-tmp.write('## has changed since the last release. Please summarise it.\n')
-tmp.write('## Anything preceded by a # is ignored.\n')
-tmp.write(thanks)
-tmp.write(changes)
-tmp.close()
+  def translator_name(language):
+    name = 'unknown'
+    for line in file('po/%s.po' % (language)).readlines():
+      match = last_translator_re.search(line)
+      if match:
+        name = match.group(1).rstrip().lstrip()
+        break
+    return "%s (%s)" % (name, language)
 
-os.spawnl(os.P_WAIT, '/bin/nano', 'nano', '+6', filename)
+  thanks += '\nTranslations\n'
+  thanks += wordwrap(', '.join([translator_name(x) for x in translator_list]), '  ')
+  thanks += '\n\n'
 
-################################################################
+  changes = '## '+ ' '.join(changelog).replace('\n', '\n## ')
 
-# Write it out to NEWS
+  filename = posixpath.expanduser("~/.release-wrangler-%(name)s-%(string)s.txt" % version)
+  tmp = open(filename, 'w')
+  tmp.write('## You are releasing %(name)s, version %(major)s.%(minor)s.%(micro)s.\n' % version)
+  tmp.write('## The text at the foot of the page is the part of the ChangeLog which\n')
+  tmp.write('## has changed since the last release. Please summarise it.\n')
+  tmp.write('## Anything preceded by a # is ignored.\n')
+  tmp.write(thanks)
+  tmp.write(changes)
+  tmp.close()
 
-news_tmp = open('NEWS.tmp', 'a')
-for line in open(filename, 'r').readlines():
-  if line=='' or line[0]!='#':
+  os.system(favourite_editor()+' +6 %s ' % (filename))
+
+  # Write it out to NEWS
+
+  news_tmp = open('NEWS.tmp', 'a')
+  for line in open(filename, 'r').readlines():
+    if line=='' or line[0]!='#':
+      news_tmp.write(line)
+
+  for line in open('NEWS').readlines():
     news_tmp.write(line)
 
-for line in open('NEWS').readlines():
-  news_tmp.write(line)
+  news_tmp.close()
 
-news_tmp.close()
+  os.rename('NEWS.tmp', 'NEWS')
+  changelog_and_checkin('NEWS', '%(major)s.%(minor)s.%(micro)s release.' % (version))
 
-os.rename('NEWS.tmp', 'NEWS')
+def build_it_all(version):
+  "Now build the thing."
+  autogen_prefix= '/prefix' # FIXME: this is specific to tthurman's laptop!
 
-################################################################
+  # FIXME: These should use os.system
 
-# Now build the thing.
-
-autogen_prefix= '/prefix' # FIXME: this is specific to tthurman's laptop!
-
-if os.spawnl(os.P_WAIT, './autogen.sh', './autogen.sh', '--prefix', autogen_prefix) != 0:
+  if os.spawnl(os.P_WAIT, './autogen.sh', './autogen.sh', '--prefix', autogen_prefix) != 0:
     print 'autogen failed'
     sys.exit(255)
     
-if os.spawnl(os.P_WAIT, '/usr/bin/make', '/usr/bin/make') != 0:
+  if os.spawnl(os.P_WAIT, '/usr/bin/make', '/usr/bin/make') != 0:
     print 'make failed'
     sys.exit(255)
 
-if os.spawnl(os.P_WAIT, '/usr/bin/make', '/usr/bin/make', 'install') != 0:
+  if os.spawnl(os.P_WAIT, '/usr/bin/make', '/usr/bin/make', 'install') != 0:
     print 'install failed'
     sys.exit(255)
 
-if os.spawnl(os.P_WAIT, '/usr/bin/make', '/usr/bin/make', 'distcheck') != 0:
+  if os.spawnl(os.P_WAIT, '/usr/bin/make', '/usr/bin/make', 'distcheck') != 0:
     print 'distcheck failed'
     sys.exit(255)
 
-if not os.access(archive_filename, os.F_OK):
-  print "Sorry, we don't appear to have a file called %s!" % (archive_filename)
-  sys.exit(255)
+  if not os.access(version['filename'], os.F_OK):
+    print "Sorry, we don't appear to have a file called %s!" % (archive_filename)
+    sys.exit(255)
 
-# No, we won't have a configuration option to set your name on svn.g.o; that's
-# what ~/.ssh/config is for.
+def upload(version):
+  # No, we won't have a configuration option to set your name on master.g.o; that's
+  # what ~/.ssh/config is for.
 
-print "Uploading..."
-upload_result = commands.getstatusoutput('scp %s master.gnome.org:' % (archive_filename))
+  print "Uploading..."
+  upload_result = commands.getstatusoutput('scp %s master.gnome.org:' % (version['filename']))
 
-if upload_result[0]!=0:
-  print "There appears to have been an uploading problem: %d\n%s\n" % (upload_result[0], upload_result[1])
+  if upload_result[0]!=0:
+    report_error("There appears to have been an uploading problem: %d\n%s\n" % (upload_result[0], upload_result[1]))
+
+def increment_version(version):
+  configure_in = file('configure.in.tmp', 'w')
+  for line in file('configure.in'):
+    if re.search("^m4_define\(\[.*_micro_version\], \[(\d+)\]", line):
+      line = line.replace('[%(micro)s]' % version, '[%(micro_next)s]' % version)
+    configure_in.write(line)
+  
+  configure_in.close()
+  os.rename('configure.in.tmp', 'configure.in')
+
+  changelog_and_checkin('configure.in', 'Post-release bump to %(major)s.%(minor)s.%(micro_next)s.' % version)
+
+def tag_the_release(version):
+  version['ucname'] = name.upper()
+  os.system("svn cp -m release . svn+ssh://svn.gnome.org/svn/%(name)s/tags/%(ucname)s_%(major)s_%(minor)_%(micro)" % (version))
+
+def main():
+  get_up_to_date()
+  check_we_are_up_to_date()
+  version = version_numbers()
+  check_file_does_not_exist(version)
+  edit_news_entry(version)
+  build_it_all(version)
+  tag_the_release(version)
+  increment_version(version)
+  upload(version)
+  print "-- Done --"
+
+if __name__=='__main__':
+  main()
+

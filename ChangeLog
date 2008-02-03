@@ -1,3 +1,8 @@
+2008-02-03  Thomas Thurman  <tthurman@gnome.org>
+
+        * tools/release-wrangler.py: basic release script; needs work,
+	but probably good enough for the current unstable release
+
 2008-02-02  Thomas Thurman  <tthurman@gnome.org>
 
         * src/Makefile.am: core.h is in include, not core. (Last one, I
