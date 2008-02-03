@@ -1,5 +1,10 @@
 2008-02-02  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/Makefile.am: core.h is in include, not core. (Last one, I
+	    promise.)
+
+2008-02-02  Thomas Thurman  <tthurman@gnome.org>
+
         * src/Makefile.am: main.h is in include, not core.
 
 2008-02-02  Thomas Thurman  <tthurman@gnome.org>

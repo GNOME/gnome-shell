@@ -48,7 +48,7 @@ metacity_SOURCES= 				\
 	core/place.c				\
 	core/place.h				\
 	core/prefs.c				\
-	core/prefs.h				\
+	include/prefs.h				\
 	core/screen.c				\
 	core/screen.h				\
 	core/session.c				\
