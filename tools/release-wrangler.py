@@ -54,7 +54,8 @@ def changelog_and_checkin(filename, message):
   changelog.close()
   os.rename('ChangeLog.tmp', 'ChangeLog')
 
-  os.system('svn commit -m \\"%s\\"' % (message.replace('"','\\"')))
+  if os.system('svn commit -m "%s"' % (message.replace('"','\\"')))!=0:
+    report_error("Could not commit; bailing.")
 
 def check_we_are_up_to_date():
   changed = []
@@ -322,7 +323,8 @@ def increment_version(version):
 
 def tag_the_release(version):
   version['ucname'] = name.upper()
-  os.system("svn cp -m release . svn+ssh://svn.gnome.org/svn/%(name)s/tags/%(ucname)s_%(major)s_%(minor)_%(micro)" % (version))
+  if os.system("svn cp -m release . svn+ssh://svn.gnome.org/svn/%(name)s/tags/%(ucname)s_%(major)s_%(minor)_%(micro)" % (version))!=0:
+    report_error("Could not tag; bailing.")
 
 def main():
   get_up_to_date()

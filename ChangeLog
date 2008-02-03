@@ -1,5 +1,10 @@
 2008-02-03  Thomas Thurman  <tthurman@gnome.org>
 
+        * tools/release-wrangler.py: Fix quoting error and added some
+	more error checking.
+
+2008-02-03  Thomas Thurman  <tthurman@gnome.org>
+
         * tools/release-wrangler.py: basic release script; needs work,
 	but probably good enough for the current unstable release
 
