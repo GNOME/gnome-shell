@@ -61,7 +61,10 @@ def check_we_are_up_to_date():
   changed = []
   for line in commands.getoutput('/usr/bin/svn status').split('\n'):
     if line!='' and (line[0]=='C' or line[0]=='M'):
-      changed.append(line[1:].lstrip())
+      if line.find('release-wrangler.py')==-1:
+        # we should be insensitive to changes in this script itself
+        # to avoid chicken-and-egg problems
+        changed.append(line[1:].lstrip())
 
   if changed:
     report_error('These files are out of date; I can\'t continue until you fix them: ' + \
@@ -322,7 +325,7 @@ def increment_version(version):
   changelog_and_checkin('configure.in', 'Post-release bump to %(major)s.%(minor)s.%(micro_next)s.' % version)
 
 def tag_the_release(version):
-  version['ucname'] = name.upper()
+  version['ucname'] = version['name'].upper()
   if os.system("svn cp -m release . svn+ssh://svn.gnome.org/svn/%(name)s/tags/%(ucname)s_%(major)s_%(minor)_%(micro)" % (version))!=0:
     report_error("Could not tag; bailing.")
 
