@@ -1,5 +1,19 @@
 2008-02-03  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-actor.c: (clutter_actor_set_rotationx):
+	Add notify signal for set_rotate
+
+	* clutter/clutter-texture.c:
+	Add basic cleanup code for fbo's	
+
+	* tests/test-fbo.c: (main):
+	Minor notes.
+
+	* clutter/osx/clutter-stage-osx.c: (clutter_stage_osx_realize):
+	Turn on vblanking.
+
+2008-02-03  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-shader.c:
 	Minor formatting cleanups to fit in 80 cols.
 

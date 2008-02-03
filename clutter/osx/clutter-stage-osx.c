@@ -118,10 +118,16 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 @implementation ClutterGLView
 - (id) initWithFrame: (NSRect)aFrame pixelFormat:(NSOpenGLPixelFormat*)aFormat stage:(ClutterActor*)aStage
 {
+  int sw = 1; 
+
   if ((self = [super initWithFrame:aFrame pixelFormat:aFormat]) != nil)
     {
       self->stage = aStage;
     }
+
+  /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html*/
+  [[self openGLContext] setValues:&sw forParameter: NSOpenGLCPSwapInterval];
+
   return self;
 }
 
@@ -288,6 +294,7 @@ clutter_stage_osx_realize (ClutterActor *actor)
 
   [self->view setOpenGLContext: context];
   [context setView: self->view];
+
 
   CLUTTER_OSX_POOL_RELEASE();
 

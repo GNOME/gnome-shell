@@ -169,6 +169,11 @@ main (gint   argc,
   clutter_actor_set_position (fbo, padx*3, pady);
   clutter_group_add (stage, fbo);
 
+  /* TODO: 
+   *  Check realize/unrealize 
+   *  get_pixbuf()
+   *  set_rgba on fbo texture.
+  */
 
   clutter_actor_show_all (stage);
   clutter_main ();

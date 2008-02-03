@@ -3256,26 +3256,37 @@ clutter_actor_set_rotationx (ClutterActor      *self,
 
   priv = self->priv;
 
+  g_object_ref (self);
+  g_object_freeze_notify (G_OBJECT (self));
+
   switch (axis)
     {
     case CLUTTER_X_AXIS:
       priv->rxang = angle;
       priv->rxy = CLUTTER_UNITS_FROM_DEVICE (y);
       priv->rxz = CLUTTER_UNITS_FROM_DEVICE (z);
+      g_object_notify (G_OBJECT (self), "rotation-angle-x");
+      g_object_notify (G_OBJECT (self), "rotation-center-x");
       break;
 
     case CLUTTER_Y_AXIS:
       priv->ryang = angle;
       priv->ryx = CLUTTER_UNITS_FROM_DEVICE (x);
       priv->ryz = CLUTTER_UNITS_FROM_DEVICE (z);
+      g_object_notify (G_OBJECT (self), "rotation-angle-y");
+      g_object_notify (G_OBJECT (self), "rotation-center-y");
       break;
-
     case CLUTTER_Z_AXIS:
       priv->rzang = angle;
       priv->rzx = CLUTTER_UNITS_FROM_DEVICE (x);
       priv->rzy = CLUTTER_UNITS_FROM_DEVICE (y);
+      g_object_notify (G_OBJECT (self), "rotation-angle-z");
+      g_object_notify (G_OBJECT (self), "rotation-center-z");
       break;
     }
+
+  g_object_thaw_notify (G_OBJECT (self));
+  g_object_unref (self);
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);

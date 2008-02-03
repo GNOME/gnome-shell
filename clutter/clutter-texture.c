@@ -124,6 +124,9 @@ enum
 
 static int texture_signals[LAST_SIGNAL] = { 0 };
 
+static void
+texture_fbo_free_resources (ClutterTexture *texture);
+
 GQuark
 clutter_texture_error_quark (void)
 {
@@ -830,6 +833,7 @@ clutter_texture_dispose (GObject *object)
   priv = texture->priv;
 
   texture_free_gl_resources (texture);
+  texture_fbo_free_resources (texture);
 
   if (priv->local_pixbuf != NULL)
     {
@@ -2075,7 +2079,8 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
 
   priv = texture->priv;
 
-  if (!texture_prepare_upload (FALSE, texture, data, has_alpha, width, height, rowstride,
+  if (!texture_prepare_upload (FALSE, texture, data, has_alpha, 
+			       width, height, rowstride,
                                bpp, flags, &copy_data, NULL, NULL))
     {
       return FALSE;
@@ -2125,16 +2130,16 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   ClutterTexturePrivate *priv;
   guint                  w, h;
 
-
   /*  TODO (before 0.6 release):
    *
    *   - Figure out getting source actor size correctly.
-   *   - Figure out refing/reparenting source actor. 
    *   - Handle source actor resizing.
    *   - Handle failure better.
    *   - Handle cleanup on destruction.
    *   - Beef up test-fbo.
-   *   - Have the source actor as a prop?
+   *   - Have the source actor as a prop, realize/unrealize ?
+   *   - Avoid infinite loop in shaders
+   *   - Fix shader rendering order 
    */
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
@@ -2163,9 +2168,9 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   if (w == 0 || h == 0)
     return NULL;
 
-   if (!cogl_texture_can_size (CGL_TEXTURE_RECTANGLE_ARB,
-			       CGL_RGBA, PIXEL_TYPE, w, h))
-     return NULL;
+  if (!cogl_texture_can_size (CGL_TEXTURE_RECTANGLE_ARB,
+			      CGL_RGBA, PIXEL_TYPE, w, h))
+    return NULL;
 
   texture = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
 
@@ -2201,3 +2206,26 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 
   return CLUTTER_ACTOR(texture);
 }
+
+static void
+texture_fbo_free_resources (ClutterTexture *texture)
+{
+  ClutterTexturePrivate *priv;
+
+  priv = texture->priv;
+
+  CLUTTER_MARK();
+
+  if (priv->fbo_source != NULL)
+    {
+      g_object_unref (priv->fbo_source);
+      priv->fbo_source = NULL;
+    }
+
+  if (priv->fbo_handle != 0)
+    {
+      cogl_offscreen_destroy (priv->fbo_handle);
+      priv->fbo_handle = 0;
+    }
+}
+
