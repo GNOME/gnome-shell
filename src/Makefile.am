@@ -43,7 +43,7 @@ metacity_SOURCES= 				\
 	core/keybindings.c			\
 	core/keybindings.h			\
 	core/main.c				\
-	core/main.h				\
+	include/main.h				\
 	core/metacity-Xatomtype.h		\
 	core/place.c				\
 	core/place.h				\
