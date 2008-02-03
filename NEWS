@@ -1,3 +1,29 @@
+2.21.8
+======
+
+Thanks to Paolo Borelli, Iain Holmes, Havoc Pennington, Christian Persch, Thomas
+Thurman, and Alex R.M. Turner for improvements in this version.
+
+  - Windows on other workspaces which need attention appear in the alt-tab
+    list too (Alex) (#333548)
+  - Remove deprecated function call (Christian) (#512561)
+  - New release script (Thomas)
+  - Made a start at improving the general number of comments (Thomas)
+  - Updated copyright year to 2008, and some other tiny fixes (Thomas)
+  - Don't do anything unusual when the compositor frees a window (Iain)
+  - Mapping windows doesn't mark them as damaged (Iain)
+  - Compositor uses the overlay window and not the root window (Iain)
+  - Fixed several list leaks (Paolo)
+  - Fixed warnings about printf formats (Havoc)
+  - Move source files into subdirectories of the src directory (Havoc)
+
+Translations
+  Khaled Hosny (ar), Ihar Hrachyshka (be@latin), Petr Kovar (cs), Andre
+  Klapper (de), Jorge González (es), Iñaki Larrañaga Murgoitio (eu), Seán de
+  Búrca (ga), Yuval Tanny (he), Luca Ferretti (it), Takeshi AIHANA (ja), Arangel
+  Angov (mk), sandeep shedmake (mr), Kjartan Maraas (nb), Yannig
+  Marchegay (Kokoyaya) (oc), Daniel Nylander (sv), Theppitak Karoonboonyanan (th),
+  Baris Cicek (tr), Clytie Siddall (vi)
 2.21.5
 ======
 
