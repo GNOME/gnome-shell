@@ -326,7 +326,7 @@ def increment_version(version):
 
 def tag_the_release(version):
   version['ucname'] = version['name'].upper()
-  if os.system("svn cp -m release . svn+ssh://svn.gnome.org/svn/%(name)s/tags/%(ucname)s_%(major)s_%(minor)_%(micro)" % (version))!=0:
+  if os.system("svn cp -m release . svn+ssh://svn.gnome.org/svn/%(name)s/tags/%(ucname)s_%(major)s_%(minor)s_%(micro)s" % (version))!=0:
     report_error("Could not tag; bailing.")
 
 def main():
