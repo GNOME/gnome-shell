@@ -909,6 +909,11 @@ cogl_offscreen_redirect_start (COGLuint offscreen_handle,
 
   glTranslatef (-1.0f, -1.0f, 0.0f);
   glScalef (2.0f / (float)width, 2.0f / (float)height, 1.0f);
+
+  /* Clear the scene, appears needed on some backends - OSX */
+  glClearColor (0.0, 0.0, 0.0, 0.0);
+  glClear (GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
 #endif
 }
 
