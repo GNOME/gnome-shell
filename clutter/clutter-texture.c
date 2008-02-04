@@ -762,14 +762,34 @@ clutter_texture_paint (ClutterActor *self)
 
   if (priv->fbo_handle)
     {
+      ClutterMainContext *context;
+
+      context = clutter_context_get_default ();
+
+      /* Temporarily turn of the shader on the top of the context's
+       * shader stack, to restore the GL pipeline to it's natural state.
+       */
+      if (context->shaders)
+        {
+          clutter_shader_set_is_enabled (
+           clutter_actor_get_shader (context->shaders->data), FALSE);
+        }
+
       cogl_offscreen_redirect_start (priv->fbo_handle, 
-				     priv->width, priv->height);
+                                     priv->width, priv->height);
       clutter_actor_paint (priv->fbo_source);
       cogl_offscreen_redirect_end (priv->fbo_handle,
-				   CLUTTER_STAGE_WIDTH(),
-				   CLUTTER_STAGE_HEIGHT());
+                                   CLUTTER_STAGE_WIDTH(),
+                                   CLUTTER_STAGE_HEIGHT());
 
       glBindTexture(CGL_TEXTURE_RECTANGLE_ARB, priv->tiles[0]);
+
+      /* If there is a shader on top of the shader stack, turn it back on. */
+      if (context->shaders)
+        {
+          clutter_shader_set_is_enabled (
+           clutter_actor_get_shader (context->shaders->data), TRUE);
+        }
     }
 
 

@@ -107,7 +107,7 @@ main (gint   argc,
 
   /* apply a shader to it */
   shader = make_shader();
-  clutter_actor_apply_shader (fbo, shader);
+  clutter_actor_set_shader (fbo, shader);
   clutter_actor_set_shader_param (fbo, "radius", 2.0);
 
 

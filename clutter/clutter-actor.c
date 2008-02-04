@@ -5027,26 +5027,63 @@ destroy_shader_data (ClutterActor *self)
   actor_priv->shader_data = NULL;
 }
 
+
 /**
- * clutter_actor_apply_shader:
+ * clutter_actor_get_shader:
  * @self: a #ClutterActor
  * @shader: a #ClutterShader or %NULL
  *
- * Sets the #ClutterShader to be applied on @self.
+ * Queries the currently set #ClutterShader on @self.
+ *
+ * Return value: The currently set #ClutterShader or NULL if no shader is set.
+ *
+ * Since: 0.6
+ */
+ClutterShader *
+clutter_actor_get_shader (ClutterActor *self)
+{
+  ClutterActorPrivate *actor_priv;
+  ShaderData     *shader_data;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  actor_priv = self->priv;
+  shader_data = actor_priv->shader_data;
+
+  if (!shader_data)
+    {
+      return NULL;
+    }
+  return shader_data->shader;
+}
+
+/**
+ * clutter_actor_set_shader:
+ * @self: a #ClutterActor
+ * @shader: a #ClutterShader or %NULL to unset the shader.
+ *
+ * Sets the #ClutterShader to be used when rendering @self, pass in NULL
+ * to unset a currently set shader for an actor.
  *
  * Return value: %TRUE if the shader was successfully applied
  *
  * Since: 0.6
  */
 gboolean
-clutter_actor_apply_shader (ClutterActor  *self,
-                            ClutterShader *shader)
+clutter_actor_set_shader (ClutterActor  *self,
+                          ClutterShader *shader)
 {
   ClutterActorPrivate *actor_priv;
-  ShaderData     *shader_data;
+  ShaderData          *shader_data;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
   g_return_val_if_fail (shader == NULL || CLUTTER_IS_SHADER (shader), FALSE);
+
+  /* if shader passed in is NULL we destroy the shader */
+  if (shader == NULL)
+    {
+      destroy_shader_data (self);
+    }
 
   actor_priv = self->priv;
   shader_data = actor_priv->shader_data;
@@ -5066,12 +5103,16 @@ clutter_actor_apply_shader (ClutterActor  *self,
     }
 
   if (shader)
-    shader_data->shader = g_object_ref (shader);
+    {
+      shader_data->shader = g_object_ref (shader);
+    }
+
 
   clutter_actor_queue_redraw (self);
 
   return TRUE;
 }
+
 
 static void
 set_each_param (gpointer key,

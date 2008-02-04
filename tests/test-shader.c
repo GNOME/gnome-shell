@@ -173,11 +173,12 @@ button_release_cb (ClutterActor    *actor,
                    shader_no, shaders[shader_no].name,
                    error->message);
           g_error_free (error);
-          clutter_actor_apply_shader (actor, NULL);
+          clutter_actor_set_shader (actor, NULL);
         }
       else
         {
-          clutter_actor_apply_shader (actor, shader);
+          clutter_actor_set_shader (actor, NULL);
+          clutter_actor_set_shader (actor, shader);
           clutter_actor_set_shader_param (actor, "radius", 3.0);
         }
     }
@@ -262,7 +263,7 @@ main (gint   argc,
     }
 #endif
 
-  clutter_actor_apply_shader (actor, shader);
+  clutter_actor_set_shader (actor, shader);
   clutter_actor_set_position (actor, 100, 100);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);

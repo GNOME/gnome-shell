@@ -1,3 +1,15 @@
+2008-02-04  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-actor.[ch]: added clutter_actor_get_shader and
+	renamed clutter_actor_apply_shader to be clutter_actor_set_shader.
+	Reindented/aligned header.
+	* clutter/clutter-texture.c: (clutter_texture_paint): temporarily
+	disable the shader on top of the clutter context's shader stack while
+	rendering into the FBO.
+	* tests/test-fbo.c: (main): s/apply_shader/set_shader/
+	* tests/test-shader.c: (button_release_cb), (main):
+	s/apply_shader/set_shader/
+
 2008-02-03  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c: (clutter_actor_set_rotationx):
