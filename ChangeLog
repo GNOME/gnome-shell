@@ -1,5 +1,10 @@
 2008-02-04  Øyvind Kolås  <pippin@o-hand.com>
 
+	* clutter/clutter-timeline.c: (clutter_timeline_rewind): updated
+	documentation to take direction into account.
+
+2008-02-04  Øyvind Kolås  <pippin@o-hand.com>
+
 	* tests/test-fbo.c: (make_shader):
 	* tests/test-shader.c: (main): multiply the resulting gl_FragColor
 	with gl_Color before being done to take opacity into account in the

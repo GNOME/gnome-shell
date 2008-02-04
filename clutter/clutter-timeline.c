@@ -745,7 +745,9 @@ clutter_timeline_get_loop (ClutterTimeline *timeline)
  * clutter_timeline_rewind:
  * @timeline: A #ClutterTimeline
  *
- * Rewinds #ClutterTimeline to frame 0.
+ * Rewinds #ClutterTimeline to the first frame if its direction is
+ * CLUTTER_TIMELINE_FORWARD and the last frame if it is
+ * CLUTTER_TIMELINE_BACKWARD.
  **/
 void
 clutter_timeline_rewind (ClutterTimeline *timeline)
