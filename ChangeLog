@@ -1,3 +1,8 @@
+2008-02-04  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-actor.c: (clutter_actor_transform_stage_point):
+	Check that x_out and y_out != NULL before setting their contents
+
 2008-02-04  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-timeline.c: (clutter_timeline_rewind): updated

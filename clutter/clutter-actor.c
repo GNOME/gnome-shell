@@ -4862,10 +4862,12 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
   wf = xi*ST[0][2] + yi*ST[1][2] + ST[2][2];
 
   /*
-   * The division needs to be done in floating point for precission reasons.
+   * The division needs to be done in floating point for precision reasons.
    */
-  *x_out = CLUTTER_UNITS_FROM_FLOAT (FX2FP (xf) / FX2FP (wf));
-  *y_out = CLUTTER_UNITS_FROM_FLOAT (FX2FP (yf) / FX2FP (wf));
+  if (x_out)
+    *x_out = CLUTTER_UNITS_FROM_FLOAT (FX2FP (xf) / FX2FP (wf));
+  if (y_out)
+    *y_out = CLUTTER_UNITS_FROM_FLOAT (FX2FP (yf) / FX2FP (wf));
 
 #undef FP2FX
 #undef FX2FP
