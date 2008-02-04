@@ -1,3 +1,24 @@
+2008-02-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add:
+
+	  clutter_actor_move_anchor_point
+	  clutter_actor_move_anchor_point_from_gravity
+	  clutter_actor_set_shader
+	  clutter_actor_get_shader
+	  clutter_actor_move_anchor_pointu
+	  clutter_texture_new_from_actor
+	  clutter_entry_set_cursor_position
+	  clutter_entry_get_cursor_position
+	
+	Remove:
+
+	  clutter_actor_apply_shader
+	  clutter_behaviour_scale_set_gravity
+	  clutter_behaviour_scale_get_gravity
+	  clutter_entry_set_position
+	  clutter_entry_get_position
+
 2008-01-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add ClutterBehaviourDepth properties

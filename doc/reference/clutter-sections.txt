@@ -360,11 +360,14 @@ clutter_actor_get_vertices
 clutter_actor_set_anchor_point
 clutter_actor_get_anchor_point
 clutter_actor_set_anchor_point_from_gravity
+clutter_actor_move_anchor_point
+clutter_actor_move_anchor_point_from_gravity
 
 <SUBSECTION>
 clutter_actor_set_reactive
 clutter_actor_get_reactive
-clutter_actor_apply_shader
+clutter_actor_set_shader
+clutter_actor_get_shader
 clutter_actor_set_shader_param
 
 <SUBSECTION>
@@ -384,6 +387,7 @@ clutter_actor_set_sizeu
 clutter_actor_get_sizeu
 clutter_actor_set_anchor_pointu
 clutter_actor_get_anchor_pointu
+clutter_actor_move_anchor_pointu
 clutter_actor_set_clipu
 clutter_actor_get_clipu
 clutter_actor_move_byu
@@ -420,6 +424,7 @@ ClutterTextureClass
 ClutterTextureFlags
 clutter_texture_new
 clutter_texture_new_from_pixbuf
+clutter_texture_new_from_actor
 CLUTTER_TEXTURE_ERROR
 ClutterTextureError
 clutter_texture_set_from_rgb_data
@@ -657,8 +662,6 @@ clutter_behaviour_scale_set_bounds
 clutter_behaviour_scale_get_bounds
 clutter_behaviour_scale_set_boundsx
 clutter_behaviour_scale_get_boundsx
-clutter_behaviour_scale_set_gravity
-clutter_behaviour_scale_get_gravity
 <SUBSECTION Standard>
 CLUTTER_BEHAVIOUR_SCALE
 CLUTTER_IS_BEHAVIOUR_SCALE
@@ -1022,8 +1025,8 @@ clutter_entry_get_color
 clutter_entry_get_layout
 clutter_entry_set_alignment
 clutter_entry_get_alignment
-clutter_entry_set_position
-clutter_entry_get_position
+clutter_entry_set_cursor_position
+clutter_entry_get_cursor_position
 clutter_entry_handle_key_event
 clutter_entry_insert_unichar
 clutter_entry_delete_chars
