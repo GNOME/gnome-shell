@@ -181,12 +181,11 @@ clutter_shader_constructor (GType                  type,
                             guint                  n_params,
                             GObjectConstructParam *params)
 {
-  GObject         *object;
+  GObjectClass *parent_class;
+  GObject *object;
 
-  object 
-    = G_OBJECT_CLASS (clutter_shader_parent_class)->constructor (type, 
-								 n_params, 
-								 params);
+  parent_class = G_OBJECT_CLASS (clutter_shader_parent_class);
+  object = parent_class->constructor (type, n_params, params);
 
   /* add this instance to the global list of shaders */
   clutter_shaders_list = g_list_prepend (clutter_shaders_list, object);

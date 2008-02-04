@@ -1,5 +1,10 @@
 2008-02-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-shader.c (clutter_shader_constructor): Keep the
+	constructor line under the 80 columns using a variable.
+
+2008-02-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	* clutter/clutter-shader.c: Small documentation and style fixes
 
