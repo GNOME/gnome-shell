@@ -357,6 +357,8 @@ struct _MetaDisplay
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   int composite_event_base;
   int composite_error_base;
+  int composite_major_version;
+  int composite_minor_version;
   int damage_event_base;
   int damage_error_base;
   int xfixes_event_base;

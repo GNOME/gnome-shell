@@ -1,3 +1,13 @@
+2008-01-28  Michael Meeks  <michael.meeks@novell.com>
+
+	* src/core/display.c (meta_display_open),
+	* src/core/compositor.c: fetch & use composite
+	version, for remote screens that don't match the
+	compile system's version.
+	(meta_compositor_manage_screen): bin erroneous FIXME.
+	(add_win): remove common warning churn for (very)
+	transient windows
+
 2008-02-03  Thomas Thurman  <tthurman@gnome.org>
 
         * tools/patch-wrangler.py: another program I use for maintenance

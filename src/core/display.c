@@ -752,11 +752,28 @@ meta_display_open (void)
         display->composite_event_base = 0;
       } 
     else
-      display->have_composite = TRUE;
+      {
+        display->composite_major_version = 0;
+        display->composite_minor_version = 0;
+        if (XCompositeQueryVersion (display->xdisplay,
+                                    &display->composite_major_version,
+                                    &display->composite_minor_version))
+          {
+            display->have_composite = TRUE;
+          }
+        else
+          {
+            display->composite_major_version = 0;
+            display->composite_minor_version = 0;
+          }
+      }
 
-    meta_verbose ("Attempted to init Composite, found error base %d event base %d\n",
+    meta_verbose ("Attempted to init Composite, found error base %d event base %d "
+                  "extn ver %d %d\n",
                   display->composite_error_base, 
-                  display->composite_event_base);
+                  display->composite_event_base,
+                  display->composite_major_version,
+                  display->composite_minor_version);
 
     display->have_damage = FALSE;
 

@@ -55,6 +55,20 @@
 
 #define USE_IDLE_REPAINT 1
 
+static inline gboolean
+composite_at_least_version (MetaDisplay *display,
+                            int maj, int minor)
+{
+  return (display->composite_major_version > maj
+          || (display->composite_major_version == maj
+              && display->composite_minor_version >= minor));
+}
+
+#define have_name_window_pixmap(display) \
+  composite_at_least_version (display, 0, 2)
+#define have_cow(display) \
+  composite_at_least_version (display, 0, 3)
+
 typedef enum _MetaCompWindowType
 {
   META_COMP_WINDOW_NORMAL,
@@ -893,11 +907,14 @@ get_window_picture (MetaCompWindow *cw)
   meta_error_trap_push (display);
 
 #ifdef HAVE_NAME_WINDOW_PIXMAP
-  if (cw->back_pixmap == None)
-    cw->back_pixmap = XCompositeNameWindowPixmap (display->xdisplay, cw->id);
-
-  if (cw->back_pixmap != None)
-    draw = cw->back_pixmap;
+  if (have_name_window_pixmap (display))
+    {
+      if (cw->back_pixmap == None)
+        cw->back_pixmap = XCompositeNameWindowPixmap (display->xdisplay, cw->id);
+      
+      if (cw->back_pixmap != None)
+        draw = cw->back_pixmap;
+    }
 #endif
 
   format = get_window_format (cw);
@@ -1049,16 +1066,21 @@ paint_windows (MetaScreen   *screen,
           int x, y, wid, hei;
           
 #ifdef HAVE_NAME_WINDOW_PIXMAP
-          x = cw->attrs.x;
-          y = cw->attrs.y;
-          wid = cw->attrs.width + cw->attrs.border_width * 2;
-          hei = cw->attrs.height + cw->attrs.border_width * 2;
-#else
-          x = cw->attrs.x + cw->attrs.border_width;
-          y = cw->attrs.y + cw->attrs.border_width;
-          wid = cw->attrs.width;
-          hei = cw->attrs.height;
+          if (have_name_window_pixmap (display))
+            {
+              x = cw->attrs.x;
+              y = cw->attrs.y;
+              wid = cw->attrs.width + cw->attrs.border_width * 2;
+              hei = cw->attrs.height + cw->attrs.border_width * 2;
+            }
+          else
 #endif
+            {
+              x = cw->attrs.x + cw->attrs.border_width;
+              y = cw->attrs.y + cw->attrs.border_width;
+              wid = cw->attrs.width;
+              hei = cw->attrs.height;
+            }
           
           XFixesSetPictureClipRegion (xdisplay, root_buffer, 
                                       0, 0, paint_region);
@@ -1135,16 +1157,21 @@ paint_windows (MetaScreen   *screen,
             {
               int x, y, wid, hei;
 #ifdef HAVE_NAME_WINDOW_PIXMAP
-              x = cw->attrs.x;
-              y = cw->attrs.y;
-              wid = cw->attrs.width + cw->attrs.border_width * 2;
-              hei = cw->attrs.height + cw->attrs.border_width * 2;
-#else
-              x = cw->attrs.x + cw->attrs.border_width;
-              y = cw->attrs.y + cw->attrs.border_width;
-              wid = cw->attrs.width;
-              hei = cw->attrs.height;
+              if (have_name_window_pixmap (display))
+                {
+                  x = cw->attrs.x;
+                  y = cw->attrs.y;
+                  wid = cw->attrs.width + cw->attrs.border_width * 2;
+                  hei = cw->attrs.height + cw->attrs.border_width * 2;
+                }
+              else
 #endif
+                {
+                  x = cw->attrs.x + cw->attrs.border_width;
+                  y = cw->attrs.y + cw->attrs.border_width;
+                  wid = cw->attrs.width;
+                  hei = cw->attrs.height;
+                }
               
               XRenderComposite (xdisplay, PictOpOver, cw->picture, 
                                 cw->alpha_pict, root_buffer, 0, 0, 0, 0,
@@ -1350,17 +1377,20 @@ free_win (MetaCompWindow *cw,
   MetaCompScreen *info = cw->screen->compositor_data;
 
 #ifdef HAVE_NAME_WINDOW_PIXMAP
-  /* See comment in map_win */
-  if (cw->back_pixmap && destroy) 
+  if (have_name_window_pixmap (display))
     {
-      XFreePixmap (display->xdisplay, cw->back_pixmap);
-      cw->back_pixmap = None;
-    }
-
-  if (cw->shaded_back_pixmap && destroy)
-    {
-      XFreePixmap (display->xdisplay, cw->shaded_back_pixmap);
-      cw->shaded_back_pixmap = None;
+      /* See comment in map_win */
+      if (cw->back_pixmap && destroy) 
+        {
+          XFreePixmap (display->xdisplay, cw->back_pixmap);
+          cw->back_pixmap = None;
+        }
+      
+      if (cw->shaded_back_pixmap && destroy)
+        {
+          XFreePixmap (display->xdisplay, cw->shaded_back_pixmap);
+          cw->shaded_back_pixmap = None;
+        }
     }
 #endif
 
@@ -1615,7 +1645,6 @@ add_win (MetaScreen *screen,
 
   if (!XGetWindowAttributes (display->xdisplay, xwindow, &cw->attrs)) 
     {
-      g_warning ("Could not get attrs");
       g_free (cw);
       return;
     }
@@ -1807,25 +1836,28 @@ resize_win (MetaCompWindow *cw,
   if (cw->attrs.width != width || cw->attrs.height != height) 
     {
 #ifdef HAVE_NAME_WINDOW_PIXMAP
-      if (cw->shaded_back_pixmap) 
+      if (have_name_window_pixmap (display))
         {
-          XFreePixmap (xdisplay, cw->shaded_back_pixmap);
-          cw->shaded_back_pixmap = None;
-        }
-
-      if (cw->back_pixmap) 
-        {
-          /* If the window is shaded, we store the old backing pixmap
-             so we can return a proper image of the window */
-          if (cw->window && cw->window->shaded)
+          if (cw->shaded_back_pixmap) 
             {
-              cw->shaded_back_pixmap = cw->back_pixmap;
-              cw->back_pixmap = None;
+              XFreePixmap (xdisplay, cw->shaded_back_pixmap);
+              cw->shaded_back_pixmap = None;
             }
-          else
+          
+          if (cw->back_pixmap) 
             {
-              XFreePixmap (xdisplay, cw->back_pixmap);
-              cw->back_pixmap = None;
+              /* If the window is shaded, we store the old backing pixmap
+                 so we can return a proper image of the window */
+              if (cw->window && cw->window->shaded)
+                {
+                  cw->shaded_back_pixmap = cw->back_pixmap;
+                  cw->back_pixmap = None;
+                }
+              else
+                {
+                  XFreePixmap (xdisplay, cw->back_pixmap);
+                  cw->back_pixmap = None;
+                }
             }
         }
 #endif
@@ -2271,24 +2303,31 @@ meta_compositor_remove_window (MetaCompositor *compositor,
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 #endif
 }
-#ifdef HAVE_COW
+
 static void
 show_overlay_window (MetaScreen *screen,
                      Window      cow)
 {
   MetaDisplay *display = screen->display;
-  XserverRegion region;
 
-  region = XFixesCreateRegion (display->xdisplay, NULL, 0);
+#ifdef HAVE_COW
+  if (have_cow (display))
+    {
+      XserverRegion region;
 
-  XFixesSetWindowShapeRegion (display->xdisplay, cow, ShapeBounding, 0, 0, 0);
-  XFixesSetWindowShapeRegion (display->xdisplay, cow, ShapeInput, 0, 0, region);
-
-  XFixesDestroyRegion (display->xdisplay, region);
-
-  damage_screen (screen);
+      region = XFixesCreateRegion (display->xdisplay, NULL, 0);
+      
+      XFixesSetWindowShapeRegion (display->xdisplay, cow, ShapeBounding, 0, 0, 0);
+      XFixesSetWindowShapeRegion (display->xdisplay, cow, ShapeInput, 0, 0, region);
+      
+      XFixesDestroyRegion (display->xdisplay, region);
+      
+      damage_screen (screen);
+    }
+#endif
 }
 
+#if 0
 static void
 hide_overlay_window (MetaScreen *screen,
                      Window      cow)
@@ -2302,19 +2341,28 @@ hide_overlay_window (MetaScreen *screen,
                               0, 0, region);
   XFixesDestroyRegion (display->xdisplay, region);
 }
+#endif
 
 static Window
-get_overlay_window (MetaScreen *screen)
+get_output_window (MetaScreen *screen)
 {
   MetaDisplay *display = screen->display;
-  Window cow;
+  Window output;
 
-  cow = XCompositeGetOverlayWindow (display->xdisplay, screen->xroot);
-  XSelectInput (display->xdisplay, cow, ExposureMask);
-
-  return cow;
-}
+#ifdef HAVE_COW
+  if (have_cow (display))
+    {
+      output = XCompositeGetOverlayWindow (display->xdisplay, screen->xroot);
+      XSelectInput (display->xdisplay, output, ExposureMask);
+    }
+  else
 #endif
+    {
+      output = screen->xroot;
+    }
+
+  return output;
+}
 
 void
 meta_compositor_manage_screen (MetaCompositor *compositor,
@@ -2331,7 +2379,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
     return;
 
   gdk_error_trap_push ();
-  /* FIXME: Use correct composite mode */
   XCompositeRedirectSubwindows (display->xdisplay, screen->xroot,
                                 CompositeRedirectManual);
   XSync (display->xdisplay, FALSE);
@@ -2357,11 +2404,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
       return;
     }
 
-#ifdef HAVE_COW
-  info->output = get_overlay_window (screen);
-#else
-  info->output = screen->xroot;
-#endif
+  info->output = get_output_window (screen);
 
   pa.subwindow_mode = IncludeInferiors;
   info->root_picture = XRenderCreatePicture (display->xdisplay, info->output,
@@ -2394,11 +2437,8 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   meta_screen_set_cm_selection (screen);
 
-#ifdef HAVE_COW
   /* Now we're up and running we can show the output if needed */
   show_overlay_window (screen, info->output);
-#endif
-
 #endif
 }
 
@@ -2596,12 +2636,15 @@ meta_compositor_get_window_pixmap (MetaCompositor *compositor,
     return None;
 
 #ifdef HAVE_NAME_WINDOW_PIXMAP
-  if (window->shaded)
-    return cw->shaded_back_pixmap;
+  if (have_name_window_pixmap (window->display))
+    {
+      if (window->shaded)
+        return cw->shaded_back_pixmap;
+      else
+        return cw->back_pixmap;
+    }
   else
-    return cw->back_pixmap;
-#else
-  return None;
 #endif
+    return None;
 #endif
 }
