@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
-ClutterGravity gravities[] = {
+static const ClutterGravity gravities[] = {
   CLUTTER_GRAVITY_NORTH_EAST,
   CLUTTER_GRAVITY_NORTH,
   CLUTTER_GRAVITY_NORTH_WEST,
@@ -14,9 +14,9 @@ ClutterGravity gravities[] = {
   CLUTTER_GRAVITY_NONE
 };
 
-gint gindex = 0;
+static gint gindex = 0;
 
-void
+static void
 on_timeline_completed (ClutterTimeline *cluttertimeline,
 		       gpointer         data)
 {
@@ -59,7 +59,7 @@ main (int argc, char *argv[])
 
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
-  timeline = clutter_timeline_new (20, 30);
+  timeline = clutter_timeline_new_for_duration (750);
   alpha    = clutter_alpha_new_full (timeline,
 				     CLUTTER_ALPHA_RAMP,
 				     NULL, NULL);
@@ -78,6 +78,9 @@ main (int argc, char *argv[])
   clutter_actor_show_all (stage);
 
   clutter_main();
+
+  g_object_unref (timeline);
+  g_object_unref (behave);
 
   return EXIT_SUCCESS;
 }

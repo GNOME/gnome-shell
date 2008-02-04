@@ -1,3 +1,10 @@
+2008-02-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-shader.c: Small documentation and style fixes
+
+	* tests/test-scale.c: Constify the gravities array.
+
 2008-02-04  Chris Lord  <chris@openedhand.com>
 
 	* clutter/clutter-actor.c: (clutter_actor_transform_stage_point):

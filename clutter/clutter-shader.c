@@ -340,10 +340,7 @@ clutter_shader_set_fragment_source (ClutterShader      *shader,
 
   is_glsl = !g_str_has_prefix (data, "!!ARBfp");
 
-  if (priv->fragment_source)
-    {
-      g_free (priv->fragment_source);
-    }
+  g_free (priv->fragment_source);
 
   CLUTTER_NOTE (SHADER, "setting fragment shader (GLSL:%s, len:%" 
 		G_GSSIZE_FORMAT ")",
@@ -387,13 +384,9 @@ clutter_shader_set_vertex_source (ClutterShader      *shader,
   if (clutter_shader_is_bound (shader))
     clutter_shader_release (shader);
 
-
   is_glsl = !g_str_has_prefix (data, "!!ARBvp");
 
-  if (priv->vertex_source)
-    {
-      g_free (priv->vertex_source);
-    }
+  g_free (priv->vertex_source);
 
   CLUTTER_NOTE (SHADER, "setting vertex shader (GLSL:%s, len:%" 
 		G_GSSIZE_FORMAT ")",

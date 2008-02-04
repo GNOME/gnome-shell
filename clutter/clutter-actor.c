@@ -1218,9 +1218,9 @@ clutter_actor_set_property (GObject      *object,
 
 static void
 clutter_actor_get_property (GObject    *object,
-			      guint       prop_id,
-			      GValue     *value,
-			      GParamSpec *pspec)
+			    guint       prop_id,
+			    GValue     *value,
+			    GParamSpec *pspec)
 {
   ClutterActor        *actor;
   ClutterActorPrivate *priv;
@@ -5033,11 +5033,11 @@ destroy_shader_data (ClutterActor *self)
 /**
  * clutter_actor_get_shader:
  * @self: a #ClutterActor
- * @shader: a #ClutterShader or %NULL
  *
  * Queries the currently set #ClutterShader on @self.
  *
- * Return value: The currently set #ClutterShader or NULL if no shader is set.
+ * Return value: The currently set #ClutterShader or %NULL if no
+ *   shader is set.
  *
  * Since: 0.6
  */
@@ -5053,9 +5053,8 @@ clutter_actor_get_shader (ClutterActor *self)
   shader_data = actor_priv->shader_data;
 
   if (!shader_data)
-    {
-      return NULL;
-    }
+    return NULL;
+
   return shader_data->shader;
 }
 
@@ -5108,7 +5107,6 @@ clutter_actor_set_shader (ClutterActor  *self,
     {
       shader_data->shader = g_object_ref (shader);
     }
-
 
   clutter_actor_queue_redraw (self);
 
