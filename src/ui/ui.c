@@ -22,7 +22,6 @@
  * 02111-1307, USA.
  */
 
-#include <config.h>
 #include "prefs.h"
 #include "ui.h"
 #include "frames.h"
@@ -567,10 +566,6 @@ meta_ui_pop_delay_exposes  (MetaUI *ui)
 {
   meta_frames_pop_delay_exposes (ui->frames);
 }
-
-#ifdef HAVE_GDK_PIXBUF_NEW_FROM_STREAM
-#define gdk_pixbuf_new_from_inline gdk_pixbuf_new_from_stream
-#endif
 
 GdkPixbuf*
 meta_ui_get_default_window_icon (MetaUI *ui)
