@@ -1,5 +1,11 @@
 2008-02-03  Thomas Thurman  <tthurman@gnome.org>
 
+        * tools/patch-wrangler.py: another program I use for maintenance
+	which other people might find useful and which should probably
+	be in svn. Also not very polished.
+
+2008-02-03  Thomas Thurman  <tthurman@gnome.org>
+
         * test/tokentest/tokentest.c, test/tokentest/tokentest.ini: added
 	new files for a regression test on the tokeniser. (They aren't very
 	polished at the moment and aren't included in the autotools build.)
