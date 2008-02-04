@@ -28,6 +28,7 @@ static ShaderSource shaders[]=
       "    pend_s4_result.y = (pend_s4_result.y - 0.5)*contrast + brightness + 0.5;"
       "    pend_s4_result.z = (pend_s4_result.z - 0.5)*contrast + brightness + 0.5;"
       "    gl_FragColor = pend_s4_result;"
+      "    gl_FragColor = gl_FragColor * gl_Color;"
       "}",
     },
     {"box-blur",
@@ -49,30 +50,8 @@ static ShaderSource shaders[]=
         "        }"
         ""
         "    gl_FragColor = color / float(count);"
+        "    gl_FragColor = gl_FragColor * gl_Color;"
         "}"
-    },
-    {"brightness-contrast.asm",
-
-      "!!ARBfp1.0\n"
-      "PARAM brightness = program.local[0];\n"
-      "PARAM contrast = program.local[1];\n"
-      "\n"
-      "TEMP R0;\n"
-      "TEX R0, fragment.texcoord[0], texture[0], RECT;\n"
-      "ADD R0.z, R0, -0.5;\n"
-      "MUL R0.z, R0, contrast.x;\n"
-      "ADD R0.z, R0, brightness.x;\n"
-      "ADD R0.y, R0, -0.5;\n"
-      "ADD R0.x, R0, -0.5;\n"
-      "MUL R0.y, R0, contrast.x;\n"
-      "MUL R0.x, R0, contrast.x;\n"
-      "ADD R0.y, R0, brightness.x;\n"
-      "ADD R0.x, R0, brightness.x;\n"
-      "ADD result.color.z, R0, 0.5;\n"
-      "ADD result.color.y, R0, 0.5;\n"
-      "ADD result.color.x, R0, 0.5;\n"
-      "MOV result.color.w, R0;\n"
-      "END ",
     },
     {"invert",
 
@@ -82,6 +61,7 @@ static ShaderSource shaders[]=
       "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));\n"
       "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) - color;\n"
       "  gl_FragColor.a = color.a;\n"
+      "  gl_FragColor = gl_FragColor * gl_Color;"
       "}"
     },
     {"brightness-contrast",
@@ -96,6 +76,7 @@ static ShaderSource shaders[]=
         "  color.g = (color.g - 0.5) * contrast + brightness + 0.5;"
         "  color.b = (color.b - 0.5) * contrast + brightness + 0.5;"
         "  gl_FragColor = color;"
+        "  gl_FragColor = gl_FragColor * gl_Color;"
         "}",
     },
     {"gray",
@@ -108,6 +89,7 @@ static ShaderSource shaders[]=
       "  color.g = avg;"
       "  color.b = avg;"
       "  gl_FragColor = color;"
+      "  gl_FragColor = gl_FragColor * gl_Color;"
       "}",
     },
     {"combined-mirror",
@@ -122,6 +104,7 @@ static ShaderSource shaders[]=
       "  color.b = avg;"
       "  color = (color + colorB)/2.0;"
       "  gl_FragColor = color;"
+      "  gl_FragColor = gl_FragColor * gl_Color;"
       "}",
     },
     {NULL, NULL}
@@ -275,6 +258,8 @@ main (gint   argc,
   clutter_actor_set_reactive (actor, TRUE);
   g_signal_connect (actor, "button-release-event",
                     G_CALLBACK (button_release_cb), NULL);
+
+  /*clutter_actor_set_opacity (actor, 0x77);*/
 
   /* Show everying ( and map window ) */
   clutter_actor_show_all (stage);

@@ -1,5 +1,12 @@
 2008-02-04  Øyvind Kolås  <pippin@o-hand.com>
 
+	* tests/test-fbo.c: (make_shader):
+	* tests/test-shader.c: (main): multiply the resulting gl_FragColor
+	with gl_Color before being done to take opacity into account in the
+	GLSL fragments.
+
+2008-02-04  Øyvind Kolås  <pippin@o-hand.com>
+
 	* clutter/clutter-actor.[ch]: added clutter_actor_get_shader and
 	renamed clutter_actor_apply_shader to be clutter_actor_set_shader.
 	Reindented/aligned header.

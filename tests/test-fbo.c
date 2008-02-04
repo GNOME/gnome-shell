@@ -57,7 +57,7 @@ make_shader(void)
         "        }"
         ""
         "    gl_FragColor = color / float(count);"
-
+        "    gl_FragColor = gl_FragColor * gl_Color;"
         "}",
         -1
    );
