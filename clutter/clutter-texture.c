@@ -1173,8 +1173,6 @@ texture_get_tile_pixbuf (ClutterTexture *texture, COGLuint texture_id, int bpp)
       tex_height = clutter_util_next_p2 (priv->height);
     }
 
-  g_print ("%i %i\n", tex_width, tex_height);
-
   if ((pixels = g_malloc (((tex_width * bpp + 3) &~ 3) * tex_height)) == NULL)
     return NULL;
 
