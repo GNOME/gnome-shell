@@ -738,13 +738,38 @@ clutter_actor_get_vertices (ClutterActor    *self,
   ClutterFixed           v[4];
   ClutterFixed           w[4];
   ClutterActorPrivate   *priv;
+  ClutterActor          *stage;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
 
-  clutter_actor_transform_vertices (self, verts, w);
+  /* We essentially have to dupe some code from clutter_redraw() here
+   * to make sure GL Matrices etc are initialised if we're called and we
+   * havn't yet rendered anything.
+   *
+   * Simply duping code for now in wait for Cogl cleanup that can hopefully
+   * address this in a nicer way.
+  */
+  stage = clutter_stage_get_default ();
 
+  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
+    {
+      ClutterPerspective perspective;
+
+      clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
+
+      cogl_setup_viewport (clutter_actor_get_width (stage),
+			   clutter_actor_get_height (stage),
+			   perspective.fovy,
+			   perspective.aspect,
+			   perspective.z_near,
+			   perspective.z_far);
+
+      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+    }
+
+  clutter_actor_transform_vertices (self, verts, w);
   cogl_get_projection_matrix (mtx_p);
   cogl_get_viewport (v);
 

@@ -1154,7 +1154,9 @@ pixbuf_destroy_notify (guchar *pixels, gpointer data)
 }
 
 static GdkPixbuf *
-texture_get_tile_pixbuf (ClutterTexture *texture, COGLuint texture_id, int bpp)
+texture_get_tile_pixbuf (ClutterTexture *texture,
+                         COGLuint        texture_id, 
+                         gint            bpp)
 {
   ClutterTexturePrivate *priv;
   guchar                *pixels = NULL;
@@ -1162,7 +1164,6 @@ texture_get_tile_pixbuf (ClutterTexture *texture, COGLuint texture_id, int bpp)
 
   priv = texture->priv;
   cogl_texture_bind (priv->target_type, texture_id);
-  cogl_texture_set_alignment (priv->target_type, 4, tex_width);
 
   tex_width = priv->width;
   tex_height = priv->height;
@@ -1172,6 +1173,8 @@ texture_get_tile_pixbuf (ClutterTexture *texture, COGLuint texture_id, int bpp)
       tex_width  = clutter_util_next_p2 (priv->width);
       tex_height = clutter_util_next_p2 (priv->height);
     }
+
+  cogl_texture_set_alignment (priv->target_type, 4, tex_width);
 
   if ((pixels = g_malloc (((tex_width * bpp + 3) &~ 3) * tex_height)) == NULL)
     return NULL;

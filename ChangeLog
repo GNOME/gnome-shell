@@ -1,3 +1,12 @@
+2008-02-05  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c: (clutter_actor_get_vertices):
+        Make sure GL related Matrices are initialised. Fixes #756
+
+	* clutter/clutter-texture.c:
+        Fix up code from Norways answer to Jean-Michel Basquiat.
+        (warning on tile_get_pixbuf)
+
 2008-02-05  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-texture.c: removed spurious left over debug printf.
