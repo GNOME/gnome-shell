@@ -1,3 +1,8 @@
+2008-02-03  Amitakhya Phukan <amitakhya@svn.gnome.org>
+
+	* LINGUAS: Added as to LINGUAS.
+	* as.po: Updated assamese translations.
+
 2008-02-03  Arangel Angov <arangel@linux.net.mk>
 
 	* mk.po: Updated Macedonian translation.
