@@ -55,6 +55,7 @@
 
 #define USE_IDLE_REPAINT 1
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 static inline gboolean
 composite_at_least_version (MetaDisplay *display,
                             int maj, int minor)
@@ -68,6 +69,8 @@ composite_at_least_version (MetaDisplay *display,
   composite_at_least_version (display, 0, 2)
 #define have_cow(display) \
   composite_at_least_version (display, 0, 3)
+
+#endif
 
 typedef enum _MetaCompWindowType
 {
