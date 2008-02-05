@@ -1148,9 +1148,57 @@ clutter_texture_init (ClutterTexture *self)
 }
 
 static void
-pixbuf_destroy_notify (guchar  *pixels, gpointer data)
+pixbuf_destroy_notify (guchar *pixels, gpointer data)
 {
   g_free (pixels);
+}
+
+static GdkPixbuf *
+texture_get_tile_pixbuf (ClutterTexture *texture, COGLuint texture_id, int bpp)
+{
+  ClutterTexturePrivate *priv;
+  guchar                *pixels = NULL;
+  guint                  tex_width, tex_height;
+
+  priv = texture->priv;
+  cogl_texture_bind (priv->target_type, texture_id);
+  cogl_texture_set_alignment (priv->target_type, 4, tex_width);
+
+  tex_width = priv->width;
+  tex_height = priv->height;
+
+  if (priv->target_type == CGL_TEXTURE_2D) /* POT */
+    {
+      tex_width  = clutter_util_next_p2 (priv->width);
+      tex_height = clutter_util_next_p2 (priv->height);
+    }
+
+  g_print ("%i %i\n", tex_width, tex_height);
+
+  if ((pixels = g_malloc (((tex_width * bpp + 3) &~ 3) * tex_height)) == NULL)
+    return NULL;
+
+  /* Read data from GL texture and return as pixbuf */
+  /* No such func in GLES... */
+  glGetTexImage (priv->target_type,
+                 0,
+                 (priv->pixel_format == CGL_RGBA
+                  || priv->pixel_format == CGL_BGRA) ?
+                 CGL_RGBA : CGL_RGB,
+                 PIXEL_TYPE,
+                 (GLvoid *)pixels);
+
+
+  return gdk_pixbuf_new_from_data ((const guchar *)pixels,
+                                   GDK_COLORSPACE_RGB,
+                                   (priv->pixel_format == CGL_RGBA
+                                    || priv->pixel_format == CGL_BGRA),
+                                   8,
+                                   tex_width,
+                                   tex_height,
+                                   ((tex_width * bpp + 3) &~ 3),
+                                   pixbuf_destroy_notify,
+                                   NULL);
 }
 
 /**
@@ -1164,13 +1212,13 @@ pixbuf_destroy_notify (guchar  *pixels, gpointer data)
  *
  * Return value: A #GdkPixbuf or NULL on fail.
  **/
-GdkPixbuf*
-clutter_texture_get_pixbuf (ClutterTexture* texture)
+GdkPixbuf *
+clutter_texture_get_pixbuf (ClutterTexture *texture)
 {
 #if HAVE_COGL_GL
   ClutterTexturePrivate *priv;
-  GdkPixbuf             *pixbuf = NULL;
-  guchar                *pixels = NULL;
+  GdkPixbuf             *pixbuf;
+  GdkPixbuf             *pixtmp;
   int                    bpp = 4;
 
   priv = texture->priv;
@@ -1179,43 +1227,45 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
     return NULL;
 
   if (priv->pixel_format == CGL_YCBCR_MESA)
-    return NULL; 		/* FIXME: convert YUV */
+    return NULL;                 /* FIXME: convert YUV */
 
   if (priv->pixel_format == CGL_RGB || priv->pixel_format == CGL_BGR)
     bpp = 3;
 
+  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                           priv->pixel_format == CGL_RGBA ||
+                           priv->pixel_format == CGL_BGRA,
+                           8, priv->width, priv->height);
+
+  if (pixbuf == NULL)
+    return NULL;
+
   if (!priv->is_tiled)
     {
-      pixels = g_malloc (((priv->width * bpp + 3) &~ 3) * priv->height);
+      pixtmp = texture_get_tile_pixbuf (texture, priv->tiles[0], bpp);
 
-      if (!pixels)
-	return NULL;
+      if (pixtmp == NULL)
+        {
+          g_object_unref (pixbuf);
+          return NULL;
+        }
 
-      glBindTexture(priv->target_type, priv->tiles[0]);
-
-      glPixelStorei (GL_UNPACK_ROW_LENGTH, priv->width);
-      glPixelStorei (GL_UNPACK_ALIGNMENT, 4);
-
-      /* read data from gl text and return as pixbuf */
-      /* No such func in gles... */
-      glGetTexImage (priv->target_type,
-		     0,
-		     (priv->pixel_format == CGL_RGBA
-		      || priv->pixel_format == CGL_BGRA) ?
-		     CGL_RGBA : CGL_RGB,
-		     PIXEL_TYPE,
-		     (GLvoid*)pixels);
-
-      pixbuf = gdk_pixbuf_new_from_data ((const guchar*)pixels,
-					 GDK_COLORSPACE_RGB,
-					 (priv->pixel_format == CGL_RGBA
-					  || priv->pixel_format == CGL_BGRA),
-					 8,
-					 priv->width,
-					 priv->height,
-					 ((priv->width * bpp + 3) &~ 3),
-					 pixbuf_destroy_notify,
-					 NULL);
+      /* Avoid a copy if the texture has the same size as the pixbuf */
+      if ((gdk_pixbuf_get_width (pixtmp)  == priv->width &&
+           gdk_pixbuf_get_height (pixtmp) == priv->height))
+        {
+          g_object_unref (pixbuf);
+          pixbuf = pixtmp;
+        }
+      else
+        {
+          gdk_pixbuf_copy_area (pixtmp,
+                                0, 0,
+                                priv->width, priv->height,
+                                pixbuf,
+                                0, 0);
+          g_object_unref (pixtmp);
+        }
     }
   else
     {
@@ -1223,48 +1273,21 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 
       i = 0;
 
-      pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-			       (priv->pixel_format == CGL_RGBA
-				|| priv->pixel_format == CGL_BGRA),
-			       8,
-			       priv->width,
-			       priv->height);
-
       for (x = 0; x < priv->n_x_tiles; x++)
-	for (y = 0; y < priv->n_y_tiles; y++)
-	  {
-	    GdkPixbuf  *tmp_pixb;
-	    gint        src_h, src_w;
+        for (y = 0; y < priv->n_y_tiles; y++)
+          {
+            gint src_w, src_h;
 
-	    src_w = priv->x_tiles[x].size;
-	    src_h = priv->y_tiles[y].size;
+            pixtmp = texture_get_tile_pixbuf (texture, priv->tiles[i], bpp);
 
-	    pixels = g_malloc (((src_w  * bpp + 3) &~ 3) * src_h);
+            if (pixtmp == NULL)
+              {
+                g_object_unref (pixbuf);
+                return NULL;
+              }
 
-	    glBindTexture(priv->target_type, priv->tiles[i]);
-
-	    glPixelStorei (GL_UNPACK_ROW_LENGTH, src_w);
-	    glPixelStorei (GL_UNPACK_ALIGNMENT, 4);
-
-	    glGetTexImage (priv->target_type,
-			   0,
-			   (priv->pixel_format == CGL_RGBA
-			    || priv->pixel_format == CGL_BGRA) ?
-			   CGL_RGBA : CGL_RGB,
-			   PIXEL_TYPE,
-			   (GLvoid *) pixels);
-
-	    tmp_pixb =
-	      gdk_pixbuf_new_from_data ((const guchar*)pixels,
-					GDK_COLORSPACE_RGB,
-					(priv->pixel_format == CGL_RGBA
-					 || priv->pixel_format == CGL_BGRA),
-					8,
-					src_w,
-					src_h,
-					((src_w * bpp + 3) &~ 3),
-					pixbuf_destroy_notify,
-					NULL);
+            src_w = priv->x_tiles[x].size;
+            src_h = priv->y_tiles[y].size;
 
             /* Clip */
             if (priv->x_tiles[x].pos + src_w > priv->width)
@@ -1273,19 +1296,15 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
             if (priv->y_tiles[y].pos + src_h > priv->height)
               src_h = priv->height - priv->y_tiles[y].pos;
 
-	    gdk_pixbuf_copy_area (tmp_pixb,
-				  0,
-				  0,
-				  src_w,
-				  src_h,
-				  pixbuf,
-				  priv->x_tiles[x].pos,
-				  priv->y_tiles[y].pos);
+            gdk_pixbuf_copy_area (pixtmp,
+                                  0, 0, src_w, src_h,
+                                  pixbuf,
+                                  priv->x_tiles[x].pos, priv->y_tiles[y].pos);
 
-	    g_object_unref (tmp_pixb);
+            g_object_unref (pixtmp);
 
-	    i++;
-	  }
+            i++;
+          }
 
     }
 

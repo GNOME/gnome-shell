@@ -1,3 +1,9 @@
+2008-02-05  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-texture.c: applied modified patch from Gwenole
+	Beuchesne adressing bug #635. Adressing a buffer overflow in
+	clutter_texture_get_pixbuf() when tiling is forced.
+
 2008-02-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-shader.c (clutter_shader_constructor): Keep the
