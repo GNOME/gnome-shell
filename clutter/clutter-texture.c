@@ -2250,12 +2250,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 	return NULL;
     }
 
-  /* FIXME abs size - usually fails with 0,0 */
   clutter_actor_get_abs_size (actor, &w, &h);
-  // printf("abs size is %ix%i\n", w, h);
-
-  /* Wont work with any kind of transform on actor */
-  //clutter_actor_get_size (actor, &w, &h); 
 
   if (w == 0 || h == 0)
     return NULL;

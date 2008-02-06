@@ -132,12 +132,6 @@ main (gint   argc,
   clutter_actor_show_all (trans_source); /* need to show() offscreen */
 
   clutter_actor_set_scale (trans_source, 2.5, 2.5);
-#if 0
-  /* Rotate about center by 90 degrees - FIXME: fbo seems to get nothing*/
-  clutter_actor_move_anchor_point_from_gravity (trans_source, 
-						CLUTTER_GRAVITY_CENTER);
-  clutter_actor_set_rotation (trans_source, CLUTTER_Z_AXIS, 90.0, 0, 0, 0);
-#endif
 
   if ((fbo = clutter_texture_new_from_actor (trans_source)) == NULL)
     g_error("transformed fbo creation failed");
@@ -153,7 +147,11 @@ main (gint   argc,
   if ((fbo = clutter_texture_new_from_actor (trans_source)) == NULL)
     g_error("transformed fbo creation failed");
 
-  clutter_actor_set_width (trans_source, 2*padx);
+  /* rotate after */
+  clutter_actor_move_anchor_point_from_gravity (trans_source, 
+						CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_rotation (trans_source, CLUTTER_Z_AXIS, 90.0, 0, 0, 0);
+
   clutter_actor_set_position (fbo, padx, pady);
   clutter_group_add (stage, fbo);
 

@@ -1,6 +1,14 @@
 2008-02-06  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:
+        Minor clean up from last commit. 
+
+	* tests/test-fbo.c:
+        Swall tweak (rotate offscreen, rather than resize)
+
+2008-02-06  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c:
         Initial attempt at handling resizing/tranformed source textures.
 
 	* clutter/pango/pangoclutter-render.c: (draw_glyph):
