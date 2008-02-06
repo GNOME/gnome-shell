@@ -351,6 +351,13 @@ draw_glyph (PangoRenderer *renderer_,
       Glyph bm;
       font_render_glyph (&bm, font, glyph);
 
+      if (bm.width < 1 || bm.height < 1 || bm.bitmap == NULL)
+        {
+          x += g->left;
+          y -= g->top;
+          return;
+        }
+
       if (g)
         g->generation = tc_generation;
       else

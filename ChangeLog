@@ -1,3 +1,12 @@
+2008-02-06  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c:
+        Initial attempt at handling resizing/tranformed source textures.
+
+	* clutter/pango/pangoclutter-render.c: (draw_glyph):
+        Guards against freetype returning NULL bitmaps and 
+        thus causing device by zeros on NVIDIA drivers. (see ml)
+
 2008-02-05  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c: (clutter_actor_get_vertices):

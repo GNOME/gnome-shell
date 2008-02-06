@@ -2148,6 +2148,58 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
   return TRUE;
 }
 
+static void
+on_fbo_source_size_change (GObject          *object,
+                           GParamSpec       *param_spec,
+                           ClutterTexture   *texture)
+{
+  ClutterTexturePrivate *priv = texture->priv;
+  guint                  w, h;
+
+  clutter_actor_get_abs_size (priv->fbo_source, &w, &h);
+  
+  if (w != priv->width || h != priv->height)
+    {
+      cogl_offscreen_destroy (priv->fbo_handle);
+
+      /* FIXME: check we can actual handle new size */
+      texture_free_gl_resources (texture);
+
+      priv->width        = w;
+      priv->height       = h;
+
+      priv->tiles = g_new (COGLuint, 1);
+
+      /* FIXME: needs a cogl wrapper */
+      glGenTextures (1, priv->tiles);
+
+      cogl_texture_bind (priv->target_type, priv->tiles[0]);
+      cogl_texture_image_2d (priv->target_type,
+                             CGL_RGBA,
+                             w,
+                             h,
+                             priv->pixel_format,
+                             priv->pixel_type,
+                             NULL);
+      
+      priv->fbo_handle = cogl_offscreen_create (priv->tiles[0]);
+
+      clutter_actor_set_size (CLUTTER_ACTOR(texture), w, h);
+    }
+}
+
+static void
+on_fbo_parent_change (ClutterActor        *actor,
+                      ClutterActor        *old_parent,
+                      ClutterTexture      *texture)
+{
+  ClutterActor        *parent = CLUTTER_ACTOR(texture);
+
+  while ((parent = clutter_actor_get_parent (parent)) != NULL)
+    if (parent == actor)
+      g_warning ("Offscreen texture is parent of source!");
+}
+
 
 /**
  * clutter_texture_new_from_actor:
@@ -2203,7 +2255,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   // printf("abs size is %ix%i\n", w, h);
 
   /* Wont work with any kind of transform on actor */
-  clutter_actor_get_size (actor, &w, &h); 
+  //clutter_actor_get_size (actor, &w, &h); 
 
   if (w == 0 || h == 0)
     return NULL;
@@ -2217,6 +2269,42 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   priv = texture->priv;
 
   priv->fbo_source = g_object_ref(actor);
+
+  /* Connect up any signals which could change our underlying size */
+  g_signal_connect (actor,
+                    "notify::width",
+                    G_CALLBACK(on_fbo_source_size_change),
+                    texture);
+  g_signal_connect (actor,
+                    "notify::height",
+                    G_CALLBACK(on_fbo_source_size_change),
+                    texture);
+  g_signal_connect (actor,
+                    "notify::scale-x",
+                    G_CALLBACK(on_fbo_source_size_change),
+                    texture);
+  g_signal_connect (actor,
+                    "notify::scale-y",
+                    G_CALLBACK(on_fbo_source_size_change),
+                    texture);
+  g_signal_connect (actor,
+                    "notify::rotation-angle-x",
+                    G_CALLBACK(on_fbo_source_size_change),
+                    texture);
+  g_signal_connect (actor,
+                    "notify::rotation-angle-y",
+                    G_CALLBACK(on_fbo_source_size_change),
+                    texture);
+  g_signal_connect (actor,
+                    "notify::rotation-angle-z",
+                    G_CALLBACK(on_fbo_source_size_change),
+                    texture);
+
+  /* And a warning if the source becomes a child of the texture */
+  g_signal_connect (actor,
+                    "parent-set",
+                    G_CALLBACK(on_fbo_parent_change),
+                    texture);
 
   priv->width        = w;
   priv->height       = h;
