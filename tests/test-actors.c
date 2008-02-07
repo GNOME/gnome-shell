@@ -113,15 +113,7 @@ frame_cb (ClutterTimeline *timeline,
        * unit based functions to fix.
       */
       clutter_actor_set_rotation (oh->hand[i], CLUTTER_Z_AXIS,
-                                  - 6.0 * frame_num,
-#if 0
-	       (clutter_actor_get_width (oh->hand[i]) / 2) * scale_x,
-	       (clutter_actor_get_height (oh->hand[i]) / 2) * scale_y,
-#else
-	       (clutter_actor_get_width (oh->hand[i]) / 2),
-	       (clutter_actor_get_height (oh->hand[i]) / 2),
-#endif
-               0);
+                                 - 6.0 * frame_num, 0, 0, 0);
     }
 }
 
@@ -216,14 +208,14 @@ main (int argc, char *argv[])
 
       clutter_actor_set_position (oh->hand[i], x, y);
 
-      clutter_actor_set_anchor_point_from_gravity (oh->hand[i],
+      clutter_actor_move_anchor_point_from_gravity (oh->hand[i],
 						   CLUTTER_GRAVITY_CENTER);
 
 
       /* Add to our group group */
       clutter_container_add_actor (CLUTTER_CONTAINER (oh->group), oh->hand[i]);
 
-#if 0 /* FIXME: disabled as causes drift - see comment above */
+#if 1 /* FIXME: disabled as causes drift? - see comment above */
       if (i % 2)
 	clutter_behaviour_apply (scaler_1, oh->hand[i]);
       else

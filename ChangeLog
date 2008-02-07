@@ -1,3 +1,10 @@
+2008-02-07  Neil J. Patel  <njp@o-hand.com>
+
+	* tests/test-actors.c: (frame_cb), (main):
+	Changed set_anchor to move_anchor.
+	Changed clutter_actor_rotate x & y values to 0,0.
+	Switched on scaling because it seems to work without drifting.
+
 2008-02-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script-parser.c:
