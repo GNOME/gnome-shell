@@ -1,3 +1,10 @@
+2008-02-07  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-actor.c:
+	(_clutter_actor_apply_modelview_transform): perform translation as
+	well as anchor point adjustment based on self not being stage (and
+	not by self not being an orphan).
+
 2008-02-07  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-stage.c:

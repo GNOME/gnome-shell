@@ -824,11 +824,9 @@ static void
 _clutter_actor_apply_modelview_transform (ClutterActor * self)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterActor        *parent;
+  gboolean             is_stage = CLUTTER_IS_STAGE (self);
 
-  parent = clutter_actor_get_parent (self);
-
-  if (parent != NULL)
+  if (!is_stage)
     {
       cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->coords.x1),
 		       CLUTTER_UNITS_TO_FIXED (priv->coords.y1),
@@ -886,7 +884,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
 		       CLUTTER_UNITS_TO_FIXED (-(priv->z + priv->rxz)));
     }
 
-  if (parent && (priv->anchor_x || priv->anchor_y))
+  if (!is_stage && (priv->anchor_x || priv->anchor_y))
     {
       cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->anchor_x),
 		       CLUTTER_UNITS_TO_FIXED (-priv->anchor_y),
