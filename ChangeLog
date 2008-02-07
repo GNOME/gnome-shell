@@ -1,3 +1,8 @@
+2008-02-07  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c: (texture_upload_data):
+        Remove random appearing 'priv->filter_quality =1' (#643)
+
 2008-02-06  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:

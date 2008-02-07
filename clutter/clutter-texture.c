@@ -477,8 +477,6 @@ texture_upload_data (ClutterTexture *texture,
 			     priv->repeat_x ? CGL_REPEAT : CGL_CLAMP_TO_EDGE,
 			     priv->repeat_y ? CGL_REPEAT : CGL_CLAMP_TO_EDGE);
 
-      priv->filter_quality = 1;
-
       if (create_textures)
 	{
 	  gint tex_width, tex_height;
