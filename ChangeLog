@@ -1,5 +1,11 @@
 2008-02-07  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/pango/pangoclutter-render.c:
+        Warn if requested glyph is too big for underlying texture cache.
+        (see #666)
+
+2008-02-07  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-texture.c: (texture_upload_data):
         Remove random appearing 'priv->filter_quality =1' (#643)
 

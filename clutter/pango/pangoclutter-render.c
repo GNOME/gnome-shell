@@ -78,8 +78,6 @@ tc_clear ()
       first_texture = next;
     }
 
-  printf("freeing textures\n");
-
   ++tc_generation;
 }
 
@@ -356,6 +354,12 @@ draw_glyph (PangoRenderer *renderer_,
           x += g->left;
           y -= g->top;
           return;
+        }
+
+      if (bm.height > TC_HEIGHT)
+        {
+          g_warning ("%s: Glyph too large for cache, increase TC_HEIGHT",
+                     G_STRLOC);
         }
 
       if (g)
