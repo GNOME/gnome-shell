@@ -6,6 +6,11 @@
 #include <stdlib.h>
 #include <glib.h>
 
+/* Dynamic branching appeared in "Shader Model 3.0" that low-end IGPs
+ * don't support.
+ */
+#define GPU_SUPPORTS_DYNAMIC_BRANCHING 0
+
 typedef struct
 {
   gchar *name;
@@ -32,7 +37,7 @@ static ShaderSource shaders[]=
       "}",
     },
     {"box-blur",
-
+#if GPU_SUPPORTS_DYNAMIC_BRANCHING
         "uniform float radius ;"
         "uniform sampler2DRect rectTexture;"
         ""
@@ -52,6 +57,33 @@ static ShaderSource shaders[]=
         "    gl_FragColor = color / float(count);"
         "    gl_FragColor = gl_FragColor * gl_Color;"
         "}"
+#else
+        "uniform sampler2DRect rectTexture;"
+        "vec4 tex_load(const vec2 coord)"
+        "{"
+        "  return texture2DRect (rectTexture, gl_TexCoord[0].st + coord * 2.0);"
+        "}"
+        ""
+        "void main()"
+        "{"
+        "  vec4 color;"
+        "  float count = 1.0;"
+        ""
+        "  color = texture2DRect (rectTexture, gl_TexCoord[0].st);"
+        "  color += tex_load (vec2 (-1.0, -1.0)); count++;"
+        "  color += tex_load (vec2 (-1.0,  0.0)); count++;"
+        "  color += tex_load (vec2 (-1.0,  1.0)); count++;"
+        "  color += tex_load (vec2 ( 0.0, -1.0)); count++;"
+        "  color += tex_load (vec2 ( 0.0,  0.0)); count++;"
+        "  color += tex_load (vec2 ( 0.0,  1.0)); count++;"
+        "  color += tex_load (vec2 ( 1.0, -1.0)); count++;"
+        "  color += tex_load (vec2 ( 1.0,  0.0)); count++;"
+        "  color += tex_load (vec2 ( 1.0,  1.0)); count++;"
+        ""
+        "  gl_FragColor = color / count;"
+        "  gl_FragColor = gl_FragColor * gl_Color;"
+        "}"
+#endif
     },
     {"invert",
 
@@ -163,6 +195,8 @@ button_release_cb (ClutterActor    *actor,
           clutter_actor_set_shader (actor, NULL);
           clutter_actor_set_shader (actor, shader);
           clutter_actor_set_shader_param (actor, "radius", 3.0);
+          clutter_actor_set_shader_param (actor, "brightness", 0.4);
+          clutter_actor_set_shader_param (actor, "contrast", -1.9);
         }
     }
   return FALSE;

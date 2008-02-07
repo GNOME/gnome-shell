@@ -1,3 +1,11 @@
+2008-02-07  Øyvind Kolås  <pippin@o-hand.com>
+
+	* tests/test-shader.c: (button_release_cb): added simplified
+	implementation of a box-blur shader from Gwenole Beauchesne that
+	should work on GLSL implementing low-end IGPs not implementing
+	dynamic branching. The original code used crashed some of these
+	due to bugs in drivers or similar. Resolves bug #710.
+
 2008-02-07  Tomas Frydrych  <tf@openedhand.com>
 	
         * clutter/clutter-actor.c:
