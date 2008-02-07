@@ -14,7 +14,12 @@
 	due to bugs in drivers or similar. Resolves bug #710.
 
 2008-02-07  Tomas Frydrych  <tf@openedhand.com>
-	
+
+	* tests/test-actors.c:
+	Reverted previous change.
+
+2008-02-07  Tomas Frydrych  <tf@openedhand.com>
+
         * clutter/clutter-actor.c:
 	(clutter_actor_set_property):
 	Fixed handling of PROP_ROTATE_CENTER_Y, ROTATE_CENTER_Z
@@ -37,7 +42,7 @@
 	when looking at the symbols, so we don't load them all up.
 
 	* clutter/clutter-script.c (resolve_alpha_func): Ditto as above.
-	
+
 2008-02-07  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-actor.c:
