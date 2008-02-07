@@ -42,6 +42,7 @@ main (int argc, char **argv)
   ClutterTimeline *timeline_2;
   ClutterTimeline *timeline_3;
   ClutterTimeline *timeline_4;
+  GSList *timelines;
   guint t1, t2, t3, t4;
 
   clutter_init (&argc, &argv);
@@ -82,6 +83,10 @@ main (int argc, char **argv)
   t2 = clutter_score_append (score, timeline_1, timeline_2);
   t3 = clutter_score_append (score, timeline_1, timeline_3);
   t4 = clutter_score_append (score, timeline_3, timeline_4);
+
+  timelines = clutter_score_list_timelines (score);
+  g_assert (4 == g_slist_length (timelines));
+  g_slist_free (timelines);
 
   clutter_score_start (score);
 

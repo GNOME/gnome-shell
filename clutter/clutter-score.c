@@ -729,7 +729,8 @@ traverse_children (GNode    *node,
       break;
 
     case LIST_TIMELINES:
-      retval = TRUE;
+      closure->result = g_slist_prepend (closure->result, entry->timeline);
+      retval = FALSE;
       break;
     }
 

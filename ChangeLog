@@ -1,39 +1,46 @@
+2008-02-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-score.c (traverse_children): Actually implement
+	clutter_score_list_timelines().
+
+	* tests/test-score.c (main): Test clutter_score_list_timelines().
+
 2008-02-07  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/pango/pangoclutter-render.c:
-        Warn if requested glyph is too big for underlying texture cache.
-        (see #666)
+	Warn if requested glyph is too big for underlying texture cache.
+	(see #666)
 
 2008-02-07  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c: (texture_upload_data):
-        Remove random appearing 'priv->filter_quality =1' (#643)
+	Remove random appearing 'priv->filter_quality =1' (#643)
 
 2008-02-06  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:
-        Minor clean up from last commit. 
+	Minor clean up from last commit. 
 
 	* tests/test-fbo.c:
-        Swall tweak (rotate offscreen, rather than resize)
+	Small tweak (rotate offscreen, rather than resize)
 
 2008-02-06  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:
-        Initial attempt at handling resizing/tranformed source textures.
+	Initial attempt at handling resizing/tranformed source textures.
 
 	* clutter/pango/pangoclutter-render.c: (draw_glyph):
-        Guards against freetype returning NULL bitmaps and 
-        thus causing device by zeros on NVIDIA drivers. (see ml)
+	Guards against freetype returning NULL bitmaps and 
+	thus causing device by zeros on NVIDIA drivers. (see ml)
 
 2008-02-05  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c: (clutter_actor_get_vertices):
-        Make sure GL related Matrices are initialised. Fixes #756
+	Make sure GL related Matrices are initialised. Fixes #756
 
 	* clutter/clutter-texture.c:
-        Fix up code from Norways answer to Jean-Michel Basquiat.
-        (warning on tile_get_pixbuf)
+	Fix up code from Norways answer to Jean-Michel Basquiat.
+	(warning on tile_get_pixbuf)
 
 2008-02-05  Øyvind Kolås  <pippin@o-hand.com>
 
