@@ -376,13 +376,6 @@ clutter_stage_x11_set_user_resize (ClutterStage *stage,
 }
 
 static void
-clutter_stage_x11_set_offscreen (ClutterStage *stage,
-                                 gboolean      offscreen)
-{
-  /* Do nothing ? */
-}
-
-static void
 clutter_stage_x11_dispose (GObject *gobject)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (gobject);
@@ -409,7 +402,6 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
   
   stage_class->set_fullscreen = clutter_stage_x11_set_fullscreen;
   stage_class->set_cursor_visible = clutter_stage_x11_set_cursor_visible;
-  stage_class->set_offscreen = clutter_stage_x11_set_offscreen;
   stage_class->set_title = clutter_stage_x11_set_title;
   stage_class->set_user_resize = clutter_stage_x11_set_user_resize;
 }

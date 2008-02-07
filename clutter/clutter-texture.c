@@ -2088,7 +2088,7 @@ texture_update_data (ClutterTexture *texture,
  * @y: Y coordinate of upper left corner of region to update.
  * @width: Width in pixels of region to update.
  * @height: Height in pixels of region to update.
- * @rowstride: Distance in bytes between row starts.
+ * @rowstride: Distance in bytes between row starts on source buffer.
  * @bpp: bytes per pixel ( Currently only 4 supported )
  * @flags: #ClutterTextureFlags
  * @error: return location for a #GError, or %NULL

@@ -151,14 +151,6 @@ clutter_stage_sdl_set_cursor_visible (ClutterStage *stage,
   SDL_ShowCursor(show_cursor);
 }
 
-static void
-clutter_stage_sdl_set_offscreen (ClutterStage *stage,
-                                 gboolean      offscreen)
-{
-  g_warning ("Stage of type `%s' do not support ClutterStage::set_offscreen",
-             G_OBJECT_TYPE_NAME (stage));
-}
-
 static GdkPixbuf*
 clutter_stage_sdl_draw_to_pixbuf (ClutterStage *stage,
                                   GdkPixbuf    *dest,
@@ -207,7 +199,6 @@ clutter_stage_sdl_class_init (ClutterStageSDLClass *klass)
   
   stage_class->set_fullscreen = clutter_stage_sdl_set_fullscreen;
   stage_class->set_cursor_visible = clutter_stage_sdl_set_cursor_visible;
-  stage_class->set_offscreen = clutter_stage_sdl_set_offscreen;
   stage_class->draw_to_pixbuf = clutter_stage_sdl_draw_to_pixbuf;
   stage_class->set_title = clutter_stage_sdl_set_title;
 }

@@ -1,3 +1,18 @@
+2008-02-07  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	* clutter/eglnative/clutter-stage-egl.c:
+	* clutter/eglx/clutter-stage-egl.c:
+	* clutter/osx/clutter-stage-osx.c:
+	* clutter/sdl/clutter-stage-sdl.c:
+	* clutter/x11/clutter-stage-x11.c:
+        Add at least somne basic offscreen handling into all backends.
+        Remove unused clutter_stage_set_offscreen vfunc. (#549)
+
+	* clutter/clutter-texture.c:
+        Minor API doc tweak, noting rowstride source in set_area
+
 2008-02-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-score.c (traverse_children): Actually implement

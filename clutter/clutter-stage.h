@@ -103,8 +103,6 @@ struct _ClutterStageClass
                                         gboolean      fullscreen);
   void          (* set_cursor_visible) (ClutterStage *stage,
                                         gboolean      visible);
-  void          (* set_offscreen)      (ClutterStage *stage,
-                                        gboolean      offscreen);
   GdkPixbuf*    (* draw_to_pixbuf)     (ClutterStage *stage,
                                         gint          x,
                                         gint          y,

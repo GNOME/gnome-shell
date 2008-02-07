@@ -28,9 +28,11 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 
   g_object_get (actor, "offscreen", &was_offscreen, NULL);
 
+
   if (G_UNLIKELY (was_offscreen))
     {
       /* No support as yet for this */
+      
     }
   else
     {
@@ -154,7 +156,9 @@ clutter_stage_egl_realize (ClutterActor *actor)
     }
   else
     {
-      /* FIXME */
+      g_warning("EGL Backend does not yet support offscreen rendering\n");
+      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+      return;
     }
 
   CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);

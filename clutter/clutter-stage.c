@@ -149,6 +149,10 @@ clutter_stage_set_property (GObject      *object,
 
       if (CLUTTER_ACTOR_IS_REALIZED (actor))
         {
+          /* Backend needs to check this prop and handle accordingly
+           * in realise. 
+           * FIXME: More 'obvious' implementation needed?
+          */
           clutter_actor_unrealize (actor);
           priv->is_offscreen = g_value_get_boolean (value);
           clutter_actor_realize (actor);

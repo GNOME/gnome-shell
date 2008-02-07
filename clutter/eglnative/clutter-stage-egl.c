@@ -148,7 +148,9 @@ clutter_stage_egl_realize (ClutterActor *actor)
     }
   else
     {
-      /* FIXME */
+      g_warning("EGL Backend does not yet support offscreen rendering\n");
+      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+      return;
     }
 
   clutter_stage_get_perspectivex (CLUTTER_STAGE (actor), &perspective);
@@ -192,15 +194,6 @@ clutter_stage_egl_set_fullscreen (ClutterStage *stage,
              G_OBJECT_TYPE_NAME (stage));
 }
 
-
-static void
-clutter_stage_egl_set_offscreen (ClutterStage *stage,
-                                 gboolean      offscreen)
-{
-  g_warning ("Stage of type `%s' do not support ClutterStage::set_offscreen",
-             G_OBJECT_TYPE_NAME (stage));
-}
-
 static GdkPixbuf*
 clutter_stage_egl_draw_to_pixbuf (ClutterStage *stage,
                                   gint          x,
@@ -238,9 +231,7 @@ clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
   actor_class->unrealize = clutter_stage_egl_unrealize;
   actor_class->request_coords = clutter_stage_egl_request_coords;
   actor_class->query_coords = clutter_stage_egl_query_coords;
-  
-  stage_class->set_fullscreen = clutter_stage_egl_set_fullscreen;
-  stage_class->set_offscreen = clutter_stage_egl_set_offscreen;
+    stage_class->set_fullscreen = clutter_stage_egl_set_fullscreen;
   stage_class->draw_to_pixbuf = clutter_stage_egl_draw_to_pixbuf;
 }
 
