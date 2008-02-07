@@ -1,3 +1,10 @@
+2008-02-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c: Add a note on clutter_actor_set_size()
+	reguarding groups.
+
+	* clutter/clutter-group.c: Clarify group sizing.
+
 2008-02-07  Øyvind Kolås  <pippin@o-hand.com>
 
 	* tests/test-shader.c: (button_release_cb): added simplified

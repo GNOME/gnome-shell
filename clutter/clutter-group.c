@@ -34,7 +34,9 @@
  *
  * A #ClutterGroup's size is defined by the size and position of it
  * it children. Resize requests via parent #ClutterActor API will be
- * ignored.
+ * ignored, i.e. calling clutter_actor_set_size() on a #ClutterGroup
+ * will not resize the group nor its children. If you want to resize
+ * a group, call clutter_actor_set_scale().
  */
 
 #ifdef HAVE_CONFIG_H

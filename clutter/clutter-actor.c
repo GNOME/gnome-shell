@@ -2198,8 +2198,7 @@ clutter_actor_get_coords (ClutterActor *self,
  * @x: New left position of actor in pixels.
  * @y: New top position of actor in pixels.
  *
- * Sets the actors position in pixels relative to any
- * parent actor.
+ * Sets the actors position in pixels relative to any parent actor.
  */
 void
 clutter_actor_set_position (ClutterActor *self,
@@ -2354,8 +2353,15 @@ clutter_actor_set_size_internalu (ClutterActor *self,
  * @width: New width of actor in pixels, or -1
  * @height: New height of actor in pixels, or -1
  *
- * Sets the actors size in pixels. If @width and/or @height are -1 the
- * actor will assume the same size of its bounding box.
+ * Sets the actors size in pixels.
+ *
+ * If @width and/or @height are -1 the actor will assume the same size
+ * of its bounding box.
+ *
+ * <note>This function is a "request" to the #ClutterActor. Depending
+ * on the actual implementation, calling clutter_actor_set_size() might
+ * not produce visible results. Calling this function on a #ClutterGroup,
+ * for instance, will not resize the group.</note>
  */
 void
 clutter_actor_set_size (ClutterActor *self,
