@@ -26,7 +26,7 @@ clutter_script_get_type_from_symbol (const gchar *symbol)
   GType gtype = G_TYPE_INVALID;
 
   if (!module)
-    module = g_module_open (NULL, 0);
+    module = g_module_open (NULL, G_MODULE_BIND_LAZY);
   
   if (g_module_symbol (module, symbol, (gpointer)&func))
     gtype = func ();
@@ -64,7 +64,10 @@ clutter_script_get_type_from_class (const gchar *name)
   symbol = g_string_free (symbol_name, FALSE);
 
   if (g_module_symbol (module, symbol, (gpointer)&func))
-    gtype = func ();
+    {
+      CLUTTER_NOTE (SCRIPT, "Type function: %s", symbol);
+      gtype = func ();
+    }
   
   g_free (symbol);
 

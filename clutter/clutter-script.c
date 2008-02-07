@@ -506,12 +506,13 @@ resolve_alpha_func (const gchar *name)
   gint i;
 
   if (G_UNLIKELY (!module))
-    module = g_module_open (NULL, 0);
+    module = g_module_open (NULL, G_MODULE_BIND_LAZY);
 
-  CLUTTER_NOTE (SCRIPT, "Looking for `%s' alpha function", name);
-  
   if (g_module_symbol (module, name, (gpointer) &func))
-    return func;
+    {
+      CLUTTER_NOTE (SCRIPT, "Found `%s' alpha function", name);
+      return func;
+    }
 
   symbol_name = g_string_new ("");
   g_string_append (symbol_name, "clutter_");
@@ -528,12 +529,16 @@ resolve_alpha_func (const gchar *name)
   
   symbol = g_string_free (symbol_name, FALSE);
 
-  if (!g_module_symbol (module, symbol, (gpointer)&func))
-    func = NULL;
+  if (g_module_symbol (module, symbol, (gpointer)&func))
+    {
+      CLUTTER_NOTE (SCRIPT, "Found `%s' alpha function", symbol);
+      g_free (symbol);
+      return func;
+    }
 
   g_free (symbol);
 
-  return func;
+  return NULL;
 }
 
 GObject *
