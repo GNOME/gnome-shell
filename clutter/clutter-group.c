@@ -34,9 +34,7 @@
  *
  * A #ClutterGroup's size is defined by the size and position of it
  * it children. Resize requests via parent #ClutterActor API will be
- * ignored, i.e. calling clutter_actor_set_size() on a #ClutterGroup
- * will not resize the group nor its children. If you want to resize
- * a group, call clutter_actor_set_scale().
+ * ignored.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -175,8 +173,21 @@ clutter_group_query_coords (ClutterActor        *self,
 	  /* if (CLUTTER_ACTOR_IS_VISIBLE (child)) */
 	    {
 	      ClutterActorBox cbox;
+	      gint            anchor_x;
+	      gint            anchor_y;
 
 	      clutter_actor_query_coords (child, &cbox);
+
+	      /*
+	       * Must adjust these by the anchor point, as we need the box
+	       * to be relative to the top-left corner of the parent
+	       */
+	      clutter_actor_get_anchor_pointu (child, &anchor_x, &anchor_y);
+
+	      cbox.x1 -= anchor_x;
+	      cbox.x2 -= anchor_x;
+	      cbox.y1 -= anchor_y;
+	      cbox.y2 -= anchor_y;
 
 	      /* Ignore any children with offscreen ( negaive )
                * positions.

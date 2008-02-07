@@ -1,3 +1,9 @@
+2008-02-07  Tomas Frydrych  <tf@openedhand.com>
+
+        * clutter/clutter-group.c:
+	(clutter_group_query_coords):
+	Take into account the anchor point when calculating the box size.
+
 2008-02-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c: Add a note on clutter_actor_set_size()
