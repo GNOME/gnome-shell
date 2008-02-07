@@ -1213,7 +1213,7 @@ clutter_actor_set_property (GObject      *object,
 
         center = g_value_get_boxed (value);
         clutter_actor_set_rotationx (actor,
-                                     CLUTTER_X_AXIS,
+                                     CLUTTER_Y_AXIS,
                                      priv->ryang,
                                      CLUTTER_UNITS_TO_DEVICE (center->x),
                                      0,
@@ -1226,7 +1226,7 @@ clutter_actor_set_property (GObject      *object,
 
         center = g_value_get_boxed (value);
         clutter_actor_set_rotationx (actor,
-                                     CLUTTER_X_AXIS,
+                                     CLUTTER_Z_AXIS,
                                      priv->rzang,
                                      CLUTTER_UNITS_TO_DEVICE (center->x),
                                      CLUTTER_UNITS_TO_DEVICE (center->y),

@@ -1,3 +1,12 @@
+2008-02-07  Tomas Frydrych  <tf@openedhand.com>
+	
+        * clutter/clutter-actor.c:
+	(clutter_actor_set_property):
+	Fixed handling of PROP_ROTATE_CENTER_Y, ROTATE_CENTER_Z
+
+	* tests/test-actors.c:
+	Adjusted to use anchor point for both group and hands.
+
 2008-02-07  Neil J. Patel  <njp@o-hand.com>
 
 	* tests/test-actors.c: (frame_cb), (main):
@@ -13,7 +22,7 @@
 	when looking at the symbols, so we don't load them all up.
 
 	* clutter/clutter-script.c (resolve_alpha_func): Ditto as above.
-
+	
 2008-02-07  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-actor.c:
@@ -57,7 +66,7 @@
 2008-02-06  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:
-	Minor clean up from last commit. 
+	Minor clean up from last commit.
 
 	* tests/test-fbo.c:
 	Small tweak (rotate offscreen, rather than resize)
@@ -68,7 +77,7 @@
 	Initial attempt at handling resizing/tranformed source textures.
 
 	* clutter/pango/pangoclutter-render.c: (draw_glyph):
-	Guards against freetype returning NULL bitmaps and 
+	Guards against freetype returning NULL bitmaps and
 	thus causing device by zeros on NVIDIA drivers. (see ml)
 
 2008-02-05  Matthew Allum  <mallum@openedhand.com>
@@ -137,7 +146,7 @@
 	Add notify signal for set_rotate
 
 	* clutter/clutter-texture.c:
-	Add basic cleanup code for fbo's	
+	Add basic cleanup code for fbo's
 
 	* tests/test-fbo.c: (main):
 	Minor notes.
@@ -207,8 +216,8 @@
 	Fall back to again not relying on xfixes to hide cursor. *sigh*
 
 	* clutter/clutter-deprecated.h:
-	Add clutter_group_find_child_by_id 
-	
+	Add clutter_group_find_child_by_id
+
 2008-02-01  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/cogl/gles/cogl.c: (cogl_rectangle_internal): increase size
@@ -254,7 +263,7 @@
 
 	* (_clutter_actor_apply_modelview_transform_recursive):
 	Made to work for parentless actors.
-	
+
 2008-01-31  Øyvind Kolås  <pippin@o-hand.com>
 
 	* tests/test-depth.c: added a box of cloned hands to further expand
@@ -318,7 +327,7 @@
         * clutter/clutter-actor.c:
         * clutter/clutter-actor.h:
 	Added new clutter_actor_move_anchor_point_ API.
-	
+
         * clutter/clutter-behaviour-scale.c:
         * clutter/clutter-behaviour-scale.h:
         * clutter/clutter-effect.c:

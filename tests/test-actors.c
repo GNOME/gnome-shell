@@ -93,12 +93,11 @@ frame_cb (ClutterTimeline *timeline,
   gint            i;
 
   /* Rotate everything clockwise about stage center*/
+
   clutter_actor_set_rotation (CLUTTER_ACTOR (oh->group),
                               CLUTTER_Z_AXIS,
                               frame_num,
-                              CLUTTER_STAGE_WIDTH() / 2,
-                              CLUTTER_STAGE_HEIGHT() / 2,
-                              0);
+                              0, 0, 0);
 
   for (i = 0; i < n_hands; i++)
     {
@@ -111,9 +110,9 @@ frame_cb (ClutterTimeline *timeline,
        *
        * FIXME: scaling causes drift so disabled for now. Need rotation
        * unit based functions to fix.
-      */
+       */
       clutter_actor_set_rotation (oh->hand[i], CLUTTER_Z_AXIS,
-                                 - 6.0 * frame_num, 0, 0, 0);
+				  - 6.0 * frame_num, 0, 0, 0);
     }
 }
 
@@ -199,18 +198,15 @@ main (int argc, char *argv[])
 
       x = CLUTTER_STAGE_WIDTH () / 2
           + radius
-          * cos (i * M_PI / (n_hands / 2))
-          - w / 2;
+          * cos (i * M_PI / (n_hands / 2));
       y = CLUTTER_STAGE_HEIGHT () / 2
           + radius
-          * sin (i * M_PI / (n_hands / 2))
-          - h / 2;
-
-      clutter_actor_set_position (oh->hand[i], x, y);
+          * sin (i * M_PI / (n_hands / 2));
 
       clutter_actor_move_anchor_point_from_gravity (oh->hand[i],
 						   CLUTTER_GRAVITY_CENTER);
 
+      clutter_actor_set_position (oh->hand[i], x, y);
 
       /* Add to our group group */
       clutter_container_add_actor (CLUTTER_CONTAINER (oh->group), oh->hand[i]);
@@ -224,6 +220,18 @@ main (int argc, char *argv[])
     }
 
   clutter_actor_show_all (oh->group);
+
+  clutter_actor_set_anchor_point_from_gravity (oh->group,
+ 					       CLUTTER_GRAVITY_CENTER);
+  clutter_actor_set_position (oh->group,
+			      CLUTTER_STAGE_WIDTH()/2,
+			      CLUTTER_STAGE_HEIGHT()/2);
+
+  printf ("group %dx%d, stage %dx%d\n",
+	  clutter_actor_get_width (oh->group),
+	  clutter_actor_get_height (oh->group),
+	  CLUTTER_STAGE_WIDTH(),
+	  CLUTTER_STAGE_HEIGHT());
 
   /* Add the group to the stage */
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
