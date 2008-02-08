@@ -1,5 +1,13 @@
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c: Reference the newly added event-flow.png
+
+	* clutter/clutter-alpha.c: Ditto, with alpha-func.png
+
+	* clutter/clutter-texture.c: Fix the XML.
+
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour-path.c: Reference the newly
 	added image showing the effects of different alpha functions
 	on the same path behaviour.

@@ -2265,9 +2265,9 @@ on_fbo_parent_change (ClutterActor        *actor,
  * 'live' redirected output of the actors scene. 
  *
  * Note this function is intented as a utility call for uniformly applying
- * shaders to groups and other potentail visual effects. It requires the
- * #CLUTTER_FEATURE_TEXTURE_RECTANGLE & #CLUTTER_FEATURE_OFFSCREEN features
- * are supported by both the current backend and target system.
+ * shaders to groups and other potentail visual effects. It requires that
+ * both %CLUTTER_FEATURE_TEXTURE_RECTANGLE and %CLUTTER_FEATURE_OFFSCREEN
+ * features are supported by the current backend and the target system.
  *
  * Some tips on usage:
  *
@@ -2276,7 +2276,7 @@ on_fbo_parent_change (ClutterActor        *actor,
  *     <para>The source actor must be made visible (i.e by calling 
  *     #clutter_actor_show). The source actor does not however have to 
  *     have a parent.</para>
- *   <listitem>
+ *   </listitem>
  *   <listitem>
  *     <para>Avoid reparenting the source with the created texture.</para>
  *   </listitem>
@@ -2293,7 +2293,7 @@ on_fbo_parent_change (ClutterActor        *actor,
  *   </listitem>
  *   <listitem>
  *     <para>Uploading pixel data to the text (e.g by #clutter_actor_set_pixbuf
- *     will destroy the offscreen texture data and end redirection.
+ *     will destroy the offscreen texture data and end redirection.</para>
  *   </listitem>
  *   <listitem>
  *     <para>#clutter_texture_get_pixbuf can used to read the offscreen
@@ -2301,8 +2301,10 @@ on_fbo_parent_change (ClutterActor        *actor,
  *   </listitem>
  * </itemizedlist>
  *
- * Return value: A newly created #ClutterTexture object or NULL on fail.
- **/
+ * Return value: A newly created #ClutterTexture object or %NULL on fail.
+ *
+ * Since: 0.6
+ */
 ClutterActor *
 clutter_texture_new_from_actor (ClutterActor *actor)
 {

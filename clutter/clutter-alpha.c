@@ -43,6 +43,11 @@
  *
  * #ClutterAlpha is used to "drive" a #ClutterBehaviour instance.
  *
+ * <figure id="alpha-functions">
+ *   <title>Graphic representation of some alpha functions</title>
+ *   <graphic fileref="alpha-func.png" format="PNG"/>
+ * </figure>
+ *
  * Since: 0.2
  */
 

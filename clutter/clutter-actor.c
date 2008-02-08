@@ -78,6 +78,12 @@
  *   <listitem><para>Pointer events will 'pass through' non reactive
  *   overlapping actors.</para></listitem>
  * </orderedlist>
+ *
+ * <figure id="event-flow">
+ *   <title>Event flow in Clutter</title>
+ *   <graphic fileref="event-flow.png" format="PNG"/>
+ * </figure>
+ *
  */
 
 /**
