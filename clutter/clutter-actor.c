@@ -32,7 +32,14 @@
  * be a #ClutterActor, either by using one of the classes provided by
  * Clutter, or by implementing a new #ClutterActor subclass.
  *
- * Actor Transformations
+ * Every actor is a 2D surface in a 3D environment. The surface is contained
+ * inside its bounding box, described by the #ClutterActorBox structure:
+ *
+ * <figure id="actor-box">
+ *   <title>Bounding box of an Actor</title>
+ *   <graphic fileref="actor-box.png" format="PNG"/>
+ * </figure>
+ *
  * The OpenGL modelview matrix for the actor is constructed from the actor
  * settings by the following order of operations:
  * <orderedlist>
@@ -49,10 +56,10 @@
  *   </listitem>
  * </orderedlist>
  *
- * NB: the position of any children is referenced from the top-left corner of
- * the parent, not the parent's anchor point.
+ * <note>The position of any children is referenced from the top-left corner of
+ * the parent, not the parent's anchor point.</note>
  *
- * Event handling
+ * Events are handled in the following ways:
  * <orderedlist>
  *   <listitem><para>Actors emit pointer events if set reactive, see
  *   clutter_actor_set_reactive()</para></listitem>
@@ -84,6 +91,8 @@
  *   <graphic fileref="event-flow.png" format="PNG"/>
  * </figure>
  *
+ * Every '?' box in the diagram above is an entry point for application
+ * code.
  */
 
 /**

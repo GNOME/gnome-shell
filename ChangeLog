@@ -1,5 +1,9 @@
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c: Add actor box diagram and notes.
+
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour-path.c: Move the nice graph and
 	description from the Path behaviour...
 
