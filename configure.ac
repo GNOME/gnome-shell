@@ -310,6 +310,14 @@ PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 
 AC_SUBST(CLUTTER_REQUIRES)
 
+GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
+PANGO_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
+GDKPIXBUF_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
+
+AC_SUBST(GLIB_PREFIX)
+AC_SUBST(PANGO_PREFIX)
+AC_SUBST(GDKPIXBUF_PREFIX)
+
 dnl ========================================================================
 
 if test "x$GCC" = "xyes"; then

@@ -1,3 +1,12 @@
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-path.c: Reference the newly
+	added image showing the effects of different alpha functions
+	on the same path behaviour.
+
+	* configure.ac: Find out the prefix of some of the libraries
+	we depend upon, so that gtk-doc can fix the references for us.
+
 2008-02-08  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:

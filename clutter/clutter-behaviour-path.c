@@ -40,6 +40,11 @@
  * knot in the path is reached with the upper bound value provided by
  * the #ClutterAlpha object used by the behaviour.
  *
+ * <figure id="behaviour-path-alpha">
+ *   <title>Effects of alpha functions on a path</title>
+ *   <graphic fileref="path-alpha-func.png" format="PNG"/>
+ * </figure>
+ *
  * #ClutterBehaviourPath is available since Clutter 0.2
  */
 

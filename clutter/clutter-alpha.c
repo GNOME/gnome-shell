@@ -97,7 +97,7 @@ timeline_new_frame_cb (ClutterTimeline *timeline,
 
       g_object_notify (G_OBJECT (alpha), "alpha");
       g_object_unref (alpha);
-  }
+    }
 }
 
 static void 
