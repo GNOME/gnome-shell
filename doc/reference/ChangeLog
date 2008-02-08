@@ -1,5 +1,10 @@
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* actor-box.png:
+	* Makefile.am: Add actor-box.png.
+
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-docs.sgml: Add dependencies inside the overview.
 
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
