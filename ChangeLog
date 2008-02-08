@@ -1,5 +1,10 @@
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-path.c: Add a paragraph describing
+	the effects of different alpha functions on the path behaviour.
+
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Reference the newly added event-flow.png
 
 	* clutter/clutter-alpha.c: Ditto, with alpha-func.png
