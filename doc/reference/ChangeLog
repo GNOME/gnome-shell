@@ -1,5 +1,14 @@
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* Makefile.am:
+	* alpha-func.png:
+	* event-flow.png: More figures. alpha-func.png is a graph
+	showing the flow of some alpha functions; event-flow.png maps
+	the path of an event coming from the underlying windowing
+	system into Clutter and through the entire library.
+
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* path-alpha-func.png: Image showing the effects of different
 	alpha functions on the same path behaviour.
 
