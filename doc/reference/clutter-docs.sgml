@@ -68,6 +68,41 @@
 
     </para>
 
+    <para>
+
+    Clutter depends on the following libraries:
+
+      <variablelist>
+        <varlistentry>
+          <term>GLib</term>
+          <listitem>
+            <para>A general-purpose utility library, not specific to
+            graphical user interfaces. GLib provides many useful data
+            types, macros, type conversions, string utilities, file
+            utilities, a main loop abstraction, and so on.</para>
+          </listitem>
+          <term>GObject</term>
+          <listitem>
+            <para>The GLib Object System provides the required
+            implementations of a flexible, extensible and intentionally
+            easy to map (into other languages) object-oriented framework
+            for C.</para>
+          </listitem>
+          <term>Pango</term>
+          <listitem>
+            <para>Pango is a library for laying out and rendering of
+            text, with an emphasis on internationalization.</para>
+          </listitem>
+          <term>GDK-Pixbuf</term>
+          <listitem>
+            <para>GDK-Pixbuf is a library for loading and manipulating
+            various image file formats.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+
+    </para>
+
     </partintro>
   </part>
 

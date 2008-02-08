@@ -1,5 +1,9 @@
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-docs.sgml: Add dependencies inside the overview.
+
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* Makefile.am:
 	* alpha-func.png:
 	* event-flow.png: More figures. alpha-func.png is a graph
