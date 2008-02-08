@@ -496,6 +496,30 @@ construct_timeline (ClutterScript *script,
   return retval;
 }
 
+/* ugh. if g_module_open() fails (*cough* python *cough*) we need a fallback
+ * for finding at least our own functions.
+ */
+static const struct
+{
+  const gchar *name;
+  ClutterAlphaFunc symbol;
+} clutter_alphas[] = {
+  { "clutter_ramp_inc_func",       CLUTTER_ALPHA_RAMP_INC },
+  { "clutter_ramp_dec_func",       CLUTTER_ALPHA_RAMP_DEC },
+  { "clutter_ramp_func",           CLUTTER_ALPHA_RAMP },
+  { "clutter_sine_inc_func",       CLUTTER_ALPHA_SINE_INC },
+  { "clutter_sine_dec_func",       CLUTTER_ALPHA_SINE_DEC },
+  { "clutter_sine_half_func",      CLUTTER_ALPHA_SINE_HALF },
+  { "clutter_sine_func",           CLUTTER_ALPHA_SINE },
+  { "clutter_square_func",         CLUTTER_ALPHA_SQUARE },
+  { "clutter_smoothstep_inc_func", CLUTTER_ALPHA_SMOOTHSTEP_INC },
+  { "clutter_smoothstep_dec_func", CLUTTER_ALPHA_SMOOTHSTEP_DEC },
+  { "clutter_exp_inc_func",        CLUTTER_ALPHA_EXP_INC },
+  { "clutter_exp_dec_func",        CLUTTER_ALPHA_EXP_DEC }
+};
+
+static const gint n_clutter_alphas = G_N_ELEMENTS (clutter_alphas);
+
 static ClutterAlphaFunc
 resolve_alpha_func (const gchar *name)
 {
@@ -505,12 +529,23 @@ resolve_alpha_func (const gchar *name)
   gchar c, *symbol;
   gint i;
 
+  CLUTTER_NOTE (SCRIPT, "Looking up `%s' alpha function", name);
+
+  for (i = 0; i < n_clutter_alphas; i++)
+    if (strcmp (name, clutter_alphas[i].name) == 0)
+      {
+        CLUTTER_NOTE (SCRIPT, "Found `%s' alpha function in the whitelist",
+                      name);
+        return clutter_alphas[i].symbol;
+      }
+
   if (G_UNLIKELY (!module))
     module = g_module_open (NULL, G_MODULE_BIND_LAZY);
 
   if (g_module_symbol (module, name, (gpointer) &func))
     {
-      CLUTTER_NOTE (SCRIPT, "Found `%s' alpha function", name);
+      CLUTTER_NOTE (SCRIPT, "Found `%s' alpha function in the symbols table",
+                    name);
       return func;
     }
 
@@ -526,12 +561,26 @@ resolve_alpha_func (const gchar *name)
         g_string_append_c (symbol_name, g_ascii_tolower (name[i]));
     }
   g_string_append (symbol_name, "_func");
-  
+
   symbol = g_string_free (symbol_name, FALSE);
+
+  CLUTTER_NOTE (SCRIPT, "Looking `%s' alpha function", symbol);
+
+  for (i = 0; i < n_clutter_alphas; i++)
+    if (strcmp (symbol, clutter_alphas[i].name) == 0)
+      {
+        CLUTTER_NOTE (SCRIPT,
+                      "Found `%s' (%s) alpha function in the whitelist",
+                      name, symbol);
+        g_free (symbol);
+        return clutter_alphas[i].symbol;
+      }
 
   if (g_module_symbol (module, symbol, (gpointer)&func))
     {
-      CLUTTER_NOTE (SCRIPT, "Found `%s' alpha function", symbol);
+      CLUTTER_NOTE (SCRIPT,
+                    "Found `%s' (%s) alpha function in the symbols table",
+                    name, symbol);
       g_free (symbol);
       return func;
     }
@@ -577,7 +626,15 @@ clutter_script_parse_alpha (ClutterScript *script,
 
   val = json_object_get_member (object, "function");
   if (val && json_node_get_string (val) != NULL)
-    alpha_func = resolve_alpha_func (json_node_get_string (val));
+    {
+      alpha_func = resolve_alpha_func (json_node_get_string (val));
+      if (!alpha_func)
+        {
+          g_warning ("Unable to find the function `%s' in the "
+                     "Clutter alpha functions or the symbols table",
+                     json_node_get_string (val));
+        }
+    }
 
   CLUTTER_NOTE (SCRIPT, "Parsed alpha: %s timeline (%p) and func:%p",
                 unref_timeline ? "implicit" : "explicit",

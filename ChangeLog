@@ -1,7 +1,16 @@
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-script.c:
+	(resolve_alpha_func): Use a whitelist containing the alpha function
+	provided by Clutter, as a fallback in case g_module_open() does not
+	work.
+
+	(clutter_script_parse_alpha): Add an explicit warning in case we
+	cannot find the alpha function used inside a UI definition.
+
 2008-02-07  Tomas Frydrych  <tf@openedhand.com>
 
-        * clutter/clutter-group.c:
-	(clutter_group_query_coords):
+	* clutter/clutter-group.c (clutter_group_query_coords):
 	Take into account the anchor point when calculating the box size.
 
 2008-02-07  Emmanuele Bassi  <ebassi@openedhand.com>
