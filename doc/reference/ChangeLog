@@ -1,3 +1,10 @@
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* path-alpha-func.png: Image showing the effects of different
+	alpha functions on the same path behaviour.
+
+	* Makefile.am: Add fixxref options.
+
 2008-02-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add:
