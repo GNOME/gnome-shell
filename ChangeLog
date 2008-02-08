@@ -1,5 +1,12 @@
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-path.c: Move the nice graph and
+	description from the Path behaviour...
+
+	* clutter/clutter-behaviour.c: ... to the main Behaviour class.
+
+2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour-path.c: Add a paragraph describing
 	the effects of different alpha functions on the path behaviour.
 

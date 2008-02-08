@@ -40,18 +40,6 @@
  * knot in the path is reached with the upper bound value provided by
  * the #ClutterAlpha object used by the behaviour.
  *
- * <figure id="behaviour-path-alpha">
- *   <title>Effects of alpha functions on a path</title>
- *   <graphic fileref="path-alpha-func.png" format="PNG"/>
- * </figure>
- *
- * The actors position between the path's end points directly correlates
- * to the #ClutterAlpha's current alpha value driving the behaviour. With
- * the #ClutterAlpha's function set to %CLUTTER_ALPHA_RAMP_INC the actor
- * will follow the path at a constant velocity, but when changing to
- * %CLUTTER_ALPHA_SINE_INC the actor initially accelerates quickly before
- * quickly decelerating.
- *
  * <note>If the alpha function is a periodic function, i.e. it returns to
  * 0 after reaching %CLUTTER_ALPHA_MAX_ALPHA, then the actors will walk
  * the path back to the starting #ClutterKnot.</note>

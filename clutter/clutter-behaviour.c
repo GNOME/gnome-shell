@@ -42,11 +42,29 @@
  * of a set of actors; #ClutterBehaviourScale, which controls the width
  * and height of a set of actors.
  *
+ * To visualize the effects of different alpha functions on a
+ * #ClutterBehaviour implementation it is possible to take the
+ * #ClutterBehaviourPath as an example:
+ *
+ * <figure id="behaviour-path-alpha">
+ *   <title>Effects of alpha functions on a path</title>
+ *   <graphic fileref="path-alpha-func.png" format="PNG"/>
+ * </figure>
+ *
+ * The actors position between the path's end points directly correlates
+ * to the #ClutterAlpha's current alpha value driving the behaviour. With
+ * the #ClutterAlpha's function set to %CLUTTER_ALPHA_RAMP_INC the actor
+ * will follow the path at a constant velocity, but when changing to
+ * %CLUTTER_ALPHA_SINE_INC the actor initially accelerates before quickly
+ * decelerating.
+ *
  * In order to implement a new behaviour you should subclass #ClutterBehaviour
  * and override the "alpha_notify" virtual function; inside the overridden
  * function you should obtain the alpha value from the #ClutterAlpha
  * instance bound to the behaviour and apply it to the desiderd property
- * (or properties) of every actor controlled by the behaviour. 
+ * (or properties) of every actor controlled by the behaviour.
+ *
+ * #ClutterBehaviour is available since Clutter 0.2
  */
 
 #ifdef HAVE_CONFIG_H
