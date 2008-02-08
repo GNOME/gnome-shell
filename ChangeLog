@@ -1,3 +1,10 @@
+2008-02-08  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c:
+        Tidy up offscreen code, adding into realize/unrealize.
+        Add more safety code.
+        Improve documentation.
+
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script.c:

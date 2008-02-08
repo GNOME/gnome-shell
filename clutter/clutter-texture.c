@@ -642,6 +642,15 @@ clutter_texture_unrealize (ClutterActor *actor)
 
   CLUTTER_MARK();
 
+  if (priv->fbo_source)
+    {
+      /* Free up our fbo handle and texture resources, realize will recreate */
+      cogl_offscreen_destroy (priv->fbo_handle);
+      priv->fbo_handle = 0;
+      texture_free_gl_resources (texture);
+      return;
+    }
+
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_READ_PIXELS))
     {
       /* Move image data from video to main memory.
@@ -672,10 +681,39 @@ clutter_texture_realize (ClutterActor *actor)
   texture = CLUTTER_TEXTURE(actor);
   priv = texture->priv;
 
-  if (priv->fbo_handle)
-    return;   /* handle better */
-
   CLUTTER_MARK();
+
+  if (priv->fbo_source)
+    {
+      /* Handle FBO's */
+
+      priv->tiles = g_new (COGLuint, 1);
+
+      /* FIXME: needs a cogl wrapper */
+      glGenTextures (1, priv->tiles);
+
+      cogl_texture_bind (priv->target_type, priv->tiles[0]);
+
+      cogl_texture_image_2d (priv->target_type,
+                             CGL_RGBA,
+                             priv->width,
+                             priv->height,
+                             priv->pixel_format,
+                             priv->pixel_type,
+                             NULL);
+
+      priv->fbo_handle = cogl_offscreen_create (priv->tiles[0]);
+
+      if (priv->fbo_handle == 0)
+        {
+          g_warning ("%s: Offscreen texture creation failed", G_STRLOC);
+	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+          return;
+        }
+
+      clutter_actor_set_size (actor, priv->width, priv->height);
+      return;
+    }
 
   if (priv->local_pixbuf != NULL)
     {
@@ -761,35 +799,35 @@ clutter_texture_paint (ClutterActor *self)
   if (priv->fbo_handle)
     {
       ClutterMainContext *context;
+      ClutterShader      *shader = NULL;
 
       context = clutter_context_get_default ();
+
+      if (context->shaders)
+        shader = clutter_actor_get_shader (context->shaders->data);
 
       /* Temporarily turn of the shader on the top of the context's
        * shader stack, to restore the GL pipeline to it's natural state.
        */
-      if (context->shaders)
-        {
-          clutter_shader_set_is_enabled (
-           clutter_actor_get_shader (context->shaders->data), FALSE);
-        }
+      if (shader)
+        clutter_shader_set_is_enabled (shader, FALSE);
 
       cogl_offscreen_redirect_start (priv->fbo_handle, 
                                      priv->width, priv->height);
+
+      /* Render out actor scene to fbo */
       clutter_actor_paint (priv->fbo_source);
+
       cogl_offscreen_redirect_end (priv->fbo_handle,
                                    CLUTTER_STAGE_WIDTH(),
                                    CLUTTER_STAGE_HEIGHT());
 
-      glBindTexture(CGL_TEXTURE_RECTANGLE_ARB, priv->tiles[0]);
-
       /* If there is a shader on top of the shader stack, turn it back on. */
-      if (context->shaders)
-        {
-          clutter_shader_set_is_enabled (
-           clutter_actor_get_shader (context->shaders->data), TRUE);
-        }
-    }
+      if (shader)
+        clutter_shader_set_is_enabled (shader, TRUE);
 
+      glBindTexture(CGL_TEXTURE_RECTANGLE_ARB, priv->tiles[0]);
+    }
 
   CLUTTER_NOTE (PAINT,
                 "painting texture '%s'",
@@ -1426,6 +1464,11 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   gboolean               texture_dirty = TRUE, size_change = FALSE;
 
   priv = texture->priv;
+
+  /* Remove FBO if exisiting */
+  if (priv->fbo_source)
+    texture_fbo_free_resources (texture);
+
   if (!texture_prepare_upload (TRUE, texture, data, has_alpha, 
 			       width, height, rowstride, bpp, flags, 
 			       &copy_data, &texture_dirty, &size_change))
@@ -1554,6 +1597,9 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
     }
 
   priv = texture->priv;
+
+  if (priv->fbo_source)
+    texture_fbo_free_resources (texture);
 
   /* FIXME: check other image props */
   size_change = (width != priv->width || height != priv->height);
@@ -2158,9 +2204,16 @@ on_fbo_source_size_change (GObject          *object,
   
   if (w != priv->width || h != priv->height)
     {
+      if (!cogl_texture_can_size (CGL_TEXTURE_RECTANGLE_ARB,
+                                  CGL_RGBA, PIXEL_TYPE, w, h))
+        {
+          g_warning ("%s: Offscreen source too large for texture", G_STRLOC);
+          return;
+        }
+
+      /* tear down the FBO */
       cogl_offscreen_destroy (priv->fbo_handle);
 
-      /* FIXME: check we can actual handle new size */
       texture_free_gl_resources (texture);
 
       priv->width        = w;
@@ -2195,21 +2248,58 @@ on_fbo_parent_change (ClutterActor        *actor,
 
   while ((parent = clutter_actor_get_parent (parent)) != NULL)
     if (parent == actor)
-      g_warning ("Offscreen texture is parent of source!");
+      {
+        g_warning ("Offscreen texture is ancestor of source!");
+        /* Desperate but will avoid infinite loops */
+        clutter_actor_unparent (actor);
+      }
 }
 
 
 /**
  * clutter_texture_new_from_actor:
- * @actor: A #ClutterActor 
+ * @actor: A source #ClutterActor 
  *
  * Creates a new #ClutterTexture object with its source a prexisting 
- * actor (and associated children).
+ * actor (and associated children). The textures content will contain
+ * 'live' redirected output of the actors scene. 
  *
  * Note this function is intented as a utility call for uniformly applying
  * shaders to groups and other potentail visual effects. It requires the
  * #CLUTTER_FEATURE_TEXTURE_RECTANGLE & #CLUTTER_FEATURE_OFFSCREEN features
- * are supported by both the current backend and target system
+ * are supported by both the current backend and target system.
+ *
+ * Some tips on usage:
+ *
+ * <itemizedlist>
+ *   <listitem>
+ *     <para>The source actor must be made visible (i.e by calling 
+ *     #clutter_actor_show). The source actor does not however have to 
+ *     have a parent.</para>
+ *   <listitem>
+ *   <listitem>
+ *     <para>Avoid reparenting the source with the created texture.</para>
+ *   </listitem>
+ *   <listitem>
+ *     <para>A group can be padded with a transparent rectangle as to 
+ *     provide a border to contents for shader output (blurring text
+ *     for example).</para>
+ *   </listitem>
+ *   <listitem>
+ *     <para>The texture will automatically resize to contain a further 
+ *     transformed source. The however involves overhead and can be
+ *     avoided by placing the source actor in a bounding group
+ *     sized large enough to contain any child tranformations.</para>
+ *   </listitem>
+ *   <listitem>
+ *     <para>Uploading pixel data to the text (e.g by #clutter_actor_set_pixbuf
+ *     will destroy the offscreen texture data and end redirection.
+ *   </listitem>
+ *   <listitem>
+ *     <para>#clutter_texture_get_pixbuf can used to read the offscreen
+ *     texture pixels into a pixbuf.</para>
+ *   </listitem>
+ * </itemizedlist>
  *
  * Return value: A newly created #ClutterTexture object or NULL on fail.
  **/
@@ -2220,20 +2310,9 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   ClutterTexturePrivate *priv;
   guint                  w, h;
 
-  /*  TODO (before 0.6 release):
-   *
-   *   - Figure out getting source actor size correctly.
-   *   - Handle source actor resizing.
-   *   - Handle failure better.
-   *   - Handle cleanup on destruction.
-   *   - Beef up test-fbo.
-   *   - Have the source actor as a prop, realize/unrealize ?
-   *   - Avoid infinite loop in shaders
-   *   - Fix shader rendering order 
-   */
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
+  /* FIXME: Some error result on below could be useful */
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE) == FALSE)
     return NULL;
 
@@ -2257,6 +2336,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 			      CGL_RGBA, PIXEL_TYPE, w, h))
     return NULL;
 
+  /* Hopefully now were good.. */
   texture = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
 
   priv = texture->priv;
@@ -2306,24 +2386,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   priv->pixel_type   = PIXEL_TYPE;
   priv->is_tiled     = 0;
 
-  priv->tiles = g_new (COGLuint, 1);
-
-  /* FIXME: needs a cogl wrapper */
-  glGenTextures (1, priv->tiles);
-
-  cogl_texture_bind (priv->target_type, priv->tiles[0]);
-
-  cogl_texture_image_2d (priv->target_type,
-			 CGL_RGBA,
-			 w,
-			 h,
-			 priv->pixel_format,
-			 priv->pixel_type,
-			 NULL);
-
-  priv->fbo_handle = cogl_offscreen_create (priv->tiles[0]);
-
-  clutter_actor_set_size (CLUTTER_ACTOR(texture), w, h);
+  clutter_actor_set_size (CLUTTER_ACTOR(texture), priv->width, priv->height);
 
   return CLUTTER_ACTOR(texture);
 }
@@ -2339,7 +2402,18 @@ texture_fbo_free_resources (ClutterTexture *texture)
 
   if (priv->fbo_source != NULL)
     {
+      g_signal_handlers_disconnect_by_func 
+                            (priv->fbo_source, 
+                             G_CALLBACK(on_fbo_parent_change), 
+                             texture);
+      
+      g_signal_handlers_disconnect_by_func 
+                            (priv->fbo_source, 
+                             G_CALLBACK(on_fbo_source_size_change), 
+                             texture);
+
       g_object_unref (priv->fbo_source);
+
       priv->fbo_source = NULL;
     }
 
