@@ -118,7 +118,7 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 @implementation ClutterGLView
 - (id) initWithFrame: (NSRect)aFrame pixelFormat:(NSOpenGLPixelFormat*)aFormat stage:(ClutterActor*)aStage
 {
-  int sw = 1; 
+  long sw = 1; 
 
   if ((self = [super initWithFrame:aFrame pixelFormat:aFormat]) != nil)
     {
@@ -261,15 +261,15 @@ clutter_stage_osx_realize (ClutterActor *actor)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
   ClutterBackendOSX *backend_osx;
-  gboolean is_offscreen;
+  gboolean offscreen;
 
   CLUTTER_NOTE (BACKEND, "realize");
 
   CLUTTER_OSX_POOL_ALLOC();
 
-  g_object_get (actor, "offscreen", &is_offscreen, NULL);
+  g_object_get (actor, "offscreen", &offscreen, NULL);
 
-  if (is_offcreen)
+  if (offscreen)
     {
       g_warning("OSX Backend does not yet support offscreen rendering\n");
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
