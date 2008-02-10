@@ -1,3 +1,8 @@
+2008-20-10  Matthew Allum    <mallum@o-hand.com>
+
+        * clutter/osx/clutter-stage-osx.c
+	Fix up a couple of typos breaking build.
+	
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c: Add actor box diagram and notes.
