@@ -93,20 +93,38 @@ clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
                                       guint32           alpha_value)
 {
   ClutterBehaviourScalePrivate *priv;
-  ClutterFixed scale_x, scale_y, factor;
+  ClutterFixed scale_x, scale_y;
   ScaleFrameClosure closure = { 0, };
 
   priv = CLUTTER_BEHAVIOUR_SCALE (behave)->priv;
 
-  factor = CLUTTER_INT_TO_FIXED (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
+  /* Fix the start/end values, avoids potential rounding errors on large
+   * values. 
+  */
+  if (alpha_value == CLUTTER_ALPHA_MAX_ALPHA)
+    {
+      scale_x = priv->x_scale_end;
+      scale_y = priv->y_scale_end;
+    }
+  else if (alpha_value == 0)
+    {
+      scale_x = priv->x_scale_start;
+      scale_y = priv->y_scale_start;
+    }
+  else
+    {
+      ClutterFixed factor;
 
-  scale_x = CLUTTER_FIXED_MUL (factor,
-                               (priv->x_scale_end - priv->x_scale_start));
-  scale_x += priv->x_scale_start;
+      factor = CLUTTER_INT_TO_FIXED (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
 
-  scale_y = CLUTTER_FIXED_MUL (factor,
-                               (priv->y_scale_end - priv->y_scale_start));
-  scale_y += priv->y_scale_start;
+      scale_x = CLUTTER_FIXED_MUL (factor,
+                                   (priv->x_scale_end - priv->x_scale_start));
+      scale_x += priv->x_scale_start;
+      
+      scale_y = CLUTTER_FIXED_MUL (factor,
+                                   (priv->y_scale_end - priv->y_scale_start));
+      scale_y += priv->y_scale_start;
+    }
 
   closure.scale_x = scale_x;
   closure.scale_y = scale_y;

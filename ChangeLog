@@ -1,3 +1,12 @@
+2008-02-11  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+        Minor documentation tweak to class description.
+
+	* clutter/clutter-behaviour-scale.c:
+        'Force' start + end vals of scale behaviour 
+        (#779, Havoc Pennington)
+
 2008-02-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* README:

@@ -2376,7 +2376,8 @@ clutter_actor_set_size_internalu (ClutterActor *self,
  * <note>This function is a "request" to the #ClutterActor. Depending
  * on the actual implementation, calling clutter_actor_set_size() might
  * not produce visible results. Calling this function on a #ClutterGroup,
- * for instance, will not resize the group.</note>
+ * for instance, will not resize the group - as its size is dependant
+ * on bounding box of actual contents</note>
  */
 void
 clutter_actor_set_size (ClutterActor *self,
