@@ -1,3 +1,17 @@
+2.21.13
+=======
+
+Thanks to Michael Meeks and Thomas Thurman for improvements in this version.
+
+  - Only use compositor version if we have a compositor (Thomas) (#514453)
+  - Remove workaround for a problem in an ancient GTK version (Thomas) (#513737)
+  - Compositor efficiency fixes (Michael)
+  - Various tools added (Thomas)
+
+Translations
+  Amitakhya Phukan (as), Rhys Jones (cy), Andre Klapper (de), Takeshi AIHANA (ja),
+  Arangel Angov (mk), Tomasz Dominikowski (pl), Duarte Loreto (pt)
+
 2.21.8
 ======
 
