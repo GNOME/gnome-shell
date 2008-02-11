@@ -1,3 +1,13 @@
+2008-02-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* README:
+	* NEWS: Release 0.5.6
+
+	* configure.ac: Post release bump to 0.5.7.
+
+	* clutter/clutter-behaviour-scale.c:
+	* tests/test-fbo.c: Fix compilation warnings.
+
 2008-02-11  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c (clutter_actor_transform_stage_point):

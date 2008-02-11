@@ -175,4 +175,6 @@ main (gint   argc,
 
   clutter_actor_show_all (stage);
   clutter_main ();
+
+  return 0;
 }

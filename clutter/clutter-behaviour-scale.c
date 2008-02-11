@@ -83,8 +83,6 @@ scale_frame_foreach (ClutterBehaviour *behaviour,
                      ClutterActor     *actor,
 		     gpointer          data)
 {
-  ClutterBehaviourScalePrivate *priv =
-      CLUTTER_BEHAVIOUR_SCALE (behaviour)->priv;
   ScaleFrameClosure *closure = data;
 
   clutter_actor_set_scalex (actor, closure->scale_x, closure->scale_y);

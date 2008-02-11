@@ -1,4 +1,4 @@
-Clutter 0.5.6 (xx/xx/2008)
+Clutter 0.5.6 (16/02/2008)
 ==========================
 
  * List of changes between 0.5.4 and 0.5.6
@@ -30,6 +30,7 @@ Clutter 0.5.6 (xx/xx/2008)
    o #533 - Clutter stage is not shown under some conditions
    o #540 - ClutterStage isn't always respecting requests to change size
    o #549 - Backend offscreen API is broken
+   o #613 - Extend point transformation API
    o #635 - Fix buffer overflow in clutter_texture_get_pixbuf() [Gwenole
      Beauchesne]
    o #643 - Superfluous "filter-quality" setting in texture_upload_data()?
@@ -40,9 +41,12 @@ Clutter 0.5.6 (xx/xx/2008)
    o #719 - X11 backend does not check window field in events [Havoc
      Pennington]
    o #724 - ClutterLabel reports wrong height when lines > 1
+   o #749 - "reactive" property does not change
    o #751 - missing XSync in clutter-event-x11.c:xembed_set_info() [Havoc
      Pennington]
    o #756 - clutter_actor_get_abs_size returns bogus values
+   o #769 - OSX backend fails to build
+   o #770 - OSX: passing incompatible pointer type
 
 Clutter 0.5.4 (25/01/2008)
 ==========================
