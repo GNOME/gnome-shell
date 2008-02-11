@@ -1,8 +1,14 @@
-2008-20-10  Matthew Allum    <mallum@o-hand.com>
+2008-02-11  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_transform_stage_point):
+	Moved part of the calculation to floating point to avoid overflow
+	of ClutterFixed range for large actors (bug 613).
+
+2008-02-10  Matthew Allum    <mallum@o-hand.com>
 
         * clutter/osx/clutter-stage-osx.c
 	Fix up a couple of typos breaking build.
-	
+
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c: Add actor box diagram and notes.

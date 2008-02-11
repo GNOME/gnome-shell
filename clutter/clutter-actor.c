@@ -4808,6 +4808,7 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
 #define FX2FP CLUTTER_FIXED_TO_DOUBLE
 #define FP2INT CLUTTER_FLOAT_TO_INT
 #define DET2X(a,b, c,d) (CFX_QMUL(a,d) - CFX_QMUL(b,c))
+#define DET2FP(a,b, c,d) (a*d - b*c)
 
   /*
    * First, find mapping from unit uv square to xy quadrilateral; this
@@ -4831,15 +4832,23 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
       RQ[2][2] = CFX_ONE;
     }
   else
-    { /* projective transform */
-      ClutterFixed dx1, dx2, dy1, dy2, del;
+    { /*
+       * projective transform
+       *
+       * Must do this in floating point, as the del value can overflow the
+       * range of ClutterFixed for large actors.
+       *
+       * TODO -- see if we could do this with sufficient precision in 26.8
+       * fixed.
+       */
+      double dx1, dx2, dy1, dy2, del;
 
-      dx1 = v[1].x - v[3].x;
-      dx2 = v[2].x - v[3].x;
-      dy1 = v[1].y - v[3].y;
-      dy2 = v[2].y - v[3].y;
+      dx1 = FX2FP (v[1].x - v[3].x);
+      dx2 = FX2FP (v[2].x - v[3].x);
+      dy1 = FX2FP (v[1].y - v[3].y);
+      dy2 = FX2FP (v[2].y - v[3].y);
 
-      del = DET2X (dx1,dx2, dy1,dy2);
+      del = DET2FP (dx1,dx2, dy1,dy2);
 
       if (!del)
 	return FALSE;
@@ -4848,9 +4857,9 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
        * The division here needs to be done in floating point for
        * precisions reasons.
        */
-      RQ[0][2] = FP2FX (FX2FP (DET2X (px,dx2, py,dy2) / FX2FP (del)));
-      RQ[1][2] = FP2FX (FX2FP (DET2X (dx1,px, dy1,py) / FX2FP (del)));
-      RQ[1][2] = CFX_DIV (DET2X(dx1,px, dy1,py), del);
+      RQ[0][2] = FP2FX (DET2FP (FX2FP(px),dx2, FX2FP(py),dy2) / del);
+      RQ[1][2] = FP2FX (DET2FP (dx1,FX2FP(px), dy1,FX2FP(py)) / del);
+      RQ[1][2] = FP2FX (DET2FP(dx1,FX2FP(px), dy1,FX2FP(py))/del);
       RQ[2][2] = CFX_ONE;
       RQ[0][0] = v[1].x - v[0].x + CFX_QMUL (RQ[0][2], v[1].x);
       RQ[1][0] = v[2].x - v[0].x + CFX_QMUL (RQ[1][2], v[2].x);
