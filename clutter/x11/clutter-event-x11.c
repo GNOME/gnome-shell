@@ -110,7 +110,7 @@ xembed_send_message (ClutterBackendX11 *backend_x11,
                      Window             window,
                      long               message,
                      long               detail,
-                     long               data1, 
+                     long               data1,
                      long               data2)
 {
   XEvent ev;
@@ -162,7 +162,7 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   GSource *source;
   ClutterEventSource *event_source;
   int connection_number;
-  
+
   connection_number = ConnectionNumber (backend_x11->xdpy);
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
 
@@ -180,7 +180,7 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   g_source_attach (source, NULL);
 
   xembed_set_info (backend_x11,
-                   clutter_x11_get_stage_window (stage), 
+                   clutter_x11_get_stage_window (stage),
                    0);
 }
 
@@ -231,8 +231,8 @@ translate_key_event (ClutterBackend *backend,
   event->key.hardware_keycode = xevent->xkey.keycode;
 
   /* FIXME: We need to handle other modifiers rather than just shift */
-  event->key.keyval = 
-    XKeycodeToKeysym (xevent->xkey.display, 
+  event->key.keyval =
+    XKeycodeToKeysym (xevent->xkey.display,
                       xevent->xkey.keycode,
                       (event->key.modifier_state & CLUTTER_SHIFT_MASK) ? 1
                                                                        : 0);
@@ -342,8 +342,6 @@ event_translate (ClutterBackend *backend,
   stage_xwindow  = clutter_x11_get_stage_window (stage);
 
   xwindow = xevent->xany.window;
-  if (xwindow == None)
-    xwindow = stage_xwindow;
 
   if (backend_x11->event_filters)
     {
@@ -371,7 +369,15 @@ event_translate (ClutterBackend *backend,
           node = node->next;
         }
     }
-  
+
+  /*
+   * Do further processing only on events for the stage window
+   * (the x11 filters might be getting events for other windows, so do not
+   * mess them about.
+   */
+  if (xwindow != stage_xwindow)
+    return FALSE;
+
   res = TRUE;
 
   switch (xevent->type)
@@ -407,7 +413,7 @@ event_translate (ClutterBackend *backend,
           clutter_x11_trap_x_errors ();
           XGetWindowProperty (backend_x11->xdpy, stage_xwindow,
                               backend_x11->atom_NET_WM_STATE,
-                              0, G_MAXLONG, 
+                              0, G_MAXLONG,
                               False, XA_ATOM,
                               &type, &format, &n_items,
                               &bytes_after, &data);
@@ -442,7 +448,7 @@ event_translate (ClutterBackend *backend,
                 }
               else
                 res = FALSE;
-              
+
               XFree (data);
             }
           else
@@ -492,9 +498,9 @@ event_translate (ClutterBackend *backend,
         XEvent foo_xev;
 
         /* Cheap compress */
-        while (XCheckTypedWindowEvent (backend_x11->xdpy, 
+        while (XCheckTypedWindowEvent (backend_x11->xdpy,
                                        xevent->xexpose.window,
-                                       Expose, 
+                                       Expose,
                                        &foo_xev));
 
         /* FIXME: need to make stage an 'actor' so can que
@@ -533,7 +539,7 @@ event_translate (ClutterBackend *backend,
             event->scroll.direction = CLUTTER_SCROLL_LEFT;
           else
             event->scroll.direction = CLUTTER_SCROLL_RIGHT;
-          
+
           event->scroll.time = xevent->xbutton.time;
           event->scroll.x = xevent->xbutton.x;
           event->scroll.y = xevent->xbutton.y;
@@ -593,9 +599,9 @@ event_translate (ClutterBackend *backend,
 
     case ClientMessage:
       CLUTTER_NOTE (EVENT, "client message");
-      
+
       event->type = event->any.type = CLUTTER_CLIENT_MESSAGE;
-      
+
       if (xevent->xclient.message_type == backend_x11->atom_XEMBED)
         res = handle_xembed_event (backend_x11, xevent);
       else if (xevent->xclient.message_type == backend_x11->atom_WM_PROTOCOLS)
@@ -689,7 +695,7 @@ clutter_event_dispatch (GSource     *source,
 
   clutter_threads_enter ();
 
-  /*  Grab the event(s), translate and figure out double click.   
+  /*  Grab the event(s), translate and figure out double click.
    *  The push onto queue (stack) if valid.
   */
   events_queue (backend);

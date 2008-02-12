@@ -1,10 +1,16 @@
+2008-02-12  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/x11/clutter-event-x11.c (event_translate):
+	Ignore events directed at the stage window once they have been
+	passed to the filter functions.
+
 2008-02-11  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
         Minor documentation tweak to class description.
 
 	* clutter/clutter-behaviour-scale.c:
-        'Force' start + end vals of scale behaviour 
+        'Force' start + end vals of scale behaviour
         (#779, Havoc Pennington)
 
 2008-02-11  Emmanuele Bassi  <ebassi@openedhand.com>
