@@ -1973,7 +1973,7 @@ texture_update_data (ClutterTexture *texture,
       CLUTTER_NOTE (TEXTURE, "syncing for single tile");
 
       cogl_texture_bind (priv->target_type, priv->tiles[0]);
-      cogl_texture_set_alignment (priv->target_type, 4, width);
+      cogl_texture_set_alignment (priv->target_type, 4, priv->width);
 
       cogl_texture_set_filters
 	(priv->target_type,
