@@ -1,3 +1,13 @@
+2008-02-12  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-texture.c: (texture_get_tile_pixbuf),
+	(clutter_texture_get_pixbuf):
+	Fix copying textures to pixbufs for tiled textures and correct #ifndef
+	typo
+
+	* clutter/clutter-util.c:
+	Amend documentation
+
 2008-02-12  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c: (texture_get_tile_pixbuf):

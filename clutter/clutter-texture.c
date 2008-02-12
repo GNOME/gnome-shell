@@ -1192,9 +1192,11 @@ pixbuf_destroy_notify (guchar *pixels, gpointer data)
 static GdkPixbuf *
 texture_get_tile_pixbuf (ClutterTexture *texture,
                          COGLuint        texture_id,
-                         gint            bpp)
+                         gint            bpp,
+                         gint            ix,
+                         gint            iy)
 {
-#ifndef HAVE_COGL_GL
+#ifdef HAVE_COGL_GL
   ClutterTexturePrivate *priv;
   guchar                *pixels = NULL;
   guint                  tex_width, tex_height;
@@ -1202,13 +1204,24 @@ texture_get_tile_pixbuf (ClutterTexture *texture,
   priv = texture->priv;
   cogl_texture_bind (priv->target_type, texture_id);
 
-  tex_width = priv->width;
-  tex_height = priv->height;
-
+  if (!priv->is_tiled)
+    {
+      tex_width = priv->width;
+      tex_height = priv->height;
+    }
+  else
+    {
+      tex_width = priv->x_tiles[ix].size;
+      tex_height = priv->y_tiles[iy].size;
+    }
+  
+  /* Make sure if we aren't using rectangular textures that we increase the 
+   * texture size accordingly.
+   */
   if (priv->target_type == CGL_TEXTURE_2D) /* POT */
     {
-      tex_width  = clutter_util_next_p2 (priv->width);
-      tex_height = clutter_util_next_p2 (priv->height);
+      tex_width = clutter_util_next_p2 (tex_width);
+      tex_height = clutter_util_next_p2 (tex_height);
     }
 
   cogl_texture_set_alignment (priv->target_type, 4, tex_width);
@@ -1283,7 +1296,7 @@ clutter_texture_get_pixbuf (ClutterTexture *texture)
 
   if (!priv->is_tiled)
     {
-      pixtmp = texture_get_tile_pixbuf (texture, priv->tiles[0], bpp);
+      pixtmp = texture_get_tile_pixbuf (texture, priv->tiles[0], bpp, 0, 0);
 
       if (pixtmp == NULL)
         {
@@ -1319,7 +1332,7 @@ clutter_texture_get_pixbuf (ClutterTexture *texture)
           {
             gint src_w, src_h;
 
-            pixtmp = texture_get_tile_pixbuf (texture, priv->tiles[i], bpp);
+            pixtmp = texture_get_tile_pixbuf (texture, priv->tiles[i], bpp, x, y);
 
             if (pixtmp == NULL)
               {

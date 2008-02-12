@@ -38,9 +38,9 @@
  * clutter_util_next_p2:
  * @a: Value to get the next power
  *
- * Calculates the next power greater than @a.
+ * Calculates the nearest power of two, greater than or equal to @a.
  *
- * Return value: The next power after @a.
+ * Return value: The nearest power of two, greater or equal to @a.
  */
 int 
 clutter_util_next_p2 (int a)
