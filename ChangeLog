@@ -1,3 +1,8 @@
+2008-02-12  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c: (texture_get_tile_pixbuf):
+        ifdef out 'leaked' GL only API call.
+
 2008-02-12  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-texture.c (texture_update_data):

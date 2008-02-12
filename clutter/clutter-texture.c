@@ -1194,6 +1194,7 @@ texture_get_tile_pixbuf (ClutterTexture *texture,
                          COGLuint        texture_id,
                          gint            bpp)
 {
+#ifndef HAVE_COGL_GL
   ClutterTexturePrivate *priv;
   guchar                *pixels = NULL;
   guint                  tex_width, tex_height;
@@ -1236,6 +1237,9 @@ texture_get_tile_pixbuf (ClutterTexture *texture,
                                    ((tex_width * bpp + 3) &~ 3),
                                    pixbuf_destroy_notify,
                                    NULL);
+#else
+  return NULL;
+#endif
 }
 
 /**
