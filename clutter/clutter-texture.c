@@ -812,7 +812,7 @@ clutter_texture_paint (ClutterActor *self)
       if (shader)
         clutter_shader_set_is_enabled (shader, FALSE);
 
-      cogl_offscreen_redirect_start (priv->fbo_handle, 
+      cogl_offscreen_redirect_start (priv->fbo_handle,
                                      priv->width, priv->height);
 
       /* Render out actor scene to fbo */
@@ -1191,7 +1191,7 @@ pixbuf_destroy_notify (guchar *pixels, gpointer data)
 
 static GdkPixbuf *
 texture_get_tile_pixbuf (ClutterTexture *texture,
-                         COGLuint        texture_id, 
+                         COGLuint        texture_id,
                          gint            bpp)
 {
   ClutterTexturePrivate *priv;
@@ -1245,7 +1245,7 @@ texture_get_tile_pixbuf (ClutterTexture *texture,
  * Gets a #GdkPixbuf representation of the #ClutterTexture data.
  * The created #GdkPixbuf is not owned by the texture but the caller.
  *
- * Note: NULL is always returned with OpenGL ES. 
+ * Note: NULL is always returned with OpenGL ES.
  *
  * Return value: A #GdkPixbuf or NULL on fail.
  **/
@@ -1469,8 +1469,8 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   if (priv->fbo_source)
     texture_fbo_free_resources (texture);
 
-  if (!texture_prepare_upload (TRUE, texture, data, has_alpha, 
-			       width, height, rowstride, bpp, flags, 
+  if (!texture_prepare_upload (TRUE, texture, data, has_alpha,
+			       width, height, rowstride, bpp, flags,
 			       &copy_data, &texture_dirty, &size_change))
     {
       return FALSE;
@@ -2035,20 +2035,20 @@ texture_update_data (ClutterTexture *texture,
  *  |-------| <- master_offset = -8
  *  |-------| <- effective_x = 8
  *          |---| <- effective_width
- *  
+ *
  *  -- second tile ---
- *  
+ *
  *  |--------------------- priv->width ------------------------------|
  *  |-----------|  <- priv->x_tiles[x].pos
  *              |-----------| <- priv->x_tiles[x].size (src_w)
  *  |-------| <- x_0
  *          |------------| <- width
  *  |--------------------| <- x_0 + width
- *          |---| <- master_offset = 4 
+ *          |---| <- master_offset = 4
  *              | <- effective_x (0 in between)
  *              |--------| <- effective_width
- *  
- *         XXXXXXXXXXXXXX    <- master       
+ *
+ *         XXXXXXXXXXXXXX    <- master
  *  |___________|___________|___________|___________|___________|_____%%%%%%|
  */
 
@@ -2119,7 +2119,7 @@ texture_update_data (ClutterTexture *texture,
 				   effective_height,
 				   priv->pixel_format,
 				   priv->pixel_type,
-                                   data + (master_offset_y * width + master_offset_x) * 4);
+                                   data + (master_offset_y * priv->width + master_offset_x) * 4);
 
 	i++;
       }
@@ -2143,7 +2143,7 @@ texture_update_data (ClutterTexture *texture,
  *
  * Return value: %TRUE on success, %FALSE on failure.
  *
- * Since 0.6. 
+ * Since 0.6.
  */
 gboolean
 clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
@@ -2163,7 +2163,7 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
 
   priv = texture->priv;
 
-  if (!texture_prepare_upload (FALSE, texture, data, has_alpha, 
+  if (!texture_prepare_upload (FALSE, texture, data, has_alpha,
 			       width, height, rowstride,
                                bpp, flags, &copy_data, NULL, NULL))
     {
@@ -2201,7 +2201,7 @@ on_fbo_source_size_change (GObject          *object,
   guint                  w, h;
 
   clutter_actor_get_abs_size (priv->fbo_source, &w, &h);
-  
+
   if (w != priv->width || h != priv->height)
     {
       if (!cogl_texture_can_size (CGL_TEXTURE_RECTANGLE_ARB,
@@ -2232,7 +2232,7 @@ on_fbo_source_size_change (GObject          *object,
                              priv->pixel_format,
                              priv->pixel_type,
                              NULL);
-      
+
       priv->fbo_handle = cogl_offscreen_create (priv->tiles[0]);
 
       clutter_actor_set_size (CLUTTER_ACTOR(texture), w, h);
@@ -2258,11 +2258,11 @@ on_fbo_parent_change (ClutterActor        *actor,
 
 /**
  * clutter_texture_new_from_actor:
- * @actor: A source #ClutterActor 
+ * @actor: A source #ClutterActor
  *
- * Creates a new #ClutterTexture object with its source a prexisting 
+ * Creates a new #ClutterTexture object with its source a prexisting
  * actor (and associated children). The textures content will contain
- * 'live' redirected output of the actors scene. 
+ * 'live' redirected output of the actors scene.
  *
  * Note this function is intented as a utility call for uniformly applying
  * shaders to groups and other potentail visual effects. It requires that
@@ -2273,20 +2273,20 @@ on_fbo_parent_change (ClutterActor        *actor,
  *
  * <itemizedlist>
  *   <listitem>
- *     <para>The source actor must be made visible (i.e by calling 
- *     #clutter_actor_show). The source actor does not however have to 
+ *     <para>The source actor must be made visible (i.e by calling
+ *     #clutter_actor_show). The source actor does not however have to
  *     have a parent.</para>
  *   </listitem>
  *   <listitem>
  *     <para>Avoid reparenting the source with the created texture.</para>
  *   </listitem>
  *   <listitem>
- *     <para>A group can be padded with a transparent rectangle as to 
+ *     <para>A group can be padded with a transparent rectangle as to
  *     provide a border to contents for shader output (blurring text
  *     for example).</para>
  *   </listitem>
  *   <listitem>
- *     <para>The texture will automatically resize to contain a further 
+ *     <para>The texture will automatically resize to contain a further
  *     transformed source. The however involves overhead and can be
  *     avoided by placing the source actor in a bounding group
  *     sized large enough to contain any child tranformations.</para>
@@ -2404,14 +2404,14 @@ texture_fbo_free_resources (ClutterTexture *texture)
 
   if (priv->fbo_source != NULL)
     {
-      g_signal_handlers_disconnect_by_func 
-                            (priv->fbo_source, 
-                             G_CALLBACK(on_fbo_parent_change), 
+      g_signal_handlers_disconnect_by_func
+                            (priv->fbo_source,
+                             G_CALLBACK(on_fbo_parent_change),
                              texture);
-      
-      g_signal_handlers_disconnect_by_func 
-                            (priv->fbo_source, 
-                             G_CALLBACK(on_fbo_source_size_change), 
+
+      g_signal_handlers_disconnect_by_func
+                            (priv->fbo_source,
+                             G_CALLBACK(on_fbo_source_size_change),
                              texture);
 
       g_object_unref (priv->fbo_source);
