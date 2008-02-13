@@ -1,0 +1,76 @@
+<chapter id="creating-your-own-behaviours">
+  <chapterinfo>
+    <author>
+      <firstname>Matthew</firstname>
+      <surname>Allum</surname>
+      <affiliation>
+        <address>
+          <email>mallum@openedhand.com</email>
+        </address>
+      </affiliation>
+    </author>
+  </chapterinfo>
+
+  <title>Creating You Own Behaviours</title>
+  <para>
+
+  Clutter comes with a number of fairly generic prebuilt behaviour
+  classes which provide a basis for transitions, animations and other
+  visual effects. However even with the ability to combine a number of
+  these behaviours sometimes they are not enough and a custom
+  behaviour is needed to create a spcific animation.
+
+  </para>
+
+  <para>
+
+  In order to implement a new #ClutterBehaviour subclass the usual
+  machinery for subclassing a GObject should be used. The new subclass
+  then just overides the ClutterBehaviour::alpha_notify() method. This
+  method is passed an alpha_value which is then used to computer
+  modifications to any actors the behaviour is applied to.
+
+  </para>
+
+  <example id="clutter-actor-query-coords-example">
+    <para>This example demonstrates a behaviour that produces a vertical 'wipe' like affect by modifying the actors clip region</para>
+
+    <programlisting>
+static void
+clutter_behaviour_foo_alpha_notify (ClutterBehaviour *behaviour,
+                                    guint32           alpha_value)
+{
+  ClutterActor     *actor
+  gint              i, n;
+  gdouble           factor;
+
+  /* Normalise alpha value */
+  factor = (gdouble)alpha_value / CLUTTER_ALPHA_MAX_ALPHA;
+
+  n = clutter_behaviour_get_n_actors (behaviour);
+
+  /* Change clip height of each applied actor. Note usually better to use
+   * clutter_behaviour_actors_foreach () for performance reasons.
+   */
+  for (i=0; i&lt;n; i++)
+    {
+      int clip_height;
+
+      actor = clutter_behaviour_get_nth_actor (behaviour, i);
+
+      clip_height = clutter_actor_get_height (actor)
+                      - (clutter_actor_get_height (actor) * factor);
+
+      clutter_actor_set_clip (actor,
+                              0,
+                              0,
+                              clutter_actor_get_width (actor),
+                              clip_height);
+     }
+}
+    </programlisting>
+  </example>
+
+  <para>
+  </para>
+</chapter>

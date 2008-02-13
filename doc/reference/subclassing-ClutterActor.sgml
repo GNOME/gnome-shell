@@ -13,6 +13,21 @@
 
   <title>Implementing a new actor</title>
 
+  <programlisting>
+  A few FIXMES:
+    - note use of units in sizing
+    - more on composite/container actors, when/why to use...
+      + implementaing a composite actor - set_parent() etc
+      + implementing a container - interface etc
+    - Painting
+      + note transform already applied. (including position, scale etc)
+      + note on cogl_enable if painting texture or blended item
+        (should at least call cogl_enable(0) - to reset state cache)
+      + fine to use regular GL but then wont be portable
+      + avoid further transforms ?     
+
+  </programlisting>
+
   <para>In order to implement a new #ClutterActor subclass the usual
   machinery for subclassing a GObject should be used. After that, the
   ClutterActor::query_coords() and ClutterActor::request_coords() virtual

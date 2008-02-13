@@ -92,6 +92,7 @@ HTML_IMAGES=\
 content_files= \
 	subclassing-ClutterActor.sgml \
         clutter-animation.sgml        \
+	creating-your-own-behaviours.sgml \
 	version.xml
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
@@ -99,7 +100,8 @@ content_files= \
 # e.g. expand_content_files=running.sgml
 expand_content_files= \
 	subclassing-ClutterActor.sgml \
-        clutter-animation.sgml
+        clutter-animation.sgml \
+	creating-your-own-behaviours.sgml
 
 # CFLAGS and LDFLAGS for compiling gtkdoc-scangobj with your library.
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget

@@ -4,6 +4,7 @@
 <!ENTITY version SYSTEM "version.xml">
 <!ENTITY clutter-SubclassingActor SYSTEM "xml/subclassing-ClutterActor.sgml">
 <!ENTITY clutter-animation SYSTEM "xml/clutter-animation.sgml">
+<!ENTITY creating-your-own-behaviours SYSTEM "xml/creating-your-own-behaviours.sgml">
 ]>
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
@@ -105,6 +106,19 @@
 
     </partintro>
   </part>
+
+  <part id="clutterbuilding">
+    <title>Building Clutter</title>
+
+    <partintro>
+
+    <para>
+    FIXME: Linux, Windows, OSX. Embedded?
+    </para>
+
+    </partintro>
+  </part>
+
 
   <part id="clutterbase">
     <title>Clutter Core Reference</title>
@@ -223,6 +237,8 @@
     &clutter-SubclassingActor;
 
     &clutter-animation;
+
+    &creating-your-own-behaviours;
 
   </part>
 

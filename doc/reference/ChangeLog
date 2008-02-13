@@ -1,3 +1,13 @@
+2008-02-13  Matthew Allum  <mallum@openedhand.com>
+
+	* Makefile.am:
+	* clutter-docs.sgml:
+        Add new appendix + FIXME for building
+	* creating-your-own-behaviours.sgml:
+        Add new initial doc on custom behaviour creation.
+	* subclassing-ClutterActor.sgml:
+        Add FIXME notes.
+
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* actor-box.png:
