@@ -276,7 +276,7 @@ static guint actor_signals[LAST_SIGNAL] = { 0, };
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
 static void _clutter_actor_apply_modelview_transform           (ClutterActor *self);
-static void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self);
+static void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self, ClutterActor *ancestor);
 
 static void clutter_actor_shader_pre_paint (ClutterActor *actor,
                                             gboolean      repeat);
@@ -583,6 +583,35 @@ mtx_transform (ClutterFixed m[16],
  * to transform the supplied point
  */
 static void
+clutter_actor_transform_point_relative (ClutterActor *actor,
+					ClutterActor *ancestor,
+					ClutterUnit  *x,
+					ClutterUnit  *y,
+					ClutterUnit  *z,
+					ClutterUnit  *w)
+{
+  ClutterFixed           mtx[16];
+  ClutterActorPrivate   *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  priv = actor->priv;
+
+  cogl_push_matrix();
+  _clutter_actor_apply_modelview_transform_recursive (actor, ancestor);
+
+  cogl_get_modelview_matrix (mtx);
+
+  mtx_transform (mtx, x, y, z, w);
+
+  cogl_pop_matrix();
+}
+
+/* Applies the transforms associated with this actor and its ancestors,
+ * retrieves the resulting OpenGL modelview matrix, and uses the matrix
+ * to transform the supplied point
+ */
+static void
 clutter_actor_transform_point (ClutterActor *actor,
 			       ClutterUnit  *x,
 			       ClutterUnit  *y,
@@ -597,7 +626,7 @@ clutter_actor_transform_point (ClutterActor *actor,
   priv = actor->priv;
 
   cogl_push_matrix();
-  _clutter_actor_apply_modelview_transform_recursive (actor);
+  _clutter_actor_apply_modelview_transform_recursive (actor, NULL);
 
   cogl_get_modelview_matrix (mtx);
 
@@ -612,6 +641,46 @@ clutter_actor_transform_point (ClutterActor *actor,
 #define MTX_GL_SCALE_X(x,w,v1,v2) (CFX_MUL (((CFX_DIV ((x), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
 #define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - CFX_MUL (((CFX_DIV ((y), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
 #define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
+
+/**
+ * clutter_actor_apply_relative_transform_to_point:
+ * @self: A #ClutterActor
+ * @ancestor: A #ClutterActor ancestor
+ * @point: A point as #ClutterVertex
+ * @vertex: The translated #ClutterVertex
+ *
+ * Transforms point in coordinates relative to the actor into ancestor
+ * coordiances using the relevant transform stack (i.e. scale, rotation etc)
+ *
+ * Since: 0.6
+ **/
+void
+clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
+						 ClutterActor  *ancestor,
+						 ClutterVertex *point,
+						 ClutterVertex *vertex)
+{
+  ClutterFixed  mtx_p[16];
+  ClutterFixed  v[4];
+  ClutterFixed  w = CFX_ONE;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  /* First we tranform the point using the OpenGL modelview matrix */
+  clutter_actor_transform_point_relative (self, ancestor,
+					  &point->x, &point->y, &point->z,
+					  &w);
+
+  cogl_get_viewport (v);
+
+  /*
+   * The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
+   * we would have to divide the original verts with it.
+   */
+  vertex->x = CFX_MUL ((point->x + CFX_ONE/2), v[2]);
+  vertex->y = CFX_MUL ((CFX_ONE/2 - point->y), v[3]);
+  vertex->z = CFX_MUL ((point->z + CFX_ONE/2), v[2]);
+}
 
 /**
  * clutter_actor_apply_transform_to_point:
@@ -652,13 +721,14 @@ clutter_actor_apply_transform_to_point (ClutterActor  *self,
 }
 
 /* Recursively tranform supplied vertices with the tranform for the current
- * actor and all its ancestors (like clutter_actor_transform_point() but
+ * actor and up to the ancestor (like clutter_actor_transform_point() but
  * for all the vertices in one go).
  */
 static void
-clutter_actor_transform_vertices (ClutterActor    * self,
-				  ClutterVertex     verts[4],
-				  ClutterFixed      w[4])
+clutter_actor_transform_vertices_relative (ClutterActor    * self,
+					   ClutterActor    * ancestor,
+					   ClutterVertex     verts[4],
+					   ClutterFixed      w[4])
 {
   ClutterFixed           mtx[16];
   ClutterFixed           _x, _y, _z, _w;
@@ -673,7 +743,7 @@ clutter_actor_transform_vertices (ClutterActor    * self,
   clutter_actor_query_coords (self, &coords);
 
   cogl_push_matrix();
-  _clutter_actor_apply_modelview_transform_recursive (self);
+  _clutter_actor_apply_modelview_transform_recursive (self, ancestor);
 
   cogl_get_modelview_matrix (mtx);
 
@@ -726,6 +796,164 @@ clutter_actor_transform_vertices (ClutterActor    * self,
   w[3] = _w;
 
   cogl_pop_matrix();
+}
+
+/* Recursively tranform supplied vertices with the tranform for the current
+ * actor and all its ancestors (like clutter_actor_transform_point() but
+ * for all the vertices in one go).
+ */
+static void
+clutter_actor_transform_vertices (ClutterActor    * self,
+				  ClutterVertex     verts[4],
+				  ClutterFixed      w[4])
+{
+  ClutterFixed           mtx[16];
+  ClutterFixed           _x, _y, _z, _w;
+  ClutterActorBox        coords;
+
+  /*
+   * Need to query coords here, so that we get coorect values for actors that
+   * do not modify priv->coords.
+   */
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_query_coords (self, &coords);
+
+  cogl_push_matrix();
+  _clutter_actor_apply_modelview_transform_recursive (self, NULL);
+
+  cogl_get_modelview_matrix (mtx);
+
+  _x = 0;
+  _y = 0;
+  _z = 0;
+  _w = CFX_ONE;
+
+  mtx_transform (mtx, &_x, &_y, &_z, &_w);
+
+  verts[0].x = _x;
+  verts[0].y = _y;
+  verts[0].z = _z;
+  w[0] = _w;
+
+  _x = coords.x2 - coords.x1;
+  _y = 0;
+  _z = 0;
+  _w = CFX_ONE;
+
+  mtx_transform (mtx, &_x, &_y, &_z, &_w);
+
+  verts[1].x = _x;
+  verts[1].y = _y;
+  verts[1].z = _z;
+  w[1] = _w;
+
+  _x = 0;
+  _y = coords.y2 - coords.y1;
+  _z = 0;
+  _w = CFX_ONE;
+
+  mtx_transform (mtx, &_x, &_y, &_z, &_w);
+
+  verts[2].x = _x;
+  verts[2].y = _y;
+  verts[2].z = _z;
+  w[2] = _w;
+
+  _x = coords.x2 - coords.x1;
+  _y = coords.y2 - coords.y1;
+  _z = 0;
+  _w = CFX_ONE;
+
+  mtx_transform (mtx, &_x, &_y, &_z, &_w);
+
+  verts[3].x = _x;
+  verts[3].y = _y;
+  verts[3].z = _z;
+  w[3] = _w;
+
+  cogl_pop_matrix();
+}
+
+/**
+ * clutter_actor_get_relative_vertices:
+ * @self: A #ClutterActor
+ * @ancestor: A #ClutterActor to calculate the vertices against.
+ * @verts: Pointer to a location of an array of 4 #ClutterVertex where to
+ * store the result.
+ *
+ * Calculates the tranformed coordinates of the four corners of the actor
+ * in the plane of the ancestor. The returned vertices relate to the
+ * ClutterActorBox coordinates as follows:
+ *
+ *  v[0] contains (x1, y1)
+ *  v[1] contains (x2, y1)
+ *  v[2] contains (x1, y2)
+ *  v[3] contains (x2, y2)
+ *
+ * Since: 0.6
+ **/
+void
+clutter_actor_get_relative_vertices (ClutterActor    *self,
+				     ClutterActor    *ancestor,
+				     ClutterVertex    verts[4])
+{
+  ClutterFixed           v[4];
+  ClutterFixed           w[4];
+  ClutterActorPrivate   *priv;
+  ClutterActor          *stage;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  /* We essentially have to dupe some code from clutter_redraw() here
+   * to make sure GL Matrices etc are initialised if we're called and we
+   * havn't yet rendered anything.
+   *
+   * Simply duping code for now in wait for Cogl cleanup that can hopefully
+   * address this in a nicer way.
+  */
+  stage = clutter_stage_get_default ();
+
+  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
+    {
+      ClutterPerspective perspective;
+
+      clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
+
+      cogl_setup_viewport (clutter_actor_get_width (stage),
+			   clutter_actor_get_height (stage),
+			   perspective.fovy,
+			   perspective.aspect,
+			   perspective.z_near,
+			   perspective.z_far);
+
+      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+    }
+
+  clutter_actor_transform_vertices_relative (self, ancestor, verts, w);
+  cogl_get_viewport (v);
+
+  /*
+   * The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
+   * we would have to devide the original verts with it.
+   */
+  verts[0].x = CFX_MUL ((verts[0].x + CFX_ONE/2), v[2]);
+  verts[0].y = CFX_MUL ((CFX_ONE/2 - verts[0].y), v[3]);
+  verts[0].z = CFX_MUL ((verts[0].z + CFX_ONE/2), v[2]);
+
+  verts[1].x = CFX_MUL ((verts[1].x + CFX_ONE/2), v[2]);
+  verts[1].y = CFX_MUL ((CFX_ONE/2 - verts[1].y), v[3]);
+  verts[1].z = CFX_MUL ((verts[1].z + CFX_ONE/2), v[2]);
+
+  verts[2].x = CFX_MUL ((verts[2].x + CFX_ONE/2), v[2]);
+  verts[2].y = CFX_MUL ((CFX_ONE/2 - verts[2].y), v[3]);
+  verts[2].z = CFX_MUL ((verts[2].z + CFX_ONE/2), v[2]);
+
+  verts[3].x = CFX_MUL ((verts[3].x + CFX_ONE/2), v[2]);
+  verts[3].y = CFX_MUL ((CFX_ONE/2 - verts[3].y), v[3]);
+  verts[3].z = CFX_MUL ((verts[3].z + CFX_ONE/2), v[2]);
 }
 
 /**
@@ -917,20 +1145,30 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
 }
 
 /* Recursively applies the transforms associated with this actor and
- * its ancestors to the OpenGL modelview matrix.
+ * its ancestors to the OpenGL modelview matrix. Use NULL if you want this
+ * to go all the way down to the stage.
  *
  * This function does not push/pop matrix; it is the responsibility
  * of the caller to do so as appropriate
  */
 static void
-_clutter_actor_apply_modelview_transform_recursive (ClutterActor * self)
+_clutter_actor_apply_modelview_transform_recursive (ClutterActor * self,
+						    ClutterActor * ancestor)
 {
   ClutterActor * parent;
 
   parent = clutter_actor_get_parent (self);
 
+  /*
+   * If we reached the ancestor, quit
+   * NB: NULL ancestor means the stage, and this will not trigger
+   * (as it should not)
+   */
+  if (self == ancestor)
+    return;
+
   if (parent)
-    _clutter_actor_apply_modelview_transform_recursive (parent);
+    _clutter_actor_apply_modelview_transform_recursive (parent, ancestor);
   else if (self != clutter_stage_get_default ())
     _clutter_actor_apply_modelview_transform (clutter_stage_get_default());
 

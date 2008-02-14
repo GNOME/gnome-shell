@@ -404,14 +404,18 @@ void                  clutter_actor_move_by                  (ClutterActor      
 void                  clutter_actor_move_byu                 (ClutterActor          *self,
                                                               ClutterUnit            dx,
                                                               ClutterUnit            dy);
-
 void                  clutter_actor_get_vertices             (ClutterActor          *self,
                                                               ClutterVertex          verts[4]);
-
+void                  clutter_actor_get_relative_vertices    (ClutterActor          *self,
+							      ClutterActor          *ancestor,
+                                                              ClutterVertex          verts[4]);
 void                  clutter_actor_apply_transform_to_point (ClutterActor          *self,
                                                               ClutterVertex         *point,
                                                               ClutterVertex         *vertex);
-
+void                  clutter_actor_apply_relative_transform_to_point (ClutterActor          *self,
+								       ClutterActor          *ancestor,
+								       ClutterVertex         *point,
+								       ClutterVertex         *vertex);
 gboolean              clutter_actor_event                    (ClutterActor          *actor,
                                                               ClutterEvent          *event,
                                                               gboolean               capture);
