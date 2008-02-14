@@ -1,3 +1,8 @@
+2008-02-14  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter-animation.sgml:
+        Add new animation docs. Needs work.
+
 2008-02-13  Matthew Allum  <mallum@openedhand.com>
 
 	* Makefile.am:
