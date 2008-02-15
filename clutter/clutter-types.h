@@ -83,7 +83,7 @@ typedef struct _ClutterVertex           ClutterVertex;
  * @width: width of an actor
  * @height: height of an actor
  *
- * Rectangle containing an actor.
+ * The rectangle containing an actor's bounding box, measured in pixels.
  */
 struct _ClutterGeometry
 {

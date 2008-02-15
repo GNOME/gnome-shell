@@ -48,14 +48,14 @@
     <para>
 
     Clutter is a GObject based library for creating fast, visually
-    rich graphical user interfaces.
+    rich, graphical user interfaces.
 
     </para>
 
     <para>
 
-    Clutter essentially works by manipulating a scene graph of 2D
-    surfaces (actors) in 3D space.
+    Clutter wors by manipulating a scene graph of 2D surfaces (called actors)
+    inside a 3D space.
 
     </para>
     <para>
@@ -69,7 +69,7 @@
     </para>
     <para>    
 
-    Sub classes of #ClutterActor include #ClutterStage, #ClutterTexture,
+    Subclasses of #ClutterActor include #ClutterStage, #ClutterTexture,
     #ClutterLabel, #ClutterRectangle, #ClutterStage, #ClutterEntry and
     #ClutterGroup. #ClutterActors are added to a parent, transformed
     and the made visible.
@@ -77,8 +77,8 @@
     </para>
     <para>
     
-    #ClutterStage is the top level #ClutterActor - its essentially a
-    window or framebuffer. It is created automatically when Clutter is
+    #ClutterStage is the top level #ClutterActor - it's the representation
+    of a window or framebuffer. It is created automatically when Clutter is
     initialised. #ClutterStage is a #ClutterGroup, a class
     implementing the #ClutterCointainer interface. Clutter currently
     only supports a single stage.
@@ -136,7 +136,7 @@
         <varlistentry>
           <term>Pango</term>
           <listitem>
-            <para>Pango is a library for laying out and rendering of
+            <para>Pango is a library for laying out and rendering
             text, with an emphasis on internationalization.</para>
           </listitem>
         </varlistentry>

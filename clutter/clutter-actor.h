@@ -52,8 +52,23 @@ G_BEGIN_DECLS
 #define CLUTTER_ACTOR_GET_CLASS(obj) \
  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ACTOR, ClutterActorClass))
 
-#define CLUTTER_ACTOR_SET_FLAGS(e,f)    (((ClutterActor*)(e))->flags |= (f))
-#define CLUTTER_ACTOR_UNSET_FLAGS(e,f)  (((ClutterActor*)(e))->flags &= ~(f))
+/**
+ * CLUTTER_ACTOR_SET_FLAGS:
+ * @a: a #ClutterActor
+ * @f: the #ClutterActorFlags to set
+ *
+ * Sets the given flags on a #ClutterActor
+ */
+#define CLUTTER_ACTOR_SET_FLAGS(a,f)    (((ClutterActor*)(a))->flags |= (f))
+
+/**
+ * CLUTTER_ACTOR_UNSET_FLAGS:
+ * @a: a #ClutterActor
+ * @f: the #ClutterActorFlags to unset
+ *
+ * Unsets the given flags on a #ClutterActor
+ */
+#define CLUTTER_ACTOR_UNSET_FLAGS(a,f)  (((ClutterActor*)(a))->flags &= ~(f))
 
 #define CLUTTER_ACTOR_IS_MAPPED(e)      (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_MAPPED)
 #define CLUTTER_ACTOR_IS_REALIZED(e)    (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REALIZED)
@@ -72,6 +87,13 @@ typedef struct _ClutterActorPrivate  ClutterActorPrivate;
  * Generic callback
  */
 typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
+
+/**
+ * CLUTTER_CALLBACK
+ * @f: a function
+ *
+ * Convenience macro to cast a function to #ClutterCallback
+ */
 #define CLUTTER_CALLBACK(f)        ((ClutterCallback) (f))
 
 /**
@@ -146,7 +168,7 @@ struct _ClutterActor
  * @hide_all: virtual function for containers and composite actors, to
  *   determine which children should be shown when calling
  *   clutter_actor_hide_all() on the actor. Defaults to calling
- *   clutter_actor_show().
+ *   clutter_actor_hide().
  * @realize: virtual function, used to allocate resources for the actor;
  *   it should chain up to the parent's implementation
  * @unrealize: virtual function, used to deallocate resources allocated
@@ -158,7 +180,7 @@ struct _ClutterActor
  *   its coordinates; it must chain up to the parent's implementation
  * @parent_set: signal class closure for the ClutterActor::parent-set
  * @destroy: signal class closure for ClutterActor::destroy
- * @pick: virtual functions, used to draw an outline of the actor with
+ * @pick: virtual function, used to draw an outline of the actor with
  *   the given colour
  * @event: signal class closure for ClutterActor::event
  * @button_press_event: signal class closure for
