@@ -1,6 +1,7 @@
 <SECTION>
 <FILE>clutter-media</FILE>
 <TITLE>ClutterMedia</TITLE>
+ClutterMedia
 ClutterMediaInterface
 clutter_media_set_uri
 clutter_media_get_uri
@@ -15,7 +16,6 @@ clutter_media_get_buffer_percent
 clutter_media_get_duration
 clutter_media_set_filename
 <SUBSECTION Standard>
-ClutterMedia
 CLUTTER_MEDIA
 CLUTTER_IS_MEDIA
 CLUTTER_TYPE_MEDIA

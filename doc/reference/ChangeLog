@@ -1,5 +1,9 @@
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-sections.txt: Fix ClutterMedia section.
+
+2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-docs.sgml: Move ClutterStage from the base actors
 	to the container actors section.
 
