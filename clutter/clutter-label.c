@@ -562,7 +562,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
     (gobject_class, PROP_ATTRIBUTES,
      g_param_spec_boxed ("attributes",
 			 "Attributes",
-			 "A list of style attributes to apply to the" 
+			 "A list of style attributes to apply to the " 
 			 "text of the label",
 			 PANGO_TYPE_ATTR_LIST,
 			 CLUTTER_PARAM_READWRITE));
@@ -570,7 +570,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
     (gobject_class, PROP_USE_MARKUP,
      g_param_spec_boolean ("use-markup",
 			   "Use markup",
-			   "The text of the label includes XML markup." 
+			   "The text of the label includes XML markup. " 
 			   "See pango_parse_markup()",
 			   FALSE,
 			   CLUTTER_PARAM_READWRITE));
@@ -585,7 +585,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
     (gobject_class, PROP_WRAP_MODE,
      g_param_spec_enum ("wrap-mode",
 			"Line wrap mode",
-			"If wrap is set, controls how linewrapping is done",
+			"If wrap is set, controls how line-wrapping is done",
 			PANGO_TYPE_WRAP_MODE,
 			PANGO_WRAP_WORD,
 			CLUTTER_PARAM_READWRITE));
@@ -593,7 +593,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
     (gobject_class, PROP_ELLIPSIZE,
      g_param_spec_enum ( "ellipsize",
 			 "Ellipsize",
-			 "The preferred place to ellipsize the string,"
+			 "The preferred place to ellipsize the string, "
 			 "if the label does not have enough room to "
 			 "display the entire string",
 			 PANGO_TYPE_ELLIPSIZE_MODE,
@@ -783,7 +783,7 @@ clutter_label_set_text (ClutterLabel *label,
  *
  * Return value: a string containing the font name, in a format
  *   understandable by pango_font_description_from_string().  The
- *   string is owned by #ClutterLabel and should not be modified
+ *   string is owned by @label and should not be modified
  *   or freed.
  */
 G_CONST_RETURN gchar *
@@ -1277,7 +1277,7 @@ clutter_label_set_alignment (ClutterLabel   *label,
  *
  * Returns the label's text alignment
  *
- * Return value: The labels #PangoAlignment
+ * Return value: The label's #PangoAlignment
  *
  * Since 0.2
  **/
@@ -1296,7 +1296,7 @@ clutter_label_get_alignment (ClutterLabel *label)
  *
  * Sets whether the text of the @label actor should be justified
  * on both margins. This setting is ignored if Clutter is compiled
- * against Pango &gt; 1.18.
+ * against Pango &lt; 1.18.
  *
  * Since: 0.6
  */

@@ -1,5 +1,10 @@
 2008-02-15  Chris Lord  <chris@openedhand.com>
 
+	* clutter/clutter-label.c: (clutter_label_class_init):
+	More documentation fixes
+
+2008-02-15  Chris Lord  <chris@openedhand.com>
+
 	* clutter/clutter-clone-texture.c:
 	* clutter/clutter-texture.c: (clutter_texture_class_init):
 	More documentation fixes
