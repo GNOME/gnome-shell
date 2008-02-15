@@ -351,8 +351,12 @@ draw_glyph (PangoRenderer *renderer_,
 
       if (bm.width < 1 || bm.height < 1 || bm.bitmap == NULL)
         {
-          x += g->left;
-          y -= g->top;
+          /* Safety on */
+          if (g)
+            {
+              x += g->left;
+              y -= g->top;
+            }
           return;
         }
 

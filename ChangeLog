@@ -1,3 +1,8 @@
+2008-02-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/pango/pangoclutter-render.c: (draw_glyph):
+        More safety checks (#796, Tero Saarni) 
+
 2008-02-15  Chris Lord  <chris@openedhand.com>
 
 	* clutter/clutter-entry.c:
