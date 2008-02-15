@@ -1,3 +1,10 @@
+2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add last-minute API additions.
+
+	* subclassing-ClutterActor.sgml: Fix some of the notes; the
+	Container implementation will need its own section.
+
 2008-02-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter-animation.sgml:

@@ -15,12 +15,10 @@
 
   <programlisting>
   A few FIXMES:
-    - note use of units in sizing
     - more on composite/container actors, when/why to use...
       + implementaing a composite actor - set_parent() etc
       + implementing a container - interface etc
     - Painting
-      + note transform already applied. (including position, scale etc)
       + note on cogl_enable if painting texture or blended item
         (should at least call cogl_enable(0) - to reset state cache)
       + fine to use regular GL but then wont be portable
@@ -44,6 +42,11 @@
   each visible child. Remember: the returned coordinates must be relative
   to the parent actor.</para>
 
+  <note>All the coordinates are expressed using #ClutterUnit<!-- -->s,
+  the internal high-precision unit type, which guarantee sub-pixel
+  precision. #ClutterUnit has the same limitation that #ClutterFixed
+  has, see the <link linkend="clutter-Fixed-Point-Support">fixed point page</link>.</note>
+
   <example id="clutter-actor-query-coords-example">
     <para>This example shows how an actor class should override the
     query_coords() virtual function of #ClutterActor. In this case,
@@ -57,6 +60,10 @@ foo_actor_query_coords (ClutterActor    *actor,
 {
   FooActor *foo_actor = FOO_ACTOR (actor);
   GList *child;
+
+  /* Clutter uses high-precision units which can be converted from
+   * and into pixels, typographic points, percentages, etc.
+   */
   ClutterUnit width, height;
 
   /* initialize our size */
@@ -66,7 +73,7 @@ foo_actor_query_coords (ClutterActor    *actor,
     {
       ClutterActor *child_actor = child-&gt;data;
 
-      /* we return only visible actors */
+      /* we consider only visible actors */
       if (CLUTTER_ACTOR_IS_VISIBLE (child_actor))
         {
           ClutterActorBox child_box = { 0, };
@@ -99,6 +106,10 @@ foo_actor_query_coords (ClutterActor    *actor,
   first and then pop the GL matrix before returning. Container actors
   or composite actors with internal children should do the same, and call
   clutter_actor_paint() on every visible child:</para>
+
+  <para>When inside the ClutterActor::paint() method the actor is already
+  positioned at the coordinates specified by its bounding box; all the
+  paint operations should then take place from the (0, 0) coordinates.</para>
 
   <example id="clutter-actor-paint-example">
     <programlisting>
@@ -142,6 +153,12 @@ foo_actor_pick (ClutterActor       *actor,
   FooActor *foo_actor = FOO_ACTOR (actor);
   guint width, height;
 
+  /* it is possible to avoid a costly paint by checking whether the
+   * actor should really be painted in pick mode
+   */
+  if (!clutter_actor_should_pick_paint (actor))
+    return;
+
   /* by including &lt;clutter/cogl.h&gt; it's possible to use the internal
    * COGL abstraction API, which is also used by Clutter itself and avoids
    * changing the GL calls depending on the target platform (GL or GL/ES).
@@ -150,6 +167,9 @@ foo_actor_pick (ClutterActor       *actor,
 
   clutter_actor_get_size (actor, &amp;width, &amp;height); 
 
+  /* it is also possible to use raw GL calls, at the cost of losing
+   * portability
+   */
   glEnable (GL_BLEND);
 
   /* draw a triangular shape */
@@ -163,5 +183,7 @@ foo_actor_pick (ClutterActor       *actor,
 }
     </programlisting>
   </example>
+
+  <para></para>
 
 </chapter>

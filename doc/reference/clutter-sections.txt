@@ -321,6 +321,7 @@ clutter_actor_get_y
 clutter_actor_move_by
 clutter_actor_set_rotation
 clutter_actor_get_rotation
+clutter_actor_is_rotated
 clutter_actor_set_opacity
 clutter_actor_get_opacity
 clutter_actor_set_name
@@ -348,13 +349,17 @@ clutter_actor_set_depth
 clutter_actor_get_depth
 clutter_actor_set_scale
 clutter_actor_get_scale
+clutter_actor_is_scaled
 clutter_actor_get_abs_size
 clutter_actor_apply_transform_to_point
 clutter_actor_transform_stage_point
+clutter_actor_apply_relative_transform_to_point
 
 <SUBSECTION>
 ClutterVertex
 clutter_actor_get_vertices
+clutter_actor_get_relative_vertices
+clutter_actor_box_get_from_vertices
 
 <SUBSECTION>
 clutter_actor_set_anchor_point
