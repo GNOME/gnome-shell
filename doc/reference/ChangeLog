@@ -1,3 +1,8 @@
+2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-docs.sgml: Move ClutterStage from the base actors
+	to the container actors section.
+
 2008-02-15  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter-docs.sgml:
