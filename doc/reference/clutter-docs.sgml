@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY version SYSTEM "version.xml">
 <!ENTITY clutter-SubclassingActor SYSTEM "xml/subclassing-ClutterActor.sgml">
@@ -67,7 +67,7 @@
     Actors are also able to receive events.
 
     </para>
-    <para>    
+    <para>
 
     Subclasses of #ClutterActor include #ClutterStage, #ClutterTexture,
     #ClutterLabel, #ClutterRectangle, #ClutterEntry and
@@ -76,13 +76,13 @@
 
     </para>
     <para>
-    
+
     #ClutterStage is the top level #ClutterActor - it's the representation
     of a window, or framebuffer. It is created automatically when Clutter is
     initialised. #ClutterStage is a #ClutterGroup, a class
     implementing the #ClutterCointainer interface. Clutter currently
     only supports a single stage.
-    
+
     </para>
     <para>
 
@@ -110,9 +110,8 @@
 
     <partintro>
 
-    <para>
-
-    Clutter depends on the following libraries:
+    <section id='dependencies'>
+    <title>Clutter Dependencies</title>
 
       <variablelist>
         <varlistentry>
@@ -157,11 +156,117 @@
         </varlistentry>
       </variablelist>
 
-    </para>
+    </section>
 
-    <para>
-    FIXME: Linux, Windows, OSX. Embedded?
-    </para>
+    <section id='building-instructions'>
+      <title>Platform-specific instructions</title>
+
+      <section id='building-linux'>
+        <title>Linux</title>
+
+        <para>If you are using Debian or Ubuntu, you can install pre-compiled
+        binary packages the normal Debian way following the instructions at
+        <ulink type="http" url="http://debian.o-hand.com/">
+        http://debian.o-hand.com/</ulink>.
+        </para>
+
+        <para>To build Clutter clutter from sources, get the latest source
+        archives from <ulink type="http"
+        url="http://www.clutter-project.org/sources/">
+        http://www.clutter-project.org/sources/</ulink>. Once you have extracted
+        the sources from the archive execute the following commands in the
+        top-level directory:
+        </para>
+
+        <literallayout>
+    ./configure
+    make
+    make install
+        </literallayout>
+
+        <para>You can configure the build with number of additional arguments
+        passed to the configure script, the full list of which can be obtained
+        by running ./configure --help. The following arguments are specific to
+        Clutter:
+
+            <variablelist>
+              <varlistentry>
+                <term>--enable-debug=[no/minimum/yes]</term>
+                <listitem>
+                  <para>Turns on debugging. Possible values are: yes -  all
+                  glib asserts, checks and runtime clutter verbose messages;
+                 minimum - just glib cast checks and runtime clutter verbose
+                 messagaes; no - no glib asserts or checks and no runtime
+                 clutter verbose messages; default=yes.
+                 </para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--enable-maintainer-flags=[no/yes]</term>
+                <listitem>
+                  <para>Use strict compiler flags; default=no.
+                  </para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--enable-gtk-doc</term>
+                <listitem>
+                  <para>Use gtk-doc to build documentation; default=no.
+                  </para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--enable-manual=[no/yes]</term>
+                <listitem>
+                  <para>Build application developers manual; requires jw and
+                  xmlto binaries; default=no.
+                  </para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term>--with-flavour=[glx/eglx/eglnative/sdl]</term>
+                <listitem>
+                  <para>Select the Clutter backend.
+                  </para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+
+            </para>
+
+      </section>
+
+      <section id='building-windows'>
+          <title>Windows</title>
+            <para>
+            The recommended way of building Clutter for Windows is using the
+            <ulink type="http" url="http://www.mingw.org/">mingw</ulink> tool
+            chain. One option is to cross-compile Clutter under Linux -- you
+            can use the script found in the <filename>build/mingw/</filename>
+            directory to simplify the process (the script takes care of setting
+            up the necessary dependencies).
+            </para>
+
+            <para>
+            If you wish to build Clutter using mingw direcly under Windows, you
+            can do so the normal *nix way (described above) using the mingw
+            POSIX shell. Should you prefer to use Microsoft Visual Studio, a
+            project file for MSVC 2005 is located in the
+            <filename>build/msvc_2k5/</filename> directory. In either case, you
+            will need to first install the required dependencies.
+            </para>
+      </section>
+
+      <section id='building-osx'>
+          <title>OSX</title>
+            <para></para>
+
+      </section>
+   </section>
 
     </partintro>
   </part>
@@ -267,7 +372,7 @@
       All backends have a common API for querying the underlying platform,
       and some of them might have specific API exposed by Clutter.</para>
     </partintro>
-    
+
     <xi:include href="xml/clutter-backend.xml"/>
     <xi:include href="xml/clutter-x11.xml"/>
 

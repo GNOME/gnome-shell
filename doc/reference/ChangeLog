@@ -1,3 +1,8 @@
+2008-02-15  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter-docs.sgml:
+	Build instructions for Linux and Windows.
+
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-animation.sgml: Fix the animations documentation.
@@ -84,7 +89,7 @@
 	  clutter_texture_new_from_actor
 	  clutter_entry_set_cursor_position
 	  clutter_entry_get_cursor_position
-	
+
 	Remove:
 
 	  clutter_actor_apply_shader
