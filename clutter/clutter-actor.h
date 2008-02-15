@@ -461,7 +461,7 @@ gboolean clutter_actor_transform_stage_point          (ClutterActor   *self,
 gboolean clutter_actor_is_rotated                     (ClutterActor   *self);
 gboolean clutter_actor_is_scaled                      (ClutterActor   *self);
 
-void     clutter_actor_get_box_from_vertices          (ClutterVertex    vtx[4],
+void     clutter_actor_box_get_from_vertices          (ClutterVertex    vtx[4],
 				                       ClutterActorBox *box);
 
 G_END_DECLS

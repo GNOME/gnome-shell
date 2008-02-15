@@ -1,3 +1,12 @@
+2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.[ch]: Rename
+	clutter_actor_get_box_from_vertices() to
+	clutter_actor_box_get_from_vertices().
+
+	* clutter/clutter-group.c (clutter_group_query_coords): Fix the
+	query_coords() implementation.
+
 2008-02-15  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

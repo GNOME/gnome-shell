@@ -177,7 +177,7 @@ clutter_group_query_coords (ClutterActor        *self,
 	      ClutterVertex vtx[4];
 
 	      clutter_actor_get_relative_vertices (child, self, vtx);
-	      clutter_actor_get_box_from_vertices (vtx, &cbox);
+	      clutter_actor_box_get_from_vertices (vtx, &cbox);
 	    }
 	  else
 #endif

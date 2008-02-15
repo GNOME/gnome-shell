@@ -5567,9 +5567,9 @@ clutter_actor_is_scaled (ClutterActor *self)
 }
 
 /**
- * clutter_actor_get_box_from_vertices:
+ * clutter_actor_box_get_from_vertices:
  * @vtx: array of four #ClutterVertex
- * @box: pointer to #ClutterActorBox where to store the result
+ * @box: return location for a #ClutterActorBox
  *
  * Calculates the bounding box represented by the four vertices; for details
  * of the vertex array see clutter_actor_get_vertices().
