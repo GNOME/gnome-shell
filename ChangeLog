@@ -1,5 +1,16 @@
 2008-02-15  Tomas Frydrych  <tf@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	(clutter_group_query_coords):
+	Added function to translate vertex array to a bounding box.
+
+	(clutter_actor_is_scaled):
+	(clutter_actor_is_rotated):
+	Fixed documentation.
+
+2008-02-15  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter/clutter-group.c: (clutter_group_query_coords):
 	Disabled new code taking into account actor scale and rotation.
 

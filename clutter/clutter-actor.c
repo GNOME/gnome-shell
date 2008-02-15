@@ -5520,7 +5520,9 @@ clutter_actor_set_shader_param (ClutterActor *self,
  * clutter_actor_is_rotated:
  * @self: a #ClutterActor
  *
- * Returns true if any rotation is applied to the actor.
+ * Checks whether any rotation is applied to the actor.
+ *
+ * Return value: %TRUE if the actor is rotated.
  *
  * Since: 0.6
  */
@@ -5543,7 +5545,9 @@ clutter_actor_is_rotated (ClutterActor *self)
  * clutter_actor_is_scaled:
  * @self: a #ClutterActor
  *
- * Returns true if the actor is scaled in either dimension.
+ * Checks whether the actor is scaled in either dimension.
+ *
+ * Return value: %TRUE if the actor is scaled.
  *
  * Since: 0.6
  */
@@ -5562,3 +5566,55 @@ clutter_actor_is_scaled (ClutterActor *self)
   return FALSE;
 }
 
+/**
+ * clutter_actor_get_box_from_vertices:
+ * @vtx: array of four #ClutterVertex
+ * @box: pointer to #ClutterActorBox where to store the result
+ *
+ * Calculates the bounding box represented by the four vertices; for details
+ * of the vertex array see clutter_actor_get_vertices().
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_get_box_from_vertices (ClutterVertex    vtx[4],
+				     ClutterActorBox *box)
+{
+  ClutterUnit x1, x2, y1, y2;
+
+  /* 4-way min/max */
+  x1 = vtx[0].x;
+  y1 = vtx[0].y;
+  if (vtx[1].x < x1)
+    x1 = vtx[1].x;
+  if (vtx[2].x < x1)
+    x1 = vtx[2].x;
+  if (vtx[3].x < x1)
+    x1 = vtx[3].x;
+  if (vtx[1].y < y1)
+    y1 = vtx[1].y;
+  if (vtx[2].y < y1)
+    y1 = vtx[2].y;
+  if (vtx[3].y < y1)
+    y1 = vtx[3].y;
+
+  x2 = vtx[0].x;
+  y2 = vtx[0].y;
+  if (vtx[1].x > x2)
+    x2 = vtx[1].x;
+  if (vtx[2].x > x2)
+    x2 = vtx[2].x;
+  if (vtx[3].x > x2)
+    x2 = vtx[3].x;
+  if (vtx[1].y > y2)
+    y2 = vtx[1].y;
+  if (vtx[2].y > y2)
+    y2 = vtx[2].y;
+  if (vtx[3].y > y2)
+    y2 = vtx[3].y;
+
+  box->x1 = x1;
+  box->x2 = x2;
+  box->y1 = y1;
+  box->y2 = y2;
+}
