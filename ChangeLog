@@ -1,3 +1,10 @@
+2008-02-15  Tomas Frydrych  <tf@openedhand.com>
+
+	* build/mingw/README:
+	* build/mingw/mingw-cross-compile.sh:
+	Script that automates cross compilation with mingw by Neil Roberts
+	<bpeeluk@yahoo.co.uk>
+
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.[ch]: Rename

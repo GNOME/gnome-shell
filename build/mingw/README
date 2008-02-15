@@ -1,0 +1,20 @@
+
+The mingw-cross-compile.sh script in this directory automates cross compilation
+of clutter with mingw for win32; it requires to have the mingw cross compiler
+installed, but it will point you in the right direction if it cannot find it.
+It will also fetch all the necessary dependencies; it build clutter from
+svn trunk, so you might want tweak it if you are looking for specific tag.
+
+To cross-compile clutter,
+
+  mkdir build_dir
+  cd build_dir
+  ./mingw-cross-compile.sh
+
+and follow the prompts.
+
+Known issues
+============
+
+clutter-cairo needs libpng3, but there are no libpng3 precompiled packages on
+on gnuwin32 sourceforge yet, so attempts to build clutter-cairo will fail.
