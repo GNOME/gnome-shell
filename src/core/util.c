@@ -131,10 +131,10 @@ meta_set_verbose (gboolean setting)
 #ifndef WITH_VERBOSE_MODE
   if (setting)
     meta_fatal (_("Metacity was compiled without support for verbose mode\n"));
-#endif
-  
+#else 
   if (setting)
     ensure_logfile ();
+#endif
   
   is_verbose = setting;
 }
@@ -148,9 +148,11 @@ meta_is_debugging (void)
 void
 meta_set_debugging (gboolean setting)
 {
+#ifdef WITH_VERBOSE_MODE
   if (setting)
     ensure_logfile ();
-  
+#endif
+
   is_debugging = setting;
 }
 
@@ -373,8 +375,12 @@ meta_bug (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
+#ifdef WITH_VERBOSE_MODE
   out = logfile ? logfile : stderr;
-  
+#else
+  out = stderr;
+#endif
+
   if (no_prefix == 0)
     utf8_fputs (_("Bug in window manager: "), out);
   utf8_fputs (str, out);
@@ -402,8 +408,12 @@ meta_warning (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
+#ifdef WITH_VERBOSE_MODE
   out = logfile ? logfile : stderr;
-  
+#else
+  out = stderr;
+#endif
+
   if (no_prefix == 0)
     utf8_fputs (_("Window manager warning: "), out);
   utf8_fputs (str, out);
@@ -426,8 +436,12 @@ meta_fatal (const char *format, ...)
   str = g_strdup_vprintf (format, args);
   va_end (args);
 
+#ifdef WITH_VERBOSE_MODE
   out = logfile ? logfile : stderr;
-  
+#else
+  out = stderr;
+#endif
+
   if (no_prefix == 0)
     utf8_fputs (_("Window manager error: "), out);
   utf8_fputs (str, out);

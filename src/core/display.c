@@ -1246,7 +1246,9 @@ meta_displays_list (void)
   return all_displays;
 }
 
+#ifdef WITH_VERBOSE_MODE
 static gboolean dump_events = TRUE;
+#endif
 
 static gboolean
 grab_op_is_mouse_only (MetaGrabOp op)
@@ -1607,8 +1609,10 @@ event_callback (XEvent   *event,
 
   display = data;
   
+#ifdef WITH_VERBOSE_MODE
   if (dump_events)
     meta_spew_event (display, event);
+#endif
 
 #ifdef HAVE_STARTUP_NOTIFICATION
   sn_display_process_event (display->sn_display, event);
