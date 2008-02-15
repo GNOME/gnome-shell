@@ -13,7 +13,7 @@
     <releaseinfo>Version &version;</releaseinfo>
 
     <copyright>
-      <year>2007</year>
+      <year>2008</year>
       <holder>OpenedHand LTD</holder>
     </copyright>
 
@@ -51,23 +51,64 @@
     rich graphical user interfaces.
 
     </para>
+
     <para>
 
-    Clutter semantics work by having a stage (a window) and then
-    adding actors (widgets) to the stage and manipulating via the
-    actor api. Actors can contain child actors (ClutterGroup for
-    example) and be manipulated as a whole.
+    Clutter essentially works by manipulating a scene graph of 2D
+    surfaces (actors) in 3D space.
 
     </para>
     <para>
 
-    Animations and visual effects can be created via the use of
-    timelines and behaviours. Timelines provide accurate frame based
-    animations. Behaviours further extend this by taking a timeline, a
-    control function (ClutterAlpha) and then applying to actors as to
-    modify a property as a function of time.
+    #ClutterActor is the base class for such surfaces. All
+    #ClutterActors can we positioned and rotated in 3D space, scaled,
+    clipped, have children, have there opacity and origin set.
+    Tranforms applied to a parent actor also apply to any children.
+    Actors are also able to receive events.
 
     </para>
+    <para>    
+
+    Sub classes of #ClutterActor include #ClutterStage, #ClutterTexture,
+    #ClutterLabel, #ClutterRectangle, #ClutterStage, #ClutterEntry and
+    #ClutterGroup. #ClutterActors are added to a parent, transformed
+    and the made visible.
+
+    </para>
+    <para>
+    
+    #ClutterStage is the top level #ClutterActor - its essentially a
+    window or framebuffer. It is created automatically when Clutter is
+    initialised. #ClutterStage is a #ClutterGroup, a class
+    implementing the #ClutterCointainer interface. Clutter currently
+    only supports a single stage.
+    
+    </para>
+    <para>
+
+    #ClutterTimeline's provide the basis for Clutters animation
+    utilitys. Building on this include the #ClutterScore, for
+    syncronising multiple timelines and the #ClutterBehaviour's and
+    #ClutterEffect's for creating animation effects such as transitions.
+
+    </para>
+    <para>
+
+    Clutter further contains a number of utilities including;
+    #ClutterScript - for loading 'UI definition' files formatted in
+    JSON, #ClutterShader - a class for applying GPU shaders to actors,
+    #ClutterModel - a utility class for MVC list type implementations
+    and #ClutterFixed - fixed point math utilitys
+
+    </para>
+
+    </partintro>
+  </part>
+
+  <part id="clutterbuilding">
+    <title>Building Clutter</title>
+
+    <partintro>
 
     <para>
 
@@ -105,18 +146,18 @@
             <para>GDK-Pixbuf is a library for loading and manipulating
             various image file formats.</para>
           </listitem>
+          <term>Backend Windowing System Library</term>
+          <listitem>
+            <para>GLX, EGL (1.1), SDL and Cocoa (OS X)</para>
+          </listitem>
+          <term>Graphics Rendering </term>
+          <listitem>
+            <para>Open GL (1.2+) ir Open GL ES (1.1) </para>
+          </listitem>
         </varlistentry>
       </variablelist>
 
     </para>
-
-    </partintro>
-  </part>
-
-  <part id="clutterbuilding">
-    <title>Building Clutter</title>
-
-    <partintro>
 
     <para>
     FIXME: Linux, Windows, OSX. Embedded?

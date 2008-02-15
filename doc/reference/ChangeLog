@@ -1,3 +1,8 @@
+2008-02-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter-docs.sgml:
+        Overhaul the overview.
+
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-animation.sgml: Fix some of the grammar; add a timeout-based
