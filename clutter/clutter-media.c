@@ -200,9 +200,9 @@ clutter_media_base_init (gpointer g_iface)
 /**
  * clutter_media_set_uri:
  * @media: #ClutterMedia object
- * @uri: Uri
+ * @uri: URI
  *
- * Sets the uri of @media to @uri.
+ * Sets the URI of @media to @uri.
  */
 void
 clutter_media_set_uri (ClutterMedia *media,
@@ -249,9 +249,9 @@ clutter_media_set_playing (ClutterMedia *media,
  * clutter_media_get_playing:
  * @media: A #ClutterMedia object
  *
- * Retrieves the state of @media.
+ * Retrieves the playing status of @media.
  *
- * Return value: TRUE if playing, FALSE if stopped.
+ * Return value: %TRUE if playing, %FALSE if stopped.
  */
 gboolean
 clutter_media_get_playing (ClutterMedia *media)
@@ -331,7 +331,7 @@ clutter_media_get_volume (ClutterMedia *media)
  *
  * Retrieves whether @media is seekable or not.
  *
- * Return value: TRUE if @media can seek, FALSE otherwise.
+ * Return value: %TRUE if @media can seek, %FALSE otherwise.
  */
 gboolean
 clutter_media_get_can_seek (ClutterMedia *media)

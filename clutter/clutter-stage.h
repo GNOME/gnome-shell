@@ -157,7 +157,7 @@ struct _ClutterPerspective
  * @z_far: final distance from the viewer to the far clipping
  *   plane (always positive)
  *
- * Fog settings used to create the depth cueing effect. #ClutterFox is
+ * Fog settings used to create the depth cueing effect. #ClutterFog is
  * useful only when using the fixed point API.
  *
  * Since: 0.6

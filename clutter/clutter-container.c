@@ -174,7 +174,7 @@ clutter_container_add (ClutterContainer *container,
  * @actor: the first #ClutterActor to add
  *
  * Adds a #ClutterActor to @container. This function will emit the
- * "actor-added" signal is emitted. The actor should be parented to
+ * "actor-added" signal. The actor should be parented to
  * @container. You cannot add a #ClutterActor to more than one
  * #ClutterContainer.
  *
@@ -383,9 +383,9 @@ clutter_container_foreach (ClutterContainer *container,
  * clutter_container_raise_child:
  * @container: a #ClutterContainer
  * @actor: the actor to raise
- * @sibling: the sibling to raise to, or %NULL to raise at the top
+ * @sibling: the sibling to raise to, or %NULL to raise to the top
  *
- * Raises @actor at @sibling level, in the depth ordering.
+ * Raises @actor to @sibling level, in the depth ordering.
  *
  * Since: 0.6
  */
@@ -427,9 +427,9 @@ clutter_container_raise_child (ClutterContainer *container,
  * clutter_container_lower_child:
  * @container: a #ClutterContainer
  * @actor: the actor to raise
- * @sibling: the sibling to lower to, or %NULL to lower at the bottom
+ * @sibling: the sibling to lower to, or %NULL to lower to the bottom
  *
- * Lowers @actor at @sibling level, in the depth ordering.
+ * Lowers @actor to @sibling level, in the depth ordering.
  *
  * Since: 0.6
  */
@@ -471,7 +471,7 @@ clutter_container_lower_child (ClutterContainer *container,
  * clutter_container_sort_depth_order:
  * @container: a #ClutterContainer
  *
- * Sorts a container children using their depth. This function should not
+ * Sorts a container's children using their depth. This function should not
  * be normally used by applications.
  *
  * Since: 0.6

@@ -32,7 +32,7 @@
  *
  * The clutter_texture_set_from_rgb_data() and clutter_texture_set_pixbuf()
  * functions are used to copy image data into texture memory and subsequently
- * realize the the texture.
+ * realize the texture.
  *
  * If texture reads are supported by underlying GL implementation,
  * unrealizing/hiding frees image data from texture memory moving to main
@@ -1577,7 +1577,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 /**
  * clutter_texture_set_from_yuv_data:
  * @texture: A #ClutterTexture
- * @data: Image data in RGB type colorspace.
+ * @data: Image data in YUV type colorspace.
  * @width: Width in pixels of image data.
  * @height: Height in pixels of image data
  * @flags: #ClutterTextureFlags
@@ -2282,7 +2282,7 @@ on_fbo_parent_change (ClutterActor        *actor,
  * 'live' redirected output of the actors scene.
  *
  * Note this function is intented as a utility call for uniformly applying
- * shaders to groups and other potentail visual effects. It requires that
+ * shaders to groups and other potential visual effects. It requires that
  * both %CLUTTER_FEATURE_TEXTURE_RECTANGLE and %CLUTTER_FEATURE_OFFSCREEN
  * features are supported by the current backend and the target system.
  *
@@ -2304,21 +2304,22 @@ on_fbo_parent_change (ClutterActor        *actor,
  *   </listitem>
  *   <listitem>
  *     <para>The texture will automatically resize to contain a further
- *     transformed source. The however involves overhead and can be
+ *     transformed source. However, this involves overhead and can be
  *     avoided by placing the source actor in a bounding group
  *     sized large enough to contain any child tranformations.</para>
  *   </listitem>
  *   <listitem>
- *     <para>Uploading pixel data to the text (e.g by #clutter_actor_set_pixbuf
- *     will destroy the offscreen texture data and end redirection.</para>
+ *     <para>Uploading pixel data to the texture (e.g by
+ *     #clutter_actor_set_pixbuf) will destroy the offscreen texture data
+ *     and end redirection.</para>
  *   </listitem>
  *   <listitem>
- *     <para>#clutter_texture_get_pixbuf can used to read the offscreen
+ *     <para>#clutter_texture_get_pixbuf can be used to read the offscreen
  *     texture pixels into a pixbuf.</para>
  *   </listitem>
  * </itemizedlist>
  *
- * Return value: A newly created #ClutterTexture object or %NULL on fail.
+ * Return value: A newly created #ClutterTexture object, or %NULL on failure.
  *
  * Since: 0.6
  */

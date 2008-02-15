@@ -27,7 +27,7 @@
  * SECTION:clutter-rectangle
  * @short_description: An actor that displays simple rectangles.
  *
- * #ClutterRectangle is an Actor which draws simple filled rectangles.
+ * #ClutterRectangle is a #ClutterActor which draws simple filled rectangles.
  */
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -331,7 +331,7 @@ clutter_rectangle_new (void)
  * @color: a #ClutterColor
  *
  * Creates a new #ClutterActor with a rectangular shape
- * and with @color.
+ * and of the given @color.
  *
  * Return value: a new #ClutterActor
  */

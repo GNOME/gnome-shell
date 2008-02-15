@@ -312,7 +312,7 @@ clutter_actor_real_show (ClutterActor *self)
  * clutter_actor_show
  * @self: A #ClutterActor
  *
- * Flags an actor to be displayed. An actor not shown will not
+ * Flags an actor to be displayed. An actor that isn't shown will not
  * be rendered on the stage.
  */
 void
@@ -368,7 +368,7 @@ clutter_actor_real_hide (ClutterActor *self)
  * clutter_actor_hide
  * @self: A #ClutterActor
  *
- * Flags an actor to be hidden. An actor not shown will not be
+ * Flags an actor to be hidden. A hidden actor will not be
  * rendered on the stage.
  */
 void
@@ -674,7 +674,7 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
  *
  * Transforms @point in coordinates relative to the actor
  * into screen-relative coordinates with the current actor
- * tranformation (i.e. scale, rotation etc)
+ * transformation (i.e. scale, rotation, etc)
  *
  * Since: 0.4
  **/
@@ -2466,7 +2466,7 @@ clutter_actor_set_position (ClutterActor *self,
  * @x: New left position of actor in #ClutterUnit<!-- -->s
  * @y: New top position of actor in #ClutterUnit<!-- -->s
  *
- * Sets the actors position in #ClutterUnit<!-- -->s relative to any
+ * Sets the actor's position in #ClutterUnit<!-- -->s relative to any
  * parent actor.
  *
  * Since: 0.6
@@ -2497,7 +2497,7 @@ clutter_actor_set_positionu (ClutterActor *self,
  * @dx: Distance to move Actor on X axis.
  * @dy: Distance to move Actor on Y axis.
  *
- * Moves an actor by the specified distance relative to
+ * Moves an actor by the specified distance relative to its
  * current position in pixels.
  *
  * Since: 0.2
@@ -2520,7 +2520,7 @@ clutter_actor_move_by (ClutterActor *self,
  * @dx: Distance to move Actor on X axis, in #ClutterUnit<!-- -->s.
  * @dy: Distance to move Actor on Y axis, in #ClutterUnit<!-- -->s.
  *
- * Moves an actor by the specified distance relative to the current
+ * Moves an actor by the specified distance relative to its current
  * position.
  *
  * Since: 0.6
@@ -2621,8 +2621,8 @@ clutter_actor_set_size (ClutterActor *self,
  * @width: New width of actor in #ClutterUnit<!-- -->s, or -1
  * @height: New height of actor in #ClutterUnit<!-- -->s, or -1
  *
- * Sets the actors size in #ClutterUnit<!-- -->s. If @width and/or @height
- * are -1 the actor will assume the same size of its bounding box.
+ * Sets the actor's size in #ClutterUnit<!-- -->s. If @width and/or @height
+ * are -1 the actor will assume the same size as its bounding box.
  *
  * Since: 0.6
  */
@@ -2642,7 +2642,7 @@ clutter_actor_set_sizeu (ClutterActor *self,
  * @width: return location for the width, or %NULL.
  * @height: return location for the height, or %NULL.
  *
- * Gets the size of an actor in pixels ignoring any scaling factors.
+ * Gets the size of an actor in pixels, ignoring any scaling factors.
  *
  * Since: 0.2
  */
@@ -2670,7 +2670,7 @@ clutter_actor_get_size (ClutterActor *self,
  * @width: return location for the width, or %NULL
  * @height: return location for the height, or %NULL
  *
- * Gets the size of an actor in #ClutterUnit<!-- -->s ignoring any scaling
+ * Gets the size of an actor in #ClutterUnit<!-- -->s, ignoring any scaling
  * factors.
  *
  * Since: 0.6
@@ -3023,7 +3023,7 @@ clutter_actor_set_height (ClutterActor *self,
 /**
  * clutter_actor_set_heightu
  * @self: A #ClutterActor
- * @height: Requested new height for actor, in #ClutterUnit<!-- -->s
+ * @height: Requested new height for the actor, in #ClutterUnit<!-- -->s
  *
  * Requests a new height for the actor
  *
@@ -3061,7 +3061,7 @@ clutter_actor_set_x (ClutterActor *self,
 /**
  * clutter_actor_set_xu:
  * @self: a #ClutterActor
- * @x: the actor's position on the X axis in #ClutterUnit<!-- -->s
+ * @x: the actor's position on the X axis, in #ClutterUnit<!-- -->s
  *
  * Sets the actor's X coordinate, relative to its parent.
  *
@@ -3101,7 +3101,7 @@ clutter_actor_set_y (ClutterActor *self,
 /**
  * clutter_actor_set_yu:
  * @self: a #ClutterActor
- * @y: the actor's position on the Y axis in #ClutterUnit<!-- -->s
+ * @y: the actor's position on the Y axis, in #ClutterUnit<!-- -->s
  *
  * Sets the actor's Y coordinate, relative to its parent.
  *
@@ -3125,7 +3125,7 @@ clutter_actor_set_yu (ClutterActor *self,
  * Retrieves the actor's X coordinate, relative to any parent.
  *
  * Return value: the X coordinate, in pixels, ignoring any
- *   tranformation (i.e. scaling, rotation).
+ *   transformation (i.e. scaling, rotation).
  */
 gint
 clutter_actor_get_x (ClutterActor *self)
@@ -3147,7 +3147,7 @@ clutter_actor_get_x (ClutterActor *self)
  * in #ClutterUnit<!-- -->s.
  *
  * Return value: the X coordinate, in #ClutterUnit<!-- -->s, ignoring
- *   any tranformation (i.e. scaling, rotation).
+ *   any transformation (i.e. scaling, rotation).
  *
  * Since: 0.6
  */
@@ -3170,7 +3170,7 @@ clutter_actor_get_xu (ClutterActor *self)
  * Retrieves the actor's Y coordinate, relative to any parent.
  *
  * Return value: the Y coordinate, in pixels, ignoring any
- *   tranformation (i.e. scaling, rotation).
+ *   transformation (i.e. scaling, rotation).
  */
 gint
 clutter_actor_get_y (ClutterActor *self)
@@ -3312,10 +3312,10 @@ clutter_actor_get_scale (ClutterActor *self,
 /**
  * clutter_actor_set_opacity:
  * @self: A #ClutterActor
- * @opacity: New opacity value for actor.
+ * @opacity: New opacity value for the actor.
  *
- * Sets the actors opacity, with zero being completely transparent and
- * 255 (0xff) as fully opaque.
+ * Sets the actor's opacity, with zero being completely transparent and
+ * 255 (0xff) being fully opaque.
  */
 void
 clutter_actor_set_opacity (ClutterActor *self,
@@ -3333,7 +3333,7 @@ clutter_actor_set_opacity (ClutterActor *self,
  * clutter_actor_get_opacity:
  * @self: A #ClutterActor
  *
- * Retrieves the actors opacity.
+ * Retrieves the actor's opacity.
  *
  * Return value: The actor opacity value.
  */
@@ -3384,7 +3384,7 @@ clutter_actor_set_name (ClutterActor *self,
  *
  * Retrieves the name of @self.
  *
- * Return value: the name of the actor or %NULL. The returned string is
+ * Return value: the name of the actor, or %NULL. The returned string is
  *   owned by the actor and should not be modified or freed.
  */
 G_CONST_RETURN gchar *
@@ -3401,7 +3401,7 @@ clutter_actor_get_name (ClutterActor *self)
  *
  * Retrieves the unique id for @self.
  *
- * Return value: Globally unique value for object instance.
+ * Return value: Globally unique value for this object instance.
  *
  * Since: 0.6
  */
@@ -3431,10 +3431,10 @@ clutter_actor_set_depth (ClutterActor *self,
 /**
  * clutter_actor_set_depthu:
  * @self: a #ClutterActor
- * @depth: Z co-ord in #ClutterUnit
+ * @depth: Z co-ordinate, in #ClutterUnit<!-- -->s
  *
- * Sets the Z co-ordinate of @self to @depth in #ClutterUnit, the Units of
- * which are dependant on the perspective setup.
+ * Sets the Z co-ordinate of @self to @depth in #ClutterUnit<!-- -->s, the
+ * units of which are dependant on the perspective setup.
  */
 void
 clutter_actor_set_depthu (ClutterActor *self,
@@ -3478,7 +3478,7 @@ clutter_actor_set_depthu (ClutterActor *self,
  *
  * Retrieves the depth of @self.
  *
- * Return value: the depth of a #ClutterActor
+ * Return value: the depth of the actor
  */
 gint
 clutter_actor_get_depth (ClutterActor *self)
@@ -3494,7 +3494,7 @@ clutter_actor_get_depth (ClutterActor *self)
  *
  * Retrieves the depth of @self.
  *
- * Return value: the depth of a #ClutterActor in #ClutterUnit
+ * Return value: the depth of the actor, in #ClutterUnit<!-- -->s
  *
  * Since: 0.6
  */
@@ -3775,7 +3775,7 @@ clutter_actor_set_clip (ClutterActor *self,
  * clutter_actor_remove_clip
  * @self: A #ClutterActor
  *
- * Removes clip area in pixels from @self.
+ * Removes clip area from @self.
  */
 void
 clutter_actor_remove_clip (ClutterActor *self)
@@ -3791,9 +3791,9 @@ clutter_actor_remove_clip (ClutterActor *self)
  * clutter_actor_has_clip:
  * @self: a #ClutterActor
  *
- * Gets whether the actor has a clip set or not.
+ * Determines whether the actor has a clip area set or not.
  *
- * Return value: %TRUE if the actor has a clip set.
+ * Return value: %TRUE if the actor has a clip area set.
  *
  * Since: 0.1.1
  */
@@ -3894,8 +3894,8 @@ clutter_actor_get_clip (ClutterActor *self,
  * Sets the parent of @self to @parent.  The opposite function is
  * clutter_actor_unparent().
  *
- * This function should not be used by applications but by custom
- * 'composite' actor sub classes.
+ * This function should not be used by applications, but by custom
+ * 'composite' actor subclasses.
  */
 void
 clutter_actor_set_parent (ClutterActor *self,
@@ -4008,7 +4008,7 @@ clutter_actor_unparent (ClutterActor *self)
  * @new_parent: the new #ClutterActor parent
  *
  * This function resets the parent actor of @self.  It is
- * logically equivalent to calling clutter_actory_unparent()
+ * logically equivalent to calling clutter_actor_unparent()
  * and clutter_actor_set_parent().
  *
  * Since: 0.2
@@ -4410,7 +4410,7 @@ clutter_actor_get_anchor_point (ClutterActor *self,
  * @anchor_x: X coordinate of the anchor point, in #ClutterUnit<!-- -->s
  * @anchor_y: Y coordinate of the anchor point, in #ClutterUnit<!-- -->s
  *
- * Sets an anchor point for the @self. The anchor point is a point in the
+ * Sets an anchor point for @self. The anchor point is a point in the
  * coordinate space of an actor to which the actor position within its
  * parent is relative; the default is (0, 0), i.e. the top-left corner
  * of the actor.
@@ -4438,7 +4438,7 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
  * @anchor_x: X coordinate of the anchor point
  * @anchor_y: Y coordinate of the anchor point
  *
- * Sets an anchor point for the @actor, and adjusts the actor postion so that
+ * Sets an anchor point for the actor, and adjusts the actor postion so that
  * the relative position of the actor toward its parent remains the same.
  *
  * Since: 0.6
@@ -4501,8 +4501,8 @@ clutter_actor_get_anchor_pointu (ClutterActor *self,
  * @self: a #ClutterActor
  * @gravity: #ClutterGravity.
  *
- * Sets an anchor point of the actor based on the given gravity, adjusting the
- * actor postion so that its relative position within its parent remainst
+ * Sets an anchor point on the actor based on the given gravity, adjusting the
+ * actor postion so that its relative position within its parent remains
  * unchanged.
  *
  * Since: 0.6
@@ -4537,7 +4537,7 @@ clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
  * @self: a #ClutterActor
  * @gravity: #ClutterGravity.
  *
- * Sets an anchor point the actor based on the given gravity (this is a
+ * Sets an anchor point on the actor, based on the given gravity (this is a
  * convenience function wrapping clutter_actor_set_anchor_point()).
  *
  * Since: 0.6
@@ -4980,9 +4980,9 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
  * @y_out: return location for the unprojected y coordinance, in
  *   #ClutterUnit<!-- -->s
  *
- * The function translates point with screen coordinates (@x, @y) to
- * coordinates relative to the actor, i.e. it can be used to translate
- * screen events from global screen coordinates into local coordinates.
+ * This function translates screen coordinates (@x, @y) to
+ * coordinates relative to the actor. For example, it can be used to translate
+ * screen events from global screen coordinates into actor-local coordinates.
  *
  * The conversion can fail, notably if the transform stack results in the
  * actor being projected on the screen as a mere line.
@@ -5354,7 +5354,7 @@ clutter_actor_get_shader (ClutterActor *self)
  *
  * Sets the #ClutterShader to be used when rendering @self.
  * If @shader is %NULL it will unset any currently set shader
- * for an actor.
+ * for the actor.
  *
  * Return value: %TRUE if the shader was successfully applied
  *

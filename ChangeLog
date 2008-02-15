@@ -1,3 +1,15 @@
+2008-02-15  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-container.c:
+	* clutter/clutter-media.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-stage.c: (clutter_stage_class_init):
+	* clutter/clutter-stage.h:
+	* clutter/clutter-texture.c:
+	* doc/reference/clutter-docs.sgml:
+	Fix more documentation
+
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.[ch]:

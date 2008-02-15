@@ -292,7 +292,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   /**
    * ClutterStage:user-resizable:
    *
-   * Whether the stage is able to be resized via user interaction.
+   * Whether the stage is resizable via user interaction.
    *
    * Since: 0.4
    */
@@ -319,7 +319,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   /**
    * ClutterStage:title:
    *
-   * The stages title - usually displayed in stage windows title decorations.
+   * The stage's title - usually displayed in stage windows title decorations.
    *
    * Since: 0.4
    */
@@ -333,9 +333,9 @@ clutter_stage_class_init (ClutterStageClass *klass)
   /**
    * ClutterStage:use-fog:
    *
-   * Whether the stage should use a linear GL "fog" for creating the
-   * depth-cueing effect to enhance the perception of depth by fading
-   * actors farther from the viewpoing.
+   * Whether the stage should use a linear GL "fog" in creating the
+   * depth-cueing effect, to enhance the perception of depth by fading
+   * actors farther from the viewpoint.
    *
    * Since: 0.6
    */
@@ -384,7 +384,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
    * ClutterStage::activate
    * @stage: the stage which was activated
    *
-   * The ::activate signal is emitted when the stage recieves key focus
+   * The ::activate signal is emitted when the stage receives key focus
    * from the underlying window system.
    *
    * Since: 0.6
@@ -534,7 +534,8 @@ clutter_stage_get_color (ClutterStage *stage,
  * @stage: A #ClutterStage
  * @perspective: A #ClutterPerspective
  *
- * Set the stage perspective.
+ * Set the stage perspective. This is the fixed point version of 
+ * clutter_stage_set_perspective().
  **/
 void
 clutter_stage_set_perspectivex (ClutterStage       *stage,
@@ -557,7 +558,8 @@ clutter_stage_set_perspectivex (ClutterStage       *stage,
  * @stage: A #ClutterStage
  * @perspective: return location for a #ClutterPerspective
  *
- * Retrieves the stage perspective.
+ * Retrieves the stage perspective. This is the fixed point version of 
+ * clutter_stage_get_perspective().
  */
 void
 clutter_stage_get_perspectivex (ClutterStage       *stage,
@@ -702,9 +704,9 @@ clutter_stage_unfullscreen (ClutterStage *stage)
 /**
  * clutter_stage_set_user_resizable:
  * @stage: a #ClutterStage
- * @resizable: whether if the stage should be user resizable.
+ * @resizable: whether the stage should be user resizable.
  *
- * Sets if the stage is able to be resized by user interaction (i.e via
+ * Sets if the stage is resizable by user interaction (e.g. via
  * window manager controls)
  *
  * Since: 0.4
@@ -737,7 +739,7 @@ clutter_stage_set_user_resizable (ClutterStage *stage,
  *
  * Retrieves the value set with clutter_stage_set_user_resizable().
  *
- * Return value: %TRUE is the stage is resizable by the user.
+ * Return value: %TRUE if the stage is resizable by the user.
  *
  * Since: 0.4
  */
