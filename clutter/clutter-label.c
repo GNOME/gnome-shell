@@ -697,7 +697,7 @@ clutter_label_new_with_text (const gchar *font_name,
  * @text: the text to be displayed
  * @color: #ClutterColor for text
  *
- * Creates a new #ClutterLabel displaying @text with color @color 
+ * Creates a new #ClutterLabel displaying @text with @color 
  * using @font_name.
  *
  * Return value: a #ClutterLabel

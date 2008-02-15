@@ -1,5 +1,14 @@
 2008-02-15  Chris Lord  <chris@openedhand.com>
 
+	* clutter/clutter-entry.c:
+	* clutter/clutter-group.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-texture.c:
+	More documentation fixes
+
+2008-02-15  Chris Lord  <chris@openedhand.com>
+
 	* clutter/clutter-entry.c: (clutter_entry_class_init):
 	More documentation fixes
 

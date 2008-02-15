@@ -848,7 +848,7 @@ clutter_entry_new_with_text (const gchar *font_name,
  * @text: the text to be displayed
  * @color: #ClutterColor for text
  *
- * Creates a new #ClutterEntry displaying @text with color @color
+ * Creates a new #ClutterEntry displaying @text with @color
  * using @font_name.
  *
  * Return value: the newly created #ClutterEntry

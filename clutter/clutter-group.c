@@ -30,7 +30,7 @@
  *
  * A #ClutterGroup is an Actor which contains multiple child actors positioned
  * relative to the #ClutterGroup position. Other operations such as scaling,
- * rotating and clipping of the group will child actors.
+ * rotating and clipping of the group will apply to the child actors.
  *
  * A #ClutterGroup's size is defined by the size and position of it
  * it children. Resize requests via parent #ClutterActor API will be
@@ -545,7 +545,7 @@ clutter_group_add_many_valist (ClutterGroup *group,
  * @first_actor: the #ClutterActor actor to add to the group
  * @Varargs: additional actors to add to the group
  *
- * Adds a NULL-terminated list of actors to a group.  This function is
+ * Adds a %NULL-terminated list of actors to a group.  This function is
  * equivalent to calling clutter_group_add() for each member of the list.
  *
  * @Deprecated: 0.4: This function is obsolete, use clutter_container_add()
@@ -665,7 +665,7 @@ clutter_group_get_nth_child (ClutterGroup *self,
  * @actor: a #ClutterActor
  * @sibling: a #ClutterActor
  *
- * FIXME
+ * Raises @actor to @sibling level in the depth ordering.
  *
  * Deprecated: 0.6: Use clutter_container_raise_child() instead.
  */
@@ -690,7 +690,7 @@ clutter_group_raise (ClutterGroup *self,
  * @actor: a #ClutterActor
  * @sibling: a #ClutterActor
  *
- * FIXME
+ * Lowers @actor to @sibling level in the depth ordering.
  *
  * Deprecated: 0.6: Use clutter_container_lower_child() instead
  */
@@ -713,7 +713,7 @@ clutter_group_lower (ClutterGroup *self,
  * clutter_group_sort_depth_order:
  * @self: A #ClutterGroup
  *
- * Sorts a #ClutterGroup's children by there depth value.
+ * Sorts a #ClutterGroup's children by their depth value.
  * This function should not be used by applications.
  *
  * Deprecated: 0.6: Use clutter_container_sort_depth_order() instead.

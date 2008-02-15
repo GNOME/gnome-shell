@@ -1448,7 +1448,7 @@ texture_prepare_upload (gboolean            initialize,
 /**
  * clutter_texture_set_from_rgb_data:
  * @texture: A #ClutterTexture
- * @data: Image data in RGB type colorspace.
+ * @data: Image data in RGBA type colorspace.
  * @has_alpha: Set to TRUE if image data has an alpha channel.
  * @width: Width in pixels of image data.
  * @height: Height in pixels of image data
