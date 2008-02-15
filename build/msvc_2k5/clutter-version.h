@@ -6,14 +6,13 @@
  *     the clutter root !!!
  */
 #define CLUTTER_MAJOR_VERSION   0
-#define CLUTTER_MINOR_VERSION   5
+#define CLUTTER_MINOR_VERSION   6
 #define CLUTTER_MICRO_VERSION   0
-#define CLUTTER_VERSION         0.5.0
-#define CLUTTER_VERSION_S       "0.5.0"
+#define CLUTTER_VERSION         0.6.0
+#define CLUTTER_VERSION_S       "0.6.0"
 
 #define CLUTTER_FLAVOUR         "sdl"
 #define CLUTTER_COGL            "gl"
-#define CLUTTER_NO_FPU          0
 
 /* The rest needs no modificactions */
 

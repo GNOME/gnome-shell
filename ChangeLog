@@ -1,5 +1,13 @@
 2008-02-15  Tomas Frydrych  <tf@openedhand.com>
 
+	* configure.ac:
+	* clutter/clutter-version.h.in:
+	* build/msvc_2k5/clutter-version.h:
+	Removed unused --without-fpu configure option and CLUTTER_NO_FPU
+	macro
+
+2008-02-15  Tomas Frydrych  <tf@openedhand.com>
+
 	* build/mingw/README:
 	* build/mingw/mingw-cross-compile.sh:
 	Script that automates cross compilation with mingw by Neil Roberts

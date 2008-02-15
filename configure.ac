@@ -79,19 +79,6 @@ AC_CHECK_FUNCS([memset munmap strcasecmp strdup])
 
 dnl ========================================================================
 
-CLUTTER_NO_FPU="0"
-AC_ARG_WITH(fpu,
-            AS_HELP_STRING([--without-fpu],
-                           [Assume target hardware has no fpu]),
-            [with_fpu=$withval],
-            [with_fpu=yes])
-
-if test "x$with_fpu" != "xyes" ; then
-   CLUTTER_NO_FPU="1"
-fi
-
-AC_SUBST(CLUTTER_NO_FPU)
-
 backendextra=
 backendextralib=
 clutterbackend=glx
@@ -443,5 +430,4 @@ echo "      Fast FP conversions:   ${enable_fast_fp_conversions}"
 echo "           Compiler flags:   ${CPPFLAGS}"
 echo "        API Documentation:   ${enable_gtk_doc}"
 echo "     Manual Documentation:   ${enable_manual}"
-echo "              FPU Support:   ${with_fpu}"
 echo ""
