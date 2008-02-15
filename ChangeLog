@@ -1,5 +1,10 @@
 2008-02-15  Chris Lord  <chris@openedhand.com>
 
+	* clutter/clutter-entry.c: (clutter_entry_class_init):
+	More documentation fixes
+
+2008-02-15  Chris Lord  <chris@openedhand.com>
+
 	* clutter/clutter-label.c: (clutter_label_class_init):
 	More documentation fixes
 

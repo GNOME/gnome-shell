@@ -640,7 +640,7 @@ clutter_entry_class_init (ClutterEntryClass *klass)
   /**
    * ClutterEntry:text-visible:
    *
-   * Whether the text is visible in plain, or replaced by the
+   * Whether the text is visible in plain form, or replaced by the
    * character set by clutter_entry_set_invisible_char().
    *
    * Since: 0.4
@@ -649,7 +649,7 @@ clutter_entry_class_init (ClutterEntryClass *klass)
     (gobject_class, PROP_TEXT_VISIBLE,
      g_param_spec_boolean ("text-visible",
 			   "Text Visible",
-			   "Whether the text is visible in plain text",
+			   "Whether the text is visible in plain form",
 			   TRUE,
 			   CLUTTER_PARAM_READWRITE));
 
@@ -703,7 +703,7 @@ clutter_entry_class_init (ClutterEntryClass *klass)
    * ClutterEntry::text-changed:
    * @entry: the actor which received the event
    *
-   * The ::text-changed signal is emitted after the @entrys text changes
+   * The ::text-changed signal is emitted after @entry's text changes
    */
   entry_signals[TEXT_CHANGED] =
     g_signal_new ("text-changed",
@@ -719,9 +719,9 @@ clutter_entry_class_init (ClutterEntryClass *klass)
    * @entry: the actor which received the event
    * @geometry: a #ClutterGeometry
    *
-   * The ::cursor-event signal is emitted each time the input cursors geometry
+   * The ::cursor-event signal is emitted each time the input cursor's geometry
    * changes, this could be a positional or size change. If you would like to
-   * implement your own input cursor, set the cursor-visible property to FALSE,
+   * implement your own input cursor, set the cursor-visible property to %FALSE,
    * and connect to this signal to position and size your own cursor.
    *
    * Since: 0.4
@@ -740,10 +740,10 @@ clutter_entry_class_init (ClutterEntryClass *klass)
   * ClutterEntry::activate:
    * @entry: the actor which received the event
    *
-   * The ::activate signal is emitted each time the netry is 'activated'
+   * The ::activate signal is emitted each time the entry is 'activated'
    * by the user, normally by pressing the 'Enter' key. This signal will
-   * only be emitted when your are adding text to the entry via
-   * #clutter_entry_handle_key_event().
+   * only be emitted when you are adding text to the entry via
+   * clutter_entry_handle_key_event().
    *
    * Since: 0.4
    */
@@ -889,7 +889,7 @@ clutter_entry_new (void)
  * clutter_entry_get_text:
  * @entry: a #ClutterEntry
  *
- * Retrieves the text displayed by @entry
+ * Retrieves the text displayed by @entry.
  *
  * Return value: the text of the entry.  The returned string is
  *   owned by #ClutterEntry and should not be modified or freed.
@@ -1181,7 +1181,7 @@ clutter_entry_set_alignment (ClutterEntry   *entry,
  *
  * Returns the entry's text alignment
  *
- * Return value: The entrys #PangoAlignment
+ * Return value: The entry's #PangoAlignment
  *
  * Since 0.4
  */
@@ -1448,8 +1448,8 @@ clutter_entry_delete_chars (ClutterEntry *entry,
  * Insert text at a specifc position.
  *
  * A value of 0 indicates  that the text will be inserted before the first
- * character in the entrys text, and a value of -1 indicates that the text
- * will be inserted after the last character in the entrys text.
+ * character in the entry's text, and a value of -1 indicates that the text
+ * will be inserted after the last character in the entry's text.
  *
  * Since: 0.4
  */
@@ -1548,7 +1548,7 @@ clutter_entry_set_visible_cursor (ClutterEntry *entry,
  * clutter_entry_get_visible_cursor:
  * @entry: a #ClutterEntry
  *
- * Returns the input cursors visiblity
+ * Returns the input cursor's visibility
  *
  * Return value: whether the input cursor is visible
  *
@@ -1565,14 +1565,14 @@ clutter_entry_get_visible_cursor (ClutterEntry *entry)
 /**
  * clutter_entry_set_visibility:
  * @entry: a #ClutterEntry
- * @visible: TRUE if the contents of the entry are displayed as plaintext.
+ * @visible: %TRUE if the contents of the entry are displayed as plaintext.
  *
  * Sets whether the contents of the entry are visible or not. When visibility
- * is set to FALSE, characters are displayed as the invisible char, and will
+ * is set to %FALSE, characters are displayed as the invisible char, and will
  * also appear that way when the text in the entry widget is copied elsewhere.
  *
  * The default invisible char is the asterisk '*', but it can be changed with
- * #clutter_entry_set_invisible_char().
+ * clutter_entry_set_invisible_char().
  *
  * Since: 0.4
  */
@@ -1598,9 +1598,9 @@ clutter_entry_set_visibility (ClutterEntry *entry, gboolean visible)
  * clutter_entry_get_visibility:
  * @entry: a #ClutterEntry
  *
- * Returns the entry text visiblity
+ * Returns the entry text visibility.
  *
- * Return value: TRUE if the contents of the entry are displayed as plaintext.
+ * Return value: %TRUE if the contents of the entry are displayed as plaintext.
  *
  * Since: 0.4
  */
@@ -1618,8 +1618,8 @@ clutter_entry_get_visibility (ClutterEntry *entry)
  * @wc: a Unicode character
  *
  * Sets the character to use in place of the actual text when
- * #clutter_entry_set_visibility() has been called to set text visibility
- * to FALSE. i.e. this is the character used in "password mode" to show the
+ * clutter_entry_set_visibility() has been called to set text visibility
+ * to %FALSE. i.e. this is the character used in "password mode" to show the
  * user how many characters have been typed. The default invisible char is an
  * asterisk ('*'). If you set the invisible char to 0, then the user will get
  * no feedback at all; there will be no text on the screen as they type.
@@ -1652,7 +1652,7 @@ clutter_entry_set_invisible_char (ClutterEntry *entry, gunichar wc)
  * @entry: a #ClutterEntry
  *
  * Returns the character to use in place of the actual text when text-visibility
- * is set to FALSE
+ * is set to %FALSE
  *
  * Return value: a Unicode character
  *
