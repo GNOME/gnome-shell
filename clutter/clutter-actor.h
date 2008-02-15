@@ -458,6 +458,8 @@ gboolean clutter_actor_transform_stage_point          (ClutterActor   *self,
                                                        ClutterUnit     y,
                                                        ClutterUnit    *x_out,
                                                        ClutterUnit    *y_out);
+gboolean clutter_actor_is_rotated                     (ClutterActor   *self);
+gboolean clutter_actor_is_scaled                      (ClutterActor   *self);
 
 G_END_DECLS
 

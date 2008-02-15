@@ -660,7 +660,6 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
 						 ClutterVertex *point,
 						 ClutterVertex *vertex)
 {
-  ClutterFixed  mtx_p[16];
   ClutterFixed  v[4];
   ClutterFixed  w = CFX_ONE;
 
@@ -5516,3 +5515,50 @@ clutter_actor_set_shader_param (ClutterActor *self,
   box->value = value;
   g_hash_table_insert (shader_data->float1f_hash, g_strdup (param), box);
 }
+
+/**
+ * clutter_actor_is_rotated:
+ * @self: a #ClutterActor
+ *
+ * Returns true if any rotation is applied to the actor.
+ *
+ * Since: 0.6
+ */
+gboolean
+clutter_actor_is_rotated (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  priv = self->priv;
+
+  if (priv->rxang || priv->ryang || priv->rzang)
+    return TRUE;
+
+  return FALSE;
+}
+
+/**
+ * clutter_actor_is_scaled:
+ * @self: a #ClutterActor
+ *
+ * Returns true if the actor is scaled in either dimension.
+ *
+ * Since: 0.6
+ */
+gboolean
+clutter_actor_is_scaled (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  priv = self->priv;
+
+  if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
+    return TRUE;
+
+  return FALSE;
+}
+

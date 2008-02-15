@@ -149,6 +149,49 @@ clutter_group_request_coords (ClutterActor    *self,
 }
 
 static void
+clutter_group_get_box_from_vertices (ClutterActorBox *box,
+				     ClutterVertex    vtx[4])
+{
+  ClutterUnit x1, x2, y1, y2;
+
+  /* 4-way min/max */
+  x1 = vtx[0].x;
+  y1 = vtx[0].y;
+  if (vtx[1].x < x1)
+    x1 = vtx[1].x;
+  if (vtx[2].x < x1)
+    x1 = vtx[2].x;
+  if (vtx[3].x < x1)
+    x1 = vtx[3].x;
+  if (vtx[1].y < y1)
+    y1 = vtx[1].y;
+  if (vtx[2].y < y1)
+    y1 = vtx[2].y;
+  if (vtx[3].y < y1)
+    y1 = vtx[3].y;
+
+  x2 = vtx[0].x;
+  y2 = vtx[0].y;
+  if (vtx[1].x > x2)
+    x2 = vtx[1].x;
+  if (vtx[2].x > x2)
+    x2 = vtx[2].x;
+  if (vtx[3].x > x2)
+    x2 = vtx[3].x;
+  if (vtx[1].y > y2)
+    y2 = vtx[1].y;
+  if (vtx[2].y > y2)
+    y2 = vtx[2].y;
+  if (vtx[3].y > y2)
+    y2 = vtx[3].y;
+
+  box->x1 = x1;
+  box->x2 = x2;
+  box->y1 = y1;
+  box->y2 = y2;
+}
+
+static void
 clutter_group_query_coords (ClutterActor        *self,
 			    ClutterActorBox     *box)
 {
@@ -167,12 +210,19 @@ clutter_group_query_coords (ClutterActor        *self,
     {
       do
 	{
-	  ClutterActor *child = CLUTTER_ACTOR(child_item->data);
+	  ClutterActor    *child = CLUTTER_ACTOR(child_item->data);
+	  ClutterActorBox  cbox;
 
-	  /* Once added we include in sizing - doesn't matter if visible */
-	  /* if (CLUTTER_ACTOR_IS_VISIBLE (child)) */
+	  if (clutter_actor_is_scaled (child) ||
+	      clutter_actor_is_rotated (child))
 	    {
-	      ClutterActorBox cbox;
+	      ClutterVertex vtx[4];
+
+	      clutter_actor_get_relative_vertices (child, self, vtx);
+	      clutter_group_get_box_from_vertices (&cbox, vtx);
+	    }
+	  else
+	    {
 	      gint            anchor_x;
 	      gint            anchor_y;
 
@@ -188,20 +238,22 @@ clutter_group_query_coords (ClutterActor        *self,
 	      cbox.x2 -= anchor_x;
 	      cbox.y1 -= anchor_y;
 	      cbox.y2 -= anchor_y;
-
-	      /* Ignore any children with offscreen ( negaive )
-               * positions.
-	       *
-               * Also x1 and x2 will be set by parent caller.
-               *
-               * FIXME: this assumes that children are not rotated in anyway.
-	       */
-	      if (box->x2 - box->x1 < cbox.x2)
-		box->x2 = cbox.x2 + box->x1;
-
-	      if (box->y2 - box->y1 < cbox.y2)
-		box->y2 = cbox.y2 + box->y1;
 	    }
+
+	  /* FIXME: now that we go into the trouble of working out the
+	   * projected sizes, we should do better than this (probably resize
+	   * the box in all direction as required).
+	   *
+	   * Ignore any children with offscreen ( negaive )
+	   * positions.
+	   *
+	   * Also x1 and x2 will be set by parent caller.
+	   */
+	  if (box->x2 - box->x1 < cbox.x2)
+	    box->x2 = cbox.x2 + box->x1;
+
+	  if (box->y2 - box->y1 < cbox.y2)
+	    box->y2 = cbox.y2 + box->y1;
 	}
       while ((child_item = g_list_next(child_item)) != NULL);
     }

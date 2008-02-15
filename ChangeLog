@@ -2,6 +2,22 @@
 
 	* clutter/clutter-actor.c:
 	* clutter/clutter-actor.h:
+	(clutter_actor_is_scaled):
+	(clutter_actor_is_rotated):
+	Convenience functions to test whether actor is scaled or rotated.
+
+	(clutter_actor_apply_relative_transform_to_point):
+	Removed unused variable.
+
+	* clutter/clutter-group.c:
+	(clutter_group_query_coords):
+	Use clutter_actor_get_relative_vertices() to calculate bounding
+	boxes of children that are scaled or rotated.
+
+2008-02-14  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
 	(clutter_actor_get_relative_vertices):
 	(clutter_actor_apply_relative_transform_to_point):
 	Functions to calculate actor vertices in the plane of a given
