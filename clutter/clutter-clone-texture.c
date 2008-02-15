@@ -361,13 +361,13 @@ clutter_clone_texture_init (ClutterCloneTexture *self)
 
 /**
  * clutter_clone_texture_new:
- * @texture: a #ClutterTexture or %NULL
+ * @texture: a #ClutterTexture, or %NULL
  *
- * Creates an efficient 'clone' of a pre-existing texture if which it 
+ * Creates an efficient 'clone' of a pre-existing texture with which it 
  * shares the underlying pixbuf data.
  *
  * You can use clutter_clone_texture_set_parent_texture() to change the
- * parent texture to be cloned.
+ * cloned texture.
  *
  * Return value: the newly created #ClutterCloneTexture
  */

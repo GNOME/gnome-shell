@@ -1,5 +1,11 @@
 2008-02-15  Chris Lord  <chris@openedhand.com>
 
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-texture.c: (clutter_texture_class_init):
+	More documentation fixes
+
+2008-02-15  Chris Lord  <chris@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	* clutter/clutter-container.c:
 	* clutter/clutter-media.c:

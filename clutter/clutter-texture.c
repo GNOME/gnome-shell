@@ -1050,8 +1050,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
     (gobject_class, PROP_SYNC_SIZE,
      g_param_spec_boolean ("sync-size",
 			   "Sync size of actor",
-			   "Auto sync size of actor to underlying pixbuf"
-			   "dimentions",
+			   "Auto sync size of actor to underlying pixbuf "
+			   "dimensions",
 			   TRUE,
 			   CLUTTER_PARAM_READWRITE));
 
@@ -1059,8 +1059,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
     (gobject_class, PROP_REPEAT_X,
      g_param_spec_boolean ("repeat-x",
 			   "Tile underlying pixbuf in x direction",
-			   "Reapeat underlying pixbuf rather than scale"
-			   "in x direction. Currently UNWORKING",
+			   "Reapeat underlying pixbuf rather than scale "
+			   "in x direction. Currently ignored",
 			   FALSE,
 			   CLUTTER_PARAM_READWRITE));
 
@@ -1068,8 +1068,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
     (gobject_class, PROP_REPEAT_Y,
      g_param_spec_boolean ("repeat-y",
 			   "Tile underlying pixbuf in y direction",
-			   "Reapeat underlying pixbuf rather than scale"
-			   "in y direction. Currently UNWORKING",
+			   "Reapeat underlying pixbuf rather than scale "
+			   "in y direction. Currently ignored",
 			   FALSE,
 			   CLUTTER_PARAM_READWRITE));
 
@@ -1080,10 +1080,10 @@ clutter_texture_class_init (ClutterTextureClass *klass)
     (gobject_class, PROP_FILTER_QUALITY,
      g_param_spec_int ("filter-quality",
 		       "Quality of filter used when scaling a texture",
-		       "Values 0 and 1 current only supported, with 0"
+		       "Values 0 and 1 current only supported, with 0 "
 		       "being lower quality but fast, 1 being better "
 		       "quality but slower. ( Currently just maps to "
-		       " GL_NEAREST / GL_LINEAR )",
+		       "GL_NEAREST / GL_LINEAR )",
 		       0,
 		       G_MAXINT,
 		       1,
@@ -1092,10 +1092,10 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   g_object_class_install_property
     (gobject_class, PROP_MAX_TILE_WASTE,
      g_param_spec_int ("tile-waste",
-		       "Tile dimention to waste",
-		       "Max wastage dimention of a texture when using "
+		       "Tile dimension to waste",
+		       "Max wastage dimension of a texture when using "
 		       "tiled textures. Bigger values use less textures, "
-		       "smaller values less texture memory. ",
+		       "smaller values less texture memory.",
 		       0,
 		       G_MAXINT,
 		       64,
@@ -1262,9 +1262,9 @@ texture_get_tile_pixbuf (ClutterTexture *texture,
  * Gets a #GdkPixbuf representation of the #ClutterTexture data.
  * The created #GdkPixbuf is not owned by the texture but the caller.
  *
- * Note: NULL is always returned with OpenGL ES.
+ * Note: %NULL is always returned with OpenGL ES.
  *
- * Return value: A #GdkPixbuf or NULL on fail.
+ * Return value: A #GdkPixbuf, or %NULL on fail.
  **/
 GdkPixbuf *
 clutter_texture_get_pixbuf (ClutterTexture *texture)
@@ -1449,7 +1449,7 @@ texture_prepare_upload (gboolean            initialize,
  * clutter_texture_set_from_rgb_data:
  * @texture: A #ClutterTexture
  * @data: Image data in RGB type colorspace.
- * @has_alpha: Set to TRUE if image data has a alpha channel.
+ * @has_alpha: Set to TRUE if image data has an alpha channel.
  * @width: Width in pixels of image data.
  * @height: Height in pixels of image data
  * @rowstride: Distance in bytes between row starts.
@@ -1810,10 +1810,10 @@ clutter_texture_get_base_size (ClutterTexture *texture,
  * @texture: A #ClutterTexture
  * @index_: Tile index to bind
  *
- * Proxys a call to glBindTexture a to bind an internal 'tile'.
+ * Proxies a call to glBindTexture to bind an internal 'tile'.
  *
- * This function is only useful for sub class implementations
- * and never should be called by an application.
+ * This function is only useful for #ClutterTexture sub-classes
+ * and should never be called by an application.
  **/
 void
 clutter_texture_bind_tile (ClutterTexture *texture,
@@ -1834,10 +1834,10 @@ clutter_texture_bind_tile (ClutterTexture *texture,
  * @n_x_tiles: Location to store number of tiles in horizonally axis
  * @n_y_tiles: Location to store number of tiles in vertical axis
  *
- * Retreives internal tile dimentioning.
+ * Retreives internal tile dimensioning.
  *
- * This function is only useful for sub class implementations
- * and never should be called by an application.
+ * This function is only useful for #ClutterTexture sub-classes
+ * and should never be called by an application.
  **/
 void
 clutter_texture_get_n_tiles (ClutterTexture *texture,
@@ -1856,14 +1856,14 @@ clutter_texture_get_n_tiles (ClutterTexture *texture,
  * clutter_texture_get_x_tile_detail:
  * @texture: A #ClutterTexture
  * @x_index: X index of tile to query
- * @pos: Location to store tiles X position
- * @size: Location to store tiles horizontal size in pixels
- * @waste: Location to store tiles horizontal wastage in pixels
+ * @pos: Location to store tile's X position
+ * @size: Location to store tile's horizontal size in pixels
+ * @waste: Location to store tile's horizontal wastage in pixels
  *
- * Retreives details of a tile on x axis.
+ * Retreives details of a tile on the X axis.
  *
- * This function is only useful for sub class implementations
- * and never should be called by an application.
+ * This function is only useful for #ClutterTexture sub-classes
+ * and should never be called by an application.
  **/
 void
 clutter_texture_get_x_tile_detail (ClutterTexture *texture,
@@ -1888,14 +1888,14 @@ clutter_texture_get_x_tile_detail (ClutterTexture *texture,
  * clutter_texture_get_y_tile_detail:
  * @texture: A #ClutterTexture
  * @y_index: Y index of tile to query
- * @pos: Location to store tiles Y position
- * @size: Location to store tiles vertical size in pixels
- * @waste: Location to store tiles vertical wastage in pixels
+ * @pos: Location to store tile's Y position
+ * @size: Location to store tile's vertical size in pixels
+ * @waste: Location to store tile's vertical wastage in pixels
  *
- * Retreives details of a tile on y axis.
+ * Retreives details of a tile on the Y axis.
  *
- * This function is only useful for sub class implementations
- * and never should be called by an application.
+ * This function is only useful for #ClutterTexture sub-classes
+ * and should never be called by an application.
  **/
 void
 clutter_texture_get_y_tile_detail (ClutterTexture *texture,
@@ -1928,10 +1928,10 @@ clutter_texture_get_y_tile_detail (ClutterTexture *texture,
  *
  * Checks if #ClutterTexture has generated underlying GL texture tiles.
  *
- * This function is only useful for sub class implementations
- * and never should be called by an application.
+ * This function is only useful for #ClutterTexture sub-classes
+ * and should never be called by an application.
  *
- * Return value: TRUE if texture has pregenerated GL tiles.
+ * Return value: %TRUE if texture has pre-generated GL tiles.
  **/
 gboolean
 clutter_texture_has_generated_tiles (ClutterTexture *texture)
@@ -1947,10 +1947,10 @@ clutter_texture_has_generated_tiles (ClutterTexture *texture)
  *
  * Checks if #ClutterTexture is tiled.
  *
- * This function is only useful for sub class implementations
- * and never should be called by an application.
+ * This function is only useful for #ClutterTexture sub-classes
+ * and should never be called by an application.
  *
- * Return value: TRUE if texture is tiled
+ * Return value: %TRUE if texture is tiled
  **/
 gboolean
 clutter_texture_is_tiled (ClutterTexture *texture)
@@ -2146,7 +2146,7 @@ texture_update_data (ClutterTexture *texture,
  * clutter_texture_set_area_from_rgb_data:
  * @texture: A #ClutterTexture
  * @data: Image data in RGB type colorspace.
- * @has_alpha: Set to TRUE if image data has a alpha channel.
+ * @has_alpha: Set to TRUE if image data has an alpha channel.
  * @x: X coordinate of upper left corner of region to update.
  * @y: Y coordinate of upper left corner of region to update.
  * @width: Width in pixels of region to update.
@@ -2156,7 +2156,7 @@ texture_update_data (ClutterTexture *texture,
  * @flags: #ClutterTextureFlags
  * @error: return location for a #GError, or %NULL
  *
- * Updates a subregion of the pixel data in a #ClutterTexture.
+ * Updates a sub-region of the pixel data in a #ClutterTexture.
  *
  * Return value: %TRUE on success, %FALSE on failure.
  *
