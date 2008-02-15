@@ -118,11 +118,7 @@ cogl_paint_init (const ClutterColor *color)
   glDisable (GL_LIGHTING);
   glDisable (GL_FOG);
 
-  glEnable (GL_DEPTH_TEST);
-  glDepthFunc (GL_LEQUAL);
-
   cogl_enable (CGL_ENABLE_BLEND);
-
   glTexEnvx (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 }
 

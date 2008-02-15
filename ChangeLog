@@ -1,3 +1,8 @@
+2008-02-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/cogl/gles/cogl.c: (cogl_paint_init):
+        Remove depth test getting turned on by default (unlike GL backend)
+
 2008-02-15  Tomas Frydrych  <tf@openedhand.com>
 
 	* configure.ac:
