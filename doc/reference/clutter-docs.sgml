@@ -82,6 +82,8 @@
             types, macros, type conversions, string utilities, file
             utilities, a main loop abstraction, and so on.</para>
           </listitem>
+        </varlistentry>
+        <varlistentry>
           <term>GObject</term>
           <listitem>
             <para>The GLib Object System provides the required
@@ -89,11 +91,15 @@
             easy to map (into other languages) object-oriented framework
             for C.</para>
           </listitem>
+        </varlistentry>
+        <varlistentry>
           <term>Pango</term>
           <listitem>
             <para>Pango is a library for laying out and rendering of
             text, with an emphasis on internationalization.</para>
           </listitem>
+        </varlistentry>
+        <varlistentry>
           <term>GDK-Pixbuf</term>
           <listitem>
             <para>GDK-Pixbuf is a library for loading and manipulating

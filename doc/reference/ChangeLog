@@ -1,5 +1,9 @@
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-docs.sgml: Fix varlistentry usage.
+
+2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-sections.txt: Add last-minute API additions.
 
 	* subclassing-ClutterActor.sgml: Fix some of the notes; the
