@@ -13,19 +13,6 @@
 
   <title>Implementing a new actor</title>
 
-  <programlisting>
-  A few FIXMES:
-    - more on composite/container actors, when/why to use...
-      + implementaing a composite actor - set_parent() etc
-      + implementing a container - interface etc
-    - Painting
-      + note on cogl_enable if painting texture or blended item
-        (should at least call cogl_enable(0) - to reset state cache)
-      + fine to use regular GL but then wont be portable
-      + avoid further transforms ?     
-
-  </programlisting>
-
   <para>In order to implement a new #ClutterActor subclass the usual
   machinery for subclassing a GObject should be used. After that, the
   ClutterActor::query_coords() and ClutterActor::request_coords() virtual
@@ -138,6 +125,10 @@ foo_actor_paint (ClutterActor *actor)
     </programlisting>
   </example>
 
+  <para>When painting a blended actor, cogl_enable() should be called with
+  the %CGL_BLEND flag; or, alternatively, glEnable() with %GL_BLEND on
+  OpenGL.</para>
+
   <para>If the actor has a non-rectangular shape, or it has internal childrens
   that needs to be distinguished by the events delivery mechanism, the
   ClutterActor::pick() method should also be overridden. The ::pick() method
@@ -184,6 +175,96 @@ foo_actor_pick (ClutterActor       *actor,
     </programlisting>
   </example>
 
-  <para></para>
+  <section id="implementing-clutter-container">
+    <title>Implementing Containers</title>
+
+    <para>
+    The #ClutterContainer interface should be implemented by subclasses
+    of #ClutterActor who wants to provide a general API for adding child
+    actors.
+    </para>
+
+    <para>
+    If the #ClutterActor subclass only handles internal children, or it's
+    not suitable for having generic actors added to it, it should not
+    implement the #ClutterContainer interface, but simply use
+    clutter_actor_set_parent():
+    </para>
+
+    <example id="clutter-actor-set-parent-example">
+      <programlisting>
+void
+foo_actor_add_baz (FooActor *foo_actor,
+                   BazActor *baz_actor)
+{
+  g_return_if_fail (FOO_IS_ACTOR (foo_actor));
+  g_return_if_fail (BAZ_IS_ACTOR (baz_actor));
+
+  /* unparent the previous BazActor; this will automatically call
+   * g_object_unref() on the actor
+   */
+  if (foo_actor-&gt;baz)
+    clutter_actor_unparent (foo_actor-&gt;baz);
+
+  foo_actor->baz = baz_actor;
+
+  /* this will cause the initial floating reference to disappear,
+   * and add a new reference on baz_actor. foo_actor has now taken
+   * ownership of baz_actor
+   */
+  clutter_actor_set_parent (CLUTTER_ACTOR (baz_actor),
+                            CLUTTER_ACTOR (foo_actor));
+
+  g_signal_emit (foo_actor, foo_actor_signals[BAZ_CHANGED], 0, baz_actor);
+}
+      </programlisting>
+    </example>
+
+    <para>
+    In order to implement the #ClutterContainer interface, these virtual
+    functions must be defined:
+
+      <variablelist>
+        <varlistentry>
+          <term>ClutterContainer::add</term>
+          <listitem>
+            <para></para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>ClutterContainer::remove</term>
+          <listitem>
+            <para></para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>ClutterContainer::foreach</term>
+          <listitem>
+            <para></para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>ClutterContainer::raise</term>
+          <listitem>
+            <para></para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>ClutterContainer::lower</term>
+          <listitem>
+            <para></para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>ClutterContainer::sort_depth_order</term>
+          <listitem>
+            <para></para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+
+    </para>
+
+  </section>
 
 </chapter>

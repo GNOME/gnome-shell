@@ -1,5 +1,15 @@
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-animation.sgml: Fix some of the grammar; add a timeout-based
+	animation example.
+
+	* creating-your-own-behaviours.sgml: Fix some of the linking.
+
+	* subclassing-ClutterActor.sgml: Remove the FIXMEs; add the initial
+	structure of a section about containers.
+
+2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-docs.sgml: Fix varlistentry usage.
 
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>

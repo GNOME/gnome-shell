@@ -17,7 +17,7 @@
 
   With Clutter using hardware accelration for graphics rendering,
   complex and fast animations are possible. This chapter describes basic
-  techniques and the utilitys Clutter provides in aiding animation
+  techniques and the utilities Clutter provides in aiding animation
   creation.
 
   </para>
@@ -28,9 +28,9 @@
   <para>
 
    The most basic way to create animations with Clutter is via the use of
-   the <code>g_timeout_add</code>. This enables a callback function to be
-   called at a definefine interval. The callback function can then modify
-   actors visual properties as to produce an animation.
+   g_timeout_add(). This enables a callback function to be called at a
+   defined interval. The callback function can then modify actors visual
+   properties as to produce an animation.
 
   </para>
 
@@ -39,23 +39,46 @@
   Simple Rotation...
   </para>
   <programlisting>
+struct RotationClosure {
+  ClutterActor *actor;
+  ClutterFixed final_angle;
+  ClutterFixed current_angle;
+};
 
-  FIXME
+static gboolean
+rotate_actor (gpointer data)
+{
+  RotationClosure *clos = data;
 
-  guint g_timeout_add  (guint interval,
-                        GSourceFunc function,
-                        gpointer data);
+  clutter_actor_set_rotationx (clos-&gt;actor, clos-&gt;current_angle, 0, 0, 0);
 
+  clos-&gt;current_angle += CFX_ONE;
 
+  if (clos-&gt;current_angle == clos-&gt;final_angle)
+    return FALSE;
+
+  return TRUE;
+}
+
+...
+  RotationClosure clos = { NULL, }
+
+  clos.actor = an_actor;
+  clos.final_angle = CLUTTER_FLOAT_TO_FIXED (360.0);
+  clos.current_angle = 0;
+
+  g_timeout_add (1000 / 360, /* fps to interval in milliseconds */
+                 rotate_actor,
+                 &amp;clos);
   </programlisting>
   </example>
 
-  <note><title>Prioritys</title>
+  <note><title>Priorities</title>
   <para>
 
-  G_PRIORITY_DEFAULT should always be used as the timeouts priority
-  (in case of g_timeout_add_full) as not to intefere with Clutters
-  schueduling of repaints and input event handling.
+  %G_PRIORITY_DEFAULT should always be used as the timeouts priority
+  (in case of g_timeout_add_full()) as not to intefere with Clutter's
+  scheduling of repaints and input event handling.
 
   </para>
   </note>
@@ -214,7 +237,7 @@ main (int argc, char *argv[])
 
   </section>
   <section id="clutter-animation-behaviours">
-  <title>Timelines</title>
+  <title>Behaviours</title>
   <para>
 
   With a large application containing many animations, the use of just
