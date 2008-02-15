@@ -1,3 +1,8 @@
+2008-02-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter-docs.sgml:
+        Minor tweakery.
+
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Fix ClutterMedia section.

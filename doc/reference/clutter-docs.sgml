@@ -230,7 +230,7 @@
               <varlistentry>
                 <term>--with-flavour=[glx/eglx/eglnative/sdl]</term>
                 <listitem>
-                  <para>Select the Clutter backend.
+                  <para>Select the Clutter backend; default=glx.
                   </para>
                 </listitem>
               </varlistentry>
@@ -258,6 +258,9 @@
             project file for MSVC 2005 is located in the
             <filename>build/msvc_2k5/</filename> directory. In either case, you
             will need to first install the required dependencies.
+            </para>
+            <para>
+            Clutter on Windows currently uses the SDL backend for windowing
             </para>
       </section>
 
