@@ -1,3 +1,8 @@
+2008-02-15  Runa Bhattacharjee <runabh@gmail.com>
+
+	* kn.po: Added Kannada Translations by Shankar Prasad
+	* LINGUAS: Added Kannada (kn) to the List of Languages
+
 2008-02-14  Ignacio Casal Quinteiro  <nacho.resa@gmail.com>
 
 	* gl.po: Updated Galician Translation.
