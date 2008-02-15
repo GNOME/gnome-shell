@@ -1,8 +1,10 @@
+2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-animation.sgml: Fix the animations documentation.
+
 2008-02-15  Chris Lord  <chris@openedhand.com>
 
-	reviewed by: <delete if not using a buddy>
-
-	* clutter-docs.sgml:
+	* clutter-docs.sgml: Fix documentation.
 
 2008-02-15  Matthew Allum  <mallum@openedhand.com>
 
