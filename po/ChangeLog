@@ -1,3 +1,7 @@
+2008-02-18  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+
+	* nl.po: Updated Dutch translation by Wouter Bolsterlee.
+
 2008-02-18  Ihar Hrachyshka <booxter@lacinka.org>
 
 	* be@latin.po: Updated Belarusian Latin translation.
@@ -104,7 +108,7 @@
 
 	* be@latin.po: Updated Belarusian Latin translation.
 
-2008-01-05   Clytie Siddall <clytie@riverland.net.au>
+2008-01-05  Clytie Siddall <clytie@riverland.net.au>
 
 	* vi.po: Updated Vietnamese translation.
 
@@ -135,7 +139,7 @@
 
 2007-12-19  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
-        * es.po: Updated Spanish translation.
+	* es.po: Updated Spanish translation.
 
 2007-12-17  Daniel Nylander <po@danielnylander.se>
 
@@ -147,7 +151,7 @@
 
 2007-12-10  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
-        * es.po: Updated Spanish translation, fixes bug #500562 and bug #500831
+	* es.po: Updated Spanish translation, fixes bug #500562 and bug #500831
 
 2007-12-10  Matej Urbančič  <mateju@svn.gnome.org>
 
@@ -155,11 +159,11 @@
 
 2007-12-10  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
-        * es.po: Updated Spanish translation, fixes bug #500831
+	* es.po: Updated Spanish translation, fixes bug #500831
 
 2007-12-09  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
 
-        * es.po: Updated Spanish translation, fixes bug #500562
+	* es.po: Updated Spanish translation, fixes bug #500562
 
 2007-12-08  Jakub Friedl  <jfriedl@suse.cz>
 
@@ -307,7 +311,7 @@
 
 2007-09-05  Jovan Naumovski  <jovan@lugola.net>
 
- 	 * mk.po: Updated Macedonian translation.
+	* mk.po: Updated Macedonian translation.
 
 2007-09-03  Clytie Siddall <clytie@riverland.net.au>
 
@@ -319,11 +323,11 @@
 
 2007-09-03  Jovan Naumovski  <jovan@lugola.net>
 
- 	 * mk.po: Updated Macedonian translation.
+	* mk.po: Updated Macedonian translation.
 
 2007-09-01  Jovan Naumovski  <jovan@lugola.net>
 
- 	 * mk.po: Updated Macedonian translation.
+	* mk.po: Updated Macedonian translation.
 
 2007-09-01  Stéphane Raimbault  <stephane.raimbault@gmail.com>
 
@@ -458,7 +462,7 @@
 
 2007-05-09  Jovan Naumovski  <jovan@lugola.net>
 
- 	 * mk.po: Updated Macedonian translation.
+	* mk.po: Updated Macedonian translation.
 
 2007-05-2  Djihed Afifi <djihed@gmail.com>
 
@@ -1863,7 +1867,7 @@
 
 2005-04-17  Pauli Virtanen <pauli.virtanen@hut.fi>
 
-	 * fi.po: Fix a small mistranslation.
+	* fi.po: Fix a small mistranslation.
 
 2005-04-09  Christopher Orr  <chris@protactin.co.uk>
 
@@ -2050,7 +2054,7 @@
 
 2005-02-06  Pauli Virtanen <pauli.virtanen@hut.fi>
 
-	 * fi.po: Updated Finnish translation.
+	* fi.po: Updated Finnish translation.
 
 2005-02-05  Frank Arnold  <farnold@cvs.gnome.org>
 
@@ -2665,7 +2669,7 @@
 
 2004-02-07  Robert Sedak  <robert.sedak@sk.htnet.hr>
 
-	 * hr.po: Updated Croatian translation.
+	* hr.po: Updated Croatian translation.
 
 2004-02-08  Changwoo Ryu  <cwryu@debian.org>
 
