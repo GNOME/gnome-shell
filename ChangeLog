@@ -1,3 +1,7 @@
+2008-02-17  Thomas Thurman  <tthurman@gnome.org>
+
+        * tools/commit-wrangler.py: added new script to manage commits
+
 2008-02-17  Jim Huang  <jserv.tw@gmail.com>
 
         * src/core/prefs.c (update_binding): Allow compilation
