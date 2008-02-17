@@ -2290,6 +2290,7 @@ update_binding (MetaKeyPref *binding,
   
    combo = binding->bindings->data;
 
+#ifdef HAVE_GCONF
    /* Bug 329676: Bindings which can be shifted must not have no modifiers,
    * nor only SHIFT as a modifier.
    */
@@ -2349,6 +2350,7 @@ update_binding (MetaKeyPref *binding,
        */
       return TRUE;
     }
+#endif
   
   changed = FALSE;
   if (keysym != combo->keysym ||

@@ -1,3 +1,8 @@
+2008-02-17  Jim Huang  <jserv.tw@gmail.com>
+
+        * src/core/prefs.c (update_binding): Allow compilation
+	when gconf mode is disabled. Closes #515019.
+
 2008-02-14  Jim Huang  <jserv.tw@gmail.com>
 
 	* src/core/display.c, src/core/util.c: fixups to allow
