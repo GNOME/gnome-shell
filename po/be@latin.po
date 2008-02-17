@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: atk.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-06 02:36+0200\n"
-"PO-Revision-Date: 2008-01-06 02:40+0200\n"
+"POT-Creation-Date: 2008-02-18 00:56+0200\n"
+"PO-Revision-Date: 2008-02-17 01:47+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: i18n@mova.org <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
@@ -67,12 +67,12 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Nielha atrymać nazvu kamputara: %s\n"
 
-#: ../src/core/display.c:204
+#: ../src/core/display.c:256
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Nie staje pašyreńnia %s, vymahanaha dziela kampazycyi"
 
-#: ../src/core/display.c:368
+#: ../src/core/display.c:438
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Niemahčyma adčynić spałučeńnie z ekranam \"%s\" systemy X Window\n"
@@ -113,61 +113,60 @@ msgid "No command %d has been defined.\n"
 msgstr "Zahad %d nie akreśleny.\n"
 
 #: ../src/core/keybindings.c:3866
-#, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Zahad terminału nie akreśleny.\n"
 
-#: ../src/core/main.c:67
+#: ../src/core/main.c:112
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Aŭtarskija pravy (C) 2001-2007 Havoc Pennington, Red Hat, Inc. dy inšyja\n"
+"Aŭtarskija pravy (C) 2001-2008 Havoc Pennington, Red Hat, Inc. dy inšyja\n"
 "Heta volnaja prahrama; kab paznajomicca z umovami, pry jakich dapuščalna "
 "jaje kapijavać, zazirni ŭ jaje krynicy.\n"
 "Na prahramu nie dajuć NIJAKAJ HARANTYI, navat harantyi HANDLOVAJ PRYDATNAŚCI "
 "albo PRYDATNAŚCI DLA AKREŚLENYCH METAŬ.\n"
 
-#: ../src/core/main.c:172
+#: ../src/core/main.c:239
 msgid "Disable connection to session manager"
 msgstr "Uklučaje spałučeńnie z kiraŭnikom sesijaŭ"
 
-#: ../src/core/main.c:178
+#: ../src/core/main.c:245
 msgid "Replace the running window manager with Metacity"
 msgstr "Zamianiaje ŭruchomlenaha kiraŭnika voknaŭ na Metacity"
 
-#: ../src/core/main.c:184
+#: ../src/core/main.c:251
 msgid "Specify session management ID"
 msgstr "Akreślivaje ID haspadarańnia sesijami"
 
 # #FIXME Słova "display" -- nie samameta, ale lepšaj versii nie pryniali. Varyjanty byli: dyspłej, dysplej. Nivodaje nie spadabałasia.
-#: ../src/core/main.c:189
+#: ../src/core/main.c:256
 msgid "X Display to use"
 msgstr "Užyvany dysplej X"
 
-#: ../src/core/main.c:195
+#: ../src/core/main.c:262
 msgid "Initialize session from savefile"
 msgstr "Inicyjavańnie sesii z zapisanaha fajłu"
 
-#: ../src/core/main.c:201
+#: ../src/core/main.c:268
 msgid "Print version"
 msgstr "Pakazvaje versiju"
 
-#: ../src/core/main.c:207
+#: ../src/core/main.c:274
 msgid "Make X calls synchronous"
 msgstr "Synchranizuj vykliki X"
 
-#: ../src/core/main.c:361
+#: ../src/core/main.c:425
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Niemahčyma prahledzieć kataloh z matyvami: %s\n"
 
-#: ../src/core/main.c:377
+#: ../src/core/main.c:441
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -175,7 +174,7 @@ msgstr ""
 "Niemahčyma znajści nivodnaha z matyvaŭ. Spraŭdź, kali łaska, ci isnuje "
 "kataloh %s i ci jość u im standartnyja matyvy.\n"
 
-#: ../src/core/main.c:452
+#: ../src/core/main.c:513
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Restart nie ŭdaŭsia: %s\n"
@@ -256,12 +255,12 @@ msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 "Padčas vyznačeńnia kolkaści rabočych abšaraŭ na %d adbyłasia pamyłka: %s\n"
 
-#: ../src/core/prefs.c:2246 ../src/core/prefs.c:2780 ../src/ui/menu.c:199
+#: ../src/core/prefs.c:2246 ../src/core/prefs.c:2782 ../src/ui/menu.c:199
 #, c-format
 msgid "Workspace %d"
 msgstr "Rabočy abšar %d"
 
-#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2446
+#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2448
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -270,7 +269,7 @@ msgstr ""
 "Vartaść \"%s\", znojdzienaja ŭ bazie źviestak kanfihuracyi, nie apisvaje "
 "pravilna klavišny skarot \"%s\"\n"
 
-#: ../src/core/prefs.c:2861
+#: ../src/core/prefs.c:2863
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Pamyłka pry vyznačeńni rabočaha abšaru %d na \"%s\": %s\n"
@@ -338,7 +337,6 @@ msgid "Failed to parse saved session file: %s\n"
 msgstr "Niemahčyma razabrać zapisany fajł sesii: %s\n"
 
 #: ../src/core/session.c:1159
-#, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "Znojdzieny atrybut <metacity_session>, kali ID sesii byŭ užo akreśleny"
 
@@ -349,7 +347,6 @@ msgstr "Nieviadomy atrybut %s unutry elementu <metacity_session>"
 
 # #FIXME nia ŭpeŭnieny ŭ terminie
 #: ../src/core/session.c:1189
-#, c-format
 msgid "nested <window> tag"
 msgstr "zahnieždžany značnik <window>"
 
@@ -398,25 +395,24 @@ msgid "Opened log file %s\n"
 msgstr "Adčynieny fajł historyi %s\n"
 
 #: ../src/core/util.c:133 ../src/tools/metacity-message.c:176
-#, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
 "Prahrama Metacity skampilavanaja biez absłuhoŭvańnia režymu z pašyranaj "
 "infarmacyjaj\n"
 
-#: ../src/core/util.c:231
+#: ../src/core/util.c:233
 msgid "Window manager: "
 msgstr "Kiraŭnik voknaŭ: "
 
-#: ../src/core/util.c:379
+#: ../src/core/util.c:385
 msgid "Bug in window manager: "
 msgstr "Pamyłka ŭ prahramie kiraŭnika voknaŭ: "
 
-#: ../src/core/util.c:408
+#: ../src/core/util.c:418
 msgid "Window manager warning: "
 msgstr "Aściaroha kiraŭnika voknaŭ: "
 
-#: ../src/core/util.c:432
+#: ../src/core/util.c:446
 msgid "Window manager error: "
 msgstr "Pamyłka kiraŭnika voknaŭ: "
 
@@ -2559,7 +2555,6 @@ msgid "_Close"
 msgstr "Za_čyni"
 
 #: ../src/ui/menu.c:208
-#, c-format
 msgid "Workspace 1_0"
 msgstr "Rabočy abšar 1_0"
 
@@ -3374,7 +3369,6 @@ msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisekund(y) dziela stvareńnia adnoj ramki vakna"
 
 #: ../src/ui/theme-viewer.c:797
-#, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Užyćcio: methacity-theme-viewer [NAZVA_MATYVU]\n"
 
@@ -3462,48 +3456,46 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "vyraz kaardynataŭ %d praanalizavany ŭ %g sekund (u siarednim %g sekund(y))\n"
 
-#: ../src/ui/theme.c:208
+#: ../src/ui/theme.c:256
 msgid "top"
 msgstr "vierch"
 
-#: ../src/ui/theme.c:210
+#: ../src/ui/theme.c:258
 msgid "bottom"
 msgstr "niz"
 
-#: ../src/ui/theme.c:212
+#: ../src/ui/theme.c:260
 msgid "left"
 msgstr "levy"
 
-#: ../src/ui/theme.c:214
+#: ../src/ui/theme.c:262
 msgid "right"
 msgstr "pravy"
 
-#: ../src/ui/theme.c:228
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "Pamier ramki nie akreślivaje pamieru \"%s\""
 
-#: ../src/ui/theme.c:247
+#: ../src/ui/theme.c:308
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "Pamier ramki nie akreślivaje pamieru \"%s\" dla kraju \"%s\""
 
-#: ../src/ui/theme.c:284
+#: ../src/ui/theme.c:345
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Kaeficyjent praporcyjaŭ knopki %g nie źmiaščajecca ŭ rezonnych miežach"
 
-#: ../src/ui/theme.c:296
-#, c-format
+#: ../src/ui/theme.c:357
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Pamier ramki nie akreślivaje ličby knopak"
 
-#: ../src/ui/theme.c:927
-#, c-format
+#: ../src/ui/theme.c:988
 msgid "Gradients should have at least two colors"
 msgstr "Hradyjenty pavinny składacca prynamsi z dvuch koleraŭ"
 
-#: ../src/ui/theme.c:1053
+#: ../src/ui/theme.c:1114
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3513,7 +3505,7 @@ msgstr ""
 "napr. gtk:fg[NORMAL], dzie NORMAL źjaŭlajecca nazvaj stanu; niemahčyma "
 "praanalizavać \"%s\""
 
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1128
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3523,17 +3515,17 @@ msgstr ""
 "dužku, napr. gtk:fg[NORMAL], dzie NORMAL heta nazva stanu; niemahčyma "
 "praanalizavać \"%s\""
 
-#: ../src/ui/theme.c:1078
+#: ../src/ui/theme.c:1139
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Niezrazumieły stan \"%s\" u specyfikacyi koleru"
 
-#: ../src/ui/theme.c:1091
+#: ../src/ui/theme.c:1152
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Niezrazumiełaje aznačeńnie koleru \"%s\" ŭ specyfikacyi"
 
-#: ../src/ui/theme.c:1121
+#: ../src/ui/theme.c:1182
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -3542,18 +3534,18 @@ msgstr ""
 "Farmatam pranikańnia źjaŭlajecca \"blend/bg_color/fg_color/alpha\", \"%s\" "
 "nie pasuje da farmatu"
 
-#: ../src/ui/theme.c:1132
+#: ../src/ui/theme.c:1193
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Niemahčyma razabrać vartaść alfa \"%s\" koleru pranikańnia"
 
-#: ../src/ui/theme.c:1142
+#: ../src/ui/theme.c:1203
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr ""
 "Vartaść alfa \"%s\" koleru pranikańnia nie źmiaščajecca pamiž 0,0 i 1,0"
 
-#: ../src/ui/theme.c:1190
+#: ../src/ui/theme.c:1251
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -3561,28 +3553,28 @@ msgstr ""
 "Farmatam pranikańnia źjaŭlajecca \"shade/base_color/factor\", \"%s\" nie "
 "pasuje da farmatu"
 
-#: ../src/ui/theme.c:1201
+#: ../src/ui/theme.c:1262
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Niemahčyma razabrać kaeficyjent pranikańnia \"%s\" koleru pranikańnia"
 
-#: ../src/ui/theme.c:1211
+#: ../src/ui/theme.c:1272
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Kaeficyjent pranikańnia \"%s\" koleru pranikańnia admoŭny"
 
-#: ../src/ui/theme.c:1241
+#: ../src/ui/theme.c:1302
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Niemahčyma razabrać koler \"%s\""
 
-#: ../src/ui/theme.c:1462
+#: ../src/ui/theme.c:1560
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, maje ŭ sabie niedazvoleny znak '%s'"
 
-#: ../src/ui/theme.c:1489
+#: ../src/ui/theme.c:1587
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -3591,13 +3583,13 @@ msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, maje nierazborlivy numar niefiksavanaj "
 "koski '%s'"
 
-#: ../src/ui/theme.c:1503
+#: ../src/ui/theme.c:1601
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, maje nierazborlivuju cełuju ličbu '%s'"
 
-#: ../src/ui/theme.c:1610
+#: ../src/ui/theme.c:1723
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -3606,44 +3598,39 @@ msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, maje nieviadomy aperatar na pačatku "
 "tekstu: \"%s\""
 
-#: ../src/ui/theme.c:1667
-#, c-format
+#: ../src/ui/theme.c:1780
 msgid "Coordinate expression was empty or not understood"
 msgstr "Vyraz, jaki akreślivaje kaardynaty, pusty albo niezrazumieły"
 
-#: ../src/ui/theme.c:1764 ../src/ui/theme.c:1774 ../src/ui/theme.c:1808
-#, c-format
+#: ../src/ui/theme.c:1891 ../src/ui/theme.c:1901 ../src/ui/theme.c:1935
 msgid "Coordinate expression results in division by zero"
 msgstr "Vyraz, jaki akreślivaje kaardynaty, maje dzialeńnie praz nul"
 
-#: ../src/ui/theme.c:1816
-#, c-format
+#: ../src/ui/theme.c:1943
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Vyraz, jaki akreślivaje kaardynaty, užyvaje aperatara dzialeńnia pa moduli z "
 "arhumentam niefiksavanaj koski"
 
-#: ../src/ui/theme.c:1872
+#: ../src/ui/theme.c:1999
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Vyraz maje aperatar \"%s\" u miescy, dzie čakali arhumentu"
 
-#: ../src/ui/theme.c:1881
-#, c-format
+#: ../src/ui/theme.c:2008
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, maje arhument u miescy, dzie čakali "
 "aperatara"
 
-#: ../src/ui/theme.c:1889
-#, c-format
+#: ../src/ui/theme.c:2016
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, zakančvajecca aperataram zamiest arhumentu"
 
-#: ../src/ui/theme.c:1899
+#: ../src/ui/theme.c:2026
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3652,45 +3639,41 @@ msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, maje arhument \"%c\" adrazu paśla arhumentu "
 "\"%c\" biez aperatara pamiž imi"
 
-#: ../src/ui/theme.c:2023 ../src/ui/theme.c:2064
+#: ../src/ui/theme.c:2173 ../src/ui/theme.c:2214
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, maje nieviadomuju źmiennuju albo stałuju \"%"
 "s\""
 
-#: ../src/ui/theme.c:2108
-#, c-format
+#: ../src/ui/theme.c:2268
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr ""
 "Parser vyrazaŭ, jakija akreślivajuć kaardynaty, pierapoŭniŭ svoj bufer."
 
-#: ../src/ui/theme.c:2137
-#, c-format
+#: ../src/ui/theme.c:2297
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, začyniaje dužka biez adpaviednaj dužki na "
 "pačatku"
 
-#: ../src/ui/theme.c:2201
-#, c-format
+#: ../src/ui/theme.c:2361
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, adčyniaje dužka biez adpaviednaj dužki na "
 "kancy"
 
-#: ../src/ui/theme.c:2212
-#, c-format
+#: ../src/ui/theme.c:2372
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "Vyraz, jaki apisvaje pałažeńnie, nia maje ani aperataraŭ, ani arhumentaŭ"
 
-#: ../src/ui/theme.c:2398 ../src/ui/theme.c:2418 ../src/ui/theme.c:2438
+#: ../src/ui/theme.c:2574 ../src/ui/theme.c:2594 ../src/ui/theme.c:2614
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Matyŭ źmiaščaŭ vyraz, jaki staŭ pryčynaj pamyłki: %s\n"
 
-#: ../src/ui/theme.c:3942
+#: ../src/ui/theme.c:4133
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3699,25 +3682,25 @@ msgstr ""
 "Pry hetym styli ramki treba padać <button function=\"%s\" state=\"%s\" "
 "draw_ops=\"niešta\"/>"
 
-#: ../src/ui/theme.c:4418 ../src/ui/theme.c:4443
+#: ../src/ui/theme.c:4609 ../src/ui/theme.c:4634
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Niama <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"niešta\"/>"
 
-#: ../src/ui/theme.c:4487
+#: ../src/ui/theme.c:4678
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Niemahčyma adčytać matyŭ \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4613 ../src/ui/theme.c:4620 ../src/ui/theme.c:4627
-#: ../src/ui/theme.c:4634 ../src/ui/theme.c:4641
+#: ../src/ui/theme.c:4804 ../src/ui/theme.c:4811 ../src/ui/theme.c:4818
+#: ../src/ui/theme.c:4825 ../src/ui/theme.c:4832
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nie akreśleny element <%s> dla matyvu \"%s\""
 
-#: ../src/ui/theme.c:4649
+#: ../src/ui/theme.c:4840
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3726,7 +3709,7 @@ msgstr ""
 "Pry typie vakna \"%s\" u matyvie \"%s\" nia vyznačany styl ramki. Dadaj "
 "element <window type=\"%s\" style_set=\"niešta\"/>"
 
-#: ../src/ui/theme.c:5016 ../src/ui/theme.c:5078 ../src/ui/theme.c:5141
+#: ../src/ui/theme.c:5207 ../src/ui/theme.c:5269 ../src/ui/theme.c:5332
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3734,7 +3717,7 @@ msgstr ""
 "Stałyja, aznačanyja karystalnikam, pavinny pačynacca vialikaj litaraj, a \"%s"
 "\" nie vykonvaje hetaj umovy"
 
-#: ../src/ui/theme.c:5024 ../src/ui/theme.c:5086 ../src/ui/theme.c:5149
+#: ../src/ui/theme.c:5215 ../src/ui/theme.c:5277 ../src/ui/theme.c:5340
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Stałaja \"%s\" užo aznačanaja"
