@@ -266,7 +266,39 @@
 
       <section id='building-osx'>
           <title>OSX</title>
-            <para></para>
+          <para>The recommended way of building Clutter on OSX is to use
+            <ulink href="http://live.gnome.org/Jhbuild">Jhbuild</ulink>,
+            following the documentation for building the GTK+ stack as shown
+            <ulink href="http://developer.imendio.com/projects/gtk-macosx/build-instructions">here</ulink>.
+          </para>
+
+          <para>
+            Jhbuild depends on SVN, which can be installed on OSX by using
+            the <ulink href="http://www.macports.org/">MacPorts</ulink>
+            project.
+          </para>
+
+          <para>
+            XCode should also be installed, either from the OSX installation
+            disk or downloading it from the Apple website.
+          </para>
+
+          <para>
+            Due to Clutter's dependency on GDK-Pixbuf, GTK+ for OSX must
+            also be built. After building GTK+, extract the files from
+            Clutter's release tar archive or check out the project from
+            SVN. Clutter OSX backend is built by passing the
+            <literal>--with-flavour=osx</literal> command line argument
+            to the configure script.
+          </para>
+
+          <para>
+            GTK-Doc is not working on OSX, so API reference generation
+            should also be disabled when building Clutter, by using
+            the <literal>--disable-docs</literal> and
+            <literal>--disable-gtk-doc</literal> command line argument
+            to the configure script.
+          </para>
 
       </section>
    </section>

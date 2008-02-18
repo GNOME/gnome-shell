@@ -1,5 +1,9 @@
 2008-02-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-docs.sgml: Add building instructions for OSX
+
+2008-02-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-animation.sgml: Fix warning
 
 	* creating-your-own-behaviours.sgml: Add a paragraph about
