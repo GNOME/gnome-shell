@@ -149,7 +149,7 @@ clutter_list_model_iter_get_value (ClutterModelIter *iter,
           return;
         }
 
-      if (!g_value_transform (value, &real_value))
+      if (!g_value_transform (iter_value, &real_value))
         {
           g_warning ("%s: Unable to make conversion from %s to %s",
                      G_STRLOC, 
