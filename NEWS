@@ -1,4 +1,23 @@
-Clutter 0.5.6 (16/02/2008)
+Clutter 0.6.0 (18/02/2008)
+==========================
+
+ * List of changes between 0.5.6 and 0.6.0
+
+   o New documentation sections inside the API reference, describing
+     the animation framework.
+
+   o New API in ClutterActor for computing the actor's vertices in
+     the plane of a given ancestor and accessors to query whether an
+     actor is scaled or rotated
+
+ * List of bug fixed
+
+   o #613 - Extend point transformation API
+   o #779 - Rounding error in ClutterBehaviourScale [Havoc Pennington]
+   o #787 - tiled textures are broken
+   o #796 - segmentation fault when setting label text
+
+Clutter 0.5.6 (11/02/2008)
 ==========================
 
  * List of changes between 0.5.4 and 0.5.6

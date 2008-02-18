@@ -56,19 +56,20 @@ See the INSTALL file. Info on specific Clutter options;
   --with-flavour=[glx/eglx/eglnative/sdl/osx]
         Select the Clutter backend: (default=glx)
 
-	  glx: Fully featured GLX backend. Using Open GL.
+	  glx:  Fully featured GLX backend. Using Open GL.
 
 	  eglx: EGL/Open GL ES backend for EGL on X windows implementations
 
-	  eglnative: EGL/Open GL ES backend on 'native windowing system' - i.e
-		     raw framebuffer. Expects EGL implementation to provide a 
-		     createNativeWindow () call. Also optionally supports 
-		     tslib for touchscreen events.
+	  eglnative:
+                EGL/Open GL ES backend on 'native windowing system' - i.e
+		raw framebuffer. Expects EGL implementation to provide a 
+		createNativeWindow () call. Also optionally supports 
+		tslib for touchscreen events.
 
-	  sdl: Basic SDL backend, using Open GL. Should provide portability
-	       to Windows and possibly other OS's. (experimental)
+	  sdl:  Basic SDL backend, using Open GL. Should provide portability
+	        to Windows and possibly other OS's. (experimental)
 
-          osx: OS X backend. (experimental)
+          osx:  OS X backend. (experimental)
 
 
 VERSIONING
@@ -91,8 +92,8 @@ only used on the SVN repository.
 HACKING
 ====
 
-If you want to hack on and improve clutter check the contained TODO
-file for pending tasks and HACKING for general coding guidelines.
+If you want to hack on and improve Clutter, check the contained TODO
+file for pending tasks, and HACKING for general coding guidelines.
 
 
 BUGS
