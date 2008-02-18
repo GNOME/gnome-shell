@@ -78,7 +78,7 @@ Clutter uses the common "Linux kernel" versioning system, where
 even-numbered minor versions are stable and odd-numbered minor
 versions are development snapshots.
 
-Different Minor versions break both API and ABI but are paralell
+Different Minor versions break both API and ABI but are parallel
 installable. The same Minor version with differing Micro version is
 expected to be ABI compatible with other micro versions. Though this
 is not guarenteed, especially for odd numbered minor releases, we'll
@@ -108,7 +108,7 @@ In the report you should include:
 * which version of Clutter you are using;
 * which version of GLib, GdkPixbuf and OpenGL you are using;
 * which video card and which drivers you are using, including output of
-  glxinfo and xdpyinfo.
+  glxinfo and xdpyinfo;
 * how to reproduce the bug.
 
 If you cannot reproduce the bug with one of the tests that come with Clutter
