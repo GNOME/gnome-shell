@@ -1,3 +1,11 @@
+2008-02-18  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/window.c (warp_grab_pointer): When
+	resizing a window with the keyboard, stay one 
+	pixels from the edges so that the cursor remains
+	resting on a window edge even if we escape,
+	whatever side it was on. Closes #436257.
+
 2008-02-17  Thomas Thurman  <tthurman@gnome.org>
 
         * tools/commit-wrangler.py: added new script to manage commits

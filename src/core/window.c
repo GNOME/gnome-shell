@@ -7784,7 +7784,7 @@ warp_grab_pointer (MetaWindow          *window,
 
       case META_GRAB_OP_KEYBOARD_RESIZING_S:
         *x = rect.width / 2;
-        *y = rect.height;
+        *y = rect.height - 1;
         break;
 
       case META_GRAB_OP_KEYBOARD_RESIZING_N:
@@ -7798,23 +7798,23 @@ warp_grab_pointer (MetaWindow          *window,
         break;
 
       case META_GRAB_OP_KEYBOARD_RESIZING_E:
-        *x = rect.width;
+        *x = rect.width - 1;
         *y = rect.height / 2;
         break;
 
       case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-        *x = rect.width;
-        *y = rect.height;
+        *x = rect.width - 1;
+        *y = rect.height - 1;
         break;
 
       case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-        *x = rect.width;
+        *x = rect.width - 1;
         *y = 0;
         break;
 
       case META_GRAB_OP_KEYBOARD_RESIZING_SW:
         *x = 0;
-        *y = rect.height;
+        *y = rect.height - 1;
         break;
 
       case META_GRAB_OP_KEYBOARD_RESIZING_NW:
