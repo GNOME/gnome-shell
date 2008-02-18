@@ -1,5 +1,11 @@
 2008-02-18  Thomas Thurman  <tthurman@gnome.org>
 
+        * configure.in: if we have libSM and its headers,
+	that means we did find it, not that we didn't.
+	Closes #328210.
+
+2008-02-18  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/window.c (warp_grab_pointer): When
 	resizing a window with the keyboard, stay one 
 	pixels from the edges so that the cursor remains
