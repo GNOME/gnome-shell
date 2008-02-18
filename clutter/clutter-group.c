@@ -170,7 +170,7 @@ clutter_group_query_coords (ClutterActor        *self,
 	  ClutterActor    *child = CLUTTER_ACTOR(child_item->data);
 	  ClutterActorBox  cbox;
 
-#if 0 /* Leave this post 0.6 ??? */
+#if 0     /* XXX - Leave this post 0.6 ??? */
 	  if (clutter_actor_is_scaled (child) ||
 	      clutter_actor_is_rotated (child))
 	    {

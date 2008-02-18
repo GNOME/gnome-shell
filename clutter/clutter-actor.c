@@ -260,11 +260,13 @@ static guint actor_signals[LAST_SIGNAL] = { 0, };
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
 static void _clutter_actor_apply_modelview_transform           (ClutterActor *self);
-static void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self, ClutterActor *ancestor);
+static void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
+                                                                ClutterActor *ancestor);
 
-static void clutter_actor_shader_pre_paint (ClutterActor *actor,
-                                            gboolean      repeat);
+static void clutter_actor_shader_pre_paint  (ClutterActor *actor,
+                                             gboolean      repeat);
 static void clutter_actor_shader_post_paint (ClutterActor *actor);
+
 static void destroy_shader_data (ClutterActor *self);
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
@@ -577,8 +579,6 @@ clutter_actor_transform_point_relative (ClutterActor *actor,
   ClutterFixed           mtx[16];
   ClutterActorPrivate   *priv;
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
   priv = actor->priv;
 
   cogl_push_matrix();
@@ -629,16 +629,22 @@ clutter_actor_transform_point (ClutterActor *actor,
 /**
  * clutter_actor_apply_relative_transform_to_point:
  * @self: A #ClutterActor
- * @ancestor: A #ClutterActor ancestor
+ * @ancestor: A #ClutterActor ancestor, or %NULL to use the
+ *   default #ClutterStage
  * @point: A point as #ClutterVertex
  * @vertex: The translated #ClutterVertex
  *
  * Transforms @point in coordinates relative to the actor into
  * ancestor-relative coordinates using the relevant transform
- * stack (i.e. scale, rotation, etc)
+ * stack (i.e. scale, rotation, etc).
+ *
+ * If @ancestor is %NULL the ancestor will be the #ClutterStage. In
+ * this case, the coordinates returned will be the coordinates on
+ * the stage before the projection is applied. This is different from
+ * the behaviour of clutter_actor_apply_transform_to_point().
  *
  * Since: 0.6
- **/
+ */
 void
 clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
 						 ClutterActor  *ancestor,
@@ -649,6 +655,7 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
   ClutterFixed  w = CFX_ONE;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
 
   /* First we tranform the point using the OpenGL modelview matrix */
   clutter_actor_transform_point_relative (self, ancestor,
@@ -787,9 +794,9 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
  * for all the vertices in one go).
  */
 static void
-clutter_actor_transform_vertices (ClutterActor    * self,
-				  ClutterVertex     verts[4],
-				  ClutterFixed      w[4])
+clutter_actor_transform_vertices (ClutterActor  *self,
+				  ClutterVertex  verts[4],
+				  ClutterFixed   w[4])
 {
   ClutterFixed           mtx[16];
   ClutterFixed           _x, _y, _z, _w;
@@ -862,12 +869,13 @@ clutter_actor_transform_vertices (ClutterActor    * self,
 /**
  * clutter_actor_get_relative_vertices:
  * @self: A #ClutterActor
- * @ancestor: A #ClutterActor to calculate the vertices against.
+ * @ancestor: A #ClutterActor to calculate the vertices against, or %NULL
+ *   to use the default #ClutterStage
  * @verts: return location for an array of 4 #ClutterVertex in which
  *   to store the result.
  *
  * Calculates the transformed coordinates of the four corners of the
- * actor in the plane of the ancestor. The returned vertices relate to
+ * actor in the plane of @ancestor. The returned vertices relate to
  * the #ClutterActorBox coordinates as follows:
  * <itemizedlist>
  *   <listitem><para>v[0] contains (x1, y1)</para></listitem>
@@ -876,12 +884,17 @@ clutter_actor_transform_vertices (ClutterActor    * self,
  *   <listitem><para>v[3] contains (x2, y2)</para></listitem>
  * </itemizedlist>
  *
+ * If @ancestor is %NULL the ancestor will be the #ClutterStage. In
+ * this case, the coordinates returned will be the coordinates on
+ * the stage before the projection is applied. This is different from
+ * the behaviour of clutter_actor_get_vertices().
+ *
  * Since: 0.6
  */
 void
-clutter_actor_get_relative_vertices (ClutterActor    *self,
-				     ClutterActor    *ancestor,
-				     ClutterVertex    verts[4])
+clutter_actor_get_relative_vertices (ClutterActor  *self,
+				     ClutterActor  *ancestor,
+				     ClutterVertex  verts[4])
 {
   ClutterFixed           v[4];
   ClutterFixed           w[4];
@@ -889,6 +902,7 @@ clutter_actor_get_relative_vertices (ClutterActor    *self,
   ClutterActor          *stage;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
 
   priv = self->priv;
 
@@ -948,19 +962,20 @@ clutter_actor_get_relative_vertices (ClutterActor    *self,
  * store the result.
  *
  * Calculates the transformed screen coordinates of the four corners of
- * the actor; the returned vertices relate to the ClutterActorBox
+ * the actor; the returned vertices relate to the #ClutterActorBox
  * coordinates  as follows:
- *
- *  v[0] contains (x1, y1)
- *  v[1] contains (x2, y1)
- *  v[2] contains (x1, y2)
- *  v[3] contains (x2, y2)
+ * <itemizedlist>
+ *   <listitem><para>v[0] contains (x1, y1)</para></listitem>
+ *   <listitem><para>v[1] contains (x2, y1)</para></listitem>
+ *   <listitem><para>v[2] contains (x1, y2)</para></listitem>
+ *   <listitem><para>v[3] contains (x2, y2)</para></listitem>
+ * </itemizedlist>
  *
  * Since: 0.4
- **/
+ */
 void
-clutter_actor_get_vertices (ClutterActor    *self,
-                            ClutterVertex    verts[4])
+clutter_actor_get_vertices (ClutterActor  *self,
+                            ClutterVertex  verts[4])
 {
   ClutterFixed           mtx_p[16];
   ClutterFixed           v[4];
@@ -1137,8 +1152,8 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
  * of the caller to do so as appropriate
  */
 static void
-_clutter_actor_apply_modelview_transform_recursive (ClutterActor * self,
-						    ClutterActor * ancestor)
+_clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
+						    ClutterActor *ancestor)
 {
   ClutterActor * parent;
 

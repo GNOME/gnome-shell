@@ -1,3 +1,9 @@
+2008-02-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c: Document the fact that ancestor can
+	be NULL in the relative transformation API, and what are the
+	effects.
+
 2008-02-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/pango/pangoclutter-render.c: (draw_glyph):
