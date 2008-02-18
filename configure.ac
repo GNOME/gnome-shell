@@ -2,8 +2,8 @@
 # An odd micro number indicates in-progress development, (eg. from CVS)
 # An even micro number indicates a released version.
 m4_define([clutter_major_version], [0])
-m4_define([clutter_minor_version], [6])
-m4_define([clutter_micro_version], [0])
+m4_define([clutter_minor_version], [7])
+m4_define([clutter_micro_version], [1])
 
 m4_define([clutter_version],
           [clutter_major_version.clutter_minor_version.clutter_micro_version])

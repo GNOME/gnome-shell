@@ -1,5 +1,10 @@
 2008-02-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac:
+	* README: Post stable release bump to 0.7.1
+
+2008-02-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* README:
 	* NEWS: Release 0.6.0
 
