@@ -5594,41 +5594,41 @@ void
 clutter_actor_get_box_from_vertices (ClutterVertex    vtx[4],
 				     ClutterActorBox *box)
 {
-  ClutterUnit x1, x2, y1, y2;
+  ClutterUnit x_1, x_2, y_1, y_2;
 
   /* 4-way min/max */
-  x1 = vtx[0].x;
-  y1 = vtx[0].y;
-  if (vtx[1].x < x1)
-    x1 = vtx[1].x;
-  if (vtx[2].x < x1)
-    x1 = vtx[2].x;
-  if (vtx[3].x < x1)
-    x1 = vtx[3].x;
-  if (vtx[1].y < y1)
-    y1 = vtx[1].y;
-  if (vtx[2].y < y1)
-    y1 = vtx[2].y;
-  if (vtx[3].y < y1)
-    y1 = vtx[3].y;
+  x_1 = vtx[0].x;
+  y_1 = vtx[0].y;
+  if (vtx[1].x < x_1)
+    x_1 = vtx[1].x;
+  if (vtx[2].x < x_1)
+    x_1 = vtx[2].x;
+  if (vtx[3].x < x_1)
+    x_1 = vtx[3].x;
+  if (vtx[1].y < y_1)
+    y_1 = vtx[1].y;
+  if (vtx[2].y < y_1)
+    y_1 = vtx[2].y;
+  if (vtx[3].y < y_1)
+    y_1 = vtx[3].y;
 
-  x2 = vtx[0].x;
-  y2 = vtx[0].y;
-  if (vtx[1].x > x2)
-    x2 = vtx[1].x;
-  if (vtx[2].x > x2)
-    x2 = vtx[2].x;
-  if (vtx[3].x > x2)
-    x2 = vtx[3].x;
-  if (vtx[1].y > y2)
-    y2 = vtx[1].y;
-  if (vtx[2].y > y2)
-    y2 = vtx[2].y;
-  if (vtx[3].y > y2)
-    y2 = vtx[3].y;
+  x_2 = vtx[0].x;
+  y_2 = vtx[0].y;
+  if (vtx[1].x > x_2)
+    x_2 = vtx[1].x;
+  if (vtx[2].x > x_2)
+    x_2 = vtx[2].x;
+  if (vtx[3].x > x_2)
+    x_2 = vtx[3].x;
+  if (vtx[1].y > y_2)
+    y_2 = vtx[1].y;
+  if (vtx[2].y > y_2)
+    y_2 = vtx[2].y;
+  if (vtx[3].y > y_2)
+    y_2 = vtx[3].y;
 
-  box->x1 = x1;
-  box->x2 = x2;
-  box->y1 = y1;
-  box->y2 = y2;
+  box->x1 = x_1;
+  box->x2 = x_2;
+  box->y1 = y_1;
+  box->y2 = y_2;
 }
