@@ -32,7 +32,7 @@
 
   </para>
 
-  <example id="clutter-actor-query-coords-example">
+  <example id="clutter-behaviour-alpha-notify-example">
     <para>This example demonstrates a behaviour that produces a vertical
     'wipe' like affect by modifying the actors clip region</para>
 
@@ -73,5 +73,9 @@ clutter_behaviour_foo_alpha_notify (ClutterBehaviour *behaviour,
   </example>
 
   <para>
+  If the new behaviour is meant to set an initial state on the
+  actors to which its applied to, then the ClutterBehaviour::applied
+  signal class handler should be overridden.
   </para>
+
 </chapter>

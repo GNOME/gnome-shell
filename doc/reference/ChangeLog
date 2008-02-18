@@ -1,7 +1,14 @@
+2008-02-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-animation.sgml: Fix warning
+
+	* creating-your-own-behaviours.sgml: Add a paragraph about
+	setting an initial state on the actors.
+
 2008-02-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter-docs.sgml:
-        Minor tweakery.
+	Minor tweakery.
 
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -28,7 +35,7 @@
 2008-02-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter-docs.sgml:
-        Overhaul the overview.
+	Overhaul the overview.
 
 2008-02-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -54,17 +61,17 @@
 2008-02-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter-animation.sgml:
-        Add new animation docs. Needs work.
+	Add new animation docs. Needs work.
 
 2008-02-13  Matthew Allum  <mallum@openedhand.com>
 
 	* Makefile.am:
 	* clutter-docs.sgml:
-        Add new appendix + FIXME for building
+	Add new appendix + FIXME for building
 	* creating-your-own-behaviours.sgml:
-        Add new initial doc on custom behaviour creation.
+	Add new initial doc on custom behaviour creation.
 	* subclassing-ClutterActor.sgml:
-        Add FIXME notes.
+	Add FIXME notes.
 
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 

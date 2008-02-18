@@ -501,10 +501,10 @@ main (int argc, char *argv[])
   together.
   </para>
 
-  <warn><para>Combining behaviours that effect the same actor properties
+  <warning><para>Combining behaviours that effect the same actor properties
   (i.e two separate paths) will cause unexpected results. The values
   will not be merged in any way with essentially a the last applied
-  behaviour taking precedence.</para></warn>
+  behaviour taking precedence.</para></warning>
 
      <para>
      Tips for implementing a new behaviour can be found <link
