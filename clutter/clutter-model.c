@@ -437,9 +437,6 @@ clutter_model_resort (ClutterModel *model)
   g_return_if_fail (CLUTTER_IS_MODEL (model));
   priv = model->priv;
 
-  if (!priv->sort_func)
-    return;
-
   klass = CLUTTER_MODEL_GET_CLASS (model);
 
   if (klass->resort)

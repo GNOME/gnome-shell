@@ -1,3 +1,9 @@
+2008-02-19  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-model.c: (clutter_model_resort):
+	Don't return when there's no sort function set, leave that to the
+	model sub-class
+
 2008-02-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac:
