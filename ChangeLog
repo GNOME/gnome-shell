@@ -1,3 +1,8 @@
+2008-02-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* src/core/window.h: Make skip-taskbar windows appear in the
+	Ctrl-Alt-Tab list. Closes #106249.
+
 2008-02-18  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: if we have libSM and its headers,
