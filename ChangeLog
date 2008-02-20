@@ -1,5 +1,10 @@
 2008-02-20  Tomas Frydrych  <tf@openedhand.com>
 
+	* clutter/Makefile.am:
+	Added libclutter_ ... _la_DEPENDENCIES to fix dependency tracking.
+
+2008-02-20  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter/x11/clutter-x11.h:
 	* clutter/x11/clutter-backend-x11.c:
 	(clutter_x11_set_display):

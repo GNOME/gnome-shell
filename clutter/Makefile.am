@@ -180,6 +180,13 @@ libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
   json/libclutter-json.la \
   $(backendextralib)
 
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
+  pango/libpangoclutter.la \
+  $(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
+  cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
+  json/libclutter-json.la \
+  $(backendextralib)
+
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(source_c) \
 	$(source_h) \
