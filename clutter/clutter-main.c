@@ -115,9 +115,9 @@ clutter_redraw (void)
 {
   ClutterMainContext *ctx;
   ClutterActor       *stage;
-  static GTimer      *timer = NULL; 
+  static GTimer      *timer = NULL;
   static guint        timer_n_frames = 0;
-  
+
   ctx  = clutter_context_get_default ();
 
   stage = _clutter_backend_get_stage (ctx->backend);
@@ -152,7 +152,7 @@ clutter_redraw (void)
       CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
-  /* Call through to the actual backend to do the painting down from  
+  /* Call through to the actual backend to do the painting down from
    * the stage. It will likely need to swap buffers, vblank sync etc
    * which will be windowing system dependant.
   */
@@ -239,7 +239,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* Disable dithering (if any) when doing the painting in pick mode */
   glDisable (GL_DITHER);
 
-  /* Render the entire scence in pick mode - just single colored silhouette's  
+  /* Render the entire scence in pick mode - just single colored silhouette's
    * are drawn offscreen (as we never swap buffers)
   */
   context->pick_mode = mode;
@@ -249,11 +249,11 @@ _clutter_do_pick (ClutterStage   *stage,
   /* Calls should work under both GL and GLES, note GLES needs RGBA */
   glGetIntegerv(GL_VIEWPORT, viewport);
 
-  /* Below to be safe, particularly on GL ES. an EGL wait call or full 
-   * could be nicer.  
+  /* Below to be safe, particularly on GL ES. an EGL wait call or full
+   * could be nicer.
   */
-  glFinish(); 		
-  /* glEnable (GL_DITHER); we never enabled this originally, so its 
+  glFinish();
+  /* glEnable (GL_DITHER); we never enabled this originally, so its
      probably not safe to then enable it */
 
   glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
@@ -480,7 +480,7 @@ clutter_threads_dispatch_free (gpointer data)
  * removed from the list of event sources and will not be called again.
  *
  * This variant of g_idle_add_full() calls @function with the Clutter lock
- * held. It can be thought of a MT-safe version for Clutter actors for the 
+ * held. It can be thought of a MT-safe version for Clutter actors for the
  * following use case, where you have to worry about idle_callback()
  * running in thread A and accessing @self after it has been finalized
  * in thread B:
@@ -572,8 +572,8 @@ clutter_threads_add_idle (GSourceFunc func,
  * @notify: function to call when the timeout source is removed
  *
  * Sets a function to be called at regular intervals holding the Clutter lock,
- * with the given priority.  The function is called repeatedly until it 
- * returns %FALSE, at which point the timeout is automatically destroyed 
+ * with the given priority.  The function is called repeatedly until it
+ * returns %FALSE, at which point the timeout is automatically destroyed
  * and the function will not be called again.  The @notify function is
  * called when the timeout is destroyed.  The first call to the
  * function will be at the end of the first @interval.
@@ -584,7 +584,7 @@ clutter_threads_add_idle (GSourceFunc func,
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
  *
- * This variant of g_timeout_add_full() can be thought of a MT-safe version 
+ * This variant of g_timeout_add_full() can be thought of a MT-safe version
  * for Clutter actors. See also clutter_threads_add_idle_full().
  *
  * Return value: the ID (greater than 0) of the event source.
@@ -669,7 +669,7 @@ clutter_threads_leave (void)
 
 /**
  * clutter_get_debug_enabled:
- * 
+ *
  * Check if clutter has debugging turned on.
  *
  * Return value: TRUE if debugging is turned on, FALSE otherwise.
@@ -872,7 +872,7 @@ post_parse_hook (GOptionContext  *context,
     retval = TRUE;
 
   clutter_is_initialized = retval;
-  
+
   return retval;
 }
 
@@ -902,10 +902,10 @@ clutter_get_option_group (void)
                               "Show Clutter Options",
                               NULL,
                               NULL);
-  
+
   g_option_group_set_parse_hooks (group, pre_parse_hook, post_parse_hook);
   g_option_group_add_entries (group, clutter_args);
-  
+
   /* add backend-specific options */
   _clutter_backend_add_options (context->backend, group);
 
@@ -964,7 +964,7 @@ clutter_init_with_args (int            *argc,
     return CLUTTER_INIT_SUCCESS;
 
   clutter_base_init ();
-  
+
   if (argc && *argc > 0 && *argv)
     g_set_prgname ((*argv)[0]);
 
@@ -1018,7 +1018,7 @@ clutter_parse_args (int    *argc,
 
   option_context = g_option_context_new (NULL);
   g_option_context_set_ignore_unknown_options (option_context, TRUE);
-  g_option_context_set_help_enabled (option_context, FALSE); 
+  g_option_context_set_help_enabled (option_context, FALSE);
 
   /* Initiate any command line options from the backend */
 
@@ -1060,7 +1060,7 @@ clutter_init (int    *argc,
     return CLUTTER_INIT_SUCCESS;
 
   clutter_base_init ();
-  
+
   if (argc && *argc > 0 && *argv)
     g_set_prgname ((*argv)[0]);
 
@@ -1075,7 +1075,7 @@ clutter_init (int    *argc,
     }
 
   /* Note, creates backend if not already existing (though parse args will
-   * have likely created it)  
+   * have likely created it)
    */
   context = clutter_context_get_default ();
 
@@ -1095,7 +1095,7 @@ clutter_init (int    *argc,
   /* finally features - will call to backend and cogl */
   _clutter_feature_init ();
 
-  clutter_stage_set_title (CLUTTER_STAGE(clutter_stage_get_default()), 
+  clutter_stage_set_title (CLUTTER_STAGE(clutter_stage_get_default()),
 			   g_get_prgname());
 
   return CLUTTER_INIT_SUCCESS;
@@ -1109,7 +1109,7 @@ _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
 {
   gboolean continue_emission;
   gboolean signal_handled;
-      
+
   signal_handled = g_value_get_boolean (handler_return);
   g_value_set_boolean (return_accu, signal_handled);
   continue_emission = !signal_handled;
@@ -1143,7 +1143,7 @@ event_click_count_generate (ClutterEvent *event)
          * existing click count
          */
         if (event->button.time < previous_time + double_click_time &&
-            (ABS (event->button.x - previous_x) <= double_click_distance) && 
+            (ABS (event->button.x - previous_x) <= double_click_distance) &&
             (ABS (event->button.y - previous_y) <= double_click_distance)
             && event->button.button == previous_button_number)
           {
@@ -1154,7 +1154,7 @@ event_click_count_generate (ClutterEvent *event)
             click_count=1;
             previous_button_number = event->button.button;
           }
-      
+
         /* store time and position for this click for comparison with next event */
         previous_time = event->button.time;
         previous_x    = event->button.x;
@@ -1170,7 +1170,7 @@ event_click_count_generate (ClutterEvent *event)
 }
 
 
-static inline void 
+static inline void
 emit_event (ClutterEvent *event,
             gboolean      is_key_event)
 {
@@ -1197,7 +1197,7 @@ emit_event (ClutterEvent *event,
   while (actor && n_tree_events < MAX_EVENT_DEPTH)
     {
       ClutterActor *parent;
-      
+
       parent = clutter_actor_get_parent (actor);
 
       if (clutter_actor_get_reactive (actor) ||
@@ -1230,7 +1230,7 @@ done:
 #undef MAX_EVENT_DEPTH
 }
 
-static inline void 
+static inline void
 emit_pointer_event (ClutterEvent *event)
 {
   /* Using the global variable directly, since it has to be initialized
@@ -1245,7 +1245,7 @@ emit_pointer_event (ClutterEvent *event)
     emit_event (event, FALSE);
 }
 
-static inline void 
+static inline void
 emit_keyboard_event (ClutterEvent *event)
 {
   ClutterMainContext *context = ClutterCntx;
@@ -1280,20 +1280,20 @@ generate_enter_leave_events (ClutterEvent *event)
             {
               cev.crossing.type    = CLUTTER_LEAVE;
               cev.crossing.time    = event->any.time;
-              cev.crossing.flags   = 0; 
+              cev.crossing.flags   = 0;
               cev.crossing.x       = event->motion.x;
               cev.crossing.y       = event->motion.y;
               cev.crossing.source  = context->motion_last_actor;
               /* unref in free  */
               cev.crossing.related = motion_current_actor;
 
-              g_queue_push_head (context->events_queue, 
+              g_queue_push_head (context->events_queue,
                                  clutter_event_copy (&cev));
             }
 
           cev.crossing.type    = CLUTTER_ENTER;
           cev.crossing.time    = event->any.time;
-          cev.crossing.flags   = 0; 
+          cev.crossing.flags   = 0;
           cev.crossing.x       = event->motion.x;
           cev.crossing.y       = event->motion.y;
           cev.crossing.source  = motion_current_actor;
@@ -1308,7 +1308,7 @@ generate_enter_leave_events (ClutterEvent *event)
               cev.crossing.related = NULL;
             }
 
-          g_queue_push_head (context->events_queue, 
+          g_queue_push_head (context->events_queue,
 			     clutter_event_copy (&cev));
         }
     }
@@ -1332,7 +1332,7 @@ generate_enter_leave_events (ClutterEvent *event)
   context->motion_last_actor = motion_current_actor;
 }
 
-/** 
+/**
  * clutter_do_event
  * @event: a #ClutterEvent.
  *
@@ -1343,9 +1343,9 @@ generate_enter_leave_events (ClutterEvent *event)
 void
 clutter_do_event (ClutterEvent *event)
 {
-  /* FIXME: This should probably be clutter_cook_event() - it would 
-   * take a raw event from the backend and 'cook' it so its more tasty. 
-   * 
+  /* FIXME: This should probably be clutter_cook_event() - it would
+   * take a raw event from the backend and 'cook' it so its more tasty.
+   *
   */
   ClutterMainContext  *context;
   ClutterBackend      *backend;
@@ -1481,15 +1481,15 @@ clutter_do_event (ClutterEvent *event)
                 }
 
               /* Map the event to a reactive actor */
-              actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
-                                        x, y, 
+              actor = _clutter_do_pick (CLUTTER_STAGE (stage),
+                                        x, y,
                                         CLUTTER_PICK_REACTIVE);
 
               event->any.source = actor;
               if (!actor)
                 break;
             }
-          else 
+          else
             {
               /* use the source already set in the synthetic event */
               actor = event->any.source;
@@ -1501,7 +1501,7 @@ clutter_do_event (ClutterEvent *event)
            * (signalling just the stage). Should be big help for gles.
            */
 
-          CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
+          CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p",
                         x, y, actor);
 
           if (event->type == CLUTTER_MOTION)
@@ -1529,7 +1529,7 @@ clutter_do_event (ClutterEvent *event)
     }
 }
 
-/** 
+/**
  * clutter_get_actor_by_gid
  * @id: a #ClutterActor ID.
  *
@@ -1591,7 +1591,7 @@ clutter_get_default_frame_rate (void)
   ClutterMainContext *context;
 
   context = clutter_context_get_default ();
-  
+
   return context->frame_rate;
 }
 
@@ -1645,7 +1645,7 @@ clutter_grab_pointer (ClutterActor *actor)
   ClutterMainContext *context;
 
   g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
-  
+
   context = clutter_context_get_default ();
 
   if (context->pointer_grab_actor == actor)
@@ -1730,7 +1730,7 @@ clutter_grab_keyboard (ClutterActor *actor)
   ClutterMainContext *context;
 
   g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
-  
+
   context = clutter_context_get_default ();
 
   if (context->keyboard_grab_actor == actor)
@@ -1787,7 +1787,7 @@ clutter_get_keyboard_grab (void)
 
 /**
  * clutter_get_motion_events_frequency:
- * 
+ *
  * Retrieves the number of motion events per second that are delivered
  * to the stage.
  *
@@ -1805,7 +1805,7 @@ clutter_get_motion_events_frequency (void)
   if (G_LIKELY (context->motion_frequency == 0))
     {
       guint frequency;
-      
+
       frequency = clutter_default_fps / 4;
       frequency = CLAMP (frequency, 20, 45);
 

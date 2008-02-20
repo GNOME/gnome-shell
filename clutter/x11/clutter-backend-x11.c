@@ -103,19 +103,27 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  if (clutter_display_name)
+  /*
+   * Only open connection if not already set by prior call to
+   * clutter_x11_set_display()
+   */
+  if (!backend_x11->xdpy)
     {
-      CLUTTER_NOTE (BACKEND, "XOpenDisplay on `%s'", clutter_display_name);
-      backend_x11->xdpy = XOpenDisplay (clutter_display_name);
-    }
-  else
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to open display. You have to set the DISPLAY "
-                   "environment variable, or use the --display command "
-                   "line argument");
-      return FALSE;
+      if (clutter_display_name)
+	{
+	  CLUTTER_NOTE (BACKEND, "XOpenDisplay on `%s'",
+			clutter_display_name);
+	  backend_x11->xdpy = XOpenDisplay (clutter_display_name);
+	}
+      else
+	{
+	  g_set_error (error, CLUTTER_INIT_ERROR,
+		       CLUTTER_INIT_ERROR_BACKEND,
+		       "Unable to open display. You have to set the DISPLAY "
+		       "environment variable, or use the --display command "
+		       "line argument");
+	  return FALSE;
+	}
     }
 
   if (backend_x11->xdpy)
@@ -130,12 +138,12 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
       else
         backend_x11->xscreen = ScreenOfDisplay (backend_x11->xdpy,
                                                 clutter_screen);
-      
+
       backend_x11->xscreen_num = XScreenNumberOfScreen (backend_x11->xscreen);
 
       backend_x11->xwin_root = RootWindow (backend_x11->xdpy,
                                            backend_x11->xscreen_num);
-      
+
       backend_x11->display_name = g_strdup (clutter_display_name);
 
       dpi = (((double) DisplayHeight (backend_x11->xdpy, backend_x11->xscreen_num) * 25.4)
@@ -163,7 +171,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
     }
 
   g_free (clutter_display_name);
-  
+
   CLUTTER_NOTE (BACKEND,
                 "X Display `%s'[%p] opened (screen:%d, root:%u, dpi:%f)",
                 backend_x11->display_name,
@@ -244,7 +252,7 @@ clutter_backend_x11_dispose (GObject *gobject)
   if (backend_x11->stage)
     {
       CLUTTER_NOTE (BACKEND, "Disposing the main stage");
-      
+
       /* we unset the private flag on the stage so we can safely
        * destroy it without a warning from clutter_actor_destroy()
        */
@@ -253,7 +261,7 @@ clutter_backend_x11_dispose (GObject *gobject)
       clutter_actor_destroy (backend_x11->stage);
       backend_x11->stage = NULL;
     }
- 
+
   CLUTTER_NOTE (BACKEND, "Removing the event source");
   _clutter_backend_x11_events_uninit (CLUTTER_BACKEND (backend_x11));
 
@@ -280,7 +288,7 @@ clutter_backend_x11_constructor (GType                  gtype,
 
   g_warning ("Attempting to create a new backend object. This should "
              "never happen, so we return the singleton instance.");
-  
+
   return g_object_ref (backend_singleton);
 }
 
@@ -366,7 +374,7 @@ clutter_x11_untrap_x_errors (void)
 
 /**
  * clutter_x11_get_default_display:
- * 
+ *
  * Retrieves the pointer to the default display.
  *
  * Return value: the default display
@@ -386,8 +394,46 @@ clutter_x11_get_default_display (void)
 }
 
 /**
+ * clutter_x11_set_display:
+ * @xdpy: pointer to a X display connection.
+ * Sets the display connection clutter should use; must be called
+ * before clutter_init().
+ *
+ * Since: 0.8
+ */
+void
+clutter_x11_set_display (Display *xdpy)
+{
+  if (!xdpy)
+    return;
+
+  if (!backend_singleton)
+    {
+      /*
+       * This creates the singleton objects
+       */
+      clutter_context_get_default ();
+
+      if (!backend_singleton)
+	{
+	  g_critical ("X11 backend could not be initialised.");
+	  return;
+	}
+    }
+
+  if (backend_singleton->xdpy)
+    {
+      g_critical ("Display connection already exists. You can only call "
+		  "clutter_x11_set_display() once before clutter_init()\n");
+      return;
+    }
+
+  backend_singleton->xdpy = xdpy;
+}
+
+/**
  * clutter_x11_get_default_screen:
- * 
+ *
  * Gets the number of the default X Screen object.
  *
  * Return value: the number of the default screen
@@ -408,7 +454,7 @@ clutter_x11_get_default_screen (void)
 
 /**
  * clutter_x11_get_root_window:
- * 
+ *
  * Retrieves the root window.
  *
  * Return value: the id of the root window

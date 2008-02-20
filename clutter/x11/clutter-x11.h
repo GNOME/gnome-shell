@@ -85,6 +85,7 @@ gint     clutter_x11_untrap_x_errors     (void);
 Display *clutter_x11_get_default_display (void);
 int      clutter_x11_get_default_screen  (void);
 Window   clutter_x11_get_root_window     (void);
+void     clutter_x11_set_display         (Display * xdpy);
 
 Window       clutter_x11_get_stage_window  (ClutterStage *stage);
 XVisualInfo *clutter_x11_get_stage_visual  (ClutterStage *stage);
