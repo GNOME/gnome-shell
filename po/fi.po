@@ -9,13 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-14 07:24+0300\n"
+"POT-Creation-Date: 2008-02-20 07:58+0300\n"
 "PO-Revision-Date: 2007-02-16 20:03+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
@@ -251,12 +252,12 @@ msgstr "%d, joka on GConf-avaimessa %s, ei ole välillä 0 - %d\n"
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Virhe työtilojen määrän asettamisessa arvoon %d: %s\n"
 
-#: ../src/core/prefs.c:2246 ../src/core/prefs.c:2780 ../src/ui/menu.c:199
+#: ../src/core/prefs.c:2246 ../src/core/prefs.c:2782 ../src/ui/menu.c:199
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
 
-#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2446
+#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2448
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -265,7 +266,7 @@ msgstr ""
 "\"%s\", joka on asetustietokannassa, ei ole kelvollinen näppäinsidonnan \"%s"
 "\" arvo\n"
 
-#: ../src/core/prefs.c:2861
+#: ../src/core/prefs.c:2863
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
@@ -397,19 +398,19 @@ msgstr "Lokitiedosto %s avattu\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity on käännetty ilman tukea monisanaisille ilmoituksille\n"
 
-#: ../src/core/util.c:231
+#: ../src/core/util.c:233
 msgid "Window manager: "
 msgstr "Ikkunointiohjelma:"
 
-#: ../src/core/util.c:379
+#: ../src/core/util.c:385
 msgid "Bug in window manager: "
 msgstr "Vika ikkunointiohjelmassa."
 
-#: ../src/core/util.c:408
+#: ../src/core/util.c:418
 msgid "Window manager warning: "
 msgstr "Ikkunointiohjelman varoitus:"
 
-#: ../src/core/util.c:432
+#: ../src/core/util.c:446
 msgid "Window manager error: "
 msgstr "Ikkunointiohjelmavirhe:"
 
