@@ -1,3 +1,8 @@
+2008-02-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-timeline.c (clutter_timeline_set_delay): Relax
+	the condition to allow 0 msecs of delay (meaning: no delay).
+
 2008-02-20  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/Makefile.am:

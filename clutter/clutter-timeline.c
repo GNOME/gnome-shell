@@ -1053,7 +1053,6 @@ clutter_timeline_set_delay (ClutterTimeline *timeline,
   ClutterTimelinePrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
-  g_return_if_fail (msecs > 0);
 
   priv = timeline->priv;
 
