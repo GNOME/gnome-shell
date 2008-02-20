@@ -59,6 +59,14 @@ typedef int (*WaitVideoSyncProc) (int           divisor,
                                   int          remainder,
                                   unsigned int *count);
 typedef int (*SwapIntervalProc) (int interval);
+typedef void    (*BindTexImage)    (Display     *display,
+                                    GLXDrawable  drawable,
+                                    int          buffer,
+                                    int         *attribList);
+typedef void    (*ReleaseTexImage)    (Display     *display,
+                                       GLXDrawable  drawable,
+                                       int          buffer);
+
 
 struct _ClutterBackendGLX
 {
@@ -70,6 +78,15 @@ struct _ClutterBackendGLX
   SwapIntervalProc       swap_interval;
   gint                   dri_fd;
   ClutterGLXVBlankType   vblank_type;
+
+  /* texture from pixmap stuff */
+  gboolean              t_f_p;
+  BindTexImage          bind_tex_image;
+  ReleaseTexImage       release_tex_image;
+
+  /* props */
+  Atom atom_WM_STATE;
+  Atom atom_WM_STATE_FULLSCREEN;
 };
 
 struct _ClutterBackendGLXClass

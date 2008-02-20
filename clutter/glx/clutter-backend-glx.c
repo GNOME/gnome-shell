@@ -325,6 +325,18 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
         }
     }
 
+  /* Check for the texture from pixmap extension */
+  if (cogl_check_extension ("GLX_EXT_texture_from_pixmap", glx_extensions))
+    {
+      backend_glx->bind_tex_image =
+          (BindTexImage)cogl_get_proc_address ("glXBindTexImageEXT");
+      backend_glx->release_tex_image =
+          (ReleaseTexImage)cogl_get_proc_address ("glXReleaseTexImageEXT");
+
+      if (backend_glx->bind_tex_image && backend_glx->release_tex_image)
+        backend_glx->t_f_p = TRUE;
+    }
+
   CLUTTER_NOTE (MISC, "backend features checked");
 
   return flags|clutter_backend_x11_get_features (backend);

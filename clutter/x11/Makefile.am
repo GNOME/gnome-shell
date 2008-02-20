@@ -1,5 +1,6 @@
 libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
-libclutterinclude_HEADERS = clutter-x11.h
+libclutterinclude_HEADERS = clutter-x11.h \
+                            clutter-x11-texture-pixmap.h
 
 clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-x11.pc
 	@cp -f $< $(@F)
@@ -26,6 +27,8 @@ libclutter_x11_la_SOURCES = \
 	clutter-event-x11.c \
 	clutter-stage-x11.h \
 	clutter-stage-x11.c \
+        clutter-x11-texture-pixmap.h \
+        clutter-x11-texture-pixmap.c \
 	clutter-x11.h
 
 CLEANFILES = clutter-x11-$(CLUTTER_API_VERSION).pc

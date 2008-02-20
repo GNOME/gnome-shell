@@ -1,5 +1,16 @@
 2008-02-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-marshal.list:
+	* clutter/glx/Makefile.am:
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-backend-glx.h:
+	* clutter/glx/clutter-glx.h:
+	* clutter/x11/Makefile.am:
+	ClutterX11TexturePixmap and ClutterGLXTexturePixmap actors (#713;
+	patch by Johan Bilien).
+
+2008-02-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.h:
 	* clutter/clutter-actor.c:
 	(clutter_actor_get_abs_opacity): Add function that does what
@@ -66,7 +77,7 @@
 2008-02-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/pango/pangoclutter-render.c: (draw_glyph):
-        More safety checks (#796, Tero Saarni) 
+        More safety checks (#796, Tero Saarni)
 
 2008-02-15  Chris Lord  <chris@openedhand.com>
 
