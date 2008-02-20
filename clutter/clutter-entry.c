@@ -396,6 +396,7 @@ clutter_entry_paint (ClutterActor *self)
   gint                  width, actor_width;
   gint                  text_width;
   gint                  cursor_x;
+  ClutterColor          color = { 0, };
 
   entry  = CLUTTER_ENTRY(self);
   priv   = entry->priv;
@@ -465,10 +466,12 @@ clutter_entry_paint (ClutterActor *self)
       priv->cursor_pos.x += priv->entry_padding;
     }
 
-  priv->fgcol.alpha = clutter_actor_get_opacity (self);
+  memcpy (&color, &priv->fgcol, sizeof (ClutterColor));
+  color.alpha = clutter_actor_get_abs_opacity (self);
+
   pango_clutter_render_layout (priv->layout,
                                priv->text_x + priv->entry_padding, 0,
-                               &priv->fgcol, 0);
+                               &color, 0);
 
   if (CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor)
     CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor (entry);

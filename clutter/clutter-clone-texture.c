@@ -213,7 +213,7 @@ clutter_clone_texture_paint (ClutterActor *self)
       cogl_enable (CGL_ENABLE_TEXTURE_2D|CGL_ENABLE_BLEND);
     }
 
-  col.alpha = clutter_actor_get_opacity (self);
+  col.alpha = clutter_actor_get_abs_opacity (self);
   cogl_color (&col);
 
   clutter_actor_get_coords (self, &x_1, &y_1, &x_2, &y_2);

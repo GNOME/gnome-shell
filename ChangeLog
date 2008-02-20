@@ -1,3 +1,29 @@
+2008-02-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	(clutter_actor_get_abs_opacity): Add function that does what
+	get_opacity() does now...
+
+	(clutter_actor_get_opacity): ... and make get_opacity() do what
+	it's supposed to be doing. The original get_opacity() returned
+	a composited value, and there's no way to actually extract the
+	real opacity value set with set_opacity().
+
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-texture.c: Update to use get_abs_opacity().
+
+	* clutter/clutter-entry.c:
+	* clutter/clutter-label.c: Ditto. Also, never change the stored
+	alpha value. (#804)
+
+	* tests/Makefile.am:
+	* tests/test-opacity.c: Test suite for the get_opacity() and
+	get_abs_opacity() API, and correct opacity handling.
+
+	* README: Add note about the change in get_opacity().
+
 2008-02-19  Chris Lord  <chris@openedhand.com>
 
 	* clutter/clutter-model.c: (clutter_model_resort):

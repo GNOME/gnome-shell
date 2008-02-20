@@ -96,7 +96,7 @@ clutter_rectangle_paint (ClutterActor *self)
       tmp_col.red   = priv->border_color.red;
       tmp_col.green = priv->border_color.green;
       tmp_col.blue  = priv->border_color.blue;
-      tmp_col.alpha = clutter_actor_get_opacity (self);
+      tmp_col.alpha = clutter_actor_get_abs_opacity (self);
 
       cogl_color (&tmp_col);
 
@@ -134,7 +134,7 @@ clutter_rectangle_paint (ClutterActor *self)
       tmp_col.red   = priv->color.red;
       tmp_col.green = priv->color.green;
       tmp_col.blue  = priv->color.blue;
-      tmp_col.alpha = clutter_actor_get_opacity (self);
+      tmp_col.alpha = clutter_actor_get_abs_opacity (self);
 
       cogl_color (&tmp_col);
 
@@ -392,8 +392,7 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
   priv->color.blue = color->blue;
   priv->color.alpha = color->alpha;
 
-  clutter_actor_set_opacity (CLUTTER_ACTOR (rectangle),
-		  	       priv->color.alpha);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (rectangle), priv->color.alpha);
 
 #if 0
   /* FIXME - appears to be causing border to always get drawn */
@@ -403,7 +402,7 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
     priv->has_border = TRUE;
 #endif
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (rectangle)))
+  if (CLUTTER_ACTOR_IS_VISIBLE (rectangle))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (rectangle));
 
   g_object_notify (G_OBJECT (rectangle), "color");

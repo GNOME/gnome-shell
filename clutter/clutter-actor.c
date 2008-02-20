@@ -3345,25 +3345,61 @@ clutter_actor_set_opacity (ClutterActor *self,
 }
 
 /**
- * clutter_actor_get_opacity:
+ * clutter_actor_get_abs_opacity:
  * @self: A #ClutterActor
  *
- * Retrieves the actor's opacity.
+ * Retrieves the absolute opacity of the actor, as it appears on the stage.
+ *
+ * This function traverses the hierarchy chain and composites the opacity of
+ * the actor with that of its parents.
+ *
+ * This function is intended for subclasses to use in the paint virtual
+ * function, to paint themselves with the correct opacity.
  *
  * Return value: The actor opacity value.
+ *
+ * Since: 0.6
  */
 guint8
-clutter_actor_get_opacity (ClutterActor *self)
+clutter_actor_get_abs_opacity (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
   ClutterActor *parent;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  parent = self->priv->parent_actor;
+  priv = self->priv;
+
+  parent = priv->parent_actor;
 
   /* Factor in the actual actors opacity with parents */
-  if (parent && clutter_actor_get_opacity (parent) != 0xff)
-      return (clutter_actor_get_opacity(parent) * self->priv->opacity) / 0xff;
+  if (G_LIKELY (parent))
+    {
+      guint8 opacity = clutter_actor_get_abs_opacity (parent);
+
+      if (opacity != 0xff)
+        return (opacity * priv->opacity) / 0xff;
+    }
+
+  return clutter_actor_get_opacity (self);
+}
+
+/**
+ * clutter_actor_get_opacity:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the opacity value of an actor, as set by
+ * clutter_actor_set_opacity().
+ *
+ * For retrieving the absolute opacity of the actor inside a paint
+ * virtual function, see clutter_actor_get_abs_opacity().
+ *
+ * Return value: the opacity of the actor
+ */
+guint8
+clutter_actor_get_opacity (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
   return self->priv->opacity;
 }

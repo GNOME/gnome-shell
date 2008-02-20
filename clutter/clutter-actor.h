@@ -360,6 +360,7 @@ ClutterFixed          clutter_actor_get_rotationx            (ClutterActor      
 void                  clutter_actor_set_opacity              (ClutterActor          *self,
                                                               guint8                 opacity);
 guint8                clutter_actor_get_opacity              (ClutterActor          *self);
+guint8                clutter_actor_get_abs_opacity          (ClutterActor          *self);
 void                  clutter_actor_set_name                 (ClutterActor          *self,
                                                               const gchar           *name);
 G_CONST_RETURN gchar *clutter_actor_get_name                 (ClutterActor          *self);

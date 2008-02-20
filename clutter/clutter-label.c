@@ -288,6 +288,7 @@ clutter_label_paint (ClutterActor *self)
 {
   ClutterLabel        *label = CLUTTER_LABEL (self);
   ClutterLabelPrivate *priv = label->priv;
+  ClutterColor color = { 0, };
 
   if (priv->font_desc == NULL || priv->text == NULL)
     {
@@ -302,9 +303,10 @@ clutter_label_paint (ClutterActor *self)
 
   clutter_label_ensure_layout (label);
 
-  priv->fgcol.alpha = clutter_actor_get_opacity (self);
+  memcpy (&color, &priv->fgcol, sizeof (ClutterColor));
+  color.alpha = clutter_actor_get_abs_opacity (self);
 
-  pango_clutter_render_layout (priv->layout, 0, 0, &priv->fgcol, 0);
+  pango_clutter_render_layout (priv->layout, 0, 0, &color, 0);
 }
 
 static void
