@@ -66,6 +66,8 @@ struct _ClutterBackendX11
   GSource *event_source;
   GSList  *event_filters;
 
+  gboolean no_xevent_retrieval;
+
   /* props */
   Atom atom_NET_WM_PING;
   Atom atom_NET_WM_STATE;

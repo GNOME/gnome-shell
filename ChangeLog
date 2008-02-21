@@ -1,3 +1,13 @@
+2008-02-21  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/x11/clutter-backend-x11.h:
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/x11/clutter-x11.h:
+	(clutter_x11_handle_event):
+	(clutter_x11_disable_event_retrieval):
+	Functions to allow to hook into external XEvent retrieval (for
+	example when using clutter with gtk); NB: this API is tentative.
+
 2008-02-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/x11/clutter-event-x11.c (event_translate): Ignore
