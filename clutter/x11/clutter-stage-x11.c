@@ -179,7 +179,8 @@ clutter_stage_x11_request_coords (ClutterActor        *self,
       stage_x11->xwin_width  = new_width;
       stage_x11->xwin_height = new_height;
 
-      if (stage_x11->xwin != None)
+      if (stage_x11->xwin != None &&
+          !stage_x11->is_foreign_xwin)
         {
           XResizeWindow (stage_x11->xdpy, 
                          stage_x11->xwin,
@@ -199,7 +200,8 @@ clutter_stage_x11_request_coords (ClutterActor        *self,
       CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
-  if (stage_x11->xwin != None) /* Do we want to bother ? */
+  if (stage_x11->xwin != None &&
+      !stage_x11->is_foreign_xwin) /* Do we want to bother ? */
     XMoveWindow (stage_x11->xdpy,
                  stage_x11->xwin,
                  CLUTTER_UNITS_TO_INT (box->x1),

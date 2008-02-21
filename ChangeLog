@@ -1,3 +1,13 @@
+2008-02-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/x11/clutter-event-x11.c (event_translate): Ignore
+	ConfigureNotify events if we are painting on a foreign window.
+
+	* clutter/x11/clutter-stage-x11.c:
+	(clutter_stage_x11_request_coords): Reliquish control of the
+	window size, if we are painting on a foreign window. This fixes
+	the GtkClutterEmbed widget.
+
 2008-02-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-timeline.c (clutter_timeline_set_delay): Relax

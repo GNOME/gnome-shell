@@ -383,21 +383,22 @@ event_translate (ClutterBackend *backend,
   switch (xevent->type)
     {
     case ConfigureNotify:
-      {
-        guint stage_width, stage_height;
+      if (!stage_x11->is_foreign_xwin)
+        {
+          guint stage_width, stage_height;
 
-        clutter_actor_get_size (CLUTTER_ACTOR (stage),
-                                &stage_width,
-                                &stage_height);
+          clutter_actor_get_size (CLUTTER_ACTOR (stage),
+                                  &stage_width,
+                                  &stage_height);
 
-        if (xevent->xconfigure.width != stage_width ||
-            xevent->xconfigure.height != stage_height)
-          {
-            clutter_actor_set_size (CLUTTER_ACTOR (stage),
-                                    xevent->xconfigure.width,
-                                    xevent->xconfigure.height);
-          }
-      }
+          if (xevent->xconfigure.width != stage_width ||
+              xevent->xconfigure.height != stage_height)
+            {
+              clutter_actor_set_size (CLUTTER_ACTOR (stage),
+                                      xevent->xconfigure.width,
+                                      xevent->xconfigure.height);
+            }
+        }
       res = FALSE;
       break;
 
