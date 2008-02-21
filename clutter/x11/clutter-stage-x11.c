@@ -206,6 +206,9 @@ clutter_stage_x11_request_coords (ClutterActor        *self,
                  stage_x11->xwin,
                  CLUTTER_UNITS_TO_INT (box->x1),
                  CLUTTER_UNITS_TO_INT (box->y1));
+
+  CLUTTER_ACTOR_CLASS (clutter_stage_x11_parent_class)->request_coords (self,
+                                                                        box);
 }
 
 static void

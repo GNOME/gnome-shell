@@ -403,7 +403,9 @@ event_translate (ClutterBackend *backend,
       break;
 
     case PropertyNotify:
-      if (xevent->xproperty.atom == backend_x11->atom_NET_WM_STATE)
+      if (xevent->xproperty.atom == backend_x11->atom_NET_WM_STATE &&
+          xevent->xproperty.window == stage_xwindow &&
+          !stage_x11->is_foreign_xwin)
         {
           Atom     type;
           gint     format;
@@ -455,6 +457,8 @@ event_translate (ClutterBackend *backend,
           else
             res = FALSE;
         }
+      else
+        res = FALSE;
       break;
 
     case MapNotify:
