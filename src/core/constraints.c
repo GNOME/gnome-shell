@@ -852,8 +852,17 @@ constrain_size_increments (MetaWindow         *window,
   if (new_height < window->size_hints.min_height)
     new_height += ((window->size_hints.min_height - new_height)/hi + 1)*hi;
 
+  /* Figure out what original rect to pass to meta_rectangle_resize_with_gravity
+   * See bug 448183
+   */
+  MetaRectangle *start_rect;
+  if (info->action_type == ACTION_MOVE_AND_RESIZE)
+    start_rect = &info->current;
+  else
+    start_rect = &info->orig;
+    
   /* Resize to the new size */
-  meta_rectangle_resize_with_gravity (&info->orig,
+  meta_rectangle_resize_with_gravity (start_rect,
                                       &info->current, 
                                       info->resize_gravity,
                                       new_width,
@@ -898,7 +907,17 @@ constrain_size_limits (MetaWindow         *window,
   /*** Enforce constraint ***/
   new_width  = CLAMP (info->current.width,  min_size.width,  max_size.width);
   new_height = CLAMP (info->current.height, min_size.height, max_size.height);
-  meta_rectangle_resize_with_gravity (&info->orig,
+  
+  /* Figure out what original rect to pass to meta_rectangle_resize_with_gravity
+   * See bug 448183
+   */
+  MetaRectangle *start_rect;
+  if (info->action_type == ACTION_MOVE_AND_RESIZE)
+    start_rect = &info->current;
+  else
+    start_rect = &info->orig;
+  
+  meta_rectangle_resize_with_gravity (start_rect,
                                       &info->current, 
                                       info->resize_gravity,
                                       new_width,
@@ -1022,7 +1041,16 @@ constrain_aspect_ratio (MetaWindow         *window,
       break;
     }
 
-  meta_rectangle_resize_with_gravity (&info->orig,
+  /* Figure out what original rect to pass to meta_rectangle_resize_with_gravity
+   * See bug 448183
+   */
+  MetaRectangle *start_rect;
+  if (info->action_type == ACTION_MOVE_AND_RESIZE)
+    start_rect = &info->current;
+  else
+    start_rect = &info->orig;
+
+  meta_rectangle_resize_with_gravity (start_rect,
                                       &info->current, 
                                       info->resize_gravity,
                                       new_width,

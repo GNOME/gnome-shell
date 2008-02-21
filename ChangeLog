@@ -1,3 +1,8 @@
+2008-02-21  Mikkel Kamstrup Erlandsen  <mikkel.kamstrup@gmail.com>
+
+	* src/core/constraints.c: Respect requested position on
+	_NET_MOVERESIZE_WINDOW. Closes #448183.
+
 2008-02-18  Matthias Clasen  <mclasen@redhat.com>
 
 	* src/core/window.h: Make skip-taskbar windows appear in the
