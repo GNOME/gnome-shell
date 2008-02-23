@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: atk.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-18 00:56+0200\n"
+"POT-Creation-Date: 2008-02-23 11:40+0200\n"
 "PO-Revision-Date: 2008-02-17 01:47+0200\n"
 "Last-Translator: Ihar Hrachyshka <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: i18n@mova.org <i18n@mova.org>\n"
@@ -179,26 +179,38 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Restart nie ŭdaŭsia: %s\n"
 
-#: ../src/core/prefs.c:434
+#.
+#. * We found it, but it was invalid.  Complain.
+#. *
+#. * FIXME: This replicates the original behaviour, but in the future
+#. * we might consider reverting invalid keys to their original values.
+#. * (We know the old value, so we can look up a suitable string in
+#. * the symtab.)
+#.
+#: ../src/core/prefs.c:325 ../src/core/prefs.c:385
 #, c-format
-msgid "Type of %s was not integer"
-msgstr "Typ %s nia ceły"
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "Kluču GConfa \"%s\" prypisanaja niapravilnaja vartaść\n"
 
-#: ../src/core/prefs.c:572 ../src/core/prefs.c:600 ../src/core/prefs.c:616
-#: ../src/core/prefs.c:632 ../src/core/prefs.c:648 ../src/core/prefs.c:664
-#: ../src/core/prefs.c:680 ../src/core/prefs.c:696 ../src/core/prefs.c:716
-#: ../src/core/prefs.c:732 ../src/core/prefs.c:748 ../src/core/prefs.c:766
-#: ../src/core/prefs.c:782 ../src/core/prefs.c:801 ../src/core/prefs.c:817
-#: ../src/core/prefs.c:852 ../src/core/prefs.c:868 ../src/core/prefs.c:885
-#: ../src/core/prefs.c:901 ../src/core/prefs.c:917 ../src/core/prefs.c:933
-#: ../src/core/prefs.c:949 ../src/core/prefs.c:964 ../src/core/prefs.c:979
-#: ../src/core/prefs.c:994 ../src/core/prefs.c:1010 ../src/core/prefs.c:1026
-#: ../src/core/prefs.c:1042 ../src/core/prefs.c:1058
+#: ../src/core/prefs.c:358 ../src/core/prefs.c:776 ../src/core/prefs.c:792
+#: ../src/core/prefs.c:808 ../src/core/prefs.c:824 ../src/core/prefs.c:840
+#: ../src/core/prefs.c:860 ../src/core/prefs.c:876 ../src/core/prefs.c:892
+#: ../src/core/prefs.c:910 ../src/core/prefs.c:926 ../src/core/prefs.c:945
+#: ../src/core/prefs.c:961 ../src/core/prefs.c:978 ../src/core/prefs.c:994
+#: ../src/core/prefs.c:1011 ../src/core/prefs.c:1027 ../src/core/prefs.c:1043
+#: ../src/core/prefs.c:1059 ../src/core/prefs.c:1075 ../src/core/prefs.c:1090
+#: ../src/core/prefs.c:1105 ../src/core/prefs.c:1121 ../src/core/prefs.c:1137
+#: ../src/core/prefs.c:1153 ../src/core/prefs.c:1169
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Kluč GConfa \"%s\" nieadpaviednaha typu\n"
 
-#: ../src/core/prefs.c:1103
+#: ../src/core/prefs.c:613
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "Typ %s nia ceły"
+
+#: ../src/core/prefs.c:1214
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -207,12 +219,7 @@ msgstr ""
 "Vartaść \"%s\", znojdzienaja ŭ bazie źviestak kanfihuracyi, nie apisvaje "
 "pravilna madyfikatara knopki myšy\n"
 
-#: ../src/core/prefs.c:1127 ../src/core/prefs.c:1148 ../src/core/prefs.c:1705
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "Kluču GConfa \"%s\" prypisanaja niapravilnaja vartaść\n"
-
-#: ../src/core/prefs.c:1277
+#: ../src/core/prefs.c:1344
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -221,12 +228,12 @@ msgstr ""
 "Vartaść %d, zapisanaja ŭ klučy GConfa %s, nie źjaŭlajecca prydatnaj "
 "vartaściu dla \"cursor_size\", jana musić być u dyjapazonie 1...128\n"
 
-#: ../src/core/prefs.c:1357
+#: ../src/core/prefs.c:1396
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Niemahčyma razabrać apisańnie \"%s\", paviazanaje z klučom GConfa %s\n"
 
-#: ../src/core/prefs.c:1599
+#: ../src/core/prefs.c:1638
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -235,7 +242,7 @@ msgstr ""
 "Vartaść %d, zapisanaja ŭ klučy GConfa %s, nie źjaŭlajecca pravilnaj ličbaj "
 "stałoŭ; maksymum składaje ciapier %d\n"
 
-#: ../src/core/prefs.c:1659
+#: ../src/core/prefs.c:1698
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -260,7 +267,7 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "Rabočy abšar %d"
 
-#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2448
+#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2449
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
