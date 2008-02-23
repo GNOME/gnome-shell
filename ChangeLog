@@ -1,3 +1,17 @@
+2008-02-23  Thomas Thurman  <tthurman@gnome.org>
+
+        Refactored handling of enumerated preferences.
+
+        * src/core/prefs.c (handle_preference_init_enum,
+	handle_preference_update_enum): new functions.
+        (meta_prefs_init, change_notify): use regularised
+	forms and remove old copy-and-pasted code.
+	Also many small similar functions removed which
+	only existed to deal with each kind of enum.
+	Also some amount of correction of which parts were
+	and weren't inside "#ifdef HAVE_GCONF" blocks.
+
+
 2008-02-21  Mikkel Kamstrup Erlandsen  <mikkel.kamstrup@gmail.com>
 
 	* src/core/constraints.c: Respect requested position on

@@ -40,15 +40,14 @@
 #define WIN_SCREENSHOT_COMMAND_IDX (MAX_COMMANDS - 1)
 
 /* If you add a key, it needs updating in init() and in the gconf
- * notify listener and of course in the .schemas file
+ * notify listener and of course in the .schemas file.
+ *
+ * Keys which are handled by one of the unified handlers below are
+ * not given a name here, because the purpose of the unified handlers
+ * is that keys should be referred to exactly once.
  */
 #define KEY_MOUSE_BUTTON_MODS "/apps/metacity/general/mouse_button_modifier"
-#define KEY_FOCUS_MODE "/apps/metacity/general/focus_mode"
-#define KEY_FOCUS_NEW_WINDOWS "/apps/metacity/general/focus_new_windows"
 #define KEY_RAISE_ON_CLICK "/apps/metacity/general/raise_on_click"
-#define KEY_ACTION_DOUBLE_CLICK_TITLEBAR "/apps/metacity/general/action_double_click_titlebar"
-#define KEY_ACTION_MIDDLE_CLICK_TITLEBAR "/apps/metacity/general/action_middle_click_titlebar"
-#define KEY_ACTION_RIGHT_CLICK_TITLEBAR "/apps/metacity/general/action_right_click_titlebar"
 #define KEY_AUTO_RAISE "/apps/metacity/general/auto_raise"
 #define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
 #define KEY_THEME "/apps/metacity/general/theme"
@@ -73,7 +72,6 @@
 
 #define KEY_VISUAL_BELL "/apps/metacity/general/visual_bell"
 #define KEY_AUDIBLE_BELL "/apps/metacity/general/audible_bell"
-#define KEY_VISUAL_BELL_TYPE "/apps/metacity/general/visual_bell_type"
 #define KEY_CURSOR_THEME "/desktop/gnome/peripherals/mouse/cursor_theme"
 #define KEY_CURSOR_SIZE "/desktop/gnome/peripherals/mouse/cursor_size"
 #define KEY_COMPOSITING_MANAGER "/apps/metacity/general/compositing_manager"
@@ -119,19 +117,17 @@ static char *terminal_command = NULL;
 static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 
 #ifdef HAVE_GCONF
+static gboolean handle_preference_update_enum (const gchar *key, GConfValue *value);
+
 static gboolean update_use_system_font    (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
 static gboolean update_mouse_button_mods  (const char *value);
-static gboolean update_focus_mode         (const char *value);
-static gboolean update_focus_new_windows  (const char *value);
 static gboolean update_raise_on_click     (gboolean    value);
 static gboolean update_theme              (const char *value);
 static gboolean update_visual_bell        (gboolean v1, gboolean v2);
-static gboolean update_visual_bell_type   (const char *value);
 static gboolean update_num_workspaces     (int         value);
 static gboolean update_application_based  (gboolean    value);
 static gboolean update_disable_workarounds (gboolean   value);
-static gboolean update_action_titlebar    (const char *key, const char *value, MetaActionTitlebar *action);
 static gboolean update_auto_raise          (gboolean   value);
 static gboolean update_auto_raise_delay    (int        value);
 static gboolean update_button_layout      (const char *value);
@@ -165,9 +161,6 @@ static void change_notify (GConfClient    *client,
 static char* gconf_key_for_workspace_name (int i);
 
 static void queue_changed (MetaPreference  pref);
-#endif /* HAVE_GCONF */
-static gboolean update_binding            (MetaKeyPref *binding,
-                                           const char  *value);
 
 typedef enum
   {
@@ -179,12 +172,231 @@ static gboolean update_list_binding       (MetaKeyPref *binding,
                                            GSList      *value,
                                            MetaStringListType type_of_value);
 
+#endif /* HAVE_GCONF */
+
+static gboolean update_binding            (MetaKeyPref *binding,
+                                           const char  *value);
+
 static void     init_bindings             (void);
 static void     init_commands             (void);
 static void     init_workspace_names      (void);
 static void     init_button_layout        (void);
 
-       
+#ifdef HAVE_GCONF
+static GConfEnumStringPair symtab_focus_mode[] =
+  {
+    { META_FOCUS_MODE_CLICK,  "click" },
+    { META_FOCUS_MODE_SLOPPY, "sloppy" },
+    { META_FOCUS_MODE_MOUSE,  "mouse" },
+    { 0, NULL },
+  };
+
+static GConfEnumStringPair symtab_focus_new_windows[] =
+  {
+    { META_FOCUS_NEW_WINDOWS_SMART,  "smart" },
+    { META_FOCUS_NEW_WINDOWS_STRICT, "strict" },
+    { 0, NULL },
+  };
+
+static GConfEnumStringPair symtab_visual_bell_type[] =
+  {
+    /* Note to the reader: 0 is an invalid value; these start at 1. */
+    { META_VISUAL_BELL_FULLSCREEN_FLASH, "fullscreen" },
+    { META_VISUAL_BELL_FRAME_FLASH,      "frame_flash" },
+    { 0, NULL },
+  };
+
+static GConfEnumStringPair symtab_titlebar_action[] =
+  {
+    { META_ACTION_TITLEBAR_TOGGLE_SHADE,    "toggle_shade" },
+    { META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE, "toggle_maximize" },
+    { META_ACTION_TITLEBAR_MINIMIZE,        "minimize" },
+    { META_ACTION_TITLEBAR_NONE,            "none" },
+    { META_ACTION_TITLEBAR_LOWER,           "lower" },
+    { META_ACTION_TITLEBAR_MENU,            "menu" },
+    { META_ACTION_TITLEBAR_TOGGLE_SHADE,    "toggle_shade" },
+    { 0, NULL },
+  };
+
+/**
+ * The details of one preference which is constrained to be
+ * one of a small number of string values-- in other words,
+ * an enumeration.
+ *
+ * We could have done this other ways.  One particularly attractive
+ * possibility would have been to represent the entire symbol table
+ * as a space-separated string literal in the list of symtabs, so
+ * the focus mode enums could have been represented simply by
+ * "click sloppy mouse".  However, the simplicity gained would have
+ * been outweighed by the bugs caused when the ordering of the enum
+ * strings got out of sync with the actual enum statement.  Also,
+ * there is existing library code to use this kind of symbol tables.
+ *
+ * Other things we might consider doing to clean this up in the
+ * future include:
+ *
+ *   - most of the keys begin with the same prefix, and perhaps we
+ *     could assume it if they don't start with a slash
+ *
+ *   - there are several cases where a single identifier could be used
+ *     to generate an entire entry, and perhaps this could be done
+ *     with a macro.  (This would reduce clarity, however, and is
+ *     probably a bad thing.)
+ */
+typedef struct
+{
+  gchar *key;
+  GConfEnumStringPair *symtab;
+  gpointer target;
+  MetaPreference pref;
+} MetaEnumPreference;
+
+static MetaEnumPreference preferences_enum[] =
+  {
+    { "/apps/metacity/general/focus_new_windows",
+      symtab_focus_new_windows,
+      &focus_new_windows,
+      META_PREF_FOCUS_NEW_WINDOWS,
+    },
+    { "/apps/metacity/general/focus_mode",
+      symtab_focus_mode,
+      &focus_mode,
+      META_PREF_FOCUS_MODE,
+    },
+    { "/apps/metacity/general/visual_bell_type",
+      symtab_visual_bell_type,
+      &visual_bell_type,
+      META_PREF_VISUAL_BELL_TYPE,
+    },
+    { "/apps/metacity/general/action_double_click_titlebar",
+      symtab_titlebar_action,
+      &action_double_click_titlebar,
+      META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR,
+    },
+    { "/apps/metacity/general/action_middle_click_titlebar",
+      symtab_titlebar_action,
+      &action_middle_click_titlebar,
+      META_PREF_ACTION_MIDDLE_CLICK_TITLEBAR,
+    },
+    { "/apps/metacity/general/action_right_click_titlebar",
+      symtab_titlebar_action,
+      &action_right_click_titlebar,
+      META_PREF_ACTION_RIGHT_CLICK_TITLEBAR,
+    },
+    { NULL, NULL, NULL, 0 },
+  };
+
+static void
+cleanup_error (GError **error)
+{
+  if (*error)
+    {
+      meta_warning ("%s\n", (*error)->message);
+      
+      g_error_free (*error);
+      *error = NULL;
+    }
+}
+
+static void
+handle_preference_init_enum (void)
+{
+  MetaEnumPreference *cursor = preferences_enum;
+
+  while (cursor->key!=NULL)
+    {
+      char *value;
+      GError *error = NULL;
+
+      value = gconf_client_get_string (default_client,
+                                         cursor->key,
+                                         &error);
+      cleanup_error (&error);
+
+      /* If the value's NULL, we found it and there's nothing we
+       * can do with it.  So just return.
+       */
+      if (value==NULL)
+        return;
+
+      if (!gconf_string_to_enum (cursor->symtab,
+                                 value,
+                                 (gint *) cursor->target))
+        meta_warning (_("GConf key '%s' is set to an invalid value\n"),
+                      cursor->key);
+
+      g_free (value);
+
+      ++cursor;
+    }
+}
+
+static gboolean
+handle_preference_update_enum (const gchar *key, GConfValue *value)
+{
+  MetaEnumPreference *cursor = preferences_enum;
+  gint old_value;
+
+  while (cursor->key!=NULL && strcmp (key, cursor->key)!=0)
+    ++cursor;
+
+  if (cursor->key==NULL)
+    /* Didn't recognise that key. */
+    return FALSE;
+      
+  /* Setting it to null (that is, removing it) always means
+   * "don't change".
+   */
+
+  if (value==NULL)
+    return TRUE;
+
+  /* Check the type.  Enums are always strings. */
+
+  if (value->type != GCONF_VALUE_STRING)
+    {
+      meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                    key);
+      /* But we did recognise it. */
+      return TRUE;
+    }
+
+  /* We need to know whether the value changes, so
+   * store the current value away.
+   */
+
+  old_value = * ((gint *) cursor->target);
+  
+  /* Now look it up... */
+
+  if (!gconf_string_to_enum (cursor->symtab,
+                             gconf_value_get_string (value),
+                             (gint *) cursor->target))
+    {
+      /*
+       * We found it, but it was invalid.  Complain.
+       *
+       * FIXME: This replicates the original behaviour, but in the future
+       * we might consider reverting invalid keys to their original values.
+       * (We know the old value, so we can look up a suitable string in
+       * the symtab.)
+       */
+      
+      meta_warning (_("GConf key '%s' is set to an invalid value\n"),
+                    key);
+      return TRUE;
+    }
+
+  /* Did it change?  If so, tell the listeners about it. */
+
+  if (old_value != *((gint *) cursor->target))
+    queue_changed (cursor->pref);
+
+  return TRUE;
+}
+
+#endif /* HAVE_GCONF */
+
 typedef struct
 {
   MetaPrefsChangedFunc func;
@@ -307,18 +519,6 @@ queue_changed (MetaPreference pref)
 #endif /* HAVE_GCONF */
 
 #ifdef HAVE_GCONF
-static void
-cleanup_error (GError **error)
-{
-  if (*error)
-    {
-      meta_warning ("%s\n", (*error)->message);
-      
-      g_error_free (*error);
-      *error = NULL;
-    }
-}
-
 /* get_bool returns TRUE if *val is filled in, FALSE otherwise */
 static gboolean
 get_bool (const char *key, gboolean *val)
@@ -342,19 +542,6 @@ get_bool (const char *key, gboolean *val)
   return filled_in;
 }
 
-static void
-init_action_meta_prefs(const char *key, MetaActionTitlebar *action)
-{
-  GError *err = NULL;
-  char *str_val;
-  
-  str_val = gconf_client_get_string (default_client,
-                                     key,
-                                     &err);
-  cleanup_error (&err);
-  update_action_titlebar (key, str_val, action);
-  g_free (str_val);
-}
 #endif /* HAVE_GCONF */
 
 void
@@ -395,31 +582,23 @@ meta_prefs_init (void)
                         &err);
   cleanup_error (&err);
 
+  /* Pick up initial values using the new system. */
+
+  handle_preference_init_enum ();
+
+  /* To follow: initialisation with ordinary strings, ints, and bools. */
+
+  /* Pick up initial values using the legacy system. */
+
   str_val = gconf_client_get_string (default_client, KEY_MOUSE_BUTTON_MODS,
                                      &err);
   cleanup_error (&err);
   update_mouse_button_mods (str_val);
   g_free (str_val);
-  
-  str_val = gconf_client_get_string (default_client, KEY_FOCUS_MODE,
-                                     &err);
-  cleanup_error (&err);
-  update_focus_mode (str_val);
-  g_free (str_val);  
-
-  str_val = gconf_client_get_string (default_client, KEY_FOCUS_NEW_WINDOWS,
-                                     &err);
-  cleanup_error (&err);
-  update_focus_new_windows (str_val);
-  g_free (str_val);  
 
   if (get_bool (KEY_RAISE_ON_CLICK, &bool_val))
     update_raise_on_click (bool_val);
   
-  init_action_meta_prefs (KEY_ACTION_DOUBLE_CLICK_TITLEBAR, &action_double_click_titlebar);
-  init_action_meta_prefs (KEY_ACTION_MIDDLE_CLICK_TITLEBAR, &action_middle_click_titlebar);
-  init_action_meta_prefs (KEY_ACTION_RIGHT_CLICK_TITLEBAR, &action_right_click_titlebar);
-
   if (get_bool (KEY_AUTO_RAISE, &bool_val))
     update_auto_raise (bool_val);
 
@@ -484,12 +663,6 @@ meta_prefs_init (void)
   bool_val = compositing_manager;
   if (get_bool (KEY_COMPOSITING_MANAGER, &bool_val))
     update_compositing_manager (bool_val);
-  
-  str_val = gconf_client_get_string (default_client, KEY_VISUAL_BELL_TYPE,
-                                     &err);
-  cleanup_error (&err);
-  update_visual_bell_type (str_val);
-  g_free (str_val);
 
   if (get_bool (KEY_REDUCED_RESOURCES, &bool_val))
     update_reduced_resources (bool_val);
@@ -562,22 +735,10 @@ meta_prefs_init (void)
 
 #ifdef HAVE_GCONF
 
-static gboolean
-action_change_titlebar (const char *key, GConfValue *value, MetaActionTitlebar *action)
-{
-  const char *str;
-
-  if (value && value->type != GCONF_VALUE_STRING)
-    {
-      meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                    key);
-      return FALSE;
-    }
-
-  str = value ? gconf_value_get_string (value) : NULL;
-
-  return update_action_titlebar (key, str, action);
-}
+gboolean (*preference_update_handler[]) (const gchar*, GConfValue*) = {
+  handle_preference_update_enum,
+  NULL
+};
 
 static void
 change_notify (GConfClient    *client,
@@ -587,9 +748,24 @@ change_notify (GConfClient    *client,
 {
   const char *key;
   GConfValue *value;
+  gint i=0;
   
   key = gconf_entry_get_key (entry);
   value = gconf_entry_get_value (entry);
+
+  /* First, search for a handler that might know what to do. */
+
+  while (preference_update_handler[i]!=NULL)
+    {
+      if (preference_update_handler[i] (key, value))
+          goto out; /* Get rid of this when we're done with the if */
+
+      i++;
+    }
+
+  /* Otherwise, use the enormous if statement. We'll move entries
+   * out of here as it becomes possible to deal with them in a
+   * more general way. */
 
   if (strcmp (key, KEY_MOUSE_BUTTON_MODS) == 0)
     {
@@ -606,38 +782,6 @@ change_notify (GConfClient    *client,
 
       if (update_mouse_button_mods (str))
         queue_changed (META_PREF_MOUSE_BUTTON_MODS);
-    }
-  else if (strcmp (key, KEY_FOCUS_MODE) == 0)
-    {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_FOCUS_MODE);
-          goto out;
-        }
-      
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_focus_mode (str))
-        queue_changed (META_PREF_FOCUS_MODE);
-    }
-  else if (strcmp (key, KEY_FOCUS_NEW_WINDOWS) == 0)
-    {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_FOCUS_NEW_WINDOWS);
-          goto out;
-        }
-      
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_focus_new_windows (str))
-        queue_changed (META_PREF_FOCUS_NEW_WINDOWS);
     }
   else if (strcmp (key, KEY_RAISE_ON_CLICK) == 0)
     {
@@ -825,24 +969,6 @@ change_notify (GConfClient    *client,
              queue_changed (META_PREF_SCREEN_KEYBINDINGS);
         }
     }
-  else if (strcmp (key, KEY_ACTION_DOUBLE_CLICK_TITLEBAR) == 0)
-    {
-      if (action_change_titlebar(KEY_ACTION_DOUBLE_CLICK_TITLEBAR, value, &action_double_click_titlebar))
-        queue_changed (META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR);
-      return;
-    }
-  else if (strcmp (key, KEY_ACTION_MIDDLE_CLICK_TITLEBAR) == 0)
-    {
-      if (action_change_titlebar(KEY_ACTION_MIDDLE_CLICK_TITLEBAR, value, &action_middle_click_titlebar))
-        queue_changed (META_PREF_ACTION_MIDDLE_CLICK_TITLEBAR);
-      return;
-    }
-  else if (strcmp (key, KEY_ACTION_RIGHT_CLICK_TITLEBAR) == 0)
-    {
-      if (action_change_titlebar(KEY_ACTION_RIGHT_CLICK_TITLEBAR, value, &action_right_click_titlebar))
-        queue_changed (META_PREF_ACTION_RIGHT_CLICK_TITLEBAR);
-      return;
-    }
   else if (strcmp (key, KEY_AUTO_RAISE) == 0)
     {
       gboolean b;
@@ -970,21 +1096,6 @@ change_notify (GConfClient    *client,
       if (update_visual_bell (provide_visual_bell, b))
 	queue_changed (META_PREF_AUDIBLE_BELL);
     }
-  else if (strcmp (key, KEY_VISUAL_BELL_TYPE) == 0)
-    {
-      const char * str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_VISUAL_BELL_TYPE);
-          goto out;
-        }
-      
-      str = value ? gconf_value_get_string (value) : NULL;
-      if (update_visual_bell_type (str))
-	queue_changed (META_PREF_VISUAL_BELL_TYPE);
-    }
   else if (strcmp (key, KEY_REDUCED_RESOURCES) == 0)
     {
       gboolean b;
@@ -1106,50 +1217,6 @@ update_mouse_button_mods (const char *value)
     }
 
   return old_mods != mouse_button_mods;
-}
-#endif /* HAVE_GCONF */
-
-#ifdef HAVE_GCONF
-static gboolean
-update_focus_mode (const char *value)
-{
-  MetaFocusMode old_mode = focus_mode;
-  
-  if (value != NULL)
-    {
-      if (g_ascii_strcasecmp (value, "click") == 0)
-        focus_mode = META_FOCUS_MODE_CLICK;
-      else if (g_ascii_strcasecmp (value, "sloppy") == 0)
-        focus_mode = META_FOCUS_MODE_SLOPPY;
-      else if (g_ascii_strcasecmp (value, "mouse") == 0)
-        focus_mode = META_FOCUS_MODE_MOUSE;
-      else
-        meta_warning (_("GConf key '%s' is set to an invalid value\n"),
-                      KEY_FOCUS_MODE);
-    }
-
-  return (old_mode != focus_mode);
-}
-#endif /* HAVE_GCONF */
-
-#ifdef HAVE_GCONF
-static gboolean
-update_focus_new_windows (const char *value)
-{
-  MetaFocusNewWindows old_mode = focus_new_windows;
-  
-  if (value != NULL)
-    {
-      if (g_ascii_strcasecmp (value, "smart") == 0)
-        focus_new_windows = META_FOCUS_NEW_WINDOWS_SMART;
-      else if (g_ascii_strcasecmp (value, "strict") == 0)
-        focus_new_windows = META_FOCUS_NEW_WINDOWS_STRICT;
-      else
-        meta_warning (_("GConf key '%s' is set to an invalid value\n"),
-                      KEY_FOCUS_NEW_WINDOWS);
-    }
-
-  return (old_mode != focus_new_windows);
 }
 #endif /* HAVE_GCONF */
 
@@ -1296,34 +1363,6 @@ update_use_system_font (gboolean value)
   use_system_font = value;
 
   return old != value;
-}
-
-static MetaVisualBellType
-visual_bell_type_from_string (const char *value)
-{
-  if (value) 
-    {
-      if (!strcmp (value, "fullscreen")) 
-	{
-	  return META_VISUAL_BELL_FULLSCREEN_FLASH;
-	}
-      else if (!strcmp (value, "frame_flash"))
-	{
-	  return META_VISUAL_BELL_FRAME_FLASH;
-	}
-    }
-  return META_VISUAL_BELL_FULLSCREEN_FLASH;
-}
-
-static gboolean
-update_visual_bell_type (const char *value)
-{
-  MetaVisualBellType old_bell_type;
-
-  old_bell_type = visual_bell_type;
-  visual_bell_type = visual_bell_type_from_string (value);
-
-  return (visual_bell_type != old_bell_type);
 }
 
 static gboolean
@@ -1671,45 +1710,6 @@ meta_prefs_get_disable_workarounds (void)
 }
 
 #ifdef HAVE_GCONF
-static MetaActionTitlebar
-action_titlebar_from_string (const char *str)
-{
-  if (strcmp (str, "toggle_shade") == 0)
-    return META_ACTION_TITLEBAR_TOGGLE_SHADE;
-  else if (strcmp (str, "toggle_maximize") == 0)
-    return META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE;
-  else if (strcmp (str, "minimize") == 0)
-    return META_ACTION_TITLEBAR_MINIMIZE;
-  else if (strcmp (str, "none") == 0)
-    return META_ACTION_TITLEBAR_NONE;
-  else if (strcmp (str, "lower") == 0)
-    return META_ACTION_TITLEBAR_LOWER;
-  else if (strcmp (str, "menu") == 0)
-    return META_ACTION_TITLEBAR_MENU;
-  else
-    return META_ACTION_TITLEBAR_LAST;
-}
-
-static gboolean
-update_action_titlebar (const char *key, const char *value, MetaActionTitlebar *action)
-{
-  MetaActionTitlebar old_action = *action, new_action = old_action;
-  
-  if (value != NULL)
-    {
-      new_action = action_titlebar_from_string (value);
-
-      if (new_action == META_ACTION_TITLEBAR_LAST)
-        {
-          new_action = old_action;
-          meta_warning (_("GConf key '%s' is set to an invalid value\n"), key);
-        }
-      *action = new_action;
-    }
-
-  return (old_action != new_action);
-}
-
 static gboolean
 update_auto_raise (gboolean value)
 {
@@ -2377,6 +2377,7 @@ update_binding (MetaKeyPref *binding,
   return changed;
 }
 
+#ifdef HAVE_GCONF
 static gboolean
 update_list_binding (MetaKeyPref *binding,
                      GSList      *value,
@@ -2489,7 +2490,6 @@ update_list_binding (MetaKeyPref *binding,
   return changed;
 }
 
-#ifdef HAVE_GCONF
 static const gchar*
 relative_key (const gchar* key)
 {
