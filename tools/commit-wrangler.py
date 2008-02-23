@@ -156,6 +156,12 @@ os.rename('ChangeLog.tmp', 'ChangeLog')
 committing = commands.getstatusoutput('svn commit --file %s.justfunc' % (change_filename))[1]
 
 print 'Committed: ', committing
-# Ends with message "Committed revision 3573." or whatever;
+
+checkin = committing[committing.find('Committed revision')+19:]
+checkin = checkin[:checkin.find('.')]
 # this number will be useful in the future for updating
 # Bugzilla.
+
+print
+print 'http://svn.gnome.org/viewvc/metacity?rev=%s&view=rev' % (checkin)
+

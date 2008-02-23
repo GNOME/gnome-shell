@@ -1,5 +1,9 @@
 2008-02-23  Thomas Thurman  <tthurman@gnome.org>
 
+	* tools/commit-wrangler.py: Print URL of changeset on success.
+
+2008-02-23  Thomas Thurman  <tthurman@gnome.org>
+
         Refactored handling of enumerated preferences.
 
         * src/core/prefs.c (handle_preference_init_enum,
