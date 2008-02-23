@@ -1,5 +1,21 @@
 2008-02-23  Thomas Thurman  <tthurman@gnome.org>
 
+	Refactor handling of boolean preferences.
+
+        * src/core/prefs.c (handle_preference_init_bool,
+	handle_preference_update_bool): new functions.
+	* src/core/prefs.c (meta_prefs_init, change_notify):
+	use the new functions.
+	* src/core/prefs.c (update_*): several of these removed whose
+	only purpose was to receive boolean preferences.
+	* src/core/prefs.c (cleanup_error, get_bool): moved down to make
+	the flow of ideas more obvious.
+	* src/core/prefs.c (maybe_give_disable_workarounds_warning): new
+	function containing duplicated code from elsewhere.
+	* src/core/prefs.c (init_button_layout): only compiled when
+	HAVE_GCONF is not defined. Removed a compiler warning.
+2008-02-23  Thomas Thurman  <tthurman@gnome.org>
+
 	* tools/commit-wrangler.py: Print URL of changeset on success.
 
 2008-02-23  Thomas Thurman  <tthurman@gnome.org>

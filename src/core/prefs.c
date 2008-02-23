@@ -47,17 +47,11 @@
  * is that keys should be referred to exactly once.
  */
 #define KEY_MOUSE_BUTTON_MODS "/apps/metacity/general/mouse_button_modifier"
-#define KEY_RAISE_ON_CLICK "/apps/metacity/general/raise_on_click"
-#define KEY_AUTO_RAISE "/apps/metacity/general/auto_raise"
 #define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
 #define KEY_THEME "/apps/metacity/general/theme"
-#define KEY_USE_SYSTEM_FONT  "/apps/metacity/general/titlebar_uses_system_font"
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
-#define KEY_APPLICATION_BASED "/apps/metacity/general/application_based"
-#define KEY_DISABLE_WORKAROUNDS "/apps/metacity/general/disable_workarounds"
 #define KEY_BUTTON_LAYOUT "/apps/metacity/general/button_layout"
-#define KEY_REDUCED_RESOURCES "/apps/metacity/general/reduced_resources"
 #define KEY_GNOME_ACCESSIBILITY "/desktop/gnome/interface/accessibility"
 
 #define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
@@ -70,11 +64,8 @@
 
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
-#define KEY_VISUAL_BELL "/apps/metacity/general/visual_bell"
-#define KEY_AUDIBLE_BELL "/apps/metacity/general/audible_bell"
 #define KEY_CURSOR_THEME "/desktop/gnome/peripherals/mouse/cursor_theme"
 #define KEY_CURSOR_SIZE "/desktop/gnome/peripherals/mouse/cursor_size"
-#define KEY_COMPOSITING_MANAGER "/apps/metacity/general/compositing_manager"
 
 #ifdef HAVE_GCONF
 static GConfClient *default_client = NULL;
@@ -119,16 +110,10 @@ static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 #ifdef HAVE_GCONF
 static gboolean handle_preference_update_enum (const gchar *key, GConfValue *value);
 
-static gboolean update_use_system_font    (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
 static gboolean update_mouse_button_mods  (const char *value);
-static gboolean update_raise_on_click     (gboolean    value);
 static gboolean update_theme              (const char *value);
-static gboolean update_visual_bell        (gboolean v1, gboolean v2);
 static gboolean update_num_workspaces     (int         value);
-static gboolean update_application_based  (gboolean    value);
-static gboolean update_disable_workarounds (gboolean   value);
-static gboolean update_auto_raise          (gboolean   value);
 static gboolean update_auto_raise_delay    (int        value);
 static gboolean update_button_layout      (const char *value);
 static gboolean update_window_binding     (const char *name,
@@ -147,11 +132,8 @@ static gboolean update_command            (const char  *name,
 static gboolean update_terminal_command   (const char *value);
 static gboolean update_workspace_name     (const char  *name,
                                            const char  *value);
-static gboolean update_reduced_resources  (gboolean     value);
-static gboolean update_gnome_accessibility  (gboolean     value);
 static gboolean update_cursor_theme       (const char *value);
 static gboolean update_cursor_size        (int size);
-static gboolean update_compositing_manager (gboolean	value);
 
 static void change_notify (GConfClient    *client,
                            guint           cnxn_id,
@@ -172,6 +154,10 @@ static gboolean update_list_binding       (MetaKeyPref *binding,
                                            GSList      *value,
                                            MetaStringListType type_of_value);
 
+static void     cleanup_error             (GError **error);
+static gboolean get_bool                  (const char *key, gboolean *val);
+static void maybe_give_disable_workarounds_warning (void);
+
 #endif /* HAVE_GCONF */
 
 static gboolean update_binding            (MetaKeyPref *binding,
@@ -180,9 +166,13 @@ static gboolean update_binding            (MetaKeyPref *binding,
 static void     init_bindings             (void);
 static void     init_commands             (void);
 static void     init_workspace_names      (void);
+
+#ifndef HAVE_GCONF
 static void     init_button_layout        (void);
+#endif /* !HAVE_GCONF */
 
 #ifdef HAVE_GCONF
+
 static GConfEnumStringPair symtab_focus_mode[] =
   {
     { META_FOCUS_MODE_CLICK,  "click" },
@@ -242,6 +232,10 @@ static GConfEnumStringPair symtab_titlebar_action[] =
  *     to generate an entire entry, and perhaps this could be done
  *     with a macro.  (This would reduce clarity, however, and is
  *     probably a bad thing.)
+ *
+ *   - these types all begin with a gchar*, and we can factor out the
+ *     repeated code in the handlers by taking advantage of this
+ *     (it is effectively a superclass field).
  */
 typedef struct
 {
@@ -250,6 +244,14 @@ typedef struct
   gpointer target;
   MetaPreference pref;
 } MetaEnumPreference;
+
+typedef struct
+{
+  gchar *key;
+  gboolean *target;
+  MetaPreference pref;
+  gboolean becomes_true_on_destruction;
+} MetaBoolPreference;
 
 static MetaEnumPreference preferences_enum[] =
   {
@@ -286,17 +288,60 @@ static MetaEnumPreference preferences_enum[] =
     { NULL, NULL, NULL, 0 },
   };
 
-static void
-cleanup_error (GError **error)
-{
-  if (*error)
-    {
-      meta_warning ("%s\n", (*error)->message);
-      
-      g_error_free (*error);
-      *error = NULL;
-    }
-}
+static MetaBoolPreference preferences_bool[] =
+  {
+    { "/apps/metacity/general/raise_on_click",
+      &raise_on_click,
+      META_PREF_RAISE_ON_CLICK,
+      TRUE,
+    },
+    { "/apps/metacity/general/titlebar_uses_system_font",
+      &use_system_font,
+      META_PREF_TITLEBAR_FONT, /* note! shares a pref */
+      TRUE,
+    },
+    { "/apps/metacity/general/application_based",
+      NULL, /* feature is known but disabled */
+      META_PREF_APPLICATION_BASED,
+      FALSE,
+    },
+    { "/apps/metacity/general/disable_workarounds",
+      &disable_workarounds,
+      META_PREF_DISABLE_WORKAROUNDS,
+      FALSE,
+    },
+    { "/apps/metacity/general/auto_raise",
+      &auto_raise,
+      META_PREF_AUTO_RAISE,
+      FALSE,
+    },
+    { "/apps/metacity/general/visual_bell",
+      &provide_visual_bell, /* FIXME: change the name: it's confusing */
+      META_PREF_VISUAL_BELL,
+      FALSE,
+    },
+    { "/apps/metacity/general/audible_bell",
+      &bell_is_audible, /* FIXME: change the name: it's confusing */
+      META_PREF_AUDIBLE_BELL,
+      FALSE,
+    },
+    { "/apps/metacity/general/reduced_resources",
+      &reduced_resources,
+      META_PREF_REDUCED_RESOURCES,
+      FALSE,
+    },
+    { "/desktop/gnome/interface/accessibility",
+      &gnome_accessibility,
+      META_PREF_GNOME_ACCESSIBILITY,
+      FALSE,
+    },
+    { "/apps/metacity/general/compositing_manager",
+      &compositing_manager,
+      META_PREF_COMPOSITING_MANAGER,
+      FALSE,
+    },
+    { NULL, NULL, 0, FALSE },
+  };
 
 static void
 handle_preference_init_enum (void)
@@ -329,6 +374,22 @@ handle_preference_init_enum (void)
 
       ++cursor;
     }
+}
+
+static void
+handle_preference_init_bool (void)
+{
+  MetaBoolPreference *cursor = preferences_bool;
+
+  while (cursor->key!=NULL)
+    {
+      if (cursor->target!=NULL)
+        get_bool (cursor->key, cursor->target);
+
+      ++cursor;
+    }
+
+  maybe_give_disable_workarounds_warning ();
 }
 
 static gboolean
@@ -391,6 +452,63 @@ handle_preference_update_enum (const gchar *key, GConfValue *value)
 
   if (old_value != *((gint *) cursor->target))
     queue_changed (cursor->pref);
+
+  return TRUE;
+}
+
+static gboolean
+handle_preference_update_bool (const gchar *key, GConfValue *value)
+{
+  MetaBoolPreference *cursor = preferences_bool;
+  gboolean old_value;
+
+  while (cursor->key!=NULL && strcmp (key, cursor->key)!=0)
+    ++cursor;
+
+  if (cursor->key==NULL)
+    /* Didn't recognise that key. */
+    return FALSE;
+      
+  if (value==NULL)
+    {
+      /* Value was destroyed; let's get out of here. */
+
+      if (cursor->becomes_true_on_destruction)
+        /* This preserves the behaviour of the old system, but
+         * for all I know that might have been an oversight.
+         */
+        *((gboolean *)cursor->target) = TRUE;
+
+      return TRUE;
+    }
+
+  /* Check the type. */
+
+  if (value->type != GCONF_VALUE_BOOL)
+    {
+      meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                    key);
+      /* But we did recognise it. */
+      return TRUE;
+    }
+
+  /* We need to know whether the value changes, so
+   * store the current value away.
+   */
+
+  old_value = * ((gboolean *) cursor->target);
+  
+  /* Now look it up... */
+
+  *((gboolean *) cursor->target) = gconf_value_get_bool (value);
+
+  /* Did it change?  If so, tell the listeners about it. */
+
+  if (old_value != *((gboolean *) cursor->target))
+    queue_changed (cursor->pref);
+
+  if (cursor->pref==META_PREF_DISABLE_WORKAROUNDS)
+    maybe_give_disable_workarounds_warning ();
 
   return TRUE;
 }
@@ -518,32 +636,6 @@ queue_changed (MetaPreference pref)
 }
 #endif /* HAVE_GCONF */
 
-#ifdef HAVE_GCONF
-/* get_bool returns TRUE if *val is filled in, FALSE otherwise */
-static gboolean
-get_bool (const char *key, gboolean *val)
-{
-  GError     *err = NULL;
-  GConfValue *value;
-  gboolean    filled_in = FALSE;
-
-  value = gconf_client_get (default_client, key, &err);
-  cleanup_error (&err);
-  if (value)
-    {
-      if (value->type == GCONF_VALUE_BOOL)
-        {
-          *val = gconf_value_get_bool (value);
-          filled_in = TRUE;
-        }
-      gconf_value_free (value);
-    }
-
-  return filled_in;
-}
-
-#endif /* HAVE_GCONF */
-
 void
 meta_prefs_init (void)
 {
@@ -552,9 +644,6 @@ meta_prefs_init (void)
   char *str_val;
   int int_val;
   GConfValue *gconf_val;
-  gboolean bool_val, bool_val_2;
-  gboolean update_visual;
-  gboolean update_audible;
   
   if (default_client != NULL)
     return;
@@ -582,9 +671,10 @@ meta_prefs_init (void)
                         &err);
   cleanup_error (&err);
 
-  /* Pick up initial values using the new system. */
+  /* Pick up initial values. */
 
   handle_preference_init_enum ();
+  handle_preference_init_bool ();
 
   /* To follow: initialisation with ordinary strings, ints, and bools. */
 
@@ -595,12 +685,6 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_mouse_button_mods (str_val);
   g_free (str_val);
-
-  if (get_bool (KEY_RAISE_ON_CLICK, &bool_val))
-    update_raise_on_click (bool_val);
-  
-  if (get_bool (KEY_AUTO_RAISE, &bool_val))
-    update_auto_raise (bool_val);
 
   gconf_val = gconf_client_get (default_client, KEY_AUTO_RAISE_DELAY,
 				  &err);
@@ -627,9 +711,6 @@ meta_prefs_init (void)
    * just lazy. But they keys ought to be set, anyhow.
    */
   
-  if (get_bool (KEY_USE_SYSTEM_FONT, &bool_val))
-    update_use_system_font (bool_val);
-  
   str_val = gconf_client_get_string (default_client, KEY_TITLEBAR_FONT,
                                      &err);
   cleanup_error (&err);
@@ -641,40 +722,17 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_num_workspaces (int_val);
 
-  if (get_bool (KEY_APPLICATION_BASED, &bool_val))
-    update_application_based (bool_val);
-
-  if (get_bool (KEY_DISABLE_WORKAROUNDS, &bool_val))
-    update_disable_workarounds (bool_val);
-
   str_val = gconf_client_get_string (default_client, KEY_BUTTON_LAYOUT,
                                      &err);
   cleanup_error (&err);
   update_button_layout (str_val);
   g_free (str_val);
 
-  bool_val = provide_visual_bell;
-  bool_val_2 = bell_is_audible;
-  update_visual = get_bool (KEY_VISUAL_BELL,  &bool_val);
-  update_audible = get_bool (KEY_AUDIBLE_BELL, &bool_val_2);
-  if (update_visual || update_audible)
-    update_visual_bell (bool_val, bool_val_2);
-
-  bool_val = compositing_manager;
-  if (get_bool (KEY_COMPOSITING_MANAGER, &bool_val))
-    update_compositing_manager (bool_val);
-
-  if (get_bool (KEY_REDUCED_RESOURCES, &bool_val))
-    update_reduced_resources (bool_val);
-
   str_val = gconf_client_get_string (default_client, KEY_TERMINAL_COMMAND,
                                      &err);
   cleanup_error (&err);
   update_terminal_command (str_val);
   g_free (str_val);
-
-  if (get_bool (KEY_GNOME_ACCESSIBILITY, &bool_val))
-    update_gnome_accessibility (bool_val);
 
   str_val = gconf_client_get_string (default_client, KEY_CURSOR_THEME,
                                      &err);
@@ -737,6 +795,7 @@ meta_prefs_init (void)
 
 gboolean (*preference_update_handler[]) (const gchar*, GConfValue*) = {
   handle_preference_update_enum,
+  handle_preference_update_bool,
   NULL
 };
 
@@ -755,10 +814,15 @@ change_notify (GConfClient    *client,
 
   /* First, search for a handler that might know what to do. */
 
+  /* FIXME: When this is all working, since the first item in every
+   * array is the gchar* of the key, there's no reason we can't
+   * find the correct record for that key here and save code duplication.
+   */
+
   while (preference_update_handler[i]!=NULL)
     {
       if (preference_update_handler[i] (key, value))
-          goto out; /* Get rid of this when we're done with the if */
+        goto out; /* Get rid of this when we're done with the if */
 
       i++;
     }
@@ -782,22 +846,6 @@ change_notify (GConfClient    *client,
 
       if (update_mouse_button_mods (str))
         queue_changed (META_PREF_MOUSE_BUTTON_MODS);
-    }
-  else if (strcmp (key, KEY_RAISE_ON_CLICK) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_RAISE_ON_CLICK);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : TRUE;
-      
-      if (update_raise_on_click (b))
-        queue_changed (META_PREF_RAISE_ON_CLICK);
     }
   else if (strcmp (key, KEY_THEME) == 0)
     {
@@ -831,26 +879,6 @@ change_notify (GConfClient    *client,
       if (update_titlebar_font (str))
         queue_changed (META_PREF_TITLEBAR_FONT);
     }
-  else if (strcmp (key, KEY_USE_SYSTEM_FONT) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_USE_SYSTEM_FONT);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : TRUE;
-      
-      /* There's no external pref for this, it just affects whether
-       * get_titlebar_font returns NULL, so that's what we queue
-       * the change on
-       */
-      if (update_use_system_font (b))
-        queue_changed (META_PREF_TITLEBAR_FONT);
-    }
   else if (strcmp (key, KEY_NUM_WORKSPACES) == 0)
     {
       int d;
@@ -866,38 +894,6 @@ change_notify (GConfClient    *client,
 
       if (update_num_workspaces (d))
         queue_changed (META_PREF_NUM_WORKSPACES);
-    }
-  else if (strcmp (key, KEY_APPLICATION_BASED) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_APPLICATION_BASED);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : application_based;
-
-      if (update_application_based (b))
-        queue_changed (META_PREF_APPLICATION_BASED);
-    }
-  else if (strcmp (key, KEY_DISABLE_WORKAROUNDS) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_APPLICATION_BASED);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : disable_workarounds;
-
-      if (update_disable_workarounds (b))
-        queue_changed (META_PREF_DISABLE_WORKAROUNDS);
     }
   else if (g_str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX))
     {
@@ -968,22 +964,6 @@ change_notify (GConfClient    *client,
           if (update_screen_binding (key, str))
              queue_changed (META_PREF_SCREEN_KEYBINDINGS);
         }
-    }
-  else if (strcmp (key, KEY_AUTO_RAISE) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_AUTO_RAISE);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : auto_raise;
-
-      if (update_auto_raise (b))
-        queue_changed (META_PREF_AUTO_RAISE);
     }
   else if (strcmp (key, KEY_AUTO_RAISE_DELAY) == 0)
     {
@@ -1066,68 +1046,6 @@ change_notify (GConfClient    *client,
       if (update_button_layout (str))
         queue_changed (META_PREF_BUTTON_LAYOUT);
     }
-  else if (strcmp (key, KEY_VISUAL_BELL) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        key);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : provide_visual_bell;      
-      if (update_visual_bell (b, bell_is_audible))
-	queue_changed (META_PREF_VISUAL_BELL);	    
-    }
-  else if (strcmp (key, KEY_AUDIBLE_BELL) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        key);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : bell_is_audible;      
-      if (update_visual_bell (provide_visual_bell, b))
-	queue_changed (META_PREF_AUDIBLE_BELL);
-    }
-  else if (strcmp (key, KEY_REDUCED_RESOURCES) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_REDUCED_RESOURCES);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : reduced_resources;
-
-      if (update_reduced_resources (b))
-        queue_changed (META_PREF_REDUCED_RESOURCES);
-    }
-  else if (strcmp (key, KEY_GNOME_ACCESSIBILITY) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                       KEY_GNOME_ACCESSIBILITY);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : gnome_accessibility;
-
-      if (update_gnome_accessibility (b))
-        queue_changed (META_PREF_GNOME_ACCESSIBILITY);
-    }
   else if (strcmp (key, KEY_CURSOR_THEME) == 0)
     {
       const char *str;
@@ -1160,22 +1078,6 @@ change_notify (GConfClient    *client,
       if (update_cursor_size (d))
 	queue_changed (META_PREF_CURSOR_SIZE);
     }
-  else if (strcmp (key, KEY_COMPOSITING_MANAGER) == 0)
-    {
-      gboolean b;
-
-      if (value && value->type != GCONF_VALUE_BOOL)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                       KEY_COMPOSITING_MANAGER);
-          goto out;
-        }
-
-      b = value ? gconf_value_get_bool (value) : compositing_manager;
-
-      if (update_compositing_manager (b))
-        queue_changed (META_PREF_COMPOSITING_MANAGER);
-    }
   else
     {
       meta_topic (META_DEBUG_PREFS, "Key %s doesn't mean anything to Metacity\n",
@@ -1186,6 +1088,60 @@ change_notify (GConfClient    *client,
   /* nothing */
   return; /* AIX compiler wants something after a label like out: */
 }
+
+static void
+cleanup_error (GError **error)
+{
+  if (*error)
+    {
+      meta_warning ("%s\n", (*error)->message);
+      
+      g_error_free (*error);
+      *error = NULL;
+    }
+}
+
+/* get_bool returns TRUE if *val is filled in, FALSE otherwise */
+static gboolean
+get_bool (const char *key, gboolean *val)
+{
+  GError     *err = NULL;
+  GConfValue *value;
+  gboolean    filled_in = FALSE;
+
+  value = gconf_client_get (default_client, key, &err);
+  cleanup_error (&err);
+  if (value)
+    {
+      if (value->type == GCONF_VALUE_BOOL)
+        {
+          *val = gconf_value_get_bool (value);
+          filled_in = TRUE;
+        }
+      gconf_value_free (value);
+    }
+
+  return filled_in;
+}
+
+/**
+ * Special case: give a warning the first time disable_workarounds
+ * is turned on.
+ */
+static void
+maybe_give_disable_workarounds_warning (void)
+{
+  static gboolean first_disable = TRUE;
+    
+  if (first_disable && disable_workarounds)
+    {
+      first_disable = FALSE;
+
+      meta_warning (_("Workarounds for broken applications disabled. "
+                      "Some applications may not behave properly.\n"));
+    }
+}
+
 #endif /* HAVE_GCONF */
 
 #ifdef HAVE_GCONF
@@ -1217,18 +1173,6 @@ update_mouse_button_mods (const char *value)
     }
 
   return old_mods != mouse_button_mods;
-}
-#endif /* HAVE_GCONF */
-
-#ifdef HAVE_GCONF
-static gboolean
-update_raise_on_click (gboolean value)
-{
-  gboolean old = raise_on_click;
-
-  raise_on_click = value;
-
-  return old != value;
 }
 #endif /* HAVE_GCONF */
 
@@ -1353,33 +1297,6 @@ meta_prefs_get_cursor_size (void)
 {
   return cursor_size;
 }
-
-#ifdef HAVE_GCONF
-static gboolean
-update_use_system_font (gboolean value)
-{
-  gboolean old = use_system_font;
-
-  use_system_font = value;
-
-  return old != value;
-}
-
-static gboolean
-update_visual_bell (gboolean visual_bell, gboolean audible_bell)
-{
-  gboolean old_visual = provide_visual_bell;
-  gboolean old_audible = bell_is_audible;
-  gboolean has_changed;
-
-  provide_visual_bell = visual_bell;
-  bell_is_audible = audible_bell;
-  has_changed = (old_visual != provide_visual_bell) || 
-    (old_audible != bell_is_audible);
-
-  return has_changed;
-}
-#endif /* HAVE_GCONF */
 
 #ifdef HAVE_GCONF
 static gboolean
@@ -1655,23 +1572,6 @@ meta_prefs_get_num_workspaces (void)
   return num_workspaces;
 }
 
-#ifdef HAVE_GCONF
-static gboolean
-update_application_based (gboolean value)
-{
-  gboolean old = application_based;
-
-  /* DISABLE application_based feature for now */
-#if 0
-  application_based = value;
-#else
-  application_based = FALSE;
-#endif
-
-  return old != application_based;
-}
-#endif /* HAVE_GCONF */
-
 gboolean
 meta_prefs_get_application_based (void)
 {
@@ -1680,29 +1580,6 @@ meta_prefs_get_application_based (void)
   return application_based;
 }
 
-#ifdef HAVE_GCONF
-static gboolean
-update_disable_workarounds (gboolean value)
-{
-  gboolean old = disable_workarounds;
-
-  disable_workarounds = value;
-
-  {
-    static gboolean first_disable = TRUE;
-    
-    if (disable_workarounds && first_disable)
-      {
-        first_disable = FALSE;
-
-        meta_warning (_("Workarounds for broken applications disabled. Some applications may not behave properly.\n"));
-      }
-  }
-  
-  return old != disable_workarounds;
-}
-#endif /* HAVE_GCONF */
-
 gboolean
 meta_prefs_get_disable_workarounds (void)
 {
@@ -1710,16 +1587,6 @@ meta_prefs_get_disable_workarounds (void)
 }
 
 #ifdef HAVE_GCONF
-static gboolean
-update_auto_raise (gboolean value)
-{
-  gboolean old = auto_raise;
-
-  auto_raise = value;
-
-  return old != auto_raise;
-}
-
 #define MAX_REASONABLE_AUTO_RAISE_DELAY 10000
   
 static gboolean
@@ -1740,25 +1607,6 @@ update_auto_raise_delay (int value)
   return old != auto_raise_delay;
 }
 
-static gboolean
-update_reduced_resources (gboolean value)
-{
-  gboolean old = reduced_resources;
-
-  reduced_resources = value;
-
-  return old != reduced_resources;
-}
-
-static gboolean
-update_gnome_accessibility (gboolean value)
-{
-  gboolean old = gnome_accessibility;
-
-  gnome_accessibility = value;
-  
-  return old != gnome_accessibility;
-}
 #endif /* HAVE_GCONF */
 
 #ifdef WITH_VERBOSE_MODE
@@ -3028,24 +2876,13 @@ meta_prefs_get_window_binding (const char          *name,
   g_assert_not_reached ();
 }
 
-#ifdef HAVE_GCONF
-static gboolean
-update_compositing_manager (gboolean value)
-{
-  gboolean old = compositing_manager;
-
-  compositing_manager = value;
-  
-  return old != compositing_manager;
-}
-#endif
-
 gboolean
 meta_prefs_get_compositing_manager (void)
 {
   return compositing_manager;
 }
 
+#ifndef HAVE_GCONF
 static void
 init_button_layout(void)
 {
@@ -3081,3 +2918,5 @@ init_button_layout(void)
   button_layout = meta_ui_get_direction() == META_UI_DIRECTION_LTR ?
     button_layout_ltr : button_layout_rtl;
 };
+
+#endif
