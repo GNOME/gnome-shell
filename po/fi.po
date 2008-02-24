@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-20 07:58+0300\n"
+"POT-Creation-Date: 2008-02-24 06:08+0300\n"
 "PO-Revision-Date: 2007-02-16 20:03+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -179,26 +179,43 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Uudelleenkäynnistys epäonnistui: %s\n"
 
-#: ../src/core/prefs.c:434
+#.
+#. * We found it, but it was invalid.  Complain.
+#. *
+#. * FIXME: This replicates the original behaviour, but in the future
+#. * we might consider reverting invalid keys to their original values.
+#. * (We know the old value, so we can look up a suitable string in
+#. * the symtab.)
+#.
+#: ../src/core/prefs.c:370 ../src/core/prefs.c:446
 #, c-format
-msgid "Type of %s was not integer"
-msgstr "Muuttujan %s tyyppi ei ollut kokonaisluku"
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "GConf-avain \"%s\" on asetettu arvoltaan vääräksi\n"
 
-#: ../src/core/prefs.c:572 ../src/core/prefs.c:600 ../src/core/prefs.c:616
-#: ../src/core/prefs.c:632 ../src/core/prefs.c:648 ../src/core/prefs.c:664
-#: ../src/core/prefs.c:680 ../src/core/prefs.c:696 ../src/core/prefs.c:716
-#: ../src/core/prefs.c:732 ../src/core/prefs.c:748 ../src/core/prefs.c:766
-#: ../src/core/prefs.c:782 ../src/core/prefs.c:801 ../src/core/prefs.c:817
-#: ../src/core/prefs.c:852 ../src/core/prefs.c:868 ../src/core/prefs.c:885
-#: ../src/core/prefs.c:901 ../src/core/prefs.c:917 ../src/core/prefs.c:933
-#: ../src/core/prefs.c:949 ../src/core/prefs.c:964 ../src/core/prefs.c:979
-#: ../src/core/prefs.c:994 ../src/core/prefs.c:1010 ../src/core/prefs.c:1026
-#: ../src/core/prefs.c:1042 ../src/core/prefs.c:1058
+#: ../src/core/prefs.c:419 ../src/core/prefs.c:489 ../src/core/prefs.c:840
+#: ../src/core/prefs.c:856 ../src/core/prefs.c:872 ../src/core/prefs.c:888
+#: ../src/core/prefs.c:906 ../src/core/prefs.c:922 ../src/core/prefs.c:941
+#: ../src/core/prefs.c:957 ../src/core/prefs.c:974 ../src/core/prefs.c:991
+#: ../src/core/prefs.c:1007 ../src/core/prefs.c:1023 ../src/core/prefs.c:1039
+#: ../src/core/prefs.c:1055 ../src/core/prefs.c:1071
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-avain \"%s\" on asetettu väärän tyyppiseksi\n"
 
-#: ../src/core/prefs.c:1103
+#: ../src/core/prefs.c:697
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "Muuttujan %s tyyppi ei ollut kokonaisluku"
+
+#: ../src/core/prefs.c:1140
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+"Rikkinäisten sovellusten kiertotiet eivät ole käytössä. Jotkin sovellukset "
+"eivät välttämättä käyttäydy kunnolla.\n"
+
+#: ../src/core/prefs.c:1170
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -206,26 +223,21 @@ msgid ""
 msgstr ""
 "Asetustietokannassa oleva \"%s\" ei ole kelvollinen hiiren muunnosnäppäin\n"
 
-#: ../src/core/prefs.c:1127 ../src/core/prefs.c:1148 ../src/core/prefs.c:1705
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf-avain \"%s\" on asetettu arvoltaan vääräksi\n"
-
-#: ../src/core/prefs.c:1277
+#: ../src/core/prefs.c:1288
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
 msgstr ""
 "GConf-avaimeen %2$s tallennettu arvo %1$d ei ole järkevä kohdistimen koko. "
-"Sallitut arvot ovat välilä 1-128\n"
+"Sallitut arvot ovat välillä 1-128\n"
 
-#: ../src/core/prefs.c:1357
+#: ../src/core/prefs.c:1313
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "GConf-avaimesta %2$s saatu kirjasinkuvaus \"%1$s\" ei jäsenny\n"
 
-#: ../src/core/prefs.c:1599
+#: ../src/core/prefs.c:1555
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -234,30 +246,22 @@ msgstr ""
 "GConf-avaimeen %2$s tallennettu %1$d ei ole järkevä työtilojen määrä. "
 "Nykyinen raja on %3$d\n"
 
-#: ../src/core/prefs.c:1659
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"Rikkinäisten sovellusten kiertotiet eivät ole käytössä. Jotkin sovellukset "
-"eivät välttämättä käyttäydy kunnolla.\n"
-
-#: ../src/core/prefs.c:1732
+#: ../src/core/prefs.c:1599
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d, joka on GConf-avaimessa %s, ei ole välillä 0 - %d\n"
 
-#: ../src/core/prefs.c:1881
+#: ../src/core/prefs.c:1729
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Virhe työtilojen määrän asettamisessa arvoon %d: %s\n"
 
-#: ../src/core/prefs.c:2246 ../src/core/prefs.c:2782 ../src/ui/menu.c:199
+#: ../src/core/prefs.c:2094 ../src/core/prefs.c:2630 ../src/ui/menu.c:199
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
 
-#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2448
+#: ../src/core/prefs.c:2124 ../src/core/prefs.c:2297
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -266,7 +270,7 @@ msgstr ""
 "\"%s\", joka on asetustietokannassa, ei ole kelvollinen näppäinsidonnan \"%s"
 "\" arvo\n"
 
-#: ../src/core/prefs.c:2863
+#: ../src/core/prefs.c:2711
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
@@ -506,7 +510,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr "Toiminto otsikkopalkin kaksoisnapsautettaelle"
+msgstr "Toiminto otsikkopalkin kaksoisnapsautukselle"
 
 #: ../src/metacity.schemas.in.h:4
 msgid "Action on title bar middle-click"
@@ -772,7 +776,7 @@ msgstr "Siirrä ikkunaa yksi työtila ylös"
 
 #: ../src/metacity.schemas.in.h:51
 msgid "Move window to east side of screen"
-msgstr "Siirrä ikkuna vasemapaan laitaan"
+msgstr "Siirrä ikkuna vasempaan laitaan"
 
 #: ../src/metacity.schemas.in.h:52
 msgid "Move window to north side of screen"
@@ -800,7 +804,7 @@ msgstr "Siirrä ikkuna oikeaan alakulmaan"
 
 #: ../src/metacity.schemas.in.h:58
 msgid "Move window to west side of screen"
-msgstr "Siirrä ikkuna oikeean reunaan"
+msgstr "Siirrä ikkuna oikeaan reunaan"
 
 #: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 1"
@@ -1651,11 +1655,11 @@ msgid ""
 msgstr ""
 "Pikanäppäin, joka vaihtaa kohdistuksen takaperin sovelluksen ikkunoiden "
 "välillä näyttämättä selausikkunaa. Pitämällä tämän pikanäppäimen kanssa "
-"samalla alhalla \"shift\"-painiketta siirytään eteenpäin. Pikanäppäimet ovat "
-"muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
-"varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
-"kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", ei tähän toimintoon liity pikanäppäintä."
+"samalla alhalla \"shift\"-painiketta siirrytään eteenpäin. Pikanäppäimet "
+"ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös "
+"lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi "
+"erityisen merkkijonon \"disabled\", ei tähän toimintoon liity pikanäppäintä."
 
 #: ../src/metacity.schemas.in.h:148
 msgid ""
@@ -1667,7 +1671,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Pikanäppäin, joka vaihtaa kohdistuksen takaperin sovellluksen ikkunoiden "
+"Pikanäppäin, joka vaihtaa kohdistuksen takaperin sovelluksen ikkunoiden "
 "välillä näyttäen selausikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a"
 "\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
 "välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
@@ -2100,7 +2104,7 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Tämä pikanäppäin siirtää ikkunan vasemaan yläkulmaan. Pikanäppäimet ovat "
+"Tämä pikanäppäin siirtää ikkunan vasempaan yläkulmaan. Pikanäppäimet ovat "
 "muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on "
 "varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, "
 "kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
@@ -2291,7 +2295,7 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments."
 msgstr ""
-"Ottaa käyttöön näkyvän ilmaisimen järjestelmän 'piipauksille. Tämä on "
+"Ottaa käyttöön näkyvän ilmaisimen järjestelmän 'piippauksille'. Tämä on "
 "hyödyllistä, jos kuulo on heikko tai ympäristö on meluinen."
 
 #: ../src/metacity.schemas.in.h:197
@@ -2431,12 +2435,12 @@ msgstr "Siirrä _oikeaan työtilaan"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:99
 msgid "Move to Workspace _Up"
-msgstr "Siirry _ylläolevaan työtilaan"
+msgstr "Siirry _yllä olevaan työtilaan"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:101
 msgid "Move to Workspace _Down"
-msgstr "Siirrä _allaolevaan työtilaan"
+msgstr "Siirrä _alla olevaan työtilaan"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
@@ -3210,7 +3214,7 @@ msgstr "Tämä on testipainike, jossa on \"lopeta\"-kuvake"
 
 #: ../src/ui/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr "Tämä on esimerkkiviesti esimerkkivalinbtaikkunassa"
+msgstr "Tämä on esimerkkiviesti esimerkkivalintaikkunassa"
 
 #: ../src/ui/theme-viewer.c:324
 #, c-format
@@ -3530,7 +3534,7 @@ msgstr ""
 #: ../src/ui/theme.c:2173 ../src/ui/theme.c:2214
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Koordinaattilausekkessa oli tuntematon muuttuja tai vakio \"%s\""
+msgstr "Koordinaattilausekkeessa oli tuntematon muuttuja tai vakio \"%s\""
 
 #: ../src/ui/theme.c:2268
 #, c-format
