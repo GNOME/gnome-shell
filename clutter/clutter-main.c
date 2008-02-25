@@ -1182,10 +1182,17 @@ emit_event (ClutterEvent *event,
   ClutterActor         *actor;
   gint                  i = 0, n_tree_events = 0;
 
-  g_return_if_fail (event->any.source != NULL);
-  g_return_if_fail (lock == FALSE);
+  if (!event->any.source)
+    {
+      g_warning ("No event source set, discarding event");
+      return;
+    }
 
-  lock = TRUE; /* Guard against reentrancy */
+  /* reentrancy check */
+  if (lock == FALSE)
+    return;
+
+  lock = TRUE;
 
   /* Sorry Mr Bassi. */
   if (G_UNLIKELY (event_tree == NULL))
@@ -1390,9 +1397,12 @@ clutter_do_event (ClutterEvent *event)
             {
               actor = clutter_stage_get_key_focus (CLUTTER_STAGE (stage));
               event->any.source = actor;
-              g_return_if_fail (actor != NULL);
+              if (G_UNLIKELY (actor == NULL))
+                {
+                  g_warning ("No key focus set, discarding");
+                  return;
+                }
             }
-
 
           emit_keyboard_event (event);
         }

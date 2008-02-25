@@ -605,8 +605,6 @@ clutter_actor_transform_point (ClutterActor *actor,
   ClutterFixed           mtx[16];
   ClutterActorPrivate   *priv;
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
   priv = actor->priv;
 
   cogl_push_matrix();
@@ -729,8 +727,6 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
    * Need to query coords here, so that we get coorect values for actors that
    * do not modify priv->coords.
    */
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
   clutter_actor_query_coords (self, &coords);
 
   cogl_push_matrix();
@@ -806,8 +802,6 @@ clutter_actor_transform_vertices (ClutterActor  *self,
    * Need to query coords here, so that we get coorect values for actors that
    * do not modify priv->coords.
    */
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
   clutter_actor_query_coords (self, &coords);
 
   cogl_push_matrix();
@@ -2782,8 +2776,6 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
 {
   ClutterVertex v1;
   ClutterVertex v2;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   v1.x = v1.y = v1.z = 0;
   clutter_actor_apply_transform_to_point (self, &v1, &v2);
@@ -5475,8 +5467,6 @@ clutter_actor_shader_pre_paint (ClutterActor *actor,
   ClutterShader       *shader;
   ClutterMainContext  *context;
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
   priv = actor->priv;
   shader_data = priv->shader_data;
 
@@ -5504,8 +5494,6 @@ clutter_actor_shader_post_paint (ClutterActor *actor)
   ShaderData          *shader_data;
   ClutterShader       *shader;
   ClutterMainContext  *context;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
   priv = actor->priv;
   shader_data = priv->shader_data;

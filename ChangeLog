@@ -1,3 +1,11 @@
+2008-02-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c: Remove the usage of g_return_if_fail()
+	from static functions: either assert or use g_warning() to check
+	internal state, as g_return_if_fail() can be compiled out.
+
+	* clutter/clutter-main.c: Ditto as above.
+
 2008-02-25  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-texture.c:
