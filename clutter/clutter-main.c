@@ -1189,7 +1189,7 @@ emit_event (ClutterEvent *event,
     }
 
   /* reentrancy check */
-  if (lock == FALSE)
+  if (lock != FALSE)
     return;
 
   lock = TRUE;
