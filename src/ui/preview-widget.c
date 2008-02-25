@@ -460,3 +460,112 @@ meta_preview_get_mini_icon (void)
   
   return default_icon;
 }
+
+GdkRegion *
+meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint new_window_height)
+{
+  GdkRectangle xrect;
+  GdkRegion *corners_xregion, *window_xregion;
+  gint flags;
+  MetaFrameLayout *fgeom;
+  MetaFrameStyle *frame_style;
+
+  g_return_if_fail (META_IS_PREVIEW (preview));
+
+  flags = (META_PREVIEW (preview)->flags);
+
+  frame_style = meta_theme_get_frame_style (preview->theme,
+      META_FRAME_TYPE_NORMAL, flags);
+
+  fgeom = frame_style->layout;
+
+  corners_xregion = gdk_region_new ();
+
+  if (fgeom->top_left_corner_rounded_radius != 0)
+    {
+      const int corner = fgeom->top_left_corner_rounded_radius;
+      const float radius = sqrt(corner) + corner;
+      int i;
+
+      for (i=0; i<corner; i++)
+        {
+
+          const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
+          xrect.x = 0;
+          xrect.y = i;
+          xrect.width = width;
+          xrect.height = 1;
+
+          gdk_region_union_with_rect (corners_xregion, &xrect);
+        }
+    }
+
+  if (fgeom->top_right_corner_rounded_radius != 0)
+    {
+      const int corner = fgeom->top_right_corner_rounded_radius;
+      const float radius = sqrt(corner) + corner;
+      int i;
+
+      for (i=0; i<corner; i++)
+        {
+          const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
+          xrect.x = new_window_width - width;
+          xrect.y = i;
+          xrect.width = width;
+          xrect.height = 1;
+
+          gdk_region_union_with_rect (corners_xregion, &xrect);
+        }
+    }
+
+  if (fgeom->bottom_left_corner_rounded_radius != 0)
+    {
+      const int corner = fgeom->bottom_left_corner_rounded_radius;
+      const float radius = sqrt(corner) + corner;
+      int i;
+
+      for (i=0; i<corner; i++)
+        {
+          const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
+          xrect.x = 0;
+          xrect.y = new_window_height - i - 1;
+          xrect.width = width;
+          xrect.height = 1;
+
+          gdk_region_union_with_rect (corners_xregion, &xrect);
+        }
+    }
+
+  if (fgeom->bottom_right_corner_rounded_radius != 0)
+    {
+      const int corner = fgeom->bottom_right_corner_rounded_radius;
+      const float radius = sqrt(corner) + corner;
+      int i;
+
+      for (i=0; i<corner; i++)
+        {
+          const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
+          xrect.x = new_window_width - width;
+          xrect.y = new_window_height - i - 1;
+          xrect.width = width;
+          xrect.height = 1;
+
+          gdk_region_union_with_rect (corners_xregion, &xrect);
+        }
+    }
+
+  window_xregion = gdk_region_new ();
+
+  xrect.x = 0;
+  xrect.y = 0;
+  xrect.width = new_window_width;
+  xrect.height = new_window_height;
+
+  gdk_region_union_with_rect (window_xregion, &xrect);
+  gdk_region_subtract (window_xregion, corners_xregion);
+  gdk_region_destroy (corners_xregion);
+
+  return window_xregion;
+}
+
+

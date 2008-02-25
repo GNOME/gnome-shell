@@ -1,3 +1,9 @@
+2008-02-25  Thomas Wood  <thos@gnome.org>
+
+        * src/ui/preview-widget.[ch] (meta_preview_get_clip_region):
+	allow users of the preview widget to get a mask for windows
+	in the correct shape for the current theme.
+
 2008-02-23  Thomas Thurman  <tthurman@gnome.org>
 
 	Refactor handling of boolean preferences.
