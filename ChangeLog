@@ -1,13 +1,14 @@
 2008-02-26  Thomas Thurman  <tthurman@gnome.org>
 
+        * NEWS: 2.23.0 release.
+
+2008-02-26  Thomas Thurman  <tthurman@gnome.org>
+
         * tools/release-wrangler.py: ANY post-release bump is now the
 	most recent, not just the one that matches the current version.
 	Otherwise, you can't use these tools straight after a branch.
 	The changeset before this one was mislabelled because of this.
-
-2008-02-26  Thomas Thurman  <tthurman@gnome.org>
-
-        * NEWS: 2.23.0 release.
+	It has now been excised from the changelog.
 
 2008-02-25  Thomas Wood  <thos@gnome.org>
 
