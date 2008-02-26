@@ -1,3 +1,9 @@
+2008-02-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-alpha.c:
+	(clutter_exp_inc_func),	(clutter_exp_dec_func): Clamp the value
+	of the alpha function between [0, MAX_ALPHA]. (#800)
+
 2008-02-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.c (emit_event): Fix the last commit

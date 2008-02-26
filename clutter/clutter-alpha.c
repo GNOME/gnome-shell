@@ -925,7 +925,7 @@ clutter_exp_inc_func (ClutterAlpha *alpha,
 
   x =  x_alpha_max * frame / n_frames;
 
-  result = clutter_pow2x (x) - 1;
+  result = CLAMP (clutter_pow2x (x) - 1, 0, CLUTTER_ALPHA_MAX_ALPHA);
 
   return result;
 }
@@ -976,7 +976,7 @@ clutter_exp_dec_func (ClutterAlpha *alpha,
 
   x =  (x_alpha_max * (n_frames - frame)) / n_frames;
 
-  result = clutter_pow2x (x) - 1;
+  result = CLAMP (clutter_pow2x (x) - 1, 0, CLUTTER_ALPHA_MAX_ALPHA);
 
   return result;
 }
