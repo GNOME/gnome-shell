@@ -102,7 +102,13 @@ def version_numbers():
 
           if version_value in versions:
             try:
-              version['micro_next'] = versions[versions.index(version_value)+1]
+              version_index = versions.index(version_value)+1
+
+              if versions[version_index] == version['micro']:
+                # work around metacity giving "1" twice
+                version_index += 1
+
+              version['micro_next'] = versions[version_index]
             except:
               report_error("You gave a list of micro version numbers, but we've used them up!")
           else:
@@ -116,6 +122,7 @@ def version_numbers():
 
   version['string'] = '%(major)s.%(minor)s.%(micro)s' % (version)
   version['filename'] = '%(name)s-%(string)s.tar.gz' % (version)
+
   return version
 
 def check_file_does_not_exist(version):
@@ -123,7 +130,7 @@ def check_file_does_not_exist(version):
     report_error("Sorry, you already have a file called %s! Please delete it or move it first." % (version['filename']))
 
 def is_date(str):
-  return len(str)>3 and str[4]=='-'
+  return len(str)>4 and str[4]=='-'
 
 def scan_changelog(version):
   changelog = file("ChangeLog").readlines()
@@ -144,10 +151,12 @@ def scan_changelog(version):
   entries = []
 
   def assumed_surname(name):
+    if name=='': return ''
     # might get more complicated later, but for now...
     return name.split()[-1]
 
   def assumed_forename(name):
+    if name=='': return ''
     return name.split()[0]
 
   bug_re = re.compile('bug \#?(\d+)', re.IGNORECASE)
@@ -236,11 +245,23 @@ def edit_news_entry(version):
 
   def translator_name(language):
     name = 'unknown'
-    for line in file('po/%s.po' % (language)).readlines():
+
+    if ',' in language:
+      language = language[:language.find(',')].replace('.po','')
+
+    filename = 'po/%s.po' % (language)
+
+    if not os.access(filename, os.F_OK):
+      # Never mind the translator being unknown, we don't even
+      # know about the language!
+      return 'Mystery translator (%s)'  % (language)
+
+    for line in file(filename).readlines():
       match = last_translator_re.search(line)
       if match:
         name = match.group(1).rstrip().lstrip()
         break
+
     return "%s (%s)" % (name, language)
 
   thanks += '\nTranslations\n'
