@@ -811,6 +811,7 @@ constrain_size_increments (MetaWindow         *window,
   int bh, hi, bw, wi, extra_height, extra_width;
   int new_width, new_height;
   gboolean constraint_already_satisfied;
+  MetaRectangle *start_rect;
 
   if (priority > PRIORITY_SIZE_HINTS_INCREMENTS)
     return TRUE;
@@ -855,7 +856,6 @@ constrain_size_increments (MetaWindow         *window,
   /* Figure out what original rect to pass to meta_rectangle_resize_with_gravity
    * See bug 448183
    */
-  MetaRectangle *start_rect;
   if (info->action_type == ACTION_MOVE_AND_RESIZE)
     start_rect = &info->current;
   else
@@ -879,6 +879,7 @@ constrain_size_limits (MetaWindow         *window,
   MetaRectangle min_size, max_size;
   gboolean too_big, too_small, constraint_already_satisfied;
   int new_width, new_height;
+  MetaRectangle *start_rect;
 
   if (priority > PRIORITY_SIZE_HINTS_LIMITS)
     return TRUE;
@@ -911,7 +912,6 @@ constrain_size_limits (MetaWindow         *window,
   /* Figure out what original rect to pass to meta_rectangle_resize_with_gravity
    * See bug 448183
    */
-  MetaRectangle *start_rect;
   if (info->action_type == ACTION_MOVE_AND_RESIZE)
     start_rect = &info->current;
   else
@@ -936,6 +936,7 @@ constrain_aspect_ratio (MetaWindow         *window,
   int fudge, new_width, new_height;
   double best_width, best_height;
   double alt_width, alt_height;
+  MetaRectangle *start_rect;
 
   if (priority > PRIORITY_ASPECT_RATIO)
     return TRUE;
@@ -1044,7 +1045,6 @@ constrain_aspect_ratio (MetaWindow         *window,
   /* Figure out what original rect to pass to meta_rectangle_resize_with_gravity
    * See bug 448183
    */
-  MetaRectangle *start_rect;
   if (info->action_type == ACTION_MOVE_AND_RESIZE)
     start_rect = &info->current;
   else

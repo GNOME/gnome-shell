@@ -1,3 +1,10 @@
+2008-02-26  Jens Granseuer  <jensgr@gmx.net>
+
+        * src/core/constraints.c (constrain_aspect_ratio,
+	constrain_size_limits, constrain_size_increments):
+	reorder declarations so we don't break C89 compilers.
+	Closes #518917.
+
 2008-02-26  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.23.1.
