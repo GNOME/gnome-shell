@@ -142,7 +142,8 @@ def scan_changelog(version):
   for line in changelog:
     if is_date(line):
       release_date = line[:10]
-    if "Post-release bump to %s.%s.%s." % (version['major'], version['minor'], version['micro']) in line:
+
+    if "Post-release bump to" in line:
       changelog = changelog[:changelog.index(line)+1]
       break
 
@@ -281,6 +282,7 @@ def edit_news_entry(version):
   tmp.close()
 
   os.system(favourite_editor()+' +6 %s ' % (filename))
+  # FIXME: if they abort, would be useful to abort here too
 
   # Write it out to NEWS
 

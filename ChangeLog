@@ -1,5 +1,12 @@
 2008-02-26  Thomas Thurman  <tthurman@gnome.org>
 
+        * tools/release-wrangler.py: ANY post-release bump is now the
+	most recent, not just the one that matches the current version.
+	Otherwise, you can't use these tools straight after a branch.
+	The changeset before this one was mislabelled because of this.
+
+2008-02-26  Thomas Thurman  <tthurman@gnome.org>
+
         * NEWS: 2.23.0 release.
 
 2008-02-25  Thomas Wood  <thos@gnome.org>
@@ -24,6 +31,7 @@
 	function containing duplicated code from elsewhere.
 	* src/core/prefs.c (init_button_layout): only compiled when
 	HAVE_GCONF is not defined. Removed a compiler warning.
+
 2008-02-23  Thomas Thurman  <tthurman@gnome.org>
 
 	* tools/commit-wrangler.py: Print URL of changeset on success.
