@@ -53,8 +53,6 @@ metacity_SOURCES= 				\
 	core/screen.h				\
 	core/session.c				\
 	core/session.h				\
-	core/spring-model.c			\
-	core/spring-model.h			\
 	core/stack.c				\
 	core/stack.h				\
 	core/util.c				\

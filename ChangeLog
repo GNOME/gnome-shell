@@ -1,3 +1,7 @@
+2008-02-27  Jim Huang  <jserv.tw@gmail.com>
+
+        * src/core/spring-model.[ch]: deleted as no longer used
+        * src/Makefile.am: modified accordingly
 2008-02-27  Thomas Thurman  <tthurman@gnome.org>
 
 	Lots of tiny fixes to make sure we compile with
