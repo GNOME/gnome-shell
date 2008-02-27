@@ -29,7 +29,6 @@
 #include "boxes.h"
 #include "util.h"
 #include <X11/Xutil.h>  /* Just for the definition of the various gravities */
-#include <stdio.h>      /* For snprintf */
 
 char*
 meta_rectangle_to_string (const MetaRectangle *rect,
@@ -61,7 +60,7 @@ meta_rectangle_region_to_string (GList      *region,
   char *cur = output;
 
   if (region == NULL)
-    snprintf (output, 10, "(EMPTY)");
+    g_snprintf (output, 10, "(EMPTY)");
 
   while (tmp)
     {
@@ -114,7 +113,7 @@ meta_rectangle_edge_list_to_string (GList      *edge_list,
   GList *tmp = edge_list;
 
   if (edge_list == NULL)
-    snprintf (output, 10, "(EMPTY)");
+    g_snprintf (output, 10, "(EMPTY)");
 
   while (tmp)
     {

@@ -627,17 +627,20 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       parent = meta_display_lookup_x_window (window->display,
                                              window->xtransient_for);
 
-    // First, maybe the app was launched with startup notification using an
-    // obsolete version of the spec; use that timestamp if it exists.
+    /* First, maybe the app was launched with startup notification using an
+     * obsolete version of the spec; use that timestamp if it exists.
+     */
     if (window->initial_timestamp_set)
-      // NOTE: Do NOT toggle net_wm_user_time_set to true; this is just
-      // being recorded as a fallback for potential transients
+      /* NOTE: Do NOT toggle net_wm_user_time_set to true; this is just
+       * being recorded as a fallback for potential transients
+       */
       window->net_wm_user_time = window->initial_timestamp;
     else if (parent != NULL)
       meta_window_set_user_time(window, parent->net_wm_user_time);
     else
-      // NOTE: Do NOT toggle net_wm_user_time_set to true; this is just
-      // being recorded as a fallback for potential transients
+      /* NOTE: Do NOT toggle net_wm_user_time_set to true; this is just
+       * being recorded as a fallback for potential transients
+       */
       window->net_wm_user_time =
         meta_display_get_current_time_roundtrip (window->display);
   }
@@ -5085,10 +5088,10 @@ meta_window_client_message (MetaWindow *window,
       meta_window_move_resize_request(window,
                                       value_mask,
                                       gravity,
-                                      event->xclient.data.l[1],  // x
-                                      event->xclient.data.l[2],  // y
-                                      event->xclient.data.l[3],  // width
-                                      event->xclient.data.l[4]); // height
+                                      event->xclient.data.l[1],  /* x */
+                                      event->xclient.data.l[2],  /* y */
+                                      event->xclient.data.l[3],  /* width */
+                                      event->xclient.data.l[4]); /* height */
     }
   else if (event->xclient.message_type ==
            display->atom_net_active_window)
@@ -5892,7 +5895,7 @@ meta_window_update_struts (MetaWindow *window)
               strut_end   = struts[4+(i*2)+1];
 
               temp = g_new (MetaStrut, 1);
-              temp->side = 1 << i; // See MetaDirection def.  Matches nicely, eh?
+              temp->side = 1 << i; /* See MetaDirection def.  Matches nicely, eh? */
               temp->rect = window->screen->rect;
               switch (temp->side)
                 {

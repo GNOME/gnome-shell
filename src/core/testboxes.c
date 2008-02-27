@@ -625,15 +625,15 @@ test_regions_okay ()
   /*************************************************************/  
   region = get_screen_region (3);
   tmp = NULL;
-  tmp = g_list_prepend (tmp, new_meta_rect ( 380,  675,  420,  525)); // 220500
-  tmp = g_list_prepend (tmp, new_meta_rect (   0,   20,  300, 1180)); // 354000
-  tmp = g_list_prepend (tmp, new_meta_rect ( 380,   20,  320, 1180)); // 377600
-  tmp = g_list_prepend (tmp, new_meta_rect (   0,  675,  800,  475)); // 380000
-  tmp = g_list_prepend (tmp, new_meta_rect (1200,   20,  400, 1180)); // 472000
-  tmp = g_list_prepend (tmp, new_meta_rect (   0,  675, 1600,  425)); // 680000
-  tmp = g_list_prepend (tmp, new_meta_rect ( 900,   20,  700, 1080)); // 756000
-  tmp = g_list_prepend (tmp, new_meta_rect (   0,   20,  700, 1130)); // 791000
-  tmp = g_list_prepend (tmp, new_meta_rect (   0,   20, 1600,  505)); // 808000
+  tmp = g_list_prepend (tmp, new_meta_rect ( 380,  675,  420,  525)); /* 220500 */
+  tmp = g_list_prepend (tmp, new_meta_rect (   0,   20,  300, 1180)); /* 354000 */
+  tmp = g_list_prepend (tmp, new_meta_rect ( 380,   20,  320, 1180)); /* 377600 */
+  tmp = g_list_prepend (tmp, new_meta_rect (   0,  675,  800,  475)); /* 380000 */
+  tmp = g_list_prepend (tmp, new_meta_rect (1200,   20,  400, 1180)); /* 472000 */
+  tmp = g_list_prepend (tmp, new_meta_rect (   0,  675, 1600,  425)); /* 680000 */
+  tmp = g_list_prepend (tmp, new_meta_rect ( 900,   20,  700, 1080)); /* 756000 */
+  tmp = g_list_prepend (tmp, new_meta_rect (   0,   20,  700, 1130)); /* 791000 */
+  tmp = g_list_prepend (tmp, new_meta_rect (   0,   20, 1600,  505)); /* 808000 */
 #if 0
   printf ("Got to here...\n");
   char region_list[(RECT_LENGTH+2) * g_list_length (region)];

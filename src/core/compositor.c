@@ -21,6 +21,9 @@
  * 02111-1307, USA.
  */
 
+#define _GNU_SOURCE
+#define _XOPEN_SOURCE 500 /* for usleep() */
+
 #include <config.h>
 
 #include <stdlib.h>
@@ -1310,7 +1313,7 @@ add_damage (MetaScreen     *screen,
   MetaDisplay *display = screen->display;
   MetaCompScreen *info = screen->compositor_data;
 
-//  dump_xserver_region ("add_damage", display, damage);
+  /*  dump_xserver_region ("add_damage", display, damage); */
 
   if (info->all_damage) 
     {

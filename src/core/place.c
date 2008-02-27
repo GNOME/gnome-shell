@@ -41,6 +41,7 @@ typedef enum
   META_BOTTOM
 } MetaWindowDirection;
 
+#if 0 /* never used -- remove if nobody wants it */
 static gint
 northwestcmp (gconstpointer a, gconstpointer b)
 {
@@ -86,7 +87,9 @@ northwestcmp (gconstpointer a, gconstpointer b)
   else
     return 0;
 }
-     
+#endif /* 0 -- never used */
+
+#if 0 /* never used -- remove if nobody wants it */
 static void
 find_next_cascade (MetaWindow *window,
                    MetaFrameGeometry *fgeom,
@@ -234,6 +237,7 @@ find_next_cascade (MetaWindow *window,
       *new_y = cascade_y + fgeom->top_height;
     }
 }
+#endif /* 0 -- never used */
 
 static void
 find_most_freespace (MetaWindow *window,

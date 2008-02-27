@@ -19,6 +19,9 @@
  * 02111-1307, USA.
  */
 
+#define _GNU_SOURCE
+#define _XOPEN_SOURCE 600 /* C99 -- for rint() */
+
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>

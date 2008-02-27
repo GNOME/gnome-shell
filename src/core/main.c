@@ -40,6 +40,9 @@
  * to investigate, read main(), meta_display_open(), and event_callback().
  */
 
+#define _GNU_SOURCE
+#define _SVID_SOURCE /* for putenv() and some signal-related functions */
+
 #include <config.h>
 #include "main.h"
 #include "util.h"
@@ -331,7 +334,7 @@ main (int argc, char **argv)
     NULL, G_LOG_DOMAIN, "Gtk", "Gdk", "GLib",
     "Pango", "GLib-GObject", "GThread"
   };
-  gint i;
+  guint i;
   
   if (setlocale (LC_ALL, "") == NULL)
     meta_warning ("Locale not understood by C library, internationalization will not work\n");

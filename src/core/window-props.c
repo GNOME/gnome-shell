@@ -22,6 +22,9 @@
  * 02111-1307, USA.
  */
 
+#define _GNU_SOURCE
+#define _SVID_SOURCE /* for gethostname() */
+
 #include <config.h>
 #include "window-props.h"
 #include "errors.h"

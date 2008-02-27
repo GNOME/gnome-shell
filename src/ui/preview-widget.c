@@ -21,6 +21,10 @@
  * 02111-1307, USA.
  */
 
+#define _GNU_SOURCE
+#define _XOPEN_SOURCE 600 /* for the maths routines over floats */
+
+#include <math.h>
 #include "preview-widget.h"
 
 static void     meta_preview_class_init    (MetaPreviewClass *klass);
@@ -470,7 +474,7 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
   MetaFrameLayout *fgeom;
   MetaFrameStyle *frame_style;
 
-  g_return_if_fail (META_IS_PREVIEW (preview));
+  g_return_val_if_fail (META_IS_PREVIEW (preview), NULL);
 
   flags = (META_PREVIEW (preview)->flags);
 

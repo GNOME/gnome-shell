@@ -91,7 +91,7 @@
 
 typedef enum
 {
-  PRIORITY_MINIMUM = 0, // Dummy value used for loop start = min(all priorities)
+  PRIORITY_MINIMUM = 0, /* Dummy value used for loop start = min(all priorities) */
   PRIORITY_ASPECT_RATIO = 0,
   PRIORITY_ENTIRELY_VISIBLE_ON_SINGLE_XINERAMA = 0,
   PRIORITY_ENTIRELY_VISIBLE_ON_WORKAREA = 1,
@@ -101,7 +101,7 @@ typedef enum
   PRIORITY_SIZE_HINTS_LIMITS = 3,
   PRIORITY_TITLEBAR_VISIBLE = 4,
   PRIORITY_PARTIALLY_VISIBLE_ON_WORKAREA = 4,
-  PRIORITY_MAXIMUM = 4  // Dummy value used for loop end = max(all priorities)
+  PRIORITY_MAXIMUM = 4 /* Dummy value used for loop end = max(all priorities) */
 } ConstraintPriority;
 
 typedef enum
