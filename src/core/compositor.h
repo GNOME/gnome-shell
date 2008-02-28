@@ -26,7 +26,6 @@
 
 #include "util.h"
 #include "display.h"
-#include "spring-model.h"
 
 MetaCompositor* meta_compositor_new           (MetaDisplay       *display);
 void            meta_compositor_process_event (MetaCompositor    *compositor,
