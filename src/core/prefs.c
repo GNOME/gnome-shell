@@ -1346,6 +1346,10 @@ button_layout_equal (const MetaButtonLayout *a,
         return FALSE;
       if (a->right_buttons[i] != b->right_buttons[i])
         return FALSE;
+      if (a->left_buttons_has_spacer[i] != b->left_buttons_has_spacer[i])
+        return FALSE;
+      if (a->right_buttons_has_spacer[i] != b->right_buttons_has_spacer[i])
+        return FALSE;
       ++i;
     }
 
@@ -1426,6 +1430,7 @@ update_button_layout (const char *value)
       while (i < META_BUTTON_FUNCTION_LAST)
         {
           used[i] = FALSE;
+          new_layout.left_buttons_has_spacer[i] = FALSE;
           ++i;
         }
       
@@ -1435,28 +1440,42 @@ update_button_layout (const char *value)
       while (buttons[b] != NULL)
         {
           MetaButtonFunction f = button_function_from_string (buttons[b]);
-
-          if (f != META_BUTTON_FUNCTION_LAST && !used[f])
+          if (i > 0 && strcmp("spacer", buttons[b]) == 0)
             {
-              new_layout.left_buttons[i] = f;
-              used[f] = TRUE;
-              ++i;
-
+              new_layout.left_buttons_has_spacer[i-1] = TRUE;
               f = button_opposite_function (f);
 
               if (f != META_BUTTON_FUNCTION_LAST)
-                new_layout.left_buttons[i++] = f;
+                {
+                  new_layout.left_buttons_has_spacer[i-2] = TRUE;
+                }
             }
           else
             {
-              meta_topic (META_DEBUG_PREFS, "Ignoring unknown or already-used button name \"%s\"\n",
-                          buttons[b]);
+              if (f != META_BUTTON_FUNCTION_LAST && !used[f])
+                {
+                  new_layout.left_buttons[i] = f;
+                  used[f] = TRUE;
+                  ++i;
+
+                  f = button_opposite_function (f);
+
+                  if (f != META_BUTTON_FUNCTION_LAST)
+                      new_layout.left_buttons[i++] = f;
+
+                }
+              else
+                {
+                  meta_topic (META_DEBUG_PREFS, "Ignoring unknown or already-used button name \"%s\"\n",
+                              buttons[b]);
+                }
             }
           
           ++b;
         }
 
       new_layout.left_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      new_layout.left_buttons_has_spacer[i] = FALSE;
       
       g_strfreev (buttons);
     }
@@ -1471,6 +1490,7 @@ update_button_layout (const char *value)
       while (i < META_BUTTON_FUNCTION_LAST)
         {
           used[i] = FALSE;
+          new_layout.right_buttons_has_spacer[i] = FALSE;
           ++i;
         }
       
@@ -1480,28 +1500,41 @@ update_button_layout (const char *value)
       while (buttons[b] != NULL)
         {
           MetaButtonFunction f = button_function_from_string (buttons[b]);
-
-          if (f != META_BUTTON_FUNCTION_LAST && !used[f])
+          if (i > 0 && strcmp("spacer", buttons[b]) == 0)
             {
-              new_layout.right_buttons[i] = f;
-              used[f] = TRUE;
-              ++i;
-
+              new_layout.right_buttons_has_spacer[i-1] = TRUE;
               f = button_opposite_function (f);
-
               if (f != META_BUTTON_FUNCTION_LAST)
-                new_layout.right_buttons[i++] = f;
-             }
+                {
+                  new_layout.right_buttons_has_spacer[i-2] = TRUE;
+                }
+            }
           else
             {
-              meta_topic (META_DEBUG_PREFS, "Ignoring unknown or already-used button name \"%s\"\n",
-                          buttons[b]);
+              if (f != META_BUTTON_FUNCTION_LAST && !used[f])
+                {
+                  new_layout.right_buttons[i] = f;
+                  used[f] = TRUE;
+                  ++i;
+
+                  f = button_opposite_function (f);
+
+                  if (f != META_BUTTON_FUNCTION_LAST)
+                      new_layout.right_buttons[i++] = f;
+
+                }
+              else
+                {
+                  meta_topic (META_DEBUG_PREFS, "Ignoring unknown or already-used button name \"%s\"\n",
+                              buttons[b]);
+                }
             }
           
           ++b;
         }
 
       new_layout.right_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      new_layout.right_buttons_has_spacer[i] = FALSE;
       
       g_strfreev (buttons);
     }
@@ -1516,13 +1549,27 @@ update_button_layout (const char *value)
     
     for (i = 0; new_layout.left_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
     for (j = 0; j < i; j++)
-	  rtl_layout.right_buttons[j] = new_layout.left_buttons[i - j - 1];
+      {
+        rtl_layout.right_buttons[j] = new_layout.left_buttons[i - j - 1];
+        if (j == 0)
+          rtl_layout.right_buttons_has_spacer[i - 1] = new_layout.left_buttons_has_spacer[i - j - 1];
+        else
+          rtl_layout.right_buttons_has_spacer[j - 1] = new_layout.left_buttons_has_spacer[i - j - 1];
+      }
     rtl_layout.right_buttons[j] = META_BUTTON_FUNCTION_LAST;
+    rtl_layout.right_buttons_has_spacer[j] = FALSE;
       
     for (i = 0; new_layout.right_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
     for (j = 0; j < i; j++)
-      rtl_layout.left_buttons[j] = new_layout.right_buttons[i - j - 1];
+      {
+        rtl_layout.left_buttons[j] = new_layout.right_buttons[i - j - 1];
+        if (j == 0)
+          rtl_layout.left_buttons_has_spacer[i - 1] = new_layout.right_buttons_has_spacer[i - j - 1];
+        else
+          rtl_layout.left_buttons_has_spacer[j - 1] = new_layout.right_buttons_has_spacer[i - j - 1];
+      }
     rtl_layout.left_buttons[j] = META_BUTTON_FUNCTION_LAST;
+    rtl_layout.left_buttons_has_spacer[j] = FALSE;
 
     new_layout = rtl_layout;
   }

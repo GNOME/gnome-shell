@@ -1,3 +1,13 @@
+2008-02-29  Andrea Del Signore  <sejerpz@tin.it>
+
+	Add support for "spacer" as a button type which adds some
+	empty space. Closes #509165.
+
+        * src/ui/theme.c (meta_frame_layout_calc_geometry),
+          src/include/common.h (MetaButtonLayout),
+          src/core/prefs.c (update_button_layout, button_layout_equal),
+          src/metacity.schemas.in: add spacer support
+
 2008-02-28  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/compositor.h: removed unnecessary #include which

@@ -592,7 +592,7 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
                                  MetaFrameGeometry      *fgeom,
                                  MetaTheme              *theme)
 {
-  int i, n_left, n_right;
+  int i, n_left, n_right, n_left_spacers, n_right_spacers;
   int x;
   int button_y;
   int title_right_edge;
@@ -606,7 +606,9 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   MetaButtonSpace *left_func_rects[MAX_BUTTONS_PER_CORNER];
   MetaButtonSpace *right_func_rects[MAX_BUTTONS_PER_CORNER];
   GdkRectangle *left_bg_rects[MAX_BUTTONS_PER_CORNER];
+  gboolean left_buttons_has_spacer[MAX_BUTTONS_PER_CORNER];
   GdkRectangle *right_bg_rects[MAX_BUTTONS_PER_CORNER];
+  gboolean right_buttons_has_spacer[MAX_BUTTONS_PER_CORNER];
   
   meta_frame_layout_get_borders (layout, text_height,
                                  flags,
@@ -659,6 +661,8 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   
   n_left = 0;
   n_right = 0;
+  n_left_spacers = 0;
+  n_right_spacers = 0;
 
   if (!layout->hide_buttons)
     {
@@ -669,7 +673,13 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
                                                        button_layout->left_buttons[i],
                                                        theme);
           if (left_func_rects[n_left] != NULL)
-            ++n_left;
+            {
+              left_buttons_has_spacer[n_left] = button_layout->left_buttons_has_spacer[i];
+              if (button_layout->left_buttons_has_spacer[i])
+                ++n_left_spacers;
+
+              ++n_left;
+            }
         }
       
       for (i = 0; i < MAX_BUTTONS_PER_CORNER && button_layout->right_buttons[i] != META_BUTTON_FUNCTION_LAST; i++)
@@ -678,7 +688,13 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
                                                          button_layout->right_buttons[i],
                                                          theme);
           if (right_func_rects[n_right] != NULL)
-            ++n_right;
+            {
+              right_buttons_has_spacer[n_right] = button_layout->right_buttons_has_spacer[i];
+              if (button_layout->right_buttons_has_spacer[i])
+                ++n_right_spacers;
+
+              ++n_right;
+            }
         }
     }
 
@@ -720,16 +736,30 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
       space_used_by_buttons = 0;
 
       space_used_by_buttons += button_width * n_left;
+      space_used_by_buttons += (button_width * 0.75) * n_left_spacers;
       space_used_by_buttons += layout->button_border.left * n_left;
       space_used_by_buttons += layout->button_border.right * n_left;
 
       space_used_by_buttons += button_width * n_right;
+      space_used_by_buttons += (button_width * 0.75) * n_right_spacers;
       space_used_by_buttons += layout->button_border.left * n_right;
       space_used_by_buttons += layout->button_border.right * n_right;
 
       if (space_used_by_buttons <= space_available)
         break; /* Everything fits, bail out */
       
+      /* First try to remove separators */
+      if (n_left_spacers > 0)
+        {
+          left_buttons_has_spacer[--n_left_spacers] = FALSE;
+          continue;
+        }
+      else if (n_right_spacers > 0)
+        {
+          right_buttons_has_spacer[--n_right_spacers] = FALSE;
+          continue;
+        }
+
       /* Otherwise we need to shave out a button. Shave
        * above, stick, shade, min, max, close, then menu (menu is most useful);
        * prefer the default button locations.
@@ -799,8 +829,10 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
         break;
       
       rect = right_func_rects[i];
-
       rect->visible.x = x - layout->button_border.right - button_width;
+      if (right_buttons_has_spacer[i])
+        rect->visible.x -= (button_width * 0.75);
+
       rect->visible.y = button_y;
       rect->visible.width = button_width;
       rect->visible.height = button_height;
@@ -865,6 +897,8 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
 
 
       x = rect->visible.x + rect->visible.width + layout->button_border.right;
+      if (left_buttons_has_spacer[i])
+        x += (button_width * 0.75);
 
       *(left_bg_rects[i]) = rect->visible;
     }

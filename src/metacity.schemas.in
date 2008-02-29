@@ -37,12 +37,14 @@
          <long>
            Arrangement of buttons on the titlebar. The 
            value should be a string, such as 
-           "menu:minimize,maximize,close"; the colon separates the 
+           "menu:minimize,maximize,spacer,close"; the colon separates the 
            left corner of the window from the right corner, and 
            the button names are comma-separated. Duplicate buttons
            are not allowed. Unknown button names are silently ignored
            so that buttons can be added in future metacity versions 
            without breaking older versions.
+           A special spacer tag can be used to insert some space between
+           two adjacent buttons.
          </long>
       </locale>
     </schema>
