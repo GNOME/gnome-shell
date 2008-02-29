@@ -1,3 +1,18 @@
+2008-02-29  Øyvind Kolås  <pippin@o-hand.com>
+
+	Reuse the numeric id's used for picking actors to avoid the potential
+	of overflowing the id numbers when continusly creating and destroying
+	actors on long running applications for 16bpp.
+
+	* clutter/clutter-private.h: replaced hashtable with GArray and a
+	GSList for available slots in the array.
+	* clutter/clutter-actor.c: (create_actor_id): function to create an
+	actor->id mapping, (release_actor_id): function to mark an existing id
+	as available for reuse.
+	* clutter/clutter-main.c: (clutter_context_free): added utility
+	function for cleaning up the context, 
+	(clutter_get_actor_by_gid): use the GArray for looking up actors.
+
 2008-02-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-alpha.c:

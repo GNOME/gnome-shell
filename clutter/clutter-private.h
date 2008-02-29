@@ -83,7 +83,8 @@ struct _ClutterMainContext
   guint            motion_frequency;   /* Motion events per second */
   gint             num_reactives;      /* Num of reactive actors */
 
-  GHashTable      *actor_hash;	       /* Hash of all actors mapped to id */
+  GArray          *actor_array;        /* Array of ClutterActors        */
+  GSList          *free_actor_ids;     /* A stack of released actor ids */
 
   guint            frame_rate;         /* Default FPS */
 
