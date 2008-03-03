@@ -114,10 +114,16 @@
          <short>Action on title bar double-click</short>
          <long>
            This option determines the effects of double-clicking on the
-           title bar.  Current valid options are 'toggle_shade', which will
-           shade/unshade the window, 'toggle_maximize' which will
-           maximize/unmaximize the window, 'minimize' which will minimize
-           the window, and 'none' which will not do anything.
+           title bar.  Current valid options are
+	   'toggle_shade', which will shade/unshade the window,
+	   'toggle_maximize' which will maximize/unmaximize the window,
+	   'toggle_maximize_horizontally' and 'toggle_maximize_vertically'
+	   which will maximize/unmaximize the window in that direction only,
+	   'minimize' which will minimize the window,
+	   'shade' which will roll the window up,
+	   'menu' which will display the window menu,
+	   'lower' which will put the window behind all the others,
+	   and 'none' which will not do anything.
          </long>
       </locale>
     </schema>
@@ -132,10 +138,16 @@
          <short>Action on title bar middle-click</short>
          <long>
            This option determines the effects of middle-clicking on the
-           title bar.  Current valid options are 'toggle_shade', which will
-           shade/unshade the window, 'toggle_maximize' which will
-           maximize/unmaximize the window, 'minimize' which will minimize
-           the window, and 'none' which will not do anything.
+           title bar.  Current valid options are
+	   'toggle_shade', which will shade/unshade the window,
+	   'toggle_maximize' which will maximize/unmaximize the window,
+	   'toggle_maximize_horizontally' and 'toggle_maximize_vertically'
+	   which will maximize/unmaximize the window in that direction only,
+	   'minimize' which will minimize the window,
+	   'shade' which will roll the window up,
+	   'menu' which will display the window menu,
+	   'lower' which will put the window behind all the others,
+	   and 'none' which will not do anything.
          </long>
       </locale>
     </schema>
@@ -150,10 +162,16 @@
          <short>Action on title bar right-click</short>
          <long>
            This option determines the effects of right-clicking on the
-           title bar.  Current valid options are 'toggle_shade', which will
-           shade/unshade the window, 'toggle_maximize' which will
-           maximize/unmaximize the window, 'minimize' which will minimize
-           the window, and 'none' which will not do anything.
+           title bar.  Current valid options are
+	   'toggle_shade', which will shade/unshade the window,
+	   'toggle_maximize' which will maximize/unmaximize the window,
+	   'toggle_maximize_horizontally' and 'toggle_maximize_vertically'
+	   which will maximize/unmaximize the window in that direction only,
+	   'minimize' which will minimize the window,
+	   'shade' which will roll the window up,
+	   'menu' which will display the window menu,
+	   'lower' which will put the window behind all the others,
+	   and 'none' which will not do anything.
          </long>
       </locale>
     </schema>

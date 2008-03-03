@@ -200,6 +200,10 @@ static GConfEnumStringPair symtab_titlebar_action[] =
   {
     { META_ACTION_TITLEBAR_TOGGLE_SHADE,    "toggle_shade" },
     { META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE, "toggle_maximize" },
+    { META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE_HORIZONTALLY,
+                                "toggle_maximize_horizontally" },
+    { META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE_VERTICALLY,
+                                "toggle_maximize_vertically" },
     { META_ACTION_TITLEBAR_MINIMIZE,        "minimize" },
     { META_ACTION_TITLEBAR_NONE,            "none" },
     { META_ACTION_TITLEBAR_LOWER,           "lower" },

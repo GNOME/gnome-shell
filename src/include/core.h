@@ -120,6 +120,10 @@ void meta_core_minimize         (Display *xdisplay,
                                  Window   frame_xwindow);
 void meta_core_toggle_maximize  (Display *xdisplay,
                                  Window   frame_xwindow);
+void meta_core_toggle_maximize_horizontally  (Display *xdisplay,
+                                              Window   frame_xwindow);
+void meta_core_toggle_maximize_vertically    (Display *xdisplay,
+                                              Window   frame_xwindow);
 void meta_core_unmaximize       (Display *xdisplay,
                                  Window   frame_xwindow);
 void meta_core_maximize         (Display *xdisplay,

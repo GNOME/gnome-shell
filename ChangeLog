@@ -1,3 +1,24 @@
+2008-03-03  Cosimo Cecchi  <anarki@lilik.it>
+
+	Add ability to vertically and horizontally maximise
+	using the mouse, by clicking the titlebar in various
+	ways.  A very similar patch was received from Jason Ribero.
+	Thanks also go to Tony Houghton and Carlo Wood, who
+	both submitted patches which solved this differently.
+	Closes #358674.
+
+        * src/include/common.h (MetaActionTitlebar): new values
+	for the new actions
+        * src/core/core.c (meta_core_maximize_{vertic|horizont}ally):
+	new functions.
+        * src/ui/frames.c (meta_frame_titlebar_event): handle the
+	new action values
+        * src/core/window.h: new macros (for regularity, not really
+	necessary)
+        * src/core/prefs.c (symtab_titlebar_action): new string
+	representations of the action values
+        * src/metacity.schemas.in: documentation
+
 2008-02-29  Andrea Del Signore  <sejerpz@tin.it>
 
 	Add support for "spacer" as a button type which adds some

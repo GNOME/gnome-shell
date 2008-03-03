@@ -1249,6 +1249,32 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
       }
       break;
 
+    case META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE_HORIZONTALLY:
+      {
+        meta_core_get (gdk_display, frame->xwindow,
+                       META_CORE_GET_FRAME_FLAGS, &flags,
+                       META_CORE_GET_END);
+        
+        if (flags & META_FRAME_ALLOWS_MAXIMIZE)
+          {
+            meta_core_toggle_maximize_horizontally (gdk_display, frame->xwindow);
+          }
+      }
+      break;
+
+    case META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE_VERTICALLY:
+      {
+        meta_core_get (gdk_display, frame->xwindow,
+                       META_CORE_GET_FRAME_FLAGS, &flags,
+                       META_CORE_GET_END);
+        
+        if (flags & META_FRAME_ALLOWS_MAXIMIZE)
+          {
+            meta_core_toggle_maximize_vertically (gdk_display, frame->xwindow);
+          }
+      }
+      break;
+
     case META_ACTION_TITLEBAR_MINIMIZE:
       {
         meta_core_get (gdk_display, frame->xwindow,
