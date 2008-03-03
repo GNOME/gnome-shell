@@ -1,3 +1,9 @@
+2008-03-03  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* Makefile.am: Do not recurse into doc if we did not explicitly
+	enabled the documentation build; we just recurse into doc if we
+	are doing a dist or a distcheck.
+
 2008-02-29  Øyvind Kolås  <pippin@o-hand.com>
 
 	Reuse the numeric id's used for picking actors to avoid the potential
