@@ -1424,8 +1424,11 @@ clutter_do_event (ClutterEvent *event)
 
       case CLUTTER_MOTION:
 
-        /* avoid rate throttling for synthetic motion events */
-        if (! (event->any.flags & CLUTTER_EVENT_FLAG_SYNTHETIC))
+        /* avoid rate throttling for synthetic motion events or if
+         * the per-actor events are disabled
+         */
+        if (!(event->any.flags & CLUTTER_EVENT_FLAG_SYNTHETIC) ||
+            !context->motion_events_per_actor)
           {
             gint32 frame_rate, delta;
 

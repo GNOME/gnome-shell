@@ -1,3 +1,8 @@
+2008-03-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-main.c (clutter_do_event): Do not throttle the
+	motion events if the per-actor delivery has been disabled.
+
 2008-03-04  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/pango/pangoclutter-render.c: (draw_glyph): use g_slice_new0
