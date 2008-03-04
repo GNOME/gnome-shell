@@ -1,3 +1,8 @@
+2008-03-04  Thomas Thurman  <tthurman@gnome.org>
+
+        * MAINTAINERS: added some spacing to see whether it
+	helps Pulse
+
 2008-03-03  Cosimo Cecchi  <anarki@lilik.it>
 
 	Add ability to vertically and horizontally maximise
