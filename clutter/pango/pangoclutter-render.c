@@ -370,7 +370,7 @@ draw_glyph (PangoRenderer *renderer_,
         g->generation = tc_generation;
       else
         {
-          g = g_slice_new (glyph_info);
+          g = g_slice_new0 (glyph_info);
 
           _pango_clutter_font_set_glyph_cache_destroy
 	                        (font, (GDestroyNotify)free_glyph_info);

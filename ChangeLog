@@ -1,3 +1,9 @@
+2008-03-04  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/pango/pangoclutter-render.c: (draw_glyph): use g_slice_new0
+	instead of g_slice_new when allocating the glyph_info, avoiding a
+	branch based on uninitialized memory.
+
 2008-03-03  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Do not recurse into doc if we did not explicitly
