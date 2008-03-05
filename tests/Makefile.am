@@ -1,6 +1,9 @@
 noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
                   test-actors test-behave test-text test-entry test-project \
 		  test-perspective test-rotate test-depth \
+		  test-threads test-timeline test-timeline-dup-frames \
+                  test-timeline-interpolate test-timeline-rewind \
+                  test-timeline-smoothness test-timeline-frame-count \
 		  test-threads test-timeline test-score test-script \
 		  test-model test-grab test-effects test-fullscreen \
 		  test-shader test-unproject test-viewport test-fbo \
@@ -27,6 +30,11 @@ test_rotate_SOURCES      = test-rotate.c
 test_depth_SOURCES       = test-depth.c
 test_threads_SOURCES     = test-threads.c
 test_timeline_SOURCES    = test-timeline.c
+test_timeline_dup_frames_SOURCES  = test-timeline-dup-frames.c
+test_timeline_interpolate_SOURCES = test-timeline-interpolate.c
+test_timeline_rewind_SOURCES      = test-timeline-rewind.c
+test_timeline_smoothness_SOURCES  = test-timeline-smoothness.c
+test_timeline_frame_count_SOURCES = test-timeline-frame-count.c
 test_shader_SOURCES      = test-shader.c
 test_score_SOURCES       = test-score.c
 test_script_SOURCES      = test-script.c
