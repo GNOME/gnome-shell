@@ -83,7 +83,7 @@ backendextra=
 backendextralib=
 clutterbackend=glx
 AC_ARG_WITH([flavour],
-            AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl@:>@],
+            AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl/osx@:>@],
                            [Select the Clutter backend]),
             clutterbackend=$with_flavour)
 
