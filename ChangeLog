@@ -1,5 +1,11 @@
 2008-03-06  Thomas Thurman  <tthurman@gnome.org>
 
+        * tools/release-wrangler.py: basic md5 printing (not used yet);
+	also print release announcements to stdout (eventually will
+	need to be emailed to release list and blogged)
+
+2008-03-06  Thomas Thurman  <tthurman@gnome.org>
+
         Part three of the great prefs refactor, this time
         dealing with string preferences.  (This was the most
         complicated part, and has been especially tested and

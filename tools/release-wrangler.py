@@ -27,6 +27,7 @@ import re
 import sys
 import commands
 import time
+import commands
 
 def report_error(message):
   print message
@@ -286,10 +287,13 @@ def edit_news_entry(version):
 
   # Write it out to NEWS
 
+  version['announcement'] = ''
+
   news_tmp = open('NEWS.tmp', 'a')
   for line in open(filename, 'r').readlines():
     if line=='' or line[0]!='#':
       news_tmp.write(line)
+      version['announcement'] += line
 
   for line in open('NEWS').readlines():
     news_tmp.write(line)
@@ -352,6 +356,9 @@ def tag_the_release(version):
   if os.system("svn cp -m release . svn+ssh://svn.gnome.org/svn/%(name)s/tags/%(ucname)s_%(major)s_%(minor)s_%(micro)s" % (version))!=0:
     report_error("Could not tag; bailing.")
 
+def md5s(version):
+  return commands.getstatusoutput('ssh master.gnome.org "cd /ftp/pub/GNOME/sources/%(name)s/%(major)s.%(minor)s/;md5sum $(name)s-%(major)s.%(minor)s.%(micro)s.tar*"' % (version))
+
 def main():
   get_up_to_date()
   check_we_are_up_to_date()
@@ -362,6 +369,7 @@ def main():
   tag_the_release(version)
   increment_version(version)
   upload(version)
+  print version['announcement']
   print "-- Done --"
 
 if __name__=='__main__':
