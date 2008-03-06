@@ -1,3 +1,10 @@
+2008-02-28  Gwenole Beauchesne  <gbeauchesne@splitted-desktop.org>
+
+	Signed off by: Emmanuele Bassi <ebassi@openedhand.com>
+
+	* clutter/clutter-group.c (clutter_group_real_lower): Fix to
+	actually lower the actor under the 'above' actor. (#822)
+
 2008-03-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-entry.h:

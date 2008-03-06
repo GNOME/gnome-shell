@@ -391,7 +391,7 @@ clutter_group_real_lower (ClutterContainer *container,
     {
       gint pos;
 
-      pos = g_list_index (priv->children, sibling) + 1;
+      pos = g_list_index (priv->children, sibling);
 
       priv->children = g_list_insert (priv->children, actor, pos);
     }
