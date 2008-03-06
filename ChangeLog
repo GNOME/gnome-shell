@@ -1,3 +1,28 @@
+2008-03-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Add support for the anchor point inside ClutterScript (#834,
+	David Stanczak)
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_property),
+	(clutter_actor_get_property),
+	(clutter_actor_class_init): Add the :anchor-x and :anchor-y
+	properties to the ClutterActor class.
+
+	(clutter_actor_set_anchor_point),
+	(clutter_actor_set_anchor_pointu),
+	(clutter_actor_set_anchor_point_from_gravity): Reimplement
+	the pixel based and gravity based API using the units based
+	one. Emit the ::notify signal for the :anchor-x and :anchor-y
+	properties.
+	
+	(parse_units),
+	(clutter_actor_parse_custom_node): Parse the :anchor-x and
+	:anchor-y properties using the custom units format (mm, px,
+	pt and %).
+
+	* tests/test-script.json: Test the newly added properties.
+
 2008-03-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Add "osx" the the AC_HELP_STRING of the flavour

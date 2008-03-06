@@ -227,7 +227,10 @@ enum
   PROP_ROTATION_ANGLE_Z,
   PROP_ROTATION_CENTER_X,
   PROP_ROTATION_CENTER_Y,
-  PROP_ROTATION_CENTER_Z
+  PROP_ROTATION_CENTER_Z,
+
+  PROP_ANCHOR_X,
+  PROP_ANCHOR_Y
 };
 
 enum
@@ -1525,6 +1528,12 @@ clutter_actor_set_property (GObject      *object,
                                      0);
       }
       break;
+    case PROP_ANCHOR_X:
+      priv->anchor_x = CLUTTER_UNITS_FROM_DEVICE (g_value_get_int (value));
+      break;
+    case PROP_ANCHOR_Y:
+      priv->anchor_y = CLUTTER_UNITS_FROM_DEVICE (g_value_get_int (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1632,6 +1641,12 @@ clutter_actor_get_property (GObject    *object,
 
         g_value_set_boxed (value, &center);
       }
+      break;
+    case PROP_ANCHOR_X:
+      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE (priv->anchor_x));
+      break;
+    case PROP_ANCHOR_Y:
+      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE (priv->anchor_y));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1964,6 +1979,40 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					    "The rotation center on the Z axis",
 					    CLUTTER_TYPE_VERTEX,
 					    CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor::anchor-x:
+   *
+   * The X coordinate of an actor's anchor point, relative to
+   * the actor coordinate space, in pixels.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+                       (object_class,
+			PROP_ANCHOR_X,
+			g_param_spec_int ("anchor-x",
+					  "Anchor X",
+					  "X coordinate of the anchor point",
+					  -G_MAXINT, G_MAXINT,
+                                          0,
+					  CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor::anchor-y:
+   *
+   * The Y coordinate of an actor's anchor point, relative to
+   * the actor coordinate space, in pixels.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+                       (object_class,
+			PROP_ANCHOR_Y,
+			g_param_spec_int ("anchor-y",
+					  "Anchor Y",
+					  "Y coordinate of the anchor point",
+					  -G_MAXINT, G_MAXINT,
+                                          0,
+					  CLUTTER_PARAM_READWRITE));
 
   /**
    * ClutterActor::destroy:
@@ -4412,14 +4461,11 @@ clutter_actor_set_anchor_point (ClutterActor *self,
 				gint          anchor_x,
                                 gint          anchor_y)
 {
-  ClutterActorPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
-
-  priv->anchor_x = CLUTTER_UNITS_FROM_DEVICE (anchor_x);
-  priv->anchor_y = CLUTTER_UNITS_FROM_DEVICE (anchor_y);
+  clutter_actor_set_anchor_pointu (self,
+                                   CLUTTER_UNITS_FROM_DEVICE (anchor_x),
+                                   CLUTTER_UNITS_FROM_DEVICE (anchor_y));
 }
 
 /**
@@ -4513,8 +4559,21 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
 
   priv = self->priv;
 
-  priv->anchor_x = anchor_x;
-  priv->anchor_y = anchor_y;
+  g_object_freeze_notify (G_OBJECT (self));
+
+  if (priv->anchor_x != anchor_x)
+    {
+      priv->anchor_x = anchor_x;
+      g_object_notify (G_OBJECT (self), "anchor-x");
+    }
+
+  if (priv->anchor_y != anchor_y)
+    {
+      priv->anchor_y = anchor_y;
+      g_object_notify (G_OBJECT (self), "anchor-y");
+    }
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -4649,15 +4708,15 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
   switch (gravity)
     {
     case CLUTTER_GRAVITY_NORTH:
-      x = w/2;
+      x = w / 2;
       break;
     case CLUTTER_GRAVITY_SOUTH:
-      x = w/2;
+      x = w / 2;
       y = h;
       break;
     case CLUTTER_GRAVITY_EAST:
       x = w;
-      y = h/2;
+      y = h / 2;
       break;
     case CLUTTER_GRAVITY_NORTH_EAST:
       x = w;
@@ -4670,20 +4729,20 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
       y = h;
       break;
     case CLUTTER_GRAVITY_WEST:
-      y = h/2;
+      y = h / 2;
       break;
     case CLUTTER_GRAVITY_CENTER:
-      x = w/2;
-      y = h/2;
+      x = w / 2;
+      y = h / 2;
       break;
     case CLUTTER_GRAVITY_NONE:
     case CLUTTER_GRAVITY_NORTH_WEST:
-    default:
       break;
     }
 
-  priv->anchor_x = x;
-  priv->anchor_y = y;
+  clutter_actor_set_anchor_pointu (self,
+                                   CLUTTER_UNITS_FROM_DEVICE (x),
+                                   CLUTTER_UNITS_FROM_DEVICE (y));
 }
 
 typedef enum
@@ -4691,7 +4750,9 @@ typedef enum
   PARSE_X,
   PARSE_Y,
   PARSE_WIDTH,
-  PARSE_HEIGHT
+  PARSE_HEIGHT,
+  PARSE_ANCHOR_X,
+  PARSE_ANCHOR_Y
 } ParseDimension;
 
 static ClutterUnit
@@ -4719,6 +4780,10 @@ parse_units (ClutterActor   *self,
       gchar *end;
 
       val = g_ascii_strtoll (g_value_get_string (&value), &end, 10);
+
+      /* skip whitespace */
+      while (g_ascii_isspace (*end))
+        end++;
 
       /* assume pixels */
       if (*end == '\0')
@@ -4751,14 +4816,17 @@ parse_units (ClutterActor   *self,
             {
               g_warning ("Unable to set percentage of %s on a top-level "
                          "actor of type `%s'",
-                         (dimension == PARSE_X || dimension == PARSE_WIDTH) ? "width"
-                                                                            : "height",
+                         (dimension == PARSE_X ||
+                          dimension == PARSE_WIDTH ||
+                          dimension == PARSE_ANCHOR_X) ? "width" : "height",
                          g_type_name (G_OBJECT_TYPE (self)));
               retval = 0;
               goto out;
             }
 
-          if (dimension == PARSE_X || dimension == PARSE_WIDTH)
+          if (dimension == PARSE_X ||
+              dimension == PARSE_WIDTH ||
+              dimension == PARSE_ANCHOR_X)
             retval = CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE (val);
           else
             retval = CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE (val);
@@ -4791,7 +4859,9 @@ parse_units (ClutterActor   *self,
 
       val = CLAMP (g_value_get_double (&value) * 100, 0, 100);
 
-      if (dimension == PARSE_X || dimension == PARSE_WIDTH)
+      if (dimension == PARSE_X ||
+          dimension == PARSE_WIDTH ||
+          dimension == PARSE_ANCHOR_X)
         retval = CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE (val);
       else
         retval = CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE (val);
@@ -4799,8 +4869,8 @@ parse_units (ClutterActor   *self,
   else
     {
       g_warning ("Invalid value of type `%s': integers, strings of floating "
-                 "point values can be used for the x, y, width and height "
-                 "properties.",
+                 "point values can be used for the x, y, width, height "
+                 "anchor-x and anchor-y properties.",
                  g_type_name (G_VALUE_TYPE (&value)));
     }
 
@@ -4980,7 +5050,9 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
   if ((name[0] == 'x' && name[1] == '\0') ||
       (name[0] == 'y' && name[1] == '\0') ||
       (strcmp (name, "width") == 0) ||
-      (strcmp (name, "height") == 0))
+      (strcmp (name, "height") == 0) ||
+      (strcmp (name, "anchor_x") == 0) ||
+      (strcmp (name, "anchor_y") == 0))
     {
       ClutterUnit units;
       ParseDimension dimension;
@@ -4991,12 +5063,18 @@ clutter_actor_parse_custom_node (ClutterScriptable *scriptable,
         dimension = PARSE_Y;
       else if (name[0] == 'w')
         dimension = PARSE_WIDTH;
-      else
+      else if (name[0] == 'h')
         dimension = PARSE_HEIGHT;
+      else if (name[0] == 'a' && name[7] == 'x')
+        dimension = PARSE_ANCHOR_X;
+      else if (name[0] == 'a' && name[7] == 'y')
+        dimension = PARSE_ANCHOR_Y;
+      else
+        return FALSE;
 
       units = parse_units (actor, dimension, node);
 
-      /* convert back to pixels */
+      /* convert back to pixels: all properties are pixel-based */
       g_value_init (value, G_TYPE_INT);
       g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE (units));
 
