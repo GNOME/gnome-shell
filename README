@@ -140,6 +140,25 @@ RELEASE NOTES
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (See NEWS for general new feature info).
 
+Release Notes for Clutter 0.8
+-------------------------------
+
+* The behaviour of clutter_actor_get_opacity() has been slightly changed;
+  instead of returning the composited opacity of the entire parents chain
+  of an actor, clutter_actor_get_opacity() does what you mean, and returns
+  the opacity set with clutter_actor_set_opacity(). The composited
+  opacity value is now returned by clutter_actor_get_abs_opacity().
+
+* Until 0.6, clutter_label_get_color() would have returned a ClutterColor
+  with the alpha component equal to the composited opacity of the label.
+  Now, clutter_label_get_color() returns a copy of the exact color set
+  with clutter_label_set_color().
+
+* The ClutterEntry actor will automatically handle key events inside
+  a key-press-event handler. This deprecates the usage of
+  clutter_entry_handle_key_event() to update the contents of the
+  entry using the ClutterKeyEvent.
+
 Release Notes for Clutter 0.6
 -------------------------------
 
@@ -228,17 +247,6 @@ Release Notes for Clutter 0.6
   clutter_entry_get_position() functions have been renamed to
   clutter_entry_set_cursor_position() and clutter_entry_get_cursor_position()
   respectively.
-
-* The behaviour of clutter_actor_get_opacity() has been slightly changed;
-  instead of returning the composited opacity of the entire parents chain
-  of an actor, clutter_actor_get_opacity() does what you mean, and returns
-  the opacity set with clutter_actor_set_opacity(). The composited
-  opacity value is now returned by clutter_actor_get_abs_opacity().
-
-* Until 0.6.0, clutter_label_get_color() would have returned a ClutterColor
-  with the alpha component equal to the composited opacity of the label.
-  Now, clutter_label_get_color() returns a copy of the exact color set
-  with clutter_label_set_color().
 
 Release Notes for Clutter 0.4.0
 -------------------------------

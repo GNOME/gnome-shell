@@ -1,4 +1,8 @@
-2008-02-28  Gwenole Beauchesne  <gbeauchesne@splitted-desktop.org>
+2008-03-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* README: Update the release notes.
+
+2008-03-06  Gwenole Beauchesne  <gbeauchesne@splitted-desktop.org>
 
 	Signed off by: Emmanuele Bassi <ebassi@openedhand.com>
 
@@ -11,7 +15,7 @@
 	* clutter/clutter-entry.c:
 	(clutter_entry_handle_key_event_internal),
 	(clutter_entry_key_press), (clutter_entry_class_init),
-	(clutter_entry_handle_key_event): Handle a default class handler
+	(clutter_entry_handle_key_event): Provide a default class handler
 	for the key-press-event, so that giving key focus to an entry will
 	automatically make it work. This deprecates the
 	clutter_entry_handle_key_event() function. (#824)
