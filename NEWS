@@ -1,3 +1,23 @@
+2.23.1
+======
+
+Thanks to Cosimo Cecchi, Jens Granseuer, Jim Huang, Andrea Del Signore, and
+Thomas Thurman for improvements in this version.
+
+(Cosimo's patch was very similar to another received from Jason Ribero.)
+
+  - Allow horizontal and vertical maximisation using the mouse (Cosimo/Jason)
+    (#358674)
+  - Allow "spacer" as a value for buttons, for blank space (Andrea) (#509165)
+  - Remove unused code (Jim)
+  - refactor preferences handling (Thomas)
+  - make sure we're valid C89 (Jens) (#518917)
+  - some messing with tool scripts (Thomas)
+
+Translations
+  Jorge González (es), Claude Paroz (fr), Woodman Tuen (zh_HK), Woodman
+  Tuen (zh_TW)
+
 2.23.0
 ======
 

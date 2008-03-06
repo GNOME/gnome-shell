@@ -1,24 +1,12 @@
 2008-03-06  Thomas Thurman  <tthurman@gnome.org>
 
-        * tools/release-wrangler.py: basic md5 printing (not used yet);
-	also print release announcements to stdout (eventually will
-	need to be emailed to release list and blogged)
+        * NEWS: 2.23.1 release.
 
 2008-03-06  Thomas Thurman  <tthurman@gnome.org>
 
-        Part three of the great prefs refactor, this time
-        dealing with string preferences.  (This was the most
-        complicated part, and has been especially tested and
-        valground before committing.  As ever, though, let us
-        know if you find a problem.)
-
-        * src/core/prefs.c (MetaStringPreference): new struct.  
-        * src/core/prefs.c (update_*): replaced with *_handler  
-        * src/core/prefs.c (meta_prefs_init): uses new string prefs
-          init; uses array of gconf dirs to monitor rather than 
-          repeating code.
-        * src/core/prefs.c (handle_preference_init_enum): tidying
-        * src/core/prefs.c (change_notify): uses new string prefs  
+        * tools/release-wrangler.py: basic md5 printing (not used yet);
+	also print release announcements to stdout (eventually will
+	need to be emailed to release list and blogged)
 
 2008-03-06  Thomas Thurman  <tthurman@gnome.org>
 
