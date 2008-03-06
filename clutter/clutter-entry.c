@@ -30,11 +30,6 @@
  *
  * #ClutterEntry is a #ClutterTexture that allows single line text entry.
  *
- * In order to update the contents of the entry with the text inserted
- * by the user you should connect to the ClutterStage::key-press-event and
- * forward the #ClutterKeyEvent received by the #ClutterStage to the
- * #ClutterEntry you want to update, using clutter_entry_handle_key_event().
- *
  * #ClutterEntry is available since Clutter 0.4.
  */
 
@@ -498,6 +493,93 @@ clutter_entry_request_coords (ClutterActor    *self,
   CLUTTER_ACTOR_CLASS (clutter_entry_parent_class)->request_coords (self, box);
 }
 
+static inline void
+clutter_entry_handle_key_event_internal (ClutterEntry    *entry,
+                                         ClutterKeyEvent *event)
+{
+  ClutterEntryPrivate *priv = entry->priv;
+  gint pos = priv->position;
+  gint len = 0;
+  gint keyval = clutter_key_event_symbol (event);
+
+  if (priv->text)
+    len = g_utf8_strlen (priv->text, -1);
+
+  switch (keyval)
+    {
+      case CLUTTER_Return:
+      case CLUTTER_KP_Enter:
+      case CLUTTER_ISO_Enter:
+        g_signal_emit (entry, entry_signals[ACTIVATE], 0);
+        break;
+
+      case CLUTTER_Escape:
+      case CLUTTER_Up:
+      case CLUTTER_KP_Up:
+      case CLUTTER_Down:
+      case CLUTTER_KP_Down:
+      case CLUTTER_Shift_L:
+      case CLUTTER_Shift_R:
+        break;
+
+      case CLUTTER_BackSpace:
+        if (pos != 0 && len != 0)
+          clutter_entry_delete_chars (entry, 1);
+        break;
+
+      case CLUTTER_Delete:
+      case CLUTTER_KP_Delete:
+        if (len && pos != -1)
+          clutter_entry_delete_text (entry, pos, pos+1);;
+        break;
+
+      case CLUTTER_Left:
+      case CLUTTER_KP_Left:
+        if (pos != 0 && len != 0)
+          {
+            if (pos == -1)
+              clutter_entry_set_cursor_position (entry, len - 1);
+            else
+              clutter_entry_set_cursor_position (entry, pos - 1);
+          }
+        break;
+
+      case CLUTTER_Right:
+      case CLUTTER_KP_Right:
+        if (pos != -1 && len != 0)
+          {
+            if (pos != len)
+              clutter_entry_set_cursor_position (entry, pos + 1);
+          }
+        break;
+
+      case CLUTTER_End:
+      case CLUTTER_KP_End:
+        clutter_entry_set_cursor_position (entry, -1);
+        break;
+
+      case CLUTTER_Begin:
+      case CLUTTER_Home:
+      case CLUTTER_KP_Home:
+        clutter_entry_set_cursor_position (entry, 0);
+        break;
+
+      default:
+        clutter_entry_insert_unichar (entry,
+                                      clutter_keysym_to_unicode (keyval));
+        break;
+    }
+}
+
+static gboolean
+clutter_entry_key_press (ClutterActor    *actor,
+                         ClutterKeyEvent *event)
+{
+  clutter_entry_handle_key_event_internal (CLUTTER_ENTRY (actor), event);
+
+  return TRUE;
+}
+
 static void
 clutter_entry_dispose (GObject *object)
 {
@@ -545,6 +627,7 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 
   actor_class->paint           = clutter_entry_paint;
   actor_class->request_coords  = clutter_entry_request_coords;
+  actor_class->key_press_event = clutter_entry_key_press;
 
   gobject_class->finalize     = clutter_entry_finalize;
   gobject_class->dispose      = clutter_entry_dispose;
@@ -744,9 +827,7 @@ clutter_entry_class_init (ClutterEntryClass *klass)
    * @entry: the actor which received the event
    *
    * The ::activate signal is emitted each time the entry is 'activated'
-   * by the user, normally by pressing the 'Enter' key. This signal will
-   * only be emitted when you are adding text to the entry via
-   * clutter_entry_handle_key_event().
+   * by the user, normally by pressing the 'Enter' key.
    *
    * Since: 0.4
    */
@@ -1269,81 +1350,17 @@ clutter_entry_get_cursor_position (ClutterEntry *entry)
  * ClutterStage::key-press-event or ClutterStage::key-release-event.
  *
  * Since: 0.4
+ *
+ * Deprecated: 0.8: The key events will automatically be handled when
+ *   giving the key focus to an entry using clutter_stage_set_key_focus().
  */
 void
 clutter_entry_handle_key_event (ClutterEntry    *entry,
                                 ClutterKeyEvent *kev)
 {
-  ClutterEntryPrivate *priv;
-  gint pos = 0;
-  gint len = 0;
-  gint keyval = clutter_key_event_symbol (kev);
-
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
 
-  priv = entry->priv;
-
-  pos = priv->position;
-
-  if (priv->text)
-    len = g_utf8_strlen (priv->text, -1);
-
-  switch (keyval)
-    {
-      case CLUTTER_Return:
-      case CLUTTER_KP_Enter:
-      case CLUTTER_ISO_Enter:
-        g_signal_emit (entry, entry_signals[ACTIVATE], 0);
-        break;
-      case CLUTTER_Escape:
-      case CLUTTER_Up:
-      case CLUTTER_KP_Up:
-      case CLUTTER_Down:
-      case CLUTTER_KP_Down:
-      case CLUTTER_Shift_L:
-      case CLUTTER_Shift_R:
-        break;
-      case CLUTTER_BackSpace:
-        if (pos != 0 && len != 0)
-          clutter_entry_delete_chars (entry, 1);
-        break;
-      case CLUTTER_Delete:
-      case CLUTTER_KP_Delete:
-        if (len && pos != -1)
-          clutter_entry_delete_text (entry, pos, pos+1);;
-        break;
-      case CLUTTER_Left:
-      case CLUTTER_KP_Left:
-        if (pos != 0 && len != 0)
-          {
-            if (pos == -1)
-              clutter_entry_set_cursor_position (entry, len - 1);
-            else
-              clutter_entry_set_cursor_position (entry, pos - 1);
-          }
-        break;
-      case CLUTTER_Right:
-      case CLUTTER_KP_Right:
-        if (pos != -1 && len != 0)
-          {
-            if (pos != len)
-              clutter_entry_set_cursor_position (entry, pos + 1);
-          }
-        break;
-      case CLUTTER_End:
-      case CLUTTER_KP_End:
-        clutter_entry_set_cursor_position (entry, -1);
-        break;
-      case CLUTTER_Begin:
-      case CLUTTER_Home:
-      case CLUTTER_KP_Home:
-        clutter_entry_set_cursor_position (entry, 0);
-        break;
-      default:
-        clutter_entry_insert_unichar (entry,
-                                      clutter_keysym_to_unicode (keyval));
-        break;
-    }
+  clutter_entry_handle_key_event_internal (entry, kev);
 }
 
 /**

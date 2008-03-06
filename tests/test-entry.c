@@ -1,24 +1,5 @@
 #include <clutter/clutter.h>
 
-#if 0
-static void
-on_entry_text_changed (ClutterEntry *entry)
-{
-  g_print ("Text changed\n");
-}
-#endif
-
-void                
-on_key_release_cb (ClutterStage *stage, ClutterEvent *event, ClutterEntry *entry)
-{
-  if (event->type == CLUTTER_KEY_RELEASE) 
-  {
-    ClutterKeyEvent* kev = (ClutterKeyEvent *) event;
-    clutter_entry_handle_key_event (entry, kev);
-    return;
-  }
-}
-
 static void
 on_entry_activated (ClutterEntry *entry, gpointer null)
 {
@@ -52,15 +33,10 @@ main (int argc, char *argv[])
   /*clutter_entry_set_max_length (CLUTTER_ENTRY (entry), 50);*/
   
   clutter_group_add (CLUTTER_GROUP (stage), entry);
+  clutter_stage_set_key_focus (CLUTTER_STAGE (stage), entry);
+
   clutter_actor_show_all (stage);
 
-  g_signal_connect (stage, "key-release-event",
-		    G_CALLBACK (on_key_release_cb), entry);
- 
-  /*
-  g_signal_connect (entry, "text-changed",
-                    G_CALLBACK (on_entry_text_changed), NULL);
-  */
   g_signal_connect (entry, "activate", 
 		    G_CALLBACK (on_entry_activated), NULL);
   

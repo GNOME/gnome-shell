@@ -1,3 +1,17 @@
+2008-03-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-entry.h:
+	* clutter/clutter-entry.c:
+	(clutter_entry_handle_key_event_internal),
+	(clutter_entry_key_press), (clutter_entry_class_init),
+	(clutter_entry_handle_key_event): Handle a default class handler
+	for the key-press-event, so that giving key focus to an entry will
+	automatically make it work. This deprecates the
+	clutter_entry_handle_key_event() function. (#824)
+
+	* tests/test-entry.c (main): Remove the handle_key_event()
+	machinery, and just give focus to the entry.
+
 2008-03-06  Chris Lord  <chris@openedhand.com>
 
 	* clutter/clutter-model.c: (clutter_model_set_sorting_column):

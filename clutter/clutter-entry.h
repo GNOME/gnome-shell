@@ -129,8 +129,6 @@ PangoAlignment        clutter_entry_get_alignment       (ClutterEntry       *ent
 void                  clutter_entry_set_cursor_position (ClutterEntry       *entry,
                                                          gint                position);
 gint                  clutter_entry_get_cursor_position (ClutterEntry       *entry);
-void                  clutter_entry_handle_key_event    (ClutterEntry       *entry,
-                                                         ClutterKeyEvent    *kev);
 void                  clutter_entry_insert_unichar      (ClutterEntry       *entry,
                                                          gunichar            wc);
 void                  clutter_entry_delete_chars        (ClutterEntry       *entry,
@@ -154,6 +152,11 @@ gunichar              clutter_entry_get_invisible_char  (ClutterEntry       *ent
 void                  clutter_entry_set_max_length      (ClutterEntry       *entry,
                                                          gint                max);
 gint                  clutter_entry_get_max_length      (ClutterEntry       *entry);
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
+void                  clutter_entry_handle_key_event    (ClutterEntry       *entry,
+                                                         ClutterKeyEvent    *kev);
+#endif
 
 G_END_DECLS
 
