@@ -4740,9 +4740,7 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
       break;
     }
 
-  clutter_actor_set_anchor_pointu (self,
-                                   CLUTTER_UNITS_FROM_DEVICE (x),
-                                   CLUTTER_UNITS_FROM_DEVICE (y));
+  clutter_actor_set_anchor_pointu (self, x, y);
 }
 
 typedef enum

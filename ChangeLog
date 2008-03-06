@@ -1,5 +1,11 @@
 2008-03-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_anchor_point_from_gravity): Fix a stupid
+	conversion from pixels to units that should I not have made.
+
+2008-03-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* README: Update the release notes.
 
 2008-03-06  Gwenole Beauchesne  <gbeauchesne@splitted-desktop.org>
