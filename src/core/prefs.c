@@ -46,17 +46,15 @@
  * not given a name here, because the purpose of the unified handlers
  * is that keys should be referred to exactly once.
  */
-#define KEY_MOUSE_BUTTON_MODS "/apps/metacity/general/mouse_button_modifier"
 #define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
-#define KEY_THEME "/apps/metacity/general/theme"
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
-#define KEY_BUTTON_LAYOUT "/apps/metacity/general/button_layout"
 #define KEY_GNOME_ACCESSIBILITY "/desktop/gnome/interface/accessibility"
 
 #define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
 
-#define KEY_TERMINAL_COMMAND "/desktop/gnome/applications/terminal/exec"
+#define KEY_TERMINAL_DIR "/desktop/gnome/applications/terminal"
+#define KEY_TERMINAL_COMMAND KEY_TERMINAL_DIR "/exec"
 
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
 #define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
@@ -64,7 +62,6 @@
 
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
-#define KEY_CURSOR_THEME "/desktop/gnome/peripherals/mouse/cursor_theme"
 #define KEY_CURSOR_SIZE "/desktop/gnome/peripherals/mouse/cursor_size"
 
 #ifdef HAVE_GCONF
@@ -110,12 +107,8 @@ static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 #ifdef HAVE_GCONF
 static gboolean handle_preference_update_enum (const gchar *key, GConfValue *value);
 
-static gboolean update_titlebar_font      (const char *value);
-static gboolean update_mouse_button_mods  (const char *value);
-static gboolean update_theme              (const char *value);
 static gboolean update_num_workspaces     (int         value);
 static gboolean update_auto_raise_delay    (int        value);
-static gboolean update_button_layout      (const char *value);
 static gboolean update_window_binding     (const char *name,
                                            const char *value);
 static gboolean update_screen_binding     (const char *name,
@@ -129,10 +122,8 @@ static gboolean update_screen_list_binding (const char *name,
                                             GSList      *value);
 static gboolean update_command            (const char  *name,
                                            const char  *value);
-static gboolean update_terminal_command   (const char *value);
 static gboolean update_workspace_name     (const char  *name,
                                            const char  *value);
-static gboolean update_cursor_theme       (const char *value);
 static gboolean update_cursor_size        (int size);
 
 static void change_notify (GConfClient    *client,
@@ -158,6 +149,11 @@ static void     cleanup_error             (GError **error);
 static gboolean get_bool                  (const char *key, gboolean *val);
 static void maybe_give_disable_workarounds_warning (void);
 
+static void titlebar_handler (MetaPreference, const gchar*, gboolean*);
+static void theme_name_handler (MetaPreference, const gchar*, gboolean*);
+static void mouse_button_mods_handler (MetaPreference, const gchar*, gboolean*);
+static void button_layout_handler (MetaPreference, const gchar*, gboolean*);
+
 #endif /* HAVE_GCONF */
 
 static gboolean update_binding            (MetaKeyPref *binding,
@@ -172,6 +168,12 @@ static void     init_button_layout        (void);
 #endif /* !HAVE_GCONF */
 
 #ifdef HAVE_GCONF
+
+typedef struct
+{
+  MetaPrefsChangedFunc func;
+  gpointer data;
+} MetaPrefsListener;
 
 static GConfEnumStringPair symtab_focus_mode[] =
   {
@@ -237,9 +239,9 @@ static GConfEnumStringPair symtab_titlebar_action[] =
  *     with a macro.  (This would reduce clarity, however, and is
  *     probably a bad thing.)
  *
- *   - these types all begin with a gchar*, and we can factor out the
- *     repeated code in the handlers by taking advantage of this
- *     (it is effectively a superclass field).
+ *   - these types all begin with a gchar* (and contain a MetaPreference)
+ *     and we can factor out the repeated code in the handlers by taking
+ *     advantage of this using some kind of union arrangement.
  */
 typedef struct
 {
@@ -256,6 +258,39 @@ typedef struct
   MetaPreference pref;
   gboolean becomes_true_on_destruction;
 } MetaBoolPreference;
+
+typedef struct
+{
+  gchar *key;
+  MetaPreference pref;
+
+  /**
+   * A handler.  Many of the string preferences aren't stored as
+   * strings and need parsing; others of them have default values
+   * which can't be solved in the general case.  If you include a
+   * function pointer here, it will be called before the string
+   * value is written out to the target variable.
+   *
+   * The function is passed two arguments: the preference, and
+   * the new string as a gchar*.  It returns a gboolean;
+   * only if this is true, the listeners will be informed that
+   * the preference has changed.
+   *
+   * This may be NULL.  If it is, see "target", below.
+   */
+  void (*handler) (MetaPreference pref,
+                     const gchar *string_value,
+                     gboolean *inform_listeners);
+
+  /**
+   * Where to write the incoming string.
+   *
+   * If the incoming string is NULL, no change will be made.
+   * This is ignored if the handler is non-NULL.
+   */
+  gchar **target;
+
+} MetaStringPreference;
 
 static MetaEnumPreference preferences_enum[] =
   {
@@ -347,6 +382,41 @@ static MetaBoolPreference preferences_bool[] =
     { NULL, NULL, 0, FALSE },
   };
 
+static MetaStringPreference preferences_string[] =
+  {
+    { "/apps/metacity/general/mouse_button_modifier",
+      META_PREF_MOUSE_BUTTON_MODS,
+      mouse_button_mods_handler,
+      NULL,
+    },
+    { "/apps/metacity/general/theme",
+      META_PREF_THEME,
+      theme_name_handler,
+      NULL,
+    },
+    { KEY_TITLEBAR_FONT,
+      META_PREF_TITLEBAR_FONT,
+      titlebar_handler,
+      NULL,
+    },
+    { KEY_TERMINAL_COMMAND,
+      META_PREF_TERMINAL_COMMAND,
+      NULL,
+      &terminal_command,
+    },
+    { "/apps/metacity/general/button_layout",
+      META_PREF_BUTTON_LAYOUT,
+      button_layout_handler,
+      NULL,
+    },
+    { "/desktop/gnome/peripherals/mouse/cursor_theme",
+      META_PREF_CURSOR_THEME,
+      NULL,
+      &cursor_theme,
+    },
+    { NULL, 0, NULL, NULL },
+  };
+
 static void
 handle_preference_init_enum (void)
 {
@@ -357,16 +427,22 @@ handle_preference_init_enum (void)
       char *value;
       GError *error = NULL;
 
+      if (cursor->target==NULL)
+        {
+          ++cursor;
+          continue;
+        }
+
       value = gconf_client_get_string (default_client,
-                                         cursor->key,
-                                         &error);
+                                       cursor->key,
+                                       &error);
       cleanup_error (&error);
 
-      /* If the value's NULL, we found it and there's nothing we
-       * can do with it.  So just return.
-       */
       if (value==NULL)
-        return;
+        {
+          ++cursor;
+          continue;
+        }
 
       if (!gconf_string_to_enum (cursor->symtab,
                                  value,
@@ -394,6 +470,44 @@ handle_preference_init_bool (void)
     }
 
   maybe_give_disable_workarounds_warning ();
+}
+
+static void
+handle_preference_init_string (void)
+{
+  MetaStringPreference *cursor = preferences_string;
+
+  while (cursor->key!=NULL)
+    {
+      char *value;
+      GError *error = NULL;
+      gboolean dummy = TRUE;
+
+      /* the string "value" will be newly allocated */
+      value = gconf_client_get_string (default_client,
+                                       cursor->key,
+                                       &error);
+      cleanup_error (&error);
+
+      if (cursor->handler)
+        {
+          if (cursor->target)
+            meta_bug ("%s has both a target and a handler\n", cursor->key);
+
+          cursor->handler (cursor->pref, value, &dummy);
+
+          g_free (value);
+        }
+      else if (cursor->target)
+        {
+          if (*(cursor->target))
+            g_free (*(cursor->target));
+
+          *(cursor->target) = value;
+        }
+
+      ++cursor;
+    }
 }
 
 static gboolean
@@ -517,13 +631,63 @@ handle_preference_update_bool (const gchar *key, GConfValue *value)
   return TRUE;
 }
 
+static gboolean
+handle_preference_update_string (const gchar *key, GConfValue *value)
+{
+  MetaStringPreference *cursor = preferences_string;
+  const gchar *value_as_string;
+  gboolean inform_listeners = TRUE;
+
+  while (cursor->key!=NULL && strcmp (key, cursor->key)!=0)
+    ++cursor;
+
+  if (cursor->key==NULL)
+    /* Didn't recognise that key. */
+    return FALSE;
+
+  if (value==NULL)
+    return TRUE;
+
+  /* Check the type. */
+
+  if (value->type != GCONF_VALUE_STRING)
+    {
+      meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                    key);
+      /* But we did recognise it. */
+      return TRUE;
+    }
+
+  /* Docs: "The returned string is not a copy, don't try to free it." */
+  value_as_string = gconf_value_get_string (value);
+
+  if (cursor->handler)
+    cursor->handler (cursor->pref, value_as_string, &inform_listeners);
+  else if (cursor->target)
+    {
+      if (*(cursor->target))
+        g_free(*(cursor->target));
+
+      if (value_as_string!=NULL)
+        *(cursor->target) = g_strdup (value_as_string);
+      else
+        *(cursor->target) = NULL;
+
+      inform_listeners =
+        (value_as_string==NULL && *(cursor->target)==NULL) ||
+        (value_as_string!=NULL && *(cursor->target)!=NULL &&
+         strcmp (value_as_string, *(cursor->target))==0);
+    }
+
+  if (inform_listeners)
+    queue_changed (cursor->pref);
+
+  return TRUE;
+}
+
 #endif /* HAVE_GCONF */
 
-typedef struct
-{
-  MetaPrefsChangedFunc func;
-  gpointer data;
-} MetaPrefsListener;
+/* FIXME: Ultimately these should be no-ops if !HAVE_GCONF. */
 
 void
 meta_prefs_add_listener (MetaPrefsChangedFunc func,
@@ -577,20 +741,19 @@ emit_changed (MetaPreference pref)
   copy = g_list_copy (listeners);
   
   tmp = copy;
+
   while (tmp != NULL)
     {
       MetaPrefsListener *l = tmp->data;
 
       (* l->func) (pref, l->data);
-      
+
       tmp = tmp->next;
     }
 
   g_list_free (copy);
 }
-#endif /* HAVE_GCONF */
 
-#ifdef HAVE_GCONF
 static gboolean
 changed_idle_handler (gpointer data)
 {
@@ -618,15 +781,13 @@ changed_idle_handler (gpointer data)
   
   return FALSE;
 }
-#endif /* HAVE_GCONF */
 
-#ifdef HAVE_GCONF
 static void
 queue_changed (MetaPreference pref)
 {
   meta_topic (META_DEBUG_PREFS, "Queueing change of pref %s\n",
               meta_preference_to_string (pref));  
-  
+
   if (g_list_find (changes, GINT_TO_POINTER (pref)) == NULL)
     changes = g_list_prepend (changes, GINT_TO_POINTER (pref));
   else
@@ -640,14 +801,22 @@ queue_changed (MetaPreference pref)
 }
 #endif /* HAVE_GCONF */
 
+static gchar *gconf_dirs_we_are_interested_in[] = {
+  "/apps/metacity",
+  KEY_TERMINAL_DIR,
+  KEY_GNOME_ACCESSIBILITY,
+  "/desktop/gnome/peripherals/mouse",
+  NULL,
+};
+
 void
 meta_prefs_init (void)
 {
 #ifdef HAVE_GCONF
   GError *err = NULL;
-  char *str_val;
   int int_val;
   GConfValue *gconf_val;
+  gchar **gconf_dir_cursor;
   
   if (default_client != NULL)
     return;
@@ -655,40 +824,26 @@ meta_prefs_init (void)
   /* returns a reference which we hold forever */
   default_client = gconf_client_get_default ();
 
-  gconf_client_add_dir (default_client, "/apps/metacity",
-                        GCONF_CLIENT_PRELOAD_RECURSIVE,
-                        &err);
-  cleanup_error (&err);
-
-  gconf_client_add_dir (default_client, "/desktop/gnome/applications/terminal",
-                        GCONF_CLIENT_PRELOAD_RECURSIVE,
-                        &err);
-  cleanup_error (&err);
-
-  gconf_client_add_dir (default_client, KEY_GNOME_ACCESSIBILITY,
-                        GCONF_CLIENT_PRELOAD_RECURSIVE,
-                        &err);
-  cleanup_error (&err);
-
-  gconf_client_add_dir (default_client, "/desktop/gnome/peripherals/mouse",
-                        GCONF_CLIENT_PRELOAD_RECURSIVE,
-                        &err);
-  cleanup_error (&err);
+  for (gconf_dir_cursor=gconf_dirs_we_are_interested_in;
+       *gconf_dir_cursor!=NULL;
+       gconf_dir_cursor++)
+    {
+      gconf_client_add_dir (default_client,
+                            *gconf_dir_cursor,
+                            GCONF_CLIENT_PRELOAD_RECURSIVE,
+                            &err);
+      cleanup_error (&err);
+    }
 
   /* Pick up initial values. */
 
   handle_preference_init_enum ();
   handle_preference_init_bool ();
+  handle_preference_init_string ();
 
-  /* To follow: initialisation with ordinary strings, ints, and bools. */
+  /* To follow: initialisation with ordinary ints. */
 
   /* Pick up initial values using the legacy system. */
-
-  str_val = gconf_client_get_string (default_client, KEY_MOUSE_BUTTON_MODS,
-                                     &err);
-  cleanup_error (&err);
-  update_mouse_button_mods (str_val);
-  g_free (str_val);
 
   gconf_val = gconf_client_get (default_client, KEY_AUTO_RAISE_DELAY,
 				  &err);
@@ -704,51 +859,36 @@ meta_prefs_init (void)
     }
   
 
-  str_val = gconf_client_get_string (default_client, KEY_THEME,
-                                     &err);
-  cleanup_error (&err);
-  update_theme (str_val);
-  g_free (str_val);
-  
   /* If the keys aren't set in the database, we use essentially
    * bogus values instead of any kind of default. This is
    * just lazy. But they keys ought to be set, anyhow.
    */
   
-  str_val = gconf_client_get_string (default_client, KEY_TITLEBAR_FONT,
-                                     &err);
-  cleanup_error (&err);
-  update_titlebar_font (str_val);
-  g_free (str_val);
-
   int_val = gconf_client_get_int (default_client, KEY_NUM_WORKSPACES,
                                   &err);
   cleanup_error (&err);
   update_num_workspaces (int_val);
 
-  str_val = gconf_client_get_string (default_client, KEY_BUTTON_LAYOUT,
-                                     &err);
-  cleanup_error (&err);
-  update_button_layout (str_val);
-  g_free (str_val);
-
-  str_val = gconf_client_get_string (default_client, KEY_TERMINAL_COMMAND,
-                                     &err);
-  cleanup_error (&err);
-  update_terminal_command (str_val);
-  g_free (str_val);
-
-  str_val = gconf_client_get_string (default_client, KEY_CURSOR_THEME,
-                                     &err);
-  cleanup_error (&err);
-  update_cursor_theme (str_val);
-  g_free (str_val);
-
   int_val = gconf_client_get_int (default_client, KEY_CURSOR_SIZE,
                                   &err);
   cleanup_error (&err);
   update_cursor_size (int_val);
+
+  for (gconf_dir_cursor=gconf_dirs_we_are_interested_in;
+       *gconf_dir_cursor!=NULL;
+       gconf_dir_cursor++)
+    {
+      gconf_client_notify_add (default_client,
+                               *gconf_dir_cursor,
+                               change_notify,
+                               NULL,
+                               NULL,
+                               &err);
+      cleanup_error (&err);
+    }
+
 #else  /* HAVE_GCONF */
+
   /* Set defaults for some values that can't be set at initialization time of
    * the static globals.  In the case of the theme, note that there is code
    * elsewhere that will do everything possible to fallback to an existing theme
@@ -769,30 +909,6 @@ meta_prefs_init (void)
   /* workspace names */
   init_workspace_names ();
 
-#ifdef HAVE_GCONF
-  gconf_client_notify_add (default_client, "/apps/metacity",
-                           change_notify,
-                           NULL,
-                           NULL,
-                           &err);
-  gconf_client_notify_add (default_client, KEY_TERMINAL_COMMAND,
-                           change_notify,
-                           NULL,
-                           NULL,
-                           &err);
-  gconf_client_notify_add (default_client, KEY_GNOME_ACCESSIBILITY,
-                           change_notify,
-                           NULL,
-                           NULL,
-                           &err);
-  gconf_client_notify_add (default_client, "/desktop/gnome/peripherals/mouse",
-                           change_notify,
-                           NULL,
-                           NULL,
-                           &err);
-
-  cleanup_error (&err);  
-#endif /* HAVE_GCONF */
 }
 
 #ifdef HAVE_GCONF
@@ -800,6 +916,7 @@ meta_prefs_init (void)
 gboolean (*preference_update_handler[]) (const gchar*, GConfValue*) = {
   handle_preference_update_enum,
   handle_preference_update_bool,
+  handle_preference_update_string,
   NULL
 };
 
@@ -835,55 +952,7 @@ change_notify (GConfClient    *client,
    * out of here as it becomes possible to deal with them in a
    * more general way. */
 
-  if (strcmp (key, KEY_MOUSE_BUTTON_MODS) == 0)
-    {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_MOUSE_BUTTON_MODS);
-          goto out;
-        }
-      
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_mouse_button_mods (str))
-        queue_changed (META_PREF_MOUSE_BUTTON_MODS);
-    }
-  else if (strcmp (key, KEY_THEME) == 0)
-    {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_THEME);
-          goto out;
-        }
-      
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_theme (str))
-        queue_changed (META_PREF_THEME);
-    }
-  else if (strcmp (key, KEY_TITLEBAR_FONT) == 0)
-    {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_TITLEBAR_FONT);
-          goto out;
-        }
-      
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_titlebar_font (str))
-        queue_changed (META_PREF_TITLEBAR_FONT);
-    }
-  else if (strcmp (key, KEY_NUM_WORKSPACES) == 0)
+  if (strcmp (key, KEY_NUM_WORKSPACES) == 0)
     {
       int d;
 
@@ -1002,22 +1071,6 @@ change_notify (GConfClient    *client,
       if (update_command (key, str))
         queue_changed (META_PREF_COMMANDS);
     }
-  else if (strcmp (key, KEY_TERMINAL_COMMAND) == 0)
-    {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_TERMINAL_COMMAND);
-          goto out;
-        }
-      
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_terminal_command (str))
-        queue_changed (META_PREF_TERMINAL_COMMAND);
-    }
   else if (g_str_has_prefix (key, KEY_WORKSPACE_NAME_PREFIX))
     {
       const char *str;
@@ -1033,38 +1086,6 @@ change_notify (GConfClient    *client,
 
       if (update_workspace_name (key, str))
         queue_changed (META_PREF_WORKSPACE_NAMES);
-    }
-  else if (strcmp (key, KEY_BUTTON_LAYOUT) == 0)
-    {
-      const char *str;
-      
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_BUTTON_LAYOUT);
-          goto out;
-        }
-      
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_button_layout (str))
-        queue_changed (META_PREF_BUTTON_LAYOUT);
-    }
-  else if (strcmp (key, KEY_CURSOR_THEME) == 0)
-    {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                       KEY_CURSOR_THEME);
-          goto out;
-        }
-
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_cursor_theme (str))
-	queue_changed (META_PREF_CURSOR_THEME);
     }
   else if (strcmp (key, KEY_CURSOR_SIZE) == 0)
     {
@@ -1148,72 +1169,6 @@ maybe_give_disable_workarounds_warning (void)
 
 #endif /* HAVE_GCONF */
 
-#ifdef HAVE_GCONF
-static gboolean
-update_mouse_button_mods (const char *value)
-{
-  MetaVirtualModifier old_mods = mouse_button_mods;
-  
-  if (value != NULL)
-    {
-      MetaVirtualModifier mods;
-  
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Mouse button modifier has new gconf value \"%s\"\n",
-                  value ? value : "none");
-  
-      if (meta_ui_parse_modifier (value, &mods))
-        {
-          mouse_button_mods = mods;
-        }
-      else
-        {
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Failed to parse new gconf value\n");
-          
-          meta_warning (_("\"%s\" found in configuration database is not a valid value for mouse button modifier\n"),
-                        value);
-        }
-    }
-
-  return old_mods != mouse_button_mods;
-}
-#endif /* HAVE_GCONF */
-
-#ifdef HAVE_GCONF
-static gboolean
-update_theme (const char *value)
-{
-  char *old_theme;
-  gboolean changed;
-  
-  old_theme = current_theme;
-  
-  if (value != NULL && *value)
-    {
-      current_theme = g_strdup (value);
-    }
-
-  changed = TRUE;
-  if ((old_theme && current_theme &&
-       strcmp (old_theme, current_theme) == 0) ||
-      (old_theme == NULL && current_theme == NULL))
-    changed = FALSE;
-
-  if (old_theme != current_theme)
-    g_free (old_theme);
-
-  if (current_theme == NULL)
-    {
-      /* Fallback crackrock */
-      current_theme = g_strdup ("Atlanta");
-      changed = TRUE;
-    }
-  
-  return changed;
-}
-#endif /* HAVE_GCONF */
-
 MetaVirtualModifier
 meta_prefs_get_mouse_button_mods  (void)
 {
@@ -1247,33 +1202,6 @@ meta_prefs_get_theme (void)
   return current_theme;
 }
 
-#ifdef HAVE_GCONF
-static gboolean
-update_cursor_theme (const char *value)
-{
-  char *old_theme;
-  gboolean changed;
-  
-  old_theme = cursor_theme;
-  
-  if (value != NULL && *value)
-    {
-      cursor_theme = g_strdup (value);
-    }
-
-  changed = TRUE;
-  if ((old_theme && cursor_theme &&
-       strcmp (old_theme, cursor_theme) == 0) ||
-      (old_theme == NULL && cursor_theme == NULL))
-    changed = FALSE;
-
-  if (old_theme != cursor_theme)
-    g_free (old_theme);
-
-  return changed;
-}
-#endif /* HAVE_GCONF */
-
 const char*
 meta_prefs_get_cursor_theme (void)
 {
@@ -1303,40 +1231,92 @@ meta_prefs_get_cursor_size (void)
 }
 
 #ifdef HAVE_GCONF
-static gboolean
-update_titlebar_font (const char *value)
+
+static void
+titlebar_handler (MetaPreference pref,
+                  const gchar    *string_value,
+                  gboolean       *inform_listeners)
 {
   PangoFontDescription *new_desc;
 
-  new_desc = NULL;
+  new_desc = pango_font_description_from_string (string_value);
 
-  if (value)
+  if (new_desc == NULL)
     {
-      new_desc = pango_font_description_from_string (value);
-      if (new_desc == NULL)
-        meta_warning (_("Could not parse font description \"%s\" from GConf key %s\n"),
-                      value, KEY_TITLEBAR_FONT);
+      meta_warning (_("Could not parse font description "
+                      "\"%s\" from GConf key %s\n"),
+                    string_value,
+                    KEY_TITLEBAR_FONT);
+
+      *inform_listeners = FALSE;
+
+      return;
     }
 
-  if (new_desc && titlebar_font &&
+  /* Is the new description the same as the old? */
+
+  if (titlebar_font &&
       pango_font_description_equal (new_desc, titlebar_font))
     {
       pango_font_description_free (new_desc);
-      return FALSE;
+      *inform_listeners = FALSE;
+      return;
+    }
+
+  /* No, so free the old one and put ours in instead. */
+
+  if (titlebar_font)
+    pango_font_description_free (titlebar_font);
+
+  titlebar_font = new_desc;
+
+}
+
+static void
+theme_name_handler (MetaPreference pref,
+                    const gchar *string_value,
+                    gboolean *inform_listeners)
+{
+  /* Fallback crackrock */
+  if (string_value == NULL)
+    current_theme = g_strdup ("Atlanta");
+  else
+    current_theme = g_strdup (string_value);
+}
+
+static void
+mouse_button_mods_handler (MetaPreference pref,
+                           const gchar *string_value,
+                           gboolean *inform_listeners)
+{
+  MetaVirtualModifier mods;
+
+  meta_warning("and here we are. SV is %s\n", string_value);
+
+  meta_warning(//topic (META_DEBUG_KEYBINDINGS,
+              "Mouse button modifier has new gconf value \"%s\"\n",
+              string_value);
+  meta_warning("%d\n", __LINE__);
+  if (meta_ui_parse_modifier (string_value, &mods))
+    {
+  meta_warning("%d\n", __LINE__);
+      mouse_button_mods = mods;
     }
   else
     {
-      if (titlebar_font)
-        pango_font_description_free (titlebar_font);
+  meta_warning("%d\n", __LINE__);
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Failed to parse new gconf value\n");
+          
+      meta_warning (_("\"%s\" found in configuration database is "
+                      "not a valid value for mouse button modifier\n"),
+                    string_value);
 
-      titlebar_font = new_desc;
-
-      return TRUE;
+      *inform_listeners = FALSE;
     }
+  meta_warning("%d\n", __LINE__);
 }
-#endif /* HAVE_GCONF */
 
-#ifdef HAVE_GCONF
 static gboolean
 button_layout_equal (const MetaButtonLayout *a,
                      const MetaButtonLayout *b)
@@ -1363,6 +1343,8 @@ button_layout_equal (const MetaButtonLayout *a,
 static MetaButtonFunction
 button_function_from_string (const char *str)
 {
+  /* FIXME: gconf_string_to_enum is the obvious way to do this */
+
   if (strcmp (str, "menu") == 0)
     return META_BUTTON_FUNCTION_MENU;
   else if (strcmp (str, "minimize") == 0)
@@ -1407,22 +1389,20 @@ button_opposite_function (MetaButtonFunction ofwhat)
     }
 }
 
-static gboolean
-update_button_layout (const char *value)
+static void
+button_layout_handler (MetaPreference pref,
+                         const gchar *string_value,
+                         gboolean *inform_listeners)
 {
   MetaButtonLayout new_layout;
   char **sides;
   int i;
-  gboolean changed;
-  
-  if (value == NULL)
-    return FALSE;
   
   /* We need to ignore unknown button functions, for
    * compat with future versions
    */
   
-  sides = g_strsplit (value, ":", 2);
+  sides = g_strsplit (string_value, ":", 2);
 
   if (sides[0] != NULL)
     {
@@ -1578,12 +1558,17 @@ update_button_layout (const char *value)
     new_layout = rtl_layout;
   }
   
-  changed = !button_layout_equal (&button_layout, &new_layout);
-
-  button_layout = new_layout;
-
-  return changed;
+  if (button_layout_equal (&button_layout, &new_layout))
+    {
+      /* Same as before, so duck out */
+      *inform_listeners = FALSE;
+    }
+  else
+    {
+      button_layout = new_layout;
+    }
 }
+
 #endif /* HAVE_GCONF */
 
 const PangoFontDescription*
@@ -1664,6 +1649,7 @@ update_auto_raise_delay (int value)
 const char*
 meta_preference_to_string (MetaPreference pref)
 {
+  /* FIXME: another case for gconf_string_to_enum */
   switch (pref)
     {
     case META_PREF_MOUSE_BUTTON_MODS:
@@ -2553,30 +2539,6 @@ update_command (const char  *name,
   return TRUE;
 }
 
-static gboolean
-update_terminal_command (const char *value)
-{
-  char *old_terminal_command;
-  gboolean changed;
-  
-  old_terminal_command = terminal_command;
-  
-  if (value != NULL && *value)
-    {
-      terminal_command = g_strdup (value);
-    }
-
-  changed = TRUE;
-  if ((old_terminal_command && terminal_command &&
-       strcmp (old_terminal_command, terminal_command) == 0) ||
-      (old_terminal_command == NULL && terminal_command == NULL))
-    changed = FALSE;
-
-  if (old_terminal_command != terminal_command)
-    g_free (old_terminal_command);
-
-  return changed;
-}
 #endif /* HAVE_GCONF */
 
 const char*

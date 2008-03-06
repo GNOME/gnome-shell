@@ -1,3 +1,35 @@
+2008-03-06  Thomas Thurman  <tthurman@gnome.org>
+
+        Part three of the great prefs refactor, this time
+        dealing with string preferences.  (This was the most
+        complicated part, and has been especially tested and
+        valground before committing.  As ever, though, let us
+        know if you find a problem.)
+
+        * src/core/prefs.c (MetaStringPreference): new struct.  
+        * src/core/prefs.c (update_*): replaced with *_handler  
+        * src/core/prefs.c (meta_prefs_init): uses new string prefs
+          init; uses array of gconf dirs to monitor rather than 
+          repeating code.
+        * src/core/prefs.c (handle_preference_init_enum): tidying
+        * src/core/prefs.c (change_notify): uses new string prefs  
+
+2008-03-06  Thomas Thurman  <tthurman@gnome.org>
+
+	Part three of the great prefs refactor, this time
+	dealing with string preferences.  (This was the most
+	complicated part, and has been especially tested and
+	valground before committing.  As ever, though, let us
+	know if you find a problem.)
+
+        * src/core/prefs.c (MetaStringPreference): new struct.
+	* src/core/prefs.c (update_*): replaced with *_handler
+	* src/core/prefs.c (meta_prefs_init): uses new string prefs
+	  init; uses array of gconf dirs to monitor rather than
+	  repeating code.
+	* src/core/prefs.c (handle_preference_init_enum): tidying
+	* src/core/prefs.c (change_notify): uses new string prefs
+
 2008-03-04  Thomas Thurman  <tthurman@gnome.org>
 
         * MAINTAINERS: added some spacing to see whether it
