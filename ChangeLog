@@ -1,3 +1,8 @@
+2008-03-06  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-model.c: (clutter_model_set_sorting_column):
+	Don't disable sorting on column 0
+
 2008-03-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Add support for the anchor point inside ClutterScript (#834,

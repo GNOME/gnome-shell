@@ -1223,7 +1223,7 @@ clutter_model_set_sorting_column (ClutterModel *model,
 
   priv->sort_column = column;
 
-  if (priv->sort_column > 0)
+  if (priv->sort_column >= 0)
     clutter_model_resort (model);
 
   g_signal_emit (model, model_signals[SORT_CHANGED], 0);
