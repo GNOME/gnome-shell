@@ -142,6 +142,20 @@ wanting to port to newer releases (See NEWS for general new feature info).
 
 Release Notes for Clutter 0.8
 -------------------------------
+* Some more focused timeline unit tests have been added and some tweaks to
+  timeline semantics were made; E.g. For a 10 frame timeline here are some
+  points about the semantics:
+  - When you create a timeline it starts with current_frame_num == 0
+  - After starting a timeline, the first timeout is for current_frame_num == 1
+    (Notably it isn't 0 since there is a delay before the first timeout signals
+    so re-asserting the starting frame (0) wouldn't make sense.)
+  - For a non looping timeline the last timeout would be for
+    current_frame_num == 10
+  - For a looping timeline the timeout for current_frame_num == 10 would be
+    followed by a timeout for current_frame_num == 1 and frame 0 is considered
+    == frame 10.
+  - Asking for a timeline of N frames might better be described as asking for
+    a timeline of _length_ N.
 
 * The behaviour of clutter_actor_get_opacity() has been slightly changed;
   instead of returning the composited opacity of the entire parents chain
