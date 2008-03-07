@@ -1291,20 +1291,15 @@ mouse_button_mods_handler (MetaPreference pref,
 {
   MetaVirtualModifier mods;
 
-  meta_warning("and here we are. SV is %s\n", string_value);
-
-  meta_warning(//topic (META_DEBUG_KEYBINDINGS,
+  meta_topic (META_DEBUG_KEYBINDINGS,
               "Mouse button modifier has new gconf value \"%s\"\n",
               string_value);
-  meta_warning("%d\n", __LINE__);
   if (meta_ui_parse_modifier (string_value, &mods))
     {
-  meta_warning("%d\n", __LINE__);
       mouse_button_mods = mods;
     }
   else
     {
-  meta_warning("%d\n", __LINE__);
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Failed to parse new gconf value\n");
           
@@ -1314,7 +1309,6 @@ mouse_button_mods_handler (MetaPreference pref,
 
       *inform_listeners = FALSE;
     }
-  meta_warning("%d\n", __LINE__);
 }
 
 static gboolean

@@ -1,3 +1,8 @@
+2008-03-07  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/prefs.c (mouse_button_mods_handler): remove
+	debug statements (*blush*)
+
 2008-03-06  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.23.2.
