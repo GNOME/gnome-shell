@@ -1,3 +1,15 @@
+2008-03-07  Øyvind Kolås  <pippin@o-hand.com>
+
+	Refactored the integer id->ClutterActor mapping code to be a self
+	contained data structure.
+
+	* clutter/clutter-id-pool.[ch]: new files.
+	* clutter/Makefile.am: added clutter-id-pool.[ch]
+	* clutter/clutter-private.h: use a ClutterIDPool instead of GArray and
+	GSList to keep track of the reusable ids.
+	* clutter/clutter-actor.c: moved id pool logic away.
+	* clutter/clutter-main.c: simplified id pool creation/finalization.
+
 2008-03-07  Robert Bragg  <bob@o-hand.com>
 
 	* clutter/clutter-timeline.c:

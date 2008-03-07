@@ -277,52 +277,6 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                                          clutter_scriptable_iface_init));
 
 
-static guint32
-create_actor_id (ClutterActor *actor)
-{
-  ClutterMainContext *context = CLUTTER_CONTEXT();
-  ClutterActor      **array;
-  guint32             id;
-
-  context = clutter_context_get_default ();
-
-  g_return_val_if_fail (context != NULL, 0);
-  g_return_val_if_fail (context->actor_array != NULL, 0);
-
-  /* There are items on our freelist */
-  if (context->free_actor_ids)
-    {
-      array = (void*) context->actor_array->data;
-      id = GPOINTER_TO_UINT (context->free_actor_ids->data);
-
-      context->free_actor_ids = g_slist_remove (context->free_actor_ids,
-                                                context->free_actor_ids->data);
-      array[id] = actor;
-      return id;
-    }
-
-  /* Allocate new id */
-  id = context->actor_array->len;
-  g_array_append_val (context->actor_array, actor);
-  return id;
-}
-
-static void
-release_actor_id (guint32 id)
-{
-  ClutterMainContext *context = CLUTTER_CONTEXT();
-  ClutterActor      **array;
-
-  context = clutter_context_get_default ();
-  g_return_if_fail (context != NULL);
-  g_return_if_fail (context->actor_array != NULL);
-
-  array = (void*) context->actor_array->data;
-  array[id] = (void*)0xdecafbad;
-
-  context->free_actor_ids = g_slist_prepend (context->free_actor_ids,
-                                             GUINT_TO_POINTER (id));
-}
 
 static gboolean
 redraw_update_idle (gpointer data)
@@ -1688,7 +1642,7 @@ clutter_actor_finalize (GObject *object)
 		g_type_name (G_OBJECT_TYPE (actor)));
 
   g_free (actor->priv->name);
-  release_actor_id (actor->priv->id);
+  clutter_id_pool_remove (CLUTTER_CONTEXT()->id_pool, actor->priv->id);
 
   G_OBJECT_CLASS (clutter_actor_parent_class)->finalize (object);
 }
@@ -2368,7 +2322,7 @@ clutter_actor_init (ClutterActor *self)
   priv->parent_actor = NULL;
   priv->has_clip     = FALSE;
   priv->opacity      = 0xff;
-  priv->id           = create_actor_id (self);
+  priv->id           = clutter_id_pool_add (CLUTTER_CONTEXT()->id_pool, self);
   priv->scale_x      = CFX_ONE;
   priv->scale_y      = CFX_ONE;
   priv->shader_data  = NULL;

@@ -44,6 +44,7 @@
 #include "clutter-backend.h"
 #include "clutter-stage.h"
 #include "clutter-feature.h"
+#include "clutter-id-pool.h"
 
 G_BEGIN_DECLS
 
@@ -83,8 +84,7 @@ struct _ClutterMainContext
   guint            motion_frequency;   /* Motion events per second */
   gint             num_reactives;      /* Num of reactive actors */
 
-  GArray          *actor_array;        /* Array of ClutterActors        */
-  GSList          *free_actor_ids;     /* A stack of released actor ids */
+  ClutterIDPool   *id_pool;            /* mapping between reused integer ids and actors */
 
   guint            frame_rate;         /* Default FPS */
 

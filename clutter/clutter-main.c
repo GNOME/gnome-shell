@@ -275,10 +275,9 @@ clutter_context_free (ClutterMainContext *context)
   /* this will take care of destroying the stage */
   g_object_unref (context->backend);
   context->backend = NULL;
-  g_array_free (context->actor_array, TRUE);
-  context->actor_array = NULL;
-  g_slist_free (context->free_actor_ids);
-  context->free_actor_ids = NULL;
+
+  clutter_id_pool_free (context->id_pool);
+  context->id_pool = NULL;
 
   /* XXX: The cleaning up of the event queue should be moved here from
           the backend base class. */
@@ -811,10 +810,7 @@ pre_parse_hook (GOptionContext  *context,
 
   clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
   pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
-
-  clutter_context->actor_array = g_array_sized_new (FALSE, FALSE,
-                                                    sizeof (guint32), 256);
-  clutter_context->free_actor_ids = NULL;
+  clutter_context->id_pool = clutter_id_pool_new (256);
 
   backend = clutter_context->backend;
   g_assert (CLUTTER_IS_BACKEND (backend));
@@ -1571,18 +1567,12 @@ ClutterActor*
 clutter_get_actor_by_gid (guint32 id)
 {
   ClutterMainContext *context;
-  ClutterActor      **array;
 
   context = clutter_context_get_default ();
 
   g_return_val_if_fail (context != NULL, NULL);
-  g_return_val_if_fail (context->actor_array != NULL, NULL);
 
-  g_assert (id < context->actor_array->len);
-  g_return_val_if_fail (id < context->actor_array->len, NULL);
-
-  array = (void*) context->actor_array->data;
-  return array[id];
+  return CLUTTER_ACTOR (clutter_id_pool_lookup (context->id_pool, id));
 }
 
 void

@@ -145,6 +145,7 @@ source_c = \
 	clutter-feature.c 		\
 	clutter-fixed.c			\
 	clutter-group.c 		\
+	clutter-id-pool.c 		\
 	clutter-label.c 		\
 	clutter-list-model.c		\
 	clutter-main.c 			\
@@ -169,6 +170,7 @@ source_h_priv = \
 	clutter-keysyms-table.h		\
 	clutter-model-private.h		\
 	clutter-private.h 		\
+	clutter-id-pool.h 		\
 	clutter-script-private.h	\
 	$(NULL)
 
