@@ -63,6 +63,7 @@ IGNORE_HFILES=\
 	clutter-marshal.h \
 	clutter-model-private.h \
 	clutter-private.h \
+	clutter-id-pool.h \
 	clutter-script-private.h \
 	stamp-clutter-enum-types.h \
 	stamp-clutter-marshal.h \

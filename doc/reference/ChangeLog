@@ -1,3 +1,7 @@
+2008-03-07  Øyvind Kolås  <pippin@o-hand.com>
+
+	* Makefile.am: Ignore clutter-id-pool.h to avoid picking up private symbols.
+
 2008-02-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-docs.sgml: Add building instructions for OSX
