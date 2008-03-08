@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-15 04:11+0100\n"
-"PO-Revision-Date: 2008-01-15 04:12+0100\n"
+"POT-Creation-Date: 2008-03-08 23:07+0100\n"
+"PO-Revision-Date: 2008-03-09 00:43+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -28,16 +28,16 @@ msgstr "Fönsterhantering"
 msgid "Unknown window information request: %d"
 msgstr "Okänd fråga efter fönsterinformation: %d"
 
-#: ../src/core/delete.c:67
-#: ../src/core/delete.c:94
+#: ../src/core/delete.c:70
+#: ../src/core/delete.c:97
 #: ../src/ui/metacity-dialog.c:50
 #: ../src/ui/theme-parser.c:481
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Kunde inte tolka \"%s\" som ett heltal"
 
-#: ../src/core/delete.c:74
-#: ../src/core/delete.c:101
+#: ../src/core/delete.c:77
+#: ../src/core/delete.c:104
 #: ../src/ui/metacity-dialog.c:57
 #: ../src/ui/theme-parser.c:490
 #: ../src/ui/theme-parser.c:545
@@ -45,23 +45,23 @@ msgstr "Kunde inte tolka \"%s\" som ett heltal"
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Förstod inte de avslutande tecknen \"%s\" i strängen \"%s\""
 
-#: ../src/core/delete.c:132
+#: ../src/core/delete.c:135
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Misslyckades med att tolka meddelandet \"%s\" från dialogprocess\n"
 
-#: ../src/core/delete.c:267
+#: ../src/core/delete.c:270
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Fel vid läsning från dialogvisningsprocess: %s\n"
 
 # SUN CHANGED MESSAGE
-#: ../src/core/delete.c:350
+#: ../src/core/delete.c:353
 #, c-format
 msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Fel vid start av metacity-dialog för att fråga om ett program skulle dödas: %s\n"
 
-#: ../src/core/delete.c:459
+#: ../src/core/delete.c:462
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Misslyckades med att få tag i värdnamn: %s\n"
@@ -92,27 +92,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
 
-#: ../src/core/keybindings.c:1087
+#: ../src/core/keybindings.c:1090
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Ett annat program använder redan tangenten %s med modifierarna %x som en bindning\n"
 
-#: ../src/core/keybindings.c:2733
+#: ../src/core/keybindings.c:2736
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Fel vid start av metacity-dialog för att skriva ut ett fel om ett kommando: %s\n"
 
-#: ../src/core/keybindings.c:2838
+#: ../src/core/keybindings.c:2841
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
 
-#: ../src/core/keybindings.c:3866
+#: ../src/core/keybindings.c:3869
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Inget terminalkommando har definierats.\n"
 
-#: ../src/core/main.c:112
+#: ../src/core/main.c:115
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -125,143 +125,133 @@ msgstr ""
 "Det här är fri programvara; se källkoden för kopieringsvillkor.\n"
 "Det finns INGA garantier; inte ens för SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL.\n"
 
-#: ../src/core/main.c:239
+#: ../src/core/main.c:242
 msgid "Disable connection to session manager"
 msgstr "Inaktivera anslutning till sessionshanteraren"
 
-#: ../src/core/main.c:245
+#: ../src/core/main.c:248
 msgid "Replace the running window manager with Metacity"
 msgstr "Ersätt den körande fönsterhanteraren med Metacity"
 
-#: ../src/core/main.c:251
+#: ../src/core/main.c:254
 msgid "Specify session management ID"
 msgstr "Ange sessionshanteringsid"
 
-#: ../src/core/main.c:256
+#: ../src/core/main.c:259
 msgid "X Display to use"
 msgstr "X-display att använda"
 
-#: ../src/core/main.c:262
+#: ../src/core/main.c:265
 msgid "Initialize session from savefile"
 msgstr "Initiera session från sparandefil"
 
-#: ../src/core/main.c:268
+#: ../src/core/main.c:271
 msgid "Print version"
 msgstr "Skriv ut version"
 
-#: ../src/core/main.c:274
+#: ../src/core/main.c:277
 msgid "Make X calls synchronous"
 msgstr "Gör X-anrop synkrona"
 
-#: ../src/core/main.c:425
+#: ../src/core/main.c:428
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Misslyckades med att genomsöka temakatalogen: %s\n"
 
-#: ../src/core/main.c:441
+#: ../src/core/main.c:444
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Kunde inte hitta ett tema! Försäkra dig om att %s finns och innehåller vanliga teman.\n"
 
-#: ../src/core/main.c:513
+#: ../src/core/main.c:516
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
 
-#: ../src/core/prefs.c:434
-#, c-format
-msgid "Type of %s was not integer"
-msgstr "Typen för %s var inte ett heltal"
-
-# SUN CHANGED MESSAGE
-#: ../src/core/prefs.c:572
-#: ../src/core/prefs.c:600
-#: ../src/core/prefs.c:616
-#: ../src/core/prefs.c:632
-#: ../src/core/prefs.c:648
-#: ../src/core/prefs.c:664
-#: ../src/core/prefs.c:680
-#: ../src/core/prefs.c:696
-#: ../src/core/prefs.c:716
-#: ../src/core/prefs.c:732
-#: ../src/core/prefs.c:748
-#: ../src/core/prefs.c:766
-#: ../src/core/prefs.c:782
-#: ../src/core/prefs.c:801
-#: ../src/core/prefs.c:817
-#: ../src/core/prefs.c:852
-#: ../src/core/prefs.c:868
-#: ../src/core/prefs.c:885
-#: ../src/core/prefs.c:901
-#: ../src/core/prefs.c:917
-#: ../src/core/prefs.c:933
-#: ../src/core/prefs.c:949
-#: ../src/core/prefs.c:964
-#: ../src/core/prefs.c:979
-#: ../src/core/prefs.c:994
-#: ../src/core/prefs.c:1010
-#: ../src/core/prefs.c:1026
-#: ../src/core/prefs.c:1042
-#: ../src/core/prefs.c:1058
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
-
-#: ../src/core/prefs.c:1103
-#, c-format
-msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
-msgstr "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för musknappsmodifierare\n"
-
-#: ../src/core/prefs.c:1127
-#: ../src/core/prefs.c:1148
-#: ../src/core/prefs.c:1705
+#.
+#. * We found it, but it was invalid.  Complain.
+#. *
+#. * FIXME: This replicates the original behaviour, but in the future
+#. * we might consider reverting invalid keys to their original values.
+#. * (We know the old value, so we can look up a suitable string in
+#. * the symtab.)
+#.
+#: ../src/core/prefs.c:450
+#: ../src/core/prefs.c:564
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nyckeln \"%s\" är satt till ett ogiltigt värde\n"
 
-#: ../src/core/prefs.c:1277
+# SUN CHANGED MESSAGE
+#: ../src/core/prefs.c:537
+#: ../src/core/prefs.c:607
+#: ../src/core/prefs.c:655
+#: ../src/core/prefs.c:961
+#: ../src/core/prefs.c:979
+#: ../src/core/prefs.c:995
+#: ../src/core/prefs.c:1014
+#: ../src/core/prefs.c:1030
+#: ../src/core/prefs.c:1047
+#: ../src/core/prefs.c:1064
+#: ../src/core/prefs.c:1080
+#: ../src/core/prefs.c:1096
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
+
+#: ../src/core/prefs.c:856
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "Typen för %s var inte ett heltal"
+
+#: ../src/core/prefs.c:1165
+msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
+msgstr "Fixar för trasiga program är inaktiverade. En del program fungerar kanske inte korrekt.\n"
+
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid "%d stored in GConf key %s is not a reasonable cursor_size; must be in the range 1..128\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte en rimlig cursor_size; måste vara inom intervallet 1..128\n"
 
-#: ../src/core/prefs.c:1357
+#: ../src/core/prefs.c:1246
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunde inte tolka typsnittsbeskrivningen \"%s\" från GConf-nyckeln %s\n"
 
-#: ../src/core/prefs.c:1599
+#: ../src/core/prefs.c:1306
+#, c-format
+msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
+msgstr "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för musknappsmodifierare\n"
+
+#: ../src/core/prefs.c:1585
 #, c-format
 msgid "%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte ett rimligt antal arbetsytor, aktuellt maxvärde är %d\n"
 
-#: ../src/core/prefs.c:1659
-msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
-msgstr "Fixar för trasiga program är inaktiverade. En del program fungerar kanske inte korrekt.\n"
-
-#: ../src/core/prefs.c:1732
+#: ../src/core/prefs.c:1629
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte i intervallet 0 till %d\n"
 
-#: ../src/core/prefs.c:1881
+#: ../src/core/prefs.c:1760
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fel vid inställning av antalet arbetsytor till %d: %s\n"
 
-#: ../src/core/prefs.c:2246
-#: ../src/core/prefs.c:2780
+#: ../src/core/prefs.c:2125
+#: ../src/core/prefs.c:2637
 #: ../src/ui/menu.c:199
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
 
-#: ../src/core/prefs.c:2276
-#: ../src/core/prefs.c:2446
+#: ../src/core/prefs.c:2155
+#: ../src/core/prefs.c:2328
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för tangentbindningen \"%s\"\n"
 
-#: ../src/core/prefs.c:2861
+#: ../src/core/prefs.c:2718
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fel vid inställning av namnet på arbetsyta %d till \"%s\": %s\n"
@@ -366,60 +356,60 @@ msgstr "Okänt element %s"
 msgid "Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
 msgstr "Fel vid start av metacity-dialog för att varna om program som inte stöder sessionshantering: %s\n"
 
-#: ../src/core/util.c:98
+#: ../src/core/util.c:101
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Misslyckades med att öppna felsökningslogg: %s\n"
 
-#: ../src/core/util.c:108
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Misslyckades med att använda fdopen() på loggfilen %s: %s\n"
 
-#: ../src/core/util.c:114
+#: ../src/core/util.c:117
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Öppnade loggfilen %s\n"
 
-#: ../src/core/util.c:133
+#: ../src/core/util.c:136
 #: ../src/tools/metacity-message.c:176
 #, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity kompilerades utan stöd för utförligt läge\n"
 
-#: ../src/core/util.c:231
+#: ../src/core/util.c:236
 msgid "Window manager: "
 msgstr "Fönsterhanterare: "
 
-#: ../src/core/util.c:379
+#: ../src/core/util.c:388
 msgid "Bug in window manager: "
 msgstr "Fel i fönsterhanterare: "
 
-#: ../src/core/util.c:408
+#: ../src/core/util.c:421
 msgid "Window manager warning: "
 msgstr "Fönsterhanterarvarning: "
 
-#: ../src/core/util.c:432
+#: ../src/core/util.c:449
 msgid "Window manager error: "
 msgstr "Fönsterhanterarfel: "
 
-#: ../src/core/window-props.c:192
+#: ../src/core/window-props.c:195
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:324
+#: ../src/core/window-props.c:327
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1406
+#: ../src/core/window-props.c:1409
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ogiltigt WM_TRANSIENT_FOR-fönster 0x%lx angivet för %s.\n"
 
 #. first time through
-#: ../src/core/window.c:5650
+#: ../src/core/window.c:5653
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Fönstret %s ställer in SM_CLIENT_ID på sig själv, istället för på WM_CLIENT_LEADER-fönstret som är angivet i ICCCM.\n"
@@ -431,7 +421,7 @@ msgstr "Fönstret %s ställer in SM_CLIENT_ID på sig själv, istället för på
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6215
+#: ../src/core/window.c:6218
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Fönstret %s ställer in ett MWM-tips som anger att det inte går att ändra storlek på, men ställer in minsta storleken %d × %d och största storleken %d × %d; detta verkar inte vettigt.\n"
@@ -494,8 +484,8 @@ msgid "Arrangement of buttons on the titlebar"
 msgstr "Knapparrangemang på titalraden"
 
 #: ../src/metacity.schemas.in.h:8
-msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions."
-msgstr "Arrangemang av knapparna på titelraden. Värdet måste vara en sträng som till exempel \"menu:minimize,maximize,close\"; kolonet skiljer det vänstra hörnet från det högra hörnet, och knappnamnen är kommaseparerade. Två knappar av samma typ är inte tillåtet. Okända knappnamn ignoreras helt och hållet så att knappar kan läggas till i framtida versioner utan att gamla versioner går sönder."
+msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,spacer,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions. A special spacer tag can be used to insert some space between two adjacent buttons."
+msgstr "Arrangemang av knapparna på titelraden. Värdet måste vara en sträng som till exempel \"menu:minimize,maximize,close\"; kolonet skiljer det vänstra hörnet från det högra hörnet, och knappnamnen är kommaseparerade. Två knappar av samma typ är inte tillåtet. Okända knappnamn ignoreras helt och hållet så att knappar kan läggas till i framtida versioner utan att gamla versioner går sönder. En speciell utfyllnadstagg kan användas för att infoga utrymme mellan två närliggande knappar."
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
@@ -1213,16 +1203,16 @@ msgid "This keybinding resizes a window to fill available vertical space. The fo
 msgstr "Denna tangentbindning ändrar storleken på ett fönster för att fylla tillgängligt vertikalt utrymme. Formatet ser ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och tillåter gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning för denna åtgärd."
 
 #: ../src/metacity.schemas.in.h:187
-msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'minimize' which will minimize the window, and 'none' which will not do anything."
-msgstr "Detta alternativ bestämmer effekterna av dubbelklick på titelraden. Aktuella giltiga alternativ är \"toggle_shade\" som kommer att skugga/avskugga fönstret, \"toggle_maximize\" som kommer att maximera/avmaximera fönstret, \"minimize\" kommer kommer att minimera fönstret, och \"none\" som inte gör något."
+msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
+msgstr "Detta alternativ bestämmer effekterna av dubbelklick på titelraden. Aktuella giltiga alternativ är \"toggle_shade\" som kommer att skugga/avskugga fönstret, \"toggle_maximize\" som kommer att maximera/avmaximera fönstret, \"toggle_maximize_horizontally\" och \"toggle_maximize_vertically\" som kommer att maximera/avmaximera fönstret endast i den riktningen, \"minimize\" kommer kommer att minimera fönstret, \"shade\" kommer att rulla upp fönstret, \"menu\" kommer att visa fönstermenyn, \"lower\" som kommer att lägga fönstret bakom alla andra, samt \"none\" som inte gör något."
 
 #: ../src/metacity.schemas.in.h:188
-msgid "This option determines the effects of middle-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'minimize' which will minimize the window, and 'none' which will not do anything."
-msgstr "Detta alternativ bestämmer effekterna av mittenklick på titellisten. Aktuella giltiga alternativ är \"toggle_shade\" som kommer att skugga/avskugga fönstret, \"toggle_maximize\" som kommer att maximera/avmaximera fönstret, \"minimize\" kommer kommer att minimera fönstret, och \"none\" som inte gör något."
+msgid "This option determines the effects of middle-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
+msgstr "Detta alternativ bestämmer effekterna av mittenklick på titellisten. Aktuella giltiga alternativ är \"toggle_shade\" som kommer att skugga/avskugga fönstret, \"toggle_maximize\" som kommer att maximera/avmaximera fönstret, \"toggle_maximize_horizontally\" och \"toggle_maximize_vertically\" som kommer att maximera/avmaximera fönstret endast i den riktningen, \"minimize\" kommer kommer att minimera fönstret, \"shade\" kommer att rulla upp fönstret, \"menu\" kommer att visa fönstermenyn, \"lower\" som kommer att lägga fönstret bakom alla andra, samt \"none\" som inte gör något."
 
 #: ../src/metacity.schemas.in.h:189
-msgid "This option determines the effects of right-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'minimize' which will minimize the window, and 'none' which will not do anything."
-msgstr "Detta alternativ bestämmer effekterna av högerklick på titellisten. Aktuella giltiga alternativ är \"toggle_shade\" som kommer att skugga/avskugga fönstret, \"toggle_maximize\" som kommer att maximera/avmaximera fönstret, \"minimize\" kommer kommer att minimera fönstret, och \"none\" som inte gör något."
+msgid "This option determines the effects of right-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
+msgstr "Detta alternativ bestämmer effekterna av högerklick på titellisten. Aktuella giltiga alternativ är \"toggle_shade\" som kommer att skugga/avskugga fönstret, \"toggle_maximize\" som kommer att maximera/avmaximera fönstret, \"toggle_maximize_horizontally\" och \"toggle_maximize_vertically\" som kommer att maximera/avmaximera fönstret endast i den riktningen, \"minimize\" kommer kommer att minimera fönstret, \"shade\" kommer att rulla upp fönstret, \"menu\" kommer att visa fönstermenyn, \"lower\" som kommer att lägga fönstret bakom alla andra, samt \"none\" som inte gör något."
 
 #: ../src/metacity.schemas.in.h:190
 msgid "This option provides additional control over how newly created windows get focus. It has two possible values; \"smart\" applies the user's normal focus mode, and \"strict\" results in windows started from a terminal not being given focus."
@@ -1522,7 +1512,7 @@ msgstr "_Vänta"
 
 #: ../src/ui/metacity-dialog.c:109
 msgid "_Force Quit"
-msgstr "_Tvinga avslutande"
+msgstr "_Tvinga avslut"
 
 #: ../src/ui/metacity-dialog.c:206
 msgid "Title"
@@ -2354,232 +2344,232 @@ msgstr "y-värdet var %d, %d förväntades"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinatuttryck tolkades på %g sekunder (%g sekunder i medelvärde)\n"
 
-#: ../src/ui/theme.c:208
+#: ../src/ui/theme.c:256
 msgid "top"
 msgstr "överkant"
 
-#: ../src/ui/theme.c:210
+#: ../src/ui/theme.c:258
 msgid "bottom"
 msgstr "nederkant"
 
-#: ../src/ui/theme.c:212
+#: ../src/ui/theme.c:260
 msgid "left"
 msgstr "vänster"
 
-#: ../src/ui/theme.c:214
+#: ../src/ui/theme.c:262
 msgid "right"
 msgstr "höger"
 
-#: ../src/ui/theme.c:228
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "ramgeometrin anger inte \"%s\"-dimension"
 
-#: ../src/ui/theme.c:247
+#: ../src/ui/theme.c:308
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "ramgeometrin anger inte dimensionen \"%s\" för ramen \"%s\""
 
-#: ../src/ui/theme.c:284
+#: ../src/ui/theme.c:345
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Knappförhållandet %g är inte rimligt"
 
-#: ../src/ui/theme.c:296
+#: ../src/ui/theme.c:357
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "ramgeometrin anger inte storlek på knappar"
 
-#: ../src/ui/theme.c:927
+#: ../src/ui/theme.c:1022
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Toningarna bör ha minst två färger"
 
-#: ../src/ui/theme.c:1053
+#: ../src/ui/theme.c:1148
 #, c-format
 msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr "GTK-färgspecifikationen måste ha tillståndet inom klamrar, t.ex. gtk:fg[NORMAL], där NORMAL är tillståndet; kunde inte tolka \"%s\""
 
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1162
 #, c-format
 msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr "GTK-färgspecifikationen måste ha en stängningsklammer efter tillståndet, t.ex. gtk:fg[NORMAL], där NORMAL är tillståndet; kunde inte tolka \"%s\""
 
-#: ../src/ui/theme.c:1078
+#: ../src/ui/theme.c:1173
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Förstod inte tillståndet \"%s\" i färgspecifikation"
 
-#: ../src/ui/theme.c:1091
+#: ../src/ui/theme.c:1186
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Förstod inte färgkomponenten \"%s\" i färgspecifikation"
 
-#: ../src/ui/theme.c:1121
+#: ../src/ui/theme.c:1216
 #, c-format
 msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
 msgstr "Blandningsformatet är \"blend/bg_color/fg_color/alpha\", \"%s\" passar inte med formatet"
 
-#: ../src/ui/theme.c:1132
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Kunde inte tolka alfavärdet \"%s\" i blandad färg"
 
-#: ../src/ui/theme.c:1142
+#: ../src/ui/theme.c:1237
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Alfavärdet \"%s\" i blandad färg är inte mellan 0,0 och 1,0"
 
-#: ../src/ui/theme.c:1190
+#: ../src/ui/theme.c:1285
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Skuggformatet är \"shade/base_color/factor\", \"%s\" passar inte med formatet"
 
-#: ../src/ui/theme.c:1201
+#: ../src/ui/theme.c:1296
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Kunde inte tolka skuggfaktorn \"%s\" i skuggad färg"
 
-#: ../src/ui/theme.c:1211
+#: ../src/ui/theme.c:1306
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Skuggfaktorn \"%s\" i skuggad färg är negativ"
 
-#: ../src/ui/theme.c:1241
+#: ../src/ui/theme.c:1336
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Kunde inte tolka färgen \"%s\""
 
-#: ../src/ui/theme.c:1462
+#: ../src/ui/theme.c:1594
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Koordinatuttrycket innehåller tecknet \"%s\" vilket inte är tillåtet"
 
-#: ../src/ui/theme.c:1489
+#: ../src/ui/theme.c:1621
 #, c-format
 msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
 msgstr "Koordinatuttrycket innehåller flyttalet \"%s\" som inte kunde tolkas"
 
-#: ../src/ui/theme.c:1503
+#: ../src/ui/theme.c:1635
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Koordinatuttrycket innehåller heltalet \"%s\" som inte kunde tolkas"
 
-#: ../src/ui/theme.c:1610
+#: ../src/ui/theme.c:1757
 #, c-format
 msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
 msgstr "Koordinatuttrycket hade en okänd operand vid början av denna text: \"%s\""
 
-#: ../src/ui/theme.c:1667
+#: ../src/ui/theme.c:1814
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Koordinatuttrycket var tomt eller förstods inte"
 
-#: ../src/ui/theme.c:1764
-#: ../src/ui/theme.c:1774
-#: ../src/ui/theme.c:1808
+#: ../src/ui/theme.c:1925
+#: ../src/ui/theme.c:1935
+#: ../src/ui/theme.c:1969
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Koordinatuttrycket resulterar i division med noll"
 
-#: ../src/ui/theme.c:1816
+#: ../src/ui/theme.c:1977
 #, c-format
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Koordinatuttrycket försöker använda mod-operator på ett flyttal"
 
-#: ../src/ui/theme.c:1872
+#: ../src/ui/theme.c:2033
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinatuttrycket har en operator \"%s\" där en operand förväntades"
 
-#: ../src/ui/theme.c:1881
+#: ../src/ui/theme.c:2042
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Koordinatuttrycket hade en operand där en operator förväntades"
 
-#: ../src/ui/theme.c:1889
+#: ../src/ui/theme.c:2050
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Koordinatuttrycket slutade med en operator istället för en operand"
 
-#: ../src/ui/theme.c:1899
+#: ../src/ui/theme.c:2060
 #, c-format
 msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
 msgstr "Koordinatuttrycket har en operator \"%c\" som följer på operatorn \"%c\" utan någon operand imellan"
 
-#: ../src/ui/theme.c:2023
-#: ../src/ui/theme.c:2064
+#: ../src/ui/theme.c:2207
+#: ../src/ui/theme.c:2248
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Koordinatuttrycket hade en okänd variabel eller konstant \"%s\""
 
-#: ../src/ui/theme.c:2108
+#: ../src/ui/theme.c:2302
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Koordinatuttryckstolkaren överflödade sin buffert."
 
-#: ../src/ui/theme.c:2137
+#: ../src/ui/theme.c:2331
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Koordinatuttrycket hade en stängningsparentes utan någon öppningsparentes"
 
-#: ../src/ui/theme.c:2201
+#: ../src/ui/theme.c:2395
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Koordinatuttrycket hade en öppningsparentes utan någon stängningsparentes"
 
-#: ../src/ui/theme.c:2212
+#: ../src/ui/theme.c:2406
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Koordinatuttrycket verkar inte ha några operatorer eller operander"
 
-#: ../src/ui/theme.c:2398
-#: ../src/ui/theme.c:2418
-#: ../src/ui/theme.c:2438
+#: ../src/ui/theme.c:2608
+#: ../src/ui/theme.c:2628
+#: ../src/ui/theme.c:2648
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Temat innehöll ett uttryck som resulterade i ett fel: %s\n"
 
-#: ../src/ui/theme.c:3942
+#: ../src/ui/theme.c:4167
 #, c-format
 msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
 msgstr "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> måste anges för denna ramtyp"
 
-#: ../src/ui/theme.c:4418
-#: ../src/ui/theme.c:4443
+#: ../src/ui/theme.c:4643
+#: ../src/ui/theme.c:4668
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> saknas"
 
-#: ../src/ui/theme.c:4487
+#: ../src/ui/theme.c:4712
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Misslyckades med att läsa in temat \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4613
-#: ../src/ui/theme.c:4620
-#: ../src/ui/theme.c:4627
-#: ../src/ui/theme.c:4634
-#: ../src/ui/theme.c:4641
+#: ../src/ui/theme.c:4838
+#: ../src/ui/theme.c:4845
+#: ../src/ui/theme.c:4852
+#: ../src/ui/theme.c:4859
+#: ../src/ui/theme.c:4866
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Inget <%s> angivet för temat \"%s\""
 
-#: ../src/ui/theme.c:4649
+#: ../src/ui/theme.c:4874
 #, c-format
 msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
 msgstr "Ingen ramstil angiven för fönstertypen \"%s\" i temat \"%s\", lägg till ett <window type=\"%s\" style_set=\"whatever\"/>-element"
 
-#: ../src/ui/theme.c:5016
-#: ../src/ui/theme.c:5078
-#: ../src/ui/theme.c:5141
+#: ../src/ui/theme.c:5241
+#: ../src/ui/theme.c:5303
+#: ../src/ui/theme.c:5366
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Användardefinierade konstanter måste börja med en stor bokstav; \"%s\" gör det inte"
 
-#: ../src/ui/theme.c:5024
-#: ../src/ui/theme.c:5086
-#: ../src/ui/theme.c:5149
+#: ../src/ui/theme.c:5249
+#: ../src/ui/theme.c:5311
+#: ../src/ui/theme.c:5374
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanten \"%s\" har redan definierats"
