@@ -256,7 +256,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* glEnable (GL_DITHER); we never enabled this originally, so its
      probably not safe to then enable it */
 
-  glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+  glReadPixels(x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     return CLUTTER_ACTOR (stage);

@@ -1,3 +1,10 @@
+2008-03-09  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-id-pool.c: (clutter_id_pool_free):
+        Use g_slice_free not g_free.
+	* clutter/clutter-main.c: (_clutter_do_pick):
+        Dont 'over read' the framebuffer when picking (#839, Neil Roberts)
+
 2008-03-07  Øyvind Kolås  <pippin@o-hand.com>
 
 	Refactored the integer id->ClutterActor mapping code to be a self
@@ -15,24 +22,31 @@
 	* clutter/clutter-timeline.c:
 	Timeline changes to fix the issues identified in bugzilla #439
 	
-	Notably, this includes some tweaks to timeline semantics. So e.g. for a   
+	Notably, this includes some tweaks to timeline semantics. 
+        So e.g. for a   
+
 	10 frame timeline here are some points about the new timeline code:
+
 	- When you create a timeline it starts with current_frame_num == 0
+
 	- After starting a timeline, the first timeout is for
 	  current_frame_num == 1 (Notably it isn't 0 since there is a delay
 	  before the first timeout signals so re-asserting the starting point
 	  would give a longer than average first frame.)
+
 	- For a non looping timeline the last timeout would be for
 	  current_frame_num == 10
-	- For a looping timeline the timeout for current_frame_num == 10 would      
-	  be followed by a timeout for current_frame_num == 1 and frame 0 is
-	  considered == frame 10.
-	- Asking for a timeline of N frames might better be described as asking    
-	  for a timeline of _length_ N.
 
-	Warning: Although I tried to test things, I guess it's quite likely that
-	this breaks somthing depending on a specific quirk of the previous
-	timeline code.
+	- For a looping timeline the timeout for current_frame_num ==
+	  10 would be followed by a timeout for current_frame_num == 1
+	  and frame 0 is considered == frame 10.
+
+	- Asking for a timeline of N frames might better be described
+	  as asking for a timeline of _length_ N.
+
+	Warning: Although I tried to test things, I guess it's quite
+	likely that this breaks somthing depending on a specific quirk
+	of the previous timeline code.
 
 2008-03-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
