@@ -777,6 +777,12 @@ window_has_shadow (MetaCompWindow *cw)
   if (((MetaCompScreen *)cw->screen->compositor_data)->have_shadows == FALSE) 
     return FALSE;
 
+  /* Never put a shadow around shaped windows */
+  if (cw->shaped) {
+    meta_verbose ("Window has no shadow as it is shaped\n");
+    return FALSE;
+  }
+
   /* Always put a shadow around windows with a frame */
   if (cw->window) 
     {

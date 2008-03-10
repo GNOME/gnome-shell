@@ -1,3 +1,8 @@
+2008-03-10  Josh Lee  <jleedev@gmail.com>
+
+        * src/core/compositor.c (window_has_shadow): Don't shadow
+	shaped windows.
+
 2008-03-07  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.23.3.
