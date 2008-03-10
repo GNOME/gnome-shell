@@ -17,128 +17,108 @@ typedef struct
   gchar *source;
 } ShaderSource;
 
+/* a couple of boilerplate defines that are common amongst all the
+ * sample shaders
+ */
+
+/* FRAGMENT_SHADER_BEGIN: generate boilerplate with a local vec4 color already initialized,
+ * from a sampler2DRect in a variable tex.
+ */
+#define FRAGMENT_SHADER_BEGIN                  \
+     "uniform sampler2DRect tex;"  \
+      "void main (){"              \
+      "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));"
+
+/* FRAGMENT_SHADER_END: apply the changed color to the output buffer correctly blended
+ * with the gl specified color (makes the opacity of actors work correctly).
+ */
+#define FRAGMENT_SHADER_END                    \
+      "  gl_FragColor = color;"    \
+      "  gl_FragColor = gl_FragColor * gl_Color;" \
+      "}"
+
 static ShaderSource shaders[]=
   {
     {"brightness-contrast",
-
-      "uniform float brightness;"
-      "uniform float contrast;"
-      "uniform sampler2DRect pend_s3_tex;"
-      ""
-      "void main()"
-      "{"
-      "    vec4 pend_s4_result;"
-      "    pend_s4_result = texture2DRect(pend_s3_tex, gl_TexCoord[0].xy);"
-      "    pend_s4_result.x = (pend_s4_result.x - 0.5)*contrast + brightness + 0.5;"
-      "    pend_s4_result.y = (pend_s4_result.y - 0.5)*contrast + brightness + 0.5;"
-      "    pend_s4_result.z = (pend_s4_result.z - 0.5)*contrast + brightness + 0.5;"
-      "    gl_FragColor = pend_s4_result;"
-      "    gl_FragColor = gl_FragColor * gl_Color;"
-      "}",
+     "uniform float brightness, contrast;"
+     FRAGMENT_SHADER_BEGIN
+     " color.rgb = (color.rgb - vec3(0.5, 0.5, 0.5)) * contrast + vec3 (brightness + 0.5, brightness + 0.5, brightness + 0.5);"
+     FRAGMENT_SHADER_END
     },
+
     {"box-blur",
 #if GPU_SUPPORTS_DYNAMIC_BRANCHING
-        "uniform float radius ;"
-        "uniform sampler2DRect rectTexture;"
-        ""
-        "void main()"
-        "{"
-        "    vec4 color = texture2DRect(rectTexture, gl_TexCoord[0].st);"
-        "    float u;"
-        "    float v;"
-        "    int count = 1;"
-        "    for (u=-radius;u<radius;u++)"
-        "      for (v=-radius;v<radius;v++)"
-        "        {"
-        "          color += texture2DRect(rectTexture, vec2(gl_TexCoord[0].s + u * 2.0, gl_TexCoord[0].t +v * 2.0));"
-        "          count ++;"
-        "        }"
-        ""
-        "    gl_FragColor = color / float(count);"
-        "    gl_FragColor = gl_FragColor * gl_Color;"
-        "}"
+     "uniform float radius;"
+     FRAGMENT_SHADER_BEGIN
+     "float u, v;"
+     "int count = 1;"
+     "for (u=-radius;u<radius;u++)"
+     "  for (v=-radius;v<radius;v++)"
+     "    {"
+     "      color += texture2DRect(tex, "
+     "          vec2(gl_TexCoord[0].s + u * 2.0, gl_TexCoord[0].t +v * 2.0));"
+     "      count ++;"
+     "    }"
+     "color = color / float(count);"
+     FRAGMENT_SHADER_END
 #else
-        "uniform sampler2DRect rectTexture;"
-        "vec4 tex_load(const vec2 coord)"
-        "{"
-        "  return texture2DRect (rectTexture, gl_TexCoord[0].st + coord * 2.0);"
-        "}"
-        ""
-        "void main()"
-        "{"
-        "  vec4 color;"
-        "  float count = 1.0;"
-        ""
-        "  color = texture2DRect (rectTexture, gl_TexCoord[0].st);"
-        "  color += tex_load (vec2 (-1.0, -1.0)); count++;"
-        "  color += tex_load (vec2 (-1.0,  0.0)); count++;"
-        "  color += tex_load (vec2 (-1.0,  1.0)); count++;"
-        "  color += tex_load (vec2 ( 0.0, -1.0)); count++;"
-        "  color += tex_load (vec2 ( 0.0,  0.0)); count++;"
-        "  color += tex_load (vec2 ( 0.0,  1.0)); count++;"
-        "  color += tex_load (vec2 ( 1.0, -1.0)); count++;"
-        "  color += tex_load (vec2 ( 1.0,  0.0)); count++;"
-        "  color += tex_load (vec2 ( 1.0,  1.0)); count++;"
-        ""
-        "  gl_FragColor = color / count;"
-        "  gl_FragColor = gl_FragColor * gl_Color;"
-        "}"
+     "vec4 get_rgba_rel(sampler2DRect tex, float dx, float dy)"
+     "{"
+     "  return texture2DRect (tex, gl_TexCoord[0].st + vec2(dx,dy) * 2.0);"
+     "}"
+
+     FRAGMENT_SHADER_BEGIN
+     "  float count = 1.0;"
+     "  color += get_rgba_rel (tex, -1.0, -1.0); count++;"
+     "  color += get_rgba_rel (tex, -1.0,  0.0); count++;"
+     "  color += get_rgba_rel (tex, -1.0,  1.0); count++;"
+     "  color += get_rgba_rel (tex,  0.0, -1.0); count++;"
+     "  color += get_rgba_rel (tex,  0.0,  0.0); count++;"
+     "  color += get_rgba_rel (tex,  0.0,  1.0); count++;"
+     "  color += get_rgba_rel (tex,  1.0, -1.0); count++;"
+     "  color += get_rgba_rel (tex,  1.0,  0.0); count++;"
+     "  color += get_rgba_rel (tex,  1.0,  1.0); count++;"
+     "  color = color / count;"
+     FRAGMENT_SHADER_END
 #endif
     },
+
     {"invert",
-
-      "uniform sampler2DRect tex;\n"
-      "void main ()\n"
-      "{\n"
-      "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));\n"
-      "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) - color;\n"
-      "  gl_FragColor.a = color.a;\n"
-      "  gl_FragColor = gl_FragColor * gl_Color;"
-      "}"
+     FRAGMENT_SHADER_BEGIN
+     "  color.rgb = vec3(1.0, 1.0, 1.0) - color.rgb;\n"
+     FRAGMENT_SHADER_END
     },
+
     {"brightness-contrast",
+     "uniform float brightness;"
+     "uniform float contrast;"
+     FRAGMENT_SHADER_BEGIN
+     "  color.r = (color.r - 0.5) * contrast + brightness + 0.5;"
+     "  color.g = (color.g - 0.5) * contrast + brightness + 0.5;"
+     "  color.b = (color.b - 0.5) * contrast + brightness + 0.5;"
+     FRAGMENT_SHADER_END
+    },
 
-        "uniform sampler2DRect tex;"
-        "uniform float brightness;"
-        "uniform float contrast;"
-        "void main ()"
-        "{"
-        "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));"
-        "  color.r = (color.r - 0.5) * contrast + brightness + 0.5;"
-        "  color.g = (color.g - 0.5) * contrast + brightness + 0.5;"
-        "  color.b = (color.b - 0.5) * contrast + brightness + 0.5;"
-        "  gl_FragColor = color;"
-        "  gl_FragColor = gl_FragColor * gl_Color;"
-        "}",
-    },
     {"gray",
-      "uniform sampler2DRect tex;"
-      "void main ()"
-      "{"
-      "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));"
-      "  float avg = (color.r + color.g + color.b) / 3.0;"
-      "  color.r = avg;"
-      "  color.g = avg;"
-      "  color.b = avg;"
-      "  gl_FragColor = color;"
-      "  gl_FragColor = gl_FragColor * gl_Color;"
-      "}",
+     FRAGMENT_SHADER_BEGIN
+     "  float avg = (color.r + color.g + color.b) / 3.0;"
+     "  color.r = avg;"
+     "  color.g = avg;"
+     "  color.b = avg;"
+     FRAGMENT_SHADER_END
     },
+
     {"combined-mirror",
-      "uniform sampler2DRect tex;"
-      "void main ()"
-      "{"
-      "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));"
-      "  vec4 colorB = texture2DRect (tex, vec2(gl_TexCoord[0].ts));"
-      "  float avg = (color.r + color.g + color.b) / 3.0;"
-      "  color.r = avg;"
-      "  color.g = avg;"
-      "  color.b = avg;"
-      "  color = (color + colorB)/2.0;"
-      "  gl_FragColor = color;"
-      "  gl_FragColor = gl_FragColor * gl_Color;"
-      "}",
+     FRAGMENT_SHADER_BEGIN 
+     "  vec4 colorB = texture2DRect (tex, vec2(gl_TexCoord[0].ts));"
+     "  float avg = (color.r + color.g + color.b) / 3.0;"
+     "  color.r = avg;"
+     "  color.g = avg;"
+     "  color.b = avg;"
+     "  color = (color + colorB)/2.0;"
+     FRAGMENT_SHADER_END
     },
+    /* Terminating NULL sentinel */
     {NULL, NULL}
 };
 

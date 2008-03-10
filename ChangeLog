@@ -1,3 +1,9 @@
+2008-03-10  Øyvind Kolås  <pippin@o-hand.com>
+
+	* tests/test-shader.c: improved readability of fragment shader
+	examples by factoring out common bits into FRAGMENT_SHADER_BEGIN and
+	FRAGMENT_SHADER_END macros.
+
 2008-03-09  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-id-pool.c: (clutter_id_pool_free):
