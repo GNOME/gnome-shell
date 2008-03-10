@@ -21,16 +21,17 @@ typedef struct
  * sample shaders
  */
 
-/* FRAGMENT_SHADER_BEGIN: generate boilerplate with a local vec4 color already initialized,
- * from a sampler2DRect in a variable tex.
+/* FRAGMENT_SHADER_BEGIN: generate boilerplate with a local vec4 color already
+ * initialized, from a sampler2DRect in a variable tex.
  */
 #define FRAGMENT_SHADER_BEGIN                  \
      "uniform sampler2DRect tex;"  \
       "void main (){"              \
       "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));"
 
-/* FRAGMENT_SHADER_END: apply the changed color to the output buffer correctly blended
- * with the gl specified color (makes the opacity of actors work correctly).
+/* FRAGMENT_SHADER_END: apply the changed color to the output buffer correctly
+ * blended with the gl specified color (makes the opacity of actors work
+ * correctly).
  */
 #define FRAGMENT_SHADER_END                    \
       "  gl_FragColor = color;"    \
@@ -42,7 +43,8 @@ static ShaderSource shaders[]=
     {"brightness-contrast",
      "uniform float brightness, contrast;"
      FRAGMENT_SHADER_BEGIN
-     " color.rgb = (color.rgb - vec3(0.5, 0.5, 0.5)) * contrast + vec3 (brightness + 0.5, brightness + 0.5, brightness + 0.5);"
+     " color.rgb = (color.rgb - vec3(0.5, 0.5, 0.5)) * contrast + "
+          "vec3 (brightness + 0.5, brightness + 0.5, brightness + 0.5);"
      FRAGMENT_SHADER_END
     },
 
@@ -153,12 +155,13 @@ button_release_cb (ClutterActor    *actor,
       shader = clutter_shader_new ();
       
       error = NULL;
-      g_object_set (G_OBJECT (shader), "fragment-source", shaders[shader_no].source, NULL);
+      g_object_set (G_OBJECT (shader),
+                    "fragment-source", shaders[shader_no].source, NULL);
 
       /* try to bind the shader, provoking an error we catch if there is issues
-       * with the shader sources we've provided. At a later stage it should be possible to
-       * iterate through a set of alternate shader sources (glsl -> asm -> cg?) and the one
-       * that succesfully compiles is used.
+       * with the shader sources we've provided. At a later stage it should be
+       * possible to iterate through a set of alternate shader sources (glsl ->
+       * asm -> cg?) and the one that succesfully compiles is used.
        */
       clutter_shader_bind (shader, &error);
 
