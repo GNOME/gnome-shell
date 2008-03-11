@@ -1583,7 +1583,7 @@ find_handler (const MetaKeyHandler *handlers,
   return NULL;
 }               
 
-static void
+static gboolean
 process_event (MetaKeyBinding       *bindings,
                int                   n_bindings,
                const MetaKeyHandler *handlers,
@@ -1597,13 +1597,13 @@ process_event (MetaKeyBinding       *bindings,
 
   /* we used to have release-based bindings but no longer. */
   if (event->type == KeyRelease)
-    return;
+    return FALSE;
   
   i = 0;
   while (i < n_bindings)
     {
       if (bindings[i].keycode == event->xkey.keycode && 
-          ((event->xkey.state & ~(display->ignored_modifier_mask)) ==
+          ((event->xkey.state & 0xff & ~(display->ignored_modifier_mask)) ==
            bindings[i].mask) &&
           event->type == KeyPress)
         {
@@ -1637,7 +1637,7 @@ process_event (MetaKeyBinding       *bindings,
 
           (* handler->func) (display, screen, window, event,
                              &bindings[i]);
-          return;
+          return TRUE;
         }
       
       ++i;
@@ -1645,6 +1645,7 @@ process_event (MetaKeyBinding       *bindings,
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "No handler found for this event in this binding table\n");
+  return FALSE;
 }
 
 /* Handle a key event. May be called recursively: some key events cause
@@ -1665,16 +1666,17 @@ meta_display_process_key_event (MetaDisplay *display,
 {
   KeySym keysym;
   gboolean handled;
+  gboolean keep_grab;
   gboolean all_keys_grabbed;
   const char *str;
   MetaScreen *screen;
-
+  
   XAllowEvents (display->xdisplay,
                 all_bindings_disabled ? ReplayKeyboard : AsyncKeyboard,
                 event->xkey.time);
   if (all_bindings_disabled)
     return;
-
+  
   /* if key event was on root window, we have a shortcut */
   screen = meta_display_screen_for_root (display, event->xkey.window);
   
@@ -1703,115 +1705,102 @@ meta_display_process_key_event (MetaDisplay *display,
               str ? str : "none", event->xkey.state,
               window ? window->desc : "(no window)");
 
+  keep_grab = TRUE;
   all_keys_grabbed = window ? window->all_keys_grabbed : screen->all_keys_grabbed;
-  if (!all_keys_grabbed)
+  if (all_keys_grabbed)
     {
-      /* Do the normal keybindings */
-      process_event (display->screen_bindings,
-                     display->n_screen_bindings,
-                     screen_handlers,
-                     display, screen, NULL, event, keysym);
-
-      if (window)
-        process_event (display->window_bindings,
-                       display->n_window_bindings,
-                       window_handlers,
-                       display, screen, window, event, keysym);
-
-      return;
-    }
-
-  if (display->grab_op == META_GRAB_OP_NONE)
-    return;    
-
-  /* If we get here we have a global grab, because
-   * we're in some special keyboard mode such as window move
-   * mode.
-   */
-  
-  handled = FALSE;
-
-  if (window ? (window == display->grab_window) :
-               (screen == display->grab_screen))
-    {
-      switch (display->grab_op)
+      if (display->grab_op == META_GRAB_OP_NONE)
+        return;
+      /* If we get here we have a global grab, because
+        * we're in some special keyboard mode such as window move
+        * mode.
+        */
+      if (window ? (window == display->grab_window) :
+          (screen == display->grab_screen))
         {
-        case META_GRAB_OP_MOVING:
-        case META_GRAB_OP_RESIZING_SE:
-        case META_GRAB_OP_RESIZING_S:      
-        case META_GRAB_OP_RESIZING_SW:      
-        case META_GRAB_OP_RESIZING_N:
-        case META_GRAB_OP_RESIZING_NE:
-        case META_GRAB_OP_RESIZING_NW:
-        case META_GRAB_OP_RESIZING_W:
-        case META_GRAB_OP_RESIZING_E:
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Processing event for mouse-only move/resize\n");
-          g_assert (window != NULL);
-          handled = process_mouse_move_resize_grab (display, screen,
-                                                    window, event, keysym);
-          break;
-
-        case META_GRAB_OP_KEYBOARD_MOVING:
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Processing event for keyboard move\n");
-          g_assert (window != NULL);
-          handled = process_keyboard_move_grab (display, screen,
-                                                window, event, keysym);
-          break;
-
-        case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
-        case META_GRAB_OP_KEYBOARD_RESIZING_S:
-        case META_GRAB_OP_KEYBOARD_RESIZING_N:
-        case META_GRAB_OP_KEYBOARD_RESIZING_W:
-        case META_GRAB_OP_KEYBOARD_RESIZING_E:
-        case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-        case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-        case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-        case META_GRAB_OP_KEYBOARD_RESIZING_NW:          
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Processing event for keyboard resize\n");
-          g_assert (window != NULL);
-          handled = process_keyboard_resize_grab (display, screen,
-                                                  window, event, keysym);
-          break;
-
-        case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
-        case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
-        case META_GRAB_OP_KEYBOARD_TABBING_GROUP:
-        case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
-        case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
-        case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Processing event for keyboard tabbing/cycling\n");
-          handled = process_tab_grab (display, screen, event, keysym);
-          break;
-          
-        case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Processing event for keyboard workspace switching\n");
-          handled = process_workspace_switch_grab (display, screen, event, keysym);
-          break;
-
-        default:
-          break;
+          switch (display->grab_op)
+            {
+            case META_GRAB_OP_MOVING:
+            case META_GRAB_OP_RESIZING_SE:
+            case META_GRAB_OP_RESIZING_S:      
+            case META_GRAB_OP_RESIZING_SW:      
+            case META_GRAB_OP_RESIZING_N:
+            case META_GRAB_OP_RESIZING_NE:
+            case META_GRAB_OP_RESIZING_NW:
+            case META_GRAB_OP_RESIZING_W:
+            case META_GRAB_OP_RESIZING_E:
+              meta_topic (META_DEBUG_KEYBINDINGS,
+                          "Processing event for mouse-only move/resize\n");
+              g_assert (window != NULL);
+              keep_grab = process_mouse_move_resize_grab (display, screen,
+                                                          window, event, keysym);
+              break;
+ 
+            case META_GRAB_OP_KEYBOARD_MOVING:
+              meta_topic (META_DEBUG_KEYBINDINGS,
+                          "Processing event for keyboard move\n");
+              g_assert (window != NULL);
+              keep_grab = process_keyboard_move_grab (display, screen,
+                                                      window, event, keysym);
+              break;
+              
+            case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
+            case META_GRAB_OP_KEYBOARD_RESIZING_S:
+            case META_GRAB_OP_KEYBOARD_RESIZING_N:
+            case META_GRAB_OP_KEYBOARD_RESIZING_W:
+            case META_GRAB_OP_KEYBOARD_RESIZING_E:
+            case META_GRAB_OP_KEYBOARD_RESIZING_SE:
+            case META_GRAB_OP_KEYBOARD_RESIZING_NE:
+            case META_GRAB_OP_KEYBOARD_RESIZING_SW:
+            case META_GRAB_OP_KEYBOARD_RESIZING_NW:          
+              meta_topic (META_DEBUG_KEYBINDINGS,
+                          "Processing event for keyboard resize\n");
+              g_assert (window != NULL);
+              keep_grab = process_keyboard_resize_grab (display, screen,
+                                                        window, event, keysym);
+              break;
+ 
+            case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
+            case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+            case META_GRAB_OP_KEYBOARD_TABBING_GROUP:
+            case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
+            case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
+            case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
+              meta_topic (META_DEBUG_KEYBINDINGS,
+                          "Processing event for keyboard tabbing/cycling\n");
+              keep_grab = process_tab_grab (display, screen, event, keysym);
+              break;
+              
+            case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
+              meta_topic (META_DEBUG_KEYBINDINGS,
+                          "Processing event for keyboard workspace switching\n");
+              keep_grab = process_workspace_switch_grab (display, screen, event, keysym);
+              break;
+ 
+            default:
+              break;
+            }
         }
-    }
-  
-  /* end grab if a key that isn't used gets pressed */
-  if (!handled)
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Ending grab op %u on key event sym %s\n",
-                  display->grab_op, XKeysymToString (keysym));
-      meta_display_end_grab_op (display, event->xkey.time);
-
-      g_assert (display->grab_op == META_GRAB_OP_NONE);
-
-      /* and go round again: #112560 */
-      meta_display_process_key_event (display, window, event);
-
-    }
+      if (!keep_grab)
+        {
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Ending grab op %u on key event sym %s\n",
+                      display->grab_op, XKeysymToString (keysym));
+          meta_display_end_grab_op (display, event->xkey.time);
+          return;
+        }
+      }
+  /* Do the normal keybindings */
+  handled = process_event (display->screen_bindings,
+                           display->n_screen_bindings,
+                           screen_handlers,
+                           display, screen, NULL, event, keysym);
+ 
+  if (!all_keys_grabbed && !handled && window)
+    handled = process_event (display->window_bindings,
+                             display->n_window_bindings,
+                             window_handlers,
+                             display, screen, window, event, keysym);
 }
 
 static gboolean
@@ -1848,13 +1837,10 @@ process_mouse_move_resize_grab (MetaDisplay *display,
       else
         display->grab_was_cancelled = TRUE;
 
-      /* End grab, since this was an "unhandled" keypress */
+      /* End grab */
       return FALSE;
     }
 
-  /* The keypress really isn't handled but we just want to ignore it, so
-   * treat it as handled.
-   */
   return TRUE;
 }
 

@@ -1,3 +1,11 @@
+2008-03-11  Matthew Wilson  <msw@gimp.org>
+
+        * src/core/keybindings.c (meta_display_process_key_event, process_event,
+        find_handler, process_mouse_move_resize_grab): allow moving workspace
+	while moving window with modifier
+        * src/core/workspace.c (meta_workspace_activate_with_focus): remove the
+	correct window on jumping workspace while moving
+
 2008-03-10  Josh Lee  <jleedev@gmail.com>
 
         * src/core/compositor.c (window_has_shadow): Don't shadow

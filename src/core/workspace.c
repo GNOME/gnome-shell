@@ -315,10 +315,12 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
        * then remove from old workspace, so the window
        * never gets unmapped and we maintain the button grab
        * on it.
+       *
+       * \bug  This comment appears to be the reverse of what happens
        */
       if (move_window && (move_window->workspace != workspace))
         {
-          meta_workspace_remove_window (workspace, move_window);
+          meta_workspace_remove_window (old, move_window);
           meta_workspace_add_window (workspace, move_window);
         }
     }
