@@ -1,3 +1,8 @@
+2008-03-18  Marco Pesenti Gritti  <mpgritti@gmail.com>
+
+        * src/core/window.c (window_would_be_covered): newly created windows
+	can't be considered to be above themselves; fixes bug #519188.
+
 2008-03-11  Matthew Wilson  <msw@gimp.org>
 
         * src/core/keybindings.c (meta_display_process_key_event, process_event,

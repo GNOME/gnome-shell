@@ -2009,7 +2009,7 @@ window_would_be_covered (const MetaWindow *newbie)
     { 
       MetaWindow *w = tmp->data;
 
-      if (w->wm_state_above)
+      if (w->wm_state_above && w != newbie)
         {
           /* We have found a window that is "above". Perhaps it overlaps. */
           if (windows_overlap (w, newbie))
