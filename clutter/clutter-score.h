@@ -77,36 +77,29 @@ GType clutter_score_get_type (void) G_GNUC_CONST;
 
 ClutterScore *   clutter_score_new            (void);
 
-void             clutter_score_set_loop        (ClutterScore    *score,
-                                                gboolean         loop);
-gboolean         clutter_score_get_loop        (ClutterScore    *score);
+void             clutter_score_set_loop         (ClutterScore    *score,
+                                                 gboolean         loop);
+gboolean         clutter_score_get_loop         (ClutterScore    *score);
 
-void             clutter_score_append_at_time  (ClutterScore    *score,
-                                                const gchar     *id,
-                                                ClutterTimeline *parent,
-                                                guint            msecs,
-                                                ClutterTimeline *timeline);
-void             clutter_score_append_at_frame (ClutterScore    *score,
-                                                const gchar     *id,
-                                                ClutterTimeline *parent,
-                                                guint            frame,
-                                                ClutterTimeline *timeline);
-void             clutter_score_append          (ClutterScore    *score,
-                                                const gchar     *id,
-                                                ClutterTimeline *parent,
-                                                ClutterTimeline *timeline);
-void             clutter_score_remove          (ClutterScore    *score,
-                                                const gchar     *id);
-void             clutter_score_remove_all      (ClutterScore    *score);
-ClutterTimeline *clutter_score_get_timeline    (ClutterScore    *score,
-                                                const gchar     *id);
-GSList *         clutter_score_list_timelines  (ClutterScore    *score);
+guint            clutter_score_append           (ClutterScore    *score,
+                                                 ClutterTimeline *parent,
+                                                 ClutterTimeline *timeline);
+guint            clutter_score_append_at_marker (ClutterScore    *score,
+                                                 ClutterTimeline *parent,
+                                                 const gchar     *marker_name,
+                                                 ClutterTimeline *timeline);
+void             clutter_score_remove           (ClutterScore    *score,
+                                                 guint            id);
+void             clutter_score_remove_all       (ClutterScore    *score);
+ClutterTimeline *clutter_score_get_timeline     (ClutterScore    *score,
+                                                 guint            id);
+GSList *         clutter_score_list_timelines   (ClutterScore    *score);
 
-void             clutter_score_start           (ClutterScore    *score);
-void             clutter_score_stop            (ClutterScore    *score);
-void             clutter_score_pause           (ClutterScore    *score);
-void             clutter_score_rewind          (ClutterScore    *score);
-gboolean         clutter_score_is_playing      (ClutterScore    *score);
+void             clutter_score_start            (ClutterScore    *score);
+void             clutter_score_stop             (ClutterScore    *score);
+void             clutter_score_pause            (ClutterScore    *score);
+void             clutter_score_rewind           (ClutterScore    *score);
+gboolean         clutter_score_is_playing       (ClutterScore    *score);
 
 G_END_DECLS
 

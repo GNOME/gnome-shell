@@ -1,5 +1,21 @@
 2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-score.[ch]: Remove all the API changes, and
+	just add a clutter_score_append_at_marker(); the implementation
+	remains the same, but the marker must be explicitly created by
+	the developer. The ids are no longer used to create implicit
+	markers, so they can return to be unsigned integers.
+
+	* clutter/clutter-timeline.[ch]:
+	(clutter_timeline_has_marker): Add a function to query a timeline
+	for a marker being set.
+
+	* tests/test-score.c (main): Update with the API changes.
+
+	* clutter.symbols: Update exported symbols.
+
+2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-texture.c: Small clean ups in the coding style.
 
 2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>

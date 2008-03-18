@@ -86,25 +86,18 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-typedef enum {
-  SCORE_ENTRY_TIME,
-  SCORE_ENTRY_FRAME,
-  SCORE_ENTRY_APPEND
-} ClutterScoreEntryType;
-
 typedef struct _ClutterScoreEntry       ClutterScoreEntry;
 
 struct _ClutterScoreEntry
 {
-  ClutterScoreEntryType type;
-
-  gchar *id;
+  /* the entry unique id */
+  guint id;
 
   ClutterTimeline *timeline;
   ClutterTimeline *parent;
 
-  guint msecs;
-  guint frame;
+  /* the optional marker */
+  gchar *marker;
 
   /* signal handlers id */
   guint complete_id;
@@ -434,7 +427,7 @@ typedef struct {
   /* parameters */
   union {
     ClutterTimeline *timeline;
-    const gchar *id;
+    guint id;
     ClutterScoreEntry *entry;
   } d;
 
@@ -462,7 +455,7 @@ destroy_entry (GNode                  *node,
         }
 
       g_object_unref (entry->timeline);
-      g_free (entry->id);
+      g_free (entry->marker);
       g_slice_free (ClutterScoreEntry, entry);
 
       node->data = NULL;
@@ -496,7 +489,7 @@ traverse_children (GNode    *node,
       break;
 
     case FIND_BY_ID:
-      if (strcmp (closure->d.id, entry->id) == 0)
+      if (closure->d.id == entry->id)
         {
           closure->result = node;
           retval = TRUE;
@@ -504,7 +497,7 @@ traverse_children (GNode    *node,
       break;
 
     case REMOVE_BY_ID:
-      if (strcmp (closure->d.id, entry->id) == 0)
+      if (closure->d.id == entry->id)
         {
           if (entry->complete_id)
             {
@@ -519,7 +512,6 @@ traverse_children (GNode    *node,
             }
 
           g_object_unref (entry->timeline);
-          g_free (entry->id);
 
           g_node_traverse (node,
                            G_POST_ORDER,
@@ -527,6 +519,7 @@ traverse_children (GNode    *node,
                            -1,
                            destroy_entry, NULL);
 
+          g_free (entry->marker);
           g_slice_free (ClutterScoreEntry, entry);
 
           closure->result = node;
@@ -569,7 +562,7 @@ find_entry_by_timeline (ClutterScore    *score,
 
 static GNode *
 find_entry_by_id (ClutterScore *score,
-                  const gchar  *id)
+                  guint         id)
 {
   ClutterScorePrivate *priv = score->priv;
   TraverseClosure closure;
@@ -612,7 +605,7 @@ on_timeline_marker (ClutterTimeline   *timeline,
   GNode *parent;
   CLUTTER_NOTE (SCHEDULER, "timeline [%p] marker ('%s') reached",
 		entry->timeline,
-                entry->id);
+                entry->marker);
 
   parent = find_entry_by_timeline (entry->score, timeline);
   if (!parent)
@@ -634,12 +627,13 @@ on_timeline_completed (ClutterTimeline   *timeline,
 {
   ClutterScorePrivate *priv = entry->score->priv;
 
-  g_hash_table_remove (priv->running_timelines, entry->id);
+  g_hash_table_remove (priv->running_timelines,
+                       GUINT_TO_POINTER (entry->id));
 
   g_signal_handler_disconnect (timeline, entry->complete_id);
   entry->complete_id = 0;
 
-  CLUTTER_NOTE (SCHEDULER, "timeline [%p] ('%s') completed", 
+  CLUTTER_NOTE (SCHEDULER, "timeline [%p] ('%d') completed", 
 		entry->timeline,
                 entry->id);
 
@@ -682,14 +676,16 @@ start_entry (ClutterScoreEntry *entry)
                                          G_CALLBACK (on_timeline_completed),
                                          entry);
 
-  CLUTTER_NOTE (SCHEDULER, "timeline [%p] ('%s') started",
+  CLUTTER_NOTE (SCHEDULER, "timeline [%p] ('%d') started",
                 entry->timeline,
                 entry->id);
 
   if (G_UNLIKELY (priv->running_timelines == NULL))
-    priv->running_timelines = g_hash_table_new (g_str_hash, g_str_equal);
+    priv->running_timelines = g_hash_table_new (NULL, NULL);
 
-  g_hash_table_insert (priv->running_timelines, entry->id, entry);
+  g_hash_table_insert (priv->running_timelines,
+                       GUINT_TO_POINTER (entry->id),
+                       entry);
 
   clutter_timeline_start (entry->timeline);
 
@@ -858,7 +854,6 @@ clutter_score_clear (ClutterScore *score)
 /**
  * clutter_score_append:
  * @score: a #ClutterScore
- * @id: a unique string identifying the timeline
  * @parent: a #ClutterTimeline in the score or %NULL
  * @timeline: a #ClutterTimeline
  *
@@ -870,32 +865,32 @@ clutter_score_clear (ClutterScore *score)
  *
  * #ClutterScore will take a reference on @timeline.
  *
- * Since: 0.8
+ * Return value: the id of the #ClutterTimeline inside the score, or
+ *   0 on failure. The returned id can be used with clutter_score_remove()
+ *   or clutter_score_get_timeline().
+ *
+ * Since: 0.6
  */
-void
+guint
 clutter_score_append (ClutterScore    *score,
-                      const gchar     *id,
 		      ClutterTimeline *parent,
 		      ClutterTimeline *timeline)
 {
   ClutterScorePrivate *priv;
+  ClutterScoreEntry *entry;
 
-  g_return_if_fail (CLUTTER_IS_SCORE (score));
-  g_return_if_fail (id != NULL);
-  g_return_if_fail (parent == NULL || CLUTTER_IS_TIMELINE (parent));
-  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_val_if_fail (CLUTTER_IS_SCORE (score), 0);
+  g_return_val_if_fail (parent == NULL || CLUTTER_IS_TIMELINE (parent), 0);
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
 
   priv = score->priv;
 
   if (!parent)
     {
-      ClutterScoreEntry *entry;
-
       entry = g_slice_new (ClutterScoreEntry);
-      entry->type = SCORE_ENTRY_APPEND;
       entry->timeline = g_object_ref (timeline);
       entry->parent = NULL;
-      entry->id = g_strdup (id);
+      entry->id = priv->last_id;
       entry->marker_id = 0;
       entry->score = score;
 
@@ -904,64 +899,69 @@ clutter_score_append (ClutterScore    *score,
   else
     {
       GNode *node;
-      ClutterScoreEntry *entry;
 
       node = find_entry_by_timeline (score, parent);
       if (G_UNLIKELY (!node))
         {
           g_warning ("Unable to find the parent timeline inside the score.");
-          return;
+          return 0;
         }
 
       entry = g_slice_new (ClutterScoreEntry);
-      entry->type = SCORE_ENTRY_APPEND;
       entry->timeline = g_object_ref (timeline);
       entry->parent = parent;
-      entry->id = g_strdup (id);
+      entry->id = priv->last_id;
       entry->marker_id = 0;
       entry->score = score;
 
       entry->node = g_node_append_data (node, entry);
     }
+
+  priv->last_id += 1;
+
+  return entry->id;
 }
 
 /**
- * clutter_score_append_at_time:
+ * clutter_score_append_at_marker:
  * @score: a #ClutterScore
- * @id: a unique string identifying the timeline
  * @parent: the parent #ClutterTimeline
- * @msecs: the time on @parent where the new timeline should
- *   be appended, in milliseconds
+ * @marker_name: the name of the marker to use
  * @timeline: the #ClutterTimeline to append
  *
- * Appends @timeline at the given position on the @parent timeline,
- * expressed in milliseconds.
- *
- * This function implicitly creates a timeline marker (see
- * clutter_timeline_add_marker_at_time()) with the given @id on
- * @parent.
+ * Appends @timeline at the given @marker_name on the @parent
+ * #ClutterTimeline.
  *
  * If you want to append @timeline at the end of @parent, use
  * clutter_score_append().
  *
+ * Return value: the id of the #ClutterTimeline inside the score, or
+ *   0 on failure. The returned id can be used with clutter_score_remove()
+ *   or clutter_score_get_timeline().
+ *
  * Since: 0.8
  */
-void
-clutter_score_append_at_time (ClutterScore    *score,
-                              const gchar     *id,
-                              ClutterTimeline *parent,
-                              guint            msecs,
-                              ClutterTimeline *timeline)
+guint
+clutter_score_append_at_marker (ClutterScore    *score,
+                                ClutterTimeline *parent,
+                                const gchar     *marker_name,
+                                ClutterTimeline *timeline)
 {
   ClutterScorePrivate *priv;
   GNode *node;
   ClutterScoreEntry *entry;
   gchar *marker_reached_signal;
 
-  g_return_if_fail (CLUTTER_IS_SCORE (score));
-  g_return_if_fail (id != NULL);
-  g_return_if_fail (CLUTTER_IS_TIMELINE (parent));
-  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_val_if_fail (CLUTTER_IS_SCORE (score), 0);
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (parent), 0);
+  g_return_val_if_fail (marker_name != NULL, 0);
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
+
+  if (!clutter_timeline_has_marker (parent, marker_name))
+    {
+      g_warning ("The parent timeline has no marker `%s'", marker_name);
+      return 0;
+    }
 
   priv = score->priv;
 
@@ -969,22 +969,17 @@ clutter_score_append_at_time (ClutterScore    *score,
   if (G_UNLIKELY (!node))
     {
       g_warning ("Unable to find the parent timeline inside the score.");
-      return;
+      return 0;
     }
 
   entry = g_slice_new (ClutterScoreEntry);
-  entry->type = SCORE_ENTRY_TIME;
   entry->timeline = g_object_ref (timeline);
   entry->parent = parent;
-  entry->msecs = msecs;
-  entry->id = g_strdup (id);
+  entry->marker = g_strdup (marker_name);
+  entry->id = priv->last_id;
   entry->score = score;
 
-  clutter_timeline_add_marker_at_time (entry->parent,
-                                       entry->id,
-                                       entry->msecs);
-
-  marker_reached_signal = g_strdup_printf ("marker-reached::%s", entry->id);
+  marker_reached_signal = g_strdup_printf ("marker-reached::%s", marker_name);
   entry->marker_id = g_signal_connect (entry->parent,
                                        marker_reached_signal,
                                        G_CALLBACK (on_timeline_marker),
@@ -993,76 +988,10 @@ clutter_score_append_at_time (ClutterScore    *score,
   entry->node = g_node_append_data (node, entry);
 
   g_free (marker_reached_signal);
-}
 
-/**
- * clutter_score_append_at_frame:
- * @score: a #ClutterScore
- * @id: a unique string identifying the timeline
- * @parent: the parent #ClutterTimeline
- * @msecs: the frame of @parent where the new timeline should
- *   be appended to
- * @timeline: the #ClutterTimeline to append
- *
- * Appends @timeline at the given position on the @parent timeline,
- * expressed as a frame number.
- *
- * This function implicitly creates a timeline marker (see
- * clutter_timeline_add_marker_at_frame()) with the given @id
- * on @parent.
- *
- * If you want to append @timeline at the end of @parent, use
- * clutter_score_append().
- *
- * Since: 0.8
- */
-void
-clutter_score_append_at_frame (ClutterScore    *score,
-                               const gchar     *id,
-                               ClutterTimeline *parent,
-                               guint            frame,
-                               ClutterTimeline *timeline)
-{
-  ClutterScorePrivate *priv;
-  GNode *node;
-  ClutterScoreEntry *entry;
-  gchar *marker_reached_signal;
+  priv->last_id += 1;
 
-  g_return_if_fail (CLUTTER_IS_SCORE (score));
-  g_return_if_fail (id != NULL);
-  g_return_if_fail (CLUTTER_IS_TIMELINE (parent));
-  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
-
-  priv = score->priv;
-
-  node = find_entry_by_timeline (score, parent);
-  if (G_UNLIKELY (!node))
-    {
-      g_warning ("Unable to find the parent timeline inside the score.");
-      return;
-    }
-
-  entry = g_slice_new (ClutterScoreEntry);
-  entry->type = SCORE_ENTRY_TIME;
-  entry->timeline = g_object_ref (timeline);
-  entry->parent = parent;
-  entry->frame = frame;
-  entry->id = g_strdup (id);
-  entry->score = score;
-
-  clutter_timeline_add_marker_at_frame (entry->parent,
-                                        entry->id,
-                                        entry->frame);
-
-  marker_reached_signal = g_strdup_printf ("marker-reached::%s", entry->id);
-  entry->marker_id = g_signal_connect (entry->parent,
-                                       marker_reached_signal,
-                                       G_CALLBACK (on_timeline_marker),
-                                       entry);
-
-  entry->node = g_node_append_data (node, entry);
-
-  g_free (marker_reached_signal);
+  return entry->id;
 }
 
 /**
@@ -1074,11 +1003,11 @@ clutter_score_append_at_frame (ClutterScore    *score,
  * the timeline has other timelines attached to it, those are removed
  * as well.
  *
- * Since: 0.8
+ * Since: 0.6
  */
 void
 clutter_score_remove (ClutterScore *score,
-                      const gchar  *id)
+                      guint         id)
 {
   ClutterScorePrivate *priv;
   TraverseClosure closure;
@@ -1140,11 +1069,11 @@ clutter_score_remove_all (ClutterScore *score)
  * Return value: the requested timeline, or %NULL. This function does
  *   not increase the reference count on the returned #ClutterTimeline
  *
- * Since: 0.8
+ * Since: 0.6
  */
 ClutterTimeline *
 clutter_score_get_timeline (ClutterScore *score,
-                            const gchar  *id)
+                            guint         id)
 {
   GNode *node;
   ClutterScoreEntry *entry;

@@ -1,5 +1,9 @@
 2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-section.txt: Update after API change in ClutterScore.
+
+2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-section.txt: Add new score API.
 
 2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>

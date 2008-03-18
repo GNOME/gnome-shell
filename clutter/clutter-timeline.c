@@ -1650,3 +1650,25 @@ clutter_timeline_remove_marker (ClutterTimeline *timeline,
   /* this will take care of freeing the marker as well */
   g_hash_table_remove (priv->markers_by_name, marker_name);
 }
+
+/**
+ * clutter_timeline_has_marker:
+ * @timeline: a #ClutterTimeline
+ * @marker_name: the name of the marker
+ *
+ * Checks whether @timeline has a marker set with the given name.
+ *
+ * Return value: %TRUE if the marker was found
+ *
+ * Since: 0.8
+ */
+gboolean
+clutter_timeline_has_marker (ClutterTimeline *timeline,
+                             const gchar     *marker_name)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
+  g_return_val_if_fail (marker_name != NULL, FALSE);
+
+  return NULL != g_hash_table_lookup (timeline->priv->markers_by_name,
+                                      marker_name);
+}
