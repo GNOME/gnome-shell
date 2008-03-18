@@ -1,5 +1,9 @@
 2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-texture.c: Small clean ups in the coding style.
+
+2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter.symbols: Add new symbols
 
 	* clutter/clutter-score.[ch]: Use the newly added marker API

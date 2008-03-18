@@ -1564,8 +1564,8 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
 
   /* If resized actor may need resizing but paint() will do this */
-  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
+  if (CLUTTER_ACTOR_IS_MAPPED (texture))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 
   if (copy_data != NULL)
     g_free (copy_data);
@@ -1729,9 +1729,9 @@ clutter_texture_set_pixbuf (ClutterTexture *texture,
 {
   ClutterTexturePrivate *priv;
 
-  priv = texture->priv;
-
   g_return_val_if_fail (pixbuf != NULL, FALSE);
+
+  priv = texture->priv;
 
   return clutter_texture_set_from_rgb_data (texture,
 					    gdk_pixbuf_get_pixels (pixbuf),
@@ -1755,11 +1755,7 @@ clutter_texture_set_pixbuf (ClutterTexture *texture,
 ClutterActor*
 clutter_texture_new_from_pixbuf (GdkPixbuf *pixbuf)
 {
-  ClutterTexture *texture;
-
-  texture = g_object_new (CLUTTER_TYPE_TEXTURE, "pixbuf", pixbuf, NULL);
-
-  return CLUTTER_ACTOR(texture);
+  return g_object_new (CLUTTER_TYPE_TEXTURE, "pixbuf", pixbuf, NULL);
 }
 
 /**
@@ -1789,12 +1785,14 @@ clutter_texture_get_base_size (ClutterTexture *texture,
 			       gint           *width,
 			       gint           *height)
 {
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
   /* Attempt to realize, mainly for subclasses ( such as labels )
-   * which maynot create pixbuf data and thus base size until
+   * which may not create pixbuf data and thus base size until
    * realization happens.
-  */
-  if (!CLUTTER_ACTOR_IS_REALIZED(CLUTTER_ACTOR(texture)))
-    clutter_actor_realize (CLUTTER_ACTOR(texture));
+   */
+  if (!CLUTTER_ACTOR_IS_REALIZED (texture))
+    clutter_actor_realize (CLUTTER_ACTOR (texture));
 
   if (width)
     *width = texture->priv->width;
@@ -1843,6 +1841,8 @@ clutter_texture_get_n_tiles (ClutterTexture *texture,
 			     gint           *n_x_tiles,
 			     gint           *n_y_tiles)
 {
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
   if (n_x_tiles)
     *n_x_tiles = texture->priv->n_x_tiles;
 
@@ -1871,16 +1871,21 @@ clutter_texture_get_x_tile_detail (ClutterTexture *texture,
 				   gint           *size,
 				   gint           *waste)
 {
-  g_return_if_fail(x_index < texture->priv->n_x_tiles);
+  ClutterTexturePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+  g_return_if_fail (x_index < texture->priv->n_x_tiles);
+
+  priv = texture->priv;
 
   if (pos)
-    *pos = texture->priv->x_tiles[x_index].pos;
+    *pos = priv->x_tiles[x_index].pos;
 
   if (size)
-    *size = texture->priv->x_tiles[x_index].size;
+    *size = priv->x_tiles[x_index].size;
 
   if (waste)
-    *waste = texture->priv->x_tiles[x_index].waste;
+    *waste = priv->x_tiles[x_index].waste;
 }
 
 /**
@@ -1937,7 +1942,7 @@ clutter_texture_has_generated_tiles (ClutterTexture *texture)
 {
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
 
-  return (texture->priv->tiles != NULL);
+  return texture->priv->tiles != NULL;
 }
 
 /**
@@ -2308,12 +2313,12 @@ on_fbo_parent_change (ClutterActor        *actor,
  *     sized large enough to contain any child tranformations.</para>
  *   </listitem>
  *   <listitem>
- *     <para>Uploading pixel data to the texture (e.g by
- *     #clutter_actor_set_pixbuf) will destroy the offscreen texture data
+ *     <para>Uploading pixel data to the texture (e.g by using
+ *     clutter_actor_set_pixbuf()) will destroy the offscreen texture data
  *     and end redirection.</para>
  *   </listitem>
  *   <listitem>
- *     <para>#clutter_texture_get_pixbuf can be used to read the offscreen
+ *     <para>clutter_texture_get_pixbuf() can be used to read the offscreen
  *     texture pixels into a pixbuf.</para>
  *   </listitem>
  * </itemizedlist>
