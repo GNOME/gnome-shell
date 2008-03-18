@@ -83,6 +83,14 @@ typedef enum _MetaCompWindowType
   META_COMP_WINDOW_DOCK
 } MetaCompWindowType;
 
+typedef enum _MetaShadowType
+{
+  META_SHADOW_SMALL,
+  META_SHADOW_MEDIUM,
+  META_SHADOW_LARGE,
+  LAST_SHADOW_TYPE
+} MetaShadowType;
+
 struct _MetaCompositor 
 {
   MetaDisplay *display;
@@ -106,18 +114,25 @@ typedef struct _conv
   double *data;
 } conv;
 
+typedef struct _shadow 
+{
+  conv *gaussian_map;
+  guchar *shadow_corner;
+  guchar *shadow_top;
+} shadow;
+ 
 typedef struct _MetaCompScreen 
 {
   MetaScreen *screen;
   GList *windows;
   GHashTable *windows_by_xid;
 
+  MetaWindow *focus_window;
+
   Window output;
 
   gboolean have_shadows;
-  conv *gaussian_map;
-  guchar *shadow_corner;
-  guchar *shadow_top;
+  shadow *shadows[LAST_SHADOW_TYPE];
 
   Picture root_picture;
   Picture root_buffer;
@@ -154,13 +169,15 @@ typedef struct _MetaCompWindow
 
   gboolean damaged;
   gboolean shaped;
-  gboolean needs_shadow;
 
   MetaCompWindowType type;
 
   Damage damage;
   Picture picture;
   Picture alpha_pict;
+
+  gboolean needs_shadow;
+  MetaShadowType shadow_type;
   Picture shadow_pict;
 
   XserverRegion border_size;
@@ -185,9 +202,16 @@ typedef struct _MetaCompWindow
 #define WINDOW_SOLID 0
 #define WINDOW_ARGB 1
 
-#define SHADOW_RADIUS 6.0
-#define SHADOW_OFFSET_X (SHADOW_RADIUS * -3 / 2)
-#define SHADOW_OFFSET_Y (SHADOW_RADIUS * -5 / 4)
+#define SHADOW_SMALL_RADIUS 3.0
+#define SHADOW_MEDIUM_RADIUS 6.0
+#define SHADOW_LARGE_RADIUS 12.0
+
+#define SHADOW_SMALL_OFFSET_X (SHADOW_SMALL_RADIUS * -3 / 2)
+#define SHADOW_SMALL_OFFSET_Y (SHADOW_SMALL_RADIUS * -3 / 2)
+#define SHADOW_MEDIUM_OFFSET_X (SHADOW_MEDIUM_RADIUS * -3 / 2)
+#define SHADOW_MEDIUM_OFFSET_Y (SHADOW_MEDIUM_RADIUS * -5 / 4)
+#define SHADOW_LARGE_OFFSET_X -15
+#define SHADOW_LARGE_OFFSET_Y -15
 
 #define SHADOW_OPACITY 0.66
  
@@ -343,73 +367,93 @@ sum_gaussian (conv          *map,
 
 /* precompute shadow corners and sides to save time for large windows */
 static void
-presum_gaussian (MetaCompScreen *info)
+presum_gaussian (shadow *shad)
 {
   int centre;
   int opacity, x, y;
   int msize;
   conv *map;
 
-  map = info->gaussian_map;
+  map = shad->gaussian_map;
   msize = map->size;
   centre = map->size / 2;
 
-  if (info->shadow_corner)
-    g_free (info->shadow_corner);
-  if (info->shadow_top)
-    g_free (info->shadow_top);
+  if (shad->shadow_corner)
+    g_free (shad->shadow_corner);
+  if (shad->shadow_top)
+    g_free (shad->shadow_top);
 
-  info->shadow_corner = (guchar *)(g_malloc ((msize + 1) * (msize + 1) * 26));
-  info->shadow_top = (guchar *) (g_malloc ((msize + 1) * 26));
+  shad->shadow_corner = (guchar *)(g_malloc ((msize + 1) * (msize + 1) * 26));
+  shad->shadow_top = (guchar *) (g_malloc ((msize + 1) * 26));
   
   for (x = 0; x <= msize; x++) 
     {
       
-      info->shadow_top[25 * (msize + 1) + x] =
+      shad->shadow_top[25 * (msize + 1) + x] =
         sum_gaussian (map, 1, x - centre, centre, msize * 2, msize * 2);
       for (opacity = 0; opacity < 25; opacity++) 
         {
-          info->shadow_top[opacity * (msize + 1) + x] =
-            info->shadow_top[25 * (msize + 1) + x] * opacity / 25;
+          shad->shadow_top[opacity * (msize + 1) + x] =
+            shad->shadow_top[25 * (msize + 1) + x] * opacity / 25;
         }
       
       for (y = 0; y <= x; y++) 
         {
-          info->shadow_corner[25 * (msize + 1) * (msize + 1) 
+          shad->shadow_corner[25 * (msize + 1) * (msize + 1) 
                               + y * (msize + 1) 
                               + x]
             = sum_gaussian (map, 1, x - centre, y - centre,
                             msize * 2, msize * 2);
           
-          info->shadow_corner[25 * (msize + 1) * (msize + 1) 
+          shad->shadow_corner[25 * (msize + 1) * (msize + 1) 
                               + x * (msize + 1) + y] =
-            info->shadow_corner[25 * (msize + 1) * (msize + 1) 
+            shad->shadow_corner[25 * (msize + 1) * (msize + 1) 
                                 + y * (msize + 1) + x];
           
           for (opacity = 0; opacity < 25; opacity++) 
             {
-              info->shadow_corner[opacity * (msize + 1) * (msize + 1) 
+              shad->shadow_corner[opacity * (msize + 1) * (msize + 1) 
                                   + y * (msize + 1) + x]
-                = info->shadow_corner[opacity * (msize + 1) * (msize + 1) 
+                = shad->shadow_corner[opacity * (msize + 1) * (msize + 1) 
                                       + x * (msize + 1) + y]
-                = info->shadow_corner[25 * (msize + 1) * (msize + 1) 
+                = shad->shadow_corner[25 * (msize + 1) * (msize + 1) 
                                       + y * (msize + 1) + x] * opacity / 25;
             }
         }
     }
 }
 
+static void
+generate_shadows (MetaCompScreen *info)
+{
+  double radii[LAST_SHADOW_TYPE] = {SHADOW_SMALL_RADIUS,
+                                    SHADOW_MEDIUM_RADIUS,
+                                    SHADOW_LARGE_RADIUS};
+  int i;
+
+  for (i = 0; i < LAST_SHADOW_TYPE; i++) {
+    shadow *shad = g_new0 (shadow, 1);
+
+    shad->gaussian_map = make_gaussian_map (radii[i]);
+    presum_gaussian (shad);
+
+    info->shadows[i] = shad;
+  }
+}
+
 static XImage *
-make_shadow (MetaDisplay *display,
-             MetaScreen  *screen,
-             double       opacity,
-             int          width,
-             int          height)
+make_shadow (MetaDisplay   *display,
+             MetaScreen    *screen,
+             MetaShadowType shadow_type,
+             double         opacity,
+             int            width,
+             int            height)
 {
   MetaCompScreen *info = screen->compositor_data;
   XImage *ximage;
   guchar *data;
-  int msize = info->gaussian_map->size;
+  shadow *shad = info->shadows[shadow_type];
+  int msize = shad->gaussian_map->size;
   int ylimit, xlimit;
   int swidth = width + msize;
   int sheight = height + msize;
@@ -439,9 +483,9 @@ make_shadow (MetaDisplay *display,
    * centre (fill the complete data array
    */
   if (msize > 0)
-    d = info->shadow_top[opacity_int * (msize + 1) + msize];
+    d = shad->shadow_top[opacity_int * (msize + 1) + msize];
   else
-    d = sum_gaussian (info->gaussian_map, opacity, centre, 
+    d = sum_gaussian (shad->gaussian_map, opacity, centre, 
                       centre, width, height);
   memset (data, d, sheight * swidth);
 
@@ -462,9 +506,9 @@ make_shadow (MetaDisplay *display,
         {
           
           if (xlimit == msize && ylimit == msize)
-            d = info->shadow_corner[opacity_int * (msize + 1) * (msize + 1) + y * (msize + 1) + x]; 
+            d = shad->shadow_corner[opacity_int * (msize + 1) * (msize + 1) + y * (msize + 1) + x]; 
           else
-            d = sum_gaussian (info->gaussian_map, opacity, x - centre, 
+            d = sum_gaussian (shad->gaussian_map, opacity, x - centre, 
                               y - centre, width, height);
           
           data[y * swidth + x] = d;
@@ -481,9 +525,9 @@ make_shadow (MetaDisplay *display,
       for (y = 0; y < ylimit; y++) 
         {
           if (ylimit == msize)
-            d = info->shadow_top[opacity_int * (msize + 1) + y];
+            d = shad->shadow_top[opacity_int * (msize + 1) + y];
           else
-            d = sum_gaussian (info->gaussian_map, opacity, centre, 
+            d = sum_gaussian (shad->gaussian_map, opacity, centre, 
                               y - centre, width, height);
 
           memset (&data[y * swidth + msize], d, x_diff);
@@ -497,10 +541,10 @@ make_shadow (MetaDisplay *display,
   for (x = 0; x < xlimit; x++) 
     {
       if (xlimit == msize)
-        d = info->shadow_top[opacity_int * (msize + 1) + x];
+        d = shad->shadow_top[opacity_int * (msize + 1) + x];
       else
-        d = sum_gaussian (info->gaussian_map, opacity, x - centre, 
-                        centre, width, height);
+        d = sum_gaussian (shad->gaussian_map, opacity, x - centre, 
+                          centre, width, height);
     
       for (y = msize; y < sheight - msize; y++) 
         {
@@ -513,21 +557,23 @@ make_shadow (MetaDisplay *display,
 }
 
 static Picture
-shadow_picture (MetaDisplay *display,
-                MetaScreen  *screen,
-                double       opacity,
-                Picture      alpha_pict,
-                int          width,
-                int          height,
-                int         *wp,
-                int         *hp)
+shadow_picture (MetaDisplay   *display,
+                MetaScreen    *screen,
+                MetaShadowType shadow_type,
+                double         opacity,
+                Picture        alpha_pict,
+                int            width,
+                int            height,
+                int           *wp,
+                int           *hp)
 {
   XImage *shadow_image;
   Pixmap shadow_pixmap;
   Picture shadow_picture;
   GC gc;
 
-  shadow_image = make_shadow (display, screen, opacity, width, height);
+  shadow_image = make_shadow (display, screen, shadow_type,
+                              opacity, width, height);
   if (!shadow_image)
     return None;
 
@@ -777,13 +823,9 @@ window_has_shadow (MetaCompWindow *cw)
   if (((MetaCompScreen *)cw->screen->compositor_data)->have_shadows == FALSE) 
     return FALSE;
 
-  /* Never put a shadow around shaped windows */
-  if (cw->shaped) {
-    meta_verbose ("Window has no shadow as it is shaped\n");
-    return FALSE;
-  }
-
-  /* Always put a shadow around windows with a frame */
+  /* Always put a shadow around windows with a frame - This should override
+     the restriction about not putting a shadow around shaped windows
+     as the frame might be the reason the window is shaped */
   if (cw->window) 
     {
       if (cw->window->frame) {
@@ -791,6 +833,12 @@ window_has_shadow (MetaCompWindow *cw)
         return TRUE;
       }
     }
+
+  /* Never put a shadow around shaped windows */
+  if (cw->shaped) {
+    meta_verbose ("Window has no shadow as it is shaped\n");
+    return FALSE;
+  }
 
   /* Don't put shadow around DND icon windows */
   if (cw->type == META_COMP_WINDOW_DND ||
@@ -808,6 +856,12 @@ window_has_shadow (MetaCompWindow *cw)
   return FALSE;
 }
 
+double shadow_offsets_x[LAST_SHADOW_TYPE] = {SHADOW_SMALL_OFFSET_X,
+                                             SHADOW_MEDIUM_OFFSET_X,
+                                             SHADOW_LARGE_OFFSET_X};
+double shadow_offsets_y[LAST_SHADOW_TYPE] = {SHADOW_SMALL_OFFSET_Y,
+                                             SHADOW_MEDIUM_OFFSET_Y,
+                                             SHADOW_LARGE_OFFSET_Y};
 static XserverRegion
 win_extents (MetaCompWindow *cw)
 {
@@ -829,8 +883,8 @@ win_extents (MetaCompWindow *cw)
     {
       XRectangle sr;
 
-      cw->shadow_dx = SHADOW_OFFSET_X;
-      cw->shadow_dy = SHADOW_OFFSET_Y;
+      cw->shadow_dx = shadow_offsets_x [cw->shadow_type];
+      cw->shadow_dy = shadow_offsets_y [cw->shadow_type];
 
       if (!cw->shadow) 
         {
@@ -838,7 +892,8 @@ win_extents (MetaCompWindow *cw)
           if (cw->opacity != (guint) OPAQUE)
             opacity = opacity * ((double) cw->opacity) / ((double) OPAQUE);
           
-          cw->shadow = shadow_picture (display, screen, opacity, cw->alpha_pict,
+          cw->shadow = shadow_picture (display, screen, cw->shadow_type, 
+                                       opacity, cw->alpha_pict,
                                        cw->attrs.width + cw->attrs.border_width * 2,
                                        cw->attrs.height + cw->attrs.border_width * 2,
                                        &cw->shadow_width, &cw->shadow_height);
@@ -1692,6 +1747,12 @@ add_win (MetaScreen *screen,
   cw->shadow_dy = 0;
   cw->shadow_width = 0;
   cw->shadow_height = 0;
+
+  if (window && window->has_focus)
+    cw->shadow_type = META_SHADOW_LARGE;
+  else
+    cw->shadow_type = META_SHADOW_MEDIUM;
+
   cw->opacity = OPAQUE;
   
   cw->border_clip = None;
@@ -2437,13 +2498,20 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   info->windows = NULL;
   info->windows_by_xid = g_hash_table_new (g_direct_hash, g_direct_equal);
 
+  info->focus_window = display->focus_window;
+
   info->compositor_active = TRUE;
   info->overlays = 0;
   info->clip_changed = TRUE;
 
   info->have_shadows = (g_getenv("META_DEBUG_NO_SHADOW") == NULL);
-  info->gaussian_map = make_gaussian_map (SHADOW_RADIUS);
-  presum_gaussian (info);
+  if (info->have_shadows)
+    {
+      meta_verbose ("Enabling shadows\n");
+      generate_shadows (info);
+    }
+  else
+    meta_verbose ("Disabling shadows\n");
 
   XClearArea (display->xdisplay, info->output, 0, 0, 0, 0, TRUE);
 
@@ -2484,7 +2552,13 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
   if (info->black_picture)
     XRenderFreePicture (display->xdisplay, info->black_picture);
 
-  g_free (info->gaussian_map);
+  if (info->have_shadows) 
+    {
+      int i;
+      
+      for (i = 0; i < LAST_SHADOW_TYPE; i++)
+        g_free (info->shadows[i]->gaussian_map);
+    }
 
   XCompositeUnredirectSubwindows (display->xdisplay, screen->xroot,
                                   CompositeRedirectManual);
@@ -2637,13 +2711,9 @@ meta_compositor_get_window_pixmap (MetaCompositor *compositor,
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaCompWindow *cw = NULL;
 
-  if (window->frame)
-    {
-      cw = find_window_for_screen (window->screen, window->frame->xwindow);
-      if (cw == NULL)
-        cw = find_window_for_screen (window->screen, window->xwindow);
-    }
-
+  cw = find_window_for_screen (window->screen,
+                               window->frame ? window->frame->xwindow : 
+                               window->xwindow);
   if (cw == NULL)
     return None;
 
@@ -2658,5 +2728,117 @@ meta_compositor_get_window_pixmap (MetaCompositor *compositor,
   else
 #endif
     return None;
+#endif
+}
+
+void
+meta_compositor_set_active_window (MetaCompositor *compositor,
+                                   MetaWindow     *window)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaDisplay *display = compositor->display;
+  Display *xdisplay = display->xdisplay;
+  MetaScreen *screen = window->screen;
+  MetaCompWindow *old_focus = NULL, *new_focus = NULL;
+  MetaCompScreen *info = screen->compositor_data;
+  MetaWindow *old_focus_win = info->focus_window;
+
+  if (old_focus_win) 
+    {
+      old_focus = find_window_for_screen (screen, 
+                                          old_focus_win->frame ? old_focus_win->frame->xwindow :
+                                          old_focus_win->xwindow);
+    }
+  new_focus = find_window_for_screen (screen,
+                                      window->frame ? window->frame->xwindow :
+                                      window->xwindow);
+
+  info->focus_window = window;
+  if (old_focus)
+    {
+      XserverRegion damage;
+
+      /* Tear down old shadows */
+      old_focus->shadow_type = META_SHADOW_MEDIUM;
+      determine_mode (display, screen, old_focus);
+      old_focus->needs_shadow = window_has_shadow (old_focus);
+
+      if (old_focus->attrs.map_state == IsViewable)
+        {
+          if (old_focus->shadow)
+            {
+              XRenderFreePicture (xdisplay, old_focus->shadow);
+              old_focus->shadow = None;
+            }
+          
+          if (old_focus->extents)
+            {
+              damage = XFixesCreateRegion (xdisplay, NULL, 0);
+              XFixesCopyRegion (xdisplay, damage, old_focus->extents);
+              XFixesDestroyRegion (xdisplay, old_focus->extents);
+            }
+          else
+            damage = None;
+          
+          /* Build new extents */
+          old_focus->extents = win_extents (old_focus);
+          
+          if (damage) 
+            XFixesUnionRegion (xdisplay, damage, damage, old_focus->extents);      
+          else
+            {
+              damage = XFixesCreateRegion (xdisplay, NULL, 0);
+              XFixesCopyRegion (xdisplay, damage, old_focus->extents);
+            }
+          
+          dump_xserver_region ("resize_win", display, damage);
+          add_damage (screen, damage);
+          
+          info->clip_changed = TRUE;
+        }
+    }
+
+  if (new_focus)
+    {
+      XserverRegion damage;
+
+      new_focus->shadow_type = META_SHADOW_LARGE;
+      determine_mode (display, screen, new_focus);
+      new_focus->needs_shadow = window_has_shadow (new_focus);
+      
+      if (new_focus->shadow)
+        {
+          XRenderFreePicture (xdisplay, new_focus->shadow);
+          new_focus->shadow = None;
+        }
+      
+      if (new_focus->extents)
+        {
+          damage = XFixesCreateRegion (xdisplay, NULL, 0);
+          XFixesCopyRegion (xdisplay, damage, new_focus->extents);
+          XFixesDestroyRegion (xdisplay, new_focus->extents);
+        }
+      else
+        damage = None;
+      
+      /* Build new extents */
+      new_focus->extents = win_extents (new_focus);
+      
+      if (damage) 
+        XFixesUnionRegion (xdisplay, damage, damage, new_focus->extents);      
+      else
+        {
+          damage = XFixesCreateRegion (xdisplay, NULL, 0);
+          XFixesCopyRegion (xdisplay, damage, new_focus->extents);
+        }
+      
+      dump_xserver_region ("resize_win", display, damage);
+      add_damage (screen, damage);
+
+      info->clip_changed = TRUE;
+    }
+#ifdef USE_IDLE_REPAINT
+  add_repair (display);
+#endif
 #endif
 }

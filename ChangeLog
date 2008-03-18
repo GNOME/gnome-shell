@@ -1,3 +1,15 @@
+2008-03-18  Iain Holmes  <iain@gnome.org>
+
+	* src/core/compositor.c (window_has_shadow): Allow shaped windows 
+	_with frames_ to have shadows.
+	(meta_compositor_set_active_window): Watch for the focus of windows
+	and change the size of the drop shadows.
+	(generate_shadows): Create differently sized shadows.
+	(meta_compositor_get_window_pixmap): Get the xwindow correctly.
+
+	* src/core/window.c (meta_window_notify_focus): Set the active window
+	in the compositor.
+
 2008-03-18  Marco Pesenti Gritti  <mpgritti@gmail.com>
 
         * src/core/window.c (window_would_be_covered): newly created windows

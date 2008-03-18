@@ -64,5 +64,7 @@ void meta_compositor_free_window (MetaCompositor *compositor,
 				  MetaWindow *window);
 Pixmap meta_compositor_get_window_pixmap (MetaCompositor *compositor,
                                           MetaWindow     *window);
+void meta_compositor_set_active_window (MetaCompositor *compositor,
+                                        MetaWindow     *window);
 
 #endif /* META_COMPOSITOR_H */
