@@ -1286,6 +1286,8 @@ clutter_score_get_loop
 
 <SUBSECTION>
 clutter_score_append
+clutter_score_append_at_frame
+clutter_score_append_at_time
 clutter_score_remove
 clutter_score_remove_all
 clutter_score_get_timeline
