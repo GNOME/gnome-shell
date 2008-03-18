@@ -2471,7 +2471,7 @@ msgstr "_Címsor mozgatása a képernyőn"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:87 ../src/ui/menu.c:89
 msgid "Always on _Top"
-msgstr "Mindig l_egfelül"
+msgstr "Mindig _felül"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:91
