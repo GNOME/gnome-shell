@@ -26,14 +26,12 @@
 #ifndef _HAVE_CLUTTER_TIMELINE_H
 #define _HAVE_CLUTTER_TIMELINE_H
 
-/* clutter-timeline.h */
-
 #include <glib-object.h>
 #include <clutter/clutter-fixed.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_TIMELINE clutter_timeline_get_type()
+#define CLUTTER_TYPE_TIMELINE (clutter_timeline_get_type ())
 
 #define CLUTTER_TIMELINE(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
@@ -86,12 +84,16 @@ struct _ClutterTimelineClass
   GObjectClass parent_class;
   
   /*< public >*/
-  void (*started)   (ClutterTimeline *timeline);
-  void (*completed) (ClutterTimeline *timeline);
-  void (*paused)    (ClutterTimeline *timeline);
+  void (*started)        (ClutterTimeline *timeline);
+  void (*completed)      (ClutterTimeline *timeline);
+  void (*paused)         (ClutterTimeline *timeline);
   
-  void (*new_frame) (ClutterTimeline *timeline,
-		     gint             frame_num);
+  void (*new_frame)      (ClutterTimeline *timeline,
+		          gint             frame_num);
+
+  void (*marker_reached) (ClutterTimeline *timeline,
+                          const gchar     *marker_name,
+                          gint             frame_num);
 
   /*< private >*/
   void (*_clutter_timeline_1) (void);
@@ -99,7 +101,7 @@ struct _ClutterTimelineClass
   void (*_clutter_timeline_3) (void);
   void (*_clutter_timeline_4) (void);
   void (*_clutter_timeline_5) (void);
-}; 
+};
 
 GType clutter_timeline_get_type (void) G_GNUC_CONST;
 
@@ -141,6 +143,20 @@ guint            clutter_timeline_get_delay             (ClutterTimeline *timeli
 guint            clutter_timeline_get_delta             (ClutterTimeline *timeline,
                                                          guint           *msecs);
 
+void             clutter_timeline_add_marker_at_frame   (ClutterTimeline *timeline,
+                                                         const gchar     *marker_name,
+                                                         guint            frame_num);
+void             clutter_timeline_add_marker_at_time    (ClutterTimeline *timeline,
+                                                         const gchar     *marker_name,
+                                                         guint            msecs);
+void             clutter_timeline_remove_marker         (ClutterTimeline *timeline,
+                                                         const gchar     *marker_name);
+gchar **         clutter_timeline_list_markers          (ClutterTimeline *timeline,
+                                                         gint             frame_num,
+                                                         guint           *n_markers) G_GNUC_MALLOC;
+void             clutter_timeline_advance_to_marker     (ClutterTimeline *timeline,
+                                                         const gchar     *marker_name);
+
 G_END_DECLS
 
-#endif
+#endif /* _HAVE_CLUTTER_TIMELINE_H */

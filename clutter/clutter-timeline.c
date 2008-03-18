@@ -76,8 +76,17 @@ struct _ClutterTimelinePrivate
   GTimeVal prev_frame_timeval;
   guint  msecs_delta;
 
+  GHashTable *markers_by_frame;
+  GHashTable *markers_by_name;
+
   guint loop : 1;
 };
+
+typedef struct {
+  gchar *name;
+  guint frame_num;
+  GQuark quark;
+} TimelineMarker;
 
 enum
 {
@@ -97,6 +106,7 @@ enum
   STARTED,
   PAUSED,
   COMPLETED,
+  MARKER_REACHED,
 
   LAST_SIGNAL
 };
@@ -163,6 +173,31 @@ timeout_remove (guint tag)
     g_source_remove (tag);
 }
 
+static TimelineMarker *
+timeline_marker_new (const gchar *name,
+                     guint        frame_num)
+{
+  TimelineMarker *marker = g_slice_new0 (TimelineMarker);
+
+  marker->name = g_strdup (name);
+  marker->quark = g_quark_from_string (marker->name);
+  marker->frame_num = frame_num;
+
+  return marker;
+}
+
+static void
+timeline_marker_free (gpointer data)
+{
+  if (G_LIKELY (data))
+    {
+      TimelineMarker *marker = data;
+
+      g_free (marker->name);
+      g_slice_free (TimelineMarker, marker);
+    }
+}
+
 /* Object */
 
 static void
@@ -200,7 +235,7 @@ clutter_timeline_set_property (GObject      *object,
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
-  }
+    }
 }
 
 static void
@@ -244,6 +279,11 @@ clutter_timeline_get_property (GObject    *object,
 static void
 clutter_timeline_finalize (GObject *object)
 {
+  ClutterTimelinePrivate *priv = CLUTTER_TIMELINE (object)->priv;
+
+  g_hash_table_destroy (priv->markers_by_frame);
+  g_hash_table_destroy (priv->markers_by_name);
+
   G_OBJECT_CLASS (clutter_timeline_parent_class)->finalize (object);
 }
 
@@ -436,18 +476,66 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  /**
+   * ClutterTimeline::marker-reached:
+   * @timeline: the #ClutterTimeline which received the signal
+   * @marker_name: the name of the marker reached
+   * @frame_num: the frame number
+   *
+   * The ::marker-reached signal is emitted each time a timeline
+   * reaches a marker set with clutter_timeline_add_marker_at_frame()
+   * or clutter_timeline_add_marker_at_time(). This signal is
+   * detailed with the name of the marker as well, so it is
+   * possible to connect a callback to the ::marker-reached signal
+   * for a specific marker with:
+   *
+   * <informalexample><programlisting>
+   *   clutter_timeline_add_marker_at_frame (timeline, "foo", 24);
+   *   clutter_timeline_add_marker_at_frame (timeline, "bar", 48);
+   *
+   *   g_signal_connect (timeline, "marker-reached",
+   *                     G_CALLBACK (each_marker_reached), NULL);
+   *   g_signal_connect (timeline, "marker-reached::foo",
+   *                     G_CALLBACK (foo_marker_reached), NULL);
+   *   g_signal_connect (timeline, "marker-reached::bar",
+   *                     G_CALLBACK (bar_marker_reached), NULL);
+   * </programlisting></informalexample>
+   *
+   * In the example, the first callback will be invoked for both
+   * the "foo" and "bar" marker, while the second and third callbacks
+   * will be invoked for the "foo" or "bar" markers, respectively.
+   *
+   * Since: 0.8
+   */
+  timeline_signals[MARKER_REACHED] =
+    g_signal_new ("marker-reached",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
+                  G_STRUCT_OFFSET (ClutterTimelineClass, marker_reached),
+                  NULL, NULL,
+                  clutter_marshal_VOID__STRING_UINT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_STRING,
+                  G_TYPE_UINT);
 }
 
 static void
 clutter_timeline_init (ClutterTimeline *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-					    CLUTTER_TYPE_TIMELINE,
-					    ClutterTimelinePrivate);
+  ClutterTimelinePrivate *priv;
 
-  self->priv->fps = clutter_get_default_frame_rate ();
-  self->priv->n_frames = 0;
-  self->priv->msecs_delta = 0;
+  self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+                                                   CLUTTER_TYPE_TIMELINE,
+                                                   ClutterTimelinePrivate);
+
+  priv->fps = clutter_get_default_frame_rate ();
+  priv->n_frames = 0;
+  priv->msecs_delta = 0;
+
+  priv->markers_by_frame = g_hash_table_new (NULL, NULL);
+  priv->markers_by_name = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                 NULL,
+                                                 timeline_marker_free);
 }
 
 static gboolean
@@ -481,21 +569,19 @@ timeline_timeout_func (gpointer data)
   /* Interpolate the current frame based on the timeval of the
    * previous frame */
   msecs = (timeval.tv_sec - priv->prev_frame_timeval.tv_sec) * 1000;
-  msecs += (timeval.tv_usec - priv->prev_frame_timeval.tv_usec)/1000;
+  msecs += (timeval.tv_usec - priv->prev_frame_timeval.tv_usec) / 1000;
   priv->msecs_delta = msecs;
   n_frames = msecs / (1000 / priv->fps);
   if (n_frames == 0)
-      n_frames = 1;
+    n_frames = 1;
 
   priv->skipped_frames = n_frames - 1;
 
   if (priv->skipped_frames)
-    {
-      CLUTTER_TIMESTAMP (SCHEDULER,
-                         "Timeline [%p], skipping %d frames\n",
-                         timeline,
-                         priv->skipped_frames);
-    }
+    CLUTTER_TIMESTAMP (SCHEDULER,
+                       "Timeline [%p], skipping %d frames\n",
+                       timeline,
+                       priv->skipped_frames);
 
   priv->prev_frame_timeval = timeval;
 
@@ -513,10 +599,32 @@ timeline_timeout_func (gpointer data)
        (priv->current_frame_num <= 0))
        ))
     {
+      gint i;
+
       /* Fire off signal */
-      g_signal_emit (timeline, timeline_signals[NEW_FRAME], 
-                     0, priv->current_frame_num);
-      
+      g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
+                     priv->current_frame_num);
+
+      for (i = priv->skipped_frames; i >= 0; i--)
+        {
+          gint frame_num = priv->current_frame_num - i;
+          GSList *markers, *l;
+          
+          markers = g_hash_table_lookup (priv->markers_by_frame,
+                                         GUINT_TO_POINTER (frame_num));
+          for (l = markers; l; l = l->next)
+            {
+              TimelineMarker *marker = l->data;
+
+              CLUTTER_NOTE (SCHEDULER, "Marker `%s' reached", marker->name);
+
+              g_signal_emit (timeline, timeline_signals[MARKER_REACHED],
+                             marker->quark,
+                             marker->name,
+                             marker->frame_num);
+            }
+        }
+
       /* Signal pauses timeline ? */
       if (!priv->timeout_id)
         {
@@ -527,26 +635,24 @@ timeline_timeout_func (gpointer data)
       g_object_unref (timeline);
       return TRUE;
     }
-  else /* Handle loop or stop */
+  else
     {
+      /* Handle loop or stop */
       ClutterTimelineDirection saved_direction = priv->direction;
       guint overflow_frame_num = priv->current_frame_num;
       gint end_frame;
   
       /* In case the signal handlers want to take a peek... */
       if (priv->direction == CLUTTER_TIMELINE_FORWARD)
-        {
-          priv->current_frame_num = priv->n_frames;
-        }
+        priv->current_frame_num = priv->n_frames;
       else if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
-        {
-          priv->current_frame_num = 0;
-        }
+        priv->current_frame_num = 0;
+
       end_frame = priv->current_frame_num;
 
       /* Fire off signal */
-      g_signal_emit (timeline, timeline_signals[NEW_FRAME], 
-                     0, priv->current_frame_num);
+      g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
+                     priv->current_frame_num);
 
       /* Did the signal handler modify the current_frame_num */
       if (priv->current_frame_num != end_frame)
@@ -558,7 +664,6 @@ timeline_timeout_func (gpointer data)
       /* Note: If the new-frame signal handler paused the timeline
        * on the last frame we will still go ahead and send the
        * completed signal */
-
       CLUTTER_NOTE (SCHEDULER,
                     "Timeline [%p] completed (cur: %d, tot: %d, drop: %d)",
                     timeline,
@@ -577,6 +682,7 @@ timeline_timeout_func (gpointer data)
           timeout_remove (priv->timeout_id);
           priv->timeout_id = 0;
         }
+
       g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
 
       /* Again check to see if the user has manually played with
@@ -603,8 +709,10 @@ timeline_timeout_func (gpointer data)
 
           /* Or if the direction changed, we try and bounce */
           if (priv->direction != saved_direction)
-            priv->current_frame_num =
-              priv->n_frames - priv->current_frame_num;
+            {
+              priv->current_frame_num = priv->n_frames
+                                        - priv->current_frame_num;
+            }
 
           g_object_unref (timeline);
           return TRUE;
@@ -612,8 +720,10 @@ timeline_timeout_func (gpointer data)
       else
         {
           clutter_timeline_rewind (timeline);
+
           priv->prev_frame_timeval.tv_sec = 0;
           priv->prev_frame_timeval.tv_usec = 0;
+
           g_object_unref (timeline);
           return FALSE;
         }
@@ -1296,4 +1406,247 @@ clutter_timeline_get_delta (ClutterTimeline *timeline,
     *msecs = timeline->priv->msecs_delta;
 
   return priv->skipped_frames + 1;
+}
+
+static inline void
+clutter_timeline_add_marker_internal (ClutterTimeline *timeline,
+                                      const gchar     *marker_name,
+                                      guint            frame_num)
+{
+  ClutterTimelinePrivate *priv = timeline->priv;
+  TimelineMarker *marker;
+  GSList *markers;
+
+  marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
+  if (G_UNLIKELY (marker))
+    {
+      g_warning ("A marker named `%s' already exists on frame %d",
+                 marker->name,
+                 marker->frame_num);
+      return;
+    }
+
+  marker = timeline_marker_new (marker_name, frame_num);
+  g_hash_table_insert (priv->markers_by_name, marker->name, marker);
+
+  markers = g_hash_table_lookup (priv->markers_by_frame,
+                                 GUINT_TO_POINTER (frame_num));
+  if (!markers)
+    {
+      markers = g_slist_prepend (NULL, marker);
+      g_hash_table_insert (priv->markers_by_frame,
+                           GUINT_TO_POINTER (frame_num),
+                           markers);
+    }
+  else
+    {
+      markers = g_slist_prepend (markers, marker);
+      g_hash_table_replace (priv->markers_by_frame,
+                            GUINT_TO_POINTER (frame_num),
+                            markers);
+    }
+}
+
+/**
+ * clutter_timeline_add_marker_at_frame:
+ * @timeline: a #ClutterTimeline
+ * @marker_name: the unique name for this marker
+ * @frame_num: the marker's frame
+ *
+ * Adds a named marker at @frame_num. Markers are unique string identifiers
+ * for a specific frame. Once @timeline reaches @frame_num, it will emit
+ * a ::marker-reached signal for each marker attached to that frame.
+ *
+ * A marker can be removed with clutter_timeline_remove_marker(). The
+ * timeline can be advanced to a marker using
+ * clutter_timeline_advance_to_marker().
+ *
+ * Since: 0.8
+ */
+void
+clutter_timeline_add_marker_at_frame (ClutterTimeline *timeline,
+                                      const gchar     *marker_name,
+                                      guint            frame_num)
+{
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (marker_name != NULL);
+  g_return_if_fail (frame_num <= clutter_timeline_get_n_frames (timeline));
+
+  clutter_timeline_add_marker_internal (timeline, marker_name, frame_num);
+}
+
+/**
+ * clutter_timeline_add_marker_at_time:
+ * @timeline: a #ClutterTimeline
+ * @marker_name: the unique name for this marker
+ * @msecs: position of the marker in milliseconds
+ *
+ * Time-based variant of clutter_timeline_add_marker_at_frame().
+ *
+ * Adds a named marker at @msecs.
+ *
+ * Since: 0.8
+ */
+void
+clutter_timeline_add_marker_at_time (ClutterTimeline *timeline,
+                                     const gchar     *marker_name,
+                                     guint            msecs)
+{
+  guint frame_num;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (marker_name != NULL);
+  g_return_if_fail (msecs <= clutter_timeline_get_duration (timeline));
+
+  frame_num = msecs * timeline->priv->fps / 1000;
+
+  clutter_timeline_add_marker_internal (timeline, marker_name, frame_num);
+}
+
+/**
+ * clutter_timeline_list_markers:
+ * @timeline: a #ClutterTimeline
+ * @frame_num: the frame number to check, or -1
+ * @n_markers: the number of markers returned
+ *
+ * Retrieves the list of markers at @frame_num. If @frame_num is a
+ * negative integer, all the markers attached to @timeline will be
+ * returned.
+ *
+ * Return value: a newly allocated, %NULL terminated string array
+ *   containing the names of the markers. Use g_strfreev() when
+ *   done.
+ *
+ * Since: 0.8
+ */
+gchar **
+clutter_timeline_list_markers (ClutterTimeline *timeline,
+                               gint             frame_num,
+                               guint           *n_markers)
+{
+  ClutterTimelinePrivate *priv;
+  gchar **retval = NULL;
+  gint i;
+
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
+
+  priv = timeline->priv;
+
+  if (frame_num < 0)
+    {
+      GList *markers, *l;
+
+      markers = g_hash_table_get_keys (priv->markers_by_name);
+      retval = g_new0 (gchar*, g_list_length (markers) + 1);
+
+      for (i = 0, l = markers; l != NULL; i++, l = l->next)
+        retval[i] = g_strdup (l->data);
+
+      g_list_free (markers);
+    }
+  else
+    {
+      GSList *markers, *l;
+
+      markers = g_hash_table_lookup (priv->markers_by_frame,
+                                     GUINT_TO_POINTER (frame_num));
+      retval = g_new0 (gchar*, g_slist_length (markers) + 1);
+
+      for (i = 0, l = markers; l != NULL; i++, l = l->next)
+        retval[i] = g_strdup (l->data);
+    }
+
+  if (n_markers)
+    *n_markers = i;
+
+  return retval;
+}
+
+/**
+ * clutter_timeline_advance_to_marker:
+ * @timeline: a #ClutterTimeline
+ * @marker_name: the name of the marker
+ *
+ * Advances @timeline to the frame of the given @marker_name.
+ *
+ * Since: 0.8
+ */
+void
+clutter_timeline_advance_to_marker (ClutterTimeline *timeline,
+                                    const gchar     *marker_name)
+{
+  ClutterTimelinePrivate *priv;
+  TimelineMarker *marker;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (marker_name != NULL);
+
+  priv = timeline->priv;
+
+  marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
+  if (!marker)
+    {
+      g_warning ("No marker named `%s' found.", marker_name);
+      return;
+    }
+
+  clutter_timeline_advance (timeline, marker->frame_num);
+}
+
+/**
+ * clutter_timeline_remove_marker:
+ * @timeline: a #ClutterTimeline
+ * @marker_name: the name of the marker to remove
+ *
+ * Removes @marker_name, if found, from @timeline.
+ *
+ * Since: 0.8
+ */
+void
+clutter_timeline_remove_marker (ClutterTimeline *timeline,
+                                const gchar     *marker_name)
+{
+  ClutterTimelinePrivate *priv;
+  TimelineMarker *marker;
+  GSList *markers;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (marker_name != NULL);
+
+  priv = timeline->priv;
+
+  marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
+  if (!marker)
+    {
+      g_warning ("No marker named `%s' found.", marker_name);
+      return;
+    }
+
+  /* remove from the list of markers at the same frame */
+  markers = g_hash_table_lookup (priv->markers_by_frame,
+                                 GUINT_TO_POINTER (marker->frame_num));
+  if (G_LIKELY (markers))
+    {
+      markers = g_slist_remove (markers, marker);
+      if (!markers)
+        {
+          /* no markers left, remove the slot */
+          g_hash_table_remove (priv->markers_by_frame,
+                               GUINT_TO_POINTER (marker->frame_num));
+        }
+      else
+        g_hash_table_replace (priv->markers_by_frame,
+                              GUINT_TO_POINTER (marker->frame_num),
+                              markers);
+    }
+  else
+    {
+      /* uh-oh, dangling marker; this should never happen */
+      g_warning ("Dangling marker %s at frame %d",
+                 marker->name,
+                 marker->frame_num);
+    }
+
+  /* this will take care of freeing the marker as well */
+  g_hash_table_remove (priv->markers_by_name, marker_name);
 }

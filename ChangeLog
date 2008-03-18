@@ -1,3 +1,19 @@
+2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-marshal.list: Add signature for the
+	::marker-reached signal marshaller.
+
+	* clutter/clutter-timeline.[ch]: Add timeline marker API;
+	using markers it is possible to add a unique identifier to
+	a particular frame of the timeline, and receive a signal
+	notification when reaching that particular marker while
+	playing the timeline. (#641)
+
+	* tests/test-timeline.c: Update the test case to check for
+	the marker-reached signal emission.
+
+	* clutter.symbols: Add new symbols.
+
 2008-03-10  Øyvind Kolås  <pippin@o-hand.com>
 
 	* tests/test-shader.c: improved readability of fragment shader
@@ -7,9 +23,9 @@
 2008-03-09  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-id-pool.c: (clutter_id_pool_free):
-        Use g_slice_free not g_free.
+	Use g_slice_free not g_free.
 	* clutter/clutter-main.c: (_clutter_do_pick):
-        Dont 'over read' the framebuffer when picking (#839, Neil Roberts)
+	Dont 'over read' the framebuffer when picking (#839, Neil Roberts)
 
 2008-03-07  Øyvind Kolås  <pippin@o-hand.com>
 
