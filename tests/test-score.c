@@ -42,31 +42,35 @@ main (int argc, char **argv)
   ClutterTimeline *timeline_2;
   ClutterTimeline *timeline_3;
   ClutterTimeline *timeline_4;
+  ClutterTimeline *timeline_5;
   GSList *timelines;
-  guint t1, t2, t3, t4;
 
   clutter_init (&argc, &argv);
 
-  timeline_1 = clutter_timeline_new (10, 120);
+  timeline_1 = clutter_timeline_new_for_duration (1000);
   g_object_set_data_full (G_OBJECT (timeline_1),
                           "timeline-name", g_strdup ("Timeline 1"),
                           g_free);
 
-  timeline_2 = clutter_timeline_clone (timeline_1);
+  timeline_2 = clutter_timeline_new_for_duration (1000);
   g_object_set_data_full (G_OBJECT (timeline_2),
                           "timeline-name", g_strdup ("Timeline 2"),
                           g_free);
 
-  timeline_3 = clutter_timeline_clone (timeline_1);
+  timeline_3 = clutter_timeline_new_for_duration (1000);
   g_object_set_data_full (G_OBJECT (timeline_3),
                           "timeline-name", g_strdup ("Timeline 3"),
                           g_free);
 
-  timeline_4 = clutter_timeline_clone (timeline_1);
+  timeline_4 = clutter_timeline_new_for_duration (1000);
   g_object_set_data_full (G_OBJECT (timeline_4),
                           "timeline-name", g_strdup ("Timeline 4"),
                           g_free);
 
+  timeline_5 = clutter_timeline_new_for_duration (1000);
+  g_object_set_data_full (G_OBJECT (timeline_5),
+                          "timeline-name", g_strdup ("Timeline 5"),
+                          g_free);
 
   score = clutter_score_new();
   g_signal_connect (score, "timeline-started",
@@ -79,13 +83,15 @@ main (int argc, char **argv)
                     G_CALLBACK (clutter_main_quit),
                     NULL);
 
-  t1 = clutter_score_append (score, NULL, timeline_1);
-  t2 = clutter_score_append (score, timeline_1, timeline_2);
-  t3 = clutter_score_append (score, timeline_1, timeline_3);
-  t4 = clutter_score_append (score, timeline_3, timeline_4);
+  clutter_score_append (score, "line-0", NULL,       timeline_1);
+  clutter_score_append (score, "line-1", timeline_1, timeline_2);
+  clutter_score_append (score, "line-2", timeline_1, timeline_3);
+  clutter_score_append (score, "line-3", timeline_3, timeline_4);
+
+  clutter_score_append_at_time (score, "line-4", timeline_2, 500, timeline_5);
 
   timelines = clutter_score_list_timelines (score);
-  g_assert (4 == g_slist_length (timelines));
+  g_assert (5 == g_slist_length (timelines));
   g_slist_free (timelines);
 
   clutter_score_start (score);
@@ -96,6 +102,7 @@ main (int argc, char **argv)
   g_object_unref (timeline_2);
   g_object_unref (timeline_3);
   g_object_unref (timeline_4);
+  g_object_unref (timeline_5);
   g_object_unref (score);
 
   return EXIT_SUCCESS;

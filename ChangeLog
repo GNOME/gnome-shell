@@ -1,5 +1,15 @@
 2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter.symbols: Add new symbols
+
+	* clutter/clutter-score.[ch]: Use the newly added marker API
+	on the timelines to implement attaching timelines at specific
+	points, using either milliseconds or frames.
+
+	* tests/test-score.c (main): Test the new API.
+
+2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-marshal.list: Add signature for the
 	::marker-reached signal marshaller.
 

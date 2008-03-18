@@ -442,6 +442,8 @@ clutter_redraw
 clutter_rotate_axis_get_type
 clutter_rotate_direction_get_type
 clutter_score_append
+clutter_score_append_at_frame
+clutter_score_append_at_time
 clutter_score_get_loop
 clutter_score_get_timeline
 clutter_score_get_type
