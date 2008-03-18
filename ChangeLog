@@ -1,5 +1,9 @@
 2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-score.c: Update documentation.
+
+2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-score.[ch]: Remove all the API changes, and
 	just add a clutter_score_append_at_marker(); the implementation
 	remains the same, but the marker must be explicitly created by

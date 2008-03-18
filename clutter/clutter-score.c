@@ -54,15 +54,14 @@
  *   clutter_score_start ();
  * ]|
  *
- * A #ClutterScore takes a reference on the timelines it manages.
+ * A #ClutterScore takes a reference on the timelines it manages,
+ * so timelines can be safely unreferenced after being appended.
  *
  * New timelines can be appended to the #ClutterScore using
  * clutter_score_append() and removed using clutter_score_remove().
- * Timelines can either be appended at the end of other timelines
- * or at the beginning of the score using clutter_score_append().
- * Timelines can also be appeneded at a specific position, expressed
- * in either millisecond or frame number, of the parent timeline,
- * using clutter_score_append_at_time() or clutter_score_append_at_frame().
+ *
+ * Timelines can also be appended to a specific marker, using
+ * clutter_score_append_at_marker().
  *
  * The score can be cleared using clutter_score_remove_all().
  *
