@@ -1,6 +1,11 @@
+2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-section.txt: Add timeline-marker API.
+
 2008-03-07  Øyvind Kolås  <pippin@o-hand.com>
 
-	* Makefile.am: Ignore clutter-id-pool.h to avoid picking up private symbols.
+	* Makefile.am: Ignore clutter-id-pool.h to avoid picking up
+	private symbols.
 
 2008-02-18  Emmanuele Bassi  <ebassi@openedhand.com>
 

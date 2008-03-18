@@ -559,6 +559,13 @@ clutter_timeline_get_progress
 clutter_timeline_get_progressx
 clutter_timeline_is_playing
 
+<SUBSECTION>
+clutter_timeline_add_marker_at_frame
+clutter_timeline_add_marker_at_time
+clutter_timeline_list_markers
+clutter_timeline_remove_marker
+clutter_timeline_advance_to_marker
+
 <SUBSECTION Standard>
 CLUTTER_TIMELINE
 CLUTTER_IS_TIMELINE
