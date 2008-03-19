@@ -20,7 +20,7 @@
 	just add a clutter_score_append_at_marker(); the implementation
 	remains the same, but the marker must be explicitly created by
 	the developer. The ids are no longer used to create implicit
-	markers, so they can return to be unsigned integers.
+	markers, so they can return to be unsigned integers. (#450)
 
 	* clutter/clutter-timeline.[ch]:
 	(clutter_timeline_has_marker): Add a function to query a timeline
