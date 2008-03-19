@@ -1,5 +1,15 @@
 2008-03-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-model.[ch]: Add a ::copy() virtual function
+	for copying iterators.
+
+	* clutter/clutter-list-model.c:
+	(clutter_list_model_iter_copy),
+	(clutter_list_model_iter_class_init): Implement the ::copy()
+	function inside the ListModel iterator subclass.
+
+2008-03-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-group.c:
 	* clutter/clutter-texture.c: Use CLUTTER_ACTOR_IS_VISIBLE()
 	and not CLUTTER_ACTOR_IS_MAPPED().

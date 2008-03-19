@@ -1473,6 +1473,16 @@ clutter_model_iter_prev_unimplemented (ClutterModelIter *iter)
   return NULL;
 }
 
+static ClutterModelIter *
+clutter_model_iter_copy_unimplemented (ClutterModelIter *iter)
+{
+  g_warning ("%s: Iterator of type `%s' does not implement the "
+             "ClutterModelIter::copy() virtual function",
+             G_STRLOC,
+             g_type_name (G_OBJECT_TYPE (iter)));
+  return NULL;
+}
+
 static void
 clutter_model_iter_get_property (GObject    *object,
                                  guint       prop_id,
@@ -1535,6 +1545,7 @@ clutter_model_iter_class_init (ClutterModelIterClass *klass)
   klass->prev      = clutter_model_iter_prev_unimplemented;
   klass->get_value = clutter_model_iter_get_value_unimplemented;
   klass->set_value = clutter_model_iter_set_value_unimplemented;
+  klass->copy      = clutter_model_iter_copy_unimplemented;
 
   /* Properties */
 
@@ -1988,4 +1999,28 @@ clutter_model_iter_get_row (ClutterModelIter *iter)
     return klass->get_row (iter);
 
   return 0;
+}
+
+/**
+ * clutter_model_iter_copy:
+ * @iter: a #ClutterModelIter
+ *
+ * Copies the passed iterator.
+ *
+ * Return value: a copy of the iterator, or %NULL
+ *
+ * Since: 0.8
+ */
+ClutterModelIter *
+clutter_model_iter_copy (ClutterModelIter *iter)
+{
+  ClutterModelIterClass *klass;
+
+  g_return_val_if_fail (CLUTTER_IS_MODEL_ITER (iter), NULL);
+
+  klass = CLUTTER_MODEL_ITER_GET_CLASS (iter);
+  if (klass->copy)
+    return klass->copy (iter);
+
+  return NULL;
 }

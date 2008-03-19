@@ -325,8 +325,10 @@ struct _ClutterModelIterClass
   ClutterModelIter *(* next)      (ClutterModelIter *iter);
   ClutterModelIter *(* prev)      (ClutterModelIter *iter);
 
-  ClutterModel*     (* get_model) (ClutterModelIter *iter);
+  ClutterModel *    (* get_model) (ClutterModelIter *iter);
   guint             (* get_row)   (ClutterModelIter *iter);
+
+  ClutterModelIter *(* copy)      (ClutterModelIter *iter);
 
   /*< private >*/
   /* padding for future */
@@ -361,6 +363,7 @@ ClutterModelIter *clutter_model_iter_prev       (ClutterModelIter *iter);
 ClutterModel *    clutter_model_iter_get_model  (ClutterModelIter *iter);
 guint             clutter_model_iter_get_row    (ClutterModelIter *iter);
 
+ClutterModelIter *clutter_model_iter_copy       (ClutterModelIter *iter);
 
 G_END_DECLS
 

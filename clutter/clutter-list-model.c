@@ -418,6 +418,33 @@ clutter_list_model_iter_prev (ClutterModelIter *iter)
 
   return CLUTTER_MODEL_ITER (iter_default);
 }
+
+static ClutterModelIter *
+clutter_list_model_iter_copy (ClutterModelIter *iter)
+{
+  ClutterListModelIter *iter_default;
+  ClutterListModelIter *iter_copy;
+  ClutterModel *model;
+  guint row;
+ 
+  iter_default = CLUTTER_LIST_MODEL_ITER (iter);
+
+  model = clutter_model_iter_get_model (iter);
+  row   = clutter_model_iter_get_row (iter) - 1;
+
+  iter_copy = g_object_new (CLUTTER_TYPE_LIST_MODEL_ITER,
+                            "model", model,
+                            "row", row,
+                            NULL);
+
+  /* this is safe, because the seq_iter pointer on the passed
+   * iterator will be always be overwritten in ::next or ::prev
+   */
+  iter_copy->seq_iter = iter_default->seq_iter;
+
+  return CLUTTER_MODEL_ITER (iter_copy);
+}
+
 static void
 clutter_list_model_iter_class_init (ClutterListModelIterClass *klass)
 {
@@ -429,6 +456,7 @@ clutter_list_model_iter_class_init (ClutterListModelIterClass *klass)
   iter_class->is_last   = clutter_list_model_iter_is_last;
   iter_class->next      = clutter_list_model_iter_next;
   iter_class->prev      = clutter_list_model_iter_prev;
+  iter_class->copy      = clutter_list_model_iter_copy;
 }
 
 static void
