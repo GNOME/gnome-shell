@@ -1133,12 +1133,6 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
 
   if (priv->z)
     cogl_translatex (0, 0, priv->z);
-
-  if (priv->has_clip)
-    cogl_clip_set (CLUTTER_UNITS_TO_FIXED (priv->clip[0]),
-                   CLUTTER_UNITS_TO_FIXED (priv->clip[1]),
-                   CLUTTER_UNITS_TO_FIXED (priv->clip[2]),
-                   CLUTTER_UNITS_TO_FIXED (priv->clip[3]));
 }
 
 /* Recursively applies the transforms associated with this actor and
@@ -1208,6 +1202,12 @@ clutter_actor_paint (ClutterActor *self)
   cogl_push_matrix();
 
   _clutter_actor_apply_modelview_transform (self);
+
+  if (priv->has_clip)
+    cogl_clip_set (CLUTTER_UNITS_TO_FIXED (priv->clip[0]),
+                   CLUTTER_UNITS_TO_FIXED (priv->clip[1]),
+                   CLUTTER_UNITS_TO_FIXED (priv->clip[2]),
+                   CLUTTER_UNITS_TO_FIXED (priv->clip[3]));
 
   if (G_UNLIKELY(context->pick_mode != CLUTTER_PICK_NONE))
     {

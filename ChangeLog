@@ -1,3 +1,9 @@
+2008-03-19  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(_clutter_actor_apply_modelview_transform), (clutter_actor_paint):
+	Apply clip inside paint function instead of transform function
+
 2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-score.c: Update documentation.
