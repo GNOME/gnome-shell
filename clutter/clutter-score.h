@@ -81,18 +81,18 @@ void             clutter_score_set_loop         (ClutterScore    *score,
                                                  gboolean         loop);
 gboolean         clutter_score_get_loop         (ClutterScore    *score);
 
-guint            clutter_score_append           (ClutterScore    *score,
+gulong           clutter_score_append           (ClutterScore    *score,
                                                  ClutterTimeline *parent,
                                                  ClutterTimeline *timeline);
-guint            clutter_score_append_at_marker (ClutterScore    *score,
+gulong           clutter_score_append_at_marker (ClutterScore    *score,
                                                  ClutterTimeline *parent,
                                                  const gchar     *marker_name,
                                                  ClutterTimeline *timeline);
 void             clutter_score_remove           (ClutterScore    *score,
-                                                 guint            id);
+                                                 gulong           id);
 void             clutter_score_remove_all       (ClutterScore    *score);
 ClutterTimeline *clutter_score_get_timeline     (ClutterScore    *score,
-                                                 guint            id);
+                                                 gulong           id);
 GSList *         clutter_score_list_timelines   (ClutterScore    *score);
 
 void             clutter_score_start            (ClutterScore    *score);

@@ -1,3 +1,9 @@
+2008-03-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-score.[ch]: Small clean ups and refactoring.
+	Use gulong instead of guint, so we have a bigger id space for
+	the timelines inside a Score.
+
 2008-03-19  Chris Lord  <chris@openedhand.com>
 
 	* clutter/clutter-actor.c:

@@ -47,7 +47,8 @@
  *   timeline_3 = clutter_timeline_new_for_duration (500);
  *
  *   score = clutter_score_new ();
- *   clutter_score_append (score, NULL, timeline_1);
+ *
+ *   clutter_score_append (score, NULL,       timeline_1);
  *   clutter_score_append (score, timeline_1, timeline_2);
  *   clutter_score_append (score, timeline_1, timeline_3);
  *
@@ -60,8 +61,8 @@
  * New timelines can be appended to the #ClutterScore using
  * clutter_score_append() and removed using clutter_score_remove().
  *
- * Timelines can also be appended to a specific marker, using
- * clutter_score_append_at_marker().
+ * Timelines can also be appended to a specific marker on the
+ * parent timeline, using clutter_score_append_at_marker().
  *
  * The score can be cleared using clutter_score_remove_all().
  *
@@ -90,17 +91,17 @@ typedef struct _ClutterScoreEntry       ClutterScoreEntry;
 struct _ClutterScoreEntry
 {
   /* the entry unique id */
-  guint id;
+  gulong id;
 
   ClutterTimeline *timeline;
   ClutterTimeline *parent;
 
-  /* the optional marker */
+  /* the optional marker on the parent */
   gchar *marker;
 
   /* signal handlers id */
-  guint complete_id;
-  guint marker_id;
+  gulong complete_id;
+  gulong marker_id;
 
   ClutterScore *score;
 
@@ -116,7 +117,7 @@ struct _ClutterScorePrivate
 
   GHashTable *running_timelines;
 
-  guint       last_id;
+  gulong      last_id;
 
   guint       is_paused : 1;
   guint       loop      : 1;
@@ -411,28 +412,11 @@ clutter_score_is_playing (ClutterScore *score)
   return (g_hash_table_size (score->priv->running_timelines) != 0);
 }
 
-typedef enum {
-  FIND_BY_TIMELINE,
-  FIND_BY_ID,
-  REMOVE_BY_ID,
-  LIST_TIMELINES
-} TraverseAction;
-
-typedef struct {
-  TraverseAction action;
-
-  ClutterScore *score;
-
-  /* parameters */
-  union {
-    ClutterTimeline *timeline;
-    guint id;
-    ClutterScoreEntry *entry;
-  } d;
-
-  gpointer result;
-} TraverseClosure;
-
+/* destroy_entry:
+ * @node: a #GNode
+ *
+ * Frees the #ClutterScoreEntry attached to @node.
+ */
 static gboolean
 destroy_entry (GNode                  *node,
                G_GNUC_UNUSED gpointer  data)
@@ -463,6 +447,28 @@ destroy_entry (GNode                  *node,
   /* continue */
   return FALSE;
 }
+
+typedef enum {
+  FIND_BY_TIMELINE,
+  FIND_BY_ID,
+  REMOVE_BY_ID,
+  LIST_TIMELINES
+} TraverseAction;
+
+typedef struct {
+  TraverseAction action;
+
+  ClutterScore *score;
+
+  /* parameters */
+  union {
+    ClutterTimeline *timeline;
+    gulong id;
+    ClutterScoreEntry *entry;
+  } d;
+
+  gpointer result;
+} TraverseClosure;
 
 /* multi-purpose traversal function for the N-ary tree used by the score */
 static gboolean
@@ -561,7 +567,7 @@ find_entry_by_timeline (ClutterScore    *score,
 
 static GNode *
 find_entry_by_id (ClutterScore *score,
-                  guint         id)
+                  gulong        id)
 {
   ClutterScorePrivate *priv = score->priv;
   TraverseClosure closure;
@@ -632,7 +638,7 @@ on_timeline_completed (ClutterTimeline   *timeline,
   g_signal_handler_disconnect (timeline, entry->complete_id);
   entry->complete_id = 0;
 
-  CLUTTER_NOTE (SCHEDULER, "timeline [%p] ('%d') completed", 
+  CLUTTER_NOTE (SCHEDULER, "timeline [%p] ('%lu') completed", 
 		entry->timeline,
                 entry->id);
 
@@ -667,6 +673,10 @@ start_entry (ClutterScoreEntry *entry)
 {
   ClutterScorePrivate *priv = entry->score->priv;
 
+  /* timelines attached to a marker might already be playing when we
+   * end up here from the ::completed handler, so we need to perform
+   * this check to avoid restarting those timelines
+   */
   if (clutter_timeline_is_playing (entry->timeline))
     return;
 
@@ -675,7 +685,7 @@ start_entry (ClutterScoreEntry *entry)
                                          G_CALLBACK (on_timeline_completed),
                                          entry);
 
-  CLUTTER_NOTE (SCHEDULER, "timeline [%p] ('%d') started",
+  CLUTTER_NOTE (SCHEDULER, "timeline [%p] ('%lu') started",
                 entry->timeline,
                 entry->id);
 
@@ -692,15 +702,35 @@ start_entry (ClutterScoreEntry *entry)
                  entry->timeline);
 }
 
+enum
+{
+  ACTION_START,
+  ACTION_PAUSE,
+  ACTION_STOP
+};
+
 static void
-foreach_running_timeline_start (gpointer key,
-                                gpointer value,
-                                gpointer user_data)
+foreach_running_timeline (gpointer key,
+                          gpointer value,
+                          gpointer user_data)
 {
   ClutterScoreEntry *entry = value;
+  gint action = GPOINTER_TO_INT (user_data);
 
-  if (!clutter_timeline_is_playing (entry->timeline))
-    clutter_timeline_start (entry->timeline);
+  switch (action)
+    {
+    case ACTION_START:
+      clutter_timeline_start (entry->timeline);
+      break;
+
+    case ACTION_PAUSE:
+      clutter_timeline_pause (entry->timeline);
+      break;
+
+    case ACTION_STOP:
+      clutter_timeline_stop (entry->timeline);
+      break;
+    }
 }
 
 /**
@@ -723,8 +753,8 @@ clutter_score_start (ClutterScore *score)
   if (priv->is_paused)
     {
       g_hash_table_foreach (priv->running_timelines,
-			    foreach_running_timeline_start,
-			    NULL);
+			    foreach_running_timeline,
+			    GINT_TO_POINTER (ACTION_START));
       priv->is_paused = FALSE;
     }
   else
@@ -734,18 +764,6 @@ clutter_score_start (ClutterScore *score)
                                start_children_entries,
                                NULL);
     }
-}
-
-static gboolean
-foreach_running_timeline_stop (gpointer key,
-                               gpointer value,
-                               gpointer user_data)
-{
-  ClutterScoreEntry *entry = value;
-
-  clutter_timeline_stop (entry->timeline);
-
-  return TRUE; 
 }
 
 /**
@@ -767,12 +785,41 @@ clutter_score_stop (ClutterScore *score)
 
   if (priv->running_timelines)
     {
-      g_hash_table_foreach_remove (priv->running_timelines,
-                                   foreach_running_timeline_stop,
-                                   NULL);
+      g_hash_table_foreach (priv->running_timelines,
+                            foreach_running_timeline,
+                            GINT_TO_POINTER (ACTION_STOP));
       g_hash_table_destroy (priv->running_timelines);
       priv->running_timelines = NULL;
     }
+}
+
+/**
+ * clutter_score_pause:
+ * @score: a #ClutterScore
+ *
+ * Pauses a playing score @score.
+ *
+ * Since: 0.6
+ */
+void
+clutter_score_pause (ClutterScore *score)
+{
+  ClutterScorePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_SCORE (score));
+
+  priv = score->priv;
+
+  if (!clutter_score_is_playing (score)) 
+    return;
+
+  g_hash_table_foreach (priv->running_timelines,
+			foreach_running_timeline,
+			GINT_TO_POINTER (ACTION_PAUSE));
+
+  priv->is_paused = TRUE;
+
+  g_signal_emit (score, score_signals[PAUSED], 0);
 }
 
 /**
@@ -798,45 +845,6 @@ clutter_score_rewind (ClutterScore *score)
     clutter_score_start (score);
 }
 
-static void
-foreach_running_timeline_pause (gpointer key,
-                                gpointer value,
-                                gpointer user_data)
-{
-  ClutterScoreEntry *entry = value;
-
-  clutter_timeline_pause (entry->timeline);
-}
-
-/**
- * clutter_score_pause:
- * @score: a #ClutterScore
- *
- * Pauses a playing score @score.
- *
- * Since: 0.6
- */
-void
-clutter_score_pause (ClutterScore *score)
-{
-  ClutterScorePrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_SCORE (score));
-
-  priv = score->priv;
-
-  if (!clutter_score_is_playing (score)) 
-    return;
-
-  g_hash_table_foreach (priv->running_timelines,
-			foreach_running_timeline_pause,
-			NULL);
-
-  priv->is_paused = TRUE;
-
-  g_signal_emit (score, score_signals[PAUSED], 0);
-}
-
 static inline void
 clutter_score_clear (ClutterScore *score)
 {
@@ -853,7 +861,7 @@ clutter_score_clear (ClutterScore *score)
 /**
  * clutter_score_append:
  * @score: a #ClutterScore
- * @parent: a #ClutterTimeline in the score or %NULL
+ * @parent: a #ClutterTimeline in the score, or %NULL
  * @timeline: a #ClutterTimeline
  *
  * Appends a timeline to another one existing in the score; the newly
@@ -870,7 +878,7 @@ clutter_score_clear (ClutterScore *score)
  *
  * Since: 0.6
  */
-guint
+gulong
 clutter_score_append (ClutterScore    *score,
 		      ClutterTimeline *parent,
 		      ClutterTimeline *timeline)
@@ -934,13 +942,15 @@ clutter_score_append (ClutterScore    *score,
  * If you want to append @timeline at the end of @parent, use
  * clutter_score_append().
  *
+ * The #ClutterScore will take a reference on @timeline.
+ *
  * Return value: the id of the #ClutterTimeline inside the score, or
  *   0 on failure. The returned id can be used with clutter_score_remove()
  *   or clutter_score_get_timeline().
  *
  * Since: 0.8
  */
-guint
+gulong
 clutter_score_append_at_marker (ClutterScore    *score,
                                 ClutterTimeline *parent,
                                 const gchar     *marker_name,
@@ -1006,7 +1016,7 @@ clutter_score_append_at_marker (ClutterScore    *score,
  */
 void
 clutter_score_remove (ClutterScore *score,
-                      guint         id)
+                      gulong        id)
 {
   ClutterScorePrivate *priv;
   TraverseClosure closure;
@@ -1072,7 +1082,7 @@ clutter_score_remove_all (ClutterScore *score)
  */
 ClutterTimeline *
 clutter_score_get_timeline (ClutterScore *score,
-                            guint         id)
+                            gulong        id)
 {
   GNode *node;
   ClutterScoreEntry *entry;
