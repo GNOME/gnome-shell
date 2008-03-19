@@ -1,5 +1,10 @@
 2008-03-19  Iain Holmes  <iain@gnome.org>
 
+	* src/core/compositor.c (meta_compositor_set_active_window): Handle
+	compositor being disabled and don't crash.
+
+2008-03-19  Iain Holmes  <iain@gnome.org>
+
 	* src/core/compositor.c (meta_compositor_set_active_window): Add a 
 	screen argument.
 	(process_property_notify): Damage the whole screen when the background	

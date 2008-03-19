@@ -2744,11 +2744,19 @@ meta_compositor_set_active_window (MetaCompositor *compositor,
                                    MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MetaDisplay *display = compositor->display;
-  Display *xdisplay = display->xdisplay;
+  MetaDisplay *display;
+  Display *xdisplay;
   MetaCompWindow *old_focus = NULL, *new_focus = NULL;
-  MetaCompScreen *info = screen->compositor_data;
-  MetaWindow *old_focus_win = info->focus_window;
+  MetaCompScreen *info;
+  MetaWindow *old_focus_win;
+
+  if (compositor == NULL)
+    return;
+
+  display = compositor->display;
+  xdisplay = display->xdisplay;
+  info = screen->compositor_data;
+  old_focus_win = info->focus_window;
 
   if (old_focus_win) 
     {
