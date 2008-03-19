@@ -5204,7 +5204,7 @@ meta_window_notify_focus (MetaWindow *window,
           window->display->focus_window = window;
           window->has_focus = TRUE;
           meta_compositor_set_active_window (window->display->compositor,
-                                             window);
+                                             window->screen, window);
 
           /* Move to the front of the focusing workspace's MRU list.
            * We should only be "removing" it from the MRU list if it's
@@ -5288,6 +5288,9 @@ meta_window_notify_focus (MetaWindow *window,
           window->has_focus = FALSE;
           if (window->frame)
             meta_frame_queue_draw (window->frame);
+
+          meta_compositor_set_active_window (window->display->compositor, 
+                                             window->screen, NULL);
 
           meta_error_trap_push (window->display);
           XUninstallColormap (window->display->xdisplay,

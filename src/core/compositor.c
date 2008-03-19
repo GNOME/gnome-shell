@@ -1354,7 +1354,7 @@ add_repair (MetaDisplay *display)
   if (compositor->repaint_id > 0)
     return;
 
-#if 0
+#if 1
   compositor->repaint_id = g_idle_add_full (G_PRIORITY_HIGH_IDLE,
                                             compositor_idle_cb, compositor,
                                             NULL);
@@ -1565,6 +1565,9 @@ unmap_win (MetaDisplay *display,
     {
       return;
     }
+
+  if (cw->window && cw->window == info->focus_window) 
+    info->focus_window = NULL;
 
   cw->attrs.map_state = IsUnmapped;
   cw->damaged = FALSE;
@@ -2094,6 +2097,10 @@ process_property_notify (MetaCompositor *compositor,
                               0, 0, 0, 0, TRUE);
                   XRenderFreePicture (display->xdisplay, info->root_tile);
                   info->root_tile = None;
+                  
+                  /* Damage the whole screen as we may need to redraw the 
+                     background ourselves */
+                  damage_screen (screen);
 #ifdef USE_IDLE_REPAINT
                   add_repair (display);
 #endif
@@ -2733,12 +2740,12 @@ meta_compositor_get_window_pixmap (MetaCompositor *compositor,
 
 void
 meta_compositor_set_active_window (MetaCompositor *compositor,
+                                   MetaScreen     *screen,
                                    MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaDisplay *display = compositor->display;
   Display *xdisplay = display->xdisplay;
-  MetaScreen *screen = window->screen;
   MetaCompWindow *old_focus = NULL, *new_focus = NULL;
   MetaCompScreen *info = screen->compositor_data;
   MetaWindow *old_focus_win = info->focus_window;
@@ -2749,9 +2756,12 @@ meta_compositor_set_active_window (MetaCompositor *compositor,
                                           old_focus_win->frame ? old_focus_win->frame->xwindow :
                                           old_focus_win->xwindow);
     }
-  new_focus = find_window_for_screen (screen,
-                                      window->frame ? window->frame->xwindow :
-                                      window->xwindow);
+  if (window) 
+    {
+      new_focus = find_window_for_screen (screen,
+                                          window->frame ? window->frame->xwindow :
+                                          window->xwindow);
+    }
 
   info->focus_window = window;
   if (old_focus)

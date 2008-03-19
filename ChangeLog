@@ -1,3 +1,15 @@
+2008-03-19  Iain Holmes  <iain@gnome.org>
+
+	* src/core/compositor.c (meta_compositor_set_active_window): Add a 
+	screen argument.
+	(process_property_notify): Damage the whole screen when the background	
+	changes. Fixes 522599 
+	(add_repair): Use the idle instead of the timeout. Fixes 522166
+	(unmap_win): If the window is also focus window NULLify it.
+
+	* src/core/window.c (meta_window_notify_focus): Notify when a window
+	has lost focus, pass in screen as well.
+
 2008-03-18  Iain Holmes  <iain@gnome.org>
 
 	* src/core/compositor.c (window_has_shadow): Allow shaped windows 
