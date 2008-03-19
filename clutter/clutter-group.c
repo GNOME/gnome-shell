@@ -99,7 +99,7 @@ clutter_group_paint (ClutterActor *actor)
 
       g_assert (child != NULL);
 
-      if (CLUTTER_ACTOR_IS_MAPPED (child))
+      if (CLUTTER_ACTOR_IS_VISIBLE (child))
 	clutter_actor_paint (child);
     }
 
@@ -126,7 +126,7 @@ clutter_group_pick (ClutterActor       *actor,
   /* Just forward to the paint call which in turn will trigger
    * the child actors also getting 'picked'.
    */
-  if (CLUTTER_ACTOR_IS_MAPPED (actor))
+  if (CLUTTER_ACTOR_IS_VISIBLE (actor))
     clutter_group_paint (actor);
 }
 

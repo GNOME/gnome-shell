@@ -1564,7 +1564,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
 
   /* If resized actor may need resizing but paint() will do this */
-  if (CLUTTER_ACTOR_IS_MAPPED (texture))
+  if (CLUTTER_ACTOR_IS_VISIBLE (texture))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 
   if (copy_data != NULL)
@@ -1696,14 +1696,14 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 		     0, priv->width, priv->height);
 
       if (priv->sync_actor_size)
-	clutter_actor_set_size (CLUTTER_ACTOR(texture),
+	clutter_actor_set_size (CLUTTER_ACTOR (texture),
 				priv->width,
 				priv->height);
     }
 
   g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
 
-  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
+  if (CLUTTER_ACTOR_IS_VISIBLE (texture))
     clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
 
   return TRUE;
@@ -2204,8 +2204,8 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
   /* rename signal */
   g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
 
-  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
+  if (CLUTTER_ACTOR_IS_VISIBLE (texture))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
 
   if (copy_data != NULL)
     g_free (copy_data);

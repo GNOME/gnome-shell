@@ -1,5 +1,11 @@
 2008-03-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-group.c:
+	* clutter/clutter-texture.c: Use CLUTTER_ACTOR_IS_VISIBLE()
+	and not CLUTTER_ACTOR_IS_MAPPED().
+
+2008-03-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-score.[ch]: Small clean ups and refactoring.
 	Use gulong instead of guint, so we have a bigger id space for
 	the timelines inside a Score.
