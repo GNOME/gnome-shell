@@ -1,3 +1,25 @@
+2.23.3
+======
+
+Thanks to Marco Pesenti Gritti, Iain Holmes, Josh Lee, Thomas Thurman, and
+Matthew Wilson for improvements in this version.
+
+  - Workspaces whose name is the same as the standard name, plus some string,
+    are not cut off. (Thomas) (#453678)
+  - Improve compositor performance (Iain) (#522166)
+  - Draw wallpaper correctly when we start up with compositor
+    (Iain) (#522599)
+  - Several other smaller compositor fixes (Iain)
+  - Don't draw shadows on shaped windows unless they have frames
+    (Iain) (#505333)
+  - Newly-created keep-above windows get focus (Marco) (#519188)
+  - Allow moving workspace when dragging with modifier key (Matthew)
+    (#474195)
+
+Translations
+  Kenneth Nielsen (da), Gabor Kelemen (hu), Vasiliy Faronov (ru), Daniel
+  Nylander (sv), Maxim Dziumanenko (uk), Woodman Tuen (zh_HK)
+
 2.23.2
 ======
 
