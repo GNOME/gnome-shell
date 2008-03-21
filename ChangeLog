@@ -1,3 +1,9 @@
+2008-03-21  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/ui/menu.c (activate_cb, get_workspace_name_with_accel): Workspaces
+	whose name is the standard name plus a non-empty string are handled
+	correctly in menus.  Closes #453678.
+
 2008-03-19  Iain Holmes  <iain@gnome.org>
 
 	* src/core/compositor.c (meta_compositor_set_active_window): Handle

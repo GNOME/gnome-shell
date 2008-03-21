@@ -177,6 +177,9 @@ activate_cb (GtkWidget *menuitem, gpointer data)
  * 
  * The calling code owns the string, and is reponsible to free the
  * memory after use.
+ *
+ * See also http://mail.gnome.org/archives/gnome-i18n/2008-March/msg00380.html
+ * which discusses possible i18n concerns.
  */
 static char*
 get_workspace_name_with_accel (Display *display,
@@ -185,6 +188,7 @@ get_workspace_name_with_accel (Display *display,
 {
   const char *name;
   int number;
+  int charcount=0;
 
   name = meta_core_get_workspace_name_with_index (display, xroot, index);
 
@@ -196,7 +200,8 @@ get_workspace_name_with_accel (Display *display,
    * return it
    */
   number = 0;
-  if (sscanf (name, _("Workspace %d"), &number) == 1)
+  if (sscanf (name, _("Workspace %d%n"), &number, &charcount) != 0 &&
+      *(name + charcount)=='\0')
     {
       char *new_name;
       
@@ -241,7 +246,7 @@ get_workspace_name_with_accel (Display *display,
           *dest++ = *source++;
         }
 
-      /* People don't start at workstation 0, but workstation 1 */
+      /* People don't start at workspace 0, but workspace 1 */
       if (index < 9)
         {
           g_snprintf (dest, 6, " (_%d)", index + 1);
