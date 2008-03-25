@@ -1,3 +1,23 @@
+2008-03-25  Neil Roberts  <neil@o-hand.com>
+
+	Added a native Win32 WGL backend.
+
+	* configure.ac: Added the 'win32' flavour.
+
+	* clutter/cogl/gl/cogl.c (cogl_get_proc_address): Added an ifdef
+	to use wglGetProcAddress with the Win32 backend.
+
+	* clutter/Makefile.am (DIST_SUBDIRS): Added the win32 directory.
+
+	* clutter/win32/clutter-win32.pc.in:
+	* clutter/win32/clutter-win32.h: 
+	* clutter/win32/clutter-stage-win32.h: 
+	* clutter/win32/clutter-stage-win32.c: 
+	* clutter/win32/clutter-event-win32.c: 
+	* clutter/win32/clutter-backend-win32.h: 
+	* clutter/win32/Makefile.am:
+	* clutter/win32/clutter-backend-win32.c: New files.
+
 2008-03-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-model.[ch]: Add a ::copy() virtual function

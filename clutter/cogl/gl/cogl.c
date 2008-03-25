@@ -109,7 +109,7 @@ cogl_get_proc_address (const gchar* name)
   /* Sucks to ifdef here but not other option..? would be nice to
    * split the code up for more reuse (once more backends use this
    */
-#ifdef HAVE_CLUTTER_GLX
+#if defined(HAVE_CLUTTER_GLX)
   static GLXGetProcAddressProc get_proc_func = NULL;
   static void                 *dlhand = NULL;
 
@@ -142,7 +142,11 @@ cogl_get_proc_address (const gchar* name)
   if (get_proc_func)
     return get_proc_func ((unsigned char*) name);
 
-#else /* !HAVE_CLUTTER_GLX */
+#elif defined(HAVE_CLUTTER_WIN32)
+
+  return (CoglFuncPtr) wglGetProcAddress ((LPCSTR) name);
+
+#else /* HAVE_CLUTTER_WIN32 */
 
   /* this should find the right function if the program is linked against a
    * library providing it */
@@ -158,7 +162,7 @@ cogl_get_proc_address (const gchar* name)
         return symbol;
     }
 
-#endif /* HAVE_CLUTTER_GLX */
+#endif /* HAVE_CLUTTER_WIN32 */
 
   return NULL;
 }

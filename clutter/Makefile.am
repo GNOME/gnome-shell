@@ -2,7 +2,7 @@ NULL =
 
 SUBDIRS = cogl pango json $(clutterbackend) $(backendextra)
 
-DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11
+DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11 win32
 
 target = $(clutterbackend)
 

@@ -273,7 +273,30 @@ case $clutterbackend in
                      [AC_MSG_ERROR([Unable to locate required GL headers])])
     ;;
 
-  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx,sdl,osx,eglx or eglnative])
+  win32)
+
+    clutter_gl_header="GL/gl.h"
+    CLUTTER_FLAVOUR="win32"
+    AC_DEFINE([HAVE_CLUTTER_WIN32], 1, [Have the Win32 backend])
+
+    CLUTTER_COGL="gl"
+    AC_DEFINE([HAVE_COGL_GL], 1, [Have GL for rendering])
+
+    AC_CHECK_HEADERS([$clutter_gl_header],,
+                     [AC_MSG_ERROR([Unable to locate required GL headers])])
+
+    dnl Use GLee under Windows instead of GL
+    AC_CHECK_LIB(GLee, GLeeInit, HAVE_LIBGLEE=yes, HAVE_LIBGLEE=no, -lopengl32)
+    if test "x$HAVE_LIBGLEE" = "xno"; then
+      AC_MSG_ERROR([libGLee not found]);
+    fi
+
+    WIN32_CFLAGS="-D_WIN32_WINNT=0x0500"
+    WIN32_LIBS="-lGLee -lopengl32 -lgdi32"
+    CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
+    ;;
+
+  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx,sdl,osx,win32,eglx or eglnative])
     ;;
 
 esac
@@ -380,8 +403,8 @@ dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
 
-CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $CLUTTER_DEPS_CFLAGS "
-CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $OSX_LIBS $CLUTTER_DEPS_LIBS"
+CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS "
+CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
@@ -396,6 +419,8 @@ AC_CONFIG_FILES([
         clutter/eglx/Makefile
         clutter/eglnative/Makefile
         clutter/osx/Makefile
+        clutter/win32/Makefile
+        clutter/win32/clutter-win32.pc
         clutter/sdl/Makefile
         clutter/cogl/Makefile
         clutter/cogl/gl/Makefile
