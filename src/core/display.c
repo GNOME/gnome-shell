@@ -28,12 +28,6 @@
  * \file display.c Handles operations on an X display.
  *
  * The display is represented as a MetaDisplay struct.
- *
- * \bug Originally we had the idea that there could be multiple MetaDisplay
- * structs in one Metacity process, but as the code currently stands, only
- * one can be initialised; it is a singleton class. We should go through and
- * remove all the code that iterates over the lists of displays later.
- * See <http://bugzilla.gnome.org/show_bug.cgi?id=499301>.
  */
 
 #include <config.h>
@@ -133,7 +127,13 @@ typedef struct
   Window xwindow;
 } MetaAutoRaiseData;
 
-static GSList *all_displays = NULL;
+/**
+ * The display we're managing.  This is a singleton object.  (Historically,
+ * this was a list of displays, but there was never any way to add more
+ * than one element to it.)  The goofy name is because we don't want it
+ * to shadow the parameter in its object methods.
+ */
+static MetaDisplay *the_display = NULL;
 
 static void   meta_spew_event           (MetaDisplay    *display,
                                          XEvent         *event);
@@ -310,16 +310,11 @@ disable_compositor (MetaDisplay *display)
  * main list; I'd rather include them in that list using the stringify
  * operator or something.
  *
- * \bug MetaDisplay is (currently) a singleton, but the code pretends
- * it isn't; at some point we will decide whether to acknowledge this
- * and simplify.
- *
  * \ingroup main
  */
 gboolean
 meta_display_open (void)
 {
-  MetaDisplay *display;
   Display *xdisplay;
   GSList *screens;
   GSList *tmp;
@@ -443,244 +438,242 @@ meta_display_open (void)
   if (meta_is_syncing ())
     XSynchronize (xdisplay, True);
   
-  display = g_new (MetaDisplay, 1);
+  g_assert (the_display == NULL);
+  the_display = g_new (MetaDisplay, 1);
 
-  display->closing = 0;
+  the_display->closing = 0;
   
   /* here we use XDisplayName which is what the user
    * probably put in, vs. DisplayString(display) which is
    * canonicalized by XOpenDisplay()
    */
-  display->name = g_strdup (XDisplayName (NULL));
-  display->xdisplay = xdisplay;
-  display->error_trap_synced_at_last_pop = TRUE;
-  display->error_traps = 0;
-  display->error_trap_handler = NULL;
-  display->server_grab_count = 0;
-  display->display_opening = TRUE;
+  the_display->name = g_strdup (XDisplayName (NULL));
+  the_display->xdisplay = xdisplay;
+  the_display->error_trap_synced_at_last_pop = TRUE;
+  the_display->error_traps = 0;
+  the_display->error_trap_handler = NULL;
+  the_display->server_grab_count = 0;
+  the_display->display_opening = TRUE;
 
-  display->pending_pings = NULL;
-  display->autoraise_timeout_id = 0;
-  display->autoraise_window = NULL;
-  display->focus_window = NULL;
-  display->expected_focus_window = NULL;
-  display->grab_old_window_stacking = NULL;
+  the_display->pending_pings = NULL;
+  the_display->autoraise_timeout_id = 0;
+  the_display->autoraise_window = NULL;
+  the_display->focus_window = NULL;
+  the_display->expected_focus_window = NULL;
+  the_display->grab_old_window_stacking = NULL;
 
-  display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
-  display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
+  the_display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
+  the_display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
                                                   terminal has the focus */
 
 #ifdef HAVE_XSYNC
-  display->grab_sync_request_alarm = None;
+  the_display->grab_sync_request_alarm = None;
 #endif
   
   /* FIXME copy the checks from GDK probably */
-  display->static_gravity_works = g_getenv ("METACITY_USE_STATIC_GRAVITY") != NULL;
+  the_display->static_gravity_works = g_getenv ("METACITY_USE_STATIC_GRAVITY") != NULL;
   
-  /* we have to go ahead and do this so error handlers work */
-  all_displays = g_slist_prepend (all_displays, display);
+  meta_bell_init (the_display);
 
-  meta_bell_init (display);
+  meta_display_init_keys (the_display);
 
-  meta_display_init_keys (display);
+  update_window_grab_modifiers (the_display);
 
-  update_window_grab_modifiers (display);
-
-  meta_prefs_add_listener (prefs_changed_callback, display);
+  meta_prefs_add_listener (prefs_changed_callback, the_display);
 
   meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
-  XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
+  XInternAtoms (the_display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
-  display->atom_net_wm_name = atoms[0];
-  display->atom_wm_protocols = atoms[1];
-  display->atom_wm_take_focus = atoms[2];
-  display->atom_wm_delete_window = atoms[3];
-  display->atom_wm_state = atoms[4];
-  display->atom_net_close_window = atoms[5];
-  display->atom_net_wm_state = atoms[6];
-  display->atom_motif_wm_hints = atoms[7];
-  display->atom_net_wm_state_shaded = atoms[8];
-  display->atom_net_wm_state_maximized_horz = atoms[9];
-  display->atom_net_wm_state_maximized_vert = atoms[10];
-  display->atom_net_wm_desktop = atoms[11];
-  display->atom_net_number_of_desktops = atoms[12];
-  display->atom_wm_change_state = atoms[13];
-  display->atom_sm_client_id = atoms[14];
-  display->atom_wm_client_leader = atoms[15];
-  display->atom_wm_window_role = atoms[16];
-  display->atom_net_current_desktop = atoms[17];
-  display->atom_net_supporting_wm_check = atoms[18];
-  display->atom_net_supported = atoms[19];
-  display->atom_net_wm_window_type = atoms[20];
-  display->atom_net_wm_window_type_desktop = atoms[21];
-  display->atom_net_wm_window_type_dock = atoms[22];
-  display->atom_net_wm_window_type_toolbar = atoms[23];
-  display->atom_net_wm_window_type_menu = atoms[24];
-  display->atom_net_wm_window_type_dialog = atoms[25];
-  display->atom_net_wm_window_type_normal = atoms[26];
-  display->atom_net_wm_state_modal = atoms[27];
-  display->atom_net_client_list = atoms[28];
-  display->atom_net_client_list_stacking = atoms[29];
-  display->atom_net_wm_state_skip_taskbar = atoms[30];
-  display->atom_net_wm_state_skip_pager = atoms[31];
-  display->atom_net_wm_icon_name = atoms[32];
-  display->atom_net_wm_icon = atoms[33];
-  display->atom_net_wm_icon_geometry = atoms[34];
-  display->atom_utf8_string = atoms[35];
-  display->atom_wm_icon_size = atoms[36];
-  display->atom_kwm_win_icon = atoms[37];
-  display->atom_net_wm_moveresize = atoms[38];
-  display->atom_net_active_window = atoms[39];
-  display->atom_metacity_restart_message = atoms[40];
-  display->atom_net_wm_strut = atoms[41];
-  display->atom_metacity_reload_theme_message = atoms[42];
-  display->atom_metacity_set_keybindings_message = atoms[43];
-  display->atom_net_wm_state_hidden = atoms[44];
-  display->atom_net_wm_window_type_utility = atoms[45];
-  display->atom_net_wm_window_type_splash = atoms[46];
-  display->atom_net_wm_state_fullscreen = atoms[47];
-  display->atom_net_wm_ping = atoms[48];
-  display->atom_net_wm_pid = atoms[49];
-  display->atom_wm_client_machine = atoms[50];
-  display->atom_net_workarea = atoms[51];
-  display->atom_net_showing_desktop = atoms[52];
-  display->atom_net_desktop_layout = atoms[53];
-  display->atom_manager = atoms[54];
-  display->atom_targets = atoms[55];
-  display->atom_multiple = atoms[56];
-  display->atom_timestamp = atoms[57];
-  display->atom_version = atoms[58];
-  display->atom_atom_pair = atoms[59];
-  display->atom_net_desktop_names = atoms[60];
-  display->atom_net_wm_allowed_actions = atoms[61];
-  display->atom_net_wm_action_move = atoms[62];
-  display->atom_net_wm_action_resize = atoms[63];
-  display->atom_net_wm_action_shade = atoms[64];
-  display->atom_net_wm_action_stick = atoms[65];
-  display->atom_net_wm_action_maximize_horz = atoms[66];
-  display->atom_net_wm_action_maximize_vert = atoms[67];
-  display->atom_net_wm_action_change_desktop = atoms[68];
-  display->atom_net_wm_action_close = atoms[69];
-  display->atom_net_wm_state_above = atoms[70];
-  display->atom_net_wm_state_below = atoms[71];
-  display->atom_net_startup_id = atoms[72];
-  display->atom_metacity_toggle_verbose = atoms[73];
-  display->atom_net_wm_sync_request = atoms[74];
-  display->atom_net_wm_sync_request_counter = atoms[75];
-  display->atom_gnome_panel_action = atoms[76];
-  display->atom_gnome_panel_action_main_menu = atoms[77];
-  display->atom_gnome_panel_action_run_dialog = atoms[78];
-  display->atom_metacity_sentinel = atoms[79];
-  display->atom_net_wm_strut_partial = atoms[80];
-  display->atom_net_wm_action_fullscreen = atoms[81];
-  display->atom_net_wm_action_minimize = atoms[82];
-  display->atom_net_frame_extents = atoms[83];
-  display->atom_net_request_frame_extents = atoms[84];
-  display->atom_net_wm_user_time = atoms[85];
-  display->atom_net_wm_state_demands_attention = atoms[86];
-  display->atom_net_restack_window = atoms[87];
-  display->atom_net_moveresize_window = atoms[88];
-  display->atom_net_desktop_geometry = atoms[89];
-  display->atom_net_desktop_viewport = atoms[90];
-  display->atom_metacity_version = atoms[91];
-  display->atom_net_wm_visible_name = atoms[92];
-  display->atom_net_wm_visible_icon_name = atoms[93];
-  display->atom_net_wm_user_time_window = atoms[94];
-  display->atom_net_wm_action_above = atoms[95];
-  display->atom_net_wm_action_below = atoms[96];
+  the_display->atom_net_wm_name = atoms[0];
+  the_display->atom_wm_protocols = atoms[1];
+  the_display->atom_wm_take_focus = atoms[2];
+  the_display->atom_wm_delete_window = atoms[3];
+  the_display->atom_wm_state = atoms[4];
+  the_display->atom_net_close_window = atoms[5];
+  the_display->atom_net_wm_state = atoms[6];
+  the_display->atom_motif_wm_hints = atoms[7];
+  the_display->atom_net_wm_state_shaded = atoms[8];
+  the_display->atom_net_wm_state_maximized_horz = atoms[9];
+  the_display->atom_net_wm_state_maximized_vert = atoms[10];
+  the_display->atom_net_wm_desktop = atoms[11];
+  the_display->atom_net_number_of_desktops = atoms[12];
+  the_display->atom_wm_change_state = atoms[13];
+  the_display->atom_sm_client_id = atoms[14];
+  the_display->atom_wm_client_leader = atoms[15];
+  the_display->atom_wm_window_role = atoms[16];
+  the_display->atom_net_current_desktop = atoms[17];
+  the_display->atom_net_supporting_wm_check = atoms[18];
+  the_display->atom_net_supported = atoms[19];
+  the_display->atom_net_wm_window_type = atoms[20];
+  the_display->atom_net_wm_window_type_desktop = atoms[21];
+  the_display->atom_net_wm_window_type_dock = atoms[22];
+  the_display->atom_net_wm_window_type_toolbar = atoms[23];
+  the_display->atom_net_wm_window_type_menu = atoms[24];
+  the_display->atom_net_wm_window_type_dialog = atoms[25];
+  the_display->atom_net_wm_window_type_normal = atoms[26];
+  the_display->atom_net_wm_state_modal = atoms[27];
+  the_display->atom_net_client_list = atoms[28];
+  the_display->atom_net_client_list_stacking = atoms[29];
+  the_display->atom_net_wm_state_skip_taskbar = atoms[30];
+  the_display->atom_net_wm_state_skip_pager = atoms[31];
+  the_display->atom_net_wm_icon_name = atoms[32];
+  the_display->atom_net_wm_icon = atoms[33];
+  the_display->atom_net_wm_icon_geometry = atoms[34];
+  the_display->atom_utf8_string = atoms[35];
+  the_display->atom_wm_icon_size = atoms[36];
+  the_display->atom_kwm_win_icon = atoms[37];
+  the_display->atom_net_wm_moveresize = atoms[38];
+  the_display->atom_net_active_window = atoms[39];
+  the_display->atom_metacity_restart_message = atoms[40];
+  the_display->atom_net_wm_strut = atoms[41];
+  the_display->atom_metacity_reload_theme_message = atoms[42];
+  the_display->atom_metacity_set_keybindings_message = atoms[43];
+  the_display->atom_net_wm_state_hidden = atoms[44];
+  the_display->atom_net_wm_window_type_utility = atoms[45];
+  the_display->atom_net_wm_window_type_splash = atoms[46];
+  the_display->atom_net_wm_state_fullscreen = atoms[47];
+  the_display->atom_net_wm_ping = atoms[48];
+  the_display->atom_net_wm_pid = atoms[49];
+  the_display->atom_wm_client_machine = atoms[50];
+  the_display->atom_net_workarea = atoms[51];
+  the_display->atom_net_showing_desktop = atoms[52];
+  the_display->atom_net_desktop_layout = atoms[53];
+  the_display->atom_manager = atoms[54];
+  the_display->atom_targets = atoms[55];
+  the_display->atom_multiple = atoms[56];
+  the_display->atom_timestamp = atoms[57];
+  the_display->atom_version = atoms[58];
+  the_display->atom_atom_pair = atoms[59];
+  the_display->atom_net_desktop_names = atoms[60];
+  the_display->atom_net_wm_allowed_actions = atoms[61];
+  the_display->atom_net_wm_action_move = atoms[62];
+  the_display->atom_net_wm_action_resize = atoms[63];
+  the_display->atom_net_wm_action_shade = atoms[64];
+  the_display->atom_net_wm_action_stick = atoms[65];
+  the_display->atom_net_wm_action_maximize_horz = atoms[66];
+  the_display->atom_net_wm_action_maximize_vert = atoms[67];
+  the_display->atom_net_wm_action_change_desktop = atoms[68];
+  the_display->atom_net_wm_action_close = atoms[69];
+  the_display->atom_net_wm_state_above = atoms[70];
+  the_display->atom_net_wm_state_below = atoms[71];
+  the_display->atom_net_startup_id = atoms[72];
+  the_display->atom_metacity_toggle_verbose = atoms[73];
+  the_display->atom_net_wm_sync_request = atoms[74];
+  the_display->atom_net_wm_sync_request_counter = atoms[75];
+  the_display->atom_gnome_panel_action = atoms[76];
+  the_display->atom_gnome_panel_action_main_menu = atoms[77];
+  the_display->atom_gnome_panel_action_run_dialog = atoms[78];
+  the_display->atom_metacity_sentinel = atoms[79];
+  the_display->atom_net_wm_strut_partial = atoms[80];
+  the_display->atom_net_wm_action_fullscreen = atoms[81];
+  the_display->atom_net_wm_action_minimize = atoms[82];
+  the_display->atom_net_frame_extents = atoms[83];
+  the_display->atom_net_request_frame_extents = atoms[84];
+  the_display->atom_net_wm_user_time = atoms[85];
+  the_display->atom_net_wm_state_demands_attention = atoms[86];
+  the_display->atom_net_restack_window = atoms[87];
+  the_display->atom_net_moveresize_window = atoms[88];
+  the_display->atom_net_desktop_geometry = atoms[89];
+  the_display->atom_net_desktop_viewport = atoms[90];
+  the_display->atom_metacity_version = atoms[91];
+  the_display->atom_net_wm_visible_name = atoms[92];
+  the_display->atom_net_wm_visible_icon_name = atoms[93];
+  the_display->atom_net_wm_user_time_window = atoms[94];
+  the_display->atom_net_wm_action_above = atoms[95];
+  the_display->atom_net_wm_action_below = atoms[96];
 
-  display->prop_hooks = NULL;
-  meta_display_init_window_prop_hooks (display);
-  display->group_prop_hooks = NULL;
-  meta_display_init_group_prop_hooks (display);
+  the_display->prop_hooks = NULL;
+  meta_display_init_window_prop_hooks (the_display);
+  the_display->group_prop_hooks = NULL;
+  meta_display_init_group_prop_hooks (the_display);
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
    */
-  display->leader_window = None;
-  display->timestamp_pinging_window = None;
+  the_display->leader_window = None;
+  the_display->timestamp_pinging_window = None;
 
-  display->xinerama_cache_invalidated = TRUE;
+  the_display->xinerama_cache_invalidated = TRUE;
 
-  display->groups_by_leader = NULL;
+  the_display->groups_by_leader = NULL;
 
-  display->window_with_menu = NULL;
-  display->window_menu = NULL;
+  the_display->window_with_menu = NULL;
+  the_display->window_menu = NULL;
   
-  display->screens = NULL;
-  display->active_screen = NULL;
+  the_display->screens = NULL;
+  the_display->active_screen = NULL;
   
 #ifdef HAVE_STARTUP_NOTIFICATION
-  display->sn_display = sn_display_new (display->xdisplay,
+  the_display->sn_display = sn_display_new (the_display->xdisplay,
                                         sn_error_trap_push,
                                         sn_error_trap_pop);
 #endif
   
-  display->events = NULL;
+  the_display->events = NULL;
 
   /* Get events */
-  meta_ui_add_event_func (display->xdisplay,
+  meta_ui_add_event_func (the_display->xdisplay,
                           event_callback,
-                          display);
+                          the_display);
   
-  display->window_ids = g_hash_table_new (meta_unsigned_long_hash,
+  the_display->window_ids = g_hash_table_new (meta_unsigned_long_hash,
                                           meta_unsigned_long_equal);
   
   i = 0;
   while (i < N_IGNORED_SERIALS)
     {
-      display->ignored_serials[i] = 0;
+      the_display->ignored_serials[i] = 0;
       ++i;
     }
-  display->ungrab_should_not_cause_focus_window = None;
+  the_display->ungrab_should_not_cause_focus_window = None;
   
-  display->current_time = CurrentTime;
-  display->sentinel_counter = 0;
+  the_display->current_time = CurrentTime;
+  the_display->sentinel_counter = 0;
 
-  display->grab_resize_timeout_id = 0;
-  display->grab_have_keyboard = FALSE;
+  the_display->grab_resize_timeout_id = 0;
+  the_display->grab_have_keyboard = FALSE;
   
 #ifdef HAVE_XKB  
-  display->last_bell_time = 0;
+  the_display->last_bell_time = 0;
 #endif
 
-  display->grab_op = META_GRAB_OP_NONE;
-  display->grab_wireframe_active = FALSE;
-  display->grab_window = NULL;
-  display->grab_screen = NULL;
-  display->grab_resize_popup = NULL;
+  the_display->grab_op = META_GRAB_OP_NONE;
+  the_display->grab_wireframe_active = FALSE;
+  the_display->grab_window = NULL;
+  the_display->grab_screen = NULL;
+  the_display->grab_resize_popup = NULL;
 
-  display->grab_edge_resistance_data = NULL;
+  the_display->grab_edge_resistance_data = NULL;
 
 #ifdef HAVE_XSYNC
   {
     int major, minor;
 
-    display->have_xsync = FALSE;
+    the_display->have_xsync = FALSE;
     
-    display->xsync_error_base = 0;
-    display->xsync_event_base = 0;
+    the_display->xsync_error_base = 0;
+    the_display->xsync_event_base = 0;
 
     /* I don't think we really have to fill these in */
     major = SYNC_MAJOR_VERSION;
     minor = SYNC_MINOR_VERSION;
     
-    if (!XSyncQueryExtension (display->xdisplay,
-                              &display->xsync_event_base,
-                              &display->xsync_error_base) ||
-        !XSyncInitialize (display->xdisplay,
+    if (!XSyncQueryExtension (the_display->xdisplay,
+                              &the_display->xsync_event_base,
+                              &the_display->xsync_error_base) ||
+        !XSyncInitialize (the_display->xdisplay,
                           &major, &minor))
       {
-        display->xsync_error_base = 0;
-        display->xsync_event_base = 0;
+        the_display->xsync_error_base = 0;
+        the_display->xsync_event_base = 0;
       }
     else
-      display->have_xsync = TRUE;
+      the_display->have_xsync = TRUE;
     
     meta_verbose ("Attempted to init Xsync, found version %d.%d error base %d event base %d\n",
                   major, minor,
-                  display->xsync_error_base,
-                  display->xsync_event_base);
+                  the_display->xsync_error_base,
+                  the_display->xsync_event_base);
   }
 #else  /* HAVE_XSYNC */
   meta_verbose ("Not compiled with Xsync support\n");
@@ -689,24 +682,24 @@ meta_display_open (void)
 
 #ifdef HAVE_SHAPE
   {
-    display->have_shape = FALSE;
+    the_display->have_shape = FALSE;
     
-    display->shape_error_base = 0;
-    display->shape_event_base = 0;
+    the_display->shape_error_base = 0;
+    the_display->shape_event_base = 0;
     
-    if (!XShapeQueryExtension (display->xdisplay,
-                               &display->shape_event_base,
-                               &display->shape_error_base))
+    if (!XShapeQueryExtension (the_display->xdisplay,
+                               &the_display->shape_event_base,
+                               &the_display->shape_error_base))
       {
-        display->shape_error_base = 0;
-        display->shape_event_base = 0;
+        the_display->shape_error_base = 0;
+        the_display->shape_event_base = 0;
       }
     else
-      display->have_shape = TRUE;
+      the_display->have_shape = TRUE;
     
     meta_verbose ("Attempted to init Shape, found error base %d event base %d\n",
-                  display->shape_error_base,
-                  display->shape_event_base);
+                  the_display->shape_error_base,
+                  the_display->shape_event_base);
   }
 #else  /* HAVE_SHAPE */
   meta_verbose ("Not compiled with Shape support\n");
@@ -714,24 +707,24 @@ meta_display_open (void)
 
 #ifdef HAVE_RENDER
   {
-    display->have_render = FALSE;
+    the_display->have_render = FALSE;
     
-    display->render_error_base = 0;
-    display->render_event_base = 0;
+    the_display->render_error_base = 0;
+    the_display->render_event_base = 0;
     
-    if (!XRenderQueryExtension (display->xdisplay,
-                                &display->render_event_base,
-                                &display->render_error_base))
+    if (!XRenderQueryExtension (the_display->xdisplay,
+                                &the_display->render_event_base,
+                                &the_display->render_error_base))
       {
-        display->render_error_base = 0;
-        display->render_event_base = 0;
+        the_display->render_error_base = 0;
+        the_display->render_event_base = 0;
       }
     else
-      display->have_render = TRUE;
+      the_display->have_render = TRUE;
     
     meta_verbose ("Attempted to init Render, found error base %d event base %d\n",
-                  display->render_error_base,
-                  display->render_event_base);
+                  the_display->render_error_base,
+                  the_display->render_event_base);
   }
 #else  /* HAVE_RENDER */
   meta_verbose ("Not compiled with Render support\n");
@@ -739,79 +732,79 @@ meta_display_open (void)
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   {
-    display->have_composite = FALSE;
+    the_display->have_composite = FALSE;
 
-    display->composite_error_base = 0;
-    display->composite_event_base = 0;
+    the_display->composite_error_base = 0;
+    the_display->composite_event_base = 0;
 
-    if (!XCompositeQueryExtension (display->xdisplay,
-                                   &display->composite_event_base,
-                                   &display->composite_error_base))
+    if (!XCompositeQueryExtension (the_display->xdisplay,
+                                   &the_display->composite_event_base,
+                                   &the_display->composite_error_base))
       {
-        display->composite_error_base = 0;
-        display->composite_event_base = 0;
+        the_display->composite_error_base = 0;
+        the_display->composite_event_base = 0;
       } 
     else
       {
-        display->composite_major_version = 0;
-        display->composite_minor_version = 0;
-        if (XCompositeQueryVersion (display->xdisplay,
-                                    &display->composite_major_version,
-                                    &display->composite_minor_version))
+        the_display->composite_major_version = 0;
+        the_display->composite_minor_version = 0;
+        if (XCompositeQueryVersion (the_display->xdisplay,
+                                    &the_display->composite_major_version,
+                                    &the_display->composite_minor_version))
           {
-            display->have_composite = TRUE;
+            the_display->have_composite = TRUE;
           }
         else
           {
-            display->composite_major_version = 0;
-            display->composite_minor_version = 0;
+            the_display->composite_major_version = 0;
+            the_display->composite_minor_version = 0;
           }
       }
 
     meta_verbose ("Attempted to init Composite, found error base %d event base %d "
                   "extn ver %d %d\n",
-                  display->composite_error_base, 
-                  display->composite_event_base,
-                  display->composite_major_version,
-                  display->composite_minor_version);
+                  the_display->composite_error_base, 
+                  the_display->composite_event_base,
+                  the_display->composite_major_version,
+                  the_display->composite_minor_version);
 
-    display->have_damage = FALSE;
+    the_display->have_damage = FALSE;
 
-    display->damage_error_base = 0;
-    display->damage_event_base = 0;
+    the_display->damage_error_base = 0;
+    the_display->damage_event_base = 0;
 
-    if (!XDamageQueryExtension (display->xdisplay,
-                                &display->damage_event_base,
-                                &display->damage_error_base))
+    if (!XDamageQueryExtension (the_display->xdisplay,
+                                &the_display->damage_event_base,
+                                &the_display->damage_error_base))
       {
-        display->damage_error_base = 0;
-        display->damage_event_base = 0;
+        the_display->damage_error_base = 0;
+        the_display->damage_event_base = 0;
       } 
     else
-      display->have_damage = TRUE;
+      the_display->have_damage = TRUE;
 
     meta_verbose ("Attempted to init Damage, found error base %d event base %d\n",
-                  display->damage_error_base, 
-                  display->damage_event_base);
+                  the_display->damage_error_base, 
+                  the_display->damage_event_base);
 
-    display->have_xfixes = FALSE;
+    the_display->have_xfixes = FALSE;
 
-    display->xfixes_error_base = 0;
-    display->xfixes_event_base = 0;
+    the_display->xfixes_error_base = 0;
+    the_display->xfixes_event_base = 0;
 
-    if (!XFixesQueryExtension (display->xdisplay,
-                               &display->xfixes_event_base,
-                               &display->xfixes_error_base))
+    if (!XFixesQueryExtension (the_display->xdisplay,
+                               &the_display->xfixes_event_base,
+                               &the_display->xfixes_error_base))
       {
-        display->xfixes_error_base = 0;
-        display->xfixes_event_base = 0;
+        the_display->xfixes_error_base = 0;
+        the_display->xfixes_event_base = 0;
       } 
     else
-      display->have_xfixes = TRUE;
+      the_display->have_xfixes = TRUE;
 
     meta_verbose ("Attempted to init XFixes, found error base %d event base %d\n",
-                  display->xfixes_error_base, 
-                  display->xfixes_event_base);
+                  the_display->xfixes_error_base, 
+                  the_display->xfixes_event_base);
   }
 #else /* HAVE_COMPOSITE_EXTENSIONS */
   meta_verbose ("Not compiled with Composite support\n");
@@ -819,8 +812,8 @@ meta_display_open (void)
       
 #ifdef HAVE_XCURSOR
   {
-    XcursorSetTheme (display->xdisplay, meta_prefs_get_cursor_theme ());
-    XcursorSetDefaultSize (display->xdisplay, meta_prefs_get_cursor_size ());
+    XcursorSetTheme (the_display->xdisplay, meta_prefs_get_cursor_theme ());
+    XcursorSetDefaultSize (the_display->xdisplay, meta_prefs_get_cursor_size ());
   }
 #else /* HAVE_XCURSOR */
   meta_verbose ("Not compiled with Xcursor support\n");
@@ -839,30 +832,30 @@ meta_display_open (void)
      * this window, so we can't rely on it still being set later.  See bug
      * 354213 for details.
      */
-    display->leader_window =
-      meta_create_offscreen_window (display->xdisplay,
-                                    DefaultRootWindow (display->xdisplay),
+    the_display->leader_window =
+      meta_create_offscreen_window (the_display->xdisplay,
+                                    DefaultRootWindow (the_display->xdisplay),
                                     PropertyChangeMask);
 
-    meta_prop_set_utf8_string_hint (display,
-                                    display->leader_window,
-                                    display->atom_net_wm_name,
+    meta_prop_set_utf8_string_hint (the_display,
+                                    the_display->leader_window,
+                                    the_display->atom_net_wm_name,
                                     "Metacity");
     
-    meta_prop_set_utf8_string_hint (display,
-                                    display->leader_window,
-                                    display->atom_metacity_version,
+    meta_prop_set_utf8_string_hint (the_display,
+                                    the_display->leader_window,
+                                    the_display->atom_metacity_version,
                                     VERSION);
 
-    data[0] = display->leader_window;
-    XChangeProperty (display->xdisplay,
-                     display->leader_window,
-                     display->atom_net_supporting_wm_check,
+    data[0] = the_display->leader_window;
+    XChangeProperty (the_display->xdisplay,
+                     the_display->leader_window,
+                     the_display->atom_net_supporting_wm_check,
                      XA_WINDOW,
                      32, PropModeReplace, (guchar*) data, 1);
 
-    XWindowEvent (display->xdisplay,
-                  display->leader_window,
+    XWindowEvent (the_display->xdisplay,
+                  the_display->leader_window,
                   PropertyChangeMask,
                   &event);
 
@@ -871,22 +864,22 @@ meta_display_open (void)
     /* Make it painfully clear that we can't rely on PropertyNotify events on
      * this window, as per bug 354213.
      */
-    XSelectInput(display->xdisplay,
-                 display->leader_window,
+    XSelectInput(the_display->xdisplay,
+                 the_display->leader_window,
                  NoEventMask);
   }
 
   /* Make a little window used only for pinging the server for timestamps; note
    * that meta_create_offscreen_window already selects for PropertyChangeMask.
    */
-  display->timestamp_pinging_window =
-    meta_create_offscreen_window (display->xdisplay,
-                                  DefaultRootWindow (display->xdisplay),
+  the_display->timestamp_pinging_window =
+    meta_create_offscreen_window (the_display->xdisplay,
+                                  DefaultRootWindow (the_display->xdisplay),
                                   PropertyChangeMask);
 
-  display->last_focus_time = timestamp;
-  display->last_user_time = timestamp;
-  display->compositor = NULL;
+  the_display->last_focus_time = timestamp;
+  the_display->last_user_time = timestamp;
+  the_display->compositor = NULL;
   
   screens = NULL;
   
@@ -895,21 +888,21 @@ meta_display_open (void)
     {
       MetaScreen *screen;
 
-      screen = meta_screen_new (display, i, timestamp);
+      screen = meta_screen_new (the_display, i, timestamp);
 
       if (screen)
         screens = g_slist_prepend (screens, screen);
       ++i;
     }
   
-  display->screens = screens;
+  the_display->screens = screens;
   
   if (screens == NULL)
     {
       /* This would typically happen because all the screens already
        * have window managers.
        */
-      meta_display_close (display, timestamp);
+      meta_display_close (the_display, timestamp);
       return FALSE;
     }
 
@@ -917,12 +910,12 @@ meta_display_open (void)
      faster with the call to meta_screen_manage_all_windows further down 
      the code */
   if (meta_prefs_get_compositing_manager ())
-    enable_compositor (display, FALSE);
+    enable_compositor (the_display, FALSE);
    
-  meta_display_grab (display);
+  meta_display_grab (the_display);
   
   /* Now manage all existing windows */
-  tmp = display->screens;
+  tmp = the_display->screens;
   while (tmp != NULL)
     {
       MetaScreen *screen = tmp->data;
@@ -937,12 +930,12 @@ meta_display_open (void)
     int ret_to;
 
     /* kinda bogus because GetInputFocus has no possible errors */
-    meta_error_trap_push (display);
+    meta_error_trap_push (the_display);
 
     /* FIXME: This is totally broken; see comment 9 of bug 88194 about this */
     focus = None;
     ret_to = RevertToPointerRoot;
-    XGetInputFocus (display->xdisplay, &focus, &ret_to);
+    XGetInputFocus (the_display->xdisplay, &focus, &ret_to);
 
     /* Force a new FocusIn (does this work?) */
 
@@ -951,29 +944,29 @@ meta_display_open (void)
      */
     if (focus == None || focus == PointerRoot)
       /* Just focus the no_focus_window on the first screen */
-      meta_display_focus_the_no_focus_window (display,
-                                              display->screens->data,
+      meta_display_focus_the_no_focus_window (the_display,
+                                              the_display->screens->data,
                                               timestamp);
     else
       {
         MetaWindow * window;
-        window  = meta_display_lookup_x_window (display, focus);
+        window  = meta_display_lookup_x_window (the_display, focus);
         if (window)
-          meta_display_set_input_focus_window (display, window, FALSE, timestamp);
+          meta_display_set_input_focus_window (the_display, window, FALSE, timestamp);
         else
           /* Just focus the no_focus_window on the first screen */
-          meta_display_focus_the_no_focus_window (display,
-                                                  display->screens->data,
+          meta_display_focus_the_no_focus_window (the_display,
+                                                  the_display->screens->data,
                                                   timestamp);
       }
 
-    meta_error_trap_pop (display, FALSE);
+    meta_error_trap_pop (the_display, FALSE);
   }
   
-  meta_display_ungrab (display);  
+  meta_display_ungrab (the_display);  
 
   /* Done opening new display */
-  display->display_opening = FALSE;
+  the_display->display_opening = FALSE;
 
   return TRUE;
 }
@@ -1055,6 +1048,16 @@ meta_display_close (MetaDisplay *display,
 {
   GSList *tmp;
 
+  g_assert (display != NULL);
+
+  if (display->screens == NULL)
+    {
+      /* The display's already been closed. (We automatically
+       * close displays with no screens.
+       */
+      return;
+    }
+
   if (display->error_traps > 0)
     meta_bug ("Display closed with error traps pending\n");
 
@@ -1107,20 +1110,15 @@ meta_display_close (MetaDisplay *display,
   
   g_free (display->name);
 
-  all_displays = g_slist_remove (all_displays, display);
-
   meta_display_shutdown_keys (display);
 
   if (display->compositor)
     meta_compositor_destroy (display->compositor);
   
   g_free (display);
+  display = NULL;
 
-  if (all_displays == NULL)
-    {
-      meta_verbose ("Last display closed, exiting\n");
-      meta_quit (META_EXIT_SUCCESS);
-    }
+  meta_quit (META_EXIT_SUCCESS);
 }
 
 MetaScreen*
@@ -1218,21 +1216,22 @@ meta_display_ungrab (MetaDisplay *display)
                 display->server_grab_count);
 }
 
+/**
+ * Returns the singleton MetaDisplay if "xdisplay" matches the X display it's
+ * managing; otherwise gives a warning and returns NULL.  When we were claiming
+ * to be able to manage multiple displays, this was supposed to find the
+ * display out of the list which matched that display.  Now it's merely an
+ * extra sanity check.
+ *
+ * \param xdisplay  An X display
+ * \return  The singleton X display, or NULL if "xdisplay" isn't the one
+ *          we're managing.
+ */
 MetaDisplay*
 meta_display_for_x_display (Display *xdisplay)
 {
-  GSList *tmp;
-
-  tmp = all_displays;
-  while (tmp != NULL)
-    {
-      MetaDisplay *display = tmp->data;
-
-      if (display->xdisplay == xdisplay)
-        return display;
-
-      tmp = tmp->next;
-    }
+  if (the_display->xdisplay == xdisplay)
+    return the_display;
 
   meta_warning ("Could not find display for X display %p, probably going to crash\n",
                 xdisplay);
@@ -1240,10 +1239,16 @@ meta_display_for_x_display (Display *xdisplay)
   return NULL;
 }
 
-GSList*
-meta_displays_list (void)
+/**
+ * Accessor for the singleton MetaDisplay.
+ *
+ * \return  The only MetaDisplay there is.  This can be NULL, but only
+ *          during startup.
+ */
+MetaDisplay*
+meta_get_display (void)
 {
-  return all_displays;
+  return the_display;
 }
 
 #ifdef WITH_VERBOSE_MODE
@@ -4114,15 +4119,7 @@ meta_display_queue_retheme_all_windows (MetaDisplay *display)
 void
 meta_display_retheme_all (void)
 {
-  GSList *tmp;
-  
-  tmp = meta_displays_list ();
-  while (tmp != NULL)
-    {
-      MetaDisplay *display = tmp->data;
-      meta_display_queue_retheme_all_windows (display);
-      tmp = tmp->next;
-    }
+  meta_display_queue_retheme_all_windows (meta_get_display ());
 }
 
 void 
@@ -4130,28 +4127,23 @@ meta_display_set_cursor_theme (const char *theme,
 			       int         size)
 {
 #ifdef HAVE_XCURSOR     
-  GSList *tmp, *tmp2;
-  
-  tmp = meta_displays_list ();
+  GSList *tmp;
+
+  MetaDisplay *display = meta_get_display ();
+
+  XcursorSetTheme (display->xdisplay, theme);
+  XcursorSetDefaultSize (display->xdisplay, size);
+
+  tmp = display->screens;
   while (tmp != NULL)
     {
-      MetaDisplay *display = tmp->data;
-
-      XcursorSetTheme (display->xdisplay, theme);
-      XcursorSetDefaultSize (display->xdisplay, size);
-
-      tmp2 = display->screens;
-      while (tmp2 != NULL)
-	{
-	  MetaScreen *screen = tmp2->data;
+      MetaScreen *screen = tmp->data;
 	  	  
-	  meta_screen_update_cursor (screen);
+      meta_screen_update_cursor (screen);
 
-	  tmp2 = tmp2->next;
-	}
-      
       tmp = tmp->next;
     }
+
 #endif
 }
 
@@ -4188,17 +4180,9 @@ meta_set_syncing (gboolean setting)
 {
   if (setting != is_syncing)
     {
-      GSList *tmp;
-      
       is_syncing = setting;
 
-      tmp = meta_displays_list ();
-      while (tmp != NULL)
-        {
-          MetaDisplay *display = tmp->data;
-          XSynchronize (display->xdisplay, is_syncing);
-          tmp = tmp->next;
-        }
+      XSynchronize (meta_get_display ()->xdisplay, is_syncing);
     }
 }
 

@@ -478,24 +478,8 @@ main (int argc, char **argv)
   
   g_main_loop_run (meta_main_loop);
 
-  {
-    GSList *displays;
-    GSList *tmp;
-
-    /* we need a copy since closing the display removes it
-     * from the list
-     */
-    displays = g_slist_copy (meta_displays_list ());
-    tmp = displays;
-    while (tmp != NULL)
-      {
-        guint32 timestamp;
-        timestamp = CurrentTime; /* I doubt correct timestamps matter here */
-        meta_display_close (tmp->data, timestamp);
-        tmp = tmp->next;
-      }
-    g_slist_free (displays);
-  }
+  meta_display_close (meta_get_display (),
+                      CurrentTime); /* I doubt correct timestamps matter here */
 
   meta_session_shutdown ();
   

@@ -147,7 +147,8 @@ search_and_destroy_window (int    pid,
    * kill the window.
    */
   GSList *tmp;
-  gboolean found;
+  gboolean found = FALSE;
+  GSList *windows;
 
   if (xwindow == None)
     {
@@ -156,39 +157,31 @@ search_and_destroy_window (int    pid,
       return;
     }
 
-  found = FALSE;
-  tmp = meta_displays_list ();
+  windows = meta_display_list_windows (meta_get_display ());
+  tmp = windows;
+
   while (tmp != NULL)
     {
-      GSList *windows = meta_display_list_windows (tmp->data);
-      GSList *tmp2;
+      MetaWindow *w = tmp->data;
 
-      tmp2 = windows;
-      while (tmp2 != NULL)
+      if (w->dialog_pid == pid)
         {
-          MetaWindow *w = tmp2->data;
-
-          if (w->dialog_pid == pid)
+          if (w->xwindow != xwindow)
+            meta_topic (META_DEBUG_PING,
+                        "Dialog pid matches but not xwindow (0x%lx vs. 0x%lx)\n",
+                        w->xwindow, xwindow);
+          else
             {
-              if (w->xwindow != xwindow)
-                meta_topic (META_DEBUG_PING,
-                            "Dialog pid matches but not xwindow (0x%lx vs. 0x%lx)\n",
-                            w->xwindow, xwindow);
-              else
-                {
-                  meta_window_kill (w);
-                  found = TRUE;
-                }
+              meta_window_kill (w);
+              found = TRUE;
             }
-          
-          tmp2 = tmp2->next;
         }
-
-      g_slist_free (windows);
-      
+          
       tmp = tmp->next;
     }
 
+  g_slist_free (windows);
+  
   if (!found)
     meta_topic (META_DEBUG_PING,
                 "Did not find a window with dialog pid %d xwindow 0x%lx\n",
@@ -202,40 +195,30 @@ release_window_with_fd (int fd)
    * double check that it matches "xwindow", then
    * kill the window.
    */
-  GSList *tmp;
-  gboolean found;
-
-  found = FALSE;
+  gboolean found = FALSE;
   
-  tmp = meta_displays_list ();
+  GSList *windows = meta_display_list_windows (meta_get_display ());
+  GSList *tmp = windows;
+
   while (tmp != NULL)
     {
-      GSList *windows = meta_display_list_windows (tmp->data);
-      GSList *tmp2;
+      MetaWindow *w = tmp->data;
 
-      tmp2 = windows;
-      while (tmp2 != NULL)
+      if (w->dialog_pid >= 0 &&
+          w->dialog_pipe == fd)
         {
-          MetaWindow *w = tmp2->data;
-
-          if (w->dialog_pid >= 0 &&
-              w->dialog_pipe == fd)
-            {
-              meta_topic (META_DEBUG_PING,
-                          "Removing dialog with fd %d pid %d from window %s\n",
-                          fd, w->dialog_pid, w->desc);
-              meta_window_free_delete_dialog (w);
-              found = TRUE;
-            }
-          
-          tmp2 = tmp2->next;
+          meta_topic (META_DEBUG_PING,
+                      "Removing dialog with fd %d pid %d from window %s\n",
+                      fd, w->dialog_pid, w->desc);
+          meta_window_free_delete_dialog (w);
+          found = TRUE;
         }
-
-      g_slist_free (windows);
-      
+       
       tmp = tmp->next;
     }
 
+  g_slist_free (windows);
+      
   if (!found)
     meta_topic (META_DEBUG_PING,
                 "Did not find a window with a dialog pipe %d\n",

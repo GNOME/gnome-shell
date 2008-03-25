@@ -459,7 +459,7 @@ gboolean    meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
 GSList*     meta_display_list_windows        (MetaDisplay *display);
 
 MetaDisplay* meta_display_for_x_display  (Display     *xdisplay);
-GSList*      meta_displays_list          (void);
+MetaDisplay* meta_get_display            (void);
 
 Cursor         meta_display_create_x_cursor (MetaDisplay *display,
                                              MetaCursor   cursor);

@@ -807,8 +807,6 @@ save_state (void)
   char *metacity_dir;
   char *session_dir;
   FILE *outfile;
-  GSList *displays;
-  GSList *display_iter;
   
   g_assert (client_id);
 
@@ -864,126 +862,116 @@ save_state (void)
   fprintf (outfile, "<metacity_session id=\"%s\">\n",
            client_id);
   
-  displays = meta_displays_list ();
-  display_iter = displays;
-  while (display_iter != NULL)
+  GSList *windows = meta_display_list_windows (meta_get_display ());
+  GSList *tmp;
+  int stack_position = 0;
+      
+  windows = g_slist_sort (windows, meta_display_stack_cmp);
+  tmp = windows;
+  stack_position = 0;
+
+  while (tmp != NULL)
     {
-      GSList *windows;
-      GSList *tmp;
-      int stack_position;
-      
-      windows = meta_display_list_windows (display_iter->data);
-      windows = g_slist_sort (windows, meta_display_stack_cmp);
+      MetaWindow *window;
 
-      stack_position = 0;
-      tmp = windows;
-      while (tmp != NULL)
+      window = tmp->data;
+
+      if (window->sm_client_id)
         {
-          MetaWindow *window;
+          char *sm_client_id;
+          char *res_class;
+          char *res_name;
+          char *role;
+          char *title;
 
-          window = tmp->data;
-
-          if (window->sm_client_id)
-            {
-              char *sm_client_id;
-              char *res_class;
-              char *res_name;
-              char *role;
-              char *title;
-
-              /* client id, class, name, role are not expected to be
-               * in UTF-8 (I think they are in XPCS which is Latin-1?
-               * in practice they are always ascii though.)
-               */
+          /* client id, class, name, role are not expected to be
+           * in UTF-8 (I think they are in XPCS which is Latin-1?
+           * in practice they are always ascii though.)
+           */
               
-              sm_client_id = encode_text_as_utf8_markup (window->sm_client_id);
-              res_class = window->res_class ?
-                encode_text_as_utf8_markup (window->res_class) : NULL;
-              res_name = window->res_name ?
-                encode_text_as_utf8_markup (window->res_name) : NULL;
-              role = window->role ?
-                encode_text_as_utf8_markup (window->role) : NULL;
-              if (window->title)
-                title = g_markup_escape_text (window->title, -1);
-              else
-                title = NULL;
-              
-              meta_topic (META_DEBUG_SM, "Saving session managed window %s, client ID '%s'\n",
-                          window->desc, window->sm_client_id);
-
-              fprintf (outfile,
-                       "  <window id=\"%s\" class=\"%s\" name=\"%s\" title=\"%s\" role=\"%s\" type=\"%s\" stacking=\"%d\">\n",
-                       sm_client_id,
-                       res_class ? res_class : "",
-                       res_name ? res_name : "",
-                       title ? title : "",
-                       role ? role : "",
-                       window_type_to_string (window->type),
-                       stack_position);
-
-              g_free (sm_client_id);
-              g_free (res_class);
-              g_free (res_name);
-              g_free (role);
-              g_free (title);
-              
-              /* Sticky */
-              if (window->on_all_workspaces)
-                fputs ("    <sticky/>\n", outfile);
-
-              /* Minimized */
-              if (window->minimized)
-                fputs ("    <minimized/>\n", outfile);
-
-              /* Maximized */
-              if (META_WINDOW_MAXIMIZED (window))
-		{
-                  fprintf (outfile,
-                           "    <maximized saved_x=\"%d\" saved_y=\"%d\" saved_width=\"%d\" saved_height=\"%d\"/>\n", 
-                           window->saved_rect.x,
-                           window->saved_rect.y,
-                           window->saved_rect.width,
-                           window->saved_rect.height);
-		}
-              
-              /* Workspaces we're on */
-              {
-                int n;
-                n = meta_workspace_index (window->workspace);
-                fprintf (outfile,
-                         "    <workspace index=\"%d\"/>\n", n);
-              }
-
-              /* Gravity */
-              {
-                int x, y, w, h;
-                meta_window_get_geometry (window, &x, &y, &w, &h);
-
-                fprintf (outfile,
-                         "    <geometry x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" gravity=\"%s\"/>\n",
-                         x, y, w, h,
-                         meta_gravity_to_string (window->size_hints.win_gravity));
-              }
-              
-              fputs ("  </window>\n", outfile);
-            }
+          sm_client_id = encode_text_as_utf8_markup (window->sm_client_id);
+          res_class = window->res_class ?
+            encode_text_as_utf8_markup (window->res_class) : NULL;
+          res_name = window->res_name ?
+            encode_text_as_utf8_markup (window->res_name) : NULL;
+          role = window->role ?
+            encode_text_as_utf8_markup (window->role) : NULL;
+          if (window->title)
+            title = g_markup_escape_text (window->title, -1);
           else
-            {
-              meta_topic (META_DEBUG_SM, "Not saving window '%s', not session managed\n",
-                          window->desc);
-            }
-          
-          tmp = tmp->next;
-          ++stack_position;
-        }
-      
-      g_slist_free (windows);
+            title = NULL;
+              
+          meta_topic (META_DEBUG_SM, "Saving session managed window %s, client ID '%s'\n",
+                      window->desc, window->sm_client_id);
 
-      display_iter = display_iter->next;
+          fprintf (outfile,
+                   "  <window id=\"%s\" class=\"%s\" name=\"%s\" title=\"%s\" role=\"%s\" type=\"%s\" stacking=\"%d\">\n",
+                   sm_client_id,
+                   res_class ? res_class : "",
+                   res_name ? res_name : "",
+                   title ? title : "",
+                   role ? role : "",
+                   window_type_to_string (window->type),
+                   stack_position);
+
+          g_free (sm_client_id);
+          g_free (res_class);
+          g_free (res_name);
+          g_free (role);
+          g_free (title);
+              
+          /* Sticky */
+          if (window->on_all_workspaces)
+            fputs ("    <sticky/>\n", outfile);
+
+          /* Minimized */
+          if (window->minimized)
+            fputs ("    <minimized/>\n", outfile);
+
+          /* Maximized */
+          if (META_WINDOW_MAXIMIZED (window))
+            {
+              fprintf (outfile,
+                       "    <maximized saved_x=\"%d\" saved_y=\"%d\" saved_width=\"%d\" saved_height=\"%d\"/>\n", 
+                       window->saved_rect.x,
+                       window->saved_rect.y,
+                       window->saved_rect.width,
+                       window->saved_rect.height);
+            }
+              
+          /* Workspaces we're on */
+          {
+            int n;
+            n = meta_workspace_index (window->workspace);
+            fprintf (outfile,
+                     "    <workspace index=\"%d\"/>\n", n);
+          }
+
+          /* Gravity */
+          {
+            int x, y, w, h;
+            meta_window_get_geometry (window, &x, &y, &w, &h);
+            
+            fprintf (outfile,
+                     "    <geometry x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" gravity=\"%s\"/>\n",
+                     x, y, w, h,
+                     meta_gravity_to_string (window->size_hints.win_gravity));
+          }
+              
+          fputs ("  </window>\n", outfile);
+        }
+      else
+        {
+          meta_topic (META_DEBUG_SM, "Not saving window '%s', not session managed\n",
+                      window->desc);
+        }
+          
+      tmp = tmp->next;
+      ++stack_position;
     }
-  /* don't need to free displays */
-  displays = NULL;
-  
+      
+  g_slist_free (windows);
+
   fputs ("</metacity_session>\n", outfile);
   
  out:
@@ -1760,8 +1748,6 @@ io_from_warning_dialog (GIOChannel   *channel,
 static void
 warn_about_lame_clients_and_finish_interact (gboolean shutdown)
 {
-  GSList *displays;
-  GSList *display_iter;  
   GSList *lame;
   char **argv;
   int i;
@@ -1776,34 +1762,26 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   char timestampbuf[32];
   
   lame = NULL;
-  displays = meta_displays_list ();
-  display_iter = displays;
-  while (display_iter != NULL)
+  GSList *windows = meta_display_list_windows (meta_get_display ());
+  tmp = windows;
+  while (tmp != NULL)
     {
-      GSList *windows;
-
-      windows = meta_display_list_windows (display_iter->data);
-      tmp = windows;
-      while (tmp != NULL)
-        {
-          MetaWindow *window;
-
-          window = tmp->data;
-
-          /* only complain about normal windows, the others
-           * are kind of dumb to worry about
-           */
-          if (window->sm_client_id == NULL &&
-              window->type == META_WINDOW_NORMAL)
-            lame = g_slist_prepend (lame, window);
+      MetaWindow *window;
           
-          tmp = tmp->next;
-        }
-      
-      g_slist_free (windows);
+      window = tmp->data;
 
-      display_iter = display_iter->next;
+      /* only complain about normal windows, the others
+       * are kind of dumb to worry about
+       */
+      if (window->sm_client_id == NULL &&
+          window->type == META_WINDOW_NORMAL)
+        lame = g_slist_prepend (lame, window);
+          
+      tmp = tmp->next;
     }
+      
+  g_slist_free (windows);
+  
   if (lame == NULL)
     {
       /* No lame apps. */
@@ -1813,11 +1791,8 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   
   lame = g_slist_sort (lame, (GCompareFunc) windows_cmp_by_title);
 
-  timestamp = meta_display_get_current_time_roundtrip (displays->data);  
+  timestamp = meta_display_get_current_time_roundtrip (meta_get_display ());
   sprintf (timestampbuf, "%u", timestamp);
-
-  /* don't need to free displays */
-  displays = NULL;
 
   len = g_slist_length (lame);
   len *= 2; /* titles and also classes */
