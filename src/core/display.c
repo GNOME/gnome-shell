@@ -1798,8 +1798,10 @@ event_callback (XEvent   *event,
                           "Syncing to old stack positions.\n");
               screen = 
                 meta_display_screen_for_root (display, event->xany.window);
-              meta_stack_set_positions (screen->stack,
-                                        display->grab_old_window_stacking);
+
+              if (screen!=NULL)
+                meta_stack_set_positions (screen->stack,
+                                          display->grab_old_window_stacking);
             }
           meta_display_end_grab_op (display,
                                     event->xbutton.time);
@@ -1988,16 +1990,15 @@ event_callback (XEvent   *event,
        * screen; this will make keybindings and workspace-launched items
        * actually appear on the right screen.
        */
-      if (display->active_screen != 
-          meta_display_screen_for_root (display, event->xcrossing.root))
-        {
-          MetaScreen *new_screen;
-          new_screen = meta_display_screen_for_root (display, 
-                                                     event->xcrossing.root);
+      {
+        MetaScreen *new_screen = 
+          meta_display_screen_for_root (display, event->xcrossing.root);
+
+        if (new_screen != NULL && display->active_screen != new_screen)
           meta_workspace_focus_default_window (new_screen->active_workspace, 
                                                NULL,
                                                event->xcrossing.time);
-        }
+      }
 
       /* Check if we've entered a window; do this even if window->has_focus to
        * avoid races.
