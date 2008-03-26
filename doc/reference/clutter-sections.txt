@@ -1006,6 +1006,12 @@ clutter_x11_remove_filter
 </SECTION>
 
 <SECTION>
+<FILE>clutter-win32</FILE>
+<TITLE>Win32 Specific Support</TITLE>
+clutter_win32_get_stage_window
+</SECTION>
+
+<SECTION>
 <FILE>clutter-version</FILE>
 <TITLE>Versioning Macros</TITLE>
 CLUTTER_MAJOR_VERSION

@@ -23,6 +23,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-win32
+ * @short_description: Win32 specific API
+ *
+ * The Win32 backend for Clutter provides some specific API, allowing
+ * integration with the Win32 API for embedding and manipulating the
+ * stage window.
+ *
+ * The ClutterWin32 API is available since Clutter 0.8
+ */
+
 #ifndef __CLUTTER_WIN32_H__
 #define __CLUTTER_WIN32_H__
 

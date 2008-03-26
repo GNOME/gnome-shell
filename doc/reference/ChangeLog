@@ -1,3 +1,13 @@
+2008-03-26  Neil Roberts  <neil@o-hand.com>
+
+	* clutter-sections.txt: Added a section for the Win32 specific
+	API.
+
+	* clutter-docs.sgml: Added comments about the Win32 backend.
+
+	* Makefile.am: Added bits to ignore the headers for the Win32
+	backend.
+
 2008-03-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-section.txt: Update after API change in ClutterScore.

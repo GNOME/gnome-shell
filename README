@@ -10,7 +10,7 @@ Clutter currently requires:
   * GdkPixbuf
   * Pango >= 1.18
   * OpenGL >= 1.2 or OpenGL ES 1.1
-  * GLX, SDL or an EGL Implementation
+  * GLX, SDL, WGL or an EGL Implementation
 
 The official website is:                
    http://www.clutter-project.org
@@ -53,7 +53,7 @@ See the INSTALL file. Info on specific Clutter options;
 	Assume target hardware has no floating point unit. Useful only
 	for embedded targets such as ARM.
 
-  --with-flavour=[glx/eglx/eglnative/sdl/osx]
+  --with-flavour=[glx/eglx/eglnative/sdl/osx/win32]
         Select the Clutter backend: (default=glx)
 
 	  glx:  Fully featured GLX backend. Using Open GL.
@@ -70,6 +70,9 @@ See the INSTALL file. Info on specific Clutter options;
 	        to Windows and possibly other OS's. (experimental)
 
           osx:  OS X backend. (experimental)
+
+          win32:
+                Windows WGL backend
 
 
 VERSIONING
@@ -142,6 +145,8 @@ wanting to port to newer releases (See NEWS for general new feature info).
 
 Release Notes for Clutter 0.8
 -------------------------------
+* There is now an experimental native Win32 WGL backend.
+
 * Some more focused timeline unit tests have been added and some tweaks to
   timeline semantics were made; E.g. For a 10 frame timeline here are some
   points about the semantics:

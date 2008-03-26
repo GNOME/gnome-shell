@@ -585,7 +585,7 @@ clutter_stage_win32_init (ClutterStageWin32 *stage)
  * clutter_win32_get_stage_window:
  * @stage: a #ClutterStage
  *
- * Gets the stages window handle
+ * Gets the stage's window handle
  *
  * Return value: An HWND for the stage window.
  *

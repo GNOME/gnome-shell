@@ -47,7 +47,8 @@ FIXXREF_OPTIONS=\
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
 HFILE_GLOB=$(top_srcdir)/clutter/*.h \
-	$(top_srcdir)/clutter/x11/clutter-x11.h
+	$(top_srcdir)/clutter/x11/clutter-x11.h \
+	$(top_srcdir)/clutter/win32/clutter-win32.h
 CFILE_GLOB=$(top_srcdir)/clutter/*.c
 
 # Header files to ignore when scanning.
@@ -75,10 +76,12 @@ IGNORE_HFILES=\
 	x11 \
 	json \
 	pango \
-	sdl
+	sdl \
+	win32
 
 EXTRA_HFILES=\
-        ../../clutter/x11/clutter-x11.h
+        ../../clutter/x11/clutter-x11.h \
+	../../clutter/win32/clutter-win32.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png

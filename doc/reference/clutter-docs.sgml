@@ -147,7 +147,7 @@
           </listitem>
           <term>Backend Windowing System Library</term>
           <listitem>
-            <para>GLX, EGL (1.1), SDL and Cocoa (OS X)</para>
+            <para>GLX, EGL (1.1), SDL, Cocoa (OS X) and WGL (Windows)</para>
           </listitem>
           <term>Graphics Rendering </term>
           <listitem>
@@ -260,7 +260,20 @@
             will need to first install the required dependencies.
             </para>
             <para>
-            Clutter on Windows currently uses the SDL backend for windowing
+            There are currently two backends that are supported on
+            Windows. One uses the Win32 and WGL APIs directly and the
+            other is built on top of SDL. You must choose one of the
+            backends when running the configure script using the
+            following argument:
+            <variablelist>
+              <varlistentry>
+                <term>--with-flavour=[win32/sdl]</term>
+                <listitem>
+                  <para>Select the Clutter backend; default=glx.
+                  </para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
             </para>
       </section>
 
@@ -410,7 +423,7 @@
 
     <xi:include href="xml/clutter-backend.xml"/>
     <xi:include href="xml/clutter-x11.xml"/>
-
+    <xi:include href="xml/clutter-win32.xml"/>
   </part>
 
   <part>
