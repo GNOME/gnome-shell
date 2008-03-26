@@ -1,3 +1,10 @@
+2008-03-26  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/win32/clutter-event-win32.c (clutter_event_check):
+	Removed the pointless parameter in the call to check_msg_pending.
+	(check_msg_pending): Fixed to use PeekMessageW instead of
+	PeekMessage.
+	
 2008-03-25  Neil Roberts  <neil@o-hand.com>
 
 	Added a native Win32 WGL backend.

@@ -177,7 +177,7 @@ check_msg_pending ()
 {
   MSG msg;
 
-  return PeekMessage (&msg, NULL, 0, 0, PM_NOREMOVE) ? TRUE : FALSE;
+  return PeekMessageW (&msg, NULL, 0, 0, PM_NOREMOVE) ? TRUE : FALSE;
 }
 
 static ClutterModifierType
@@ -232,13 +232,12 @@ static gboolean
 clutter_event_check (GSource *source)
 {
   ClutterEventSource *event_source = (ClutterEventSource *) source;
-  ClutterBackend *backend = event_source->backend;
   gboolean retval;
 
   clutter_threads_enter ();
 
   if ((event_source->event_poll_fd.revents & G_IO_IN))
-    retval = (clutter_events_pending () || check_msg_pending (backend));
+    retval = (clutter_events_pending () || check_msg_pending ());
   else
     retval = FALSE;
 
