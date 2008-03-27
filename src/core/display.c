@@ -1050,11 +1050,9 @@ meta_display_close (MetaDisplay *display,
 
   g_assert (display != NULL);
 
-  if (display->screens == NULL)
+  if (display->closing != 0)
     {
-      /* The display's already been closed. (We automatically
-       * close displays with no screens.
-       */
+      /* The display's already been closed. */
       return;
     }
 
