@@ -812,10 +812,20 @@ save_state (void)
 
   outfile = NULL;
   
-  metacity_dir = g_strconcat (g_get_home_dir (), "/.metacity",
+  /*
+   * g_get_user_config_dir() is guaranteed to return an existing directory.
+   * Eventually, if SM stays with the WM, I'd like to make this
+   * something like <config>/window_placement in a standard format.
+   * Future optimisers should note also that by the time we get here
+   * we probably already have full_save_path figured out and therefore
+   * can just use the directory name from that.
+   */
+  metacity_dir = g_strconcat (g_get_user_config_dir (),
+                              G_DIR_SEPARATOR_S "metacity",
                               NULL);
   
-  session_dir = g_strconcat (metacity_dir, "/sessions",
+  session_dir = g_strconcat (metacity_dir,
+                             G_DIR_SEPARATOR_S "sessions",
                              NULL);
 
   if (mkdir (metacity_dir, 0700) < 0 &&
@@ -1049,8 +1059,9 @@ load_state (const char *previous_save_file)
   gsize length;
   char *session_file;
 
-  session_file = g_strconcat (g_get_home_dir (),
-                              "/.metacity/sessions/",
+  session_file = g_strconcat (g_get_user_config_dir (),
+                              G_DIR_SEPARATOR_S "metacity"
+                              G_DIR_SEPARATOR_S "sessions" G_DIR_SEPARATOR_S,
                               previous_save_file,
                               NULL);
 
@@ -1060,11 +1071,32 @@ load_state (const char *previous_save_file)
                             &length,
                             &error))
     {
-      meta_warning (_("Failed to read saved session file %s: %s\n"),
-                    session_file, error->message);
-      g_error_free (error);
-      g_free (session_file);
-      return NULL;
+      char *canonical_session_file = session_file;
+
+      /* Maybe they were doing it the old way, with ~/.metacity */
+      session_file = g_strconcat (g_get_home_dir (),
+                                  G_DIR_SEPARATOR_S ".metacity"
+                                  G_DIR_SEPARATOR_S "sessions"
+                                  G_DIR_SEPARATOR_S,
+                                  previous_save_file,
+                                  NULL);
+      
+      if (!g_file_get_contents (session_file,
+                                &text,
+                                &length,
+                                NULL))
+        {
+          /* oh, just give up */
+
+          meta_warning (_("Failed to read saved session file %s: %s\n"),
+                    canonical_session_file, error->message);
+          g_error_free (error);
+          g_free (session_file);
+          g_free (canonical_session_file);
+          return NULL;
+        }
+
+      g_free (canonical_session_file);
     }
 
   meta_topic (META_DEBUG_SM, "Parsing saved session file %s\n", session_file);
@@ -1666,8 +1698,9 @@ regenerate_save_file (void)
   g_free (full_save_path);
 
   if (client_id)
-    full_save_path = g_strconcat (g_get_home_dir (),
-                                  "/.metacity/sessions/",
+    full_save_path = g_strconcat (g_get_user_config_dir (),
+                                  G_DIR_SEPARATOR_S "metacity"
+                                  G_DIR_SEPARATOR_S "sessions" G_DIR_SEPARATOR_S,
                                   client_id,
                                   ".ms",
                                   NULL);

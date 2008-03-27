@@ -1,5 +1,11 @@
 2008-03-27  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/session.c (regenerate_save_file, save_state, load_state):
+        files are saved in ~/.config/metacity/sessions and checked for there
+        and in ~/.metacity/sessions.  Fixes #518596.
+
+2008-03-27  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/display.c (meta_display_close): fix regression
         where Metacity sometimes wouldn't quit when replaced
 
