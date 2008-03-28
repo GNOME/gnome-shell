@@ -487,6 +487,8 @@ gboolean clutter_actor_is_scaled                      (ClutterActor   *self);
 void     clutter_actor_box_get_from_vertices          (ClutterVertex    vtx[4],
 				                       ClutterActorBox *box);
 
+ClutterActor* clutter_actor_get_stage                 (ClutterActor *actor);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_ACTOR_H */

@@ -95,14 +95,6 @@ clutter_backend_init (ClutterBackend *backend)
   priv->resolution = -1.0;
 }
 
-ClutterActor *
-_clutter_backend_get_stage (ClutterBackend *backend)
-{
-  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), NULL);
-
-  return CLUTTER_BACKEND_GET_CLASS (backend)->get_stage (backend);
-}
-
 void
 _clutter_backend_add_options (ClutterBackend *backend,
                               GOptionGroup   *group)
@@ -146,30 +138,64 @@ _clutter_backend_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
-gboolean
-_clutter_backend_init_stage (ClutterBackend  *backend,
-                             GError         **error)
+ClutterActor*
+_clutter_backend_create_stage (ClutterBackend  *backend,
+                               GError         **error)
 {
+  ClutterMainContext  *context;
   ClutterBackendClass *klass;
+  ClutterActor        *stage = NULL;
 
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
 
-  klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (klass->init_stage)
-    return klass->init_stage (backend, error);
+  context = clutter_context_get_default ();
 
-  return TRUE;
+  if (!context->stage_manager)
+    context->stage_manager = clutter_stage_manager_get_default ();
+
+  klass = CLUTTER_BACKEND_GET_CLASS (backend);
+  if (klass->create_stage)
+    stage = klass->create_stage (backend, error);
+
+  if (!stage)
+    return NULL;
+
+  _clutter_stage_manager_add_stage (context->stage_manager, 
+                                    CLUTTER_STAGE(stage));
+  return stage;
 }
 
 void
-_clutter_backend_redraw (ClutterBackend *backend)
+_clutter_backend_redraw (ClutterBackend *backend, ClutterStage *stage)
 {
   ClutterBackendClass *klass;
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (G_LIKELY(klass->redraw))
-    klass->redraw (backend);
+    klass->redraw (backend, stage);
 }
+
+void
+_clutter_backend_ensure_context (ClutterBackend *backend, ClutterStage *stage)
+{
+  ClutterBackendClass *klass;
+  static ClutterStage *current_context_stage = NULL;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  if (stage != current_context_stage)
+    {
+     klass = CLUTTER_BACKEND_GET_CLASS (backend);
+      if (G_LIKELY(klass->ensure_context))
+        klass->ensure_context (backend, stage);
+
+      current_context_stage = stage;
+
+      CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+    }
+}
+
 
 ClutterFeatureFlags
 _clutter_backend_get_features (ClutterBackend *backend)

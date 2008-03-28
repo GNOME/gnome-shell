@@ -198,6 +198,8 @@ struct _ClutterActorPrivate
   ClutterFixed    scale_y;
 
   ShaderData     *shader_data;
+
+  ClutterStage   *stage;
 };
 
 enum
@@ -278,21 +280,6 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
 
 
 
-static gboolean
-redraw_update_idle (gpointer data)
-{
-  ClutterMainContext *ctx = CLUTTER_CONTEXT();
-
-  if (ctx->update_idle)
-    {
-      g_source_remove (ctx->update_idle);
-      ctx->update_idle = 0;
-    }
-
-  clutter_redraw ();
-
-  return FALSE;
-}
 
 static void
 clutter_actor_real_show (ClutterActor *self)
@@ -423,7 +410,7 @@ clutter_actor_hide_all (ClutterActor *self)
 void
 clutter_actor_realize (ClutterActor *self)
 {
-  ClutterActorClass *klass;
+  ClutterActorClass   *klass;
 
   if (CLUTTER_ACTOR_IS_REALIZED (self))
     return;
@@ -447,6 +434,9 @@ void
 clutter_actor_unrealize (ClutterActor *self)
 {
   ClutterActorClass *klass;
+  ClutterActorPrivate *priv;
+
+  priv = self->priv;
 
   if (!CLUTTER_ACTOR_IS_REALIZED (self))
     return;
@@ -457,6 +447,8 @@ clutter_actor_unrealize (ClutterActor *self)
 
   if (klass->unrealize)
     (klass->unrealize) (self);
+
+  priv->stage = NULL;
 }
 
 static void
@@ -910,7 +902,15 @@ clutter_actor_get_relative_vertices (ClutterActor  *self,
    * Simply duping code for now in wait for Cogl cleanup that can hopefully
    * address this in a nicer way.
   */
-  stage = clutter_stage_get_default ();
+  stage = clutter_actor_get_stage (self);
+
+  /* FIXME: if were not yet added to a stage, its probably unsafe to
+   * return default - idealy the func should fail. 
+  */
+  if (stage == NULL)
+    stage = clutter_stage_get_default ();
+
+  clutter_stage_ensure_current (CLUTTER_STAGE(stage));
 
   if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
     {
@@ -991,7 +991,15 @@ clutter_actor_get_vertices (ClutterActor  *self,
    * Simply duping code for now in wait for Cogl cleanup that can hopefully
    * address this in a nicer way.
   */
-  stage = clutter_stage_get_default ();
+  stage = clutter_actor_get_stage (self);
+
+  /* FIXME: if were not yet added to a stage, its probably unsafe to
+   * return default - idealy the func should fail. 
+  */
+  if (stage == NULL)
+    stage = clutter_stage_get_default ();
+
+  clutter_stage_ensure_current (CLUTTER_STAGE(stage));
 
   if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
     {
@@ -1146,7 +1154,7 @@ static void
 _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
 						    ClutterActor *ancestor)
 {
-  ClutterActor * parent;
+  ClutterActor *parent, *stage;
 
   parent = clutter_actor_get_parent (self);
 
@@ -1158,10 +1166,18 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
   if (self == ancestor)
     return;
 
+  stage = clutter_actor_get_stage (self);
+
+  /* FIXME: if were not yet added to a stage, its probably unsafe to
+   * return default - idealy the func should fail. 
+  */
+  if (stage == NULL)
+    stage = clutter_stage_get_default ();
+
   if (parent)
     _clutter_actor_apply_modelview_transform_recursive (parent, ancestor);
-  else if (self != clutter_stage_get_default ())
-    _clutter_actor_apply_modelview_transform (clutter_stage_get_default());
+  else if (self != stage)
+    _clutter_actor_apply_modelview_transform (stage);
 
   _clutter_actor_apply_modelview_transform (self);
 }
@@ -2352,14 +2368,6 @@ clutter_actor_destroy (ClutterActor *self)
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
-    {
-      g_warning ("Calling clutter_actor_destroy() on an actor of type `%s' "
-                 "is not possible. This is usually an application bug.",
-                 g_type_name (G_OBJECT_TYPE (self)));
-      return;
-    }
-
   priv = self->priv;
 
   if (priv->parent_actor)
@@ -2395,17 +2403,13 @@ clutter_actor_destroy (ClutterActor *self)
 void
 clutter_actor_queue_redraw (ClutterActor *self)
 {
-  ClutterMainContext *ctx = CLUTTER_CONTEXT();
+  ClutterActor *stage;
 
-  if (!ctx->update_idle)
-    {
-      CLUTTER_TIMESTAMP (SCHEDULER, "Adding idle source for actor: %p", self);
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-      ctx->update_idle =
-        clutter_threads_add_idle_full (G_PRIORITY_DEFAULT + 10,
-                                       redraw_update_idle,
-                                       NULL, NULL);
-    }
+  /* FIXME: should we check we're visible here? */
+  if ((stage = clutter_actor_get_stage (self)) != NULL)
+    clutter_stage_queue_redraw (CLUTTER_STAGE(stage));
 }
 
 /**
@@ -5727,4 +5731,15 @@ clutter_actor_get_box_from_vertices (ClutterVertex    vtx[4],
   box->x2 = x_2;
   box->y1 = y_1;
   box->y2 = y_2;
+}
+
+ClutterActor*
+clutter_actor_get_stage (ClutterActor *actor)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
+
+  while (actor && !(CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL))
+    actor = clutter_actor_get_parent (actor);
+
+  return actor;
 }

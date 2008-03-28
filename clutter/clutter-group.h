@@ -27,6 +27,7 @@
 #define __CLUTTER_GROUP_H__
 
 #include <glib-object.h>
+#include <clutter/clutter-types.h>
 #include <clutter/clutter-actor.h>
 
 G_BEGIN_DECLS

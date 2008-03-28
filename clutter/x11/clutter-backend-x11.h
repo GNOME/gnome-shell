@@ -53,9 +53,6 @@ struct _ClutterBackendX11
 {
   ClutterBackend parent_instance;
 
-  /* main stage singleton */
-  ClutterActor *stage;
-
   Display *xdpy;
   Window   xwin_root;
   Screen  *xscreen;

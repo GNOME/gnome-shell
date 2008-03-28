@@ -82,6 +82,7 @@ static const GDebugKey clutter_debug_keys[] = {
   { "scheduler", CLUTTER_DEBUG_SCHEDULER },
   { "script", CLUTTER_DEBUG_SCRIPT },
   { "shader", CLUTTER_DEBUG_SHADER },
+  { "multistage", CLUTTER_DEBUG_MULTISTAGE },
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
@@ -111,22 +112,21 @@ clutter_get_show_fps (void)
  * function, but queue a redraw using clutter_actor_queue_redraw().
  */
 void
-clutter_redraw (void)
+clutter_redraw (ClutterStage *stage)
 {
   ClutterMainContext *ctx;
-  ClutterActor       *stage;
   static GTimer      *timer = NULL;
   static guint        timer_n_frames = 0;
 
   ctx  = clutter_context_get_default ();
 
-  stage = _clutter_backend_get_stage (ctx->backend);
+  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw start for stage:%p", stage);
+  CLUTTER_NOTE (PAINT, " Redraw enter for stage:%p", stage);
+  CLUTTER_NOTE (MULTISTAGE, "redraw called for stage:%p", stage);
 
-  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw start");
+  _clutter_backend_ensure_context (ctx->backend, stage);
 
-  CLUTTER_NOTE (PAINT, " Redraw enter");
-
-  /* Setup FPS count */
+  /* Setup FPS count - not currently across *all* stages rather than per */
   if (clutter_get_show_fps ())
     {
       if (!timer)
@@ -142,8 +142,8 @@ clutter_redraw (void)
 
       clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
 
-      cogl_setup_viewport (clutter_actor_get_width (stage),
-			   clutter_actor_get_height (stage),
+      cogl_setup_viewport (clutter_actor_get_width (CLUTTER_ACTOR(stage)),
+			   clutter_actor_get_height (CLUTTER_ACTOR(stage)),
 			   perspective.fovy,
 			   perspective.aspect,
 			   perspective.z_near,
@@ -156,7 +156,7 @@ clutter_redraw (void)
    * the stage. It will likely need to swap buffers, vblank sync etc
    * which will be windowing system dependant.
   */
-  _clutter_backend_redraw (ctx->backend);
+  _clutter_backend_redraw (ctx->backend, stage);
 
   /* Complete FPS info */
   if (clutter_get_show_fps ())
@@ -171,9 +171,8 @@ clutter_redraw (void)
 	}
     }
 
-  CLUTTER_NOTE (PAINT, " Redraw leave");
-
-  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finish");
+  CLUTTER_NOTE (PAINT, " Redraw leave for stage:%p", stage);
+  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finish for stage:%p", stage);
 }
 
 /**
@@ -233,6 +232,27 @@ _clutter_do_pick (ClutterStage   *stage,
 
   context = clutter_context_get_default ();
 
+  _clutter_backend_ensure_context (context->backend, stage);
+
+  /* FIXME: needed for when a context switch happens - probably
+   * should put into its own function somewhere..
+  */
+  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
+    {
+      ClutterPerspective perspective;
+
+      clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
+
+      cogl_setup_viewport (clutter_actor_get_width (CLUTTER_ACTOR(stage)),
+			   clutter_actor_get_height (CLUTTER_ACTOR(stage)),
+			   perspective.fovy,
+			   perspective.aspect,
+			   perspective.z_near,
+			   perspective.z_far);
+
+      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+    }
+
   cogl_paint_init (&white);
   cogl_enable (0);
 
@@ -259,7 +279,7 @@ _clutter_do_pick (ClutterStage   *stage,
   glReadPixels(x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
-    return CLUTTER_ACTOR (stage);
+      return CLUTTER_ACTOR (stage);
 
   cogl_get_bitmasks (&r, &g, &b, NULL);
 
@@ -969,6 +989,7 @@ clutter_init_with_args (int            *argc,
   GOptionGroup *group;
   gboolean res;
   GError *stage_error;
+  ClutterActor *stage;
 
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
@@ -998,7 +1019,10 @@ clutter_init_with_args (int            *argc,
   clutter_context = clutter_context_get_default ();
 
   stage_error = NULL;
-  if (!_clutter_backend_init_stage (clutter_context->backend, &stage_error))
+  stage = _clutter_backend_create_stage (clutter_context->backend, 
+                                         &stage_error);
+
+  if (!stage)
     {
       g_propagate_error (error, stage_error);
       return CLUTTER_INIT_ERROR_INTERNAL;
@@ -1064,6 +1088,7 @@ clutter_init (int    *argc,
               char ***argv)
 {
   ClutterMainContext *context;
+  ClutterActor *stage;
   GError *stage_error;
 
   if (clutter_is_initialized)
@@ -1091,7 +1116,10 @@ clutter_init (int    *argc,
 
   /* Stage will give us a GL Context etc */
   stage_error = NULL;
-  if (!_clutter_backend_init_stage (context->backend, &stage_error))
+
+  stage = _clutter_backend_create_stage (context->backend, &stage_error);
+
+  if (!stage)
     {
       CLUTTER_NOTE (MISC, "stage failed to initialise.");
       g_critical (stage_error->message);
@@ -1165,7 +1193,9 @@ event_click_count_generate (ClutterEvent *event)
             previous_button_number = event->button.button;
           }
 
-        /* store time and position for this click for comparison with next event */
+        /* store time and position for this click for comparison with
+         * next event 
+         */
         previous_time = event->button.time;
         previous_x    = event->button.x;
         previous_y    = event->button.y;
@@ -1301,6 +1331,7 @@ generate_enter_leave_events (ClutterEvent *event)
               cev.crossing.x       = event->motion.x;
               cev.crossing.y       = event->motion.y;
               cev.crossing.source  = context->motion_last_actor;
+              cev.crossing.stage   = event->any.stage;
               /* unref in free  */
               cev.crossing.related = motion_current_actor;
 
@@ -1314,6 +1345,7 @@ generate_enter_leave_events (ClutterEvent *event)
           cev.crossing.x       = event->motion.x;
           cev.crossing.y       = event->motion.y;
           cev.crossing.source  = motion_current_actor;
+          cev.crossing.stage   = event->any.stage;
 
           if (context->motion_last_actor)
             cev.crossing.related = context->motion_last_actor;
@@ -1371,7 +1403,7 @@ clutter_do_event (ClutterEvent *event)
 
   context = clutter_context_get_default ();
   backend = context->backend;
-  stage   = _clutter_backend_get_stage (backend);
+  stage   = CLUTTER_ACTOR(event->any.stage);
 
   if (!stage)
     return;
@@ -1394,7 +1426,13 @@ clutter_do_event (ClutterEvent *event)
         event->any.source = stage;
         /* the stage did not handle the event, so we just quit */
         if (!clutter_stage_event (CLUTTER_STAGE (stage), event))
-          clutter_main_quit ();
+          {
+            if (stage == clutter_stage_get_default())
+              clutter_main_quit ();
+            else
+              clutter_actor_destroy (stage);
+          }
+        
         break;
 
       case CLUTTER_KEY_PRESS:

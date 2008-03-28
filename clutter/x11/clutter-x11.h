@@ -101,6 +101,8 @@ ClutterX11FilterReturn clutter_x11_handle_event (XEvent *xevent);
 
 void         clutter_x11_disable_event_retrieval (void);
 
+ClutterStage *clutter_x11_get_stage_from_window (Window win);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_X11_H__ */

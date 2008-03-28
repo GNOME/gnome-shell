@@ -40,6 +40,7 @@
 
 #include <pango/pangoft2.h>
 
+#include "clutter-stage-manager.h"
 #include "clutter-event.h"
 #include "clutter-backend.h"
 #include "clutter-stage.h"
@@ -72,28 +73,33 @@ struct _ClutterMainContext
 {
   ClutterBackend  *backend;            /* holds a pointer to the windowing 
                                           system backend */
+  ClutterStageManager *stage_manager;  /* stages */
   GQueue          *events_queue;       /* the main event queue */
   PangoFT2FontMap *font_map;
-  guint            update_idle;	       /* repaint idler id */
   
   guint            is_initialized : 1;  
   GTimer          *timer;	       /* Used for debugging scheduler */
 
   ClutterPickMode  pick_mode;          /* Indicates pick render mode   */
-  guint            motion_events_per_actor : 1;/* set for enter/leave events */
+
+  guint            motion_events_per_actor : 1;/* set f
+or enter/leave events */
+
   guint            motion_frequency;   /* Motion events per second */
   gint             num_reactives;      /* Num of reactive actors */
 
-  ClutterIDPool   *id_pool;            /* mapping between reused integer ids and actors */
-
+  ClutterIDPool   *id_pool;            /* mapping between reused integer ids 
+                                        * and actors 
+                                        */
   guint            frame_rate;         /* Default FPS */
 
   ClutterActor    *pointer_grab_actor; /* The actor having the pointer grab
-                                          (or NULL if there is no pointer grab) 
+                                        * (or NULL if there is no pointer grab
                                         */
   ClutterActor    *keyboard_grab_actor; /* The actor having the pointer grab
-                                          (or NULL if there is no pointer grab) 
-                                        */
+                                         * (or NULL if there is no pointer 
+                                         *  grab) 
+                                         */
   GSList          *shaders;            /* stack of overridden shaders */
 
   ClutterActor    *motion_last_actor;
@@ -115,13 +121,32 @@ ClutterMainContext *clutter_context_get_default (void);
 
 #define I_(str)  (g_intern_static_string ((str)))
 
+/* stage manager */
+
+struct _ClutterStageManager
+{
+  GObject parent_instance;
+
+  GSList *stages;
+};
+
+void _clutter_stage_manager_add_stage    (ClutterStageManager *stage_manager,
+                                          ClutterStage        *stage);
+void _clutter_stage_manager_remove_stage (ClutterStageManager *stage_manager,
+                                          ClutterStage        *stage);
+
 /* vfuncs implemnted by backend */
 
 GType _clutter_backend_impl_get_type (void);
 
-ClutterActor *_clutter_backend_get_stage     (ClutterBackend  *backend);
+void          _clutter_backend_redraw        (ClutterBackend *backend,
+                                              ClutterStage   *stage);
 
-void          _clutter_backend_redraw        (ClutterBackend *backend);
+ClutterActor* _clutter_backend_create_stage (ClutterBackend  *backend,
+                                             GError         **error);
+
+void          _clutter_backend_redraw        (ClutterBackend *backend,
+                                              ClutterStage   *stage);
 
 void          _clutter_backend_add_options   (ClutterBackend  *backend,
                                               GOptionGroup    *group);
@@ -129,9 +154,10 @@ gboolean      _clutter_backend_pre_parse     (ClutterBackend  *backend,
                                               GError         **error);
 gboolean      _clutter_backend_post_parse    (ClutterBackend  *backend,
                                               GError         **error);
-gboolean      _clutter_backend_init_stage    (ClutterBackend  *backend,
-                                              GError         **error);
 void          _clutter_backend_init_events   (ClutterBackend  *backend);
+
+void          _clutter_backend_ensure_context (ClutterBackend *backend, 
+                                               ClutterStage   *stage);
 
 ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 

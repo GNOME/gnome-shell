@@ -39,6 +39,7 @@ G_BEGIN_DECLS
 
 /* Forward delarations to avoid header catch 22's */
 typedef struct _ClutterActor         ClutterActor;
+typedef struct _ClutterStage         ClutterStage;
 
 /**
  * ClutterGravity:

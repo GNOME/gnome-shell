@@ -44,7 +44,9 @@
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+#include "clutter-stage-manager.h"
 #include "clutter-version.h" 	/* For flavour */
+#include "clutter-id-pool.h"
 
 #include "cogl.h"
 
@@ -67,6 +69,8 @@ struct _ClutterStagePrivate
 
   gchar              *title;
   ClutterActor       *key_focused_actor;
+
+  guint               update_idle;	       /* repaint idler id */
 };
 
 enum
@@ -469,12 +473,9 @@ clutter_stage_init (ClutterStage *self)
 ClutterActor *
 clutter_stage_get_default (void)
 {
-  ClutterMainContext *context;
+  ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
 
-  context = clutter_context_get_default ();
-  g_assert (context != NULL);
-
-  return _clutter_backend_get_stage (context->backend);
+  return CLUTTER_ACTOR(clutter_stage_manager_get_default_stage(stage_manager));
 }
 
 /**
@@ -1348,4 +1349,116 @@ clutter_fog_get_type (void)
                                     (GBoxedFreeFunc) clutter_fog_free);
 
   return our_type;
+}
+
+/**
+ * clutter_stage_create_new:
+ *
+ * Creates a new, non-default stage. A non-default stage is a new
+ * top-level actor which can be used as another container. It works
+ * exactly like the default stage, but while clutter_stage_get_default()
+ * will always return the same instance, you will have to keep a pointer
+ * to any #ClutterStage returned by clutter_stage_create().
+ *
+ * The ability to support multiple stages depends on the current
+ * backend. Use clutter_feature_available() and
+ * %CLUTTER_FEATURE_STAGE_MULTIPLE to check at runtime whether a
+ * backend supports multiple stages.
+ *
+ * Return value: a new stage, or %NULL if the default backend does
+ *   not support multiple stages. Use clutter_actor_destroy() to
+ *   close the returned stage.
+ *
+ * Since: 0.8
+ */
+ClutterActor*
+clutter_stage_create_new (void)
+{
+  ClutterBackend *backend = clutter_get_default_backend ();
+  GError *error = NULL;
+  ClutterActor *retval;
+
+  if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_MULTIPLE))
+    {
+      g_warning ("Unable to create a new stage: the %s backend does not "
+                 "support multiple stages.",
+                 CLUTTER_FLAVOUR);
+      return NULL;
+    }
+
+  retval = _clutter_backend_create_stage (backend, &error);
+  if (error)
+    {
+      g_warning ("Unable to create a secondary stage: %s", error->message);
+      g_error_free (error);
+      retval = NULL;
+    }
+
+  return retval;
+}
+
+/**
+ * clutter_stage_ensure_current:
+ * @stage: the #ClutterStage
+ *
+ * This function essentially makes sure the right GL context is
+ * current for the passed stage. It is not intended to
+ * be used by applications.
+ *
+ * Since: 0.8
+ */
+void
+clutter_stage_ensure_current (ClutterStage *stage)
+{
+  ClutterMainContext *ctx;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  ctx  = clutter_context_get_default ();
+
+  _clutter_backend_ensure_context (ctx->backend, stage);
+}
+
+static gboolean
+redraw_update_idle (gpointer data)
+{
+  ClutterStage *stage = CLUTTER_STAGE(data);
+
+  if (stage->priv->update_idle)
+    {
+      g_source_remove (stage->priv->update_idle);
+      stage->priv->update_idle = 0;
+    }
+
+  CLUTTER_NOTE (MULTISTAGE, "redrawing via idle for stage:%p", stage);
+  clutter_redraw (stage);
+
+  return FALSE;
+}
+
+/**
+ * clutter_stage_queue_redraw:
+ * @stage: the #ClutterStage
+ *
+ * Queues a redraw for the passed stage. Note applications should call
+ * #clutter_actor_queue_redraw over this.
+ *
+ * Since: 0.8
+ */
+void
+clutter_stage_queue_redraw (ClutterStage *stage)
+{
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  if (!stage->priv->update_idle)
+    {
+      CLUTTER_TIMESTAMP (SCHEDULER, "Adding idle source for stage: %p", stage);
+
+      /* FIXME: weak_ref self in case we dissapear before paint? */
+      stage->priv->update_idle =
+        clutter_threads_add_idle_full (G_PRIORITY_DEFAULT + 10,
+                                       redraw_update_idle,
+                                       stage, 
+                                       NULL);
+    }
 }

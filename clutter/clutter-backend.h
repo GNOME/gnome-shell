@@ -28,6 +28,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-actor.h>
+#include <clutter/clutter-stage.h>
 #include <clutter/clutter-event.h>
 #include <clutter/clutter-feature.h>
 
@@ -60,15 +61,17 @@ struct _ClutterBackendClass
                                    GError         **error);
   gboolean      (* post_parse)    (ClutterBackend  *backend,
                                    GError         **error);
-  gboolean      (* init_stage)    (ClutterBackend  *backend,
+  ClutterActor *(* create_stage)   (ClutterBackend  *backend,
                                    GError         **error);
   void          (* init_events)   (ClutterBackend  *backend);
   void          (* init_features) (ClutterBackend  *backend);
-  ClutterActor *(* get_stage)     (ClutterBackend  *backend);
   void          (* add_options)   (ClutterBackend  *backend,
                                    GOptionGroup    *group);
   ClutterFeatureFlags (* get_features)  (ClutterBackend  *backend);
-  void                (* redraw)  (ClutterBackend *backend);
+  void                (* redraw)  (ClutterBackend *backend, 
+                                   ClutterStage   *stage);
+  void        (* ensure_context)  (ClutterBackend *backend, 
+                                   ClutterStage   *stage);
 };
 
 GType clutter_backend_get_type    (void) G_GNUC_CONST;

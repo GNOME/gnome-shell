@@ -1,3 +1,38 @@
+2008-03-28  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-backend.c:
+	* clutter/clutter-backend.h:
+	* clutter/clutter-debug.h:
+	* clutter/clutter-event.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-feature.h:
+	* clutter/clutter-group.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+        * clutter/clutter-stage-manager.c
+        * clutter/clutter-stage-manager.h
+	* clutter/clutter-types.h:
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-backend-glx.h:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/glx/clutter-stage-glx.h:
+	* clutter/x11/clutter-backend-x11.c:
+	* clutter/x11/clutter-backend-x11.h:
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/x11/clutter-stage-x11.c:
+	* clutter/x11/clutter-x11.h:
+	* tests/Makefile.am:
+	* tests/test-multistage.c:
+        Initial commit of multi stage support (mostly a merge from the
+        clutter-multistage branch).
+        Note, this commit will break all backends except glx.
+
 2008-03-26  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/win32/clutter-win32.h: Added gtk-doc documentation for

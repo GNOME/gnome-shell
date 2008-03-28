@@ -72,6 +72,7 @@ source_h =					\
 	$(srcdir)/clutter-scriptable.h		\
 	$(srcdir)/clutter-shader.h		\
 	$(srcdir)/clutter-stage.h 		\
+	$(srcdir)/clutter-stage-manager.h	\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-timeline.h 		\
 	$(srcdir)/clutter-timeout-pool.h 	\
@@ -159,6 +160,7 @@ source_c = \
 	clutter-scriptable.c		\
 	clutter-shader.c		\
 	clutter-stage.c			\
+	clutter-stage-manager.c		\
 	clutter-texture.c 		\
 	clutter-timeline.c 		\
 	clutter-timeout-pool.c		\

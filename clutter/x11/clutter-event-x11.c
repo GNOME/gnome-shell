@@ -158,7 +158,6 @@ void
 _clutter_backend_x11_events_init (ClutterBackend *backend)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  ClutterStage *stage = CLUTTER_STAGE (backend_x11->stage);
   GSource *source;
   ClutterEventSource *event_source;
   int connection_number;
@@ -182,9 +181,6 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   g_source_set_can_recurse (source, TRUE);
   g_source_attach (source, NULL);
 
-  xembed_set_info (backend_x11,
-                   clutter_x11_get_stage_window (stage),
-                   0);
 }
 
 void
@@ -243,14 +239,13 @@ translate_key_event (ClutterBackend *backend,
 
 static gboolean
 handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
+                           Window             window,
                            XEvent            *xevent)
 {
   Atom atom = (Atom) xevent->xclient.data.l[0];
-  ClutterStage *stage = CLUTTER_STAGE (backend_x11->stage);
-  Window stage_xwindow = clutter_x11_get_stage_window (stage);
 
   if (atom == backend_x11->atom_WM_DELETE_WINDOW &&
-      xevent->xany.window == stage_xwindow)
+      xevent->xany.window == window)
     {
       /* the WM_DELETE_WINDOW is a request: we do not destroy
        * the window right away, as it might contain vital data;
@@ -261,13 +256,13 @@ handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
                     xevent->xclient.window);
 
       set_user_time (backend_x11,
-                     &stage_xwindow,
+                     &window,
                      xevent->xclient.data.l[1]);
 
       return TRUE;
     }
   else if (atom == backend_x11->atom_NET_WM_PING &&
-           xevent->xany.window == stage_xwindow)
+           xevent->xany.window == window)
     {
       XClientMessageEvent xclient = xevent->xclient;
 
@@ -289,7 +284,7 @@ handle_xembed_event (ClutterBackendX11 *backend_x11,
 {
   ClutterActor *stage;
 
-  stage = _clutter_backend_get_stage (CLUTTER_BACKEND (backend_x11));
+  stage = clutter_stage_get_default ();
 
   switch (xevent->xclient.data.l[1])
     {
@@ -340,9 +335,6 @@ event_translate (ClutterBackend *backend,
   Window             xwindow, stage_xwindow;
 
   backend_x11    = CLUTTER_BACKEND_X11 (backend);
-  stage          = CLUTTER_STAGE (_clutter_backend_get_stage (backend));
-  stage_x11      = CLUTTER_STAGE_X11 (stage);
-  stage_xwindow  = clutter_x11_get_stage_window (stage);
 
   xwindow = xevent->xany.window;
 
@@ -378,8 +370,15 @@ event_translate (ClutterBackend *backend,
    * (the x11 filters might be getting events for other windows, so do not
    * mess them about.
    */
-  if (xwindow != stage_xwindow)
+  stage = clutter_x11_get_stage_from_window (xwindow);
+
+  if (stage == NULL)
     return FALSE;
+
+  stage_x11      = CLUTTER_STAGE_X11 (stage);
+  stage_xwindow  = xwindow; /* clutter_x11_get_stage_window (stage); */
+
+  event->any.stage = stage;
 
   res = TRUE;
 
@@ -514,7 +513,8 @@ event_translate (ClutterBackend *backend,
         /* FIXME: need to make stage an 'actor' so can que
          * a paint direct from there rather than hack here...
          */
-        clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+        CLUTTER_NOTE (MULTISTAGE, "expose for stage:%p, redrawing", stage);
+        clutter_redraw (stage);
         res = FALSE;
       }
       break;
@@ -614,7 +614,7 @@ event_translate (ClutterBackend *backend,
         res = handle_xembed_event (backend_x11, xevent);
       else if (xevent->xclient.message_type == backend_x11->atom_WM_PROTOCOLS)
         {
-          res = handle_wm_protocols_event (backend_x11, xevent);
+          res = handle_wm_protocols_event (backend_x11, stage_xwindow, xevent);
           event->type = event->any.type = CLUTTER_DELETE;
         }
       break;

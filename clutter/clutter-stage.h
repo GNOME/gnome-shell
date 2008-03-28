@@ -26,6 +26,7 @@
 #ifndef __CLUTTER_STAGE_H__
 #define __CLUTTER_STAGE_H__
 
+#include <clutter/clutter-types.h>
 #include <clutter/clutter-group.h>
 #include <clutter/clutter-color.h>
 #include <clutter/clutter-event.h>
@@ -80,7 +81,7 @@ G_BEGIN_DECLS
 typedef struct _ClutterPerspective  ClutterPerspective;
 typedef struct _ClutterFog          ClutterFog;
 
-typedef struct _ClutterStage        ClutterStage;
+
 typedef struct _ClutterStageClass   ClutterStageClass;
 typedef struct _ClutterStagePrivate ClutterStagePrivate;
 
@@ -236,6 +237,12 @@ ClutterFixed          clutter_stage_get_resolutionx    (ClutterStage *stage);
 void                  clutter_stage_set_key_focus      (ClutterStage *stage,
                                                         ClutterActor *actor);
 ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
+
+ClutterActor*         clutter_stage_create_new         (void);
+
+void                  clutter_stage_ensure_current     (ClutterStage *stage);
+
+void                  clutter_stage_queue_redraw       (ClutterStage *stage);
 
 /* Commodity macro */
 #define clutter_stage_add(stage,actor)                  G_STMT_START {  \

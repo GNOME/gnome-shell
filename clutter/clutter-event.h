@@ -200,6 +200,7 @@ struct _ClutterAnyEvent
   ClutterEventType  type;
   guint32           time;
   ClutterEventFlags flags;
+  ClutterStage *stage;
   ClutterActor *source;
 };
 
@@ -223,6 +224,7 @@ struct _ClutterKeyEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterStage *stage;
   ClutterActor *source;
   ClutterModifierType modifier_state;
   guint keyval;
@@ -254,6 +256,7 @@ struct _ClutterButtonEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterStage *stage;
   ClutterActor *source;
   gint x;
   gint y;
@@ -269,6 +272,7 @@ struct _ClutterCrossingEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterStage *stage;
   ClutterActor *source;
   gint x;
   gint y;
@@ -281,6 +285,7 @@ struct _ClutterMotionEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterStage *stage;
   ClutterActor *source;
   gint x;
   gint y;
@@ -294,6 +299,7 @@ struct _ClutterScrollEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterStage *stage;
   ClutterActor *source;
   gint x;
   gint y;
@@ -308,6 +314,7 @@ struct _ClutterStageStateEvent
   ClutterEventType type;
   guint32 time;
   ClutterEventFlags flags;
+  ClutterStage *stage;
   ClutterActor *source; /* unused XXX: should probably be the stage itself */
   ClutterStageState changed_mask;
   ClutterStageState new_state;
@@ -351,6 +358,7 @@ guint32             clutter_button_event_button (ClutterButtonEvent *buttev);
 
 guint32             clutter_keysym_to_unicode   (guint               keyval);
 
+ClutterStage*       clutter_event_get_stage     (ClutterEvent *event);
 
 G_END_DECLS
 

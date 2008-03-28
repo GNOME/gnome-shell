@@ -72,7 +72,7 @@ void             clutter_main                       (void);
 void             clutter_main_quit                  (void);
 gint             clutter_main_level                 (void);
 
-void             clutter_redraw                     (void);
+void             clutter_redraw                     (ClutterStage *stage);
 
 void             clutter_do_event                   (ClutterEvent *event);
 

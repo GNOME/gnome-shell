@@ -117,7 +117,7 @@ clutter_stage_x11_show (ClutterActor *actor)
       /* Fire off a redraw to avoid flicker on first map.
        * Appears not to work perfectly on intel drivers at least.
       */
-      clutter_redraw();
+      clutter_redraw(CLUTTER_STAGE(actor));
 
       XSync (stage_x11->xdpy, FALSE);
       XMapWindow (stage_x11->xdpy, stage_x11->xwin);
@@ -445,6 +445,39 @@ clutter_x11_get_stage_window (ClutterStage *stage)
   g_return_val_if_fail (CLUTTER_IS_STAGE_X11 (stage), None);
 
   return CLUTTER_STAGE_X11 (stage)->xwin;
+}
+
+/**
+ * clutter_x11_get_stage_from_window:
+ * @win: an X Window ID
+ *
+ * Gets the stage for a particular X window.  
+ *
+ * Return value: The stage or NULL if a stage does not exist for the window.
+ *
+ * Since: 0.8
+ */
+ClutterStage*
+clutter_x11_get_stage_from_window (Window win)
+{
+  ClutterMainContext  *context;
+  ClutterStageManager *stage_manager;
+  GSList              *l;
+
+  context = clutter_context_get_default ();
+
+  stage_manager = context->stage_manager;
+
+  /* FIXME: use a hash here for performance resaon */
+  for (l = stage_manager->stages; l; l = l->next)
+    {
+      ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (l->data);
+
+      if (stage_x11->xwin == win)
+        return CLUTTER_STAGE(stage_x11);
+    }
+
+  return NULL;
 }
 
 /**

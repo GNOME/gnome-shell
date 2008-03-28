@@ -7,7 +7,7 @@ noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
 		  test-threads test-timeline test-score test-script \
 		  test-model test-grab test-effects test-fullscreen \
 		  test-shader test-unproject test-viewport test-fbo \
-		  test-opacity
+		  test-opacity test-multistage
 
 INCLUDES = -I$(top_srcdir)/
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
@@ -43,5 +43,6 @@ test_fullscreen_SOURCES  = test-fullscreen.c
 test_viewport_SOURCES    = test-viewport.c
 test_fbo_SOURCES         = test-fbo.c
 test_opacity_SOURCES     = test-opacity.c
+test_multistage_SOURCES     = test-multistage.c
 
 EXTRA_DIST = redhand.png test-script.json

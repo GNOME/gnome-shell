@@ -181,6 +181,25 @@ clutter_event_get_source (ClutterEvent *event)
 }
 
 /**
+ * clutter_event_get_stage:
+ * @event: a #ClutterEvent
+ *
+ * Retrieves the source #ClutterStage the event originated for, or
+ * NULL if the event has no stage.
+ *
+ * Return value: a #ClutterStage
+ *
+ * Since: 0.8
+ */
+ClutterStage*
+clutter_event_get_stage (ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, NULL);
+
+  return event->any.stage;
+}
+
+/**
  * clutter_button_event_button:
  * @buttev: a #ClutterButtonEvent
  *

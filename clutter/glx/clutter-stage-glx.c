@@ -39,6 +39,7 @@
 #include "../clutter-shader.h"
 #include "../clutter-group.h"
 #include "../clutter-container.h"
+#include "../clutter-stage.h"
 
 #include "cogl.h"
 
@@ -98,12 +99,6 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
 
   glXMakeCurrent (stage_x11->xdpy, None, NULL);
 
-  if (stage_glx->gl_context != None)
-    {
-      glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
-      stage_glx->gl_context = None;
-    }
-
   XSync (stage_x11->xdpy, False);
 
   clutter_x11_untrap_x_errors ();
@@ -116,11 +111,14 @@ clutter_stage_glx_realize (ClutterActor *actor)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
-  gboolean is_offscreen;
+  ClutterBackendGLX *backend_glx;
+  gboolean         is_offscreen;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
 
   g_object_get (actor, "offscreen", &is_offscreen, NULL);
+
+  backend_glx = CLUTTER_BACKEND_GLX(clutter_get_default_backend());
 
   if (G_LIKELY (!is_offscreen))
     {
@@ -142,7 +140,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
       /* The following check seems strange */
       if (stage_x11->xvisinfo == None)
         stage_x11->xvisinfo = glXChooseVisual (stage_x11->xdpy,
-                                           stage_x11->xscreen,
+                                               stage_x11->xscreen,
                                                gl_attributes);
       if (!stage_x11->xvisinfo)
         {
@@ -195,26 +193,27 @@ clutter_stage_glx_realize (ClutterActor *actor)
 
       clutter_stage_x11_set_wm_protocols (stage_x11);
 
-      if (stage_glx->gl_context)
-        glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
-
-      CLUTTER_NOTE (GL, "Creating GL Context");
-      stage_glx->gl_context = glXCreateContext (stage_x11->xdpy, 
-                                                stage_x11->xvisinfo, 
-                                                0, 
-                                                True);
-
-      if (stage_glx->gl_context == None)
+      if (backend_glx->gl_context == None)
         {
-          g_critical ("Unable to create suitable GL context.");
+          CLUTTER_NOTE (GL, "Creating GL Context");
+          backend_glx->gl_context =  glXCreateContext (stage_x11->xdpy, 
+                                                       stage_x11->xvisinfo, 
+                                                       0,
+                                                       True);
 
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+          if (backend_glx->gl_context == None)
+            {
+              g_critical ("Unable to create suitable GL context.");
 
-          return;
+              CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+
+              return;
+            }
         }
 
       CLUTTER_NOTE (GL, "glXMakeCurrent");
-      glXMakeCurrent (stage_x11->xdpy, stage_x11->xwin, stage_glx->gl_context);
+
+      clutter_stage_ensure_current (CLUTTER_STAGE(stage_glx));
     }
   else
     {
@@ -244,9 +243,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
           goto fail;
         }
 
-      if (stage_glx->gl_context)
-        glXDestroyContext (stage_x11->xdpy, stage_glx->gl_context);
-
+     
       stage_x11->xpixmap = XCreatePixmap (stage_x11->xdpy,
                                           stage_x11->xwin_root,
                                           stage_x11->xwin_width, 
@@ -258,17 +255,34 @@ clutter_stage_glx_realize (ClutterActor *actor)
                                                  stage_x11->xvisinfo,
                                                  stage_x11->xpixmap);
 
-      /* indirect */
-      stage_glx->gl_context = glXCreateContext (stage_x11->xdpy, 
-                                                stage_x11->xvisinfo, 
-                                                0, 
-                                                False);
+      if (backend_glx->gl_context == None)
+        {
+          CLUTTER_NOTE (GL, "Creating GL Context");
+
+          /* FIXME: we probably need a seperate offscreen context here
+           * - though it likely makes most sense to drop offscreen stages
+           * and rely on FBO's instead and GLXPixmaps seems mostly broken
+           * anyway..
+          */
+          backend_glx->gl_context =  glXCreateContext (stage_x11->xdpy, 
+                                                       stage_x11->xvisinfo, 
+                                                       0,
+                                                       False);
+
+          if (backend_glx->gl_context == None)
+            {
+              g_critical ("Unable to create suitable GL context.");
+
+              CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+
+              return;
+            }
+        }
 
       clutter_x11_trap_x_errors ();
 
-      glXMakeCurrent (stage_x11->xdpy,
-                      stage_glx->glxpixmap,
-                      stage_glx->gl_context);
+      /* below will call glxMakeCurrent */
+      clutter_stage_ensure_current (CLUTTER_STAGE(stage_glx));
 
       if (clutter_x11_untrap_x_errors ())
         {

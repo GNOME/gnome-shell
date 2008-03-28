@@ -192,14 +192,6 @@ clutter_backend_x11_init_events (ClutterBackend *backend)
   _clutter_backend_x11_events_init (backend);
 }
 
-ClutterActor *
-clutter_backend_x11_get_stage (ClutterBackend *backend)
-{
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-
-  return backend_x11->stage;
-}
-
 static const GOptionEntry entries[] =
 {
   {
@@ -247,19 +239,20 @@ clutter_backend_x11_finalize (GObject *gobject)
 static void
 clutter_backend_x11_dispose (GObject *gobject)
 {
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
+  ClutterBackendX11   *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
+  ClutterMainContext  *context;
+  ClutterStageManager *stage_manager;
+  GSList              *l;
 
-  if (backend_x11->stage)
+  CLUTTER_NOTE (BACKEND, "Disposing the of stages");
+
+  context = clutter_context_get_default ();
+  stage_manager = context->stage_manager;
+
+  for (l = stage_manager->stages; l; l = l->next)
     {
-      CLUTTER_NOTE (BACKEND, "Disposing the main stage");
-
-      /* we unset the private flag on the stage so we can safely
-       * destroy it without a warning from clutter_actor_destroy()
-       */
-      CLUTTER_UNSET_PRIVATE_FLAGS (backend_x11->stage,
-                                   CLUTTER_ACTOR_IS_TOPLEVEL);
-      clutter_actor_destroy (backend_x11->stage);
-      backend_x11->stage = NULL;
+      ClutterActor *stage = CLUTTER_ACTOR (l->data);
+      clutter_actor_destroy (stage);
     }
 
   CLUTTER_NOTE (BACKEND, "Removing the event source");
@@ -314,10 +307,9 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   gobject_class->dispose = clutter_backend_x11_dispose;
   gobject_class->finalize = clutter_backend_x11_finalize;
 
-  backend_class->pre_parse   = clutter_backend_x11_pre_parse;
+  backend_class->pre_parse    = clutter_backend_x11_pre_parse;
   backend_class->post_parse   = clutter_backend_x11_post_parse;
   backend_class->init_events  = clutter_backend_x11_init_events;
-  backend_class->get_stage    = clutter_backend_x11_get_stage;
   backend_class->add_options  = clutter_backend_x11_add_options;
   backend_class->get_features = clutter_backend_x11_get_features;
 }

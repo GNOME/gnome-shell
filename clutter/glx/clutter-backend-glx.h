@@ -72,6 +72,9 @@ struct _ClutterBackendGLX
 {
   ClutterBackendX11 parent_instance;
 
+  /* Single context for all wins */
+  GLXContext             gl_context;
+
   /* Vblank stuff */
   GetVideoSyncProc       get_video_sync;
   WaitVideoSyncProc      wait_video_sync;
