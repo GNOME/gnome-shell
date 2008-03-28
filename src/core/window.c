@@ -799,8 +799,11 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    * However, we shouldn't unminimize windows here when opening
    * a new display because that breaks passing _NET_WM_STATE_HIDDEN
    * between window managers when replacing them; see bug 358042.
+   *
+   * And we shouldn't unminimize windows if they were initially
+   * iconic.
    */
-  if (!display->display_opening)
+  if (!display->display_opening && !window->initially_iconic)
     unminimize_window_and_all_transient_parents (window);
 
   meta_error_trap_pop (display, FALSE); /* pop the XSync()-reducing trap */

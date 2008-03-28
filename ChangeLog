@@ -1,3 +1,8 @@
+2008-03-28  Owen Taylor  <otaylor@redhat.com>
+
+        * src/core/window.c (meta_window_new_with_attrs): Don't
+        immediately unminimize an initially iconic window (#491090)
+
 2008-03-27  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/session.c (regenerate_save_file, save_state, load_state):
