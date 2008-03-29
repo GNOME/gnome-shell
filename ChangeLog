@@ -1,3 +1,11 @@
+2008-03-29  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/ui/preview-widget.c (meta_preview_get_clip_region):
+        prevent null dereference if the theme was invalid, which
+        caused crashes in gnome-appearance-properties.  No GNOME
+        bug number, but I believe this is a fix for Launchpad bug
+        #199402 and its many duplicates.
+
 2008-03-28  Owen Taylor  <otaylor@redhat.com>
 
         * src/core/window.c (meta_window_new_with_attrs): Don't

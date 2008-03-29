@@ -478,6 +478,19 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
 
   flags = (META_PREVIEW (preview)->flags);
 
+  window_xregion = gdk_region_new ();
+
+  xrect.x = 0;
+  xrect.y = 0;
+  xrect.width = new_window_width;
+  xrect.height = new_window_height;
+
+  gdk_region_union_with_rect (window_xregion, &xrect);
+
+  if (preview->theme == NULL)
+    return window_xregion;
+
+  /* Otherwise, we do have a theme, so calculate the corners */
   frame_style = meta_theme_get_frame_style (preview->theme,
       META_FRAME_TYPE_NORMAL, flags);
 
@@ -558,14 +571,6 @@ meta_preview_get_clip_region (MetaPreview *preview, gint new_window_width, gint 
         }
     }
 
-  window_xregion = gdk_region_new ();
-
-  xrect.x = 0;
-  xrect.y = 0;
-  xrect.width = new_window_width;
-  xrect.height = new_window_height;
-
-  gdk_region_union_with_rect (window_xregion, &xrect);
   gdk_region_subtract (window_xregion, corners_xregion);
   gdk_region_destroy (corners_xregion);
 
