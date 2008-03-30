@@ -292,7 +292,7 @@ case $clutterbackend in
     fi
 
     WIN32_CFLAGS="-D_WIN32_WINNT=0x0500"
-    WIN32_LIBS="-lGLee -lopengl32 -lgdi32"
+    WIN32_LIBS="-lGLee -lopengl32 -lgdi32 -lwinmm"
     CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
     ;;
 

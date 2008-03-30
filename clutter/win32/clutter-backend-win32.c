@@ -89,6 +89,8 @@ clutter_backend_win32_finalize (GObject *gobject)
 {
   backend_singleton = NULL;
 
+  timeEndPeriod (1);
+
   G_OBJECT_CLASS (clutter_backend_win32_parent_class)->finalize (gobject);
 }
 
@@ -299,6 +301,11 @@ clutter_backend_win32_init (ClutterBackendWin32 *backend_win32)
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
   clutter_backend_set_resolution (backend, 96.0);
+
+  /* Set the maximum precision for Windows time functions. Without
+     this glib will not be able to sleep accurately enough to give a
+     reasonable frame rate */
+  timeBeginPeriod (1);
 }
 
 GType

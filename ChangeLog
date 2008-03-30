@@ -1,5 +1,18 @@
 2008-03-30  Neil Roberts  <neil@o-hand.com>
 
+	* clutter/win32/clutter-backend-win32.c
+	(clutter_backend_win32_init): Added a call to
+	timeBeginPeriod. Without this the frame rates are terrible because
+	the glib timeouts are not accurate enough. However this requires
+	Glib >= 2.16.0 to take any effect because of a change in the way
+	g_poll is implemented. See revision 6597 of glib.
+	(clutter_backend_win32_finalize): Added a call to timeEndPeriod.
+
+	* configure.ac: Added -lwinmm to the library dependencies for the
+	Win32 backend.
+
+2008-03-30  Neil Roberts  <neil@o-hand.com>
+
 	* clutter/win32/clutter-win32.h: 
 	* clutter/win32/clutter-stage-win32.h: 
 	* clutter/win32/clutter-stage-win32.c: 
