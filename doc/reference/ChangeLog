@@ -1,3 +1,7 @@
+2008-03-30  Neil Roberts  <neil@o-hand.com>
+
+	* clutter-sections.txt: Added clutter_win32_get_stage_from_window
+
 2008-03-26  Neil Roberts  <neil@o-hand.com>
 
 	* clutter-sections.txt: Added a section for the Win32 specific

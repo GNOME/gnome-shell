@@ -36,6 +36,7 @@
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
 #include "../clutter-units.h"
+#include "../clutter-stage.h"
 
 #include "cogl.h"
 
@@ -171,18 +172,23 @@ clutter_stage_win32_request_coords (ClutterActor        *self,
 				    ClutterActorBox     *box)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
-
   gint new_xpos, new_ypos, new_width, new_height;
+  int change_flags = SWP_NOZORDER | SWP_NOSIZE | SWP_NOMOVE;
 
   new_xpos = CLUTTER_UNITS_TO_INT (MIN (box->x1, box->x2));
   new_ypos = CLUTTER_UNITS_TO_INT (MIN (box->y1, box->y2));
   new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
   new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
 
-  if ((new_width != stage_win32->win_width
-       || new_height != stage_win32->win_height
-       || new_xpos != stage_win32->win_xpos
-       || new_ypos != stage_win32->win_ypos)
+  if (new_width != stage_win32->win_width
+      || new_height != stage_win32->win_height)
+    change_flags &= ~SWP_NOSIZE;
+
+  if (new_xpos != stage_win32->win_xpos
+      || new_ypos != stage_win32->win_ypos)
+    change_flags &= ~SWP_NOMOVE;
+
+  if ((change_flags & (SWP_NOSIZE | SWP_NOMOVE)) != (SWP_NOSIZE | SWP_NOMOVE)
       /* Ignore size requests if we are in full screen mode */
       && (stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN) == 0)
     {
@@ -205,7 +211,7 @@ clutter_stage_win32_request_coords (ClutterActor        *self,
 	  SetWindowPos (stage_win32->hwnd, NULL,
 			full_xpos, full_ypos,
 			full_width, full_height,
-			SWP_NOZORDER);
+			change_flags);
 	}
 
       CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_SYNC_MATRICES);
@@ -316,6 +322,7 @@ clutter_stage_win32_set_fullscreen (ClutterStage *stage,
   /* Report the state change */
   memset (&event, 0, sizeof (event));
   event.type = CLUTTER_STAGE_STATE;
+  event.stage = CLUTTER_STAGE (stage_win32);
   event.new_state = stage_win32->state;
   event.changed_mask = CLUTTER_STAGE_STATE_FULLSCREEN;
   clutter_event_put ((ClutterEvent *) &event);
@@ -382,10 +389,13 @@ static void
 clutter_stage_win32_realize (ClutterActor *actor)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (actor);
+  ClutterBackendWin32 *backend_win32;
   PIXELFORMATDESCRIPTOR pfd;
   int pf;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
+
+  backend_win32 = CLUTTER_BACKEND_WIN32 (clutter_get_default_backend ());
 
   if (stage_win32->hwnd == NULL)
     {
@@ -459,9 +469,6 @@ clutter_stage_win32_realize (ClutterActor *actor)
       SetWindowLongPtrW (stage_win32->hwnd, 0, (LONG_PTR) stage_win32);
     }
 
-  if (stage_win32->gl_context)
-    wglDeleteContext (stage_win32->gl_context);
-
   if (stage_win32->client_dc)
     ReleaseDC (stage_win32->hwnd, stage_win32->client_dc);
 
@@ -470,7 +477,8 @@ clutter_stage_win32_realize (ClutterActor *actor)
   memset (&pfd, 0, sizeof (pfd));
   pfd.nSize = sizeof (pfd);
   pfd.nVersion = 1;
-  pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+  pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
+    | PFD_DOUBLEBUFFER | PFD_GENERIC_ACCELERATED;
   pfd.iPixelType = PFD_TYPE_RGBA;
   pfd.cColorBits = 24;
   pfd.cAlphaBits = 8;
@@ -486,17 +494,21 @@ clutter_stage_win32_realize (ClutterActor *actor)
       return;
     }
 
-  stage_win32->gl_context = wglCreateContext (stage_win32->client_dc);
-
-  if (stage_win32->gl_context == NULL)
+  if (backend_win32->gl_context == NULL)
     {
-      g_critical ("Unable to create suitable GL context");
-      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-      return;
+      backend_win32->gl_context = wglCreateContext (stage_win32->client_dc);
+      
+      if (backend_win32->gl_context == NULL)
+	{
+	  g_critical ("Unable to create suitable GL context");
+	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+	  return;
+	}
     }
 
   CLUTTER_NOTE (GL, "wglMakeCurrent");
-  wglMakeCurrent (stage_win32->client_dc, stage_win32->gl_context);
+
+  clutter_stage_ensure_current (CLUTTER_STAGE (stage_win32));
 
   if (!clutter_stage_win32_check_gl_version ())
     {
@@ -516,12 +528,6 @@ clutter_stage_win32_unrealize (ClutterActor *actor)
 
   wglMakeCurrent (NULL, NULL);
 
-  if (stage_win32->gl_context != NULL)
-    {
-      wglDeleteContext (stage_win32->gl_context);
-      stage_win32->gl_context = NULL;
-    }
-  
   if (stage_win32->client_dc)
     {
       ReleaseDC (stage_win32->hwnd, stage_win32->client_dc);
@@ -572,7 +578,6 @@ clutter_stage_win32_init (ClutterStageWin32 *stage)
 {
   stage->hwnd = NULL;
   stage->client_dc = NULL;
-  stage->gl_context = NULL;
   stage->win_xpos = 0;
   stage->win_ypos = 0;
   stage->win_width = 640;
@@ -599,6 +604,31 @@ clutter_win32_get_stage_window (ClutterStage *stage)
   return CLUTTER_STAGE_WIN32 (stage)->hwnd;
 }
 
+/**
+ * clutter_win32_get_stage_from_window:
+ * @hwnd: a window handle
+ *
+ * Gets the stage for a particular window.
+ *
+ * Return value: The stage or NULL if a stage does not exist for the
+ * window.
+ *
+ * Since: 0.8
+ */
+ClutterStage *
+clutter_win32_get_stage_from_window (HWND hwnd)
+{
+  /* Check whether the window handle is an instance of the stage
+     window class */
+  if ((ATOM) GetClassLongPtrW (hwnd, GCW_ATOM)
+      == clutter_stage_win32_get_window_class ())
+    /* If it is there should be a pointer to the stage in the window
+       extra data */
+    return (ClutterStage *) GetWindowLongPtrW (hwnd, 0);
+  else
+    return NULL;
+}
+  	 
 void
 clutter_stage_win32_map (ClutterStageWin32 *stage_win32)
 {

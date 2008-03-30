@@ -307,16 +307,17 @@ message_translate (ClutterBackend *backend,
   ClutterStageWin32   *stage_win32;
   ClutterStage        *stage;
   gboolean            res;
-  HWND                stage_hwnd;
 
   backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-  stage         = CLUTTER_STAGE (_clutter_backend_get_stage (backend));
-  stage_win32   = CLUTTER_STAGE_WIN32 (stage);
-  stage_hwnd    = clutter_win32_get_stage_window (stage);
 
   /* Do further processing only on events for the stage window */
-  if (stage_hwnd != msg->hwnd)
+  stage = clutter_win32_get_stage_from_window (msg->hwnd);
+
+  if (stage == NULL)
     return FALSE;
+  stage_win32 = CLUTTER_STAGE_WIN32 (stage);
+
+  event->any.stage = stage;
 
   res = TRUE;
 
@@ -393,7 +394,8 @@ message_translate (ClutterBackend *backend,
       break;
 
     case WM_PAINT:
-      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage_win32));
+      CLUTTER_NOTE (MULTISTAGE, "expose for stage:%p, redrawing", stage);
+      clutter_redraw (stage);
       res = FALSE;
       break;
 

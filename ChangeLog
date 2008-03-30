@@ -1,3 +1,24 @@
+2008-03-30  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/win32/clutter-win32.h: 
+	* clutter/win32/clutter-stage-win32.h: 
+	* clutter/win32/clutter-stage-win32.c: 
+	* clutter/win32/clutter-event-win32.c: 
+	* clutter/win32/clutter-backend-win32.h: 
+	* clutter/win32/clutter-backend-win32.c:
+	Upgraded for multi-stage support.
+
+	* clutter/win32/clutter-stage-win32.c
+	(clutter_stage_win32_request_coords): Fixed so that it doesn't set
+	the position or size if it hasn't changed. This was causing
+	problems when the window was resized using the top left corner. In
+	that case the window receives resize and move messages separately
+	which caused the window to flash at a different size or position
+	while one message was handled before the other.
+	(clutter_stage_win32_realize): Added PFD_GENERIC_ACCELERATED to
+	the list of pixel format flags to force it to use hardware
+	acceleration.
+
 2008-03-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:

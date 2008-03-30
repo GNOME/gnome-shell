@@ -43,7 +43,8 @@
 
 G_BEGIN_DECLS
 
-HWND       clutter_win32_get_stage_window  (ClutterStage *stage);
+HWND          clutter_win32_get_stage_window      (ClutterStage *stage);
+ClutterStage *clutter_win32_get_stage_from_window (HWND hwnd);
 
 G_END_DECLS
 

@@ -46,7 +46,6 @@ struct _ClutterStageWin32
 
   HWND         hwnd;
   HDC          client_dc;
-  HGLRC        gl_context;
   gint         win_xpos;
   gint         win_ypos;
   gint         win_width;
@@ -64,8 +63,6 @@ struct _ClutterStageWin32Class
 };
 
 GType clutter_stage_win32_get_type (void) G_GNUC_CONST;
-
-HWND clutter_win32_get_stage_window (ClutterStage *stage);
 
 void clutter_stage_win32_map   (ClutterStageWin32 *stage_win32);
 void clutter_stage_win32_unmap (ClutterStageWin32 *stage_win32);

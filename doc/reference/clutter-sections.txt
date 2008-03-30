@@ -1008,6 +1008,7 @@ clutter_x11_remove_filter
 <SECTION>
 <FILE>clutter-win32</FILE>
 <TITLE>Win32 Specific Support</TITLE>
+clutter_win32_get_stage_from_window
 clutter_win32_get_stage_window
 </SECTION>
 

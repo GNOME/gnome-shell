@@ -45,8 +45,7 @@ struct _ClutterBackendWin32
 {
   ClutterBackend parent_instance;
 
-  /* main stage singleton */
-  ClutterActor *stage;
+  HGLRC gl_context;
 
   GSource *event_source;
 };
@@ -60,9 +59,6 @@ void   _clutter_backend_win32_events_init (ClutterBackend *backend);
 void   _clutter_backend_win32_events_uninit (ClutterBackend *backend);
 
 GType clutter_backend_win32_get_type (void) G_GNUC_CONST;
-
-ClutterActor *
-clutter_backend_win32_get_stage (ClutterBackend *backend);
 
 void
 clutter_backend_win32_add_options (ClutterBackend *backend,

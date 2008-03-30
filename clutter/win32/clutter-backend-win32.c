@@ -66,14 +66,6 @@ clutter_backend_win32_init_events (ClutterBackend *backend)
   _clutter_backend_win32_events_init (backend);
 }
 
-ClutterActor *
-clutter_backend_win32_get_stage (ClutterBackend *backend)
-{
-  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-
-  return backend_win32->stage;
-}
-
 static const GOptionEntry entries[] =
   {
     {
@@ -104,18 +96,19 @@ static void
 clutter_backend_win32_dispose (GObject *gobject)
 {
   ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (gobject);
+  ClutterMainContext  *context;
+  ClutterStageManager *stage_manager;
+  GSList              *l;
 
-  if (backend_win32->stage)
+  CLUTTER_NOTE (BACKEND, "Disposing the of stages");
+
+  context = clutter_context_get_default ();
+  stage_manager = context->stage_manager;
+
+  for (l = stage_manager->stages; l; l = l->next)
     {
-      CLUTTER_NOTE (BACKEND, "Disposing the main stage");
-
-      /* we unset the private flag on the stage so we can safely
-       * destroy it without a warning from clutter_actor_destroy()
-       */
-      CLUTTER_UNSET_PRIVATE_FLAGS (backend_win32->stage,
-                                   CLUTTER_ACTOR_IS_TOPLEVEL);
-      clutter_actor_destroy (backend_win32->stage);
-      backend_win32->stage = NULL;
+      ClutterActor *stage = CLUTTER_ACTOR (l->data);
+      clutter_actor_destroy (stage);
     }
 
   CLUTTER_NOTE (BACKEND, "Removing the event source");
@@ -175,7 +168,9 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
                 glGetString (GL_VERSION),
                 extensions);
 
-  flags = CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
+  flags = CLUTTER_FEATURE_STAGE_USER_RESIZE
+    | CLUTTER_FEATURE_STAGE_CURSOR
+    | CLUTTER_FEATURE_STAGE_MULTIPLE;
 
   /* If the VBlank should be left at the default or it has been
      disabled elsewhere (eg NVIDIA) then don't bother trying to check
@@ -217,52 +212,61 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_win32_redraw (ClutterBackend *backend)
+clutter_backend_win32_ensure_context (ClutterBackend *backend, 
+				      ClutterStage   *stage)
 {
-  ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
-  ClutterStageWin32 *stage_win32;
+  ClutterBackendWin32 *backend_win32;
+  ClutterStageWin32   *stage_win32;
 
-  stage_win32 = CLUTTER_STAGE_WIN32 (backend_win32->stage);
+  stage_win32 = CLUTTER_STAGE_WIN32 (stage);
+  backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
 
-  clutter_actor_paint (CLUTTER_ACTOR (stage_win32));
+  CLUTTER_NOTE (MULTISTAGE, "setting context for stage:%p", stage );
+
+  wglMakeCurrent (stage_win32->client_dc,
+                  backend_win32->gl_context);
+}
+
+static void
+clutter_backend_win32_redraw (ClutterBackend *backend,
+			      ClutterStage   *stage)
+{
+  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage);
+
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
 
   if (stage_win32->client_dc)
     SwapBuffers (stage_win32->client_dc);
 }
 
-static gboolean
-clutter_backend_win32_init_stage (ClutterBackend  *backend,
-				  GError         **error)
+static ClutterActor *
+clutter_backend_win32_create_stage (ClutterBackend  *backend,
+				    GError         **error)
 {
   ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
+  ClutterStageWin32 *stage_win32;
+  ClutterActor *stage;
 
-  if (!backend_win32->stage)
-    {
-      ClutterStageWin32 *stage_win32;
-      ClutterActor *stage;
+  stage = g_object_new (CLUTTER_TYPE_STAGE_WIN32, NULL);
 
-      stage = g_object_new (CLUTTER_TYPE_STAGE_WIN32, NULL);
+  /* copy backend data into the stage */
+  stage_win32 = CLUTTER_STAGE_WIN32 (stage);
+  stage_win32->backend = backend_win32;
 
-      /* copy backend data into the stage */
-      stage_win32 = CLUTTER_STAGE_WIN32 (stage);
-      stage_win32->backend = backend_win32;
+  /* needed ? */
+  g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
 
-      g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
+  clutter_actor_realize (stage);
 
-      backend_win32->stage = g_object_ref_sink (stage);
-    }
-
-  clutter_actor_realize (backend_win32->stage);
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (backend_win32->stage))
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_INTERNAL,
                    "Unable to realize the main stage");
-      return FALSE;
+      return NULL;
     }
 
-  return TRUE;
+  return stage;
 }
 
 static void
@@ -275,19 +279,21 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   gobject_class->dispose = clutter_backend_win32_dispose;
   gobject_class->finalize = clutter_backend_win32_finalize;
 
-  backend_class->pre_parse    = clutter_backend_win32_pre_parse;
-  backend_class->init_events  = clutter_backend_win32_init_events;
-  backend_class->init_stage   = clutter_backend_win32_init_stage;
-  backend_class->get_stage    = clutter_backend_win32_get_stage;
-  backend_class->add_options  = clutter_backend_win32_add_options;
-  backend_class->get_features = clutter_backend_win32_get_features;
-  backend_class->redraw       = clutter_backend_win32_redraw;
+  backend_class->pre_parse      = clutter_backend_win32_pre_parse;
+  backend_class->init_events    = clutter_backend_win32_init_events;
+  backend_class->create_stage   = clutter_backend_win32_create_stage;
+  backend_class->add_options    = clutter_backend_win32_add_options;
+  backend_class->get_features   = clutter_backend_win32_get_features;
+  backend_class->redraw         = clutter_backend_win32_redraw;
+  backend_class->ensure_context = clutter_backend_win32_ensure_context;
 }
 
 static void
 clutter_backend_win32_init (ClutterBackendWin32 *backend_win32)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_win32);
+
+  backend_win32->gl_context = NULL;
 
   /* FIXME: get from GetSystemMetric? */
   clutter_backend_set_double_click_time (backend, 250);
