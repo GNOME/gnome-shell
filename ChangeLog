@@ -1,3 +1,9 @@
+2008-03-29  Lucas Rocha  <lucasr.at.mundo@gmail.com>
+
+        * src/metacity.desktop.in, src/Makefile.am: make Metacity
+        install its desktop files in the default session directory
+        as required by the new gnome-session.  (Closes #525051.)
+
 2008-03-29  Thomas Thurman  <tthurman@gnome.org>
 
         * src/ui/preview-widget.c (meta_preview_get_clip_region):

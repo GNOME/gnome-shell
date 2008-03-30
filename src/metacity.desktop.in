@@ -1,4 +1,5 @@
 [Desktop Entry]
+Type=Application
 Encoding=UTF-8
 _Name=Metacity
 Exec=metacity
@@ -11,6 +12,9 @@ X-GnomeWMSettingsLibrary=metacity
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=metacity
 X-GNOME-Bugzilla-Component=general
+X-GNOME-Autostart-Phase=WindowManager
+X-GNOME-Provides=windowmanager
+X-GNOME-Autostart-Notify=true
 
 [Window Manager]
 SessionManaged=true

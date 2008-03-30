@@ -149,6 +149,7 @@ desktopfilesdir=$(datadir)/gnome/wm-properties
 desktopfiles_in_files=metacity.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
+
 @INTLTOOL_DESKTOP_RULE@
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
@@ -169,6 +170,14 @@ install-data-local:
 else
 install-data-local:
 endif
+
+sessiondir = $(datadir)/gnome/default-session;
+
+install-data-hook:
+	if test -z "$(sessiondir)" ; then \
+	       $(MKDIR_P) $(sessiondir) \
+	fi
+	$(LN_S) -f $(desktopfilesdir)/$(desktopfiles_DATA) $(sessiondir)
 
 IMAGES=default_icon.png stock_maximize.png stock_minimize.png stock_delete.png
 VARIABLES=default_icon_data $(srcdir)/default_icon.png \
