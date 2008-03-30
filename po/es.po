@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-03 01:59+0000\n"
-"PO-Revision-Date: 2008-03-03 23:55+0100\n"
+"POT-Creation-Date: 2008-03-21 02:57+0000\n"
+"PO-Revision-Date: 2008-03-30 11:04+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -104,19 +104,19 @@ msgstr ""
 "Algún otro programa ya está usando la clave %s con el modificador %x como "
 "una vinculación\n"
 
-#: ../src/core/keybindings.c:2736
+#: ../src/core/keybindings.c:2722
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Ocurrió un error al lanzar metacity-dialog para imprimir un error acerca de "
 "un comando: %s\n"
 
-#: ../src/core/keybindings.c:2841
+#: ../src/core/keybindings.c:2827
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No ha sido definido ningún comando %d.\n"
 
-#: ../src/core/keybindings.c:3869
+#: ../src/core/keybindings.c:3855
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "No ha sido definido ningún comando de terminal.\n"
@@ -189,27 +189,25 @@ msgstr "No se pudo reiniciar: %s\n"
 #. * (We know the old value, so we can look up a suitable string in
 #. * the symtab.)
 #.
-#: ../src/core/prefs.c:374 ../src/core/prefs.c:450
+#: ../src/core/prefs.c:450 ../src/core/prefs.c:564
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clave GConf «%s» está configurada con un valor inválido\n"
 
-#: ../src/core/prefs.c:423 ../src/core/prefs.c:493 ../src/core/prefs.c:844
-#: ../src/core/prefs.c:860 ../src/core/prefs.c:876 ../src/core/prefs.c:892
-#: ../src/core/prefs.c:910 ../src/core/prefs.c:926 ../src/core/prefs.c:945
-#: ../src/core/prefs.c:961 ../src/core/prefs.c:978 ../src/core/prefs.c:995
-#: ../src/core/prefs.c:1011 ../src/core/prefs.c:1027 ../src/core/prefs.c:1043
-#: ../src/core/prefs.c:1059 ../src/core/prefs.c:1075
+#: ../src/core/prefs.c:537 ../src/core/prefs.c:607 ../src/core/prefs.c:655
+#: ../src/core/prefs.c:961 ../src/core/prefs.c:979 ../src/core/prefs.c:995
+#: ../src/core/prefs.c:1014 ../src/core/prefs.c:1030 ../src/core/prefs.c:1047
+#: ../src/core/prefs.c:1064 ../src/core/prefs.c:1080 ../src/core/prefs.c:1096
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clave GConf «%s» está configurada con un tipo inválido\n"
 
-#: ../src/core/prefs.c:701
+#: ../src/core/prefs.c:856
 #, c-format
 msgid "Type of %s was not integer"
 msgstr "El tipo de %s no es entero"
 
-#: ../src/core/prefs.c:1144
+#: ../src/core/prefs.c:1165
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -217,16 +215,7 @@ msgstr ""
 "Los arreglos para aplicaciones rotas se han deshabilitado. Algunas "
 "aplicaciones podrían no comportarse correctamente.\n"
 
-#: ../src/core/prefs.c:1174
-#, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-"«%s» encontrado en la base de datos de configuración no es un valor válido "
-"para el modificador del botón del ratón\n"
-
-#: ../src/core/prefs.c:1292
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -235,14 +224,23 @@ msgstr ""
 "%d almacenado en la clave GConf %s no es un tamaño razonable para "
 "«cursor_size»; debe estar entre 1..128\n"
 
-#: ../src/core/prefs.c:1317
+#: ../src/core/prefs.c:1246
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "No se ha podido interpretar la descripción de la tipografía «%s» de la clave "
 "GConf %s\n"
 
-#: ../src/core/prefs.c:1606
+#: ../src/core/prefs.c:1306
+#, c-format
+msgid ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
+msgstr ""
+"«%s» encontrado en la base de datos de configuración no es un valor válido "
+"para el modificador del botón del ratón\n"
+
+#: ../src/core/prefs.c:1585
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -251,22 +249,22 @@ msgstr ""
 "%d almacenado en la clave GConf %s no es un número razonable de espacios de "
 "trabajo. El máximo disponible es de %d\n"
 
-#: ../src/core/prefs.c:1650
+#: ../src/core/prefs.c:1629
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d almacenado en la clave GConf %s está fuera de rango 0 hasta %d\n"
 
-#: ../src/core/prefs.c:1780
+#: ../src/core/prefs.c:1760
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Ocurrió un error configurando la número de espacios de trabajo para %d: %s\n"
 
-#: ../src/core/prefs.c:2145 ../src/core/prefs.c:2681 ../src/ui/menu.c:199
+#: ../src/core/prefs.c:2125 ../src/core/prefs.c:2637
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de trabajo %d"
 
-#: ../src/core/prefs.c:2175 ../src/core/prefs.c:2348
+#: ../src/core/prefs.c:2155 ../src/core/prefs.c:2328
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -275,7 +273,7 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para la combinación de teclas «%s»\n"
 
-#: ../src/core/prefs.c:2762
+#: ../src/core/prefs.c:2718
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -442,7 +440,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "WM_TRANSIENT_FOR inválido para la ventana 0x%lx especificada para %s.\n"
 
 #. first time through
-#: ../src/core/window.c:5653
+#: ../src/core/window.c:5658
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -458,7 +456,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6218
+#: ../src/core/window.c:6223
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -549,13 +547,14 @@ msgid ""
 "some space between two adjacent buttons."
 msgstr ""
 "Distribución de botones en la barra de títulos. El valor debe ser una "
-"cadena, como \"menu:minimize,maximize,spacer,close\" ; los dos puntos separan la "
-"esquina izquierda de la ventana de la esquina derecha, y los nombres de los "
-"botones están separados por comas. No se permiten botones duplicados. Los "
-"nombres desconocidos de botones se ignoran ignorados sin avisar de este modo "
-"esos botones puedan añadirse en las versiones futuras de metacity sin "
-"problemas con las versiones más antiguas. Se puede usar una etiqueta espaciadora "
-"para insertar algunos espacios entre dos botones adyacentes."
+"cadena, como \"menu:minimize,maximize,spacer,close\" ; los dos puntos "
+"separan la esquina izquierda de la ventana de la esquina derecha, y los "
+"nombres de los botones están separados por comas. No se permiten botones "
+"duplicados. Los nombres desconocidos de botones se ignoran ignorados sin "
+"avisar de este modo esos botones puedan añadirse en las versiones futuras de "
+"metacity sin problemas con las versiones más antiguas. Se puede usar una "
+"etiqueta espaciadora para insertar algunos espacios entre dos botones "
+"adyacentes."
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
@@ -2324,11 +2323,12 @@ msgid ""
 msgstr ""
 "Esta opción determina los efectos de la pulsación doble en la barra de "
 "títulos. Las opciones válidas actualmente son «toggle_shade», que enrolla/"
-"desenrolla la ventana, «toggle_maximized» que maximiza/desmaximiza la ventana, "
-"«toggle_maximize_horizontally» y «toggle_maximize_vertically» que maximiza/desmaximiza "
-"la ventana sólo en esa dirección, «minimize» que minimiza la ventana, "
-"«shade» que enrolla la ventana hacia arriba, «menu» que muestra la ventana "
-"de menú, «lower» que pone la ventana detrás de todas las demás y «none» que no hará nada."
+"desenrolla la ventana, «toggle_maximized» que maximiza/desmaximiza la "
+"ventana, «toggle_maximize_horizontally» y «toggle_maximize_vertically» que "
+"maximiza/desmaximiza la ventana sólo en esa dirección, «minimize» que "
+"minimiza la ventana, «shade» que enrolla la ventana hacia arriba, «menu» que "
+"muestra la ventana de menú, «lower» que pone la ventana detrás de todas las "
+"demás y «none» que no hará nada."
 
 #: ../src/metacity.schemas.in.h:188
 msgid ""
@@ -2342,12 +2342,13 @@ msgid ""
 "the others, and 'none' which will not do anything."
 msgstr ""
 "Esta opción determina los efectos de la pulsación con el botón central en la "
-"barra de títulos. Las opciones válidas actualmente son «toggle_shade», que enrolla/"
-"desenrolla la ventana, «toggle_maximized» que maximiza/desmaximiza la ventana, "
-"«toggle_maximize_horizontally» y «toggle_maximize_vertically» que maximiza/desmaximiza "
-"la ventana sólo en esa dirección, «minimize» que minimiza la ventana, "
-"«shade» que enrolla la ventana hacia arriba, «menu» que muestra la ventana "
-"de menú, «lower» que pone la ventana detrás de todas las demás y «none» que no hará nada."
+"barra de títulos. Las opciones válidas actualmente son «toggle_shade», que "
+"enrolla/desenrolla la ventana, «toggle_maximized» que maximiza/desmaximiza "
+"la ventana, «toggle_maximize_horizontally» y «toggle_maximize_vertically» "
+"que maximiza/desmaximiza la ventana sólo en esa dirección, «minimize» que "
+"minimiza la ventana, «shade» que enrolla la ventana hacia arriba, «menu» que "
+"muestra la ventana de menú, «lower» que pone la ventana detrás de todas las "
+"demás y «none» que no hará nada."
 
 #: ../src/metacity.schemas.in.h:189
 msgid ""
@@ -2361,12 +2362,13 @@ msgid ""
 "the others, and 'none' which will not do anything."
 msgstr ""
 "Esta opción determina los efectos de la pulsación con el botón derecho en la "
-"barra de títulos. Las opciones válidas actualmente son «toggle_shade», que enrolla/"
-"desenrolla la ventana, «toggle_maximized» que maximiza/desmaximiza la ventana, "
-"«toggle_maximize_horizontally» y «toggle_maximize_vertically» que maximiza/desmaximiza "
-"la ventana sólo en esa dirección, «minimize» que minimiza la ventana, "
-"«shade» que enrolla la ventana hacia arriba, «menu» que muestra la ventana "
-"de menú, «lower» que pone la ventana detrás de todas las demás y «none» que no hará nada."
+"barra de títulos. Las opciones válidas actualmente son «toggle_shade», que "
+"enrolla/desenrolla la ventana, «toggle_maximized» que maximiza/desmaximiza "
+"la ventana, «toggle_maximize_horizontally» y «toggle_maximize_vertically» "
+"que maximiza/desmaximiza la ventana sólo en esa dirección, «minimize» que "
+"minimiza la ventana, «shade» que enrolla la ventana hacia arriba, «menu» que "
+"muestra la ventana de menú, «lower» que pone la ventana detrás de todas las "
+"demás y «none» que no hará nada."
 
 #: ../src/metacity.schemas.in.h:190
 msgid ""
@@ -2562,17 +2564,22 @@ msgstr "Mover al área de trabajo de a_bajo"
 msgid "_Close"
 msgstr "_Cerrar"
 
-#: ../src/ui/menu.c:208
+#: ../src/ui/menu.c:203
+#, c-format
+msgid "Workspace %d%n"
+msgstr "Área de trabajo %d%n"
+
+#: ../src/ui/menu.c:213
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Área de trabajo 1_0"
 
-#: ../src/ui/menu.c:210
+#: ../src/ui/menu.c:215
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Área de trabajo %s%d"
 
-#: ../src/ui/menu.c:390
+#: ../src/ui/menu.c:395
 msgid "Move to Another _Workspace"
 msgstr "Mover a _otro área de trabajo"
 
