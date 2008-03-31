@@ -45,6 +45,7 @@
 #include "../clutter-main.h"
 #include "../clutter-debug.h"
 #include "../clutter-private.h"
+#include "../clutter-version.h"
 
 #include "cogl.h"
 
@@ -388,7 +389,7 @@ clutter_backend_glx_redraw (ClutterBackend *backend, ClutterStage *stage)
     }
 }
 
-ClutterActor*
+static ClutterActor*
 clutter_backend_glx_create_stage (ClutterBackend  *backend,
                                   GError         **error)
 {
@@ -396,7 +397,7 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   ClutterStageX11   *stage_x11;
   ClutterActor      *stage;
 
-  stage = g_object_new (CLUTTER_TYPE_STAGE_GLX, NULL);
+  stage = g_object_new (CLUTTER_STAGE_TYPE, NULL);
 
   /* copy backend data into the stage */
   stage_x11 = CLUTTER_STAGE_X11 (stage);

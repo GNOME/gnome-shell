@@ -245,7 +245,12 @@ _clutter_stage_manager_add_stage (ClutterStageManager *stage_manager,
       return;
     }
 
-  g_object_ref_sink (stage);
+  /*  Refing currently disabled as 
+   *   - adding/removing internal to clutter and only stage does this 
+   *   - stage removes from manager in finalize (and how can it with ref)
+   *   - Maybe a safer way
+   *  g_object_ref_sink (stage);   
+  */
   stage_manager->stages = g_slist_append (stage_manager->stages, stage);
 
   if (!default_stage)
@@ -278,5 +283,5 @@ _clutter_stage_manager_remove_stage (ClutterStageManager *stage_manager,
 
   g_signal_emit (stage_manager, manager_signals[STAGE_REMOVED], 0, stage);
 
-  g_object_unref (stage);
+  /* g_object_unref (stage); */
 }

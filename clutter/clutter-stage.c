@@ -246,6 +246,25 @@ clutter_stage_get_property (GObject    *object,
 }
 
 static void
+clutter_stage_dispose (GObject *object)
+{
+
+  G_OBJECT_CLASS (clutter_stage_parent_class)->dispose (object);
+}
+
+static void
+clutter_stage_finalize (GObject *object)
+{
+  ClutterStage        *stage = CLUTTER_STAGE(object);
+  ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
+
+  _clutter_stage_manager_remove_stage (stage_manager, stage);
+
+  G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
+}
+
+
+static void
 clutter_stage_class_init (ClutterStageClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -253,6 +272,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
 
   gobject_class->set_property = clutter_stage_set_property;
   gobject_class->get_property = clutter_stage_get_property;
+  gobject_class->dispose = clutter_stage_dispose;
+  gobject_class->finalize = clutter_stage_finalize;
 
   actor_class->paint = clutter_stage_paint;
   actor_class->pick = clutter_stage_pick;

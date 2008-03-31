@@ -56,6 +56,8 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
 
+  /* Note unrealize should free up any backend stage related resources */
+
   gboolean was_offscreen;
 
   CLUTTER_MARK();

@@ -113,6 +113,15 @@
 #define CLUTTER_COGL            "@CLUTTER_COGL@"
 
 /**
+ * CLUTTER_STAGE_TYPE:
+ *
+ * The default GObject type for the Clutter stage. 
+ *
+ * Since 0.8
+ */
+#define CLUTTER_STAGE_TYPE @CLUTTER_STAGE_TYPE@
+
+/**
  * CLUTTER_NO_FPU:
  *
  * Set to 1 if Clutter was built without FPU (i.e fixed math), 0 otherwise
@@ -121,5 +130,6 @@
  *  regardless the presence of FPU).
  */
 #define CLUTTER_NO_FPU          CLUTTER_NO_FPU_MACRO_WAS_REMOVED
+
 
 #endif /* __CLUTTER_VERSION_H__ */

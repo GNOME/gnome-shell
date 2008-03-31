@@ -62,7 +62,7 @@ struct _ClutterBackendClass
   gboolean      (* post_parse)    (ClutterBackend  *backend,
                                    GError         **error);
   ClutterActor *(* create_stage)   (ClutterBackend  *backend,
-                                   GError         **error);
+                                    GError         **error);
   void          (* init_events)   (ClutterBackend  *backend);
   void          (* init_features) (ClutterBackend  *backend);
   void          (* add_options)   (ClutterBackend  *backend,

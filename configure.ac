@@ -121,6 +121,7 @@ case $clutterbackend in
 
     clutter_gl_header="GL/gl.h"
     CLUTTER_FLAVOUR="sdl"
+    CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_SDL"
     AC_DEFINE([HAVE_CLUTTER_SDL], 1, [Have the SDL backend])
 
     CLUTTER_COGL="gl"
@@ -162,6 +163,7 @@ case $clutterbackend in
 
     clutter_gl_header="GL/gl.h"
     CLUTTER_FLAVOUR="glx"
+    CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_GLX"
     AC_DEFINE([HAVE_CLUTTER_GLX], 1, [Have the GLX backend])
 
     CLUTTER_COGL="gl"
@@ -191,6 +193,7 @@ case $clutterbackend in
 
     clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglx"
+    CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGLX"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
 
     # We currently assume having egl means also having gles..
@@ -230,6 +233,7 @@ case $clutterbackend in
 
     clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglnative"
+    CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGLNATIVE"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
 
     # We currently assume having egl means also having gles..
@@ -263,6 +267,7 @@ case $clutterbackend in
 
     clutter_gl_header="OpenGL/gl.h"
     CLUTTER_FLAVOUR="osx"
+    CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_OSX"
     AC_DEFINE([HAVE_CLUTTER_OSX], [1], [Have the OSX backend])
 
     CLUTTER_COGL="gl"
@@ -277,6 +282,7 @@ case $clutterbackend in
 
     clutter_gl_header="GL/gl.h"
     CLUTTER_FLAVOUR="win32"
+    CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_WIN32"
     AC_DEFINE([HAVE_CLUTTER_WIN32], 1, [Have the Win32 backend])
 
     CLUTTER_COGL="gl"
@@ -309,6 +315,7 @@ AC_SUBST([backendextralib])
 AC_SUBST(CLUTTER_FLAVOUR)
 AC_SUBST(CLUTTER_COGL)
 AC_SUBST(CLUTTER_GL_HEADER)
+AC_SUBST(CLUTTER_STAGE_TYPE)
 
 clutterbackendlib=libclutter$CLUTTER_REAL-$clutterbackend-$CLUTTER_MAJORMINOR.la
 AC_SUBST([clutterbackendlib])

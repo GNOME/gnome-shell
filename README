@@ -145,6 +145,11 @@ wanting to port to newer releases (See NEWS for general new feature info).
 
 Release Notes for Clutter 0.8
 -------------------------------
+
+* Clutter now features support for multiple stages assuming supported by the
+  backend. See test-multistage.c for example of usage. This does not change
+  the automatic creation of the default stage.
+
 * There is now an experimental native Win32 WGL backend.
 
 * Some more focused timeline unit tests have been added and some tweaks to

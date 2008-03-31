@@ -1,3 +1,25 @@
+2008-03-31  Matthew Allum  <mallum@openedhand.com>
+
+	* README:
+        Add notes on new multistage feature.
+
+	* clutter/clutter-stage-manager.c:
+        Dont ref contained stages.
+
+	* clutter/clutter-stage.c:
+        Automatically remove stage from stage manager on finalisation.
+        Cleans up warnings when a stage is destroyed. 
+
+	* clutter/clutter-backend.h:
+	* clutter/glx/clutter-backend-glx.c:
+        Minor formatting cleanups.
+
+	* clutter/glx/clutter-stage-glx.c:
+	* configure.ac:
+	* clutter/clutter-version.h.in:
+        Add a general CLUTTER_STAGE_TYPE define, should be useful for 
+        evntual stage subclassing and creating with g_object_new()
+
 2008-03-30  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/win32/clutter-backend-win32.c
