@@ -1,3 +1,9 @@
+2008-04-1  Robert Bragg  <bob@o-hand.com>
+	
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	In clutter_glx_texture_pixmap_dispose; trap X errors around
+	glXDestroyGLXPixmap so we can't die due to BadDrawable errors.
+
 2008-03-31  Matthew Allum  <mallum@openedhand.com>
 
 	* README:

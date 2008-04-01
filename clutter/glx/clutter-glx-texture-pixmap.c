@@ -162,8 +162,11 @@ clutter_glx_texture_pixmap_dispose (GObject *object)
 
   if (priv->glx_pixmap != None)
     {
+      clutter_x11_trap_x_errors ();
       glXDestroyGLXPixmap (((ClutterBackendX11 *)backend)->xdpy,
                            priv->glx_pixmap);
+      XSync (((ClutterBackendX11 *)backend)->xdpy, FALSE);
+      clutter_x11_untrap_x_errors ();
       priv->glx_pixmap = None;
     }
 
