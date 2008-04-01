@@ -184,15 +184,25 @@ _clutter_backend_ensure_context (ClutterBackend *backend, ClutterStage *stage)
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  if (stage != current_context_stage)
+  if (stage != current_context_stage || !CLUTTER_ACTOR_IS_REALIZED(stage))
     {
-     klass = CLUTTER_BACKEND_GET_CLASS (backend);
+      if (!CLUTTER_ACTOR_IS_REALIZED(stage))
+        stage = NULL;
+      
+      klass = CLUTTER_BACKEND_GET_CLASS (backend);
       if (G_LIKELY(klass->ensure_context))
         klass->ensure_context (backend, stage);
+      
+      /* FIXME: With a NULL stage and thus no active context it may make more
+       * sense to clean the context but then re call with the default stage 
+       * so at least there is some kind of context in place (as to avoid
+       * potential issue of GL calls with no context)
+      */
 
       current_context_stage = stage;
-
-      CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+      
+      if (stage)
+        CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 }
 

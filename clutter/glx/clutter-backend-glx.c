@@ -350,16 +350,30 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
   ClutterBackendGLX *backend_glx;
   ClutterStageGLX   *stage_glx;
   ClutterStageX11   *stage_x11;
+  ClutterBackendX11 *backend_x11;
 
-  stage_x11 = CLUTTER_STAGE_X11(stage);
-  stage_glx = CLUTTER_STAGE_GLX(stage);
-  backend_glx = CLUTTER_BACKEND_GLX(backend);
+  if (stage == NULL)
+    {
+      backend_x11 = CLUTTER_BACKEND_X11(backend);
+      CLUTTER_NOTE (MULTISTAGE, "Clearing all context");
 
-  CLUTTER_NOTE (MULTISTAGE, "setting context for stage:%p", stage );
+      glXMakeCurrent (backend_x11->xdpy, None, NULL);
+    }
+  else
+    {
+      stage_glx = CLUTTER_STAGE_GLX(stage);
+      stage_x11 = CLUTTER_STAGE_X11(stage);
+      backend_glx = CLUTTER_BACKEND_GLX(backend);
 
-  glXMakeCurrent (stage_x11->xdpy, 
-                  stage_x11->xwin, 
-                  backend_glx->gl_context);
+      g_return_if_fail (stage_x11->xwin != None);
+      g_return_if_fail (backend_glx->gl_context != None);
+
+      CLUTTER_NOTE (MULTISTAGE, "setting context for stage:%p", stage );
+
+      glXMakeCurrent (stage_x11->xdpy, 
+                      stage_x11->xwin, 
+                      backend_glx->gl_context);
+    }
 }
 
 static void

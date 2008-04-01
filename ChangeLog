@@ -1,3 +1,13 @@
+2008-04-01  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-backend.c:
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-stage-glx.c:
+        Allow NULL to be passed to _clutter_backend_ensure_context
+        which essentially clears GL context. This is hooked into stage
+        unrealisation.  Isn't yet quite bulletproof.  
+        Fixes issues with gtk-embed crasher (thanks to Neil).
+
 2008-04-1  Robert Bragg  <bob@o-hand.com>
 	
 	* clutter/glx/clutter-glx-texture-pixmap.c:

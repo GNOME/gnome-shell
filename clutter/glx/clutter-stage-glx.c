@@ -99,7 +99,8 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
         stage_x11->xwin = None;
     }
 
-  glXMakeCurrent (stage_x11->xdpy, None, NULL);
+  /* As unrealised the context will now get cleared */
+  clutter_stage_ensure_current (CLUTTER_STAGE(stage_glx));
 
   XSync (stage_x11->xdpy, False);
 
