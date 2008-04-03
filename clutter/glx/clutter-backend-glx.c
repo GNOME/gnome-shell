@@ -216,7 +216,11 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
   const gchar        *glx_extensions = NULL;
   ClutterFeatureFlags flags = CLUTTER_FEATURE_STAGE_MULTIPLE;
 
-  /* FIXME: we really need to check if gl context is set */
+  /* this will make sure that the GL context exists and its
+   * bound to a drawable
+   */
+  g_assert (backend_glx->gl_context != None);
+  g_assert (glXGetCurrentDrawable () != None);
 
   CLUTTER_NOTE (BACKEND, "Checking features\n"
                 "GL_VENDOR: %s\n"

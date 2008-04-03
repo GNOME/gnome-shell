@@ -288,13 +288,7 @@ clutter_backend_x11_constructor (GType                  gtype,
 ClutterFeatureFlags
 clutter_backend_x11_get_features (ClutterBackend *backend)
 {
-  ClutterFeatureFlags flags = 0;
-
-  /* FIXME: we really need to check if gl context is set */
-
-  flags = CLUTTER_FEATURE_STAGE_USER_RESIZE|CLUTTER_FEATURE_STAGE_CURSOR;
-
-  return flags;
+  return CLUTTER_FEATURE_STAGE_USER_RESIZE | CLUTTER_FEATURE_STAGE_CURSOR;
 }
 
 static void

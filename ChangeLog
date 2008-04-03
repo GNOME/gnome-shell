@@ -1,3 +1,16 @@
+2008-04-03  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/glx/clutter-backend-glx.c:
+	(clutter_backend_glx_get_features): Assert if we don't have a
+	GL context here or if it's not matched to a drawable. Asserting
+	might seem too drastic, but if we don't have a valid GL context
+	here then Clutter will segfault anyway, and I'll take an assert()
+	over a hard to read, deep in GLX guts backtrace any day (and
+	twice on a monday).
+
+	* clutter/x11/clutter-backend-x11.c:
+	(clutter_backend_x11_get_features): No need for a variable here.
+
 2008-04-01  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-backend.c:
