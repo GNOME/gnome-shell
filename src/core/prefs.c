@@ -586,6 +586,10 @@ handle_preference_update_bool (const gchar *key, GConfValue *value)
   if (cursor->key==NULL)
     /* Didn't recognise that key. */
     return FALSE;
+
+  if (cursor->target==NULL)
+    /* No work for us to do. */
+    return TRUE;
       
   if (value==NULL)
     {

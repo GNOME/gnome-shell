@@ -1,3 +1,8 @@
+2008-04-03  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/prefs.c (handle_preference_update_bool): preferences
+        which have a null target don't get updated! (#526016)
+
 2008-03-29  Lucas Rocha  <lucasr.at.mundo@gmail.com>
 
         * src/metacity.desktop.in, src/Makefile.am: make Metacity
