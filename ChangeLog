@@ -1,5 +1,11 @@
 2008-04-03  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/Makefile.am: Only export symbols matching "^clutter.*",
+	to avoid exposing the library-private symbols starting with
+	an underscore.
+
+2008-04-03  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-alpha.c: ClutterAlpha is an InitiallyUnowned
 	subclass. This should fix a lot of leakage. (#860, Neil Roberts)
 

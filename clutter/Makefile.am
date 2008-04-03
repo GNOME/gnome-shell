@@ -32,6 +32,7 @@ INCLUDES = \
 LDADD = \
 	$(CLUTTER_LT_LDFLAGS) \
 	-export-dynamic \
+	-export-symbols-regex "^clutter.*" \
 	-rpath $(libdir) \
 	$(NULL)
 
