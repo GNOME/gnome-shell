@@ -63,7 +63,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-G_DEFINE_TYPE (ClutterAlpha, clutter_alpha, G_TYPE_OBJECT);
+G_DEFINE_TYPE (ClutterAlpha, clutter_alpha, G_TYPE_INITIALLY_UNOWNED);
 
 
 struct _ClutterAlphaPrivate

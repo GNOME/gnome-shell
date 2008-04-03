@@ -1,5 +1,10 @@
 2008-04-03  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-alpha.c: ClutterAlpha is an InitiallyUnowned
+	subclass. This should fix a lot of leakage. (#860, Neil Roberts)
+
+2008-04-03  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/glx/clutter-backend-glx.c:
 	(clutter_backend_glx_get_features): Assert if we don't have a
 	GL context here or if it's not matched to a drawable. Asserting
