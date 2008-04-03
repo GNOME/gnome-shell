@@ -16,17 +16,27 @@ General notes and rules on clutter core hacking;
  - All public functions with float parameters should also provide a fixed
    point version. Fixed point should be used internally.
 
- - Properties should always be float (never fixed). 
+ - All public functions dealing with pixels should also provide a
+   ClutterUnit version. ClutterUnit should be used internally.
 
- - API funcs should always check their arguments with g_return_*().
+ - Properties should always be in floating point (never fixed point).
+   The precision should be double for unbounded properties (e.g.
+   (-MAX_DOUBLE, MAX_DOUBLE)), and single for bounded properties (e.g.:
+   [0.0, 1.0]).
 
- - Really try to avoid if possible additions to clutter-private.h
+ - Public entry points must always check their arguments with
+   g_return_if_fail() or g_return_val_if_fail().
+
+ - Private entry points should use g_assert() to verify internal state.
+
+ - Really try to avoid if possible additions to clutter-private.h. Use
+   accessor functions instead.
 
  - Don't add direct GL calls but wrap with cogl (also adding GL ES Version)
 
  - Use CLUTTER_NOTE() macro for debug statements.
 
- - New features should also include an exhaustive test in tests/
+ - New features should also include an exhaustive test unit under tests.
 
 
 RELEASES
@@ -36,9 +46,14 @@ In making a new release;
 
  - Check out a fresh copy from SVN.
 
- - verify versioning in configure.ac, increasing relevant
+ - Verify versioning in configure.ac, increasing relevant
    clutter_major_version/clutter_minor_version/clutter_micro_version
-   value.
+   value. For point releases, bump clutter_micro_version to the next
+   even number.
+
+ - If there was no API change (addition, removal), increment
+   clutter_interface_age by one. If there was an API change,
+   set clutter_interface_age to zero.
 
  - Update NEWS (New feature details, bug #'s), README (Any API changes
    relevant to developers + version), AUTHORS if relevant.
@@ -49,7 +64,7 @@ In making a new release;
 
  - Upload the tarball.
 
- - Bump to the next odd number version.
+ - Bump clutter_micro_version to the next odd number version.
 
  - Commit.
  
