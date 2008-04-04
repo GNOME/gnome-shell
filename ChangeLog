@@ -1,3 +1,18 @@
+2008-04-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-backend.c: Add more debug messages
+
+	* clutter/clutter-stage.h:
+	* clutter/clutter-stage.c:
+	(clutter_stage_is_default): Add a function to check if the
+	stage is the default one.
+
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/x11/clutter-stage-x11.c: Keep the stage wrapper
+	and implementation flags in sync, to ensure that the GL
+	context is always set.
+
 2008-04-04  Neil Roberts  <neil@o-hand.com>
 
 	* README: Fixed typo

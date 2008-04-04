@@ -189,13 +189,15 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  if (stage != current_context_stage || !CLUTTER_ACTOR_IS_REALIZED (stage))
+  if (current_context_stage != stage || !CLUTTER_ACTOR_IS_REALIZED (stage))
     {
       if (!CLUTTER_ACTOR_IS_REALIZED (stage))
         {
-          CLUTTER_NOTE (MULTISTAGE, "Stage is not realized");
+          CLUTTER_NOTE (MULTISTAGE, "Stage is not realized, unsetting");
           stage = NULL;
         }
+      else
+        CLUTTER_NOTE (MULTISTAGE, "Setting the new stage [%p]", stage);
       
       klass = CLUTTER_BACKEND_GET_CLASS (backend);
       if (G_LIKELY (klass->ensure_context))
@@ -205,13 +207,14 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
        * sense to clean the context but then re call with the default stage 
        * so at least there is some kind of context in place (as to avoid
        * potential issue of GL calls with no context)
-      */
-
+       */
       current_context_stage = stage;
       
       if (stage)
         CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
     }
+  else
+    CLUTTER_NOTE (MULTISTAGE, "Stage is the same");
 }
 
 

@@ -578,14 +578,14 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (xwindow != None, FALSE);
 
+  actor = CLUTTER_ACTOR (stage);
+
   impl = _clutter_stage_get_window (stage);
   stage_x11 = CLUTTER_STAGE_X11 (impl);
-  actor = CLUTTER_ACTOR (impl);
 
   clutter_x11_trap_x_errors ();
 
-  status = XGetGeometry (stage_x11->xdpy,
-                         xwindow,
+  status = XGetGeometry (stage_x11->xdpy, xwindow,
                          &root_return,
                          &x, &y,
                          &width, &height,
@@ -597,10 +597,13 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
       width == 0 || height == 0 ||
       depth != stage_x11->xvisinfo->depth)
     {
+      g_warning ("Unable to retrieve the new window geometry");
       return FALSE;
     }
 
   clutter_actor_unrealize (actor);
+
+  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)", (int) xwindow);
 
   stage_x11->xwin = xwindow;
   stage_x11->is_foreign_xwin = TRUE;

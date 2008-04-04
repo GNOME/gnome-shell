@@ -390,7 +390,9 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
       stage_x11 = CLUTTER_STAGE_X11 (impl);
       backend_glx = CLUTTER_BACKEND_GLX (backend);
 
-      g_return_if_fail (backend_glx->gl_context != None);
+      /* no GL context to set */
+      if (backend_glx->gl_context == None)
+        return;
 
       /* we might get here inside the final dispose cycle, so we
        * need to handle this gracefully
@@ -406,9 +408,18 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
           glXMakeCurrent (backend_x11->xdpy, None, NULL);
         }
       else
-        glXMakeCurrent (stage_x11->xdpy,
-                        stage_x11->xwin,
+        {
+          CLUTTER_NOTE (BACKEND,
+                        "MakeCurrent dpy: %p, window: 0x%x (%s), context: %p",
+                        stage_x11->xdpy,
+                        (int) stage_x11->xwin,
+                        stage_x11->is_foreign_xwin ? "foreign" : "native",
                         backend_glx->gl_context);
+
+          glXMakeCurrent (stage_x11->xdpy,
+                          stage_x11->xwin,
+                          backend_glx->gl_context);
+        }
     }
 }
 

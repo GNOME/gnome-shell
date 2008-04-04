@@ -188,11 +188,14 @@ clutter_stage_realize (ClutterActor *self)
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
   /* then realize the implementation */
+  g_assert (priv->impl != NULL);
   CLUTTER_ACTOR_GET_CLASS (priv->impl)->realize (priv->impl);
 
   /* set the flag on the wrapper if the implementation was successful */
   if (CLUTTER_ACTOR_IS_REALIZED (priv->impl))
     CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
+  else
+    CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 }
 
 static void
@@ -204,6 +207,7 @@ clutter_stage_unrealize (ClutterActor *self)
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 
   /* and then unrealize the implementation */
+  g_assert (priv->impl != NULL);
   CLUTTER_ACTOR_GET_CLASS (priv->impl)->unrealize (priv->impl);
 }
 
@@ -1663,6 +1667,34 @@ clutter_stage_queue_redraw (ClutterStage *stage)
                                        stage,
                                        NULL);
     }
+}
+
+/**
+ * clutter_stage_is_default:
+ * @stage: a #ClutterStage
+ *
+ * Checks if @stage is the default stage, or an instance created using
+ * clutter_stage_new() but internally using the same implementation.
+ *
+ * Return value: %TRUE if the passed stage is the default one
+ *
+ * Since: 0.8
+ */
+gboolean
+clutter_stage_is_default (ClutterStage *stage)
+{
+  ClutterStageWindow *impl;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  if (CLUTTER_ACTOR (stage) == clutter_stage_get_default ())
+    return TRUE;
+
+  impl = _clutter_stage_get_window (stage);
+  if (impl == _clutter_stage_get_default_window ())
+    return TRUE;
+
+  return FALSE;
 }
 
 void

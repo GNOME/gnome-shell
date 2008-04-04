@@ -65,7 +65,7 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
   gboolean was_offscreen;
 
   /* Note unrealize should free up any backend stage related resources */
-  CLUTTER_MARK();
+  CLUTTER_NOTE (BACKEND, "Unrealizing stage");
 
   g_object_get (stage_x11->wrapper, "offscreen", &was_offscreen, NULL);
 
@@ -155,8 +155,6 @@ clutter_stage_glx_realize (ClutterActor *actor)
       if (!stage_x11->xvisinfo)
         {
           g_critical ("Unable to find suitable GL visual.");
-
-          CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
           CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
           return;
         }
@@ -204,27 +202,26 @@ clutter_stage_glx_realize (ClutterActor *actor)
       clutter_stage_x11_fix_window_size (stage_x11);
       clutter_stage_x11_set_wm_protocols (stage_x11);
 
-      if (backend_glx->gl_context == None)
+      if (G_UNLIKELY (backend_glx->gl_context == None))
         {
           CLUTTER_NOTE (GL, "Creating GL Context");
-          backend_glx->gl_context =  glXCreateContext (stage_x11->xdpy, 
-                                                       stage_x11->xvisinfo, 
-                                                       0,
-                                                       True);
+          backend_glx->gl_context = glXCreateContext (stage_x11->xdpy, 
+                                                      stage_x11->xvisinfo, 
+                                                      0,
+                                                      True);
 
           if (backend_glx->gl_context == None)
             {
               g_critical ("Unable to create suitable GL context.");
-
-              CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
               CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-
               return;
             }
         }
 
-      CLUTTER_NOTE (GL, "glXMakeCurrent");
+      /* this will make sure to set the current context */
+      CLUTTER_NOTE (BACKEND, "Marking stage as realized and setting context");
       CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
+      CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
       clutter_stage_ensure_current (stage_x11->wrapper);
     }
   else
@@ -286,7 +283,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
               g_critical ("Unable to create suitable GL context.");
 
               CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
-              CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+              CLUTTER_ACTOR_UNSET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
 
               return;
             }
@@ -295,6 +292,8 @@ clutter_stage_glx_realize (ClutterActor *actor)
       clutter_x11_trap_x_errors ();
 
       /* below will call glxMakeCurrent */
+      CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
+      CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
       clutter_stage_ensure_current (stage_x11->wrapper);
 
       if (clutter_x11_untrap_x_errors ())
