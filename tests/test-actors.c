@@ -224,14 +224,12 @@ main (int argc, char *argv[])
 #endif
     }
 
-  clutter_actor_show_all (oh->group);
-
   /* Add the group to the stage */
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                CLUTTER_ACTOR (oh->group));
 
   /* Show everying ( and map window ) */
-  clutter_actor_show_all (stage);
+  clutter_actor_show (stage);
 
 
   g_signal_connect (stage, "button-press-event",

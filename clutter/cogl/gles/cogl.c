@@ -359,6 +359,8 @@ cogl_texture_quad (gint   x1,
   GE( glDrawArrays(GL_TRIANGLES, 0, 6) );
   GE( glDisableClientState(GL_TEXTURE_COORD_ARRAY) );
   GE( glDisableClientState(GL_VERTEX_ARRAY) );
+
+  /* Note also see glDrawTexxOES for potential optimisation */
 }
 
 void
@@ -645,8 +647,13 @@ cogl_fog_set (const ClutterColor *fog_color,
   glFogx (GL_FOG_END, (GLfixed) z_far);
 }
 
-/* Offscreen - TODO: possible support from FBO's */
-
+/* Offscreen - TODO: possible support from FBO's/PBuffers 
+ * See;
+ *  http://www.khronos.org/message_boards/viewtopic.php?t=589
+ *  http://www.gamedev.net/community/forums/topic.asp?topic_id=369739
+ *
+ * Likely requires EGL 1.3 for eglBindTexImage
+*/
 COGLuint
 cogl_offscreen_create (COGLuint target_texture)
 {

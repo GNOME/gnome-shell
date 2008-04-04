@@ -199,7 +199,7 @@ struct _ClutterActorPrivate
 
   ShaderData     *shader_data;
 
-  ClutterStage   *stage;
+  gboolean        show_on_set_parent;
 };
 
 enum
@@ -232,7 +232,9 @@ enum
   PROP_ROTATION_CENTER_Z,
 
   PROP_ANCHOR_X,
-  PROP_ANCHOR_Y
+  PROP_ANCHOR_Y,
+
+  PROP_SHOW_ON_SET_PARENT
 };
 
 enum
@@ -279,8 +281,6 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                                          clutter_scriptable_iface_init));
 
 
-
-
 static void
 clutter_actor_real_show (ClutterActor *self)
 {
@@ -310,6 +310,15 @@ clutter_actor_real_show (ClutterActor *self)
 void
 clutter_actor_show (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (priv->show_on_set_parent == FALSE && priv->parent_actor == NULL)
+      g_object_set (self, "show-on-set-parent", TRUE, NULL);
+
   if (!CLUTTER_ACTOR_IS_VISIBLE (self))
     {
       g_object_ref (self);
@@ -366,12 +375,18 @@ clutter_actor_real_hide (ClutterActor *self)
 void
 clutter_actor_hide (ClutterActor *self)
 {
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (priv->show_on_set_parent == TRUE && priv->parent_actor == NULL)
+      g_object_set (self, "show-on-set-parent", FALSE, NULL);
+
+  if (CLUTTER_ACTOR_IS_MAPPED (self))
     {
       g_object_ref (self);
-
-      if (CLUTTER_ACTOR_IS_REACTIVE(self))
-	; 			/* FIXME: decrease global reactive count */
 
       g_signal_emit (self, actor_signals[HIDE], 0);
       g_object_notify (G_OBJECT (self), "visible");
@@ -447,8 +462,6 @@ clutter_actor_unrealize (ClutterActor *self)
 
   if (klass->unrealize)
     (klass->unrealize) (self);
-
-  priv->stage = NULL;
 }
 
 static void
@@ -1504,6 +1517,9 @@ clutter_actor_set_property (GObject      *object,
     case PROP_ANCHOR_Y:
       priv->anchor_y = CLUTTER_UNITS_FROM_DEVICE (g_value_get_int (value));
       break;
+    case PROP_SHOW_ON_SET_PARENT:
+      priv->show_on_set_parent = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1617,6 +1633,9 @@ clutter_actor_get_property (GObject    *object,
       break;
     case PROP_ANCHOR_Y:
       g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE (priv->anchor_y));
+      break;
+    case PROP_SHOW_ON_SET_PARENT:
+      g_value_set_boolean (value, priv->show_on_set_parent);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1985,6 +2004,24 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					  CLUTTER_PARAM_READWRITE));
 
   /**
+   * ClutterActor:show-on-set-parent:
+   *
+   * If TRUE, the Actor is automatically shown when parented. 
+   *
+   * Since: 0.8 
+   */
+  g_object_class_install_property 
+                       (object_class,
+                        PROP_SHOW_ON_SET_PARENT,
+                        g_param_spec_boolean ("show-on-set-parent",
+                                              "Show on set parent",
+                                              "Whether the actor is shown"
+                                              " when parented",
+                                              TRUE,
+                                              CLUTTER_PARAM_READWRITE));
+
+
+  /**
    * ClutterActor::destroy:
    * @actor: the object which received the signal
    *
@@ -2342,6 +2379,7 @@ clutter_actor_init (ClutterActor *self)
   priv->scale_x      = CFX_ONE;
   priv->scale_y      = CFX_ONE;
   priv->shader_data  = NULL;
+  priv->show_on_set_parent = TRUE;
 
   memset (priv->clip, 0, sizeof (ClutterUnit) * 4);
 
@@ -4027,6 +4065,10 @@ clutter_actor_set_parent (ClutterActor *self,
   self->priv->parent_actor = parent;
   g_signal_emit (self, actor_signals[PARENT_SET], 0, NULL);
 
+  if (self->priv->show_on_set_parent == TRUE)
+      clutter_actor_show (self);
+  
+  /* FIXME: below likely not needed */
   if (CLUTTER_ACTOR_IS_REALIZED (self->priv->parent_actor))
     clutter_actor_realize (self);
 
