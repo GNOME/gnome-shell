@@ -146,9 +146,15 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 0.8
 -------------------------------
 
-* Clutter now features support for multiple stages assuming supported by the
-  backend. See test-multistage.c for example of usage. This does not change
-  the automatic creation of the default stage.
+* Actors now have a new 'show-on-set-parent' property set to TRUE by
+  default. With this property set to TRUE, actors will automatically
+  automatically have clutter_actor_show() called on them when a parent
+  is set (i.e added to a container).
+
+* Clutter now features support for multiple stages assuming supported
+  by the backend. See test-multistage.c for example of usage. This
+  does not change the automatic creation of the default stage. Stages
+  can now also be subclassed
 
 * There is now an experimental native Win32 WGL backend.
 
