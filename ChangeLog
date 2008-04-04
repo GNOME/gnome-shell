@@ -15,16 +15,20 @@
 
 2008-04-04  Matthew Allum  <mallum@openedhand.com>
 
-	reviewed by: <delete if not using a buddy>
+	* clutter/clutter-actor.c:
+        Remove uneeded stage private member.
+        Add show-on-set-parent prop and make so by default Actors are
+        now automatically shown when reparented (#791)            
 
-	* clutter/clutter-actor.c: (clutter_actor_real_hide),
-	(clutter_actor_unrealize), (clutter_actor_set_property),
-	(clutter_actor_get_property), (clutter_actor_class_init),
-	(clutter_actor_init), (clutter_actor_set_parent):
-	* clutter/cogl/gles/cogl.c: (cogl_texture_quad), (cogl_fog_set):
-	* clutter/eglnative/Makefile.am:
 	* clutter/eglx/clutter-backend-egl.c:
-	* tests/test-actors.c: (main):
+	* clutter/cogl/gles/cogl.c:
+        A couple of minor comments.
+
+	* clutter/eglnative/Makefile.am:
+        Add missing clutter-egl.h header (back port from trunk)
+
+	* tests/test-actors.c:
+        Modify to take advantage of new show-on-set-parent functionality.
 
 2008-04-03  Emmanuele Bassi  <ebassi@openedhand.com>
 
