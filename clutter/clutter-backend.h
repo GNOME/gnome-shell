@@ -47,31 +47,33 @@ typedef struct _ClutterBackendClass     ClutterBackendClass;
 
 struct _ClutterBackend
 {
+  /*< private >*/
   GObject                parent_instance;
   ClutterBackendPrivate *priv;
-
 };
 
 struct _ClutterBackendClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 
   /* vfuncs */
-  gboolean      (* pre_parse)     (ClutterBackend  *backend,
-                                   GError         **error);
-  gboolean      (* post_parse)    (ClutterBackend  *backend,
-                                   GError         **error);
-  ClutterActor *(* create_stage)   (ClutterBackend  *backend,
-                                    GError         **error);
-  void          (* init_events)   (ClutterBackend  *backend);
-  void          (* init_features) (ClutterBackend  *backend);
-  void          (* add_options)   (ClutterBackend  *backend,
-                                   GOptionGroup    *group);
-  ClutterFeatureFlags (* get_features)  (ClutterBackend  *backend);
-  void                (* redraw)  (ClutterBackend *backend, 
-                                   ClutterStage   *stage);
-  void        (* ensure_context)  (ClutterBackend *backend, 
-                                   ClutterStage   *stage);
+  gboolean            (* pre_parse)      (ClutterBackend  *backend,
+                                          GError         **error);
+  gboolean            (* post_parse)     (ClutterBackend  *backend,
+                                          GError         **error);
+  ClutterActor *      (* create_stage)   (ClutterBackend  *backend,
+                                          ClutterStage    *wrapper,
+                                          GError         **error);
+  void                (* init_events)    (ClutterBackend  *backend);
+  void                (* init_features)  (ClutterBackend  *backend);
+  void                (* add_options)    (ClutterBackend  *backend,
+                                          GOptionGroup    *group);
+  ClutterFeatureFlags (* get_features)   (ClutterBackend  *backend);
+  void                (* redraw)         (ClutterBackend  *backend,
+                                          ClutterStage    *stage);
+  void                (* ensure_context) (ClutterBackend  *backend,
+                                          ClutterStage    *stage);
 };
 
 GType clutter_backend_get_type    (void) G_GNUC_CONST;

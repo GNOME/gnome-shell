@@ -328,11 +328,12 @@ event_translate (ClutterBackend *backend,
                  ClutterEvent   *event,
                  XEvent         *xevent)
 {
-  ClutterBackendX11 *backend_x11;
-  ClutterStageX11   *stage_x11;
-  ClutterStage      *stage;
-  gboolean           res;
-  Window             xwindow, stage_xwindow;
+  ClutterBackendX11  *backend_x11;
+  ClutterStageX11    *stage_x11;
+  ClutterStage       *stage;
+  ClutterStageWindow *impl;
+  gboolean            res;
+  Window              xwindow, stage_xwindow;
 
   backend_x11    = CLUTTER_BACKEND_X11 (backend);
 
@@ -375,7 +376,8 @@ event_translate (ClutterBackend *backend,
   if (stage == NULL)
     return FALSE;
 
-  stage_x11      = CLUTTER_STAGE_X11 (stage);
+  impl           = _clutter_stage_get_window (stage);
+  stage_x11      = CLUTTER_STAGE_X11 (impl);
   stage_xwindow  = xwindow; /* clutter_x11_get_stage_window (stage); */
 
   event->any.stage = stage;

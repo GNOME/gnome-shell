@@ -40,6 +40,7 @@
 #include "../clutter-group.h"
 #include "../clutter-container.h"
 #include "../clutter-stage.h"
+#include "../clutter-stage-window.h"
 
 #include "cogl.h"
 
@@ -48,21 +49,25 @@
 
 #include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
-G_DEFINE_TYPE (ClutterStageGLX, clutter_stage_glx, CLUTTER_TYPE_STAGE_X11);
+static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterStageGLX,
+                         clutter_stage_glx,
+                         CLUTTER_TYPE_STAGE_X11,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
+                                                clutter_stage_window_iface_init));
 
 static void
 clutter_stage_glx_unrealize (ClutterActor *actor)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
-
-  /* Note unrealize should free up any backend stage related resources */
-
   gboolean was_offscreen;
 
+  /* Note unrealize should free up any backend stage related resources */
   CLUTTER_MARK();
 
-  g_object_get (actor, "offscreen", &was_offscreen, NULL);
+  g_object_get (stage_x11->wrapper, "offscreen", &was_offscreen, NULL);
 
   /* Chain up so all children get unrealized, needed to move texture data
    * across contexts
@@ -100,7 +105,7 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
     }
 
   /* As unrealised the context will now get cleared */
-  clutter_stage_ensure_current (CLUTTER_STAGE(stage_glx));
+  clutter_stage_ensure_current (stage_x11->wrapper);
 
   XSync (stage_x11->xdpy, False);
 
@@ -119,9 +124,9 @@ clutter_stage_glx_realize (ClutterActor *actor)
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
 
-  g_object_get (actor, "offscreen", &is_offscreen, NULL);
+  g_object_get (stage_x11->wrapper, "offscreen", &is_offscreen, NULL);
 
-  backend_glx = CLUTTER_BACKEND_GLX(clutter_get_default_backend());
+  backend_glx = CLUTTER_BACKEND_GLX (clutter_get_default_backend ());
 
   if (G_LIKELY (!is_offscreen))
     {
@@ -137,8 +142,10 @@ clutter_stage_glx_realize (ClutterActor *actor)
         };
 
       if (stage_x11->xvisinfo)
-        XFree (stage_x11->xvisinfo);
-      stage_x11->xvisinfo = NULL;
+        {
+          XFree (stage_x11->xvisinfo);
+          stage_x11->xvisinfo = None;
+        }
 
       /* The following check seems strange */
       if (stage_x11->xvisinfo == None)
@@ -148,6 +155,8 @@ clutter_stage_glx_realize (ClutterActor *actor)
       if (!stage_x11->xvisinfo)
         {
           g_critical ("Unable to find suitable GL visual.");
+
+          CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
           CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
           return;
         }
@@ -169,15 +178,15 @@ clutter_stage_glx_realize (ClutterActor *actor)
                                             AllocNone);
           mask = CWBackPixel | CWBorderPixel | CWColormap;
           stage_x11->xwin = XCreateWindow (stage_x11->xdpy,
-                                              stage_x11->xwin_root,
-                                              0, 0,
-                                              stage_x11->xwin_width,
-                                              stage_x11->xwin_height,
-                                              0,
-                                              stage_x11->xvisinfo->depth,
-                                              InputOutput,
-                                              stage_x11->xvisinfo->visual,
-                                              mask, &xattr);
+                                           stage_x11->xwin_root,
+                                           0, 0,
+                                           stage_x11->xwin_width,
+                                           stage_x11->xwin_height,
+                                           0,
+                                           stage_x11->xvisinfo->depth,
+                                           InputOutput,
+                                           stage_x11->xvisinfo->visual,
+                                           mask, &xattr);
         }
 
       CLUTTER_NOTE (MISC, "XSelectInput");
@@ -193,7 +202,6 @@ clutter_stage_glx_realize (ClutterActor *actor)
 
       /* no user resize.. */
       clutter_stage_x11_fix_window_size (stage_x11);
-
       clutter_stage_x11_set_wm_protocols (stage_x11);
 
       if (backend_glx->gl_context == None)
@@ -208,6 +216,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
             {
               g_critical ("Unable to create suitable GL context.");
 
+              CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
               CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 
               return;
@@ -215,8 +224,8 @@ clutter_stage_glx_realize (ClutterActor *actor)
         }
 
       CLUTTER_NOTE (GL, "glXMakeCurrent");
-
-      clutter_stage_ensure_current (CLUTTER_STAGE(stage_glx));
+      CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
+      clutter_stage_ensure_current (stage_x11->wrapper);
     }
   else
     {
@@ -276,6 +285,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
             {
               g_critical ("Unable to create suitable GL context.");
 
+              CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
               CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 
               return;
@@ -285,7 +295,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
       clutter_x11_trap_x_errors ();
 
       /* below will call glxMakeCurrent */
-      clutter_stage_ensure_current (CLUTTER_STAGE(stage_glx));
+      clutter_stage_ensure_current (stage_x11->wrapper);
 
       if (clutter_x11_untrap_x_errors ())
         {
@@ -295,14 +305,13 @@ clutter_stage_glx_realize (ClutterActor *actor)
     }
 
   /* Make sure the viewport gets set up correctly */
-  CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
   return;
   
- fail:
-
+fail:
   /* For one reason or another we cant realize the stage.. */
+  CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-  return;
 }
 
 static void
@@ -312,12 +321,12 @@ snapshot_pixbuf_free (guchar   *pixels,
   g_free (pixels);
 }
 
-static GdkPixbuf*
-clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
-                                  gint          x,
-                                  gint          y,
-                                  gint          width,
-                                  gint          height)
+static GdkPixbuf *
+clutter_stage_glx_draw_to_pixbuf (ClutterStageWindow *stage_window,
+                                  gint                x,
+                                  gint                y,
+                                  gint                width,
+                                  gint                height)
 {
   guchar *data;
   GdkPixbuf *pixb;
@@ -326,9 +335,9 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
   ClutterStageX11 *stage_x11;
   gboolean is_offscreen = FALSE;
 
-  stage_glx = CLUTTER_STAGE_GLX (stage);
-  stage_x11 = CLUTTER_STAGE_X11 (stage);
-  actor = CLUTTER_ACTOR (stage);
+  stage_glx = CLUTTER_STAGE_GLX (stage_window);
+  stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+  actor = CLUTTER_ACTOR (stage_window);
 
   if (width < 0)
     width = clutter_actor_get_width (actor);
@@ -336,7 +345,7 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
   if (height < 0)
     height = clutter_actor_get_height (actor);
 
-  g_object_get (stage, "offscreen", &is_offscreen, NULL);
+  g_object_get (stage_x11->wrapper, "offscreen", &is_offscreen, NULL);
 
   if (G_UNLIKELY (is_offscreen))
     {
@@ -401,17 +410,22 @@ clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  ClutterStageClass *stage_class = CLUTTER_STAGE_CLASS (klass);
 
   gobject_class->dispose = clutter_stage_glx_dispose;
   
   actor_class->realize = clutter_stage_glx_realize;
   actor_class->unrealize = clutter_stage_glx_unrealize;
-  stage_class->draw_to_pixbuf = clutter_stage_glx_draw_to_pixbuf;
 }
 
 static void
 clutter_stage_glx_init (ClutterStageGLX *stage)
 {
-  ;
+}
+
+static void
+clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
+{
+  iface->draw_to_pixbuf = clutter_stage_glx_draw_to_pixbuf;
+
+  /* the rest is inherited from ClutterStageX11 */
 }

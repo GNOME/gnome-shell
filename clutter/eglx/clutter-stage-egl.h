@@ -27,8 +27,7 @@ struct _ClutterStageEGL
 {
   ClutterStageX11 parent_instance;
 
-  EGLSurface   egl_surface;
-  EGLContext   egl_context;
+  EGLSurface egl_surface;
 };
 
 struct _ClutterStageEGLClass

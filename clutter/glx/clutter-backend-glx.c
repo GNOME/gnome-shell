@@ -173,6 +173,15 @@ clutter_backend_glx_finalize (GObject *gobject)
 static void
 clutter_backend_glx_dispose (GObject *gobject)
 {
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (gobject);
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
+
+  if (backend_glx->gl_context)
+    {
+      glXDestroyContext (backend_x11->xdpy, backend_glx->gl_context);
+      backend_glx->gl_context = None;
+    }
+
   G_OBJECT_CLASS (clutter_backend_glx_parent_class)->dispose (gobject);
 }
 
@@ -214,10 +223,13 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 {
   ClutterBackendGLX  *backend_glx = CLUTTER_BACKEND_GLX (backend);
   const gchar        *glx_extensions = NULL;
-  ClutterFeatureFlags flags = CLUTTER_FEATURE_STAGE_MULTIPLE;
+  ClutterFeatureFlags flags;
+  
+  flags = clutter_backend_x11_get_features (backend);
+  flags |= CLUTTER_FEATURE_STAGE_MULTIPLE;
 
-  /* this will make sure that the GL context exists and its
-   * bound to a drawable
+  /* this will make sure that the GL context exists and
+   * it's bound to a drawable
    */
   g_assert (backend_glx->gl_context != None);
   g_assert (glXGetCurrentDrawable () != None);
@@ -344,59 +356,88 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
   CLUTTER_NOTE (MISC, "backend features checked");
 
-  return flags|clutter_backend_x11_get_features (backend);
+  return flags;
 }
 
 static void
 clutter_backend_glx_ensure_context (ClutterBackend *backend, 
                                     ClutterStage   *stage)
 {
-  ClutterBackendGLX *backend_glx;
-  ClutterStageGLX   *stage_glx;
-  ClutterStageX11   *stage_x11;
-  ClutterBackendX11 *backend_x11;
-
   if (stage == NULL)
     {
-      backend_x11 = CLUTTER_BACKEND_X11(backend);
+      ClutterBackendX11 *backend_x11;
+
+      backend_x11 = CLUTTER_BACKEND_X11 (backend);
       CLUTTER_NOTE (MULTISTAGE, "Clearing all context");
 
       glXMakeCurrent (backend_x11->xdpy, None, NULL);
     }
   else
     {
-      stage_glx = CLUTTER_STAGE_GLX(stage);
-      stage_x11 = CLUTTER_STAGE_X11(stage);
-      backend_glx = CLUTTER_BACKEND_GLX(backend);
+      ClutterBackendGLX  *backend_glx;
+      ClutterStageGLX    *stage_glx;
+      ClutterStageX11    *stage_x11;
+      ClutterStageWindow *impl;
 
-      g_return_if_fail (stage_x11->xwin != None);
+      impl = _clutter_stage_get_window (stage);
+      g_assert (impl != NULL);
+
+      CLUTTER_NOTE (MULTISTAGE, "Setting context for stage of type %s [%p]",
+                    g_type_name (G_OBJECT_TYPE (impl)),
+                    impl);
+
+      stage_glx = CLUTTER_STAGE_GLX (impl);
+      stage_x11 = CLUTTER_STAGE_X11 (impl);
+      backend_glx = CLUTTER_BACKEND_GLX (backend);
+
       g_return_if_fail (backend_glx->gl_context != None);
 
-      CLUTTER_NOTE (MULTISTAGE, "setting context for stage:%p", stage );
+      /* we might get here inside the final dispose cycle, so we
+       * need to handle this gracefully
+       */
+      if (stage_x11->xwin == None)
+        {
+          ClutterBackendX11 *backend_x11;
 
-      glXMakeCurrent (stage_x11->xdpy, 
-                      stage_x11->xwin, 
-                      backend_glx->gl_context);
+          backend_x11 = CLUTTER_BACKEND_X11 (backend);
+          CLUTTER_NOTE (MULTISTAGE,
+                        "Received a stale stage, clearing all context");
+
+          glXMakeCurrent (backend_x11->xdpy, None, NULL);
+        }
+      else
+        glXMakeCurrent (stage_x11->xdpy,
+                        stage_x11->xwin,
+                        backend_glx->gl_context);
     }
 }
 
 static void
-clutter_backend_glx_redraw (ClutterBackend *backend, ClutterStage *stage)
+clutter_backend_glx_redraw (ClutterBackend *backend,
+                            ClutterStage   *stage)
 {
-  ClutterStageGLX   *stage_glx;
-  ClutterStageX11   *stage_x11;
+  ClutterStageGLX *stage_glx;
+  ClutterStageX11 *stage_x11;
+  ClutterStageWindow *impl;
 
-  stage_x11 = CLUTTER_STAGE_X11(stage);
-  stage_glx = CLUTTER_STAGE_GLX(stage);
+  impl = _clutter_stage_get_window (stage);
+  if (!impl)
+    return;
 
-  clutter_actor_paint (CLUTTER_ACTOR (stage_glx));
+  g_assert (CLUTTER_IS_STAGE_GLX (impl));
+
+  stage_x11 = CLUTTER_STAGE_X11 (impl);
+  stage_glx = CLUTTER_STAGE_GLX (impl);
+
+  /* this will cause the stage implementation to be painted */
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
 
   /* Why this paint is done in backend as likely GL windowing system
    * specific calls, like swapping buffers.
   */
   if (stage_x11->xwin)
     {
-      clutter_backend_glx_wait_for_vblank (CLUTTER_BACKEND_GLX(backend));
+      clutter_backend_glx_wait_for_vblank (CLUTTER_BACKEND_GLX (backend));
       glXSwapBuffers (stage_x11->xdpy, stage_x11->xwin);
     }
   else
@@ -409,11 +450,15 @@ clutter_backend_glx_redraw (ClutterBackend *backend, ClutterStage *stage)
 
 static ClutterActor*
 clutter_backend_glx_create_stage (ClutterBackend  *backend,
+                                  ClutterStage    *wrapper,
                                   GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterStageX11   *stage_x11;
   ClutterActor      *stage;
+
+  CLUTTER_NOTE (BACKEND, "Creating stage of type `%s'",
+                g_type_name (CLUTTER_STAGE_TYPE));
 
   stage = g_object_new (CLUTTER_STAGE_TYPE, NULL);
 
@@ -423,8 +468,12 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   stage_x11->xwin_root = backend_x11->xwin_root;
   stage_x11->xscreen = backend_x11->xscreen_num;
   stage_x11->backend = backend_x11;
+  stage_x11->wrapper = wrapper;
 
-  CLUTTER_NOTE (MISC, "X11 stage created (display:%p, screen:%d, root:%u)",
+  /* set the pointer back into the wrapper */
+  _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
+
+  CLUTTER_NOTE (BACKEND, "GLX stage created (display:%p, screen:%d, root:%u)",
                 stage_x11->xdpy,
                 stage_x11->xscreen,
                 (unsigned int) stage_x11->xwin_root);
@@ -432,6 +481,10 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   /* needed ? */
   g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
 
+  /* FIXME - is this needed? we should call realize inside the clutter
+   * init sequence for the default stage, and let the usual realization
+   * sequence be used for any other stage
+   */
   clutter_actor_realize (stage);
 
   if (!CLUTTER_ACTOR_IS_REALIZED (stage))
@@ -445,7 +498,6 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   return stage;
 }
 
-
 static void
 clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
 {
@@ -456,19 +508,19 @@ clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
   gobject_class->dispose     = clutter_backend_glx_dispose;
   gobject_class->finalize    = clutter_backend_glx_finalize;
 
-  backend_class->pre_parse   = clutter_backend_glx_pre_parse;
-  backend_class->post_parse   = clutter_backend_glx_post_parse;
-  backend_class->create_stage = clutter_backend_glx_create_stage;
-  backend_class->add_options  = clutter_backend_glx_add_options;
-  backend_class->get_features = clutter_backend_glx_get_features;
-  backend_class->redraw       = clutter_backend_glx_redraw;
+  backend_class->pre_parse      = clutter_backend_glx_pre_parse;
+  backend_class->post_parse     = clutter_backend_glx_post_parse;
+  backend_class->create_stage   = clutter_backend_glx_create_stage;
+  backend_class->add_options    = clutter_backend_glx_add_options;
+  backend_class->get_features   = clutter_backend_glx_get_features;
+  backend_class->redraw         = clutter_backend_glx_redraw;
   backend_class->ensure_context = clutter_backend_glx_ensure_context;
 }
 
 static void
 clutter_backend_glx_init (ClutterBackendGLX *backend_glx)
 {
-  ;
+
 }
 
 /* every backend must implement this function */

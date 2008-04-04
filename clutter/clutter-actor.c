@@ -2447,7 +2447,7 @@ clutter_actor_queue_redraw (ClutterActor *self)
 
   /* FIXME: should we check we're visible here? */
   if ((stage = clutter_actor_get_stage (self)) != NULL)
-    clutter_stage_queue_redraw (CLUTTER_STAGE(stage));
+    clutter_stage_queue_redraw (CLUTTER_STAGE (stage));
 }
 
 /**

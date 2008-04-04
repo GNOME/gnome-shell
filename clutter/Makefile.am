@@ -162,6 +162,7 @@ source_c = \
 	clutter-shader.c		\
 	clutter-stage.c			\
 	clutter-stage-manager.c		\
+	clutter-stage-window.c		\
 	clutter-texture.c 		\
 	clutter-timeline.c 		\
 	clutter-timeout-pool.c		\
@@ -175,6 +176,7 @@ source_h_priv = \
 	clutter-private.h 		\
 	clutter-id-pool.h 		\
 	clutter-script-private.h	\
+	clutter-stage-window.h		\
 	$(NULL)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \

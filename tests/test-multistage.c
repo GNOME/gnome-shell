@@ -26,7 +26,7 @@ on_button_press (ClutterActor *actor,
   ClutterAlpha     *alpha;
   ClutterBehaviour *r_behave;
 
-  new_stage = clutter_stage_create_new ();
+  new_stage = clutter_stage_new ();
 
   /* FIXME: below should really be automatic */
   /* clutter_stage_ensure_cogl_context (CLUTTER_STAGE(new_stage)); */

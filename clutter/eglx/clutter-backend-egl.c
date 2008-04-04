@@ -23,11 +23,12 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
     {
       EGLBoolean status;
 
-      backend_egl->edpy = eglGetDisplay((NativeDisplayType)backend_x11->xdpy);
+      backend_egl->edpy =
+        eglGetDisplay ((NativeDisplayType) backend_x11->xdpy);
 
-      status = eglInitialize(backend_egl->edpy,
-			     &backend_egl->egl_version_major,
-			     &backend_egl->egl_version_minor);
+      status = eglInitialize (backend_egl->edpy,
+			      &backend_egl->egl_version_major,
+			      &backend_egl->egl_version_minor);
 
       if (status != EGL_TRUE)
 	{
@@ -47,17 +48,80 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
 }
 
 static void
-clutter_backend_egl_redraw (ClutterBackend *backend)
+clutter_backend_egl_ensure_context (ClutterBackend *backend,
+                                    ClutterStage   *stage)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  ClutterStageEGL   *stage_egl;
-  ClutterStageX11   *stage_x11;
 
-  stage_x11 = CLUTTER_STAGE_X11(backend_x11->stage);
-  stage_egl = CLUTTER_STAGE_EGL(backend_x11->stage);
+  if (stage == NULL)
+    {
+      CLUTTER_NOTE (BACKEND, "Clearing EGL context");
+      eglMakeCurrent (backend_egl->edpy,
+                      EGL_NO_SURFACE,
+                      EGL_NO_SURFACE,
+                      EGL_NO_CONTEXT);
+    }
+  else
+    {
+      ClutterStageWindow *impl;
+      ClutterStageEGL    *stage_egl;
+      ClutterStageX11    *stage_x11;
 
-  clutter_actor_paint (CLUTTER_ACTOR(stage_egl));
+      impl = _clutter_stage_get_window (stage);
+      g_assert (impl != NULL);
+
+      CLUTTER_NOTE (MULTISTAGE, "Setting context for stage of type %s [%p]",
+                    g_type_name (G_OBJECT_TYPE (impl)),
+                    impl);
+
+      stage_egl = CLUTTER_STAGE_EGL (impl);
+      stage_x11 = CLUTTER_STAGE_X11 (impl);
+
+      g_return_if_fail (backend_egl->egl_context != NULL);
+
+      /* we might get here inside the final dispose cycle, so we
+       * need to handle this gracefully
+       */
+      if (stage_x11->xwin == None ||
+          stage_egl->egl_surface == EGL_NO_SURFACE)
+        {
+          CLUTTER_NOTE (MULTISTAGE,
+                        "Received a stale stage, clearing all context");
+
+          eglMakeCurrent (backend_egl->edpy,
+                          EGL_NO_SURFACE,
+                          EGL_NO_SURFACE,
+                          EGL_NO_CONTEXT);
+        }
+      else
+        eglMakeCurrent (backend_egl->edpy,
+                        stage_egl->egl_surface,
+                        stage_egl->egl_surface,
+                        backend_egl->egl_context);
+    }
+}
+
+static void
+clutter_backend_egl_redraw (ClutterBackend *backend,
+                            ClutterStage   *stage)
+{
+  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendX11  *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterStageWindow *impl;
+  ClutterStageEGL    *stage_egl;
+  ClutterStageX11    *stage_x11;
+
+  impl = _clutter_stage_get_window (stage);
+  if (!impl)
+    return;
+
+  g_assert (CLUTTER_IS_STAGE_EGL (impl));
+
+  stage_x11 = CLUTTER_STAGE_X11 (impl);
+  stage_egl = CLUTTER_STAGE_EGL (impl);
+
+  /* this will cause the stage implementation to be painted as well */
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
 
   /* Why this paint is done in backend as likely GL windowing system
    * specific calls, like swapping buffers.
@@ -87,6 +151,12 @@ static void
 clutter_backend_egl_dispose (GObject *gobject)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
+
+  if (backend_egl->egl_context)
+    {
+      eglDestroyContext (backend_egl->edpy, backend_egl->egl_context);
+      backend_egl->egl_context = NULL;
+    }
 
   if (backend_egl->edpy)
     {
@@ -133,46 +203,46 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
                 "EGL_VENDOR: %s\n",
                 "EGL_VERSION: %s\n",
                 "EGL_EXTENSIONS: %s\n",
-                glGetString(GL_VENDOR),
-                glGetString(GL_RENDERER),
-                glGetString(GL_VERSION),
-                eglQueryString(backend_egl->edpy, EGL_VENDOR),
-                eglQueryString(backend_egl->edpy, EGL_VERSION),
-                eglQueryString(backend_egl->edpy, EGL_EXTENSIONS));
+                glGetString (GL_VENDOR),
+                glGetString (GL_RENDERER),
+                glGetString (GL_VERSION),
+                eglQueryString (backend_egl->edpy, EGL_VENDOR),
+                eglQueryString (backend_egl->edpy, EGL_VERSION),
+                eglQueryString (backend_egl->edpy, EGL_EXTENSIONS));
 
   /* We can actually resize too */
   return CLUTTER_FEATURE_STAGE_CURSOR|CLUTTER_FEATURE_STAGE_MULTIPLE;
 }
 
-static gboolean
-clutter_backend_egl_init_stage (ClutterBackend  *backend,
-                                GError         **error)
+static ClutterActor *
+clutter_backend_egl_create_stage (ClutterBackend  *backend,
+                                  ClutterStage    *wrapper,
+                                  GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
-  if (!backend_x11->stage)
-    {
-      ClutterStageX11 *stage_x11;
-      ClutterActor *stage;
-
-      stage = g_object_new (CLUTTER_TYPE_STAGE_EGL, NULL);
-
-      /* copy backend data into the stage */
-      stage_x11 = CLUTTER_STAGE_X11 (stage);
-      stage_x11->xdpy = backend_x11->xdpy;
-      stage_x11->xwin_root = backend_x11->xwin_root;
-      stage_x11->xscreen = backend_x11->xscreen_num;
-      stage_x11->backend = backend_x11;
-
-      CLUTTER_NOTE (MISC, "X11 stage created (display:%p, screen:%d, root:%u)",
-                    stage_x11->xdpy,
-                    stage_x11->xscreen,
-                    (unsigned int) stage_x11->xwin_root);
-
-      g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
-
-      backend_x11->stage = g_object_ref_sink (stage);
-    }
+  CLUTTER_NOTE (BACKEND, "Creating stage of type `%s'",
+                g_type_name (CLUTTER_STAGE_TYPE));
+  
+  stage = g_object_new (CLUTTER_STAGE_TYPE, NULL);
+  
+  /* copy backend data into the stage */
+  stage_x11 = CLUTTER_STAGE_X11 (stage);
+  stage_x11->xdpy = backend_x11->xdpy;
+  stage_x11->xwin_root = backend_x11->xwin_root;
+  stage_x11->xscreen = backend_x11->xscreen_num;
+  stage_x11->backend = backend_x11;
+  stage_x11->wrapper = wrapper;
+  
+  /* set the pointer back into the wrapper */
+  _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
+  
+  CLUTTER_NOTE (MISC, "EGLX stage created (display:%p, screen:%d, root:%u)",
+                stage_x11->xdpy,
+                stage_x11->xscreen,
+                (unsigned int) stage_x11->xwin_root);
+  
+  g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
 
   clutter_actor_realize (backend_x11->stage);
 
@@ -181,10 +251,11 @@ clutter_backend_egl_init_stage (ClutterBackend  *backend,
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_INTERNAL,
                    "Unable to realize the main stage");
-      return FALSE;
+      g_object_unref (stage);
+      return NULL;
     }
 
-  return TRUE;
+  return stage;
 }
 
 static void
@@ -194,19 +265,20 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
 
   gobject_class->constructor = clutter_backend_egl_constructor;
-  gobject_class->dispose = clutter_backend_egl_dispose;
-  gobject_class->finalize = clutter_backend_egl_finalize;
+  gobject_class->dispose     = clutter_backend_egl_dispose;
+  gobject_class->finalize    = clutter_backend_egl_finalize;
 
-  backend_class->post_parse  = clutter_backend_egl_post_parse;
-  backend_class->redraw      = clutter_backend_egl_redraw;
-  backend_class->get_features = clutter_backend_egl_get_features;
-  backend_class->init_stage = clutter_backend_egl_init_stage;
+  backend_class->post_parse     = clutter_backend_egl_post_parse;
+  backend_class->redraw         = clutter_backend_egl_redraw;
+  backend_class->get_features   = clutter_backend_egl_get_features;
+  backend_class->create_stage   = clutter_backend_egl_create_stage;
+  backend_class->ensure_context = clutter_backend_egl_ensure_context;
 }
 
 static void
 clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
-  ;
+
 }
 
 GType

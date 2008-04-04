@@ -267,12 +267,11 @@ void
 _clutter_stage_manager_remove_stage (ClutterStageManager *stage_manager,
                                      ClutterStage        *stage)
 {
+  /* this might be called multiple times from a ::dispose, so it
+   * needs to just return without warning
+   */
   if (!g_slist_find (stage_manager->stages, stage))
-    {
-      g_warning ("Trying to remove an unknown stage from the list "
-                 "of managed stages, aborting.");
-      return;
-    }
+    return;
 
   stage_manager->stages = g_slist_remove (stage_manager->stages, stage);
 

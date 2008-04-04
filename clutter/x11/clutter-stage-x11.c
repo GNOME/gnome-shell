@@ -27,6 +27,7 @@
 #include "clutter-stage-x11.h"
 #include "clutter-x11.h"
 
+#include "../clutter-stage-window.h"
 #include "../clutter-main.h"
 #include "../clutter-feature.h"
 #include "../clutter-color.h"
@@ -45,7 +46,13 @@
 
 #include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
-G_DEFINE_TYPE (ClutterStageX11, clutter_stage_x11, CLUTTER_TYPE_STAGE);
+static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterStageX11,
+                         clutter_stage_x11,
+                         CLUTTER_TYPE_GROUP,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
+                                                clutter_stage_window_iface_init));
 
 #define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
 #define _NET_WM_STATE_ADD           1    /* add/set property */
@@ -84,7 +91,7 @@ clutter_stage_x11_fix_window_size (ClutterStageX11 *stage_x11)
 {
   gboolean resize;
 
-  resize = clutter_stage_get_user_resizable (CLUTTER_STAGE (stage_x11));
+  resize = clutter_stage_get_user_resizable (stage_x11->wrapper);
 
   if (stage_x11->xwin != None && stage_x11->is_foreign_xwin == FALSE)
     {
@@ -117,7 +124,7 @@ clutter_stage_x11_show (ClutterActor *actor)
       /* Fire off a redraw to avoid flicker on first map.
        * Appears not to work perfectly on intel drivers at least.
       */
-      clutter_redraw(CLUTTER_STAGE(actor));
+      clutter_redraw (stage_x11->wrapper);
 
       XSync (stage_x11->xdpy, FALSE);
       XMapWindow (stage_x11->xdpy, stage_x11->xwin);
@@ -153,8 +160,8 @@ clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11)
 }
 
 static void
-clutter_stage_x11_query_coords (ClutterActor        *self,
-                                ClutterActorBox     *box)
+clutter_stage_x11_query_coords (ClutterActor    *self,
+                                ClutterActorBox *box)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
 
@@ -164,8 +171,8 @@ clutter_stage_x11_query_coords (ClutterActor        *self,
 }
 
 static void
-clutter_stage_x11_request_coords (ClutterActor        *self,
-                                  ClutterActorBox     *box)
+clutter_stage_x11_request_coords (ClutterActor    *self,
+                                  ClutterActorBox *box)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (self);
   gint new_width, new_height;
@@ -208,7 +215,8 @@ clutter_stage_x11_request_coords (ClutterActor        *self,
           clutter_actor_realize (self);
         }
 
-      CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
+      CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
+                                 CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
   if (stage_x11->xwin != None
@@ -224,15 +232,18 @@ clutter_stage_x11_request_coords (ClutterActor        *self,
 }
 
 static void
-clutter_stage_x11_set_fullscreen (ClutterStage *stage,
-                                  gboolean      fullscreen)
+clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
+                                  gboolean            is_fullscreen)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage);
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterBackendX11 *backend_x11 = stage_x11->backend;
-
+  ClutterStage *stage = stage_x11->wrapper;
   static gboolean was_resizeable = FALSE;
 
-  if (fullscreen)
+  if (!stage)
+    return;
+
+  if (is_fullscreen)
     {
       if (stage_x11->xwin != None)
         {
@@ -248,7 +259,7 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
               width  = DisplayWidth (stage_x11->xdpy, stage_x11->xscreen);
               height = DisplayHeight (stage_x11->xdpy, stage_x11->xscreen);
 
-              clutter_actor_set_size (CLUTTER_ACTOR (stage_x11), 
+              clutter_actor_set_size (CLUTTER_ACTOR (stage_x11),
                                       width, height);
 
               /* FIXME: This wont work if we support more states */
@@ -311,19 +322,19 @@ clutter_stage_x11_set_fullscreen (ClutterStage *stage,
 }
 
 static void
-clutter_stage_x11_set_cursor_visible (ClutterStage *stage,
-                                      gboolean      show_cursor)
+clutter_stage_x11_set_cursor_visible (ClutterStageWindow *stage_window,
+                                      gboolean            cursor_visible)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage);
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
   if (stage_x11->xwin == None)
     return;
 
   CLUTTER_NOTE (BACKEND, "setting cursor state ('%s') over stage window (%u)",
-                show_cursor ? "visible" : "invisible",
+                cursor_visible ? "visible" : "invisible",
                 (unsigned int) stage_x11->xwin);
 
-  if (show_cursor)
+  if (cursor_visible)
     {
 #if 0 /* HAVE_XFIXES - seems buggy/unreliable */
       XFixesShowCursor (stage_x11->xdpy, stage_x11->xwin);
@@ -355,10 +366,10 @@ clutter_stage_x11_set_cursor_visible (ClutterStage *stage,
 }
 
 static void
-clutter_stage_x11_set_title (ClutterStage *stage,
-                             const gchar  *title)
+clutter_stage_x11_set_title (ClutterStageWindow *stage_window,
+                             const gchar        *title)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage);
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
   ClutterBackendX11 *backend_x11 = stage_x11->backend;
 
   if (stage_x11->xwin == None)
@@ -384,12 +395,18 @@ clutter_stage_x11_set_title (ClutterStage *stage,
 }
 
 static void
-clutter_stage_x11_set_user_resize (ClutterStage *stage,
-                                   gboolean      value)
+clutter_stage_x11_set_user_resizable (ClutterStageWindow *stage_window,
+                                      gboolean            is_resizable)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage);
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
   clutter_stage_x11_fix_window_size (stage_x11);
+}
+
+static ClutterActor *
+clutter_stage_x11_get_wrapper (ClutterStageWindow *stage_window)
+{
+  return CLUTTER_ACTOR (CLUTTER_STAGE_X11 (stage_window)->wrapper);
 }
 
 static void
@@ -408,7 +425,6 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  ClutterStageClass *stage_class = CLUTTER_STAGE_CLASS (klass);
 
   gobject_class->dispose = clutter_stage_x11_dispose;
   
@@ -416,11 +432,6 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
   actor_class->hide = clutter_stage_x11_hide;
   actor_class->request_coords = clutter_stage_x11_request_coords;
   actor_class->query_coords = clutter_stage_x11_query_coords;
-  
-  stage_class->set_fullscreen = clutter_stage_x11_set_fullscreen;
-  stage_class->set_cursor_visible = clutter_stage_x11_set_cursor_visible;
-  stage_class->set_title = clutter_stage_x11_set_title;
-  stage_class->set_user_resize = clutter_stage_x11_set_user_resize;
 }
 
 static void
@@ -439,7 +450,22 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->fullscreen_on_map = FALSE;
   stage->handling_configure = FALSE;
 
+  stage->wrapper = NULL;
+
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IS_TOPLEVEL);
+#if 0
   CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+#endif
+}
+
+static void
+clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
+{
+  iface->get_wrapper = clutter_stage_x11_get_wrapper;
+  iface->set_title = clutter_stage_x11_set_title;
+  iface->set_fullscreen = clutter_stage_x11_set_fullscreen;
+  iface->set_cursor_visible = clutter_stage_x11_set_cursor_visible;
+  iface->set_user_resizable = clutter_stage_x11_set_user_resizable;
 }
 
 /**
@@ -455,9 +481,14 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
 Window
 clutter_x11_get_stage_window (ClutterStage *stage)
 {
-  g_return_val_if_fail (CLUTTER_IS_STAGE_X11 (stage), None);
+  ClutterStageWindow *impl;
 
-  return CLUTTER_STAGE_X11 (stage)->xwin;
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), None);
+
+  impl = _clutter_stage_get_window (stage);
+  g_assert (CLUTTER_IS_STAGE_X11 (impl));
+
+  return CLUTTER_STAGE_X11 (impl)->xwin;
 }
 
 /**
@@ -470,7 +501,7 @@ clutter_x11_get_stage_window (ClutterStage *stage)
  *
  * Since: 0.8
  */
-ClutterStage*
+ClutterStage *
 clutter_x11_get_stage_from_window (Window win)
 {
   ClutterMainContext  *context;
@@ -484,10 +515,14 @@ clutter_x11_get_stage_from_window (Window win)
   /* FIXME: use a hash here for performance resaon */
   for (l = stage_manager->stages; l; l = l->next)
     {
-      ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (l->data);
+      ClutterStage *stage = l->data;
+      ClutterStageWindow *impl;
 
-      if (stage_x11->xwin == win)
-        return CLUTTER_STAGE(stage_x11);
+      impl = _clutter_stage_get_window (stage);
+      g_assert (CLUTTER_IS_STAGE_X11 (impl));
+
+      if (CLUTTER_STAGE_X11 (impl)->xwin == win)
+        return stage;
     }
 
   return NULL;
@@ -506,9 +541,14 @@ clutter_x11_get_stage_from_window (Window win)
 XVisualInfo *
 clutter_x11_get_stage_visual (ClutterStage *stage)
 {
-  g_return_val_if_fail (CLUTTER_IS_STAGE_X11 (stage), NULL);
+  ClutterStageWindow *impl;
 
-  return CLUTTER_STAGE_X11 (stage)->xvisinfo;
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
+  impl = _clutter_stage_get_window (stage);
+  g_assert (CLUTTER_IS_STAGE_X11 (impl));
+
+  return CLUTTER_STAGE_X11 (impl)->xvisinfo;
 }
 
 /**
@@ -527,6 +567,7 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
                                Window        xwindow)
 {
   ClutterStageX11 *stage_x11;
+  ClutterStageWindow *impl;
   ClutterActor *actor;
   gint x, y;
   guint width, height, border, depth;
@@ -534,11 +575,12 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
   Status status;
   ClutterGeometry geom;
 
-  g_return_val_if_fail (CLUTTER_IS_STAGE_X11 (stage), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (xwindow != None, FALSE);
 
-  stage_x11 = CLUTTER_STAGE_X11 (stage);
-  actor = CLUTTER_ACTOR (stage);
+  impl = _clutter_stage_get_window (stage);
+  stage_x11 = CLUTTER_STAGE_X11 (impl);
+  actor = CLUTTER_ACTOR (impl);
 
   clutter_x11_trap_x_errors ();
 
@@ -577,19 +619,27 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 void
 clutter_stage_x11_map (ClutterStageX11 *stage_x11)
 {
+  /* set the mapped flag on the implementation */
   CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
 
-  if (stage_x11->fullscreen_on_map)
-    clutter_stage_fullscreen (CLUTTER_STAGE (stage_x11));
-  else
-    clutter_stage_unfullscreen (CLUTTER_STAGE (stage_x11));
+  /* and on the wrapper itself */
+  CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_MAPPED);
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage_x11));
+  if (stage_x11->fullscreen_on_map)
+    clutter_stage_fullscreen (CLUTTER_STAGE (stage_x11->wrapper));
+  else
+    clutter_stage_unfullscreen (CLUTTER_STAGE (stage_x11->wrapper));
+
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage_x11->wrapper));
 }
 
 void
 clutter_stage_x11_unmap (ClutterStageX11 *stage_x11)
 {
+  /* like above, unset the MAPPED stage on both the implementation and
+   * the wrapper
+   */
   CLUTTER_ACTOR_UNSET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_MAPPED);
 }
 

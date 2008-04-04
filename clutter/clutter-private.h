@@ -40,12 +40,13 @@
 
 #include <pango/pangoft2.h>
 
-#include "clutter-stage-manager.h"
-#include "clutter-event.h"
 #include "clutter-backend.h"
-#include "clutter-stage.h"
+#include "clutter-event.h"
 #include "clutter-feature.h"
 #include "clutter-id-pool.h"
+#include "clutter-stage-manager.h"
+#include "clutter-stage-window.h"
+#include "clutter-stage.h"
 
 G_BEGIN_DECLS
 
@@ -55,10 +56,11 @@ typedef enum {
   CLUTTER_ACTOR_IN_DESTRUCTION = 1 << 0,
   CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1,
   CLUTTER_ACTOR_IN_REPARENT    = 1 << 2,
-  CLUTTER_ACTOR_SYNC_MATRICES  = 1 << 3 /* Used by stage to indicate GL
-					 * viewport / perspective etc
-					 * needs (re)setting. 
-					*/
+  CLUTTER_ACTOR_SYNC_MATRICES  = 1 << 3, /* Used by stage to indicate GL
+					  * viewport / perspective etc
+					  * needs (re)setting.
+                                          */
+  CLUTTER_ACTOR_IN_PAINT       = 1 << 4  /* Used to avoid recursion */
 } ClutterPrivateFlags;
 
 typedef enum {
@@ -122,7 +124,6 @@ ClutterMainContext *clutter_context_get_default (void);
 #define I_(str)  (g_intern_static_string ((str)))
 
 /* stage manager */
-
 struct _ClutterStageManager
 {
   GObject parent_instance;
@@ -135,29 +136,31 @@ void _clutter_stage_manager_add_stage    (ClutterStageManager *stage_manager,
 void _clutter_stage_manager_remove_stage (ClutterStageManager *stage_manager,
                                           ClutterStage        *stage);
 
-/* vfuncs implemnted by backend */
+/* stage */
 
-GType _clutter_backend_impl_get_type (void);
+void                _clutter_stage_set_window         (ClutterStage       *stage,
+                                                       ClutterStageWindow *stage_window);
+ClutterStageWindow *_clutter_stage_get_window         (ClutterStage       *stage);
+ClutterStageWindow *_clutter_stage_get_default_window (void);
 
-void          _clutter_backend_redraw        (ClutterBackend *backend,
-                                              ClutterStage   *stage);
+/* vfuncs implemented by backend */
+GType         _clutter_backend_impl_get_type  (void);
 
-ClutterActor* _clutter_backend_create_stage (ClutterBackend  *backend,
-                                             GError         **error);
+void          _clutter_backend_redraw         (ClutterBackend  *backend,
+                                               ClutterStage    *stage);
+ClutterActor *_clutter_backend_create_stage   (ClutterBackend  *backend,
+                                               ClutterStage    *wrapper,
+                                               GError         **error);
+void          _clutter_backend_ensure_context (ClutterBackend  *backend,
+                                               ClutterStage    *stage);
 
-void          _clutter_backend_redraw        (ClutterBackend *backend,
-                                              ClutterStage   *stage);
-
-void          _clutter_backend_add_options   (ClutterBackend  *backend,
-                                              GOptionGroup    *group);
-gboolean      _clutter_backend_pre_parse     (ClutterBackend  *backend,
-                                              GError         **error);
-gboolean      _clutter_backend_post_parse    (ClutterBackend  *backend,
-                                              GError         **error);
-void          _clutter_backend_init_events   (ClutterBackend  *backend);
-
-void          _clutter_backend_ensure_context (ClutterBackend *backend, 
-                                               ClutterStage   *stage);
+void          _clutter_backend_add_options    (ClutterBackend  *backend,
+                                               GOptionGroup    *group);
+gboolean      _clutter_backend_pre_parse      (ClutterBackend  *backend,
+                                               GError         **error);
+gboolean      _clutter_backend_post_parse     (ClutterBackend  *backend,
+                                               GError         **error);
+void          _clutter_backend_init_events    (ClutterBackend  *backend);
 
 ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
@@ -172,10 +175,10 @@ ClutterActor *_clutter_do_pick (ClutterStage   *stage,
  * a G_TYPE_BOOLEAN return value; this will stop the emission as
  * soon as one handler returns TRUE
  */
-gboolean      _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
-                                                    GValue                *return_accu,
-                                                    const GValue          *handler_return,
-                                                    gpointer               dummy);
+gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
+                                               GValue                *return_accu,
+                                               const GValue          *handler_return,
+                                               gpointer               dummy);
 
 G_END_DECLS
 

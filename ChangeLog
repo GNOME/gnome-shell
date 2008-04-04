@@ -1,3 +1,38 @@
+2008-04-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #864 - Allow instantiating and subclassing of ClutterStage
+
+	* clutter/Makefile.am: Add clutter-stage-window.[ch]
+
+	* clutter/clutter-stage-manager.c:
+	(_clutter_stage_manager_remove_stage): Do not warn if removing
+	a stage we don't manage, as we might be invoked multiple times
+	during a ClutterState dispose sequence.
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-backend.[ch]:
+	* clutter/clutter-main.c:
+	* clutter/clutter-private.h:
+	* clutter/clutter-stage.[ch]: Make ClutterStage a proxy actor,
+	with a private actor implementing the ClutterStageWindow
+	interface for handling the per-backend realization, painting
+	and unrealization, plus all the windowing system abstraction.
+
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/x11/clutter-stage-x11.[ch]: Port the X11 backend
+	to the new backend and stage API and semantics.
+
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-stage-glx.c: Port the GLX backend to
+	the new backend and stage API and semantics.
+
+	* clutter/eglx/clutter-backend-egl.[ch]:
+	* clutter/eglx/clutter-stage-egl.[ch]: Port the EGLX backend
+	to the new backend and stage API and semantics (untested).
+
+	* tests/test-multistage.c (on_button_press): Rename
+	clutter_stage_create_new() to clutter_stage_new().
+
 2008-04-04  Neil Roberts  <neil@o-hand.com>
 
 	Applied patch from bug #810.

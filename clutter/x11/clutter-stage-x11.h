@@ -22,7 +22,7 @@
 #ifndef __CLUTTER_STAGE_X11_H__
 #define __CLUTTER_STAGE_X11_H__
 
-#include <glib-object.h>
+#include <clutter/clutter-group.h>
 #include <clutter/clutter-stage.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -43,7 +43,7 @@ typedef struct _ClutterStageX11Class    ClutterStageX11Class;
 
 struct _ClutterStageX11
 {
-  ClutterStage parent_instance;
+  ClutterGroup parent_instance;
 
   guint        is_foreign_xwin   : 1;
   guint        fullscreen_on_map : 1;
@@ -60,11 +60,13 @@ struct _ClutterStageX11
 
   ClutterBackendX11 *backend;
   ClutterStageState  state;
+
+  ClutterStage *wrapper;
 };
 
 struct _ClutterStageX11Class
 {
-  ClutterStageClass parent_class;
+  ClutterGroupClass parent_class;
 };
 
 GType clutter_stage_x11_get_type (void) G_GNUC_CONST;
@@ -72,9 +74,8 @@ GType clutter_stage_x11_get_type (void) G_GNUC_CONST;
 /* Private to subclasses */
 void clutter_stage_x11_fix_window_size  (ClutterStageX11 *stage_x11);
 void clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11);
-
-void clutter_stage_x11_map   (ClutterStageX11 *stage_x11);
-void clutter_stage_x11_unmap (ClutterStageX11 *stage_x11);
+void clutter_stage_x11_map              (ClutterStageX11 *stage_x11);
+void clutter_stage_x11_unmap            (ClutterStageX11 *stage_x11);
 
 G_END_DECLS
 

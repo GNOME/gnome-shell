@@ -52,7 +52,11 @@ struct _ClutterBackendEGL
 
   /* EGL Specific */
   EGLDisplay edpy;
-  gint       egl_version_major, egl_version_minor;
+  EGLSurface egl_surface;
+  EGLContext egl_context;
+
+  gint egl_version_major;
+  gint egl_version_minor;
 
 };
 

@@ -44,6 +44,7 @@
 #include "clutter-fixed.h"
 #include "clutter-backend.h"
 #include "clutter-private.h"
+#include "clutter-debug.h"
 
 G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
 
@@ -138,8 +139,9 @@ _clutter_backend_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
-ClutterActor*
+ClutterActor *
 _clutter_backend_create_stage (ClutterBackend  *backend,
+                               ClutterStage    *wrapper,
                                GError         **error)
 {
   ClutterMainContext  *context;
@@ -147,6 +149,7 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
   ClutterActor        *stage = NULL;
 
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_STAGE (wrapper), FALSE);
 
   context = clutter_context_get_default ();
 
@@ -155,28 +158,30 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->create_stage)
-    stage = klass->create_stage (backend, error);
+    stage = klass->create_stage (backend, wrapper, error);
 
   if (!stage)
     return NULL;
 
-  _clutter_stage_manager_add_stage (context->stage_manager, 
-                                    CLUTTER_STAGE(stage));
+  _clutter_stage_manager_add_stage (context->stage_manager, wrapper);
+
   return stage;
 }
 
 void
-_clutter_backend_redraw (ClutterBackend *backend, ClutterStage *stage)
+_clutter_backend_redraw (ClutterBackend *backend,
+                         ClutterStage   *stage)
 {
   ClutterBackendClass *klass;
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (G_LIKELY(klass->redraw))
+  if (G_LIKELY (klass->redraw))
     klass->redraw (backend, stage);
 }
 
 void
-_clutter_backend_ensure_context (ClutterBackend *backend, ClutterStage *stage)
+_clutter_backend_ensure_context (ClutterBackend *backend,
+                                 ClutterStage   *stage)
 {
   ClutterBackendClass *klass;
   static ClutterStage *current_context_stage = NULL;
@@ -184,13 +189,16 @@ _clutter_backend_ensure_context (ClutterBackend *backend, ClutterStage *stage)
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
-  if (stage != current_context_stage || !CLUTTER_ACTOR_IS_REALIZED(stage))
+  if (stage != current_context_stage || !CLUTTER_ACTOR_IS_REALIZED (stage))
     {
-      if (!CLUTTER_ACTOR_IS_REALIZED(stage))
-        stage = NULL;
+      if (!CLUTTER_ACTOR_IS_REALIZED (stage))
+        {
+          CLUTTER_NOTE (MULTISTAGE, "Stage is not realized");
+          stage = NULL;
+        }
       
       klass = CLUTTER_BACKEND_GET_CLASS (backend);
-      if (G_LIKELY(klass->ensure_context))
+      if (G_LIKELY (klass->ensure_context))
         klass->ensure_context (backend, stage);
       
       /* FIXME: With a NULL stage and thus no active context it may make more

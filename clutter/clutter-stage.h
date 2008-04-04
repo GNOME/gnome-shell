@@ -99,26 +99,11 @@ struct _ClutterStageClass
   ClutterGroupClass parent_class;
 
   /*< public >*/
-  /* vfuncs, not signals */
-  void          (* set_fullscreen)     (ClutterStage *stage,
-                                        gboolean      fullscreen);
-  void          (* set_cursor_visible) (ClutterStage *stage,
-                                        gboolean      visible);
-  GdkPixbuf*    (* draw_to_pixbuf)     (ClutterStage *stage,
-                                        gint          x,
-                                        gint          y,
-                                        gint          width,
-                                        gint          height);
-  void          (* set_title)          (ClutterStage *stage,
-                                        const gchar  *title);
-  void          (* set_user_resize)    (ClutterStage *stage,
-                                        gboolean      value);
-
-  /* events */
-  void     (* fullscreen)      (ClutterStage           *stage);
-  void     (* unfullscreen)    (ClutterStage           *stage);
-  void     (* activate)        (ClutterStage           *stage);
-  void     (* deactivate)      (ClutterStage           *stage);
+  /* signals */
+  void (* fullscreen)   (ClutterStage *stage);
+  void (* unfullscreen) (ClutterStage *stage);
+  void (* activate)     (ClutterStage *stage);
+  void (* deactivate)   (ClutterStage *stage);
 
   /*< private >*/
   /* padding for future expansion */
@@ -175,6 +160,8 @@ GType         clutter_fog_get_type            (void) G_GNUC_CONST;
 GType         clutter_stage_get_type          (void) G_GNUC_CONST;
 
 ClutterActor *clutter_stage_get_default       (void);
+ClutterActor *clutter_stage_new               (void);
+
 void          clutter_stage_set_color         (ClutterStage       *stage,
                                                const ClutterColor *color);
 void          clutter_stage_get_color         (ClutterStage       *stage,
@@ -233,15 +220,12 @@ void                  clutter_stage_get_fogx           (ClutterStage *stage,
 gdouble               clutter_stage_get_resolution     (ClutterStage *stage);
 ClutterFixed          clutter_stage_get_resolutionx    (ClutterStage *stage);
 
-/* New experiental calls */
 void                  clutter_stage_set_key_focus      (ClutterStage *stage,
                                                         ClutterActor *actor);
 ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
 
-ClutterActor*         clutter_stage_create_new         (void);
-
+/* New experiental calls */
 void                  clutter_stage_ensure_current     (ClutterStage *stage);
-
 void                  clutter_stage_queue_redraw       (ClutterStage *stage);
 
 /* Commodity macro */

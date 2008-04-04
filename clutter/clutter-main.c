@@ -104,6 +104,28 @@ clutter_get_show_fps (void)
   return clutter_show_fps;
 }
 
+static inline void
+clutter_maybe_setup_viewport (ClutterStage *stage)
+{
+  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
+    {
+      ClutterPerspective perspective;
+      guint width, height;
+
+      clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
+      clutter_stage_get_perspectivex (stage, &perspective);
+
+      CLUTTER_NOTE (PAINT, "Setting up the viewport");
+
+      cogl_setup_viewport (width, height,
+			   perspective.fovy,
+			   perspective.aspect,
+			   perspective.z_near,
+			   perspective.z_far);
+
+      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+    }
+}
 
 /**
  * clutter_redraw:
@@ -122,35 +144,21 @@ clutter_redraw (ClutterStage *stage)
 
   CLUTTER_TIMESTAMP (SCHEDULER, "Redraw start for stage:%p", stage);
   CLUTTER_NOTE (PAINT, " Redraw enter for stage:%p", stage);
-  CLUTTER_NOTE (MULTISTAGE, "redraw called for stage:%p", stage);
+  CLUTTER_NOTE (MULTISTAGE, "Redraw called for stage:%p", stage);
 
   _clutter_backend_ensure_context (ctx->backend, stage);
 
   /* Setup FPS count - not currently across *all* stages rather than per */
-  if (clutter_get_show_fps ())
+  if (G_UNLIKELY (clutter_get_show_fps ()))
     {
       if (!timer)
 	timer = g_timer_new ();
     }
 
-  /* The below cant go in stage paint as base actor_paint will get
-   * called before the below (and break picking etc)
-  */
-  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
-    {
-      ClutterPerspective perspective;
-
-      clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
-
-      cogl_setup_viewport (clutter_actor_get_width (CLUTTER_ACTOR(stage)),
-			   clutter_actor_get_height (CLUTTER_ACTOR(stage)),
-			   perspective.fovy,
-			   perspective.aspect,
-			   perspective.z_near,
-			   perspective.z_far);
-
-      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
-    }
+  /* The code below can't go in stage paint as base actor_paint
+   * will get called before it (and break picking, etc)
+   */
+  clutter_maybe_setup_viewport (stage);
 
   /* Call through to the actual backend to do the painting down from
    * the stage. It will likely need to swap buffers, vblank sync etc
@@ -159,7 +167,7 @@ clutter_redraw (ClutterStage *stage)
   _clutter_backend_redraw (ctx->backend, stage);
 
   /* Complete FPS info */
-  if (clutter_get_show_fps ())
+  if (G_UNLIKELY (clutter_get_show_fps ()))
     {
       timer_n_frames++;
 
@@ -234,24 +242,8 @@ _clutter_do_pick (ClutterStage   *stage,
 
   _clutter_backend_ensure_context (context->backend, stage);
 
-  /* FIXME: needed for when a context switch happens - probably
-   * should put into its own function somewhere..
-  */
-  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
-    {
-      ClutterPerspective perspective;
-
-      clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
-
-      cogl_setup_viewport (clutter_actor_get_width (CLUTTER_ACTOR(stage)),
-			   clutter_actor_get_height (CLUTTER_ACTOR(stage)),
-			   perspective.fovy,
-			   perspective.aspect,
-			   perspective.z_near,
-			   perspective.z_far);
-
-      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
-    }
+  /* needed for when a context switch happens */
+  clutter_maybe_setup_viewport (stage);
 
   cogl_paint_init (&white);
   cogl_enable (0);
@@ -276,10 +268,10 @@ _clutter_do_pick (ClutterStage   *stage,
   /* glEnable (GL_DITHER); we never enabled this originally, so its
      probably not safe to then enable it */
 
-  glReadPixels(x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+  glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
-      return CLUTTER_ACTOR (stage);
+    return CLUTTER_ACTOR (stage);
 
   cogl_get_bitmasks (&r, &g, &b, NULL);
 
@@ -988,7 +980,6 @@ clutter_init_with_args (int            *argc,
   GOptionContext *context;
   GOptionGroup *group;
   gboolean res;
-  GError *stage_error;
   ClutterActor *stage;
 
   if (clutter_is_initialized)
@@ -1018,13 +1009,13 @@ clutter_init_with_args (int            *argc,
 
   clutter_context = clutter_context_get_default ();
 
-  stage_error = NULL;
-  stage = _clutter_backend_create_stage (clutter_context->backend, 
-                                         &stage_error);
-
+  stage = clutter_stage_get_default ();
   if (!stage)
     {
-      g_propagate_error (error, stage_error);
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_INTERNAL,
+                   "Unable to create the default stage");
+
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
@@ -1032,8 +1023,7 @@ clutter_init_with_args (int            *argc,
 
   _clutter_feature_init ();
 
-  clutter_stage_set_title (CLUTTER_STAGE(clutter_stage_get_default()),
-			   g_get_prgname ());
+  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
 
   return CLUTTER_INIT_SUCCESS;
 }
@@ -1089,7 +1079,6 @@ clutter_init (int    *argc,
 {
   ClutterMainContext *context;
   ClutterActor *stage;
-  GError *stage_error;
 
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
@@ -1115,15 +1104,10 @@ clutter_init (int    *argc,
   context = clutter_context_get_default ();
 
   /* Stage will give us a GL Context etc */
-  stage_error = NULL;
-
-  stage = _clutter_backend_create_stage (context->backend, &stage_error);
-
+  stage = clutter_stage_get_default ();
   if (!stage)
     {
-      CLUTTER_NOTE (MISC, "stage failed to initialise.");
-      g_critical (stage_error->message);
-      g_error_free (stage_error);
+      g_critical ("Unable to create the default stage");
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
@@ -1133,8 +1117,7 @@ clutter_init (int    *argc,
   /* finally features - will call to backend and cogl */
   _clutter_feature_init ();
 
-  clutter_stage_set_title (CLUTTER_STAGE(clutter_stage_get_default()),
-			   g_get_prgname());
+  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
 
   return CLUTTER_INIT_SUCCESS;
 }
