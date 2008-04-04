@@ -56,6 +56,7 @@ struct _ClutterStageX11
   gint         xwin_width;
   gint         xwin_height; /* FIXME target_width / height */
   Pixmap       xpixmap;
+  gboolean     handling_configure;
 
   ClutterBackendX11 *backend;
   ClutterStageState  state;

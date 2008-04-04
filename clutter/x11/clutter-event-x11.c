@@ -387,19 +387,17 @@ event_translate (ClutterBackend *backend,
     case ConfigureNotify:
       if (!stage_x11->is_foreign_xwin)
         {
-          guint stage_width, stage_height;
+	  /* Set a flag so that the stage will know the actor is being
+	     resized in response to the window size changing as
+	     opposed to a request from the application. This prevents
+	     it from trying to resize the window again */
+	  stage_x11->handling_configure = TRUE;
 
-          clutter_actor_get_size (CLUTTER_ACTOR (stage),
-                                  &stage_width,
-                                  &stage_height);
+	  clutter_actor_set_size (CLUTTER_ACTOR (stage),
+				  xevent->xconfigure.width,
+				  xevent->xconfigure.height);
 
-          if (xevent->xconfigure.width != stage_width ||
-              xevent->xconfigure.height != stage_height)
-            {
-              clutter_actor_set_size (CLUTTER_ACTOR (stage),
-                                      xevent->xconfigure.width,
-                                      xevent->xconfigure.height);
-            }
+	  stage_x11->handling_configure = FALSE;
         }
       res = FALSE;
       break;

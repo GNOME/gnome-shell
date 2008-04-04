@@ -1,3 +1,18 @@
+2008-04-04  Neil Roberts  <neil@o-hand.com>
+
+	Applied patch from bug #810.
+
+	* clutter/x11/clutter-event-x11.c (event_translate): Set a flag
+	when resizing the stage from a ConfigureNotify event.
+
+	* clutter/x11/clutter-stage-x11.c
+	(clutter_stage_x11_request_coords): Don't try to resize the window
+	again if the flag is set.
+	(clutter_stage_x11_init): Added initialiser for the flag.
+
+	* clutter/x11/clutter-stage-x11.h (struct _ClutterStageX11): Added
+	the flag.
+
 2008-04-04  Matthew Allum  <mallum@openedhand.com>
 
 	reviewed by: <delete if not using a buddy>

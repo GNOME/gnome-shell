@@ -173,22 +173,33 @@ clutter_stage_x11_request_coords (ClutterActor        *self,
   new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
   new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
 
-  if (new_width != stage_x11->xwin_width ||
-      new_height != stage_x11->xwin_height)
+  if (new_width != stage_x11->xwin_width
+      || new_height != stage_x11->xwin_height)
     {
       stage_x11->xwin_width  = new_width;
       stage_x11->xwin_height = new_height;
 
-      if (stage_x11->xwin != None &&
-          !stage_x11->is_foreign_xwin)
-        {
-          XResizeWindow (stage_x11->xdpy, 
-                         stage_x11->xwin,
-                         stage_x11->xwin_width,
-                         stage_x11->xwin_height);
-
-          clutter_stage_x11_fix_window_size (stage_x11);
-        }
+      /* The 'handling_configure' flag below is used to prevent the
+	 window from being resized again in response to a
+	 ConfigureNotify event. Normally this will not be a problem
+	 because the window will be resized to xwin_width and
+	 xwin_height so the above test will prevent it from resizing
+	 the window a second time. However if the stage is resized
+	 multiple times without the events being processed in between
+	 (eg, when calling g_object_set to set both width and height)
+	 then there will be multiple ConfigureNotify events in the
+	 queue. Handling the first event will undo the work of setting
+	 the second property which will cause it to keep generating
+	 events in an infinite loop. See bug #810 */
+      if (stage_x11->xwin != None
+	  && !stage_x11->is_foreign_xwin
+	  && !stage_x11->handling_configure)
+	XResizeWindow (stage_x11->xdpy, 
+		       stage_x11->xwin,
+		       stage_x11->xwin_width,
+		       stage_x11->xwin_height);
+      
+      clutter_stage_x11_fix_window_size (stage_x11);
       
       if (stage_x11->xpixmap != None)
         {
@@ -200,8 +211,9 @@ clutter_stage_x11_request_coords (ClutterActor        *self,
       CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
-  if (stage_x11->xwin != None &&
-      !stage_x11->is_foreign_xwin) /* Do we want to bother ? */
+  if (stage_x11->xwin != None
+      && !stage_x11->is_foreign_xwin
+      && !stage_x11->handling_configure) /* Do we want to bother ? */
     XMoveWindow (stage_x11->xdpy,
                  stage_x11->xwin,
                  CLUTTER_UNITS_TO_INT (box->x1),
@@ -425,6 +437,7 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
 
   stage->is_foreign_xwin = FALSE;
   stage->fullscreen_on_map = FALSE;
+  stage->handling_configure = FALSE;
 
   CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
