@@ -1,3 +1,7 @@
+2008-04-06  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.23.5 release.
+
 2008-04-03  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/prefs.c (handle_preference_update_bool): preferences

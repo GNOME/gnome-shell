@@ -1,3 +1,21 @@
+2.23.5
+======
+
+Thanks to Lucas Rocha, Owen Taylor, and Thomas Thurman for improvements in this
+version.
+
+  - Updates of useless preferences don't crash (Thomas) (#526016)
+  - Compliance with new gnome-session (Lucas) (#525051)
+  - Preview widget doesn't crash on broken themes (Thomas) (Launchpad 199402)
+  - Initially iconic windows don't unminimise (Owen) (#491090)
+  - Move ~/.metacity to ~/.config/metacity (Thomas) (#518596)
+  - Metacity doesn't stay around when replaced (Thomas)
+  - Extra check for null return in a function (Thomas)
+  - Displays are singletons, simplifying code (Thomas) (#499301)
+
+Translations
+  Jorge González (es), Eskild Hustvedt (nn), Baris Cicek (tr), Clytie Siddall (vi)
+
 2.23.3
 ======
 
