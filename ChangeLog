@@ -1,3 +1,9 @@
+2008-04-07  iain  <iain@gnome.org>
+
+	* src/core/compositor.c (hide_overlay_window): Hide the overlay window
+	(meta_compositor_unmanage_screen): Release the compositor overlay.
+	(#526770)
+
 2008-04-07  Jens Granseuer  <jensgr@gmx.net>
 
 	* src/core/session.c: (save_state),
