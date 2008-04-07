@@ -807,6 +807,9 @@ save_state (void)
   char *metacity_dir;
   char *session_dir;
   FILE *outfile;
+  GSList *windows;
+  GSList *tmp;
+  int stack_position;
   
   g_assert (client_id);
 
@@ -871,11 +874,10 @@ save_state (void)
   
   fprintf (outfile, "<metacity_session id=\"%s\">\n",
            client_id);
-  
-  GSList *windows = meta_display_list_windows (meta_get_display ());
-  GSList *tmp;
-  int stack_position = 0;
-      
+
+  windows = meta_display_list_windows (meta_get_display ());
+  stack_position = 0;
+
   windows = g_slist_sort (windows, meta_display_stack_cmp);
   tmp = windows;
   stack_position = 0;
@@ -1782,6 +1784,7 @@ static void
 warn_about_lame_clients_and_finish_interact (gboolean shutdown)
 {
   GSList *lame;
+  GSList *windows;
   char **argv;
   int i;
   GSList *tmp;
@@ -1795,7 +1798,7 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   char timestampbuf[32];
   
   lame = NULL;
-  GSList *windows = meta_display_list_windows (meta_get_display ());
+  windows = meta_display_list_windows (meta_get_display ());
   tmp = windows;
   while (tmp != NULL)
     {
