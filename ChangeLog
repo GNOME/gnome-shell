@@ -1,5 +1,14 @@
 2008-04-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/cogl/Makefile.am:
+	* clutter/cogl/gl/Makefile.am:
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/json/Makefile.am:
+	* clutter/pango/Makefile.am: Fix the visibility of all the
+	symbols, for the main library and the statically linked ones.
+
+2008-04-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* autogen.sh: Clean up a bit
 
 	* clutter/clutter-fixed.[ch]:
