@@ -9,7 +9,7 @@ INCLUDES = \
 	$(CLUTTER_DEBUG_CFLAGS)      \
 	$(GCC_FLAGS)
 
-LDADD = $(CLUTTER_LIBS)
+LDADD = $(CLUTTER_LIBS) -export-symbols-regex "^cogl.*"
 
 noinst_LTLIBRARIES = libclutter-cogl.la
 
