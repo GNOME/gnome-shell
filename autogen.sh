@@ -1,7 +1,22 @@
 #! /bin/sh
-gtkdocize || exit 1
+
+srcdir=`dirname $0`
+test -z "$srcdir" && srcdir=.
+
+PROJECT=Clutter
+TEST_TYPE=-d
+FILE=clutter
+
+test $TEST_TYPE $FILE || {
+        echo "You must run this script in the top-level $PROJECT directory"
+        exit 1
+}
+
+gtkdocize || exit $?
 
 # back in the stupidity of autoreconf
-autoreconf -v --install || exit 1
+autoreconf -v --install || exit $?
 
-./configure "$@"
+./configure "$@" ${GTK_DOC_ARGS}
+
+echo "Now type 'make' to compile $PROJECT."

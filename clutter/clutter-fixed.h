@@ -175,7 +175,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  *
  * Convert a float value to fixed.
  */
-#define CLUTTER_FLOAT_TO_FIXED(x)       (_clutter_double_to_fixed ((x)))
+#define CLUTTER_FLOAT_TO_FIXED(x)       (clutter_double_to_fixed ((x)))
 
 /**
  * CLUTTER_FLOAT_TO_INT:
@@ -183,7 +183,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  *
  * Convert a float value to int.
  */
-#define CLUTTER_FLOAT_TO_INT(x)         (_clutter_double_to_int ((x)))
+#define CLUTTER_FLOAT_TO_INT(x)         (clutter_double_to_int ((x)))
 
 /**
  * CLUTTER_FLOAT_TO_UINT:
@@ -191,7 +191,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  *
  * Convert a float value to unsigned int.
  */
-#define CLUTTER_FLOAT_TO_UINT(x)         (_clutter_double_to_uint ((x)))
+#define CLUTTER_FLOAT_TO_UINT(x)         (clutter_double_to_uint ((x)))
 
 /**
  * CLUTTER_INT_TO_FIXED:
@@ -279,10 +279,12 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 /*< public >*/
 /* Fixed point math routines */
 extern inline
-ClutterFixed clutter_qmulx (ClutterFixed op1, ClutterFixed op2);
+ClutterFixed clutter_qmulx (ClutterFixed op1,
+                            ClutterFixed op2);
 
 extern inline
-ClutterFixed clutter_qdivx (ClutterFixed op1, ClutterFixed op2);
+ClutterFixed clutter_qdivx (ClutterFixed op1,
+                            ClutterFixed op2);
 
 ClutterFixed clutter_sinx (ClutterFixed angle);
 ClutterFixed clutter_sini (ClutterAngle angle);
@@ -371,14 +373,9 @@ guint        clutter_pow2x (ClutterFixed x);
 guint        clutter_powx  (guint x, ClutterFixed y);
 
 /* <private> */
-extern inline
-ClutterFixed _clutter_double_to_fixed (double value);
-
-extern inline
-gint _clutter_double_to_int (double value);
-
-extern inline
-guint _clutter_double_to_uint (double value);
+extern ClutterFixed clutter_double_to_fixed (double value);
+extern gint         clutter_double_to_int   (double value);
+extern guint        clutter_double_to_unit  (double value);
 
 G_END_DECLS
 

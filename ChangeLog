@@ -1,3 +1,14 @@
+2008-04-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* autogen.sh: Clean up a bit
+
+	* clutter/clutter-fixed.[ch]:
+	(clutter_double_to_fixed),
+	(clutter_double_to_int),
+	(clutter_double_to_uint): Make these functions public, as they
+	are expanded by their respective macros. This fixes the errors
+	from the linker trying to resolve their name.
+
 2008-04-09  Neil Roberts  <neil@o-hand.com>
 
 	Applied patch from bug #871

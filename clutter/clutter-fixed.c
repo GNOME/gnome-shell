@@ -148,6 +148,94 @@ static ClutterFixed sin_tbl [] =
  */
 #define CFX_SIN_STEP 0x00000192
 
+/* <private> */
+const double _magic = 68719476736.0 * 1.5;
+
+/* Where in the 64 bits of double is the mantisa */
+#if (__FLOAT_WORD_ORDER == 1234)
+#define _CFX_MAN			0
+#elif (__FLOAT_WORD_ORDER == 4321)
+#define _CFX_MAN			1
+#else
+#define CFX_NO_FAST_CONVERSIONS
+#endif
+
+/*
+ * clutter_double_to_fixed :
+ * @value: value to be converted
+ *
+ * A fast conversion from double precision floating to fixed point
+ *
+ * Return value: Fixed point representation of the value
+ *
+ * Since: 0.2
+ */
+ClutterFixed
+clutter_double_to_fixed (double val)
+{
+#ifdef CFX_NO_FAST_CONVERSIONS
+    return (ClutterFixed)(val * (double)CFX_ONE);
+#else
+    union
+    {
+	double d;
+	unsigned int i[2];
+    } dbl;
+
+    dbl.d = val;
+    dbl.d = dbl.d + _magic;
+    return dbl.i[_CFX_MAN];
+#endif
+}
+
+/*
+ * clutter_double_to_int :
+ * @value: value to be converted
+ *
+ * A fast conversion from doulbe precision floatint point  to int;
+ * used this instead of casting double/float to int.
+ *
+ * Return value: Integer part of the double
+ *
+ * Since: 0.2
+ */
+gint
+clutter_double_to_int (double val)
+{
+#ifdef CFX_NO_FAST_CONVERSIONS
+    return (gint)(val);
+#else
+    union
+    {
+	double d;
+	unsigned int i[2];
+    } dbl;
+
+    dbl.d = val;
+    dbl.d = dbl.d + _magic;
+    return ((int)dbl.i[_CFX_MAN]) >> 16;
+#endif
+}
+
+guint
+clutter_double_to_uint (double val)
+{
+#ifdef CFX_NO_FAST_CONVERSIONS
+    return (guint)(val);
+#else
+    union
+    {
+	double d;
+	unsigned int i[2];
+    } dbl;
+
+    dbl.d = val;
+    dbl.d = dbl.d + _magic;
+    return (dbl.i[_CFX_MAN]) >> 16;
+#endif
+}
+
+#undef _CFX_MAN
 
 /**
  * clutter_sinx:
@@ -883,94 +971,4 @@ clutter_powx (guint x, ClutterFixed y)
 {
   return clutter_pow2x (CFX_MUL (y, clutter_log2x (x)));
 }
-
-
-/* <private> */
-const double _magic = 68719476736.0*1.5;
-
-/* Where in the 64 bits of double is the mantisa */
-#if (__FLOAT_WORD_ORDER == 1234)
-#define _CFX_MAN			0
-#elif (__FLOAT_WORD_ORDER == 4321)
-#define _CFX_MAN			1
-#else
-#define CFX_NO_FAST_CONVERSIONS
-#endif
-
-/*
- * clutter_double_to_fixed :
- * @value: value to be converted
- *
- * A fast conversion from double precision floating to fixed point
- *
- * Return value: Fixed point representation of the value
- *
- * Since: 0.2
- */
-ClutterFixed
-_clutter_double_to_fixed (double val)
-{
-#ifdef CFX_NO_FAST_CONVERSIONS
-    return (ClutterFixed)(val * (double)CFX_ONE);
-#else
-    union
-    {
-	double d;
-	unsigned int i[2];
-    } dbl;
-
-    dbl.d = val;
-    dbl.d = dbl.d + _magic;
-    return dbl.i[_CFX_MAN];
-#endif
-}
-
-/*
- * clutter_double_to_int :
- * @value: value to be converted
- *
- * A fast conversion from doulbe precision floatint point  to int;
- * used this instead of casting double/float to int.
- *
- * Return value: Integer part of the double
- *
- * Since: 0.2
- */
-gint
-_clutter_double_to_int (double val)
-{
-#ifdef CFX_NO_FAST_CONVERSIONS
-    return (gint)(val);
-#else
-    union
-    {
-	double d;
-	unsigned int i[2];
-    } dbl;
-
-    dbl.d = val;
-    dbl.d = dbl.d + _magic;
-    return ((int)dbl.i[_CFX_MAN]) >> 16;
-#endif
-}
-
-guint
-_clutter_double_to_uint (double val)
-{
-#ifdef CFX_NO_FAST_CONVERSIONS
-    return (guint)(val);
-#else
-    union
-    {
-	double d;
-	unsigned int i[2];
-    } dbl;
-
-    dbl.d = val;
-    dbl.d = dbl.d + _magic;
-    return (dbl.i[_CFX_MAN]) >> 16;
-#endif
-}
-
-#undef _CFX_MAN
 
