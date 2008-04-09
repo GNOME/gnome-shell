@@ -1,5 +1,16 @@
 2008-04-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/Makefile.am: Update the regular expression to match
+	all the namespaces we actually use. Thanks to Neil Roberts for
+	spotting this. A make distclean is needed.
+
+	* clutter/cogl/gl/Makefile.am:
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/json/Makefile.am:
+	* clutter/pango/Makefile.am: Revert previous commit.
+
+2008-04-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/cogl/Makefile.am:
 	* clutter/cogl/gl/Makefile.am:
 	* clutter/cogl/gles/Makefile.am:

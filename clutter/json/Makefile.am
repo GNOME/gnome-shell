@@ -24,7 +24,5 @@ INCLUDES = \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS)
 
-LDADD = -export-symbols-regex "^json.*"
-
 clutterjsondir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter/json
 clutterjson_HEADERS = $(source_h)

@@ -19,7 +19,5 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/cogl			\
 	-I$(top_srcdir)/clutter/cogl/@CLUTTER_COGL@ 
 
-LDADD = -export-symbols-regex "^pango.*"
-
 pangoclutterheadersdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
 pangoclutterheaders_HEADERS = $(source_h)
