@@ -1,3 +1,18 @@
+2008-04-09  Neil Roberts  <neil@o-hand.com>
+
+	Applied patch from bug #871
+
+	* clutter/x11/clutter-backend-x11.c (clutter_backend_x11_dispose):
+	Call g_slist_foreach instead of iterating over the stage_manager
+	list manually when deleting stages. Otherwise the 'next' pointer
+	of the list node can get corrupted when the actor removes itself
+	from the list.
+
+	* clutter/clutter-stage.c (clutter_stage_dispose): Call
+	clutter_actor_unrealize in the dispose handler. This fixes
+	problems where the dispose handler for the ClutterStageWrapper
+	can't deselect the GL context until the stage is unrealized.
+
 2008-04-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-backend.c: Add more debug messages

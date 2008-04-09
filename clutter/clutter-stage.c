@@ -363,6 +363,8 @@ clutter_stage_dispose (GObject *object)
       priv->update_idle = 0;
     }
 
+  clutter_actor_unrealize (CLUTTER_ACTOR (object));
+  
   _clutter_stage_manager_remove_stage (stage_manager, stage);
 
   if (priv->impl)

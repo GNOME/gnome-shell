@@ -242,18 +242,17 @@ clutter_backend_x11_dispose (GObject *gobject)
   ClutterBackendX11   *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
   ClutterMainContext  *context;
   ClutterStageManager *stage_manager;
-  GSList              *l;
 
   CLUTTER_NOTE (BACKEND, "Disposing the of stages");
 
   context = clutter_context_get_default ();
   stage_manager = context->stage_manager;
 
-  for (l = stage_manager->stages; l; l = l->next)
-    {
-      ClutterActor *stage = CLUTTER_ACTOR (l->data);
-      clutter_actor_destroy (stage);
-    }
+  /* Destroy all of the stages. g_slist_foreach is used because the
+     finalizer for the stages will remove the stage from the
+     stage_manager's list and g_slist_foreach has some basic
+     protection against this */
+  g_slist_foreach (stage_manager->stages, (GFunc) clutter_actor_destroy, NULL);
 
   CLUTTER_NOTE (BACKEND, "Removing the event source");
   _clutter_backend_x11_events_uninit (CLUTTER_BACKEND (backend_x11));
