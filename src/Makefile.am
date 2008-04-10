@@ -171,14 +171,6 @@ else
 install-data-local:
 endif
 
-sessiondir = $(datadir)/gnome/default-session;
-
-install-data-hook:
-	if test -z "$(sessiondir)" ; then \
-	       $(MKDIR_P) $(sessiondir) \
-	fi
-	$(LN_S) -f $(desktopfilesdir)/$(desktopfiles_DATA) $(sessiondir)
-
 IMAGES=default_icon.png stock_maximize.png stock_minimize.png stock_delete.png
 VARIABLES=default_icon_data $(srcdir)/default_icon.png \
           stock_maximize_data $(srcdir)/stock_maximize.png \

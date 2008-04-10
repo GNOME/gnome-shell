@@ -1,3 +1,9 @@
+2008-04-10  Lucas Rocha  <lucasr@gnome.org>
+
+	* src/Makefile.am: no need to create a symlink to .desktop file in
+	default-session directory anymore as gnome-session will find
+	metacity's .desktop in its original place.
+
 2008-04-07  iain  <iain@gnome.org>
 
 	* src/core/compositor.c (hide_overlay_window): Hide the overlay window
