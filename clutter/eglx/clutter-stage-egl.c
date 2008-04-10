@@ -154,7 +154,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
         {
           g_critical ("Unable to create an EGL surface");
 
-          CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
           CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
           return;
         }
@@ -172,13 +171,15 @@ clutter_stage_egl_realize (ClutterActor *actor)
             {
               g_critical ("Unable to create a suitable EGL context");
 
-              CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
               CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
               return;
             }
         }
 
+      /* this will make sure to set the current context */
+      CLUTTER_NOTE (BACKEND, "Marking stage as realized and setting context");
       CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
+      CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
       clutter_stage_ensure_current (stage_x11->wrapper);
     }
   else
