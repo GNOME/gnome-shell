@@ -77,7 +77,8 @@ clutter_backend_egl_ensure_context (ClutterBackend *backend,
       stage_egl = CLUTTER_STAGE_EGL (impl);
       stage_x11 = CLUTTER_STAGE_X11 (impl);
 
-      g_return_if_fail (backend_egl->egl_context != NULL);
+      if (!backend_egl->egl_context)
+        return;
 
       /* we might get here inside the final dispose cycle, so we
        * need to handle this gracefully
@@ -220,6 +221,8 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
                                   GError         **error)
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
+  ClutterStageX11 *stage_x11;
+  ClutterActor *stage;
 
   CLUTTER_NOTE (BACKEND, "Creating stage of type `%s'",
                 g_type_name (CLUTTER_STAGE_TYPE));

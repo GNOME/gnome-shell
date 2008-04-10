@@ -503,6 +503,7 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_INTERNAL,
                    "Unable to realize the main stage");
+      g_object_unref (stage);
       return NULL;
     }
 

@@ -1,5 +1,17 @@
 2008-04-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/eglx/clutter-backend-egl.c:
+	(clutter_backend_egl_ensure_context): Sync up with the GLX
+	backend.
+
+	(clutter_backend_egl_create_stage): Dumb compilation fix.
+
+	* clutter/glx/clutter-backend-glx.c:
+	(clutter_backend_glx_create_stage): Unref the stage if we are
+	erroring out.
+
+2008-04-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/eglx/clutter-stage-egl.c:
 	(clutter_stage_egl_realize): Sync up with the GLX backend.
 
