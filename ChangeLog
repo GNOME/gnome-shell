@@ -1,5 +1,12 @@
 2008-04-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-container.c:
+	(clutter_container_get_type): Relax the precondition on the
+	implementations of ClutterContainer from ClutterActor to
+	GObject.
+
+2008-04-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* README: Add a note about the Shader API changes.
 
 	* clutter/clutter-deprecated.h: Add deprecation symbols.

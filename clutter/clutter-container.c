@@ -134,7 +134,7 @@ clutter_container_get_type (void)
                                                "ClutterContainer",
                                                &container_info, 0);
 
-      g_type_interface_add_prerequisite (container_type, CLUTTER_TYPE_ACTOR);
+      g_type_interface_add_prerequisite (container_type, G_TYPE_OBJECT);
     }
 
   return container_type;
