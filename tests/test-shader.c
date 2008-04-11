@@ -163,8 +163,7 @@ button_release_cb (ClutterActor    *actor,
        * possible to iterate through a set of alternate shader sources (glsl ->
        * asm -> cg?) and the one that succesfully compiles is used.
        */
-      clutter_shader_bind (shader, &error);
-
+      clutter_shader_compile (shader, &error);
       if (error)
         {
           g_print ("unable to set shaders[%i] named '%s': %s",
@@ -211,7 +210,7 @@ main (gint   argc,
 
   error = NULL;
   clutter_shader_set_fragment_source (shader, shaders[shader_no].source, -1);
-  clutter_shader_bind (shader, &error);
+  clutter_shader_compile (shader, &error);
   if (error)
     {
       g_print ("unable to load shaders[%d] named '%s': %s\n",

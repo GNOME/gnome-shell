@@ -146,6 +146,12 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 0.8
 -------------------------------
 
+* ClutterShader API has been slightly changed: the ClutterStage:bound
+  property, clutter_shader_bind() and clutter_shader_is_bound() have
+  been renamed to :compiled, clutter_shader_compile() and
+  clutter_shader_is_compiled(), respectively. The previously semi-private
+  clutter_shader_release_all() function is now not exported anymore.
+
 * ClutterStage is not an abstract type anymore: it can be instantiated
   using clutter_stage_new() and it can be properly subclassed. If the
   backend supports multiple stages, every stage will be a new window,

@@ -68,7 +68,7 @@ typedef enum {
 
 struct _ClutterShaderPrivate
 {
-  guint       bound            : 1; /* Shader is bound to the GL context */
+  guint       compiled         : 1; /* Shader is bound to the GL context */
   guint       is_enabled       : 1;
 
   guint       vertex_is_glsl   : 1;
@@ -89,7 +89,7 @@ enum
 
   PROP_VERTEX_SOURCE,
   PROP_FRAGMENT_SOURCE,
-  PROP_BOUND,
+  PROP_COMPILED,
   PROP_ENABLED
 };
 
@@ -164,8 +164,8 @@ clutter_shader_get_property (GObject    *object,
     case PROP_FRAGMENT_SOURCE:
       g_value_set_string (value, priv->fragment_source);
       break;
-    case PROP_BOUND:
-      g_value_set_boolean (value, priv->bound);
+    case PROP_COMPILED:
+      g_value_set_boolean (value, priv->compiled);
       break;
     case PROP_ENABLED:
       g_value_set_boolean (value, priv->is_enabled);
@@ -237,19 +237,19 @@ clutter_shader_class_init (ClutterShaderClass *klass)
 			  NULL,
 			  CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterShader:bound:
+   * ClutterShader:compiled:
    *
-   * Whether the shader is bound (compiled and linked, ready for use
-   * in the GL context).
+   * Whether the shader is compiled and linked, ready for use
+   * in the GL context.
    *
-   * Since: 0.6
+   * Since: 0.8
    */
   g_object_class_install_property 
     (object_class,
-     PROP_BOUND,
-     g_param_spec_boolean ("bound",
-			   "Bound",
-			   "Whether the shader is bound",
+     PROP_COMPILED,
+     g_param_spec_boolean ("compiled",
+			   "Compiled",
+			   "Whether the shader is compiled and linked",
 			   FALSE,
 			   CLUTTER_PARAM_READABLE));
   /**
@@ -276,7 +276,7 @@ clutter_shader_init (ClutterShader *self)
 
   priv = self->priv = CLUTTER_SHADER_GET_PRIVATE (self);
 
-  priv->bound = FALSE;
+  priv->compiled = FALSE;
 
   priv->vertex_source = NULL;
   priv->fragment_source = NULL;
@@ -334,7 +334,7 @@ clutter_shader_set_fragment_source (ClutterShader      *shader,
   /* release shader if bound when changing the source, the shader will
    * automatically be rebound on the next use.
    */
-  if (clutter_shader_is_bound (shader))
+  if (clutter_shader_is_compiled (shader))
     clutter_shader_release (shader);
 
   is_glsl = !g_str_has_prefix (data, "!!ARBfp");
@@ -380,7 +380,7 @@ clutter_shader_set_vertex_source (ClutterShader      *shader,
   /* release shader if bound when changing the source, the shader will
    * automatically be rebound on the next use.
    */
-  if (clutter_shader_is_bound (shader))
+  if (clutter_shader_is_compiled (shader))
     clutter_shader_release (shader);
 
   is_glsl = !g_str_has_prefix (data, "!!ARBvp");
@@ -452,21 +452,21 @@ bind_glsl_shader (ClutterShader  *self,
 }
 
 /**
- * clutter_shader_bind:
+ * clutter_shader_compile:
  * @shader: a #ClutterShader
  * @error: return location for a #GError, or %NULL
  *
- * Compile and link GLSL sources set for vertex and fragment shaders for
+ * Compiles and links GLSL sources set for vertex and fragment shaders for
  * a #ClutterShader. If the compilation fails and a #GError return location is
  * provided the error will contain the errors from the compiler, if any.
  *
- * Return value: returns TRUE if the shader was succesfully bound.
+ * Return value: returns TRUE if the shader was succesfully compiled.
  *
- * Since: 0.6
+ * Since: 0.8
  */
 gboolean
-clutter_shader_bind (ClutterShader  *shader,
-                     GError        **error)
+clutter_shader_compile (ClutterShader  *shader,
+                        GError        **error)
 {
   ClutterShaderPrivate *priv;
 
@@ -474,8 +474,8 @@ clutter_shader_bind (ClutterShader  *shader,
 
   priv = shader->priv;
 
-  if (priv->bound)
-    return priv->bound;
+  if (priv->compiled)
+    return priv->compiled;
 
   if ((priv->vertex_source   && !priv->vertex_is_glsl) ||
       (priv->fragment_source && !priv->fragment_is_glsl))
@@ -485,8 +485,8 @@ clutter_shader_bind (ClutterShader  *shader,
       g_set_error (error, CLUTTER_SHADER_ERROR,
                    CLUTTER_SHADER_ERROR_NO_ASM,
                    "ASM shaders not supported");
-      priv->bound = FALSE;
-      return priv->bound;
+      priv->compiled = FALSE;
+      return priv->compiled;
     }
 
   if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
@@ -494,23 +494,21 @@ clutter_shader_bind (ClutterShader  *shader,
       g_set_error (error, CLUTTER_SHADER_ERROR,
                    CLUTTER_SHADER_ERROR_NO_GLSL,
                    "GLSL shaders not supported");
-      priv->bound = FALSE;
-      return priv->bound;
+      priv->compiled = FALSE;
+      return priv->compiled;
     }
 
-  priv->bound = bind_glsl_shader (shader, error);
+  priv->compiled = bind_glsl_shader (shader, error);
+  g_object_notify (G_OBJECT (shader), "compiled");
 
-  if (priv->bound)
-    g_object_notify (G_OBJECT (shader), "bound");
-
-  return priv->bound;
+  return priv->compiled;
 }
 
 /**
  * clutter_shader_release:
  * @shader: a #ClutterShader
  *
- * Free up any GL context resources held by the shader.
+ * Frees up any GL context resources held by the shader.
  *
  * Since: 0.6
  */
@@ -523,7 +521,7 @@ clutter_shader_release (ClutterShader *shader)
 
   priv = shader->priv;
 
-  if (!priv->bound)
+  if (!priv->compiled)
     return;
 
   g_assert (priv->program);
@@ -540,13 +538,13 @@ clutter_shader_release (ClutterShader *shader)
   priv->vertex_shader = 0;
   priv->fragment_shader = 0;
   priv->program = 0;
-  priv->bound = FALSE;
+  priv->compiled = FALSE;
 
-  g_object_notify (G_OBJECT (shader), "bound");
+  g_object_notify (G_OBJECT (shader), "compiled");
 }
 
 /**
- * clutter_shader_is_bound:
+ * clutter_shader_is_compiled:
  * @shader: a #ClutterShader
  *
  * Checks whether @shader is is currently compiled, linked and bound
@@ -554,14 +552,14 @@ clutter_shader_release (ClutterShader *shader)
  *
  * Return value: %TRUE if the shader is compiled, linked and ready for use.
  *
- * Since: 0.6
+ * Since: 0.8
  */
 gboolean
-clutter_shader_is_bound (ClutterShader *shader)
+clutter_shader_is_compiled (ClutterShader *shader)
 {
   g_return_val_if_fail (CLUTTER_IS_SHADER (shader), FALSE);
 
-  return shader->priv->bound;
+  return shader->priv->compiled;
 }
 
 /**
@@ -569,9 +567,11 @@ clutter_shader_is_bound (ClutterShader *shader)
  * @shader: a #ClutterShader
  * @enabled: The new state of the shader.
  *
- * Enable a shader, will attempt to bind the shader if it isn't already bound.
- * When FALSE is passed in the default state of the GL pipeline will be used
- * instead.
+ * Enables a shader. This function will attempt to compile and link
+ * the shader, if it isn't already.
+ *
+ * When @enabled is %FALSE the default state of the GL pipeline will be
+ * used instead.
  *
  * Since: 0.6
  */
@@ -590,7 +590,7 @@ clutter_shader_set_is_enabled (ClutterShader *shader,
       GError *error = NULL;
       gboolean res;
 
-      res = clutter_shader_bind (shader, &error);
+      res = clutter_shader_compile (shader, &error);
       if (!res)
         {
           g_warning ("Unable to bind the shader: %s",
@@ -658,8 +658,8 @@ clutter_shader_set_uniform_1f (ClutterShader *shader,
   cogl_program_uniform_1f (location, foo);
 }
 
-/**
- * clutter_shader_release_all:
+/*
+ * _clutter_shader_release_all:
  *
  * Iterate through all #ClutterShaders and tell them to release GL context
  * related sources.
@@ -667,7 +667,7 @@ clutter_shader_set_uniform_1f (ClutterShader *shader,
  * Since: 0.6
  */
 void
-clutter_shader_release_all (void)
+_clutter_shader_release_all (void)
 {
   g_list_foreach (clutter_shaders_list,
                   (GFunc) clutter_shader_release,

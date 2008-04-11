@@ -39,4 +39,7 @@
 #define clutter_entry_set_position              clutter_entry_set_position_REPLACED_BY_clutter_entry_set_cursor_position
 #define clutter_entry_get_position              clutter_entry_get_position_REPLACED_BY_clutter_entry_get_cursor_position
 
+#define clutter_shader_bind                     clutter_shader_bind_REPLACED_BY_clutter_shader_compile
+#define clutter_shader_is_bound                 clutter_shader_is_bound_REPLACED_BY_clutter_shader_is_compiled
+
 #endif /* CLUTTER_DEPRECATED_H */

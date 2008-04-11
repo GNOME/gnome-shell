@@ -83,10 +83,10 @@ void                  clutter_shader_set_is_enabled      (ClutterShader      *sh
                                                           gboolean            enabled);
 gboolean              clutter_shader_get_is_enabled      (ClutterShader      *shader);
 
-gboolean              clutter_shader_bind                (ClutterShader      *shader,
+gboolean              clutter_shader_compile             (ClutterShader      *shader,
                                                           GError            **error);
 void                  clutter_shader_release             (ClutterShader      *shader);
-gboolean              clutter_shader_is_bound            (ClutterShader      *shader);
+gboolean              clutter_shader_is_compiled         (ClutterShader      *shader);
 
 void                  clutter_shader_set_vertex_source   (ClutterShader      *shader,
                                                           const gchar        *data,
@@ -102,7 +102,7 @@ void                  clutter_shader_set_uniform_1f      (ClutterShader      *sh
                                                           const gchar        *name,
                                                           gfloat              value);
 /* should be private and internal */
-void                  clutter_shader_release_all         (void);
+void                  _clutter_shader_release_all        (void);
 
 G_END_DECLS
 

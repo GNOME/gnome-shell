@@ -1,3 +1,20 @@
+2008-04-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* README: Add a note about the Shader API changes.
+
+	* clutter/clutter-deprecated.h: Add deprecation symbols.
+
+	* clutter/clutter-shader.[ch]: Rename the :bound read-only
+	property to :compiled. Also rename clutter_shader_bind()
+	and clutter_shader_is_bound() to clutter_shader_compil() and
+	clutter_shader_is_compiled(), respectively.
+
+	* clutter/glx/clutter-stage-glx.c:
+	(clutter_stage_glx_unrealize): Update after
+	clutter_shader_release_all() rename.
+
+	* tests/test-shader.c (button_release_cb), (main): Update.
+
 2008-04-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/eglx/clutter-backend-egl.c:
