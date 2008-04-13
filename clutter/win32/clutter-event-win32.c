@@ -301,11 +301,13 @@ get_key_modifier_state (const BYTE *key_states)
 static gboolean
 message_translate (ClutterBackend *backend,
 		   ClutterEvent   *event,
-		   const MSG      *msg)
+		   const MSG      *msg,
+		   gboolean       *call_def_window_proc)
 {
   ClutterBackendWin32 *backend_win32;
   ClutterStageWin32   *stage_win32;
   ClutterStage        *stage;
+  ClutterStageWindow  *impl;
   gboolean            res;
 
   backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
@@ -315,7 +317,8 @@ message_translate (ClutterBackend *backend,
 
   if (stage == NULL)
     return FALSE;
-  stage_win32 = CLUTTER_STAGE_WIN32 (stage);
+  impl        = _clutter_stage_get_window (stage);
+  stage_win32 = CLUTTER_STAGE_WIN32 (impl);
 
   event->any.stage = stage;
 
@@ -402,6 +405,16 @@ message_translate (ClutterBackend *backend,
     case WM_DESTROY:
       CLUTTER_NOTE (EVENT, "WM_DESTROY");
       event->type = CLUTTER_DESTROY_NOTIFY;
+      break;
+
+    case WM_CLOSE:
+      CLUTTER_NOTE (EVENT, "WM_CLOSE");
+      event->type = CLUTTER_DELETE;
+      /* The default window proc will destroy the window so we want to
+	 prevent this to allow applications to optionally destroy the
+	 window themselves */
+      if (call_def_window_proc)
+	*call_def_window_proc = FALSE;
       break;
 
     case WM_LBUTTONDOWN:
@@ -552,6 +565,15 @@ message_translate (ClutterBackend *backend,
       }
       break;
 
+    case WM_GETMINMAXINFO:
+      {
+	MINMAXINFO *min_max_info = (MINMAXINFO *) msg->lParam;
+	_clutter_stage_win32_get_min_max_info (stage_win32, min_max_info);
+	if (call_def_window_proc)
+	  *call_def_window_proc = FALSE;
+      }
+      break;
+
     default:
       /* ignore every other message */
       res = FALSE;
@@ -567,6 +589,7 @@ _clutter_stage_win32_window_proc (HWND hwnd, UINT umsg,
 {
   ClutterStageWin32 *stage_win32
     = (ClutterStageWin32 *) GetWindowLongPtrW (hwnd, 0);
+  gboolean call_def_window_proc = TRUE;
 
   /* Ignore any messages before SetWindowLongPtr has been called to
      set the stage */
@@ -590,25 +613,18 @@ _clutter_stage_win32_window_proc (HWND hwnd, UINT umsg,
       msg.pt.x = (SHORT) LOWORD (message_pos);
       msg.pt.y = (SHORT) HIWORD (message_pos);
 
-      /* Some messages are handled here specially outside of
-	 message_translate so that DefWindowProc can be overridden */
-      if (umsg == WM_GETMINMAXINFO)
-	{
-	  MINMAXINFO *min_max_info = (MINMAXINFO *) lparam;
-	  _clutter_stage_win32_get_min_max_info (stage_win32, min_max_info);
-	  return 0;
-	}
-      else
-	{
-	  event = clutter_event_new (CLUTTER_NOTHING);
+      event = clutter_event_new (CLUTTER_NOTHING);
 	  
-	  if (message_translate (CLUTTER_BACKEND (backend_win32), event, &msg))
-	    /* push directly here to avoid copy of queue_put */
-	    g_queue_push_head (clutter_context->events_queue, event);
-	  else
-	    clutter_event_free (event);
-	}
+      if (message_translate (CLUTTER_BACKEND (backend_win32), event,
+			     &msg, &call_def_window_proc))
+	/* push directly here to avoid copy of queue_put */
+	g_queue_push_head (clutter_context->events_queue, event);
+      else
+	clutter_event_free (event);
     }
 
-  return DefWindowProcW (hwnd, umsg, wparam, lparam);
+  if (call_def_window_proc)
+    return DefWindowProcW (hwnd, umsg, wparam, lparam);
+  else
+    return 0;
 }

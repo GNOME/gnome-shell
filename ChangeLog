@@ -1,3 +1,26 @@
+2008-04-13  Neil Roberts  <neil@o-hand.com>
+
+	Upgraded the Win32 backend to work with the multi-stage
+	subclassing code.
+
+	* clutter/win32/clutter-stage-win32.h: 
+	* clutter/win32/clutter-stage-win32.c: Now inherits from
+	ClutterGroup and implements ClutterStageWindow instead of
+	inheriting directly from ClutterStage.
+
+	* clutter/win32/clutter-event-win32.c (message_translate): Now
+	takes an extra parameter to return whether DefWindowProc should be
+	called. This is needed to prevent the default WM_CLOSE handler
+	from destroying the window.
+
+	* clutter/win32/clutter-backend-win32.c
+	(clutter_backend_win32_dispose): Destroy all of the stages using
+	g_slist_foreach as per bug #871. Now also destroys the GL context.
+	(clutter_backend_win32_get_features): Added assertions to ensure
+	there is a valid GL context.
+	(clutter_backend_win32_ensure_context): Accepts NULL stage. Gets
+	implementation pointer from the stage.
+
 2008-04-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-container.c:

@@ -27,6 +27,7 @@
 #include "clutter-stage-win32.h"
 #include "clutter-win32.h"
 
+#include "../clutter-stage-window.h"
 #include "../clutter-main.h"
 #include "../clutter-feature.h"
 #include "../clutter-color.h"
@@ -36,13 +37,21 @@
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
 #include "../clutter-units.h"
+#include "../clutter-shader.h"
 #include "../clutter-stage.h"
 
 #include "cogl.h"
 
 #include <windows.h>
 
-G_DEFINE_TYPE (ClutterStageWin32, clutter_stage_win32, CLUTTER_TYPE_STAGE);
+static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
+  	 
+G_DEFINE_TYPE_WITH_CODE (ClutterStageWin32,
+			 clutter_stage_win32,
+			 CLUTTER_TYPE_GROUP,
+			 G_IMPLEMENT_INTERFACE
+			 (CLUTTER_TYPE_STAGE_WINDOW,
+			  clutter_stage_window_iface_init));
 
 static void
 clutter_stage_win32_show (ClutterActor *actor)
@@ -122,7 +131,7 @@ get_full_window_pos (ClutterStageWin32 *stage_win32,
 		     int *xpos_out, int *ypos_out)
 {
   gboolean resizable
-    = clutter_stage_get_user_resizable (CLUTTER_STAGE (stage_win32));
+    = clutter_stage_get_user_resizable (stage_win32->wrapper);
   /* The window position passed to CreateWindow includes the window
      decorations */
   *xpos_out = xpos_in - GetSystemMetrics (resizable ? SM_CXSIZEFRAME
@@ -138,7 +147,7 @@ get_full_window_size (ClutterStageWin32 *stage_win32,
 		      int *width_out, int *height_out)
 {
   gboolean resizable
-    = clutter_stage_get_user_resizable (CLUTTER_STAGE (stage_win32));
+    = clutter_stage_get_user_resizable (stage_win32->wrapper);
   /* The window size passed to CreateWindow includes the window
      decorations */
   *width_out = width_in + GetSystemMetrics (resizable ? SM_CXSIZEFRAME
@@ -154,7 +163,7 @@ _clutter_stage_win32_get_min_max_info (ClutterStageWin32 *stage_win32,
 {
   /* If the window isn't resizable then set the max and min size to
      the current size */
-  if (!clutter_stage_get_user_resizable (CLUTTER_STAGE (stage_win32)))
+  if (!clutter_stage_get_user_resizable (CLUTTER_STAGE (stage_win32->wrapper)))
     {
       int full_width, full_height;
       get_full_window_size (stage_win32,
@@ -214,7 +223,8 @@ clutter_stage_win32_request_coords (ClutterActor        *self,
 			change_flags);
 	}
 
-      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_SYNC_MATRICES);
+      CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
+				 CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
   CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)
@@ -222,10 +232,10 @@ clutter_stage_win32_request_coords (ClutterActor        *self,
 }
 
 static void
-clutter_stage_win32_set_title (ClutterStage *stage,
-			       const gchar  *title)
+clutter_stage_win32_set_title (ClutterStageWindow *stage_window,
+			       const gchar        *title)
 {
-  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage);
+  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
   wchar_t *wtitle;
 
   /* Empty window titles not allowed, so set it to just a period. */
@@ -240,36 +250,44 @@ clutter_stage_win32_set_title (ClutterStage *stage,
 static LONG
 get_window_style (ClutterStageWin32 *stage_win32)
 {
+  ClutterStage *wrapper = stage_win32->wrapper;
+
   /* Fullscreen mode shouldn't have any borders */
   if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN))
     return WS_POPUP;
   /* Otherwise it's an overlapped window but if it isn't resizable
      then it shouldn't have a thick frame */
-  else if (clutter_stage_get_user_resizable (CLUTTER_STAGE (stage_win32)))
+  else if (clutter_stage_get_user_resizable (wrapper))
     return WS_OVERLAPPEDWINDOW;
   else
     return WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
 }
 
 static void
-clutter_stage_win32_set_user_resize (ClutterStage *stage,
-				     gboolean      value)
+clutter_stage_win32_set_user_resize (ClutterStageWindow *stage_window,
+				     gboolean            value)
 {
-  HWND hwnd = CLUTTER_STAGE_WIN32 (stage)->hwnd;
+  HWND hwnd = CLUTTER_STAGE_WIN32 (stage_window)->hwnd;
   LONG old_style = GetWindowLongW (hwnd, GWL_STYLE);
 
   /* Update the window style but preserve the visibility */
   SetWindowLongW (hwnd, GWL_STYLE,
-		  get_window_style (CLUTTER_STAGE_WIN32 (stage))
+		  get_window_style (CLUTTER_STAGE_WIN32 (stage_window))
 		  | (old_style & WS_VISIBLE));
 }
 
-static void
-clutter_stage_win32_set_fullscreen (ClutterStage *stage,
-				    gboolean      value)
+static ClutterActor *
+clutter_stage_win32_get_wrapper (ClutterStageWindow *stage_window)
 {
-  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage);
-  HWND hwnd = CLUTTER_STAGE_WIN32 (stage)->hwnd;
+  return CLUTTER_ACTOR (CLUTTER_STAGE_WIN32 (stage_window)->wrapper);
+}
+
+static void
+clutter_stage_win32_set_fullscreen (ClutterStageWindow *stage_window,
+				    gboolean            value)
+{
+  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage_window);
+  HWND hwnd = CLUTTER_STAGE_WIN32 (stage_window)->hwnd;
   LONG old_style = GetWindowLongW (hwnd, GWL_STYLE);
   ClutterStageStateEvent event;
 
@@ -316,13 +334,14 @@ clutter_stage_win32_set_fullscreen (ClutterStage *stage,
 			SWP_NOZORDER);
 	}
 
-      CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+      CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
+				 CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
   /* Report the state change */
   memset (&event, 0, sizeof (event));
   event.type = CLUTTER_STAGE_STATE;
-  event.stage = CLUTTER_STAGE (stage_win32);
+  event.stage = CLUTTER_STAGE (stage_win32->wrapper);
   event.new_state = stage_win32->state;
   event.changed_mask = CLUTTER_STAGE_STATE_FULLSCREEN;
   clutter_event_put ((ClutterEvent *) &event);
@@ -407,6 +426,8 @@ clutter_stage_win32_realize (ClutterActor *actor)
       if (window_class == 0)
 	{
           g_critical ("Unable to register window class");
+	  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
+				     CLUTTER_ACTOR_REALIZED);
           CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
           return;
 	}
@@ -449,6 +470,8 @@ clutter_stage_win32_realize (ClutterActor *actor)
       if (stage_win32->hwnd == NULL)
 	{
 	  g_critical ("Unable to create stage window");
+	  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
+				     CLUTTER_ACTOR_REALIZED);
 	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 	  return;
 	}
@@ -490,6 +513,8 @@ clutter_stage_win32_realize (ClutterActor *actor)
       || !SetPixelFormat (stage_win32->client_dc, pf, &pfd))
     {
       g_critical ("Unable to find suitable GL pixel format");
+      CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
+				 CLUTTER_ACTOR_REALIZED);
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
       return;
     }
@@ -501,24 +526,30 @@ clutter_stage_win32_realize (ClutterActor *actor)
       if (backend_win32->gl_context == NULL)
 	{
 	  g_critical ("Unable to create suitable GL context");
+	  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
+				     CLUTTER_ACTOR_REALIZED);
 	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 	  return;
 	}
     }
 
-  CLUTTER_NOTE (GL, "wglMakeCurrent");
-
-  clutter_stage_ensure_current (CLUTTER_STAGE (stage_win32));
+  /* below will call wglMakeCurrent */
+  CLUTTER_ACTOR_SET_FLAGS (stage_win32->wrapper, CLUTTER_ACTOR_REALIZED);
+  CLUTTER_ACTOR_SET_FLAGS (stage_win32, CLUTTER_ACTOR_REALIZED);
+  clutter_stage_ensure_current (stage_win32->wrapper);
 
   if (!clutter_stage_win32_check_gl_version ())
     {
       g_critical ("OpenGL version number is too low");
+      CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
+				 CLUTTER_ACTOR_REALIZED);
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
       return;
     }
       
   /* Make sure the viewport gets set up correctly */
-  CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
+			     CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void
@@ -526,7 +557,18 @@ clutter_stage_win32_unrealize (ClutterActor *actor)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (actor);
 
-  wglMakeCurrent (NULL, NULL);
+  CLUTTER_NOTE (BACKEND, "Unrealizing stage");
+
+  /* Chain up so all children get unrealized, needed to move texture
+   * data across contexts
+   */
+  CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->unrealize (actor);
+
+  /* Unrealize all shaders, since the GL context is going away */
+  _clutter_shader_release_all ();
+
+  /* As unrealised the context will now get cleared */
+  clutter_stage_ensure_current (stage_win32->wrapper);
 
   if (stage_win32->client_dc)
     {
@@ -536,6 +578,11 @@ clutter_stage_win32_unrealize (ClutterActor *actor)
 
   if (stage_win32->hwnd)
     {
+      /* Drop the pointer to this stage in the window so that any
+	 further messages won't be processed. The stage might be being
+	 destroyed so otherwise the messages would be handled with an
+	 invalid stage instance */
+      SetWindowLongPtrW (stage_win32->hwnd, 0, (LONG_PTR) 0);
       DestroyWindow (stage_win32->hwnd);
       stage_win32->hwnd = NULL;
     }
@@ -557,7 +604,6 @@ clutter_stage_win32_class_init (ClutterStageWin32Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  ClutterStageClass *stage_class = CLUTTER_STAGE_CLASS (klass);
 
   gobject_class->dispose = clutter_stage_win32_dispose;
   
@@ -567,10 +613,6 @@ clutter_stage_win32_class_init (ClutterStageWin32Class *klass)
   actor_class->query_coords = clutter_stage_win32_query_coords;
   actor_class->realize = clutter_stage_win32_realize;
   actor_class->unrealize = clutter_stage_win32_unrealize;
-  
-  stage_class->set_title = clutter_stage_win32_set_title;
-  stage_class->set_user_resize = clutter_stage_win32_set_user_resize;
-  stage_class->set_fullscreen = clutter_stage_win32_set_fullscreen;
 }
 
 static void
@@ -584,6 +626,19 @@ clutter_stage_win32_init (ClutterStageWin32 *stage)
   stage->win_height = 480;
   stage->backend = NULL;
   stage->scroll_pos = 0;
+
+  stage->wrapper = NULL;
+  	 
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IS_TOPLEVEL);
+}
+
+static void
+clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
+{
+  iface->get_wrapper = clutter_stage_win32_get_wrapper;
+  iface->set_title = clutter_stage_win32_set_title;
+  iface->set_fullscreen = clutter_stage_win32_set_fullscreen;
+  iface->set_user_resizable = clutter_stage_win32_set_user_resize;
 }
 
 /**
@@ -599,9 +654,15 @@ clutter_stage_win32_init (ClutterStageWin32 *stage)
 HWND
 clutter_win32_get_stage_window (ClutterStage *stage)
 {
-  g_return_val_if_fail (CLUTTER_IS_STAGE_WIN32 (stage), NULL);
+  ClutterStageWindow *impl;
 
-  return CLUTTER_STAGE_WIN32 (stage)->hwnd;
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
+  impl = _clutter_stage_get_window (stage);
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE_WIN32 (impl), NULL);
+
+  return CLUTTER_STAGE_WIN32 (impl)->hwnd;
 }
 
 /**
@@ -624,7 +685,7 @@ clutter_win32_get_stage_from_window (HWND hwnd)
       == clutter_stage_win32_get_window_class ())
     /* If it is there should be a pointer to the stage in the window
        extra data */
-    return (ClutterStage *) GetWindowLongPtrW (hwnd, 0);
+    return CLUTTER_STAGE_WIN32 (GetWindowLongPtrW (hwnd, 0))->wrapper;
   else
     return NULL;
 }
@@ -633,12 +694,14 @@ void
 clutter_stage_win32_map (ClutterStageWin32 *stage_win32)
 {
   CLUTTER_ACTOR_SET_FLAGS (stage_win32, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_ACTOR_SET_FLAGS (stage_win32->wrapper, CLUTTER_ACTOR_MAPPED);
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage_win32));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage_win32->wrapper));
 }
 
 void
 clutter_stage_win32_unmap (ClutterStageWin32 *stage_win32)
 {
   CLUTTER_ACTOR_UNSET_FLAGS (stage_win32, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper, CLUTTER_ACTOR_MAPPED);
 }

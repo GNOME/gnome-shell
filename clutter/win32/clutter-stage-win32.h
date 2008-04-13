@@ -22,7 +22,7 @@
 #ifndef __CLUTTER_STAGE_WIN32_H__
 #define __CLUTTER_STAGE_WIN32_H__
 
-#include <glib-object.h>
+#include <clutter/clutter-group.h>
 #include <clutter/clutter-stage.h>
 #include <windows.h>
 
@@ -42,7 +42,7 @@ typedef struct _ClutterStageWin32Class    ClutterStageWin32Class;
 
 struct _ClutterStageWin32
 {
-  ClutterStage parent_instance;
+  ClutterGroup parent_instance;
 
   HWND         hwnd;
   HDC          client_dc;
@@ -55,11 +55,13 @@ struct _ClutterStageWin32
 
   ClutterBackendWin32 *backend;
   ClutterStageState   state;
+
+  ClutterStage *wrapper;
 };
 
 struct _ClutterStageWin32Class
 {
-  ClutterStageClass parent_class;
+  ClutterGroupClass parent_class;
 };
 
 GType clutter_stage_win32_get_type (void) G_GNUC_CONST;

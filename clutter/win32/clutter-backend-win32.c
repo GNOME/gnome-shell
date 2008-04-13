@@ -33,6 +33,7 @@
 #include "../clutter-main.h"
 #include "../clutter-debug.h"
 #include "../clutter-private.h"
+#include "../clutter-version.h"
 
 #include "cogl.h"
 
@@ -100,21 +101,26 @@ clutter_backend_win32_dispose (GObject *gobject)
   ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (gobject);
   ClutterMainContext  *context;
   ClutterStageManager *stage_manager;
-  GSList              *l;
 
   CLUTTER_NOTE (BACKEND, "Disposing the of stages");
 
   context = clutter_context_get_default ();
   stage_manager = context->stage_manager;
 
-  for (l = stage_manager->stages; l; l = l->next)
-    {
-      ClutterActor *stage = CLUTTER_ACTOR (l->data);
-      clutter_actor_destroy (stage);
-    }
+  /* Destroy all of the stages. g_slist_foreach is used because the
+     finalizer for the stages will remove the stage from the
+     stage_manager's list and g_slist_foreach has some basic
+     protection against this */
+  g_slist_foreach (stage_manager->stages, (GFunc) clutter_actor_destroy, NULL);
 
   CLUTTER_NOTE (BACKEND, "Removing the event source");
   _clutter_backend_win32_events_uninit (CLUTTER_BACKEND (backend_win32));
+
+  if (backend_win32->gl_context)
+    {
+      wglDeleteContext (backend_win32->gl_context);
+      backend_win32->gl_context = NULL;
+    }
 
   G_OBJECT_CLASS (clutter_backend_win32_parent_class)->dispose (gobject);
 }
@@ -152,13 +158,20 @@ check_vblank_env (const char *name)
 ClutterFeatureFlags
 clutter_backend_win32_get_features (ClutterBackend *backend)
 {
-  ClutterFeatureFlags flags;
-  const gchar *extensions;
-  SwapIntervalProc swap_interval;
+  ClutterFeatureFlags  flags;
+  const gchar         *extensions;
+  SwapIntervalProc     swap_interval;
+  ClutterBackendWin32 *backend_win32;
 
   /* FIXME: we really need to check if gl context is set */
 
   extensions = glGetString (GL_EXTENSIONS);
+
+  /* this will make sure that the GL context exists and is bound to a
+     drawable */
+  backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
+  g_return_val_if_fail (backend_win32->gl_context != NULL, 0);
+  g_return_val_if_fail (wglGetCurrentDC () != NULL, 0);
 
   CLUTTER_NOTE (BACKEND, "Checking features\n"
                 "GL_VENDOR: %s\n"
@@ -217,24 +230,70 @@ static void
 clutter_backend_win32_ensure_context (ClutterBackend *backend, 
 				      ClutterStage   *stage)
 {
-  ClutterBackendWin32 *backend_win32;
-  ClutterStageWin32   *stage_win32;
+  if (stage == NULL)
+    {
+      CLUTTER_NOTE (MULTISTAGE, "Clearing all context");
 
-  stage_win32 = CLUTTER_STAGE_WIN32 (stage);
-  backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
+      wglMakeCurrent (NULL, NULL);
+    }
+  else
+    {
+      ClutterBackendWin32 *backend_win32;
+      ClutterStageWin32   *stage_win32;
+      ClutterStageWindow  *impl;
 
-  CLUTTER_NOTE (MULTISTAGE, "setting context for stage:%p", stage );
+      impl = _clutter_stage_get_window (stage);
+      g_return_if_fail (impl != NULL);
+      
+      CLUTTER_NOTE (MULTISTAGE, "Setting context for stage of type %s [%p]",
+		    g_type_name (G_OBJECT_TYPE (impl)),
+		    impl);
 
-  wglMakeCurrent (stage_win32->client_dc,
-                  backend_win32->gl_context);
+      backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
+      stage_win32 = CLUTTER_STAGE_WIN32 (impl);
+      
+      /* no GL context to set */
+      if (backend_win32->gl_context == NULL)
+	return;
+
+      /* we might get here inside the final dispose cycle, so we
+       * need to handle this gracefully
+       */
+      if (stage_win32->client_dc == NULL)
+	{
+	  CLUTTER_NOTE (MULTISTAGE,
+			"Received a stale stage, clearing all context");
+  	 
+	  wglMakeCurrent (NULL, NULL);
+	}
+      else
+	{
+	  CLUTTER_NOTE (BACKEND,
+			"MakeCurrent window %p, context %p",
+			stage_win32->hwnd,
+			backend_win32->gl_context);
+	  wglMakeCurrent (stage_win32->client_dc,
+			  backend_win32->gl_context);
+	}
+    }
 }
 
 static void
 clutter_backend_win32_redraw (ClutterBackend *backend,
 			      ClutterStage   *stage)
 {
-  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (stage);
+  ClutterStageWin32  *stage_win32;
+  ClutterStageWindow *impl;
 
+  impl = _clutter_stage_get_window (stage);
+  if (impl == NULL)
+    return;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WIN32 (impl));
+
+  stage_win32 = CLUTTER_STAGE_WIN32 (impl);
+
+  /* this will cause the stage implementation to be painted */
   clutter_actor_paint (CLUTTER_ACTOR (stage));
 
   if (stage_win32->client_dc)
@@ -243,21 +302,33 @@ clutter_backend_win32_redraw (ClutterBackend *backend,
 
 static ClutterActor *
 clutter_backend_win32_create_stage (ClutterBackend  *backend,
+				    ClutterStage    *wrapper,
 				    GError         **error)
 {
   ClutterBackendWin32 *backend_win32 = CLUTTER_BACKEND_WIN32 (backend);
   ClutterStageWin32 *stage_win32;
   ClutterActor *stage;
 
-  stage = g_object_new (CLUTTER_TYPE_STAGE_WIN32, NULL);
+  CLUTTER_NOTE (BACKEND, "Creating stage of type `%s'",
+		g_type_name (CLUTTER_STAGE_TYPE));
+
+  stage = g_object_new (CLUTTER_STAGE_TYPE, NULL);
 
   /* copy backend data into the stage */
   stage_win32 = CLUTTER_STAGE_WIN32 (stage);
   stage_win32->backend = backend_win32;
+  stage_win32->wrapper = wrapper;
+
+  /* set the pointer back into the wrapper */
+  _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
 
   /* needed ? */
   g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
 
+  /* FIXME - is this needed? we should call realize inside the clutter
+   * init sequence for the default stage, and let the usual realization
+   * sequence be used for any other stage
+   */
   clutter_actor_realize (stage);
 
   if (!CLUTTER_ACTOR_IS_REALIZED (stage))
