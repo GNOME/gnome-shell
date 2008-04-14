@@ -242,7 +242,12 @@ cogl_enable_depth_test (gboolean setting)
 void
 cogl_color (const ClutterColor *color)
 {
-#if HAVE_GLES_COLOR4UB
+#if 0 /*HAVE_GLES_COLOR4UB*/
+
+  /* NOTE: seems SDK_OGLES-1.1_LINUX_PCEMULATION_2.02.22.0756 has this call 
+   * but is broken - see #857. Therefor disabling. 
+  */
+
   /* 
    * GLES 1.1 does actually have this function, it's in the header file but
    * missing in the reference manual (and SDK):
@@ -253,6 +258,8 @@ cogl_color (const ClutterColor *color)
 		  color->green,
 		  color->blue,
 		  color->alpha) );
+
+
 #else
   /* conversion can cause issues with picking on some gles implementations */
   GE( glColor4x ((color->red << 16) / 0xff,  
