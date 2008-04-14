@@ -1,3 +1,12 @@
+2008-04-14  Neil Roberts  <neil@o-hand.com>
+
+	Bug #853
+
+	* clutter/clutter-timeline.c (clutter_timeline_get_progressx): Fix
+	arithmetic for calculating the reverse progress when the timeline
+	is backward. (Should subtract from one instead of taking the
+	reciprocal).
+
 2008-04-13  Neil Roberts  <neil@o-hand.com>
 
 	Upgraded the Win32 backend to work with the multi-stage

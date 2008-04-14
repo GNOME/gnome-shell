@@ -1304,17 +1304,19 @@ ClutterFixed
 clutter_timeline_get_progressx (ClutterTimeline *timeline)
 {
   ClutterTimelinePrivate *priv;
+  ClutterFixed progress;
 
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
 
   priv = timeline->priv;
 
-  if (priv->direction == CLUTTER_TIMELINE_FORWARD)
-    return CLUTTER_FIXED_DIV (CLUTTER_INT_TO_FIXED (priv->current_frame_num),
-                              CLUTTER_INT_TO_FIXED (priv->n_frames));
-  else
-    return CLUTTER_FIXED_DIV (CLUTTER_INT_TO_FIXED (priv->n_frames),
-                              CLUTTER_INT_TO_FIXED (priv->current_frame_num));
+  progress = CLUTTER_FIXED_DIV (CLUTTER_INT_TO_FIXED (priv->current_frame_num),
+				CLUTTER_INT_TO_FIXED (priv->n_frames));
+
+  if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
+    progress = CFX_ONE - progress;
+
+  return progress;
 }
 
 /**
