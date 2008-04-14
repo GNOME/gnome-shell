@@ -193,7 +193,7 @@ case $clutterbackend in
 
     clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglx"
-    CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGLX"
+    CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
 
     # We currently assume having egl means also having gles..

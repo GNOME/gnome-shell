@@ -7,6 +7,7 @@
 #include "../clutter-private.h"
 #include "../clutter-main.h"
 #include "../clutter-debug.h"
+#include "../clutter-version.h"
 
 static ClutterBackendEGL *backend_singleton = NULL;
 
@@ -107,10 +108,9 @@ clutter_backend_egl_redraw (ClutterBackend *backend,
                             ClutterStage   *stage)
 {
   ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  ClutterBackendX11  *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  ClutterStageWindow *impl;
   ClutterStageEGL    *stage_egl;
   ClutterStageX11    *stage_x11;
+  ClutterStageWindow *impl;
 
   impl = _clutter_stage_get_window (stage);
   if (!impl)
@@ -162,7 +162,7 @@ clutter_backend_egl_dispose (GObject *gobject)
   if (backend_egl->edpy)
     {
       eglTerminate (backend_egl->edpy);
-      backend_egl->edpy = NULL;
+      backend_egl->edpy = 0;
     }
 
   G_OBJECT_CLASS (clutter_backend_egl_parent_class)->dispose (gobject);
@@ -201,8 +201,8 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
                 "GL_VENDOR: %s\n"
                 "GL_RENDERER: %s\n"
                 "GL_VERSION: %s\n"
-                "EGL_VENDOR: %s\n",
-                "EGL_VERSION: %s\n",
+                "EGL_VENDOR: %s\n"
+                "EGL_VERSION: %s\n"
                 "EGL_EXTENSIONS: %s\n",
                 glGetString (GL_VENDOR),
                 glGetString (GL_RENDERER),
@@ -247,9 +247,9 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   
   g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
 
-  clutter_actor_realize (backend_x11->stage);
+  clutter_actor_realize (stage);
 
-  if (!CLUTTER_ACTOR_IS_REALIZED (backend_x11->stage))
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_INTERNAL,

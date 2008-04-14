@@ -40,7 +40,7 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->unrealize (actor);
 
-  clutter_x11_trap_x_errors ()
+  clutter_x11_trap_x_errors ();
 
   if (G_UNLIKELY (was_offscreen))
     {
@@ -48,7 +48,7 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
     }
   else
     {
-      if (!stage_X11->is_foreign_xwin && stage_x11->xwin != None)
+      if (!stage_x11->is_foreign_xwin && stage_x11->xwin != None)
 	{
 	  XDestroyWindow (stage_x11->xdpy, stage_x11->xwin);
 	  stage_x11->xwin = None;
@@ -211,6 +211,8 @@ clutter_stage_egl_draw_to_pixbuf (ClutterStageWindow *stage_window,
                                   gint                width,
                                   gint                height)
 {
+  ClutterStage *stage = CLUTTER_STAGE (stage_window);
+
   g_warning ("Stages of type `%s' do not support "
              "ClutterStageWindow::draw_to_pixbuf",
              G_OBJECT_TYPE_NAME (stage));

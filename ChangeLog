@@ -1,3 +1,14 @@
+2008-04-14  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/cogl/gles/cogl.c: (cogl_color):
+        Disable use of color4ub, issues with latest MBX SDL (#857)
+
+	* clutter/eglx/clutter-backend-egl.c:
+	* clutter/eglx/clutter-stage-egl.c:
+	* configure.ac:
+        Fixup for the eglx backend to work with new backend/multistage code.
+        Some issues remain in destroying stages.
+
 2008-04-14  Neil Roberts  <neil@o-hand.com>
 
 	Bug #853
