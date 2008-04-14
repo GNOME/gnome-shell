@@ -65,7 +65,7 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 
   clutter_stage_ensure_current (stage_x11->wrapper);
 
-  /* XSync (stage_x11->xdpy, False); */
+  XSync (stage_x11->xdpy, False); 
 
   clutter_x11_untrap_x_errors ();
 
@@ -137,6 +137,10 @@ clutter_stage_egl_realize (ClutterActor *actor)
 		    | ButtonPressMask
 		    | ButtonReleaseMask
 		    | PropertyChangeMask);
+
+      /* FIXME, do these in a clutterstage_x11_realise? */
+      clutter_stage_x11_fix_window_size (stage_x11);
+      clutter_stage_x11_set_wm_protocols (stage_x11);
 
       if (stage_egl->egl_surface != EGL_NO_SURFACE)
         {

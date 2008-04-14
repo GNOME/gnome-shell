@@ -1,5 +1,11 @@
 2008-04-14  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/eglx/clutter-stage-egl.c:
+        Actually set wm protocols on eglx stage windows. Fixes issues with
+        cloising stages and cleanup.
+
+2008-04-14  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/cogl/gles/cogl.c: (cogl_color):
         Disable use of color4ub, issues with latest MBX SDL (#857)
 
