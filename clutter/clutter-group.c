@@ -32,9 +32,8 @@
  * relative to the #ClutterGroup position. Other operations such as scaling,
  * rotating and clipping of the group will apply to the child actors.
  *
- * A #ClutterGroup's size is defined by the size and position of it
- * it children. Resize requests via parent #ClutterActor API will be
- * ignored.
+ * A #ClutterGroup's size is defined by the size and position of its children.
+ * Resize requests via parent #ClutterActor API will be ignored.
  */
 
 #ifdef HAVE_CONFIG_H

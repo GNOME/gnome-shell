@@ -1,3 +1,7 @@
+2008-04-15  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-group.c: fixed typo in docs.
+
 2008-04-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/eglx/clutter-stage-egl.c:
