@@ -1,3 +1,32 @@
+2008-04-15  Matthew Allum  <mallum@openedhand.com>
+
+        Work related to #873;
+
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-backend-glx.h:
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+	* clutter/x11/clutter-x11-texture-pixmap.h:
+        General cleanup of texture pixmap code, adding;
+          - Pixmap dimentions and depth now auto probed, read only props.
+          - More X safety traps
+          - Add support for optionally tracking damage and automatically
+            updating texture.
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* clutter/glx/clutter-glx-texture-pixmap.h:
+        General cleanup and some safety additions. Needs more work so
+        'proper' subclass - dependent on new COGL.
+
+	* clutter/x11/clutter-backend-x11.c: (clutter_x11_remove_filter):
+        Invert g_return_if check.
+
+	* configure.ac:
+        Pull in XComposite and XDamage (at least for now)
+
+	* tests/Makefile.am:
+	* tests/test-pixmap.c:
+        Add a modified test from Johan for above.
+
 2008-04-15  Neil Roberts  <neil@o-hand.com>
 
 	Added support for foreign windows to the Win32 backend.

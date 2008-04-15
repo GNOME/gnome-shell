@@ -507,7 +507,7 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
   GSList                *tmp_list, *this;
   ClutterX11EventFilter *filter;
 
-  g_return_if_fail (func == NULL);
+  g_return_if_fail (func != NULL);
 
   tmp_list = backend_singleton->event_filters;
 

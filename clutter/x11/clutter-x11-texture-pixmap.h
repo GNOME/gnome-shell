@@ -67,16 +67,10 @@ struct _ClutterX11TexturePixmap
 GType clutter_x11_texture_pixmap_get_type (void);
 ClutterActor * clutter_x11_texture_pixmap_new (void);
 
-ClutterActor * clutter_x11_texture_pixmap_new_with_pixmap (Pixmap     pixmap,
-							   guint      width,
-							   guint      height,
-							   guint      depth);
+ClutterActor * clutter_x11_texture_pixmap_new_with_pixmap (Pixmap     pixmap);
 
 void  clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
-                                             Pixmap                   pixmap,
-                                             guint                    width,
-                                             guint                    height,
-                                             guint                    depth);
+                                             Pixmap                   pixmap);
 
 void  clutter_x11_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
                                               gint                     x,
@@ -84,6 +78,9 @@ void  clutter_x11_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
                                               gint                     width,
                                               gint                     height);
 
+void
+clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
+                                          gboolean                 setting);
 
 G_END_DECLS
 

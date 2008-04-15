@@ -60,10 +60,7 @@ GType clutter_glx_texture_pixmap_get_type (void);
 
 ClutterActor * clutter_glx_texture_pixmap_new (void);
 
-ClutterActor * clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap,
-							   guint width,
-							   guint height,
-							   guint depth);
+ClutterActor * clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap);
 
 G_END_DECLS
 

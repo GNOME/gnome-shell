@@ -48,13 +48,18 @@
 
 #include "cogl.h"
 
-enum
-{
-  PROP_PIXMAP = 1,
-  PROP_PIXMAP_WIDTH,
-  PROP_PIXMAP_HEIGHT,
-  PROP_DEPTH
-};
+typedef void    (*BindTexImage) (Display     *display,
+                                 GLXDrawable  drawable,
+                                 int          buffer,
+                                 int         *attribList);
+typedef void    (*ReleaseTexImage) (Display     *display,
+                                    GLXDrawable  drawable,
+                                    int          buffer);
+
+static BindTexImage      _gl_bind_tex_image = NULL;
+static ReleaseTexImage   _gl_release_tex_image = NULL;
+static gboolean          _have_tex_from_pixmap_ext = FALSE;
+static gboolean          _ext_check_done = FALSE;
 
 struct _ClutterGLXTexturePixmapPrivate
 {
@@ -62,32 +67,44 @@ struct _ClutterGLXTexturePixmapPrivate
   guint         texture_id;
   GLXPixmap     glx_pixmap;
   gboolean      bound;
+
 };
 
-static ClutterBackendGLX *backend = NULL;
+static void 
+clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass);
 
-static void clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass);
-static void clutter_glx_texture_pixmap_init       (ClutterGLXTexturePixmap *self);
-static GObject *clutter_glx_texture_pixmap_constructor (GType                  type,
-                                                        guint                  n_construct_properties,
-                                                        GObjectConstructParam *construct_properties);
-static void clutter_glx_texture_pixmap_dispose    (GObject *object);
-static void clutter_glx_texture_pixmap_notify     (GObject    *object,
-                                                   GParamSpec *pspec);
+static void 
+clutter_glx_texture_pixmap_init       (ClutterGLXTexturePixmap *self);
 
-static void clutter_glx_texture_pixmap_realize (ClutterActor *actor);
-static void clutter_glx_texture_pixmap_unrealize (ClutterActor *actor);
-static void clutter_glx_texture_pixmap_paint (ClutterActor *actor);
+static void 
+clutter_glx_texture_pixmap_dispose (GObject *object);
 
-static void clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
-                                                    gint x,
-                                                    gint y,
-                                                    gint width,
-                                                    gint height);
+static void 
+clutter_glx_texture_pixmap_notify (GObject    *object,
+                                   GParamSpec *pspec);
 
-static void clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture);
+static void 
+clutter_glx_texture_pixmap_realize (ClutterActor *actor);
 
-G_DEFINE_TYPE (ClutterGLXTexturePixmap, clutter_glx_texture_pixmap, CLUTTER_X11_TYPE_TEXTURE_PIXMAP);
+static void 
+clutter_glx_texture_pixmap_unrealize (ClutterActor *actor);
+
+static void 
+clutter_glx_texture_pixmap_paint (ClutterActor *actor);
+
+static void 
+clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
+                                        gint x,
+                                        gint y,
+                                        gint width,
+                                        gint height);
+
+static void 
+clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *tex);
+
+G_DEFINE_TYPE (ClutterGLXTexturePixmap,    \
+               clutter_glx_texture_pixmap, \
+               CLUTTER_X11_TYPE_TEXTURE_PIXMAP);
 
 static void
 clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
@@ -96,11 +113,9 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
   ClutterActorClass            *actor_class = CLUTTER_ACTOR_CLASS (klass);
   ClutterX11TexturePixmapClass *x11_texture_class =
       CLUTTER_X11_TEXTURE_PIXMAP_CLASS (klass);
-  ClutterBackend               *default_backend;
 
   g_type_class_add_private (klass, sizeof (ClutterGLXTexturePixmapPrivate));
 
-  object_class->constructor = clutter_glx_texture_pixmap_constructor;
   object_class->dispose = clutter_glx_texture_pixmap_dispose;
   object_class->notify = clutter_glx_texture_pixmap_notify;
 
@@ -110,17 +125,28 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
 
   x11_texture_class->update_area = clutter_glx_texture_pixmap_update_area;
 
-  default_backend = clutter_get_default_backend ();
-  if (!CLUTTER_IS_BACKEND_GLX (default_backend))
+  if (_ext_check_done == FALSE)
     {
-      g_critical ("ClutterGLXTexturePixmap instanciated with a "
-                  "non-GLX backend");
-      return;
+      const gchar *glx_extensions = NULL;
+
+      glx_extensions = 
+        glXQueryExtensionsString (clutter_x11_get_default_display (),
+                                  clutter_x11_get_default_screen ());
+      
+      /* Check for the texture from pixmap extension */
+      if (cogl_check_extension ("GLX_EXT_texture_from_pixmap", glx_extensions))
+        {
+          _gl_bind_tex_image =
+            (BindTexImage)cogl_get_proc_address ("glXBindTexImageEXT");
+          _gl_release_tex_image =
+            (ReleaseTexImage)cogl_get_proc_address ("glXReleaseTexImageEXT");
+          
+          if (_gl_bind_tex_image && _gl_release_tex_image)
+            _have_tex_from_pixmap_ext = TRUE;
+        }
+      
+      _ext_check_done = TRUE;
     }
-
-  backend = (ClutterBackendGLX *)default_backend;
-/*  backend->t_f_p = FALSE;*/
-
 }
 
 static void
@@ -133,40 +159,29 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
                                    CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
                                    ClutterGLXTexturePixmapPrivate);
 
-
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
     priv->target_type = CGL_TEXTURE_RECTANGLE_ARB;
   else
     priv->target_type = CGL_TEXTURE_2D;
 }
 
-static GObject *
-clutter_glx_texture_pixmap_constructor (GType                  type,
-                                        guint                  n_construct_properties,
-                                        GObjectConstructParam *construct_properties)
-{
-  GObject *object = G_OBJECT_CLASS (clutter_glx_texture_pixmap_parent_class)->
-      constructor (type, n_construct_properties, construct_properties);
-
-  g_object_set (object,
-                "sync-size", FALSE,
-                NULL);
-
-  return object;
-}
-
 static void
 clutter_glx_texture_pixmap_dispose (GObject *object)
 {
-  ClutterGLXTexturePixmapPrivate *priv = CLUTTER_GLX_TEXTURE_PIXMAP (object)->priv;
+  ClutterGLXTexturePixmapPrivate *priv;
+
+  priv = CLUTTER_GLX_TEXTURE_PIXMAP (object)->priv;
 
   if (priv->glx_pixmap != None)
     {
       clutter_x11_trap_x_errors ();
-      glXDestroyGLXPixmap (((ClutterBackendX11 *)backend)->xdpy,
+
+      glXDestroyGLXPixmap (clutter_x11_get_default_display(),
                            priv->glx_pixmap);
-      XSync (((ClutterBackendX11 *)backend)->xdpy, FALSE);
+      XSync (clutter_x11_get_default_display(), FALSE);
+
       clutter_x11_untrap_x_errors ();
+
       priv->glx_pixmap = None;
     }
 
@@ -179,7 +194,6 @@ clutter_glx_texture_pixmap_notify (GObject *object, GParamSpec *pspec)
   if (g_str_equal (pspec->name, "pixmap"))
     {
       ClutterGLXTexturePixmap *texture = CLUTTER_GLX_TEXTURE_PIXMAP (object);
-
       clutter_glx_texture_pixmap_create_glx_pixmap (texture);
     }
 }
@@ -187,17 +201,17 @@ clutter_glx_texture_pixmap_notify (GObject *object, GParamSpec *pspec)
 static void
 clutter_glx_texture_pixmap_realize (ClutterActor *actor)
 {
-  ClutterGLXTexturePixmapPrivate *priv =
-      CLUTTER_GLX_TEXTURE_PIXMAP (actor)->priv;
-  COGLenum                      pixel_type, pixel_format,
-                                filter_quality;
-  gboolean                      repeat_x, repeat_y;
-  guint                         width, height;
+  ClutterGLXTexturePixmapPrivate *priv;
+  COGLenum                        pixel_type, pixel_format,filter_quality;
+  gboolean                        repeat_x, repeat_y;
+  guint                           width, height;
 
-  if (!backend->t_f_p)
+  priv = CLUTTER_GLX_TEXTURE_PIXMAP (actor)->priv;
+
+  if (!_have_tex_from_pixmap_ext) 
     {
       CLUTTER_ACTOR_CLASS (clutter_glx_texture_pixmap_parent_class)->
-          realize (actor);
+        realize (actor);
       return;
     }
 
@@ -233,11 +247,13 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
 static void
 clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
 {
-  ClutterGLXTexturePixmapPrivate *priv =
-      CLUTTER_GLX_TEXTURE_PIXMAP (actor)->priv;
-  Display                        *dpy = ((ClutterBackendX11 *)backend)->xdpy;
+  ClutterGLXTexturePixmapPrivate *priv;
+  Display                        *dpy;
 
-  if (!backend->t_f_p)
+  priv = CLUTTER_GLX_TEXTURE_PIXMAP (actor)->priv;
+  dpy = clutter_x11_get_default_display();
+
+  if (!_have_tex_from_pixmap_ext)
     {
       CLUTTER_ACTOR_CLASS (clutter_glx_texture_pixmap_parent_class)->
           unrealize (actor);
@@ -249,9 +265,14 @@ clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
 
   if (priv->bound && priv->glx_pixmap)
     {
-      (backend->release_tex_image) (dpy,
-                                    priv->glx_pixmap,
-                                    GLX_FRONT_LEFT_EXT);
+      clutter_x11_trap_x_errors ();
+
+      (_gl_release_tex_image) (dpy,
+                               priv->glx_pixmap,
+                               GLX_FRONT_LEFT_EXT);
+
+      XSync (clutter_x11_get_default_display(), FALSE);
+      clutter_x11_untrap_x_errors ();
     }
 
   cogl_textures_destroy (1, &priv->texture_id);
@@ -314,7 +335,7 @@ clutter_glx_texture_pixmap_paint (ClutterActor *actor)
   gint            x_1, y_1, x_2, y_2;
   ClutterColor    col = { 0xff, 0xff, 0xff, 0xff };
 
-  if (!backend->t_f_p)
+  if (!_have_tex_from_pixmap_ext)
     {
       CLUTTER_ACTOR_CLASS (clutter_glx_texture_pixmap_parent_class)->
           paint (actor);
@@ -354,11 +375,13 @@ get_fbconfig_for_depth (guint depth)
 {
   GLXFBConfig *fbconfigs, *ret = NULL;
   int          n_elements, i, found;
-  Display     *dpy = ((ClutterBackendX11 *)backend)->xdpy;
+  Display     *dpy;
   int          db, stencil, alpha, mipmap, rgba, value;
 
+  dpy = clutter_x11_get_default_display ();
+
   fbconfigs = glXGetFBConfigs (dpy,
-                               ((ClutterBackendX11 *)backend)->xscreen_num,
+                               clutter_x11_get_default_screen (),
                                &n_elements);
 
   db      = G_MAXSHORT;
@@ -404,7 +427,6 @@ get_fbconfig_for_depth (guint depth)
                                 fbconfigs[i],
                                 GLX_BIND_TO_TEXTURE_RGBA_EXT,
                                 &value);
-
           if (value)
             rgba = 1;
         }
@@ -462,12 +484,17 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
   GLXPixmap                       glx_pixmap;
   int                             attribs[7], i = 0;
   GLXFBConfig                    *fbconfig;
-  Display                        *dpy = ((ClutterBackendX11 *)backend)->xdpy;
+  Display                        *dpy;
   guint                           depth;
   Pixmap                          pixmap;
+  ClutterBackendGLX             *backend_glx;
+
+  backend_glx = CLUTTER_BACKEND_GLX(clutter_get_default_backend ());
+
+  dpy = clutter_x11_get_default_display ();
 
   g_object_get (texture,
-                "depth",                &depth,
+                "pixmap-depth",                &depth,
                 "pixmap",               &pixmap,
                 NULL);
 
@@ -522,15 +549,23 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
     {
       if (priv->glx_pixmap)
         {
-          if (backend->t_f_p &&
+          if (_have_tex_from_pixmap_ext &&
               CLUTTER_ACTOR_IS_REALIZED (texture) &&
               priv->bound)
             {
               cogl_texture_bind (priv->target_type, priv->texture_id);
 
-              (backend->release_tex_image) (dpy,
-                                            priv->glx_pixmap,
-                                            GLX_FRONT_LEFT_EXT);
+              clutter_x11_trap_x_errors ();
+
+              (_gl_release_tex_image) (dpy,
+                                       priv->glx_pixmap,
+                                       GLX_FRONT_LEFT_EXT);
+
+              XSync (clutter_x11_get_default_display(), FALSE);
+              
+              if (clutter_x11_untrap_x_errors ())
+                g_warning ("Failed to bind texture pixmap");
+
             }
 
           clutter_x11_trap_x_errors ();
@@ -551,16 +586,17 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
                                         gint                     height)
 {
   ClutterGLXTexturePixmapPrivate       *priv;
-  Display                              *dpy =
-      ((ClutterBackendX11 *)backend)->xdpy;
+  Display                              *dpy;
 
   priv = CLUTTER_GLX_TEXTURE_PIXMAP (texture)->priv;
+  dpy = clutter_x11_get_default_display();
 
-  if (!backend->t_f_p)
+  if (!_have_tex_from_pixmap_ext)
     {
-      CLUTTER_X11_TEXTURE_PIXMAP_CLASS (texture)->update_area (texture,
-                                                               x, y,
-                                                               width, height);
+      CLUTTER_X11_TEXTURE_PIXMAP_CLASS 
+        (texture)->update_area (texture,
+                                x, y,
+                                width, height);
       return;
     }
 
@@ -569,12 +605,19 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
 
   cogl_texture_bind (priv->target_type, priv->texture_id);
 
-  if (backend->t_f_p)
+  if (_have_tex_from_pixmap_ext)
     {
-      (backend->bind_tex_image) (dpy,
-                                 priv->glx_pixmap,
-                                 GLX_FRONT_LEFT_EXT,
-                                 NULL);
+      clutter_x11_trap_x_errors ();
+
+      (_gl_bind_tex_image) (dpy,
+                            priv->glx_pixmap,
+                            GLX_FRONT_LEFT_EXT,
+                            NULL);
+
+      XSync (clutter_x11_get_default_display(), FALSE);
+
+      if (clutter_x11_untrap_x_errors ())
+        g_warning ("Failed to bind texture pixmap");
 
       priv->bound = TRUE;
     }
@@ -592,18 +635,12 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
  * Since: 0.8
  **/
 ClutterActor *
-clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap,
-					    guint  width,
-					    guint  height,
-					    guint  depth)
+clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap)
 {
   ClutterActor *actor;
 
   actor = g_object_new (CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
                         "pixmap", pixmap,
-                        "pixmap-width",  width,
-                        "pixmap-height", height,
-                        "depth",  depth,
                         NULL);
 
   return actor;

@@ -113,6 +113,29 @@ if test x$have_xfixes = xyes; then
       X11_LIBS="$X11_LIBS -lXfixes"
 fi
 
+PKG_CHECK_MODULES(XDAMAGE, xdamage, [have_xdamage=yes], [have_xdamage=no])
+if test x$have_xdamage = xyes; then
+      AC_DEFINE(HAVE_XDAMAGE, 1, Have the XDAMAGE X extension)
+      X11_LIBS="$X11_LIBS -lXdamage"
+fi
+
+# FIXME: Composite 0.3/0.4 likely needed when window redirection complete.
+#        though may not be needed at all
+PKG_CHECK_MODULES(XCOMPOSITE, xcomposite, [have_xcomposite=yes], [have_xcomposite=no])
+if test x$have_xcomposite = xyes; then
+      AC_DEFINE(HAVE_XCOMPOSITE, 1, Have the XCOMPOSITE X extension)
+      X11_LIBS="$X11_LIBS -lXcomposite"
+fi
+
+# Currently require all extentions, may not for actual release.
+if test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx" 
+then
+      if test "x$have_xdamage" = "xno" || test "x$have_xfixes" = "xno" || test "x$have_xcomposite" = "xno" 
+      then
+            AC_MSG_ERROR([[Required backend X11 Libraries not found.]])
+      fi
+fi 
+
 clutter_gl_header=""
 
 case $clutterbackend in
@@ -458,7 +481,6 @@ echo "                  Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
 echo "               GL Headers:   ${CLUTTER_GL_HEADER}"
 echo "           Target library:   ${clutterbackendlib}"
 echo "              Debug level:   ${enable_debug}"
-echo "      Fast FP conversions:   ${enable_fast_fp_conversions}"
 echo "           Compiler flags:   ${CPPFLAGS}"
 echo "        API Documentation:   ${enable_gtk_doc}"
 echo "     Manual Documentation:   ${enable_manual}"
