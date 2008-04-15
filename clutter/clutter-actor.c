@@ -301,7 +301,7 @@ clutter_actor_real_show (ClutterActor *self)
 }
 
 /**
- * clutter_actor_show
+ * clutter_actor_show:
  * @self: A #ClutterActor
  *
  * Flags an actor to be displayed. An actor that isn't shown will not
@@ -366,7 +366,7 @@ clutter_actor_real_hide (ClutterActor *self)
 }
 
 /**
- * clutter_actor_hide
+ * clutter_actor_hide:
  * @self: A #ClutterActor
  *
  * Flags an actor to be hidden. A hidden actor will not be
@@ -416,7 +416,7 @@ clutter_actor_hide_all (ClutterActor *self)
 }
 
 /**
- * clutter_actor_realize
+ * clutter_actor_realize:
  * @self: A #ClutterActor
  *
  * Creates any underlying graphics resources needed by the actor to be
@@ -439,7 +439,7 @@ clutter_actor_realize (ClutterActor *self)
 }
 
 /**
- * clutter_actor_unrealize
+ * clutter_actor_unrealize:
  * @self: A #ClutterActor
  *
  * Frees up any underlying graphics resources needed by the actor to be
@@ -5559,7 +5559,8 @@ clutter_actor_set_shader (ClutterActor  *self,
       shader_data->shader = g_object_ref (shader);
     }
 
-  clutter_actor_queue_redraw (self);
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
 
   return TRUE;
 }
@@ -5670,6 +5671,9 @@ clutter_actor_set_shader_param (ClutterActor *self,
   box = g_slice_new (BoxedFloat);
   box->value = value;
   g_hash_table_insert (shader_data->float1f_hash, g_strdup (param), box);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
 }
 
 /**

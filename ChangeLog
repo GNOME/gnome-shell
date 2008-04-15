@@ -1,5 +1,11 @@
 2008-04-15  Øyvind Kolås  <pippin@o-hand.com>
 
+	* clutter/clutter-actor.c: (clutter_actor_set_shader_param): queue a
+	redraw when a shader_param is set. Normalized some gtk-doc syntax in
+	some of the api documentation.
+
+2008-04-15  Øyvind Kolås  <pippin@o-hand.com>
+
 	* clutter/clutter-group.c: fixed typo in docs.
 
 2008-04-14  Matthew Allum  <mallum@openedhand.com>
