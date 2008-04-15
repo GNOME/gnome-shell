@@ -52,6 +52,7 @@ struct _ClutterStageWin32
   gint         win_height;
   gint         scroll_pos;
   RECT         fullscreen_rect;
+  gboolean     is_foreign_win;
 
   ClutterBackendWin32 *backend;
   ClutterStageState   state;

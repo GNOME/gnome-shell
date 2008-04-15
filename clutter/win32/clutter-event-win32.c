@@ -212,6 +212,28 @@ make_button_event (const MSG *msg, ClutterEvent *event,
   event->button.click_count = click_count;
 }
 
+/**
+ * clutter_win32_disable_event_retrieval
+ *
+ * Disables retrieval of Windows messages in the main loop. Use to
+ * create event-less canvas.
+ *
+ * This function can only be called before calling clutter_init().
+ *
+ * Since: 0.8
+ */
+void
+clutter_win32_disable_event_retrieval (void)
+{
+  ClutterBackendWin32 *backend;
+  ClutterMainContext  *clutter_context;
+
+  clutter_context = clutter_context_get_default ();
+  backend = CLUTTER_BACKEND_WIN32 (clutter_context->backend);
+
+  backend->no_event_retrieval = TRUE;
+}
+
 static gboolean
 clutter_event_prepare (GSource *source,
                        gint    *timeout)
@@ -327,34 +349,36 @@ message_translate (ClutterBackend *backend,
   switch (msg->message)
     {
     case WM_SIZE:
-      {
-	WORD new_width = LOWORD (msg->lParam);
-	WORD new_height = HIWORD (msg->lParam);
-	guint old_width, old_height;
+      if (!stage_win32->is_foreign_win)
+	{
+	  WORD new_width = LOWORD (msg->lParam);
+	  WORD new_height = HIWORD (msg->lParam);
+	  guint old_width, old_height;
 
-	clutter_actor_get_size (CLUTTER_ACTOR (stage),
-				&old_width, &old_height);
+	  clutter_actor_get_size (CLUTTER_ACTOR (stage),
+				  &old_width, &old_height);
 
-	if (new_width != old_width || new_height != old_height)
-	  clutter_actor_set_size (CLUTTER_ACTOR (stage),
-				  new_width, new_height);
-      }
+	  if (new_width != old_width || new_height != old_height)
+	    clutter_actor_set_size (CLUTTER_ACTOR (stage),
+				    new_width, new_height);
+	}
       res = FALSE;
       break;
 
     case WM_MOVE:
-      {
-	WORD new_xpos = GET_X_LPARAM (msg->lParam);
-	WORD new_ypos = GET_Y_LPARAM (msg->lParam);
-	guint old_xpos, old_ypos;
+      if (!stage_win32->is_foreign_win)
+	{
+	  WORD new_xpos = GET_X_LPARAM (msg->lParam);
+	  WORD new_ypos = GET_Y_LPARAM (msg->lParam);
+	  guint old_xpos, old_ypos;
 
-	clutter_actor_get_position (CLUTTER_ACTOR (stage),
-				    &old_xpos, &old_ypos);
+	  clutter_actor_get_position (CLUTTER_ACTOR (stage),
+				      &old_xpos, &old_ypos);
 
-	if (new_xpos != old_xpos || new_ypos != old_ypos)
-	  clutter_actor_set_position (CLUTTER_ACTOR (stage),
-				      new_xpos, new_ypos);
-      }
+	  if (new_xpos != old_xpos || new_ypos != old_ypos)
+	    clutter_actor_set_position (CLUTTER_ACTOR (stage),
+					new_xpos, new_ypos);
+	}
       res = FALSE;
       break;
 

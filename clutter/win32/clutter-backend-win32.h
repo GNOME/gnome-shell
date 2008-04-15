@@ -45,9 +45,10 @@ struct _ClutterBackendWin32
 {
   ClutterBackend parent_instance;
 
-  HGLRC gl_context;
+  HGLRC          gl_context;
+  gboolean       no_event_retrieval;
 
-  GSource *event_source;
+  GSource       *event_source;
 };
 
 struct _ClutterBackendWin32Class

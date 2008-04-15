@@ -269,8 +269,9 @@ clutter_backend_win32_ensure_context (ClutterBackend *backend,
       else
 	{
 	  CLUTTER_NOTE (BACKEND,
-			"MakeCurrent window %p, context %p",
+			"MakeCurrent window %p (%s), context %p",
 			stage_win32->hwnd,
+			stage_win32->is_foreign_win ? "foreign" : "native",
 			backend_win32->gl_context);
 	  wglMakeCurrent (stage_win32->client_dc,
 			  backend_win32->gl_context);
@@ -366,7 +367,8 @@ clutter_backend_win32_init (ClutterBackendWin32 *backend_win32)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_win32);
 
-  backend_win32->gl_context = NULL;
+  backend_win32->gl_context         = NULL;
+  backend_win32->no_event_retrieval = FALSE;
 
   /* FIXME: get from GetSystemMetric? */
   clutter_backend_set_double_click_time (backend, 250);

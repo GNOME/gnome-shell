@@ -206,7 +206,7 @@ clutter_stage_win32_request_coords (ClutterActor        *self,
       stage_win32->win_width = new_width;
       stage_win32->win_height = new_height;
 
-      if (stage_win32->hwnd != NULL)
+      if (stage_win32->hwnd != NULL && !stage_win32->is_foreign_win)
 	{
 	  int full_xpos, full_ypos, full_width, full_height;
 
@@ -576,7 +576,7 @@ clutter_stage_win32_unrealize (ClutterActor *actor)
       stage_win32->client_dc = NULL;
     }
 
-  if (stage_win32->hwnd)
+  if (!stage_win32->is_foreign_win && stage_win32->hwnd)
     {
       /* Drop the pointer to this stage in the window so that any
 	 further messages won't be processed. The stage might be being
@@ -626,6 +626,7 @@ clutter_stage_win32_init (ClutterStageWin32 *stage)
   stage->win_height = 480;
   stage->backend = NULL;
   stage->scroll_pos = 0;
+  stage->is_foreign_win = FALSE;
 
   stage->wrapper = NULL;
   	 
@@ -687,9 +688,86 @@ clutter_win32_get_stage_from_window (HWND hwnd)
        extra data */
     return CLUTTER_STAGE_WIN32 (GetWindowLongPtrW (hwnd, 0))->wrapper;
   else
-    return NULL;
+    {
+      /* Otherwise it might be a foreign window so we should check the
+	 stage list */
+      ClutterMainContext  *context = clutter_context_get_default ();
+      ClutterStageManager *stage_manager = context->stage_manager;
+      GSList              *l;
+
+      for (l = stage_manager->stages; l; l = l->next)
+	{
+	  ClutterStage *stage = l->data;
+	  ClutterStageWindow *impl;
+
+	  impl = _clutter_stage_get_window (stage);
+	  g_assert (CLUTTER_IS_STAGE_WIN32 (impl));
+
+	  if (CLUTTER_STAGE_WIN32 (impl)->hwnd == hwnd)
+	    return stage;
+	}
+    }
+
+  return NULL;
 }
   	 
+/**
+ * clutter_win32_set_stage_foreign:
+ * @stage: a #ClutterStage
+ * @hwnd: an existing window handle
+ *
+ * Target the #ClutterStage to use an existing external window handle.
+ *
+ * Return value: %TRUE if foreign window is valid
+ *
+ * Since: 0.8
+ */
+gboolean
+clutter_win32_set_stage_foreign (ClutterStage *stage,
+				 HWND          hwnd)
+{
+  ClutterStageWin32 *stage_win32;
+  ClutterStageWindow *impl;
+  ClutterActor *actor;
+  RECT client_rect;
+  POINT window_pos;
+  ClutterGeometry geom;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+  g_return_val_if_fail (hwnd != NULL, FALSE);
+
+  actor = CLUTTER_ACTOR (stage);
+
+  impl = _clutter_stage_get_window (stage);
+  stage_win32 = CLUTTER_STAGE_WIN32 (impl);
+
+  clutter_actor_unrealize (actor);
+
+  if (!GetClientRect (hwnd, &client_rect))
+    {
+      g_warning ("Unable to retrieve the new window geometry");
+      return FALSE;
+    }
+  window_pos.x = client_rect.left;
+  window_pos.y = client_rect.right;
+  ClientToScreen (hwnd, &window_pos);
+
+  CLUTTER_NOTE (BACKEND, "Setting foreign window (0x%x)", (int) hwnd);
+
+  stage_win32->hwnd = hwnd;
+  stage_win32->is_foreign_win = TRUE;
+
+  geom.x = window_pos.x;
+  geom.y = window_pos.y;
+  geom.width = client_rect.right - client_rect.left;
+  geom.height = client_rect.bottom - client_rect.top;
+
+  clutter_actor_set_geometry (actor, &geom);
+  clutter_actor_realize (actor);
+
+  return TRUE;
+}
+
 void
 clutter_stage_win32_map (ClutterStageWin32 *stage_win32)
 {

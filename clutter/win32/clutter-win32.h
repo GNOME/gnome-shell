@@ -43,8 +43,13 @@
 
 G_BEGIN_DECLS
 
-HWND          clutter_win32_get_stage_window      (ClutterStage *stage);
-ClutterStage *clutter_win32_get_stage_from_window (HWND hwnd);
+HWND          clutter_win32_get_stage_window        (ClutterStage *stage);
+ClutterStage *clutter_win32_get_stage_from_window   (HWND          hwnd);
+
+gboolean      clutter_win32_set_stage_foreign       (ClutterStage *stage,
+                                                     HWND          hwnd);
+
+void          clutter_win32_disable_event_retrieval (void);
 
 G_END_DECLS
 

@@ -1,3 +1,31 @@
+2008-04-15  Neil Roberts  <neil@o-hand.com>
+
+	Added support for foreign windows to the Win32 backend.
+
+	* clutter/win32/clutter-stage-win32.c
+	(clutter_stage_win32_request_coords): Don't resize foreign
+	windows.
+	(clutter_stage_win32_unrealize): Don't destroy foreign windows.
+	(clutter_stage_win32_init): Added initialiser for is_foreign_win.
+	(clutter_win32_get_stage_from_window): Resort to looking in the
+	stage list if the window isn't the right window class so that it
+	can still find stages with foreign windows.
+	(clutter_win32_set_stage_foreign): New public function to set a
+	foreign window for a stage.
+
+	* clutter/win32/clutter-event-win32.c
+	(clutter_win32_disable_event_retrieval): New public function to
+	disable event retrieval.
+	(message_translate): Don't handle WM_SIZE or WM_MOVE for foreign
+	windows.
+
+	* clutter/win32/clutter-backend-win32.h (struct
+	_ClutterBackendWin32): Added a flag to disable event retrieval
+
+	* clutter/win32/clutter-backend-win32.c
+	(clutter_backend_win32_ensure_context): Update debug note to
+	include whether the stage is foreign or not.
+
 2008-04-15  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-actor.c: (clutter_actor_set_shader_param): queue a
