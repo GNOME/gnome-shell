@@ -54,6 +54,8 @@ CLUTTER_VALUE_HOLDS_UNIT
 clutter_value_set_unit
 clutter_value_get_unit
 <SUBSECTION>
+CLUTTER_MAXUNIT
+CLUTTER_MINUNIT
 ClutterParamSpecUnit
 clutter_param_spec_unit
 <SUBSECTION Standard>
@@ -878,6 +880,8 @@ clutter_value_set_fixed
 clutter_value_get_fixed
 
 <SUBSECTION>
+CLUTTER_MAXFIXED
+CLUTTER_MINFIXED
 ClutterParamSpecFixed
 clutter_param_spec_fixed
 

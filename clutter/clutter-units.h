@@ -146,6 +146,24 @@ typedef gint32 ClutterUnit;
 #define CLUTTER_IS_PARAM_SPEC_UNIT(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), CLUTTER_TYPE_PARAM_UNIT))
 
 /**
+ * CLUTTER_MAXUNIT:
+ *
+ * Higher boundary for a #ClutterUnit
+ *
+ * Since: 0.8
+ */
+#define CLUTTER_MAXUNIT         G_MAXINT16
+
+/**
+ * CLUTTER_MINUNIT:
+ *
+ * Lower boundary for a #ClutterUnit
+ *
+ * Since: 0.8
+ */
+#define CLUTTER_MINUNIT         G_MININT16
+
+/**
  * CLUTTER_VALUE_HOLDS_UNIT:
  * @x: a #GValue
  *

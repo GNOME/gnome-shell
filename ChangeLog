@@ -1,5 +1,13 @@
 2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-units.h:
+	* clutter/clutter-fixed.h: Add boundaries for fixed point
+	and units values.
+
+	* doc/reference/clutter-sections.txt: Update the documentation.
+
+2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* autogen.sh: Try to continue even if we don't have gtk-doc
 	installed; this will obviously won't work if you don't pass
 	--disable-docs --disable-gtk-doc to autogen.sh as well.

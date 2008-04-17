@@ -390,6 +390,24 @@ guint        clutter_powx  (guint x, ClutterFixed y);
 typedef struct _ClutterParamSpecFixed   ClutterParamSpecFixed;
 
 /**
+ * CLUTTER_MAXFIXED:
+ *
+ * Higher boundary for #ClutterFixed
+ *
+ * Since: 0.8
+ */
+#define CLUTTER_MAXFIXED        G_MAXINT16
+
+/**
+ * CLUTTER_MINFIXED:
+ *
+ * Lower boundary for #ClutterFixed
+ *
+ * Since: 0.8
+ */
+#define CLUTTER_MINFIXED        G_MININT16
+
+/**
  * ClutterParamSpecFixed
  * @minimum: lower boundary
  * @maximum: higher boundary
