@@ -27,7 +27,7 @@
 #ifndef _HAVE_CLUTTER_FIXED_H
 #define _HAVE_CLUTTER_FIXED_H
 
-#include <glib.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
@@ -371,6 +371,59 @@ gint         clutter_sqrti (gint         x);
 ClutterFixed clutter_log2x (guint x);
 guint        clutter_pow2x (ClutterFixed x);
 guint        clutter_powx  (guint x, ClutterFixed y);
+
+#define CLUTTER_TYPE_FIXED                 (clutter_fixed_get_type ())
+#define CLUTTER_TYPE_PARAM_FIXED           (clutter_param_fixed_get_type ())
+#define CLUTTER_PARAM_SPEC_FIXED(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), CLUTTER_TYPE_PARAM_FIXED, ClutterParamSpecFixed))
+#define CLUTTER_IS_PARAM_SPEC_FIXED(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), CLUTTER_TYPE_PARAM_FIXED))
+
+/**
+ * CLUTTER_VALUE_HOLDS_FIXED:
+ * @x: a #GValue
+ *
+ * Evaluates to %TRUE if @x holds a #ClutterFixed.
+ *
+ * Since: 0.8
+ */
+#define CLUTTER_VALUE_HOLDS_FIXED(x)    (G_VALUE_HOLDS ((x), CLUTTER_TYPE_FIXED))
+
+typedef struct _ClutterParamSpecFixed   ClutterParamSpecFixed;
+
+/**
+ * ClutterParamSpecFixed
+ * @minimum: lower boundary
+ * @maximum: higher boundary
+ * @default_value: default value
+ *
+ * #GParamSpec subclass for fixed point based properties
+ *
+ * Since: 0.8
+ */
+struct _ClutterParamSpecFixed
+{
+  /*< private >*/
+  GParamSpec    parent_instance;
+
+  /*< public >*/
+  ClutterFixed  minimum;
+  ClutterFixed  maximum;
+  ClutterFixed  default_value;
+};
+
+GType        clutter_fixed_get_type       (void) G_GNUC_CONST;
+GType        clutter_param_fixed_get_type (void) G_GNUC_CONST;
+
+void         clutter_value_set_fixed      (GValue       *value,
+                                           ClutterFixed  fixed_);
+ClutterFixed clutter_value_get_fixed      (const GValue *value);
+
+GParamSpec * clutter_param_spec_fixed     (const gchar  *name,
+                                           const gchar  *nick,
+                                           const gchar  *blurb,
+                                           ClutterFixed  minimum,
+                                           ClutterFixed  maximum,
+                                           ClutterFixed  default_value,
+                                           GParamFlags   flags);
 
 /* <private> */
 extern ClutterFixed clutter_double_to_fixed (double value);

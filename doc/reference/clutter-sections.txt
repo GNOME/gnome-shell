@@ -872,12 +872,29 @@ clutter_qmulx
 clutter_qdivx
 clutter_tani
 
+<SUBSECTION>
+CLUTTER_VALUE_HOLDS_FIXED
+clutter_value_set_fixed
+clutter_value_get_fixed
+
+<SUBSECTION>
+ClutterParamSpecFixed
+clutter_param_spec_fixed
+
+<SUBSECTION Standard>
+CLUTTER_PARAM_SPEC_FIXED
+CLUTTER_IS_PARAM_SPEC_FIXED
+
 <SUBSECTION Private>
 CFX_DIV
 CFX_INT
 CFX_MUL
 CFX_QMUL
 CFX_QDIV
+CLUTTER_TYPE_FIXED
+CLUTTER_TYPE_PARAM_FIXED
+clutter_fixed_get_type
+clutter_param_fixed_get_type
 </SECTION>
 
 <SECTION>
