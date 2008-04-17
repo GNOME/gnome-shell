@@ -1,5 +1,22 @@
 2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-fixed.c:
+	(clutter_value_transform_fixed_int),
+	(clutter_value_transform_fixed_double),
+	(clutter_value_transform_fixed_float),
+	(clutter_fixed_get_type): Add GValue transformation functions
+	for ClutterFixed; copying a CLUTTER_TYPE_FIXED GValue into
+	a G_TYPE_FLOAT/G_TYPE_DOUBLE one will automatically transform
+	the fixed point representation into a floating point one. Also
+	add the G_TYPE_INT transformation function to do a plain
+	fixed->int copy.
+
+	* clutter/clutter-units.c:
+	(clutter_value_transform_unit_int),
+	(clutter_unit_get_type): Add a unit->int transformation function.
+
+2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-fixed.c (clutter_value_get_fixed): Fix typo
 	in the function name.
 

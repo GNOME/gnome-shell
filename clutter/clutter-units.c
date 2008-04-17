@@ -110,6 +110,13 @@ clutter_value_lcopy_unit (const GValue *value,
   return NULL;
 }
 
+static void
+clutter_value_transform_unit_int (const GValue *src,
+                                  GValue       *dest)
+{
+  dest->data[0].v_int = src->data[0].v_int;
+}
+
 static const GTypeValueTable _clutter_unit_value_table = {
   clutter_value_init_unit,
   NULL,
@@ -133,6 +140,9 @@ clutter_unit_get_type (void)
         g_type_register_fundamental (g_type_fundamental_next (),
                                      I_("ClutterUnit"),
                                      &_info, &_finfo, 0);
+
+      g_value_register_transform_func (_clutter_unit_type, G_TYPE_INT,
+                                       clutter_value_transform_unit_int);
     }
 
   return _clutter_unit_type;

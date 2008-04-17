@@ -1031,6 +1031,27 @@ clutter_value_lcopy_fixed (const GValue *value,
   return NULL;
 }
 
+static void
+clutter_value_transform_fixed_int (const GValue *src,
+                                   GValue       *dest)
+{
+  dest->data[0].v_int = src->data[0].v_int;
+}
+
+static void
+clutter_value_transform_fixed_double (const GValue *src,
+                                      GValue       *dest)
+{
+  dest->data[0].v_double = CLUTTER_FIXED_TO_DOUBLE (src->data[0].v_int);
+}
+
+static void
+clutter_value_transform_fixed_float (const GValue *src,
+                                     GValue       *dest)
+{
+  dest->data[0].v_float = CLUTTER_FIXED_TO_FLOAT (src->data[0].v_int);
+}
+
 static const GTypeValueTable _clutter_fixed_value_table = {
   clutter_value_init_fixed,
   NULL,
@@ -1054,6 +1075,13 @@ clutter_fixed_get_type (void)
         g_type_register_fundamental (g_type_fundamental_next (),
                                      I_("ClutterFixed"),
                                      &_info, &_finfo, 0);
+
+      g_value_register_transform_func (_clutter_fixed_type, G_TYPE_INT,
+                                       clutter_value_transform_fixed_int);
+      g_value_register_transform_func (_clutter_fixed_type, G_TYPE_FLOAT,
+                                       clutter_value_transform_fixed_float);
+      g_value_register_transform_func (_clutter_fixed_type, G_TYPE_DOUBLE,
+                                       clutter_value_transform_fixed_double);
     }
 
   return _clutter_fixed_type;
