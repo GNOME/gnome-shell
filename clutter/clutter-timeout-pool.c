@@ -50,12 +50,11 @@ struct _ClutterTimeout
   gint refcount;
 
   guint interval;
+  guint last_time;
 
   GSourceFunc func;
   gpointer data;
   GDestroyNotify notify;
-
-  GTimeVal expiration;
 };
 
 struct _ClutterTimeoutPool
@@ -64,6 +63,7 @@ struct _ClutterTimeoutPool
 
   guint next_id;
 
+  GTimeVal start_time;
   GList *timeouts, *dispatched_timeouts;
   gint ready;
 
@@ -104,14 +104,15 @@ clutter_timeout_sort (gconstpointer a,
     return 1;
 
   /* Otherwise sort by expiration time */
-  comparison = t_a->expiration.tv_sec - t_b->expiration.tv_sec;
+  comparison = (t_a->last_time + t_a->interval)
+    - (t_b->last_time + t_b->interval);
   if (comparison < 0)
     return -1;
 
   if (comparison > 0)
     return 1;
 
-  return (t_a->expiration.tv_usec - t_b->expiration.tv_usec);
+  return 0;
 }
 
 static gint
@@ -123,75 +124,47 @@ clutter_timeout_find_by_id (gconstpointer a,
   return t_a->id == GPOINTER_TO_UINT (b) ? 0 : 1;
 }
 
-static void
-clutter_timeout_set_expiration (ClutterTimeout *timeout,
-                                GTimeVal       *current_time)
+static guint
+clutter_timeout_pool_get_ticks (ClutterTimeoutPool *pool)
 {
-  guint seconds = timeout->interval / 1000;
-  guint msecs = timeout->interval - seconds * 1000;
+  GTimeVal time_now;
 
-  timeout->expiration.tv_sec  = current_time->tv_sec + seconds;
-  timeout->expiration.tv_usec = current_time->tv_usec + msecs * 1000;
-
-  if (timeout->expiration.tv_usec >= 1000000)
-    {
-      timeout->expiration.tv_usec -= 1000000;
-      timeout->expiration.tv_sec += 1;
-    }
+  g_source_get_current_time ((GSource *) pool, &time_now);
+  
+  return (time_now.tv_sec - pool->start_time.tv_sec) * 1000
+    + (time_now.tv_usec - pool->start_time.tv_usec) / 1000;
 }
 
 static gboolean
-clutter_timeout_prepare (GSource        *source,
-                         ClutterTimeout *timeout,
-                         gint           *next_timeout)
+clutter_timeout_prepare (ClutterTimeoutPool *pool,
+                         ClutterTimeout     *timeout,
+                         gint               *next_timeout)
 {
-  glong sec;
-  glong msec;
-  GTimeVal current_time;
+  guint now = clutter_timeout_pool_get_ticks (pool);
 
-  g_source_get_current_time (source, &current_time);
-
-  sec = timeout->expiration.tv_sec - current_time.tv_sec;
-  msec = (timeout->expiration.tv_usec - current_time.tv_usec) / 1000;
-
-  if (sec < 0 || (sec == 0 && msec < 0))
-    msec = 0;
+  /* If time has gone backwards or the time since the last frame is
+     greater than the two frames worth then reset the time and do a
+     frame now */
+  if (timeout->last_time > now || now - timeout->last_time
+      > timeout->interval * 2)
+    {
+      timeout->last_time = now - timeout->interval;
+      if (next_timeout)
+	*next_timeout = 0;
+      return TRUE;
+    }
+  else if (now - timeout->last_time >= timeout->interval)
+    {
+      if (next_timeout)
+	*next_timeout = 0;
+      return TRUE;
+    }
   else
     {
-      glong interval_sec = timeout->interval / 1000;
-      glong interval_msec = timeout->interval % 1000;
-
-      if (msec < 0)
-        {
-          msec += 1000;
-          sec -= 1;
-        }
-
-      if (sec > interval_sec ||
-          (sec == interval_sec && msec > interval_msec))
-        {
-          clutter_timeout_set_expiration (timeout, &current_time);
-          msec = MIN (G_MAXINT, timeout->interval);
-        }
-      else
-        msec = MIN (G_MAXINT, (guint) msec + 1000 * (guint) sec);
+      if (next_timeout)
+	*next_timeout = timeout->interval + timeout->last_time - now;
+      return FALSE;
     }
-
-  *next_timeout = (gint) msec;
-  return (msec == 0);
-}
-
-static gboolean
-clutter_timeout_check (GSource        *source,
-                       ClutterTimeout *timeout)
-{
-  GTimeVal current_time;
-
-  g_source_get_current_time (source, &current_time);
-
-  return ((timeout->expiration.tv_sec < current_time.tv_sec) ||
-          ((timeout->expiration.tv_sec == current_time.tv_sec) &&
-           (timeout->expiration.tv_usec <= current_time.tv_usec)));
 }
 
 static gboolean
@@ -208,10 +181,7 @@ clutter_timeout_dispatch (GSource        *source,
 
   if (timeout->func (timeout->data))
     {
-      GTimeVal current_time;
-
-      g_source_get_current_time (source, &current_time);
-      clutter_timeout_set_expiration (timeout, &current_time);
+      timeout->last_time += timeout->interval;
 
       retval = TRUE;
     }
@@ -223,15 +193,11 @@ static ClutterTimeout *
 clutter_timeout_new (guint interval)
 {
   ClutterTimeout *timeout;
-  GTimeVal current_time;
 
   timeout = g_slice_new0 (ClutterTimeout);
   timeout->interval = interval;
   timeout->flags = CLUTTER_TIMEOUT_NONE;
   timeout->refcount = 1;
-
-  g_get_current_time (&current_time);
-  clutter_timeout_set_expiration (timeout, &current_time);
 
   return timeout;
 }
@@ -291,7 +257,7 @@ clutter_timeout_pool_prepare (GSource *source,
   if (l && l->data)
     {
       ClutterTimeout *timeout = l->data;
-      return clutter_timeout_prepare (source, timeout, next_timeout);
+      return clutter_timeout_prepare (pool, timeout, next_timeout);
     }
   else
     {
@@ -317,7 +283,7 @@ clutter_timeout_pool_check (GSource *source)
        * following timeouts are not expiring, so we break as
        * soon as possible
        */
-      if (clutter_timeout_check (source, timeout))
+      if (clutter_timeout_prepare (pool, timeout, NULL))
         {
           timeout->flags |= CLUTTER_TIMEOUT_READY;
           pool->ready += 1;
@@ -475,6 +441,7 @@ clutter_timeout_pool_new (gint priority)
     g_source_set_priority (source, priority);
 
   pool = (ClutterTimeoutPool *) source;
+  g_get_current_time (&pool->start_time);
   pool->next_id = 1;
   pool->id = g_source_attach (source, NULL);
   g_source_unref (source);
@@ -496,11 +463,14 @@ clutter_timeout_pool_new (gint priority)
  * won't be called again. If @notify is not %NULL, the @notify function
  * will be called. The first call to @func will be at the end of @interval.
  *
- * Note that timeout functions may be delayed, due to the processing of other
- * event sources. Thus they should not be relied on for precise timing.
- * After each call to the timeout function, the time of the next
- * timeout is recalculated based on the current time and the given interval
- * (it does not try to 'catch up' time lost in delays).
+ * Since version 0.8 this will try to compensate for delays. For
+ * example, if @func takes half the interval time to execute then the
+ * function will be called again half the interval time after it
+ * finished. Before version 0.8 it would not fire until a full
+ * interval after the function completes so the delay between calls
+ * would be @interval * 1.5. This function does not however try to
+ * invoke the function multiple times to catch up missing frames if
+ * @func takes more than @interval ms to execute.
  *
  * Return value: the ID (greater than 0) of the timeout inside the pool.
  *   Use clutter_timeout_pool_remove() to stop the timeout.
@@ -521,6 +491,7 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
 
   retval = timeout->id = pool->next_id++;
 
+  timeout->last_time = clutter_timeout_pool_get_ticks (pool);
   timeout->func = func;
   timeout->data = data;
   timeout->notify = notify;
@@ -554,10 +525,12 @@ clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
       clutter_timeout_unref (l->data);
       pool->timeouts = g_list_delete_link (pool->timeouts, l);
     }
-  else if ((l = g_list_find_custom (pool->dispatched_timeouts, GUINT_TO_POINTER (id),
+  else if ((l = g_list_find_custom (pool->dispatched_timeouts,
+				    GUINT_TO_POINTER (id),
 				    clutter_timeout_find_by_id)))
     {
       clutter_timeout_unref (l->data);
-      pool->dispatched_timeouts = g_list_delete_link (pool->dispatched_timeouts, l);
+      pool->dispatched_timeouts
+	= g_list_delete_link (pool->dispatched_timeouts, l);
     }
 }

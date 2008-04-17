@@ -1,3 +1,26 @@
+2008-04-17  Neil Roberts  <neil@o-hand.com>
+
+	Applied patch from bug #881
+
+	* clutter/clutter-frame-source.h: 
+	* clutter/clutter-frame-source.c:
+	New files that contain a replacement for g_timeout that try to
+	cope with system delays.
+
+	* clutter/Makefile.am: Added clutter-frame-source.{c,h}
+
+	* clutter/clutter-timeline.c (timeout_add): Use a frame source
+	instead of a g_timeout.
+
+	* clutter/clutter-main.c (clutter_threads_add_frame_source_full)
+	(clutter_threads_add_frame_source): New public functions to wrap a
+	frame source and grab the Clutter mutex.
+
+	* clutter/clutter-timeout-pool.c: Now calculates the timeout
+	expiration times in the same way as a frame source does so that it
+	counts time in frame intervals instead of setting the next
+	expiration time as an offset from the current time.
+
 2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-fixed.c:

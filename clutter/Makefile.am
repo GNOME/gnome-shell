@@ -146,6 +146,7 @@ source_c = \
         clutter-event.c 		\
 	clutter-feature.c 		\
 	clutter-fixed.c			\
+	clutter-frame-source.c		\
 	clutter-group.c 		\
 	clutter-id-pool.c 		\
 	clutter-label.c 		\
@@ -172,6 +173,7 @@ source_c = \
 
 source_h_priv = \
 	clutter-debug.h 		\
+	clutter-frame-source.h          \
 	clutter-keysyms-table.h		\
 	clutter-model-private.h		\
 	clutter-private.h 		\

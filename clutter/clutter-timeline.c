@@ -153,9 +153,9 @@ timeout_add (guint          interval,
     }
   else
     {
-      res = clutter_threads_add_timeout_full (CLUTTER_TIMELINE_PRIORITY,
-                                              interval,
-                                              func, data, notify);
+      res = clutter_threads_add_frame_source_full (CLUTTER_TIMELINE_PRIORITY,
+						   interval,
+						   func, data, notify);
     }
 
   return res;
