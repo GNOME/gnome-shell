@@ -1,5 +1,10 @@
 2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-fixed.c (clutter_value_get_fixed): Fix typo
+	in the function name.
+
+2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-units.c (clutter_value_get_unit): Fix typo
 	in the function name.
 

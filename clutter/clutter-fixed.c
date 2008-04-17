@@ -1088,7 +1088,7 @@ clutter_value_set_fixed (GValue       *value,
  * Since: 0.8
  */
 ClutterFixed
-cluttter_value_get_fixed (const GValue *value)
+clutter_value_get_fixed (const GValue *value)
 {
   g_return_val_if_fail (CLUTTER_VALUE_HOLDS_FIXED (value), 0);
 
