@@ -12,11 +12,17 @@ test $TEST_TYPE $FILE || {
         exit 1
 }
 
-gtkdocize || exit $?
+GTKDOCIZE=`which gtkdocize`
+if test -z $GTKDOCIZE; then
+        echo "*** No gtk-doc support ***"
+        touch gtk-doc.make
+else
+        gtkdocize || exit $?
+fi
 
 # back in the stupidity of autoreconf
 autoreconf -v --install || exit $?
 
-./configure "$@" ${GTK_DOC_ARGS}
+./configure "$@"
 
 echo "Now type 'make' to compile $PROJECT."
