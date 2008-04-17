@@ -3,7 +3,7 @@ GENERAL
 
 General notes and rules on clutter core hacking;
 
- - GNU style indentation, please wrap at 80 chars. 
+ - GNU style indentation, please try hard to wrap at 80 chars.
 
  - All non static public API funcs should be documented in the source files
    via gtk-doc. Structures, enumerations and macros should be documented in
@@ -14,30 +14,47 @@ General notes and rules on clutter core hacking;
    of mutexes.
 
  - All public functions with float parameters should also provide a fixed
-   point version. Fixed point should be used internally.
+   point version, with the 'x' postfix to the function name, e.g.:
+   
+     clutter_actor_set_foo      - floating point
+     clutter_actor_set_foox     - fixed point
+
+   Fixed point should be always be used internally, except when precision
+   is paramount.
 
  - All public functions dealing with pixels should also provide a
-   ClutterUnit version. ClutterUnit should be used internally.
+   ClutterUnit version, with the 'u' postfix to the function name, e.g:
+
+     clutter_actor_set_bar      - pixels
+     clutter_actor_set_baru     - units
+   
+   ClutterUnit should always be used internally.
 
  - Properties should always be in floating point (never fixed point).
-   The precision should be double for unbounded properties (e.g.
-   (-MAX_DOUBLE, MAX_DOUBLE)), and single for bounded properties (e.g.:
-   [0.0, 1.0]).
+   The preferred precision is double. 
+
+ - Properties should use pixels whenever is possible. If sub-pixel
+   precision is fundamental, use ClutterParamSpecUnit and
+   clutter_param_spec_unit() to install ClutterUnit properties, and
+   clutter_value_set_unit()/clutter_value_get_unit() to handle GValues in
+   a safe way. Never install a ClutterUnit property using a GParamSpecInt.
 
  - Public entry points must always check their arguments with
    g_return_if_fail() or g_return_val_if_fail().
 
- - Private entry points should use g_assert() to verify internal state.
+ - Private entry points should use g_assert() to verify internal state;
+   do not use g_return_if_fail()/g_return_val_if_fail() as they might
+   be compiled out.
 
  - Really try to avoid if possible additions to clutter-private.h. Use
    accessor functions instead.
 
- - Don't add direct GL calls but wrap with cogl (also adding GL ES Version)
+ - Don't add direct GL calls but wrap with cogl (also adding GLES
+   version if possible, or at least a stub).
 
  - Use CLUTTER_NOTE() macro for debug statements.
 
  - New features should also include an exhaustive test unit under tests.
-
 
 RELEASES
 ========

@@ -1,5 +1,10 @@
 2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* HACKING: Amend coding style and tenets, as it is now possible
+	to install and use unit based properties in a safe way.
+
+2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-units.h:
 	* clutter/clutter-fixed.h: Add boundaries for fixed point
 	and units values.
