@@ -1,3 +1,15 @@
+2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/Makefile.am: Add clutter-units.c
+
+	* clutter/clutter-units.[ch]: Add a ClutterUnit fundamental
+	type, and wrappers for storing it into GValues; also add a
+	GParamSpec subclass for defining parameters holding ClutterUnit
+	values. This allows creating GObject properties using units.
+
+	* doc/reference/clutter-sections.txt: Document the newly
+	added API.
+
 2008-04-15  Matthew Allum  <mallum@openedhand.com>
 
         Work related to #873;

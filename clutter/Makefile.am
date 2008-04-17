@@ -166,6 +166,7 @@ source_c = \
 	clutter-texture.c 		\
 	clutter-timeline.c 		\
 	clutter-timeout-pool.c		\
+	clutter-units.c			\
 	clutter-util.c 			\
 	$(NULL)
 

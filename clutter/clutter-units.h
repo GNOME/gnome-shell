@@ -24,29 +24,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/**
- * SECTION:clutter-units
- * @short_description: A logical distance unit.
- *
- * Clutter units are logical units with granularity greater than that of the
- * device units; they are used by #ClutterActorBox and the _units() family of
- * ClutterActor functions. To convert between clutter units and device units,
- * use #CLUTTER_UNITS_FROM_DEVICE and #CLUTTER_UNITS_TO_DEVICE macros.
- *
- * Note: It is expected that as of version 0.6 all dimensions in the public
- * Clutter API will be given in clutter units. In order to ease the transition,
- * two extra macros have been provided, #CLUTTER_UNITS_TMP_TO_DEVICE and
- * #CLUTTER_UNITS_TMP_FROM_DEVICE. In version 0.4 these are identity macros,
- * but when the API transition happens will map to #CLUTTER_UNITS_TO_DEVICE and
- * #CLUTTER_UNITS_FROM_DEVICE respectively. You can use these in newly written
- * code as place holders.
- *
- * Since: 0.4
- */
-
 #ifndef _HAVE_CLUTTER_UNITS_H
 #define _HAVE_CLUTTER_UNITS_H
 
+#include <glib-object.h>
 #include <clutter/clutter-fixed.h>
 
 G_BEGIN_DECLS
@@ -158,6 +139,59 @@ typedef gint32 ClutterUnit;
 
 #define CLUTTER_UNITS_FROM_POINTSX(x) \
   (CFX_MUL ((x), clutter_stage_get_resolutionx ((ClutterStage *) clutter_stage_get_default ())) / 72)
+
+#define CLUTTER_TYPE_UNIT                 (clutter_unit_get_type ())
+#define CLUTTER_TYPE_PARAM_UNIT           (clutter_param_unit_get_type ())
+#define CLUTTER_PARAM_SPEC_UNIT(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), CLUTTER_TYPE_PARAM_UNIT, ClutterParamSpecUnit))
+#define CLUTTER_IS_PARAM_SPEC_UNIT(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), CLUTTER_TYPE_PARAM_UNIT))
+
+/**
+ * CLUTTER_VALUE_HOLDS_UNIT:
+ * @x: a #GValue
+ *
+ * Evaluates to %TRUE if @x holds #ClutterUnit<!-- -->s.
+ *
+ * Since: 0.8
+ */
+#define CLUTTER_VALUE_HOLDS_UNIT(x)       (G_VALUE_HOLDS ((x), CLUTTER_TYPE_UNIT))
+
+typedef struct _ClutterParamSpecUnit    ClutterParamSpecUnit;
+
+/**
+ * ClutterParamSpecUnit:
+ * @minimum: lower boundary
+ * @maximum: higher boundary
+ * @default_value: default value
+ *
+ * #GParamSpec subclass for unit based properties.
+ *
+ * Since: 0.8
+ */
+struct _ClutterParamSpecUnit
+{
+  /*< private >*/
+  GParamSpec    parent_instance;
+
+  /*< public >*/
+  ClutterUnit   minimum;
+  ClutterUnit   maximum;
+  ClutterUnit   default_value;
+};
+
+GType       clutter_unit_get_type       (void) G_GNUC_CONST;
+GType       clutter_param_unit_get_type (void) G_GNUC_CONST;
+
+void        clutter_value_set_unit (GValue       *value,
+                                    ClutterUnit   units);
+ClutterUnit clutter_value_get_unit (const GValue *value);
+
+GParamSpec *clutter_param_spec_unit (const gchar *name,
+                                     const gchar *nick,
+                                     const gchar *blurb,
+                                     ClutterUnit  minimum,
+                                     ClutterUnit  maximum,
+                                     ClutterUnit  default_value,
+                                     GParamFlags  flags);
 
 G_END_DECLS
 
