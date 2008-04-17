@@ -98,7 +98,7 @@ clutter_frame_source_get_ticks (ClutterFrameSource *frame_source)
   g_source_get_current_time ((GSource *) frame_source, &time_now);
   
   return (time_now.tv_sec - frame_source->start_time.tv_sec) * 1000
-    + (time_now.tv_usec - frame_source->start_time.tv_usec) / 1000;
+         + (time_now.tv_usec - frame_source->start_time.tv_usec) / 1000;
 }
 
 static gboolean
@@ -111,8 +111,8 @@ clutter_frame_source_prepare (GSource *source, gint *timeout)
   /* If time has gone backwards or the time since the last frame is
      greater than the two frames worth then reset the time and do a
      frame now */
-  if (frame_source->last_time > now || now - frame_source->last_time
-      > frame_source->frame_time * 2)
+  if (frame_source->last_time > now ||
+      (now - frame_source->last_time) > frame_source->frame_time * 2)
     {
       frame_source->last_time = now - frame_source->frame_time;
       if (timeout)
@@ -147,10 +147,10 @@ clutter_frame_source_dispatch (GSource     *source,
   ClutterFrameSource *frame_source = (ClutterFrameSource *) source;
 
   if ((* callback) (user_data))
-  {
-    frame_source->last_time += frame_source->frame_time;
-    return TRUE;
-  }
+    {
+      frame_source->last_time += frame_source->frame_time;
+      return TRUE;
+    }
   else
     return FALSE;
 }
