@@ -1310,8 +1310,8 @@ clutter_timeline_get_progressx (ClutterTimeline *timeline)
 
   priv = timeline->priv;
 
-  progress = CLUTTER_FIXED_DIV (CLUTTER_INT_TO_FIXED (priv->current_frame_num),
-				CLUTTER_INT_TO_FIXED (priv->n_frames));
+  progress = clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->current_frame_num),
+			    CLUTTER_INT_TO_FIXED (priv->n_frames));
 
   if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
     progress = CFX_ONE - progress;

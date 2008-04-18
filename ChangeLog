@@ -1,3 +1,9 @@
+2008-04-18  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-timeline.c (clutter_timeline_get_progressx):
+	Changed to use clutter_qdiv instead of CLUTTER_FIXED_DIV otherwise
+	it can't cope with timelines with more than 255 frames.
+
 2008-04-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-frame-source.c: Small coding style fixes.
