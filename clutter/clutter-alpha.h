@@ -133,6 +133,8 @@ void             clutter_alpha_set_func     (ClutterAlpha     *alpha,
                                              ClutterAlphaFunc  func,
                                              gpointer          data,
                                              GDestroyNotify    destroy);
+void             clutter_alpha_set_closure  (ClutterAlpha     *alpha,
+                                             GClosure         *closure);
 void             clutter_alpha_set_timeline (ClutterAlpha     *alpha,
                                              ClutterTimeline  *timeline);
 ClutterTimeline *clutter_alpha_get_timeline (ClutterAlpha     *alpha);

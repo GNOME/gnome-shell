@@ -72,10 +72,8 @@ struct _ClutterAlphaPrivate
   guint timeline_new_frame_id;
 
   guint32 alpha;
-  
-  ClutterAlphaFunc func;
-  gpointer data;
-  GDestroyNotify destroy;
+
+  GClosure *closure;
 };
 
 enum
@@ -94,11 +92,28 @@ timeline_new_frame_cb (ClutterTimeline *timeline,
   ClutterAlphaPrivate *priv = alpha->priv;
 
   /* Update alpha value and notify */
-  if (priv->func)
+  if (G_LIKELY (priv->closure))
     {
+      GValue params = { 0, };
+      GValue result_value = { 0, };
+
       g_object_ref (alpha);
 
-      priv->alpha = priv->func (alpha, priv->data);
+      g_value_init (&result_value, G_TYPE_UINT);
+
+      g_value_init (&params, CLUTTER_TYPE_ALPHA);
+      g_value_set_object (&params, alpha);
+		     
+      g_closure_invoke (priv->closure,
+                        &result_value,
+                        1,
+                        &params,
+                        NULL);
+
+      priv->alpha = g_value_get_uint (&result_value);
+
+      g_value_unset (&result_value);
+      g_value_unset (&params);
 
       g_object_notify (G_OBJECT (alpha), "alpha");
       g_object_unref (alpha);
@@ -159,13 +174,9 @@ clutter_alpha_finalize (GObject *object)
 {
   ClutterAlphaPrivate *priv = CLUTTER_ALPHA (object)->priv;
 
-  if (priv->destroy)
+  if (priv->closure)
     {
-      priv->destroy (priv->data);
-
-      priv->destroy = NULL;
-      priv->data = NULL;
-      priv->func = NULL;
+      g_closure_unref (priv->closure);
     }
 
   G_OBJECT_CLASS (clutter_alpha_parent_class)->finalize (object);
@@ -253,6 +264,42 @@ clutter_alpha_get_alpha (ClutterAlpha *alpha)
 }
 
 /**
+ * clutter_alpha_set_closure:
+ * @alpha: A #ClutterAlpha
+ * @closure: A #GClosure
+ *
+ * Sets the #GClosure used to compute
+ * the alpha value at each frame of the #ClutterTimeline
+ * bound to @alpha.
+ *
+ * Since: 0.8
+ */
+void
+clutter_alpha_set_closure (ClutterAlpha *alpha,
+                           GClosure     *closure)
+{
+  ClutterAlphaPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ALPHA (alpha));
+  g_return_if_fail (closure != NULL);
+
+  priv = alpha->priv;
+
+  if (priv->closure)
+    g_closure_unref (priv->closure);
+
+  priv->closure = g_closure_ref (closure);
+  g_closure_sink (closure);
+
+  if (G_CLOSURE_NEEDS_MARSHAL (closure))
+    {
+      GClosureMarshal marshal = clutter_marshal_UINT__VOID;
+
+      g_closure_set_marshal (closure, marshal);
+    }
+}
+
+/**
  * clutter_alpha_set_func:
  * @alpha: A #ClutterAlpha
  * @func: A #ClutterAlphaAlphaFunc
@@ -272,22 +319,14 @@ clutter_alpha_set_func (ClutterAlpha    *alpha,
                         GDestroyNotify   destroy)
 {
   ClutterAlphaPrivate *priv;
+  GClosure *closure;
 
   g_return_if_fail (CLUTTER_IS_ALPHA (alpha));
   
   priv = alpha->priv;
 
-  if (priv->destroy)
-    {
-      priv->destroy (priv->data);
-      priv->func = NULL;
-      priv->data = NULL;
-      priv->destroy = NULL;
-    }
-
-  priv->func = func;
-  priv->data = data;
-  priv->destroy = destroy;
+  closure = g_cclosure_new (G_CALLBACK (func), data, (GClosureNotify) destroy);
+  clutter_alpha_set_closure (alpha, closure);
 }
 
 /**

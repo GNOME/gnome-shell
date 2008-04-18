@@ -1,3 +1,11 @@
+2008-04-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #884 - Add clutter_alpha_set_closure
+
+	* clutter/clutter-alpha.[ch]: Add clutter_alpha_set_closure(),
+	a GClosure variant of clutter_alpha_set_func(), and reimplement
+	the latter as a special case of the former. (#884, Xan López)
+
 2008-04-18  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-timeline.c (clutter_timeline_get_progressx):
