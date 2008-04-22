@@ -21,6 +21,16 @@
  * 02111-1307, USA.
  */
 
+
+/**
+ * \file effects.c "Special effects" other than compositor effects.
+ * 
+ * Before we had a serious compositor, we supported swooping
+ * rectangles for minimising and so on.  These are still supported
+ * today, even when the compositor is enabled.
+ */
+
+
 #include <config.h>
 #include "effects.h"
 #include "display.h"
@@ -256,14 +266,15 @@ update_wireframe_window (MetaDisplay         *display,
 #endif
 }
 
+/**
+ * A hack to force the X server to synchronize with the
+ * graphics hardware.
+ */
 static void
 graphics_sync (BoxAnimationContext *context)
 {
   XImage *image;
   
-  /* A hack to force the X server to synchronize with the
-   * graphics hardware
-   */
   image = XGetImage (context->screen->display->xdisplay,
 		     context->screen->xroot,
 		     0, 0, 1, 1,

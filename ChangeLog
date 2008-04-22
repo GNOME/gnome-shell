@@ -1,3 +1,7 @@
+2008-04-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/effects.c: a few comments
+
 2008-04-10  Lucas Rocha  <lucasr@gnome.org>
 
 	* src/Makefile.am: no need to create a symlink to .desktop file in
