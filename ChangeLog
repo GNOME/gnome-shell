@@ -1,5 +1,10 @@
 2008-04-22  Thomas Thurman  <tthurman@gnome.org>
 
+        * configure.in: Post-release bump to 2.21.8.
+	(Which was seriously belated.  Sorry, folks.)
+
+2008-04-22  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/effects.c: a few comments
 
 2008-04-10  Lucas Rocha  <lucasr@gnome.org>
