@@ -1,3 +1,8 @@
+2008-04-22  Carlos Garnacho  <carlos@imendio.com>
+
+        * src/core/compositor.c (process_property_notify,
+        find_window_in_display): Propagate opacity to frame window.
+
 2008-04-22  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.23.13.

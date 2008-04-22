@@ -645,6 +645,24 @@ find_window_in_display (MetaDisplay *display,
   return NULL;
 }
 
+static MetaCompWindow *
+find_window_for_child_window_in_display (MetaDisplay *display,
+                                         Window       xwindow)
+{
+  Window ignored1, *ignored2;
+  Window parent;
+  guint ignored_children;
+
+  XQueryTree (display->xdisplay,
+              xwindow, &ignored1, &parent,
+              &ignored2, &ignored_children);
+
+  if (parent != None)
+    return find_window_in_display (display, parent);
+
+  return NULL;
+}
+
 static Picture
 solid_picture (MetaDisplay *display,
                MetaScreen  *screen,
@@ -2117,7 +2135,15 @@ process_property_notify (MetaCompositor *compositor,
       MetaCompWindow *cw = find_window_in_display (display, event->window);
       gulong value;
 
-      if (!cw) 
+      if (!cw)
+        {
+          /* Applications can set this property for their toplevel windows, so
+           * this must be propagated to the window managed by the compositor
+           */
+          cw = find_window_for_child_window_in_display (display, event->window);
+        }
+
+      if (!cw)
         return;
 
       if (meta_prop_get_cardinal (display, event->window,
