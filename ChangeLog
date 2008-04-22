@@ -1,5 +1,9 @@
 2008-04-22  Thomas Thurman  <tthurman@gnome.org>
 
+        * NEWS: 2.23.8 release.
+
+2008-04-22  Thomas Thurman  <tthurman@gnome.org>
+
         * configure.in: Post-release bump to 2.21.8.
 	(Which was seriously belated.  Sorry, folks.)
 
