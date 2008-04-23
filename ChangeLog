@@ -1,5 +1,15 @@
 2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/eglnative/clutter-backend-egl.[ch]:
+	* clutter/eglnative/clutter-stage-egl.[ch]:
+	* clutter/eglnative/clutter-event-egl.c: Port to the new stage
+	and backend APIs. *WARNING* untested and not compiled.
+
+	* clutter/eglx/clutter-backend-egl.c:
+	(clutter_backend_egl_init): Set some defaults.
+
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* tests/test-script.json: Remove the explicit "visible"
 	member to test that the visibility of actors is TRUE
 	by default.

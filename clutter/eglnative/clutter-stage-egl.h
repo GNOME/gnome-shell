@@ -18,19 +18,21 @@ typedef struct _ClutterStageEGLClass    ClutterStageEGLClass;
 
 struct _ClutterStageEGL
 {
-  ClutterStage parent_instance;
+  ClutterActor parent_instance;
 
   /* from the backend */
   gint         surface_width;
   gint         surface_height;
 
   EGLSurface   egl_surface;
-  EGLContext   egl_context;
+
+  /* the stage wrapper */
+  ClutterStage *wrapper;
 };
 
 struct _ClutterStageEGLClass
 {
-  ClutterStageClass parent_class;
+  ClutterActorClass parent_class;
 };
 
 GType clutter_stage_egl_get_type (void) G_GNUC_CONST;

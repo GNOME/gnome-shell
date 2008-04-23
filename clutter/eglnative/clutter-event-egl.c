@@ -215,6 +215,8 @@ clutter_event_dispatch (GSource     *source,
 
       event = clutter_event_new (CLUTTER_NOTHING);
 
+      event->any.stage = clutter_stage_get_default ();
+
       last_x = event->button.x = tsevent.x;
       last_y = event->button.y = tsevent.y;
 

@@ -281,7 +281,11 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 static void
 clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
+  ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
 
+  clutter_backend_set_resolution (backend, 96.0);
+  clutter_backend_set_double_click_time (backend, 250);
+  clutter_backend_set_double_click_distance (backend, 5);
 }
 
 GType
