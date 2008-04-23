@@ -1,3 +1,13 @@
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug 891 - assertion failed when test-behave exits
+
+	* clutter/clutter-behaviour.c:
+	(remove_actor_on_destroy),
+	(clutter_behaviour_apply),
+	(clutter_behaviour_remove): Remove the actor if it gets
+	destroyed before the behaviour.
+
 2008-04-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #884 - Add clutter_alpha_set_closure

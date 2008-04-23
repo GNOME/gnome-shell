@@ -325,6 +325,13 @@ clutter_behaviour_init (ClutterBehaviour *self)
 
 }
 
+static void
+remove_actor_on_destroy (ClutterActor     *actor,
+                         ClutterBehaviour *behaviour)
+{
+  clutter_behaviour_remove (behaviour, actor);
+}
+
 /**
  * clutter_behaviour_apply:
  * @behave: a #ClutterBehaviour
@@ -356,6 +363,9 @@ clutter_behaviour_apply (ClutterBehaviour *behave,
     }
 
   priv->actors = g_slist_prepend (priv->actors, g_object_ref (actor));
+  g_signal_connect (actor, "destroy",
+                    G_CALLBACK (remove_actor_on_destroy),
+                    behave);
 
   g_signal_emit (behave, behave_signals[APPLIED], 0, actor);
 }
@@ -410,7 +420,11 @@ clutter_behaviour_remove (ClutterBehaviour *behave,
                  g_type_name (G_OBJECT_TYPE (actor)));
       return;
     }
-  
+
+  g_signal_handlers_disconnect_by_func (actor,
+                                        G_CALLBACK (remove_actor_on_destroy),
+                                        behave);
+
   priv->actors = g_slist_remove (priv->actors, actor);
   
   g_signal_emit (behave, behave_signals[REMOVED], 0, actor);
