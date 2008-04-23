@@ -306,6 +306,11 @@ clutter_actor_real_show (ClutterActor *self)
  *
  * Flags an actor to be displayed. An actor that isn't shown will not
  * be rendered on the stage.
+ *
+ * Actors are visible by default.
+ *
+ * If this function is called on an actor without a parent, the
+ * ClutterActor:show-on-set-parent will be set to %TRUE as a side effect.
  */
 void
 clutter_actor_show (ClutterActor *self)
@@ -316,18 +321,21 @@ clutter_actor_show (ClutterActor *self)
 
   priv = self->priv;
 
-  if (priv->show_on_set_parent == FALSE && priv->parent_actor == NULL)
-      g_object_set (self, "show-on-set-parent", TRUE, NULL);
+  g_object_freeze_notify (G_OBJECT (self));
+
+  if (!priv->show_on_set_parent && !priv->parent_actor)
+    {
+      priv->show_on_set_parent = TRUE;
+      g_object_notify (G_OBJECT (self), "show-on-set-parent");
+    }
 
   if (!CLUTTER_ACTOR_IS_VISIBLE (self))
     {
-      g_object_ref (self);
-
       g_signal_emit (self, actor_signals[SHOW], 0);
       g_object_notify (G_OBJECT (self), "visible");
-
-      g_object_unref (self);
     }
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -371,6 +379,12 @@ clutter_actor_real_hide (ClutterActor *self)
  *
  * Flags an actor to be hidden. A hidden actor will not be
  * rendered on the stage.
+ *
+ * Actors are visible by default.
+ *
+ * If this function is called on an actor without a parent, the
+ * ClutterActor:show-on-set-parent property will be set to %FALSE
+ * as a side-effect.
  */
 void
 clutter_actor_hide (ClutterActor *self)
@@ -381,18 +395,21 @@ clutter_actor_hide (ClutterActor *self)
 
   priv = self->priv;
 
-  if (priv->show_on_set_parent == TRUE && priv->parent_actor == NULL)
-      g_object_set (self, "show-on-set-parent", FALSE, NULL);
+  g_object_freeze_notify (G_OBJECT (self));
+
+  if (priv->show_on_set_parent && !priv->parent_actor)
+    {
+      priv->show_on_set_parent = FALSE;
+      g_object_notify (G_OBJECT (self), "show-on-set-parent");
+    }
 
   if (CLUTTER_ACTOR_IS_MAPPED (self))
     {
-      g_object_ref (self);
-
       g_signal_emit (self, actor_signals[HIDE], 0);
       g_object_notify (G_OBJECT (self), "visible");
-
-      g_object_unref (self);
     }
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -2077,7 +2094,10 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:show-on-set-parent:
    *
-   * If TRUE, the Actor is automatically shown when parented. 
+   * If %TRUE, the actor is automatically shown when parented.
+   *
+   * Calling clutter_actor_hide() on an actor which has not been
+   * parented will set this property to %FALSE as a side effect.
    *
    * Since: 0.8 
    */

@@ -1,5 +1,12 @@
 2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c: Document :show-on-set-parent and
+	the fact that calling clutter_actor_show() and hide() on an
+	unparented actor will change that property as well as a side
+	effect.
+
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c (clutter_actor_set_property): Use the
 	internal setter for the rotation center.
 
