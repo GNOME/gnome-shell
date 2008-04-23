@@ -109,13 +109,13 @@ fi
 
 PKG_CHECK_MODULES(XFIXES, xfixes >= 4, [have_xfixes=yes], [have_xfixes=no])
 if test x$have_xfixes = xyes; then
-      AC_DEFINE(HAVE_XFIXES, 1, Have the XFIXES X extension)
+      AC_DEFINE(HAVE_XFIXES, 1, [Have the XFIXES X extension])
       X11_LIBS="$X11_LIBS -lXfixes"
 fi
 
 PKG_CHECK_MODULES(XDAMAGE, xdamage, [have_xdamage=yes], [have_xdamage=no])
 if test x$have_xdamage = xyes; then
-      AC_DEFINE(HAVE_XDAMAGE, 1, Have the XDAMAGE X extension)
+      AC_DEFINE(HAVE_XDAMAGE, 1, [Have the XDAMAGE X extension])
       X11_LIBS="$X11_LIBS -lXdamage"
 fi
 
@@ -123,7 +123,7 @@ fi
 #        though may not be needed at all
 PKG_CHECK_MODULES(XCOMPOSITE, xcomposite, [have_xcomposite=yes], [have_xcomposite=no])
 if test x$have_xcomposite = xyes; then
-      AC_DEFINE(HAVE_XCOMPOSITE, 1, Have the XCOMPOSITE X extension)
+      AC_DEFINE(HAVE_XCOMPOSITE, 1, [Have the XCOMPOSITE X extension])
       X11_LIBS="$X11_LIBS -lXcomposite"
 fi
 
@@ -345,15 +345,32 @@ AC_SUBST([clutterbackendlib])
 
 dnl ========================================================================
 
-CLUTTER_REQUIRES="pangoft2 glib-2.0 >= 2.14 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 $BACKEND_PC_FILES"
+# if we have json-glib installed, use the system library instead of
+# the internal copy
+AC_MSG_CHECKING([for installed JSON-GLib])
+PKG_CHECK_EXISTS(json-glib-1.0, [have_json=yes], [have_json=no])
+if test "x$have_json" = "xyes"; then
+        JSON_PREFIX=json-glib
+        JSON_GLIB_PC=json-glib-1.0
+        AC_DEFINE(HAVE_JSON_GLIB, 1, [Have the JSON-GLib library installed])
+        AC_MSG_RESULT([found])
+else
+        JSON_PREFIX=json
+        AC_MSG_RESULT([not found, using internal copy])
+fi
+
+AC_SUBST(JSON_PREFIX)
+AM_CONDITIONAL(LOCAL_JSON_GLIB, test "x$have_json" = "xno")
+
+CLUTTER_REQUIRES="pangoft2 glib-2.0 >= 2.14 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 $BACKEND_PC_FILES $JSON_GLIB_PC"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 
 AC_SUBST(CLUTTER_REQUIRES)
 
+# prefixes for fixing gtk-doc references
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 PANGO_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
 GDKPIXBUF_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
-
 AC_SUBST(GLIB_PREFIX)
 AC_SUBST(PANGO_PREFIX)
 AC_SUBST(GDKPIXBUF_PREFIX)
@@ -406,7 +423,7 @@ fi
 
 dnl = GTK Doc check ========================================================
 
-GTK_DOC_CHECK([1.6])
+GTK_DOC_CHECK([1.8])
 
 dnl = Manual ===============================================================
 
@@ -433,7 +450,7 @@ dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
 
-CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS "
+CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $OSX_CFLAGS $WIN32_CFLAGS $CLUTTER_DEPS_CFLAGS"
 CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
@@ -443,6 +460,7 @@ AC_CONFIG_FILES([
         Makefile
         clutter/Makefile
         clutter/clutter-version.h
+        clutter/clutter-json.h
         clutter/x11/Makefile
         clutter/x11/clutter-x11.pc
         clutter/glx/Makefile

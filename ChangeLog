@@ -1,5 +1,16 @@
 2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac:
+	* clutter/Makefile.am: Do not build the internal JSON-GLib
+	copy if there is a system installed one.
+
+	* clutter/clutter-json.h: Remove.
+
+	* clutter/clutter-json.h.in: Template for the clutter-json.h
+	header file, used to opaquely include the JSON-GLib types.
+
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Document :show-on-set-parent and
 	the fact that calling clutter_actor_show() and hide() on an
 	unparented actor will change that property as well as a side

@@ -1,6 +1,13 @@
 NULL =
 
-SUBDIRS = cogl pango json $(clutterbackend) $(backendextra)
+SUBDIRS = cogl pango $(clutterbackend) $(backendextra)
+
+if LOCAL_JSON_GLIB
+SUBDIRS += json
+clutter_json_include = -I$(top_srcdir)/clutter/json
+clutter_json_dep = json/libclutter-json.la
+clutter_json_libadd = $(top_builddir)/clutter/json/libclutter-json.la
+endif
 
 DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11 win32
 
@@ -17,13 +24,13 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/pango			\
 	-I$(top_srcdir)/clutter/cogl			\
 	-I$(top_srcdir)/clutter/cogl/$(CLUTTER_COGL)	\
-	-I$(top_srcdir)/clutter/json 			\
+	$(clutter_json_include)				\
 	-DCLUTTER_PREFIX=\""$(prefix)"\"		\
 	-DCLUTTER_LIBDIR=\""$(libdir)"\"		\
 	-DCLUTTER_DATADIR=\""$(datadir)"\"		\
+	-DCLUTTER_COMPILATION=1				\
 	-DG_DISABLE_DEPRECATED 				\
 	-DG_LOG_DOMAIN=\"Clutter\" 			\
-	-DCLUTTER_JSON_API=1				\
 	$(GCC_FLAGS) 					\
 	$(CLUTTER_CFLAGS) 				\
 	$(CLUTTER_DEBUG_CFLAGS)				\
@@ -184,17 +191,17 @@ source_h_priv = \
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
   $(CLUTTER_LIBS) \
-  pango/libpangoclutter.la \
-  $(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
-  cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
-  json/libclutter-json.la \
+  $(top_builddir)/clutter/pango/libpangoclutter.la \
+  $(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
+  $(top_builddir)/clutter/cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
+  $(clutter_json_libadd) \
   $(backendextralib)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
   pango/libpangoclutter.la \
   $(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
   cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
-  json/libclutter-json.la \
+  $(clutter_json_dep) \
   $(backendextralib)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES = \
