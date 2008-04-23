@@ -1,5 +1,18 @@
 2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug 892 - Incorrect results using rotation-[center|angle] properties
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_rotation_internal): Inline function for setting
+	the rotation using fixed point for the angle and units for the
+	center of rotation.
+
+	(clutter_actor_set_property),
+	(clutter_actor_set_rotationx): Use the internal setter to avoid
+	loss of precision and too many conversions to and from units.
+
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug 891 - assertion failed when test-behave exits
 
 	* clutter/clutter-behaviour.c:

@@ -1388,6 +1388,56 @@ clutter_actor_query_coords (ClutterActor    *self,
     }
 }
 
+/* fixed point, unit based rotation setter, to be used by
+ * set_property() so that we don't lose precision in the
+ * center coordinates by converting them to and from units
+ */
+static inline void
+clutter_actor_set_rotation_internal (ClutterActor      *self,
+                                     ClutterRotateAxis  axis,
+                                     ClutterFixed       angle,
+                                     ClutterUnit        center_x,
+                                     ClutterUnit        center_y,
+                                     ClutterUnit        center_z)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  g_object_ref (self);
+  g_object_freeze_notify (G_OBJECT (self));
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      priv->rxang = angle;
+      priv->rxy = center_y;
+      priv->rxz = center_z;
+      g_object_notify (G_OBJECT (self), "rotation-angle-x");
+      g_object_notify (G_OBJECT (self), "rotation-center-x");
+      break;
+
+    case CLUTTER_Y_AXIS:
+      priv->ryang = angle;
+      priv->ryx = center_x;
+      priv->ryz = center_z;
+      g_object_notify (G_OBJECT (self), "rotation-angle-y");
+      g_object_notify (G_OBJECT (self), "rotation-center-y");
+      break;
+    case CLUTTER_Z_AXIS:
+      priv->rzang = angle;
+      priv->rzx = center_x;
+      priv->rzy = center_y;
+      g_object_notify (G_OBJECT (self), "rotation-angle-z");
+      g_object_notify (G_OBJECT (self), "rotation-center-z");
+      break;
+    }
+
+  g_object_thaw_notify (G_OBJECT (self));
+  g_object_unref (self);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
+}
+
 static void
 clutter_actor_set_property (GObject      *object,
 			    guint         prop_id,
@@ -1455,22 +1505,43 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_reactive (actor, g_value_get_boolean (value));
       break;
     case PROP_ROTATION_ANGLE_X:
-      clutter_actor_set_rotation (actor,
-                                  CLUTTER_X_AXIS,
-                                  g_value_get_double (value),
-                                  0, priv->rxy, priv->rxz);
+      {
+        ClutterFixed angle;
+
+        angle = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+        clutter_actor_set_rotation_internal (actor,
+                                             CLUTTER_X_AXIS,
+                                             angle,
+                                             0,
+                                             priv->rxy,
+                                             priv->rxz);
+      }
       break;
     case PROP_ROTATION_ANGLE_Y:
-      clutter_actor_set_rotation (actor,
-                                  CLUTTER_Y_AXIS,
-                                  g_value_get_double (value),
-                                  priv->ryx, 0, priv->ryz);
+      {
+        ClutterFixed angle;
+
+        angle = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+        clutter_actor_set_rotation_internal (actor,
+                                             CLUTTER_Y_AXIS,
+                                             angle,
+                                             priv->ryx,
+                                             0,
+                                             priv->ryz);
+      }
       break;
     case PROP_ROTATION_ANGLE_Z:
-      clutter_actor_set_rotation (actor,
-                                  CLUTTER_Z_AXIS,
-                                  g_value_get_double (value),
-                                  priv->rzx, priv->rzy, 0);
+      {
+        ClutterFixed angle;
+
+        angle = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+        clutter_actor_set_rotation_internal (actor,
+                                             CLUTTER_Z_AXIS,
+                                             angle,
+                                             priv->rzx,
+                                             priv->rzy,
+                                             0);
+      }
       break;
     case PROP_ROTATION_CENTER_X:
       {
@@ -1481,8 +1552,8 @@ clutter_actor_set_property (GObject      *object,
                                      CLUTTER_X_AXIS,
                                      priv->rxang,
                                      0,
-                                     CLUTTER_UNITS_TO_DEVICE (center->y),
-                                     CLUTTER_UNITS_TO_DEVICE (center->z));
+                                     center->y,
+                                     center->z);
       }
       break;
     case PROP_ROTATION_CENTER_Y:
@@ -1493,9 +1564,9 @@ clutter_actor_set_property (GObject      *object,
         clutter_actor_set_rotationx (actor,
                                      CLUTTER_Y_AXIS,
                                      priv->ryang,
-                                     CLUTTER_UNITS_TO_DEVICE (center->x),
+                                     center->x,
                                      0,
-                                     CLUTTER_UNITS_TO_DEVICE (center->z));
+                                     center->z);
       }
       break;
     case PROP_ROTATION_CENTER_Z:
@@ -1506,8 +1577,8 @@ clutter_actor_set_property (GObject      *object,
         clutter_actor_set_rotationx (actor,
                                      CLUTTER_Z_AXIS,
                                      priv->rzang,
-                                     CLUTTER_UNITS_TO_DEVICE (center->x),
-                                     CLUTTER_UNITS_TO_DEVICE (center->y),
+                                     center->x,
+                                     center->y,
                                      0);
       }
       break;
@@ -3664,46 +3735,12 @@ clutter_actor_set_rotationx (ClutterActor      *self,
                              gint               y,
                              gint               z)
 {
-  ClutterActorPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
-
-  g_object_ref (self);
-  g_object_freeze_notify (G_OBJECT (self));
-
-  switch (axis)
-    {
-    case CLUTTER_X_AXIS:
-      priv->rxang = angle;
-      priv->rxy = CLUTTER_UNITS_FROM_DEVICE (y);
-      priv->rxz = CLUTTER_UNITS_FROM_DEVICE (z);
-      g_object_notify (G_OBJECT (self), "rotation-angle-x");
-      g_object_notify (G_OBJECT (self), "rotation-center-x");
-      break;
-
-    case CLUTTER_Y_AXIS:
-      priv->ryang = angle;
-      priv->ryx = CLUTTER_UNITS_FROM_DEVICE (x);
-      priv->ryz = CLUTTER_UNITS_FROM_DEVICE (z);
-      g_object_notify (G_OBJECT (self), "rotation-angle-y");
-      g_object_notify (G_OBJECT (self), "rotation-center-y");
-      break;
-    case CLUTTER_Z_AXIS:
-      priv->rzang = angle;
-      priv->rzx = CLUTTER_UNITS_FROM_DEVICE (x);
-      priv->rzy = CLUTTER_UNITS_FROM_DEVICE (y);
-      g_object_notify (G_OBJECT (self), "rotation-angle-z");
-      g_object_notify (G_OBJECT (self), "rotation-center-z");
-      break;
-    }
-
-  g_object_thaw_notify (G_OBJECT (self));
-  g_object_unref (self);
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
+  clutter_actor_set_rotation_internal (self, axis, angle,
+                                       CLUTTER_UNITS_FROM_DEVICE (x),
+                                       CLUTTER_UNITS_FROM_DEVICE (y),
+                                       CLUTTER_UNITS_FROM_DEVICE (z));
 }
 
 /**
