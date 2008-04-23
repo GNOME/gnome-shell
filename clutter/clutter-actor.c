@@ -1548,12 +1548,12 @@ clutter_actor_set_property (GObject      *object,
         ClutterVertex *center;
 
         center = g_value_get_boxed (value);
-        clutter_actor_set_rotationx (actor,
-                                     CLUTTER_X_AXIS,
-                                     priv->rxang,
-                                     0,
-                                     center->y,
-                                     center->z);
+        clutter_actor_set_rotation_internal (actor,
+                                             CLUTTER_X_AXIS,
+                                             priv->rxang,
+                                             0,
+                                             center->y,
+                                             center->z);
       }
       break;
     case PROP_ROTATION_CENTER_Y:
@@ -1561,12 +1561,12 @@ clutter_actor_set_property (GObject      *object,
         ClutterVertex *center;
 
         center = g_value_get_boxed (value);
-        clutter_actor_set_rotationx (actor,
-                                     CLUTTER_Y_AXIS,
-                                     priv->ryang,
-                                     center->x,
-                                     0,
-                                     center->z);
+        clutter_actor_set_rotation_internal (actor,
+                                             CLUTTER_Y_AXIS,
+                                             priv->ryang,
+                                             center->x,
+                                             0,
+                                             center->z);
       }
       break;
     case PROP_ROTATION_CENTER_Z:
@@ -1574,12 +1574,12 @@ clutter_actor_set_property (GObject      *object,
         ClutterVertex *center;
 
         center = g_value_get_boxed (value);
-        clutter_actor_set_rotationx (actor,
-                                     CLUTTER_Z_AXIS,
-                                     priv->rzang,
-                                     center->x,
-                                     center->y,
-                                     0);
+        clutter_actor_set_rotation_internal (actor,
+                                             CLUTTER_Z_AXIS,
+                                             priv->rzang,
+                                             center->x,
+                                             center->y,
+                                             0);
       }
       break;
     case PROP_ANCHOR_X:

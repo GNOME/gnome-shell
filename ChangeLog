@@ -1,5 +1,10 @@
 2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c (clutter_actor_set_property): Use the
+	internal setter for the rotation center.
+
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.[ch]: Add units based variant of the
 	rotation accessors.
 
