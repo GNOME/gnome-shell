@@ -1,5 +1,11 @@
 2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/test-script.json: Remove the explicit "visible"
+	member to test that the visibility of actors is TRUE
+	by default.
+
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac:
 	* clutter/Makefile.am: Do not build the internal JSON-GLib
 	copy if there is a system installed one.
