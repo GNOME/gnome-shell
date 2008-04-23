@@ -346,6 +346,12 @@ void                  clutter_actor_set_rotationx            (ClutterActor      
                                                               gint                   x,
                                                               gint                   y,
                                                               gint                   z);
+void                  clutter_actor_set_rotationu            (ClutterActor          *self,
+                                                              ClutterRotateAxis      axis,
+                                                              gdouble                angle,
+                                                              ClutterUnit            x,
+                                                              ClutterUnit            y,
+                                                              ClutterUnit            z);
 gdouble               clutter_actor_get_rotation             (ClutterActor          *self,
                                                               ClutterRotateAxis      axis,
                                                               gint                  *x,
@@ -356,6 +362,11 @@ ClutterFixed          clutter_actor_get_rotationx            (ClutterActor      
                                                               gint                  *x,
                                                               gint                  *y,
                                                               gint                  *z);
+gdouble               clutter_actor_get_rotationu            (ClutterActor          *self,
+                                                              ClutterRotateAxis      axis,
+                                                              ClutterUnit           *x,
+                                                              ClutterUnit           *y,
+                                                              ClutterUnit           *z);
 
 void                  clutter_actor_set_opacity              (ClutterActor          *self,
                                                               guint8                 opacity);

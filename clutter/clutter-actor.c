@@ -3713,6 +3713,37 @@ clutter_actor_get_depthu (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_set_rotationu:
+ * @self: a #ClutterActor
+ * @axis: the axis of rotation
+ * @angle: the angle of rotation
+ * @x: X coordinate of the rotation center, in #ClutterUnit<!-- -->s
+ * @y: Y coordinate of the rotation center, in #ClutterUnit<!-- -->s
+ * @z: Z coordinate of the rotation center, in #ClutterUnit<!-- -->s
+ *
+ * Sets the rotation angle of @self around the given axis.
+ *
+ * This function is the units based variant of clutter_actor_set_rotation().
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_set_rotationu (ClutterActor      *self,
+                             ClutterRotateAxis  axis,
+                             gdouble            angle,
+                             ClutterUnit        x,
+                             ClutterUnit        y,
+                             ClutterUnit        z)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_rotation_internal (self, axis,
+                                       CLUTTER_FLOAT_TO_FIXED (angle),
+                                       x, y, z);
+}
+
+
+/**
  * clutter_actor_set_rotationx:
  * @self: a #ClutterActor
  * @axis: the axis of rotation
@@ -3780,6 +3811,70 @@ clutter_actor_set_rotation (ClutterActor      *self,
   clutter_actor_set_rotationx (self, axis,
                                CLUTTER_FLOAT_TO_FIXED (angle),
                                x, y, z);
+}
+
+/**
+ * clutter_actor_get_rotationu:
+ * @self: a #ClutterActor
+ * @axis: the axis of rotation
+ * @x: return value for the X coordinate of the center of rotation,
+ *   in #ClutterUnit<!-- -->s
+ * @y: return value for the Y coordinate of the center of rotation,
+ *   in #ClutterUnit<!-- -->s
+ * @z: return value for the Z coordinate of the center of rotation,
+ *   in #ClutterUnit<!-- -->s
+ *
+ * Retrieves the angle and center of rotation on the given axis,
+ * set using clutter_actor_set_rotation().
+ *
+ * This function is the units based variant of clutter_actor_get_rotation().
+ *
+ * Return value: the angle of rotation
+ *
+ * Since: 0.8
+ */
+gdouble
+clutter_actor_get_rotationu (ClutterActor      *self,
+                             ClutterRotateAxis  axis,
+                             ClutterUnit       *x,
+                             ClutterUnit       *y,
+                             ClutterUnit       *z)
+{
+  ClutterActorPrivate *priv;
+  gdouble retval = 0;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
+  priv = self->priv;
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      retval = CLUTTER_FIXED_TO_DOUBLE (priv->rxang);
+      if (y)
+        *y = priv->rxy;
+      if (z)
+        *z = priv->rxz;
+      break;
+
+    case CLUTTER_Y_AXIS:
+      retval = CLUTTER_FIXED_TO_DOUBLE (priv->ryang);
+      if (x)
+        *x = priv->ryx;
+      if (z)
+        *z = priv->ryz;
+      break;
+
+    case CLUTTER_Z_AXIS:
+      retval = CLUTTER_FIXED_TO_DOUBLE (priv->rzang);
+      if (x)
+        *x = priv->rzx;
+      if (y)
+        *y = priv->rzy;
+      break;
+    }
+
+  return retval;
 }
 
 /**

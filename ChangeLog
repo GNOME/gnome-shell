@@ -1,5 +1,10 @@
 2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.[ch]: Add units based variant of the
+	rotation accessors.
+
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug 892 - Incorrect results using rotation-[center|angle] properties
 
 	* clutter/clutter-actor.c:
