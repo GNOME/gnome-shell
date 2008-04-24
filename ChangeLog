@@ -1,5 +1,9 @@
 2008-04-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* Makefile.am: Add HACKING.backends to the EXTRA_DIST.
+
+2008-04-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* HACKING.backends: Add documentation on how to write a
 	backend for Clutter.
 
