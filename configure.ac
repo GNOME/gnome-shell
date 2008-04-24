@@ -345,18 +345,37 @@ AC_SUBST([clutterbackendlib])
 
 dnl ========================================================================
 
-# if we have json-glib installed, use the system library instead of
-# the internal copy
-AC_MSG_CHECKING([for installed JSON-GLib])
-PKG_CHECK_EXISTS(json-glib-1.0, [have_json=yes], [have_json=no])
-if test "x$have_json" = "xyes"; then
-        JSON_PREFIX=json-glib
-        JSON_GLIB_PC=json-glib-1.0
-        AC_DEFINE(HAVE_JSON_GLIB, 1, [Have the JSON-GLib library installed])
-        AC_MSG_RESULT([found])
-else
+# allow building clutter with an external dependency on json-glib
+# using the --with-json=check argument, but keep the default to
+# the internal version
+AC_ARG_WITH([json],
+            AC_HELP_STRING([--with-json=@<:@internal/check@:>@],
+                           [Select the JSON-GLib copy to use @<:@default=internal@:>@]),
+            [],
+            [with_json=internal])
+
+case $with_json in
+        internal|check) ;;
+        *) AC_MSG_ERROR([Invalid value for the JSON library: use internal or check]) ;;
+esac
+
+if test "x$with_json" = "xinternal"; then
         JSON_PREFIX=json
-        AC_MSG_RESULT([not found, using internal copy])
+        have_json=no
+else
+        # if the user asked for it and if we have json-glib installed,
+        # prefer the system library instead of the internal copy
+        AC_MSG_CHECKING([for installed JSON-GLib])
+        PKG_CHECK_EXISTS(json-glib-1.0, [have_json=yes], [have_json=no])
+        if test "x$have_json" = "xyes"; then
+                JSON_PREFIX=json-glib
+                JSON_GLIB_PC=json-glib-1.0
+                AC_DEFINE(HAVE_JSON_GLIB, 1, [Have the JSON-GLib library installed])
+                AC_MSG_RESULT([found])
+        else
+                JSON_PREFIX=json
+                AC_MSG_RESULT([not found, using internal copy])
+        fi
 fi
 
 AC_SUBST(JSON_PREFIX)

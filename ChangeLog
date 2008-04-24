@@ -1,5 +1,12 @@
 2008-04-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Add the --with-json configure switch to
+	allow building Clutter with the external dependency on
+	the system JSON-GLib; the default is to use the internal
+	copy unless explicitly asked to check.
+
+2008-04-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* Makefile.am: Add HACKING.backends to the EXTRA_DIST.
 
 2008-04-24  Emmanuele Bassi  <ebassi@openedhand.com>
