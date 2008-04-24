@@ -131,7 +131,6 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   stage = g_object_new (CLUTTER_TYPE_STAGE_EGL, NULL);
 
   stage_egl = CLUTTER_STAGE_EGL (stage);
-  stage_egl->edpy = backend_egl->edpy
   stage_egl->backend = backend_egl;
   stage_egl->wrapper = wrapper;
 
@@ -139,9 +138,9 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
 
   g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
 
-  clutter_actor_realize (backend_egl->stage);
+  clutter_actor_realize (stage);
 
-  if (!CLUTTER_ACTOR_IS_REALIZED (backend_egl->stage))
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_INTERNAL,
