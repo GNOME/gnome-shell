@@ -27,9 +27,9 @@ create a new sub-directory under clutter/clutter containing:
 
   -- The event handling code (optional).
 
-  <backend>/clutte-<backend>.h
+  <backend>/clutter-<backend>.h
 
-  -- An header for the backend-specific API that should be installed
+  -- A header for the backend-specific API that should be installed
      by Clutter inside the include directory along with the rest of
      the public API headers (optional).
 
