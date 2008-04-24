@@ -1,0 +1,166 @@
+IMPLEMENTING BACKENDS
+=====================
+
+Clutter supports multiple backends for handling windowing systems and
+GL/GLES API on different platforms.
+
+The GL and GLES API are abstracted by the COGL library. The windowing
+system is handled by the ClutterBackend implementations inside Clutter
+itself.
+
+Clutter, at the moment, supports only in-tree backends.
+
+In order to write a new backend for a specific platform you should
+create a new sub-directory under clutter/clutter containing:
+
+  <backend>/clutter-backend-<backend>.h
+  <backend>/clutter-backend-<backend>.c
+
+  -- The subclass of the ClutterBackend abstract class.
+
+  <backend>/clutter-stage-<backend>.h
+  <backend>/clutter-stage-<backend>.c
+
+  -- The implementation of the stage actor.
+
+  <backend>/clutter-event-<backend>.c
+
+  -- The event handling code (optional).
+
+  <backend>/clutte-<backend>.h
+
+  -- An header for the backend-specific API that should be installed
+     by Clutter inside the include directory along with the rest of
+     the public API headers (optional).
+
+
+Implementing ClutterBackend
+---------------------------
+
+Each backend must implement the
+
+  GType
+  _clutter_backend_impl_get_type (void);
+
+function declared inside clutter/clutter-private.h. The implementation
+of the function must return the same GType of the backend implementation,
+for instance:
+
+  GType
+  _clutter_backend_impl_get_type (void)
+  {
+    return CLUTTER_TYPE_BACKEND_GLX;
+  }
+
+The ClutterBackend implementation is a singleton instance, and the
+backend must ensure that every time g_object_new() is called the same
+pointer is returned (with its reference count increased). The GObject
+API reference describes how to use the ::constructor virtual function
+to implement a singleton, so you should refer to that.
+
+When implementing the ClutterBackend subclass these virtual functions
+can be overridden:
+
+  ClutterBackend::add_options
+  -- Use this function to install new, backend-specific GOptionEntry
+     definitions to the Clutter GOptionGroup. This function is guaranteed
+     to be called just once.
+
+  ClutterBackend::pre_parse
+  -- Use this function to check for environment variables or setting
+     up default values before the command line arguments are parsed.
+     This function is guaranteed to be called just once.
+
+  ClutterBackend::post_parse
+  -- Use this function to prepare the backend with the values either
+     set inside the ::pre_parse virtual function or by the command
+     line options parsing code. This function is guaranteed to be
+     called just once.
+
+  ClutterBackend::init_events
+  -- Use this function to initialize the event handling. This function
+     is guaranteed to be called just once.
+
+  ClutterBackend::get_features
+  -- Use this function to retrieve the features detectable at runtime
+     from the GL or GLES implementation, plus the eventual backend-specific
+     features.
+
+  ClutterBackend::ensure_context
+  -- This function is used to ensure that the backend drawing context
+     is made current for passed ClutterStage, using the backend-specific
+     API.
+
+  ClutterBackend::redraw
+  -- This function is used to draw the passed ClutterStage; the backend
+     must call clutter_actor_paint() on the ClutterStage that has been
+     passed as a parameter and then perform backend-specific tasks, like
+     waiting for vertical blanking and swapping the buffers.
+
+  ClutterBackend::create_stage
+  -- This function is used to create the stage implementation. It will
+     receive as an argument the ClutterStage instance that is "wrapping"
+     the actual implementation being created. The backend must create
+     its stage implementation and call _clutter_stage_set_window() with
+     the wrapper and the stage implementation instance:
+
+       _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (impl));
+
+     The backend must also call clutter_actor_realize() on the stage
+     implementation, and then check if the stage has been realized, using
+     the CLUTTER_ACTOR_IS_REALIZED() macro; if the stage was not
+     realized, it must return NULL and set the passed GError.
+
+Implementing the stage
+----------------------
+
+ClutterStage acts as a wrapper object relaying all the drawing operations
+to the actual implementation. The implementation of the stage can be any
+ClutterActor subclass, as long as it does not subclass ClutterStage and
+it implements the ClutterStageWindow interface.
+
+The ClutterStageWindow interface contains a set of virtual functions that
+should be overridden by backends that support a windowing system, like
+::set_title(), ::set_fullscreen(), ::set_cursor_visible(), etc.
+
+The stage implementation actor must implement at least the ::realize and
+::unrealize ClutterActor virtual functions. Inside the ::realize function
+the stage implementation should:
+
+  - create a new native window handle
+  - create the drawing context (either GL or GLES) and assign it
+    to the backend, if it's not already present
+  - set the CLUTTER_ACTOR_REALIZED flag on *both* the wrapper and the
+    stage implementation
+  - call clutter_stage_ensure_current() with the wrapper instance
+  - set the private CLUTTER_ACTOR_SYNC_MATRICES flag on the stage wrapper
+
+In case of failure, the CLUTTER_ACTOR_REALIZED flag should be unset on
+both the wrapper and the stage implementation.
+
+Inside the ::unrealize function the stage implementation should:
+
+  - unset the CLUTTER_ACTOR_REALIZED flag
+  - call _clutter_shader_release_all() if the backend supports shaders
+    and the GL programmable pipeline
+  - destroy the native window handle
+  - call clutter_stage_ensure_context() with the wrapper instance
+
+
+NOTES
+=====
+
+If the platform is using X11 you should probably subclass ClutterBackendX11
+and ClutterStageX11, which will provide you with a ready to use code
+implementation for event handling and window management.
+
+Usual points of failure for backends are:
+
+- not setting the CLUTTER_ACTOR_REALIZED flag on the stage implementation
+  and the stage wrapper inside the ::realized virtual function;
+- not setting the CLUTTER_ACTOR_SYNC_MATRICES on the stage wrapper
+  at the end of the ::realized virtual function;
+- calling public API, like clutter_actor_paint(), or checking properties
+  on the stage implementation instead of the ClutterStage wrapper.
+
+$LastChangedDate$

@@ -1,5 +1,10 @@
 2008-04-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* HACKING.backends: Add documentation on how to write a
+	backend for Clutter.
+
+2008-04-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/eglnative/clutter-backend-egl.c:
 	(clutter_backend_egl_create_stage): Fix checks using a
 	non assigned member of the ClutterBackendEGL structure.
