@@ -182,7 +182,6 @@
 	Adds support for out of tree builds. Tested building for arm+eglx
 	glx and mingw+win32.
 
->>>>>>> .r2586
 2008-04-23  Neil Roberts  <neil@o-hand.com>
 
 	* tests/Makefile.am: Don't build test-pixmap if we are not
