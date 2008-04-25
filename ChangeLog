@@ -1,3 +1,8 @@
+2008-04-25  Neil Roberts  <neil@o-hand.com>
+
+	Merged in the clutter-ivan branch which contained the new public
+	COGL API.
+
 2008-04-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/sdl/clutter-stage-sdl.[ch]: Port the SDL stage to
