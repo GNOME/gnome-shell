@@ -22,9 +22,10 @@
 #ifndef __CLUTTER_BACKEND_SDL_H__
 #define __CLUTTER_BACKEND_SDL_H__
 
+#include <SDL.h>
 #include <glib-object.h>
 #include <clutter/clutter-backend.h>
-#include <SDL.h>
+#include "clutter-stage-sdl.h"
 
 G_BEGIN_DECLS
 
@@ -43,7 +44,7 @@ struct _ClutterBackendSDL
   ClutterBackend parent_instance;
 
   /* main stage singleton */
-  ClutterActor *stage;
+  ClutterStageSDL *stage;
 
   /* event source */
   GSource *event_source;

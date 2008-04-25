@@ -24,9 +24,9 @@ static gboolean
 clutter_backend_sdl_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  int                err;
+  int err;
 
-  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) < 0)
+  if (SDL_Init (SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) < 0)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
 		   CLUTTER_INIT_ERROR_BACKEND,
@@ -35,97 +35,94 @@ clutter_backend_sdl_post_parse (ClutterBackend  *backend,
     }
 
 #if defined(WIN32)
-  err = SDL_GL_LoadLibrary("opengl32.dll");
+  err = SDL_GL_LoadLibrary ("opengl32.dll");
 #elif defined(__linux__) || defined(__FreeBSD__)
-  err = SDL_GL_LoadLibrary("libGL.so");
+  err = SDL_GL_LoadLibrary ("libGL.so");
 #else
 #error Your platform is not supported
   err = 1;
 #endif
+
   if (err != 0)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
 		   CLUTTER_INIT_ERROR_BACKEND,
-		   SDL_GetError());
+		   SDL_GetError ());
       return FALSE;
     }
+
+  CLUTTER_NOTE (BACKEND, "SDL successfully initialized");
 
   return TRUE;
 }
 
-static gboolean
-clutter_backend_sdl_init_stage (ClutterBackend  *backend,
-                                GError         **error)
+static void
+clutter_backend_sdl_ensure_context (ClutterBackend *backend,
+                                    ClutterStage   *stage)
+{
+  /* no context to ensure */
+}
+
+static void
+clutter_backend_sdl_redraw (ClutterBackend *backend,
+                            ClutterStage   *stage)
+{
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
+  
+  SDL_GL_SwapBuffers();
+}
+
+static ClutterActor *
+clutter_backend_sdl_create_stage (ClutterBackend  *backend,
+                                  ClutterStage    *wrapper,
+                                  GError         **error)
 {
   ClutterBackendSDL *backend_sdl = CLUTTER_BACKEND_SDL (backend);
+  ClutterStageSDL *stage_sdl;
+  ClutterActor *stage;
 
-  if (!backend_sdl->stage)
+  if (backend_sdl->stage)
     {
-      ClutterStageSDL *stage_sdl;
-      ClutterActor    *stage;
-
-      stage = g_object_new (CLUTTER_TYPE_STAGE_SDL, NULL);
-
-      /* copy backend data into the stage */
-      stage_sdl = CLUTTER_STAGE_SDL (stage);
-
-      g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
-
-      backend_sdl->stage = g_object_ref_sink (stage);
+      g_warning ("The SDL backend does not support multiple stages");
+      return CLUTTER_ACTOR (backend_sdl->stage);
     }
 
-  clutter_actor_realize (backend_sdl->stage);
+  stage = g_object_new (CLUTTER_TYPE_STAGE_SDL, NULL);
 
-  if (!CLUTTER_ACTOR_IS_REALIZED (backend_sdl->stage))
+  /* copy backend data into the stage */
+  stage_sdl = CLUTTER_STAGE_SDL (stage);
+  stage_sdl->wrapper = wrapper;
+
+  _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
+
+  g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
+
+  clutter_actor_realize (stage);
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_INTERNAL,
                    "Unable to realize the main stage");
-      return FALSE;
+      g_object_unref (stage);
+      return NULL;
     }
 
-  return TRUE;
+  backend_sdl->stage = stage_sdl;
+
+  return stage;
 }
 
 static void
 clutter_backend_sdl_init_events (ClutterBackend *backend)
 {
   _clutter_events_init (backend);
-
 }
-
-static const GOptionEntry entries[] =
-{
-  { NULL }
-};
-
 
 static void
 clutter_backend_sdl_add_options (ClutterBackend *backend,
                                  GOptionGroup   *group)
 {
-  g_option_group_add_entries (group, entries);
-}
-
-static ClutterActor *
-clutter_backend_sdl_get_stage (ClutterBackend *backend)
-{
-  ClutterBackendSDL *backend_sdl = CLUTTER_BACKEND_SDL (backend);
-
-  return backend_sdl->stage;
-}
-
-static void
-clutter_backend_sdl_redraw (ClutterBackend *backend)
-{
-  ClutterBackendSDL *backend_sdl = CLUTTER_BACKEND_SDL (backend);
-  ClutterStageSDL   *stage_sdl;
-
-  stage_sdl = CLUTTER_STAGE_SDL(backend_sdl->stage);
-
-  clutter_actor_paint (CLUTTER_ACTOR(stage_sdl));
-  
-  SDL_GL_SwapBuffers();
 }
 
 static void
@@ -148,9 +145,7 @@ clutter_backend_sdl_dispose (GObject *gobject)
 
   if (backend_sdl->stage)
     {
-      CLUTTER_UNSET_PRIVATE_FLAGS (backend_sdl->stage,
-                                   CLUTTER_ACTOR_IS_TOPLEVEL);
-      clutter_actor_destroy (backend_sdl->stage);
+      clutter_actor_destroy (CLUTTER_ACTOR (backend_sdl->stage));
       backend_sdl->stage = NULL;
     }
 
@@ -197,14 +192,13 @@ clutter_backend_sdl_class_init (ClutterBackendSDLClass *klass)
   gobject_class->dispose = clutter_backend_sdl_dispose;
   gobject_class->finalize = clutter_backend_sdl_finalize;
 
-  backend_class->pre_parse = clutter_backend_sdl_pre_parse;
-  backend_class->post_parse = clutter_backend_sdl_post_parse;
-  backend_class->init_stage = clutter_backend_sdl_init_stage;
-  backend_class->init_events = clutter_backend_sdl_init_events;
-  backend_class->get_stage = clutter_backend_sdl_get_stage;
-  backend_class->add_options = clutter_backend_sdl_add_options;
-  backend_class->redraw      = clutter_backend_sdl_redraw;
-  backend_class->get_features = clutter_backend_sdl_get_features;
+  backend_class->pre_parse      = clutter_backend_sdl_pre_parse;
+  backend_class->post_parse     = clutter_backend_sdl_post_parse;
+  backend_class->init_events    = clutter_backend_sdl_init_events;
+  backend_class->create_stage   = clutter_backend_sdl_create_stage;
+  backend_class->ensure_context = clutter_backend_sdl_ensure_context;
+  backend_class->redraw         = clutter_backend_sdl_redraw;
+  backend_class->get_features   = clutter_backend_sdl_get_features;
 }
 
 static void

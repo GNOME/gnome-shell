@@ -14,10 +14,17 @@
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
 #include "../clutter-units.h"
+#include "../clutter-stage-window.h"
 
 #include "cogl.h"
 
-G_DEFINE_TYPE (ClutterStageSDL, clutter_stage_sdl, CLUTTER_TYPE_STAGE);
+static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterStageSDL,
+                         clutter_stage_sdl,
+                         CLUTTER_TYPE_ACTOR,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
+                                                clutter_stage_window_iface_init));
 
 static void
 clutter_stage_sdl_show (ClutterActor *actor)
@@ -46,45 +53,58 @@ static void
 clutter_stage_sdl_realize (ClutterActor *actor)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (actor);
-
   gboolean is_offscreen, is_fullscreen;
-  ClutterPerspective perspective;
 
   CLUTTER_NOTE (BACKEND, "Realizing main stage");
 
-  g_object_get (actor, "offscreen", &is_offscreen, NULL);
-  g_object_get (actor, "fullscreen", &is_fullscreen, NULL);
+  is_offscreen = is_fullscreen = FALSE;
+  g_object_get (stage_sdl->wrapper,
+                "offscreen", &is_offscreen,
+                "fullscreen", &is_fullscreen,
+                NULL);
 
   if (G_LIKELY (!is_offscreen))
     {
       gint flags = SDL_OPENGL;
 
-      if (is_fullscreen) flags |= SDL_FULLSCREEN;
+      if (is_fullscreen)
+        flags |= SDL_FULLSCREEN;
 
-      SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, 0);
-      SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, 0);
-      SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, 0);
-      SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, 0);
+      SDL_GL_SetAttribute (SDL_GL_ACCUM_RED_SIZE, 0);
+      SDL_GL_SetAttribute (SDL_GL_ACCUM_GREEN_SIZE, 0);
+      SDL_GL_SetAttribute (SDL_GL_ACCUM_BLUE_SIZE, 0);
+      SDL_GL_SetAttribute (SDL_GL_ACCUM_ALPHA_SIZE, 0);
 
-      if (SDL_SetVideoMode(stage_sdl->win_width, 
-			   stage_sdl->win_height, 
-			   0, flags) == NULL)
+      if (SDL_SetVideoMode (stage_sdl->win_width, 
+			    stage_sdl->win_height, 
+			    0, flags) == NULL)
 	{
 	  CLUTTER_NOTE (BACKEND, "SDL appears not to handle this mode - %s",
 			SDL_GetError());
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+
+	  CLUTTER_ACTOR_UNSET_FLAGS (stage_sdl, CLUTTER_ACTOR_REALIZED);
+          CLUTTER_ACTOR_UNSET_FLAGS (stage_sdl->wrapper,
+                                     CLUTTER_ACTOR_REALIZED);
 	  return;
 	}
+      else
+        {
+          CLUTTER_ACTOR_SET_FLAGS (stage_sdl, CLUTTER_ACTOR_REALIZED);
+          CLUTTER_ACTOR_SET_FLAGS (stage_sdl->wrapper, CLUTTER_ACTOR_REALIZED);
+          clutter_stage_ensure_current (stage_sdl->wrapper);
+        }
     }
   else
     {
       /* FIXME */
       g_warning("SDL Backend does not yet support offscreen rendering\n");
+
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
       return;
     }
 
-  CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_NOTE (BACKEND, "SDL stage realized");
+  CLUTTER_SET_PRIVATE_FLAGS (stage_sdl->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void
@@ -126,18 +146,22 @@ clutter_stage_sdl_request_coords (ClutterActor    *self,
       stage_sdl->win_width  = new_width;
       stage_sdl->win_height = new_height;
 
-      CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
+      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_SYNC_MATRICES);
     }
+
+  CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class)->request_coords (self,
+                                                                        box);
 }
 
 static void
-clutter_stage_sdl_set_fullscreen (ClutterStage *stage,
-                                  gboolean      fullscreen)
+clutter_stage_sdl_set_fullscreen (ClutterStageWindow *stage_window,
+                                  gboolean            fullscreen)
 {
-  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (stage);
+  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (stage_window);
   int              flags = SDL_OPENGL;
 
-  if (fullscreen) flags |= SDL_FULLSCREEN;
+  if (fullscreen)
+    flags |= SDL_FULLSCREEN;
 
   SDL_SetVideoMode(stage_sdl->win_width,
 		   stage_sdl->win_height,
@@ -145,28 +169,29 @@ clutter_stage_sdl_set_fullscreen (ClutterStage *stage,
 }
 
 static void
-clutter_stage_sdl_set_cursor_visible (ClutterStage *stage,
-                                      gboolean      show_cursor)
+clutter_stage_sdl_set_cursor_visible (ClutterStageWindow *stage_window,
+                                      gboolean            show_cursor)
 {
-  SDL_ShowCursor(show_cursor);
+  SDL_ShowCursor (show_cursor);
 }
 
-static GdkPixbuf*
-clutter_stage_sdl_draw_to_pixbuf (ClutterStage *stage,
-                                  GdkPixbuf    *dest,
-                                  gint          x,
-                                  gint          y,
-                                  gint          width,
-                                  gint          height)
+static GdkPixbuf *
+clutter_stage_sdl_draw_to_pixbuf (ClutterStageWindow *stage_window,
+                                  GdkPixbuf          *dest,
+                                  gint                x,
+                                  gint                y,
+                                  gint                width,
+                                  gint                height)
 {
-  g_warning ("Stage of type `%s' do not support ClutterStage::draw_to_pixbuf",
-             G_OBJECT_TYPE_NAME (stage));
+  g_warning ("Stage of type `%s' do not support "
+             "ClutterStageWindow::draw_to_pixbuf",
+             G_OBJECT_TYPE_NAME (stage_window));
   return NULL;
 }
 
 static void
-clutter_stage_sdl_set_title (ClutterStage *stage,
-			     const gchar  *title)
+clutter_stage_sdl_set_title (ClutterStageWindow *stage_window,
+			     const gchar        *title)
 {
   SDL_WM_SetCaption  (title, NULL);
 }
@@ -186,7 +211,6 @@ clutter_stage_sdl_class_init (ClutterStageSDLClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  ClutterStageClass *stage_class = CLUTTER_STAGE_CLASS (klass);
 
   gobject_class->dispose = clutter_stage_sdl_dispose;
   
@@ -196,11 +220,15 @@ clutter_stage_sdl_class_init (ClutterStageSDLClass *klass)
   actor_class->unrealize = clutter_stage_sdl_unrealize;
   actor_class->request_coords = clutter_stage_sdl_request_coords;
   actor_class->query_coords = clutter_stage_sdl_query_coords;
-  
-  stage_class->set_fullscreen = clutter_stage_sdl_set_fullscreen;
-  stage_class->set_cursor_visible = clutter_stage_sdl_set_cursor_visible;
-  stage_class->draw_to_pixbuf = clutter_stage_sdl_draw_to_pixbuf;
-  stage_class->set_title = clutter_stage_sdl_set_title;
+}
+
+static void
+clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
+{
+  iface->set_fullscreen = clutter_stage_sdl_set_fullscreen;
+  iface->set_cursor_visible = clutter_stage_sdl_set_cursor_visible;
+  iface->set_title = clutter_stage_sdl_set_title;
+  iface->draw_to_pixbuf = clutter_stage_sdl_draw_to_pixbuf;
 }
 
 static void

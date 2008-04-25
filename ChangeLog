@@ -1,3 +1,15 @@
+2008-04-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/sdl/clutter-stage-sdl.[ch]: Port the SDL stage to
+	the new stage implementation API.
+
+	* clutter/sdl/clutter-backend-sdl.[ch]: Port the SDL backend
+	to the new backend API.
+
+	* clutter/sdl/clutter-event-sdl.c:
+	(clutter_event_dispatch): Assign the default stage as the
+	origin of the event.
+
 2008-04-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Add the --with-json configure switch to

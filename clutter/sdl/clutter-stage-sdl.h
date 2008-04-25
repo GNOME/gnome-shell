@@ -16,15 +16,17 @@ typedef struct _ClutterStageSDLClass    ClutterStageSDLClass;
 
 struct _ClutterStageSDL
 {
-  ClutterStage parent_instance;
+  ClutterActor parent_instance;
 
   gint         win_width;
   gint         win_height;
+
+  ClutterStage *wrapper;
 };
 
 struct _ClutterStageSDLClass
 {
-  ClutterStageClass parent_class;
+  ClutterActorClass parent_class;
 };
 
 GType clutter_stage_sdl_get_type (void) G_GNUC_CONST;

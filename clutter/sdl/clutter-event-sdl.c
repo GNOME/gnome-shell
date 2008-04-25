@@ -327,15 +327,15 @@ clutter_event_dispatch (GSource     *source,
 	{
 	  event = clutter_event_new (CLUTTER_NOTHING);
 
+          event->any.stage = clutter_stage_get_default ();
+
 	  if (event_translate (backend, event, &sdl_event))
 	    {
 	      /* push directly here to avoid copy of queue_put */
 	      g_queue_push_head (clutter_context->events_queue, event);
 	    }
 	  else
-	    {
-	      clutter_event_free (event);
-	    }
+	    clutter_event_free (event);
 	}
     }
 
