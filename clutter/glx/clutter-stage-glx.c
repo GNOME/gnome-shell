@@ -42,12 +42,10 @@
 #include "../clutter-stage.h"
 #include "../clutter-stage-window.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 #include <GL/glx.h>
 #include <GL/gl.h>
-
-#include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
@@ -314,85 +312,6 @@ fail:
 }
 
 static void
-snapshot_pixbuf_free (guchar   *pixels,
-                      gpointer  data)
-{
-  g_free (pixels);
-}
-
-static GdkPixbuf *
-clutter_stage_glx_draw_to_pixbuf (ClutterStageWindow *stage_window,
-                                  gint                x,
-                                  gint                y,
-                                  gint                width,
-                                  gint                height)
-{
-  guchar *data;
-  GdkPixbuf *pixb;
-  ClutterActor *actor;
-  ClutterStageGLX *stage_glx;
-  ClutterStageX11 *stage_x11;
-  gboolean is_offscreen = FALSE;
-
-  stage_glx = CLUTTER_STAGE_GLX (stage_window);
-  stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-  actor = CLUTTER_ACTOR (stage_window);
-
-  if (width < 0)
-    width = clutter_actor_get_width (actor);
-
-  if (height < 0)
-    height = clutter_actor_get_height (actor);
-
-  g_object_get (stage_x11->wrapper, "offscreen", &is_offscreen, NULL);
-
-  if (G_UNLIKELY (is_offscreen))
-    {
-      gdk_pixbuf_xlib_init (stage_x11->xdpy, stage_x11->xscreen);
-
-      pixb = gdk_pixbuf_xlib_get_from_drawable (NULL,
-                                                (Drawable) stage_x11->xpixmap,
-                                                DefaultColormap (stage_x11->xdpy,
-                                                                 stage_x11->xscreen),
-                                                stage_x11->xvisinfo->visual,
-                                                x, y,
-                                                0, 0,
-                                                width, height);
-    }
-  else
-    {
-      GdkPixbuf *tmp = NULL, *tmp2 = NULL;
-      gint stride;
-
-      stride = ((width * 4 + 3) &~ 3);
-
-      data = g_malloc0 (sizeof (guchar) * stride * height);
-
-      glReadPixels (x, 
-                    clutter_actor_get_height (actor) - y - height,
-                    width, 
-                    height, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-      tmp = gdk_pixbuf_new_from_data (data,
-                                      GDK_COLORSPACE_RGB, 
-                                      TRUE, 
-                                      8, 
-                                      width, height,
-                                      stride,
-                                      snapshot_pixbuf_free,
-                                      NULL);
-
-      tmp2 = gdk_pixbuf_flip (tmp, TRUE); 
-      g_object_unref (tmp);
-
-      pixb = gdk_pixbuf_rotate_simple (tmp2, GDK_PIXBUF_ROTATE_UPSIDEDOWN);
-      g_object_unref (tmp2);
-   }
-
-  return pixb;
-}
-
-static void
 clutter_stage_glx_dispose (GObject *gobject)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (gobject);
@@ -424,7 +343,5 @@ clutter_stage_glx_init (ClutterStageGLX *stage)
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
-  iface->draw_to_pixbuf = clutter_stage_glx_draw_to_pixbuf;
-
   /* the rest is inherited from ClutterStageX11 */
 }

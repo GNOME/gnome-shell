@@ -116,15 +116,9 @@ main (int argc, char *argv[])
   ClutterActor     *group, *hand, *label, *rect, *janus, *box;
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
   ClutterColor      rect_color  = { 0, 0, 0, 0x88 };
-  GdkPixbuf        *pixbuf;
   GError           *error;
 
   clutter_init (&argc, &argv);
-
-  error = NULL;
-  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", &error);
-  if (error)
-    g_error ("Unable to load redhand.png: %s", error->message);
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
@@ -143,7 +137,10 @@ main (int argc, char *argv[])
   clutter_actor_set_position (label, 120, 200);
   clutter_actor_show (label);
 
-  hand = clutter_texture_new_from_pixbuf (pixbuf);
+  error = NULL;
+  hand = clutter_texture_new_from_file ("redhand.png", &error);
+  if (error)
+    g_error ("Unable to load redhand.png: %s", error->message);
   clutter_actor_set_position (hand, 240, 100);
   clutter_actor_show (hand);
 

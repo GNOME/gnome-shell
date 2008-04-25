@@ -46,7 +46,7 @@
 
 #include "../clutter-util.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 typedef void    (*BindTexImage) (Display     *display,
                                  GLXDrawable  drawable,
@@ -159,10 +159,11 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
                                    CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
                                    ClutterGLXTexturePixmapPrivate);
 
+  /* FIXME: Obsolete. Move to new cogl api.
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
     priv->target_type = CGL_TEXTURE_RECTANGLE_ARB;
   else
-    priv->target_type = CGL_TEXTURE_2D;
+    priv->target_type = CGL_TEXTURE_2D; */
 }
 
 static void
@@ -224,15 +225,16 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
                 "pixmap-width",   &width,
                 "pixmap-height",  &height,
                 NULL);
-
+  
+  /* FIXME: Obsolete. Move to new cogl api
   cogl_textures_create (1, &priv->texture_id);
-
+  */
   clutter_glx_texture_pixmap_update_area (CLUTTER_X11_TEXTURE_PIXMAP (actor),
                                           0, 0,
                                           width, height);
-
+  /*
   cogl_texture_set_alignment (priv->target_type, 4, width);
-
+  
   cogl_texture_set_filters (priv->target_type,
                             filter_quality ? CGL_LINEAR : CGL_NEAREST,
                             filter_quality ? CGL_LINEAR : CGL_NEAREST);
@@ -240,7 +242,7 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
   cogl_texture_set_wrap (priv->target_type,
                          repeat_x ? CGL_REPEAT : CGL_CLAMP_TO_EDGE,
                          repeat_y ? CGL_REPEAT : CGL_CLAMP_TO_EDGE);
-
+  */
   CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
 
@@ -274,9 +276,10 @@ clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
       XSync (clutter_x11_get_default_display(), FALSE);
       clutter_x11_untrap_x_errors ();
     }
-
+  
+  /* FIXME: Obsolete. Move to new cogl api.
   cogl_textures_destroy (1, &priv->texture_id);
-
+  */
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
 
@@ -287,6 +290,7 @@ texture_render_to_gl_quad (ClutterGLXTexturePixmap *texture,
                            int                      x_2,
                            int                      y_2)
 {
+  /* FIXME: Obsolete. Move to new cogl api
   ClutterGLXTexturePixmapPrivate *priv = texture->priv;
 
   int   qx1 = 0, qx2 = 0, qy1 = 0, qy2 = 0;
@@ -304,7 +308,7 @@ texture_render_to_gl_quad (ClutterGLXTexturePixmap *texture,
 
   cogl_texture_bind (priv->target_type, priv->texture_id);
 
-  if (priv->target_type == CGL_TEXTURE_2D) /* POT */
+  if (priv->target_type == CGL_TEXTURE_2D)
     {
       tx = (float) width  / clutter_util_next_p2 (width);
       ty = (float) height / clutter_util_next_p2 (height);
@@ -323,7 +327,7 @@ texture_render_to_gl_quad (ClutterGLXTexturePixmap *texture,
                      0,
                      0,
                      CLUTTER_FLOAT_TO_FIXED (tx),
-                     CLUTTER_FLOAT_TO_FIXED (ty));
+                     CLUTTER_FLOAT_TO_FIXED (ty)); */
 }
 
 static void
@@ -347,6 +351,7 @@ clutter_glx_texture_pixmap_paint (ClutterActor *actor)
 
   cogl_push_matrix ();
 
+  /* FIXME: Obsolete. Move to new cogl api.
   switch (priv->target_type)
     {
       case CGL_TEXTURE_2D:
@@ -357,7 +362,7 @@ clutter_glx_texture_pixmap_paint (ClutterActor *actor)
           break;
       default:
           break;
-    }
+    } */
 
   col.alpha = clutter_actor_get_opacity (actor);
 
@@ -527,11 +532,12 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   attribs[i++] = GLX_TEXTURE_TARGET_EXT;
 
+  /* FIXME: Obsolete. Move to new cogl api
   if (priv->target_type == CGL_TEXTURE_RECTANGLE_ARB)
     attribs[i++] = GLX_TEXTURE_RECTANGLE_EXT;
   else
-    attribs[i++] = GLX_TEXTURE_2D_EXT;
-
+    attribs[i++] = GLX_TEXTURE_2D_EXT; */
+  
   attribs[i++] = None;
 
 
@@ -553,8 +559,9 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
               CLUTTER_ACTOR_IS_REALIZED (texture) &&
               priv->bound)
             {
-              cogl_texture_bind (priv->target_type, priv->texture_id);
-
+	      /*
+              cogl_texture_bind (priv->target_type, priv->texture_id); */
+	      
               clutter_x11_trap_x_errors ();
 
               (_gl_release_tex_image) (dpy,
@@ -603,7 +610,8 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   if (!CLUTTER_ACTOR_IS_REALIZED (texture))
     return;
 
-  cogl_texture_bind (priv->target_type, priv->texture_id);
+  /* FIXME: Obsolete.
+  cogl_texture_bind (priv->target_type, priv->texture_id); */
 
   if (_have_tex_from_pixmap_ext)
     {

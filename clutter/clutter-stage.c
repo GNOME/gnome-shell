@@ -67,7 +67,7 @@
 #include "clutter-version.h" 	/* For flavour */
 #include "clutter-id-pool.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
@@ -1012,7 +1012,7 @@ clutter_stage_hide_cursor (ClutterStage *stage)
 }
 
 /**
- * clutter_stage_snapshot
+ * clutter_stage_read_pixels:
  * @stage: A #ClutterStage
  * @x: x coordinate of the first pixel that is read from stage
  * @y: y coordinate of the first pixel that is read from stage
@@ -1021,31 +1021,65 @@ clutter_stage_hide_cursor (ClutterStage *stage)
  * @height: Height dimention of pixels to be read, or -1 for the
  *   entire stage height
  *
+ * Makes a screenshot of the stage in RGBA 8bit data, returns a
+ * linear buffer with @width*4 as rowstride.
  * Gets a pixel based representation of the current rendered stage.
  *
- * Return value: pixel representation as a  #GdkPixbuf, or %NULL if
- *   the backend does not support this operation
+ * Return value: a pointer to newly allocated memory with the buffer
+ * that should be free with g_free, or NULL if the read back failed.
  */
-GdkPixbuf *
-clutter_stage_snapshot (ClutterStage *stage,
-			gint          x,
-			gint          y,
-			gint          width,
-			gint          height)
+guchar *
+clutter_stage_read_pixels (ClutterStage *stage,
+                           gint          x,
+                           gint          y,
+                           gint          width,
+                           gint          height)
 {
-  ClutterStageWindow *impl;
-  ClutterStageWindowIface *iface;
+  guchar *pixels;
+  GLint   viewport[4];
+  gint    rowstride;
+  gint    stage_x, stage_y, stage_width, stage_height;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
+  /* according to glReadPixels documentation pixels outside the viewport are
+   * undefined, but no error should be provoked, thus this is probably unnneed.
+   */
   g_return_val_if_fail (x >= 0 && y >= 0, NULL);
 
-  impl = CLUTTER_STAGE_WINDOW (stage->priv->impl);
-  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (impl);
+  /* Force a redraw of the stage before reading back pixels */
+  clutter_stage_paint (CLUTTER_ACTOR (stage));
+  clutter_stage_ensure_current (stage);
 
-  if (iface->draw_to_pixbuf)
-    return iface->draw_to_pixbuf (impl, x, y, width, height);
+  glGetIntegerv (GL_VIEWPORT, viewport);
+  stage_x      = viewport[0];
+  stage_y      = viewport[1];
+  stage_width  = viewport[2] - x;
+  stage_height = viewport[3] - y;
+  rowstride    = width * 4;
 
-  return NULL;
+  pixels = g_malloc (height * rowstride);
+
+  /* check whether we need to read into a smaller temporary buffer */
+  glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+  /* vertically flip the buffer in-place */
+  for (y=0; y< height/2; y++)
+    {
+      guchar temprow[rowstride];
+      if (y != height-y-1) /* skip center row */
+        {
+          memcpy (temprow,
+                  pixels + y * rowstride, rowstride);
+          memcpy (pixels + y * rowstride, 
+                  pixels + (height-y-1) * rowstride, rowstride);
+          memcpy (pixels + (height-y-1) * rowstride,
+                  temprow,
+                  rowstride);
+        }
+    }
+
+  return pixels;
 }
 
 /**
@@ -1161,7 +1195,8 @@ clutter_stage_set_title (ClutterStage       *stage,
   priv->title = g_strdup (title);
 
   impl = CLUTTER_STAGE_WINDOW (priv->impl);
-  CLUTTER_STAGE_WINDOW_GET_IFACE (impl)->set_title (impl, priv->title);
+  if (CLUTTER_STAGE_WINDOW_GET_IFACE(impl)->set_title != NULL)
+    CLUTTER_STAGE_WINDOW_GET_IFACE (impl)->set_title (impl, priv->title);
 
   g_object_notify (G_OBJECT (stage), "title");
 }

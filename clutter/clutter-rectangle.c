@@ -38,7 +38,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 G_DEFINE_TYPE (ClutterRectangle, clutter_rectangle, CLUTTER_TYPE_ACTOR);
 
@@ -84,7 +84,7 @@ clutter_rectangle_paint (ClutterActor *self)
                                               : "unknown");
   cogl_push_matrix();
 
-  cogl_enable (CGL_ENABLE_BLEND);
+  //cogl_enable (CGL_ENABLE_BLEND);
 
   clutter_actor_get_geometry (self, &geom);
 
@@ -101,22 +101,22 @@ clutter_rectangle_paint (ClutterActor *self)
       cogl_color (&tmp_col);
 
       /* this sucks, but it's the only way to make a border */
-      cogl_rectangle (priv->border_width, 0,
-		      geom.width - priv->border_width,
-		      priv->border_width);
+      cogl_fast_fill_rectangle (priv->border_width, 0,
+				geom.width - priv->border_width,
+				priv->border_width);
 
-      cogl_rectangle (geom.width - priv->border_width,
-		      priv->border_width,
-		      priv->border_width,
-		      geom.height - priv->border_width);
+      cogl_fast_fill_rectangle (geom.width - priv->border_width,
+				priv->border_width,
+				priv->border_width,
+				geom.height - priv->border_width);
 
-      cogl_rectangle (0, geom.height - priv->border_width,
-		      geom.width - priv->border_width,
-		      priv->border_width);
+      cogl_fast_fill_rectangle (0, geom.height - priv->border_width,
+				geom.width - priv->border_width,
+				priv->border_width);
 
-      cogl_rectangle (0, 0,
-		      priv->border_width,
-		      geom.height - priv->border_width);
+      cogl_fast_fill_rectangle (0, 0,
+				priv->border_width,
+				geom.height - priv->border_width);
 
       tmp_col.red   = priv->color.red;
       tmp_col.green = priv->color.green;
@@ -124,10 +124,10 @@ clutter_rectangle_paint (ClutterActor *self)
 
       cogl_color (&tmp_col);
 
-      cogl_rectangle (priv->border_width,
-		      priv->border_width,
-		      geom.width - priv->border_width * 2,
-		      geom.height - priv->border_width * 2);
+      cogl_fast_fill_rectangle (priv->border_width,
+				priv->border_width,
+				geom.width - priv->border_width * 2,
+				geom.height - priv->border_width * 2);
     }
   else
     {
@@ -138,7 +138,7 @@ clutter_rectangle_paint (ClutterActor *self)
 
       cogl_color (&tmp_col);
 
-      cogl_rectangle (0, 0, geom.width, geom.height);
+      cogl_fast_fill_rectangle (0, 0, geom.width, geom.height);
     }
 
   cogl_pop_matrix();

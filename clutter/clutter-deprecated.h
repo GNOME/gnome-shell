@@ -36,10 +36,12 @@
 #define clutter_actor_set_scale_with_gravity         clutter_actor_set_scale_with_gravity_DEPRECATED_BY_clutter_actor_set_anchor_point_from_gravity
 #define clutter_actor_set_scale_with_gravityx        clutter_actor_set_scale_with_gravity_DEPRECATED_BY_clutter_actor_set_anchor_point_from_gravity
 
-#define clutter_entry_set_position              clutter_entry_set_position_REPLACED_BY_clutter_entry_set_cursor_position
-#define clutter_entry_get_position              clutter_entry_get_position_REPLACED_BY_clutter_entry_get_cursor_position
+#define clutter_entry_set_position                   clutter_entry_set_position_REPLACED_BY_clutter_entry_set_cursor_position
+#define clutter_entry_get_position                   clutter_entry_get_position_REPLACED_BY_clutter_entry_get_cursor_position
 
-#define clutter_shader_bind                     clutter_shader_bind_REPLACED_BY_clutter_shader_compile
-#define clutter_shader_is_bound                 clutter_shader_is_bound_REPLACED_BY_clutter_shader_is_compiled
+#define clutter_shader_bind                          clutter_shader_bind_REPLACED_BY_clutter_shader_compile
+#define clutter_shader_is_bound                      clutter_shader_is_bound_REPLACED_BY_clutter_shader_is_compiled
+
+#define clutter_texture_new_from_pixbuf              clutter_texture_new_from_pixbuf_DEPRECATED_BY_clutter_texture_new_from_file_OR_clutter_texture_new_AND_clutter_texture_set_from_rgb_data
 
 #endif /* CLUTTER_DEPRECATED_H */

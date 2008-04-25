@@ -1,0 +1,1266 @@
+2008-04-25  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/eglnative/clutter-backend-egl.c: (clutter_egl_display):
+	removed platform specific build hack rpl_malloc and rpl_free wrappers.
+
+	* clutter/eglnative/clutter-backend-egl.h: 
+	* clutter/eglnative/clutter-egl.h:
+	* clutter/eglnative/clutter-stage-egl.h: removed platform specific
+	extra includes from eglnative.
+
+2008-04-25  Øyvind Kolås  <pippin@o-hand.com>
+
+	* tests/test-pixmap.c: (main): only compile this test if
+	HAVE_CLUTTER_GLX is defined.
+
+2008-04-25  Øyvind Kolås  <pippin@o-hand.com>
+
+	Merged back changes from the fruity flavour into the original native
+	flavour. Changes for dealing with multiple stages.
+
+	* clutter/eglnative/clutter-backend-egl.c:
+	* clutter/eglnative/clutter-backend-egl.h:
+	* clutter/eglnative/clutter-egl.h:
+	* clutter/eglnative/clutter-stage-egl.c:
+	* clutter/eglnative/clutter-stage-egl.h:
+
+2008-04-25  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/cogl.h.in: Tiny fix to gtk-doc for cogl_fog.set
+
+2008-04-25  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gles/cogl-texture.c (cogl_texture_polygon): 
+	* clutter/cogl/gl/cogl-texture.c (cogl_texture_polygon): Added a
+	warning if the call will fail.
+
+	* clutter/cogl/cogl.h.in: Added a note in the gtk-doc about not
+	supporting repeated textures in cogl_texture_polygon.
+
+2008-04-24  Øyvind Kolås  <pippin@o-hand.com>
+
+	* configure.ac: added fruity backend.
+	* clutter/clutter-main.c: (clutter_main): special case invoking main()
+	for the fruity backend.
+	* clutter/clutter-stage.c: (clutter_stage_set_title): do not call the
+	set_title vfunc if no implementation exist in the interface.
+
+	* clutter/fruity/Makefile.am: 
+	* clutter/fruity/clutter-backend-fruity.c:
+	* clutter/fruity/clutter-backend-fruity.h:
+	* clutter/fruity/clutter-fruity.c:
+	* clutter/fruity/clutter-fruity.h:
+	* clutter/fruity/clutter-stage-fruity.c:
+	* clutter/fruity/clutter-stage-fruity.h: added fruity backend.
+
+2008-04-24  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c:
+        Add a 'disable-slicing' property.
+
+2008-04-24  Ivan Leben  <ivan@o-hand.com>
+
+	* clutter/clutter-feature.c:
+	(_clutter_features_from_cogl:) oops, forgot to return.
+
+2008-04-24  Ivan Leben  <ivan@o-hand.com>
+
+	* clutter/clutter-feature.c:
+	Map cogl to clutter features before or-ing with clutter flags
+	obtained from backend.
+
+	* clutter/cogl/cogl.h.in:
+	Removed SYNC_TO_VBLANK from cogl feature flags, since its only
+	checked on clutter level. Renumbered flags in ascending order.
+
+	* clutter/cogl/gles/cogl.c:
+	(_cogl_features_init:) Adds COGL_FEATURE_TEXTURE_READ_PIXELS
+	flag to features.
+
+2008-04-24  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/cogl.h.in: Documented remaining functions up to the
+	texture API except cogl_check_extension, cogl_perspective and
+	cogl_alpha_func.
+
+2008-04-24  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-texture.c (struct _ClutterTexturePrivate): Make
+	max_tile_waste signed.
+	(clutter_texture_class_init): Fix documentation for tile-waste
+	property.
+	(clutter_texture_get_cogl_texture),
+	(clutter_texture_set_cogl_texture): Added 'since' to the gtk-doc.
+	(clutter_texture_set_max_tile_waste): Make the max_tile_waste
+	parameter signed and fix the documentation.
+	(clutter_texture_get_max_tile_waste): Make the return value signed
+	and fix the documentation.
+
+	* clutter/clutter-texture.h: Fix type for
+	{get,set}_max_tile_waste.
+
+	* clutter/clutter-sections.txt: Added
+	clutter_texture_{get,set}_max_tile_waste and
+	clutter_texture_set_cogl_texture.
+
+2008-04-24  Ivan Leben  <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h.in:
+	* clutter/cogl/gl/(es)/cogl-texture.c:
+	cogl_texture_get_max_waste returns gint instead of guint.
+
+2008-04-24  Ivan Leben  <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h.in:
+	Texture *_new_* functions max_waste argument changed to signed
+	integer.
+
+	* clutter/cogl/gl(es)/cogl-texture.c:
+	(_cogl_texture_slices_create:) Returns FALSE if max_waste is -1
+	and size of initial slice is not supported.
+
+	(_cogl_texture_slices_free:) Fixed so that slice_gl_handles
+	array is freed when texture created from foreign.
+
+	(_cogl_texture_free:) New function - calls other *_free
+	functions to simplify destruction.
+
+	(*_new_* functions): max_waste signed, fixed handling of
+	failed texture construction so that the resources allocated
+	so far are actually freed before bailing out.
+
+2008-04-24  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/cogl.h.in (cogl_scale): Fixed name of the y
+	parameter.
+
+2008-04-24  Robert Bragg    <bob@o-hand.com>
+
+	* clutter/eglx/clutter-stage-egl.c
+	* clutter/cogl/gl/cogl-texture.c
+	* clutter/cogl/gles/cogl-texture.c
+	* tests/test-pixmap.c:
+	Minor tidy up of some allocations: s/malloc/g_malloc and s/free/g_free
+	(except I left cogl/common/stb_image.c untouched)
+	These had been causing some cross compile issues for me.
+
+2008-04-24  Ivan Leben    <ivan@o-hand.com>
+
+	* clutter/cogl/gl(es)/cogl-texture.c:
+	(cogl_texture_is_sliced, cogl_texture_get_gl_texture:)
+	Fixed a copy-paste typo. Thanks to Matthew Allum for spotting.
+
+2008-04-24  Ivan Leben    <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h.in: Changed flags in CoglTargetBuffer
+	enum to occupy separate bits so COGL_WINDOW_BUFFER and
+	COGL_MASK_BUFFER can be or-ed together.
+
+	* clutter/cogl/gl(es)/cogl-fbo.c: (cogl_draw_buffer:) handles
+	the combination of window and mask buffer targets
+
+	* clutter/cogl/gles/cogl-textures.c:
+	Implemented cogl_texture_getset in GLES. Limitations are two:
+	a) viewport must be inside the window and have at least width and
+	height of 1 pixel
+	b) framebuffer alpha plane required to properly obtain data for
+	alpha texture channel
+
+2008-04-23  Robert Bragg  <bob@o-hand.com>
+	
+	* clutter/sdl/Makefile.am
+	* clutter/glx/Makefile.am
+	* clutter/pango/Makefile.am
+	* clutter/cogl/gl/Makefile.am
+	* clutter/cogl/common/Makefile.am
+	* clutter/cogl/gles/Makefile.am
+	* clutter/win32/Makefile.am
+	* clutter/x11/Makefile.am
+	* clutter/osx/Makefile.am
+	* clutter/Makefile.am
+	* tests/Makefile.am:
+	Adds support for out of tree builds. Tested building for arm+eglx
+	glx and mingw+win32.
+
+>>>>>>> .r2586
+2008-04-23  Neil Roberts  <neil@o-hand.com>
+
+	* tests/Makefile.am: Don't build test-pixmap if we are not
+	targetting one of the X11-based backends.
+
+	* configure.ac: Define an AM_CONDITIONAL when we are building
+	for either of the X11-based backends.
+
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-texture.c:
+	(clutter_texture_set_property),
+	(clutter_texture_class_init): Add a :filename property, writable
+	only, for setting the filename of the texture data.
+
+	(clutter_texture_set_custom_property),
+	(clutter_scriptable_iface_init): Override the scriptable interface
+	to allow using relative paths for the :filename property; chain
+	up to the parent class implementation.
+
+	* tests/test-script.json: Update to use "filename" instead of
+	"pixbuf".
+
+2008-04-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.[ch]: Sync up with trunk, to reduce the
+	chunks between the clutter-ivan branch and trunk when merging.
+
+2008-04-23  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_set_property): When one
+	of the rotation properties is set it also tries to set the
+	rotation center to what is was already. clutter_actor_set_rotation
+	expects integer co-ordinates but we were passing them directly
+	from the actor private data which stores them as ClutterUnits
+
+2008-04-22  Robert Bragg  <bob@o-hand.com>
+
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+	clutter_x11_texture_pixmap_update_area_real simply returns if no
+	pixmap has been set yet so we dont hit an X error after trying
+	XGet[Sub]Image.
+
+2008-04-22  Robert Bragg  <bob@o-hand.com>
+
+	* clutter/cogl/common/cogl-bitmap-pixbuf.c:
+	Tweaks the calculation of last_row_size in _cogl_bitmap_from_file
+	(USE_GDKPIXBUF) to fix an overflow page fault.
+
+2008-04-22  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/cogl.h.in: 
+	* clutter/cogl/gl/cogl-texture.c: 
+	* clutter/cogl/gles/cogl-texture.c: 
+	* doc/reference/cogl/cogl-sections.txt: Removed
+	cogl_texture_can_polygon.
+
+2008-04-22  Neil Roberts  <neil@o-hand.com>
+
+	* doc/reference/cogl/Makefile.am (INCLUDES): 
+	* doc/reference/clutter/Makefile.am (INCLUDES): 
+	Added the clutter directory to the include path so that
+	cogl/cogl.h can be included when building cogl-scan and
+	clutter-scan.
+
+2008-04-22  Neil Roberts  <neil@o-hand.com>
+
+	Relocated the installation location of the cogl header to
+	clutter-VERSION/cogl/cogl.h instead of
+	clutter-VERSION/clutter/cogl.h.
+
+	* configure.ac: Now generates cogl/cogl-defines-*.gl from the
+	cogl-defines.h in the appropriate directory. cogl.h is also
+	generated to include the right cogl-defines-*.h
+
+	* clutter/cogl/gl/Makefile.am: 
+	* clutter/cogl/gles/Makefile.am: Install cogl headers to
+	clutter-VERSION/cogl instead of clutter-VERSION/clutter.
+
+	* clutter/cogl/cogl.h: Rename to cogl.h.in and have the configure
+	script filter it so that it can include the right
+	cogl-defines-*.h.
+
+	* clutter/cogl/gles/cogl-defines.h: Rename to cogl-defines.h.in so
+	that the configure script can copy it to the parent directory.
+
+	* clutter/cogl/gles/cogl-fbo.c: 
+	* clutter/cogl/gl/cogl-fbo.c: Remove inclusion of cogl-defines.h
+	because it has changed its name and it is included indirectly by
+	cogl.h anyway.
+
+	* clutter/cogl/common/Makefile.am (INCLUDES): Added the clutter
+	folder to the include path.
+
+	* clutter/clutter-texture.h: Properly include the COGL header as
+	<cogl/cogl.h> and use CoglHandle instead of void*
+
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-feature.c:
+	* clutter/clutter-group.c:
+	* clutter/clutter-main.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-shader.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-actor.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* clutter/pango/pangoclutter-render.c:
+	* clutter/sdl/clutter-stage-sdl.c:
+	* clutter/win32/clutter-backend-win32.c:
+	* clutter/win32/clutter-stage-win32.c:
+	* clutter/x11/clutter-backend-x11.c:
+	* clutter/x11/clutter-stage-x11.c:
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+	Include the COGL header as cogl/cogl.h instead of cogl.h
+
+	* clutter/pango/Makefile.am:
+	* clutter/osx/Makefile.am:
+	* clutter/glx/Makefile.am:
+	* clutter/sdl/Makefile.am:
+	* clutter/win32/Makefile.am:
+	* clutter/x11/Makefile.am:
+	* clutter/Makefile.am: Remove the two COGL include
+	directories and add the clutter folder so that the cogl header can
+	be included as cogl/cogl.h
+
+	* tests/Makefile.am: Added the clutter folder to the include path
+	and removed the special build flags for the COGL tests.
+
+	* tests/test-cogl-offscreen:
+	* tests/test-cogl-tex-convert:
+	* tests/test-cogl-tex-foreign:
+	* tests/test-cogl-tex-getset:
+	* tests/test-cogl-tex-polygon:
+	* tests/test-cogl-tex-tile:
+	Include COGL header as <cogl/cogl.h> instead of "cogl.h"
+	
+2008-04-22  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/common/stb_image.c: only include emmintrin.h when
+	STBI_SIMD is explictly defined before including stb_image.[ch] to
+	make stb_image compile for ARM.
+
+2008-04-22  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/eglx/clutter-stage-egl.c: removed ::draw_to_pixbuf.
+
+2008-04-22  Ivan Leben    <ivan@o-hand.com>
+
+	* clutter/cogl/gl(es)/cogl-texture.c:
+	(cogl_texture_new_from_foreign:) Sets waste value for the single
+	slice and tex->wrap_mode. This fixes test-cogl-tex-foreign after
+	hardware tiling has been corrected by factoring out the waste from
+	texture coordinates.
+
+2008-04-22  Ivan Leben    <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-texture.c (_cogl_texture_slices_create:)
+	Moved check for harware tiling availability so that n_slices is
+	actually initialized before being used in the check. Fixes
+	test-cogl-tex-tile after introduction of cogl_texture_polygon.
+
+2008-04-22  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-stage-window.h: removed draw_to_pixbuf call from
+	class.
+	* clutter/glx/clutter-stage-glx.c: removed
+	clutter_stage_glx_draw_to_pixbuf.
+	* clutter/clutter-stage.[ch]: (clutter_stage_read_pixels): made
+	clutter_stage_read_pixels replace clutter_stage_snapshot.
+	* tests/test-stage-read-pixels.c: added test that extends test-actors
+	with a on stage snapshot of the stage behind the circle of hands.
+	* tests/Makefile.am: added test.
+
+2008-04-21  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gles/cogl-texture.c (_cogl_texture_quad_hw): 
+	* clutter/cogl/gl/cogl-texture.c (_cogl_texture_quad_hw):
+	Fixed so that if the texture is sliced then it doesn't include the
+	waste part of the texture in the range of the texture coordinates.
+
+2008-04-21  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/cogl.h: Added cogl_texture_can_polygon and
+	cogl_texture_polygon.
+	(struct _CoglTextureVertex): New public structure to represent a
+	vertex with texture coordinates and a color to pass to
+	cogl_texture_polygon.
+
+	* clutter/cogl/gl/cogl-texture.c (_cogl_texture_slices_create):
+	The wrap mode for the texture is now stored in the texture
+	structure so that it can be quickly restored after
+	cogl_texture_polygon temporarily changes it. It now also sets a
+	transparent border color for each texture to make
+	cogl_texture_polygon easier to work with sliced textures.
+	(cogl_texture_can_polygon, cogl_texture_polygon): New public
+	functions.
+
+	* clutter/cogl/gl/cogl-texture.h (struct _CoglTexture): Added
+	wrap_mode
+
+	* clutter/cogl/gles/cogl-context.h (struct CoglContext): Added a
+	global resizable array to store vertices in to pass to
+	glDrawArrays from cogl_texture_polygon.
+
+	* clutter/cogl/gles/cogl-context.c (cogl_create_context): Added
+	initialisers for texture_vertices and textures_vertices_size.
+	(cogl_destroy_context): Frees texture_vertices.
+
+	* clutter/cogl/gles/cogl-internal.h (COGL_ENABLE_COLOR_ARRAY):
+	Added a bit to enable the color array.
+
+	* clutter/cogl/gles/cogl-texture.c (cogl_texture_can_polygon)
+	(cogl_texture_polygon): New public functions.
+
+	* clutter/cogl/gles/cogl.c (cogl_enable): Added test for enabling
+	the color array.
+
+	* tests/Makefile.am: Added test-cogl-tex-polygon.
+
+	* tests/test-cogl-tex-polygon.c: New test for cogl_texture_polygon
+
+2008-04-18  Øyvind Kolås  <pippin@gimp.org>
+
+	* configure.ac: added a configure time option to build without
+	depending on GdkPixbuf that uses stb_image.c instead, this build
+	type is experimental and can be enabled by passing
+	--with-imagebackend=internal to ./configure.
+	* clutter/cogl/common/stb_image.c: new file.
+	* clutter/cogl/common/Makefile.am: added new file.
+	* clutter/cogl/common/cogl-bitmap-pixbuf.c:
+	(_cogl_bitmap_from_file): added alternate codepath.
+
+	* clutter/clutter-script.c: 
+	* clutter/clutter-script-parser.c: #include <gmodule.h> and disable
+	code referring to GdkPixbuf is USE_GDKPIXBUF is not defined.
+
+	* clutter/clutter-stage.[ch]:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-stage-window.h:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/x11/clutter-stage-x11.c:
+	* tests/test-pixmap.c:
+	* tests/test-textures.c: disable code referring to GdkPixbuf if
+	USE_GDKPIXBUF is not defined.
+
+2008-04-17  Neil Roberts  <neil@o-hand.com>
+
+	Applied patch from bug #874
+
+	* clutter/cogl/gles/cogl.c (cogl_clip_set): 
+	* clutter/cogl/gl/cogl.c (cogl_clip_set): If four clip planes are
+	available then attempt to use those to implement the clip rect,
+	otherwise resort to the stencil buffer.
+
+	* clutter/cogl/cogl.h (enum CoglFeatureFlags): Added feature flags
+	for the stencil buffer and having four clip planes.
+
+2008-04-17  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-deprecated.h: added deprecation warning for
+	clutter_texture_new_from_pixmap.
+
+2008-04-16  Neil Roberts  <neil@o-hand.com>
+
+	* tests/test-multistage.c (on_button_press): Fix to use the new
+	clutter_texture_new_from_file function instead of
+	clutter_texture_new_from_pixbuf.
+
+2008-04-16  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gl/cogl-texture.c: 
+	* clutter/cogl/gles/cogl-texture.c: 
+	Fixed tests for COGL_DEBUG in texture referencing debugging
+	statements. (It's defined as 0 when disabled instead of not being
+	defined at all). oops
+
+2008-04-15  Ivan Leben    <ivan@o-hand.com>
+
+	* tests: update svn:ignore
+
+2008-04-15  Ivan Leben    <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/common/cogl-bitmap.c:
+	* clutter/cogl/common/cogl-bitmap-fallback.c:
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gles/cogl-texture.c:
+	New pixel format COGL_PIXEL_FORMAT_G_8 and appropriate
+	conversions to / from RGBA implemented.
+
+	* tests/test-cogl-tex-convert.c:
+	Bottom-right image uses G_8 format instead of RGB_888.
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl-texture.h:
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gles/cogl-texture.h:
+	* clutter/cogl/gles/cogl-texture.c:
+	New function cogl_texture_new_from_foreign constructs a
+	cogl texture from an existing GL texture object.
+
+	* tests/test-cogl-tex-foreign.c:
+	New test app for cogl_texture_new_from_foreign.
+
+2008-04-15  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-texture.c (clutter_texture_set_property)
+	(clutter_texture_get_property, clutter_texture_class_init): Added
+	the 'cogl-texture' property.
+	(clutter_texture_handle_get_type): Added a function to get a boxed
+	type wrapper around a CoglHandle for a texture.
+	(clutter_texture_set_cogl_texture): Emits a notification signal
+	when the cogl-texture property is changed.
+
+	* clutter/clutter-texture.h: Added a boxed type wrapper for a COGL
+	texture handle.
+
+	* clutter/cogl/gl/cogl-texture.c (cogl_texture_new_with_size)
+	(cogl_texture_new_from_data, cogl_texture_new_from_file)
+	(cogl_texture_ref, cogl_texture_unref): Added debugging statements
+	for the texture referencing counting.
+
+2008-04-15  Neil Roberts  <neil@o-hand.com>
+
+	Added reference counting to CoglHandles
+
+	* tests/test-cogl-offscreen.c (test_coglbox_dispose): 
+	* clutter/clutter-texture.c: Replaced calls to
+	cogl_offscreen_destroy with cogl_offscreen_unref.
+
+	* clutter/cogl/gl/cogl-texture.h: 
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gles/cogl-texture.h: 
+	* clutter/cogl/gles/cogl-texture.c:
+	* clutter/cogl/gl/cogl-fbo.h:
+	* clutter/cogl/gl/cogl-fbo.c:
+	* clutter/cogl/gles/cogl-fbo.h: 
+	* clutter/cogl/gles/cogl-fbo.c:
+	* clutter/cogl/cogl.h:
+	Added reference counting functions
+
+	* clutter/clutter-texture.c (struct _ClutterTexturePrivate):
+	max_tile_waste is now guint instead of gint.
+	(clutter_texture_realize): Added a call to
+	cogl_texture_set_filters for every new texture created.
+	(clutter_texture_set_property): Calls
+	clutter_texture_set_max_tile_waste to set the PROP_MAX_TILE_WASTE
+	property.
+	(clutter_texture_get_property): Calls getter functions for the
+	PROP_MAX_TILE_WASTE and PROP_FILTER_QUALITY functions.
+	(clutter_texture_save_to_local_data): Store the filter quality and
+	max_tile_waste when making a local copy of the texture so that it
+	can be restored.
+	(clutter_texture_set_filter_quality): Set the filter quality on
+	the CoglHandle instead if it is available.
+	(clutter_texture_get_filter_quality): Gets the filter quality on
+	the CoglHandle instead if it is available.
+	(clutter_texture_set_cogl_texture)
+	(clutter_texture_set_max_tile_waste)
+	(clutter_texture_get_max_tile_waste): New functions
+	(clutter_set_cogl_texture): New public function to replace
+	clutter_texture_set_from_cogl_texture
+
+	* tests/test-cogl-tex-convert.c:
+	* tests/test-cogl-tex-getset.c:
+	* tests/test-cogl-tex-tile.c:
+	* tests/test-cogl-offscreen.c: 
+	* clutter/pango/pangoclutter-render.c (tc_clear):
+	Replace cogl_texture_destroy with cogl_texture_unref.
+
+2008-04-15  Ivan Leben    <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gl/cogl-context.c:
+	* clutter/cogl/gl/cogl-context.h:
+	_cogl_features_init obtains pointers to all the shader related
+	functions and stores them into context object (same as for FBOs).
+	All the cogl thin wrappers around shader functions redirected
+	to function pointers from context.
+
+2008-04-14  Ivan Leben    <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl(es)/cogl-texture.c:
+	New functions: cogl_texture_is_sliced and
+	cogl_texture_get_gl_texture.
+
+2008-04-09  Ivan Leben    <ivan@o-hand.com>
+
+	* cluter/cogl/gl/cogl-texture.c:
+	* cluter/cogl/gles/cogl-texture.c:
+	Manual texture coordinate (de)normalization to avoid
+	per-slice texture matrix push/pop.
+
+2008-04-08  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-texture.c (clutter_texture_save_to_local_data):
+	Got rid of COGL_PIXEL_FORMAT_HAS_ALPHA now that CoglPixelFormat
+	has the COGL_A_BIT flag to signify that the format has an alpha
+	channel.
+
+2008-04-08  Ivan Leben    <ivan@o-hand.com>
+
+	* clutter/cogl/*:
+	cogl_enable is now internal. All the cogl primitive and
+	texture drawing functions automatically enable required
+	flags.
+
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gles/cogl-texture.c:
+	Improved texture drawing to optimize for special cases.
+	Coupled with internal enable flag caching, the font
+	performance has now been restored.
+
+	* clutter/cogl/gl/cogl-defines.h:
+	* clutter/cogl/gles/cogl-defines.h:
+	Clean-up of obsolete defines. One step closer to not
+	having it included in cogl.h
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	commented usage of old cogl functions
+
+	* tests/test-text.c:
+	fps counter for measuring texture performance
+
+2008-04-07  Neil Roberts  <neil@o-hand.com>
+
+	Removed GdkPixbuf related code from ClutterTexture.
+
+	* clutter/cogl/gles/cogl-texture.c (cogl_texture_new_from_file): 
+	* clutter/cogl/gl/cogl-texture.c (cogl_texture_new_from_file): 
+	* clutter/cogl/common/cogl-bitmap-pixbuf.c
+	(_cogl_bitmap_from_file):
+	Now takes an error pointer to pass up errors from gdk-pixbuf.
+
+	* clutter/clutter-texture.h: Removed pixbuf functions and added
+	clutter_texture_set_from_file and clutter_texture_new_from_file.
+
+	* clutter/clutter-texture.c (clutter_texture_unrealize,
+	clutter_texture_realize): Now saves the system memory copy of the
+	texture to a local guchar array instead of to a pixbuf
+	(clutter_texture_set_property, clutter_texture_get_property):
+	Removed the pixbuf property.
+	(clutter_texture_get_pixbuf, clutter_texture_set_pixbuf):
+	Removed.
+	(clutter_texture_set_from_file): New function.
+
+	* tests/test-viewport.c: 
+	* tests/test-textures.c: 
+	* tests/test-shader.c: 
+	* tests/test-rotate.c: 
+	* tests/test-fbo.c: 
+	* tests/test-depth.c: 
+	* tests/test-cogl-tex-tile.c: 
+	* tests/test-cogl-tex-getset.c: 
+	* tests/test-cogl-tex-convert.c: 
+	* tests/test-cogl-offscreen.c: 
+	* tests/test-behave.c: 
+	* tests/test-actors.c: 
+	Adapted to use clutter_texture_new_from_file instead of
+	clutter_texture_new_from_pixbuf.
+
+2008-04-07  Neil Roberts  <neil@o-hand.com>
+
+	Adapted PangoClutterRenderer to use the new COGL API. This
+	currently seems to get about half the performance though.
+
+	* clutter/pango/pangoclutter-render.c: Now uses CoglHandles and
+	the new texture API instead of creating GL textures directly.
+	(draw_trapezoid): Removed as it doesn't seem to be used anywhere.
+
+	* clutter/cogl/gles/cogl-texture.c (_cogl_pixel_format_to_gl):
+	Added the COGL_PIXEL_FORMAT_A8 pixel format.
+	(_cogl_texture_upload_subregion_to_gl): Now sets
+	GL_UNPACK_ALIGNMENT based on the rowstride otherwise it won't
+	support bitmaps aligned to anything but 4.
+
+	* clutter/cogl/gl/cogl-texture.c (_cogl_pixel_format_to_gl): Added
+	the COGL_PIXEL_FORMAT_A8 pixel format.
+
+2008-04-04  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gles/cogl-texture.c (_cogl_texture_upload_to_gl):
+	Set GL_UNPACK_ALIGNMENT to 1 before uploading data for a tile. The
+	default value is 4 so if you used image data that doesn't have an
+	alpha it would previously be misaligned and show a corrupted
+	texture.
+
+2008-04-04  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gl/cogl-texture.c (_cogl_subregion_gl_store_rules):
+	Now sets ROW_LENGTH based on the row stride instead of the image
+	width. This allows you to use the row stride to make a texture
+	from a sub-section of a larger image. This is necessary to use
+	GdkPixbufs generated using gdk_pixbuf_new_subpixbuf.
+
+	* clutter/clutter-texture.c (clutter_texture_set_from_data): Fixed
+	a bug with sync-size if you try to change the size of the texture
+	data more than once. When clutter_actor_set_size is called in
+	response to the texture size being changed the sync_actor_size
+	flag is cleared. The fix just sets it again after the call is
+	finished.
+
+2008-04-03  Ivan Leben  <ivan@o-hand.com>
+	
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c:
+	Removed old offscreen api. Renamed cogl_offscreen_buf_destroy
+	to cogl_offscreen_destroy since there is no clash anymore.
+
+	* clutter/cogl/gl/fbo.c:
+	* clutter/cogl/gles/fbo.c:
+	* clutter/clutter-texture.c:
+	* tests/test-cogl-offscreen.c:
+	cogl_offscreen_buf_destroy -> cogl_offscreen_destroy
+	
+2008-04-03  Ivan Leben   <ivan@o-hand.com>
+
+	* clutter/clutter-texture.c: Fixed an = to |= typo.
+
+2008-04-03  Neil Roberts  <neil@o-hand.com>
+
+	* tests/test-textures.c (main): Removed call to
+	clutter_texture_get_n_tiles which is no longer supported.
+
+2008-04-03  Neil Roberts  <neil@o-hand.com>
+
+	Upgraded ClutterTexture and ClutterCloneTexture to use the new
+	texture API in COGL.
+
+	* clutter/clutter-texture.c (clutter_texture_realize): Greatly
+	simplified to just load the texture data using the new COGL
+	API. The static utility functions that were used to load the data
+	have been removed and are now in COGL.
+	(clutter_texture_set_property): Removed the use-tiles property
+	because it can no longer be implemented with the new COGL API. The
+	repeat-x, repeat-y and filter-quality properties now cause the
+	actor to be redrawn.
+	(clutter_texture_get_property): Removed the pixel-type property
+	because the information is now available in the single
+	pixel-format property. This is now directly queried from the COGL
+	texture instead of being stored in a private member variable.
+
+	* clutter/clutter-texture.h: Removed API functions that are
+	related to tiling because they are no longer neccessary to
+	implement ClutterCloneTexture using the new COGL texture API.
+
+	* clutter/clutter-clone-texture.c (clutter_clone_texture_set_property)
+	(clutter_clone_texture_get_property): Added repeat-x and repeat-y
+	properties.
+	(clone_texture_render_to_gl_quad): Removed so that the painting
+	can be done via the COGL API instead.
+	(clutter_clone_texture_paint): Painting greatly simplified so that
+	it just gets a handle to the COGL texture from the parent
+	ClutterTexture and calls COGL to render it. Also supports the
+	repeat-x and repeat-y properties by extending the texture
+	co-ordinates given to cogl_texture_rectangle.
+
+2008-04-02  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-texture.c:
+	Fixed a bug where cogl_texture_get_data would
+	corrupt memory if the texture was sliced.
+
+2008-04-02  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl(es)/cogl-texture.h:
+	* clutter/cogl/gl(es)/cogl-texture.c:
+
+	Added min/mag filter property to a texture.
+	New function cogl_texture_set_filters.
+
+	cogl_texture_get_properties broken into separate
+	functions for each of the texture properties
+	(e.g. cogl_texture_get_width).
+
+	* clutter/clutter-texture.c:
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* clutter/pango/pangoclutter-render.c:
+
+	Commented out clashes with new api while Clutter
+	is being moved to new textures api.
+
+	* tests/test-cogl-tex-tile.c:
+	Set linear min mag filters after creating texture.
+
+	* tests/test-cogl-tex-getset.c:
+	Use new getter functions.
+
+2008-04-02  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c:
+	Explicit cast to remove const qualifier when initing
+	bitmap structure with given data argument fixes the
+	compile warning.
+
+2008-04-02  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl.c:
+	Rearraging, grouping and marking of functions that
+	are expected to be removed in the cleanup phase
+	after clutter is moved to new api.
+
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gles/cogl-texture.c:
+	* tests/test-cogl-tex-getset.c:
+	Renamed cogl_texture_set_subregion to
+	cogl_texture_set_region. Data argument made const.
+
+2008-03-31  Ivan Leben <ivan@o-hand.com>
+
+	* cluter/cogl/gl/cogl-context.c:
+	Removed the inclusion of gles header. (Copy-paste
+	error when syncing with gles port.)
+
+2008-03-26  Ivan Leben <ivan@o-hand.com>
+	
+	* tests: update svn:ignore
+
+2008-03-26  Ivan Leben <ivan@o-hand.com>
+
+	Bug fixes, code rearrangement.
+	FBOs ported to GLES (mainly just stubs).
+
+	* clutter/cogl/gl/cogl-texture.c:
+	New function cogl_texture_new_with_size creates
+	an empty texture of given size.
+
+	* tests/test-cogl-offscreen.c:
+	Two partially-occluded rectangles are drawn
+	to an offscreen buffer and then blended as
+	one entity with the textured background.
+
+2008-03-20  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/cogl.c:
+	* clutter/cogl/cogl-context.h:
+	* clutter/cogl/cogl-context.c:
+
+	Added COGL_FEATURE_OFFSCREEN_BLIT and
+	COGL_FEATURE_OFFSCREEN_MULTISAMPLE.
+
+	Added function pointers for generation
+	of renderbuffers.
+
+	All EXT function pointers now stored in
+	context structure
+
+	A default context structure is now created
+	automatically upon a call to
+	cogl_context_get_default
+
+	* tests/test-cogl-xxx.c:
+
+	Removed a call to cogl_context_create.
+
+	* clutter/cogl/gl/cogl-defines.h:
+
+	Removed EXT fuction declarations. We rely on
+	glext.h to provied those anyway.
+
+	* clutter/cogl/gl/cogl-fbo.c:
+
+	Checks for offscreen feature support before
+	calling EXT functions via pointers in context.
+
+2008-03-20  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl(es)/cogl-texture.c:
+	Moved some declarations from here ...
+
+	* clutter/cogl/gl(es)/cogl-texture.h:
+	...to a new header file, to be able to reference
+	textures from FBOs.
+
+	* clutter/cogl/gl(es)/cogl-context.h:
+	* clutter/cogl/gl(es)/cogl-context.c:
+	* clutter/cogl/gl/cogl-fbo.h:
+	* clutter/cogl/gl/cogl-fbo.c:
+	Began implementing FBOs. GL flavour currently
+	not compilable. Need to resolve some issues
+	in cogl-defines.h.
+
+2008-03-18  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl(es)/cogl-context.h:
+	* clutter/cogl/gl(es)/cogl-context.c:
+	Implemented a CoglContext structure and context
+	create / destroy api to be able to init state
+	properly and centralize state variables.
+
+	* clutter/cogl/gl(es)/cogl-primitives.h:
+	* clutter/cogl/gl(es)/cogl-primitives.c:
+	* clutter/cogl/gl(es)/cogl-texture.h:
+	* clutter/cogl/gl(es)/cogl-texture.c:
+	Moved state variables to CoglContext.
+
+	* tests/test-cogl-*.c:
+	Updated CoglTestbox to create cogl context.
+
+	* clutter/eglx/clutter-stage-egl.c:
+	Some more testing with glGet values.
+
+2008-03-11  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/eglx/clutter-stage-egl.c:
+	Output all the available configurations prior to
+	choosing one. Clearly shows no stencil buffer
+	available with PowerVR's GLES SDK.
+
+2008-03-07  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/common/cogl-bitmap.h:
+	* clutter/cogl/common/cogl-bitmap.c:
+	Utility function to copy data subregion between
+	two bitmaps of same format.
+
+	* clutter/cogl/gl/cogl-texture.c:
+	Minor bug fix.
+
+	* clutter/cogl/gles/cogl-texture.c:
+	Texture api ported to GLES (get/set still missing).
+
+	* clutter/cogl/cogl.h:
+	Texture creation functions now also take maximum
+	waste parameter.
+
+	* tests/test-cogl-tex-xxx.c:
+	Update to new texture creation api.
+
+2008-03-06  Ivan Leben <ivan@o-hand.com>
+
+	* ./ : update svn:ignore
+	* tests: update svn:ignore
+
+2008-03-06  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/common:
+	Common files (util and bitmap related) moved here
+	and compiled into an intermediate static lib to be
+	linked in to proper gl(es) version of the library.
+
+2008-03-04  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl-texture.c:
+	cogl_texture_set_subregion implemented
+
+	* tests/test-cogl-tex-getset.c:
+	Tests texture image retrieval and subregion update
+	api.
+
+2008-03-01  Ivan Leben <ivan@o-hand.com>
+
+	* tests/test-cogl.c:
+	Renamed to:
+
+	* tests/test-cogl-primitives.c:
+	... and reverted to test the primitives api
+
+	* tests/test-cogl-tex-tile.c:
+	A separate test for texture tiling. Now animated to
+	test a broader range of input data.
+
+	* tests/test-cogl-tex-convert.c:
+	Tests bitmap conversion functions by forcing the image
+	data to a different internal format.
+
+2008-02-29  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-bitmap.h:
+	* clutter/cogl/gl/cogl-bitmap-fallback.h:
+	* clutter/cogl/gl/cogl-bitmap-pixbuf.h:
+	Many bugs fixed in the fallback conversion code that
+	make it actually work. Conversions from rgba to other
+	24 and 32 bit formats required by cogl_texture_get_image.
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl-texture.c:
+	Bug fixes to make conversions work. cogl_texture_new_xxx
+	functions now take internal format as a convenience so
+	cogl can do a conversion prior to passing the data to
+	GL if requested so by the user (e.g. rgb(a) -> grayscale)
+
+2008-02-28  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl.c:
+	Moved _cogl_get_format_bpp ...
+
+	* clutter/cogl/gl/cogl-bitmap.c:
+	- ... here
+	- Convenience function _cogl_bitmap_convert_and_premult
+	does both
+
+	* clutter/cogl/gl/cogl-texture.c:
+	- Generalized the gl pixel storage setup function to
+	be able to specify both pack and unpack rules
+	- implemented _cogl_texture_download_from_gl
+	- implemented cogl_texture_get_image (renamed from
+	cogl_texture_get_subregion, since obtaining subregion
+	is not supported by GL.. might get renamed again :)
+	
+2008-02-27  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl-texture.c:
+
+	- New function cogl_texture_get_properties returns
+	  texture width, height and maximum waste.
+
+	- CoglSpanIter structure and iterator api abstracts
+	  iteration over slices when an area needs to be
+	  covered by returning slice-coverage intersection
+	  info.
+
+	- Software tiling simplified using span iterators
+
+	- Began work on cogl_texture_get_sub_region and
+	  cogl_texture_set_sub_region (will use span iterators
+	  as well)
+
+2008-02-27  Ivan Leben <ivan@o-hand.com>
+
+	* tests/test-cogl.c:
+	Background color changed to emphasize the transparency
+	in the redhand image.
+
+2008-02-27  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h:
+	cogl_texture_draw renamed to cogl_texture_rectangle to
+	better match the rest of the drawing api
+
+	* clutter/cogl/gl/cogl-texture.c:
+	Harware tiling implemented and used when supported.
+	Software (manual) tiling now only used as a fallback.
+
+2008-02-27  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl(es)/cogl.c:
+	Moved the COGL_DEBUG definition from source ...
+
+	* clutter/cogl/gl(es)/cogl-internal.h:
+	... to header file.
+
+	* clutter/cogl/gl/cogl-texture.c:
+	- Uploading to gl for multiple slices implemented
+	- Unique upload function for both one and many slices
+	- Some fixes for bugs found while testing
+	- Some more comments
+
+2008-02-26  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h:
+	Texture drawing api now takes texture coordinates
+	for quad corners.
+
+	* clutter/cogl/gl/cogl-texture.c:
+	Tiling has been implemented. Whenever the quad texture
+	corner coordinates are different than (0,0)-(1,1) the
+	texture slices are automatically drawn as many times
+	as to cover the whole quad area, thus tiling the whole
+	texture image across the quad. To be used as a fallback
+	where GL_REPEAT for texture wrap mode is not supported.
+
+	* clutter/tests/test-cogl.c:
+	Draws the red hand image tiled several times.
+
+2008-02-23  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-texture.c:
+	slicing moved into cogl texture api
+
+2008-02-22  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/TODO:
+	a special (temporary) TODO for cogl overhaul related
+	stuff
+
+2008-02-22  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/clutter-feature.h:
+	added a new feature: CLUTTER_FEATURE_TEXTURE_NPOT
+
+	* clutter/cogl/cogl.h:
+	cogl has got its own feature flags defined
+
+	* clutter/cogl/gl(es)/cogl.c:
+	new feature check for ARB_texture_non_power_of_two
+
+	* clutter/cogl/gl(es)/cogl-util.h:
+	* clutter/cogl/gl(es)/cogl-util.c:
+	cogl_util_next_p2 moved from clutter for independency
+
+	* clutter/cogl/gl/cogl-texture.c:
+	- texture handles being stored into and array
+	- cogl_is_texture checks for a valid handle
+	- structures and functions prepared for implementation
+	of slicing
+
+2008-02-21  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gl/cogl-internal.h:
+	* clutter/cogl/gl/cogl-bitmap-pixbuf.c:
+	* clutter/cogl/gl/cogl-bitmap-fallback.c:
+	* clutter/cogl/gl/cogl-texture.c:
+	Some debugging of the texture code written so far...
+
+	* clutter/tests/test-cogl.c:
+	...and the first texture is being drawn using the new api!
+
+2008-02-19  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl.h:
+	braces () around complex pixel format enums
+
+	* clutter/cogl/gl/cogl-bitmap.h:
+	* clutter/cogl/gl/cogl-bitmap-fallback.h:
+	* clutter/cogl/gl/cogl-bitmap-pixbuf.h:
+	simplified api by introducing internal CoglBitmap struct
+
+	* clutter/cogl/gl/cogl-texture.c:
+	- using CoglBitmap
+	- format conversion and alpha unpremultiplication using
+	cogl_bitmap_xxx api
+
+2008-02-19  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-texture.c:
+	prepared to implement the upload-to-GL stage
+
+2008-02-19  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-texture.c:
+	loading from file (first stage - load data into memory)
+	implemented in CoglTexture
+
+	* clutter/cogl/gl/cogl-bitmap.h:
+	* clutter/cogl/gl/cogl-bitmap-fallback.c:
+	* clutter/cogl/gl/cogl-bitmap-pixbuf.c:
+	loading from file implemented in GdkPixbuf imaging backend
+
+2008-02-18  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gl/cogl-bitmap.h:
+	* clutter/cogl/gl/cogl-bitmap-fallback.c:
+	* clutter/cogl/gl/cogl-bitmap-pixbuf.c:
+	image loading and pixel conversions moved behind a simple
+	abstraction api that makes adding new native image library
+	'backends' easy
+
+	* clutter/cogl/gl/Makefile.am:
+	for now hardcoded to use pixbuf imaging library, this
+	should be handled by configure.ac later
+
+	* clutter/cogl/cogl.h:
+	updated CoglFormat enum to add premultiplied image formats
+	
+2008-02-16  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-texture.c: started moving
+	clutter-texture code to cogl level
+
+	* clutter/cogl/cogl.h: enums and declarations required
+	by the textures api (not complete yet)
+
+2008-02-13  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-primitives.c:
+	* clutter/cogl/gles/cogl-primitives.c:
+	Primitives api extensively commented.
+
+2008-02-13  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl-primitives.c: moved cogl_color ...
+
+	* clutter/cogl/gl/cogl.c: ... back here, since it might be
+	subject to more general use.
+
+	* clutter/cogl/gles/cogl.c:
+	* clutter/cogl/gles/cogl-internal.h:
+	* clutter/cogl/gles/cogl-primitives.c:
+	Primitives api ported to GLES.
+
+2008-02-12  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.c: moved drawing api...
+
+	* clutter/cogl/cogl-primitives.c: ...to a separate file
+
+	* clutter/cogl/cogl-internal.h: hosts internal declarations
+	and #defines common to all the source files implementing
+	cogl
+
+2008-02-12  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.c:
+
+	  - removed cogl_set_fill_color, cogl_set_stroke_color
+	  (a unique color is specifiad via cogl_color and used
+	   for both filling and stroking)
+
+	  - renamed cogl_rectangle to cogl_fast_fill_rectangle
+	  (uses current color just like cogl_fill and cogl_stroke)
+
+	  - renamed cogl_trapezoid to cogl_fast_fill_trapezoid
+	  (uses current color just like cogl_fill and cogl_stroke)
+
+	  - cogl_fast_fill_rectanglex, cogl_fast_fill_trapezoidx
+	  (ClutterFixed versions)
+
+	* clutter/cogl/cogl.h:
+	  rectangle and color api update
+
+	* tests/test-coglc:
+	  update to use cogl_color instead
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-rectangle.c:
+	  cogl_rectangle => cogl_fast_fill_rectangle
+
+	* clutter/pango/pangoclutter-render.c:
+	  cogl_trapezoid => cogl_fast_fill_trapezoid
+
+2008-02-12  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/cogl.h: drawing api inserted into header
+
+	* clutter/cogl/gl/cogl.c:
+	  - bezier relative functions
+	  - internal functions made static
+
+2008-02-12  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl.c:
+	  - relative versions of path_xxx_to apis (path_xxx_to_rel)
+	  - horizontal, vertical lines for even more handyness
+	  - cogl_round_rectangle
+	  - all the input arguments changed to ClutterFixed
+
+	* tests/test-cogl.c: added round rectangle to drawing list
+
+2008-02-11  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl.c: bezier quadratic and cubic curve
+	subdivision implemented.
+
+	* tests/test-cogl.c: added bezier curves to drawing list
+
+2008-02-09  Ivan Leben <ivan@o-hand.com>
+
+	* tests/test-cogl.c: moved the "cogltester" class from
+	clutter-cogltester.c into a dedicated test app. The cogl testing
+	actor cycles between and draws various cogl primitives.
+
+	* clutter/cogl/gl/cogl.c: almost all the basic primitives done
+
+2008-02-08  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl.c: some more work on higher level drawing api
+
+	* clutter/clutter-cogltester.h: header for a simple actor to test new
+        cogl api. For now just an empty rig.
+
+	* clutter/clutter-cogltester.c: implementation of a simple actor to
+        test new cogl api. For now just an empty rig.
+
+2008-02-07  Ivan Leben <ivan@o-hand.com>
+
+	* clutter/cogl/gl/cogl.c: started work on higher level drawing api.
+

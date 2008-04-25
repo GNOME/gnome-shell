@@ -43,7 +43,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 typedef struct ClutterFeatures
 {
@@ -52,6 +52,32 @@ typedef struct ClutterFeatures
 } ClutterFeatures;
 
 static ClutterFeatures* __features = NULL;
+
+ClutterFeatureFlags
+_clutter_features_from_cogl (guint cogl_flags)
+{
+  ClutterFeatureFlags clutter_flags = 0;
+  
+  if (cogl_flags & COGL_FEATURE_TEXTURE_RECTANGLE)
+    clutter_flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
+  
+  if (cogl_flags & COGL_FEATURE_TEXTURE_NPOT)
+    clutter_flags |= CLUTTER_FEATURE_TEXTURE_NPOT;
+
+  if (cogl_flags & COGL_FEATURE_TEXTURE_YUV)
+    clutter_flags |= CLUTTER_FEATURE_TEXTURE_YUV;
+  
+  if (cogl_flags & COGL_FEATURE_TEXTURE_READ_PIXELS)
+    clutter_flags |= CLUTTER_FEATURE_TEXTURE_READ_PIXELS;
+  
+  if (cogl_flags & COGL_FEATURE_SHADERS_GLSL)
+    clutter_flags |= CLUTTER_FEATURE_SHADERS_GLSL;
+  
+  if (cogl_flags & COGL_FEATURE_OFFSCREEN)
+    clutter_flags |= CLUTTER_FEATURE_OFFSCREEN;
+  
+  return clutter_flags;
+}
 
 void
 _clutter_feature_init (void)
@@ -72,8 +98,8 @@ _clutter_feature_init (void)
 
   context = clutter_context_get_default ();
 
-  __features->flags = cogl_get_features()
-                          |_clutter_backend_get_features (context->backend);
+  __features->flags = (_clutter_features_from_cogl (cogl_get_features ())
+		       | _clutter_backend_get_features (context->backend));
 
   __features->features_set = TRUE;
 

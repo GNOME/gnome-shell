@@ -65,7 +65,7 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 
   clutter_stage_ensure_current (stage_x11->wrapper);
 
-  XSync (stage_x11->xdpy, False); 
+  XSync (stage_x11->xdpy, False);
 
   clutter_x11_untrap_x_errors ();
 
@@ -103,6 +103,47 @@ clutter_stage_egl_realize (ClutterActor *actor)
 			      configs,
 			      2,
 			      &config_count);
+
+      int c;
+      int num_configs;
+      EGLConfig *all_configs;
+
+      eglGetConfigs (clutter_eglx_display(), NULL, 0, &num_configs);
+
+      all_configs = g_malloc (num_configs * sizeof (EGLConfig));
+
+      eglGetConfigs (clutter_eglx_display(),
+		     all_configs,
+		     num_configs,
+		     &num_configs);
+
+      for (c=0; c<num_configs; ++c)
+	{
+	  EGLint red=-1, green=-1, blue=-1, alpha=-1, stencil=-1;
+	  eglGetConfigAttrib (clutter_eglx_display(),
+			      all_configs[c],
+			      EGL_RED_SIZE, &red);
+	  eglGetConfigAttrib (clutter_eglx_display(),
+			      all_configs[c],
+			      EGL_GREEN_SIZE, &green);
+	  eglGetConfigAttrib (clutter_eglx_display(),
+			      all_configs[c],
+			      EGL_BLUE_SIZE, &blue);
+	  eglGetConfigAttrib (clutter_eglx_display(),
+			      all_configs[c],
+			      EGL_ALPHA_SIZE, &alpha);
+	  eglGetConfigAttrib (clutter_eglx_display(),
+			      all_configs[c],
+			      EGL_STENCIL_SIZE, &stencil);
+	  printf("EGLConfig === R:%d G:%d B:%d A:%d S:%d \n",
+		 red, green, blue, alpha, stencil);
+	}
+
+      int max_tex_units = 0;
+      glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_tex_units);
+      printf("Texture units: %d\n", max_tex_units);
+
+      g_free (all_configs);
 
       if (status != EGL_TRUE)
 	g_warning ("eglGetConfigs failed");
@@ -208,26 +249,9 @@ clutter_stage_egl_dispose (GObject *gobject)
   G_OBJECT_CLASS (clutter_stage_egl_parent_class)->dispose (gobject);
 }
 
-static GdkPixbuf *
-clutter_stage_egl_draw_to_pixbuf (ClutterStageWindow *stage_window,
-                                  gint                x,
-                                  gint                y,
-                                  gint                width,
-                                  gint                height)
-{
-  ClutterStage *stage = CLUTTER_STAGE (stage_window);
-
-  g_warning ("Stages of type `%s' do not support "
-             "ClutterStageWindow::draw_to_pixbuf",
-             G_OBJECT_TYPE_NAME (stage));
-  return NULL;
-}
-
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
-  iface->draw_to_pixbuf = clutter_stage_egl_draw_to_pixbuf;
-
   /* the rest is inherited from ClutterStageX11 */
 }
 

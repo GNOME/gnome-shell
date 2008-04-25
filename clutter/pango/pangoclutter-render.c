@@ -32,7 +32,7 @@
 #include "pangoclutter-private.h"
 #include "../clutter-debug.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 /*
  * Texture cache support code
@@ -43,18 +43,18 @@
 #define TC_ROUND  4
 
 typedef struct {
-  guint name;
+  CoglHandle cogl_tex;
   int x, y, w, h;
 } tc_area;
 
 typedef struct tc_texture {
   struct tc_texture *next;
-  COGLuint name;
+  CoglHandle cogl_tex;
   int avail;
 } tc_texture;
 
 typedef struct tc_slice {
-  guint name;
+  CoglHandle cogl_tex;
   int avail, y;
 } tc_slice;
 
@@ -68,12 +68,12 @@ tc_clear ()
   int i;
 
   for (i = TC_HEIGHT / TC_ROUND; i--; )
-    slices [i].name = 0;
+    slices [i].cogl_tex = COGL_INVALID_HANDLE;
 
   while (first_texture)
     {
       tc_texture *next = first_texture->next;
-      cogl_textures_destroy (1, &first_texture->name);
+      cogl_texture_unref (first_texture->cogl_tex);
       g_slice_free (tc_texture, first_texture);
       first_texture = next;
     }
@@ -101,7 +101,7 @@ tc_get (tc_area *area, int width, int height)
 
   width = MIN (width, TC_WIDTH);
 
-  if (!slice->name || slice->avail < width)
+  if (slice->cogl_tex == COGL_INVALID_HANDLE || slice->avail < width)
     {
       /* try to find a texture with enough space */
       tc_texture *tex, *match = 0;
@@ -113,54 +113,37 @@ tc_get (tc_area *area, int width, int height)
       /* create a new texture if necessary */
       if (!match)
         {
-	  COGLenum texture_target_type = CGL_TEXTURE_2D;
-
 	  CLUTTER_NOTE (PANGO, "creating new texture %i x %i",
 			TC_WIDTH, TC_HEIGHT);
-
-	  /* Use NPOTS if available as it simply makes shaders easier to
-	   * work with on text.
-	  */
-	  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
-	    texture_target_type = CGL_TEXTURE_RECTANGLE_ARB;
 
           match = g_slice_new (tc_texture);
           match->next = first_texture;
           first_texture = match;
           match->avail = TC_HEIGHT;
 
-	  cogl_textures_create (1, &match->name);
-
-	  cogl_texture_bind (texture_target_type, match->name);
-
-        /* We might even want to use mipmapping instead of CGL_LINEAR here
-         * that should allow rerendering of glyphs to look nice even at scales
-         * far below 50%.
-         */
-	  cogl_texture_set_filters (texture_target_type,
+	  match->cogl_tex = cogl_texture_new_with_size (TC_WIDTH, TC_HEIGHT, 0,
+							COGL_PIXEL_FORMAT_A_8);
+	  
+	  /* We might even want to use mipmapping instead of
+	   * CGL_LINEAR here that should allow rerendering of glyphs
+	   * to look nice even at scales far below 50%.
+	   */
+	  cogl_texture_set_filters (match->cogl_tex,
 				    CGL_LINEAR, CGL_NEAREST);
-
-	  cogl_texture_image_2d (texture_target_type,
-				 CGL_ALPHA,
-				 TC_WIDTH,
-				 TC_HEIGHT,
-				 CGL_ALPHA,
-				 CGL_UNSIGNED_BYTE,
-				 NULL);
         }
 
       match->avail -= slice_height;
 
-      slice->name  = match->name;
-      slice->avail = TC_WIDTH;
-      slice->y     = match->avail;
+      slice->cogl_tex = match->cogl_tex;
+      slice->avail    = TC_WIDTH;
+      slice->y        = match->avail;
     }
 
   slice->avail -= width;
 
-  area->name = slice->name;
-  area->x    = slice->avail;
-  area->y    = slice->y;
+  area->cogl_tex = slice->cogl_tex;
+  area->x        = slice->avail;
+  area->y        = slice->y;
 }
 
 static void
@@ -194,8 +177,6 @@ struct _PangoClutterRenderer
   PangoRenderer parent_instance;
   ClutterColor  color;
   int           flags;
-  guint         curtex; /* current texture */
-  COGLenum      texture_target_type; /* 2D or Rect */
 };
 
 G_DEFINE_TYPE (PangoClutterRenderer,   \
@@ -330,9 +311,9 @@ draw_glyph (PangoRenderer *renderer_,
 	    double         xd,
 	    double         yd)
 {
-  PangoClutterRenderer *renderer = PANGO_CLUTTER_RENDERER (renderer_);
   glyph_info           *g;
   gint                  x = (gint)xd, y = (gint)yd;
+  ClutterFixed          fx, fy;
 
   if (glyph & PANGO_GLYPH_UNKNOWN_FLAG)
     {
@@ -384,103 +365,36 @@ draw_glyph (PangoRenderer *renderer_,
 
       CLUTTER_NOTE (PANGO, "cache fail; subimage2d %i", glyph);
 
-      cogl_texture_bind (renderer->texture_target_type, g->tex.name);
-
-      cogl_texture_set_alignment (renderer->texture_target_type,
-				  1, bm.stride);
-
-      cogl_texture_sub_image_2d (renderer->texture_target_type,
-				 g->tex.x,
-				 g->tex.y,
-				 bm.width,
-				 bm.height,
-				 CGL_ALPHA,
-				 CGL_UNSIGNED_BYTE,
-				 bm.bitmap);
-
-      glTexParameteri (renderer->texture_target_type,
-		       GL_GENERATE_MIPMAP, FALSE);
-
-      renderer->curtex = g->tex.name;
+      cogl_texture_set_region (g->tex.cogl_tex,
+			       0, 0,
+			       g->tex.x, g->tex.y,
+			       bm.width, bm.height,
+			       bm.width, bm.height,
+			       COGL_PIXEL_FORMAT_A_8,
+			       bm.stride,
+			       bm.bitmap);
     }
-  else CLUTTER_NOTE (PANGO, "cache succsess %i\n", glyph);
+  else
+    CLUTTER_NOTE (PANGO, "cache success %i\n", glyph);
 
   x += g->left;
   y -= g->top;
 
-  if (g->tex.name != renderer->curtex)
-    {
-      cogl_texture_bind (renderer->texture_target_type, g->tex.name);
-      renderer->curtex = g->tex.name;
-    }
+  fx = CLUTTER_INT_TO_FIXED (g->tex.x) / TC_WIDTH;
+  fy = CLUTTER_INT_TO_FIXED (g->tex.y) / TC_HEIGHT;
 
-  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
-    {
-      cogl_texture_quad (x,
-			 x + g->tex.w,
-			 y,
-			 y + g->tex.h,
-			 CLUTTER_INT_TO_FIXED (g->tex.x),
-			 CLUTTER_INT_TO_FIXED (g->tex.y),
-			 CLUTTER_INT_TO_FIXED (g->tex.w + g->tex.x),
-			 CLUTTER_INT_TO_FIXED (g->tex.h + g->tex.y));
-    }
-  else
-    {
-      ClutterFixed fx, fy;
-
-      fx = CLUTTER_INT_TO_FIXED (g->tex.x) / TC_WIDTH;
-      fy = CLUTTER_INT_TO_FIXED (g->tex.y) / TC_HEIGHT;
-
-      cogl_texture_quad (x,
-			 x + g->tex.w,
-			 y,
-			 y + g->tex.h,
-			 fx,
-			 fy,
-			 CLUTTER_INT_TO_FIXED (g->tex.w) / TC_WIDTH + fx,
-			 CLUTTER_INT_TO_FIXED (g->tex.h) / TC_HEIGHT + fy);
-    }
+  cogl_texture_rectangle (g->tex.cogl_tex,
+			  CLUTTER_INT_TO_FIXED (x),
+			  CLUTTER_INT_TO_FIXED (y),
+			  CLUTTER_INT_TO_FIXED (x + g->tex.w),
+			  CLUTTER_INT_TO_FIXED (y + g->tex.h),
+			  fx, fy,
+			  CLUTTER_INT_TO_FIXED (g->tex.w) / TC_WIDTH + fx,
+			  CLUTTER_INT_TO_FIXED (g->tex.h) / TC_WIDTH + fy);
 }
-
-static void
-draw_trapezoid (PangoRenderer   *renderer_,
-		PangoRenderPart  part,
-		double           y01,
-		double           x11,
-		double           x21,
-		double           y02,
-		double           x12,
-		double           x22)
-{
-  PangoClutterRenderer *renderer = (PangoClutterRenderer *)renderer_;
-
-  if (renderer->curtex)
-    {
-      /* glEnd (); */
-      renderer->curtex = 0;
-    }
-
-  /* Turn texturing off */
-  cogl_enable (CGL_ENABLE_BLEND);
-
-  cogl_trapezoid ((gint) y01,
-		  (gint) x11,
-		  (gint) x21,
-		  (gint) y02,
-		  (gint) x12,
-		  (gint) x22);
-
-  /* Turn it back on again */
-  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
-    cogl_enable (CGL_ENABLE_TEXTURE_RECT|CGL_ENABLE_BLEND);
-  else
-    cogl_enable (CGL_ENABLE_TEXTURE_2D|CGL_ENABLE_BLEND);
-}
-
 
 void
-pango_clutter_render_layout_subpixel (PangoLayout *layout,
+pango_clutter_render_layout_subpixel (PangoLayout  *layout,
 				      int           x,
 				      int           y,
 				      ClutterColor *color,
@@ -545,11 +459,6 @@ pango_clutter_render_clear_caches (void)
 static void
 pango_clutter_renderer_init (PangoClutterRenderer *renderer)
 {
-  renderer->texture_target_type = CGL_TEXTURE_2D;
-
-  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
-    renderer->texture_target_type = CGL_TEXTURE_RECTANGLE_ARB;
-
   memset (&renderer->color, 0xff, sizeof(ClutterColor));
 }
 
@@ -614,25 +523,11 @@ prepare_run (PangoRenderer *renderer, PangoLayoutRun *run)
 static void
 draw_begin (PangoRenderer *renderer_)
 {
-  PangoClutterRenderer *renderer = (PangoClutterRenderer *)renderer_;
-
-  renderer->curtex = 0;
-
-  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
-    cogl_enable (CGL_ENABLE_TEXTURE_RECT|CGL_ENABLE_BLEND);
-  else
-    cogl_enable (CGL_ENABLE_TEXTURE_2D|CGL_ENABLE_BLEND);
 }
 
 static void
 draw_end (PangoRenderer *renderer_)
 {
-  /*
-  PangoClutterRenderer *renderer = (PangoClutterRenderer *)renderer_;
-
-  if (renderer->curtex)
-    glEnd ();
-  */
 }
 
 static void
@@ -641,7 +536,6 @@ pango_clutter_renderer_class_init (PangoClutterRendererClass *klass)
   PangoRendererClass *renderer_class = PANGO_RENDERER_CLASS (klass);
 
   renderer_class->draw_glyph     = draw_glyph;
-  renderer_class->draw_trapezoid = draw_trapezoid;
   renderer_class->prepare_run    = prepare_run;
   renderer_class->begin          = draw_begin;
   renderer_class->end            = draw_end;

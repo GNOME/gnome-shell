@@ -30,7 +30,10 @@
 #include <clutter/clutter-group.h>
 #include <clutter/clutter-color.h>
 #include <clutter/clutter-event.h>
+
+#ifdef USE_GDKPIXBUF
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#endif
 
 G_BEGIN_DECLS
 
@@ -188,7 +191,7 @@ void          clutter_stage_hide_cursor       (ClutterStage       *stage);
 ClutterActor *clutter_stage_get_actor_at_pos  (ClutterStage       *stage,
                                                gint                x,
                                                gint                y);
-GdkPixbuf *   clutter_stage_snapshot          (ClutterStage       *stage,
+guchar       *clutter_stage_read_pixels       (ClutterStage       *stage,
                                                gint                x,
                                                gint                y,
                                                gint                width,

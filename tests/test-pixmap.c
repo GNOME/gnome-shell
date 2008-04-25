@@ -1,12 +1,13 @@
+
+
+#if HAVE_CLUTTER_GLX
 #include <config.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <clutter/x11/clutter-x11-texture-pixmap.h>
 
-#if HAVE_CLUTTER_GLX
 #include <clutter/glx/clutter-glx.h>
 #include <clutter/glx/clutter-glx-texture-pixmap.h>
-#endif
 
 #include <X11/Xlib.h>
 #include <X11/extensions/Xcomposite.h>
@@ -14,7 +15,7 @@
 
 #define IMAGE "redhand.png"
 
-
+#ifdef USE_GDKPIXBUF
 
 static gboolean
 stage_press_cb (ClutterActor    *actor,
@@ -61,7 +62,7 @@ create_pixmap (guint *width, guint *height, guint *depth)
   h = gdk_pixbuf_get_height (pixbuf);
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
 
-  data = malloc (w * h * 4);
+  data = g_malloc (w * h * 4);
   image = XCreateImage (dpy,
                         None,
                         32,
@@ -134,10 +135,12 @@ create_pixmap (guint *width, guint *height, guint *depth)
 
   return pixmap;
 }
+#endif
 
 int
 main (int argc, char **argv)
 {
+#ifdef USE_GDKPIXBUF
   ClutterActor         *stage, *tex;
   Pixmap                pixmap;
   guint                 w, h, d;
@@ -195,5 +198,10 @@ main (int argc, char **argv)
   clutter_actor_show (stage);
 
   clutter_main ();
+#endif
 
 }
+
+#else
+int main(int argc, char **argv){return 0;};
+#endif

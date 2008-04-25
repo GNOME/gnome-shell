@@ -36,7 +36,7 @@
       {
         "id" : "red-hand",
         "type" : "ClutterTexture",
-        "pixbuf" : "redhand.png",
+        "filename" : "redhand.png",
         "x" : 100,
         "y" : 100,
         "width" : "20mm",

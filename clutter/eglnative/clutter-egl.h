@@ -35,8 +35,7 @@
 
 G_BEGIN_DECLS
 
-EGLDisplay
-clutter_egl_display (void);
+EGLDisplay clutter_egl_display (void);
 
 G_END_DECLS
 

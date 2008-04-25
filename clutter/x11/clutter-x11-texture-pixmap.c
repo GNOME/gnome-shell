@@ -45,7 +45,7 @@
 #include "clutter-x11.h"
 #include "clutter-backend-x11.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 /* FIXME: Check exts exist in autogen */
 #include <X11/extensions/Xdamage.h>
@@ -453,6 +453,9 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
 
   priv = texture->priv;
   dpy  = clutter_x11_get_default_display();
+
+  if (!priv->pixmap)
+    return;
 
   clutter_x11_trap_x_errors ();
 

@@ -52,40 +52,7 @@ static void
 clutter_backend_egl_ensure_context (ClutterBackend *backend,
                                     ClutterStage   *stage)
 {
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-
-  if (stage == NULL)
-    {
-      CLUTTER_NOTE (BACKEND, "Clearing EGL context");
-      eglMakeCurrent (backend_egl->edpy,
-                      EGL_NO_SURFACE,
-                      EGL_NO_SURFACE,
-                      EGL_NO_CONTEXT);
-    }
-  else
-    {
-      ClutterStageWindow *impl;
-      ClutterStageEGL    *stage_egl;
-
-      impl = _clutter_stage_get_window (stage);
-      g_assert (impl != NULL);
-
-      stage_egl = CLUTTER_STAGE_EGL (impl);
-
-      if (!backend_egl->egl_context)
-        return;
-
-      if (stage_egl->egl_surface == EGL_NO_SURFACE)
-        eglMakeCurrent (backend_egl->edpy,
-                        EGL_NO_SURFACE,
-                        EGL_NO_SURFACE,
-                        EGL_NO_CONTEXT);
-      else
-        eglMakeCurrent (backend_egl->edpy,
-                        stage_egl->egl_surface,
-                        stage_egl->egl_surface,
-                        backend_egl->egl_context);
-    }
+  /* not doing anything since we only have one context */
 }
 
 static void
@@ -101,15 +68,11 @@ clutter_backend_egl_redraw (ClutterBackend *backend,
     return;
 
   g_assert (CLUTTER_IS_STAGE_EGL (impl));
-
   stage_egl = CLUTTER_STAGE_EGL (impl);
 
-  clutter_actor_paint (CLUTTER_ACTOR (stage_egl));
-
-  /* Why this paint is done in backend as likely GL windowing system
-   * specific calls, like swapping buffers.
-  */
-  /* clutter_feature_wait_for_vblank (); */
+  eglWaitNative (EGL_CORE_NATIVE_ENGINE);
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
+  eglWaitGL();
   eglSwapBuffers (backend_egl->edpy,  stage_egl->egl_surface);
 }
 
@@ -119,8 +82,8 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
                                   GError         **error)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  ClutterStageEGL *stage_egl;
-  ClutterActor *stage;
+  ClutterStageEGL   *stage_egl;
+  ClutterActor      *stage;
 
   if (backend_egl->stage)
     {
@@ -149,7 +112,7 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
       return NULL;
     }
 
-  backend_egl->stage = stage_egl;
+  backend_egl->stage = CLUTTER_ACTOR (stage_egl);
 
   return stage;
 }
@@ -158,21 +121,12 @@ static void
 clutter_backend_egl_init_events (ClutterBackend *backend)
 {
   _clutter_events_init (backend);
-
 }
 
 static const GOptionEntry entries[] =
 {
   { NULL }
 };
-
-static ClutterActor *
-clutter_backend_egl_get_stage (ClutterBackend *backend)
-{
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-
-  return backend_egl->stage;
-}
 
 static void
 clutter_backend_egl_finalize (GObject *gobject)
@@ -199,7 +153,7 @@ clutter_backend_egl_dispose (GObject *gobject)
   if (backend_egl->edpy)
     {
       eglTerminate (backend_egl->edpy);
-      backend_egl->edpy = NULL;
+      backend_egl->edpy = 0;
     }
 
   G_OBJECT_CLASS (clutter_backend_egl_parent_class)->dispose (gobject);
@@ -264,7 +218,7 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   backend_class->pre_parse      = clutter_backend_egl_pre_parse;
   backend_class->post_parse     = clutter_backend_egl_post_parse;
   backend_class->init_events    = clutter_backend_egl_init_events;
-  backend_class->create_stage   = clutter_backend_egl_init_stage;
+  backend_class->create_stage   = clutter_backend_egl_create_stage;
   backend_class->ensure_context = clutter_backend_egl_ensure_context;
   backend_class->redraw         = clutter_backend_egl_redraw;
   backend_class->get_features   = clutter_backend_egl_get_features;

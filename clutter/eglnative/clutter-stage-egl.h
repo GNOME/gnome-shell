@@ -3,8 +3,10 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-stage.h>
+
 #include <GLES/gl.h>
 #include <GLES/egl.h>
+#include "clutter-backend-egl.h"
 
 #define CLUTTER_TYPE_STAGE_EGL                  (clutter_stage_egl_get_type ())
 #define CLUTTER_STAGE_EGL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_EGL, ClutterStageEGL))
@@ -27,7 +29,8 @@ struct _ClutterStageEGL
   EGLSurface   egl_surface;
 
   /* the stage wrapper */
-  ClutterStage *wrapper;
+  ClutterStage      *wrapper;
+  ClutterBackendEGL *backend;
 };
 
 struct _ClutterStageEGLClass

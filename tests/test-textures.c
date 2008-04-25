@@ -1,5 +1,6 @@
 #include <clutter/clutter.h>
 
+#ifdef USE_PIXBUF
 GdkPixbuf*
 make_pixbuf (int width, int height, int bpp, int has_alpha)
 {
@@ -48,14 +49,16 @@ make_pixbuf (int width, int height, int bpp, int has_alpha)
 #define SPIN()   while (g_main_context_pending (NULL)) \
                      g_main_context_iteration (NULL, FALSE);
 
+#endif
 
 int
 main (int argc, char *argv[])
 {
+#ifdef USE_PIXBUF
   ClutterActor    *texture;
   ClutterActor    *stage;
   GdkPixbuf       *pixbuf;
-  gint             i, j, cols, rows;
+  gint             i, j;
 
   clutter_init (&argc, &argv);
 
@@ -73,15 +76,24 @@ main (int argc, char *argv[])
 	  g_error("%ix%i pixbuf creation failed", i+j, i+j);
 	
 	printf("o %ix%i pixbuf... ", i+j, i+j);
-	
-	texture = clutter_texture_new_from_pixbuf (pixbuf);
+
+	texture = clutter_texture_new ();
+	clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (texture),
+					   gdk_pixbuf_get_pixels (pixbuf),
+					   gdk_pixbuf_get_has_alpha (pixbuf),
+					   gdk_pixbuf_get_width (pixbuf),
+					   gdk_pixbuf_get_height (pixbuf),
+					   gdk_pixbuf_get_rowstride (pixbuf),
+					   gdk_pixbuf_get_has_alpha (pixbuf)
+					   ? 4 : 3,
+					   0, NULL);
 	
 	g_object_unref (pixbuf);
 	
 	if (!texture)
 	  g_error("Pixbuf creation failed");
 	
-	printf("uploaded to texture... ");
+	printf("uploaded to texture...\n");
 	
 	clutter_container_add (CLUTTER_CONTAINER (stage), texture, NULL);
 	clutter_actor_set_size (texture, 400, 400);
@@ -91,14 +103,10 @@ main (int argc, char *argv[])
 	clutter_actor_hide (texture);
 	clutter_actor_show (texture);	
 
-	clutter_texture_get_n_tiles(CLUTTER_TEXTURE(texture), &cols, &rows);
-	
-	printf("with tiles: %i x %i\n", cols, rows);
-	
 	SPIN();
 
         clutter_container_remove (CLUTTER_CONTAINER (stage), texture, NULL);
     }
-
+#endif
   return 0;
 }

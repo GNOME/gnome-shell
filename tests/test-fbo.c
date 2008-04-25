@@ -10,17 +10,15 @@ ClutterActor*
 make_source(void)
 {
   ClutterActor     *source, *actor;
-  GdkPixbuf        *pixbuf;
   GError           *error = NULL;
 
   ClutterColor      yellow = {0xff, 0xff, 0x00, 0xff};
 
-  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", &error);
-  if (!pixbuf)
+  source  = clutter_group_new();
+  actor = clutter_texture_new_from_file ("redhand.png", &error);
+  if (!actor)
     g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
 
-  source  = clutter_group_new();
-  actor = clutter_texture_new_from_pixbuf (pixbuf);
   clutter_group_add (source, actor);
 
   actor = clutter_label_new_with_text ("Sans Bold 50px", "Clutter");

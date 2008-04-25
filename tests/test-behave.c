@@ -78,7 +78,6 @@ main (int argc, char *argv[])
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
   ClutterColor      rect_bg_color = { 0x33, 0x22, 0x22, 0xff };
   ClutterColor      rect_border_color = { 0, 0, 0, 0 };
-  GdkPixbuf        *pixbuf;
   int               i;
   path_t            path_type = PATH_POLY;
   
@@ -134,11 +133,6 @@ main (int argc, char *argv[])
                     G_CALLBACK (clutter_main_quit),
                     NULL);
 
-  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", NULL);
-
-  if (!pixbuf)
-    g_error("pixbuf load failed");
-
   clutter_stage_set_color (CLUTTER_STAGE (stage),
 		           &stage_color);
 
@@ -147,11 +141,20 @@ main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
   clutter_actor_show (group);
   
+  hand = clutter_texture_new_from_file ("redhand.png", NULL);
+  if (hand == NULL)
+    {
+      g_error("pixbuf load failed");
+      return 1;
+    }
+  clutter_actor_set_position (hand, 0, 0);
+  clutter_actor_show (hand);
+
   rect = clutter_rectangle_new ();
   clutter_actor_set_position (rect, 0, 0);
   clutter_actor_set_size (rect,
-                          gdk_pixbuf_get_width (pixbuf),
-                          gdk_pixbuf_get_height (pixbuf));
+                          clutter_actor_get_width (hand),
+			  clutter_actor_get_height (hand));
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect),
                                &rect_bg_color);
   clutter_rectangle_set_border_width (CLUTTER_RECTANGLE (rect), 10);
@@ -160,10 +163,6 @@ main (int argc, char *argv[])
                                       &rect_border_color);
   clutter_actor_show (rect);
   
-  hand = clutter_texture_new_from_pixbuf (pixbuf);
-  clutter_actor_set_position (hand, 0, 0);
-  clutter_actor_show (hand);
-
   clutter_container_add (CLUTTER_CONTAINER (group), rect, hand, NULL);
   
   /* Make a timeline */

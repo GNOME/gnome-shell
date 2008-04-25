@@ -149,7 +149,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-units.h"
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 typedef struct _ShaderData ShaderData;
 
@@ -488,10 +488,10 @@ clutter_actor_real_pick (ClutterActor       *self,
   if (clutter_actor_should_pick_paint (self))
     {
       cogl_color (color);
-      cogl_rectangle (0,
-		      0,
-		      clutter_actor_get_width(self),
-		      clutter_actor_get_height(self));
+      cogl_fast_fill_rectangle (0,
+				0,
+				clutter_actor_get_width(self),
+				clutter_actor_get_height(self));
     }
 }
 
@@ -3762,7 +3762,6 @@ clutter_actor_set_rotationu (ClutterActor      *self,
                                        x, y, z);
 }
 
-
 /**
  * clutter_actor_set_rotationx:
  * @self: a #ClutterActor
@@ -5255,6 +5254,8 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
                                    const gchar       *name,
                                    const GValue      *value)
 {
+  CLUTTER_NOTE (SCRIPT, "in ClutterActor::set_custom_property('%s')", name);
+
   if (strcmp (name, "rotation") == 0)
     {
       RotationInfo *info;

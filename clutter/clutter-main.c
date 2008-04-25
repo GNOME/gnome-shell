@@ -47,7 +47,7 @@
 #include "clutter-version.h" 	/* For flavour define */
 #include "clutter-frame-source.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 /* main context */
 static ClutterMainContext *ClutterCntx  = NULL;
@@ -247,7 +247,6 @@ _clutter_do_pick (ClutterStage   *stage,
   clutter_maybe_setup_viewport (stage);
 
   cogl_paint_init (&white);
-  cogl_enable (0);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
   glDisable (GL_DITHER);
@@ -349,12 +348,16 @@ clutter_main (void)
   loop = g_main_loop_new (NULL, TRUE);
   main_loops = g_slist_prepend (main_loops, loop);
 
+#ifdef HAVE_CLUTTER_FRUITY_FOO
+  clutter_fruity_main ();
+#else
   if (g_main_loop_is_running (main_loops->data))
     {
       clutter_threads_leave ();
       g_main_loop_run (loop);
       clutter_threads_enter ();
     }
+#endif
 
   main_loops = g_slist_remove (main_loops, loop);
 

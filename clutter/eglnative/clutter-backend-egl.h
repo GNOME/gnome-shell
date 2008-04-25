@@ -22,12 +22,11 @@
 #ifndef __CLUTTER_BACKEND_EGL_H__
 #define __CLUTTER_BACKEND_EGL_H__
 
-#include <glib-object.h>
-#include <clutter/clutter-backend.h>
-
 #include <GLES/gl.h>
 #include <GLES/egl.h>
 
+#include <glib-object.h>
+#include <clutter/clutter-backend.h>
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND_EGL                (clutter_backend_egl_get_type ())
@@ -39,6 +38,7 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterBackendEGL       ClutterBackendEGL;
 typedef struct _ClutterBackendEGLClass  ClutterBackendEGLClass;
+
 
 struct _ClutterBackendEGL
 {

@@ -194,7 +194,6 @@ main (gint   argc,
   ClutterActor     *stage;
   ClutterColor      stage_color = { 0x61, 0x64, 0x8c, 0xff };
   ClutterShader    *shader;
-  GdkPixbuf        *pixbuf;
   GError           *error;
 
   clutter_init (&argc, &argv);
@@ -222,10 +221,6 @@ main (gint   argc,
       return EXIT_FAILURE;
     }
 
-  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", &error);
-  if (!pixbuf)
-    g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
-
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Shader Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
@@ -234,15 +229,21 @@ main (gint   argc,
   g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
 
 #ifndef TEST_GROUP
-  actor = clutter_texture_new_from_pixbuf (pixbuf);
+  actor = clutter_texture_new_from_file ("redhand.png", &error);
+  if (!actor)
+    g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
 #else
   actor = clutter_group_new ();
     {
       ClutterActor *child1, *child2, *child3, *child4;
       ClutterColor  color = { 0xff, 0x22, 0x66, 0x99 };
 
-      child1 = clutter_texture_new_from_pixbuf (pixbuf);
-      child2 = clutter_texture_new_from_pixbuf (pixbuf);
+      child1 = clutter_texture_new_from_file ("redhand.png", &error);
+      if (!child1)
+	g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
+      child2 = clutter_texture_new_from_file ("redhand.png", &error);
+      if (!child2)
+	g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
       child3 = clutter_rectangle_new ();
       child4 = clutter_label_new_with_text ("Sans 20px", "Shady stuff");
 

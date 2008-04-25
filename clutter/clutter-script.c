@@ -160,6 +160,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <gmodule.h>
 
 #include "clutter-actor.h"
 #include "clutter-alpha.h"
@@ -927,6 +928,7 @@ clutter_script_parse_node (ClutterScript *script,
           break;
 
         case G_TYPE_OBJECT:
+#ifdef USE_GDKPIXBUF
           if (G_VALUE_HOLDS (value, GDK_TYPE_PIXBUF))
             {
               if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
@@ -958,7 +960,7 @@ clutter_script_parse_node (ClutterScript *script,
                       g_warning ("Unable to open image at path `%s': %s",
                                  path,
                                  error->message);
-                                 g_error_free (error);
+                      g_error_free (error);
                     }
                   else
                     {
@@ -983,6 +985,7 @@ clutter_script_parse_node (ClutterScript *script,
                 }
             }
           break;
+#endif
 
         default:
           retval = FALSE;

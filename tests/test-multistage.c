@@ -21,7 +21,6 @@ on_button_press (ClutterActor *actor,
   gchar *stage_label, *win_title;
   ClutterColor color = { 0xdd, 0x33, 0xdd, 0xff };
   ClutterColor white = { 0x99, 0x99, 0x99, 0xff };
-  GdkPixbuf      *pixb;
   ClutterTimeline  *timeline;
   ClutterAlpha     *alpha;
   ClutterBehaviour *r_behave;
@@ -34,12 +33,11 @@ on_button_press (ClutterActor *actor,
   clutter_stage_set_color (CLUTTER_STAGE (new_stage), &color);
   clutter_actor_set_size (new_stage, 320, 240);
 
-  pixb = gdk_pixbuf_new_from_file ("redhand.png", NULL);
+  tex = clutter_texture_new_from_file ("redhand.png", NULL);
 
-  if (!pixb)
+  if (!tex)
     g_error("pixbuf load failed");
 
-  tex = clutter_texture_new_from_pixbuf (pixb);
   clutter_actor_set_reactive (tex, TRUE);
   g_signal_connect (tex, "button-press-event", 
                     G_CALLBACK (tex_button_cb), NULL);

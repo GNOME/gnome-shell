@@ -51,7 +51,7 @@
 #include "clutter-marshal.h"
 #include "clutter-enum-types.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 enum
 {

@@ -17,7 +17,6 @@ typedef struct SuperOH
 {
   ClutterActor   **hand, *bgtex;
   ClutterActor    *group;
-  GdkPixbuf       *bgpixb;
 
 } SuperOH;
 
@@ -126,7 +125,6 @@ main (int argc, char *argv[])
   ClutterBehaviour *scaler_1, *scaler_2;
   ClutterActor    *stage;
   ClutterColor     stage_color = { 0x61, 0x64, 0x8c, 0xff };
-  GdkPixbuf       *pixbuf;
   SuperOH         *oh;
   gint             i;
   GError          *error;
@@ -149,11 +147,6 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 800, 600);
-
-  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", NULL);
-
-  if (!pixbuf)
-    g_error("pixbuf load failed");
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Actors Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage),
@@ -188,9 +181,16 @@ main (int argc, char *argv[])
       gint x, y, w, h;
       gint radius = get_radius ();
 
-      /* Create a texture from pixbuf, then clone in to same resources */
+      /* Create a texture from file, then clone in to same resources */
       if (i == 0)
-	oh->hand[i] = clutter_texture_new_from_pixbuf (pixbuf);
+	{
+	  if ((oh->hand[i] = clutter_texture_new_from_file ("redhand.png",
+							    &error)) == NULL)
+	    {
+	      g_error ("image load failed: %s", error->message);
+	      exit (1);
+	    }
+	}
       else
 	oh->hand[i] = clutter_clone_texture_new (CLUTTER_TEXTURE(oh->hand[0]));
 

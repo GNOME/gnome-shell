@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include <glib.h>
+#include <gmodule.h>
 
 #include "clutter-actor.h"
 #include "clutter-behaviour.h"

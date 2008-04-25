@@ -16,8 +16,8 @@ INCLUDES = \
 	@GCC_FLAGS@ @CLUTTER_CFLAGS@ 			\
 	$(CLUTTER_DEBUG_CFLAGS)				\
 	-I$(top_srcdir)                         	\
-	-I$(top_srcdir)/clutter/cogl			\
-	-I$(top_srcdir)/clutter/cogl/@CLUTTER_COGL@ 
+	-I$(top_srcdir)/clutter				\
+	-I$(top_builddir)/clutter
 
 pangoclutterheadersdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
 pangoclutterheaders_HEADERS = $(source_h)

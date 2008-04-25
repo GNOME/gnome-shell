@@ -15,22 +15,19 @@ main (int argc, char *argv[])
   ClutterActor     *stage;
   ClutterActor     *hand;
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
-  GdkPixbuf        *pixbuf;
 
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
 
-  pixbuf = gdk_pixbuf_new_from_file ("redhand.png", NULL);
-
-  if (!pixbuf)
-    g_error("pixbuf load failed");
-
   clutter_stage_set_color (CLUTTER_STAGE (stage),
 		           &stage_color);
 
   /* Make a hand */
-  hand = clutter_texture_new_from_pixbuf (pixbuf);
+  hand = clutter_texture_new_from_file ("redhand.png", NULL);
+  if (!hand)
+    g_error("pixbuf load failed");
+
   clutter_actor_set_position (hand, 300, 200);
   clutter_actor_set_clip (hand, 20, 21, 132, 170);
   clutter_actor_set_anchor_point (hand, 86, 125);

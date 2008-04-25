@@ -22,9 +22,9 @@ GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 INCLUDES = \
 	-I$(top_srcdir) 				\
 	-I$(top_srcdir)/clutter/pango			\
-	-I$(top_srcdir)/clutter/cogl			\
-	-I$(top_srcdir)/clutter/cogl/$(CLUTTER_COGL)	\
+	-I$(top_srcdir)/clutter	                        \
 	$(clutter_json_include)				\
+	-I$(top_builddir)/clutter			\
 	-DCLUTTER_PREFIX=\""$(prefix)"\"		\
 	-DCLUTTER_LIBDIR=\""$(libdir)"\"		\
 	-DCLUTTER_DATADIR=\""$(datadir)"\"		\
@@ -87,7 +87,7 @@ source_h =					\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
-	$(srcdir)/clutter-version.h		\
+	$(top_builddir)/clutter/clutter-version.h \
 	$(NULL)
 
 clutter-marshal.h: stamp-clutter-marshal.h
@@ -113,8 +113,7 @@ clutter-marshal.c: clutter-marshal.h Makefile
 clutter-enum-types.h: stamp-clutter-enum-types.h
 	@true
 stamp-clutter-enum-types.h: $(source_h) Makefile
-	( cd $(srcdir) && \
-	  $(GLIB_MKENUMS) \
+	( $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/clutter-enum-types.h.in \
 	  $(source_h) ) >> xgen-ceth && \
 	(cmp xgen-ceth clutter-enum-types.h || cp xgen-ceth clutter-enum-types.h) && \
@@ -122,8 +121,7 @@ stamp-clutter-enum-types.h: $(source_h) Makefile
 	echo timestamp > $(@F)
 
 clutter-enum-types.c: clutter-enum-types.h
-	( cd $(srcdir) && \
-	  $(GLIB_MKENUMS) \
+	( $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/clutter-enum-types.c.in \
 	  $(source_h) ) >> xgen-cetc && \
 	cp xgen-cetc clutter-enum-types.c && \
@@ -144,9 +142,9 @@ source_c = \
 	clutter-behaviour-path.c	\
 	clutter-behaviour-rotate.c	\
 	clutter-behaviour-scale.c	\
+	clutter-clone-texture.c 	\
 	clutter-color.c 		\
 	clutter-container.c		\
-	clutter-clone-texture.c 	\
 	clutter-effect.c      		\
         clutter-entry.c                 \
 	clutter-enum-types.c		\

@@ -49,7 +49,7 @@
 
 #include <glib.h>
 
-#include <cogl/cogl.h>
+#include "cogl/cogl.h"
 
 #include "clutter-debug.h"
 #include "clutter-private.h"
@@ -402,9 +402,6 @@ bind_glsl_shader (ClutterShader  *self,
 {
   ClutterShaderPrivate *priv;
   priv = self->priv;
-
-  cogl_enable (CGL_FRAGMENT_SHADER);
-  cogl_enable (CGL_VERTEX_SHADER);
 
   priv->program = cogl_create_program ();
 

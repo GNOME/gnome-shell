@@ -16,7 +16,7 @@
 #include "../clutter-units.h"
 #include "../clutter-stage-window.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 

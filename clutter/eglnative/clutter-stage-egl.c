@@ -2,9 +2,9 @@
 #include "config.h"
 #endif
 
-#include "clutter-backend-egl.h"
 #include "clutter-stage-egl.h"
 #include "clutter-egl.h"
+#include "clutter-backend-egl.h"
 
 #include "../clutter-main.h"
 #include "../clutter-feature.h"
@@ -29,12 +29,21 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageEGL,
 static void
 clutter_stage_egl_show (ClutterActor *actor)
 {
+    ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
+
+  CLUTTER_ACTOR_SET_FLAGS (stage_egl, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_ACTOR_SET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_MAPPED);
+
   CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->show (actor);
 }
 
 static void
 clutter_stage_egl_hide (ClutterActor *actor)
 {
+    ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
+
+  CLUTTER_ACTOR_UNSET_FLAGS (stage_egl, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_ACTOR_UNSET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_MAPPED);
   CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->hide (actor);
 }
 
@@ -49,7 +58,7 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 
   if (stage_egl->egl_surface)
     {
-      eglDestroySurface (clutter_egl_display(), stage_egl->egl_surface);
+      eglDestroySurface (clutter_egl_display (), stage_egl->egl_surface);
       stage_egl->egl_surface = EGL_NO_SURFACE;
     }
 
@@ -64,7 +73,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
   EGLConfig            configs[2];
   EGLint               config_count;
   EGLBoolean           status;
-  ClutterPerspective   perspective;
   gboolean             is_offscreen;
 
   CLUTTER_NOTE (BACKEND, "Realizing main stage");
@@ -81,7 +89,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
 			       EGL_BLUE_SIZE,      5,
 			       EGL_DEPTH_SIZE,     16,
 			       EGL_ALPHA_SIZE,     EGL_DONT_CARE,
-			       EGL_STENCIL_SIZE,   EGL_DONT_CARE,
+			       EGL_STENCIL_SIZE,   2,
 			       EGL_SURFACE_TYPE,   EGL_WINDOW_BIT,
 			       EGL_NONE };
 
@@ -108,11 +116,19 @@ clutter_stage_egl_realize (ClutterActor *actor)
           stage_egl->egl_surface = EGL_NO_SURFACE;
         }
 
+       if (backend_egl->egl_context)
+         {
+            eglDestroyContext (backend_egl->edpy, backend_egl->egl_context);
+            backend_egl->egl_context = NULL;
+         }
+
       stage_egl->egl_surface =
 	eglCreateWindowSurface (backend_egl->edpy,
                                 configs[0],
                                 NULL,
                                 NULL);
+
+
 
       if (stage_egl->egl_surface == EGL_NO_SURFACE)
         {
@@ -136,7 +152,8 @@ clutter_stage_egl_realize (ClutterActor *actor)
 		    stage_egl->surface_width,
                     stage_egl->surface_height);
 
-      if (G_UNLIKELY (backend_egl->egl_context == None))
+
+      if (G_UNLIKELY (backend_egl->egl_context == NULL))
         {
           CLUTTER_NOTE (GL, "Creating EGL Context");
 
@@ -154,11 +171,20 @@ clutter_stage_egl_realize (ClutterActor *actor)
             }
         }
 
-      /* this will make sure to set the current context */
       CLUTTER_NOTE (BACKEND, "Marking stage as realized and setting context");
       CLUTTER_ACTOR_SET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_REALIZED);
       CLUTTER_ACTOR_SET_FLAGS (stage_egl, CLUTTER_ACTOR_REALIZED);
-      clutter_stage_ensure_current (stage_egl->wrapper);
+
+
+      /* eglnative can have only one context */
+      status = eglMakeCurrent (backend_egl->edpy,
+                               stage_egl->egl_surface,
+                               stage_egl->egl_surface,
+                               backend_egl->egl_context);
+
+      if (status != EGL_TRUE)
+          g_warning ("eglMakeCurrent");   
+
     }
   else
     {
@@ -166,6 +192,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
       return;
     }
+
 
   CLUTTER_SET_PRIVATE_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
 }
@@ -210,18 +237,17 @@ clutter_stage_egl_dispose (GObject *gobject)
 static void
 clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  ClutterStageClass *stage_class = CLUTTER_STAGE_CLASS (klass);
+  GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class   = CLUTTER_ACTOR_CLASS (klass);
 
   gobject_class->dispose = clutter_stage_egl_dispose;
 
-  actor_class->show = clutter_stage_egl_show;
-  actor_class->hide = clutter_stage_egl_hide;
-  actor_class->realize = clutter_stage_egl_realize;
-  actor_class->unrealize = clutter_stage_egl_unrealize;
+  actor_class->show           = clutter_stage_egl_show;
+  actor_class->hide           = clutter_stage_egl_hide;
+  actor_class->realize        = clutter_stage_egl_realize;
+  actor_class->unrealize      = clutter_stage_egl_unrealize;
   actor_class->request_coords = clutter_stage_egl_request_coords;
-  actor_class->query_coords = clutter_stage_egl_query_coords;
+  actor_class->query_coords   = clutter_stage_egl_query_coords;
 }
 
 static void
@@ -232,10 +258,18 @@ clutter_stage_egl_set_fullscreen (ClutterStageWindow *stage_window,
              G_OBJECT_TYPE_NAME (stage_window));
 }
 
+static ClutterActor *
+clutter_stage_egl_get_wrapper (ClutterStageWindow *stage_window)
+{
+  return CLUTTER_ACTOR (CLUTTER_STAGE_EGL (stage_window)->wrapper);
+}
+
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
   iface->set_fullscreen = clutter_stage_egl_set_fullscreen;
+  iface->set_title = NULL;
+  iface->get_wrapper = clutter_stage_egl_get_wrapper;
 }
 
 static void

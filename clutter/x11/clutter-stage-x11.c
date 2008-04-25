@@ -38,13 +38,11 @@
 #include "../clutter-debug.h"
 #include "../clutter-units.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 #ifdef HAVE_XFIXES
 #include <X11/extensions/Xfixes.h>
 #endif
-
-#include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 

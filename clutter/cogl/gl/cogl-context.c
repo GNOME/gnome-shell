@@ -1,0 +1,114 @@
+/*
+ * Clutter COGL
+ *
+ * A basic GL/GLES Abstraction/Utility Layer
+ *
+ * Authored By Matthew Allum  <mallum@openedhand.com>
+ *
+ * Copyright (C) 2007 OpenedHand
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include "cogl.h"
+#include "cogl-internal.h"
+#include "cogl-util.h"
+#include "cogl-context.h"
+
+#include <string.h>
+
+static CoglContext *_context = NULL;
+
+gboolean
+cogl_create_context ()
+{
+  if (_context != NULL)
+    return FALSE;
+  
+  /* Allocate context memory */
+  _context = (CoglContext*) g_malloc (sizeof (CoglContext));
+  
+  /* Init default values */
+  _context->feature_flags = 0;
+  _context->features_cached = FALSE;
+  
+  _context->enable_flags = 0;
+  _context->color_alpha = 255;
+  
+  _context->path_nodes = NULL;
+  _context->path_nodes_cap = 0;
+  _context->path_nodes_size = 0;
+  
+  _context->texture_handles = NULL;
+  
+  _context->fbo_handles = NULL;
+  _context->draw_buffer = COGL_WINDOW_BUFFER;
+  
+  _context->pf_glGenRenderbuffersEXT = NULL;
+  _context->pf_glBindRenderbufferEXT = NULL;
+  _context->pf_glRenderbufferStorageEXT = NULL;
+  _context->pf_glGenFramebuffersEXT = NULL;
+  _context->pf_glBindFramebufferEXT = NULL;
+  _context->pf_glFramebufferTexture2DEXT = NULL;
+  _context->pf_glFramebufferRenderbufferEXT = NULL;
+  _context->pf_glCheckFramebufferStatusEXT = NULL;
+  _context->pf_glDeleteFramebuffersEXT = NULL;
+  _context->pf_glBlitFramebufferEXT = NULL;
+  _context->pf_glRenderbufferStorageMultisampleEXT = NULL;
+  
+  _context->pf_glCreateProgramObjectARB = NULL;
+  _context->pf_glCreateShaderObjectARB = NULL;
+  _context->pf_glShaderSourceARB = NULL;
+  _context->pf_glCompileShaderARB = NULL;
+  _context->pf_glAttachObjectARB = NULL;
+  _context->pf_glLinkProgramARB = NULL;
+  _context->pf_glUseProgramObjectARB = NULL;
+  _context->pf_glGetUniformLocationARB = NULL;
+  _context->pf_glDeleteObjectARB = NULL;
+  _context->pf_glGetInfoLogARB = NULL;
+  _context->pf_glGetObjectParameterivARB = NULL;
+  _context->pf_glUniform1fARB = NULL;
+  
+  /* Init OpenGL state */
+  glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+  glColorMask (TRUE, TRUE, TRUE, FALSE);
+  cogl_enable (0);
+  
+  return TRUE;
+}
+
+void
+cogl_destroy_context ()
+{
+  if (_context == NULL)
+    return;
+  
+  g_free (_context);
+}
+
+CoglContext *
+_cogl_context_get_default ()
+{
+  /* Create if doesn't exist yet */
+  if (_context == NULL)
+    cogl_create_context ();
+  
+  return _context;
+}

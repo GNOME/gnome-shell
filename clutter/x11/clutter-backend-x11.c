@@ -43,7 +43,7 @@
 #include "../clutter-debug.h"
 #include "../clutter-private.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 G_DEFINE_TYPE (ClutterBackendX11, clutter_backend_x11, CLUTTER_TYPE_BACKEND);
 

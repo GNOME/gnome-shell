@@ -1,3 +1,50 @@
+2008-04-22  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/Makefile.am: 
+	* cogl/Makefile.am: s/EXTRA_DIST +=/EXTRA_DIST =/ since newer automake
+	is more stringent and EXTRA_DIST has not been defined earlier.
+
+2008-04-21  Neil Roberts  <neil@o-hand.com>
+
+	* cogl/cogl-sections.txt: Added CoglTextureVertex,
+	cogl_texture_can_polygon and cogl_texture_polygon.
+
+2008-04-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* cogl/cogl-docs.sgml: Fill out and add an "about" section.
+
+	* cogl/cogl-sections.txt: Remove unused/redundant stuff,
+	divide into logical subsections and in general make the
+	documentation more structured.
+
+	* cogl/Makefile.am: Ignore some private header files.
+
+2008-04-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* cogl/: Add COGL documentation.
+
+	* Makefile.am: Add cogl/ to the list of SUBDIRS.
+
+2008-04-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/:
+	* *: Moved everything into the clutter/ subdirectory, to make
+	room for the COGL API reference.
+
+2008-04-07  Neil Roberts  <neil@o-hand.com>
+
+	* clutter-sections.txt: Removed clutter_texture_new_from_pixbuf
+	and clutter_texture_{get,set}_pixbuf. Added
+	clutter_texture_{set,new}_from_file.
+
+2008-04-03  Neil Roberts  <neil@o-hand.com>
+
+	* clutter-sections.txt: Removed ClutterTexture functions that are
+	no longer neccessary to implement ClutterCloneTexture because of
+	the new COGL texture API. Added
+	clutter_texture_{get,set}_filter_quality and
+	clutter_texture_get_cogl_texture.
+
 2008-03-30  Neil Roberts  <neil@o-hand.com>
 
 	* clutter-sections.txt: Added clutter_win32_get_stage_from_window

@@ -27,7 +27,7 @@
 #define _HAVE_CLUTTER_TEXTURE_H
 
 #include <clutter/clutter-actor.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <cogl/cogl.h>
 
 G_BEGIN_DECLS
 
@@ -38,11 +38,16 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_TEXTURE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_TEXTURE))
 #define CLUTTER_TEXTURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_TEXTURE, ClutterTextureClass))
 
+#define CLUTTER_TYPE_TEXTURE_HANDLE     (clutter_texture_handle_get_type ())
+
 /**
  * ClutterTextureError:
  * @CLUTTER_TEXTURE_ERROR_OUT_OF_MEMORY: OOM condition
  * @CLUTTER_TEXTURE_ERROR_NO_YUV: YUV operation attempted but no YUV support
  *   found
+ * @CLUTTER_TEXTURE_ERROR_BAD_FORMAT: The requested format for
+ * clutter_texture_set_from_rgb_data or
+ * clutter_texture_set_from_yuv_data is unsupported.
  *
  * Error enumeration for #ClutterTexture
  *
@@ -50,7 +55,8 @@ G_BEGIN_DECLS
  */
 typedef enum {
   CLUTTER_TEXTURE_ERROR_OUT_OF_MEMORY,
-  CLUTTER_TEXTURE_ERROR_NO_YUV
+  CLUTTER_TEXTURE_ERROR_NO_YUV,
+  CLUTTER_TEXTURE_ERROR_BAD_FORMAT
 } ClutterTextureError;
 
 #define CLUTTER_TEXTURE_ERROR   (clutter_texture_error_quark ())
@@ -107,9 +113,14 @@ typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
 } ClutterTextureFlags;
 
 GType clutter_texture_get_type (void) G_GNUC_CONST;
+GType clutter_texture_handle_get_type (void) G_GNUC_CONST;
 
 ClutterActor *clutter_texture_new                 (void);
-ClutterActor *clutter_texture_new_from_pixbuf     (GdkPixbuf      *pixbuf);
+ClutterActor *clutter_texture_new_from_file       (const gchar    *filename,
+						   GError        **error);
+gboolean      clutter_texture_set_from_file       (ClutterTexture *texture,
+						   const gchar    *filename,
+						   GError        **error);
 gboolean      clutter_texture_set_from_rgb_data   (ClutterTexture *texture,
 						   const guchar   *data,
 						   gboolean        has_alpha,
@@ -138,33 +149,19 @@ gboolean      clutter_texture_set_from_yuv_data   (ClutterTexture *texture,
 						   gint            height,
 						   ClutterTextureFlags  flags,
 						   GError        **error);
-gboolean      clutter_texture_set_pixbuf          (ClutterTexture *texture,
-						   GdkPixbuf      *pixbuf,
-						   GError        **error);
-GdkPixbuf *   clutter_texture_get_pixbuf          (ClutterTexture *texture);
 void          clutter_texture_get_base_size       (ClutterTexture *texture,
                                                    gint           *width,
                                                    gint           *height);
+void          clutter_texture_set_filter_quality  (ClutterTexture *texture,
+				                   guint     filter_quality);
+guint         clutter_texture_get_filter_quality  (ClutterTexture *texture);
+void          clutter_texture_set_max_tile_waste  (ClutterTexture *texture,
+						   gint      max_tile_waste);
+gint          clutter_texture_get_max_tile_waste  (ClutterTexture *texture);
 
-/* Below mainly for subclassed texture based actors */
-
-void     clutter_texture_bind_tile           (ClutterTexture *texture,
-                                              gint            index_);
-void     clutter_texture_get_n_tiles         (ClutterTexture *texture,
-                                              gint           *n_x_tiles,
-                                              gint           *n_y_tiles);
-void     clutter_texture_get_x_tile_detail   (ClutterTexture *texture, 
-				              gint            x_index,
-				              gint           *pos,
-				              gint           *size,
-				              gint           *waste);
-void     clutter_texture_get_y_tile_detail   (ClutterTexture *texture, 
-				              gint            y_index,
-				              gint           *pos,
-				              gint           *size,
-				              gint           *waste);
-gboolean clutter_texture_has_generated_tiles (ClutterTexture *texture);
-gboolean clutter_texture_is_tiled            (ClutterTexture *texture);
+CoglHandle    clutter_texture_get_cogl_texture    (ClutterTexture *texture);
+void          clutter_texture_set_cogl_texture    (ClutterTexture *texture,
+						   CoglHandle      cogl_tex);
 
 G_END_DECLS
 

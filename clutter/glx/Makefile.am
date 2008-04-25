@@ -4,8 +4,8 @@ libclutterinclude_HEADERS = clutter-glx.h clutter-glx-texture-pixmap.h
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterGLX\" \
 	-I$(top_srcdir) \
-	-I$(top_srcdir)/clutter/cogl 	        \
-	-I$(top_srcdir)/clutter/cogl/@CLUTTER_COGL@ \
+	-I$(top_srcdir)/clutter \
+	-I$(top_builddir)/clutter \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS) \
 	$(GCC_FLAGS)

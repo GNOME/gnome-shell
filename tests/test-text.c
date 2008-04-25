@@ -9,6 +9,30 @@
 #define COLS 18
 #define ROWS 20
 
+gboolean idle (gpointer data)
+{
+  ClutterActor *stage = CLUTTER_ACTOR (data);
+  
+  static GTimer *timer = NULL;
+  static int fps = 0;
+  
+  if (!timer)
+    {
+      timer = g_timer_new ();
+      g_timer_start (timer);
+    }
+  
+  if (g_timer_elapsed (timer, NULL) >= 1)
+    {
+      printf ("fps: %d\n", fps);
+      g_timer_start (timer);
+      fps = 0;
+    }
+  
+  clutter_actor_paint (stage);
+  ++fps;
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -69,6 +93,8 @@ main (int argc, char *argv[])
 
   g_signal_connect (stage, "key-press-event",
 		    G_CALLBACK (clutter_main_quit), NULL);
+  
+  g_idle_add (idle, (gpointer) stage);
 
   clutter_main();
 

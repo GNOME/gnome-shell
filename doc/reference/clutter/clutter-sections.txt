@@ -28,15 +28,14 @@ clutter_media_get_type
 <FILE>clutter-units</FILE>
 <TITLE>Unit conversion</TITLE>
 ClutterUnit
+CLUTTER_UNITS_FROM_DEVICE
+CLUTTER_UNITS_TO_DEVICE
 CLUTTER_UNITS_FROM_FIXED
 CLUTTER_UNITS_TO_FIXED
 CLUTTER_UNITS_FROM_FLOAT
 CLUTTER_UNITS_TO_FLOAT
 CLUTTER_UNITS_FROM_INT
 CLUTTER_UNITS_TO_INT
-<SUBSECTION>
-CLUTTER_UNITS_FROM_DEVICE
-CLUTTER_UNITS_TO_DEVICE
 CLUTTER_UNITS_FROM_PANGO_UNIT
 CLUTTER_UNITS_TO_PANGO_UNIT
 CLUTTER_UNITS_TMP_FROM_DEVICE
@@ -49,23 +48,6 @@ CLUTTER_UNITS_FROM_MM
 CLUTTER_UNITS_FROM_MMX
 CLUTTER_UNITS_FROM_POINTS
 CLUTTER_UNITS_FROM_POINTSX
-<SUBSECTION>
-CLUTTER_VALUE_HOLDS_UNIT
-clutter_value_set_unit
-clutter_value_get_unit
-<SUBSECTION>
-CLUTTER_MAXUNIT
-CLUTTER_MINUNIT
-ClutterParamSpecUnit
-clutter_param_spec_unit
-<SUBSECTION Standard>
-CLUTTER_TYPE_UNIT
-CLUTTER_TYPE_PARAM_UNIT
-CLUTTER_PARAM_SPEC_UNIT
-CLUTTER_IS_PARAM_SPEC_UNIT
-<SUBSECTION Private>
-clutter_unit_get_type
-clutter_param_unit_get_type
 </SECTION>
 
 <SECTION>
@@ -446,24 +428,21 @@ ClutterTexture
 ClutterTextureClass
 ClutterTextureFlags
 clutter_texture_new
-clutter_texture_new_from_pixbuf
+clutter_texture_new_from_file
 clutter_texture_new_from_actor
 CLUTTER_TEXTURE_ERROR
 ClutterTextureError
+clutter_texture_set_from_file
 clutter_texture_set_from_rgb_data
 clutter_texture_set_from_yuv_data
 clutter_texture_set_area_from_rgb_data
-clutter_texture_set_pixbuf
-clutter_texture_get_pixbuf
 clutter_texture_get_base_size
-
-<SUBSECTION>
-clutter_texture_bind_tile
-clutter_texture_get_n_tiles
-clutter_texture_get_x_tile_detail
-clutter_texture_get_y_tile_detail
-clutter_texture_has_generated_tiles
-clutter_texture_is_tiled
+clutter_texture_get_filter_quality
+clutter_texture_set_filter_quality
+clutter_texture_get_max_tile_waste
+clutter_texture_set_max_tile_waste
+clutter_texture_get_cogl_texture
+clutter_texture_set_cogl_texture
 
 <SUBSECTION Standard>
 CLUTTER_TEXTURE
@@ -874,31 +853,12 @@ clutter_qmulx
 clutter_qdivx
 clutter_tani
 
-<SUBSECTION>
-CLUTTER_VALUE_HOLDS_FIXED
-clutter_value_set_fixed
-clutter_value_get_fixed
-
-<SUBSECTION>
-CLUTTER_MAXFIXED
-CLUTTER_MINFIXED
-ClutterParamSpecFixed
-clutter_param_spec_fixed
-
-<SUBSECTION Standard>
-CLUTTER_PARAM_SPEC_FIXED
-CLUTTER_IS_PARAM_SPEC_FIXED
-
 <SUBSECTION Private>
 CFX_DIV
 CFX_INT
 CFX_MUL
 CFX_QMUL
 CFX_QDIV
-CLUTTER_TYPE_FIXED
-CLUTTER_TYPE_PARAM_FIXED
-clutter_fixed_get_type
-clutter_param_fixed_get_type
 </SECTION>
 
 <SECTION>

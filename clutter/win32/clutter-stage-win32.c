@@ -40,7 +40,7 @@
 #include "../clutter-shader.h"
 #include "../clutter-stage.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 #include <windows.h>
 

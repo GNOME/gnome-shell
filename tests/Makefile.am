@@ -7,9 +7,17 @@ noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
 		  test-threads test-timeline test-score test-script \
 		  test-model test-grab test-effects test-fullscreen \
 		  test-shader test-unproject test-viewport test-fbo \
-		  test-opacity test-multistage test-pixmap
+		  test-opacity test-multistage \
+		  test-cogl-primitives test-cogl-tex-tile \
+		  test-cogl-tex-convert test-cogl-tex-foreign \
+		  test-cogl-tex-getset test-cogl-offscreen \
+		  test-cogl-tex-polygon test-stage-read-pixels
 
-INCLUDES = -I$(top_srcdir)/
+if X11_TESTS
+noinst_PROGRAMS += test-pixmap
+endif
+
+INCLUDES = -I$(top_srcdir)/ -I$(top_builddir)/clutter
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
 AM_CFLAGS = $(CLUTTER_CFLAGS)
 AM_LDFLAGS = $(CLUTTER_LIBS)
@@ -45,5 +53,12 @@ test_fbo_SOURCES         = test-fbo.c
 test_opacity_SOURCES     = test-opacity.c
 test_multistage_SOURCES     = test-multistage.c
 test_pixmap_SOURCES      = test-pixmap.c
+test_cogl_primitives_SOURCES  = test-cogl-primitives.c
+test_cogl_tex_tile_SOURCES    = test-cogl-tex-tile.c
+test_cogl_tex_convert_SOURCES = test-cogl-tex-convert.c
+test_cogl_tex_foreign_SOURCES = test-cogl-tex-foreign.c
+test_cogl_tex_getset_SOURCES  = test-cogl-tex-getset.c
+test_cogl_offscreen_SOURCES   = test-cogl-offscreen.c
+test_stage_read_pixels_SOURCES = test-stage-read-pixels.c
 
 EXTRA_DIST = redhand.png test-script.json

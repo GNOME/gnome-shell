@@ -35,7 +35,7 @@
 #include "../clutter-private.h"
 #include "../clutter-version.h"
 
-#include "cogl.h"
+#include "cogl/cogl.h"
 
 G_DEFINE_TYPE (ClutterBackendWin32, clutter_backend_win32,
 	       CLUTTER_TYPE_BACKEND);

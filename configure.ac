@@ -56,6 +56,8 @@ dnl ========================================================================
 
 # Checks for programs.
 AC_PROG_CC
+#_AM_DEPENDENCIES([OBJC]) 
+#AC_PROG_OBJC            
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
@@ -75,6 +77,26 @@ AC_C_CONST
 AC_FUNC_MALLOC
 AC_FUNC_MMAP
 AC_CHECK_FUNCS([memset munmap strcasecmp strdup])
+
+dnl ========================================================================
+
+imagebackend="gdk-pixbuf"
+AC_ARG_WITH([imagebackend],
+            AC_HELP_STRING([--with-imagebackend=@<:@gdk-pixbuf/internal@:>@],
+                           [Select COGL image loading backend]),
+            imagebackend=$with_imagebackend)
+
+case $imagebackend in
+
+  gdk-pixbuf)
+    AC_DEFINE([USE_GDKPIXBUF], 1, [Use GdkPixbuf for loading image files])
+    ;;
+
+  internal)
+    ;;
+
+
+esac
 
 
 dnl ========================================================================
@@ -127,6 +149,8 @@ if test x$have_xcomposite = xyes; then
       X11_LIBS="$X11_LIBS -lXcomposite"
 fi
 
+x11_tests=no
+
 # Currently require all extentions, may not for actual release.
 if test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx" 
 then
@@ -134,7 +158,10 @@ then
       then
             AC_MSG_ERROR([[Required backend X11 Libraries not found.]])
       fi
-fi 
+      x11_tests=yes
+fi
+
+AM_CONDITIONAL(X11_TESTS, test "x$x11_tests" != "xno")
 
 clutter_gl_header=""
 
@@ -203,8 +230,10 @@ case $clutterbackend in
       AC_MSG_ERROR([GLX not found and GLX backend requested]);
     fi
 
-    # xlib pixbuf needed for exporting the stage
-    BACKEND_PC_FILES="gdk-pixbuf-xlib-2.0"
+    if test "x$imagebackend" = "xgdk-pixbuf"; then
+        # xlib pixbuf needed for exporting the stage
+        BACKEND_PC_FILES="gdk-pixbuf-xlib-2.0"
+    fi
 
     GLX_LIBS="$X11_LIBS -lGL"
     GLX_CFLAGS="$X11_CFLAGS"
@@ -286,6 +315,35 @@ case $clutterbackend in
     EGL_CFLAGS="$TSLIB_CFLAGS"
     ;;
 
+  fruity)
+
+    clutter_gl_header="GLES/gl.h"
+   
+
+    CLUTTER_FLAVOUR="fruity"
+    CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_FRUITY"
+    AC_DEFINE([HAVE_CLUTTER_FRUITY], 1, [We're building a fruity version of the eglnative backend])
+
+    # We currently assume having egl means also having gles..
+    CLUTTER_COGL="gles"
+
+    AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
+
+    # We currently assume having egl means also having gles..
+    CLUTTER_COGL="gles"
+    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+
+    AC_CHECK_HEADERS([$clutter_gl_header],,
+                     [AC_MSG_ERROR([Unable to locate require GL header])])
+    AC_CHECK_HEADERS([GLES/egl.h],,
+                     [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+    backendextra=
+
+     EGL_LIBS="-ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
+     EGL_CFLAGS=""
+     ;;
+
   osx)
 
     clutter_gl_header="OpenGL/gl.h"
@@ -325,7 +383,7 @@ case $clutterbackend in
     CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
     ;;
 
-  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx,sdl,osx,win32,eglx or eglnative])
+  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx,sdl,osx,win32,eglx, eglnative or fruity])
     ;;
 
 esac
@@ -333,6 +391,7 @@ esac
 CLUTTER_GL_HEADER=$clutter_gl_header
 
 AC_SUBST([clutterbackend])
+AC_SUBST([imagebackend])
 AC_SUBST([backendextra])
 AC_SUBST([backendextralib])
 AC_SUBST(CLUTTER_FLAVOUR)
@@ -381,7 +440,12 @@ fi
 AC_SUBST(JSON_PREFIX)
 AM_CONDITIONAL(LOCAL_JSON_GLIB, test "x$have_json" = "xno")
 
-CLUTTER_REQUIRES="pangoft2 glib-2.0 >= 2.14 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 $BACKEND_PC_FILES $JSON_GLIB_PC"
+CLUTTER_REQUIRES="pangoft2 glib-2.0 >= 2.14 gobject-2.0 gthread-2.0 gmodule-2.0 $BACKEND_PC_FILES $JSON_GLIB_PC"
+
+if test "x$imagebackend" = "xgdk-pixbuf"; then
+        CLUTTER_REQUIRES="$CLUTTER_REQUIRES gdk-pixbuf-2.0"
+fi
+
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$CLUTTER_REQUIRES])
 
 AC_SUBST(CLUTTER_REQUIRES)
@@ -485,20 +549,26 @@ AC_CONFIG_FILES([
         clutter/glx/Makefile
         clutter/eglx/Makefile
         clutter/eglnative/Makefile
+        clutter/fruity/Makefile
         clutter/osx/Makefile
         clutter/win32/Makefile
         clutter/win32/clutter-win32.pc
         clutter/sdl/Makefile
         clutter/cogl/Makefile
+	clutter/cogl/common/Makefile
+        clutter/cogl/cogl.h
+        clutter/cogl/cogl-defines-gl.h:clutter/cogl/gl/cogl-defines.h.in
+        clutter/cogl/cogl-defines-gles.h:clutter/cogl/gles/cogl-defines.h.in
         clutter/cogl/gl/Makefile
-        clutter/cogl/gl/cogl-defines.h
         clutter/cogl/gles/Makefile
         clutter/json/Makefile
         clutter/pango/Makefile
         tests/Makefile
         doc/Makefile
         doc/reference/Makefile
-        doc/reference/version.xml
+        doc/reference/clutter/Makefile
+        doc/reference/clutter/version.xml
+        doc/reference/cogl/Makefile
         doc/manual/clutter-manual.xml
         doc/manual/Makefile
         clutter.pc
@@ -522,3 +592,29 @@ echo "           Compiler flags:   ${CPPFLAGS}"
 echo "        API Documentation:   ${enable_gtk_doc}"
 echo "     Manual Documentation:   ${enable_manual}"
 echo ""
+
+
+# you can add more configuration options or flags that will bring up the
+# the experimental/unstable warning summary.
+
+if test "x$imagebackend" = "xinternal"; then
+  experimental_stuff="$experimental_stuff\n imagebackend=$imagebackend"
+fi
+if test "x$clutterbackend" = "xfruity"; then
+  experimental_stuff="$experimental_stuff\n clutterbackend=$clutterbackend"
+fi
+
+
+if test "x$experimental_stuff" != "x"; then
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo ""
+echo "Experimental features configured, stability of your build either uses"
+echo "experimental backends or experimental and unsupported features:"
+echo -e "$experimental_stuff"
+echo ""
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+fi
+
+

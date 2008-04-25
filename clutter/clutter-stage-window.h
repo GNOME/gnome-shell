@@ -2,7 +2,9 @@
 #define __CLUTTER_STAGE_WINDOW_H__
 
 #include <clutter/clutter-actor.h>
+#ifdef USE_GDKPIXBUF
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#endif
 
 G_BEGIN_DECLS
 
@@ -28,12 +30,6 @@ struct _ClutterStageWindowIface
                                         gboolean            cursor_visible);
   void          (* set_user_resizable) (ClutterStageWindow *stage_window,
                                         gboolean            is_resizable);
-
-  GdkPixbuf *   (* draw_to_pixbuf)     (ClutterStageWindow *stage_window,
-                                        gint                x,
-                                        gint                y,
-                                        gint                width,
-                                        gint                height);
 };
 
 GType clutter_stage_window_get_type (void) G_GNUC_CONST;
