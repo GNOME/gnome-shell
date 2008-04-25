@@ -32,16 +32,12 @@
 #include <GLES/gl.h>
 #include <string.h>
 
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-#define PIXEL_TYPE GL_UNSIGNED_BYTE
-#else
-#define PIXEL_TYPE GL_UNSIGNED_INT_8_8_8_8_REV
-#endif
+#include "cogl-internal.h"
+#include "cogl-util.h"
+#include "cogl-context.h"
 
-static gulong __enable_flags = 0;
 
-#define COGL_DEBUG 0
-
+/* GL error to string conversion */
 #if COGL_DEBUG
 struct token_string
 {
@@ -75,20 +71,6 @@ error_string(GLenum errorCode)
 }
 #endif
 
-#if COGL_DEBUG
-#define GE(x...) {                                               \
-        GLenum err;                                              \
-        (x);                                                     \
-        fprintf(stderr, "%s\n", #x);                             \
-        while ((err = glGetError()) != GL_NO_ERROR) {            \
-                fprintf(stderr, "glError: %s caught at %s:%u\n", \
-                                (char *)error_string(err),       \
-			         __FILE__, __LINE__);            \
-        }                                                        \
-}
-#else
-#define GE(x) (x);
-#endif
 
 CoglFuncPtr
 cogl_get_proc_address (const gchar* name)
@@ -117,9 +99,6 @@ cogl_paint_init (const ClutterColor *color)
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   glDisable (GL_LIGHTING);
   glDisable (GL_FOG);
-
-  cogl_enable (CGL_ENABLE_BLEND);
-  glTexEnvx (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 }
 
 /* FIXME: inline most of these  */
@@ -173,53 +152,98 @@ cogl_rotate (gint angle, gint x, gint y, gint z)
 		 CLUTTER_INT_TO_FIXED(z)) );
 }
 
+static inline gboolean
+cogl_toggle_flag (CoglContext *ctx,
+		  gulong new_flags,
+		  gulong flag,
+		  GLenum gl_flag)
+{
+  /* Toggles and caches a single enable flag on or off
+   * by comparing to current state
+   */
+  if (new_flags & flag)
+    {
+      if (!(ctx->enable_flags & flag))
+	{
+	  GE( glEnable (gl_flag) );
+	  ctx->enable_flags |= flag;
+	  return TRUE;
+	}
+    }
+  else if (ctx->enable_flags & flag)
+    {
+      GE( glDisable (gl_flag) );
+      ctx->enable_flags &= ~flag;
+    }
+  
+  return FALSE;
+}
+
+static inline gboolean
+cogl_toggle_client_flag (CoglContext *ctx,
+			 gulong new_flags,
+			 gulong flag,
+			 GLenum gl_flag)
+{
+  /* Toggles and caches a single client-side enable flag
+   * on or off by comparing to current state
+   */
+  if (new_flags & flag)
+    {
+      if (!(ctx->enable_flags & flag))
+	{
+	  GE( glEnableClientState (gl_flag) );
+	  ctx->enable_flags |= flag;
+	  return TRUE;
+	}
+    }
+  else if (ctx->enable_flags & flag)
+    {
+      GE( glDisableClientState (gl_flag) );
+      ctx->enable_flags &= ~flag;
+    }
+  
+  return FALSE;
+}
+
 void
 cogl_enable (gulong flags)
 {
   /* This function essentially caches glEnable state() in the
    * hope of lessening number GL traffic.
   */
-  if (flags & CGL_ENABLE_BLEND)
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
+  if (cogl_toggle_flag (ctx, flags,
+			COGL_ENABLE_BLEND,
+			GL_BLEND))
     {
-      if (!(__enable_flags & CGL_ENABLE_BLEND))
-	{
-	  GE( glEnable (GL_BLEND) );
-	  GE( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
-	}
-      __enable_flags |= CGL_ENABLE_BLEND;
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
-  else if (__enable_flags & CGL_ENABLE_BLEND)
-    {
-      GE( glDisable (GL_BLEND) );
-      __enable_flags &= ~CGL_ENABLE_BLEND;
-    }
+  
+  cogl_toggle_flag (ctx, flags,
+		    COGL_ENABLE_TEXTURE_2D,
+		    GL_TEXTURE_2D);
+  
+  cogl_toggle_client_flag (ctx, flags,
+			   COGL_ENABLE_VERTEX_ARRAY,
+			   GL_VERTEX_ARRAY);
+  
+  cogl_toggle_client_flag (ctx, flags,
+			   COGL_ENABLE_TEXCOORD_ARRAY,
+			   GL_TEXTURE_COORD_ARRAY);
 
-  if (flags & CGL_ENABLE_TEXTURE_2D)
-    {
-      if (!(__enable_flags & CGL_ENABLE_TEXTURE_2D))
-	GE( glEnable (GL_TEXTURE_2D) );
-      __enable_flags |= CGL_ENABLE_TEXTURE_2D;
-    }
-  else if (__enable_flags & CGL_ENABLE_TEXTURE_2D)
-    {
-      GE( glDisable (GL_TEXTURE_2D) );
-      __enable_flags &= ~CGL_ENABLE_TEXTURE_2D;
-    }
+  cogl_toggle_client_flag (ctx, flags,
+			   COGL_ENABLE_COLOR_ARRAY,
+			   GL_COLOR_ARRAY);
+}
 
-#if 0
-  if (flags & CGL_ENABLE_TEXTURE_RECT)
-    {
-      if (!(__enable_flags & CGL_ENABLE_TEXTURE_RECT))
-	  glEnable (GL_TEXTURE_RECTANGLE_);
-
-      __enable_flags |= CGL_ENABLE_TEXTURE_RECT;
-    }
-  else if (__enable_flags & CGL_ENABLE_TEXTURE_RECT)
-    {
-      glDisable (GL_TEXTURE_RECTANGLE_);
-      __enable_flags &= ~CGL_ENABLE_TEXTURE_RECT;
-    }
-#endif
+gulong
+cogl_get_enable ()
+{
+  _COGL_GET_CONTEXT (ctx, 0);
+  
+  return ctx->enable_flags;
 }
 
 void
@@ -242,6 +266,8 @@ cogl_enable_depth_test (gboolean setting)
 void
 cogl_color (const ClutterColor *color)
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
 #if 0 /*HAVE_GLES_COLOR4UB*/
 
   /* NOTE: seems SDK_OGLES-1.1_LINUX_PCEMULATION_2.02.22.0756 has this call 
@@ -267,25 +293,9 @@ cogl_color (const ClutterColor *color)
 		 (color->blue << 16) / 0xff,   
                   (color->alpha << 16) / 0xff));
 #endif
-}
-
-static inline void
-cogl_rectangle_internal (ClutterFixed x,
-                         ClutterFixed y,
-                         ClutterFixed width,
-                         ClutterFixed height)
-{
-  GLfixed rect_verts[8] = {
-    x,         y,
-    x + width, y,
-    x,         y + height,
-    x + width, y + height
-  };
-
-  GE( glEnableClientState (GL_VERTEX_ARRAY) );
-  GE( glVertexPointer (2, GL_FIXED, 0, rect_verts) );
-  GE( glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
-  GE( glDisableClientState (GL_VERTEX_ARRAY) );
+  
+  /* Store alpha for proper blending enables */
+  ctx->color_alpha = color->alpha;
 }
 
 void
@@ -294,198 +304,56 @@ cogl_clip_set (ClutterFixed x_offset,
                ClutterFixed width,
                ClutterFixed height)
 {
-  GE( glEnable (GL_STENCIL_TEST) );
+  if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
+    {
+      GLfixed eqn_left[4] = { CFX_ONE, 0, 0, -x_offset };
+      GLfixed eqn_right[4] = { -CFX_ONE, 0, 0,  x_offset + width };
+      GLfixed eqn_top[4] = { 0, CFX_ONE, 0, -y_offset };
+      GLfixed eqn_bottom[4] = { 0, -CFX_ONE, 0,  y_offset + height };
 
-  GE( glClearStencil (0) );
-  GE( glClear (GL_STENCIL_BUFFER_BIT) );
+      GE( glClipPlanex (GL_CLIP_PLANE0, eqn_left) );
+      GE( glClipPlanex (GL_CLIP_PLANE1, eqn_right) );
+      GE( glClipPlanex (GL_CLIP_PLANE2, eqn_top) );
+      GE( glClipPlanex (GL_CLIP_PLANE3, eqn_bottom) );
+      GE( glEnable (GL_CLIP_PLANE0) );
+      GE( glEnable (GL_CLIP_PLANE1) );
+      GE( glEnable (GL_CLIP_PLANE2) );
+      GE( glEnable (GL_CLIP_PLANE3) );
+    }
+  else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
+    {
+      GE( glEnable (GL_STENCIL_TEST) );
 
-  GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
-  GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+      GE( glClearStencil (0) );
+      GE( glClear (GL_STENCIL_BUFFER_BIT) );
 
-  GE( glColor4x (CFX_ONE, CFX_ONE, CFX_ONE, CFX_ONE ) );
+      GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+      GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
 
-  cogl_rectangle_internal (x_offset, y_offset, width, height);
+      GE( glColor4x (CFX_ONE, CFX_ONE, CFX_ONE, CFX_ONE ) );
 
-  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
-  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+      cogl_fast_fill_rectanglex (x_offset, y_offset, width, height);
+
+      GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
+      GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+    }
 }
 
 void
 cogl_clip_unset (void)
 {
-  GE( glDisable (GL_STENCIL_TEST) );
+  if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
+    {
+      GE( glDisable (GL_CLIP_PLANE3) );
+      GE( glDisable (GL_CLIP_PLANE2) );
+      GE( glDisable (GL_CLIP_PLANE1) );
+      GE( glDisable (GL_CLIP_PLANE0) );
+    }
+  else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
+    {
+      GE( glDisable (GL_STENCIL_TEST) );
+    }
 }
-
-gboolean
-cogl_texture_can_size (COGLenum       target,
-		       COGLenum pixel_format,
-		       COGLenum pixel_type,
-		       int    width, 
-		       int    height)
-{
-  /* FIXME: How we get this is likely GLES implementation dependant. */
-  return TRUE;
-}
-
-void
-cogl_texture_quad (gint   x1,
-		   gint   x2, 
-		   gint   y1, 
-		   gint   y2,
-		   ClutterFixed tx1,
-		   ClutterFixed ty1,
-		   ClutterFixed tx2,
-		   ClutterFixed ty2)
-{
-#define FIX CLUTTER_INT_TO_FIXED
-
-  GLfixed quadVerts[] = {
-    FIX(x1), FIX(y1), 0,
-    FIX(x2), FIX(y1), 0,
-    FIX(x2), FIX(y2), 0,
-    FIX(x2), FIX(y2), 0,
-    FIX(x1), FIX(y2), 0,
-    FIX(x1), FIX(y1), 0
-  };
-
-  GLfixed quadTex[] = {
-    tx1, ty1,
-    tx2, ty1,
-    tx2, ty2,
-    tx2, ty2,
-    tx1, ty2,
-    tx1, ty1
-  };
-
-#undef FIX
-
-  GE( glEnableClientState(GL_VERTEX_ARRAY) );
-  GE( glEnableClientState(GL_TEXTURE_COORD_ARRAY) );
-  GE( glVertexPointer(3, GL_FIXED, 0, quadVerts) );
-  GE( glTexCoordPointer(2, GL_FIXED, 0, quadTex) );
-  GE( glDrawArrays(GL_TRIANGLES, 0, 6) );
-  GE( glDisableClientState(GL_TEXTURE_COORD_ARRAY) );
-  GE( glDisableClientState(GL_VERTEX_ARRAY) );
-
-  /* Note also see glDrawTexxOES for potential optimisation */
-}
-
-void
-cogl_textures_create (guint num, COGLuint *textures)
-{
-  GE( glGenTextures (num, textures) );
-}
-
-void
-cogl_textures_destroy (guint num, const COGLuint *textures)
-{
-  GE( glDeleteTextures (num, textures) );
-}
-
-void
-cogl_texture_bind (COGLenum target, COGLuint texture)
-{
-  GE( glBindTexture (target, texture) );
-}
-
-void
-cogl_texture_set_alignment (COGLenum target, 
-			    guint    alignment,
-			    guint    row_length)
-{
-  /* GE( glPixelStorei (GL_UNPACK_ROW_LENGTH, row_length) ); */
-  GE( glPixelStorei (GL_UNPACK_ALIGNMENT, alignment) );
-}
-
-void
-cogl_texture_set_filters (COGLenum target, 
-			  COGLenum min_filter,
-			  COGLenum max_filter)
-{
-  GE( glTexParameteri(target, GL_TEXTURE_MAG_FILTER, max_filter) );
-  GE( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, min_filter) );
-}
-
-void
-cogl_texture_set_wrap (COGLenum target, 
-		       COGLenum wrap_s,
-		       COGLenum wrap_t)
-{
-  GE( glTexParameteri(target, GL_TEXTURE_WRAP_S, wrap_s) );
-  GE( glTexParameteri(target, GL_TEXTURE_WRAP_T, wrap_s) );
-}
-
-void
-cogl_texture_image_2d (COGLenum      target,
-		       COGLint       internal_format,
-		       gint          width, 
-		       gint          height, 
-		       COGLenum      format,
-		       COGLenum      type,
-		       const guchar* pixels)
-{
-  GE( glTexImage2D (target,
-		    0, 	
-		    format, /* HACK: For gles we set the internal_format equal
-			     * to the pixel format. This is for RGB data (i.e
-			     * jpgs) which seem to need a matching internal
-                             * format rather than RGBA (which is used by GL) 
-			     *.
-                             * This fix isn't ideal..
-			     */
-		    width,
-		    height,
-		    0, 	
-		    format,
-		    type,
-		    pixels) );
-}
-
-void
-cogl_texture_sub_image_2d (COGLenum      target,
-			   gint          xoff,
-			   gint          yoff,
-			   gint          width, 
-			   gint          height,
-			   COGLenum      format, 
-			   COGLenum      type,
-			   const guchar* pixels)
-{
-  GE( glTexSubImage2D (target,
-		       0,
-		       xoff,
-		       yoff,
-		       width,
-		       height,
-		       format,
-		       type,
-		       pixels));
-}
-
-void
-cogl_rectangle (gint x,
-                gint y,
-                guint width,
-                guint height)
-{
-  cogl_rectangle_internal (CLUTTER_INT_TO_FIXED (x),
-                           CLUTTER_INT_TO_FIXED (y),
-                           CLUTTER_INT_TO_FIXED (width),
-                           CLUTTER_INT_TO_FIXED (height));
-}
-
-/* FIXME: Should use ClutterReal or Fixed */
-void
-cogl_trapezoid (gint y1,
-		gint x11,
-		gint x21,
-		gint y2,
-		gint x12,
-		gint x22)
-{
-  /* FIXME */
-}
-
 
 void
 cogl_alpha_func (COGLenum     func, 
@@ -591,11 +459,49 @@ cogl_setup_viewport (guint        w,
   GE( glTranslatex (0, -CFX_ONE * height, 0) );
 }
 
+static void
+_cogl_features_init ()
+{
+  ClutterFeatureFlags flags = 0;
+  int                 stencil_bits = 0;
+  int                 max_clip_planes = 0;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
+
+  GE( glGetIntegerv (GL_STENCIL_BITS, &stencil_bits) );
+  if (stencil_bits > 0)
+    flags |= COGL_FEATURE_STENCIL_BUFFER;
+
+  GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
+  if (max_clip_planes >= 4)
+    flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
+
+  ctx->feature_flags = flags;
+  ctx->features_cached = TRUE;
+}
+
 ClutterFeatureFlags
 cogl_get_features ()
 {
-  /* Suck */
-  return 0;
+  _COGL_GET_CONTEXT (ctx, 0);
+  
+  if (!ctx->features_cached)
+    _cogl_features_init ();
+  
+  return ctx->feature_flags;
+}
+
+gboolean
+cogl_features_available (CoglFeatureFlags features)
+{
+  _COGL_GET_CONTEXT (ctx, 0);
+  
+  if (!ctx->features_cached)
+    _cogl_features_init ();
+  
+  return (ctx->feature_flags & features) == features;
 }
 
 void
@@ -653,39 +559,6 @@ cogl_fog_set (const ClutterColor *fog_color,
   glFogx (GL_FOG_START, (GLfixed) z_near);
   glFogx (GL_FOG_END, (GLfixed) z_far);
 }
-
-/* Offscreen - TODO: possible support from FBO's/PBuffers 
- * See;
- *  http://www.khronos.org/message_boards/viewtopic.php?t=589
- *  http://www.gamedev.net/community/forums/topic.asp?topic_id=369739
- *
- * Likely requires EGL 1.3 for eglBindTexImage
-*/
-COGLuint
-cogl_offscreen_create (COGLuint target_texture)
-{
-  return 0;
-}
-
-void
-cogl_offscreen_destroy (COGLuint offscreen_handle)
-{
-}
-
-void
-cogl_offscreen_redirect_start (COGLuint offscreen_handle,
-			       gint     width,
-			       gint     height)
-{
-}
-
-void
-cogl_offscreen_redirect_end (COGLuint offscreen_handle,
-			     gint     width,
-			     gint     height)
-{
-}
-
 
 /* Shaders, no support on regular OpenGL 1.1 */
 

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>COGL Reference Manual</title>
+    <releaseinfo>
+    </releaseinfo>
+
+    <copyright>
+      <year>2008</year>
+      <holder>OpenedHand LTD</holder>
+    </copyright>
+
+    <legalnotice>
+      <para>
+        Permission is granted to copy, distribute and/or modify this
+        document under the terms of the <citetitle>GNU Free
+        Documentation License</citetitle>, Version 1.1 or any later
+        version published by the Free Software Foundation with no
+        Invariant Sections, no Front-Cover Texts, and no Back-Cover
+        Texts. You may obtain a copy of the <citetitle>GNU Free
+        Documentation License</citetitle> from the Free Software
+        Foundation by visiting <ulink type="http"
+        url="http://www.fsf.org">their Web site</ulink> or by writing
+        to:
+
+        <address>
+          The Free Software Foundation, Inc.,
+          <street>59 Temple Place</street> - Suite 330,
+          <city>Boston</city>, <state>MA</state> <postcode>02111-1307</postcode>
+,
+          <country>USA</country>
+        </address>
+      </para>
+    </legalnotice>
+
+  </bookinfo>
+
+  <chapter>
+    <title>COGL - GL Abstraction API</title>
+
+    <section id="cogl-intro">
+      <title>About COGL</title>
+      <para>
+        FIXME
+      </para>
+    </section>
+
+    <xi:include href="xml/cogl.xml"/>
+    <xi:include href="xml/cogl-primitives.xml"/>
+    <xi:include href="xml/cogl-util.xml"/>
+    <xi:include href="xml/cogl-texture.xml"/>
+    <xi:include href="xml/cogl-shaders.xml"/>
+    <xi:include href="xml/cogl-offscreen.xml"/>
+  </chapter>
+</book>

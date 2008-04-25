@@ -1,0 +1,874 @@
+/*
+ * Clutter COGL
+ *
+ * A basic GL/GLES Abstraction/Utility Layer
+ *
+ * Authored By Matthew Allum  <mallum@openedhand.com>
+ *
+ * Copyright (C) 2007 OpenedHand
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+/* 
+ * COGL
+ * ====
+ *
+ * 'cogl' is a very simple abstraction layer which wraps GL and GLES.
+ * 
+ *
+ * !!!! DO NOT USE THIS API YET OUTSIDE OF CLUTTER CORE !!!!
+ *              THE API WILL FLUCTUATE WILDLY
+ *
+ * TODO:
+ *  - Use ClutterReal for fixed/float params.
+ *  - Add Perspective/viewport setup
+ *  - Add Features..
+ */
+
+#ifndef __COGL_H__
+#define __COGL_H__
+
+#include <glib.h>
+#include <clutter/clutter-color.h>
+#include <clutter/clutter-feature.h>
+#include <clutter/clutter-fixed.h>
+#include <clutter/clutter-types.h>
+
+#include <cogl/cogl-defines-@CLUTTER_COGL@.h>
+
+G_BEGIN_DECLS
+
+/* Enum declarations */
+
+#define COGL_PIXEL_FORMAT_24    2
+#define COGL_PIXEL_FORMAT_32    3
+#define COGL_A_BIT              (1 << 4)
+#define COGL_BGR_BIT            (1 << 5)
+#define COGL_AFIRST_BIT         (1 << 6)
+#define COGL_PREMULT_BIT        (1 << 7)
+#define COGL_UNORDERED_MASK     0x0F
+#define COGL_UNPREMULT_MASK     0x7F
+
+/**
+ * CoglPixelFormat:
+ * @COGL_PIXEL_FORMAT_ANY:
+ * @COGL_PIXEL_FORMAT_A_8:
+ * @COGL_PIXEL_FORMAT_RGB_888:
+ * @COGL_PIXEL_FORMAT_BGR_888:
+ * @COGL_PIXEL_FORMAT_RGBA_8888:
+ * @COGL_PIXEL_FORMAT_BGRA_8888:
+ * @COGL_PIXEL_FORMAT_ARGB_8888:
+ * @COGL_PIXEL_FORMAT_ABGR_8888:
+ * @COGL_PIXEL_FORMAT_RGBA_8888_PRE:
+ * @COGL_PIXEL_FORMAT_BGRA_8888_PRE:
+ * @COGL_PIXEL_FORMAT_ARGB_8888_PRE:
+ * @COGL_PIXEL_FORMAT_ABGR_8888_PRE:
+ * @COGL_PIXEL_FORMAT_RGB_565:
+ * @COGL_PIXEL_FORMAT_RGBA_4444:
+ * @COGL_PIXEL_FORMAT_RGBA_5551:
+ * @COGL_PIXEL_FORMAT_RGBA_4444_PRE:
+ * @COGL_PIXEL_FORMAT_RGBA_5551_PRE:
+ * @COGL_PIXEL_FORMAT_YUV:
+ * @COGL_PIXEL_FORMAT_G_8:
+ *
+ * Pixel formats used by COGL.
+ */
+typedef enum
+{
+  COGL_PIXEL_FORMAT_ANY            = 0,
+  COGL_PIXEL_FORMAT_A_8            = 1 | COGL_A_BIT,
+  
+  COGL_PIXEL_FORMAT_RGB_888        =  COGL_PIXEL_FORMAT_24,
+  COGL_PIXEL_FORMAT_BGR_888        = (COGL_PIXEL_FORMAT_24 | COGL_BGR_BIT),
+  
+  COGL_PIXEL_FORMAT_RGBA_8888      =  COGL_PIXEL_FORMAT_32 | COGL_A_BIT,
+  COGL_PIXEL_FORMAT_BGRA_8888      = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888      = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888      = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  
+  COGL_PIXEL_FORMAT_RGBA_8888_PRE  = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_BGRA_8888_PRE  = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_ARGB_8888_PRE  = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_ABGR_8888_PRE  = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  
+  COGL_PIXEL_FORMAT_RGB_565        = 4,
+  COGL_PIXEL_FORMAT_RGBA_4444      = 5 | COGL_A_BIT,
+  COGL_PIXEL_FORMAT_RGBA_5551      = 6 | COGL_A_BIT,
+  
+  COGL_PIXEL_FORMAT_RGBA_4444_PRE  = (COGL_PIXEL_FORMAT_RGBA_4444 | COGL_A_BIT | COGL_PREMULT_BIT),
+  COGL_PIXEL_FORMAT_RGBA_5551_PRE  = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT),
+  
+  COGL_PIXEL_FORMAT_YUV            = 7,
+  
+  COGL_PIXEL_FORMAT_G_8            = 8
+  
+} CoglPixelFormat;
+
+/**
+ * CoglFeatureFlags:
+ * @COGL_FEATURE_TEXTURE_RECTANGLE:
+ * @COGL_FEATURE_TEXTURE_NPOT:
+ * @COGL_FEATURE_TEXTURE_YUV:
+ * @COGL_FEATURE_TEXTURE_READ_PIXELS:
+ * @COGL_FEATURE_SHADERS_GLSL:
+ * @COGL_FEATURE_OFFSCREEN:
+ * @COGL_FEATURE_OFFSCREEN_MULTISAMPLE:
+ * @COGL_FEATURE_OFFSCREEN_BLIT:
+ * @COGL_FEATURE_FOUR_CLIP_PLANES:
+ * @COGL_FEATURE_STENCIL_BUFFER:
+ *
+ * Flags for the supported features.
+ */
+typedef enum
+{
+  COGL_FEATURE_TEXTURE_RECTANGLE      = (1 << 1),
+  COGL_FEATURE_TEXTURE_NPOT           = (1 << 2),
+  COGL_FEATURE_TEXTURE_YUV            = (1 << 3),
+  COGL_FEATURE_TEXTURE_READ_PIXELS    = (1 << 4),
+  COGL_FEATURE_SHADERS_GLSL           = (1 << 5),
+  COGL_FEATURE_OFFSCREEN              = (1 << 6),
+  COGL_FEATURE_OFFSCREEN_MULTISAMPLE  = (1 << 7),
+  COGL_FEATURE_OFFSCREEN_BLIT         = (1 << 8),
+  COGL_FEATURE_FOUR_CLIP_PLANES       = (1 << 9),
+  COGL_FEATURE_STENCIL_BUFFER         = (1 << 10)
+
+} CoglFeatureFlags;
+
+/**
+ * CoglBufferTarget:
+ * @COGL_WINDOW_BUFFER:
+ * @COGL_MASK_BUFFER:
+ * @COGL_OFFSCREEN_BUFFER:
+ *
+ * FIXME
+ */
+typedef enum
+{
+  COGL_WINDOW_BUFFER      = (1 << 1),
+  COGL_MASK_BUFFER        = (1 << 2),
+  COGL_OFFSCREEN_BUFFER   = (1 << 3)
+  
+} CoglBufferTarget;
+
+/**
+ * CoglTextureVertex:
+ * @x: Model x-coordinate
+ * @y: Model y-coordinate
+ * @z: Model z-coordinate
+ * @tx: Texture x-coordinate
+ * @ty: Texture y-coordinate
+ * @color: The color to use at this vertex. This is ignored if
+ * @use_color is %FALSE when calling cogl_texture_polygon().
+ *
+ * Used to specify vertex information when calling cogl_texture_polygon().
+ */
+struct _CoglTextureVertex
+{
+  ClutterFixed x, y, z;
+  ClutterFixed tx, ty;
+  ClutterColor color;
+};
+
+typedef struct _CoglTextureVertex CoglTextureVertex;
+
+/* Context manipulation */
+
+gboolean
+cogl_create_context (void);
+
+void
+cogl_destroy_context (void);
+
+/* Misc */
+#define COGL_INVALID_HANDLE NULL
+
+typedef gpointer CoglHandle;
+
+typedef void (* CoglFuncPtr) (void);
+
+/**
+ * cogl_get_features:
+ *
+ * Returns all of the features supported by COGL.
+ *
+ * Return value: A logical OR of all the supported COGL features.
+ *
+ * Since: 0.8
+ */
+ClutterFeatureFlags
+cogl_get_features (void);
+
+/**
+ * cogl_features_available:
+ * @features: A bitmask of features to check for
+ *
+ * Checks whether the given COGL features are available. Multiple
+ * features can be checked for by or-ing them together with the '|'
+ * operator. %TRUE is only returned if all of the requested features
+ * are available.
+ *
+ * Return value: %TRUE if the features are available, %FALSE otherwise.
+ */
+gboolean
+cogl_features_available (CoglFeatureFlags features);
+
+/**
+ * cogl_get_proc_address:
+ * @name: the name of the function.
+ *
+ * Gets a pointer to a given GL or GL ES extension function. This acts
+ * as a wrapper around glXGetProcAddress() or whatever is the
+ * appropriate function for the current backend.
+ *
+ * Return value: a pointer to the requested function or %NULL if the
+ * function is not available.
+ */
+CoglFuncPtr
+cogl_get_proc_address (const gchar* name);
+
+gboolean 
+cogl_check_extension (const gchar *name,
+                      const gchar *ext);
+
+/**
+ * cogl_get_bitmasks:
+ * @red: Return location for the number of red bits or %NULL
+ * @green: Return location for the number of green bits or %NULL
+ * @blue: Return location for the number of blue bits or %NULL
+ * @alpha: Return location for the number of alpha bits or %NULL
+ *
+ * Gets the number of bitplanes used for each of the color components
+ * in the color buffer. Pass %NULL for any of the arguments if the
+ * value is not required.
+ */
+void
+cogl_get_bitmasks (gint *red,
+                   gint *green,
+                   gint *blue,
+                   gint *alpha);
+
+void
+cogl_perspective (ClutterFixed fovy,
+		  ClutterFixed aspect,
+		  ClutterFixed zNear,
+		  ClutterFixed zFar);
+
+/**
+ * cogl_setup_viewport:
+ * @width: Width of the viewport
+ * @height: Height of the viewport
+ * @fovy: Field of view angle in degrees
+ * @aspect: Aspect ratio to determine the field of view along the x-axis
+ * @z_near: Nearest visible point along the z-axis
+ * @z_far: Furthest visible point along the z-axis
+ *
+ * Replaces the current viewport and projection matrix with the given
+ * values. The viewport is placed at the top left corner of the window
+ * with the given width and height. The projection matrix is replaced
+ * with one that has a viewing angle of @fovy along the y-axis and a
+ * view scaled according to @aspect along the x-axis. The view is
+ * clipped according to @z_near and @z_far on the z-axis.
+ */
+void
+cogl_setup_viewport (guint        width,
+		     guint        height,
+		     ClutterFixed fovy,
+		     ClutterFixed aspect,
+		     ClutterFixed z_near,
+		     ClutterFixed z_far);
+
+/**
+ * cogl_push_matrix:
+ *
+ * Store the current model-view matrix on the matrix stack. The matrix
+ * can later be restored with cogl_pop_matrix().
+ */
+void
+cogl_push_matrix (void);
+
+/**
+ * cogl_pop_matrix:
+ *
+ * Restore the current model-view matrix from the matrix stack.
+ */
+void
+cogl_pop_matrix (void);
+
+/**
+ * cogl_scale:
+ * @x: Amount to scale along the x-axis
+ * @y: Amount to scale along the y-axis
+ *
+ * Multiplies the current model-view matrix by one that scales the x
+ * and y axes by the given values.
+ */
+void
+cogl_scale (ClutterFixed x, ClutterFixed y);
+
+/**
+ * cogl_translatex:
+ * @x: Distance to translate along the x-axis
+ * @y: Distance to translate along the y-axis
+ * @z: Distance to translate along the z-axis
+ *
+ * Multiplies the current model-view matrix by one that translates the
+ * model along all three axes according to the given values.
+ */
+void
+cogl_translatex (ClutterFixed x, ClutterFixed y, ClutterFixed z);
+
+/**
+ * cogl_translate:
+ * @x: Distance to translate along the x-axis
+ * @y: Distance to translate along the y-axis
+ * @z: Distance to translate along the z-axis
+ *
+ * Integer version of cogl_translatex(). Multiplies the current
+ * model-view matrix by one that translates the model along all three
+ * axes according to the given values.
+ */
+void
+cogl_translate (gint x, gint y, gint z);
+
+/**
+ * cogl_rotatex:
+ * @angle: Angle in degrees to rotate.
+ * @x: X-component of vertex to rotate around.
+ * @y: Y-component of vertex to rotate around.
+ * @z: Z-component of vertex to rotate around.
+ *
+ * Multiplies the current model-view matrix by one that rotates the
+ * model around the vertex specified by @x, @y and @z. The rotation
+ * follows the right-hand thumb rule so for example rotating by 10
+ * degrees about the vertex (0, 0, 1) causes a small counter-clockwise
+ * rotation.
+ */
+void
+cogl_rotatex (ClutterFixed angle, gint x, gint y, gint z);
+
+/**
+ * cogl_rotate:
+ * @angle: Angle in degrees to rotate.
+ * @x: X-component of vertex to rotate around.
+ * @y: Y-component of vertex to rotate around.
+ * @z: Z-component of vertex to rotate around.
+ *
+ * Integer version of cogl_rotatex(). Multiplies the current
+ * model-view matrix by one that rotates the model around the vertex
+ * specified by @x, @y and @z.
+ */
+void
+cogl_rotate (gint angle, gint x, gint y, gint z);
+
+/**
+ * cogl_get_modelview_matrix:
+ * @m: pointer to a 4x4 array of #ClutterFixed<!-- -->s to receive the matrix
+ *
+ * Stores the current model-view matrix in @m. The matrix is in
+ * column-major order.
+ */
+void
+cogl_get_modelview_matrix (ClutterFixed m[16]);
+
+/**
+ * cogl_get_projection_matrix:
+ * @m: pointer to a 4x4 array of #ClutterFixed<!-- -->s to receive the matrix
+ *
+ * Stores the current projection matrix in @m. The matrix is in
+ * column-major order.
+ */
+void
+cogl_get_projection_matrix (ClutterFixed m[16]);
+
+/**
+ * cogl_get_viewport:
+ * @v: pointer to a 4 element array of #ClutterFixed<!-- -->s to
+ * receive the viewport dimensions.
+ *
+ * Stores the current viewport in @v. @v[0] and @v[1] get the x and y
+ * position of the viewport and @v[2] and @v[3] get the width and
+ * height.
+ */
+void
+cogl_get_viewport (ClutterFixed v[4]);
+
+/**
+ * cogl_clip_set:
+ * @x_offset: left edge of the clip rectangle
+ * @y_offset: top edge of the clip rectangle
+ * @width: width of the clip rectangle
+ * @height: height of the clip rectangle
+ *
+ * Specifies a rectangular clipping area for all subsequent drawing
+ * operations. Any drawing commands that extend outside the rectangle
+ * will be clipped so that only the portion inside the rectangle will
+ * be displayed. The rectangle dimensions are transformed by the
+ * current model-view matrix.
+ */
+void
+cogl_clip_set (ClutterFixed x_offset,
+               ClutterFixed y_offset,
+               ClutterFixed width,
+               ClutterFixed height);
+
+/**
+ * cogl_clip_unset:
+ *
+ * Removes the current clipping rectangle so that all drawing
+ * operations extend to full size of the viewport again.
+ */
+void
+cogl_clip_unset (void);
+
+/**
+ * cogl_enable_depth_test:
+ * @setting: %TRUE to enable depth testing or %FALSE to disable.
+ *
+ * Sets whether depth testing is enabled. If it is disabled then the
+ * order that actors are layered on the screen depends solely on the
+ * order specified using clutter_actor_raise() and
+ * clutter_actor_lower(), otherwise it will also take into account the
+ * actor's depth. Depth testing is disabled by default.
+ */
+void
+cogl_enable_depth_test (gboolean setting);
+
+void
+cogl_alpha_func (COGLenum     func, 
+		 ClutterFixed ref);
+
+/**
+ * cogl_fog_set:
+ * @fog_color: The color of the fog
+ * @density: Ignored
+ * @z_near: Position along z-axis where no fogging should be applied
+ * @z_far: Position along z-axes where full fogging should be applied
+ *
+ * Enables fogging. Fogging causes vertices that are further away from
+ * the eye to be rendered with a different color. The color is
+ * linearly interpolated so that vertices at @z_near are drawn fully
+ * with their original color and vertices at @z_far are drawn fully
+ * with @fog_color. Fogging will remain enabled until the next call to
+ * cogl_paint_init().
+ */
+void
+cogl_fog_set (const ClutterColor *fog_color,
+              ClutterFixed        density,
+              ClutterFixed        z_near,
+              ClutterFixed        z_far);
+
+/**
+ * cogl_paint_init:
+ * @color: Background color to clear to
+ *
+ * Clears the color buffer to @color. The depth buffer and stencil
+ * buffers are also cleared and fogging and lighting are disabled.
+ */
+void
+cogl_paint_init (const ClutterColor *color);
+
+/* Textures api */
+
+CoglHandle
+cogl_texture_new_with_size (guint           width,
+			    guint           height,
+			    gint            max_waste,
+			    CoglPixelFormat internal_format);
+
+CoglHandle
+cogl_texture_new_from_file (const gchar     *filename,
+                            gint             max_waste,
+                            CoglPixelFormat  internal_format,
+			    GError         **error);
+
+CoglHandle
+cogl_texture_new_from_data (guint              width,
+			    guint              height,
+			    gint               max_waste,
+                            CoglPixelFormat    format,
+                            CoglPixelFormat    internal_format,
+			    guint              rowstride,
+			    const guchar      *data);
+
+CoglHandle
+cogl_texture_new_from_foreign (GLuint           gl_handle,
+			       GLenum           gl_target,
+			       GLuint           width,
+			       GLuint           height,
+			       GLuint           x_pot_waste,
+			       GLuint           y_pot_waste,
+			       CoglPixelFormat  format);
+
+/**
+ * cogl_is_texture:
+ * @handle: A CoglHandle
+ *
+ * Gets whether the given handle references an existing texture object.
+ *
+ * Return value: %TRUE if the handle references a texture,
+ *   %FALSE otherwise
+ */
+gboolean
+cogl_is_texture (CoglHandle handle);
+
+guint
+cogl_texture_get_width (CoglHandle handle);
+
+guint
+cogl_texture_get_height (CoglHandle handle);
+
+CoglPixelFormat
+cogl_texture_get_format (CoglHandle handle);
+
+guint
+cogl_texture_get_rowstride (CoglHandle handle);
+
+gint
+cogl_texture_get_max_waste (CoglHandle handle);
+
+COGLenum
+cogl_texture_get_min_filter (CoglHandle handle);
+
+COGLenum
+cogl_texture_get_mag_filter (CoglHandle handle);
+
+gboolean
+cogl_texture_is_sliced (CoglHandle handle);
+
+gboolean
+cogl_texture_get_gl_texture (CoglHandle handle,
+			     GLuint *out_gl_handle,
+			     GLenum *out_gl_target);
+
+gint
+cogl_texture_get_data (CoglHandle       handle,
+                       CoglPixelFormat  format,
+                       guint            rowstride,
+                       guchar          *data);
+
+void
+cogl_texture_set_filters (CoglHandle handle,
+			  COGLenum   min_filter,
+			  COGLenum   mag_filter);
+
+gboolean
+cogl_texture_set_region (CoglHandle       handle,
+			 gint             src_x,
+			 gint             src_y,
+			 gint             dst_x,
+			 gint             dst_y,
+			 guint            dst_width,
+			 guint            dst_height,
+			 gint             width,
+			 gint             height,
+			 CoglPixelFormat  format,
+			 guint            rowstride,
+			 const guchar    *data);
+
+CoglHandle
+cogl_texture_ref (CoglHandle handle);
+
+void
+cogl_texture_unref (CoglHandle handle);
+
+void
+cogl_texture_rectangle (CoglHandle   handle,
+                        ClutterFixed x1,
+                        ClutterFixed y1,
+                        ClutterFixed x2,
+                        ClutterFixed y2,
+                        ClutterFixed tx1,
+                        ClutterFixed ty1,
+                        ClutterFixed tx2,
+                        ClutterFixed ty2);
+
+/**
+ * cogl_texture_polygon:
+ * @handle: A CoglHandle for a texture
+ * @n_vertices: The length of the vertices array
+ * @vertices: An array of #CoglTextureVertex structs
+ * @use_color: %TRUE if the color member of #CoglTextureVertex should be used
+ *
+ * Draws a polygon from a texture with the given model and texture
+ * coordinates. This can be used to draw arbitrary shapes textured
+ * with a COGL texture. If @use_color is %TRUE then the current COGL
+ * color will be changed for each vertex using the value specified in
+ * the color member of #CoglTextureVertex. This can be used for
+ * example to make the texture fade out by setting the alpha value of
+ * the color.
+ *
+ * All of the texture coordinates must be in the range [0,1] and
+ * repeating the texture is not supported.
+ *
+ * Because of the way this function is implemented it will currently
+ * only work if either the texture is not sliced or the backend is not
+ * OpenGL ES and the minifying and magnifying functions are both set
+ * to CGL_NEAREST.
+ */
+void
+cogl_texture_polygon (CoglHandle         handle,
+		      guint              n_vertices,
+		      CoglTextureVertex *vertices,
+		      gboolean           use_color);
+
+/* Primitives API */
+
+void
+cogl_color (const ClutterColor *color);
+
+void
+cogl_fast_fill_rectangle (gint x,
+                          gint y,
+                          guint width,
+                          guint height);
+
+void
+cogl_fast_fill_rectanglex (ClutterFixed x,
+			   ClutterFixed y,
+			   ClutterFixed width,
+			   ClutterFixed height);
+
+void
+cogl_fast_fill_trapezoid (gint y1,
+			  gint x11,
+			  gint x21,
+			  gint y2,
+			  gint x12,
+			  gint x22);
+
+void
+cogl_fast_fill_trapezoidx (ClutterFixed y1,
+			   ClutterFixed x11,
+			   ClutterFixed x21,
+			   ClutterFixed y2,
+			   ClutterFixed x12,
+			   ClutterFixed x22);
+
+void
+cogl_fill ();
+
+void
+cogl_stroke ();
+
+void
+cogl_path_move_to (ClutterFixed x,
+		   ClutterFixed y);
+
+void
+cogl_path_move_to_rel (ClutterFixed x,
+		       ClutterFixed y);
+
+void
+cogl_path_line_to (ClutterFixed x,
+		   ClutterFixed y);
+
+void
+cogl_path_line_to_rel (ClutterFixed x,
+		       ClutterFixed y);
+
+void
+cogl_path_h_line_to (ClutterFixed x);
+
+void
+cogl_path_v_line_to (ClutterFixed y);
+
+void
+cogl_path_h_line_to_rel (ClutterFixed x);
+
+void
+cogl_path_v_line_to_rel (ClutterFixed y);
+
+void
+cogl_path_arc (ClutterFixed center_x,
+	       ClutterFixed center_y,
+	       ClutterFixed radius_x,
+	       ClutterFixed radius_y,
+	       ClutterAngle angle_1,
+	       ClutterAngle angle_2,
+	       ClutterAngle angle_step);
+
+void
+cogl_path_arc_rel (ClutterFixed center_x,
+		   ClutterFixed center_y,
+		   ClutterFixed radius_x,
+		   ClutterFixed radius_y,
+		   ClutterAngle angle_1,
+		   ClutterAngle angle_2,
+		   ClutterAngle angle_step);
+
+void
+cogl_path_bezier2_to (ClutterFixed x1,
+		      ClutterFixed y1,
+		      ClutterFixed x2,
+		      ClutterFixed y2);
+
+void
+cogl_path_bezier2_to_rel (ClutterFixed x1,
+			  ClutterFixed y1,
+			  ClutterFixed x2,
+			  ClutterFixed y2);
+
+void
+cogl_path_bezier3_to (ClutterFixed x1,
+		      ClutterFixed y1,
+		      ClutterFixed x2,
+		      ClutterFixed y2,
+		      ClutterFixed x3,
+		      ClutterFixed y3);
+
+void
+cogl_path_bezier3_to_rel (ClutterFixed x1,
+			  ClutterFixed y1,
+			  ClutterFixed x2,
+			  ClutterFixed y2,
+			  ClutterFixed x3,
+			  ClutterFixed y3);
+
+void
+cogl_path_close ();
+
+void
+cogl_line (ClutterFixed x1,
+           ClutterFixed y1,
+           ClutterFixed x2,
+           ClutterFixed y2);
+
+void
+cogl_polyline (ClutterFixed *coords,
+	       gint num_points);
+
+void
+cogl_polygon (ClutterFixed *coords,
+	      gint num_points);
+
+void
+cogl_rectangle (ClutterFixed x,
+		ClutterFixed y,
+		ClutterFixed width,
+		ClutterFixed height);
+
+void
+cogl_arc (ClutterFixed center_x,
+	  ClutterFixed center_y,
+	  ClutterFixed radius_x,
+	  ClutterFixed radius_y,
+	  ClutterAngle angle_1,
+	  ClutterAngle angle_2,
+	  ClutterAngle angle_step);
+
+void
+cogl_ellipse (ClutterFixed center_x,
+	      ClutterFixed center_y,
+	      ClutterFixed radius_x,
+	      ClutterFixed radius_y,
+	      ClutterAngle angle_step);
+
+void
+cogl_round_rectangle (ClutterFixed x,
+		      ClutterFixed y,
+		      ClutterFixed width,
+		      ClutterFixed height,
+		      ClutterFixed radius,
+		      ClutterAngle arc_step);
+
+
+COGLhandle
+cogl_create_shader                (COGLenum     shaderType);
+
+void
+cogl_shader_destroy               (COGLhandle   handle);
+
+
+void
+cogl_shader_source                (COGLhandle   shader,
+                                   const gchar *source);
+void
+cogl_shader_compile               (COGLhandle   shader_handle);
+
+void
+cogl_shader_get_info_log          (COGLhandle   handle,
+                                   guint        size,
+                                   gchar       *buffer);
+
+void
+cogl_shader_get_parameteriv       (COGLhandle   handle,
+                                   COGLenum     pname,
+                                   COGLint     *dest);
+
+
+COGLhandle
+cogl_create_program               (void);
+
+void
+cogl_program_destroy              (COGLhandle   handle);
+
+void
+cogl_program_attach_shader        (COGLhandle   program_handle,
+                                   COGLhandle   shader_handle);
+
+/* 0 to use none */
+void
+cogl_program_link                 (COGLhandle   program_handle);
+
+void
+cogl_program_use                  (COGLhandle   program_handle);
+
+COGLint
+cogl_program_get_uniform_location (COGLhandle   program_int,
+                                   const gchar *uniform_name);
+
+
+void
+cogl_program_uniform_1f           (COGLint      uniform_no,
+                                   gfloat       value);
+
+/* Offscreen api */
+
+CoglHandle
+cogl_offscreen_new_to_texture (CoglHandle texhandle);
+
+CoglHandle
+cogl_offscreen_new_multisample ();
+
+CoglHandle
+cogl_offscreen_ref (CoglHandle handle);
+
+void
+cogl_offscreen_unref (CoglHandle handle);
+
+void
+cogl_offscreen_blit (CoglHandle src_buffer,
+		     CoglHandle dst_buffer);
+
+void
+cogl_offscreen_blit_region (CoglHandle src_buffer,
+			    CoglHandle dst_buffer,
+			    int src_x,
+			    int src_y,
+			    int src_w,
+			    int src_h,
+			    int dst_x,
+			    int dst_y,
+			    int dst_w,
+			    int dst_h);
+
+void
+cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen);
+
+G_END_DECLS
+
+#endif /* __COGL_H__ */

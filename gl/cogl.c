@@ -39,23 +39,12 @@
 typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #endif
 
-static gulong __enable_flags = 0;
+#include "cogl-internal.h"
+#include "cogl-util.h"
+#include "cogl-context.h"
 
-/* FBO Procs */
-typedef void (*GenFramebuffers) (GLsizei n, GLuint *ids);
-typedef void (*BindFramebuffer) (GLenum target, GLuint framebuffer);
-typedef void (*FramebufferTexture2D) (GLenum target, GLenum attachment,
-				      GLenum textarget, GLuint texture,
-				      GLint level);
-typedef GLenum (*CheckFramebufferStatus)(GLenum target);
-typedef void (*DeleteFramebuffers) (GLsizei n, const GLuint *framebuffers);
 
-static GenFramebuffers        _gen_framebuffers = NULL;
-static BindFramebuffer        _bind_framebuffer = NULL;
-static FramebufferTexture2D   _framebuffer_texture_2d = NULL;
-static CheckFramebufferStatus _check_framebuffer_status = NULL;
-static DeleteFramebuffers     _delete_framebuffers = NULL;
-
+/* GL error to string conversion */
 #if COGL_DEBUG
 struct token_string
 {
@@ -89,19 +78,21 @@ error_string(GLenum errorCode)
 }
 #endif
 
-#if COGL_DEBUG
-#define GE(x...) G_STMT_START {                                  \
-        GLenum err;                                              \
-        (x);                                                     \
-        while ((err = glGetError()) != GL_NO_ERROR) {            \
-                fprintf(stderr, "glError: %s caught at %s:%u\n", \
-                                (char *)error_string(err),       \
-			         __FILE__, __LINE__);            \
-        }                                                        \
-} G_STMT_END
-#else
-#define GE(x) (x);
-#endif
+
+/* Expecting ARB functions not to be defined */
+#define glCreateProgramObjectARB        ctx->pf_glCreateProgramObjectARB
+#define glCreateShaderObjectARB         ctx->pf_glCreateShaderObjectARB
+#define glShaderSourceARB               ctx->pf_glShaderSourceARB
+#define glCompileShaderARB              ctx->pf_glCompileShaderARB
+#define glAttachObjectARB               ctx->pf_glAttachObjectARB
+#define glLinkProgramARB                ctx->pf_glLinkProgramARB
+#define glUseProgramObjectARB           ctx->pf_glUseProgramObjectARB
+#define glGetUniformLocationARB         ctx->pf_glGetUniformLocationARB
+#define glDeleteObjectARB               ctx->pf_glDeleteObjectARB
+#define glGetInfoLogARB                 ctx->pf_glGetInfoLogARB
+#define glGetObjectParameterivARB       ctx->pf_glGetObjectParameterivARB
+#define glUniform1fARB                  ctx->pf_glUniform1fARB
+
 
 CoglFuncPtr
 cogl_get_proc_address (const gchar* name)
@@ -217,9 +208,6 @@ cogl_paint_init (const ClutterColor *color)
    * glDepthFunc (GL_LEQUAL);
    * glAlphaFunc (GL_GREATER, 0.1);
    */
-
-  cogl_enable (CGL_ENABLE_BLEND);
-  glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 }
 
 /* FIXME: inline most of these  */
@@ -272,59 +260,155 @@ cogl_rotate (gint angle, gint x, gint y, gint z)
   glRotatef ((float)angle, (float)x, (float)y, (float)z);
 }
 
+static inline gboolean
+cogl_toggle_flag (CoglContext *ctx,
+		  gulong new_flags,
+		  gulong flag,
+		  GLenum gl_flag)
+{
+  /* Toggles and caches a single enable flag on or off
+   * by comparing to current state
+   */
+  if (new_flags & flag)
+    {
+      if (!(ctx->enable_flags & flag))
+	{
+	  GE( glEnable (gl_flag) );
+	  ctx->enable_flags |= flag;
+	  return TRUE;
+	}
+    }
+  else if (ctx->enable_flags & flag)
+    {
+      GE( glDisable (gl_flag) );
+      ctx->enable_flags &= ~flag;
+    }
+  
+  return FALSE;
+}
+
+static inline gboolean
+cogl_toggle_client_flag (CoglContext *ctx,
+			 gulong new_flags,
+			 gulong flag,
+			 GLenum gl_flag)
+{
+  /* Toggles and caches a single client-side enable flag
+   * on or off by comparing to current state
+   */
+  if (new_flags & flag)
+    {
+      if (!(ctx->enable_flags & flag))
+	{
+	  GE( glEnableClientState (gl_flag) );
+	  ctx->enable_flags |= flag;
+	  return TRUE;
+	}
+    }
+  else if (ctx->enable_flags & flag)
+    {
+      GE( glDisableClientState (gl_flag) );
+      ctx->enable_flags &= ~flag;
+    }
+  
+  return FALSE;
+}
+
 void
 cogl_enable (gulong flags)
 {
   /* This function essentially caches glEnable state() in the
    * hope of lessening number GL traffic.
   */
-  if (flags & CGL_ENABLE_BLEND)
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
+  if (cogl_toggle_flag (ctx, flags,
+			COGL_ENABLE_BLEND,
+			GL_BLEND))
     {
-      if (!(__enable_flags & CGL_ENABLE_BLEND))
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+  
+  cogl_toggle_flag (ctx, flags,
+		    COGL_ENABLE_TEXTURE_2D,
+		    GL_TEXTURE_2D);
+  
+  cogl_toggle_client_flag (ctx, flags,
+			   COGL_ENABLE_VERTEX_ARRAY,
+			   GL_VERTEX_ARRAY);
+  
+  cogl_toggle_client_flag (ctx, flags,
+			   COGL_ENABLE_TEXCOORD_ARRAY,
+			   GL_TEXTURE_COORD_ARRAY);
+  
+#ifdef GL_TEXTURE_RECTANGLE_ARB
+  cogl_toggle_flag (ctx, flags,
+		    COGL_ENABLE_TEXTURE_RECT,
+		    GL_TEXTURE_RECTANGLE_ARB);
+#endif
+}
+
+gulong
+cogl_get_enable ()
+{
+  _COGL_GET_CONTEXT (ctx, 0);
+  
+  return ctx->enable_flags;
+}
+
+/*
+void
+cogl_enable (gulong flags)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
+  if (flags & COGL_ENABLE_BLEND)
+    {
+      if (!(ctx->enable_flags & COGL_ENABLE_BLEND))
 	{
 	  glEnable (GL_BLEND);
 	  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-          __enable_flags |= CGL_ENABLE_BLEND;
+          ctx->enable_flags |= COGL_ENABLE_BLEND;
         }
     }
-  else if (__enable_flags & CGL_ENABLE_BLEND)
+  else if (ctx->enable_flags & COGL_ENABLE_BLEND)
     {
       glDisable (GL_BLEND);
-      __enable_flags &= ~CGL_ENABLE_BLEND;
+      ctx->enable_flags &= ~COGL_ENABLE_BLEND;
     }
 
-  if (flags & CGL_ENABLE_TEXTURE_2D)
+  if (flags & COGL_ENABLE_TEXTURE_2D)
     {
-      if (!(__enable_flags & CGL_ENABLE_TEXTURE_2D))
+      if (!(ctx->enable_flags & COGL_ENABLE_TEXTURE_2D))
         {
 	  glEnable (GL_TEXTURE_2D);
-          __enable_flags |= CGL_ENABLE_TEXTURE_2D;
+          ctx->enable_flags |= COGL_ENABLE_TEXTURE_2D;
         }
     }
-  else if (__enable_flags & CGL_ENABLE_TEXTURE_2D)
+  else if (ctx->enable_flags & COGL_ENABLE_TEXTURE_2D)
     {
       glDisable (GL_TEXTURE_2D);
-       __enable_flags &= ~CGL_ENABLE_TEXTURE_2D;
+       ctx->enable_flags &= ~COGL_ENABLE_TEXTURE_2D;
     }
-
+  
 #ifdef GL_TEXTURE_RECTANGLE_ARB
-  if (flags & CGL_ENABLE_TEXTURE_RECT)
+  if (flags & COGL_ENABLE_TEXTURE_RECT)
     {
-      if (!(__enable_flags & CGL_ENABLE_TEXTURE_RECT))
+      if (!(ctx->enable_flags & COGL_ENABLE_TEXTURE_RECT))
         {
 	  glEnable (GL_TEXTURE_RECTANGLE_ARB);
-          __enable_flags |= CGL_ENABLE_TEXTURE_RECT;
+          ctx->enable_flags |= COGL_ENABLE_TEXTURE_RECT;
         }
     }
-  else if (__enable_flags & CGL_ENABLE_TEXTURE_RECT)
+  else if (ctx->enable_flags & COGL_ENABLE_TEXTURE_RECT)
     {
       glDisable (GL_TEXTURE_RECTANGLE_ARB);
-      __enable_flags &= ~CGL_ENABLE_TEXTURE_RECT;
+      ctx->enable_flags &= ~COGL_ENABLE_TEXTURE_RECT;
     }
 #endif
 }
-
+*/
 void
 cogl_enable_depth_test (gboolean setting)
 {
@@ -345,7 +429,15 @@ cogl_enable_depth_test (gboolean setting)
 void
 cogl_color (const ClutterColor *color)
 {
-  glColor4ub (color->red, color->green, color->blue, color->alpha);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
+  glColor4ub (color->red,
+	      color->green,
+	      color->blue,
+	      color->alpha);
+  
+  /* Store alpha for proper blending enables */
+  ctx->color_alpha = color->alpha;
 }
 
 void
@@ -354,195 +446,61 @@ cogl_clip_set (ClutterFixed x_offset,
                ClutterFixed width,
                ClutterFixed height)
 {
-  GE( glEnable (GL_STENCIL_TEST) );
+  if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
+    {
+      GLdouble eqn_left[4] = { 1.0, 0, 0,
+			       -CLUTTER_FIXED_TO_FLOAT (x_offset) };
+      GLdouble eqn_right[4] = { -1.0, 0, 0, 
+				CLUTTER_FIXED_TO_FLOAT (x_offset + width) };
+      GLdouble eqn_top[4] = { 0, 1.0, 0, -CLUTTER_FIXED_TO_FLOAT (y_offset) };
+      GLdouble eqn_bottom[4] = { 0, -1.0, 0, CLUTTER_FIXED_TO_FLOAT
+				 (y_offset + height) };
 
-  GE( glClearStencil (0.0f) );
-  GE( glClear (GL_STENCIL_BUFFER_BIT) );
+      GE( glClipPlane (GL_CLIP_PLANE0, eqn_left) );
+      GE( glClipPlane (GL_CLIP_PLANE1, eqn_right) );
+      GE( glClipPlane (GL_CLIP_PLANE2, eqn_top) );
+      GE( glClipPlane (GL_CLIP_PLANE3, eqn_bottom) );
+      GE( glEnable (GL_CLIP_PLANE0) );
+      GE( glEnable (GL_CLIP_PLANE1) );
+      GE( glEnable (GL_CLIP_PLANE2) );
+      GE( glEnable (GL_CLIP_PLANE3) );     
+    }
+  else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
+    {
+      GE( glEnable (GL_STENCIL_TEST) );
 
-  GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
-  GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+      GE( glClearStencil (0.0f) );
+      GE( glClear (GL_STENCIL_BUFFER_BIT) );
 
-  GE( glColor3f (1.0f, 1.0f, 1.0f) );
+      GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+      GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
 
-  GE( glRectf (CLUTTER_FIXED_TO_FLOAT (x_offset),
-	       CLUTTER_FIXED_TO_FLOAT (y_offset),
-	       CLUTTER_FIXED_TO_FLOAT (x_offset + width),
-	       CLUTTER_FIXED_TO_FLOAT (y_offset + height)) );
+      GE( glColor3f (1.0f, 1.0f, 1.0f) );
 
-  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
-  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+      GE( glRectf (CLUTTER_FIXED_TO_FLOAT (x_offset),
+		   CLUTTER_FIXED_TO_FLOAT (y_offset),
+		   CLUTTER_FIXED_TO_FLOAT (x_offset + width),
+		   CLUTTER_FIXED_TO_FLOAT (y_offset + height)) );
+
+      GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
+      GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+    }
 }
 
 void
 cogl_clip_unset (void)
 {
-  GE( glDisable (GL_STENCIL_TEST) );
-}
-
-gboolean
-cogl_texture_can_size (COGLenum       target,
-		       COGLenum pixel_format,
-		       COGLenum pixel_type,
-		       int    width,
-		       int    height)
-{
-#ifdef GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB
-  if (target == CGL_TEXTURE_RECTANGLE_ARB)
+  if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
     {
-      GLint max_size = 0;
-
-      GE( glGetIntegerv(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB, &max_size) );
-
-      return (max_size && width <= max_size && height <= max_size);
+      GE( glDisable (GL_CLIP_PLANE3) );
+      GE( glDisable (GL_CLIP_PLANE2) );
+      GE( glDisable (GL_CLIP_PLANE1) );
+      GE( glDisable (GL_CLIP_PLANE0) );
     }
-  else /* Assumes CGL_TEXTURE_2D */
-#endif
+  else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
-      GLint new_width = 0;
-
-      GE( glTexImage2D (GL_PROXY_TEXTURE_2D, 0, GL_RGBA,
-			width, height, 0 /* border */,
-			pixel_format, pixel_type, NULL) );
-
-      GE( glGetTexLevelParameteriv (GL_PROXY_TEXTURE_2D, 0,
-				    GL_TEXTURE_WIDTH, &new_width) );
-
-      return new_width != 0;
+      GE( glDisable (GL_STENCIL_TEST) );
     }
-}
-
-void
-cogl_texture_quad (gint   x1,
-		   gint   x2,
-		   gint   y1,
-		   gint   y2,
-		   ClutterFixed tx1,
-		   ClutterFixed ty1,
-		   ClutterFixed tx2,
-		   ClutterFixed ty2)
-{
-  gdouble txf1, tyf1, txf2, tyf2;
-
-  txf1 = CLUTTER_FIXED_TO_DOUBLE (tx1);
-  tyf1 = CLUTTER_FIXED_TO_DOUBLE (ty1);
-  txf2 = CLUTTER_FIXED_TO_DOUBLE (tx2);
-  tyf2 = CLUTTER_FIXED_TO_DOUBLE (ty2);
-
-  glBegin (GL_QUADS);
-  glTexCoord2f (txf2, tyf2); glVertex2i   (x2, y2);
-  glTexCoord2f (txf1, tyf2); glVertex2i   (x1, y2);
-  glTexCoord2f (txf1, tyf1); glVertex2i   (x1, y1);
-  glTexCoord2f (txf2, tyf1); glVertex2i   (x2, y1);
-  glEnd ();
-}
-
-void
-cogl_textures_create (guint num, COGLuint *textures)
-{
-  GE( glGenTextures (num, textures) );
-}
-
-void
-cogl_textures_destroy (guint num, const COGLuint *textures)
-{
-  GE( glDeleteTextures (num, textures) );
-}
-
-void
-cogl_texture_bind (COGLenum target, COGLuint texture)
-{
-  GE( glBindTexture (target, texture) );
-}
-
-void
-cogl_texture_set_alignment (COGLenum target,
-			    guint    alignment,
-			    guint    row_length)
-{
-  GE( glPixelStorei (GL_UNPACK_ROW_LENGTH, row_length) );
-  GE( glPixelStorei (GL_UNPACK_ALIGNMENT, alignment) );
-}
-
-void
-cogl_texture_set_filters (COGLenum target,
-			  COGLenum min_filter,
-			  COGLenum max_filter)
-{
-  GE( glTexParameteri(target, GL_TEXTURE_MAG_FILTER, max_filter) );
-  GE( glTexParameteri(target, GL_TEXTURE_MIN_FILTER, min_filter) );
-}
-
-void
-cogl_texture_set_wrap (COGLenum target,
-		       COGLenum wrap_s,
-		       COGLenum wrap_t)
-{
-  GE( glTexParameteri(target, GL_TEXTURE_WRAP_S, wrap_s) );
-  GE( glTexParameteri(target, GL_TEXTURE_WRAP_T, wrap_s) );
-}
-
-void
-cogl_texture_image_2d (COGLenum      target,
-		       COGLint       internal_format,
-		       gint          width,
-		       gint          height,
-		       COGLenum      format,
-		       COGLenum      type,
-		       const guchar* pixels)
-{
-  GE( glTexImage2D (target,
-		    0, 		/* No mipmap support as yet */
-		    internal_format,
-		    width,
-		    height,
-		    0, 		/* 0 pixel border */
-		    format,
-		    type,
-		    pixels) );
-}
-
-void
-cogl_texture_sub_image_2d (COGLenum      target,
-			   gint          xoff,
-			   gint          yoff,
-			   gint          width,
-			   gint          height,
-			   COGLenum      format,
-			   COGLenum      type,
-			   const guchar* pixels)
-{
-  GE( glTexSubImage2D (target,
-		       0,
-		       xoff,
-		       yoff,
-		       width,
-		       height,
-		       format,
-		       type,
-		       pixels));
-}
-
-void
-cogl_rectangle (gint x, gint y, guint width, guint height)
-{
-  GE( glRecti (x, y, x + width, y + height) );
-}
-
-/* FIXME: Should use ClutterReal or Fixed */
-void
-cogl_trapezoid (gint y1,
-		gint x11,
-		gint x21,
-		gint y2,
-		gint x12,
-		gint x22)
-{
-  GE( glBegin (GL_QUADS) );
-  GE( glVertex2i (x11, y1) );
-  GE( glVertex2i (x21, y1) );
-  GE( glVertex2i (x22, y2) );
-  GE( glVertex2i (x12, y2) );
-  GE( glEnd () );
 }
 
 void
@@ -649,13 +607,17 @@ cogl_setup_viewport (guint        width,
   GE( glTranslatef (0.0f, -1.0 * height, 0.0f) );
 }
 
-ClutterFeatureFlags
-cogl_get_features ()
+static void
+_cogl_features_init ()
 {
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
   ClutterFeatureFlags flags = 0;
   const gchar        *gl_extensions;
+  int                 max_clip_planes = 0;
+  int                 stencil_bits = 0;
 
-  flags = CLUTTER_FEATURE_TEXTURE_READ_PIXELS;
+  flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
 
@@ -663,53 +625,194 @@ cogl_get_features ()
   if (cogl_check_extension ("GL_ARB_texture_rectangle", gl_extensions) ||
       cogl_check_extension ("GL_EXT_texture_rectangle", gl_extensions))
     {
-      flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
+      flags |= COGL_FEATURE_TEXTURE_RECTANGLE;
     }
 #endif
-
+  
+  if (cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))
+    {
+      flags |= COGL_FEATURE_TEXTURE_NPOT;
+    }
+  
 #ifdef GL_YCBCR_MESA
   if (cogl_check_extension ("GL_MESA_ycbcr_texture", gl_extensions))
     {
-      flags |= CLUTTER_FEATURE_TEXTURE_YUV;
+      flags |= COGL_FEATURE_TEXTURE_YUV;
     }
 #endif
 
-  if (cogl_check_extension ("GL_ARB_vertex_shader", gl_extensions) &&
+  if (cogl_check_extension ("GL_ARB_shader_objects", gl_extensions) &&
+      cogl_check_extension ("GL_ARB_vertex_shader", gl_extensions) &&
       cogl_check_extension ("GL_ARB_fragment_shader", gl_extensions))
     {
-      flags |= CLUTTER_FEATURE_SHADERS_GLSL;
+      ctx->pf_glCreateProgramObjectARB =
+	(PFNGLCREATEPROGRAMOBJECTARBPROC)
+	cogl_get_proc_address ("glCreateProgramObjectARB");
+      
+      ctx->pf_glCreateShaderObjectARB =
+	(PFNGLCREATESHADEROBJECTARBPROC)
+	cogl_get_proc_address ("glCreateShaderObjectARB");
+      
+      ctx->pf_glShaderSourceARB =
+	(PFNGLSHADERSOURCEARBPROC)
+	cogl_get_proc_address ("glShaderSourceARB");
+      
+      ctx->pf_glCompileShaderARB =
+	(PFNGLCOMPILESHADERARBPROC)
+	cogl_get_proc_address ("glCompileShaderARB");
+      
+      ctx->pf_glAttachObjectARB =
+	(PFNGLATTACHOBJECTARBPROC)
+	cogl_get_proc_address ("glAttachObjectARB");
+      
+      ctx->pf_glLinkProgramARB =
+	(PFNGLLINKPROGRAMARBPROC)
+	cogl_get_proc_address ("glLinkProgramARB");
+      
+      ctx->pf_glUseProgramObjectARB =
+	(PFNGLUSEPROGRAMOBJECTARBPROC)
+	cogl_get_proc_address ("glUseProgramObjectARB");
+      
+      ctx->pf_glGetUniformLocationARB =
+	(PFNGLGETUNIFORMLOCATIONARBPROC)
+	cogl_get_proc_address ("glGetUniformLocationARB");
+      
+      ctx->pf_glDeleteObjectARB =
+	(PFNGLDELETEOBJECTARBPROC)
+	cogl_get_proc_address ("glDeleteObjectARB");
+      
+      ctx->pf_glGetInfoLogARB =
+	(PFNGLGETINFOLOGARBPROC)
+	cogl_get_proc_address ("glGetInfoLogARB");
+      
+      ctx->pf_glGetObjectParameterivARB =
+	(PFNGLGETOBJECTPARAMETERIVARBPROC)
+	cogl_get_proc_address ("glGetObjectParameterivARB");
+      
+      ctx->pf_glUniform1fARB =
+	(PFNGLUNIFORM1FARBPROC)
+	cogl_get_proc_address ("glUniform1fARB");
+      
+      if (ctx->pf_glCreateProgramObjectARB    &&
+	  ctx->pf_glCreateShaderObjectARB     &&
+	  ctx->pf_glShaderSourceARB           &&
+	  ctx->pf_glCompileShaderARB          &&
+	  ctx->pf_glAttachObjectARB           &&
+	  ctx->pf_glLinkProgramARB            &&
+	  ctx->pf_glUseProgramObjectARB       &&
+	  ctx->pf_glGetUniformLocationARB     &&
+	  ctx->pf_glDeleteObjectARB           &&
+	  ctx->pf_glGetInfoLogARB             &&
+	  ctx->pf_glGetObjectParameterivARB   &&
+	  ctx->pf_glUniform1fARB)
+	flags |= COGL_FEATURE_SHADERS_GLSL;
     }
+  
 
   if (cogl_check_extension ("GL_EXT_framebuffer_object", gl_extensions) ||
       cogl_check_extension ("GL_ARB_framebuffer_object", gl_extensions))
+    { 
+      ctx->pf_glGenRenderbuffersEXT =
+	(PFNGLGENRENDERBUFFERSEXTPROC)
+	cogl_get_proc_address ("glGenRenderbuffersEXT");
+      
+      ctx->pf_glBindRenderbufferEXT =
+	(PFNGLBINDRENDERBUFFEREXTPROC)
+	cogl_get_proc_address ("glBindRenderbufferEXT");
+      
+      ctx->pf_glRenderbufferStorageEXT =
+	(PFNGLRENDERBUFFERSTORAGEEXTPROC)
+	cogl_get_proc_address ("glRenderbufferStorageEXT");
+      
+      ctx->pf_glGenFramebuffersEXT =
+	(PFNGLGENFRAMEBUFFERSEXTPROC)
+	cogl_get_proc_address ("glGenFramebuffersEXT");
+      
+      ctx->pf_glBindFramebufferEXT =
+	(PFNGLBINDFRAMEBUFFEREXTPROC)
+	cogl_get_proc_address ("glBindFramebufferEXT");
+      
+      ctx->pf_glFramebufferTexture2DEXT =
+	(PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)
+	cogl_get_proc_address ("glFramebufferTexture2DEXT");
+      
+      ctx->pf_glFramebufferRenderbufferEXT =
+	(PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)
+	cogl_get_proc_address ("glFramebufferRenderbufferEXT");
+      
+      ctx->pf_glCheckFramebufferStatusEXT =
+	(PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)
+	cogl_get_proc_address ("glCheckFramebufferStatusEXT");
+      
+      ctx->pf_glDeleteFramebuffersEXT =
+	(PFNGLDELETEFRAMEBUFFERSEXTPROC)
+	cogl_get_proc_address ("glDeleteFramebuffersEXT");
+      
+      if (ctx->pf_glGenRenderbuffersEXT         &&
+	  ctx->pf_glBindRenderbufferEXT         &&
+	  ctx->pf_glRenderbufferStorageEXT      &&
+	  ctx->pf_glGenFramebuffersEXT          &&
+	  ctx->pf_glBindFramebufferEXT          &&
+	  ctx->pf_glFramebufferTexture2DEXT     &&
+	  ctx->pf_glFramebufferRenderbufferEXT  &&
+	  ctx->pf_glCheckFramebufferStatusEXT   &&
+	  ctx->pf_glDeleteFramebuffersEXT)
+	flags |= COGL_FEATURE_OFFSCREEN;
+    }
+  
+  if (cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
     {
-      _gen_framebuffers = 
-	(GenFramebuffers) cogl_get_proc_address ("glGenFramebuffersEXT");
-
-      _bind_framebuffer = 
-	(BindFramebuffer) cogl_get_proc_address ("glBindFramebufferEXT");
-
-      _framebuffer_texture_2d =
-	(FramebufferTexture2D) 
-	   cogl_get_proc_address ("glFramebufferTexture2DEXT");
-
-      _check_framebuffer_status =
-	(CheckFramebufferStatus)
-	   cogl_get_proc_address ("glCheckFramebufferStatusEXT");
-
-      _delete_framebuffers =
-	(DeleteFramebuffers)
-	   cogl_get_proc_address ("glDeleteFramebuffersEXT");
-
-      if (_gen_framebuffers 
-	  && _bind_framebuffer
-	  && _framebuffer_texture_2d
-	  && _check_framebuffer_status
-	  && _delete_framebuffers)
-	flags |= CLUTTER_FEATURE_OFFSCREEN;
+      ctx->pf_glBlitFramebufferEXT =
+	(PFNGLBLITFRAMEBUFFEREXTPROC)
+	cogl_get_proc_address ("glBlitFramebufferEXT");
+      
+      if (ctx->pf_glBlitFramebufferEXT)
+	flags |= COGL_FEATURE_OFFSCREEN_BLIT;
+    }
+  
+  if (cogl_check_extension ("GL_EXT_framebuffer_multisample", gl_extensions))
+    {
+      ctx->pf_glRenderbufferStorageMultisampleEXT =
+	(PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC)
+	cogl_get_proc_address ("glRenderbufferStorageMultisampleEXT");
+      
+      if (ctx->pf_glRenderbufferStorageMultisampleEXT)
+	flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;
     }
 
-  return flags;
+  GE( glGetIntegerv (GL_STENCIL_BITS, &stencil_bits) );
+  if (stencil_bits > 0)
+    flags |= COGL_FEATURE_STENCIL_BUFFER;
+
+  GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
+  if (max_clip_planes >= 4)
+    flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
+  
+  /* Cache features */
+  ctx->feature_flags = flags;
+  ctx->features_cached = TRUE;
+}
+
+ClutterFeatureFlags
+cogl_get_features ()
+{
+  _COGL_GET_CONTEXT (ctx, 0);
+  
+  if (!ctx->features_cached)
+    _cogl_features_init ();
+  
+  return ctx->feature_flags;
+}
+
+gboolean
+cogl_features_available (CoglFeatureFlags features)
+{
+  _COGL_GET_CONTEXT (ctx, 0);
+  
+  if (!ctx->features_cached)
+    _cogl_features_init ();
+  
+  return (ctx->feature_flags & features) == features;
 }
 
 void
@@ -835,217 +938,79 @@ cogl_fog_set (const ClutterColor *fog_color,
   glFogf (GL_FOG_END, CLUTTER_FIXED_TO_FLOAT (stop));
 }
 
-/* FBOs - offscreen */
-
-COGLuint
-cogl_offscreen_create (COGLuint target_texture)
-{
-#ifdef GL_FRAMEBUFFER_EXT
-  COGLuint handle;
-  GLenum status;
-
-  if (_gen_framebuffers == NULL
-      || _bind_framebuffer == NULL
-      || _framebuffer_texture_2d == NULL
-      || _check_framebuffer_status == NULL)
-    {
-      /* tmp warning - need error reporting */
-      g_warning("Missing GL_FRAMEBUFFER_EXT API\n");
-      return 0;
-    }
-
-  _gen_framebuffers (1, &handle);
-  _bind_framebuffer (GL_FRAMEBUFFER_EXT, handle);
-
-  _framebuffer_texture_2d (GL_FRAMEBUFFER_EXT, 
-			   GL_COLOR_ATTACHMENT0_EXT,
-			   GL_TEXTURE_RECTANGLE_ARB, 
-			   target_texture,
-			   0);
-
-  status = _check_framebuffer_status (GL_FRAMEBUFFER_EXT);
-
-  if (status != GL_FRAMEBUFFER_COMPLETE_EXT)
-    {
-      _delete_framebuffers (1, &handle);
-      return 0;
-    }
-
-  _bind_framebuffer (GL_FRAMEBUFFER_EXT, 0);
-
-  return handle;
-#else
-  /* tmp warning - need error reporting */
-  g_warning("No GL_FRAMEBUFFER_EXT\n");
-  return 0;
-#endif
-}
-
-void
-cogl_offscreen_destroy (COGLuint offscreen_handle)
-{
-  if (_delete_framebuffers)
-    _delete_framebuffers (1, &offscreen_handle);
-}
-
-void
-cogl_offscreen_redirect_start (COGLuint offscreen_handle,
-			       gint     width,
-			       gint     height)
-{
-  /* FIXME: silly we need to pass width / height to init viewport */
-#ifdef GL_FRAMEBUFFER_EXT
-
-  if (_bind_framebuffer == NULL)
-    return;
-
-  _bind_framebuffer (GL_FRAMEBUFFER_EXT, offscreen_handle);
-
-  glViewport (0, 0, width, height);
-
-  glMatrixMode (GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity ();
-
-  glMatrixMode (GL_MODELVIEW);
-  glPushMatrix();
-  glLoadIdentity ();
-
-  glTranslatef (-1.0f, -1.0f, 0.0f);
-  glScalef (2.0f / (float)width, 2.0f / (float)height, 1.0f);
-
-  /* Clear the scene, appears needed on some backends - OSX */
-  glClearColor (0.0, 0.0, 0.0, 0.0);
-  glClear (GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-#endif
-}
-
-void
-cogl_offscreen_redirect_end (COGLuint offscreen_handle,
-			     gint     width,
-			     gint     height)
-{
-  /* FIXME: silly we need to pass width / height to reset to */
-  if (_bind_framebuffer == NULL)
-    return;
-
-#ifdef GL_FRAMEBUFFER_EXT
-  glViewport (0, 0, width, height);
-
-  glMatrixMode (GL_PROJECTION);
-  glPopMatrix();
-
-  glMatrixMode (GL_MODELVIEW);
-  glPopMatrix();
-
-  _bind_framebuffer (GL_FRAMEBUFFER_EXT, 0);
-#endif
-}
-
-
 /* Shader Magic follows */
-
-#ifdef __GNUC__
-
-#define PROC(rettype, retval, procname, args...) \
-  static rettype (*proc) (args) = NULL;  \
-   if (proc == NULL) \
-     { \
-       proc = (void*)cogl_get_proc_address (#procname);\
-       if (!proc)\
-         {\
-           g_warning ("failed to lookup proc: %s", #procname);\
-           return retval;\
-         }\
-     }
-#else
-
-#define PROC(rettype, retval, procname, ...) \
-  static rettype (*proc) (__VA_ARGS__) = NULL;  \
-   if (proc == NULL) \
-     { \
-       proc = (void*)cogl_get_proc_address (#procname);\
-       if (!proc)\
-         {\
-           g_warning ("failed to lookup proc: %s", #procname);\
-           return retval;\
-         }\
-     }
-
-#endif
 
 COGLhandle
 cogl_create_program (void)
 {
-  PROC (GLhandleARB, 0, glCreateProgramObjectARB, void);
-  return proc ();
+  _COGL_GET_CONTEXT (ctx, 0);
+  return glCreateProgramObjectARB ();
 }
 
 COGLhandle
 cogl_create_shader (COGLenum shaderType)
 {
-  PROC (GLhandleARB, 0, glCreateShaderObjectARB, GLenum);
-  return proc (shaderType);
+  _COGL_GET_CONTEXT (ctx, 0);
+  return glCreateShaderObjectARB (shaderType);
 }
 
 void
 cogl_shader_source (COGLhandle   shader,
                     const gchar *source)
 {
-  PROC (GLvoid,, glShaderSourceARB, GLhandleARB, GLsizei, const GLcharARB **, const GLint *)
-  proc (shader, 1, &source, NULL);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glShaderSourceARB (shader, 1, &source, NULL);
 }
 
 void
 cogl_shader_compile (COGLhandle shader_handle)
 {
-  PROC (GLvoid,, glCompileShaderARB, GLhandleARB);
-  proc (shader_handle);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glCompileShaderARB (shader_handle);
 }
 
 void
 cogl_program_attach_shader (COGLhandle program_handle,
                             COGLhandle shader_handle)
 {
-  PROC (GLvoid,, glAttachObjectARB, GLhandleARB, GLhandleARB);
-  proc (program_handle, shader_handle);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glAttachObjectARB (program_handle, shader_handle);
 }
 
 void
 cogl_program_link (COGLhandle program_handle)
 {
-  PROC (GLvoid,, glLinkProgramARB, GLhandleARB);
-  proc (program_handle);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glLinkProgramARB (program_handle);
 }
 
 void
 cogl_program_use (COGLhandle program_handle)
 {
-  PROC (GLvoid,, glUseProgramObjectARB, GLhandleARB);
-  proc (program_handle);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glUseProgramObjectARB (program_handle);
 }
 
 COGLint
 cogl_program_get_uniform_location (COGLhandle   program_handle,
                                    const gchar *uniform_name)
 {
-  PROC (GLint,0, glGetUniformLocationARB, GLhandleARB, const GLcharARB *)
-  return proc (program_handle, uniform_name);
+  _COGL_GET_CONTEXT (ctx, 0);
+  return glGetUniformLocationARB (program_handle, uniform_name);
 }
 
 void
 cogl_program_destroy (COGLhandle handle)
 {
-  PROC (GLvoid,, glDeleteObjectARB, GLhandleARB);
-  proc (handle);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glDeleteObjectARB (handle);
 }
 
 void
 cogl_shader_destroy (COGLhandle handle)
 {
-  PROC (GLvoid,, glDeleteObjectARB, GLhandleARB);
-  proc (handle);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glDeleteObjectARB (handle);
 }
 
 void
@@ -1054,8 +1019,8 @@ cogl_shader_get_info_log (COGLhandle  handle,
                           gchar      *buffer)
 {
   COGLint len;
-  PROC (GLvoid,, glGetInfoLogARB, GLhandleARB, GLsizei, GLsizei *, GLcharARB *);
-  proc (handle, size-1, &len, buffer);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glGetInfoLogARB (handle, size-1, &len, buffer);
   buffer[len]='\0';
 }
 
@@ -1064,15 +1029,14 @@ cogl_shader_get_parameteriv (COGLhandle  handle,
                              COGLenum    pname,
                              COGLint    *dest)
 {
-  PROC (GLvoid,, glGetObjectParameterivARB, GLhandleARB, GLenum, GLint*)
-  proc (handle, pname, dest);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glGetObjectParameterivARB (handle, pname, dest);
 }
-
 
 void
 cogl_program_uniform_1f (COGLint uniform_no,
                          gfloat  value)
 {
-  PROC (GLvoid,, glUniform1fARB, GLint, GLfloat);
-  proc (uniform_no, value);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glUniform1fARB (uniform_no, value);
 }
