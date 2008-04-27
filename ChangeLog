@@ -1,5 +1,9 @@
 2008-04-27  Thomas Thurman  <tthurman@gnome.org>
 
+        * configure.in: Post-release bump to 2.23.21.
+
+2008-04-27  Thomas Thurman  <tthurman@gnome.org>
+
         * NEWS: 2.23.13 release.
 
 2008-04-27  Erwann Chenede  <erwann.chenede@sun.com>
