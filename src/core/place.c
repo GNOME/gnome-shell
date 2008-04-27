@@ -41,7 +41,6 @@ typedef enum
   META_BOTTOM
 } MetaWindowDirection;
 
-#if 0 /* never used -- remove if nobody wants it */
 static gint
 northwestcmp (gconstpointer a, gconstpointer b)
 {
@@ -87,9 +86,7 @@ northwestcmp (gconstpointer a, gconstpointer b)
   else
     return 0;
 }
-#endif /* 0 -- never used */
 
-#if 0 /* never used -- remove if nobody wants it */
 static void
 find_next_cascade (MetaWindow *window,
                    MetaFrameGeometry *fgeom,
@@ -237,7 +234,6 @@ find_next_cascade (MetaWindow *window,
       *new_y = cascade_y + fgeom->top_height;
     }
 }
-#endif /* 0 -- never used */
 
 static void
 find_most_freespace (MetaWindow *window,
@@ -874,6 +870,12 @@ meta_window_place (MetaWindow        *window,
           window->maximize_vertically_after_placement = TRUE;
         }
     }
+
+  /* If no placement has been done, revert to cascade to avoid 
+   * fully overlapping window (e.g. starting multiple terminals)
+   * */
+  if (x == xi->rect.x && y == xi->rect.y)  
+    find_next_cascade (window, fgeom, windows, x, y, &x, &y);
 
  done_check_denied_focus:
   /* If the window is being denied focus and isn't a transient of the

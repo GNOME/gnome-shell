@@ -1,3 +1,8 @@
+2008-04-27  Erwann Chenede  <erwann.chenede@sun.com>
+
+        * src/core/place.c (meta_window_place): re-enable cascade
+          code which was wrongly removed a year ago.  Closes #529925.
+
 2008-04-22  Carlos Garnacho  <carlos@imendio.com>
 
         * src/core/compositor.c (process_property_notify,
