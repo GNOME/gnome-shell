@@ -1,3 +1,15 @@
+2.23.13
+=======
+
+Thanks to Erwann Chenede and Carlos Garnacho for improvements
+in this version.
+
+  - Re-enable cascading (Erwann) (#529925)
+  - Propagate opacity to frame windows (spec compliance!) (Carlos)
+
+Translations
+  - None this time!
+
 2.23.8
 ======
 
