@@ -1,3 +1,7 @@
+2008-04-28  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/cogl.h.in: reindented.
+
 2008-04-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c:

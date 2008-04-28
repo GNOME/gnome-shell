@@ -89,32 +89,64 @@ G_BEGIN_DECLS
  */
 typedef enum
 {
-  COGL_PIXEL_FORMAT_ANY            = 0,
-  COGL_PIXEL_FORMAT_A_8            = 1 | COGL_A_BIT,
+  COGL_PIXEL_FORMAT_ANY           = 0,
+  COGL_PIXEL_FORMAT_A_8           = 1 | COGL_A_BIT,
+
+  COGL_PIXEL_FORMAT_RGB_565       = 4,
+  COGL_PIXEL_FORMAT_RGBA_4444     = 5 | COGL_A_BIT,
+  COGL_PIXEL_FORMAT_RGBA_5551     = 6 | COGL_A_BIT,
+  COGL_PIXEL_FORMAT_YUV           = 7,
+  COGL_PIXEL_FORMAT_G_8           = 8
   
-  COGL_PIXEL_FORMAT_RGB_888        =  COGL_PIXEL_FORMAT_24,
-  COGL_PIXEL_FORMAT_BGR_888        = (COGL_PIXEL_FORMAT_24 | COGL_BGR_BIT),
+  COGL_PIXEL_FORMAT_RGB_888       =  COGL_PIXEL_FORMAT_24,
+
+  COGL_PIXEL_FORMAT_BGR_888       = (COGL_PIXEL_FORMAT_24 |
+                                     COGL_BGR_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_8888     =  COGL_PIXEL_FORMAT_32 |
+                                     COGL_A_BIT,
+
+  COGL_PIXEL_FORMAT_BGRA_8888     = (COGL_PIXEL_FORMAT_32 |
+                                     COGL_A_BIT           |
+                                     COGL_BGR_BIT),
+
+  COGL_PIXEL_FORMAT_ARGB_8888     = (COGL_PIXEL_FORMAT_32 |
+                                     COGL_A_BIT           |
+                                     COGL_AFIRST_BIT),
+
+  COGL_PIXEL_FORMAT_ABGR_8888     = (COGL_PIXEL_FORMAT_32 |
+                                     COGL_A_BIT           |
+                                     COGL_BGR_BIT         |
+                                     COGL_AFIRST_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_8888_PRE = (COGL_PIXEL_FORMAT_32 |
+                                     COGL_A_BIT           |
+                                     COGL_PREMULT_BIT),
+
+  COGL_PIXEL_FORMAT_BGRA_8888_PRE = (COGL_PIXEL_FORMAT_32 |
+                                     COGL_A_BIT           |
+                                     COGL_PREMULT_BIT     |
+                                     COGL_BGR_BIT),
+
+  COGL_PIXEL_FORMAT_ARGB_8888_PRE = (COGL_PIXEL_FORMAT_32 |
+                                     COGL_A_BIT           |
+                                     COGL_PREMULT_BIT     |
+                                     COGL_AFIRST_BIT),
+
+  COGL_PIXEL_FORMAT_ABGR_8888_PRE = (COGL_PIXEL_FORMAT_32 |
+                                     COGL_A_BIT           |
+                                     COGL_PREMULT_BIT     |
+                                     COGL_BGR_BIT         |
+                                     COGL_AFIRST_BIT),
   
-  COGL_PIXEL_FORMAT_RGBA_8888      =  COGL_PIXEL_FORMAT_32 | COGL_A_BIT,
-  COGL_PIXEL_FORMAT_BGRA_8888      = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT),
-  COGL_PIXEL_FORMAT_ARGB_8888      = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_AFIRST_BIT),
-  COGL_PIXEL_FORMAT_ABGR_8888      = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
+  COGL_PIXEL_FORMAT_RGBA_4444_PRE = (COGL_PIXEL_FORMAT_RGBA_4444 |
+                                     COGL_A_BIT                  |
+                                     COGL_PREMULT_BIT),
+
+  COGL_PIXEL_FORMAT_RGBA_5551_PRE = (COGL_PIXEL_FORMAT_RGBA_5551 |
+                                     COGL_A_BIT                  |
+                                     COGL_PREMULT_BIT),
   
-  COGL_PIXEL_FORMAT_RGBA_8888_PRE  = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT),
-  COGL_PIXEL_FORMAT_BGRA_8888_PRE  = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT),
-  COGL_PIXEL_FORMAT_ARGB_8888_PRE  = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_AFIRST_BIT),
-  COGL_PIXEL_FORMAT_ABGR_8888_PRE  = (COGL_PIXEL_FORMAT_32 | COGL_A_BIT | COGL_PREMULT_BIT | COGL_BGR_BIT | COGL_AFIRST_BIT),
-  
-  COGL_PIXEL_FORMAT_RGB_565        = 4,
-  COGL_PIXEL_FORMAT_RGBA_4444      = 5 | COGL_A_BIT,
-  COGL_PIXEL_FORMAT_RGBA_5551      = 6 | COGL_A_BIT,
-  
-  COGL_PIXEL_FORMAT_RGBA_4444_PRE  = (COGL_PIXEL_FORMAT_RGBA_4444 | COGL_A_BIT | COGL_PREMULT_BIT),
-  COGL_PIXEL_FORMAT_RGBA_5551_PRE  = (COGL_PIXEL_FORMAT_RGBA_5551 | COGL_A_BIT | COGL_PREMULT_BIT),
-  
-  COGL_PIXEL_FORMAT_YUV            = 7,
-  
-  COGL_PIXEL_FORMAT_G_8            = 8
   
 } CoglPixelFormat;
 
@@ -191,21 +223,20 @@ typedef struct _CoglTextureVertex CoglTextureVertex;
  * cogl_create_context:
  *
  */
-gboolean
-cogl_create_context (void);
+gboolean        cogl_create_context           (void);
 
 /**
  * cogl_destroy_context:
  *
  */
-void
-cogl_destroy_context (void);
+void            cogl_destroy_context          (void);
 
 /* Misc */
 /**
  * COGL_INVALID_HANDLE:
  *
- * A cogl handle that is not valid, used for unitialized handles as well as error conditions.
+ * A cogl handle that is not valid, used for unitialized handles as well as
+ * error conditions.
  */
 #define COGL_INVALID_HANDLE NULL
 
@@ -235,8 +266,7 @@ typedef void (* CoglFuncPtr) (void);
  *
  * Since: 0.8
  */
-ClutterFeatureFlags
-cogl_get_features (void);
+ClutterFeatureFlags cogl_get_features         (void);
 
 /**
  * cogl_features_available:
@@ -249,8 +279,7 @@ cogl_get_features (void);
  *
  * Return value: %TRUE if the features are available, %FALSE otherwise.
  */
-gboolean
-cogl_features_available (CoglFeatureFlags features);
+gboolean        cogl_features_available       (CoglFeatureFlags    features);
 
 /**
  * cogl_get_proc_address:
@@ -263,8 +292,7 @@ cogl_features_available (CoglFeatureFlags features);
  * Return value: a pointer to the requested function or %NULL if the
  * function is not available.
  */
-CoglFuncPtr
-cogl_get_proc_address (const gchar* name);
+CoglFuncPtr     cogl_get_proc_address         (const gchar        *name);
 
 /**
  * cogl_check_extension:
@@ -275,9 +303,8 @@ cogl_get_proc_address (const gchar* name);
  *
  * Returns: %TRUE if the extension occurs in the list, %FALSE otherwize.
  */
-gboolean 
-cogl_check_extension (const gchar *name,
-                      const gchar *ext);
+gboolean        cogl_check_extension          (const gchar        *name,
+                                               const gchar        *ext);
 
 /**
  * cogl_get_bitmasks:
@@ -290,29 +317,25 @@ cogl_check_extension (const gchar *name,
  * in the color buffer. Pass %NULL for any of the arguments if the
  * value is not required.
  */
-void
-cogl_get_bitmasks (gint *red,
-                   gint *green,
-                   gint *blue,
-                   gint *alpha);
-
-/* XXX: should this be internal? */
+void            cogl_get_bitmasks             (gint               *red,
+                                               gint               *green,
+                                               gint               *blue,
+                                               gint               *alpha);
 
 /**
  * cogl_perspective:
  * @fovy: Vertical of view angle in degrees.
  * @aspect: Aspect ratio of diesplay
- * @zNear: Nearest visible point
- * @zFar: Furthest visible point along the z-axis
+ * @z_near: Nearest visible point
+ * @z_far: Furthest visible point along the z-axis
  *
  * Multiplies the current set matrix with a projection matrix based
  * on the provided values.
  */
-void
-cogl_perspective (ClutterFixed fovy,
-		  ClutterFixed aspect,
-		  ClutterFixed zNear,
-		  ClutterFixed zFar);
+void            cogl_perspective              (ClutterFixed        fovy,
+                                               ClutterFixed        aspect,
+                                               ClutterFixed        z_near,
+                                               ClutterFixed        z_far);
 
 /**
  * cogl_setup_viewport:
@@ -330,13 +353,12 @@ cogl_perspective (ClutterFixed fovy,
  * view scaled according to @aspect along the x-axis. The view is
  * clipped according to @z_near and @z_far on the z-axis.
  */
-void
-cogl_setup_viewport (guint        width,
-		     guint        height,
-		     ClutterFixed fovy,
-		     ClutterFixed aspect,
-		     ClutterFixed z_near,
-		     ClutterFixed z_far);
+void            cogl_setup_viewport           (guint               width,
+                                               guint               height,
+                                               ClutterFixed        fovy,
+                                               ClutterFixed        aspect,
+                                               ClutterFixed        z_near,
+                                               ClutterFixed        z_far);
 
 /**
  * cogl_push_matrix:
@@ -344,16 +366,14 @@ cogl_setup_viewport (guint        width,
  * Store the current model-view matrix on the matrix stack. The matrix
  * can later be restored with cogl_pop_matrix().
  */
-void
-cogl_push_matrix (void);
+void            cogl_push_matrix              (void);
 
 /**
  * cogl_pop_matrix:
  *
  * Restore the current model-view matrix from the matrix stack.
  */
-void
-cogl_pop_matrix (void);
+void            cogl_pop_matrix               (void);
 
 /**
  * cogl_scale:
@@ -363,9 +383,8 @@ cogl_pop_matrix (void);
  * Multiplies the current model-view matrix by one that scales the x
  * and y axes by the given values.
  */
-void
-cogl_scale (ClutterFixed x,
-            ClutterFixed y);
+void            cogl_scale                    (ClutterFixed        x,
+                                               ClutterFixed        y);
 
 /**
  * cogl_translatex:
@@ -376,10 +395,9 @@ cogl_scale (ClutterFixed x,
  * Multiplies the current model-view matrix by one that translates the
  * model along all three axes according to the given values.
  */
-void
-cogl_translatex (ClutterFixed x,
-                 ClutterFixed y,
-                 ClutterFixed z);
+void            cogl_translatex               (ClutterFixed        x,
+                                               ClutterFixed        y,
+                                               ClutterFixed        z);
 
 /**
  * cogl_translate:
@@ -391,10 +409,9 @@ cogl_translatex (ClutterFixed x,
  * model-view matrix by one that translates the model along all three
  * axes according to the given values.
  */
-void
-cogl_translate (gint x,
-                gint y,
-                gint z);
+void            cogl_translate                (gint                x,
+                                               gint                y,
+                                               gint                z);
 
 /**
  * cogl_rotatex:
@@ -409,11 +426,10 @@ cogl_translate (gint x,
  * degrees about the vertex (0, 0, 1) causes a small counter-clockwise
  * rotation.
  */
-void
-cogl_rotatex (ClutterFixed angle,
-              gint         x,
-              gint         y,
-              gint         z);
+void            cogl_rotatex                  (ClutterFixed        angle,
+                                               gint                x,
+                                               gint                y,
+                                               gint                z);
 
 /**
  * cogl_rotate:
@@ -426,11 +442,10 @@ cogl_rotatex (ClutterFixed angle,
  * model-view matrix by one that rotates the model around the vertex
  * specified by @x, @y and @z.
  */
-void
-cogl_rotate (gint angle,
-             gint x,
-             gint y,
-             gint z);
+void            cogl_rotate                   (gint                angle,
+                                               gint                x,
+                                               gint                y,
+                                               gint                z);
 
 /**
  * cogl_get_modelview_matrix:
@@ -439,8 +454,7 @@ cogl_rotate (gint angle,
  * Stores the current model-view matrix in @m. The matrix is in
  * column-major order.
  */
-void
-cogl_get_modelview_matrix (ClutterFixed m[16]);
+void            cogl_get_modelview_matrix     (ClutterFixed        m[16]);
 
 /**
  * cogl_get_projection_matrix:
@@ -449,8 +463,7 @@ cogl_get_modelview_matrix (ClutterFixed m[16]);
  * Stores the current projection matrix in @m. The matrix is in
  * column-major order.
  */
-void
-cogl_get_projection_matrix (ClutterFixed m[16]);
+void            cogl_get_projection_matrix    (ClutterFixed        m[16]);
 
 /**
  * cogl_get_viewport:
@@ -461,8 +474,7 @@ cogl_get_projection_matrix (ClutterFixed m[16]);
  * position of the viewport and @v[2] and @v[3] get the width and
  * height.
  */
-void
-cogl_get_viewport (ClutterFixed v[4]);
+void            cogl_get_viewport             (ClutterFixed        v[4]);
 
 /**
  * cogl_clip_set:
@@ -477,11 +489,10 @@ cogl_get_viewport (ClutterFixed v[4]);
  * be displayed. The rectangle dimensions are transformed by the
  * current model-view matrix.
  */
-void
-cogl_clip_set (ClutterFixed x_offset,
-               ClutterFixed y_offset,
-               ClutterFixed width,
-               ClutterFixed height);
+void            cogl_clip_set                 (ClutterFixed        x_offset,
+                                               ClutterFixed        y_offset,
+                                               ClutterFixed        width,
+                                               ClutterFixed        height);
 
 /**
  * cogl_clip_unset:
@@ -489,8 +500,7 @@ cogl_clip_set (ClutterFixed x_offset,
  * Removes the current clipping rectangle so that all drawing
  * operations extend to full size of the viewport again.
  */
-void
-cogl_clip_unset (void);
+void            cogl_clip_unset               (void);
 
 /**
  * cogl_enable_depth_test:
@@ -502,8 +512,7 @@ cogl_clip_unset (void);
  * clutter_actor_lower(), otherwise it will also take into account the
  * actor's depth. Depth testing is disabled by default.
  */
-void
-cogl_enable_depth_test (gboolean setting);
+void            cogl_enable_depth_test        (gboolean            setting);
 
 /**
  * cogl_alpha_func:
@@ -515,9 +524,8 @@ cogl_enable_depth_test (gboolean setting);
  * comparing with the value in @ref. The default function is CGL_ALWAYS the
  * initial reference value is 1.0.
  */
-void
-cogl_alpha_func (COGLenum     func, 
-		 ClutterFixed ref);
+void            cogl_alpha_func               (COGLenum            func, 
+                                               ClutterFixed        ref);
 
 /**
  * cogl_fog_set:
@@ -533,11 +541,10 @@ cogl_alpha_func (COGLenum     func,
  * with @fog_color. Fogging will remain enabled until the next call to
  * cogl_paint_init().
  */
-void
-cogl_fog_set (const ClutterColor *fog_color,
-              ClutterFixed        density,
-              ClutterFixed        z_near,
-              ClutterFixed        z_far);
+void            cogl_fog_set                  (const ClutterColor *fog_color,
+                                               ClutterFixed        density,
+                                               ClutterFixed        z_near,
+                                               ClutterFixed        z_far);
 
 /**
  * cogl_paint_init:
@@ -546,8 +553,7 @@ cogl_fog_set (const ClutterColor *fog_color,
  * Clears the color buffer to @color. The depth buffer and stencil
  * buffers are also cleared and fogging and lighting are disabled.
  */
-void
-cogl_paint_init (const ClutterColor *color);
+void            cogl_paint_init               (const ClutterColor *color);
 
 /* Textures api */
 
@@ -557,18 +563,18 @@ cogl_paint_init (const ClutterColor *color);
  * @height: height of texture in pixels.
  * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
  * texture fit GPU limitations.
- * @internal_format: the #CoglPixelFormat to use for the GPU storage of the texture.
+ * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
+ * texture.
  *
  * Create a new texture with specified dimensions and pixel format.
  *
  * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
  * if texture creation failed.
  */
-CoglHandle
-cogl_texture_new_with_size (guint           width,
-			    guint           height,
-			    gint            max_waste,
-			    CoglPixelFormat internal_format);
+CoglHandle      cogl_texture_new_with_size    (guint           width,
+                                               guint           height,
+                                               gint            max_waste,
+                                               CoglPixelFormat internal_format);
 
 /**
  * cogl_texture_new_from_file:
@@ -584,11 +590,10 @@ cogl_texture_new_with_size (guint           width,
  * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
  * if creating the texture failed.
  */
-CoglHandle
-cogl_texture_new_from_file (const gchar     *filename,
-                            gint             max_waste,
-                            CoglPixelFormat  internal_format,
-			    GError         **error);
+CoglHandle      cogl_texture_new_from_file    (const gchar    *filename,
+                                               gint            max_waste,
+                                               CoglPixelFormat internal_format,
+                                               GError        **error);
 
 /**
  * cogl_texture_new_from_data:
@@ -607,14 +612,13 @@ cogl_texture_new_from_file (const gchar     *filename,
  * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
  * if creating the texture failed.
  */
-CoglHandle
-cogl_texture_new_from_data (guint              width,
-			    guint              height,
-			    gint               max_waste,
-                            CoglPixelFormat    format,
-                            CoglPixelFormat    internal_format,
-			    guint              rowstride,
-			    const guchar      *data);
+CoglHandle      cogl_texture_new_from_data    (guint            width,
+                                               guint            height,
+                                               gint             max_waste,
+                                               CoglPixelFormat  format,
+                                               CoglPixelFormat  internal_format,
+                                               guint            rowstride,
+                                               const guchar    *data);
 
 /**
  * cogl_texture_new_from_foreign:
@@ -633,14 +637,13 @@ cogl_texture_new_from_data (guint              width,
  * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
  * if creating the texture failed.
  */
-CoglHandle
-cogl_texture_new_from_foreign (GLuint           gl_handle,
-			       GLenum           gl_target,
-			       GLuint           width,
-			       GLuint           height,
-			       GLuint           x_pot_waste,
-			       GLuint           y_pot_waste,
-			       CoglPixelFormat  format);
+CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
+                                               GLenum              gl_target,
+                                               GLuint              width,
+                                               GLuint              height,
+                                               GLuint              x_pot_waste,
+                                               GLuint              y_pot_waste,
+                                               CoglPixelFormat     format);
 
 /**
  * cogl_is_texture:
@@ -651,8 +654,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
  * Returns: %TRUE if the handle references a texture,
  *   %FALSE otherwise
  */
-gboolean
-cogl_is_texture (CoglHandle handle);
+gboolean        cogl_is_texture               (CoglHandle          handle);
 
 /**
  * cogl_texture_get_width:
@@ -662,8 +664,7 @@ cogl_is_texture (CoglHandle handle);
  *
  * Returns: the width of the GPU side texture in pixels:
  */
-guint
-cogl_texture_get_width (CoglHandle handle);
+guint           cogl_texture_get_width        (CoglHandle          handle);
 
 /**
  * cogl_texture_get_height:
@@ -673,8 +674,7 @@ cogl_texture_get_width (CoglHandle handle);
  *
  * Returns: the height of the GPU side texture in pixels:
  */
-guint
-cogl_texture_get_height (CoglHandle handle);
+guint           cogl_texture_get_height       (CoglHandle          handle);
 
 /**
  * cogl_texture_get_format:
@@ -684,8 +684,7 @@ cogl_texture_get_height (CoglHandle handle);
  *
  * Returns: the #CoglPixelFormat of the GPU side texture.
  */
-CoglPixelFormat
-cogl_texture_get_format (CoglHandle handle);
+CoglPixelFormat cogl_texture_get_format       (CoglHandle          handle);
 
 
 /**
@@ -696,19 +695,18 @@ cogl_texture_get_format (CoglHandle handle);
  *
  * Returns: the offset in bytes between each consequetive row of pixels.
  */
-guint
-cogl_texture_get_rowstride (CoglHandle handle);
+guint           cogl_texture_get_rowstride    (CoglHandle          handle);
 
 /**
  * cogl_texture_get_max_waste:
  * @handle: a #CoglHandle for a texture.
  * 
- * Query the maximum wasted (unused) pixels in one dimension of a GPU side texture.
+ * Query the maximum wasted (unused) pixels in one dimension of a GPU side
+ * texture.
  *
  * Returns: the maximum waste.
  */
-gint
-cogl_texture_get_max_waste (CoglHandle handle);
+gint            cogl_texture_get_max_waste    (CoglHandle          handle);
 
 /**
  * cogl_texture_get_min_filter:
@@ -718,8 +716,7 @@ cogl_texture_get_max_waste (CoglHandle handle);
  *
  * Returns: the current downscaling filter for a cogl texture.
  */
-COGLenum
-cogl_texture_get_min_filter (CoglHandle handle);
+COGLenum        cogl_texture_get_min_filter   (CoglHandle          handle);
 
 /**
  * cogl_texture_get_mag_filter:
@@ -729,8 +726,7 @@ cogl_texture_get_min_filter (CoglHandle handle);
  *
  * Returns: the current downscaling filter for a cogl texture.
  */
-COGLenum
-cogl_texture_get_mag_filter (CoglHandle handle);
+COGLenum        cogl_texture_get_mag_filter   (CoglHandle          handle);
 
 /**
  * cogl_texture_is_sliced:
@@ -742,8 +738,7 @@ cogl_texture_get_mag_filter (CoglHandle handle);
  * Returns: %TRUE if the texture is sliced, %FALSE if the texture
  * is stored as a single GPU texture.
  */
-gboolean
-cogl_texture_is_sliced (CoglHandle handle);
+gboolean        cogl_texture_is_sliced        (CoglHandle          handle);
 
 /**
  * cogl_texture_get_gl_texture:
@@ -759,10 +754,9 @@ cogl_texture_is_sliced (CoglHandle handle);
  * Returns: %TRUE if the handle was successfully retrieved %FALSE
  * if the handle was invalid.
  */
-gboolean
-cogl_texture_get_gl_texture (CoglHandle handle,
-			     GLuint *out_gl_handle,
-			     GLenum *out_gl_target);
+gboolean        cogl_texture_get_gl_texture   (CoglHandle         handle,
+                                               GLuint            *out_gl_handle,
+                                               GLenum            *out_gl_target);
 
 /**
  * cogl_texture_get_data:
@@ -778,11 +772,10 @@ cogl_texture_get_gl_texture (CoglHandle handle,
  * Returns: the size of the texture data in bytes (or 0 if the texture
  * is not valid.)
  */
-gint
-cogl_texture_get_data (CoglHandle       handle,
-                       CoglPixelFormat  format,
-                       guint            rowstride,
-                       guchar          *data);
+gint            cogl_texture_get_data         (CoglHandle          handle,
+                                               CoglPixelFormat     format,
+                                               guint               rowstride,
+                                               guchar             *data);
 
 /**
  * cogl_texture_set_filters:
@@ -793,10 +786,9 @@ cogl_texture_get_data (CoglHandle       handle,
  * Changes the decimation and interpolation filters used when the texture is
  * drawn at other scales than 100%.
  */
-void
-cogl_texture_set_filters (CoglHandle handle,
-			  COGLenum   min_filter,
-			  COGLenum   mag_filter);
+void            cogl_texture_set_filters      (CoglHandle          handle,
+                                               COGLenum            min_filter,
+                                               COGLenum            mag_filter);
 
 
 /**
@@ -811,27 +803,27 @@ cogl_texture_set_filters (CoglHandle handle,
  * @width: width of source data buffer.
  * @height: height of source data buffer.
  * @format: the #CoglPixelFormat used in the source buffer.
- * @rowstride: rowstride of source buffer (computed from width if none specified)
+ * @rowstride: rowstride of source buffer (computed from width if none
+ * specified)
  * @data: the actual pixel data.
  *
- * Sets the pixels in a rectangular subregion of @handle from an in-memory buffer
- * containing pixel data. 
+ * Sets the pixels in a rectangular subregion of @handle from an in-memory
+ * buffer containing pixel data. 
  *
  * Returns: %TRUE if the subregion upload was successful, otherwise %FALSE.
  */
-gboolean
-cogl_texture_set_region (CoglHandle       handle,
-			 gint             src_x,
-			 gint             src_y,
-			 gint             dst_x,
-			 gint             dst_y,
-			 guint            dst_width,
-			 guint            dst_height,
-			 gint             width,
-			 gint             height,
-			 CoglPixelFormat  format,
-			 guint            rowstride,
-			 const guchar    *data);
+gboolean        cogl_texture_set_region       (CoglHandle          handle,
+                                               gint                src_x,
+                                               gint                src_y,
+                                               gint                dst_x,
+                                               gint                dst_y,
+                                               guint               dst_width,
+                                               guint               dst_height,
+                                               gint                width,
+                                               gint                height,
+                                               CoglPixelFormat     format,
+                                               guint               rowstride,
+                                               const guchar       *data);
 
 /**
  * cogl_texture_ref:
@@ -841,8 +833,7 @@ cogl_texture_set_region (CoglHandle       handle,
  *
  * Returns: the @handle.
  */
-CoglHandle
-cogl_texture_ref (CoglHandle handle);
+CoglHandle      cogl_texture_ref              (CoglHandle          handle);
 
 /**
  * cogl_texture_unref:
@@ -850,8 +841,7 @@ cogl_texture_ref (CoglHandle handle);
  *
  * Deccrement the reference count for a cogl texture.
  */
-void
-cogl_texture_unref (CoglHandle handle);
+void            cogl_texture_unref            (CoglHandle          handle);
 
 /**
  * cogl_texture_rectangle:
@@ -868,16 +858,15 @@ cogl_texture_unref (CoglHandle handle);
  * Draw a rectangle from a texture to the display, to draw the entire
  * texture pass in @tx1=0.0 @ty1=0.0 @tx2=1.0 @ty2=1.0.
  */
-void
-cogl_texture_rectangle (CoglHandle   handle,
-                        ClutterFixed x1,
-                        ClutterFixed y1,
-                        ClutterFixed x2,
-                        ClutterFixed y2,
-                        ClutterFixed tx1,
-                        ClutterFixed ty1,
-                        ClutterFixed tx2,
-                        ClutterFixed ty2);
+void            cogl_texture_rectangle        (CoglHandle          handle,
+                                               ClutterFixed        x1,
+                                               ClutterFixed        y1,
+                                               ClutterFixed        x2,
+                                               ClutterFixed        y2,
+                                               ClutterFixed        tx1,
+                                               ClutterFixed        ty1,
+                                               ClutterFixed        tx2,
+                                               ClutterFixed        ty2);
 
 /**
  * cogl_texture_polygon:
@@ -902,11 +891,10 @@ cogl_texture_rectangle (CoglHandle   handle,
  * OpenGL ES and the minifying and magnifying functions are both set
  * to CGL_NEAREST.
  */
-void
-cogl_texture_polygon (CoglHandle         handle,
-		      guint              n_vertices,
-		      CoglTextureVertex *vertices,
-		      gboolean           use_color);
+void            cogl_texture_polygon          (CoglHandle          handle,
+		                               guint               n_vertices,
+		                               CoglTextureVertex  *vertices,
+		                               gboolean            use_color);
 
 /* Primitives API */
 
@@ -941,8 +929,7 @@ cogl_texture_polygon (CoglHandle         handle,
  * Changes the color of cogl's current paint, which is used for filling and stroking
  * primitives.
  */
-void
-cogl_color (const ClutterColor *color);
+void            cogl_color                    (const ClutterColor *color);
 
 
 /**
@@ -955,11 +942,10 @@ cogl_color (const ClutterColor *color);
  * Fills a rectangle at the given coordinates with the current
  * drawing color in a highly optimizied fashion.
  **/
-void
-cogl_fast_fill_rectangle (gint x,
-                          gint y,
-                          guint width,
-                          guint height);
+void            cogl_fast_fill_rectangle      (gint                x,
+                                               gint                y,
+                                               guint               width,
+                                               guint               height);
 
 /**
  * cogl_fast_fill_rectanglex:
@@ -970,11 +956,10 @@ cogl_fast_fill_rectangle (gint x,
  *
  * A fixed-point version of cogl_fast_fill_rectangle.
  **/
-void
-cogl_fast_fill_rectanglex (ClutterFixed x,
-			   ClutterFixed y,
-			   ClutterFixed width,
-			   ClutterFixed height);
+void            cogl_fast_fill_rectanglex     (ClutterFixed        x,
+			                       ClutterFixed        y,
+			                       ClutterFixed        width,
+			                       ClutterFixed        height);
 
 /**
  * cogl_fast_fill_trapezoid:
@@ -988,13 +973,12 @@ cogl_fast_fill_rectanglex (ClutterFixed x,
  * Fills a trapezoid at the given coordinates with the current
  * drawing color in a highly optimized fashion.
  **/
-void
-cogl_fast_fill_trapezoid (gint y1,
-			  gint x11,
-			  gint x21,
-			  gint y2,
-			  gint x12,
-			  gint x22);
+void            cogl_fast_fill_trapezoid      (gint                y1,
+			                       gint                x11,
+			                       gint                x21,
+			                       gint                y2,
+			                       gint                x12,
+			                       gint                x22);
 
 /**
  * cogl_fast_fill_trapezoidx:
@@ -1007,21 +991,19 @@ cogl_fast_fill_trapezoid (gint y1,
  *
  * A fixed-point version of cogl_fast_fill_trapezoid.
  **/
-void
-cogl_fast_fill_trapezoidx (ClutterFixed y1,
-			   ClutterFixed x11,
-			   ClutterFixed x21,
-			   ClutterFixed y2,
-			   ClutterFixed x12,
-			   ClutterFixed x22);
+void            cogl_fast_fill_trapezoidx     (ClutterFixed        y1,
+			                       ClutterFixed        x11,
+			                       ClutterFixed        x21,
+			                       ClutterFixed        y2,
+			                       ClutterFixed        x12,
+			                       ClutterFixed        x22);
 
 /**
  * cogl_fill:
  *
  * Fills the constructed shape using the current drawing color.
  **/
-void
-cogl_fill (void);
+void            cogl_fill                     (void);
 
 /**
  * cogl_stroke:
@@ -1030,8 +1012,7 @@ cogl_fill (void);
  * and a width of 1 pixel (regardless of the current transformation
  * matrix).
  **/
-void
-cogl_stroke (void);
+void            cogl_stroke                   (void);
 
 
 /**
@@ -1042,9 +1023,8 @@ cogl_stroke (void);
  * Clears the previously constructed shape and begins a new path
  * contour by moving the pen to the given coordinates.
  **/
-void
-cogl_path_move_to (ClutterFixed x,
-		   ClutterFixed y);
+void            cogl_path_move_to             (ClutterFixed        x,
+		                               ClutterFixed        y);
 
 
 /**
@@ -1056,9 +1036,8 @@ cogl_path_move_to (ClutterFixed x,
  * contour by moving the pen to the given coordinates relative
  * to the current pen location.
  **/
-void
-cogl_path_move_to_rel (ClutterFixed x,
-		       ClutterFixed y);
+void            cogl_path_move_to_rel         (ClutterFixed        x,
+		                               ClutterFixed        y);
 
 /**
  * cogl_path_line_to:
@@ -1068,9 +1047,8 @@ cogl_path_move_to_rel (ClutterFixed x,
  * Adds a straight line segment to the current path that ends at the
  * given coordinates.
  **/
-void
-cogl_path_line_to (ClutterFixed x,
-		   ClutterFixed y);
+void            cogl_path_line_to             (ClutterFixed        x,
+		                               ClutterFixed        y);
 
 /**
  * cogl_path_line_to_rel:
@@ -1080,9 +1058,8 @@ cogl_path_line_to (ClutterFixed x,
  * Adds a straight line segment to the current path that ends at the
  * given coordinates relative to the current pen location.
  **/
-void
-cogl_path_line_to_rel (ClutterFixed x,
-		       ClutterFixed y);
+void            cogl_path_line_to_rel         (ClutterFixed        x,
+		                               ClutterFixed        y);
 
 /**
  * cogl_path_h_line_to:
@@ -1091,8 +1068,7 @@ cogl_path_line_to_rel (ClutterFixed x,
  * Adds a straight horizontal line segment to the current path that
  * ends at the given X coordinate and current pen Y coordinate.
  **/
-void
-cogl_path_h_line_to (ClutterFixed x);
+void            cogl_path_h_line_to           (ClutterFixed        x);
 
 /**
  * cogl_path_v_line_to:
@@ -1101,8 +1077,7 @@ cogl_path_h_line_to (ClutterFixed x);
  * Adds a stright vertical line segment to the current path that ends
  * at the current pen X coordinate and the given Y coordinate.
  **/
-void
-cogl_path_v_line_to (ClutterFixed y);
+void            cogl_path_v_line_to           (ClutterFixed        y);
 
 /**
  * cogl_path_h_line_to_rel:
@@ -1112,8 +1087,7 @@ cogl_path_v_line_to (ClutterFixed y);
  * ends at the given X coordinate relative to the current pen location
  * and current pen Y coordinate.
  **/
-void
-cogl_path_h_line_to_rel (ClutterFixed x);
+void            cogl_path_h_line_to_rel       (ClutterFixed        x);
 
 /**
  * cogl_path_v_line_to_rel:
@@ -1123,8 +1097,7 @@ cogl_path_h_line_to_rel (ClutterFixed x);
  * at the current pen X coordinate and the given Y coordinate relative
  * to the current pen location.
  **/
-void
-cogl_path_v_line_to_rel (ClutterFixed y);
+void            cogl_path_v_line_to_rel       (ClutterFixed        y);
 
 
 /**
@@ -1141,14 +1114,13 @@ cogl_path_v_line_to_rel (ClutterFixed y);
  * segment will link the current pen location with the first vertex
  * of the arc.
  **/
-void
-cogl_path_arc (ClutterFixed center_x,
-	       ClutterFixed center_y,
-	       ClutterFixed radius_x,
-	       ClutterFixed radius_y,
-	       ClutterAngle angle_1,
-	       ClutterAngle angle_2,
-	       ClutterAngle angle_step);
+void            cogl_path_arc                 (ClutterFixed        center_x,
+                                               ClutterFixed        center_y,
+                                               ClutterFixed        radius_x,
+                                               ClutterFixed        radius_y,
+                                               ClutterAngle        angle_1,
+                                               ClutterAngle        angle_2,
+                                               ClutterAngle        angle_step);
 
 /**
  * cogl_path_arc_rel:
@@ -1166,14 +1138,13 @@ cogl_path_arc (ClutterFixed center_x,
  * segment will link the current pen location with the first vertex
  * of the arc.
  **/
-void
-cogl_path_arc_rel (ClutterFixed center_x,
-		   ClutterFixed center_y,
-		   ClutterFixed radius_x,
-		   ClutterFixed radius_y,
-		   ClutterAngle angle_1,
-		   ClutterAngle angle_2,
-		   ClutterAngle angle_step);
+void            cogl_path_arc_rel             (ClutterFixed        center_x,
+                                               ClutterFixed        center_y,
+                                               ClutterFixed        radius_x,
+                                               ClutterFixed        radius_y,
+                                               ClutterAngle        angle_1,
+                                               ClutterAngle        angle_2,
+                                               ClutterAngle        angle_step);
 
 /**
  * cogl_path_bezier2_to:
@@ -1186,11 +1157,10 @@ cogl_path_arc_rel (ClutterFixed center_x,
  * second and third control points and using current pen location as the
  * first control point.
  **/
-void
-cogl_path_bezier2_to (ClutterFixed x1,
-		      ClutterFixed y1,
-		      ClutterFixed x2,
-		      ClutterFixed y2);
+void            cogl_path_bezier2_to          (ClutterFixed        x1,
+                                               ClutterFixed        y1,
+                                               ClutterFixed        x2,
+                                               ClutterFixed        y2);
 
 
 /**
@@ -1205,11 +1175,10 @@ cogl_path_bezier2_to (ClutterFixed x1,
  * first control point. The given coordinates are relative to the current
  * pen location.
  **/
-void
-cogl_path_bezier2_to_rel (ClutterFixed x1,
-			  ClutterFixed y1,
-			  ClutterFixed x2,
-			  ClutterFixed y2);
+void            cogl_path_bezier2_to_rel      (ClutterFixed        x1,
+                                               ClutterFixed        y1,
+                                               ClutterFixed        x2,
+                                               ClutterFixed        y2);
 
 /**
  * cogl_path_bezier3_to:
@@ -1224,13 +1193,12 @@ cogl_path_bezier2_to_rel (ClutterFixed x1,
  * second, third and fourth control points and using current pen location
  * as the first control point.
  **/
-void
-cogl_path_bezier3_to (ClutterFixed x1,
-		      ClutterFixed y1,
-		      ClutterFixed x2,
-		      ClutterFixed y2,
-		      ClutterFixed x3,
-		      ClutterFixed y3);
+void            cogl_path_bezier3_to          (ClutterFixed        x1,
+                                               ClutterFixed        y1,
+                                               ClutterFixed        x2,
+                                               ClutterFixed        y2,
+                                               ClutterFixed        x3,
+                                               ClutterFixed        y3);
 
 /**
  * cogl_path_bezier3_to_rel:
@@ -1246,13 +1214,12 @@ cogl_path_bezier3_to (ClutterFixed x1,
  * as the first control point. The given coordinates are relative to the
  * current pen location.
  */
-void
-cogl_path_bezier3_to_rel (ClutterFixed x1,
-			  ClutterFixed y1,
-			  ClutterFixed x2,
-			  ClutterFixed y2,
-			  ClutterFixed x3,
-			  ClutterFixed y3);
+void            cogl_path_bezier3_to_rel      (ClutterFixed        x1,
+                                               ClutterFixed        y1,
+                                               ClutterFixed        x2,
+                                               ClutterFixed        y2,
+                                               ClutterFixed        x3,
+                                               ClutterFixed        y3);
 
 /**
  * cogl_path_close:
@@ -1260,8 +1227,7 @@ cogl_path_bezier3_to_rel (ClutterFixed x1,
  * Closes the path being constructed by adding a straight line segment
  * to it that ends at the first vertex of the path.
  **/
-void
-cogl_path_close (void);
+void            cogl_path_close               (void);
 
 /**
  * cogl_line:
@@ -1273,11 +1239,10 @@ cogl_path_close (void);
  * Clears the previously constructed shape and constructs a straight
  * line shape start and ending at the given coordinates.
  **/
-void
-cogl_line (ClutterFixed x1,
-           ClutterFixed y1,
-           ClutterFixed x2,
-           ClutterFixed y2);
+void            cogl_line                     (ClutterFixed        x1,
+                                               ClutterFixed        y1,
+                                               ClutterFixed        x2,
+                                               ClutterFixed        y2);
 
 /**
  * cogl_polyline:
@@ -1296,9 +1261,8 @@ cogl_line (ClutterFixed x1,
  * fashion for the rest of the vertices. (num_points - 1) segments will
  * be constructed.
  **/
-void
-cogl_polyline (ClutterFixed *coords,
-	       gint          num_points);
+void            cogl_polyline                 (ClutterFixed       *coords,
+                                               gint                num_points);
 
 
 /**
@@ -1315,9 +1279,8 @@ cogl_polyline (ClutterFixed *coords,
  * represents the Y coordinate of the first vertex, continuing in the same
  * fashion for the rest of the vertices.
  **/
-void
-cogl_polygon (ClutterFixed *coords,
-	      gint          num_points);
+void            cogl_polygon                  (ClutterFixed       *coords,
+                                               gint                num_points);
 
 
 /**
@@ -1330,11 +1293,10 @@ cogl_polygon (ClutterFixed *coords,
  * Clears the previously constructed shape and constructs a rectangular
  * shape at the given coordinates.
  **/
-void
-cogl_rectangle (ClutterFixed x,
-		ClutterFixed y,
-		ClutterFixed width,
-		ClutterFixed height);
+void            cogl_rectangle                (ClutterFixed        x,
+                                               ClutterFixed        y,
+                                               ClutterFixed        width,
+                                               ClutterFixed        height);
 
 /**
  * cogl_arc:
@@ -1349,14 +1311,13 @@ cogl_rectangle (ClutterFixed x,
  * Clears the previously constructed shape and constructs and elliptical arc
  * shape.
  **/
-void
-cogl_arc (ClutterFixed center_x,
-	  ClutterFixed center_y,
-	  ClutterFixed radius_x,
-	  ClutterFixed radius_y,
-	  ClutterAngle angle_1,
-	  ClutterAngle angle_2,
-	  ClutterAngle angle_step);
+void            cogl_arc                      (ClutterFixed        center_x,
+                                               ClutterFixed        center_y,
+                                               ClutterFixed        radius_x,
+                                               ClutterFixed        radius_y,
+                                               ClutterAngle        angle_1,
+                                               ClutterAngle        angle_2,
+                                               ClutterAngle        angle_step);
 
 
 /**
@@ -1370,12 +1331,11 @@ cogl_arc (ClutterFixed center_x,
  * Clears the previously constructed shape and constructs an ellipse
  * shape.
  **/
-void
-cogl_ellipse (ClutterFixed center_x,
-	      ClutterFixed center_y,
-	      ClutterFixed radius_x,
-	      ClutterFixed radius_y,
-	      ClutterAngle angle_step);
+void            cogl_ellipse                  (ClutterFixed        center_x,
+                                               ClutterFixed        center_y,
+                                               ClutterFixed        radius_x,
+                                               ClutterFixed        radius_y,
+                                               ClutterAngle        angle_step);
 
 
 /**
@@ -1391,25 +1351,23 @@ cogl_ellipse (ClutterFixed center_x,
  * Clears the previously constructed shape and constructs a rectangular
  * shape with rounded corners.
  **/
-void
-cogl_round_rectangle (ClutterFixed x,
-		      ClutterFixed y,
-		      ClutterFixed width,
-		      ClutterFixed height,
-		      ClutterFixed radius,
-		      ClutterAngle arc_step);
+void            cogl_round_rectangle          (ClutterFixed        x,
+                                               ClutterFixed        y,
+                                               ClutterFixed        width,
+                                               ClutterFixed        height,
+                                               ClutterFixed        radius,
+                                               ClutterAngle        arc_step);
 
 /**
  * cogl_create_shader:
- * @shaderType: CGL_VERTEX_SHADER og CGL_FRAGMENT_SHADER.
+ * @shader_type: CGL_VERTEX_SHADER og CGL_FRAGMENT_SHADER.
  *
  * Create a new shader handle, use #cogl_shader_source to set the source code
  * to be used on it.
  *
  * Returns: a new shader handle.
  */
-COGLhandle
-cogl_create_shader                (COGLenum     shaderType);
+COGLhandle      cogl_create_shader            (COGLenum            shader_type);
 
 /**
  * cogl_shader_destroy:
@@ -1417,8 +1375,7 @@ cogl_create_shader                (COGLenum     shaderType);
  *
  * Free up the resources used by a cogl shader.
  */
-void
-cogl_shader_destroy               (COGLhandle   handle);
+void            cogl_shader_destroy           (COGLhandle          handle);
 
 /**
  * cogl_shader_source:
@@ -1428,9 +1385,8 @@ cogl_shader_destroy               (COGLhandle   handle);
  * Replaces the current GLSL source associated with a shader with a new
  * one.
  */
-void
-cogl_shader_source                (COGLhandle   shader,
-                                   const gchar *source);
+void            cogl_shader_source            (COGLhandle          shader,
+                                               const gchar        *source);
 /**
  * cogl_shader_compile:
  * @shader_handle: #COGLhandle for a shader.
@@ -1438,8 +1394,7 @@ cogl_shader_source                (COGLhandle   shader,
  * Compiles the shader, no return value, but the shader is now ready for
  * linking into a program.
  */
-void
-cogl_shader_compile               (COGLhandle   shader_handle);
+void            cogl_shader_compile           (COGLhandle        shader_handle);
 
 /**
  * cogl_shader_get_info_log:
@@ -1452,10 +1407,9 @@ cogl_shader_compile               (COGLhandle   shader_handle);
  * messages that caused a shader to not compile correctly, mainly useful for
  * debugging purposes.
  */
-void
-cogl_shader_get_info_log          (COGLhandle   handle,
-                                   guint        size,
-                                   gchar       *buffer);
+void            cogl_shader_get_info_log      (COGLhandle          handle,
+                                               guint               size,
+                                               gchar              *buffer);
 
 /**
  * cogl_shader_get_parameteriv:
@@ -1466,10 +1420,9 @@ cogl_shader_get_info_log          (COGLhandle   handle,
  * Retrieve a named parameter from a shader can be used to query to compile
  * satus of a shader by passing in CGL_OBJECT_COMPILE_STATUS for @pname.
  */
-void
-cogl_shader_get_parameteriv       (COGLhandle   handle,
-                                   COGLenum     pname,
-                                   COGLint     *dest);
+void            cogl_shader_get_parameteriv   (COGLhandle          handle,
+                                               COGLenum            pname,
+                                               COGLint            *dest);
 
 /**
  * cogl_create_program:
@@ -1479,8 +1432,7 @@ cogl_shader_get_parameteriv       (COGLhandle   handle,
  *
  * Returns: a new cogl program.
  */
-COGLhandle
-cogl_create_program               (void);
+COGLhandle      cogl_create_program           (void);
 
 /**
  * cogl_program_destroy:
@@ -1488,8 +1440,7 @@ cogl_create_program               (void);
  *
  * Releases all resources held by a cogl program.
  */
-void
-cogl_program_destroy              (COGLhandle   handle);
+void            cogl_program_destroy          (COGLhandle          handle);
 
 /**
  * cogl_program_attach_shader:
@@ -1499,9 +1450,8 @@ cogl_program_destroy              (COGLhandle   handle);
  * Attaches a shader to a program object, a program can have one vertex shader
  * and one fragment shader attached.
  */
-void
-cogl_program_attach_shader        (COGLhandle   program_handle,
-                                   COGLhandle   shader_handle);
+void            cogl_program_attach_shader    (COGLhandle        program_handle,
+                                               COGLhandle        shader_handle);
 
 
 /**
@@ -1510,8 +1460,7 @@ cogl_program_attach_shader        (COGLhandle   program_handle,
  *
  * Links a program making it ready for use.
  */
-void
-cogl_program_link                 (COGLhandle   program_handle);
+void            cogl_program_link             (COGLhandle       program_handle);
 
 /**
  * cogl_program_use:
@@ -1520,8 +1469,7 @@ cogl_program_link                 (COGLhandle   program_handle);
  * Activate a specific shader program replacing that part of the GL rendering
  * pipeline, if passed in 0 the default behavior of GL is reinstated.
  */
-void
-cogl_program_use                  (COGLhandle   program_handle);
+void            cogl_program_use              (COGLhandle       program_handle);
 
 /**
  * cogl_program_get_uniform_location:
@@ -1532,12 +1480,12 @@ cogl_program_use                  (COGLhandle   program_handle);
  * uniform is a variable that is constant for all vertices/fragments for a
  * shader object and is possible to modify as an external parameter.
  *
- * Returns: the offset of a uniform in a specified program, this uniform can be set
- * using #cogl_program_uniform_1f when the program is in use.
+ * Returns: the offset of a uniform in a specified program, this uniform can be
+ * set using #cogl_program_uniform_1f when the program is in use.
  */
-COGLint
-cogl_program_get_uniform_location (COGLhandle   program_handle,
-                                   const gchar *uniform_name);
+COGLint         cogl_program_get_uniform_location
+                                              (COGLhandle        program_handle,
+                                               const gchar      *uniform_name);
 
 
 /**
@@ -1548,9 +1496,8 @@ cogl_program_get_uniform_location (COGLhandle   program_handle,
  * Changes the value of a uniform in the currently used (see #cogl_program_use)
  * shader program.
  */
-void
-cogl_program_uniform_1f           (COGLint      uniform_no,
-                                   gfloat       value);
+void            cogl_program_uniform_1f       (COGLint             uniform_no,
+                                               gfloat              value);
 
 /* Offscreen api */
 
@@ -1560,8 +1507,7 @@ cogl_program_uniform_1f           (COGLint      uniform_no,
  *
  * Returns:
  */
-CoglHandle
-cogl_offscreen_new_to_texture (CoglHandle texhandle);
+CoglHandle      cogl_offscreen_new_to_texture (CoglHandle         texhandle);
 
 /**
  * cogl_offscreen_new_multisample:
@@ -1569,8 +1515,7 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle);
  *
  * Returns:
  */
-CoglHandle
-cogl_offscreen_new_multisample (void);
+CoglHandle      cogl_offscreen_new_multisample(void);
 
 /**
  * cogl_offscreen_ref:
@@ -1578,16 +1523,14 @@ cogl_offscreen_new_multisample (void);
  *
  * Returns:
  */
-CoglHandle
-cogl_offscreen_ref (CoglHandle handle);
+CoglHandle      cogl_offscreen_ref            (CoglHandle          handle);
 
 /**
  * cogl_offscreen_unref:
  * @handle:
  *
  */
-void
-cogl_offscreen_unref (CoglHandle handle);
+void            cogl_offscreen_unref          (CoglHandle          handle);
 
 /**
  * cogl_offscreen_blit:
@@ -1595,9 +1538,8 @@ cogl_offscreen_unref (CoglHandle handle);
  * @dst_buffer:
  *
  */
-void
-cogl_offscreen_blit (CoglHandle src_buffer,
-		     CoglHandle dst_buffer);
+void            cogl_offscreen_blit           (CoglHandle          src_buffer,
+		                               CoglHandle          dst_buffer);
 
 /**
  * cogl_offscreen_blit_region:
@@ -1613,17 +1555,16 @@ cogl_offscreen_blit (CoglHandle src_buffer,
  * @dst_h:
  *
  */
-void
-cogl_offscreen_blit_region (CoglHandle src_buffer,
-			    CoglHandle dst_buffer,
-			    int src_x,
-			    int src_y,
-			    int src_w,
-			    int src_h,
-			    int dst_x,
-			    int dst_y,
-			    int dst_w,
-			    int dst_h);
+void            cogl_offscreen_blit_region    (CoglHandle          src_buffer,
+                                               CoglHandle          dst_buffer,
+                                               gint                src_x,
+                                               gint                src_y,
+                                               gint                src_w,
+                                               gint                src_h,
+                                               gint                dst_x,
+                                               gint                dst_y,
+                                               gint                dst_w,
+                                               gint                dst_h);
 
 /**
  * cogl_draw_buffer:
@@ -1631,8 +1572,8 @@ cogl_offscreen_blit_region (CoglHandle src_buffer,
  * @offscreen:
  *
  */
-void
-cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen);
+void            cogl_draw_buffer              (CoglBufferTarget    target,
+                                               CoglHandle          offscreen);
 
 G_END_DECLS
 
