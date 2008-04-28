@@ -1,5 +1,5 @@
 SUBDIRS = common $(CLUTTER_COGL)
 
-EXTRA_DIST = cogl.h
+EXTRA_DIST = cogl.h.in
 
-DIST_SUBDIRS = gl gles
+DIST_SUBDIRS = common gl gles
