@@ -1,3 +1,8 @@
+2008-04-28  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/cogl.h.in (COGL_A_BIT): Added the missing comma
+	after COGL_PIXEL_FORMAT_G_8
+
 2008-04-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* autogen.sh: Do not just touch the gtk-doc.make file, if we
