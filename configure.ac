@@ -103,11 +103,18 @@ dnl ========================================================================
 
 backendextra=
 backendextralib=
+glesversion=1.1
 clutterbackend=glx
 AC_ARG_WITH([flavour],
             AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl/osx@:>@],
                            [Select the Clutter backend]),
             clutterbackend=$with_flavour)
+
+
+AC_ARG_WITH([gles],
+            AC_HELP_STRING([--with-gles=@1.1/2.0@:>@],
+                           [Select Clutter GLES version (for EGL backends)]),
+            glesversion=$with_gles)
 
 BACKEND_PC_FILES=""
 
@@ -164,6 +171,56 @@ fi
 AM_CONDITIONAL(X11_TESTS, test "x$x11_tests" != "xno")
 
 clutter_gl_header=""
+
+if test "x$clutterbackend" = "xeglnative" || test "x$clutterbackend" = "xeglx" || test "x$clutterbackend" = "xfruity" 
+then
+case $glesversion in
+
+  1*)
+    clutter_gl_header="GLES/gl.h"
+    CLUTTER_COGL="gles"
+    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+
+    AC_CHECK_HEADERS([GLES/egl.h],,
+	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
+    AC_CHECK_HEADERS([$clutter_gl_header],,
+	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+
+    # check for upper/lower case libgles_em
+    # The powervr sdk uses lower case.
+    AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+    if test "x$HAVE_LIBGLES" = "xno"; then
+
+        AC_CHECK_LIB(gles_cm, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+	if test "x$HAVE_LIBGLES" = "xno"; then
+	  AC_MSG_ERROR([GLES library not found and egl backend requested.]);
+	fi
+        GLES_LIBS="-lgles_cm"
+
+   else
+        GLES_LIBS="-lGLES_CM"
+   fi
+  ;;
+  2*)
+    clutter_gl_header="GLES2/gl2.h"
+    CLUTTER_COGL="gl"
+    AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
+
+    AC_CHECK_HEADERS([EGL/egl.h],,
+	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+    AC_CHECK_HEADERS([$clutter_gl_header],,
+	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+    GLES_LIBS="-lGLESv2 -lEGL"
+  ;;
+
+  *) AC_MSG_ERROR([Invalid GL ES Version '$glesversion' specified])
+    ;;
+
+esac
+fi
 
 case $clutterbackend in
 
@@ -243,105 +300,42 @@ case $clutterbackend in
 
   eglx)
 
-    clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglx"
     CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGL"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
 
-    # We currently assume having egl means also having gles..
-    CLUTTER_COGL="gles"
-    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-
-    AC_CHECK_HEADERS([GLES/egl.h $clutter_gl_header],,
-	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
-
-    # check for upper/lower case libgles_em
-    # The powervr sdk uses lower case.
-    AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
-    if test "x$HAVE_LIBGLES" = "xno"; then
-
-        AC_CHECK_LIB(gles_cm, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
-	if test "x$HAVE_LIBGLES" = "xno"; then
-	  AC_MSG_ERROR([GLES library not found and egl backend requested.]);
-	fi
-        EGL_LIBS="gles_cm"
-
-   else
-        EGL_LIBS="GLES_CM"
-   fi
-
-    # glColor4ub needed for more precise picking, seems presence is a
-    # bit random in egl 1.1 (in SDK header, but not lib)
-    AC_CHECK_LIB($EGL_LIBS, glColor4ub, COLOR4UB=1, COLOR4UB=0)
-    AC_DEFINE_UNQUOTED([HAVE_GLES_COLOR4UB], $COLOR4UB, [Have GL/ES glColor4ub])
-
-    EGL_LIBS="-l$EGL_LIBS $X11_LIBS"
-    EGL_CFLAGS="$EGL_CFLAGS $X11_CFLAGS"
+    EGL_LIBS="$GLES_LIBS $X11_LIBS"
+    EGL_CFLAGS="$GLES_CFLAGS $X11_CFLAGS"
     backendextra=x11
     backendextralib="x11/libclutter-x11.la"
     ;;
 
   eglnative)
 
-    clutter_gl_header="GLES/gl.h"
     CLUTTER_FLAVOUR="eglnative"
     CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_EGLNATIVE"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
-
-    # We currently assume having egl means also having gles..
-    CLUTTER_COGL="gles"
-    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-
-    AC_CHECK_HEADERS([$clutter_gl_header],,
-                     [AC_MSG_ERROR([Unable to locate require GL header])])
-    AC_CHECK_HEADERS([GLES/egl.h],,
-	             [AC_MSG_ERROR([Unable to locate required GLES headers])])
-
-    AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
-
-    if test "x$HAVE_LIBGLES" = "xno"; then
-      AC_MSG_ERROR([libGLES_CM not found and egl backend requested.]);
-    fi
-
-    AC_CHECK_LIB(GLES_CM, glColor4ub, COLOR4UB=1, COLOR4UB=0)
-    AC_DEFINE([HAVE_GLES_COLOR4UB], COLOR4UB, [Have GL/ES glColor4ub])
 
     PKG_CHECK_MODULES(TSLIB, tslib-1.0, [have_tslib=yes], [have_tslib=no])
     if test x$have_tslib = xyes; then
            AC_DEFINE([HAVE_TSLIB], 1, [Have tslib for touchscreen handling])
     fi
 
-    EGL_LIBS="-lGLES_CM $TSLIB_LIBS"
+    EGL_LIBS="$GLES_LIBS $TSLIB_LIBS"
     EGL_CFLAGS="$TSLIB_CFLAGS"
     ;;
 
   fruity)
-
-    clutter_gl_header="GLES/gl.h"
-   
-
     CLUTTER_FLAVOUR="fruity"
     CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_FRUITY"
     AC_DEFINE([HAVE_CLUTTER_FRUITY], 1, [We're building a fruity version of the eglnative backend])
 
-    # We currently assume having egl means also having gles..
-    CLUTTER_COGL="gles"
+    if test "x$glesversion" != "x1.1"; then
+       AC_MSG_ERROR([Fruity backend only supports GL ES 1.1.]);
+    fi
 
-    AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
-
-    # We currently assume having egl means also having gles..
-    CLUTTER_COGL="gles"
-    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
-
-    AC_CHECK_HEADERS([$clutter_gl_header],,
-                     [AC_MSG_ERROR([Unable to locate require GL header])])
-    AC_CHECK_HEADERS([GLES/egl.h],,
-                     [AC_MSG_ERROR([Unable to locate required GLES headers])])
-
-    backendextra=
-
-     EGL_LIBS="-ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
-     EGL_CFLAGS=""
+    EGL_LIBS="-ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
+    EGL_CFLAGS=""
      ;;
 
   osx)
@@ -387,6 +381,9 @@ case $clutterbackend in
     ;;
 
 esac
+
+
+
 
 CLUTTER_GL_HEADER=$clutter_gl_header
 
@@ -598,23 +595,23 @@ echo ""
 # the experimental/unstable warning summary.
 
 if test "x$imagebackend" = "xinternal"; then
-  experimental_stuff="$experimental_stuff\n imagebackend=$imagebackend"
+  experimental_stuff="$experimental_stuff imagebackend=$imagebackend\n"
 fi
 if test "x$clutterbackend" = "xfruity"; then
-  experimental_stuff="$experimental_stuff\n clutterbackend=$clutterbackend"
+  experimental_stuff="$experimental_stuff clutterbackend=$clutterbackend\n"
 fi
 
 
 if test "x$experimental_stuff" != "x"; then
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo ""
-echo "Experimental features configured, stability of your build either uses"
-echo "experimental backends or experimental and unsupported features:"
-echo -e "$experimental_stuff"
+echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
+echo " *WARNING*"
 echo ""
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo "  Experimental features configured, stability of your build either uses"
+echo "  experimental backends or experimental and unsupported features:"
+echo -e "   $experimental_stuff"
+echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
+echo ""
 fi
 
 

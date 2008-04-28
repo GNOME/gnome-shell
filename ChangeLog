@@ -1,3 +1,11 @@
+2008-04-28  Matthew Allum  <mallum@openedhand.com>
+
+	* autogen.sh:
+        Dont display 'make' if configure fails.
+	* configure.ac:
+        Add new --with-gles version option for eventual GLES2 support
+        Also minor tidyups.
+
 2008-04-28  Neil Roberts  <neil@o-hand.com>
 
 	* tests/test-cogl-tex-polygon.c: Added buttons to toggle whether

@@ -23,6 +23,4 @@ fi
 # back in the stupidity of autoreconf
 autoreconf -v --install || exit $?
 
-./configure "$@"
-
-echo "Now type 'make' to compile $PROJECT."
+./configure "$@" && echo "Now type 'make' to compile $PROJECT."
