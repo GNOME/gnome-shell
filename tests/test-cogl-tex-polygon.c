@@ -68,8 +68,10 @@ G_DEFINE_TYPE (TestCoglbox, test_coglbox, CLUTTER_TYPE_ACTOR);
 
 struct _TestCoglboxPrivate
 {
-  CoglHandle cogl_tex_id;
+  CoglHandle sliced_tex, not_sliced_tex;
   gint       frame;
+  gboolean   use_sliced;
+  gboolean   use_linear_filtering;
 };
 
 /* Coglbox implementation
@@ -164,64 +166,58 @@ static void
 test_coglbox_paint (ClutterActor *self)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
-  int tex_width = cogl_texture_get_width (priv->cogl_tex_id);
-  int tex_height = cogl_texture_get_height (priv->cogl_tex_id);
-  int i;
+  CoglHandle tex_handle = priv->use_sliced
+    ? priv->sliced_tex : priv->not_sliced_tex;
+  int tex_width = cogl_texture_get_width (tex_handle);
+  int tex_height = cogl_texture_get_height (tex_handle);
+  static const ClutterColor white = { 0xff, 0xff, 0xff, 0xff };
 
-  for (i = 0; i < 2; i++)
-    {
-      cogl_texture_set_filters (priv->cogl_tex_id,
-				i ? CGL_LINEAR : CGL_NEAREST,
-				i ? CGL_LINEAR : CGL_NEAREST);
+  cogl_color (&white);
 
-      if (i)
-	{
-	  cogl_push_matrix ();
-	  cogl_translate (tex_width, tex_height, 0);
-	}
-      
-      cogl_push_matrix ();
-      cogl_translate (tex_width / 2, 0, 0);
-      cogl_rotate (priv->frame, 0, 1, 0);
-      cogl_translate (-tex_width / 2, 0, 0);
+  cogl_texture_set_filters (tex_handle,
+			    priv->use_linear_filtering
+			    ? CGL_LINEAR : CGL_NEAREST,
+			    priv->use_linear_filtering
+			    ? CGL_LINEAR : CGL_NEAREST);
 
-      /* Draw a hand and refect it */
-      cogl_texture_rectangle (priv->cogl_tex_id,
-			      0, 0,
-			      CLUTTER_INT_TO_FIXED (tex_width),
-			      CLUTTER_INT_TO_FIXED (tex_height),
-			      0, 0, CFX_ONE, CFX_ONE);
-      test_coglbox_fade_texture (priv->cogl_tex_id,
-				 0, CLUTTER_INT_TO_FIXED (tex_height),
-				 CLUTTER_INT_TO_FIXED (tex_width),
-				 CLUTTER_INT_TO_FIXED (tex_height * 3 / 2),
+  cogl_push_matrix ();
+  cogl_translate (tex_width / 2, 0, 0);
+  cogl_rotate (priv->frame, 0, 1, 0);
+  cogl_translate (-tex_width / 2, 0, 0);
+
+  /* Draw a hand and refect it */
+  cogl_texture_rectangle (tex_handle,
+			  0, 0,
+			  CLUTTER_INT_TO_FIXED (tex_width),
+			  CLUTTER_INT_TO_FIXED (tex_height),
+			  0, 0, CFX_ONE, CFX_ONE);
+  test_coglbox_fade_texture (tex_handle,
+			     0, CLUTTER_INT_TO_FIXED (tex_height),
+			     CLUTTER_INT_TO_FIXED (tex_width),
+			     CLUTTER_INT_TO_FIXED (tex_height * 3 / 2),
+			     0, CFX_ONE,
+			     CFX_ONE, CFX_ONE / 2);
+
+  cogl_pop_matrix ();
+
+  cogl_push_matrix ();
+  cogl_translate (tex_width * 3 / 2 + 60, 0, 0);
+  cogl_rotate (priv->frame, 0, 1, 0);
+  cogl_translate (-tex_width / 2 - 10, 0, 0);
+
+  /* Draw the texture split into two triangles */
+  test_coglbox_triangle_texture (tex_handle,
+				 0, 0,
+				 0, 0,
 				 0, CFX_ONE,
-				 CFX_ONE, CFX_ONE / 2);
+				 CFX_ONE, CFX_ONE);
+  test_coglbox_triangle_texture (tex_handle,
+				 CLUTTER_INT_TO_FIXED (20), 0,
+				 0, 0,
+				 CFX_ONE, 0,
+				 CFX_ONE, CFX_ONE);
 
-      cogl_pop_matrix ();
-
-      cogl_push_matrix ();
-      cogl_translate (tex_width * 3 / 2 + 60, 0, 0);
-      cogl_rotate (priv->frame, 0, 1, 0);
-      cogl_translate (-tex_width / 2 - 10, 0, 0);
-
-      /* Draw the texture split into two triangles */
-      test_coglbox_triangle_texture (priv->cogl_tex_id,
-				     0, 0,
-				     0, 0,
-				     0, CFX_ONE,
-				     CFX_ONE, CFX_ONE);
-      test_coglbox_triangle_texture (priv->cogl_tex_id,
-				     CLUTTER_INT_TO_FIXED (20), 0,
-				     0, 0,
-				     CFX_ONE, 0,
-				     CFX_ONE, CFX_ONE);
-
-      cogl_pop_matrix ();
-
-      if (i)
-	cogl_pop_matrix ();
-    }
+  cogl_pop_matrix ();
 }
 
 static void
@@ -236,7 +232,8 @@ test_coglbox_dispose (GObject *object)
   TestCoglboxPrivate *priv;
   
   priv = TEST_COGLBOX_GET_PRIVATE (object);
-  cogl_texture_unref (priv->cogl_tex_id);
+  cogl_texture_unref (priv->not_sliced_tex);
+  cogl_texture_unref (priv->sliced_tex);
   
   G_OBJECT_CLASS (test_coglbox_parent_class)->dispose (object);
 }
@@ -245,14 +242,28 @@ static void
 test_coglbox_init (TestCoglbox *self)
 {
   TestCoglboxPrivate *priv;
+  GError *error = NULL;
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE (self);
+
+  priv->use_linear_filtering = FALSE;
+  priv->use_sliced = FALSE;
   
-  priv->cogl_tex_id = cogl_texture_new_from_file ("redhand.png", 0,
-						  COGL_PIXEL_FORMAT_ANY,
-						  NULL);
-  
-  cogl_texture_set_filters (priv->cogl_tex_id,
-			    CGL_LINEAR, CGL_LINEAR);
+  priv->sliced_tex = cogl_texture_new_from_file
+    ("redhand.png", 10, COGL_PIXEL_FORMAT_ANY, &error);
+  if (priv->sliced_tex == NULL)
+    {
+      g_warning ("Texture loading failed: %s", error->message);
+      g_error_free (error);
+      error = NULL;
+    }
+
+  priv->not_sliced_tex = cogl_texture_new_from_file
+    ("redhand.png", -1, COGL_PIXEL_FORMAT_ANY, &error);
+  if (priv->not_sliced_tex == NULL)
+    {
+      g_warning ("Texture loading failed: %s", error->message);
+      g_error_free (error);
+    }
 }
 
 static void
@@ -285,11 +296,49 @@ frame_cb (ClutterTimeline *timeline,
   clutter_actor_queue_redraw (CLUTTER_ACTOR (data));
 }
 
+static void
+update_toggle_text (ClutterLabel *button, gboolean val)
+{
+  clutter_label_set_text (button, val ? "Enabled" : "Disabled");
+}
+
+static gboolean
+on_toggle_click (ClutterActor *button, ClutterEvent *event,
+		 gboolean *toggle_val)
+{
+  update_toggle_text (CLUTTER_LABEL (button), *toggle_val = !*toggle_val);
+
+  return TRUE;
+}
+
+static ClutterActor *
+make_toggle (const char *label_text, gboolean *toggle_val)
+{
+  ClutterActor *group = clutter_group_new ();
+  ClutterActor *label = clutter_label_new_with_text ("Sans 14", label_text);
+  ClutterActor *button = clutter_label_new_with_text ("Sans 14", "");
+  
+  clutter_actor_set_reactive (button, TRUE);
+
+  update_toggle_text (CLUTTER_LABEL (button), *toggle_val);
+  
+  clutter_actor_set_position (button, clutter_actor_get_width (label) + 10, 0);
+  clutter_container_add (CLUTTER_CONTAINER (group), label, button, NULL);
+
+  g_signal_connect (button, "button-press-event", G_CALLBACK (on_toggle_click),
+		    toggle_val);
+
+  return group;
+}
+
 int
 main (int argc, char *argv[])
 {
   ClutterActor     *stage;
   ClutterActor     *coglbox;
+  ClutterActor     *filtering_toggle;
+  ClutterActor     *slicing_toggle;
+  ClutterActor     *note;
   ClutterTimeline  *timeline;
   ClutterColor      blue = { 0x30, 0x30, 0xff, 0xff };
   
@@ -298,7 +347,7 @@ main (int argc, char *argv[])
   /* Stage */
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &blue);
-  clutter_actor_set_size (stage, 800, 600);
+  clutter_actor_set_size (stage, 640, 480);
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl Test");
   
   /* Cogl Box */
@@ -310,8 +359,34 @@ main (int argc, char *argv[])
   g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), coglbox);
   clutter_timeline_start (timeline);
+
+  /* Labels for toggling settings */
+  slicing_toggle = make_toggle ("Texture slicing: ",
+				&(TEST_COGLBOX_GET_PRIVATE (coglbox)
+				  ->use_sliced));
+  clutter_actor_set_position (slicing_toggle, 0,
+			      clutter_actor_get_height (stage)
+			      - clutter_actor_get_height (slicing_toggle));
+  filtering_toggle = make_toggle ("Linear filtering: ",
+				  &(TEST_COGLBOX_GET_PRIVATE (coglbox)
+				    ->use_linear_filtering));
+  clutter_actor_set_position (filtering_toggle, 0,
+			      clutter_actor_get_y (slicing_toggle)
+			      - clutter_actor_get_height (filtering_toggle));
+  note = clutter_label_new_with_text ("Sans 10", "<- Click to change");
+  clutter_actor_set_position (note,
+			      clutter_actor_get_width (filtering_toggle) + 10,
+			      (clutter_actor_get_height (stage)
+			       + clutter_actor_get_y (filtering_toggle)) / 2
+			      - clutter_actor_get_height (note) / 2);
+
+  clutter_container_add (CLUTTER_CONTAINER (stage),
+			 slicing_toggle,
+			 filtering_toggle,
+			 note,
+			 NULL);
   
-  clutter_actor_show_all (stage);
+  clutter_actor_show (stage);
   
   clutter_main ();
   
