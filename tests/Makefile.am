@@ -17,7 +17,7 @@ if X11_TESTS
 noinst_PROGRAMS += test-pixmap
 endif
 
-INCLUDES = -I$(top_srcdir)/ -I$(top_builddir)/clutter
+INCLUDES = -I$(top_srcdir)/ -I$(top_srcdir)/clutter -I$(top_builddir)/clutter
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
 AM_CFLAGS = $(CLUTTER_CFLAGS)
 AM_LDFLAGS = $(CLUTTER_LIBS)

@@ -1,3 +1,9 @@
+2008-04-28  Neil Roberts  <neil@o-hand.com>
+
+	* tests/Makefile.am (INCLUDES): Added $(top_srcdir)/clutter to the
+	include path. Otherwise the tests will fail to build trying to
+	include "json/json-types.h" when building out-of-tree.
+
 2008-04-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/eglnative/clutter-backend-egl.c:
