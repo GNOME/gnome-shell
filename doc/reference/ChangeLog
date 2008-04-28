@@ -1,3 +1,12 @@
+2008-04-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-docs.sgml: Add index for the 0.8 symbols.
+
+	* clutter/Makefile.am:
+	* cogl/Makefile.am: Revert back, as EXTRA_DIST has been defined
+	by gtk-doc.make and automake-1.9 complains loudly about a
+	redefinition of EXTRA_DIST.
+
 2008-04-22  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/Makefile.am: 

@@ -66,11 +66,14 @@ IGNORE_HFILES=\
 	clutter-private.h \
 	clutter-id-pool.h \
 	clutter-script-private.h \
+	clutter-stage-manager.h \
+	clutter-stage-window.h \
 	stamp-clutter-enum-types.h \
 	stamp-clutter-marshal.h \
 	cogl \
 	eglnative \
 	eglx \
+	fruity \
 	glx \
 	osx \
 	x11 \
@@ -121,7 +124,7 @@ include $(top_srcdir)/gtk-doc.make
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
-EXTRA_DIST = \
+EXTRA_DIST += \
 	version.xml.in \
 	actor-box.png \
 	alpha-func.png \
