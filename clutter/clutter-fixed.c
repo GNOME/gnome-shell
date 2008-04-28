@@ -1128,8 +1128,8 @@ param_fixed_init (GParamSpec *pspec)
 {
   ClutterParamSpecFixed *fspec = CLUTTER_PARAM_SPEC_FIXED (pspec);
 
-  fspec->minimum = -G_MAXINT32;
-  fspec->maximum = G_MAXINT32;
+  fspec->minimum = CLUTTER_MINFIXED;
+  fspec->maximum = CLUTTER_MAXFIXED;
   fspec->default_value = 0;
 }
 

@@ -1,10 +1,17 @@
+2008-04-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-units.c (param_unit_init): Use the right
+	macros to set the default minimum and maximum values.
+
+	* clutter/clutter-fixed.c (param_fixed_init): Ditto as above.
+
 2008-04-28  Matthew Allum  <mallum@openedhand.com>
 
 	* autogen.sh:
-        Dont display 'make' if configure fails.
+	Dont display 'make' if configure fails.
 	* configure.ac:
-        Add new --with-gles version option for eventual GLES2 support
-        Also minor tidyups.
+	Add new --with-gles version option for eventual GLES2 support
+	Also minor tidyups.
 
 2008-04-28  Neil Roberts  <neil@o-hand.com>
 
@@ -248,32 +255,32 @@
 
 2008-04-15  Matthew Allum  <mallum@openedhand.com>
 
-        Work related to #873;
+	Work related to #873;
 
 	* clutter/glx/clutter-backend-glx.c:
 	* clutter/glx/clutter-backend-glx.h:
 	* clutter/x11/clutter-x11-texture-pixmap.c:
 	* clutter/x11/clutter-x11-texture-pixmap.h:
-        General cleanup of texture pixmap code, adding;
-          - Pixmap dimentions and depth now auto probed, read only props.
-          - More X safety traps
-          - Add support for optionally tracking damage and automatically
-            updating texture.
+	General cleanup of texture pixmap code, adding;
+	  - Pixmap dimentions and depth now auto probed, read only props.
+	  - More X safety traps
+	  - Add support for optionally tracking damage and automatically
+	    updating texture.
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* clutter/glx/clutter-glx-texture-pixmap.h:
-        General cleanup and some safety additions. Needs more work so
-        'proper' subclass - dependent on new COGL.
+	General cleanup and some safety additions. Needs more work so
+	'proper' subclass - dependent on new COGL.
 
 	* clutter/x11/clutter-backend-x11.c: (clutter_x11_remove_filter):
-        Invert g_return_if check.
+	Invert g_return_if check.
 
 	* configure.ac:
-        Pull in XComposite and XDamage (at least for now)
+	Pull in XComposite and XDamage (at least for now)
 
 	* tests/Makefile.am:
 	* tests/test-pixmap.c:
-        Add a modified test from Johan for above.
+	Add a modified test from Johan for above.
 
 2008-04-15  Neil Roberts  <neil@o-hand.com>
 
@@ -316,19 +323,19 @@
 2008-04-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/eglx/clutter-stage-egl.c:
-        Actually set wm protocols on eglx stage windows. Fixes issues with
-        cloising stages and cleanup.
+	Actually set wm protocols on eglx stage windows. Fixes issues with
+	cloising stages and cleanup.
 
 2008-04-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gles/cogl.c: (cogl_color):
-        Disable use of color4ub, issues with latest MBX SDL (#857)
+	Disable use of color4ub, issues with latest MBX SDL (#857)
 
 	* clutter/eglx/clutter-backend-egl.c:
 	* clutter/eglx/clutter-stage-egl.c:
 	* configure.ac:
-        Fixup for the eglx backend to work with new backend/multistage code.
-        Some issues remain in destroying stages.
+	Fixup for the eglx backend to work with new backend/multistage code.
+	Some issues remain in destroying stages.
 
 2008-04-14  Neil Roberts  <neil@o-hand.com>
 
@@ -471,7 +478,7 @@
 2008-04-04  Matthew Allum  <mallum@openedhand.com>
 
 	* README:
-        Add a note on new show-on-set-parent prop and stage subclassing.
+	Add a note on new show-on-set-parent prop and stage subclassing.
 
 2008-04-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -526,19 +533,19 @@
 2008-04-04  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
-        Remove uneeded stage private member.
-        Add show-on-set-parent prop and make so by default Actors are
-        now automatically shown when reparented (#791)            
+	Remove uneeded stage private member.
+	Add show-on-set-parent prop and make so by default Actors are
+	now automatically shown when reparented (#791)            
 
 	* clutter/eglx/clutter-backend-egl.c:
 	* clutter/cogl/gles/cogl.c:
-        A couple of minor comments.
+	A couple of minor comments.
 
 	* clutter/eglnative/Makefile.am:
-        Add missing clutter-egl.h header (back port from trunk)
+	Add missing clutter-egl.h header (back port from trunk)
 
 	* tests/test-actors.c:
-        Modify to take advantage of new show-on-set-parent functionality.
+	Modify to take advantage of new show-on-set-parent functionality.
 
 2008-04-03  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -569,10 +576,10 @@
 	* clutter/clutter-backend.c:
 	* clutter/glx/clutter-backend-glx.c:
 	* clutter/glx/clutter-stage-glx.c:
-        Allow NULL to be passed to _clutter_backend_ensure_context
-        which essentially clears GL context. This is hooked into stage
-        unrealisation.  Isn't yet quite bulletproof.  
-        Fixes issues with gtk-embed crasher (thanks to Neil).
+	Allow NULL to be passed to _clutter_backend_ensure_context
+	which essentially clears GL context. This is hooked into stage
+	unrealisation.  Isn't yet quite bulletproof.  
+	Fixes issues with gtk-embed crasher (thanks to Neil).
 
 2008-04-1  Robert Bragg  <bob@o-hand.com>
 	
@@ -583,24 +590,24 @@
 2008-03-31  Matthew Allum  <mallum@openedhand.com>
 
 	* README:
-        Add notes on new multistage feature.
+	Add notes on new multistage feature.
 
 	* clutter/clutter-stage-manager.c:
-        Dont ref contained stages.
+	Dont ref contained stages.
 
 	* clutter/clutter-stage.c:
-        Automatically remove stage from stage manager on finalisation.
-        Cleans up warnings when a stage is destroyed. 
+	Automatically remove stage from stage manager on finalisation.
+	Cleans up warnings when a stage is destroyed. 
 
 	* clutter/clutter-backend.h:
 	* clutter/glx/clutter-backend-glx.c:
-        Minor formatting cleanups.
+	Minor formatting cleanups.
 
 	* clutter/glx/clutter-stage-glx.c:
 	* configure.ac:
 	* clutter/clutter-version.h.in:
-        Add a general CLUTTER_STAGE_TYPE define, should be useful for 
-        evntual stage subclassing and creating with g_object_new()
+	Add a general CLUTTER_STAGE_TYPE define, should be useful for 
+	evntual stage subclassing and creating with g_object_new()
 
 2008-03-30  Neil Roberts  <neil@o-hand.com>
 
@@ -653,8 +660,8 @@
 	* clutter/clutter-private.h:
 	* clutter/clutter-stage.c:
 	* clutter/clutter-stage.h:
-        * clutter/clutter-stage-manager.c
-        * clutter/clutter-stage-manager.h
+	* clutter/clutter-stage-manager.c
+	* clutter/clutter-stage-manager.h
 	* clutter/clutter-types.h:
 	* clutter/glx/clutter-backend-glx.c:
 	* clutter/glx/clutter-backend-glx.h:
@@ -667,9 +674,9 @@
 	* clutter/x11/clutter-x11.h:
 	* tests/Makefile.am:
 	* tests/test-multistage.c:
-        Initial commit of multi stage support (mostly a merge from the
-        clutter-multistage branch).
-        Note, this commit will break all backends except glx.
+	Initial commit of multi stage support (mostly a merge from the
+	clutter-multistage branch).
+	Note, this commit will break all backends except glx.
 
 2008-03-26  Neil Roberts  <neil@o-hand.com>
 
@@ -818,7 +825,7 @@
 	Timeline changes to fix the issues identified in bugzilla #439
 	
 	Notably, this includes some tweaks to timeline semantics. 
-        So e.g. for a   
+	So e.g. for a   
 
 	10 frame timeline here are some points about the new timeline code:
 
@@ -1093,7 +1100,7 @@
 2008-02-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/pango/pangoclutter-render.c: (draw_glyph):
-        More safety checks (#796, Tero Saarni)
+	More safety checks (#796, Tero Saarni)
 
 2008-02-15  Chris Lord  <chris@openedhand.com>
 
@@ -1141,7 +1148,7 @@
 2008-02-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gles/cogl.c: (cogl_paint_init):
-        Remove depth test getting turned on by default (unlike GL backend)
+	Remove depth test getting turned on by default (unlike GL backend)
 
 2008-02-15  Tomas Frydrych  <tf@openedhand.com>
 
@@ -1221,7 +1228,7 @@
 2008-02-12  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c: (texture_get_tile_pixbuf):
-        ifdef out 'leaked' GL only API call.
+	ifdef out 'leaked' GL only API call.
 
 2008-02-12  Tomas Frydrych  <tf@openedhand.com>
 
@@ -1243,11 +1250,11 @@
 2008-02-11  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
-        Minor documentation tweak to class description.
+	Minor documentation tweak to class description.
 
 	* clutter/clutter-behaviour-scale.c:
-        'Force' start + end vals of scale behaviour
-        (#779, Havoc Pennington)
+	'Force' start + end vals of scale behaviour
+	(#779, Havoc Pennington)
 
 2008-02-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -1267,7 +1274,7 @@
 
 2008-02-10  Matthew Allum    <mallum@o-hand.com>
 
-        * clutter/osx/clutter-stage-osx.c
+	* clutter/osx/clutter-stage-osx.c
 	Fix up a couple of typos breaking build.
 
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
@@ -1306,9 +1313,9 @@
 2008-02-08  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:
-        Tidy up offscreen code, adding into realize/unrealize.
-        Add more safety code.
-        Improve documentation.
+	Tidy up offscreen code, adding into realize/unrealize.
+	Add more safety code.
+	Improve documentation.
 
 2008-02-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -1347,7 +1354,7 @@
 
 2008-02-07  Tomas Frydrych  <tf@openedhand.com>
 
-        * clutter/clutter-actor.c:
+	* clutter/clutter-actor.c:
 	(clutter_actor_set_property):
 	Fixed handling of PROP_ROTATE_CENTER_Y, ROTATE_CENTER_Z
 
@@ -1386,11 +1393,11 @@
 	* clutter/osx/clutter-stage-osx.c:
 	* clutter/sdl/clutter-stage-sdl.c:
 	* clutter/x11/clutter-stage-x11.c:
-        Add at least somne basic offscreen handling into all backends.
-        Remove unused clutter_stage_set_offscreen vfunc. (#549)
+	Add at least somne basic offscreen handling into all backends.
+	Remove unused clutter_stage_set_offscreen vfunc. (#549)
 
 	* clutter/clutter-texture.c:
-        Minor API doc tweak, noting rowstride source in set_area
+	Minor API doc tweak, noting rowstride source in set_area
 
 2008-02-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -1602,7 +1609,7 @@
 
 2007-01-31  Tomas Frydrych  <tf@openedhand.com>
 
-        * clutter/clutter-actor.c:
+	* clutter/clutter-actor.c:
 	(clutter_actor_transform_vertices):
 	Call clutter_actor_query_coords() instead of accessing the actor
 	box, so that actors that calculate their bounding box on the fly
@@ -1671,17 +1678,17 @@
 
 2007-01-30  Tomas Frydrych  <tf@openedhand.com>
 
-        * clutter/clutter-actor.c:
-        * clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
 	Added new clutter_actor_move_anchor_point_ API.
 
-        * clutter/clutter-behaviour-scale.c:
-        * clutter/clutter-behaviour-scale.h:
-        * clutter/clutter-effect.c:
-        * clutter/clutter-effect.h:
-        * tests/test-actors.c:
-        * tests/test-effects.c:
-        * tests/test-scale.c:
+	* clutter/clutter-behaviour-scale.c:
+	* clutter/clutter-behaviour-scale.h:
+	* clutter/clutter-effect.c:
+	* clutter/clutter-effect.h:
+	* tests/test-actors.c:
+	* tests/test-effects.c:
+	* tests/test-scale.c:
 	Removed gravity from ClutterBehaviourScale.
 
 2008-01-27  Emmanuele Bassi  <ebassi@openedhand.com>
@@ -3524,16 +3531,16 @@
 
 2007-11-06  Tomas Frydrych  <tf@o-hand.com>
 
-        * clutter/clutter-fixed.h:
+	* clutter/clutter-fixed.h:
 	Added CLUTTER_SQRTI_ARG_MAX, CLUTTER_SQRTI_5_PERCENT,
 	CLUTTER_SQRTI_10_PERCENT expressing clutter_sqrti limits.
 	Stripped trailing whitespace.
 
-        * clutter/clutter-fixed.c:
+	* clutter/clutter-fixed.c:
 	(clutter_sqrti):
 	Updated documentation, stripped trailing whitespace.
 
-        * clutter/clutter-behaviour-path.c:
+	* clutter/clutter-behaviour-path.c:
 	(node_distance):
 	Use clib sqrt if clutter_sqrti() precission would be worse than
 	10%.
@@ -3666,7 +3673,7 @@
 	* clutter/cogl/gl/cogl.c:
 	* clutter/cogl/gles/cogl.c:
 	Switch from use of guint to COGLuint. Avoids problems when
-        guint != GLuint on some platforms, i.e OSX.
+	guint != GLuint on some platforms, i.e OSX.
 	(Tommi Komulainen, #525, #523)
 
 	* clutter/Makefile.am:
@@ -4000,45 +4007,45 @@
 
 2007-10-12  Tomas Frydrych  <tf@o-hand.com>
 
-        * clutter/clutter-actor.c:
-        * clutter/clutter-backend.c:
-        * clutter/clutter-behaviour-depth.c:
-        * clutter/clutter-box.c:
-        * clutter/clutter-clone-texture.c:
-        * clutter/clutter-container.c:
-        * clutter/clutter-entry.c:
-        * clutter/clutter-feature.c:
-        * clutter/clutter-fixed.c:
-        * clutter/clutter-group.c:
-        * clutter/clutter-hbox.c:
-        * clutter/clutter-label.c:
-        * clutter/clutter-layout.c:
-        * clutter/clutter-media.c:
-        * clutter/clutter-rectangle.c:
-        * clutter/clutter-score.c:
-        * clutter/clutter-script.c:
-        * clutter/clutter-stage.c:
-        * clutter/clutter-texture.c:
-        * clutter/clutter-timeline.c:
-        * clutter/clutter-timeout-pool.c:
-        * clutter/clutter-vbox.c:
-        * clutter/cogl/gl/cogl.c:
-        * clutter/cogl/gles/cogl.c:
-        * clutter/eglnative/clutter-backend-egl.c:
-        * clutter/eglnative/clutter-event-egl.c:
-        * clutter/eglnative/clutter-stage-egl.c:
-        * clutter/eglx/clutter-backend-egl.c:
-        * clutter/eglx/clutter-event-egl.c:
-        * clutter/eglx/clutter-stage-egl.c:
-        * clutter/glx/clutter-event-glx.c:
-        * clutter/json/json-array.c:
-        * clutter/json/json-generator.c:
-        * clutter/json/json-node.c:
-        * clutter/json/json-object.c:
-        * clutter/json/json-parser.c:
-        * clutter/sdl/clutter-backend-sdl.c:
-        * clutter/sdl/clutter-event-sdl.c:
-        * clutter/sdl/clutter-stage-sdl.c:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-backend.c:
+	* clutter/clutter-behaviour-depth.c:
+	* clutter/clutter-box.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-container.c:
+	* clutter/clutter-entry.c:
+	* clutter/clutter-feature.c:
+	* clutter/clutter-fixed.c:
+	* clutter/clutter-group.c:
+	* clutter/clutter-hbox.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-layout.c:
+	* clutter/clutter-media.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-score.c:
+	* clutter/clutter-script.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-timeout-pool.c:
+	* clutter/clutter-vbox.c:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c:
+	* clutter/eglnative/clutter-backend-egl.c:
+	* clutter/eglnative/clutter-event-egl.c:
+	* clutter/eglnative/clutter-stage-egl.c:
+	* clutter/eglx/clutter-backend-egl.c:
+	* clutter/eglx/clutter-event-egl.c:
+	* clutter/eglx/clutter-stage-egl.c:
+	* clutter/glx/clutter-event-glx.c:
+	* clutter/json/json-array.c:
+	* clutter/json/json-generator.c:
+	* clutter/json/json-node.c:
+	* clutter/json/json-object.c:
+	* clutter/json/json-parser.c:
+	* clutter/sdl/clutter-backend-sdl.c:
+	* clutter/sdl/clutter-event-sdl.c:
+	* clutter/sdl/clutter-stage-sdl.c:
 
 	Fixedup config.h inclusion (must always be bracketed with #ifdef
 	HAVE_CONFIG_H).
@@ -4424,8 +4431,8 @@
 
 	Merge from stable.
 
-        * clutter/clutter-behaviour-path.c: (path_alpha_to_position)
-        Fix uninitialized variable (#480, Gwenole Beauchesne)
+	* clutter/clutter-behaviour-path.c: (path_alpha_to_position)
+	Fix uninitialized variable (#480, Gwenole Beauchesne)
 
 2007-09-27  Matthew Allum  <mallum@openedhand.com>
 
@@ -4458,7 +4465,7 @@
 
 	* clutter/Makefile.am:
 	* tests/Makefile.am:
-        * tests/test-score.c
+	* tests/test-score.c
 	* clutter/clutter.h:
 	* clutter/clutter-score.h:
 	* clutter/clutter-score.c:
@@ -4743,13 +4750,13 @@
 	Initial implementation of actors emmitting event signals (423);
 	- Actors set_reactive() to receive mouse events.
 	  (call clutter_enable_motion_events() for per action motion events)
-        - clutter_stage_set_key_focus () to direct key events.
-        - Events bubble up to parents (ending at stage)
+	- clutter_stage_set_key_focus () to direct key events.
+	- Events bubble up to parents (ending at stage)
 	  (original source identified by clutter_event_get_source())
 	TODO:
 	- enter/leave notifys for actors.
-        - stage specific events - fullscreen
-        - grabs
+	- stage specific events - fullscreen
+	- grabs
 
 	* tests/test-events.c:
 	Extend a little to use new API
@@ -5642,7 +5649,7 @@
 	* clutter/eglx/clutter-stage-egl.c:
 	* configure.ac:
 	Add a new 'native' EGL backend for non X based EGL's
-        (i.e on framebuffer).
+	(i.e on framebuffer).
 	Rename old backend to 'eglx' and namespace public funcs with this.
 
 	* clutter/pango/pangoclutter-private.h:
@@ -6078,10 +6085,10 @@
 	* clutter/glx/clutter-backend-glx.c:
 	* clutter/glx/clutter-backend-glx.h:
 	Add support for GLX_SGI_swap_control to do vblanking prefering
-        over glXGetVideoSyncSGI. Should fix issues on Intel chips with
-        very slow frame rates due to vblank problems.
+	over glXGetVideoSyncSGI. Should fix issues on Intel chips with
+	very slow frame rates due to vblank problems.
 	Thanks to  Michel Danzer for tips, see;
-        http://bugs.freedesktop.org/show_bug.cgi?id=10542
+	http://bugs.freedesktop.org/show_bug.cgi?id=10542
 
 	* test/test-actors.c:
 	Change FPS to 60.
@@ -6594,7 +6601,7 @@
 
 	* clutter/clutter-stage.c: (clutter_stage_get_actor_at_pos):
 	Fix for GL/ES. Barring texture reads this means all clutter
-        functionality now works on GL/ES! (no doubt with a few yet to
+	functionality now works on GL/ES! (no doubt with a few yet to
 	be discovered bugs)
 
 2007-05-28  Matthew Allum  <mallum@openedhand.com>
@@ -8876,7 +8883,7 @@
 	* configure.ac:
 	* web/index.html:
 	Correct Bugzilla link. Add debs link
-        Bump up version to 0.1 !
+	Bump up version to 0.1 !
 
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
@@ -9600,7 +9607,7 @@
 	* clutter/clutter-main.h:
 	* clutter/clutter-private.h:
 	Quick fix for debug statements so now only appear
-        if CLUTTER_DBBUG env var set.
+	if CLUTTER_DBBUG env var set.
 
 2006-05-12  Matthew Allum  <mallum@openedhand.com>
 
@@ -9908,7 +9915,7 @@
 	* bindings/python/Makefile.am:
 	* bindings/python/cluttermodule.c: (initclutter):
 	Fix python build with new -1.0 naming. Use of GdkPixbufs
-        still causing crashes.
+	still causing crashes.
 
 2006-04-30  Matthew Allum  <mallum@openedhand.com>
 
@@ -9943,7 +9950,7 @@
 	(clutter_queue_redraw), (clutter_redraw):
 	Simplify paint event queueing. Does not actually queue
 	anymore (broken), needs wrong to reduce high number of
-        uneeded paints.
+	uneeded paints.
 
 	* clutter/clutter-texture.c: (clutter_texture_set_pixbuf):
 	Remove visible check which broke paints of resized texture pixmaps.

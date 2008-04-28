@@ -189,8 +189,8 @@ param_unit_init (GParamSpec *pspec)
 {
   ClutterParamSpecUnit *uspec = CLUTTER_PARAM_SPEC_UNIT (pspec);
 
-  uspec->minimum = -G_MAXINT32;
-  uspec->maximum = G_MAXINT32;
+  uspec->minimum = CLUTTER_MINUNIT;
+  uspec->maximum = CLUTTER_MAXUNIT;
   uspec->default_value = 0;
 }
 
