@@ -5032,7 +5032,7 @@ out:
 typedef struct {
   ClutterRotateAxis axis;
 
-  gdouble angle;
+  ClutterFixed angle;
 
   ClutterUnit center_x;
   ClutterUnit center_y;
@@ -5052,7 +5052,7 @@ parse_rotation_array (ClutterActor *actor,
   /* angle */
   element = json_array_get_element (array, 0);
   if (JSON_NODE_TYPE (element) == JSON_NODE_VALUE)
-    info->angle = json_node_get_double (element);
+    info->angle = CLUTTER_FLOAT_TO_FIXED (json_node_get_double (element));
   else
     return FALSE;
 
@@ -5265,11 +5265,11 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
 
       info = g_value_get_pointer (value);
 
-      clutter_actor_set_rotation (CLUTTER_ACTOR (scriptable),
-                                  info->axis, info->angle,
-                                  CLUTTER_UNITS_TO_DEVICE (info->center_x),
-                                  CLUTTER_UNITS_TO_DEVICE (info->center_y),
-                                  CLUTTER_UNITS_TO_DEVICE (info->center_z));
+      clutter_actor_set_rotation_internal (CLUTTER_ACTOR (scriptable),
+                                           info->axis, info->angle,
+                                           info->center_x,
+                                           info->center_y,
+                                           info->center_z);
 
       g_slice_free (RotationInfo, info);
     }
@@ -5487,11 +5487,7 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
 static ClutterGeometry*
 clutter_geometry_copy (const ClutterGeometry *geometry)
 {
-  ClutterGeometry *result = g_slice_new (ClutterGeometry);
-
-  *result = *geometry;
-
-  return result;
+  return g_slice_dup (ClutterGeometry, geometry);
 }
 
 static void
@@ -5522,11 +5518,7 @@ clutter_geometry_get_type (void)
 static ClutterVertex *
 clutter_vertex_copy (const ClutterVertex *vertex)
 {
-  ClutterVertex *result = g_slice_new (ClutterVertex);
-
-  *result = *vertex;
-
-  return result;
+  return g_slice_dup (ClutterVertex, vertex);
 }
 
 static void
@@ -5556,11 +5548,7 @@ clutter_vertex_get_type (void)
 static ClutterActorBox *
 clutter_actor_box_copy (const ClutterActorBox *box)
 {
-  ClutterActorBox *result = g_slice_new (ClutterActorBox);
-
-  *result = *box;
-
-  return result;
+  return g_slice_dup (ClutterActorBox, box);
 }
 
 static void
@@ -5932,7 +5920,17 @@ clutter_actor_get_box_from_vertices (ClutterVertex    vtx[4],
   box->y2 = y_2;
 }
 
-ClutterActor*
+/**
+ * clutter_actor_get_stage:
+ * @actor: a #ClutterActor
+ *
+ * Retrieves the #ClutterStage where @actor is contained.
+ *
+ * Return value: the stage containing the actor, or %NULL
+ *
+ * Since: 0.8
+ */
+ClutterActor *
 clutter_actor_get_stage (ClutterActor *actor)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);

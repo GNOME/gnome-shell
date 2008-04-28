@@ -1,3 +1,19 @@
+2008-04-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(parse_rotation_array),
+	(clutter_actor_set_custom_property): Use the internal, unit based
+	rotation setter when parsing the rotation from a ClutterScript
+	file.
+	
+	(clutter_geometry_copy),
+	(clutter_vertex_copy),
+	(clutter_actor_box_copy): Use the more efficient g_slice_dup().
+
+	(clutter_actor_get_stage): Add documentation.
+
+	* clutter/clutter-group.c: Documentation fix.
+
 2008-04-28  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/cogl/cogl.h.in: moved the documentation of the cogl

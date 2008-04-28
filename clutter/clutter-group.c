@@ -508,10 +508,10 @@ clutter_group_init (ClutterGroup *self)
 /**
  * clutter_group_new:
  *
- * Create a new  #ClutterGroup instance.
+ * Create a new  #ClutterGroup.
  *
- * returns a new #ClutterGroup
- **/
+ * Return value: the newly created #ClutterGroup actor
+ */
 ClutterActor *
 clutter_group_new (void)
 {
