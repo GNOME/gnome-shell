@@ -1,5 +1,12 @@
 2008-04-28  Øyvind Kolås  <pippin@o-hand.com>
 
+	* clutter/cogl/cogl.h.in: moved the documentation of the cogl
+	primitives to the main public header.
+	* clutter/cogl/gl/cogl-primitives.c: from here ..
+	* clutter/cogl/gles/cogl-primitives.c: .. _and_ here.
+
+2008-04-28  Øyvind Kolås  <pippin@o-hand.com>
+
 	* clutter/cogl/cogl.h.in: added documentation.
 
 2008-04-28  Emmanuele Bassi  <ebassi@openedhand.com>
