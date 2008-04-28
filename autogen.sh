@@ -15,7 +15,7 @@ test $TEST_TYPE $FILE || {
 GTKDOCIZE=`which gtkdocize`
 if test -z $GTKDOCIZE; then
         echo "*** No gtk-doc support ***"
-        touch gtk-doc.make
+        echo "EXTRA_DIST =" > gtk-doc.make
 else
         gtkdocize || exit $?
 fi
