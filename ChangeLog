@@ -1,3 +1,7 @@
+2008-04-28  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/cogl.h.in: added documentation.
+
 2008-04-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-units.c (param_unit_init): Use the right

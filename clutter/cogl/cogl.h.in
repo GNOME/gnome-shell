@@ -154,7 +154,7 @@ typedef enum
  * @COGL_MASK_BUFFER:
  * @COGL_OFFSCREEN_BUFFER:
  *
- * FIXME
+ *
  */
 typedef enum
 {
@@ -187,17 +187,43 @@ typedef struct _CoglTextureVertex CoglTextureVertex;
 
 /* Context manipulation */
 
+/**
+ * cogl_create_context:
+ *
+ */
 gboolean
 cogl_create_context (void);
 
+/**
+ * cogl_destroy_context:
+ *
+ */
 void
 cogl_destroy_context (void);
 
 /* Misc */
+/**
+ * COGL_INVALID_HANDLE:
+ *
+ * A cogl handle that is not valid, used for unitialized handles as well as error conditions.
+ */
 #define COGL_INVALID_HANDLE NULL
 
+/**
+ * CoglHandle:
+ *
+ * Type used for storing references to cogl objects, the CoglHandle is
+ * a fully opaque type without any public data members.
+ */
 typedef gpointer CoglHandle;
 
+/**
+ * CoglFuncPtr:
+ *
+ * The type used by cogl for function pointers, note that this type
+ * is used as a generic catch-all cast for function pointers and the
+ * actual arguments and return type may be different.
+ */
 typedef void (* CoglFuncPtr) (void);
 
 /**
@@ -240,6 +266,15 @@ cogl_features_available (CoglFeatureFlags features);
 CoglFuncPtr
 cogl_get_proc_address (const gchar* name);
 
+/**
+ * cogl_check_extension:
+ * @name: extension to check for
+ * @ext: list of extensions
+ *
+ * Check whether @name occurs in list of extensions in @ext.
+ *
+ * Returns: %TRUE if the extension occurs in the list, %FALSE otherwize.
+ */
 gboolean 
 cogl_check_extension (const gchar *name,
                       const gchar *ext);
@@ -261,6 +296,18 @@ cogl_get_bitmasks (gint *red,
                    gint *blue,
                    gint *alpha);
 
+/* XXX: should this be internal? */
+
+/**
+ * cogl_perspective:
+ * @fovy: Vertical of view angle in degrees.
+ * @aspect: Aspect ratio of diesplay
+ * @zNear: Nearest visible point
+ * @zFar: Furthest visible point along the z-axis
+ *
+ * Multiplies the current set matrix with a projection matrix based
+ * on the provided values.
+ */
 void
 cogl_perspective (ClutterFixed fovy,
 		  ClutterFixed aspect,
@@ -317,7 +364,8 @@ cogl_pop_matrix (void);
  * and y axes by the given values.
  */
 void
-cogl_scale (ClutterFixed x, ClutterFixed y);
+cogl_scale (ClutterFixed x,
+            ClutterFixed y);
 
 /**
  * cogl_translatex:
@@ -329,7 +377,9 @@ cogl_scale (ClutterFixed x, ClutterFixed y);
  * model along all three axes according to the given values.
  */
 void
-cogl_translatex (ClutterFixed x, ClutterFixed y, ClutterFixed z);
+cogl_translatex (ClutterFixed x,
+                 ClutterFixed y,
+                 ClutterFixed z);
 
 /**
  * cogl_translate:
@@ -342,7 +392,9 @@ cogl_translatex (ClutterFixed x, ClutterFixed y, ClutterFixed z);
  * axes according to the given values.
  */
 void
-cogl_translate (gint x, gint y, gint z);
+cogl_translate (gint x,
+                gint y,
+                gint z);
 
 /**
  * cogl_rotatex:
@@ -358,7 +410,10 @@ cogl_translate (gint x, gint y, gint z);
  * rotation.
  */
 void
-cogl_rotatex (ClutterFixed angle, gint x, gint y, gint z);
+cogl_rotatex (ClutterFixed angle,
+              gint         x,
+              gint         y,
+              gint         z);
 
 /**
  * cogl_rotate:
@@ -372,7 +427,10 @@ cogl_rotatex (ClutterFixed angle, gint x, gint y, gint z);
  * specified by @x, @y and @z.
  */
 void
-cogl_rotate (gint angle, gint x, gint y, gint z);
+cogl_rotate (gint angle,
+             gint x,
+             gint y,
+             gint z);
 
 /**
  * cogl_get_modelview_matrix:
@@ -447,6 +505,16 @@ cogl_clip_unset (void);
 void
 cogl_enable_depth_test (gboolean setting);
 
+/**
+ * cogl_alpha_func:
+ * @func: the comparison function to use, one of CGL_NEVER, CGL_LESS,
+ * CGL_EQUAL, CGL_LEQUAL, CGL_GREATER, CGL_NOTEQUAL, CGL_GEQUAL and GL_ALWAYS.
+ * @ref: reference value.
+ *
+ * Changes the alpha test to use the specified function specified in @func,
+ * comparing with the value in @ref. The default function is CGL_ALWAYS the
+ * initial reference value is 1.0.
+ */
 void
 cogl_alpha_func (COGLenum     func, 
 		 ClutterFixed ref);
@@ -483,18 +551,62 @@ cogl_paint_init (const ClutterColor *color);
 
 /* Textures api */
 
+/**
+ * cogl_texture_new_with_size:
+ * @width: width of texture in pixels.
+ * @height: height of texture in pixels.
+ * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
+ * texture fit GPU limitations.
+ * @internal_format: the #CoglPixelFormat to use for the GPU storage of the texture.
+ *
+ * Create a new texture with specified dimensions and pixel format.
+ *
+ * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
+ * if texture creation failed.
+ */
 CoglHandle
 cogl_texture_new_with_size (guint           width,
 			    guint           height,
 			    gint            max_waste,
 			    CoglPixelFormat internal_format);
 
+/**
+ * cogl_texture_new_from_file:
+ * @filename: the file to load
+ * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
+ * texture fit GPU limitations.
+ * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
+ * texture.
+ * @error: a #GError or NULL.
+ *
+ * Load an image file from disk.
+ *
+ * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
+ * if creating the texture failed.
+ */
 CoglHandle
 cogl_texture_new_from_file (const gchar     *filename,
                             gint             max_waste,
                             CoglPixelFormat  internal_format,
 			    GError         **error);
 
+/**
+ * cogl_texture_new_from_data:
+ * @width: width of texture in pixels.
+ * @height: height of texture in pixels.
+ * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
+ * @format: the #CoglPixelFormat the buffer is stored in in RAM
+ * @internal_format: the #CoglPixelFormat that will be used for storing the
+ * buffer on the GPU.
+ * @rowstride: the memory offset in bytes between the starts of scanlines in
+ * @data.
+ * @data: pointer the memory region where the source buffer resides.
+ *
+ * Create a new cogl texture based on data residing in memory.
+ *
+ * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
+ * if creating the texture failed.
+ */
 CoglHandle
 cogl_texture_new_from_data (guint              width,
 			    guint              height,
@@ -504,6 +616,23 @@ cogl_texture_new_from_data (guint              width,
 			    guint              rowstride,
 			    const guchar      *data);
 
+/**
+ * cogl_texture_new_from_foreign:
+ * @gl_handle: opengl target type of foreign texture
+ * @gl_target: opengl handle of foreign texture.
+ * @width: width of foreign texture
+ * @height: height of foreign texture.
+ * @x_pot_waste: maximum horizontal waste.
+ * @y_pot_waste: maximum vertical waste.
+ * @format: format of the foreign texture.
+ *
+ * Create a cogl texture based on an existing OpenGL texture, the width, height
+ * and format are passed along since it is not possible to query this from a
+ * handle with GLES 1.0.
+ *
+ * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
+ * if creating the texture failed.
+ */
 CoglHandle
 cogl_texture_new_from_foreign (GLuint           gl_handle,
 			       GLenum           gl_target,
@@ -519,52 +648,177 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
  *
  * Gets whether the given handle references an existing texture object.
  *
- * Return value: %TRUE if the handle references a texture,
+ * Returns: %TRUE if the handle references a texture,
  *   %FALSE otherwise
  */
 gboolean
 cogl_is_texture (CoglHandle handle);
 
+/**
+ * cogl_texture_get_width:
+ * @handle: a #CoglHandle for a texture.
+ * 
+ * Query the width of a cogl texture.
+ *
+ * Returns: the width of the GPU side texture in pixels:
+ */
 guint
 cogl_texture_get_width (CoglHandle handle);
 
+/**
+ * cogl_texture_get_height:
+ * @handle: a #CoglHandle for a texture.
+ * 
+ * Query the height of a cogl texture.
+ *
+ * Returns: the height of the GPU side texture in pixels:
+ */
 guint
 cogl_texture_get_height (CoglHandle handle);
 
+/**
+ * cogl_texture_get_format:
+ * @handle: a #CoglHandle for a texture.
+ * 
+ * Query the #CoglPixelFormat of a cogl texture.
+ *
+ * Returns: the #CoglPixelFormat of the GPU side texture.
+ */
 CoglPixelFormat
 cogl_texture_get_format (CoglHandle handle);
 
+
+/**
+ * cogl_texture_get_rowstride:
+ * @handle: a #CoglHandle for a texture.
+ * 
+ * Query the rowstride of a cogl texture.
+ *
+ * Returns: the offset in bytes between each consequetive row of pixels.
+ */
 guint
 cogl_texture_get_rowstride (CoglHandle handle);
 
+/**
+ * cogl_texture_get_max_waste:
+ * @handle: a #CoglHandle for a texture.
+ * 
+ * Query the maximum wasted (unused) pixels in one dimension of a GPU side texture.
+ *
+ * Returns: the maximum waste.
+ */
 gint
 cogl_texture_get_max_waste (CoglHandle handle);
 
+/**
+ * cogl_texture_get_min_filter:
+ * @handle: a #CoglHandle for a texture.
+ * 
+ * Query the currently set downscaling filter for a cogl texture.
+ *
+ * Returns: the current downscaling filter for a cogl texture.
+ */
 COGLenum
 cogl_texture_get_min_filter (CoglHandle handle);
 
+/**
+ * cogl_texture_get_mag_filter:
+ * @handle: a #CoglHandle for a texture.
+ * 
+ * Query the currently set downscaling filter for a cogl texture.
+ *
+ * Returns: the current downscaling filter for a cogl texture.
+ */
 COGLenum
 cogl_texture_get_mag_filter (CoglHandle handle);
 
+/**
+ * cogl_texture_is_sliced:
+ * @handle: a #CoglHandle for a texture.
+ * 
+ * Query if a texture is sliced (stored as multiple GPU side tecture
+ * objects).
+ *
+ * Returns: %TRUE if the texture is sliced, %FALSE if the texture
+ * is stored as a single GPU texture.
+ */
 gboolean
 cogl_texture_is_sliced (CoglHandle handle);
 
+/**
+ * cogl_texture_get_gl_texture:
+ * @handle: a #CoglHandle for a texture.
+ * @out_gl_handle: pointer to return location for the textures GL handle, or
+ * NULL.
+ * @out_gl_target: pointer to return location for the GL target type, or NULL.
+ * 
+ * Query the GL handles for a GPU side texture through it's #CoglHandle,
+ * if the texture is spliced the data for the first sub texture will be
+ * queried.
+ *
+ * Returns: %TRUE if the handle was successfully retrieved %FALSE
+ * if the handle was invalid.
+ */
 gboolean
 cogl_texture_get_gl_texture (CoglHandle handle,
 			     GLuint *out_gl_handle,
 			     GLenum *out_gl_target);
 
+/**
+ * cogl_texture_get_data:
+ * @handle: a #CoglHandle for a texture.
+ * @format: the #CoglPixelFormat to store the texture as.
+ * @rowstride: the rowstride of @data or retrieved from texture if none is
+ * specified.
+ * @data: memory location to write contents of buffer, or %NULL if we're
+ * only querying the data size through the return value.
+ * 
+ * Copy the pixel data from a cogl texture to system memory.
+ *
+ * Returns: the size of the texture data in bytes (or 0 if the texture
+ * is not valid.)
+ */
 gint
 cogl_texture_get_data (CoglHandle       handle,
                        CoglPixelFormat  format,
                        guint            rowstride,
                        guchar          *data);
 
+/**
+ * cogl_texture_set_filters:
+ * @handle: a #CoglHandle.
+ * @min_filter: the filter used when scaling the texture down.
+ * @mag_filter: the filter used when magnifying the texture.
+ * 
+ * Changes the decimation and interpolation filters used when the texture is
+ * drawn at other scales than 100%.
+ */
 void
 cogl_texture_set_filters (CoglHandle handle,
 			  COGLenum   min_filter,
 			  COGLenum   mag_filter);
 
+
+/**
+ * cogl_texture_set_region:
+ * @handle: a #CoglHandle.
+ * @src_x: upper left coordinate to use from source data.
+ * @src_y: upper left coordinate to use from source data.
+ * @dst_x: upper left destination horizontal coordinate.
+ * @dst_y: upper left destination vertical coordinate.
+ * @dst_width: width of destination region to write.
+ * @dst_height: height of destination region to write.
+ * @width: width of source data buffer.
+ * @height: height of source data buffer.
+ * @format: the #CoglPixelFormat used in the source buffer.
+ * @rowstride: rowstride of source buffer (computed from width if none specified)
+ * @data: the actual pixel data.
+ *
+ * Sets the pixels in a rectangular subregion of @handle from an in-memory buffer
+ * containing pixel data. 
+ *
+ * Returns: %TRUE if the subregion upload was successful, otherwise %FALSE.
+ */
 gboolean
 cogl_texture_set_region (CoglHandle       handle,
 			 gint             src_x,
@@ -579,12 +833,41 @@ cogl_texture_set_region (CoglHandle       handle,
 			 guint            rowstride,
 			 const guchar    *data);
 
+/**
+ * cogl_texture_ref:
+ * @handle: a @CoglHandle.
+ *
+ * Increment the reference count for a cogl.
+ *
+ * Returns: the @handle.
+ */
 CoglHandle
 cogl_texture_ref (CoglHandle handle);
 
+/**
+ * cogl_texture_unref:
+ * @handle: a @CoglHandle.
+ *
+ * Deccrement the reference count for a cogl texture.
+ */
 void
 cogl_texture_unref (CoglHandle handle);
 
+/**
+ * cogl_texture_rectangle:
+ * @handle: a @CoglHandle.
+ * @x1: x coordinate upper left on screen.
+ * @y1: y coordinate upper left on screen.
+ * @x2: x coordinate lower right on screen.
+ * @y2: y coordinate lower right on screen.
+ * @tx1: x part of texture coordinate to use for upper left pixel
+ * @ty1: y part of texture coordinate to use for upper left pixel
+ * @tx2: x part of texture coordinate to use for lower right pixel
+ * @ty2: y part of texture coordinate to use for left pixel
+ *
+ * Draw a rectangle from a texture to the display, to draw the entire
+ * texture pass in @tx1=0.0 @ty1=0.0 @tx2=1.0 @ty2=1.0.
+ */
 void
 cogl_texture_rectangle (CoglHandle   handle,
                         ClutterFixed x1,
@@ -627,8 +910,16 @@ cogl_texture_polygon (CoglHandle         handle,
 
 /* Primitives API */
 
+/**
+ * cogl_color:
+ * @color: new current @ClutterColor.
+ *
+ * Changes the color of cogl's current paint, which is used for filling and stroking
+ * primitives.
+ */
 void
 cogl_color (const ClutterColor *color);
+
 
 void
 cogl_fast_fill_rectangle (gint x,
@@ -659,10 +950,10 @@ cogl_fast_fill_trapezoidx (ClutterFixed y1,
 			   ClutterFixed x22);
 
 void
-cogl_fill ();
+cogl_fill (void);
 
 void
-cogl_stroke ();
+cogl_stroke (void);
 
 void
 cogl_path_move_to (ClutterFixed x,
@@ -739,7 +1030,7 @@ cogl_path_bezier3_to_rel (ClutterFixed x1,
 			  ClutterFixed y3);
 
 void
-cogl_path_close ();
+cogl_path_close (void);
 
 void
 cogl_line (ClutterFixed x1,
@@ -749,11 +1040,11 @@ cogl_line (ClutterFixed x1,
 
 void
 cogl_polyline (ClutterFixed *coords,
-	       gint num_points);
+	       gint          num_points);
 
 void
 cogl_polygon (ClutterFixed *coords,
-	      gint num_points);
+	      gint          num_points);
 
 void
 cogl_rectangle (ClutterFixed x,
@@ -785,75 +1076,220 @@ cogl_round_rectangle (ClutterFixed x,
 		      ClutterFixed radius,
 		      ClutterAngle arc_step);
 
-
+/**
+ * cogl_create_shader:
+ * @shaderType: CGL_VERTEX_SHADER og CGL_FRAGMENT_SHADER.
+ *
+ * Create a new shader handle, use #cogl_shader_source to set the source code
+ * to be used on it.
+ *
+ * Returns: a new shader handle.
+ */
 COGLhandle
 cogl_create_shader                (COGLenum     shaderType);
 
+/**
+ * cogl_shader_destroy:
+ * @handle: #COGLhandle for a shader.
+ *
+ * Free up the resources used by a cogl shader.
+ */
 void
 cogl_shader_destroy               (COGLhandle   handle);
 
-
+/**
+ * cogl_shader_source:
+ * @shader: #COGLhandle for a shader.
+ * @source: GLSL shader source.
+ *
+ * Replaces the current GLSL source associated with a shader with a new
+ * one.
+ */
 void
 cogl_shader_source                (COGLhandle   shader,
                                    const gchar *source);
+/**
+ * cogl_shader_compile:
+ * @shader_handle: #COGLhandle for a shader.
+ *
+ * Compiles the shader, no return value, but the shader is now ready for
+ * linking into a program.
+ */
 void
 cogl_shader_compile               (COGLhandle   shader_handle);
 
+/**
+ * cogl_shader_get_info_log:
+ * @handle: #COGLhandle for a shader.
+ * @size: maximum number of bytes to retrieve.
+ * @buffer: location for info log.
+ *
+ * Retrieves the information log for a coglobject, can be used in conjunction
+ * with #cogl_shader_get_parameteriv to retrieve the compiler warnings/error
+ * messages that caused a shader to not compile correctly, mainly useful for
+ * debugging purposes.
+ */
 void
 cogl_shader_get_info_log          (COGLhandle   handle,
                                    guint        size,
                                    gchar       *buffer);
 
+/**
+ * cogl_shader_get_parameteriv:
+ * @handle: #COGLhandle for a shader.
+ * @pname: the named COGL parameter to retrieve.
+ * @dest: storage location for COGLint return value.
+ *
+ * Retrieve a named parameter from a shader can be used to query to compile
+ * satus of a shader by passing in CGL_OBJECT_COMPILE_STATUS for @pname.
+ */
 void
 cogl_shader_get_parameteriv       (COGLhandle   handle,
                                    COGLenum     pname,
                                    COGLint     *dest);
 
-
+/**
+ * cogl_create_program:
+ *
+ * Create a new cogl program object that can be used to replace parts of the GL
+ * rendering pipeline with custom code.
+ *
+ * Returns: a new cogl program.
+ */
 COGLhandle
 cogl_create_program               (void);
 
+/**
+ * cogl_program_destroy:
+ * @handle: #COGLhandle for a shader.
+ *
+ * Releases all resources held by a cogl program.
+ */
 void
 cogl_program_destroy              (COGLhandle   handle);
 
+/**
+ * cogl_program_attach_shader:
+ * @program_handle: a #COGLhandle for a shdaer program.
+ * @shader_handle: a #COGLhandle for a vertex of fragment shader.
+ *
+ * Attaches a shader to a program object, a program can have one vertex shader
+ * and one fragment shader attached.
+ */
 void
 cogl_program_attach_shader        (COGLhandle   program_handle,
                                    COGLhandle   shader_handle);
 
-/* 0 to use none */
+
+/**
+ * cogl_program_link:
+ * @program_handle: a #COGLhandle for a shader program.
+ *
+ * Links a program making it ready for use.
+ */
 void
 cogl_program_link                 (COGLhandle   program_handle);
 
+/**
+ * cogl_program_use:
+ * @program_handle: a #COGLhandle for a shader program or 0.
+ *
+ * Activate a specific shader program replacing that part of the GL rendering
+ * pipeline, if passed in 0 the default behavior of GL is reinstated.
+ */
 void
 cogl_program_use                  (COGLhandle   program_handle);
 
+/**
+ * cogl_program_get_uniform_location:
+ * @program_handle: a #COGLhandle for a shader program.
+ * @uniform_name: the name of a uniform.
+ *
+ * Retrieve the location (offset) of a uniform variable in a shader program, a
+ * uniform is a variable that is constant for all vertices/fragments for a
+ * shader object and is possible to modify as an external parameter.
+ *
+ * Returns: the offset of a uniform in a specified program, this uniform can be set
+ * using #cogl_program_uniform_1f when the program is in use.
+ */
 COGLint
-cogl_program_get_uniform_location (COGLhandle   program_int,
+cogl_program_get_uniform_location (COGLhandle   program_handle,
                                    const gchar *uniform_name);
 
 
+/**
+ * cogl_program_uniform_1f:
+ * @uniform_no: the unform to set.
+ * @value: the new value of the uniform.
+ *
+ * Changes the value of a uniform in the currently used (see #cogl_program_use)
+ * shader program.
+ */
 void
 cogl_program_uniform_1f           (COGLint      uniform_no,
                                    gfloat       value);
 
 /* Offscreen api */
 
+/**
+ * cogl_offscreen_new_to_texture:
+ * @texhandle:
+ *
+ * Returns:
+ */
 CoglHandle
 cogl_offscreen_new_to_texture (CoglHandle texhandle);
 
+/**
+ * cogl_offscreen_new_multisample:
+ * 
+ *
+ * Returns:
+ */
 CoglHandle
-cogl_offscreen_new_multisample ();
+cogl_offscreen_new_multisample (void);
 
+/**
+ * cogl_offscreen_ref:
+ * @handle:
+ *
+ * Returns:
+ */
 CoglHandle
 cogl_offscreen_ref (CoglHandle handle);
 
+/**
+ * cogl_offscreen_unref:
+ * @handle:
+ *
+ */
 void
 cogl_offscreen_unref (CoglHandle handle);
 
+/**
+ * cogl_offscreen_blit:
+ * @src_buffer:
+ * @dst_buffer:
+ *
+ */
 void
 cogl_offscreen_blit (CoglHandle src_buffer,
 		     CoglHandle dst_buffer);
 
+/**
+ * cogl_offscreen_blit_region:
+ * @src_buffer:
+ * @dst_buffer:
+ * @src_x:
+ * @src_y:
+ * @src_w:
+ * @src_h:
+ * @dst_x:
+ * @dst_y:
+ * @dst_w:
+ * @dst_h:
+ *
+ */
 void
 cogl_offscreen_blit_region (CoglHandle src_buffer,
 			    CoglHandle dst_buffer,
@@ -866,6 +1302,12 @@ cogl_offscreen_blit_region (CoglHandle src_buffer,
 			    int dst_w,
 			    int dst_h);
 
+/**
+ * cogl_draw_buffer:
+ * @target:
+ * @offscreen:
+ *
+ */
 void
 cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen);
 
