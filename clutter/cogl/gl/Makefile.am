@@ -20,8 +20,7 @@ noinst_LTLIBRARIES = libclutter-cogl.la
 
 libclutter_cogl_la_SOURCES = \
 	$(top_builddir)/clutter/cogl/cogl.h \
-	$(top_builddir)/clutter/cogl/gl/cogl-defines.h \
-        cogl-defines.h \
+	$(top_builddir)/clutter/cogl/cogl-defines-gl.h \
 	cogl-internal.h \
 	cogl-primitives.h \
 	cogl-texture.h \
@@ -32,5 +31,7 @@ libclutter_cogl_la_SOURCES = \
 	cogl-texture.c \
 	cogl-fbo.c \
 	cogl-context.c
+
+EXTRA_DIST = cogl-defines.h.in
 
 libclutter_cogl_la_LIBADD =  $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la

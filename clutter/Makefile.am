@@ -9,7 +9,7 @@ clutter_json_dep = json/libclutter-json.la
 clutter_json_libadd = $(top_builddir)/clutter/json/libclutter-json.la
 endif
 
-DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11 win32
+DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json osx x11 win32 fruity
 
 target = $(clutterbackend)
 

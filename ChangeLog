@@ -1,5 +1,24 @@
 2008-04-28  Neil Roberts  <neil@o-hand.com>
 
+	Fixed 'make dist'
+
+	* clutter/cogl/Makefile.am (EXTRA_DIST): Distribute cogl.h.in
+	instead of cogl.h
+	(DIST_SUBDIRS): Added common folder
+
+	* clutter/cogl/gl/Makefile.am (libclutter_cogl_la_SOURCES): Remove
+	cogl-defines.h and use the right location for cogl-defines.gl.h
+	(EXTRA_DIST): Distribute cogl-defines.h.in
+
+	* clutter/cogl/gles/Makefile.am (libclutter_cogl_la_SOURCES):
+	Remove cogl-defines.h and use the right location for
+	cogl-defines.gles.h
+	(EXTRA_DIST): Distribute cogl-defines.h.in
+
+	* clutter/Makefile.am (DIST_SUBDIRS): Add fruity
+
+2008-04-28  Neil Roberts  <neil@o-hand.com>
+
 	* clutter/cogl/cogl.h.in (COGL_A_BIT): Added the missing comma
 	after COGL_PIXEL_FORMAT_G_8
 
