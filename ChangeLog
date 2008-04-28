@@ -1,3 +1,15 @@
+2008-04-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/eglnative/clutter-backend-egl.c:
+	(clutter_backend_egl_redraw): Whitespace fixes.
+
+	* clutter/eglnative/clutter-stage-egl.c:
+	(clutter_stage_egl_hide): Indentation fixes.
+
+	(clutter_stage_egl_realize): Use g_critical() to report failure,
+	unset the flags and bail out instead of continuing the realization
+	of the stage.
+
 2008-04-25  Neil Roberts  <neil@o-hand.com>
 
 	Merged in the clutter-ivan branch which contained the new public

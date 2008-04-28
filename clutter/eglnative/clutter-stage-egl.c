@@ -29,7 +29,7 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageEGL,
 static void
 clutter_stage_egl_show (ClutterActor *actor)
 {
-    ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
 
   CLUTTER_ACTOR_SET_FLAGS (stage_egl, CLUTTER_ACTOR_MAPPED);
   CLUTTER_ACTOR_SET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_MAPPED);
@@ -40,10 +40,11 @@ clutter_stage_egl_show (ClutterActor *actor)
 static void
 clutter_stage_egl_hide (ClutterActor *actor)
 {
-    ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
 
   CLUTTER_ACTOR_UNSET_FLAGS (stage_egl, CLUTTER_ACTOR_MAPPED);
   CLUTTER_ACTOR_UNSET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_MAPPED);
+
   CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->hide (actor);
 }
 
@@ -99,7 +100,11 @@ clutter_stage_egl_realize (ClutterActor *actor)
 			      &config_count);
 
       if (status != EGL_TRUE)
-	g_warning ("eglGetConfigs failed");
+        {
+	  g_critical ("eglGetConfigs failed");
+          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+          return;
+        }
 
       status = eglChooseConfig (backend_egl->edpy,
 				cfg_attribs,
@@ -108,7 +113,11 @@ clutter_stage_egl_realize (ClutterActor *actor)
 				&config_count);
 
       if (status != EGL_TRUE)
-	g_warning ("eglChooseConfig failed");
+        {
+          g_critical ("eglChooseConfig failed");
+          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+          return;
+        }
 
       if (stage_egl->egl_surface != EGL_NO_SURFACE)
         {
@@ -127,8 +136,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
                                 configs[0],
                                 NULL,
                                 NULL);
-
-
 
       if (stage_egl->egl_surface == EGL_NO_SURFACE)
         {
@@ -175,24 +182,26 @@ clutter_stage_egl_realize (ClutterActor *actor)
       CLUTTER_ACTOR_SET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_REALIZED);
       CLUTTER_ACTOR_SET_FLAGS (stage_egl, CLUTTER_ACTOR_REALIZED);
 
-
-      /* eglnative can have only one context */
+      /* eglnative can have only one stage */
       status = eglMakeCurrent (backend_egl->edpy,
                                stage_egl->egl_surface,
                                stage_egl->egl_surface,
                                backend_egl->egl_context);
 
       if (status != EGL_TRUE)
-          g_warning ("eglMakeCurrent");   
-
+        {
+          g_critical ("eglMakeCurrent failed");
+          
+          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+          return;
+        }
     }
   else
     {
-      g_warning("EGL Backend does not yet support offscreen rendering\n");
+      g_warning ("EGL Backend does not yet support offscreen rendering\n");
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
       return;
     }
-
 
   CLUTTER_SET_PRIVATE_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
 }
