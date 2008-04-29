@@ -1,5 +1,11 @@
 2008-04-29  Robert Bragg  <bob@o-hand.com>
 	
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+	In clutter_x11_texture_pixmap_set_pixmap, dont assume that the actor
+	size should be changed to match the size of the pixmap.
+
+2008-04-29  Robert Bragg  <bob@o-hand.com>
+	
 	* clutter/cogl/gles/cogl-texture.c:
 	Replaces an malloc call with g_malloc.
 

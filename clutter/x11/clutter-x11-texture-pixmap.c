@@ -705,9 +705,6 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
                                                 priv->pixmap_width,
                                                 priv->pixmap_height);
     }
-  
-  clutter_actor_set_size (CLUTTER_ACTOR(texture), 
-                          priv->pixmap_width, priv->pixmap_height);
 }
 
 /**
