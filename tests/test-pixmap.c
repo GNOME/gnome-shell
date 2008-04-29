@@ -1,7 +1,8 @@
 
+#include <config.h>
 
 #if HAVE_CLUTTER_GLX
-#include <config.h>
+
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <clutter/x11/clutter-x11-texture-pixmap.h>
@@ -159,13 +160,11 @@ main (int argc, char **argv)
 
   pixmap = win_remote;
 
+
   /*
   XCompositeRedirectWindow(clutter_x11_get_default_display(),
                            win_remote,
                            CompositeRedirectAutomatic);
-
-  pixmap = XCompositeNameWindowPixmap (clutter_x11_get_default_display(), 
-                                       win_remote);
   */
 
   tex = clutter_x11_texture_pixmap_new_with_pixmap (pixmap);
@@ -176,7 +175,20 @@ main (int argc, char **argv)
                                             TRUE);
 
 #ifdef HAVE_CLUTTER_GLX
+
   pixmap = create_pixmap (&w, &h, &d);
+
+#if 0
+  // pixmap = win_remote;
+
+
+  XCompositeRedirectWindow(clutter_x11_get_default_display(),
+                           win_remote,
+                           CompositeRedirectAutomatic);
+
+  pixmap = XCompositeNameWindowPixmap (clutter_x11_get_default_display(), 
+                                       win_remote);
+#endif
 
   tex = clutter_glx_texture_pixmap_new_with_pixmap (pixmap);
 
@@ -186,7 +198,7 @@ main (int argc, char **argv)
                               0);
 
   clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex), 
-                                            FALSE);
+                                            TRUE);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                tex);

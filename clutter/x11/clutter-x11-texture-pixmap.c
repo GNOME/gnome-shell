@@ -51,6 +51,11 @@
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xcomposite.h>
 
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/time.h>
+#include <X11/extensions/XShm.h>
+
 enum
 {
   PROP_PIXMAP = 1,
@@ -86,10 +91,12 @@ struct _ClutterX11TexturePixmapPrivate
   guint         depth;
 
   XImage       *image;
+  XShmSegmentInfo shminfo;
 
   gboolean      automatic_updates;     
   Damage        damage;
 
+  gboolean	have_shm;
 };
 
 static int _damage_event_base = 0;
@@ -128,6 +135,108 @@ check_extensions (ClutterX11TexturePixmap *texture)
     }
 
   return TRUE;
+}
+
+static void
+free_shm_resources (ClutterX11TexturePixmap *texture)
+{
+  ClutterX11TexturePixmapPrivate *priv;
+
+  priv = texture->priv;
+
+  if (priv->shminfo.shmid != -1)
+    {
+      XShmDetach(clutter_x11_get_default_display(),
+		 &priv->shminfo);
+      shmdt(priv->shminfo.shmaddr);
+      shmctl(priv->shminfo.shmid, IPC_RMID, 0);
+      priv->shminfo.shmid = -1;
+    }
+}
+
+/* Tries to allocate enough shared mem to handle a full size
+ * update size of the X Pixmap. */
+static gboolean
+try_alloc_shm (ClutterX11TexturePixmap *texture)
+{
+  ClutterX11TexturePixmapPrivate  *priv;
+  XImage			  *dummy_image;
+  Display			  *dpy;
+
+  priv = texture->priv;
+  dpy  = clutter_x11_get_default_display();
+
+  g_return_val_if_fail (priv->pixmap, FALSE);
+
+  if (!XShmQueryExtension(dpy) || g_getenv("CLUTTER_X11_NO_SHM"))
+    {
+      priv->have_shm = FALSE;
+      return FALSE;
+    }
+
+  clutter_x11_trap_x_errors ();
+
+  /* We are creating a dummy_image so we can have Xlib calculate
+   * image->bytes_per_line - including any magic padding it may
+   * want - for the largest possible ximage we might need to use
+   * when handling updates to the texture.
+   *
+   * Note: we pass a NULL shminfo here, but that has no bearing
+   * on the setup of the XImage, except that ximage->obdata will
+   * == NULL.
+   */
+  dummy_image =
+    XShmCreateImage(dpy,
+		    DefaultVisual(dpy,
+				  clutter_x11_get_default_screen()),
+		    priv->depth,
+		    ZPixmap,
+		    NULL,
+		    NULL, /* shminfo, */
+		    priv->pixmap_width,
+		    priv->pixmap_height);
+  if (!dummy_image)
+    goto failed_image_create;
+
+  priv->shminfo.shmid = shmget (IPC_PRIVATE,
+				dummy_image->bytes_per_line
+				* dummy_image->height,
+				IPC_CREAT|0777);
+  if (priv->shminfo.shmid == -1)
+    goto failed_shmget;
+
+  priv->shminfo.shmaddr =
+    shmat (priv->shminfo.shmid, 0, 0);
+  if (priv->shminfo.shmaddr == (void *)-1)
+    goto failed_shmat;
+
+  priv->shminfo.readOnly = False;
+
+  if (XShmAttach(dpy, &priv->shminfo) == 0)
+    goto failed_xshmattach;
+
+  if (clutter_x11_untrap_x_errors ())
+    g_warning ("X Error: Failed to setup XShm.");
+
+  priv->have_shm = TRUE;
+  return TRUE;
+
+failed_xshmattach:
+  g_warning ("XShmAttach failed");
+  shmdt(priv->shminfo.shmaddr);
+failed_shmat:
+  g_warning ("shmat failed");
+  shmctl(priv->shminfo.shmid, IPC_RMID, 0);
+failed_shmget:
+  g_warning ("shmget failed");
+  XDestroyImage(dummy_image);
+failed_image_create:
+
+  if (clutter_x11_untrap_x_errors ())
+    g_warning ("X Error: Failed to setup XShm.");
+
+  priv->have_shm = FALSE;
+  return FALSE;
 }
 
 static ClutterX11FilterReturn 
@@ -223,21 +332,12 @@ clutter_x11_texture_pixmap_init (ClutterX11TexturePixmap *self)
        *        - a _can_autoupdate() method ?
       */
     }
-}
 
-static GObject *
-clutter_x11_texture_pixmap_constructor (GType                  type,
-                                        guint                  n_props,
-                                        GObjectConstructParam *props)
-{
-  GObject *object = G_OBJECT_CLASS (clutter_x11_texture_pixmap_parent_class)->
-    constructor (type, n_props, props);
-
-  g_object_set (object,
-                "sync-size", FALSE,
-                NULL);
-
-  return object;
+  self->priv->image = NULL;
+  self->priv->automatic_updates = FALSE;
+  self->priv->damage = None;
+  self->priv->pixmap = None;
+  self->priv->shminfo.shmid = -1;
 }
 
 static void
@@ -253,6 +353,8 @@ clutter_x11_texture_pixmap_dispose (GObject *object)
       XDestroyImage (priv->image);
       priv->image = NULL;
     }
+
+  free_shm_resources (texture);
 
   G_OBJECT_CLASS (clutter_x11_texture_pixmap_parent_class)->dispose (object);
 }
@@ -340,7 +442,6 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterX11TexturePixmapPrivate));
 
-  object_class->constructor  = clutter_x11_texture_pixmap_constructor;
   object_class->dispose      = clutter_x11_texture_pixmap_dispose;
   object_class->set_property = clutter_x11_texture_pixmap_set_property;
   object_class->get_property = clutter_x11_texture_pixmap_get_property;
@@ -441,10 +542,10 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
   ClutterX11TexturePixmapPrivate       *priv;
   Display                              *dpy;
   XImage                               *image;
-  guint                                *pixel, *l;
+  char				       *first_pixel;
   GError                               *error = NULL;
   guint                                 bytes_per_line;
-  guint8                               *data;
+  char				       *data;
   gboolean                              data_allocated = FALSE;
   int                                   err_code;
 
@@ -459,23 +560,51 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
 
   clutter_x11_trap_x_errors ();
 
-  /* FIXME: Use XSHM here! */
-  if (!priv->image)
-    priv->image = XGetImage (dpy,
-                             priv->pixmap,
-                             0, 0,
-                             priv->pixmap_width, priv->pixmap_height,
-                             AllPlanes,
-                             ZPixmap);
+  if (priv->have_shm)
+    {
+      image =
+	XShmCreateImage(dpy,
+			DefaultVisual(dpy,
+				      clutter_x11_get_default_screen()),
+			priv->depth,
+			ZPixmap,
+			NULL,
+			&priv->shminfo,
+			width,
+			height);
+      image->data = priv->shminfo.shmaddr;
+
+      XShmGetImage (dpy, priv->pixmap, image, x, y, AllPlanes);
+      first_pixel = image->data;
+    }
   else
-    XGetSubImage (dpy,
-                  priv->pixmap,
-                  x, y,
-                  width, height,
-                  AllPlanes,
-                  ZPixmap,
-                  priv->image,
-                  x, y);
+    {
+      if (!priv->image)
+	{
+          priv->image = XGetImage (dpy,
+                                   priv->pixmap,
+                                   0, 0,
+                                   priv->pixmap_width, priv->pixmap_height,
+                                   AllPlanes,
+                                   ZPixmap);
+	  first_pixel  = priv->image->data + priv->image->bytes_per_line * y
+			  + x * priv->image->bits_per_pixel/8;
+	}
+      else
+	{
+          XGetSubImage (dpy,
+                        priv->pixmap,
+                        x, y,
+                        width, height,
+                        AllPlanes,
+                        ZPixmap,
+                        priv->image,
+                        x, y);
+	  first_pixel  = priv->image->data + priv->image->bytes_per_line * y
+            + x * priv->image->bits_per_pixel/8;
+	}
+      image = priv->image;
+    }
 
   XSync (dpy, FALSE);
 
@@ -488,53 +617,47 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
       return;
     }
 
-  image = priv->image;
-
   if (priv->depth == 24)
     {
-      guint *first_line = (guint *)image->data + y * image->bytes_per_line / 4;
+      guint xpos, ypos;
 
-      for (l =   first_line;
-           l != (first_line + height * image->bytes_per_line / 4);
-           l = l + image->bytes_per_line / 4)
-        {
-          for (pixel = l + x; pixel != l + x + width; pixel ++)
+      for (ypos=0; ypos<height; ypos++)
+	for (xpos=0; xpos<width; xpos++)
             {
-              ((guint8 *)pixel)[3] = 0xFF;
-            }
+	    char *p = first_pixel + image->bytes_per_line*ypos
+			  + xpos * 4;
+	    p[3] = 0xFF;
         }
 
-      data = (guint8 *)first_line + x * 4;
+      data = first_pixel;
       bytes_per_line = image->bytes_per_line;
     }
-
   else if (priv->depth == 16)
     {
-      guint16 *p, *lp;
-
+      guint xpos, ypos;
       data = g_malloc (height * width * 4);
       data_allocated = TRUE;
-      bytes_per_line = priv->pixmap_width * 4;
+      bytes_per_line = width * 4;
 
-      for (l =   (guint *)data,
-           lp = (guint16 *)image->data + y * image->bytes_per_line / 2;
-           l != ((guint *)data + height * width);
-           l = l + width, lp = lp + image->bytes_per_line / 2)
-        {
-          for (pixel = l, p = lp + x; pixel != l + width; pixel ++, p++)
+      for (ypos=0; ypos<height; ypos++)
+	for (xpos=0; xpos<width; xpos++)
             {
-              *pixel = 0xFF000000 |
-                      (guint)((*p) & 0xf800) << 8 |
-                      (guint)((*p) & 0x07e0) << 5 |
-                      (guint)((*p) & 0x001f) << 3;
-            }
-        }
+	    char *src_p = first_pixel + image->bytes_per_line * ypos
+			    + xpos * 2;
+	    guint16 *src_pixel = (guint16 *)src_p;
+	    char *dst_p = data + bytes_per_line * ypos + xpos * 4;
+	    guint32 *dst_pixel = (guint32 *)dst_p;
 
+	    *dst_pixel =
+	      ((((*src_pixel << 3) & 0xf8) | ((*src_pixel >> 2) & 0x7)) | \
+	      (((*src_pixel << 5) & 0xfc00) | ((*src_pixel >> 1) & 0x300)) | \
+	      (((*src_pixel << 8) & 0xf80000) | ((*src_pixel << 3) & 0x70000)));
+	  }
     }
   else if (priv->depth == 32)
     {
       bytes_per_line = image->bytes_per_line;
-      data = (guint8 *)image->data + y * bytes_per_line + x * 4;
+      data = first_pixel;
     }
   else
     return;
@@ -542,7 +665,7 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
   if (x != 0 || y != 0 ||
       width != priv->pixmap_width || height != priv->pixmap_height)
     clutter_texture_set_area_from_rgb_data  (CLUTTER_TEXTURE (texture),
-					     data,
+					     (guint8 *)data,
 					     TRUE,
 					     x, y,
 					     width, height,
@@ -552,7 +675,7 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
 					     &error);
   else
     clutter_texture_set_from_rgb_data  (CLUTTER_TEXTURE (texture),
-					data,
+					(guint8 *)data,
 					TRUE,
 					width, height,
 					bytes_per_line,
@@ -571,6 +694,9 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
 
   if (data_allocated)
     g_free (data);
+
+  if (priv->have_shm)
+    XFree (image);
 }
 
 /**
@@ -633,6 +759,8 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
   int          x, y; 
   unsigned int width, height, border_width, depth;
   Status       status = 0;
+  gboolean     new_pixmap = FALSE, new_pixmap_width = FALSE;
+  gboolean     new_pixmap_height = FALSE, new_pixmap_depth = FALSE;
 
   ClutterX11TexturePixmapPrivate *priv;
 
@@ -642,6 +770,7 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
 
   clutter_x11_trap_x_errors ();
 
+  if (pixmap != None)
   status = XGetGeometry (clutter_x11_get_default_display(),
                          (Drawable)pixmap, 
                          &root,
@@ -666,33 +795,47 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
       priv->image = NULL;
     }
   
-  g_object_ref (texture);
-
   if (priv->pixmap != pixmap)
     {
       priv->pixmap = pixmap;
-      g_object_notify (G_OBJECT (texture), "pixmap");
+      new_pixmap = TRUE;
     }
 
   if (priv->pixmap_width != width)
     {
       priv->pixmap_width = width;
-      g_object_notify (G_OBJECT (texture), "pixmap-width");
+      new_pixmap_width = TRUE;
     }
 
   if (priv->pixmap_height != height)
     {
       priv->pixmap_height = height;
-      g_object_notify (G_OBJECT (texture), "pixmap-height");
+      new_pixmap_height = TRUE;
     }
 
   if (priv->depth != depth)
     {
       priv->depth = depth;
-      g_object_notify (G_OBJECT (texture), "pixmap-depth");
+      new_pixmap_depth = TRUE;
     }
 
+  /* NB: We defer sending the signals until updating all the
+   * above members so the values are all available to the
+   * signal handlers. */
+  g_object_ref (texture);
+  if (new_pixmap)
+    g_object_notify (G_OBJECT (texture), "pixmap");
+  if (new_pixmap_width)
+    g_object_notify (G_OBJECT (texture), "pixmap-width");
+  if (new_pixmap_height)
+    g_object_notify (G_OBJECT (texture), "pixmap-height");
+  if (new_pixmap_depth)
+    g_object_notify (G_OBJECT (texture), "pixmap-depth");
   g_object_unref (texture);
+
+  free_shm_resources (texture);
+  if (pixmap != None)
+    try_alloc_shm (texture);
 
   if (priv->depth != 0 &&
       priv->pixmap != None &&

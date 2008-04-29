@@ -1,5 +1,5 @@
-libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
-libclutterinclude_HEADERS = clutter-x11.h \
+libclutter_x11_includedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter/x11
+libclutter_x11_include_HEADERS = clutter-x11.h \
                             clutter-x11-texture-pixmap.h
 
 clutter-x11-$(CLUTTER_API_VERSION).pc: clutter-x11.pc

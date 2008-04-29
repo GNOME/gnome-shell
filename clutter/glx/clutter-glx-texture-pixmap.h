@@ -28,6 +28,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+#include <clutter/x11/clutter-x11-texture-pixmap.h>
 
 #include <GL/glx.h>
 

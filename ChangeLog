@@ -1,3 +1,18 @@
+2008-04-29  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/Makefile.am:
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* clutter/glx/clutter-glx-texture-pixmap.h:
+	* clutter/x11/Makefile.am:
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+	* tests/test-pixmap.c:
+        Commit newer x11 texture pixmap stuff (optionally using SHM).
+        Also seemingly still broken overhauled glx-texture-pixmap
+        (code by Robert and myself) 
+
+	* configure.ac:
+        Minor formatting change.
+
 2008-04-29  Neil Roberts  <neil@o-hand.com>
 
 	Removed COGLhandle and changed shader and program functions to be

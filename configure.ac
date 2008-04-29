@@ -333,6 +333,7 @@ case $clutterbackend in
     ;;
 
   fruity)
+
     CLUTTER_FLAVOUR="fruity"
     CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_FRUITY"
     AC_DEFINE([HAVE_CLUTTER_FRUITY], 1, [We're building a fruity version of the eglnative backend])
