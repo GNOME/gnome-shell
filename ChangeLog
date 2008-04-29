@@ -1,3 +1,11 @@
+2008-04-29  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_move_anchor_point): The
+	actor position was being moved in the wrong direction. Perhaps
+	this was a cut-and-paste bug from move_anchor_point_from_gravity
+	because in that function ax and ay represent the old anchor
+	position, but in this function they represent the new.
+
 2008-04-29  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/glx/Makefile.am:

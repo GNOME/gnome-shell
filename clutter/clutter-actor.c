@@ -4645,8 +4645,8 @@ clutter_actor_move_anchor_point (ClutterActor *self,
 
   priv = self->priv;
 
-  dx = ax - priv->anchor_x;
-  dy = ay - priv->anchor_y;
+  dx = priv->anchor_x - ax;
+  dy = priv->anchor_y - ay;
 
   priv->anchor_x = ax;
   priv->anchor_y = ay;
