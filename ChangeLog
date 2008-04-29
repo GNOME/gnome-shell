@@ -1,3 +1,9 @@
+2008-04-29  Chris Wang  <chris.wang@sun.com>
+
+        * src/core/window.c (meta_window_new): XGetWindowAttributes
+          can return an error value, and if it does its other results
+          are invalid! (#530485)
+
 2008-04-29  Thomas Thurman  <tthurman@gnome.org>
 
         * src/ui/fixedtip.[ch]: documentation

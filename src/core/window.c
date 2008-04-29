@@ -206,21 +206,30 @@ meta_window_new (MetaDisplay *display,
   
   meta_error_trap_push_with_return (display);
   
-  XGetWindowAttributes (display->xdisplay,
-                        xwindow, &attrs);
-  
-  if (meta_error_trap_pop_with_return (display, TRUE) != Success)
-    {
-      meta_verbose ("Failed to get attributes for window 0x%lx\n",
-                    xwindow);
-      meta_error_trap_pop (display, TRUE);
-      meta_display_ungrab (display);
-      return NULL;
-    }
-  window = meta_window_new_with_attrs (display, xwindow,
+  if (XGetWindowAttributes (display->xdisplay,xwindow, &attrs)) 
+   {
+      if(meta_error_trap_pop_with_return (display, TRUE) != Success)
+       {
+          meta_verbose ("Failed to get attributes for window 0x%lx\n",
+                        xwindow);
+          meta_error_trap_pop (display, TRUE);
+          meta_display_ungrab (display);
+          return NULL;
+       }
+      window = meta_window_new_with_attrs (display, xwindow,
                                        must_be_viewable, &attrs);
-
-
+   }
+  else
+   {
+         meta_error_trap_pop_with_return (display, TRUE); 
+         meta_verbose ("Failed to get attributes for window 0x%lx\n",
+                        xwindow);
+         meta_error_trap_pop (display, TRUE);
+         meta_display_ungrab (display);
+         return NULL;
+   }
+   
+  
   meta_error_trap_pop (display, FALSE);
   meta_display_ungrab (display);
 
