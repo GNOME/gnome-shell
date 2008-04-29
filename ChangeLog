@@ -1,3 +1,20 @@
+2008-04-29  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/cogl.h.in: renaming of API's in cogl to make the
+	primitives and path API a bit smaller and more resembling cairo.
+	* clutter/cogl/gl/cogl-primitives.c:
+	* clutter/cogl/gles/cogl-primitives.c:
+	* clutter/cogl/gles/cogl.c:
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-rectangle.c:
+	* tests/test-cogl-offscreen.c:
+	* tests/test-cogl-primitives.c:
+	* tests/test-cogl-tex-convert.c:
+	* tests/test-cogl-tex-foreign.c:
+	* tests/test-cogl-tex-getset.c:
+	* tests/test-cogl-tex-tile.c: updated according to changes in cogl.
+
 2008-04-29  Robert Bragg  <bob@o-hand.com>
 	
 	* clutter/x11/clutter-x11-texture-pixmap.c:

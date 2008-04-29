@@ -97,7 +97,7 @@ test_coglbox_paint(ClutterActor *self)
   priv = TEST_COGLBOX_GET_PRIVATE (self);
   
   cogl_color (&cback);
-  cogl_fast_fill_rectangle (0,0,400,400);
+  cogl_rectangle (0,0,400,400);
   
   cogl_color (&cfullopaque);
   cogl_texture_rectangle (priv->texhand_id,
@@ -111,10 +111,10 @@ test_coglbox_paint(ClutterActor *self)
   cogl_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->offscreen_id);
   
   cogl_color (&cred);
-  cogl_fast_fill_rectangle (20,20,100,100);
+  cogl_rectangle (20,20,100,100);
   
   cogl_color (&cgreen);
-  cogl_fast_fill_rectangle (80,80,100,100);
+  cogl_rectangle (80,80,100,100);
   
   cogl_draw_buffer (COGL_WINDOW_BUFFER, 0);
   

@@ -488,10 +488,9 @@ clutter_actor_real_pick (ClutterActor       *self,
   if (clutter_actor_should_pick_paint (self))
     {
       cogl_color (color);
-      cogl_fast_fill_rectangle (0,
-				0,
-				clutter_actor_get_width(self),
-				clutter_actor_get_height(self));
+      cogl_rectangle (0, 0,
+                      clutter_actor_get_width(self),
+                      clutter_actor_get_height(self));
     }
 }
 

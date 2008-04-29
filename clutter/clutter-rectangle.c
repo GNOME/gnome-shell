@@ -101,22 +101,22 @@ clutter_rectangle_paint (ClutterActor *self)
       cogl_color (&tmp_col);
 
       /* this sucks, but it's the only way to make a border */
-      cogl_fast_fill_rectangle (priv->border_width, 0,
-				geom.width - priv->border_width,
-				priv->border_width);
+      cogl_rectangle (priv->border_width, 0,
+                      geom.width - priv->border_width,
+                      priv->border_width);
 
-      cogl_fast_fill_rectangle (geom.width - priv->border_width,
-				priv->border_width,
-				priv->border_width,
-				geom.height - priv->border_width);
+      cogl_rectangle (geom.width - priv->border_width,
+                      priv->border_width,
+                      priv->border_width,
+                      geom.height - priv->border_width);
 
-      cogl_fast_fill_rectangle (0, geom.height - priv->border_width,
-				geom.width - priv->border_width,
-				priv->border_width);
+      cogl_rectangle (0, geom.height - priv->border_width,
+                      geom.width - priv->border_width,
+                      priv->border_width);
 
-      cogl_fast_fill_rectangle (0, 0,
-				priv->border_width,
-				geom.height - priv->border_width);
+      cogl_rectangle (0, 0,
+                      priv->border_width,
+                      geom.height - priv->border_width);
 
       tmp_col.red   = priv->color.red;
       tmp_col.green = priv->color.green;
@@ -124,10 +124,10 @@ clutter_rectangle_paint (ClutterActor *self)
 
       cogl_color (&tmp_col);
 
-      cogl_fast_fill_rectangle (priv->border_width,
-				priv->border_width,
-				geom.width - priv->border_width * 2,
-				geom.height - priv->border_width * 2);
+      cogl_rectangle (priv->border_width,
+                      priv->border_width,
+                      geom.width - priv->border_width * 2,
+                      geom.height - priv->border_width * 2);
     }
   else
     {
@@ -138,7 +138,7 @@ clutter_rectangle_paint (ClutterActor *self)
 
       cogl_color (&tmp_col);
 
-      cogl_fast_fill_rectangle (0, 0, geom.width, geom.height);
+      cogl_rectangle (0, 0, geom.width, geom.height);
     }
 
   cogl_pop_matrix();

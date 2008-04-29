@@ -92,7 +92,7 @@ test_coglbox_paint(ClutterActor *self)
   priv = TEST_COGLBOX_GET_PRIVATE (self);
   
   cogl_color (&cback);
-  cogl_fast_fill_rectangle (0,0,400,400);
+  cogl_rectangle (0,0,400,400);
   
   cogl_color (&cwhite);
 

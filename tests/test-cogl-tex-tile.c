@@ -117,7 +117,7 @@ test_coglbox_paint(ClutterActor *self)
   cogl_push_matrix ();
   
   cogl_color (&cback);
-  cogl_fast_fill_rectangle (0,0,400,400);
+  cogl_rectangle (0,0,400,400);
   
   cogl_color (&cwhite);
   cogl_translate (100,100,0);

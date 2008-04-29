@@ -332,7 +332,7 @@ cogl_clip_set (ClutterFixed x_offset,
 
       GE( glColor4x (CFX_ONE, CFX_ONE, CFX_ONE, CFX_ONE ) );
 
-      cogl_fast_fill_rectanglex (x_offset, y_offset, width, height);
+      cogl_rectanglex (x_offset, y_offset, width, height);
 
       GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
       GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );

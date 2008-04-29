@@ -80,29 +80,29 @@ static void
 test_paint_line ()
 {
   cogl_line (CLUTTER_INT_TO_FIXED (-50),
-	     CLUTTER_INT_TO_FIXED (-25),
-	     CLUTTER_INT_TO_FIXED (50),
-	     CLUTTER_INT_TO_FIXED (25));
+             CLUTTER_INT_TO_FIXED (-25),
+             CLUTTER_INT_TO_FIXED (50),
+             CLUTTER_INT_TO_FIXED (25));
 }
 
 static void
 test_paint_rect ()
 {
-  cogl_rectangle (CLUTTER_INT_TO_FIXED (-50),
-		  CLUTTER_INT_TO_FIXED (-25),
-		  CLUTTER_INT_TO_FIXED (100),
-		  CLUTTER_INT_TO_FIXED (50));
+  cogl_path_rectangle (CLUTTER_INT_TO_FIXED (-50),
+                       CLUTTER_INT_TO_FIXED (-25),
+                       CLUTTER_INT_TO_FIXED (100),
+                       CLUTTER_INT_TO_FIXED (50));
 }
 
 static void
 test_paint_rndrect()
 {
   cogl_round_rectangle (CLUTTER_INT_TO_FIXED (-50),
-			CLUTTER_INT_TO_FIXED (-25),
-			CLUTTER_INT_TO_FIXED (100),
-			CLUTTER_INT_TO_FIXED (50),
-			CLUTTER_INT_TO_FIXED (10),
-			5);
+                        CLUTTER_INT_TO_FIXED (-25),
+                        CLUTTER_INT_TO_FIXED (100),
+                        CLUTTER_INT_TO_FIXED (50),
+                        CLUTTER_INT_TO_FIXED (10),
+                        5);
 }
 
 static void
@@ -140,50 +140,56 @@ test_paint_polyg ()
 }
 
 static void
-test_paint_arc ()
-{
-  cogl_arc (0,0,
-	    CLUTTER_INT_TO_FIXED (60),
-	    CLUTTER_INT_TO_FIXED (40),
-	    CLUTTER_ANGLE_FROM_DEG (-45),
-	    CLUTTER_ANGLE_FROM_DEG (+45),
-	    10);
-}
-
-static void
 test_paint_elp ()
 {
   cogl_ellipse (0, 0,
-		CLUTTER_INT_TO_FIXED (60),
-		CLUTTER_INT_TO_FIXED (40),
-		10);
+                CLUTTER_INT_TO_FIXED (60),
+                CLUTTER_INT_TO_FIXED (40),
+                10);
 }
 
 static void
 test_paint_bezier2 ()
 {
   cogl_path_move_to (CLUTTER_INT_TO_FIXED (-50),
-		     CLUTTER_INT_TO_FIXED (+25));
-  
-  cogl_path_bezier2_to (CLUTTER_INT_TO_FIXED (0),
-			CLUTTER_INT_TO_FIXED (-25),
-			CLUTTER_INT_TO_FIXED (+50),
-			CLUTTER_INT_TO_FIXED (+25));
+                     CLUTTER_INT_TO_FIXED (+25));
+
+  /* a bezier2 is just the same as a bezier3 with both the two first
+   * coordinate pairs being equal
+   */  
+  cogl_path_curve_to (CLUTTER_INT_TO_FIXED (0),
+                      CLUTTER_INT_TO_FIXED (-25),
+                      CLUTTER_INT_TO_FIXED (0),
+                      CLUTTER_INT_TO_FIXED (-25),
+                      CLUTTER_INT_TO_FIXED (+50),
+                      CLUTTER_INT_TO_FIXED (+25));
 }
 
 static void
 test_paint_bezier3 ()
 {
   cogl_path_move_to (CLUTTER_INT_TO_FIXED (-50),
-		     CLUTTER_INT_TO_FIXED (+50));
+                     CLUTTER_INT_TO_FIXED (+50));
   
-  cogl_path_bezier3_to (CLUTTER_INT_TO_FIXED (+100),
-			CLUTTER_INT_TO_FIXED (-50),
-			CLUTTER_INT_TO_FIXED (-100),
-			CLUTTER_INT_TO_FIXED (-50),
-			CLUTTER_INT_TO_FIXED (+50),
-			CLUTTER_INT_TO_FIXED (+50));
+  cogl_path_curve_to (CLUTTER_INT_TO_FIXED (+100),
+                      CLUTTER_INT_TO_FIXED (-50),
+                      CLUTTER_INT_TO_FIXED (-100),
+                      CLUTTER_INT_TO_FIXED (-50),
+                      CLUTTER_INT_TO_FIXED (+50),
+                      CLUTTER_INT_TO_FIXED (+50));
 }
+
+static PaintFunc paint_func []=
+{
+  test_paint_line,
+  test_paint_rect,
+  test_paint_rndrect,
+  test_paint_polyl,
+  test_paint_polyg,
+  test_paint_elp,
+  test_paint_bezier2,
+  test_paint_bezier3
+};
 
 static void
 test_coglbox_paint(ClutterActor *self)
@@ -196,20 +202,12 @@ test_coglbox_paint(ClutterActor *self)
   static GTimer *timer = NULL;
   static gint paint_index = 0;
   
-  const gint NUM_PAINT_FUNCS = 9;
-  PaintFunc paint_func [NUM_PAINT_FUNCS];
+  gint NUM_PAINT_FUNCS;
+ 
+  NUM_PAINT_FUNCS = G_N_ELEMENTS (paint_func);
   
   priv = TEST_COGLBOX_GET_PRIVATE (self);
   
-  paint_func[0] = test_paint_line;
-  paint_func[1] = test_paint_rect;
-  paint_func[2] = test_paint_rndrect;
-  paint_func[3] = test_paint_polyl;
-  paint_func[4] = test_paint_polyg;
-  paint_func[5] = test_paint_arc;
-  paint_func[6] = test_paint_elp;
-  paint_func[7] = test_paint_bezier2;
-  paint_func[8] = test_paint_bezier3;
   
   if (!timer)
     {
