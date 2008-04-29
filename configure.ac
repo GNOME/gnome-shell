@@ -202,7 +202,7 @@ case $glesversion in
                 GLES_LIBS="-lgles_cm"
             fi
         else
-            EGL_LIBS="GLESv1_CM"
+            GLES_LIBS="-lGLESv1_CM"
         fi
 
    else
