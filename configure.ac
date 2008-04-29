@@ -136,7 +136,7 @@ if test x$have_x11 = xno; then
      fi
 fi
 
-PKG_CHECK_MODULES(XFIXES, xfixes >= 4, [have_xfixes=yes], [have_xfixes=no])
+PKG_CHECK_MODULES(XFIXES, xfixes >= 3, [have_xfixes=yes], [have_xfixes=no])
 if test x$have_xfixes = xyes; then
       AC_DEFINE(HAVE_XFIXES, 1, [Have the XFIXES X extension])
       X11_LIBS="$X11_LIBS -lXfixes"
@@ -192,11 +192,18 @@ case $glesversion in
     AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
     if test "x$HAVE_LIBGLES" = "xno"; then
 
-        AC_CHECK_LIB(gles_cm, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+        AC_CHECK_LIB(GLESv1_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
 	if test "x$HAVE_LIBGLES" = "xno"; then
-	  AC_MSG_ERROR([GLES library not found and egl backend requested.]);
-	fi
-        GLES_LIBS="-lgles_cm"
+
+            AC_CHECK_LIB(gles_cm, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+            if test "x$HAVE_LIBGLES" = "xno"; then
+                AC_MSG_ERROR([GLES library not found and egl backend requested.]);
+            else
+                GLES_LIBS="-lgles_cm"
+            fi
+        else
+            EGL_LIBS="GLESv1_CM"
+        fi
 
    else
         GLES_LIBS="-lGLES_CM"

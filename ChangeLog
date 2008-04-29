@@ -1,3 +1,11 @@
+2008-04-29  Robert Bragg  <bob@o-hand.com>
+	
+	* clutter/configure.ac:
+	When looking for a GLES 1 library, also try the name "GLESv1_CM".
+
+	This also reduces the xfixes version requirement to v3, since we dont
+	need support for Show/HideCursor.
+
 2008-04-28  Neil Roberts  <neil@o-hand.com>
 
 	Fixed 'make dist'
