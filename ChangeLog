@@ -1,3 +1,10 @@
+2008-04-29  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/Makefile.am:
+	* clutter/x11/Makefile.am:
+        Revert header install locations (Mistake in previous commit,
+        fixes #898)
+
 2008-04-29  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-actor.c (clutter_actor_move_anchor_point): The
