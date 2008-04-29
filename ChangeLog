@@ -1,5 +1,10 @@
 2008-04-29  Robert Bragg  <bob@o-hand.com>
 	
+	* clutter/cogl/gles/cogl-texture.c:
+	Replaces an malloc call with g_malloc.
+
+2008-04-29  Robert Bragg  <bob@o-hand.com>
+	
 	* clutter/configure.ac:
 	When looking for a GLES 1 library, also try the name "GLESv1_CM".
 

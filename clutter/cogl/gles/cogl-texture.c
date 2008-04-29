@@ -580,7 +580,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 	  slice_bmp.width  = inter_w;
 	  slice_bmp.height = inter_h;
 	  slice_bmp.rowstride = bpp * slice_bmp.width;
-	  slice_bmp.data = (guchar*) malloc (slice_bmp.rowstride *
+	  slice_bmp.data = (guchar*) g_malloc (slice_bmp.rowstride *
 					     slice_bmp.height);
 	  
 	  /* Copy subregion data */
