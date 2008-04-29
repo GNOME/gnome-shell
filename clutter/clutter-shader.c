@@ -77,10 +77,10 @@ struct _ClutterShaderPrivate
   gchar      *vertex_source;        /* GLSL source for vertex shader */
   gchar      *fragment_source;      /* GLSL source for fragment shader */
 
-  COGLhandle  program;
+  CoglHandle  program;
 
-  COGLhandle  vertex_shader;
-  COGLhandle  fragment_shader;
+  CoglHandle  vertex_shader;
+  CoglHandle  fragment_shader;
 };
 
 enum 
@@ -281,9 +281,9 @@ clutter_shader_init (ClutterShader *self)
   priv->vertex_source = NULL;
   priv->fragment_source = NULL;
 
-  priv->program = 0;
-  priv->vertex_shader = 0;
-  priv->fragment_shader = 0;
+  priv->program = COGL_INVALID_HANDLE;
+  priv->vertex_shader = COGL_INVALID_HANDLE;
+  priv->fragment_shader = COGL_INVALID_HANDLE;
 }
 
 /**
@@ -405,7 +405,7 @@ bind_glsl_shader (ClutterShader  *self,
 
   priv->program = cogl_create_program ();
 
-  if (priv->vertex_is_glsl && priv->vertex_source)
+  if (priv->vertex_is_glsl && priv->vertex_source != COGL_INVALID_HANDLE)
     {
      priv->vertex_shader = cogl_create_shader (CGL_VERTEX_SHADER);
 
@@ -414,7 +414,7 @@ bind_glsl_shader (ClutterShader  *self,
      cogl_program_attach_shader (priv->program, priv->vertex_shader);
     }
 
-  if (priv->fragment_is_glsl && priv->fragment_source)
+  if (priv->fragment_is_glsl && priv->fragment_source != COGL_INVALID_HANDLE)
     {
       GLint compiled = CGL_FALSE;
 
@@ -474,8 +474,8 @@ clutter_shader_compile (ClutterShader  *shader,
   if (priv->compiled)
     return priv->compiled;
 
-  if ((priv->vertex_source   && !priv->vertex_is_glsl) ||
-      (priv->fragment_source && !priv->fragment_is_glsl))
+  if ((priv->vertex_source != COGL_INVALID_HANDLE && !priv->vertex_is_glsl) ||
+      (priv->fragment_source != COGL_INVALID_HANDLE && !priv->fragment_is_glsl))
     {
       /* XXX: Could remove this check, since we only advertise support for GLSL
        * shaders anyways. */
@@ -521,20 +521,20 @@ clutter_shader_release (ClutterShader *shader)
   if (!priv->compiled)
     return;
 
-  g_assert (priv->program);
+  g_assert (priv->program != COGL_INVALID_HANDLE);
 
-  if (priv->vertex_is_glsl && priv->vertex_shader)
-    cogl_shader_destroy (priv->vertex_shader);
+  if (priv->vertex_is_glsl && priv->vertex_shader != COGL_INVALID_HANDLE)
+    cogl_shader_unref (priv->vertex_shader);
 
-  if (priv->fragment_is_glsl && priv->fragment_shader)
-    cogl_shader_destroy (priv->fragment_shader);
+  if (priv->fragment_is_glsl && priv->fragment_shader != COGL_INVALID_HANDLE)
+    cogl_shader_unref (priv->fragment_shader);
 
-  if (priv->program)
-    cogl_program_destroy (priv->program);
+  if (priv->program != COGL_INVALID_HANDLE)
+    cogl_program_unref (priv->program);
 
-  priv->vertex_shader = 0;
-  priv->fragment_shader = 0;
-  priv->program = 0;
+  priv->vertex_shader = COGL_INVALID_HANDLE;
+  priv->fragment_shader = COGL_INVALID_HANDLE;
+  priv->program = COGL_INVALID_HANDLE;
   priv->compiled = FALSE;
 
   g_object_notify (G_OBJECT (shader), "compiled");
@@ -603,7 +603,7 @@ clutter_shader_set_is_enabled (ClutterShader *shader,
       if (priv->is_enabled)
         cogl_program_use (priv->program);
       else
-        cogl_program_use (0);
+        cogl_program_use (COGL_INVALID_HANDLE);
 
       g_object_notify (G_OBJECT (shader), "enabled");
     }

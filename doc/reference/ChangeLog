@@ -1,3 +1,9 @@
+2008-04-29  Neil Roberts  <neil@o-hand.com>
+
+	* cogl/cogl-sections.txt: Added cogl_shader_ref,
+	cogl_shader_unref, cogl_is_shader, cogl_program_ref,
+	cogl_program_unref, cogl_is_program and cogl_is_offscreen.
+
 2008-04-29  Øyvind Kolås  <pippin@o-hand.com>
 
 	* cogl/cogl-sections.txt: updated after cogl primitives api rename

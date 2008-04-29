@@ -109,14 +109,18 @@ cogl_texture_polygon
 <FILE>cogl-shaders</FILE>
 <TITLE>Shaders and Programmable Pipeline</TITLE>
 cogl_create_shader
-cogl_shader_destroy
+cogl_shader_ref
+cogl_shader_unref
+cogl_is_shader
 cogl_shader_source
 cogl_shader_compile
 cogl_shader_get_info_log
 cogl_shader_get_parameteriv
 <SUBSECTION>
 cogl_create_program
-cogl_program_destroy
+cogl_program_ref
+cogl_program_unref
+cogl_is_program
 cogl_program_attach_shader
 cogl_program_link
 cogl_program_use
@@ -131,6 +135,7 @@ cogl_offscreen_new_to_texture
 cogl_offscreen_new_multisample
 cogl_offscreen_ref
 cogl_offscreen_unref
+cogl_is_offscreen
 cogl_offscreen_blit
 cogl_offscreen_blit_region
 cogl_draw_buffer

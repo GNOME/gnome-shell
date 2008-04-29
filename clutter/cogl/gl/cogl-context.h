@@ -53,6 +53,12 @@ typedef struct
   /* Framebuffer objects */
   GArray           *fbo_handles;
   CoglBufferTarget  draw_buffer;
+
+  /* Shaders */
+  GArray           *shader_handles;
+
+  /* Programs */
+  GArray           *program_handles;
   
   /* Relying on glext.h to define these */
   PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;

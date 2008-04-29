@@ -25,11 +25,15 @@ libclutter_cogl_la_SOURCES = \
 	cogl-primitives.h \
 	cogl-texture.h \
 	cogl-fbo.h \
+	cogl-shader.h \
+	cogl-program.h \
 	cogl-context.h \
 	cogl.c \
 	cogl-primitives.c \
 	cogl-texture.c \
 	cogl-fbo.c \
+	cogl-shader.c \
+	cogl-program.c \
 	cogl-context.c
 
 EXTRA_DIST = cogl-defines.h.in

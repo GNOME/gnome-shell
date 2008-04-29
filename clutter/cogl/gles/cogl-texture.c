@@ -33,6 +33,7 @@
 #include "cogl-bitmap.h"
 #include "cogl-texture.h"
 #include "cogl-context.h"
+#include "cogl-handle.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -64,97 +65,14 @@ struct _CoglSpanIter
   gboolean          intersects;
 };
 
-/*
- * _cogl_texture_handle_find:
- * @handle: A texture handle
- *
- * Returns the index of the given CoglHandle if found in the
- * handle array.
- */
-static gint
-_cogl_texture_handle_find (CoglHandle handle)
-{
-  _COGL_GET_CONTEXT (ctx, -1);
-  
-  gint i;
-  
-  if (ctx->texture_handles == NULL)
-    return -1;
-  
-  for (i=0; i < ctx->texture_handles->len; ++i)
-    if (g_array_index (ctx->texture_handles, CoglHandle, i) == handle)
-      return i;
-  
-  return -1;
-}
+static void _cogl_texture_free (CoglTexture *tex);
 
-/*
- * _cogl_texture_handle_new:
- * @tex: A pointer to an allocated CoglTexture structure
- *
- * Returns a new CoglHandle for the given CoglTexture
- * object.
- */
-static CoglHandle
-_cogl_texture_handle_new (CoglTexture *tex)
-{
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
-  
-  CoglHandle handle = (CoglHandle)tex;
-  
-  if (ctx->texture_handles == NULL)
-    ctx->texture_handles = g_array_new (FALSE, FALSE, sizeof (CoglHandle));
-  
-  g_array_append_val (ctx->texture_handles, handle);
-  
-  return handle;
-}
-
-/*
- * _cogl_texture_handle_release:
- * @handle: A valid CoglHandle
- *
- * Frees the given CoglHandle for use with another object.
- */
-static void
-_cogl_texture_handle_release (CoglHandle handle)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  gint i;
-  
-  if ( (i = _cogl_texture_handle_find (handle)) == -1)
-    return;
-  
-  g_array_remove_index_fast (ctx->texture_handles, i);
-}
-
-/*
- * _cogl_texture_pointer_from_handle:
- * @handle: A valid CoglHandle
- *
- * Returns a pointer to the texture object referenced by
- * given handle.
- */
-CoglTexture *
-_cogl_texture_pointer_from_handle (CoglHandle handle)
-{
-  return (CoglTexture*) handle;
-}
+COGL_HANDLE_DEFINE (Texture, texture, texture_handles);
 
 CoglHandle
 _cogl_texture_handle_from_pointer (CoglTexture *tex)
 {
   return (CoglHandle) tex;
-}
-
-gboolean
-cogl_is_texture (CoglHandle handle)
-{ 
-  if (handle == COGL_INVALID_HANDLE)
-    return FALSE;
-  
-  return _cogl_texture_handle_find (handle) >= 0;
 }
 
 static void
@@ -1038,6 +956,7 @@ cogl_texture_new_with_size (guint           width,
   tex = (CoglTexture*) g_malloc (sizeof (CoglTexture));
 
   tex->ref_count = 1;
+  COGL_HANDLE_DEBUG_NEW (texture, tex);
   
   tex->is_foreign = FALSE;
   
@@ -1098,6 +1017,7 @@ cogl_texture_new_from_data (guint              width,
   tex = (CoglTexture*) g_malloc (sizeof (CoglTexture));
   
   tex->ref_count = 1;
+  COGL_HANDLE_DEBUG_NEW (texture, tex);
   
   tex->is_foreign = FALSE;
 
@@ -1172,6 +1092,7 @@ cogl_texture_new_from_file (const gchar     *filename,
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
   
   tex->ref_count = 1;
+  COGL_HANDLE_DEBUG_NEW (texture, tex);
   
   tex->is_foreign = FALSE;
 
@@ -1283,9 +1204,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
   
   tex->ref_count = 1;
-#if COGL_DEBUG
-  printf ("COGL TEX new   %p %i\n", tex, tex->ref_count);
-#endif
+  COGL_HANDLE_DEBUG_NEW (texture, tex);
   
   /* Setup bitmap info */
   tex->is_foreign = TRUE;
@@ -1352,40 +1271,6 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE) );
   
   return _cogl_texture_handle_new (tex);
-}
-
-CoglHandle
-cogl_texture_ref (CoglHandle handle)
-{
-  CoglTexture *tex;
-
-  if (!cogl_is_texture (handle))
-    return COGL_INVALID_HANDLE;
-
-  tex = _cogl_texture_pointer_from_handle (handle);
-
-  tex->ref_count++;
-
-  return handle;
-}
-
-void
-cogl_texture_unref (CoglHandle handle)
-{
-  /* Check if valid texture handle */
-  CoglTexture *tex;
-  
-  if (!cogl_is_texture (handle))
-    return;
-  
-  tex = _cogl_texture_pointer_from_handle (handle);
-
-  if (--tex->ref_count < 1)
-    {
-      /* Free texture handle and resources */
-      _cogl_texture_handle_release (tex);
-      _cogl_texture_free (tex);
-    }
 }
 
 void

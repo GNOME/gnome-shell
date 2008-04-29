@@ -562,71 +562,95 @@ cogl_fog_set (const ClutterColor *fog_color,
 
 /* Shaders, no support on regular OpenGL 1.1 */
 
-COGLhandle
+CoglHandle
 cogl_create_program (void)
 {
-  return 0;
+  return COGL_INVALID_HANDLE;
 }
 
-COGLhandle
-cogl_create_shader (COGLenum shaderType)
+gboolean
+cogl_is_program (CoglHandle handle)
 {
-  return 0;
+  return FALSE;
+}
+
+CoglHandle
+cogl_program_ref (CoglHandle handle)
+{
+  return COGL_INVALID_HANDLE;
 }
 
 void
-cogl_shader_source (COGLhandle  shader,
+cogl_program_unref (CoglHandle handle)
+{
+}
+
+CoglHandle
+cogl_create_shader (COGLenum shaderType)
+{
+  return COGL_INVALID_HANDLE;
+}
+
+gboolean
+cogl_is_shader (CoglHandle handle)
+{
+  return FALSE;
+}
+
+CoglHandle
+cogl_shader_ref (CoglHandle handle)
+{
+  return COGL_INVALID_HANDLE;
+}
+
+void
+cogl_shader_unref (CoglHandle handle)
+{
+}
+
+void
+cogl_shader_source (CoglHandle  shader,
                     const gchar   *source)
 {
 }
 
 void
-cogl_shader_compile (COGLhandle shader_handle)
+cogl_shader_compile (CoglHandle shader_handle)
 {
 }
 
 void
-cogl_program_attach_shader (COGLhandle program_handle,
-                            COGLhandle shader_handle)
+cogl_program_attach_shader (CoglHandle program_handle,
+                            CoglHandle shader_handle)
 {
 }
 
 void
-cogl_program_link (COGLhandle program_handle)
+cogl_program_link (CoglHandle program_handle)
 {
 }
 
 void
-cogl_program_use (COGLhandle program_handle)
+cogl_program_use (CoglHandle program_handle)
 {
 }
 
 COGLint
-cogl_program_get_uniform_location (COGLhandle   program_handle,
+cogl_program_get_uniform_location (CoglHandle   program_handle,
                                    const gchar *uniform_name)
 {
   return 0;
 }
 
 void
-cogl_program_destroy (COGLhandle handle)
-{
-}
-
-void
-cogl_shader_destroy (COGLhandle handle)
-{
-}
-
-void
-cogl_shader_get_info_log (COGLhandle  handle,
+cogl_shader_get_info_log (CoglHandle  handle,
                           guint       size,
                           gchar      *buffer)
 {
 }
 
 void
-cogl_shader_get_parameteriv (COGLhandle  handle,
+cogl_shader_get_parameteriv (CoglHandle  handle,
                              COGLenum    pname,
                              COGLint    *dest)
 {

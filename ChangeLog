@@ -1,3 +1,53 @@
+2008-04-29  Neil Roberts  <neil@o-hand.com>
+
+	Removed COGLhandle and changed shader and program functions to be
+	wrapped in reference-counted CoglHandles instead.
+
+	* clutter/cogl/gl/cogl-shader.c: 
+	* clutter/cogl/gl/cogl-shader.h: 
+	* clutter/cogl/gl/cogl-program.c: 
+	* clutter/cogl/gl/cogl-program.h: 
+	New files to hold the shader and program functions.
+
+	* clutter/cogl/gl/cogl.c: Removed shader and program functions.
+
+	* clutter/cogl/common/cogl-handle.h: New header to define
+	COGL_HANDLE_DEFINE which helps build functions to create
+	reference-counted handles. This reduces the amount of duplicated
+	code.
+
+	* clutter/cogl/gl/cogl-texture.c: 
+	* clutter/cogl/gles/cogl-texture.c: 
+	* clutter/cogl/gl/cogl-fbo.c: Converted to use COGL_HANDLE_DEFINE
+	from cogl-handle.h to avoid duplicating some of the common code.
+
+	* clutter/cogl/gles/cogl-defines.h.in: 
+	* clutter/cogl/gl/cogl-defines.h.in: Removed COGLhandle
+
+	* clutter/cogl/gl/cogl-context.h: Added handle arrays for programs
+	and shaders.
+
+	* clutter/cogl/gl/cogl-context.c (cogl_create_context): Added
+	initialisers for shader_handles and program_handles.
+	(cogl_destroy_context): Added calls to g_array_free for all handle
+	arrays.
+
+	* clutter/cogl/gl/Makefile.am (libclutter_cogl_la_SOURCES): Added
+	cogl-{program,shader}.{c,h}
+
+	* clutter/cogl/common/Makefile.am
+	(libclutter_cogl_common_la_SOURCES): Added cogl-handle.h
+
+	* clutter/cogl/gles/cogl.c:
+	* clutter/cogl/cogl.h.in: Programs and shaders are now wrapped in
+	CoglHandles instead of COGLhandles. cogl_program_destroy and
+	cogl_shader_destroy is now replaced with cogl_program_unref and
+	cogl_shader_unref. cogl_program_ref and cogl_shader_ref are also
+	added.
+
+	* clutter/clutter-shader.c: Converted to use CoglHandles for the
+	programs and shaders instead of COGLhandles.
+
 2008-04-29  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/cogl/cogl.h.in: renaming of API's in cogl to make the
