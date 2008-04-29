@@ -1,3 +1,7 @@
+2008-04-29  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/ui/fixedtip.[ch]: documentation
+
 2008-04-27  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.23.21.

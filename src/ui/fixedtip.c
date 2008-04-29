@@ -25,9 +25,29 @@
 #include "fixedtip.h"
 #include "ui.h"
 
+/**
+ * The floating rectangle.  This is a GtkWindow, and it contains
+ * the "label" widget, below.
+ */
 static GtkWidget *tip = NULL;
+
+/**
+ * The actual text that gets displayed.
+ */
 static GtkWidget *label = NULL;
+/*
+ * X coordinate of the right-hand edge of the screen.
+ *
+ * \bug  This appears to be a bug; screen_right_edge is calculated only when
+ *       the window is redrawn.  Actually we should never cache it because
+ *       different windows are different sizes.
+ */
 static int screen_right_edge = 0;
+/*
+ * Y coordinate of the bottom edge of the screen.
+ *
+ * \bug  As with screen_right_edge.
+ */
 static int screen_bottom_edge = 0;
 
 static gint
