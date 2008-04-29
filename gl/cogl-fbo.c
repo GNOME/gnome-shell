@@ -33,6 +33,7 @@
 #include "cogl-texture.h"
 #include "cogl-fbo.h"
 #include "cogl-context.h"
+#include "cogl-handle.h"
 
 /* Expecting EXT functions not to be defined - redirect to pointers in context  */
 #define glGenRenderbuffersEXT                ctx->pf_glGenRenderbuffersEXT
@@ -47,65 +48,9 @@
 #define glBlitFramebufferEXT                 ctx->pf_glBlitFramebufferEXT
 #define glRenderbufferStorageMultisampleEXT  ctx->pf_glRenderbufferStorageMultisampleEXT
 
-static gint
-_cogl_fbo_handle_find (CoglHandle handle)
-{
-  _COGL_GET_CONTEXT (ctx, -1);
-  
-  gint i;
-  
-  if (ctx->fbo_handles == NULL)
-    return -1;
-  
-  for (i=0; i < ctx->fbo_handles->len; ++i)
-    if (g_array_index (ctx->fbo_handles, CoglHandle, i) == handle)
-      return i;
-  
-  return -1;
-}
+static void _cogl_offscreen_free (CoglFbo *fbo);
 
-static CoglHandle
-_cogl_fbo_handle_new (CoglFbo *fbo)
-{
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
-  
-  CoglHandle handle = (CoglHandle)fbo;
-  
-  if (ctx->fbo_handles == NULL)
-    ctx->fbo_handles = g_array_new (FALSE, FALSE, sizeof (CoglHandle));
-  
-  g_array_append_val (ctx->fbo_handles, handle);
-  
-  return handle;
-}
-
-static void
-_cogl_fbo_handle_release (CoglHandle handle)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  gint i;
-  
-  if ( (i = _cogl_fbo_handle_find (handle)) == -1)
-    return;
-  
-  g_array_remove_index_fast (ctx->fbo_handles, i);
-}
-
-static CoglFbo*
-_cogl_fbo_pointer_from_handle (CoglHandle handle)
-{
-  return (CoglFbo*) handle;
-}
-
-gboolean
-cogl_is_offscreen_buffer (CoglHandle handle)
-{ 
-  if (handle == COGL_INVALID_HANDLE)
-    return FALSE;
-  
-  return _cogl_fbo_handle_find (handle) >= 0;
-}
+COGL_HANDLE_DEFINE (Fbo, offscreen, fbo_handles);
 
 CoglHandle
 cogl_offscreen_new_to_texture (CoglHandle texhandle)
@@ -166,8 +111,10 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   fbo->width     = x_span->size - x_span->waste;
   fbo->height    = y_span->size - y_span->waste;
   fbo->gl_handle = fbo_gl_handle;
+
+  COGL_HANDLE_DEBUG_NEW (offscreen, fbo);
   
-  return _cogl_fbo_handle_new (fbo);
+  return _cogl_offscreen_handle_new (fbo);
 }
 
 CoglHandle
@@ -179,43 +126,16 @@ cogl_offscreen_new_multisample ()
   return COGL_INVALID_HANDLE;
 }
 
-CoglHandle
-cogl_offscreen_ref (CoglHandle handle)
-{
-  CoglFbo *fbo;
-
-  if (!cogl_is_offscreen_buffer (handle))
-    return COGL_INVALID_HANDLE;
-
-  fbo = _cogl_fbo_pointer_from_handle (handle);
-
-  fbo->ref_count++;
-
-  return handle;
-}
-
-void
-cogl_offscreen_unref (CoglHandle handle)
+static void
+_cogl_offscreen_free (CoglFbo *fbo)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  CoglFbo *fbo;
-  
-  /* Make sure this is a valid fbo handle */
-  if (!cogl_is_offscreen_buffer (handle))
-    return;
-  
-  fbo = _cogl_fbo_pointer_from_handle (handle);
 
-  if (--fbo->ref_count < 1)
-    {  
-      /* Release handle and destroy object */
-      GE( glDeleteFramebuffersEXT (1, &fbo->gl_handle) );
+  /* Frees FBO resources but its handle is not
+     released! Do that separately before this! */
 
-      _cogl_fbo_handle_release (handle);
-      
-      g_free (fbo);
-    }
+  GE( glDeleteFramebuffersEXT (1, &fbo->gl_handle) );
+  g_free (fbo);
 }
 
 void
@@ -239,14 +159,14 @@ cogl_offscreen_blit_region (CoglHandle src_buffer,
   CoglFbo *dst_fbo;
   
   /* Make sure these are valid fbo handles */
-  if (!cogl_is_offscreen_buffer (src_buffer))
+  if (!cogl_is_offscreen (src_buffer))
     return;
   
-  if (!cogl_is_offscreen_buffer (dst_buffer))
+  if (!cogl_is_offscreen (dst_buffer))
     return;
   
-  src_fbo = _cogl_fbo_pointer_from_handle (src_buffer);
-  dst_fbo = _cogl_fbo_pointer_from_handle (dst_buffer);
+  src_fbo = _cogl_offscreen_pointer_from_handle (src_buffer);
+  dst_fbo = _cogl_offscreen_pointer_from_handle (dst_buffer);
   
   /* Copy (and scale) a region from one to another framebuffer */
   GE( glBindFramebufferEXT (GL_READ_FRAMEBUFFER_EXT, src_fbo->gl_handle) );
@@ -269,14 +189,14 @@ cogl_offscreen_blit (CoglHandle src_buffer,
   CoglFbo *dst_fbo;
   
   /* Make sure these are valid fbo handles */
-  if (!cogl_is_offscreen_buffer (src_buffer))
+  if (!cogl_is_offscreen (src_buffer))
     return;
   
-  if (!cogl_is_offscreen_buffer (dst_buffer))
+  if (!cogl_is_offscreen (dst_buffer))
     return;
   
-  src_fbo = _cogl_fbo_pointer_from_handle (src_buffer);
-  dst_fbo = _cogl_fbo_pointer_from_handle (dst_buffer);
+  src_fbo = _cogl_offscreen_pointer_from_handle (src_buffer);
+  dst_fbo = _cogl_offscreen_pointer_from_handle (dst_buffer);
   
   /* Copy (and scale) whole image from one to another framebuffer */
   GE( glBindFramebufferEXT (GL_READ_FRAMEBUFFER_EXT, src_fbo->gl_handle) );
@@ -296,10 +216,10 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
   if (target == COGL_OFFSCREEN_BUFFER)
     {
       /* Make sure it is a valid fbo handle */
-      if (!cogl_is_offscreen_buffer (offscreen))
+      if (!cogl_is_offscreen (offscreen))
 	return;
       
-      fbo = _cogl_fbo_pointer_from_handle (offscreen);
+      fbo = _cogl_offscreen_pointer_from_handle (offscreen);
       
       /* Check current draw buffer target */
       if (ctx->draw_buffer != COGL_OFFSCREEN_BUFFER)
