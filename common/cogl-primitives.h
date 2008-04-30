@@ -36,6 +36,15 @@ struct _CoglFixedVec2
   ClutterFixed y;
 };
 
+#ifdef CLUTTER_COGL_HAS_GL
+typedef struct _CoglFloatVec2    CoglFloatVec2;
+struct _CoglFloatVec2
+{
+  GLfloat x;
+  GLfloat y;
+};
+#endif
+
 struct _CoglBezQuad
 {
   CoglFixedVec2 p1;
