@@ -651,7 +651,8 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
 	    *dst_pixel =
 	      ((((*src_pixel << 3) & 0xf8) | ((*src_pixel >> 2) & 0x7)) | \
 	      (((*src_pixel << 5) & 0xfc00) | ((*src_pixel >> 1) & 0x300)) | \
-	      (((*src_pixel << 8) & 0xf80000) | ((*src_pixel << 3) & 0x70000)));
+	      (((*src_pixel << 8) & 0xf80000) | ((*src_pixel << 3) & 0x70000)))
+	      | 0xff000000;
 	  }
     }
   else if (priv->depth == 32)
@@ -661,6 +662,32 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
     }
   else
     return;
+
+  /* For debugging purposes, un comment to simply generate dummy
+   * pixmap data. (A Green background and Blue cross) */
+#if 0
+  {
+    guint xpos, ypos;
+
+    if (data_allocated)
+      g_free (data);
+    data_allocated = TRUE;
+    data = g_malloc (width*height*4);
+    bytes_per_line = width *4;
+
+    for (ypos=0; ypos<height; ypos++)
+      for (xpos=0; xpos<width; xpos++)
+	{
+	  char *p = data + width*4*ypos + xpos * 4;
+	  guint32 *pixel = (guint32 *)p;
+	  if ((xpos > width/2 && xpos <= (width/2) + width/4)
+	      || (ypos > height/2 && ypos <= (height/2) + height/4))
+	    *pixel=0xff0000ff;
+	  else
+	    *pixel=0xff00ff00;
+	}
+  }
+#endif
 
   if (x != 0 || y != 0 ||
       width != priv->pixmap_width || height != priv->pixmap_height)

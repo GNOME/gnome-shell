@@ -1,3 +1,9 @@
+2008-04-30  Robert Bragg  <bob@openedhand.com>
+	
+	* clutter/clutter/x11/clutter-x11-texture-pixmap.c:
+	In _update_area_real with depth=16 we weren't setting up the alpha
+	channel.
+
 2008-04-29  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/glx/Makefile.am:
