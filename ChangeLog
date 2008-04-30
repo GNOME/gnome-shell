@@ -1,6 +1,12 @@
 2008-04-30  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/cogl/gles/cogl-primitives.c: (_cogl_path_fill_nodes):
+	keep track of direction we are drawing in and make sure we leave
+	two intersection points when we have changed direction.
+
+2008-04-30  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/gles/cogl-primitives.c: (_cogl_path_fill_nodes):
 	scanline rasterizer fallback for GLES without working stencil
 	buffer (would benefit from optimization/smarter choice of
 	datastructures).
