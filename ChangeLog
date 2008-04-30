@@ -1,3 +1,10 @@
+2008-04-30  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/gles/cogl-primitives.c: (_cogl_path_fill_nodes):
+	scanline rasterizer fallback for GLES without working stencil
+	buffer (would benefit from optimization/smarter choice of
+	datastructures).
+
 2008-04-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-effect.c:
