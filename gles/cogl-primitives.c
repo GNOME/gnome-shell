@@ -254,6 +254,8 @@ _cogl_path_fill_nodes ()
     gint prev_y;
     gint first_x;
     gint first_y;
+    gint lastdir=-2; /* last direction we vere moving */
+    gint lastline=-1; /* the previous scanline we added to */
 
     /* clear scanline intersection lists */
     for (i=0; i < bounds_h; i++) 
@@ -278,14 +280,21 @@ fill_close:
 
         if (dy < 0)
           ydir = -1;
-        else
+        else if (dy > 0)
           ydir = 1;
+        else
+          ydir = 0;
 
         /* do linear interpolation between vertexes */
         for (y=prev_y; y!= dest_y; y += ydir)
           {
+
+            /* only add a point if the scanline has changed and we're
+             * within bounds.
+             */
             if (y-bounds_y >= 0 &&
-                y-bounds_y < bounds_h)
+                y-bounds_y < bounds_h &&
+                lastline != y)
               {
                 gint x = prev_x + (dx * (y-prev_y)) / dy;
 
@@ -293,6 +302,15 @@ fill_close:
                   g_slist_insert_sorted (scanlines[ y - bounds_y],
                                          GINT_TO_POINTER(x),
                                          compare_ints);
+
+                if (ydir != lastdir &&  /* add a double entry when changing */
+                    lastdir!=-2)        /* vertical direction */
+                  scanlines[ y - bounds_y ]=
+                    g_slist_insert_sorted (scanlines[ y - bounds_y],
+                                           GINT_TO_POINTER(x),
+                                           compare_ints);
+                lastdir = ydir;
+                lastline = y;
               }
           }
 
