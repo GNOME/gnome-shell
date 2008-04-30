@@ -199,6 +199,12 @@ _cogl_path_stroke_nodes ()
   GE( glDrawArrays (GL_LINE_STRIP, 0, ctx->path_nodes_size) );
 }
 
+static gint compare_ints (gconstpointer a,
+                          gconstpointer b)
+{
+  return GPOINTER_TO_INT(a)-GPOINTER_TO_INT(b);
+}
+
 static void
 _cogl_path_fill_nodes ()
 {
@@ -208,6 +214,13 @@ _cogl_path_fill_nodes ()
   guint bounds_y;
   guint bounds_w;
   guint bounds_h;
+
+  bounds_x = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.x);
+  bounds_y = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.y);
+  bounds_w = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.x - ctx->path_nodes_min.x);
+  bounds_h = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.y - ctx->path_nodes_min.y);
+
+#if GOT_WORKING_STENCIL_BUFFER
   
   GE( glClear (GL_STENCIL_BUFFER_BIT) );
 
@@ -226,14 +239,99 @@ _cogl_path_fill_nodes ()
   GE( glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
   GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE) );
   
-  bounds_x = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.x);
-  bounds_y = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.y);
-  bounds_w = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.x - ctx->path_nodes_min.x);
-  bounds_h = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.y - ctx->path_nodes_min.y);
   
   cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
   
   GE( glDisable (GL_STENCIL_TEST) );
+#endif
+  {
+    GSList *scanlines[bounds_h];
+    /* This is our edge list it stores intersections between our curve and
+     * scanlines */
+
+    gint i;
+    gint prev_x;
+    gint prev_y;
+    gint first_x;
+    gint first_y;
+
+    /* clear scanline intersection lists */
+    for (i=0; i < bounds_h; i++) 
+      scanlines[i]=NULL;
+
+    first_x = prev_x = CLUTTER_FIXED_TO_INT (ctx->path_nodes[0].x);
+    first_y = prev_y = CLUTTER_FIXED_TO_INT (ctx->path_nodes[0].y);
+
+    /* saturate scanline intersection list */
+    for (i=1; i<ctx->path_nodes_size; i++)
+      {
+        gint dest_x = CLUTTER_FIXED_TO_INT (ctx->path_nodes[i].x);
+        gint dest_y = CLUTTER_FIXED_TO_INT (ctx->path_nodes[i].y);
+        gint ydir;
+        gint dx;
+        gint dy;
+        gint y;
+
+fill_close:
+        dx = dest_x - prev_x;
+        dy = dest_y - prev_y;
+
+        if (dy < 0)
+          ydir = -1;
+        else
+          ydir = 1;
+
+        /* do linear interpolation between vertexes */
+        for (y=prev_y; y!= dest_y; y += ydir)
+          {
+            if (y-bounds_y >= 0 &&
+                y-bounds_y < bounds_h)
+              {
+                gint x = prev_x + (dx * (y-prev_y)) / dy;
+
+                scanlines[ y - bounds_y ]=
+                  g_slist_insert_sorted (scanlines[ y - bounds_y],
+                                         GINT_TO_POINTER(x),
+                                         compare_ints);
+              }
+          }
+
+        prev_x = dest_x;
+        prev_y = dest_y;
+
+        /* if we're on the last knot, fake the first vertex being a next one */
+        if (ctx->path_nodes_size == i+1)
+          {
+            dest_x = first_x;
+            dest_y = first_y;
+            i++; /* to make the loop finally end */
+            goto fill_close;
+          }
+      }
+
+    /* for each scanline */
+    for (i=0; i < bounds_h; i++)
+      {
+        GSList *iter = scanlines[i];
+        while (iter)
+          {
+            GSList *next = iter->next;
+            gint startx, endx;
+            if (!next)
+              break;
+
+            startx = GPOINTER_TO_INT (iter->data);
+            endx   = GPOINTER_TO_INT (next->data);
+
+            /* draw the segments that should be visible */
+
+            cogl_rectangle (startx, i + bounds_y, endx - startx, 1);
+            iter = next->next;
+          }
+        if (scanlines[i])
+          g_slist_free (scanlines[i]);
+      }
+  }
 }
 
 void
