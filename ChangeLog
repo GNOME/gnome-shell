@@ -1,3 +1,16 @@
+2008-04-30  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/common/Makefile.am:
+	* clutter/cogl/common/cogl-primitives.c:
+	* clutter/cogl/common/cogl-primitives.h:
+	* clutter/cogl/gl/Makefile.am:
+	* clutter/cogl/gl/cogl-primitives.c:
+	* clutter/cogl/gl/cogl-primitives.h:
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/cogl/gles/cogl-primitives.c:
+	* clutter/cogl/gles/cogl-primitives.h: moved duplicated code to the
+	common directory.
+
 2008-04-30  Robert Bragg  <bob@openedhand.com>
 	
 	* clutter/clutter/x11/clutter-x11-texture-pixmap.c:
@@ -8,8 +21,8 @@
 
 	* clutter/glx/Makefile.am:
 	* clutter/x11/Makefile.am:
-        Revert header install locations (Mistake in previous commit,
-        fixes #898)
+	Revert header install locations (Mistake in previous commit,
+	fixes #898)
 
 2008-04-29  Neil Roberts  <neil@o-hand.com>
 

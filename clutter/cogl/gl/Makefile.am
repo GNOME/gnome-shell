@@ -22,7 +22,6 @@ libclutter_cogl_la_SOURCES = \
 	$(top_builddir)/clutter/cogl/cogl.h \
 	$(top_builddir)/clutter/cogl/cogl-defines-gl.h \
 	cogl-internal.h \
-	cogl-primitives.h \
 	cogl-texture.h \
 	cogl-fbo.h \
 	cogl-shader.h \
