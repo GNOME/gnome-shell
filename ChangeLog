@@ -1,3 +1,11 @@
+2008-05-01  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* tests/test-pixmap.c:
+        Fix up texture-pixmap, now works. 
+        Thanks to Neil for spotting we were actually using 
+        wrong texture type in fbconfig (COGL change).
+
 2008-04-30  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/cogl/gles/cogl-primitives.c: (_cogl_path_fill_nodes):

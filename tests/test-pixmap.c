@@ -158,14 +158,8 @@ main (int argc, char **argv)
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &gry);
 
+  /* Note this seemingly just works.. */
   pixmap = win_remote;
-
-
-  /*
-  XCompositeRedirectWindow(clutter_x11_get_default_display(),
-                           win_remote,
-                           CompositeRedirectAutomatic);
-  */
 
   tex = clutter_x11_texture_pixmap_new_with_pixmap (pixmap);
 
@@ -176,11 +170,7 @@ main (int argc, char **argv)
 
 #ifdef HAVE_CLUTTER_GLX
 
-  pixmap = create_pixmap (&w, &h, &d);
-
-#if 0
-  // pixmap = win_remote;
-
+  /* pixmap = create_pixmap (&w, &h, &d); */
 
   XCompositeRedirectWindow(clutter_x11_get_default_display(),
                            win_remote,
@@ -188,7 +178,6 @@ main (int argc, char **argv)
 
   pixmap = XCompositeNameWindowPixmap (clutter_x11_get_default_display(), 
                                        win_remote);
-#endif
 
   tex = clutter_glx_texture_pixmap_new_with_pixmap (pixmap);
 
