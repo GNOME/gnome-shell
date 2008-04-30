@@ -484,7 +484,6 @@ static void
 clutter_effect_closure_destroy (ClutterEffectClosure *c)
 {
   g_signal_handler_disconnect (c->timeline, c->signal_id);
-  clutter_behaviour_remove (c->behave, c->actor);
 
   g_object_unref (c->actor);
   g_object_unref (c->template);
