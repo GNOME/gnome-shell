@@ -1,10 +1,17 @@
+2008-05-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour.c:
+	(clutter_behaviour_remove_all): Disconnect the ::destroy
+	handler when removing all actors, to match the behaviour
+	of clutter_behaviour_remove().
+
 2008-05-01  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* tests/test-pixmap.c:
-        Fix up texture-pixmap, now works. 
-        Thanks to Neil for spotting we were actually using 
-        wrong texture type in fbconfig (COGL change).
+	Fix up texture-pixmap, now works. 
+	Thanks to Neil for spotting we were actually using 
+	wrong texture type in fbconfig (COGL change).
 
 2008-04-30  Øyvind Kolås  <pippin@o-hand.com>
 
@@ -70,12 +77,12 @@
 	* clutter/x11/Makefile.am:
 	* clutter/x11/clutter-x11-texture-pixmap.c:
 	* tests/test-pixmap.c:
-        Commit newer x11 texture pixmap stuff (optionally using SHM).
-        Also seemingly still broken overhauled glx-texture-pixmap
-        (code by Robert and myself) 
+	Commit newer x11 texture pixmap stuff (optionally using SHM).
+	Also seemingly still broken overhauled glx-texture-pixmap
+	(code by Robert and myself) 
 
 	* configure.ac:
-        Minor formatting change.
+	Minor formatting change.
 
 2008-04-29  Neil Roberts  <neil@o-hand.com>
 
@@ -761,7 +768,7 @@
 	* clutter/clutter-actor.c:
 	Remove uneeded stage private member.
 	Add show-on-set-parent prop and make so by default Actors are
-	now automatically shown when reparented (#791)            
+	now automatically shown when reparented (#791)	    
 
 	* clutter/eglx/clutter-backend-egl.c:
 	* clutter/cogl/gles/cogl.c:

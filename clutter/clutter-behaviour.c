@@ -652,6 +652,9 @@ clutter_behaviour_remove_all (ClutterBehaviour *behave)
       ClutterActor *actor = l->data;
 
       g_signal_emit (behave, behave_signals[REMOVED], 0, actor);
+      g_signal_handlers_disconnect_by_func (actor,
+                                            G_CALLBACK (remove_actor_on_destroy),
+                                            behave);
       g_object_unref (actor);
     }
 
