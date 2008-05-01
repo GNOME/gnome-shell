@@ -1,3 +1,8 @@
+2008-05-01  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/gles/cogl-primitives.c: (_cogl_path_fill_nodes): draw
+	the rasterized scanlines as an array of triangles.
+
 2008-05-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour.c:
