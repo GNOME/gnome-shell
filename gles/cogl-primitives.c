@@ -243,11 +243,13 @@ _cogl_path_fill_nodes ()
   cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
   
   GE( glDisable (GL_STENCIL_TEST) );
-#endif
+#else
   {
-    GSList *scanlines[bounds_h];
     /* This is our edge list it stores intersections between our curve and
-     * scanlines */
+     * scanlines, it should probably be implemented with a data structure
+     * that has smaller overhead for inserting the curve/scanline intersections.
+     */
+    GSList *scanlines[bounds_h];
 
     gint i;
     gint prev_x;
@@ -264,7 +266,7 @@ _cogl_path_fill_nodes ()
     first_x = prev_x = CLUTTER_FIXED_TO_INT (ctx->path_nodes[0].x);
     first_y = prev_y = CLUTTER_FIXED_TO_INT (ctx->path_nodes[0].y);
 
-    /* saturate scanline intersection list */
+    /* create scanline intersection list */
     for (i=1; i<ctx->path_nodes_size; i++)
       {
         gint dest_x = CLUTTER_FIXED_TO_INT (ctx->path_nodes[i].x);
@@ -327,29 +329,74 @@ fill_close:
           }
       }
 
-    /* for each scanline */
-    for (i=0; i < bounds_h; i++)
-      {
-        GSList *iter = scanlines[i];
-        while (iter)
-          {
-            GSList *next = iter->next;
-            gint startx, endx;
-            if (!next)
-              break;
+   {
+      gint spans = 0;
+      gint span_no;
+      GLfixed *coords;
 
-            startx = GPOINTER_TO_INT (iter->data);
-            endx   = GPOINTER_TO_INT (next->data);
+      /* count number of spans */
+      for (i=0; i < bounds_h; i++)
+        {
+          GSList *iter = scanlines[i];
+          while (iter)
+            {
+              GSList *next = iter->next;
+              if (!next)
+                {
+                  break;
+                }
+              /* draw the segments that should be visible */
+              spans ++;
+              iter = next->next;
+            }
+        }
+      coords = g_malloc0 (spans * sizeof (GLfixed) * 3 * 2 * 2);
 
-            /* draw the segments that should be visible */
+      span_no = 0;
+      /* build list of triangles */
+      for (i=0; i < bounds_h; i++)
+        {
+          GSList *iter = scanlines[i];
+          while (iter)
+            {
+              GSList *next = iter->next;
+              GLfixed x0, x1;
+              GLfixed y0, y1;
+              if (!next)
+                break;
 
-            cogl_rectangle (startx, i + bounds_y, endx - startx, 1);
-            iter = next->next;
-          }
-        if (scanlines[i])
-          g_slist_free (scanlines[i]);
-      }
+              x0 = CLUTTER_INT_TO_FIXED (GPOINTER_TO_INT (iter->data));
+              x1 = CLUTTER_INT_TO_FIXED (GPOINTER_TO_INT (next->data));
+              y0 = CLUTTER_INT_TO_FIXED (bounds_y + i);
+              y1 = CLUTTER_INT_TO_FIXED (bounds_y + i + 1) + 4096;
+              /* render scanlines 1.0625 high to avoid gaps when transformed */
+
+              coords[span_no * 12 + 0] = x0;
+              coords[span_no * 12 + 1] = y0;
+              coords[span_no * 12 + 2] = x1;
+              coords[span_no * 12 + 3] = y0;
+              coords[span_no * 12 + 4] = x1;
+              coords[span_no * 12 + 5] = y1;
+              coords[span_no * 12 + 6] = x0;
+              coords[span_no * 12 + 7] = y0;
+              coords[span_no * 12 + 8] = x0;
+              coords[span_no * 12 + 9] = y1;
+              coords[span_no * 12 + 10] = x1;
+              coords[span_no * 12 + 11] = y1;
+              span_no ++;
+              iter = next->next;
+            }
+        }
+
+        /* render triangles */
+        cogl_enable (COGL_ENABLE_VERTEX_ARRAY
+                    | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
+        GE ( glVertexPointer (2, GL_FIXED, 0, coords ) );
+        GE ( glDrawArrays (GL_TRIANGLES, 0, spans * 2 * 3));
+        g_free (coords);
+     }
   }
+#endif
 }
 
 void
