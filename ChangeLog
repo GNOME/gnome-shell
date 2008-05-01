@@ -1,3 +1,8 @@
+2008-05-01  Richard Purdie  <rpurdie@openedhand.com>
+
+	* configure.ac:
+	Set CLUTTER_COGL for fruity.
+
 2008-05-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Build fixes for the SDL flavour.

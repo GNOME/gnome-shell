@@ -231,6 +231,8 @@ case $glesversion in
     GLES_LIBS="-lGLESv2 -lEGL"
   ;;
   fruity)
+    CLUTTER_COGL="gles"
+    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
   ;;
 
   *) AC_MSG_ERROR([Invalid GL ES Version '$glesversion' specified])
