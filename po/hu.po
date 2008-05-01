@@ -889,7 +889,7 @@ msgstr "Megadott parancs futtatása"
 
 #: ../src/metacity.schemas.in.h:78
 msgid "Run a terminal"
-msgstr "Terminál megnyitása"
+msgstr "Terminál nyitása"
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
