@@ -175,20 +175,6 @@ clutter_stage_sdl_set_cursor_visible (ClutterStageWindow *stage_window,
   SDL_ShowCursor (show_cursor);
 }
 
-static GdkPixbuf *
-clutter_stage_sdl_draw_to_pixbuf (ClutterStageWindow *stage_window,
-                                  GdkPixbuf          *dest,
-                                  gint                x,
-                                  gint                y,
-                                  gint                width,
-                                  gint                height)
-{
-  g_warning ("Stage of type `%s' do not support "
-             "ClutterStageWindow::draw_to_pixbuf",
-             G_OBJECT_TYPE_NAME (stage_window));
-  return NULL;
-}
-
 static void
 clutter_stage_sdl_set_title (ClutterStageWindow *stage_window,
 			     const gchar        *title)
@@ -228,7 +214,6 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->set_fullscreen = clutter_stage_sdl_set_fullscreen;
   iface->set_cursor_visible = clutter_stage_sdl_set_cursor_visible;
   iface->set_title = clutter_stage_sdl_set_title;
-  iface->draw_to_pixbuf = clutter_stage_sdl_draw_to_pixbuf;
 }
 
 static void

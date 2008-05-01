@@ -327,7 +327,7 @@ clutter_event_dispatch (GSource     *source,
 	{
 	  event = clutter_event_new (CLUTTER_NOTHING);
 
-          event->any.stage = clutter_stage_get_default ();
+          event->any.stage = CLUTTER_STAGE (clutter_stage_get_default ());
 
 	  if (event_translate (backend, event, &sdl_event))
 	    {

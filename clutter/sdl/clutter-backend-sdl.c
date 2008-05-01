@@ -120,12 +120,6 @@ clutter_backend_sdl_init_events (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_sdl_add_options (ClutterBackend *backend,
-                                 GOptionGroup   *group)
-{
-}
-
-static void
 clutter_backend_sdl_finalize (GObject *gobject)
 {
   SDL_Quit();

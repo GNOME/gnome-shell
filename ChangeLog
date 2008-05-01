@@ -1,3 +1,16 @@
+2008-05-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Build fixes for the SDL flavour.
+
+	* clutter/sdl/clutter-backend-sdl.c: Remove an unused function.
+
+	* clutter/sdl/clutter-event-sdl.c:
+	(clutter_event_dispatch): Properly cast the stage pointer.
+
+	* clutter/sdl/clutter-stage-sdl.c:
+	(clutter_stage_window_iface_init): Remove the draw_to_pixbuf()
+	stub and assignment.
+
 2008-05-01  Richard Purdie  <rpurdie@openedhand.com>
 
 	* configure.ac:
