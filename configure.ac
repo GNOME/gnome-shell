@@ -116,6 +116,14 @@ AC_ARG_WITH([gles],
                            [Select Clutter GLES version (for EGL backends)]),
             glesversion=$with_gles)
 
+if test "x$clutterbackend" = "xfruity" 
+then
+    if test "x$glesversion" != "x1.1"; then
+       AC_MSG_ERROR([Fruity backend only supports GL ES 1.1.]);
+    fi
+    glesversion="fruity"
+fi
+
 BACKEND_PC_FILES=""
 
 # Check for X though could be redundant if backend does not need it.
@@ -221,6 +229,8 @@ case $glesversion in
 	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
     GLES_LIBS="-lGLESv2 -lEGL"
+  ;;
+  fruity)
   ;;
 
   *) AC_MSG_ERROR([Invalid GL ES Version '$glesversion' specified])
@@ -337,10 +347,6 @@ case $clutterbackend in
     CLUTTER_FLAVOUR="fruity"
     CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_FRUITY"
     AC_DEFINE([HAVE_CLUTTER_FRUITY], 1, [We're building a fruity version of the eglnative backend])
-
-    if test "x$glesversion" != "x1.1"; then
-       AC_MSG_ERROR([Fruity backend only supports GL ES 1.1.]);
-    fi
 
     EGL_LIBS="-ObjC -framework Foundation  -framework CoreFoundation  -framework CoreGraphics  -framework CoreSurface  -framework GraphicsServices  -framework OpenGLES  -framework LayerKit  -framework UIKit"
     EGL_CFLAGS=""
