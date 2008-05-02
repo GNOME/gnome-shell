@@ -79,7 +79,7 @@ set_wm_check_hint (MetaScreen *screen)
   data[0] = screen->display->leader_window;
 
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_net_supporting_wm_check,
+                   screen->display->atom__NET_SUPPORTING_WM_CHECK,
                    XA_WINDOW,
                    32, PropModeReplace, (guchar*) data, 1);
 
@@ -89,81 +89,21 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 62
-  Atom atoms[N_SUPPORTED];
-  
-  atoms[0] = screen->display->atom_net_wm_name;
-  atoms[1] = screen->display->atom_net_close_window;
-  atoms[2] = screen->display->atom_net_wm_state;
-  atoms[3] = screen->display->atom_net_wm_state_shaded;
-  atoms[4] = screen->display->atom_net_wm_state_maximized_vert;
-  atoms[5] = screen->display->atom_net_wm_state_maximized_horz;
-  atoms[6] = screen->display->atom_net_wm_desktop;
-  atoms[7] = screen->display->atom_net_number_of_desktops;
-  atoms[8] = screen->display->atom_net_current_desktop;
-  atoms[9] = screen->display->atom_net_wm_window_type;
-  atoms[10] = screen->display->atom_net_wm_window_type_desktop;
-  atoms[11] = screen->display->atom_net_wm_window_type_dock;
-  atoms[12] = screen->display->atom_net_wm_window_type_toolbar;
-  atoms[13] = screen->display->atom_net_wm_window_type_menu;
-  atoms[14] = screen->display->atom_net_wm_window_type_dialog;
-  atoms[15] = screen->display->atom_net_wm_window_type_normal;
-  atoms[16] = screen->display->atom_net_wm_state_modal;
-  atoms[17] = screen->display->atom_net_client_list;
-  atoms[18] = screen->display->atom_net_client_list_stacking;
-  atoms[19] = screen->display->atom_net_wm_state_skip_taskbar;
-  atoms[20] = screen->display->atom_net_wm_state_skip_pager;
-  atoms[21] = screen->display->atom_net_wm_icon_name;
-  atoms[22] = screen->display->atom_net_wm_icon;
-  atoms[23] = screen->display->atom_net_wm_icon_geometry;
-  atoms[24] = screen->display->atom_net_wm_moveresize;
-  atoms[25] = screen->display->atom_net_active_window;
-  atoms[26] = screen->display->atom_net_wm_strut;
-  atoms[27] = screen->display->atom_net_wm_state_hidden;
-  atoms[28] = screen->display->atom_net_wm_window_type_utility;
-  atoms[29] = screen->display->atom_net_wm_window_type_splash;
-  atoms[30] = screen->display->atom_net_wm_state_fullscreen;
-  atoms[31] = screen->display->atom_net_wm_ping;
-  atoms[32] = screen->display->atom_net_wm_pid;
-  atoms[33] = screen->display->atom_net_workarea;
-  atoms[34] = screen->display->atom_net_showing_desktop;
-  atoms[35] = screen->display->atom_net_desktop_layout;
-  atoms[36] = screen->display->atom_net_desktop_names;
-  atoms[37] = screen->display->atom_net_wm_allowed_actions;
-  atoms[38] = screen->display->atom_net_wm_action_move;
-  atoms[39] = screen->display->atom_net_wm_action_resize;
-  atoms[40] = screen->display->atom_net_wm_action_shade;
-  atoms[41] = screen->display->atom_net_wm_action_stick;
-  atoms[42] = screen->display->atom_net_wm_action_maximize_horz;
-  atoms[43] = screen->display->atom_net_wm_action_maximize_vert;
-  atoms[44] = screen->display->atom_net_wm_action_change_desktop;
-  atoms[45] = screen->display->atom_net_wm_action_close;
-  atoms[46] = screen->display->atom_net_wm_state_above;
-  atoms[47] = screen->display->atom_net_wm_state_below;
-  atoms[48] = screen->display->atom_net_startup_id;
-  atoms[49] = screen->display->atom_net_wm_strut_partial;
-  atoms[50] = screen->display->atom_net_wm_action_fullscreen;
-  atoms[51] = screen->display->atom_net_wm_action_minimize;
-  atoms[52] = screen->display->atom_net_frame_extents;
-  atoms[53] = screen->display->atom_net_request_frame_extents;
-  atoms[54] = screen->display->atom_net_wm_user_time;
-  atoms[55] = screen->display->atom_net_wm_state_demands_attention;
-  atoms[56] = screen->display->atom_net_desktop_geometry;
-  atoms[57] = screen->display->atom_net_desktop_viewport;
-  atoms[58] = screen->display->atom_net_wm_user_time_window;
-  atoms[59] = screen->display->atom_net_moveresize_window;
-  atoms[60] = screen->display->atom_net_wm_action_above;
-  atoms[61] = screen->display->atom_net_wm_action_below;
+  Atom atoms[] = {
+#define EWMH_ATOMS_ONLY
+#define item(x)  screen->display->atom_##x,
+#include "atomnames.h"
+#undef item
+#undef EWMH_ATOMS_ONLY
+  };
 
-  /* atoms[58] = screen->display->atom_net_restack_window; */
-  
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_net_supported,
+                   screen->display->atom__NET_SUPPORTED,
                    XA_ATOM,
-                   32, PropModeReplace, (guchar*) atoms, N_SUPPORTED);
+                   32, PropModeReplace,
+                   (guchar*) atoms, G_N_ELEMENTS(atoms));
   
   return Success;
-#undef N_SUPPORTED
 }
 
 static int
@@ -181,7 +121,7 @@ set_wm_icon_size_hint (MetaScreen *screen)
   vals[5] = 0;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_wm_icon_size,
+                   screen->display->atom_WM_ICON_SIZE,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) vals, N_VALS);
   
@@ -464,7 +404,7 @@ meta_screen_new (MetaDisplay *display,
     
     ev.type = ClientMessage;
     ev.window = xroot;
-    ev.message_type = display->atom_manager;
+    ev.message_type = display->atom_MANAGER;
     ev.format = 32;
     ev.data.l[0] = manager_timestamp;
     ev.data.l[1] = wm_sn_atom;
@@ -612,7 +552,7 @@ meta_screen_new (MetaDisplay *display,
   current_workspace = 0;
   if (meta_prop_get_cardinal (screen->display,
                               screen->xroot,
-                              screen->display->atom_net_current_desktop,
+                              screen->display->atom__NET_CURRENT_DESKTOP,
                               &current_workspace))
     meta_verbose ("Read existing _NET_CURRENT_DESKTOP = %d\n",
                   (int) current_workspace);
@@ -1080,7 +1020,7 @@ set_number_of_spaces_hint (MetaScreen *screen,
 
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_net_number_of_desktops,
+                   screen->display->atom__NET_NUMBER_OF_DESKTOPS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   meta_error_trap_pop (screen->display, FALSE);
@@ -1101,7 +1041,7 @@ set_desktop_geometry_hint (MetaScreen *screen)
 
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_net_desktop_geometry,
+                   screen->display->atom__NET_DESKTOP_GEOMETRY,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 2);
   meta_error_trap_pop (screen->display, FALSE);
@@ -1125,7 +1065,7 @@ set_desktop_viewport_hint (MetaScreen *screen)
 
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_net_desktop_viewport,
+                   screen->display->atom__NET_DESKTOP_VIEWPORT,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 2);
   meta_error_trap_pop (screen->display, FALSE);
@@ -1770,7 +1710,7 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
 
   if (meta_prop_get_cardinal_list (screen->display,
                                    screen->xroot,
-                                   screen->display->atom_net_desktop_layout,
+                                   screen->display->atom__NET_DESKTOP_LAYOUT,
                                    &list, &n_items))
     {
       if (n_items == 3 || n_items == 4)
@@ -1883,8 +1823,8 @@ set_workspace_names (MetaScreen *screen)
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay,
                    screen->xroot,
-                   screen->display->atom_net_desktop_names,
-		   screen->display->atom_utf8_string,
+                   screen->display->atom__NET_DESKTOP_NAMES,
+		   screen->display->atom_UTF8_STRING,
                    8, PropModeReplace,
 		   (unsigned char *)flattened->str, flattened->len);
   meta_error_trap_pop (screen->display, FALSE);
@@ -1907,7 +1847,7 @@ meta_screen_update_workspace_names (MetaScreen *screen)
   n_names = 0;
   if (!meta_prop_get_utf8_list (screen->display,
                                 screen->xroot,
-                                screen->display->atom_net_desktop_names,
+                                screen->display->atom__NET_DESKTOP_NAMES,
                                 &names, &n_names))
     {
       meta_verbose ("Failed to get workspace names from root window %d\n",
@@ -1987,7 +1927,7 @@ set_work_area_hint (MetaScreen *screen)
   
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-		   screen->display->atom_net_workarea,
+		   screen->display->atom__NET_WORKAREA,
 		   XA_CARDINAL, 32, PropModeReplace,
 		   (guchar*) data, num_workspaces*4);
   g_free (data);
@@ -2357,7 +2297,7 @@ meta_screen_update_showing_desktop_hint (MetaScreen *screen)
       
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_net_showing_desktop,
+                   screen->display->atom__NET_SHOWING_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   meta_error_trap_pop (screen->display, FALSE);

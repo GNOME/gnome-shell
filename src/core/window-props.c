@@ -157,7 +157,7 @@ init_wm_client_machine (MetaDisplay   *display,
                         MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_STRING;
-  value->atom = display->atom_wm_client_machine;
+  value->atom = display->atom_WM_CLIENT_MACHINE;
 }
 
 static void
@@ -180,7 +180,7 @@ init_net_wm_pid (MetaDisplay   *display,
                  MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_CARDINAL;
-  value->atom = display->atom_net_wm_pid;
+  value->atom = display->atom__NET_WM_PID;
 }
 
 static void
@@ -209,7 +209,7 @@ init_net_wm_user_time (MetaDisplay   *display,
                        MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_CARDINAL;
-  value->atom = display->atom_net_wm_user_time;
+  value->atom = display->atom__NET_WM_USER_TIME;
 }
 
 static void
@@ -229,7 +229,7 @@ init_net_wm_user_time_window (MetaDisplay   *display,
                               MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_WINDOW;
-  value->atom = display->atom_net_wm_user_time_window;
+  value->atom = display->atom__NET_WM_USER_TIME_WINDOW;
 }
 
 static void
@@ -264,7 +264,7 @@ reload_net_wm_user_time_window (MetaWindow    *window,
            * treated identically and will result in functions for
            * window being called to update it.  Maybe we should ignore
            * any property notifies to window->user_time_window other
-           * than atom_net_wm_user_time ones, but I just don't care
+           * than atom__NET_WM_USER_TIME ones, but I just don't care
            * and it's not specified in the spec anyway.
            */
           meta_display_register_x_window (window->display,
@@ -282,7 +282,7 @@ reload_net_wm_user_time_window (MetaWindow    *window,
           meta_window_reload_property_from_xwindow (
             window,
             window->user_time_window,
-            window->display->atom_net_wm_user_time);
+            window->display->atom__NET_WM_USER_TIME);
         }
     }
 }
@@ -359,7 +359,7 @@ set_window_title (MetaWindow *window,
     set_title_text (window,
                     window->using_net_wm_visible_name,
                     title,
-                    window->display->atom_net_wm_visible_name,
+                    window->display->atom__NET_WM_VISIBLE_NAME,
                     &window->title);
   window->using_net_wm_visible_name = modified;
   
@@ -381,7 +381,7 @@ init_net_wm_name (MetaDisplay   *display,
                   MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_UTF8;
-  value->atom = display->atom_net_wm_name;
+  value->atom = display->atom__NET_WM_NAME;
 }
 
 static void
@@ -445,7 +445,7 @@ set_icon_title (MetaWindow *window,
     set_title_text (window,
                     window->using_net_wm_visible_icon_name,
                     title,
-                    window->display->atom_net_wm_visible_icon_name,
+                    window->display->atom__NET_WM_VISIBLE_ICON_NAME,
                     &window->icon_name);
   window->using_net_wm_visible_icon_name = modified;
 }
@@ -456,7 +456,7 @@ init_net_wm_icon_name (MetaDisplay   *display,
                   MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_UTF8;
-  value->atom = display->atom_net_wm_icon_name;
+  value->atom = display->atom__NET_WM_ICON_NAME;
 }
 
 static void
@@ -518,7 +518,7 @@ init_net_wm_state (MetaDisplay    *display,
                    MetaPropValue  *value)
 {
   value->type = META_PROP_VALUE_ATOM_LIST;
-  value->atom = display->atom_net_wm_state;
+  value->atom = display->atom__NET_WM_STATE;
 }
 
 static void
@@ -547,27 +547,27 @@ reload_net_wm_state (MetaWindow    *window,
   i = 0;
   while (i < value->v.atom_list.n_atoms)
     {
-      if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_shaded)
+      if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_SHADED)
         window->shaded = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_maximized_horz)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_MAXIMIZED_HORZ)
         window->maximize_horizontally_after_placement = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_maximized_vert)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_MAXIMIZED_VERT)
         window->maximize_vertically_after_placement = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_hidden)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_HIDDEN)
         window->minimize_after_placement = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_modal)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_MODAL)
         window->wm_state_modal = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_skip_taskbar)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_SKIP_TASKBAR)
         window->wm_state_skip_taskbar = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_skip_pager)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_SKIP_PAGER)
         window->wm_state_skip_pager = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_fullscreen)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_FULLSCREEN)
         window->fullscreen = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_above)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_ABOVE)
         window->wm_state_above = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_below)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_BELOW)
         window->wm_state_below = TRUE;
-      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_demands_attention)
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_DEMANDS_ATTENTION)
         window->wm_state_demands_attention = TRUE;
 
       ++i;
@@ -585,7 +585,7 @@ init_mwm_hints (MetaDisplay    *display,
                 MetaPropValue  *value)
 {
   value->type = META_PROP_VALUE_MOTIF_HINTS;
-  value->atom = display->atom_motif_wm_hints;
+  value->atom = display->atom__MOTIF_WM_HINTS;
 }
 
 static void
@@ -754,7 +754,7 @@ init_net_wm_desktop (MetaDisplay   *display,
                      MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_CARDINAL;
-  value->atom = display->atom_net_wm_desktop;
+  value->atom = display->atom__NET_WM_DESKTOP;
 }
 
 static void
@@ -777,7 +777,7 @@ init_net_startup_id (MetaDisplay   *display,
                      MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_UTF8;
-  value->atom = display->atom_net_startup_id;
+  value->atom = display->atom__NET_STARTUP_ID;
 }
 
 static void
@@ -823,7 +823,7 @@ init_update_counter (MetaDisplay   *display,
                      MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_SYNC_COUNTER;
-  value->atom = display->atom_net_wm_sync_request_counter;
+  value->atom = display->atom__NET_WM_SYNC_REQUEST_COUNTER;
 }
 
 static void
@@ -1282,7 +1282,7 @@ init_wm_protocols (MetaDisplay   *display,
                    MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_ATOM_LIST;
-  value->atom = display->atom_wm_protocols;
+  value->atom = display->atom_WM_PROTOCOLS;
 }
 
 static void
@@ -1302,13 +1302,13 @@ reload_wm_protocols (MetaWindow    *window,
   while (i < value->v.atom_list.n_atoms)
     {
       if (value->v.atom_list.atoms[i] ==
-          window->display->atom_wm_take_focus)
+          window->display->atom_WM_TAKE_FOCUS)
         window->take_focus = TRUE;
       else if (value->v.atom_list.atoms[i] ==
-               window->display->atom_wm_delete_window)
+               window->display->atom_WM_DELETE_WINDOW)
         window->delete_window = TRUE;
       else if (value->v.atom_list.atoms[i] ==
-               window->display->atom_net_wm_ping)
+               window->display->atom__NET_WM_PING)
         window->net_wm_ping = TRUE;
       ++i;
     }
@@ -1455,27 +1455,27 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   
   i = 0;
 
-  hooks[i].property = display->atom_wm_state;
+  hooks[i].property = display->atom_WM_STATE;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;
 
-  hooks[i].property = display->atom_wm_client_machine;
+  hooks[i].property = display->atom_WM_CLIENT_MACHINE;
   hooks[i].init_func = init_wm_client_machine;
   hooks[i].reload_func = reload_wm_client_machine;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_pid;
+  hooks[i].property = display->atom__NET_WM_PID;
   hooks[i].init_func = init_net_wm_pid;
   hooks[i].reload_func = reload_net_wm_pid;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_user_time;
+  hooks[i].property = display->atom__NET_WM_USER_TIME;
   hooks[i].init_func = init_net_wm_user_time;
   hooks[i].reload_func = reload_net_wm_user_time;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_name;
+  hooks[i].property = display->atom__NET_WM_NAME;
   hooks[i].init_func = init_net_wm_name;
   hooks[i].reload_func = reload_net_wm_name;
   ++i;
@@ -1485,7 +1485,7 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].reload_func = reload_wm_name;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_icon_name;
+  hooks[i].property = display->atom__NET_WM_ICON_NAME;
   hooks[i].init_func = init_net_wm_icon_name;
   hooks[i].reload_func = reload_net_wm_icon_name;
   ++i;
@@ -1495,17 +1495,17 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].reload_func = reload_wm_icon_name;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_state;
+  hooks[i].property = display->atom__NET_WM_STATE;
   hooks[i].init_func = init_net_wm_state;
   hooks[i].reload_func = reload_net_wm_state;
   ++i;
   
-  hooks[i].property = display->atom_motif_wm_hints;
+  hooks[i].property = display->atom__MOTIF_WM_HINTS;
   hooks[i].init_func = init_mwm_hints;
   hooks[i].reload_func = reload_mwm_hints;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_icon_geometry;
+  hooks[i].property = display->atom__NET_WM_ICON_GEOMETRY;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;
@@ -1515,47 +1515,47 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].reload_func = reload_wm_class;
   ++i;
 
-  hooks[i].property = display->atom_wm_client_leader;
+  hooks[i].property = display->atom_WM_CLIENT_LEADER;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;
 
-  hooks[i].property = display->atom_sm_client_id;
+  hooks[i].property = display->atom_SM_CLIENT_ID;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;
 
-  hooks[i].property = display->atom_wm_window_role;
+  hooks[i].property = display->atom_WM_WINDOW_ROLE;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_window_type;
+  hooks[i].property = display->atom__NET_WM_WINDOW_TYPE;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_desktop;
+  hooks[i].property = display->atom__NET_WM_DESKTOP;
   hooks[i].init_func = init_net_wm_desktop;
   hooks[i].reload_func = reload_net_wm_desktop;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_strut;
+  hooks[i].property = display->atom__NET_WM_STRUT;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_strut_partial;
+  hooks[i].property = display->atom__NET_WM_STRUT_PARTIAL;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;
 
-  hooks[i].property = display->atom_net_startup_id;
+  hooks[i].property = display->atom__NET_STARTUP_ID;
   hooks[i].init_func = init_net_startup_id;
   hooks[i].reload_func = reload_net_startup_id;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_sync_request_counter;
+  hooks[i].property = display->atom__NET_WM_SYNC_REQUEST_COUNTER;
   hooks[i].init_func = init_update_counter;
   hooks[i].reload_func = reload_update_counter;
   ++i;
@@ -1565,7 +1565,7 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].reload_func = reload_normal_hints;
   ++i;
 
-  hooks[i].property = display->atom_wm_protocols;
+  hooks[i].property = display->atom_WM_PROTOCOLS;
   hooks[i].init_func = init_wm_protocols;
   hooks[i].reload_func = reload_wm_protocols;
   ++i;
@@ -1580,7 +1580,7 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].reload_func = reload_transient_for;
   ++i;
 
-  hooks[i].property = display->atom_net_wm_user_time_window;
+  hooks[i].property = display->atom__NET_WM_USER_TIME_WINDOW;
   hooks[i].init_func = init_net_wm_user_time_window;
   hooks[i].reload_func = reload_net_wm_user_time_window;
   ++i;

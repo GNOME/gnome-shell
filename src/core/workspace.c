@@ -419,7 +419,7 @@ set_active_space_hint (MetaScreen *screen)
   
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
-                   screen->display->atom_net_current_desktop,
+                   screen->display->atom__NET_CURRENT_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   meta_error_trap_pop (screen->display, FALSE);

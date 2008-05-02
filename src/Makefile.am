@@ -7,6 +7,7 @@ INCLUDES=@METACITY_CFLAGS@ -I $(srcdir)/include -DMETACITY_LIBEXECDIR=\"$(libexe
 metacity_SOURCES= 				\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
+	core/atomnames.h                        \
 	core/bell.c				\
 	core/bell.h				\
 	core/boxes.c				\

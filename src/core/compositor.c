@@ -1675,20 +1675,20 @@ get_window_type (MetaDisplay    *display,
   atoms = NULL;
   
   meta_prop_get_atom_list (display, cw->id, 
-                           display->atom_net_wm_window_type,
+                           display->atom__NET_WM_WINDOW_TYPE,
                            &atoms, &n_atoms);
 
   for (i = 0; i < n_atoms; i++) 
     {
       if (atoms[i] == compositor->atom_net_wm_window_type_dnd ||
-          atoms[i] == display->atom_net_wm_window_type_desktop ||
-          atoms[i] == display->atom_net_wm_window_type_dock ||
-          atoms[i] == display->atom_net_wm_window_type_toolbar ||
-          atoms[i] == display->atom_net_wm_window_type_menu ||
-          atoms[i] == display->atom_net_wm_window_type_dialog ||
-          atoms[i] == display->atom_net_wm_window_type_normal ||
-          atoms[i] == display->atom_net_wm_window_type_utility ||
-          atoms[i] == display->atom_net_wm_window_type_splash)
+          atoms[i] == display->atom__NET_WM_WINDOW_TYPE_DESKTOP ||
+          atoms[i] == display->atom__NET_WM_WINDOW_TYPE_DOCK ||
+          atoms[i] == display->atom__NET_WM_WINDOW_TYPE_TOOLBAR ||
+          atoms[i] == display->atom__NET_WM_WINDOW_TYPE_MENU ||
+          atoms[i] == display->atom__NET_WM_WINDOW_TYPE_DIALOG ||
+          atoms[i] == display->atom__NET_WM_WINDOW_TYPE_NORMAL ||
+          atoms[i] == display->atom__NET_WM_WINDOW_TYPE_UTILITY ||
+          atoms[i] == display->atom__NET_WM_WINDOW_TYPE_SPLASH)
         {
           type_atom = atoms[i];
           break;
@@ -1699,9 +1699,9 @@ get_window_type (MetaDisplay    *display,
 
   if (type_atom == compositor->atom_net_wm_window_type_dnd)
     cw->type = META_COMP_WINDOW_DND;
-  else if (type_atom == display->atom_net_wm_window_type_desktop)
+  else if (type_atom == display->atom__NET_WM_WINDOW_TYPE_DESKTOP)
     cw->type = META_COMP_WINDOW_DESKTOP;
-  else if (type_atom == display->atom_net_wm_window_type_dock)
+  else if (type_atom == display->atom__NET_WM_WINDOW_TYPE_DOCK)
     cw->type = META_COMP_WINDOW_DOCK;
   else
     cw->type = META_COMP_WINDOW_NORMAL;
@@ -2173,7 +2173,7 @@ process_property_notify (MetaCompositor *compositor,
       return;
     }
 
-  if (event->atom == display->atom_net_wm_window_type) {
+  if (event->atom == display->atom__NET_WM_WINDOW_TYPE) {
     MetaCompWindow *cw = find_window_in_display (display, event->window);
 
     if (!cw)

@@ -365,7 +365,7 @@ meta_window_delete (MetaWindow  *window,
                   "Deleting %s with delete_window request\n",
                   window->desc);
       meta_window_send_icccm_message (window,
-                                      window->display->atom_wm_delete_window,
+                                      window->display->atom_WM_DELETE_WINDOW,
                                       timestamp);
     }
   else

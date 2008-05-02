@@ -1159,14 +1159,14 @@ meta_stack_sync_to_server (MetaStack *stack)
 
   XChangeProperty (stack->screen->display->xdisplay,
                    stack->screen->xroot,
-                   stack->screen->display->atom_net_client_list,
+                   stack->screen->display->atom__NET_CLIENT_LIST,
                    XA_WINDOW,
                    32, PropModeReplace,
                    (unsigned char *)stack->windows->data,
                    stack->windows->len);
   XChangeProperty (stack->screen->display->xdisplay,
                    stack->screen->xroot,
-                   stack->screen->display->atom_net_client_list_stacking,
+                   stack->screen->display->atom__NET_CLIENT_LIST_STACKING,
                    XA_WINDOW,
                    32, PropModeReplace,
                    (unsigned char *)stacked->data,

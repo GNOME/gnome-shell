@@ -389,7 +389,7 @@ utf8_string_from_results (GetPropertyResults *results,
   *str_p = NULL;
   
   if (!validate_or_free_results (results, 8,
-                                 results->display->atom_utf8_string, FALSE))
+                                 results->display->atom_UTF8_STRING, FALSE))
     return FALSE;
 
   if (results->n_items > 0 &&
@@ -424,7 +424,7 @@ meta_prop_get_utf8_string (MetaDisplay *display,
   *str_p = NULL;
 
   if (!get_property (display, xwindow, xatom,
-                     display->atom_utf8_string,
+                     display->atom_UTF8_STRING,
                      &results))
     return FALSE;
 
@@ -446,7 +446,7 @@ utf8_list_from_results (GetPropertyResults *results,
   *n_str_p = 0;
 
   if (!validate_or_free_results (results, 8,
-                                 results->display->atom_utf8_string, FALSE))
+                                 results->display->atom_UTF8_STRING, FALSE))
     return FALSE;
   
   /* I'm not sure this is right, but I'm guessing the
@@ -519,7 +519,7 @@ meta_prop_get_utf8_list (MetaDisplay   *display,
   *str_p = NULL;
 
   if (!get_property (display, xwindow, xatom,
-                     display->atom_utf8_string,
+                     display->atom_UTF8_STRING,
                      &results))
     return FALSE;
 
@@ -535,7 +535,7 @@ meta_prop_set_utf8_string_hint (MetaDisplay *display,
   meta_error_trap_push (display);
   XChangeProperty (display->xdisplay, 
                    xwindow, atom,
-                   display->atom_utf8_string, 
+                   display->atom_UTF8_STRING, 
                    8, PropModeReplace, (guchar*) val, strlen (val));
   meta_error_trap_pop (display, FALSE);
 }
@@ -969,7 +969,7 @@ meta_prop_get_values (MetaDisplay   *display,
               break;
             case META_PROP_VALUE_UTF8_LIST:
             case META_PROP_VALUE_UTF8:
-              values[i].required_type = display->atom_utf8_string;
+              values[i].required_type = display->atom_UTF8_STRING;
               break;
             case META_PROP_VALUE_STRING:
             case META_PROP_VALUE_STRING_AS_UTF8:

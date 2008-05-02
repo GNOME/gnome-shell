@@ -236,7 +236,7 @@ read_rgb_icon (MetaDisplay   *display,
   data = NULL;
   result = XGetWindowProperty (display->xdisplay,
 			       xwindow,
-                               display->atom_net_wm_icon,
+                               display->atom__NET_WM_ICON,
 			       0, G_MAXLONG,
 			       False, XA_CARDINAL, &type, &format, &nitems,
 			       &bytes_after, ((guchar **)&data));
@@ -473,10 +473,10 @@ get_kwm_win_icon (MetaDisplay *display,
   meta_error_trap_push_with_return (display);
   icons = NULL;
   result = XGetWindowProperty (display->xdisplay, xwindow,
-                               display->atom_kwm_win_icon,
+                               display->atom__KWM_WIN_ICON,
 			       0, G_MAXLONG,
 			       False,
-                               display->atom_kwm_win_icon,
+                               display->atom__KWM_WIN_ICON,
 			       &type, &format, &nitems,
 			       &bytes_after, (guchar **)&icons);
 
@@ -485,7 +485,7 @@ get_kwm_win_icon (MetaDisplay *display,
       result != Success)
     return;
 
-  if (type != display->atom_kwm_win_icon)
+  if (type != display->atom__KWM_WIN_ICON)
     {
       XFree (icons);
       return;
@@ -556,9 +556,9 @@ meta_icon_cache_property_changed (MetaIconCache *icon_cache,
                                   MetaDisplay   *display,
                                   Atom           atom)
 {
-  if (atom == display->atom_net_wm_icon)
+  if (atom == display->atom__NET_WM_ICON)
     icon_cache->net_wm_icon_dirty = TRUE;
-  else if (atom == display->atom_kwm_win_icon)
+  else if (atom == display->atom__KWM_WIN_ICON)
     icon_cache->kwm_win_icon_dirty = TRUE;
   else if (atom == XA_WM_HINTS)
     icon_cache->wm_hints_dirty = TRUE;

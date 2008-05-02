@@ -1,3 +1,28 @@
+2008-05-02  Thomas Thurman  <tthurman@gnome.org>
+
+        All information should live in exactly one place.  This means
+        that the list of atoms should not be replicated anywhere.
+        Therefore, we include it via x-macros.  Closes #530843.
+
+        * src/core/atomnames.h: added list of atom names
+        * src/Makefile.am: added reference to new file
+        * src/core/display.h
+        * src/core/display.c (twice)
+        * src/core/screen.c: #included atomnames.h instead of having
+          an enormous list of atoms
+        * src/core/group-props.c
+        * src/core/window.c
+        * src/core/compositor.c
+        * src/core/window-props.c
+        * src/core/delete.c
+        * src/core/workspace.c
+        * src/core/stack.c
+        * src/core/keybindings.c
+        * src/core/iconcache.c
+        * src/core/group.c
+        * src/core/xprops.c: changed to new, simpler identifiers
+          for atoms
+
 2008-04-29  Chris Wang  <chris.wang@sun.com>
 
         * src/core/window.c (meta_window_new): XGetWindowAttributes

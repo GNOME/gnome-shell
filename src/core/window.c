@@ -296,8 +296,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
       /* WM_STATE isn't a cardinal, it's type WM_STATE, but is an int */
       if (!(meta_prop_get_cardinal_with_atom_type (display, xwindow,
-                                                   display->atom_wm_state,
-                                                   display->atom_wm_state,
+                                                   display->atom_WM_STATE,
+                                                   display->atom_WM_STATE,
                                                    &state) &&
             (state == IconicState || state == NormalState)))
         {
@@ -572,24 +572,24 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    * wm_client_machine, so push it slightly sooner.
    */
   i = 0;
-  initial_props[i++] = display->atom_wm_client_machine;
-  initial_props[i++] = display->atom_net_wm_name;
+  initial_props[i++] = display->atom_WM_CLIENT_MACHINE;
+  initial_props[i++] = display->atom__NET_WM_NAME;
   initial_props[i++] = XA_WM_CLASS;
-  initial_props[i++] = display->atom_net_wm_pid;
+  initial_props[i++] = display->atom__NET_WM_PID;
   initial_props[i++] = XA_WM_NAME;
-  initial_props[i++] = display->atom_net_wm_icon_name;
+  initial_props[i++] = display->atom__NET_WM_ICON_NAME;
   initial_props[i++] = XA_WM_ICON_NAME;
-  initial_props[i++] = display->atom_net_wm_desktop;
-  initial_props[i++] = display->atom_net_startup_id;
-  initial_props[i++] = display->atom_net_wm_sync_request_counter;
+  initial_props[i++] = display->atom__NET_WM_DESKTOP;
+  initial_props[i++] = display->atom__NET_STARTUP_ID;
+  initial_props[i++] = display->atom__NET_WM_SYNC_REQUEST_COUNTER;
   initial_props[i++] = XA_WM_NORMAL_HINTS;
-  initial_props[i++] = display->atom_wm_protocols;
+  initial_props[i++] = display->atom_WM_PROTOCOLS;
   initial_props[i++] = XA_WM_HINTS;
-  initial_props[i++] = display->atom_net_wm_user_time;
-  initial_props[i++] = display->atom_net_wm_state;
-  initial_props[i++] = display->atom_motif_wm_hints;
+  initial_props[i++] = display->atom__NET_WM_USER_TIME;
+  initial_props[i++] = display->atom__NET_WM_STATE;
+  initial_props[i++] = display->atom__MOTIF_WM_HINTS;
   initial_props[i++] = XA_WM_TRANSIENT_FOR;
-  initial_props[i++] = display->atom_net_wm_user_time_window;
+  initial_props[i++] = display->atom__NET_WM_USER_TIME_WINDOW;
   g_assert (N_INITIAL_PROPS == i);
   
   meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
@@ -1103,10 +1103,10 @@ meta_window_free (MetaWindow  *window,
       meta_verbose ("Cleaning state from window %s\n", window->desc);
       XDeleteProperty (window->display->xdisplay,
                        window->xwindow,
-                       window->display->atom_net_wm_desktop);
+                       window->display->atom__NET_WM_DESKTOP);
       XDeleteProperty (window->display->xdisplay,
                        window->xwindow,
-                       window->display->atom_net_wm_state);
+                       window->display->atom__NET_WM_STATE);
       set_wm_state (window, WithdrawnState);
       meta_error_trap_pop (window->display, FALSE);
     }
@@ -1210,8 +1210,8 @@ set_wm_state (MetaWindow *window,
 
   meta_error_trap_push (window->display);
   XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom_wm_state,
-                   window->display->atom_wm_state,
+                   window->display->atom_WM_STATE,
+                   window->display->atom_WM_STATE,
                    32, PropModeReplace, (guchar*) data, 2);
   meta_error_trap_pop (window->display, FALSE);
 }
@@ -1225,57 +1225,57 @@ set_net_wm_state (MetaWindow *window)
   i = 0;
   if (window->shaded)
     {
-      data[i] = window->display->atom_net_wm_state_shaded;
+      data[i] = window->display->atom__NET_WM_STATE_SHADED;
       ++i;
     }
   if (window->wm_state_modal)
     {
-      data[i] = window->display->atom_net_wm_state_modal;
+      data[i] = window->display->atom__NET_WM_STATE_MODAL;
       ++i;
     }
   if (window->skip_pager)
     {
-      data[i] = window->display->atom_net_wm_state_skip_pager;
+      data[i] = window->display->atom__NET_WM_STATE_SKIP_PAGER;
       ++i;
     }
   if (window->skip_taskbar)
     {
-      data[i] = window->display->atom_net_wm_state_skip_taskbar;
+      data[i] = window->display->atom__NET_WM_STATE_SKIP_TASKBAR;
       ++i;
     }
   if (window->maximized_horizontally)
     {
-      data[i] = window->display->atom_net_wm_state_maximized_horz;
+      data[i] = window->display->atom__NET_WM_STATE_MAXIMIZED_HORZ;
       ++i;
     }
   if (window->maximized_vertically)
     {
-      data[i] = window->display->atom_net_wm_state_maximized_vert;
+      data[i] = window->display->atom__NET_WM_STATE_MAXIMIZED_VERT;
       ++i;
     }
   if (window->fullscreen)
     {
-      data[i] = window->display->atom_net_wm_state_fullscreen;
+      data[i] = window->display->atom__NET_WM_STATE_FULLSCREEN;
       ++i;
     }
   if (!meta_window_showing_on_its_workspace (window) || window->shaded)
     {
-      data[i] = window->display->atom_net_wm_state_hidden;
+      data[i] = window->display->atom__NET_WM_STATE_HIDDEN;
       ++i;
     }
   if (window->wm_state_above)
     {
-      data[i] = window->display->atom_net_wm_state_above;
+      data[i] = window->display->atom__NET_WM_STATE_ABOVE;
       ++i;
     }
   if (window->wm_state_below)
     {
-      data[i] = window->display->atom_net_wm_state_below;
+      data[i] = window->display->atom__NET_WM_STATE_BELOW;
       ++i;
     }
   if (window->wm_state_demands_attention)
     {
-      data[i] = window->display->atom_net_wm_state_demands_attention;
+      data[i] = window->display->atom__NET_WM_STATE_DEMANDS_ATTENTION;
       ++i;
     }
 
@@ -1283,7 +1283,7 @@ set_net_wm_state (MetaWindow *window)
   
   meta_error_trap_push (window->display);
   XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom_net_wm_state,
+                   window->display->atom__NET_WM_STATE,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) data, i);
   meta_error_trap_pop (window->display, FALSE);
@@ -3096,9 +3096,9 @@ send_sync_request (MetaWindow *window)
   
   ev.type = ClientMessage;
   ev.window = window->xwindow;
-  ev.message_type = window->display->atom_wm_protocols;
+  ev.message_type = window->display->atom_WM_PROTOCOLS;
   ev.format = 32;
-  ev.data.l[0] = window->display->atom_net_wm_sync_request;
+  ev.data.l[0] = window->display->atom__NET_WM_SYNC_REQUEST;
   /* FIXME: meta_display_get_current_time() is bad, but since calls
    * come from meta_window_move_resize_internal (which in turn come
    * from all over), I'm not sure what we can do to fix it.  Do we
@@ -4094,7 +4094,7 @@ meta_window_focus (MetaWindow  *window,
                       "Sending WM_TAKE_FOCUS to %s since take_focus = true\n",
                       window->desc);
           meta_window_send_icccm_message (window,
-                                          window->display->atom_wm_take_focus,
+                                          window->display->atom_WM_TAKE_FOCUS,
                                           timestamp);
           window->display->expected_focus_window = window;
         }
@@ -4286,7 +4286,7 @@ update_net_frame_extents (MetaWindow *window)
 
   meta_error_trap_push (window->display);
   XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom_net_frame_extents,
+                   window->display->atom__NET_FRAME_EXTENTS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 4);
   meta_error_trap_pop (window->display, FALSE);
@@ -4313,7 +4313,7 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
   
   meta_error_trap_push (window->display);
   XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom_net_wm_desktop,
+                   window->display->atom__NET_WM_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   meta_error_trap_pop (window->display, FALSE);
@@ -4417,7 +4417,7 @@ meta_window_send_icccm_message (MetaWindow *window,
     
     ev.type = ClientMessage;
     ev.window = window->xwindow;
-    ev.message_type = window->display->atom_wm_protocols;
+    ev.message_type = window->display->atom_WM_PROTOCOLS;
     ev.format = 32;
     ev.data.l[0] = atom;
     ev.data.l[1] = timestamp;
@@ -4705,7 +4705,7 @@ meta_window_client_message (MetaWindow *window,
   display = window->display;
 
   if (event->xclient.message_type ==
-      display->atom_net_close_window)
+      display->atom__NET_CLOSE_WINDOW)
     {
       guint32 timestamp;
 
@@ -4725,7 +4725,7 @@ meta_window_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom_net_wm_desktop)
+           display->atom__NET_WM_DESKTOP)
     {
       int space;
       MetaWorkspace *workspace;
@@ -4760,7 +4760,7 @@ meta_window_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom_net_wm_state)
+           display->atom__NET_WM_STATE)
     {
       gulong action;
       Atom first;
@@ -4794,8 +4794,8 @@ meta_window_client_message (MetaWindow *window,
           meta_XFree (str2);
         }
 
-      if (first == display->atom_net_wm_state_shaded ||
-          second == display->atom_net_wm_state_shaded)
+      if (first == display->atom__NET_WM_STATE_SHADED ||
+          second == display->atom__NET_WM_STATE_SHADED)
         {
           gboolean shade;
           guint32 timestamp;
@@ -4814,8 +4814,8 @@ meta_window_client_message (MetaWindow *window,
             meta_window_unshade (window, timestamp);
         }
 
-      if (first == display->atom_net_wm_state_fullscreen ||
-          second == display->atom_net_wm_state_fullscreen)
+      if (first == display->atom__NET_WM_STATE_FULLSCREEN ||
+          second == display->atom__NET_WM_STATE_FULLSCREEN)
         {
           gboolean make_fullscreen;
 
@@ -4827,8 +4827,8 @@ meta_window_client_message (MetaWindow *window,
             meta_window_unmake_fullscreen (window);
         }
       
-      if (first == display->atom_net_wm_state_maximized_horz ||
-          second == display->atom_net_wm_state_maximized_horz)
+      if (first == display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
+          second == display->atom__NET_WM_STATE_MAXIMIZED_HORZ)
         {
           gboolean max;
 
@@ -4849,8 +4849,8 @@ meta_window_client_message (MetaWindow *window,
             }
         }
 
-      if (first == display->atom_net_wm_state_maximized_vert ||
-          second == display->atom_net_wm_state_maximized_vert)
+      if (first == display->atom__NET_WM_STATE_MAXIMIZED_VERT ||
+          second == display->atom__NET_WM_STATE_MAXIMIZED_VERT)
         {
           gboolean max;
 
@@ -4871,8 +4871,8 @@ meta_window_client_message (MetaWindow *window,
             }
         }
 
-      if (first == display->atom_net_wm_state_modal ||
-          second == display->atom_net_wm_state_modal)
+      if (first == display->atom__NET_WM_STATE_MODAL ||
+          second == display->atom__NET_WM_STATE_MODAL)
         {
           window->wm_state_modal =
             (action == _NET_WM_STATE_ADD) ||
@@ -4882,8 +4882,8 @@ meta_window_client_message (MetaWindow *window,
           meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
         }
 
-      if (first == display->atom_net_wm_state_skip_pager ||
-          second == display->atom_net_wm_state_skip_pager)
+      if (first == display->atom__NET_WM_STATE_SKIP_PAGER ||
+          second == display->atom__NET_WM_STATE_SKIP_PAGER)
         {
           window->wm_state_skip_pager = 
             (action == _NET_WM_STATE_ADD) ||
@@ -4893,8 +4893,8 @@ meta_window_client_message (MetaWindow *window,
           set_net_wm_state (window);
         }
 
-      if (first == display->atom_net_wm_state_skip_taskbar ||
-          second == display->atom_net_wm_state_skip_taskbar)
+      if (first == display->atom__NET_WM_STATE_SKIP_TASKBAR ||
+          second == display->atom__NET_WM_STATE_SKIP_TASKBAR)
         {
           window->wm_state_skip_taskbar =
             (action == _NET_WM_STATE_ADD) ||
@@ -4904,8 +4904,8 @@ meta_window_client_message (MetaWindow *window,
           set_net_wm_state (window);
         }
 
-      if (first == display->atom_net_wm_state_above ||
-          second == display->atom_net_wm_state_above)
+      if (first == display->atom__NET_WM_STATE_ABOVE ||
+          second == display->atom__NET_WM_STATE_ABOVE)
         {
           window->wm_state_above = 
             (action == _NET_WM_STATE_ADD) ||
@@ -4915,8 +4915,8 @@ meta_window_client_message (MetaWindow *window,
           set_net_wm_state (window);
         }
 
-      if (first == display->atom_net_wm_state_below ||
-          second == display->atom_net_wm_state_below)
+      if (first == display->atom__NET_WM_STATE_BELOW ||
+          second == display->atom__NET_WM_STATE_BELOW)
         {
           window->wm_state_below = 
             (action == _NET_WM_STATE_ADD) ||
@@ -4926,8 +4926,8 @@ meta_window_client_message (MetaWindow *window,
           set_net_wm_state (window);
         }
 
-      if (first == display->atom_net_wm_state_demands_attention ||
-          second == display->atom_net_wm_state_demands_attention)
+      if (first == display->atom__NET_WM_STATE_DEMANDS_ATTENTION ||
+          second == display->atom__NET_WM_STATE_DEMANDS_ATTENTION)
         {
           if ((action == _NET_WM_STATE_ADD) ||
               (action == _NET_WM_STATE_TOGGLE && !window->wm_state_demands_attention))
@@ -4939,7 +4939,7 @@ meta_window_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom_wm_change_state)
+           display->atom_WM_CHANGE_STATE)
     {
       meta_verbose ("WM_CHANGE_STATE client message, state: %ld\n",
                     event->xclient.data.l[0]);
@@ -4950,7 +4950,7 @@ meta_window_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom_net_wm_moveresize)
+           display->atom__NET_WM_MOVERESIZE)
     {
       int x_root;
       int y_root;
@@ -5085,7 +5085,7 @@ meta_window_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom_net_moveresize_window)
+           display->atom__NET_MOVERESIZE_WINDOW)
     {
       int gravity, source;
       guint value_mask;
@@ -5106,7 +5106,7 @@ meta_window_client_message (MetaWindow *window,
                                       event->xclient.data.l[4]); /* height */
     }
   else if (event->xclient.message_type ==
-           display->atom_net_active_window)
+           display->atom__NET_ACTIVE_WINDOW)
     {
       MetaClientType source_indication;
       guint32        timestamp;
@@ -5332,7 +5332,7 @@ process_property_notify (MetaWindow     *window,
   /* First, property notifies to ignore because we shouldn't honor
    * new values
    */
-  if (event->atom == window->display->atom_net_wm_state)
+  if (event->atom == window->display->atom__NET_WM_STATE)
     {
       meta_verbose ("Property notify on %s for _NET_WM_STATE, ignoring (we should be the one who set the property in the first place)\n",
                     window->desc);
@@ -5353,10 +5353,10 @@ process_property_notify (MetaWindow     *window,
       if (!window->using_net_wm_name)
         meta_window_reload_property (window, XA_WM_NAME);
     }
-  else if (event->atom == window->display->atom_net_wm_name)
+  else if (event->atom == window->display->atom__NET_WM_NAME)
     {
       meta_verbose ("Property notify on %s for NET_WM_NAME\n", window->desc);
-      meta_window_reload_property (window, window->display->atom_net_wm_name);
+      meta_window_reload_property (window, window->display->atom__NET_WM_NAME);
       
       /* if _NET_WM_NAME was unset, reload WM_NAME */
       if (!window->using_net_wm_name)
@@ -5370,10 +5370,10 @@ process_property_notify (MetaWindow     *window,
       if (!window->using_net_wm_icon_name)
         meta_window_reload_property (window, XA_WM_ICON_NAME);
     }
-  else if (event->atom == window->display->atom_net_wm_icon_name)
+  else if (event->atom == window->display->atom__NET_WM_ICON_NAME)
     {
       meta_verbose ("Property notify on %s for NET_WM_ICON_NAME\n", window->desc);
-      meta_window_reload_property (window, window->display->atom_net_wm_icon_name);
+      meta_window_reload_property (window, window->display->atom__NET_WM_ICON_NAME);
       
       /* if _NET_WM_ICON_NAME was unset, reload WM_ICON_NAME */
       if (!window->using_net_wm_icon_name)
@@ -5388,11 +5388,11 @@ process_property_notify (MetaWindow     *window,
       /* See if we need to constrain current size */
       meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
     }
-  else if (event->atom == window->display->atom_wm_protocols)
+  else if (event->atom == window->display->atom_WM_PROTOCOLS)
     {
       meta_verbose ("Property notify on %s for WM_PROTOCOLS\n", window->desc);
       
-      meta_window_reload_property (window, window->display->atom_wm_protocols);
+      meta_window_reload_property (window, window->display->atom_WM_PROTOCOLS);
     }
   else if (event->atom == XA_WM_HINTS)
     {
@@ -5400,12 +5400,12 @@ process_property_notify (MetaWindow     *window,
 
       meta_window_reload_property (window, XA_WM_HINTS);
     }
-  else if (event->atom == window->display->atom_motif_wm_hints)
+  else if (event->atom == window->display->atom__MOTIF_WM_HINTS)
     {
       meta_verbose ("Property notify on %s for MOTIF_WM_HINTS\n", window->desc);
       
       meta_window_reload_property (window,
-                                   window->display->atom_motif_wm_hints);
+                                   window->display->atom__MOTIF_WM_HINTS);
     }
   else if (event->atom == XA_WM_CLASS)
     {
@@ -5420,26 +5420,26 @@ process_property_notify (MetaWindow     *window,
       meta_window_reload_property (window, XA_WM_TRANSIENT_FOR);
     }
   else if (event->atom ==
-           window->display->atom_wm_window_role)
+           window->display->atom_WM_WINDOW_ROLE)
     {
       meta_verbose ("Property notify on %s for WM_WINDOW_ROLE\n", window->desc);
       
       update_role (window);
     }
   else if (event->atom ==
-           window->display->atom_wm_client_leader ||
+           window->display->atom_WM_CLIENT_LEADER ||
            event->atom ==
-           window->display->atom_sm_client_id)
+           window->display->atom_SM_CLIENT_ID)
     {
       meta_warning ("Broken client! Window %s changed client leader window or SM client ID\n", window->desc);
     }
   else if (event->atom ==
-           window->display->atom_net_wm_window_type)
+           window->display->atom__NET_WM_WINDOW_TYPE)
     {
       meta_verbose ("Property notify on %s for NET_WM_WINDOW_TYPE\n", window->desc);
       update_net_wm_type (window);
     }
-  else if (event->atom == window->display->atom_net_wm_icon)
+  else if (event->atom == window->display->atom__NET_WM_ICON)
     {
       meta_verbose ("Property notify on %s for NET_WM_ICON\n", window->desc);
       meta_icon_cache_property_changed (&window->icon_cache,
@@ -5447,7 +5447,7 @@ process_property_notify (MetaWindow     *window,
                                         event->atom);
       meta_window_queue(window, META_QUEUE_UPDATE_ICON);
     }
-  else if (event->atom == window->display->atom_kwm_win_icon)
+  else if (event->atom == window->display->atom__KWM_WIN_ICON)
     {
       meta_verbose ("Property notify on %s for KWM_WIN_ICON\n", window->desc);
 
@@ -5456,41 +5456,41 @@ process_property_notify (MetaWindow     *window,
                                         event->atom);
       meta_window_queue(window, META_QUEUE_UPDATE_ICON);
     }
-  else if ((event->atom == window->display->atom_net_wm_strut) ||
-	   (event->atom == window->display->atom_net_wm_strut_partial))
+  else if ((event->atom == window->display->atom__NET_WM_STRUT) ||
+	   (event->atom == window->display->atom__NET_WM_STRUT_PARTIAL))
     {
       meta_verbose ("Property notify on %s for _NET_WM_STRUT\n", window->desc);
       meta_window_update_struts (window);
     }
-  else if (event->atom == window->display->atom_net_startup_id)
+  else if (event->atom == window->display->atom__NET_STARTUP_ID)
     {
       meta_verbose ("Property notify on %s for _NET_STARTUP_ID\n", window->desc);
       
       meta_window_reload_property (window,
-                                   window->display->atom_net_startup_id);
+                                   window->display->atom__NET_STARTUP_ID);
     }
-  else if (event->atom == window->display->atom_net_wm_sync_request_counter)
+  else if (event->atom == window->display->atom__NET_WM_SYNC_REQUEST_COUNTER)
     {
       meta_verbose ("Property notify on %s for _NET_WM_SYNC_REQUEST_COUNTER\n", window->desc);
       
       meta_window_reload_property (window,
-                                   window->display->atom_net_wm_sync_request_counter);
+                                   window->display->atom__NET_WM_SYNC_REQUEST_COUNTER);
     }
-  else if (event->atom == window->display->atom_net_wm_user_time)
+  else if (event->atom == window->display->atom__NET_WM_USER_TIME)
     {
       Window xid;
-      Atom atom_net_wm_user_time;
+      Atom atom__NET_WM_USER_TIME;
 
       meta_verbose ("Property notify on %s for _NET_WM_USER_TIME\n", window->desc);
 
-      atom_net_wm_user_time = window->display->atom_net_wm_user_time;
+      atom__NET_WM_USER_TIME = window->display->atom__NET_WM_USER_TIME;
       if (window->user_time_window)
         xid = window->user_time_window;
       else
         xid = window->xwindow;
       meta_window_reload_property_from_xwindow (window,
                                                 xid,
-                                                atom_net_wm_user_time);
+                                                atom__NET_WM_USER_TIME);
     }
 
   return TRUE;
@@ -5554,7 +5554,7 @@ meta_window_get_icon_geometry (MetaWindow    *window,
 
   if (meta_prop_get_cardinal_list (window->display,
                                    window->xwindow,
-                                   window->display->atom_net_wm_icon_geometry,
+                                   window->display->atom__NET_WM_ICON_GEOMETRY,
                                    &geometry, &nitems))
     {
       if (nitems != 4)
@@ -5588,7 +5588,7 @@ read_client_leader (MetaDisplay *display,
   Window retval = None;
   
   meta_prop_get_window (display, xwindow,
-                        display->atom_wm_client_leader,
+                        display->atom_WM_CLIENT_LEADER,
                         &retval);
 
   return retval;
@@ -5643,7 +5643,7 @@ update_sm_hints (MetaWindow *window)
       window->xclient_leader = leader;
 
       if (meta_prop_get_latin1_string (window->display, leader,
-                                       window->display->atom_sm_client_id,
+                                       window->display->atom_SM_CLIENT_ID,
                                        &str))
         {
           window->sm_client_id = g_strdup (str);
@@ -5663,7 +5663,7 @@ update_sm_hints (MetaWindow *window)
 
           str = NULL;
           if (meta_prop_get_latin1_string (window->display, window->xwindow,
-                                           window->display->atom_sm_client_id,
+                                           window->display->atom_SM_CLIENT_ID,
                                            &str))
             {
               if (window->sm_client_id == NULL) /* first time through */
@@ -5691,7 +5691,7 @@ update_role (MetaWindow *window)
   window->role = NULL;
 
   if (meta_prop_get_latin1_string (window->display, window->xwindow,
-                                   window->display->atom_wm_window_role,
+                                   window->display->atom_WM_WINDOW_ROLE,
                                    &str))
     {
       window->role = g_strdup (str);
@@ -5714,7 +5714,7 @@ update_net_wm_type (MetaWindow *window)
   atoms = NULL;
   
   meta_prop_get_atom_list (window->display, window->xwindow, 
-                           window->display->atom_net_wm_window_type,
+                           window->display->atom__NET_WM_WINDOW_TYPE,
                            &atoms, &n_atoms);
 
   i = 0;
@@ -5723,14 +5723,14 @@ update_net_wm_type (MetaWindow *window)
       /* We break as soon as we find one we recognize,
        * supposed to prefer those near the front of the list
        */
-      if (atoms[i] == window->display->atom_net_wm_window_type_desktop ||
-          atoms[i] == window->display->atom_net_wm_window_type_dock ||
-          atoms[i] == window->display->atom_net_wm_window_type_toolbar ||
-          atoms[i] == window->display->atom_net_wm_window_type_menu ||
-          atoms[i] == window->display->atom_net_wm_window_type_dialog ||
-          atoms[i] == window->display->atom_net_wm_window_type_normal ||
-          atoms[i] == window->display->atom_net_wm_window_type_utility ||
-          atoms[i] == window->display->atom_net_wm_window_type_splash)
+      if (atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DESKTOP ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DOCK ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_TOOLBAR ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_MENU ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH)
         {
           window->type_atom = atoms[i];
           break;
@@ -5889,7 +5889,7 @@ meta_window_update_struts (MetaWindow *window)
 
   if (meta_prop_get_cardinal_list (window->display,
                                    window->xwindow,
-                                   window->display->atom_net_wm_strut_partial,
+                                   window->display->atom__NET_WM_STRUT_PARTIAL,
                                    &struts, &nitems))
     {
       if (nitems != 12)
@@ -5955,7 +5955,7 @@ meta_window_update_struts (MetaWindow *window)
   if (!new_struts &&
       meta_prop_get_cardinal_list (window->display,
                                    window->xwindow,
-                                   window->display->atom_net_wm_strut,
+                                   window->display->atom__NET_WM_STRUT,
                                    &struts, &nitems))
     {
       if (nitems != 4)
@@ -6059,21 +6059,21 @@ recalc_window_type (MetaWindow *window)
   
   if (window->type_atom != None)
     {
-      if (window->type_atom  == window->display->atom_net_wm_window_type_desktop)
+      if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DESKTOP)
         window->type = META_WINDOW_DESKTOP;
-      else if (window->type_atom  == window->display->atom_net_wm_window_type_dock)
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DOCK)
         window->type = META_WINDOW_DOCK;
-      else if (window->type_atom  == window->display->atom_net_wm_window_type_toolbar)
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLBAR)
         window->type = META_WINDOW_TOOLBAR;
-      else if (window->type_atom  == window->display->atom_net_wm_window_type_menu)
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_MENU)
         window->type = META_WINDOW_MENU;
-      else if (window->type_atom  == window->display->atom_net_wm_window_type_dialog)
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG)
         window->type = META_WINDOW_DIALOG;
-      else if (window->type_atom  == window->display->atom_net_wm_window_type_normal)
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
         window->type = META_WINDOW_NORMAL;
-      else if (window->type_atom  == window->display->atom_net_wm_window_type_utility)
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY)
         window->type = META_WINDOW_UTILITY;
-      else if (window->type_atom  == window->display->atom_net_wm_window_type_splash)
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH)
         window->type = META_WINDOW_SPLASHSCREEN;
       else
         meta_bug ("Set a type atom for %s that wasn't handled in recalc_window_type\n",
@@ -6124,27 +6124,27 @@ set_allowed_actions_hint (MetaWindow *window)
   i = 0;
   if (window->has_move_func)
     {
-      data[i] = window->display->atom_net_wm_action_move;
+      data[i] = window->display->atom__NET_WM_ACTION_MOVE;
       ++i;
     }
   if (window->has_resize_func)
     {
-      data[i] = window->display->atom_net_wm_action_resize;
+      data[i] = window->display->atom__NET_WM_ACTION_RESIZE;
       ++i;
     }
   if (window->has_fullscreen_func)
     {
-      data[i] = window->display->atom_net_wm_action_fullscreen;
+      data[i] = window->display->atom__NET_WM_ACTION_FULLSCREEN;
       ++i;
     }
   if (window->has_minimize_func)
     {
-      data[i] = window->display->atom_net_wm_action_minimize;
+      data[i] = window->display->atom__NET_WM_ACTION_MINIMIZE;
       ++i;
     }
   if (window->has_shade_func)
     {
-      data[i] = window->display->atom_net_wm_action_shade;
+      data[i] = window->display->atom__NET_WM_ACTION_SHADE;
       ++i;
     }
   /* sticky according to EWMH is different from metacity's sticky;
@@ -6152,24 +6152,24 @@ set_allowed_actions_hint (MetaWindow *window)
    */
   if (window->has_maximize_func)
     {
-      data[i] = window->display->atom_net_wm_action_maximize_horz;
+      data[i] = window->display->atom__NET_WM_ACTION_MAXIMIZE_HORZ;
       ++i;
-      data[i] = window->display->atom_net_wm_action_maximize_vert;
+      data[i] = window->display->atom__NET_WM_ACTION_MAXIMIZE_VERT;
       ++i;
     }
   /* We always allow this */
-  data[i] = window->display->atom_net_wm_action_change_desktop;
+  data[i] = window->display->atom__NET_WM_ACTION_CHANGE_DESKTOP;
   ++i;
   if (window->has_close_func)
     {
-      data[i] = window->display->atom_net_wm_action_close;
+      data[i] = window->display->atom__NET_WM_ACTION_CLOSE;
       ++i;
     }
 
   /* I guess we always allow above/below operations */
-  data[i] = window->display->atom_net_wm_action_above;
+  data[i] = window->display->atom__NET_WM_ACTION_ABOVE;
   ++i;
-  data[i] = window->display->atom_net_wm_action_below;
+  data[i] = window->display->atom__NET_WM_ACTION_BELOW;
   ++i;
 
   g_assert (i <= MAX_N_ACTIONS);
@@ -6178,7 +6178,7 @@ set_allowed_actions_hint (MetaWindow *window)
   
   meta_error_trap_push (window->display);
   XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom_net_wm_allowed_actions,
+                   window->display->atom__NET_WM_ALLOWED_ACTIONS,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) data, i);
   meta_error_trap_pop (window->display, FALSE);

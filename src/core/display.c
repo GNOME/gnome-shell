@@ -306,10 +306,6 @@ disable_compositor (MetaDisplay *display)
  * otherwise-- that is, if the display doesn't exist or it already
  * has a window manager.
  *
- * \bug The list of atom_names is prone to get out of sync with the
- * main list; I'd rather include them in that list using the stringify
- * operator or something.
- *
  * \ingroup main
  */
 gboolean
@@ -320,107 +316,12 @@ meta_display_open (void)
   GSList *tmp;
   int i;
   guint32 timestamp;
-  /* Remember to edit code that assigns each atom to display struct
-   * when adding an atom name here.
-   */
+
+  /* A list of all atom names, so that we can intern them in one go. */
   char *atom_names[] = {
-    "_NET_WM_NAME",
-    "WM_PROTOCOLS",
-    "WM_TAKE_FOCUS",
-    "WM_DELETE_WINDOW",
-    "WM_STATE",
-    "_NET_CLOSE_WINDOW",
-    "_NET_WM_STATE",
-    "_MOTIF_WM_HINTS",
-    "_NET_WM_STATE_SHADED",
-    "_NET_WM_STATE_MAXIMIZED_HORZ",
-    "_NET_WM_STATE_MAXIMIZED_VERT",
-    "_NET_WM_DESKTOP",
-    "_NET_NUMBER_OF_DESKTOPS",
-    "WM_CHANGE_STATE",
-    "SM_CLIENT_ID",
-    "WM_CLIENT_LEADER",
-    "WM_WINDOW_ROLE",
-    "_NET_CURRENT_DESKTOP",
-    "_NET_SUPPORTING_WM_CHECK",
-    "_NET_SUPPORTED",
-    "_NET_WM_WINDOW_TYPE",
-    "_NET_WM_WINDOW_TYPE_DESKTOP",
-    "_NET_WM_WINDOW_TYPE_DOCK",
-    "_NET_WM_WINDOW_TYPE_TOOLBAR",
-    "_NET_WM_WINDOW_TYPE_MENU",
-    "_NET_WM_WINDOW_TYPE_DIALOG",
-    "_NET_WM_WINDOW_TYPE_NORMAL",
-    "_NET_WM_STATE_MODAL",
-    "_NET_CLIENT_LIST",
-    "_NET_CLIENT_LIST_STACKING",
-    "_NET_WM_STATE_SKIP_TASKBAR",
-    "_NET_WM_STATE_SKIP_PAGER",
-    "_NET_WM_ICON_NAME",
-    "_NET_WM_ICON",
-    "_NET_WM_ICON_GEOMETRY",
-    "UTF8_STRING",
-    "WM_ICON_SIZE",
-    "_KWM_WIN_ICON",
-    "_NET_WM_MOVERESIZE",
-    "_NET_ACTIVE_WINDOW",
-    "_METACITY_RESTART_MESSAGE",    
-    "_NET_WM_STRUT",
-    "_METACITY_RELOAD_THEME_MESSAGE",
-    "_METACITY_SET_KEYBINDINGS_MESSAGE",
-    "_NET_WM_STATE_HIDDEN",
-    "_NET_WM_WINDOW_TYPE_UTILITY",
-    "_NET_WM_WINDOW_TYPE_SPLASH",
-    "_NET_WM_STATE_FULLSCREEN",
-    "_NET_WM_PING",
-    "_NET_WM_PID",
-    "WM_CLIENT_MACHINE",
-    "_NET_WORKAREA",
-    "_NET_SHOWING_DESKTOP",
-    "_NET_DESKTOP_LAYOUT",
-    "MANAGER",
-    "TARGETS",
-    "MULTIPLE",
-    "TIMESTAMP",
-    "VERSION",
-    "ATOM_PAIR",
-    "_NET_DESKTOP_NAMES",
-    "_NET_WM_ALLOWED_ACTIONS",
-    "_NET_WM_ACTION_MOVE",
-    "_NET_WM_ACTION_RESIZE",
-    "_NET_WM_ACTION_SHADE",
-    "_NET_WM_ACTION_STICK",
-    "_NET_WM_ACTION_MAXIMIZE_HORZ",
-    "_NET_WM_ACTION_MAXIMIZE_VERT",
-    "_NET_WM_ACTION_CHANGE_DESKTOP",
-    "_NET_WM_ACTION_CLOSE",
-    "_NET_WM_STATE_ABOVE",
-    "_NET_WM_STATE_BELOW",
-    "_NET_STARTUP_ID",
-    "_METACITY_TOGGLE_VERBOSE",
-    "_NET_WM_SYNC_REQUEST",
-    "_NET_WM_SYNC_REQUEST_COUNTER",
-    "_GNOME_PANEL_ACTION",
-    "_GNOME_PANEL_ACTION_MAIN_MENU",
-    "_GNOME_PANEL_ACTION_RUN_DIALOG",
-    "_METACITY_SENTINEL",
-    "_NET_WM_STRUT_PARTIAL",
-    "_NET_WM_ACTION_FULLSCREEN",
-    "_NET_WM_ACTION_MINIMIZE",
-    "_NET_FRAME_EXTENTS",
-    "_NET_REQUEST_FRAME_EXTENTS",
-    "_NET_WM_USER_TIME",
-    "_NET_WM_STATE_DEMANDS_ATTENTION",
-    "_NET_RESTACK_WINDOW",
-    "_NET_MOVERESIZE_WINDOW",
-    "_NET_DESKTOP_GEOMETRY",
-    "_NET_DESKTOP_VIEWPORT",
-    "_METACITY_VERSION",
-    "_NET_WM_VISIBLE_NAME",
-    "_NET_WM_VISIBLE_ICON_NAME",
-    "_NET_WM_USER_TIME_WINDOW",
-    "_NET_WM_ACTION_ABOVE",
-    "_NET_WM_ACTION_BELOW",
+#define item(x) #x,
+#include "atomnames.h"
+#undef item
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -484,103 +385,12 @@ meta_display_open (void)
   meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
   XInternAtoms (the_display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
-  the_display->atom_net_wm_name = atoms[0];
-  the_display->atom_wm_protocols = atoms[1];
-  the_display->atom_wm_take_focus = atoms[2];
-  the_display->atom_wm_delete_window = atoms[3];
-  the_display->atom_wm_state = atoms[4];
-  the_display->atom_net_close_window = atoms[5];
-  the_display->atom_net_wm_state = atoms[6];
-  the_display->atom_motif_wm_hints = atoms[7];
-  the_display->atom_net_wm_state_shaded = atoms[8];
-  the_display->atom_net_wm_state_maximized_horz = atoms[9];
-  the_display->atom_net_wm_state_maximized_vert = atoms[10];
-  the_display->atom_net_wm_desktop = atoms[11];
-  the_display->atom_net_number_of_desktops = atoms[12];
-  the_display->atom_wm_change_state = atoms[13];
-  the_display->atom_sm_client_id = atoms[14];
-  the_display->atom_wm_client_leader = atoms[15];
-  the_display->atom_wm_window_role = atoms[16];
-  the_display->atom_net_current_desktop = atoms[17];
-  the_display->atom_net_supporting_wm_check = atoms[18];
-  the_display->atom_net_supported = atoms[19];
-  the_display->atom_net_wm_window_type = atoms[20];
-  the_display->atom_net_wm_window_type_desktop = atoms[21];
-  the_display->atom_net_wm_window_type_dock = atoms[22];
-  the_display->atom_net_wm_window_type_toolbar = atoms[23];
-  the_display->atom_net_wm_window_type_menu = atoms[24];
-  the_display->atom_net_wm_window_type_dialog = atoms[25];
-  the_display->atom_net_wm_window_type_normal = atoms[26];
-  the_display->atom_net_wm_state_modal = atoms[27];
-  the_display->atom_net_client_list = atoms[28];
-  the_display->atom_net_client_list_stacking = atoms[29];
-  the_display->atom_net_wm_state_skip_taskbar = atoms[30];
-  the_display->atom_net_wm_state_skip_pager = atoms[31];
-  the_display->atom_net_wm_icon_name = atoms[32];
-  the_display->atom_net_wm_icon = atoms[33];
-  the_display->atom_net_wm_icon_geometry = atoms[34];
-  the_display->atom_utf8_string = atoms[35];
-  the_display->atom_wm_icon_size = atoms[36];
-  the_display->atom_kwm_win_icon = atoms[37];
-  the_display->atom_net_wm_moveresize = atoms[38];
-  the_display->atom_net_active_window = atoms[39];
-  the_display->atom_metacity_restart_message = atoms[40];
-  the_display->atom_net_wm_strut = atoms[41];
-  the_display->atom_metacity_reload_theme_message = atoms[42];
-  the_display->atom_metacity_set_keybindings_message = atoms[43];
-  the_display->atom_net_wm_state_hidden = atoms[44];
-  the_display->atom_net_wm_window_type_utility = atoms[45];
-  the_display->atom_net_wm_window_type_splash = atoms[46];
-  the_display->atom_net_wm_state_fullscreen = atoms[47];
-  the_display->atom_net_wm_ping = atoms[48];
-  the_display->atom_net_wm_pid = atoms[49];
-  the_display->atom_wm_client_machine = atoms[50];
-  the_display->atom_net_workarea = atoms[51];
-  the_display->atom_net_showing_desktop = atoms[52];
-  the_display->atom_net_desktop_layout = atoms[53];
-  the_display->atom_manager = atoms[54];
-  the_display->atom_targets = atoms[55];
-  the_display->atom_multiple = atoms[56];
-  the_display->atom_timestamp = atoms[57];
-  the_display->atom_version = atoms[58];
-  the_display->atom_atom_pair = atoms[59];
-  the_display->atom_net_desktop_names = atoms[60];
-  the_display->atom_net_wm_allowed_actions = atoms[61];
-  the_display->atom_net_wm_action_move = atoms[62];
-  the_display->atom_net_wm_action_resize = atoms[63];
-  the_display->atom_net_wm_action_shade = atoms[64];
-  the_display->atom_net_wm_action_stick = atoms[65];
-  the_display->atom_net_wm_action_maximize_horz = atoms[66];
-  the_display->atom_net_wm_action_maximize_vert = atoms[67];
-  the_display->atom_net_wm_action_change_desktop = atoms[68];
-  the_display->atom_net_wm_action_close = atoms[69];
-  the_display->atom_net_wm_state_above = atoms[70];
-  the_display->atom_net_wm_state_below = atoms[71];
-  the_display->atom_net_startup_id = atoms[72];
-  the_display->atom_metacity_toggle_verbose = atoms[73];
-  the_display->atom_net_wm_sync_request = atoms[74];
-  the_display->atom_net_wm_sync_request_counter = atoms[75];
-  the_display->atom_gnome_panel_action = atoms[76];
-  the_display->atom_gnome_panel_action_main_menu = atoms[77];
-  the_display->atom_gnome_panel_action_run_dialog = atoms[78];
-  the_display->atom_metacity_sentinel = atoms[79];
-  the_display->atom_net_wm_strut_partial = atoms[80];
-  the_display->atom_net_wm_action_fullscreen = atoms[81];
-  the_display->atom_net_wm_action_minimize = atoms[82];
-  the_display->atom_net_frame_extents = atoms[83];
-  the_display->atom_net_request_frame_extents = atoms[84];
-  the_display->atom_net_wm_user_time = atoms[85];
-  the_display->atom_net_wm_state_demands_attention = atoms[86];
-  the_display->atom_net_restack_window = atoms[87];
-  the_display->atom_net_moveresize_window = atoms[88];
-  the_display->atom_net_desktop_geometry = atoms[89];
-  the_display->atom_net_desktop_viewport = atoms[90];
-  the_display->atom_metacity_version = atoms[91];
-  the_display->atom_net_wm_visible_name = atoms[92];
-  the_display->atom_net_wm_visible_icon_name = atoms[93];
-  the_display->atom_net_wm_user_time_window = atoms[94];
-  the_display->atom_net_wm_action_above = atoms[95];
-  the_display->atom_net_wm_action_below = atoms[96];
+  {
+    int i = 0;    
+#define item(x) the_display->atom_##x = atoms[i++];
+#include "atomnames.h"
+#undef item
+  }
 
   the_display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (the_display);
@@ -839,18 +649,18 @@ meta_display_open (void)
 
     meta_prop_set_utf8_string_hint (the_display,
                                     the_display->leader_window,
-                                    the_display->atom_net_wm_name,
+                                    the_display->atom__NET_WM_NAME,
                                     "Metacity");
     
     meta_prop_set_utf8_string_hint (the_display,
                                     the_display->leader_window,
-                                    the_display->atom_metacity_version,
+                                    the_display->atom__METACITY_VERSION,
                                     VERSION);
 
     data[0] = the_display->leader_window;
     XChangeProperty (the_display->xdisplay,
                      the_display->leader_window,
-                     the_display->atom_net_supporting_wm_check,
+                     the_display->atom__NET_SUPPORTING_WM_CHECK,
                      XA_WINDOW,
                      32, PropModeReplace, (guchar*) data, 1);
 
@@ -2345,14 +2155,14 @@ event_callback (XEvent   *event,
         if (screen != NULL)
           {
             if (event->xproperty.atom ==
-                display->atom_net_desktop_layout)
+                display->atom__NET_DESKTOP_LAYOUT)
               meta_screen_update_workspace_layout (screen);
             else if (event->xproperty.atom ==
-                     display->atom_net_desktop_names)
+                     display->atom__NET_DESKTOP_NAMES)
               meta_screen_update_workspace_names (screen);
 #if 0
             else if (event->xproperty.atom ==
-                     display->atom_net_restack_window)
+                     display->atom__NET_RESTACK_WINDOW)
               handle_net_restack_window (display, event);
 #endif
 
@@ -2361,7 +2171,7 @@ event_callback (XEvent   *event,
              * sentinel_counter variable declaration in display.h
 	     */
 	    if (event->xproperty.atom ==
-		display->atom_metacity_sentinel)
+		display->atom__METACITY_SENTINEL)
 	      {
 		meta_display_decrement_focus_sentinel (display);
 	      }
@@ -2408,7 +2218,7 @@ event_callback (XEvent   *event,
           if (screen)
             {
               if (event->xclient.message_type ==
-                  display->atom_net_current_desktop)
+                  display->atom__NET_CURRENT_DESKTOP)
                 {
                   int space;
                   MetaWorkspace *workspace;
@@ -2440,7 +2250,7 @@ event_callback (XEvent   *event,
                     meta_verbose ("Don't know about workspace %d\n", space);
                 }
               else if (event->xclient.message_type ==
-                       display->atom_net_number_of_desktops)
+                       display->atom__NET_NUMBER_OF_DESKTOPS)
                 {
                   int num_spaces;
               
@@ -2452,7 +2262,7 @@ event_callback (XEvent   *event,
                   meta_prefs_set_num_workspaces (num_spaces);
                 }
               else if (event->xclient.message_type ==
-                       display->atom_net_showing_desktop)
+                       display->atom__NET_SHOWING_DESKTOP)
                 {
                   gboolean showing_desktop;
                   guint32  timestamp;
@@ -2472,13 +2282,13 @@ event_callback (XEvent   *event,
                     }
                 }
               else if (event->xclient.message_type ==
-                       display->atom_metacity_restart_message)
+                       display->atom__METACITY_RESTART_MESSAGE)
                 {
                   meta_verbose ("Received restart request\n");
                   meta_restart ();
                 }
               else if (event->xclient.message_type ==
-                       display->atom_metacity_reload_theme_message)
+                       display->atom__METACITY_RELOAD_THEME_MESSAGE)
                 {
                   meta_verbose ("Received reload theme request\n");
                   meta_ui_set_current_theme (meta_prefs_get_theme (),
@@ -2486,24 +2296,24 @@ event_callback (XEvent   *event,
                   meta_display_retheme_all ();
                 }
               else if (event->xclient.message_type ==
-                       display->atom_metacity_set_keybindings_message)
+                       display->atom__METACITY_SET_KEYBINDINGS_MESSAGE)
                 {
                   meta_verbose ("Received set keybindings request = %d\n",
                                 (int) event->xclient.data.l[0]);
                   meta_set_keybindings_disabled (!event->xclient.data.l[0]);
                 }
               else if (event->xclient.message_type ==
-                       display->atom_metacity_toggle_verbose)
+                       display->atom__METACITY_TOGGLE_VERBOSE)
                 {
                   meta_verbose ("Received toggle verbose message\n");
                   meta_set_verbose (!meta_is_verbose ());
                 }
 	      else if (event->xclient.message_type ==
-		       display->atom_wm_protocols) 
+		       display->atom_WM_PROTOCOLS) 
 		{
                   meta_verbose ("Received WM_PROTOCOLS message\n");
                   
-		  if ((Atom)event->xclient.data.l[0] == display->atom_net_wm_ping)
+		  if ((Atom)event->xclient.data.l[0] == display->atom__NET_WM_PING)
                     {
                       process_pong_message (display, event);
 
@@ -2517,7 +2327,7 @@ event_callback (XEvent   *event,
             }
 
           if (event->xclient.message_type ==
-              display->atom_net_request_frame_extents)
+              display->atom__NET_REQUEST_FRAME_EXTENTS)
             {
               meta_verbose ("Received _NET_REQUEST_FRAME_EXTENTS message\n");
               process_request_frame_extents (display, event);
@@ -4057,7 +3867,7 @@ meta_display_increment_event_serial (MetaDisplay *display)
 {
   /* We just make some random X request */
   XDeleteProperty (display->xdisplay, display->leader_window,
-                   display->atom_motif_wm_hints);
+                   display->atom__MOTIF_WM_HINTS);
 }
 
 void
@@ -4079,7 +3889,7 @@ meta_display_update_active_window_hint (MetaDisplay *display)
       
       meta_error_trap_push (display);
       XChangeProperty (display->xdisplay, screen->xroot,
-                       display->atom_net_active_window,
+                       display->atom__NET_ACTIVE_WINDOW,
                        XA_WINDOW,
                        32, PropModeReplace, (guchar*) data, 1);
 
@@ -4296,7 +4106,7 @@ meta_display_ping_window (MetaDisplay       *display,
               "Sending ping with timestamp %u to window %s\n",
               timestamp, window->desc);
   meta_window_send_icccm_message (window,
-                                  display->atom_net_wm_ping,
+                                  display->atom__NET_WM_PING,
                                   timestamp);
 }
 
@@ -4316,7 +4126,7 @@ process_request_frame_extents (MetaDisplay    *display,
   /* See if the window is decorated. */
   hints_set = meta_prop_get_motif_hints (display,
                                          xwindow,
-                                         display->atom_motif_wm_hints,
+                                         display->atom__MOTIF_WM_HINTS,
                                          &hints);
   if ((hints_set && hints->decorations) || !hints_set)
     {
@@ -4360,7 +4170,7 @@ process_request_frame_extents (MetaDisplay    *display,
 
   meta_error_trap_push (display);
   XChangeProperty (display->xdisplay, xwindow,
-                   display->atom_net_frame_extents,
+                   display->atom__NET_FRAME_EXTENTS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 4);
   meta_error_trap_pop (display, FALSE);
@@ -4781,21 +4591,21 @@ convert_property (MetaDisplay *display,
   Atom conversion_targets[N_TARGETS];
   long icccm_version[] = { 2, 0 };
 
-  conversion_targets[0] = display->atom_targets;
-  conversion_targets[1] = display->atom_multiple;
-  conversion_targets[2] = display->atom_timestamp;
-  conversion_targets[3] = display->atom_version;
+  conversion_targets[0] = display->atom_TARGETS;
+  conversion_targets[1] = display->atom_MULTIPLE;
+  conversion_targets[2] = display->atom_TIMESTAMP;
+  conversion_targets[3] = display->atom_VERSION;
 
   meta_error_trap_push_with_return (display);
-  if (target == display->atom_targets)
+  if (target == display->atom_TARGETS)
     XChangeProperty (display->xdisplay, w, property,
 		     XA_ATOM, 32, PropModeReplace,
 		     (unsigned char *)conversion_targets, N_TARGETS);
-  else if (target == display->atom_timestamp)
+  else if (target == display->atom_TIMESTAMP)
     XChangeProperty (display->xdisplay, w, property,
 		     XA_INTEGER, 32, PropModeReplace,
 		     (unsigned char *)&screen->wm_sn_timestamp, 1);
-  else if (target == display->atom_version)
+  else if (target == display->atom_VERSION)
     XChangeProperty (display->xdisplay, w, property,
 		     XA_INTEGER, 32, PropModeReplace,
 		     (unsigned char *)icccm_version, 2);
@@ -4855,7 +4665,7 @@ process_selection_request (MetaDisplay   *display,
   reply.property = None;
   reply.time = event->xselectionrequest.time;
 
-  if (event->xselectionrequest.target == display->atom_multiple)
+  if (event->xselectionrequest.target == display->atom_MULTIPLE)
     {
       if (event->xselectionrequest.property != None)
         {
@@ -4868,7 +4678,7 @@ process_selection_request (MetaDisplay   *display,
           if (XGetWindowProperty (display->xdisplay,
                                   event->xselectionrequest.requestor,
                                   event->xselectionrequest.property, 0, 256, False,
-                                  display->atom_atom_pair,
+                                  display->atom_ATOM_PAIR,
                                   &type, &format, &num, &rest, &data) != Success)
             {
               meta_error_trap_pop_with_return (display, TRUE);
@@ -4896,7 +4706,7 @@ process_selection_request (MetaDisplay   *display,
               XChangeProperty (display->xdisplay,
                                event->xselectionrequest.requestor,
                                event->xselectionrequest.property,
-                               display->atom_atom_pair,
+                               display->atom_ATOM_PAIR,
                                32, PropModeReplace, data, num);
               meta_error_trap_pop (display, FALSE);
               meta_XFree (data);
@@ -5132,7 +4942,7 @@ meta_display_increment_focus_sentinel (MetaDisplay *display)
   
   XChangeProperty (display->xdisplay,
                    ((MetaScreen*) display->screens->data)->xroot,
-                   display->atom_metacity_sentinel,
+                   display->atom__METACITY_SENTINEL,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   

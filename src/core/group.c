@@ -58,9 +58,9 @@ meta_group_new (MetaDisplay *display,
 
   /* Fill these in the order we want them to be gotten */
   i = 0;
-  initial_props[i++] = display->atom_wm_client_machine;
-  initial_props[i++] = display->atom_net_wm_pid;
-  initial_props[i++] = display->atom_net_startup_id;
+  initial_props[i++] = display->atom_WM_CLIENT_MACHINE;
+  initial_props[i++] = display->atom__NET_WM_PID;
+  initial_props[i++] = display->atom__NET_STARTUP_ID;
   g_assert (N_INITIAL_PROPS == i);
   
   meta_group_reload_properties (group, initial_props, N_INITIAL_PROPS);
