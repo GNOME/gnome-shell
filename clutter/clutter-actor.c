@@ -4392,6 +4392,9 @@ clutter_actor_raise (ClutterActor *self,
     }
 
   clutter_container_raise_child (CLUTTER_CONTAINER (parent), self, below);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
 }
 
 /**
@@ -4431,6 +4434,9 @@ clutter_actor_lower (ClutterActor *self,
     }
 
   clutter_container_lower_child (CLUTTER_CONTAINER (parent), self, above);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
 }
 
 /**

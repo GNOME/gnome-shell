@@ -1,3 +1,12 @@
+2008-05-02  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #900 - clutter_actor_lower() and friends do not queue redraw
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_raise),
+	(clutter_actor_lower): Queue a redraw after raising and lowering
+	and actor in the paint order stack. (#900)
+
 2008-05-01  Richard Purdie  <rpurdie@openedhand.com>
 
 	* configure.ac:
