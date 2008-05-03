@@ -1,3 +1,7 @@
+2008-05-03  Matt Krai  <mkraai@beckman.com>
+
+        * src/core/delete.c (io_from_ping_dialog): fix type of "len" variable
+          (refs #526049)
 2008-05-02  Thomas Thurman  <tthurman@gnome.org>
 
         All information should live in exactly one place.  This means

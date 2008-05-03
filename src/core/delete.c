@@ -237,7 +237,7 @@ io_from_ping_dialog (GIOChannel   *channel,
   if (condition & G_IO_IN)
     {
       char *str;
-      unsigned int len;
+      gsize len;
       GError *err;
 
       /* Go ahead and block for all data from child */
@@ -256,7 +256,7 @@ io_from_ping_dialog (GIOChannel   *channel,
         }
 
       meta_topic (META_DEBUG_PING,
-                  "Read %d bytes strlen %d \"%s\" from child\n",
+                  "Read %" G_GSIZE_FORMAT " bytes strlen %d \"%s\" from child\n",
                   len, str ? (int) strlen (str) : 0, str ? str : "NULL");
       
       if (len > 0)
