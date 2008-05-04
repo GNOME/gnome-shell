@@ -1586,7 +1586,9 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   ++i;
 
   if (i != N_HOOKS)
-    g_error ("Initialized %d hooks should have been %d\n", i, N_HOOKS);
+    {
+      g_error ("Initialized %d hooks should have been %d\n", i, N_HOOKS);
+    }
 }
 
 void

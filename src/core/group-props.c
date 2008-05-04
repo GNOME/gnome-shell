@@ -197,7 +197,9 @@ meta_display_init_group_prop_hooks (MetaDisplay *display)
   ++i;
   
   if (i != N_HOOKS)
-    g_error ("Initialized %d group hooks should have been %d\n", i, N_HOOKS);
+    {
+      g_error ("Initialized %d group hooks should have been %d\n", i, N_HOOKS);
+    }
 }
 
 void
