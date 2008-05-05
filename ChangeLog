@@ -1,5 +1,13 @@
 2008-05-05  Øyvind Kolås  <pippin@o-hand.com>
 
+	* clutter/cogl/gl/cogl-primitives.c:
+	* clutter/cogl/gles/cogl-primitives.c: 
+	* clutter/cogl/common/cogl-primitives.c: moved declaration of
+	gegl_rectangle and gegl_rectanglex here to satisfy linking
+	requirements when building the fruity backend.
+
+2008-05-05  Øyvind Kolås  <pippin@o-hand.com>
+
 	* clutter/cogl/cogl.h.in: api review touch ups.
 	* clutter/cogl/common/cogl-primitives.c: api review touch ups.
 	* clutter/cogl/gl/cogl-primitives.c: (cogl_path_fill),

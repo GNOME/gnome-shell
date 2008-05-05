@@ -37,10 +37,10 @@
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
 void
-cogl_rectangle (gint x,
-                gint y,
-                guint width,
-                guint height)
+_cogl_rectangle (gint x,
+                 gint y,
+                 guint width,
+                 guint height)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -52,10 +52,10 @@ cogl_rectangle (gint x,
 
 
 void
-cogl_rectanglex (ClutterFixed x,
-                 ClutterFixed y,
-                 ClutterFixed width,
-                 ClutterFixed height)
+_cogl_rectanglex (ClutterFixed x,
+                  ClutterFixed y,
+                  ClutterFixed width,
+                  ClutterFixed height)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -132,7 +132,7 @@ _cogl_path_stroke_nodes ()
   GE( glDrawArrays (GL_LINE_STRIP, 0, ctx->path_nodes_size) );
 }
 
-static void
+void
 _cogl_path_fill_nodes ()
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -167,27 +167,4 @@ _cogl_path_fill_nodes ()
   cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
   
   GE( glDisable (GL_STENCIL_TEST) );
-}
-
-void
-cogl_path_fill (void)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  if (ctx->path_nodes_size == 0)
-    return;
-  
-  _cogl_path_fill_nodes();
-  
-}
-
-void
-cogl_path_stroke (void)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  if (ctx->path_nodes_size == 0)
-    return;
-  
-  _cogl_path_stroke_nodes();
 }

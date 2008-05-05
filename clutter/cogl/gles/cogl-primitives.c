@@ -37,10 +37,10 @@
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
 void
-cogl_rectangle (gint x,
-                gint y,
-                guint width,
-                guint height)
+_cogl_rectangle (gint x,
+                 gint y,
+                 guint width,
+                 guint height)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -63,10 +63,10 @@ cogl_rectangle (gint x,
 
 
 void
-cogl_rectanglex (ClutterFixed x,
-                 ClutterFixed y,
-                 ClutterFixed width,
-                 ClutterFixed height)
+_cogl_rectanglex (ClutterFixed x,
+                  ClutterFixed y,
+                  ClutterFixed width,
+                  ClutterFixed height)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -138,7 +138,7 @@ _cogl_path_add_node (ClutterFixed x,
     }
 }
 
-static void
+void
 _cogl_path_stroke_nodes ()
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -157,7 +157,7 @@ static gint compare_ints (gconstpointer a,
   return GPOINTER_TO_INT(a)-GPOINTER_TO_INT(b);
 }
 
-static void
+void
 _cogl_path_fill_nodes ()
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -355,25 +355,3 @@ fill_close:
 #endif
 }
 
-void
-cogl_path_fill (void)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  if (ctx->path_nodes_size == 0)
-    return;
-  
-  _cogl_path_fill_nodes();
-  
-}
-
-void
-cogl_path_stroke (void)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  if (ctx->path_nodes_size == 0)
-    return;
-  
-  _cogl_path_stroke_nodes();
-}

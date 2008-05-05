@@ -40,6 +40,56 @@
 void _cogl_path_clear_nodes ();
 void _cogl_path_add_node    (ClutterFixed x,
                              ClutterFixed y);
+void _cogl_path_fill_nodes    ();
+void _cogl_path_stroke_nodes  ();
+void _cogl_rectangle (gint x,
+                      gint y,
+                      guint width,
+                      guint height);
+void _cogl_rectanglex (ClutterFixed x,
+                       ClutterFixed y,
+                       ClutterFixed width,
+                       ClutterFixed height);
+void
+cogl_rectangle (gint x,
+                gint y,
+                guint width,
+                guint height)
+{
+  _cogl_rectangle (x, y, width, height);
+}
+
+void
+cogl_rectanglex (ClutterFixed x,
+                 ClutterFixed y,
+                 ClutterFixed width,
+                 ClutterFixed height)
+{
+  _cogl_rectanglex (x, y, width, height);
+}
+
+
+void
+cogl_path_fill (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
+  if (ctx->path_nodes_size == 0)
+    return;
+  
+  _cogl_path_fill_nodes();
+}
+
+void
+cogl_path_stroke (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
+  if (ctx->path_nodes_size == 0)
+    return;
+  
+  _cogl_path_stroke_nodes();
+}
 
 void
 cogl_path_move_to (ClutterFixed x,
