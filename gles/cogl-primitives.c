@@ -86,54 +86,6 @@ cogl_rectanglex (ClutterFixed x,
 
 }
 
-#if 0
-void
-cogl_trapezoid (gint y1,
-                gint x11,
-                gint x21,
-                gint y2,
-                gint x12,
-                gint x22)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  cogl_enable (ctx->color_alpha < 255
-	       ? COGL_ENABLE_BLEND : 0);
-  
-  GE( glBegin (GL_QUADS) );
-  GE( glVertex2i (x11, y1) );
-  GE( glVertex2i (x21, y1) );
-  GE( glVertex2i (x22, y2) );
-  GE( glVertex2i (x12, y2) );
-  GE( glEnd () );
-}
-
-void
-cogl_trapezoidx (ClutterFixed y1,
-                 ClutterFixed x11,
-                 ClutterFixed x21,
-                 ClutterFixed y2,
-                 ClutterFixed x12,
-                 ClutterFixed x22)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  cogl_enable (ctx->color_alpha < 255
-	       ? COGL_ENABLE_BLEND : 0);
-  
-  GE( glBegin (GL_QUADS) );
-  
-  GE( glVertex2f (CLUTTER_FIXED_TO_FLOAT (x11),
-		  CLUTTER_FIXED_TO_FLOAT (y1))  );
-  GE( glVertex2f (CLUTTER_FIXED_TO_FLOAT (x21),
-		  CLUTTER_FIXED_TO_FLOAT (y1))  );
-  GE( glVertex2f (CLUTTER_FIXED_TO_FLOAT (x22),
-		  CLUTTER_FIXED_TO_FLOAT (y2))  );
-  GE( glVertex2f (CLUTTER_FIXED_TO_FLOAT (x12),
-		  CLUTTER_FIXED_TO_FLOAT (y2))  );
-  GE( glEnd () );
-}
-#endif
 
 void
 _cogl_path_clear_nodes ()
@@ -368,7 +320,7 @@ fill_close:
               x0 = CLUTTER_INT_TO_FIXED (GPOINTER_TO_INT (iter->data));
               x1 = CLUTTER_INT_TO_FIXED (GPOINTER_TO_INT (next->data));
               y0 = CLUTTER_INT_TO_FIXED (bounds_y + i);
-              y1 = CLUTTER_INT_TO_FIXED (bounds_y + i + 1) + 4096;
+              y1 = CLUTTER_INT_TO_FIXED (bounds_y + i + 1) + 2048;
               /* render scanlines 1.0625 high to avoid gaps when transformed */
 
               coords[span_no * 12 + 0] = x0;
@@ -387,6 +339,10 @@ fill_close:
               iter = next->next;
             }
         }
+      for (i=0; i < bounds_h; i++)
+        {
+          g_slist_free (scanlines[i]);
+        }
 
         /* render triangles */
         cogl_enable (COGL_ENABLE_VERTEX_ARRAY
@@ -400,7 +356,7 @@ fill_close:
 }
 
 void
-cogl_fill ()
+cogl_path_fill (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -412,7 +368,7 @@ cogl_fill ()
 }
 
 void
-cogl_stroke ()
+cogl_path_stroke (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
