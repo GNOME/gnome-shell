@@ -79,10 +79,10 @@ typedef void (*PaintFunc) (void);
 static void
 test_paint_line ()
 {
-  cogl_line (CLUTTER_INT_TO_FIXED (-50),
-             CLUTTER_INT_TO_FIXED (-25),
-             CLUTTER_INT_TO_FIXED (50),
-             CLUTTER_INT_TO_FIXED (25));
+  cogl_path_line (CLUTTER_INT_TO_FIXED (-50),
+                  CLUTTER_INT_TO_FIXED (-25),
+                  CLUTTER_INT_TO_FIXED (50),
+                  CLUTTER_INT_TO_FIXED (25));
 }
 
 static void
@@ -97,12 +97,12 @@ test_paint_rect ()
 static void
 test_paint_rndrect()
 {
-  cogl_round_rectangle (CLUTTER_INT_TO_FIXED (-50),
-                        CLUTTER_INT_TO_FIXED (-25),
-                        CLUTTER_INT_TO_FIXED (100),
-                        CLUTTER_INT_TO_FIXED (50),
-                        CLUTTER_INT_TO_FIXED (10),
-                        5);
+  cogl_path_round_rectangle (CLUTTER_INT_TO_FIXED (-50),
+                             CLUTTER_INT_TO_FIXED (-25),
+                             CLUTTER_INT_TO_FIXED (100),
+                             CLUTTER_INT_TO_FIXED (50),
+                             CLUTTER_INT_TO_FIXED (10),
+                             5);
 }
 
 static void
@@ -119,7 +119,7 @@ test_paint_polyl ()
     CLUTTER_INT_TO_FIXED (+40)
   };
   
-  cogl_polyline (poly_coords, 4);
+  cogl_path_polyline (poly_coords, 4);
 }
 
 static void
@@ -136,37 +136,19 @@ test_paint_polyg ()
     CLUTTER_INT_TO_FIXED (+40)
   };
   
-  cogl_polygon (poly_coords, 4);
+  cogl_path_polygon (poly_coords, 4);
 }
 
 static void
 test_paint_elp ()
 {
-  cogl_ellipse (0, 0,
-                CLUTTER_INT_TO_FIXED (60),
-                CLUTTER_INT_TO_FIXED (40),
-                10);
+  cogl_path_ellipse (0, 0,
+                     CLUTTER_INT_TO_FIXED (60),
+                     CLUTTER_INT_TO_FIXED (40));
 }
 
 static void
-test_paint_bezier2 ()
-{
-  cogl_path_move_to (CLUTTER_INT_TO_FIXED (-50),
-                     CLUTTER_INT_TO_FIXED (+25));
-
-  /* a bezier2 is just the same as a bezier3 with both the two first
-   * coordinate pairs being equal
-   */  
-  cogl_path_curve_to (CLUTTER_INT_TO_FIXED (0),
-                      CLUTTER_INT_TO_FIXED (-25),
-                      CLUTTER_INT_TO_FIXED (0),
-                      CLUTTER_INT_TO_FIXED (-25),
-                      CLUTTER_INT_TO_FIXED (+50),
-                      CLUTTER_INT_TO_FIXED (+25));
-}
-
-static void
-test_paint_bezier3 ()
+test_paint_curve ()
 {
   cogl_path_move_to (CLUTTER_INT_TO_FIXED (-50),
                      CLUTTER_INT_TO_FIXED (+50));
@@ -187,8 +169,7 @@ static PaintFunc paint_func []=
   test_paint_polyl,
   test_paint_polyg,
   test_paint_elp,
-  test_paint_bezier2,
-  test_paint_bezier3
+  test_paint_curve
 };
 
 static void
@@ -237,13 +218,14 @@ test_coglbox_paint(ClutterActor *self)
   
   cogl_translate (100,100,0);
   cogl_color (&cstroke);
-  cogl_stroke ();
+  cogl_path_stroke ();
   
   cogl_translate (150,0,0);
   cogl_color (&cfill);
-  cogl_fill ();
+  cogl_path_fill ();
   
   cogl_pop_matrix();
+
 }
 
 static void
@@ -305,6 +287,9 @@ main (int argc, char *argv[])
   
   coglbox = test_coglbox_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), coglbox);
+
+  clutter_actor_set_rotation (coglbox, CLUTTER_Y_AXIS, -30, 200, 0, 0);
+  clutter_actor_set_position (coglbox, 0, 100);
   
   clutter_actor_show_all (stage);
   

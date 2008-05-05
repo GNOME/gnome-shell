@@ -68,55 +68,6 @@ cogl_rectanglex (ClutterFixed x,
 	       CLUTTER_FIXED_TO_FLOAT (y + height)) );
 }
 
-#if 0
-void
-cogl_trapezoid (gint y1,
-                gint x11,
-                gint x21,
-                gint y2,
-                gint x12,
-                gint x22)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  cogl_enable (ctx->color_alpha < 255
-	       ? COGL_ENABLE_BLEND : 0);
-  
-  GE( glBegin (GL_QUADS) );
-  GE( glVertex2i (x11, y1) );
-  GE( glVertex2i (x21, y1) );
-  GE( glVertex2i (x22, y2) );
-  GE( glVertex2i (x12, y2) );
-  GE( glEnd () );
-}
-
-void
-cogl_trapezoidx (ClutterFixed y1,
-                 ClutterFixed x11,
-                 ClutterFixed x21,
-                 ClutterFixed y2,
-                 ClutterFixed x12,
-                 ClutterFixed x22)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  cogl_enable (ctx->color_alpha < 255
-	       ? COGL_ENABLE_BLEND : 0);
-  
-  GE( glBegin (GL_QUADS) );
-  
-  GE( glVertex2f (CLUTTER_FIXED_TO_FLOAT (x11),
-		  CLUTTER_FIXED_TO_FLOAT (y1))  );
-  GE( glVertex2f (CLUTTER_FIXED_TO_FLOAT (x21),
-		  CLUTTER_FIXED_TO_FLOAT (y1))  );
-  GE( glVertex2f (CLUTTER_FIXED_TO_FLOAT (x22),
-		  CLUTTER_FIXED_TO_FLOAT (y2))  );
-  GE( glVertex2f (CLUTTER_FIXED_TO_FLOAT (x12),
-		  CLUTTER_FIXED_TO_FLOAT (y2))  );
-  GE( glEnd () );
-}
-#endif
-
 void
 _cogl_path_clear_nodes ()
 {
@@ -219,7 +170,7 @@ _cogl_path_fill_nodes ()
 }
 
 void
-cogl_fill ()
+cogl_path_fill (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -231,7 +182,7 @@ cogl_fill ()
 }
 
 void
-cogl_stroke ()
+cogl_path_stroke (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   

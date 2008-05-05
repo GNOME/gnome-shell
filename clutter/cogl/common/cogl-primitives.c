@@ -36,10 +36,10 @@
 
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
-/* these are defined in the particular backend */
+/* these are defined in the particular backend(float in gl vs fixed in gles)*/
 void _cogl_path_clear_nodes ();
 void _cogl_path_add_node    (ClutterFixed x,
-		             ClutterFixed y);
+                             ClutterFixed y);
 
 void
 cogl_path_move_to (ClutterFixed x,
@@ -48,7 +48,10 @@ cogl_path_move_to (ClutterFixed x,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   /* FIXME: handle multiple contours maybe? */
-  
+ 
+ /* at the moment, a move_to is an implicit instruction to create
+  * a new path.
+  */ 
   _cogl_path_clear_nodes ();
   _cogl_path_add_node (x, y);
   
@@ -60,12 +63,12 @@ cogl_path_move_to (ClutterFixed x,
 
 void
 cogl_path_rel_move_to (ClutterFixed x,
-		               ClutterFixed y)
+                       ClutterFixed y)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   cogl_path_move_to (ctx->path_pen.x + x,
-		             ctx->path_pen.y + y);
+                     ctx->path_pen.y + y);
 }
 
 void
@@ -91,7 +94,7 @@ cogl_path_rel_line_to (ClutterFixed x,
 }
 
 void
-cogl_path_close ()
+cogl_path_close (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -101,18 +104,18 @@ cogl_path_close ()
 
 
 void
-cogl_line (ClutterFixed x1,
-	   ClutterFixed y1,
-	   ClutterFixed x2,
-	   ClutterFixed y2)
+cogl_path_line (ClutterFixed x1,
+	        ClutterFixed y1,
+	        ClutterFixed x2,
+	        ClutterFixed y2)
 {
   cogl_path_move_to (x1, y1);
   cogl_path_line_to (x2, y2);
 }
 
 void
-cogl_polyline (ClutterFixed *coords,
-	       gint num_points)
+cogl_path_polyline (ClutterFixed *coords,
+	            gint num_points)
 {
   gint c = 0;
   
@@ -123,10 +126,10 @@ cogl_polyline (ClutterFixed *coords,
 }
 
 void
-cogl_polygon (ClutterFixed *coords,
-	      gint num_points)
+cogl_path_polygon (ClutterFixed *coords,
+	           gint          num_points)
 {
-  cogl_polyline (coords, num_points);
+  cogl_path_polyline (coords, num_points);
   cogl_path_close ();
 }
 
@@ -144,14 +147,14 @@ cogl_path_rectangle (ClutterFixed x,
 }
 
 static void
-_cogl_arc (ClutterFixed center_x,
-	   ClutterFixed center_y,
-	   ClutterFixed radius_x,
-	   ClutterFixed radius_y,
-	   ClutterAngle angle_1,
-	   ClutterAngle angle_2,
-	   ClutterAngle angle_step,
-	   guint        move_first)
+_cogl_path_arc (ClutterFixed center_x,
+	        ClutterFixed center_y,
+                ClutterFixed radius_x,
+                ClutterFixed radius_y,
+                ClutterAngle angle_1,
+                ClutterAngle angle_2,
+                ClutterAngle angle_step,
+                guint        move_first)
 {
   ClutterAngle a     = 0x0;
   ClutterAngle temp  = 0x0;
@@ -201,10 +204,13 @@ cogl_path_arc (ClutterFixed center_x,
                ClutterAngle angle_2)
 { 
   ClutterAngle angle_step = 10;
-  _cogl_arc (center_x,   center_y,
-	     radius_x,   radius_y,
-	     angle_1,    angle_2,
-	     angle_step, 0 /* no move */);
+  /* it is documented that a move to is needed to create a freestanding
+   * arc
+   */
+  _cogl_path_arc (center_x,   center_y,
+	          radius_x,   radius_y,
+	          angle_1,    angle_2,
+	          angle_step, 0 /* no move */);
 }
 
 
@@ -219,54 +225,39 @@ cogl_path_arc_rel (ClutterFixed center_x,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  _cogl_arc (ctx->path_pen.x + center_x,
-	     ctx->path_pen.y + center_y,
-	     radius_x,   radius_y,
-	     angle_1,    angle_2,
-	     angle_step, 0 /* no move */);
+  _cogl_path_arc (ctx->path_pen.x + center_x,
+	          ctx->path_pen.y + center_y,
+	          radius_x,   radius_y,
+	          angle_1,    angle_2,
+	          angle_step, 0 /* no move */);
 }
 
 void
-cogl_arc (ClutterFixed center_x,
-	  ClutterFixed center_y,
-	  ClutterFixed radius_x,
-	  ClutterFixed radius_y,
-	  ClutterAngle angle_1,
-	  ClutterAngle angle_2)
-{
-  ClutterAngle angle_step = 10;
-  _cogl_arc (center_x,   center_y,
-	     radius_x,   radius_y,
-	     angle_1,    angle_2,
-	     angle_step, 1 /* move first */);
-}
-
-void
-cogl_ellipse (ClutterFixed center_x,
-	      ClutterFixed center_y,
-	      ClutterFixed radius_x,
-	      ClutterFixed radius_y)
+cogl_path_ellipse (ClutterFixed center_x,
+                   ClutterFixed center_y,
+                   ClutterFixed radius_x,
+                   ClutterFixed radius_y)
 {
   ClutterAngle angle_step = 10;
   
   /* FIXME: if shows to be slow might be optimized
    * by mirroring just a quarter of it */
   
-  _cogl_arc (center_x, center_y,
-	     radius_x, radius_y,
-	     0, CLUTTER_ANGLE_FROM_DEG(360),
-	     angle_step, 1 /* move first */);
+  _cogl_path_arc (center_x, center_y,
+	          radius_x, radius_y,
+	          0, CLUTTER_ANGLE_FROM_DEG(360),
+	          angle_step, 1 /* move first */);
   
   cogl_path_close();
 }
 
 void
-cogl_round_rectangle (ClutterFixed x,
-		      ClutterFixed y,
-		      ClutterFixed width,
-		      ClutterFixed height,
-		      ClutterFixed radius,
-		      ClutterAngle arc_step)
+cogl_path_round_rectangle (ClutterFixed x,
+                           ClutterFixed y,
+                           ClutterFixed width,
+                           ClutterFixed height,
+                           ClutterFixed radius,
+                           ClutterAngle arc_step)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   ClutterFixed inner_width = width  - (radius << 1);
@@ -307,73 +298,6 @@ cogl_round_rectangle (ClutterFixed x,
   cogl_path_close ();
 }
 
-#if 0
-static void
-_cogl_path_bezier2_sub (CoglBezQuad *quad)
-{
-  CoglBezQuad     quads[_COGL_MAX_BEZ_RECURSE_DEPTH];
-  CoglBezQuad    *qleft;
-  CoglBezQuad    *qright;
-  CoglBezQuad    *q;
-  CoglFixedVec2   mid;
-  CoglFixedVec2   dif;
-  CoglFixedVec2   c1;
-  CoglFixedVec2   c2;
-  CoglFixedVec2   c3;
-  gint            qindex;
-  
-  /* Put first curve on stack */
-  quads[0] = *quad;
-  qindex   =  0;
-  
-  /* While stack is not empty */
-  while (qindex >= 0)
-    {
-      
-      q = &quads[qindex];
-      
-      /* Calculate distance of control point from its
-       * counterpart on the line between end points */
-      mid.x = ((q->p1.x + q->p3.x) >> 1);
-      mid.y = ((q->p1.y + q->p3.y) >> 1);
-      dif.x = (q->p2.x - mid.x);
-      dif.y = (q->p2.y - mid.y);
-      if (dif.x < 0) dif.x = -dif.x;
-      if (dif.y < 0) dif.y = -dif.y;
-      
-      /* Cancel if the curve is flat enough */
-      if (dif.x + dif.y <= CFX_ONE
-	  || qindex == _COGL_MAX_BEZ_RECURSE_DEPTH - 1)
-	{
-	  /* Add subdivision point (skip last) */
-	  if (qindex == 0) return;
-	  _cogl_path_add_node (q->p3.x, q->p3.y);
-	  --qindex; continue;
-	}
-      
-      /* Left recursion goes on top of stack! */
-      qright = q; qleft = &quads[++qindex];
-      
-      /* Subdivide into 2 sub-curves */
-      c1.x = ((q->p1.x + q->p2.x) >> 1);
-      c1.y = ((q->p1.y + q->p2.y) >> 1);
-      c3.x = ((q->p2.x + q->p3.x) >> 1);
-      c3.y = ((q->p2.y + q->p3.y) >> 1);
-      c2.x = ((c1.x + c3.x) >> 1);
-      c2.y = ((c1.y + c3.y) >> 1);
-      
-      /* Add left recursion onto stack */
-      qleft->p1 = q->p1;
-      qleft->p2 = c1;
-      qleft->p3 = c2;
-      
-      /* Add right recursion onto stack */
-      qright->p1 = c2;
-      qright->p2 = c3;
-      qright->p3 = q->p3;
-    }
-}
-#endif
 
 static void
 _cogl_path_bezier3_sub (CoglBezCubic *cubic)
@@ -466,32 +390,6 @@ _cogl_path_bezier3_sub (CoglBezCubic *cubic)
     }
 }
 
-#if 0
-void
-cogl_path_bezier2_to (ClutterFixed x1,
-		      ClutterFixed y1,
-		      ClutterFixed x2,
-		      ClutterFixed y2)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  CoglBezQuad quad;
-  
-  /* Prepare quadratic curve */
-  quad.p1 = ctx->path_pen;
-  quad.p2.x = x1;
-  quad.p2.y = y1;
-  quad.p3.x = x2;
-  quad.p3.y = y2;
-  
-  /* Run subdivision */
-  _cogl_path_bezier2_sub (&quad);
-  
-  /* Add last point */
-  _cogl_path_add_node (quad.p3.x, quad.p3.y);
-  ctx->path_pen = quad.p3;
-}
-#endif
 
 void
 cogl_path_curve_to (ClutterFixed x1,
@@ -539,3 +437,115 @@ cogl_rel_curve_to (ClutterFixed x1,
                       ctx->path_pen.x + x3,
                       ctx->path_pen.y + y3);
 }
+
+
+/* If second order beziers were needed the following code could
+ * be re-enabled:
+ */
+#if 0
+
+static void
+_cogl_path_bezier2_sub (CoglBezQuad *quad)
+{
+  CoglBezQuad     quads[_COGL_MAX_BEZ_RECURSE_DEPTH];
+  CoglBezQuad    *qleft;
+  CoglBezQuad    *qright;
+  CoglBezQuad    *q;
+  CoglFixedVec2   mid;
+  CoglFixedVec2   dif;
+  CoglFixedVec2   c1;
+  CoglFixedVec2   c2;
+  CoglFixedVec2   c3;
+  gint            qindex;
+  
+  /* Put first curve on stack */
+  quads[0] = *quad;
+  qindex   =  0;
+  
+  /* While stack is not empty */
+  while (qindex >= 0)
+    {
+      
+      q = &quads[qindex];
+      
+      /* Calculate distance of control point from its
+       * counterpart on the line between end points */
+      mid.x = ((q->p1.x + q->p3.x) >> 1);
+      mid.y = ((q->p1.y + q->p3.y) >> 1);
+      dif.x = (q->p2.x - mid.x);
+      dif.y = (q->p2.y - mid.y);
+      if (dif.x < 0) dif.x = -dif.x;
+      if (dif.y < 0) dif.y = -dif.y;
+      
+      /* Cancel if the curve is flat enough */
+      if (dif.x + dif.y <= CFX_ONE
+	  || qindex == _COGL_MAX_BEZ_RECURSE_DEPTH - 1)
+	{
+	  /* Add subdivision point (skip last) */
+	  if (qindex == 0) return;
+	  _cogl_path_add_node (q->p3.x, q->p3.y);
+	  --qindex; continue;
+	}
+      
+      /* Left recursion goes on top of stack! */
+      qright = q; qleft = &quads[++qindex];
+      
+      /* Subdivide into 2 sub-curves */
+      c1.x = ((q->p1.x + q->p2.x) >> 1);
+      c1.y = ((q->p1.y + q->p2.y) >> 1);
+      c3.x = ((q->p2.x + q->p3.x) >> 1);
+      c3.y = ((q->p2.y + q->p3.y) >> 1);
+      c2.x = ((c1.x + c3.x) >> 1);
+      c2.y = ((c1.y + c3.y) >> 1);
+      
+      /* Add left recursion onto stack */
+      qleft->p1 = q->p1;
+      qleft->p2 = c1;
+      qleft->p3 = c2;
+      
+      /* Add right recursion onto stack */
+      qright->p1 = c2;
+      qright->p2 = c3;
+      qright->p3 = q->p3;
+    }
+}
+
+void
+cogl_path_curve2_to (ClutterFixed x1,
+                     ClutterFixed y1,
+                     ClutterFixed x2,
+                     ClutterFixed y2)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
+  CoglBezQuad quad;
+  
+  /* Prepare quadratic curve */
+  quad.p1 = ctx->path_pen;
+  quad.p2.x = x1;
+  quad.p2.y = y1;
+  quad.p3.x = x2;
+  quad.p3.y = y2;
+  
+  /* Run subdivision */
+  _cogl_path_bezier2_sub (&quad);
+  
+  /* Add last point */
+  _cogl_path_add_node (quad.p3.x, quad.p3.y);
+  ctx->path_pen = quad.p3;
+}
+
+void
+cogl_rel_curve2_to (ClutterFixed x1,
+			        ClutterFixed y1,
+			        ClutterFixed x2,
+			        ClutterFixed y2)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
+  cogl_path_curve2_to (ctx->path_pen.x + x1,
+                       ctx->path_pen.y + y2,
+                       ctx->path_pen.x + x2,
+                       ctx->path_pen.y + y2);
+}
+#endif

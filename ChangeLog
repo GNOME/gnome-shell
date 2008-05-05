@@ -1,3 +1,16 @@
+2008-05-05  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/cogl.h.in: api review touch ups.
+	* clutter/cogl/common/cogl-primitives.c: api review touch ups.
+	* clutter/cogl/gl/cogl-primitives.c: (cogl_path_fill),
+	(cogl_path_stroke): indentation.
+	* clutter/cogl/gles/cogl-primitives.c:
+	(_cogl_path_fill_nodes): free allocated resources.
+
+	* tests/test-cogl-primitives.c: updated to new API, added rotation to
+	test to show that cogl renders paths correct under perspective
+	distortion.
+
 2008-05-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #900 - clutter_actor_lower() and friends do not queue redraw

@@ -960,44 +960,6 @@ void            cogl_rectanglex               (ClutterFixed        x,
                                                ClutterFixed        y,
                                                ClutterFixed        width,
                                                ClutterFixed        height);
-#if 0
-/**
- * cogl_trapezoid:
- * @y1: Y coordinate of the top two vertices.
- * @x11: X coordinate of the top-left vertex.
- * @x21: X coordinate of the top-right vertex.
- * @y2: Y coordinate of the bottom two vertices.
- * @x12: X coordinate of the bottom-left vertex.
- * @x22: X coordinate of the bottom-right vertex.
- *
- * Fills a trapezoid at the given coordinates with the current
- * drawing color in a highly optimized fashion.
- **/
-void            cogl_trapezoid                (gint                y1,
-                                               gint                x11,
-                                               gint                x21,
-                                               gint                y2,
-                                               gint                x12,
-                                               gint                x22);
-
-/**
- * cogl_trapezoidx:
- * @y1: Y coordinate of the top two vertices.
- * @x11: X coordinate of the top-left vertex.
- * @x21: X coordinate of the top-right vertex.
- * @y2: Y coordinate of the bottom two vertices.
- * @x12: X coordinate of the bottom-left vertex.
- * @x22: X coordinate of the bottom-right vertex.
- *
- * A fixed-point version of cogl_trapezoid.
- **/
-void            cogl_trapezoidx               (ClutterFixed        y1,
-                                               ClutterFixed        x11,
-                                               ClutterFixed        x21,
-                                               ClutterFixed        y2,
-                                               ClutterFixed        x12,
-                                               ClutterFixed        x22);
-#endif
 
 /**
  * cogl_path_fill:
@@ -1074,7 +1036,8 @@ void            cogl_path_rel_line_to    (ClutterFixed        x,
  *
  * Adds an elliptical arc segment to the current path. A straight line
  * segment will link the current pen location with the first vertex
- * of the arc.
+ * of the arc. If you perform a move_to to the arcs start just before
+ * drawing it you create a free standing arc.
  **/
 void            cogl_path_arc                 (ClutterFixed        center_x,
                                                ClutterFixed        center_y,
@@ -1209,7 +1172,6 @@ void            cogl_path_rectangle           (ClutterFixed        x,
  * @center_y: Y coordinate of the ellipse center
  * @radius_x: X radius of the ellipse
  * @radius_y: Y radius of the ellipse
- * @angle_step: Angle increment resolution for subdivision
  *
  * Clears the previously constructed shape and constructs an ellipse
  * shape.
@@ -1217,8 +1179,7 @@ void            cogl_path_rectangle           (ClutterFixed        x,
 void            cogl_path_ellipse             (ClutterFixed        center_x,
                                                ClutterFixed        center_y,
                                                ClutterFixed        radius_x,
-                                               ClutterFixed        radius_y,
-                                               ClutterAngle        angle_step);
+                                               ClutterFixed        radius_y);
 
 /**
  * cogl_path_round_rectangle:
