@@ -310,7 +310,10 @@ free_damage_resources (ClutterX11TexturePixmap *texture)
 
   if (priv->damage)
     {
+      clutter_x11_trap_x_errors ();
       XDamageDestroy (dpy, priv->damage);
+      XSync (dpy, FALSE);
+      clutter_x11_untrap_x_errors ();
       priv->damage = None;
     }
 
@@ -797,7 +800,6 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
 
   clutter_x11_trap_x_errors ();
 
-  if (pixmap != None)
   status = XGetGeometry (clutter_x11_get_default_display(),
                          (Drawable)pixmap, 
                          &root,
@@ -807,7 +809,7 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
                          &height, 
                          &border_width,
                          &depth);
-
+  
   if (clutter_x11_untrap_x_errors () || status == 0)
     {
       if (pixmap != None)
@@ -958,11 +960,16 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
   if (setting == TRUE)
     {
       clutter_x11_add_filter (on_x_event_filter, (gpointer)texture);
+
+      clutter_x11_trap_x_errors ();
           
-      /* NOTE: Appears this will not work for a named pixmap  */
+      /* NOTE: Appears this will not work for a named pixmap ? */
       priv->damage = XDamageCreate (dpy,
                                     priv->pixmap,
                                     XDamageReportNonEmpty);
+
+      XSync (dpy, FALSE);
+      clutter_x11_untrap_x_errors ();
     }
   else
     free_damage_resources (texture);

@@ -1,3 +1,9 @@
+2008-05-06  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+        More cleanups, safety additions.
+
 2008-05-05  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/cogl/gl/cogl-primitives.c:

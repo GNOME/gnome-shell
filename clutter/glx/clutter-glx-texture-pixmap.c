@@ -27,9 +27,7 @@
 
 /*  TODO:  
  *  - Automagically handle named pixmaps, and window resizes (i.e
- *    essentially handle window id's being passed in)
- *  - Dont bomb out when an invalid pixmap is passed (trap damage handling)
- *  - track and trap referenced pixmap/win  getting destroyed
+ *    essentially handle window id's being passed in) ?
 */
 
 /**
@@ -78,8 +76,11 @@ struct _ClutterGLXTexturePixmapPrivate
   COGLenum      target_type;
   guint         texture_id;
   GLXPixmap     glx_pixmap;
-  gboolean      bound;
 
+  gboolean      use_fallback;
+
+  gboolean      bound;
+  
 };
 
 static void 
@@ -162,7 +163,7 @@ clutter_glx_texture_pixmap_notify (GObject *object, GParamSpec *pspec)
     }
 }
 
-static void
+static gboolean
 create_cogl_texture (ClutterTexture *texture,
 		     guint width,
 		     guint height)
@@ -184,9 +185,10 @@ create_cogl_texture (ClutterTexture *texture,
                                   (CLUTTER_X11_TEXTURE_PIXMAP (texture),
                                    0, 0,
                                    width, height);
+      return TRUE;
     }
-  else
-    g_warning ("unable to realize");
+
+  return FALSE;
 }
 
 static void
@@ -198,13 +200,18 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
 
   priv = CLUTTER_GLX_TEXTURE_PIXMAP (actor)->priv;
 
-  if (!_have_tex_from_pixmap_ext
-      || !clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT))
+  if (priv->use_fallback
+      || !_have_tex_from_pixmap_ext
+      || !(clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT)
+           || clutter_feature_available (COGL_FEATURE_TEXTURE_RECTANGLE)))
     {
       /* Fall back */
       CLUTTER_NOTE (TEXTURE, "texture from pixmap appears unsupported");
       CLUTTER_NOTE (TEXTURE, "Falling back to X11 manual mechansim");
       /* FIXME: Also check for sliced npots ? */
+
+      priv->use_fallback = TRUE;
+
       CLUTTER_ACTOR_CLASS (clutter_glx_texture_pixmap_parent_class)->
         realize (actor);
       return;
@@ -217,9 +224,18 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
                 NULL);
   
   if (!pixmap)
-    return;
+      return;
 
-  create_cogl_texture (CLUTTER_TEXTURE (actor), pixmap_width, pixmap_height);
+  if (!create_cogl_texture (CLUTTER_TEXTURE (actor), 
+                            pixmap_width, pixmap_height))
+    {
+      CLUTTER_NOTE (TEXTURE, "Unable to create a valid pixmap");
+      CLUTTER_NOTE (TEXTURE, "Falling back to X11 manual mechanism");
+      priv->use_fallback = TRUE;
+      CLUTTER_ACTOR_CLASS (clutter_glx_texture_pixmap_parent_class)->
+        realize (actor);
+      return;
+    }
 
   CLUTTER_NOTE (TEXTURE, "texture pixmap realised");
 }
@@ -243,7 +259,7 @@ clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
   if (!CLUTTER_ACTOR_IS_REALIZED (actor))
     return;
 
-  if (priv->bound && priv->glx_pixmap)
+  if (priv->glx_pixmap && priv->bound)
     {
       clutter_x11_trap_x_errors ();
 
@@ -253,6 +269,8 @@ clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
 
       XSync (clutter_x11_get_default_display(), FALSE);
       clutter_x11_untrap_x_errors ();
+
+      priv->bound = FALSE;
     }
   
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
@@ -373,8 +391,7 @@ clutter_glx_texture_pixmap_free_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   dpy = clutter_x11_get_default_display ();
 
-  if (_have_tex_from_pixmap_ext &&
-      CLUTTER_ACTOR_IS_REALIZED (texture) &&
+  if (priv->glx_pixmap &&
       priv->bound)
     {
       texture_bind (texture);
@@ -391,19 +408,23 @@ clutter_glx_texture_pixmap_free_glx_pixmap (ClutterGLXTexturePixmap *texture)
 	CLUTTER_NOTE (TEXTURE, "Failed to release?");
 
       CLUTTER_NOTE (TEXTURE, "Destroyed pxm: %li", priv->glx_pixmap);
+
+      priv->bound = FALSE;
     }
 
   clutter_x11_trap_x_errors ();
-  glXDestroyGLXPixmap (dpy, priv->glx_pixmap);
+  if (priv->glx_pixmap)
+    glXDestroyGLXPixmap (dpy, priv->glx_pixmap);
   XSync (dpy, FALSE);
   clutter_x11_untrap_x_errors ();
+  priv->glx_pixmap = None;
 }
 
 static void
 clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 {
   ClutterGLXTexturePixmapPrivate *priv = texture->priv;
-  GLXPixmap                       glx_pixmap;
+  GLXPixmap                       glx_pixmap = None;
   int                             attribs[7], i = 0;
   GLXFBConfig                    *fbconfig;
   Display                        *dpy;
@@ -419,20 +440,22 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
   dpy = clutter_x11_get_default_display ();
 
   g_object_get (texture,
-                "pixmap-width", &pixmap_width,
+                "pixmap-width",  &pixmap_width,
                 "pixmap-height", &pixmap_height,
-                "pixmap-depth",                &depth,
-                "pixmap",               &pixmap,
+                "pixmap-depth",  &depth,
+                "pixmap",        &pixmap,
                 NULL);
   if (!pixmap)
-    return;
+    {
+      goto cleanup;
+    }
 
   fbconfig = get_fbconfig_for_depth (depth);
 
   if (!fbconfig)
     {
       g_warning ("Could not find an FBConfig for selected pixmap");
-      return;
+      goto cleanup;
     }
 
   attribs[i++] = GLX_TEXTURE_FORMAT_EXT;
@@ -448,15 +471,19 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
   else
     {
       g_warning ("Pixmap with depth bellow 24 are not supported");
-      return;
+      goto cleanup;
     }
 
   attribs[i++] = GLX_MIPMAP_TEXTURE_EXT;
   attribs[i++] = 0;
 
   attribs[i++] = GLX_TEXTURE_TARGET_EXT;
-  attribs[i++] = GLX_TEXTURE_2D_EXT;
-  
+
+  if (clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT))
+    attribs[i++] = GLX_TEXTURE_2D_EXT;
+  else
+    attribs[i++] = GLX_TEXTURE_RECTANGLE_EXT;
+
   attribs[i++] = None;
 
   clutter_x11_trap_x_errors ();
@@ -470,16 +497,18 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   g_free (fbconfig);
 
+ cleanup:
+
+  if (priv->glx_pixmap)
+    clutter_glx_texture_pixmap_free_glx_pixmap (texture);
+
   if (glx_pixmap != None)
     {
-      if (priv->glx_pixmap)
-        clutter_glx_texture_pixmap_free_glx_pixmap (texture);
-      
       priv->glx_pixmap = glx_pixmap;
       
       if (!clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (texture)))
 	{
-	  create_cogl_texture (texture,
+	  create_cogl_texture (CLUTTER_TEXTURE (texture),
 			       pixmap_width,
 			       pixmap_height);
         }
@@ -487,6 +516,11 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
       CLUTTER_NOTE (TEXTURE, "Created GLXPixmap");
 
       return;
+    }
+  else
+    {
+      priv->use_fallback = TRUE;
+      priv->glx_pixmap = None;
     }
 }
 
@@ -506,49 +540,44 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   priv = CLUTTER_GLX_TEXTURE_PIXMAP (texture)->priv;
   dpy = clutter_x11_get_default_display();
 
-
   if (!CLUTTER_ACTOR_IS_REALIZED (texture))
     return;
 
-  if (!_have_tex_from_pixmap_ext)
+  if (priv->use_fallback)
     {
       parent_class->update_area (texture,
-                                x, y,
-                                width, height);
+                                 x, y,
+                                 width, height);
       return;
     }
 
-  if (_have_tex_from_pixmap_ext)
+  if (priv->glx_pixmap == None)
+    return;
+  
+  if (texture_bind (CLUTTER_GLX_TEXTURE_PIXMAP(texture)))
     {
-      Display *dpy;
+      clutter_x11_trap_x_errors ();
+      
+      (_gl_bind_tex_image) (dpy,
+                            priv->glx_pixmap,
+                            GLX_FRONT_LEFT_EXT,
+                            NULL);
+      
+      XSync (clutter_x11_get_default_display(), FALSE);
+      
+      /* Note above fires X error for non name pixmaps - but
+       * things still seem to work - i.e pixmap updated  
+       */
+      if (clutter_x11_untrap_x_errors ())
+        CLUTTER_NOTE (TEXTURE, "Update bind_tex_image failed");
 
-      dpy = clutter_x11_get_default_display();
-
-      if (texture_bind (CLUTTER_GLX_TEXTURE_PIXMAP(texture)))
-        {
-          clutter_x11_trap_x_errors ();
-          
-          (_gl_bind_tex_image) (dpy,
-                                priv->glx_pixmap,
-                                GLX_FRONT_LEFT_EXT,
-                                NULL);
-          
-          XSync (clutter_x11_get_default_display(), FALSE);
-
-          /* Note above fires X error for non name pixmaps - but
-           * things still seem to work - i.e pixmap updated  
-          */
-          if (clutter_x11_untrap_x_errors ())
-            CLUTTER_NOTE (TEXTURE, "Update bind_tex_image failed");
-          
-          priv->bound = TRUE;
-        }
-      else
-          g_warning ("Failed to bind initial tex");
-
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(texture)))
-        clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
+      priv->bound = TRUE;
     }
+  else
+    g_warning ("Failed to bind initial tex");
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(texture)))
+  clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
 
 }
 
@@ -596,6 +625,25 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
     }
 }
 
+/**
+ * clutter_glx_texture_pixmap_using_extension:
+ * @texture: A #ClutterGLXTexturePixmap
+ *
+ * Return value: A boolean indicating if the texture is using the  
+ * GLX_EXT_texture_from_pixmap OpenGL extension or falling back to
+ * slower software mechanism.
+ *
+ * Since: 0.8
+ **/
+gboolean
+clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
+{
+  ClutterGLXTexturePixmapPrivate       *priv;
+
+  priv = CLUTTER_GLX_TEXTURE_PIXMAP (texture)->priv;
+
+  return (priv->use_fallback != FALSE);
+}
 
 /**
  * clutter_glx_texture_pixmap_new_with_pixmap:
@@ -608,7 +656,7 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
  *
  * Since: 0.8
  **/
-ClutterActor *
+ClutterActor*
 clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap)
 {
   ClutterActor *actor;
