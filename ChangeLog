@@ -1,3 +1,8 @@
+2008-05-07  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-frame-source.h: Added the missing G_BEGIN_DECLS
+	and G_END_DECLS
+
 2008-05-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/sdl/clutter-backend-sdl.c:

@@ -28,6 +28,8 @@
 
 #include <glib.h>
 
+G_BEGIN_DECLS
+
 guint clutter_frame_source_add (guint          interval,
 				GSourceFunc    function,
 				gpointer       data);
@@ -37,5 +39,7 @@ guint clutter_frame_source_add_full (gint           priority,
 				     GSourceFunc    function,
 				     gpointer       data,
 				     GDestroyNotify notify);
+
+G_END_DECLS
 
 #endif /* _CLUTTER_FRAME_SOURCE_H */
