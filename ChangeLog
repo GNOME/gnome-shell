@@ -1,3 +1,23 @@
+2008-05-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/sdl/clutter-backend-sdl.c:
+	(clutter_backend_sdl_dispose): Destroy the timer that we created...
+	(clutter_backend_sdl_init): ... here.
+
+	* clutter/sdl/clutter-backend-sdl.h: Add a GTimer for time-based
+	operations, like the event time.
+
+	* clutter/sdl/clutter-event-sdl.c:
+	(get_backend_time): Get the elapsed milliseconds for the SDL
+	backend.
+
+	(_clutter_events_init): Start the timer provided by the backend...
+	(_clutter_events_uninit): ... and the stop it.
+
+	(key_event_translate), (event_translate): Use the backend time
+	to fill out the time field of the event structures. This fixes
+	the motion notification throttling on the SDL backend.
+
 2008-05-06  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:

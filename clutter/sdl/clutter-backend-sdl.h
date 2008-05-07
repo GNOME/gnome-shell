@@ -49,6 +49,9 @@ struct _ClutterBackendSDL
   /* event source */
   GSource *event_source;
 
+  /* our own timer for events */
+  GTimer *timer;
+
   /*< private >*/
 };
 

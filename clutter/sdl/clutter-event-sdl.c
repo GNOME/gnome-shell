@@ -62,6 +62,19 @@ static GSourceFuncs event_funcs = {
   NULL
 };
 
+static guint32
+get_backend_time (void)
+{
+  ClutterBackendSDL *backend_sdl;
+  gdouble elapsed;
+
+  backend_sdl = CLUTTER_BACKEND_SDL (clutter_get_default_backend ());
+
+  elapsed = g_timer_elapsed (backend_sdl->timer, NULL);
+
+  return (elapsed * 1000.0);
+}
+
 static GSource *
 clutter_event_source_new (ClutterBackend *backend)
 {
@@ -80,6 +93,11 @@ _clutter_events_init (ClutterBackend *backend)
   ClutterEventSource *event_source;
   ClutterBackendSDL *backend_sdl = CLUTTER_BACKEND_SDL (backend);
 
+  CLUTTER_NOTE (EVENT, "Starting timer");
+  g_assert (backend_sdl->timer != NULL);
+  g_timer_start (backend_sdl->timer);
+
+  CLUTTER_NOTE (EVENT, "Creating event source");
   source = backend_sdl->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
@@ -97,8 +115,10 @@ _clutter_events_uninit (ClutterBackend *backend)
 
   if (backend_sdl->event_source)
     {
-      CLUTTER_NOTE (EVENT, "Destroying the event source");
+      CLUTTER_NOTE (EVENT, "Stopping the timer");
+      g_timer_stop (backend_sdl->timer);
 
+      CLUTTER_NOTE (EVENT, "Destroying the event source");
       event_sources = g_list_remove (event_sources,
                                      backend_sdl->event_source);
 
@@ -168,7 +188,7 @@ static void
 key_event_translate (ClutterEvent   *event,
 		     SDL_Event      *sdl_event)
 {
-  event->key.time = 0;
+  event->key.time = get_backend_time ();
 
   /* FIXME: This is just a quick hack to make SDL keys roughly work.
    * Fixing it properly is left as a exercise to someone who enjoys
@@ -180,7 +200,7 @@ key_event_translate (ClutterEvent   *event,
    * SDL in the first place (More portability than just GLX)
   */
 
-  switch(sdl_event->key.keysym.sym)
+  switch (sdl_event->key.keysym.sym)
     {
     case SDLK_UP:        event->key.keyval = CLUTTER_Up; break;
     case SDLK_DOWN:      event->key.keyval = CLUTTER_Down; break;
@@ -212,7 +232,10 @@ event_translate (ClutterBackend *backend,
 		 ClutterEvent   *event,
 		 SDL_Event      *sdl_event)
 {
+  ClutterBackendSDL *backend_sdl;
   gboolean res;
+
+  backend_sdl = CLUTTER_BACKEND_SDL (clutter_get_default_backend ());
 
   res = TRUE;
 
@@ -246,15 +269,16 @@ event_translate (ClutterBackend *backend,
           else
             event->scroll.direction = CLUTTER_SCROLL_RIGHT;
 
-          event->scroll.time = 0;
+          event->scroll.time = get_backend_time ();
           event->scroll.x = sdl_event->button.x;
           event->scroll.y = sdl_event->button.y;
           event->scroll.modifier_state = sdl_event->button.state;
 
           break;
+
         default:
           event->button.type = event->type = CLUTTER_BUTTON_PRESS;
-          event->button.time = 0;
+          event->button.time = get_backend_time (); 
           event->button.x = sdl_event->button.x;
           event->button.y = sdl_event->button.y;
           event->button.modifier_state = sdl_event->button.state;
@@ -275,7 +299,7 @@ event_translate (ClutterBackend *backend,
         }
 
       event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
-      event->button.time = 0;
+      event->button.time = get_backend_time ();
       event->button.x = sdl_event->button.x;
       event->button.y = sdl_event->button.y;
       event->button.modifier_state = sdl_event->button.state;
@@ -284,10 +308,10 @@ event_translate (ClutterBackend *backend,
 
     case SDL_MOUSEMOTION:
       event->motion.type = event->type = CLUTTER_MOTION;
-      event->motion.time = 0;
+      event->motion.time = get_backend_time ();
       event->motion.x = sdl_event->motion.x;
       event->motion.y = sdl_event->motion.y;
-      event->motion.modifier_state = sdl_event->motion.state;;
+      event->motion.modifier_state = sdl_event->motion.state;
       break;
 
     default:

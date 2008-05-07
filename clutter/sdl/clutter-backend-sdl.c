@@ -143,6 +143,12 @@ clutter_backend_sdl_dispose (GObject *gobject)
       backend_sdl->stage = NULL;
     }
 
+  if (backend_sdl->timer)
+    {
+      g_timer_destroy (backend_sdl->timer);
+      backend_sdl->timer = NULL;
+    }
+
   G_OBJECT_CLASS (clutter_backend_sdl_parent_class)->dispose (gobject);
 }
 
@@ -203,6 +209,8 @@ clutter_backend_sdl_init (ClutterBackendSDL *backend_sdl)
   clutter_backend_set_resolution (backend, 96.0);
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
+
+  backend_sdl->timer = g_timer_new ();
 }
 
 GType
