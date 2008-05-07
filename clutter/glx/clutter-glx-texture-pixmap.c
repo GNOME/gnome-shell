@@ -172,7 +172,7 @@ create_cogl_texture (ClutterTexture *texture,
 
   handle 
     = cogl_texture_new_with_size (width, height,
-                                  -1,
+                                  -1, FALSE,
                                   COGL_PIXEL_FORMAT_RGBA_8888|COGL_BGR_BIT);
 
   if (handle)

@@ -55,6 +55,7 @@ struct _CoglTexture
   COGLenum           min_filter;
   COGLenum           mag_filter;
   gboolean           is_foreign;
+  gboolean           auto_mipmap;
 };
 
 CoglTexture*

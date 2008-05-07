@@ -121,15 +121,16 @@ tc_get (tc_area *area, int width, int height)
           first_texture = match;
           match->avail = TC_HEIGHT;
 
-	  match->cogl_tex = cogl_texture_new_with_size (TC_WIDTH, TC_HEIGHT, 0,
-							COGL_PIXEL_FORMAT_A_8);
+	  match->cogl_tex = cogl_texture_new_with_size (TC_WIDTH, TC_HEIGHT, 0, TRUE,
+                                                        COGL_PIXEL_FORMAT_A_8);
 	  
-	  /* We might even want to use mipmapping instead of
-	   * CGL_LINEAR here that should allow rerendering of glyphs
-	   * to look nice even at scales far below 50%.
+	  /* We use mipmapping instead of just CGL_LINEAR here
+           * which allows rendering of glyphs to look nice even at
+           * scales far below 50%.
 	   */
-	  cogl_texture_set_filters (match->cogl_tex,
-				    CGL_LINEAR, CGL_NEAREST);
+          cogl_texture_set_filters (match->cogl_tex,
+                                    CGL_LINEAR_MIPMAP_LINEAR,
+                                    CGL_LINEAR);
         }
 
       match->avail -= slice_height;

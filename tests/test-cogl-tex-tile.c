@@ -154,12 +154,12 @@ test_coglbox_init (TestCoglbox *self)
   TestCoglboxPrivate *priv;
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
   
-  priv->cogl_tex_id = cogl_texture_new_from_file ("redhand.png", 0,
-						  COGL_PIXEL_FORMAT_ANY,
-						  NULL);
+  priv->cogl_tex_id = cogl_texture_new_from_file ("redhand.png", 0, FALSE,
+                                                  COGL_PIXEL_FORMAT_ANY,
+                                                  NULL);
   
   cogl_texture_set_filters (priv->cogl_tex_id,
-			    CGL_LINEAR, CGL_LINEAR);
+                            CGL_LINEAR, CGL_LINEAR);
 }
 
 static void

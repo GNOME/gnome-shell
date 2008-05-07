@@ -221,6 +221,7 @@ clutter_texture_realize (ClutterActor *actor)
                                 (priv->width,
                                  priv->height,
                                  priv->no_slice ? -1 : priv->max_tile_waste,
+                                 FALSE,
                                  COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_texture_set_filters (priv->texture,
@@ -946,6 +947,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
   if ((new_texture = cogl_texture_new_from_data 
                             (width, height,
                              priv->no_slice ? -1 : priv->max_tile_waste,
+                             FALSE,
                              source_format,
                              COGL_PIXEL_FORMAT_ANY,
                              rowstride,
@@ -1128,6 +1130,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   if ((new_texture = cogl_texture_new_from_file 
                                (filename,
                                 priv->no_slice ? -1 : priv->max_tile_waste,
+                                FALSE,
                                 COGL_PIXEL_FORMAT_ANY,
                                 error))
       == COGL_INVALID_HANDLE)
@@ -1477,6 +1480,7 @@ on_fbo_source_size_change (GObject          *object,
       priv->texture = cogl_texture_new_with_size (priv->width,
 						  priv->height,
 						  priv->max_tile_waste,
+                                                  FALSE,
 						  COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_texture_set_filters (priv->texture,

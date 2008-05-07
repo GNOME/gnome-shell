@@ -749,7 +749,10 @@ _cogl_texture_slices_create (CoglTexture *tex)
 			       tex->wrap_mode) );
 	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T,
 			       tex->wrap_mode) );
-
+          
+          if (tex->auto_mipmap)
+            GE( glTexParameteri (tex->gl_target, GL_GENERATE_MIPMAP, GL_TRUE) );
+          
 	  /* Use a transparent border color so that we can leave the
 	     color buffer alone when using texture co-ordinates
 	     outside of the texture */
@@ -989,6 +992,7 @@ CoglHandle
 cogl_texture_new_with_size (guint           width,
 			    guint           height,
 			    gint            max_waste,
+                            gboolean        auto_mipmap,
 			    CoglPixelFormat internal_format)
 {
   CoglTexture *tex;
@@ -1010,6 +1014,7 @@ cogl_texture_new_with_size (guint           width,
   COGL_HANDLE_DEBUG_NEW (texture, tex);
 
   tex->is_foreign = FALSE;
+  tex->auto_mipmap = auto_mipmap;
   
   tex->bitmap.width = width;
   tex->bitmap.height = height;
@@ -1047,6 +1052,7 @@ CoglHandle
 cogl_texture_new_from_data (guint              width,
 			    guint              height,
 			    gint               max_waste,
+                            gboolean           auto_mipmap,
 			    CoglPixelFormat    format,
 			    CoglPixelFormat    internal_format,
 			    guint              rowstride,
@@ -1072,6 +1078,7 @@ cogl_texture_new_from_data (guint              width,
   COGL_HANDLE_DEBUG_NEW (texture, tex);
 
   tex->is_foreign = FALSE;
+  tex->auto_mipmap = auto_mipmap;
   
   tex->bitmap.width = width;
   tex->bitmap.height = height;
@@ -1119,6 +1126,7 @@ cogl_texture_new_from_data (guint              width,
 CoglHandle
 cogl_texture_new_from_file (const gchar     *filename,
 			    gint             max_waste,
+                            gboolean         auto_mipmap,
 			    CoglPixelFormat  internal_format,
 			    GError         **error)
 {
@@ -1147,6 +1155,7 @@ cogl_texture_new_from_file (const gchar     *filename,
   COGL_HANDLE_DEBUG_NEW (texture, tex);
   
   tex->is_foreign = FALSE;
+  tex->auto_mipmap = auto_mipmap;
   
   tex->bitmap = bmp;
   tex->bitmap_owner = TRUE;
@@ -1214,6 +1223,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   GLint            gl_height = 0;
   GLint            gl_min_filter;
   GLint            gl_mag_filter;
+  GLint            gl_gen_mipmap;
   guint            bpp;
   CoglTexture     *tex;
   CoglTexSliceSpan x_span;
@@ -1257,11 +1267,15 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   
   GE( glGetTexParameteriv (gl_target,
 			   GL_TEXTURE_MIN_FILTER,
-			   &gl_min_filter));
+			   &gl_min_filter) );
   
   GE( glGetTexParameteriv (gl_target,
 			   GL_TEXTURE_MAG_FILTER,
-			   &gl_mag_filter));
+			   &gl_mag_filter) );
+  
+  GE( glGetTexParameteriv (gl_target,
+                           GL_GENERATE_MIPMAP,
+                           &gl_gen_mipmap) );
   
   /* Validate width and height */
   if (gl_width <= 0 || gl_height <= 0)
@@ -1293,6 +1307,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   
   /* Setup bitmap info */
   tex->is_foreign = TRUE;
+  tex->auto_mipmap = (gl_gen_mipmap == GL_TRUE) ? TRUE : FALSE;
   
   tex->bitmap.format = format;
   tex->bitmap.width = gl_width - x_pot_waste;
@@ -1334,21 +1349,6 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   g_array_append_val (tex->slice_y_spans, y_span);
   
   g_array_append_val (tex->slice_gl_handles, gl_handle);
-  
-  /* Replace mipmap min filter modes with single level ones */
-  if (gl_min_filter != GL_NEAREST && gl_min_filter != GL_LINEAR)
-    {
-      if (gl_min_filter == GL_NEAREST_MIPMAP_NEAREST)
-	{
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER, GL_NEAREST) );
-	  tex->min_filter = CGL_NEAREST;
-	}
-      else
-	{
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR) );
-	  tex->min_filter = CGL_LINEAR;
-	}
-    }
   
   /* Force appropriate wrap parameter */
   if (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) &&

@@ -249,7 +249,7 @@ test_coglbox_init (TestCoglbox *self)
   priv->use_sliced = FALSE;
   
   priv->sliced_tex = cogl_texture_new_from_file
-    ("redhand.png", 10, COGL_PIXEL_FORMAT_ANY, &error);
+    ("redhand.png", 10, FALSE, COGL_PIXEL_FORMAT_ANY, &error);
   if (priv->sliced_tex == NULL)
     {
       g_warning ("Texture loading failed: %s", error->message);
@@ -258,7 +258,7 @@ test_coglbox_init (TestCoglbox *self)
     }
 
   priv->not_sliced_tex = cogl_texture_new_from_file
-    ("redhand.png", -1, COGL_PIXEL_FORMAT_ANY, &error);
+    ("redhand.png", -1, FALSE, COGL_PIXEL_FORMAT_ANY, &error);
   if (priv->not_sliced_tex == NULL)
     {
       g_warning ("Texture loading failed: %s", error->message);

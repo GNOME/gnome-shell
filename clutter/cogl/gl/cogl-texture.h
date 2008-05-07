@@ -56,6 +56,7 @@ struct _CoglTexture
   COGLenum           mag_filter;
   gboolean           is_foreign;
   GLint              wrap_mode;
+  gboolean           auto_mipmap;
 };
 
 CoglTexture*
