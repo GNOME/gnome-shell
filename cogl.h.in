@@ -563,6 +563,8 @@ void            cogl_paint_init               (const ClutterColor *color);
  * @height: height of texture in pixels.
  * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
  * texture fit GPU limitations.
+ * @auto_mipmap: enable or disable automatic generation of mipmap pyramid
+ * from the base level image whenever it is updated.
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  * texture.
  *
@@ -574,6 +576,7 @@ void            cogl_paint_init               (const ClutterColor *color);
 CoglHandle      cogl_texture_new_with_size    (guint           width,
                                                guint           height,
                                                gint            max_waste,
+                                               gboolean        auto_mipmap,
                                                CoglPixelFormat internal_format);
 
 /**
@@ -581,6 +584,8 @@ CoglHandle      cogl_texture_new_with_size    (guint           width,
  * @filename: the file to load
  * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
  * texture fit GPU limitations.
+ * @auto_mipmap: enable or disable automatic generation of mipmap pyramid
+ * from the base level image whenever it is updated.
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
  * texture.
  * @error: a #GError or NULL.
@@ -592,6 +597,7 @@ CoglHandle      cogl_texture_new_with_size    (guint           width,
  */
 CoglHandle      cogl_texture_new_from_file    (const gchar    *filename,
                                                gint            max_waste,
+                                               gboolean        auto_mipmap,
                                                CoglPixelFormat internal_format,
                                                GError        **error);
 
@@ -600,6 +606,8 @@ CoglHandle      cogl_texture_new_from_file    (const gchar    *filename,
  * @width: width of texture in pixels.
  * @height: height of texture in pixels.
  * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
+ * @auto_mipmap: enable or disable automatic generation of mipmap pyramid
+ * from the base level image whenever it is updated.
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
  * @internal_format: the #CoglPixelFormat that will be used for storing the
  * buffer on the GPU.
@@ -615,6 +623,7 @@ CoglHandle      cogl_texture_new_from_file    (const gchar    *filename,
 CoglHandle      cogl_texture_new_from_data    (guint            width,
                                                guint            height,
                                                gint             max_waste,
+                                               gboolean         auto_mipmap,
                                                CoglPixelFormat  format,
                                                CoglPixelFormat  internal_format,
                                                guint            rowstride,
