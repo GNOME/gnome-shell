@@ -1,5 +1,23 @@
 2008-05-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script-private.h: Add a flag for the
+	default stage.
+
+	* clutter/clutter-script.c:
+	(json_object_end): If the "type" member is "ClutterStage"
+	and we have a "is-default" member set to true then this
+	is the default stage.
+
+	(clutter_script_construct_object): Special case the default
+	stage instead of each ClutterStage.
+	
+	(object_info_free): Ditto as above.
+
+	* tests/test-script.json: Test the creation of a non-default
+	stage and the ::destroy handler to quit.
+
+2008-05-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug #908 - Support transform from G_TYPE_INT to ClutterUnit
 
 	* clutter/clutter-units.c:

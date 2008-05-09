@@ -729,6 +729,17 @@ json_object_end (JsonParser *parser,
       json_object_remove_member (object, "signals");
     }
 
+  if (strcmp (oinfo->class_name, "ClutterStage") == 0 &&
+      json_object_has_member (object, "is-default"))
+    {
+      val = json_object_get_member (object, "is-default");
+      oinfo->is_stage_default = json_node_get_boolean (val);
+
+      json_object_remove_member (object, "is-default");
+    }
+  else
+    oinfo->is_stage_default = FALSE;
+
   oinfo->is_toplevel = FALSE;
   oinfo->is_unmerged = FALSE;
   oinfo->has_unresolved = TRUE;
@@ -1246,9 +1257,9 @@ clutter_script_construct_object (ClutterScript *script,
 
   if (oinfo->object)
     object = oinfo->object;
-  else if (oinfo->gtype == CLUTTER_TYPE_STAGE)
+  else if (oinfo->gtype == CLUTTER_TYPE_STAGE && oinfo->is_stage_default)
     {
-      /* the stage is a complex beast: we cannot create it using
+      /* the default stage is a complex beast: we cannot create it using
        * g_object_newv() but we need clutter_script_construct_parameters()
        * to add the GParamSpec to the PropertyInfo pspec member, so
        * that we don't have to implement every complex property (like
@@ -1459,7 +1470,7 @@ object_info_free (gpointer data)
           oinfo->object = NULL;
         }
 
-      if (oinfo->is_unmerged && oinfo->object)
+      if (oinfo->is_unmerged && oinfo->object && !oinfo->is_stage_default)
         {
           clutter_actor_destroy (CLUTTER_ACTOR (oinfo->object));
           oinfo->object = NULL;

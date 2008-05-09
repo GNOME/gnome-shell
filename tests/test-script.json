@@ -2,9 +2,11 @@
   "My Scene" : {
     "id" : "main-stage",
     "type" : "ClutterStage",
+    "title" : "ClutterScript test",
     "color" : "white",
     "signals" : [
-      { "name" : "key-press-event", "handler" : "clutter_main_quit" }
+      { "name" : "key-press-event", "handler" : "clutter_main_quit" },
+      { "name" : "destroy", "handler" : "clutter_main_quit" }
     ],
     "children" : [
       {
@@ -16,7 +18,7 @@
         "rotation" : [
           { "z-axis" : [ 45.0, [ 75, 75 ] ] }
         ],
-        "behaviours" : [ "fade-behaviour", "path-behaviour" ],
+        "behaviours" : [ "fade-behaviour", "path-behaviour" ]
       },
       {
         "id" : "green-button",

@@ -50,9 +50,10 @@ typedef struct {
 
   guint merge_id;
 
-  guint is_toplevel    : 1;
-  guint has_unresolved : 1;
-  guint is_unmerged    : 1;
+  guint is_stage_default : 1;
+  guint is_toplevel      : 1;
+  guint has_unresolved   : 1;
+  guint is_unmerged      : 1;
 } ObjectInfo;
 
 void object_info_free (gpointer data);
