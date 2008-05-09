@@ -682,16 +682,19 @@ clutter_threads_add_timeout (guint       interval,
  * called when the timeout is destroyed.  The first call to the
  * function will be at the end of the first @interval.
  *
- * This function is similar to clutter_threads_add_timeout_full except
- * that it will try to compensate for delays. For example, if @func
- * takes half the interval time to execute then the function will be
- * called again half the interval time after it finished. In contrast
- * clutter_threads_add_timeout_full would not fire until a full
- * interval after the function completes so the delay between calls
- * would be @interval * 1.5. This function does not however try to
- * invoke the function multiple times to catch up missing frames if
+ * This function is similar to clutter_threads_add_timeout_full()
+ * except that it will try to compensate for delays. For example, if
+ * @func takes half the interval time to execute then the function
+ * will be called again half the interval time after it finished. In
+ * contrast clutter_threads_add_timeout_full() would not fire until a
+ * full interval after the function completes so the delay between
+ * calls would be @interval * 1.5. This function does not however try
+ * to invoke the function multiple times to catch up missing frames if
  * @func takes more than @interval ms to execute.
  *
+ * This variant of clutter_frame_source_add_full() can be thought of a
+ * MT-safe version for Clutter actors.
+
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 0.8

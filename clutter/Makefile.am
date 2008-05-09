@@ -67,6 +67,7 @@ source_h =					\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
+	$(srcdir)/clutter-frame-source.h        \
 	$(srcdir)/clutter-group.h 		\
 	$(srcdir)/clutter-keysyms.h 		\
 	$(srcdir)/clutter-label.h 		\
@@ -178,7 +179,6 @@ source_c = \
 
 source_h_priv = \
 	clutter-debug.h 		\
-	clutter-frame-source.h          \
 	clutter-keysyms-table.h		\
 	clutter-model-private.h		\
 	clutter-private.h 		\

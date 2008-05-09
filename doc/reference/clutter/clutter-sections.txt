@@ -963,6 +963,12 @@ clutter_threads_add_idle
 clutter_threads_add_idle_full
 clutter_threads_add_timeout
 clutter_threads_add_timeout_full
+clutter_threads_add_frame_source
+clutter_threads_add_frame_source_full
+
+<SUBSECTION>
+clutter_frame_source_add
+clutter_frame_source_add_full
 
 <SUBSECTION>
 clutter_get_keyboard_grab

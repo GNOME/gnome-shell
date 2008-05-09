@@ -53,10 +53,40 @@ static GSourceFuncs clutter_frame_source_funcs =
     NULL
   };
 
+/**
+ * clutter_frame_source_add_full:
+ * @priority: the priority of the frame source. Typically this will be in the
+ *            range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
+ * @interval: the time between calls to the function, in milliseconds
+ * @func: function to call
+ * @data: data to pass to the function
+ * @notify: function to call when the timeout source is removed
+ *
+ * Sets a function to be called at regular intervals with the given
+ * priority.  The function is called repeatedly until it returns
+ * %FALSE, at which point the timeout is automatically destroyed and
+ * the function will not be called again.  The @notify function is
+ * called when the timeout is destroyed.  The first call to the
+ * function will be at the end of the first @interval.
+ *
+ * This function is similar to g_timeout_add_full() except that it
+ * will try to compensate for delays. For example, if @func takes half
+ * the interval time to execute then the function will be called again
+ * half the interval time after it finished. In contrast
+ * g_timeout_add_full() would not fire until a full interval after the
+ * function completes so the delay between calls would be @interval *
+ * 1.5. This function does not however try to invoke the function
+ * multiple times to catch up missing frames if @func takes more than
+ * @interval ms to execute.
+ *
+ * Return value: the ID (greater than 0) of the event source.
+ *
+ * Since: 0.8
+ */
 guint
 clutter_frame_source_add_full (gint           priority,
 			       guint          interval,
-			       GSourceFunc    function,
+			       GSourceFunc    func,
 			       gpointer       data,
 			       GDestroyNotify notify)
 {
@@ -72,7 +102,7 @@ clutter_frame_source_add_full (gint           priority,
   if (priority != G_PRIORITY_DEFAULT)
     g_source_set_priority (source, priority);
 
-  g_source_set_callback (source, function, data, notify);
+  g_source_set_callback (source, func, data, notify);
 
   ret = g_source_attach (source, NULL);
 
@@ -81,13 +111,25 @@ clutter_frame_source_add_full (gint           priority,
   return ret;
 }
 
+/**
+ * clutter_frame_source_add:
+ * @interval: the time between calls to the function, in milliseconds
+ * @func: function to call
+ * @data: data to pass to the function
+ *
+ * Simple wrapper around clutter_frame_source_add_full().
+ *
+ * Return value: the ID (greater than 0) of the event source.
+ *
+ * Since: 0.8
+ */
 guint
 clutter_frame_source_add (guint          interval,
-			  GSourceFunc    function,
+			  GSourceFunc    func,
 			  gpointer       data)
 {
   return clutter_frame_source_add_full (G_PRIORITY_DEFAULT,
-					interval, function, data, NULL);
+					interval, func, data, NULL);
 }
 
 static guint

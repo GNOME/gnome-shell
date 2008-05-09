@@ -31,12 +31,12 @@
 G_BEGIN_DECLS
 
 guint clutter_frame_source_add (guint          interval,
-				GSourceFunc    function,
+				GSourceFunc    func,
 				gpointer       data);
 
 guint clutter_frame_source_add_full (gint           priority,
 				     guint          interval,
-				     GSourceFunc    function,
+				     GSourceFunc    func,
 				     gpointer       data,
 				     GDestroyNotify notify);
 
