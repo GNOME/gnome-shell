@@ -1,11 +1,11 @@
 2008-05-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
-	Bug #902 - Support transform from G_TYPE_INT to ClutterUnit
+	Bug #908 - Support transform from G_TYPE_INT to ClutterUnit
 
 	* clutter/clutter-units.c:
 	(clutter_value_transform_int_unit),
 	(clutter_unit_get_type): Add GValue transformation function from
-	integer values to ClutterUnit. (#902)
+	integer values to ClutterUnit. (#908)
 
 	(param_unit_validate): Fix validation for ClutterParamSpecUnit;
 	this allows writable ClutterUnit properties.
