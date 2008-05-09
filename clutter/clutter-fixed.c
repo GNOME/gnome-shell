@@ -1035,7 +1035,7 @@ static void
 clutter_value_transform_fixed_int (const GValue *src,
                                    GValue       *dest)
 {
-  dest->data[0].v_int = src->data[0].v_int;
+  dest->data[0].v_int = CLUTTER_FIXED_TO_INT (src->data[0].v_int);
 }
 
 static void
@@ -1051,6 +1051,28 @@ clutter_value_transform_fixed_float (const GValue *src,
 {
   dest->data[0].v_float = CLUTTER_FIXED_TO_FLOAT (src->data[0].v_int);
 }
+
+static void
+clutter_value_transform_int_fixed (const GValue *src,
+                                   GValue       *dest)
+{
+  dest->data[0].v_int = CLUTTER_INT_TO_FIXED (src->data[0].v_int);
+}
+
+static void
+clutter_value_transform_double_fixed (const GValue *src,
+                                      GValue       *dest)
+{
+  dest->data[0].v_int = CLUTTER_FLOAT_TO_FIXED (src->data[0].v_double);
+}
+
+static void
+clutter_value_transform_float_fixed (const GValue *src,
+                                     GValue       *dest)
+{
+  dest->data[0].v_int = CLUTTER_FLOAT_TO_FIXED (src->data[0].v_float);
+}
+
 
 static const GTypeValueTable _clutter_fixed_value_table = {
   clutter_value_init_fixed,
@@ -1078,10 +1100,16 @@ clutter_fixed_get_type (void)
 
       g_value_register_transform_func (_clutter_fixed_type, G_TYPE_INT,
                                        clutter_value_transform_fixed_int);
+      g_value_register_transform_func (G_TYPE_INT, _clutter_fixed_type,
+                                       clutter_value_transform_int_fixed);
       g_value_register_transform_func (_clutter_fixed_type, G_TYPE_FLOAT,
                                        clutter_value_transform_fixed_float);
+      g_value_register_transform_func (G_TYPE_FLOAT, _clutter_fixed_type,
+                                       clutter_value_transform_float_fixed);
       g_value_register_transform_func (_clutter_fixed_type, G_TYPE_DOUBLE,
                                        clutter_value_transform_fixed_double);
+      g_value_register_transform_func (G_TYPE_DOUBLE, _clutter_fixed_type,
+                                       clutter_value_transform_double_fixed);
     }
 
   return _clutter_fixed_type;
@@ -1145,13 +1173,27 @@ param_fixed_validate (GParamSpec *pspec,
                       GValue     *value)
 {
   ClutterParamSpecFixed *fspec = CLUTTER_PARAM_SPEC_FIXED (pspec);
-  gint oval = value->data[0].v_int;
+  gint oval = CLUTTER_FIXED_TO_INT (value->data[0].v_int);
+  gint min, max, val;
 
-  value->data[0].v_int = CLAMP (value->data[0].v_int,
-                                fspec->minimum,
-                                fspec->maximum);
+  g_assert (CLUTTER_IS_PARAM_SPEC_FIXED (pspec));
 
-  return value->data[0].v_int != oval;
+  /* we compare the integer part of the value because the minimum
+   * and maximum values cover just that part of the representation
+   */
+
+  min = fspec->minimum;
+  max = fspec->maximum;
+  val = CLUTTER_FIXED_TO_INT (value->data[0].v_int);
+
+  val = CLAMP (val, min, max);
+  if (val != oval)
+    {
+      value->data[0].v_int = val;
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
 static gint

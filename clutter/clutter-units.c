@@ -4,7 +4,8 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Tomas Frydrych  <tf@openedhand.com>
+ * Authored By: Tomas Frydrych  <tf@openedhand.com>
+ *              Emmanuele Bassi  <ebassi@openedhand.com>
  *
  * Copyright (C) 2007 OpenedHand
  *
@@ -29,19 +30,65 @@
  * @short_description: A logical distance unit.
  *
  * Clutter units are logical units with granularity greater than that of the
- * device units; they are used by #ClutterActorBox and the _units() family of
- * ClutterActor functions. To convert between clutter units and device units,
- * use #CLUTTER_UNITS_FROM_DEVICE and #CLUTTER_UNITS_TO_DEVICE macros.
+ * device units; they are used by #ClutterActorBox and the units-based family
+ * of #ClutterActor functions. To convert between Clutter units and device
+ * units, use %CLUTTER_UNITS_FROM_DEVICE and %CLUTTER_UNITS_TO_DEVICE macros.
  *
- * Note: It is expected that as of version 0.6 all dimensions in the public
- * Clutter API will be given in clutter units. In order to ease the transition,
- * two extra macros have been provided, #CLUTTER_UNITS_TMP_TO_DEVICE and
- * #CLUTTER_UNITS_TMP_FROM_DEVICE. In version 0.4 these are identity macros,
- * but when the API transition happens will map to #CLUTTER_UNITS_TO_DEVICE and
- * #CLUTTER_UNITS_FROM_DEVICE respectively. You can use these in newly written
- * code as place holders.
+ * #ClutterUnit<!-- -->s can be converted from other units like millimeters,
+ * typographic points (at the current resolution) and percentages. It is
+ * also possible to convert fixed point values to and from #ClutterUnit
+ * values.
  *
- * Since: 0.4
+ * In order to register a #ClutterUnit property, the #ClutterParamSpecUnit
+ * #GParamSpec sub-class should be used:
+ *
+ * |[
+ *   GParamSpec *pspec;
+ *
+ *   pspec = clutter_param_spec_unit ("width",
+ *                                    "Width",
+ *                                    "Width of the actor, in units",
+ *                                    0, CLUTTER_MAXUNIT,
+ *                                    0,
+ *                                    G_PARAM_READWRITE);
+ *   g_object_class_install_property (gobject_class, PROP_WIDTH, pspec);
+ * ]|
+ *
+ * A #GValue holding units can be manipulated using clutter_value_set_unit()
+ * and clutter_value_get_unit(). #GValue<!-- -->s containing a #ClutterUnit
+ * value can also be transformed to #GValue<!-- -->s containing integer
+ * values - with a loss of precision:
+ *
+ * |[
+ *   static gboolean
+ *   units_to_int (const GValue *src,
+ *                 GValue       *dest)
+ *   {
+ *     g_return_val_if_fail (CLUTTER_VALUE_HOLDS_UNIT (src), FALSE);
+ *
+ *     g_value_init (dest, G_TYPE_INT);
+ *     return g_value_transform (src, &dest);
+ *   }
+ * ]|
+ *
+ * The code above is equivalent to:
+ *
+ * |[
+ *   static gboolean
+ *   units_to_int (const GValue *src,
+ *                 GValue       *dest)
+ *   {
+ *     g_return_val_if_fail (CLUTTER_VALUE_HOLDS_UNIT (src), FALSE);
+ *
+ *     g_value_init (dest, G_TYPE_INT);
+ *     g_value_set_int (dest,
+ *                      CLUTTER_UNITS_TO_INT (clutter_value_get_unit (src)));
+ *
+ *     return TRUE;
+ *   }
+ * ]|
+ *
+ * #ClutterUnit is available since Clutter 0.4
  */
 
 #ifdef HAVE_CONFIG_H
@@ -114,7 +161,14 @@ static void
 clutter_value_transform_unit_int (const GValue *src,
                                   GValue       *dest)
 {
-  dest->data[0].v_int = src->data[0].v_int;
+  dest->data[0].v_int = CLUTTER_UNITS_TO_INT (src->data[0].v_int);
+}
+
+static void
+clutter_value_transform_int_unit (const GValue *src,
+                                  GValue       *dest)
+{
+  dest->data[0].v_int = CLUTTER_UNITS_FROM_INT (src->data[0].v_int);
 }
 
 static const GTypeValueTable _clutter_unit_value_table = {
@@ -143,6 +197,8 @@ clutter_unit_get_type (void)
 
       g_value_register_transform_func (_clutter_unit_type, G_TYPE_INT,
                                        clutter_value_transform_unit_int);
+      g_value_register_transform_func (G_TYPE_INT, _clutter_unit_type,
+                                       clutter_value_transform_int_unit);
     }
 
   return _clutter_unit_type;
@@ -206,13 +262,26 @@ param_unit_validate (GParamSpec *pspec,
                      GValue     *value)
 {
   ClutterParamSpecUnit *uspec = CLUTTER_PARAM_SPEC_UNIT (pspec);
-  gint oval = value->data[0].v_int;
+  gint oval = CLUTTER_UNITS_TO_INT (value->data[0].v_int);
+  gint min, max, val;
 
-  value->data[0].v_int = CLAMP (value->data[0].v_int,
-                                uspec->minimum,
-                                uspec->maximum);
+  g_assert (CLUTTER_IS_PARAM_SPEC_UNIT (pspec));
 
-  return value->data[0].v_int != oval;
+  /* we compare the integer part of the value because the minimum
+   * and maximum values cover just that part of the representation
+   */
+  min = uspec->minimum; 
+  max = uspec->maximum;
+  val = CLUTTER_UNITS_TO_INT (value->data[0].v_int);
+
+  val = CLAMP (val, min, max);
+  if (val != oval)
+    {
+      value->data[0].v_int = val;
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
 static gint

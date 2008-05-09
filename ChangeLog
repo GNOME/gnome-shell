@@ -1,3 +1,26 @@
+2008-05-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #902 - Support transform from G_TYPE_INT to ClutterUnit
+
+	* clutter/clutter-units.c:
+	(clutter_value_transform_int_unit),
+	(clutter_unit_get_type): Add GValue transformation function from
+	integer values to ClutterUnit. (#902)
+
+	(param_unit_validate): Fix validation for ClutterParamSpecUnit;
+	this allows writable ClutterUnit properties.
+
+	* clutter/clutter-fixed.c:
+	(clutter_value_transform_int_fixed),
+	(clutter_value_transform_double_fixed),
+	(clutter_value_transform_float_fixed): Add GValue transformation
+	functions from native types (int, double, float) to ClutterFixed.
+
+	(clutter_fixed_get_type): Register the new transformation functions.
+
+	(param_fixed_validate): Fix validation for ClutterParamSpecUnit;
+	this allows writable ClutterFixed properties.
+
 2008-05-07  Ivan Leben  <ivan@o-hand.com>
 
 	* clutter/cogl/cogl.h.in:

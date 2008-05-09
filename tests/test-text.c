@@ -31,6 +31,8 @@ gboolean idle (gpointer data)
   
   clutter_actor_paint (stage);
   ++fps;
+
+  return TRUE;
 }
 
 int
