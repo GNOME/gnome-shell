@@ -1,3 +1,8 @@
+2008-05-09  Elijah Newren  <newren gmail com>
+
+	* src/ui/color.[ch]:
+	Remove these two unused files
+
 2008-05-04  Thomas Thurman  <tthurman@gnome.org>
 
         Added curly brackets in two places to keep -pedantic happy.
