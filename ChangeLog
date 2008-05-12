@@ -1,3 +1,8 @@
+2008-05-12  Thomas Thurman  <tthurman@gnome.org>
+
+        * tools/xlib.py: Basic Python-based Xlib client for testing
+          and building upon.
+
 2008-05-09  Elijah Newren  <newren gmail com>
 
 	* src/ui/color.[ch]:
