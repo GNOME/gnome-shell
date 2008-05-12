@@ -630,51 +630,51 @@ _cogl_features_init ()
       cogl_check_extension ("GL_ARB_fragment_shader", gl_extensions))
     {
       ctx->pf_glCreateProgramObjectARB =
-	(PFNGLCREATEPROGRAMOBJECTARBPROC)
+	(COGL_PFNGLCREATEPROGRAMOBJECTARBPROC)
 	cogl_get_proc_address ("glCreateProgramObjectARB");
       
       ctx->pf_glCreateShaderObjectARB =
-	(PFNGLCREATESHADEROBJECTARBPROC)
+	(COGL_PFNGLCREATESHADEROBJECTARBPROC)
 	cogl_get_proc_address ("glCreateShaderObjectARB");
       
       ctx->pf_glShaderSourceARB =
-	(PFNGLSHADERSOURCEARBPROC)
+	(COGL_PFNGLSHADERSOURCEARBPROC)
 	cogl_get_proc_address ("glShaderSourceARB");
       
       ctx->pf_glCompileShaderARB =
-	(PFNGLCOMPILESHADERARBPROC)
+	(COGL_PFNGLCOMPILESHADERARBPROC)
 	cogl_get_proc_address ("glCompileShaderARB");
       
       ctx->pf_glAttachObjectARB =
-	(PFNGLATTACHOBJECTARBPROC)
+	(COGL_PFNGLATTACHOBJECTARBPROC)
 	cogl_get_proc_address ("glAttachObjectARB");
       
       ctx->pf_glLinkProgramARB =
-	(PFNGLLINKPROGRAMARBPROC)
+	(COGL_PFNGLLINKPROGRAMARBPROC)
 	cogl_get_proc_address ("glLinkProgramARB");
       
       ctx->pf_glUseProgramObjectARB =
-	(PFNGLUSEPROGRAMOBJECTARBPROC)
+	(COGL_PFNGLUSEPROGRAMOBJECTARBPROC)
 	cogl_get_proc_address ("glUseProgramObjectARB");
       
       ctx->pf_glGetUniformLocationARB =
-	(PFNGLGETUNIFORMLOCATIONARBPROC)
+	(COGL_PFNGLGETUNIFORMLOCATIONARBPROC)
 	cogl_get_proc_address ("glGetUniformLocationARB");
       
       ctx->pf_glDeleteObjectARB =
-	(PFNGLDELETEOBJECTARBPROC)
+	(COGL_PFNGLDELETEOBJECTARBPROC)
 	cogl_get_proc_address ("glDeleteObjectARB");
       
       ctx->pf_glGetInfoLogARB =
-	(PFNGLGETINFOLOGARBPROC)
+	(COGL_PFNGLGETINFOLOGARBPROC)
 	cogl_get_proc_address ("glGetInfoLogARB");
       
       ctx->pf_glGetObjectParameterivARB =
-	(PFNGLGETOBJECTPARAMETERIVARBPROC)
+	(COGL_PFNGLGETOBJECTPARAMETERIVARBPROC)
 	cogl_get_proc_address ("glGetObjectParameterivARB");
       
       ctx->pf_glUniform1fARB =
-	(PFNGLUNIFORM1FARBPROC)
+	(COGL_PFNGLUNIFORM1FARBPROC)
 	cogl_get_proc_address ("glUniform1fARB");
       
       if (ctx->pf_glCreateProgramObjectARB    &&
@@ -697,39 +697,39 @@ _cogl_features_init ()
       cogl_check_extension ("GL_ARB_framebuffer_object", gl_extensions))
     { 
       ctx->pf_glGenRenderbuffersEXT =
-	(PFNGLGENRENDERBUFFERSEXTPROC)
+	(COGL_PFNGLGENRENDERBUFFERSEXTPROC)
 	cogl_get_proc_address ("glGenRenderbuffersEXT");
       
       ctx->pf_glBindRenderbufferEXT =
-	(PFNGLBINDRENDERBUFFEREXTPROC)
+	(COGL_PFNGLBINDRENDERBUFFEREXTPROC)
 	cogl_get_proc_address ("glBindRenderbufferEXT");
       
       ctx->pf_glRenderbufferStorageEXT =
-	(PFNGLRENDERBUFFERSTORAGEEXTPROC)
+	(COGL_PFNGLRENDERBUFFERSTORAGEEXTPROC)
 	cogl_get_proc_address ("glRenderbufferStorageEXT");
       
       ctx->pf_glGenFramebuffersEXT =
-	(PFNGLGENFRAMEBUFFERSEXTPROC)
+	(COGL_PFNGLGENFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glGenFramebuffersEXT");
       
       ctx->pf_glBindFramebufferEXT =
-	(PFNGLBINDFRAMEBUFFEREXTPROC)
+	(COGL_PFNGLBINDFRAMEBUFFEREXTPROC)
 	cogl_get_proc_address ("glBindFramebufferEXT");
       
       ctx->pf_glFramebufferTexture2DEXT =
-	(PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)
+	(COGL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)
 	cogl_get_proc_address ("glFramebufferTexture2DEXT");
       
       ctx->pf_glFramebufferRenderbufferEXT =
-	(PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)
+	(COGL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)
 	cogl_get_proc_address ("glFramebufferRenderbufferEXT");
       
       ctx->pf_glCheckFramebufferStatusEXT =
-	(PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)
+	(COGL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)
 	cogl_get_proc_address ("glCheckFramebufferStatusEXT");
       
       ctx->pf_glDeleteFramebuffersEXT =
-	(PFNGLDELETEFRAMEBUFFERSEXTPROC)
+	(COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glDeleteFramebuffersEXT");
       
       if (ctx->pf_glGenRenderbuffersEXT         &&
@@ -747,7 +747,7 @@ _cogl_features_init ()
   if (cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
     {
       ctx->pf_glBlitFramebufferEXT =
-	(PFNGLBLITFRAMEBUFFEREXTPROC)
+	(COGL_PFNGLBLITFRAMEBUFFEREXTPROC)
 	cogl_get_proc_address ("glBlitFramebufferEXT");
       
       if (ctx->pf_glBlitFramebufferEXT)
@@ -757,7 +757,7 @@ _cogl_features_init ()
   if (cogl_check_extension ("GL_EXT_framebuffer_multisample", gl_extensions))
     {
       ctx->pf_glRenderbufferStorageMultisampleEXT =
-	(PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC)
+	(COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC)
 	cogl_get_proc_address ("glRenderbufferStorageMultisampleEXT");
       
       if (ctx->pf_glRenderbufferStorageMultisampleEXT)

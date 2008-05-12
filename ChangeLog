@@ -1,3 +1,15 @@
+2008-05-12  Ivan Leben  <ivan.leben@o-hand.com>
+
+	* clutter/cogl/gl/cogl-defines.h.in:
+	Defined GL extension functions used by Cogl inside the COGL_
+	namespace.
+
+	* clutter/cogl/gl/cogl-context.h:
+	* clutter/cogl/gl/cogl.c:
+	Use COGL_ extension function prototypes instead of relying
+	on glext.h to define them. Should fix the mac compilability
+	bug, but haven't tested it yet.
+
 2008-05-12  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/x11/clutter-x11-texture-pixmap.c:

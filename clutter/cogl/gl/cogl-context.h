@@ -61,30 +61,30 @@ typedef struct
   GArray           *program_handles;
   
   /* Relying on glext.h to define these */
-  PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
-  PFNGLBINDRENDERBUFFEREXTPROC                pf_glBindRenderbufferEXT;
-  PFNGLRENDERBUFFERSTORAGEEXTPROC             pf_glRenderbufferStorageEXT;
-  PFNGLGENFRAMEBUFFERSEXTPROC                 pf_glGenFramebuffersEXT;
-  PFNGLBINDFRAMEBUFFEREXTPROC                 pf_glBindFramebufferEXT;
-  PFNGLFRAMEBUFFERTEXTURE2DEXTPROC            pf_glFramebufferTexture2DEXT;
-  PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC         pf_glFramebufferRenderbufferEXT;
-  PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC          pf_glCheckFramebufferStatusEXT;
-  PFNGLDELETEFRAMEBUFFERSEXTPROC              pf_glDeleteFramebuffersEXT;
-  PFNGLBLITFRAMEBUFFEREXTPROC                 pf_glBlitFramebufferEXT;
-  PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC  pf_glRenderbufferStorageMultisampleEXT;
+  COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
+  COGL_PFNGLBINDRENDERBUFFEREXTPROC                pf_glBindRenderbufferEXT;
+  COGL_PFNGLRENDERBUFFERSTORAGEEXTPROC             pf_glRenderbufferStorageEXT;
+  COGL_PFNGLGENFRAMEBUFFERSEXTPROC                 pf_glGenFramebuffersEXT;
+  COGL_PFNGLBINDFRAMEBUFFEREXTPROC                 pf_glBindFramebufferEXT;
+  COGL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC            pf_glFramebufferTexture2DEXT;
+  COGL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC         pf_glFramebufferRenderbufferEXT;
+  COGL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC          pf_glCheckFramebufferStatusEXT;
+  COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC              pf_glDeleteFramebuffersEXT;
+  COGL_PFNGLBLITFRAMEBUFFEREXTPROC                 pf_glBlitFramebufferEXT;
+  COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC  pf_glRenderbufferStorageMultisampleEXT;
   
-  PFNGLCREATEPROGRAMOBJECTARBPROC             pf_glCreateProgramObjectARB;
-  PFNGLCREATESHADEROBJECTARBPROC              pf_glCreateShaderObjectARB;
-  PFNGLSHADERSOURCEARBPROC                    pf_glShaderSourceARB;
-  PFNGLCOMPILESHADERARBPROC                   pf_glCompileShaderARB;
-  PFNGLATTACHOBJECTARBPROC                    pf_glAttachObjectARB;
-  PFNGLLINKPROGRAMARBPROC                     pf_glLinkProgramARB;
-  PFNGLUSEPROGRAMOBJECTARBPROC                pf_glUseProgramObjectARB;
-  PFNGLGETUNIFORMLOCATIONARBPROC              pf_glGetUniformLocationARB;
-  PFNGLDELETEOBJECTARBPROC                    pf_glDeleteObjectARB;
-  PFNGLGETINFOLOGARBPROC                      pf_glGetInfoLogARB;
-  PFNGLGETOBJECTPARAMETERIVARBPROC            pf_glGetObjectParameterivARB;
-  PFNGLUNIFORM1FARBPROC                       pf_glUniform1fARB;
+  COGL_PFNGLCREATEPROGRAMOBJECTARBPROC             pf_glCreateProgramObjectARB;
+  COGL_PFNGLCREATESHADEROBJECTARBPROC              pf_glCreateShaderObjectARB;
+  COGL_PFNGLSHADERSOURCEARBPROC                    pf_glShaderSourceARB;
+  COGL_PFNGLCOMPILESHADERARBPROC                   pf_glCompileShaderARB;
+  COGL_PFNGLATTACHOBJECTARBPROC                    pf_glAttachObjectARB;
+  COGL_PFNGLLINKPROGRAMARBPROC                     pf_glLinkProgramARB;
+  COGL_PFNGLUSEPROGRAMOBJECTARBPROC                pf_glUseProgramObjectARB;
+  COGL_PFNGLGETUNIFORMLOCATIONARBPROC              pf_glGetUniformLocationARB;
+  COGL_PFNGLDELETEOBJECTARBPROC                    pf_glDeleteObjectARB;
+  COGL_PFNGLGETINFOLOGARBPROC                      pf_glGetInfoLogARB;
+  COGL_PFNGLGETOBJECTPARAMETERIVARBPROC            pf_glGetObjectParameterivARB;
+  COGL_PFNGLUNIFORM1FARBPROC                       pf_glUniform1fARB;
   
 } CoglContext;
 

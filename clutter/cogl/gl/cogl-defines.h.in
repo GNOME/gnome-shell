@@ -705,6 +705,144 @@ typedef GLuint COGLuint;
 
 #define CLUTTER_COGL_HAS_GL 1
 
+/* Extension function prototypes */
+
+typedef void
+  (APIENTRYP             COGL_PFNGLGENRENDERBUFFERSEXTPROC)
+  (GLsizei               n,
+   GLuint               *renderbuffers);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLBINDRENDERBUFFEREXTPROC)
+  (GLenum                target,
+   GLuint                renderbuffer);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLRENDERBUFFERSTORAGEEXTPROC)
+  (GLenum                target,
+   GLenum                internalformat,
+   GLsizei               width,
+   GLsizei               height);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLGENFRAMEBUFFERSEXTPROC)
+  (GLsizei               n,
+   GLuint               *framebuffers);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLBINDFRAMEBUFFEREXTPROC)
+  (GLenum                target,
+   GLuint                framebuffer);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)
+  (GLenum                target,
+   GLenum                attachment,
+   GLenum                textarget,
+   GLuint                texture,
+   GLint                 level);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)
+  (GLenum                target,
+   GLenum                attachment,
+   GLenum                renderbuffertarget,
+   GLuint                renderbuffer);
+
+typedef GLenum
+  (APIENTRYP             COGL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)
+  (GLenum                target);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC)
+  (GLsizei               n,
+   const                 GLuint *framebuffers);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLDELETERENDERBUFFERSEXTPROC)
+  (GLsizei               n,
+   const GLuint         *renderbuffers);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLBLITFRAMEBUFFEREXTPROC)
+  (GLint                 srcX0,
+   GLint                 srcY0,
+   GLint                 srcX1,
+   GLint                 srcY1,
+   GLint                 dstX0,
+   GLint                 dstY0,
+   GLint                 dstX1,
+   GLint                 dstY1,
+   GLbitfield            mask,
+   GLenum                filter);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC)
+  (GLenum                target,
+   GLsizei               samples,
+   GLenum                internalformat,
+   GLsizei               width,
+   GLsizei               height);
+
+typedef GLhandleARB
+  (APIENTRYP             COGL_PFNGLCREATEPROGRAMOBJECTARBPROC)
+  (void);
+
+typedef GLhandleARB
+  (APIENTRYP             COGL_PFNGLCREATESHADEROBJECTARBPROC)
+  (GLenum                shaderType);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLSHADERSOURCEARBPROC)
+  (GLhandleARB           shaderObj,
+   GLsizei               count,
+   const GLcharARB*     *string,
+   const GLint          *length);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLCOMPILESHADERARBPROC)
+  (GLhandleARB           shaderObj);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLATTACHOBJECTARBPROC)
+  (GLhandleARB           containerObj,
+   GLhandleARB           obj);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLLINKPROGRAMARBPROC)
+  (GLhandleARB           programObj);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUSEPROGRAMOBJECTARBPROC)
+  (GLhandleARB           programObj);
+
+typedef GLint
+  (APIENTRYP             COGL_PFNGLGETUNIFORMLOCATIONARBPROC)
+  (GLhandleARB           programObj,
+   const GLcharARB      *name);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLDELETEOBJECTARBPROC)
+  (GLhandleARB           obj);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLGETINFOLOGARBPROC)
+  (GLhandleARB           obj,
+   GLsizei               maxLength,
+   GLsizei              *length,
+   GLcharARB            *infoLog);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLGETOBJECTPARAMETERIVARBPROC)
+  (GLhandleARB           obj,
+   GLenum                pname,
+   GLint                *params);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM1FARBPROC)
+  (GLint                 location,
+   GLfloat               v0);
+
 G_END_DECLS
 
 #endif
