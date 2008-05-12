@@ -53,6 +53,7 @@ test_fbo_SOURCES         = test-fbo.c
 test_opacity_SOURCES     = test-opacity.c
 test_multistage_SOURCES     = test-multistage.c
 test_pixmap_SOURCES      = test-pixmap.c
+test_pixmap_LDFLAGS      = -lXcomposite
 test_cogl_primitives_SOURCES  = test-cogl-primitives.c
 test_cogl_tex_tile_SOURCES    = test-cogl-tex-tile.c
 test_cogl_tex_convert_SOURCES = test-cogl-tex-convert.c

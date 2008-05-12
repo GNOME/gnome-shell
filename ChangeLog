@@ -1,3 +1,11 @@
+2008-05-12  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+	* configure.ac:
+	* tests/Makefile.am:
+        Remove the XComposite dep from Clutter itself, just use
+        in test-pixmap (if available)
+
 2008-05-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Rework the stage wrapper/implementation relation: remove

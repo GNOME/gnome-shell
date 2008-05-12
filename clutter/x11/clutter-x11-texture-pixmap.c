@@ -49,7 +49,6 @@
 
 /* FIXME: Check exts exist in autogen */
 #include <X11/extensions/Xdamage.h>
-#include <X11/extensions/Xcomposite.h>
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -109,7 +108,6 @@ G_DEFINE_TYPE (ClutterX11TexturePixmap, \
 static gboolean
 check_extensions (ClutterX11TexturePixmap *texture)
 {
-  int                             event_base, error_base;
   int                             damage_error;
   ClutterX11TexturePixmapPrivate *priv;
   Display                        *dpy;
@@ -120,12 +118,6 @@ check_extensions (ClutterX11TexturePixmap *texture)
     return TRUE;
 
   dpy = clutter_x11_get_default_display();
-
-  if (!XCompositeQueryExtension (dpy, &event_base, &error_base))
-    {
-      g_warning ("No composite extension\n");
-      return FALSE;
-    }
 
   if (!XDamageQueryExtension (dpy,
                               &_damage_event_base, &damage_error))

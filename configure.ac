@@ -156,12 +156,10 @@ if test x$have_xdamage = xyes; then
       X11_LIBS="$X11_LIBS -lXdamage"
 fi
 
-# FIXME: Composite 0.3/0.4 likely needed when window redirection complete.
-#        though may not be needed at all
-PKG_CHECK_MODULES(XCOMPOSITE, xcomposite, [have_xcomposite=yes], [have_xcomposite=no])
+# Composite 0.4 just needed for tests
+PKG_CHECK_MODULES(XCOMPOSITE, xcomposite >= 0.4, [have_xcomposite=yes], [have_xcomposite=no])
 if test x$have_xcomposite = xyes; then
       AC_DEFINE(HAVE_XCOMPOSITE, 1, [Have the XCOMPOSITE X extension])
-      X11_LIBS="$X11_LIBS -lXcomposite"
 fi
 
 x11_tests=no
@@ -169,11 +167,14 @@ x11_tests=no
 # Currently require all extentions, may not for actual release.
 if test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx" 
 then
-      if test "x$have_xdamage" = "xno" || test "x$have_xfixes" = "xno" || test "x$have_xcomposite" = "xno" 
+      if test "x$have_xdamage" = "xno" || test "x$have_xfixes" = "xno"
       then
             AC_MSG_ERROR([[Required backend X11 Libraries not found.]])
       fi
-      x11_tests=yes
+      if test "x$have_xcomposite" = "xyes" 
+      then
+            x11_tests=yes
+      fi
 fi
 
 AM_CONDITIONAL(X11_TESTS, test "x$x11_tests" != "xno")
@@ -219,7 +220,7 @@ case $glesversion in
   ;;
   2*)
     clutter_gl_header="GLES2/gl2.h"
-    CLUTTER_COGL="gl"
+    CLUTTER_COGL="gles"
     AC_DEFINE([HAVE_COGL_GLES2], 1, [Have GL/ES for rendering])
 
     AC_CHECK_HEADERS([EGL/egl.h],,
