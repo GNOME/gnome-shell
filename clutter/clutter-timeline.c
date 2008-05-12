@@ -31,12 +31,51 @@
  * as animations.
  *
  * Every timeline shares the same #ClutterTimeoutPool to decrease the
- * possibility of starvating the main loop when using many timelines
+ * possibility of starving the main loop when using many timelines
  * at the same time; this might cause problems if you are also using
  * a library making heavy use of threads with no GLib main loop integration.
+ *
  * In that case you might disable the common timeline pool by setting
  * the %CLUTTER_TIMELINE=no-pool environment variable prior to launching
  * your application.
+ *
+ * One way to visualise a timeline is as a path with marks along its length.
+ * When creating a timeline of @n_frames via clutter_timeline_new(), then the
+ * number of frames can be seen as the paths length, and each unit of length
+ * (each frame) is delimited by a mark.
+ *
+ * For a non looping timeline there will be (n_frames + 1) marks along its
+ * length. For a looping timeline, the two ends are joined with one mark.
+ * Technically this mark represents two discrete frame numbers, but for a
+ * looping timeline the start and end frame numbers are considered equivalent.
+ *
+ * When you create a timeline it starts with
+ * clutter_timeline_get_current_frame() == 0.
+ *
+ * After starting a timeline, the first timeout is for current_frame_num == 1
+ * (Notably it isn't 0 since there is a delay before the first timeout signals
+ * so re-asserting the starting frame (0) wouldn't make sense.)
+ * Notably, this implies that actors you intend to be affected by the
+ * timeline's progress, should be manually primed/positioned for frame 0 which
+ * will be displayed before the first timeout. (If you are not careful about
+ * this point you will likely see flashes of incorrect actor state in your
+ * program)
+ *
+ * For a non looping timeline the last timeout would be for
+ * current_frame_num == @n_frames
+ *
+ * For a looping timeline the timeout for current_frame_num == @n_frames would
+ * be followed by a timeout for current_frame_num == 1 (remember frame 0 is
+ * considered == frame (@n_frames)).
+ *
+ * There may be times when a system is not able to meet the frame rate
+ * requested for a timeline, and in this case the frame number will be
+ * interpolated at the next timeout event. The interpolation is calculated from
+ * the time that the timeline was started, not from the time of the last
+ * timeout, so a given timeline should basically elapse in the same - real
+ * world - time on any given system. An invariable here though is that
+ * current_frame_num == @n_frames will always be signaled, but notably frame 1
+ * can be interpolated past and so never signaled.
  *
  */
 
@@ -397,7 +436,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                                                       CLUTTER_PARAM_READWRITE));
   /**
    * ClutterTimeline:direction:
-   * 
+   *
    * The direction of the timeline, either %CLUTTER_TIMELINE_FORWARD or
    * %CLUTTER_TIMELINE_BACKWARD.
    *
@@ -415,7 +454,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
   /**
    * ClutterTimeline::new-frame:
    * @timeline: the timeline which received the signal
-   * @frame_num: the number of the new frame between 0 and 
+   * @frame_num: the number of the new frame between 0 and
    * ClutterTimeline:num-frames
    *
    * The ::new-frame signal is emitted each time a new frame in the
@@ -609,7 +648,7 @@ timeline_timeout_func (gpointer data)
         {
           gint frame_num = priv->current_frame_num - i;
           GSList *markers, *l;
-          
+
           markers = g_hash_table_lookup (priv->markers_by_frame,
                                          GUINT_TO_POINTER (frame_num));
           for (l = markers; l; l = l->next)
@@ -641,7 +680,7 @@ timeline_timeout_func (gpointer data)
       ClutterTimelineDirection saved_direction = priv->direction;
       guint overflow_frame_num = priv->current_frame_num;
       gint end_frame;
-  
+
       /* In case the signal handlers want to take a peek... */
       if (priv->direction == CLUTTER_TIMELINE_FORWARD)
         priv->current_frame_num = priv->n_frames;
@@ -674,7 +713,7 @@ timeline_timeout_func (gpointer data)
       if (!priv->loop && priv->timeout_id)
         {
           /* We remove the timeout now, so that the completed signal handler
-           * may choose to re-start the timeline 
+           * may choose to re-start the timeline
            *
            * ** Perhaps we should remove this earlier, and regardless
            * of priv->loop. Are we limiting the things that could be done in
@@ -688,7 +727,7 @@ timeline_timeout_func (gpointer data)
       /* Again check to see if the user has manually played with
        * current_frame_num, before we finally stop or loop the timeline */
 
-      if (priv->current_frame_num != end_frame && 
+      if (priv->current_frame_num != end_frame &&
           !(/* Except allow moving from frame 0 -> n_frame (or vica-versa)
                since these are considered equivalent */
             (priv->current_frame_num == 0 && end_frame == priv->n_frames) ||
@@ -1135,7 +1174,7 @@ clutter_timeline_clone (ClutterTimeline *timeline)
  *
  * Creates a new #ClutterTimeline with a duration of @msecs using
  * the value of the ClutterTimeline:fps property to compute the
- * equivalent number of frames. 
+ * equivalent number of frames.
  *
  * Return value: the newly created #ClutterTimeline
  *

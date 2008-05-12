@@ -1,3 +1,9 @@
+2008-05-12  Robert Bragg  <bob@openedhand.com>
+	
+	* clutter/clutter-timeline.c:
+	Adds clutter-timeline documentation RE: r2337, explaining
+	the current timeline semantics.
+
 2008-05-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* HACKING.backends: Update documentation.
