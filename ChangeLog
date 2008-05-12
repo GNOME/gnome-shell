@@ -1,3 +1,11 @@
+2008-05-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* HACKING.backends: Update documentation.
+
+	* clutter/glx/clutter-stage-glx.c:
+	(clutter_stage_glx_realize): Avoid setting more flags than
+	necessary.
+
 2008-05-09  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-frame-source.c (clutter_frame_source_add)

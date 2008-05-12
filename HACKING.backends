@@ -128,24 +128,20 @@ The stage implementation actor must implement at least the ::realize and
 the stage implementation should:
 
   - create a new native window handle
-  - create the drawing context (either GL or GLES) and assign it
-    to the backend, if it's not already present
+  - if the backend doesn't have a drawing context (either GL or GLES),
+    create one and assing it to the backend
   - set the CLUTTER_ACTOR_REALIZED flag on *both* the wrapper and the
-    stage implementation
+    stage implementation (this is very important)
   - call clutter_stage_ensure_current() with the wrapper instance
-  - set the private CLUTTER_ACTOR_SYNC_MATRICES flag on the stage wrapper
 
 In case of failure, the CLUTTER_ACTOR_REALIZED flag should be unset on
-both the wrapper and the stage implementation.
+the stage implementation.
 
 Inside the ::unrealize function the stage implementation should:
 
-  - unset the CLUTTER_ACTOR_REALIZED flag
-  - call _clutter_shader_release_all() if the backend supports shaders
-    and the GL programmable pipeline
+  - unset the CLUTTER_ACTOR_REALIZED flag on itself
   - destroy the native window handle
-  - call clutter_stage_ensure_context() with the wrapper instance
-
+  - call clutter_stage_ensure_current() with the wrapper instance
 
 NOTES
 =====
@@ -157,9 +153,8 @@ implementation for event handling and window management.
 Usual points of failure for backends are:
 
 - not setting the CLUTTER_ACTOR_REALIZED flag on the stage implementation
-  and the stage wrapper inside the ::realized virtual function;
-- not setting the CLUTTER_ACTOR_SYNC_MATRICES on the stage wrapper
-  at the end of the ::realized virtual function;
+  and the stage wrapper inside the ::realized virtual function before
+  calling clutter_stage_ensure_current();
 - calling public API, like clutter_actor_paint(), or checking properties
   on the stage implementation instead of the ClutterStage wrapper.
 

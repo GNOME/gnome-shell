@@ -153,8 +153,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
       if (!stage_x11->xvisinfo)
         {
           g_critical ("Unable to find suitable GL visual.");
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-          return;
+          goto fail;
         }
 
       if (stage_x11->xwin == None)
@@ -211,8 +210,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
           if (backend_glx->gl_context == None)
             {
               g_critical ("Unable to create suitable GL context.");
-              CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-              return;
+              goto fail;
             }
         }
 
@@ -279,11 +277,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
           if (backend_glx->gl_context == None)
             {
               g_critical ("Unable to create suitable GL context.");
-
-              CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
-              CLUTTER_ACTOR_UNSET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
-
-              return;
+              goto fail;
             }
         }
 
@@ -301,13 +295,9 @@ clutter_stage_glx_realize (ClutterActor *actor)
         }
     }
 
-  /* Make sure the viewport gets set up correctly */
-  CLUTTER_SET_PRIVATE_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
   return;
   
 fail:
-  /* For one reason or another we cant realize the stage.. */
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
 
