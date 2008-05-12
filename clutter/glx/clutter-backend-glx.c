@@ -382,6 +382,8 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
       if (backend_glx->gl_context == None)
         return;
 
+      clutter_x11_trap_x_errors ();
+
       /* we might get here inside the final dispose cycle, so we
        * need to handle this gracefully
        */
@@ -408,6 +410,11 @@ clutter_backend_glx_ensure_context (ClutterBackend *backend,
                           stage_x11->xwin,
                           backend_glx->gl_context);
         }
+
+      if (clutter_x11_untrap_x_errors ())
+        g_critical ("Unable to make the stage window 0x%x the current "
+                    "GLX drawable",
+                    (int) stage_x11->xwin);
     }
 }
 
@@ -459,7 +466,7 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
   CLUTTER_NOTE (BACKEND, "Creating stage of type `%s'",
                 g_type_name (CLUTTER_STAGE_TYPE));
 
-  stage = g_object_new (CLUTTER_STAGE_TYPE, NULL);
+  stage = g_object_new (CLUTTER_TYPE_STAGE_GLX, NULL);
 
   /* copy backend data into the stage */
   stage_x11 = CLUTTER_STAGE_X11 (stage);
@@ -476,24 +483,6 @@ clutter_backend_glx_create_stage (ClutterBackend  *backend,
                 stage_x11->xdpy,
                 stage_x11->xscreen,
                 (unsigned int) stage_x11->xwin_root);
-
-  /* needed ? */
-  g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
-
-  /* FIXME - is this needed? we should call realize inside the clutter
-   * init sequence for the default stage, and let the usual realization
-   * sequence be used for any other stage
-   */
-  clutter_actor_realize (stage);
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_INTERNAL,
-                   "Unable to realize the main stage");
-      g_object_unref (stage);
-      return NULL;
-    }
 
   return stage;
 }

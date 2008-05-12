@@ -102,9 +102,6 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
         stage_x11->xwin = None;
     }
 
-  /* As unrealised the context will now get cleared */
-  clutter_stage_ensure_current (stage_x11->wrapper);
-
   XSync (stage_x11->xdpy, False);
 
   clutter_x11_untrap_x_errors ();
@@ -115,10 +112,10 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
 static void
 clutter_stage_glx_realize (ClutterActor *actor)
 {
-  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
-  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
+  ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (actor);
+  ClutterStageGLX   *stage_glx = CLUTTER_STAGE_GLX (actor);
   ClutterBackendGLX *backend_glx;
-  gboolean         is_offscreen;
+  gboolean           is_offscreen;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
 
@@ -214,11 +211,8 @@ clutter_stage_glx_realize (ClutterActor *actor)
             }
         }
 
-      /* this will make sure to set the current context */
-      CLUTTER_NOTE (BACKEND, "Marking stage as realized and setting context");
-      CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
+      CLUTTER_NOTE (BACKEND, "Marking stage as realized");
       CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
-      clutter_stage_ensure_current (stage_x11->wrapper);
     }
   else
     {
@@ -281,20 +275,14 @@ clutter_stage_glx_realize (ClutterActor *actor)
             }
         }
 
-      clutter_x11_trap_x_errors ();
-
-      /* below will call glxMakeCurrent */
-      CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
+      CLUTTER_NOTE (BACKEND, "Marking stage as realized");
       CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
-      clutter_stage_ensure_current (stage_x11->wrapper);
-
-      if (clutter_x11_untrap_x_errors ())
-        {
-          g_critical ("Unable to set up offscreen context.");
-          goto fail;
-        }
     }
 
+  /* we need to chain up to the X11 stage implementation in order to
+   * set the window state in case we set it before realizing the stage
+   */
+  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->realize (actor);
   return;
   
 fail:

@@ -61,8 +61,6 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
       eglDestroySurface (clutter_egl_display (), stage_egl->egl_surface);
       stage_egl->egl_surface = EGL_NO_SURFACE;
     }
-
-  clutter_stage_ensure_current (stage_egl->wrapper);
 }
 
 static void
@@ -108,7 +106,11 @@ clutter_stage_egl_realize (ClutterActor *actor)
 				&config_count);
 
       if (status != EGL_TRUE)
-	g_warning ("eglChooseConfig failed");
+        {
+	  g_critical ("eglChooseConfig failed");
+          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+          return;
+        }
 
       if (stage_egl->egl_surface != EGL_NO_SURFACE)
         {
@@ -133,7 +135,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
       if (stage_egl->egl_surface == EGL_NO_SURFACE)
         {
 	  g_critical ("Unable to create an EGL surface");
-
           CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
           return;
         }
@@ -173,29 +174,24 @@ clutter_stage_egl_realize (ClutterActor *actor)
 
       /* this will make sure to set the current context */
       CLUTTER_NOTE (BACKEND, "Marking stage as realized and setting context");
-      CLUTTER_ACTOR_SET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_REALIZED);
-      CLUTTER_ACTOR_SET_FLAGS (stage_egl, CLUTTER_ACTOR_REALIZED);
 
-
+      /* this should be done in ClutterBackend::ensure_context */
       status = eglMakeCurrent (backend_egl->edpy,
                                stage_egl->egl_surface,
                                stage_egl->egl_surface,
                                backend_egl->egl_context);
 
       if (status != EGL_TRUE)
-          g_warning ("eglMakeCurrent");   
-
-      /*clutter_stage_ensure_current (stage_egl->wrapper);*/
+        {
+          g_critical ("eglMakeCurrent failed");
+          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+        }
     }
   else
     {
       g_warning("EGL Backend does not yet support offscreen rendering\n");
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-      return;
     }
-
-
-  CLUTTER_SET_PRIVATE_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void

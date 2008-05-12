@@ -187,13 +187,16 @@ clutter_stage_realize (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
-  /* then realize the implementation */
+  CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
+
   g_assert (priv->impl != NULL);
   CLUTTER_ACTOR_GET_CLASS (priv->impl)->realize (priv->impl);
 
-  /* set the flag on the wrapper if the implementation was successful */
+  /* ensure that the stage is using the context if the
+   * realization sequence was successful
+   */
   if (CLUTTER_ACTOR_IS_REALIZED (priv->impl))
-    CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
+    clutter_stage_ensure_current (CLUTTER_STAGE (self));
   else
     CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 }
@@ -209,6 +212,8 @@ clutter_stage_unrealize (ClutterActor *self)
   /* and then unrealize the implementation */
   g_assert (priv->impl != NULL);
   CLUTTER_ACTOR_GET_CLASS (priv->impl)->unrealize (priv->impl);
+
+  clutter_stage_ensure_current (CLUTTER_STAGE (self));
 }
 
 static void
@@ -217,6 +222,10 @@ clutter_stage_show (ClutterActor *self)
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
   g_assert (priv->impl != NULL);
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (priv->impl))
+    clutter_actor_realize (priv->impl);
+
   clutter_actor_show (priv->impl);
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->show (self);

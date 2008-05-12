@@ -229,6 +229,83 @@ clutter_stage_x11_request_coords (ClutterActor    *self,
                                                                         box);
 }
 
+static inline void
+set_wm_title (ClutterStageX11 *stage_x11)
+{
+  ClutterBackendX11 *backend_x11 = stage_x11->backend;
+
+  if (stage_x11->xwin == None)
+    return;
+
+  if (stage_x11->title == NULL)
+    {
+      XDeleteProperty (stage_x11->xdpy, 
+                       stage_x11->xwin, 
+                       backend_x11->atom_NET_WM_NAME);
+    }
+  else
+    {
+      XChangeProperty (stage_x11->xdpy, 
+                       stage_x11->xwin, 
+                       backend_x11->atom_NET_WM_NAME, 
+                       backend_x11->atom_UTF8_STRING, 
+                       8, 
+                       PropModeReplace, 
+                       (unsigned char *) stage_x11->title, 
+                       (int) strlen (stage_x11->title));
+    }
+}
+
+static inline void
+set_cursor_visible (ClutterStageX11 *stage_x11)
+{
+  if (stage_x11->xwin == None)
+    return;
+
+  CLUTTER_NOTE (BACKEND, "setting cursor state ('%s') over stage window (%u)",
+                stage_x11->is_cursor_visible ? "visible" : "invisible",
+                (unsigned int) stage_x11->xwin);
+
+  if (stage_x11->is_cursor_visible)
+    {
+#if 0 /* HAVE_XFIXES - seems buggy/unreliable */
+      XFixesShowCursor (stage_x11->xdpy, stage_x11->xwin);
+#else
+      XUndefineCursor (stage_x11->xdpy, stage_x11->xwin);
+#endif /* HAVE_XFIXES */
+    }
+  else
+    {
+#if 0 /* HAVE_XFIXES - seems buggy/unreliable, check cursor in firefox 
+       *               loading page after hiding.  
+      */
+      XFixesHideCursor (stage_x11->xdpy, stage_x11->xwin);
+#else
+      XColor col;
+      Pixmap pix;
+      Cursor curs;
+
+      pix = XCreatePixmap (stage_x11->xdpy, stage_x11->xwin, 1, 1, 1);
+      memset (&col, 0, sizeof (col));
+      curs = XCreatePixmapCursor (stage_x11->xdpy, 
+                                  pix, pix,
+                                  &col, &col,
+                                  1, 1);
+      XFreePixmap (stage_x11->xdpy, pix);
+      XDefineCursor (stage_x11->xdpy, stage_x11->xwin, curs);
+#endif /* HAVE_XFIXES */
+    }
+}
+
+static void
+clutter_stage_x11_realize (ClutterActor *actor)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
+
+  set_wm_title (stage_x11);
+  set_cursor_visible (stage_x11);
+}
+
 static void
 clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
                                   gboolean            is_fullscreen)
@@ -325,42 +402,9 @@ clutter_stage_x11_set_cursor_visible (ClutterStageWindow *stage_window,
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
-  if (stage_x11->xwin == None)
-    return;
+  stage_x11->is_cursor_visible = (cursor_visible == TRUE);
 
-  CLUTTER_NOTE (BACKEND, "setting cursor state ('%s') over stage window (%u)",
-                cursor_visible ? "visible" : "invisible",
-                (unsigned int) stage_x11->xwin);
-
-  if (cursor_visible)
-    {
-#if 0 /* HAVE_XFIXES - seems buggy/unreliable */
-      XFixesShowCursor (stage_x11->xdpy, stage_x11->xwin);
-#else
-      XUndefineCursor (stage_x11->xdpy, stage_x11->xwin);
-#endif /* HAVE_XFIXES */
-    }
-  else
-    {
-#if 0 /* HAVE_XFIXES - seems buggy/unreliable, check cursor in firefox 
-       *               loading page after hiding.  
-      */
-      XFixesHideCursor (stage_x11->xdpy, stage_x11->xwin);
-#else
-      XColor col;
-      Pixmap pix;
-      Cursor curs;
-
-      pix = XCreatePixmap (stage_x11->xdpy, stage_x11->xwin, 1, 1, 1);
-      memset (&col, 0, sizeof (col));
-      curs = XCreatePixmapCursor (stage_x11->xdpy, 
-                                  pix, pix,
-                                  &col, &col,
-                                  1, 1);
-      XFreePixmap (stage_x11->xdpy, pix);
-      XDefineCursor (stage_x11->xdpy, stage_x11->xwin, curs);
-#endif /* HAVE_XFIXES */
-    }
+  set_cursor_visible (stage_x11);
 }
 
 static void
@@ -368,28 +412,11 @@ clutter_stage_x11_set_title (ClutterStageWindow *stage_window,
                              const gchar        *title)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
-  ClutterBackendX11 *backend_x11 = stage_x11->backend;
 
-  if (stage_x11->xwin == None)
-    return;
+  g_free (stage_x11->title);
+  stage_x11->title = g_strdup (title);
 
-  if (title == NULL)
-    {
-      XDeleteProperty (stage_x11->xdpy, 
-                       stage_x11->xwin, 
-                       backend_x11->atom_NET_WM_NAME);
-    }
-  else
-    {
-      XChangeProperty (stage_x11->xdpy, 
-                       stage_x11->xwin, 
-                       backend_x11->atom_NET_WM_NAME, 
-                       backend_x11->atom_UTF8_STRING, 
-                       8, 
-                       PropModeReplace, 
-                       (unsigned char*)title, 
-                       (int)strlen(title));
-    }
+  set_wm_title (stage_x11);
 }
 
 static void
@@ -405,6 +432,16 @@ static ClutterActor *
 clutter_stage_x11_get_wrapper (ClutterStageWindow *stage_window)
 {
   return CLUTTER_ACTOR (CLUTTER_STAGE_X11 (stage_window)->wrapper);
+}
+
+static void
+clutter_stage_x11_finalize (GObject *gobject)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (gobject);
+
+  g_free (stage_x11->title);
+
+  G_OBJECT_CLASS (clutter_stage_x11_parent_class)->finalize (gobject);
 }
 
 static void
@@ -424,8 +461,10 @@ clutter_stage_x11_class_init (ClutterStageX11Class *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
+  gobject_class->finalize = clutter_stage_x11_finalize;
   gobject_class->dispose = clutter_stage_x11_dispose;
-  
+
+  actor_class->realize = clutter_stage_x11_realize;
   actor_class->show = clutter_stage_x11_show;
   actor_class->hide = clutter_stage_x11_hide;
   actor_class->request_coords = clutter_stage_x11_request_coords;
@@ -447,13 +486,13 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
   stage->is_foreign_xwin = FALSE;
   stage->fullscreen_on_map = FALSE;
   stage->handling_configure = FALSE;
+  stage->is_cursor_visible = TRUE;
+
+  stage->title = NULL;
 
   stage->wrapper = NULL;
 
   CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IS_TOPLEVEL);
-#if 0
-  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
-#endif
 }
 
 static void

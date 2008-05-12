@@ -45,8 +45,10 @@ struct _ClutterStageX11
 {
   ClutterGroup parent_instance;
 
-  guint        is_foreign_xwin   : 1;
-  guint        fullscreen_on_map : 1;
+  guint        is_foreign_xwin    : 1;
+  guint        fullscreen_on_map  : 1;
+  guint        handling_configure : 1;
+  guint        is_cursor_visible  : 1;
 
   Display     *xdpy;
   Window       xwin_root;
@@ -56,7 +58,7 @@ struct _ClutterStageX11
   gint         xwin_width;
   gint         xwin_height; /* FIXME target_width / height */
   Pixmap       xpixmap;
-  gboolean     handling_configure;
+  gchar       *title;
 
   ClutterBackendX11 *backend;
   ClutterStageState  state;

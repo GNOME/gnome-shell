@@ -1103,6 +1103,16 @@ clutter_init_with_args (int            *argc,
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
+  clutter_actor_realize (stage);
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_INTERNAL,
+                   "Unable to realize the default stage");
+
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
+
   _clutter_backend_init_events (clutter_context->backend);
 
   _clutter_feature_init ();
@@ -1192,6 +1202,14 @@ clutter_init (int    *argc,
   if (!stage)
     {
       g_critical ("Unable to create the default stage");
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
+
+  clutter_actor_realize (stage);
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
+    {
+      g_critical ("Unable to realize the default stage");
+
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 

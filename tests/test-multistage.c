@@ -10,7 +10,7 @@ tex_button_cb (ClutterActor    *actor,
   clutter_actor_hide (actor);
 }
 
-static void
+static gboolean
 on_button_press (ClutterActor *actor,
                  ClutterEvent *event,
                  gpointer      data)
@@ -26,6 +26,8 @@ on_button_press (ClutterActor *actor,
   ClutterBehaviour *r_behave;
 
   new_stage = clutter_stage_new ();
+  if (!new_stage)
+    return FALSE;
 
   /* FIXME: below should really be automatic */
   /* clutter_stage_ensure_cogl_context (CLUTTER_STAGE(new_stage)); */
@@ -36,7 +38,7 @@ on_button_press (ClutterActor *actor,
   tex = clutter_texture_new_from_file ("redhand.png", NULL);
 
   if (!tex)
-    g_error("pixbuf load failed");
+    g_error ("pixbuf load failed");
 
   clutter_actor_set_reactive (tex, TRUE);
   g_signal_connect (tex, "button-press-event", 
@@ -88,6 +90,8 @@ on_button_press (ClutterActor *actor,
   clutter_timeline_start (timeline);
 
   clutter_actor_show_all (new_stage);
+
+  return TRUE;
 }
 
 int

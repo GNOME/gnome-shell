@@ -62,8 +62,6 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
       eglDestroySurface (clutter_egl_display (), stage_egl->egl_surface);
       stage_egl->egl_surface = EGL_NO_SURFACE;
     }
-
-  clutter_stage_ensure_current (stage_egl->wrapper);
 }
 
 static void
@@ -179,7 +177,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
         }
 
       CLUTTER_NOTE (BACKEND, "Marking stage as realized and setting context");
-      CLUTTER_ACTOR_SET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_REALIZED);
       CLUTTER_ACTOR_SET_FLAGS (stage_egl, CLUTTER_ACTOR_REALIZED);
 
       /* eglnative can have only one stage */
@@ -202,8 +199,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
       return;
     }
-
-  CLUTTER_SET_PRIVATE_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void

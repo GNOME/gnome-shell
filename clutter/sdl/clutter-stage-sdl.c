@@ -80,31 +80,21 @@ clutter_stage_sdl_realize (ClutterActor *actor)
 			    0, flags) == NULL)
 	{
 	  CLUTTER_NOTE (BACKEND, "SDL appears not to handle this mode - %s",
-			SDL_GetError());
+			SDL_GetError ());
 
-	  CLUTTER_ACTOR_UNSET_FLAGS (stage_sdl, CLUTTER_ACTOR_REALIZED);
-          CLUTTER_ACTOR_UNSET_FLAGS (stage_sdl->wrapper,
-                                     CLUTTER_ACTOR_REALIZED);
-	  return;
+          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+          return;
 	}
       else
-        {
-          CLUTTER_ACTOR_SET_FLAGS (stage_sdl, CLUTTER_ACTOR_REALIZED);
-          CLUTTER_ACTOR_SET_FLAGS (stage_sdl->wrapper, CLUTTER_ACTOR_REALIZED);
-          clutter_stage_ensure_current (stage_sdl->wrapper);
-        }
+        CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
     }
   else
     {
       /* FIXME */
-      g_warning("SDL Backend does not yet support offscreen rendering\n");
+      g_critical ("SDL Backend does not yet support offscreen rendering");
 
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-      return;
     }
-
-  CLUTTER_NOTE (BACKEND, "SDL stage realized");
-  CLUTTER_SET_PRIVATE_FLAGS (stage_sdl->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void

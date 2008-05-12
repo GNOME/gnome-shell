@@ -63,8 +63,6 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
       stage_egl->egl_surface = EGL_NO_SURFACE;
     }
 
-  clutter_stage_ensure_current (stage_x11->wrapper);
-
   XSync (stage_x11->xdpy, False);
 
   clutter_x11_untrap_x_errors ();
@@ -91,6 +89,11 @@ clutter_stage_egl_realize (ClutterActor *actor)
 
   if (G_LIKELY (!is_offscreen))
     {
+      int c;
+      int num_configs;
+      int max_tex_units;
+      EGLConfig *all_configs;
+
       EGLint cfg_attribs[] = {
         EGL_BUFFER_SIZE,    EGL_DONT_CARE,
 	EGL_RED_SIZE,       5,
@@ -104,49 +107,48 @@ clutter_stage_egl_realize (ClutterActor *actor)
 			      2,
 			      &config_count);
 
-      int c;
-      int num_configs;
-      EGLConfig *all_configs;
-
-      eglGetConfigs (clutter_eglx_display(), NULL, 0, &num_configs);
+      eglGetConfigs (clutter_eglx_display (), NULL, 0, &num_configs);
 
       all_configs = g_malloc (num_configs * sizeof (EGLConfig));
-
-      eglGetConfigs (clutter_eglx_display(),
+      eglGetConfigs (clutter_eglx_display (),
 		     all_configs,
 		     num_configs,
 		     &num_configs);
 
-      for (c=0; c<num_configs; ++c)
+      for (c = 0; c < num_configs; ++c)
 	{
-	  EGLint red=-1, green=-1, blue=-1, alpha=-1, stencil=-1;
-	  eglGetConfigAttrib (clutter_eglx_display(),
+	  EGLint red = -1, green = -1, blue = -1, alpha = -1, stencil = -1;
+
+	  eglGetConfigAttrib (clutter_eglx_display (),
 			      all_configs[c],
 			      EGL_RED_SIZE, &red);
-	  eglGetConfigAttrib (clutter_eglx_display(),
+	  eglGetConfigAttrib (clutter_eglx_display (),
 			      all_configs[c],
 			      EGL_GREEN_SIZE, &green);
-	  eglGetConfigAttrib (clutter_eglx_display(),
+	  eglGetConfigAttrib (clutter_eglx_display (),
 			      all_configs[c],
 			      EGL_BLUE_SIZE, &blue);
-	  eglGetConfigAttrib (clutter_eglx_display(),
+	  eglGetConfigAttrib (clutter_eglx_display (),
 			      all_configs[c],
 			      EGL_ALPHA_SIZE, &alpha);
-	  eglGetConfigAttrib (clutter_eglx_display(),
+	  eglGetConfigAttrib (clutter_eglx_display (),
 			      all_configs[c],
 			      EGL_STENCIL_SIZE, &stencil);
-	  printf("EGLConfig === R:%d G:%d B:%d A:%d S:%d \n",
-		 red, green, blue, alpha, stencil);
+	  CLUTTER_NOTE (BACKEND, "EGLConfig == R:%d G:%d B:%d A:%d S:%d \n",
+		        red, green, blue, alpha, stencil);
 	}
 
-      int max_tex_units = 0;
+      max_tex_units = 0;
       glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_tex_units);
-      printf("Texture units: %d\n", max_tex_units);
+      CLUTTER_NOTE (BACKEND, "Texture units: %d\n", max_tex_units);
 
       g_free (all_configs);
 
       if (status != EGL_TRUE)
-	g_warning ("eglGetConfigs failed");
+	{
+          g_critical ("eglGetConfigs failed");
+          goto fail;
+        }
 
       status = eglChooseConfig (backend_egl->edpy,
 				cfg_attribs,
@@ -155,7 +157,10 @@ clutter_stage_egl_realize (ClutterActor *actor)
 				&config_count);
 
       if (status != EGL_TRUE)
-	g_warning ("eglChooseConfig failed");
+        {
+          g_critical ("eglChooseConfig failed");
+          goto fail;
+        }
 
       if (stage_x11->xwin == None)
 	stage_x11->xwin =
@@ -198,9 +203,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
       if (stage_egl->egl_surface == EGL_NO_SURFACE)
         {
           g_critical ("Unable to create an EGL surface");
-
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-          return;
+          goto fail;
         }
 
       if (G_UNLIKELY (backend_egl->egl_context == None))
@@ -215,26 +218,26 @@ clutter_stage_egl_realize (ClutterActor *actor)
           if (backend_egl->egl_context == EGL_NO_CONTEXT)
             {
               g_critical ("Unable to create a suitable EGL context");
-
-              CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-              return;
+              goto fail;
             }
         }
 
-      /* this will make sure to set the current context */
-      CLUTTER_NOTE (BACKEND, "Marking stage as realized and setting context");
-      CLUTTER_ACTOR_SET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_REALIZED);
-      CLUTTER_ACTOR_SET_FLAGS (stage_x11, CLUTTER_ACTOR_REALIZED);
-      clutter_stage_ensure_current (stage_x11->wrapper);
+      CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
     }
   else
     {
-      g_warning("EGLX Backend does not support offscreen rendering");
-      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-      return;
+      g_critical ("EGLX Backend does not support offscreen rendering");
+      goto fail;
     }
 
-  CLUTTER_SET_PRIVATE_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
+  /* we need to chain up to the X11 stage implementation in order to
+   * set the window state in case we set it before realizing the stage
+   */
+  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->realize (actor);
+  return;
+
+fail:
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
 
 static void

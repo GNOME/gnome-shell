@@ -1,3 +1,93 @@
+2008-05-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Rework the stage wrapper/implementation relation: remove
+	duplicated code and all the bookkeeping from the backends into
+	ClutterStage whenever possible, to reduce the amount of	work a
+	backend must do (and possibly get wrong). Thanks to Tommi
+	Komulainen.
+
+	* clutter/clutter-main.c:
+	(clutter_init_with_args), (clutter_init): Realize the default
+	stage after creation. The default stage is special, because we
+	use it in the initialization sequence. This removes the burden
+	from the backends and reduces the things a backend can get
+	wrong.
+
+	* clutter/clutter-stage.c:
+	(clutter_stage_show): Make sure to realize the implementation if
+	it hasn't been realized yet.
+
+	(clutter_stage_realize): Set the REALIZED flag and call
+	clutter_stage_ensure_current() if the implementation was
+	successfully realized.
+
+	(clutter_stage_unrealized): Call clutter_stage_ensure_current()
+	on unrealize.
+
+	* clutter/glx/clutter-backend-glx.c:
+	(clutter_backend_glx_create_stage): Do not realize the stage anymore
+	when creating it, and let the normal realization sequence take
+	place.
+
+	(clutter_backend_glx_ensure_context): Trap for X11 errors.
+
+	* clutter/glx/clutter-stage-glx.c:
+	(clutter_stage_glx_realize): Chain up to the X11 implementation
+	so that we can set up the window state (title, cursor visibility)
+	when we actually have a X window. Also, do not call
+	clutter_stage_ensure_current(), and rely on the wrapper to do
+	it for us. This means we can drop setting the REALIZED flag on
+	the wrapper.
+
+	(clutter_stage_glx_unrealize): Do not call
+	clutter_stage_ensure_current() ourselves, and rely on the wrapper
+	to do it for us.
+
+	* clutter/x11/clutter-stage-x11.c:
+	(set_wm_title),	(set_cursor_visible): Move the WM title and
+	cursor visibility code inside their own functions.
+
+	(clutter_stage_x11_realize): Set the window title and whether the
+	cursor is visible or not after realizing the stage.
+
+	(clutter_stage_x11_set_cursor_visible),
+	(clutter_stage_x11_set_title): Call set_wm_title() and
+	set_cursor_visible().
+
+	(clutter_stage_x11_finalize): Free the title string.
+
+	* clutter/x11/clutter-stage-x11.h: Save more of the stage state,
+	so that we can set it even when the stage hasn't been realized
+	yet.
+
+	* clutter/eglnative/clutter-backend-egl.c:
+	(clutter_backend_egl_create_stage):
+	* clutter/eglnative/clutter-stage-egl.c:
+	(clutter_stage_egl_unrealize),
+	(clutter_stage_egl_realize): Update the eglnative backend.
+
+	* clutter/eglx/clutter-backend-egl.c:
+	(clutter_backend_egl_ensure_context),
+	(clutter_backend_egl_create_stage):
+	* clutter/eglx/clutter-stage-egl.c:
+	(clutter_stage_egl_unrealize),
+	(clutter_stage_egl_realize): Update the eglx backend.
+
+	* clutter/sdl/clutter-backend-sdl.c:
+	(clutter_backend_sdl_create_stage):
+	* clutter/sdl/clutter-stage-sdl.c:
+	(clutter_stage_sdl_realize): Update the sdl backend.
+
+	* clutter/fruity/clutter-backend-fruity.c:
+	(clutter_backend_fruity_create_stage):
+	* clutter/sdl/clutter-stage-fruity.c:
+	(clutter_stage_fruity_realize): Update the fruity backend.
+
+	* tests/test-multistage.c (on_button_press): Bail out if
+	clutter_stage_new() returns NULL.
+
+	* HACKING.backends: Update backend writing documentation.
+
 2008-05-12  Robert Bragg  <bob@openedhand.com>
 	
 	* clutter/clutter-timeline.c:

@@ -58,6 +58,10 @@ pointer is returned (with its reference count increased). The GObject
 API reference describes how to use the ::constructor virtual function
 to implement a singleton, so you should refer to that.
 
+The ClutterBackend implementation should hold a single drawing context
+for its entire lifetime; stage implementations should be "made current"
+when needed.
+
 When implementing the ClutterBackend subclass these virtual functions
 can be overridden:
 
@@ -106,10 +110,8 @@ can be overridden:
 
        _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (impl));
 
-     The backend must also call clutter_actor_realize() on the stage
-     implementation, and then check if the stage has been realized, using
-     the CLUTTER_ACTOR_IS_REALIZED() macro; if the stage was not
-     realized, it must return NULL and set the passed GError.
+     in case of error, the backend must return NULL and set the passed
+     GError.
 
 Implementing the stage
 ----------------------
@@ -130,9 +132,7 @@ the stage implementation should:
   - create a new native window handle
   - if the backend doesn't have a drawing context (either GL or GLES),
     create one and assing it to the backend
-  - set the CLUTTER_ACTOR_REALIZED flag on *both* the wrapper and the
-    stage implementation (this is very important)
-  - call clutter_stage_ensure_current() with the wrapper instance
+  - set the CLUTTER_ACTOR_REALIZED flag on itself
 
 In case of failure, the CLUTTER_ACTOR_REALIZED flag should be unset on
 the stage implementation.
@@ -141,7 +141,6 @@ Inside the ::unrealize function the stage implementation should:
 
   - unset the CLUTTER_ACTOR_REALIZED flag on itself
   - destroy the native window handle
-  - call clutter_stage_ensure_current() with the wrapper instance
 
 NOTES
 =====
@@ -152,9 +151,6 @@ implementation for event handling and window management.
 
 Usual points of failure for backends are:
 
-- not setting the CLUTTER_ACTOR_REALIZED flag on the stage implementation
-  and the stage wrapper inside the ::realized virtual function before
-  calling clutter_stage_ensure_current();
 - calling public API, like clutter_actor_paint(), or checking properties
   on the stage implementation instead of the ClutterStage wrapper.
 

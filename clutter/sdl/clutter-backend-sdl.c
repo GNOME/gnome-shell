@@ -95,19 +95,6 @@ clutter_backend_sdl_create_stage (ClutterBackend  *backend,
 
   _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
 
-  g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
-
-  clutter_actor_realize (stage);
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_INTERNAL,
-                   "Unable to realize the main stage");
-      g_object_unref (stage);
-      return NULL;
-    }
-
   backend_sdl->stage = stage_sdl;
 
   return stage;
