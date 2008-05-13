@@ -1,3 +1,9 @@
+2008-05-13  Ivan Leben  <ivan.leben@o-hand.com>
+
+	* clutter/cogl/gl/cogl-defines.h.in:
+	Fix GL function prototypes on OS X by #definining APIENTRY and
+	APIENTRYP if missing.
+
 2008-05-12  Ivan Leben  <ivan.leben@o-hand.com>
 
 	* clutter/cogl/gl/cogl-defines.h.in:

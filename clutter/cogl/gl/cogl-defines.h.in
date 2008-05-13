@@ -707,6 +707,14 @@ typedef GLuint COGLuint;
 
 /* Extension function prototypes */
 
+#ifndef APIENTRY
+#define APIENTRY
+#endif
+
+#ifndef APIENTRYP
+#define APIENTRYP APIENTRY *
+#endif
+
 typedef void
   (APIENTRYP             COGL_PFNGLGENRENDERBUFFERSEXTPROC)
   (GLsizei               n,
