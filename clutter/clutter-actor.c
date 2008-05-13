@@ -1211,6 +1211,91 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
   _clutter_actor_apply_modelview_transform (self);
 }
 
+static gint r_available, g_available, b_available;  
+static gint r_used,      g_used,      b_used;
+
+static inline void init_bits (void)
+{
+  static gboolean done = FALSE;
+  if (G_LIKELY (done))
+    return;
+  done = TRUE;
+  cogl_get_bitmasks (&r_available, &g_available, &b_available, NULL);
+
+  r_used = r_available;
+  g_used = g_available;
+  b_used = b_available;
+
+#ifndef HAVE_CLUTTER_FRUITY
+  /* We always do fuzzy picking for the fruity backend */
+  if (g_getenv ("CLUTTER_FUZZY_PICK")!=NULL)
+#endif
+    {
+      r_used--;
+      g_used--;
+      b_used--;
+    }
+}
+
+
+static inline void
+_clutter_id_to_col (guint         id,
+                    ClutterColor *col)
+{
+  gint red, green, blue;
+
+  init_bits ();
+
+  /* compute the numbers we'll store in the components */
+  red   = (id >> (g_used+b_used)) & (0xff >> (8-r_used));
+  green = (id >> b_used)          & (0xff >> (8-g_used));
+  blue  = (id)                    & (0xff >> (8-b_used));
+
+  /* shift left bits a bit and add one, this circumvents
+   * at least some potential rounding errors in GL/GLES
+   * driver / hw implementation. 
+   */
+  if (r_used != r_available)
+    red = red * 2 + 1;
+  if (g_used != g_available)
+    green = green * 2 + 1;
+  if (b_used != b_available)
+    blue  = blue  * 2 + 1;
+
+  /* shift up to be full 8bit values */ 
+  red   = red   << (8-r_available);
+  green = green << (8-g_available);
+  blue  = blue  << (8-b_available);
+
+  col->red   = red;
+  col->green = green;
+  col->blue  = blue;
+  col->alpha = 0xff;
+}
+
+guint _clutter_pix_to_id (guchar pixel[4])                 
+{
+  gint  red, green, blue;
+  guint id;
+
+  /* reduce the pixel components to the number of bits actually used of the
+   * 8bits.
+   */
+  red   = pixel[0] >> (8 - r_available);
+  green = pixel[1] >> (8 - g_available);
+  blue  = pixel[2] >> (8 - b_available);
+
+  /* divide by two */
+  red   = red   >> (r_available-r_used);
+  green = green >> (g_available-g_used);
+  blue  = blue  >> (b_available-b_used);  
+
+  /* combine the correct per component values into the final id */
+  id =  blue + (green <<  b_used) + (red << (b_used + g_used));
+  
+  return id;
+}
+
 /**
  * clutter_actor_paint:
  * @self: A #ClutterActor
@@ -1256,19 +1341,9 @@ clutter_actor_paint (ClutterActor *self)
 
   if (G_UNLIKELY(context->pick_mode != CLUTTER_PICK_NONE))
     {
-      gint         r, g, b;
       ClutterColor col;
-      guint32      id;
 
-      id = clutter_actor_get_gid (self);
-
-      cogl_get_bitmasks (&r, &g, &b, NULL);
-
-      /* Encode the actor id into a color, taking into account bpp */
-      col.red = ((id >> (g+b)) & (0xff>>(8-r)))<<(8-r);
-      col.green = ((id >> b)  & (0xff>>(8-g))) << (8-g);
-      col.blue = (id & (0xff>>(8-b)))<<(8-b);
-      col.alpha = 0xff;
+      _clutter_id_to_col (clutter_actor_get_gid (self), &col);
 
       /* Actor will then paint silhouette of itself in supplied
        * color.  See clutter_stage_get_actor_at_pos() for where

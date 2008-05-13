@@ -1,3 +1,20 @@
+2008-05-13  Øyvind Kolås  <pippin@o-hand.com>
+
+	Made it possible to do picking when the colors stored in the
+	framebuffer are only approximately the correct value.
+
+	* clutter/clutter-actor.c: 
+	(init_bits): initialize constants about how many bits are
+	available/will be used for r,g,b components.
+	(_clutter_pix_to_id): now own function, compute an id from a
+	pixel into its own function (used from _clutter_do_pick). 
+	(_clutter_id_to_col): now own function, computes the color to use for
+	a given id.
+	(clutter_actor_paint): use clutter_id_to_col.
+	* clutter/clutter-main.c:
+	(_clutter_do_pick): use _clutter_pix_to_id
+	(clutter_main): re-enable invocation of fruity app shell.
+
 2008-05-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/fruity/clutter-stage-fruity.c:

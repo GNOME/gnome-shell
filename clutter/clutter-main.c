@@ -226,6 +226,8 @@ clutter_get_motion_events_enabled (void)
   return context->motion_events_per_actor;
 }
 
+guint _clutter_pix_to_id (guchar pixel[4]);
+
 ClutterActor *
 _clutter_do_pick (ClutterStage   *stage,
 		  gint            x,
@@ -237,8 +239,7 @@ _clutter_do_pick (ClutterStage   *stage,
   GLint               viewport[4];
   ClutterColor        white = { 0xff, 0xff, 0xff, 0xff };
   guint32             id;
-  gint                r,g,b;
-
+  
   context = clutter_context_get_default ();
 
   _clutter_backend_ensure_context (context->backend, stage);
@@ -273,10 +274,7 @@ _clutter_do_pick (ClutterStage   *stage,
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     return CLUTTER_ACTOR (stage);
 
-  cogl_get_bitmasks (&r, &g, &b, NULL);
-
-  /* Decode color back into an ID, taking into account fb depth */
-  id = pixel[2]>>(8-b) | pixel[1]<<b>>(8-g) | pixel[0]<<(g+b)>>(8-r);
+  id = _clutter_pix_to_id (pixel);
 
   return clutter_get_actor_by_gid (id);
 }
@@ -348,7 +346,10 @@ clutter_main (void)
   loop = g_main_loop_new (NULL, TRUE);
   main_loops = g_slist_prepend (main_loops, loop);
 
-#ifdef HAVE_CLUTTER_FRUITY_FOO
+#ifdef HAVE_CLUTTER_FRUITY
+  /* clutter fruity creates an application that forwards events and manually
+   * spins the mainloop
+   */
   clutter_fruity_main ();
 #else
   if (g_main_loop_is_running (main_loops->data))
