@@ -29,23 +29,13 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageEGL,
 static void
 clutter_stage_egl_show (ClutterActor *actor)
 {
-  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
-
-  CLUTTER_ACTOR_SET_FLAGS (stage_egl, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_SET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_MAPPED);
-
-  CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->show (actor);
+  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
 }
 
 static void
 clutter_stage_egl_hide (ClutterActor *actor)
 {
-  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
-
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_egl, CLUTTER_ACTOR_MAPPED);
-  CLUTTER_ACTOR_UNSET_FLAGS (stage_egl->wrapper, CLUTTER_ACTOR_MAPPED);
-
-  CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->hide (actor);
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
 }
 
 static void

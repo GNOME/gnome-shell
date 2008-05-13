@@ -1,5 +1,17 @@
 2008-05-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/fruity/clutter-stage-fruity.c:
+	(clutter_stage_egl_show), (clutter_stage_egl_hide): Don't chain
+	up and set flags, as it is not needed anymore.
+
+	(clutter_stage_egl_realize): Set the REALIZED flag.
+
+	* clutter/eglnative/clutter-stage-egl.c:
+	(clutter_stage_egl_show), (clutter_stage_egl_hide): Don't chain
+	up and set flags, as it is not needed anymore.
+
+2008-05-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/glx/clutter-stage-glx.c:
 	(clutter_stage_glx_unrealize): Move the shaders release from here...
 
