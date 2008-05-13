@@ -105,13 +105,8 @@ can be overridden:
   -- This function is used to create the stage implementation. It will
      receive as an argument the ClutterStage instance that is "wrapping"
      the actual implementation being created. The backend must create
-     its stage implementation and call _clutter_stage_set_window() with
-     the wrapper and the stage implementation instance:
-
-       _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (impl));
-
-     in case of error, the backend must return NULL and set the passed
-     GError.
+     its stage implementation, initialise it and then return it; in case
+     of error, the backend must return NULL and set the passed GError.
 
 Implementing the stage
 ----------------------

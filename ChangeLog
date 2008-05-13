@@ -1,5 +1,30 @@
 2008-05-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-backend.c:
+	(_clutter_backend_create_stage): Call _clutter_stage_set_window()
+	ourselves, thus removing yet another action that backends must
+	implement and might get wrong; also cuts a backend-agnostic piece
+	of code duplication.
+
+	* clutter/eglnative/clutter-backend-egl.c:
+	(clutter_backend_egl_create_stage): Update the EGL native backend.
+
+	* clutter/eglx/clutter-backend-egl.c:
+	(clutter_backend_egl_create_stage): Update the EGLX backend.
+
+	* clutter/fruity/clutter-backend-fruity.c:
+	(clutter_backend_egl_create_stage): Update the fruity backend
+
+	* clutter/glx/clutter-backend-glx.c:
+	(clutter_backend_glx_create_stage): Update the GLX backend.
+
+	* clutter/sdl/clutter-backend-sdl.c:
+	(clutter_backend_sdl_create_stage): Update the SDL backend.
+
+	* HACKING.backends: Update the ::create_stage() description.
+
+2008-05-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/x11/clutter-event-x11.c (event_translate): Remove the
 	cheap Expose event compression, as it seems to play games when a
 	composite manager is running. It's also not really needed, as

@@ -244,9 +244,6 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   stage_x11->backend = backend_x11;
   stage_x11->wrapper = wrapper;
   
-  /* set the pointer back into the wrapper */
-  _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
-  
   CLUTTER_NOTE (MISC, "EGLX stage created (display:%p, screen:%d, root:%u)",
                 stage_x11->xdpy,
                 stage_x11->xscreen,

@@ -93,8 +93,6 @@ clutter_backend_sdl_create_stage (ClutterBackend  *backend,
   stage_sdl = CLUTTER_STAGE_SDL (stage);
   stage_sdl->wrapper = wrapper;
 
-  _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
-
   backend_sdl->stage = stage_sdl;
 
   return stage;

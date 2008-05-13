@@ -163,6 +163,8 @@ _clutter_backend_create_stage (ClutterBackend  *backend,
   if (!stage)
     return NULL;
 
+  g_assert (CLUTTER_IS_STAGE_WINDOW (stage));
+  _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
   _clutter_stage_manager_add_stage (context->stage_manager, wrapper);
 
   return stage;

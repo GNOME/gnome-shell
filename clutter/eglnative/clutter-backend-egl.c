@@ -98,8 +98,6 @@ clutter_backend_egl_create_stage (ClutterBackend  *backend,
   stage_egl->backend = backend_egl;
   stage_egl->wrapper = wrapper;
 
-  _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
-
   backend_egl->stage = CLUTTER_ACTOR (stage_egl);
 
   return stage;
