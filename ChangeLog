@@ -1,3 +1,16 @@
+2008-05-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/x11/clutter-event-x11.c (event_translate): Remove the
+	cheap Expose event compression, as it seems to play games when a
+	composite manager is running. It's also not really needed, as
+	the redraw queue will avoid redraws too close to each other
+	anyway.
+
+	* clutter/x11/clutter-stage-x11.c:
+	(clutter_stage_x11_show), (clutter_stage_x11_hide): Do not chain
+	up just to set the flags. This fixes a critical warning coming
+	from ClutterActor::hide() default implementation.
+
 2008-05-13  Ivan Leben  <ivan.leben@o-hand.com>
 
 	* clutter/cogl/gl/cogl-defines.h.in:

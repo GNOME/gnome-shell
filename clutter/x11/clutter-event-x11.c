@@ -502,19 +502,8 @@ event_translate (ClutterBackend *backend,
 
     case Expose:
       {
-        XEvent foo_xev;
-
-        /* Cheap compress */
-        while (XCheckTypedWindowEvent (backend_x11->xdpy,
-                                       xevent->xexpose.window,
-                                       Expose,
-                                       &foo_xev));
-
-        /* FIXME: need to make stage an 'actor' so can que
-         * a paint direct from there rather than hack here...
-         */
-        CLUTTER_NOTE (MULTISTAGE, "expose for stage:%p, redrawing", stage);
-        clutter_redraw (stage);
+        CLUTTER_NOTE (MULTISTAGE, "expose for stage: %p, redrawing", stage);
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
         res = FALSE;
       }
       break;

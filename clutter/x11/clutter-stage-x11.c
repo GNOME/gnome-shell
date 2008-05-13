@@ -128,8 +128,7 @@ clutter_stage_x11_show (ClutterActor *actor)
       XMapWindow (stage_x11->xdpy, stage_x11->xwin);
     }
 
-  /* chain up */
-  CLUTTER_ACTOR_CLASS (clutter_stage_x11_parent_class)->show (actor);
+  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
 }
 
 static void
@@ -137,11 +136,10 @@ clutter_stage_x11_hide (ClutterActor *actor)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (actor);
 
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+
   if (stage_x11->xwin)
     XUnmapWindow (stage_x11->xdpy, stage_x11->xwin);
-
-  /* chain up */
-  CLUTTER_ACTOR_CLASS (clutter_stage_x11_parent_class)->hide (actor);
 }
 
 void
