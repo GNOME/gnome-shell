@@ -74,9 +74,6 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
 
   clutter_x11_trap_x_errors ();
 
-  /* Unrealize all shaders, since the GL context is going away */
-  _clutter_shader_release_all ();
-
   if (G_UNLIKELY (was_offscreen))
     {
       if (stage_glx->glxpixmap)

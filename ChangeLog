@@ -1,5 +1,16 @@
 2008-05-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/glx/clutter-stage-glx.c:
+	(clutter_stage_glx_unrealize): Move the shaders release from here...
+
+	* clutter/glx/clutter-backend-glx.c:
+	(clutter_backend_glx_dispose): ... to here. Shaders should be
+	released when the GL context is being destroyed, and that only
+	happens when the backend is being disposed, now that we support
+	multiple stages.
+
+2008-05-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-backend.c:
 	(_clutter_backend_create_stage): Call _clutter_stage_set_window()
 	ourselves, thus removing yet another action that backends must

@@ -176,6 +176,9 @@ clutter_backend_glx_dispose (GObject *gobject)
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (gobject);
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (gobject);
 
+  /* Unrealize all shaders, since the GL context is going away */
+  _clutter_shader_release_all ();
+
   if (backend_glx->gl_context)
     {
       glXDestroyContext (backend_x11->xdpy, backend_glx->gl_context);
