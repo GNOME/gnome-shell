@@ -259,14 +259,12 @@ struct _MetaColorSpec
       MetaColorSpec *background;
       double alpha;
 
-      gboolean color_set;
       GdkColor color;
     } blend;
     struct {
       MetaColorSpec *base;
       double factor;
 
-      gboolean color_set;
       GdkColor color;
     } shade;
   } data;

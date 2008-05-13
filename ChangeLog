@@ -1,3 +1,10 @@
+2008-05-13  Robert Escriva  <me@robescriva.com>
+
+        * src/ui/theme.h (struct): remove color_set flag
+        * src/ui/theme.c (meta_color_spec_render,
+          meta_color_spec_new_from_string): remove check of color_set flag
+          before rendering (we always do it now).  Closes #511826.
+
 2008-05-12  Thomas Thurman  <tthurman@gnome.org>
 
         * tools/xlib.py: Basic Python-based Xlib client for testing

@@ -1264,7 +1264,6 @@ meta_color_spec_new_from_string (const char *str,
       spec->data.blend.alpha = alpha;
       spec->data.blend.background = bg;
       spec->data.blend.foreground = fg;
-      spec->data.blend.color_set = FALSE;
     }
   else if (str[0] == 's' && str[1] == 'h' && str[2] == 'a' && str[3] == 'd' &&
            str[4] == 'e' && str[5] == '/')
@@ -1323,7 +1322,6 @@ meta_color_spec_new_from_string (const char *str,
       spec = meta_color_spec_new (META_COLOR_SPEC_SHADE);
       spec->data.shade.factor = factor;
       spec->data.shade.base = base;
-      spec->data.shade.color_set = FALSE;
     }
   else
     {
@@ -1411,15 +1409,11 @@ meta_color_spec_render (MetaColorSpec *spec,
       {
         GdkColor bg, fg;
 
-        if (spec->data.blend.color_set == FALSE)
-          {
-            meta_color_spec_render (spec->data.blend.background, widget, &bg);
-            meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
+        meta_color_spec_render (spec->data.blend.background, widget, &bg);
+        meta_color_spec_render (spec->data.blend.foreground, widget, &fg);
 
-            color_composite (&bg, &fg, spec->data.blend.alpha, 
-                             &spec->data.blend.color);
-            spec->data.blend.color_set = TRUE;
-          }
+        color_composite (&bg, &fg, spec->data.blend.alpha, 
+                         &spec->data.blend.color);
 
         *color = spec->data.blend.color;
       }
@@ -1427,15 +1421,11 @@ meta_color_spec_render (MetaColorSpec *spec,
 
     case META_COLOR_SPEC_SHADE:
       {
-        if (spec->data.shade.color_set == FALSE)
-          {
-            meta_color_spec_render (spec->data.shade.base, widget, 
-                                    &spec->data.shade.color);
+        meta_color_spec_render (spec->data.shade.base, widget, 
+                                &spec->data.shade.color);
             
-            gtk_style_shade (&spec->data.shade.color, 
-                             &spec->data.shade.color, spec->data.shade.factor);
-            spec->data.shade.color_set = TRUE;
-          }
+        gtk_style_shade (&spec->data.shade.color, 
+                         &spec->data.shade.color, spec->data.shade.factor);
 
         *color = spec->data.shade.color;
       }
