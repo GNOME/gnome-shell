@@ -105,6 +105,11 @@ or enter/leave events */
   GSList          *shaders;            /* stack of overridden shaders */
 
   ClutterActor    *motion_last_actor;
+
+  /* fb bit masks for col<->id mapping in picking */
+  gint fb_r_mask, fb_g_mask, fb_b_mask;
+  gint fb_r_mask_used, fb_g_mask_used, fb_b_mask_used;
+
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
@@ -166,10 +171,16 @@ ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
 void          _clutter_feature_init (void);
 
+/* Picking code */
 ClutterActor *_clutter_do_pick (ClutterStage   *stage,
 				 gint            x,
 				 gint            y,
 				 ClutterPickMode mode);
+
+guint         _clutter_pixel_to_id (guchar pixel[4]);
+
+void          _clutter_id_to_color (guint id, ClutterColor *col);
+
 
 /* use this function as the accumulator if you have a signal with
  * a G_TYPE_BOOLEAN return value; this will stop the emission as

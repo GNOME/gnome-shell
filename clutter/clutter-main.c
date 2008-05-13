@@ -228,6 +228,82 @@ clutter_get_motion_events_enabled (void)
 
 guint _clutter_pix_to_id (guchar pixel[4]);
 
+static inline void init_bits (void)
+{
+  ClutterMainContext *ctx;
+
+  static gboolean done = FALSE;
+  if (G_LIKELY (done))
+    return;
+
+  ctx = clutter_context_get_default ();
+
+  done = TRUE;
+}
+
+void
+_clutter_id_to_color (guint id, ClutterColor *col)
+{
+  ClutterMainContext *ctx;
+  gint                red, green, blue;
+  ctx = clutter_context_get_default ();
+
+  /* compute the numbers we'll store in the components */
+  red   = (id >> (ctx->fb_g_mask_used+ctx->fb_b_mask_used)) 
+                & (0xff >> (8-ctx->fb_r_mask_used));
+  green = (id >> ctx->fb_b_mask_used) & (0xff >> (8-ctx->fb_g_mask_used));
+  blue  = (id)  & (0xff >> (8-ctx->fb_b_mask_used));
+
+  /* shift left bits a bit and add one, this circumvents
+   * at least some potential rounding errors in GL/GLES
+   * driver / hw implementation. 
+   */
+  if (ctx->fb_r_mask_used != ctx->fb_r_mask)
+    red = red * 2 + 1;
+  if (ctx->fb_g_mask_used != ctx->fb_g_mask)
+    green = green * 2 + 1;
+  if (ctx->fb_b_mask_used != ctx->fb_b_mask)
+    blue  = blue  * 2 + 1;
+
+  /* shift up to be full 8bit values */ 
+  red   = red   << (8 - ctx->fb_r_mask);
+  green = green << (8 - ctx->fb_g_mask);
+  blue  = blue  << (8 - ctx->fb_b_mask);
+
+  col->red   = red;
+  col->green = green;
+  col->blue  = blue;
+  col->alpha = 0xff;
+}
+
+guint 
+_clutter_pixel_to_id (guchar pixel[4])                 
+{
+  ClutterMainContext *ctx;
+  gint  red, green, blue;
+  guint id;
+
+  ctx = clutter_context_get_default ();
+
+  /* reduce the pixel components to the number of bits actually used of the
+   * 8bits.
+   */
+  red   = pixel[0] >> (8 - ctx->fb_r_mask);
+  green = pixel[1] >> (8 - ctx->fb_g_mask);
+  blue  = pixel[2] >> (8 - ctx->fb_b_mask);
+
+  /* divide potentially by two if 'fuzzy' */
+  red   = red   >> (ctx->fb_r_mask - ctx->fb_r_mask_used);
+  green = green >> (ctx->fb_g_mask - ctx->fb_g_mask_used);
+  blue  = blue  >> (ctx->fb_b_mask - ctx->fb_b_mask_used);  
+
+  /* combine the correct per component values into the final id */
+  id =  blue + (green <<  ctx->fb_b_mask_used) 
+          + (red << (ctx->fb_b_mask_used + ctx->fb_g_mask_used));
+  
+  return id;
+}
+
 ClutterActor *
 _clutter_do_pick (ClutterStage   *stage,
 		  gint            x,
@@ -266,15 +342,17 @@ _clutter_do_pick (ClutterStage   *stage,
    * could be nicer.
   */
   glFinish();
+
   /* glEnable (GL_DITHER); we never enabled this originally, so its
      probably not safe to then enable it */
 
+  /* Read the color of the screen co-ords pixel */
   glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     return CLUTTER_ACTOR (stage);
 
-  id = _clutter_pix_to_id (pixel);
+  id = _clutter_pixel_to_id (pixel);
 
   return clutter_get_actor_by_gid (id);
 }
@@ -1025,6 +1103,76 @@ clutter_init_error_quark (void)
   return g_quark_from_static_string ("clutter-init-error-quark");
 }
 
+static ClutterInitError
+clutter_init_real (GError **error)
+{
+  ClutterMainContext *ctx;
+  ClutterActor *stage;
+
+  /* Note, creates backend if not already existing, though parse args will
+   * have likely created it
+   */
+  ctx = clutter_context_get_default ();
+
+  /* Stage will give us a GL Context etc */
+  stage = clutter_stage_get_default ();
+  if (!stage)
+    {
+      if (error)
+        g_set_error (error, CLUTTER_INIT_ERROR,
+                     CLUTTER_INIT_ERROR_INTERNAL,
+                     "Unable to create the default stage");
+      else
+        g_critical ("Unable to create the default stage");
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
+
+  clutter_actor_realize (stage);
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
+    {
+      if (error)
+        g_set_error (error, CLUTTER_INIT_ERROR,
+                     CLUTTER_INIT_ERROR_INTERNAL,
+                     "Unable to realize the default stage");
+      else
+        g_critical ("Unable to realize the default stage");
+
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
+
+  /* Now we can safely assume we have a valid GL context and can 
+   * start issueing cogl commands
+  */
+
+  /* Figure out framebuffer masks used for pick */
+  cogl_get_bitmasks (&ctx->fb_r_mask, &ctx->fb_g_mask, &ctx->fb_b_mask, NULL);
+
+  ctx->fb_r_mask_used = ctx->fb_r_mask;
+  ctx->fb_g_mask_used = ctx->fb_g_mask;
+  ctx->fb_b_mask_used = ctx->fb_b_mask;
+
+#ifndef HAVE_CLUTTER_FRUITY
+  /* We always do fuzzy picking for the fruity backend */
+  if (g_getenv ("CLUTTER_FUZZY_PICK") != NULL)
+#endif
+    {
+      ctx->fb_r_mask_used--;
+      ctx->fb_g_mask_used--;
+      ctx->fb_b_mask_used--;
+    }
+
+  /* Initiate event collection */
+  _clutter_backend_init_events (ctx->backend);
+
+  /* finally features - will call to backend and cogl */
+  _clutter_feature_init ();
+
+  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
+
+  return CLUTTER_INIT_SUCCESS;
+}
+
 /**
  * clutter_init_with_args:
  * @argc: a pointer to the number of command line arguments
@@ -1061,11 +1209,9 @@ clutter_init_with_args (int            *argc,
                         char           *translation_domain,
                         GError        **error)
 {
-  ClutterMainContext *clutter_context;
   GOptionContext *context;
   GOptionGroup *group;
   gboolean res;
-  ClutterActor *stage;
 
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
@@ -1092,35 +1238,8 @@ clutter_init_with_args (int            *argc,
   if (!res)
     return CLUTTER_INIT_ERROR_INTERNAL;
 
-  clutter_context = clutter_context_get_default ();
-
-  stage = clutter_stage_get_default ();
-  if (!stage)
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_INTERNAL,
-                   "Unable to create the default stage");
-
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
-
-  clutter_actor_realize (stage);
-  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_INTERNAL,
-                   "Unable to realize the default stage");
-
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
-
-  _clutter_backend_init_events (clutter_context->backend);
-
-  _clutter_feature_init ();
-
-  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
-
-  return CLUTTER_INIT_SUCCESS;
+  /* Do the real work.. */
+  return clutter_init_real (error);
 }
 
 static gboolean
@@ -1172,9 +1291,6 @@ ClutterInitError
 clutter_init (int    *argc,
               char ***argv)
 {
-  ClutterMainContext *context;
-  ClutterActor *stage;
-
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
@@ -1182,7 +1298,6 @@ clutter_init (int    *argc,
 
   if (argc && *argc > 0 && *argv)
     g_set_prgname ((*argv)[0]);
-
 
   /* parse_args will trigger backend creation and things like
    * DISPLAY connection etc.
@@ -1193,36 +1308,7 @@ clutter_init (int    *argc,
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
-  /* Note, creates backend if not already existing (though parse args will
-   * have likely created it)
-   */
-  context = clutter_context_get_default ();
-
-  /* Stage will give us a GL Context etc */
-  stage = clutter_stage_get_default ();
-  if (!stage)
-    {
-      g_critical ("Unable to create the default stage");
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
-
-  clutter_actor_realize (stage);
-  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
-    {
-      g_critical ("Unable to realize the default stage");
-
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
-
-  /* Initiate event collection */
-  _clutter_backend_init_events (context->backend);
-
-  /* finally features - will call to backend and cogl */
-  _clutter_feature_init ();
-
-  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
-
-  return CLUTTER_INIT_SUCCESS;
+  return clutter_init_real (NULL);
 }
 
 gboolean

@@ -1,3 +1,13 @@
+2008-05-14  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-main.c:
+	* clutter/clutter-private.h:
+        Rejid Øyvind's previous commit a little moving more into 
+        clutter-main.c and using ClutterContext.
+        Also Refactor clutter_init & clutter_init_with_args to share
+        same core init code.
+
 2008-05-13  Øyvind Kolås  <pippin@o-hand.com>
 
 	Made it possible to do picking when the colors stored in the
