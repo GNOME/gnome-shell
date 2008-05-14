@@ -468,8 +468,6 @@ _cogl_features_init ()
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
-
   GE( glGetIntegerv (GL_STENCIL_BITS, &stencil_bits) );
   if (stencil_bits > 0)
     flags |= COGL_FEATURE_STENCIL_BUFFER;
