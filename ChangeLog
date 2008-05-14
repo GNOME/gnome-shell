@@ -1,5 +1,10 @@
 2008-05-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/test-threads.c: Add a "progress bar" actor and
+	make the test take less amount of time to complete.
+
+2008-05-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* tests/test-events.c: Clean up a bit, and print out more
 	messages when pressing one of the rectangles.
 

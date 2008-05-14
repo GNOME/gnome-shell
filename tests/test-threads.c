@@ -6,6 +6,7 @@ typedef struct
 {
   ClutterActor *stage;
   ClutterActor *label;
+  ClutterActor *progress;
 
   ClutterTimeline *timeline;
 
@@ -25,6 +26,7 @@ test_thread_data_new (void)
 static void
 test_thread_data_free (TestThreadData *data)
 {
+  g_object_unref (data->progress);
   g_object_unref (data->label);
   g_object_unref (data->stage);
   g_object_unref (data->timeline);
@@ -59,12 +61,22 @@ static gboolean
 update_label_idle (gpointer data)
 {
   TestUpdate *update = data;
+  guint width;
   gchar *text;
 
   text = g_strdup_printf ("Count to %d", update->count);
 
   clutter_label_set_text (CLUTTER_LABEL (update->thread_data->label), text);
   clutter_actor_set_width (update->thread_data->label, -1);
+
+  if (update->count == 0)
+    width = 0;
+  else if (update->count == 100)
+    width = 350;
+  else
+    width = (guint) (update->count / 100.0 * 350.0);
+
+  clutter_actor_set_width (update->thread_data->progress, width);
 
   g_free (text);
   g_free (update);
@@ -86,7 +98,7 @@ do_something_very_slow (void)
     {
       gint msecs;
 
-      msecs = 1 + (int) (1000.0 * rand () / ((RAND_MAX + 1.0) / 3));
+      msecs = 1 + (int) (100.0 * rand () / ((RAND_MAX + 1.0) / 3));
 
       /* sleep for a while */
       g_usleep (msecs * 1000);
@@ -99,12 +111,10 @@ do_something_very_slow (void)
           update->count = i;
           update->thread_data = data;
 
-          g_print ("updating the label: %d\n", update->count);
-
-          clutter_threads_add_idle (update_label_idle, update);
+          clutter_threads_add_idle_full (G_PRIORITY_DEFAULT + 30,
+                                         update_label_idle,
+                                         update, NULL);
         }
-
-      g_print ("slept to %d msecs\n", msecs);
     }
 }
 
@@ -118,14 +128,17 @@ test_thread_func (gpointer user_data)
 
   do_something_very_slow ();
 
-  clutter_threads_add_idle (test_thread_done_idle, data);
+  clutter_threads_add_idle_full (G_PRIORITY_DEFAULT + 30,
+                                 test_thread_done_idle,
+                                 data, NULL);
 
   return NULL;
 }
 
-static ClutterTimeline *timeline = NULL;
-static ClutterActor *count_label = NULL;
-static ClutterActor *help_label  = NULL;
+static ClutterTimeline *timeline   = NULL;
+static ClutterActor *count_label   = NULL;
+static ClutterActor *help_label    = NULL;
+static ClutterActor *progress_rect = NULL;
 
 static void
 on_key_press_event (ClutterStage    *stage,
@@ -144,6 +157,7 @@ on_key_press_event (ClutterStage    *stage,
       data = test_thread_data_new ();
       data->stage = g_object_ref (stage);
       data->label = g_object_ref (count_label);
+      data->progress = g_object_ref (progress_rect);
       data->timeline = g_object_ref (timeline);
       g_thread_create (test_thread_func, data, FALSE, NULL);
       break;
@@ -160,6 +174,7 @@ main (int argc, char *argv[])
   ClutterActor *rect;
   ClutterColor stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
   ClutterColor rect_color = { 0xee, 0x55, 0x55, 0x99 };
+  ClutterColor progress_color = { 0x55, 0xee, 0x55, 0xbb };
   ClutterBehaviour *r_behaviour, *p_behaviour;
   const ClutterKnot knots[] = {
     {  75, 150 },
@@ -172,7 +187,7 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  clutter_actor_set_size (stage, 600, 200);
+  clutter_actor_set_size (stage, 600, 300);
   
   count_label = clutter_label_new_with_text ("Mono 12", "Counter");
   clutter_actor_set_position (count_label, 350, 50);
@@ -185,9 +200,13 @@ main (int argc, char *argv[])
   clutter_actor_set_size (rect, 50, 50);
   clutter_actor_set_anchor_point (rect, 25, 25);
 
+  progress_rect = clutter_rectangle_new_with_color (&progress_color);
+  clutter_actor_set_position (progress_rect, 50, 225);
+  clutter_actor_set_size (progress_rect, 350, 50);
+
   clutter_container_add (CLUTTER_CONTAINER (stage),
                          count_label, help_label,
-                         rect,
+                         rect, progress_rect,
                          NULL);
 
   timeline = clutter_timeline_new (150, 50);
