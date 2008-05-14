@@ -1,3 +1,12 @@
+2008-05-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* tests/test-events.c: Clean up a bit, and print out more
+	messages when pressing one of the rectangles.
+
+	* tests/test-threads.c: Be more verbose in the console, and
+	apply another behaviour on the rectangle, to show that we
+	are not blocking.
+
 2008-05-14  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/cogl/gles/cogl.c: (_cogl_features_init): do not set

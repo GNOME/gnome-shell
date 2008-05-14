@@ -27,6 +27,9 @@ blue_button_cb (ClutterActor    *actor,
 
   g_object_set (stage, "fullscreen", IsFullScreen, NULL);
 
+  g_print ("*** Fullscreen %s ***\n",
+           IsFullScreen ? "enabled" : "disabled");
+
   return FALSE;
 }
 
@@ -43,15 +46,19 @@ red_button_cb (ClutterActor    *actor,
 
   clutter_set_motion_events_enabled (IsMotion);
 
+  g_print ("*** Per actor motion events %s ***\n",
+           IsMotion ? "enabled" : "disabled");
+
   return FALSE;
 }
 
 static gboolean
-capture_cb (ClutterActor    *actor,
-	    ClutterEvent    *event,
-	    gpointer         data)
+capture_cb (ClutterActor *actor,
+	    ClutterEvent *event,
+	    gpointer      data)
 {
-  printf("captured event for type '%s'\n", G_OBJECT_TYPE_NAME(actor));
+  g_print ("* captured event for type '%s' *\n",
+           G_OBJECT_TYPE_NAME (actor));
 
   return FALSE;
 }
@@ -63,9 +70,7 @@ key_focus_in_cb (ClutterActor    *actor,
   ClutterActor *focus_box = CLUTTER_ACTOR(data);  
 
   if (actor == clutter_stage_get_default ())
-    {
-      clutter_actor_hide (focus_box);
-    }
+    clutter_actor_hide (focus_box);
   else
     {
       clutter_actor_set_position (focus_box,
@@ -94,30 +99,30 @@ input_cb (ClutterActor    *actor,
       len = g_unichar_to_utf8 (clutter_keysym_to_unicode (event->key.keyval),
 			       keybuf);
       keybuf[len] = '\0';
-      printf ("[%s] KEY PRESS '%s'", source, keybuf);
+      g_print ("[%s] KEY PRESS '%s'", source, keybuf);
       break;
     case CLUTTER_KEY_RELEASE:
       len = g_unichar_to_utf8 (clutter_keysym_to_unicode (event->key.keyval),
 			       keybuf);
       keybuf[len] = '\0';
-      printf ("[%s] KEY RELEASE '%s'", source, keybuf);
+      g_print ("[%s] KEY RELEASE '%s'", source, keybuf);
       break;
     case CLUTTER_MOTION:
-      printf("[%s] MOTION", source);
+      g_print ("[%s] MOTION", source);
       break;
     case CLUTTER_ENTER:
-      printf("[%s] ENTER", source);
+      g_print ("[%s] ENTER", source);
       break;
     case CLUTTER_LEAVE:
-      printf("[%s] LEAVE", source);
+      g_print ("[%s] LEAVE", source);
       break;
     case CLUTTER_BUTTON_PRESS:
-      printf("[%s] BUTTON PRESS (click count:%i)", 
-	     source, event->button.click_count);
+      g_print ("[%s] BUTTON PRESS (click count:%i)", 
+	       source, event->button.click_count);
       break;
     case CLUTTER_BUTTON_RELEASE:
-      printf("[%s] BUTTON RELEASE (click count:%i)", 
-	     source, event->button.click_count);
+      g_print ("[%s] BUTTON RELEASE (click count:%i)", 
+	       source, event->button.click_count);
 
       if (clutter_event_get_source (event) == CLUTTER_ACTOR (stage))
         clutter_stage_set_key_focus (stage, NULL);
@@ -126,29 +131,29 @@ input_cb (ClutterActor    *actor,
 	clutter_stage_set_key_focus (stage, actor);
       break;
     case CLUTTER_SCROLL:
-      printf("[%s] BUTTON SCROLL (click count:%i)", 
-	     source, event->button.click_count);
+      g_print ("[%s] BUTTON SCROLL (click count:%i)",
+	       source, event->button.click_count);
       break;
     case CLUTTER_STAGE_STATE:
-      printf("[%s] STAGE STATE", source);
+      g_print ("[%s] STAGE STATE", source);
       break;
     case CLUTTER_DESTROY_NOTIFY:
-      printf("[%s] DESTROY NOTIFY", source);
+      g_print ("[%s] DESTROY NOTIFY", source);
       break;
     case CLUTTER_CLIENT_MESSAGE:
-      printf("[%s] CLIENT MESSAGE\n", source);
+      g_print ("[%s] CLIENT MESSAGE", source);
       break;
     case CLUTTER_DELETE:
-      printf("[%s] DELETE", source);
+      g_print ("[%s] DELETE", source);
       break;
     case CLUTTER_NOTHING:
       return FALSE;
     }
 
   if (clutter_event_get_source (event) == actor)
-    printf(" *source*");
+    g_print (" *source*");
   
-  printf("\n");
+  g_printf("\n");
 
   return FALSE;
 }
@@ -197,7 +202,8 @@ main (int argc, char *argv[])
 		    focus_box);
 
   /* Toggle motion - enter/leave capture */
-  g_signal_connect (actor, "button-press-event", G_CALLBACK (red_button_cb), NULL);
+  g_signal_connect (actor, "button-press-event",
+                    G_CALLBACK (red_button_cb), NULL);
 
   clutter_stage_set_key_focus (CLUTTER_STAGE (stage), actor);
 
@@ -227,7 +233,8 @@ main (int argc, char *argv[])
   g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
 		    focus_box);
   /* Fullscreen */
-  g_signal_connect (actor, "button-press-event", G_CALLBACK (blue_button_cb), NULL);
+  g_signal_connect (actor, "button-press-event",
+                    G_CALLBACK (blue_button_cb), NULL);
 
   /* non reactive */
   actor = clutter_rectangle_new_with_color (&ncol);
@@ -252,8 +259,8 @@ main (int argc, char *argv[])
 
   /* note group not reactive */
   group = clutter_group_new ();
-  clutter_container_add (CLUTTER_CONTAINER(group), actor, NULL);
-  clutter_container_add (CLUTTER_CONTAINER(stage), group, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (group), actor, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (stage), group, NULL);
   clutter_actor_set_position (group, 100, 350);
   clutter_actor_show_all (group);
 
