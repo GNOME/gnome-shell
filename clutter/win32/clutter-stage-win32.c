@@ -61,8 +61,7 @@ clutter_stage_win32_show (ClutterActor *actor)
   if (stage_win32->hwnd)
     ShowWindow (stage_win32->hwnd, SW_SHOW);
 
-  /* chain up */
-  CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->show (actor);
+  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
 }
 
 static void
@@ -70,11 +69,10 @@ clutter_stage_win32_hide (ClutterActor *actor)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (actor);
 
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+  
   if (stage_win32->hwnd)
     ShowWindow (stage_win32->hwnd, SW_HIDE);
-  
-  /* chain up */
-  CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->hide (actor);
 }
 
 static void
@@ -426,10 +424,7 @@ clutter_stage_win32_realize (ClutterActor *actor)
       if (window_class == 0)
 	{
           g_critical ("Unable to register window class");
-	  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
-				     CLUTTER_ACTOR_REALIZED);
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-          return;
+	  goto fail;
 	}
 
       /* If we're in fullscreen mode then use the fullscreen rect
@@ -470,10 +465,7 @@ clutter_stage_win32_realize (ClutterActor *actor)
       if (stage_win32->hwnd == NULL)
 	{
 	  g_critical ("Unable to create stage window");
-	  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
-				     CLUTTER_ACTOR_REALIZED);
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-	  return;
+	  goto fail;
 	}
 
       /* Get the position in case CW_USEDEFAULT was specified */
@@ -513,10 +505,7 @@ clutter_stage_win32_realize (ClutterActor *actor)
       || !SetPixelFormat (stage_win32->client_dc, pf, &pfd))
     {
       g_critical ("Unable to find suitable GL pixel format");
-      CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
-				 CLUTTER_ACTOR_REALIZED);
-      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-      return;
+      goto fail;
     }
 
   if (backend_win32->gl_context == NULL)
@@ -526,30 +515,26 @@ clutter_stage_win32_realize (ClutterActor *actor)
       if (backend_win32->gl_context == NULL)
 	{
 	  g_critical ("Unable to create suitable GL context");
-	  CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
-				     CLUTTER_ACTOR_REALIZED);
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-	  return;
+	  goto fail;
+	}
+
+      /* Make the context current so we can check the GL version */
+      wglMakeCurrent (stage_win32->client_dc, backend_win32->gl_context);
+
+      if (!clutter_stage_win32_check_gl_version ())
+	{
+	  g_critical ("OpenGL version number is too low");
+	  goto fail;
 	}
     }
 
-  /* below will call wglMakeCurrent */
-  CLUTTER_ACTOR_SET_FLAGS (stage_win32->wrapper, CLUTTER_ACTOR_REALIZED);
+  CLUTTER_NOTE (BACKEND, "Marking stage as realized");
   CLUTTER_ACTOR_SET_FLAGS (stage_win32, CLUTTER_ACTOR_REALIZED);
-  clutter_stage_ensure_current (stage_win32->wrapper);
 
-  if (!clutter_stage_win32_check_gl_version ())
-    {
-      g_critical ("OpenGL version number is too low");
-      CLUTTER_ACTOR_UNSET_FLAGS (stage_win32->wrapper,
-				 CLUTTER_ACTOR_REALIZED);
-      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-      return;
-    }
-      
-  /* Make sure the viewport gets set up correctly */
-  CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
-			     CLUTTER_ACTOR_SYNC_MATRICES);
+  return;
+
+ fail:
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
 
 static void
@@ -563,12 +548,6 @@ clutter_stage_win32_unrealize (ClutterActor *actor)
    * data across contexts
    */
   CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)->unrealize (actor);
-
-  /* Unrealize all shaders, since the GL context is going away */
-  _clutter_shader_release_all ();
-
-  /* As unrealised the context will now get cleared */
-  clutter_stage_ensure_current (stage_win32->wrapper);
 
   if (stage_win32->client_dc)
     {

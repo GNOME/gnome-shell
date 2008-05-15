@@ -1,3 +1,10 @@
+2008-05-15  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/win32/clutter-stage-win32.c: 
+	* clutter/win32/clutter-backend-win32.c: Reflect changes to the
+	GLX/X11 backend in revisions 2708-2709 and 2713-2715 which
+	simplify the backend a little.
+
 2008-05-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/x11/clutter-backend-x11.c:

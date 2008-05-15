@@ -116,6 +116,9 @@ clutter_backend_win32_dispose (GObject *gobject)
   CLUTTER_NOTE (BACKEND, "Removing the event source");
   _clutter_backend_win32_events_uninit (CLUTTER_BACKEND (backend_win32));
 
+  /* Unrealize all shaders, since the GL context is going away */
+  _clutter_shader_release_all ();
+
   if (backend_win32->gl_context)
     {
       wglDeleteContext (backend_win32->gl_context);
@@ -313,32 +316,12 @@ clutter_backend_win32_create_stage (ClutterBackend  *backend,
   CLUTTER_NOTE (BACKEND, "Creating stage of type `%s'",
 		g_type_name (CLUTTER_STAGE_TYPE));
 
-  stage = g_object_new (CLUTTER_STAGE_TYPE, NULL);
+  stage = g_object_new (CLUTTER_TYPE_STAGE_WIN32, NULL);
 
   /* copy backend data into the stage */
   stage_win32 = CLUTTER_STAGE_WIN32 (stage);
   stage_win32->backend = backend_win32;
   stage_win32->wrapper = wrapper;
-
-  /* set the pointer back into the wrapper */
-  _clutter_stage_set_window (wrapper, CLUTTER_STAGE_WINDOW (stage));
-
-  /* needed ? */
-  g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
-
-  /* FIXME - is this needed? we should call realize inside the clutter
-   * init sequence for the default stage, and let the usual realization
-   * sequence be used for any other stage
-   */
-  clutter_actor_realize (stage);
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_INTERNAL,
-                   "Unable to realize the main stage");
-      return NULL;
-    }
 
   return stage;
 }
