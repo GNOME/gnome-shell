@@ -10,7 +10,7 @@
 	* clutter/eglnative/clutter-event-egl.c: Add the same solution
 	used for the SDL backend in order to get the time of an event.
 	This should fix the motion event throttling and the click count
-	on button press.
+	on button press. (#906)
 
 	* tests/test-pixmap.c (create_pixmap), (main): Fix preprocessor
 	directives.
