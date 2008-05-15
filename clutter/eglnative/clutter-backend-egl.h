@@ -58,6 +58,9 @@ struct _ClutterBackendEGL
   /* event source */
   GSource *event_source;
 
+  /* event timer */
+  GTimer *event_timer;
+
   /*< private >*/
 };
 

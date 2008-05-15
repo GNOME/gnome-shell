@@ -16,7 +16,7 @@
 
 #define IMAGE "redhand.png"
 
-#ifdef USE_GDKPIXBUF
+# ifdef USE_GDKPIXBUF
 
 static gboolean
 stage_press_cb (ClutterActor    *actor,
@@ -87,10 +87,10 @@ create_pixmap (guint *width, guint *height, guint *depth)
     for (p = line; p < endofline; p += 4, d+=4)
       {
 
-#define r ((guint32)(*(p)))
-#define g ((guint32)(*(p+1)))
-#define b ((guint32)(*(p+2)))
-#define a ((guint32)(*(p+3)))
+#  define r ((guint32)(*(p)))
+#  define g ((guint32)(*(p+1)))
+#  define b ((guint32)(*(p+2)))
+#  define a ((guint32)(*(p+3)))
         guint32 pixel =
             ((a << 24) & 0xFF000000  ) |
             ((r << 16) & 0x00FF0000  ) |
@@ -100,10 +100,10 @@ create_pixmap (guint *width, guint *height, guint *depth)
         *((guint32 *)d) = pixel;
 
       }
-#undef r
-#undef g
-#undef b
-#undef a
+#  undef r
+#  undef g
+#  undef b
+#  undef a
 
   }
 
@@ -136,12 +136,12 @@ create_pixmap (guint *width, guint *height, guint *depth)
 
   return pixmap;
 }
-#endif
+# endif /* USE_GDKPIXBUF */
 
 int
 main (int argc, char **argv)
 {
-#ifdef USE_GDKPIXBUF
+# ifdef USE_GDKPIXBUF
   ClutterActor         *stage, *tex;
   Pixmap                pixmap;
   guint                 w, h, d;
@@ -168,7 +168,7 @@ main (int argc, char **argv)
   clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex), 
                                             TRUE);
 
-#ifdef HAVE_CLUTTER_GLX
+#  ifdef HAVE_CLUTTER_GLX
 
   /* pixmap = create_pixmap (&w, &h, &d); */
 
@@ -191,7 +191,7 @@ main (int argc, char **argv)
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage),
                                tex);
-#endif
+#  endif /* HAVE_CLUTTER_GLX */
 
   g_signal_connect (stage, "button-press-event", 
                     G_CALLBACK (stage_press_cb), (gpointer)pixmap);
@@ -199,10 +199,10 @@ main (int argc, char **argv)
   clutter_actor_show (stage);
 
   clutter_main ();
-#endif
+# endif /* USE_GDKPIXBUF */
 
 }
 
-#else
+#else /* HAVE_CLUTTER_GLX */
 int main(int argc, char **argv){return 0;};
-#endif
+#endif /* HAVE_CLUTTER_GLX */

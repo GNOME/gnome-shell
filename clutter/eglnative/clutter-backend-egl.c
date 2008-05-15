@@ -142,6 +142,12 @@ clutter_backend_egl_dispose (GObject *gobject)
       backend_egl->edpy = 0;
     }
 
+  if (backend_egl->event_timer)
+    {
+      g_timer_destroy (backend_egl->event_timer);
+      backend_egl->event_timer = NULL;
+    }
+
   G_OBJECT_CLASS (clutter_backend_egl_parent_class)->dispose (gobject);
 }
 
@@ -218,6 +224,8 @@ clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
   clutter_backend_set_resolution (backend, 96.0);
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
+
+  backend_egl->event_timer = g_timer_new ();
 }
 
 GType

@@ -793,7 +793,7 @@ clutter_sqrti (gint number)
 }
 
 /**
- * clutter_fixed_qmulx:
+ * clutter_qmulx:
  * @op1: #ClutterFixed
  * @op2: #ClutterFixed
  *
@@ -833,7 +833,7 @@ clutter_qmulx (ClutterFixed op1, ClutterFixed op2)
 }
 
 /**
- * clutter_fixed_qdivx:
+ * clutter_qdivx:
  * @op1: #ClutterFixed
  * @op2: #ClutterFixed
  *

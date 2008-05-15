@@ -1,3 +1,20 @@
+2008-05-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/x11/clutter-backend-x11.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-feature.h:
+	* clutter/clutter-fixed.c:
+	* clutter/clutter-model.h: Fix documentation.
+
+	* clutter/eglnative/clutter-backend-egl.[ch]:
+	* clutter/eglnative/clutter-event-egl.c: Add the same solution
+	used for the SDL backend in order to get the time of an event.
+	This should fix the motion event throttling and the click count
+	on button press.
+
+	* tests/test-pixmap.c (create_pixmap), (main): Fix preprocessor
+	directives.
+
 2008-05-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* tests/test-threads.c: Add a "progress bar" actor and

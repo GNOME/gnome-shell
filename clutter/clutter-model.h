@@ -300,6 +300,7 @@ struct _ClutterModelIter
  *   iterator belongs to
  * @get_row: Virtual function for getting the row to which the iterator
  *   points
+ * @copy: Virtual function for copying a #ClutterModelIter.
  *
  * Class for #ClutterModelIter instances.
  *

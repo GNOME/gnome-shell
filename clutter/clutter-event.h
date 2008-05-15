@@ -189,6 +189,7 @@ typedef struct _ClutterInputDevice      ClutterInputDevice;
  * @type: event type
  * @time: event time
  * @flags: event flags
+ * @stage: event source stage
  * @source: event source actor
  *
  * Common members for a #ClutterEvent
@@ -209,6 +210,7 @@ struct _ClutterAnyEvent
  * @type: event type
  * @time: event time
  * @flags: event flags
+ * @stage: event source stage
  * @source: event source actor
  * @modifier_state: key modifiers
  * @keyval: raw key value

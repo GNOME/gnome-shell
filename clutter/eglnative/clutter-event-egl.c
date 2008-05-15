@@ -81,6 +81,16 @@ clutter_event_source_new (ClutterBackend *backend)
   return source;
 }
 
+static guint32
+get_backend_time (void)
+{
+  ClutterBackendEGL *backend_egl;
+
+  backend_egl = CLUTTER_BACKEND_EGL (clutter_get_default_backend ());
+
+  return g_timer_elapsed (backend_egl->event_timer) * 1000;
+}
+
 void
 _clutter_events_init (ClutterBackend *backend)
 {
@@ -88,19 +98,22 @@ _clutter_events_init (ClutterBackend *backend)
   GSource            *source;
   ClutterEventSource *event_source;
 
+  CLUTTER_NOTE (EVENT, "Starting timer");
+  g_assert (backend_egl->event_timer != NULL);
+  g_timer_start (backend_egl->event_timer);
+
 #ifdef HAVE_TSLIB
   /* FIXME LEAK on error paths */
   source = backend_egl->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
 
-  event_source->ts_device = ts_open(g_getenv("TSLIB_TSDEVICE"), 0);
+  event_source->ts_device = ts_open (g_getenv ("TSLIB_TSDEVICE"), 0);
 
   if (event_source->ts_device)
     {
+      CLUTTER_NOTE (EVENT, "Opened '%s'", g_getenv ("TSLIB_TSDEVICE"));
 
-      CLUTTER_NOTE (EVENT, "Opened '%s'", g_getenv("TSLIB_TSDEVICE"));
-
-      if (ts_config(event_source->ts_device))
+      if (ts_config (event_source->ts_device))
 	{
 	  g_warning ("ts_config() failed");
 	  ts_close (event_source->ts_device);
@@ -128,6 +141,12 @@ void
 _clutter_events_uninit (ClutterBackend *backend)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
+
+  if (backend_egl->event_timer)
+    {
+      CLUTTER_NOTE (EVENT, "Stopping the timer");
+      g_timer_stop (backend_egl->event_timer);
+    }
 
   if (backend_egl->event_source)
     {
@@ -220,27 +239,32 @@ clutter_event_dispatch (GSource     *source,
       last_x = event->button.x = tsevent.x;
       last_y = event->button.y = tsevent.y;
 
-      event->button.time = 0;
-      event->button.modifier_state = 0;
-      event->button.button = 1;
-
       if (tsevent.pressure && !clicked)
         {
 	  event->button.type = event->type = CLUTTER_BUTTON_PRESS;
+          event->button.time = get_backend_time ();
+          event->button.modifier_state = 0;
+          event->button.button = 1;
+
           clicked = TRUE;
         }
       else if (tsevent.pressure && clicked)
         {
           event->motion.type = event->type = CLUTTER_MOTION;
+          event->motion.time = get_backend_time ();
+          event->motion.modifier_state = 0;
         }
       else
         {
 	  event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
+          event->button.time = get_backend_time ();
+          event->button.modifier_state = 0;
+          event->button.button = 1;
+
           clicked = FALSE;
         }
 
       g_queue_push_head (clutter_context->events_queue, event);
-
     }
 #endif
 

@@ -381,6 +381,7 @@ clutter_x11_get_default_display (void)
 /**
  * clutter_x11_set_display:
  * @xdpy: pointer to a X display connection.
+ *
  * Sets the display connection clutter should use; must be called
  * before clutter_init().
  *
