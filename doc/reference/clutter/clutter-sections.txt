@@ -48,6 +48,22 @@ CLUTTER_UNITS_FROM_MM
 CLUTTER_UNITS_FROM_MMX
 CLUTTER_UNITS_FROM_POINTS
 CLUTTER_UNITS_FROM_POINTSX
+
+<SUBSECTION>
+CLUTTER_MAXUNIT
+CLUTTER_MINUNIT
+ClutterParamSpecUnit
+clutter_param_spec_unit
+CLUTTER_VALUE_HOLDS_UNIT
+clutter_value_set_unit
+clutter_value_get_unit
+<SUBSECTION Private>
+CLUTTER_TYPE_UNIT
+CLUTTER_TYPE_PARAM_UNIT
+CLUTTER_PARAM_SPEC_UNIT
+CLUTTER_IS_PARAM_SPEC_UNIT
+clutter_unit_get_type
+clutter_param_unit_get_type
 </SECTION>
 
 <SECTION>
@@ -131,6 +147,7 @@ clutter_alpha_get_alpha
 CLUTTER_ALPHA_MAX_ALPHA
 ClutterAlphaFunc
 clutter_alpha_set_func
+clutter_alpha_set_closure
 clutter_alpha_set_timeline
 clutter_alpha_get_timeline
 CLUTTER_ALPHA_RAMP_INC
@@ -451,11 +468,13 @@ CLUTTER_TYPE_TEXTURE
 CLUTTER_TEXTURE_CLASS
 CLUTTER_IS_TEXTURE_CLASS
 CLUTTER_TEXTURE_GET_CLASS
+CLUTTER_TYPE_TEXTURE_HANDLE
 
 <SUBSECTION Private>
 ClutterTexturePrivate
 clutter_texture_error_quark
 clutter_texture_get_type
+clutter_texture_handle_get_type
 </SECTION>
 
 <SECTION>
@@ -465,7 +484,10 @@ ClutterStage
 ClutterStageClass
 CLUTTER_STAGE_WIDTH
 CLUTTER_STAGE_HEIGHT
+clutter_stage_new
 clutter_stage_get_default
+
+<SUBSECTION>
 clutter_stage_set_color
 clutter_stage_get_color
 clutter_stage_fullscreen
@@ -473,12 +495,13 @@ clutter_stage_unfullscreen
 clutter_stage_show_cursor
 clutter_stage_hide_cursor
 clutter_stage_get_actor_at_pos
-clutter_stage_snapshot
+clutter_stage_ensure_current
 clutter_stage_event
 clutter_stage_set_key_focus
 clutter_stage_get_key_focus
 clutter_stage_get_resolution
 clutter_stage_get_resolutionx
+clutter_stage_read_pixels
 
 <SUBSECTION>
 ClutterPerspective
@@ -511,6 +534,7 @@ CLUTTER_IS_STAGE_CLASS
 CLUTTER_STAGE_GET_CLASS
 CLUTTER_TYPE_PERSPECTIVE
 CLUTTER_TYPE_FOG
+CLUTTER_STAGE_TYPE
 <SUBSECTION Private>
 ClutterStagePrivate
 clutter_stage_get_type
@@ -559,6 +583,7 @@ clutter_timeline_is_playing
 <SUBSECTION>
 clutter_timeline_add_marker_at_frame
 clutter_timeline_add_marker_at_time
+clutter_timeline_has_marker
 clutter_timeline_list_markers
 clutter_timeline_remove_marker
 clutter_timeline_advance_to_marker
@@ -782,9 +807,16 @@ clutter_backend_get_type
 <FILE>clutter-util</FILE>
 <TITLE>Utilities</TITLE>
 clutter_util_next_p2
+
+<SUBSECTION>
 clutter_timeout_pool_new
 clutter_timeout_pool_add
 clutter_timeout_pool_remove
+
+<SUBSECTION>
+clutter_frame_source_add
+clutter_frame_source_add_full
+
 <SUBSECTION Standard>
 ClutterTimeoutPool
 </SECTION>
@@ -853,12 +885,30 @@ clutter_qmulx
 clutter_qdivx
 clutter_tani
 
+<SUBSECTION>
+CLUTTER_MAXFIXED
+CLUTTER_MINFIXED
+ClutterParamSpecFixed
+clutter_param_spec_fixed
+CLUTTER_VALUE_HOLDS_FIXED
+clutter_value_set_fixed
+clutter_value_get_fixed
+
 <SUBSECTION Private>
 CFX_DIV
 CFX_INT
 CFX_MUL
 CFX_QMUL
 CFX_QDIV
+clutter_double_to_fixed
+clutter_double_to_int
+clutter_double_to_unit
+CLUTTER_TYPE_FIXED
+CLUTTER_TYPE_PARAM_FIXED
+CLUTTER_PARAM_SPEC_FIXED
+CLUTTER_IS_PARAM_SPEC_FIXED
+clutter_fixed_get_type
+clutter_param_fixed_get_type
 </SECTION>
 
 <SECTION>
@@ -910,15 +960,24 @@ clutter_event_new
 clutter_event_copy
 clutter_event_free
 clutter_event_type
+
+<SUBSECTION>
 clutter_event_get_coords
 clutter_event_get_state
 clutter_event_get_time
 clutter_event_get_source
+clutter_event_get_stage
+
+<SUBSECTION>
 clutter_event_get
 clutter_event_peek
 clutter_event_put
 clutter_events_pending
+
+<SUBSECTION>
 clutter_button_event_button
+
+<SUBSECTION>
 clutter_key_event_symbol
 clutter_key_event_code
 clutter_key_event_unicode
@@ -967,10 +1026,6 @@ clutter_threads_add_frame_source
 clutter_threads_add_frame_source_full
 
 <SUBSECTION>
-clutter_frame_source_add
-clutter_frame_source_add_full
-
-<SUBSECTION>
 clutter_get_keyboard_grab
 clutter_get_pointer_grab
 clutter_grab_keyboard
@@ -992,6 +1047,10 @@ clutter_redraw
 <SECTION>
 <FILE>clutter-x11</FILE>
 <TITLE>X11 Specific Support</TITLE>
+clutter_x11_set_display
+clutter_x11_disable_event_retrieval
+clutter_x11_get_stage_from_window
+clutter_x11_handle_event
 clutter_x11_get_default_display
 clutter_x11_get_default_screen
 clutter_x11_get_root_window
@@ -1013,6 +1072,8 @@ clutter_x11_remove_filter
 <TITLE>Win32 Specific Support</TITLE>
 clutter_win32_get_stage_from_window
 clutter_win32_get_stage_window
+clutter_win32_disable_event_retrieval
+clutter_win32_set_stage_foreign
 </SECTION>
 
 <SECTION>
@@ -1241,6 +1302,9 @@ clutter_model_get_type
 <TITLE>ClutterModelIter</TITLE>
 ClutterModelIter
 ClutterModelIterClass
+clutter_model_iter_copy
+
+<SUBSECTION>
 clutter_model_iter_get
 clutter_model_iter_get_valist
 clutter_model_iter_get_value
@@ -1333,9 +1397,9 @@ clutter_shader_set_vertex_source
 clutter_shader_get_vertex_source
 clutter_shader_set_fragment_source
 clutter_shader_get_fragment_source
-clutter_shader_bind
+clutter_shader_compile
 clutter_shader_release
-clutter_shader_is_bound
+clutter_shader_is_compiled
 clutter_shader_set_is_enabled
 clutter_shader_get_is_enabled
 clutter_shader_set_uniform_1f
