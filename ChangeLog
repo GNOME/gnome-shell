@@ -1,3 +1,16 @@
+2008-05-16  Neil Roberts  <neil@o-hand.com>
+
+        Use the Mesa headers instead of depending on GLee for Win32
+	builds.
+    
+        * configure.ac: No longer check for GLee
+    
+        * clutter/cogl/gl/cogl-defines.h.in: Don't bother including GLee.h
+    
+        * build/mingw/mingw-cross-compile.sh: No longer downloads libGLee
+        but downloads the Mesa library instead and installs the headers
+        from that. Fixed the libpng version.
+
 2008-05-16  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/glx/Makefile.am:

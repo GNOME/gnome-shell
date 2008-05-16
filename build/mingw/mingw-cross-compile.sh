@@ -26,13 +26,13 @@ SF_URL="http://surfnet.dl.sourceforge.net/sourceforge";
 OTHER_DEPS=( \
     "http://www.gimp.org/~tml/gimp/win32/libiconv-1.9.1.bin.woe32.zip" \
     "${SF_URL}/libpng/zlib123-dll.zip" \
-    "http://elf-stone.com/downloads/GLee/GLee5_21.zip" \
-    "http://www.libsdl.org/release/SDL-devel-1.2.12-mingw32.tar.gz" );
+    "http://www.libsdl.org/release/SDL-devel-1.2.12-mingw32.tar.gz" \
+    "${SF_URL}/mesa3d/MesaLib-7.0.3.tar.bz2" );
 
 GNUWIN32_URL="${SF_URL}/gnuwin32";
 
 GNUWIN32_DEPS=( \
-    libpng-1.2.24-{bin,lib}.zip \
+    libpng-1.2.8-{bin,lib}.zip \
     jpeg-6b-4-{bin,lib}.zip \
     tiff-3.8.2-1-{bin,lib}.zip );
 
@@ -306,35 +306,12 @@ sed -e 's/^Cflags:.*$/Cflags: -I${includedir}\/pango-1.0 -I${includedir}\/freety
     > "$ROOT_DIR/lib/pkgconfig/pangoft2.pc.tmp";
 mv "$ROOT_DIR/lib/pkgconfig/pangoft2.pc"{.tmp,};
 
-##
-# Build GLee
-##
-
-if y_or_n "Do you want to build and install libGLee?"; then
-    guess_dir GLEE_BUILD_DIR "glee" \
-	"the build directory for libGLee" "Build dir";
-
-    find_compiler;
-
-    do_unzip_d "$GLEE_BUILD_DIR" "$DOWNLOAD_DIR/GLee5_21.zip" GLee.{c,h};
-
-    if ! ( cd "$GLEE_BUILD_DIR" \
-	&& "${CC}" -Wall -O2 -c -o GLee.o GLee.c \
-	&& "${AR}" r libGLee.a GLee.o \
-	&& "${RANLIB}" libGLee.a ); then
-	echo "Failed to build libGLee";
-	exit 1;
-    fi;
-
-    if ! [ -d "$ROOT_DIR/include/GL" ]; then
-	mkdir "$ROOT_DIR/include/GL";
-    fi;
-
-    if ! ( cp -p "$GLEE_BUILD_DIR/libGLee.a" "$ROOT_DIR/lib/" \
-	&& cp -p "$GLEE_BUILD_DIR/GLee.h" "$ROOT_DIR/include/GL" ); then
-	echo "Failed to copy libGLee to root directory";
-	exit 1;
-    fi;
+echo "Extracting Mesa headers...";
+if ! tar -C "$ROOT_DIR" \
+    -jxf "$DOWNLOAD_DIR/MesaLib-7.0.3.tar.bz2" \
+    --strip 1 Mesa-7.0.3/include; then
+    echo "Failed to extract Mesa headers";
+    exit 1;
 fi;
 
 ##

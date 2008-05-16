@@ -264,15 +264,10 @@ case $clutterbackend in
        AC_CHECK_HEADERS([$clutter_gl_header],,
                         [AC_MSG_ERROR([Unable to locate required GL headers])])
 
-       dnl Use GLee under Windows instead of GL
+       dnl Use -lopengl32 under Windows instead of -lGL
        case "$host" in
          *mingw32*)
-           AC_CHECK_LIB(GLee, GLeeInit, HAVE_LIBGLEE=yes, HAVE_LIBGLEE=no, -lopengl32)
-	   if test "x$HAVE_LIBGLEE" = "xno"; then
-	     AC_MSG_ERROR([libGLee not found]);
-	   fi
-
-           SDL_LIBS="$SDL_LIBS -lGLee -lopengl32"
+           SDL_LIBS="$SDL_LIBS -lopengl32"
 	   CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
            ;;
          *)
@@ -383,14 +378,8 @@ case $clutterbackend in
     AC_CHECK_HEADERS([$clutter_gl_header],,
                      [AC_MSG_ERROR([Unable to locate required GL headers])])
 
-    dnl Use GLee under Windows instead of GL
-    AC_CHECK_LIB(GLee, GLeeInit, HAVE_LIBGLEE=yes, HAVE_LIBGLEE=no, -lopengl32)
-    if test "x$HAVE_LIBGLEE" = "xno"; then
-      AC_MSG_ERROR([libGLee not found]);
-    fi
-
     WIN32_CFLAGS="-D_WIN32_WINNT=0x0500"
-    WIN32_LIBS="-lGLee -lopengl32 -lgdi32 -lwinmm"
+    WIN32_LIBS="-lopengl32 -lgdi32 -lwinmm"
     CLUTTER_LT_LDFLAGS="$CLUTTER_LT_LDFLAGS -no-undefined"
     ;;
 
