@@ -168,7 +168,7 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
 
   /* FIXME: we really need to check if gl context is set */
 
-  extensions = glGetString (GL_EXTENSIONS);
+  extensions = (const gchar *) glGetString (GL_EXTENSIONS);
 
   /* this will make sure that the GL context exists and is bound to a
      drawable */

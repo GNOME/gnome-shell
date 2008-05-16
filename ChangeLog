@@ -1,3 +1,13 @@
+2008-05-16  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/win32/clutter-event-win32.c (message_translate): Fix
+	signedness of old_xpos and old_ypos to get rid of compiler
+	warnings.
+
+	* clutter/win32/clutter-backend-win32.c
+	(clutter_backend_win32_get_features): Cast the result of
+	glGetString to a signed char pointer to avoid compiler warnings.
+
 2008-05-15  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/win32/clutter-stage-win32.c: 

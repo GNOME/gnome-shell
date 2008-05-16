@@ -370,7 +370,7 @@ message_translate (ClutterBackend *backend,
 	{
 	  WORD new_xpos = GET_X_LPARAM (msg->lParam);
 	  WORD new_ypos = GET_Y_LPARAM (msg->lParam);
-	  guint old_xpos, old_ypos;
+	  gint old_xpos, old_ypos;
 
 	  clutter_actor_get_position (CLUTTER_ACTOR (stage),
 				      &old_xpos, &old_ypos);
