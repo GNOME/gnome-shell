@@ -233,7 +233,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
   /* we need to chain up to the X11 stage implementation in order to
    * set the window state in case we set it before realizing the stage
    */
-  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->realize (actor);
+  CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->realize (actor);
   return;
 
 fail:

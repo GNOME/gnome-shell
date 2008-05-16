@@ -1,5 +1,11 @@
 2008-05-16  Neil Roberts  <neil@o-hand.com>
 
+	* clutter/eglx/clutter-stage-egl.c (clutter_stage_egl_realize):
+	Fix name of parent class variable which otherwise breaks the
+	build.
+	
+2008-05-16  Neil Roberts  <neil@o-hand.com>
+
         Use the Mesa headers instead of depending on GLee for Win32
 	builds.
     
