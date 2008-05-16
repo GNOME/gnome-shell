@@ -1,4 +1,4 @@
-libclutter_x11_includedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
+libclutter_x11_includedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter/x11
 libclutter_x11_include_HEADERS = clutter-x11.h \
                             clutter-x11-texture-pixmap.h
 

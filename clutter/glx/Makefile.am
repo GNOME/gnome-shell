@@ -1,4 +1,4 @@
-libclutter_glx_includedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
+libclutter_glx_includedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter/glx
 libclutter_glx_include_HEADERS = clutter-glx.h clutter-glx-texture-pixmap.h
 
 INCLUDES = \

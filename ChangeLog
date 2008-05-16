@@ -1,3 +1,11 @@
+2008-05-16  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/glx/Makefile.am:
+	* clutter/x11/Makefile.am:
+	Install glx and x11 specific includes into clutter/glx and
+	clutter/x11 so that header files that include glx/*.h or x11/*.h
+	when installed.
+
 2008-05-16  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/win32/clutter-event-win32.c (message_translate): Fix
@@ -10,7 +18,7 @@
 
 2008-05-15  Neil Roberts  <neil@o-hand.com>
 
-	* clutter/win32/clutter-stage-win32.c: 
+	* clutter/win32/clutter-stage-win32.c:
 	* clutter/win32/clutter-backend-win32.c: Reflect changes to the
 	GLX/X11 backend in revisions 2708-2709 and 2713-2715 which
 	simplify the backend a little.
@@ -56,7 +64,7 @@
 	* clutter/clutter-actor.c:
 	* clutter/clutter-main.c:
 	* clutter/clutter-private.h:
-	Rejid Øyvind's previous commit a little moving more into 
+	Rejid Øyvind's previous commit a little moving more into
 	clutter-main.c and using ClutterContext.
 	Also Refactor clutter_init & clutter_init_with_args to share
 	same core init code.
@@ -66,11 +74,11 @@
 	Made it possible to do picking when the colors stored in the
 	framebuffer are only approximately the correct value.
 
-	* clutter/clutter-actor.c: 
+	* clutter/clutter-actor.c:
 	(init_bits): initialize constants about how many bits are
 	available/will be used for r,g,b components.
 	(_clutter_pix_to_id): now own function, compute an id from a
-	pixel into its own function (used from _clutter_do_pick). 
+	pixel into its own function (used from _clutter_do_pick).
 	(_clutter_id_to_col): now own function, computes the color to use for
 	a given id.
 	(clutter_actor_paint): use clutter_id_to_col.
@@ -256,7 +264,7 @@
 	* HACKING.backends: Update backend writing documentation.
 
 2008-05-12  Robert Bragg  <bob@openedhand.com>
-	
+
 	* clutter/clutter-timeline.c:
 	Adds clutter-timeline documentation RE: r2337, explaining
 	the current timeline semantics.
@@ -296,7 +304,7 @@
 
 	(clutter_script_construct_object): Special case the default
 	stage instead of each ClutterStage.
-	
+
 	(object_info_free): Ditto as above.
 
 	* tests/test-script.json: Test the creation of a non-default
@@ -384,7 +392,7 @@
 2008-05-05  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/cogl/gl/cogl-primitives.c:
-	* clutter/cogl/gles/cogl-primitives.c: 
+	* clutter/cogl/gles/cogl-primitives.c:
 	* clutter/cogl/common/cogl-primitives.c: moved declaration of
 	gegl_rectangle and gegl_rectanglex here to satisfy linking
 	requirements when building the fruity backend.
@@ -450,8 +458,8 @@
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* tests/test-pixmap.c:
-	Fix up texture-pixmap, now works. 
-	Thanks to Neil for spotting we were actually using 
+	Fix up texture-pixmap, now works.
+	Thanks to Neil for spotting we were actually using
 	wrong texture type in fbconfig (COGL change).
 
 2008-04-30  Øyvind Kolås  <pippin@o-hand.com>
@@ -490,7 +498,7 @@
 	common directory.
 
 2008-04-30  Robert Bragg  <bob@openedhand.com>
-	
+
 	* clutter/clutter/x11/clutter-x11-texture-pixmap.c:
 	In _update_area_real with depth=16 we weren't setting up the alpha
 	channel.
@@ -520,7 +528,7 @@
 	* tests/test-pixmap.c:
 	Commit newer x11 texture pixmap stuff (optionally using SHM).
 	Also seemingly still broken overhauled glx-texture-pixmap
-	(code by Robert and myself) 
+	(code by Robert and myself)
 
 	* configure.ac:
 	Minor formatting change.
@@ -530,10 +538,10 @@
 	Removed COGLhandle and changed shader and program functions to be
 	wrapped in reference-counted CoglHandles instead.
 
-	* clutter/cogl/gl/cogl-shader.c: 
-	* clutter/cogl/gl/cogl-shader.h: 
-	* clutter/cogl/gl/cogl-program.c: 
-	* clutter/cogl/gl/cogl-program.h: 
+	* clutter/cogl/gl/cogl-shader.c:
+	* clutter/cogl/gl/cogl-shader.h:
+	* clutter/cogl/gl/cogl-program.c:
+	* clutter/cogl/gl/cogl-program.h:
 	New files to hold the shader and program functions.
 
 	* clutter/cogl/gl/cogl.c: Removed shader and program functions.
@@ -543,12 +551,12 @@
 	reference-counted handles. This reduces the amount of duplicated
 	code.
 
-	* clutter/cogl/gl/cogl-texture.c: 
-	* clutter/cogl/gles/cogl-texture.c: 
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gles/cogl-texture.c:
 	* clutter/cogl/gl/cogl-fbo.c: Converted to use COGL_HANDLE_DEFINE
 	from cogl-handle.h to avoid duplicating some of the common code.
 
-	* clutter/cogl/gles/cogl-defines.h.in: 
+	* clutter/cogl/gles/cogl-defines.h.in:
 	* clutter/cogl/gl/cogl-defines.h.in: Removed COGLhandle
 
 	* clutter/cogl/gl/cogl-context.h: Added handle arrays for programs
@@ -593,18 +601,18 @@
 	* tests/test-cogl-tex-tile.c: updated according to changes in cogl.
 
 2008-04-29  Robert Bragg  <bob@o-hand.com>
-	
+
 	* clutter/x11/clutter-x11-texture-pixmap.c:
 	In clutter_x11_texture_pixmap_set_pixmap, dont assume that the actor
 	size should be changed to match the size of the pixmap.
 
 2008-04-29  Robert Bragg  <bob@o-hand.com>
-	
+
 	* clutter/cogl/gles/cogl-texture.c:
 	Replaces an malloc call with g_malloc.
 
 2008-04-29  Robert Bragg  <bob@o-hand.com>
-	
+
 	* clutter/configure.ac:
 	When looking for a GLES 1 library, also try the name "GLESv1_CM".
 
@@ -652,7 +660,7 @@
 	(clutter_actor_set_custom_property): Use the internal, unit based
 	rotation setter when parsing the rotation from a ClutterScript
 	file.
-	
+
 	(clutter_geometry_copy),
 	(clutter_vertex_copy),
 	(clutter_actor_box_copy): Use the more efficient g_slice_dup().
@@ -839,7 +847,7 @@
 
 	Applied patch from bug #881
 
-	* clutter/clutter-frame-source.h: 
+	* clutter/clutter-frame-source.h:
 	* clutter/clutter-frame-source.c:
 	New files that contain a replacement for g_timeout that try to
 	cope with system delays.
@@ -1025,7 +1033,7 @@
 	Upgraded the Win32 backend to work with the multi-stage
 	subclassing code.
 
-	* clutter/win32/clutter-stage-win32.h: 
+	* clutter/win32/clutter-stage-win32.h:
 	* clutter/win32/clutter-stage-win32.c: Now inherits from
 	ClutterGroup and implements ClutterStageWindow instead of
 	inheriting directly from ClutterStage.
@@ -1209,7 +1217,7 @@
 	* clutter/clutter-actor.c:
 	Remove uneeded stage private member.
 	Add show-on-set-parent prop and make so by default Actors are
-	now automatically shown when reparented (#791)	    
+	now automatically shown when reparented (#791)
 
 	* clutter/eglx/clutter-backend-egl.c:
 	* clutter/cogl/gles/cogl.c:
@@ -1252,11 +1260,11 @@
 	* clutter/glx/clutter-stage-glx.c:
 	Allow NULL to be passed to _clutter_backend_ensure_context
 	which essentially clears GL context. This is hooked into stage
-	unrealisation.  Isn't yet quite bulletproof.  
+	unrealisation.  Isn't yet quite bulletproof.
 	Fixes issues with gtk-embed crasher (thanks to Neil).
 
 2008-04-1  Robert Bragg  <bob@o-hand.com>
-	
+
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	In clutter_glx_texture_pixmap_dispose; trap X errors around
 	glXDestroyGLXPixmap so we can't die due to BadDrawable errors.
@@ -1271,7 +1279,7 @@
 
 	* clutter/clutter-stage.c:
 	Automatically remove stage from stage manager on finalisation.
-	Cleans up warnings when a stage is destroyed. 
+	Cleans up warnings when a stage is destroyed.
 
 	* clutter/clutter-backend.h:
 	* clutter/glx/clutter-backend-glx.c:
@@ -1280,7 +1288,7 @@
 	* clutter/glx/clutter-stage-glx.c:
 	* configure.ac:
 	* clutter/clutter-version.h.in:
-	Add a general CLUTTER_STAGE_TYPE define, should be useful for 
+	Add a general CLUTTER_STAGE_TYPE define, should be useful for
 	evntual stage subclassing and creating with g_object_new()
 
 2008-03-30  Neil Roberts  <neil@o-hand.com>
@@ -1298,11 +1306,11 @@
 
 2008-03-30  Neil Roberts  <neil@o-hand.com>
 
-	* clutter/win32/clutter-win32.h: 
-	* clutter/win32/clutter-stage-win32.h: 
-	* clutter/win32/clutter-stage-win32.c: 
-	* clutter/win32/clutter-event-win32.c: 
-	* clutter/win32/clutter-backend-win32.h: 
+	* clutter/win32/clutter-win32.h:
+	* clutter/win32/clutter-stage-win32.h:
+	* clutter/win32/clutter-stage-win32.c:
+	* clutter/win32/clutter-event-win32.c:
+	* clutter/win32/clutter-backend-win32.h:
 	* clutter/win32/clutter-backend-win32.c:
 	Upgraded for multi-stage support.
 
@@ -1369,7 +1377,7 @@
 	Removed the pointless parameter in the call to check_msg_pending.
 	(check_msg_pending): Fixed to use PeekMessageW instead of
 	PeekMessage.
-	
+
 2008-03-25  Neil Roberts  <neil@o-hand.com>
 
 	Added a native Win32 WGL backend.
@@ -1382,11 +1390,11 @@
 	* clutter/Makefile.am (DIST_SUBDIRS): Added the win32 directory.
 
 	* clutter/win32/clutter-win32.pc.in:
-	* clutter/win32/clutter-win32.h: 
-	* clutter/win32/clutter-stage-win32.h: 
-	* clutter/win32/clutter-stage-win32.c: 
-	* clutter/win32/clutter-event-win32.c: 
-	* clutter/win32/clutter-backend-win32.h: 
+	* clutter/win32/clutter-win32.h:
+	* clutter/win32/clutter-stage-win32.h:
+	* clutter/win32/clutter-stage-win32.c:
+	* clutter/win32/clutter-event-win32.c:
+	* clutter/win32/clutter-backend-win32.h:
 	* clutter/win32/Makefile.am:
 	* clutter/win32/clutter-backend-win32.c: New files.
 
@@ -1497,9 +1505,9 @@
 
 	* clutter/clutter-timeline.c:
 	Timeline changes to fix the issues identified in bugzilla #439
-	
-	Notably, this includes some tweaks to timeline semantics. 
-	So e.g. for a   
+
+	Notably, this includes some tweaks to timeline semantics.
+	So e.g. for a
 
 	10 frame timeline here are some points about the new timeline code:
 
@@ -1577,7 +1585,7 @@
 	the pixel based and gravity based API using the units based
 	one. Emit the ::notify signal for the :anchor-x and :anchor-y
 	properties.
-	
+
 	(parse_units),
 	(clutter_actor_parse_custom_node): Parse the :anchor-x and
 	:anchor-y properties using the custom units format (mm, px,
@@ -1619,7 +1627,7 @@
 	actor->id mapping, (release_actor_id): function to mark an existing id
 	as available for reuse.
 	* clutter/clutter-main.c: (clutter_context_free): added utility
-	function for cleaning up the context, 
+	function for cleaning up the context,
 	(clutter_get_actor_by_gid): use the GArray for looking up actors.
 
 2008-02-26  Emmanuele Bassi  <ebassi@openedhand.com>
