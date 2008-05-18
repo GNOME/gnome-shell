@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-01 17:56+0700\n"
-"PO-Revision-Date: 2008-02-01 11:51+0700\n"
+"PO-Revision-Date: 2008-05-18 11:11+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -365,17 +365,17 @@ msgstr "ไม่สามารถเปิดกล่องโต้ตอบ
 #: ../src/core/util.c:98
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "เปิดแฟ้มบันทึกการดีบั๊กไม่สำเร็จ: %s\n"
+msgstr "เปิดแฟ้มปูมการดีบั๊กไม่สำเร็จ: %s\n"
 
 #: ../src/core/util.c:108
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "fdopen() แฟ้มบันทึกปฏิบัติการ %s ไม่สำเร็จ: %s\n"
+msgstr "fdopen() แฟ้มปูม %s ไม่สำเร็จ: %s\n"
 
 #: ../src/core/util.c:114
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "เปิดแฟ้มบันทึกปฏิบัติการ %s เรียบร้อยแล้ว\n"
+msgstr "เปิดแฟ้มปูม %s เรียบร้อยแล้ว\n"
 
 #: ../src/core/util.c:133 ../src/tools/metacity-message.c:176
 #, c-format
