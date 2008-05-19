@@ -24,6 +24,8 @@
 #ifndef META_ERRORS_H
 #define META_ERRORS_H
 
+#include <X11/Xlib.h>
+
 #include "util.h"
 #include "display.h"
 

@@ -25,8 +25,13 @@
 #define META_XPROPS_H
 
 #include <config.h>
+
 #include "display.h"
 #include <X11/Xutil.h>
+
+#ifdef HAVE_XSYNC
+#include <X11/extensions/sync.h>
+#endif
 
 /* Copied from Lesstif by way of GTK. Rudimentary docs can be
  * found in some Motif reference guides online.

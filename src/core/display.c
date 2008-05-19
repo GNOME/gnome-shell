@@ -31,14 +31,14 @@
  */
 
 #include <config.h>
-#include "display.h"
+#include "display-private.h"
 #include "util.h"
 #include "main.h"
-#include "screen.h"
-#include "window.h"
+#include "screen-private.h"
+#include "window-private.h"
 #include "window-props.h"
 #include "group-props.h"
-#include "frame.h"
+#include "frame-private.h"
 #include "errors.h"
 #include "keybindings.h"
 #include "prefs.h"
@@ -5114,4 +5114,55 @@ meta_display_remove_autoraise_callback (MetaDisplay *display)
       display->autoraise_timeout_id = 0;
       display->autoraise_window = NULL;
     }
+}
+
+void
+meta_display_get_compositor_version (MetaDisplay *display,
+                                     int         *major,
+                                     int         *minor)
+{
+  *major = display->composite_major_version;
+  *minor = display->composite_minor_version;
+}
+
+Display *
+meta_display_get_xdisplay (MetaDisplay *display)
+{
+  return display->xdisplay;
+}
+
+MetaCompositor *
+meta_display_get_compositor (MetaDisplay *display)
+{
+  return display->compositor;
+}
+
+GSList *
+meta_display_get_screens (MetaDisplay *display)
+{
+  return display->screens;
+}
+
+gboolean
+meta_display_has_shape (MetaDisplay *display)
+{
+  return META_DISPLAY_HAS_SHAPE (display);
+}
+
+MetaWindow *
+meta_display_get_focus_window (MetaDisplay *display)
+{
+  return display->focus_window;
+}
+
+int 
+meta_display_get_damage_event_base (MetaDisplay *display)
+{
+  return display->damage_event_base;
+}
+
+int
+meta_display_get_shape_event_base (MetaDisplay *display)
+{
+  return display->shape_event_base;
 }

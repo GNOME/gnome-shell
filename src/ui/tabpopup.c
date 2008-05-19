@@ -31,7 +31,7 @@
 /* FIXME these two includes are 100% broken ...
  */
 #include "../core/workspace.h"
-#include "../core/frame.h"
+#include "../core/frame-private.h"
 #include "draw-workspace.h"
 #include <gtk/gtk.h>
 #include <math.h>

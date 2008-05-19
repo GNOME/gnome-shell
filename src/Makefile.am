@@ -12,14 +12,17 @@ metacity_SOURCES= 				\
 	core/bell.h				\
 	core/boxes.c				\
 	include/boxes.h				\
-	core/compositor.c			\
-	core/compositor.h			\
+	compositor/compositor.c			\
+	compositor/compositor-private.h		\
+	compositor/compositor-xrender.c		\
+	include/compositor.h			\
 	core/constraints.c			\
 	core/constraints.h			\
 	core/core.c				\
 	core/delete.c				\
 	core/display.c				\
-	core/display.h				\
+	core/display-private.h			\
+	include/display.h			\
 	ui/draw-workspace.c			\
 	ui/draw-workspace.h			\
 	core/edge-resistance.c			\
@@ -27,11 +30,12 @@ metacity_SOURCES= 				\
 	core/effects.c				\
 	core/effects.h				\
 	core/errors.c				\
-	core/errors.h				\
+	include/errors.h			\
 	core/eventqueue.c			\
 	core/eventqueue.h			\
 	core/frame.c				\
-	core/frame.h				\
+	core/frame-private.h			\
+	include/frame.h				\
 	ui/gradient.c				\
 	ui/gradient.h				\
 	core/group-private.h			\
@@ -51,7 +55,8 @@ metacity_SOURCES= 				\
 	core/prefs.c				\
 	include/prefs.h				\
 	core/screen.c				\
-	core/screen.h				\
+	core/screen-private.h			\
+	include/screen.h			\
 	core/session.c				\
 	core/session.h				\
 	core/stack.c				\
@@ -61,11 +66,12 @@ metacity_SOURCES= 				\
 	core/window-props.c			\
 	core/window-props.h			\
 	core/window.c				\
-	core/window.h				\
+	core/window-private.h			\
+	include/window.h			\
 	core/workspace.c			\
 	core/workspace.h			\
 	core/xprops.c				\
-	core/xprops.h				\
+	include/xprops.h			\
 	include/common.h			\
 	include/core.h				\
 	include/ui.h				\

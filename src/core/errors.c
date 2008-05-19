@@ -24,6 +24,7 @@
 
 #include <config.h>
 #include "errors.h"
+#include "display-private.h"
 #include <errno.h>
 #include <stdlib.h>
 #include <gdk/gdk.h>

@@ -24,7 +24,7 @@
  */
 
 #include <config.h>
-#include "frame.h"
+#include "frame-private.h"
 #include "bell.h"
 #include "errors.h"
 #include "keybindings.h"
@@ -413,3 +413,8 @@ meta_frame_set_screen_cursor (MetaFrame	*frame,
     }
 }
 
+Window
+meta_frame_get_xwindow (MetaFrame *frame)
+{
+  return frame->xwindow;
+}

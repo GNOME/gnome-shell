@@ -25,7 +25,7 @@
 #ifndef META_WORKSPACE_H
 #define META_WORKSPACE_H
 
-#include "window.h"
+#include "window-private.h"
 
 /* Negative to avoid conflicting with real workspace
  * numbers

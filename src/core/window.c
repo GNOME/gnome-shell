@@ -25,10 +25,10 @@
  */
 
 #include <config.h>
-#include "window.h"
+#include "window-private.h"
 #include "edge-resistance.h"
 #include "util.h"
-#include "frame.h"
+#include "frame-private.h"
 #include "errors.h"
 #include "workspace.h"
 #include "stack.h"
@@ -8131,4 +8131,46 @@ meta_window_unset_demands_attention (MetaWindow *window)
   
   window->wm_state_demands_attention = FALSE;
   set_net_wm_state (window);
+}
+
+MetaFrame *
+meta_window_get_frame (MetaWindow *window)
+{
+  return window->frame;
+}
+
+gboolean
+meta_window_has_focus (MetaWindow *window)
+{
+  return window->has_focus;
+}
+
+gboolean
+meta_window_is_shaded (MetaWindow *window)
+{
+  return window->shaded;
+}
+
+MetaRectangle *
+meta_window_get_rect (MetaWindow *window)
+{
+  return &window->rect;
+}
+
+MetaScreen *
+meta_window_get_screen (MetaWindow *window)
+{
+  return window->screen;
+}
+
+MetaDisplay *
+meta_window_get_display (MetaWindow *window)
+{
+  return window->display;
+}
+
+Window
+meta_window_get_xwindow (MetaWindow *window)
+{
+  return window->xwindow;
 }

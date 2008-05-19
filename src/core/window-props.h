@@ -24,7 +24,7 @@
 #ifndef META_WINDOW_PROPS_H
 #define META_WINDOW_PROPS_H
 
-#include "window.h"
+#include "window-private.h"
 
 void meta_window_reload_property   (MetaWindow *window,
                                     Atom        property);

@@ -21,10 +21,11 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_FRAME_H
-#define META_FRAME_H
+#ifndef META_FRAME_PRIVATE_H
+#define META_FRAME_PRIVATE_H
 
-#include "window.h"
+#include "frame.h"
+#include "window-private.h"
 
 typedef struct _MetaFrameGeometry MetaFrameGeometry;
 

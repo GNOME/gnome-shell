@@ -25,7 +25,7 @@
 #ifndef META_STACK_H
 #define META_STACK_H
 
-#include "screen.h"
+#include "screen-private.h"
 
 /* Layers vs. stack positions
  * ==========================

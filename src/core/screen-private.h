@@ -23,10 +23,11 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_SCREEN_H
-#define META_SCREEN_H
+#ifndef META_SCREEN_PRIVATE_H
+#define META_SCREEN_PRIVATE_H
 
-#include "display.h"
+#include "display-private.h"
+#include "screen.h"
 #include <X11/Xutil.h>
 #include "ui.h"
 
@@ -132,7 +133,6 @@ MetaScreen*   meta_screen_new                 (MetaDisplay                *displ
 void          meta_screen_free                (MetaScreen                 *screen,
                                                guint32                     timestamp);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
-MetaScreen*   meta_screen_for_x_screen        (Screen                     *xscreen);
 void          meta_screen_foreach_window      (MetaScreen                 *screen,
                                                MetaScreenWindowFunc        func,
                                                gpointer                    data);
@@ -214,10 +214,5 @@ void     meta_screen_update_showing_desktop_hint          (MetaScreen *screen);
 gboolean meta_screen_apply_startup_properties (MetaScreen *screen,
                                                MetaWindow *window);
 void	 meta_screen_composite_all_windows (MetaScreen *screen);
-
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-void meta_screen_set_cm_selection (MetaScreen *screen);
-void meta_screen_unset_cm_selection (MetaScreen *screen);
-#endif
 
 #endif

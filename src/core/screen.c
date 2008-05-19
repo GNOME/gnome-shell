@@ -27,11 +27,11 @@
  */
 
 #include <config.h>
-#include "screen.h"
+#include "screen-private.h"
 #include "util.h"
 #include "errors.h"
-#include "window.h"
-#include "frame.h"
+#include "window-private.h"
+#include "frame-private.h"
 #include "prefs.h"
 #include "workspace.h"
 #include "keybindings.h"
@@ -2733,6 +2733,46 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
 #endif /* HAVE_STARTUP_NOTIFICATION */
 
   return FALSE;
+}
+
+int
+meta_screen_get_screen_number (MetaScreen *screen)
+{
+  return screen->number;
+}
+
+MetaDisplay *
+meta_screen_get_display (MetaScreen *screen)
+{
+  return screen->display;
+}
+
+Window
+meta_screen_get_xroot (MetaScreen *screen)
+{
+  return screen->xroot;
+}
+
+void 
+meta_screen_get_size (MetaScreen *screen,
+                      int        *width,
+                      int        *height)
+{
+  *width = screen->rect.width;
+  *height = screen->rect.height;
+}
+
+gpointer
+meta_screen_get_compositor_data (MetaScreen *screen)
+{
+  return screen->compositor_data;
+}
+
+void
+meta_screen_set_compositor_data (MetaScreen *screen,
+                                 gpointer    compositor)
+{
+  screen->compositor_data = compositor;
 }
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS

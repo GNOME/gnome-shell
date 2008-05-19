@@ -24,11 +24,12 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_WINDOW_H
-#define META_WINDOW_H
+#ifndef META_WINDOW_PRIVATE_H
+#define META_WINDOW_PRIVATE_H
 
 #include <config.h>
-#include "screen.h"
+#include "window.h"
+#include "screen-private.h"
 #include "util.h"
 #include "stack.h"
 #include "iconcache.h"

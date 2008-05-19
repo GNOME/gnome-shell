@@ -27,7 +27,7 @@
 
 #include <config.h>
 #include "util.h"
-#include "window.h"
+#include "window-private.h"
 #include "errors.h"
 #include "workspace.h"
 

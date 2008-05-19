@@ -24,7 +24,7 @@
 #ifndef META_KEYBINDINGS_H
 #define META_KEYBINDINGS_H
 
-#include "display.h"
+#include "display-private.h"
 #include "window.h"
 
 void     meta_display_init_keys             (MetaDisplay *display);

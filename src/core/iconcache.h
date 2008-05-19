@@ -24,7 +24,7 @@
 #ifndef META_ICON_CACHE_H
 #define META_ICON_CACHE_H
 
-#include "screen.h"
+#include "screen-private.h"
 
 typedef struct _MetaIconCache MetaIconCache;
 

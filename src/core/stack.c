@@ -26,9 +26,9 @@
 
 #include <config.h>
 #include "stack.h"
-#include "window.h"
+#include "window-private.h"
 #include "errors.h"
-#include "frame.h"
+#include "frame-private.h"
 #include "group.h"
 #include "prefs.h"
 #include "workspace.h"

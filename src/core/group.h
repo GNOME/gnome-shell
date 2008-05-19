@@ -24,7 +24,7 @@
 #ifndef META_GROUP_H
 #define META_GROUP_H
 
-#include "window.h"
+#include "window-private.h"
 
 /* note, can return NULL */
 MetaGroup* meta_window_get_group       (MetaWindow *window);

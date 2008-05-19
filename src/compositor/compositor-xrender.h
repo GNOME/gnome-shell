@@ -1,9 +1,9 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity window placement */
-
 /* 
- * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2007 Iain Holmes
+ * Based on xcompmgr - (c) 2003 Keith Packard
+ *          xfwm4    - (c) 2005-2007 Olivier Fourdan
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,17 +21,11 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_PLACE_H
-#define META_PLACE_H
+#ifndef META_COMPOSITOR_XRENDER_H_
+#define META_COMPOSITOR_XRENDER_H_
 
-#include "window-private.h"
-#include "frame-private.h"
+#include "types.h"
 
-void meta_window_place (MetaWindow *window,
-                        MetaFrameGeometry *fgeom,
-                        int         x,
-                        int         y,
-                        int        *new_x,
-                        int        *new_y);
+MetaCompositor *meta_compositor_xrender_new (MetaDisplay *display);
 
 #endif

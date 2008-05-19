@@ -25,7 +25,7 @@
 
 #include <config.h>
 #include "core.h"
-#include "frame.h"
+#include "frame-private.h"
 #include "workspace.h"
 #include "prefs.h"
 

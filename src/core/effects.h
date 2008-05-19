@@ -25,7 +25,7 @@
 #define META_EFFECTS_H
 
 #include "util.h"
-#include "screen.h"
+#include "screen-private.h"
 
 typedef struct MetaEffect MetaEffect;
 typedef struct MetaEffectPriv MetaEffectPriv;

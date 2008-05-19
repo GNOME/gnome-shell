@@ -29,7 +29,7 @@
 #include "window-props.h"
 #include "errors.h"
 #include "xprops.h"
-#include "frame.h"
+#include "frame-private.h"
 #include "group.h"
 #include <X11/Xatom.h>
 #include <unistd.h>

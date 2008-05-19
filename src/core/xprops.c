@@ -89,7 +89,7 @@ from The Open Group.
 #include "metacity-Xatomtype.h"
 #include <X11/Xatom.h>
 #include <string.h>
-#include "window.h"
+#include "window-private.h"
 
 typedef struct
 {

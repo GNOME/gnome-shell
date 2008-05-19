@@ -33,9 +33,9 @@
 
 #include <config.h>
 #include "effects.h"
-#include "display.h"
+#include "display-private.h"
 #include "ui.h"
-#include "window.h"
+#include "window-private.h"
 
 #ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>

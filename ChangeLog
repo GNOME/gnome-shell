@@ -1,3 +1,51 @@
+2008-05-19  Iain Holmes  <iain@gnome.org>
+
+	* src/include/frame.h
+	* src/include/display.h
+	* src/include/xprops.h
+	* src/include/compositor.h
+	* src/include/types.h
+	* src/include/window.h
+	* src/include/errors.h
+	* src/include/screen.h: New basic public API for compositor.
+
+	* src/compositor/*: Separate the compositor out into its own separate
+	directory and set it up for backends. Initial XRender backend.
+
+	* src/core/compositor.[ch]: Remove
+
+	* src/core/frame.h
+	* src/core/screen.h
+	* src/core/display.h
+	* src/core/window.h: Rename to -private.h so as not to clash with the
+	new files in include
+
+	* src/core/delete.c
+	* src/core/workspace.h
+	* src/core/stack.[ch]
+	* src/core/keybindings.[ch]
+	* src/core/errors.c
+	* src/core/effects.[ch]
+	* src/core/core.c
+	* src/core/group.h
+	* src/core/edge-resistance.[ch]
+	* src/core/window-props.[ch]
+	* src/core/constraints.h
+	* src/core/bell.[ch]
+	* src/core/iconcache.h
+	* src/core/session.[ch]
+	* src/core/main.c
+	* src/core/place.h
+	* src/core/xprops.c
+	* src/ui/tabpopup.c: Use the new -private headers
+	
+	* src/core/display.c
+	* src/core/frame.c
+	* src/core/window.c
+	* src/core/screen.c: Add the API functions required by the compositor
+
+	* src/Makefile.am: Relocate the new files
+
 2008-05-13  Robert Escriva  <me@robescriva.com>
 
         * src/ui/theme.h (struct): remove color_set flag

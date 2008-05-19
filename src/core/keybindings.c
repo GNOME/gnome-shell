@@ -32,7 +32,7 @@
 #include "errors.h"
 #include "edge-resistance.h"
 #include "ui.h"
-#include "frame.h"
+#include "frame-private.h"
 #include "place.h"
 #include "prefs.h"
 #include "effects.h"

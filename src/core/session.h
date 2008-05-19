@@ -24,7 +24,7 @@
 #ifndef META_SESSION_H
 #define META_SESSION_H
 
-#include "window.h"
+#include "window-private.h"
 
 typedef struct _MetaWindowSessionInfo MetaWindowSessionInfo;
 

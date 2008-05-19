@@ -24,8 +24,8 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_DISPLAY_H
-#define META_DISPLAY_H
+#ifndef META_DISPLAY_PRIVATE_H
+#define META_DISPLAY_PRIVATE_H
 
 #ifndef PACKAGE
 #error "config.h not included"
@@ -36,6 +36,7 @@
 #include "eventqueue.h"
 #include "common.h"
 #include "boxes.h"
+#include "display.h"
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 #include <libsn/sn.h>
@@ -45,16 +46,9 @@
 #include <X11/extensions/sync.h>
 #endif
 
-#define meta_XFree(p) do { if ((p)) XFree ((p)); } while (0)
-
-typedef struct _MetaCompositor  MetaCompositor;
-typedef struct _MetaDisplay    MetaDisplay;
-typedef struct _MetaFrame      MetaFrame;
 typedef struct _MetaKeyBinding MetaKeyBinding;
-typedef struct _MetaScreen     MetaScreen;
 typedef struct _MetaStack      MetaStack;
 typedef struct _MetaUISlave    MetaUISlave;
-typedef struct _MetaWindow     MetaWindow;
 typedef struct _MetaWorkspace  MetaWorkspace;
 
 typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
@@ -330,8 +324,6 @@ struct _MetaDisplay
 gboolean      meta_display_open                (void);
 void          meta_display_close               (MetaDisplay *display,
                                                 guint32      timestamp);
-MetaScreen*   meta_display_screen_for_root     (MetaDisplay *display,
-                                                Window       xroot);
 MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
                                                 Screen      *screen);
 MetaScreen*   meta_display_screen_for_xwindow  (MetaDisplay *display,

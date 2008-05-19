@@ -52,7 +52,7 @@
 
 #include <config.h>
 #include "bell.h"
-#include "screen.h"
+#include "screen-private.h"
 #include "prefs.h"
 
 /**

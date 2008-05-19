@@ -46,7 +46,7 @@
 #include <config.h>
 #include "main.h"
 #include "util.h"
-#include "display.h"
+#include "display-private.h"
 #include "errors.h"
 #include "ui.h"
 #include "session.h"
