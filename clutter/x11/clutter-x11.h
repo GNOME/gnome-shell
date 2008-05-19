@@ -42,6 +42,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 #include <clutter/clutter-stage.h>
+#include <clutter/x11/clutter-x11-texture-pixmap.h>
 
 G_BEGIN_DECLS
 

@@ -27,7 +27,7 @@
  * SECTION:clutter-glx
  * @short_description: GLX specific API
  *
- * The GLX backend for Clutter provides some specific API for GLX 
+ * The GLX backend for Clutter provides some specific API for GLX
  * related calls.
  *
  * The ClutterGLX API is available since Clutter 0.4
@@ -41,6 +41,7 @@
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 #include <clutter/clutter-stage.h>
+#include <clutter/glx/clutter-glx-texture-pixmap.h>
 
 G_BEGIN_DECLS
 
