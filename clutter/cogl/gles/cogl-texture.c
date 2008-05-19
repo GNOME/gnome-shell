@@ -297,6 +297,7 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
          for direct copy to framebuffer */
       cogl_paint_init (&cback);
       cogl_color (&cwhite);
+      cogl_blend_func (CGL_ONE, CGL_ZERO);
       
       /* Draw the texture image */
       cogl_texture_rectangle (handle,
@@ -349,6 +350,7 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
 		 for direct copy to framebuffer */
 	      cogl_paint_init (&cback);
 	      cogl_color (&cwhite);
+              cogl_blend_func (CGL_ONE, CGL_ZERO);
 	      
 	      /* Draw a portion of texture */
 	      cogl_texture_rectangle (handle,

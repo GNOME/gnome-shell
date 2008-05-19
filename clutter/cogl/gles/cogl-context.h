@@ -44,6 +44,8 @@ typedef struct
   /* Enable cache */
   gulong               enable_flags;
   guint8               color_alpha;
+  COGLenum             blend_src_factor;
+  COGLenum             blend_dst_factor;
   
   /* Primitives */
   CoglFixedVec2        path_start;

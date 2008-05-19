@@ -1,3 +1,24 @@
+2008-05-19  Ivan Leben  <ivan@o-hand.com>
+
+	* clutter/cogl/gl(es)/cogl.c: New internal function
+	cogl_blend_func caches blending setup much like cogl_enable
+	does with the enable flags. This separates blending factors
+	setup from the enable/disable operation in preparation of
+	the texture image retrieval fix for alpha channel on GLES.
+	(cogl_enable:) Does not modify blending factors anymore.
+
+	* clutter/cogl/gl(es)/cogl-context.h: CoglContext holds two
+	new variables to cache blending src and dst factors.
+
+	* clutter/cogl/gl(es)/cogl-context.c:
+	(cogl_create_context:) Initialize blending factors.
+
+	* clutter/cogl/gles/cogl-texture.c:
+	(cogl_texture_download_from_gl:) Set blending factors to
+	CGL_ONE, CGL_ZERO which fixes the slighlty improper behavior
+	where source colour was actually multiplied with its alpha
+	value in the result (not noticable on current tests).
+
 2008-05-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/eglx/Makefile.am: Fix the INCLUDE directives to

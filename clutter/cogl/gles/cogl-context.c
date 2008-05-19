@@ -65,9 +65,13 @@ cogl_create_context ()
   _context->fbo_handles = NULL;
   _context->draw_buffer = COGL_WINDOW_BUFFER;
   
+  _context->blend_src_factor = CGL_SRC_ALPHA;
+  _context->blend_dst_factor = CGL_ONE_MINUS_SRC_ALPHA;
+  
   /* Init OpenGL state */
-  glTexEnvx (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-  glColorMask (TRUE, TRUE, TRUE, FALSE);
+  GE( glTexEnvx (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) );
+  GE( glColorMask (TRUE, TRUE, TRUE, FALSE) );
+  GE( glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
   cogl_enable (0);
   
   return TRUE;

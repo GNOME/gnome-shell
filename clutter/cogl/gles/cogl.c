@@ -214,12 +214,9 @@ cogl_enable (gulong flags)
   */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  if (cogl_toggle_flag (ctx, flags,
-			COGL_ENABLE_BLEND,
-			GL_BLEND))
-    {
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    }
+  cogl_toggle_flag (ctx, flags,
+                    COGL_ENABLE_BLEND,
+                    GL_BLEND);
   
   cogl_toggle_flag (ctx, flags,
 		    COGL_ENABLE_TEXTURE_2D,
@@ -244,6 +241,23 @@ cogl_get_enable ()
   _COGL_GET_CONTEXT (ctx, 0);
   
   return ctx->enable_flags;
+}
+
+void
+cogl_blend_func (COGLenum src_factor, COGLenum dst_factor)
+{
+  /* This function caches the blending setup in the
+   * hope of lessening GL traffic.
+   */
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
+  if (ctx->blend_src_factor != src_factor ||
+      ctx->blend_dst_factor != dst_factor)
+    {
+      glBlendFunc (src_factor, dst_factor);
+      ctx->blend_src_factor = src_factor;
+      ctx->blend_dst_factor = dst_factor;
+    }
 }
 
 void
