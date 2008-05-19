@@ -306,12 +306,9 @@ cogl_enable (gulong flags)
   */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  if (cogl_toggle_flag (ctx, flags,
-			COGL_ENABLE_BLEND,
-			GL_BLEND))
-    {
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    }
+  cogl_toggle_flag (ctx, flags,
+                    COGL_ENABLE_BLEND,
+                    GL_BLEND);
   
   cogl_toggle_flag (ctx, flags,
 		    COGL_ENABLE_TEXTURE_2D,
@@ -340,59 +337,23 @@ cogl_get_enable ()
   return ctx->enable_flags;
 }
 
-/*
 void
-cogl_enable (gulong flags)
+cogl_blend_func (COGLenum src_factor, COGLenum dst_factor)
 {
+  /* This function caches the blending setup in the
+   * hope of lessening GL traffic.
+   */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  if (flags & COGL_ENABLE_BLEND)
+  if (ctx->blend_src_factor != src_factor ||
+      ctx->blend_dst_factor != dst_factor)
     {
-      if (!(ctx->enable_flags & COGL_ENABLE_BLEND))
-	{
-	  glEnable (GL_BLEND);
-	  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-          ctx->enable_flags |= COGL_ENABLE_BLEND;
-        }
+      glBlendFunc (src_factor, dst_factor);
+      ctx->blend_src_factor = src_factor;
+      ctx->blend_dst_factor = dst_factor;
     }
-  else if (ctx->enable_flags & COGL_ENABLE_BLEND)
-    {
-      glDisable (GL_BLEND);
-      ctx->enable_flags &= ~COGL_ENABLE_BLEND;
-    }
-
-  if (flags & COGL_ENABLE_TEXTURE_2D)
-    {
-      if (!(ctx->enable_flags & COGL_ENABLE_TEXTURE_2D))
-        {
-	  glEnable (GL_TEXTURE_2D);
-          ctx->enable_flags |= COGL_ENABLE_TEXTURE_2D;
-        }
-    }
-  else if (ctx->enable_flags & COGL_ENABLE_TEXTURE_2D)
-    {
-      glDisable (GL_TEXTURE_2D);
-       ctx->enable_flags &= ~COGL_ENABLE_TEXTURE_2D;
-    }
-  
-#ifdef GL_TEXTURE_RECTANGLE_ARB
-  if (flags & COGL_ENABLE_TEXTURE_RECT)
-    {
-      if (!(ctx->enable_flags & COGL_ENABLE_TEXTURE_RECT))
-        {
-	  glEnable (GL_TEXTURE_RECTANGLE_ARB);
-          ctx->enable_flags |= COGL_ENABLE_TEXTURE_RECT;
-        }
-    }
-  else if (ctx->enable_flags & COGL_ENABLE_TEXTURE_RECT)
-    {
-      glDisable (GL_TEXTURE_RECTANGLE_ARB);
-      ctx->enable_flags &= ~COGL_ENABLE_TEXTURE_RECT;
-    }
-#endif
 }
-*/
+
 void
 cogl_enable_depth_test (gboolean setting)
 {
