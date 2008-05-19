@@ -255,6 +255,10 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   ClutterFixed       tx1, ty1;
   ClutterFixed       tx2, ty2;
   int                bw,  bh;
+  COGLenum           old_src_factor;
+  COGLenum           old_dst_factor;
+  
+  _COGL_GET_CONTEXT (ctx, FALSE);
   
   handle = _cogl_texture_handle_from_pointer (tex);
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
@@ -286,6 +290,10 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   /* Draw to all channels */
   cogl_draw_buffer (COGL_WINDOW_BUFFER | COGL_MASK_BUFFER, 0);
   
+  /* Store old blending factors and setup direct copy operation */
+  old_src_factor = ctx->blend_src_factor;
+  old_dst_factor = ctx->blend_dst_factor;
+  cogl_blend_func (CGL_ONE, CGL_ZERO);
   
   /* If whole image fits into the viewport and target buffer
      has got no special rowstride, we can do it in one pass */
@@ -297,7 +305,6 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
          for direct copy to framebuffer */
       cogl_paint_init (&cback);
       cogl_color (&cwhite);
-      cogl_blend_func (CGL_ONE, CGL_ZERO);
       
       /* Draw the texture image */
       cogl_texture_rectangle (handle,
@@ -350,7 +357,6 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
 		 for direct copy to framebuffer */
 	      cogl_paint_init (&cback);
 	      cogl_color (&cwhite);
-              cogl_blend_func (CGL_ONE, CGL_ZERO);
 	      
 	      /* Draw a portion of texture */
 	      cogl_texture_rectangle (handle,
@@ -397,6 +403,7 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   glPopMatrix ();
   
   cogl_draw_buffer (COGL_WINDOW_BUFFER, 0);
+  cogl_blend_func (old_src_factor, old_dst_factor);
   
   return TRUE;
 }

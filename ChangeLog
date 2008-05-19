@@ -1,5 +1,17 @@
 2008-05-19  Ivan Leben  <ivan@o-hand.com>
 
+	* clutter/cogl/gles/cogl-texture.c:
+	(cogl_texture_download_from_gl:) Store old blending factors
+	and restore them when done. The lack of ability to retrieve
+	the alpha channel now more noticable in test-cogl-tex-getset
+	since the edges of the hand are not antialiased.
+
+	* clutter/cogl/gl(es)/cogl-internal.h: Declare
+	cogl_blend_func to avoid "implicit implementation" compile
+	warning.
+
+2008-05-19  Ivan Leben  <ivan@o-hand.com>
+
 	* clutter/cogl/gl(es)/cogl.c: New internal function
 	cogl_blend_func caches blending setup much like cogl_enable
 	does with the enable flags. This separates blending factors
