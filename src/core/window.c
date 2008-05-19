@@ -1055,7 +1055,11 @@ meta_window_free (MetaWindow  *window,
   g_assert (window->display->grab_window != window);
   
   if (window->display->focus_window == window)
-    window->display->focus_window = NULL;
+    {
+      window->display->focus_window = NULL;
+      meta_compositor_set_active_window (window->display->compositor,
+                                         window->screen, NULL);
+    }
 
   if (window->maximized_horizontally || window->maximized_vertically)
     unmaximize_window_before_freeing (window);

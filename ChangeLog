@@ -1,5 +1,9 @@
 2008-05-19  Iain Holmes  <iain@gnome.org>
 
+	* src/core/window.c: Applied patch from Ed Catmur to fix #528787
+
+2008-05-19  Iain Holmes  <iain@gnome.org>
+
 	* src/include/frame.h
 	* src/include/display.h
 	* src/include/xprops.h
