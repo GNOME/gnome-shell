@@ -1,3 +1,11 @@
+2008-05-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/eglx/Makefile.am: Fix the INCLUDE directives to
+	properly include the X11 backend headers.
+
+	* clutter/glx/Makefile.am: Add the libclutter-x11.la static
+	library to the LDADD directives.
+
 2008-05-19  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/x11/clutter-x11.h:

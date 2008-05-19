@@ -4,12 +4,14 @@ libclutterinclude_HEADERS = clutter-eglx.h
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterEGL\" \
 	-I$(top_srcdir) \
+	-I$(top_srcdir)/clutter \
+	-I$(top_srcdir)/clutter/x11 \
+	-I$(top_builddir)/clutter \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS) \
 	$(GCC_FLAGS)
 
-LDADD = $(CLUTTER_LIBS) \
-	$(top_srcdir)/clutter/x11/libclutter-x11.la
+LDADD = $(CLUTTER_LIBS) $(top_builddir)/clutter/x11/libclutter-x11.la
 
 noinst_LTLIBRARIES = libclutter-eglx.la
 
