@@ -238,6 +238,125 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
   return TRUE;
 }
 
+static void
+_cogl_texture_draw_and_read (CoglTexture  *tex,
+                             CoglBitmap   *target_bmp,
+                             ClutterColor *back_color,
+                             GLint        *viewport)
+{
+  gint               bpp;
+  ClutterFixed       rx1, ry1;
+  ClutterFixed       rx2, ry2;
+  ClutterFixed       tx1, ty1;
+  ClutterFixed       tx2, ty2;
+  int                bw,  bh;
+  CoglBitmap         rect_bmp;
+  CoglHandle         handle;
+  
+  handle = _cogl_texture_handle_from_pointer (tex);
+  bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
+  
+  /* If whole image fits into the viewport and target buffer
+     has got no special rowstride, we can do it in one pass */
+  if (tex->bitmap.width < viewport[2] - viewport[0] &&
+      tex->bitmap.height < viewport[3] - viewport[1] &&
+      tex->bitmap.rowstride == bpp * tex->bitmap.width)
+    {
+      /* Clear buffer with transparent black, draw with white
+         for direct copy to framebuffer */
+      cogl_paint_init (back_color);
+      
+      /* Draw the texture image */
+      cogl_texture_rectangle (handle,
+                              0, 0,
+                              CLUTTER_INT_TO_FIXED (tex->bitmap.width),
+                              CLUTTER_INT_TO_FIXED (tex->bitmap.height),
+                              0, 0, CFX_ONE, CFX_ONE);
+      
+      /* Read into target bitmap */
+      GE( glPixelStorei (GL_PACK_ALIGNMENT, 1) );
+      GE( glReadPixels (viewport[0], viewport[1],
+                        tex->bitmap.width,
+                        tex->bitmap.height,
+                        GL_RGBA, GL_UNSIGNED_BYTE,
+                        target_bmp->data) );
+    }
+  else
+    {
+      ry1 = 0; ry2 = 0;
+      ty1 = 0; ty2 = 0;
+      
+#define CFIX CLUTTER_INT_TO_FIXED
+      
+      /* Walk Y axis until whole bitmap height consumed */
+      for (bh = tex->bitmap.height; bh > 0; bh -= viewport[3])
+        {
+          /* Rectangle Y coords */
+          ry1 = ry2;
+          ry2 += (bh < viewport[3]) ? bh : viewport[3];
+          
+          /* Normalized texture Y coords */
+          ty1 = ty2;
+          ty2 = CFX_QDIV (CFIX (ry2), CFIX (tex->bitmap.height));
+          
+          rx1 = 0; rx2 = 0;
+          tx1 = 0; tx2 = 0;
+          
+          /* Walk X axis until whole bitmap width consumed */
+          for (bw = tex->bitmap.width; bw > 0; bw-=viewport[2])
+            {
+              /* Rectangle X coords */
+              rx1 = rx2;
+              rx2 += (bw < viewport[2]) ? bw : viewport[2];
+              
+              /* Normalized texture X coords */
+              tx1 = tx2;
+              tx2 = CFX_QDIV (CFIX (rx2), CFIX (tex->bitmap.width));
+              
+              /* Clear buffer with transparent black, draw with white
+		 for direct copy to framebuffer */
+              cogl_paint_init (back_color);
+              
+              /* Draw a portion of texture */
+              cogl_texture_rectangle (handle,
+                                      0, 0,
+                                      CFIX (rx2 - rx1),
+                                      CFIX (ry2 - ry1),
+                                      tx1, ty1,
+                                      tx2, ty2);
+              
+              /* Read into a temporary bitmap */
+              rect_bmp.format = COGL_PIXEL_FORMAT_RGBA_8888;
+              rect_bmp.width = rx2 - rx1;
+              rect_bmp.height = ry2 - ry1;
+              rect_bmp.rowstride = bpp * rect_bmp.width;
+              rect_bmp.data = (guchar*) g_malloc (rect_bmp.rowstride *
+                                                  rect_bmp.height);
+              
+              GE( glPixelStorei (GL_PACK_ALIGNMENT, 1) );
+              GE( glReadPixels (viewport[0], viewport[1],
+                                rect_bmp.width,
+                                rect_bmp.height,
+                                GL_RGBA, GL_UNSIGNED_BYTE,
+                                rect_bmp.data) );
+              
+              /* Copy to target bitmap */
+              _cogl_bitmap_copy_subregion (&rect_bmp,
+                                           target_bmp,
+                                           0,0,
+                                           rx1,ry1,
+                                           rect_bmp.width,
+                                           rect_bmp.height);
+              
+              /* Free temp bitmap */
+              g_free (rect_bmp.data);
+            }
+        }
+      
+#undef CFIX
+    }
+}
+
 static gboolean
 _cogl_texture_download_from_gl (CoglTexture *tex,
 				CoglBitmap  *target_bmp,
@@ -246,21 +365,13 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
 {
   gint               bpp;
   GLint              viewport[4];
-  CoglHandle         handle;
-  ClutterColor       cback = {0x0, 0x0, 0x0, 0x0};
   ClutterColor       cwhite = {0xFF, 0xFF, 0xFF, 0xFF};
-  CoglBitmap         rect_bmp;
-  ClutterFixed       rx1, ry1;
-  ClutterFixed       rx2, ry2;
-  ClutterFixed       tx1, ty1;
-  ClutterFixed       tx2, ty2;
-  int                bw,  bh;
+  CoglBitmap         alpha_bmp;
   COGLenum           old_src_factor;
   COGLenum           old_dst_factor;
   
   _COGL_GET_CONTEXT (ctx, FALSE);
   
-  handle = _cogl_texture_handle_from_pointer (tex);
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
   
   /* Viewport needs to have some size and be inside the window for this */
@@ -290,113 +401,70 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   /* Draw to all channels */
   cogl_draw_buffer (COGL_WINDOW_BUFFER | COGL_MASK_BUFFER, 0);
   
-  /* Store old blending factors and setup direct copy operation */
+  /* Store old blending factors */
   old_src_factor = ctx->blend_src_factor;
   old_dst_factor = ctx->blend_dst_factor;
+  
+  /* Direct copy operation */
+  cogl_color (&cwhite);
   cogl_blend_func (CGL_ONE, CGL_ZERO);
+  _cogl_texture_draw_and_read (tex, target_bmp,
+                               &cwhite, viewport);
   
-  /* If whole image fits into the viewport and target buffer
-     has got no special rowstride, we can do it in one pass */
-  if (tex->bitmap.width < viewport[2] - viewport[0] &&
-      tex->bitmap.height < viewport[3] - viewport[1] &&
-      tex->bitmap.rowstride == bpp * tex->bitmap.width)
+  /* Check whether texture has alpha and framebuffer not */
+  /* FIXME: For some reason even if ALPHA_BITS is 8, the framebuffer
+     still doesn't seem to have an alpha buffer. This might be just
+     a PowerVR issue.
+  GLint r_bits, g_bits, b_bits, a_bits;
+  GE( glGetIntegerv (GL_ALPHA_BITS, &a_bits) );
+  GE( glGetIntegerv (GL_RED_BITS, &r_bits) );
+  GE( glGetIntegerv (GL_GREEN_BITS, &g_bits) );
+  GE( glGetIntegerv (GL_BLUE_BITS, &b_bits) );
+  printf ("R bits: %d\n", r_bits);
+  printf ("G bits: %d\n", g_bits);
+  printf ("B bits: %d\n", b_bits);
+  printf ("A bits: %d\n", a_bits);
+  if ((tex->bitmap.format & COGL_A_BIT) && a_bits == 0) */
     {
-      /* Clear buffer with transparent black, draw with white
-         for direct copy to framebuffer */
-      cogl_paint_init (&cback);
-      cogl_color (&cwhite);
+      guchar *srcdata;
+      guchar *dstdata;
+      guchar *srcpixel;
+      guchar *dstpixel;
+      gint    x,y;
       
-      /* Draw the texture image */
-      cogl_texture_rectangle (handle,
-			      0, 0,
-			      CLUTTER_INT_TO_FIXED (tex->bitmap.width),
-			      CLUTTER_INT_TO_FIXED (tex->bitmap.height),
-			      0, 0, CFX_ONE, CFX_ONE);
+      /* Create temp bitmap for alpha values */
+      alpha_bmp.format = COGL_PIXEL_FORMAT_RGBA_8888;
+      alpha_bmp.width = target_bmp->width;
+      alpha_bmp.height = target_bmp->height;
+      alpha_bmp.rowstride = bpp * alpha_bmp.width;
+      alpha_bmp.data = (guchar*) g_malloc (alpha_bmp.rowstride *
+                                           alpha_bmp.height);
       
-      /* Read into target bitmap */
-      GE( glPixelStorei (GL_PACK_ALIGNMENT, 1) );
-      GE( glReadPixels (viewport[0], viewport[1],
-			tex->bitmap.width,
-			tex->bitmap.height,
-			GL_RGBA, GL_UNSIGNED_BYTE,
-			target_bmp->data) );
-    }
-  else
-    {
-      ry1 = 0; ry2 = 0;
-      ty1 = 0; ty2 = 0;
+      /* Draw alpha values into RGB channels */
+      cogl_blend_func (CGL_ZERO, CGL_SRC_ALPHA);
+      _cogl_texture_draw_and_read (tex, &alpha_bmp,
+                                   &cwhite, viewport);
       
-#define CFIX CLUTTER_INT_TO_FIXED
+      /* Copy temp R to target A */
+      srcdata = alpha_bmp.data;
+      dstdata = target_bmp->data;
       
-      /* Walk Y axis until whole bitmap height consumed */
-      for (bh = tex->bitmap.height; bh > 0; bh -= viewport[3])
-	{
-	  /* Rectangle Y coords */
-	  ry1 = ry2;
-	  ry2 += (bh < viewport[3]) ? bh : viewport[3];
-	  
-	  /* Normalized texture Y coords */
-	  ty1 = ty2;
-	  ty2 = CFX_QDIV (CFIX (ry2), CFIX (tex->bitmap.height));
-	  
-	  rx1 = 0; rx2 = 0;
-	  tx1 = 0; tx2 = 0;
-	  
-	  /* Walk X axis until whole bitmap width consumed */
-	  for (bw = tex->bitmap.width; bw > 0; bw-=viewport[2])
-	    {
-	      /* Rectangle X coords */
-	      rx1 = rx2;
-	      rx2 += (bw < viewport[2]) ? bw : viewport[2];
-	      
-	      /* Normalized texture X coords */
-	      tx1 = tx2;
-	      tx2 = CFX_QDIV (CFIX (rx2), CFIX (tex->bitmap.width));
-	      
-	      /* Clear buffer with transparent black, draw with white
-		 for direct copy to framebuffer */
-	      cogl_paint_init (&cback);
-	      cogl_color (&cwhite);
-	      
-	      /* Draw a portion of texture */
-	      cogl_texture_rectangle (handle,
-				      0, 0,
-				      CFIX (rx2 - rx1),
-				      CFIX (ry2 - ry1),
-				      tx1, ty1,
-				      tx2, ty2);
-	      
-	      /* Read into a temporary bitmap */
-	      rect_bmp.format = COGL_PIXEL_FORMAT_RGBA_8888;
-	      rect_bmp.width = rx2 - rx1;
-	      rect_bmp.height = ry2 - ry1;
-	      rect_bmp.rowstride = bpp * rect_bmp.width;
-	      rect_bmp.data = (guchar*) g_malloc (rect_bmp.rowstride *
-						  rect_bmp.height);
-	      
-	      GE( glPixelStorei (GL_PACK_ALIGNMENT, 1) );
-	      GE( glReadPixels (viewport[0], viewport[1],
-				rect_bmp.width,
-				rect_bmp.height,
-				GL_RGBA, GL_UNSIGNED_BYTE,
-				rect_bmp.data) );
-	      
-	      /* Copy to target bitmap */
-	      _cogl_bitmap_copy_subregion (&rect_bmp,
-					   target_bmp,
-					   0,0,
-					   rx1,ry1,
-					   rect_bmp.width,
-					   rect_bmp.height);
-	      
-	      /* Free temp bitmap */
-	      g_free (rect_bmp.data);
-	    }
-	}
+      for (y=0; y<target_bmp->height; ++y)
+        {
+          for (x=0; x<target_bmp->width; ++x)
+            {
+              srcpixel = srcdata + x*bpp;
+              dstpixel = dstdata + x*bpp;
+              dstpixel[3] = srcpixel[0];
+            }
+          srcdata += alpha_bmp.rowstride;
+          dstdata += target_bmp->rowstride;
+        }
       
-#undef CFIX
+      g_free (alpha_bmp.data);
     }
   
+  /* Restore old state */
   glMatrixMode (GL_PROJECTION);
   glPopMatrix ();
   glMatrixMode (GL_MODELVIEW);
