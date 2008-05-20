@@ -1,3 +1,14 @@
+2008-05-20  Øyvind Kolås  <pippin@o-hand.com>
+
+	Decouple actor opacity from fill opacity in ClutterRectangle (fixes
+	race when both are set from clutter script also makes it more
+	consistent with the behavior of other actors.)
+
+	* clutter/clutter-rectangle.c: (clutter_rectangle_set_color): stop
+	setting the opacity of the actor from the specified color.
+	(clutter_rectangle_paint): combine the absolute opacity of the actor
+	with the alpha of the color when painting.
+
 2008-05-20  Ivan Leben  <ivan@o-hand.com>
 
 	* clutter/cogl/gles/cogl-texture.c:
