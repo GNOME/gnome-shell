@@ -1,3 +1,12 @@
+2008-05-20  Ivan Leben  <ivan@o-hand.com>
+
+	* clutter/cogl/gles/cogl-texture.c:
+	(cogl_texture_download_from_gl:) Implemented a workaround
+	for missing alpha framebuffer channel. There are still
+	some issues with detecting whether alpha is present in the
+	framebuffer. See comments in code. Test-cogl-tex-getset now
+	successfully retrieves a RGBA texture image data.
+
 2008-05-19  Ivan Leben  <ivan@o-hand.com>
 
 	* clutter/cogl/gles/cogl-texture.c:
