@@ -423,8 +423,8 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   printf ("R bits: %d\n", r_bits);
   printf ("G bits: %d\n", g_bits);
   printf ("B bits: %d\n", b_bits);
-  printf ("A bits: %d\n", a_bits);
-  if ((tex->bitmap.format & COGL_A_BIT) && a_bits == 0) */
+  printf ("A bits: %d\n", a_bits); */
+  if ((tex->bitmap.format & COGL_A_BIT)/* && a_bits == 0*/)
     {
       guchar *srcdata;
       guchar *dstdata;
