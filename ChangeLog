@@ -1,3 +1,27 @@
+2008-05-21  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gl/cogl.c (error_string):
+	* clutter/cogl/gles/cogl.c (error_string): Rename to
+	_cogl_error_string and remove the static scoping so that it can be
+	called in cogl-texture etc.
+
+	* clutter/cogl/gl/cogl-texture.c (cogl_texture_new_from_foreign):
+	* clutter/cogl/gles/cogl-texture.c (cogl_texture_new_from_foreign): 
+	GE(*) can't be used to wrap around calls that use the return
+	value.
+
+	* clutter/cogl/gl/cogl-texture.c (_cogl_texture_quad_sw)
+	(_cogl_texture_quad_hw, cogl_texture_polygon): Remove GE(*)
+	wrapper around calls in the middle of a glBegin/glEnd pair which
+	otherwise always generate an error because glGetError can only be
+	called outside of the pair.
+
+	* clutter/cogl/gl/cogl-internal.h: Include stdio.h when definig
+	COGL_DEBUG and declare a prototype for _cogl_error_string.
+
+	* clutter/cogl/gles/cogl-internal.h: Match GE(*) macro to GL
+	version.
+
 2008-05-21  Ivan Leben  <ivan@o-hand.com>
 
 	* clutter/cogl/gles/cogl-texture.c:

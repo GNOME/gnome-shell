@@ -1248,7 +1248,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
     return COGL_INVALID_HANDLE;
   
   /* Make sure it is a valid GL texture object */
-  gl_istexture = GE( glIsTexture (gl_handle) );
+  gl_istexture = glIsTexture (gl_handle);
   if (gl_istexture == GL_FALSE)
     return COGL_INVALID_HANDLE;
   

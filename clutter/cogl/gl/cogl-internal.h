@@ -29,18 +29,26 @@
 #define COGL_DEBUG 0
 
 #if COGL_DEBUG
+
+#include <stdio.h>
+
+const char *_cogl_error_string(GLenum errorCode);
+
 #define GE(x...) G_STMT_START {                                  \
         GLenum err;                                              \
         (x);                                                     \
         while ((err = glGetError()) != GL_NO_ERROR) {            \
                 fprintf(stderr, "glError: %s caught at %s:%u\n", \
-                                (char *)error_string(err),       \
-			         __FILE__, __LINE__);            \
+			(char *)_cogl_error_string(err),	 \
+			__FILE__, __LINE__);			 \
         }                                                        \
 } G_STMT_END
-#else
+
+#else /* COGL_DEBUG */
+
 #define GE(x) (x);
-#endif
+
+#endif /* COGL_DEBUG */
 
 #define COGL_ENABLE_BLEND             (1<<1)
 #define COGL_ENABLE_TEXTURE_2D        (1<<2)

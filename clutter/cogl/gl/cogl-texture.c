@@ -1235,7 +1235,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
     return COGL_INVALID_HANDLE;
   
   /* Make sure it is a valid GL texture object */
-  gl_istexture = GE( glIsTexture (gl_handle) );
+  gl_istexture = glIsTexture (gl_handle);
   if (gl_istexture == GL_FALSE)
     return COGL_INVALID_HANDLE;
   
@@ -1863,21 +1863,21 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 #define CFX_F CLUTTER_FIXED_TO_FLOAT
 	  
 	  /* Draw textured quad */
-	  GE( glBegin (GL_QUADS) );
+	  glBegin (GL_QUADS);
 	  
-	  GE( glTexCoord2f (CFX_F(slice_tx1), CFX_F(slice_ty1)) );
-	  GE( glVertex2f   (CFX_F(slice_qx1), CFX_F(slice_qy1)) );
+	  glTexCoord2f (CFX_F(slice_tx1), CFX_F(slice_ty1));
+	  glVertex2f   (CFX_F(slice_qx1), CFX_F(slice_qy1));
 	  
-	  GE( glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty1)) );
-	  GE( glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy1)) );
+	  glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty1));
+	  glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy1));
 	  
-	  GE( glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty2)) );
-	  GE( glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy2)) );
+	  glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty2));
+	  glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy2));
 	  
-	  GE( glTexCoord2f (CFX_F(slice_tx1), CFX_F(slice_ty2)) );
-	  GE( glVertex2f   (CFX_F(slice_qx1), CFX_F(slice_qy2)) );
+	  glTexCoord2f (CFX_F(slice_tx1), CFX_F(slice_ty2));
+	  glVertex2f   (CFX_F(slice_qx1), CFX_F(slice_qy2));
 	  
-	  glEnd ();
+	  GE( glEnd () );
 	  
 #undef CFX_F
 	}
@@ -1946,21 +1946,21 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 #define CFX_F(x) CLUTTER_FIXED_TO_FLOAT(x)
   
   /* Draw textured quad */
-  GE( glBegin (GL_QUADS) );
+  glBegin (GL_QUADS);
   
-  GE( glTexCoord2f (CFX_F(tx1), CFX_F(ty1)) );
-  GE( glVertex2f   (CFX_F(x1),  CFX_F(y1)) );
+  glTexCoord2f (CFX_F(tx1), CFX_F(ty1));
+  glVertex2f   (CFX_F(x1),  CFX_F(y1));
   
-  GE( glTexCoord2f (CFX_F(tx2), CFX_F(ty1)) );
-  GE( glVertex2f   (CFX_F(x2),  CFX_F(y1)) );
+  glTexCoord2f (CFX_F(tx2), CFX_F(ty1));
+  glVertex2f   (CFX_F(x2),  CFX_F(y1));
   
-  GE( glTexCoord2f (CFX_F(tx2), CFX_F(ty2)) );
-  GE( glVertex2f   (CFX_F(x2),  CFX_F(y2)) );
+  glTexCoord2f (CFX_F(tx2), CFX_F(ty2));
+  glVertex2f   (CFX_F(x2),  CFX_F(y2));
   
-  GE( glTexCoord2f (CFX_F(tx1), CFX_F(ty2)) );
-  GE( glVertex2f   (CFX_F(x1),  CFX_F(y2)) );
+  glTexCoord2f (CFX_F(tx1), CFX_F(ty2));
+  glVertex2f   (CFX_F(x1),  CFX_F(y2));
   
-  glEnd ();
+  GE( glEnd () );
   
 #undef CFX_F
 }
@@ -2122,7 +2122,7 @@ cogl_texture_polygon (CoglHandle         handle,
 
 	  GE( glBindTexture (tex->gl_target, gl_handle) );
 
-	  GE( glBegin (GL_TRIANGLE_FAN) );
+	  glBegin (GL_TRIANGLE_FAN);
 
 	  for (vnum = 0; vnum < n_vertices; vnum++)
 	    {
@@ -2146,11 +2146,11 @@ cogl_texture_polygon (CoglHandle         handle,
 		  ty *= y_span->size;
 		}
 
-	      GE( glTexCoord2f (tx, ty) );
+	      glTexCoord2f (tx, ty);
 
-	      GE( glVertex3f (CLUTTER_FIXED_TO_FLOAT (vertices[vnum].x),
-			      CLUTTER_FIXED_TO_FLOAT (vertices[vnum].y),
-			      CLUTTER_FIXED_TO_FLOAT (vertices[vnum].z)) );
+	      glVertex3f (CLUTTER_FIXED_TO_FLOAT (vertices[vnum].x),
+			  CLUTTER_FIXED_TO_FLOAT (vertices[vnum].y),
+			  CLUTTER_FIXED_TO_FLOAT (vertices[vnum].z));
 	    }
 
 	  GE( glEnd () );
