@@ -66,8 +66,8 @@ static const struct token_string Errors[] = {
   { ~0, NULL }
 };
 
-static const char*
-error_string(GLenum errorCode)
+const char*
+_cogl_error_string(GLenum errorCode)
 {
   int i;
   for (i = 0; Errors[i].String; i++) {
