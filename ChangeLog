@@ -1,3 +1,10 @@
+2008-05-21  Ivan Leben  <ivan@o-hand.com>
+
+	* clutter/cogl/gles/cogl-texture.c:
+	(_cogl_texture_download_from_gl:) Only comment out the broken
+	check for framebuffer alpha bits, not the check for alpha in
+	texture format.
+
 2008-05-20  Øyvind Kolås  <pippin@o-hand.com>
 
 	Decouple actor opacity from fill opacity in ClutterRectangle (fixes
