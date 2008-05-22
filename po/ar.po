@@ -87,7 +87,7 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "فقدت الاتصال بالعرض '%s';\n"
-"من المحتمل ان خادم X اغلق أو انك\n"
+"من المحتمل ان خادوم X اغلق أو انك\n"
 "قتلت/دمرت مدير النوافذ.\n"
 
 #: ../src/core/errors.c:279
@@ -133,7 +133,7 @@ msgstr ""
 
 #: ../src/core/main.c:242
 msgid "Disable connection to session manager"
-msgstr "عطّل الإتصال بمدير الجلسة"
+msgstr "عطّل الاتصال بمدير الجلسة"
 
 #: ../src/core/main.c:248
 msgid "Replace the running window manager with Metacity"
@@ -624,7 +624,7 @@ msgid ""
 msgstr ""
 "إذا ضبط لصحيح، فسيعطي مِتسِتي المستخدم ردودا أقل ، بإستخدام إطارات شبكية تتجنّب "
 "الرسوم المتحركة أو بطرق أخرى. هذا تخفيض هام لقابلية الإستخدام للعديد من "
-"المستخدمين، لكنه سيسمح يتطبيقات موروثة و خوادم الشاشات الطرفية أن تعمل عوض "
+"المستخدمين، لكنه سيسمح يتطبيقات موروثة و خواديم الشاشات الطرفية أن تعمل عوض "
 "أن تكون غير عمليّة."
 
 #: ../src/metacity.schemas.in.h:25
@@ -2617,7 +2617,7 @@ msgstr "لا صفة \"%s\" على العنصر <%s>"
 #: ../src/ui/theme-parser.c:1032 ../src/ui/theme-parser.c:1143
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> استُعمل الإسم \"%s\" للمرّة الثانية"
+msgstr "<%s> استُعمل الاسم \"%s\" للمرّة الثانية"
 
 #: ../src/ui/theme-parser.c:931 ../src/ui/theme-parser.c:1044
 #: ../src/ui/theme-parser.c:1155
@@ -3245,7 +3245,7 @@ msgid ""
 "frame)\n"
 msgstr ""
 "دفعت %d إطارات في %g ثوان بإتجاه العميل (%g ملي ثانية لكل إطار) و %g ثواني "
-"بوقت ساعة حائطية مع مصادر خادم X (%g ملي ثانية لكل إطار)\n"
+"بوقت ساعة حائطية مع مصادر خادوم X (%g ملي ثانية لكل إطار)\n"
 
 #: ../src/ui/theme-viewer.c:1225
 msgid "position expression test returned TRUE but set error"
