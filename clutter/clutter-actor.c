@@ -4205,13 +4205,12 @@ clutter_actor_set_parent (ClutterActor *self,
   self->priv->parent_actor = parent;
   g_signal_emit (self, actor_signals[PARENT_SET], 0, NULL);
 
-  if (self->priv->show_on_set_parent == TRUE)
-      clutter_actor_show (self);
-  
-  /* FIXME: below likely not needed */
   if (CLUTTER_ACTOR_IS_REALIZED (self->priv->parent_actor))
     clutter_actor_realize (self);
 
+  if (self->priv->show_on_set_parent)
+    clutter_actor_show (self);
+  
   if (CLUTTER_ACTOR_IS_VISIBLE (self->priv->parent_actor) &&
       CLUTTER_ACTOR_IS_VISIBLE (self))
     {

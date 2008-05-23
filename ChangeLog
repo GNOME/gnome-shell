@@ -1,3 +1,17 @@
+2008-05-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #928 - Reparenting a child that itself is a container
+	doesn't work
+
+	* clutter/clutter-actor.c (clutter_actor_set_parent): Realize
+	an actor when setting its parent, if the parent is realized.
+
+	* clutter/clutter-group.c:
+	(clutter_group_realize), (clutter_group_class_init): Add the
+	missing implementation of the ::realize() virtual function; this
+	makes sure that the children of a Group are realized if the Group
+	is realized. (#928)
+
 2008-05-21  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/cogl/gl/cogl.c (error_string):
