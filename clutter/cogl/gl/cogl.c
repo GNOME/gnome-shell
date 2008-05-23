@@ -559,8 +559,8 @@ _cogl_features_init ()
   
   ClutterFeatureFlags flags = 0;
   const gchar        *gl_extensions;
-  int                 max_clip_planes = 0;
-  int                 stencil_bits = 0;
+  GLint               max_clip_planes = 0;
+  GLint               stencil_bits = 0;
 
   flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
 

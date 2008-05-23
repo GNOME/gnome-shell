@@ -1,5 +1,12 @@
 2008-05-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug #912 - Invalid use of int* as parameter for glGetIntegerv
+
+	* clutter/cogl/gl/cogl.c (_cogl_features_init): Use GLint
+	instead of int. (#912, Tommi Komulainen)
+
+2008-05-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug #928 - Reparenting a child that itself is a container
 	doesn't work
 
