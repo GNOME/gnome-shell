@@ -86,7 +86,10 @@ typedef enum _MetaCompWindowType
   META_COMP_WINDOW_NORMAL,
   META_COMP_WINDOW_DND,
   META_COMP_WINDOW_DESKTOP,
-  META_COMP_WINDOW_DOCK
+  META_COMP_WINDOW_DOCK,
+  META_COMP_WINDOW_MENU,
+  META_COMP_WINDOW_DROP_DOWN_MENU,
+  META_COMP_WINDOW_TOOLTIP,
 } MetaCompWindowType;
 
 typedef enum _MetaShadowType
@@ -117,6 +120,8 @@ typedef struct _MetaCompositorXRender
   Atom atom_net_wm_window_type_utility;
   Atom atom_net_wm_window_type_splash;
   Atom atom_net_wm_window_type_toolbar;
+  Atom atom_net_wm_window_type_dropdown_menu;
+  Atom atom_net_wm_window_type_tooltip;
 
 #ifdef USE_IDLE_REPAINT
   guint repaint_id;
@@ -895,7 +900,18 @@ window_has_shadow (MetaCompWindow *cw)
     meta_verbose ("Window has shadow as it is not ARGB\n");
     return TRUE;
   }
-  
+
+  if (cw->type == META_COMP_WINDOW_MENU || 
+      cw->type == META_COMP_WINDOW_DROP_DOWN_MENU) {
+    meta_verbose ("Window has shadow as it is a menu\n");
+    return TRUE;
+  }
+
+  if (cw->type == META_COMP_WINDOW_TOOLTIP) {
+    meta_verbose ("Window has shadow as it is a tooltip\n");
+    return TRUE;
+  }
+
   meta_verbose ("Window has no shadow as it fell through\n");
   return FALSE;
 }
@@ -1721,7 +1737,9 @@ get_window_type (MetaDisplay    *display,
           atoms[i] == compositor->atom_net_wm_window_type_dialog ||
           atoms[i] == compositor->atom_net_wm_window_type_normal ||
           atoms[i] == compositor->atom_net_wm_window_type_utility ||
-          atoms[i] == compositor->atom_net_wm_window_type_splash)
+          atoms[i] == compositor->atom_net_wm_window_type_splash ||
+          atoms[i] == compositor->atom_net_wm_window_type_dropdown_menu ||
+          atoms[i] == compositor->atom_net_wm_window_type_tooltip)
         {
           type_atom = atoms[i];
           break;
@@ -1736,6 +1754,12 @@ get_window_type (MetaDisplay    *display,
     cw->type = META_COMP_WINDOW_DESKTOP;
   else if (type_atom == compositor->atom_net_wm_window_type_dock)
     cw->type = META_COMP_WINDOW_DOCK;
+  else if (type_atom == compositor->atom_net_wm_window_type_menu)
+    cw->type = META_COMP_WINDOW_MENU;
+  else if (type_atom == compositor->atom_net_wm_window_type_dropdown_menu)
+    cw->type = META_COMP_WINDOW_DROP_DOWN_MENU;
+  else if (type_atom == compositor->atom_net_wm_window_type_tooltip)
+    cw->type = META_COMP_WINDOW_TOOLTIP;
   else
     cw->type = META_COMP_WINDOW_NORMAL;
 
@@ -2932,7 +2956,9 @@ meta_compositor_xrender_new (MetaDisplay *display)
     "_NET_WM_WINDOW_TYPE_NORMAL",
     "_NET_WM_WINDOW_TYPE_UTILITY",
     "_NET_WM_WINDOW_TYPE_SPLASH",
-    "_NET_WM_WINDOW_TYPE_TOOLBAR"
+    "_NET_WM_WINDOW_TYPE_TOOLBAR",
+    "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU",
+    "_NET_WM_WINDOW_TYPE_TOOLTIP"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   MetaCompositorXRender *xrc;
@@ -2963,6 +2989,8 @@ meta_compositor_xrender_new (MetaDisplay *display)
   xrc->atom_net_wm_window_type_utility = atoms[10];
   xrc->atom_net_wm_window_type_splash = atoms[11];
   xrc->atom_net_wm_window_type_toolbar = atoms[12];
+  xrc->atom_net_wm_window_type_dropdown_menu = atoms[13];
+  xrc->atom_net_wm_window_type_tooltip = atoms[14];
 
 #ifdef USE_IDLE_REPAINT
   meta_verbose ("Using idle repaint\n");

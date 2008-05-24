@@ -1,5 +1,11 @@
 2008-05-24  Iain Holmes  <iain@gnome.org>
 
+	* src/compositor/compositor-xrender.c: Add Dropdown menu atoms so we
+	can add shadows to them. Fixes #517442
+	Handle tooltips as well. Fixes #517524
+
+2008-05-24  Iain Holmes  <iain@gnome.org>
+
 	* src/compositor/compositor.c: Check the compositor isn't NULL before 
 	dereferencing it. Fixes #534569
 	(meta_compositor_get_window_pixmap): Actually return a value
