@@ -1,3 +1,9 @@
+2008-05-24  Iain Holmes  <iain@gnome.org>
+
+	* src/compositor/compositor.c: Check the compositor isn't NULL before 
+	dereferencing it. Fixes #534569
+	(meta_compositor_get_window_pixmap): Actually return a value
+
 2008-05-19  Iain Holmes  <iain@gnome.org>
 
 	* src/core/window.c: Applied patch from Ed Catmur to fix #528787

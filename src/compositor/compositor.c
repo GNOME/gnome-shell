@@ -21,6 +21,7 @@
 
 #include <config.h>
 #include "compositor-private.h"
+#include "compositor-xrender.h"
 
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
@@ -37,7 +38,7 @@ void
 meta_compositor_destroy (MetaCompositor *compositor)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor->destroy)
+  if (compositor && compositor->destroy)
     compositor->destroy (compositor);
 #endif
 }
@@ -49,7 +50,7 @@ meta_compositor_add_window (MetaCompositor    *compositor,
                             XWindowAttributes *attrs)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor->add_window)
+  if (compositor && compositor->add_window)
     compositor->add_window (compositor, window, xwindow, attrs);
 #endif
 }
@@ -59,7 +60,7 @@ meta_compositor_remove_window (MetaCompositor *compositor,
                                Window          xwindow)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor->remove_window)
+  if (compositor && compositor->remove_window)
     compositor->remove_window (compositor, xwindow);
 #endif
 }
@@ -69,7 +70,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
                                MetaScreen     *screen)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor->manage_screen)
+  if (compositor && compositor->manage_screen)
     compositor->manage_screen (compositor, screen);
 #endif
 }
@@ -79,7 +80,7 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                  MetaScreen     *screen)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor->unmanage_screen)
+  if (compositor && compositor->unmanage_screen)
     compositor->unmanage_screen (compositor, screen);
 #endif
 }
@@ -90,7 +91,7 @@ meta_compositor_set_updates (MetaCompositor *compositor,
                              gboolean        updates)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor->set_updates)
+  if (compositor && compositor->set_updates)
     compositor->set_updates (compositor, window, updates);
 #endif
 }
@@ -101,7 +102,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
                                MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor->process_event)
+  if (compositor && compositor->process_event)
     compositor->process_event (compositor, event, window);
 #endif
 }
@@ -111,8 +112,8 @@ meta_compositor_get_window_pixmap (MetaCompositor *compositor,
                                    MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor->get_window_pixmap)
-    compositor->get_window_pixmap (compositor, window);
+  if (compositor && compositor->get_window_pixmap)
+    return compositor->get_window_pixmap (compositor, window);
   else 
     return None;
 #else
@@ -126,7 +127,7 @@ meta_compositor_set_active_window (MetaCompositor *compositor,
                                    MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor->set_active_window) 
+  if (compositor && compositor->set_active_window) 
     compositor->set_active_window (compositor, screen, window);
 #endif
 }
