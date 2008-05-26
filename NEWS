@@ -1,3 +1,23 @@
+2.23.21
+=======
+
+Thanks to Robert Escriva, Iain Holmes, Matt Krai, Thomas Thurman,
+and Chris Wang for improvements in this version.
+
+  - Add shadow ability for menus and tooltips (Iain) (#517442) (#517524)
+  - Fix possible crashes in compositor (Iain) (#534569) (#528787)
+  - Major reorganisation of compositor code (Iain)
+  - Initial version of XRender backend for the compositor (Iain)
+  - New basic public API for compositor (Iain)
+  - Window decoration updates colour when GTK theme changes (Robert) (#511826)
+  - Minor code cleanup for pedantic compilers (Thomas)
+  - Further code cleanup for pedantic compilers (Matt) (#526049)
+  - The atom list appears only once in the code (Thomas) (#530843)
+  - Don't attempt to read attributes of invalid windows (Chris) (#530485)
+
+Translations
+  Khaled Hosny (ar), Gabor Kelemen (hu), Kjartan Maraas (nb), Tino Meinen (nl),
+  Theppitak Karoonboonyanan (th)
 2.23.13
 =======
 
