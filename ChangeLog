@@ -1,5 +1,9 @@
 2008-05-26  Thomas Thurman  <tthurman@gnome.org>
 
+        * NEWS: 2.23.21 release.
+
+2008-05-26  Thomas Thurman  <tthurman@gnome.org>
+
         * src/Makefile.am: added in two files needed for Iain's
           changes earlier to work in a release tarball
 
