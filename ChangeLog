@@ -1,3 +1,8 @@
+2008-05-26  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/x11/clutter-stage-x11.c: (clutter_stage_x11_request_coords):
+        Dont allow the window to be resize to 0 dimentions. (fixes #933)
+
 2008-05-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #912 - Invalid use of int* as parameter for glGetIntegerv

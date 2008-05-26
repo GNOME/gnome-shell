@@ -176,6 +176,19 @@ clutter_stage_x11_request_coords (ClutterActor    *self,
   new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
   new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
 
+  /* X cant resize to 0 dimentions */
+  if (new_height == 0)
+    {
+      box->y2 = box->y1 + 1;
+      new_height = 1;
+    }
+
+  if (new_width == 0)
+    {
+      box->x2 = box->x1 + 1;
+      new_width = 1;
+    }
+
   if (new_width != stage_x11->xwin_width
       || new_height != stage_x11->xwin_height)
     {
@@ -197,11 +210,11 @@ clutter_stage_x11_request_coords (ClutterActor    *self,
       if (stage_x11->xwin != None
 	  && !stage_x11->is_foreign_xwin
 	  && !stage_x11->handling_configure)
-	XResizeWindow (stage_x11->xdpy, 
-		       stage_x11->xwin,
-		       stage_x11->xwin_width,
-		       stage_x11->xwin_height);
-      
+        XResizeWindow (stage_x11->xdpy, 
+                       stage_x11->xwin,
+                       stage_x11->xwin_width,
+                       stage_x11->xwin_height);
+
       clutter_stage_x11_fix_window_size (stage_x11);
       
       if (stage_x11->xpixmap != None)
