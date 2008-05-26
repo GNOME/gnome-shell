@@ -15,6 +15,7 @@ metacity_SOURCES= 				\
 	compositor/compositor.c			\
 	compositor/compositor-private.h		\
 	compositor/compositor-xrender.c		\
+	compositor/compositor-xrender.h		\
 	include/compositor.h			\
 	core/constraints.c			\
 	core/constraints.h			\
@@ -57,6 +58,7 @@ metacity_SOURCES= 				\
 	core/screen.c				\
 	core/screen-private.h			\
 	include/screen.h			\
+	include/types.h                         \
 	core/session.c				\
 	core/session.h				\
 	core/stack.c				\
