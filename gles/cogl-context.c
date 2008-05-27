@@ -29,12 +29,13 @@
 
 #include "cogl.h"
 
-#include <GLES/gl.h>
 #include <string.h>
 
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
+
+#include "cogl-gles2-wrapper.h"
 
 static CoglContext *_context = NULL;
 
@@ -67,9 +68,14 @@ cogl_create_context ()
   
   _context->blend_src_factor = CGL_SRC_ALPHA;
   _context->blend_dst_factor = CGL_ONE_MINUS_SRC_ALPHA;
+
+  /* Init the GLES2 wrapper */
+#ifdef HAVE_COGL_GLES2
+  cogl_gles2_wrapper_init (&_context->gles2);
+#endif
   
   /* Init OpenGL state */
-  GE( glTexEnvx (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) );
+  GE( cogl_wrap_glTexEnvx (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) );
   GE( glColorMask (TRUE, TRUE, TRUE, FALSE) );
   GE( glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
   cogl_enable (0);
@@ -82,6 +88,10 @@ cogl_destroy_context ()
 {
   if (_context == NULL)
     return;
+
+#ifdef HAVE_COGL_GLES2
+  cogl_gles2_wrapper_deinit (&_context->gles2);
+#endif
 
   if (_context->texture_vertices)
     g_free (_context->texture_vertices);

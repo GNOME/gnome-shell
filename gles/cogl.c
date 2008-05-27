@@ -29,13 +29,13 @@
 
 #include "cogl.h"
 
-#include <GLES/gl.h>
 #include <string.h>
 
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
 
+#include "cogl-gles2-wrapper.h"
 
 /* GL error to string conversion */
 #if COGL_DEBUG
@@ -91,47 +91,47 @@ cogl_paint_init (const ClutterColor *color)
   fprintf(stderr, "\n ============== Paint Start ================ \n");
 #endif
 
-  glClearColorx ((color->red << 16) / 0xff, 
-		 (color->green << 16) / 0xff,
-		 (color->blue << 16) / 0xff, 
-		 0xff);
+  cogl_wrap_glClearColorx ((color->red << 16) / 0xff, 
+			   (color->green << 16) / 0xff,
+			   (color->blue << 16) / 0xff, 
+			   0xff);
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  glDisable (GL_LIGHTING);
-  glDisable (GL_FOG);
+  cogl_wrap_glDisable (GL_LIGHTING);
+  cogl_wrap_glDisable (GL_FOG);
 }
 
 /* FIXME: inline most of these  */
 void
 cogl_push_matrix (void)
 {
-  GE( glPushMatrix() );
+  GE( cogl_wrap_glPushMatrix() );
 }
 
 void
 cogl_pop_matrix (void)
 {
-  GE( glPopMatrix() );
+  GE( cogl_wrap_glPopMatrix() );
 }
 
 void
 cogl_scale (ClutterFixed x, ClutterFixed y)
 {
-  GE( glScalex (x, y, CFX_ONE) );
+  GE( cogl_wrap_glScalex (x, y, CFX_ONE) );
 }
 
 void
 cogl_translatex (ClutterFixed x, ClutterFixed y, ClutterFixed z)
 {
-  GE( glTranslatex (x, y, z) );
+  GE( cogl_wrap_glTranslatex (x, y, z) );
 }
 
 void
 cogl_translate (gint x, gint y, gint z)
 {
-  GE( glTranslatex (CLUTTER_INT_TO_FIXED(x), 
-		    CLUTTER_INT_TO_FIXED(y), 
-		    CLUTTER_INT_TO_FIXED(z)) );
+  GE( cogl_wrap_glTranslatex (CLUTTER_INT_TO_FIXED(x), 
+			      CLUTTER_INT_TO_FIXED(y), 
+			      CLUTTER_INT_TO_FIXED(z)) );
 }
 
 void
@@ -140,13 +140,13 @@ cogl_rotatex (ClutterFixed angle,
 	      ClutterFixed y, 
 	      ClutterFixed z)
 {
-  GE( glRotatex (angle,x,y,z) );
+  GE( cogl_wrap_glRotatex (angle,x,y,z) );
 }
 
 void
 cogl_rotate (gint angle, gint x, gint y, gint z)
 {
-  GE( glRotatex (CLUTTER_INT_TO_FIXED(angle),
+  GE( cogl_wrap_glRotatex (CLUTTER_INT_TO_FIXED(angle),
 		 CLUTTER_INT_TO_FIXED(x), 
 		 CLUTTER_INT_TO_FIXED(y), 
 		 CLUTTER_INT_TO_FIXED(z)) );
@@ -165,14 +165,14 @@ cogl_toggle_flag (CoglContext *ctx,
     {
       if (!(ctx->enable_flags & flag))
 	{
-	  GE( glEnable (gl_flag) );
+	  GE( cogl_wrap_glEnable (gl_flag) );
 	  ctx->enable_flags |= flag;
 	  return TRUE;
 	}
     }
   else if (ctx->enable_flags & flag)
     {
-      GE( glDisable (gl_flag) );
+      GE( cogl_wrap_glDisable (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
   
@@ -192,14 +192,14 @@ cogl_toggle_client_flag (CoglContext *ctx,
     {
       if (!(ctx->enable_flags & flag))
 	{
-	  GE( glEnableClientState (gl_flag) );
+	  GE( cogl_wrap_glEnableClientState (gl_flag) );
 	  ctx->enable_flags |= flag;
 	  return TRUE;
 	}
     }
   else if (ctx->enable_flags & flag)
     {
-      GE( glDisableClientState (gl_flag) );
+      GE( cogl_wrap_glDisableClientState (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
   
@@ -265,15 +265,15 @@ cogl_enable_depth_test (gboolean setting)
 {
   if (setting)
     {
-      glEnable (GL_DEPTH_TEST);                                               
-      glEnable (GL_ALPHA_TEST);
+      cogl_wrap_glEnable (GL_DEPTH_TEST);
+      cogl_wrap_glEnable (GL_ALPHA_TEST);
       glDepthFunc (GL_LEQUAL);
-      glAlphaFunc (GL_GREATER, 0.1);
+      cogl_wrap_glAlphaFunc (GL_GREATER, 0.1);
     }
   else
     {
-      glDisable (GL_DEPTH_TEST);                                               
-      glDisable (GL_ALPHA_TEST);
+      cogl_wrap_glDisable (GL_DEPTH_TEST);
+      cogl_wrap_glDisable (GL_ALPHA_TEST);
     }
 }
 
@@ -302,10 +302,10 @@ cogl_color (const ClutterColor *color)
 
 #else
   /* conversion can cause issues with picking on some gles implementations */
-  GE( glColor4x ((color->red << 16) / 0xff,  
-		 (color->green << 16) / 0xff,  
-		 (color->blue << 16) / 0xff,   
-                  (color->alpha << 16) / 0xff));
+  GE( cogl_wrap_glColor4x ((color->red << 16) / 0xff,  
+			   (color->green << 16) / 0xff,  
+			   (color->blue << 16) / 0xff,   
+			   (color->alpha << 16) / 0xff));
 #endif
   
   /* Store alpha for proper blending enables */
@@ -325,18 +325,18 @@ cogl_clip_set (ClutterFixed x_offset,
       GLfixed eqn_top[4] = { 0, CFX_ONE, 0, -y_offset };
       GLfixed eqn_bottom[4] = { 0, -CFX_ONE, 0,  y_offset + height };
 
-      GE( glClipPlanex (GL_CLIP_PLANE0, eqn_left) );
-      GE( glClipPlanex (GL_CLIP_PLANE1, eqn_right) );
-      GE( glClipPlanex (GL_CLIP_PLANE2, eqn_top) );
-      GE( glClipPlanex (GL_CLIP_PLANE3, eqn_bottom) );
-      GE( glEnable (GL_CLIP_PLANE0) );
-      GE( glEnable (GL_CLIP_PLANE1) );
-      GE( glEnable (GL_CLIP_PLANE2) );
-      GE( glEnable (GL_CLIP_PLANE3) );
+      GE( cogl_wrap_glClipPlanex (GL_CLIP_PLANE0, eqn_left) );
+      GE( cogl_wrap_glClipPlanex (GL_CLIP_PLANE1, eqn_right) );
+      GE( cogl_wrap_glClipPlanex (GL_CLIP_PLANE2, eqn_top) );
+      GE( cogl_wrap_glClipPlanex (GL_CLIP_PLANE3, eqn_bottom) );
+      GE( cogl_wrap_glEnable (GL_CLIP_PLANE0) );
+      GE( cogl_wrap_glEnable (GL_CLIP_PLANE1) );
+      GE( cogl_wrap_glEnable (GL_CLIP_PLANE2) );
+      GE( cogl_wrap_glEnable (GL_CLIP_PLANE3) );
     }
   else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
-      GE( glEnable (GL_STENCIL_TEST) );
+      GE( cogl_wrap_glEnable (GL_STENCIL_TEST) );
 
       GE( glClearStencil (0) );
       GE( glClear (GL_STENCIL_BUFFER_BIT) );
@@ -344,7 +344,7 @@ cogl_clip_set (ClutterFixed x_offset,
       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
 
-      GE( glColor4x (CFX_ONE, CFX_ONE, CFX_ONE, CFX_ONE ) );
+      GE( cogl_wrap_glColor4x (CFX_ONE, CFX_ONE, CFX_ONE, CFX_ONE ) );
 
       cogl_rectanglex (x_offset, y_offset, width, height);
 
@@ -358,14 +358,14 @@ cogl_clip_unset (void)
 {
   if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
     {
-      GE( glDisable (GL_CLIP_PLANE3) );
-      GE( glDisable (GL_CLIP_PLANE2) );
-      GE( glDisable (GL_CLIP_PLANE1) );
-      GE( glDisable (GL_CLIP_PLANE0) );
+      GE( cogl_wrap_glDisable (GL_CLIP_PLANE3) );
+      GE( cogl_wrap_glDisable (GL_CLIP_PLANE2) );
+      GE( cogl_wrap_glDisable (GL_CLIP_PLANE1) );
+      GE( cogl_wrap_glDisable (GL_CLIP_PLANE0) );
     }
   else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
-      GE( glDisable (GL_STENCIL_TEST) );
+      GE( cogl_wrap_glDisable (GL_STENCIL_TEST) );
     }
 }
 
@@ -373,7 +373,7 @@ void
 cogl_alpha_func (COGLenum     func, 
 		 ClutterFixed ref)
 {
-  GE( glAlphaFunc (func, CLUTTER_FIXED_TO_FLOAT(ref)) );
+  GE( cogl_wrap_glAlphaFunc (func, CLUTTER_FIXED_TO_FLOAT(ref)) );
 }
 
 /*
@@ -418,7 +418,7 @@ cogl_perspective (ClutterFixed fovy,
   M(2,3) = d;
   M(3,2) = 1 + ~CFX_ONE;
 
-  GE( glMultMatrixx (m) );
+  GE( cogl_wrap_glMultMatrixx (m) );
 #undef M
 }
 
@@ -435,17 +435,17 @@ cogl_setup_viewport (guint        w,
   ClutterFixed z_camera;
   
   GE( glViewport (0, 0, width, height) );
-  GE( glMatrixMode (GL_PROJECTION) );
-  GE( glLoadIdentity () );
+  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+  GE( cogl_wrap_glLoadIdentity () );
 
   /* For Ortho projection.
-   * glOrthox (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
+   * cogl_wrap_glOrthox (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
   */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
   
-  GE( glMatrixMode (GL_MODELVIEW) );
-  GE( glLoadIdentity () );
+  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+  GE( cogl_wrap_glLoadIdentity () );
 
   /*
    * camera distance from screen, 0.5 * tan (FOV)
@@ -464,13 +464,13 @@ cogl_setup_viewport (guint        w,
   }
   
 
-  GE( glTranslatex (-1 << 15, -1 << 15, -z_camera));
+  GE( cogl_wrap_glTranslatex (-1 << 15, -1 << 15, -z_camera));
 
-  GE( glScalex ( CFX_ONE / width, 
+  GE( cogl_wrap_glScalex ( CFX_ONE / width, 
 		 -CFX_ONE / height,
 		 CFX_ONE / width));
 
-  GE( glTranslatex (0, -CFX_ONE * height, 0) );
+  GE( cogl_wrap_glTranslatex (0, -CFX_ONE * height, 0) );
 }
 
 static void
@@ -519,19 +519,19 @@ cogl_features_available (CoglFeatureFlags features)
 void
 cogl_get_modelview_matrix (ClutterFixed m[16])
 {
-  glGetFixedv(GL_MODELVIEW_MATRIX, &m[0]);
+  cogl_wrap_glGetFixedv(GL_MODELVIEW_MATRIX, &m[0]);
 }
 
 void
 cogl_get_projection_matrix (ClutterFixed m[16])
 {
-  glGetFixedv(GL_PROJECTION_MATRIX, &m[0]);
+  cogl_wrap_glGetFixedv(GL_PROJECTION_MATRIX, &m[0]);
 }
 
 void
 cogl_get_viewport (ClutterFixed v[4])
 {
-  glGetFixedv(GL_VIEWPORT, &v[0]);
+  cogl_wrap_glGetFixedv(GL_VIEWPORT, &v[0]);
 }
 
 void
@@ -560,16 +560,16 @@ cogl_fog_set (const ClutterColor *fog_color,
   fogColor[2] = (fog_color->blue  << 16) / 0xff;
   fogColor[3] = (fog_color->alpha << 16) / 0xff;
 
-  glEnable (GL_FOG);
+  cogl_wrap_glEnable (GL_FOG);
 
-  glFogxv (GL_FOG_COLOR, fogColor);
+  cogl_wrap_glFogxv (GL_FOG_COLOR, fogColor);
 
-  glFogx (GL_FOG_MODE, GL_LINEAR);
+  cogl_wrap_glFogx (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
-  glFogx (GL_FOG_DENSITY, (GLfixed) density);
-  glFogx (GL_FOG_START, (GLfixed) z_near);
-  glFogx (GL_FOG_END, (GLfixed) z_far);
+  cogl_wrap_glFogx (GL_FOG_DENSITY, (GLfixed) density);
+  cogl_wrap_glFogx (GL_FOG_START, (GLfixed) z_near);
+  cogl_wrap_glFogx (GL_FOG_END, (GLfixed) z_far);
 }
 
 /* Shaders, no support on regular OpenGL 1.1 */

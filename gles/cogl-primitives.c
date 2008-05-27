@@ -57,8 +57,8 @@ _cogl_rectangle (gint x,
 
   cogl_enable (COGL_ENABLE_VERTEX_ARRAY
               | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
-  GE ( glVertexPointer (2, GL_SHORT, 0, rect_verts ) );
-  GE ( glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
+  GE ( cogl_wrap_glVertexPointer (2, GL_SHORT, 0, rect_verts ) );
+  GE ( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
 }
 
 
@@ -81,8 +81,8 @@ _cogl_rectanglex (ClutterFixed x,
 	       | (ctx->color_alpha < 255
 		  ? COGL_ENABLE_BLEND : 0));
   
-  GE( glVertexPointer (2, GL_FIXED, 0, rect_verts) );
-  GE( glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
+  GE( cogl_wrap_glVertexPointer (2, GL_FIXED, 0, rect_verts) );
+  GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
 
 }
 
@@ -147,8 +147,8 @@ _cogl_path_stroke_nodes ()
 	       | (ctx->color_alpha < 255
 		  ? COGL_ENABLE_BLEND : 0));
   
-  GE( glVertexPointer (2, GL_FIXED, 0, ctx->path_nodes) );
-  GE( glDrawArrays (GL_LINE_STRIP, 0, ctx->path_nodes_size) );
+  GE( cogl_wrap_glVertexPointer (2, GL_FIXED, 0, ctx->path_nodes) );
+  GE( cogl_wrap_glDrawArrays (GL_LINE_STRIP, 0, ctx->path_nodes_size) );
 }
 
 static gint compare_ints (gconstpointer a,
@@ -176,7 +176,7 @@ _cogl_path_fill_nodes ()
   
   GE( glClear (GL_STENCIL_BUFFER_BIT) );
 
-  GE( glEnable (GL_STENCIL_TEST) );
+  GE( cogl_wrap_glEnable (GL_STENCIL_TEST) );
   GE( glStencilFunc (GL_ALWAYS, 0x0, 0x0) );
   GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
   GE( glColorMask (GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE) );
@@ -184,8 +184,8 @@ _cogl_path_fill_nodes ()
   cogl_enable (COGL_ENABLE_VERTEX_ARRAY
 	       | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
   
-  GE( glVertexPointer (2, GL_FIXED, 0, ctx->path_nodes) );
-  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, ctx->path_nodes_size) );
+  GE( cogl_wrap_glVertexPointer (2, GL_FIXED, 0, ctx->path_nodes) );
+  GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_FAN, 0, ctx->path_nodes_size) );
   
   GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
   GE( glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
@@ -194,7 +194,7 @@ _cogl_path_fill_nodes ()
   
   cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
   
-  GE( glDisable (GL_STENCIL_TEST) );
+  GE( cogl_wrap_glDisable (GL_STENCIL_TEST) );
 #else
   {
     /* This is our edge list it stores intersections between our curve and
@@ -347,8 +347,8 @@ fill_close:
         /* render triangles */
         cogl_enable (COGL_ENABLE_VERTEX_ARRAY
                     | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
-        GE ( glVertexPointer (2, GL_FIXED, 0, coords ) );
-        GE ( glDrawArrays (GL_TRIANGLES, 0, spans * 2 * 3));
+        GE ( cogl_wrap_glVertexPointer (2, GL_FIXED, 0, coords ) );
+        GE ( cogl_wrap_glDrawArrays (GL_TRIANGLES, 0, spans * 2 * 3));
         g_free (coords);
      }
   }

@@ -29,8 +29,29 @@ libclutter_cogl_la_SOURCES = \
 	cogl-primitives.c \
 	cogl-texture.c \
 	cogl-fbo.c \
-	cogl-context.c
+	cogl-context.c \
+	cogl-gles2-wrapper.h
 
-EXTRA_DIST = cogl-defines.h.in
+if USE_GLES2_WRAPPER
+libclutter_cogl_la_SOURCES += \
+	cogl-gles2-wrapper.c \
+	cogl-fixed-vertex-shader.h \
+	cogl-fixed-vertex-shader.c \
+	cogl-fixed-fragment-shader.h \
+	cogl-fixed-fragment-shader.c
+endif
+
+EXTRA_DIST = cogl-defines.h.in \
+	stringify.sh \
+	cogl-fixed-vertex-shader.glsl \
+	cogl-fixed-fragment-shader.glsl
 
 libclutter_cogl_la_LIBADD =  $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
+
+%.h : %.glsl
+	/bin/sh $(top_srcdir)/clutter/cogl/gles/stringify.sh -h $<
+
+%.c : %.glsl
+	/bin/sh $(top_srcdir)/clutter/cogl/gles/stringify.sh $<
+
+cogl-gles2-wrapper.lo : cogl-fixed-vertex-shader.h cogl-fixed-fragment-shader.h

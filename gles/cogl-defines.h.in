@@ -23,10 +23,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <GLES/gl.h>
-
 #ifndef __COGL_DEFINES_H__
 #define __COGL_DEFINES_H__
+
+#include <@CLUTTER_GL_HEADER@>
 
 G_BEGIN_DECLS
 
