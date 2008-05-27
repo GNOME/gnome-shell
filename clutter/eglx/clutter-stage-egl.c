@@ -91,7 +91,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
     {
       int c;
       int num_configs;
-      int max_tex_units;
       EGLConfig *all_configs;
 
       EGLint cfg_attribs[] = {
@@ -137,10 +136,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
 	  CLUTTER_NOTE (BACKEND, "EGLConfig == R:%d G:%d B:%d A:%d S:%d \n",
 		        red, green, blue, alpha, stencil);
 	}
-
-      max_tex_units = 0;
-      glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_tex_units);
-      CLUTTER_NOTE (BACKEND, "Texture units: %d\n", max_tex_units);
 
       g_free (all_configs);
 

@@ -35,6 +35,8 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 
+#include "cogl-gles2-wrapper.h"
+
 #include <string.h>
 #include <stdlib.h>
 /*
@@ -220,7 +222,8 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
 				       slice_bmp.height);
 	  
 	  /* Upload new image data */
-	  GE( glBindTexture (tex->gl_target, gl_handle) );
+	  GE( cogl_gles2_wrapper_bind_texture (tex->gl_target, gl_handle,
+					       tex->gl_intformat) );
 
 	  GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 1) );
 	  
@@ -385,18 +388,18 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
      (0,0 in bottom-left corner to draw the texture
      upside-down so we match the way glReadPixels works) */
   
-  GE( glMatrixMode (GL_PROJECTION) );
-  GE( glPushMatrix () );
-  GE( glLoadIdentity () );
+  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+  GE( cogl_wrap_glPushMatrix () );
+  GE( cogl_wrap_glLoadIdentity () );
   
-  GE( glOrthox (0, CLUTTER_INT_TO_FIXED (viewport[2]),
-		0, CLUTTER_INT_TO_FIXED (viewport[3]),
-		CLUTTER_INT_TO_FIXED (0),
-		CLUTTER_INT_TO_FIXED (100)) );
+  GE( cogl_wrap_glOrthox (0, CLUTTER_INT_TO_FIXED (viewport[2]),
+			  0, CLUTTER_INT_TO_FIXED (viewport[3]),
+			  CLUTTER_INT_TO_FIXED (0),
+			  CLUTTER_INT_TO_FIXED (100)) );
   
-  GE( glMatrixMode (GL_MODELVIEW) );
-  GE( glPushMatrix () );
-  GE( glLoadIdentity () );
+  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+  GE( cogl_wrap_glPushMatrix () );
+  GE( cogl_wrap_glLoadIdentity () );
   
   /* Draw to all channels */
   cogl_draw_buffer (COGL_WINDOW_BUFFER | COGL_MASK_BUFFER, 0);
@@ -465,10 +468,10 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
     }
   
   /* Restore old state */
-  glMatrixMode (GL_PROJECTION);
-  glPopMatrix ();
-  glMatrixMode (GL_MODELVIEW);
-  glPopMatrix ();
+  cogl_wrap_glMatrixMode (GL_PROJECTION);
+  cogl_wrap_glPopMatrix ();
+  cogl_wrap_glMatrixMode (GL_MODELVIEW);
+  cogl_wrap_glPopMatrix ();
   
   cogl_draw_buffer (COGL_WINDOW_BUFFER, 0);
   cogl_blend_func (old_src_factor, old_dst_factor);
@@ -590,7 +593,8 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 	  /* Upload new image data */
 	  GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 1) );
 	  
-	  GE( glBindTexture (tex->gl_target, gl_handle) );
+	  GE( cogl_gles2_wrapper_bind_texture (tex->gl_target, gl_handle,
+					       tex->gl_intformat) );
 	  
 	  GE( glTexSubImage2D (tex->gl_target, 0,
 			       local_x, local_y,
@@ -808,7 +812,10 @@ _cogl_texture_slices_create (CoglTexture *tex)
 	    y_span->size - y_span->waste);
 #endif
 	  /* Setup texture parameters */
-          GE( glBindTexture   (tex->gl_target, gl_handles[y * n_x_slices + x]) );
+	  GE( cogl_gles2_wrapper_bind_texture (tex->gl_target,
+					       gl_handles[y * n_x_slices + x],
+					       tex->gl_intformat) );
+
           GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER, tex->mag_filter) );
           GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER, tex->min_filter) );
           GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE) );
@@ -1546,7 +1553,7 @@ cogl_texture_set_filters (CoglHandle handle,
   for (i=0; i<tex->slice_gl_handles->len; ++i)
     {
       gl_handle = g_array_index (tex->slice_gl_handles, GLuint, i);
-      GE( glBindTexture   (tex->gl_target, gl_handle) );
+      GE( glBindTexture (tex->gl_target, gl_handle) );
       GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER, tex->mag_filter) );
       GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER, tex->min_filter) );
     }
@@ -1772,8 +1779,8 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   
   cogl_enable (enable_flags);
   
-  GE( glTexCoordPointer (2, GL_FIXED, 0, tex_coords) );
-  GE( glVertexPointer   (2, GL_FIXED, 0, quad_coords) );
+  GE( cogl_wrap_glTexCoordPointer (2, GL_FIXED, 0, tex_coords) );
+  GE( cogl_wrap_glVertexPointer   (2, GL_FIXED, 0, quad_coords) );
   
   /* Scale ratio from texture to quad widths */
   tw = CLUTTER_INT_TO_FIXED (tex->bitmap.width);
@@ -1865,7 +1872,8 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 				     iter_y.index * iter_x.array->len +
 				     iter_x.index);
 	  
-	  GE( glBindTexture (tex->gl_target, gl_handle) );
+	  GE( cogl_gles2_wrapper_bind_texture (tex->gl_target, gl_handle,
+					       tex->gl_intformat) );
 	  
 	  /* Draw textured quad */
 	  tex_coords[0] = slice_tx1; tex_coords[1] = slice_ty1;
@@ -1878,7 +1886,7 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 	  quad_coords[4] = slice_qx1; quad_coords[5] = slice_qy2;
 	  quad_coords[6] = slice_qx2; quad_coords[7] = slice_qy2;
 	  
-	  GE (glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
+	  GE (cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
 	}
     }
 }
@@ -1919,12 +1927,13 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   
   cogl_enable (enable_flags);
   
-  GE( glTexCoordPointer (2, GL_FIXED, 0, tex_coords) );
-  GE( glVertexPointer   (2, GL_FIXED, 0, quad_coords) );
+  GE( cogl_wrap_glTexCoordPointer (2, GL_FIXED, 0, tex_coords) );
+  GE( cogl_wrap_glVertexPointer   (2, GL_FIXED, 0, quad_coords) );
   
   /* Pick and bind opengl texture object */
   gl_handle = g_array_index (tex->slice_gl_handles, GLuint, 0);
-  GE( glBindTexture (tex->gl_target, gl_handle) );
+  GE( cogl_gles2_wrapper_bind_texture (tex->gl_target, gl_handle,
+				       tex->gl_intformat) );
   
   /* Don't include the waste in the texture coordinates */
   x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
@@ -1945,7 +1954,7 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   quad_coords[4] = x1; quad_coords[5] = y2;
   quad_coords[6] = x2; quad_coords[7] = y2;
   
-  GE (glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
+  GE (cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
 }
 
 void
@@ -2106,14 +2115,14 @@ cogl_texture_polygon (CoglHandle         handle,
   if (use_color)
     {
       enable_flags |= COGL_ENABLE_COLOR_ARRAY;
-      GE( glColorPointer (4, GL_FIXED, sizeof (CoglTextureGLVertex),
-			  ctx->texture_vertices[0].c) );
+      GE( cogl_wrap_glColorPointer (4, GL_FIXED, sizeof (CoglTextureGLVertex),
+				    ctx->texture_vertices[0].c) );
     }
  
-  GE( glVertexPointer (3, GL_FIXED, sizeof (CoglTextureGLVertex),
-		       ctx->texture_vertices[0].v) );
-  GE( glTexCoordPointer (2, GL_FIXED, sizeof (CoglTextureGLVertex),
-			 ctx->texture_vertices[0].t) );
+  GE( cogl_wrap_glVertexPointer (3, GL_FIXED, sizeof (CoglTextureGLVertex),
+				 ctx->texture_vertices[0].v) );
+  GE( cogl_wrap_glTexCoordPointer (2, GL_FIXED, sizeof (CoglTextureGLVertex),
+				   ctx->texture_vertices[0].t) );
 
   cogl_enable (enable_flags);
   
@@ -2136,9 +2145,10 @@ cogl_texture_polygon (CoglHandle         handle,
       p->c[3] = (vertices[i].color.alpha << 16) / 0xff;
     }
 
-  GE( glBindTexture (tex->gl_target, gl_handle) );
+  GE( cogl_gles2_wrapper_bind_texture (tex->gl_target, gl_handle,
+				       tex->gl_intformat) );
 
-  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices) );
+  GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices) );
 
   /* Set the last color so that the cache of the alpha value will work
      properly */

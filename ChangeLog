@@ -1,3 +1,46 @@
+2008-05-27  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/eglx/clutter-stage-egl.h: 
+	* clutter/eglx/clutter-egl-headers.h: 
+	* clutter/eglx/clutter-backend-egl.h: 
+	* clutter/eglx/Makefile.am: Include the GLES and EGL headers via
+	clutter-egl-headers.h so that the right version can be used
+	depending on whether the GLES 2 wrapper is being used.
+
+	* configure.ac: Added an automake conditional for whether the GLES
+	2 wrapper should be used.
+
+	* clutter/eglx/clutter-stage-egl.c (clutter_stage_egl_realize):
+	Remove the call to glGetIntegerv to get the max texture size. It
+	was being called before the GL context was bound so it didn't work
+	anyway and it was causing trouble for the GLES 2 simulator.
+
+	* clutter/cogl/gles/stringify.sh: Shell script to convert the
+	shaders into a C string.
+
+	* clutter/cogl/gles/cogl-gles2-wrapper.h: 
+	* clutter/cogl/gles/cogl-gles2-wrapper.c: Wrappers for most of the
+	missing GL functions in GLES 2.
+
+	* clutter/cogl/gles/cogl-fixed-fragment-shader.glsl: 
+	* clutter/cogl/gles/cogl-fixed-vertex-shader.glsl: New shaders for
+	GLES 2
+
+	* clutter/cogl/gles/cogl-defines.h.in: Use the @CLUTTER_GL_HEADER@
+	macro instead of always using the GLES 1 header.
+
+	* clutter/cogl/gles/cogl-context.h (CoglContext): Include a field
+	for the state of the GLES 2 wrapper.
+
+	* clutter/cogl/gles/cogl-texture.c: 
+	* clutter/cogl/gles/cogl-primitives.c: 
+	* clutter/cogl/gles/cogl.c: Use wrapped versions of the GL
+	functions where neccessary.
+
+	* clutter/cogl/gles/Makefile.am: Add sources for the GLES 2
+	wrapper and an extra build step to put the GLSL files into a C
+	string whenever the files change.
+
 2008-05-26  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/x11/clutter-stage-x11.c: (clutter_stage_x11_request_coords):

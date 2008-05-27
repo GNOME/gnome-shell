@@ -20,4 +20,5 @@ libclutter_eglx_la_SOURCES = \
 	clutter-backend-egl.c \
 	clutter-stage-egl.h \
 	clutter-stage-egl.c \
-	clutter-eglx.h
+	clutter-eglx.h \
+	clutter-egl-headers.h

@@ -8,8 +8,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#include <GLES/gl.h>
-#include <GLES/egl.h>
+#include "clutter-egl-headers.h"
 
 #include "../x11/clutter-stage-x11.h"
 

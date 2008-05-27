@@ -180,6 +180,7 @@ fi
 AM_CONDITIONAL(X11_TESTS, test "x$x11_tests" != "xno")
 
 clutter_gl_header=""
+use_gles2_wrapper="no"
 
 if test "x$clutterbackend" = "xeglnative" || test "x$clutterbackend" = "xeglx" || test "x$clutterbackend" = "xfruity" 
 then
@@ -230,6 +231,8 @@ case $glesversion in
 	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
     GLES_LIBS="-lGLESv2 -lEGL"
+
+    use_gles2_wrapper=yes
   ;;
   fruity)
     CLUTTER_COGL="gles"
@@ -241,6 +244,8 @@ case $glesversion in
 
 esac
 fi
+
+AM_CONDITIONAL(USE_GLES2_WRAPPER, test "x$use_gles2_wrapper" != "xno")
 
 case $clutterbackend in
 

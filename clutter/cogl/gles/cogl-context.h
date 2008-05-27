@@ -28,6 +28,8 @@
 
 #include "cogl-primitives.h"
 
+#include "cogl-gles2-wrapper.h"
+
 typedef struct
 {
   GLfixed v[3];
@@ -64,6 +66,10 @@ typedef struct
   /* Framebuffer objects */
   GArray              *fbo_handles;
   CoglBufferTarget     draw_buffer;
+
+#ifdef HAVE_COGL_GLES2
+  CoglGles2Wrapper     gles2;
+#endif
   
 } CoglContext;
 

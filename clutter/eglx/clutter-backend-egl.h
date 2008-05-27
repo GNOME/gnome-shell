@@ -28,8 +28,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
-#include <GLES/gl.h>
-#include <GLES/egl.h>
+#include "clutter-egl-headers.h"
 
 #include "../x11/clutter-backend-x11.h"
 #include "clutter-eglx.h"
