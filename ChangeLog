@@ -1,3 +1,9 @@
+2008-05-28  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/prefs.c (handle_preference_update_string,
+        meta_prefs_remove_listener, queue_changed): Make disabling
+        gconf work again.  Closes #530870.
+
 2008-05-26  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.23.34.

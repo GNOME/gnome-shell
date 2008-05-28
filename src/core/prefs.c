@@ -689,10 +689,6 @@ handle_preference_update_string (const gchar *key, GConfValue *value)
   return TRUE;
 }
 
-#endif /* HAVE_GCONF */
-
-/* FIXME: Ultimately these should be no-ops if !HAVE_GCONF. */
-
 void
 meta_prefs_add_listener (MetaPrefsChangedFunc func,
                          gpointer             data)
@@ -732,7 +728,6 @@ meta_prefs_remove_listener (MetaPrefsChangedFunc func,
   meta_bug ("Did not find listener to remove\n");
 }
 
-#ifdef HAVE_GCONF
 static void
 emit_changed (MetaPreference pref)
 {
@@ -803,7 +798,25 @@ queue_changed (MetaPreference pref)
     changed_idle = g_idle_add_full (META_PRIORITY_PREFS_NOTIFY,
                                     changed_idle_handler, NULL, NULL);
 }
+
+#else /* HAVE_GCONF */
+
+void
+meta_prefs_add_listener (MetaPrefsChangedFunc func,
+                         gpointer             data)
+{
+  /* Nothing, because they have gconf turned off */
+}
+
+void
+meta_prefs_remove_listener (MetaPrefsChangedFunc func,
+                            gpointer             data)
+{
+  /* Nothing, because they have gconf turned off */
+}
+
 #endif /* HAVE_GCONF */
+
 
 static gchar *gconf_dirs_we_are_interested_in[] = {
   "/apps/metacity",
