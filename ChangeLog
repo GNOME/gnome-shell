@@ -1,5 +1,10 @@
 2008-05-28  Neil Roberts  <neil@o-hand.com>
 
+	* clutter/cogl/gles/cogl-gles2-wrapper.c (cogl_wrap_glGetFixedv):
+	Filled in the wrapper for glGetFixedv
+
+2008-05-28  Neil Roberts  <neil@o-hand.com>
+
 	* clutter/cogl/gles/cogl-texture.c: Use the wrapper for
 	glTexParameteri. Call glGenerateMipmap after every change to the
 	texture image data.
