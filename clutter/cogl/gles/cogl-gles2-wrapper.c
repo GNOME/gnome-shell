@@ -630,3 +630,10 @@ cogl_wrap_glFogxv (GLenum pname, const GLfixed *params)
 {
   /* FIXME */
 }
+
+void
+cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param)
+{
+  if (pname != GL_GENERATE_MIPMAP)
+    glTexParameteri (target, pname, param);
+}

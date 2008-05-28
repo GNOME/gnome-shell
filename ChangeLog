@@ -1,3 +1,15 @@
+2008-05-28  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gles/cogl-texture.c: Use the wrapper for
+	glTexParameteri. Call glGenerateMipmap after every change to the
+	texture image data.
+
+	* clutter/cogl/gles/cogl-gles2-wrapper.h: 
+	* clutter/cogl/gles/cogl-gles2-wrapper.c: Added a wrapper for
+	glTexParameteri so that it can ignore requests to set
+	GL_GENERATE_MIPMAP. Added a wrapper for glGenerateMipmap that does
+	nothing on GLES 1
+
 2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script.c:
