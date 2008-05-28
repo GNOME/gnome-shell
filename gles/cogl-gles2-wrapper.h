@@ -44,10 +44,18 @@ struct _CoglGles2Wrapper
   GLuint    fragment_shader;
 
   GLint     mvp_matrix_uniform;
+  GLint     modelview_matrix_uniform;
   GLint     texture_matrix_uniform;
   GLint     texture_2d_enabled_uniform;
   GLint     bound_texture_uniform;
   GLint     alpha_only_uniform;
+
+  GLint     fog_enabled_uniform;
+  GLint     fog_mode_uniform;
+  GLint     fog_density_uniform;
+  GLint     fog_start_uniform;
+  GLint     fog_end_uniform;
+  GLint     fog_color_uniform;
 
   GLuint    matrix_mode;
   GLfloat   modelview_stack[COGL_GLES2_MODELVIEW_STACK_SIZE * 16];
