@@ -1,3 +1,23 @@
+2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Fix merging of objects with the same id.
+
+	* clutter/clutter-script.c:
+	(json_object_end): If there already is an ObjectInfo under the
+	parsed id, merge the construction with the currently stored
+	state.
+
+	(parse_children), (parse_signals),
+	(parse_behaviours): Append the newly parsed children, signals
+	and behaviours, in case the ObjectInfo already has unresolved
+	items.
+
+	(clutter_script_construct_object): Fix a typo in the type check.
+	
+	(clutter_script_init): Do not copy the key inside the hash
+	table holding the objects - we are already holding it inside
+	the value.
+
 2008-05-28  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/cogl/gles/cogl-gles2-wrapper.c (cogl_wrap_glGetFixedv):
