@@ -32,14 +32,17 @@
 
 #include <stdarg.h>
 #include <glib-object.h>
+#include <gobject/gvaluecollector.h>
 
 #include "clutter-container.h"
+#include "clutter-child-meta.h"
 
 #include "clutter-debug.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-enum-types.h"
+
 
 /**
  * SECTION:clutter-container
@@ -58,11 +61,33 @@ enum
 {
   ACTOR_ADDED,
   ACTOR_REMOVED,
+  CHILD_NOTIFY,
 
   LAST_SIGNAL
 };
 
 static guint container_signals[LAST_SIGNAL] = { 0, };
+static GQuark quark_child_meta = 0;
+
+static ClutterChildMeta *
+get_child_meta (ClutterContainer *container,
+                ClutterActor     *actor);
+
+static void
+create_child_meta (ClutterContainer *container,
+                   ClutterActor     *actor);
+
+static void
+destroy_child_meta (ClutterContainer *container,
+                    ClutterActor     *actor);
+
+static void
+clutter_container_create_child_meta  (ClutterContainer *container,
+                                      ClutterActor     *actor);
+static void
+clutter_container_destroy_child_meta (ClutterContainer *container,
+                                      ClutterActor     *actor);
+
 
 static void
 clutter_container_base_init (gpointer g_iface)
@@ -72,8 +97,12 @@ clutter_container_base_init (gpointer g_iface)
   if (!initialised)
     {
       GType iface_type = G_TYPE_FROM_INTERFACE (g_iface);
+      ClutterContainerIface *iface = g_iface;
 
       initialised = TRUE;
+
+      quark_child_meta =
+        g_quark_from_static_string ("clutter-container-child-data");
 
       /**
        * ClutterContainer::actor-added:
@@ -86,7 +115,7 @@ clutter_container_base_init (gpointer g_iface)
        * Since: 0.4
        */
       container_signals[ACTOR_ADDED] =
-        g_signal_new ("actor-added",
+        g_signal_new (I_("actor-added"),
                       iface_type,
                       G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (ClutterContainerIface, actor_added),
@@ -105,7 +134,7 @@ clutter_container_base_init (gpointer g_iface)
        * Since: 0.4
        */
       container_signals[ACTOR_REMOVED] =
-        g_signal_new ("actor-removed",
+        g_signal_new (I_("actor-removed"),
                       iface_type,
                       G_SIGNAL_RUN_FIRST,
                       G_STRUCT_OFFSET (ClutterContainerIface, actor_removed),
@@ -113,6 +142,32 @@ clutter_container_base_init (gpointer g_iface)
                       clutter_marshal_VOID__OBJECT,
                       G_TYPE_NONE, 1,
                       CLUTTER_TYPE_ACTOR);
+
+      /**
+       * ClutterContainer::child-notify:
+       * @container: the container which received the signal
+       * @actor: the child that has had a property set. 
+       *
+       * The ::child-notify signal is emitted each time a property is
+       * being set through the clutter_container_child_set() and
+       * clutter_container_child_set_property() calls.
+       *
+       * Since: 0.8
+       */
+      container_signals[CHILD_NOTIFY] =
+        g_signal_new (I_("child-notify"),
+                      iface_type,
+                      G_SIGNAL_RUN_FIRST,
+                      G_STRUCT_OFFSET (ClutterContainerIface, child_notify),
+                      NULL, NULL,
+                      clutter_marshal_VOID__OBJECT_OBJECT_PARAM,
+                      G_TYPE_NONE, 2,
+                      CLUTTER_TYPE_ACTOR, G_TYPE_PARAM);
+
+      iface->child_meta_type    = G_TYPE_INVALID;
+      iface->create_child_meta  = create_child_meta;
+      iface->destroy_child_meta = destroy_child_meta;
+      iface->get_child_meta     = get_child_meta;
     }
 }
 
@@ -127,11 +182,11 @@ clutter_container_get_type (void)
       {
         sizeof (ClutterContainerIface),
         clutter_container_base_init,
-        NULL, /* iface_finalize */
+        NULL, /* iface_base_finalize */
       };
 
       container_type = g_type_register_static (G_TYPE_INTERFACE,
-                                               "ClutterContainer",
+                                               I_("ClutterContainer"),
                                                &container_info, 0);
 
       g_type_interface_add_prerequisite (container_type, G_TYPE_OBJECT);
@@ -201,6 +256,7 @@ clutter_container_add_actor (ClutterContainer *container,
       return;
     }
 
+  clutter_container_create_child_meta (container, actor);
   CLUTTER_CONTAINER_GET_IFACE (container)->add (container, actor);
 }
 
@@ -293,6 +349,7 @@ clutter_container_remove_actor (ClutterContainer *container,
       return;
     }
 
+  clutter_container_destroy_child_meta (container, actor);
   CLUTTER_CONTAINER_GET_IFACE (container)->remove (container, actor);
 }
 
@@ -320,7 +377,6 @@ clutter_container_remove_valist (ClutterContainer *container,
   while (actor)
     {
       clutter_container_remove_actor (container, actor);
-
       actor = va_arg (var_args, ClutterActor*);
     }
 }
@@ -376,7 +432,9 @@ clutter_container_foreach (ClutterContainer *container,
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (callback != NULL);
 
-  CLUTTER_CONTAINER_GET_IFACE (container)->foreach (container, callback, user_data);
+  CLUTTER_CONTAINER_GET_IFACE (container)->foreach (container,
+                                                    callback,
+                                                    user_data);
 }
 
 /**
@@ -392,7 +450,7 @@ clutter_container_foreach (ClutterContainer *container,
 void
 clutter_container_raise_child (ClutterContainer *container,
                                ClutterActor     *actor,
-                         ClutterActor     *sibling)
+                               ClutterActor     *sibling)
 {
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
@@ -436,7 +494,7 @@ clutter_container_raise_child (ClutterContainer *container,
 void
 clutter_container_lower_child (ClutterContainer *container,
                                ClutterActor     *actor,
-                         ClutterActor     *sibling)
+                               ClutterActor     *sibling)
 {
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
@@ -506,10 +564,11 @@ clutter_container_find_child_by_name (ClutterContainer *container,
   ClutterActor *actor = NULL;
 
   g_return_val_if_fail (CLUTTER_IS_CONTAINER (container), NULL);
+  g_return_val_if_fail (child_name != NULL, NULL);
 
   children = clutter_container_get_children (container);
 
-  for (iter=children; iter; iter = g_list_next (iter))
+  for (iter = children; iter; iter = g_list_next (iter))
     {
       ClutterActor *a;
       const gchar  *iter_name;
@@ -532,6 +591,529 @@ clutter_container_find_child_by_name (ClutterContainer *container,
             break;
 	}
     }
+
   g_list_free (children);
+
   return actor;
+}
+
+static ClutterChildMeta *
+get_child_meta (ClutterContainer *container,
+                ClutterActor     *actor)
+{
+  ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+
+  if (iface->child_meta_type == G_TYPE_INVALID)
+    return NULL;
+  else
+    {
+      ClutterChildMeta *child_meta = NULL;
+      GSList *list, *iter;
+
+      list = g_object_get_qdata (G_OBJECT (container), quark_child_meta);
+      for (iter = list; iter; iter = g_slist_next (iter))
+        {
+          child_meta = iter->data;
+
+          if (child_meta->actor == actor)
+            return child_meta;
+        }
+    }
+
+  return NULL;
+}
+
+static void
+create_child_meta (ClutterContainer *container,
+                   ClutterActor     *actor)
+{
+  ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  ClutterChildMeta      *child_meta = NULL;
+  GSList                *data_list = NULL;
+
+  if (iface->child_meta_type == G_TYPE_INVALID)
+    return;
+
+  if (!g_type_is_a (iface->child_meta_type, CLUTTER_TYPE_CHILD_META))
+    {
+      g_warning ("%s: Child data of type `%s' is not a ClutterChildMeta",
+                 G_STRLOC, g_type_name (iface->child_meta_type));
+      return;
+    }
+
+  child_meta            = g_object_new (iface->child_meta_type, NULL);
+  child_meta->container = container;
+  child_meta->actor     = actor;
+
+  data_list = g_object_get_qdata (G_OBJECT (container), quark_child_meta);
+  data_list = g_slist_prepend (data_list, child_meta);
+  g_object_set_qdata (G_OBJECT (container), quark_child_meta, data_list);
+}
+
+static void
+destroy_child_meta (ClutterContainer *container,
+                    ClutterActor     *actor)
+{
+  ClutterContainerIface *iface  = CLUTTER_CONTAINER_GET_IFACE (container);
+  GObject               *object = G_OBJECT (container);
+
+  if (iface->child_meta_type == G_TYPE_INVALID)
+    return;
+  else
+    {
+      ClutterChildMeta *child_meta = NULL;
+      GSList *list = g_object_get_qdata (object, quark_child_meta);
+      GSList *iter;
+
+      for (iter = list; iter; iter = g_slist_next (iter))
+        {
+          child_meta = iter->data;
+
+          if (child_meta->actor == actor)
+            break;
+          else
+            child_meta = NULL;
+        }
+
+      if (child_meta)
+        {
+          list = g_slist_remove (list, child_meta);
+          g_object_set_qdata (object, quark_child_meta, list);
+
+          g_object_unref (child_meta);
+        }
+    }
+}
+
+/**
+ * clutter_container_get_child_meta:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor that is a child of @container.
+ *
+ * Retrieves the #ClutterChildMeta which contains the data about the
+ * @container specific state for @actor.
+ *
+ * Return value: the #ClutterChildMeta for the @actor child of @container
+ *   or %NULL if the specifiec actor does not exist or the container is not
+ *   configured to provide #ClutterChildMeta<!-- -->s
+ *
+ * Since: 0.8
+ */
+ClutterChildMeta *
+clutter_container_get_child_meta (ClutterContainer *container,
+                                  ClutterActor     *actor)
+{
+  ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+
+  if (iface->child_meta_type == G_TYPE_INVALID)
+    return NULL;
+
+  if (G_LIKELY (iface->get_child_meta))
+    return iface->get_child_meta (container, actor);
+
+  return NULL;
+}
+
+/*
+ * clutter_container_create_child_meta:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor
+ *
+ * Creates the #ClutterChildMeta wrapping @actor inside the
+ * @container, if the #ClutterContainerIface::child_meta_type
+ * class member is not set to %G_TYPE_INVALID.
+ */
+static void
+clutter_container_create_child_meta (ClutterContainer *container,
+                                     ClutterActor     *actor)
+{
+  ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+
+  if (iface->child_meta_type == G_TYPE_INVALID)
+    return;
+
+  g_assert (g_type_is_a (iface->child_meta_type, CLUTTER_TYPE_CHILD_META));
+
+  if (G_LIKELY (iface->create_child_meta))
+    iface->create_child_meta (container, actor);
+}
+
+/*
+ * clutter_container_destroy_child_meta:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor
+ *
+ * Destroys the #ClutterChildMeta wrapping @actor inside the
+ * @container, if any.
+ */
+static void
+clutter_container_destroy_child_meta (ClutterContainer *container,
+                                      ClutterActor     *actor)
+{
+  ClutterContainerIface *iface = CLUTTER_CONTAINER_GET_IFACE (container);
+
+  if (iface->child_meta_type == G_TYPE_INVALID)
+    return;
+
+  if (G_LIKELY (iface->destroy_child_meta))
+    iface->destroy_child_meta (container, actor);
+}
+
+/**
+ * clutter_container_class_find_child_property:
+ * @klass: a #GObjectClass implementing the #ClutterContainer interface.
+ * @property_name: a property name.
+ *
+ * Looks up the #GParamSpec for a child property of @klass.
+ *
+ * Return value: The #GParamSpec for the property or %NULL if no such
+ *   property exist.
+ *
+ * Since: 0.8
+ */
+GParamSpec *
+clutter_container_class_find_child_property (GObjectClass *klass,
+                                             const gchar  *property_name)
+{
+  ClutterContainerIface *iface;
+  GObjectClass          *child_class;
+  GParamSpec            *pspec;
+
+  g_return_val_if_fail (G_IS_OBJECT_CLASS (klass), NULL);
+  g_return_val_if_fail (property_name != NULL, NULL);
+  g_return_val_if_fail (g_type_is_a (G_TYPE_FROM_CLASS (klass),
+                                     CLUTTER_TYPE_CONTAINER),
+                        NULL);
+
+  iface = g_type_interface_peek (klass, CLUTTER_TYPE_CONTAINER);
+  g_return_val_if_fail (iface != NULL, NULL);
+
+  if (iface->child_meta_type == G_TYPE_INVALID)
+    return NULL;
+
+  child_class = g_type_class_ref (iface->child_meta_type);
+  pspec = g_object_class_find_property (child_class, property_name);
+  g_type_class_unref (child_class);
+
+  return pspec;
+}
+
+/**
+ * clutter_container_class_list_child_properties:
+ * @klass: a #GObjectClass implementing the #ClutterContainer interface.
+ * @n_properties: return location for length of returned array.
+ *
+ * Returns an array of #GParamSpec for all child properties.
+ *
+ * Return value: an array of #GParamSpec<!-- -->s which should be freed
+ *   after use.
+ *
+ * Since: 0.8
+ */
+GParamSpec **
+clutter_container_class_list_child_properties (GObjectClass *klass,
+                                               guint        *n_properties)
+{
+  ClutterContainerIface *iface;
+  GObjectClass          *child_class;
+  GParamSpec           **retval;
+
+  g_return_val_if_fail (G_IS_OBJECT_CLASS (klass), NULL);
+  g_return_val_if_fail (g_type_is_a (G_TYPE_FROM_CLASS (klass),
+                                     CLUTTER_TYPE_CONTAINER),
+                        NULL);
+
+  iface = g_type_interface_peek (klass, CLUTTER_TYPE_CONTAINER);
+  g_return_val_if_fail (iface != NULL, NULL);
+
+  if (iface->child_meta_type == G_TYPE_INVALID)
+    return NULL;
+
+  child_class = g_type_class_ref (iface->child_meta_type);
+  retval = g_object_class_list_properties (child_class, n_properties);
+  g_type_class_unref (child_class);
+
+  return retval;
+}
+
+static inline void
+container_set_child_property (ClutterContainer *container,
+                              ClutterActor     *actor,
+                              const GValue     *value,
+                              GParamSpec       *pspec)
+{
+  ClutterChildMeta *data;
+  ClutterContainerIface *iface;
+
+  data = clutter_container_get_child_meta (container, actor);
+  g_object_set_property (G_OBJECT (data), pspec->name, value);
+
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  if (G_LIKELY (iface->child_notify))
+    iface->child_notify (container, actor, pspec);
+}
+
+/**
+ * clutter_container_child_set_property:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor that is a child of @container.
+ * @property: the name of the property to set.
+ * @value: the value.
+ *
+ * Sets a container-specific property on a child of @container.
+ *
+ * Since: 0.8
+ */
+void
+clutter_container_child_set_property (ClutterContainer *container,
+                                      ClutterActor     *actor,
+                                      const gchar      *property,
+                                      const GValue     *value)
+{
+  GObjectClass *klass;
+  GParamSpec   *pspec;
+
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (property != NULL);
+  g_return_if_fail (value != NULL);
+
+  klass = G_OBJECT_GET_CLASS (container);
+
+  pspec = clutter_container_class_find_child_property (klass, property);
+  if (!pspec)
+    {
+      g_warning ("%s: Containers of type `%s' have no child "
+                 "property named `%s'",
+                 G_STRLOC, G_OBJECT_TYPE_NAME (container), property);
+      return;
+    }
+
+  if (!(pspec->flags & G_PARAM_WRITABLE))
+    {
+      g_warning ("%s: Child property `%s' of the container `%s' "
+                 "is not writable",
+                 G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (container));
+      return;
+    }
+
+  container_set_child_property (container, actor, value, pspec);
+}
+
+/**
+ * clutter_container_child_set:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor that is a child of @container.
+ * @first_prop: name of the first property to be set.
+ * @...: value for the first property, followed optionally by more name/value
+ * pairs terminated with NULL.
+ *
+ * Sets container specific properties on the child of a container.
+ *
+ * Since: 0.8
+ */
+void
+clutter_container_child_set (ClutterContainer *container,
+                             ClutterActor     *actor,
+                             const gchar      *first_prop,
+                             ...)
+{
+  GObjectClass *klass;
+  const gchar *name;
+  va_list var_args;
+  
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  klass = G_OBJECT_GET_CLASS (container);
+
+  va_start (var_args, first_prop);
+
+  name = first_prop;
+  while (name)
+    {
+      GValue value = { 0, };
+      gchar *error = NULL;
+      GParamSpec *pspec;
+    
+      pspec = clutter_container_class_find_child_property (klass, name);
+      if (!pspec)
+        {
+          g_warning ("%s: Containers of type `%s' have no child "
+                     "property named `%s'",
+                     G_STRLOC, G_OBJECT_TYPE_NAME (container), name);
+          break;
+        }
+
+      if (!(pspec->flags & G_PARAM_WRITABLE))
+        {
+          g_warning ("%s: Child property `%s' of the container `%s' "
+                     "is not writable",
+                     G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (container));
+          break;
+        }
+
+      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      G_VALUE_COLLECT (&value, var_args, 0, &error);
+      if (error)
+        {
+          /* we intentionally leak the GValue because it might
+           * be in an undefined state and calling g_value_unset()
+           * on it might crash
+           */
+          g_warning ("%s: %s", G_STRLOC, error);
+          g_free (error);
+          break;
+        }
+
+      container_set_child_property (container, actor, &value, pspec);
+
+      g_value_unset (&value);
+
+      name = va_arg (var_args, gchar*);
+    }
+
+  va_end (var_args);
+}
+
+static inline void
+container_get_child_property (ClutterContainer *container,
+                              ClutterActor     *actor,
+                              GValue           *value,
+                              GParamSpec       *pspec)
+{
+  ClutterChildMeta *data;
+
+  data = clutter_container_get_child_meta (container, actor);
+  g_object_set_property (G_OBJECT (data), pspec->name, value);
+}
+
+/**
+ * clutter_container_child_get_property:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor that is a child of @container.
+ * @property: the name of the property to set.
+ * @value: the value.
+ *
+ * Gets a container specific property of a child of @container, In general,
+ * a copy is made of the property contents and the caller is responsible for
+ * freeing the memory by calling g_value_unset().
+ *
+ * Note that clutter_container_child_set_property() is really intended for
+ * language bindings, clutter_container_child_set() is much more convenient
+ * for C programming.
+ *
+ * Since: 0.8
+ */
+void
+clutter_container_child_get_property (ClutterContainer *container,
+                                      ClutterActor     *actor,
+                                      const gchar      *property,
+                                      GValue           *value)
+{
+  GObjectClass *klass;
+  GParamSpec   *pspec;
+
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (property != NULL);
+  g_return_if_fail (value != NULL);
+
+  klass = G_OBJECT_GET_CLASS (container);
+
+  pspec = clutter_container_class_find_child_property (klass, property);
+  if (!pspec)
+    {
+      g_warning ("%s: Containers of type `%s' have no child "
+                 "property named `%s'",
+                 G_STRLOC, G_OBJECT_TYPE_NAME (container), property);
+      return;
+    }
+
+  if (!(pspec->flags & G_PARAM_READABLE))
+    {
+      g_warning ("%s: Child property `%s' of the container `%s' "
+                 "is not writable",
+                 G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (container));
+      return;
+    }
+
+  container_get_child_property (container, actor, value, pspec);
+}
+
+
+/**
+ * clutter_container_child_get:
+ * @container: a #ClutterContainer
+ * @actor: a #ClutterActor that is a child of @container.
+ * @first_prop: name of the first property to be set.
+ * @...: value for the first property, followed optionally by more name/value
+ * pairs terminated with NULL.
+ *
+ * Gets @container specific properties of an actor.
+ *
+ * In general, a copy is made of the property contents and the caller is
+ * responsible for freeing the memory in the appropriate manner for the type, for
+ * instance by calling g_free() or g_object_unref(). 
+ *
+ * Since: 0.8
+ */
+void
+clutter_container_child_get (ClutterContainer *container,
+                             ClutterActor     *actor,
+                             const gchar      *first_prop,
+                             ...)
+{
+  GObjectClass *klass;
+  const gchar *name;
+  va_list var_args;
+  
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  klass = G_OBJECT_GET_CLASS (container);
+
+  va_start (var_args, first_prop);
+
+  name = first_prop;
+  while (name)
+    {
+      GValue value = { 0, };
+      gchar *error = NULL;
+      GParamSpec *pspec;
+    
+      pspec = clutter_container_class_find_child_property (klass, name);
+      if (!pspec)
+        {
+          g_warning ("%s: container `%s' has no child property named `%s'",
+                     G_STRLOC, G_OBJECT_TYPE_NAME (container), name);
+          break;
+        }
+
+      if (!(pspec->flags & G_PARAM_READABLE))
+        {
+          g_warning ("%s: child property `%s' of container `%s' is not readable",
+                     G_STRLOC, pspec->name, G_OBJECT_TYPE_NAME (container));
+          break;
+        }
+
+      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+
+      container_get_child_property (container, actor, &value, pspec);
+
+      G_VALUE_LCOPY (&value, var_args, 0, &error);
+      if (error)
+        {
+          g_warning ("%s: %s", G_STRLOC, error);
+          g_free (error);
+          g_value_unset (&value);
+          break;
+        }
+
+      g_value_unset (&value);
+
+      name = va_arg (var_args, gchar*);
+    }
+
+  va_end (var_args);
 }

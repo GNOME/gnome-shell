@@ -1,5 +1,34 @@
 2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug 882 - Allow child properties for containers implementing the
+	          ClutterContainer interface (Øyvind Kolås)
+
+	* clutter/clutter-child-meta.[ch]: Base class for the metadata
+	of a ClutterActor inside a ClutterContainer; the ChildMeta
+	object implements a wrapper for storing data that is attached
+	to a ClutterActor only when it's part of a ClutterContainer.
+	The ChildMeta object is used to store the child properties
+	accessible through the ClutterContainer API.
+
+	* clutter/clutter-container.[ch]: Creates the ChildMeta for
+	each actor, in case the Container specifies the ChildMeta
+	type to use.
+
+	* clutter/Makefile.am: Add clutter-child-meta.[ch] to the build.
+
+	* clutter/clutter-marshal.list: Add the marshaller for the
+	ClutterContainer::child-notify signal.
+
+	* clutter/clutter-types.h: Declare ClutterContainer and
+	ClutterChildMeta to avoid recursive inclusion.
+
+2008-05-28  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gles/Makefile.am: Use old-style Makefile rules for
+	the stringify script so that automake won't complain.
+
+2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* tests/test-script.c:
 	* tests/test-script.json: Test merging the same actor from two
 	different sources.
@@ -23,11 +52,6 @@
 	(clutter_script_init): Do not copy the key inside the hash
 	table holding the objects - we are already holding it inside
 	the value.
-
-2008-05-28  Neil Roberts  <neil@o-hand.com>
-
-	* clutter/cogl/gles/Makefile.am: Use old-style Makefile rules for
-	the stringify script so that automake won't complain.
 
 2008-05-28  Neil Roberts  <neil@o-hand.com>
 

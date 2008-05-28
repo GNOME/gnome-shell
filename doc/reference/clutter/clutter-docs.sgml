@@ -327,6 +327,7 @@
       <title>Abstract classes and interfaces</title>
       <xi:include href="xml/clutter-actor.xml"/>
       <xi:include href="xml/clutter-container.xml"/>
+      <xi:include href="xml/clutter-child-data.xml"/>
       <xi:include href="xml/clutter-media.xml"/>
     </chapter>
 

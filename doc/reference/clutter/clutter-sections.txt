@@ -247,10 +247,24 @@ clutter_container_remove
 clutter_container_remove_valist
 clutter_container_get_children
 clutter_container_foreach
+
+<SUBSECTION>
 clutter_container_find_child_by_name
 clutter_container_raise_child
 clutter_container_lower_child
 clutter_container_sort_depth_order
+
+<SUBSECTION>
+clutter_container_find_child_property
+clutter_container_list_child_properties
+clutter_container_child_set_property
+clutter_container_child_get_property
+clutter_container_child_set
+clutter_container_child_get
+
+<SUBSECTION>
+clutter_container_get_child_data
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_CONTAINER
 CLUTTER_CONTAINER
@@ -258,6 +272,24 @@ CLUTTER_IS_CONTAINER
 CLUTTER_CONTAINER_GET_IFACE
 <SUBSECTION Private>
 clutter_container_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-child-data</FILE>
+<TITLE>ClutterChildData<TITLE>
+ClutterChildData
+ClutterChildDataClass
+clutter_child_data_get_container
+clutter_child_data_get_actor
+<SUBSECTION Standard>
+CLUTTER_TYPE_CHILD_DATA
+CLUTTER_CHILD_DATA
+CLUTTER_IS_CHILD_DATA
+CLUTTER_CHILD_DATA_CLASS
+CLUTTER_IS_CHILD_DATA_CLASS
+CLUTTER_CHILD_DATA_GET_CLASS
+<SUBSECTION Private>
+clutter_child_data_get_type
 </SECTION>
 
 <SECTION>

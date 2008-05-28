@@ -58,6 +58,7 @@ source_h =					\
 	$(srcdir)/clutter-behaviour-path.h 	\
 	$(srcdir)/clutter-behaviour-rotate.h 	\
 	$(srcdir)/clutter-behaviour-scale.h 	\
+	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-clone-texture.h 	\
 	$(srcdir)/clutter-color.h		\
         $(srcdir)/clutter-container.h		\
@@ -143,6 +144,7 @@ source_c = \
 	clutter-behaviour-path.c	\
 	clutter-behaviour-rotate.c	\
 	clutter-behaviour-scale.c	\
+	clutter-child-meta.c		\
 	clutter-clone-texture.c 	\
 	clutter-color.c 		\
 	clutter-container.c		\

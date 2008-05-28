@@ -38,8 +38,10 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_VERTEX     (clutter_vertex_get_type ())
 
 /* Forward delarations to avoid header catch 22's */
-typedef struct _ClutterActor         ClutterActor;
-typedef struct _ClutterStage         ClutterStage;
+typedef struct _ClutterActor            ClutterActor;
+typedef struct _ClutterStage            ClutterStage;
+typedef struct _ClutterContainer        ClutterContainer; /* dummy */
+typedef struct _ClutterChildMeta        ClutterChildMeta;
 
 /**
  * ClutterGravity:
