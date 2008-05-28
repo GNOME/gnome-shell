@@ -148,8 +148,13 @@ void cogl_wrap_glFogxv (GLenum pname, const GLfixed *params);
 
 void cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count);
 
+void cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param);
+
 void cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
 				      GLenum internal_format);
+
+/* This function is only available on GLES 2 */
+#define cogl_wrap_glGenerateMipmap glGenerateMipmap
 
 #else /* HAVE_COGL_GLES2 */
 
@@ -181,11 +186,16 @@ void cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
 #define cogl_wrap_glGetFixedv          glGetFixedv
 #define cogl_wrap_glFogx               glFogx
 #define cogl_wrap_glFogxv              glFogxv
+#define cogl_wrap_glTexParameteri      glTexParameteri
 
 /* The extra third parameter of the bind texture wrapper isn't needed
    so we can just directly call glBindTexture */
 #define cogl_gles2_wrapper_bind_texture(target, texture, internal_format) \
   glBindTexture ((target), (texture))
+
+/* COGL uses the automatic mipmap generation for GLES 1 so
+   glGenerateMipmap doesn't need to do anything */
+#define cogl_wrap_glGenerateMipmap(x) ((void) 0)
 
 #endif /* HAVE_COGL_GLES2 */
 

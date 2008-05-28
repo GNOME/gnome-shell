@@ -232,6 +232,9 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
 			       slice_bmp.height,
 			       tex->gl_format, tex->gl_type,
 			       slice_bmp.data) );
+
+	  if (tex->auto_mipmap)
+	    cogl_wrap_glGenerateMipmap (tex->gl_target);
 	  
 	  /* Free temp bitmap */
 	  g_free (slice_bmp.data);
@@ -603,6 +606,9 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 			       source_gl_type,
 			       slice_bmp.data) );
 	  
+	  if (tex->auto_mipmap)
+	    cogl_wrap_glGenerateMipmap (tex->gl_target);
+
 	  /* Free temp bitmap */
 	  g_free (slice_bmp.data);
 	}
@@ -816,13 +822,18 @@ _cogl_texture_slices_create (CoglTexture *tex)
 					       gl_handles[y * n_x_slices + x],
 					       tex->gl_intformat) );
 
-          GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER, tex->mag_filter) );
-          GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER, tex->min_filter) );
-          GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE) );
-          GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE) );
+          GE( cogl_wrap_glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER,
+					 tex->mag_filter) );
+          GE( cogl_wrap_glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER,
+					 tex->min_filter) );
+          GE( cogl_wrap_glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S,
+					 GL_CLAMP_TO_EDGE) );
+          GE( cogl_wrap_glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T,
+					 GL_CLAMP_TO_EDGE) );
           
           if (tex->auto_mipmap)
-            GE( glTexParameteri (tex->gl_target, GL_GENERATE_MIPMAP, GL_TRUE) );
+            GE( cogl_wrap_glTexParameteri (tex->gl_target, GL_GENERATE_MIPMAP,
+					   GL_TRUE) );
 	  
 	  /* Pass NULL data to init size and internal format */
 	  GE( glTexImage2D (tex->gl_target, 0, tex->gl_intformat,
@@ -1351,8 +1362,10 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   g_array_append_val (tex->slice_gl_handles, gl_handle);
   
   /* Force appropriate wrap parameter */
-  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE) );
-  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE) );
+  GE( cogl_wrap_glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S,
+				 GL_CLAMP_TO_EDGE) );
+  GE( cogl_wrap_glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T,
+				 GL_CLAMP_TO_EDGE) );
   
   return _cogl_texture_handle_new (tex);
 }
@@ -1554,8 +1567,10 @@ cogl_texture_set_filters (CoglHandle handle,
     {
       gl_handle = g_array_index (tex->slice_gl_handles, GLuint, i);
       GE( glBindTexture (tex->gl_target, gl_handle) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER, tex->mag_filter) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER, tex->min_filter) );
+      GE( cogl_wrap_glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER,
+				     tex->mag_filter) );
+      GE( cogl_wrap_glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER,
+				     tex->min_filter) );
     }
 }
 
