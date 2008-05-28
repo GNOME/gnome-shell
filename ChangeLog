@@ -26,6 +26,11 @@
 
 2008-05-28  Neil Roberts  <neil@o-hand.com>
 
+	* clutter/cogl/gles/Makefile.am: Use old-style Makefile rules for
+	the stringify script so that automake won't complain.
+
+2008-05-28  Neil Roberts  <neil@o-hand.com>
+
 	* clutter/cogl/gles/cogl-gles2-wrapper.c (cogl_wrap_glGetFixedv):
 	Filled in the wrapper for glGetFixedv
 

@@ -48,10 +48,10 @@ EXTRA_DIST = cogl-defines.h.in \
 
 libclutter_cogl_la_LIBADD =  $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
 
-%.h : %.glsl
+.glsl.h :
 	/bin/sh $(top_srcdir)/clutter/cogl/gles/stringify.sh -h $<
 
-%.c : %.glsl
+.glsl.c :
 	/bin/sh $(top_srcdir)/clutter/cogl/gles/stringify.sh $<
 
 cogl-gles2-wrapper.lo : cogl-fixed-vertex-shader.h cogl-fixed-fragment-shader.h
