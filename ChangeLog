@@ -1,5 +1,17 @@
 2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script.c:
+	(clutter_script_construct_object): Mark top-level objects,
+	that is objects that don't have their ownership transferred
+	when building up a ClutterScript.
+
+	(object_info_free): Merge a fix from the stable branch, but
+	do not check the type - check whether the object is a top
+	level (we still need the ClutterActor type check in order to
+	call clutter_actor_destroy()).
+
+2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-rectangle.c:
 	(clutter_rectangle_paint): Remove commented out call to
 	cogl_enable(); the call is not needed and the comment is

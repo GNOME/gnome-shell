@@ -1225,6 +1225,22 @@ add_children (ClutterScript    *script,
   oinfo->children = unresolved;
 }
 
+static const struct
+{
+  const gchar *type_name;
+  guint is_toplevel : 1;
+} clutter_toplevels[] = {
+  { "ClutterActor",          FALSE },
+  { "ClutterAlpha",          FALSE },
+  { "ClutterBehaviour",      TRUE  },
+  { "ClutterEffectTemplate", TRUE  },
+  { "ClutterModel",          TRUE  },
+  { "ClutterScore",          TRUE  },
+  { "ClutterTimeline",       TRUE  }
+};
+
+static guint n_clutter_toplevels = G_N_ELEMENTS (clutter_toplevels);
+
 GObject *
 clutter_script_construct_object (ClutterScript *script,
                                  ObjectInfo    *oinfo)
@@ -1353,6 +1369,19 @@ clutter_script_construct_object (ClutterScript *script,
     }
   g_array_free (params, TRUE);
 
+  for (i = 0; i < n_clutter_toplevels; i++)
+    {
+      const gchar *t_name = clutter_toplevels[i].type_name;
+      GType t_type;
+      
+      t_type = clutter_script_get_type_from_name (script, t_name);
+      if (g_type_is_a (oinfo->gtype, t_name))
+        {
+          oinfo->is_toplevel = clutter_toplevels[i].is_toplevel;
+          break;
+        }
+    }
+
   if (oinfo->children && CLUTTER_IS_CONTAINER (object))
     add_children (script, CLUTTER_CONTAINER (object), oinfo);
 
@@ -1464,15 +1493,30 @@ object_info_free (gpointer data)
       g_list_foreach (oinfo->behaviours, (GFunc) g_free, NULL);
       g_list_free (oinfo->behaviours);
 
-      if (oinfo->is_toplevel && oinfo->object)
+      /* we unref top-level objects and leave the actors alone,
+       * unless we are unmerging in which case we have to destroy
+       * the actor to unparent them
+       */
+      if (oinfo->object)
         {
-          g_object_unref (oinfo->object);
-          oinfo->object = NULL;
-        }
+          if (oinfo->is_unmerged)
+            {
+              if (oinfo->is_toplevel)
+                g_object_unref (oinfo->object);
+              else
+                {
+                  /* destroy every actor, unless it's the default stage */
+                  if (oinfo->is_stage_default != TRUE &&
+                      CLUTTER_IS_ACTOR (oinfo->object))
+                    clutter_actor_destroy (CLUTTER_ACTOR (oinfo->object));
+                }
+            }
+          else
+            {
+              if (oinfo->is_toplevel)
+                g_object_unref (oinfo->object);
+            }
 
-      if (oinfo->is_unmerged && oinfo->object && !oinfo->is_stage_default)
-        {
-          clutter_actor_destroy (CLUTTER_ACTOR (oinfo->object));
           oinfo->object = NULL;
         }
 
