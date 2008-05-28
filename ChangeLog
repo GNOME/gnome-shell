@@ -1,3 +1,23 @@
+2008-05-28  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gles/cogl-gles2-wrapper.c
+	(cogl_gles2_wrapper_init): Get uniforms for fog parameters and
+	initialise them.
+	(cogl_wrap_glDrawArrays): Store the modelview matrix in a uniform
+	as well so that it can be used for fogging calculations.
+	(cogl_wrap_glEnable, cogl_wrap_glDisable): Enable/disable fogging.
+	(cogl_wrap_glFogx, cogl_wrap_glFogxv): Fill in wrapper to set
+	fogging parameters.
+
+	* clutter/cogl/gles/cogl-fixed-vertex-shader.glsl: Calculate the
+	fog amount if fogging is enabled.
+
+	* clutter/cogl/gles/cogl-fixed-fragment-shader.glsl: Mix with fog
+	color.
+
+	* clutter/cogl/gles/cogl-gles2-wrapper.h (CoglGles2Wrapper): Add
+	uniforms for fogging.
+
 2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/pango/pangoclutter-font.c: Remove unneeded file.

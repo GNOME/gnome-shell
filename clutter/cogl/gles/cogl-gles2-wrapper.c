@@ -84,6 +84,7 @@ void
 cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
 {
   GLint status;
+  GLfixed default_fog_color[4] = { 0, 0, 0, 0 };
 
   memset (wrapper, 0, sizeof (CoglGles2Wrapper));
 
@@ -139,6 +140,8 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
 
   wrapper->mvp_matrix_uniform
     = glGetUniformLocation (wrapper->program, "mvp_matrix");
+  wrapper->modelview_matrix_uniform
+    = glGetUniformLocation (wrapper->program, "modelview_matrix");
   wrapper->texture_matrix_uniform
     = glGetUniformLocation (wrapper->program, "texture_matrix");
   wrapper->texture_2d_enabled_uniform
@@ -147,6 +150,19 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
     = glGetUniformLocation (wrapper->program, "texture_unit");
   wrapper->alpha_only_uniform
     = glGetUniformLocation (wrapper->program, "alpha_only");
+
+  wrapper->fog_enabled_uniform
+    = glGetUniformLocation (wrapper->program, "fog_enabled");
+  wrapper->fog_mode_uniform
+    = glGetUniformLocation (wrapper->program, "fog_mode");
+  wrapper->fog_density_uniform
+    = glGetUniformLocation (wrapper->program, "fog_density");
+  wrapper->fog_start_uniform
+    = glGetUniformLocation (wrapper->program, "fog_start");
+  wrapper->fog_end_uniform
+    = glGetUniformLocation (wrapper->program, "fog_end");
+  wrapper->fog_color_uniform
+    = glGetUniformLocation (wrapper->program, "fog_color");
 
   /* Always use the first texture unit */
   glUniform1i (wrapper->bound_texture_uniform, 0);
@@ -160,6 +176,14 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   cogl_wrap_glLoadIdentity ();
 
   wrapper->mvp_uptodate = GL_FALSE;
+
+  /* Initialize the fogging options */
+  cogl_wrap_glDisable (GL_FOG);
+  cogl_wrap_glFogx (GL_FOG_MODE, GL_LINEAR);
+  cogl_wrap_glFogx (GL_FOG_DENSITY, CFX_ONE);
+  cogl_wrap_glFogx (GL_FOG_START, 0);
+  cogl_wrap_glFogx (GL_FOG_END, 1);
+  cogl_wrap_glFogxv (GL_FOG_COLOR, default_fog_color);
 }
 
 void
@@ -487,14 +511,17 @@ cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count)
   if (!w->mvp_uptodate)
     {
       float mvp_matrix[16];
+      const float *modelview_matrix = w->modelview_stack
+	+ w->modelview_stack_pos * 16;
 
       cogl_gles2_wrapper_mult_matrix (mvp_matrix,
 				      w->projection_stack
 				      + w->projection_stack_pos * 16,
-				      w->modelview_stack
-				      + w->modelview_stack_pos * 16);
+				      modelview_matrix);
 
       glUniformMatrix4fv (w->mvp_matrix_uniform, 1, GL_FALSE, mvp_matrix);
+      glUniformMatrix4fv (w->modelview_matrix_uniform, 1, GL_FALSE,
+			  modelview_matrix);
 
       w->mvp_uptodate = GL_TRUE;
     }
@@ -536,6 +563,10 @@ cogl_wrap_glEnable (GLenum cap)
       glUniform1i (w->texture_2d_enabled_uniform, GL_TRUE);
       break;
 
+    case GL_FOG:
+      glUniform1i (w->fog_enabled_uniform, GL_TRUE);
+      break;
+
     default:
       glEnable (cap);
     }
@@ -550,6 +581,10 @@ cogl_wrap_glDisable (GLenum cap)
     {
     case GL_TEXTURE_2D:
       glUniform1i (w->texture_2d_enabled_uniform, GL_FALSE);
+      break;
+
+    case GL_FOG:
+      glUniform1i (w->fog_enabled_uniform, GL_FALSE);
       break;
 
     default:
@@ -654,13 +689,39 @@ cogl_wrap_glGetFixedv (GLenum pname, GLfixed *params)
 void
 cogl_wrap_glFogx (GLenum pname, GLfixed param)
 {
-  /* FIXME */
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  switch (pname)
+    {
+    case GL_FOG_MODE:
+      glUniform1i (w->fog_mode_uniform, param);
+      break;
+      
+    case GL_FOG_DENSITY:
+      glUniform1f (w->fog_density_uniform, CLUTTER_FIXED_TO_FLOAT (param));
+      break;
+
+    case GL_FOG_START:
+      glUniform1f (w->fog_start_uniform, CLUTTER_FIXED_TO_FLOAT (param));
+      break;
+
+    case GL_FOG_END:
+      glUniform1f (w->fog_end_uniform, CLUTTER_FIXED_TO_FLOAT (param));
+      break;
+    }
 }
 
 void
 cogl_wrap_glFogxv (GLenum pname, const GLfixed *params)
 {
-  /* FIXME */
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  if (pname == GL_FOG_COLOR)
+    glUniform4f (w->fog_color_uniform,
+		 CLUTTER_FIXED_TO_FLOAT (params[0]),
+		 CLUTTER_FIXED_TO_FLOAT (params[1]),
+		 CLUTTER_FIXED_TO_FLOAT (params[2]),
+		 CLUTTER_FIXED_TO_FLOAT (params[3]));
 }
 
 void
