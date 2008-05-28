@@ -84,8 +84,6 @@ clutter_rectangle_paint (ClutterActor *self)
                                               : "unknown");
   cogl_push_matrix();
 
-  //cogl_enable (CGL_ENABLE_BLEND);
-
   clutter_actor_get_geometry (self, &geom);
 
   /* parent paint call will have translated us into position so
