@@ -282,7 +282,8 @@ get_id_from_node (JsonNode *node)
 }
 
 static GList *
-parse_children (JsonNode *node)
+parse_children (ObjectInfo *oinfo,
+                JsonNode   *node)
 {
   JsonArray *array;
   GList *retval;
@@ -291,7 +292,7 @@ parse_children (JsonNode *node)
   if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
     return NULL;
 
-  retval = NULL;
+  retval = oinfo->children;
 
   array = json_node_get_array (node);
   array_len = json_array_get_length (array);
@@ -310,7 +311,8 @@ parse_children (JsonNode *node)
 }
 
 static GList *
-parse_signals (JsonNode *node)
+parse_signals (ObjectInfo *oinfo,
+               JsonNode   *node)
 {
   JsonArray *array;
   GList *retval;
@@ -322,7 +324,7 @@ parse_signals (JsonNode *node)
       return NULL;
     }
 
-  retval = NULL;
+  retval = oinfo->signals;
   array = json_node_get_array (node);
   array_len = json_array_get_length (array);
 
@@ -429,7 +431,8 @@ parse_signals (JsonNode *node)
 }
 
 static GList *
-parse_behaviours (JsonNode *node)
+parse_behaviours (ObjectInfo *oinfo,
+                  JsonNode   *node)
 {
   JsonArray *array;
   GList *retval;
@@ -438,7 +441,7 @@ parse_behaviours (JsonNode *node)
   if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
     return NULL;
 
-  retval = NULL;
+  retval = oinfo->behaviours;
 
   array = json_node_get_array (node);
   array_len = json_array_get_length (array);
@@ -660,6 +663,7 @@ json_object_end (JsonParser *parser,
   ClutterScriptPrivate *priv = script->priv;
   ObjectInfo *oinfo;
   JsonNode *val;
+  const gchar *id;
   GList *members, *l;
 
   if (!json_object_has_member (object, "id"))
@@ -688,27 +692,32 @@ json_object_end (JsonParser *parser,
       return;
     }
 
-  oinfo = g_slice_new0 (ObjectInfo);
-  oinfo->merge_id = priv->last_merge_id;
-  
   val = json_object_get_member (object, "id");
-  oinfo->id = json_node_dup_string (val);
+  id = json_node_get_string (val);
 
-  val = json_object_get_member (object, "type");
-  oinfo->class_name = json_node_dup_string (val);
-
-  if (json_object_has_member (object, "type_func"))
+  oinfo = g_hash_table_lookup (priv->objects, id);
+  if (G_LIKELY (!oinfo))
     {
-      val = json_object_get_member (object, "type_func");
-      oinfo->type_func = json_node_dup_string (val);
+      oinfo = g_slice_new0 (ObjectInfo);
+      oinfo->merge_id = priv->last_merge_id;
+      oinfo->id = g_strdup (id);
 
-      json_object_remove_member (object, "type_func");
+      val = json_object_get_member (object, "type");
+      oinfo->class_name = json_node_dup_string (val);
+  
+      if (json_object_has_member (object, "type_func"))
+        {
+          val = json_object_get_member (object, "type_func");
+          oinfo->type_func = json_node_dup_string (val);
+
+          json_object_remove_member (object, "type_func");
+        }
     }
 
   if (json_object_has_member (object, "children"))
     {
       val = json_object_get_member (object, "children");
-      oinfo->children = parse_children (val);
+      oinfo->children = parse_children (oinfo, val);
 
       json_object_remove_member (object, "children");
     }
@@ -716,7 +725,7 @@ json_object_end (JsonParser *parser,
   if (json_object_has_member (object, "behaviours"))
     {
       val = json_object_get_member (object, "behaviours");
-      oinfo->behaviours = parse_behaviours (val);
+      oinfo->behaviours = parse_behaviours (oinfo, val);
 
       json_object_remove_member (object, "behaviours");
     }
@@ -724,7 +733,7 @@ json_object_end (JsonParser *parser,
   if (json_object_has_member (object, "signals"))
     {
       val = json_object_get_member (object, "signals");
-      oinfo->signals = parse_signals (val);
+      oinfo->signals = parse_signals (oinfo, val);
 
       json_object_remove_member (object, "signals");
     }
@@ -776,7 +785,8 @@ json_object_end (JsonParser *parser,
                 g_list_length (oinfo->properties),
                 g_list_length (oinfo->signals));
 
-  g_hash_table_replace (priv->objects, g_strdup (oinfo->id), oinfo);
+  g_hash_table_steal (priv->objects, oinfo->id);
+  g_hash_table_insert (priv->objects, oinfo->id, oinfo);
 
   oinfo->object = clutter_script_construct_object (script, oinfo);
 }
@@ -1375,7 +1385,7 @@ clutter_script_construct_object (ClutterScript *script,
       GType t_type;
       
       t_type = clutter_script_get_type_from_name (script, t_name);
-      if (g_type_is_a (oinfo->gtype, t_name))
+      if (g_type_is_a (oinfo->gtype, t_type))
         {
           oinfo->is_toplevel = clutter_toplevels[i].is_toplevel;
           break;
@@ -1506,7 +1516,7 @@ object_info_free (gpointer data)
               else
                 {
                   /* destroy every actor, unless it's the default stage */
-                  if (oinfo->is_stage_default != TRUE &&
+                  if (oinfo->is_stage_default == FALSE &&
                       CLUTTER_IS_ACTOR (oinfo->object))
                     clutter_actor_destroy (CLUTTER_ACTOR (oinfo->object));
                 }
@@ -1622,7 +1632,7 @@ clutter_script_init (ClutterScript *script)
   priv->last_merge_id = 0;
 
   priv->objects = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                         g_free,
+                                         NULL,
                                          object_info_free);
 }
 
