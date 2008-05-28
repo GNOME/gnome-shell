@@ -56,7 +56,6 @@
 G_DEFINE_TYPE (ClutterEntry, clutter_entry, CLUTTER_TYPE_ACTOR);
 
 /* Probably move into main */
-static PangoClutterFontMap  *_font_map = NULL;
 static PangoContext         *_context  = NULL;
 
 enum
@@ -289,6 +288,9 @@ clutter_entry_ensure_layout (ClutterEntry *entry, gint width)
 	pango_layout_set_width (priv->layout, width * PANGO_SCALE);
       else
 	pango_layout_set_width (priv->layout, -1);
+
+      /* Prime the cache for the layout */
+      pango_clutter_ensure_glyph_cache_for_layout (priv->layout);
     }
 }
 
@@ -858,9 +860,17 @@ clutter_entry_init (ClutterEntry *self)
 
   if (G_UNLIKELY (_context == NULL))
     {
-      _font_map = PANGO_CLUTTER_FONT_MAP (pango_clutter_font_map_new ());
-      pango_clutter_font_map_set_resolution (_font_map, resolution);
-      _context = pango_clutter_font_map_create_context (_font_map);
+      ClutterBackend *backend = clutter_get_default_backend ();
+      PangoClutterFontMap *font_map = CLUTTER_CONTEXT ()->font_map;
+      gdouble resolution;
+      cairo_font_options_t *font_options;
+
+      _context = pango_clutter_font_map_create_context (font_map);
+
+      pango_cairo_context_set_resolution (_context, resolution);
+
+      font_options = clutter_backend_get_font_options (backend);
+      pango_cairo_context_set_font_options (_context, font_options);
     }
 
   priv->alignment     = PANGO_ALIGN_LEFT;
@@ -1040,6 +1050,8 @@ clutter_entry_set_text (ClutterEntry *entry,
 
   clutter_entry_clear_layout (entry);
   clutter_entry_clear_cursor_position (entry);
+  /* Recreate the layout so the glyph cache will be primed */
+  clutter_entry_ensure_layout (entry, -1);
 
   if (CLUTTER_ACTOR_IS_VISIBLE (entry))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
@@ -1123,6 +1135,8 @@ clutter_entry_set_font_name (ClutterEntry *entry,
   if (entry->priv->text && entry->priv->text[0] != '\0')
     {
       clutter_entry_clear_layout (entry);
+      /* Recreate the layout so the glyph cache will be primed */
+      clutter_entry_ensure_layout (entry, -1);
 
       if (CLUTTER_ACTOR_IS_VISIBLE (entry))
 	clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));

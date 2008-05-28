@@ -38,8 +38,6 @@
 
 #include <glib.h>
 
-#include <pango/pangoft2.h>
-
 #include "clutter-backend.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
@@ -47,6 +45,7 @@
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
 #include "clutter-stage.h"
+#include "pango/pangoclutter.h"
 
 G_BEGIN_DECLS
 
@@ -77,7 +76,6 @@ struct _ClutterMainContext
                                           system backend */
   ClutterStageManager *stage_manager;  /* stages */
   GQueue          *events_queue;       /* the main event queue */
-  PangoFT2FontMap *font_map;
   
   guint            is_initialized : 1;  
   GTimer          *timer;	       /* Used for debugging scheduler */
@@ -110,6 +108,7 @@ or enter/leave events */
   gint fb_r_mask, fb_g_mask, fb_b_mask;
   gint fb_r_mask_used, fb_g_mask_used, fb_b_mask_used;
 
+  PangoClutterFontMap *font_map;       /* Global font map */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())

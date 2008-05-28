@@ -1,241 +1,124 @@
-/* Pango
- * Clutter fonts handling
+/*
+ * Clutter.
  *
- * Copyright (C) 2000 Red Hat Software
- * Copyright (C) 2000 Tor Lillqvist
- * Copyright (C) 2006 Marc Lehmann <pcg@goof.com>
+ * An OpenGL based 'interactive canvas' library.
  *
- * This file is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * Authored By Matthew Allum  <mallum@openedhand.com>
+ *
+ * Copyright (C) 2008 OpenedHand
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
- * This file is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
- * Library General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
 
-#include <glib.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+/* This is needed to get the Pango headers to export stuff needed to
+   subclass */
+#ifndef PANGO_ENABLE_BACKEND
+#define PANGO_ENABLE_BACKEND 1
+#endif
+
+#include <pango/pango-fontmap.h>
+#include <pango/pangocairo.h>
+#include <pango/pango-renderer.h>
 
 #include "pangoclutter.h"
 #include "pangoclutter-private.h"
 
-
-#include <pango/pangofc-font.h>
-#include <pango/pangofc-fontmap.h>
-
-struct _PangoClutterFontMap
-{
-  PangoFcFontMap parent_instance;
-
-  FT_Library library;
-
-  double dpi;
-
-  /* Function to call on prepared patterns to do final
-   * config tweaking.
-   */
-  PangoClutterSubstituteFunc substitute_func;
-  gpointer substitute_data;
-  GDestroyNotify substitute_destroy;
-
-  PangoRenderer *renderer;
-};
-
-struct _PangoClutterFontMapClass
-{
-  PangoFcFontMapClass parent_class;
-};
-
-G_DEFINE_TYPE (PangoClutterFontMap, pango_clutter_font_map, PANGO_TYPE_FC_FONT_MAP)
-
-static void
-pango_clutter_font_map_finalize (GObject *object)
-{
-  PangoClutterFontMap *fontmap = PANGO_CLUTTER_FONT_MAP (object);
-  
-  if (fontmap->renderer)
-    g_object_unref (fontmap->renderer);
-
-  if (fontmap->substitute_destroy)
-    fontmap->substitute_destroy (fontmap->substitute_data);
-
-  FT_Done_FreeType (fontmap->library);
-
-  G_OBJECT_CLASS (pango_clutter_font_map_parent_class)->finalize (object);
-}
+static GQuark pango_clutter_font_map_get_renderer_key (void) G_GNUC_CONST;
 
 PangoFontMap *
 pango_clutter_font_map_new (void)
 {
-  PangoClutterFontMap *fontmap;
-  FT_Error error;
-  
-  /* Make sure that the type system is initialized */
-  g_type_init ();
-  
-  fontmap = g_object_new (PANGO_TYPE_CLUTTER_FONT_MAP, NULL);
-  
-  error = FT_Init_FreeType (&fontmap->library);
-  if (error != FT_Err_Ok)
-    g_critical ("pango_clutter_font_map_new: Could not initialize freetype");
-
-  return (PangoFontMap *)fontmap;
+  return pango_cairo_font_map_new ();
 }
 
-void
-pango_clutter_font_map_set_default_substitute (PangoClutterFontMap        *fontmap,
-					   PangoClutterSubstituteFunc  func,
-					   gpointer                data,
-					   GDestroyNotify          notify)
-{
-  if (fontmap->substitute_destroy)
-    fontmap->substitute_destroy (fontmap->substitute_data);
-
-  fontmap->substitute_func = func;
-  fontmap->substitute_data = data;
-  fontmap->substitute_destroy = notify;
-  
-  pango_fc_font_map_cache_clear (PANGO_FC_FONT_MAP (fontmap));
-}
-
-/**
- * pango_clutter_font_map_substitute_changed:
- * @fontmap: a #PangoClutterFontmap
- * 
- * Call this function any time the results of the
- * default substitution function set with
- * pango_clutter_font_map_set_default_substitute() change.
- * That is, if your subsitution function will return different
- * results for the same input pattern, you must call this function.
- *
- * Since: 1.2
- **/
-void
-pango_clutter_font_map_substitute_changed (PangoClutterFontMap *fontmap)
-{
-  pango_fc_font_map_cache_clear (PANGO_FC_FONT_MAP (fontmap));
-}
-
-/**
- * pango_clutter_font_map_create_context:
- * @fontmap: a #PangoClutterFontmap
- * 
- * Create a #PangoContext for the given fontmap.
- * 
- * Return value: the newly created context; free with g_object_unref().
- *
- * Since: 1.2
- **/
 PangoContext *
-pango_clutter_font_map_create_context (PangoClutterFontMap *fontmap)
+pango_clutter_font_map_create_context (PangoClutterFontMap *fm)
 {
-  g_return_val_if_fail (PANGO_CLUTTER_IS_FONT_MAP (fontmap), NULL);
-  
-  return pango_fc_font_map_create_context (PANGO_FC_FONT_MAP (fontmap));
+  g_return_val_if_fail (PANGO_CLUTTER_IS_FONT_MAP (fm), NULL);
+
+  /* We can just directly use the pango context from the Cairo font
+     map */
+  return pango_cairo_font_map_create_context (PANGO_CAIRO_FONT_MAP (fm));
 }
 
-FT_Library
-_pango_clutter_font_map_get_library (PangoFontMap *fontmap_)
+PangoRenderer *
+_pango_clutter_font_map_get_renderer (PangoClutterFontMap *fm)
 {
-  PangoClutterFontMap *fontmap = (PangoClutterFontMap *)fontmap_;
-  
-  return fontmap->library;
+  PangoRenderer *renderer;
+
+  /* We want to keep a cached pointer to the renderer from the font
+     map instance but as we don't have a proper subclass we have to
+     store it in the object data instead */
+
+  renderer = g_object_get_qdata (G_OBJECT (fm),
+				 pango_clutter_font_map_get_renderer_key ());
+
+  if (G_UNLIKELY (renderer == NULL))
+    {
+      renderer = g_object_new (PANGO_CLUTTER_TYPE_RENDERER, NULL);
+      g_object_set_qdata_full (G_OBJECT (fm),
+			       pango_clutter_font_map_get_renderer_key (),
+			       renderer,
+			       g_object_unref);
+    }
+
+  return renderer;
 }
 
 void
-pango_clutter_font_map_set_resolution (PangoClutterFontMap *fontmap,
-                                       double               dpi)
+pango_clutter_font_map_set_resolution (PangoClutterFontMap *font_map,
+				       double               dpi)
 {
-  g_return_if_fail (PANGO_CLUTTER_IS_FONT_MAP (fontmap));
+  g_return_if_fail (PANGO_CLUTTER_IS_FONT_MAP (font_map));
 
-  fontmap->dpi = dpi;
-
-  pango_clutter_font_map_substitute_changed (fontmap);
+  pango_cairo_font_map_set_resolution (PANGO_CAIRO_FONT_MAP (font_map), dpi);
 }
 
-/**
- * _pango_clutter_font_map_get_renderer:
- * @fontmap: a #PangoClutterFontmap
- * 
- * Gets the singleton PangoClutterRenderer for this fontmap.
- * 
- * Return value: 
- **/
-PangoRenderer *
-_pango_clutter_font_map_get_renderer (PangoClutterFontMap *fontmap)
+void
+pango_clutter_font_map_clear_glyph_cache (PangoClutterFontMap *fm)
 {
-  if (!fontmap->renderer)
-    fontmap->renderer = g_object_new (PANGO_TYPE_CLUTTER_RENDERER, NULL);
+  PangoRenderer *renderer;
 
-  return fontmap->renderer;
+  renderer = _pango_clutter_font_map_get_renderer (fm);
+
+  _pango_clutter_renderer_clear_glyph_cache (PANGO_CLUTTER_RENDERER (renderer));
 }
 
-static void
-pango_clutter_font_map_default_substitute (PangoFcFontMap *fcfontmap,
-				       FcPattern      *pattern)
+void
+pango_clutter_font_map_set_use_mipmapping (PangoClutterFontMap *fm,
+					   gboolean             value)
 {
-  PangoClutterFontMap *fontmap = PANGO_CLUTTER_FONT_MAP (fcfontmap);
+  PangoClutterRenderer *renderer;
 
-  FcConfigSubstitute (NULL, pattern, FcMatchPattern);
+  renderer = PANGO_CLUTTER_RENDERER (_pango_clutter_font_map_get_renderer (fm));
 
-  if (fontmap->substitute_func)
-    fontmap->substitute_func (pattern, fontmap->substitute_data);
-
-#if 0
-  FcValue v;
-  if (FcPatternGet (pattern, FC_DPI, 0, &v) == FcResultNoMatch)
-    FcPatternAddDouble (pattern, FC_DPI, fontmap->dpi_y);
-#endif
-
-   /* Turn off hinting, since we most of the time are not using the glyphs
-    * from our cache at their nativly rendered resolution
-    */
-   FcPatternDel (pattern, FC_HINTING);
-   FcPatternAddBool (pattern, FC_HINTING, FALSE);
-
-  FcDefaultSubstitute (pattern);
+  _pango_clutter_renderer_set_use_mipmapping (renderer, value);
 }
 
-static PangoFcFont *
-pango_clutter_font_map_new_font (PangoFcFontMap  *fcfontmap,
-			        FcPattern       *pattern)
+static GQuark
+pango_clutter_font_map_get_renderer_key (void)
 {
-  return (PangoFcFont *)_pango_clutter_font_new (PANGO_CLUTTER_FONT_MAP (fcfontmap), pattern);
-}
+  static GQuark renderer_key = 0;
 
-static double
-pango_clutter_font_map_get_resolution (PangoFcFontMap *fcfontmap,
-                                       PangoContext   *context)
-{
-  return ((PangoClutterFontMap *)fcfontmap)->dpi;
-}
+  if (G_UNLIKELY (renderer_key == 0))
+      renderer_key = g_quark_from_static_string ("PangoClutterFontMap");
 
-static void
-pango_clutter_font_map_class_init (PangoClutterFontMapClass *class)
-{
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
-  PangoFcFontMapClass *fcfontmap_class = PANGO_FC_FONT_MAP_CLASS (class);
-  
-  gobject_class->finalize = pango_clutter_font_map_finalize;
-  fcfontmap_class->default_substitute = pango_clutter_font_map_default_substitute;
-  fcfontmap_class->new_font = pango_clutter_font_map_new_font;
-  fcfontmap_class->get_resolution = pango_clutter_font_map_get_resolution;
+  return renderer_key;
 }
-
-static void
-pango_clutter_font_map_init (PangoClutterFontMap *fontmap)
-{
-  fontmap->library = NULL;
-  fontmap->dpi = 96.0;
-}
-

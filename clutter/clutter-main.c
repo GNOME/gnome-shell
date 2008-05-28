@@ -367,6 +367,9 @@ clutter_context_free (ClutterMainContext *context)
   clutter_id_pool_free (context->id_pool);
   context->id_pool = NULL;
 
+  g_object_unref (context->font_map);
+  context->font_map = NULL;
+
   /* XXX: The cleaning up of the event queue should be moved here from
           the backend base class. */
 
@@ -877,8 +880,9 @@ clutter_context_get_default (void)
   if (G_UNLIKELY(!ClutterCntx))
     {
       ClutterMainContext *ctx;
+      gdouble resolution;
 
-      ctx = g_new0 (ClutterMainContext, 1);
+      ClutterCntx = ctx = g_new0 (ClutterMainContext, 1);
       ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
 
       ctx->is_initialized = FALSE;
@@ -889,7 +893,12 @@ clutter_context_get_default (void)
       g_timer_start (ctx->timer);
 #endif
 
-      ClutterCntx = ctx;
+      ctx->font_map = PANGO_CLUTTER_FONT_MAP (pango_clutter_font_map_new ());
+
+      resolution = clutter_backend_get_resolution (ctx->backend);
+      pango_clutter_font_map_set_resolution (ctx->font_map, resolution);
+
+      pango_clutter_font_map_set_use_mipmapping (ctx->font_map, TRUE);
     }
 
   return ClutterCntx;
@@ -983,8 +992,6 @@ pre_parse_hook (GOptionContext  *context,
 
   clutter_context = clutter_context_get_default ();
 
-  clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
-  pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
   clutter_context->id_pool = clutter_id_pool_new (256);
 
   backend = clutter_context->backend;
@@ -2070,4 +2077,39 @@ clutter_set_motion_events_frequency (guint frequency)
 
   /* never allow the motion events to exceed the default frame rate */
   context->motion_frequency = CLAMP (frequency, 1, clutter_default_fps);
+}
+
+/**
+ * clutter_clear_glyph_cache:
+ *
+ * Clears the internal cache of glyphs used by the Pango
+ * renderer. This will free up some memory and GL texture
+ * resources. The cache will be automatically refilled as more text is
+ * drawn.
+ * 
+ * Since: 0.8
+ */
+void
+clutter_clear_glyph_cache (void)
+{
+  if (CLUTTER_CONTEXT ()->font_map)
+    pango_clutter_font_map_clear_glyph_cache (CLUTTER_CONTEXT ()->font_map);
+}
+
+/**
+ * clutter_set_use_mipmapped_text:
+ * @value: %TRUE to enable mipmapping or %FALSE to disable.
+ *
+ * Sets whether subsequent text rendering operations will use
+ * mipmapped textures or not. Using mipmapped textures will improve
+ * the quality for scaled down text but will use more texture memory.
+ *
+ * Since: 0.8
+ */
+void
+clutter_set_use_mipmapped_text (gboolean value)
+{
+  if (CLUTTER_CONTEXT ()->font_map)
+    pango_clutter_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
+					       value);
 }

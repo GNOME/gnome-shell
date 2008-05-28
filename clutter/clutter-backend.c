@@ -41,10 +41,10 @@
 #include "config.h"
 #endif
 
-#include "clutter-fixed.h"
 #include "clutter-backend.h"
-#include "clutter-private.h"
 #include "clutter-debug.h"
+#include "clutter-fixed.h"
+#include "clutter-private.h"
 
 G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
 
@@ -58,6 +58,8 @@ struct _ClutterBackendPrivate
   guint double_click_distance;
 
   ClutterFixed resolution;
+
+  cairo_font_options_t *font_options;
 };
 
 static void
@@ -73,6 +75,8 @@ clutter_backend_dispose (GObject *gobject)
       g_queue_free (clutter_context->events_queue);
       clutter_context->events_queue = NULL;
     }
+
+  clutter_backend_set_font_options (CLUTTER_BACKEND (gobject), NULL);
 
   G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
 }
@@ -382,6 +386,10 @@ clutter_backend_set_resolution (ClutterBackend *backend,
   fixed_dpi = CLUTTER_FLOAT_TO_FIXED (dpi);
   if (priv->resolution != fixed_dpi)
     priv->resolution = fixed_dpi;
+
+  if (CLUTTER_CONTEXT ()->font_map)
+    pango_clutter_font_map_set_resolution (CLUTTER_CONTEXT ()->font_map,
+					   CLUTTER_FIXED_TO_FLOAT (fixed_dpi));
 }
 
 /**
@@ -402,4 +410,50 @@ clutter_backend_get_resolution (ClutterBackend *backend)
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1.0);
 
   return CLUTTER_FIXED_TO_FLOAT (backend->priv->resolution);
+}
+
+void
+clutter_backend_set_font_options (ClutterBackend       *backend,
+                                  cairo_font_options_t *options)
+{
+  ClutterBackendPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+
+  priv = backend->priv;
+
+  if (priv->font_options != options)
+    {
+      if (priv->font_options)
+        cairo_font_options_destroy (priv->font_options);
+
+      if (options)
+        priv->font_options = cairo_font_options_copy (options);
+      else
+        priv->font_options = NULL;
+    }
+}
+
+cairo_font_options_t *
+clutter_backend_get_font_options (ClutterBackend *backend)
+{
+  ClutterBackendPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), NULL);
+
+  priv = backend->priv;
+
+  if (G_LIKELY (priv->font_options))
+    return priv->font_options;
+
+  priv->font_options = cairo_font_options_create ();
+
+  cairo_font_options_set_hint_style (priv->font_options,
+                                     CAIRO_HINT_STYLE_NONE);
+  cairo_font_options_set_subpixel_order (priv->font_options,
+                                         CAIRO_SUBPIXEL_ORDER_DEFAULT);
+  cairo_font_options_set_antialias (priv->font_options,
+                                    CAIRO_ANTIALIAS_DEFAULT);
+
+  return priv->font_options;
 }

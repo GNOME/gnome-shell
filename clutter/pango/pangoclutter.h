@@ -1,105 +1,109 @@
-/* Pango
- * pangoclutter.h: Clutter/Freetype2 backend
+/*
+ * Clutter.
  *
- * Copyright (C) 1999 Red Hat Software
- * Copyright (C) 2000 Tor Lillqvist
- * Copyright (C) 2006 Marc Lehmann <pcg@goof.com>
+ * An OpenGL based 'interactive canvas' library.
  *
- * This file is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
+ * Authored By Matthew Allum  <mallum@openedhand.com>
+ *
+ * Copyright (C) 2008 OpenedHand
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
- * This file is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
- * Library General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public
+ * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#ifndef PANGOCLUTTER_H__
-#define PANGOCLUTTER_H__
 
-#define PANGO_ENABLE_BACKEND
-
-/* we always want to disable cast checks */
-#ifndef G_DISABLE_CAST_CHECKS
-#define G_DISABLE_CAST_CHECKS
-#endif
+#ifndef _HAVE_PANGO_CLUTTER_H
+#define _HAVE_PANGO_CLUTTER_H
 
 #include <glib-object.h>
-#include <pango/pango.h>
-#include <fontconfig/fontconfig.h>
+#include <pango/pangocairo.h>
 #include <clutter/clutter-color.h>
 
 G_BEGIN_DECLS
 
-#define PANGO_TYPE_CLUTTER_FONT_MAP                                   \
-            (pango_clutter_font_map_get_type ())
+/* It's too difficult to actually subclass the pango cairo font
+   map. Instead we just make a fake set of macros that actually just
+   directly use the original type */
+#define PANGO_CLUTTER_TYPE_FONT_MAP PANGO_TYPE_CAIRO_FONT_MAP
 
-#define PANGO_CLUTTER_FONT_MAP(object)                                \
-            (G_TYPE_CHECK_INSTANCE_CAST ((object),                    \
-                                         PANGO_TYPE_CLUTTER_FONT_MAP, \
-                                         PangoClutterFontMap))
+#define PANGO_CLUTTER_FONT_MAP(obj)				\
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj),				\
+			       PANGO_CLUTTER_TYPE_FONT_MAP,	\
+			       PangoClutterFontMap))
+#define PANGO_CLUTTER_IS_FONT_MAP(obj)				\
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj),				\
+			       PANGO_CLUTTER_TYPE_FONT_MAP))
 
-#define PANGO_CLUTTER_IS_FONT_MAP(object)                             \
-           (G_TYPE_CHECK_INSTANCE_TYPE ((object), PANGO_TYPE_CLUTTER_FONT_MAP))
+typedef PangoCairoFontMap PangoClutterFontMap;
 
-typedef struct _PangoClutterFontMap      PangoClutterFontMap;
-typedef struct _PangoClutterFontMapClass PangoClutterFontMapClass;
+PangoFontMap *pango_clutter_font_map_new (void);
 
-typedef void (*PangoClutterSubstituteFunc) (FcPattern *pattern, gpointer data);
+PangoContext *pango_clutter_font_map_create_context (PangoClutterFontMap *fm);
 
-GType pango_clutter_font_map_get_type (void);
+void pango_clutter_font_map_set_resolution (PangoClutterFontMap *font_map,
+					    double               dpi);
 
-PangoFontMap*
-pango_clutter_font_map_new (void);
+void pango_clutter_font_map_clear_glyph_cache (PangoClutterFontMap *fm);
 
-void  
-pango_clutter_font_map_set_default_substitute 
-                           (PangoClutterFontMap        *fontmap,
-			    PangoClutterSubstituteFunc  func,
-			    gpointer                    data,
-			    GDestroyNotify              notify);
+void pango_clutter_font_map_set_use_mipmapping (PangoClutterFontMap *fm,
+						gboolean             value);
 
-void
-pango_clutter_font_map_set_resolution (PangoClutterFontMap *fontmap,
-                                       double               dpi);
+void pango_clutter_ensure_glyph_cache_for_layout (PangoLayout *layout);
 
-void          
-pango_clutter_font_map_substitute_changed (PangoClutterFontMap *fontmap);
+#define PANGO_CLUTTER_TYPE_RENDERER (pango_clutter_renderer_get_type ())
 
-PangoContext *
-pango_clutter_font_map_create_context (PangoClutterFontMap *fontmap);
+#define PANGO_CLUTTER_RENDERER(obj)				\
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj),				\
+			       PANGO_CLUTTER_TYPE_RENDERER,	\
+			       PangoClutterRenderer))
+#define PANGO_CLUTTER_RENDERER_CLASS(klass)			\
+  (G_TYPE_CHECK_CLASS_CAST ((klass),				\
+			    PANGO_CLUTTER_TYPE_RENDERER,	\
+			    PangoClutterRendererClass))
+#define PANGO_CLUTTER_IS_RENDERER(obj)				\
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj),				\
+			       PANGO_CLUTTER_TYPE_RENDERER))
+#define PANGO_CLUTTER_IS_RENDERER_CLASS(klass)			\
+  (G_TYPE_CHECK_CLASS_TYPE ((klass),				\
+			    PANGO_CLUTTER_TYPE_RENDERER))
+#define PANGO_CLUTTER_RENDERER_GET_CLASS(obj)			\
+  (G_TYPE_INSTANCE_GET_CLASS ((obj),				\
+			      PANGO_CLUTTER_TYPE_RENDERER,	\
+			      PangoClutterRendererClass))
 
-#define FLAG_INVERSE 1
-#define FLAG_OUTLINE 2 // not yet implemented
+typedef struct _PangoClutterRenderer      PangoClutterRenderer;
+typedef struct _PangoClutterRendererClass PangoClutterRendererClass;
 
-void 
-pango_clutter_render_layout_subpixel (PangoLayout *layout,
-				      int           x, 
-				      int           y,
-				      ClutterColor *color,
-				      int           flags);
-void 
-pango_clutter_render_layout (PangoLayout  *layout,
-			     int           x, 
-			     int           y,
-			     ClutterColor *color,
-			     int           flags);
+GType pango_clutter_renderer_get_type (void) G_GNUC_CONST;
 
-void 
-pango_clutter_render_layout_line (PangoLayoutLine *line,
-				  int              x,
-				  int              y,
-				  ClutterColor    *color);
+void pango_clutter_render_layout_subpixel (PangoLayout  *layout,
+					   int           x,
+					   int           y,
+					   ClutterColor *color,
+					   int           flags);
 
-void 
-pango_clutter_render_clear_caches ();
+void pango_clutter_render_layout (PangoLayout  *layout,
+				  int           x,
+				  int           y,
+				  ClutterColor *color,
+				  int           flags);
+
+void pango_clutter_render_layout_line (PangoLayoutLine  *line,
+				       int               x,
+				       int               y,
+				       ClutterColor     *color);
 
 G_END_DECLS
 
-#endif
+#endif /* _HAVE_PANGO_CLUTTER_H */

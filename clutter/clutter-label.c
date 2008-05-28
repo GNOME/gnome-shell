@@ -48,7 +48,6 @@
 G_DEFINE_TYPE (ClutterLabel, clutter_label, CLUTTER_TYPE_ACTOR)
 
 /* Probably move into main */
-static PangoClutterFontMap  *_font_map = NULL;
 static PangoContext         *_context  = NULL;
 
 enum
@@ -268,6 +267,9 @@ clutter_label_ensure_layout (ClutterLabel *label)
       else
 	pango_layout_set_width (priv->layout, raw_width > 0 ? CLUTTER_UNITS_TO_PANGO_UNIT (raw_width) 
                                                             : -1);
+
+      /* Prime the glyph cache */
+      pango_clutter_ensure_glyph_cache_for_layout (priv->layout);
     }
 
   CLUTTER_NOTE (ACTOR, "Label width set to %d pixels", width);
@@ -637,17 +639,18 @@ clutter_label_init (ClutterLabel *self)
 
   if (G_UNLIKELY (_context == NULL))
     {
-      ClutterBackend *backend;
+      ClutterBackend *backend = clutter_get_default_backend ();
+      PangoClutterFontMap *font_map = CLUTTER_CONTEXT ()->font_map;
       gdouble resolution;
+      cairo_font_options_t *font_options;
 
-      backend = clutter_get_default_backend ();
+      _context = pango_clutter_font_map_create_context (font_map);
+
       resolution = clutter_backend_get_resolution (backend);
-      if (resolution < 0)
-        resolution = 96.0;
+      pango_cairo_context_set_resolution (_context, resolution);
 
-      _font_map = PANGO_CLUTTER_FONT_MAP (pango_clutter_font_map_new ());
-      pango_clutter_font_map_set_resolution (_font_map, resolution);
-      _context = pango_clutter_font_map_create_context (_font_map);
+      font_options = clutter_backend_get_font_options (backend);
+      pango_cairo_context_set_font_options (_context, font_options);
     }
 
   priv->alignment     = PANGO_ALIGN_LEFT;
@@ -769,6 +772,9 @@ clutter_label_set_text (ClutterLabel *label,
   priv->text = g_strdup (text);
 
   clutter_label_clear_layout (label);   
+  /* Recreate the layout now so that the glyph cache will be primed
+     outside of the paint run */
+  clutter_label_ensure_layout (label);
 
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
@@ -847,7 +853,10 @@ clutter_label_set_font_name (ClutterLabel *label,
   if (label->priv->text && label->priv->text[0] != '\0')
     {
       clutter_label_clear_layout (label);      
-
+      /* Recreate the layout now so that the glyph cache will be
+	 primed outside of the paint run */
+      clutter_label_ensure_layout (label);
+      
       if (CLUTTER_ACTOR_IS_VISIBLE (label))
 	clutter_actor_queue_redraw (CLUTTER_ACTOR (label));
     }
@@ -947,6 +956,9 @@ clutter_label_set_ellipsize (ClutterLabel          *label,
       priv->ellipsize = mode;
 
       clutter_label_clear_layout (label);      
+      /* Recreate the layout now so that the glyph cache will be
+	 primed outside of the paint run */
+      clutter_label_ensure_layout (label);
       
       if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
 	clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
@@ -1214,6 +1226,9 @@ clutter_label_set_use_markup (ClutterLabel *label,
 
       priv->use_markup = setting;
       clutter_label_clear_layout (label);
+      /* Recreate the layout now so that the glyph cache will be
+	 primed outside of the paint run */
+      clutter_label_ensure_layout (label);
 
       if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (label)))
 	clutter_actor_queue_redraw (CLUTTER_ACTOR (label));

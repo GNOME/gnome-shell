@@ -127,6 +127,9 @@ void             clutter_grab_keyboard               (ClutterActor *actor);
 void             clutter_ungrab_keyboard             (void);
 ClutterActor *   clutter_get_keyboard_grab           (void);
 
+void             clutter_clear_glyph_cache           (void);
+void             clutter_set_use_mipmapped_text      (gboolean      value);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_MAIN_H */

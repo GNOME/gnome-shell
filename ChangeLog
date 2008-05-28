@@ -1,5 +1,54 @@
 2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug #919 - Replacement pango renderer (Neil Roberts)
+
+	* clutter/clutter-backend.h:
+	* clutter/clutter-backend.c:
+	(clutter_backend_set_font_options),
+	(clutter_backend_get_font_options): Add the ability to set
+	the cairo_font_options_t* for the backend at construction
+	time, so that backend implementations can have their own
+	options.
+
+	* clutter/clutter-color.c: Include pango/pango-attributes.h
+	for the pango_color_parse() function.
+
+	* clutter/clutter-label.c:
+	(clutter_label_ensure_layout),
+	(clutter_label_init), (clutter_label_set_text),
+	(clutter_label_set_font_name), (clutter_label_set_ellipsize),
+	(clutter_label_set_use_markup): Ensure that the cache is
+	always primed when the Label changes; this makes sure that
+	the cache is rebuilt outside the paint run, which should
+	make the painting perform better especially on embedded
+	devices.
+
+	* clutter/clutter-entry.c:
+	(clutter_entry_ensure_layout),
+	(clutter_entry_init), (clutter_entry_set_text),
+	(clutter_entry_set_font_name): Ditto as above.
+
+	* clutter/clutter-private.h:
+	* clutter/clutter-main.[ch]: Create the font-map inside the
+	main context; add two new functions:
+
+	  clutter_clear_glyph_cache()
+	  clutter_set_use_mipmapped_text()
+
+	that control the glyphs cache.
+
+	* clutter/pango/Makefile.am:
+	* clutter/pango/pangoclutter-fontmap.c:
+	* clutter/pango/pangoclutter-private.h:
+	* clutter/pango/pangoclutter-render.c:
+	* clutter/pango/pangoclutter.h: Rewrite the Pango renderer
+	using a PangoCairo context and saving the glyphs inside a
+	more efficient cache.
+
+	* configure.ac: Depend on pangocairo instead of pangoft2.
+
+2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug 882 - Allow child properties for containers implementing the
 	          ClutterContainer interface (Øyvind Kolås)
 

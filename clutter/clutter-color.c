@@ -34,6 +34,8 @@
 #include "config.h"
 #endif
 
+#include <pango/pango-attributes.h>
+
 #include "clutter-main.h"
 #include "clutter-color.h"
 #include "clutter-private.h"
