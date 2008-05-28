@@ -1,5 +1,13 @@
 2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/pango/pangoclutter-font.c: Remove unneeded file.
+
+	* tests/Makefile.am:
+	* tests/test-random-text.c: Add a test for checking the
+	glyph cache.
+
+2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug #919 - Replacement pango renderer (Neil Roberts)
 
 	* clutter/clutter-backend.h:
