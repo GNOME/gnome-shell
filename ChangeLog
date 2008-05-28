@@ -1,5 +1,11 @@
 2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/test-script.c:
+	* tests/test-script.json: Test merging the same actor from two
+	different sources.
+
+2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Fix merging of objects with the same id.
 
 	* clutter/clutter-script.c:

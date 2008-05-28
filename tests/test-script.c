@@ -9,17 +9,24 @@ static ClutterScript *script = NULL;
 static guint merge_id = 0;
 
 static const gchar *test_unmerge =
-"{"
-"  \"id\" : \"blue-button\","
-"  \"type\" : \"ClutterRectangle\","
-"  \"color\" : \"#0000ffff\","
-"  \"x\" : 350,"
-"  \"y\" : 50,"
-"  \"width\" : 100,"
-"  \"height\" : 100,"
-"  \"visible\" : true,"
-"  \"reactive\" : true"
-"}";
+"["
+"  {"
+"    \"id\" : \"main-stage\","
+"    \"type\" : \"ClutterStage\","
+"    \"children\" : [ \"blue-button\" ]"
+"  },"
+"  {"
+"    \"id\" : \"blue-button\","
+"    \"type\" : \"ClutterRectangle\","
+"    \"color\" : \"#0000ffff\","
+"    \"x\" : 350,"
+"    \"y\" : 50,"
+"    \"width\" : 100,"
+"    \"height\" : 100,"
+"    \"visible\" : true,"
+"    \"reactive\" : true"
+"  }"
+"]";
 
 static const gchar *test_behaviour =
 "["
