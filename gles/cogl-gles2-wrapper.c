@@ -613,10 +613,42 @@ cogl_wrap_glClipPlanex (GLenum plane, GLfixed *equation)
   /* FIXME */
 }
 
+static void
+cogl_gles2_float_array_to_fixed (int size, const GLfloat *floats,
+				 GLfixed *fixeds)
+{
+  while (size-- > 0)
+    *(fixeds++) = CLUTTER_FLOAT_TO_FIXED (*(floats++));
+}
+
 void
 cogl_wrap_glGetFixedv (GLenum pname, GLfixed *params)
 {
-  /* FIXME */
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  switch (pname)
+    {
+    case GL_MODELVIEW_MATRIX:
+      cogl_gles2_float_array_to_fixed (16, w->modelview_stack
+				       + w->modelview_stack_pos * 16,
+				       params);
+      break;
+
+    case GL_PROJECTION_MATRIX:
+      cogl_gles2_float_array_to_fixed (16, w->projection_stack
+				       + w->projection_stack_pos * 16,
+				       params);
+      break;
+
+    case GL_VIEWPORT:
+      {
+	GLfloat v[4];
+
+	glGetFloatv (GL_VIEWPORT, v);
+	cogl_gles2_float_array_to_fixed (4, v, params);
+      }
+      break;
+    }
 }
 
 void
