@@ -1,5 +1,10 @@
 2008-05-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Check the --with switches as soon as we have them,
+	to avoid further checks that will fail anyway.
+
+2008-05-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* README: Update the configure arguments list.
 
 2008-05-28  Neil Roberts  <neil@o-hand.com>

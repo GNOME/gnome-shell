@@ -103,18 +103,27 @@ dnl ========================================================================
 
 backendextra=
 backendextralib=
-glesversion=1.1
 clutterbackend=glx
 AC_ARG_WITH([flavour],
-            AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl/osx@:>@],
+            AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl/osx/win32/fruity@:>@],
                            [Select the Clutter backend]),
             clutterbackend=$with_flavour)
 
+case $clutterbackend in
+  glx|eglx|eglnative|sdl|osx|win32|fruity) ;;
+  *) AC_MSG_ERROR([Invalid flavour $clutterbackend]) ;;
+esac
 
+glesversion=1.1
 AC_ARG_WITH([gles],
-            AC_HELP_STRING([--with-gles=@1.1/2.0@:>@],
+            AC_HELP_STRING([--with-gles=@<:@1.1/2.0@:>@],
                            [Select Clutter GLES version (for EGL backends)]),
             glesversion=$with_gles)
+
+case $glesversion in
+  1.1|2.0) ;;
+  *) AC_MSG_ERROR([Invalid GL ES version $glesversion])
+esac
 
 if test "x$clutterbackend" = "xfruity" 
 then
