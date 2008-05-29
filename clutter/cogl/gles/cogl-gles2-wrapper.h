@@ -57,6 +57,10 @@ struct _CoglGles2Wrapper
   GLint     fog_end_uniform;
   GLint     fog_color_uniform;
 
+  GLint     alpha_test_enabled_uniform;
+  GLint     alpha_test_func_uniform;
+  GLint     alpha_test_ref_uniform;
+
   GLuint    matrix_mode;
   GLfloat   modelview_stack[COGL_GLES2_MODELVIEW_STACK_SIZE * 16];
   GLuint    modelview_stack_pos;
@@ -149,6 +153,7 @@ void cogl_wrap_glColor4x (GLclampx r, GLclampx g, GLclampx b, GLclampx a);
 
 void cogl_wrap_glClipPlanex (GLenum plane, GLfixed *equation);
 
+void cogl_wrap_glGetIntegerv (GLenum pname, GLint *params);
 void cogl_wrap_glGetFixedv (GLenum pname, GLfixed *params);
 
 void cogl_wrap_glFogx (GLenum pname, GLfixed param);
@@ -191,6 +196,7 @@ void cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
 #define cogl_wrap_glAlphaFunc          glAlphaFunc
 #define cogl_wrap_glColor4x            glColor4x
 #define cogl_wrap_glClipPlanex         glClipPlanex
+#define cogl_wrap_glGetIntegerv        glGetIntegerv
 #define cogl_wrap_glGetFixedv          glGetFixedv
 #define cogl_wrap_glFogx               glFogx
 #define cogl_wrap_glFogxv              glFogxv

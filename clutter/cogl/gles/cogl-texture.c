@@ -381,7 +381,7 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
   
   /* Viewport needs to have some size and be inside the window for this */
-  GE( glGetIntegerv (GL_VIEWPORT, viewport) );
+  GE( cogl_wrap_glGetIntegerv (GL_VIEWPORT, viewport) );
   
   if (viewport[0] <  0 || viewport[1] <  0 ||
       viewport[2] <= 0 || viewport[3] <= 0)
@@ -422,10 +422,10 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
      still doesn't seem to have an alpha buffer. This might be just
      a PowerVR issue.
   GLint r_bits, g_bits, b_bits, a_bits;
-  GE( glGetIntegerv (GL_ALPHA_BITS, &a_bits) );
-  GE( glGetIntegerv (GL_RED_BITS, &r_bits) );
-  GE( glGetIntegerv (GL_GREEN_BITS, &g_bits) );
-  GE( glGetIntegerv (GL_BLUE_BITS, &b_bits) );
+  GE( cogl_wrap_glGetIntegerv (GL_ALPHA_BITS, &a_bits) );
+  GE( cogl_wrap_glGetIntegerv (GL_RED_BITS, &r_bits) );
+  GE( cogl_wrap_glGetIntegerv (GL_GREEN_BITS, &g_bits) );
+  GE( cogl_wrap_glGetIntegerv (GL_BLUE_BITS, &b_bits) );
   printf ("R bits: %d\n", r_bits);
   printf ("G bits: %d\n", g_bits);
   printf ("B bits: %d\n", b_bits);
