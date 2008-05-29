@@ -1,4 +1,4 @@
-Clutter 0.7 README.
+Clutter 0.8 README.
 ===================
 
 Clutter it an open source software library for creating fast, visually
@@ -23,11 +23,11 @@ The official mailing list archive is:
 New bug page on Bugzilla:               
    http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
-Clutter is LGPL licensed.
-
+Clutter is licensed under the terms of the GNU Lesser General Public
+License, version 2.1 or (at your option) later.
 
 INSTALLATION
-====
+============
 
 See the INSTALL file. Info on specific Clutter options;
 
@@ -74,9 +74,27 @@ See the INSTALL file. Info on specific Clutter options;
           win32:
                 Windows WGL backend
 
+  --with-imagebackend=[gdk-pixbuf/internal]
+        Select the image loading backend used by COGL (default=gdk-pixbuf)
+
+          gdk-pixbuf: Depend on gdk-pixbuf-2.0
+
+          internal: Internal JPEG and PNG loader. Should only be used
+                    for testing on new platforms
+
+  --with-gles=[1.1/2.0]
+        Select the GLES version (for EGL backends) (default=1.1)
+
+  --with-json=[internal/check]
+        Select the JSON-GLib copy to use (default=internal)
+
+          internal: Use the internal copy of JSON-GLib for ClutterScript
+
+          check: Check for the existence of a system copy of JSON-GLib
+                 and if it is available, make Clutter depend on it
 
 VERSIONING
-====
+==========
 
 Clutter uses the common "Linux kernel" versioning system, where
 even-numbered minor versions are stable and odd-numbered minor
@@ -93,14 +111,14 @@ numbers are only used for released archives; odd micro numbers are
 only used on the SVN repository.
 
 HACKING
-====
+=======
 
 If you want to hack on and improve Clutter, check the contained TODO
 file for pending tasks, and HACKING for general coding guidelines.
 
-
 BUGS
 ====
+
 Bugs should be reported to the OpenedHand Bugzilla at:
 
   http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
@@ -124,7 +142,8 @@ obtained using gdb are greatly appreciated.
 
 
 PATCHES
-====
+=======
+
 Patches should be submitted using Bugzilla. Patches fixing a bug should be
 attached to the bug report; patches for new features or for fixing bugs not
 yet reported should be attached to a newly opened bug. Patches should always
@@ -138,13 +157,17 @@ If diffing against the SVN repository, you should use:
 
 
 RELEASE NOTES
-====
+=============
 
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (See NEWS for general new feature info).
 
 Release Notes for Clutter 0.8
 -------------------------------
+
+* Clutter now depends on PangoCairo for the font rendering. The PangoClutter
+  API is still considered semi-private and no guarantees are made on its
+  stability.
 
 * ClutterShader API has been slightly changed: the ClutterStage:bound
   property, clutter_shader_bind() and clutter_shader_is_bound() have

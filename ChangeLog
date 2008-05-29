@@ -1,3 +1,7 @@
+2008-05-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* README: Update the configure arguments list.
+
 2008-05-28  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/cogl/gles/cogl-gles2-wrapper.c
