@@ -164,6 +164,13 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   wrapper->fog_color_uniform
     = glGetUniformLocation (wrapper->program, "fog_color");
 
+  wrapper->alpha_test_enabled_uniform
+    = glGetUniformLocation (wrapper->program, "alpha_test_enabled");
+  wrapper->alpha_test_func_uniform
+    = glGetUniformLocation (wrapper->program, "alpha_test_func");
+  wrapper->alpha_test_ref_uniform
+    = glGetUniformLocation (wrapper->program, "alpha_test_ref");
+
   /* Always use the first texture unit */
   glUniform1i (wrapper->bound_texture_uniform, 0);
 
@@ -184,6 +191,10 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   cogl_wrap_glFogx (GL_FOG_START, 0);
   cogl_wrap_glFogx (GL_FOG_END, 1);
   cogl_wrap_glFogxv (GL_FOG_COLOR, default_fog_color);
+
+  /* Initialize alpha testing */
+  cogl_wrap_glDisable (GL_ALPHA_TEST);
+  cogl_wrap_glAlphaFunc (GL_ALWAYS, 0.0f);
 }
 
 void
@@ -567,6 +578,10 @@ cogl_wrap_glEnable (GLenum cap)
       glUniform1i (w->fog_enabled_uniform, GL_TRUE);
       break;
 
+    case GL_ALPHA_TEST:
+      glUniform1i (w->alpha_test_enabled_uniform, GL_TRUE);
+      break;
+
     default:
       glEnable (cap);
     }
@@ -585,6 +600,10 @@ cogl_wrap_glDisable (GLenum cap)
 
     case GL_FOG:
       glUniform1i (w->fog_enabled_uniform, GL_FALSE);
+      break;
+
+    case GL_ALPHA_TEST:
+      glUniform1i (w->alpha_test_enabled_uniform, GL_FALSE);
       break;
 
     default:
@@ -629,7 +648,15 @@ cogl_wrap_glDisableClientState (GLenum array)
 void
 cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref)
 {
-  /* FIXME */
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  if (ref < 0.0f)
+    ref = 0.0f;
+  else if (ref > 1.0f)
+    ref = 1.0f;
+
+  glUniform1i (w->alpha_test_func_uniform, func);
+  glUniform1f (w->alpha_test_ref_uniform, ref);
 }
 
 void
@@ -654,6 +681,23 @@ cogl_gles2_float_array_to_fixed (int size, const GLfloat *floats,
 {
   while (size-- > 0)
     *(fixeds++) = CLUTTER_FLOAT_TO_FIXED (*(floats++));
+}
+
+void
+cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
+{
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  switch (pname)
+    {
+    case GL_MAX_CLIP_PLANES:
+      *params = 0;
+      break;
+
+    default:
+      glGetIntegerv (pname, params);
+      break;
+    }
 }
 
 void

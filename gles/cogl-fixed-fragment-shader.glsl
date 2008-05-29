@@ -12,6 +12,20 @@ uniform bool       alpha_only;
 uniform bool       fog_enabled;
 uniform vec4       fog_color;
 
+/* Alpha test options */
+uniform bool       alpha_test_enabled;
+uniform int        alpha_test_func;
+uniform float      alpha_test_ref;
+
+/* Alpha test functions */
+const int GL_NEVER    = 0x0200;
+const int GL_LESS     = 0x0201;
+const int GL_EQUAL    = 0x0202;
+const int GL_LEQUAL   = 0x0203;
+const int GL_GREATER  = 0x0204;
+const int GL_NOTEQUAL = 0x0205;
+const int GL_GEQUAL   = 0x0206;
+
 void
 main (void)
 {
@@ -35,4 +49,41 @@ main (void)
   if (fog_enabled)
     /* Mix the calculated color with the fog color */
     gl_FragColor.rgb = mix (fog_color.rgb, gl_FragColor.rgb, fog_amount);
+
+  /* Alpha testing */
+  if (alpha_test_enabled)
+    {
+      if (alpha_test_func == GL_NEVER)
+	discard;
+      else if (alpha_test_func == GL_LESS)
+	{
+	  if (gl_FragColor.a >= alpha_test_ref)
+	    discard;
+	}
+      else if (alpha_test_func == GL_EQUAL)
+	{
+	  if (gl_FragColor.a != alpha_test_ref)
+	    discard;
+	}
+      else if (alpha_test_func == GL_LEQUAL)
+	{
+	  if (gl_FragColor.a > alpha_test_ref)
+	    discard;
+	}
+      else if (alpha_test_func == GL_GREATER)
+	{
+	  if (gl_FragColor.a <= alpha_test_ref)
+	    discard;
+	}
+      else if (alpha_test_func == GL_NOTEQUAL)
+	{
+	  if (gl_FragColor.a == alpha_test_ref)
+	    discard;
+	}
+      else if (alpha_test_func == GL_GEQUAL)
+	{
+	  if (gl_FragColor.a < alpha_test_ref)
+	    discard;
+	}
+    }
 }

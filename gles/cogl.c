@@ -482,11 +482,11 @@ _cogl_features_init ()
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  GE( glGetIntegerv (GL_STENCIL_BITS, &stencil_bits) );
+  GE( cogl_wrap_glGetIntegerv (GL_STENCIL_BITS, &stencil_bits) );
   if (stencil_bits > 0)
     flags |= COGL_FEATURE_STENCIL_BUFFER;
 
-  GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
+  GE( cogl_wrap_glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
   if (max_clip_planes >= 4)
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
 
@@ -538,13 +538,13 @@ void
 cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 {
   if (red)
-    GE( glGetIntegerv(GL_RED_BITS, red) );
+    GE( cogl_wrap_glGetIntegerv(GL_RED_BITS, red) );
   if (green)
-    GE( glGetIntegerv(GL_GREEN_BITS, green) );
+    GE( cogl_wrap_glGetIntegerv(GL_GREEN_BITS, green) );
   if (blue)
-    GE( glGetIntegerv(GL_BLUE_BITS, blue) );
+    GE( cogl_wrap_glGetIntegerv(GL_BLUE_BITS, blue) );
   if (alpha)
-    GE( glGetIntegerv(GL_ALPHA_BITS, alpha ) );
+    GE( cogl_wrap_glGetIntegerv(GL_ALPHA_BITS, alpha ) );
 }
 
 void
