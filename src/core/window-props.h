@@ -35,9 +35,9 @@
 #include "window-private.h"
 
 /**
- * Requests the current values of a set of properties for a given
- * window from the server, and deals with them appropriately.
- * Does not return them to the caller (they've been dealt with!)
+ * Requests the current values of a single property for a given
+ * window from the server, and deals with it appropriately.
+ * Does not return it to the caller (it's been dealt with!)
  *
  * \param window     The window.
  * \param property   A single X atom.
@@ -60,9 +60,9 @@ void meta_window_reload_properties (MetaWindow *window,
                                     int         n_properties);
 
 /**
- * Requests the current values of a set of properties for a given
- * window from the server, and deals with them appropriately.
- * Does not return them to the caller (they've been dealt with!)
+ * Requests the current values of a single property for a given
+ * window from the server, and deals with it appropriately.
+ * Does not return it to the caller (it's been dealt with!)
  *
  * \param window     A window on the same display as the one we're
  *                   investigating (only used to find the display)

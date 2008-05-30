@@ -1,5 +1,9 @@
 2008-05-30  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/window-props.h: fix comments (number)
+
+2008-05-30  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/window-props.h: commenting
 
 2008-05-28  Thomas Thurman  <tthurman@gnome.org>
