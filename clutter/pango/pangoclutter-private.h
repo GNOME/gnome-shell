@@ -30,12 +30,13 @@
 
 G_BEGIN_DECLS
 
-PangoRenderer *_pango_clutter_font_map_get_renderer (PangoClutterFontMap *fm);
+PangoRenderer *_pango_clutter_font_map_get_renderer       (PangoClutterFontMap  *fm);
 
-void _pango_clutter_renderer_clear_glyph_cache (PangoClutterRenderer *renderer);
+void           _pango_clutter_renderer_clear_glyph_cache  (PangoClutterRenderer *renderer);
 
-void _pango_clutter_renderer_set_use_mipmapping (PangoClutterRenderer *renderer,
-						 gboolean              value);
+void           _pango_clutter_renderer_set_use_mipmapping (PangoClutterRenderer *renderer,
+                                                           gboolean              value);
+gboolean       _pango_clutter_renderer_get_use_mipmapping (PangoClutterRenderer *renderer);
 
 G_END_DECLS
 

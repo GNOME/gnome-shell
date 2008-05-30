@@ -199,6 +199,12 @@ _pango_clutter_renderer_set_use_mipmapping (PangoClutterRenderer *renderer,
   renderer->use_mipmapping = value;
 }
 
+gboolean
+_pango_clutter_renderer_get_use_mipmapping (PangoClutterRenderer *renderer)
+{
+  return renderer->use_mipmapping;
+}
+
 static PangoClutterGlyphCacheValue *
 pango_clutter_renderer_get_cached_glyph (PangoRenderer *renderer,
 					 PangoFont     *font,

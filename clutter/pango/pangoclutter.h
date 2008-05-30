@@ -56,8 +56,9 @@ void pango_clutter_font_map_set_resolution (PangoClutterFontMap *font_map,
 
 void pango_clutter_font_map_clear_glyph_cache (PangoClutterFontMap *fm);
 
-void pango_clutter_font_map_set_use_mipmapping (PangoClutterFontMap *fm,
-						gboolean             value);
+void     pango_clutter_font_map_set_use_mipmapping (PangoClutterFontMap *fm,
+                                                    gboolean             value);
+gboolean pango_clutter_font_map_get_use_mipmapping (PangoClutterFontMap *fm);
 
 void pango_clutter_ensure_glyph_cache_for_layout (PangoLayout *layout);
 

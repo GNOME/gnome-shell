@@ -112,6 +112,16 @@ pango_clutter_font_map_set_use_mipmapping (PangoClutterFontMap *fm,
   _pango_clutter_renderer_set_use_mipmapping (renderer, value);
 }
 
+gboolean
+pango_clutter_font_map_get_use_mipmapping (PangoClutterFontMap *fm)
+{
+  PangoClutterRenderer *renderer;
+
+  renderer = PANGO_CLUTTER_RENDERER (_pango_clutter_font_map_get_renderer (fm));
+
+  return _pango_clutter_renderer_get_use_mipmapping (renderer);
+}
+
 static GQuark
 pango_clutter_font_map_get_renderer_key (void)
 {

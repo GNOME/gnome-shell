@@ -1,32 +1,39 @@
+2008-05-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/pango/pangoclutter-fontmap.c:
+	* clutter/pango/pangoclutter-renderer.c: 
+	* clutter/pango/pangoclutter.h
+	* clutter/pango/pangoclutter-private.h: Add a function retrieving
+	the font mipmapping setting.
+
 2008-05-29  Neil Roberts  <neil@o-hand.com>
 
-    	* clutter/cogl/gles/cogl-gles2-wrapper.h (CoglGles2Wrapper): Added
-    	uniforms for alpha testing.
-    
-    	* clutter/cogl/gles/cogl-gles2-wrapper.c
-    	(cogl_gles2_wrapper_init): Get the uniforms for alpha testing
-    	settings.
-    	(cogl_wrap_glEnable, cogl_wrap_glDisable): Enable/disable alpha
-    	testing.
-    	(cogl_wrap_glAlphaFunc): Filled in the wrapper.
-    
-    	* clutter/cogl/gles/cogl-fixed-fragment-shader.glsl: Added alpha
-    	testing.
+	* clutter/cogl/gles/cogl-gles2-wrapper.h (CoglGles2Wrapper): Added
+	uniforms for alpha testing.
 
-    	* clutter/cogl/gles/cogl-gles2-wrapper.h:
-    	* clutter/cogl/gles/cogl-gles2-wrapper.c
-    	(cogl_wrap_glGetIntegerv): Added a wrapper for glGetIntegerv so
-    	that it can report zero clip planes.
-    
-    	* clutter/cogl/gles/cogl.c:
-    	* clutter/cogl/gles/cogl-texture.c: Use the wrapped version of
-    	glGetIntegerv
+	* clutter/cogl/gles/cogl-gles2-wrapper.c
+	(cogl_gles2_wrapper_init): Get the uniforms for alpha testing
+	settings.
+	(cogl_wrap_glEnable, cogl_wrap_glDisable): Enable/disable alpha
+	testing.
+	(cogl_wrap_glAlphaFunc): Filled in the wrapper.
 
-    	* clutter/cogl/gles/cogl-primitives.c (_cogl_path_fill_nodes): Use
-    	_cogl_features_available to check for the stencil buffer instead
-    	of an #ifdef. The stencil buffer is available in the default
-    	profile for the GLES 2 simulator.
+	* clutter/cogl/gles/cogl-fixed-fragment-shader.glsl: Added alpha
+	testing.
 
+	* clutter/cogl/gles/cogl-gles2-wrapper.h:
+	* clutter/cogl/gles/cogl-gles2-wrapper.c
+	(cogl_wrap_glGetIntegerv): Added a wrapper for glGetIntegerv so
+	that it can report zero clip planes.
+
+	* clutter/cogl/gles/cogl.c:
+	* clutter/cogl/gles/cogl-texture.c: Use the wrapped version of
+	glGetIntegerv
+
+	* clutter/cogl/gles/cogl-primitives.c (_cogl_path_fill_nodes): Use
+	_cogl_features_available to check for the stencil buffer instead
+	of an #ifdef. The stencil buffer is available in the default
+	profile for the GLES 2 simulator.
 
 2008-05-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -117,7 +124,7 @@
 2008-05-28  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 882 - Allow child properties for containers implementing the
-	          ClutterContainer interface (Øyvind Kolås)
+		  ClutterContainer interface (Øyvind Kolås)
 
 	* clutter/clutter-child-meta.[ch]: Base class for the metadata
 	of a ClutterActor inside a ClutterContainer; the ChildMeta
@@ -251,7 +258,7 @@
 2008-05-26  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/x11/clutter-stage-x11.c: (clutter_stage_x11_request_coords):
-        Dont allow the window to be resize to 0 dimentions. (fixes #933)
+	Dont allow the window to be resize to 0 dimentions. (fixes #933)
 
 2008-05-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -380,16 +387,16 @@
 
 2008-05-16  Neil Roberts  <neil@o-hand.com>
 
-        Use the Mesa headers instead of depending on GLee for Win32
+	Use the Mesa headers instead of depending on GLee for Win32
 	builds.
 
-        * configure.ac: No longer check for GLee
+	* configure.ac: No longer check for GLee
 
-        * clutter/cogl/gl/cogl-defines.h.in: Don't bother including GLee.h
+	* clutter/cogl/gl/cogl-defines.h.in: Don't bother including GLee.h
 
-        * build/mingw/mingw-cross-compile.sh: No longer downloads libGLee
-        but downloads the Mesa library instead and installs the headers
-        from that. Fixed the libpng version.
+	* build/mingw/mingw-cross-compile.sh: No longer downloads libGLee
+	but downloads the Mesa library instead and installs the headers
+	from that. Fixed the libpng version.
 
 2008-05-16  Tomas Frydrych  <tf@openedhand.com>
 
@@ -563,8 +570,8 @@
 	* clutter/x11/clutter-x11-texture-pixmap.c:
 	* configure.ac:
 	* tests/Makefile.am:
-        Remove the XComposite dep from Clutter itself, just use
-        in test-pixmap (if available)
+	Remove the XComposite dep from Clutter itself, just use
+	in test-pixmap (if available)
 
 2008-05-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -780,7 +787,7 @@
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* clutter/x11/clutter-x11-texture-pixmap.c:
-        More cleanups, safety additions.
+	More cleanups, safety additions.
 
 2008-05-05  Øyvind Kolås  <pippin@o-hand.com>
 
