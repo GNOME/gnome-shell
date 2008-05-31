@@ -1,3 +1,12 @@
+2008-05-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #943 - Signals are only emitted within a certain area of
+	           the stage
+
+	* clutter/clutter-main.c (clutter_do_event): Use the proper
+	API and not the macros for the default stage, in case we are
+	using a backend supporting multiple stages. (Julian Aron Prenner)
+
 2008-05-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/pango/pangoclutter-fontmap.c:

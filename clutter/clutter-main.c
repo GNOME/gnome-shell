@@ -1705,8 +1705,8 @@ clutter_do_event (ClutterEvent *event)
           if (event->any.source == NULL)
             {
               /* Handle release off stage */
-              if ((x >= CLUTTER_STAGE_WIDTH () ||
-                   y >= CLUTTER_STAGE_HEIGHT() ||
+              if ((x >= clutter_actor_get_width (stage) ||
+                   y >= clutter_actor_get_height (stage) ||
                    x < 0 || y < 0))
                 {
                   if (event->type == CLUTTER_BUTTON_RELEASE)
