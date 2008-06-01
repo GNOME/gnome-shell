@@ -1,3 +1,20 @@
+2008-06-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Merge from clutter-0-6:
+
+	* clutter/clutter-model.c:
+	(clutter_model_iter_set_internal_valist): Add an internal function
+	wrapping ClutterModelIter::set_value that does not emit the
+	::row-changed signal. Emitting this signal before the ::row-added
+	one is wrong: a row cannot change before being inserted.
+
+	(clutter_model_append), (clutter_model_prepend),
+	(clutter_model_insert): Use the non-signal emitting variant of
+	clutter_model_iter_set_valist().
+
+	(clutter_model_iter_set_valist): Use the internal version and emit
+	the ::row-changed signal at the end.
+
 2008-05-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #943 - Signals are only emitted within a certain area of

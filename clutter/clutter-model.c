@@ -736,6 +736,10 @@ clutter_model_appendv (ClutterModel *model,
   g_object_unref (iter);
 }
 
+/* forward declaration */
+static void clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
+                                                    va_list           args);
+
 /**
  * clutter_model_append:
  * @model: a #ClutterModel
@@ -769,8 +773,9 @@ clutter_model_append (ClutterModel *model,
   iter = CLUTTER_MODEL_GET_CLASS (model)->insert_row (model, -1);
   g_assert (CLUTTER_IS_MODEL_ITER (iter));
 
+  /* do not emit the ::row-changed signal */
   va_start (args, model);
-  clutter_model_iter_set_valist (iter, args);
+  clutter_model_iter_set_internal_valist (iter, args);
   va_end (args);
 
   g_signal_emit (model, model_signals[ROW_ADDED], 0, iter);
@@ -859,7 +864,7 @@ clutter_model_prepend (ClutterModel *model,
   g_assert (CLUTTER_IS_MODEL_ITER (iter));
 
   va_start (args, model);
-  clutter_model_iter_set_valist (iter, args);
+  clutter_model_iter_set_internal_valist (iter, args);
   va_end (args);
 
   g_signal_emit (model, model_signals[ROW_ADDED], 0, iter);
@@ -906,7 +911,7 @@ clutter_model_insert (ClutterModel *model,
    * passed columns matches the model sorting column index
    */
   va_start (args, row);
-  clutter_model_iter_set_valist (iter, args);
+  clutter_model_iter_set_internal_valist (iter, args);
   va_end (args);
 
   g_signal_emit (model, model_signals[ROW_ADDED], 0, iter);
@@ -1599,27 +1604,15 @@ clutter_model_iter_init (ClutterModelIter *self)
  *  Public functions
  */
 
-/**
- * clutter_model_iter_set_valist:
- * @iter: a #ClutterModelIter
- * @args: va_list of column/value pairs, terminiated by -1
- *
- * See clutter_model_iter_set(); this version takes a va_list for language
- * bindings.
- *
- * Since: 0.6
- */
-void 
-clutter_model_iter_set_valist (ClutterModelIter *iter,
-                               va_list           args)
+static void
+clutter_model_iter_set_internal_valist (ClutterModelIter *iter,
+                                        va_list           args)
 {
   ClutterModel *model;
   ClutterModelIterPrivate *priv;
   guint column = 0;
   gboolean sort = FALSE;
   
-  g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
-
   priv = iter->priv;
   model = priv->model;
   g_assert (CLUTTER_IS_MODEL (model));
@@ -1666,6 +1659,32 @@ clutter_model_iter_set_valist (ClutterModelIter *iter,
   priv->ignore_sort = FALSE;
   if (sort)
     clutter_model_resort (model);
+}
+
+/**
+ * clutter_model_iter_set_valist:
+ * @iter: a #ClutterModelIter
+ * @args: va_list of column/value pairs, terminiated by -1
+ *
+ * See clutter_model_iter_set(); this version takes a va_list for language
+ * bindings.
+ *
+ * Since: 0.6
+ */
+void 
+clutter_model_iter_set_valist (ClutterModelIter *iter,
+                               va_list           args)
+{
+  ClutterModelIterPrivate *priv;
+  ClutterModel *model;
+
+  g_return_if_fail (CLUTTER_IS_MODEL_ITER (iter));
+
+  clutter_model_iter_set_internal_valist (iter, args);
+
+  priv = iter->priv;
+  model = priv->model;
+  g_assert (CLUTTER_IS_MODEL (model));
 
   g_signal_emit (model, model_signals[ROW_CHANGED], 0, iter);
 }
