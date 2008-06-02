@@ -48,6 +48,9 @@ typedef struct
   guint             path_nodes_size;
   CoglFixedVec2     path_nodes_min;
   CoglFixedVec2     path_nodes_max;
+
+  /* Cache of inverse projection matrix */
+  GLfloat           inverse_projection[16];
   
   /* Textures */
   GArray           *texture_handles;

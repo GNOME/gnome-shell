@@ -312,6 +312,74 @@ cogl_color (const ClutterColor *color)
   ctx->color_alpha = color->alpha;
 }
 
+static void
+apply_matrix (const ClutterFixed *matrix, ClutterFixed *vertex)
+{
+  int x, y;
+  ClutterFixed vertex_out[4] = { 0 };
+
+  for (y = 0; y < 4; y++)
+    for (x = 0; x < 4; x++)
+      vertex_out[y] += CFX_QMUL (vertex[x], matrix[y + x * 4]);
+
+  memcpy (vertex, vertex_out, sizeof (vertex_out));
+}
+
+static void
+project_vertex (ClutterFixed *modelview,
+		ClutterFixed *project,
+		ClutterFixed *vertex)
+{
+  int i;
+
+  /* Apply the modelview matrix */
+  apply_matrix (modelview, vertex);
+  /* Apply the projection matrix */
+  apply_matrix (project, vertex);
+  /* Convert from homogenized coordinates */
+  for (i = 0; i < 4; i++)
+    vertex[i] = CFX_QDIV (vertex[i], vertex[3]);
+}
+
+static void
+set_clip_plane (GLint plane_num,
+		const ClutterFixed *vertex_a,
+		const ClutterFixed *vertex_b)
+{
+  GLfixed plane[4];
+  GLfixed angle;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Calculate the angle between the axes and the line crossing the
+     two points */
+  angle = CFX_QMUL (clutter_atan2i (vertex_b[1] - vertex_a[1],
+				    vertex_b[0] - vertex_a[0]),
+		    CFX_RADIANS_TO_DEGREES);
+
+  GE( cogl_wrap_glPushMatrix () );
+  /* Load the identity matrix and multiply by the reverse of the
+     projection matrix so we can specify the plane in screen
+     coordinates */
+  GE( cogl_wrap_glLoadIdentity () );
+  GE( cogl_wrap_glMultMatrixx ((GLfixed *) ctx->inverse_projection) );
+  /* Rotate about point a */
+  GE( cogl_wrap_glTranslatex (vertex_a[0], vertex_a[1], vertex_a[2]) );
+  /* Rotate the plane by the calculated angle so that it will connect
+     the two points */
+  GE( cogl_wrap_glRotatex (angle, 0.0f, 0.0f, 1.0f) );
+  GE( cogl_wrap_glTranslatex (-vertex_a[0], -vertex_a[1], -vertex_a[2]) );
+
+  plane[0] = 0;
+  plane[1] = -CFX_ONE;
+  plane[2] = 0;
+  plane[3] = vertex_a[1];
+  GE( cogl_wrap_glClipPlanex (plane_num, plane) );
+
+  GE( cogl_wrap_glPopMatrix () );
+
+  GE( cogl_wrap_glEnable (plane_num) );
+}
+
 void
 cogl_clip_set (ClutterFixed x_offset,
                ClutterFixed y_offset,
@@ -320,19 +388,43 @@ cogl_clip_set (ClutterFixed x_offset,
 {
   if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
     {
-      GLfixed eqn_left[4] = { CFX_ONE, 0, 0, -x_offset };
-      GLfixed eqn_right[4] = { -CFX_ONE, 0, 0,  x_offset + width };
-      GLfixed eqn_top[4] = { 0, CFX_ONE, 0, -y_offset };
-      GLfixed eqn_bottom[4] = { 0, -CFX_ONE, 0,  y_offset + height };
+      GLfixed modelview[16], projection[16];
 
-      GE( cogl_wrap_glClipPlanex (GL_CLIP_PLANE0, eqn_left) );
-      GE( cogl_wrap_glClipPlanex (GL_CLIP_PLANE1, eqn_right) );
-      GE( cogl_wrap_glClipPlanex (GL_CLIP_PLANE2, eqn_top) );
-      GE( cogl_wrap_glClipPlanex (GL_CLIP_PLANE3, eqn_bottom) );
-      GE( cogl_wrap_glEnable (GL_CLIP_PLANE0) );
-      GE( cogl_wrap_glEnable (GL_CLIP_PLANE1) );
-      GE( cogl_wrap_glEnable (GL_CLIP_PLANE2) );
-      GE( cogl_wrap_glEnable (GL_CLIP_PLANE3) );
+      ClutterFixed vertex_tl[4] = { x_offset, y_offset, 0, CFX_ONE };
+      ClutterFixed vertex_tr[4] = { x_offset + width, y_offset, 0, CFX_ONE };
+      ClutterFixed vertex_bl[4] = { x_offset, y_offset + height, 0, CFX_ONE };
+      ClutterFixed vertex_br[4] = { x_offset + width, y_offset + height,
+				    0, CFX_ONE };
+
+      GE( cogl_wrap_glGetFixedv (GL_MODELVIEW_MATRIX, modelview) );
+      GE( cogl_wrap_glGetFixedv (GL_PROJECTION_MATRIX, projection) );
+
+      project_vertex (modelview, projection, vertex_tl);
+      project_vertex (modelview, projection, vertex_tr);
+      project_vertex (modelview, projection, vertex_bl);
+      project_vertex (modelview, projection, vertex_br);
+
+      /* If the order of the top and bottom lines is different from
+	 the order of the left and right lines then the clip rect must
+	 have been transformed so that the back is visible. We
+	 therefore need to swap one pair of vertices otherwise all of
+	 the planes will be the wrong way around */
+      if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
+	  != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
+	{
+	  ClutterFixed temp[4];
+	  memcpy (temp, vertex_tl, sizeof (temp));
+	  memcpy (vertex_tl, vertex_tr, sizeof (temp));
+	  memcpy (vertex_tr, temp, sizeof (temp));
+	  memcpy (temp, vertex_bl, sizeof (temp));
+	  memcpy (vertex_bl, vertex_br, sizeof (temp));
+	  memcpy (vertex_br, temp, sizeof (temp));
+	}
+
+      set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_tr);
+      set_clip_plane (GL_CLIP_PLANE1, vertex_tr, vertex_br);
+      set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_bl);
+      set_clip_plane (GL_CLIP_PLANE3, vertex_bl, vertex_tl);
     }
   else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
@@ -391,6 +483,8 @@ cogl_perspective (ClutterFixed fovy,
 
   GLfixed m[16];
   
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   memset (&m[0], 0, sizeof (m));
 
   /*
@@ -419,6 +513,18 @@ cogl_perspective (ClutterFixed fovy,
   M(3,2) = 1 + ~CFX_ONE;
 
   GE( cogl_wrap_glMultMatrixx (m) );
+
+  /* Calculate and store the inverse of the matrix */
+  memset (ctx->inverse_projection, 0, sizeof (ClutterFixed) * 16);
+
+#define m ctx->inverse_projection
+  M(0, 0) = CFX_QDIV (CFX_ONE, x);
+  M(1, 1) = CFX_QDIV (CFX_ONE, y);
+  M(2, 3) = -CFX_ONE;
+  M(3, 2) = CFX_QDIV (CFX_ONE, d);
+  M(3, 3) = CFX_QDIV (c, d);
+#undef m
+
 #undef M
 }
 

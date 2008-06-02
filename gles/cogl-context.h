@@ -58,6 +58,9 @@ typedef struct
   CoglFixedVec2        path_nodes_min;
   CoglFixedVec2        path_nodes_max;
   
+  /* Cache of inverse projection matrix */
+  ClutterFixed         inverse_projection[16];
+
   /* Textures */
   GArray              *texture_handles;
   CoglTextureGLVertex *texture_vertices;
