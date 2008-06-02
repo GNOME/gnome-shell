@@ -1,3 +1,8 @@
+2008-06-02  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gl/cogl-context.c (cogl_destroy_context): Fix
+	cut-and-paste error where the wrong arrays were being freed.
+
 2008-06-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Merge from clutter-0-6:
