@@ -5116,6 +5116,7 @@ meta_display_remove_autoraise_callback (MetaDisplay *display)
     }
 }
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 void
 meta_display_get_compositor_version (MetaDisplay *display,
                                      int         *major,
@@ -5124,6 +5125,7 @@ meta_display_get_compositor_version (MetaDisplay *display,
   *major = display->composite_major_version;
   *minor = display->composite_minor_version;
 }
+#endif
 
 Display *
 meta_display_get_xdisplay (MetaDisplay *display)
@@ -5155,14 +5157,18 @@ meta_display_get_focus_window (MetaDisplay *display)
   return display->focus_window;
 }
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 int 
 meta_display_get_damage_event_base (MetaDisplay *display)
 {
   return display->damage_event_base;
 }
+#endif
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 int
 meta_display_get_shape_event_base (MetaDisplay *display)
 {
   return display->shape_event_base;
 }
+#endif

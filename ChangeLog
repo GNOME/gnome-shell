@@ -1,5 +1,10 @@
 2008-06-02  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/display.c: make sure compositor things don't get
+        compiled when we're not using the compositor.
+
+2008-06-02  Thomas Thurman  <tthurman@gnome.org>
+
         * test/metacity-test: new test script, imported from
         branch.
 
