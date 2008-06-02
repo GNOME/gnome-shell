@@ -1,3 +1,8 @@
+2008-06-02  Thomas Thurman  <tthurman@gnome.org>
+
+        * test/metacity-test: new test script, imported from
+        branch.
+
 2008-05-30  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/window-props.h: fix comments (number)
