@@ -147,6 +147,12 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  */
 #define CFX_60  CLUTTER_INT_TO_FIXED (60)
 /**
+ * CFX_RADIANS_TO_DEGREES:
+ *
+ * Fixed point representation of the number 180 / pi
+ */
+#define CFX_RADIANS_TO_DEGREES 0x394bb8
+/**
  * CFX_255:
  *
  * Fixed point representation of the number 255
@@ -290,6 +296,9 @@ ClutterFixed clutter_sinx (ClutterFixed angle);
 ClutterFixed clutter_sini (ClutterAngle angle);
 
 ClutterFixed clutter_tani (ClutterAngle angle);
+
+ClutterFixed clutter_atani (ClutterFixed x);
+ClutterFixed clutter_atan2i (ClutterFixed y, ClutterFixed x);
 
 /* convenience macros for the cos functions */
 

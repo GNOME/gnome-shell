@@ -31,6 +31,7 @@
 
 #include <string.h>
 #include <gmodule.h>
+#include <math.h>
 
 #ifdef HAVE_CLUTTER_GLX
 #include <dlfcn.h>
@@ -385,6 +386,71 @@ cogl_color (const ClutterColor *color)
   ctx->color_alpha = color->alpha;
 }
 
+static void
+apply_matrix (const GLfloat *matrix, GLfloat *vertex)
+{
+  int x, y;
+  GLfloat vertex_out[4] = { 0 };
+
+  for (y = 0; y < 4; y++)
+    for (x = 0; x < 4; x++)
+      vertex_out[y] += vertex[x] * matrix[y + x * 4];
+
+  memcpy (vertex, vertex_out, sizeof (vertex_out));
+}
+
+static void
+project_vertex (GLfloat *modelview, GLfloat *project, GLfloat *vertex)
+{
+  int i;
+
+  /* Apply the modelview matrix */
+  apply_matrix (modelview, vertex);
+  /* Apply the projection matrix */
+  apply_matrix (project, vertex);
+  /* Convert from homogenized coordinates */
+  for (i = 0; i < 4; i++)
+    vertex[i] /= vertex[3];
+}
+
+static void
+set_clip_plane (GLint plane_num,
+		const GLfloat *vertex_a,
+		const GLfloat *vertex_b)
+{
+  GLdouble plane[4];
+  GLfloat angle;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Calculate the angle between the axes and the line crossing the
+     two points */
+  angle = atan2f ((vertex_b[1] - vertex_a[1]),
+		  (vertex_b[0] - vertex_a[0])) * 180.0f / M_PI;
+
+  GE( glPushMatrix () );
+  /* Load the identity matrix and multiply by the reverse of the
+     projection matrix so we can specify the plane in screen
+     coordinates */
+  GE( glLoadIdentity () );
+  GE( glMultMatrixf (ctx->inverse_projection) );
+  /* Rotate about point a */
+  GE( glTranslatef (vertex_a[0], vertex_a[1], vertex_a[2]) );
+  /* Rotate the plane by the calculated angle so that it will connect
+     the two points */
+  GE( glRotatef (angle, 0.0f, 0.0f, 1.0f) );
+  GE( glTranslatef (-vertex_a[0], -vertex_a[1], -vertex_a[2]) );
+
+  plane[0] = 0.0f;
+  plane[1] = -1.0f;
+  plane[2] = 0.0f;
+  plane[3] = vertex_a[1];
+  GE( glClipPlane (plane_num, plane) );
+
+  GE( glPopMatrix () );
+
+  GE( glEnable (plane_num) );
+}
+
 void
 cogl_clip_set (ClutterFixed x_offset,
                ClutterFixed y_offset,
@@ -393,22 +459,50 @@ cogl_clip_set (ClutterFixed x_offset,
 {
   if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
     {
-      GLdouble eqn_left[4] = { 1.0, 0, 0,
-			       -CLUTTER_FIXED_TO_FLOAT (x_offset) };
-      GLdouble eqn_right[4] = { -1.0, 0, 0, 
-				CLUTTER_FIXED_TO_FLOAT (x_offset + width) };
-      GLdouble eqn_top[4] = { 0, 1.0, 0, -CLUTTER_FIXED_TO_FLOAT (y_offset) };
-      GLdouble eqn_bottom[4] = { 0, -1.0, 0, CLUTTER_FIXED_TO_FLOAT
-				 (y_offset + height) };
+      GLfloat modelview[16], projection[16];
 
-      GE( glClipPlane (GL_CLIP_PLANE0, eqn_left) );
-      GE( glClipPlane (GL_CLIP_PLANE1, eqn_right) );
-      GE( glClipPlane (GL_CLIP_PLANE2, eqn_top) );
-      GE( glClipPlane (GL_CLIP_PLANE3, eqn_bottom) );
-      GE( glEnable (GL_CLIP_PLANE0) );
-      GE( glEnable (GL_CLIP_PLANE1) );
-      GE( glEnable (GL_CLIP_PLANE2) );
-      GE( glEnable (GL_CLIP_PLANE3) );     
+      GLfloat vertex_tl[4] = { CLUTTER_FIXED_TO_FLOAT (x_offset),
+			       CLUTTER_FIXED_TO_FLOAT (y_offset),
+			       0.0f, 1.0f };
+      GLfloat vertex_tr[4] = { CLUTTER_FIXED_TO_FLOAT (x_offset + width),
+			       CLUTTER_FIXED_TO_FLOAT (y_offset),
+			       0.0f, 1.0f };
+      GLfloat vertex_bl[4] = { CLUTTER_FIXED_TO_FLOAT (x_offset),
+			       CLUTTER_FIXED_TO_FLOAT (y_offset + height),
+			       0.0f, 1.0f };
+      GLfloat vertex_br[4] = { CLUTTER_FIXED_TO_FLOAT (x_offset + width),
+			       CLUTTER_FIXED_TO_FLOAT (y_offset + height),
+			       0.0f, 1.0f };
+
+      GE( glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
+      GE( glGetFloatv (GL_PROJECTION_MATRIX, projection) );
+
+      project_vertex (modelview, projection, vertex_tl);
+      project_vertex (modelview, projection, vertex_tr);
+      project_vertex (modelview, projection, vertex_bl);
+      project_vertex (modelview, projection, vertex_br);
+
+      /* If the order of the top and bottom lines is different from
+	 the order of the left and right lines then the clip rect must
+	 have been transformed so that the back is visible. We
+	 therefore need to swap one pair of vertices otherwise all of
+	 the planes will be the wrong way around */
+      if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
+	  != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
+	{
+	  GLfloat temp[4];
+	  memcpy (temp, vertex_tl, sizeof (temp));
+	  memcpy (vertex_tl, vertex_tr, sizeof (temp));
+	  memcpy (vertex_tr, temp, sizeof (temp));
+	  memcpy (temp, vertex_bl, sizeof (temp));
+	  memcpy (vertex_bl, vertex_br, sizeof (temp));
+	  memcpy (vertex_br, temp, sizeof (temp));
+	}
+
+      set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_tr);
+      set_clip_plane (GL_CLIP_PLANE1, vertex_tr, vertex_br);
+      set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_bl);
+      set_clip_plane (GL_CLIP_PLANE3, vertex_bl, vertex_tl);
     }
   else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
@@ -467,6 +561,8 @@ cogl_perspective (ClutterFixed fovy,
 
   GLfloat m[16];
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   memset (&m[0], 0, sizeof (m));
 
   /*
@@ -495,6 +591,17 @@ cogl_perspective (ClutterFixed fovy,
   M(3,2) = -1.0F;
 
   GE( glMultMatrixf (m) );
+
+  /* Calculate and store the inverse of the matrix */
+  memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
+
+#define m ctx->inverse_projection
+  M(0, 0) = 1.0f / CLUTTER_FIXED_TO_FLOAT (x);
+  M(1, 1) = 1.0f / CLUTTER_FIXED_TO_FLOAT (y);
+  M(2, 3) = -1.0f;
+  M(3, 2) = 1.0f / CLUTTER_FIXED_TO_FLOAT (d);
+  M(3, 3) = CLUTTER_FIXED_TO_FLOAT (c) / CLUTTER_FIXED_TO_FLOAT (d);
+#undef m
 #undef M
 }
 

@@ -1,5 +1,29 @@
 2008-06-02  Neil Roberts  <neil@o-hand.com>
 
+	Applied 'final patch' from bug #874
+
+	* clutter/cogl/gles/cogl.c: 
+	* clutter/cogl/gl/cogl.c: The clip planes are now set using the
+	inverse projection matrix as the modelview matrix so that they can
+	be specified in screen coordinates.
+
+	* clutter/cogl/gles/cogl-context.h (CoglContext): 
+	* clutter/cogl/gl/cogl-context.h (CoglContext): Added a member to
+	cache the inverse projection matrix
+
+	* clutter/clutter-fixed.h: Added a constant for converting from
+	radians to degrees.
+
+	* clutter/clutter-fixed.c (clutter_atani, clutter_atan2i): Added
+	fixed-point versions of atan and atan2.
+
+	* tests/test-clip.c: Added a test for clipping with various
+	rotations and depths.
+
+	* tests/Makefile.am (noinst_PROGRAMS): Added test-clip
+
+2008-06-02  Neil Roberts  <neil@o-hand.com>
+
 	* clutter/cogl/gles/cogl-gles2-wrapper.h: The uniform numbers are
 	now stored in a separate struct so they can be stored for
 	application program objects as well.

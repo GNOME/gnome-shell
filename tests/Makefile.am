@@ -12,7 +12,7 @@ noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
 		  test-cogl-tex-convert test-cogl-tex-foreign \
 		  test-cogl-tex-getset test-cogl-offscreen \
 		  test-cogl-tex-polygon test-stage-read-pixels \
-		  test-random-text
+		  test-random-text test-clip
 
 if X11_TESTS
 noinst_PROGRAMS += test-pixmap
