@@ -111,9 +111,9 @@ cogl_destroy_context ()
   if (_context->texture_handles)
     g_array_free (_context->texture_handles, TRUE);
   if (_context->fbo_handles)
-    g_array_free (_context->texture_handles, TRUE);
+    g_array_free (_context->fbo_handles, TRUE);
   if (_context->shader_handles)
-    g_array_free (_context->texture_handles, TRUE);
+    g_array_free (_context->shader_handles, TRUE);
   if (_context->program_handles)
     g_array_free (_context->program_handles, TRUE);
   
