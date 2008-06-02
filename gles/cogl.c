@@ -490,6 +490,10 @@ _cogl_features_init ()
   if (max_clip_planes >= 4)
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
 
+#ifdef HAVE_COGL_GLES2
+  flags |= COGL_FEATURE_SHADERS_GLSL;
+#endif
+
   ctx->feature_flags = flags;
   ctx->features_cached = TRUE;
 }
@@ -570,107 +574,4 @@ cogl_fog_set (const ClutterColor *fog_color,
   cogl_wrap_glFogx (GL_FOG_DENSITY, (GLfixed) density);
   cogl_wrap_glFogx (GL_FOG_START, (GLfixed) z_near);
   cogl_wrap_glFogx (GL_FOG_END, (GLfixed) z_far);
-}
-
-/* Shaders, no support on regular OpenGL 1.1 */
-
-CoglHandle
-cogl_create_program (void)
-{
-  return COGL_INVALID_HANDLE;
-}
-
-gboolean
-cogl_is_program (CoglHandle handle)
-{
-  return FALSE;
-}
-
-CoglHandle
-cogl_program_ref (CoglHandle handle)
-{
-  return COGL_INVALID_HANDLE;
-}
-
-void
-cogl_program_unref (CoglHandle handle)
-{
-}
-
-CoglHandle
-cogl_create_shader (COGLenum shaderType)
-{
-  return COGL_INVALID_HANDLE;
-}
-
-gboolean
-cogl_is_shader (CoglHandle handle)
-{
-  return FALSE;
-}
-
-CoglHandle
-cogl_shader_ref (CoglHandle handle)
-{
-  return COGL_INVALID_HANDLE;
-}
-
-void
-cogl_shader_unref (CoglHandle handle)
-{
-}
-
-void
-cogl_shader_source (CoglHandle  shader,
-                    const gchar   *source)
-{
-}
-
-void
-cogl_shader_compile (CoglHandle shader_handle)
-{
-}
-
-void
-cogl_program_attach_shader (CoglHandle program_handle,
-                            CoglHandle shader_handle)
-{
-}
-
-void
-cogl_program_link (CoglHandle program_handle)
-{
-}
-
-void
-cogl_program_use (CoglHandle program_handle)
-{
-}
-
-COGLint
-cogl_program_get_uniform_location (CoglHandle   program_handle,
-                                   const gchar *uniform_name)
-{
-  return 0;
-}
-
-void
-cogl_shader_get_info_log (CoglHandle  handle,
-                          guint       size,
-                          gchar      *buffer)
-{
-}
-
-void
-cogl_shader_get_parameteriv (CoglHandle  handle,
-                             COGLenum    pname,
-                             COGLint    *dest)
-{
-}
-
-
-void
-cogl_program_uniform_1f (COGLint uniform_no,
-                         gfloat  value)
-{
 }

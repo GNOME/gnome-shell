@@ -64,6 +64,8 @@ cogl_create_context ()
   _context->texture_vertices = NULL;
   
   _context->fbo_handles = NULL;
+  _context->program_handles = NULL;
+  _context->shader_handles = NULL;
   _context->draw_buffer = COGL_WINDOW_BUFFER;
   
   _context->blend_src_factor = CGL_SRC_ALPHA;
@@ -95,6 +97,15 @@ cogl_destroy_context ()
 
   if (_context->texture_vertices)
     g_free (_context->texture_vertices);
+  
+  if (_context->texture_handles)
+    g_array_free (_context->texture_handles, TRUE);
+  if (_context->fbo_handles)
+    g_array_free (_context->fbo_handles, TRUE);
+  if (_context->shader_handles)
+    g_array_free (_context->shader_handles, TRUE);
+  if (_context->program_handles)
+    g_array_free (_context->program_handles, TRUE);
   
   g_free (_context);
 }
