@@ -67,6 +67,10 @@ typedef struct
   GArray              *fbo_handles;
   CoglBufferTarget     draw_buffer;
 
+  /* Shaders */
+  GArray              *program_handles;
+  GArray              *shader_handles;
+
 #ifdef HAVE_COGL_GLES2
   CoglGles2Wrapper     gles2;
 #endif

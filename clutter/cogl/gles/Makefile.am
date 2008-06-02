@@ -30,7 +30,11 @@ libclutter_cogl_la_SOURCES = \
 	cogl-texture.c \
 	cogl-fbo.c \
 	cogl-context.c \
-	cogl-gles2-wrapper.h
+	cogl-gles2-wrapper.h \
+	cogl-program.h \
+	cogl-program.c \
+	cogl-shader.h \
+	cogl-shader.c
 
 if USE_GLES2_WRAPPER
 libclutter_cogl_la_SOURCES += \

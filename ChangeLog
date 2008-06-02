@@ -1,5 +1,46 @@
 2008-06-02  Neil Roberts  <neil@o-hand.com>
 
+	* clutter/cogl/gles/cogl-gles2-wrapper.h: The uniform numbers are
+	now stored in a separate struct so they can be stored for
+	application program objects as well.
+
+	* clutter/cogl/gles/cogl.c: Moved stub shader functions into
+	separate files.
+	(_cogl_features_init): Report support for the shaders feature on
+	GLES 2
+
+	* clutter/cogl/gles/cogl-shader.h: 
+	* clutter/cogl/gles/cogl-shader.c: 
+	* clutter/cogl/gles/cogl-program.h: 
+	* clutter/cogl/gles/cogl-program.c: Separate files to handle
+	shaders on programs on GLES. If version 1.1 is being used then the
+	stub functions which all fail are still used.
+
+	* clutter/cogl/gles/cogl-gles2-wrapper.c
+	(cogl_gles2_wrapper_init, cogl_gles2_wrapper_bind_attributes),
+	(cogl_gles2_wrapper_get_uniforms): Move the uniforms and attribute
+	bindings into a separate function so they can be used to bind on
+	application shaders as well.
+	(cogl_gles2_wrapper_update_matrix): Now takes a parameter and is
+	no longer static so that it can be used to update all of the
+	matrices when a new shader is bound.
+
+	* clutter/cogl/gles/cogl-defines.h.in: Use GL_COMPILE_STATUS for
+	CGL_OBJECT_COMPILE_STATUS if the latter isn't available (for
+	example on GLES 2).
+
+	* clutter/cogl/gles/cogl-context.h (CoglContext): Added handle
+	arrays for programs and shaders.
+
+	* clutter/cogl/gles/cogl-context.c (cogl_create_context)
+	(cogl_destroy_context): Initialize and destroy program and shader
+	handle array.
+
+	* clutter/cogl/gles/Makefile.am (libclutter_cogl_la_SOURCES): Add
+	cogl-{shader,program}.{c,h}
+
+2008-06-02  Neil Roberts  <neil@o-hand.com>
+
 	* clutter/cogl/gl/cogl-context.c (cogl_destroy_context): Fix
 	cut-and-paste error where the wrong arrays were being freed.
 

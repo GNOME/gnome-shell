@@ -30,19 +30,16 @@ G_BEGIN_DECLS
 
 #ifdef HAVE_COGL_GLES2
 
-typedef struct _CoglGles2Wrapper CoglGles2Wrapper;
+typedef struct _CoglGles2Wrapper         CoglGles2Wrapper;
+typedef struct _CoglGles2WrapperUniforms CoglGles2WrapperUniforms;
 
 /* Must be a power of two */
 #define COGL_GLES2_MODELVIEW_STACK_SIZE  32
 #define COGL_GLES2_PROJECTION_STACK_SIZE 2
 #define COGL_GLES2_TEXTURE_STACK_SIZE    2
 
-struct _CoglGles2Wrapper
+struct _CoglGles2WrapperUniforms
 {
-  GLuint    program;
-  GLuint    vertex_shader;
-  GLuint    fragment_shader;
-
   GLint     mvp_matrix_uniform;
   GLint     modelview_matrix_uniform;
   GLint     texture_matrix_uniform;
@@ -60,6 +57,13 @@ struct _CoglGles2Wrapper
   GLint     alpha_test_enabled_uniform;
   GLint     alpha_test_func_uniform;
   GLint     alpha_test_ref_uniform;
+};
+
+struct _CoglGles2Wrapper
+{
+  GLuint    program;
+  GLuint    vertex_shader;
+  GLuint    fragment_shader;
 
   GLuint    matrix_mode;
   GLfloat   modelview_stack[COGL_GLES2_MODELVIEW_STACK_SIZE * 16];
@@ -68,6 +72,11 @@ struct _CoglGles2Wrapper
   GLuint    projection_stack_pos;
   GLfloat   texture_stack[COGL_GLES2_TEXTURE_STACK_SIZE * 16];
   GLuint    texture_stack_pos;
+
+  /* The uniforms for the fixed-functionality emulation program */
+  CoglGles2WrapperUniforms fixed_uniforms;
+  /* The uniforms for the currently bound program */
+  CoglGles2WrapperUniforms *uniforms;
 
   /* The combined modelview and projection matrix is only updated at
      the last minute in glDrawArrays to avoid recalculating it for
@@ -168,6 +177,12 @@ void cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
 
 /* This function is only available on GLES 2 */
 #define cogl_wrap_glGenerateMipmap glGenerateMipmap
+
+void cogl_gles2_wrapper_bind_attributes (GLuint program);
+void cogl_gles2_wrapper_get_uniforms (GLuint program,
+				      CoglGles2WrapperUniforms *uniforms);
+void cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper,
+				       GLenum matrix_num);
 
 #else /* HAVE_COGL_GLES2 */
 

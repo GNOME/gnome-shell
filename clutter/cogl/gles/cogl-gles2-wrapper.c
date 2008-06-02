@@ -109,12 +109,7 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   wrapper->program = glCreateProgram ();
   glAttachShader (wrapper->program, wrapper->fragment_shader);
   glAttachShader (wrapper->program, wrapper->vertex_shader);
-  glBindAttribLocation (wrapper->program, COGL_GLES2_WRAPPER_VERTEX_ATTRIB,
-			"vertex_attrib");
-  glBindAttribLocation (wrapper->program, COGL_GLES2_WRAPPER_TEX_COORD_ATTRIB,
-			"tex_coord_attrib");
-  glBindAttribLocation (wrapper->program, COGL_GLES2_WRAPPER_COLOR_ATTRIB,
-			"color_attrib");
+  cogl_gles2_wrapper_bind_attributes (wrapper->program);
   glLinkProgram (wrapper->program);
 
   glGetProgramiv (wrapper->program, GL_LINK_STATUS, &status);
@@ -138,41 +133,11 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
 
   glUseProgram (wrapper->program);
 
-  wrapper->mvp_matrix_uniform
-    = glGetUniformLocation (wrapper->program, "mvp_matrix");
-  wrapper->modelview_matrix_uniform
-    = glGetUniformLocation (wrapper->program, "modelview_matrix");
-  wrapper->texture_matrix_uniform
-    = glGetUniformLocation (wrapper->program, "texture_matrix");
-  wrapper->texture_2d_enabled_uniform
-    = glGetUniformLocation (wrapper->program, "texture_2d_enabled");
-  wrapper->bound_texture_uniform
-    = glGetUniformLocation (wrapper->program, "texture_unit");
-  wrapper->alpha_only_uniform
-    = glGetUniformLocation (wrapper->program, "alpha_only");
-
-  wrapper->fog_enabled_uniform
-    = glGetUniformLocation (wrapper->program, "fog_enabled");
-  wrapper->fog_mode_uniform
-    = glGetUniformLocation (wrapper->program, "fog_mode");
-  wrapper->fog_density_uniform
-    = glGetUniformLocation (wrapper->program, "fog_density");
-  wrapper->fog_start_uniform
-    = glGetUniformLocation (wrapper->program, "fog_start");
-  wrapper->fog_end_uniform
-    = glGetUniformLocation (wrapper->program, "fog_end");
-  wrapper->fog_color_uniform
-    = glGetUniformLocation (wrapper->program, "fog_color");
-
-  wrapper->alpha_test_enabled_uniform
-    = glGetUniformLocation (wrapper->program, "alpha_test_enabled");
-  wrapper->alpha_test_func_uniform
-    = glGetUniformLocation (wrapper->program, "alpha_test_func");
-  wrapper->alpha_test_ref_uniform
-    = glGetUniformLocation (wrapper->program, "alpha_test_ref");
+  wrapper->uniforms = &wrapper->fixed_uniforms;
+  cogl_gles2_wrapper_get_uniforms (wrapper->program, wrapper->uniforms);
 
   /* Always use the first texture unit */
-  glUniform1i (wrapper->bound_texture_uniform, 0);
+  glUniform1i (wrapper->uniforms->bound_texture_uniform, 0);
 
   /* Initialize the stacks */
   cogl_wrap_glMatrixMode (GL_TEXTURE);
@@ -198,6 +163,55 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
 }
 
 void
+cogl_gles2_wrapper_bind_attributes (GLuint program)
+{
+  glBindAttribLocation (program, COGL_GLES2_WRAPPER_VERTEX_ATTRIB,
+			"vertex_attrib");
+  glBindAttribLocation (program, COGL_GLES2_WRAPPER_TEX_COORD_ATTRIB,
+			"tex_coord_attrib");
+  glBindAttribLocation (program, COGL_GLES2_WRAPPER_COLOR_ATTRIB,
+			"color_attrib");
+}
+
+void
+cogl_gles2_wrapper_get_uniforms (GLuint program,
+				 CoglGles2WrapperUniforms *uniforms)
+{
+  uniforms->mvp_matrix_uniform
+    = glGetUniformLocation (program, "mvp_matrix");
+  uniforms->modelview_matrix_uniform
+    = glGetUniformLocation (program, "modelview_matrix");
+  uniforms->texture_matrix_uniform
+    = glGetUniformLocation (program, "texture_matrix");
+  uniforms->texture_2d_enabled_uniform
+    = glGetUniformLocation (program, "texture_2d_enabled");
+  uniforms->bound_texture_uniform
+    = glGetUniformLocation (program, "texture_unit");
+  uniforms->alpha_only_uniform
+    = glGetUniformLocation (program, "alpha_only");
+
+  uniforms->fog_enabled_uniform
+    = glGetUniformLocation (program, "fog_enabled");
+  uniforms->fog_mode_uniform
+    = glGetUniformLocation (program, "fog_mode");
+  uniforms->fog_density_uniform
+    = glGetUniformLocation (program, "fog_density");
+  uniforms->fog_start_uniform
+    = glGetUniformLocation (program, "fog_start");
+  uniforms->fog_end_uniform
+    = glGetUniformLocation (program, "fog_end");
+  uniforms->fog_color_uniform
+    = glGetUniformLocation (program, "fog_color");
+
+  uniforms->alpha_test_enabled_uniform
+    = glGetUniformLocation (program, "alpha_test_enabled");
+  uniforms->alpha_test_func_uniform
+    = glGetUniformLocation (program, "alpha_test_func");
+  uniforms->alpha_test_ref_uniform
+    = glGetUniformLocation (program, "alpha_test_ref");
+}
+
+void
 cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
 {
   if (wrapper->program)
@@ -217,12 +231,12 @@ cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
     }
 }
 
-static void
-cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper)
+void
+cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper, GLenum matrix_num)
 {
   const float *matrix;
 
-  switch (wrapper->matrix_mode)
+  switch (matrix_num)
     {
     default:
     case GL_MODELVIEW:
@@ -234,10 +248,10 @@ cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper)
 
     case GL_TEXTURE:
       matrix = wrapper->texture_stack + wrapper->texture_stack_pos * 16;
-      glUniformMatrix4fv (wrapper->texture_matrix_uniform, 1, GL_FALSE, matrix);
+      glUniformMatrix4fv (wrapper->uniforms->texture_matrix_uniform,
+			  1, GL_FALSE, matrix);
       break;
     }
-
 }
 
 void
@@ -314,7 +328,7 @@ cogl_wrap_glPopMatrix ()
     }
 
   /* Update the matrix in the program object */
-  cogl_gles2_wrapper_update_matrix (w);
+  cogl_gles2_wrapper_update_matrix (w, w->matrix_mode);
 }
 
 void
@@ -356,7 +370,7 @@ cogl_wrap_glLoadIdentity ()
   matrix[10] = 1.0f;
   matrix[15] = 1.0f;
 
-  cogl_gles2_wrapper_update_matrix (w);
+  cogl_gles2_wrapper_update_matrix (w, w->matrix_mode);
 }
 
 static void
@@ -388,7 +402,7 @@ cogl_wrap_glMultMatrix (const float *m)
 
   memcpy (old_matrix, new_matrix, sizeof (float) * 16);
 
-  cogl_gles2_wrapper_update_matrix (w);
+  cogl_gles2_wrapper_update_matrix (w, w->matrix_mode);
 }
 
 void
@@ -530,8 +544,9 @@ cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count)
 				      + w->projection_stack_pos * 16,
 				      modelview_matrix);
 
-      glUniformMatrix4fv (w->mvp_matrix_uniform, 1, GL_FALSE, mvp_matrix);
-      glUniformMatrix4fv (w->modelview_matrix_uniform, 1, GL_FALSE,
+      glUniformMatrix4fv (w->uniforms->mvp_matrix_uniform, 1,
+			  GL_FALSE, mvp_matrix);
+      glUniformMatrix4fv (w->uniforms->modelview_matrix_uniform, 1, GL_FALSE,
 			  modelview_matrix);
 
       w->mvp_uptodate = GL_TRUE;
@@ -551,7 +566,7 @@ cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
   /* We need to keep track of whether the texture is alpha-only
      because the emulation of GL_MODULATE needs to work differently in
      that case */
-  glUniform1i (w->alpha_only_uniform,
+  glUniform1i (w->uniforms->alpha_only_uniform,
 	       internal_format == GL_ALPHA ? GL_TRUE : GL_FALSE);
 }
 
@@ -571,15 +586,15 @@ cogl_wrap_glEnable (GLenum cap)
   switch (cap)
     {
     case GL_TEXTURE_2D:
-      glUniform1i (w->texture_2d_enabled_uniform, GL_TRUE);
+      glUniform1i (w->uniforms->texture_2d_enabled_uniform, GL_TRUE);
       break;
 
     case GL_FOG:
-      glUniform1i (w->fog_enabled_uniform, GL_TRUE);
+      glUniform1i (w->uniforms->fog_enabled_uniform, GL_TRUE);
       break;
 
     case GL_ALPHA_TEST:
-      glUniform1i (w->alpha_test_enabled_uniform, GL_TRUE);
+      glUniform1i (w->uniforms->alpha_test_enabled_uniform, GL_TRUE);
       break;
 
     default:
@@ -595,15 +610,15 @@ cogl_wrap_glDisable (GLenum cap)
   switch (cap)
     {
     case GL_TEXTURE_2D:
-      glUniform1i (w->texture_2d_enabled_uniform, GL_FALSE);
+      glUniform1i (w->uniforms->texture_2d_enabled_uniform, GL_FALSE);
       break;
 
     case GL_FOG:
-      glUniform1i (w->fog_enabled_uniform, GL_FALSE);
+      glUniform1i (w->uniforms->fog_enabled_uniform, GL_FALSE);
       break;
 
     case GL_ALPHA_TEST:
-      glUniform1i (w->alpha_test_enabled_uniform, GL_FALSE);
+      glUniform1i (w->uniforms->alpha_test_enabled_uniform, GL_FALSE);
       break;
 
     default:
@@ -655,8 +670,8 @@ cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref)
   else if (ref > 1.0f)
     ref = 1.0f;
 
-  glUniform1i (w->alpha_test_func_uniform, func);
-  glUniform1f (w->alpha_test_ref_uniform, ref);
+  glUniform1i (w->uniforms->alpha_test_func_uniform, func);
+  glUniform1f (w->uniforms->alpha_test_ref_uniform, ref);
 }
 
 void
@@ -738,19 +753,22 @@ cogl_wrap_glFogx (GLenum pname, GLfixed param)
   switch (pname)
     {
     case GL_FOG_MODE:
-      glUniform1i (w->fog_mode_uniform, param);
+      glUniform1i (w->uniforms->fog_mode_uniform, param);
       break;
       
     case GL_FOG_DENSITY:
-      glUniform1f (w->fog_density_uniform, CLUTTER_FIXED_TO_FLOAT (param));
+      glUniform1f (w->uniforms->fog_density_uniform,
+		   CLUTTER_FIXED_TO_FLOAT (param));
       break;
 
     case GL_FOG_START:
-      glUniform1f (w->fog_start_uniform, CLUTTER_FIXED_TO_FLOAT (param));
+      glUniform1f (w->uniforms->fog_start_uniform,
+		   CLUTTER_FIXED_TO_FLOAT (param));
       break;
 
     case GL_FOG_END:
-      glUniform1f (w->fog_end_uniform, CLUTTER_FIXED_TO_FLOAT (param));
+      glUniform1f (w->uniforms->fog_end_uniform,
+		   CLUTTER_FIXED_TO_FLOAT (param));
       break;
     }
 }
@@ -761,7 +779,7 @@ cogl_wrap_glFogxv (GLenum pname, const GLfixed *params)
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
   if (pname == GL_FOG_COLOR)
-    glUniform4f (w->fog_color_uniform,
+    glUniform4f (w->uniforms->fog_color_uniform,
 		 CLUTTER_FIXED_TO_FLOAT (params[0]),
 		 CLUTTER_FIXED_TO_FLOAT (params[1]),
 		 CLUTTER_FIXED_TO_FLOAT (params[2]),
