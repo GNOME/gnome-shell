@@ -1,5 +1,12 @@
 2008-06-02  Neil Roberts  <neil@o-hand.com>
 
+        * clutter/pango/pangoclutter-glyph-cache.c
+        (pango_clutter_glyph_cache_set): When creating a new band, make
+        sure the texture is wide enough for the glyph, not just tall
+        enough.
+
+2008-06-02  Neil Roberts  <neil@o-hand.com>
+
 	Applied 'final patch' from bug #874
 
 	* clutter/cogl/gles/cogl.c: 

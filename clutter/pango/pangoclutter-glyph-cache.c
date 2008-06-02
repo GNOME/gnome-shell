@@ -269,7 +269,8 @@ pango_clutter_glyph_cache_set (PangoClutterGlyphCache *cache,
       /* Look for a texture with enough vertical space left for a band
 	 with this height */
       for (texture = cache->textures;
-	   texture && texture->space_remaining < band_height;
+	   texture && (texture->space_remaining < band_height
+		       || texture->texture_size < width);
 	   texture = texture->next);
       if (texture == NULL)
 	{
@@ -281,7 +282,8 @@ pango_clutter_glyph_cache_set (PangoClutterGlyphCache *cache,
 	  texture = g_slice_new (PangoClutterGlyphCacheTexture);
 
 	  texture->texture_size = MIN_TEXTURE_SIZE;
-	  while (texture->texture_size < band_height)
+	  while (texture->texture_size < band_height
+		 || texture->texture_size < width)
 	    texture->texture_size *= 2;
 
 	  /* Allocate an empty buffer to clear the texture */
