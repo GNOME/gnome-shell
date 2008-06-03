@@ -2488,15 +2488,14 @@ clutter_actor_destroy (ClutterActor *self)
 
   priv = self->priv;
 
+  g_object_ref (self);
+
   if (priv->parent_actor)
     {
       ClutterActor *parent = priv->parent_actor;
 
       if (CLUTTER_IS_CONTAINER (parent))
-        {
-          g_object_ref (self);
-          clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
-        }
+	clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
       else
         priv->parent_actor = NULL;
     }

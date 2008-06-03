@@ -1,3 +1,32 @@
+2008-06-03  Neil Roberts  <neil@o-hand.com>
+
+	Applied patch from bug #947
+
+        * clutter/clutter-stage.c (clutter_stage_get_default): Don't grab
+        the floating reference when creating the default stage. The stage
+        manager will take a reference to it so it will behave as any other
+        stage.
+        (clutter_stage_new): Don't take the floating reference to the new
+        stage but let the stage manager keep it instead.
+
+        * clutter/clutter-stage-manager.c
+        (_clutter_stage_manager_add_stage): Take a reference to the stage
+	when it is added to the list.
+        (_clutter_stage_manager_remove_stage): Unref the stage when it is
+	removed from the list.
+        (clutter_stage_manager_dispose): Keep track of the 'next' pointer
+	as a separate variable so we can cope when the stage being
+	destroyed removes itself from the list as the list is being
+	iterated.
+
+        * clutter/clutter-actor.c (clutter_actor_destroy): Take a
+	reference at the beginning of the function even if there is no
+	parent container so that overall the reference count is not
+	changed when the actor is unref'd again at the bottom of the
+	function. Previously it would have a net effect of leaving the
+	reference count alone unless it is a top level actor in which case
+	it would unref it.
+
 2008-06-03  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:

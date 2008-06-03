@@ -67,13 +67,14 @@ static void
 clutter_stage_manager_dispose (GObject *gobject)
 {
   ClutterStageManager *stage_manager;
-  GSList *l;
+  GSList *l, *next;
 
   stage_manager = CLUTTER_STAGE_MANAGER (gobject);
 
-  for (l = stage_manager->stages; l; l = l->next)
+  for (l = stage_manager->stages; l; l = next)
     {
       ClutterActor *stage = l->data;
+      next = l->next;
 
       if (stage)
         clutter_actor_destroy (stage);
@@ -245,12 +246,8 @@ _clutter_stage_manager_add_stage (ClutterStageManager *stage_manager,
       return;
     }
 
-  /*  Refing currently disabled as 
-   *   - adding/removing internal to clutter and only stage does this 
-   *   - stage removes from manager in finalize (and how can it with ref)
-   *   - Maybe a safer way
-   *  g_object_ref_sink (stage);   
-  */
+  g_object_ref_sink (stage);
+
   stage_manager->stages = g_slist_append (stage_manager->stages, stage);
 
   if (!default_stage)
@@ -282,5 +279,5 @@ _clutter_stage_manager_remove_stage (ClutterStageManager *stage_manager,
 
   g_signal_emit (stage_manager, manager_signals[STAGE_REMOVED], 0, stage);
 
-  /* g_object_unref (stage); */
+  g_object_unref (stage);
 }

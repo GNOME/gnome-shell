@@ -651,13 +651,11 @@ clutter_stage_get_default (void)
 
   stage = clutter_stage_manager_get_default_stage (stage_manager);
   if (G_UNLIKELY (stage == NULL))
-    {
-      /* this will take care of automatically adding the stage
-       * to the stage manager and setting it as the default
-       */
-      stage = g_object_new (CLUTTER_TYPE_STAGE, NULL);
-      g_object_ref_sink (stage);
-    }
+    /* This will take care of automatically adding the stage to the
+     * stage manager and setting it as the default. Its floating
+     * reference will be claimed by the stage manager.
+     */
+    stage = g_object_new (CLUTTER_TYPE_STAGE, NULL);
 
   return CLUTTER_ACTOR (stage);
 }
@@ -1631,8 +1629,6 @@ clutter_fog_get_type (void)
 ClutterActor *
 clutter_stage_new (void)
 {
-  ClutterActor *retval;
-
   if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_MULTIPLE))
     {
       g_warning ("Unable to create a new stage: the %s backend does not "
@@ -1641,11 +1637,9 @@ clutter_stage_new (void)
       return NULL;
     }
 
-  retval = g_object_new (CLUTTER_TYPE_STAGE, NULL);
-  if (retval)
-    return g_object_ref_sink (retval);
-
-  return NULL;
+  /* The stage manager will grab the floating reference when the stage
+     is added to it in the constructor */
+  return g_object_new (CLUTTER_TYPE_STAGE, NULL);
 }
 
 /**
