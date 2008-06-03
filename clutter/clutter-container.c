@@ -985,7 +985,7 @@ container_get_child_property (ClutterContainer *container,
   ClutterChildMeta *data;
 
   data = clutter_container_get_child_meta (container, actor);
-  g_object_set_property (G_OBJECT (data), pspec->name, value);
+  g_object_get_property (G_OBJECT (data), pspec->name, value);
 }
 
 /**
