@@ -553,6 +553,9 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
   if (!priv->pixmap)
     return;
 
+  if (priv->shminfo.shmid == -1)
+    try_alloc_shm (texture);    
+
   clutter_x11_trap_x_errors ();
 
   if (priv->have_shm)
@@ -855,19 +858,28 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
   g_object_unref (texture);
 
   free_shm_resources (texture);
-  if (pixmap != None)
-    try_alloc_shm (texture);
 
   if (priv->depth != 0 &&
       priv->pixmap != None &&
       priv->pixmap_width != 0 &&
       priv->pixmap_height != 0)
     {
+      gboolean sync_size = TRUE;
+
       if (CLUTTER_ACTOR_IS_REALIZED (texture))
         clutter_x11_texture_pixmap_update_area (texture,
                                                 0, 0,
                                                 priv->pixmap_width,
                                                 priv->pixmap_height);
+
+#if 0
+      /* Borked - externally resizing resets this prop.. */
+      g_object_get (texture, "sync-size", &sync_size, NULL);
+
+      /*if (sync_size)*/
+        clutter_actor_set_size (CLUTTER_ACTOR(texture),
+                                priv->pixmap_width, priv->pixmap_height);
+#endif
     }
 }
 
@@ -896,39 +908,6 @@ clutter_x11_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
 
   g_signal_emit (texture, signals[UPDATE_AREA], 0, x, y, width, height);
 }
-
-/* FIXME: to implement */
-void
-clutter_x11_texture_pixmap_set_from_window (ClutterX11TexturePixmap *texture,
-                                            Window                   win,
-                                            gboolean                 reflect)
-{
-  ClutterX11TexturePixmapPrivate *priv;
-
-  g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
-
-  /* This would mainly be used for compositing type situations 
-   * with named pixmap (cannot be regular pixmap) and setting up  
-   * actual window redirection.
-   *
-   * It also seems to can pass a window to texture_pixmap and it
-   * it works like redirectwindow automatic. 
-   *
-   * Note windows do however change size, whilst pixmaps do not. 
-  */
-
-  priv = texture->priv;
-
-  /*
-  priv->window_pixmap = XCompositeNameWindowPixmap (dpy, win);
-
-  XCompositeRedirectWindow(clutter_x11_get_default_display(),
-                           win_remote,
-                           CompositeRedirectAutomatic);
-  */
-}
-
-
 
 /* FIXME: Below will change, just proof of concept atm - it will not work
  *        100% for named pixmaps. 

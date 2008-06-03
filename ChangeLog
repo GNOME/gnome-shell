@@ -1,3 +1,12 @@
+2008-06-03  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+        Dont always fallback to x11 (slow) updates for a single
+        failed pixmap.
+        Minor cleanups.
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+        Move shm allocation to only area updates.
+
 2008-06-03  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-container.c: (container_get_child_property): 

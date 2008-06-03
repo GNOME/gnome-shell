@@ -431,7 +431,7 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
   guint                           depth;
   Pixmap                          pixmap;
   guint				  pixmap_width, pixmap_height;
-  ClutterBackendGLX             *backend_glx;
+  ClutterBackendGLX              *backend_glx;
 
   CLUTTER_NOTE (TEXTURE, "Creating GLXPixmap");
 
@@ -439,12 +439,15 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   dpy = clutter_x11_get_default_display ();
 
+  priv->use_fallback = FALSE;
+
   g_object_get (texture,
                 "pixmap-width",  &pixmap_width,
                 "pixmap-height", &pixmap_height,
                 "pixmap-depth",  &depth,
                 "pixmap",        &pixmap,
                 NULL);
+
   if (!pixmap)
     {
       goto cleanup;
@@ -545,6 +548,7 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
 
   if (priv->use_fallback)
     {
+      CLUTTER_NOTE (TEXTURE, "Falling back to X11..");
       parent_class->update_area (texture,
                                  x, y,
                                  width, height);
@@ -556,6 +560,8 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   
   if (texture_bind (CLUTTER_GLX_TEXTURE_PIXMAP(texture)))
     {
+      CLUTTER_NOTE (TEXTURE, "Really updating via GLX");
+
       clutter_x11_trap_x_errors ();
       
       (_gl_bind_tex_image) (dpy,
