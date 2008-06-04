@@ -1,3 +1,10 @@
+2008-06-04  Robert Bragg  <bob@o-hand.com>
+
+	* configure.ac:
+	Checks that for pangocairo >= 1.18, since
+	pangocairo-font.c uses pango_cairo_font_get_scaled_font which isn't
+	otherwise available.
+
 2008-06-03  Neil Roberts  <neil@o-hand.com>
 
 	Applied patch from bug #947
