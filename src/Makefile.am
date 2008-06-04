@@ -16,6 +16,8 @@ metacity_SOURCES= 				\
 	compositor/compositor-private.h		\
 	compositor/compositor-xrender.c		\
 	compositor/compositor-xrender.h		\
+	compositor/compositor-clutter.c		\
+	compositor/compositor-clutter.h		\
 	include/compositor.h			\
 	core/constraints.c			\
 	core/constraints.h			\

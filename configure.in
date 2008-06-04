@@ -284,6 +284,8 @@ if test x$have_xcursor = xyes; then
   AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support]) 
 fi
 
+METACITY_PC_MODULES="$METACITY_PC_MODULES clutter-0.7"
+
 PKG_CHECK_MODULES(METACITY, $METACITY_PC_MODULES)
 
 AC_PATH_XTRA

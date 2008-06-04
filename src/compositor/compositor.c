@@ -22,13 +22,15 @@
 #include <config.h>
 #include "compositor-private.h"
 #include "compositor-xrender.h"
+#include "compositor-clutter.h"
 
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   /* At some point we would have a way to select between backends */
-  return meta_compositor_xrender_new (display);
+  /* return meta_compositor_xrender_new (display); */
+  return meta_compositor_clutter_new (display);
 #else
   return NULL;
 #endif

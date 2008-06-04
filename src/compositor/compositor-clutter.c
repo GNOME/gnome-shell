@@ -91,31 +91,20 @@ typedef struct _MetaCompositorClutter
   Atom atom_net_wm_window_type_splash;
   Atom atom_net_wm_window_type_toolbar;
 
-#ifdef USE_IDLE_REPAINT
-  guint repaint_id;
-#endif
-  guint enabled : 1;
   guint show_redraw : 1;
   guint debug : 1;
 } MetaCompositorClutter;
 
 typedef struct _MetaCompScreen 
 {
-  MetaScreen *screen;
+  MetaScreen   *screen;
 
   ClutterActor *stage;
   GList        *windows;
   GHashTable   *windows_by_xid;
   MetaWindow   *focus_window;
-
   Window        output;
-
   XserverRegion all_damage;
-
-  guint         overlays;
-  gboolean      compositor_active;
-  gboolean      clip_changed;
-
   GSList       *dock_windows;
 
   ClutterEffectTemplate *destroy_effect;
@@ -124,33 +113,25 @@ typedef struct _MetaCompScreen
 
 typedef struct _MetaCompWindow 
 {
-  MetaScreen *screen;
-  MetaWindow *window; /* NULL if this window isn't managed by Metacity */
-  Window id;
+  MetaScreen       *screen;
+  MetaWindow       *window;
+  Window            id;
   XWindowAttributes attrs;
+  ClutterActor     *actor;
+  Pixmap            back_pixmap;
+  int               mode;
 
-  ClutterActor *actor;
-
-  Pixmap back_pixmap;
-
-  int mode;
-
-  gboolean damaged;
-  gboolean shaped;
+  gboolean          damaged;
+  gboolean          shaped;
 
   MetaCompWindowType type;
 
-  Damage damage;
+  Damage             damage;
 
-  gboolean needs_shadow;
+  gboolean           needs_shadow;
 
-  XserverRegion border_size;
-  XserverRegion extents;
+  XserverRegion      extents;
 
-  XserverRegion border_clip;
-
-  gboolean updates_frozen;
-  gboolean update_pending;
 } MetaCompWindow;
 
 
@@ -172,7 +153,9 @@ find_window_in_display (MetaDisplay *display,
 {
   GSList *index;
 
-  for (index = meta_display_get_screens (display); index; index = index->next) 
+  for (index = meta_display_get_screens (display); 
+       index; 
+       index = index->next) 
     {
       MetaCompWindow *cw = find_window_for_screen (index->data, xwindow);
 
@@ -244,8 +227,6 @@ get_window_type (MetaDisplay    *display,
     cw->type = META_COMP_WINDOW_DOCK;
   else
     cw->type = META_COMP_WINDOW_NORMAL;
-
-/*   meta_verbose ("Window is %d\n", cw->type); */
 }
 
 static gboolean
@@ -301,11 +282,10 @@ add_damage (MetaScreen     *screen,
   Display *xdisplay = meta_display_get_xdisplay (display);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  /*  dump_xserver_region ("add_damage", display, damage); */
-
   if (info->all_damage) 
     {
-      XFixesUnionRegion (xdisplay, info->all_damage, info->all_damage, damage);
+      XFixesUnionRegion (xdisplay, info->all_damage, 
+                         info->all_damage, damage);
       XFixesDestroyRegion (xdisplay, damage);
     } 
   else
@@ -327,18 +307,6 @@ free_win (MetaCompWindow *cw,
       cw->back_pixmap = None;
     }
   
-  if (cw->border_size) 
-    {
-      XFixesDestroyRegion (xdisplay, cw->border_size);
-      cw->border_size = None;
-    }
-  
-  if (cw->border_clip) 
-    {
-      XFixesDestroyRegion (xdisplay, cw->border_clip);
-      cw->border_clip = None;
-    }
-
   if (cw->extents) 
     {
       XFixesDestroyRegion (xdisplay, cw->extents);
@@ -347,13 +315,14 @@ free_win (MetaCompWindow *cw,
 
   if (destroy) 
     { 
-      if (cw->damage != None) {
-        meta_error_trap_push (display);
-        XDamageDestroy (xdisplay, cw->damage);
-        meta_error_trap_pop (display, FALSE);
-
-        cw->damage = None;
-      }
+      if (cw->damage != None) 
+        {
+          meta_error_trap_push (display);
+          XDamageDestroy (xdisplay, cw->damage);
+          meta_error_trap_pop (display, FALSE);
+          
+          cw->damage = None;
+        }
 
       /* The window may not have been added to the list in this case,
          but we can check anyway */
@@ -366,16 +335,16 @@ free_win (MetaCompWindow *cw,
     }
 }
 
+/*
 static void  
 on_destroy_effect_complete (ClutterActor *actor,
                             gpointer user_data)
 {
   MetaCompWindow *cw = (MetaCompWindow *)user_data;
 
-
-
   free_win (cw, TRUE);
 }
+*/
 
 static void
 destroy_win (MetaDisplay *display,
@@ -391,8 +360,6 @@ destroy_win (MetaDisplay *display,
   if (cw == NULL)
     return;
 
-  printf("destroy %p\n", cw);
-
   screen = cw->screen;
   
   if (cw->extents != None) 
@@ -405,6 +372,8 @@ destroy_win (MetaDisplay *display,
   info->windows = g_list_remove (info->windows, (gconstpointer) cw);
   g_hash_table_remove (info->windows_by_xid, (gpointer) xwindow);
 
+  free_win (cw, TRUE);
+#if 0
   clutter_actor_show (cw->actor);
   clutter_actor_raise_top (cw->actor);
   clutter_actor_set_opacity (cw->actor, 0xff);
@@ -413,6 +382,7 @@ destroy_win (MetaDisplay *display,
 		       0,
 		       on_destroy_effect_complete,
 		       (gpointer)cw);
+#endif
 }
 
 static void
@@ -483,9 +453,7 @@ resize_win (MetaCompWindow *cw,
   MetaScreen *screen = cw->screen;
   MetaDisplay *display = meta_screen_get_display (screen);
   Display *xdisplay = meta_display_get_xdisplay (display);
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
   XserverRegion damage;
-  gboolean debug;
 
   if (cw->extents)
     {
@@ -502,8 +470,7 @@ resize_win (MetaCompWindow *cw,
 
   clutter_actor_set_position (cw->actor, x, y);
   
-  /* Let named pixmap resync sort this */
-  /* clutter_actor_set_size (cw->actor, width, height); */
+  /* Note, let named named pixmap resync actually resize actor */
 
   if (cw->attrs.width != width || cw->attrs.height != height) 
     {
@@ -535,8 +502,6 @@ resize_win (MetaCompWindow *cw,
     }
 
   add_damage (screen, damage);
-
-  info->clip_changed = TRUE;
 }
 
 static void
@@ -559,8 +524,6 @@ map_win (MetaDisplay *display,
       cw->back_pixmap = None;
     }
 
-  printf("map %p\n", cw);
-
   clutter_actor_show (cw->actor);
 }
 
@@ -572,14 +535,11 @@ unmap_win (MetaDisplay *display,
 {
   MetaCompWindow *cw = find_window_for_screen (screen, id);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
 
   if (cw == NULL) 
     {
       return;
     }
-
-  printf("unmap %p\n", cw);
 
   if (cw->window && cw->window == info->focus_window) 
     info->focus_window = NULL;
@@ -594,7 +554,6 @@ unmap_win (MetaDisplay *display,
     }
 
   free_win (cw, FALSE);
-  info->clip_changed = TRUE;
 
   clutter_actor_hide (cw->actor);
 }
@@ -644,27 +603,7 @@ add_win (MetaScreen *screen,
   else
     cw->damage = XDamageCreate (xdisplay, xwindow, XDamageReportNonEmpty);
 
-#if 0
-  cw->alpha_pict = None;
-  cw->shadow_pict = None;
-  cw->border_size = None;
   cw->extents = None;
-  cw->shadow = None;
-  cw->shadow_dx = 0;
-  cw->shadow_dy = 0;
-  cw->shadow_width = 0;
-  cw->shadow_height = 0;
-
-  if (window && meta_window_has_focus (window))
-    cw->shadow_type = META_SHADOW_LARGE;
-  else
-    cw->shadow_type = META_SHADOW_MEDIUM;
-
-  cw->opacity = OPAQUE;
-  
-  cw->border_clip = None;
-
-#endif
 
   /* Only add the window to the list of docks if it needs a shadow */
   if (cw->type == META_COMP_WINDOW_DOCK) 
@@ -678,17 +617,10 @@ add_win (MetaScreen *screen,
   info->windows = g_list_prepend (info->windows, cw);
   g_hash_table_insert (info->windows_by_xid, (gpointer) xwindow, cw);
 
-#if 0  
-  cw->back_pixmap = XCompositeNameWindowPixmap (xdisplay, xwindow);
-  cw->actor = clutter_glx_texture_pixmap_new_with_pixmap (cw->back_pixmap);
-#endif
 
   cw->actor = clutter_glx_texture_pixmap_new ();
-
   clutter_container_add_actor (CLUTTER_CONTAINER (info->stage), cw->actor);
-
   clutter_actor_set_position (cw->actor, cw->attrs.x, cw->attrs.y);
-
   clutter_actor_hide (cw->actor);
 
   if (cw->attrs.map_state == IsViewable)
@@ -696,12 +628,32 @@ add_win (MetaScreen *screen,
 }
 
 static void
+damage_screen (MetaScreen *screen)
+{
+  MetaDisplay *display = meta_screen_get_display (screen);
+  Display *xdisplay = meta_display_get_xdisplay (display);
+  XserverRegion region;
+  int width, height;
+  XRectangle r;
+
+  r.x = 0;
+  r.y = 0;
+  meta_screen_get_size (screen, &width, &height);
+  r.width = width;
+  r.height = height;
+
+  region = XFixesCreateRegion (xdisplay, &r, 1);
+
+  add_damage (screen, region);
+}
+
+
+static void
 repair_win (MetaCompWindow *cw)
 {
   MetaScreen *screen = cw->screen;
   MetaDisplay *display = meta_screen_get_display (screen);
   Display *xdisplay = meta_display_get_xdisplay (display);
-  // XserverRegion parts;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
   if (cw->id == meta_screen_get_xroot (screen)
@@ -718,12 +670,13 @@ repair_win (MetaCompWindow *cw)
 
       if (cw->back_pixmap == None)
         {
-          printf("dammit no valid pixmap\n");
+          meta_verbose ("Unable to get named pixmap for %p\n", cw);
           return;
         }
 
-      clutter_x11_texture_pixmap_set_pixmap (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
-                                             cw->back_pixmap);
+      clutter_x11_texture_pixmap_set_pixmap 
+                       (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
+                        cw->back_pixmap);
 
       g_object_get (cw->actor,
                     "pixmap-width", &pxm_width,
@@ -731,7 +684,6 @@ repair_win (MetaCompWindow *cw)
                     NULL);
       
       clutter_actor_set_size (cw->actor, pxm_width, pxm_height);
-
       clutter_actor_show (cw->actor);
     }
 
@@ -749,45 +701,38 @@ repair_win (MetaCompWindow *cw)
       parts = XFixesCreateRegion (xdisplay, 0, 0);
       XDamageSubtract (xdisplay, cw->damage, None, parts);
 
-#if 0      
-      r_damage = XFixesFetchRegionAndBounds (xdisplay, 
-                                             parts,
-                                             &r_count,
-                                             &r_bounds);
-
-      if (r_damage)
+      if (1) /*clutter_glx_texture_pixmap_using_extension 
+               (CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor)))*/
         {
-          for (i = 0; i < r_count; ++i)
+          clutter_x11_texture_pixmap_update_area 
+            (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor), 
+             0, 
+             0,
+             clutter_actor_get_width (cw->actor),
+             clutter_actor_get_height (cw->actor));
+        }
+      else
+        {
+          r_damage = XFixesFetchRegionAndBounds (xdisplay, 
+                                                 parts,
+                                                 &r_count,
+                                                 &r_bounds);
+
+          if (r_damage)
             {
-              // ClutterGeometry geom;
-
-              clutter_x11_texture_pixmap_update_area 
-                (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
-                 r_damage[i].x,
-                 r_damage[i].y,
-                 r_damage[i].width,
-                 r_damage[i].height);
-
-              /*
-              geom.x = clutter_actor_get_x (cw->actor) + r_damage[i].x;
-              geom.y = clutter_actor_get_y (cw->actor) + r_damage[i].y;
-              geom.width = r_damage[i].width;
-              geom.height = r_damage[i].height;
-
-              clutter_stage_queue_redraw_area (info->stage, &geom);
-              */
+              for (i = 0; i < r_count; ++i)
+                {
+                  clutter_x11_texture_pixmap_update_area 
+                    (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
+                     r_damage[i].x,
+                     r_damage[i].y,
+                     r_damage[i].width,
+                     r_damage[i].height);
+                }
             }
-	}
-
-      XFree (r_damage);
-#endif
-
-      clutter_x11_texture_pixmap_update_area 
-        (CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor), 
-         0, 
-         0,
-         clutter_actor_get_width (cw->actor),
-         clutter_actor_get_height (cw->actor));
+          
+          XFree (r_damage);
+        }
     }
 
   meta_error_trap_pop (display, FALSE);
@@ -851,7 +796,6 @@ process_configure_notify (MetaCompositorClutter  *compositor,
                           XConfigureEvent        *event)
 {
   MetaDisplay *display = compositor->display;
-  Display *xdisplay = meta_display_get_xdisplay (display);
   MetaCompWindow *cw = find_window_in_display (display, event->window);
 
   if (cw) 
@@ -872,15 +816,8 @@ process_configure_notify (MetaCompositorClutter  *compositor,
         return;
 
       info = meta_screen_get_compositor_data (screen);
-      /*
-      if (info->root_buffer)
-        {
-          XRenderFreePicture (xdisplay, info->root_buffer);
-          info->root_buffer = None;
-        }
 
       damage_screen (screen);
-      */
     }
 }
 
@@ -910,7 +847,6 @@ process_circulate_notify (MetaCompositorClutter  *compositor,
     above = None;
   restack_win (cw, above);
 
-  info->clip_changed = TRUE;
 }
 
 static void
@@ -971,7 +907,6 @@ process_unmap (MetaCompositorClutter *compositor,
       /* Ignore unmap caused by parent's resize */
       return;
     }
-  
 
   cw = find_window_in_display (compositor->display, event->window);
   if (cw)
@@ -989,7 +924,79 @@ process_map (MetaCompositorClutter *compositor,
     map_win (compositor->display, cw->screen, event->window);
 }
 
+static void
+process_property_notify (MetaCompositorClutter *compositor,
+                         XPropertyEvent        *event)
+{
+  MetaDisplay *display = compositor->display;
+  Display *xdisplay = meta_display_get_xdisplay (display);
+  MetaScreen *screen;
+  int p;
+  Atom background_atoms[2];
 
+  /* Check for the background property changing */
+  background_atoms[0] = compositor->atom_x_root_pixmap;
+  background_atoms[1] = compositor->atom_x_set_root;
+
+  for (p = 0; p < 2; p++) 
+    {
+      if (event->atom == background_atoms[p])
+        {
+          screen = meta_display_screen_for_root (display, event->window);
+
+          if (screen)
+            {
+              damage_screen (screen);
+              return;
+            }
+        }
+    }
+
+  /* Check for the opacity changing */
+  if (event->atom == compositor->atom_net_wm_window_opacity) 
+    {
+      MetaCompWindow *cw = find_window_in_display (display, event->window);
+      gulong value;
+
+      if (!cw) 
+        {
+          /* Applications can set this for their toplevel windows, so
+           * this must be propagated to the window managed by the compositor
+           */
+          cw = find_window_for_child_window_in_display (display, 
+                                                        event->window);
+        }
+      
+      if (!cw)
+        return;
+
+      if (meta_prop_get_cardinal (display, event->window,
+                                  compositor->atom_net_wm_window_opacity,
+                                  &value) == FALSE)
+        value = 0xffffffff;
+
+      clutter_actor_set_opacity (cw->actor, 200); /* FIXME */
+
+      if (cw->extents)
+        XFixesDestroyRegion (xdisplay, cw->extents);
+      cw->extents = win_extents (cw);
+
+      cw->damaged = TRUE;
+      return;
+    }
+
+  if (event->atom == compositor->atom_net_wm_window_type) 
+    {
+      MetaCompWindow *cw = find_window_in_display (display, event->window);
+
+      if (!cw)
+        return;
+
+      get_window_type (display, cw);
+      //cw->needs_shadow = window_has_shadow (cw);
+      return;
+    }
+}
 
 static void
 show_overlay_window (MetaScreen *screen,
@@ -997,22 +1004,16 @@ show_overlay_window (MetaScreen *screen,
 {
   MetaDisplay *display = meta_screen_get_display (screen);
   Display *xdisplay = meta_display_get_xdisplay (display);
+  XserverRegion region;
 
-#ifdef HAVE_COW
-  if (have_cow (display))
-    {
-      XserverRegion region;
-
-      region = XFixesCreateRegion (xdisplay, NULL, 0);
+  region = XFixesCreateRegion (xdisplay, NULL, 0);
       
-      XFixesSetWindowShapeRegion (xdisplay, cow, ShapeBounding, 0, 0, 0);
-      XFixesSetWindowShapeRegion (xdisplay, cow, ShapeInput, 0, 0, region);
+  XFixesSetWindowShapeRegion (xdisplay, cow, ShapeBounding, 0, 0, 0);
+  XFixesSetWindowShapeRegion (xdisplay, cow, ShapeInput, 0, 0, region);
       
-      XFixesDestroyRegion (xdisplay, region);
+  XFixesDestroyRegion (xdisplay, region);
       
-      //damage_screen (screen);
-    }
-#endif
+  damage_screen (screen);
 }
 
 static Window
@@ -1024,17 +1025,8 @@ get_output_window (MetaScreen *screen)
 
   xroot = meta_screen_get_xroot (screen);
 
-#ifdef HAVE_COW
-  if (have_cow (display))
-    {
-      output = XCompositeGetOverlayWindow (xdisplay, xroot);
-      XSelectInput (xdisplay, output, ExposureMask);
-    }
-  else
-#endif
-    {
-      output = xroot;
-    }
+  output = XCompositeGetOverlayWindow (xdisplay, xroot);
+  XSelectInput (xdisplay, output, ExposureMask);
 
   return output;
 }
@@ -1075,15 +1067,10 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   info->output = get_output_window (screen);
 
   info->all_damage = None;
-  
   info->windows = NULL;
   info->windows_by_xid = g_hash_table_new (g_direct_hash, g_direct_equal);
 
   info->focus_window = meta_display_get_focus_window (display);
-
-  info->compositor_active = TRUE;
-  info->overlays = 0;
-  info->clip_changed = TRUE;
 
   XClearArea (xdisplay, info->output, 0, 0, 0, 0, TRUE);
 
@@ -1106,8 +1093,6 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   info->destroy_effect 
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (2000),
                                     CLUTTER_ALPHA_SINE_INC);
-
-  printf("managing screen\n");
 #endif
 }
 
@@ -1179,7 +1164,7 @@ clutter_cmp_process_event (MetaCompositor *compositor,
       break;
 
     case PropertyNotify:
-      // process_property_notify (xrc, (XPropertyEvent *) event);
+      process_property_notify (xrc, (XPropertyEvent *) event);
       break;
 
     case Expose:
@@ -1213,10 +1198,7 @@ clutter_cmp_process_event (MetaCompositor *compositor,
         }
 
 
-      /*
-      if (event->type == meta_display_get_damage_event_base (xrc->display) + XDamageNotify) 
-        process_damage (xrc, (XDamageNotifyEvent *) event);
-      else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify) 
+      /* else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify) 
         process_shape (xrc, (XShapeEvent *) event);
       else 
         {
@@ -1290,14 +1272,15 @@ meta_compositor_clutter_new (MetaDisplay *display)
   MetaCompositor *compositor;
   Display *xdisplay = meta_display_get_xdisplay (display);
 
+  if (!composite_at_least_version (display, 0, 3))
+    return NULL;
+
   clc = g_new (MetaCompositorClutter, 1);
   clc->compositor = comp_info;
 
   clutter_x11_set_display (xdisplay);
   clutter_x11_disable_event_retrieval ();
   clutter_init (NULL, NULL);
-
-  printf("clutter initiated\n");
 
   compositor = (MetaCompositor *) clc;
 
@@ -1320,13 +1303,6 @@ meta_compositor_clutter_new (MetaDisplay *display)
   clc->atom_net_wm_window_type_utility = atoms[10];
   clc->atom_net_wm_window_type_splash = atoms[11];
   clc->atom_net_wm_window_type_toolbar = atoms[12];
-
-#ifdef USE_IDLE_REPAINT
-  meta_verbose ("Using idle repaint\n");
-  clc->repaint_id = 0;
-#endif
-
-  clc->enabled = TRUE;
 
   return compositor;
 #else

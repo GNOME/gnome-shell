@@ -719,7 +719,7 @@ meta_display_open (void)
   /* We don't composite the windows here because they will be composited 
      faster with the call to meta_screen_manage_all_windows further down 
      the code */
-  if (meta_prefs_get_compositing_manager ())
+  if (1) /* meta_prefs_get_compositing_manager ()) FIXME */
     enable_compositor (the_display, FALSE);
    
   meta_display_grab (the_display);
