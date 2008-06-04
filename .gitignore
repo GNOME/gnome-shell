@@ -3,6 +3,7 @@ Makefile
 Makefile.in
 aclocal.m4
 autom4te.cache
+compile
 clutter-*.pc
 clutter.pc
 .deps
