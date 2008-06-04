@@ -1,5 +1,4 @@
 #include <clutter/clutter.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>

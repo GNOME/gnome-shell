@@ -1,5 +1,11 @@
 2008-06-04  Robert Bragg  <bob@o-hand.com>
 
+	* tests/test-clip.c:
+	Removes a spurious #include <gdk-pixbuf/gdk-pixbuf.h> which may not
+	be found if using --with-imagebackend=internal
+
+2008-06-04  Robert Bragg  <bob@o-hand.com>
+
 	* configure.ac:
 	Checks that for pangocairo >= 1.18, since
 	pangocairo-font.c uses pango_cairo_font_get_scaled_font which isn't
