@@ -1,3 +1,12 @@
+2008-06-05  Tommi Komulainen  <tommi.komulainen@iki.fi>
+
+	Bug #909 - OSX: missing NULL pointer handling
+
+	* clutter/osx/clutter-stage-osx.c (ClutterGLWindow,
+	clutter_stage_osx_set_title): NSString:stringWithUTF8String:
+	does not accept NULL values, use empty string ("") instead.
+	Avoids potential crash.
+
 2008-06-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* tests/Makefile.am:

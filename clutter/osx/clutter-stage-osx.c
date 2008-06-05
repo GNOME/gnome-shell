@@ -57,7 +57,7 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
       [self setDelegate: self];
       [self useOptimizedDrawing: YES];
       [self setContentView: aView];
-      [self setTitle:[NSString stringWithUTF8String: aTitle]];
+      [self setTitle:[NSString stringWithUTF8String: aTitle ? aTitle : ""]];
       stage = aStage;
     }
   return self;
@@ -427,7 +427,7 @@ clutter_stage_osx_set_title (ClutterStage *stage,
   CLUTTER_OSX_POOL_ALLOC();
 
   if (CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stage)))
-    [self->window setTitle:[NSString stringWithUTF8String:title]];
+    [self->window setTitle:[NSString stringWithUTF8String: title ? title : ""]];
 
   CLUTTER_OSX_POOL_RELEASE();
 }
