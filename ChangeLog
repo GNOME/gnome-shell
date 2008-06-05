@@ -1,5 +1,12 @@
 2008-06-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/Makefile.am:
+	* tests/test-paint-wrapper.c: Add a test case (merely, a copy
+	of test-actors.c) that verifies that handlers to the ::paint
+	signal are called in the right order.
+
+2008-06-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug #840 - Implement prepare-paint and finish-paint signals.
 
 	* clutter/clutter-actor.c:
