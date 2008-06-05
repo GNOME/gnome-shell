@@ -63,6 +63,8 @@ ClutterActor * clutter_glx_texture_pixmap_new (void);
 
 ClutterActor * clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap);
 
+gboolean       clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture);
+
 G_END_DECLS
 
 #endif
