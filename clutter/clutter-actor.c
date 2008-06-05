@@ -245,6 +245,9 @@ enum
   PARENT_SET,
   FOCUS_IN,
   FOCUS_OUT,
+  PAINT,
+  REALIZE,
+  UNREALIZE,
 
   EVENT,
   CAPTURED_EVENT,
@@ -442,17 +445,14 @@ clutter_actor_hide_all (ClutterActor *self)
 void
 clutter_actor_realize (ClutterActor *self)
 {
-  ClutterActorClass   *klass;
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   if (CLUTTER_ACTOR_IS_REALIZED (self))
     return;
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
-
-  if (klass->realize)
-    (klass->realize) (self);
+  g_signal_emit (self, actor_signals[REALIZE], 0);
 }
 
 /**
@@ -465,20 +465,14 @@ clutter_actor_realize (ClutterActor *self)
 void
 clutter_actor_unrealize (ClutterActor *self)
 {
-  ClutterActorClass *klass;
-  ClutterActorPrivate *priv;
-
-  priv = self->priv;
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   if (!CLUTTER_ACTOR_IS_REALIZED (self))
     return;
 
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
-
-  if (klass->unrealize)
-    (klass->unrealize) (self);
+  g_signal_emit (self, actor_signals[UNREALIZE], 0);
 }
 
 static void
@@ -1224,8 +1218,8 @@ void
 clutter_actor_paint (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
-  ClutterActorClass *klass;
   ClutterMainContext *context;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   priv = self->priv;
 
@@ -1241,9 +1235,6 @@ clutter_actor_paint (ClutterActor *self)
 	}
     }
 
-  context = clutter_context_get_default ();
-  klass   = CLUTTER_ACTOR_GET_CLASS (self);
-
   cogl_push_matrix();
 
   _clutter_actor_apply_modelview_transform (self);
@@ -1254,9 +1245,10 @@ clutter_actor_paint (ClutterActor *self)
                    CLUTTER_UNITS_TO_FIXED (priv->clip[2]),
                    CLUTTER_UNITS_TO_FIXED (priv->clip[3]));
 
-  if (G_UNLIKELY(context->pick_mode != CLUTTER_PICK_NONE))
+  context = clutter_context_get_default ();
+  if (G_UNLIKELY (context->pick_mode != CLUTTER_PICK_NONE))
     {
-      ClutterColor col;
+      ClutterColor col = { 0, };
 
       _clutter_id_to_color (clutter_actor_get_gid (self), &col);
 
@@ -1270,8 +1262,7 @@ clutter_actor_paint (ClutterActor *self)
     {
       clutter_actor_shader_pre_paint (self, FALSE);
 
-      if (G_LIKELY (klass->paint))
-         klass->paint (self);
+      g_signal_emit (self, actor_signals[PAINT], 0);
 
       clutter_actor_shader_post_paint (self);
     }
@@ -2435,6 +2426,63 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  clutter_marshal_BOOLEAN__BOXED,
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+  /**
+   * ClutterActor::paint:
+   * @actor: the #ClutterActor that received the signal
+   *
+   * The ::paint signal is emitted each time an actor is being painted.
+   *
+   * Subclasses of #ClutterActor should override the class signal handler
+   * and paint themselves in that function.
+   *
+   * It is possible to connect a handler to the ::paint signal in order
+   * to set up some custom aspect of a paint.
+   *
+   * Since: 0.8
+   */
+  actor_signals[PAINT] =
+    g_signal_new (I_("paint"),
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterActorClass, paint),
+                  NULL, NULL,
+                  clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+  /**
+   * ClutterActor::realize:
+   * @actor: the #ClutterActor that received the signal
+   *
+   * The ::realize signal is emitted each time an actor is being
+   * realized.
+   *
+   * Since: 0.8
+   */
+  actor_signals[REALIZE] =
+    g_signal_new (I_("realize"),
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterActorClass, realize),
+                  NULL, NULL,
+                  clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+  /**
+   * ClutterActor::unrealize:
+   * @actor: the #ClutterActor that received the signal
+   *
+   * The ::unrealize signal is emitted each time an actor is being
+   * unrealized.
+   *
+   * Since: 0.8
+   */
+  actor_signals[UNREALIZE] =
+    g_signal_new (I_("unrealized"),
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterActorClass, unrealize),
+                  NULL, NULL,
+                  clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   klass->show = clutter_actor_real_show;
   klass->show_all = clutter_actor_show;

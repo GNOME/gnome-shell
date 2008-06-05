@@ -1,5 +1,22 @@
 2008-06-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug #840 - Implement prepare-paint and finish-paint signals.
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_class_init): Add the ::paint, ::realize and
+	::unrealize signals to ClutterActor. It is possible to
+	override the paint, realization and unrealization of an
+	actor without subclassing it. The ::paint signal handlers
+	have the same limitations of a ClutterActor::paint implementation
+	inside a subclass.
+
+	(clutter_actor_realize),
+	(clutter_actor_unrealize),
+	(clutter_actor_paint): Emit the signals instead of calling
+	the functions from the class vtable.
+
+2008-06-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* ChangeLog-ivan: Remove the ChangeLog of the clutter-ivan
 	branch; the branch already contains it.
 
