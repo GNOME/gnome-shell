@@ -48,6 +48,13 @@
 #define glBlitFramebufferEXT                 ctx->pf_glBlitFramebufferEXT
 #define glRenderbufferStorageMultisampleEXT  ctx->pf_glRenderbufferStorageMultisampleEXT
 
+#ifndef GL_READ_FRAMEBUFFER_EXT
+#define GL_READ_FRAMEBUFFER_EXT 0x8CA8
+#endif
+#ifndef GL_DRAW_FRAMEBUFFER_EXT
+#define GL_DRAW_FRAMEBUFFER_EXT 0x8CA9
+#endif
+
 static void _cogl_offscreen_free (CoglFbo *fbo);
 
 COGL_HANDLE_DEFINE (Fbo, offscreen, fbo_handles);
