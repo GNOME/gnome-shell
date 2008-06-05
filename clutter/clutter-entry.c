@@ -1706,8 +1706,8 @@ clutter_entry_get_invisible_char (ClutterEntry *entry)
 /**
  * clutter_entry_set_max_length:
  * @entry: a #ClutterEntry
- * @max: the maximum number of characters allowed in the entry, or -1
- *   to disable
+ * @max: the maximum number of characters allowed in the entry; 0
+ *   to disable or -1 to set the length of the current string
  *
  * Sets the maximum allowed length of the contents of the actor. If the
  * current contents are longer than the given length, then they will be
