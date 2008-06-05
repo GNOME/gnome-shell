@@ -1,7 +1,12 @@
+2008-06-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* ChangeLog-ivan: Remove the ChangeLog of the clutter-ivan
+	branch; the branch already contains it.
+
 2008-06-05  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/glx/clutter-glx-texture-pixmap.h:
-        Actually export clutter_glx_texture_pixmap_using_extension ()
+	Actually export clutter_glx_texture_pixmap_using_extension ()
 
 2008-06-05  Chris Lord  <chris@openedhand.com>
 
