@@ -1,5 +1,32 @@
 2008-06-05  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
+	Bug #911 - OSX: add multistage support
+
+	* clutter/osx/clutter-backend-osx.{c,h}
+	(clutter_backend_osx_init_stage, clutter_backend_osx_get_stage,
+	clutter_backend_osx_redraw, clutter_backend_osx_create_stage,
+	clutter_backend_osx_ensure_context, clutter_backend_osx_class_init,
+	clutter_backend_osx_dispose, ClutterGLView:drawRect:):
+	* clutter/osx/clutter-stage-osx.{c,h} (clutter_stage_osx_realize,
+	ClutterGLWindow:setFrameSize:):
+	Adapt to new multistage backend API. Don't keep a pointer to
+	default stage. Derive from ClutterActor instead of ClutterStage.
+	Implement ClutterStageWindow interface. Paint, resize and
+	otherwise manipulate the wrapper rather than self when necessary.
+
+	(clutter_backend_post_parse): Create our singleton GL context
+	here. We could probably create the context when the default
+	stage is created, but I think this is more clean.
+
+	* clutter/osx/clutter-event-osx.c (clutter_event_osx_translate)
+	* clutter/osx/clutter-stage-osx.c (clutter_stage_osx_state_update,
+	ClutterGLWindow:windowShouldClose:):
+	* clutter/osx/clutter-stage-osx.h: Export ClutterGLWindow interface
+	for clutter-event-osx.c to easily get the stage for NSWindow.
+	Fill in ClutterEventAny::stage on our events.
+
+2008-06-05  Tommi Komulainen  <tommi.komulainen@iki.fi>
+
 	Bug #910 - OSX: missing memory pool
 
 	* clutter/osx/clutter-backend-osx.c (clutter_backend_osx_redraw):

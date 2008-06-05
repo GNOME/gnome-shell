@@ -1,7 +1,7 @@
 /* Clutter -  An OpenGL based 'interactive canvas' library.
  * OSX backend - event loops integration
  *
- * Copyright (C) 2007  Tommi Komulainen <tommi.komulainen@iki.fi>
+ * Copyright (C) 2007-2008  Tommi Komulainen <tommi.komulainen@iki.fi>
  * Copyright (C) 2007  OpenedHand Ltd.
  *
  * This library is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include "clutter-osx.h"
+#include "clutter-stage-osx.h"
 
 #import <AppKit/AppKit.h>
 #include <glib/gmain.h>
@@ -37,6 +38,7 @@ static GPollFunc old_poll_func = NULL;
 
 /*************************************************************************/
 @interface NSEvent (Clutter)
+- (ClutterStage*)clutterStage;
 - (gint)clutterTime;
 - (gint)clutterButton;
 - (void)clutterX:(gint*)ptrX y:(gint*)ptrY;
@@ -45,6 +47,16 @@ static GPollFunc old_poll_func = NULL;
 @end
 
 @implementation NSEvent (Clutter)
+- (ClutterStage*)clutterStage
+{
+  ClutterGLWindow *w = (ClutterGLWindow*)[self window];
+  if (![w isKindOfClass:[ClutterGLWindow class]])
+    return NULL;
+
+  ClutterStageOSX *stage_osx = w->stage_osx;
+  return stage_osx->wrapper;
+}
+
 - (gint)clutterTime
 {
   return [self timestamp] * 1000;
@@ -160,6 +172,7 @@ static GPollFunc old_poll_func = NULL;
 static gboolean
 clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
 {
+  event->any.stage = [nsevent clutterStage];
   event->any.time = [nsevent clutterTime];
 
   switch ([nsevent type])

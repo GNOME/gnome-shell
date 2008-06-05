@@ -26,7 +26,7 @@
 #include <clutter/clutter-backend.h>
 
 #import <Foundation/Foundation.h>
-@class NSOpenGLView, NSWindow;
+#import <AppKit/AppKit.h>
 
 G_BEGIN_DECLS
 
@@ -41,11 +41,19 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageOSX      ClutterStageOSX;
 typedef struct _ClutterStageOSXClass ClutterStageOSXClass;
 
+@interface ClutterGLWindow : NSWindow
+{
+@public
+  ClutterStageOSX *stage_osx;
+}
+@end
+
 struct _ClutterStageOSX
 {
-  ClutterStage parent;
+  ClutterActor parent;
 
   ClutterBackend *backend;
+  ClutterStage   *wrapper;
 
   NSWindow *window;
   NSOpenGLView *view;
@@ -61,12 +69,13 @@ struct _ClutterStageOSX
 
 struct _ClutterStageOSXClass
 {
-  ClutterStageClass parent_class;
+  ClutterActorClass parent_class;
 };
 
 GType           clutter_stage_osx_get_type    (void) G_GNUC_CONST;
 
-ClutterActor*   clutter_stage_osx_new (ClutterBackend *backend);
+ClutterActor*   clutter_stage_osx_new (ClutterBackend *backend,
+                                       ClutterStage   *wrapper);
 
 G_END_DECLS
 

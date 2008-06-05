@@ -1,7 +1,7 @@
 /* Clutter -  An OpenGL based 'interactive canvas' library.
  * OSX backend - integration with NSWindow and NSView
  *
- * Copyright (C) 2007  Tommi Komulainen <tommi.komulainen@iki.fi>
+ * Copyright (C) 2007-2008  Tommi Komulainen <tommi.komulainen@iki.fi>
  * Copyright (C) 2007  OpenedHand Ltd.
  *
  * This library is free software; you can redistribute it and/or
@@ -29,7 +29,11 @@
 #include <clutter/clutter-debug.h>
 #include <clutter/clutter-private.h>
 
-G_DEFINE_TYPE (ClutterStageOSX, clutter_stage_osx, CLUTTER_TYPE_STAGE)
+static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterStageOSX, clutter_stage_osx, CLUTTER_TYPE_ACTOR,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
+                                                clutter_stage_window_iface_init))
 
 /* FIXME: this should be in clutter-stage.c */
 static void
@@ -40,12 +44,6 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 #define CLUTTER_OSX_FULLSCREEN_WINDOW_LEVEL (NSMainMenuWindowLevel + 1)
 
 /*************************************************************************/
-@interface ClutterGLWindow : NSWindow
-{
-  ClutterStageOSX *stage;
-}
-@end
-
 @implementation ClutterGLWindow
 - (id)initWithView:(NSView *)aView UTF8Title:(const char *)aTitle stage:(ClutterStageOSX *)aStage
 {
@@ -58,17 +56,18 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
       [self useOptimizedDrawing: YES];
       [self setContentView: aView];
       [self setTitle:[NSString stringWithUTF8String: aTitle ? aTitle : ""]];
-      stage = aStage;
+      self->stage_osx = aStage;
     }
   return self;
 }
 
 - (BOOL) windowShouldClose: (id) sender
 {
-  CLUTTER_NOTE (BACKEND, "windowShouldClose");
+  CLUTTER_NOTE (BACKEND, "[%p] windowShouldClose", self->stage_osx);
 
   ClutterEvent event;
   event.type = CLUTTER_DELETE;
+  event.any.stage = CLUTTER_STAGE (self->stage_osx->wrapper);
   clutter_event_put (&event);
 
   return NO;
@@ -85,55 +84,50 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 
 - (void) windowDidBecomeKey:(NSNotification*)aNotification
 {
-  CLUTTER_NOTE (BACKEND, "windowDidBecomeKey");
+  CLUTTER_NOTE (BACKEND, "[%p] windowDidBecomeKey", self->stage_osx);
 
-  if (stage->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
+  if (self->stage_osx->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
     [self setLevel: CLUTTER_OSX_FULLSCREEN_WINDOW_LEVEL];
 
-  clutter_stage_osx_state_update (stage, 0, CLUTTER_STAGE_STATE_ACTIVATED);
+  clutter_stage_osx_state_update (self->stage_osx, 0, CLUTTER_STAGE_STATE_ACTIVATED);
 }
 
 - (void) windowDidResignKey:(NSNotification*)aNotification
 {
-  CLUTTER_NOTE (BACKEND, "windowDidResignKey");
+  CLUTTER_NOTE (BACKEND, "[%p] windowDidResignKey", self->stage_osx);
 
-  if (stage->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
+  if (self->stage_osx->stage_state & CLUTTER_STAGE_STATE_FULLSCREEN)
     {
       [self setLevel: NSNormalWindowLevel];
       [self orderBack: nil];
     }
 
-  clutter_stage_osx_state_update (stage, CLUTTER_STAGE_STATE_ACTIVATED, 0);
+  clutter_stage_osx_state_update (self->stage_osx, CLUTTER_STAGE_STATE_ACTIVATED, 0);
 }
 @end
 
 /*************************************************************************/
 @interface ClutterGLView : NSOpenGLView
 {
-  ClutterActor *stage;
+  ClutterStageOSX *stage_osx;
 }
 - (void) drawRect: (NSRect) bounds;
 @end
 
 @implementation ClutterGLView
-- (id) initWithFrame: (NSRect)aFrame pixelFormat:(NSOpenGLPixelFormat*)aFormat stage:(ClutterActor*)aStage
+- (id) initWithFrame: (NSRect)aFrame pixelFormat:(NSOpenGLPixelFormat*)aFormat stage:(ClutterStageOSX*)aStage
 {
-  long sw = 1; 
-
   if ((self = [super initWithFrame:aFrame pixelFormat:aFormat]) != nil)
     {
-      self->stage = aStage;
+      self->stage_osx = aStage;
     }
-
-  /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html*/
-  [[self openGLContext] setValues:&sw forParameter: NSOpenGLCPSwapInterval];
 
   return self;
 }
 
 - (void) drawRect: (NSRect) bounds
 {
-  clutter_actor_paint (self->stage);
+  clutter_actor_paint (CLUTTER_ACTOR (self->stage_osx->wrapper));
   [[self openGLContext] flushBuffer];
 }
 
@@ -151,14 +145,15 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 
 - (void) setFrameSize: (NSSize) aSize
 {
-  CLUTTER_NOTE (BACKEND, "setFrameSize: %dx%d",
+  CLUTTER_NOTE (BACKEND, "[%p] setFrameSize: %dx%d", self->stage_osx,
                 (int)aSize.width, (int)aSize.height);
 
   [super setFrameSize: aSize];
 
-  clutter_actor_set_size (self->stage, (int)aSize.width, (int)aSize.height);
+  clutter_actor_set_size (CLUTTER_ACTOR (self->stage_osx->wrapper),
+                          (int)aSize.width, (int)aSize.height);
 
-  CLUTTER_SET_PRIVATE_FLAGS(self->stage, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS(self->stage_osx->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 /* Simply forward all events that reach our view to clutter. */
@@ -209,6 +204,7 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
   self->stage_state = event.new_state;
 
   event.type = CLUTTER_STAGE_STATE;
+  event.stage = CLUTTER_STAGE (self->wrapper);
   clutter_event_put ((ClutterEvent*)&event);
 }
 
@@ -263,11 +259,14 @@ clutter_stage_osx_realize (ClutterActor *actor)
   ClutterBackendOSX *backend_osx;
   gboolean offscreen;
 
-  CLUTTER_NOTE (BACKEND, "realize");
+  CLUTTER_NOTE (BACKEND, "[%p] realize", self);
+
+  /* ensure we get realize+unrealize properly paired */
+  g_return_if_fail (self->view == NULL && self->window == NULL);
 
   CLUTTER_OSX_POOL_ALLOC();
 
-  g_object_get (actor, "offscreen", &offscreen, NULL);
+  g_object_get (self->wrapper, "offscreen", &offscreen, NULL);
 
   if (offscreen)
     {
@@ -276,9 +275,6 @@ clutter_stage_osx_realize (ClutterActor *actor)
       return;
     }
 
-  if (CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->realize)
-    CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->realize (actor);
-
   backend_osx = CLUTTER_BACKEND_OSX (self->backend);
 
   NSRect rect = NSMakeRect(0, 0, self->requisition_width, self->requisition_height);
@@ -286,28 +282,23 @@ clutter_stage_osx_realize (ClutterActor *actor)
   self->view = [[ClutterGLView alloc]
                 initWithFrame: rect
                   pixelFormat: backend_osx->pixel_format
-                        stage: actor];
+                        stage: self];
+  [self->view setOpenGLContext:backend_osx->context];
 
   self->window = [[ClutterGLWindow alloc]
                   initWithView: self->view
-                     UTF8Title: clutter_stage_get_title (CLUTTER_STAGE (self))
+                     UTF8Title: clutter_stage_get_title (CLUTTER_STAGE (self->wrapper))
                          stage: self];
 
   /* looks better than positioning to 0,0 (bottom right) */
   [self->window center];
 
-  /* To not miss all textures created with the context created in the backend
-   * make sure we share the context. (By default NSOpenGLView creates its own
-   * context.)
-   */
-  NSOpenGLContext *context = backend_osx->context;
-
-  [self->view setOpenGLContext: context];
-  [context setView: self->view];
-
-
   CLUTTER_OSX_POOL_RELEASE();
 
+  /* FIXME: ClutterStage:realize is using the class pointer directly rather
+   * than clutter_actor_realize which would set the REALIZED flag for us.
+   */
+  CLUTTER_ACTOR_SET_FLAGS(self, CLUTTER_ACTOR_REALIZED);
   CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
@@ -316,7 +307,10 @@ clutter_stage_osx_unrealize (ClutterActor *actor)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
 
-  CLUTTER_NOTE (BACKEND, "unrealize");
+  CLUTTER_NOTE (BACKEND, "[%p] unrealize", self);
+
+  /* ensure we get realize+unrealize properly paired */
+  g_return_if_fail (self->view != NULL && self->window != NULL);
 
   CLUTTER_OSX_POOL_ALLOC();
 
@@ -328,8 +322,7 @@ clutter_stage_osx_unrealize (ClutterActor *actor)
 
   CLUTTER_OSX_POOL_RELEASE();
 
-  if (CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->unrealize)
-    CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->unrealize (actor);
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
 
 static void
@@ -337,12 +330,12 @@ clutter_stage_osx_show (ClutterActor *actor)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
 
-  CLUTTER_NOTE (BACKEND, "show");
-
-  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+  CLUTTER_NOTE (BACKEND, "[%p] show", self);
 
   if (CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->show)
     CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class)->show (actor);
+
+  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
 
   CLUTTER_OSX_POOL_ALLOC();
 
@@ -358,7 +351,7 @@ clutter_stage_osx_hide (ClutterActor *actor)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
 
-  CLUTTER_NOTE (BACKEND, "hide");
+  CLUTTER_NOTE (BACKEND, "[%p] hide", self);
 
   CLUTTER_OSX_POOL_ALLOC();
 
@@ -394,7 +387,7 @@ clutter_stage_osx_request_coords (ClutterActor    *actor,
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
 
-  CLUTTER_NOTE (BACKEND, "request_coords: %d,%d %dx%d",
+  CLUTTER_NOTE (BACKEND, "[%p], request_coords: %d,%d %dx%d", self,
                 CLUTTER_UNITS_TO_INT (box->x1),
                 CLUTTER_UNITS_TO_INT (box->y1),
                 CLUTTER_UNITS_TO_INT (box->x2 - box->x1),
@@ -416,29 +409,37 @@ clutter_stage_osx_request_coords (ClutterActor    *actor,
 }
 
 /*************************************************************************/
-static void
-clutter_stage_osx_set_title (ClutterStage *stage,
-                             const char   *title)
+static ClutterActor *
+clutter_stage_osx_get_wrapper (ClutterStageWindow *stage_window)
 {
-  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage);
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
-  CLUTTER_NOTE (BACKEND, "set_title: %s", title);
+  return CLUTTER_ACTOR (self->wrapper);
+}
+
+static void
+clutter_stage_osx_set_title (ClutterStageWindow *stage_window,
+                             const char         *title)
+{
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
+
+  CLUTTER_NOTE (BACKEND, "[%p] set_title: %s", self, title);
 
   CLUTTER_OSX_POOL_ALLOC();
 
-  if (CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stage)))
+  if (CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (self)))
     [self->window setTitle:[NSString stringWithUTF8String: title ? title : ""]];
 
   CLUTTER_OSX_POOL_RELEASE();
 }
 
 static void
-clutter_stage_osx_set_fullscreen (ClutterStage *stage,
-                                  gboolean      fullscreen)
+clutter_stage_osx_set_fullscreen (ClutterStageWindow *stage_window,
+                                  gboolean            fullscreen)
 {
-  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage);
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (stage_window);
 
-  CLUTTER_NOTE (BACKEND, "set_fullscreen: %u", fullscreen);
+  CLUTTER_NOTE (BACKEND, "[%p] set_fullscreen: %u", self, fullscreen);
 
   CLUTTER_OSX_POOL_ALLOC();
 
@@ -476,14 +477,24 @@ clutter_stage_osx_set_fullscreen (ClutterStage *stage,
   CLUTTER_OSX_POOL_RELEASE();
 }
 
+static void
+clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
+{
+  iface->get_wrapper    = clutter_stage_osx_get_wrapper;
+  iface->set_title      = clutter_stage_osx_set_title;
+  iface->set_fullscreen = clutter_stage_osx_set_fullscreen;
+}
+
 /*************************************************************************/
 ClutterActor *
-clutter_stage_osx_new (ClutterBackend *backend)
+clutter_stage_osx_new (ClutterBackend *backend,
+                       ClutterStage   *wrapper)
 {
   ClutterStageOSX *self;
 
   self = g_object_new (CLUTTER_TYPE_STAGE_OSX, NULL);
   self->backend = backend;
+  self->wrapper = wrapper;
 
   return CLUTTER_ACTOR(self);
 }
@@ -495,14 +506,13 @@ clutter_stage_osx_init (ClutterStageOSX *self)
   self->requisition_width  = 640;
   self->requisition_height = 480;
 
-  CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_IS_TOPLEVEL);
 }
 
 static void
 clutter_stage_osx_class_init (ClutterStageOSXClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  ClutterStageClass *stage_class = CLUTTER_STAGE_CLASS (klass);
 
   actor_class->realize   = clutter_stage_osx_realize;
   actor_class->unrealize = clutter_stage_osx_unrealize;
@@ -511,7 +521,4 @@ clutter_stage_osx_class_init (ClutterStageOSXClass *klass)
 
   actor_class->query_coords   = clutter_stage_osx_query_coords;
   actor_class->request_coords = clutter_stage_osx_request_coords;
-
-  stage_class->set_title = clutter_stage_osx_set_title;
-  stage_class->set_fullscreen = clutter_stage_osx_set_fullscreen;
 }

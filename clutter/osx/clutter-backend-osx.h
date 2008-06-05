@@ -44,8 +44,6 @@ struct _ClutterBackendOSX
 
   NSOpenGLPixelFormat *pixel_format;
   NSOpenGLContext     *context;
-
-  ClutterActor *stage;
 };
 
 struct _ClutterBackendOSXClass
