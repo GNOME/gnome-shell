@@ -1,3 +1,16 @@
+2008-06-05  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/compositor/compositor-xrender.c (paint_root, destroy_win,
+        create_root_buffer, paint_windows, repair_screen, window_has_shadow,
+        xrender_set_active_window, paint_dock_shadows, unmap_win, restack_win,
+        make_shadow, resize_win, process_property_notify, free_win,
+        process_configure_notify, process_circulate_notify, add_damage):
+        defensive programming; check meta_screen_get_compositor_data()
+        throughout in case it returns NULL.  In particular, when this
+        happened in a certain situation in xrender_set_active_window
+        this caused a segfault; refs #530702 (and LP#178953 has more data)
+        but this doesn't close them.
+
 2008-06-02  Thomas Thurman  <tthurman@gnome.org>
 
         * NEWS: 2.23.34 release.
