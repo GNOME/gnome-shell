@@ -1,5 +1,15 @@
 2008-06-05  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
+	Bug 913 - cogl fails to build on OSX
+
+	* clutter/cogl/gl/cogl-fbo.c: define GL_READ_FRAMEBUFFER_EXT and
+	GL_DRAW_FRAMEBUFFER_EXT if not defined in the build system. The
+	#ifdef can fail if they're not #defines but variables or enums.
+	As the values are supposed to be industry standard even then
+	it shouldn't have ill effects.
+
+2008-06-05  Tommi Komulainen  <tommi.komulainen@iki.fi>
+
 	Bug #911 - OSX: add multistage support
 
 	* clutter/osx/clutter-backend-osx.{c,h}
