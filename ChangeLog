@@ -1,5 +1,12 @@
 2008-06-05  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
+	Bug #910 - OSX: missing memory pool
+
+	* clutter/osx/clutter-backend-osx.c (clutter_backend_osx_redraw):
+	Add missing memory pool wrapup.
+
+2008-06-05  Tommi Komulainen  <tommi.komulainen@iki.fi>
+
 	Bug #909 - OSX: missing NULL pointer handling
 
 	* clutter/osx/clutter-stage-osx.c (ClutterGLWindow,

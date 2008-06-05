@@ -129,7 +129,12 @@ clutter_backend_osx_redraw (ClutterBackend *backend)
   ClutterStageOSX *stage_osx;
 
   stage_osx = CLUTTER_STAGE_OSX (self->stage);
+
+  CLUTTER_OSX_POOL_ALLOC();
+
   [stage_osx->view setNeedsDisplay: YES];
+
+  CLUTTER_OSX_POOL_RELEASE();
 }
 
 /*************************************************************************/
