@@ -134,7 +134,7 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
   /* FIXME: Any way to destroy pixbuf but retain pixel data? */
   
   pixels   = gdk_pixbuf_get_pixels (pixbuf);
-  out_data = (guchar*) g_malloc ((height - 1) * rowstride + last_row_size);
+  out_data = (guchar*) g_malloc (height * rowstride);
   out      = out_data;
   
   /* Copy up to last row */
@@ -152,7 +152,10 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
   g_object_unref (pixbuf);
   
   /* Store bitmap info */
-  bmp->data = out_data;
+  bmp->data = out_data; /* The stored data the same alignment constraints as a
+                         * gdkpixbuf but stores a full rowstride in the last
+                         * scanline
+                         */
   bmp->format = pixel_format;
   bmp->width = width;
   bmp->height = height;

@@ -1,3 +1,10 @@
+2008-06-06  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/common/cogl-bitmap-pixbuf.c:
+	(_cogl_bitmap_from_file): allocate height×rowstride and not duplicate
+	gdkpixbuf's strange optimization saving some bytes at the end of the
+	pixbuf.
+
 2008-06-05  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
 	Bug 913 - cogl fails to build on OSX
