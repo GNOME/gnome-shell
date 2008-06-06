@@ -1,7 +1,9 @@
 2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug #951 - Fix clutter_entry_init() in trunk
+
 	* clutter/clutter-entry.c (clutter_entry_init): Remove a
-	variable shadowing another one. (Tommi Komulainen)
+	variable shadowing another one. (#951, Tommi Komulainen)
 
 2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
