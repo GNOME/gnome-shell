@@ -40,10 +40,12 @@ get_radius (void)
 
 /* input handler */
 static gboolean
-input_cb (ClutterStage *stage,
+input_cb (ClutterActor *stage,
 	  ClutterEvent *event,
 	  gpointer      data)
 {
+  SuperOH *oh = data;
+
   if (event->type == CLUTTER_BUTTON_PRESS)
     {
       ClutterButtonEvent *button_event;
@@ -56,7 +58,7 @@ input_cb (ClutterStage *stage,
       g_print ("*** button press event (button:%d) ***\n",
 	       button_event->button);
 
-      e = clutter_stage_get_actor_at_pos (stage, x, y);
+      e = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage), x, y);
 
       if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE_TEXTURE (e)))
         {
@@ -76,6 +78,15 @@ input_cb (ClutterStage *stage,
 	  clutter_main_quit ();
           return TRUE;
         }
+      else if (clutter_key_event_symbol (kev) == CLUTTER_r)
+        {
+          gint i;
+
+          for (i = 0; i < n_hands; i++)
+            clutter_actor_show (oh->hand[i]);
+
+          return TRUE;
+        }
     }
 
   return FALSE;
@@ -88,8 +99,8 @@ frame_cb (ClutterTimeline *timeline,
 	  gint             frame_num,
 	  gpointer         data)
 {
-  SuperOH        *oh = (SuperOH *)data;
-  gint            i;
+  SuperOH *oh = data;
+  gint     i;
 
   /* Rotate everything clockwise about stage center*/
 

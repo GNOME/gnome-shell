@@ -1,3 +1,15 @@
+2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-texture.c:
+	(clutter_texture_class_init): Do not unrealize on hide(), and
+	do not realize() on show. By default, clutter_actor_show() will
+	realize ourselves, and we don't want to unrealize when hidden
+	to avoid paying the penalty of reading back the texture data
+	from the video memory.
+
+	* tests/test-actors.c: Show all textures again when pressing
+	the 'r' key.
+
 2008-06-06  Neil Roberts  <neil@o-hand.com>
 
 	* tests/test-shader.c: Use the special wrapper vars when building

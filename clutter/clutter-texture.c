@@ -271,32 +271,6 @@ clutter_texture_realize (ClutterActor *actor)
 }
 
 static void
-clutter_texture_show (ClutterActor *self)
-{
-  ClutterActorClass *parent_class;
-
-  /* chain up parent show */
-  parent_class = CLUTTER_ACTOR_CLASS (clutter_texture_parent_class);
-  if (parent_class->show)
-    parent_class->show (self);
-
-  clutter_actor_realize (self);
-}
-
-static void
-clutter_texture_hide (ClutterActor *self)
-{
-  ClutterActorClass *parent_class;
-
-  /* chain up parent hide */
-  parent_class = CLUTTER_ACTOR_CLASS (clutter_texture_parent_class);
-  if (parent_class->hide)
-    parent_class->hide (self);
-
-  clutter_actor_unrealize (self);
-}
-
-static void
 clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
@@ -535,8 +509,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   actor_class->paint          = clutter_texture_paint;
   actor_class->realize        = clutter_texture_realize;
   actor_class->unrealize      = clutter_texture_unrealize;
-  actor_class->show           = clutter_texture_show;
-  actor_class->hide           = clutter_texture_hide;
   actor_class->request_coords = clutter_texture_request_coords;
 
   gobject_class->dispose      = clutter_texture_dispose;
