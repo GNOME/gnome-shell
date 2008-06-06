@@ -22,12 +22,13 @@ typedef struct
  */
 
 /* FRAGMENT_SHADER_BEGIN: generate boilerplate with a local vec4 color already
- * initialized, from a sampler2DRect in a variable tex.
+ * initialized, from a sampler2D in a variable tex.
  */
-#define FRAGMENT_SHADER_BEGIN                  \
-     "uniform sampler2DRect tex;"  \
-      "void main (){"              \
-      "  vec4 color = texture2DRect (tex, vec2(gl_TexCoord[0].st));"
+#define FRAGMENT_SHADER_BEGIN					\
+  "uniform sampler2D tex;"					\
+  "uniform float x_step, y_step;"				\
+  "void main (){"						\
+  "  vec4 color = texture2D (tex, vec2(gl_TexCoord[0].st));"
 
 /* FRAGMENT_SHADER_END: apply the changed color to the output buffer correctly
  * blended with the gl specified color (makes the opacity of actors work
@@ -57,29 +58,31 @@ static ShaderSource shaders[]=
      "for (u=-radius;u<radius;u++)"
      "  for (v=-radius;v<radius;v++)"
      "    {"
-     "      color += texture2DRect(tex, "
-     "          vec2(gl_TexCoord[0].s + u * 2.0, gl_TexCoord[0].t +v * 2.0));"
+     "      color += texture2D(tex, "
+     "          vec2(gl_TexCoord[0].s + u * 2.0 * x_step, "
+     "               gl_TexCoord[0].t + v * 2.0 * y_step));"
      "      count ++;"
      "    }"
      "color = color / float(count);"
      FRAGMENT_SHADER_END
 #else
-     "vec4 get_rgba_rel(sampler2DRect tex, float dx, float dy)"
+     "vec4 get_rgba_rel(sampler2D tex, float dx, float dy)"
      "{"
-     "  return texture2DRect (tex, gl_TexCoord[0].st + vec2(dx,dy) * 2.0);"
+     "  return texture2D (tex, gl_TexCoord[0].st "
+     "                         + vec2(dx, dy) * 2.0);"
      "}"
 
      FRAGMENT_SHADER_BEGIN
      "  float count = 1.0;"
-     "  color += get_rgba_rel (tex, -1.0, -1.0); count++;"
-     "  color += get_rgba_rel (tex, -1.0,  0.0); count++;"
-     "  color += get_rgba_rel (tex, -1.0,  1.0); count++;"
-     "  color += get_rgba_rel (tex,  0.0, -1.0); count++;"
-     "  color += get_rgba_rel (tex,  0.0,  0.0); count++;"
-     "  color += get_rgba_rel (tex,  0.0,  1.0); count++;"
-     "  color += get_rgba_rel (tex,  1.0, -1.0); count++;"
-     "  color += get_rgba_rel (tex,  1.0,  0.0); count++;"
-     "  color += get_rgba_rel (tex,  1.0,  1.0); count++;"
+     "  color += get_rgba_rel (tex, -x_step, -y_step); count++;"
+     "  color += get_rgba_rel (tex, -x_step,  0.0);    count++;"
+     "  color += get_rgba_rel (tex, -x_step,  y_step); count++;"
+     "  color += get_rgba_rel (tex,  0.0,    -y_step); count++;"
+     "  color += get_rgba_rel (tex,  0.0,     0.0);    count++;"
+     "  color += get_rgba_rel (tex,  0.0,     y_step); count++;"
+     "  color += get_rgba_rel (tex,  x_step, -y_step); count++;"
+     "  color += get_rgba_rel (tex,  x_step,  0.0);    count++;"
+     "  color += get_rgba_rel (tex,  x_step,  y_step); count++;"
      "  color = color / count;"
      FRAGMENT_SHADER_END
 #endif
@@ -112,7 +115,7 @@ static ShaderSource shaders[]=
 
     {"combined-mirror",
      FRAGMENT_SHADER_BEGIN 
-     "  vec4 colorB = texture2DRect (tex, vec2(gl_TexCoord[0].ts));"
+     "  vec4 colorB = texture2D (tex, vec2(gl_TexCoord[0].ts));"
      "  float avg = (color.r + color.g + color.b) / 3.0;"
      "  color.r = avg;"
      "  color.g = avg;"
@@ -132,6 +135,8 @@ button_release_cb (ClutterActor    *actor,
                    gpointer         data)
 {
   gint new_no;
+  int  tex_width;
+  int  tex_height;
 
   if (event->button.button == 1)
     {
@@ -179,6 +184,19 @@ button_release_cb (ClutterActor    *actor,
           clutter_actor_set_shader_param (actor, "radius", 3.0);
           clutter_actor_set_shader_param (actor, "brightness", 0.4);
           clutter_actor_set_shader_param (actor, "contrast", -1.9);
+
+	  if (CLUTTER_IS_TEXTURE (actor))
+	    {
+	      tex_width = clutter_actor_get_width (actor);
+	      tex_width = clutter_util_next_p2 (tex_width);
+	      tex_height = clutter_actor_get_height (actor);
+	      tex_height = clutter_util_next_p2 (tex_height);
+
+	      clutter_actor_set_shader_param (actor, "x_step",
+					      1.0f / tex_width);
+	      clutter_actor_set_shader_param (actor, "y_step",
+					      1.0f / tex_height);
+  	    }
         }
     }
   return FALSE;
@@ -229,9 +247,14 @@ main (gint   argc,
   g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
 
 #ifndef TEST_GROUP
+  actor = g_object_new (CLUTTER_TYPE_TEXTURE,
+			"filename", "redhand.png",
+			"disable-slicing", TRUE,
+			NULL);
   actor = clutter_texture_new_from_file ("redhand.png", &error);
   if (!actor)
     g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
+
 #else
   actor = clutter_group_new ();
     {

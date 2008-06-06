@@ -1,3 +1,12 @@
+2008-06-06  Neil Roberts  <neil@o-hand.com>
+
+	* tests/test-shader.c: Fixed to use sampler2D instead of
+	sampler2DRect now that GL_TEXTURE_RECTANGLE support is disabled in
+	revision 2834. The ClutterTexture actor now has the
+	'disable-slicing' property set. The distance in texture
+	coordinates between pixels is passed in as a uniform so that the
+	box-blur shader can still work.
+
 2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #952 - Fix test-textures in trunk
