@@ -1,3 +1,11 @@
+2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #927 - Created ports for clutter, clutter-cairo in macports
+
+	* clutter/clutter-docs.sgml: Update the OSX build instructions
+	and mention that the preferred way to build Clutter for developing
+	applications is via MacPorts. (#927, Idan Gazit)
+
 2008-05-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-sections.txt: Update with new symbols.
