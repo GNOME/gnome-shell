@@ -1,5 +1,7 @@
 2008-06-06  Øyvind Kolås  <pippin@o-hand.com>
 
+	Bug #931 - suspicious size allocation for pixel data.
+
 	* clutter/cogl/common/cogl-bitmap-pixbuf.c:
 	(_cogl_bitmap_from_file): allocate height×rowstride and not duplicate
 	gdkpixbuf's strange optimization saving some bytes at the end of the
