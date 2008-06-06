@@ -72,14 +72,18 @@ clutter_stage_egl_realize (ClutterActor *actor)
 
   if (G_LIKELY (!is_offscreen))
     {
-      EGLint cfg_attribs[] = { EGL_BUFFER_SIZE,    EGL_DONT_CARE,
-			       EGL_RED_SIZE,       5,
-			       EGL_GREEN_SIZE,     6,
-			       EGL_BLUE_SIZE,      5,
-			       EGL_DEPTH_SIZE,     16,
-			       EGL_ALPHA_SIZE,     EGL_DONT_CARE,
-			       EGL_STENCIL_SIZE,   2,
-			       EGL_SURFACE_TYPE,   EGL_WINDOW_BIT,
+      EGLint cfg_attribs[] = { EGL_BUFFER_SIZE,     EGL_DONT_CARE,
+			       EGL_RED_SIZE,        5,
+			       EGL_GREEN_SIZE,      6,
+			       EGL_BLUE_SIZE,       5,
+			       EGL_DEPTH_SIZE,      16,
+			       EGL_ALPHA_SIZE,      EGL_DONT_CARE,
+			       EGL_STENCIL_SIZE,    2,
+#ifdef HAVE_COGL_GLES2
+			       EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+#else /* HAVE_COGL_GLES2 */
+			       EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
+#endif /* HAVE_COGL_GLES2 */
 			       EGL_NONE };
 
       status = eglGetConfigs (backend_egl->edpy,
@@ -150,12 +154,20 @@ clutter_stage_egl_realize (ClutterActor *actor)
 
       if (G_UNLIKELY (backend_egl->egl_context == NULL))
         {
+	  static const EGLint attribs[3]
+	    = { EGL_CONTEXT_CLIENT_VERSION,
+#ifdef HAVE_COGL_GLES2
+		2,
+#else /* HAVE_COGL_GLES2 */
+		1,
+#endif
+		EGL_NONE };
           CLUTTER_NOTE (GL, "Creating EGL Context");
 
           backend_egl->egl_context = eglCreateContext (backend_egl->edpy,
-                                                       configs[0],
+						       configs[0],
                                                        EGL_NO_CONTEXT,
-                                                       NULL);
+                                                       attribs);
 
           if (backend_egl->egl_context == EGL_NO_CONTEXT)
             {

@@ -1,3 +1,26 @@
+2008-06-06  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/eglnative/clutter-stage-egl.c
+	(clutter_stage_egl_realize): Use ES 2 renderable type when
+	building for GLES 2.
+
+	* clutter/eglnative/clutter-event-egl.c (get_backend_time): Added
+	a NULL for the microseconds parameter of g_timer_elapsed.
+
+	* clutter/eglnative/clutter-stage-egl.h: 
+	* clutter/eglnative/clutter-egl.h: 
+	* clutter/eglnative/clutter-backend-egl.h: Include
+	clutter-egl-headers.h instead of including the GL headers directly
+	so it can include gl2.h when building for GLES 2.
+
+	* clutter/eglnative/clutter-egl-headers.h: 
+	* clutter/eglnative/Makefile.am (libclutter_eglnative_la_SOURCES):
+	Added clutter-egl-headers.h
+
+	* clutter/cogl/gles/cogl-fixed-fragment-shader.glsl: GLES 2
+	doesn't provide a default precision for floats in the fragment
+	shader and it will reject the shader if there isn't one.
+
 2008-06-06  Matthew Allum  <mallum@openedhand.com>
 
         Bug #948 - Remove texture rectangle support

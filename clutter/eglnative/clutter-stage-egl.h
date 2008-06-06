@@ -4,8 +4,7 @@
 #include <glib-object.h>
 #include <clutter/clutter-stage.h>
 
-#include <GLES/gl.h>
-#include <GLES/egl.h>
+#include "clutter-egl-headers.h"
 #include "clutter-backend-egl.h"
 
 #define CLUTTER_TYPE_STAGE_EGL                  (clutter_stage_egl_get_type ())

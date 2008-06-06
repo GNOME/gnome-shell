@@ -88,7 +88,7 @@ get_backend_time (void)
 
   backend_egl = CLUTTER_BACKEND_EGL (clutter_get_default_backend ());
 
-  return g_timer_elapsed (backend_egl->event_timer) * 1000;
+  return g_timer_elapsed (backend_egl->event_timer, NULL) * 1000;
 }
 
 void

@@ -17,4 +17,5 @@ libclutter_eglnative_la_SOURCES = \
 	clutter-backend-egl.c \
 	clutter-event-egl.c \
 	clutter-stage-egl.h \
-	clutter-stage-egl.c
+	clutter-stage-egl.c \
+	clutter-egl-headers.h

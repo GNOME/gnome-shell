@@ -1,3 +1,7 @@
+/* There is no default precision for floats in fragment shaders in
+   GLES 2 so we need to define one */
+precision mediump float;
+
 /* Inputs from the vertex shader */
 varying vec4       frag_color;
 varying vec2       tex_coord;

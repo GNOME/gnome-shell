@@ -22,8 +22,7 @@
 #ifndef __CLUTTER_BACKEND_EGL_H__
 #define __CLUTTER_BACKEND_EGL_H__
 
-#include <GLES/gl.h>
-#include <GLES/egl.h>
+#include "clutter-egl-headers.h"
 
 #include <glib-object.h>
 #include <clutter/clutter-backend.h>
