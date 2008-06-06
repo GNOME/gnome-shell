@@ -39,7 +39,6 @@ G_BEGIN_DECLS
 
 /**
  * ClutterFeatureFlags:
- * @CLUTTER_FEATURE_TEXTURE_RECTANGLE: Set if rectangular textures supported.
  * @CLUTTER_FEATURE_TEXTURE_RECTANGLE: Set if NPOTS textures supported.
  * @CLUTTER_FEATURE_SYNC_TO_VBLANK: Set if vblank syncing supported.
  * @CLUTTER_FEATURE_TEXTURE_YUV: Set if YUV based textures supported.
@@ -58,7 +57,6 @@ G_BEGIN_DECLS
  */
 typedef enum 
 {
-  CLUTTER_FEATURE_TEXTURE_RECTANGLE      = (1 << 1),
   CLUTTER_FEATURE_TEXTURE_NPOT           = (1 << 2),
   CLUTTER_FEATURE_SYNC_TO_VBLANK         = (1 << 3),
   CLUTTER_FEATURE_TEXTURE_YUV            = (1 << 4),

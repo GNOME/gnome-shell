@@ -323,11 +323,6 @@ cogl_enable (gulong flags)
 			   COGL_ENABLE_TEXCOORD_ARRAY,
 			   GL_TEXTURE_COORD_ARRAY);
   
-#ifdef GL_TEXTURE_RECTANGLE_ARB
-  cogl_toggle_flag (ctx, flags,
-		    COGL_ENABLE_TEXTURE_RECT,
-		    GL_TEXTURE_RECTANGLE_ARB);
-#endif
 }
 
 gulong
@@ -673,14 +668,6 @@ _cogl_features_init ()
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
 
-#if defined(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB) && defined(GL_TEXTURE_RECTANGLE_ARB)
-  if (cogl_check_extension ("GL_ARB_texture_rectangle", gl_extensions) ||
-      cogl_check_extension ("GL_EXT_texture_rectangle", gl_extensions))
-    {
-      flags |= COGL_FEATURE_TEXTURE_RECTANGLE;
-    }
-#endif
-  
   if (cogl_check_extension ("GL_ARB_texture_non_power_of_two", gl_extensions))
     {
       flags |= COGL_FEATURE_TEXTURE_NPOT;

@@ -1479,7 +1479,7 @@ on_fbo_source_size_change (GObject          *object,
 
       priv->texture = cogl_texture_new_with_size (priv->width,
 						  priv->height,
-						  priv->max_tile_waste,
+						  -1,
                                                   FALSE,
 						  COGL_PIXEL_FORMAT_RGBA_8888);
 
@@ -1529,8 +1529,8 @@ on_fbo_parent_change (ClutterActor        *actor,
  *
  * Note this function is intented as a utility call for uniformly applying
  * shaders to groups and other potential visual effects. It requires that
- * both %CLUTTER_FEATURE_TEXTURE_RECTANGLE and %CLUTTER_FEATURE_OFFSCREEN
- * features are supported by the current backend and the target system.
+ * the %CLUTTER_FEATURE_OFFSCREEN feature is supported by the current backend 
+ * and the target system.
  *
  * Some tips on usage:
  *
@@ -1579,10 +1579,6 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), NULL);
 
-  /* FIXME: Some error result on below could be useful */
-  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE) == FALSE)
-    return NULL;
-
   if (clutter_feature_available (CLUTTER_FEATURE_OFFSCREEN) == FALSE)
     return NULL;
 
@@ -1600,7 +1596,9 @@ clutter_texture_new_from_actor (ClutterActor *actor)
     return NULL;
 
   /* Hopefully now were good.. */
-  texture = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
+  texture = g_object_new (CLUTTER_TYPE_TEXTURE, 
+                          "disable-slicing", TRUE,
+                          NULL);
 
   priv = texture->priv;
 

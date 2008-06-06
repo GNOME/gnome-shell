@@ -202,8 +202,7 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
 
   if (priv->use_fallback
       || !_have_tex_from_pixmap_ext
-      || !(clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT)
-           || clutter_feature_available (COGL_FEATURE_TEXTURE_RECTANGLE)))
+      || !clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT))
     {
       /* Fall back */
       CLUTTER_NOTE (TEXTURE, "texture from pixmap appears unsupported");

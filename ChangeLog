@@ -1,3 +1,16 @@
+2008-06-06  Matthew Allum  <mallum@openedhand.com>
+
+        Bug #948 - Remove texture rectangle support
+
+	* clutter/clutter-feature.c:
+	* clutter/clutter-feature.h:
+	* clutter/clutter-texture.c:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+        Remove support for GL_TEXTURE_RECTANGLE_ARB (now using just regular
+        2D textures, with optional npots extension). Simplifys code, + makes
+        mipmap & shader support much more sane.
+
 2008-06-06  Øyvind Kolås  <pippin@o-hand.com>
 
 	Bug #931 - suspicious size allocation for pixel data.
