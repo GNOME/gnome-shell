@@ -1,3 +1,11 @@
+2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #955 - ClutterLabel is missing fallback resolution handling
+
+	* clutter/clutter-label.c (clutter_label_init): Handle
+	clutter_backend_get_resolution() return value -1 similar to
+	ClutterEntry (falling back to 96.0). (#955, Tommi Komulainen)
+
 2008-06-06  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/eglnative/clutter-stage-egl.c

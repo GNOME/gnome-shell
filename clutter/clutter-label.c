@@ -647,6 +647,8 @@ clutter_label_init (ClutterLabel *self)
       _context = pango_clutter_font_map_create_context (font_map);
 
       resolution = clutter_backend_get_resolution (backend);
+      if (resolution < 0)
+        resolution = 96.0;
       pango_cairo_context_set_resolution (_context, resolution);
 
       font_options = clutter_backend_get_font_options (backend);
