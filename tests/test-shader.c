@@ -1,6 +1,7 @@
 /*#define TEST_GROUP */
 
 #include <clutter/clutter.h>
+#include "../config.h"
 
 #include <errno.h>
 #include <stdlib.h>
@@ -17,6 +18,25 @@ typedef struct
   gchar *source;
 } ShaderSource;
 
+/* These variables are used instead of the standard GLSL variables on
+   GLES 2 */
+#ifdef HAVE_COGL_GLES2
+
+#define GLES2_VARS \
+  "precision mediump float;\n" \
+  "varying vec2 tex_coord;\n" \
+  "varying vec4 frag_color;\n"
+#define TEX_COORD "tex_coord"
+#define COLOR_VAR "frag_color"
+
+#else /* HAVE_COGL_GLES2 */
+
+#define GLES2_VARS ""
+#define TEX_COORD "gl_TexCoord[0]"
+#define COLOR_VAR "gl_Color"
+
+#endif /* HAVE_COGL_GLES2 */
+
 /* a couple of boilerplate defines that are common amongst all the
  * sample shaders
  */
@@ -24,11 +44,14 @@ typedef struct
 /* FRAGMENT_SHADER_BEGIN: generate boilerplate with a local vec4 color already
  * initialized, from a sampler2D in a variable tex.
  */
-#define FRAGMENT_SHADER_BEGIN					\
+#define FRAGMENT_SHADER_VARS					\
+  GLES2_VARS                                                    \
   "uniform sampler2D tex;"					\
   "uniform float x_step, y_step;"				\
+
+#define FRAGMENT_SHADER_BEGIN					\
   "void main (){"						\
-  "  vec4 color = texture2D (tex, vec2(gl_TexCoord[0].st));"
+  "  vec4 color = texture2D (tex, vec2(" TEX_COORD "));"
 
 /* FRAGMENT_SHADER_END: apply the changed color to the output buffer correctly
  * blended with the gl specified color (makes the opacity of actors work
@@ -36,12 +59,13 @@ typedef struct
  */
 #define FRAGMENT_SHADER_END                    \
       "  gl_FragColor = color;"    \
-      "  gl_FragColor = gl_FragColor * gl_Color;" \
+      "  gl_FragColor = gl_FragColor * " COLOR_VAR ";" \
       "}"
 
 static ShaderSource shaders[]=
   {
     {"brightness-contrast",
+     FRAGMENT_SHADER_VARS
      "uniform float brightness, contrast;"
      FRAGMENT_SHADER_BEGIN
      " color.rgb = (color.rgb - vec3(0.5, 0.5, 0.5)) * contrast + "
@@ -50,6 +74,8 @@ static ShaderSource shaders[]=
     },
 
     {"box-blur",
+     FRAGMENT_SHADER_VARS
+
 #if GPU_SUPPORTS_DYNAMIC_BRANCHING
      "uniform float radius;"
      FRAGMENT_SHADER_BEGIN
@@ -59,8 +85,8 @@ static ShaderSource shaders[]=
      "  for (v=-radius;v<radius;v++)"
      "    {"
      "      color += texture2D(tex, "
-     "          vec2(gl_TexCoord[0].s + u * 2.0 * x_step, "
-     "               gl_TexCoord[0].t + v * 2.0 * y_step));"
+     "          vec2(" TEX_COORD ".s + u * 2.0 * x_step, "
+     "               " TEX_COORD ".t + v * 2.0 * y_step));"
      "      count ++;"
      "    }"
      "color = color / float(count);"
@@ -68,7 +94,7 @@ static ShaderSource shaders[]=
 #else
      "vec4 get_rgba_rel(sampler2D tex, float dx, float dy)"
      "{"
-     "  return texture2D (tex, gl_TexCoord[0].st "
+     "  return texture2D (tex, " TEX_COORD ".st "
      "                         + vec2(dx, dy) * 2.0);"
      "}"
 
@@ -89,12 +115,14 @@ static ShaderSource shaders[]=
     },
 
     {"invert",
+     FRAGMENT_SHADER_VARS
      FRAGMENT_SHADER_BEGIN
      "  color.rgb = vec3(1.0, 1.0, 1.0) - color.rgb;\n"
      FRAGMENT_SHADER_END
     },
 
     {"brightness-contrast",
+     FRAGMENT_SHADER_VARS
      "uniform float brightness;"
      "uniform float contrast;"
      FRAGMENT_SHADER_BEGIN
@@ -105,6 +133,7 @@ static ShaderSource shaders[]=
     },
 
     {"gray",
+     FRAGMENT_SHADER_VARS
      FRAGMENT_SHADER_BEGIN
      "  float avg = (color.r + color.g + color.b) / 3.0;"
      "  color.r = avg;"
@@ -114,8 +143,9 @@ static ShaderSource shaders[]=
     },
 
     {"combined-mirror",
+     FRAGMENT_SHADER_VARS
      FRAGMENT_SHADER_BEGIN 
-     "  vec4 colorB = texture2D (tex, vec2(gl_TexCoord[0].ts));"
+     "  vec4 colorB = texture2D (tex, vec2(" TEX_COORD ".ts));"
      "  float avg = (color.r + color.g + color.b) / 3.0;"
      "  color.r = avg;"
      "  color.g = avg;"
@@ -129,23 +159,11 @@ static ShaderSource shaders[]=
 
 static gint shader_no = 0;
 
-static gboolean
-button_release_cb (ClutterActor    *actor,
-                   ClutterEvent    *event,
-                   gpointer         data)
+static void
+set_shader_num (ClutterActor *actor, gint new_no)
 {
-  gint new_no;
   int  tex_width;
   int  tex_height;
-
-  if (event->button.button == 1)
-    {
-      new_no = shader_no - 1;
-    }
-  else
-    {
-      new_no = shader_no + 1;
-    }
 
   if (new_no >= 0 && shaders[new_no].name)
     {
@@ -199,9 +217,43 @@ button_release_cb (ClutterActor    *actor,
   	    }
         }
     }
+}
+
+static gboolean
+button_release_cb (ClutterActor    *actor,
+                   ClutterEvent    *event,
+                   gpointer         data)
+{
+  gint new_no;
+
+  if (event->button.button == 1)
+    {
+      new_no = shader_no - 1;
+    }
+  else
+    {
+      new_no = shader_no + 1;
+    }
+
+  set_shader_num (actor, new_no);
+
   return FALSE;
 }
 
+#ifdef HAVE_COGL_GLES2
+static gboolean
+timeout_cb (gpointer data)
+{
+  int new_no = shader_no + 1;
+
+  if (shaders[new_no].name == NULL)
+    new_no = 0;
+
+  set_shader_num (CLUTTER_ACTOR (data), new_no);
+
+  return TRUE;
+}
+#endif /* HAVE_COGL_GLES2 */
 
 gint
 main (gint   argc,
@@ -298,6 +350,12 @@ main (gint   argc,
   clutter_actor_set_reactive (actor, TRUE);
   g_signal_connect (actor, "button-release-event",
                     G_CALLBACK (button_release_cb), NULL);
+
+#ifdef HAVE_COGL_GLES2
+  /* On an embedded platform it is difficult to right click so we will
+     cycle through the shaders automatically */
+  g_timeout_add_seconds (3, timeout_cb, actor);
+#endif
 
   /*clutter_actor_set_opacity (actor, 0x77);*/
 

@@ -1,5 +1,11 @@
 2008-06-06  Neil Roberts  <neil@o-hand.com>
 
+	* tests/test-shader.c: Use the special wrapper vars when building
+	for GLES 2 and automatically cycle the shaders because it's
+	difficult to right-click.
+
+2008-06-06  Neil Roberts  <neil@o-hand.com>
+
 	* tests/test-shader.c: Fixed to use sampler2D instead of
 	sampler2DRect now that GL_TEXTURE_RECTANGLE support is disabled in
 	revision 2834. The ClutterTexture actor now has the
