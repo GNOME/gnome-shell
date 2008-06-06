@@ -1,5 +1,10 @@
 2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-entry.c (clutter_entry_init): Remove a
+	variable shadowing another one. (Tommi Komulainen)
+
+2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug #955 - ClutterLabel is missing fallback resolution handling
 
 	* clutter/clutter-label.c (clutter_label_init): Handle

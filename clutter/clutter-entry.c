@@ -862,7 +862,6 @@ clutter_entry_init (ClutterEntry *self)
     {
       ClutterBackend *backend = clutter_get_default_backend ();
       PangoClutterFontMap *font_map = CLUTTER_CONTEXT ()->font_map;
-      gdouble resolution;
       cairo_font_options_t *font_options;
 
       _context = pango_clutter_font_map_create_context (font_map);
