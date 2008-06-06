@@ -29,17 +29,26 @@
 #include <clutter/x11/clutter-x11.h>
 #include <clutter/glx/clutter-glx.h>
 
-#if COMPOSITE_MAJOR > 0 || COMPOSITE_MINOR >= 2
-#define HAVE_NAME_WINDOW_PIXMAP 1
-#endif
+#include <cogl/cogl.h>
 
-#if COMPOSITE_MAJOR > 0 || COMPOSITE_MINOR >= 3
-#define HAVE_COW 1
-#else
-/* Don't have a cow man...HAAHAAHAA */
-#endif
+#define SHADOW_RADIUS 10
+#define SHADOW_OPACITY	0.9
+#define SHADOW_OFFSET_X	(-SHADOW_RADIUS)
+#define SHADOW_OFFSET_Y	(-SHADOW_RADIUS)
 
-#define USE_IDLE_REPAINT 1
+#define MAX_TILE_SZ 30 	/* make sure size/2 < MAX_TILE_SZ */
+#define TILE_WIDTH  (3*MAX_TILE_SZ)
+#define TILE_HEIGHT (3*MAX_TILE_SZ)
+
+ClutterActor*
+tidy_texture_frame_new (ClutterTexture *texture, 
+			gint            left,
+			gint            top,
+			gint            right,
+			gint            bottom);
+
+static unsigned char *
+shadow_gaussian_make_tile (void);
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 static inline gboolean
@@ -55,11 +64,6 @@ composite_at_least_version (MetaDisplay *display,
   return (major > maj || (major == maj && minor >= min));
 }
 
-#define have_name_window_pixmap(display) \
-  composite_at_least_version (display, 0, 2)
-#define have_cow(display) \
-  composite_at_least_version (display, 0, 3)
-
 #endif
 
 typedef enum _MetaCompWindowType
@@ -67,7 +71,10 @@ typedef enum _MetaCompWindowType
   META_COMP_WINDOW_NORMAL,
   META_COMP_WINDOW_DND,
   META_COMP_WINDOW_DESKTOP,
-  META_COMP_WINDOW_DOCK
+  META_COMP_WINDOW_DOCK,
+  META_COMP_WINDOW_MENU,
+  META_COMP_WINDOW_DROP_DOWN_MENU,
+  META_COMP_WINDOW_TOOLTIP,
 } MetaCompWindowType;
 
 typedef struct _MetaCompositorClutter 
@@ -109,6 +116,8 @@ typedef struct _MetaCompScreen
 
   ClutterEffectTemplate *destroy_effect;
 
+  ClutterActor *shadow_src;
+
 } MetaCompScreen;
 
 typedef struct _MetaCompWindow 
@@ -118,6 +127,7 @@ typedef struct _MetaCompWindow
   Window            id;
   XWindowAttributes attrs;
   ClutterActor     *actor;
+  ClutterActor     *shadow;
   Pixmap            back_pixmap;
   int               mode;
 
@@ -248,6 +258,58 @@ is_shaped (MetaDisplay *display,
   
   return FALSE;
 }
+
+static gboolean
+window_has_shadow (MetaCompWindow *cw)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (cw->screen);
+
+  /* Always put a shadow around windows with a frame - This should override
+     the restriction about not putting a shadow around shaped windows
+     as the frame might be the reason the window is shaped */
+  if (cw->window) 
+    {
+      if (meta_window_get_frame (cw->window)) {
+        meta_verbose ("Window has shadow because it has a frame\n");
+        return TRUE;
+      }
+    }
+
+  /* Never put a shadow around shaped windows */
+  if (cw->shaped) {
+    meta_verbose ("Window has no shadow as it is shaped\n");
+    return FALSE;
+  }
+
+  /* Don't put shadow around DND icon windows */
+  if (cw->type == META_COMP_WINDOW_DND ||
+      cw->type == META_COMP_WINDOW_DESKTOP) {
+    meta_verbose ("Window has no shadow as it is DND or Desktop\n");
+    return FALSE;
+  }
+
+#if 0
+  if (cw->mode != WINDOW_ARGB) {
+    meta_verbose ("Window has shadow as it is not ARGB\n");
+    return TRUE;
+  }
+#endif
+
+  if (cw->type == META_COMP_WINDOW_MENU || 
+      cw->type == META_COMP_WINDOW_DROP_DOWN_MENU) {
+    meta_verbose ("Window has shadow as it is a menu\n");
+    return TRUE;
+  }
+
+  if (cw->type == META_COMP_WINDOW_TOOLTIP) {
+    meta_verbose ("Window has shadow as it is a tooltip\n");
+    return TRUE;
+  }
+
+  meta_verbose ("Window has no shadow as it fell through\n");
+  return FALSE;
+}
+
 
 static void 
 clutter_cmp_destroy (MetaCompositor *compositor)
@@ -416,6 +478,8 @@ restack_win (MetaCompWindow *cw,
       info->windows = g_list_delete_link (info->windows, sibling);
       info->windows = g_list_append (info->windows, cw);
 
+      if (cw->shadow)
+        clutter_actor_raise_top (cw->shadow);
       clutter_actor_raise_top (cw->actor);
     } 
   else if (previous_above != above) 
@@ -436,6 +500,8 @@ restack_win (MetaCompWindow *cw,
           info->windows = g_list_insert_before (info->windows, index, cw);
 
           clutter_actor_raise (cw->actor, above_win->actor);
+          if (cw->shadow)
+            clutter_actor_raise(cw->shadow, above_win->actor);
         }
     }
 }
@@ -470,6 +536,11 @@ resize_win (MetaCompWindow *cw,
 
   clutter_actor_set_position (cw->actor, x, y);
   
+  if (cw->shadow)
+    clutter_actor_set_position (cw->shadow, 
+                                x + SHADOW_OFFSET_X , 
+                                y + SHADOW_OFFSET_Y);
+
   /* Note, let named named pixmap resync actually resize actor */
 
   if (cw->attrs.width != width || cw->attrs.height != height) 
@@ -524,6 +595,9 @@ map_win (MetaDisplay *display,
       cw->back_pixmap = None;
     }
 
+  if (cw->shadow)
+    clutter_actor_show (cw->shadow);
+
   clutter_actor_show (cw->actor);
 }
 
@@ -556,6 +630,9 @@ unmap_win (MetaDisplay *display,
   free_win (cw, FALSE);
 
   clutter_actor_hide (cw->actor);
+
+  if (cw->shadow)
+    clutter_actor_hide (cw->shadow);
 }
 
 
@@ -619,6 +696,23 @@ add_win (MetaScreen *screen,
 
 
   cw->actor = clutter_glx_texture_pixmap_new ();
+
+  if (window_has_shadow(cw))
+    {
+      cw->shadow = tidy_texture_frame_new (CLUTTER_TEXTURE (info->shadow_src),
+                                           MAX_TILE_SZ,
+                                           MAX_TILE_SZ,
+                                           MAX_TILE_SZ,
+                                           MAX_TILE_SZ);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (info->stage), 
+                                   cw->shadow);
+      clutter_actor_set_position (cw->shadow, 
+                                  cw->attrs.x + SHADOW_OFFSET_X , 
+                                  cw->attrs.y + SHADOW_OFFSET_Y);
+      clutter_actor_hide (cw->shadow);
+    }
+
   clutter_container_add_actor (CLUTTER_CONTAINER (info->stage), cw->actor);
   clutter_actor_set_position (cw->actor, cw->attrs.x, cw->attrs.y);
   clutter_actor_hide (cw->actor);
@@ -684,6 +778,12 @@ repair_win (MetaCompWindow *cw)
                     NULL);
       
       clutter_actor_set_size (cw->actor, pxm_width, pxm_height);
+
+      if (cw->shadow)
+        clutter_actor_set_size (cw->shadow, 
+                                pxm_width + (2 * SHADOW_RADIUS), 
+                                pxm_height  + (2 * SHADOW_RADIUS));
+
       clutter_actor_show (cw->actor);
     }
 
@@ -701,8 +801,8 @@ repair_win (MetaCompWindow *cw)
       parts = XFixesCreateRegion (xdisplay, 0, 0);
       XDamageSubtract (xdisplay, cw->damage, None, parts);
 
-      if (1) /*clutter_glx_texture_pixmap_using_extension 
-               (CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor)))*/
+      if (clutter_glx_texture_pixmap_using_extension 
+               (CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor)))
         {
           clutter_x11_texture_pixmap_update_area 
             (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor), 
@@ -1043,6 +1143,7 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   Window xroot = meta_screen_get_xroot (screen);
   Window xwin;
   gint width, height;
+  guchar *data;
 
   /* Check if the screen is already managed */
   if (meta_screen_get_compositor_data (screen))
@@ -1084,6 +1185,23 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
 
   XReparentWindow (xdisplay, xwin, info->output, 0, 0);
+
+  /* Shadow setup */
+  
+  data = shadow_gaussian_make_tile ();
+
+  info->shadow_src = clutter_texture_new ();
+
+  clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (info->shadow_src),
+                                     data,
+                                     TRUE,
+                                     TILE_WIDTH,
+                                     TILE_HEIGHT,
+                                     TILE_WIDTH*4,
+                                     4,
+                                     0,
+                                     NULL);
+  free (data);
 
   clutter_actor_show_all (info->stage);
 
@@ -1308,4 +1426,674 @@ meta_compositor_clutter_new (MetaDisplay *display)
 #else
   return NULL;
 #endif
+}
+
+/* ------------------------------- */
+/* Shadow Generation */
+
+typedef struct GaussianMap
+{
+  int	   size;
+  double * data;
+} GaussianMap;
+
+static double
+gaussian (double r, double x, double y)
+{
+  return ((1 / (sqrt (2 * M_PI * r))) *
+	  exp ((- (x * x + y * y)) / (2 * r * r)));
+}
+
+
+static GaussianMap *
+make_gaussian_map (double r)
+{
+  GaussianMap  *c;
+  int	          size = ((int) ceil ((r * 3)) + 1) & ~1;
+  int	          center = size / 2;
+  int	          x, y;
+  double          t = 0.0;
+  double          g;
+
+  c = malloc (sizeof (GaussianMap) + size * size * sizeof (double));
+  c->size = size;
+
+  c->data = (double *) (c + 1);
+
+  for (y = 0; y < size; y++)
+    for (x = 0; x < size; x++)
+      {
+	g = gaussian (r, (double) (x - center), (double) (y - center));
+	t += g;
+	c->data[y * size + x] = g;
+      }
+
+  for (y = 0; y < size; y++)
+    for (x = 0; x < size; x++)
+      c->data[y*size + x] /= t;
+
+  return c;
+}
+
+static unsigned char
+sum_gaussian (GaussianMap * map, double opacity,
+              int x, int y, int width, int height)
+{
+  int	           fx, fy;
+  double         * g_data;
+  double         * g_line = map->data;
+  int	           g_size = map->size;
+  int	           center = g_size / 2;
+  int	           fx_start, fx_end;
+  int	           fy_start, fy_end;
+  double           v;
+  unsigned int     r;
+
+  /*
+   * Compute set of filter values which are "in range",
+   * that's the set with:
+   *	0 <= x + (fx-center) && x + (fx-center) < width &&
+   *  0 <= y + (fy-center) && y + (fy-center) < height
+   *
+   *  0 <= x + (fx - center)	x + fx - center < width
+   *  center - x <= fx	fx < width + center - x
+   */
+
+  fx_start = center - x;
+  if (fx_start < 0)
+    fx_start = 0;
+  fx_end = width + center - x;
+  if (fx_end > g_size)
+    fx_end = g_size;
+
+  fy_start = center - y;
+  if (fy_start < 0)
+    fy_start = 0;
+  fy_end = height + center - y;
+  if (fy_end > g_size)
+    fy_end = g_size;
+
+  g_line = g_line + fy_start * g_size + fx_start;
+
+  v = 0;
+  for (fy = fy_start; fy < fy_end; fy++)
+    {
+      g_data = g_line;
+      g_line += g_size;
+
+      for (fx = fx_start; fx < fx_end; fx++)
+	v += *g_data++;
+    }
+  if (v > 1)
+    v = 1;
+
+  v *= (opacity * 255.0);
+
+  r = (unsigned int) v;
+
+  return (unsigned char) r;
+}
+
+static unsigned char *
+shadow_gaussian_make_tile ()
+{
+  unsigned char              * data;
+  int		               size;
+  int		               center;
+  int		               x, y;
+  unsigned char                d;
+  int                          pwidth, pheight;
+  double                       opacity = SHADOW_OPACITY;
+  static GaussianMap       * gaussian_map = NULL;
+
+  struct _mypixel
+  {
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+    unsigned char a;
+  } * _d;
+
+
+  if (!gaussian_map)
+    gaussian_map =
+      make_gaussian_map (SHADOW_RADIUS);
+
+  size   = gaussian_map->size;
+  center = size / 2;
+
+  /* Top & bottom */
+
+  pwidth  = MAX_TILE_SZ;
+  pheight = MAX_TILE_SZ;
+
+  data = g_malloc0 (4 * TILE_WIDTH * TILE_HEIGHT);
+
+  _d = (struct _mypixel*) data;
+
+  /* N */
+  for (y = 0; y < pheight; y++)
+    {
+      d = sum_gaussian (gaussian_map, opacity,
+                        center, y - center,
+                        TILE_WIDTH, TILE_HEIGHT);
+      for (x = 0; x < pwidth; x++)
+	{
+	  _d[y*3*pwidth + x + pwidth].r = 0;
+	  _d[y*3*pwidth + x + pwidth].g = 0;
+	  _d[y*3*pwidth + x + pwidth].b = 0;
+	  _d[y*3*pwidth + x + pwidth].a = d;
+	}
+
+    }
+
+  /* S */
+  pwidth = MAX_TILE_SZ;
+  pheight = MAX_TILE_SZ;
+
+  for (y = 0; y < pheight; y++)
+    {
+      d = sum_gaussian (gaussian_map, opacity,
+                        center, y - center,
+                        TILE_WIDTH, TILE_HEIGHT);
+      for (x = 0; x < pwidth; x++)
+	{
+	  _d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + x + pwidth].r = 0;
+	  _d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + x + pwidth].g = 0;
+	  _d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + x + pwidth].b = 0;
+	  _d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + x + pwidth].a = d;
+	}
+
+    }
+
+
+  /* w */
+  pwidth = MAX_TILE_SZ;
+  pheight = MAX_TILE_SZ;
+
+  for (x = 0; x < pwidth; x++)
+    {
+      d = sum_gaussian (gaussian_map, opacity,
+                        x - center, center,
+                        TILE_WIDTH, TILE_HEIGHT);
+      for (y = 0; y < pheight; y++)
+	{
+	  _d[y*3*pwidth + 3*pwidth*pheight + x].r = 0;
+	  _d[y*3*pwidth + 3*pwidth*pheight + x].g = 0;
+	  _d[y*3*pwidth + 3*pwidth*pheight + x].b = 0;
+	  _d[y*3*pwidth + 3*pwidth*pheight + x].a = d;
+	}
+
+    }
+
+  /* E */
+  for (x = 0; x < pwidth; x++)
+    {
+      d = sum_gaussian (gaussian_map, opacity,
+					       x - center, center,
+					       TILE_WIDTH, TILE_HEIGHT);
+      for (y = 0; y < pheight; y++)
+	{
+	  _d[y*3*pwidth + 3*pwidth*pheight + (pwidth-x-1) + 2*pwidth].r = 0;
+	  _d[y*3*pwidth + 3*pwidth*pheight + (pwidth-x-1) + 2*pwidth].g = 0;
+	  _d[y*3*pwidth + 3*pwidth*pheight + (pwidth-x-1) + 2*pwidth].b = 0;
+	  _d[y*3*pwidth + 3*pwidth*pheight + (pwidth-x-1) + 2*pwidth].a = d;
+	}
+
+    }
+
+  /* NW */
+  pwidth = MAX_TILE_SZ;
+  pheight = MAX_TILE_SZ;
+
+  for (x = 0; x < pwidth; x++)
+    for (y = 0; y < pheight; y++)
+      {
+	d = sum_gaussian (gaussian_map, opacity,
+                          x-center, y-center,
+                          TILE_WIDTH, TILE_HEIGHT);
+
+	_d[y*3*pwidth + x].r = 0;
+	_d[y*3*pwidth + x].g = 0;
+	_d[y*3*pwidth + x].b = 0;
+	_d[y*3*pwidth + x].a = d;
+      }
+
+  /* SW */
+  for (x = 0; x < pwidth; x++)
+    for (y = 0; y < pheight; y++)
+      {
+	d = sum_gaussian (gaussian_map, opacity,
+                          x-center, y-center,
+                          TILE_WIDTH, TILE_HEIGHT);
+
+	_d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + x].r = 0;
+	_d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + x].g = 0;
+	_d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + x].b = 0;
+	_d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + x].a = d;
+      }
+
+  /* SE */
+  for (x = 0; x < pwidth; x++)
+    for (y = 0; y < pheight; y++)
+      {
+	d = sum_gaussian (gaussian_map, opacity,
+                          x-center, y-center,
+                          TILE_WIDTH, TILE_HEIGHT);
+
+	_d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + (pwidth-x-1) +
+	   2*pwidth].r = 0;
+	_d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + (pwidth-x-1) +
+	   2*pwidth].g = 0;
+	_d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + (pwidth-x-1) +
+	   2*pwidth].b = 0;
+	_d[(pheight-y-1)*3*pwidth + 6*pwidth*pheight + (pwidth-x-1) +
+	   2*pwidth].a = d;
+      }
+
+  /* NE */
+  for (x = 0; x < pwidth; x++)
+    for (y = 0; y < pheight; y++)
+      {
+	d = sum_gaussian (gaussian_map, opacity,
+                          x-center, y-center, 
+                          TILE_WIDTH, TILE_HEIGHT);
+
+	_d[y*3*pwidth + (pwidth - x - 1) + 2*pwidth].r = 0;
+	_d[y*3*pwidth + (pwidth - x - 1) + 2*pwidth].g = 0;
+	_d[y*3*pwidth + (pwidth - x - 1) + 2*pwidth].b = 0;
+	_d[y*3*pwidth + (pwidth - x - 1) + 2*pwidth].a = d;
+      }
+
+  /* center */
+  pwidth = MAX_TILE_SZ;
+  pheight = MAX_TILE_SZ;
+
+  d = sum_gaussian (gaussian_map, opacity,
+                    center, center, TILE_WIDTH, TILE_HEIGHT);
+
+  for (x = 0; x < pwidth; x++)
+    for (y = 0; y < pheight; y++)
+      {
+	_d[y*3*pwidth + 3*pwidth*pheight + x + pwidth].r = 0;
+	_d[y*3*pwidth + 3*pwidth*pheight + x + pwidth].g = 0;
+	_d[y*3*pwidth + 3*pwidth*pheight + x + pwidth].b = 0;
+	_d[y*3*pwidth + 3*pwidth*pheight + x + pwidth].a = d;
+      }
+
+  return data;
+}
+
+#define TIDY_TYPE_TEXTURE_FRAME (tidy_texture_frame_get_type ())
+
+#define TIDY_TEXTURE_FRAME(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+  TIDY_TYPE_TEXTURE_FRAME, TidyTextureFrame))
+
+#define TIDY_TEXTURE_FRAME_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), \
+  TIDY_TYPE_TEXTURE_FRAME, TidyTextureFrameClass))
+
+#define TIDY_IS_TEXTURE_FRAME(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+  TIDY_TYPE_TEXTURE_FRAME))
+
+#define TIDY_IS_TEXTURE_FRAME_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
+  TIDY_TYPE_TEXTURE_FRAME))
+
+#define TIDY_TEXTURE_FRAME_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+  TIDY_TYPE_TEXTURE_FRAME, TidyTextureFrameClass))
+
+typedef struct _TidyTextureFrame        TidyTextureFrame;
+typedef struct _TidyTextureFramePrivate TidyTextureFramePrivate;
+typedef struct _TidyTextureFrameClass   TidyTextureFrameClass;
+
+struct _TidyTextureFrame
+{
+  ClutterCloneTexture              parent;
+  
+  /*< priv >*/
+  TidyTextureFramePrivate    *priv;
+};
+
+struct _TidyTextureFrameClass 
+{
+  ClutterCloneTextureClass parent_class;
+
+  /* padding for future expansion */
+  void (*_clutter_box_1) (void);
+  void (*_clutter_box_2) (void);
+  void (*_clutter_box_3) (void);
+  void (*_clutter_box_4) (void);
+}; 
+
+GType         tidy_texture_frame_get_type (void) G_GNUC_CONST;
+
+#define TIDY_PARAM_READABLE     \
+        (G_PARAM_READABLE |     \
+         G_PARAM_STATIC_NICK | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB)
+
+#define TIDY_PARAM_READWRITE    \
+        (G_PARAM_READABLE | G_PARAM_WRITABLE | \
+         G_PARAM_STATIC_NICK | G_PARAM_STATIC_NAME | G_PARAM_STATIC_BLURB)
+
+
+enum
+{
+  PROP_0,
+  PROP_LEFT,
+  PROP_TOP,
+  PROP_RIGHT,
+  PROP_BOTTOM
+};
+
+G_DEFINE_TYPE (TidyTextureFrame,
+	       tidy_texture_frame,
+	       CLUTTER_TYPE_CLONE_TEXTURE);
+
+#define TIDY_TEXTURE_FRAME_GET_PRIVATE(obj) \
+(G_TYPE_INSTANCE_GET_PRIVATE ((obj), TIDY_TYPE_TEXTURE_FRAME, TidyTextureFramePrivate))
+
+struct _TidyTextureFramePrivate
+{
+  gint left, top, right, bottom;
+};
+
+static void
+tidy_texture_frame_paint (ClutterActor *self)
+{
+  TidyTextureFramePrivate *priv = TIDY_TEXTURE_FRAME (self)->priv;
+  ClutterCloneTexture     *clone_texture = CLUTTER_CLONE_TEXTURE (self);
+  ClutterTexture          *parent_texture;
+  guint                    width, height;
+  guint                    tex_width, tex_height;
+  guint                    ex, ey;
+  ClutterFixed             tx1, ty1, tx2, ty2;
+  ClutterColor             col = { 0xff, 0xff, 0xff, 0xff };
+  CoglHandle               cogl_texture;
+
+  priv = TIDY_TEXTURE_FRAME (self)->priv;
+
+  /* no need to paint stuff if we don't have a texture */
+  parent_texture = clutter_clone_texture_get_parent_texture (clone_texture);
+  if (!parent_texture)
+    return;
+
+  /* parent texture may have been hidden, so need to make sure it gets
+   * realized
+   */
+  if (!CLUTTER_ACTOR_IS_REALIZED (parent_texture))
+    clutter_actor_realize (CLUTTER_ACTOR (parent_texture));
+
+  cogl_texture = clutter_texture_get_cogl_texture (parent_texture);
+  if (cogl_texture == COGL_INVALID_HANDLE)
+    return;
+
+  cogl_push_matrix ();
+
+  tex_width  = cogl_texture_get_width (cogl_texture);
+  tex_height = cogl_texture_get_height (cogl_texture);
+
+  clutter_actor_get_size (self, &width, &height); 
+
+  tx1 = CLUTTER_INT_TO_FIXED (priv->left) / tex_width;
+  tx2 = CLUTTER_INT_TO_FIXED (tex_width - priv->right) / tex_width;
+  ty1 = CLUTTER_INT_TO_FIXED (priv->top) / tex_height;
+  ty2 = CLUTTER_INT_TO_FIXED (tex_height - priv->bottom) / tex_height;
+
+  col.alpha = clutter_actor_get_abs_opacity (self);
+  cogl_color (&col);
+
+  ex = width - priv->right;
+  if (ex < 0) 
+    ex = priv->right; 		/* FIXME ? */
+
+  ey = height - priv->bottom;
+  if (ey < 0) 
+    ey = priv->bottom; 		/* FIXME ? */
+
+#define FX(x) CLUTTER_INT_TO_FIXED(x)
+
+  /* top left corner */
+  cogl_texture_rectangle (cogl_texture, 
+                          0,
+                          0,
+                          FX(priv->left), /* FIXME: clip if smaller */
+                          FX(priv->top),
+                          0,
+                          0,
+                          tx1,
+                          ty1);
+
+  /* top middle */
+  cogl_texture_rectangle (cogl_texture,
+                          FX(priv->left),
+                          FX(priv->top),
+                          FX(ex),
+                          0,
+                          tx1,
+                          0,
+                          tx2,
+                          ty1);
+
+  /* top right */
+  cogl_texture_rectangle (cogl_texture,
+                          FX(ex),
+                          0,
+                          FX(width),
+                          FX(priv->top),
+                          tx2,
+                          0,
+                          CFX_ONE,
+                          ty1);
+
+  /* mid left */
+  cogl_texture_rectangle (cogl_texture,
+                          0, 
+                          FX(priv->top),
+                          FX(priv->left),
+                          FX(ey),
+                          0,
+                          ty1,
+                          tx1,
+                          ty2);
+
+  /* center */
+  cogl_texture_rectangle (cogl_texture,
+                          FX(priv->left),
+                          FX(priv->top),
+                          FX(ex),
+                          FX(ey),
+                          tx1,
+                          ty1,
+                          tx2,
+                          ty2);
+
+  /* mid right */
+  cogl_texture_rectangle (cogl_texture,
+                          FX(ex),
+                          FX(priv->top),
+                          FX(width),
+                          FX(ey),
+                          tx2,
+                          ty1,
+                          CFX_ONE,
+                          ty2);
+  
+  /* bottom left */
+  cogl_texture_rectangle (cogl_texture,
+                          0, 
+                          FX(ey),
+                          FX(priv->left),
+                          FX(height),
+                          0,
+                          ty2,
+                          tx1,
+                          CFX_ONE);
+
+  /* bottom center */
+  cogl_texture_rectangle (cogl_texture,
+                          FX(priv->left),
+                          FX(ey),
+                          FX(ex),
+                          FX(height),
+                          tx1,
+                          ty2,
+                          tx2,
+                          CFX_ONE);
+
+  /* bottom right */
+  cogl_texture_rectangle (cogl_texture,
+                          FX(ex),
+                          FX(ey),
+                          FX(width),
+                          FX(height),
+                          tx2,
+                          ty2,
+                          CFX_ONE,
+                          CFX_ONE);
+
+
+  cogl_pop_matrix ();
+}
+
+
+static void
+tidy_texture_frame_set_property (GObject      *object,
+				    guint         prop_id,
+				    const GValue *value,
+				    GParamSpec   *pspec)
+{
+  TidyTextureFrame         *ctexture = TIDY_TEXTURE_FRAME (object);
+  TidyTextureFramePrivate  *priv = ctexture->priv;  
+
+  switch (prop_id)
+    {
+    case PROP_LEFT:
+      priv->left = g_value_get_int (value);
+      break;
+    case PROP_TOP:
+      priv->top = g_value_get_int (value);
+      break;
+    case PROP_RIGHT:
+      priv->right = g_value_get_int (value);
+      break;
+    case PROP_BOTTOM:
+      priv->bottom = g_value_get_int (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+tidy_texture_frame_get_property (GObject    *object,
+				    guint       prop_id,
+				    GValue     *value,
+				    GParamSpec *pspec)
+{
+  TidyTextureFrame *ctexture = TIDY_TEXTURE_FRAME (object);
+  TidyTextureFramePrivate  *priv = ctexture->priv;  
+
+  switch (prop_id)
+    {
+    case PROP_LEFT:
+      g_value_set_int (value, priv->left);
+      break;
+    case PROP_TOP:
+      g_value_set_int (value, priv->top);
+      break;
+    case PROP_RIGHT:
+      g_value_set_int (value, priv->right);
+      break;
+    case PROP_BOTTOM:
+      g_value_set_int (value, priv->bottom);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+tidy_texture_frame_class_init (TidyTextureFrameClass *klass)
+{
+  GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+
+  actor_class->paint = tidy_texture_frame_paint;
+
+  gobject_class->set_property = tidy_texture_frame_set_property;
+  gobject_class->get_property = tidy_texture_frame_get_property;
+
+  g_object_class_install_property 
+            (gobject_class,
+	     PROP_LEFT,
+	     g_param_spec_int ("left",
+			       "left",
+			       "",
+			       0, G_MAXINT,
+			       0,
+			       TIDY_PARAM_READWRITE));
+
+  g_object_class_install_property 
+            (gobject_class,
+	     PROP_TOP,
+	     g_param_spec_int ("top",
+			       "top",
+			       "",
+			       0, G_MAXINT,
+			       0,
+			       TIDY_PARAM_READWRITE));
+
+  g_object_class_install_property 
+            (gobject_class,
+	     PROP_BOTTOM,
+	     g_param_spec_int ("bottom",
+			       "bottom",
+			       "",
+			       0, G_MAXINT,
+			       0,
+			       TIDY_PARAM_READWRITE));
+  
+  g_object_class_install_property 
+            (gobject_class,
+	     PROP_RIGHT,
+	     g_param_spec_int ("right",
+			       "right",
+			       "",
+			       0, G_MAXINT,
+			       0,
+			       TIDY_PARAM_READWRITE));
+  
+  g_type_class_add_private (gobject_class, sizeof (TidyTextureFramePrivate));
+}
+
+static void
+tidy_texture_frame_init (TidyTextureFrame *self)
+{
+  TidyTextureFramePrivate *priv;
+
+  self->priv = priv = TIDY_TEXTURE_FRAME_GET_PRIVATE (self);
+}
+
+ClutterActor*
+tidy_texture_frame_new (ClutterTexture *texture, 
+			gint            left,
+			gint            top,
+			gint            right,
+			gint            bottom)
+{
+  g_return_val_if_fail (texture == NULL || CLUTTER_IS_TEXTURE (texture), NULL);
+
+  return g_object_new (TIDY_TYPE_TEXTURE_FRAME,
+ 		       "parent-texture", texture,
+		       "left", left,
+		       "top", top,
+		       "right", right,
+		       "bottom", bottom,
+		       NULL);
 }
