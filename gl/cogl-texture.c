@@ -539,20 +539,7 @@ _cogl_texture_size_supported (GLenum gl_target,
 			      int    width,
 			      int    height)
 {
-  if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    {
-      /* There is no proxy rectangle texture target so best we can
-       * do is to check against the safest value (although depending
-       * on our specific format and type the size could be supported
-       * when it seems it is not) */
-      
-      GLint max_size = 0;
-
-      GE( glGetIntegerv(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB, &max_size) );
-
-      return (max_size && width <= max_size && height <= max_size);
-    }
-  else if (gl_target ==  GL_TEXTURE_2D)
+if (gl_target ==  GL_TEXTURE_2D)
     {
       /* Proxy texture allows for a quick check for supported size */
       
@@ -599,13 +586,6 @@ _cogl_texture_slices_create (CoglTexture *tex)
       max_width = tex->bitmap.width;
       max_height = tex->bitmap.height;
       tex->gl_target  = GL_TEXTURE_2D;
-      slices_for_size = _cogl_rect_slices_for_size;
-    }
-  else if (cogl_features_available (COGL_FEATURE_TEXTURE_RECTANGLE))
-    {
-      max_width = tex->bitmap.width;
-      max_height = tex->bitmap.height;
-      tex->gl_target = GL_TEXTURE_RECTANGLE_ARB;
       slices_for_size = _cogl_rect_slices_for_size;
     }
   else
@@ -1230,8 +1210,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   CoglTexSliceSpan y_span;
   
   /* Allow 2-dimensional textures only */
-  if (gl_target != GL_TEXTURE_2D &&
-      gl_target != GL_TEXTURE_RECTANGLE_ARB)
+  if (gl_target != GL_TEXTURE_2D)
     return COGL_INVALID_HANDLE;
   
   /* Make sure it is a valid GL texture object */
@@ -1747,10 +1726,7 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   /* Prepare GL state */
   gulong enable_flags = 0;
   
-  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    enable_flags |= COGL_ENABLE_TEXTURE_RECT;
-  else
-    enable_flags |= COGL_ENABLE_TEXTURE_2D;
+  enable_flags |= COGL_ENABLE_TEXTURE_2D;
   
   if (ctx->color_alpha < 255
       || tex->bitmap.format & COGL_A_BIT)
@@ -1806,11 +1782,8 @@ _cogl_texture_quad_sw (CoglTexture *tex,
       
       /* Normalize texture coordinates to current slice
          (rectangle texture targets take denormalized) */
-      if (tex->gl_target != GL_TEXTURE_RECTANGLE_ARB)
-	{
-	  slice_ty1 /= iter_y.span->size;
-	  slice_ty2 /= iter_y.span->size;
-	}
+      slice_ty1 /= iter_y.span->size;
+      slice_ty2 /= iter_y.span->size;
       
       
       /* Iterate until whole quad width covered */
@@ -1835,11 +1808,8 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 	  
 	  /* Normalize texture coordinates to current slice
              (rectangle texture targets take denormalized) */
-	  if (tex->gl_target != GL_TEXTURE_RECTANGLE_ARB)
-	    {
-	      slice_tx1 /= iter_x.span->size;
-	      slice_tx2 /= iter_x.span->size;
-	    }
+          slice_tx1 /= iter_x.span->size;
+          slice_tx2 /= iter_x.span->size;
 	  
 #if COGL_DEBUG
 	  printf("~~~~~ slice (%d,%d)\n", iter_x.index, iter_y.index);
@@ -1908,10 +1878,7 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   /* Prepare GL state */
   gulong enable_flags = 0;
   
-  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    enable_flags |= COGL_ENABLE_TEXTURE_RECT;
-  else
-    enable_flags |= COGL_ENABLE_TEXTURE_2D;
+  enable_flags |= COGL_ENABLE_TEXTURE_2D;
   
   if (ctx->color_alpha < 255
       || tex->bitmap.format & COGL_A_BIT)
@@ -1934,15 +1901,6 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   ty1 = ty1 * (y_span->size - y_span->waste) / y_span->size;
   ty2 = ty2 * (y_span->size - y_span->waste) / y_span->size;
 
-  /* Denormalize texture coordinates for rectangle textures */
-  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    {
-      tx1 *= x_span->size;
-      tx2 *= x_span->size;
-      ty1 *= y_span->size;
-      ty2 *= y_span->size;
-    }
-  
 #define CFX_F(x) CLUTTER_FIXED_TO_FLOAT(x)
   
   /* Draw textured quad */
@@ -2088,10 +2046,7 @@ cogl_texture_polygon (CoglHandle         handle,
   tex = _cogl_texture_pointer_from_handle (handle);
   
   /* Prepare GL state */
-  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    cogl_enable (COGL_ENABLE_TEXTURE_RECT | COGL_ENABLE_BLEND);
-  else
-    cogl_enable (COGL_ENABLE_TEXTURE_2D | COGL_ENABLE_BLEND);
+  cogl_enable (COGL_ENABLE_TEXTURE_2D | COGL_ENABLE_BLEND);
 
   /* Temporarily change the wrapping mode on all of the slices to use
      a transparent border */
@@ -2139,12 +2094,6 @@ cogl_texture_polygon (CoglHandle         handle,
 	      ty = (CLUTTER_FIXED_TO_FLOAT (vertices[vnum].ty)
 		    - y_span->start / (GLfloat) tex->bitmap.height)
 		* tex->bitmap.height / y_span->size;
-
-	      if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
-		{
-		  tx *= x_span->size;
-		  ty *= y_span->size;
-		}
 
 	      glTexCoord2f (tx, ty);
 
