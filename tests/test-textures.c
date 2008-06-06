@@ -1,6 +1,13 @@
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <stdlib.h>
+
 #include <clutter/clutter.h>
 
-#ifdef USE_PIXBUF
+#ifdef USE_GDKPIXBUF
+
 GdkPixbuf*
 make_pixbuf (int width, int height, int bpp, int has_alpha)
 {
@@ -49,12 +56,12 @@ make_pixbuf (int width, int height, int bpp, int has_alpha)
 #define SPIN()   while (g_main_context_pending (NULL)) \
                      g_main_context_iteration (NULL, FALSE);
 
-#endif
+#endif /* USE_GDKPIXBUF */
 
 int
 main (int argc, char *argv[])
 {
-#ifdef USE_PIXBUF
+#ifdef USE_GDKPIXBUF
   ClutterActor    *texture;
   ClutterActor    *stage;
   GdkPixbuf       *pixbuf;
@@ -107,6 +114,7 @@ main (int argc, char *argv[])
 
         clutter_container_remove (CLUTTER_CONTAINER (stage), texture, NULL);
     }
-#endif
-  return 0;
+#endif /* USE_GDKPIXBUF */
+
+  return EXIT_SUCCESS;
 }
