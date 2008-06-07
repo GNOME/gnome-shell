@@ -1,4 +1,4 @@
-2008-06-07  Øyvind Kolås  <pippin@gimp.org>
+2008-06-07  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-texture.c: made the filter-quality proeprty also
 	control the use of mipmapping.
