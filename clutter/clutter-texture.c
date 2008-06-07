@@ -59,6 +59,7 @@
 #include "clutter-scriptable.h"
 #include "clutter-debug.h"
 #include "clutter-fixed.h"
+#include "clutter-enum-types.h"
 
 #include "cogl/cogl.h"
 
@@ -78,7 +79,7 @@ struct _ClutterTexturePrivate
   gint                         height;
   guint                        sync_actor_size : 1;
   gint                         max_tile_waste;
-  guint                        filter_quality;
+  ClutterTextureQuality        filter_quality;
   guint                        repeat_x : 1;
   guint                        repeat_y : 1;
   CoglHandle                   texture;
@@ -130,6 +131,54 @@ GQuark
 clutter_texture_error_quark (void)
 {
   return g_quark_from_static_string ("clutter-texture-error-quark");
+}
+
+static COGLenum
+clutter_texture_quality_to_cogl_min_filter (ClutterTextureQuality buf_filter)
+{
+  switch (buf_filter)
+    {
+      case CLUTTER_TEXTURE_QUALITY_LOW:
+        return CGL_NEAREST;
+      case CLUTTER_TEXTURE_QUALITY_MEDIUM:
+        return CGL_LINEAR;
+      case CLUTTER_TEXTURE_QUALITY_HIGH:
+        return CGL_LINEAR_MIPMAP_LINEAR;
+    }
+  return 0;
+}
+
+static COGLenum
+clutter_texture_quality_to_cogl_mag_filter (ClutterTextureQuality buf_filter)
+{
+  switch (buf_filter)
+    {
+      case CLUTTER_TEXTURE_QUALITY_LOW:
+        return CGL_NEAREST;
+      case CLUTTER_TEXTURE_QUALITY_MEDIUM:
+      case CLUTTER_TEXTURE_QUALITY_HIGH:
+        return CGL_LINEAR;
+    }
+  return 0;
+}
+
+static ClutterTextureQuality
+cogl_filters_to_clutter_texture_quality (COGLenum min,
+                                         COGLenum mag)
+{
+  switch (min)
+    {
+      case CGL_NEAREST:
+         g_assert (mag == min); /* just for sanity */
+         return CLUTTER_TEXTURE_QUALITY_LOW;
+      case CGL_LINEAR:
+         g_assert (mag == min); /* just for sanity */
+         return CLUTTER_TEXTURE_QUALITY_MEDIUM;
+      case CGL_LINEAR_MIPMAP_LINEAR:
+         g_assert (mag == CGL_LINEAR); /* just for sanity */
+         return CLUTTER_TEXTURE_QUALITY_HIGH;
+    }
+  return 0;
 }
 
 static void
@@ -221,14 +270,12 @@ clutter_texture_realize (ClutterActor *actor)
                                 (priv->width,
                                  priv->height,
                                  priv->no_slice ? -1 : priv->max_tile_waste,
-                                 FALSE,
+                                 priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
                                  COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_texture_set_filters (priv->texture,
-				priv->filter_quality
-				? CGL_LINEAR : CGL_NEAREST,
-				priv->filter_quality
-				? CGL_LINEAR : CGL_NEAREST);
+             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
+             clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (priv->texture);
 
@@ -428,7 +475,7 @@ clutter_texture_set_property (GObject      *object,
       break;
     case PROP_FILTER_QUALITY:
       clutter_texture_set_filter_quality (texture,
-					  g_value_get_int (value));
+					  g_value_get_enum (value));
       break;
     case PROP_COGL_TEXTURE:
       clutter_texture_set_cogl_texture
@@ -481,7 +528,7 @@ clutter_texture_get_property (GObject    *object,
       g_value_set_boolean (value, priv->repeat_y);
       break;
     case PROP_FILTER_QUALITY:
-      g_value_set_int (value, clutter_texture_get_filter_quality (texture));
+      g_value_set_enum (value, clutter_texture_get_filter_quality (texture));
       break;
     case PROP_COGL_TEXTURE:
       g_value_set_boxed (value, clutter_texture_get_cogl_texture (texture));
@@ -558,16 +605,12 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   */
   g_object_class_install_property
     (gobject_class, PROP_FILTER_QUALITY,
-     g_param_spec_int ("filter-quality",
-		       "Quality of filter used when scaling a texture",
-		       "Values 0 and 1 current only supported, with 0 "
-		       "being lower quality but fast, 1 being better "
-		       "quality but slower. ( Currently just maps to "
-		       "GL_NEAREST / GL_LINEAR )",
-		       0,
-		       G_MAXINT,
-		       1,
-		       CLUTTER_PARAM_READWRITE));
+     g_param_spec_enum ("filter-quality",
+                       "Filter Quality",
+                       "Rendering quality used when drawing the texture.",
+                       CLUTTER_TYPE_TEXTURE_QUALITY,
+		       CLUTTER_TEXTURE_QUALITY_MEDIUM,
+		       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_MAX_TILE_WASTE,
@@ -727,7 +770,7 @@ clutter_texture_init (ClutterTexture *self)
   self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
   priv->max_tile_waste  = 64;
-  priv->filter_quality  = 1;
+  priv->filter_quality  = CLUTTER_TEXTURE_QUALITY_MEDIUM;
   priv->repeat_x        = FALSE;
   priv->repeat_y        = FALSE;
   priv->sync_actor_size = TRUE;
@@ -917,13 +960,13 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
   priv = texture->priv;
 
   if ((new_texture = cogl_texture_new_from_data 
-                            (width, height,
-                             priv->no_slice ? -1 : priv->max_tile_waste,
-                             FALSE,
-                             source_format,
-                             COGL_PIXEL_FORMAT_ANY,
-                             rowstride,
-                             data)) == COGL_INVALID_HANDLE)
+                          (width, height,
+                           priv->no_slice ? -1 : priv->max_tile_waste,
+                           priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
+                           source_format,
+                           COGL_PIXEL_FORMAT_ANY,
+                           rowstride,
+                           data)) == COGL_INVALID_HANDLE)
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
@@ -933,10 +976,8 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
     }
 
   cogl_texture_set_filters (new_texture,
-			    priv->filter_quality
-			    ? CGL_LINEAR : CGL_NEAREST,
-			    priv->filter_quality
-			    ? CGL_LINEAR : CGL_NEAREST);
+          clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
+          clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
@@ -1100,11 +1141,11 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   if ((new_texture = cogl_texture_new_from_file 
-                               (filename,
-                                priv->no_slice ? -1 : priv->max_tile_waste,
-                                FALSE,
-                                COGL_PIXEL_FORMAT_ANY,
-                                error))
+                          (filename,
+                           priv->no_slice ? -1 : priv->max_tile_waste,
+                           priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
+                           COGL_PIXEL_FORMAT_ANY,
+                           error))
       == COGL_INVALID_HANDLE)
     {
       /* If COGL didn't give an error then make one up */
@@ -1119,10 +1160,8 @@ clutter_texture_set_from_file (ClutterTexture *texture,
     }
 
   cogl_texture_set_filters (new_texture,
-			    priv->filter_quality
-			    ? CGL_LINEAR : CGL_NEAREST,
-			    priv->filter_quality
-			    ? CGL_LINEAR : CGL_NEAREST);
+             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
+             clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
 
   clutter_texture_set_cogl_texture (texture, new_texture);
 
@@ -1144,23 +1183,35 @@ clutter_texture_set_from_file (ClutterTexture *texture,
  * Since: 0.8
  */
 void
-clutter_texture_set_filter_quality (ClutterTexture *texture,
-				    guint           filter_quality)
+clutter_texture_set_filter_quality (ClutterTexture        *texture,
+				    ClutterTextureQuality  filter_quality)
 {
   ClutterTexturePrivate *priv;
+  ClutterTextureQuality  old_quality;
 
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
 
   priv = texture->priv;
 
-  if (filter_quality != clutter_texture_get_filter_quality (texture))
+  old_quality = clutter_texture_get_filter_quality (texture);
+  if (filter_quality != old_quality)
     {
       priv->filter_quality = filter_quality;
 
       if (priv->texture != COGL_INVALID_HANDLE)
 	cogl_texture_set_filters (priv->texture,
-				  filter_quality ? CGL_LINEAR : CGL_NEAREST,
-				  filter_quality ? CGL_LINEAR : CGL_NEAREST);
+             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
+             clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
+
+
+      if ((old_quality == CLUTTER_TEXTURE_QUALITY_HIGH ||
+           filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH) &&
+           CLUTTER_ACTOR_IS_REALIZED (texture))
+        {
+          clutter_texture_unrealize (CLUTTER_ACTOR (texture));
+          clutter_texture_realize (CLUTTER_ACTOR (texture));
+        }
+
 
       if (CLUTTER_ACTOR_IS_VISIBLE (texture))
 	clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));
@@ -1177,7 +1228,7 @@ clutter_texture_set_filter_quality (ClutterTexture *texture,
  *
  * Since: 0.8
  */
-guint
+ClutterTextureQuality
 clutter_texture_get_filter_quality (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv;
@@ -1191,8 +1242,10 @@ clutter_texture_get_filter_quality (ClutterTexture *texture)
   else
     /* If we have a valid texture handle then use the filter quality
        from that instead */
-    return cogl_texture_get_min_filter (texture->priv->texture)
-      == CGL_LINEAR ? 1 : 0;
+
+  return cogl_filters_to_clutter_texture_quality (
+      cogl_texture_get_min_filter (texture->priv->texture),
+      cogl_texture_get_mag_filter (texture->priv->texture));
 }
 
 /**
@@ -1452,14 +1505,12 @@ on_fbo_source_size_change (GObject          *object,
       priv->texture = cogl_texture_new_with_size (priv->width,
 						  priv->height,
 						  -1,
-                                                  FALSE,
+                          priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
 						  COGL_PIXEL_FORMAT_RGBA_8888);
 
-      cogl_texture_set_filters (priv->texture,
-				priv->filter_quality
-				? CGL_LINEAR : CGL_NEAREST,
-				priv->filter_quality
-				? CGL_LINEAR : CGL_NEAREST);
+      cogl_texture_set_filters (priv->texture,   
+            clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
+            clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (priv->texture);
 

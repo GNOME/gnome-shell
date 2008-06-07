@@ -112,6 +112,22 @@ typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
     /* FIXME: add compressed types ? */
 } ClutterTextureFlags;
 
+/**
+ * ClutterTextureQuality:
+ * @CLUTTER_TEXTURE_QUALITY_LOW: fastest rendering will use nearest neighbour
+ * interpolation when rendering.
+ * good setting.
+ * @CLUTTER_TEXTURE_QUALITY_MEDIUM: higher quality rendering without using
+ * extra resources.
+ * @CLUTTER_TEXTURE_QUALITY_HIGH: render the texture with the best quality
+ * available using extra memory.
+ */
+typedef enum { /*< prefix=CLUTTER_TEXTURE_QUALITY >*/
+  CLUTTER_TEXTURE_QUALITY_LOW = 0,
+  CLUTTER_TEXTURE_QUALITY_MEDIUM,
+  CLUTTER_TEXTURE_QUALITY_HIGH
+} ClutterTextureQuality;
+
 GType clutter_texture_get_type (void) G_GNUC_CONST;
 GType clutter_texture_handle_get_type (void) G_GNUC_CONST;
 
@@ -153,8 +169,10 @@ void          clutter_texture_get_base_size       (ClutterTexture *texture,
                                                    gint           *width,
                                                    gint           *height);
 void          clutter_texture_set_filter_quality  (ClutterTexture *texture,
-				                   guint     filter_quality);
-guint         clutter_texture_get_filter_quality  (ClutterTexture *texture);
+				                   ClutterTextureQuality
+                                                                filter_quality);
+ClutterTextureQuality
+              clutter_texture_get_filter_quality  (ClutterTexture *texture);
 void          clutter_texture_set_max_tile_waste  (ClutterTexture *texture,
 						   gint      max_tile_waste);
 gint          clutter_texture_get_max_tile_waste  (ClutterTexture *texture);

@@ -1,3 +1,11 @@
+2008-06-07  Øyvind Kolås  <pippin@gimp.org>
+
+	* clutter/clutter-texture.c: made the filter-quality proeprty also
+	control the use of mipmapping.
+	* clutter/clutter-texture.h: added ClutterTextureQuality enum.
+	* tests/test-texture-quality.c: new test.
+	* tests/Makefile.am: added test-texture-quality
+
 2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-texture.c:
