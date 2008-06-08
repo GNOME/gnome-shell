@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.23.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-14 15:14+0200\n"
-"PO-Revision-Date: 2008-05-14 15:15+0200\n"
+"POT-Creation-Date: 2008-06-08 11:51+0200\n"
+"PO-Revision-Date: 2008-06-08 11:52+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: ../src/core/errors.c:271
+#: ../src/core/errors.c:272
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -84,7 +84,7 @@ msgstr ""
 "sannsynligvis ble X-tjeneren stengt ned eller kanskje du drepte/ødela\n"
 "vinduhåndtereren.\n"
 
-#: ../src/core/errors.c:278
+#: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
@@ -189,19 +189,19 @@ msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi\n"
 
 #: ../src/core/prefs.c:537 ../src/core/prefs.c:611 ../src/core/prefs.c:659
-#: ../src/core/prefs.c:965 ../src/core/prefs.c:983 ../src/core/prefs.c:999
-#: ../src/core/prefs.c:1018 ../src/core/prefs.c:1034 ../src/core/prefs.c:1051
-#: ../src/core/prefs.c:1068 ../src/core/prefs.c:1084 ../src/core/prefs.c:1100
+#: ../src/core/prefs.c:978 ../src/core/prefs.c:996 ../src/core/prefs.c:1012
+#: ../src/core/prefs.c:1031 ../src/core/prefs.c:1047 ../src/core/prefs.c:1064
+#: ../src/core/prefs.c:1081 ../src/core/prefs.c:1097 ../src/core/prefs.c:1113
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
 
-#: ../src/core/prefs.c:860
+#: ../src/core/prefs.c:873
 #, c-format
 msgid "Type of %s was not integer"
 msgstr "Typen for «%s» var ikke heltall"
 
-#: ../src/core/prefs.c:1169
+#: ../src/core/prefs.c:1182
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -209,7 +209,7 @@ msgstr ""
 "Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
 "programmer vil kanskje ikke oppføre seg korrekt.\n"
 
-#: ../src/core/prefs.c:1224
+#: ../src/core/prefs.c:1237
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -218,12 +218,12 @@ msgstr ""
 "%d lagret i GConf-nøkkel %s er ikke en fornuftig verdi for cursor_size. Må "
 "være i området 1..128\n"
 
-#: ../src/core/prefs.c:1250
+#: ../src/core/prefs.c:1263
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
 
-#: ../src/core/prefs.c:1310
+#: ../src/core/prefs.c:1323
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -232,7 +232,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: ../src/core/prefs.c:1589
+#: ../src/core/prefs.c:1602
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -241,22 +241,22 @@ msgstr ""
 "%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
 "maksimum er %d\n"
 
-#: ../src/core/prefs.c:1633
+#: ../src/core/prefs.c:1646
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagret i GConf-nøkkel %s er utenfor området 0 til %d\n"
 
-#: ../src/core/prefs.c:1764
+#: ../src/core/prefs.c:1777
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
 
-#: ../src/core/prefs.c:2129 ../src/core/prefs.c:2641
+#: ../src/core/prefs.c:2142 ../src/core/prefs.c:2654
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: ../src/core/prefs.c:2159 ../src/core/prefs.c:2332
+#: ../src/core/prefs.c:2172 ../src/core/prefs.c:2345
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -265,7 +265,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: ../src/core/prefs.c:2722
+#: ../src/core/prefs.c:2735
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
@@ -427,7 +427,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindu 0x%lx oppgitt for %s.\n"
 
 #. first time through
-#: ../src/core/window.c:5670
+#: ../src/core/window.c:5674
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -443,7 +443,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6235
+#: ../src/core/window.c:6239
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -524,7 +524,6 @@ msgid "Arrangement of buttons on the titlebar"
 msgstr "Plassering av knappene på tittellinjen"
 
 #: ../src/metacity.schemas.in.h:8
-#, fuzzy
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
 "as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
@@ -533,12 +532,7 @@ msgid ""
 "silently ignored so that buttons can be added in future metacity versions "
 "without breaking older versions. A special spacer tag can be used to insert "
 "some space between two adjacent buttons."
-msgstr ""
-"Plassering av knapper på tittellinjen. Verdien skal være en streng av type "
-"«menu:minimize,maximize,close»; kolon skiller venstre hjørne av vinduet fra "
-"høyre hjørne, og knappenavnene skilles av komma. Duplisering av knapper er "
-"ikke lovlig. Ukjente knapper ignoreres uten tilbakemelding slik at knapper "
-"kan legges til i fremtidige versjoner uten å ødelegge for eldre versjoner."
+msgstr "Plassering av knapper på tittellinjen. Verdien skal være en streng av type «menu:minimize,maximize,spacer,close»; kolon skiller venstre hjørne av vinduet fra høyre hjørne, og knappenavnene skilles av komma. Duplisering av knapper er ikke lovlig. Ukjente knapper ignoreres uten tilbakemelding slik at knapper kan legges til i fremtidige versjoner uten å ødelegge for eldre versjoner. En tagg for mellomrom kan brukes for å sette inn mellomrom mellom to knapper."
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
