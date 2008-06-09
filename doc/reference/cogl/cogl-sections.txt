@@ -65,6 +65,7 @@ cogl_path_move_to
 cogl_path_close
 cogl_path_line_to
 cogl_path_curve_to
+cogl_path_arc
 cogl_path_rel_move_to
 cogl_path_rel_line_to
 cogl_path_rel_curve_to
