@@ -440,7 +440,6 @@ _cogl_path_bezier3_sub (CoglBezCubic *cubic)
     }
 }
 
-
 void
 cogl_path_curve_to (ClutterFixed x1,
                     ClutterFixed y1,
@@ -471,12 +470,12 @@ cogl_path_curve_to (ClutterFixed x1,
 }
 
 void
-cogl_rel_curve_to (ClutterFixed x1,
-			  ClutterFixed y1,
-			  ClutterFixed x2,
-			  ClutterFixed y2,
-			  ClutterFixed x3,
-			  ClutterFixed y3)
+cogl_path_rel_curve_to (ClutterFixed x1,
+                        ClutterFixed y1,
+                        ClutterFixed x2,
+                        ClutterFixed y2,
+                        ClutterFixed x3,
+                        ClutterFixed y3)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   

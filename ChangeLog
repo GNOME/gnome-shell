@@ -1,3 +1,9 @@
+2008-06-09  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/common/cogl-primitives.c: (cogl_path_rel_curve_to):
+	fixed naming of implementation of cogl_path_rel_curve_to (it was
+	called just cogl_rel_curve_to).
+
 2008-06-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Clean up a bit the X11 and X extensions
