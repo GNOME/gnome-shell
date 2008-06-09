@@ -85,13 +85,24 @@ PKG_PROG_PKG_CONFIG
 
 dnl ========================================================================
 
-imagebackend="gdk-pixbuf"
+# Peek which flavour the user wants so that we can couple the osx flavour with
+# quartz imageloader.
+if test "x$with_flavour" = "xosx"; then
+  imagebackend="quartz"
+else
+  imagebackend="gdk-pixbuf"
+fi
+
 AC_ARG_WITH([imagebackend],
-            AC_HELP_STRING([--with-imagebackend=@<:@gdk-pixbuf/internal@:>@],
+            AC_HELP_STRING([--with-imagebackend=@<:@gdk-pixbuf/quartz/internal@:>@],
                            [Select COGL image loading backend]),
             imagebackend=$with_imagebackend)
 
 case $imagebackend in
+
+  quartz)
+    AC_DEFINE([USE_QUARTZ], 1, [Use Core Graphics (Quartz) for loading image files])
+    ;;
 
   gdk-pixbuf)
     AC_DEFINE([USE_GDKPIXBUF], 1, [Use GdkPixbuf for loading image files])
@@ -629,6 +640,7 @@ echo "                   prefix:   ${prefix}"
 echo ""
 echo "                  Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
 echo "               GL Headers:   ${CLUTTER_GL_HEADER}"
+echo "            Image backend:   ${imagebackend}"
 echo "           Target library:   ${clutterbackendlib}"
 echo "              Debug level:   ${enable_debug}"
 echo "           Compiler flags:   ${CPPFLAGS}"
