@@ -1,3 +1,8 @@
+2008-06-09  Chris Lord  <chris@openedhand.com>
+
+	* cogl/cogl-sections.txt:
+	Add missing cogl_path_arc
+
 2008-06-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #927 - Created ports for clutter, clutter-cairo in macports
