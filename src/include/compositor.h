@@ -68,6 +68,10 @@ void meta_compositor_end_move (MetaCompositor *compositor,
 void meta_compositor_free_window (MetaCompositor *compositor,
                                   MetaWindow *window);
 
+void 
+meta_compositor_destroy_window (MetaCompositor *compositor,
+                                MetaWindow     *window);
+
 #endif
 
 

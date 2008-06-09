@@ -49,6 +49,10 @@ struct _MetaCompositor
   void (*set_active_window) (MetaCompositor *compositor,
                              MetaScreen     *screen,
                              MetaWindow     *window);
+  /* local additions */
+  void (*destroy_window) (MetaCompositor *compositor,
+                          MetaWindow     *window);
+
 };
 
 #endif

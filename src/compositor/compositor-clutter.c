@@ -152,7 +152,7 @@ find_window_for_screen (MetaScreen *screen,
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
   if (info == NULL)
-    return NULL;
+      return NULL;
   
   return g_hash_table_lookup (info->windows_by_xid, (gpointer) xwindow);
 }
@@ -262,8 +262,6 @@ is_shaped (MetaDisplay *display,
 static gboolean
 window_has_shadow (MetaCompWindow *cw)
 {
-  MetaCompScreen *info = meta_screen_get_compositor_data (cw->screen);
-
   /* Always put a shadow around windows with a frame - This should override
      the restriction about not putting a shadow around shaped windows
      as the frame might be the reason the window is shaped */
@@ -397,16 +395,6 @@ free_win (MetaCompWindow *cw,
     }
 }
 
-/*
-static void  
-on_destroy_effect_complete (ClutterActor *actor,
-                            gpointer user_data)
-{
-  MetaCompWindow *cw = (MetaCompWindow *)user_data;
-
-  free_win (cw, TRUE);
-}
-*/
 
 static void
 destroy_win (MetaDisplay *display,
@@ -422,6 +410,8 @@ destroy_win (MetaDisplay *display,
   if (cw == NULL)
     return;
 
+  printf("destroying a window... %p\n", cw);
+
   screen = cw->screen;
   
   if (cw->extents != None) 
@@ -435,16 +425,6 @@ destroy_win (MetaDisplay *display,
   g_hash_table_remove (info->windows_by_xid, (gpointer) xwindow);
 
   free_win (cw, TRUE);
-#if 0
-  clutter_actor_show (cw->actor);
-  clutter_actor_raise_top (cw->actor);
-  clutter_actor_set_opacity (cw->actor, 0xff);
-  clutter_effect_fade (info->destroy_effect   ,
-		       cw->actor,
-		       0,
-		       on_destroy_effect_complete,
-		       (gpointer)cw);
-#endif
 }
 
 static void
@@ -689,8 +669,38 @@ add_win (MetaScreen *screen,
       info->dock_windows = g_slist_append (info->dock_windows, cw);
     }
 
+#if 0
   /* Add this to the list at the top of the stack
      before it is mapped so that map_win can find it again */
+  printf("added %li type:", xwindow);
+
+  switch (cw->type)
+    {
+    case META_COMP_WINDOW_NORMAL:
+      printf("normal"); break;
+    case META_COMP_WINDOW_DND:
+      printf("dnd"); break;
+    case META_COMP_WINDOW_DESKTOP:
+      printf("desktop"); break;
+    case META_COMP_WINDOW_DOCK:
+      printf("dock"); break;
+    case META_COMP_WINDOW_MENU:
+      printf("menu"); break;
+    case META_COMP_WINDOW_DROP_DOWN_MENU:
+      printf("menu"); break;
+    case META_COMP_WINDOW_TOOLTIP:
+      printf("tooltip"); break;
+    default:
+      printf("unknown");
+      break;
+    }
+
+  if (window && meta_window_get_frame (window))
+    printf(" *HAS FRAME* ");
+
+  printf("\n");
+#endif
+
   info->windows = g_list_prepend (info->windows, cw);
   g_hash_table_insert (info->windows_by_xid, (gpointer) xwindow, cw);
 
@@ -741,7 +751,6 @@ damage_screen (MetaScreen *screen)
   add_damage (screen, region);
 }
 
-
 static void
 repair_win (MetaCompWindow *cw)
 {
@@ -764,7 +773,7 @@ repair_win (MetaCompWindow *cw)
 
       if (cw->back_pixmap == None)
         {
-          meta_verbose ("Unable to get named pixmap for %p\n", cw);
+          printf ("Unable to get named pixmap for %p\n", cw);
           return;
         }
 
@@ -801,8 +810,8 @@ repair_win (MetaCompWindow *cw)
       parts = XFixesCreateRegion (xdisplay, 0, 0);
       XDamageSubtract (xdisplay, cw->damage, None, parts);
 
-      if (clutter_glx_texture_pixmap_using_extension 
-               (CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor)))
+      if (1) /* clutter_glx_texture_pixmap_using_extension 
+                (CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor))) */
         {
           clutter_x11_texture_pixmap_update_area 
             (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor), 
@@ -810,6 +819,7 @@ repair_win (MetaCompWindow *cw)
              0,
              clutter_actor_get_width (cw->actor),
              clutter_actor_get_height (cw->actor));
+
         }
       else
         {
@@ -853,7 +863,10 @@ process_create (MetaCompositorClutter *compositor,
   screen = meta_display_screen_for_root (compositor->display, event->parent);
   if (screen == NULL)
     return;
-  
+
+  /* This is quite silly as we end up creating windows as then immediatly
+   * destroying them as they (likely) become framed and thus reparented. 
+  */
   if (!find_window_in_display (compositor->display, event->window))
     add_win (screen, window, event->window);
 }
@@ -867,9 +880,15 @@ process_reparent (MetaCompositorClutter *compositor,
 
   screen = meta_display_screen_for_root (compositor->display, event->parent);
   if (screen != NULL)
-    add_win (screen, window, event->window);
+    {
+        printf("reparent: adding a new window %li\n", event->window);
+        add_win (screen, window, event->window);
+    }
   else
-    destroy_win (compositor->display, event->window, FALSE); 
+    {
+      printf("reparent: destroying a window %li\n", event->window);
+      destroy_win (compositor->display, event->window, FALSE); 
+    }
 }
 
 static void
@@ -1010,12 +1029,16 @@ process_unmap (MetaCompositorClutter *compositor,
 
   cw = find_window_in_display (compositor->display, event->window);
   if (cw)
-    unmap_win (compositor->display, cw->screen, event->window);
+    {
+      printf("processing unmap  of %p\n", cw);
+      unmap_win (compositor->display, cw->screen, event->window);
+    }
 }
 
 static void
 process_map (MetaCompositorClutter *compositor,
-             XMapEvent             *event)
+             XMapEvent             *event,
+             MetaWindow            *window)
 {
   MetaCompWindow *cw = find_window_in_display (compositor->display, 
                                                event->window);
@@ -1209,7 +1232,7 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   show_overlay_window (screen, info->output);
 
   info->destroy_effect 
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (2000),
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (200),
                                     CLUTTER_ALPHA_SINE_INC);
 #endif
 }
@@ -1270,6 +1293,7 @@ clutter_cmp_process_event (MetaCompositor *compositor,
    * X errors. This is really a hack, but I'm afraid I don't understand
    * enough about Metacity/X to know how else you are supposed to do it
    */
+
   meta_error_trap_push (xrc->display);
   switch (event->type) 
     {
@@ -1294,7 +1318,7 @@ clutter_cmp_process_event (MetaCompositor *compositor,
       break;
 
     case MapNotify:
-      process_map (xrc, (XMapEvent *) event);
+      process_map (xrc, (XMapEvent *) event, window);
       break;
       
     case ReparentNotify:
@@ -1353,6 +1377,83 @@ clutter_cmp_set_active_window (MetaCompositor *compositor,
 #endif
 }
 
+static void  
+on_destroy_effect_complete (ClutterActor *actor,
+                            gpointer user_data)
+{
+  MetaCompWindow *cw = (MetaCompWindow *)user_data;
+
+  free_win (cw, TRUE);
+}
+
+static void 
+clutter_cmp_destroy_window (MetaCompositor *compositor,
+                            MetaWindow     *window)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaCompWindow *cw = NULL;
+  MetaCompScreen *info;
+  MetaScreen *screen;
+  MetaFrame *f = meta_window_get_frame (window);
+
+  screen = meta_window_get_screen (window);
+  info = meta_screen_get_compositor_data (screen);
+
+  /* Chances are we actually get the window frame here */
+  cw = find_window_for_screen (screen,
+                               f ? meta_frame_get_xwindow (f) :
+                               meta_window_get_xwindow (window));
+  if (!cw)
+      return;
+
+  printf("animating destroy of %p\n", cw);
+
+  /* We remove the window from internal lookup hashes and thus any other
+   * unmap events etc fail
+  */
+  info->windows = g_list_remove (info->windows, (gconstpointer) cw);
+  g_hash_table_remove (info->windows_by_xid, 
+                       (gpointer) (f ? meta_frame_get_xwindow (f) :
+                                   meta_window_get_xwindow (window)));
+
+  /* Crappy TV power down effect */
+  clutter_actor_move_anchor_point_from_gravity (cw->actor, 
+                                                CLUTTER_GRAVITY_CENTER);
+
+  clutter_effect_fade (info->destroy_effect,
+		       cw->actor,
+		       0x99,
+		       on_destroy_effect_complete,
+		       (gpointer)cw);
+
+  clutter_effect_scale (info->destroy_effect   ,
+                        cw->actor,
+                        10.0,
+                        0.0,
+                        NULL,
+                        NULL);
+  if (cw->shadow)
+    {
+      clutter_actor_move_anchor_point_from_gravity (cw->shadow, 
+                                                    CLUTTER_GRAVITY_CENTER);
+
+      clutter_effect_fade (info->destroy_effect,
+                           cw->shadow,
+                           0,
+                           NULL,
+                           NULL);
+
+      clutter_effect_scale (info->destroy_effect,
+                            cw->shadow,
+                            5.0,
+                            0.0,
+                            NULL,
+                            NULL);
+    }
+
+#endif
+}
+
 
 static MetaCompositor comp_info = {
   clutter_cmp_destroy,
@@ -1363,7 +1464,8 @@ static MetaCompositor comp_info = {
   clutter_cmp_set_updates,
   clutter_cmp_process_event,
   clutter_cmp_get_window_pixmap,
-  clutter_cmp_set_active_window
+  clutter_cmp_set_active_window,
+  clutter_cmp_destroy_window
 };
 
 MetaCompositor *

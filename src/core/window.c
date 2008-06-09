@@ -971,7 +971,7 @@ meta_window_free (MetaWindow  *window,
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
   if (window->display->compositor)
-    meta_compositor_free_window (window->display->compositor, window);
+    meta_compositor_destroy_window (window->display->compositor, window);
   
   if (window->display->window_with_menu == window)
     {
