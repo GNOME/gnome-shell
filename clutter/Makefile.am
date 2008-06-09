@@ -16,8 +16,6 @@ target = $(clutterbackend)
 MARSHALFILES = clutter-marshal.c clutter-marshal.h
 ENUMFILES = clutter-enum-types.c clutter-enum-types.h
 STAMPFILES = stamp-clutter-marshal.h stamp-clutter-enum-types.h
-GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
-GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
 INCLUDES = \
 	-I$(top_srcdir) 				\

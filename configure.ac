@@ -78,6 +78,11 @@ AC_FUNC_MALLOC
 AC_FUNC_MMAP
 AC_CHECK_FUNCS([memset munmap strcasecmp strdup])
 
+AC_PATH_PROG([GLIB_MKENUMS], [glib-mkenums])
+AC_PATH_PROG([GLIB_GENMARSHAL], [glib-genmarshal])
+
+PKG_PROG_PKG_CONFIG
+
 dnl ========================================================================
 
 imagebackend="gdk-pixbuf"
@@ -136,39 +141,61 @@ fi
 BACKEND_PC_FILES=""
 
 # Check for X though could be redundant if backend does not need it.
-PKG_CHECK_MODULES(X11, x11, [have_x11=yes], [have_x11=no])
-if test x$have_x11 = xno; then
-     AC_PATH_X
-     if test x"$no_x" = "yes" ; then
-        if test "x$clutterbackend" = "xglx" or "x$clutterbackend" = "xeglx"
-        then
-	   AC_MSG_ERROR([[No X11 Libraries found and required by backend.]])
-	fi
-     fi
-     if test x"$x_includes" != x"NONE" && test -n "$x_includes" ; then
-	X11_CFLAGS=-I`echo $x_includes | sed -e "s/:/ -I/g"`
-     fi
-     if test x"$x_libraries" != x"NONE" && test -n "$x_libraries" ; then
-	X11_LIBS=-L`echo $x_libraries | sed -e "s/:/ -L/g"`
-     fi
+AC_MSG_CHECKING([for X11])
+PKG_CHECK_EXISTS([x11], [have_x11=yes], [have_x11=no])
+if test "x$have_x11" = "xno"; then
+  AC_PATH_X
+
+  if test x"$no_x" = "yes" ; then
+    if test "x$clutterbackend" = "xglx" or "x$clutterbackend" = "xeglx"
+    then
+      AC_MSG_ERROR([No X11 Libraries found and required by backend.])
+    fi
+
+    AC_MSG_RESULT([not found])
+  else
+    if test x"$x_includes" != x"NONE" && test -n "$x_includes" ; then
+      X11_CFLAGS=-I`echo $x_includes | sed -e "s/:/ -I/g"`
+    fi
+
+    if test x"$x_libraries" != x"NONE" && test -n "$x_libraries" ; then
+      X11_LIBS=-L`echo $x_libraries | sed -e "s/:/ -L/g"`
+    fi
+
+    AC_MSG_RESULT([found])
+  fi
+else
+  AC_MSG_RESULT([found])
 fi
 
-PKG_CHECK_MODULES(XFIXES, xfixes >= 3, [have_xfixes=yes], [have_xfixes=no])
-if test x$have_xfixes = xyes; then
-      AC_DEFINE(HAVE_XFIXES, 1, [Have the XFIXES X extension])
-      X11_LIBS="$X11_LIBS -lXfixes"
+AC_MSG_CHECKING([for XFIXES extension >= 3])
+PKG_CHECK_EXISTS([xfixes >= 3], [have_xfixes=yes], [have_xfixes=no])
+if test "x$have_xfixes" = "xyes"; then
+  AC_DEFINE(HAVE_XFIXES, 1, [Define to 1 if we have the XFIXES X extension])
+  X11_LIBS="$X11_LIBS -lXfixes"
+  AC_MSG_RESULT([found])
+else
+  AC_MSG_RESULT([not found])
 fi
 
-PKG_CHECK_MODULES(XDAMAGE, xdamage, [have_xdamage=yes], [have_xdamage=no])
-if test x$have_xdamage = xyes; then
-      AC_DEFINE(HAVE_XDAMAGE, 1, [Have the XDAMAGE X extension])
-      X11_LIBS="$X11_LIBS -lXdamage"
+AC_MSG_CHECKING([for XDAMAGE extension])
+PKG_CHECK_EXISTS([xdamage], [have_xdamage=yes], [have_xdamage=no])
+if test "x$have_xdamage" = "xyes"; then
+  AC_DEFINE(HAVE_XDAMAGE, 1, [Define to 1 if we have the XDAMAGE X extension])
+  X11_LIBS="$X11_LIBS -lXdamage"
+  AC_MSG_RESULT([found])
+else
+  AC_MSG_RESULT([not found])
 fi
 
 # Composite 0.4 just needed for tests
-PKG_CHECK_MODULES(XCOMPOSITE, xcomposite >= 0.4, [have_xcomposite=yes], [have_xcomposite=no])
-if test x$have_xcomposite = xyes; then
-      AC_DEFINE(HAVE_XCOMPOSITE, 1, [Have the XCOMPOSITE X extension])
+AC_MSG_CHECKING([for XCOMPOSITE extension >= 0.4])
+PKG_CHECK_EXISTS([xcomposite >= 0.4], [have_xcomposite=yes], [have_xcomposite=no])
+if test "x$have_xcomposite" = "xyes"; then
+  AC_DEFINE(HAVE_XCOMPOSITE, 1, [Define to 1 if we have the XCOMPOSITE X extension])
+  AC_MSG_RESULT([found])
+else
+  AC_MSG_RESULT([not found])
 fi
 
 x11_tests=no
@@ -176,14 +203,13 @@ x11_tests=no
 # Currently require all extentions, may not for actual release.
 if test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx" 
 then
-      if test "x$have_xdamage" = "xno" || test "x$have_xfixes" = "xno"
-      then
-            AC_MSG_ERROR([[Required backend X11 Libraries not found.]])
-      fi
-      if test "x$have_xcomposite" = "xyes" 
-      then
-            x11_tests=yes
-      fi
+  if test "x$have_xdamage" = "xno" || test "x$have_xfixes" = "xno"; then
+    AC_MSG_ERROR([Required backend X11 Libraries not found.])
+  fi
+
+  if test "x$have_xcomposite" = "xyes"; then
+    x11_tests=yes
+  fi
 fi
 
 AM_CONDITIONAL(X11_TESTS, test "x$x11_tests" != "xno")

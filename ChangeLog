@@ -1,3 +1,14 @@
+2008-06-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac: Clean up a bit the X11 and X extensions
+	checks with PKG_CHECK_EXISTS(). Since we are filling up the
+	X11_CFLAGS and X11_LIBS variables ourselves there is no
+	point in polluting the Makefiles with unused variables.
+
+	* clutter/Makefile.am: Remove the pkg-config variable
+	evaluation and use the values retrieved from the configure
+	script.
+
 2008-06-09  Chris Lord  <chris@openedhand.com>
 
 	Bug #914 - ClutterEntry is confused about characters vs. bytes
