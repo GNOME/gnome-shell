@@ -25,6 +25,7 @@
 #include "clutter-backend-osx.h"
 #include "clutter-stage-osx.h"
 #include "../clutter-private.h"
+#include "cogl/cogl.h"
 
 #include <clutter/clutter-debug.h>
 #import <AppKit/AppKit.h>
@@ -70,6 +71,19 @@ clutter_backend_osx_post_parse (ClutterBackend  *backend,
   /* Enable vblank sync - http://developer.apple.com/qa/qa2007/qa1521.html*/
   const long sw = 1;
   [self->context setValues:&sw forParameter: NSOpenGLCPSwapInterval];
+
+  /* FIXME: move the debugging bits to cogl */
+  [self->context makeCurrentContext];
+  CLUTTER_NOTE(BACKEND, "GL information\n"
+               "    GL_VENDOR: %s\n"
+               "  GL_RENDERER: %s\n"
+               "   GL_VERSION: %s\n"
+               "GL_EXTENSIONS: %s\n",
+               glGetString (GL_VENDOR),
+               glGetString (GL_RENDERER),
+               glGetString (GL_VERSION),
+               glGetString (GL_EXTENSIONS));
+  [NSOpenGLContext clearCurrentContext];
 
   CLUTTER_OSX_POOL_RELEASE();
 

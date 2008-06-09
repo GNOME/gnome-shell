@@ -1,5 +1,11 @@
 2008-06-09  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
+	* clutter/osx/clutter-backend-osx.c (clutter_backend_osx_post_parse):
+	Print GL_VENDOR, GL_RENDERER, GL_VERSION and GL_EXTENSIONS to aid
+	debugging.
+
+2008-06-09  Tommi Komulainen  <tommi.komulainen@iki.fi>
+
 	Bug #930 - add support for quartz imagebackend
 
 	* clutter/cogl/common/cogl-bitmap-pixbuf.c
