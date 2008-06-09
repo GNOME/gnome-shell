@@ -1,3 +1,22 @@
+2008-06-09  Chris Lord  <chris@openedhand.com>
+
+	Bug #914 - ClutterEntry is confused about characters vs. bytes
+
+	* clutter/clutter-entry.c: (clutter_entry_ensure_layout),
+	(clutter_entry_handle_key_event_internal),
+	(clutter_entry_set_text):
+	Fix mix-up of character and byte counts, handle unicode correctly.
+	Use clutter_key_event_unicode() instead of
+	clutter_keysym_to_unicode().
+
+	* clutter/clutter-event.c: (clutter_key_event_unicode):
+	Don't ignore ClutterKeyEvent.unicode_value
+
+	* clutter/clutter-keysyms-table.h:
+	Rename header define so as not to conflict with clutter-keysyms.h
+
+	Patch originally by Emmanuele Bassi, with input from Tommi Komulainen.
+
 2008-06-07  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-texture.c: made the filter-quality proeprty also

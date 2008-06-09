@@ -104,7 +104,8 @@ struct _ClutterEntryPrivate
   gint                  extents_height;
 
   gint                  width;
-  gint                  n_chars;
+  gint                  n_chars; /* number of chars */
+  gint                  n_bytes; /* number of bytes */
 
   guint                 alignment        : 2;
   guint                 wrap             : 1;
@@ -270,15 +271,23 @@ clutter_entry_ensure_layout (ClutterEntry *entry, gint width)
       pango_layout_set_font_description (priv->layout, priv->desc);
 
       if (priv->text_visible)
-        pango_layout_set_text (priv->layout, priv->text, priv->n_chars);
+        pango_layout_set_text (priv->layout, priv->text, priv->n_bytes);
       else
         {
-          gint len = g_utf8_strlen (priv->text, -1);
-          gchar *invisible = g_strnfill (len, priv->priv_char);
+          GString *str = g_string_sized_new (priv->n_bytes);
+          gunichar invisible_char;
+          gint i;
 
-          pango_layout_set_text (priv->layout, invisible, len);
-          
-          g_free (invisible);
+          if (priv->priv_char != 0)
+            invisible_char = priv->priv_char;
+          else
+            invisible_char = '*';
+
+          for (i = 0; i < priv->n_chars; i++)
+            g_string_append_unichar (str, invisible_char);
+
+          pango_layout_set_text (priv->layout, str->str, str->len);
+          g_string_free (str, TRUE);
         }
 
       if (priv->wrap)
@@ -499,6 +508,7 @@ static inline void
 clutter_entry_handle_key_event_internal (ClutterEntry    *entry,
                                          ClutterKeyEvent *event)
 {
+  gunichar key_unichar;
   ClutterEntryPrivate *priv = entry->priv;
   gint pos = priv->position;
   gint len = 0;
@@ -567,8 +577,9 @@ clutter_entry_handle_key_event_internal (ClutterEntry    *entry,
         break;
 
       default:
-        clutter_entry_insert_unichar (entry,
-                                      clutter_keysym_to_unicode (keyval));
+        key_unichar = clutter_key_event_unicode (event);
+        if (g_unichar_validate (key_unichar))
+          clutter_entry_insert_unichar (entry, key_unichar);
         break;
     }
 }
@@ -1027,7 +1038,10 @@ clutter_entry_set_text (ClutterEntry *entry,
       if (len < priv->max_length)
         {
            g_free (priv->text);
+
            priv->text = g_strdup (text);
+           priv->n_bytes = strlen (text);
+           priv->n_chars = len;
         }
       else
         {
@@ -1037,6 +1051,8 @@ clutter_entry_set_text (ClutterEntry *entry,
           g_free (priv->text);
 
           priv->text = n;
+          priv->n_bytes = strlen (n);
+          priv->n_chars = priv->max_length;
         }
     }
   else
@@ -1044,6 +1060,7 @@ clutter_entry_set_text (ClutterEntry *entry,
       g_free (priv->text);
 
       priv->text = g_strdup (text);
+      priv->n_bytes = strlen (text);
       priv->n_chars = g_utf8_strlen (priv->text, -1);
     }
 

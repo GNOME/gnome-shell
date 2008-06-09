@@ -1,5 +1,5 @@
-#ifndef __CLUTTER_KEYSYMS_H__
-#define __CLUTTER_KEYSYMS_H__
+#ifndef __CLUTTER_KEYSYMS_TABLE_H__
+#define __CLUTTER_KEYSYMS_TABLE_H__
 
 /* Code below from GDK, which contains following comment; 
  *

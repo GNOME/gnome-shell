@@ -27,6 +27,7 @@
 #include "config.h"
 #endif
 
+#include "clutter-keysyms.h"
 #include "clutter-keysyms-table.h"
 #include "clutter-event.h"
 #include "clutter-private.h"
@@ -263,8 +264,11 @@ guint32
 clutter_key_event_unicode (ClutterKeyEvent *keyev)
 {
   g_return_val_if_fail (keyev != NULL, 0);
- 
-  return clutter_keysym_to_unicode (keyev->keyval);
+
+  if (keyev->unicode_value)
+    return keyev->unicode_value;
+  else
+    return clutter_keysym_to_unicode (keyev->keyval);
 }
 
 /**
