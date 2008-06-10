@@ -84,7 +84,7 @@ clutter_rectangle_paint (ClutterActor *self)
                                               : "unknown");
   cogl_push_matrix();
 
-  clutter_actor_get_geometry (self, &geom);
+  clutter_actor_get_allocation_geometry (self, &geom);
 
   /* parent paint call will have translated us into position so
    * paint from 0, 0
@@ -94,8 +94,9 @@ clutter_rectangle_paint (ClutterActor *self)
       tmp_col.red   = priv->border_color.red;
       tmp_col.green = priv->border_color.green;
       tmp_col.blue  = priv->border_color.blue;
-      tmp_col.alpha = (clutter_actor_get_abs_opacity (self) *
-                      priv->border_color.alpha) / 0xff;
+      tmp_col.alpha = clutter_actor_get_paint_opacity (self)
+                      * priv->border_color.alpha
+                      / 255;
 
       cogl_color (&tmp_col);
 
@@ -120,13 +121,13 @@ clutter_rectangle_paint (ClutterActor *self)
       tmp_col.red   = priv->color.red;
       tmp_col.green = priv->color.green;
       tmp_col.blue  = priv->color.blue;
-      tmp_col.alpha = (clutter_actor_get_abs_opacity (self) *
-                      priv->color.alpha) / 0xff;
+      tmp_col.alpha = clutter_actor_get_paint_opacity (self)
+                      * priv->color.alpha
+                      / 255;
 
       cogl_color (&tmp_col);
 
-      cogl_rectangle (priv->border_width,
-                      priv->border_width,
+      cogl_rectangle (priv->border_width, priv->border_width,
                       geom.width - priv->border_width * 2,
                       geom.height - priv->border_width * 2);
     }
@@ -135,8 +136,9 @@ clutter_rectangle_paint (ClutterActor *self)
       tmp_col.red   = priv->color.red;
       tmp_col.green = priv->color.green;
       tmp_col.blue  = priv->color.blue;
-      tmp_col.alpha = (clutter_actor_get_abs_opacity (self) *
-                      priv->color.alpha) / 0xff;
+      tmp_col.alpha = clutter_actor_get_paint_opacity (self)
+                      * priv->color.alpha
+                      / 255;
 
       cogl_color (&tmp_col);
 

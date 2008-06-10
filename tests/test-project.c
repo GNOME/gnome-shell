@@ -12,7 +12,7 @@ init_handles ()
   ClutterVertex    v1, v2;
   ClutterColor blue = { 0, 0, 0xff, 0xff };
 
-  clutter_actor_get_vertices (rect, v);
+  clutter_actor_get_abs_allocation_vertices (rect, v);
   for (i = 0; i < 4; ++i)
     {
       p[i] = clutter_rectangle_new_with_color (&blue);
@@ -58,7 +58,7 @@ place_handles ()
   ClutterVertex    v[4];
   ClutterVertex    v1, v2;
 
-  clutter_actor_get_vertices (rect, v);
+  clutter_actor_get_abs_allocation_vertices (rect, v);
   for (i = 0; i < 4; ++i)
     {
       clutter_actor_set_position (p[i],
@@ -136,8 +136,8 @@ on_event (ClutterStage *stage,
 	    
 	    clutter_event_get_coords (event, &x, &y);
 	    
-	    clutter_actor_query_coords (dragging, &box1);
-	    clutter_actor_query_coords (rect, &box2);
+	    clutter_actor_get_allocation_box (dragging, &box1);
+	    clutter_actor_get_allocation_box (rect, &box2);
 
 	    xp = CLUTTER_INT_TO_FIXED (x-3) - box1.x1;
 	    yp = CLUTTER_INT_TO_FIXED (y-3) - box1.y1;
@@ -178,7 +178,10 @@ on_event (ClutterStage *stage,
 		    break;
 		  }
 
-		clutter_actor_request_coords (rect, &box2);
+                /* FIXME this is just plain wrong, to allocate directly
+                 * like this
+                 */
+		clutter_actor_allocate (rect, &box2, TRUE);
 	      }
 	    
  	    place_handles ();

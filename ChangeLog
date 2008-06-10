@@ -1,5 +1,68 @@
 2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug #815 - Split up request, allocation, and paint box
+
+	* clutter/clutter-actor.[ch]: Rework the size allocation,
+	request and paint area. Now ::request_coords() is called
+	::allocate(), and ::query_coords() has been split into
+	::get_preferred_width() and ::get_preferred_height(). See
+	the documentation and the layout test on how to implement
+	a container and layout manager with the new API. (#915,
+	based on a patch by Havoc Pennington, Lucas Rocha and Johan
+	Bilien)
+
+	* clutter/clutter-clone-texture.c: Port CloneTexture to
+	the new size negotiation API; it just means forwarding
+	the requests to the parent texture.
+
+	* clutter/clutter-deprecated.h: Add deprecated and replaced
+	API.
+
+	* clutter/clutter-entry.c: Port Entry to the new size
+	negotiation API.
+
+	* clutter/clutter-group.c: Port Group to the new size
+	negotiation API; the semantics of the Group actor do not
+	change.
+
+	* clutter/clutter-label.c: Port Label to the new size
+	negotiation API, and vastly simplify the code.
+
+	* clutter/clutter-main.[ch]: Add API for executing a
+	relayout when needed.
+
+	* clutter/clutter-private.h: Add new Stage private API.
+
+	* clutter/clutter-rectangle.c: Update the get_abs_opacity()
+	call to get_paint_opacity().
+
+	* clutter/clutter-stage.c:
+	(clutter_stage_get_preferred_width),
+	(clutter_stage_get_preferred_height),
+	(clutter_stage_allocate),
+	(clutter_stage_class_init): Port Stage to the new size
+	negotiation API.
+
+	* clutter/clutter-texture.c: Port Texture to the new size
+	negotiation API.
+
+	* clutter/clutter-types.h: Add ClutterRequestMode enumeration.
+
+	* clutter/x11/clutter-stage-x11.c: Port the X11 stage
+	implementation to the new size negotiation API.
+
+	* tests/Makefile.am: Add the layout manager test case.
+
+	* tests/test-opacity.c: Update.
+
+	* tests/test-project.c: Update.
+
+	* tests/test-layout.c: Test case for a layout manager implemented
+	using the new size negotiation API; the layout manager handles
+	both transformed and untransformed children.
+
+2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* Makefile.am: Add the po/ directory to the build.
 
 2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>

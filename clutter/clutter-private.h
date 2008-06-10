@@ -59,7 +59,8 @@ typedef enum {
 					  * viewport / perspective etc
 					  * needs (re)setting.
                                           */
-  CLUTTER_ACTOR_IN_PAINT       = 1 << 4  /* Used to avoid recursion */
+  CLUTTER_ACTOR_IN_PAINT       = 1 << 4, /* Used to avoid recursion */
+  CLUTTER_ACTOR_IN_RELAYOUT    = 1 << 5  /* Used to avoid recursion */
 } ClutterPrivateFlags;
 
 typedef enum {
@@ -142,10 +143,12 @@ void _clutter_stage_manager_remove_stage (ClutterStageManager *stage_manager,
 
 /* stage */
 
-void                _clutter_stage_set_window         (ClutterStage       *stage,
-                                                       ClutterStageWindow *stage_window);
-ClutterStageWindow *_clutter_stage_get_window         (ClutterStage       *stage);
-ClutterStageWindow *_clutter_stage_get_default_window (void);
+void                _clutter_stage_set_window           (ClutterStage       *stage,
+                                                         ClutterStageWindow *stage_window);
+ClutterStageWindow *_clutter_stage_get_window           (ClutterStage       *stage);
+ClutterStageWindow *_clutter_stage_get_default_window   (void);
+void                _clutter_stage_maybe_setup_viewport (ClutterStage       *stage);
+void                _clutter_stage_maybe_relayout       (ClutterActor       *stage);
 
 /* vfuncs implemented by backend */
 GType         _clutter_backend_impl_get_type  (void);

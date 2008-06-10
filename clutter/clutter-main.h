@@ -129,6 +129,7 @@ ClutterActor *   clutter_get_keyboard_grab           (void);
 
 void             clutter_clear_glyph_cache           (void);
 void             clutter_set_use_mipmapped_text      (gboolean      value);
+gboolean         clutter_get_use_mipmapped_text      (void);
 
 G_END_DECLS
 

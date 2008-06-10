@@ -106,8 +106,41 @@ clutter_get_show_fps (void)
   return clutter_show_fps;
 }
 
-static inline void
-clutter_maybe_setup_viewport (ClutterStage *stage)
+void
+_clutter_stage_maybe_relayout (ClutterActor *stage)
+{
+  ClutterUnit natural_width, natural_height;
+  ClutterActorBox box = { 0, };
+
+  /* avoid reentrancy */
+  if (!(CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_IN_RELAYOUT))
+    {
+      CLUTTER_NOTE (ACTOR, "Recomputing layout");
+
+      CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IN_RELAYOUT);
+
+      natural_width = natural_height = 0;
+      clutter_actor_get_preferred_size (stage,
+                                        NULL, NULL,
+                                        &natural_width, &natural_height);
+
+      box.x1 = 0;
+      box.y1 = 0;
+      box.x2 = natural_width;
+      box.y2 = natural_height;
+
+      CLUTTER_NOTE (ACTOR, "Allocating (0, 0 - %d, %d) for the stage",
+                    CLUTTER_UNITS_TO_DEVICE (natural_width),
+                    CLUTTER_UNITS_TO_DEVICE (natural_height));
+
+      clutter_actor_allocate (stage, &box, FALSE);
+
+      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_IN_RELAYOUT);
+    }
+}
+
+void
+_clutter_stage_maybe_setup_viewport (ClutterStage *stage)
 {
   if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
     {
@@ -148,6 +181,9 @@ clutter_redraw (ClutterStage *stage)
   CLUTTER_NOTE (PAINT, " Redraw enter for stage:%p", stage);
   CLUTTER_NOTE (MULTISTAGE, "Redraw called for stage:%p", stage);
 
+  /* Before we can paint, we have to be sure we have the latest layout */
+  _clutter_stage_maybe_relayout (CLUTTER_ACTOR (stage));
+
   _clutter_backend_ensure_context (ctx->backend, stage);
 
   /* Setup FPS count - not currently across *all* stages rather than per */
@@ -160,7 +196,7 @@ clutter_redraw (ClutterStage *stage)
   /* The code below can't go in stage paint as base actor_paint
    * will get called before it (and break picking, etc)
    */
-  clutter_maybe_setup_viewport (stage);
+  _clutter_stage_maybe_setup_viewport (stage);
 
   /* Call through to the actual backend to do the painting down from
    * the stage. It will likely need to swap buffers, vblank sync etc
@@ -322,7 +358,7 @@ _clutter_do_pick (ClutterStage   *stage,
   _clutter_backend_ensure_context (context->backend, stage);
 
   /* needed for when a context switch happens */
-  clutter_maybe_setup_viewport (stage);
+  _clutter_stage_maybe_setup_viewport (stage);
 
   cogl_paint_init (&white);
 
@@ -2117,4 +2153,28 @@ clutter_set_use_mipmapped_text (gboolean value)
   if (CLUTTER_CONTEXT ()->font_map)
     pango_clutter_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
 					       value);
+}
+
+/**
+ * clutter_get_use_mipmapped_text:
+ *
+ * Gets whether mipmapped textures are used in text operations.
+ * See clutter_set_use_mipmapped_text().
+ *
+ * Return value: %TRUE if text operations should use mipmapped
+ *   textures
+ *
+ * Since: 0.8
+ */
+gboolean
+clutter_get_use_mipmapped_text (void)
+{
+  PangoClutterFontMap *font_map = NULL;
+
+  font_map = CLUTTER_CONTEXT ()->font_map;
+
+  if (font_map)
+    return pango_clutter_font_map_get_use_mipmapping (font_map);
+
+  return FALSE;    
 }

@@ -473,7 +473,7 @@ clutter_entry_paint (ClutterActor *self)
     }
 
   memcpy (&color, &priv->fgcol, sizeof (ClutterColor));
-  color.alpha = clutter_actor_get_abs_opacity (self);
+  color.alpha = clutter_actor_get_paint_opacity (self);
 
   pango_clutter_render_layout (priv->layout,
                                priv->text_x + priv->entry_padding, 0,
@@ -484,8 +484,9 @@ clutter_entry_paint (ClutterActor *self)
 }
 
 static void
-clutter_entry_request_coords (ClutterActor    *self,
-			      ClutterActorBox *box)
+clutter_entry_allocate (ClutterActor          *self,
+                        const ClutterActorBox *box,
+                        gboolean               absolute_origin_changed)
 {
   ClutterEntry *entry = CLUTTER_ENTRY (self);
   ClutterEntryPrivate *priv = entry->priv;
@@ -501,7 +502,7 @@ clutter_entry_request_coords (ClutterActor    *self,
       priv->width = width;
     }
 
-  CLUTTER_ACTOR_CLASS (clutter_entry_parent_class)->request_coords (self, box);
+  CLUTTER_ACTOR_CLASS (clutter_entry_parent_class)->allocate (self, box, absolute_origin_changed);
 }
 
 static inline void
@@ -633,13 +634,13 @@ clutter_entry_finalize (GObject *object)
 static void
 clutter_entry_class_init (ClutterEntryClass *klass)
 {
-  GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   klass->paint_cursor = clutter_entry_paint_cursor;
 
   actor_class->paint           = clutter_entry_paint;
-  actor_class->request_coords  = clutter_entry_request_coords;
+  actor_class->allocate        = clutter_entry_allocate;
   actor_class->key_press_event = clutter_entry_key_press;
 
   gobject_class->finalize     = clutter_entry_finalize;

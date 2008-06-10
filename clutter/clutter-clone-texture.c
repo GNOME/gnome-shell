@@ -69,6 +69,74 @@ struct _ClutterCloneTexturePrivate
 };
 
 static void
+clutter_clone_texture_get_preferred_width (ClutterActor *self,
+                                           ClutterUnit   for_height,
+                                           ClutterUnit  *min_width_p,
+                                           ClutterUnit  *natural_width_p)
+{
+  ClutterCloneTexturePrivate *priv = CLUTTER_CLONE_TEXTURE (self)->priv;
+  ClutterActor *parent_texture;
+  ClutterActorClass *parent_texture_class;
+
+  /* Note that by calling the get_width_request virtual method directly
+   * and skipping the clutter_actor_get_preferred_width() wrapper, we
+   * are ignoring any size request override set on the parent texture
+   * and just getting the normal size of the parent texture.
+   */
+  parent_texture = CLUTTER_ACTOR (priv->parent_texture);
+  if (!parent_texture)
+    {
+      if (min_width_p)
+        *min_width_p = 0;
+
+      if (natural_width_p)
+        *natural_width_p = 0;
+
+      return;
+    }
+
+  parent_texture_class = CLUTTER_ACTOR_GET_CLASS (parent_texture);
+  parent_texture_class->get_preferred_width (parent_texture,
+                                             for_height,
+                                             min_width_p,
+                                             natural_width_p);
+}
+
+static void
+clutter_clone_texture_get_preferred_height (ClutterActor *self,
+                                            ClutterUnit   for_width,
+                                            ClutterUnit  *min_height_p,
+                                            ClutterUnit  *natural_height_p)
+{
+  ClutterCloneTexturePrivate *priv = CLUTTER_CLONE_TEXTURE (self)->priv;
+  ClutterActor *parent_texture;
+  ClutterActorClass *parent_texture_class;
+
+  /* Note that by calling the get_height_request virtual method directly
+   * and skipping the clutter_actor_get_preferred_height() wrapper, we
+   * are ignoring any size request override set on the parent texture and
+   * just getting the normal size of the parent texture.
+   */
+  parent_texture = CLUTTER_ACTOR (priv->parent_texture);
+  if (!parent_texture)
+    {
+      if (min_height_p)
+        *min_height_p = 0;
+
+      if (natural_height_p)
+        *natural_height_p = 0;
+
+      return;
+    }
+
+  parent_texture_class = CLUTTER_ACTOR_GET_CLASS (parent_texture);
+  parent_texture_class->get_preferred_height (parent_texture,
+                                              for_width,
+                                              min_height_p,
+                                              natural_height_p);
+}
+
+static void
 clutter_clone_texture_paint (ClutterActor *self)
 {
   ClutterCloneTexturePrivate  *priv;
@@ -99,10 +167,10 @@ clutter_clone_texture_paint (ClutterActor *self)
 
   cogl_push_matrix ();
 
-  col.alpha = clutter_actor_get_abs_opacity (self);
+  col.alpha = clutter_actor_get_paint_opacity (self);
   cogl_color (&col);
 
-  clutter_actor_get_coords (self, &x_1, &y_1, &x_2, &y_2);
+  clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
 
   CLUTTER_NOTE (PAINT, "paint to x1: %i, y1: %i x2: %i, y2: %i "
 		"opacity: %i",
@@ -156,13 +224,7 @@ set_parent_texture (ClutterCloneTexture *ctexture,
 
   if (texture) 
     {
-      gint width, height;
-
       priv->parent_texture = g_object_ref (texture);
-
-      /* Sync up the size to parent texture base pixbuf size. */
-      clutter_texture_get_base_size (texture, &width, &height);
-      clutter_actor_set_size (actor, width, height);
 
       /* queue a redraw if the cloned texture is already visible */
       if (CLUTTER_ACTOR_IS_VISIBLE (priv->parent_texture) &&
@@ -171,6 +233,8 @@ set_parent_texture (ClutterCloneTexture *ctexture,
           clutter_actor_show (actor);
           clutter_actor_queue_redraw (actor);
         }
+
+      clutter_actor_queue_relayout (actor);
     }
       
 }
@@ -265,7 +329,12 @@ clutter_clone_texture_class_init (ClutterCloneTextureClass *klass)
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  actor_class->paint = clutter_clone_texture_paint;
+  actor_class->paint =
+    clutter_clone_texture_paint;
+  actor_class->get_preferred_width =
+    clutter_clone_texture_get_preferred_width;
+  actor_class->get_preferred_height =
+    clutter_clone_texture_get_preferred_height;
 
   gobject_class->finalize     = clutter_clone_texture_finalize;
   gobject_class->dispose      = clutter_clone_texture_dispose;

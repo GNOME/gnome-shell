@@ -13,7 +13,7 @@ noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
 		  test-cogl-tex-getset test-cogl-offscreen \
 		  test-cogl-tex-polygon test-stage-read-pixels \
 		  test-random-text test-clip test-paint-wrapper \
-		  test-texture-quality test-entry-auto
+		  test-texture-quality test-entry-auto test-layout
 
 if X11_TESTS
 noinst_PROGRAMS += test-pixmap
@@ -24,22 +24,22 @@ LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR
 AM_CFLAGS = $(CLUTTER_CFLAGS)
 AM_LDFLAGS = $(CLUTTER_LIBS)
 
-test_textures_SOURCES             = test-textures.c
-test_events_SOURCES               = test-events.c
-test_offscreen_SOURCES            = test-offscreen.c
-test_scale_SOURCES                = test-scale.c
-test_actors_SOURCES               = test-actors.c
-test_grab_SOURCES                 = test-grab.c
-test_behave_SOURCES               = test-behave.c
-test_text_SOURCES                 = test-text.c
-test_entry_SOURCES                = test-entry.c
-test_project_SOURCES              = test-project.c
-test_unproject_SOURCES            = test-unproject.c
-test_perspective_SOURCES          = test-perspective.c
-test_rotate_SOURCES               = test-rotate.c
-test_depth_SOURCES                = test-depth.c
-test_threads_SOURCES              = test-threads.c
-test_timeline_SOURCES             = test-timeline.c
+test_textures_SOURCES    = test-textures.c
+test_events_SOURCES      = test-events.c
+test_offscreen_SOURCES   = test-offscreen.c
+test_scale_SOURCES       = test-scale.c
+test_actors_SOURCES      = test-actors.c
+test_grab_SOURCES        = test-grab.c
+test_behave_SOURCES      = test-behave.c
+test_text_SOURCES        = test-text.c
+test_entry_SOURCES       = test-entry.c
+test_project_SOURCES     = test-project.c
+test_unproject_SOURCES   = test-unproject.c
+test_perspective_SOURCES = test-perspective.c
+test_rotate_SOURCES      = test-rotate.c
+test_depth_SOURCES       = test-depth.c
+test_threads_SOURCES     = test-threads.c
+test_timeline_SOURCES    = test-timeline.c
 test_timeline_dup_frames_SOURCES  = test-timeline-dup-frames.c
 test_timeline_interpolate_SOURCES = test-timeline-interpolate.c
 test_timeline_rewind_SOURCES      = test-timeline-rewind.c
@@ -67,5 +67,6 @@ test_random_text_SOURCES          = test-random-text.c
 test_paint_wrapper_SOURCES        = test-paint-wrapper.c
 test_texture_quality_SOURCES      = test-texture-quality.c
 test_entry_auto_SOURCES	          = test-entry-auto.c
+test_layout_SOURCES               = test-layout.c
 
 EXTRA_DIST = redhand.png test-script.json

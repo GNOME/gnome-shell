@@ -121,25 +121,52 @@ enum
 static guint stage_signals[LAST_SIGNAL] = { 0, };
 
 static void
-clutter_stage_request_coords (ClutterActor    *self,
-                              ClutterActorBox *box)
+clutter_stage_get_preferred_width (ClutterActor *self,
+                                   ClutterUnit   for_height,
+                                   ClutterUnit  *min_width_p,
+                                   ClutterUnit  *natural_width_p)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
   g_assert (priv->impl != NULL);
-  CLUTTER_ACTOR_GET_CLASS (priv->impl)->request_coords (priv->impl, box);
 
-  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->request_coords (self, box);
+  CLUTTER_ACTOR_GET_CLASS (priv->impl)->get_preferred_width (priv->impl,
+                                                             for_height,
+                                                             min_width_p,
+                                                             natural_width_p);
 }
 
 static void
-clutter_stage_query_coords (ClutterActor    *self,
-                            ClutterActorBox *box)
+clutter_stage_get_preferred_height (ClutterActor *self,
+                                    ClutterUnit   for_width,
+                                    ClutterUnit  *min_height_p,
+                                    ClutterUnit  *natural_height_p)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
   g_assert (priv->impl != NULL);
-  CLUTTER_ACTOR_GET_CLASS (priv->impl)->query_coords (priv->impl, box);
+
+  CLUTTER_ACTOR_GET_CLASS (priv->impl)->get_preferred_height (priv->impl,
+                                                              for_width,
+                                                              min_height_p,
+                                                              natural_height_p);
+}
+static void
+clutter_stage_allocate (ClutterActor              *self,
+                        const ClutterActorBox     *box,
+                        gboolean                   origin_changed)
+{
+  ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+
+  g_assert (priv->impl != NULL);
+
+  CLUTTER_ACTOR_GET_CLASS (priv->impl)->allocate (priv->impl,
+                                                  box,
+                                                  origin_changed);
+
+  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->allocate (self, 
+                                                              box,
+                                                              origin_changed);
 }
 
 static void
@@ -240,6 +267,32 @@ clutter_stage_hide (ClutterActor *self)
   clutter_actor_hide (priv->impl);
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->hide (self);
+}
+
+static void
+clutter_stage_real_fullscreen (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv = stage->priv;
+  ClutterUnit natural_width, natural_height;
+  ClutterActorBox box;
+
+  /* we need to force an allocation here because the size
+   * of the stage might have been changed by the backend
+   *
+   * this is a really bad solution to the issues caused by
+   * the fact that fullscreening the stage on the X11 backends
+   * is really an asynchronous operation
+   */
+  clutter_actor_get_preferred_size (CLUTTER_ACTOR (priv->impl),
+                                    NULL, NULL,
+                                    &natural_width, &natural_height);
+
+  box.x1 = 0;
+  box.y1 = 0;
+  box.x2 = natural_width;
+  box.y2 = natural_height;
+
+  clutter_actor_allocate (CLUTTER_ACTOR (stage), &box, FALSE);
 }
 
 static void
@@ -404,8 +457,9 @@ clutter_stage_class_init (ClutterStageClass *klass)
   gobject_class->dispose = clutter_stage_dispose;
   gobject_class->finalize = clutter_stage_finalize;
 
-  actor_class->request_coords = clutter_stage_request_coords;
-  actor_class->query_coords = clutter_stage_query_coords;
+  actor_class->allocate = clutter_stage_allocate;
+  actor_class->get_preferred_width = clutter_stage_get_preferred_width;
+  actor_class->get_preferred_height = clutter_stage_get_preferred_height;
   actor_class->paint = clutter_stage_paint;
   actor_class->pick = clutter_stage_pick;
   actor_class->realize = clutter_stage_realize;
@@ -518,7 +572,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   stage_signals[FULLSCREEN] =
     g_signal_new ("fullscreen",
 		  G_TYPE_FROM_CLASS (gobject_class),
-		  G_SIGNAL_RUN_LAST,
+		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (ClutterStageClass, fullscreen),
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
@@ -574,6 +628,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+
+  klass->fullscreen = clutter_stage_real_fullscreen;
 
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }

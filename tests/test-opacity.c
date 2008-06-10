@@ -31,9 +31,9 @@ main (int argc, char *argv[])
   clutter_label_get_color (CLUTTER_LABEL (label), &color_check);
   g_assert (color_check.alpha == label_color.alpha);
 
-  g_print ("label 50%%.get_abs_opacity() = %d\n",
-           clutter_actor_get_abs_opacity (label));
-  g_assert (clutter_actor_get_abs_opacity (label) == 128);
+  g_print ("label 50%%.get_paint_opacity() = %d\n",
+           clutter_actor_get_paint_opacity (label));
+  g_assert (clutter_actor_get_paint_opacity (label) == 128);
 
   clutter_actor_show (label);
 
@@ -57,9 +57,9 @@ main (int argc, char *argv[])
   clutter_label_get_color (CLUTTER_LABEL (label), &color_check);
   g_assert (color_check.alpha == label_color.alpha);
 
-  g_print ("label 50%% + group 50%%.get_abs_opacity() = %d\n",
-           clutter_actor_get_abs_opacity (label));
-  g_assert (clutter_actor_get_abs_opacity (label) == 64);
+  g_print ("label 50%% + group 50%%.get_paint_opacity() = %d\n",
+           clutter_actor_get_paint_opacity (label));
+  g_assert (clutter_actor_get_paint_opacity (label) == 64);
 
   clutter_actor_show (label);
 
@@ -81,9 +81,9 @@ main (int argc, char *argv[])
   clutter_rectangle_get_color (CLUTTER_RECTANGLE (rect), &color_check);
   g_assert (color_check.alpha == rect_color.alpha);
 
-  g_print ("rect 100%%.get_abs_opacity() = %d\n",
-           clutter_actor_get_abs_opacity (rect));
-  g_assert (clutter_actor_get_abs_opacity (rect) == 128);
+  g_print ("rect 100%%.get_paint_opacity() = %d\n",
+           clutter_actor_get_paint_opacity (rect));
+  g_assert (clutter_actor_get_paint_opacity (rect) == 128);
 
   clutter_actor_show (rect);
 
@@ -101,9 +101,9 @@ main (int argc, char *argv[])
   clutter_rectangle_get_color (CLUTTER_RECTANGLE (rect), &color_check);
   g_assert (color_check.alpha == rect_color.alpha);
 
-  g_print ("rect 100%%.get_abs_opacity() = %d\n",
-           clutter_actor_get_abs_opacity (rect));
-  g_assert (clutter_actor_get_abs_opacity (rect) == 255);
+  g_print ("rect 100%%.get_paint_opacity() = %d\n",
+           clutter_actor_get_paint_opacity (rect));
+  g_assert (clutter_actor_get_paint_opacity (rect) == 255);
 
   clutter_actor_show (rect);
 

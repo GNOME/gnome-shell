@@ -158,10 +158,40 @@ typedef struct _ShaderData ShaderData;
 
 struct _ClutterActorPrivate
 {
-  ClutterActorBox coords;
+  /* fixed_x, fixed_y, and the allocation box are all in parent
+   * coordinates.
+   */
+  ClutterUnit fixed_x;
+  ClutterUnit fixed_y;
 
-  ClutterUnit     clip[4];
+  /* request mode */
+  ClutterRequestMode request_mode;
+
+  /* our cached request width is for this height */
+  ClutterUnit request_width_for_height;
+  ClutterUnit request_min_width;
+  ClutterUnit request_natural_width;
+  /* our cached request height is for this width */
+  ClutterUnit request_height_for_width;
+  ClutterUnit request_min_height;
+  ClutterUnit request_natural_height;
+
+  ClutterActorBox allocation;
+
+  guint position_set         : 1;
+  guint min_width_set        : 1;
+  guint min_height_set       : 1;
+  guint natural_width_set    : 1;
+  guint natural_height_set   : 1;
+  /* cached request is invalid (implies allocation is too) */
+  guint needs_width_request  : 1;
+  /* cached request is invalid (implies allocation is too) */
+  guint needs_height_request : 1;
+  /* cached allocation is invalid (request has changed, probably) */
+  guint needs_allocation     : 1;
+
   guint           has_clip : 1;
+  ClutterUnit     clip[4];
 
   /* Rotation angles */
   ClutterFixed    rxang;
@@ -208,10 +238,43 @@ enum
 
   PROP_NAME,
 
+  /* X, Y, WIDTH, HEIGHT are "do what I mean" properties;
+   * when set they force a size request, when gotten they
+   * get the allocation if the allocation is valid, and the
+   * request otherwise. Also, they are in pixels, while
+   * all the underlying properties are in ClutterUnit.
+   */
   PROP_X,
   PROP_Y,
   PROP_WIDTH,
   PROP_HEIGHT,
+
+  /* Then the rest of these size-related properties are the "actual"
+   * underlying properties set or gotten by X, Y, WIDTH, HEIGHT. All
+   * of these are in ClutterUnit not in pixels.
+   */
+  PROP_FIXED_X,
+  PROP_FIXED_Y,
+
+  PROP_FIXED_POSITION_SET,
+
+  PROP_MIN_WIDTH,
+  PROP_MIN_WIDTH_SET,
+
+  PROP_MIN_HEIGHT,
+  PROP_MIN_HEIGHT_SET,
+
+  PROP_NATURAL_WIDTH,
+  PROP_NATURAL_WIDTH_SET,
+
+  PROP_NATURAL_HEIGHT,
+  PROP_NATURAL_HEIGHT_SET,
+
+  PROP_REQUEST_MODE,
+
+  /* Allocation properties are read-only */
+  PROP_ALLOCATION,
+
   PROP_DEPTH,
 
   PROP_CLIP,
@@ -277,6 +340,29 @@ static void clutter_actor_shader_post_paint (ClutterActor *actor);
 
 static void destroy_shader_data (ClutterActor *self);
 
+/* These setters are all static for now, maybe they should be in the
+ * public API, but they are perhaps obscure enough to leave only as
+ * properties
+ */
+static void clutter_actor_set_min_width          (ClutterActor *self,
+                                                  ClutterUnit   min_width);
+static void clutter_actor_set_min_height         (ClutterActor *self,
+                                                  ClutterUnit   min_height);
+static void clutter_actor_set_natural_width      (ClutterActor *self,
+                                                  ClutterUnit   natural_width);
+static void clutter_actor_set_natural_height     (ClutterActor *self,
+                                                  ClutterUnit   natural_height);
+static void clutter_actor_set_min_width_set      (ClutterActor *self,
+                                                  gboolean      use_min_width);
+static void clutter_actor_set_min_height_set     (ClutterActor *self,
+                                                  gboolean      use_min_height);
+static void clutter_actor_set_natural_width_set  (ClutterActor *self,
+                                                  gboolean  use_natural_width);
+static void clutter_actor_set_natural_height_set (ClutterActor *self,
+                                                  gboolean  use_natural_height);
+static void clutter_actor_set_request_mode       (ClutterActor *self,
+                                                  ClutterRequestMode mode);
+
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   clutter_actor,
                                   G_TYPE_INITIALLY_UNOWNED,
@@ -292,7 +378,7 @@ clutter_actor_real_show (ClutterActor *self)
       if (!CLUTTER_ACTOR_IS_REALIZED (self))
         clutter_actor_realize (self);
 
-      /* the mapped flag on the top-level actors is set by the
+      /* the mapped flag on the top-level actors must be set by the
        * per-backend implementation because it might be asynchronous
        */
       if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
@@ -300,6 +386,8 @@ clutter_actor_real_show (ClutterActor *self)
 
       if (CLUTTER_ACTOR_IS_VISIBLE (self))
         clutter_actor_queue_redraw (self);
+
+      clutter_actor_queue_relayout (self);
     }
 }
 
@@ -313,7 +401,8 @@ clutter_actor_real_show (ClutterActor *self)
  * Actors are visible by default.
  *
  * If this function is called on an actor without a parent, the
- * ClutterActor:show-on-set-parent will be set to %TRUE as a side effect.
+ * #ClutterActor:show-on-set-parent will be set to %TRUE as a side
+ * effect.
  */
 void
 clutter_actor_show (ClutterActor *self)
@@ -345,7 +434,7 @@ clutter_actor_show (ClutterActor *self)
  * clutter_actor_show_all:
  * @self: a #ClutterActor
  *
- * Call show() on all children of an actor (if any).
+ * Calls clutter_actor_show() on all children of an actor (if any).
  *
  * Since: 0.2
  */
@@ -372,7 +461,7 @@ clutter_actor_real_hide (ClutterActor *self)
       if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL))
         CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
 
-      clutter_actor_queue_redraw (self);
+      clutter_actor_queue_relayout (self);
     }
 }
 
@@ -386,7 +475,7 @@ clutter_actor_real_hide (ClutterActor *self)
  * Actors are visible by default.
  *
  * If this function is called on an actor without a parent, the
- * ClutterActor:show-on-set-parent property will be set to %FALSE
+ * #ClutterActor:show-on-set-parent property will be set to %FALSE
  * as a side-effect.
  */
 void
@@ -419,7 +508,7 @@ clutter_actor_hide (ClutterActor *self)
  * clutter_actor_hide_all:
  * @self: a #ClutterActor
  *
- * Call hide() on all child actors (if any).
+ * Calls clutter_actor_hide() on all child actors (if any).
  *
  * Since: 0.2
  */
@@ -479,12 +568,15 @@ static void
 clutter_actor_real_pick (ClutterActor       *self,
 			 const ClutterColor *color)
 {
+  /* the default implementation is just to paint a rectangle
+   * with the same size of the actor using the passed color
+   */
   if (clutter_actor_should_pick_paint (self))
     {
       cogl_color (color);
       cogl_rectangle (0, 0,
-                      clutter_actor_get_width(self),
-                      clutter_actor_get_height(self));
+                      clutter_actor_get_width (self),
+                      clutter_actor_get_height (self));
     }
 }
 
@@ -512,7 +604,7 @@ clutter_actor_pick (ClutterActor       *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (color != NULL);
 
-  CLUTTER_ACTOR_GET_CLASS (self)->pick(self, color);
+  CLUTTER_ACTOR_GET_CLASS (self)->pick (self, color);
 }
 
 /**
@@ -543,6 +635,117 @@ clutter_actor_should_pick_paint (ClutterActor *self)
   return FALSE;
 }
 
+static void
+clutter_actor_real_get_preferred_width (ClutterActor *self,
+                                        ClutterUnit   for_height,
+                                        ClutterUnit  *min_width_p,
+                                        ClutterUnit  *natural_width_p)
+{
+  /* Default implementation is always 0x0, usually an actor
+   * using this default is relying on someone to set the
+   * request manually
+   */
+
+  if (min_width_p)
+    *min_width_p = 0;
+
+  if (natural_width_p)
+    *natural_width_p = 0;
+}
+
+static void
+clutter_actor_real_get_preferred_height (ClutterActor *self,
+                                         ClutterUnit   for_width,
+                                         ClutterUnit  *min_height_p,
+                                         ClutterUnit  *natural_height_p)
+{
+  /* Default implementation is always 0x0, usually an actor
+   * using this default is relying on someone to set the
+   * request manually
+   */
+
+  if (min_height_p)
+    *min_height_p = 0;
+
+  if (natural_height_p)
+    *natural_height_p = 0;
+}
+
+static void
+clutter_actor_store_old_geometry (ClutterActor    *self,
+                                  ClutterGeometry *geom)
+{
+  clutter_actor_get_geometry (self, geom);
+}
+
+static inline void
+clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
+                                          const ClutterGeometry *old)
+{
+  ClutterGeometry geom;
+
+  clutter_actor_get_geometry (self, &geom);
+
+  g_object_freeze_notify (G_OBJECT (self));
+
+  if (geom.x != old->x)
+    g_object_notify (G_OBJECT (self), "x");
+
+  if (geom.y != old->y)
+    g_object_notify (G_OBJECT (self), "y");
+
+  if (geom.width != old->width)
+    g_object_notify (G_OBJECT (self), "width");
+
+  if (geom.height != old->height)
+    g_object_notify (G_OBJECT (self), "height");
+
+  g_object_thaw_notify (G_OBJECT (self));
+}
+
+static void
+clutter_actor_real_allocate (ClutterActor          *self,
+                             const ClutterActorBox *box,
+                             gboolean               absolute_origin_changed)
+{
+  ClutterActorPrivate *priv = self->priv;
+  gboolean x1_changed, y1_changed, x2_changed, y2_changed;
+  ClutterGeometry old;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  x1_changed = priv->allocation.x1 != box->x1;
+  y1_changed = priv->allocation.y1 != box->y1;
+  x2_changed = priv->allocation.x2 != box->x2;
+  y2_changed = priv->allocation.y2 != box->y2;
+
+  priv->allocation = *box;
+  priv->needs_allocation = FALSE;
+
+  g_object_freeze_notify (G_OBJECT (self));
+
+  if (x1_changed || y1_changed || x2_changed || y2_changed)
+    g_object_notify (G_OBJECT (self), "allocation");
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  g_object_thaw_notify (G_OBJECT (self));
+}
+
+static void
+clutter_actor_real_get_paint_area (ClutterActor    *self,
+                                   ClutterActorBox *box)
+{
+  /* Default implementation is to just return allocation,
+   * i.e. assume the actor draws inside its allocation.
+   *
+   * Note that the virtual get_paint_area method does not
+   * apply the transform; that is done in the wrapper
+   * function.
+   */
+  *box = self->priv->allocation;
+}
+
 /*
  * Utility functions for manipulating transformation matrix
  *
@@ -562,18 +765,18 @@ mtx_transform (ClutterFixed m[16],
     _z = *z;
     _w = *w;
 
-    /* We care lot about precission here, so have to use QMUL */
-    *x = CFX_QMUL (M (m,0,0), _x) + CFX_QMUL (M (m,0,1), _y) +
-	 CFX_QMUL (M (m,0,2), _z) + CFX_QMUL (M (m,0,3), _w);
+    /* We care lot about precision here, so have to use QMUL */
+    *x = CFX_QMUL (M (m, 0, 0), _x) + CFX_QMUL (M (m, 0, 1), _y) +
+	 CFX_QMUL (M (m, 0, 2), _z) + CFX_QMUL (M (m, 0, 3), _w);
 
-    *y = CFX_QMUL (M (m,1,0), _x) + CFX_QMUL (M (m,1,1), _y) +
-	 CFX_QMUL (M (m,1,2), _z) + CFX_QMUL (M (m,1,3), _w);
+    *y = CFX_QMUL (M (m, 1, 0), _x) + CFX_QMUL (M (m, 1, 1), _y) +
+	 CFX_QMUL (M (m, 1, 2), _z) + CFX_QMUL (M (m, 1, 3), _w);
 
-    *z = CFX_QMUL (M (m,2,0), _x) + CFX_QMUL (M (m,2,1), _y) +
-	 CFX_QMUL (M (m,2,2), _z) + CFX_QMUL (M (m,2,3), _w);
+    *z = CFX_QMUL (M (m, 2, 0), _x) + CFX_QMUL (M (m, 2, 1), _y) +
+	 CFX_QMUL (M (m, 2, 2), _z) + CFX_QMUL (M (m, 2, 3), _w);
 
-    *w = CFX_QMUL (M (m,3,0), _x) + CFX_QMUL (M (m,3,1), _y) +
-	 CFX_QMUL (M (m,3,2), _z) + CFX_QMUL (M (m,3,3), _w);
+    *w = CFX_QMUL (M (m, 3, 0), _x) + CFX_QMUL (M (m, 3, 1), _y) +
+	 CFX_QMUL (M (m, 3, 2), _z) + CFX_QMUL (M (m, 3, 3), _w);
 
     /* Specially for Matthew: was going to put a comment here, but could not
      * think of anything at all to say ;)
@@ -594,16 +797,12 @@ clutter_actor_transform_point_relative (ClutterActor *actor,
 					ClutterUnit  *z,
 					ClutterUnit  *w)
 {
-  ClutterFixed           mtx[16];
-  ClutterActorPrivate   *priv;
-
-  priv = actor->priv;
+  ClutterFixed mtx[16];
 
   cogl_push_matrix();
+
   _clutter_actor_apply_modelview_transform_recursive (actor, ancestor);
-
   cogl_get_modelview_matrix (mtx);
-
   mtx_transform (mtx, x, y, z, w);
 
   cogl_pop_matrix();
@@ -620,16 +819,12 @@ clutter_actor_transform_point (ClutterActor *actor,
 			       ClutterUnit  *z,
 			       ClutterUnit  *w)
 {
-  ClutterFixed           mtx[16];
-  ClutterActorPrivate   *priv;
-
-  priv = actor->priv;
+  ClutterFixed mtx[16];
 
   cogl_push_matrix();
+
   _clutter_actor_apply_modelview_transform_recursive (actor, NULL);
-
   cogl_get_modelview_matrix (mtx);
-
   mtx_transform (mtx, x, y, z, w);
 
   cogl_pop_matrix();
@@ -638,8 +833,8 @@ clutter_actor_transform_point (ClutterActor *actor,
 /* Help macros to scale from OpenGL <-1,1> coordinates system to our
  * X-window based <0,window-size> coordinates
  */
-#define MTX_GL_SCALE_X(x,w,v1,v2) (CFX_MUL (((CFX_DIV ((x), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
-#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - CFX_MUL (((CFX_DIV ((y), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
+#define MTX_GL_SCALE_X(x,w,v1,v2) (CFX_QMUL (((CFX_QDIV ((x), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - CFX_QMUL (((CFX_QDIV ((y), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
 #define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
 
 /**
@@ -684,9 +879,9 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
    * The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
    * we would have to divide the original verts with it.
    */
-  vertex->x = CFX_MUL ((point->x + CFX_ONE/2), v[2]);
-  vertex->y = CFX_MUL ((CFX_ONE/2 - point->y), v[3]);
-  vertex->z = CFX_MUL ((point->z + CFX_ONE/2), v[2]);
+  vertex->x = CFX_QMUL ((point->x + CFX_ONE / 2), v[2]);
+  vertex->y = CFX_QMUL ((CFX_ONE / 2 - point->y), v[3]);
+  vertex->z = CFX_QMUL ((point->z + CFX_ONE / 2), v[2]);
 }
 
 /**
@@ -739,17 +934,10 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
 {
   ClutterFixed    mtx[16];
   ClutterFixed    _x, _y, _z, _w;
-  ClutterActorBox coords;
-
-  /*
-   * Need to query coords here, so that we get coorect values for actors that
-   * do not modify priv->coords.
-   */
-  clutter_actor_query_coords (self, &coords);
 
   cogl_push_matrix();
-  _clutter_actor_apply_modelview_transform_recursive (self, ancestor);
 
+  _clutter_actor_apply_modelview_transform_recursive (self, ancestor);
   cogl_get_modelview_matrix (mtx);
 
   _x = 0;
@@ -764,7 +952,7 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
   verts[0].z = _z;
   w[0] = _w;
 
-  _x = coords.x2 - coords.x1;
+  _x = self->priv->allocation.x2 - self->priv->allocation.x1;
   _y = 0;
   _z = 0;
   _w = CFX_ONE;
@@ -777,7 +965,7 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
   w[1] = _w;
 
   _x = 0;
-  _y = coords.y2 - coords.y1;
+  _y = self->priv->allocation.y2 - self->priv->allocation.y1;
   _z = 0;
   _w = CFX_ONE;
 
@@ -788,8 +976,8 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
   verts[2].z = _z;
   w[2] = _w;
 
-  _x = coords.x2 - coords.x1;
-  _y = coords.y2 - coords.y1;
+  _x = self->priv->allocation.x2 - self->priv->allocation.x1;
+  _y = self->priv->allocation.y2 - self->priv->allocation.y1;
   _z = 0;
   _w = CFX_ONE;
 
@@ -814,13 +1002,6 @@ clutter_actor_transform_vertices (ClutterActor  *self,
 {
   ClutterFixed           mtx[16];
   ClutterFixed           _x, _y, _z, _w;
-  ClutterActorBox        coords;
-
-  /*
-   * Need to query coords here, so that we get coorect values for actors that
-   * do not modify priv->coords.
-   */
-  clutter_actor_query_coords (self, &coords);
 
   cogl_push_matrix();
   _clutter_actor_apply_modelview_transform_recursive (self, NULL);
@@ -839,7 +1020,7 @@ clutter_actor_transform_vertices (ClutterActor  *self,
   verts[0].z = _z;
   w[0] = _w;
 
-  _x = coords.x2 - coords.x1;
+  _x = self->priv->allocation.x2 - self->priv->allocation.x1;
   _y = 0;
   _z = 0;
   _w = CFX_ONE;
@@ -852,7 +1033,7 @@ clutter_actor_transform_vertices (ClutterActor  *self,
   w[1] = _w;
 
   _x = 0;
-  _y = coords.y2 - coords.y1;
+  _y = self->priv->allocation.y2 - self->priv->allocation.y1;
   _z = 0;
   _w = CFX_ONE;
 
@@ -863,8 +1044,8 @@ clutter_actor_transform_vertices (ClutterActor  *self,
   verts[2].z = _z;
   w[2] = _w;
 
-  _x = coords.x2 - coords.x1;
-  _y = coords.y2 - coords.y1;
+  _x = self->priv->allocation.x2 - self->priv->allocation.x1;
+  _y = self->priv->allocation.y2 - self->priv->allocation.y1;
   _z = 0;
   _w = CFX_ONE;
 
@@ -879,7 +1060,7 @@ clutter_actor_transform_vertices (ClutterActor  *self,
 }
 
 /**
- * clutter_actor_get_relative_vertices:
+ * clutter_actor_get_allocation_vertices:
  * @self: A #ClutterActor
  * @ancestor: A #ClutterActor to calculate the vertices against, or %NULL
  *   to use the default #ClutterStage
@@ -899,14 +1080,14 @@ clutter_actor_transform_vertices (ClutterActor  *self,
  * If @ancestor is %NULL the ancestor will be the #ClutterStage. In
  * this case, the coordinates returned will be the coordinates on
  * the stage before the projection is applied. This is different from
- * the behaviour of clutter_actor_get_vertices().
+ * the behaviour of clutter_actor_get_abs_allocation_vertices().
  *
  * Since: 0.6
  */
 void
-clutter_actor_get_relative_vertices (ClutterActor  *self,
-				     ClutterActor  *ancestor,
-				     ClutterVertex  verts[4])
+clutter_actor_get_allocation_vertices (ClutterActor  *self,
+                                       ClutterActor  *ancestor,
+                                       ClutterVertex  verts[4])
 {
   ClutterFixed           v[4];
   ClutterFixed           w[4];
@@ -933,23 +1114,8 @@ clutter_actor_get_relative_vertices (ClutterActor  *self,
   if (stage == NULL)
     stage = clutter_stage_get_default ();
 
-  clutter_stage_ensure_current (CLUTTER_STAGE(stage));
-
-  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
-    {
-      ClutterPerspective perspective;
-
-      clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
-
-      cogl_setup_viewport (clutter_actor_get_width (stage),
-			   clutter_actor_get_height (stage),
-			   perspective.fovy,
-			   perspective.aspect,
-			   perspective.z_near,
-			   perspective.z_far);
-
-      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
-    }
+  clutter_stage_ensure_current (CLUTTER_STAGE (stage));
+  _clutter_stage_maybe_setup_viewport (CLUTTER_STAGE (stage));
 
   clutter_actor_transform_vertices_relative (self, ancestor, verts, w);
   cogl_get_viewport (v);
@@ -958,25 +1124,25 @@ clutter_actor_get_relative_vertices (ClutterActor  *self,
    * The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
    * we would have to devide the original verts with it.
    */
-  verts[0].x = CFX_MUL ((verts[0].x + CFX_ONE/2), v[2]);
-  verts[0].y = CFX_MUL ((CFX_ONE/2 - verts[0].y), v[3]);
-  verts[0].z = CFX_MUL ((verts[0].z + CFX_ONE/2), v[2]);
+  verts[0].x = CFX_QMUL ((verts[0].x + CFX_ONE / 2), v[2]);
+  verts[0].y = CFX_QMUL ((CFX_ONE / 2 - verts[0].y), v[3]);
+  verts[0].z = CFX_QMUL ((verts[0].z + CFX_ONE / 2), v[2]);
 
-  verts[1].x = CFX_MUL ((verts[1].x + CFX_ONE/2), v[2]);
-  verts[1].y = CFX_MUL ((CFX_ONE/2 - verts[1].y), v[3]);
-  verts[1].z = CFX_MUL ((verts[1].z + CFX_ONE/2), v[2]);
+  verts[1].x = CFX_QMUL ((verts[1].x + CFX_ONE / 2), v[2]);
+  verts[1].y = CFX_QMUL ((CFX_ONE / 2 - verts[1].y), v[3]);
+  verts[1].z = CFX_QMUL ((verts[1].z + CFX_ONE / 2), v[2]);
 
-  verts[2].x = CFX_MUL ((verts[2].x + CFX_ONE/2), v[2]);
-  verts[2].y = CFX_MUL ((CFX_ONE/2 - verts[2].y), v[3]);
-  verts[2].z = CFX_MUL ((verts[2].z + CFX_ONE/2), v[2]);
+  verts[2].x = CFX_QMUL ((verts[2].x + CFX_ONE / 2), v[2]);
+  verts[2].y = CFX_QMUL ((CFX_ONE / 2 - verts[2].y), v[3]);
+  verts[2].z = CFX_QMUL ((verts[2].z + CFX_ONE / 2), v[2]);
 
-  verts[3].x = CFX_MUL ((verts[3].x + CFX_ONE/2), v[2]);
-  verts[3].y = CFX_MUL ((CFX_ONE/2 - verts[3].y), v[3]);
-  verts[3].z = CFX_MUL ((verts[3].z + CFX_ONE/2), v[2]);
+  verts[3].x = CFX_QMUL ((verts[3].x + CFX_ONE / 2), v[2]);
+  verts[3].y = CFX_QMUL ((CFX_ONE / 2 - verts[3].y), v[3]);
+  verts[3].z = CFX_QMUL ((verts[3].z + CFX_ONE / 2), v[2]);
 }
 
 /**
- * clutter_actor_get_vertices:
+ * clutter_actor_get_abs_allocation_vertices:
  * @self: A #ClutterActor
  * @verts: Pointer to a location of an array of 4 #ClutterVertex where to
  * store the result.
@@ -994,8 +1160,8 @@ clutter_actor_get_relative_vertices (ClutterActor  *self,
  * Since: 0.4
  */
 void
-clutter_actor_get_vertices (ClutterActor  *self,
-                            ClutterVertex  verts[4])
+clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
+                                           ClutterVertex  verts[4])
 {
   ClutterFixed           mtx_p[16];
   ClutterFixed           v[4];
@@ -1022,23 +1188,8 @@ clutter_actor_get_vertices (ClutterActor  *self,
   if (stage == NULL)
     stage = clutter_stage_get_default ();
 
-  clutter_stage_ensure_current (CLUTTER_STAGE(stage));
-
-  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
-    {
-      ClutterPerspective perspective;
-
-      clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
-
-      cogl_setup_viewport (clutter_actor_get_width (stage),
-			   clutter_actor_get_height (stage),
-			   perspective.fovy,
-			   perspective.aspect,
-			   perspective.z_near,
-			   perspective.z_far);
-
-      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
-    }
+  clutter_stage_ensure_current (CLUTTER_STAGE (stage));
+  _clutter_stage_maybe_setup_viewport (CLUTTER_STAGE (stage));
 
   clutter_actor_transform_vertices (self, verts, w);
   cogl_get_projection_matrix (mtx_p);
@@ -1092,17 +1243,15 @@ clutter_actor_get_vertices (ClutterActor  *self,
  * of the caller to do so as appropriate
  */
 static void
-_clutter_actor_apply_modelview_transform (ClutterActor * self)
+_clutter_actor_apply_modelview_transform (ClutterActor *self)
 {
   ClutterActorPrivate *priv = self->priv;
   gboolean             is_stage = CLUTTER_IS_STAGE (self);
 
   if (!is_stage)
-    {
-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->coords.x1),
-		       CLUTTER_UNITS_TO_FIXED (priv->coords.y1),
-		       0);
-    }
+    cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->allocation.x1),
+		     CLUTTER_UNITS_TO_FIXED (priv->allocation.y1),
+		     0);
 
   /*
    * because the rotation involves translations, we must scale before
@@ -1110,11 +1259,8 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
    * the translations included in the rotation are not scaled and so the
    * entire object will move on the screen as a result of rotating it).
    */
-  if (priv->scale_x != CFX_ONE ||
-      priv->scale_y != CFX_ONE)
-    {
-      cogl_scale (priv->scale_x, priv->scale_y);
-    }
+  if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
+    cogl_scale (priv->scale_x, priv->scale_y);
 
    if (priv->rzang)
     {
@@ -1156,11 +1302,9 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
     }
 
   if (!is_stage && (priv->anchor_x || priv->anchor_y))
-    {
-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->anchor_x),
-		       CLUTTER_UNITS_TO_FIXED (-priv->anchor_y),
-		       0);
-    }
+    cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->anchor_x),
+		     CLUTTER_UNITS_TO_FIXED (-priv->anchor_y),
+		     0);
 
   if (priv->z)
     cogl_translatex (0, 0, priv->z);
@@ -1221,6 +1365,7 @@ clutter_actor_paint (ClutterActor *self)
   ClutterMainContext *context;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
   priv = self->priv;
 
   if (!CLUTTER_ACTOR_IS_REALIZED (self))
@@ -1273,118 +1418,6 @@ clutter_actor_paint (ClutterActor *self)
   cogl_pop_matrix();
 }
 
-static void
-clutter_actor_real_request_coords (ClutterActor    *self,
-                                   ClutterActorBox *box)
-{
-  self->priv->coords = *box;
-}
-
-/**
- * clutter_actor_request_coords:
- * @self: A #ClutterActor
- * @box: A #ClutterActorBox with the new coordinates, in ClutterUnits
- *
- * Requests new untransformed coordinates for the bounding box of
- * a #ClutterActor. The coordinates must be relative to the current
- * parent of the actor.
- *
- * This function should not be called directly by applications;
- * instead, the various position/geometry methods should be used.
- *
- * Note: Actors overriding the ClutterActor::request_coords() virtual
- * function should always chain up to the parent class request_coords()
- * method. Actors should override this function only if they need to
- * recompute some internal state or need to reposition their children.
- */
-void
-clutter_actor_request_coords (ClutterActor    *self,
-			      ClutterActorBox *box)
-{
-  ClutterActorPrivate *priv;
-  gboolean x_change, y_change, width_change, height_change;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (box != NULL);
-
-  priv = self->priv;
-
-  /* avoid calling request coords if the coordinates did not change */
-  x_change      = (priv->coords.x1 != box->x1);
-  y_change      = (priv->coords.y1 != box->y1);
-  width_change  = ((priv->coords.x2 - priv->coords.x1) != (box->x2 - box->x1));
-  height_change = ((priv->coords.y2 - priv->coords.y1) != (box->y2 - box->y1));
-
-  if (x_change || y_change || width_change || height_change)
-    {
-      g_object_ref (self);
-      g_object_freeze_notify (G_OBJECT (self));
-
-      CLUTTER_ACTOR_GET_CLASS (self)->request_coords (self, box);
-
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-	clutter_actor_queue_redraw (self);
-
-      if (x_change)
-	g_object_notify (G_OBJECT (self), "x");
-
-      if (y_change)
-	g_object_notify (G_OBJECT (self), "y");
-
-      if (width_change)
-	g_object_notify (G_OBJECT (self), "width");
-
-      if (height_change)
-	g_object_notify (G_OBJECT (self), "height");
-
-      g_object_thaw_notify (G_OBJECT (self));
-      g_object_unref (self);
-    }
-}
-
-/**
- * clutter_actor_query_coords:
- * @self: A #ClutterActor
- * @box: A location to store the actor's #ClutterActorBox
- *
- * Requests the untransformed co-ordinates (in #ClutterUnit<!-- -->s) for
- * the #ClutterActor, relative to any parent.
- *
- * This function should not be called directly by applications.
- * The various position/geometry methods should be used instead.
- */
-void
-clutter_actor_query_coords (ClutterActor    *self,
-			    ClutterActorBox *box)
-{
-  ClutterActorClass *klass;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (box != NULL);
-
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
-
-  box->x1 = self->priv->coords.x1;
-  box->y1 = self->priv->coords.y1;
-  box->x2 = self->priv->coords.x2;
-  box->y2 = self->priv->coords.y2;
-
-  if (klass->query_coords)
-    {
-      /* FIXME: This is kind of a cludge - we pass out *private*
-       *        co-ords down to any subclasses so they can modify
-       *        we then resync any changes. Needed for group class.
-       *        Need to figure out nicer way.
-      */
-      klass->query_coords(self, box);
-
-      self->priv->coords.x1 = box->x1;
-      self->priv->coords.y1 = box->y1;
-      self->priv->coords.x2 = box->x2;
-      self->priv->coords.y2 = box->y2;
-    }
-}
-
 /* fixed point, unit based rotation setter, to be used by
  * set_property() so that we don't lose precision in the
  * center coordinates by converting them to and from units
@@ -1419,6 +1452,7 @@ clutter_actor_set_rotation_internal (ClutterActor      *self,
       g_object_notify (G_OBJECT (self), "rotation-angle-y");
       g_object_notify (G_OBJECT (self), "rotation-center-y");
       break;
+
     case CLUTTER_Z_AXIS:
       priv->rzang = angle;
       priv->rzx = center_x;
@@ -1461,6 +1495,42 @@ clutter_actor_set_property (GObject      *object,
       break;
     case PROP_HEIGHT:
       clutter_actor_set_height (actor, g_value_get_int (value));
+      break;
+    case PROP_FIXED_X:
+      clutter_actor_set_xu (actor, clutter_value_get_unit (value));
+      break;
+    case PROP_FIXED_Y:
+      clutter_actor_set_yu (actor, clutter_value_get_unit (value));
+      break;
+    case PROP_FIXED_POSITION_SET:
+      clutter_actor_set_fixed_position_set (actor, g_value_get_boolean (value));
+      break;
+    case PROP_MIN_WIDTH:
+      clutter_actor_set_min_width (actor, clutter_value_get_unit (value));
+      break;
+    case PROP_MIN_HEIGHT:
+      clutter_actor_set_min_height (actor, clutter_value_get_unit (value));
+      break;
+    case PROP_NATURAL_WIDTH:
+      clutter_actor_set_natural_width (actor, clutter_value_get_unit (value));
+      break;
+    case PROP_NATURAL_HEIGHT:
+      clutter_actor_set_natural_height (actor, clutter_value_get_unit (value));
+      break;
+    case PROP_MIN_WIDTH_SET:
+      clutter_actor_set_min_width_set (actor, g_value_get_boolean (value));
+      break;
+    case PROP_MIN_HEIGHT_SET:
+      clutter_actor_set_min_height_set (actor, g_value_get_boolean (value));
+      break;
+    case PROP_NATURAL_WIDTH_SET:
+      clutter_actor_set_natural_width_set (actor, g_value_get_boolean (value));
+      break;
+    case PROP_NATURAL_HEIGHT_SET:
+      clutter_actor_set_natural_height_set (actor, g_value_get_boolean (value));
+      break;
+    case PROP_REQUEST_MODE:
+      clutter_actor_set_request_mode (actor, g_value_get_enum (value));
       break;
     case PROP_DEPTH:
       clutter_actor_set_depth (actor, g_value_get_int (value));
@@ -1620,6 +1690,45 @@ clutter_actor_get_property (GObject    *object,
     case PROP_HEIGHT:
       g_value_set_int (value, clutter_actor_get_height (actor));
       break;
+    case PROP_FIXED_X:
+      clutter_value_set_unit (value, priv->fixed_x);
+      break;
+    case PROP_FIXED_Y:
+      clutter_value_set_unit (value, priv->fixed_y);
+      break;
+    case PROP_FIXED_POSITION_SET:
+      g_value_set_boolean (value, priv->position_set);
+      break;
+    case PROP_MIN_WIDTH:
+      clutter_value_set_unit (value, priv->request_min_width);
+      break;
+    case PROP_MIN_HEIGHT:
+      clutter_value_set_unit (value, priv->request_min_height);
+      break;
+    case PROP_NATURAL_WIDTH:
+      clutter_value_set_unit (value, priv->request_natural_width);
+      break;
+    case PROP_NATURAL_HEIGHT:
+      clutter_value_set_unit (value, priv->request_natural_height);
+      break;
+    case PROP_MIN_WIDTH_SET:
+      g_value_set_boolean (value, priv->min_width_set);
+      break;
+    case PROP_MIN_HEIGHT_SET:
+      g_value_set_boolean (value, priv->min_height_set);
+      break;
+    case PROP_NATURAL_WIDTH_SET:
+      g_value_set_boolean (value, priv->natural_width_set);
+      break;
+    case PROP_NATURAL_HEIGHT_SET:
+      g_value_set_boolean (value, priv->natural_height_set);
+      break;
+    case PROP_REQUEST_MODE:
+      g_value_set_enum (value, priv->request_mode);
+      break;
+    case PROP_ALLOCATION:
+      g_value_set_boxed (value, &priv->allocation);
+      break;
     case PROP_DEPTH:
       g_value_set_int (value, clutter_actor_get_depth (actor));
       break;
@@ -1765,55 +1874,324 @@ clutter_actor_class_init (ClutterActorClass *klass)
   /**
    * ClutterActor:x:
    *
-   * X coordinate of the actor.
+   * X coordinate of the actor in pixels. If written, forces a fixed
+   * position for the actor. If read, returns the fixed position if any,
+   * otherwise the allocation if available, otherwise 0.
    */
   g_object_class_install_property (object_class,
-                                   PROP_X,
-                                   g_param_spec_int ("x",
-                                                     "X co-ord",
-                                                     "X co-ord of actor",
-                                                     -G_MAXINT, G_MAXINT,
-                                                     0,
-                                                     CLUTTER_PARAM_READWRITE));
+    PROP_X,
+    g_param_spec_int ("x",
+                      "X coordinate",
+                      "X coordinate of the actor",
+                      -G_MAXINT, G_MAXINT,
+                      0,
+                      CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:y:
    *
-   * Y coordinate of the actor.
+   * Y coordinate of the actor in pixels. If written, forces a fixed
+   * position for the actor.  If read, returns the fixed position if
+   * any, otherwise the allocation if available, otherwise 0.
    */
   g_object_class_install_property (object_class,
-                                   PROP_Y,
-                                   g_param_spec_int ("y",
-                                                     "Y co-ord",
-                                                     "Y co-ord of actor",
-                                                     -G_MAXINT, G_MAXINT,
-                                                     0,
-                                                     CLUTTER_PARAM_READWRITE));
+    PROP_Y,
+    g_param_spec_int ("y",
+                      "Y coordinate",
+                      "Y coordinate of the actor",
+                      -G_MAXINT, G_MAXINT,
+                      0,
+                      CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:width:
    *
-   * Width of the actor (in pixels).
+   * Width of the actor (in pixels). If written, forces the minimum and
+   * natural size request of the actor to the given width. If read, returns
+   * the allocated width if available, otherwise the width request.
    */
   g_object_class_install_property (object_class,
-                                   PROP_WIDTH,
-                                   g_param_spec_int ("width",
-                                                     "Width",
-                                                     "Width of actor in pixels",
-                                                     0, G_MAXINT,
-                                                     0,
-                                                     CLUTTER_PARAM_READWRITE));
+    PROP_WIDTH,
+    g_param_spec_int ("width",
+                      "Width",
+                      "Width of the actor",
+                      0, G_MAXINT,
+                      0,
+                      CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:height:
    *
-   * Height of the actor (in pixels).
+   * Height of the actor (in pixels).  If written, forces the minimum and
+   * natural size request of the actor to the given height. If read, returns
+   * the allocated height if available, otherwise the height request.
    */
   g_object_class_install_property (object_class,
-                                   PROP_HEIGHT,
-                                   g_param_spec_int ("height",
-                                                     "Height",
-                                                     "Height of actor in pixels",
-                                                     0, G_MAXINT,
-                                                     0,
-                                                     CLUTTER_PARAM_READWRITE));
+    PROP_HEIGHT,
+    g_param_spec_int ("height",
+                      "Height",
+                      "Height of the actor",
+                      0, G_MAXINT,
+                      0,
+                      CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterActor:fixed-x
+   *
+   * The fixed X position of the actor in ClutterUnit<!-- -->s. Writing this
+   * property sets the fixed-position-set property as well, as a side effect.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+                   (object_class,
+                    PROP_FIXED_X,
+                    clutter_param_spec_unit ("fixed-x",
+                                             "Fixed X",
+                                             "Forced X position of the actor",
+                                             CLUTTER_MINUNIT, CLUTTER_MAXUNIT,
+                                             0,
+                                             CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterActor:fixed-y
+   *
+   * The fixed Y position of the actor in ClutterUnit<!-- -->s. Writing
+   * this property sets the fixed-position-set property as well, as a side
+   * effect.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+                   (object_class,
+                    PROP_FIXED_Y,
+                    clutter_param_spec_unit ("fixed-y",
+                                             "Fixed Y",
+                                             "Forced Y position of the actor",
+                                             CLUTTER_MINUNIT, CLUTTER_MAXUNIT,
+                                             0,
+                                             CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:fixed-position-set
+   *
+   * This flag controls whether the fixed-x and fixed-y properties are used.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+        (object_class,
+         PROP_FIXED_POSITION_SET,
+         g_param_spec_boolean ("fixed-position-set",
+                               "Fixed position set",
+                               "Whether to use fixed positioning for the actor",
+                               FALSE,
+                               CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:min-width
+   *
+   * A forced minimum width request for the actor, in ClutterUnit<!-- -->s.
+   * Writing this property sets the min-width-set property as well, as a side
+   * effect. This property overrides the usual width request of the actor.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property 
+        (object_class,
+         PROP_MIN_WIDTH,
+         clutter_param_spec_unit ("min-width",
+                                  "Min Width",
+                                  "Forced minimum width request for the actor",
+                                  0, CLUTTER_MAXUNIT,
+                                  0,
+                                  CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:min-height
+   *
+   * A forced minimum height request for the actor, in
+   * ClutterUnit<!-- -->s. Writing this property sets the min-height-set
+   * property as well, as a side effect. This property overrides the usual
+   * height request of the actor.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+        (object_class,
+         PROP_MIN_HEIGHT,
+         clutter_param_spec_unit ("min-height",
+                                  "Min Height",
+                                  "Forced minimum height request for the actor",
+                                  0, CLUTTER_MAXUNIT,
+                                  0,
+                                  CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:natural-width
+   *
+   * A forced natural width request for the actor, in ClutterUnit<!-- -->s.
+   * Writing this property sets the natural-width-set property as
+   * well, as a side effect. This property overrides the usual width request
+   * of the actor.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+        (object_class,
+         PROP_NATURAL_WIDTH,
+         clutter_param_spec_unit ("natural-width",
+                                  "Natural Width",
+                                  "Forced natural width request for the actor",
+                                  0, CLUTTER_MAXUNIT,
+                                  0,
+                                  CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:natural-height
+   *
+   * A forced natural height request for the actor, in ClutterUnit<!-- -->s.
+   * Writing this property sets the natural-height-set property as well, as
+   * a side effect. This property overrides the usual height request
+   * of the actor.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+        (object_class,
+         PROP_NATURAL_HEIGHT,
+         clutter_param_spec_unit ("natural-height",
+                                  "Natural Height",
+                                  "Forced natural height request for the actor",
+                                  0, CLUTTER_MAXUNIT,
+                                  0,
+                                  CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:min-width-set
+   *
+   * This flag controls whether the min-width property is used.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+        (object_class,
+         PROP_MIN_WIDTH_SET,
+         g_param_spec_boolean ("min-width-set",
+                               "Minimum width set",
+                               "Whether to use the min-width property",
+                               FALSE,
+                               CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:min-height-set
+   *
+   * This flag controls whether the min-height property is used.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+        (object_class,
+         PROP_MIN_HEIGHT_SET,
+         g_param_spec_boolean ("min-height-set",
+                               "Minimum height set",
+                               "Whether to use the min-height property",
+                               FALSE,
+                               CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:natural-width-set
+   *
+   * This flag controls whether the natural-width property is used.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+        (object_class,
+         PROP_NATURAL_WIDTH_SET,
+         g_param_spec_boolean ("natural-width-set",
+                               "Natural width set",
+                               "Whether to use the natural-width property",
+                               FALSE,
+                               CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:natural-height-set
+   *
+   * This flag controls whether the natural-height property is used.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property
+        (object_class,
+         PROP_NATURAL_HEIGHT_SET,
+         g_param_spec_boolean ("natural-height-set",
+                               "Natural height set",
+                               "Whether to use the natural-height property",
+                               FALSE,
+                               CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:allocation:
+   *
+   * The allocation for the actor, in ClutterUnit<!-- -->s. This is
+   * read-only, but you might monitor this property to know when an
+   * actor moves or resizes.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_ALLOCATION,
+                                   g_param_spec_boxed ("allocation",
+                                                       "Allocation",
+                                                       "The actor's allocation",
+                                                       CLUTTER_TYPE_ACTOR_BOX,
+                                                       CLUTTER_PARAM_READABLE));
+  /**
+   * ClutterActor:request-mode:
+   *
+   * Request mode for the #ClutterActor. The request mode determines the
+   * type of geometry management used by the actor, either height for width
+   * (the default) or width for height.
+   *
+   * For actors implementing height for width, the parent container should get
+   * the preferred width first, and then the preferred height for that width.
+   *
+   * For actors implementing width for height, the parent container should get
+   * the preferred height first, and then the preferred width for that height.
+   *
+   * For instance:
+   *
+   * |[
+   *   ClutterRequestMode mode;
+   *   ClutterUnit natural_width, min_width;
+   *   ClutterUnit natural_height, min_height;
+   *
+   *   g_object_get (G_OBJECT (child), "request-mode", &amp;mode, NULL);
+   *   if (mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
+   *     {
+   *       clutter_actor_get_preferred_width (child, -1,
+   *                                          &amp;min_width,
+   *                                          &amp;natural_width);
+   *       clutter_actor_get_preferred_height (child, natural_width,
+   *                                           &amp;min_height,
+   *                                           &amp;natural_height);
+   *     }
+   *   else
+   *     {
+   *       clutter_actor_get_preferred_height (child, -1,
+   *                                           &amp;min_height,
+   *                                           &amp;natural_height);
+   *       clutter_actor_get_preferred_width (child, natural_height,
+   *                                          &amp;min_width,
+   *                                          &amp;natural_width);
+   *     }
+   * ]|
+   *
+   * will retrieve the minimum and natural width and height depending on the
+   * preferred request mode of the #ClutterActor "child".
+   *
+   * The clutter_actor_get_preferred_size() function will implement this
+   * check for you.
+   *
+   * Since: 0.8
+   */
+  g_object_class_install_property (object_class,
+    PROP_REQUEST_MODE,
+    g_param_spec_enum ("request-mode",
+                       "Request Mode",
+                       "The actor's request mode",
+                       CLUTTER_TYPE_REQUEST_MODE,
+                       CLUTTER_REQUEST_HEIGHT_FOR_WIDTH,
+                       CLUTTER_PARAM_READWRITE));
+
   /**
    * ClutterActor:depth:
    *
@@ -1865,7 +2243,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                    PROP_REACTIVE,
                                    g_param_spec_boolean ("reactive",
                                                          "Reactive",
-                                                         "Whether the actor is reactive to events or not",
+                                                         "Whether the actor "
+                                                         "is reactive to "
+                                                         "events or not",
                                                          FALSE,
                                                          CLUTTER_PARAM_READWRITE));
   /**
@@ -1877,7 +2257,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                    PROP_HAS_CLIP,
                                    g_param_spec_boolean ("has-clip",
                                                          "Has Clip",
-                                                         "Whether the actor has a clip set or not",
+                                                         "Whether the actor "
+                                                         "has a clip set or "
+                                                         "not",
                                                          FALSE,
                                                          CLUTTER_PARAM_READABLE));
   /**
@@ -1889,7 +2271,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                    PROP_CLIP,
                                    g_param_spec_boxed ("clip",
                                                        "Clip",
-                                                       "The clip region for the actor",
+                                                       "The clip region for "
+                                                       "the actor",
                                                        CLUTTER_TYPE_GEOMETRY,
                                                        CLUTTER_PARAM_READWRITE));
   /**
@@ -2489,14 +2872,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->hide = clutter_actor_real_hide;
   klass->hide_all = clutter_actor_hide;
   klass->pick = clutter_actor_real_pick;
-  klass->request_coords = clutter_actor_real_request_coords;
+  klass->get_preferred_width = clutter_actor_real_get_preferred_width;
+  klass->get_preferred_height = clutter_actor_real_get_preferred_height;
+  klass->allocate = clutter_actor_real_allocate;
+  klass->get_paint_area = clutter_actor_real_get_paint_area;
 }
 
 static void
 clutter_actor_init (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
-  ClutterActorBox box = { 0, };
 
   self->priv = priv = CLUTTER_ACTOR_GET_PRIVATE (self);
 
@@ -2509,9 +2894,11 @@ clutter_actor_init (ClutterActor *self)
   priv->shader_data  = NULL;
   priv->show_on_set_parent = TRUE;
 
-  memset (priv->clip, 0, sizeof (ClutterUnit) * 4);
+  priv->needs_width_request  = TRUE;
+  priv->needs_height_request = TRUE;
+  priv->needs_allocation     = TRUE;
 
-  clutter_actor_request_coords (self, &box);
+  memset (priv->clip, 0, sizeof (ClutterUnit) * 4);
 }
 
 /**
@@ -2578,25 +2965,531 @@ clutter_actor_queue_redraw (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_queue_relayout:
+ * @self: A #ClutterActor
+ *
+ * Indicates that the actor's size request or other layout-affecting
+ * properties may have changed. This function is used inside #ClutterActor
+ * subclass implementations, not by applications directly.
+ *
+ * Queueing a new layout automatically queues a redraw as well.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_queue_relayout (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+
+  priv = self->priv;
+
+  if (priv->needs_width_request &&
+      priv->needs_height_request &&
+      priv->needs_allocation)
+    return; /* save some cpu cycles */
+
+  self->priv->needs_width_request  = TRUE;
+  self->priv->needs_height_request = TRUE;
+  self->priv->needs_allocation     = TRUE;
+
+  /* always repaint also */
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
+
+  /* We need to go all the way up the hierarchy */
+  if (self->priv->parent_actor)
+    clutter_actor_queue_relayout (self->priv->parent_actor);
+}
+
+/**
+ * clutter_actor_get_preferred_size:
+ * @self: a #ClutterActor
+ * @min_width_p: return location for the minimum width, or %NULL
+ * @min_height_p: return location for the minimum height, or %NULL
+ * @natural_width_p: return location for the natural width, or %NULL
+ * @natural_height_p: return location for the natural height, or %NULL
+ *
+ * Computes the preferred minimum and natural size of an actor, taking into
+ * account the actor's geometry management (either height-for-width
+ * or width-for-height).
+ *
+ * The width and height used to compute the preferred height and preferred
+ * width are the actor's natural ones.
+ *
+ * If you need to control the height for the preferred width, or the width for
+ * the preferred height, you should use clutter_actor_get_preferred_width()
+ * and clutter_actor_get_preferred_height(), and check the actor's preferred
+ * geometry management using the #ClutterActor:request-mode property.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_get_preferred_size (ClutterActor *self,
+                                  ClutterUnit  *min_width_p,
+                                  ClutterUnit  *min_height_p,
+                                  ClutterUnit  *natural_width_p,
+                                  ClutterUnit  *natural_height_p)
+{
+  ClutterActorPrivate *priv;
+  ClutterUnit for_width, for_height;
+  ClutterUnit min_width, min_height;
+  ClutterUnit natural_width, natural_height;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  for_width = for_height = 0;
+  min_width = min_height = 0;
+  natural_width = natural_height = 0;
+
+  if (priv->request_mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
+    {
+      clutter_actor_get_preferred_width (self, -1,
+                                         &min_width,
+                                         &natural_width);
+      clutter_actor_get_preferred_height (self, natural_width,
+                                          &min_height,
+                                          &natural_height);
+    }
+  else
+    {
+      clutter_actor_get_preferred_height (self, -1,
+                                          &min_height,
+                                          &natural_height);
+      clutter_actor_get_preferred_width (self, natural_height,
+                                         &min_width,
+                                         &natural_width);
+    }
+
+  if (min_width_p)
+    *min_width_p = min_width;
+
+  if (min_height_p)
+    *min_height_p = min_height;
+
+  if (natural_width_p)
+    *natural_width_p = natural_width;
+
+  if (natural_height_p)
+    *natural_height_p = natural_height;
+}
+
+/**
+ * clutter_actor_get_preferred_width:
+ * @self: A #ClutterActor
+ * @for_height: available height when computing the preferred width,
+ *   or a negative value to indicate that no height is defined
+ * @min_width_p: return location for min width, or %NULL
+ * @natural_width_p: return location for min width, or %NULL
+ *
+ * Computes the requested minimum and natural widths for an actor,
+ * optionally depending on the specified height, or if they are
+ * already computed, returns the cached values.
+ *
+ * An actor may not get its request - depending on the layout
+ * manager that's in effect.
+ *
+ * A request should not incorporate the actor's scale or anchor point;
+ * those transformations do not affect layout, only rendering.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_get_preferred_width (ClutterActor *self,
+                                   ClutterUnit   for_height,
+                                   ClutterUnit  *min_width_p,
+                                   ClutterUnit  *natural_width_p)
+{
+  ClutterActorClass *klass;
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+  priv = self->priv;
+
+  if (priv->needs_width_request ||
+      priv->request_width_for_height != for_height)
+    {
+      ClutterUnit min_width, natural_width;
+
+      min_width = natural_width = 0;
+
+      klass->get_preferred_width (self, for_height,
+                                  &min_width,
+                                  &natural_width);
+
+      if (natural_width < min_width)
+        {
+          g_warning ("Actor of type %s reported a natural width of %d (%d px) "
+                     "lower than min width %d (%d px)",
+                     G_OBJECT_TYPE_NAME (self),
+                     natural_width, CLUTTER_UNITS_TO_DEVICE (natural_width),
+                     min_width, CLUTTER_UNITS_TO_DEVICE (min_width));
+        }
+
+      if (!priv->min_width_set)
+        priv->request_min_width = min_width;
+
+      if (!priv->natural_width_set)
+        priv->request_natural_width = natural_width;
+
+      priv->request_width_for_height = for_height;
+      priv->needs_width_request = FALSE;
+    }
+
+  if (min_width_p)
+    *min_width_p = priv->request_min_width;
+
+  if (natural_width_p)
+    *natural_width_p = priv->request_natural_width;
+}
+
+/**
+ * clutter_actor_get_preferred_height:
+ * @self: A #ClutterActor
+ * @for_width: available width to assume in computing desired height,
+ *   or a negative value to indicate that no width is defined
+ * @min_height_p: return location for min height, or %NULL
+ * @natural_height_p: return location for natural height, or %NULL
+ *
+ * Computes the requested minimum and natural heights for an actor,
+ * or if they are already computed, returns the cached values.
+ *
+ * An actor may not get its request - depending on the layout
+ * manager that's in effect.
+ *
+ * A request should not incorporate the actor's scale or anchor point;
+ * those transformations do not affect layout, only rendering.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_get_preferred_height (ClutterActor *self,
+                                    ClutterUnit   for_width,
+                                    ClutterUnit  *min_height_p,
+                                    ClutterUnit  *natural_height_p)
+{
+  ClutterActorClass *klass;
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+  priv = self->priv;
+
+  if (priv->needs_height_request ||
+      priv->request_height_for_width != for_width)
+    {
+      ClutterUnit min_height, natural_height;
+
+      min_height = natural_height = 0;
+
+      klass->get_preferred_height (self, for_width,
+                                   &min_height,
+                                   &natural_height);
+
+      if (natural_height < min_height)
+        {
+          g_warning ("Actor of type %s reported a natural height of %d "
+                     "(%d px) lower than min height %d (%d px)",
+                     G_OBJECT_TYPE_NAME (self),
+                     natural_height, CLUTTER_UNITS_TO_DEVICE (natural_height),
+                     min_height, CLUTTER_UNITS_TO_DEVICE (min_height));
+        }
+
+      if (!priv->min_height_set)
+        priv->request_min_height = min_height;
+
+      if (!priv->natural_height_set)
+        priv->request_natural_height = natural_height;
+
+      priv->request_height_for_width = for_width;
+      priv->needs_height_request = FALSE;
+    }
+
+  if (min_height_p)
+    *min_height_p = priv->request_min_height;
+
+  if (natural_height_p)
+    *natural_height_p = priv->request_natural_height;
+}
+
+/**
+ * clutter_actor_get_allocation_coords:
+ * @self: A #ClutterActor
+ * @x1: x1 coord
+ * @y1: y1 coord
+ * @x2: x2 coord
+ * @y2: y2 coord
+ *
+ * Gets the layout box an actor has been assigned.  The allocation can
+ * only be assumed valid inside a paint() method; anywhere else, it
+ * may be out-of-date.
+ *
+ * An allocation does not incorporate the actor's scale or anchor point;
+ * those transformations do not affect layout, only rendering.
+ *
+ * The returned coordinates are in pixels.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_get_allocation_coords (ClutterActor  *self,
+                                     gint          *x1,
+                                     gint          *y1,
+                                     gint          *x2,
+                                     gint          *y2)
+{
+  ClutterActorBox allocation = { 0, };
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_get_allocation_box (self, &allocation);
+
+  if (x1)
+    *x1 = CLUTTER_UNITS_TO_DEVICE (allocation.x1);
+
+  if (y1)
+    *y1 = CLUTTER_UNITS_TO_DEVICE (allocation.y1);
+
+  if (x2)
+    *x2 = CLUTTER_UNITS_TO_DEVICE (allocation.x2);
+
+  if (y2)
+    *y2 = CLUTTER_UNITS_TO_DEVICE (allocation.y2);
+}
+
+/**
+ * clutter_actor_get_allocation_box:
+ * @self: A #ClutterActor
+ * @box: the function fills this in with the actor's allocation
+ *
+ * Gets the layout box an actor has been assigned. The allocation can
+ * only be assumed valid inside a paint() method; anywhere else, it
+ * may be out-of-date.
+ *
+ * An allocation does not incorporate the actor's scale or anchor point;
+ * those transformations do not affect layout, only rendering.
+ *
+ * <note>Do not call any of the clutter_actor_get_allocation_*() family
+ * of functions inside the implementation of the get_preferred_width()
+ * or get_preferred_height() virtual functions.</note>
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_get_allocation_box (ClutterActor    *self,
+                                  ClutterActorBox *box)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  /* FIXME - if needs_allocation=TRUE, we can either 1)
+   * g_return_if_fail, which limits calling get_allocation to inside
+   * paint() basically; or we can 2) force a layout, which could be
+   * expensive if someone calls get_allocation somewhere silly; or we
+   * can 3) just return the latest value, allowing it to be
+   * out-of-date, and assume people know what they are doing.
+   *
+   * The least-surprises approach that keeps existing code working is
+   * likely to be 2). People can end up doing some inefficient things,
+   * though, and in general code that requires 2) is probably broken.
+   */
+
+  /* this implements 2) */
+  if (G_UNLIKELY (self->priv->needs_allocation))
+    {
+      ClutterActor *stage = clutter_actor_get_stage (self);
+
+      /* do not queue a relayout on an unparented actor */
+      if (stage)
+        _clutter_stage_maybe_relayout (stage);
+    }
+
+  /* commenting out the code above and just keeping this assigment
+   * implements 3)
+   */
+  *box = self->priv->allocation;
+}
+
+/**
+ * clutter_actor_get_allocation_geometry:
+ * @self: A #ClutterActor
+ * @geom: allocation geometry in pixels
+ *
+ * Gets the layout box an actor has been assigned.  The allocation can
+ * only be assumed valid inside a paint() method; anywhere else, it
+ * may be out-of-date.
+ *
+ * An allocation does not incorporate the actor's scale or anchor point;
+ * those transformations do not affect layout, only rendering.
+ *
+ * The returned rectangle is in pixels.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_get_allocation_geometry (ClutterActor    *self,
+                                       ClutterGeometry *geom)
+{
+  int x2, y2;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_get_allocation_coords (self, &geom->x, &geom->y, &x2, &y2);
+  geom->width = x2 - geom->x;
+  geom->height = y2 - geom->y;
+}
+
+/**
+ * clutter_actor_get_paint_area:
+ * @self: A #ClutterActor
+ * @box: the function fills this in with the actor's paint area
+ *
+ * Gets where an actor will be painted, which is generally the union
+ * of the paint boxes of the actor's children, plus anything the actor
+ * draws itself, transformed by the scale factor and anchor point. The
+ * result is a "paint area", i.e. where the actor will actually be
+ * painted.
+ *
+ * The returned #ClutterActorBox is in the coordinates of the actor's
+ * parent, just as an allocation is.
+ *
+ * <note>This function is only valid if the allocation is valid,
+ * which means for the most part only inside a paint() method.</note>
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_get_paint_area (ClutterActor    *self,
+                              ClutterActorBox *box)
+{
+  ClutterActorClass *klass;
+  ClutterActorBox transformed = { 0, };
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+
+  klass->get_paint_area (self, &transformed);
+
+  /* FIXME also do scale and rotation; without these, get_stage_area()
+   * behaviour is the same as query_coords() called in ClutterGroup
+   * in Clutter 0.6.
+   */
+#if 0
+  if (clutter_actor_is_scaled (child) ||
+      clutter_actor_is_rotated (child))
+    {
+      ClutterVertex vtx[4];
+
+      clutter_actor_get_allocation_vertices (child, self, vtx);
+      clutter_actor_box_get_from_vertices (vtx, &transformed);
+    }
+  else
+#endif
+    {
+      ClutterUnit anchor_x;
+      ClutterUnit anchor_y;
+
+      clutter_actor_get_anchor_pointu (self, &anchor_x, &anchor_y);
+
+      transformed.x1 -= anchor_x;
+      transformed.x2 -= anchor_x;
+      transformed.y1 -= anchor_y;
+      transformed.y2 -= anchor_y;
+    }
+
+  *box = transformed;
+}
+
+/**
+ * clutter_actor_allocate:
+ * @self: A #ClutterActor
+ * @box: new allocation of the actor, in parent-relative coordinates
+ * @absolute_origin_changed: whether the position of the parent has
+ *   changed in stage coordinates
+ *
+ * Called by the parent of an actor to assign the actor its size.
+ * Should never be called by applications (except when implementing
+ * a container or layout manager).
+ *
+ * Actors can know from their allocation box whether they have moved
+ * with respect to their parent actor. The absolute_origin_changed
+ * parameter additionally indicates whether the parent has moved with
+ * respect to the stage, for example because a grandparent's origin
+ * has moved.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_allocate (ClutterActor          *self,
+                        const ClutterActorBox *box,
+                        gboolean               absolute_origin_changed)
+{
+  ClutterActorPrivate *priv;
+  ClutterActorClass *klass;
+  gboolean child_moved;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+
+  child_moved = (box->x1 == priv->allocation.x1 ||
+                 box->y1 == priv->allocation.y1);
+
+  /* If we get an allocation "out of the blue"
+   * (we did not queue relayout), then we want to
+   * ignore it. But if we have needs_allocation set,
+   * we want to guarantee that allocate() virtual
+   * method is always called, i.e. that queue_relayout()
+   * always results in an allocate() invocation on
+   * an actor.
+   *
+   * The optimization here is to avoid re-allocating
+   * actors that did not queue relayout and were
+   * not moved.
+   */
+
+  if (!priv->needs_allocation &&
+      !absolute_origin_changed &&
+      !child_moved &&
+      box->x2 == priv->allocation.x2 &&
+      box->y2 == priv->allocation.y2)
+    {
+      CLUTTER_NOTE (ACTOR, "No allocation needed");
+      return;
+    }
+
+  /* When absolute_origin_changed is passed in to
+   * clutter_actor_allocate(), it indicates whether the parent has its
+   * absolute origin moved; when passed in to ClutterActor::allocate()
+   * virtual method though, it indicates whether the child has its
+   * absolute origin moved.  So we set it to TRUE if child_moved.
+   */
+  klass->allocate (self, box, absolute_origin_changed || child_moved);
+}
+
+/**
  * clutter_actor_set_geometry:
  * @self: A #ClutterActor
  * @geometry: A #ClutterGeometry
  *
- * Sets the actor's untransformed geometry in pixels relative to any
- * parent actor.
+ * Sets the actor's fixed position and forces its minimum and natural
+ * size, in pixels. This means the untransformed actor will have the
+ * given geometry. This is the same as calling clutter_actor_set_position()
+ * and clutter_actor_set_size().
  */
 void
 clutter_actor_set_geometry (ClutterActor          *self,
 			    const ClutterGeometry *geometry)
 {
-  ClutterActorBox box;
-
-  box.x1 = CLUTTER_UNITS_FROM_INT (geometry->x);
-  box.y1 = CLUTTER_UNITS_FROM_INT (geometry->y);
-  box.x2 = CLUTTER_UNITS_FROM_INT (geometry->x + geometry->width);
-  box.y2 = CLUTTER_UNITS_FROM_INT (geometry->y + geometry->height);
-
-  clutter_actor_request_coords (self, &box);
+  g_object_freeze_notify (G_OBJECT (self));
+  clutter_actor_set_position (self, geometry->x, geometry->y);
+  clutter_actor_set_size (self, geometry->width, geometry->height);
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -2604,60 +3497,19 @@ clutter_actor_set_geometry (ClutterActor          *self,
  * @self: A #ClutterActor
  * @geometry: A location to store actors #ClutterGeometry
  *
- * Gets the actor's untransformed geometry in pixels relative to any
- * parent actor.
+ * Gets the size and position of an actor relative to its parent
+ * actor. This is the same as calling clutter_actor_get_position() and
+ * clutter_actor_get_size(). It tries to "do what you mean" and get the
+ * requested size and position if the actor's allocation is invalid.
  */
 void
 clutter_actor_get_geometry (ClutterActor    *self,
 			    ClutterGeometry *geometry)
 {
-  ClutterActorBox box;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_query_coords (self, &box);
-
-  geometry->x      = CLUTTER_UNITS_TO_DEVICE (box.x1);
-  geometry->y      = CLUTTER_UNITS_TO_DEVICE (box.y1);
-  geometry->width  = CLUTTER_UNITS_TO_DEVICE (box.x2 - box.x1);
-  geometry->height = CLUTTER_UNITS_TO_DEVICE (box.y2 - box.y1);
-}
-
-/**
- * clutter_actor_get_coords:
- * @self: A #ClutterActor
- * @x_1: A location to store actors left position, or %NULL.
- * @y_1: A location to store actors top position, or %NULL.
- * @x_2: A location to store actors right position, or %NULL.
- * @y_2: A location to store actors bottom position, or %NULL.
- *
- * Gets the actor's untransformed bounding rectangle coordinates in pixels
- * relative to any parent actor.
- */
-void
-clutter_actor_get_coords (ClutterActor *self,
-			  gint         *x_1,
-			  gint         *y_1,
-			  gint         *x_2,
-			  gint         *y_2)
-{
-  ClutterActorBox box;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  clutter_actor_query_coords (self, &box);
-
-  if (x_1)
-    *x_1 = CLUTTER_UNITS_TO_DEVICE (box.x1);
-
-  if (y_1)
-    *y_1 = CLUTTER_UNITS_TO_DEVICE (box.y1);
-
-  if (x_2)
-    *x_2 = CLUTTER_UNITS_TO_DEVICE (box.x2);
-
-  if (y_2)
-    *y_2 = CLUTTER_UNITS_TO_DEVICE (box.y2);
+  clutter_actor_get_position (self, &geometry->x, &geometry->y);
+  clutter_actor_get_size (self, &geometry->width, &geometry->height);
 }
 
 /**
@@ -2666,26 +3518,23 @@ clutter_actor_get_coords (ClutterActor *self,
  * @x: New left position of actor in pixels.
  * @y: New top position of actor in pixels.
  *
- * Sets the actor's position in pixels relative to any parent actor.
+ * Sets the actor's fixed position in pixels relative to any parent
+ * actor.
+ *
+ * If a layout manager is in use, this position will override the
+ * layout manager and force a fixed position.
  */
 void
 clutter_actor_set_position (ClutterActor *self,
 			    gint          x,
 			    gint          y)
 {
-  ClutterActorBox box;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_query_coords (self, &box);
-
-  box.x2 += (CLUTTER_UNITS_FROM_INT (x) - box.x1);
-  box.y2 += (CLUTTER_UNITS_FROM_INT (y) - box.y1);
-
-  box.x1 = CLUTTER_UNITS_FROM_INT (x);
-  box.y1 = CLUTTER_UNITS_FROM_INT (y);
-
-  clutter_actor_request_coords (self, &box);
+  g_object_freeze_notify (G_OBJECT (self));
+  clutter_actor_set_x (self, x);
+  clutter_actor_set_y (self, y);
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -2697,6 +3546,9 @@ clutter_actor_set_position (ClutterActor *self,
  * Sets the actor's position in #ClutterUnit<!-- -->s relative to any
  * parent actor.
  *
+ * If a layout manager is in use, this position will override the
+ * layout manager and force a fixed position.
+ *
  * Since: 0.6
  */
 void
@@ -2704,19 +3556,55 @@ clutter_actor_set_positionu (ClutterActor *self,
 			     ClutterUnit   x,
 			     ClutterUnit   y)
 {
-  ClutterActorBox box;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_query_coords (self, &box);
+  g_object_freeze_notify (G_OBJECT (self));
+  clutter_actor_set_xu (self, x);
+  clutter_actor_set_yu (self, y);
+  g_object_thaw_notify (G_OBJECT (self));
+}
 
-  box.x2 += (x - box.x1);
-  box.y2 += (y - box.y1);
+/**
+ * clutter_actor_get_fixed_position_set:
+ * @self: A #ClutterActor
+ *
+ * Checks whether an actor has a fixed position set (and will thus be
+ * unaffected by any layout manager).
+ *
+ * Return value: %TRUE if the fixed position is set on the actor
+ *
+ * Since: 0.8
+ */
+gboolean
+clutter_actor_get_fixed_position_set (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  box.x1 = x;
-  box.y1 = y;
+  return self->priv->position_set;
+}
 
-  clutter_actor_request_coords (self, &box);
+/**
+ * clutter_actor_set_fixed_position_set:
+ * @self: A #ClutterActor
+ * @is_set: whether to use fixed position
+ *
+ * Sets whether an actor has a fixed position set (and will thus be
+ * unaffected by any layout manager).
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_set_fixed_position_set (ClutterActor *self,
+                                      gboolean      is_set)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->position_set == (is_set != FALSE))
+    return;
+
+  self->priv->position_set = is_set != FALSE;
+  g_object_notify (G_OBJECT (self), "fixed-position-set");
+  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -2725,8 +3613,11 @@ clutter_actor_set_positionu (ClutterActor *self,
  * @dx: Distance to move Actor on X axis.
  * @dy: Distance to move Actor on Y axis.
  *
- * Moves an actor by the specified distance relative to its
- * current position in pixels.
+ * Moves an actor by the specified distance relative to its current
+ * position in pixels. This function modifies the fixed position of an
+ * actor and thus removes it from any layout management. Another way
+ * to move an actor is with an anchor point, see
+ * clutter_actor_set_anchor_point().
  *
  * Since: 0.2
  */
@@ -2751,6 +3642,9 @@ clutter_actor_move_by (ClutterActor *self,
  * Moves an actor by the specified distance relative to its current
  * position.
  *
+ * The move is accomplished by setting a fixed position, overriding
+ * any layout manager, see clutter_actor_set_positionu().
+ *
  * Since: 0.6
  */
 void
@@ -2758,62 +3652,215 @@ clutter_actor_move_byu (ClutterActor *self,
                         ClutterUnit   dx,
                         ClutterUnit   dy)
 {
-  ClutterActorBox box;
-
+  ClutterUnit x, y;
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_query_coords (self, &box);
+  x = self->priv->fixed_x;
+  y = self->priv->fixed_y;
 
-  box.x2 += dx;
-  box.y2 += dy;
-  box.x1 += dx;
-  box.y1 += dy;
-
-  clutter_actor_request_coords (self, &box);
+  clutter_actor_set_positionu (self, x + dx, y + dy);
 }
 
-/* local inline version, without type checking to be used by
- * set_width() and set_height(). if one of the dimensions is < 0
- * it will not be changed
- */
-static inline void
-clutter_actor_set_size_internal (ClutterActor *self,
-                                 gint          width,
-                                 gint          height)
+static void
+clutter_actor_set_min_width (ClutterActor *self,
+                             ClutterUnit   min_width)
 {
-  ClutterActorBox box;
+  ClutterActorPrivate *priv = self->priv;
+  ClutterGeometry old = { 0, };
 
-  clutter_actor_query_coords (self, &box);
+  if (priv->min_width_set && min_width == priv->request_min_width)
+    return;
 
-  if (width > 0)
-    box.x2 = box.x1 + CLUTTER_UNITS_FROM_INT (width);
+  g_object_freeze_notify (G_OBJECT (self));
 
-  if (height > 0)
-    box.y2 = box.y1 + CLUTTER_UNITS_FROM_INT (height);
+  clutter_actor_store_old_geometry (self, &old);
 
-  clutter_actor_request_coords (self, &box);
+  priv->request_min_width = min_width;
+  g_object_notify (G_OBJECT (self), "min-width");
+  clutter_actor_set_min_width_set (self, TRUE);
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  g_object_thaw_notify (G_OBJECT (self));
+
+  clutter_actor_queue_relayout (self);
 }
 
-/* local inline unit version, without type checking to be used by
- * set_width() and set_height(). if one of the dimensions is < 0
- * it will not be changed
- */
-static inline void
-clutter_actor_set_size_internalu (ClutterActor *self,
-				  ClutterUnit   width,
-                                  ClutterUnit   height)
+static void
+clutter_actor_set_min_height (ClutterActor *self,
+                              ClutterUnit   min_height)
+
 {
-  ClutterActorBox box;
+  ClutterActorPrivate *priv = self->priv;
+  ClutterGeometry old = { 0, };
 
-  clutter_actor_query_coords (self, &box);
+  if (priv->min_height_set && min_height == priv->request_min_height)
+    return;
 
-  if (width > 0)
-    box.x2 = box.x1 + width;
+  g_object_freeze_notify (G_OBJECT (self));
 
-  if (height > 0)
-    box.y2 = box.y1 + height;
+  clutter_actor_store_old_geometry (self, &old);
 
-  clutter_actor_request_coords (self, &box);
+  priv->request_min_height = min_height;
+  g_object_notify (G_OBJECT (self), "min-height");
+  clutter_actor_set_min_height_set (self, TRUE);
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  g_object_thaw_notify (G_OBJECT (self));
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+clutter_actor_set_natural_width (ClutterActor *self,
+                                 ClutterUnit   natural_width)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterGeometry old = { 0, };
+
+  if (priv->natural_width_set &&
+      natural_width == priv->request_natural_width)
+    return;
+
+  g_object_freeze_notify (G_OBJECT (self));
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  priv->request_natural_width = natural_width;
+  g_object_notify (G_OBJECT (self), "natural-width");
+  clutter_actor_set_natural_width_set (self, TRUE);
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  g_object_thaw_notify (G_OBJECT (self));
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+clutter_actor_set_natural_height (ClutterActor *self,
+                                  ClutterUnit   natural_height)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterGeometry old = { 0, };
+
+  if (priv->natural_height_set &&
+      natural_height == priv->request_natural_height)
+    return;
+
+  g_object_freeze_notify (G_OBJECT (self));
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  priv->request_natural_height = natural_height;
+  g_object_notify (G_OBJECT (self), "natural-height");
+  clutter_actor_set_natural_height_set (self, TRUE);
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  g_object_thaw_notify (G_OBJECT (self));
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+clutter_actor_set_min_width_set (ClutterActor *self,
+                                 gboolean      use_min_width)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterGeometry old = { 0, };
+
+  if (priv->min_width_set == (use_min_width != FALSE))
+    return;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  priv->min_width_set = use_min_width != FALSE;
+  g_object_notify (G_OBJECT (self), "min-width-set");
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+clutter_actor_set_min_height_set (ClutterActor *self,
+                                  gboolean      use_min_height)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterGeometry old = { 0, };
+
+  if (priv->min_height_set == (use_min_height != FALSE))
+    return;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  priv->min_height_set = use_min_height != FALSE;
+  g_object_notify (G_OBJECT (self), "min-height-set");
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+clutter_actor_set_natural_width_set (ClutterActor *self,
+                                     gboolean      use_natural_width)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterGeometry old = { 0, };
+
+  if (priv->natural_width_set == (use_natural_width != FALSE))
+    return;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  priv->natural_width_set = use_natural_width != FALSE;
+  g_object_notify (G_OBJECT (self), "natural-width-set");
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+clutter_actor_set_natural_height_set (ClutterActor *self,
+                                      gboolean      use_natural_height)
+{
+  ClutterActorPrivate *priv = self->priv;
+  ClutterGeometry old = { 0, };
+
+  if (priv->natural_height_set == (use_natural_height != FALSE))
+    return;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  priv->natural_height_set = use_natural_height != FALSE;
+  g_object_notify (G_OBJECT (self), "natural-height-set");
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  clutter_actor_queue_relayout (self);
+}
+
+static void
+clutter_actor_set_request_mode (ClutterActor *self,
+                                ClutterRequestMode mode)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  if (priv->request_mode == mode)
+    return;
+
+  priv->request_mode = mode;
+
+  priv->needs_width_request = TRUE;
+  priv->needs_height_request = TRUE;
+
+  g_object_notify (G_OBJECT (self), "request-mode");
+
+  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -2822,16 +3869,16 @@ clutter_actor_set_size_internalu (ClutterActor *self,
  * @width: New width of actor in pixels, or -1
  * @height: New height of actor in pixels, or -1
  *
- * Sets the actor's size in pixels.
+ * Sets the actor's size request in pixels. This overrides any
+ * "normal" size request the actor would have. For example
+ * a text actor might normally request the size of the text;
+ * this function would force a specific size instead.
  *
- * If @width and/or @height are -1 the actor will assume the same size
- * of its bounding box.
+ * If @width and/or @height are -1 the actor will use its
+ * "normal" size request instead of overriding it, i.e.
+ * you can "unset" the size with -1.
  *
- * <note>This function is a "request" to the #ClutterActor. Depending
- * on the actual implementation, calling clutter_actor_set_size() might
- * not produce visible results. Calling this function on a #ClutterGroup,
- * for instance, will not resize the group - as its size is dependant
- * on bounding box of actual contents</note>
+ * This function sets or unsets both the minimum and natural size.
  */
 void
 clutter_actor_set_size (ClutterActor *self,
@@ -2840,7 +3887,9 @@ clutter_actor_set_size (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_size_internal (self, width, height);
+  clutter_actor_set_sizeu (self,
+                           CLUTTER_UNITS_FROM_DEVICE (width),
+                           CLUTTER_UNITS_FROM_DEVICE (height));
 }
 
 /**
@@ -2849,8 +3898,11 @@ clutter_actor_set_size (ClutterActor *self,
  * @width: New width of actor in #ClutterUnit<!-- -->s, or -1
  * @height: New height of actor in #ClutterUnit<!-- -->s, or -1
  *
- * Sets the actor's size in #ClutterUnit<!-- -->s. If @width and/or @height
- * are -1 the actor will assume the same size as its bounding box.
+ * Overrides the actor's size request in #ClutterUnit<!-- -->s. If @width
+ * and/or @height are -1 the actor will use its normal size request (the
+ * override is removed).
+ *
+ * This function sets or unsets both the minimum and natural size.
  *
  * Since: 0.6
  */
@@ -2861,7 +3913,31 @@ clutter_actor_set_sizeu (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_size_internalu (self, width, height);
+  g_object_freeze_notify (G_OBJECT (self));
+
+  if (width >= 0)
+    {
+      clutter_actor_set_min_width (self, width);
+      clutter_actor_set_natural_width (self, width);
+    }
+  else
+    {
+      clutter_actor_set_min_width_set (self, FALSE);
+      clutter_actor_set_natural_width_set (self, FALSE);
+    }
+
+  if (height >= 0)
+    {
+      clutter_actor_set_min_height (self, height);
+      clutter_actor_set_natural_height (self, height);
+    }
+  else
+    {
+      clutter_actor_set_min_height_set (self, FALSE);
+      clutter_actor_set_natural_height_set (self, FALSE);
+    }
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -2870,7 +3946,15 @@ clutter_actor_set_sizeu (ClutterActor *self,
  * @width: return location for the width, or %NULL.
  * @height: return location for the height, or %NULL.
  *
- * Gets the size of an actor in pixels, ignoring any scaling factors.
+ * This function tries to "do what you mean" and return
+ * the size an actor will have. If the actor has a valid
+ * allocation, the allocation will be returned; otherwise,
+ * the actors natural size request will be returned.
+ *
+ * If you care whether you get the request vs. the allocation, you
+ * should probably call a different function like
+ * clutter_actor_get_allocation_coords() or
+ * clutter_actor_get_preferred_width().
  *
  * Since: 0.2
  */
@@ -2879,17 +3963,13 @@ clutter_actor_get_size (ClutterActor *self,
 			guint        *width,
 			guint        *height)
 {
-  ClutterActorBox box;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_query_coords (self, &box);
-
   if (width)
-    *width = CLUTTER_UNITS_TO_DEVICE (box.x2 - box.x1);
+    *width = clutter_actor_get_width (self);
 
   if (height)
-    *height = CLUTTER_UNITS_TO_DEVICE (box.y2 - box.y1);
+    *height = clutter_actor_get_height (self);
 }
 
 /**
@@ -2898,8 +3978,15 @@ clutter_actor_get_size (ClutterActor *self,
  * @width: return location for the width, or %NULL
  * @height: return location for the height, or %NULL
  *
- * Gets the size of an actor in #ClutterUnit<!-- -->s, ignoring any scaling
- * factors.
+ * This function tries to "do what you mean" and return
+ * the size an actor will have. If the actor has a valid
+ * allocation, the allocation will be returned; otherwise,
+ * the actors natural size request will be returned.
+ *
+ * If you care whether you get the request vs. the allocation, you
+ * should probably call a different function like
+ * clutter_actor_get_allocation_coords() or
+ * clutter_actor_get_preferred_width().
  *
  * Since: 0.6
  */
@@ -2908,17 +3995,13 @@ clutter_actor_get_sizeu (ClutterActor *self,
                          ClutterUnit  *width,
                          ClutterUnit  *height)
 {
-  ClutterActorBox box;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_query_coords (self, &box);
-
   if (width)
-    *width = box.x2 - box.x1;
+    *width = clutter_actor_get_widthu (self);
 
   if (height)
-    *height = box.y2 - box.y1;
+    *height = clutter_actor_get_heightu (self);
 }
 
 /**
@@ -2927,7 +4010,13 @@ clutter_actor_get_sizeu (ClutterActor *self,
  * @x: return location for the X coordinate, or %NULL
  * @y: return location for the Y coordinate, or %NULL
  *
- * Retrieves the position of an actor.
+ * This function tries to "do what you mean" and tell you where the
+ * actor is, prior to any transformations. Retrieves the fixed
+ * position of an actor in pixels, if one has been set; otherwise, if
+ * the allocation is valid, returns the actor's allocated position;
+ * otherwise, returns 0,0.
+ *
+ * The returned position is in pixels.
  *
  * Since: 0.6
  */
@@ -2936,17 +4025,13 @@ clutter_actor_get_position (ClutterActor *self,
                             gint         *x,
                             gint         *y)
 {
-  ClutterActorBox box = { 0, };
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_query_coords (self, &box);
-
   if (x)
-    *x = CLUTTER_UNITS_TO_DEVICE (box.x1);
+    *x = clutter_actor_get_x (self);
 
   if (y)
-    *y = CLUTTER_UNITS_TO_DEVICE (box.y1);
+    *y = clutter_actor_get_y (self);
 }
 
 /**
@@ -2955,7 +4040,13 @@ clutter_actor_get_position (ClutterActor *self,
  * @x: return location for the X coordinate, or %NULL
  * @y: return location for the Y coordinate, or %NULL
  *
- * Retrieves the position of an actor in #ClutterUnit<!-- -->s.
+ * This function tries to "do what you mean" and tell you where the
+ * actor is, prior to any transformations. Retrieves the fixed
+ * position of an actor in pixels, if one has been set; otherwise, if
+ * the allocation is valid, returns the actor's allocated position;
+ * otherwise, returns 0,0.
+ *
+ * The returned position is in #ClutterUnit<!-- -->s.
  *
  * Since: 0.6
  */
@@ -2964,21 +4055,17 @@ clutter_actor_get_positionu (ClutterActor *self,
                              ClutterUnit  *x,
                              ClutterUnit  *y)
 {
-  ClutterActorBox box = { 0, };
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_query_coords (self, &box);
-
   if (x)
-    *x = box.x1;
+    *x = clutter_actor_get_xu (self);
 
   if (y)
-    *y = box.y1;
+    *y = clutter_actor_get_yu (self);
 }
 
-/*
- * clutter_actor_get_abs_position_units
+/**
+ * clutter_actor_get_transformed_positionu
  * @self: A #ClutterActor
  * @x: return location for the X coordinate, or %NULL
  * @y: return location for the Y coordinate, or %NULL
@@ -2986,17 +4073,16 @@ clutter_actor_get_positionu (ClutterActor *self,
  * Gets the absolute position of an actor, in #ClutterUnit<!-- -->s,
  * relative to the stage.
  *
- * Since: 0.4
+ * Since: 0.8
  */
-static void
-clutter_actor_get_abs_position_units (ClutterActor *self,
-				      gint32       *x,
-				      gint32       *y)
+void
+clutter_actor_get_transformed_positionu (ClutterActor *self,
+                                         ClutterUnit  *x,
+                                         ClutterUnit  *y)
 {
-  ClutterVertex v1;
-  ClutterVertex v2;
+  ClutterVertex v1 = { 0, };
+  ClutterVertex v2 = { 0, };
 
-  v1.x = v1.y = v1.z = 0;
   clutter_actor_apply_transform_to_point (self, &v1, &v2);
 
   if (x)
@@ -3006,25 +4092,27 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
 }
 
 /**
- * clutter_actor_get_abs_position
+ * clutter_actor_get_transformed_position
  * @self: A #ClutterActor
  * @x: return location for the X coordinate, or %NULL
  * @y: return location for the Y coordinate, or %NULL
  *
  * Gets the absolute position of an actor, in pixels, relative
  * to the stage.
+ *
+ * Since: 0.8
  */
 void
-clutter_actor_get_abs_position (ClutterActor *self,
-				gint         *x,
-				gint         *y)
+clutter_actor_get_transformed_position (ClutterActor *self,
+                                        gint         *x,
+                                        gint         *y)
 {
   ClutterUnit xu, yu;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   xu = yu = 0;
-  clutter_actor_get_abs_position_units (self, &xu, &yu);
+  clutter_actor_get_transformed_positionu (self, &xu, &yu);
 
   if (x)
     *x = CLUTTER_UNITS_TO_DEVICE (xu);
@@ -3032,8 +4120,8 @@ clutter_actor_get_abs_position (ClutterActor *self,
     *y = CLUTTER_UNITS_TO_DEVICE (yu);
 }
 
-/*
- * clutter_actor_get_abs_size_units:
+/**
+ * clutter_actor_get_transformed_sizeu:
  * @self: A #ClutterActor
  * @width: return location for the width, or %NULL
  * @height: return location for the height, or %NULL
@@ -3047,27 +4135,27 @@ clutter_actor_get_abs_position (ClutterActor *self,
  * of the smallest rectangle that encapsulates the entire quad. Please
  * note that in this case no assumptions can be made about the relative
  * position of this envelope to the absolute position of the actor, as
- * returned by clutter_actor_get_abs_position(); if you need this
- * information, you need to use clutter_actor_get_vertices() to get the
- * coords of the actual quadrangle.
+ * returned by clutter_actor_get_transformed_position(); if you need this
+ * information, you need to use clutter_actor_get_abs_allocation_vertices()
+ * to get the coords of the actual quadrangle.</note>
  *
- * Since: 0.4
+ * Since: 0.8
  */
-static void
-clutter_actor_get_abs_size_units (ClutterActor *self,
-				  gint32       *width,
-				  gint32       *height)
+void
+clutter_actor_get_transformed_sizeu (ClutterActor *self,
+                                     ClutterUnit  *width,
+                                     ClutterUnit  *height)
 {
   ClutterVertex v[4];
   ClutterFixed  x_min, x_max, y_min, y_max;
   gint i;
 
-  clutter_actor_get_vertices (self, v);
+  clutter_actor_get_abs_allocation_vertices (self, v);
 
   x_min = x_max = v[0].x;
   y_min = y_max = v[0].y;
 
-  for (i = 1; i < sizeof(v)/sizeof(v[0]); ++i)
+  for (i = 1; i < G_N_ELEMENTS (v); ++i)
     {
       if (v[i].x < x_min)
 	x_min = v[i].x;
@@ -3082,29 +4170,41 @@ clutter_actor_get_abs_size_units (ClutterActor *self,
 	y_max = v[i].y;
     }
 
-  *width  = x_max - x_min;
-  *height = y_max - y_min;
+  if (width)
+    *width  = x_max - x_min;
+
+  if (height)
+    *height = y_max - y_min;
 }
 
 /**
- * clutter_actor_get_abs_size:
+ * clutter_actor_get_transformed_size:
  * @self: A #ClutterActor
  * @width: return location for the width, or %NULL
  * @height: return location for the height, or %NULL
  *
  * Gets the absolute size of an actor taking into account
- * an scaling factors
+ * any scaling factors
+ *
+ * Since: 0.8
  */
 void
-clutter_actor_get_abs_size (ClutterActor *self,
-			    guint        *width,
-			    guint        *height)
+clutter_actor_get_transformed_size (ClutterActor *self,
+                                    guint        *width,
+                                    guint        *height)
 {
-  gint32 wu, hu;
-  clutter_actor_get_abs_size_units (self, &wu, &hu);
+  ClutterUnit wu, hu;
 
-  *width  = CLUTTER_UNITS_TO_DEVICE (wu);
-  *height = CLUTTER_UNITS_TO_DEVICE (hu);
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  wu = hu = 0;
+  clutter_actor_get_transformed_sizeu (self, &wu, &hu);
+
+  if (width)
+    *width  = CLUTTER_UNITS_TO_DEVICE (wu);
+
+  if (height)
+    *height = CLUTTER_UNITS_TO_DEVICE (hu);
 }
 
 
@@ -3112,84 +4212,165 @@ clutter_actor_get_abs_size (ClutterActor *self,
  * clutter_actor_get_width
  * @self: A #ClutterActor
  *
- * Retrieves the actor's width ignoring any scaling factors.
+ * Retrieves the width of a #ClutterActor.
  *
- * Return value: the width in pixels
- **/
+ * This function tries to "do what you mean", by returning the correct
+ * value depending on the actor's state.
+ *
+ * If the actor has a valid allocation, this function will return the
+ * width of the allocation box.
+ *
+ * If the actor does not have a valid allocation, this function will
+ * return the actor's natural width request.
+ *
+ * If you care whether you get the width request or the allocation,
+ * you should probably call a different function like
+ * clutter_actor_get_allocation_coords() to retrieve the allocation
+ * or clutter_actor_get_preferred_width() to retrieve the preferred
+ * width.
+ *
+ * Return value: the width of the actor, in pixels
+ */
 guint
 clutter_actor_get_width (ClutterActor *self)
 {
-  ClutterActorBox box;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_query_coords (self, &box);
-
-  return CLUTTER_UNITS_TO_DEVICE (box.x2 - box.x1);
+  return CLUTTER_UNITS_TO_DEVICE (clutter_actor_get_widthu (self));
 }
 
 /**
  * clutter_actor_get_widthu
  * @self: A #ClutterActor
  *
- * Retrieves the actor's width ignoring any scaling factors.
+ * Retrieves the width of a #ClutterActor, in #ClutterUnit<!-- -->s.
  *
- * Return value: the width in #ClutterUnit<!-- -->s
+ * This function tries to "do what you mean", by returning the correct
+ * value depending on the actor's state.
+ *
+ * If the actor has a valid allocation, this function will return the
+ * width of the allocation box.
+ *
+ * If the actor does not have a valid allocation, this function will
+ * return the actor's natural width request.
+ *
+ * If you care whether you get the width request or the allocation,
+ * you should probably call a different function like
+ * clutter_actor_get_allocation_coords() to retrieve the allocation
+ * or clutter_actor_get_preferred_width() to retrieve the preferred
+ * width.
+ *
+ * Return value: the width of the actor, in #ClutterUnit<!-- -->s
  *
  * since: 0.6
- **/
+ */
 ClutterUnit
 clutter_actor_get_widthu (ClutterActor *self)
 {
-  ClutterActorBox box;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_query_coords (self, &box);
+  if (self->priv->needs_allocation)
+    {
+      ClutterUnit natural_width = 0;
 
-  return box.x2 - box.x1;
+      if (self->priv->request_mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
+        clutter_actor_get_preferred_width (self, -1, NULL, &natural_width);
+      else
+        {
+          ClutterUnit natural_height = 0;
+
+          clutter_actor_get_preferred_height (self, -1, NULL, &natural_height);
+          clutter_actor_get_preferred_width (self, natural_height,
+                                             NULL,
+                                             &natural_width);
+        }
+
+      return natural_width;
+    }
+  else
+    return self->priv->allocation.x2 - self->priv->allocation.x1;
 }
 
 /**
  * clutter_actor_get_height
  * @self: A #ClutterActor
  *
- * Retrieves the actor's height ignoring any scaling factors.
+ * Retrieves the height of a #ClutterActor.
  *
- * Return value: the height in pixels
- **/
+ * This function tries to "do what you mean", by returning the correct
+ * value depending on the actor's state.
+ *
+ * If the actor has a valid allocation, this function will return the
+ * height of the allocation box.
+ *
+ * If the actor does not have a valid allocation, this function will
+ * return the actor's natural height request.
+ *
+ * If you care whether you get the height request or the allocation,
+ * you should probably call a different function like
+ * clutter_actor_get_allocation_coords() to retrieve the allocation
+ * or clutter_actor_get_preferred_height() to retrieve the
+ * preferred height.
+ *
+ * Return value: the height of the actor, in pixels
+ */
 guint
 clutter_actor_get_height (ClutterActor *self)
 {
-  ClutterActorBox box;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_query_coords (self, &box);
-
-  return CLUTTER_UNITS_TO_DEVICE (box.y2 - box.y1);
+  return CLUTTER_UNITS_TO_DEVICE (clutter_actor_get_heightu (self));
 }
 
 /**
  * clutter_actor_get_heightu
  * @self: A #ClutterActor
  *
- * Retrieves the actor's height ignoring any scaling factors.
+ * Retrieves the height of a #ClutterActor, in #ClutterUnit<!-- -->s.
  *
- * Return value: the height in #ClutterUnit<!-- -->s
+ * This function tries to "do what you mean", by returning the correct
+ * value depending on the actor's state.
+ *
+ * If the actor has a valid allocation, this function will return the
+ * height of the allocation box.
+ *
+ * If the actor does not have a valid allocation, this function will
+ * return the actor's natural height request.
+ *
+ * If you care whether you get the height request or the allocation,
+ * you should probably call a different function like
+ * clutter_actor_get_allocation_coords() to retrieve the allocation
+ * or clutter_actor_get_preferred_height() to retrieve the
+ * preferred height.
+ *
+ * Return value: the height of the actor, in #ClutterUnit<!-- -->s
  *
  * since: 0.6
- **/
+ */
 ClutterUnit
 clutter_actor_get_heightu (ClutterActor *self)
 {
-  ClutterActorBox box;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_query_coords (self, &box);
+  if (self->priv->needs_allocation)
+    {
+      ClutterUnit natural_height = 0;
 
-  return box.y2 - box.y1;
+      if (self->priv->request_mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
+        {
+          ClutterUnit natural_width = 0;
+
+          clutter_actor_get_preferred_width (self, -1, NULL, &natural_width);
+          clutter_actor_get_preferred_height (self, natural_width,
+                                              NULL, &natural_height);
+        }
+      else
+        clutter_actor_get_preferred_height (self, -1, NULL, &natural_height);
+
+      return natural_height;
+    }
+  else
+    return self->priv->allocation.y2 - self->priv->allocation.y1;
 }
 
 /**
@@ -3197,7 +4378,9 @@ clutter_actor_get_heightu (ClutterActor *self)
  * @self: A #ClutterActor
  * @width: Requested new width for the actor, in pixels
  *
- * Requests a new width for the actor
+ * Forces a width request on an actor, causing the actor's
+ * normal width and height (if any) to be ignored. This function
+ * sets both the minimum and natural size request of the actor.
  *
  * since: 0.2
  **/
@@ -3207,7 +4390,7 @@ clutter_actor_set_width (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_size_internal (self, width, -1);
+  clutter_actor_set_widthu (self, CLUTTER_UNITS_FROM_DEVICE (width));
 }
 
 /**
@@ -3215,7 +4398,9 @@ clutter_actor_set_width (ClutterActor *self,
  * @self: A #ClutterActor
  * @width: Requested new width for the actor, in #ClutterUnit<!-- -->s
  *
- * Requests a new width for the actor
+ * Forces a width request on an actor, causing the actor's
+ * normal width and height (if any) to be ignored. This function
+ * sets both the minimum and natural size request of the actor.
  *
  * since: 0.6
  **/
@@ -3225,7 +4410,12 @@ clutter_actor_set_widthu (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_size_internalu (self, width, -1);
+  g_object_freeze_notify (G_OBJECT (self));
+
+  clutter_actor_set_min_width (self, width);
+  clutter_actor_set_natural_width (self, width);
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -3233,7 +4423,9 @@ clutter_actor_set_widthu (ClutterActor *self,
  * @self: A #ClutterActor
  * @height: Requested new height for the actor, in pixels
  *
- * Requests a new height for the actor
+ * Forces a height request on an actor, causing the actor's
+ * normal width and height (if any) to be ignored. This function
+ * sets both the minimum and natural size request of the actor.
  *
  * since: 0.2
  **/
@@ -3243,7 +4435,7 @@ clutter_actor_set_height (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_size_internal (self, -1, height);
+  clutter_actor_set_heightu (self, CLUTTER_UNITS_FROM_DEVICE (height));
 }
 
 /**
@@ -3251,17 +4443,24 @@ clutter_actor_set_height (ClutterActor *self,
  * @self: A #ClutterActor
  * @height: Requested new height for the actor, in #ClutterUnit<!-- -->s
  *
- * Requests a new height for the actor
+ * Forces a height request on an actor, causing the actor's
+ * normal width and height (if any) to be ignored. This function
+ * sets both the minimum and natural size request of the actor.
  *
  * since: 0.6
  **/
 void
 clutter_actor_set_heightu (ClutterActor *self,
-                           ClutterUnit   height)
+                          ClutterUnit   height)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_size_internalu (self, -1, height);
+  g_object_freeze_notify (G_OBJECT (self));
+
+  clutter_actor_set_min_height (self, height);
+  clutter_actor_set_natural_height (self, height);
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -3269,7 +4468,9 @@ clutter_actor_set_heightu (ClutterActor *self,
  * @self: a #ClutterActor
  * @x: the actor's position on the X axis
  *
- * Sets the actor's X coordinate, relative to its parent.
+ * Sets the actor's X coordinate, relative to its parent, in pixels.
+ * Overrides any layout manager and forces a fixed position for
+ * the actor.
  *
  * Since: 0.6
  */
@@ -3279,9 +4480,7 @@ clutter_actor_set_x (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_position (self,
-                              x,
-                              clutter_actor_get_y (self));
+  clutter_actor_set_xu (self, CLUTTER_UNITS_FROM_DEVICE (x));
 }
 
 /**
@@ -3290,6 +4489,8 @@ clutter_actor_set_x (ClutterActor *self,
  * @x: the actor's position on the X axis, in #ClutterUnit<!-- -->s
  *
  * Sets the actor's X coordinate, relative to its parent.
+ * Overrides any layout manager and forces a fixed position for
+ * the actor.
  *
  * Since: 0.6
  */
@@ -3297,11 +4498,22 @@ void
 clutter_actor_set_xu (ClutterActor *self,
 		      ClutterUnit   x)
 {
+  ClutterGeometry old;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_positionu (self,
-			       x,
-			       clutter_actor_get_yu (self));
+  if (self->priv->position_set &&
+      self->priv->fixed_x == x)
+    return;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  self->priv->fixed_x = x;
+  clutter_actor_set_fixed_position_set (self, TRUE);
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  clutter_actor_queue_relayout (self);
 }
 
 /**
@@ -3309,7 +4521,9 @@ clutter_actor_set_xu (ClutterActor *self,
  * @self: a #ClutterActor
  * @y: the actor's position on the Y axis
  *
- * Sets the actor's Y coordinate, relative to its parent.
+ * Sets the actor's Y coordinate, relative to its parent, in pixels.
+ * Overrides any layout manager and forces a fixed position for
+ * the actor.
  *
  * Since: 0.6
  */
@@ -3319,9 +4533,7 @@ clutter_actor_set_y (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_position (self,
-                              clutter_actor_get_x (self),
-                              y);
+  clutter_actor_set_yu (self, CLUTTER_UNITS_FROM_DEVICE (y));
 }
 
 /**
@@ -3330,6 +4542,8 @@ clutter_actor_set_y (ClutterActor *self,
  * @y: the actor's position on the Y axis, in #ClutterUnit<!-- -->s
  *
  * Sets the actor's Y coordinate, relative to its parent.
+ * Overrides any layout manager and forces a fixed position for
+ * the actor.
  *
  * Since: 0.6
  */
@@ -3337,99 +4551,162 @@ void
 clutter_actor_set_yu (ClutterActor *self,
 		      ClutterUnit   y)
 {
+  ClutterGeometry old;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_positionu (self,
-			       clutter_actor_get_xu (self),
-			       y);
+  if (self->priv->position_set &&
+      self->priv->fixed_y == y)
+    return;
+
+  clutter_actor_store_old_geometry (self, &old);
+
+  self->priv->fixed_y = y;
+  clutter_actor_set_fixed_position_set (self, TRUE);
+
+  clutter_actor_notify_if_geometry_changed (self, &old);
+
+  clutter_actor_queue_relayout (self);
 }
 
 /**
  * clutter_actor_get_x
  * @self: A #ClutterActor
  *
- * Retrieves the actor's X coordinate, relative to any parent.
+ * Retrieves the X coordinate of a #ClutterActor.
+ *
+ * This function tries to "do what you mean", by returning the
+ * correct value depending on the actor's state.
+ *
+ * If the actor has a valid allocation, this function will return
+ * the X coordinate of the origin of the allocation box.
+ *
+ * If the actor has any fixed coordinate set using clutter_actor_set_x(),
+ * clutter_actor_set_position() or clutter_actor_set_geometry(), this
+ * function will return that coordinate.
+ *
+ * If both the allocation and a fixed position are missing, this function
+ * will return 0.
  *
  * Return value: the X coordinate, in pixels, ignoring any
- *   transformation (i.e. scaling, rotation).
+ *   transformation (i.e. scaling, rotation)
  */
 gint
 clutter_actor_get_x (ClutterActor *self)
 {
-  ClutterActorBox box;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_query_coords (self, &box);
-
-  return CLUTTER_UNITS_TO_DEVICE (box.x1);
+  return CLUTTER_UNITS_TO_DEVICE (clutter_actor_get_xu (self));
 }
 
 /**
  * clutter_actor_get_xu
  * @self: A #ClutterActor
  *
- * Retrieves the actor's X coordinate, relative to any parent,
- * in #ClutterUnit<!-- -->s.
+ * Retrieves the X coordinate of a #ClutterActor, in #ClutterUnit<!-- -->s.
+ *
+ * This function tries to "do what you mean", by returning the
+ * correct value depending on the actor's state.
+ *
+ * If the actor has a valid allocation, this function will return
+ * the X coordinate of the origin of the allocation box.
+ *
+ * If the actor has any fixed coordinate set using clutter_actor_set_x(),
+ * clutter_actor_set_position() or clutter_actor_set_geometry(), this
+ * function will return that coordinate.
+ *
+ * If both the allocation and a fixed position are missing, this function
+ * will return 0.
  *
  * Return value: the X coordinate, in #ClutterUnit<!-- -->s, ignoring
- *   any transformation (i.e. scaling, rotation).
+ *   any transformation (i.e. scaling, rotation)
  *
  * Since: 0.6
  */
 ClutterUnit
 clutter_actor_get_xu (ClutterActor *self)
 {
-  ClutterActorBox box;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_query_coords (self, &box);
-
-  return box.x1;
+  if (self->priv->needs_allocation)
+    {
+      if (self->priv->position_set)
+        return self->priv->fixed_x;
+      else
+        return 0;
+    }
+  else
+    return self->priv->allocation.x1;
 }
 
 /**
- * clutter_actor_get_y:
+ * clutter_actor_get_y
  * @self: A #ClutterActor
  *
- * Retrieves the actor's Y coordinate, relative to any parent.
+ * Retrieves the Y coordinate of a #ClutterActor.
+ *
+ * This function tries to "do what you mean", by returning the
+ * correct value depending on the actor's state.
+ *
+ * If the actor has a valid allocation, this function will return
+ * the Y coordinate of the origin of the allocation box.
+ *
+ * If the actor has any fixed coordinate set using clutter_actor_set_y(),
+ * clutter_actor_set_position() or clutter_actor_set_geometry(), this
+ * function will return that coordinate.
+ *
+ * If both the allocation and a fixed position are missing, this function
+ * will return 0.
  *
  * Return value: the Y coordinate, in pixels, ignoring any
- *   transformation (i.e. scaling, rotation).
+ *   transformation (i.e. scaling, rotation)
  */
 gint
 clutter_actor_get_y (ClutterActor *self)
 {
-  ClutterActorBox box;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_query_coords (self, &box);
-
-  return CLUTTER_UNITS_TO_DEVICE (box.y1);
+  return CLUTTER_UNITS_TO_DEVICE (clutter_actor_get_yu (self));
 }
 
 /**
- * clutter_actor_get_yu:
+ * clutter_actor_get_yu
  * @self: A #ClutterActor
  *
- * Retrieves the actor's Y coordinate, relative to any parent,
- * in #ClutterUnit<!-- -->s.
+ * Retrieves the Y coordinate of a #ClutterActor, in #ClutterUnit<!-- -->s.
  *
- * Return value: the Y coordinate, in #ClutterUnit<!-- -->s, ignoring any
- *   transformation (i.e. scaling, rotation).
+ * This function tries to "do what you mean", by returning the
+ * correct value depending on the actor's state.
+ *
+ * If the actor has a valid allocation, this function will return
+ * the Y coordinate of the origin of the allocation box.
+ *
+ * If the actor has any fixed coordinate set using clutter_actor_set_y(),
+ * clutter_actor_set_position() or clutter_actor_set_geometry(), this
+ * function will return that coordinate.
+ *
+ * If both the allocation and a fixed position are missing, this function
+ * will return 0.
+ *
+ * Return value: the Y coordinate, in #ClutterUnit<!-- -->s, ignoring
+ *   any transformation (i.e. scaling, rotation)
+ *
+ * Since: 0.6
  */
 ClutterUnit
 clutter_actor_get_yu (ClutterActor *self)
 {
-  ClutterActorBox box;
-
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_query_coords (self, &box);
-
-  return box.y1;
+  if (self->priv->needs_allocation)
+    {
+      if (self->priv->position_set)
+        return self->priv->fixed_y;
+      else
+        return 0;
+    }
+  else
+    return self->priv->allocation.y1;
 }
 
 /**
@@ -3506,6 +4783,8 @@ clutter_actor_get_scalex (ClutterActor *self,
 			  ClutterFixed *scale_x,
 			  ClutterFixed *scale_y)
 {
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
   if (scale_x)
     *scale_x = self->priv->scale_x;
 
@@ -3528,6 +4807,8 @@ clutter_actor_get_scale (ClutterActor *self,
 			 gdouble      *scale_x,
 			 gdouble      *scale_y)
 {
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
   if (scale_x)
     *scale_x = CLUTTER_FIXED_TO_FLOAT (self->priv->scale_x);
 
@@ -3556,7 +4837,7 @@ clutter_actor_set_opacity (ClutterActor *self,
 }
 
 /**
- * clutter_actor_get_abs_opacity:
+ * clutter_actor_get_paint_opacity:
  * @self: A #ClutterActor
  *
  * Retrieves the absolute opacity of the actor, as it appears on the stage.
@@ -3569,10 +4850,10 @@ clutter_actor_set_opacity (ClutterActor *self,
  *
  * Return value: The actor opacity value.
  *
- * Since: 0.6
+ * Since: 0.8
  */
 guint8
-clutter_actor_get_abs_opacity (ClutterActor *self)
+clutter_actor_get_paint_opacity (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
   ClutterActor *parent;
@@ -3586,7 +4867,7 @@ clutter_actor_get_abs_opacity (ClutterActor *self)
   /* Factor in the actual actors opacity with parents */
   if (G_LIKELY (parent))
     {
-      guint8 opacity = clutter_actor_get_abs_opacity (parent);
+      guint8 opacity = clutter_actor_get_paint_opacity (parent);
 
       if (opacity != 0xff)
         return (opacity * priv->opacity) / 0xff;
@@ -3603,7 +4884,7 @@ clutter_actor_get_abs_opacity (ClutterActor *self)
  * clutter_actor_set_opacity().
  *
  * For retrieving the absolute opacity of the actor inside a paint
- * virtual function, see clutter_actor_get_abs_opacity().
+ * virtual function, see clutter_actor_get_paint_opacity().
  *
  * Return value: the opacity of the actor
  */
@@ -3629,15 +4910,10 @@ clutter_actor_set_name (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  g_object_ref (self);
-
   g_free (self->priv->name);
-
-  if (name && name[0] != '\0')
-    self->priv->name = g_strdup(name);
+  self->priv->name = g_strdup (name);
 
   g_object_notify (G_OBJECT (self), "name");
-  g_object_unref (self);
 }
 
 /**
@@ -4224,6 +5500,7 @@ clutter_actor_set_parent (ClutterActor *self,
 		          ClutterActor *parent)
 {
   ClutterMainContext *clutter_context;
+  ClutterActorPrivate *priv;
 
   clutter_context = clutter_context_get_default ();
 
@@ -4232,36 +5509,45 @@ clutter_actor_set_parent (ClutterActor *self,
   g_return_if_fail (self != parent);
   g_return_if_fail (clutter_context != NULL);
 
-  if (self->priv->parent_actor != NULL)
+  priv = self->priv;
+
+  if (priv->parent_actor != NULL)
     {
       g_warning ("Cannot set a parent on an actor which has a parent.\n"
 		 "You must use clutter_actor_unparent() first.\n");
-
       return;
     }
 
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
     {
       g_warning ("Cannot set a parent on a toplevel actor\n");
-
       return;
     }
 
-
   g_object_ref_sink (self);
-  self->priv->parent_actor = parent;
+  priv->parent_actor = parent;
   g_signal_emit (self, actor_signals[PARENT_SET], 0, NULL);
 
-  if (CLUTTER_ACTOR_IS_REALIZED (self->priv->parent_actor))
+  if (CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
     clutter_actor_realize (self);
 
-  if (self->priv->show_on_set_parent)
+  if (priv->show_on_set_parent)
     clutter_actor_show (self);
   
-  if (CLUTTER_ACTOR_IS_VISIBLE (self->priv->parent_actor) &&
+  if (CLUTTER_ACTOR_IS_VISIBLE (priv->parent_actor) &&
       CLUTTER_ACTOR_IS_VISIBLE (self))
     {
       clutter_actor_queue_redraw (self);
+    }
+
+  /* Maintain invariant that if an actor needs layout,
+   * its parents do as well.
+   */
+  if (priv->needs_width_request ||
+      priv->needs_height_request ||
+      priv->needs_allocation)
+    {
+      clutter_actor_queue_relayout (self);
     }
 }
 
@@ -4318,7 +5604,7 @@ clutter_actor_unparent (ClutterActor *self)
   self->priv->parent_actor = NULL;
   g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
-
+  /* remove the reference we acquired in clutter_actor_set_parent() */
   g_object_unref (self);
 }
 
@@ -4369,7 +5655,10 @@ clutter_actor_reparent (ClutterActor *self,
 
       g_object_ref (self);
 
-      /* FIXME: below assumes only containers can reparent */
+      /* XXX: below assumes only containers can reparent, which is
+       * a fair assumption given that composited actors will not call
+       * or need clutter_actor_reparent() for internal children.
+       */
       if (CLUTTER_IS_CONTAINER (priv->parent_actor))
         clutter_container_remove_actor (CLUTTER_CONTAINER (priv->parent_actor),
                                         self);
@@ -4397,6 +5686,7 @@ clutter_actor_reparent (ClutterActor *self,
  * @below: A #ClutterActor to raise above.
  *
  * Puts @self above @below.
+ *
  * Both actors must have the same parent.
  */
 void
@@ -4428,9 +5718,6 @@ clutter_actor_raise (ClutterActor *self,
     }
 
   clutter_container_raise_child (CLUTTER_CONTAINER (parent), self, below);
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
 }
 
 /**
@@ -4470,9 +5757,6 @@ clutter_actor_lower (ClutterActor *self,
     }
 
   clutter_container_lower_child (CLUTTER_CONTAINER (parent), self, above);
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
 }
 
 /**
@@ -4687,16 +5971,14 @@ clutter_actor_move_anchor_point (ClutterActor *self,
 
   priv = self->priv;
 
-  dx = priv->anchor_x - ax;
-  dy = priv->anchor_y - ay;
+  dx = ax - priv->anchor_x;
+  dy = ay - priv->anchor_y;
 
   priv->anchor_x = ax;
   priv->anchor_y = ay;
 
-  priv->coords.x1 -= dx;
-  priv->coords.x2 -= dx;
-  priv->coords.y1 -= dy;
-  priv->coords.y2 -= dy;
+  if (priv->position_set)
+    clutter_actor_move_by (self, -dx, -dy);
 }
 
 /**
@@ -4798,10 +6080,8 @@ clutter_actor_move_anchor_pointu (ClutterActor *self,
   priv->anchor_x = anchor_x;
   priv->anchor_y = anchor_y;
 
-  priv->coords.x1 -= dx;
-  priv->coords.x2 -= dx;
-  priv->coords.y1 -= dy;
-  priv->coords.y2 -= dy;
+  if (priv->position_set)
+    clutter_actor_move_byu (self, -dx, -dy);
 }
 
 /**
@@ -4862,10 +6142,10 @@ clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
   dx = ax - priv->anchor_x;
   dy = ay - priv->anchor_y;
 
-  priv->coords.x1 -= dx;
-  priv->coords.x2 -= dx;
-  priv->coords.y1 -= dy;
-  priv->coords.y2 -= dy;
+  if (priv->position_set)
+    {
+      clutter_actor_move_byu (self, -dx, -dy);
+    }
 }
 
 /**
@@ -4883,19 +6163,15 @@ clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
 					     ClutterGravity  gravity)
 {
   ClutterActorPrivate *priv;
-  ClutterActorBox box;
   ClutterUnit w, h, x, y;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
 
-  clutter_actor_query_coords (self, &box);
-
   x = 0;
   y = 0;
-  w  = box.x2 - box.x1;
-  h  = box.y2 - box.y1;
+  clutter_actor_get_sizeu (self, &w, &h);
 
   switch (gravity)
     {
@@ -5348,6 +6624,8 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
  *
  * Note: This function is fairly computationally intensive.
  *
+ * Note: This function only works when the allocation is up-to-date, i.e. inside of paint()
+ *
  * Return value: %TRUE if conversion was successful.
  *
  * Since: 0.6
@@ -5383,14 +6661,14 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
    * calls have been unrolled, and most of the math is done in fixed point.
    */
 
-  clutter_actor_get_vertices (self, v);
+  clutter_actor_get_abs_allocation_vertices (self, v);
 
   /*
    * Keeping these as ints simplifies the multiplication (no significant loss
-   * of precission here).
+   * of precision here).
    */
-  du = CLUTTER_UNITS_TO_DEVICE (priv->coords.x2 - priv->coords.x1);
-  dv = CLUTTER_UNITS_TO_DEVICE (priv->coords.y2 - priv->coords.y1);
+  du = CLUTTER_UNITS_TO_DEVICE (priv->allocation.x2 - priv->allocation.x1);
+  dv = CLUTTER_UNITS_TO_DEVICE (priv->allocation.y2 - priv->allocation.y1);
 
   if (!du || !dv)
     return FALSE;
@@ -5914,7 +7192,7 @@ clutter_actor_is_scaled (ClutterActor *self)
  * @box: return location for a #ClutterActorBox
  *
  * Calculates the bounding box represented by the four vertices; for details
- * of the vertex array see clutter_actor_get_vertices().
+ * of the vertex array see clutter_actor_get_abs_allocation_vertices().
  *
  * Since: 0.6
  */

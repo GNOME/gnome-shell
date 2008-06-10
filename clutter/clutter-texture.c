@@ -40,10 +40,10 @@
  * This process allows basic management of commonly limited available texture
  * memory.
  *
- * Note: a ClutterTexture will scale its contents to fit the bounding box
- * requested using clutter_actor_request_coords() and its wrappers. To
- * display an area of a texture without scaling, you should set the clip
- * area using clutter_actor_set_clip().
+ * Note: a ClutterTexture will scale its contents to fit the bounding
+ * box requested using clutter_actor_set_size(). To display an area of
+ * a texture without scaling, you should set the clip area using
+ * clutter_actor_set_clip().
  */
 
 #ifdef HAVE_CONFIG_H
@@ -319,6 +319,64 @@ clutter_texture_realize (ClutterActor *actor)
 }
 
 static void
+clutter_texture_get_preferred_width (ClutterActor *self,
+                                     ClutterUnit   for_height,
+                                     ClutterUnit  *min_width_p,
+                                     ClutterUnit  *natural_width_p)
+{
+  ClutterTexture *texture = CLUTTER_TEXTURE (self);
+  ClutterTexturePrivate *priv = texture->priv;
+
+  /* FIXME If we wanted to be clever here, we could set the natural
+   * width to preserve aspect ratio considering for_height
+   */
+
+  /* Min request is always 0 since we can scale down or clip */
+  if (min_width_p)
+    *min_width_p = 0;
+
+  if (priv->sync_actor_size)
+    {
+      if (natural_width_p)
+        *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (priv->width);
+    }
+  else
+    {
+      if (natural_width_p)
+        *natural_width_p = 0;
+    }
+}
+
+static void
+clutter_texture_get_preferred_height (ClutterActor *self,
+                                      ClutterUnit   for_width,
+                                      ClutterUnit  *min_height_p,
+                                      ClutterUnit  *natural_height_p)
+{
+  ClutterTexture *texture = CLUTTER_TEXTURE (self);
+  ClutterTexturePrivate *priv = texture->priv;
+
+  /* FIXME If we wanted to be clever here, we could set the natural
+   * height to preserve aspect ratio considering for_width
+   */
+
+  /* Min request is always 0 since we can scale down or clip */
+  if (min_height_p)
+    *min_height_p = 0;
+
+  if (priv->sync_actor_size)
+    {
+      if (natural_height_p)
+        *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (priv->height);
+    }
+  else
+    {
+      if (natural_height_p)
+        *natural_height_p = 0;
+    }
+}
+
+static void
 clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
@@ -370,10 +428,10 @@ clutter_texture_paint (ClutterActor *self)
                                               : "unknown");
   cogl_push_matrix ();
 
-  col.alpha = clutter_actor_get_abs_opacity (self);
+  col.alpha = clutter_actor_get_paint_opacity (self);
   cogl_color (&col);
 
-  clutter_actor_get_coords (self, &x_1, &y_1, &x_2, &y_2);
+  clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
 
   CLUTTER_NOTE (PAINT, "paint to x1: %i, y1: %i x2: %i, y2: %i "
 		       "opacity: %i",
@@ -398,23 +456,6 @@ clutter_texture_paint (ClutterActor *self)
 			  0, 0, t_w, t_h);
 
   cogl_pop_matrix ();
-}
-
-static void
-clutter_texture_request_coords (ClutterActor    *self,
-                                ClutterActorBox *box)
-{
-  ClutterTexture *texture = CLUTTER_TEXTURE (self);
-  ClutterActorBox old_request;
-
-  clutter_actor_query_coords (self, &old_request);
-
-  if (((box->x2 - box->x1) != (old_request.x2 - old_request.x1)) ||
-      ((box->y2 - box->y1) != (old_request.y2 - old_request.y1)))
-    texture->priv->sync_actor_size = FALSE;
-
-  CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)
-    ->request_coords (self, box);
 }
 
 static void
@@ -457,6 +498,7 @@ clutter_texture_set_property (GObject      *object,
       break;
     case PROP_SYNC_SIZE:
       priv->sync_actor_size = g_value_get_boolean (value);
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
       break;
     case PROP_REPEAT_X:
       if (priv->repeat_x != g_value_get_boolean (value))
@@ -557,7 +599,9 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   actor_class->paint          = clutter_texture_paint;
   actor_class->realize        = clutter_texture_realize;
   actor_class->unrealize      = clutter_texture_unrealize;
-  actor_class->request_coords = clutter_texture_request_coords;
+
+  actor_class->get_preferred_width = clutter_texture_get_preferred_width;
+  actor_class->get_preferred_height = clutter_texture_get_preferred_height;
 
   gobject_class->dispose      = clutter_texture_dispose;
   gobject_class->set_property = clutter_texture_set_property;
@@ -920,18 +964,11 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
 
   if (size_change)
     {
-      g_signal_emit (texture, texture_signals[SIZE_CHANGE],
-		     0, priv->width, priv->height);
+      g_signal_emit (texture, texture_signals[SIZE_CHANGE], 0,
+                     priv->width,
+                     priv->height);
 
-      if (priv->sync_actor_size)
-	{
-	  clutter_actor_set_size (CLUTTER_ACTOR(texture),
-				  priv->width,
-				  priv->height);
-	  /* The above call will clear sync_actor_size because the
-	     size has changed so we need to put it back */
-	  priv->sync_actor_size = TRUE;
-	}
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
     }
 
   /* rename signal */
@@ -1493,7 +1530,7 @@ on_fbo_source_size_change (GObject          *object,
   ClutterTexturePrivate *priv = texture->priv;
   guint                  w, h;
 
-  clutter_actor_get_abs_size (priv->fbo_source, &w, &h);
+  clutter_actor_get_transformed_size (priv->fbo_source, &w, &h);
 
   if (w != priv->width || h != priv->height)
     {
@@ -1616,7 +1653,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 	return NULL;
     }
 
-  clutter_actor_get_abs_size (actor, &w, &h);
+  clutter_actor_get_transformed_size (actor, &w, &h);
 
   if (w == 0 || h == 0)
     return NULL;
