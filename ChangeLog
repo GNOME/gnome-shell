@@ -1,3 +1,8 @@
+2008-06-10  Thomas Thurman  <tthurman@gnome.org>
+
+        * test/tokentest:  A preliminary attempt at a test for the
+          theme expression tokeniser.
+
 2008-06-05  Thomas Thurman  <tthurman@gnome.org>
 
         * src/compositor/compositor-xrender.c (paint_root, destroy_win,

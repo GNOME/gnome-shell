@@ -24,15 +24,119 @@
 
 #include <stdio.h>
 #include <glib/gerror.h>
+#include <gtk/gtkobject.h>
+#include <gtk/gtkicontheme.h>
 #include <ui/theme.h>
+#include <util.h>
 
 #define TOKENTEST_GROUP "tokentest0"
 
+/************************/
+/* Dummy functions which are just here to keep the linker happy */
+
 MetaTheme* meta_theme_load (const char *theme_name,
                             GError    **err) {
-  // dummy
+  /* dummy */
   return NULL;
 }
+
+void
+meta_bug(const char *format, ...)
+{
+  /* dummy */
+}
+
+void
+meta_warning(const char *format, ...)
+{
+  /* dummy */
+}
+
+GType
+gtk_widget_get_type (void)
+{
+  /* dummy */
+}
+
+GtkType
+gtk_object_get_type (void)
+{
+  /* dummy */
+}
+
+void gtk_paint_arrow      (GtkStyle        *style,
+                           GdkWindow       *window,
+                           GtkStateType     state_type,
+                           GtkShadowType    shadow_type,
+                           GdkRectangle    *area,
+                           GtkWidget       *widget,
+                           const gchar     *detail,
+                           GtkArrowType     arrow_type,
+                           gboolean         fill,
+                           gint             x,
+                           gint             y,
+                           gint             width,
+                           gint             height)
+{
+  /* dummy */
+}
+
+void gtk_paint_vline      (GtkStyle        *style,
+                           GdkWindow       *window,
+                           GtkStateType     state_type,
+                           GdkRectangle    *area,
+                           GtkWidget       *widget,
+                           const gchar     *detail,
+                           gint             y1_,
+                           gint             y2_,
+                           gint             x)
+{
+  /* dummy */
+}
+void gtk_paint_box        (GtkStyle        *style,
+                           GdkWindow       *window,
+                           GtkStateType     state_type,
+                           GtkShadowType    shadow_type,
+                           GdkRectangle    *area,
+                           GtkWidget       *widget,
+                           const gchar     *detail,
+                           gint             x,
+                           gint             y,
+                           gint             width,
+                           gint             height)
+{
+  /* dummy */
+}
+
+GtkIconTheme *gtk_icon_theme_get_default           (void)
+{
+  /* dummy */
+}
+
+GdkPixbuf *   gtk_icon_theme_load_icon             (GtkIconTheme                *icon_theme,
+                                                    const gchar                 *icon_name,
+                                                    gint                         size,
+                                                    GtkIconLookupFlags           flags,
+                                                    GError                     **error)
+{
+  /* dummy */
+}
+
+MetaRectangle                 meta_rect (int x, int y, int width, int height)
+{
+  /* dummy */
+}
+
+void
+meta_topic_real (MetaDebugTopic topic,
+                 const char *format,
+                 ...)
+{
+  /* dummy */
+}
+
+
+/*********************************/
 
 GString *draw_spec_to_string(MetaDrawSpec *spec)
 {
@@ -133,11 +237,14 @@ load_keys ()
   GError* err = NULL;
   gchar** keys_of_file;
   gchar** cursor;
+  gboolean ever_printed_header = FALSE;
+  gint passes = 0, fails = 0;
+
   keys = g_key_file_new ();
 
   g_key_file_load_from_file (keys,
         "tokentest.ini",
-        G_KEY_FILE_NONE,
+        G_KEY_FILE_KEEP_COMMENTS,
         &err);
 
   keys_of_file = g_key_file_get_keys (keys,
@@ -161,20 +268,35 @@ load_keys ()
 
       str = draw_spec_to_string (spec);
 
-      if (strcmp (str->str, desideratum)==0) {
+      if (strcmp ("REQ", desideratum)==0) {
+	gchar *comment = g_key_file_get_comment (keys, TOKENTEST_GROUP, *cursor, &err);
+
+	if (!ever_printed_header) {
+	  g_print ("[%s]\n", TOKENTEST_GROUP);
+	  ever_printed_header = TRUE;
+	}
+
+	g_print ("\n#%s%s=%s\n", comment? comment: "", *cursor, str->str);
+	g_free (comment);
+      } else if (strcmp (str->str, desideratum)==0) {
         g_print("PASS: %s\n", *cursor);
+	passes++;
       } else {
         g_warning ("FAIL: %s, wanted %s, got %s\n",
             *cursor, desideratum, str->str);
+	fails++;
       }
 
       meta_theme_free (dummy);
       g_string_free (str, TRUE);
+      g_free (desideratum);
 
       cursor++;
     }
 
   g_strfreev (keys_of_file);
+
+  g_print("\n# Passes: %d.  Fails: %d.\n", passes, fails);
 }
 
 int

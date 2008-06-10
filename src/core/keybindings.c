@@ -2549,6 +2549,13 @@ process_tab_grab (MetaDisplay *display,
     default:
       break;
     }
+
+  /* !! TO HERE !!
+   * alt-f6 during alt-{Tab,Escape} does not end the grab
+   * but does change the grab op (and redraws the window,
+   * of course).
+   * See _{SWITCH,CYCLE}_GROUP.@@@
+   */
    
   popup_not_showing = FALSE;
   key_used = FALSE;
