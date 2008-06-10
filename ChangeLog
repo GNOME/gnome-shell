@@ -1,5 +1,11 @@
 2008-06-10  Thomas Thurman  <tthurman@gnome.org>
 
+        * test/tokentest/tokentest.c (draw_string_to_spec): doubles are
+	  %f or %g, not %d
+        * test/tokentest/tokentest.ini: re-created fair copy accordingly
+
+2008-06-10  Thomas Thurman  <tthurman@gnome.org>
+
         * test/tokentest:  A preliminary attempt at a test for the
           theme expression tokeniser.
 

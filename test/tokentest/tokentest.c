@@ -164,7 +164,7 @@ GString *draw_spec_to_string(MetaDrawSpec *spec)
           break;
 
         case POS_TOKEN_DOUBLE:
-          g_string_append_printf (result, "(double %d)", t.d.d.val);
+          g_string_append_printf (result, "(double %g)", t.d.d.val);
           break;
 
         case POS_TOKEN_OPERATOR:
