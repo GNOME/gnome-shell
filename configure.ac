@@ -593,6 +593,14 @@ CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $OSX_LIBS $WIN32_LIBS $CLUTTER_DEPS_
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
 
+GETTEXT_PACKAGE="clutter-$CLUTTER_API_VERSION"
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
+                   [The prefix for our gettext translation domains.])
+
+ALL_LINGUAS=""
+AM_GLIB_GNU_GETTEXT
+
 AC_CONFIG_FILES([
         Makefile
         clutter/Makefile
@@ -625,6 +633,7 @@ AC_CONFIG_FILES([
         doc/reference/cogl/Makefile
         doc/manual/clutter-manual.xml
         doc/manual/Makefile
+        po/Makefile.in
         clutter.pc
 ])
 

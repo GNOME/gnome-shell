@@ -35,7 +35,6 @@
 #endif
 
 #include <stdlib.h>
-#define GETTEXT_PACKAGE "clutter"
 #include <glib/gi18n-lib.h>
 
 #include "clutter-event.h"

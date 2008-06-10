@@ -1,3 +1,14 @@
+2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* autogen.sh: Check for, and run glib-gettextize.
+
+	* configure.ac: Set up the localization support.
+
+	* clutter/clutter-main.c: Do not define the GETTEXT_PACKAGE,
+	but use the one from the configure script.
+
+	* po/POTFILES.in: Template for the translatable files.
+
 2008-06-10  Chris Lord  <chris@openedhand.com>
 
 	* clutter/clutter-main.c: (pre_parse_hook):

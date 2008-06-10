@@ -20,6 +20,14 @@ else
         gtkdocize || exit $?
 fi
 
+GLIB_GETTEXTIZE=`which glib-gettextize`
+if test -z $GLIB_GETTEXTIZE; then
+        echo "*** No glib-gettextize ***"
+        exit 1
+else
+        glib-gettextize || exit $?
+fi
+
 autoreconf -v --install || exit $?
 
 ./configure "$@" && echo "Now type 'make' to compile $PROJECT."
