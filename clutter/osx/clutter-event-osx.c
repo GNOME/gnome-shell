@@ -107,7 +107,7 @@ static GPollFunc old_poll_func = NULL;
    * For now handle some common/simple keys only. Might not work with other
    * hardware than mine (MacBook Pro, finnish layout). Sorry.
    */
-  unichar c = [[self characters] characterAtIndex:0];
+  unichar c = [[self charactersIgnoringModifiers] characterAtIndex:0];
 
   /* Latin-1 characters, 1:1 mapping - this ought to be reliable */
   if ((c >= 0x0020 && c <= 0x007e) ||
@@ -224,6 +224,7 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
       event->key.hardware_keycode = [nsevent keyCode];
       event->key.modifier_state = [nsevent clutterModifierState];
       event->key.keyval = [nsevent clutterKeyVal];
+      event->key.unicode_value = [[nsevent characters] characterAtIndex:0];
 
       CLUTTER_NOTE (EVENT, "key %d (%s) (%s) %s, keyval %d",
                     [nsevent keyCode],

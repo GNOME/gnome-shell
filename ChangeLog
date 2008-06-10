@@ -1,9 +1,21 @@
+2008-06-10  Chris Lord  <chris@openedhand.com>
+
+	Bug #916 - ClutterKeyEvent:unicode_value is ignored
+	Bug #950 - AltGr not handled
+
+	* clutter/osx/clutter-event-osx.c: (clutter_event_osx_translate):
+	* clutter/x11/clutter-event-x11.c: (translate_key_event):
+	* tests/test-events.c: (fill_keybuf), (input_cb):
+	Apply patch from Tommi Komulainen, fill the unicode_value attribute of
+	the ClutterKeyEvent struct. Also use XKeycodeToKeysym, as suggested in
+	bug #950, comment #2
+
 2008-06-10  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:
-        Minor reformatting cleanups. Emit filter-quality prop on change.
+	Minor reformatting cleanups. Emit filter-quality prop on change.
 	* clutter/glx/clutter-glx-texture-pixmap.c:
-        Support mipmaps via filter quality prop.
+	Support mipmaps via filter quality prop.
 
 2008-06-10  Chris Lord  <chris@openedhand.com>
 

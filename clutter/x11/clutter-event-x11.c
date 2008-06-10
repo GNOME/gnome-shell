@@ -220,6 +220,9 @@ translate_key_event (ClutterBackend *backend,
                      ClutterEvent   *event,
                      XEvent         *xevent)
 {
+  char buffer[6];
+  int n;
+  
   CLUTTER_NOTE (EVENT, "Translating key %s event",
                 xevent->xany.type == KeyPress ? "press" : "release");
 
@@ -229,12 +232,25 @@ translate_key_event (ClutterBackend *backend,
   event->key.modifier_state = (ClutterModifierType) xevent->xkey.state;
   event->key.hardware_keycode = xevent->xkey.keycode;
 
-  /* FIXME: We need to handle other modifiers rather than just shift */
+  /* keyval is the key ignoring all modifiers ('1' vs. '!') */
   event->key.keyval =
     XKeycodeToKeysym (xevent->xkey.display,
                       xevent->xkey.keycode,
-                      (event->key.modifier_state & CLUTTER_SHIFT_MASK) ? 1
-                                                                       : 0);
+                      0);
+
+  /* unicode_value is the printable representation */
+  n = XLookupString (&xevent->xkey, buffer, sizeof (buffer), NULL, NULL);
+  if (n == NoSymbol)
+    {
+      event->key.unicode_value = (gunichar)'\0';
+    }
+  else
+    {
+      event->key.unicode_value = g_utf8_get_char_validated (buffer, n);
+      if ((event->key.unicode_value == -1) ||
+          (event->key.unicode_value == -1))
+        event->key.unicode_value = (gunichar)'\0';
+    }
 }
 
 static gboolean

@@ -1,4 +1,5 @@
 #include <clutter/clutter.h>
+#include <string.h>
 
 gboolean IsFullScreen = FALSE, IsMotion = TRUE;
 
@@ -84,28 +85,58 @@ key_focus_in_cb (ClutterActor    *actor,
     }
 }
 
+static void
+fill_keybuf (char *keybuf, ClutterKeyEvent *event)
+{
+  char utf8[6];
+  int len;
+
+  /* printable character, if any (ß, ∑) */
+  len = g_unichar_to_utf8 (event->unicode_value, utf8);
+  utf8[len] = '\0';
+  sprintf(keybuf, "'%s' ", utf8);
+
+  /* key combination (<Mod1>s, <Shift><Mod1>S, <Ctrl><Mod1>Delete) */
+  len = g_unichar_to_utf8 (clutter_keysym_to_unicode (event->keyval),
+                           utf8);
+  utf8[len] = '\0';
+
+  if (event->modifier_state & CLUTTER_SHIFT_MASK)
+    strcat (keybuf, "<Shift>");
+  if (event->modifier_state & CLUTTER_LOCK_MASK)
+    strcat (keybuf, "<Lock>");
+  if (event->modifier_state & CLUTTER_CONTROL_MASK)
+    strcat (keybuf, "<Control>");
+  if (event->modifier_state & CLUTTER_MOD1_MASK)
+    strcat (keybuf, "<Mod1>");
+  if (event->modifier_state & CLUTTER_MOD2_MASK)
+    strcat (keybuf, "<Mod2>");
+  if (event->modifier_state & CLUTTER_MOD3_MASK)
+    strcat (keybuf, "<Mod3>");
+  if (event->modifier_state & CLUTTER_MOD4_MASK)
+    strcat (keybuf, "<Mod4>");
+  if (event->modifier_state & CLUTTER_MOD5_MASK)
+    strcat (keybuf, "<Mod5>");
+  strcat (keybuf, utf8);
+}
+
 static gboolean
 input_cb (ClutterActor    *actor,
 	  ClutterEvent    *event,
 	  gpointer         data)
 {
   ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
-  gchar keybuf[9], *source = (gchar*)data;
-  int   len = 0;
+  gchar keybuf[128], *source = (gchar*)data;
 
   switch (event->type)
     {
     case CLUTTER_KEY_PRESS:
-      len = g_unichar_to_utf8 (clutter_keysym_to_unicode (event->key.keyval),
-			       keybuf);
-      keybuf[len] = '\0';
-      g_print ("[%s] KEY PRESS '%s'", source, keybuf);
+      fill_keybuf (keybuf, &event->key);
+      printf ("[%s] KEY PRESS %s", source, keybuf);
       break;
     case CLUTTER_KEY_RELEASE:
-      len = g_unichar_to_utf8 (clutter_keysym_to_unicode (event->key.keyval),
-			       keybuf);
-      keybuf[len] = '\0';
-      g_print ("[%s] KEY RELEASE '%s'", source, keybuf);
+      fill_keybuf (keybuf, &event->key);
+      printf ("[%s] KEY RELEASE %s", source, keybuf);
       break;
     case CLUTTER_MOTION:
       g_print ("[%s] MOTION", source);
