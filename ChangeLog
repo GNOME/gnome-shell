@@ -1,3 +1,7 @@
+2008-06-10  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-main.c: Include <locale.h> for setlocale()
+
 2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-child-meta.c: Fix section name

@@ -36,6 +36,7 @@
 
 #include <stdlib.h>
 #include <glib/gi18n-lib.h>
+#include <locale.h>
 
 #include "clutter-event.h"
 #include "clutter-backend.h"
