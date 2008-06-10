@@ -1173,14 +1173,16 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 /**
  * clutter_texture_set_filter_quality
  * @texture: A #ClutterTexture
- * @filter_quality: A filter quality value
+ * @filter_quality: New filter quality value
  *
- * FIXME: THIS IS WRONG FOR NEW API
- *
- * Sets the filter quality when scaling a texture. Only values 0 and 1
- * are currently supported, with 0 being lower quality but fast, 1
- * being better quality but slower. ( Currently just maps to
- * GL_NEAREST / GL_LINEAR ). The default is 1.
+ * Sets the filter quality when scaling a texture. The quality is an
+ * enumeration currently the following values are supported:
+ * CLUTTER_TEXTURE_QUALITY_LOW which is fast but only uses nearest neighbour
+ * interpolation. CLUTTER_TEXTURE_QUALITY_MEDIUM which is computationally a bit
+ * more expensive (bilinear interpolation), and CLUTTER_TEXTURE_QUALITY_HIGH
+ * which uses extra texture memory resources to improve scaled down rendering
+ * as well (it uses mipmaps). The default value is
+ * CLUTTER_TEXTURE_QUALITY_MEDIUM.
  *
  * Since: 0.8
  */
