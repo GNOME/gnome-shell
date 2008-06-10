@@ -864,8 +864,6 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
       priv->pixmap_width != 0 &&
       priv->pixmap_height != 0)
     {
-      gboolean sync_size = TRUE;
-
       if (CLUTTER_ACTOR_IS_REALIZED (texture))
         clutter_x11_texture_pixmap_update_area (texture,
                                                 0, 0,
