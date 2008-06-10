@@ -1,5 +1,9 @@
 2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* Makefile.am: Add the po/ directory to the build.
+
+2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* autogen.sh: Check for, and run glib-gettextize.
 
 	* configure.ac: Set up the localization support.

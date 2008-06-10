@@ -1,12 +1,12 @@
 NULL =
 
-SUBDIRS = clutter tests
+SUBDIRS = clutter tests po
 
 if ENABLE_GTK_DOC
 SUBDIRS += doc
 endif
 
-DIST_SUBDIRS = clutter tests doc
+DIST_SUBDIRS = clutter tests doc po
 
 pcfiles = \
 	clutter-$(CLUTTER_API_VERSION).pc \
