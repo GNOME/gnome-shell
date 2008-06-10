@@ -1,3 +1,9 @@
+2008-06-10  Chris Lord  <chris@openedhand.com>
+
+	* clutter/cogl/common/cogl-primitives.c: (_cogl_path_arc):
+	Draw as expected when end angle is lower than start angle (i.e. do not
+	swap the angles). This aligns with cairo behaviour.
+
 2008-06-10  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
 	Bug#959 - Multiple minor improvements

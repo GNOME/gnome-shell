@@ -207,7 +207,6 @@ _cogl_path_arc (ClutterFixed center_x,
                 guint        move_first)
 {
   ClutterAngle a     = 0x0;
-  ClutterAngle temp  = 0x0;
   ClutterFixed cosa  = 0x0;
   ClutterFixed sina  = 0x0;
   ClutterFixed px    = 0x0;
@@ -221,16 +220,10 @@ _cogl_path_arc (ClutterFixed center_x,
   if (angle_step < 0x0)
     angle_step = -angle_step;
   
-  if (angle_2 < angle_1)
-    {
-      temp = angle_1;
-      angle_1 = angle_2;
-      angle_2 = temp;
-    }
-  
   /* Walk the arc by given step */
   
-  for (a = angle_1; a < angle_2; a += angle_step)
+  a = angle_1;
+  while (a != angle_2)
     {
       cosa = clutter_cosi (a);
       sina = clutter_sini (a);
@@ -242,7 +235,30 @@ _cogl_path_arc (ClutterFixed center_x,
 	cogl_path_move_to (px, py);
       else
 	cogl_path_line_to (px, py);
+      
+      if (G_LIKELY (angle_2 > angle_1))
+        {
+          a += angle_step;
+          if (a > angle_2)
+            a = angle_2;
+        }
+      else
+        {
+          a -= angle_step;
+          if (a < angle_2)
+            a = angle_2;
+        }
     }
+
+  /* Make sure the final point is drawn */
+  
+  cosa = clutter_cosi (angle_2);
+  sina = clutter_sini (angle_2);
+
+  px = center_x + CFX_MUL (cosa, radius_x);
+  py = center_y + CFX_MUL (sina, radius_y);
+
+  cogl_path_line_to (px, py);
 }
 
 void
