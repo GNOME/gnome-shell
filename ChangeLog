@@ -1,3 +1,10 @@
+2008-06-10  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c:
+        Minor reformatting cleanups. Emit filter-quality prop on change.
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+        Support mipmaps via filter quality prop.
+
 2008-06-10  Chris Lord  <chris@openedhand.com>
 
 	* tests/Makefile.am:

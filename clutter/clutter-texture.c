@@ -266,16 +266,17 @@ clutter_texture_realize (ClutterActor *actor)
       if (priv->texture != COGL_INVALID_HANDLE)
 	cogl_texture_unref (priv->texture);
 
-      priv->texture = cogl_texture_new_with_size 
-                                (priv->width,
-                                 priv->height,
-                                 priv->no_slice ? -1 : priv->max_tile_waste,
-                                 priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
-                                 COGL_PIXEL_FORMAT_RGBA_8888);
+      priv->texture 
+            = cogl_texture_new_with_size 
+                          (priv->width,
+                           priv->height,
+                           priv->no_slice ? -1 : priv->max_tile_waste,
+                          priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
+                          COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_texture_set_filters (priv->texture,
-             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
-             clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
+            clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
+            clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
 
       priv->fbo_handle = cogl_offscreen_new_to_texture (priv->texture);
 
@@ -600,9 +601,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   FALSE,
 			   CLUTTER_PARAM_READWRITE));
 
-  /* FIXME: Ideally this option needs to have some kind of global
-   *        overide as to imporve performance.
-  */
   g_object_class_install_property
     (gobject_class, PROP_FILTER_QUALITY,
      g_param_spec_enum ("filter-quality",
@@ -757,7 +755,8 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
   parent_scriptable_iface = g_type_interface_peek_parent (iface);
 
   if (!parent_scriptable_iface)
-    parent_scriptable_iface = g_type_default_interface_peek (CLUTTER_TYPE_SCRIPTABLE);
+    parent_scriptable_iface = g_type_default_interface_peek 
+                                          (CLUTTER_TYPE_SCRIPTABLE);
 
   iface->set_custom_property = clutter_texture_set_custom_property;
 }
@@ -802,6 +801,7 @@ clutter_texture_save_to_local_data (ClutterTexture *texture)
   pixel_format = cogl_texture_get_format (priv->texture);
   priv->local_data_has_alpha = pixel_format & COGL_A_BIT;
   bpp = priv->local_data_has_alpha ? 4 : 3;
+
   /* Align to 4 bytes */
   priv->local_data_rowstride = (priv->local_data_width * bpp + 3) & ~3;
 
@@ -1175,6 +1175,8 @@ clutter_texture_set_from_file (ClutterTexture *texture,
  * @texture: A #ClutterTexture
  * @filter_quality: A filter quality value
  *
+ * FIXME: THIS IS WRONG FOR NEW API
+ *
  * Sets the filter quality when scaling a texture. Only values 0 and 1
  * are currently supported, with 0 being lower quality but fast, 1
  * being better quality but slower. ( Currently just maps to
@@ -1202,8 +1204,6 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
 	cogl_texture_set_filters (priv->texture,
              clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
              clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
-
-
       if ((old_quality == CLUTTER_TEXTURE_QUALITY_HIGH ||
            filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH) &&
            CLUTTER_ACTOR_IS_REALIZED (texture))
@@ -1211,7 +1211,8 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
           clutter_texture_unrealize (CLUTTER_ACTOR (texture));
           clutter_texture_realize (CLUTTER_ACTOR (texture));
         }
-
+      
+      g_object_notify (G_OBJECT (texture), "filter-quality");
 
       if (CLUTTER_ACTOR_IS_VISIBLE (texture))
 	clutter_actor_queue_redraw (CLUTTER_ACTOR (texture));

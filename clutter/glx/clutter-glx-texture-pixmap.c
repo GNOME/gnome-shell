@@ -424,13 +424,14 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 {
   ClutterGLXTexturePixmapPrivate *priv = texture->priv;
   GLXPixmap                       glx_pixmap = None;
-  int                             attribs[7], i = 0;
+  int                             attribs[7], i = 0, mipmap = 0;
   GLXFBConfig                    *fbconfig;
   Display                        *dpy;
   guint                           depth;
   Pixmap                          pixmap;
   guint				  pixmap_width, pixmap_height;
   ClutterBackendGLX              *backend_glx;
+  ClutterTextureQuality           quality;
 
   CLUTTER_NOTE (TEXTURE, "Creating GLXPixmap");
 
@@ -476,8 +477,13 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
       goto cleanup;
     }
 
+  quality = clutter_texture_get_filter_quality (CLUTTER_TEXTURE(texture));
+
+  if (quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+    mipmap = 1;
+  
   attribs[i++] = GLX_MIPMAP_TEXTURE_EXT;
-  attribs[i++] = 0;
+  attribs[i++] = mipmap;
 
   attribs[i++] = GLX_TEXTURE_TARGET_EXT;
 
@@ -647,7 +653,7 @@ clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
 
   priv = CLUTTER_GLX_TEXTURE_PIXMAP (texture)->priv;
 
-  return (priv->use_fallback != FALSE);
+  return (_have_tex_from_pixmap_ext);
 }
 
 /**
