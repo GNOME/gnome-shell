@@ -84,6 +84,11 @@ main (int argc, char *argv[])
   clutter_stage_fullscreen (CLUTTER_STAGE (stage));
   clutter_actor_show (stage);
 
+  g_debug ("stage size: %dx%d, mapped: %s",
+           clutter_actor_get_width (stage),
+           clutter_actor_get_height (stage),
+           CLUTTER_ACTOR_IS_MAPPED (stage) ? "true" : "false");
+
   g_timeout_add (1000, toggle_fullscreen, NULL);
 
   clutter_main ();

@@ -28,7 +28,7 @@
  */
 
 /**
- * SECTION:clutter-child-data
+ * SECTION:clutter-child-meta
  * @short_description: Wrapper for actors inside a container
  *
  * #ClutterChildMeta is a wrapper object created by #ClutterContainer

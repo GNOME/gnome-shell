@@ -856,7 +856,7 @@ container_set_child_property (ClutterContainer *container,
 /**
  * clutter_container_child_set_property:
  * @container: a #ClutterContainer
- * @actor: a #ClutterActor that is a child of @container.
+ * @child: a #ClutterActor that is a child of @container.
  * @property: the name of the property to set.
  * @value: the value.
  *
@@ -866,7 +866,7 @@ container_set_child_property (ClutterContainer *container,
  */
 void
 clutter_container_child_set_property (ClutterContainer *container,
-                                      ClutterActor     *actor,
+                                      ClutterActor     *child,
                                       const gchar      *property,
                                       const GValue     *value)
 {
@@ -874,7 +874,7 @@ clutter_container_child_set_property (ClutterContainer *container,
   GParamSpec   *pspec;
 
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
   g_return_if_fail (property != NULL);
   g_return_if_fail (value != NULL);
 
@@ -897,7 +897,7 @@ clutter_container_child_set_property (ClutterContainer *container,
       return;
     }
 
-  container_set_child_property (container, actor, value, pspec);
+  container_set_child_property (container, child, value, pspec);
 }
 
 /**
@@ -991,7 +991,7 @@ container_get_child_property (ClutterContainer *container,
 /**
  * clutter_container_child_get_property:
  * @container: a #ClutterContainer
- * @actor: a #ClutterActor that is a child of @container.
+ * @child: a #ClutterActor that is a child of @container.
  * @property: the name of the property to set.
  * @value: the value.
  *
@@ -1007,7 +1007,7 @@ container_get_child_property (ClutterContainer *container,
  */
 void
 clutter_container_child_get_property (ClutterContainer *container,
-                                      ClutterActor     *actor,
+                                      ClutterActor     *child,
                                       const gchar      *property,
                                       GValue           *value)
 {
@@ -1015,7 +1015,7 @@ clutter_container_child_get_property (ClutterContainer *container,
   GParamSpec   *pspec;
 
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (CLUTTER_IS_ACTOR (child));
   g_return_if_fail (property != NULL);
   g_return_if_fail (value != NULL);
 
@@ -1038,7 +1038,7 @@ clutter_container_child_get_property (ClutterContainer *container,
       return;
     }
 
-  container_get_child_property (container, actor, value, pspec);
+  container_get_child_property (container, child, value, pspec);
 }
 
 

@@ -170,6 +170,20 @@ typedef enum { /*< prefix=CLUTTER_ROTATE >*/
   CLUTTER_ROTATE_CCW
 } ClutterRotateDirection;
 
+/**
+ * ClutterRequestMode:
+ * @CLUTTER_REQUEST_HEIGHT_FOR_WIDTH: Height for width requests
+ * @CLUTTER_REQUEST_WIDTH_FOR_HEIGHT: Width for height requests
+ *
+ * Specifies the type of requests for a #ClutterActor.
+ *
+ * Since: 0.8
+ */
+typedef enum {
+  CLUTTER_REQUEST_HEIGHT_FOR_WIDTH,
+  CLUTTER_REQUEST_WIDTH_FOR_HEIGHT
+} ClutterRequestMode;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TYPES_H__ */

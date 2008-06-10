@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 
 /**
  * ClutterFeatureFlags:
- * @CLUTTER_FEATURE_TEXTURE_RECTANGLE: Set if NPOTS textures supported.
+ * @CLUTTER_FEATURE_TEXTURE_NPOT: Set if NPOTS textures supported.
  * @CLUTTER_FEATURE_SYNC_TO_VBLANK: Set if vblank syncing supported.
  * @CLUTTER_FEATURE_TEXTURE_YUV: Set if YUV based textures supported.
  * @CLUTTER_FEATURE_TEXTURE_READ_PIXELS: Set if texture pixels can be read.

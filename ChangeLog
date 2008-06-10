@@ -1,5 +1,28 @@
 2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-child-meta.c: Fix section name
+
+	* clutter/clutter-container.c:
+	(clutter_container_child_set_property),
+	(clutter_container_child_get_property): Fix gtk-doc parameter
+	name.
+
+	* clutter/clutter-container.h: Fix documentation of the
+	interface vfuncs.
+
+	* clutter/clutter-event.h: Fix documentation.
+
+	* clutter/clutter-feature.h: Fix documentation.
+
+	* clutter/clutter-types.h: Add ClutterRequestMode.
+
+	* clutter/x11/clutter-event-x11.c: Fix documentation.
+
+	* tests/test-fullscreen.c: Verify that the stage size has been
+	changed by clutter_stage_fullscreen().
+
+2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug #815 - Split up request, allocation, and paint box
 
 	* clutter/clutter-actor.[ch]: Rework the size allocation,

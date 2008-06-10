@@ -662,14 +662,14 @@ events_queue (ClutterBackend *backend)
 }
 
 /**
- * clutter_x11_handle_event
+ * clutter_x11_handle_event:
  * @xevent: pointer to XEvent structure
  *
  * This function processes a single X event; it can be used to hook
  * into external X event retrieval (for example that done by GDK).
  *
- * Return: #ClutterX11FilterReturn indicating what the caller should
- *         do with the original event.
+ * Return value: #ClutterX11FilterReturn indicating what the caller
+ *   should do with the original event.
  *
  * Since:  0.8
  */

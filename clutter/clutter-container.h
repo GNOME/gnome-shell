@@ -51,17 +51,18 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  * @lower: virtual function for lowering a child
  * @sort_depth_order: virtual function for sorting the children of a
  *   container depending on their depth
- * @child_record_type: The GType used for storing auxiliary information about
- * each of the containers children.
- * @create_child_record: virtual function that gets called for each added
- * child, the function should instantiate @child_record_type, set the container
- * and actor fields in the instance and add the record to a data structure for
- * subsequent access for get_child_record.
- * @destroy_child_record: virtual function that gets called when a child is removed
- * it shuld release all resources held by the record.
- * @get_child_record: return the record for a container child.
- * @actor_added: signal class handler for ClutterContainer::actor_added
- * @actor_removed: signal class handler for ClutterContainer::actor_removed
+ * @child_meta_type: The GType used for storing auxiliary information about
+ *   each of the containers children.
+ * @create_child_meta: virtual function that gets called for each added
+ *   child, the function should instantiate an object of type
+ *   #ClutterContainerIface::child_meta_type, set the container and actor
+ *   fields in the instance and add the record to a data structure for
+ *   subsequent access for #ClutterContainerIface::get_child_meta
+ * @destroy_child_meta: virtual function that gets called when a child is
+ *   removed; it shuld release all resources held by the record
+ * @get_child_meta: return the record for a container child
+ * @actor_added: signal class handler for #ClutterContainer::actor_added
+ * @actor_removed: signal class handler for #ClutterContainer::actor_removed
  * 
  * Base interface for container actors.
  *
