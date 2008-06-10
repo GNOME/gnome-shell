@@ -1,3 +1,32 @@
+2008-06-10  Tommi Komulainen  <tommi.komulainen@iki.fi>
+
+	Bug#959 - Multiple minor improvements
+
+	* configure.ac: pick up GDKPIXBUF_PREFIX from gdk-pixbuf-2.0
+	module, not pango
+
+	* clutter/clutter-keysyms-table.h: cosmetic fix for ifdef guard
+	name in the comment (leftover from earlier commit)
+
+	* tests/test-textures.c: don't depend on GdkPixbuf as we're not
+	using any actual features from it, just plain pixel buffer
+	manipulation
+
+	* clutter/clutter-timeline.c
+	* clutter/clutter-timeline.h (clutter_timeline_list_markers): Use
+	gsize* to return number of items, not guint*
+	* tests/test-paint-wrapper.c: use correct type (guint*) in call
+	to clutter_actor_get_size()
+
+	* tests/test-depth.c (janus_group): properly take height2 into
+	account when calculating needed height for the rectangle
+
+	* tests/test-cogl-tex-getset.c: use rowstride, not width*4, when
+	calculating pixel offsets
+
+	* tests/test-cogl-tex-getset.c: Don't assume/force RGBA format,
+	also support ARGB format (needed with quartz imageloader.)
+
 2008-06-09  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
 	* clutter/osx/clutter-backend-osx.c (clutter_backend_osx_post_parse):

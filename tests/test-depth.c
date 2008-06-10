@@ -92,7 +92,7 @@ janus_group (const gchar *front_text,
 
   if (width2 > width)
     width = width2;
-  if (height> height)
+  if (height2 > height)
     height = height2;
 
   clutter_actor_set_size (rectangle, width, height);

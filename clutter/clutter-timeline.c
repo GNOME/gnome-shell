@@ -1563,11 +1563,11 @@ clutter_timeline_add_marker_at_time (ClutterTimeline *timeline,
 gchar **
 clutter_timeline_list_markers (ClutterTimeline *timeline,
                                gint             frame_num,
-                               guint           *n_markers)
+                               gsize           *n_markers)
 {
   ClutterTimelinePrivate *priv;
   gchar **retval = NULL;
-  gint i;
+  gsize i;
 
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
 

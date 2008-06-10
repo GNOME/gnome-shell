@@ -507,7 +507,7 @@ AC_SUBST(CLUTTER_REQUIRES)
 # prefixes for fixing gtk-doc references
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 PANGO_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
-GDKPIXBUF_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
+GDKPIXBUF_PREFIX="`$PKG_CONFIG --variable=prefix gdk-pixbuf-2.0`"
 AC_SUBST(GLIB_PREFIX)
 AC_SUBST(PANGO_PREFIX)
 AC_SUBST(GDKPIXBUF_PREFIX)

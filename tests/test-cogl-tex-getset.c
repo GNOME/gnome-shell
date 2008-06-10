@@ -131,6 +131,7 @@ test_coglbox_init (TestCoglbox *self)
   TestCoglboxPrivate *priv;
   guint            width;
   guint            height;
+  guint            rowstride;
   CoglPixelFormat  format;
   gint             size;
   guchar          *data;
@@ -155,7 +156,10 @@ test_coglbox_init (TestCoglbox *self)
   
   /* Obtain pixel data */
   
-  format = COGL_PIXEL_FORMAT_RGBA_8888;
+  format = cogl_texture_get_format (priv->cogl_tex_id[0]);
+  g_assert(format == COGL_PIXEL_FORMAT_RGBA_8888 ||
+           format == COGL_PIXEL_FORMAT_ARGB_8888);
+
   width = cogl_texture_get_width (priv->cogl_tex_id[0]);
   height = cogl_texture_get_height (priv->cogl_tex_id[0]);
   size = cogl_texture_get_data (priv->cogl_tex_id[0],
@@ -169,13 +173,14 @@ test_coglbox_init (TestCoglbox *self)
   
   cogl_texture_get_data (priv->cogl_tex_id[0],
 			 format, 0, data);
+  rowstride = cogl_texture_get_rowstride (priv->cogl_tex_id[0]);
   
   /* Create new texture from modified data */
   
   priv->cogl_tex_id[1] =
     cogl_texture_new_from_data (width, height, 0, FALSE,
                                 format, format,
-				0, data);
+				rowstride, data);
   
   if (priv->cogl_tex_id[1] == COGL_INVALID_HANDLE)
     {
@@ -191,10 +196,19 @@ test_coglbox_init (TestCoglbox *self)
     {
       for (x=0; x<width; ++x)
 	{
-	  pixel = data + y * width * 4 + x * 4;
-	  t = pixel[0];
-	  pixel[0] = pixel[1];
-	  pixel[1] = t;
+	  pixel = data + y * rowstride + x * 4;
+	  if (format == COGL_PIXEL_FORMAT_RGBA_8888)
+	    {
+	      t = pixel[0];
+	      pixel[0] = pixel[1];
+	      pixel[1] = t;
+	    }
+	  else
+	    {
+	      t = pixel[1];
+	      pixel[1] = pixel[2];
+	      pixel[2] = t;
+	    }
 	}
     }
   

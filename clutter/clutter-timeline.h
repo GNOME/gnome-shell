@@ -153,7 +153,7 @@ void             clutter_timeline_remove_marker         (ClutterTimeline *timeli
                                                          const gchar     *marker_name);
 gchar **         clutter_timeline_list_markers          (ClutterTimeline *timeline,
                                                          gint             frame_num,
-                                                         guint           *n_markers) G_GNUC_MALLOC;
+                                                         gsize           *n_markers) G_GNUC_MALLOC;
 gboolean         clutter_timeline_has_marker            (ClutterTimeline *timeline,
                                                          const gchar     *marker_name);
 void             clutter_timeline_advance_to_marker     (ClutterTimeline *timeline,

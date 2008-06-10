@@ -6,26 +6,23 @@
 
 #include <clutter/clutter.h>
 
-#ifdef USE_GDKPIXBUF
-
-GdkPixbuf*
-make_pixbuf (int width, int height, int bpp, int has_alpha)
+guchar*
+make_rgba_data (int width, int height, int bpp, int has_alpha, int *rowstride_p)
 {
 #define CHECK_SIZE 20
 
-  GdkPixbuf *px;
   gint       x,y, rowstride, n_channels, i = 0;
+  guchar *pixels;
 
-  px = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-		       has_alpha,
-		       8,
-		       width,
-		       height);
+  g_assert(bpp == 4);
+  g_assert(has_alpha == TRUE);
 
-  if (!px) return NULL;
+  rowstride = width * bpp;
+  *rowstride_p = rowstride;
 
-  rowstride  = gdk_pixbuf_get_rowstride (px);
-  n_channels = gdk_pixbuf_get_n_channels (px);
+  pixels = g_try_malloc (height * rowstride);
+  if (!pixels)
+    return NULL;
 
   for (y = 0; y < height; y++)
     {
@@ -34,7 +31,7 @@ make_pixbuf (int width, int height, int bpp, int has_alpha)
 	{
 	  guchar *p;
 	  
-	  p = gdk_pixbuf_get_pixels (px) + y * rowstride + x * n_channels;
+	  p = pixels + y * rowstride + x * bpp;
 	  
 	  p[0] = p[1] = p[2] = 0; p[3] = 0xff;
 	  
@@ -50,21 +47,17 @@ make_pixbuf (int width, int height, int bpp, int has_alpha)
 	}
     }
 
-  return px;
+  return pixels;
 }
 
 #define SPIN()   while (g_main_context_pending (NULL)) \
                      g_main_context_iteration (NULL, FALSE);
 
-#endif /* USE_GDKPIXBUF */
-
 int
 main (int argc, char *argv[])
 {
-#ifdef USE_GDKPIXBUF
   ClutterActor    *texture;
   ClutterActor    *stage;
-  GdkPixbuf       *pixbuf;
   gint             i, j;
 
   clutter_init (&argc, &argv);
@@ -74,31 +67,33 @@ main (int argc, char *argv[])
 
   SPIN();
 
-  for (i=100; i<5000; i += 100)
+  for (i=100; i<=5000; i += 100)
     for (j=0; j<4; j++)
       {
-	pixbuf = make_pixbuf (i+j, i+j, 4, TRUE);
-	
-	if (!pixbuf)
-	  g_error("%ix%i pixbuf creation failed", i+j, i+j);
-	
-	printf("o %ix%i pixbuf... ", i+j, i+j);
+        const int width = i+j;
+        const int height = i+j;
+        const gboolean has_alpha = TRUE;
+        const int bpp = has_alpha ? 4 : 3;
+        int rowstride;
+        guchar *pixels;
 
-	texture = clutter_texture_new ();
-	clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (texture),
-					   gdk_pixbuf_get_pixels (pixbuf),
-					   gdk_pixbuf_get_has_alpha (pixbuf),
-					   gdk_pixbuf_get_width (pixbuf),
-					   gdk_pixbuf_get_height (pixbuf),
-					   gdk_pixbuf_get_rowstride (pixbuf),
-					   gdk_pixbuf_get_has_alpha (pixbuf)
-					   ? 4 : 3,
-					   0, NULL);
-	
-	g_object_unref (pixbuf);
-	
-	if (!texture)
-	  g_error("Pixbuf creation failed");
+        pixels = make_rgba_data (width, height, bpp, has_alpha, &rowstride);
+        if (!pixels)
+          g_error("No memory for %ix%i RGBA data failed", width, height);
+
+        printf("o %ix%i texture... ", width, height);
+
+        texture = clutter_texture_new ();
+        if (!clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (texture),
+                                                pixels,
+                                                has_alpha,
+                                                width,
+                                                height,
+                                                rowstride,
+                                                bpp,
+                                                0, NULL))
+          g_error("texture creation failed");
+        g_free(pixels);
 	
 	printf("uploaded to texture...\n");
 	
@@ -114,7 +109,6 @@ main (int argc, char *argv[])
 
         clutter_container_remove (CLUTTER_CONTAINER (stage), texture, NULL);
     }
-#endif /* USE_GDKPIXBUF */
 
   return EXIT_SUCCESS;
 }

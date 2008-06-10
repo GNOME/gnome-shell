@@ -824,4 +824,4 @@ struct {
   /* End numeric keypad */
 };
 
-#endif /* __CLUTTER_KEYSYMS_H__ */
+#endif /* __CLUTTER_KEYSYMS_TABLE_H__ */

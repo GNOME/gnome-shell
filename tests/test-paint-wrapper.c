@@ -124,7 +124,7 @@ hand_pre_paint (ClutterActor *actor,
                 gpointer      user_data)
 {
   ClutterColor red = { 255, 0, 0, 128 };
-  gint w, h;
+  guint w, h;
 
   g_assert (hand_pre_paint_guard == FALSE);
 
@@ -141,7 +141,7 @@ hand_post_paint (ClutterActor *actor,
                  gpointer      user_data)
 {
   ClutterColor green = { 0, 255, 0, 128 };
-  gint w, h;
+  guint w, h;
 
   g_assert (hand_pre_paint_guard == TRUE);
 
