@@ -255,15 +255,15 @@ clutter_container_lower_child
 clutter_container_sort_depth_order
 
 <SUBSECTION>
-clutter_container_find_child_property
-clutter_container_list_child_properties
+clutter_container_class_find_child_property
+clutter_container_class_list_child_properties
 clutter_container_child_set_property
 clutter_container_child_get_property
 clutter_container_child_set
 clutter_container_child_get
 
 <SUBSECTION>
-clutter_container_get_child_data
+clutter_container_get_child_meta
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_CONTAINER
@@ -275,21 +275,21 @@ clutter_container_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-child-data</FILE>
-<TITLE>ClutterChildData<TITLE>
-ClutterChildData
-ClutterChildDataClass
-clutter_child_data_get_container
-clutter_child_data_get_actor
+<FILE>clutter-child-meta</FILE>
+<TITLE>ClutterChildMeta</TITLE>
+ClutterChildMeta
+ClutterChildMetaClass
+clutter_child_meta_get_container
+clutter_child_meta_get_actor
 <SUBSECTION Standard>
-CLUTTER_TYPE_CHILD_DATA
-CLUTTER_CHILD_DATA
-CLUTTER_IS_CHILD_DATA
-CLUTTER_CHILD_DATA_CLASS
-CLUTTER_IS_CHILD_DATA_CLASS
-CLUTTER_CHILD_DATA_GET_CLASS
+CLUTTER_TYPE_CHILD_META
+CLUTTER_CHILD_META
+CLUTTER_IS_CHILD_META
+CLUTTER_CHILD_META_CLASS
+CLUTTER_IS_CHILD_META_CLASS
+CLUTTER_CHILD_META_GET_CLASS
 <SUBSECTION Private>
-clutter_child_data_get_type
+clutter_child_meta_get_type
 </SECTION>
 
 <SECTION>
@@ -330,6 +330,7 @@ CLUTTER_ACTOR_IS_REACTIVE
 <SUBSECTION>
 ClutterActorBox
 ClutterActorFlags
+ClutterRequestMode
 ClutterGeometry
 CLUTTER_CALLBACK
 ClutterCallback
@@ -343,22 +344,32 @@ clutter_actor_realize
 clutter_actor_unrealize
 clutter_actor_paint
 clutter_actor_queue_redraw
+clutter_actor_queue_relayout
 clutter_actor_destroy
-clutter_actor_request_coords
-clutter_actor_query_coords
 clutter_actor_event
 clutter_actor_pick
 clutter_actor_should_pick_paint
 
 <SUBSECTION>
+clutter_actor_allocate
+clutter_actor_get_allocation_coords
+clutter_actor_get_allocation_box
+clutter_actor_get_allocation_geometry
+clutter_actor_get_allocation_vertices
+clutter_actor_get_preferred_size
+clutter_actor_get_preferred_width
+clutter_actor_get_preferred_height
+clutter_actor_get_paint_area
+clutter_actor_set_fixed_position_set
+clutter_actor_get_fixed_position_set
+
+<SUBSECTION>
 clutter_actor_set_geometry
 clutter_actor_get_geometry
-clutter_actor_get_coords
 clutter_actor_set_size
 clutter_actor_get_size
 clutter_actor_set_position
 clutter_actor_get_position
-clutter_actor_get_abs_position
 clutter_actor_set_width
 clutter_actor_get_width
 clutter_actor_set_height
@@ -392,6 +403,7 @@ clutter_actor_raise
 clutter_actor_lower
 clutter_actor_raise_top
 clutter_actor_lower_bottom
+clutter_actor_get_stage
 
 <SUBSECTION>
 clutter_actor_set_depth
@@ -399,15 +411,16 @@ clutter_actor_get_depth
 clutter_actor_set_scale
 clutter_actor_get_scale
 clutter_actor_is_scaled
-clutter_actor_get_abs_size
 clutter_actor_apply_transform_to_point
 clutter_actor_transform_stage_point
 clutter_actor_apply_relative_transform_to_point
+clutter_actor_get_transformed_position
+clutter_actor_get_transformed_size
+clutter_actor_get_paint_opacity
+clutter_actor_get_abs_allocation_vertices
 
 <SUBSECTION>
 ClutterVertex
-clutter_actor_get_vertices
-clutter_actor_get_relative_vertices
 clutter_actor_box_get_from_vertices
 
 <SUBSECTION>
@@ -444,7 +457,11 @@ clutter_actor_get_anchor_pointu
 clutter_actor_move_anchor_pointu
 clutter_actor_set_clipu
 clutter_actor_get_clipu
+clutter_actor_set_rotationu
+clutter_actor_get_rotationu
 clutter_actor_move_byu
+clutter_actor_get_transformed_positionu
+clutter_actor_get_transformed_sizeu
 
 <SUBSECTION>
 clutter_actor_set_scalex
@@ -516,8 +533,9 @@ ClutterStage
 ClutterStageClass
 CLUTTER_STAGE_WIDTH
 CLUTTER_STAGE_HEIGHT
-clutter_stage_new
 clutter_stage_get_default
+clutter_stage_new
+clutter_stage_is_default
 
 <SUBSECTION>
 clutter_stage_set_color
@@ -528,6 +546,7 @@ clutter_stage_show_cursor
 clutter_stage_hide_cursor
 clutter_stage_get_actor_at_pos
 clutter_stage_ensure_current
+clutter_stage_queue_redraw
 clutter_stage_event
 clutter_stage_set_key_focus
 clutter_stage_get_key_focus
@@ -564,9 +583,9 @@ CLUTTER_TYPE_STAGE
 CLUTTER_STAGE_CLASS
 CLUTTER_IS_STAGE_CLASS
 CLUTTER_STAGE_GET_CLASS
+CLUTTER_STAGE_TYPE
 CLUTTER_TYPE_PERSPECTIVE
 CLUTTER_TYPE_FOG
-CLUTTER_STAGE_TYPE
 <SUBSECTION Private>
 ClutterStagePrivate
 clutter_stage_get_type
@@ -821,6 +840,8 @@ clutter_backend_get_double_click_time
 clutter_backend_set_double_click_time
 clutter_backend_get_double_click_distance
 clutter_backend_set_double_click_distance
+clutter_backend_set_font_options
+clutter_backend_get_font_options
 <SUBSECTION Standard>
 CLUTTER_BACKEND
 CLUTTER_IS_BACKEND
@@ -1014,6 +1035,7 @@ clutter_key_event_symbol
 clutter_key_event_code
 clutter_key_event_unicode
 clutter_keysym_to_unicode
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_EVENT
 <SUBSECTION Private>
@@ -1028,6 +1050,7 @@ ClutterInitError
 clutter_init
 clutter_init_with_args
 clutter_get_option_group
+
 <SUBSECTION>
 clutter_main
 clutter_main_quit
@@ -1044,6 +1067,9 @@ clutter_set_motion_events_enabled
 clutter_get_motion_events_enabled
 clutter_set_motion_events_frequency
 clutter_get_motion_events_frequency
+clutter_clear_glyph_cache
+clutter_set_use_mipmapped_text
+clutter_get_use_mipmapped_text
 
 <SUBSECTION>
 clutter_threads_set_lock_functions
@@ -1102,10 +1128,10 @@ clutter_x11_remove_filter
 <SECTION>
 <FILE>clutter-win32</FILE>
 <TITLE>Win32 Specific Support</TITLE>
-clutter_win32_get_stage_from_window
-clutter_win32_get_stage_window
 clutter_win32_disable_event_retrieval
 clutter_win32_set_stage_foreign
+clutter_win32_get_stage_from_window
+clutter_win32_get_stage_window
 </SECTION>
 
 <SECTION>

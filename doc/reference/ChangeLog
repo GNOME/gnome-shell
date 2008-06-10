@@ -1,3 +1,10 @@
+2008-06-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-sections.txt: Update with the new API.
+
+	* clutter/subclassing-ClutterActor.sgml: Update with the new
+	size negotiation API.
+
 2008-06-09  Chris Lord  <chris@openedhand.com>
 
 	* cogl/cogl-sections.txt:
