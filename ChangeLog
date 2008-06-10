@@ -1,3 +1,11 @@
+2008-06-10  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-main.c: (pre_parse_hook):
+	Call setlocale on init
+
+	* clutter/x11/clutter-event-x11.c: (translate_key_event):
+	Fix typo and use the same buffer size as xev
+
 2008-06-10  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-texture.c: improved documentation for

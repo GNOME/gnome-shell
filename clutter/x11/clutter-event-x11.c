@@ -220,7 +220,7 @@ translate_key_event (ClutterBackend *backend,
                      ClutterEvent   *event,
                      XEvent         *xevent)
 {
-  char buffer[6];
+  char buffer[256+1];
   int n;
   
   CLUTTER_NOTE (EVENT, "Translating key %s event",
@@ -239,18 +239,17 @@ translate_key_event (ClutterBackend *backend,
                       0);
 
   /* unicode_value is the printable representation */
-  n = XLookupString (&xevent->xkey, buffer, sizeof (buffer), NULL, NULL);
-  if (n == NoSymbol)
-    {
-      event->key.unicode_value = (gunichar)'\0';
-    }
-  else
+  n = XLookupString (&xevent->xkey, buffer, sizeof (buffer) - 1, NULL, NULL);
+
+  if (n != NoSymbol)
     {
       event->key.unicode_value = g_utf8_get_char_validated (buffer, n);
-      if ((event->key.unicode_value == -1) ||
-          (event->key.unicode_value == -1))
-        event->key.unicode_value = (gunichar)'\0';
+      if ((event->key.unicode_value != -1) &&
+          (event->key.unicode_value != -2))
+        return;
     }
+  
+  event->key.unicode_value = (gunichar)'\0';
 }
 
 static gboolean

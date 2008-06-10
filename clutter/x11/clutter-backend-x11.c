@@ -153,7 +153,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
       if (clutter_synchronise)
         XSynchronize (backend_x11->xdpy, True);
-
+      
       XInternAtoms (backend_x11->xdpy,
                     (char **) atom_names, n_atom_names,
                     False, atoms);

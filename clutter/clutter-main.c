@@ -35,6 +35,8 @@
 #endif
 
 #include <stdlib.h>
+#define GETTEXT_PACKAGE "clutter"
+#include <glib/gi18n-lib.h>
 
 #include "clutter-event.h"
 #include "clutter-backend.h"
@@ -989,6 +991,10 @@ pre_parse_hook (GOptionContext  *context,
 
   if (clutter_is_initialized)
     return TRUE;
+  
+  if (setlocale (LC_ALL, "") == NULL)
+    g_warning ("Locale not supported by C library.\n"
+               "Using the fallback 'C' locale.");
 
   clutter_context = clutter_context_get_default ();
 
