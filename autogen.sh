@@ -25,9 +25,15 @@ if test -z $GLIB_GETTEXTIZE; then
         echo "*** No glib-gettextize ***"
         exit 1
 else
-        glib-gettextize || exit $?
+        glib-gettextize -f || exit $?
 fi
 
-autoreconf -v --install || exit $?
+AUTORECONF=`which autoreconf`
+if test -z $AUTORECONF; then
+        echo "*** No autoreconf found ***"
+        exit 1
+else
+        autoreconf -v --install || exit $?
+fi
 
 ./configure "$@" && echo "Now type 'make' to compile $PROJECT."
