@@ -98,24 +98,45 @@ clutter_stage_sdl_realize (ClutterActor *actor)
 }
 
 static void
-clutter_stage_sdl_query_coords (ClutterActor    *self,
-                                   ClutterActorBox *box)
+clutter_stage_sdl_get_preferred_width (ClutterActor *self,
+                                       ClutterUnit   for_height,
+                                       ClutterUnit  *min_width_p,
+                                       ClutterUnit  *natural_width_p)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
 
-  box->x1 = box->y1 = 0;
-  box->x2 = box->x1 + CLUTTER_UNITS_FROM_INT (stage_sdl->win_width);
-  box->y2 = box->y1 + CLUTTER_UNITS_FROM_INT (stage_sdl->win_height);
+  if (min_width_p)
+    *min_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_sdl->win_width);
+
+  if (natural_width_p)
+    *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_sdl->win_width);
 }
 
 static void
-clutter_stage_sdl_request_coords (ClutterActor    *self,
-				  ClutterActorBox *box)
+clutter_stage_sdl_get_preferred_height (ClutterActor *self,
+                                        ClutterUnit   for_width,
+                                        ClutterUnit  *min_height_p,
+                                        ClutterUnit  *natural_height_p)
+{
+  ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
+
+  if (min_height_p)
+    *min_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_sdl->win_height);
+
+  if (natural_height_p)
+    *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_sdl->win_height);
+}
+
+static void
+clutter_stage_sdl_allocate (ClutterActor          *self,
+                            const ClutterActorBox *box,
+                            gboolean               origin_changed)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
   gint new_width, new_height;
+  ClutterActorClass *parent_class;
 
-  /* FIXME: some how have X configure_notfiys call this ? */
+  /* FIXME: some how have X configure_notfiy call this ? */
   new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
   new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1));
 
@@ -126,9 +147,6 @@ clutter_stage_sdl_request_coords (ClutterActor    *self,
 			   new_height, 
 			   0, SDL_OPENGL) == NULL)
 	{
-	  box->x2 = box->x1 + stage_sdl->win_width;
-	  box->y2 = box->y1 + stage_sdl->win_height;
-
 	  /* Failed */
 	  return;
 	}
@@ -139,8 +157,8 @@ clutter_stage_sdl_request_coords (ClutterActor    *self,
       CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
-  CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class)->request_coords (self,
-                                                                        box);
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class);
+  parent_class->allocate (self, box, origin_changed);
 }
 
 static void
@@ -153,9 +171,9 @@ clutter_stage_sdl_set_fullscreen (ClutterStageWindow *stage_window,
   if (fullscreen)
     flags |= SDL_FULLSCREEN;
 
-  SDL_SetVideoMode(stage_sdl->win_width,
-		   stage_sdl->win_height,
-		   0, flags);
+  SDL_SetVideoMode (stage_sdl->win_width,
+		    stage_sdl->win_height,
+		    0, flags);
 }
 
 static void
@@ -194,8 +212,9 @@ clutter_stage_sdl_class_init (ClutterStageSDLClass *klass)
   actor_class->hide = clutter_stage_sdl_hide;
   actor_class->realize = clutter_stage_sdl_realize;
   actor_class->unrealize = clutter_stage_sdl_unrealize;
-  actor_class->request_coords = clutter_stage_sdl_request_coords;
-  actor_class->query_coords = clutter_stage_sdl_query_coords;
+  actor_class->get_preferred_width = clutter_stage_sdl_get_preferred_width;
+  actor_class->get_preferred_height = clutter_stage_sdl_get_preferred_height;
+  actor_class->allocate = clutter_stage_sdl_allocate;
 }
 
 static void
