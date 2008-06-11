@@ -219,21 +219,6 @@ clutter_stage_egl_get_preferred_width (ClutterActor *self,
 }
 
 static void
-clutter_stage_egl_get_preferred_width (ClutterActor *self,
-                                       ClutterUnit   for_height,
-                                       ClutterUnit  *min_width_p,
-                                       ClutterUnit  *natural_width_p)
-{
-  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (self);
-
-  if (min_width_p)
-    *min_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_egl->surface_width);
-
-  if (natural_width_p)
-    *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_egl->surface_width);
-}
-
-static void
 clutter_stage_egl_get_preferred_height (ClutterActor *self,
                                         ClutterUnit   for_width,
                                         ClutterUnit  *min_height_p,

@@ -1,3 +1,8 @@
+2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/eglnative/clutter-stage-egl.c: Remove a duplicate
+	get_preferred_width() implementation. (thanks to Iain Holmes)
+
 2008-06-11  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-actor.c (clutter_actor_allocate): Fixed the
