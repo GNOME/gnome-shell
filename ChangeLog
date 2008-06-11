@@ -1,3 +1,8 @@
+2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* autogen.sh: Force overwriting when glib-gettextize is
+	invoked by autogen.sh.
+
 2008-06-10  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-main.c: Include <locale.h> for setlocale()
