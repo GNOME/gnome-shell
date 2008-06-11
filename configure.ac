@@ -283,6 +283,15 @@ case $glesversion in
   fruity)
     CLUTTER_COGL="gles"
     AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+
+    clutter_gl_header="GLES/gl.h"
+    CLUTTER_COGL="gles"
+    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+
+    AC_CHECK_HEADERS([GLES/egl.h],,
+                 [AC_MSG_ERROR([Unable to locate required GLES headers])])
+    AC_CHECK_HEADERS([$clutter_gl_header],,
+                 [AC_MSG_ERROR([Unable to locate required GLES headers])])
   ;;
 
   *) AC_MSG_ERROR([Invalid GL ES Version '$glesversion' specified])

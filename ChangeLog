@@ -1,3 +1,10 @@
+2008-06-11  Iain Holmes  <iain@openedhand.com>
+
+	* configure.ac: Detect the GL headers in flavour=fruity
+
+	* clutter/fruity/clutter-stage-fruity.c: Update the Fruity backend to 
+	use the new size negotiation API.
+
 2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-label.c (clutter_label_allocate): Keep the

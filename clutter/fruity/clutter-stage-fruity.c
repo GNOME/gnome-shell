@@ -188,30 +188,33 @@ clutter_stage_egl_realize (ClutterActor *actor)
 }
 
 static void
-clutter_stage_egl_query_coords (ClutterActor    *self,
-                                ClutterActorBox *box)
+clutter_stage_egl_get_preferred_width (ClutterActor *self,
+                        	       ClutterUnit   for_height,
+				       ClutterUnit  *min_width_p,
+				       ClutterUnit  *natural_width_p)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (self);
 
-  box->x1 = box->y1 = 0;
-  box->x2 = box->x1 + CLUTTER_UNITS_FROM_INT (stage_egl->surface_width);
-  box->y2 = box->y1 + CLUTTER_UNITS_FROM_INT (stage_egl->surface_height);
+  if (min_width_p)
+    *min_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_egl->surface_width);
+
+  if (natural_width_p)
+    *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (stage_egl->surface_width);
 }
 
 static void
-clutter_stage_egl_request_coords (ClutterActor    *self,
-				  ClutterActorBox *box)
+clutter_stage_egl_get_preferred_height (ClutterActor *self,
+		      			ClutterUnit   for_width,
+					ClutterUnit  *min_height_p,
+					ClutterUnit  *natural_height_p)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (self);
 
-  /* framebuffer no resize */
-  box->x1 = 0;
-  box->y1 = 0;
-  box->x2 = CLUTTER_UNITS_FROM_INT (stage_egl->surface_width);
-  box->y2 = CLUTTER_UNITS_FROM_INT (stage_egl->surface_height);
+  if (min_height_p)
+    *min_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_egl->surface_height);
 
-  CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->request_coords (self,
-                                                                        box);
+  if (natural_height_p)
+    *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (stage_egl->surface_height);
 }
 
 static void
@@ -236,8 +239,8 @@ clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
   actor_class->hide           = clutter_stage_egl_hide;
   actor_class->realize        = clutter_stage_egl_realize;
   actor_class->unrealize      = clutter_stage_egl_unrealize;
-  actor_class->request_coords = clutter_stage_egl_request_coords;
-  actor_class->query_coords   = clutter_stage_egl_query_coords;
+  actor_class->get_preferred_width = clutter_stage_egl_get_preferred_width;
+  actor_class->get_preferred_height = clutter_stage_egl_get_preferred_height;
 }
 
 static void
