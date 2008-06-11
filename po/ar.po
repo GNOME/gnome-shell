@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-19 01:59+0100\n"
+"POT-Creation-Date: 2008-06-11 22:31+0100\n"
 "PO-Revision-Date: 2008-01-13 01:49+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -102,17 +102,17 @@ msgid ""
 "binding\n"
 msgstr "يستعمل برنامج آخر المفتاح %s بالفعل مع المغيرين %x كرابط\n"
 
-#: ../src/core/keybindings.c:2722
+#: ../src/core/keybindings.c:2729
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "خطأ في إطلاق حوار مِتسِتي لطبع خطأ حول الأمر: %s\n"
 
-#: ../src/core/keybindings.c:2827
+#: ../src/core/keybindings.c:2834
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "لم يُعرّف أمر %d.\n"
 
-#: ../src/core/keybindings.c:3855
+#: ../src/core/keybindings.c:3862
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "لم يُعرّف أمر طرفيّة.\n"
@@ -189,19 +189,19 @@ msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "مفتاح GConf '%s' مضبوط لقيمة غير صحيحة\n"
 
 #: ../src/core/prefs.c:537 ../src/core/prefs.c:611 ../src/core/prefs.c:659
-#: ../src/core/prefs.c:965 ../src/core/prefs.c:983 ../src/core/prefs.c:999
-#: ../src/core/prefs.c:1018 ../src/core/prefs.c:1034 ../src/core/prefs.c:1051
-#: ../src/core/prefs.c:1068 ../src/core/prefs.c:1084 ../src/core/prefs.c:1100
+#: ../src/core/prefs.c:978 ../src/core/prefs.c:996 ../src/core/prefs.c:1012
+#: ../src/core/prefs.c:1031 ../src/core/prefs.c:1047 ../src/core/prefs.c:1064
+#: ../src/core/prefs.c:1081 ../src/core/prefs.c:1097 ../src/core/prefs.c:1113
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "مفتاح GConf \"%s\" مضبوط لنوع غير صحيح\n"
 
-#: ../src/core/prefs.c:860
+#: ../src/core/prefs.c:873
 #, c-format
 msgid "Type of %s was not integer"
 msgstr "نوع %s لم يكن عددا صحيحا"
 
-#: ../src/core/prefs.c:1169
+#: ../src/core/prefs.c:1182
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -209,7 +209,7 @@ msgstr ""
 "عطّلت الحلول الجزئيّة للتطبيقات المعطوبة . ربما لن تتصرف بعض التطبيقات "
 "بسلامة.\n"
 
-#: ../src/core/prefs.c:1224
+#: ../src/core/prefs.c:1237
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -218,12 +218,12 @@ msgstr ""
 "%d المحفوظ في مفتاح GConf %s ليس عددا معقولا لمساحات العمل، يجب أن يكون بين "
 "1 و 128\n"
 
-#: ../src/core/prefs.c:1250
+#: ../src/core/prefs.c:1263
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "لا يمكن تحليل وصف الخط \"%s\" من مفتاح GConf %s\n"
 
-#: ../src/core/prefs.c:1310
+#: ../src/core/prefs.c:1323
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -231,7 +231,7 @@ msgid ""
 msgstr ""
 "\"%s\" الموجود في قاعدة بايانات الإعدادات ليس قيمة سليمة لمغير أزرار الفأرة\n"
 
-#: ../src/core/prefs.c:1589
+#: ../src/core/prefs.c:1602
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -240,22 +240,22 @@ msgstr ""
 "%d المحفوظ في مفتاح GConf %s ليس عدد معقول لمساحات العمل، الحدالأقصى الحالي "
 "هو %d\n"
 
-#: ../src/core/prefs.c:1633
+#: ../src/core/prefs.c:1646
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d المحفوظ في مفتاح GConf %s خارج المدى من 0 إلى %d\n"
 
-#: ../src/core/prefs.c:1764
+#: ../src/core/prefs.c:1777
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "خطأ عند تعيين عدد مساحات العمل لـ %d: %s\n"
 
-#: ../src/core/prefs.c:2129 ../src/core/prefs.c:2641
+#: ../src/core/prefs.c:2142 ../src/core/prefs.c:2654
 #, c-format
 msgid "Workspace %d"
 msgstr "مساحة العمل %d"
 
-#: ../src/core/prefs.c:2159 ../src/core/prefs.c:2332
+#: ../src/core/prefs.c:2172 ../src/core/prefs.c:2345
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -264,7 +264,7 @@ msgstr ""
 "\"%s\" الموجود في قاعدة بيانات الإعدادات ليس قيمة سليمة لارتباط المفتاح \"%s"
 "\"\n"
 
-#: ../src/core/prefs.c:2722
+#: ../src/core/prefs.c:2735
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "خطأ عند تعيين اسم مساحة العمل %d لـ \"%s\": %s\n"
