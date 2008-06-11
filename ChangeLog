@@ -1,3 +1,8 @@
+2008-06-11  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_allocate): Fixed the
+	logic when detecting whether the actor has moved.
+
 2008-06-11  Iain Holmes  <iain@openedhand.com>
 
 	* configure.ac: Detect the GL headers in flavour=fruity

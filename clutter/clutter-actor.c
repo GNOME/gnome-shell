@@ -3442,8 +3442,8 @@ clutter_actor_allocate (ClutterActor          *self,
   priv = self->priv;
   klass = CLUTTER_ACTOR_GET_CLASS (self);
 
-  child_moved = (box->x1 == priv->allocation.x1 ||
-                 box->y1 == priv->allocation.y1);
+  child_moved = (box->x1 != priv->allocation.x1 ||
+                 box->y1 != priv->allocation.y1);
 
   /* If we get an allocation "out of the blue"
    * (we did not queue relayout), then we want to
