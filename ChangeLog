@@ -1,5 +1,12 @@
 2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug #961 - Fails to build on OSX
+
+	* clutter/osx/clutter-stage-osx.c: Update the OSX backend to
+	use the new size negotiation API.
+
+2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* autogen.sh: Force overwriting when glib-gettextize is
 	invoked by autogen.sh.
 

@@ -298,8 +298,8 @@ clutter_stage_osx_realize (ClutterActor *actor)
   /* FIXME: ClutterStage:realize is using the class pointer directly rather
    * than clutter_actor_realize which would set the REALIZED flag for us.
    */
-  CLUTTER_ACTOR_SET_FLAGS(self, CLUTTER_ACTOR_REALIZED);
-  CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
+  CLUTTER_NOTE (BACKEND, "Marking stage as realized");
+  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 }
 
 static void
@@ -366,28 +366,68 @@ clutter_stage_osx_hide (ClutterActor *actor)
 }
 
 static void
-clutter_stage_osx_query_coords (ClutterActor    *actor,
-                                ClutterActorBox *box)
+clutter_stage_osx_get_preferred_width (ClutterActor *actor,
+                                       ClutterUnit   for_height,
+                                       ClutterUnit  *min_width_p,
+                                       ClutterUnit  *natural_width_p)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
+  gboolean is_resizable;
 
   CLUTTER_OSX_POOL_ALLOC();
 
-  box->x1 = 0;
-  box->y1 = 0;
-  box->x2 = box->x1 + CLUTTER_UNITS_FROM_FLOAT (self->requisition_width);
-  box->y2 = box->y1 + CLUTTER_UNITS_FROM_FLOAT (self->requisition_height);
+  is_resizable = clutter_stage_get_user_resizable (self->wrapper);
+
+  if (min_width_p)
+    {
+      if (is_resizable)
+        *min_width_p = CLUTTER_UNITS_FROM_FLOAT (1.0);
+      else
+        *min_width_p = CLUTTER_UNITS_FROM_FLOAT (self->requisition_width);
+    }
+
+  if (natural_width_p)
+    *natural_width_p = CLUTTER_UNITS_FROM_FLOAT (self->requisition_width);
 
   CLUTTER_OSX_POOL_RELEASE();
 }
 
 static void
-clutter_stage_osx_request_coords (ClutterActor    *actor,
-                                  ClutterActorBox *box)
+clutter_stage_osx_get_preferred_height (ClutterActor *actor,
+                                        ClutterUnit   for_width,
+                                        ClutterUnit  *min_height_p,
+                                        ClutterUnit  *natural_height_p)
 {
   ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
+  gboolean is_resizable;
 
-  CLUTTER_NOTE (BACKEND, "[%p], request_coords: %d,%d %dx%d", self,
+  CLUTTER_OSX_POOL_ALLOC();
+
+  is_resizable = clutter_stage_get_user_resizable (self->wrapper);
+
+  if (min_height_p)
+    {
+      if (is_resizable)
+        *min_height_p = CLUTTER_UNITS_FROM_FLOAT (1.0);
+      else
+        *min_height_p = CLUTTER_UNITS_FROM_FLOAT (self->requisition_height);
+    }
+
+  if (natural_height_p)
+    *natural_height_p = CLUTTER_UNITS_FROM_FLOAT (self->requisition_height);
+
+  CLUTTER_OSX_POOL_RELEASE();
+}
+
+static void
+clutter_stage_osx_allocate (ClutterActor          *actor,
+                            const ClutterActorBox *box,
+                            gboolean               origin_changed)
+{
+  ClutterStageOSX *self = CLUTTER_STAGE_OSX (actor);
+  ClutterActorClass *parent_class;
+
+  CLUTTER_NOTE (BACKEND, "[%p], allocate: %d, %d - %d x %d", self,
                 CLUTTER_UNITS_TO_INT (box->x1),
                 CLUTTER_UNITS_TO_INT (box->y1),
                 CLUTTER_UNITS_TO_INT (box->x2 - box->x1),
@@ -406,6 +446,13 @@ clutter_stage_osx_request_coords (ClutterActor    *actor,
 
       CLUTTER_OSX_POOL_RELEASE();
     }
+
+  /* make sure that the viewport is updated */
+  CLUTTER_SET_PRIVATE_FLAGS (self->wrapper, CLUTTER_ACTOR_SYNC_MATRICES);
+
+  /* chain up */
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_osx_parent_class);
+  parent_class->allocate (actor, box, origin_changed);
 }
 
 /*************************************************************************/
@@ -519,6 +566,7 @@ clutter_stage_osx_class_init (ClutterStageOSXClass *klass)
   actor_class->show      = clutter_stage_osx_show;
   actor_class->hide      = clutter_stage_osx_hide;
 
-  actor_class->query_coords   = clutter_stage_osx_query_coords;
-  actor_class->request_coords = clutter_stage_osx_request_coords;
+  actor_class->allocate             = clutter_stage_osx_allocate;
+  actor_class->get_preferred_width  = clutter_stage_osx_get_preferred_width;
+  actor_class->get_preferred_height = clutter_stage_osx_get_preferred_height;
 }
