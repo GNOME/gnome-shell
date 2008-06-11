@@ -1,5 +1,10 @@
 2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c: Notify :x, :y, :width and :height
+	properties using ClutterUnits, not pixels.
+
+2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/eglnative/clutter-stage-egl.c: Update the EGL native
 	backend to use the new size negotiation API.
 

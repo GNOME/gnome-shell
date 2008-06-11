@@ -673,31 +673,36 @@ clutter_actor_real_get_preferred_height (ClutterActor *self,
 
 static void
 clutter_actor_store_old_geometry (ClutterActor    *self,
-                                  ClutterGeometry *geom)
+                                  ClutterActorBox *box)
 {
-  clutter_actor_get_geometry (self, geom);
+  box->x1 = clutter_actor_get_xu (self);
+  box->y1 = clutter_actor_get_yu (self);
+  box->x2 = box->x1 + clutter_actor_get_widthu (self);
+  box->y2 = box->y1 + clutter_actor_get_heightu (self);
 }
 
 static inline void
 clutter_actor_notify_if_geometry_changed (ClutterActor          *self,
-                                          const ClutterGeometry *old)
+                                          const ClutterActorBox *old)
 {
-  ClutterGeometry geom;
+  ClutterUnit xu, yu;
+  ClutterUnit widthu, heightu;
 
-  clutter_actor_get_geometry (self, &geom);
+  clutter_actor_get_positionu (self, &xu, &yu);
+  clutter_actor_get_sizeu (self, &widthu, &heightu);
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  if (geom.x != old->x)
+  if (xu != old->x1)
     g_object_notify (G_OBJECT (self), "x");
 
-  if (geom.y != old->y)
+  if (yu != old->y1)
     g_object_notify (G_OBJECT (self), "y");
 
-  if (geom.width != old->width)
+  if (widthu != (old->x2 - old->x1))
     g_object_notify (G_OBJECT (self), "width");
 
-  if (geom.height != old->height)
+  if (heightu != (old->y2 - old->y1))
     g_object_notify (G_OBJECT (self), "height");
 
   g_object_thaw_notify (G_OBJECT (self));
@@ -710,7 +715,7 @@ clutter_actor_real_allocate (ClutterActor          *self,
 {
   ClutterActorPrivate *priv = self->priv;
   gboolean x1_changed, y1_changed, x2_changed, y2_changed;
-  ClutterGeometry old;
+  ClutterActorBox old = { 0, };
 
   clutter_actor_store_old_geometry (self, &old);
 
@@ -3666,7 +3671,7 @@ clutter_actor_set_min_width (ClutterActor *self,
                              ClutterUnit   min_width)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterGeometry old = { 0, };
+  ClutterActorBox old = { 0, };
 
   if (priv->min_width_set && min_width == priv->request_min_width)
     return;
@@ -3692,7 +3697,7 @@ clutter_actor_set_min_height (ClutterActor *self,
 
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterGeometry old = { 0, };
+  ClutterActorBox old = { 0, };
 
   if (priv->min_height_set && min_height == priv->request_min_height)
     return;
@@ -3717,7 +3722,7 @@ clutter_actor_set_natural_width (ClutterActor *self,
                                  ClutterUnit   natural_width)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterGeometry old = { 0, };
+  ClutterActorBox old = { 0, };
 
   if (priv->natural_width_set &&
       natural_width == priv->request_natural_width)
@@ -3743,7 +3748,7 @@ clutter_actor_set_natural_height (ClutterActor *self,
                                   ClutterUnit   natural_height)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterGeometry old = { 0, };
+  ClutterActorBox old = { 0, };
 
   if (priv->natural_height_set &&
       natural_height == priv->request_natural_height)
@@ -3769,7 +3774,7 @@ clutter_actor_set_min_width_set (ClutterActor *self,
                                  gboolean      use_min_width)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterGeometry old = { 0, };
+  ClutterActorBox old = { 0, };
 
   if (priv->min_width_set == (use_min_width != FALSE))
     return;
@@ -3789,7 +3794,7 @@ clutter_actor_set_min_height_set (ClutterActor *self,
                                   gboolean      use_min_height)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterGeometry old = { 0, };
+  ClutterActorBox old = { 0, };
 
   if (priv->min_height_set == (use_min_height != FALSE))
     return;
@@ -3809,7 +3814,7 @@ clutter_actor_set_natural_width_set (ClutterActor *self,
                                      gboolean      use_natural_width)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterGeometry old = { 0, };
+  ClutterActorBox old = { 0, };
 
   if (priv->natural_width_set == (use_natural_width != FALSE))
     return;
@@ -3829,7 +3834,7 @@ clutter_actor_set_natural_height_set (ClutterActor *self,
                                       gboolean      use_natural_height)
 {
   ClutterActorPrivate *priv = self->priv;
-  ClutterGeometry old = { 0, };
+  ClutterActorBox old = { 0, };
 
   if (priv->natural_height_set == (use_natural_height != FALSE))
     return;
@@ -4498,7 +4503,7 @@ void
 clutter_actor_set_xu (ClutterActor *self,
 		      ClutterUnit   x)
 {
-  ClutterGeometry old;
+  ClutterActorBox old = { 0, };
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -4551,7 +4556,7 @@ void
 clutter_actor_set_yu (ClutterActor *self,
 		      ClutterUnit   y)
 {
-  ClutterGeometry old;
+  ClutterActorBox old = { 0, };
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
