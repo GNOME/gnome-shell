@@ -370,7 +370,7 @@ my_thing_get_preferred_height (ClutterActor *self,
 static void
 my_thing_allocate (ClutterActor          *self,
                    const ClutterActorBox *box,
-                   gboolean               absolute_origin_changed)
+                   gboolean               origin_changed)
 {
   MyThingPrivate *priv;
   ClutterUnit current_x, current_y, max_row_height;
@@ -378,7 +378,7 @@ my_thing_allocate (ClutterActor          *self,
 
   /* chain up to set actor->allocation */
   CLUTTER_ACTOR_CLASS (my_thing_parent_class)->allocate (self, box,
-                                                         absolute_origin_changed);
+                                                         origin_changed);
 
   priv = MY_THING (self)->priv;
 
@@ -417,7 +417,7 @@ my_thing_allocate (ClutterActor          *self,
       child_box.x2 = child_box.x1 + natural_width;
       child_box.y2 = child_box.y1 + natural_height;
 
-      clutter_actor_allocate (child, &child_box, absolute_origin_changed);
+      clutter_actor_allocate (child, &child_box, origin_changed);
 
       /* if we take into account the transformation of the children
        * then we first check if it's transformed; then we get the
@@ -431,24 +431,33 @@ my_thing_allocate (ClutterActor          *self,
               clutter_actor_is_rotated (child))
             {
               ClutterVertex v1 = { 0, }, v2 = { 0, };
-              ClutterActorBox box = { 0, };
+              ClutterActorBox transformed_box = { 0, };
 
               /* origin */
-              v1.x = 0;
-              v1.y = 0;
+              if (!origin_changed)
+                {
+                  v1.x = 0;
+                  v1.y = 0;
+                }
+              else
+                {
+                  v1.x = box->x1;
+                  v1.y = box->y1;
+                }
+
               clutter_actor_apply_transform_to_point (child, &v1, &v2);
-              box.x1 = v2.x;
-              box.y1 = v2.y;
+              transformed_box.x1 = v2.x;
+              transformed_box.y1 = v2.y;
 
               /* size */
               v1.x = natural_width;
               v1.y = natural_height;
               clutter_actor_apply_transform_to_point (child, &v1, &v2);
-              box.x2 = v2.x;
-              box.y2 = v2.y;
+              transformed_box.x2 = v2.x;
+              transformed_box.y2 = v2.y;
 
-              natural_width = box.x2 - box.x1;
-              natural_height = box.y2 - box.y1;
+              natural_width = transformed_box.x2 - transformed_box.x1;
+              natural_height = transformed_box.y2 - transformed_box.y1;
             }
         }
 
@@ -713,6 +722,26 @@ keypress_cb (ClutterStage    *stage,
     } 
 }
 
+static void
+relayout_on_frame (ClutterTimeline *timeline)
+{
+  gboolean use_transformed_box;
+
+  /* if we care about transformations updating the layout, we need to inform
+   * the layout that a transformation is happening; this is either done by
+   * attaching a notification on the transformation properties or by simply
+   * queuing a relayout on each frame of the timeline used to drive the
+   * behaviour. for simplicity's sake, we used the latter
+   */
+
+  g_object_get (G_OBJECT (box),
+                "use-transformed-box", &use_transformed_box,
+                NULL);
+
+  if (use_transformed_box)
+    clutter_actor_queue_relayout (box);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -730,6 +759,9 @@ main (int   argc,
 
   timeline = clutter_timeline_new_for_duration (2000);
   clutter_timeline_set_loop (timeline, TRUE);
+  g_signal_connect (timeline, "new-frame",
+                    G_CALLBACK (relayout_on_frame),
+                    NULL);
 
   behaviour = clutter_behaviour_scale_new (clutter_alpha_new_full (timeline,
                                                                    CLUTTER_ALPHA_SINE,
@@ -739,7 +771,7 @@ main (int   argc,
   box = my_thing_new (10, 10);
 
   clutter_actor_set_position (box, 20, 20);
-  clutter_actor_set_size (box, 400, -1);
+  clutter_actor_set_size (box, 350, -1);
 
   icon = clutter_texture_new_from_file ("redhand.png", &error);
   if (error)

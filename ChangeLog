@@ -1,5 +1,11 @@
 2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/test-layout.c: Take into account the origin of the
+	parent, if it has changed, and queue a relayout if we are
+	using the transformed box when computing the layout.
+
+2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/eglnative/clutter-stage-egl.c: Remove a duplicate
 	get_preferred_width() implementation. (thanks to Iain Holmes)
 
