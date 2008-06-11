@@ -93,6 +93,9 @@ foo_actor_init (FooActor *actor)
     using the clutter_actor_set_width() and clutter_actor_set_height()
     functions and their wrappers.</para>
 
+    <note><para>For instance, an actor that depends on the explicit
+    sizing is the #ClutterRectangle actor.</para></note>
+
     <para>The size requisition is split into two different phases: width
     requisition and height requisition.</para>
 
@@ -127,8 +130,8 @@ foo_actor_init (FooActor *actor)
 
     <note><para>The clutter_actor_get_preferred_size() function will
     automatically check the geometry management preferred by the actor
-    and return its preferred size depending on it and on the natural
-    size.</para></note>
+    and return its preferred size depending on the value of the request-mode
+    property and on the natural size of the actor.</para></note>
 
     <para>The size requisition starts from the #ClutterStage and it is
     performed on every child of the stage following down the hierarchy
@@ -638,6 +641,9 @@ foo_actor_add_baz (FooActor *foo_actor,
    */
   clutter_actor_set_parent (CLUTTER_ACTOR (baz_actor),
                             CLUTTER_ACTOR (foo_actor));
+
+  /* a container should queue a change in the layout */
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (foo_actor));
 
   /* emit a signal and notification */
   g_signal_emit (foo_actor, foo_actor_signals[BAZ_CHANGED], 0, baz_actor);
