@@ -1208,18 +1208,18 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 }
 
 /**
- * clutter_texture_set_filter_quality
- * @texture: A #ClutterTexture
- * @filter_quality: New filter quality value
+ * clutter_texture_set_filter_quality:
+ * @texture: a #ClutterTexture
+ * @filter_quality: new filter quality value
  *
  * Sets the filter quality when scaling a texture. The quality is an
  * enumeration currently the following values are supported:
- * CLUTTER_TEXTURE_QUALITY_LOW which is fast but only uses nearest neighbour
- * interpolation. CLUTTER_TEXTURE_QUALITY_MEDIUM which is computationally a bit
- * more expensive (bilinear interpolation), and CLUTTER_TEXTURE_QUALITY_HIGH
- * which uses extra texture memory resources to improve scaled down rendering
- * as well (it uses mipmaps). The default value is
- * CLUTTER_TEXTURE_QUALITY_MEDIUM.
+ * %CLUTTER_TEXTURE_QUALITY_LOW which is fast but only uses nearest neighbour
+ * interpolation. %CLUTTER_TEXTURE_QUALITY_MEDIUM which is computationally a
+ * bit more expensive (bilinear interpolation), and
+ * %CLUTTER_TEXTURE_QUALITY_HIGH which uses extra texture memory resources to
+ * improve scaled down rendering as well (by using mipmaps). The default value
+ * is %CLUTTER_TEXTURE_QUALITY_MEDIUM.
  *
  * Since: 0.8
  */
@@ -1243,6 +1243,7 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
 	cogl_texture_set_filters (priv->texture,
              clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
              clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
+
       if ((old_quality == CLUTTER_TEXTURE_QUALITY_HIGH ||
            filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH) &&
            CLUTTER_ACTOR_IS_REALIZED (texture))

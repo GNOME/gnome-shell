@@ -412,6 +412,20 @@ clutter_backend_get_resolution (ClutterBackend *backend)
   return CLUTTER_FIXED_TO_FLOAT (backend->priv->resolution);
 }
 
+/**
+ * clutter_backend_set_font_options:
+ * @backend: a #ClutterBackend
+ * @options: Cairo font options for the backend, or %NULL
+ *
+ * Sets the new font options for @backend. If @options is %NULL,
+ * the first following call to clutter_backend_get_font_options()
+ * will return the default font options for @backend.
+ *
+ * This function is intended for actors creating a Pango layout
+ * using the PangoCairo API.
+ *
+ * Since: 0.8
+ */
 void
 clutter_backend_set_font_options (ClutterBackend       *backend,
                                   cairo_font_options_t *options)
@@ -434,6 +448,16 @@ clutter_backend_set_font_options (ClutterBackend       *backend,
     }
 }
 
+/**
+ * clutter_backend_get_font_options:
+ * @backend: a #ClutterBackend
+ *
+ * Retrieves the font options for @backend.
+ *
+ * Return value: the font options of the #ClutterBackend
+ *
+ * Since: 0.8
+ */
 cairo_font_options_t *
 clutter_backend_get_font_options (ClutterBackend *backend)
 {

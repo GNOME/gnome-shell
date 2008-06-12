@@ -174,23 +174,23 @@ struct _ClutterActor
  * @unrealize: virtual function, used to deallocate resources allocated
  *   in ::realize; it should chain up to the parent's implementation
  * @paint: virtual function, used to paint the actor
- * @get_preferred_width: virtual function, used when querying the minimum and
- *   natural widths of an actor
- * @get_preferred_height: virtual function, used when querying the minimum and
- *   natural heights of an actor
+ * @get_preferred_width: virtual function, used when querying the minimum
+ *   and natural widths of an actor for a given height; it is used by
+ *   clutter_actor_get_preferred_width()
+ * @get_preferred_height: virtual function, used when querying the minimum
+ *   and natural heights of an actor for a given width; it is used by
+ *   clutter_actor_get_preferred_height()
  * @allocate: virtual function, used when settings the coordinates of an
- *   actor
+ *   actor; it is used by clutter_actor_allocate()
  * @get_paint_area: virtual function, used when querying the untrasformed
- *   bounding box of an actor; it's used internally by
- *   clutter_actor_get_stage_area()
- * @parent_set: signal class closure for the #ClutterActor::parent-set
- * @destroy: signal class closure for #ClutterActor::destroy
+ *   bounding box of an actor; it's used by clutter_actor_get_paint_area()
+ * @parent_set: signal class handler for the #ClutterActor::parent-set
+ * @destroy: signal class handler for #ClutterActor::destroy
  * @pick: virtual function, used to draw an outline of the actor with
  *   the given color
- * @event: signal class closure for #ClutterActor::event
- * @button_press_event: signal class closure for
- *   #ClutterActor::button-press-event
- * @button_release_event: signal class closure for
+ * @event: class handler for #ClutterActor::event
+ * @button_press_event: class handler for #ClutterActor::button-press-event
+ * @button_release_event: class handler for
  *   #ClutterActor::button-release-event
  * @scroll_event: signal class closure for #ClutterActor::scroll-event
  * @key_press_event: signal class closure for #ClutterActor::key-press-event

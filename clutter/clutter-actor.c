@@ -3085,8 +3085,8 @@ clutter_actor_get_preferred_size (ClutterActor *self,
  * @self: A #ClutterActor
  * @for_height: available height when computing the preferred width,
  *   or a negative value to indicate that no height is defined
- * @min_width_p: return location for min width, or %NULL
- * @natural_width_p: return location for min width, or %NULL
+ * @min_width_p: return location for minimum width, or %NULL
+ * @natural_width_p: return location for the natural width, or %NULL
  *
  * Computes the requested minimum and natural widths for an actor,
  * optionally depending on the specified height, or if they are
@@ -3156,7 +3156,7 @@ clutter_actor_get_preferred_width (ClutterActor *self,
  * @self: A #ClutterActor
  * @for_width: available width to assume in computing desired height,
  *   or a negative value to indicate that no width is defined
- * @min_height_p: return location for min height, or %NULL
+ * @min_height_p: return location for minimum height, or %NULL
  * @natural_height_p: return location for natural height, or %NULL
  *
  * Computes the requested minimum and natural heights for an actor,

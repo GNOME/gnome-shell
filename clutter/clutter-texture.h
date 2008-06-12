@@ -131,55 +131,51 @@ typedef enum { /*< prefix=CLUTTER_TEXTURE_QUALITY >*/
 GType clutter_texture_get_type (void) G_GNUC_CONST;
 GType clutter_texture_handle_get_type (void) G_GNUC_CONST;
 
-ClutterActor *clutter_texture_new                 (void);
-ClutterActor *clutter_texture_new_from_file       (const gchar    *filename,
-						   GError        **error);
-gboolean      clutter_texture_set_from_file       (ClutterTexture *texture,
-						   const gchar    *filename,
-						   GError        **error);
-gboolean      clutter_texture_set_from_rgb_data   (ClutterTexture *texture,
-						   const guchar   *data,
-						   gboolean        has_alpha,
-						   gint            width,
-						   gint            height,
-						   gint            rowstride,
-						   gint            bpp,
-						   ClutterTextureFlags  flags,
-						   GError        **error);
-ClutterActor *clutter_texture_new_from_actor      (ClutterActor *actor);
-gboolean      clutter_texture_set_area_from_rgb_data (ClutterTexture *texture,
-                                                   const guchar   *data,
-                                                   gboolean        has_alpha,
-                                                   gint            x,
-                                                   gint            y,
-                                                   gint            width,
-                                                   gint            height,
-                                                   gint            rowstride,
-                                                   gint            bpp,
-                                                   ClutterTextureFlags flags,
-                                                   GError         **error);
-
-gboolean      clutter_texture_set_from_yuv_data   (ClutterTexture *texture,
-						   const guchar   *data,
-						   gint            width,
-						   gint            height,
-						   ClutterTextureFlags  flags,
-						   GError        **error);
-void          clutter_texture_get_base_size       (ClutterTexture *texture,
-                                                   gint           *width,
-                                                   gint           *height);
-void          clutter_texture_set_filter_quality  (ClutterTexture *texture,
-				                   ClutterTextureQuality
-                                                                filter_quality);
-ClutterTextureQuality
-              clutter_texture_get_filter_quality  (ClutterTexture *texture);
-void          clutter_texture_set_max_tile_waste  (ClutterTexture *texture,
-						   gint      max_tile_waste);
-gint          clutter_texture_get_max_tile_waste  (ClutterTexture *texture);
-
-CoglHandle    clutter_texture_get_cogl_texture    (ClutterTexture *texture);
-void          clutter_texture_set_cogl_texture    (ClutterTexture *texture,
-						   CoglHandle      cogl_tex);
+ClutterActor *       clutter_texture_new                    (void);
+ClutterActor *       clutter_texture_new_from_file          (const gchar            *filename,
+                                                             GError                **error);
+ClutterActor *       clutter_texture_new_from_actor         (ClutterActor           *actor);
+gboolean             clutter_texture_set_from_file          (ClutterTexture         *texture,
+                                                             const gchar            *filename,
+                                                             GError                **error);
+gboolean             clutter_texture_set_from_rgb_data      (ClutterTexture         *texture,
+                                                             const guchar           *data,
+                                                             gboolean                has_alpha,
+                                                             gint                    width,
+                                                             gint                    height,
+                                                             gint                    rowstride,
+                                                             gint                    bpp,
+                                                             ClutterTextureFlags     flags,
+                                                             GError                **error);
+gboolean              clutter_texture_set_from_yuv_data     (ClutterTexture         *texture,
+                                                             const guchar           *data,
+                                                             gint                    width,
+                                                             gint                    height,
+                                                             ClutterTextureFlags     flags,
+                                                             GError                **error);
+gboolean             clutter_texture_set_area_from_rgb_data (ClutterTexture         *texture,
+                                                             const guchar           *data,
+                                                             gboolean                has_alpha,
+                                                             gint                    x,
+                                                             gint                    y,
+                                                             gint                    width,
+                                                             gint                    height,
+                                                             gint                    rowstride,
+                                                             gint                    bpp,
+                                                             ClutterTextureFlags     flags,
+                                                             GError                **error);
+void                  clutter_texture_get_base_size         (ClutterTexture         *texture,
+                                                             gint                   *width,
+                                                             gint                   *height);
+void                  clutter_texture_set_filter_quality    (ClutterTexture         *texture,
+                                                             ClutterTextureQuality   filter_quality);
+ClutterTextureQuality clutter_texture_get_filter_quality    (ClutterTexture         *texture);
+void                  clutter_texture_set_max_tile_waste    (ClutterTexture         *texture,
+                                                             gint                    max_tile_waste);
+gint                  clutter_texture_get_max_tile_waste    (ClutterTexture         *texture);
+CoglHandle            clutter_texture_get_cogl_texture      (ClutterTexture         *texture);
+void                  clutter_texture_set_cogl_texture      (ClutterTexture         *texture,
+                                                             CoglHandle              cogl_tex);
 
 G_END_DECLS
 

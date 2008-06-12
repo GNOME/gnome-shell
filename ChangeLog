@@ -1,3 +1,18 @@
+2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.[ch]: Documentation fixes.
+
+	* clutter/clutter-backend.c: Documentation fixes.
+
+	* clutter/clutter-container.h: Documentation fixes.
+
+	* clutter/clutter-fixed.c (clutter_qdivx): Fix the return
+	value to be after the description.
+
+	* clutter/clutter-texture.[ch]: Documentation fixes.
+
+	* clutter/clutter-timeline.c: Documentation fixes.
+
 2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* tests/test-layout.c: Take into account the origin of the

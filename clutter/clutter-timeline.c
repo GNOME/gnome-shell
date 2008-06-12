@@ -25,7 +25,7 @@
 
 /**
  * SECTION:clutter-timeline
- * @short_description: A class for based events
+ * @short_description: A class for time-based events
  *
  * #ClutterTimeline is a base class for managing time based events such
  * as animations.
