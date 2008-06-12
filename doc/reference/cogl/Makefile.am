@@ -59,7 +59,9 @@ IGNORE_HFILES=\
 	cogl-defines.h \
 	cogl-internal.h \
 	cogl-primitives.h \
-	cogl-texture.h
+	cogl-texture.h \
+	gl \
+	gles
 
 EXTRA_HFILES=
 
