@@ -1,5 +1,12 @@
 2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug #964 - "unrealized" signal of ClutterActor wrongly named
+
+	* clutter/clutter-actor.c (clutter_actor_class_init): Fix typo
+	in the ::unrealize signal name. (Armin Burgmeier)
+
+2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* doc/reference/cogl/Makefile.am: Ignore cogl/gl and cogl/gles
 	when building the documentation.
 

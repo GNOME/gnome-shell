@@ -2887,7 +2887,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Since: 0.8
    */
   actor_signals[UNREALIZE] =
-    g_signal_new (I_("unrealized"),
+    g_signal_new (I_("unrealize"),
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterActorClass, unrealize),
