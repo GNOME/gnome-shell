@@ -40,6 +40,13 @@
  *   <graphic fileref="actor-box.png" format="PNG"/>
  * </figure>
  *
+ * The actor box represents the untransformed area occupied by an actor. Each
+ * visible actor that has been put on a #ClutterStage also has a transformed
+ * area, depending on the actual transformations applied to it by the
+ * developer (scale, rotation), the transformations applied by its
+ * containers, the transformations applied to the containers themselves and,
+ * finally, the perspective transformations applied to the #ClutterStage.
+ *
  * The OpenGL modelview matrix for the actor is constructed from
  * the actor settings by the following order of operations:
  * <orderedlist>
@@ -51,12 +58,28 @@
  *   <listitem><para>Rotation around y axis,</para></listitem>
  *   <listitem><para>Rotation around x axis,</para></listitem>
  *   <listitem><para>Translation by actor depth (z),</para></listitem>
- *   <listitem><para>Clip stencil is applied (not an operation on the matrix
- *   as such, but done as part of the transform set up).</para></listitem>
+ *   <listitem><para>Clip stencil is applied (this is not an operation on
+ *   the matrix as such, but it is done as part of the transform set
+ *   up).</para></listitem>
  * </orderedlist>
  *
  * <note>The position of any children is referenced from the top-left corner of
  * the parent, not the parent's anchor point.</note>
+ *
+ * An actor can either be explicitly sized and positioned, using the
+ * various size and position accessors, like clutter_actor_set_x() or
+ * clutter_actor_set_width(); or it can have a preferred width and
+ * height, which then allows a layout manager to implicitly size and
+ * position it by "allocating" an area for an actor.
+ *
+ * When accessing the position and size of an actor, the simple accessors
+ * like clutter_actor_get_width() and clutter_actor_get_x() will return
+ * a value depending on whether the actor has been explicitly sized and
+ * positioned by the developer or implicitly by the layout manager.
+ *
+ * Depending on whether you are querying an actor or implementing a
+ * layout manager, you should either use the simple accessors or use the
+ * size negotiation API.
  *
  * Events are handled in the following ways:
  * <orderedlist>

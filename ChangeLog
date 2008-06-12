@@ -1,5 +1,12 @@
 2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c: Add more clarifications on the
+	size and position accessors and the distinction between
+	transformed and untransformed actor box inside the actor's
+	description.
+
+2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Clarify the documentation of the
 	accessors of the width and height.
 
