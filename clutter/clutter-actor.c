@@ -4219,20 +4219,22 @@ clutter_actor_get_transformed_size (ClutterActor *self,
  *
  * Retrieves the width of a #ClutterActor.
  *
- * This function tries to "do what you mean", by returning the correct
- * value depending on the actor's state.
- *
  * If the actor has a valid allocation, this function will return the
- * width of the allocation box.
+ * width of the allocated area given to the actor.
  *
  * If the actor does not have a valid allocation, this function will
- * return the actor's natural width request.
+ * return the actor's natural width, that is the preferred width of
+ * the actor.
  *
- * If you care whether you get the width request or the allocation,
- * you should probably call a different function like
- * clutter_actor_get_allocation_coords() to retrieve the allocation
- * or clutter_actor_get_preferred_width() to retrieve the preferred
- * width.
+ * If you care whether you get the preferred width or the width that
+ * has been assigned to the actor, you should probably call a different
+ * function like clutter_actor_get_allocation_coords() to retrieve the
+ * allocated size or clutter_actor_get_preferred_width() to retrieve the
+ * preferred width.
+ *
+ * If an actor has a fixed width, for instance a width that has been
+ * assigned using clutter_actor_set_width(), the width returned will
+ * be the same value.
  *
  * Return value: the width of the actor, in pixels
  */
@@ -4250,20 +4252,22 @@ clutter_actor_get_width (ClutterActor *self)
  *
  * Retrieves the width of a #ClutterActor, in #ClutterUnit<!-- -->s.
  *
- * This function tries to "do what you mean", by returning the correct
- * value depending on the actor's state.
- *
  * If the actor has a valid allocation, this function will return the
- * width of the allocation box.
+ * width of the allocated area given to the actor.
  *
  * If the actor does not have a valid allocation, this function will
- * return the actor's natural width request.
+ * return the actor's natural width, that is the preferred width of
+ * the actor.
  *
- * If you care whether you get the width request or the allocation,
- * you should probably call a different function like
- * clutter_actor_get_allocation_coords() to retrieve the allocation
- * or clutter_actor_get_preferred_width() to retrieve the preferred
- * width.
+ * If you care whether you get the preferred width or the width that
+ * has been assigned to the actor, you should probably call a different
+ * function like clutter_actor_get_allocation_coords() to retrieve the
+ * allocated size or clutter_actor_get_preferred_width() to retrieve the
+ * preferred width.
+ *
+ * If an actor has a fixed width, for instance a width that has been
+ * assigned using clutter_actor_set_width(), the width returned will
+ * be the same value.
  *
  * Return value: the width of the actor, in #ClutterUnit<!-- -->s
  *
@@ -4302,20 +4306,22 @@ clutter_actor_get_widthu (ClutterActor *self)
  *
  * Retrieves the height of a #ClutterActor.
  *
- * This function tries to "do what you mean", by returning the correct
- * value depending on the actor's state.
- *
  * If the actor has a valid allocation, this function will return the
- * height of the allocation box.
+ * height of the allocated area given to the actor.
  *
  * If the actor does not have a valid allocation, this function will
- * return the actor's natural height request.
+ * return the actor's natural height, that is the preferred height of
+ * the actor.
  *
- * If you care whether you get the height request or the allocation,
- * you should probably call a different function like
- * clutter_actor_get_allocation_coords() to retrieve the allocation
- * or clutter_actor_get_preferred_height() to retrieve the
+ * If you care whether you get the preferred height or the height that
+ * has been assigned to the actor, you should probably call a different
+ * function like clutter_actor_get_allocation_coords() to retrieve the
+ * allocated size or clutter_actor_get_preferred_height() to retrieve the
  * preferred height.
+ *
+ * If an actor has a fixed height, for instance a height that has been
+ * assigned using clutter_actor_set_height(), the height returned will
+ * be the same value.
  *
  * Return value: the height of the actor, in pixels
  */
@@ -4333,20 +4339,22 @@ clutter_actor_get_height (ClutterActor *self)
  *
  * Retrieves the height of a #ClutterActor, in #ClutterUnit<!-- -->s.
  *
- * This function tries to "do what you mean", by returning the correct
- * value depending on the actor's state.
- *
  * If the actor has a valid allocation, this function will return the
- * height of the allocation box.
+ * height of the allocated area given to the actor.
  *
  * If the actor does not have a valid allocation, this function will
- * return the actor's natural height request.
+ * return the actor's natural height, that is the preferred height of
+ * the actor.
  *
- * If you care whether you get the height request or the allocation,
- * you should probably call a different function like
- * clutter_actor_get_allocation_coords() to retrieve the allocation
- * or clutter_actor_get_preferred_height() to retrieve the
+ * If you care whether you get the preferred height or the height that
+ * has been assigned to the actor, you should probably call a different
+ * function like clutter_actor_get_allocation_coords() to retrieve the
+ * allocated size or clutter_actor_get_preferred_height() to retrieve the
  * preferred height.
+ *
+ * If an actor has a fixed height, for instance a height that has been
+ * assigned using clutter_actor_set_height(), the height returned will
+ * be the same value.
  *
  * Return value: the height of the actor, in #ClutterUnit<!-- -->s
  *
@@ -4383,9 +4391,10 @@ clutter_actor_get_heightu (ClutterActor *self)
  * @self: A #ClutterActor
  * @width: Requested new width for the actor, in pixels
  *
- * Forces a width request on an actor, causing the actor's
- * normal width and height (if any) to be ignored. This function
- * sets both the minimum and natural size request of the actor.
+ * Forces a width on an actor, causing the actor's preferred width
+ * and height (if any) to be ignored.
+ *
+ * This function sets both the minimum and natural size of the actor.
  *
  * since: 0.2
  **/
@@ -4403,9 +4412,10 @@ clutter_actor_set_width (ClutterActor *self,
  * @self: A #ClutterActor
  * @width: Requested new width for the actor, in #ClutterUnit<!-- -->s
  *
- * Forces a width request on an actor, causing the actor's
- * normal width and height (if any) to be ignored. This function
- * sets both the minimum and natural size request of the actor.
+ * Forces a width on an actor, causing the actor's preferred width
+ * and height (if any) to be ignored.
+ *
+ * This function sets both the minimum and natural size of the actor.
  *
  * since: 0.6
  **/
@@ -4428,9 +4438,10 @@ clutter_actor_set_widthu (ClutterActor *self,
  * @self: A #ClutterActor
  * @height: Requested new height for the actor, in pixels
  *
- * Forces a height request on an actor, causing the actor's
- * normal width and height (if any) to be ignored. This function
- * sets both the minimum and natural size request of the actor.
+ * Forces a height on an actor, causing the actor's preferred width
+ * and height (if any) to be ignored.
+ *
+ * This function sets both the minimum and natural size of the actor.
  *
  * since: 0.2
  **/
@@ -4448,9 +4459,10 @@ clutter_actor_set_height (ClutterActor *self,
  * @self: A #ClutterActor
  * @height: Requested new height for the actor, in #ClutterUnit<!-- -->s
  *
- * Forces a height request on an actor, causing the actor's
- * normal width and height (if any) to be ignored. This function
- * sets both the minimum and natural size request of the actor.
+ * Forces a height on an actor, causing the actor's preferred width
+ * and height (if any) to be ignored.
+ *
+ * This function sets both the minimum and natural size of the actor.
  *
  * since: 0.6
  **/
@@ -4474,6 +4486,7 @@ clutter_actor_set_heightu (ClutterActor *self,
  * @x: the actor's position on the X axis
  *
  * Sets the actor's X coordinate, relative to its parent, in pixels.
+ *
  * Overrides any layout manager and forces a fixed position for
  * the actor.
  *
@@ -4494,6 +4507,7 @@ clutter_actor_set_x (ClutterActor *self,
  * @x: the actor's position on the X axis, in #ClutterUnit<!-- -->s
  *
  * Sets the actor's X coordinate, relative to its parent.
+ *
  * Overrides any layout manager and forces a fixed position for
  * the actor.
  *
@@ -4526,7 +4540,8 @@ clutter_actor_set_xu (ClutterActor *self,
  * @self: a #ClutterActor
  * @y: the actor's position on the Y axis
  *
- * Sets the actor's Y coordinate, relative to its parent, in pixels.
+ * Sets the actor's Y coordinate, relative to its parent, in pixels.#
+ *
  * Overrides any layout manager and forces a fixed position for
  * the actor.
  *
@@ -4547,6 +4562,7 @@ clutter_actor_set_y (ClutterActor *self,
  * @y: the actor's position on the Y axis, in #ClutterUnit<!-- -->s
  *
  * Sets the actor's Y coordinate, relative to its parent.
+ *
  * Overrides any layout manager and forces a fixed position for
  * the actor.
  *

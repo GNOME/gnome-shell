@@ -1,3 +1,8 @@
+2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c: Clarify the documentation of the
+	accessors of the width and height.
+
 2008-06-12  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/win32/clutter-stage-win32.c: Updated to the new layout
