@@ -27,3 +27,4 @@ clutter_model_iter_get_type
 clutter_list_model_get_type
 clutter_score_get_type
 clutter_shader_get_type
+clutter_child_meta_get_type

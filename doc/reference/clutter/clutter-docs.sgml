@@ -339,7 +339,7 @@
       <title>Abstract classes and interfaces</title>
       <xi:include href="xml/clutter-actor.xml"/>
       <xi:include href="xml/clutter-container.xml"/>
-      <xi:include href="xml/clutter-child-data.xml"/>
+      <xi:include href="xml/clutter-child-meta.xml"/>
       <xi:include href="xml/clutter-media.xml"/>
     </chapter>
 
@@ -362,7 +362,13 @@
   </part>
 
   <part id="clutteranimation">
-    <title>Clutter Animation Support</title>
+    <title>Clutter Animation Framework</title>
+
+    <partintro>
+      <para>Clutter has a fully extensible animation framework
+      providing support for explicit and implicit animations of
+      single actors as well as groups of actors.</para>
+    </partintro>
 
     <chapter>
       <title>Base classes</title>
@@ -458,18 +464,23 @@
   <index>
     <title>Index</title>
   </index>
+
   <index role="deprecated">
     <title>Index of deprecated symbols</title>
   </index>
+
   <index role="0.2">
     <title>Index of new symbols in 0.2</title>
   </index>
+
   <index role="0.4">
     <title>Index of new symbols in 0.4</title>
   </index>
+
   <index role="0.6">
     <title>Index of new symbols in 0.6</title>
   </index>
+
   <index role="0.8">
     <title>Index of new symbols in 0.8</title>
   </index>

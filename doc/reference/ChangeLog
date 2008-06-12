@@ -1,3 +1,11 @@
+2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-docs.sgml: Clean up.
+
+	* clutter/clutter-sections.txt: Add missing new symbols.
+
+	* clutter/clutter.types: Add ClutterChildMeta type.
+
 2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/subclassing-ClutterActor.sgml: Add more notes and

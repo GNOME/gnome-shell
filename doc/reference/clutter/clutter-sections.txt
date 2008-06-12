@@ -493,6 +493,7 @@ clutter_vertex_get_type
 ClutterTexture
 ClutterTextureClass
 ClutterTextureFlags
+ClutterTextureQuality
 clutter_texture_new
 clutter_texture_new_from_file
 clutter_texture_new_from_actor
@@ -922,6 +923,7 @@ CLUTTER_ANGLE_TO_DEGF
 CLUTTER_ANGLE_TO_DEG
 CLUTTER_ANGLE_TO_DEGX
 CLUTTER_ANGLE_MAX_DEG
+CFX_RADIANS_TO_DEGREES
 clutter_cosi
 clutter_cosx
 clutter_sini
@@ -937,6 +939,8 @@ clutter_powx
 clutter_qmulx
 clutter_qdivx
 clutter_tani
+clutter_atani
+clutter_atan2i
 
 <SUBSECTION>
 CLUTTER_MAXFIXED
@@ -1288,6 +1292,7 @@ clutter_script_error_quark
 <SECTION>
 <FILE>clutter-scriptable</FILE>
 <TITLE>ClutterScriptable</TITLE>
+ClutterScriptable
 ClutterScriptableIface
 clutter_scriptable_set_id
 clutter_scriptable_get_id
@@ -1474,5 +1479,4 @@ CLUTTER_TYPE_SHADER
 ClutterShaderPrivate
 clutter_shader_get_type
 clutter_shader_error_quark
-clutter_shader_release_all
 </SECTION>
