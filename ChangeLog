@@ -1,5 +1,12 @@
 2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* doc/reference/cogl/Makefile.am: Ignore cogl/gl and cogl/gles
+	when building the documentation.
+
+	* clutter/cogl/cogl.h.in: Add sections in the header file.
+
+2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Add more clarifications on the
 	size and position accessors and the distinction between
 	transformed and untransformed actor box inside the actor's

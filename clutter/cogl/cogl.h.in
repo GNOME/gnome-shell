@@ -217,17 +217,26 @@ struct _CoglTextureVertex
 
 typedef struct _CoglTextureVertex CoglTextureVertex;
 
+/**
+ * SECTION:cogl
+ * @short_description: General purpose API
+ *
+ * General utility functions for COGL.
+ */
+
 /* Context manipulation */
 
 /**
  * cogl_create_context:
  *
+ * FIXME
  */
 gboolean        cogl_create_context           (void);
 
 /**
  * cogl_destroy_context:
  *
+ * FIXME
  */
 void            cogl_destroy_context          (void);
 
@@ -235,7 +244,7 @@ void            cogl_destroy_context          (void);
 /**
  * COGL_INVALID_HANDLE:
  *
- * A cogl handle that is not valid, used for unitialized handles as well as
+ * A COGL handle that is not valid, used for unitialized handles as well as
  * error conditions.
  */
 #define COGL_INVALID_HANDLE NULL
@@ -554,6 +563,15 @@ void            cogl_fog_set                  (const ClutterColor *fog_color,
  * buffers are also cleared and fogging and lighting are disabled.
  */
 void            cogl_paint_init               (const ClutterColor *color);
+
+/**
+ * SECTION:cogl-texture
+ * @short_description: Fuctions for creating and manipulating textures
+ *
+ * COGL allows creating and manipulating GL textures using a uniform
+ * API that tries to hide all the various complexities of creating,
+ * loading and manipulating textures.
+ */
 
 /* Textures api */
 
@@ -1211,6 +1229,16 @@ void            cogl_path_round_rectangle     (ClutterFixed        x,
                                                ClutterAngle        arc_step);
 
 /**
+ * SECTION:cogl-shaders
+ * @short_description: Fuctions for accessing the programmable GL pipeline
+ *
+ * COGL allows accessing the GL programmable pipeline in order to create
+ * vertex and fragment shaders.
+ *
+ * The only supported format is GLSL shaders.
+ */
+
+/**
  * cogl_create_shader:
  * @shader_type: CGL_VERTEX_SHADER or CGL_FRAGMENT_SHADER.
  *
@@ -1396,6 +1424,14 @@ COGLint         cogl_program_get_uniform_location
 void            cogl_program_uniform_1f       (COGLint           uniform_no,
                                                gfloat            value);
 
+/**
+ * SECTION:cogl-offscreen
+ * @short_description: Fuctions for creating and manipulating offscreen
+ *   frame buffer objects
+ *
+ * COGL allows creating and operating on FBOs (Framebuffer Objects).
+ */
+
 /* Offscreen api */
 
 /**
@@ -1412,7 +1448,7 @@ CoglHandle      cogl_offscreen_new_to_texture (CoglHandle         texhandle);
  *
  * Returns:
  */
-CoglHandle      cogl_offscreen_new_multisample(void);
+CoglHandle      cogl_offscreen_new_multisample (void);
 
 /**
  * cogl_offscreen_ref:
