@@ -46,8 +46,6 @@ struct _ClutterStageWin32
 
   HWND         hwnd;
   HDC          client_dc;
-  gint         win_xpos;
-  gint         win_ypos;
   gint         win_width;
   gint         win_height;
   gint         scroll_pos;

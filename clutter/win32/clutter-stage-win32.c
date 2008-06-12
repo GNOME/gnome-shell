@@ -59,9 +59,15 @@ clutter_stage_win32_show (ClutterActor *actor)
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (actor);
 
   if (stage_win32->hwnd)
-    ShowWindow (stage_win32->hwnd, SW_SHOW);
+    {
+      /* Force a redraw so that the layout will be run and the correct
+	 size will be allocated to the window before it is
+	 shown. Otherwise a WM_SIZE message will be sent which will
+	 override the user's chosen size */
+      clutter_redraw (stage_win32->wrapper);
 
-  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
+      ShowWindow (stage_win32->hwnd, SW_SHOW);
+    }
 }
 
 static void
@@ -69,34 +75,56 @@ clutter_stage_win32_hide (ClutterActor *actor)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (actor);
 
-  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_MAPPED);
-  
   if (stage_win32->hwnd)
     ShowWindow (stage_win32->hwnd, SW_HIDE);
 }
 
 static void
-clutter_stage_win32_query_coords (ClutterActor        *self,
-				  ClutterActorBox     *box)
+clutter_stage_win32_get_preferred_width (ClutterActor  *self,
+					 ClutterUnit    for_height,
+					 ClutterUnit   *min_width_p,
+					 ClutterUnit   *natural_width_p)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
+  int width;
 
   /* If we're in fullscreen mode then return the size of the screen
      instead */
   if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN))
-    {
-      box->x1 = CLUTTER_UNITS_FROM_INT (stage_win32->fullscreen_rect.left);
-      box->y1 = CLUTTER_UNITS_FROM_INT (stage_win32->fullscreen_rect.top);
-      box->x2 = CLUTTER_UNITS_FROM_INT (stage_win32->fullscreen_rect.right);
-      box->y2 = CLUTTER_UNITS_FROM_INT (stage_win32->fullscreen_rect.bottom);
-    }
+    width = CLUTTER_UNITS_FROM_DEVICE (stage_win32->fullscreen_rect.right
+				       - stage_win32->fullscreen_rect.left);
   else
-    {
-      box->x1 = CLUTTER_UNITS_FROM_INT (stage_win32->win_xpos);
-      box->y1 = CLUTTER_UNITS_FROM_INT (stage_win32->win_ypos);
-      box->x2 = box->x1 + CLUTTER_UNITS_FROM_INT (stage_win32->win_width);
-      box->y2 = box->y1 + CLUTTER_UNITS_FROM_INT (stage_win32->win_height);
-    }
+    width = CLUTTER_UNITS_FROM_DEVICE (stage_win32->win_width);
+
+  if (min_width_p)
+    *min_width_p = width;
+
+  if (natural_width_p)
+    *natural_width_p = width;
+}
+
+static void
+clutter_stage_win32_get_preferred_height (ClutterActor  *self,
+					  ClutterUnit    for_width,
+					  ClutterUnit   *min_height_p,
+					  ClutterUnit   *natural_height_p)
+{
+  ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
+  int height;
+
+  /* If we're in fullscreen mode then return the size of the screen
+     instead */
+  if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN))
+    height = CLUTTER_UNITS_FROM_DEVICE (stage_win32->fullscreen_rect.bottom
+				       - stage_win32->fullscreen_rect.top);
+  else
+    height = CLUTTER_UNITS_FROM_DEVICE (stage_win32->win_height);
+
+  if (min_height_p)
+    *min_height_p = height;
+
+  if (natural_height_p)
+    *natural_height_p = height;
 }
 
 static void
@@ -121,22 +149,6 @@ get_fullscreen_rect (ClutterStageWin32 *stage_win32)
   monitor_info.cbSize = sizeof (monitor_info);
   GetMonitorInfoW (monitor, &monitor_info);
   stage_win32->fullscreen_rect = monitor_info.rcMonitor;
-}
-
-static void
-get_full_window_pos (ClutterStageWin32 *stage_win32,
-		     int xpos_in, int ypos_in,
-		     int *xpos_out, int *ypos_out)
-{
-  gboolean resizable
-    = clutter_stage_get_user_resizable (stage_win32->wrapper);
-  /* The window position passed to CreateWindow includes the window
-     decorations */
-  *xpos_out = xpos_in - GetSystemMetrics (resizable ? SM_CXSIZEFRAME
-					  : SM_CXFIXEDFRAME);
-  *ypos_out = ypos_in - GetSystemMetrics (resizable ? SM_CYSIZEFRAME
-					  : SM_CYFIXEDFRAME)
-    - GetSystemMetrics (SM_CYCAPTION);
 }
 
 static void
@@ -175,50 +187,38 @@ _clutter_stage_win32_get_min_max_info (ClutterStageWin32 *stage_win32,
 }
 
 static void
-clutter_stage_win32_request_coords (ClutterActor        *self,
-				    ClutterActorBox     *box)
+clutter_stage_win32_allocate (ClutterActor          *self,
+			      const ClutterActorBox *box,
+			      gboolean               origin_changed)
 {
   ClutterStageWin32 *stage_win32 = CLUTTER_STAGE_WIN32 (self);
-  gint new_xpos, new_ypos, new_width, new_height;
-  int change_flags = SWP_NOZORDER | SWP_NOSIZE | SWP_NOMOVE;
+  gint new_width, new_height;
 
-  new_xpos = CLUTTER_UNITS_TO_INT (MIN (box->x1, box->x2));
-  new_ypos = CLUTTER_UNITS_TO_INT (MIN (box->y1, box->y2));
   new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
   new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
 
   if (new_width != stage_win32->win_width
       || new_height != stage_win32->win_height)
-    change_flags &= ~SWP_NOSIZE;
-
-  if (new_xpos != stage_win32->win_xpos
-      || new_ypos != stage_win32->win_ypos)
-    change_flags &= ~SWP_NOMOVE;
-
-  if ((change_flags & (SWP_NOSIZE | SWP_NOMOVE)) != (SWP_NOSIZE | SWP_NOMOVE)
-      /* Ignore size requests if we are in full screen mode */
-      && (stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN) == 0)
     {
-      stage_win32->win_xpos = new_xpos;
-      stage_win32->win_ypos = new_ypos;
-      stage_win32->win_width = new_width;
-      stage_win32->win_height = new_height;
-
-      if (stage_win32->hwnd != NULL && !stage_win32->is_foreign_win)
+      /* Ignore size requests if we are in full screen mode */
+      if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN) == 0)
 	{
-	  int full_xpos, full_ypos, full_width, full_height;
+	  stage_win32->win_width = new_width;
+	  stage_win32->win_height = new_height;
 
-	  get_full_window_pos (stage_win32,
-			       new_xpos, new_ypos,
-			       &full_xpos, &full_ypos);
-	  get_full_window_size (stage_win32,
-				new_width, new_height,
-				&full_width, &full_height);
+	  if (stage_win32->hwnd != NULL && !stage_win32->is_foreign_win)
+	    {
+	      int full_width, full_height;
 
-	  SetWindowPos (stage_win32->hwnd, NULL,
-			full_xpos, full_ypos,
-			full_width, full_height,
-			change_flags);
+	      get_full_window_size (stage_win32,
+				    new_width, new_height,
+				    &full_width, &full_height);
+
+	      SetWindowPos (stage_win32->hwnd, NULL,
+			    0, 0,
+			    full_width, full_height,
+			    SWP_NOZORDER | SWP_NOMOVE);
+	    }
 	}
 
       CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
@@ -226,7 +226,7 @@ clutter_stage_win32_request_coords (ClutterActor        *self,
     }
 
   CLUTTER_ACTOR_CLASS (clutter_stage_win32_parent_class)
-    ->request_coords (self, box);
+    ->allocate (self, box, origin_changed);
 }
 
 static void
@@ -315,21 +315,17 @@ clutter_stage_win32_set_fullscreen (ClutterStageWindow *stage_window,
 	}
       else
 	{
-	  int full_xpos, full_ypos, full_width, full_height;
+	  int full_width, full_height;
 
-	  get_full_window_pos (stage_win32,
-			       stage_win32->win_xpos,
-			       stage_win32->win_ypos,
-			       &full_xpos, &full_ypos);
 	  get_full_window_size (stage_win32,
 				stage_win32->win_width,
 				stage_win32->win_height,
 				&full_width, &full_height);
 
 	  SetWindowPos (stage_win32->hwnd, NULL,
-			full_xpos, full_ypos,
+			0, 0,
 			full_width, full_height,
-			SWP_NOZORDER);
+			SWP_NOZORDER | SWP_NOMOVE);
 	}
 
       CLUTTER_SET_PRIVATE_FLAGS (stage_win32->wrapper,
@@ -418,8 +414,6 @@ clutter_stage_win32_realize (ClutterActor *actor)
     {
       ATOM window_class = clutter_stage_win32_get_window_class ();
       int win_xpos, win_ypos, win_width, win_height;
-      RECT win_rect;
-      POINT actual_pos;
 
       if (window_class == 0)
 	{
@@ -439,12 +433,8 @@ clutter_stage_win32_realize (ClutterActor *actor)
 	}
       else
 	{
-	  if (stage_win32->win_xpos == 0 && stage_win32->win_ypos == 0)
-	    win_xpos = win_ypos = CW_USEDEFAULT;
-	  else
-	    get_full_window_pos (stage_win32,
-				 stage_win32->win_xpos, stage_win32->win_ypos,
-				 &win_xpos, &win_ypos);
+	  win_xpos = win_ypos = CW_USEDEFAULT;
+
 	  get_full_window_size (stage_win32,
 				stage_win32->win_width,
 				stage_win32->win_height,
@@ -468,17 +458,6 @@ clutter_stage_win32_realize (ClutterActor *actor)
 	  goto fail;
 	}
 
-      /* Get the position in case CW_USEDEFAULT was specified */
-      if ((stage_win32->state & CLUTTER_STAGE_STATE_FULLSCREEN) == 0)
-	{
-	  GetClientRect (stage_win32->hwnd, &win_rect);
-	  actual_pos.x = win_rect.left;
-	  actual_pos.y = win_rect.top;
-	  ClientToScreen (stage_win32->hwnd, &actual_pos);
-	  stage_win32->win_xpos = actual_pos.x;
-	  stage_win32->win_ypos = actual_pos.y;
-	}
-      
       /* Store a pointer to the actor in the extra bytes of the window
 	 so we can quickly access it in the window procedure */
       SetWindowLongPtrW (stage_win32->hwnd, 0, (LONG_PTR) stage_win32);
@@ -588,8 +567,9 @@ clutter_stage_win32_class_init (ClutterStageWin32Class *klass)
   
   actor_class->show = clutter_stage_win32_show;
   actor_class->hide = clutter_stage_win32_hide;
-  actor_class->request_coords = clutter_stage_win32_request_coords;
-  actor_class->query_coords = clutter_stage_win32_query_coords;
+  actor_class->get_preferred_width = clutter_stage_win32_get_preferred_width;
+  actor_class->get_preferred_height = clutter_stage_win32_get_preferred_height;
+  actor_class->allocate = clutter_stage_win32_allocate;
   actor_class->realize = clutter_stage_win32_realize;
   actor_class->unrealize = clutter_stage_win32_unrealize;
 }
@@ -599,8 +579,6 @@ clutter_stage_win32_init (ClutterStageWin32 *stage)
 {
   stage->hwnd = NULL;
   stage->client_dc = NULL;
-  stage->win_xpos = 0;
-  stage->win_ypos = 0;
   stage->win_width = 640;
   stage->win_height = 480;
   stage->backend = NULL;
@@ -736,8 +714,8 @@ clutter_win32_set_stage_foreign (ClutterStage *stage,
   stage_win32->hwnd = hwnd;
   stage_win32->is_foreign_win = TRUE;
 
-  geom.x = window_pos.x;
-  geom.y = window_pos.y;
+  geom.x = 0;
+  geom.y = 0;
   geom.width = client_rect.right - client_rect.left;
   geom.height = client_rect.bottom - client_rect.top;
 
@@ -753,7 +731,7 @@ clutter_stage_win32_map (ClutterStageWin32 *stage_win32)
   CLUTTER_ACTOR_SET_FLAGS (stage_win32, CLUTTER_ACTOR_MAPPED);
   CLUTTER_ACTOR_SET_FLAGS (stage_win32->wrapper, CLUTTER_ACTOR_MAPPED);
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage_win32->wrapper));
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (stage_win32->wrapper));
 }
 
 void

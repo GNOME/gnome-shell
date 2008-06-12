@@ -1,3 +1,17 @@
+2008-06-12  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/win32/clutter-stage-win32.c: Updated to the new layout
+	API. All code to do with positioning the stage has been removed so
+	the window is left where Windows wants to put it and it can not be
+	moved with clutter_actor_set_position.
+
+	* clutter/win32/clutter-stage-win32.h (ClutterStageWin32): Remove
+	win_xpos and win_ypos.
+
+	* clutter/win32/clutter-event-win32.c (message_translate): Remove
+	the handler for WM_MOVE because the stage no longer cares where it
+	is positioned.
+
 2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.[ch]: Documentation fixes.

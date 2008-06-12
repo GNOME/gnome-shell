@@ -365,23 +365,6 @@ message_translate (ClutterBackend *backend,
       res = FALSE;
       break;
 
-    case WM_MOVE:
-      if (!stage_win32->is_foreign_win)
-	{
-	  WORD new_xpos = GET_X_LPARAM (msg->lParam);
-	  WORD new_ypos = GET_Y_LPARAM (msg->lParam);
-	  gint old_xpos, old_ypos;
-
-	  clutter_actor_get_position (CLUTTER_ACTOR (stage),
-				      &old_xpos, &old_ypos);
-
-	  if (new_xpos != old_xpos || new_ypos != old_ypos)
-	    clutter_actor_set_position (CLUTTER_ACTOR (stage),
-					new_xpos, new_ypos);
-	}
-      res = FALSE;
-      break;
-
     case WM_SHOWWINDOW:
       if (msg->wParam)
 	clutter_stage_win32_map (stage_win32);
