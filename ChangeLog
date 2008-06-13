@@ -1,5 +1,13 @@
 2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	(clutter_actor_dispose), (clutter_actor_destroy),
+	(clutter_actor_unparent): Clean up the actor's destruction
+	sequence, making sure that every operation is performed
+	under the CLUTTER_ACTOR_IN_DESTRUCTION internal flag.
+
+2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug #960 - PangoContext creation code should not be duplicated
 
 	* clutter/clutter-private.h:

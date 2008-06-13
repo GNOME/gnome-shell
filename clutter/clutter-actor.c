@@ -1852,22 +1852,27 @@ static void
 clutter_actor_dispose (GObject *object)
 {
   ClutterActor *self = CLUTTER_ACTOR (object);
+  ClutterActorPrivate *priv = self->priv;
 
   CLUTTER_NOTE (MISC, "Disposing of object (id=%d) of type `%s' (ref_count:%d)",
 		self->priv->id,
 		g_type_name (G_OBJECT_TYPE (self)),
                 object->ref_count);
 
+  /* avoid recursing when called from clutter_actor_destroy() */
+  if (priv->parent_actor)
+    {
+      ClutterActor *parent = priv->parent_actor;
+
+      if (CLUTTER_IS_CONTAINER (parent))
+        clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
+      else
+        priv->parent_actor = NULL;
+    }
+
   destroy_shader_data (self);
 
- if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
-    {
-      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
-
-      g_signal_emit (self, actor_signals[DESTROY], 0);
-
-      CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
-    }
+  g_signal_emit (self, actor_signals[DESTROY], 0);
 
   G_OBJECT_CLASS (clutter_actor_parent_class)->dispose (object);
 }
@@ -2953,18 +2958,15 @@ clutter_actor_destroy (ClutterActor *self)
 
   g_object_ref (self);
 
-  if (priv->parent_actor)
-    {
-      ClutterActor *parent = priv->parent_actor;
-
-      if (CLUTTER_IS_CONTAINER (parent))
-	clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
-      else
-        priv->parent_actor = NULL;
-    }
-
+  /* avoid recursion while destroying */
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
-    g_object_run_dispose (G_OBJECT (self));
+    {
+      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
+
+      g_object_run_dispose (G_OBJECT (self));
+
+      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
+    }
 
   g_object_unref (self);
 }
@@ -5635,6 +5637,9 @@ clutter_actor_unparent (ClutterActor *self)
   if (self->priv->parent_actor == NULL)
     return;
 
+  old_parent = self->priv->parent_actor;
+  self->priv->parent_actor = NULL;
+
   /* just hide the actor if we are reparenting it */
   if (CLUTTER_ACTOR_IS_REALIZED (self))
     {
@@ -5644,8 +5649,6 @@ clutter_actor_unparent (ClutterActor *self)
         clutter_actor_unrealize (self);
     }
 
-  old_parent = self->priv->parent_actor;
-  self->priv->parent_actor = NULL;
   g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
   /* remove the reference we acquired in clutter_actor_set_parent() */
