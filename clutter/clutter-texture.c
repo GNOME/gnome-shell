@@ -35,10 +35,10 @@
  * data into texture memory and subsequently realize the texture.
  *
  * If texture reads are supported by underlying GL implementation,
- * unrealizing/hiding frees image data from texture memory moving to main
+ * unrealizing frees image data from texture memory moving to main
  * system memory. Re-realizing then performs the opposite operation.
- * This process allows basic management of commonly limited available texture
- * memory.
+ * This process allows basic management of commonly limited available
+ * texture memory.
  *
  * Note: a ClutterTexture will scale its contents to fit the bounding
  * box requested using clutter_actor_set_size(). To display an area of
