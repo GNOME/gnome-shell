@@ -1,5 +1,30 @@
 2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Post release bump to 0.7.1.
+
+======== Release 0.7.0 ========================================================
+
+2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* README:
+	* NEWS:
+	* configure.ac: Release 0.7.0, "Booska".
+
+2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* tests/test-cogl-offscreen.c:
+	* tests/test-cogl-primitives.c:
+	* tests/test-cogl-tex-convert.c:
+	* tests/test-cogl-tex-foreign.c:
+	* tests/test-cogl-tex-getset.c:
+	* tests/test-cogl-tex-tile.c:
+	* tests/test-layout.c:
+	* tests/test-pixmap.c:
+	* tests/test-texture-quality.c: Miscellaneous fixes for distcheck
+	to pass.
+
+2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	* clutter/clutter-actor.h:
 	* tests/test-cogl-primitives.c:

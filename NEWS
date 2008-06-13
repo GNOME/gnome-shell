@@ -1,13 +1,113 @@
-Clutter 0.7.2 (xx/xx/2008)
-==========================
+Clutter 0.7.0 (13/06/2008), "Booska"
+===============================================================================
 
- * List of changes between 0.6.2 and 0.7.2
+ * List of changes between 0.6 and 0.7.2
 
-   o
+   o COGL, the underlying GL abstraction layer in Clutter, has been
+     completely rewritten from the ground up. Its no longer a conceptual
+     hack but a documented, fully featured library pretty much in its
+     own right. COGL abstracts over Open GL, Open GL ES 1.1 and now
+     OpenGL ES 2.0, providing a smart uniform API over these libraries
+     with various utility features such as texture tiling abstractions,
+     paths and primitive rendering, FBO, shaders, etc.
+
+   o Clutter now provides an experimental backend for the Apple(tm)
+     iPhone and iPod Touch families of products.
+
+   o The Windows platform is now natively supported instead of
+     relying on the SDL libraries. The win32 backend is still
+     experimental.
+
+   o The X11 based backends now feature support for Actors that wrap
+     external X drawables (i.e the texture-from-pixmap extension and
+     fallbacks)
+
+   o Clutter now seamlessly supports multiple stages on the backends
+     that allow this feature.
+
+   o The custom Pango renderer has been completely rewritten, now using
+     the more modern and maintained PangoCairo (instead of FT2), and avoids
+     nasty subclassing hacks, supports smooth fast scaling of text, has
+     many edge case issues fixed and it still is very efficient (using
+     a texture glyph cache). It is even a little bit faster.
+
+   o Better texture support, timeline improvements, ClutterLabel and
+     ClutterEntry improvements, and container child properties are among
+     the new features - too many to fit in the NEWS file.
 
  * List of bug fixes
 
-   o 
+   o #358 - "window resizing doesn't show scaled stage"
+   o #425 - "COGL enhancements"
+   o #439 - "timing related pong lockup due to timeline_rewind somtimes
+            being ignored by timeline_timeout_func"
+   o #450 - "ClutterScore API enhancements"
+   o #641 - "add markers to timelines"
+   o #666 - "Large font size leads to missing ""W"" and wrong ""J"" character"
+   o #713 - "texture from pixmap"
+   o #791 - "default actors to visible"
+   o #800 - "CLUTTER_ALPHA_EXP_INC overflows"
+   o #804 - "clutter_actor_get_opacity returns composited alpha"
+   o #810 - "100 % CPU load with clutter_main()"
+   o #815 - "Split up request
+   o #816 - "clutter_actor_request_coords() should take a const box."
+   o #822 - "Fix clutter_actor_lower()"
+   o #823 - "Clean-up GLism's in clutter-core (below cogl)"
+   o #824 - "ClutterEntry should handle its own key events"
+   o #825 - "Removes GLisms from clutter-main.c"
+   o #831 - "configure.ac missing osx flavour help"
+   o #834 - "add ability to set anchor in json"
+   o #836 - "Optimize clutter_label_query_coords()"
+   o #839 - "Crash if put cursor over topmost pixel"
+   o #840 - "Implement prepare-paint and finish-paint signals."
+   o #848 - "Events dispatch doesn't work in GLX Xephyr"
+   o #850 - "Impossible to set ClutterRectangle border opacity to a value
+            different from the surface opacity"
+   o #857 - "cogl_color doesn't work in PowerVR PC Viewer"
+   o #860 - "ClutterAlpha leaks"
+   o #864 - "Allow instantiating and subclassing of ClutterStage"
+   o #871 - "Two problems with closing stages"
+   o #873 - "clutter_x11/glx_texture_pixmap issues"
+   o #874 - "Clipping on GL ES"
+   o #875 - "Clutter Label Issues"
+   o #881 - "Timelines require precise system timing"
+   o #882 - "Allow child properties for containers implementing the
+            ClutterContainer interface"
+   o #884 - "Add clutter_alpha_set_closure"
+   o #889 - "Error when building clutter-ivan with eglx"
+   o #891 - "assertion failed when test-behave exits"
+   o #892 - "Incorrect results using  rotation-[center|angle] properties"
+   o #894 - "Artifacts with the pango renderer"
+   o #900 - "clutter_actor_lower() and friends do not queue redraw"
+   o #906 - "Implement timing of the events"
+   o #908 - "Support transform from G_TYPE_INT to ClutterUnit"
+   o #909 - "OSX: missing NULL pointer handling"
+   o #910 - "OSX: missing memory pool"
+   o #911 - "OSX: add multistage support"
+   o #912 - "Invalid use of int* as parameter for glGetIntegerv"
+   o #913 - "cogl fails to build on OSX"
+   o #914 - "ClutterEntry is confused about characters vs. bytes"
+   o #915 - "clutter_entry_set_max_length(-1) misbehaves"
+   o #916 - "ClutterKeyEvent:unicode_value is ignored"
+   o #919 - "Replacement pango renderer"
+   o #927 - "Created ports for clutter
+   o #928 - "Reparenting a child that itself is a container doesn't work"
+   o #930 - "add support for quartz imagebackend"
+   o #931 - "suspicious size allocation for pixel data"
+   o #933 - ""X Error of failed request" when attempting to call
+            clutter_actor_request_coords()"
+   o #934 - "Update clutter-tutorial to build with clutter from svn trunk."
+   o #947 - "Destroying a stage is messy"
+   o #948 - "Remove texture rectangle support"
+   o #950 - "AltGr not handled"
+   o #951 - "Fix clutter_entry_init() in trunk"
+   o #952 - "Fix test-textures in trunk"
+   o #953 - "Actors are not hidden before unrealized or disposed"
+   o #955 - "ClutterLabel is missing fallback resolution handling"
+   o #959 - "Multiple minor improvements"
+   o #960 - "PangoContext creation code should not be duplicated"
+   o #961 - "Fails to build on OSX (query/request_coords is gone)"
+   o #964 - """unrealized"" signal of ClutterActor wrongly named"
 
 Clutter 0.6.0 (18/02/2008)
 ==========================

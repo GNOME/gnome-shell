@@ -165,6 +165,21 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 0.8
 -------------------------------
 
+* The size negotiation API has been completely changed in order to allow
+  the creation of non-fixed layout managers. These functions have been
+  removed:
+
+    clutter_actor_request_coords()
+    clutter_actor_query_coords()
+
+  from the ClutterActor API, as well as their virtual functions inside
+  the ClutterActorClass. The size of an actor is now split into two
+  different concepts: the preferred size (width and height separatedly)
+  and the size that has been allocated by the container to which that
+  actor belongs. Clutter still defaults to the fixed layout management
+  of the actors, but supports fluid layout managers written using the
+  new API.
+
 * Clutter now depends on PangoCairo for the font rendering. The PangoClutter
   API is still considered semi-private and no guarantees are made on its
   stability.
@@ -190,6 +205,8 @@ Release Notes for Clutter 0.8
 * Clutter now features support for multiple stages assuming supported
   by the backend. See test-multistage.c for example of usage. This
   does not change the automatic creation of the default stage.
+
+* There is now an experimental native iPod Touch/iPhone backend.
 
 * There is now an experimental native Win32 WGL backend.
 
