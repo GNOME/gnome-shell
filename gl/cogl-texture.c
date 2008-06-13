@@ -38,6 +38,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+// #define HAVE_PBOS 1
+#include <GL/glext.h>
+
 /*
 #define COGL_DEBUG 1
 
@@ -244,7 +247,39 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
 					  x_span->start,
 					  y_span->start,
 					  FALSE);
+          {
+#if HAVE_PBOS
+          void *io_mem;
+          GLuint buf;
+
+          buf = g_array_index (tex->slice_buf_handles, GLuint,
+                               y * tex->slice_x_spans->len + x);
+
+          glBindBuffer (GL_PIXEL_UNPACK_BUFFER_ARB, buf);
 	  
+          glBufferData (GL_PIXEL_UNPACK_BUFFER_ARB, 
+                        tex->bitmap.height * tex->bitmap.rowstride, 
+                        NULL, 
+                        GL_STREAM_DRAW);
+
+          io_mem = glMapBuffer (GL_PIXEL_UNPACK_BUFFER_ARB, GL_WRITE_ONLY);
+
+          g_assert (io_mem);
+          memcpy (io_mem, tex->bitmap.data, 
+                  tex->bitmap.height * tex->bitmap.rowstride);
+
+          GE( glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB) );
+
+          GE( glBindTexture (tex->gl_target, gl_handle) );
+
+	  GE( glTexSubImage2D (tex->gl_target, 0, 0, 0,
+			       x_span->size - x_span->waste,
+			       y_span->size - y_span->waste,
+			       tex->gl_format, tex->gl_type,
+			       (char *)NULL) );
+
+          GE( glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0) );
+#else
 	  /* Upload new image data */
 	  GE( glBindTexture (tex->gl_target, gl_handle) );
 	  
@@ -253,6 +288,8 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
 			       y_span->size - y_span->waste,
 			       tex->gl_format, tex->gl_type,
 			       tex->bitmap.data) );
+#endif
+          }
 	}
     }
   
@@ -568,6 +605,9 @@ _cogl_texture_slices_create (CoglTexture *tex)
   gint              max_width;
   gint              max_height;
   GLuint           *gl_handles;
+#if HAVE_PBOS
+  GLuint           *buf_handles;
+#endif
   gint              n_x_slices;
   gint              n_y_slices;
   gint              n_slices;
@@ -703,7 +743,17 @@ _cogl_texture_slices_create (CoglTexture *tex)
   gl_handles = (GLuint*) tex->slice_gl_handles->data;
   
   GE( glGenTextures (n_slices, gl_handles) );
+
+#if HAVE_PBOS
+  tex->slice_buf_handles = g_array_sized_new (FALSE, FALSE,
+					     sizeof (GLuint),
+					     n_slices);
   
+  g_array_set_size (tex->slice_buf_handles, n_slices);
+  buf_handles = (GLuint*) tex->slice_buf_handles->data;
+
+  GE( glGenBuffers(n_slices, buf_handles) );
+#endif  
   
   /* Init each GL texture object */
   for (y = 0; y < n_y_slices; ++y)
@@ -712,8 +762,11 @@ _cogl_texture_slices_create (CoglTexture *tex)
       
       for (x = 0; x < n_x_slices; ++x)
 	{
+#if HAVE_PBOS
+          glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+#endif
 	  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, x);
-	  
+
 #if COGL_DEBUG
 	  printf ("CREATE SLICE (%d,%d)\n", x,y);
 	  printf ("size: (%d x %d)\n",
@@ -721,9 +774,12 @@ _cogl_texture_slices_create (CoglTexture *tex)
 	    y_span->size - y_span->waste);
 #endif
 	  /* Setup texture parameters */
-	  GE( glBindTexture   (tex->gl_target, gl_handles[y * n_x_slices + x]) );
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER, tex->mag_filter) );
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER, tex->min_filter) );
+	  GE( glBindTexture   (tex->gl_target, 
+                               gl_handles[y * n_x_slices + x]) );
+	  GE( glTexParameteri (tex->gl_target, 
+                               GL_TEXTURE_MAG_FILTER, tex->mag_filter) );
+	  GE( glTexParameteri (tex->gl_target, 
+                               GL_TEXTURE_MIN_FILTER, tex->min_filter) );
 	  
 	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S,
 			       tex->wrap_mode) );
@@ -768,6 +824,15 @@ _cogl_texture_slices_free (CoglTexture *tex)
       
       g_array_free (tex->slice_gl_handles, TRUE);
     }
+
+#if HAVE_PBOS 
+  if (tex->slice_buf_handles != NULL)
+    {
+      glDeleteBuffers(tex->slice_buf_handles->len,
+                      (GLuint*) tex->slice_buf_handles->data);
+
+    }
+#endif
 }
 
 static gboolean
