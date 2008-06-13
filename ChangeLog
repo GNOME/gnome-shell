@@ -4,7 +4,8 @@
 	(clutter_actor_dispose), (clutter_actor_destroy),
 	(clutter_actor_unparent): Clean up the actor's destruction
 	sequence, making sure that every operation is performed
-	under the CLUTTER_ACTOR_IN_DESTRUCTION internal flag.
+	under the CLUTTER_ACTOR_IN_DESTRUCTION internal flag. (thanks
+	to Tomas Frydrych, Neil Roberts and Matthew Allum)
 
 2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
