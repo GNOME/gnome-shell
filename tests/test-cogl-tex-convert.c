@@ -196,25 +196,11 @@ test_coglbox_new (void)
   return g_object_new (TEST_TYPE_COGLBOX, NULL);
 }
 
-static void
-frame_cb (ClutterTimeline *timeline,
-	  gint             frame_num,
-	  gpointer         data)
-{
-  TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (data);
-  
-  priv->frame = frame_num;
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (data));
-}
-
 int
 main (int argc, char *argv[])
 {
   ClutterActor     *stage;
   ClutterActor     *coglbox;
-  ClutterTimeline  *timeline;
-  ClutterBehaviour *behave;
-  ClutterAlpha     *alpha;
   
   clutter_init(&argc, &argv);
   

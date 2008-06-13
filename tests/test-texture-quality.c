@@ -62,10 +62,11 @@ main (int argc, char *argv[])
   error = NULL;
   image = clutter_texture_new_from_file (argv[1]?argv[1]:"redhand.png", &error);
   if (error)
-    g_error ("Unable to load image.", error->message);
+    g_error ("Unable to load image: %s", error->message);
 
   if (!argv[1])
-    g_print ("Hint: the redhand.png isn't a good test image for this, this test can take any clutter loadable image as an argument\n");
+    g_print ("Hint: the redhand.png isn't a good test image for this test.\n"
+             "This test can take any clutter loadable image as an argument\n");
 
   /* center the image */
   clutter_actor_set_position (image, 

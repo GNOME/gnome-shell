@@ -563,11 +563,10 @@ my_thing_new (gint padding,
 
 /* test code */
 
-static ClutterActor *stage         = NULL;
-static ClutterActor *box           = NULL;
-static ClutterActor *icon          = NULL;
-static ClutterTimeline *timeline   = NULL;
-static ClutterBehaviour *behaviour = NULL;
+static ClutterActor *box              = NULL;
+static ClutterActor *icon             = NULL;
+static ClutterTimeline *main_timeline = NULL;
+static ClutterBehaviour *behaviour    = NULL;
 
 static ClutterColor bg_color;
 
@@ -623,7 +622,7 @@ decrease_property_value (ClutterActor *actor,
 }
 
 static ClutterActor *
-create_item()
+create_item (void)
 {
   ClutterActor *clone = 
     clutter_clone_texture_new (CLUTTER_TEXTURE (icon));
@@ -638,7 +637,7 @@ create_item()
 }
 
 static gboolean
-keypress_cb (ClutterStage    *stage,
+keypress_cb (ClutterActor    *actor,
 	     ClutterKeyEvent *event,
 	     gpointer         data)
 {
@@ -709,17 +708,19 @@ keypress_cb (ClutterStage    *stage,
 
     case CLUTTER_z:
       {
-        if (clutter_timeline_is_playing (timeline))
-          clutter_timeline_pause (timeline);
+        if (clutter_timeline_is_playing (main_timeline))
+          clutter_timeline_pause (main_timeline);
         else
-          clutter_timeline_start (timeline);
+          clutter_timeline_start (main_timeline);
 
         break;
       }
 
     default:
-    break;
-    } 
+      break;
+    }
+
+  return FALSE;
 }
 
 static void
@@ -746,7 +747,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  ClutterActor *instructions;
+  ClutterActor *stage, *instructions;
   gint i;
   GError *error = NULL;
 
@@ -757,13 +758,13 @@ main (int   argc,
 
   clutter_color_parse ("Red", &bg_color);
 
-  timeline = clutter_timeline_new_for_duration (2000);
-  clutter_timeline_set_loop (timeline, TRUE);
-  g_signal_connect (timeline, "new-frame",
+  main_timeline = clutter_timeline_new_for_duration (2000);
+  clutter_timeline_set_loop (main_timeline, TRUE);
+  g_signal_connect (main_timeline, "new-frame",
                     G_CALLBACK (relayout_on_frame),
                     NULL);
 
-  behaviour = clutter_behaviour_scale_new (clutter_alpha_new_full (timeline,
+  behaviour = clutter_behaviour_scale_new (clutter_alpha_new_full (main_timeline,
                                                                    CLUTTER_ALPHA_SINE,
                                                                    NULL, NULL),
                                            1.0, 1.0, 2.0, 2.0);
@@ -810,7 +811,7 @@ main (int   argc,
 
   clutter_main ();
 
-  g_object_unref (timeline);
+  g_object_unref (main_timeline);
   g_object_unref (behaviour);
 
   return EXIT_SUCCESS;

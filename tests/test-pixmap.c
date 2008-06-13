@@ -1,6 +1,9 @@
 
 #include <config.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 #if HAVE_CLUTTER_GLX
 
 #include <clutter/clutter.h>
@@ -12,7 +15,6 @@
 
 #include <X11/Xlib.h>
 #include <X11/extensions/Xcomposite.h>
-#include <string.h>
 
 #define IMAGE "redhand.png"
 
@@ -35,6 +37,8 @@ stage_press_cb (ClutterActor    *actor,
                   &gc_values);
 
   XDrawLine (dpy, pxm, gc, 0, 0, 100, 100); 
+
+  return FALSE;
 }
 
 
@@ -144,7 +148,6 @@ main (int argc, char **argv)
 # ifdef USE_GDKPIXBUF
   ClutterActor         *stage, *tex;
   Pixmap                pixmap;
-  guint                 w, h, d;
   const ClutterColor    gry = { 0x99, 0x99, 0x99, 0xFF };
   Window                win_remote;
 
@@ -201,8 +204,9 @@ main (int argc, char **argv)
   clutter_main ();
 # endif /* USE_GDKPIXBUF */
 
+  return EXIT_SUCCESS;
 }
 
 #else /* HAVE_CLUTTER_GLX */
-int main(int argc, char **argv){return 0;};
+int main (int argc, char **argv) { return EXIT_SUCCESS; };
 #endif /* HAVE_CLUTTER_GLX */

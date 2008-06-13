@@ -198,8 +198,6 @@ main (int argc, char *argv[])
   ClutterActor     *stage;
   ClutterActor     *coglbox;
   ClutterTimeline  *timeline;
-  ClutterBehaviour *behave;
-  ClutterAlpha     *alpha;
   
   clutter_init(&argc, &argv);
   
