@@ -9,7 +9,7 @@ Clutter currently requires:
   * GLib >= 2.14.0
   * GdkPixbuf
   * Pango >= 1.18
-  * OpenGL >= 1.2 or OpenGL ES 1.1
+  * OpenGL >= 1.4, OpenGL ES 1.1 or OpenGL ES 2.0
   * GLX, SDL, WGL or an EGL Implementation
 
 The official website is:                
@@ -165,6 +165,10 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 0.8
 -------------------------------
 
+* The COGL GL wrapper API has been overhauled and now contains many
+  new features including new texture abstractions, path based
+  primitive drawing, improved FBO support and is now fully documented.
+
 * The size negotiation API has been completely changed in order to allow
   the creation of non-fixed layout managers. These functions have been
   removed:
@@ -205,10 +209,15 @@ Release Notes for Clutter 0.8
 * Clutter now features support for multiple stages assuming supported
   by the backend. See test-multistage.c for example of usage. This
   does not change the automatic creation of the default stage.
+  A single GL context is used across all stages meaning GL resources 
+  are shared. 
 
-* There is now an experimental native iPod Touch/iPhone backend.
+* There is now an experimental native iPod Touch/iPhone UIKit backend.
 
 * There is now an experimental native Win32 WGL backend.
+
+* COGL (and therefor Clutter) now optionally features initial support for 
+  OpenGL ES 2.0
 
 * Some more focused timeline unit tests have been added and some tweaks to
   timeline semantics were made; E.g. For a 10 frame timeline here are some
