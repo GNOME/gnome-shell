@@ -1,3 +1,10 @@
+2008-06-13  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/event-flow.png: fixed typo.
+	* clutter/event-flow.dia: added source for event-flow.png, this file
+	is not referred to in Makefile.am and thus not distributed in
+	tarballs.
+
 2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-docs.sgml: Clean up.
