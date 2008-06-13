@@ -1,5 +1,17 @@
 2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug #953 - Actors are not hidden before unrealized or
+	           disposed (Tommi Komulainen)
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_unrealize): Hide a visible actor when unrealizing
+	it.
+
+	(clutter_actor_dispose): Make sure to unrealize an actor when
+	disposing it.
+
+2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	(clutter_actor_dispose), (clutter_actor_destroy),
 	(clutter_actor_unparent): Clean up the actor's destruction

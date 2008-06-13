@@ -582,6 +582,12 @@ clutter_actor_unrealize (ClutterActor *self)
   if (!CLUTTER_ACTOR_IS_REALIZED (self))
     return;
 
+  /* unrealizing also means hiding a visible actor, exactly
+   * like showing implies realization if called on an unrealized
+   * actor. this keeps the flags in sync.
+   */
+  clutter_actor_hide (self);
+
   CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 
   g_signal_emit (self, actor_signals[UNREALIZE], 0);
@@ -1869,6 +1875,8 @@ clutter_actor_dispose (GObject *object)
       else
         priv->parent_actor = NULL;
     }
+
+  clutter_actor_unrealize (self);
 
   destroy_shader_data (self);
 
