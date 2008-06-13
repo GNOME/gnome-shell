@@ -11,7 +11,7 @@ make_rgba_data (int width, int height, int bpp, int has_alpha, int *rowstride_p)
 {
 #define CHECK_SIZE 20
 
-  gint       x,y, rowstride, n_channels, i = 0;
+  gint       x,y, rowstride, i = 0;
   guchar *pixels;
 
   g_assert(bpp == 4);

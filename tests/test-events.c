@@ -184,7 +184,7 @@ input_cb (ClutterActor    *actor,
   if (clutter_event_get_source (event) == actor)
     g_print (" *source*");
   
-  g_printf("\n");
+  g_print ("\n");
 
   return FALSE;
 }

@@ -1,5 +1,16 @@
 2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* tests/test-cogl-primitives.c:
+	* tests/test-events.c:
+	* tests/test-multistage.c:
+	* tests/test-textures.c:
+	* tests/test-timeline.c: Miscellaneous fixes for distcheck to
+	pass.
+
+2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-texture.c:
 	(clutter_texture_unrealize), (clutter_texture_dispose): Add a
 	guard against reading back memory during the unrealization on

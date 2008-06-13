@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <clutter/clutter.h>
 
 static void
@@ -59,7 +60,7 @@ timeline_3_marker_reached (ClutterTimeline *timeline,
                            const gchar     *marker_name,
                            guint            frame_num)
 {
-  g_print ("2: Marker `%s' (%d) reached\n", marker_name, frame_num);
+  g_print ("3: Marker `%s' (%d) reached\n", marker_name, frame_num);
 }
 
 int
@@ -105,7 +106,7 @@ main (int argc, char **argv)
                     NULL);
 
   g_signal_connect (timeline_2,
-                    "marker-reached::bar", G_CALLBACK (timeline_1_marker_reached),
+                    "marker-reached::bar", G_CALLBACK (timeline_2_marker_reached),
                     NULL);
   g_signal_connect (timeline_2,
                     "new-frame", G_CALLBACK (timeline_2_new_frame_cb),
@@ -115,7 +116,7 @@ main (int argc, char **argv)
                     NULL);
 
   g_signal_connect (timeline_3,
-                    "marker-reached", G_CALLBACK (timeline_1_marker_reached),
+                    "marker-reached", G_CALLBACK (timeline_3_marker_reached),
                     NULL);
   g_signal_connect (timeline_3,
                     "new-frame", G_CALLBACK (timeline_3_new_frame_cb),

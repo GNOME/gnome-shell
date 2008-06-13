@@ -194,6 +194,7 @@ test_coglbox_paint(ClutterActor *self)
     {
       timer = g_timer_new ();
       g_timer_start (timer);
+      paint_index = 0;
     }
   
   if (g_timer_elapsed (timer, NULL) >= 1)

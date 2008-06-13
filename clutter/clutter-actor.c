@@ -3257,10 +3257,10 @@ clutter_actor_get_preferred_height (ClutterActor *self,
 /**
  * clutter_actor_get_allocation_coords:
  * @self: A #ClutterActor
- * @x1: x1 coord
- * @y1: y1 coord
- * @x2: x2 coord
- * @y2: y2 coord
+ * @x_1: x1 coordinate
+ * @y_1: y1 coordinate
+ * @x_2: x2 coordinate
+ * @y_2: y2 coordinate
  *
  * Gets the layout box an actor has been assigned.  The allocation can
  * only be assumed valid inside a paint() method; anywhere else, it
@@ -3275,10 +3275,10 @@ clutter_actor_get_preferred_height (ClutterActor *self,
  */
 void
 clutter_actor_get_allocation_coords (ClutterActor  *self,
-                                     gint          *x1,
-                                     gint          *y1,
-                                     gint          *x2,
-                                     gint          *y2)
+                                     gint          *x_1,
+                                     gint          *y_1,
+                                     gint          *x_2,
+                                     gint          *y_2)
 {
   ClutterActorBox allocation = { 0, };
 
@@ -3286,17 +3286,17 @@ clutter_actor_get_allocation_coords (ClutterActor  *self,
 
   clutter_actor_get_allocation_box (self, &allocation);
 
-  if (x1)
-    *x1 = CLUTTER_UNITS_TO_DEVICE (allocation.x1);
+  if (x_1)
+    *x_1 = CLUTTER_UNITS_TO_DEVICE (allocation.x1);
 
-  if (y1)
-    *y1 = CLUTTER_UNITS_TO_DEVICE (allocation.y1);
+  if (y_1)
+    *y_1 = CLUTTER_UNITS_TO_DEVICE (allocation.y1);
 
-  if (x2)
-    *x2 = CLUTTER_UNITS_TO_DEVICE (allocation.x2);
+  if (x_2)
+    *x_2 = CLUTTER_UNITS_TO_DEVICE (allocation.x2);
 
-  if (y2)
-    *y2 = CLUTTER_UNITS_TO_DEVICE (allocation.y2);
+  if (y_2)
+    *y_2 = CLUTTER_UNITS_TO_DEVICE (allocation.y2);
 }
 
 /**

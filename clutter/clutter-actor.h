@@ -302,10 +302,10 @@ void                  clutter_actor_allocate                  (ClutterActor     
                                                                const ClutterActorBox *box,
                                                                gboolean               absolute_origin_changed);
 void                  clutter_actor_get_allocation_coords     (ClutterActor          *self,
-                                                               gint                  *x1,
-                                                               gint                  *y1,
-                                                               gint                  *x2,
-                                                               gint                  *y2);
+                                                               gint                  *x_1,
+                                                               gint                  *y_1,
+                                                               gint                  *x_2,
+                                                               gint                  *y_2);
 void                  clutter_actor_get_allocation_box        (ClutterActor          *self,
                                                                ClutterActorBox       *box);
 void                  clutter_actor_get_allocation_geometry   (ClutterActor          *self,

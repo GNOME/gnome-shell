@@ -8,6 +8,8 @@ tex_button_cb (ClutterActor    *actor,
                gpointer         data)
 {
   clutter_actor_hide (actor);
+
+  return TRUE;
 }
 
 static gboolean
