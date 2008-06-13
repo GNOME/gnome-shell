@@ -561,22 +561,7 @@ clutter_label_init (ClutterLabel *self)
   self->priv = priv = CLUTTER_LABEL_GET_PRIVATE (self);
 
   if (G_UNLIKELY (_context == NULL))
-    {
-      ClutterBackend *backend = clutter_get_default_backend ();
-      PangoClutterFontMap *font_map = CLUTTER_CONTEXT ()->font_map;
-      gdouble resolution;
-      cairo_font_options_t *font_options;
-
-      _context = pango_clutter_font_map_create_context (font_map);
-
-      resolution = clutter_backend_get_resolution (backend);
-      if (resolution < 0)
-        resolution = 96.0;
-      pango_cairo_context_set_resolution (_context, resolution);
-
-      font_options = clutter_backend_get_font_options (backend);
-      pango_cairo_context_set_font_options (_context, font_options);
-    }
+    _context = _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
 
   priv->alignment     = PANGO_ALIGN_LEFT;
   priv->wrap          = FALSE;

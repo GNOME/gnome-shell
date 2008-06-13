@@ -114,6 +114,7 @@ or enter/leave events */
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
 ClutterMainContext *clutter_context_get_default (void);
+PangoContext *_clutter_context_create_pango_context (ClutterMainContext *self);
 
 #define CLUTTER_PRIVATE_FLAGS(a)	 (((ClutterActor *) (a))->private_flags)
 #define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 (CLUTTER_PRIVATE_FLAGS (a) |= (f))

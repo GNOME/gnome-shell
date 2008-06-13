@@ -1,3 +1,18 @@
+2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #960 - PangoContext creation code should not be duplicated
+
+	* clutter/clutter-private.h:
+	* clutter/clutter-main.c:
+	(_clutter_context_create_pango_context): Abstract the creation
+	of the PangoContext inside its own function, to avoid code and
+	bugs duplication. (Tommi Komulainen)
+
+	* clutter/clutter-entry.c (clutter_entry_init): Use the newly
+	added PangoContext creation function.
+
+	* clutter/clutter-label.c (clutter_label_init): Ditto as above.
+
 2008-06-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #964 - "unrealized" signal of ClutterActor wrongly named

@@ -414,6 +414,27 @@ clutter_context_free (ClutterMainContext *context)
   g_free (context);
 }
 
+PangoContext *
+_clutter_context_create_pango_context (ClutterMainContext *self)
+{
+  PangoContext *context;
+  gdouble resolution;
+  cairo_font_options_t *font_options;
+
+  resolution = clutter_backend_get_resolution (self->backend);
+  if (resolution < 0)
+    resolution = 96.0; /* fall back */
+
+  context = pango_clutter_font_map_create_context (self->font_map);
+
+  pango_cairo_context_set_resolution (context, resolution);
+
+  font_options = clutter_backend_get_font_options (self->backend);
+  pango_cairo_context_set_font_options (context, font_options);
+
+  return context;
+}
+
 /**
  * clutter_main_quit:
  *
