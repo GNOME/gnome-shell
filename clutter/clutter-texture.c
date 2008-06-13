@@ -93,6 +93,8 @@ struct _ClutterTexturePrivate
   guint                        local_data_rowstride;
   guint                        local_data_has_alpha;
   guchar                      *local_data;
+
+  guint                        in_dispose : 1;
 };
 
 enum
@@ -213,7 +215,8 @@ clutter_texture_unrealize (ClutterActor *actor)
    * a dispose run, and the dispose() call will release the GL
    * texture data as well, so we can safely bail out now
    */
-  if (CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IN_DESTRUCTION)
+  if ((CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IN_DESTRUCTION) ||
+      priv->in_dispose)
     return;
 
   CLUTTER_MARK();
@@ -465,6 +468,14 @@ clutter_texture_dispose (GObject *object)
   ClutterTexturePrivate *priv;
 
   priv = texture->priv;
+
+  /* mark that we are in dispose, so when the parent class'
+   * dispose implementation will call unrealize on us we'll
+   * not try to copy back the resources from video memory
+   * to system memory
+   */
+  if (!priv->in_dispose)
+    priv->in_dispose = TRUE;
 
   texture_free_gl_resources (texture);
   texture_fbo_free_resources (texture);
