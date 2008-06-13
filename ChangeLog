@@ -1,3 +1,11 @@
+2008-06-13  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/window-props.c: Some commenting.
+
+        * src/core/prefs.c: Added unified handling of integer preferences.
+          Re-ordered fields in existing preferences so that changing to
+          a union-based system will be easier in the future.
+
 2008-06-10  Thomas Thurman  <tthurman@gnome.org>
 
         * test/tokentest/tokentest.c (draw_string_to_spec): doubles are

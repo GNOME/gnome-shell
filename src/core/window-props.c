@@ -1,6 +1,17 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* MetaWindow property handling */
+/**
+ * \file window-props.c    MetaWindow property handling
+ *
+ * A system which can inspect sets of properties of given windows
+ * and take appropriate action given their values.
+ *
+ * Note that all the meta_window_reload_propert* functions require a
+ * round trip to the server.
+ *
+ * \bug Not all the properties have moved over from their original
+ * handler in window.c yet.
+ */
 
 /* 
  * Copyright (C) 2001, 2002, 2003 Red Hat, Inc.
