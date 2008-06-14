@@ -8,7 +8,7 @@ Clutter currently requires:
 
   * GLib >= 2.14.0
   * GdkPixbuf
-  * Pango >= 1.18
+  * PangoCairo >= 1.18
   * OpenGL >= 1.4, OpenGL ES 1.1 or OpenGL ES 2.0
   * GLX, SDL, WGL or an EGL Implementation
 
@@ -62,25 +62,31 @@ See the INSTALL file. Info on specific Clutter options;
 
 	  eglnative:
                 EGL/Open GL ES backend on 'native windowing system' - i.e
-		raw framebuffer. Expects EGL implementation to provide a 
-		createNativeWindow () call. Also optionally supports 
+		raw framebuffer. Expects the EGL implementation to provide
+                a createNativeWindow() call. Also it optionally supports
 		tslib for touchscreen events.
 
 	  sdl:  Basic SDL backend, using Open GL. Should provide portability
-	        to Windows and possibly other OS's. (experimental)
+	        to Windows and possibly other OS's.
 
           osx:  OS X backend. (experimental)
 
           win32:
-                Windows WGL backend
+                Microsoft Windows(tm) WGL backend (experimental)
 
-  --with-imagebackend=[gdk-pixbuf/internal]
-        Select the image loading backend used by COGL (default=gdk-pixbuf)
+          fruity:
+                Apple iPod Touch(tm)/iPhone(tm) backend (experimental)
 
-          gdk-pixbuf: Depend on gdk-pixbuf-2.0
+  --with-imagebackend=[gdk-pixbuf/quartz/internal]
+        Select the image loading backend used by COGL
 
-          internal: Internal JPEG and PNG loader. Should only be used
-                    for testing on new platforms
+          gdk-pixbuf: Depend on gdk-pixbuf-2.0 (default for the glx, eglx,
+                      eglnative, sdl, win32 flavours)
+
+          quartz:     Depend on CoreGraphics (default for the osx flavour)
+
+          internal:   Internal JPEG and PNG loader. Should only be used
+                      for testing on new platforms
 
   --with-gles=[1.1/2.0]
         Select the GLES version (for EGL backends) (default=1.1)
@@ -165,6 +171,38 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 0.8
 -------------------------------
 
+* The functions that return the transformed position of an actor have
+  been renamed to be more explicit about it:
+
+    clutter_actor_get_abs_position - clutter_actor_get_transformed_position
+    clutter_actor_get_abs_size     - clutter_actor_get_transformed_size
+
+  Their behaviour has not been changed.
+
+* Clutter does not strictly depend on GdkPixbuf anymore; this means that
+  you will have to include <gdk-pixbuf/gdk-pixbuf.h> yourself if you are
+  operating with GdkPixbuf objects and not including that header. The
+  GdkPixbuf-based API has been removed from Clutter core:
+
+    clutter_texture_new_from_pixbuf
+    clutter_texture_set_pixbuf
+    clutter_texture_get_pixbuf
+
+  are all deprecated functions. It is still possible to load a GdkPixbuf
+  into a ClutterTexture with this sample code:
+
+    clutter_texture_set_from_rgb_data (texture,
+                                       gdk_pixbuf_get_pixels (pixbuf),
+                                       gdk_pixbuf_get_has_alpha (pixbuf),
+                                       gdk_pixbuf_get_width (pixbuf),
+                                       gdk_pixbuf_get_height (pixbuf),
+                                       gdk_pixbuf_get_rowstride (pixbuf),
+                                       4, 0,
+                                       &error);
+
+  The clutter-gtk integration library has API for using GdkPixbuf with
+  ClutterTextures (among others).
+
 * The COGL GL wrapper API has been overhauled and now contains many
   new features including new texture abstractions, path based
   primitive drawing, improved FBO support and is now fully documented.
@@ -238,7 +276,7 @@ Release Notes for Clutter 0.8
   instead of returning the composited opacity of the entire parents chain
   of an actor, clutter_actor_get_opacity() does what you mean, and returns
   the opacity set with clutter_actor_set_opacity(). The composited
-  opacity value is now returned by clutter_actor_get_abs_opacity().
+  opacity value is now returned by clutter_actor_get_paint_opacity().
 
 * Until 0.6, clutter_label_get_color() would have returned a ClutterColor
   with the alpha component equal to the composited opacity of the label.
