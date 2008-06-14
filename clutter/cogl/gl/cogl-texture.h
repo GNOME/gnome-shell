@@ -51,7 +51,6 @@ struct _CoglTexture
   GArray            *slice_x_spans;
   GArray            *slice_y_spans;
   GArray            *slice_gl_handles;
-  GArray            *slice_buf_handles;
   gint               max_waste;
   COGLenum           min_filter;
   COGLenum           mag_filter;

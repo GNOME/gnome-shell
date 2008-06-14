@@ -59,8 +59,6 @@ main (int argc, char *argv[])
   ClutterActor    *texture;
   ClutterActor    *stage;
   gint             i, j;
-  guchar          *pixels;
-  int              rowstride;
 
   clutter_init (&argc, &argv);
 
@@ -69,27 +67,23 @@ main (int argc, char *argv[])
 
   SPIN();
 
-  pixels = make_rgba_data (1000, 1000, 4, TRUE, &rowstride);
-
-  texture = clutter_texture_new ();
-
-  clutter_container_add (CLUTTER_CONTAINER (stage), texture, NULL);
-  clutter_actor_set_size (texture, 400, 400);
-  clutter_actor_show (texture);
-
   for (i=100; i<=5000; i += 100)
     for (j=0; j<4; j++)
       {
-        const int width = 1000;
-        const int height = 1000;
+        const int width = i+j;
+        const int height = i+j;
         const gboolean has_alpha = TRUE;
         const int bpp = has_alpha ? 4 : 3;
+        int rowstride;
+        guchar *pixels;
 
-
+        pixels = make_rgba_data (width, height, bpp, has_alpha, &rowstride);
         if (!pixels)
           g_error("No memory for %ix%i RGBA data failed", width, height);
 
         printf("o %ix%i texture... ", width, height);
+
+        texture = clutter_texture_new ();
         if (!clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (texture),
                                                 pixels,
                                                 has_alpha,
@@ -99,22 +93,21 @@ main (int argc, char *argv[])
                                                 bpp,
                                                 0, NULL))
           g_error("texture creation failed");
-        // g_free(pixels);
+        g_free(pixels);
 	
 	printf("uploaded to texture...\n");
 	
+	clutter_container_add (CLUTTER_CONTAINER (stage), texture, NULL);
+	clutter_actor_set_size (texture, 400, 400);
+	clutter_actor_show (texture);
 
 	/* Hide & show to unreaise then realise the texture */
 	clutter_actor_hide (texture);
 	clutter_actor_show (texture);	
 
-	// clutter_actor_unrealize (texture);	
-
 	SPIN();
 
-	// clutter_actor_destroy (texture);	
-
-        // clutter_container_remove (CLUTTER_CONTAINER (stage), texture, NULL);
+        clutter_container_remove (CLUTTER_CONTAINER (stage), texture, NULL);
     }
 
   return EXIT_SUCCESS;
