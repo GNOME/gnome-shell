@@ -1,3 +1,13 @@
+2008-06-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug #967 - Mismatch of Timeline::marker-reached signal signature
+
+	* clutter/clutter-marshal.list:
+	* clutter/clutter-timeline.c:
+	(clutter_timeline_class_init): Fix the type of the frame_num
+	argument in the ::marker-reached signal creation to match the
+	signal class handler. (Armin Burgmeier)
+
 2008-06-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* README: We depend on PangoCairo, now; also add all the missing

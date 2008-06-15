@@ -552,10 +552,10 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                   G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
                   G_STRUCT_OFFSET (ClutterTimelineClass, marker_reached),
                   NULL, NULL,
-                  clutter_marshal_VOID__STRING_UINT,
+                  clutter_marshal_VOID__STRING_INT,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
-                  G_TYPE_UINT);
+                  G_TYPE_INT);
 }
 
 static void
