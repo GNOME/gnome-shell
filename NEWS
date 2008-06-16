@@ -3,6 +3,19 @@
 
 Thanks to Thomas Thurman for improvements in this version.
 
+  - Commenting and tidying (Thomas)
+  - Fix possible compositor crash (Thomas) (#530702)
+
+Translations
+  Khaled Hosny (ar), Yavor Doganov (bg), Jorge González (es), Kjartan Maraas (nb),
+  Yannig Marchegay (Kokoyaya) (oc), Theppitak Karoonboonyanan (th), Clytie
+  Siddall (vi)
+
+2.23.34
+=======
+
+Thanks to Thomas Thurman for improvements in this version.
+
   - Various commenting (Thomas)
   - Ensure you can turn off compositor with "configure" (Thomas)
   - Ensure you can turn off gconf with "configure" (Thomas) (#530870)

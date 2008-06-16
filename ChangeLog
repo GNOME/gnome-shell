@@ -1,3 +1,7 @@
+2008-06-16  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.23.34 release.
+
 2008-06-13  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/window-props.c: Some commenting.
