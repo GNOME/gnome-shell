@@ -1,3 +1,10 @@
+2008-06-16  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_move_anchor_point_from_gravity):
+	Fixed incorrect sign of position adjustment (revert of earlier
+	change).
+
 2008-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c (clutter_actor_unparent): Reset the

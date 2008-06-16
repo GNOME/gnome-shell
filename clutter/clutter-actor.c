@@ -6201,8 +6201,8 @@ clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
 
   clutter_actor_set_anchor_point_from_gravity (self, gravity);
 
-  dx = ax - priv->anchor_x;
-  dy = ay - priv->anchor_y;
+  dx = priv->anchor_x - ax;
+  dy = priv->anchor_y - ay;
 
   if (priv->position_set)
     {
