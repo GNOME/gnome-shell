@@ -1,3 +1,15 @@
+2008-06-16  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_move_anchor_point):
+	(clutter_actor_move_anchor_pointu):
+	(clutter_actor_move_anchor_point_from_gravity):
+	Fixed incorrect sign of position adjustment.
+	Fixed replace call to _move_by with move_byu in
+	_move_anchor_pointu.
+
+	Stripped trailing whitespace.
+
 2008-06-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #967 - Mismatch of Timeline::marker-reached signal signature
@@ -17,7 +29,7 @@
 
 	* README:
 	Make needed GL version 1.4, note GLES2 support, add some notes
-	for COGL. 
+	for COGL.
 
 2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -173,7 +185,7 @@
 
 	* configure.ac: Detect the GL headers in flavour=fruity
 
-	* clutter/fruity/clutter-stage-fruity.c: Update the Fruity backend to 
+	* clutter/fruity/clutter-stage-fruity.c: Update the Fruity backend to
 	use the new size negotiation API.
 
 2008-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
@@ -505,13 +517,13 @@
 	* clutter/eglnative/clutter-event-egl.c (get_backend_time): Added
 	a NULL for the microseconds parameter of g_timer_elapsed.
 
-	* clutter/eglnative/clutter-stage-egl.h: 
-	* clutter/eglnative/clutter-egl.h: 
+	* clutter/eglnative/clutter-stage-egl.h:
+	* clutter/eglnative/clutter-egl.h:
 	* clutter/eglnative/clutter-backend-egl.h: Include
 	clutter-egl-headers.h instead of including the GL headers directly
 	so it can include gl2.h when building for GLES 2.
 
-	* clutter/eglnative/clutter-egl-headers.h: 
+	* clutter/eglnative/clutter-egl-headers.h:
 	* clutter/eglnative/Makefile.am (libclutter_eglnative_la_SOURCES):
 	Added clutter-egl-headers.h
 
@@ -687,7 +699,7 @@
 
 2008-06-03  Øyvind Kolås  <pippin@o-hand.com>
 
-	* clutter/clutter-container.c: (container_get_child_property): 
+	* clutter/clutter-container.c: (container_get_child_property):
 	s/g_object_set_property/g_object_get_property/
 
 2008-06-02  Neil Roberts  <neil@o-hand.com>
@@ -701,12 +713,12 @@
 
 	Applied 'final patch' from bug #874
 
-	* clutter/cogl/gles/cogl.c: 
+	* clutter/cogl/gles/cogl.c:
 	* clutter/cogl/gl/cogl.c: The clip planes are now set using the
 	inverse projection matrix as the modelview matrix so that they can
 	be specified in screen coordinates.
 
-	* clutter/cogl/gles/cogl-context.h (CoglContext): 
+	* clutter/cogl/gles/cogl-context.h (CoglContext):
 	* clutter/cogl/gl/cogl-context.h (CoglContext): Added a member to
 	cache the inverse projection matrix
 
@@ -732,9 +744,9 @@
 	(_cogl_features_init): Report support for the shaders feature on
 	GLES 2
 
-	* clutter/cogl/gles/cogl-shader.h: 
-	* clutter/cogl/gles/cogl-shader.c: 
-	* clutter/cogl/gles/cogl-program.h: 
+	* clutter/cogl/gles/cogl-shader.h:
+	* clutter/cogl/gles/cogl-shader.c:
+	* clutter/cogl/gles/cogl-program.h:
 	* clutter/cogl/gles/cogl-program.c: Separate files to handle
 	shaders on programs on GLES. If version 1.1 is being used then the
 	stub functions which all fail are still used.
@@ -796,7 +808,7 @@
 2008-05-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/pango/pangoclutter-fontmap.c:
-	* clutter/pango/pangoclutter-renderer.c: 
+	* clutter/pango/pangoclutter-renderer.c:
 	* clutter/pango/pangoclutter.h
 	* clutter/pango/pangoclutter-private.h: Add a function retrieving
 	the font mipmapping setting.
@@ -966,7 +978,7 @@
 	items.
 
 	(clutter_script_construct_object): Fix a typo in the type check.
-	
+
 	(clutter_script_init): Do not copy the key inside the hash
 	table holding the objects - we are already holding it inside
 	the value.
@@ -982,7 +994,7 @@
 	glTexParameteri. Call glGenerateMipmap after every change to the
 	texture image data.
 
-	* clutter/cogl/gles/cogl-gles2-wrapper.h: 
+	* clutter/cogl/gles/cogl-gles2-wrapper.h:
 	* clutter/cogl/gles/cogl-gles2-wrapper.c: Added a wrapper for
 	glTexParameteri so that it can ignore requests to set
 	GL_GENERATE_MIPMAP. Added a wrapper for glGenerateMipmap that does
@@ -1009,9 +1021,9 @@
 
 2008-05-27  Neil Roberts  <neil@o-hand.com>
 
-	* clutter/eglx/clutter-stage-egl.h: 
-	* clutter/eglx/clutter-egl-headers.h: 
-	* clutter/eglx/clutter-backend-egl.h: 
+	* clutter/eglx/clutter-stage-egl.h:
+	* clutter/eglx/clutter-egl-headers.h:
+	* clutter/eglx/clutter-backend-egl.h:
 	* clutter/eglx/Makefile.am: Include the GLES and EGL headers via
 	clutter-egl-headers.h so that the right version can be used
 	depending on whether the GLES 2 wrapper is being used.
@@ -1027,11 +1039,11 @@
 	* clutter/cogl/gles/stringify.sh: Shell script to convert the
 	shaders into a C string.
 
-	* clutter/cogl/gles/cogl-gles2-wrapper.h: 
+	* clutter/cogl/gles/cogl-gles2-wrapper.h:
 	* clutter/cogl/gles/cogl-gles2-wrapper.c: Wrappers for most of the
 	missing GL functions in GLES 2.
 
-	* clutter/cogl/gles/cogl-fixed-fragment-shader.glsl: 
+	* clutter/cogl/gles/cogl-fixed-fragment-shader.glsl:
 	* clutter/cogl/gles/cogl-fixed-vertex-shader.glsl: New shaders for
 	GLES 2
 
@@ -1041,8 +1053,8 @@
 	* clutter/cogl/gles/cogl-context.h (CoglContext): Include a field
 	for the state of the GLES 2 wrapper.
 
-	* clutter/cogl/gles/cogl-texture.c: 
-	* clutter/cogl/gles/cogl-primitives.c: 
+	* clutter/cogl/gles/cogl-texture.c:
+	* clutter/cogl/gles/cogl-primitives.c:
 	* clutter/cogl/gles/cogl.c: Use wrapped versions of the GL
 	functions where neccessary.
 
@@ -1084,7 +1096,7 @@
 	called in cogl-texture etc.
 
 	* clutter/cogl/gl/cogl-texture.c (cogl_texture_new_from_foreign):
-	* clutter/cogl/gles/cogl-texture.c (cogl_texture_new_from_foreign): 
+	* clutter/cogl/gles/cogl-texture.c (cogl_texture_new_from_foreign):
 	GE(*) can't be used to wrap around calls that use the return
 	value.
 

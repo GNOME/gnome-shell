@@ -1143,7 +1143,7 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
   stage = clutter_actor_get_stage (self);
 
   /* FIXME: if were not yet added to a stage, its probably unsafe to
-   * return default - idealy the func should fail. 
+   * return default - idealy the func should fail.
   */
   if (stage == NULL)
     stage = clutter_stage_get_default ();
@@ -1217,7 +1217,7 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
   stage = clutter_actor_get_stage (self);
 
   /* FIXME: if were not yet added to a stage, its probably unsafe to
-   * return default - idealy the func should fail. 
+   * return default - idealy the func should fail.
   */
   if (stage == NULL)
     stage = clutter_stage_get_default ();
@@ -1370,7 +1370,7 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
   stage = clutter_actor_get_stage (self);
 
   /* FIXME: if were not yet added to a stage, its probably unsafe to
-   * return default - idealy the func should fail. 
+   * return default - idealy the func should fail.
   */
   if (stage == NULL)
     stage = clutter_stage_get_default ();
@@ -2033,7 +2033,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * Since: 0.8
    */
-  g_object_class_install_property 
+  g_object_class_install_property
         (object_class,
          PROP_MIN_WIDTH,
          clutter_param_spec_unit ("min-width",
@@ -2503,9 +2503,9 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * Calling clutter_actor_hide() on an actor which has not been
    * parented will set this property to %FALSE as a side effect.
    *
-   * Since: 0.8 
+   * Since: 0.8
    */
-  g_object_class_install_property 
+  g_object_class_install_property
                        (object_class,
                         PROP_SHOW_ON_SET_PARENT,
                         g_param_spec_boolean ("show-on-set-parent",
@@ -5587,7 +5587,7 @@ clutter_actor_set_parent (ClutterActor *self,
 
   if (priv->show_on_set_parent)
     clutter_actor_show (self);
-  
+
   if (CLUTTER_ACTOR_IS_VISIBLE (priv->parent_actor) &&
       CLUTTER_ACTOR_IS_VISIBLE (self))
     {
@@ -6033,7 +6033,7 @@ clutter_actor_move_anchor_point (ClutterActor *self,
   priv->anchor_y = ay;
 
   if (priv->position_set)
-    clutter_actor_move_by (self, -dx, -dy);
+    clutter_actor_move_byu (self, dx, dy);
 }
 
 /**
@@ -6136,7 +6136,7 @@ clutter_actor_move_anchor_pointu (ClutterActor *self,
   priv->anchor_y = anchor_y;
 
   if (priv->position_set)
-    clutter_actor_move_byu (self, -dx, -dy);
+    clutter_actor_move_byu (self, dx, dy);
 }
 
 /**
@@ -6199,7 +6199,7 @@ clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
 
   if (priv->position_set)
     {
-      clutter_actor_move_byu (self, -dx, -dy);
+      clutter_actor_move_byu (self, dx, dy);
     }
 }
 
