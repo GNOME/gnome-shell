@@ -234,6 +234,17 @@ clutter_stage_egl_get_preferred_height (ClutterActor *self,
 }
 
 static void
+clutter_stage_egl_allocate (ClutterActor          *self,
+                            const ClutterActorBox *box,
+                            gboolean               origin_changed)
+{
+  /* we cannot resize the frame buffer, so we just ignore
+   * any allocation we receive by simply interrupting the
+   * allocation chain.
+   */
+}
+
+static void
 clutter_stage_egl_dispose (GObject *gobject)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (gobject);
@@ -257,6 +268,7 @@ clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
   actor_class->unrealize            = clutter_stage_egl_unrealize;
   actor_class->get_preferred_width  = clutter_stage_egl_get_preferred_width;
   actor_class->get_preferred_height = clutter_stage_egl_get_preferred_height;
+  actor_class->allocate             = clutter_stage_egl_allocate;
 }
 
 static void

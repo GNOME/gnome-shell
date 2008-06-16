@@ -1,3 +1,10 @@
+2008-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/eglnative/clutter-stage-egl.c: Ignore any size allocation
+	we receive from the user.
+
+	* clutter/fruity/clutter-stage-fruity.c: Ditto as above.
+
 2008-06-16  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:
