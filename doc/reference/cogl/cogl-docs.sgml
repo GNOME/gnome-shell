@@ -43,8 +43,11 @@
     <section id="cogl-intro">
       <title>About COGL</title>
       <para>
-        FIXME
+
+      COGL is a low level OpenGL abstraction library developed for (and part of) Clutter. It is used primarily by #ClutterActor's to provide a common rendering API that works transparently across OpenGL >=1.4, OpenGL ES 1.1 and OpenGL ES 2.0.
+
       </para>
+
     </section>
 
     <xi:include href="xml/cogl.xml"/>
