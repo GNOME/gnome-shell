@@ -1,5 +1,15 @@
 2008-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c (clutter_actor_unparent): Reset the
+	:show-on-set-parent property to TRUE when unparenting.
+
+	* tests/Makefile.am: Add test-invariant to the build.
+
+	* tests/test-invariants.c: Test the invariants that we are going
+	to honour (and document, at some point).
+
+2008-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/eglnative/clutter-stage-egl.c: Ignore any size allocation
 	we receive from the user.
 

@@ -13,7 +13,8 @@ noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
 		  test-cogl-tex-getset test-cogl-offscreen \
 		  test-cogl-tex-polygon test-stage-read-pixels \
 		  test-random-text test-clip test-paint-wrapper \
-		  test-texture-quality test-entry-auto test-layout
+		  test-texture-quality test-entry-auto test-layout \
+		  test-invariants
 
 if X11_TESTS
 noinst_PROGRAMS += test-pixmap
@@ -68,5 +69,6 @@ test_paint_wrapper_SOURCES        = test-paint-wrapper.c
 test_texture_quality_SOURCES      = test-texture-quality.c
 test_entry_auto_SOURCES	          = test-entry-auto.c
 test_layout_SOURCES               = test-layout.c
+test_invariants_SOURCES           = test-invariants.c
 
 EXTRA_DIST = redhand.png test-script.json

@@ -5657,6 +5657,13 @@ clutter_actor_unparent (ClutterActor *self)
         clutter_actor_unrealize (self);
     }
 
+  /* clutter_actor_hide() will set the :show-on-set-parent property
+   * to FALSE because the actor doesn't have a parent anymore; but
+   * we need to return the actor to its initial state, so we force
+   * the :show-on-set-parent to be TRUE here
+   */
+  self->priv->show_on_set_parent = TRUE;
+
   g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
   /* remove the reference we acquired in clutter_actor_set_parent() */
