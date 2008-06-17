@@ -1,5 +1,12 @@
 2008-06-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* doc/clutter-actor-invariants.txt: Document the flags, the
+	invariants, the state changes and the minimum requirements for
+	actor implementations. Needs to be tweaked and fleshed out
+	before 0.8.0, and we obviously need to enforce the invariants.
+
+2008-06-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	(clutter_actor_set_parent): Document and maintain the invariant
 	that after setting a realized parent on an actor, the actor is

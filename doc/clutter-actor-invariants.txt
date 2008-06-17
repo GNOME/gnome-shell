@@ -1,0 +1,182 @@
+ClutterActor Invariants
+===============================================================================
+
+ClutterActor behaviour has invariants that will be kept with the same API and
+ABI guarantees as the whole Clutter library.
+
+Sections:
+
+   i. Flags
+        a. Public ClutterActor Flags
+        b. Private ClutterActor Flags
+        c. Private Pick Modes
+  ii. Invariants
+ iii. State changes
+  iv. Responsibilities of a ClutterActor
+        a. Adding to a container
+        b. Removing from a container
+        c. Initial state
+
+ i. Flags
+-------------------------------------------------------------------------------
+
+This section describes the various flags and enumerations used by
+ClutterActor.
+
+ a. Public ClutterActor Flags
+
+CLUTTER_ACTOR_REALIZED
+        Set by clutter_actor_realize(), unset by clutter_actor_unrealize().
+        Means: the actor has memory associated to its paint cycle.
+
+CLUTTER_ACTOR_MAPPED
+        Set by clutter_actor_show(), unset by clutter_actor_hide()
+        May only be set if CLUTTER_ACTOR_IS_REALIZED (actor).
+        Means: the actor has been set as visible
+
+CLUTTER_ACTOR_VISIBLE
+        Implies: CLUTTER_ACTOR_IS_REALIZED (actor)
+                 &&
+                 CLUTTER_ACTOR_IS_MAPPED (actor)
+
+CLUTTER_ACTOR_REACTIVE
+        Set and unset by clutter_actor_set_reactive()
+        Means: the actor is now reactive to events.
+
+ b. Private ClutterActor flags
+
+CLUTTER_ACTOR_IN_DESTRUCTION
+        Set internally by clutter_actor_destroy()
+
+CLUTTER_ACTOR_IS_TOPLEVEL
+        Set internally by the initialization of ClutterStage
+
+CLUTTER_ACTOR_IN_REPARENT
+        Set internally by clutter_actor_reparent()
+
+CLUTTER_ACTOR_SYNC_MATRICES
+        Set internally by ClutterStage implementations
+        Means: the size of the stage changed and the viewport must be
+        synchronized to the new size
+
+CLUTTER_ACTOR_IN_PAINT:
+        Set internally by clutter_actor_paint()
+
+CLUTTER_ACTOR_IN_RELAYOUT
+        Set internally by clutter_relayout()
+
+ c. Private Pick Modes
+
+CLUTTER_PICK_NONE
+        No pick operation is performed during the paint
+
+CLUTTER_PICK_REACTIVE
+        Only reactive actors will be picked
+
+CLUTTER_PICK_ALL
+        All visible actors will be picked
+
+ ii. Invariants
+-------------------------------------------------------------------------------
+
+This section describes the various constraints and invariants on ClutterActor.
+
+In the following
+
+        A  => B         means   if A is true then B is true
+        A <=> B         means   A is true if and only if B is true
+                                (equivalent to A => B && A <= B)
+
+1) CLUTTER_ACTOR_IN_DESTRUCTION => !CLUTTER_ACTOR_IS_MAPPED (actor) &&
+                                   !CLUTTER_ACTOR_IS_REALIZED (actor)
+
+        clutter_actor_destroy() will cause an actor to be hidden
+        and unrealized.
+
+2) CLUTTER_ACTOR_IS_MAPPED (actor) => CLUTTER_ACTOR_IS_REALIZED (actor)
+
+        calling clutter_actor_show() on an unrealized actor will cause
+        a realization to happen.
+
+3) if clutter_actor_set_parent (actor, parent):
+     CLUTTER_ACTOR_IS_REALIZED (parent) => CLUTTER_ACTOR_IS_REALIZED (actor)
+
+        calling clutter_actor_set_parent() on an actor and a realized
+        parent will cause a realization on the actor.
+
+4) if clutter_actor_unparent (actor):
+     CLUTTER_ACTOR_IS_MAPPED (actor) <=> CLUTTER_ACTOR_IN_REPARENT
+
+        calling clutter_actor_unparent() on an actor will hide the actor;
+        calling clutter_actor_reparent() on an actor will leave the actor
+        in the same state.
+
+ iii. State changes
+-------------------------------------------------------------------------------
+
+clutter_actor_show:
+        1. if !CLUTTER_ACTOR_REALIZED calls clutter_actor_realize
+        2. sets CLUTTER_ACTOR_MAPPED
+
+clutter_actor_hide:
+        1. sets !CLUTTER_ACTOR_MAPPED
+
+clutter_actor_destroy:
+        1. sets CLUTTER_ACTOR_IN_DESTRUCTION
+
+clutter_actor_realize:
+        sets CLUTTER_ACTOR_REALIZED
+
+clutter_actor_unrealized:
+        1. if CLUTTER_ACTOR_MAPPED calls clutter_actor_hide
+        2. sets !CLUTTER_ACTOR_REALIZED
+
+clutter_actor_set_parent:
+        1. sets actor->parent
+        2. if parent is CLUTTER_ACTOR_REALIZED calls clutter_actor_realize
+        3. if actor->show_on_set_parent is TRUE calls clutter_actor_show
+
+clutter_actor_unset_parent:
+        1. unsets actor->parent
+        2. if !CLUTTER_ACTOR_IN_REPARENT calls clutter_actor_hide
+
+clutter_actor_reparent:
+        sets CLUTTER_ACTOR_IN_REPARENT
+        equivalent to:
+                clutter_actor_unparent
+                clutter_actor_set_parent
+
+ iv. Responsibilities of a ClutterActor
+-------------------------------------------------------------------------------
+
+ a. Adding to a container
+
+When adding an actor to a container, the container must:
+
+ 1. call clutter_actor_set_parent (actor, container)
+ 2. call clutter_actor_queue_relayout (container)
+
+ b. Removing from a container
+
+When removing an actor from a container, the container must:
+
+ 1. call clutter_actor_unparent (actor)
+ 2. call clutter_actor_queue_relayout (container)
+
+Notes:
+
+* here a container actor is any actor that contains children actors; it
+  does not imply the implementation of the ClutterContainer interface.
+
+* clutter_actor_unparent() will hide the actor except in the special case
+  when CLUTTER_ACTOR_IN_REPARENT is set.
+
+ c. Initial state
+
+When creating an actor, the initial state is:
+
+ 1. !CLUTTER_ACTOR_REALIZED
+ 2. !CLUTTER_ACTOR_MAPPED
+
+===============================================================================
+$LastChangedDate$
