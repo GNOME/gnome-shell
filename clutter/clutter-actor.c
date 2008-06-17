@@ -5580,7 +5580,10 @@ clutter_actor_set_parent (ClutterActor *self,
 
   g_object_ref_sink (self);
   priv->parent_actor = parent;
-  g_signal_emit (self, actor_signals[PARENT_SET], 0, NULL);
+
+  /* clutter_actor_reparent() will emit ::parent-set for us */
+  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+    g_signal_emit (self, actor_signals[PARENT_SET], 0, NULL);
 
   /* the invariant is: if the parent is realized, the we must be
    * realized after set_parent(). the call to clutter_actor_show()
@@ -5677,7 +5680,9 @@ clutter_actor_unparent (ClutterActor *self)
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);
 
-  g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
+  /* clutter_actor_reparent() will emit ::parent-set for us */
+  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
+    g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
   /* remove the reference we acquired in clutter_actor_set_parent() */
   g_object_unref (self);
@@ -5716,43 +5721,35 @@ clutter_actor_reparent (ClutterActor *self,
     {
       ClutterActor *old_parent;
 
-      /* if the actor and the parent have already been realized,
-       * mark the actor as reparenting, so that clutter_actor_unparent()
-       * just hides the actor instead of unrealize it.
-       */
-      if (CLUTTER_ACTOR_IS_REALIZED (self) &&
-          CLUTTER_ACTOR_IS_REALIZED (new_parent))
-        {
-          CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
-        }
+      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
 
       old_parent = priv->parent_actor;
 
       g_object_ref (self);
 
-      /* XXX: below assumes only containers can reparent, which is
-       * a fair assumption given that composited actors will not call
-       * or need clutter_actor_reparent() for internal children.
-       */
       if (CLUTTER_IS_CONTAINER (priv->parent_actor))
-        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->parent_actor),
-                                        self);
+        {
+          ClutterContainer *parent = CLUTTER_CONTAINER (priv->parent_actor);
+
+          clutter_container_remove_actor (parent, self);
+        }
       else
-        priv->parent_actor = NULL;
+        clutter_actor_unparent (self);
 
       if (CLUTTER_IS_CONTAINER (new_parent))
         clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
       else
-        priv->parent_actor = new_parent;
+        clutter_actor_set_parent (self, new_parent);
+
+      /* we emit the ::parent-set signal once */
+      g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
       g_object_unref (self);
 
-      if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT)
-        {
-          CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
+      CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
 
-          clutter_actor_queue_redraw (self);
-        }
+      if (CLUTTER_ACTOR_IS_VISIBLE (self))
+        clutter_actor_queue_redraw (self);
    }
 }
 /**

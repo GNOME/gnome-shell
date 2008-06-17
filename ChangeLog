@@ -1,5 +1,16 @@
 2008-06-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_parent): Do not emit ::parent-set when
+	reparenting.
+
+	(clutter_actor_unparent): Ditto, as above.
+	
+	(clutter_actor_reparent): Emit ::parent-set with the old
+	parent and set the IN_REPARENT flag unconditionally.
+
+2008-06-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* doc/clutter-actor-invariants.txt: Document the flags, the
 	invariants, the state changes and the minimum requirements for
 	actor implementations. Needs to be tweaked and fleshed out
