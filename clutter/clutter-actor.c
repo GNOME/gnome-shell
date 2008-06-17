@@ -7362,32 +7362,38 @@ clutter_actor_get_stage (ClutterActor *actor)
 
 /**
  * clutter_actor_allocate_preferred_size:
- * @actor: a #ClutterActor
- * @absolute_origin_changed:  whether the position of the parent has
+ * @self: a #ClutterActor
+ * @absolute_origin_changed: whether the position of the parent has
  *   changed in stage coordinates
  *
- * Utility call for Actor implementations that allocates the actors
- * preffered natural size.
+ * Allocates the natural size of @self.
+ *
+ * This function is a utility call for #ClutterActor implementations
+ * that allocates the actor's preferred natural size. It can be used
+ * by fixed layout managers (like #ClutterGroup) inside the
+ * ClutterActor::allocate implementation to give each child exactly
+ * how much space it requires.
+ *
+ * This function is not meant to be used by applications. It is also
+ * not meant to be used outside the implementation of the
+ * ClutterActor::allocate virtual function.
  *
  * Since: 0.8
  */
 void
-clutter_actor_allocate_preferred_size (ClutterActor *actor,
+clutter_actor_allocate_preferred_size (ClutterActor *self,
                                        gboolean      absolute_origin_changed)
 {
   ClutterUnit actor_x, actor_y;
   ClutterUnit natural_width, natural_height;
   ClutterActorBox actor_box;
 
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
-  actor_x = clutter_actor_get_xu (actor);
-  actor_y = clutter_actor_get_yu (actor);
+  actor_x = clutter_actor_get_xu (self);
+  actor_y = clutter_actor_get_yu (self);
 
-  /* All actorren get their position and natural size (the
-   * container's allocation is flat-out ignored).
-   */
-  clutter_actor_get_preferred_size (actor,
+  clutter_actor_get_preferred_size (self,
                                     NULL, NULL,
                                     &natural_width,
                                     &natural_height);
@@ -7397,5 +7403,5 @@ clutter_actor_allocate_preferred_size (ClutterActor *actor,
   actor_box.x2 = actor_box.x1 + natural_width;
   actor_box.y2 = actor_box.y1 + natural_height;
 
-  clutter_actor_allocate (actor, &actor_box, absolute_origin_changed);
+  clutter_actor_allocate (self, &actor_box, absolute_origin_changed);
 }

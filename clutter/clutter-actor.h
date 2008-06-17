@@ -301,6 +301,8 @@ void                  clutter_actor_get_preferred_size        (ClutterActor     
 void                  clutter_actor_allocate                  (ClutterActor          *self,
                                                                const ClutterActorBox *box,
                                                                gboolean               absolute_origin_changed);
+void                  clutter_actor_allocate_preferred_size   (ClutterActor          *self,
+                                                               gboolean               absolute_origin_changed);
 void                  clutter_actor_get_allocation_coords     (ClutterActor          *self,
                                                                gint                  *x_1,
                                                                gint                  *y_1,
@@ -555,9 +557,6 @@ void clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
                                                       ClutterActor  *ancestor,
                                                       ClutterVertex *point,
                                                       ClutterVertex *vertex);
-
-void clutter_actor_allocate_preferred_size            (ClutterActor *actor,
-                                                       gboolean      absolute_origin_changed);
 
 G_END_DECLS
 
