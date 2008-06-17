@@ -165,7 +165,7 @@ test_show_on_set_parent (void)
                 "show-on-set-parent", &show_on_set_parent,
                 NULL);
 
-  g_assert (!(CLUTTER_ACTOR_IS_REALIZED (actor)));
+  g_assert (CLUTTER_ACTOR_IS_REALIZED (actor));
   g_assert (!(CLUTTER_ACTOR_IS_VISIBLE (actor)));
   g_assert (show_on_set_parent == TRUE);
 

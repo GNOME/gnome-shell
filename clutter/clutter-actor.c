@@ -5547,7 +5547,7 @@ clutter_actor_get_clip (ClutterActor *self,
  * clutter_actor_unparent().
  *
  * This function should not be used by applications, but by custom
- * 'composite' actor subclasses.
+ * container actor subclasses.
  */
 void
 clutter_actor_set_parent (ClutterActor *self,
@@ -5582,6 +5582,11 @@ clutter_actor_set_parent (ClutterActor *self,
   priv->parent_actor = parent;
   g_signal_emit (self, actor_signals[PARENT_SET], 0, NULL);
 
+  /* the invariant is: if the parent is realized, the we must be
+   * realized after set_parent(). the call to clutter_actor_show()
+   * will cause this anyway, but we need to maintain the invariant
+   * even for actors that have :show-on-set-parent set to FALSE
+   */
   if (CLUTTER_ACTOR_IS_REALIZED (priv->parent_actor))
     clutter_actor_realize (self);
 
@@ -5594,8 +5599,8 @@ clutter_actor_set_parent (ClutterActor *self,
       clutter_actor_queue_redraw (self);
     }
 
-  /* Maintain invariant that if an actor needs layout,
-   * its parents do as well.
+  /* maintain the invariant that if an actor needs layout,
+   * its parents do as well
    */
   if (priv->needs_width_request ||
       priv->needs_height_request ||
@@ -5625,6 +5630,8 @@ clutter_actor_get_parent (ClutterActor *self)
  * clutter_actor_unparent:
  * @self: a #ClutterActor
  *
+ * Removes the parent of @self.
+ *
  * This function should not be used in applications.  It should be called by
  * implementations of container actors, to dissociate a child from the
  * container.
@@ -5634,35 +5641,41 @@ clutter_actor_get_parent (ClutterActor *self)
 void
 clutter_actor_unparent (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
   ClutterActor *old_parent;
-  ClutterMainContext *clutter_context;
-
-  clutter_context = clutter_context_get_default ();
+  gboolean show_on_set_parent_enabled = TRUE;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail (clutter_context != NULL);
 
-  if (self->priv->parent_actor == NULL)
+  priv = self->priv;
+
+  if (priv->parent_actor == NULL)
     return;
 
-  old_parent = self->priv->parent_actor;
-  self->priv->parent_actor = NULL;
+  show_on_set_parent_enabled = priv->show_on_set_parent;
 
-  /* just hide the actor if we are reparenting it */
+  old_parent = priv->parent_actor;
+  priv->parent_actor = NULL;
+
+  /* if we are uparenting we hide ourselves; if we are just reparenting
+   * there's no need to do that, as the paint is fast enough.
+   */
   if (CLUTTER_ACTOR_IS_REALIZED (self))
     {
-      if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT)
+      if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
         clutter_actor_hide (self);
-      else
-        clutter_actor_unrealize (self);
     }
 
   /* clutter_actor_hide() will set the :show-on-set-parent property
    * to FALSE because the actor doesn't have a parent anymore; but
    * we need to return the actor to its initial state, so we force
-   * the :show-on-set-parent to be TRUE here
+   * the state of the :show-on-set-parent property to its value
+   * previous the unparenting
    */
-  self->priv->show_on_set_parent = TRUE;
+  priv->show_on_set_parent = show_on_set_parent_enabled;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
 
   g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
@@ -5750,6 +5763,8 @@ clutter_actor_reparent (ClutterActor *self,
  * Puts @self above @below.
  *
  * Both actors must have the same parent.
+ *
+ * This function is the equivalent of clutter_container_raise_child().
  */
 void
 clutter_actor_raise (ClutterActor *self,
@@ -5788,7 +5803,10 @@ clutter_actor_raise (ClutterActor *self,
  * @above: A #ClutterActor to lower below
  *
  * Puts @self below @above.
+ *
  * Both actors must have the same parent.
+ *
+ * This function is the equivalent of clutter_container_lower_child().
  */
 void
 clutter_actor_lower (ClutterActor *self,
@@ -5826,6 +5844,8 @@ clutter_actor_lower (ClutterActor *self,
  * @self: A #ClutterActor
  *
  * Raises @self to the top.
+ *
+ * This function calls clutter_actor_raise() internally.
  */
 void
 clutter_actor_raise_top (ClutterActor *self)
@@ -5838,6 +5858,8 @@ clutter_actor_raise_top (ClutterActor *self)
  * @self: A #ClutterActor
  *
  * Lowers @self to the bottom.
+ *
+ * This function calls clutter_actor_lower() internally.
  */
 void
 clutter_actor_lower_bottom (ClutterActor *self)

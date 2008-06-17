@@ -1,3 +1,18 @@
+2008-06-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_parent): Document and maintain the invariant
+	that after setting a realized parent on an actor, the actor is
+	also going to be realized.
+
+	(clutter_actor_unparent): Change the invariant that an unparented
+	actor is also unrealized: the paint is fast enough to avoid
+	unrealizing, since it also causes more problems that what it's
+	worth.
+
+	* tests/test-invariants.c (test_show_on_set_parent): Update the
+	invariants test because we changed the invariants.
+
 2008-06-17  Jussi Kukkonen  <jku@o-hand.com>
 
 	* clutter/clutter-score.c (clutter_score_append):
