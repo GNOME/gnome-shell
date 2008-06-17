@@ -4,6 +4,8 @@ ClutterActor Invariants
 ClutterActor behaviour has invariants that will be kept with the same API and
 ABI guarantees as the whole Clutter library.
 
+This document refers to the 0.8 release of Clutter.
+
 Sections:
 
    i. Flags
@@ -27,7 +29,9 @@ ClutterActor.
 
 CLUTTER_ACTOR_REALIZED
         Set by clutter_actor_realize(), unset by clutter_actor_unrealize().
-        Means: the actor has memory associated to its paint cycle.
+        Means: the actor has GPU resources associated to its paint cycle.
+        Once realized an actor needs to be explicitly unrealized unless
+        being destroyed. Hide, reparent etc will not unrealize.
 
 CLUTTER_ACTOR_MAPPED
         Set by clutter_actor_show(), unset by clutter_actor_hide()
@@ -42,11 +46,18 @@ CLUTTER_ACTOR_VISIBLE
 CLUTTER_ACTOR_REACTIVE
         Set and unset by clutter_actor_set_reactive()
         Means: the actor is now reactive to events.
+        Notes:
+          * If parents need to be reactive for child its up to the
+            parent implementation. In the case of ClutterGroup it
+            being marked unreactive does not mark all children unreactive.
+          * Clutter stage is always reactive.
+                  
 
  b. Private ClutterActor flags
 
 CLUTTER_ACTOR_IN_DESTRUCTION
-        Set internally by clutter_actor_destroy()
+        Set internally by clutter_actor_destroy().
+        Used to avoid uneeded overhead when freeing GPU resources on unrealize
 
 CLUTTER_ACTOR_IS_TOPLEVEL
         Set internally by the initialization of ClutterStage
@@ -110,6 +121,7 @@ In the following
         calling clutter_actor_unparent() on an actor will hide the actor;
         calling clutter_actor_reparent() on an actor will leave the actor
         in the same state.
+        Niether will unrealize.
 
  iii. State changes
 -------------------------------------------------------------------------------
@@ -171,12 +183,14 @@ Notes:
 * clutter_actor_unparent() will hide the actor except in the special case
   when CLUTTER_ACTOR_IN_REPARENT is set.
 
+* 'Composite' Clutter actors need to pass down any allocations to children. 
+
  c. Initial state
 
 When creating an actor, the initial state is:
 
  1. !CLUTTER_ACTOR_REALIZED
  2. !CLUTTER_ACTOR_MAPPED
-
+ 3. !CLUTTER_ACTOR_REACTIVE
 ===============================================================================
 $LastChangedDate$

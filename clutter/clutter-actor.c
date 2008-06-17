@@ -32,22 +32,28 @@
  * be a #ClutterActor, either by using one of the classes provided by
  * Clutter, or by implementing a new #ClutterActor subclass.
  *
- * Every actor is a 2D surface in a 3D environment. The surface is contained
- * inside its bounding box, described by the #ClutterActorBox structure:
+ * Every actor is a 2D surface positioned and optionally transformed
+ * in 3D space. The actor is positioned relative to top left corner of
+ * it parent with the childs origin being its anchor point (also top
+ * left by default).
+ *
+ * The actors 2D surface is contained inside its bounding box,
+ * described by the #ClutterActorBox structure:
  *
  * <figure id="actor-box">
  *   <title>Bounding box of an Actor</title>
  *   <graphic fileref="actor-box.png" format="PNG"/>
  * </figure>
  *
- * The actor box represents the untransformed area occupied by an actor. Each
- * visible actor that has been put on a #ClutterStage also has a transformed
- * area, depending on the actual transformations applied to it by the
- * developer (scale, rotation), the transformations applied by its
- * containers, the transformations applied to the containers themselves and,
- * finally, the perspective transformations applied to the #ClutterStage.
+ * The actor box represents the untransformed area occupied by an
+ * actor. Each visible actor that has been put on a #ClutterStage also
+ * has a transformed area, depending on the actual transformations
+ * applied to it by the developer (scale, rotation). Tranforms will
+ * also be applied to any child actors. Also applied to all actors by
+ * the #ClutterStage is a perspective transformation. API is provided
+ * for both tranformed and untransformed actor geometry information.
  *
- * The OpenGL modelview matrix for the actor is constructed from
+ * The 'modelview' transform matrix for the actor is constructed from
  * the actor settings by the following order of operations:
  * <orderedlist>
  *   <listitem><para>Translation by actor x, y coords,</para></listitem>
@@ -58,19 +64,19 @@
  *   <listitem><para>Rotation around y axis,</para></listitem>
  *   <listitem><para>Rotation around x axis,</para></listitem>
  *   <listitem><para>Translation by actor depth (z),</para></listitem>
- *   <listitem><para>Clip stencil is applied (this is not an operation on
+ *   <listitem><para>Rectangular Clip is applied (this is not an operation on
  *   the matrix as such, but it is done as part of the transform set
  *   up).</para></listitem>
  * </orderedlist>
- *
- * <note>The position of any children is referenced from the top-left corner of
- * the parent, not the parent's anchor point.</note>
  *
  * An actor can either be explicitly sized and positioned, using the
  * various size and position accessors, like clutter_actor_set_x() or
  * clutter_actor_set_width(); or it can have a preferred width and
  * height, which then allows a layout manager to implicitly size and
- * position it by "allocating" an area for an actor.
+ * position it by "allocating" an area for an actor. This allows for
+ * actors to be manipulate in both a fixed or static parent container
+ * (i.e. children of #ClutterGroup) and a more automatic or dynamic
+ * layout based parent container.
  *
  * When accessing the position and size of an actor, the simple accessors
  * like clutter_actor_get_width() and clutter_actor_get_x() will return
@@ -81,7 +87,9 @@
  * layout manager, you should either use the simple accessors or use the
  * size negotiation API.
  *
- * Events are handled in the following ways:
+ * Clutter actors are also able to receive input events and react to
+ * them. Events are handled in the following ways:
+ *
  * <orderedlist>
  *   <listitem><para>Actors emit pointer events if set reactive, see
  *   clutter_actor_set_reactive()</para></listitem>
@@ -117,7 +125,7 @@
  * Every '?' box in the diagram above is an entry point for application
  * code.
  *
- * For implementing a new actor class, please read <link
+ * For implementing a new custom actor class, please read <link
  * linkend="clutter-subclassing-ClutterActor">the corresponding section</link>
  * of the API reference.
  */
@@ -5646,6 +5654,7 @@ clutter_actor_unparent (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
   ClutterActor *old_parent;
+
   gboolean show_on_set_parent_enabled = TRUE;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
@@ -5683,6 +5692,18 @@ clutter_actor_unparent (ClutterActor *self)
   /* clutter_actor_reparent() will emit ::parent-set for us */
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT))
     g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
+
+  /* Queue a redraw on old_parent */
+  if (CLUTTER_ACTOR_IS_VISIBLE (old_parent))
+    clutter_actor_queue_redraw (old_parent);
+
+  /* Could also need to relayout */
+  if (old_parent->priv->needs_width_request ||
+      old_parent->priv->needs_height_request ||
+      old_parent->priv->needs_allocation)
+    {
+      clutter_actor_queue_relayout (old_parent);
+    }
 
   /* remove the reference we acquired in clutter_actor_set_parent() */
   g_object_unref (self);
@@ -5730,13 +5751,14 @@ clutter_actor_reparent (ClutterActor *self,
       if (CLUTTER_IS_CONTAINER (priv->parent_actor))
         {
           ClutterContainer *parent = CLUTTER_CONTAINER (priv->parent_actor);
-
+          /* Note, will call unparent() */
           clutter_container_remove_actor (parent, self);
         }
       else
         clutter_actor_unparent (self);
 
       if (CLUTTER_IS_CONTAINER (new_parent))
+          /* Note, will call parent() */
         clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
       else
         clutter_actor_set_parent (self, new_parent);
@@ -5747,9 +5769,6 @@ clutter_actor_reparent (ClutterActor *self,
       g_object_unref (self);
 
       CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
-
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-        clutter_actor_queue_redraw (self);
    }
 }
 /**
@@ -7339,4 +7358,44 @@ clutter_actor_get_stage (ClutterActor *actor)
     actor = clutter_actor_get_parent (actor);
 
   return actor;
+}
+
+/**
+ * clutter_actor_allocate_preferred_size:
+ * @actor: a #ClutterActor
+ * @absolute_origin_changed:  whether the position of the parent has
+ *   changed in stage coordinates
+ *
+ * Utility call for Actor implementations that allocates the actors
+ * preffered natural size.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_allocate_preferred_size (ClutterActor *actor,
+                                       gboolean      absolute_origin_changed)
+{
+  ClutterUnit actor_x, actor_y;
+  ClutterUnit natural_width, natural_height;
+  ClutterActorBox actor_box;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  
+  actor_x = clutter_actor_get_xu (actor);
+  actor_y = clutter_actor_get_yu (actor);
+
+  /* All actorren get their position and natural size (the
+   * container's allocation is flat-out ignored).
+   */
+  clutter_actor_get_preferred_size (actor,
+                                    NULL, NULL,
+                                    &natural_width,
+                                    &natural_height);
+  
+  actor_box.x1 = actor_x;
+  actor_box.y1 = actor_y;
+  actor_box.x2 = actor_box.x1 + natural_width;
+  actor_box.y2 = actor_box.y1 + natural_height;
+
+  clutter_actor_allocate (actor, &actor_box, absolute_origin_changed);
 }

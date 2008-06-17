@@ -298,27 +298,7 @@ clutter_fixed_layout_allocate (GList    *children,
   for (l = children; l != NULL; l = l->next)
     {
       ClutterActor *child = l->data;
-      ClutterUnit child_x, child_y;
-      ClutterUnit natural_width, natural_height;
-      ClutterActorBox child_box;
-      
-      child_x = clutter_actor_get_xu (child);
-      child_y = clutter_actor_get_yu (child);
-
-      /* All children get their position and natural size (the
-       * container's allocation is flat-out ignored).
-       */
-      clutter_actor_get_preferred_size (child,
-                                        NULL, NULL,
-                                        &natural_width,
-                                        &natural_height);
-
-      child_box.x1 = child_x;
-      child_box.y1 = child_y;
-      child_box.x2 = child_box.x1 + natural_width;
-      child_box.y2 = child_box.y1 + natural_height;
-
-      clutter_actor_allocate (child, &child_box, absolute_origin_changed);
+      clutter_actor_allocate_preferred_size (child, absolute_origin_changed);
     }
 }
 

@@ -1,3 +1,17 @@
+2008-06-17  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+        Clean up of parenting code (see #972)
+        Doc updates to section intro.
+        Add clutter_actor_allocate_preferred_size () utility call 
+
+	* clutter/clutter-group.c: (clutter_fixed_layout_allocate):
+        Use clutter_actor_allocate_preferred_size ()
+
+	* doc/clutter-actor-invariants.txt:
+        Add some more notes
+
 2008-06-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c:
