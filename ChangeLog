@@ -1,3 +1,9 @@
+2008-06-17  Jussi Kukkonen  <jku@o-hand.com>
+
+	* clutter/clutter-score.c (clutter_score_append):
+	initialize "marker" string and "complete_id" signal id when creating a
+	ClutterScoreEntry.
+
 2008-06-16  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

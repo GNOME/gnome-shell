@@ -898,7 +898,9 @@ clutter_score_append (ClutterScore    *score,
       entry->timeline = g_object_ref (timeline);
       entry->parent = NULL;
       entry->id = priv->last_id;
+      entry->marker = NULL;
       entry->marker_id = 0;
+      entry->complete_id = 0;
       entry->score = score;
 
       entry->node = g_node_append_data (priv->root, entry);
@@ -918,7 +920,9 @@ clutter_score_append (ClutterScore    *score,
       entry->timeline = g_object_ref (timeline);
       entry->parent = parent;
       entry->id = priv->last_id;
+      entry->marker = NULL;
       entry->marker_id = 0;
+      entry->complete_id = 0;
       entry->score = score;
 
       entry->node = g_node_append_data (node, entry);
