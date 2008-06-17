@@ -1,3 +1,10 @@
+2008-06-17  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-texture.c: (clutter_texture_get_preferred_width),
+	(clutter_texture_get_preferred_height):
+	Maintain aspect ratio with natural width/height when for_width/height
+	are specified
+
 2008-06-17  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:

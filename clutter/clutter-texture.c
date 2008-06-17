@@ -330,10 +330,6 @@ clutter_texture_get_preferred_width (ClutterActor *self,
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
 
-  /* FIXME If we wanted to be clever here, we could set the natural
-   * width to preserve aspect ratio considering for_height
-   */
-
   /* Min request is always 0 since we can scale down or clip */
   if (min_width_p)
     *min_width_p = 0;
@@ -341,7 +337,20 @@ clutter_texture_get_preferred_width (ClutterActor *self,
   if (priv->sync_actor_size)
     {
       if (natural_width_p)
-        *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (priv->width);
+        {
+          if ((for_height < 0) || (priv->height <= 0))
+            *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (priv->width);
+          else
+            {
+              /* Set the natural width so as to preserve the aspect ratio */
+              ClutterFixed ratio =
+                clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->width),
+                               CLUTTER_INT_TO_FIXED (priv->height));
+              
+              *natural_width_p = CLUTTER_UNITS_FROM_FIXED (
+                clutter_qmulx (ratio, CLUTTER_UNITS_TO_FIXED (for_height)));
+            }
+        }
     }
   else
     {
@@ -359,10 +368,6 @@ clutter_texture_get_preferred_height (ClutterActor *self,
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
 
-  /* FIXME If we wanted to be clever here, we could set the natural
-   * height to preserve aspect ratio considering for_width
-   */
-
   /* Min request is always 0 since we can scale down or clip */
   if (min_height_p)
     *min_height_p = 0;
@@ -370,7 +375,20 @@ clutter_texture_get_preferred_height (ClutterActor *self,
   if (priv->sync_actor_size)
     {
       if (natural_height_p)
-        *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (priv->height);
+        {
+          if ((for_width < 0) || (priv->width <= 0))
+            *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (priv->height);
+          else
+            {
+              /* Set the natural height so as to preserve the aspect ratio */
+              ClutterFixed ratio =
+                clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->height),
+                               CLUTTER_INT_TO_FIXED (priv->width));
+              
+              *natural_height_p = CLUTTER_UNITS_FROM_FIXED (
+                clutter_qmulx (ratio, CLUTTER_UNITS_TO_FIXED (for_width)));
+            }
+        }
     }
   else
     {
