@@ -47,7 +47,7 @@
  *
  * A simple object might be defined as:
  *
- * <programlisting>
+ * |[
  * {
  *   "id"     : "red-button",
  *   "type"   : "ClutterRectangle",
@@ -55,18 +55,20 @@
  *   "height" : 100,
  *   "color"  : "0xff0000ff"
  * }
- * </programlisting>
+ * ]|
  *
  * This will produce a red #ClutterRectangle, 100x100 pixels wide, and
- * with a name of "red-button"; it can be retrieved by calling:
+ * with a ClutterScript id of "red-button"; it can be retrieved by calling:
  *
- * <programlisting>
+ * |[
  * ClutterActor *red_button;
  *
  * red_button = CLUTTER_ACTOR (clutter_script_get_object (script, "red-button"));
- * </programlisting>
+ * ]|
  *
- * and then manipulated with the Clutter API.
+ * and then manipulated with the Clutter API. For every object created
+ * using ClutterScript it is possible to check the id by calling
+ * clutter_get_script_id().
  *
  * Packing can be represented using the "children" member, and passing an
  * array of objects or ids of objects already defined (but not packed: the
@@ -76,7 +78,7 @@
  * Behaviours and timelines can also be defined inside a UI definition
  * buffer:
  *
- * <programlisting>
+ * |[
  * {
  *   "id"          : "rotate-behaviour",
  *   "type"        : "ClutterBehaviourRotate",
@@ -88,19 +90,19 @@
  *     "function" : "sine"
  *   }
  * }
- * </programlisting>
+ * ]|
  *
  * And then to apply a defined behaviour to an actor defined inside the
  * definition of an actor, the "behaviour" member can be used:
  *
- * <programlisting>
+ * |[
  * {
  *   "id" : "my-rotating-actor",
  *   "type" : "ClutterTexture",
  *   ...
  *   "behaviours" : [ "rotate-behaviour" ]
  * }
- * </programlisting>
+ * ]|
  *
  * A #ClutterAlpha belonging to a #ClutterBehaviour can only be defined
  * implicitely. A #ClutterTimeline belonging to a #ClutterAlpha can be
@@ -115,7 +117,7 @@
  * then autoconnected to their respective signals using the
  * clutter_script_connect_signals() function:
  *
- * <programlisting>
+ * |[
  *   ...
  *   "signals" : [
  *     { "name" : "button-press-event", "handler" : "on_button_press" },
@@ -124,8 +126,9 @@
  *       "handler" : "after_foo",
  *       "after" : true
  *     },
- *   ]
- * </programlisting>
+ *   ],
+ *   ...
+ * ]|
  *
  * Signal handler definitions must have a "name" and a "handler" members;
  * they can also have the "after" and "swapped" boolean members (for the

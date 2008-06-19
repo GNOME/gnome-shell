@@ -1,3 +1,9 @@
+2008-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-script.c: Be more explicit about the fact that
+	the script id is not the name of an actor, and that it is retrieved
+	by using clutter_get_script_id().
+
 2008-06-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.h:
