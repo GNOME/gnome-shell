@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-13 04:00+0000\n"
-"PO-Revision-Date: 2008-03-09 22:40+0100\n"
+"POT-Creation-Date: 2008-06-13 23:11+0000\n"
+"PO-Revision-Date: 2008-06-21 15:41+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@fsf.hu>\n"
 "MIME-Version: 1.0\n"
@@ -33,39 +33,39 @@ msgstr "Ablakkezelés"
 msgid "Unknown window information request: %d"
 msgstr "Ismeretlen ablakinformáció-kérés: %d"
 
-#: ../src/core/delete.c:67 ../src/core/delete.c:94
+#: ../src/core/delete.c:70 ../src/core/delete.c:97
 #: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:481
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "„%s” nem értelmezhető egész számként"
 
-#: ../src/core/delete.c:74 ../src/core/delete.c:101
+#: ../src/core/delete.c:77 ../src/core/delete.c:104
 #: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:490
 #: ../src/ui/theme-parser.c:545
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Nem lehetett „%s” zárókaraktereket értelmezni a(z) „%s” karakterláncban"
 
-#: ../src/core/delete.c:132
+#: ../src/core/delete.c:135
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Nem sikerült elemezni a(z) „%s” üzenetet a párbeszédablak folyamatból\n"
 
-#: ../src/core/delete.c:267
+#: ../src/core/delete.c:253
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr ""
 "Hiba történt a párbeszédablak-megjelenítő folyamatból való olvasás közben : %"
 "s\n"
 
-#: ../src/core/delete.c:350
+#: ../src/core/delete.c:336
 #, c-format
 msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Nem sikerült elindítani a program kilövéséről kérdező metacity "
 "párbeszédablakot: %s\n"
 
-#: ../src/core/delete.c:459
+#: ../src/core/delete.c:445
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Hiba a gépnév lekérdezése közben: %s\n"
@@ -75,12 +75,12 @@ msgstr "Hiba a gépnév lekérdezése közben: %s\n"
 msgid "Missing %s extension required for compositing"
 msgstr "Hiányzik a kompozit ablakkezeléshez szükséges %s kiterjesztés"
 
-#: ../src/core/display.c:438
+#: ../src/core/display.c:334
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nem sikerült megnyitni a(z) „%s” X Window rendszer képernyőt\n"
 
-#: ../src/core/errors.c:271
+#: ../src/core/errors.c:272
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -92,12 +92,12 @@ msgstr ""
 "megsemmisítette\n"
 "az ablakkezelőt.\n"
 
-#: ../src/core/errors.c:278
+#: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Végzetes IO hiba %d (%s) a(z) „%s” képernyőn.\n"
 
-#: ../src/core/keybindings.c:1087
+#: ../src/core/keybindings.c:1090
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -106,23 +106,24 @@ msgstr ""
 "Valamely másik program már használja a(z) %s billentyűt %x módosítókkal "
 "összekötve\n"
 
-#: ../src/core/keybindings.c:2733
+#: ../src/core/keybindings.c:2729
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Hiba történt a parancsról hibajelzést megjelenítő metacity-párbeszédablak "
 "megjelenítése közben: %s\n"
 
-#: ../src/core/keybindings.c:2838
+#: ../src/core/keybindings.c:2834
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nincs %d parancs meghatározva.\n"
 
-#: ../src/core/keybindings.c:3866
+#: ../src/core/keybindings.c:3862
+#, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Nincs terminálparancs meghatározva.\n"
 
-#: ../src/core/main.c:112
+#: ../src/core/main.c:115
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -137,71 +138,93 @@ msgstr ""
 "NINCS garancia; még az ELADHATÓSÁGRA vagy EGY ADOTT CÉLRA VALÓ ALKALMASSÁGRA "
 "vonatkozólag sem.\n"
 
-#: ../src/core/main.c:239
+#: ../src/core/main.c:242
 msgid "Disable connection to session manager"
 msgstr "A munkamenet-kezelőhöz való csatlakozás tiltása"
 
-#: ../src/core/main.c:245
+#: ../src/core/main.c:248
 msgid "Replace the running window manager with Metacity"
 msgstr "A futó ablakkezelő helyettesítése a Metacity-vel"
 
-#: ../src/core/main.c:251
+#: ../src/core/main.c:254
 msgid "Specify session management ID"
 msgstr "A munkamenet-kezelő azonosítójának megadása"
 
-#: ../src/core/main.c:256
+#: ../src/core/main.c:259
 msgid "X Display to use"
 msgstr "A használandó X megjelenítő"
 
-#: ../src/core/main.c:262
+#: ../src/core/main.c:265
 msgid "Initialize session from savefile"
 msgstr "A munkamenet inicializálása a mentési fájlból"
 
-#: ../src/core/main.c:268
+#: ../src/core/main.c:271
 msgid "Print version"
 msgstr "Verzió kinyomtatása"
 
-#: ../src/core/main.c:274
+#: ../src/core/main.c:277
 msgid "Make X calls synchronous"
 msgstr "Az X-hívások szinkronná tétele"
 
-#: ../src/core/main.c:425
+#: ../src/core/main.c:428
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Témakönyvtár beolvasása sikertelen: %s\n"
 
-#: ../src/core/main.c:441
+#: ../src/core/main.c:444
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Nem található téma! Bizonyosodjon meg róla hogy a(z) %s létezik és "
 "tartalmazza a szokásos témákat.\n"
 
-#: ../src/core/main.c:513
+#: ../src/core/main.c:500
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Újraindítás sikertelen: %s\n"
 
-#: ../src/core/prefs.c:434
+#.
+#. * We found it, but it was invalid.  Complain.
+#. *
+#. * FIXME: This replicates the original behaviour, but in the future
+#. * we might consider reverting invalid keys to their original values.
+#. * (We know the old value, so we can look up a suitable string in
+#. * the symtab.)
+#.
+#: ../src/core/prefs.c:496 ../src/core/prefs.c:648
 #, c-format
-msgid "Type of %s was not integer"
-msgstr "A(z) %s típusa nem egész"
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "„%s” GConf kulcs érvénytelen értékre van állítva\n"
 
-#: ../src/core/prefs.c:572 ../src/core/prefs.c:600 ../src/core/prefs.c:616
-#: ../src/core/prefs.c:632 ../src/core/prefs.c:648 ../src/core/prefs.c:664
-#: ../src/core/prefs.c:680 ../src/core/prefs.c:696 ../src/core/prefs.c:716
-#: ../src/core/prefs.c:732 ../src/core/prefs.c:748 ../src/core/prefs.c:766
-#: ../src/core/prefs.c:782 ../src/core/prefs.c:801 ../src/core/prefs.c:817
-#: ../src/core/prefs.c:852 ../src/core/prefs.c:868 ../src/core/prefs.c:885
-#: ../src/core/prefs.c:901 ../src/core/prefs.c:917 ../src/core/prefs.c:933
-#: ../src/core/prefs.c:949 ../src/core/prefs.c:964 ../src/core/prefs.c:979
-#: ../src/core/prefs.c:994 ../src/core/prefs.c:1010 ../src/core/prefs.c:1026
-#: ../src/core/prefs.c:1042 ../src/core/prefs.c:1058
+#: ../src/core/prefs.c:577 ../src/core/prefs.c:817
+#, c-format
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
+msgstr "%d, ami a(z) %s GConf kulcsban van tárolva, a tartományon (%d - %d) kívül van\n"
+
+#: ../src/core/prefs.c:621 ../src/core/prefs.c:695 ../src/core/prefs.c:743
+#: ../src/core/prefs.c:807 ../src/core/prefs.c:1101 ../src/core/prefs.c:1117
+#: ../src/core/prefs.c:1136 ../src/core/prefs.c:1152 ../src/core/prefs.c:1169
+#: ../src/core/prefs.c:1185
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "„%s” GConf kulcs érvénytelen típusú\n"
 
-#: ../src/core/prefs.c:1103
+#: ../src/core/prefs.c:1255
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr ""
+"A hibás alkalmazások hibáinak megkerülése nincs engedélyezve. Néhány "
+"alkalmazás lehet, hogy nem fog helyesen működni.\n"
+
+#: ../src/core/prefs.c:1325
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr ""
+"Nem sikerült feldolgozni a(z) „%s” betűkészlet leírását a(z) „%s” GConf "
+"kulcsból\n"
+
+#: ../src/core/prefs.c:1385
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -210,60 +233,17 @@ msgstr ""
 "A konfigurációs adatbázisban talált „%s” érvénytelen érték az egérgomb "
 "módosítóhoz\n"
 
-#: ../src/core/prefs.c:1127 ../src/core/prefs.c:1148 ../src/core/prefs.c:1705
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "„%s” GConf kulcs érvénytelen értékre van állítva\n"
-
-#: ../src/core/prefs.c:1277
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-"range 1..128\n"
-msgstr ""
-"A(z) %d, amely a(z) „%s” GConf kulcsban található, nem egy elfogadható "
-"cursor_size; az 1..128 tartományba kellene esnie.\n"
-
-#: ../src/core/prefs.c:1357
-#, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
-"Nem sikerült feldolgozni a(z) „%s” betűkészlet leírását a(z) „%s” GConf "
-"kulcsból\n"
-
-#: ../src/core/prefs.c:1599
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-"A(z) %d, amely a(z) „%s” GConf kulcsban található, nem fogadható el a "
-"munkaterületek számaként, a jelenlegi maximum %d\n"
-
-#: ../src/core/prefs.c:1659
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"A hibás alkalmazások hibáinak megkerülése nincs engedélyezve. Néhány "
-"alkalmazás lehet, hogy nem fog helyesen működni.\n"
-
-#: ../src/core/prefs.c:1732
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "%d, ami a(z) %s GConf kulcsban van tárolva, a 0 - %d tartományon kívül van\n"
-
-#: ../src/core/prefs.c:1881
+#: ../src/core/prefs.c:1799
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Hiba a munkaterületek számának beállításánál a következőre: %d: %s\n"
 
-#: ../src/core/prefs.c:2246 ../src/core/prefs.c:2780 ../src/ui/menu.c:199
+#: ../src/core/prefs.c:2164 ../src/core/prefs.c:2676
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. munkaterület"
 
-#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2446
+#: ../src/core/prefs.c:2194 ../src/core/prefs.c:2367
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -272,47 +252,48 @@ msgstr ""
 "A konfigurációs adatbázisban talált „%s” nem érvényes érték a következő "
 "billentyűkombinációhoz: „%s”\n"
 
-#: ../src/core/prefs.c:2861
+#: ../src/core/prefs.c:2757
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Hiba a(z) %d. munkaterület nevének beállításánál a következőre: „%s”: %s\n"
 
-#: ../src/core/screen.c:410
+#: ../src/core/screen.c:350
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A(z) %d képernyő a(z) „%s” megjelenítőn érvénytelen\n"
 
-#: ../src/core/screen.c:426
+#: ../src/core/screen.c:366
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"A(z) %d képernyő a(z) „%s” megjelenítőn már rendelkezik egy "
-"ablakkezelővel; próbálja a --replace opcióval helyettesíteni a jelenlegi "
-"ablakkezelőt.\n"
+"A(z) %d képernyő a(z) „%s” megjelenítőn már rendelkezik egy ablakkezelővel; "
+"próbálja a --replace opcióval helyettesíteni a jelenlegi ablakkezelőt.\n"
 
-#: ../src/core/screen.c:453
+#: ../src/core/screen.c:393
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Nem sikerült beolvasni az ablakkezelő kiválasztását a(z) %d képernyőn a(z) „%s” megjelenítőn\n"
+msgstr ""
+"Nem sikerült beolvasni az ablakkezelő kiválasztását a(z) %d képernyőn a(z) „%"
+"s” megjelenítőn\n"
 
-#: ../src/core/screen.c:511
+#: ../src/core/screen.c:451
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A(z) %d képernyőnek a(z) „%s” megjelenítőn már van ablakkezelője\n"
 
-#: ../src/core/screen.c:721
+#: ../src/core/screen.c:661
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nem sikerült elengedni a(z) %d képernyőt a(z) „%s” kijelzőn\n"
 
-#: ../src/core/session.c:826 ../src/core/session.c:833
+#: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nem lehet létrehozni a(z) „%s” könyvtárat: %s\n"
 
-#: ../src/core/session.c:843
+#: ../src/core/session.c:854
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nem sikerült a(z) „%s” munkamenet fájlt írásra megnyitni: %s\n"
@@ -327,52 +308,55 @@ msgstr "Hiba történt a(z) „%s” munkamenet fájl írása közben: %s\n"
 msgid "Error closing session file '%s': %s\n"
 msgstr "Hiba történt a(z) „%s” munkamenet fájl lezárása közben: %s\n"
 
-#: ../src/core/session.c:1075
+#. oh, just give up
+#: ../src/core/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Hiba történt a(z) „%s” munkamenet fájl olvasása közben: %s\n"
 
-#: ../src/core/session.c:1110
+#: ../src/core/session.c:1132
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Nem sikerült feldolgozni a mentett munkamenet fájlt: %s\n"
 
-#: ../src/core/session.c:1159
+#: ../src/core/session.c:1181
+#, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "A <metacity_session> attribútum megjelent, de már rendelkezünk a munkamenet-"
 "azonosítóval"
 
-#: ../src/core/session.c:1172
+#: ../src/core/session.c:1194
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Ismeretlen %s attribútum a <metacity_session> elemen"
 
-#: ../src/core/session.c:1189
+#: ../src/core/session.c:1211
+#, c-format
 msgid "nested <window> tag"
 msgstr "beágyazott <window> tag"
 
-#: ../src/core/session.c:1247 ../src/core/session.c:1279
+#: ../src/core/session.c:1269 ../src/core/session.c:1301
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Ismeretlen %s attribútum a <window> elemen"
 
-#: ../src/core/session.c:1351
+#: ../src/core/session.c:1373
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Ismeretlen %s attribútum a <maximized> elemen"
 
-#: ../src/core/session.c:1411
+#: ../src/core/session.c:1433
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Ismeretlen %s attribútum a <geometry> elemen"
 
-#: ../src/core/session.c:1431
+#: ../src/core/session.c:1453
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ismeretlen elem: %s"
 
-#: ../src/core/session.c:1868
+#: ../src/core/session.c:1879
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -381,52 +365,53 @@ msgstr ""
 "Hiba a munkamenet kezelést nem támogató alkalmazásokra figyelmeztető "
 "metacity-párbeszédablak indításánál: %s\n"
 
-#: ../src/core/util.c:98
+#: ../src/core/util.c:101
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Nem sikerült megnyitni a hibakeresési naplót: %s\n"
 
-#: ../src/core/util.c:108
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Nem sikerült megnyitni az fdopen()-nel a(z) „%s” naplófájlt: %s\n"
 
-#: ../src/core/util.c:114
+#: ../src/core/util.c:117
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "%s naplófájl megnyitva\n"
 
-#: ../src/core/util.c:133 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "A Metacity ablakkezelőt a bőbeszédű mód támogatása nélkül fordították\n"
 
-#: ../src/core/util.c:231
+#: ../src/core/util.c:236
 msgid "Window manager: "
 msgstr "Ablakkezelő: "
 
-#: ../src/core/util.c:379
+#: ../src/core/util.c:388
 msgid "Bug in window manager: "
 msgstr "Hiba az ablakkezelőben: "
 
-#: ../src/core/util.c:408
+#: ../src/core/util.c:421
 msgid "Window manager warning: "
 msgstr "Figyelmeztetés az ablakkezelőtől: "
 
-#: ../src/core/util.c:432
+#: ../src/core/util.c:449
 msgid "Window manager error: "
 msgstr "Hibaüzenet az ablakkezelőtől: "
 
-#: ../src/core/window-props.c:192
+#: ../src/core/window-props.c:206
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Az alkalmazás hibás _NET_WM_PID-értéket állított be: %lu\n"
 
-#: ../src/core/window-props.c:324
+#: ../src/core/window-props.c:338
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (ezen: %s)"
 
-#: ../src/core/window-props.c:1406
+#: ../src/core/window-props.c:1420
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
@@ -434,7 +419,7 @@ msgstr ""
 "s.\n"
 
 #. first time through
-#: ../src/core/window.c:5650
+#: ../src/core/window.c:5674
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -450,7 +435,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6215
+#: ../src/core/window.c:6239
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -532,18 +517,19 @@ msgstr "A gombok elrendezése az ablak címsorában"
 #: ../src/metacity.schemas.in.h:8
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,close\"; the colon separates the left corner of "
-"the window from the right corner, and the button names are comma-separated. "
-"Duplicate buttons are not allowed. Unknown button names are silently ignored "
-"so that buttons can be added in future metacity versions without breaking "
-"older versions."
+"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
+"corner of the window from the right corner, and the button names are comma-"
+"separated. Duplicate buttons are not allowed. Unknown button names are "
+"silently ignored so that buttons can be added in future metacity versions "
+"without breaking older versions. A special spacer tag can be used to insert "
+"some space between two adjacent buttons."
 msgstr ""
 "A címsor gombjainak igazítása. Az értéknek szövegnek kell lennie, mint "
-"például „menu:minimize,maximize,close”; kettőspont választja el az ablak "
+"például „menu:minimize,maximize,spacer,close”; a kettőspont választja el az ablak "
 "jobb és bal sarkát, a gombneveket pedig vesszők. Kettőzött gombok nem "
 "megengedettek. Az ismeretlen gombnevek jelzés nélkül figyelmen kívül lesznek "
 "hagyva, így a jövőbeli metacity verziókkal készült gombsorok visszafelé "
-"kompatibilisek maradnak."
+"kompatibilisek maradnak. A speciális spacer címkével némi hely szúrható két szomszédos gomb közé."
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
@@ -558,7 +544,8 @@ msgid ""
 msgstr ""
 "Ezen billentyű nyomva tartása mellett az ablakra kattintva az ablak "
 "mozgatható (bal gomb) átméretezhető (középső gomb) vagy megjeleníthető az "
-"ablakmenü (jobb gomb). A módosítót például a következő módon lehet megadni: „&lt;Alt&gt;” vagy „&lt;Super&gt;”."
+"ablakmenü (jobb gomb). A módosítót például a következő módon lehet megadni: "
+"„&lt;Alt&gt;” vagy „&lt;Super&gt;”."
 
 #: ../src/metacity.schemas.in.h:11
 msgid "Close window"
@@ -594,7 +581,8 @@ msgid ""
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
 "Meghatározza, hogy az alkalmazások vagy a rendszer tudnak-e hallható "
-"hangjelzéseket kiadni, hasznos lehet a „látható rendszercsengővel” együtt alkalmazni, mert ennek segítségével lehetségesek a „néma hangjelzések” is."
+"hangjelzéseket kiadni, hasznos lehet a „látható rendszercsengővel” együtt "
+"alkalmazni, mert ennek segítségével lehetségesek a „néma hangjelzések” is."
 
 #: ../src/metacity.schemas.in.h:19
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -617,8 +605,8 @@ msgid ""
 "the auto_raise_delay key. This is not related to clicking on a window to "
 "raise it, nor to entering a window during drag-and-drop."
 msgstr ""
-"Ha igazra van állítva és a fókuszmód a „sloppy” vagy „mouse” egyike, "
-"akkor a fókuszba került ablak automatikusan az előtérbe lesz hozva az "
+"Ha igazra van állítva és a fókuszmód a „sloppy” vagy „mouse” egyike, akkor a "
+"fókuszba került ablak automatikusan az előtérbe lesz hozva az "
 "auto_raise_delay kulcsban megadott késleltetés letelte után. Ez nem "
 "kapcsolódik az ablakra kattintáshoz annak előtérbe hozása érdekében, sem az "
 "ablakra mutatáshoz fogd és ejtsd művelet során."
@@ -681,7 +669,12 @@ msgid ""
 "false, which is strongly discouraged, will decouple raising from other user "
 "actions, and ignore raise requests generated by applications. See http://"
 "bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-msgstr "Számos művelet (például a kattintás a kliens területén, az ablak mozgatása vagy átméretezése) mellékhatásként előtérbe hozzák az ablakot. Ezen beállítás hamisra állításával (ami nem javasolt) az előtérbe hozást elválaszthatja más felhasználói műveletektől. További információkért keresse fel a http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6 oldalt."
+msgstr ""
+"Számos művelet (például a kattintás a kliens területén, az ablak mozgatása "
+"vagy átméretezése) mellékhatásként előtérbe hozzák az ablakot. Ezen "
+"beállítás hamisra állításával (ami nem javasolt) az előtérbe hozást "
+"elválaszthatja más felhasználói műveletektől. További információkért keresse "
+"fel a http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6 oldalt."
 
 #: ../src/metacity.schemas.in.h:29
 msgid "Maximize window"
@@ -999,12 +992,12 @@ msgid ""
 "currently focused window's titlebar is flashed."
 msgstr ""
 "Meghatározza, hogy a Metacity hogyan jelenítse meg látható módon, ha a "
-"rendszercsengő (esetleg másik alkalmazás „csengője”) megszólal. Jelenleg "
-"két érvényes értéke van: a „fullscreen”, amely teljes képernyős fekete-"
-"fehér villanását okozza illetve a „frame_flash”, amely a címsor "
-"villanását okozza annál az alkalmazásnál, amely a jelzést kiváltotta. Ha ez "
-"az alkalmazás ismeretlen (amely általános az alapértelmezett „system beep” "
-"esetén), akkor a jelenleg aktív ablak címsora fog felvillanni."
+"rendszercsengő (esetleg másik alkalmazás „csengője”) megszólal. Jelenleg két "
+"érvényes értéke van: a „fullscreen”, amely teljes képernyős fekete-fehér "
+"villanását okozza illetve a „frame_flash”, amely a címsor villanását okozza "
+"annál az alkalmazásnál, amely a jelzést kiváltotta. Ha ez az alkalmazás "
+"ismeretlen (amely általános az alapértelmezett „system beep” esetén), akkor "
+"a jelenleg aktív ablak címsora fog felvillanni."
 
 #: ../src/metacity.schemas.in.h:102
 msgid ""
@@ -1047,9 +1040,11 @@ msgid ""
 msgstr ""
 "Az a billentyűkombináció, amely futtatja a megfelelő számú parancsot az /"
 "apps/metacity/keybinding_commands kulcsból. Formátuma ehhez hasonló: „&lt;"
-"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
-"társítva ehhez a művelethez."
+"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, "
+"nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;"
+"Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
+"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
+"a művelethez."
 
 #: ../src/metacity.schemas.in.h:106
 msgid ""
@@ -1061,11 +1056,11 @@ msgid ""
 "for this action."
 msgstr ""
 "Az a billentyűkombináció, amely a jelenlegi munkaterület feletti "
-"munkaterületre vált. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
-"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"munkaterületre vált. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
+"Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:107
 msgid ""
@@ -1077,11 +1072,11 @@ msgid ""
 "for this action."
 msgstr ""
 "Az a billentyűkombináció, amely a jelenlegi munkaterület alatti "
-"munkaterületre vált. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
-"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"munkaterületre vált. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
+"Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:108
 msgid ""
@@ -1093,11 +1088,11 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amely a jelenlegi munkaterülettől balra lévő "
-"munkaterületre vált. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
-"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"munkaterületre vált. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
+"Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:109
 msgid ""
@@ -1109,11 +1104,11 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amely a jelenlegi munkaterülettől jobbra lévő "
-"munkaterületre vált. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
-"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"munkaterületre vált. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
+"Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:110
 msgid ""
@@ -1126,9 +1121,9 @@ msgstr ""
 "Az a billentyűkombináció, amely az 1. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:111
 msgid ""
@@ -1141,9 +1136,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 10. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:112
 msgid ""
@@ -1156,9 +1151,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 11. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:113
 msgid ""
@@ -1171,9 +1166,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 12. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:114
 msgid ""
@@ -1186,9 +1181,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 2. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:115
 msgid ""
@@ -1201,9 +1196,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 3. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:116
 msgid ""
@@ -1216,9 +1211,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 4. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:117
 msgid ""
@@ -1231,9 +1226,9 @@ msgstr ""
 "Az a billentyűkombináció, amely az 5. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:118
 msgid ""
@@ -1246,9 +1241,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 6. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:119
 msgid ""
@@ -1261,9 +1256,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 7. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:120
 msgid ""
@@ -1276,9 +1271,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 8. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:121
 msgid ""
@@ -1291,9 +1286,9 @@ msgstr ""
 "Az a billentyűkombináció, amely a 9. munkaterületre vált. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:122
 msgid ""
@@ -1306,9 +1301,9 @@ msgstr ""
 "Az a billentyűkombináció, amely aktiválja az ablakmenüt. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:123
 msgid ""
@@ -1318,8 +1313,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Az a billentyűkombináció, amely bezárja az ablakot. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"Az a billentyűkombináció, amely bezárja az ablakot. Formátuma ehhez hasonló: "
+"„&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
+"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint "
+"„&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
 "társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:124
@@ -1333,9 +1331,11 @@ msgid ""
 msgstr ""
 "Az a billentyűkombináció, amellyel „mozgatási módba” lehet lépni, majd az "
 "ablakot billentyűzettel mozgatni lehet. Formátuma ehhez hasonló: „&lt;"
-"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
-"társítva ehhez a művelethez."
+"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, "
+"nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;"
+"Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
+"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
+"a művelethez."
 
 #: ../src/metacity.schemas.in.h:125
 msgid ""
@@ -1346,13 +1346,13 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Az a billentyűkombináció, amellyel „átméretezési módba” lehet lépni, majd "
-"a billentyűzet használatával át lehet méretezni az ablakot. Formátuma ehhez "
+"Az a billentyűkombináció, amellyel „átméretezési módba” lehet lépni, majd a "
+"billentyűzet használatával át lehet méretezni az ablakot. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:126
 msgid ""
@@ -1364,8 +1364,11 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel el lehet rejteni az összes normál ablakot "
-"és a fókuszt a munkaasztal hátterére lehet vinni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"és a fókuszt a munkaasztal hátterére lehet vinni. Formátuma ehhez hasonló: "
+"„&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
+"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint "
+"„&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
 "társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:127
@@ -1377,11 +1380,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel teljes méretűvé lehet nagyítani egy "
-"ablakot. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"ablakot. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:128
 msgid ""
@@ -1409,11 +1412,10 @@ msgid ""
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot az eggyel lejjebb lévő "
 "munkaterületre lehet küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” "
-"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny "
-"a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
+"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
+"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
+"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:130
 msgid ""
@@ -1426,11 +1428,10 @@ msgid ""
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot az eggyel balra lévő "
 "munkaterületre lehet küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” "
-"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny "
-"a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
+"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
+"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
+"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:131
 msgid ""
@@ -1443,11 +1444,10 @@ msgid ""
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot az eggyel jobbra lévő "
 "munkaterületre lehet küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” "
-"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny "
-"a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
+"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
+"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
+"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:132
 msgid ""
@@ -1459,11 +1459,10 @@ msgid ""
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot az eggyel feljebb lévő "
 "munkaterületre lehet küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” "
-"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny "
-"a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
+"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
+"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
+"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:133
 msgid ""
@@ -1474,11 +1473,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot az 1. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:134
 msgid ""
@@ -1489,11 +1488,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 10. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:135
 msgid ""
@@ -1504,11 +1503,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 11. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:136
 msgid ""
@@ -1519,11 +1518,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 12. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:137
 msgid ""
@@ -1534,11 +1533,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 2. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:138
 msgid ""
@@ -1549,11 +1548,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 3. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:139
 msgid ""
@@ -1564,11 +1563,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 4. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:140
 msgid ""
@@ -1579,11 +1578,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot az 5. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:141
 msgid ""
@@ -1594,11 +1593,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 6. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:142
 msgid ""
@@ -1609,11 +1608,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 7. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:143
 msgid ""
@@ -1624,11 +1623,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 8. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:144
 msgid ""
@@ -1639,11 +1638,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel egy ablakot a 9. munkaterületre lehet "
-"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"küldeni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:145
 msgid ""
@@ -1658,9 +1657,9 @@ msgstr ""
 "felugró ablak használatával lehet hátrafelé mozgatni. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:146
 msgid ""
@@ -1672,9 +1671,12 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel a fókuszt a panelek és az asztal között "
-"felugró ablak nélkül lehet hátrafelé mozgatni. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
-"társítva ehhez a művelethez."
+"felugró ablak nélkül lehet hátrafelé mozgatni. Formátuma ehhez hasonló: „&lt;"
+"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, "
+"nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;"
+"Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
+"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
+"a művelethez."
 
 #: ../src/metacity.schemas.in.h:147
 msgid ""
@@ -1725,12 +1727,11 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel a fókuszt az ablakok között felugró ablak "
-"nélkül lehet hátrafelé mozgatni. Formátuma ehhez hasonló: „&lt;Control&gt;a"
-"” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem "
-"érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” "
-"és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"nélkül lehet hátrafelé mozgatni. Formátuma ehhez hasonló: „&lt;Control&gt;a” "
+"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
+"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
+"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
+"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:150
 msgid ""
@@ -1744,9 +1745,11 @@ msgid ""
 msgstr ""
 "Az a billentyűkombináció, amellyel a fókuszt az ablakok között felugró ablak "
 "használatával lehet hátrafelé mozgatni. Formátuma ehhez hasonló: „&lt;"
-"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
-"társítva ehhez a művelethez."
+"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, "
+"nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;"
+"Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
+"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
+"a művelethez."
 
 #: ../src/metacity.schemas.in.h:151
 msgid ""
@@ -1759,9 +1762,11 @@ msgid ""
 msgstr ""
 "Az a billentyűkombináció, amellyel a fókuszt a panelek és az asztal között "
 "felugró ablak használatával lehet mozgatni. Formátuma ehhez hasonló: „&lt;"
-"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
-"társítva ehhez a művelethez."
+"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, "
+"nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;"
+"Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
+"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
+"a művelethez."
 
 #: ../src/metacity.schemas.in.h:152
 msgid ""
@@ -1774,9 +1779,11 @@ msgid ""
 msgstr ""
 "Az a billentyűkombináció, amellyel a fókuszt a panelek és az asztal között "
 "felugró ablak nélkül lehet mozgatni. Formátuma ehhez hasonló: „&lt;"
-"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
-"társítva ehhez a művelethez."
+"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, "
+"nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;"
+"Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
+"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
+"a művelethez."
 
 #: ../src/metacity.schemas.in.h:153
 msgid ""
@@ -1789,8 +1796,8 @@ msgid ""
 "then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel a fókuszt egy alkalmazás ablakai között "
-"felugró ablak nélkül lehet mozgatni. A „shift” billentyű nyomva tartása "
-"ezen billentyűkombináció használata közben megfordítja a mozgás irányát. "
+"felugró ablak nélkül lehet mozgatni. A „shift” billentyű nyomva tartása ezen "
+"billentyűkombináció használata közben megfordítja a mozgás irányát. "
 "Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;"
 "F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, valamint "
 "rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az "
@@ -1808,11 +1815,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel a fókuszt egy alkalmazás ablakai között "
-"felugró ablak használatával lehet mozgatni (Hagyományosan &lt;Alt&gt;F6). A „shift” billentyű nyomva tartása ezen billentyűkombináció használata "
-"közben megfordítja a mozgás irányát. Formátuma ehhez hasonló: „&lt;"
-"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
-"társítva ehhez a művelethez."
+"felugró ablak használatával lehet mozgatni (Hagyományosan &lt;Alt&gt;F6). A "
+"„shift” billentyű nyomva tartása ezen billentyűkombináció használata közben "
+"megfordítja a mozgás irányát. Formátuma ehhez hasonló: „&lt;Control&gt;a” "
+"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
+"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
+"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
+"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:155
 msgid ""
@@ -1825,14 +1834,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel a fókuszt az ablakok között felugró ablak "
-"nélkül lehet mozgatni (Hagyományosan &lt;Alt&gt;Escape). A „shift” "
-"billentyű nyomva tartása ezen billentyűkombináció használata közben "
-"megfordítja a mozgás irányát. Formátuma ehhez hasonló: „&lt;Control&gt;a” "
-"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny "
-"a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"nélkül lehet mozgatni (Hagyományosan &lt;Alt&gt;Escape). A „shift” billentyű "
+"nyomva tartása ezen billentyűkombináció használata közben megfordítja a "
+"mozgás irányát. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
+"Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:156
 msgid ""
@@ -1848,11 +1856,10 @@ msgstr ""
 "használatával lehet mozgatni (Hagyományosan &lt;Alt&gt;Tab) A „shift” "
 "billentyű nyomva tartása ezen billentyűkombináció használata közben "
 "megfordítja a mozgás irányát. Formátuma ehhez hasonló: „&lt;Control&gt;a” "
-"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny "
-"a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
+"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
+"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
+"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:157
 msgid ""
@@ -1926,11 +1933,11 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel az ablak egy vagy minden munkaterületen "
-"megjelenése váltható át. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a "
-"kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"megjelenése váltható át. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy "
+"„&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- "
+"és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
+"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
+"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:162
 msgid ""
@@ -1957,12 +1964,11 @@ msgid ""
 "for this action."
 msgstr ""
 "Az a billentyűkombináció, amellyel megjeleníthető a panel „Alkalmazás "
-"futtatása” párbeszédablaka. Formátuma ehhez hasonló: „&lt;Control&gt;a” "
-"vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny "
-"a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
-"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
-"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
-"a művelethez."
+"futtatása” párbeszédablaka. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy "
+"„&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- "
+"és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;"
+"Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
+"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:164
 msgid ""
@@ -1975,9 +1981,9 @@ msgstr ""
 "Az a billentyűkombináció, amellyel egy terminál indítható. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:165
 msgid ""
@@ -1992,9 +1998,9 @@ msgstr ""
 "indítható, hogy egy ablakról képernyőképet készítsen. Formátuma ehhez "
 "hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző "
 "elég liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket "
-"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a "
-"speciális „disabled” karakterláncra állítja be, akkor nem lesz "
-"billentyűkombináció társítva ehhez a művelethez."
+"(mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális "
+"„disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
+"társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:166
 msgid ""
@@ -2008,9 +2014,9 @@ msgstr ""
 "Az a billentyűkombináció, amellyel a panel képernyőkép-készítő eszköze "
 "indítható. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
 "&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez. "
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez. "
 
 #: ../src/metacity.schemas.in.h:167
 msgid ""
@@ -2058,11 +2064,11 @@ msgid ""
 "unfocused when the mouse leaves the window."
 msgstr ""
 "Az ablakfókusz módja jelzi, hogy az ablakokat hogyan tehetőek aktívvá. Három "
-"lehetséges értéke van; „click” azt jelenti, hogy rá kell kattintani az "
-"adott ablakra hogy aktív legyen, „sloppy” azt jelenti, hogy az ablak aktív "
-"lesz, amint az egér az ablak fölé ér és a „mouse” azt jelenti, hogy az "
-"ablak aktív lesz, amint az egér az ablak fölé ér és nem lesz az, ha az egér "
-"elhagyja az ablakot."
+"lehetséges értéke van; „click” azt jelenti, hogy rá kell kattintani az adott "
+"ablakra hogy aktív legyen, „sloppy” azt jelenti, hogy az ablak aktív lesz, "
+"amint az egér az ablak fölé ér és a „mouse” azt jelenti, hogy az ablak aktív "
+"lesz, amint az egér az ablak fölé ér és nem lesz az, ha az egér elhagyja az "
+"ablakot."
 
 #: ../src/metacity.schemas.in.h:173
 msgid "The window screenshot command"
@@ -2084,9 +2090,9 @@ msgstr ""
 "többiek elé hozza. Ha az ablak már teljesen látható, akkor más ablakok mögé "
 "viszi. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
 "Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
-"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is "
-"megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
-"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:175
 msgid ""
@@ -2113,11 +2119,11 @@ msgid ""
 "for this action."
 msgstr ""
 "Ezzel a billentyűkombinációval az ablak a képernyő északi (felső) oldala "
-"felé vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
-"Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"felé vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
+"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:177
 msgid ""
@@ -2129,11 +2135,11 @@ msgid ""
 "for this action."
 msgstr ""
 "Ezzel a billentyűkombinációval az ablak a képernyő keleti (jobb) oldala felé "
-"vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:178
 msgid ""
@@ -2147,9 +2153,9 @@ msgstr ""
 "Ezzel a billentyűkombinációval az ablak a képernyő északkeleti (jobb felső) "
 "sarka felé vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
 "Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:179
 msgid ""
@@ -2163,9 +2169,9 @@ msgstr ""
 "Ezzel a billentyűkombinációval az ablak a képernyő északnyugati (bal felső) "
 "sarka felé vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
 "Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:180
 msgid ""
@@ -2177,11 +2183,11 @@ msgid ""
 "for this action."
 msgstr ""
 "Ezzel a billentyűkombinációval az ablak a képernyő déli (alsó) oldala felé "
-"vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:181
 msgid ""
@@ -2195,9 +2201,9 @@ msgstr ""
 "Ezzel a billentyűkombinációval az ablak a képernyő délkeleti (jobb alsó) "
 "sarka felé vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
 "Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:182
 msgid ""
@@ -2211,9 +2217,9 @@ msgstr ""
 "Ezzel a billentyűkombinációval az ablak a képernyő délnyugati (bal alsó) "
 "sarka felé vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;"
 "Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) "
+"is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, "
+"akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:183
 msgid ""
@@ -2225,11 +2231,11 @@ msgid ""
 "for this action."
 msgstr ""
 "Ezzel a billentyűkombinációval az ablak a képernyő nyugati (bal) oldala felé "
-"vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;"
-"&lt;Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és "
-"nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;"
-"”) is megenged. Ha az opciót a speciális „disabled” karakterláncra "
-"állítja be, akkor nem lesz billentyűkombináció társítva ehhez a művelethez."
+"vihető. Formátuma ehhez hasonló: „&lt;Control&gt;a” vagy „&lt;Shift&gt;&lt;"
+"Alt&gt;F1”. Az elemző elég liberális, nem érzékeny a kis- és nagybetűkre, "
+"valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. "
+"Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem "
+"lesz billentyűkombináció társítva ehhez a művelethez."
 
 #: ../src/metacity.schemas.in.h:184
 msgid ""
@@ -2257,9 +2263,11 @@ msgid ""
 msgstr ""
 "Ez a billentyűkombináció átméretezi az ablakot úgy, hogy az kitöltse a "
 "rendelkezésre álló helyet vízszintesen. Formátuma ehhez hasonló: „&lt;"
-"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
-"társítva ehhez a művelethez."
+"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, "
+"nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;"
+"Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
+"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
+"a művelethez."
 
 #: ../src/metacity.schemas.in.h:186
 msgid ""
@@ -2272,51 +2280,59 @@ msgid ""
 msgstr ""
 "Ez a billentyűkombináció átméretezi az ablakot úgy, hogy az kitöltse a "
 "rendelkezésre álló helyet függőlegesen. Formátuma ehhez hasonló: „&lt;"
-"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég "
-"liberális, nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” karakterláncra állítja be, akkor nem lesz billentyűkombináció "
-"társítva ehhez a művelethez."
+"Control&gt;a” vagy „&lt;Shift&gt;&lt;Alt&gt;F1”. Az elemző elég liberális, "
+"nem érzékeny a kis- és nagybetűkre, valamint rövidítéseket (mint „&lt;"
+"Ctl&gt;” és „&lt;Ctrl&gt;”) is megenged. Ha az opciót a speciális „disabled” "
+"karakterláncra állítja be, akkor nem lesz billentyűkombináció társítva ehhez "
+"a művelethez."
 
 #: ../src/metacity.schemas.in.h:187
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'minimize' which will minimize the window, and 'none' which will not do "
-"anything."
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
 msgstr ""
 "Ez az opció határozza meg, hogy mi történjen a címsoron való dupla kattintás "
 "esetén. Jelenleg érvényes opciók a „toggle_shade”, amely hatására az ablak "
 "felgördül/legördül, a „toggle_maximize”, amely hatására teljes képernyős/"
-"eredeti méretű lesz, „minimize”, amely hatására kis méretű lesz az ablak "
-"és „none”, amely nem hajt végre semmit."
+"eredeti méretű lesz, „toggle_maximize_horizontally” és „toggle_maximize_vertically”, amelyek hatására az ablak csak vízszintesen/függőlegesen lesz maximalizázva, „minimize”, amely hatására kis méretű lesz az ablak, „shade”, amely hatásáraa az ablak felgördül, „menu”, amely megjeleníti az ablak menüt, „lower”, amely az ablakot a többi ablak mögé viszi és „none”, amely nem hajt végre semmit."
 
 #: ../src/metacity.schemas.in.h:188
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'minimize' which will minimize the window, and 'none' which will not do "
-"anything."
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
 msgstr ""
 "Ez az opció határozza meg, hogy mi történjen a címsoron való középsőgombos "
-"kattintás esetén. Jelenleg érvényes opciók a „toggle_shade”, amely "
-"hatására az ablak felgördül/legördül, a „toggle_maximize”, amely hatására "
-"teljes képernyős/eredeti méretű lesz, „minimize”, amely hatására kis "
-"méretű lesz az ablak és „none”, amely nem hajt végre semmit."
+"kattintás esetén. Jelenleg érvényes opciók a „toggle_shade”, amely hatására az ablak "
+"felgördül/legördül, a „toggle_maximize”, amely hatására teljes képernyős/"
+"eredeti méretű lesz, „toggle_maximize_horizontally” és „toggle_maximize_vertically”, amelyek hatására az ablak csak vízszintesen/függőlegesen lesz maximalizázva, „minimize”, amely hatására kis méretű lesz az ablak, „shade”, amely hatásáraa az ablak felgördül, „menu”, amely megjeleníti az ablak menüt, „lower”, amely az ablakot a többi ablak mögé viszi és „none”, amely nem hajt végre semmit."
 
 #: ../src/metacity.schemas.in.h:189
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'minimize' which will minimize the window, and 'none' which will not do "
-"anything."
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
 msgstr ""
 "Ez az opció határozza meg, hogy mi történjen a címsoron való jobb gombos "
-"kattintás esetén. Jelenleg érvényes opciók a „toggle_shade”, amely "
-"hatására az ablak felgördül/legördül, a „toggle_maximize”, amely hatására "
-"teljes képernyős/eredeti méretű lesz, „minimize”, amely hatására kis "
-"méretű lesz az ablak és „none”, amely nem hajt végre semmit."
+"kattintás esetén. Jelenleg érvényes opciók a „toggle_shade”, amely hatására az ablak "
+"felgördül/legördül, a „toggle_maximize”, amely hatására teljes képernyős/"
+"eredeti méretű lesz, „toggle_maximize_horizontally” és „toggle_maximize_vertically”, amelyek hatására az ablak csak vízszintesen/függőlegesen lesz maximalizázva, „minimize”, amely hatására kis méretű lesz az ablak, „shade”, amely hatásáraa az ablak felgördül, „menu”, amely megjeleníti az ablak menüt, „lower”, amely az ablakot a többi ablak mögé viszi és „none”, amely nem hajt végre semmit."
 
 #: ../src/metacity.schemas.in.h:190
 msgid ""
@@ -2326,7 +2342,9 @@ msgid ""
 "given focus."
 msgstr ""
 "Ez a beállítás az újonnan létrehozott ablakok fókuszba kerülésének "
-"irányítására biztosít további lehetőséget. Két lehetséges értéke van: a „smart” (intelligens) a felhasználó normál fókuszmódját alkalmazza, a „strict” (korlátozott) hatására pedig a terminálból indított ablakok nem "
+"irányítására biztosít további lehetőséget. Két lehetséges értéke van: a "
+"„smart” (intelligens) a felhasználó normál fókuszmódját alkalmazza, a "
+"„strict” (korlátozott) hatására pedig a terminálból indított ablakok nem "
 "kapnak fókuszt."
 
 #: ../src/metacity.schemas.in.h:191
@@ -2486,17 +2504,17 @@ msgstr "_Csak ezen a munkaterületen"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:95
 msgid "Move to Workspace _Left"
-msgstr "Áthelyezés a _bal oldali munkaterületre"
+msgstr "Áthelyezés a bal ol_dali munkaterületre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:97
 msgid "Move to Workspace R_ight"
-msgstr "Áthelyezés a _jobb oldali munkaterületre"
+msgstr "Áthelyezés a j_obb oldali munkaterületre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:99
 msgid "Move to Workspace _Up"
-msgstr "Áthelyezés a _felső munkaterületre"
+msgstr "Áthelyezés a fel_ső munkaterületre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:101
@@ -2509,18 +2527,24 @@ msgstr "Áthelyezés az _alsó munkaterületre"
 msgid "_Close"
 msgstr "_Bezárás"
 
-#: ../src/ui/menu.c:208
+#: ../src/ui/menu.c:203
+#, c-format
+msgid "Workspace %d%n"
+msgstr "%d%n. munkaterület"
+
+#: ../src/ui/menu.c:213
+#, c-format
 msgid "Workspace 1_0"
 msgstr "1_0. munkaterület"
 
-#: ../src/ui/menu.c:210
+#: ../src/ui/menu.c:215
 #, c-format
 msgid "Workspace %s%d"
 msgstr "%s%d. munkaterület"
 
-#: ../src/ui/menu.c:390
+#: ../src/ui/menu.c:395
 msgid "Move to Another _Workspace"
-msgstr "Áthelyezés másik _munkaterületre"
+msgstr "Áthelyezés mási_k munkaterületre"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -3090,15 +3114,15 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
-"A(z) <%s> elemnek nem szabadna „resize” attribútummal rendelkeznie a "
-"teljes méretű/felgördített állapothoz"
+"A(z) <%s> elemnek nem szabadna „resize” attribútummal rendelkeznie a teljes "
+"méretű/felgördített állapothoz"
 
 #: ../src/ui/theme-parser.c:3662
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
-"A(z) <%s> elemnek nem szabadna „resize” attribútummal rendelkeznie a "
-"teljes méretű állapothoz"
+"A(z) <%s> elemnek nem szabadna „resize” attribútummal rendelkeznie a teljes "
+"méretű állapothoz"
 
 #: ../src/ui/theme-parser.c:3676 ../src/ui/theme-parser.c:3698
 #, c-format
@@ -3321,6 +3345,7 @@ msgid "%g milliseconds to draw one window frame"
 msgstr "%g ezredmásodpercig tartott egy ablakkeret kirajzolása"
 
 #: ../src/ui/theme-viewer.c:797
+#, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Használat: metacity-theme-viewer [TÉMANÉV]\n"
 
@@ -3440,14 +3465,16 @@ msgid "Button aspect ratio %g is not reasonable"
 msgstr "%g gomb méretaránya nem fogadható el"
 
 #: ../src/ui/theme.c:357
+#, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "A keretgeometria nem határozza meg a gombok méretét"
 
-#: ../src/ui/theme.c:988
+#: ../src/ui/theme.c:1022
+#, c-format
 msgid "Gradients should have at least two colors"
 msgstr "A színátmenetnek legalább két színűnek kell lennie"
 
-#: ../src/ui/theme.c:1114
+#: ../src/ui/theme.c:1148
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3457,7 +3484,7 @@ msgstr ""
 "gtk:fg[NORMAL] ahol NORMAL az állapot; nem lehetett feldolgozni a "
 "következőt: „%s”"
 
-#: ../src/ui/theme.c:1128
+#: ../src/ui/theme.c:1162
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3467,17 +3494,17 @@ msgstr ""
 "után, például gtk:fg[NORMAL], ahol NORMAL az állapot; nem sikerült "
 "értelmezni a következőt: „%s”"
 
-#: ../src/ui/theme.c:1139
+#: ../src/ui/theme.c:1173
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Nem sikerült a(z) „%s” állapotot értelmezni a szín meghatározásban"
 
-#: ../src/ui/theme.c:1152
+#: ../src/ui/theme.c:1186
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Nem sikerült értelmezni „%s” színösszetevőt a színmeghatározásban"
 
-#: ../src/ui/theme.c:1182
+#: ../src/ui/theme.c:1216
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -3486,58 +3513,58 @@ msgstr ""
 "A keverés formátuma: „blend/bg_color/fg_color/alpha”, „%s” nem felel meg "
 "ennek"
 
-#: ../src/ui/theme.c:1193
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Nem sikerült értelmezni a(z) „%s” alfa értéket a kevert színben"
 
-#: ../src/ui/theme.c:1203
+#: ../src/ui/theme.c:1237
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "A(z) „%s” alfa érték a kevert színben nem 0.0 és 1.0 között van"
 
-#: ../src/ui/theme.c:1251
+#: ../src/ui/theme.c:1284
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Az árnyék formátuma: „shade/base_color/factor”, „%s” nem felel meg ennek"
 
-#: ../src/ui/theme.c:1262
+#: ../src/ui/theme.c:1295
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Nem sikerült a(z) „%s” árnyéktényezőt feldolgozni az árnyékolt színben"
 
-#: ../src/ui/theme.c:1272
+#: ../src/ui/theme.c:1305
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "„%s” árnyéktényező az árnyékolt színben negatív"
 
-#: ../src/ui/theme.c:1302
+#: ../src/ui/theme.c:1334
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Nem sikerült feldolgozni a(z) „%s” színt"
 
-#: ../src/ui/theme.c:1560
+#: ../src/ui/theme.c:1584
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "A koordinátakifejezés „%s” karaktert tartalmaz, ami nem megengedett"
 
-#: ../src/ui/theme.c:1587
+#: ../src/ui/theme.c:1611
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
-"A koordinátakifejezés „%s” lebegőpontos számot tartalmaz, amit nem "
-"sikerült feldolgozni"
+"A koordinátakifejezés „%s” lebegőpontos számot tartalmaz, amit nem sikerült "
+"feldolgozni"
 
-#: ../src/ui/theme.c:1601
+#: ../src/ui/theme.c:1625
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "A koordinátakifejezés „%s” egész számot tartalmaz, amit nem sikerült "
 "feldolgozni"
 
-#: ../src/ui/theme.c:1723
+#: ../src/ui/theme.c:1747
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -3546,106 +3573,117 @@ msgstr ""
 "A koordinátakifejezés ismeretlen operátort tartalmaz ennek a szövegnek az "
 "elején: „%s”"
 
-#: ../src/ui/theme.c:1780
+#: ../src/ui/theme.c:1804
+#, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "A koordinátakifejezés üres vagy értelmezhetetlen volt"
 
-#: ../src/ui/theme.c:1891 ../src/ui/theme.c:1901 ../src/ui/theme.c:1935
+#: ../src/ui/theme.c:1915 ../src/ui/theme.c:1925 ../src/ui/theme.c:1959
+#, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "A koordinátakifejezés nullával való osztást okozott."
 
-#: ../src/ui/theme.c:1943
+#: ../src/ui/theme.c:1967
+#, c-format
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "A koordinátakifejezés mod operátort próbált használni lebegőpontos számon"
 
-#: ../src/ui/theme.c:1999
+#: ../src/ui/theme.c:2023
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "A koordinátakifejezésben egy operandus helyén „%s” operátor volt"
 
-#: ../src/ui/theme.c:2008
+#: ../src/ui/theme.c:2032
+#, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "A koordinátakifejezésben a várt operátor helyett operandus szerepelt"
 
-#: ../src/ui/theme.c:2016
+#: ../src/ui/theme.c:2040
+#, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "A koordinátakifejezés operátorral végződött, nem operandussal"
 
-#: ../src/ui/theme.c:2026
+#: ../src/ui/theme.c:2050
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"A koordinátakifejezésben „%c” operátort „%c” operátor követi úgy, hogy "
-"nincs köztük operandus"
+"A koordinátakifejezésben „%c” operátort „%c” operátor követi úgy, hogy nincs "
+"köztük operandus"
 
-#: ../src/ui/theme.c:2173 ../src/ui/theme.c:2214
+#: ../src/ui/theme.c:2197 ../src/ui/theme.c:2238
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "A koordinátakifejezésben „%s” változó vagy állandó ismeretlen volt"
 
-#: ../src/ui/theme.c:2268
+#: ../src/ui/theme.c:2292
+#, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "A koordinátakifejezés-elemző túlcsordította a pufferét."
 
-#: ../src/ui/theme.c:2297
+#: ../src/ui/theme.c:2321
+#, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "A koordinátakifejezésben záró zárójel szerepelt kezdő nélkül"
 
-#: ../src/ui/theme.c:2361
+#: ../src/ui/theme.c:2385
+#, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "A koordinátakifejezésben kezdő zárójel szerepelt záró nélkül"
 
-#: ../src/ui/theme.c:2372
+#: ../src/ui/theme.c:2396
+#, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "A koordinátakifejezésben úgy tűnik nincsenek sem operátorok, sem operandusok"
 
-#: ../src/ui/theme.c:2574 ../src/ui/theme.c:2594 ../src/ui/theme.c:2614
+#: ../src/ui/theme.c:2598 ../src/ui/theme.c:2618 ../src/ui/theme.c:2638
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "A téma által tartalmazott kifejezés hibát okozott: %s\n"
 
-#: ../src/ui/theme.c:4133
+#: ../src/ui/theme.c:4157
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
-msgstr "Ehhez a keretstílushoz meg kell határozni a következő elemet: <button function=\"%s\" state=\"%s\" draw_ops=\"bármi\"/>"
+msgstr ""
+"Ehhez a keretstílushoz meg kell határozni a következő elemet: <button "
+"function=\"%s\" state=\"%s\" draw_ops=\"bármi\"/>"
 
-#: ../src/ui/theme.c:4609 ../src/ui/theme.c:4634
+#: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Hiányzó <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"bármi\"/> elem"
 
-#: ../src/ui/theme.c:4678
+#: ../src/ui/theme.c:4702
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Hiba a(z) „%s” téma betöltése közben: %s\n"
 
-#: ../src/ui/theme.c:4804 ../src/ui/theme.c:4811 ../src/ui/theme.c:4818
-#: ../src/ui/theme.c:4825 ../src/ui/theme.c:4832
+#: ../src/ui/theme.c:4828 ../src/ui/theme.c:4835 ../src/ui/theme.c:4842
+#: ../src/ui/theme.c:4849 ../src/ui/theme.c:4856
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nincs <%s> beállítva a(z) „%s” témához"
 
-#: ../src/ui/theme.c:4840
+#: ../src/ui/theme.c:4864
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Nincs keretstílus beállítva a(z) „%s” ablaktípushoz a(z) „%s” témában, "
-"adjon hozzá egy <window type=\"%s\" style_set=\"bármi\"/> elemet"
+"Nincs keretstílus beállítva a(z) „%s” ablaktípushoz a(z) „%s” témában, adjon "
+"hozzá egy <window type=\"%s\" style_set=\"bármi\"/> elemet"
 
-#: ../src/ui/theme.c:5207 ../src/ui/theme.c:5269 ../src/ui/theme.c:5332
+#: ../src/ui/theme.c:5231 ../src/ui/theme.c:5293 ../src/ui/theme.c:5356
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "A felhasználó által meghatározott konstansoknak nagybetűvel kell kezdődniük, "
 "a(z) „%s” nem ilyen"
 
-#: ../src/ui/theme.c:5215 ../src/ui/theme.c:5277 ../src/ui/theme.c:5340
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5301 ../src/ui/theme.c:5364
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "A(z) „%s” konstans már definiálva van"
