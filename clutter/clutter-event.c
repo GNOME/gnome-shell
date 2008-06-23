@@ -327,9 +327,9 @@ clutter_keysym_to_unicode (guint keyval)
 gint
 clutter_event_get_device_id (ClutterEvent *event)
 {
-  g_return_val_if_fail (-1, event != NULL);
-
   ClutterInputDevice *device = NULL;
+
+  g_return_val_if_fail (-1, event != NULL);
 
   switch (event->type)
     {

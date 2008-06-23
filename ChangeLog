@@ -1,3 +1,10 @@
+2008-06-23  Matthew Allum  <mallum@openedhand.com>
+
+        Bug 987 - clutter-event.c c99 variable declaration
+
+	* clutter/clutter-event.c:
+        Remove c99ism.
+
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Post release bump to 0.7.3.
