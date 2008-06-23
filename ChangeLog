@@ -1,3 +1,9 @@
+2008-06-23  Robert Bragg  <bob@o-hand.com>
+
+	* clutter/eglx/clutter-stage-egl.c: Makes sure the eglx backend
+	passes the EGL_OPENGL_ES2_BIT surface attrib when using
+	GLES2.0 under cogl
+
 2008-06-23  Chris Lord  <chris@openedhand.com>
 
 	* clutter/x11/clutter-event-x11.c: (convert_xdevicekey_to_xkey),
