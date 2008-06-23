@@ -14,14 +14,15 @@ LDADD = $(CLUTTER_LIBS)
 noinst_LTLIBRARIES = libclutter-cogl-common.la
 EXTRA_DIST = stb_image.c
 
-libclutter_cogl_common_la_SOURCES = \
-	cogl-util.h \
-	cogl-bitmap.h \
-	cogl-handle.h \
-	cogl-util.c \
-	cogl-bitmap.c \
-	cogl-bitmap-fallback.c \
-	cogl-primitives.c \
-	cogl-primitives.h \
-	cogl-bitmap-pixbuf.c \
+libclutter_cogl_common_la_SOURCES = 	\
+	cogl-handle.h 			\
+	cogl-util.h 			\
+	cogl-util.c 			\
+	cogl-bitmap.h 			\
+	cogl-bitmap.c 			\
+	cogl-bitmap-fallback.c 		\
+	cogl-primitives.h 		\
+	cogl-primitives.c 		\
+	cogl-bitmap-pixbuf.c 		\
+	cogl-clip-stack.h 		\
 	cogl-clip-stack.c
