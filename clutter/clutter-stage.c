@@ -1085,11 +1085,11 @@ clutter_stage_hide_cursor (ClutterStage *stage)
  *   entire stage height
  *
  * Makes a screenshot of the stage in RGBA 8bit data, returns a
- * linear buffer with @width*4 as rowstride.
- * Gets a pixel based representation of the current rendered stage.
+ * linear buffer with @width * 4 as rowstride.
  *
  * Return value: a pointer to newly allocated memory with the buffer
- * that should be free with g_free, or NULL if the read back failed.
+ *   or %NULL if the read failed. Use g_free() on the returned data
+ *   to release the resources it has allocated.
  */
 guchar *
 clutter_stage_read_pixels (ClutterStage *stage,
@@ -1099,6 +1099,7 @@ clutter_stage_read_pixels (ClutterStage *stage,
                            gint          height)
 {
   guchar *pixels;
+  guchar *temprow;
   GLint   viewport[4];
   gint    rowstride;
   gint    stage_x, stage_y, stage_width, stage_height;
@@ -1117,30 +1118,39 @@ clutter_stage_read_pixels (ClutterStage *stage,
   glGetIntegerv (GL_VIEWPORT, viewport);
   stage_x      = viewport[0];
   stage_y      = viewport[1];
-  stage_width  = viewport[2] - x;
-  stage_height = viewport[3] - y;
-  rowstride    = width * 4;
+  stage_width  = viewport[2];
+  stage_height = viewport[3];
 
-  pixels = g_malloc (height * rowstride);
+  if (width < 0 || width > stage_width)
+    width = stage_width;
+
+  if (height < 0 || height > stage_height)
+    height = stage_height;
+
+  rowstride = width * 4;
+
+  pixels  = g_malloc (height * rowstride);
+  temprow = g_malloc (rowstride);
 
   /* check whether we need to read into a smaller temporary buffer */
   glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
   /* vertically flip the buffer in-place */
-  for (y=0; y< height/2; y++)
+  for (y = 0; y < height / 2; y++)
     {
-      guchar temprow[rowstride];
-      if (y != height-y-1) /* skip center row */
+      if (y != height - y - 1) /* skip center row */
         {
           memcpy (temprow,
                   pixels + y * rowstride, rowstride);
           memcpy (pixels + y * rowstride, 
-                  pixels + (height-y-1) * rowstride, rowstride);
-          memcpy (pixels + (height-y-1) * rowstride,
+                  pixels + (height - y - 1) * rowstride, rowstride);
+          memcpy (pixels + (height - y - 1) * rowstride,
                   temprow,
                   rowstride);
         }
     }
+
+  g_free (temprow);
 
   return pixels;
 }
