@@ -1706,8 +1706,6 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 		       ClutterFixed tx2,
 		       ClutterFixed ty2)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   CoglSpanIter       iter_x    ,  iter_y;
   ClutterFixed       tw        ,  th;
   ClutterFixed       tqx       ,  tqy;
@@ -1718,14 +1716,15 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   ClutterFixed       slice_qx1 ,  slice_qy1;
   ClutterFixed       slice_qx2 ,  slice_qy2;
   GLuint             gl_handle;
+  gulong enable_flags = 0;
+  
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
 #if COGL_DEBUG
   printf("=== Drawing Tex Quad (Software Tiling Mode) ===\n");
 #endif
   
   /* Prepare GL state */
-  gulong enable_flags = 0;
-  
   enable_flags |= COGL_ENABLE_TEXTURE_2D;
   
   if (ctx->color_alpha < 255
@@ -1865,19 +1864,18 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 		       ClutterFixed tx2,
 		       ClutterFixed ty2)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   CoglTexSliceSpan *x_span;
   CoglTexSliceSpan *y_span;
   GLuint            gl_handle;
+  gulong enable_flags = 0;
   
 #if COGL_DEBUG
   printf("=== Drawing Tex Quad (Hardware Tiling Mode) ===\n");
 #endif
   
-  /* Prepare GL state */
-  gulong enable_flags = 0;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
+  /* Prepare GL state */
   enable_flags |= COGL_ENABLE_TEXTURE_2D;
   
   if (ctx->color_alpha < 255

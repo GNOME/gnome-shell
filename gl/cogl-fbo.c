@@ -62,11 +62,6 @@ COGL_HANDLE_DEFINE (Fbo, offscreen, fbo_handles);
 CoglHandle
 cogl_offscreen_new_to_texture (CoglHandle texhandle)
 {
-  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
-  
-  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
-    return COGL_INVALID_HANDLE;
-  
   CoglTexture      *tex;
   CoglFbo          *fbo;
   CoglTexSliceSpan *x_span;
@@ -74,6 +69,11 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   GLuint            tex_gl_handle;
   GLuint            fbo_gl_handle;
   GLenum            status;
+  
+  _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
+  
+  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
+    return COGL_INVALID_HANDLE;
   
   /* Make texhandle is a valid texture object */
   if (!cogl_is_texture (texhandle))
@@ -157,13 +157,13 @@ cogl_offscreen_blit_region (CoglHandle src_buffer,
 			    int dst_w,
 			    int dst_h)
 {
+  CoglFbo *src_fbo;
+  CoglFbo *dst_fbo;
+  
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   if (!cogl_features_available (COGL_FEATURE_OFFSCREEN_BLIT))
     return;
-  
-  CoglFbo *src_fbo;
-  CoglFbo *dst_fbo;
   
   /* Make sure these are valid fbo handles */
   if (!cogl_is_offscreen (src_buffer))
@@ -187,13 +187,13 @@ void
 cogl_offscreen_blit (CoglHandle src_buffer,
 		     CoglHandle dst_buffer)
 {
+  CoglFbo *src_fbo;
+  CoglFbo *dst_fbo;
+  
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   if (!cogl_features_available (COGL_FEATURE_OFFSCREEN_BLIT))
     return;
-  
-  CoglFbo *src_fbo;
-  CoglFbo *dst_fbo;
   
   /* Make sure these are valid fbo handles */
   if (!cogl_is_offscreen (src_buffer))
@@ -216,9 +216,9 @@ cogl_offscreen_blit (CoglHandle src_buffer,
 void
 cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   CoglFbo *fbo = NULL;
+  
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   if (target == COGL_OFFSCREEN_BUFFER)
     {

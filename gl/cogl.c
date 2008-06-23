@@ -657,13 +657,13 @@ cogl_setup_viewport (guint        width,
 static void
 _cogl_features_init ()
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   ClutterFeatureFlags flags = 0;
   const gchar        *gl_extensions;
   GLint               max_clip_planes = 0;
   GLint               stencil_bits = 0;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
   flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);

@@ -60,9 +60,9 @@
   static gint							\
   _cogl_##type_name##_handle_find (CoglHandle handle)		\
   {								\
-    _COGL_GET_CONTEXT (ctx, -1);				\
-								\
     gint i;							\
+								\
+    _COGL_GET_CONTEXT (ctx, -1);				\
 								\
     if (ctx->handle_array == NULL)				\
       return -1;						\
@@ -78,9 +78,9 @@
   static CoglHandle						\
   _cogl_##type_name##_handle_new (Cogl##TypeName *obj)		\
   {								\
-    _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);		\
-								\
     CoglHandle handle = (CoglHandle) obj;			\
+								\
+    _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);		\
 								\
     if (ctx->handle_array == NULL)				\
       ctx->handle_array						\
@@ -94,9 +94,9 @@
   static void							\
   _cogl_##type_name##_handle_release (CoglHandle handle)	\
   {								\
-    _COGL_GET_CONTEXT (ctx, NO_RETVAL);				\
-								\
     gint i;							\
+								\
+    _COGL_GET_CONTEXT (ctx, NO_RETVAL);				\
 								\
     if ( (i = _cogl_##type_name##_handle_find (handle)) == -1)	\
       return;							\

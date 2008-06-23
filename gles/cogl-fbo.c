@@ -50,9 +50,9 @@
 static gint
 _cogl_fbo_handle_find (CoglHandle handle)
 {
-  _COGL_GET_CONTEXT (ctx, -1);
-  
   gint i;
+  
+  _COGL_GET_CONTEXT (ctx, -1);
   
   if (ctx->fbo_handles == NULL)
     return -1;
