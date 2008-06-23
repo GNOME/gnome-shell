@@ -1,3 +1,10 @@
+2008-06-23  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-entry.c (clutter_entry_paint): Set the clip
+	using COGL directly instead of setting the actor clip. Otherwise
+	the clip stack will be unbalanced after the first draw. This also
+	frees up the actor clip to be set by an application.
+
 2008-06-23  Matthew Allum  <mallum@openedhand.com>
 
 	* NEWS:
