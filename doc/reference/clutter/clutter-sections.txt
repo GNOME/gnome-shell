@@ -352,6 +352,7 @@ clutter_actor_should_pick_paint
 
 <SUBSECTION>
 clutter_actor_allocate
+clutter_actor_allocate_preferred_size
 clutter_actor_get_allocation_coords
 clutter_actor_get_allocation_box
 clutter_actor_get_allocation_geometry
@@ -359,7 +360,6 @@ clutter_actor_get_allocation_vertices
 clutter_actor_get_preferred_size
 clutter_actor_get_preferred_width
 clutter_actor_get_preferred_height
-clutter_actor_get_paint_area
 clutter_actor_set_fixed_position_set
 clutter_actor_get_fixed_position_set
 

@@ -1,5 +1,10 @@
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-sections.txt: Remove clutter_actor_get_paint_area()
+	and add clutter_actor_allocate_preferred_size().
+
+2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/subclassing-ClutterActor.sgml: Remove mention of the
 	get_paint_area() function and virtual function.
 
