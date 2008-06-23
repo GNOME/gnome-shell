@@ -20,6 +20,8 @@ stage_motion_event_cb (ClutterActor *actor,
 
   hand = g_hash_table_lookup (app->devices, mev->device);
   clutter_actor_set_position (hand, mev->x, mev->y);
+
+  return FALSE;
 }
 
 int

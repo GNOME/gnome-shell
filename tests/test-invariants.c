@@ -177,8 +177,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  ClutterActor *stage;
-
   test_init (&argc, &argv);
 
   test_add_func ("/invariants/initial-state", test_initial_state);
