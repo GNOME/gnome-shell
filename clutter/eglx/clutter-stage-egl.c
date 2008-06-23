@@ -76,6 +76,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
   ClutterStageEGL   *stage_egl = CLUTTER_STAGE_EGL (actor);
   ClutterStageX11   *stage_x11 = CLUTTER_STAGE_X11 (actor);
   ClutterBackendEGL *backend_egl;
+  ClutterBackendX11 *backend_x11;
   EGLConfig          configs[2];
   EGLint             config_count;
   EGLBoolean         status;
@@ -86,6 +87,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
   g_object_get (stage_x11->wrapper, "offscreen", &is_offscreen, NULL);
 
   backend_egl = CLUTTER_BACKEND_EGL (clutter_get_default_backend ());
+  backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
 
   if (G_LIKELY (!is_offscreen))
     {
@@ -168,16 +170,27 @@ clutter_stage_egl_realize (ClutterActor *actor)
                                WhitePixel (stage_x11->xdpy,
                                            stage_x11->xscreen));
 
-      XSelectInput (stage_x11->xdpy, stage_x11->xwin,
-                    StructureNotifyMask
-		    | ExposureMask
-		    /* FIXME: we may want to eplicity enable MotionMask */
-		    | PointerMotionMask
-		    | KeyPressMask
-		    | KeyReleaseMask
-		    | ButtonPressMask
-		    | ButtonReleaseMask
-		    | PropertyChangeMask);
+      if (clutter_x11_has_xinput())
+        {
+          XSelectInput (stage_x11->xdpy, stage_x11->xwin,
+                        StructureNotifyMask |
+                        FocusChangeMask |
+                        ExposureMask |
+                        PropertyChangeMask);
+#ifdef USE_XINPUT          
+          _clutter_x11_select_events (stage_x11->xwin);
+#endif
+        }
+      else
+        XSelectInput (stage_x11->xdpy, stage_x11->xwin,
+                      StructureNotifyMask |
+                      FocusChangeMask |
+                      ExposureMask |
+                      /* FIXME: we may want to eplicity enable MotionMask */
+                      PointerMotionMask |
+                      KeyPressMask | KeyReleaseMask |
+                      ButtonPressMask | ButtonReleaseMask |
+                      PropertyChangeMask);
 
       /* FIXME, do these in a clutterstage_x11_realise? */
       clutter_stage_x11_fix_window_size (stage_x11);

@@ -225,6 +225,22 @@ fi
 
 AM_CONDITIONAL(X11_TESTS, test "x$x11_tests" != "xno")
 
+xinput=no
+AC_ARG_ENABLE(xinput,
+      AS_HELP_STRING([--enable-xinput], 
+                     ["Use the XINPUT X extension"]),[
+          if test "x$enableval" = "xyes" ; then
+            PKG_CHECK_MODULES(XINPUT,[xi],
+                              xinput=yes,
+                              xinput=no)
+          fi],
+          [xinput=yes])
+
+if test "x$xinput" = "xyes"; then
+      AC_DEFINE(USE_XINPUT, 1, Use the XINPUT X extension)
+      X11_LIBS="$X11_LIBS -lXi"
+fi
+
 clutter_gl_header=""
 use_gles2_wrapper="no"
 
@@ -657,6 +673,9 @@ echo ""
 echo "                   prefix:   ${prefix}"
 echo ""
 echo "                  Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
+if test "x$clutterbackend" = "xeglx" || test "x$clutterbackend" = "xglx"; then
+  echo "                   XInput:   ${xinput}"
+fi
 echo "               GL Headers:   ${CLUTTER_GL_HEADER}"
 echo "            Image backend:   ${imagebackend}"
 echo "           Target library:   ${clutterbackendlib}"

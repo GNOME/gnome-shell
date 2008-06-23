@@ -213,10 +213,33 @@ static void
 clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
+  ClutterMainContext  *context;
+  int i;
 
   clutter_backend_set_resolution (backend, 96.0);
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
+
+  context = clutter_context_get_default ();
+
+#define MAX_FINGERS 5
+
+  for (i=0; i<MAX_FINGERS; i++)
+    {
+      ClutterFruityFingerDevice *device;
+
+      device = g_new0 (ClutterFruityFingerDevice, 1);
+      context->input_devices = g_slist_append (context->input_devices, device);
+
+      device->device.id = i;
+      device->device.click_count = 0;
+      device->device.previous_time = 0;
+      device->device.previous_x = -1;
+      device->device.previous_y = -1;
+      device->device.previous_button_number = -1;
+      device->x = 0;
+      device->y = 0;
+    }
 }
 
 GType

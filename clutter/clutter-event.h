@@ -350,6 +350,7 @@ ClutterModifierType clutter_event_get_state     (ClutterEvent       *event);
 void                clutter_event_get_coords    (ClutterEvent       *event,
                                                  gint               *x,
                                                  gint               *y);
+gint                clutter_event_get_device_id (ClutterEvent *event);
 ClutterActor*       clutter_event_get_source    (ClutterEvent       *event);
 
 guint               clutter_key_event_symbol    (ClutterKeyEvent    *keyev);

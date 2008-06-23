@@ -63,6 +63,11 @@ struct _ClutterStageX11
   ClutterBackendX11 *backend;
   ClutterStageState  state;
 
+#ifdef USE_XINPUT
+  int          event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
+  GList       *devices;
+#endif
+
   ClutterStage *wrapper;
 };
 
@@ -78,6 +83,8 @@ void clutter_stage_x11_fix_window_size  (ClutterStageX11 *stage_x11);
 void clutter_stage_x11_set_wm_protocols (ClutterStageX11 *stage_x11);
 void clutter_stage_x11_map              (ClutterStageX11 *stage_x11);
 void clutter_stage_x11_unmap            (ClutterStageX11 *stage_x11);
+
+GList *clutter_stage_x11_get_input_devices (ClutterStageX11 *stage_x11);
 
 G_END_DECLS
 

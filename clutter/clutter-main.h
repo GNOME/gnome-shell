@@ -131,6 +131,14 @@ void             clutter_clear_glyph_cache           (void);
 void             clutter_set_use_mipmapped_text      (gboolean      value);
 gboolean         clutter_get_use_mipmapped_text      (void);
 
+ClutterInputDevice*  clutter_get_input_device_for_id (gint id);
+
+void             clutter_grab_pointer_for_device     (ClutterActor  *actor,
+                                                      gint           id);
+
+void             clutter_ungrab_pointer_for_device   (gint id);
+
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_MAIN_H */

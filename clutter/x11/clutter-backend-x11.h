@@ -28,6 +28,10 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
+#ifdef USE_XINPUT
+#include <X11/extensions/XInput.h>
+#endif
+
 #include "clutter-x11.h"
 
 G_BEGIN_DECLS
@@ -76,6 +80,12 @@ struct _ClutterBackendX11
   Atom atom_XEMBED_INFO;
   Atom atom_NET_WM_NAME;
   Atom atom_UTF8_STRING;
+
+#ifdef USE_XINPUT
+  int         event_types[CLUTTER_X11_XINPUT_LAST_EVENT];
+  gboolean    have_xinput;
+#endif
+
 };
 
 struct _ClutterBackendX11Class
@@ -111,6 +121,19 @@ clutter_backend_x11_add_options (ClutterBackend *backend,
 ClutterFeatureFlags
 clutter_backend_x11_get_features (ClutterBackend *backend);
 
+#ifdef USE_XINPUT
+void 
+_clutter_x11_register_xinput (void);
+
+void
+_clutter_x11_unregister_xinput (void);
+
+ClutterX11XInputDevice *
+_clutter_x11_get_device_for_xid (XID id);
+#endif
+
+void
+_clutter_x11_select_events (Window xwin);
 
 G_END_DECLS
 

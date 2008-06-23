@@ -69,6 +69,20 @@ typedef enum {
   CLUTTER_PICK_ALL
 } ClutterPickMode;
 
+struct _ClutterInputDevice
+{
+  gint          id;
+  gint32        motion_last_time;
+  ClutterActor *pointer_grab_actor;
+  ClutterActor *motion_last_actor;
+
+  gint          click_count;
+  gint          previous_x; 
+  gint          previous_y; 
+  guint32       previous_time;
+  gint          previous_button_number;
+};
+
 typedef struct _ClutterMainContext ClutterMainContext;
 
 struct _ClutterMainContext
@@ -83,8 +97,7 @@ struct _ClutterMainContext
 
   ClutterPickMode  pick_mode;          /* Indicates pick render mode   */
 
-  guint            motion_events_per_actor : 1;/* set f
-or enter/leave events */
+  guint            motion_events_per_actor : 1;/* set for enter/leave events */
 
   guint            motion_frequency;   /* Motion events per second */
   gint             num_reactives;      /* Num of reactive actors */
@@ -110,6 +123,9 @@ or enter/leave events */
   gint fb_r_mask_used, fb_g_mask_used, fb_b_mask_used;
 
   PangoClutterFontMap *font_map;       /* Global font map */
+
+  GSList              *input_devices; /* For extra input devices, i.e
+                                         MultiTouch */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())

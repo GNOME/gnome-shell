@@ -33,6 +33,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-backend.h>
+#include <clutter/clutter-private.h>
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND_FRUITY             (clutter_backend_egl_get_type ())
@@ -44,7 +45,14 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterBackendEGL       ClutterBackendEGL;
 typedef struct _ClutterBackendEGLClass  ClutterBackendEGLClass;
+typedef struct _ClutterFruityFingerDevice ClutterFruityFingerDevice;
 
+struct _ClutterFruityFingerDevice
+{
+  ClutterInputDevice device;
+  int                x, y;
+  gboolean           is_down;
+};  
 
 struct _ClutterBackendEGL
 {
@@ -63,6 +71,8 @@ struct _ClutterBackendEGL
 
   /* event source */
   GSource *event_source;
+
+  int num_fingers;
 
   /*< private >*/
 };

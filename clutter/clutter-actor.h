@@ -550,6 +550,8 @@ void clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
                                                       ClutterActor  *ancestor,
                                                       ClutterVertex *point,
                                                       ClutterVertex *vertex);
+void clutter_actor_allocate_preferred_size           (ClutterActor *actor,
+                                                      gboolean      absolute_origin_changed);
 
 G_END_DECLS
 

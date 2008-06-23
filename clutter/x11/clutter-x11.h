@@ -64,6 +64,23 @@ typedef enum {
   CLUTTER_X11_FILTER_REMOVE
 } ClutterX11FilterReturn;
 
+typedef enum {
+  CLUTTER_X11_XINPUT_KEY_PRESS_EVENT = 0,
+  CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT,
+  CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT,
+  CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT,
+  CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT,
+  CLUTTER_X11_XINPUT_LAST_EVENT
+} ClutterX11XInputEventTypes;
+
+typedef enum {
+  CLUTTER_X11_XINPUT_POINTER_DEVICE,
+  CLUTTER_X11_XINPUT_KEYBOARD_DEVICE,
+  CLUTTER_X11_XINPUT_EXTENSION_DEVICE
+} ClutterX11InputDeviceType;
+
+typedef struct _ClutterX11XInputDevice ClutterX11XInputDevice;
+
 /**
  * ClutterX11FilterFunc:
  * @xev: Native X11 event structure
@@ -103,6 +120,16 @@ ClutterX11FilterReturn clutter_x11_handle_event (XEvent *xevent);
 void         clutter_x11_disable_event_retrieval (void);
 
 ClutterStage *clutter_x11_get_stage_from_window (Window win);
+
+GSList*
+clutter_x11_get_input_devices (void);
+
+ClutterX11InputDeviceType
+clutter_x11_get_input_device_type (ClutterX11XInputDevice *device);
+
+gboolean
+clutter_x11_has_xinput (void);
+
 
 G_END_DECLS
 

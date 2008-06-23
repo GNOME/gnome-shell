@@ -18,6 +18,7 @@ noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
 
 if X11_TESTS
 noinst_PROGRAMS += test-pixmap
+noinst_PROGRAMS += test-devices
 endif
 
 INCLUDES = -I$(top_srcdir)/ -I$(top_srcdir)/clutter -I$(top_builddir)/clutter
@@ -70,5 +71,6 @@ test_texture_quality_SOURCES      = test-texture-quality.c
 test_entry_auto_SOURCES	          = test-entry-auto.c
 test_layout_SOURCES               = test-layout.c
 test_invariants_SOURCES           = test-invariants.c
+test_devices_SOURCES              = test-devices.c
 
 EXTRA_DIST = redhand.png test-script.json

@@ -1415,6 +1415,15 @@ event_click_count_generate (ClutterEvent *event)
   double_click_distance = clutter_backend_get_double_click_distance (backend);
   double_click_time = clutter_backend_get_double_click_time (backend);
 
+  if (event->button.device != NULL)
+    {
+      click_count = event->button.device->click_count;
+      previous_x = event->button.device->previous_x;
+      previous_y = event->button.device->previous_y;
+      previous_time = event->button.device->previous_time;
+      previous_button_number = event->button.device->previous_button_number;
+    }
+
   switch (event->type)
     {
       case CLUTTER_BUTTON_PRESS:
@@ -1448,6 +1457,15 @@ event_click_count_generate (ClutterEvent *event)
         break;
       default:
         g_assert (NULL);
+    }
+
+  if (event->button.device != NULL)
+    {
+      event->button.device->click_count = click_count;
+      event->button.device->previous_x = previous_x;
+      event->button.device->previous_y = previous_y;
+      event->button.device->previous_time = previous_time;
+      event->button.device->previous_button_number = previous_button_number;
     }
 }
 
@@ -1546,11 +1564,14 @@ emit_keyboard_event (ClutterEvent *event)
 }
 
 static void
-unset_motion_last_actor (ClutterActor *actor)
+unset_motion_last_actor (ClutterActor *actor, ClutterInputDevice *dev)
 {
   ClutterMainContext *context = ClutterCntx;
 
-  context->motion_last_actor = NULL;
+  if (dev == NULL)
+    context->motion_last_actor = NULL;
+  else
+    dev->motion_last_actor = NULL;
 }
 
 static inline void
@@ -1558,8 +1579,12 @@ generate_enter_leave_events (ClutterEvent *event)
 {
   ClutterMainContext *context              = ClutterCntx;
   ClutterActor       *motion_current_actor = event->motion.source;
+  ClutterActor       *last_actor           = context->motion_last_actor;
 
-  if (context->motion_last_actor != motion_current_actor)
+  if (event->motion.device != NULL)
+    last_actor = event->motion.device->motion_last_actor;
+
+  if (last_actor != motion_current_actor)
     {
       if (motion_current_actor)
         {
@@ -1572,7 +1597,7 @@ generate_enter_leave_events (ClutterEvent *event)
               cev.crossing.flags   = 0;
               cev.crossing.x       = event->motion.x;
               cev.crossing.y       = event->motion.y;
-              cev.crossing.source  = context->motion_last_actor;
+              cev.crossing.source  = last_actor;
               cev.crossing.stage   = event->any.stage;
               /* unref in free  */
               cev.crossing.related = motion_current_actor;
@@ -1590,7 +1615,7 @@ generate_enter_leave_events (ClutterEvent *event)
           cev.crossing.stage   = event->any.stage;
 
           if (context->motion_last_actor)
-            cev.crossing.related = context->motion_last_actor;
+            cev.crossing.related = last_actor;
           else
             {
               /* the previous actor we were getting events from seems to have
@@ -1604,23 +1629,25 @@ generate_enter_leave_events (ClutterEvent *event)
         }
     }
 
-  if (context->motion_last_actor &&
-      context->motion_last_actor != motion_current_actor)
+  if (last_actor && last_actor != motion_current_actor)
     {
-      g_signal_handlers_disconnect_by_func (context->motion_last_actor,
-                                            G_CALLBACK (unset_motion_last_actor),
-                                            NULL);
+      g_signal_handlers_disconnect_by_func 
+                       (last_actor,
+                        G_CALLBACK (unset_motion_last_actor),
+                        event->motion.device);
     }
 
-  if (motion_current_actor &&
-      context->motion_last_actor != motion_current_actor)
+  if (motion_current_actor && last_actor != motion_current_actor)
     {
       g_signal_connect (motion_current_actor, "destroy",
                         G_CALLBACK (unset_motion_last_actor),
-                        NULL);
+                        event->motion.device);
     }
 
-  context->motion_last_actor = motion_current_actor;
+  if (event->motion.device != NULL)
+    event->motion.device->motion_last_actor = motion_current_actor;
+  else
+    context->motion_last_actor = motion_current_actor;
 }
 
 /**
@@ -1641,7 +1668,9 @@ clutter_do_event (ClutterEvent *event)
   ClutterMainContext  *context;
   ClutterBackend      *backend;
   ClutterActor        *stage;
+  ClutterInputDevice  *device = NULL;
   static gint32        motion_last_time = 0L;
+  gint32               local_motion_time;
 
   context = clutter_context_get_default ();
   backend = context->backend;
@@ -1699,6 +1728,12 @@ clutter_do_event (ClutterEvent *event)
         break;
 
       case CLUTTER_MOTION:
+        device = event->motion.device;
+
+        if (device)
+          local_motion_time = device->motion_last_time;
+        else
+          local_motion_time = motion_last_time;
 
         /* avoid rate throttling for synthetic motion events or if
          * the per-actor events are disabled
@@ -1716,16 +1751,21 @@ clutter_do_event (ClutterEvent *event)
 
             CLUTTER_NOTE (EVENT,
                   "skip motion event: %s (last:%d, delta:%d, time:%d)",
-                  (event->any.time < (motion_last_time + delta) ? "yes" : "no"),
-                  motion_last_time,
+                  (event->any.time < (local_motion_time + delta) ? "yes" : "no"),
+                  local_motion_time,
                   delta,
                   event->any.time);
 
-            if (event->any.time < (motion_last_time + delta))
+            if (event->any.time < (local_motion_time + delta))
               break;
             else
-              motion_last_time = event->any.time;
+              local_motion_time = event->any.time;
           }
+
+        if (device)
+          device->motion_last_time = local_motion_time;
+        else
+          motion_last_time = local_motion_time;
 
         /* Only stage gets motion events if clutter_set_motion_events is TRUE,
          * and the event is not a synthetic event with source set.
@@ -1736,9 +1776,17 @@ clutter_do_event (ClutterEvent *event)
             /* Only stage gets motion events */
             event->any.source = stage;
 
+            /* global grabs */
             if (context->pointer_grab_actor != NULL)
               {
-                clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+                clutter_actor_event (context->pointer_grab_actor, 
+                                     event, FALSE);
+                break;
+              }
+            else if (device != NULL && device->pointer_grab_actor != NULL)
+              {
+                clutter_actor_event (device->pointer_grab_actor, 
+                                     event, FALSE);
                 break;
               }
 
@@ -1774,7 +1822,8 @@ clutter_do_event (ClutterEvent *event)
                 {
                   if (event->type == CLUTTER_BUTTON_RELEASE)
                     {
-                      CLUTTER_NOTE (EVENT,"Release off stage received at %i, %i",
+                      CLUTTER_NOTE (EVENT,
+                                    "Release off stage received at %i, %i",
                                     x, y);
 
                       event->button.source = stage;
@@ -1922,12 +1971,21 @@ static void
 on_pointer_grab_weak_notify (gpointer data,
                              GObject *where_the_object_was)
 {
+  ClutterInputDevice *dev = (ClutterInputDevice *)data;
   ClutterMainContext *context;
-
+  
   context = clutter_context_get_default ();
-  context->pointer_grab_actor = NULL;
 
-  clutter_ungrab_pointer ();
+  if (dev)
+    {
+      dev->pointer_grab_actor = NULL;
+      clutter_ungrab_pointer_for_device (dev->id);
+    }
+  else
+    {
+      context->pointer_grab_actor = NULL;
+      clutter_ungrab_pointer ();
+    }
 }
 
 /**
@@ -1971,6 +2029,48 @@ clutter_grab_pointer (ClutterActor *actor)
     }
 }
 
+void
+clutter_grab_pointer_for_device (ClutterActor       *actor,
+                                 gint                id)
+{
+  ClutterInputDevice *dev;
+
+  g_return_if_fail (actor == NULL || CLUTTER_IS_ACTOR (actor));
+
+  /* essentially a global grab */
+  if (id == -1)
+    {
+      clutter_grab_pointer (actor);
+      return;
+    }
+
+  dev = clutter_get_input_device_for_id (id);
+
+  if (!dev)
+    return;
+
+  if (dev->pointer_grab_actor == actor)
+    return;
+
+  if (dev->pointer_grab_actor)
+    {
+      g_object_weak_unref (G_OBJECT (dev->pointer_grab_actor),
+                          on_pointer_grab_weak_notify,
+                          dev);
+      dev->pointer_grab_actor = NULL;
+    }
+
+  if (actor)
+    {
+      dev->pointer_grab_actor = actor;
+
+      g_object_weak_ref (G_OBJECT (actor),
+                        on_pointer_grab_weak_notify,
+                        dev);
+    }
+}
+
+
 /**
  * clutter_ungrab_pointer:
  *
@@ -1983,6 +2083,13 @@ clutter_ungrab_pointer (void)
 {
   clutter_grab_pointer (NULL);
 }
+
+void
+clutter_ungrab_pointer_for_device (gint id)
+{
+  clutter_grab_pointer_for_device (NULL, id);
+}
+
 
 /**
  * clutter_get_pointer_grab:
@@ -2199,4 +2306,26 @@ clutter_get_use_mipmapped_text (void)
     return pango_clutter_font_map_get_use_mipmapping (font_map);
 
   return FALSE;    
+}
+
+ClutterInputDevice*
+clutter_get_input_device_for_id (gint id)
+{
+  GSList *item;
+  ClutterInputDevice *device = NULL;
+  ClutterMainContext  *context;
+
+  context = clutter_context_get_default ();
+
+  for (item = context->input_devices; 
+       item != NULL; 
+       item = item->next)
+  {
+    device = (ClutterInputDevice *)item->data;
+
+    if (device->id == id)
+      return device;
+  }
+
+  return NULL;
 }

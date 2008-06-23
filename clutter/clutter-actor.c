@@ -7293,9 +7293,10 @@ clutter_actor_get_stage (ClutterActor *actor)
  *
  * This function is a utility call for #ClutterActor implementations
  * that allocates the actor's preferred natural size. It can be used
- * by fixed layout managers (like #ClutterGroup) inside the
- * ClutterActor::allocate implementation to give each child exactly
- * how much space it requires.
+ * by fixed layout managers (like #ClutterGroup or so called
+ * 'composite actors') inside the ClutterActor::allocate
+ * implementation to give each child exactly how much space it
+ * requires.
  *
  * This function is not meant to be used by applications. It is also
  * not meant to be used outside the implementation of the

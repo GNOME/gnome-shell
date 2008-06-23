@@ -2,6 +2,31 @@
 
 	* clutter/clutter-actor.c:
 	* clutter/clutter-actor.h:
+	* clutter/clutter-event.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/eglx/clutter-stage-egl.c:
+	* clutter/fruity/clutter-backend-fruity.c:
+	* clutter/fruity/clutter-backend-fruity.h:
+	* clutter/fruity/clutter-fruity.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/x11/clutter-backend-x11.c:
+	* clutter/x11/clutter-backend-x11.h:
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/x11/clutter-stage-x11.h:
+	* clutter/x11/clutter-x11.h:
+	* configure.ac:
+	* tests/Makefile.am:
+	* tests/test-devices.c:
+        Merge of 'xinput' branch giving initial basic support of 
+        multiple input devices.
+
+2008-06-23  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
 	* clutter/clutter-group.c:
         Remove uneeded (at least for now) paint_area method (#970)
 

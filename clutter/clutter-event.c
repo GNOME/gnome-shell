@@ -315,6 +315,54 @@ clutter_keysym_to_unicode (guint keyval)
   return 0;
 }
 
+/**
+ * clutter_event_get_device_id:
+ * @event: a clutter event 
+ * 
+ * Retrieves the events device id if set.
+ * 
+ * Return value: A unique identifier for the device or -1 if the event has
+ *               no specific device set.
+ **/
+gint
+clutter_event_get_device_id (ClutterEvent *event)
+{
+  g_return_val_if_fail (-1, event != NULL);
+
+  ClutterInputDevice *device = NULL;
+
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+    case CLUTTER_STAGE_STATE:
+    case CLUTTER_DESTROY_NOTIFY:
+    case CLUTTER_CLIENT_MESSAGE:
+    case CLUTTER_DELETE:
+    case CLUTTER_ENTER:
+    case CLUTTER_LEAVE:
+      break;
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+      device = event->button.device;
+      break;
+    case CLUTTER_MOTION:
+      device = event->motion.device;
+      break;
+    case CLUTTER_SCROLL:
+      device = event->scroll.device;
+      break;
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      break;
+    }
+
+  if (device)
+    return device->id;
+  else
+    return -1;
+}
+
+
 GType
 clutter_event_get_type (void)
 {
