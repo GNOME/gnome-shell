@@ -182,8 +182,6 @@ struct _ClutterActor
  *   clutter_actor_get_preferred_height()
  * @allocate: virtual function, used when settings the coordinates of an
  *   actor; it is used by clutter_actor_allocate()
- * @get_paint_area: virtual function, used when querying the untrasformed
- *   bounding box of an actor; it's used by clutter_actor_get_paint_area()
  * @parent_set: signal class handler for the #ClutterActor::parent-set
  * @destroy: signal class handler for #ClutterActor::destroy
  * @pick: virtual function, used to draw an outline of the actor with
@@ -237,9 +235,6 @@ struct _ClutterActorClass
   void (* allocate)             (ClutterActor          *actor,
                                  const ClutterActorBox *box,
                                  gboolean               absolute_origin_changed);
-  void (* get_paint_area)       (ClutterActor          *actor,
-                                 ClutterActorBox       *box);
-
   /* event signals */
   gboolean (* event)                (ClutterActor         *actor,
                                      ClutterEvent         *event);
@@ -315,8 +310,6 @@ void                  clutter_actor_get_allocation_geometry   (ClutterActor     
 void                  clutter_actor_get_allocation_vertices   (ClutterActor          *self,
 							       ClutterActor          *ancestor,
                                                                ClutterVertex          verts[4]);
-void                  clutter_actor_get_paint_area            (ClutterActor          *self,
-                                                               ClutterActorBox       *box);
 
 void                  clutter_actor_set_geometry              (ClutterActor          *self,
                                                                const ClutterGeometry *geometry);

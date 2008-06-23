@@ -350,57 +350,6 @@ clutter_group_allocate (ClutterActor          *self,
 }
 
 static void
-clutter_group_get_paint_area (ClutterActor    *self,
-                              ClutterActorBox *box)
-{
-  ClutterGroupPrivate *priv = CLUTTER_GROUP (self)->priv;
-
-  /* Our area is the union of all child boxes. */
-  if (!priv->children)
-    {
-      /* Only get our allocation if no children;
-       * if we do have children, we don't want this
-       * because the allocation is based on the children's
-       * untransformed layout, and we want the union of
-       * their transformed boxes (their paint boxes).
-       */
-      clutter_actor_get_allocation_box (self, box);
-    }
-  else
-    {
-      ClutterActorBox all_box = { 0, }; /* initialize to silence gcc */
-      GList *l;
-      
-      for (l = priv->children; l != NULL; l = l->next)
-        {
-          ClutterActor *child = l->data;
-          ClutterActorBox child_box = { 0, };
-
-          clutter_actor_get_paint_area (child, &child_box);
-
-          if (l == priv->children)
-            all_box = child_box;
-          else
-            {
-              if (child_box.x1 < all_box.x1)
-                all_box.x1 = child_box.x1;
-
-              if (child_box.y1 < all_box.y1)
-                all_box.y1 = child_box.y1;
-
-              if (child_box.x2 > all_box.x2)
-                all_box.x2 = child_box.x2;
-
-              if (child_box.y2 > all_box.y2)
-                all_box.y2 = child_box.y2;
-            }
-        }
-
-      *box = all_box;
-    }
-}
-
-static void
 clutter_group_dispose (GObject *object)
 {
   ClutterGroup *self = CLUTTER_GROUP (object);
@@ -652,7 +601,6 @@ clutter_group_class_init (ClutterGroupClass *klass)
   actor_class->get_preferred_width  = clutter_group_get_preferred_width;
   actor_class->get_preferred_height = clutter_group_get_preferred_height;
   actor_class->allocate             = clutter_group_allocate;
-  actor_class->get_paint_area       = clutter_group_get_paint_area;
 
   /**
    * ClutterGroup::add:

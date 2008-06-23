@@ -1,3 +1,10 @@
+2008-06-23  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-group.c:
+        Remove uneeded (at least for now) paint_area method (#970)
+
 2008-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script.c: Be more explicit about the fact that

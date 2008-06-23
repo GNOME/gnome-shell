@@ -774,20 +774,6 @@ clutter_actor_real_allocate (ClutterActor          *self,
   g_object_thaw_notify (G_OBJECT (self));
 }
 
-static void
-clutter_actor_real_get_paint_area (ClutterActor    *self,
-                                   ClutterActorBox *box)
-{
-  /* Default implementation is to just return allocation,
-   * i.e. assume the actor draws inside its allocation.
-   *
-   * Note that the virtual get_paint_area method does not
-   * apply the transform; that is done in the wrapper
-   * function.
-   */
-  *box = self->priv->allocation;
-}
-
 /*
  * Utility functions for manipulating transformation matrix
  *
@@ -2924,7 +2910,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
   klass->get_preferred_width = clutter_actor_real_get_preferred_width;
   klass->get_preferred_height = clutter_actor_real_get_preferred_height;
   klass->allocate = clutter_actor_real_allocate;
-  klass->get_paint_area = clutter_actor_real_get_paint_area;
 }
 
 static void
@@ -3386,68 +3371,6 @@ clutter_actor_get_allocation_geometry (ClutterActor    *self,
   clutter_actor_get_allocation_coords (self, &geom->x, &geom->y, &x2, &y2);
   geom->width = x2 - geom->x;
   geom->height = y2 - geom->y;
-}
-
-/**
- * clutter_actor_get_paint_area:
- * @self: A #ClutterActor
- * @box: the function fills this in with the actor's paint area
- *
- * Gets where an actor will be painted, which is generally the union
- * of the paint boxes of the actor's children, plus anything the actor
- * draws itself, transformed by the scale factor and anchor point. The
- * result is a "paint area", i.e. where the actor will actually be
- * painted.
- *
- * The returned #ClutterActorBox is in the coordinates of the actor's
- * parent, just as an allocation is.
- *
- * <note>This function is only valid if the allocation is valid,
- * which means for the most part only inside a paint() method.</note>
- *
- * Since: 0.8
- */
-void
-clutter_actor_get_paint_area (ClutterActor    *self,
-                              ClutterActorBox *box)
-{
-  ClutterActorClass *klass;
-  ClutterActorBox transformed = { 0, };
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
-
-  klass->get_paint_area (self, &transformed);
-
-  /* FIXME also do scale and rotation; without these, get_stage_area()
-   * behaviour is the same as query_coords() called in ClutterGroup
-   * in Clutter 0.6.
-   */
-#if 0
-  if (clutter_actor_is_scaled (child) ||
-      clutter_actor_is_rotated (child))
-    {
-      ClutterVertex vtx[4];
-
-      clutter_actor_get_allocation_vertices (child, self, vtx);
-      clutter_actor_box_get_from_vertices (vtx, &transformed);
-    }
-  else
-#endif
-    {
-      ClutterUnit anchor_x;
-      ClutterUnit anchor_y;
-
-      clutter_actor_get_anchor_pointu (self, &anchor_x, &anchor_y);
-
-      transformed.x1 -= anchor_x;
-      transformed.x2 -= anchor_x;
-      transformed.y1 -= anchor_y;
-      transformed.y2 -= anchor_y;
-    }
-
-  *box = transformed;
 }
 
 /**
