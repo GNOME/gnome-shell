@@ -42,8 +42,6 @@ _cogl_rectangle (gint x,
                  guint width,
                  guint height)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   /* 32-bit integers are not supported as coord types
      in GLES . Fixed type has got 16 bits left of the
      point which is equal to short anyway. */
@@ -55,6 +53,8 @@ _cogl_rectangle (gint x,
     (GLshort) (x + width), (GLshort) (y + height)
   };
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
   cogl_enable (COGL_ENABLE_VERTEX_ARRAY
               | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
   GE ( cogl_wrap_glVertexPointer (2, GL_SHORT, 0, rect_verts ) );
@@ -68,8 +68,6 @@ _cogl_rectanglex (ClutterFixed x,
                   ClutterFixed width,
                   ClutterFixed height)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   GLfixed rect_verts[8] = {
     x,         y,
     x + width, y,
@@ -77,6 +75,8 @@ _cogl_rectanglex (ClutterFixed x,
     x + width, y + height
   };
    
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
   cogl_enable (COGL_ENABLE_VERTEX_ARRAY
 	       | (ctx->color_alpha < 255
 		  ? COGL_ENABLE_BLEND : 0));
@@ -104,9 +104,9 @@ void
 _cogl_path_add_node (ClutterFixed x,
 		     ClutterFixed y)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   CoglFixedVec2   *new_nodes = NULL;
+  
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   if (ctx->path_nodes_size == ctx->path_nodes_cap)
     {
@@ -160,13 +160,13 @@ static gint compare_ints (gconstpointer a,
 void
 _cogl_path_fill_nodes ()
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   guint bounds_x;
   guint bounds_y;
   guint bounds_w;
   guint bounds_h;
 
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  
   bounds_x = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.x);
   bounds_y = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.y);
   bounds_w = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.x - ctx->path_nodes_min.x);

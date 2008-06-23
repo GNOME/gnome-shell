@@ -85,9 +85,9 @@ void
 _cogl_path_add_node (ClutterFixed x,
 		     ClutterFixed y)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   CoglFloatVec2   *new_nodes = NULL;
+  
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   if (ctx->path_nodes_size == ctx->path_nodes_cap)
     {
@@ -135,12 +135,12 @@ _cogl_path_stroke_nodes ()
 void
 _cogl_path_fill_nodes ()
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   guint bounds_x;
   guint bounds_y;
   guint bounds_w;
   guint bounds_h;
+  
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   GE( glClear (GL_STENCIL_BUFFER_BIT) );
 

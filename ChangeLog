@@ -1,5 +1,21 @@
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug 982 - __COGL_GET_CONTEXT MS compiler issue (Haakon Sporsheim)
+
+	* clutter/cogl/common/cogl-handle.h:
+	* clutter/cogl/common/cogl-primitives.c: Remove C99-isms.
+
+	* clutter/cogl/gl/cogl-fbo.c:
+	* clutter/cogl/gl/cogl-primitives.c:
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gl/cogl.c: Ditto as above.
+
+	* clutter/cogl/gles/cogl-fbo.c:
+	* clutter/cogl/gles/cogl-primitives.c:
+	* clutter/cogl/gles/cogl-texture.c: Ditto as above.
+
+2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug 984 - pango_clutter_render_layout() declared void, but
 	          returns (Haakon Sporsheim)
 

@@ -1762,8 +1762,6 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 		       ClutterFixed tx2,
 		       ClutterFixed ty2)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   CoglSpanIter       iter_x    ,  iter_y;
   ClutterFixed       tw        ,  th;
   ClutterFixed       tqx       ,  tqy;
@@ -1776,16 +1774,17 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   GLfixed            tex_coords[8];
   GLfixed            quad_coords[8];
   GLuint             gl_handle;
+  gulong             enable_flags = (COGL_ENABLE_TEXTURE_2D
+                                    | COGL_ENABLE_VERTEX_ARRAY
+                                    | COGL_ENABLE_TEXCOORD_ARRAY);
   
 #if COGL_DEBUG
   printf("=== Drawing Tex Quad (Software Tiling Mode) ===\n");
 #endif
   
-  /* Prepare GL state */
-  gulong enable_flags = (COGL_ENABLE_TEXTURE_2D
-			 | COGL_ENABLE_VERTEX_ARRAY
-			 | COGL_ENABLE_TEXCOORD_ARRAY);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
+  /* Prepare GL state */
   if (ctx->color_alpha < 255
       || tex->bitmap.format & COGL_A_BIT)
     {
@@ -1917,23 +1916,22 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 		       ClutterFixed tx2,
 		       ClutterFixed ty2)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   GLfixed           tex_coords[8];
   GLfixed           quad_coords[8];
   GLuint            gl_handle;
   CoglTexSliceSpan *x_span;
   CoglTexSliceSpan *y_span;
-  
+  gulong            enable_flags = (COGL_ENABLE_TEXTURE_2D
+                                   | COGL_ENABLE_VERTEX_ARRAY
+                                   | COGL_ENABLE_TEXCOORD_ARRAY);
+
 #if COGL_DEBUG
   printf("=== Drawing Tex Quad (Hardware Tiling Mode) ===\n");
 #endif
   
-  /* Prepare GL state */
-  gulong enable_flags = (COGL_ENABLE_TEXTURE_2D
-			 | COGL_ENABLE_VERTEX_ARRAY
-			 | COGL_ENABLE_TEXCOORD_ARRAY);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
+  /* Prepare GL state */
   if (ctx->color_alpha < 255
       || tex->bitmap.format & COGL_A_BIT)
     {

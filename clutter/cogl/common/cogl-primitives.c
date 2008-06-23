@@ -325,10 +325,11 @@ cogl_path_round_rectangle (ClutterFixed x,
                            ClutterFixed radius,
                            ClutterAngle arc_step)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   ClutterFixed inner_width = width  - (radius << 1);
   ClutterFixed inner_height = height - (radius << 1);
   
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   cogl_path_move_to (x, y + radius);
   cogl_path_arc_rel (radius, 0,
 		     radius, radius,
@@ -464,10 +465,10 @@ cogl_path_curve_to (ClutterFixed x1,
                     ClutterFixed x3,
                     ClutterFixed y3)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
   CoglBezCubic cubic;
-  
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
   /* Prepare cubic curve */
   cubic.p1 = ctx->path_pen;
   cubic.p2.x = x1;
@@ -476,10 +477,10 @@ cogl_path_curve_to (ClutterFixed x1,
   cubic.p3.y = y2;
   cubic.p4.x = x3;
   cubic.p4.y = y3;
-  
+
   /* Run subdivision */
   _cogl_path_bezier3_sub (&cubic);
-  
+
   /* Add last point */
   _cogl_path_add_node (cubic.p4.x, cubic.p4.y);
   ctx->path_pen = cubic.p4;
