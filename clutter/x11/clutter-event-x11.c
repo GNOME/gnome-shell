@@ -219,11 +219,29 @@ set_user_time (ClutterBackendX11 *backend_x11,
     }
 }
 
+static void
+convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
+{
+  xevent->xany.type = xevent->xkey.type = xkev->type;
+  xevent->xkey.serial = xkev->serial;
+  xevent->xkey.display = xkev->display;
+  xevent->xkey.window = xkev->window;
+  xevent->xkey.root = xkev->root;
+  xevent->xkey.subwindow = xkev->subwindow;
+  xevent->xkey.time = xkev->time;
+  xevent->xkey.x = xkev->x;
+  xevent->xkey.y = xkev->y;
+  xevent->xkey.x_root = xkev->x_root;
+  xevent->xkey.y_root = xkev->y_root;
+  xevent->xkey.state = xkev->state;
+  xevent->xkey.keycode = xkev->keycode;
+  xevent->xkey.same_screen = xkev->same_screen;
+}
 
 static void
-translate_key_event (ClutterBackend *backend,
-                     ClutterEvent   *event,
-                     XEvent         *xevent)
+translate_key_event (ClutterBackend   *backend,
+                     ClutterEvent     *event,
+                     XEvent           *xevent)
 {
   char buffer[256+1];
   int n;
@@ -231,8 +249,6 @@ translate_key_event (ClutterBackend *backend,
   CLUTTER_NOTE (EVENT, "Translating key %s event",
                 xevent->xany.type == KeyPress ? "press" : "release");
 
-  event->key.type = (xevent->xany.type == KeyPress) ? CLUTTER_KEY_PRESS
-                                                    : CLUTTER_KEY_RELEASE;
   event->key.time = xevent->xkey.time;
   event->key.modifier_state = (ClutterModifierType) xevent->xkey.state;
   event->key.hardware_keycode = xevent->xkey.keycode;
@@ -745,42 +761,25 @@ event_translate (ClutterBackend *backend,
           else if (xevent->type 
                         == ev_types [CLUTTER_X11_XINPUT_KEY_PRESS_EVENT]) 
             {
+              XEvent xevent_converted;
               XDeviceKeyEvent *xkev = (XDeviceKeyEvent *)xevent;
+              
+              convert_xdevicekey_to_xkey (xkev, &xevent_converted);
 
-              event->key.type = CLUTTER_KEY_PRESS;
-              event->key.time = xkev->time;
-              event->key.modifier_state = (ClutterModifierType) xkev->state;
-              event->key.hardware_keycode = xkev->keycode;
-
-              /* Note key events have no device field */
-
-              /* FIXME: We need to handle other modifiers rather than 
-                 just shift */
-              event->key.keyval =
-                XKeycodeToKeysym (xevent->xany.display,
-                                  xkev->keycode,
-                                  (event->key.modifier_state 
-                                        & CLUTTER_SHIFT_MASK) ? 1 : 0);
-
+              event->key.type = event->type = CLUTTER_KEY_PRESS;
+              translate_key_event (backend, event, &xevent_converted);
               set_user_time (backend_x11, &xwindow, xkev->time);
             } 
           else if (xevent->type 
                    == ev_types [CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT]) 
             {
+              XEvent xevent_converted;
               XDeviceKeyEvent *xkev = (XDeviceKeyEvent *)xevent;
               
-              event->key.type = CLUTTER_KEY_RELEASE;
-              event->key.time = xkev->time;
-              event->key.modifier_state = (ClutterModifierType) xkev->state;
-              event->key.hardware_keycode = xkev->keycode;
+              convert_xdevicekey_to_xkey (xkev, &xevent_converted);
 
-              /* FIXME: We need to handle other modifiers rather than
-                 just shift */
-              event->key.keyval =
-                XKeycodeToKeysym (xevent->xany.display,
-                                  xkev->keycode,
-                                  (event->key.modifier_state 
-                                   & CLUTTER_SHIFT_MASK) ? 1 : 0);
+              event->type = CLUTTER_KEY_RELEASE;
+              translate_key_event (backend, event, &xevent_converted);
             }
           else 
 #endif

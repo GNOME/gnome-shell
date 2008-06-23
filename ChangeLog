@@ -1,3 +1,10 @@
+2008-06-23  Chris Lord  <chris@openedhand.com>
+
+	* clutter/x11/clutter-event-x11.c: (convert_xdevicekey_to_xkey),
+	(translate_key_event), (event_translate):
+	Change the xinput event handling to use translate_key (fixes modifier
+	handling with xinput key events)
+
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 982 - __COGL_GET_CONTEXT MS compiler issue (Haakon Sporsheim)
