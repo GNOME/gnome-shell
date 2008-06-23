@@ -23,4 +23,5 @@ libclutter_cogl_common_la_SOURCES = \
 	cogl-bitmap-fallback.c \
 	cogl-primitives.c \
 	cogl-primitives.h \
-	cogl-bitmap-pixbuf.c
+	cogl-bitmap-pixbuf.c \
+	cogl-clip-stack.c

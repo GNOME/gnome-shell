@@ -30,6 +30,7 @@
 #include "cogl.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 #include "cogl-internal.h"
 #include "cogl-util.h"
@@ -381,84 +382,257 @@ set_clip_plane (GLint plane_num,
 }
 
 void
-cogl_clip_set (ClutterFixed x_offset,
-               ClutterFixed y_offset,
-               ClutterFixed width,
-               ClutterFixed height)
+_cogl_set_clip_planes (ClutterFixed x_offset,
+		       ClutterFixed y_offset,
+		       ClutterFixed width,
+		       ClutterFixed height)
 {
-  if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
+  GLfixed modelview[16], projection[16];
+
+  ClutterFixed vertex_tl[4] = { x_offset, y_offset, 0, CFX_ONE };
+  ClutterFixed vertex_tr[4] = { x_offset + width, y_offset, 0, CFX_ONE };
+  ClutterFixed vertex_bl[4] = { x_offset, y_offset + height, 0, CFX_ONE };
+  ClutterFixed vertex_br[4] = { x_offset + width, y_offset + height,
+				0, CFX_ONE };
+
+  GE( cogl_wrap_glGetFixedv (GL_MODELVIEW_MATRIX, modelview) );
+  GE( cogl_wrap_glGetFixedv (GL_PROJECTION_MATRIX, projection) );
+
+  project_vertex (modelview, projection, vertex_tl);
+  project_vertex (modelview, projection, vertex_tr);
+  project_vertex (modelview, projection, vertex_bl);
+  project_vertex (modelview, projection, vertex_br);
+
+  /* If the order of the top and bottom lines is different from
+     the order of the left and right lines then the clip rect must
+     have been transformed so that the back is visible. We
+     therefore need to swap one pair of vertices otherwise all of
+     the planes will be the wrong way around */
+  if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
+      != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
     {
-      GLfixed modelview[16], projection[16];
-
-      ClutterFixed vertex_tl[4] = { x_offset, y_offset, 0, CFX_ONE };
-      ClutterFixed vertex_tr[4] = { x_offset + width, y_offset, 0, CFX_ONE };
-      ClutterFixed vertex_bl[4] = { x_offset, y_offset + height, 0, CFX_ONE };
-      ClutterFixed vertex_br[4] = { x_offset + width, y_offset + height,
-				    0, CFX_ONE };
-
-      GE( cogl_wrap_glGetFixedv (GL_MODELVIEW_MATRIX, modelview) );
-      GE( cogl_wrap_glGetFixedv (GL_PROJECTION_MATRIX, projection) );
-
-      project_vertex (modelview, projection, vertex_tl);
-      project_vertex (modelview, projection, vertex_tr);
-      project_vertex (modelview, projection, vertex_bl);
-      project_vertex (modelview, projection, vertex_br);
-
-      /* If the order of the top and bottom lines is different from
-	 the order of the left and right lines then the clip rect must
-	 have been transformed so that the back is visible. We
-	 therefore need to swap one pair of vertices otherwise all of
-	 the planes will be the wrong way around */
-      if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
-	  != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
-	{
-	  ClutterFixed temp[4];
-	  memcpy (temp, vertex_tl, sizeof (temp));
-	  memcpy (vertex_tl, vertex_tr, sizeof (temp));
-	  memcpy (vertex_tr, temp, sizeof (temp));
-	  memcpy (temp, vertex_bl, sizeof (temp));
-	  memcpy (vertex_bl, vertex_br, sizeof (temp));
-	  memcpy (vertex_br, temp, sizeof (temp));
-	}
-
-      set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_tr);
-      set_clip_plane (GL_CLIP_PLANE1, vertex_tr, vertex_br);
-      set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_bl);
-      set_clip_plane (GL_CLIP_PLANE3, vertex_bl, vertex_tl);
+      ClutterFixed temp[4];
+      memcpy (temp, vertex_tl, sizeof (temp));
+      memcpy (vertex_tl, vertex_tr, sizeof (temp));
+      memcpy (vertex_tr, temp, sizeof (temp));
+      memcpy (temp, vertex_bl, sizeof (temp));
+      memcpy (vertex_bl, vertex_br, sizeof (temp));
+      memcpy (vertex_br, temp, sizeof (temp));
     }
-  else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
-    {
-      GE( cogl_wrap_glEnable (GL_STENCIL_TEST) );
 
-      GE( glClearStencil (0) );
-      GE( glClear (GL_STENCIL_BUFFER_BIT) );
+  set_clip_plane (GL_CLIP_PLANE0, vertex_tl, vertex_tr);
+  set_clip_plane (GL_CLIP_PLANE1, vertex_tr, vertex_br);
+  set_clip_plane (GL_CLIP_PLANE2, vertex_br, vertex_bl);
+  set_clip_plane (GL_CLIP_PLANE3, vertex_bl, vertex_tl);
+}
 
-      GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
-      GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+static int
+compare_y_coordinate (const void *a, const void *b)
+{
+  GLfixed ay = ((const GLfixed *) a)[1];
+  GLfixed by = ((const GLfixed *) b)[1];
 
-      GE( cogl_wrap_glColor4x (CFX_ONE, CFX_ONE, CFX_ONE, CFX_ONE ) );
-
-      cogl_rectanglex (x_offset, y_offset, width, height);
-
-      GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
-      GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
-    }
+  return ay < by ? -1 : ay > by ? 1 : 0;
 }
 
 void
-cogl_clip_unset (void)
+_cogl_add_stencil_clip (ClutterFixed x_offset,
+			ClutterFixed y_offset,
+			ClutterFixed width,
+			ClutterFixed height,
+			gboolean first)
 {
-  if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
+  gboolean has_clip_planes
+    = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
+  
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (has_clip_planes)
     {
       GE( cogl_wrap_glDisable (GL_CLIP_PLANE3) );
       GE( cogl_wrap_glDisable (GL_CLIP_PLANE2) );
       GE( cogl_wrap_glDisable (GL_CLIP_PLANE1) );
       GE( cogl_wrap_glDisable (GL_CLIP_PLANE0) );
     }
-  else if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
+
+  if (first)
     {
-      GE( cogl_wrap_glDisable (GL_STENCIL_TEST) );
+      GE( cogl_wrap_glEnable (GL_STENCIL_TEST) );
+      
+      /* Initially disallow everything */
+      GE( glClearStencil (0) );
+      GE( glClear (GL_STENCIL_BUFFER_BIT) );
+
+      /* Punch out a hole to allow the rectangle */
+      GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+      GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
+
+      cogl_rectanglex (x_offset, y_offset, width, height);
     }
+  else if (ctx->num_stencil_bits > 1)
+    {
+      /* Add one to every pixel of the stencil buffer in the
+	 rectangle */
+      GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
+      GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+      cogl_rectanglex (x_offset, y_offset, width, height);
+
+      /* Subtract one from all pixels in the stencil buffer so that
+	 only pixels where both the original stencil buffer and the
+	 rectangle are set will be valid */
+      GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
+      GE( cogl_wrap_glPushMatrix () );
+      GE( cogl_wrap_glLoadIdentity () );
+      GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+      GE( cogl_wrap_glPushMatrix () );
+      GE( cogl_wrap_glLoadIdentity () );
+      cogl_rectanglex (-CFX_ONE, -CFX_ONE,
+		       CLUTTER_INT_TO_FIXED (2),
+		       CLUTTER_INT_TO_FIXED (2));
+      GE( cogl_wrap_glPopMatrix () );
+      GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+      GE( cogl_wrap_glPopMatrix () );
+    }
+  else
+    {
+      /* Slower fallback if there is exactly one stencil bit. This
+	 tries to draw enough triangles to tessalate around the
+	 rectangle so that it can subtract from the stencil buffer for
+	 every pixel in the screen except those in the rectangle */
+      GLfixed modelview[16], projection[16];
+      GLfixed temp_point[4];
+      GLfixed left_edge, right_edge, bottom_edge, top_edge;
+      int i;
+      GLfixed points[16] =
+	{
+	  x_offset, y_offset, 0, CFX_ONE,
+	  x_offset + width, y_offset, 0, CFX_ONE,
+	  x_offset, y_offset + height, 0, CFX_ONE,
+	  x_offset + width, y_offset + height, 0, CFX_ONE
+	};
+      GLfixed draw_points[12];
+
+      GE( cogl_wrap_glGetFixedv (GL_MODELVIEW_MATRIX, modelview) );
+      GE( cogl_wrap_glGetFixedv (GL_PROJECTION_MATRIX, projection) );
+
+      /* Project all of the vertices into screen coordinates */
+      for (i = 0; i < 4; i++)
+	project_vertex (modelview, projection, points + i * 4);
+
+      /* Sort the points by y coordinate */
+      qsort (points, 4, sizeof (GLfixed) * 4, compare_y_coordinate);
+
+      /* Put the bottom two pairs and the top two pairs in
+	 left-right order */
+      if (points[0] > points[4])
+	{
+	  memcpy (temp_point, points, sizeof (GLfixed) * 4);
+	  memcpy (points, points + 4, sizeof (GLfixed) * 4);
+	  memcpy (points + 4, temp_point, sizeof (GLfixed) * 4);
+	}
+      if (points[8] > points[12])
+	{
+	  memcpy (temp_point, points + 8, sizeof (GLfixed) * 4);
+	  memcpy (points + 8, points + 12, sizeof (GLfixed) * 4);
+	  memcpy (points + 12, temp_point, sizeof (GLfixed) * 4);
+	}
+
+      /* If the clip rect goes outside of the screen then use the
+	 extents of the rect instead */
+      left_edge   = MIN (-CFX_ONE, MIN (points[0], points[8]));
+      right_edge  = MAX ( CFX_ONE, MAX (points[4], points[12]));
+      bottom_edge = MIN (-CFX_ONE, MIN (points[1], points[5]));
+      top_edge    = MAX ( CFX_ONE, MAX (points[9], points[13]));
+
+      /* Using the identity matrix for the projection and
+	 modelview matrix, draw the triangles around the inner
+	 rectangle */
+      GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+      GE( glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
+      GE( cogl_wrap_glPushMatrix () );
+      GE( cogl_wrap_glLoadIdentity () );
+      GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+      GE( cogl_wrap_glPushMatrix () );
+      GE( cogl_wrap_glLoadIdentity () );
+
+      cogl_enable (COGL_ENABLE_VERTEX_ARRAY
+		   | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
+      GE( cogl_wrap_glVertexPointer (2, GL_FIXED, 0, draw_points) );
+
+      /* Clear the left side */
+      draw_points[0] = left_edge; draw_points[1] = bottom_edge;
+      draw_points[2] = points[0]; draw_points[3] = points[1];
+      draw_points[4] = left_edge; draw_points[5] = points[1];
+      draw_points[6] = points[8]; draw_points[7] = points[9];
+      draw_points[8] = left_edge; draw_points[9] = points[9];
+      draw_points[10] = left_edge; draw_points[11] = top_edge;
+      GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 6) );
+
+      /* Clear the right side */
+      draw_points[0] = right_edge; draw_points[1] = top_edge;
+      draw_points[2] = points[12]; draw_points[3] = points[13];
+      draw_points[4] = right_edge; draw_points[5] = points[13];
+      draw_points[6] = points[4]; draw_points[7] = points[5];
+      draw_points[8] = right_edge; draw_points[9] = points[5];
+      draw_points[10] = right_edge; draw_points[11] = bottom_edge;
+      GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 6) );
+
+      /* Clear the top side */
+      draw_points[0] = left_edge; draw_points[1] = top_edge;
+      draw_points[2] = points[8]; draw_points[3] = points[9];
+      draw_points[4] = points[8]; draw_points[5] = top_edge;
+      draw_points[6] = points[12]; draw_points[7] = points[13];
+      draw_points[8] = points[12]; draw_points[9] = top_edge;
+      draw_points[10] = right_edge; draw_points[11] = top_edge;
+      GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 6) );
+
+      /* Clear the bottom side */
+      draw_points[0] = left_edge; draw_points[1] = bottom_edge;
+      draw_points[2] = points[0]; draw_points[3] = points[1];
+      draw_points[4] = points[0]; draw_points[5] = bottom_edge;
+      draw_points[6] = points[4]; draw_points[7] = points[5];
+      draw_points[8] = points[4]; draw_points[9] = bottom_edge;
+      draw_points[10] = right_edge; draw_points[11] = bottom_edge;
+      GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 6) );
+
+      GE( cogl_wrap_glPopMatrix () );
+      GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+      GE( cogl_wrap_glPopMatrix () );
+    }
+
+  if (has_clip_planes)
+    {
+      GE( cogl_wrap_glEnable (GL_CLIP_PLANE0) );
+      GE( cogl_wrap_glEnable (GL_CLIP_PLANE1) );
+      GE( cogl_wrap_glEnable (GL_CLIP_PLANE2) );
+      GE( cogl_wrap_glEnable (GL_CLIP_PLANE3) );
+    }
+
+  /* Restore the stencil mode */
+  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
+  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+}
+
+void
+_cogl_set_matrix (const ClutterFixed *matrix)
+{
+  GE( cogl_wrap_glLoadIdentity () );
+  GE( cogl_wrap_glMultMatrixx (matrix) );
+}
+
+void
+_cogl_disable_stencil_buffer (void)
+{
+  GE( cogl_wrap_glDisable (GL_STENCIL_TEST) );
+}
+
+void
+_cogl_disable_clip_planes (void)
+{
+  GE( cogl_wrap_glDisable (GL_CLIP_PLANE3) );
+  GE( cogl_wrap_glDisable (GL_CLIP_PLANE2) );
+  GE( cogl_wrap_glDisable (GL_CLIP_PLANE1) );
+  GE( cogl_wrap_glDisable (GL_CLIP_PLANE0) );
 }
 
 void
@@ -583,13 +757,13 @@ static void
 _cogl_features_init ()
 {
   ClutterFeatureFlags flags = 0;
-  int                 stencil_bits = 0;
   int                 max_clip_planes = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  GE( cogl_wrap_glGetIntegerv (GL_STENCIL_BITS, &stencil_bits) );
-  if (stencil_bits > 0)
+  ctx->num_stencil_bits = 0;
+  GE( cogl_wrap_glGetIntegerv (GL_STENCIL_BITS, &ctx->num_stencil_bits) );
+  if (ctx->num_stencil_bits > 0)
     flags |= COGL_FEATURE_STENCIL_BUFFER;
 
   GE( cogl_wrap_glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );

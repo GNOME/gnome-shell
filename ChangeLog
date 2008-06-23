@@ -1,3 +1,29 @@
+2008-06-23  Neil Roberts  <neil@o-hand.com>
+
+	Bug 918 - Group doesn't clip if it's children are clipped
+
+	* clutter/cogl/common/cogl-clip-stack.h: 
+	* clutter/cogl/common/cogl-clip-stack.c: Added functions to
+	maintain a stack of clipping rectangles.
+
+	* clutter/cogl/gles/cogl.c: 
+	* clutter/cogl/gl/cogl.c: The cogl_clip_set and unset functions
+	have moved into cogl-clip-stack.c which calls back to cogl.c to
+	set the actual rectangles. Multiple clip rectangles are combined
+	by merging the stencil buffers.
+
+	* clutter/cogl/gles/cogl-primitives.c (_cogl_path_fill_nodes): 
+	* clutter/cogl/gl/cogl-primitives.c (_cogl_path_fill_nodes): Merge
+	the stencil buffer with the contents of the clipping stack after
+	drawing the path.
+
+	* clutter/cogl/gles/cogl-context.h (CoglContext): 
+	* clutter/cogl/gl/cogl-context.h (CoglContext): Store the number
+	of available stencil bits.
+
+	* clutter/cogl/common/Makefile.am
+	(libclutter_cogl_common_la_SOURCES): Added cogl-clip-stack.c
+
 2008-06-23  Robert Bragg  <bob@o-hand.com>
 
 	* clutter/eglx/clutter-stage-egl.c: Makes sure the eglx backend
