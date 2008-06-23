@@ -37,6 +37,8 @@
 #include "config.h"
 #endif
 
+#include <cogl/cogl.h>
+
 #include "clutter-entry.h"
 
 #include "clutter-debug.h"
@@ -126,7 +128,6 @@ struct _ClutterEntryPrivate
   gint                  width_chars;
 
   ClutterGeometry       cursor_pos;
-  ClutterActor         *cursor;
   gboolean              show_cursor;
 };
 
@@ -381,15 +382,15 @@ clutter_entry_paint_cursor (ClutterEntry *entry)
 
   if (priv->show_cursor)
     {
-      clutter_actor_set_size (CLUTTER_ACTOR (priv->cursor),
-                              priv->cursor_pos.width,
-                              priv->cursor_pos.height);
+      cogl_push_matrix ();
 
-      clutter_actor_set_position (priv->cursor,
-                                  priv->cursor_pos.x,
-                                  priv->cursor_pos.y);
+      cogl_color (&priv->fgcol);
+      cogl_rectangle (priv->cursor_pos.x,
+                      priv->cursor_pos.y,
+                      priv->cursor_pos.width,
+                      priv->cursor_pos.height);
 
-      clutter_actor_paint (priv->cursor);
+      cogl_pop_matrix ();
     }
 }
 
@@ -904,9 +905,6 @@ clutter_entry_init (ClutterEntry *self)
               / 72.0;
   clutter_actor_set_size (CLUTTER_ACTOR (self), font_size * 20, 50);
 
-  priv->cursor        = clutter_rectangle_new_with_color (&priv->fgcol);
-  clutter_actor_set_parent (priv->cursor, CLUTTER_ACTOR (self));
-
   priv->show_cursor   = TRUE;
 }
 
@@ -1182,8 +1180,6 @@ clutter_entry_set_color (ClutterEntry       *entry,
   actor = CLUTTER_ACTOR (entry);
 
   clutter_actor_set_opacity (actor, priv->fgcol.alpha);
-
-  clutter_rectangle_set_color (CLUTTER_RECTANGLE (priv->cursor), &priv->fgcol);
 
   if (CLUTTER_ACTOR_IS_VISIBLE (actor))
     clutter_actor_queue_redraw (actor);

@@ -1,5 +1,15 @@
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug 905 - Paint cursor directly (Xan López)
+
+	* clutter/clutter-entry.c:
+	(clutter_entry_paint_cursor),
+	(clutter_entry_init),
+	(clutter_entry_set_color): Directly paint the cursor on the
+	entry instead of using an actor.
+
+2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug 981 - clutter_stage_read_pixels temprow fix (Haakon Sporsheim)
 
 	* clutter/clutter-stage.c (clutter_stage_read_pixels): Allocate
