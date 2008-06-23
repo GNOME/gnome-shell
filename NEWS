@@ -15,7 +15,9 @@ Clutter 0.7.2 (23/06/2008), "Kedoke"
      support for multiple input devices. The API is X11-specific, and
      provides support for querying at run-time support for XINPUT, for
      getting a list of input devices and for getting the type of each
-     input device.
+     input device. 
+ 
+   o The 'fruity' backend also features multiple device support.
 
  * List of bugs fixed
 
@@ -36,7 +38,7 @@ Clutter 0.7.2 (23/06/2008), "Kedoke"
 Clutter 0.7.0 (13/06/2008), "Booska"
 ===============================================================================
 
- * List of changes between 0.6 and 0.7.2
+ * List of changes between 0.6 and 0.7.0
 
    o COGL, the underlying GL abstraction layer in Clutter, has been
      completely rewritten from the ground up. Its no longer a conceptual

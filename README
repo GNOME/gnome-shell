@@ -7,7 +7,6 @@ rich and animated graphical user interfaces.
 Clutter currently requires:
 
   * GLib >= 2.14.0
-  * GdkPixbuf
   * PangoCairo >= 1.18
   * OpenGL >= 1.4, OpenGL ES 1.1 or OpenGL ES 2.0
   * GLX, SDL, WGL or an EGL Implementation
@@ -81,7 +80,7 @@ See the INSTALL file. Info on specific Clutter options;
         Select the image loading backend used by COGL
 
           gdk-pixbuf: Depend on gdk-pixbuf-2.0 (default for the glx, eglx,
-                      eglnative, sdl, win32 flavours)
+                      eglnative, sdl, win32 flavours and recommended)
 
           quartz:     Depend on CoreGraphics (default for the osx flavour)
 
@@ -134,7 +133,7 @@ You will need an account.
 In the report you should include:
 * what system you're running Clutter on;
 * which version of Clutter you are using;
-* which version of GLib, GdkPixbuf and OpenGL you are using;
+* which version of GLib and OpenGL you are using;
 * which video card and which drivers you are using, including output of
   glxinfo and xdpyinfo;
 * how to reproduce the bug.
@@ -170,6 +169,12 @@ wanting to port to newer releases (See NEWS for general new feature info).
 
 Release Notes for Clutter 0.8
 -------------------------------
+
+* Clutter now has basic suppport for multiple input devices assuming
+  the backend supports it (currently X11 based via XInput and Fruity
+  backends). New API supporting this includes
+  clutter_event_get_device_id, clutter_get_input_device_for_id,
+  clutter_grab_pointer_for_device & clutter_ungrab_pointer_for_device.
 
 * The functions that return the transformed position of an actor have
   been renamed to be more explicit about it:

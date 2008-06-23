@@ -1,5 +1,13 @@
 2008-06-23  Matthew Allum  <mallum@openedhand.com>
 
+	* NEWS:
+        Add a quick note on fruity multiple deivce support.
+	* README:
+        Add multiple device support details and some tweaks on
+        Clutter requirements (i.e GdkPixbuf).
+
+2008-06-23  Matthew Allum  <mallum@openedhand.com>
+
         Bug 987 - clutter-event.c c99 variable declaration
 
 	* clutter/clutter-event.c:
