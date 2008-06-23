@@ -583,13 +583,14 @@ event_translate (ClutterBackend *backend,
           switch (xevent->type)
             {
             case KeyPress:
-              event->type = CLUTTER_KEY_PRESS;
+              event->key.type = event->type = CLUTTER_KEY_PRESS;
               translate_key_event (backend, event, xevent);
+
               set_user_time (backend_x11, &xwindow, xevent->xkey.time);
               break;
               
             case KeyRelease:
-              event->type = CLUTTER_KEY_RELEASE;
+              event->key.type = event->type = CLUTTER_KEY_RELEASE;
               translate_key_event (backend, event, xevent);
               break;
               
@@ -768,6 +769,7 @@ event_translate (ClutterBackend *backend,
 
               event->key.type = event->type = CLUTTER_KEY_PRESS;
               translate_key_event (backend, event, &xevent_converted);
+
               set_user_time (backend_x11, &xwindow, xkev->time);
             } 
           else if (xevent->type 
@@ -778,7 +780,7 @@ event_translate (ClutterBackend *backend,
               
               convert_xdevicekey_to_xkey (xkev, &xevent_converted);
 
-              event->type = CLUTTER_KEY_RELEASE;
+              event->key.type = event->type = CLUTTER_KEY_RELEASE;
               translate_key_event (backend, event, &xevent_converted);
             }
           else 

@@ -1,3 +1,9 @@
+2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/x11/clutter-event-x11.c (event_translate): Set the
+	event type explicitly in the union members as well for the
+	key events, like we do for all the other events.
+
 2008-06-23  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-entry.c (clutter_entry_paint): Set the clip
