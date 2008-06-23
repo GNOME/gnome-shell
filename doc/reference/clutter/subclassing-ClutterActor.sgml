@@ -320,90 +320,8 @@ foo_actor_allocate (ClutterActor          *actor,
       </programlisting>
     </example>
 
-    <para>An actor should always paint inside its allocation. It is,
-    however, possible to paint outside the negotiated size by overriding
-    the <classname>ClutterActor</classname>::get_paint_area() virtual
-    function and setting the passed #ClutterActorBox with their
-    <emphasis>untransformed</emphasis> paint area. This allows writing
-    actors that can effectively paint on an area different in size and
-    position from the allocation area.</para>
-
-    <para>The <classname>ClutterActor</classname>::get_paint_area() method of
-    a #ClutterActor is internally invoked when clutter_actor_get_paint_area()
-    is called on an instance of that actor class. The get_paint_area()
-    virtual function must return the untransformed area used by the
-    actor to paint itself; clutter_actor_get_paint_area() will then
-    proceed to transform the area coordinates into the frame of reference
-    of the actor's parent (taking into account anchor point, scaling
-    and rotation).</para>
-
-    <note><para>The default paint area is the allocation area of the
-    actor.</para></note>
-
-    <example id="container-actor-paint-area-example">
-      <title>Implementation of get_paint_area()</title>
-      <para>In this example, <classname>FooActor</classname> implements
-      the get_paint_area() virtual function to return an area equivalent
-      to those of its children plus a border which is not taken into
-      account by the size negotiation process.</para>
-      <programlisting>
-static void
-foo_actor_get_paint_area (ClutterActor    *actor,
-                          ClutterActorBox *box)
-{
-  FooActor *foo_actor = FOO_ACTOR (actor);
-
-  if (!foo_actor-&gt;children)
-    {
-      /* if we don't have any children we return the
-       * allocation given to us
-       */
-      clutter_actor_get_allocation_box (actor, box);
-    }
-  else
-    {
-      ClutterActorBox all_box = { 0, };
-      GList *l;
-
-      /* our paint area is the union of the children
-       * paint areas, plus a border
-       */
-      for (l = foo_actor-&gt;children; l != NULL; l = l&gt;next)
-        {
-          ClutterActor *child = l-&gt;data;
-          ClutterActorBox child_box = { 0, };
-
-          clutter_actor_get_paint_area (child, &amp;child_box);
-
-          if (l == foo_actor-&gt;children)
-            all_box = child_box;
-          else
-            {
-              if (child_box.x1 &lt; all_box.x1)
-                all_box.x1 = child_box.x1;
-
-              if (child_box.y1 &lt; all_box.y1)
-                all_box.y1 = child_box.y1;
-
-              if (child_box.x2 &lt; all_box.x2)
-                all_box.x2 = child_box.x2;
-
-              if (child_box.y2 &lt; all_box.y2)
-                all_box.y2 = child_box.y2;
-            }
-        }
-
-      /* apply the border width around the box */
-      all_box.x1 -= (foo_actor-&gt;border_width / 2);
-      all_box.y1 -= (foo_actor-&gt;border_width / 2);
-      all_box.x2 += (foo_actor-&gt;border_width / 2);
-      all_box.y2 += (foo_actor-&gt;border_width / 2);
-
-      *box = all_box;
-    }
-}
-      </programlisting>
-    </example>
+    <para>The allocation is also the "paint area", that is the area where
+    the paint operations should be performed.</para>
 
   </refsect1> <!-- actor-size-allocation -->
 
@@ -512,10 +430,6 @@ foo_actor_paint (ClutterActor *actor)
       </programlisting>
     </example>
 
-    <note><para>A container imposing a layout on its children may
-    opt to use the paint area as returned by clutter_actor_get_paint_area()
-    instead of the allocation.</para></note>
-
     <para>If the actor has a non-rectangular shape, or it has internal
     children that need to be distinguished by the events delivery mechanism,
     the <classname>ClutterActor</classname>::pick() method should also be
@@ -527,7 +441,7 @@ foo_actor_paint (ClutterActor *actor)
       <para>In this example, <classname>FooActor</classname> overrides the
       pick() virtual function default implementation to paint itself with a
       shaped silhouette, to allow events only on the actual shape of the actor
-      instead of the paint area.</para>
+      instead of the whole paint area.</para>
       <programlisting>
 static void
 foo_actor_pick (ClutterActor       *actor,

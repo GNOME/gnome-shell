@@ -1,3 +1,8 @@
+2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/subclassing-ClutterActor.sgml: Remove mention of the
+	get_paint_area() function and virtual function.
+
 2008-06-23  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/subclassing-ClutterActor.sgml: added missing call to
