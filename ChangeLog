@@ -1,3 +1,22 @@
+2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-texture.c:
+	(clutter_texture_get_preferred_width),
+	(clutter_texture_get_preferred_height),
+	(clutter_texture_set_property),
+	(clutter_texture_get_property),
+	(clutter_texture_class_init),
+	(clutter_texture_init): Add the new :keep-aspect-ratio property
+	to ClutterTexture; when set to TRUE the texture will return a
+	preferred width maintaining the aspect ratio with the given height
+	and a preferred height maintaining the aspect ratio with the
+	given width. This allows to set the width or the height and have
+	the texture automatically request the height or the width respectively
+	while maintaining the aspect ratio of the original image.
+
+	* tests/test-script.json: Update to test the new :keep-aspect-ratio
+	property.
+
 2008-06-23  Neil Roberts  <neil@o-hand.com>
 
 	Bug 918 - Group doesn't clip if it's children are clipped

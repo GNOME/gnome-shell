@@ -42,7 +42,7 @@
         "x" : 100,
         "y" : 100,
         "width" : "20mm",
-        "height" : "100px",
+        "keep-aspect-ratio" : true,
         "anchor-x" : "5mm",
         "anchor-y" : "5pt",
         "opacity" : 100,

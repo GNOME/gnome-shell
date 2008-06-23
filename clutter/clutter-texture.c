@@ -95,6 +95,7 @@ struct _ClutterTexturePrivate
   guchar                      *local_data;
 
   guint                        in_dispose : 1;
+  guint                        keep_aspect_ratio : 1;
 };
 
 enum
@@ -108,7 +109,8 @@ enum
   PROP_REPEAT_X,
   PROP_FILTER_QUALITY,
   PROP_COGL_TEXTURE,
-  PROP_FILENAME
+  PROP_FILENAME,
+  PROP_KEEP_ASPECT_RATIO
 };
 
 enum
@@ -338,17 +340,24 @@ clutter_texture_get_preferred_width (ClutterActor *self,
     {
       if (natural_width_p)
         {
-          if ((for_height < 0) || (priv->height <= 0))
-            *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (priv->width);
+          if (!priv->keep_aspect_ratio ||
+              for_height < 0 ||
+              priv->height <= 0)
+            {
+              *natural_width_p = CLUTTER_UNITS_FROM_DEVICE (priv->width);
+            }
           else
             {
               /* Set the natural width so as to preserve the aspect ratio */
-              ClutterFixed ratio =
-                clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->width),
-                               CLUTTER_INT_TO_FIXED (priv->height));
-              
-              *natural_width_p = CLUTTER_UNITS_FROM_FIXED (
-                clutter_qmulx (ratio, CLUTTER_UNITS_TO_FIXED (for_height)));
+              ClutterFixed ratio, height;
+
+              ratio = clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->width),
+                                     CLUTTER_INT_TO_FIXED (priv->height));
+
+              height = CLUTTER_UNITS_TO_FIXED (for_height);
+
+              *natural_width_p =
+                CLUTTER_UNITS_FROM_FIXED (clutter_qmulx (ratio, height));
             }
         }
     }
@@ -376,17 +385,24 @@ clutter_texture_get_preferred_height (ClutterActor *self,
     {
       if (natural_height_p)
         {
-          if ((for_width < 0) || (priv->width <= 0))
-            *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (priv->height);
+          if (!priv->keep_aspect_ratio ||
+              for_width < 0 ||
+              priv->width <= 0)
+            {
+              *natural_height_p = CLUTTER_UNITS_FROM_DEVICE (priv->height);
+            }
           else
             {
               /* Set the natural height so as to preserve the aspect ratio */
-              ClutterFixed ratio =
-                clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->height),
-                               CLUTTER_INT_TO_FIXED (priv->width));
+              ClutterFixed ratio, width;
               
-              *natural_height_p = CLUTTER_UNITS_FROM_FIXED (
-                clutter_qmulx (ratio, CLUTTER_UNITS_TO_FIXED (for_width)));
+              ratio = clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->height),
+                                     CLUTTER_INT_TO_FIXED (priv->width));
+
+              width = CLUTTER_UNITS_TO_FIXED (for_width);
+              
+              *natural_height_p =
+                CLUTTER_UNITS_FROM_FIXED (clutter_qmulx (ratio, width));
             }
         }
     }
@@ -561,6 +577,9 @@ clutter_texture_set_property (GObject      *object,
     case PROP_NO_SLICE:
       priv->no_slice = g_value_get_boolean (value);
       break;
+    case PROP_KEEP_ASPECT_RATIO:
+      priv->keep_aspect_ratio = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -607,6 +626,9 @@ clutter_texture_get_property (GObject    *object,
       break;
     case PROP_NO_SLICE:
       g_value_set_boolean (value, priv->no_slice);
+      break;
+    case PROP_KEEP_ASPECT_RATIO:
+      g_value_set_boolean (value, priv->keep_aspect_ratio);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -722,6 +744,15 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                           "The full path of the file containing the texture",
                           NULL,
                           G_PARAM_WRITABLE));
+
+  g_object_class_install_property
+    (gobject_class, PROP_KEEP_ASPECT_RATIO,
+     g_param_spec_boolean ("keep-aspect-ratio",
+			   "Keep Aspect Ratio",
+			   "Keep the aspect ratio of the texture when "
+			   "requesting the preferred width or height",
+			   FALSE,
+			   CLUTTER_PARAM_READWRITE));
 
   /**
    * ClutterTexture::size-change:
@@ -841,14 +872,15 @@ clutter_texture_init (ClutterTexture *self)
 
   self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
-  priv->max_tile_waste  = 64;
-  priv->filter_quality  = CLUTTER_TEXTURE_QUALITY_MEDIUM;
-  priv->repeat_x        = FALSE;
-  priv->repeat_y        = FALSE;
-  priv->sync_actor_size = TRUE;
-  priv->texture         = COGL_INVALID_HANDLE;
-  priv->fbo_handle      = COGL_INVALID_HANDLE;
-  priv->local_data      = NULL;
+  priv->max_tile_waste    = 64;
+  priv->filter_quality    = CLUTTER_TEXTURE_QUALITY_MEDIUM;
+  priv->repeat_x          = FALSE;
+  priv->repeat_y          = FALSE;
+  priv->sync_actor_size   = TRUE;
+  priv->texture           = COGL_INVALID_HANDLE;
+  priv->fbo_handle        = COGL_INVALID_HANDLE;
+  priv->local_data        = NULL;
+  priv->keep_aspect_ratio = FALSE;
 }
 
 static void
