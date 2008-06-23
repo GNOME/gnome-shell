@@ -29,15 +29,15 @@
 	* configure.ac:
 	* tests/Makefile.am:
 	* tests/test-devices.c:
-        Merge of 'xinput' branch giving initial basic support of 
-        multiple input devices.
+	Merge of 'xinput' branch giving initial basic support of 
+	multiple input devices.
 
 2008-06-23  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
 	* clutter/clutter-actor.h:
 	* clutter/clutter-group.c:
-        Remove uneeded (at least for now) paint_area method (#970)
+	Remove uneeded (at least for now) paint_area method (#970)
 
 2008-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -63,15 +63,15 @@
 
 	* clutter/clutter-actor.c:
 	* clutter/clutter-actor.h:
-        Clean up of parenting code (see #972)
-        Doc updates to section intro.
-        Add clutter_actor_allocate_preferred_size () utility call 
+	Clean up of parenting code (see #972)
+	Doc updates to section intro.
+	Add clutter_actor_allocate_preferred_size () utility call 
 
 	* clutter/clutter-group.c: (clutter_fixed_layout_allocate):
-        Use clutter_actor_allocate_preferred_size ()
+	Use clutter_actor_allocate_preferred_size ()
 
 	* doc/clutter-actor-invariants.txt:
-        Add some more notes
+	Add some more notes
 
 2008-06-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
