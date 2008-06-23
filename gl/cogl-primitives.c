@@ -30,6 +30,7 @@
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
+#include "cogl-clip-stack.h"
 
 #include <string.h>
 #include <gmodule.h>
@@ -145,9 +146,10 @@ _cogl_path_fill_nodes ()
   GE( glClear (GL_STENCIL_BUFFER_BIT) );
 
   GE( glEnable (GL_STENCIL_TEST) );
-  GE( glStencilFunc (GL_ALWAYS, 0x0, 0x0) );
+  GE( glStencilFunc (GL_NEVER, 0x0, 0x1) );
   GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
-  GE( glColorMask (GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE) );
+
+  GE( glStencilMask (1) );
   
   cogl_enable (COGL_ENABLE_VERTEX_ARRAY
 	       | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
@@ -155,10 +157,14 @@ _cogl_path_fill_nodes ()
   GE( glVertexPointer (2, GL_FLOAT, 0, ctx->path_nodes) );
   GE( glDrawArrays (GL_TRIANGLE_FAN, 0, ctx->path_nodes_size) );
   
-  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
-  GE( glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
-  GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE) );
+  GE( glStencilMask (~(GLuint) 0) );
   
+  /* Merge the stencil buffer with any clipping rectangles */
+  _cogl_clip_stack_merge ();
+  
+  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
+  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+
   bounds_x = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.x);
   bounds_y = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.y);
   bounds_w = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.x - ctx->path_nodes_min.x);
@@ -166,5 +172,6 @@ _cogl_path_fill_nodes ()
   
   cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
   
-  GE( glDisable (GL_STENCIL_TEST) );
+  /* Rebuild the stencil clip */
+  _cogl_clip_stack_rebuild (TRUE);
 }

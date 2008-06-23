@@ -33,6 +33,7 @@ typedef struct
   /* Features cache */
   CoglFeatureFlags  feature_flags;
   gboolean          features_cached;
+  GLint             num_stencil_bits;
   
   /* Enable cache */
   gulong            enable_flags;
