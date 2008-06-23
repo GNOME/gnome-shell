@@ -156,10 +156,11 @@ pango_clutter_render_layout (PangoLayout  *layout,
 			     ClutterColor *color,
 			     int           flags)
 {
-  return pango_clutter_render_layout_subpixel (layout,
-					       x * PANGO_SCALE,
-					       y * PANGO_SCALE,
-					       color, flags);
+  pango_clutter_render_layout_subpixel (layout,
+                                        x * PANGO_SCALE,
+                                        y * PANGO_SCALE,
+                                        color,
+                                        flags);
 }
 
 void

@@ -1,5 +1,13 @@
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug 984 - pango_clutter_render_layout() declared void, but
+	          returns (Haakon Sporsheim)
+
+	* clutter/pango/pangoclutter-render.c:
+	(pango_clutter_render_layout): Do not use a return statement.
+
+2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug 905 - Paint cursor directly (Xan López)
 
 	* clutter/clutter-entry.c:
