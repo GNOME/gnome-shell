@@ -1,5 +1,16 @@
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Post release bump to 0.7.3.
+
+======== Release 0.7.2 ========================================================
+
+2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac:
+	* NEWS: Release 0.7.2.
+
+2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-texture.c:
 	(clutter_texture_get_preferred_width),
 	(clutter_texture_get_preferred_height),

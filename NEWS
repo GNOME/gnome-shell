@@ -1,3 +1,38 @@
+Clutter 0.7.2 (23/06/2008), "Kedoke"
+===============================================================================
+
+ * List of changes between 0.7.0 and 0.7.2
+
+   o ClutterTexture has a new :keep-aspect-ratio property; when it is set
+     to TRUE the texture will return a preferred width maintaining the
+     aspect ratio with the given height and a preferred height maintaining
+     the aspect ratio with the given width. This allows to set the width or
+     the height and have the texture automatically request the height or the
+     width respectively while maintaining the aspect ratio of the original
+     image.
+
+   o Added XINPUT support on the X11 backends; this provides an initial
+     support for multiple input devices. The API is X11-specific, and
+     provides support for querying at run-time support for XINPUT, for
+     getting a list of input devices and for getting the type of each
+     input device.
+
+ * List of bugs fixed
+
+   o #816 - clutter_actor_request_coords() should take a const box.
+   o #836 - Optimize clutter_label_query_coords()
+   o #905 - Paint cursor directly
+   o #918 - Group doesn't clip if it's children are clipped
+   o #953 - Actors are not hidden before unrealized or disposed
+   o #960 - PangoContext creation code should not be duplicated
+   o #970 - clutter_actor_get_paint_area confusion
+   o #971 - Minor ClutterActor cleanups
+   o #972 - Better parenting
+   o #973 - unreffing ClutterScore may segfault
+   o #981 - clutter_stage_read_pixels temprow fix
+   o #982 - __COGL_GET_CONTEXT MS compiler issue
+   o #984 - pango_clutter_render_layout() declared void
+
 Clutter 0.7.0 (13/06/2008), "Booska"
 ===============================================================================
 
