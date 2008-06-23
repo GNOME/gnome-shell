@@ -1,7 +1,12 @@
+2008-06-23  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/subclassing-ClutterActor.sgml: added missing call to
+	cogl_push_matrix ()
+
 2008-06-16  Matthew Allum  <mallum@openedhand.com>
 
 	* cogl/cogl-docs.sgml:
-        Add an intro.
+	Add an intro.
 
 2008-06-13  Øyvind Kolås  <pippin@o-hand.com>
 

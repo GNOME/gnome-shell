@@ -548,6 +548,8 @@ foo_actor_pick (ClutterActor       *actor,
   /* this is the arc radius for the rounded rectangle corners */
   r = CLUTTER_UNITS_TO_FIXED (foo_actor->radius);
 
+  cogl_push_matrix ();
+
   /* use the passed color to paint ourselves */
   cogl_color (pick_color);
 
