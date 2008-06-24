@@ -201,6 +201,8 @@ struct _ClutterScriptPrivate
 
   JsonParser *parser;
 
+  gchar **search_paths;
+
   gchar *filename;
   guint is_filename : 1;
 };
@@ -1544,6 +1546,7 @@ clutter_script_finalize (GObject *gobject)
 
   g_object_unref (priv->parser);
   g_hash_table_destroy (priv->objects);
+  g_strfreev (priv->search_paths);
   g_free (priv->filename);
 
   G_OBJECT_CLASS (clutter_script_parent_class)->finalize (gobject);
@@ -2156,3 +2159,126 @@ clutter_script_error_quark (void)
 {
   return g_quark_from_static_string ("clutter-script-error");
 }
+
+/**
+ * clutter_script_add_search_paths:
+ * @script: a #ClutterScript
+ * @paths: an array of strings containing different search paths
+ * @n_paths: the length of the passed array
+ *
+ * Adds @paths to the list of search paths held by @script.
+ *
+ * The search paths are used by clutter_script_lookup_filename(), which
+ * can be used to define search paths for the textures source file name
+ * or other custom, file-based properties.
+ *
+ * Since: 0.8
+ */
+void
+clutter_script_add_search_paths (ClutterScript       *script,
+                                 const gchar * const  paths[],
+                                 gsize                n_paths)
+{
+  ClutterScriptPrivate *priv;
+  gchar **old_paths, **new_paths;
+  gsize old_paths_len, i;
+  gsize iter = 0;
+
+  g_return_if_fail (CLUTTER_IS_SCRIPT (script));
+  g_return_if_fail (paths != NULL);
+  g_return_if_fail (n_paths > 0);
+
+  priv = script->priv;
+
+  if (priv->search_paths)
+    {
+      old_paths     = priv->search_paths;
+      old_paths_len = g_strv_length (old_paths);
+    }
+  else
+    {
+      old_paths     = NULL;
+      old_paths_len = 0;
+    }
+
+  new_paths = g_new0 (gchar*, old_paths_len + n_paths + 1);
+
+  for (i = 0, iter = 0; i < old_paths_len; i++, iter++)
+    new_paths[iter] = g_strdup (old_paths[i]);
+
+  for (i = 0; i < n_paths; i++, iter++)
+    new_paths[iter] = g_strdup (paths[i]);
+
+  CLUTTER_NOTE (SCRIPT, "Added %d new search paths (new size: %d)",
+                n_paths,
+                g_strv_length (new_paths));
+
+  priv->search_paths = new_paths;
+  g_strfreev (old_paths);
+}
+
+/**
+ * clutter_script_lookup_filename:
+ * @script: a #ClutterScript
+ * @filename: the name of the file to lookup
+ *
+ * Looks up @filename inside the search paths of @script. If @filename
+ * is found, its full path will be returned .
+ *
+ * Return value: the full path of @filename or %NULL if no path was
+ *   found.
+ *
+ * Since: 0.8
+ */
+gchar *
+clutter_script_lookup_filename (ClutterScript *script,
+                                const gchar   *filename)
+{
+  ClutterScriptPrivate *priv;
+  gchar *dirname;
+  gchar *retval;
+
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
+  g_return_val_if_fail (filename != NULL, FALSE);
+
+  if (g_path_is_absolute (filename))
+    return g_strdup (filename);
+
+  priv = script->priv;
+
+  if (priv->search_paths)
+    {
+      gsize paths_len, i;
+
+      paths_len = g_strv_length (priv->search_paths);
+      for (i = 0; i < paths_len; i++)
+        {
+          retval = g_build_filename (priv->search_paths[i], filename, NULL);
+          if (g_file_test (retval, G_FILE_TEST_EXISTS))
+            return retval;
+          else
+            {
+              g_free (retval);
+              retval = NULL;
+            }
+        }
+    }
+
+  /* Fall back to assuming relative to our script */
+  if (priv->is_filename)
+    dirname = g_path_get_dirname (script->priv->filename);
+  else
+    dirname = g_get_current_dir ();
+  
+  retval = g_build_filename (dirname, filename, NULL);
+  if (!g_file_test (retval, G_FILE_TEST_EXISTS))
+    {
+      g_free (retval);
+      retval = NULL;
+    }
+  
+  g_free (dirname);
+
+  return retval;
+}
+

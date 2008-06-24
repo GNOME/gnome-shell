@@ -1259,6 +1259,8 @@ clutter_script_new
 ClutterScriptError
 clutter_script_load_from_data
 clutter_script_load_from_file
+clutter_script_add_search_paths
+clutter_script_lookup_filename
 
 <SUBSECTION>
 clutter_script_get_object

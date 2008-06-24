@@ -807,29 +807,9 @@ clutter_texture_set_custom_property (ClutterScriptable *scriptable,
       gchar *path;
       GError *error;
 
-      if (g_path_is_absolute (str))
-        path = g_strdup (str);
-      else
-        {
-          gchar *dirname = NULL;
-          gboolean is_filename = FALSE;
-
-          g_object_get (script, "filename-set", &is_filename, NULL);
-          if (is_filename)
-            {
-              gchar *filename = NULL;
-
-              g_object_get (script, "filename", &filename, NULL);
-              dirname = g_path_get_dirname (filename);
-
-              g_free (filename);
-            }
-          else
-            dirname = g_get_current_dir ();
-
-          path = g_build_filename (dirname, str, NULL);
-          g_free (dirname);
-        }
+      path = clutter_script_lookup_filename (script, str);
+      if (G_UNLIKELY (!path))
+        return;
 
       error = NULL;
       clutter_texture_set_from_file (texture, path, &error);

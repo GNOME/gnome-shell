@@ -145,6 +145,12 @@ void           clutter_script_connect_signals_full (ClutterScript  *script,
                                                     ClutterScriptConnectFunc func,
                                                     gpointer        user_data);
 
+void           clutter_script_add_search_paths     (ClutterScript       *script,
+                                                    const gchar * const  paths[],
+                                                    gsize                n_paths);
+gchar *        clutter_script_lookup_filename      (ClutterScript       *script,
+                                                    const gchar         *filename) G_GNUC_MALLOC;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_SCRIPT_H__ */

@@ -1,3 +1,22 @@
+2008-06-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug 989 - Add a search path for clutter script assets
+
+	* clutter/clutter-script.h:
+	* clutter/clutter-script.c:
+	(clutter_script_finalize),
+	(clutter_script_add_search_paths),
+	(clutter_script_lookup_filename): Add the ability to define multiple
+	search paths inside ClutterScript and to look up a specific filename
+	inside those search paths. This is useful to define a set of
+	directories where the assets for a UI definition are and still
+	reference those assets by their name instead of the full path. (989,
+	based on a patch by Matthew Allum)
+
+	* clutter/clutter-texture.c:
+	(clutter_texture_set_custom_property): Use the newly added
+	clutter_script_lookup_filename() function.
+
 2008-06-24  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/cogl/gles/cogl-gles2-wrapper.h: 
