@@ -33,16 +33,10 @@ typedef struct _CoglProgram CoglProgram;
 struct _CoglProgram
 {
   guint              ref_count;
-  GLuint             gl_handle;
 
-  /* Keep track of which types of shader we've attached so we can link
-     in our replacement fixed functionality shader */
-  gboolean           attached_vertex_shader;
-  gboolean           attached_fragment_shader;
-  gboolean           attached_fixed_vertex_shader;
-  gboolean           attached_fixed_fragment_shader;
+  GSList            *attached_shaders;
 
-  CoglGles2WrapperUniforms uniforms;
+  char              *custom_uniform_names[COGL_GLES2_NUM_CUSTOM_UNIFORMS];
 };
 
 CoglProgram *_cogl_program_pointer_from_handle (CoglHandle handle);

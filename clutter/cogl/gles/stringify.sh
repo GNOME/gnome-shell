@@ -44,7 +44,11 @@ if test "$#" = 2; then
     echo "#ifndef ${guardname}" >> "${headername}";
     echo "#define ${guardname}" >> "${headername}";
     echo >> "${headername}";
-    echo "extern const char ${varname}[];" >> "${headername}";
+
+    sed -n \
+     -e 's/^ *\/\*\*\* \([a-zA-Z0-9_]*\) \*\*\*\//extern const char \1[];/p' \
+     < "$2" >> "${headername}";
+
     echo >> "${headername}";
     echo "#endif /* ${guardname} */" >> "${headername}";
 
@@ -57,9 +61,16 @@ else
 
     output_copyright "${cname}";
     echo >> "${cname}";
-    echo "const char ${varname}[] =" >> "${cname}";
-    sed -e 's/"/\\"/' -e 's/^/  \"/' -e 's/$/\\n"/' \
+    sed -n \
+	-e h \
+	-e 's/^ *\/\*\*\* \([a-zA-Z0-9_]*\) \*\*\*\//  ;\nconst char \1[] =/' \
+	-e 't got' \
+	-e g \
+	-e 's/"/\\"/' \
+	-e 's/^/  "/' \
+	-e 's/$/\\n"/' \
+	-e ': got' \
+	-e p \
 	< "$1" >> "${cname}";
     echo "  ;" >> "${cname}";
-
 fi;

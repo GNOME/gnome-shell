@@ -36,6 +36,8 @@
 #include "cogl-fixed-vertex-shader.h"
 #include "cogl-fixed-fragment-shader.h"
 #include "cogl-context.h"
+#include "cogl-shader.h"
+#include "cogl-program.h"
 
 #define _COGL_GET_GLES2_WRAPPER(wvar, retval)			\
   CoglGles2Wrapper *wvar;					\
@@ -44,6 +46,24 @@
     if (__ctxvar == NULL) return retval;			\
     wvar = &__ctxvar->gles2;					\
   }
+
+#define _COGL_GLES2_CHANGE_SETTING(w, var, val)	\
+  do						\
+    if ((w)->settings.var != (val))		\
+      {						\
+	(w)->settings.var = (val);		\
+	(w)->settings_dirty = TRUE;		\
+      }						\
+  while (0)
+
+#define _COGL_GLES2_CHANGE_UNIFORM(w, flag, var, val)		\
+  do								\
+    if ((w)->var != (val))					\
+      {								\
+	(w)->var = (val);					\
+	(w)->dirty_uniforms |= COGL_GLES2_DIRTY_ ## flag;	\
+      }								\
+  while (0)
 
 #define COGL_GLES2_WRAPPER_VERTEX_ATTRIB    0
 #define COGL_GLES2_WRAPPER_TEX_COORD_ATTRIB 1
@@ -83,61 +103,9 @@ cogl_gles2_wrapper_create_shader (GLenum type, const char *source)
 void
 cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
 {
-  GLint status;
   GLfixed default_fog_color[4] = { 0, 0, 0, 0 };
 
   memset (wrapper, 0, sizeof (CoglGles2Wrapper));
-
-  /* Create the shader program */
-  wrapper->vertex_shader
-    = cogl_gles2_wrapper_create_shader (GL_VERTEX_SHADER,
-					cogl_fixed_vertex_shader);
-
-  if (wrapper->vertex_shader == 0)
-    return;
-
-  wrapper->fragment_shader
-    = cogl_gles2_wrapper_create_shader (GL_FRAGMENT_SHADER,
-					cogl_fixed_fragment_shader);
-
-  if (wrapper->fragment_shader == 0)
-    {
-      glDeleteShader (wrapper->vertex_shader);
-      return;
-    }
-
-  wrapper->program = glCreateProgram ();
-  glAttachShader (wrapper->program, wrapper->fragment_shader);
-  glAttachShader (wrapper->program, wrapper->vertex_shader);
-  cogl_gles2_wrapper_bind_attributes (wrapper->program);
-  glLinkProgram (wrapper->program);
-
-  glGetProgramiv (wrapper->program, GL_LINK_STATUS, &status);
-
-  if (!status)
-    {
-      char log[1024];
-      GLint len;
-
-      glGetProgramInfoLog (wrapper->program, sizeof (log) - 1, &len, log);
-      log[len] = '\0';
-
-      g_critical ("%s", log);
-
-      glDeleteProgram (wrapper->program);
-      glDeleteShader (wrapper->vertex_shader);
-      glDeleteShader (wrapper->fragment_shader);
-
-      return;
-    }
-
-  glUseProgram (wrapper->program);
-
-  wrapper->uniforms = &wrapper->fixed_uniforms;
-  cogl_gles2_wrapper_get_uniforms (wrapper->program, wrapper->uniforms);
-
-  /* Always use the first texture unit */
-  glUniform1i (wrapper->uniforms->bound_texture_uniform, 0);
 
   /* Initialize the stacks */
   cogl_wrap_glMatrixMode (GL_TEXTURE);
@@ -146,8 +114,6 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   cogl_wrap_glLoadIdentity ();
   cogl_wrap_glMatrixMode (GL_MODELVIEW);
   cogl_wrap_glLoadIdentity ();
-
-  wrapper->mvp_uptodate = GL_FALSE;
 
   /* Initialize the fogging options */
   cogl_wrap_glDisable (GL_FOG);
@@ -160,6 +126,293 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   /* Initialize alpha testing */
   cogl_wrap_glDisable (GL_ALPHA_TEST);
   cogl_wrap_glAlphaFunc (GL_ALWAYS, 0.0f);
+}
+
+static gboolean
+cogl_gles2_settings_equal (const CoglGles2WrapperSettings *a,
+			   const CoglGles2WrapperSettings *b,
+			   gboolean vertex_tests,
+			   gboolean fragment_tests)
+{
+  if (fragment_tests)
+    {
+      if (a->texture_2d_enabled != b->texture_2d_enabled)
+	return FALSE;
+      
+      if (a->texture_2d_enabled && a->alpha_only != b->alpha_only)
+	return FALSE;
+
+      if (a->alpha_test_enabled != b->alpha_test_enabled)
+	return FALSE;
+      if (a->alpha_test_enabled && a->alpha_test_func != b->alpha_test_func)
+	return FALSE;
+    }
+
+  if (a->fog_enabled != b->fog_enabled)
+    return FALSE;
+
+  if (vertex_tests && a->fog_enabled && a->fog_mode != b->fog_mode)
+    return FALSE;
+
+  return TRUE;
+}
+
+static CoglGles2WrapperShader *
+cogl_gles2_get_vertex_shader (const CoglGles2WrapperSettings *settings)
+{
+  GString *shader_source;
+  GLuint shader_obj;
+  CoglGles2WrapperShader *shader;
+  GSList *node;
+
+  _COGL_GET_GLES2_WRAPPER (w, NULL);
+
+  /* Check if we already have a vertex shader for these settings */
+  for (node = w->compiled_vertex_shaders; node; node = node->next)
+    if (cogl_gles2_settings_equal (settings,
+				   &((CoglGles2WrapperShader *)
+				     node->data)->settings,
+				   TRUE, FALSE))
+      return (CoglGles2WrapperShader *) node->data;
+
+  /* Otherwise create a new shader */
+  shader_source = g_string_new (cogl_fixed_vertex_shader_start);
+
+  if (settings->fog_enabled)
+    {
+      g_string_append (shader_source, cogl_fixed_vertex_shader_fog_start);
+
+      switch (settings->fog_mode)
+	{
+	case GL_EXP:
+	  g_string_append (shader_source, cogl_fixed_vertex_shader_fog_exp);
+	  break;
+
+	case GL_EXP2:
+	  g_string_append (shader_source, cogl_fixed_vertex_shader_fog_exp2);
+	  break;
+
+	default:
+	  g_string_append (shader_source, cogl_fixed_vertex_shader_fog_linear);
+	  break;
+	}
+
+      g_string_append (shader_source, cogl_fixed_vertex_shader_fog_end);
+    }
+
+  g_string_append (shader_source, cogl_fixed_vertex_shader_end);
+
+  shader_obj = cogl_gles2_wrapper_create_shader (GL_VERTEX_SHADER,
+						 shader_source->str);
+
+  g_string_free (shader_source, TRUE);
+  
+  if (shader_obj == 0)
+    return NULL;
+  
+  shader = g_slice_new (CoglGles2WrapperShader);
+  shader->shader = shader_obj;
+  shader->settings = *settings;
+
+  w->compiled_vertex_shaders = g_slist_prepend (w->compiled_vertex_shaders,
+						shader);
+
+  return shader;
+}
+
+static CoglGles2WrapperShader *
+cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
+{
+  GString *shader_source;
+  GLuint shader_obj;
+  CoglGles2WrapperShader *shader;
+  GSList *node;
+
+  _COGL_GET_GLES2_WRAPPER (w, NULL);
+
+  /* Check if we already have a fragment shader for these settings */
+  for (node = w->compiled_fragment_shaders; node; node = node->next)
+    if (cogl_gles2_settings_equal (settings,
+				   &((CoglGles2WrapperShader *)
+				     node->data)->settings,
+				   FALSE, TRUE))
+      return (CoglGles2WrapperShader *) node->data;
+
+  /* Otherwise create a new shader */
+  shader_source = g_string_new (cogl_fixed_fragment_shader_start);
+  if (settings->texture_2d_enabled)
+    {
+      if (settings->alpha_only)
+	g_string_append (shader_source,
+			 cogl_fixed_fragment_shader_texture_alpha_only);
+      else
+	g_string_append (shader_source,
+			 cogl_fixed_fragment_shader_texture);
+    }
+  else
+    g_string_append (shader_source, cogl_fixed_fragment_shader_solid_color);
+
+  if (settings->fog_enabled)
+    g_string_append (shader_source, cogl_fixed_fragment_shader_fog);
+
+  if (settings->alpha_test_enabled)
+    switch (settings->alpha_test_func)
+      {
+      case GL_NEVER:
+	g_string_append (shader_source,
+			 cogl_fixed_fragment_shader_alpha_never);
+	break;
+      case GL_LESS:
+	g_string_append (shader_source,
+			 cogl_fixed_fragment_shader_alpha_less);
+	break;
+      case GL_EQUAL:
+	g_string_append (shader_source,
+			 cogl_fixed_fragment_shader_alpha_equal);
+	break;
+      case GL_LEQUAL:
+	g_string_append (shader_source,
+			 cogl_fixed_fragment_shader_alpha_lequal);
+	break;
+      case GL_GREATER:
+	g_string_append (shader_source,
+			 cogl_fixed_fragment_shader_alpha_greater);
+	break;
+      case GL_NOTEQUAL:
+	g_string_append (shader_source,
+			 cogl_fixed_fragment_shader_alpha_notequal);
+	break;
+      case GL_GEQUAL:
+	g_string_append (shader_source,
+			 cogl_fixed_fragment_shader_alpha_gequal);
+      }
+
+  g_string_append (shader_source, cogl_fixed_fragment_shader_end);
+
+  shader_obj = cogl_gles2_wrapper_create_shader (GL_FRAGMENT_SHADER,
+						 shader_source->str);
+
+  g_string_free (shader_source, TRUE);
+  
+  if (shader_obj == 0)
+    return NULL;
+  
+  shader = g_slice_new (CoglGles2WrapperShader);
+  shader->shader = shader_obj;
+  shader->settings = *settings;
+
+  w->compiled_fragment_shaders = g_slist_prepend (w->compiled_fragment_shaders,
+						  shader);
+
+  return shader;
+}
+
+static CoglGles2WrapperProgram *
+cogl_gles2_wrapper_get_program (const CoglGles2WrapperSettings *settings)
+{
+  GSList *node;
+  CoglGles2WrapperProgram *program;
+  CoglGles2WrapperShader *vertex_shader, *fragment_shader;
+  GLint status;
+  gboolean custom_vertex_shader = FALSE, custom_fragment_shader = FALSE;
+  CoglProgram *user_program = NULL;
+  int i;
+
+  _COGL_GET_GLES2_WRAPPER (w, NULL);
+
+  /* Check if we've already got a program for these settings */
+  for (node = w->compiled_programs; node; node = node->next)
+    {
+      program = (CoglGles2WrapperProgram *) node->data;
+
+      if (cogl_gles2_settings_equal (settings, &program->settings, TRUE, TRUE)
+	  && program->settings.user_program == settings->user_program)
+	return (CoglGles2WrapperProgram *) node->data;
+    }
+
+  /* Otherwise create a new program */
+
+  /* Check whether the currently used custom program has vertex and
+     fragment shaders */
+  if (w->settings.user_program != COGL_INVALID_HANDLE)
+    {
+      user_program
+	= _cogl_program_pointer_from_handle (w->settings.user_program);
+
+      for (node = user_program->attached_shaders; node; node = node->next)
+	{
+	  CoglShader *shader
+	    = _cogl_shader_pointer_from_handle ((CoglHandle) node->data);
+
+	  if (shader->type == CGL_VERTEX_SHADER)
+	    custom_vertex_shader = TRUE;
+	  else if (shader->type == CGL_FRAGMENT_SHADER)
+	    custom_fragment_shader = TRUE;
+	}
+    }
+
+  /* Get or create the fixed functionality shaders for these settings
+     if there is no custom replacement */
+  if (!custom_vertex_shader)
+    {
+      vertex_shader = cogl_gles2_get_vertex_shader (settings);
+      if (vertex_shader == NULL)
+	return NULL;
+    }
+  if (!custom_fragment_shader)
+    {
+      fragment_shader = cogl_gles2_get_fragment_shader (settings);
+      if (fragment_shader == NULL)
+	return NULL;
+    }
+
+  program = g_slice_new (CoglGles2WrapperProgram);
+
+  program->program = glCreateProgram ();
+  if (!custom_vertex_shader)
+    glAttachShader (program->program, vertex_shader->shader);
+  if (!custom_fragment_shader)
+    glAttachShader (program->program, fragment_shader->shader);
+  if (user_program)
+    for (node = user_program->attached_shaders; node; node = node->next)
+      {
+	CoglShader *shader
+	  = _cogl_shader_pointer_from_handle ((CoglHandle) node->data);
+	glAttachShader (program->program, shader->gl_handle);
+      }
+  cogl_gles2_wrapper_bind_attributes (program->program);
+  glLinkProgram (program->program);
+
+  glGetProgramiv (program->program, GL_LINK_STATUS, &status);
+
+  if (!status)
+    {
+      char log[1024];
+      GLint len;
+
+      glGetProgramInfoLog (program->program, sizeof (log) - 1, &len, log);
+      log[len] = '\0';
+
+      g_critical ("%s", log);
+
+      glDeleteProgram (program->program);
+      g_slice_free (CoglGles2WrapperProgram, program);
+
+      return NULL;
+    }
+
+  program->settings = *settings;
+      
+  cogl_gles2_wrapper_get_uniforms (program->program, &program->uniforms);
+
+  /* We haven't tried to get a location for any of the custom uniforms
+     yet */
+  for (i = 0; i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
+    program->custom_uniforms[i] = COGL_GLES2_UNBOUND_CUSTOM_UNIFORM;
+      
+  w->compiled_programs = g_slist_append (w->compiled_programs, program);
+      
+  return program;
 }
 
 void
@@ -183,17 +436,9 @@ cogl_gles2_wrapper_get_uniforms (GLuint program,
     = glGetUniformLocation (program, "modelview_matrix");
   uniforms->texture_matrix_uniform
     = glGetUniformLocation (program, "texture_matrix");
-  uniforms->texture_2d_enabled_uniform
-    = glGetUniformLocation (program, "texture_2d_enabled");
   uniforms->bound_texture_uniform
     = glGetUniformLocation (program, "texture_unit");
-  uniforms->alpha_only_uniform
-    = glGetUniformLocation (program, "alpha_only");
 
-  uniforms->fog_enabled_uniform
-    = glGetUniformLocation (program, "fog_enabled");
-  uniforms->fog_mode_uniform
-    = glGetUniformLocation (program, "fog_mode");
   uniforms->fog_density_uniform
     = glGetUniformLocation (program, "fog_density");
   uniforms->fog_start_uniform
@@ -203,10 +448,6 @@ cogl_gles2_wrapper_get_uniforms (GLuint program,
   uniforms->fog_color_uniform
     = glGetUniformLocation (program, "fog_color");
 
-  uniforms->alpha_test_enabled_uniform
-    = glGetUniformLocation (program, "alpha_test_enabled");
-  uniforms->alpha_test_func_uniform
-    = glGetUniformLocation (program, "alpha_test_func");
   uniforms->alpha_test_ref_uniform
     = glGetUniformLocation (program, "alpha_test_ref");
 }
@@ -214,42 +455,50 @@ cogl_gles2_wrapper_get_uniforms (GLuint program,
 void
 cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
 {
-  if (wrapper->program)
+  GSList *node, *next;
+
+  for (node = wrapper->compiled_programs; node; node = next)
     {
-      glDeleteProgram (wrapper->program);
-      wrapper->program = 0;
+      next = node->next;
+      glDeleteProgram (((CoglGles2WrapperProgram *) node->data)->program);
+      g_slist_free1 (node);
     }
-  if (wrapper->vertex_shader)
+  wrapper->compiled_programs = NULL;
+
+  for (node = wrapper->compiled_vertex_shaders; node; node = next)
     {
-      glDeleteShader (wrapper->vertex_shader);
-      wrapper->vertex_shader = 0;
+      next = node->next;
+      glDeleteShader (((CoglGles2WrapperShader *) node->data)->shader);
+      g_slist_free1 (node);
     }
-  if (wrapper->fragment_shader)
+  wrapper->compiled_vertex_shaders = NULL;
+
+  for (node = wrapper->compiled_fragment_shaders; node; node = next)
     {
-      glDeleteShader (wrapper->fragment_shader);
-      wrapper->fragment_shader = 0;
+      next = node->next;
+      glDeleteShader (((CoglGles2WrapperShader *) node->data)->shader);
+      g_slist_free1 (node);
     }
+  wrapper->compiled_fragment_shaders = NULL;
 }
 
 void
 cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper, GLenum matrix_num)
 {
-  const float *matrix;
-
   switch (matrix_num)
     {
     default:
     case GL_MODELVIEW:
+      wrapper->dirty_uniforms |= COGL_GLES2_DIRTY_MVP_MATRIX
+	| COGL_GLES2_DIRTY_MODELVIEW_MATRIX;
+      break;
+
     case GL_PROJECTION:
-      /* Queue a recalculation of the combined modelview and
-	 projection matrix at the next draw */
-      wrapper->mvp_uptodate = GL_FALSE;
+      wrapper->dirty_uniforms |= COGL_GLES2_DIRTY_MVP_MATRIX;
       break;
 
     case GL_TEXTURE:
-      matrix = wrapper->texture_stack + wrapper->texture_stack_pos * 16;
-      glUniformMatrix4fv (wrapper->uniforms->texture_matrix_uniform,
-			  1, GL_FALSE, matrix);
+      wrapper->dirty_uniforms |= COGL_GLES2_DIRTY_TEXTURE_MATRIX;
       break;
     }
 }
@@ -530,26 +779,105 @@ cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
 void
 cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count)
 {
+  CoglGles2WrapperProgram *program;
+
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
-  /* Make sure the modelview+projection matrix is up to date */
-  if (!w->mvp_uptodate)
+  /* Check if we need to switch programs */
+  if (w->settings_dirty)
     {
-      float mvp_matrix[16];
-      const float *modelview_matrix = w->modelview_stack
-	+ w->modelview_stack_pos * 16;
+      /* Find or create a program for the current settings */
+      program = cogl_gles2_wrapper_get_program (&w->settings);
 
-      cogl_gles2_wrapper_mult_matrix (mvp_matrix,
-				      w->projection_stack
-				      + w->projection_stack_pos * 16,
-				      modelview_matrix);
+      if (program == NULL)
+	/* Can't compile a shader so there is nothing we can do */
+	return;
 
-      glUniformMatrix4fv (w->uniforms->mvp_matrix_uniform, 1,
-			  GL_FALSE, mvp_matrix);
-      glUniformMatrix4fv (w->uniforms->modelview_matrix_uniform, 1, GL_FALSE,
-			  modelview_matrix);
+      /* Start using it if we aren't already */
+      if (w->current_program != program)
+	{
+	  glUseProgram (program->program);
+	  w->current_program = program;
+	  /* All of the uniforms are probably now out of date */
+	  w->dirty_uniforms = COGL_GLES2_DIRTY_ALL;
+	  w->dirty_custom_uniforms = (1 << COGL_GLES2_NUM_CUSTOM_UNIFORMS) - 1;
+	}
+      w->settings_dirty = FALSE;
+    }
+  else
+    program = w->current_program;
 
-      w->mvp_uptodate = GL_TRUE;
+  /* Make sure all of the uniforms are up to date */
+  if (w->dirty_uniforms)
+    {
+      if ((w->dirty_uniforms & (COGL_GLES2_DIRTY_MVP_MATRIX
+				| COGL_GLES2_DIRTY_MODELVIEW_MATRIX)))
+	{
+	  float mvp_matrix[16];
+	  const float *modelview_matrix = w->modelview_stack
+	    + w->modelview_stack_pos * 16;
+
+	  cogl_gles2_wrapper_mult_matrix (mvp_matrix,
+					  w->projection_stack
+					  + w->projection_stack_pos * 16,
+					  modelview_matrix);	  
+
+	  if (program->uniforms.mvp_matrix_uniform != -1)
+	    glUniformMatrix4fv (program->uniforms.mvp_matrix_uniform, 1,
+				GL_FALSE, mvp_matrix);
+	  if (program->uniforms.modelview_matrix_uniform != -1)
+	    glUniformMatrix4fv (program->uniforms.modelview_matrix_uniform, 1,
+				GL_FALSE, modelview_matrix);
+	}
+      if ((w->dirty_uniforms & COGL_GLES2_DIRTY_TEXTURE_MATRIX)
+	  && program->uniforms.texture_matrix_uniform != -1)
+	glUniformMatrix4fv (program->uniforms.texture_matrix_uniform, 1,
+			    GL_FALSE,
+			    w->texture_stack + w->texture_stack_pos * 16);
+
+      if ((w->dirty_uniforms & COGL_GLES2_DIRTY_FOG_DENSITY)
+	  && program->uniforms.fog_density_uniform != -1)
+	glUniform1f (program->uniforms.fog_density_uniform, w->fog_density);
+      if ((w->dirty_uniforms & COGL_GLES2_DIRTY_FOG_START)
+	  && program->uniforms.fog_start_uniform != -1)
+	glUniform1f (program->uniforms.fog_start_uniform, w->fog_start);
+      if ((w->dirty_uniforms & COGL_GLES2_DIRTY_FOG_END)
+	  && program->uniforms.fog_end_uniform != -1)
+	glUniform1f (program->uniforms.fog_end_uniform, w->fog_end);
+
+      if ((w->dirty_uniforms & COGL_GLES2_DIRTY_ALPHA_TEST_REF)
+	  && program->uniforms.alpha_test_ref_uniform != -1)
+	glUniform1f (program->uniforms.alpha_test_ref_uniform,
+		     w->alpha_test_ref);
+
+      w->dirty_uniforms = 0;
+    }
+
+  if (w->dirty_custom_uniforms)
+    {
+      int i;
+
+      if (w->settings.user_program != COGL_INVALID_HANDLE)
+	{
+	  CoglProgram *user_program
+	    = _cogl_program_pointer_from_handle (w->settings.user_program);
+	  const char *uniform_name;
+
+	  for (i = 0; i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
+	    if ((w->dirty_custom_uniforms & (1 << i))
+		&& (uniform_name = user_program->custom_uniform_names[i]))
+	      {
+		if (program->custom_uniforms[i]
+		    == COGL_GLES2_UNBOUND_CUSTOM_UNIFORM)
+		  program->custom_uniforms[i]
+		    = glGetUniformLocation (program->program, uniform_name);
+		if (program->custom_uniforms[i] >= 0)
+		  glUniform1f (program->custom_uniforms[i],
+			       w->custom_uniforms[i]);
+	      }
+	}
+      
+      w->dirty_custom_uniforms = 0;
     }
 
   glDrawArrays (mode, first, count);
@@ -566,8 +894,7 @@ cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
   /* We need to keep track of whether the texture is alpha-only
      because the emulation of GL_MODULATE needs to work differently in
      that case */
-  glUniform1i (w->uniforms->alpha_only_uniform,
-	       internal_format == GL_ALPHA ? GL_TRUE : GL_FALSE);
+  _COGL_GLES2_CHANGE_SETTING (w, alpha_only, internal_format == GL_ALPHA);
 }
 
 void
@@ -586,15 +913,15 @@ cogl_wrap_glEnable (GLenum cap)
   switch (cap)
     {
     case GL_TEXTURE_2D:
-      glUniform1i (w->uniforms->texture_2d_enabled_uniform, GL_TRUE);
+      _COGL_GLES2_CHANGE_SETTING (w, texture_2d_enabled, TRUE);
       break;
 
     case GL_FOG:
-      glUniform1i (w->uniforms->fog_enabled_uniform, GL_TRUE);
+      _COGL_GLES2_CHANGE_SETTING (w, fog_enabled, TRUE);
       break;
 
     case GL_ALPHA_TEST:
-      glUniform1i (w->uniforms->alpha_test_enabled_uniform, GL_TRUE);
+      _COGL_GLES2_CHANGE_SETTING (w, alpha_test_enabled, TRUE);
       break;
 
     default:
@@ -610,15 +937,15 @@ cogl_wrap_glDisable (GLenum cap)
   switch (cap)
     {
     case GL_TEXTURE_2D:
-      glUniform1i (w->uniforms->texture_2d_enabled_uniform, GL_FALSE);
+      _COGL_GLES2_CHANGE_SETTING (w, texture_2d_enabled, FALSE);
       break;
 
     case GL_FOG:
-      glUniform1i (w->uniforms->fog_enabled_uniform, GL_FALSE);
+      _COGL_GLES2_CHANGE_SETTING (w, fog_enabled, FALSE);
       break;
 
     case GL_ALPHA_TEST:
-      glUniform1i (w->uniforms->alpha_test_enabled_uniform, GL_FALSE);
+      _COGL_GLES2_CHANGE_SETTING (w, alpha_test_enabled, FALSE);
       break;
 
     default:
@@ -670,8 +997,8 @@ cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref)
   else if (ref > 1.0f)
     ref = 1.0f;
 
-  glUniform1i (w->uniforms->alpha_test_func_uniform, func);
-  glUniform1f (w->uniforms->alpha_test_ref_uniform, ref);
+  _COGL_GLES2_CHANGE_SETTING (w, alpha_test_func, func);
+  _COGL_GLES2_CHANGE_UNIFORM (w, ALPHA_TEST_REF, alpha_test_ref, ref);
 }
 
 void
@@ -753,22 +1080,22 @@ cogl_wrap_glFogx (GLenum pname, GLfixed param)
   switch (pname)
     {
     case GL_FOG_MODE:
-      glUniform1i (w->uniforms->fog_mode_uniform, param);
+      _COGL_GLES2_CHANGE_SETTING (w, fog_mode, param);
       break;
       
     case GL_FOG_DENSITY:
-      glUniform1f (w->uniforms->fog_density_uniform,
-		   CLUTTER_FIXED_TO_FLOAT (param));
+      _COGL_GLES2_CHANGE_UNIFORM (w, FOG_DENSITY, fog_density,
+				  CLUTTER_FIXED_TO_FLOAT (param));
       break;
 
     case GL_FOG_START:
-      glUniform1f (w->uniforms->fog_start_uniform,
-		   CLUTTER_FIXED_TO_FLOAT (param));
+      _COGL_GLES2_CHANGE_UNIFORM (w, FOG_START, fog_start,
+				  CLUTTER_FIXED_TO_FLOAT (param));
       break;
 
     case GL_FOG_END:
-      glUniform1f (w->uniforms->fog_end_uniform,
-		   CLUTTER_FIXED_TO_FLOAT (param));
+      _COGL_GLES2_CHANGE_UNIFORM (w, FOG_END, fog_end,
+				  CLUTTER_FIXED_TO_FLOAT (param));
       break;
     }
 }
@@ -776,14 +1103,15 @@ cogl_wrap_glFogx (GLenum pname, GLfixed param)
 void
 cogl_wrap_glFogxv (GLenum pname, const GLfixed *params)
 {
+  int i;
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
   if (pname == GL_FOG_COLOR)
-    glUniform4f (w->uniforms->fog_color_uniform,
-		 CLUTTER_FIXED_TO_FLOAT (params[0]),
-		 CLUTTER_FIXED_TO_FLOAT (params[1]),
-		 CLUTTER_FIXED_TO_FLOAT (params[2]),
-		 CLUTTER_FIXED_TO_FLOAT (params[3]));
+    {
+      for (i = 0; i < 4; i++)
+	w->fog_color[i] = CLUTTER_FIXED_TO_FLOAT (params[i]);
+      w->dirty_uniforms |= COGL_GLES2_DIRTY_FOG_COLOR;
+    }
 }
 
 void
@@ -791,4 +1119,34 @@ cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param)
 {
   if (pname != GL_GENERATE_MIPMAP)
     glTexParameteri (target, pname, param);
+}
+
+void
+_cogl_gles2_clear_cache_for_program (CoglHandle user_program)
+{
+  GSList *node, *next, *last = NULL;
+  CoglGles2WrapperProgram *program;
+
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  /* Remove any cached programs that link against this custom program */
+  for (node = w->compiled_programs; node; node = next)
+    {
+      next = node->next;
+      program = (CoglGles2WrapperProgram *) node->data;
+
+      if (program->settings.user_program == user_program)
+	{
+	  glDeleteProgram (program->program);
+
+	  if (last)
+	    last->next = next;
+	  else
+	    w->compiled_programs = next;
+
+	  g_slist_free1 (node);
+	}
+      else
+	last = node;
+    }
 }

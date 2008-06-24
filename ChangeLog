@@ -1,3 +1,29 @@
+2008-06-24  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/cogl/gles/cogl-gles2-wrapper.h: 
+	* clutter/cogl/gles/cogl-gles2-wrapper.c: All of the settings and
+	uniforms are now proxied into COGL variables instead of setting
+	the GL uniforms directly. Just before glDrawArrays is executed a
+	shader is generated using the given settings to avoid using 'if'
+	statements. The shaders are cached.
+
+	* clutter/cogl/gles/cogl-fixed-vertex-shader.glsl: 
+	* clutter/cogl/gles/cogl-fixed-fragment-shader.glsl: The shaders
+	are now split into parts using comments instead of 'if' statements
+	so that the simplest shader can be generated on the fly.
+
+	* clutter/cogl/gles/stringify.sh: Now splits up the shader sources
+	into separate C strings where deliminated by special comments.
+
+	* clutter/cogl/gles/cogl-program.h: 
+	* clutter/cogl/gles/cogl-program.c: A custom shader can no longer
+	be directly linked with the fixed-functionality replacement
+	because the replacement changes depending on the settings. Instead
+	the bound shader is linked with the appropriate replacement shader
+	just before glDrawArrays is executed. The custom uniform variables
+	must also be proxied through COGL variables because their location
+	can change when relinked.
+
 2008-06-24  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/fruity/clutter-fruity.c: removed dead code and unused
