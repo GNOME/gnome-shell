@@ -4,7 +4,7 @@
  * An OpenGL based 'interactive canvas' library.
  *
  * Authored By Matthew Allum  <mallum@openedhand.com>
- *             Neil Jagdish Patel <njp@o-hand.com
+ *             Neil Jagdish Patel <njp@o-hand.com>
  *
  * Copyright (C) 2006 OpenedHand
  *
@@ -350,13 +350,32 @@ clutter_entry_ensure_cursor_position (ClutterEntry *entry)
   ClutterEntryPrivate  *priv;
   gint                  index_;
   PangoRectangle        rect;
+  gint                  priv_char_bytes;
 
   priv = entry->priv;
 
-  if (priv->position == -1)
-    index_ = strlen (priv->text);
+  /* If characters are invisible, get the byte-length of the invisible
+   * character. If priv_char is 0, we use '*', which is ASCII (1 byte).
+   */
+  if (!priv->text_visible && priv->priv_char)
+    priv_char_bytes = g_unichar_to_utf8 (priv->priv_char, NULL);
   else
-    index_ = offset_to_bytes (priv->text, priv->position);
+    priv_char_bytes = 1;
+  
+  if (priv->position == -1)
+    {
+      if (priv->text_visible)
+        index_ = strlen (priv->text);
+      else
+        index_ = priv->n_chars * priv_char_bytes;
+    }
+  else
+    {
+      if (priv->text_visible)
+        index_ = offset_to_bytes (priv->text, priv->position);
+      else
+        index_ = priv->position * priv_char_bytes;
+    }
 
   pango_layout_get_cursor_pos (priv->layout, index_, &rect, NULL);
   priv->cursor_pos.x = rect.x / PANGO_SCALE;

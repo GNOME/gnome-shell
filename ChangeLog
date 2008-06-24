@@ -1,3 +1,10 @@
+2008-06-24  Chris Lord  <chris@openedhand.com>
+
+	Bug 988 - cursor position wrong with multibyte invisible char
+
+	* clutter/clutter-entry.c: (clutter_entry_ensure_cursor_position):
+	Fix cursor position calculation when using invisible text
+
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/x11/clutter-event-x11.c (event_translate): Set the
