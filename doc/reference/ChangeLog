@@ -1,3 +1,12 @@
+2008-06-24  Matthew Allum  <mallum@openedhand.com>
+
+	* cogl/Makefile.am:
+	* cogl/cogl-docs.sgml:
+        * cogl/version.xml.in
+        * clutter/version.xml.in
+        Add full version (including minor) to docs.
+        Add version to COGL docs
+
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-sections.txt: Remove clutter_actor_get_paint_area()
