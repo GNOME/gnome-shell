@@ -1,9 +1,15 @@
+2008-06-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-entry.c:
+	(clutter_entry_ensure_layout): Convert the invisible char
+	to UTF-8 to avoid Pango barfing on us.
+
 2008-06-24  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/eglnative/clutter-stage-egl.c:
-        Add an extra debug note.
+	Add an extra debug note.
 	* configure.ac:
-        Generate version.xml for COGL API docs
+	Generate version.xml for COGL API docs
 
 2008-06-24  Chris Lord  <chris@openedhand.com>
 
@@ -28,17 +34,17 @@
 2008-06-23  Matthew Allum  <mallum@openedhand.com>
 
 	* NEWS:
-        Add a quick note on fruity multiple deivce support.
+	Add a quick note on fruity multiple deivce support.
 	* README:
-        Add multiple device support details and some tweaks on
-        Clutter requirements (i.e GdkPixbuf).
+	Add multiple device support details and some tweaks on
+	Clutter requirements (i.e GdkPixbuf).
 
 2008-06-23  Matthew Allum  <mallum@openedhand.com>
 
-        Bug 987 - clutter-event.c c99 variable declaration
+	Bug 987 - clutter-event.c c99 variable declaration
 
 	* clutter/clutter-event.c:
-        Remove c99ism.
+	Remove c99ism.
 
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 

@@ -277,17 +277,25 @@ clutter_entry_ensure_layout (ClutterEntry *entry, gint width)
         {
           GString *str = g_string_sized_new (priv->n_bytes);
           gunichar invisible_char;
-          gint i;
+          gchar buf[7];
+          gint char_len, i;
 
           if (priv->priv_char != 0)
             invisible_char = priv->priv_char;
           else
             invisible_char = '*';
 
+          /* we need to convert the string built of invisible characters
+           * into UTF-8 for it to be fed to the Pango layout
+           */
+          memset (buf, 0, sizeof (buf));
+          char_len = g_unichar_to_utf8 (invisible_char, buf);
+
           for (i = 0; i < priv->n_chars; i++)
-            g_string_append_unichar (str, invisible_char);
+            g_string_append_len (str, buf, char_len);
 
           pango_layout_set_text (priv->layout, str->str, str->len);
+
           g_string_free (str, TRUE);
         }
 
