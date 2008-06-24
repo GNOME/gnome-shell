@@ -691,10 +691,10 @@ echo ""
 # the experimental/unstable warning summary.
 
 if test "x$imagebackend" = "xinternal"; then
-  experimental_stuff="$experimental_stuff imagebackend=$imagebackend\n"
+  experimental_stuff="$experimental_stuff      imagebackend:  $imagebackend\n"
 fi
 if test "x$clutterbackend" = "xfruity"; then
-  experimental_stuff="$experimental_stuff clutterbackend=$clutterbackend\n"
+  experimental_stuff="$experimental_stuff    clutterbackend:  $clutterbackend\n"
 fi
 
 
@@ -705,7 +705,8 @@ echo " *WARNING*"
 echo ""
 echo "  Experimental features configured, stability of your build either uses"
 echo "  experimental backends or experimental and unsupported features:"
-echo -e "   $experimental_stuff"
+echo ""
+echo -e "$experimental_stuff"
 echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
 echo ""
 fi
