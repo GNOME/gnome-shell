@@ -1,5 +1,10 @@
 2008-06-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* doc/clutter-actor-invariants.txt: Fix grammar and spelling,
+	document the ::parent-set signal emission.
+
+2008-06-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-entry.c:
 	(clutter_entry_ensure_layout): Convert the invisible char
 	to UTF-8 to avoid Pango barfing on us.

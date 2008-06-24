@@ -121,7 +121,8 @@ In the following
         calling clutter_actor_unparent() on an actor will hide the actor;
         calling clutter_actor_reparent() on an actor will leave the actor
         in the same state.
-        Niether will unrealize.
+
+        Neither will unrealize.
 
  iii. State changes
 -------------------------------------------------------------------------------
@@ -147,16 +148,22 @@ clutter_actor_set_parent:
         1. sets actor->parent
         2. if parent is CLUTTER_ACTOR_REALIZED calls clutter_actor_realize
         3. if actor->show_on_set_parent is TRUE calls clutter_actor_show
+        4. if !CLUTTER_ACTOR_IN_REPARENT emits ::parent-set with
+           old_parent set to NULL
 
 clutter_actor_unset_parent:
         1. unsets actor->parent
         2. if !CLUTTER_ACTOR_IN_REPARENT calls clutter_actor_hide
+        3. if !CLUTTER_ACTOR_IN_REPARENT emits ::parent-set with
+           old_parent set to the previous parent
 
 clutter_actor_reparent:
-        sets CLUTTER_ACTOR_IN_REPARENT
+        1. sets CLUTTER_ACTOR_IN_REPARENT
+        2. emits ::parent-set with old_parent set to the previous parent
         equivalent to:
                 clutter_actor_unparent
                 clutter_actor_set_parent
+
 
  iv. Responsibilities of a ClutterActor
 -------------------------------------------------------------------------------
@@ -191,6 +198,6 @@ When creating an actor, the initial state is:
 
  1. !CLUTTER_ACTOR_REALIZED
  2. !CLUTTER_ACTOR_MAPPED
- 3. !CLUTTER_ACTOR_REACTIVE
+
 ===============================================================================
 $LastChangedDate$
