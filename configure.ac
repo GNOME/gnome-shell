@@ -656,6 +656,7 @@ AC_CONFIG_FILES([
         doc/reference/clutter/Makefile
         doc/reference/clutter/version.xml
         doc/reference/cogl/Makefile
+        doc/reference/cogl/version.xml
         doc/manual/clutter-manual.xml
         doc/manual/Makefile
         po/Makefile.in

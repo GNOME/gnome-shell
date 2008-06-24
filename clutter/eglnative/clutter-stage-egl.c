@@ -78,7 +78,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
 			       EGL_BLUE_SIZE,       5,
 			       EGL_DEPTH_SIZE,      16,
 			       EGL_ALPHA_SIZE,      EGL_DONT_CARE,
-			       EGL_STENCIL_SIZE,    2,
+			       EGL_STENCIL_SIZE,    2, 
 #ifdef HAVE_COGL_GLES2
 			       EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
 #else /* HAVE_COGL_GLES2 */
@@ -110,6 +110,8 @@ clutter_stage_egl_realize (ClutterActor *actor)
           CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
           return;
         }
+
+      CLUTTER_NOTE (BACKEND, "Got %i configs", config_count); 
 
       if (stage_egl->egl_surface != EGL_NO_SURFACE)
         {

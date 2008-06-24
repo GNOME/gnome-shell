@@ -1,3 +1,10 @@
+2008-06-24  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/eglnative/clutter-stage-egl.c:
+        Add an extra debug note.
+	* configure.ac:
+        Generate version.xml for COGL API docs
+
 2008-06-24  Chris Lord  <chris@openedhand.com>
 
 	Bug 988 - cursor position wrong with multibyte invisible char
