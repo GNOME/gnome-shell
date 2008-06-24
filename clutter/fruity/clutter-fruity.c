@@ -18,10 +18,6 @@
 #import  <UIKit/UIView-Geometry.h>
 #include "clutter-fruity.h"
 
-static EGLDisplay mEGLDisplay;
-static EGLContext mEGLContext;
-static EGLSurface mEGLSurface;
-static CoreSurfaceBufferRef mScreenSurface;
 static gboolean alive = TRUE;
 
 @interface StageView : UIView
@@ -29,23 +25,6 @@ static gboolean alive = TRUE;
 }
 
 @end
-
-static CoreSurfaceBufferRef CreateSurface(int w, int h)
-{
-  int pitch = w * 2, allocSize = 2 * w * h;
-  char *pixelFormat = "565L";
-  CFMutableDictionaryRef dict;
-
-  dict = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  CFDictionarySetValue(dict, kCoreSurfaceBufferGlobal,        kCFBooleanTrue);
-  CFDictionarySetValue(dict, kCoreSurfaceBufferMemoryRegion,  CFSTR("PurpleGFXMem"));
-  CFDictionarySetValue(dict, kCoreSurfaceBufferPitch,         CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &pitch));
-  CFDictionarySetValue(dict, kCoreSurfaceBufferWidth,         CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &w));
-  CFDictionarySetValue(dict, kCoreSurfaceBufferHeight,        CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &h));
-  CFDictionarySetValue(dict, kCoreSurfaceBufferPixelFormat,   CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, pixelFormat));
-  CFDictionarySetValue(dict, kCoreSurfaceBufferAllocSize,     CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &allocSize));
-  return CoreSurfaceBufferCreate(dict);
-}
 
 
 @implementation StageView
@@ -85,6 +64,7 @@ typedef struct {
   struct GSPathPoint points[10];
 } MEvent;
 
+#define MAX_FINGERS 5
 
 - (void)doEvent:(GSEvent*)gs_event
 {
@@ -92,13 +72,12 @@ typedef struct {
   int i, j;
   ClutterMainContext  *context;
   ClutterStage *stage = CLUTTER_STAGE_EGL(ba->stage)->wrapper;
-  int n_fingers = 0;
   MEvent *event = (MEvent*)gs_event;
 
   context = clutter_context_get_default ();
 
-  bool mapped[5] = {false, false, false, false, false}; /* an event has been mapped to this device */
-  int  evs[5] = {0,0,0,0,0};
+  bool mapped[MAX_FINGERS] = {false, false, false, false, false}; /* an event has been mapped to this device */
+  int  evs[MAX_FINGERS] = {0,0,0,0,0};
   
   for (i = 0; i < event->fingerCount; i++) 
     {
@@ -107,7 +86,7 @@ typedef struct {
       /* NSLog(@"IncomingEvent: %d, pos: %f, %f", i, event->points[i].x, event->points[i].y);*/
 
       /* check if this finger maps to one of the existing devices */
-      for (j = 0; j < 5; j++) 
+      for (j = 0; j < MAX_FINGERS; j++) 
         {
           ClutterFruityFingerDevice *dev;
 
@@ -142,7 +121,7 @@ typedef struct {
         {
           ClutterFruityFingerDevice *dev;
 
-          for (j = 0; j < 5 /*n_fingers*/; j++) 
+          for (j = 0; j < MAX_FINGERS; j++) 
             {
               dev = g_slist_nth_data (context->input_devices, j);
               if (!dev->is_down)
@@ -161,7 +140,7 @@ typedef struct {
         }
     }
 
-  for (j = 0; j < 5; j++) 
+  for (j = 0; j < MAX_FINGERS; j++) 
     {
       ClutterFruityFingerDevice *dev;
 

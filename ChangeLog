@@ -1,5 +1,10 @@
 2008-06-24  Øyvind Kolås  <pippin@o-hand.com>
 
+	* clutter/fruity/clutter-fruity.c: removed dead code and unused
+	variables.
+
+2008-06-24  Øyvind Kolås  <pippin@o-hand.com>
+
 	* configure.ac: better alignment of list of enabled experimental
 	features.
 
