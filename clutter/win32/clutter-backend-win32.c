@@ -40,7 +40,7 @@
 G_DEFINE_TYPE (ClutterBackendWin32, clutter_backend_win32,
 	       CLUTTER_TYPE_BACKEND);
 
-typedef int (* SwapIntervalProc) (int interval);
+typedef int (WINAPI * SwapIntervalProc) (int interval);
 
 /* singleton object */
 static ClutterBackendWin32 *backend_singleton = NULL;
