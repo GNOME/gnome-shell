@@ -1,3 +1,12 @@
+2008-06-25  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/win32/clutter-stage-win32.c
+	(clutter_stage_win32_realize): Use a more direct method to choose
+	the best pixel format instead of ChoosePixelFormat because
+	otherwise if the display's depth is 16 then it will prefer the
+	non-accelerated software implementation when the requested depth
+	is 24.
+
 2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-stage.c (clutter_stage_allocate): Fix condition;

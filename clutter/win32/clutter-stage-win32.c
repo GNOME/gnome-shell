@@ -398,6 +398,66 @@ clutter_stage_win32_check_gl_version ()
   return major > 1 || (major == 1 && minor >= 2);
 }
 
+static gboolean
+clutter_stage_win32_pixel_format_is_better (const PIXELFORMATDESCRIPTOR *pfa,
+					    const PIXELFORMATDESCRIPTOR *pfb)
+{
+  /* Always prefer a format with a stencil buffer */
+  if (pfa->cStencilBits == 0)
+    {
+      if (pfb->cStencilBits > 0)
+	return TRUE;
+    }
+  else if (pfb->cStencilBits == 0)
+    return FALSE;
+
+  /* Prefer a bigger color buffer */
+  if (pfb->cColorBits > pfa->cColorBits)
+    return TRUE;
+  else if (pfb->cColorBits < pfa->cColorBits)
+    return FALSE;
+
+  /* Prefer a bigger depth buffer */
+  return pfb->cDepthBits > pfa->cDepthBits;
+}
+
+static int
+clutter_stage_win32_choose_pixel_format (HDC dc, PIXELFORMATDESCRIPTOR *pfd)
+{
+  int i, num_formats, best_pf = 0;
+  PIXELFORMATDESCRIPTOR best_pfd;
+
+  num_formats = DescribePixelFormat (dc, 0, sizeof (best_pfd), NULL);
+
+  for (i = 1; i <= num_formats; i++)
+    {
+      memset (pfd, 0, sizeof (*pfd));
+
+      if (DescribePixelFormat (dc, i, sizeof (best_pfd), pfd)
+	  /* Check whether this format is useable by Clutter */
+	  && ((pfd->dwFlags & (PFD_SUPPORT_OPENGL
+			       | PFD_DRAW_TO_WINDOW
+			       | PFD_DOUBLEBUFFER
+			       | PFD_GENERIC_FORMAT))
+	      == (PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER | PFD_DRAW_TO_WINDOW))
+	  && pfd->iPixelType == PFD_TYPE_RGBA
+	  && pfd->cColorBits >= 16 && pfd->cColorBits <= 32
+	  && pfd->cDepthBits >= 16 && pfd->cDepthBits <= 32
+	  /* Check whether this is a better format than one we've
+	     already found */
+	  && (best_pf == 0
+	      || clutter_stage_win32_pixel_format_is_better (&best_pfd, pfd)))
+	{
+	  best_pf = i;
+	  best_pfd = *pfd;
+	}
+    }
+
+  *pfd = best_pfd;
+
+  return best_pf;
+}
+
 static void
 clutter_stage_win32_realize (ClutterActor *actor)
 {
@@ -468,20 +528,9 @@ clutter_stage_win32_realize (ClutterActor *actor)
 
   stage_win32->client_dc = GetDC (stage_win32->hwnd);
 
-  memset (&pfd, 0, sizeof (pfd));
-  pfd.nSize = sizeof (pfd);
-  pfd.nVersion = 1;
-  pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL
-    | PFD_DOUBLEBUFFER | PFD_GENERIC_ACCELERATED;
-  pfd.iPixelType = PFD_TYPE_RGBA;
-  pfd.cColorBits = 24;
-  pfd.cAlphaBits = 8;
-  pfd.cDepthBits = 32;
-  pfd.cStencilBits = 8;
-  pfd.iLayerType = PFD_MAIN_PLANE;
-
-  if ((pf = ChoosePixelFormat (stage_win32->client_dc, &pfd)) == 0
-      || !SetPixelFormat (stage_win32->client_dc, pf, &pfd))
+  pf = clutter_stage_win32_choose_pixel_format (stage_win32->client_dc, &pfd);
+  
+  if (pf == 0 || !SetPixelFormat (stage_win32->client_dc, pf, &pfd))
     {
       g_critical ("Unable to find suitable GL pixel format");
       goto fail;
