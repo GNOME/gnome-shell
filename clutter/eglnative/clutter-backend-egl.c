@@ -200,8 +200,7 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
 static void
 clutter_backend_egl_get_display_size (ClutterBackend *backend,
                                       gint           *width,
-                                      gint       	* clutter/clutter-backend.h:
-    *height)
+                                      gint           *height)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
   gint surface_width, surface_height;
