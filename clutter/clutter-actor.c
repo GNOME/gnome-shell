@@ -1391,6 +1391,7 @@ clutter_actor_paint (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
   ClutterMainContext *context;
+  gboolean clip_set = FALSE;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -1413,10 +1414,13 @@ clutter_actor_paint (ClutterActor *self)
   _clutter_actor_apply_modelview_transform (self);
 
   if (priv->has_clip)
-    cogl_clip_set (CLUTTER_UNITS_TO_FIXED (priv->clip[0]),
-                   CLUTTER_UNITS_TO_FIXED (priv->clip[1]),
-                   CLUTTER_UNITS_TO_FIXED (priv->clip[2]),
-                   CLUTTER_UNITS_TO_FIXED (priv->clip[3]));
+    {
+      cogl_clip_set (CLUTTER_UNITS_TO_FIXED (priv->clip[0]),
+		     CLUTTER_UNITS_TO_FIXED (priv->clip[1]),
+		     CLUTTER_UNITS_TO_FIXED (priv->clip[2]),
+		     CLUTTER_UNITS_TO_FIXED (priv->clip[3]));
+      clip_set = TRUE;
+    }
 
   context = clutter_context_get_default ();
   if (G_UNLIKELY (context->pick_mode != CLUTTER_PICK_NONE))
@@ -1440,7 +1444,7 @@ clutter_actor_paint (ClutterActor *self)
       clutter_actor_shader_post_paint (self);
     }
 
-  if (priv->has_clip)
+  if (clip_set)
     cogl_clip_unset();
 
   cogl_pop_matrix();

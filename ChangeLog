@@ -1,3 +1,10 @@
+2008-06-25  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_paint): Guard against the
+	actor clip being enabled or disabled in an actor paint
+	method. Otherwise the clip stack can be become unbalanced. This
+	was happening in ClutterEntry until it was fixed in revision 2983.
+
 2008-06-24  Neil Roberts  <neil@o-hand.com>
 
 	Bug 979 - Wrong call convension for SwapIntervalProc in win32 backend
