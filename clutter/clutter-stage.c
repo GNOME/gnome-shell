@@ -152,9 +152,9 @@ clutter_stage_get_preferred_height (ClutterActor *self,
                                                               natural_height_p);
 }
 static void
-clutter_stage_allocate (ClutterActor              *self,
-                        const ClutterActorBox     *box,
-                        gboolean                   origin_changed)
+clutter_stage_allocate (ClutterActor          *self,
+                        const ClutterActorBox *box,
+                        gboolean               origin_changed)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
@@ -167,6 +167,11 @@ clutter_stage_allocate (ClutterActor              *self,
   if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     {
       ClutterActorClass *klass;
+
+      CLUTTER_NOTE (ACTOR, "Following allocation to %dx%d (origin %s)",
+                    CLUTTER_UNITS_TO_DEVICE (box->x2 - box->x1),
+                    CLUTTER_UNITS_TO_DEVICE (box->y2 - box->y1),
+                    origin_changed ? "changed" : "not changed");
 
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
       klass->allocate (self, box, origin_changed);
@@ -190,6 +195,11 @@ clutter_stage_allocate (ClutterActor              *self,
       override.y1 = 0;
       override.x2 = CLUTTER_UNITS_FROM_DEVICE (display_width);
       override.y2 = CLUTTER_UNITS_FROM_DEVICE (display_height);
+
+      CLUTTER_NOTE (ACTOR, "Overriding allocation to %dx%d (origin: %s)",
+                    display_width,
+                    display_height,
+                    origin_changed ? "changed" : "not changed");
 
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
       klass->allocate (self, &override, origin_changed);

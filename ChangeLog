@@ -1,3 +1,17 @@
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-backend.c:
+	(clutter_backend_get_display_size): Provide a fallback for
+	backends not implementing get_display_size().
+
+	* clutter/clutter-stage.c:
+	(clutter_stage_allocate): Add debug messages.
+
+	* clutter/sdl/clutter-backend-sdl.c:
+	(clutter_backend_sdl_get_display_size),
+	(clutter_backend_sdl_class_init): Implement get_display_size()
+	on the SDL backend.
+
 2008-06-25  Chris Lord  <chris@openedhand.com>
 
 	* clutter/clutter-fixed.c: (clutter_sinx):
