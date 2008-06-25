@@ -1,5 +1,14 @@
 2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-stage.c:
+	(clutter_stage_allocate): Minor optimization.
+
+	(clutter_stage_init): Do not set the minimum size of the
+	stage wrapper, and require that the backends set the size
+	themselves.
+
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/eglnative/clutter-stage-egl.c:
 	(clutter_stage_egl_realize): Try to force the minimum and
 	natural size on realization.

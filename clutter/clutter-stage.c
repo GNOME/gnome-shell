@@ -164,7 +164,7 @@ clutter_stage_allocate (ClutterActor          *self,
    * then we simply ignore any allocation request and override the
    * allocation chain.
    */
-  if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
+  if (G_LIKELY (!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC)))
     {
       ClutterActorClass *klass;
 
@@ -718,7 +718,6 @@ clutter_stage_init (ClutterStage *self)
   priv->fog.z_near  = CLUTTER_FLOAT_TO_FIXED (1.0);
   priv->fog.z_far   = CLUTTER_FLOAT_TO_FIXED (2.0);
 
-  clutter_actor_set_size (CLUTTER_ACTOR (self), 640, 480);
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
   clutter_stage_set_key_focus (self, NULL);
 }
