@@ -1,11 +1,16 @@
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-sections.txt: Add
+	clutter_backend_get_display_size() to the documented symbols.
+
 2008-06-24  Matthew Allum  <mallum@openedhand.com>
 
 	* cogl/Makefile.am:
 	* cogl/cogl-docs.sgml:
-        * cogl/version.xml.in
-        * clutter/version.xml.in
-        Add full version (including minor) to docs.
-        Add version to COGL docs
+	* cogl/version.xml.in:
+	* clutter/version.xml.in:
+	Add full version (including minor) to docs.
+	Add version to COGL docs
 
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
