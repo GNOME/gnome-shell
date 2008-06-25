@@ -1,5 +1,13 @@
 2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-main.h: Make the priority constants public.
+
+	* clutter/clutter-stage.c: Use CLUTTER_PRIORITY_REDRAW.
+
+	* clutter/clutter-timeline.c: Use CLUTTER_PRIORITY_TIMELINE.
+
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/osx/clutter-backend-osx.c:
 	(clutter_backend_osx_get_display_size),
 	(clutter_backend_osx_class_init): Implement the get_display_size

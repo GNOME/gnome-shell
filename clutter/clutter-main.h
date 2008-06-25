@@ -31,6 +31,11 @@
 
 G_BEGIN_DECLS
 
+/**
+ * CLUTTER_INIT_ERROR:
+ *
+ * #GError domain for #ClutterInitError
+ */
 #define CLUTTER_INIT_ERROR      (clutter_init_error_quark ())
 
 /**
@@ -54,6 +59,24 @@ typedef enum {
 } ClutterInitError;
 
 GQuark clutter_init_error_quark (void);
+
+/**
+ * CLUTTER_PRIORITY_REDRAW:
+ *
+ * Priority of the redraws.
+ *
+ * Since: 0.8
+ */
+#define CLUTTER_PRIORITY_REDRAW         (G_PRIORITY_DEFAULT + 10)
+
+/**
+ * CLUTTER_PRIORITY_TIMELINE:
+ *
+ * Priority of the timelines.
+ *
+ * Since: 0.8
+ */
+#define CLUTTER_PRIORITY_TIMELINE       (G_PRIORITY_DEFAULT + 30)
 
 /* Initialisation */
 void             clutter_base_init        (void);

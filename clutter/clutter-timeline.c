@@ -94,7 +94,6 @@
 G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
 #define FPS_TO_INTERVAL(f) (1000 / (f))
-#define CLUTTER_TIMELINE_PRIORITY       (G_PRIORITY_DEFAULT + 30)
 
 struct _ClutterTimelinePrivate
 {
@@ -169,7 +168,7 @@ timeline_pool_init (void)
         }
       else
         {
-          timeline_pool = clutter_timeout_pool_new (CLUTTER_TIMELINE_PRIORITY);
+          timeline_pool = clutter_timeout_pool_new (CLUTTER_PRIORITY_TIMELINE);
           timeline_use_pool = TRUE;
         }
     }
@@ -192,7 +191,7 @@ timeout_add (guint          interval,
     }
   else
     {
-      res = clutter_threads_add_frame_source_full (CLUTTER_TIMELINE_PRIORITY,
+      res = clutter_threads_add_frame_source_full (CLUTTER_PRIORITY_TIMELINE,
 						   interval,
 						   func, data, notify);
     }

@@ -1804,7 +1804,7 @@ clutter_stage_queue_redraw (ClutterStage *stage)
 
       /* FIXME: weak_ref self in case we dissapear before paint? */
       stage->priv->update_idle =
-        clutter_threads_add_idle_full (G_PRIORITY_DEFAULT + 10,
+        clutter_threads_add_idle_full (CLUTTER_PRIORITY_REDRAW,
                                        redraw_update_idle,
                                        stage,
                                        NULL);
