@@ -223,27 +223,28 @@ clutter_stage_egl_realize (ClutterActor *actor)
 
       if (G_UNLIKELY (backend_egl->egl_context == None))
         {
-	  static const EGLint attribs[3]
-	    = { EGL_CONTEXT_CLIENT_VERSION,
 #ifdef HAVE_COGL_GLES2
-		2,
-#else /* HAVE_COGL_GLES2 */
-		1,
-#endif
-		EGL_NONE };
-
-          CLUTTER_NOTE (GL, "Creating EGL Context");
+	  static const EGLint attribs[3]
+	    = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
 
           backend_egl->egl_context = eglCreateContext (backend_egl->edpy,
-                                                       configs[0],
+						       configs[0],
                                                        EGL_NO_CONTEXT,
                                                        attribs);
-
+#else
+          /* Seems some GLES implementations 1.x do not like attribs... */
+          backend_egl->egl_context = eglCreateContext (backend_egl->edpy,
+						       configs[0],
+                                                       EGL_NO_CONTEXT,
+                                                       NULL);
+#endif
           if (backend_egl->egl_context == EGL_NO_CONTEXT)
             {
               g_critical ("Unable to create a suitable EGL context");
               goto fail;
             }
+
+          CLUTTER_NOTE (GL, "Created EGL Context");
         }
 
       CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
