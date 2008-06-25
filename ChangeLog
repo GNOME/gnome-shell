@@ -1,5 +1,12 @@
 2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/osx/clutter-backend-osx.c:
+	(clutter_backend_osx_get_display_size),
+	(clutter_backend_osx_class_init): Implement the get_display_size
+	function.
+
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	(clutter_actor_set_min_width),
 	(clutter_actor_set_min_height),

@@ -167,6 +167,38 @@ clutter_backend_osx_redraw (ClutterBackend *backend, ClutterStage *wrapper)
   CLUTTER_OSX_POOL_RELEASE();
 }
 
+static void
+clutter_backend_osx_get_display_size (ClutterBackend *backend,
+                                      gint           *width,
+                                      gint           *height)
+{
+  int i;
+  int display_width, display_height;
+  NSArray *array;
+
+  CLUTTER_OSX_ALLOC_POOL;
+
+  array = [NSScreen screens];
+
+  display_width = display_height = 0;
+
+  for (i = 0; i < [array count]; i++) 
+    {
+      NSRect rect = [[array objectAtIndex:i] frame];
+
+      display_width += rect.size.width;
+      display_height += rect.size.height;
+    }
+
+  CLUTTER_OSX_RELEASE_POOL;
+
+  if (width)
+    *width = display_width;
+
+  if (height)
+    *height = display_height;
+}
+
 /*************************************************************************/
 
 static void
@@ -198,12 +230,13 @@ clutter_backend_osx_class_init (ClutterBackendOSXClass *klass)
 
   object_class->dispose = clutter_backend_osx_dispose;
 
-  backend_class->post_parse   = clutter_backend_osx_post_parse;
-  backend_class->get_features = clutter_backend_osx_get_features;
-  backend_class->create_stage = clutter_backend_osx_create_stage;
-  backend_class->ensure_context = clutter_backend_osx_ensure_context;
-  backend_class->init_events = clutter_backend_osx_init_events;
-  backend_class->redraw      = clutter_backend_osx_redraw;
+  backend_class->post_parse       = clutter_backend_osx_post_parse;
+  backend_class->get_features     = clutter_backend_osx_get_features;
+  backend_class->create_stage     = clutter_backend_osx_create_stage;
+  backend_class->ensure_context   = clutter_backend_osx_ensure_context;
+  backend_class->init_events      = clutter_backend_osx_init_events;
+  backend_class->redraw           = clutter_backend_osx_redraw;
+  backend_class->get_display_size = clutter_backend_osx_get_display_size;
 }
 
 GType
