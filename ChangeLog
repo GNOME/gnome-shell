@@ -1,3 +1,14 @@
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-stage.c:
+	(clutter_stage_allocate): Check if the stage provided by the
+	backend is static (i.e. a framebuffer that cannot be resized)
+	and interrupt the allocation chain there.
+
+	* clutter/eglnative/clutter-stage-egl.c:
+	(clutter_stage_egl_class_init): Remove the ::allocate empty
+	stub.
+
 2008-06-25  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/eglnative/clutter-stage-egl.c:

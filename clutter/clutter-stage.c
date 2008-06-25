@@ -160,13 +160,20 @@ clutter_stage_allocate (ClutterActor              *self,
 
   g_assert (priv->impl != NULL);
 
-  CLUTTER_ACTOR_GET_CLASS (priv->impl)->allocate (priv->impl,
-                                                  box,
-                                                  origin_changed);
+  /* if the stage is fixed size (for instance, it's using a frame-buffer)
+   * then we simply ignore any allocation request and interrupt the
+   * allocation chain here.
+   */
+  if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
+    {
+      ClutterActorClass *klass;
 
-  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->allocate (self, 
-                                                              box,
-                                                              origin_changed);
+      klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
+      klass->allocate (self, box, origin_changed);
+
+      klass = CLUTTER_ACTOR_GET_CLASS (priv->impl);
+      klass->allocate (priv->impl, box, origin_changed);
+    }
 }
 
 static void
