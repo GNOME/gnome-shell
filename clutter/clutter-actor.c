@@ -3641,6 +3641,22 @@ clutter_actor_set_min_width (ClutterActor *self,
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
 
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+    {
+      if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
+        {
+          ClutterBackend *backend = clutter_get_default_backend ();
+          gint display_width;
+
+          clutter_backend_get_display_size (backend,
+                                            &display_width,
+                                            NULL);
+
+          if (min_width != (CLUTTER_UNITS_FROM_DEVICE (display_width)))
+            min_width = CLUTTER_UNITS_FROM_DEVICE (display_width);
+        }
+    }
+
   if (priv->min_width_set && min_width == priv->request_min_width)
     return;
 
@@ -3667,6 +3683,22 @@ clutter_actor_set_min_height (ClutterActor *self,
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
 
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+    {
+      if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
+        {
+          ClutterBackend *backend = clutter_get_default_backend ();
+          gint display_height;
+
+          clutter_backend_get_display_size (backend,
+                                            NULL,
+                                            &display_height);
+
+          if (min_height != (CLUTTER_UNITS_FROM_DEVICE (display_height)))
+            min_height = CLUTTER_UNITS_FROM_DEVICE (display_height);
+        }
+    }
+
   if (priv->min_height_set && min_height == priv->request_min_height)
     return;
 
@@ -3691,6 +3723,22 @@ clutter_actor_set_natural_width (ClutterActor *self,
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
+
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+    {
+      if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
+        {
+          ClutterBackend *backend = clutter_get_default_backend ();
+          gint display_width;
+
+          clutter_backend_get_display_size (backend,
+                                            &display_width,
+                                            NULL);
+
+          if (natural_width != (CLUTTER_UNITS_FROM_DEVICE (display_width)))
+            natural_width = CLUTTER_UNITS_FROM_DEVICE (display_width);
+        }
+    }
 
   if (priv->natural_width_set &&
       natural_width == priv->request_natural_width)
@@ -3717,6 +3765,22 @@ clutter_actor_set_natural_height (ClutterActor *self,
 {
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
+
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+    {
+      if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
+        {
+          ClutterBackend *backend = clutter_get_default_backend ();
+          gint display_height;
+
+          clutter_backend_get_display_size (backend,
+                                            NULL,
+                                            &display_height);
+
+          if (natural_height != (CLUTTER_UNITS_FROM_DEVICE (display_height)))
+            natural_height = CLUTTER_UNITS_FROM_DEVICE (display_height);
+        }
+    }
 
   if (priv->natural_height_set &&
       natural_height == priv->request_natural_height)

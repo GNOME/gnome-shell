@@ -1,3 +1,19 @@
+2008-06-25  Emmanuele Bassi  <set EMAIL_ADDRESS environment variable>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_min_width),
+	(clutter_actor_set_min_height),
+	(clutter_actor_set_natural_width),
+	(clutter_actor_set_natural_height): If setting the minimum
+	and natural width and height on a top-level actor, and on
+	a backend that provides only static stages, then override
+	the value and use the size of the display as returned by
+	the backend.
+
+	* clutter/eglnative/clutter-stage-egl.c:
+	(clutter_stage_egl_realize): Remove the setting of the
+	minimum and natural width and height.
+
 2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-stage.c:

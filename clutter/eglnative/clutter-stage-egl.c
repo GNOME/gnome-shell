@@ -86,8 +86,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
 #endif /* HAVE_COGL_GLES2 */
 			       EGL_NONE };
 
-      ClutterUnit widthu, heightu;
-
       status = eglGetConfigs (backend_egl->edpy,
 			      configs, 
 			      2, 
@@ -155,23 +153,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
 		    stage_egl->surface_width,
                     stage_egl->surface_height);
 
-      widthu = CLUTTER_UNITS_FROM_DEVICE (stage_egl->surface_width);
-      heightu = CLUTTER_UNITS_FROM_DEVICE (stage_egl->surface_height);
-
-      CLUTTER_NOTE (BACKEND, "Setting minimum and natural width and height "
-                             "to the EGL surface width and height");
-
-      g_object_set (G_OBJECT (stage_egl),
-                    "min-width", widthu,
-                    "min-width-set", TRUE,
-                    "natural-width", widthu,
-                    "natural-width-set", TRUE,
-                    "min-height", heightu,
-                    "min-height-set", TRUE,
-                    "natural-height", heightu,
-                    "natural-height-set", TRUE,
-                    NULL);
-
+      
       if (G_UNLIKELY (backend_egl->egl_context == NULL))
         {
 #ifdef HAVE_COGL_GLES2
