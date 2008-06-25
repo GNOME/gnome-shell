@@ -110,8 +110,8 @@
 2008-06-25  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/x11/clutter-backend-x11.c: (_clutter_x11_register_xinput)
-        Add extra safety and fallback if no useable pointing devices are
-        found.
+	Add extra safety and fallback if no useable pointing devices are
+	found.
 
 2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -128,7 +128,7 @@
 
 	* clutter/eglnative/clutter-stage-egl.c:
 	* clutter/eglx/clutter-stage-egl.c: 
-        Disable passing of attribs to eglCreateContext() on GLES 1.1 h/w
+	Disable passing of attribs to eglCreateContext() on GLES 1.1 h/w
 
 2008-06-25  Neil Roberts  <neil@o-hand.com>
 
