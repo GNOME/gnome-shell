@@ -568,7 +568,8 @@ _clutter_x11_register_xinput ()
   gint num_devices = 0;
   gint num_events = 0;
   gint i = 0, j = 0;
-
+  gboolean have_an_xpointer = FALSE;
+  
   ClutterBackendX11      *x11b;
   ClutterX11XInputDevice *device = NULL;
 
@@ -617,11 +618,15 @@ _clutter_x11_register_xinput ()
         info->use == IsXExtensionKeyboard ||
         info->use == IsXExtensionDevice)
     {
+      clutter_x11_trap_x_errors ();
+      xdevice = XOpenDevice (x11b->xdpy, info->id);
+      if (clutter_x11_untrap_x_errors () || xdevice == NULL)
+        continue;
+
       /* Create the appropriate Clutter device */
       device = g_new0 (ClutterX11XInputDevice, 1);
       context->input_devices = g_slist_append (context->input_devices, device);
 
-      xdevice = XOpenDevice (x11b->xdpy, info->id);
       device->device.id = info->id;
 
       /* FIXME: some kind of general device_init() call should do below */
@@ -638,6 +643,7 @@ _clutter_x11_register_xinput ()
       {
         case IsXExtensionPointer:
           device->type = CLUTTER_X11_XINPUT_POINTER_DEVICE;
+          have_an_xpointer = TRUE;
           break;
         case IsXExtensionKeyboard:
           device->type = CLUTTER_X11_XINPUT_KEYBOARD_DEVICE;
@@ -694,11 +700,25 @@ _clutter_x11_register_xinput ()
         }
       }
 
+      if (info->use == IsXExtensionPointer && num_events > 0)
+        have_an_xpointer = TRUE;
+
       device->num_events  = num_events;
     }
   }
 
   XFree (xdevices);
+
+  if (!have_an_xpointer)
+    {
+      /* Something is likely wrong with Xinput setup so we basically
+       * abort here and fall back to lofi regular xinput.
+      */
+      g_warning ("No usuable XInput pointing devices found");
+      backend_singleton->have_xinput = FALSE;
+      g_slist_free (context->input_devices);
+      context->input_devices = NULL;
+    }
 }
 
 void
