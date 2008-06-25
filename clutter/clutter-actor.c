@@ -3641,6 +3641,10 @@ clutter_actor_set_min_width (ClutterActor *self,
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
 
+  /* override the minimum width on a top-level actor in case
+   * we are working on a backend that only provides a fixed
+   * size stage (e.g. on a framebuffer)
+   */
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
     {
       if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
@@ -3683,6 +3687,10 @@ clutter_actor_set_min_height (ClutterActor *self,
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
 
+  /* override the minimum height on a top-level actor in case
+   * we are working on a backend that only provides a fixed
+   * size stage (e.g. on a framebuffer)
+   */
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
     {
       if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
@@ -3724,6 +3732,10 @@ clutter_actor_set_natural_width (ClutterActor *self,
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
 
+  /* override the natural width on a top-level actor in case
+   * we are working on a backend that only provides a fixed
+   * size stage (e.g. on a framebuffer)
+   */
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
     {
       if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
@@ -3766,6 +3778,10 @@ clutter_actor_set_natural_height (ClutterActor *self,
   ClutterActorPrivate *priv = self->priv;
   ClutterActorBox old = { 0, };
 
+  /* override the natural height on a top-level actor in case
+   * we are working on a backend that only provides a fixed
+   * size stage (e.g. on a framebuffer)
+   */
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
     {
       if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))

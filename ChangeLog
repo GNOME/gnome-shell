@@ -1,3 +1,13 @@
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_min_width),
+	(clutter_actor_set_min_height),
+	(clutter_actor_set_natural_width),
+	(clutter_actor_set_natural_height): Add a comment explaining
+	the override in place for backends providing a fixed size
+	on a stage.
+
 2008-06-25  Emmanuele Bassi  <set EMAIL_ADDRESS environment variable>
 
 	* clutter/clutter-actor.c:
