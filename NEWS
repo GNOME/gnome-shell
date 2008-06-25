@@ -1,3 +1,40 @@
+Clutter 0.7.4 (25/06/2008), "Killer Koi"
+===============================================================================
+
+ * List of changes between 0.7.2 and 0.7.4
+
+   o Fix the ClutterEntry actor after the clip API changes in COGL.
+
+   o Update the shaders generated for GLES 2.0.
+
+   o Add the ability to add search paths and look up files from
+     ClutterScript. This allows defining directories to store the
+     images to be loaded by a ClutterTexture.
+
+   o Fix the GLES 1.1 support.
+
+   o Warn if no usable pointer device are available on X11 backends.
+
+   o Improve the request for the best pixel format on win32.
+
+   o Fix a regression when sizing the ClutterStage on backends that
+     only support fixed size stages; now setting any size will result
+     in Clutter ignoring the request, like it happened in Clutter 0.6.
+
+   o Add a method to ClutterBackend to retrieve the display size.
+
+   o Fix clutter_sinx() for angles > CFX_2PI - CFX_ONE.
+
+ * List of bugs fixed
+
+   o #833 - ClutterEntry should clip glyphs rather than itself
+   o #858 - Support for multiple devices (using XINPUT)
+   o #879 - sampler2DRect used by test-shader.c doen't work with non-rect textures
+   o #979 - Wrong call convension for SwapIntervalProc in win32 backend
+   o #987 - clutter-event.c c99 variable declaration
+   o #988 - cursor position wrong with multibyte invisible char
+   o #989 - Add a search path for clutter script assets
+
 Clutter 0.7.2 (23/06/2008), "Kedoke"
 ===============================================================================
 
