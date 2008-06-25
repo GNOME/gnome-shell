@@ -161,8 +161,8 @@ clutter_stage_allocate (ClutterActor              *self,
   g_assert (priv->impl != NULL);
 
   /* if the stage is fixed size (for instance, it's using a frame-buffer)
-   * then we simply ignore any allocation request and interrupt the
-   * allocation chain here.
+   * then we simply ignore any allocation request and override the
+   * allocation chain.
    */
   if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     {
@@ -173,6 +173,26 @@ clutter_stage_allocate (ClutterActor              *self,
 
       klass = CLUTTER_ACTOR_GET_CLASS (priv->impl);
       klass->allocate (priv->impl, box, origin_changed);
+    }
+  else
+    {
+      ClutterActorBox override = { 0, };
+      ClutterBackend *backend = clutter_get_default_backend ();
+      gint display_width, display_height;
+      ClutterActorClass *klass;
+
+      display_width = display_height = 0;
+      clutter_backend_get_display_size (backend,
+                                        &display_width,
+                                        &display_height);
+
+      override.x1 = 0;
+      override.y1 = 0;
+      override.x2 = CLUTTER_UNITS_FROM_DEVICE (display_width);
+      override.y2 = CLUTTER_UNITS_FROM_DEVICE (display_height);
+
+      klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
+      klass->allocate (self, &override, origin_changed);
     }
 }
 

@@ -59,22 +59,25 @@ struct _ClutterBackendClass
   GObjectClass parent_class;
 
   /* vfuncs */
-  gboolean            (* pre_parse)      (ClutterBackend  *backend,
-                                          GError         **error);
-  gboolean            (* post_parse)     (ClutterBackend  *backend,
-                                          GError         **error);
-  ClutterActor *      (* create_stage)   (ClutterBackend  *backend,
-                                          ClutterStage    *wrapper,
-                                          GError         **error);
-  void                (* init_events)    (ClutterBackend  *backend);
-  void                (* init_features)  (ClutterBackend  *backend);
-  void                (* add_options)    (ClutterBackend  *backend,
-                                          GOptionGroup    *group);
-  ClutterFeatureFlags (* get_features)   (ClutterBackend  *backend);
-  void                (* redraw)         (ClutterBackend  *backend,
-                                          ClutterStage    *stage);
-  void                (* ensure_context) (ClutterBackend  *backend,
-                                          ClutterStage    *stage);
+  gboolean            (* pre_parse)        (ClutterBackend  *backend,
+                                            GError         **error);
+  gboolean            (* post_parse)       (ClutterBackend  *backend,
+                                            GError         **error);
+  ClutterActor *      (* create_stage)     (ClutterBackend  *backend,
+                                            ClutterStage    *wrapper,
+                                            GError         **error);
+  void                (* init_events)      (ClutterBackend  *backend);
+  void                (* init_features)    (ClutterBackend  *backend);
+  void                (* add_options)      (ClutterBackend  *backend,
+                                            GOptionGroup    *group);
+  ClutterFeatureFlags (* get_features)     (ClutterBackend  *backend);
+  void                (* redraw)           (ClutterBackend  *backend,
+                                            ClutterStage    *stage);
+  void                (* ensure_context)   (ClutterBackend  *backend,
+                                            ClutterStage    *stage);
+  void                (* get_display_size) (ClutterBackend  *backend,
+                                            gint            *width,
+                                            gint            *height);
 };
 
 GType clutter_backend_get_type    (void) G_GNUC_CONST;
@@ -93,6 +96,9 @@ guint                 clutter_backend_get_double_click_distance (ClutterBackend 
 void                  clutter_backend_set_font_options          (ClutterBackend       *backend,
                                                                  cairo_font_options_t *options);
 cairo_font_options_t *clutter_backend_get_font_options          (ClutterBackend       *backend);
+void                  clutter_backend_get_display_size          (ClutterBackend       *backend,
+                                                                 gint                 *width,
+                                                                 gint                 *height);
 
 G_END_DECLS
 

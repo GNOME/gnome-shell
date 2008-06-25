@@ -1,3 +1,30 @@
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-backend.h:
+	* clutter/clutter-backend.c:
+	(clutter_backend_get_display_size): Add a function for getting the
+	display size out of the backend.
+
+	* clutter/clutter-stage.c:
+	(clutter_stage_allocate): When allocating on a backend with a
+	static stage, we simply ignore the passed box and override it with
+	the size of the display.
+
+	* clutter/eglnative/clutter-backend-egl.c:
+	(clutter_backend_egl_get_display_size),
+	(clutter_backend_egl_class_init): Implement get_display_size() by
+	returning the size of the EGL surface.
+
+	* clutter/fruity/clutter-backend-fruity.c:
+	(clutter_backend_egl_get_display_size),
+	(clutter_backend_egl_class_init): Ditto as above.
+
+	* clutter/x11/clutter-backend-x11.c:
+	(clutter_backend_x11_get_display_size),
+	(clutter_backend_x11_class_init): Implement get_display_size() by
+	returning the DisplayWidth and DisplayHeight of the current
+	screen.
+
 2008-06-25  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/win32/clutter-stage-win32.c
