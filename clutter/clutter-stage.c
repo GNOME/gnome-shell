@@ -164,7 +164,7 @@ clutter_stage_allocate (ClutterActor              *self,
    * then we simply ignore any allocation request and interrupt the
    * allocation chain here.
    */
-  if (clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
+  if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     {
       ClutterActorClass *klass;
 

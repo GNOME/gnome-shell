@@ -1,3 +1,8 @@
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-stage.c (clutter_stage_allocate): Fix condition;
+	should always test before committing.
+
 2008-06-25  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/x11/clutter-backend-x11.c: (_clutter_x11_register_xinput)
