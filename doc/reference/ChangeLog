@@ -1,5 +1,9 @@
 2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-sections.txt: Add missing symbols.
+
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-sections.txt: Add
 	clutter_backend_get_display_size() to the documented symbols.
 

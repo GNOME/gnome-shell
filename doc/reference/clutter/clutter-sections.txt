@@ -1041,6 +1041,10 @@ clutter_key_event_code
 clutter_key_event_unicode
 clutter_keysym_to_unicode
 
+<SUBSECTION>
+clutter_event_get_device_id
+clutter_get_input_device_for_id
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_EVENT
 <SUBSECTION Private>
@@ -1051,6 +1055,10 @@ clutter_event_get_type
 <SECTION>
 <FILE>clutter-main</FILE>
 <TITLE>General</TITLE>
+CLUTTER_PRIORITY_REDRAW
+CLUTTER_PRIORITY_TIMELINE
+
+<SUBSECTION>
 ClutterInitError
 clutter_init
 clutter_init_with_args
@@ -1095,6 +1103,8 @@ clutter_grab_keyboard
 clutter_grab_pointer
 clutter_ungrab_keyboard
 clutter_ungrab_pointer
+clutter_grab_pointer_for_device
+clutter_ungrab_pointer_for_device
 
 <SUBSECTION>
 clutter_do_event
@@ -1128,6 +1138,14 @@ ClutterX11FilterFunc
 ClutterX11FilterReturn
 clutter_x11_add_filter
 clutter_x11_remove_filter
+
+<SUBSECTION>
+ClutterX11InputDeviceType
+ClutterX11XInputDevice
+ClutterX11XInputEventTypes
+clutter_x11_get_input_device_type
+clutter_x11_get_input_devices
+clutter_x11_has_xinput
 </SECTION>
 
 <SECTION>
