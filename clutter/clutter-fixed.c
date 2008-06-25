@@ -50,8 +50,8 @@
  *
  * <itemizedlist>
  *   <listitem>
- *     <para>Two fixed point numbers can be directly added and
- *     subtracted.</para>
+ *     <para>Two fixed point numbers can be directly added,
+ *     subtracted and have their modulus taken.</para>
  *   </listitem>
  *   <listitem>
  *     <para>To add other numerical type to a fixed point number it has to
@@ -264,11 +264,7 @@ clutter_sinx (ClutterFixed angle)
     }
 
     /* reduce to <0, 2*pi) */
-    if (angle >= CFX_2PI)
-    {
-	ClutterFixed f = CLUTTER_FIXED_DIV (angle, CFX_2PI);
-	angle = angle - f;
-    }
+    angle = angle % CFX_2PI;
 
     /* reduce to first quadrant and sign */
     if (angle > CFX_PI)

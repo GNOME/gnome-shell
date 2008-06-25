@@ -1,3 +1,9 @@
+2008-06-25  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-fixed.c: (clutter_sinx):
+	Fix clutter_sinx for angles > CFX_2PI - CFX_ONE. Also add note to
+	documentation about being able to use modulus with ClutterFixed
+
 2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-backend.h:
