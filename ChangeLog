@@ -8,7 +8,7 @@
 	the override in place for backends providing a fixed size
 	on a stage.
 
-2008-06-25  Emmanuele Bassi  <set EMAIL_ADDRESS environment variable>
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com> 
 
 	* clutter/clutter-actor.c:
 	(clutter_actor_set_min_width),
