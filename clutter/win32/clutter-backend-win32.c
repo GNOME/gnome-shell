@@ -230,6 +230,30 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
 }
 
 static void
+clutter_backend_win32_get_display_size (ClutterBackend *backend,
+					gint           *width,
+					gint           *height)
+{
+  gint display_width, display_height;
+
+  /* Try get the combined size of all of the monitors */
+  if ((display_width = GetSystemMetrics (SM_CXVIRTUALSCREEN)) == 0
+      || (display_height = GetSystemMetrics (SM_CYVIRTUALSCREEN)) == 0)
+    {
+      /* If the multi-monitor API isn't supported then just return the
+	 size of the primary display */
+      display_width = GetSystemMetrics (SM_CXSCREEN);
+      display_height = GetSystemMetrics (SM_CYSCREEN);
+    }
+
+  if (width)
+    *width = display_width;
+
+  if (height)
+    *height = display_height;
+}
+
+static void
 clutter_backend_win32_ensure_context (ClutterBackend *backend, 
 				      ClutterStage   *stage)
 {
@@ -336,13 +360,14 @@ clutter_backend_win32_class_init (ClutterBackendWin32Class *klass)
   gobject_class->dispose = clutter_backend_win32_dispose;
   gobject_class->finalize = clutter_backend_win32_finalize;
 
-  backend_class->pre_parse      = clutter_backend_win32_pre_parse;
-  backend_class->init_events    = clutter_backend_win32_init_events;
-  backend_class->create_stage   = clutter_backend_win32_create_stage;
-  backend_class->add_options    = clutter_backend_win32_add_options;
-  backend_class->get_features   = clutter_backend_win32_get_features;
-  backend_class->redraw         = clutter_backend_win32_redraw;
-  backend_class->ensure_context = clutter_backend_win32_ensure_context;
+  backend_class->pre_parse        = clutter_backend_win32_pre_parse;
+  backend_class->init_events      = clutter_backend_win32_init_events;
+  backend_class->create_stage     = clutter_backend_win32_create_stage;
+  backend_class->add_options      = clutter_backend_win32_add_options;
+  backend_class->get_features     = clutter_backend_win32_get_features;
+  backend_class->get_display_size = clutter_backend_win32_get_display_size;
+  backend_class->redraw           = clutter_backend_win32_redraw;
+  backend_class->ensure_context   = clutter_backend_win32_ensure_context;
 }
 
 static void
