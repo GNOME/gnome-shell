@@ -1,5 +1,11 @@
 2008-06-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-shader.c (bind_glsl_shader): Verify that the
+	vertex shader has been successfully compiled, like we do with
+	the fragment shader.
+
+2008-06-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/osx/clutter-backend-osx.c:
 	(clutter_backend_osx_get_display_size): Fix the allocation pool
 	macro name.

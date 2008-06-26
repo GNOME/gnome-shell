@@ -407,11 +407,31 @@ bind_glsl_shader (ClutterShader  *self,
 
   if (priv->vertex_is_glsl && priv->vertex_source != COGL_INVALID_HANDLE)
     {
-     priv->vertex_shader = cogl_create_shader (CGL_VERTEX_SHADER);
+      GLint compiled = CGL_FALSE;
 
-     cogl_shader_source (priv->vertex_shader, priv->vertex_source);
-     cogl_shader_compile (priv->vertex_shader);
-     cogl_program_attach_shader (priv->program, priv->vertex_shader);
+      priv->vertex_shader = cogl_create_shader (CGL_VERTEX_SHADER);
+
+      cogl_shader_source (priv->vertex_shader, priv->vertex_source);
+      cogl_shader_compile (priv->vertex_shader);
+
+      cogl_shader_get_parameteriv (priv->fragment_shader,
+                                   CGL_OBJECT_COMPILE_STATUS,
+                                   &compiled);
+      if (compiled != CGL_TRUE)
+        {
+          gchar error_buf[512];
+
+          cogl_shader_get_info_log (priv->fragment_shader, 512, error_buf);
+
+          g_set_error (error, CLUTTER_SHADER_ERROR,
+                       CLUTTER_SHADER_ERROR_COMPILE,
+                       "Vertex shader compilation failed: %s",
+                       error_buf);
+
+          return FALSE;
+        }
+      else
+        cogl_program_attach_shader (priv->program, priv->vertex_shader);
     }
 
   if (priv->fragment_is_glsl && priv->fragment_source != COGL_INVALID_HANDLE)
@@ -434,7 +454,7 @@ bind_glsl_shader (ClutterShader  *self,
 
           g_set_error (error, CLUTTER_SHADER_ERROR,
                        CLUTTER_SHADER_ERROR_COMPILE,
-                       "Shader compilation failed: %s",
+                       "Fragment shader compilation failed: %s",
                        error_buf);
 
           return FALSE;
