@@ -312,31 +312,6 @@ clutter_backend_x11_get_features (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_x11_get_display_size (ClutterBackend *backend,
-                                      gint           *width,
-                                      gint           *height)
-{
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
-  gint display_width, display_height;
-
-  if (G_LIKELY (backend_x11->xdpy))
-    {
-      display_width  = DisplayWidth (backend_x11->xdpy,
-                                     backend_x11->xscreen_num);
-      display_height = DisplayHeight (backend_x11->xdpy,
-                                      backend_x11->xscreen_num);
-    }
-  else
-    display_width = display_height = 0;
-
-  if (width)
-    *width = display_width;
-
-  if (height)
-    *height = display_height;
-}
-
-static void
 clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -351,7 +326,6 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   backend_class->init_events      = clutter_backend_x11_init_events;
   backend_class->add_options      = clutter_backend_x11_add_options;
   backend_class->get_features     = clutter_backend_x11_get_features;
-  backend_class->get_display_size = clutter_backend_x11_get_display_size;
 }
 
 static void
