@@ -1,5 +1,11 @@
 2008-06-26  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+        Move the gl extension probe into the regular object init() rather than
+        class_init. Should be a little safer.
+
+2008-06-26  Matthew Allum  <mallum@openedhand.com>
+
 	* tests/test-pixmap.c: (main):
         Use strtol on arg as to take hex values. Tweak from James Ketrenos
 

@@ -128,6 +128,28 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
                                    CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
                                    ClutterGLXTexturePixmapPrivate);
 
+  if (_ext_check_done == FALSE)
+    {
+      const gchar *glx_extensions = NULL;
+
+      glx_extensions =
+        glXQueryExtensionsString (clutter_x11_get_default_display (),
+                                  clutter_x11_get_default_screen ());
+
+      /* Check for the texture from pixmap extension */
+      if (cogl_check_extension ("GLX_EXT_texture_from_pixmap", glx_extensions))
+        {
+          _gl_bind_tex_image =
+            (BindTexImage)cogl_get_proc_address ("glXBindTexImageEXT");
+          _gl_release_tex_image =
+            (ReleaseTexImage)cogl_get_proc_address ("glXReleaseTexImageEXT");
+
+          if (_gl_bind_tex_image && _gl_release_tex_image)
+            _have_tex_from_pixmap_ext = TRUE;
+        }
+
+      _ext_check_done = TRUE;
+    }
 }
 
 static void
@@ -612,28 +634,6 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
 
   x11_texture_class->update_area = clutter_glx_texture_pixmap_update_area;
 
-  if (_ext_check_done == FALSE)
-    {
-      const gchar *glx_extensions = NULL;
-
-      glx_extensions =
-        glXQueryExtensionsString (clutter_x11_get_default_display (),
-                                  clutter_x11_get_default_screen ());
-
-      /* Check for the texture from pixmap extension */
-      if (cogl_check_extension ("GLX_EXT_texture_from_pixmap", glx_extensions))
-        {
-          _gl_bind_tex_image =
-            (BindTexImage)cogl_get_proc_address ("glXBindTexImageEXT");
-          _gl_release_tex_image =
-            (ReleaseTexImage)cogl_get_proc_address ("glXReleaseTexImageEXT");
-
-          if (_gl_bind_tex_image && _gl_release_tex_image)
-            _have_tex_from_pixmap_ext = TRUE;
-        }
-
-      _ext_check_done = TRUE;
-    }
 }
 
 /**
