@@ -69,8 +69,9 @@ In making a new release;
    even number.
 
  - If there was no API change (addition, removal), increment
-   clutter_interface_age by one. If there was an API change,
-   set clutter_interface_age to zero.
+   clutter_interface_age by two. If there was an API change,
+   set clutter_interface_age to zero. The interface_age is used to
+   keep the soname the same.
 
  - Update NEWS (New feature details, bug #'s), README (Any API changes
    relevant to developers + version), AUTHORS if relevant.
