@@ -156,7 +156,7 @@ main (int argc, char **argv)
   if (argc < 2)
     g_error ("usage: %s <window id>", argv[0]);
 
-  win_remote = atol(argv[1]);
+  win_remote = strtol(argv[1], NULL, 0);
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &gry);
