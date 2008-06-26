@@ -1,0 +1,53 @@
+<part id="clutter-overview">
+  <partinfo>
+    <author>
+      <firstname>Emmanuele</firstname>
+      <surname>Bassi</surname>
+      <affiliation>
+        <address>
+          <email>ebassi@openedhand.com</email>
+        </address>
+      </affiliation>
+    </author>
+  </partinfo>
+
+  <title>Overview</title>
+
+  <partintro>
+
+    <para>Clutter is a GObject based library for creating fast, visually
+    rich, graphical user interfaces.</para>
+
+    <para>Clutter works by manipulating a scene-graph of 2D surfaces, or
+    'actors', inside a 3D space.</para>
+
+    <para>#ClutterActor is the base class for such surfaces. All
+    #ClutterActor<!-- -->s can be positioned, scaled and rotated in 3D space.
+    In addition, other properties can be set, such as 2D clipping, children and
+    opacity. Tranforms applied to a parent actor also apply to any children.
+    Actors are also able to receive events.</para>
+
+    <para>Subclasses of #ClutterActor include #ClutterStage, #ClutterTexture,
+    #ClutterLabel, #ClutterRectangle, #ClutterEntry and
+    #ClutterGroup. #ClutterActor<!-- -->s are added to a parent, transformed
+    and then made visible.</para>
+
+    <para>#ClutterStage is the top level #ClutterActor - it's the
+    representation of a window, or framebuffer. It is created automatically
+    when Clutter is initialised. #ClutterStage is a #ClutterGroup, a class
+    implementing the #ClutterCointainer interface.</para>
+
+    <para>#ClutterTimeline<!-- -->s provide the basis for Clutter's animation
+    utilities. Multiple timelines can be synchronised using #ClutterScore,
+    and #ClutterBehaviour and #ClutterEffect allow for the creation of
+    animation effects such as transitions.</para>
+
+    <para>Clutter further contains a number of utilities, including;
+    #ClutterScript - for loading 'UI definition' files formatted in
+    <ulink type="http" url="http://json.org">JSON</ulink>, #ClutterShader - a
+    class for applying GPU shaders to actors, #ClutterModel - a utility class
+    for MVC list type implementations, and fixed point math utilities.</para>
+
+  </partintro>
+
+</part>

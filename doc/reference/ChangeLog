@@ -1,3 +1,21 @@
+2008-06-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-overview.xml: Split the overview into its own
+	file, so we gtk-doc can linkify all class names.
+
+	* clutter/building-clutter.xml: Split the building instructions
+	into its own file, for better maintainability.
+
+	* clutter/clutter-animation.xml:
+	* clutter/creating-behaviours.xml:
+	* clutter/subclassing-ClutterActor.xml: Rename from SGML to XML;
+	these were not SGML files anyway, but templates.
+
+	* clutter/clutter-docs.sgml: Use XInclude instead of the ugly
+	entities hack.
+
+	* clutter/Makefile.am: Update the build.
+
 2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-sections.txt: Add missing symbols.
