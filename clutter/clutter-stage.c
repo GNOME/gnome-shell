@@ -182,25 +182,24 @@ clutter_stage_allocate (ClutterActor          *self,
   else
     {
       ClutterActorBox override = { 0, };
-      ClutterBackend *backend = clutter_get_default_backend ();
-      gint display_width, display_height;
       ClutterActorClass *klass;
+      ClutterUnit natural_width, natural_height;
 
-      display_width = display_height = 0;
-      clutter_backend_get_display_size (backend,
-                                        &display_width,
-                                        &display_height);
+      /* propagate the allocation */
+      klass = CLUTTER_ACTOR_GET_CLASS (priv->impl);
+      klass->allocate (self, box, origin_changed);
+
+      /* get the preferred size from the backend */
+      clutter_actor_get_preferred_size (priv->impl,
+                                        NULL, NULL,
+                                        &natural_width, &natural_height);
 
       override.x1 = 0;
       override.y1 = 0;
-      override.x2 = CLUTTER_UNITS_FROM_DEVICE (display_width);
-      override.y2 = CLUTTER_UNITS_FROM_DEVICE (display_height);
+      override.x2 = natural_width;
+      override.y2 = natural_height;
 
-      CLUTTER_NOTE (ACTOR, "Overriding allocation to %dx%d (origin: %s)",
-                    display_width,
-                    display_height,
-                    origin_changed ? "changed" : "not changed");
-
+      /* and store the overridden allocation */
       klass = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
       klass->allocate (self, &override, origin_changed);
     }

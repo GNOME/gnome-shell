@@ -168,32 +168,6 @@ clutter_backend_sdl_get_features (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_sdl_get_display_size (ClutterBackend *backend,
-                                      gint           *width,
-                                      gint           *height)
-{
-  SDL_Surface *surface;
-
-  surface = SDL_GetVideoSurface ();
-  if (!surface)
-    {
-      if (width)
-        *width = 0;
-
-      if (height)
-        *height = 0;
-    }
-  else
-    {
-      if (width)
-        *width = surface->w;
-
-      if (height)
-        *height = surface->h;
-    }
-}
-
-static void
 clutter_backend_sdl_class_init (ClutterBackendSDLClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -210,7 +184,6 @@ clutter_backend_sdl_class_init (ClutterBackendSDLClass *klass)
   backend_class->ensure_context   = clutter_backend_sdl_ensure_context;
   backend_class->redraw           = clutter_backend_sdl_redraw;
   backend_class->get_features     = clutter_backend_sdl_get_features;
-  backend_class->get_display_size = clutter_backend_sdl_get_display_size;
 }
 
 static void

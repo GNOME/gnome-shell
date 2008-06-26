@@ -482,34 +482,3 @@ clutter_backend_get_font_options (ClutterBackend *backend)
   return priv->font_options;
 }
 
-/**
- * clutter_backend_get_display_size:
- * @backend: a #ClutterBackend
- * @width: return location for the display width in pixels, or %NULL
- * @height: return location for the display height in pixels, or %NULL
- *
- * Retrieves the size of the display from the #ClutterBackend.
- *
- * Since: 0.8
- */
-void
-clutter_backend_get_display_size (ClutterBackend *backend,
-                                  gint           *width,
-                                  gint           *height)
-{
-  ClutterBackendClass *klass;
-
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
-
-  klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (!klass->get_display_size)
-    {
-      if (width)
-        *width = 0;
-
-      if (height)
-        *height = 0;
-    }
-  else
-    klass->get_display_size (backend, width, height);
-}

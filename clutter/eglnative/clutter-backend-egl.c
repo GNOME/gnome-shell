@@ -198,33 +198,6 @@ clutter_backend_egl_get_features (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_egl_get_display_size (ClutterBackend *backend,
-                                      gint           *width,
-                                      gint           *height)
-{
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  gint surface_width, surface_height;
-
-  if (backend_egl->stage)
-    {
-      ClutterStageEGL *stage_egl;
-
-      stage_egl = CLUTTER_STAGE_EGL (backend_egl->stage);
-
-      surface_width  = stage_egl->surface_width;
-      surface_height = stage_egl->surface_height;
-    }
-  else
-    surface_width = surface_height = 0;
-
-  if (width)
-    *width = surface_width;
-
-  if (height)
-    *height = surface_height;
-}
-
-static void
 clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -241,7 +214,6 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   backend_class->ensure_context   = clutter_backend_egl_ensure_context;
   backend_class->redraw           = clutter_backend_egl_redraw;
   backend_class->get_features     = clutter_backend_egl_get_features;
-  backend_class->get_display_size = clutter_backend_egl_get_display_size;
 }
 
 static void

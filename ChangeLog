@@ -1,5 +1,30 @@
 2008-06-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_min_width),
+	(clutter_actor_set_min_height),
+	(clutter_actor_set_natural_width),
+	(clutter_actor_set_natural_height): Ignore any override of the
+	minimum and natural size of the stage on backends that only
+	support static stages.
+
+	* clutter/clutter-stage.c (clutter_stage_allocate): Use the
+	preferred size of the ClutterStage implementation instead of
+	the display size.
+
+	* clutter/clutter-backend.[ch]: Remove get_display_size() and
+	clutter_backend_get_display_size().
+
+	* clutter/eglnative/clutter-backend-egl.c:
+	* clutter/fruity/clutter-backend-fruity.c:
+	* clutter/osx/clutter-backend-osx.c:
+	* clutter/sdl/clutter-backend-sdl.c:
+	* clutter/win32/clutter-backend-win32.c:
+	* clutter/x11/clutter-backend-x11.c: Remove get_display_size()
+	implementations.
+
+2008-06-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-shader.c (bind_glsl_shader): Verify that the
 	vertex shader has been successfully compiled, like we do with
 	the fragment shader.
