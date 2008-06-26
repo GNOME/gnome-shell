@@ -90,6 +90,9 @@ can be overridden:
      from the GL or GLES implementation, plus the eventual backend-specific
      features.
 
+  ClutterBackend::get_display_size
+  -- Use this function to retrieve the size of the display.
+
   ClutterBackend::ensure_context
   -- This function is used to ensure that the backend drawing context
      is made current for passed ClutterStage, using the backend-specific
@@ -126,7 +129,7 @@ the stage implementation should:
 
   - create a new native window handle
   - if the backend doesn't have a drawing context (either GL or GLES),
-    create one and assing it to the backend
+    create one and pass it to the backend
   - set the CLUTTER_ACTOR_REALIZED flag on itself
 
 In case of failure, the CLUTTER_ACTOR_REALIZED flag should be unset on
