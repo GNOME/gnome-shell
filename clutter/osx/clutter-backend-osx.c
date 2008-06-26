@@ -176,7 +176,7 @@ clutter_backend_osx_get_display_size (ClutterBackend *backend,
   int display_width, display_height;
   NSArray *array;
 
-  CLUTTER_OSX_ALLOC_POOL;
+  CLUTTER_OSX_POOL_ALLOC();
 
   array = [NSScreen screens];
 
@@ -190,7 +190,7 @@ clutter_backend_osx_get_display_size (ClutterBackend *backend,
       display_height += rect.size.height;
     }
 
-  CLUTTER_OSX_RELEASE_POOL;
+  CLUTTER_OSX_POOL_RELEASE();
 
   if (width)
     *width = display_width;
