@@ -1,3 +1,16 @@
+2008-06-27  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/cogl/gl/cogl.c:
+        Temp workaround for 10.4 ATI card OSX folks, see #929 
+        (Tommi Komulainen)
+        
+        Bug 998 - clutter always captures X input events
+        
+	* clutter/eglx/clutter-stage-egl.c:
+	* clutter/glx/clutter-stage-glx.c:
+        When we disable X event retrival, dont still select for window
+        events. 
+
 2008-06-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-event.h:

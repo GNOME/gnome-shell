@@ -180,27 +180,29 @@ clutter_stage_glx_realize (ClutterActor *actor)
                                            mask, &xattr);
         }
 
-      if (clutter_x11_has_xinput())
+      if (!backend_x11->no_xevent_retrieval)
         {
-          XSelectInput (stage_x11->xdpy, stage_x11->xwin,
-                        StructureNotifyMask |
-                        FocusChangeMask |
-                        ExposureMask |
-                        PropertyChangeMask);
+          if (clutter_x11_has_xinput())
+            {
+              XSelectInput (stage_x11->xdpy, stage_x11->xwin,
+                            StructureNotifyMask |
+                            FocusChangeMask |
+                            ExposureMask |
+                            PropertyChangeMask);
 #ifdef USE_XINPUT          
-          _clutter_x11_select_events (stage_x11->xwin);
+              _clutter_x11_select_events (stage_x11->xwin);
 #endif
+            }
+          else
+            XSelectInput (stage_x11->xdpy, stage_x11->xwin,
+                          StructureNotifyMask |
+                          FocusChangeMask |
+                          ExposureMask |
+                          PointerMotionMask |
+                          KeyPressMask | KeyReleaseMask |
+                          ButtonPressMask | ButtonReleaseMask |
+                          PropertyChangeMask);
         }
-      else
-        XSelectInput (stage_x11->xdpy, stage_x11->xwin,
-                      StructureNotifyMask |
-                      FocusChangeMask |
-                      ExposureMask |
-                      /* FIXME: we may want to eplicity enable MotionMask */
-                      PointerMotionMask |
-                      KeyPressMask | KeyReleaseMask |
-                      ButtonPressMask | ButtonReleaseMask |
-                      PropertyChangeMask);
 
       /* no user resize.. */
       clutter_stage_x11_fix_window_size (stage_x11);
