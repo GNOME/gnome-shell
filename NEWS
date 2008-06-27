@@ -1,3 +1,19 @@
+Clutter 0.7.6 (27/06/2008)
+===============================================================================
+
+ * List of changes between 0.7.4 and 0.7.6
+
+   o Removed the ClutterBackend::get_display_size() and wrappers.
+
+   o Verify that the vertex shaders are successfully compiled when binding
+     them.
+
+   o Increase safety of the ClutterGLXTexturePixmap
+
+ * List of bugs fixed since 0.7.4
+
+   o #993 - Underline colors are sometimes wrong
+
 Clutter 0.7.4 (25/06/2008), "Killer Koi"
 ===============================================================================
 

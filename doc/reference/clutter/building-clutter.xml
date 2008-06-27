@@ -53,7 +53,7 @@
         <varlistentry>
           <term>Graphics Rendering </term>
           <listitem>
-            <para>Open GL (1.4+) ir Open GL ES (1.1) </para>
+            <para>Open GL (1.4+) or Open GL ES (1.1 or 2.0) </para>
           </listitem>
         </varlistentry>
       </variablelist>
