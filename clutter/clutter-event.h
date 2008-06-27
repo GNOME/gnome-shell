@@ -269,6 +269,21 @@ struct _ClutterButtonEvent
   ClutterInputDevice *device; /* Future use */
 };
 
+/**
+ * ClutterCrossingEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @stage: event source stage
+ * @source: event source actor
+ * @x: event X coordinate
+ * @y: event Y coordinate
+ * @related: actor related to the crossing
+ *
+ * Event for the movement of the pointer across different actors
+ *
+ * Since: 0.2
+ */
 struct _ClutterCrossingEvent
 {
   ClutterEventType type;
@@ -281,7 +296,23 @@ struct _ClutterCrossingEvent
   ClutterActor *related;
 };
 
-
+/**
+ * ClutterMotionEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @stage: event source stage
+ * @source: event source actor
+ * @x: event X coordinate
+ * @y: event Y coordinate
+ * @modifier_state: button modifiers
+ * @axes: reserved for future use
+ * @device: reserved for future use
+ *
+ * Event for the pointer motion
+ *
+ * Since: 0.2
+ */
 struct _ClutterMotionEvent
 {
   ClutterEventType type;
@@ -296,6 +327,24 @@ struct _ClutterMotionEvent
   ClutterInputDevice *device; /* Future use */
 };
 
+/**
+ * ClutterScrollEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @stage: event source stage
+ * @source: event source actor
+ * @x: event X coordinate
+ * @y: event Y coordinate
+ * @direction: direction of the scrolling
+ * @modifier_state: button modifiers
+ * @axes: reserved for future use
+ * @device: reserved for future use
+ *
+ * Scroll wheel (or similar device) event
+ *
+ * Since: 0.2
+ */
 struct _ClutterScrollEvent
 {
   ClutterEventType type;
@@ -311,6 +360,20 @@ struct _ClutterScrollEvent
   ClutterInputDevice *device; /* future use */
 };
 
+/**
+ * ClutterStageStateEvent:
+ * @type: event type
+ * @time: event time
+ * @flags: event flags
+ * @stage: event source stage
+ * @source: event source actor (unused)
+ * @changed_mask: bitwise OR of the changed flags
+ * @new_state: bitwise OR of the current state flags
+ *
+ * Event signalling a change in the #ClutterStage state.
+ *
+ * Since: 0.2
+ */
 struct _ClutterStageStateEvent
 {
   ClutterEventType type;
@@ -322,10 +385,18 @@ struct _ClutterStageStateEvent
   ClutterStageState new_state;
 };
 
+/**
+ * ClutterEvent:
+ * @type: event type
+ *
+ * Generic event wrapper.
+ *
+ * Since: 0.2
+ */
 union _ClutterEvent
 {
   ClutterEventType type;
-  
+
   ClutterAnyEvent any;
   ClutterButtonEvent button;
   ClutterKeyEvent key;

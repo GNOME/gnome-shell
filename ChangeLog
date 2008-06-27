@@ -1,5 +1,12 @@
 2008-06-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-event.h:
+	* clutter/clutter-main.c:
+	* clutter/x11/clutter-backend-x11.c: Add further documentation,
+	and increase the coverage to 94%.
+
+2008-06-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac: Post release bump to 0.7.7.
 
 ======== Release 0.7.6 ========================================================

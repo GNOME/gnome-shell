@@ -1997,6 +1997,9 @@ on_pointer_grab_weak_notify (gpointer data,
  * actor directly. The source set in the event will be the actor that would
  * have received the event if the pointer grab was not in effect.
  *
+ * If you wish to grab all the pointer events for a specific input device,
+ * you should use clutter_grab_pointer_for_device().
+ *
  * Since: 0.6
  */
 void
@@ -2029,9 +2032,20 @@ clutter_grab_pointer (ClutterActor *actor)
     }
 }
 
+/**
+ * clutter_grab_pointer_for_device:
+ * @actor: a #ClutterActor
+ * @id: a device id, or -1
+ *
+ * Grabs all the pointer events coming from the device @id for @actor.
+ *
+ * If @id is -1 then this function is equivalent to clutter_grab_pointer().
+ *
+ * Since: 0.8
+ */
 void
-clutter_grab_pointer_for_device (ClutterActor       *actor,
-                                 gint                id)
+clutter_grab_pointer_for_device (ClutterActor *actor,
+                                 gint          id)
 {
   ClutterInputDevice *dev;
 
@@ -2084,6 +2098,14 @@ clutter_ungrab_pointer (void)
   clutter_grab_pointer (NULL);
 }
 
+/**
+ * clutter_ungrab_pointer_for_device:
+ * @id: a device id
+ *
+ * Removes an existing grab of the pointer events for device @id.
+ *
+ * Since: 0.8
+ */
 void
 clutter_ungrab_pointer_for_device (gint id)
 {
@@ -2308,7 +2330,17 @@ clutter_get_use_mipmapped_text (void)
   return FALSE;    
 }
 
-ClutterInputDevice*
+/**
+ * clutter_get_input_device_for_id:
+ * @id: a device id
+ *
+ * Retrieves the #ClutterInputDevice from its id.
+ *
+ * Return value: a #ClutterInputDevice, or %NULL
+ *
+ * Since: 0.8
+ */
+ClutterInputDevice *
 clutter_get_input_device_for_id (gint id)
 {
   GSList *item;
@@ -2321,7 +2353,7 @@ clutter_get_input_device_for_id (gint id)
        item != NULL; 
        item = item->next)
   {
-    device = (ClutterInputDevice *)item->data;
+    device = item->data;
 
     if (device->id == id)
       return device;

@@ -756,7 +756,7 @@ _clutter_x11_select_events (Window xwin)
   }
 }
 
-ClutterX11XInputDevice*
+ClutterX11XInputDevice *
 _clutter_x11_get_device_for_xid (XID id)
 {
   GSList *list_it;
@@ -806,12 +806,32 @@ clutter_x11_get_input_devices (void)
 #endif
 }
 
+/**
+ * clutter_x11_get_input_device_type:
+ * @device: a #ClutterX11XInputDevice
+ *
+ * Retrieves the type of @device.
+ *
+ * Return value: the type of the device
+ *
+ * Since: 0.8
+ */
 ClutterX11InputDeviceType
 clutter_x11_get_input_device_type (ClutterX11XInputDevice *device)
 {
   return device->type;
 }
 
+/**
+ * clutter_x11_has_xinput:
+ * 
+ * Gets whether Clutter has XInput support.
+ *
+ * Return value: %TRUE if Clutter was compiled with XInput support
+ *   and XInput support is available at run time.
+ *
+ * Since: 0.8
+ */
 gboolean
 clutter_x11_has_xinput (void)
 {
