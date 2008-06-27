@@ -1,5 +1,14 @@
 2008-06-26  Thomas Thurman  <tthurman@gnome.org>
 
+        Keep the compiler from giving some warnings.
+        
+        * src/compositor/compositor-xrender.c (xrender_begin_move,
+          xrender_update_move, xrender_end_move, xrender_free_window): four
+          functions which were never called and contain no code #iffed out.
+        * src/tools/metacity-mag.c (grab_area_at_mouse): fixed typecast error.
+
+2008-06-26  Thomas Thurman  <tthurman@gnome.org>
+
         Refactor so the long scary stack functions are less long and scary:
 
         * stack.c (stack_ensure_sorted): the five parts of this long function

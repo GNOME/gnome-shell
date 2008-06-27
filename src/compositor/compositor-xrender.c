@@ -2697,6 +2697,11 @@ xrender_destroy (MetaCompositor *compositor)
 #endif
 }
 
+#if 0
+/* Taking these out because they're empty and never called, and the
+ * compiler complains -- tthurman
+ */
+
 static void
 xrender_begin_move (MetaCompositor *compositor,
                     MetaWindow     *window,
@@ -2741,7 +2746,8 @@ xrender_free_window (MetaCompositor *compositor,
   /* destroy_win (compositor->display, window->xwindow, FALSE); */
 #endif
 }
-   
+#endif /* 0 */
+
 static void
 xrender_process_event (MetaCompositor *compositor,
                        XEvent         *event,

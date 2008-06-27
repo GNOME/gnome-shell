@@ -132,7 +132,8 @@ grab_area_at_mouse (GtkWidget *invisible,
   gtk_container_add (GTK_CONTAINER (display_window), widget);
   g_object_unref (G_OBJECT (magnified));
 
-  g_object_add_weak_pointer (G_OBJECT (display_window), (void**) &display_window);
+  g_object_add_weak_pointer (G_OBJECT (display_window),
+                             (gpointer) &display_window);
 
   g_signal_connect (G_OBJECT (display_window), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
