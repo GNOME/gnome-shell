@@ -1,6 +1,8 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity Window Stack */
+/**
+ * \file stack.c  Metacity window stack
+ */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
@@ -52,6 +54,13 @@
 static void meta_stack_sync_to_server (MetaStack *stack);
 static void meta_window_set_stack_position_no_sync (MetaWindow *window,
                                                     int         position);
+static void stack_do_window_deletions (MetaStack *stack);
+static void stack_do_window_additions (MetaStack *stack);
+static void stack_do_relayer          (MetaStack *stack);
+static void stack_do_constrain        (MetaStack *stack);
+static void stack_do_resort           (MetaStack *stack);
+
+static void stack_ensure_sorted (MetaStack *stack);
 
 MetaStack*
 meta_stack_new (MetaScreen *screen)
@@ -710,48 +719,19 @@ apply_constraints (Constraint **constraints,
   g_slist_free (heads);
 }
 
+/**
+ * Go through "deleted" and take the matching windows
+ * out of "windows".
+ */
 static void
-constrain_stacking (MetaStack *stack)
+stack_do_window_deletions (MetaStack *stack)
 {
-  Constraint **constraints;
-
-  /* It'd be nice if this were all faster, probably */
-  
-  if (!stack->need_constrain)
-    return;
-
-  meta_topic (META_DEBUG_STACK,
-              "Reapplying constraints\n");
-
-  constraints = g_new0 (Constraint*,
-                        stack->n_positions);
-
-  create_constraints (constraints, stack->sorted);
-
-  graph_constraints (constraints, stack->n_positions);
-
-  apply_constraints (constraints, stack->n_positions);
-  
-  free_constraints (constraints, stack->n_positions);
-  g_free (constraints);
-  
-  stack->need_constrain = FALSE;
-}
-
-static void
-meta_stack_ensure_sorted (MetaStack *stack)
-{
-  GList *tmp;
-  int i;
-  int n_added;
-
-  /* Note that the additions, relayers, reconstrains
-   * may all set need_resort to TRUE
-   */
-  
   /* Do removals before adds, with paranoid idea that we might re-add
    * the same window IDs.
    */
+  GList *tmp;
+  int i;
+    
   tmp = stack->removed;
   while (tmp != NULL)
     {
@@ -785,8 +765,15 @@ meta_stack_ensure_sorted (MetaStack *stack)
     }
 
   g_list_free (stack->removed);
-  stack->removed = NULL;  
-  
+  stack->removed = NULL;
+}
+
+static void
+stack_do_window_additions (MetaStack *stack)
+{
+  GList *tmp;
+  gint i, n_added;
+
   n_added = g_list_length (stack->added);
   if (n_added > 0)
     {
@@ -831,61 +818,119 @@ meta_stack_ensure_sorted (MetaStack *stack)
 
   g_list_free (stack->added);
   stack->added = NULL;
+}
 
-  /* Update the layers that windows are in */
-  if (stack->need_relayer)
-    {
-      meta_topic (META_DEBUG_STACK,
-                  "Recomputing layers\n");
+/**
+ * Update the layers that windows are in
+ */
+static void
+stack_do_relayer (MetaStack *stack)
+{
+  GList *tmp;
+    
+  if (!stack->need_relayer)
+      return;
+    
+  meta_topic (META_DEBUG_STACK,
+              "Recomputing layers\n");
       
-      tmp = stack->sorted;
+  tmp = stack->sorted;
 
-      while (tmp != NULL)
+  while (tmp != NULL)
+    {
+      MetaWindow *w;
+      MetaStackLayer old_layer;
+
+      w = tmp->data;
+      old_layer = w->layer;
+
+      compute_layer (w);
+
+      if (w->layer != old_layer)
         {
-          MetaWindow *w;
-          MetaStackLayer old_layer;
-
-          w = tmp->data;
-          old_layer = w->layer;
-
-          compute_layer (w);
-
-          if (w->layer != old_layer)
-            {
-              meta_topic (META_DEBUG_STACK,
-                          "Window %s moved from layer %u to %u\n",
-                          w->desc, old_layer, w->layer);
+          meta_topic (META_DEBUG_STACK,
+                      "Window %s moved from layer %u to %u\n",
+                      w->desc, old_layer, w->layer);
               
-              stack->need_resort = TRUE;
-              stack->need_constrain = TRUE;
-              /* don't need to constrain as constraining
-               * purely operates in terms of stack_position
-               * not layer
-               */
-            }
-          
-          tmp = tmp->next;
+          stack->need_resort = TRUE;
+          stack->need_constrain = TRUE;
+          /* don't need to constrain as constraining
+           * purely operates in terms of stack_position
+           * not layer
+           */
         }
-
-      stack->need_relayer = FALSE;
+          
+      tmp = tmp->next;
     }
 
-  /* Update stack_position and layer to reflect transiency
-     constraints */
-  constrain_stacking (stack);
+  stack->need_relayer = FALSE;
+}
+
+/**
+ * Update stack_position and layer to reflect transiency
+ * constraints
+ */
+static void
+stack_do_constrain (MetaStack *stack)
+{
+  Constraint **constraints;
+
+  /* It'd be nice if this were all faster, probably */
   
-  /* Sort stack->sorted with layers having priority over stack_position
-   */
+  if (!stack->need_constrain)
+    return;
 
-  if (stack->need_resort)
-    {
-      meta_topic (META_DEBUG_STACK,
-                  "Sorting stack list\n");
+  meta_topic (META_DEBUG_STACK,
+              "Reapplying constraints\n");
+
+  constraints = g_new0 (Constraint*,
+                        stack->n_positions);
+
+  create_constraints (constraints, stack->sorted);
+
+  graph_constraints (constraints, stack->n_positions);
+
+  apply_constraints (constraints, stack->n_positions);
+  
+  free_constraints (constraints, stack->n_positions);
+  g_free (constraints);
+  
+  stack->need_constrain = FALSE;
+}
+
+/**
+ * Sort stack->sorted with layers having priority over stack_position.
+ */
+static void
+stack_do_resort (MetaStack *stack)
+{
+  if (!stack->need_resort)
+    return;
+  
+  meta_topic (META_DEBUG_STACK,
+              "Sorting stack list\n");
       
-      stack->sorted = g_list_sort (stack->sorted, (GCompareFunc) compare_window_position);
+  stack->sorted = g_list_sort (stack->sorted,
+                               (GCompareFunc) compare_window_position);
 
-      stack->need_resort = FALSE;
-    }
+  stack->need_resort = FALSE;
+}
+
+/**
+ * Honour the removed and added lists of the stack, and then recalculate
+ * all the layers (if the flag is set), re-run all the constraint calculations
+ * (if the flag is set), and finally re-sort the stack (if the flag is set,
+ * and if it wasn't already it might have become so during all the previous
+ * activity).
+ */
+static void
+stack_ensure_sorted (MetaStack *stack)
+{
+  stack_do_window_deletions (stack);
+  stack_do_window_additions (stack);
+  stack_do_relayer (stack);
+  stack_do_constrain (stack);
+  stack_do_resort (stack);
 }
 
 static void
@@ -1000,7 +1045,7 @@ meta_stack_sync_to_server (MetaStack *stack)
   
   meta_topic (META_DEBUG_STACK, "Syncing window stack to server\n");  
 
-  meta_stack_ensure_sorted (stack);
+  stack_ensure_sorted (stack);
   
   /* Create stacked xwindow arrays.
    * Painfully, "stacked" is in bottom-to-top order for the
@@ -1184,7 +1229,7 @@ meta_stack_sync_to_server (MetaStack *stack)
 MetaWindow*
 meta_stack_get_top (MetaStack *stack)
 {
-  meta_stack_ensure_sorted (stack);
+  stack_ensure_sorted (stack);
 
   if (stack->sorted)
     return stack->sorted->data;
@@ -1197,7 +1242,7 @@ meta_stack_get_bottom (MetaStack  *stack)
 {
   GList *link;
 
-  meta_stack_ensure_sorted (stack);
+  stack_ensure_sorted (stack);
 
   link = g_list_last (stack->sorted);
   if (link != NULL)
@@ -1214,7 +1259,7 @@ meta_stack_get_above (MetaStack      *stack,
   GList *link;
   MetaWindow *above;
   
-  meta_stack_ensure_sorted (stack);
+  stack_ensure_sorted (stack);
   
   link = g_list_find (stack->sorted, window);
   if (link == NULL)
@@ -1239,7 +1284,7 @@ meta_stack_get_below (MetaStack      *stack,
   GList *link;
   MetaWindow *below;
   
-  meta_stack_ensure_sorted (stack);
+  stack_ensure_sorted (stack);
 
   link = g_list_find (stack->sorted, window);
 
@@ -1299,7 +1344,7 @@ get_default_focus_window (MetaStack     *stack,
   else
     not_this_one_group = NULL;
 
-  meta_stack_ensure_sorted (stack);
+  stack_ensure_sorted (stack);
 
   /* top of this layer is at the front of the list */
   link = stack->sorted;
@@ -1392,7 +1437,7 @@ meta_stack_list_windows (MetaStack     *stack,
   GList *workspace_windows = NULL;
   GList *link;
   
-  meta_stack_ensure_sorted (stack); /* do adds/removes */
+  stack_ensure_sorted (stack); /* do adds/removes */
   
   link = stack->sorted;
   
@@ -1422,7 +1467,7 @@ meta_stack_windows_cmp  (MetaStack  *stack,
 
   /* -1 means a below b */
 
-  meta_stack_ensure_sorted (stack); /* update constraints, layers */
+  stack_ensure_sorted (stack); /* update constraints, layers */
   
   if (window_a->layer < window_b->layer)
     return -1;
@@ -1457,7 +1502,7 @@ meta_stack_get_positions (MetaStack *stack)
   GList *tmp;
 
   /* Make sure to handle any adds or removes */
-  meta_stack_ensure_sorted (stack);
+  stack_ensure_sorted (stack);
 
   tmp = g_list_copy (stack->sorted);
   tmp = g_list_sort (tmp, (GCompareFunc) compare_just_window_stack_position);
@@ -1510,7 +1555,7 @@ meta_stack_set_positions (MetaStack *stack,
   GList *tmp;
 
   /* Make sure any adds or removes aren't in limbo -- is this needed? */
-  meta_stack_ensure_sorted (stack);
+  stack_ensure_sorted (stack);
   
   if (!lists_contain_same_windows (windows, stack->sorted))
     {

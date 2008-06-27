@@ -1,3 +1,14 @@
+2008-06-26  Thomas Thurman  <tthurman@gnome.org>
+
+        Refactor so the long scary stack functions are less long and scary:
+
+        * stack.c (stack_ensure_sorted): the five parts of this long function
+          broken out into the new functions stack_do_window_deletions,
+          stack_do_window_additions, stack_do_relayer, stack_do_constrain
+          (which was already separate: see next) and stack_do_resort.
+        * stack.c (constrain_stacking): renamed to stack_do_constrain.
+        * stack.c (stack_ignore_sorted): lose meta prefix since it's static.
+        
 2008-06-16  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.23.55.
