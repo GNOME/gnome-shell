@@ -62,12 +62,14 @@ struct _PangoClutterRendererClass
   PangoRendererClass class_instance;
 };
 
+#define CLUTTER_PANGO_UNIT_TO_FIXED(x) ((x) << (CFX_Q - 10))
+
 static void pango_clutter_renderer_finalize (GObject *object);
-static void pango_clutter_renderer_draw_glyph (PangoRenderer *renderer,
-					       PangoFont     *font,
-					       PangoGlyph     glyph,
-					       double         x,
-					       double         y);
+static void pango_clutter_renderer_draw_glyphs (PangoRenderer    *renderer,
+						PangoFont        *font,
+						PangoGlyphString *glyphs,
+						int               x,
+						int               y);
 static void pango_clutter_renderer_draw_rectangle (PangoRenderer    *renderer,
 						   PangoRenderPart   part,
 						   int               x,
@@ -82,8 +84,6 @@ static void pango_clutter_renderer_draw_trapezoid (PangoRenderer    *renderer,
 						   double            y2,
 						   double            x12,
 						   double            x22);
-static void pango_clutter_renderer_prepare_run (PangoRenderer  *renderer,
-						PangoLayoutRun *run);
 
 static GObjectClass *parent_class = NULL;
 
@@ -108,10 +108,9 @@ pango_clutter_renderer_class_init (PangoClutterRendererClass *klass)
 
   object_class->finalize = pango_clutter_renderer_finalize;
 
-  renderer_class->draw_glyph = pango_clutter_renderer_draw_glyph;
+  renderer_class->draw_glyphs = pango_clutter_renderer_draw_glyphs;
   renderer_class->draw_rectangle = pango_clutter_renderer_draw_rectangle;
   renderer_class->draw_trapezoid = pango_clutter_renderer_draw_trapezoid;
-  renderer_class->prepare_run = pango_clutter_renderer_prepare_run;
 }
 
 static void
@@ -316,6 +315,27 @@ pango_clutter_ensure_glyph_cache_for_layout (PangoLayout *layout)
 }
 
 static void
+pango_clutter_renderer_set_color_for_part (PangoRenderer   *renderer,
+					   PangoRenderPart  part)
+{
+  PangoColor *pango_color = pango_renderer_get_color (renderer, part);
+  PangoClutterRenderer *priv = PANGO_CLUTTER_RENDERER (renderer);
+  ClutterColor clutter_color;
+
+  if (pango_color)
+    {
+      clutter_color.red = pango_color->red >> 8;
+      clutter_color.green = pango_color->green >> 8;
+      clutter_color.blue = pango_color->blue >> 8;
+      clutter_color.alpha = priv->color.alpha;
+    }
+  else
+    clutter_color = priv->color;
+
+  cogl_color (&clutter_color);
+}
+
+static void
 pango_clutter_renderer_draw_box (int x,     int y,
 				 int width, int height)
 {
@@ -327,6 +347,30 @@ pango_clutter_renderer_draw_box (int x,     int y,
 }
 
 static void
+pango_clutter_renderer_get_device_units (PangoRenderer *renderer,
+					 int            xin,
+					 int            yin,
+					 ClutterFixed  *xout,
+					 ClutterFixed  *yout)
+{
+  const PangoMatrix *matrix;
+
+  if ((matrix = pango_renderer_get_matrix (renderer)))
+    {
+      /* Convert user-space coords to device coords */
+      *xout = CLUTTER_FLOAT_TO_FIXED ((xin * matrix->xx + yin * matrix->xy)
+				      / PANGO_SCALE + matrix->x0);
+      *yout = CLUTTER_FLOAT_TO_FIXED ((yin * matrix->yy + xin * matrix->yx)
+				      / PANGO_SCALE + matrix->y0);
+    }
+  else
+    {
+      *xout = CLUTTER_PANGO_UNIT_TO_FIXED (xin);
+      *yout = CLUTTER_PANGO_UNIT_TO_FIXED (yin);
+    }
+}
+
+static void
 pango_clutter_renderer_draw_rectangle (PangoRenderer    *renderer,
 				       PangoRenderPart   part,
 				       int               x,
@@ -334,28 +378,16 @@ pango_clutter_renderer_draw_rectangle (PangoRenderer    *renderer,
 				       int               width,
 				       int               height)
 {
-  float x1, x2, y1, y2;
-  const PangoMatrix *matrix;
+  ClutterFixed x1, x2, y1, y2;
 
-  if ((matrix = pango_renderer_get_matrix (renderer)))
-    {
-      /* Convert user-space coords to device coords */
-      x1 = (x * matrix->xx + y * matrix->xy) / PANGO_SCALE + matrix->x0;
-      x2 = ((x + width) * matrix->xx + (y + height) * matrix->xy)
-	/ PANGO_SCALE + matrix->x0;
-      y1 = (y * matrix->yy + x * matrix->yx) / PANGO_SCALE + matrix->y0;
-      y2 = ((y + height) * matrix->yy + (x + width) * matrix->yx)
-	/ PANGO_SCALE + matrix->y0;
-    }
-  else
-    {
-      x1 = x / PANGO_SCALE;
-      x2 = (x + width) / PANGO_SCALE;
-      y1 = y / PANGO_SCALE;
-      y2 = (y + height) / PANGO_SCALE;
-    }
+  pango_clutter_renderer_set_color_for_part (renderer, part);
 
-  cogl_rectangle (x1, y1, x2 - x1, y2 - y1);
+  pango_clutter_renderer_get_device_units (renderer, x, y,
+					   &x1, &y1);
+  pango_clutter_renderer_get_device_units (renderer, x + width, y + height,
+					   &x2, &y2);
+
+  cogl_rectanglex (x1, y1, x2 - x1, y2 - y1);
 }
 
 static void
@@ -379,110 +411,84 @@ pango_clutter_renderer_draw_trapezoid (PangoRenderer    *renderer,
   points[6] = CLUTTER_FLOAT_TO_FIXED (x21);
   points[7] = points[1];
 
+  pango_clutter_renderer_set_color_for_part (renderer, part);
   cogl_path_polygon (points, 4);
   cogl_path_fill ();
 }
 
 static void
-pango_clutter_renderer_draw_glyph (PangoRenderer *renderer,
-				   PangoFont     *font,
-				   PangoGlyph     glyph,
-				   double         xd,
-				   double         yd)
+pango_clutter_renderer_draw_glyphs (PangoRenderer    *renderer,
+				    PangoFont        *font,
+				    PangoGlyphString *glyphs,
+				    int               xi,
+				    int               yi)
 {
   PangoClutterGlyphCacheValue *cache_value;
-  ClutterFixed x = CLUTTER_FLOAT_TO_FIXED ((float) xd);
-  ClutterFixed y = CLUTTER_FLOAT_TO_FIXED ((float) yd);
+  int i;
 
-  if ((glyph & PANGO_GLYPH_UNKNOWN_FLAG))
+  pango_clutter_renderer_set_color_for_part (renderer,
+					     PANGO_RENDER_PART_FOREGROUND);
+
+  for (i = 0; i < glyphs->num_glyphs; i++)
     {
-      PangoFontMetrics *metrics;
+      PangoGlyphInfo *gi = glyphs->glyphs + i;
+      ClutterFixed x, y;
 
-      if (font == NULL
-	  || (metrics = pango_font_get_metrics (font, NULL)) == NULL)
-	pango_clutter_renderer_draw_box (CLUTTER_FIXED_TO_INT (x),
-					 CLUTTER_FIXED_TO_INT (y),
-					 PANGO_UNKNOWN_GLYPH_WIDTH,
-					 PANGO_UNKNOWN_GLYPH_HEIGHT);
+      pango_clutter_renderer_get_device_units (renderer,
+					       xi + gi->geometry.x_offset,
+					       yi + gi->geometry.y_offset,
+					       &x, &y);
+
+      if ((gi->glyph & PANGO_GLYPH_UNKNOWN_FLAG))
+	{
+	  PangoFontMetrics *metrics;
+
+	  if (font == NULL
+	      || (metrics = pango_font_get_metrics (font, NULL)) == NULL)
+	    pango_clutter_renderer_draw_box (CLUTTER_FIXED_TO_INT (x),
+					     CLUTTER_FIXED_TO_INT (y),
+					     PANGO_UNKNOWN_GLYPH_WIDTH,
+					     PANGO_UNKNOWN_GLYPH_HEIGHT);
+	  else
+	    {
+	      pango_clutter_renderer_draw_box (CLUTTER_FIXED_TO_INT (x),
+					       CLUTTER_FIXED_TO_INT (y),
+					       metrics->approximate_char_width
+					       / PANGO_SCALE,
+					       metrics->ascent / PANGO_SCALE);
+
+	      pango_font_metrics_unref (metrics);
+	    }
+	}
       else
 	{
-	  pango_clutter_renderer_draw_box (CLUTTER_FIXED_TO_INT (x),
-					   CLUTTER_FIXED_TO_INT (y),
-					   metrics->approximate_char_width
-					   / PANGO_SCALE,
-					   metrics->ascent / PANGO_SCALE);
+	  /* Get the texture containing the glyph. This will create
+	     the cache entry if there isn't already one */
+	  cache_value
+	    = pango_clutter_renderer_get_cached_glyph (renderer, font,
+						       gi->glyph);
 
-	  pango_font_metrics_unref (metrics);
+	  if (cache_value == NULL)
+	    pango_clutter_renderer_draw_box (CLUTTER_FIXED_TO_INT (x),
+					     CLUTTER_FIXED_TO_INT (y),
+					     PANGO_UNKNOWN_GLYPH_WIDTH,
+					     PANGO_UNKNOWN_GLYPH_HEIGHT);
+	  else
+	    {
+	      x += CLUTTER_INT_TO_FIXED (cache_value->draw_x);
+	      y += CLUTTER_INT_TO_FIXED (cache_value->draw_y);
+
+	      /* Render the glyph from the texture */
+	      cogl_texture_rectangle (cache_value->texture, x, y,
+				      x + CLUTTER_INT_TO_FIXED (cache_value
+								->draw_width),
+				      y + CLUTTER_INT_TO_FIXED (cache_value
+								->draw_height),
+				      cache_value->tx1, cache_value->ty1,
+				      cache_value->tx2, cache_value->ty2);
+	    }
 	}
 
-      return;
+      xi += gi->geometry.width;
     }
-
-  /* Get the texture containing the glyph. This will create the cache
-     entry if there isn't already one */
-  cache_value = pango_clutter_renderer_get_cached_glyph (renderer, font, glyph);
-
-  if (cache_value == NULL)
-    {
-      pango_clutter_renderer_draw_box (CLUTTER_FIXED_TO_INT (x),
-				       CLUTTER_FIXED_TO_INT (y),
-				       PANGO_UNKNOWN_GLYPH_WIDTH,
-				       PANGO_UNKNOWN_GLYPH_HEIGHT);
-
-      return;
-    }
-
-  x += CLUTTER_INT_TO_FIXED (cache_value->draw_x);
-  y += CLUTTER_INT_TO_FIXED (cache_value->draw_y);
-
-  /* Render the glyph from the texture */
-  cogl_texture_rectangle (cache_value->texture, x, y,
-			  x + CLUTTER_INT_TO_FIXED (cache_value->draw_width),
-			  y + CLUTTER_INT_TO_FIXED (cache_value->draw_height),
-			  cache_value->tx1, cache_value->ty1,
-			  cache_value->tx2, cache_value->ty2);
-}
-
-static void
-pango_clutter_renderer_prepare_run (PangoRenderer  *renderer,
-				    PangoLayoutRun *run)
-{
-  GSList               *node;
-  PangoColor           *fg = NULL;
-  ClutterColor          col;
-  PangoClutterRenderer *priv = PANGO_CLUTTER_RENDERER (renderer);
-
-  for (node = run->item->analysis.extra_attrs; node; node = node->next)
-    {
-      PangoAttribute *attr = node->data;
-
-      switch (attr->klass->type)
-	{
-	case PANGO_ATTR_FOREGROUND:
-	  fg = &((PangoAttrColor *) attr)->color;
-
-	default:
-	  break;
-	}
-    }
-
-   if (fg)
-    {
-      col.red   = (fg->red   * 255) / 65535;
-      col.green = (fg->green * 255) / 65535;
-      col.blue  = (fg->blue  * 255) / 65535;
-    }
-  else
-    {
-      col.red   = priv->color.red;
-      col.green = priv->color.green;
-      col.blue  = priv->color.blue;
-    }
-
-  col.alpha = priv->color.alpha;
-
-  cogl_color (&col);
-
-  /* Chain up */
-  (* PANGO_RENDERER_CLASS (parent_class)->prepare_run) (renderer, run);
 }

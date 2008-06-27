@@ -1,3 +1,12 @@
+2008-06-27  Neil Roberts  <neil@o-hand.com>
+
+	Bug 993 - Underline colors are sometimes wrong
+
+	* clutter/pango/pangoclutter-render.c: Fixed so that instead
+	of trying to set the color in prepare_run it uses draw_glyphs
+	to draw groups of glyphs and requests the color for each part
+	from Pango.
+
 2008-06-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c:
