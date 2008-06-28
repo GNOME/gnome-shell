@@ -1,3 +1,11 @@
+        * src/core/stack.c (stack_sync_to_server): lose meta prefix
+          since it's static. 
+
+
+2008-06-27  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/stack.h: Commented everything.
+
 2008-06-26  Thomas Thurman  <tthurman@gnome.org>
 
         Keep the compiler from giving some warnings.
