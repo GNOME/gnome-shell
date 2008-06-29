@@ -2802,8 +2802,10 @@ xrender_process_event (MetaCompositor *compositor,
     default:
       if (event->type == meta_display_get_damage_event_base (xrc->display) + XDamageNotify) 
         process_damage (xrc, (XDamageNotifyEvent *) event);
+#ifdef HAVE_SHAPE
       else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify) 
         process_shape (xrc, (XShapeEvent *) event);
+#endif /* HAVE_SHAPE */
       else 
         {
           meta_error_trap_pop (xrc->display, FALSE);

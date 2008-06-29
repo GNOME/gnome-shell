@@ -1,5 +1,11 @@
 2008-06-28  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/display.c, src/compositor/compositor-xrender.c: add checks
+          for HAVE_SHAPE where appropriate.
+        * src/core/xprops.c: fix type error which was causing warnings.
+
+2008-06-28  Thomas Thurman  <tthurman@gnome.org>
+
         Some refactoring, simplifying, and commenting of the non-composited
         effects code.  effects.c could still do with some polish, which will
         come along later.

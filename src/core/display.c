@@ -5166,9 +5166,11 @@ meta_display_get_damage_event_base (MetaDisplay *display)
 #endif
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+#ifdef HAVE_SHAPE
 int
 meta_display_get_shape_event_base (MetaDisplay *display)
 {
   return display->shape_event_base;
 }
+#endif
 #endif
