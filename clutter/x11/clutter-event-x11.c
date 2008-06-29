@@ -219,6 +219,7 @@ set_user_time (ClutterBackendX11 *backend_x11,
     }
 }
 
+#ifdef USE_XINPUT
 static void
 convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
 {
@@ -237,6 +238,7 @@ convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
   xevent->xkey.keycode = xkev->keycode;
   xevent->xkey.same_screen = xkev->same_screen;
 }
+#endif
 
 static void
 translate_key_event (ClutterBackend   *backend,

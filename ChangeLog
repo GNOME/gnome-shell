@@ -1,3 +1,9 @@
+2008-06-29  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/x11/clutter-event-x11.c: 
+        ifdef convert_xdevicekey_to_xkey () with XINPUT check.
+        (fix via Andy Wingo)
+
 2008-06-29  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
 	* clutter/osx/clutter-osx.h (_clutter_event_osx_put)
