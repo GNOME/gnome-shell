@@ -1,3 +1,10 @@
+2008-06-29  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/stack.c (stack_sync_to_server): lose meta prefix
+          since it's static. 
+        * src/core/stack.c (meta_stack_remove, stack_do_window_deletions):
+          replace our own cast with glib macro designed to do the same thing
+
 2008-06-28  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/display.c, src/compositor/compositor-xrender.c: add checks
