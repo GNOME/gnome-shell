@@ -1,6 +1,30 @@
-        * src/core/stack.c (stack_sync_to_server): lose meta prefix
-          since it's static. 
+2008-06-28  Thomas Thurman  <tthurman@gnome.org>
 
+        Some refactoring, simplifying, and commenting of the non-composited
+        effects code.  effects.c could still do with some polish, which will
+        come along later.
+
+        * src/core/effects.h (meta_push_effect_handler): removed since it's
+          never used and does nothing very useful.
+        * src/core/effects.h (meta_pop_effect_handler): removed since its
+          only effect is to crash the program.
+        * src/core/effects.h (META_MINIMIZE_ANIMATION_LENGTH,
+          META_SHADE_ANIMATION_LENGTH): move to effects.c because they're used
+          nowhere else.
+        * src/core/effects.c: there were three versions of the box-zoom effect.
+          Remove the one which was never used, and make only the ones which
+          are used with certain configure settings be compiled.
+        * src/core/effects.h (meta_effect_end): move to effects.c, make static,
+          and rename to effect_free.
+        * src/core/effects.h (meta_effects_draw_box_animation): move to
+          effects.c, make static, and rename to draw_box_animation.
+        * src/core/effects.h (MetaEffectType): remove the values which weren't
+          used.
+        * src/core/window.c (meta_window_shade): remove commented-out code to
+          call effect for shading.
+        * src/core/effects.h (MetaEffectFinish): remove useless MetaEffect
+          parameter.
+        * src/core/window.c (finish_minimize): remove MetaEffect parameter.
 
 2008-06-27  Thomas Thurman  <tthurman@gnome.org>
 

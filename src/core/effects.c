@@ -1,6 +1,40 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity animation effects */
+/**
+ * \file effects.c "Special effects" other than compositor effects.
+ * 
+ * Before we had a serious compositor, we supported swooping
+ * rectangles for minimising and so on.  These are still supported
+ * today, even when the compositor is enabled.  The file contains two
+ * parts:
+ *
+ *  1) A set of functions, each of which implements a special effect.
+ *     (Only the minimize function does anything interesting; we should
+ *      probably get rid of the rest.)
+ *
+ *  2) A set of functions for moving a highlighted wireframe box around
+ *     the screen, optionally with height and width shown in the middle.
+ *     This is used for moving and resizing when reduced_resources is set.
+ *
+ * There was formerly a system which allowed callers to drop in their
+ * own handlers for various things; it was never used (people who want
+ * their own handlers can just modify this file, after all) and it added
+ * a good deal of extra complexity, so it has been removed.  If you want it,
+ * it can be found in svn r3769.
+ *
+ * Once upon a time there were three different ways of drawing the box
+ * animation: window wireframe, window opaque, and root. People who had
+ * the shape extension theoretically had the choice of all three, and
+ * people who didn't weren't given the choice of the wireframe option.
+ * In practice, though, the opaque animation was never perfect, so it came
+ * down to the wireframe option for those who had the extension and
+ * the root option for those who didn't; there was actually no way of choosing
+ * any other option anyway.  Work on the opaque animation stopped in 2002;
+ * anyone who wants something like that these days will be using the
+ * compositor anyway.
+ *
+ * In svn r3769 this was made explicit.
+ */
 
 /* 
  * Copyright (C) 2001 Anders Carlsson, Havoc Pennington
@@ -21,16 +55,6 @@
  * 02111-1307, USA.
  */
 
-
-/**
- * \file effects.c "Special effects" other than compositor effects.
- * 
- * Before we had a serious compositor, we supported swooping
- * rectangles for minimising and so on.  These are still supported
- * today, even when the compositor is enabled.
- */
-
-
 #include <config.h>
 #include "effects.h"
 #include "display-private.h"
@@ -41,15 +65,13 @@
 #include <X11/extensions/shape.h>
 #endif
 
+#define META_MINIMIZE_ANIMATION_LENGTH 0.25
+#define META_SHADE_ANIMATION_LENGTH 0.2
+
 #include <string.h>
 
-typedef enum
-{
-  META_ANIMATION_DRAW_ROOT,
-  META_ANIMATION_WINDOW_WIREFRAME,
-  META_ANIMATION_WINDOW_OPAQUE
-
-} MetaAnimationStyle;
+typedef struct MetaEffect MetaEffect;
+typedef struct MetaEffectPriv MetaEffectPriv;
 
 typedef struct
 {
@@ -58,65 +80,85 @@ typedef struct
   double millisecs_duration;
   GTimeVal start_time;
 
+#ifdef HAVE_SHAPE
+  /** For wireframe window */
+  Window wireframe_xwindow;
+#else
+  /** Rectangle to erase */
+  MetaRectangle last_rect;
+
+  /** First time we've plotted anything in this animation? */
   gboolean first_time;
+
+  /** For wireframe drawn on root window */
+  GC gc;
+#endif
 
   MetaRectangle start_rect;
   MetaRectangle end_rect;
-
-  /* rect to erase */
-  MetaRectangle last_rect;
-
-  /* used instead of the global flag, since
-   * we don't want to change midstream.
-   */
-  MetaAnimationStyle style;
-  
-  /* For wireframe drawn on root window */
-  GC gc;
-
-  /* For wireframe window */
-  Window wireframe_xwindow;
-  
-  /* For opaque */
-  MetaImageWindow *image_window;
-  GdkPixbuf       *orig_pixbuf;
-
-  MetaBoxAnimType anim_type;
   
 } BoxAnimationContext;
+
+/**
+ * Information we need to know during a maximise or minimise effect.
+ */
+typedef struct
+{
+  /** This is the normal-size window. */
+  MetaRectangle window_rect;
+  /** This is the size of the window when it's an icon. */
+  MetaRectangle icon_rect;
+} MetaMinimizeEffect, MetaUnminimizeEffect;
 
 struct MetaEffectPriv
 {
   MetaEffectFinished finished;
-  gpointer	     finished_data;
+  gpointer           finished_data;
+};
+
+struct MetaEffect
+{
+  /** The window the effect is applied to. */
+  MetaWindow *window;
+  /** Which effect is happening here. */
+  MetaEffectType type;
+  /** The effect handler can hang data here. */
+  gpointer info;
+
+  union
+  {
+    MetaMinimizeEffect      minimize;
+    /* ... and theoretically anything else */
+  } u;
+  
+  MetaEffectPriv *priv;
 };
 
 static void run_default_effect_handler (MetaEffect *effect);
 static void run_handler (MetaEffect *effect);
-
-static MetaEffectHandler effect_handler;
-static gpointer		 effect_handler_data;
-
-void
-meta_push_effect_handler (MetaEffectHandler   handler,
-			  gpointer            data)
-{
-    effect_handler = handler;
-    effect_handler_data = data;
-}
-
-void
-meta_pop_effect_handler (void)
-{
-    /* FIXME: not implemented yet */
-    g_assert_not_reached ();
-}
+static void effect_free (MetaEffect *effect);
 
 static MetaEffect *
 create_effect (MetaEffectType      type,
-	       MetaWindow         *window,
-	       MetaEffectFinished  finished,
-	       gpointer		   finished_data)
+               MetaWindow         *window,
+               MetaEffectFinished  finished,
+               gpointer            finished_data);
+
+static void
+draw_box_animation (MetaScreen     *screen,
+                    MetaRectangle  *initial_rect,
+                    MetaRectangle  *destination_rect,
+                    double          seconds_duration);
+
+/**
+ * Creates an effect.
+ *
+ */
+static MetaEffect*
+create_effect (MetaEffectType      type,
+               MetaWindow         *window,
+               MetaEffectFinished  finished,
+               gpointer            finished_data)
 {
     MetaEffect *effect = g_new (MetaEffect, 1);
 
@@ -129,14 +171,20 @@ create_effect (MetaEffectType      type,
     return effect;
 }
 
-void
-meta_effect_end (MetaEffect         *effect)
+/**
+ * Destroys an effect.  If the effect has a "finished" hook, it will be
+ * called before cleanup.
+ *
+ * \param effect  The effect.
+ */
+static void
+effect_free (MetaEffect *effect)
 {
-    if (effect->priv->finished)
-	effect->priv->finished (effect, effect->priv->finished_data);
+  if (effect->priv->finished)
+    effect->priv->finished (effect->priv->finished_data);
     
-    g_free (effect->priv);
-    g_free (effect);
+  g_free (effect->priv);
+  g_free (effect);
 }
 
 void
@@ -155,12 +203,13 @@ meta_effect_run_focus (MetaWindow	    *window,
 
 void
 meta_effect_run_minimize (MetaWindow         *window,
-			  MetaRectangle      *window_rect,
-			  MetaRectangle	     *icon_rect,
-			  MetaEffectFinished  finished,
-			  gpointer            data)
+                          MetaRectangle      *window_rect,
+                          MetaRectangle      *icon_rect,
+                          MetaEffectFinished  finished,
+                          gpointer            data)
 {
     MetaEffect *effect;
+    meta_warning ("Well, here we aren't.\n");
 
     g_return_if_fail (window != NULL);
     g_return_if_fail (icon_rect != NULL);
@@ -175,10 +224,10 @@ meta_effect_run_minimize (MetaWindow         *window,
 
 void
 meta_effect_run_unminimize (MetaWindow         *window,
-			    MetaRectangle      *window_rect,
-			    MetaRectangle      *icon_rect,
-			    MetaEffectFinished  finished,
-			    gpointer            data)
+                            MetaRectangle      *window_rect,
+                            MetaRectangle      *icon_rect,
+                            MetaEffectFinished  finished,
+                            gpointer            data)
 {
     MetaEffect *effect;
 
@@ -203,7 +252,7 @@ meta_effect_run_close (MetaWindow         *window,
     g_return_if_fail (window != NULL);
 
     effect = create_effect (META_EFFECT_CLOSE, window,
-			    finished, data);
+                            finished, data);
 
     run_handler (effect);
 }
@@ -211,6 +260,7 @@ meta_effect_run_close (MetaWindow         *window,
 
 /* old ugly minimization effect */
 
+#ifdef HAVE_SHAPE  
 static void
 update_wireframe_window (MetaDisplay         *display,
                          Window               xwindow,
@@ -220,8 +270,6 @@ update_wireframe_window (MetaDisplay         *display,
                      xwindow,
                      rect->x, rect->y,
                      rect->width, rect->height);
-
-#ifdef HAVE_SHAPE  
 
 #define OUTLINE_WIDTH 3
   
@@ -263,8 +311,8 @@ update_wireframe_window (MetaDisplay         *display,
       XShapeCombineMask (display->xdisplay, xwindow,
                          ShapeBounding, 0, 0, None, ShapeSet);
     }
-#endif
 }
+#endif
 
 /**
  * A hack to force the X server to synchronize with the
@@ -276,9 +324,9 @@ graphics_sync (BoxAnimationContext *context)
   XImage *image;
   
   image = XGetImage (context->screen->display->xdisplay,
-		     context->screen->xroot,
-		     0, 0, 1, 1,
-		     AllPlanes, ZPixmap);
+                     context->screen->xroot,
+                     0, 0, 1, 1,
+                     AllPlanes, ZPixmap);
 
   XDestroyImage (image);
 }
@@ -291,20 +339,20 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
   MetaRectangle draw_rect;
   double fraction;
   
+#ifndef HAVE_SHAPE
   if (!context->first_time)
     {
-      if (context->style == META_ANIMATION_DRAW_ROOT)
-        {
-          /* Restore the previously drawn background */
-          XDrawRectangle (context->screen->display->xdisplay,
-                          context->screen->xroot,
-                          context->gc,
-                          context->last_rect.x, context->last_rect.y,
-                          context->last_rect.width, context->last_rect.height);
-        }
+       /* Restore the previously drawn background */
+       XDrawRectangle (context->screen->display->xdisplay,
+                       context->screen->xroot,
+                       context->gc,
+                       context->last_rect.x, context->last_rect.y,
+                       context->last_rect.width, context->last_rect.height);
     }
+  else
+    context->first_time = FALSE;
 
-  context->first_time = FALSE;
+#endif /* !HAVE_SHAPE */
 
   g_get_current_time (&current_time);
   
@@ -323,23 +371,15 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
   if (elapsed > context->millisecs_duration)
     {
       /* All done */
-      if (context->style == META_ANIMATION_WINDOW_OPAQUE)
-        {
-          g_object_unref (G_OBJECT (context->orig_pixbuf));
-          meta_image_window_free (context->image_window);
-        }
-      else if (context->style == META_ANIMATION_DRAW_ROOT)
-        {
-          meta_display_ungrab (context->screen->display);
-          meta_ui_pop_delay_exposes (context->screen->ui);
-          XFreeGC (context->screen->display->xdisplay,
-                   context->gc);
-        }
-      else if (context->style == META_ANIMATION_WINDOW_WIREFRAME)
-        {
-          XDestroyWindow (context->screen->display->xdisplay,
+#ifdef HAVE_SHAPE
+        XDestroyWindow (context->screen->display->xdisplay,
                           context->wireframe_xwindow);
-        }
+#else
+        meta_display_ungrab (context->screen->display);
+        meta_ui_pop_delay_exposes (context->screen->ui);
+        XFreeGC (context->screen->display->xdisplay,
+                 context->gc);
+#endif /* !HAVE_SHAPE */
 
       graphics_sync (context);
       
@@ -363,195 +403,99 @@ effects_draw_box_animation_timeout (BoxAnimationContext *context)
     draw_rect.width = 1;
   if (draw_rect.height < 1)
     draw_rect.height = 1;
-  
+
+#ifdef HAVE_SHAPE
+  update_wireframe_window (context->screen->display,
+                           context->wireframe_xwindow,
+                           &draw_rect);
+#else
   context->last_rect = draw_rect;
 
-  if (context->style == META_ANIMATION_WINDOW_OPAQUE)
-    {
-      GdkPixbuf *scaled;
-
-      scaled = NULL;
-      switch (context->anim_type)
-        {
-        case META_BOX_ANIM_SCALE:
-          scaled = gdk_pixbuf_scale_simple (context->orig_pixbuf,
-                                            draw_rect.width,
-                                            draw_rect.height,
-                                            GDK_INTERP_BILINEAR);
-          break;
-        case META_BOX_ANIM_SLIDE_UP:
-          {
-            int x, y;
-
-            x = context->start_rect.width - draw_rect.width;
-            y = context->start_rect.height - draw_rect.height;
-
-            /* paranoia */
-            if (x < 0)
-              x = 0;
-            if (y < 0)
-              y = 0;
-            
-            scaled = gdk_pixbuf_new_subpixbuf (context->orig_pixbuf,
-                                               x, y,
-                                               draw_rect.width,
-                                               draw_rect.height);
-          }
-          break;
-        }
-
-      /* handle out-of-memory */
-      if (scaled != NULL)
-        {
-          meta_image_window_set (context->image_window,
-                                 scaled,
-                                 draw_rect.x, draw_rect.y);
-          
-          g_object_unref (G_OBJECT (scaled));
-        }
-    }
-  else if (context->style == META_ANIMATION_DRAW_ROOT)
-    {
-      /* Draw the rectangle */
-      XDrawRectangle (context->screen->display->xdisplay,
-                      context->screen->xroot,
-                      context->gc,
-                      draw_rect.x, draw_rect.y,
-                      draw_rect.width, draw_rect.height);
-    }
-  else if (context->style == META_ANIMATION_WINDOW_WIREFRAME)
-    {
-      update_wireframe_window (context->screen->display,
-                               context->wireframe_xwindow,
-                               &draw_rect);
-    }
+  /* Draw the rectangle */
+  XDrawRectangle (context->screen->display->xdisplay,
+                  context->screen->xroot,
+                  context->gc,
+                  draw_rect.x, draw_rect.y,
+                  draw_rect.width, draw_rect.height);
+    
+#endif /* !HAVE_SHAPE */
 
   /* kick changes onto the server */
   graphics_sync (context);
   
   return TRUE;
 }
-
-
-/* I really don't want this to be a configuration option, but I think
- * the wireframe is sucky from a UI standpoint (more confusing than
- * opaque), but the opaque is definitely still too slow on some
- * systems, and also doesn't look quite right due to the mapping
- * and unmapping of windows that's going on.
- */
  
-static MetaAnimationStyle animation_style = META_ANIMATION_WINDOW_WIREFRAME;
-
 void
-meta_effects_draw_box_animation (MetaScreen     *screen,
-                                 MetaRectangle  *initial_rect,
-                                 MetaRectangle  *destination_rect,
-                                 double          seconds_duration,
-                                 MetaBoxAnimType anim_type)
+draw_box_animation (MetaScreen     *screen,
+                    MetaRectangle  *initial_rect,
+                    MetaRectangle  *destination_rect,
+                    double          seconds_duration)
 {
   BoxAnimationContext *context;
 
+#ifdef HAVE_SHAPE
+  XSetWindowAttributes attrs;
+#else
+  XGCValues gc_values;
+#endif
+    
   g_return_if_fail (seconds_duration > 0.0);
 
   if (g_getenv ("METACITY_DEBUG_EFFECTS"))
     seconds_duration *= 10; /* slow things down */
   
   /* Create the animation context */
-  context = g_new0 (BoxAnimationContext, 1);	
+  context = g_new0 (BoxAnimationContext, 1);
 
   context->screen = screen;
 
   context->millisecs_duration = seconds_duration * 1000.0;
-  context->first_time = TRUE;
+
   context->start_rect = *initial_rect;
   context->end_rect = *destination_rect;
-  context->anim_type = anim_type;
 
-  context->style = animation_style;
+#ifdef HAVE_SHAPE
 
-#ifndef HAVE_SHAPE
-  if (context->style == META_ANIMATION_WINDOW_WIREFRAME)
-    context->style = META_ANIMATION_DRAW_ROOT;
+  attrs.override_redirect = True;
+  attrs.background_pixel = BlackPixel (screen->display->xdisplay,
+                                       screen->number);
+
+  context->wireframe_xwindow = XCreateWindow (screen->display->xdisplay,
+                                              screen->xroot,
+                                              initial_rect->x,
+                                              initial_rect->y,
+                                              initial_rect->width,
+                                              initial_rect->height,
+                                              0,
+                                              CopyFromParent,
+                                              CopyFromParent,
+                                              (Visual *)CopyFromParent,
+                                              CWOverrideRedirect | CWBackPixel,
+                                              &attrs);
+
+  update_wireframe_window (screen->display,
+                           context->wireframe_xwindow,
+                           initial_rect);
+
+  XMapWindow (screen->display->xdisplay,
+              context->wireframe_xwindow);
+
+#else /* !HAVE_SHAPE */
+
+  context->first_time = TRUE;
+  gc_values.subwindow_mode = IncludeInferiors;
+  gc_values.function = GXinvert;
+
+  context->gc = XCreateGC (screen->display->xdisplay,
+                           screen->xroot,
+                           GCSubwindowMode | GCFunction,
+                           &gc_values);
+      
+  /* Grab the X server to avoid screen dirt */
+  meta_display_grab (context->screen->display);
+  meta_ui_push_delay_exposes (context->screen->ui);
 #endif
-  
-  if (context->style == META_ANIMATION_WINDOW_OPAQUE)
-    {
-      GdkPixbuf *pix;
-      
-      pix = meta_gdk_pixbuf_get_from_window (NULL,
-                                             screen->xroot,
-                                             initial_rect->x,
-                                             initial_rect->y,
-                                             0, 0,
-                                             initial_rect->width,
-                                             initial_rect->height);
-
-      if (pix == NULL)
-        {
-          /* Fall back to wireframe */
-          context->style = META_ANIMATION_WINDOW_WIREFRAME;
-        }
-      else
-        {
-          context->image_window = meta_image_window_new (screen->display->xdisplay,
-                                                         screen->number,
-                                                         initial_rect->width,
-                                                         initial_rect->height);
-          context->orig_pixbuf = pix;
-          meta_image_window_set (context->image_window,
-                                 context->orig_pixbuf,
-                                 initial_rect->x,
-                                 initial_rect->y);
-          meta_image_window_set_showing (context->image_window, TRUE);
-        }
-    }
-
-  /* Not an else, so that fallback works */
-  if (context->style == META_ANIMATION_WINDOW_WIREFRAME)
-    {
-      XSetWindowAttributes attrs;
-
-      attrs.override_redirect = True;
-      attrs.background_pixel = BlackPixel (screen->display->xdisplay,
-                                           screen->number);
-
-      context->wireframe_xwindow = XCreateWindow (screen->display->xdisplay,
-                                                  screen->xroot,
-                                                  initial_rect->x,
-                                                  initial_rect->y,
-                                                  initial_rect->width,
-                                                  initial_rect->height,
-                                                  0,
-                                                  CopyFromParent,
-                                                  CopyFromParent,
-                                                  (Visual *)CopyFromParent,
-                                                  CWOverrideRedirect | CWBackPixel,
-                                                  &attrs);
-
-      update_wireframe_window (screen->display,
-                               context->wireframe_xwindow,
-                               initial_rect);
-
-      XMapWindow (screen->display->xdisplay,
-                  context->wireframe_xwindow);
-    }
-  
-  if (context->style == META_ANIMATION_DRAW_ROOT)
-    {
-      XGCValues gc_values;
-      
-      gc_values.subwindow_mode = IncludeInferiors;
-      gc_values.function = GXinvert;
-
-      context->gc = XCreateGC (screen->display->xdisplay,
-                               screen->xroot,
-                               GCSubwindowMode | GCFunction,
-                               &gc_values);
-      
-      /* Grab the X server to avoid screen dirt */
-      meta_display_grab (context->screen->display);
-      meta_ui_push_delay_exposes (context->screen->ui);
-    }
 
   /* Do this only after we get the pixbuf from the server,
    * so that the animation doesn't get truncated.
@@ -770,28 +714,20 @@ run_default_effect_handler (MetaEffect *effect)
     switch (effect->type)
     {
     case META_EFFECT_MINIMIZE:
-	meta_effects_draw_box_animation (effect->window->screen,
-					 &(effect->u.minimize.window_rect),
-					 &(effect->u.minimize.icon_rect),
-					 META_MINIMIZE_ANIMATION_LENGTH,
-					 META_BOX_ANIM_SCALE);
-	break;
+       draw_box_animation (effect->window->screen,
+                     &(effect->u.minimize.window_rect),
+                     &(effect->u.minimize.icon_rect),
+                     META_MINIMIZE_ANIMATION_LENGTH);
+       break;
 
     default:
-	break;
+       break;
     }
 }
 
 static void
 run_handler (MetaEffect *effect)
 {
-    if (effect_handler)
-    {
-	effect_handler (effect, effect_handler_data);
-    }
-    else
-    {
-	run_default_effect_handler (effect);
-	meta_effect_end (effect);
-    }
+  run_default_effect_handler (effect);
+  effect_free (effect);
 }
