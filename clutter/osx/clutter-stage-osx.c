@@ -159,7 +159,7 @@ clutter_stage_osx_state_update (ClutterStageOSX   *self,
 /* Simply forward all events that reach our view to clutter. */
 
 #define EVENT_HANDLER(event) -(void)event:(NSEvent *)theEvent { \
-  _clutter_event_osx_put (theEvent);                            \
+  _clutter_event_osx_put (theEvent, self->stage_osx->wrapper);  \
 }
 EVENT_HANDLER(mouseDown)
 EVENT_HANDLER(mouseDragged)

@@ -1,5 +1,15 @@
 2008-06-29  Tommi Komulainen  <tommi.komulainen@iki.fi>
 
+	* clutter/osx/clutter-osx.h (_clutter_event_osx_put)
+	* clutter/osx/clutter-event-osx.c (clutter_event_osx_translate,
+	NSEvent:clutterStage:)
+	* clutter/osx/clutter-stage-osx.c (EVENT_HANDLER): Since events are
+	delivered to ClutterGLView, pass the associated ClutterStage directly
+	to event translation. Avoids relying on being embedded in
+	ClutterGLWindow, which makes it easier to implement clutter-gtk.
+
+2008-06-29  Tommi Komulainen  <tommi.komulainen@iki.fi>
+
 	* clutter/osx/clutter-event.osx.c (NSEvent:clutterKeyVal:): Add
 	comment, on OSX backend the Shift modifier is included in 'keyval'
 	making it identical to 'unicode_value'  Instead of <Shift>a or

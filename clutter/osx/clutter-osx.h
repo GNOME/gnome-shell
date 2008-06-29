@@ -34,7 +34,7 @@ G_BEGIN_DECLS
 void _clutter_events_osx_init   (void);
 void _clutter_events_osx_uninit (void);
 
-void _clutter_event_osx_put     (NSEvent *nsevent);
+void _clutter_event_osx_put     (NSEvent *nsevent, ClutterStage *wrapper);
 
 G_END_DECLS
 

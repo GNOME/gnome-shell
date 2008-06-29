@@ -38,7 +38,6 @@ static GPollFunc old_poll_func = NULL;
 
 /*************************************************************************/
 @interface NSEvent (Clutter)
-- (ClutterStage*)clutterStage;
 - (gint)clutterTime;
 - (gint)clutterButton;
 - (void)clutterX:(gint*)ptrX y:(gint*)ptrY;
@@ -47,16 +46,6 @@ static GPollFunc old_poll_func = NULL;
 @end
 
 @implementation NSEvent (Clutter)
-- (ClutterStage*)clutterStage
-{
-  ClutterGLWindow *w = (ClutterGLWindow*)[self window];
-  if (![w isKindOfClass:[ClutterGLWindow class]])
-    return NULL;
-
-  ClutterStageOSX *stage_osx = w->stage_osx;
-  return stage_osx->wrapper;
-}
-
 - (gint)clutterTime
 {
   return [self timestamp] * 1000;
@@ -177,7 +166,6 @@ static GPollFunc old_poll_func = NULL;
 static gboolean
 clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
 {
-  event->any.stage = [nsevent clutterStage];
   event->any.time = [nsevent clutterTime];
 
   switch ([nsevent type])
@@ -248,10 +236,12 @@ clutter_event_osx_translate (NSEvent *nsevent, ClutterEvent *event)
 }
 
 void
-_clutter_event_osx_put (NSEvent *nsevent)
+_clutter_event_osx_put (NSEvent *nsevent, ClutterStage *wrapper)
 {
   ClutterEvent event = { 0, };
-   
+
+  event.any.stage = wrapper;
+
   if (clutter_event_osx_translate (nsevent, &event))
     {
       g_assert (event.type != CLUTTER_NOTHING);
