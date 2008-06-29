@@ -106,6 +106,11 @@ static GPollFunc old_poll_func = NULL;
   /* FIXME: doing this right is a lot of work, see gdkkeys-quartz.c in gtk+
    * For now handle some common/simple keys only. Might not work with other
    * hardware than mine (MacBook Pro, finnish layout). Sorry.
+   *
+   * charactersIgnoringModifiers ignores most modifiers, not Shift though.
+   * So, for all Shift-modified keys we'll end up reporting 'keyval' identical
+   * to 'unicode_value'  Instead of <Shift>a or <Shift>3 you'd get <Shift>A
+   * and <Shift>#
    */
   unichar c = [[self charactersIgnoringModifiers] characterAtIndex:0];
 
