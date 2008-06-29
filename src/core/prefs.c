@@ -89,6 +89,7 @@ static gboolean provide_visual_bell = FALSE;
 static gboolean bell_is_audible = TRUE;
 static gboolean reduced_resources = FALSE;
 static gboolean gnome_accessibility = FALSE;
+static gboolean gnome_animations = TRUE;
 static char *cursor_theme = NULL;
 static int   cursor_size = 24;
 static gboolean compositing_manager = FALSE;
@@ -394,6 +395,11 @@ static MetaBoolPreference preferences_bool[] =
       META_PREF_GNOME_ACCESSIBILITY,
       &gnome_accessibility,
       FALSE,
+    },
+    { "/desktop/gnome/interface/enable_animations",
+      META_PREF_GNOME_ANIMATIONS,
+      &gnome_animations,
+      TRUE,
     },
     { "/apps/metacity/general/compositing_manager",
       META_PREF_COMPOSITING_MANAGER,
@@ -976,6 +982,7 @@ static gchar *gconf_dirs_we_are_interested_in[] = {
   KEY_TERMINAL_DIR,
   KEY_GNOME_ACCESSIBILITY,
   "/desktop/gnome/peripherals/mouse",
+  "/desktop/gnome/interface",
   NULL,
 };
 
@@ -1759,6 +1766,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_GNOME_ACCESSIBILITY:
       return "GNOME_ACCESSIBILTY";
+
+    case META_PREF_GNOME_ANIMATIONS:
+      return "GNOME_ANIMATIONS";
 
     case META_PREF_CURSOR_THEME:
       return "CURSOR_THEME";
@@ -2860,6 +2870,12 @@ gboolean
 meta_prefs_get_gnome_accessibility ()
 {
   return gnome_accessibility;
+}
+
+gboolean
+meta_prefs_get_gnome_animations ()
+{
+  return gnome_animations;
 }
 
 MetaKeyBindingAction

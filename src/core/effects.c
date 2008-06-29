@@ -60,6 +60,7 @@
 #include "display-private.h"
 #include "ui.h"
 #include "window-private.h"
+#include "prefs.h"
 
 #ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
@@ -209,7 +210,6 @@ meta_effect_run_minimize (MetaWindow         *window,
                           gpointer            data)
 {
     MetaEffect *effect;
-    meta_warning ("Well, here we aren't.\n");
 
     g_return_if_fail (window != NULL);
     g_return_if_fail (icon_rect != NULL);
@@ -728,6 +728,8 @@ run_default_effect_handler (MetaEffect *effect)
 static void
 run_handler (MetaEffect *effect)
 {
-  run_default_effect_handler (effect);
+  if (meta_prefs_get_gnome_animations ())
+    run_default_effect_handler (effect);
+
   effect_free (effect);
 }

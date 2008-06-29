@@ -1,5 +1,19 @@
 2008-06-29  Thomas Thurman  <tthurman@gnome.org>
 
+        Allow toggling of non-compositor effects (since there's a
+        non-Metacity key to do so: /desktop/gnome/interface/enable_animations).
+        Closes #92867.
+
+        * src/include/prefs.h: add META_PREFS_GNOME_ANIMATIONS key and
+          meta_prefs_get_gnome_animations() function
+        * src/include/prefs.c: added meta_prefs_get_gnome_animations()
+          function, and made supporting changes to structs.
+        * src/core/effects.c (run_handler): checked whether enable_animations
+          is set before running an effect.
+        * src/core/effects.c (meta_effect_run_minimize): remove debug message.
+
+2008-06-29  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/bell.c: remove meta_ prefix on all static functions.
 
 2008-06-29  Thomas Thurman  <tthurman@gnome.org>
