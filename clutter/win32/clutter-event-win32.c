@@ -19,7 +19,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-stage-win32.h"
 #include "clutter-backend-win32.h"

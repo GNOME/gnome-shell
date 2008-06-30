@@ -1,3 +1,9 @@
+2008-06-30  Neil Roberts  <neil@o-hand.com>
+
+        * clutter/x11/clutter-event-x11.c:
+        * clutter/win32/clutter-event-win32.c: Use the HAVE_CONFIG_H guard
+        around #include "config.h"
+
 2008-06-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/Makefile.am:
