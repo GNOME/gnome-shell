@@ -1,3 +1,10 @@
+2008-06-30  Matthew Allum  <mallum@openedhand.com>
+
+        Bug 1008 - tfp still a bit borked
+
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+        Fix from Andy Wingo for sync_window borkage
+
 2008-06-30  Neil Roberts  <neil@o-hand.com>
 
 	Bug 985 - MSC math.h / M_PI issue

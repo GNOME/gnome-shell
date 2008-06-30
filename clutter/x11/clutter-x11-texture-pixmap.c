@@ -1024,33 +1024,34 @@ void
 clutter_x11_texture_pixmap_sync_window (ClutterX11TexturePixmap *texture)
 {
   ClutterX11TexturePixmapPrivate *priv;
-  Pixmap pixmap;
+  Pixmap pixmap, prev_pixmap;
 
   g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
 
   priv = texture->priv;
 
-  /* we own the pixmap */
-  if (priv->pixmap) 
+  if (!clutter_x11_has_composite_extension())
     {
-      pixmap = priv->pixmap;
-      /* This will cause an additional notify emission; suckiness. */
-      clutter_x11_texture_pixmap_set_pixmap (texture, None);
-      XFreePixmap (clutter_x11_get_default_display (), pixmap);
+      clutter_x11_texture_pixmap_set_pixmap (texture, priv->window);
+      return;
     }
+      
+  /* we own the pixmap */
+  prev_pixmap = priv->pixmap;
   
-  if (priv->window && clutter_x11_has_composite_extension()) 
+  if (priv->window)
     {
+      Display *dpy = clutter_x11_get_default_display ();
+
       clutter_x11_trap_x_errors ();
-      pixmap = XCompositeNameWindowPixmap (clutter_x11_get_default_display(), 
-                                           priv->window);
+      pixmap = XCompositeNameWindowPixmap (dpy, priv->window);
       clutter_x11_untrap_x_errors ();
 
       clutter_x11_texture_pixmap_set_pixmap (texture, pixmap);
-    }
 
-  pixmap = priv->window;
-  clutter_x11_texture_pixmap_set_pixmap (texture, pixmap);
+      if (prev_pixmap)
+        XFreePixmap (dpy, prev_pixmap);
+    }
 }
 
 /**
