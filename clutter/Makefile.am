@@ -1,6 +1,6 @@
 NULL =
 
-SUBDIRS = cogl pango $(clutterbackend) $(backendextra)
+SUBDIRS = cogl pango $(backendextra) $(clutterbackend)
 
 if LOCAL_JSON_GLIB
 SUBDIRS += json

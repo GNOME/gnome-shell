@@ -15,6 +15,9 @@ LDADD = $(CLUTTER_LIBS) $(top_builddir)/clutter/x11/libclutter-x11.la
 
 noinst_LTLIBRARIES = libclutter-glx.la
 
+libclutter_glx_la_DEPENDENCIES = \
+	$(top_builddir)/clutter/x11/libclutter-x11.la
+
 libclutter_glx_la_SOURCES = \
 	clutter-backend-glx.h \
 	clutter-backend-glx.c \

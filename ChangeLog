@@ -1,5 +1,12 @@
 2008-06-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/Makefile.am:
+	* clutter/eglx/Makefile.am:
+	* clutter/glx/Makefile.am: Build the X11 base backend before
+	the backends that depend on it.
+
+2008-06-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug 1000 - clutter-x11 should define gtypes for its enumerations
 
 	* clutter/x11/Makefile.am:
