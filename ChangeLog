@@ -1,8 +1,21 @@
+2008-06-30  Øyvind Kolås  <pippin@o-hand.com>
+
+	Disable XInput handling for keyboard events, re-enabling key press and
+	release events when pointer is outside window as well as re-enabling
+	keyrepeat.
+
+	* clutter/glx/clutter-stage-glx.c: (clutter_stage_glx_realize): select
+	for KeyPressMask and KeyReleaseMask even with XInput enabled.
+	* clutter/x11/clutter-backend-x11.c: (_clutter_x11_register_xinput): 
+	Disabled the XInput keyboard code paths (comments and #if 0's)
+	* clutter/x11/clutter-event-x11.c: (event_translate): always handle
+	keyboard events without regard to XInput.
+
 2008-06-29  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/x11/clutter-event-x11.c: 
-        ifdef convert_xdevicekey_to_xkey () with XINPUT check.
-        (fix via Andy Wingo)
+	ifdef convert_xdevicekey_to_xkey () with XINPUT check.
+	(fix via Andy Wingo)
 
 2008-06-29  Tommi Komulainen  <tommi.komulainen@iki.fi>
 

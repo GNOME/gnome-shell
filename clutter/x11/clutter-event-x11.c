@@ -570,6 +570,18 @@ event_translate (ClutterBackend *backend,
         }
       break;
 
+    case KeyPress:
+      event->key.type = event->type = CLUTTER_KEY_PRESS;
+      translate_key_event (backend, event, xevent);
+
+      set_user_time (backend_x11, &xwindow, xevent->xkey.time);
+      break;
+              
+    case KeyRelease:
+      event->key.type = event->type = CLUTTER_KEY_RELEASE;
+      translate_key_event (backend, event, xevent);
+      break;
+
     default:
       /* ignore every other event */
       not_yet_handled = TRUE;
@@ -584,18 +596,9 @@ event_translate (ClutterBackend *backend,
           /* Regular X event */
           switch (xevent->type)
             {
-            case KeyPress:
-              event->key.type = event->type = CLUTTER_KEY_PRESS;
-              translate_key_event (backend, event, xevent);
-
-              set_user_time (backend_x11, &xwindow, xevent->xkey.time);
-              break;
-              
-            case KeyRelease:
-              event->key.type = event->type = CLUTTER_KEY_RELEASE;
-              translate_key_event (backend, event, xevent);
-              break;
-              
+			/* KeyPress / KeyRelease should reside here if XInput
+             * worked properly
+             */
             case ButtonPress:
               switch (xevent->xbutton.button)
                 {
@@ -761,6 +764,12 @@ event_translate (ClutterBackend *backend,
                            xmev->x, 
                            xmev->y);
             } 
+#if 0
+        /* the Xinput handling of key presses/releases disabled for now since
+         * it makes keyrepeat, and key presses and releases outside the window
+         * not generate events even when the window has focus
+         */
+
           else if (xevent->type 
                         == ev_types [CLUTTER_X11_XINPUT_KEY_PRESS_EVENT]) 
             {
@@ -785,6 +794,7 @@ event_translate (ClutterBackend *backend,
               event->key.type = event->type = CLUTTER_KEY_RELEASE;
               translate_key_event (backend, event, &xevent_converted);
             }
+#endif
           else 
 #endif
             {

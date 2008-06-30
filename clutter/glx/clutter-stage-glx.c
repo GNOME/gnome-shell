@@ -188,6 +188,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
                             StructureNotifyMask |
                             FocusChangeMask |
                             ExposureMask |
+                            KeyPressMask | KeyReleaseMask |
                             PropertyChangeMask);
 #ifdef USE_XINPUT          
               _clutter_x11_select_events (stage_x11->xwin);

@@ -615,7 +615,7 @@ _clutter_x11_register_xinput ()
 
     /* Only want 'raw' devices themselves not virtual ones */
     if (info->use == IsXExtensionPointer ||
-        info->use == IsXExtensionKeyboard ||
+        /*info->use == IsXExtensionKeyboard || XInput is broken */
         info->use == IsXExtensionDevice)
     {
       clutter_x11_trap_x_errors ();
@@ -645,9 +645,10 @@ _clutter_x11_register_xinput ()
           device->type = CLUTTER_X11_XINPUT_POINTER_DEVICE;
           have_an_xpointer = TRUE;
           break;
+        /* XInput is broken:
         case IsXExtensionKeyboard:
           device->type = CLUTTER_X11_XINPUT_KEYBOARD_DEVICE;
-          break;
+          break;*/
         case IsXExtensionDevice:
           device->type = CLUTTER_X11_XINPUT_EXTENSION_DEVICE;
           break;
@@ -667,6 +668,8 @@ _clutter_x11_register_xinput ()
 
         switch (xclass_info->input_class)
         {
+#if 0
+      /* We do not do XInput keyboard events yet, since it is broken */
           case KeyClass:
             DeviceKeyPress (xdevice, 
                 x11b->event_types [CLUTTER_X11_XINPUT_KEY_PRESS_EVENT], 
@@ -678,6 +681,7 @@ _clutter_x11_register_xinput ()
                 device->xevent_list [num_events]);
             num_events++;
             break;
+#endif
 
           case ButtonClass:
             DeviceButtonPress (xdevice, 
