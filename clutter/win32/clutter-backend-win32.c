@@ -155,7 +155,7 @@ clutter_backend_win32_constructor (GType                  gtype,
 static gboolean
 check_vblank_env (const char *name)
 {
-  return clutter_vblank_name && !strcasecmp (clutter_vblank_name, name);
+  return clutter_vblank_name && !g_ascii_strcasecmp (clutter_vblank_name, name);
 }
 
 ClutterFeatureFlags

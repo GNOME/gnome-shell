@@ -1,3 +1,9 @@
+2008-06-30  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/win32/clutter-backend-win32.c (check_vblank_env): Use
+	g_ascii_strcasecmp instead of strcasecmp because strcasecmp isn't
+	available in MSVC.
+
 2008-06-30  Matthew Allum  <mallum@openedhand.com>
 
          Bug 1007 - Fix TFP fallback mechanism
