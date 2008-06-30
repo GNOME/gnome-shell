@@ -273,16 +273,6 @@ bell_visual_notify (MetaDisplay *display,
     }
 }
 
-/**
- * Gives the user some kind of visual bell; in fact, this is our response
- * to any kind of bell request, but we set it up so that we only get
- * notified about visual bells, and X deals with audible ones.
- *
- * If the configure script found we had no XKB, this does not exist.
- *
- * \param display  The display the bell event came in on
- * \param xkb_ev   The bell event we just received
- */
 void
 meta_bell_notify (MetaDisplay *display, 
 		  XkbAnyEvent *xkb_ev)
@@ -293,16 +283,7 @@ meta_bell_notify (MetaDisplay *display,
 }
 #endif /* HAVE_XKB */
 
-/**
- * Turns the bell to audible or visual. This tells X what to do, but
- * not Metacity; you will need to set the "visual bell" pref for that.
- *
- * If the configure script found we had no XKB, this is a no-op.
- *
- * \param display  The display we're configuring
- * \param audible  True for an audible bell, false for a visual bell
- */
-void
+metavoid
 meta_bell_set_audible (MetaDisplay *display, gboolean audible)
 {
 #ifdef HAVE_XKB
@@ -313,27 +294,6 @@ meta_bell_set_audible (MetaDisplay *display, gboolean audible)
 #endif  
 }
 
-/**
- * Initialises the bell subsystem. This involves intialising
- * XKB (which, despite being a keyboard extension, is the
- * place to look for bell notifications), then asking it
- * to send us bell notifications, and then also switching
- * off the audible bell if we're using a visual one ourselves.
- *
- * Unlike most X extensions we use, we only initialise XKB here
- * (rather than in main()). It's possible that XKB is not
- * installed at all, but if that was known at build time
- * we will have HAVE_XKB undefined, which will cause this
- * function to be a no-op.
- *
- * \param display  The display which is opening
- *
- * \bug There is a line of code that's never run that tells
- * XKB to reset the bell status after we quit. Bill H said
- * (<http://bugzilla.gnome.org/show_bug.cgi?id=99886#c12>)
- * that XFree86's implementation is broken so we shouldn't
- * call it, but that was in 2002. Is it working now?
- */
 gboolean
 meta_bell_init (MetaDisplay *display)
 {
@@ -375,15 +335,6 @@ meta_bell_init (MetaDisplay *display)
   return FALSE;
 }
 
-/**
- * Shuts down the bell subsystem.
- *
- * \param display  The display which is closing
- *
- * \bug This is never called! If we had XkbSetAutoResetControls
- * enabled in meta_bell_init(), this wouldn't be a problem, but
- * we don't.
- */
 void
 meta_bell_shutdown (MetaDisplay *display)
 {
@@ -396,14 +347,6 @@ meta_bell_shutdown (MetaDisplay *display)
 #endif
 }
 
-/**
- * Deals with a frame being destroyed. This is important because if we're
- * using a visual bell, we might be flashing the edges of the frame, and
- * so we'd have a timeout function waiting ready to un-flash them. If the
- * frame's going away, we can tell the timeout not to bother.
- *
- * \param frame  The frame which is being destroyed
- */
 void
 meta_bell_notify_frame_destroy (MetaFrame *frame)
 {

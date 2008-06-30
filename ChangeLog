@@ -1,5 +1,10 @@
 2008-06-30  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/bell.[ch]: Move comments for non-statics from the .c to .h.
+        * Doxyfile: adapt better for C, and make quiet.
+
+2008-06-29  Thomas Thurman  <tthurman@gnome.org>
+
         * src/ui/theme-viewer.c (main): display the theme name
           in the title bar.  Closes #430198.
 
