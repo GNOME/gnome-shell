@@ -165,9 +165,9 @@ _cogl_unpremult_alpha_last (const guchar *src, guchar *dst)
 {
   guchar alpha = src[3];
   
-  dst[0] = (((src[0] >> 16) & 0xff) * 255 ) / alpha;
-  dst[1] = (((src[1] >> 8) & 0xff) * 255 ) / alpha;
-  dst[2] = (((src[2] >> 0) & 0xff) * 255 ) / alpha;
+  dst[0] = ((((gulong) src[0] >> 16) & 0xff) * 255 ) / alpha;
+  dst[1] = ((((gulong) src[1] >> 8) & 0xff) * 255 ) / alpha;
+  dst[2] = ((((gulong) src[2] >> 0) & 0xff) * 255 ) / alpha;
   dst[3] = alpha;
 }
 
@@ -177,9 +177,9 @@ _cogl_unpremult_alpha_first (const guchar *src, guchar *dst)
   guchar alpha = src[0];
   
   dst[0] = alpha;
-  dst[1] = (((src[1] >> 16) & 0xff) * 255 ) / alpha;
-  dst[2] = (((src[2] >> 8) & 0xff) * 255 ) / alpha;
-  dst[3] = (((src[3] >> 0) & 0xff) * 255 ) / alpha;
+  dst[1] = ((((gulong) src[1] >> 16) & 0xff) * 255 ) / alpha;
+  dst[2] = ((((gulong) src[2] >> 8) & 0xff) * 255 ) / alpha;
+  dst[3] = ((((gulong) src[3] >> 0) & 0xff) * 255 ) / alpha;
 }
 
 gboolean
