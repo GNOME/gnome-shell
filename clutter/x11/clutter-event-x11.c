@@ -238,7 +238,7 @@ convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
   xevent->xkey.keycode = xkev->keycode;
   xevent->xkey.same_screen = xkev->same_screen;
 }
-#endif
+#endif /* USE_XINPUT */
 
 static void
 translate_key_event (ClutterBackend   *backend,

@@ -1,3 +1,15 @@
+2008-06-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug 1000 - clutter-x11 should define gtypes for its enumerations
+
+	* clutter/x11/Makefile.am:
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/x11/clutter-x11-enum-types.c.in:
+	* clutter/x11/clutter-x11-enum-types.h.in:
+	* clutter/x11/clutter-x11.h: Add the GTypes for the X11-specific
+	enumerations, so that they can be used by the bindings. (Andy
+	Wingo)
+
 2008-06-30  Chris Lord  <chris@openedhand.com>
 
 	* tests/test-shader.c:
