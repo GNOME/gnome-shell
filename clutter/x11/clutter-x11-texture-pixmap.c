@@ -47,8 +47,8 @@
 
 #include "cogl/cogl.h"
 
-/* FIXME: Check exts exist in autogen */
 #include <X11/extensions/Xdamage.h>
+#include <X11/extensions/Xcomposite.h>
 
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -61,7 +61,9 @@ enum
   PROP_PIXMAP_WIDTH,
   PROP_PIXMAP_HEIGHT,
   PROP_DEPTH,
-  PROP_AUTO
+  PROP_AUTO,
+  PROP_WINDOW,
+  PROP_WINDOW_REDIRECT_AUTOMATIC
 };
 
 enum
@@ -85,6 +87,7 @@ static guint signals[LAST_SIGNAL] = { 0, };
 
 struct _ClutterX11TexturePixmapPrivate
 {
+  Window        window;
   Pixmap        pixmap;
   guint         pixmap_width, pixmap_height;
   guint         depth;
@@ -94,8 +97,10 @@ struct _ClutterX11TexturePixmapPrivate
 
   gboolean      automatic_updates;     
   Damage        damage;
+  Drawable      damage_drawable;
 
   gboolean	have_shm;
+  gboolean      window_redirect_automatic;
 };
 
 static int _damage_event_base = 0;
@@ -254,7 +259,7 @@ on_x_event_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
       XRectangle     r_bounds;
       XDamageNotifyEvent *dev = (XDamageNotifyEvent*)xev;
       
-      if (dev->drawable != priv->pixmap)
+      if (dev->drawable != priv->damage_drawable)
         return CLUTTER_X11_FILTER_CONTINUE;
 
 
@@ -307,6 +312,7 @@ free_damage_resources (ClutterX11TexturePixmap *texture)
       XSync (dpy, FALSE);
       clutter_x11_untrap_x_errors ();
       priv->damage = None;
+      priv->damage_drawable = None;
     }
 
   clutter_x11_remove_filter (on_x_event_filter, (gpointer)texture);
@@ -331,8 +337,13 @@ clutter_x11_texture_pixmap_init (ClutterX11TexturePixmap *self)
   self->priv->image = NULL;
   self->priv->automatic_updates = FALSE;
   self->priv->damage = None;
+  self->priv->damage_drawable = None;
+  self->priv->window = None;
   self->priv->pixmap = None;
+  self->priv->pixmap_height = 0;
+  self->priv->pixmap_width = 0;
   self->priv->shminfo.shmid = -1;
+  self->priv->window_redirect_automatic = TRUE;
 }
 
 static void
@@ -361,6 +372,7 @@ clutter_x11_texture_pixmap_set_property (GObject      *object,
                                          GParamSpec   *pspec)
 {
   ClutterX11TexturePixmap  *texture = CLUTTER_X11_TEXTURE_PIXMAP (object);
+  ClutterX11TexturePixmapPrivate *priv = texture->priv;
 
   switch (prop_id)
     {
@@ -371,6 +383,23 @@ clutter_x11_texture_pixmap_set_property (GObject      *object,
     case PROP_AUTO:
       clutter_x11_texture_pixmap_set_automatic (texture,
                                                 g_value_get_boolean (value));
+      break;
+    case PROP_WINDOW:
+      clutter_x11_texture_pixmap_set_window (texture,
+                                             g_value_get_uint (value),
+                                             priv->window_redirect_automatic);
+      break;
+    case PROP_WINDOW_REDIRECT_AUTOMATIC:
+      {
+        gboolean new;
+        new = g_value_get_boolean (value);
+
+        /* Change the update mode.. */
+        if (new != priv->window_redirect_automatic && priv->window)
+          clutter_x11_texture_pixmap_set_window (texture, priv->window, new);
+
+        priv->window_redirect_automatic = new;
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -403,6 +432,12 @@ clutter_x11_texture_pixmap_get_property (GObject      *object,
       break;
     case PROP_AUTO:
       g_value_set_boolean (value, priv->automatic_updates);
+      break;
+    case PROP_WINDOW:
+      g_value_set_uint (value, priv->window);
+      break;
+    case PROP_WINDOW_REDIRECT_AUTOMATIC:
+      g_value_set_boolean (value, priv->window_redirect_automatic);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -450,7 +485,7 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
                              "The X11 Pixmap to be bound",
                              0, G_MAXINT,
                              None,
-                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+                             G_PARAM_READWRITE);
 
   g_object_class_install_property (object_class, PROP_PIXMAP, pspec);
 
@@ -492,6 +527,25 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
                                 G_PARAM_READWRITE);
 
   g_object_class_install_property (object_class, PROP_AUTO, pspec);
+
+  pspec = g_param_spec_uint ("window",
+                             "Window",
+                             "The X11 Window to be bound",
+                             0, G_MAXINT,
+                             None,
+                             G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class, PROP_WINDOW, pspec);
+
+  pspec = g_param_spec_boolean ("window-redirect-automatic",
+                                "Window Redirect Automatic",
+                                "If composite window redirects are set to "
+                                "Automatic (or Manual if false)",
+                                TRUE,
+                                G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class, 
+                                   PROP_WINDOW_REDIRECT_AUTOMATIC, pspec);
 
 
   /**
@@ -765,12 +819,32 @@ clutter_x11_texture_pixmap_new_with_pixmap (Pixmap pixmap)
 }
 
 /**
+ * clutter_x11_texture_pixmap_new_with_window:
+ * @window: the X window to which this texture should be bound
+ * @width: the width of the X pixmap
+ * @height: the height of the X pixmap
+ * @depth: the depth of the X pixmap
+ *
+ * Return value: A new #ClutterX11TexturePixmap bound to the given X window.
+ *
+ * Since 0.8
+ **/
+ClutterActor *
+clutter_x11_texture_pixmap_new_with_window (Window window)
+{
+  ClutterActor *actor;
+
+  actor = g_object_new (CLUTTER_X11_TYPE_TEXTURE_PIXMAP,
+			"window", window,
+			NULL);
+
+  return actor;
+}
+
+/**
  * clutter_x11_texture_pixmap_set_pixmap:
  * @texture: the texture to bind
  * @pixmap: the X Pixmap to which the texture should be bound
- * @width: the Pixmap width
- * @height: the Pixmap height
- * @depth: the Pixmap depth, in number of bits
  *
  * Sets the X Pixmap to which the texture should be bound.
  *
@@ -870,15 +944,113 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
                                                 priv->pixmap_width,
                                                 priv->pixmap_height);
 
-#if 0
-      /* Borked - externally resizing resets this prop.. */
-      g_object_get (texture, "sync-size", &sync_size, NULL);
-
-      /*if (sync_size)*/
-        clutter_actor_set_size (CLUTTER_ACTOR(texture),
-                                priv->pixmap_width, priv->pixmap_height);
-#endif
     }
+}
+
+/**
+ * clutter_x11_texture_pixmap_set_window:
+ * @texture: the texture to bind
+ * @window: the X window to which the texture should be bound
+ * @automatic: TRUE is automatic window updates, FALSE for manual.
+ *
+ * Sets up a suitable pixmap for the window, using the composite and damage
+ * extensions if possible, and then calls
+ * clutter_x11_texture_pixmap_set_pixmap(). If you want a window in a texture,
+ * you probably want this function, or its older sister,
+ * clutter_glx_texture_pixmap_set_window().
+ *
+ * Since: 0.8
+ **/
+void
+clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
+                                       Window                   window,
+                                       gboolean                 automatic)
+{
+  ClutterX11TexturePixmapPrivate *priv;
+
+  g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
+
+  priv = texture->priv;
+
+  if (!clutter_x11_has_composite_extension())
+    return;
+
+  if (priv->window == window)
+    return;
+
+  if (priv->window)
+    {
+      clutter_x11_trap_x_errors ();
+      XCompositeUnredirectWindow(clutter_x11_get_default_display (),
+                                  priv->window,
+                                  priv->window_redirect_automatic);
+
+      clutter_x11_untrap_x_errors ();
+    }
+
+  if (window == None)
+    return;
+
+  priv->window = window;
+  priv->window_redirect_automatic = automatic;
+
+  clutter_x11_trap_x_errors ();
+
+  XCompositeRedirectWindow 
+                     (clutter_x11_get_default_display (),
+                      window,
+                      automatic ? 
+                      CompositeRedirectAutomatic : CompositeRedirectManual);
+  XSync (clutter_x11_get_default_display (), False);
+  clutter_x11_untrap_x_errors ();
+
+  g_object_ref (texture);
+  g_object_notify (G_OBJECT (texture), "window");
+  g_object_unref (texture);
+
+  clutter_x11_texture_pixmap_sync_window (texture);
+}
+
+/**
+ * clutter_x11_texture_pixmap_sync_window:
+ * @texture: the texture to bind
+ *
+ * Resets the texture's pixmap from its window, perhaps in response to the
+ * pixmap's invalidation as the window changed size.
+ *
+ * Since: 0.8
+ **/
+void
+clutter_x11_texture_pixmap_sync_window (ClutterX11TexturePixmap *texture)
+{
+  ClutterX11TexturePixmapPrivate *priv;
+  Pixmap pixmap;
+
+  g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
+
+  priv = texture->priv;
+
+  /* we own the pixmap */
+  if (priv->pixmap) 
+    {
+      pixmap = priv->pixmap;
+      /* This will cause an additional notify emission; suckiness. */
+      clutter_x11_texture_pixmap_set_pixmap (texture, None);
+      XFreePixmap (clutter_x11_get_default_display (), pixmap);
+    }
+  
+  if (priv->window && clutter_x11_has_composite_extension()) 
+    {
+      clutter_x11_trap_x_errors ();
+      pixmap = XCompositeNameWindowPixmap (clutter_x11_get_default_display(), 
+                                           priv->window);
+      clutter_x11_untrap_x_errors ();
+
+      clutter_x11_texture_pixmap_set_pixmap (texture, pixmap);
+    }
+
+  pixmap = priv->window;
+  clutter_x11_texture_pixmap_set_pixmap (texture, pixmap);
 }
 
 /**
@@ -907,9 +1079,6 @@ clutter_x11_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   g_signal_emit (texture, signals[UPDATE_AREA], 0, x, y, width, height);
 }
 
-/* FIXME: Below will change, just proof of concept atm - it will not work
- *        100% for named pixmaps. 
-*/
 void
 clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
                                           gboolean                 setting)
@@ -932,9 +1101,13 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
 
       clutter_x11_trap_x_errors ();
           
-      /* NOTE: Appears this will not work for a named pixmap ? */
-      priv->damage = XDamageCreate (dpy,
-                                    priv->pixmap,
+      if (priv->window)
+        priv->damage_drawable = priv->window;
+      else
+        priv->damage_drawable = priv->pixmap;
+      
+      priv->damage = XDamageCreate (dpy, 
+                                    priv->damage_drawable,
                                     XDamageReportNonEmpty);
 
       XSync (dpy, FALSE);

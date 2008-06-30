@@ -130,6 +130,8 @@ clutter_x11_get_input_device_type (ClutterX11XInputDevice *device);
 gboolean
 clutter_x11_has_xinput (void);
 
+gboolean
+clutter_x11_has_composite_extension (void);
 
 G_END_DECLS
 

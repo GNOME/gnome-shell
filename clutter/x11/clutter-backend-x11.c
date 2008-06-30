@@ -37,7 +37,7 @@
 #include "clutter-backend-x11.h"
 #include "clutter-stage-x11.h"
 #include "clutter-x11.h"
-
+#include <X11/extensions/Xcomposite.h>
 
 #include "../clutter-event.h"
 #include "../clutter-main.h"
@@ -851,3 +851,37 @@ clutter_x11_has_xinput (void)
   return FALSE;
 #endif
 }
+
+gboolean
+clutter_x11_has_composite_extension (void)
+{
+  static gboolean                 have_composite = FALSE, done_check = FALSE;
+  int                             error = 0, event = 0;
+  Display                        *dpy;
+
+  if (done_check)
+    return have_composite;
+
+  if (!backend_singleton)
+    {
+      g_critical ("X11 backend has not been initialised");
+      return FALSE;
+    }
+
+  dpy = clutter_x11_get_default_display();
+
+  if (XCompositeQueryExtension (dpy, &event, &error))
+    {
+      int major = 0, minor = 0;
+      if (XCompositeQueryVersion (dpy, &major, &minor)) 
+        {
+          if (major >= 0 && minor >= 3) 
+            have_composite = TRUE;
+        }
+    }
+
+  done_check = TRUE;
+
+  return have_composite;
+}
+

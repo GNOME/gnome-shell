@@ -199,11 +199,11 @@ else
   AC_MSG_RESULT([not found])
 fi
 
-# Composite 0.4 just needed for tests
 AC_MSG_CHECKING([for XCOMPOSITE extension >= 0.4])
 PKG_CHECK_EXISTS([xcomposite >= 0.4], [have_xcomposite=yes], [have_xcomposite=no])
 if test "x$have_xcomposite" = "xyes"; then
   AC_DEFINE(HAVE_XCOMPOSITE, 1, [Define to 1 if we have the XCOMPOSITE X extension])
+  X11_LIBS="$X11_LIBS -lXcomposite"
   AC_MSG_RESULT([found])
 else
   AC_MSG_RESULT([not found])
@@ -214,7 +214,7 @@ x11_tests=no
 # Currently require all extentions, may not for actual release.
 if test "x$clutterbackend" = "xglx" || test "x$clutterbackend" = "xeglx" 
 then
-  if test "x$have_xdamage" = "xno" || test "x$have_xfixes" = "xno"; then
+  if test "x$have_xdamage" = "xno" || test "x$have_xfixes" = "xno" || test "x$have_xcomposite" = "xno"; then
     AC_MSG_ERROR([Required backend X11 Libraries not found.])
   fi
 

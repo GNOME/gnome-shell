@@ -150,6 +150,7 @@ main (int argc, char **argv)
   Pixmap                pixmap;
   const ClutterColor    gry = { 0x99, 0x99, 0x99, 0xFF };
   Window                win_remote;
+  guint w, h, d;
 
   clutter_init (&argc, &argv);
 
@@ -161,10 +162,22 @@ main (int argc, char **argv)
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &gry);
 
-  /* Note this seemingly just works.. */
-  pixmap = win_remote;
+
+  /* a pixmap */
+  pixmap = create_pixmap (&w, &h, &d);
 
   tex = clutter_x11_texture_pixmap_new_with_pixmap (pixmap);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), tex);
+  /* oddly, the actor's size is 0 until it is realized, even though
+     pixmap-height is set */
+  clutter_actor_set_position (tex, 0, 
+                              clutter_actor_get_height (stage)
+                              - clutter_actor_get_height (tex));
+
+  /* a window */
+  tex = clutter_x11_texture_pixmap_new_with_window (win_remote);
+
+  clutter_actor_set_position (tex, 0, 0);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), tex);
 
@@ -172,17 +185,8 @@ main (int argc, char **argv)
                                             TRUE);
 
 #  ifdef HAVE_CLUTTER_GLX
-
-  /* pixmap = create_pixmap (&w, &h, &d); */
-
-  XCompositeRedirectWindow(clutter_x11_get_default_display(),
-                           win_remote,
-                           CompositeRedirectAutomatic);
-
-  pixmap = XCompositeNameWindowPixmap (clutter_x11_get_default_display(), 
-                                       win_remote);
-
-  tex = clutter_glx_texture_pixmap_new_with_pixmap (pixmap);
+  /* a window with glx */
+  tex = clutter_glx_texture_pixmap_new_with_window (win_remote);
 
   clutter_actor_set_position (tex,
                               clutter_actor_get_width (stage) 
@@ -199,7 +203,7 @@ main (int argc, char **argv)
   g_signal_connect (stage, "button-press-event", 
                     G_CALLBACK (stage_press_cb), (gpointer)pixmap);
 
-  clutter_actor_show (stage);
+  clutter_actor_show_all (stage);
 
   clutter_main ();
 # endif /* USE_GDKPIXBUF */

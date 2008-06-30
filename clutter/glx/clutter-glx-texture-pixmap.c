@@ -659,9 +659,6 @@ clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
 /**
  * clutter_glx_texture_pixmap_new_with_pixmap:
  * @pixmap: the X Pixmap to which this texture should be bound
- * @width: the width of the X pixmap
- * @height: the height of the X pixmap
- * @depth: the depth of the X pixmap
  *
  * Return value: A new #ClutterGLXTexturePixmap bound to the given X Pixmap
  *
@@ -674,6 +671,26 @@ clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap)
 
   actor = g_object_new (CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
                         "pixmap", pixmap,
+                        NULL);
+
+  return actor;
+}
+
+/**
+ * clutter_glx_texture_pixmap_new_with_window:
+ * @window: the X window to which this texture should be bound
+ *
+ * Return value: A new #ClutterGLXTexturePixmap bound to the given X window
+ *
+ * Since: 0.8
+ **/
+ClutterActor*
+clutter_glx_texture_pixmap_new_with_window (Window window)
+{
+  ClutterActor *actor;
+
+  actor = g_object_new (CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
+                        "window", window,
                         NULL);
 
   return actor;

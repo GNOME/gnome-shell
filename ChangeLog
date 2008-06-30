@@ -1,3 +1,19 @@
+2008-06-30  Matthew Allum  <mallum@openedhand.com>
+
+        Bug 997 - automatic updates not working for named TFP pixmaps, 
+                  at least in x11    
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* clutter/glx/clutter-glx-texture-pixmap.h:
+	* clutter/x11/clutter-backend-x11.c:
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+	* clutter/x11/clutter-x11-texture-pixmap.h:
+	* clutter/x11/clutter-x11.h:
+	* configure.ac:
+	* tests/test-pixmap.c: 
+        Rework Andy Wingos patch a little adding more safety for now also
+        handling redirect Windows (as well as pixmaps)
+
 2008-06-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 980 - cogl-bitmap-fallback.c compiler error/warning due to
