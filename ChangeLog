@@ -1,3 +1,13 @@
+2008-06-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug 980 - cogl-bitmap-fallback.c compiler error/warning due to
+	          cast issue (Haakon Sporsheim)
+
+	* clutter/cogl/common/cogl-bitmap-fallback.c:
+	(_cogl_unpremult_alpha_last),
+	(_cogl_unpremult_alpha_first): Cast to avoid a compiler warning
+	with MSC.
+
 2008-06-30  Chris Lord  <chris@openedhand.com>
 
 	* tests/test-shader.c: (main):
