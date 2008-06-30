@@ -1,3 +1,8 @@
+2008-06-30  Thomas Thurman  <tthurman@gnome.org
+
+        * src/core/bell.c (meta_bell_set_audible): Fix typo that
+          slipped through.
+
 2008-06-30  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/bell.[ch]: Move comments for non-statics from the .c to .h.
