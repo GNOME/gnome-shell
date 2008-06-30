@@ -153,6 +153,44 @@ static ShaderSource shaders[]=
      "  color = (color + colorB)/2.0;"
      FRAGMENT_SHADER_END
     },
+
+    {"edge-detect",
+     FRAGMENT_SHADER_VARS
+     "float get_avg_rel(sampler2D texB, float dx, float dy)"
+     "{"
+     "  vec3 colorB = texture2D (texB, " TEX_COORD ".st + vec2(dx, dy));"
+     "  return (colorB.r + colorB.g + colorB.b) / 3.0;"
+     "}"
+     FRAGMENT_SHADER_BEGIN
+     "  mat3 sobel_h = mat3( 1.0,  2.0,  1.0,"
+     "                       0.0,  0.0,  0.0,"
+     "                      -1.0, -2.0, -1.0);"
+     "  mat3 sobel_v = mat3( 1.0,  0.0, -1.0,"
+     "                       2.0,  0.0, -2.0,"
+     "                       1.0,  0.0, -1.0);"
+     "  mat3 map = mat3( get_avg_rel(tex, -x_step, -y_step),"
+     "                   get_avg_rel(tex, -x_step, 0.0),"
+     "                   get_avg_rel(tex, -x_step, y_step),"
+     "                   get_avg_rel(tex, 0.0, -y_step),"
+     "                   get_avg_rel(tex, 0.0, 0.0),"
+     "                   get_avg_rel(tex, 0.0, y_step),"
+     "                   get_avg_rel(tex, x_step, -y_step),"
+     "                   get_avg_rel(tex, x_step, 0.0),"
+     "                   get_avg_rel(tex, x_step, y_step) );"
+     "  mat3 gh = sobel_h * map;"
+     "  mat3 gv = map * sobel_v;"
+     "  float avgh = (gh[0][0] + gh[0][1] + gh[0][2] +"
+     "                gh[1][0] + gh[1][1] + gh[1][2] +"
+     "                gh[2][0] + gh[2][1] + gh[2][2]) / 18.0 + 0.5;"
+     "  float avgv = (gv[0][0] + gv[0][1] + gv[0][2] +"
+     "                gv[1][0] + gv[1][1] + gv[1][2] +"
+     "                gv[2][0] + gv[2][1] + gv[2][2]) / 18.0 + 0.5;"
+     "  float avg = (avgh + avgv) / 2.0;"
+     "  color.r = avg * color.r;"
+     "  color.g = avg * color.g;"
+     "  color.b = avg * color.b;"
+     FRAGMENT_SHADER_END
+    },
     /* Terminating NULL sentinel */
     {NULL, NULL}
 };
@@ -259,7 +297,6 @@ gint
 main (gint   argc,
       gchar *argv[])
 {
-  ClutterTimeline  *timeline;
   ClutterActor     *actor;
   ClutterActor     *stage;
   ClutterColor      stage_color = { 0x61, 0x64, 0x8c, 0xff };
@@ -293,10 +330,6 @@ main (gint   argc,
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Shader Test");
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-
-  /* Create a timeline to manage animation */
-  timeline = clutter_timeline_new (360, 60); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
 
 #ifndef TEST_GROUP
   actor = g_object_new (CLUTTER_TYPE_TEXTURE,
@@ -357,13 +390,8 @@ main (gint   argc,
   g_timeout_add_seconds (3, timeout_cb, actor);
 #endif
 
-  /*clutter_actor_set_opacity (actor, 0x77);*/
-
   /* Show everying ( and map window ) */
   clutter_actor_show_all (stage);
-
-  /* and start it */
-  clutter_timeline_start (timeline);
 
   clutter_main ();
 
