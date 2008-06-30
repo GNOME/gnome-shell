@@ -499,7 +499,7 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
       goto cleanup;
     }
 
-  quality = clutter_texture_get_filter_quality (CLUTTER_TEXTURE(texture));
+  quality = clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture));
 
   if (quality == CLUTTER_TEXTURE_QUALITY_HIGH)
     mipmap = 1;
@@ -523,7 +523,12 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
                                 attribs);
   XSync (dpy, FALSE);
   if (clutter_x11_untrap_x_errors ())
-    CLUTTER_NOTE (TEXTURE, "Failed to create GLXPixmap");
+    {
+      CLUTTER_NOTE (TEXTURE, "Failed to create GLXPixmap");
+
+      /* Make sure we don't think the call actually succeeded */
+      glx_pixmap = None;
+    }
 
   g_free (fbconfig);
 
@@ -565,7 +570,7 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   Display                              *dpy;
 
 
-  CLUTTER_NOTE (TEXTURE, "Updaing texture pixmap");
+  CLUTTER_NOTE (TEXTURE, "Updating texture pixmap");
 
   priv = CLUTTER_GLX_TEXTURE_PIXMAP (texture)->priv;
   dpy = clutter_x11_get_default_display();
@@ -575,7 +580,7 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
 
   if (priv->use_fallback)
     {
-      CLUTTER_NOTE (TEXTURE, "Falling back to X11..");
+      CLUTTER_NOTE (TEXTURE, "Falling back to X11");
       parent_class->update_area (texture,
                                  x, y,
                                  width, height);

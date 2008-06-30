@@ -1,3 +1,12 @@
+2008-06-30  Matthew Allum  <mallum@openedhand.com>
+
+         Bug 1007 - Fix TFP fallback mechanism
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+        Add some extra safety to glx pixmap creations and tidy up some notes.
+        Patch from Gwenole Beauchesne.
+
 2008-06-30  Neil Roberts  <neil@o-hand.com>
 
         * clutter/x11/clutter-event-x11.c:

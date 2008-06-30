@@ -127,7 +127,7 @@ check_extensions (ClutterX11TexturePixmap *texture)
   if (!XDamageQueryExtension (dpy,
                               &_damage_event_base, &damage_error))
     {
-      g_warning ("No Damage extension\n");
+      g_warning ("No Damage extension");
       return FALSE;
     }
 
@@ -213,7 +213,7 @@ try_alloc_shm (ClutterX11TexturePixmap *texture)
     goto failed_xshmattach;
 
   if (clutter_x11_untrap_x_errors ())
-    g_warning ("X Error: Failed to setup XShm.");
+    g_warning ("X Error: Failed to setup XShm");
 
   priv->have_shm = TRUE;
   return TRUE;
@@ -230,7 +230,7 @@ failed_shmget:
 failed_image_create:
 
   if (clutter_x11_untrap_x_errors ())
-    g_warning ("X Error: Failed to setup XShm.");
+    g_warning ("X Error: Failed to setup XShm");
 
   priv->have_shm = FALSE;
   return FALSE;
@@ -662,7 +662,7 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
 
   if ((err_code = clutter_x11_untrap_x_errors ()))
     {
-      g_warning ("Failed to get XImage of pixmap: %lx, removing.",
+      g_warning ("Failed to get XImage of pixmap: %lx, removing",
                  priv->pixmap);
       /* safe to assume pixmap has gone away? - therefor reset */
       clutter_x11_texture_pixmap_set_pixmap (texture, None);
@@ -882,7 +882,7 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
   if (clutter_x11_untrap_x_errors () || status == 0)
     {
       if (pixmap != None)
-        g_warning ("Unable to query pixmap: %lx\n", pixmap);
+        g_warning ("Unable to query pixmap: %lx", pixmap);
       pixmap = None;
       width = height = depth = 0; 
     }
