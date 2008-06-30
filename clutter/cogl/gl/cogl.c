@@ -420,7 +420,7 @@ set_clip_plane (GLint plane_num,
   /* Calculate the angle between the axes and the line crossing the
      two points */
   angle = atan2f ((vertex_b[1] - vertex_a[1]),
-		  (vertex_b[0] - vertex_a[0])) * 180.0f / M_PI;
+		  (vertex_b[0] - vertex_a[0])) * 180.0f / G_PI;
 
   GE( glPushMatrix () );
   /* Load the identity matrix and multiply by the reverse of the

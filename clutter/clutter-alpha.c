@@ -633,8 +633,8 @@ sinc_func (ClutterAlpha *alpha,
 
   /* FIXME: fixed point, and fixed point sine() */
 
-  x = (gdouble) (current_frame_num * angle * M_PI) / n_frames ;
-  sine = (sin (x - (M_PI / angle)) + offset) * 0.5f;
+  x = (gdouble) (current_frame_num * angle * G_PI) / n_frames ;
+  sine = (sin (x - (G_PI / angle)) + offset) * 0.5f;
 
   CLUTTER_NOTE (ALPHA, "sine: %2f\n",sine);
 

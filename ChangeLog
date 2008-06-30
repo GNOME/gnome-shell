@@ -1,5 +1,14 @@
 2008-06-30  Neil Roberts  <neil@o-hand.com>
 
+	Bug 985 - MSC math.h / M_PI issue
+
+	* clutter/cogl/gl/cogl.c (set_clip_plane): 
+	* clutter/clutter-alpha.c (sinc_func): Use G_PI instead of M_PI
+	because M_PI isn't defined in MSVC without a special
+	#define. Thanks to Haakon Sporsheim
+
+2008-06-30  Neil Roberts  <neil@o-hand.com>
+
 	* clutter/win32/clutter-backend-win32.c (check_vblank_env): Use
 	g_ascii_strcasecmp instead of strcasecmp because strcasecmp isn't
 	available in MSVC.
