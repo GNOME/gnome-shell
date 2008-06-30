@@ -1,3 +1,8 @@
+2008-06-30  Chris Lord  <chris@openedhand.com>
+
+	* tests/test-shader.c:
+	Fix edge-detect shader on ATI, thanks Gwenole Beauchesne
+
 2008-06-30  Matthew Allum  <mallum@openedhand.com>
 
         Bug 997 - automatic updates not working for named TFP pixmaps, 

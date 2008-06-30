@@ -158,7 +158,7 @@ static ShaderSource shaders[]=
      FRAGMENT_SHADER_VARS
      "float get_avg_rel(sampler2D texB, float dx, float dy)"
      "{"
-     "  vec3 colorB = texture2D (texB, " TEX_COORD ".st + vec2(dx, dy));"
+     "  vec4 colorB = texture2D (texB, " TEX_COORD ".st + vec2(dx, dy));"
      "  return (colorB.r + colorB.g + colorB.b) / 3.0;"
      "}"
      FRAGMENT_SHADER_BEGIN
