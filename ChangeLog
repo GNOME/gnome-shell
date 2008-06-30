@@ -1,3 +1,8 @@
+2008-06-30  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/ui/theme-viewer.c (main): display the theme name
+          in the title bar.  Closes #430198.
+
 2008-06-29  Thomas Thurman  <tthurman@gnome.org>
 
         Allow toggling of non-compositor effects (since there's a
