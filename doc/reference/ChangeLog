@@ -1,3 +1,8 @@
+2008-07-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* cogl/cogl-docs.sgml: Add an index to the COGL API reference
+	and the licensing information.
+
 2008-06-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-overview.xml: Split the overview into its own
