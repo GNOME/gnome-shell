@@ -1537,19 +1537,37 @@ done:
 #undef MAX_EVENT_DEPTH
 }
 
+/*
+ * Emits a pointer event after having prepared the event for delivery (setting
+ * source, computing click_count, generating enter/leave etc.).
+ */
+
 static inline void
-emit_pointer_event (ClutterEvent *event)
+emit_pointer_event (ClutterEvent       *event,
+                    ClutterInputDevice *device)
 {
   /* Using the global variable directly, since it has to be initialized
    * at this point
    */
   ClutterMainContext *context = ClutterCntx;
 
-
-  if (G_UNLIKELY (context->pointer_grab_actor != NULL))
-    clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+  if (G_UNLIKELY (context->pointer_grab_actor != NULL &&
+                  device == NULL))
+    {
+      /* global grab */
+      clutter_actor_event (context->pointer_grab_actor, event, FALSE);
+    }
+  else if (G_UNLIKELY (device != NULL &&
+                       device->pointer_grab_actor != NULL))
+    {
+      /* per device grab */
+      clutter_actor_event (device->pointer_grab_actor, event, FALSE);
+    }
   else
-    emit_event (event, FALSE);
+    {
+      /* no grab, time to capture and bubble */
+      emit_event (event, FALSE);
+    }
 }
 
 static inline void
@@ -1590,6 +1608,8 @@ generate_enter_leave_events (ClutterEvent *event)
         {
           ClutterEvent cev;
 
+          cev.crossing.device  = event->motion.device;
+
           if (context->motion_last_actor)
             {
               cev.crossing.type    = CLUTTER_LEAVE;
@@ -1599,6 +1619,7 @@ generate_enter_leave_events (ClutterEvent *event)
               cev.crossing.y       = event->motion.y;
               cev.crossing.source  = last_actor;
               cev.crossing.stage   = event->any.stage;
+
               /* unref in free  */
               cev.crossing.related = motion_current_actor;
 
@@ -1689,7 +1710,7 @@ clutter_do_event (ClutterEvent *event)
 
       case CLUTTER_ENTER:
       case CLUTTER_LEAVE:
-        emit_pointer_event (event);
+        emit_pointer_event (event, event->crossing.device);
         break;
 
       case CLUTTER_DESTROY_NOTIFY:
@@ -1827,7 +1848,7 @@ clutter_do_event (ClutterEvent *event)
                                     x, y);
 
                       event->button.source = stage;
-                      emit_pointer_event (event);
+                      emit_pointer_event (event, event->button.device);
                     }
                   break;
                 }
@@ -1866,7 +1887,26 @@ clutter_do_event (ClutterEvent *event)
               /* Generate click count */
               event_click_count_generate (event);
             }
-            emit_pointer_event (event);
+
+          if (device == NULL)
+            {
+              switch (event->type)
+                {
+                  case CLUTTER_BUTTON_PRESS:
+                  case CLUTTER_BUTTON_RELEASE:
+                    device = event->button.device;
+                    break;
+                  case CLUTTER_SCROLL:
+                    device = event->scroll.device;
+                    break;
+                  case CLUTTER_MOTION:
+                    /* already handled in the MOTION case of the switch */
+                  default:
+                    break;
+                }
+            }
+
+          emit_pointer_event (event, device);
           break;
         }
 

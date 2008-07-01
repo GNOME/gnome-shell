@@ -1,3 +1,18 @@
+2008-07-01  Øyvind Kolås  <pippin@o-hand.com>
+
+	Bug 1013 - Per device grabs are not obeyed in pointer device propagation.
+
+	* clutter/clutter-event.c: (clutter_event_get_device_id): swap
+	arguments of g_return_val_if_fail around.
+	* clutter/clutter-event.h: added *device field to crossing events as
+	well.
+	* clutter/clutter-main.c: (emit_pointer_event): added a device
+	argument and check for per device grabs if this device is passed.
+	(clutter_do_event): pass the device if present for all pointer event
+	emissions.
+	(generate_enter_leave_events): copy the device from the motion events
+	when generating enter/leave events.
+
 2008-07-01  Chris Lord  <chris@openedhand.com>
 
 	* clutter/clutter-texture.c:

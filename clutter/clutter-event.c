@@ -329,7 +329,7 @@ clutter_event_get_device_id (ClutterEvent *event)
 {
   ClutterInputDevice *device = NULL;
 
-  g_return_val_if_fail (-1, event != NULL);
+  g_return_val_if_fail (event != NULL, -1);
 
   switch (event->type)
     {

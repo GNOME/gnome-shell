@@ -298,6 +298,7 @@ struct _ClutterCrossingEvent
   ClutterActor *source;
   gint x;
   gint y;
+  ClutterInputDevice *device; /* future use */
   ClutterActor *related;
 };
 
