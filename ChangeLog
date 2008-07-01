@@ -1,3 +1,19 @@
+2008-07-01  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_get_transformed_sizeu):
+	This is now do-what-I-mean like clutter_actor_get_size so that if
+	the allocation box is available it will use that, otherwise it
+	will use the preferred size. clutter_actor_transform_vertices has
+	been converted to clutter_actor_transform_and_project_box so that
+	it can be used by both functions. Based on a patch by Emmanuele
+	Bassi.
+	(clutter_actor_get_abs_allocation_vertices)
+	(clutter_actor_get_allocation_vertices): These two functions now
+	force a relayout if the allocation box is not available.
+
+	* tests/test-fbo.c: Fixed the shader to use texture2D instead of
+	texture2DRect now that GL_EXT_texture_rectangle is no longer used.
+
 2008-07-01  Chris Lord  <chris@openedhand.com>
 
 	* clutter/clutter-stage.c:

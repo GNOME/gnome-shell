@@ -39,18 +39,23 @@ make_shader(void)
   clutter_shader_set_fragment_source (shader, 
    
         "uniform float radius ;"
-        "uniform sampler2DRect rectTexture;"
+        "uniform sampler2D rectTexture;"
+	"uniform float x_step, y_step;"
         ""
         "void main()"
         "{"
-        "    vec4 color = texture2DRect(rectTexture, gl_TexCoord[0].st);"
+        "    vec4 color = texture2D(rectTexture, gl_TexCoord[0].st);"
         "    float u;"
         "    float v;"
         "    int count = 1;"
         "    for (u=-radius;u<radius;u++)"
         "      for (v=-radius;v<radius;v++)"
         "        {"
-        "          color += texture2DRect(rectTexture, vec2(gl_TexCoord[0].s + u * 2.0, gl_TexCoord[0].t +v * 2.0));"
+        "          color += texture2D(rectTexture, "
+        "                             vec2(gl_TexCoord[0].s + u"
+        "                                  * 2.0 * x_step,"
+        "                                  gl_TexCoord[0].t + v"
+        "                                  * 2.0 * y_step));"
         "          count ++;"
         "        }"
         ""
@@ -76,6 +81,7 @@ main (gint   argc,
   ClutterActor     *clone;
   ClutterShader    *shader;
   gint              padx, pady;
+  gint              fbo_width, fbo_height;
 
   clutter_init (&argc, &argv);
 
@@ -91,10 +97,11 @@ main (gint   argc,
   clutter_group_add (stage, onscreen_source);
 
   /* Basic sizing for alignment */
-  padx = clutter_actor_get_width (onscreen_source) + 10;
-  pady = clutter_actor_get_height (onscreen_source) + 10;
+  fbo_width = clutter_actor_get_width (onscreen_source);
+  fbo_height = clutter_actor_get_height (onscreen_source);
+  padx = fbo_width + 10;
+  pady = fbo_height + 10;
   clutter_actor_set_size (stage, padx*4, pady*2);
-
 
   /* Second hand from fbo onscreen */
   if ((fbo = clutter_texture_new_from_actor (onscreen_source)) == NULL)
@@ -107,7 +114,10 @@ main (gint   argc,
   shader = make_shader();
   clutter_actor_set_shader (fbo, shader);
   clutter_actor_set_shader_param (fbo, "radius", 2.0);
-
+  clutter_actor_set_shader_param (fbo, "x_step",
+				  1.0f / clutter_util_next_p2 (fbo_width));
+  clutter_actor_set_shader_param (fbo, "y_step",
+				  1.0f / clutter_util_next_p2 (fbo_height));
 
   /* Third from cloning the fbo texture */
   clone = clutter_clone_texture_new (CLUTTER_TEXTURE(fbo));

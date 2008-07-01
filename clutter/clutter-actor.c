@@ -1019,17 +1019,40 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
   cogl_pop_matrix();
 }
 
-/* Recursively tranform supplied vertices with the tranform for the current
- * actor and all its ancestors (like clutter_actor_transform_point() but
- * for all the vertices in one go).
+/* Recursively tranform supplied box with the tranform for the current
+ * actor and all its ancestors (like clutter_actor_transform_point()
+ * but for all the vertices in one go) and project it into screen
+ * coordinates
  */
 static void
-clutter_actor_transform_vertices (ClutterActor  *self,
-				  ClutterVertex  verts[4],
-				  ClutterFixed   w[4])
+clutter_actor_transform_and_project_box (ClutterActor          *self,
+					 const ClutterActorBox *box,
+					 ClutterVertex          verts[4])
 {
+  ClutterActor          *stage;
   ClutterFixed           mtx[16];
+  ClutterFixed           mtx_p[16];
   ClutterFixed           _x, _y, _z, _w;
+  ClutterFixed           w[4];
+  ClutterFixed           v[4];
+
+  /* We essentially have to dupe some code from clutter_redraw() here
+   * to make sure GL Matrices etc are initialised if we're called and we
+   * havn't yet rendered anything.
+   *
+   * Simply duping code for now in wait for Cogl cleanup that can hopefully
+   * address this in a nicer way.
+  */
+  stage = clutter_actor_get_stage (self);
+
+  /* FIXME: if were not yet added to a stage, its probably unsafe to
+   * return default - idealy the func should fail.
+  */
+  if (stage == NULL)
+    stage = clutter_stage_get_default ();
+
+  clutter_stage_ensure_current (CLUTTER_STAGE (stage));
+  _clutter_stage_maybe_setup_viewport (CLUTTER_STAGE (stage));
 
   cogl_push_matrix();
   _clutter_actor_apply_modelview_transform_recursive (self, NULL);
@@ -1048,7 +1071,7 @@ clutter_actor_transform_vertices (ClutterActor  *self,
   verts[0].z = _z;
   w[0] = _w;
 
-  _x = self->priv->allocation.x2 - self->priv->allocation.x1;
+  _x = box->x2 - box->x1;
   _y = 0;
   _z = 0;
   _w = CFX_ONE;
@@ -1061,7 +1084,7 @@ clutter_actor_transform_vertices (ClutterActor  *self,
   w[1] = _w;
 
   _x = 0;
-  _y = self->priv->allocation.y2 - self->priv->allocation.y1;
+  _y = box->y2 - box->y1;
   _z = 0;
   _w = CFX_ONE;
 
@@ -1072,8 +1095,8 @@ clutter_actor_transform_vertices (ClutterActor  *self,
   verts[2].z = _z;
   w[2] = _w;
 
-  _x = self->priv->allocation.x2 - self->priv->allocation.x1;
-  _y = self->priv->allocation.y2 - self->priv->allocation.y1;
+  _x = box->x2 - box->x1;
+  _y = box->y2 - box->y1;
   _z = 0;
   _w = CFX_ONE;
 
@@ -1085,6 +1108,49 @@ clutter_actor_transform_vertices (ClutterActor  *self,
   w[3] = _w;
 
   cogl_pop_matrix();
+
+  cogl_get_projection_matrix (mtx_p);
+  cogl_get_viewport (v);
+
+  mtx_transform (mtx_p,
+		 &verts[0].x,
+		 &verts[0].y,
+		 &verts[0].z,
+		 &w[0]);
+
+  verts[0].x = MTX_GL_SCALE_X (verts[0].x, w[0], v[2], v[0]);
+  verts[0].y = MTX_GL_SCALE_Y (verts[0].y, w[0], v[3], v[1]);
+  verts[0].z = MTX_GL_SCALE_Z (verts[0].z, w[0], v[2], v[0]);
+
+  mtx_transform (mtx_p,
+		 &verts[1].x,
+		 &verts[1].y,
+		 &verts[1].z,
+		 &w[1]);
+
+  verts[1].x = MTX_GL_SCALE_X (verts[1].x, w[1], v[2], v[0]);
+  verts[1].y = MTX_GL_SCALE_Y (verts[1].y, w[1], v[3], v[1]);
+  verts[1].z = MTX_GL_SCALE_Z (verts[1].z, w[1], v[2], v[0]);
+
+  mtx_transform (mtx_p,
+		 &verts[2].x,
+		 &verts[2].y,
+		 &verts[2].z,
+		 &w[2]);
+
+  verts[2].x = MTX_GL_SCALE_X (verts[2].x, w[2], v[2], v[0]);
+  verts[2].y = MTX_GL_SCALE_Y (verts[2].y, w[2], v[3], v[1]);
+  verts[2].z = MTX_GL_SCALE_Z (verts[2].z, w[2], v[2], v[0]);
+
+  mtx_transform (mtx_p,
+		 &verts[3].x,
+		 &verts[3].y,
+		 &verts[3].z,
+		 &w[3]);
+
+  verts[3].x = MTX_GL_SCALE_X (verts[3].x, w[3], v[2], v[0]);
+  verts[3].y = MTX_GL_SCALE_Y (verts[3].y, w[3], v[3], v[1]);
+  verts[3].z = MTX_GL_SCALE_Z (verts[3].z, w[3], v[2], v[0]);
 }
 
 /**
@@ -1145,6 +1211,13 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
   clutter_stage_ensure_current (CLUTTER_STAGE (stage));
   _clutter_stage_maybe_setup_viewport (CLUTTER_STAGE (stage));
 
+  /* if the actor needs to be allocated we force a relayout, so that
+   * clutter_actor_transform_vertices_relative() will have valid values
+   * to use in the transformations
+   */
+  if (priv->needs_allocation)
+    _clutter_stage_maybe_relayout (stage);
+
   clutter_actor_transform_vertices_relative (self, ancestor, verts, w);
   cogl_get_viewport (v);
 
@@ -1191,9 +1264,6 @@ void
 clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
                                            ClutterVertex  verts[4])
 {
-  ClutterFixed           mtx_p[16];
-  ClutterFixed           v[4];
-  ClutterFixed           w[4];
   ClutterActorPrivate   *priv;
   ClutterActor          *stage;
 
@@ -1201,67 +1271,16 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
 
   priv = self->priv;
 
-  /* We essentially have to dupe some code from clutter_redraw() here
-   * to make sure GL Matrices etc are initialised if we're called and we
-   * havn't yet rendered anything.
-   *
-   * Simply duping code for now in wait for Cogl cleanup that can hopefully
-   * address this in a nicer way.
-  */
-  stage = clutter_actor_get_stage (self);
+  /* if the actor needs to be allocated we force a relayout, so that
+   * the actor allocation box will be valid for
+   * clutter_actor_transform_and_project_box()
+   */
+  if (priv->needs_allocation)
+    _clutter_stage_maybe_relayout (stage);
 
-  /* FIXME: if were not yet added to a stage, its probably unsafe to
-   * return default - idealy the func should fail.
-  */
-  if (stage == NULL)
-    stage = clutter_stage_get_default ();
-
-  clutter_stage_ensure_current (CLUTTER_STAGE (stage));
-  _clutter_stage_maybe_setup_viewport (CLUTTER_STAGE (stage));
-
-  clutter_actor_transform_vertices (self, verts, w);
-  cogl_get_projection_matrix (mtx_p);
-  cogl_get_viewport (v);
-
-  mtx_transform (mtx_p,
-		 &verts[0].x,
-		 &verts[0].y,
-		 &verts[0].z,
-		 &w[0]);
-
-  verts[0].x = MTX_GL_SCALE_X (verts[0].x, w[0], v[2], v[0]);
-  verts[0].y = MTX_GL_SCALE_Y (verts[0].y, w[0], v[3], v[1]);
-  verts[0].z = MTX_GL_SCALE_Z (verts[0].z, w[0], v[2], v[0]);
-
-  mtx_transform (mtx_p,
-		 &verts[1].x,
-		 &verts[1].y,
-		 &verts[1].z,
-		 &w[1]);
-
-  verts[1].x = MTX_GL_SCALE_X (verts[1].x, w[1], v[2], v[0]);
-  verts[1].y = MTX_GL_SCALE_Y (verts[1].y, w[1], v[3], v[1]);
-  verts[1].z = MTX_GL_SCALE_Z (verts[1].z, w[1], v[2], v[0]);
-
-  mtx_transform (mtx_p,
-		 &verts[2].x,
-		 &verts[2].y,
-		 &verts[2].z,
-		 &w[2]);
-
-  verts[2].x = MTX_GL_SCALE_X (verts[2].x, w[2], v[2], v[0]);
-  verts[2].y = MTX_GL_SCALE_Y (verts[2].y, w[2], v[3], v[1]);
-  verts[2].z = MTX_GL_SCALE_Z (verts[2].z, w[2], v[2], v[0]);
-
-  mtx_transform (mtx_p,
-		 &verts[3].x,
-		 &verts[3].y,
-		 &verts[3].z,
-		 &w[3]);
-
-  verts[3].x = MTX_GL_SCALE_X (verts[3].x, w[3], v[2], v[0]);
-  verts[3].y = MTX_GL_SCALE_Y (verts[3].y, w[3], v[3], v[1]);
-  verts[3].z = MTX_GL_SCALE_Z (verts[3].z, w[3], v[2], v[0]);
+  clutter_actor_transform_and_project_box (self,
+					   &self->priv->allocation,
+					   verts);
 }
 
 /* Applies the transforms associated with this actor to the
@@ -4138,6 +4157,13 @@ clutter_actor_get_transformed_position (ClutterActor *self,
  * Gets the absolute size of an actor in #ClutterUnits<!-- -->s, taking
  * into account the scaling factors.
  *
+ * If the actor has a valid allocation, the allocated size will be used.
+ * If the actor has not a valid allocation then the preferred size will
+ * be transformed and returned.
+ *
+ * If you want the transformed allocation, see
+ * clutter_actor_get_abs_allocation_vertices() instead.
+ *
  * <note>When the actor (or one of its ancestors) is rotated around the
  * X or Y axis, it no longer appears as on the stage as a rectangle, but
  * as a generic quadrangle; in that case this function returns the size
@@ -4155,11 +4181,38 @@ clutter_actor_get_transformed_sizeu (ClutterActor *self,
                                      ClutterUnit  *width,
                                      ClutterUnit  *height)
 {
+  ClutterActorPrivate *priv;
   ClutterVertex v[4];
   ClutterFixed  x_min, x_max, y_min, y_max;
   gint i;
 
-  clutter_actor_get_abs_allocation_vertices (self, v);
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  /* if the actor hasn't been allocated yet, get the preferred
+   * size and transform that
+   */
+  if (priv->needs_allocation)
+    {
+      ClutterUnit natural_width, natural_height;
+      ClutterActorBox box;
+
+      /* make a fake allocation to transform */
+      clutter_actor_get_positionu (self, &box.x1, &box.y1);
+
+      natural_width = natural_height = 0;
+      clutter_actor_get_preferred_size (self, NULL, NULL,
+                                        &natural_width,
+                                        &natural_height);
+
+      box.x2 = box.x1 + natural_width;
+      box.y2 = box.y1 + natural_height;
+      
+      clutter_actor_transform_and_project_box (self, &box, v);
+    }
+  else
+    clutter_actor_get_abs_allocation_vertices (self, v);
 
   x_min = x_max = v[0].x;
   y_min = y_max = v[0].y;
