@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.23.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-08 11:51+0200\n"
-"PO-Revision-Date: 2008-06-08 11:52+0200\n"
+"POT-Creation-Date: 2008-07-01 10:25+0200\n"
+"PO-Revision-Date: 2008-07-01 10:25+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -98,19 +98,19 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: ../src/core/keybindings.c:2722
+#: ../src/core/keybindings.c:2729
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Feil under oppstart av metacity-dialog for å skrive ut en feil om en "
 "kommando: %s\n"
 
-#: ../src/core/keybindings.c:2827
+#: ../src/core/keybindings.c:2834
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ingen kommando %d er definert\n"
 
-#: ../src/core/keybindings.c:3855
+#: ../src/core/keybindings.c:3862
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminalkommando er definert\n"
@@ -183,25 +183,25 @@ msgstr "Feil under omstart: %s\n"
 #. * (We know the old value, so we can look up a suitable string in
 #. * the symtab.)
 #.
-#: ../src/core/prefs.c:450 ../src/core/prefs.c:564
+#: ../src/core/prefs.c:502 ../src/core/prefs.c:654
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi\n"
 
-#: ../src/core/prefs.c:537 ../src/core/prefs.c:611 ../src/core/prefs.c:659
-#: ../src/core/prefs.c:978 ../src/core/prefs.c:996 ../src/core/prefs.c:1012
-#: ../src/core/prefs.c:1031 ../src/core/prefs.c:1047 ../src/core/prefs.c:1064
-#: ../src/core/prefs.c:1081 ../src/core/prefs.c:1097 ../src/core/prefs.c:1113
+#: ../src/core/prefs.c:583 ../src/core/prefs.c:823
+#, c-format
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
+msgstr "%d lagret i GConf-nøkkel %s er utenfor område %d til %d\n"
+
+#: ../src/core/prefs.c:627 ../src/core/prefs.c:701 ../src/core/prefs.c:749
+#: ../src/core/prefs.c:813 ../src/core/prefs.c:1108 ../src/core/prefs.c:1124
+#: ../src/core/prefs.c:1143 ../src/core/prefs.c:1159 ../src/core/prefs.c:1176
+#: ../src/core/prefs.c:1192
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
 
-#: ../src/core/prefs.c:873
-#, c-format
-msgid "Type of %s was not integer"
-msgstr "Typen for «%s» var ikke heltall"
-
-#: ../src/core/prefs.c:1182
+#: ../src/core/prefs.c:1262
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -209,21 +209,12 @@ msgstr ""
 "Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
 "programmer vil kanskje ikke oppføre seg korrekt.\n"
 
-#: ../src/core/prefs.c:1237
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-"range 1..128\n"
-msgstr ""
-"%d lagret i GConf-nøkkel %s er ikke en fornuftig verdi for cursor_size. Må "
-"være i området 1..128\n"
-
-#: ../src/core/prefs.c:1263
+#: ../src/core/prefs.c:1332
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
 
-#: ../src/core/prefs.c:1323
+#: ../src/core/prefs.c:1392
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -232,31 +223,17 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: ../src/core/prefs.c:1602
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-"%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
-"maksimum er %d\n"
-
-#: ../src/core/prefs.c:1646
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "%d lagret i GConf-nøkkel %s er utenfor området 0 til %d\n"
-
-#: ../src/core/prefs.c:1777
+#: ../src/core/prefs.c:1809
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
 
-#: ../src/core/prefs.c:2142 ../src/core/prefs.c:2654
+#: ../src/core/prefs.c:2174 ../src/core/prefs.c:2686
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: ../src/core/prefs.c:2172 ../src/core/prefs.c:2345
+#: ../src/core/prefs.c:2204 ../src/core/prefs.c:2377
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -265,7 +242,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: ../src/core/prefs.c:2735
+#: ../src/core/prefs.c:2767
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
@@ -411,23 +388,23 @@ msgstr "Advarsel fra vindushåndterer: "
 msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
-#: ../src/core/window-props.c:195
+#: ../src/core/window-props.c:206
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programmet satte en feil _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:327
+#: ../src/core/window-props.c:338
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1409
+#: ../src/core/window-props.c:1420
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindu 0x%lx oppgitt for %s.\n"
 
 #. first time through
-#: ../src/core/window.c:5674
+#: ../src/core/window.c:5648
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -443,7 +420,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6239
+#: ../src/core/window.c:6213
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -532,7 +509,14 @@ msgid ""
 "silently ignored so that buttons can be added in future metacity versions "
 "without breaking older versions. A special spacer tag can be used to insert "
 "some space between two adjacent buttons."
-msgstr "Plassering av knapper på tittellinjen. Verdien skal være en streng av type «menu:minimize,maximize,spacer,close»; kolon skiller venstre hjørne av vinduet fra høyre hjørne, og knappenavnene skilles av komma. Duplisering av knapper er ikke lovlig. Ukjente knapper ignoreres uten tilbakemelding slik at knapper kan legges til i fremtidige versjoner uten å ødelegge for eldre versjoner. En tagg for mellomrom kan brukes for å sette inn mellomrom mellom to knapper."
+msgstr ""
+"Plassering av knapper på tittellinjen. Verdien skal være en streng av type "
+"«menu:minimize,maximize,spacer,close»; kolon skiller venstre hjørne av "
+"vinduet fra høyre hjørne, og knappenavnene skilles av komma. Duplisering av "
+"knapper er ikke lovlig. Ukjente knapper ignoreres uten tilbakemelding slik "
+"at knapper kan legges til i fremtidige versjoner uten å ødelegge for eldre "
+"versjoner. En tagg for mellomrom kan brukes for å sette inn mellomrom mellom "
+"to knapper."
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
@@ -3187,157 +3171,157 @@ msgstr "Fant ikke en gyldig fil for tema %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Temafil %s inneholdt ikke et rotelement <metacity_theme>"
 
-#: ../src/ui/theme-viewer.c:74
+#: ../src/ui/theme-viewer.c:75
 msgid "/_Windows"
 msgstr "/_Vinduer"
 
-#: ../src/ui/theme-viewer.c:75
+#: ../src/ui/theme-viewer.c:76
 msgid "/Windows/tearoff"
 msgstr "/Vinduer/avriving"
 
-#: ../src/ui/theme-viewer.c:76
+#: ../src/ui/theme-viewer.c:77
 msgid "/Windows/_Dialog"
 msgstr "/Vinduer/_Dialog"
 
-#: ../src/ui/theme-viewer.c:77
+#: ../src/ui/theme-viewer.c:78
 msgid "/Windows/_Modal dialog"
 msgstr "/Vinduer/_Modal dialog"
 
-#: ../src/ui/theme-viewer.c:78
+#: ../src/ui/theme-viewer.c:79
 msgid "/Windows/_Utility"
 msgstr "/Vinduer/_Verktøy"
 
-#: ../src/ui/theme-viewer.c:79
+#: ../src/ui/theme-viewer.c:80
 msgid "/Windows/_Splashscreen"
 msgstr "/Vinduer/Opp_startskjerm"
 
-#: ../src/ui/theme-viewer.c:80
+#: ../src/ui/theme-viewer.c:81
 msgid "/Windows/_Top dock"
 msgstr "/Vinduer/_Toppdokk"
 
-#: ../src/ui/theme-viewer.c:81
+#: ../src/ui/theme-viewer.c:82
 msgid "/Windows/_Bottom dock"
 msgstr "/Vinduer/_Bunndokk"
 
-#: ../src/ui/theme-viewer.c:82
+#: ../src/ui/theme-viewer.c:83
 msgid "/Windows/_Left dock"
 msgstr "/Vinduer/_Venstre dokk"
 
-#: ../src/ui/theme-viewer.c:83
+#: ../src/ui/theme-viewer.c:84
 msgid "/Windows/_Right dock"
 msgstr "/Vinduer/Høy_re dokk"
 
-#: ../src/ui/theme-viewer.c:84
+#: ../src/ui/theme-viewer.c:85
 msgid "/Windows/_All docks"
 msgstr "/Vinduer/_Alle dokker"
 
-#: ../src/ui/theme-viewer.c:85
+#: ../src/ui/theme-viewer.c:86
 msgid "/Windows/Des_ktop"
 msgstr "/Vinduer/S_krivebord"
 
-#: ../src/ui/theme-viewer.c:134
+#: ../src/ui/theme-viewer.c:135
 msgid "Open another one of these windows"
 msgstr "Åpne et til av disse vinduene"
 
-#: ../src/ui/theme-viewer.c:141
+#: ../src/ui/theme-viewer.c:142
 msgid "This is a demo button with an 'open' icon"
 msgstr "Dette er en demoknapp med et «åpne»-ikon"
 
-#: ../src/ui/theme-viewer.c:148
+#: ../src/ui/theme-viewer.c:149
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Dette er en demoknapp med et «avslutt»-ikon"
 
-#: ../src/ui/theme-viewer.c:241
+#: ../src/ui/theme-viewer.c:242
 msgid "This is a sample message in a sample dialog"
 msgstr "Dette er en eksempelbeskjed i en eksempeldialog"
 
-#: ../src/ui/theme-viewer.c:324
+#: ../src/ui/theme-viewer.c:325
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Falsk menyoppføring %d\n"
 
-#: ../src/ui/theme-viewer.c:358
+#: ../src/ui/theme-viewer.c:359
 msgid "Border-only window"
 msgstr "Vindu uten innhold"
 
-#: ../src/ui/theme-viewer.c:360
+#: ../src/ui/theme-viewer.c:361
 msgid "Bar"
 msgstr "Linje"
 
-#: ../src/ui/theme-viewer.c:377
+#: ../src/ui/theme-viewer.c:378
 msgid "Normal Application Window"
 msgstr "Normalt programvindu"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:382
 msgid "Dialog Box"
 msgstr "Dialogboks"
 
-#: ../src/ui/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:386
 msgid "Modal Dialog Box"
 msgstr "Modal dialogboks"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:390
 msgid "Utility Palette"
 msgstr "Verktøypalett"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:394
 msgid "Torn-off Menu"
 msgstr "Avrevet meny"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:398
 msgid "Border"
 msgstr "Kant"
 
-#: ../src/ui/theme-viewer.c:725
+#: ../src/ui/theme-viewer.c:726
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test av knappeplassering %d"
 
-#: ../src/ui/theme-viewer.c:754
+#: ../src/ui/theme-viewer.c:755
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g millisekunder for å tegne en vindusramme"
 
-#: ../src/ui/theme-viewer.c:797
+#: ../src/ui/theme-viewer.c:798
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Bruk: metacity-theme-viewer [TEMANAVN]\n"
 
-#: ../src/ui/theme-viewer.c:804
+#: ../src/ui/theme-viewer.c:805
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Feil under lasting av tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:810
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Lastet tema «%s» på %g sekunder\n"
 
-#: ../src/ui/theme-viewer.c:833
+#: ../src/ui/theme-viewer.c:852
 msgid "Normal Title Font"
 msgstr "Normal tittelskrift"
 
-#: ../src/ui/theme-viewer.c:839
+#: ../src/ui/theme-viewer.c:858
 msgid "Small Title Font"
 msgstr "Liten tittelskrift"
 
-#: ../src/ui/theme-viewer.c:845
+#: ../src/ui/theme-viewer.c:864
 msgid "Large Title Font"
 msgstr "Stor tittelskrift"
 
-#: ../src/ui/theme-viewer.c:850
+#: ../src/ui/theme-viewer.c:869
 msgid "Button Layouts"
 msgstr "Knappeplasseringer"
 
-#: ../src/ui/theme-viewer.c:855
+#: ../src/ui/theme-viewer.c:874
 msgid "Benchmark"
 msgstr "Ytelsestest"
 
-#: ../src/ui/theme-viewer.c:902
+#: ../src/ui/theme-viewer.c:921
 msgid "Window Title Goes Here"
 msgstr "Vindutittel skal her"
 
-#: ../src/ui/theme-viewer.c:1006
+#: ../src/ui/theme-viewer.c:1025
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -3348,39 +3332,39 @@ msgstr ""
 "%g sekunder på klokken inklusive ressurser på X-tjener (%g millisekunder per "
 "ramme)\n"
 
-#: ../src/ui/theme-viewer.c:1225
+#: ../src/ui/theme-viewer.c:1244
 msgid "position expression test returned TRUE but set error"
 msgstr "test av posisjonsuttrykk returnerte TRUE, men satte en feilkode"
 
-#: ../src/ui/theme-viewer.c:1227
+#: ../src/ui/theme-viewer.c:1246
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "test av posisjonsuttrykk returnerte FALSE, men satte ikke en feilkode"
 
-#: ../src/ui/theme-viewer.c:1231
+#: ../src/ui/theme-viewer.c:1250
 msgid "Error was expected but none given"
 msgstr "Feil var ventet men ingen ble gitt"
 
-#: ../src/ui/theme-viewer.c:1233
+#: ../src/ui/theme-viewer.c:1252
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Feil %d var ventet men %d ble gitt"
 
-#: ../src/ui/theme-viewer.c:1239
+#: ../src/ui/theme-viewer.c:1258
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Feil ikke ventet men en ble returnert: %s"
 
-#: ../src/ui/theme-viewer.c:1243
+#: ../src/ui/theme-viewer.c:1262
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y-verdi var %d, %d var ventet"
 
-#: ../src/ui/theme-viewer.c:1311
+#: ../src/ui/theme-viewer.c:1330
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinatuttrykk lest på %g sekunder (%g sekunder i snitt)\n"
