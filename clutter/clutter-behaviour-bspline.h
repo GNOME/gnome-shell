@@ -18,9 +18,7 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __CLUTTER_BEHAVIOUR_BSPLINE_H__
@@ -57,20 +55,42 @@ G_BEGIN_DECLS
 typedef struct _ClutterBehaviourBspline        ClutterBehaviourBspline;
 typedef struct _ClutterBehaviourBsplinePrivate ClutterBehaviourBsplinePrivate;
 typedef struct _ClutterBehaviourBsplineClass   ClutterBehaviourBsplineClass;
- 
+
+/**
+ * ClutterBehaviourBspline:
+ *
+ * #ClutterBehaviourBspline-struct contains only private data and
+ * should be accessed using the functions below.
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourBspline
 {
   ClutterBehaviour parent_instance;
   ClutterBehaviourBsplinePrivate *priv;
 };
 
+/**
+ * ClutterBehaviourBsplineClass:
+ * @knot_reached: class handler for the #ClutterBehaviourBspline::knot-reached
+ *   signal
+ *
+ * #ClutterBehaviourBsplineClass-struct contains only private data
+ * and should be accessed using the functions below.
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourBsplineClass
 {
+  /*< private >*/
   ClutterBehaviourClass   parent_class;
 
+  /*< public >*/
   void (*knot_reached) (ClutterBehaviourBspline *bsplineb,
                         const ClutterKnot       *knot);
 
+  /*< private >*/
+  /* padding for future expansion */
   void (*_clutter_bspline_1) (void);
   void (*_clutter_bspline_2) (void);
   void (*_clutter_bspline_3) (void);

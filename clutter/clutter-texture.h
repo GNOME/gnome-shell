@@ -18,9 +18,7 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef _HAVE_CLUTTER_TEXTURE_H
@@ -115,12 +113,15 @@ typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
 /**
  * ClutterTextureQuality:
  * @CLUTTER_TEXTURE_QUALITY_LOW: fastest rendering will use nearest neighbour
- * interpolation when rendering.
- * good setting.
+ *   interpolation when rendering. good setting.
  * @CLUTTER_TEXTURE_QUALITY_MEDIUM: higher quality rendering without using
- * extra resources.
+ *   extra resources.
  * @CLUTTER_TEXTURE_QUALITY_HIGH: render the texture with the best quality
- * available using extra memory.
+ *   available using extra memory.
+ *
+ * Enumaration controlling the texture quality.
+ *
+ * Since: 0.8
  */
 typedef enum { /*< prefix=CLUTTER_TEXTURE_QUALITY >*/
   CLUTTER_TEXTURE_QUALITY_LOW = 0,

@@ -1,9 +1,18 @@
+2008-07-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-bspline.h:
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-event.h:
+	* clutter/clutter-texture.h: Add missing documentation and
+	change the copyright and licensing notice to use the FSF
+	website instead of its address. (#512)
+
 2008-06-30  Matthew Allum  <mallum@openedhand.com>
 
-        Bug 1008 - tfp still a bit borked
+	Bug 1008 - tfp still a bit borked
 
 	* clutter/x11/clutter-x11-texture-pixmap.c:
-        Fix from Andy Wingo for sync_window borkage
+	Fix from Andy Wingo for sync_window borkage
 
 2008-06-30  Neil Roberts  <neil@o-hand.com>
 
@@ -22,18 +31,18 @@
 
 2008-06-30  Matthew Allum  <mallum@openedhand.com>
 
-         Bug 1007 - Fix TFP fallback mechanism
+	 Bug 1007 - Fix TFP fallback mechanism
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* clutter/x11/clutter-x11-texture-pixmap.c:
-        Add some extra safety to glx pixmap creations and tidy up some notes.
-        Patch from Gwenole Beauchesne.
+	Add some extra safety to glx pixmap creations and tidy up some notes.
+	Patch from Gwenole Beauchesne.
 
 2008-06-30  Neil Roberts  <neil@o-hand.com>
 
-        * clutter/x11/clutter-event-x11.c:
-        * clutter/win32/clutter-event-win32.c: Use the HAVE_CONFIG_H guard
-        around #include "config.h"
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/win32/clutter-event-win32.c: Use the HAVE_CONFIG_H guard
+	around #include "config.h"
 
 2008-06-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -61,8 +70,8 @@
 
 2008-06-30  Matthew Allum  <mallum@openedhand.com>
 
-        Bug 997 - automatic updates not working for named TFP pixmaps, 
-                  at least in x11    
+	Bug 997 - automatic updates not working for named TFP pixmaps, 
+	          at least in x11    
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* clutter/glx/clutter-glx-texture-pixmap.h:
@@ -72,8 +81,8 @@
 	* clutter/x11/clutter-x11.h:
 	* configure.ac:
 	* tests/test-pixmap.c: 
-        Rework Andy Wingos patch a little adding more safety for now also
-        handling redirect Windows (as well as pixmaps)
+	Rework Andy Wingos patch a little adding more safety for now also
+	handling redirect Windows (as well as pixmaps)
 
 2008-06-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -129,15 +138,15 @@
 2008-06-27  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gl/cogl.c:
-        Temp workaround for 10.4 ATI card OSX folks, see #929 
-        (Tommi Komulainen)
-        
-        Bug 998 - clutter always captures X input events
-        
+	Temp workaround for 10.4 ATI card OSX folks, see #929 
+	(Tommi Komulainen)
+	
+	Bug 998 - clutter always captures X input events
+	
 	* clutter/eglx/clutter-stage-egl.c:
 	* clutter/glx/clutter-stage-glx.c:
-        When we disable X event retrival, dont still select for window
-        events. 
+	When we disable X event retrival, dont still select for window
+	events. 
 
 2008-06-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
