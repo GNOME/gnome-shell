@@ -32,6 +32,7 @@ main (int argc, char **argv)
   TestDevicesApp *app = NULL;
   ClutterColor stage_color = { 0x61, 0x64, 0x8c, 0xff };
 
+  clutter_x11_enable_xinput ();
   clutter_init (&argc, &argv);
 
   app = g_new0 (TestDevicesApp, 1);
@@ -48,6 +49,9 @@ main (int argc, char **argv)
   clutter_actor_show_all (stage);
 
   stage_devices = clutter_x11_get_input_devices ();
+
+  if (stage_devices == NULL)
+    g_error ("No extended input devices found.");
 
   do 
     {

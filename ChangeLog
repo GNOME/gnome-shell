@@ -1,6 +1,19 @@
+2008-07-01  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/x11/clutter-backend-x11.c:
+	* clutter/x11/clutter-backend-x11.h:
+	* clutter/x11/clutter-event-x11.c:
+	* clutter/x11/clutter-x11.h:
+	* tests/test-devices.c:
+        Disable use of XInput and add an explicit clutter_x11_enable_xinput
+        to enable it.
+        Also fix up the x11 pre-init calls to not need g_type_init.
+
 2008-07-01  Øyvind Kolås  <pippin@o-hand.com>
 
-	Bug 1013 - Per device grabs are not obeyed in pointer device propagation.
+	Bug 1013 - Per device grabs are not obeyed in pointer device 
+                   propagation.
 
 	* clutter/clutter-event.c: (clutter_event_get_device_id): swap
 	arguments of g_return_val_if_fail around.

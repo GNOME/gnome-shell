@@ -86,6 +86,11 @@ static const guint n_atom_names = G_N_ELEMENTS (atom_names);
 /* singleton object */
 static ClutterBackendX11 *backend_singleton = NULL;
 
+/* various flags corresponding to pre init setup calls */
+static gboolean _no_xevent_retrieval = FALSE;
+static gboolean _enable_xinput = FALSE;
+static Display  *_foreign_dpy = NULL;
+
 /* options */
 static gchar *clutter_display_name = NULL;
 static gint clutter_screen = 0;
@@ -120,6 +125,8 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 {
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
 
+  if (_foreign_dpy)
+    backend_x11->xdpy = _foreign_dpy;
   /*
    * Only open connection if not already set by prior call to
    * clutter_x11_set_display()
@@ -210,7 +217,8 @@ clutter_backend_x11_init_events (ClutterBackend *backend)
 {
   CLUTTER_NOTE (EVENT, "initialising the event loop");
 
-  _clutter_backend_x11_events_init (backend);
+  if (!_no_xevent_retrieval)
+    _clutter_backend_x11_events_init (backend);
 }
 
 static const GOptionEntry entries[] =
@@ -411,31 +419,77 @@ clutter_x11_get_default_display (void)
 void
 clutter_x11_set_display (Display *xdpy)
 {
-  if (!xdpy)
-    return;
-
-  if (!backend_singleton)
-    {
-      /*
-       * This creates the singleton objects
-       */
-      clutter_context_get_default ();
-
-      if (!backend_singleton)
-	{
-	  g_critical ("X11 backend could not be initialised.");
-	  return;
-	}
-    }
-
-  if (backend_singleton->xdpy)
+  if (backend_singleton && backend_singleton->xdpy)
     {
       g_critical ("Display connection already exists. You can only call "
 		  "clutter_x11_set_display() once before clutter_init()\n");
       return;
     }
 
-  backend_singleton->xdpy = xdpy;
+  _foreign_dpy= xdpy;
+}
+
+/**
+ * clutter_x11_enable_xinput:
+ *
+ * Enables the use of the XInput extension if present on connected
+ * XServer and support built into Clutter.  XInput allows for multiple
+ * pointing devices to be used. This must be called before
+ * clutter_init().
+ *
+ * You should use #clutter_x11_has_xinput to see if support was enabled.
+ *
+ * Since: 0.8
+ */
+void
+clutter_x11_enable_xinput ()
+{
+  if (backend_singleton != NULL)
+    {
+      g_warning  ("clutter_x11_enable_xinput should "
+                  "be called before clutter_init");
+      return; 
+    }
+
+  _enable_xinput = TRUE;
+}
+
+/**
+ * clutter_x11_disable_event_retrieval
+ *
+ * Disables retrieval of X events in the main loop. Use to create event-less
+ * canvas or in conjunction with clutter_x11_handle_event.
+ *
+ * This function can only be called before calling clutter_init().
+ *
+ * Since: 0.8
+ */
+void
+clutter_x11_disable_event_retrieval (void)
+{
+  if (backend_singleton != NULL)
+    {
+      g_warning  ("clutter_x11_disable_event_retrieval should "
+                  "be called before clutter_init");
+      return; 
+    }
+
+  _no_xevent_retrieval = TRUE;
+}
+
+/**
+ * clutter_x11_has_event_retrieval
+ *
+ * Queries the X11 backend to check if event collection has been disabled.
+ *
+ * Return value: TRUE if event retrival has been disabled. FALSE otherwise.
+ *
+ * Since: 0.8
+ */
+gboolean
+clutter_x11_has_event_retrieval (void)
+{
+  return !_no_xevent_retrieval;
 }
 
 /**
@@ -578,6 +632,12 @@ _clutter_x11_register_xinput ()
   if (!backend_singleton)
     {
       g_critical ("X11 backend has not been initialised");
+      return;
+    }
+
+  if (!_enable_xinput)
+    {
+      CLUTTER_NOTE (BACKEND, "Not enabling XInput");
       return;
     }
 

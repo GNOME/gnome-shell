@@ -168,9 +168,6 @@ _clutter_backend_x11_events_init (ClutterBackend *backend)
   ClutterEventSource *event_source;
   int connection_number;
 
-  if (backend_x11->no_xevent_retrieval)
-    return;
-
   connection_number = ConnectionNumber (backend_x11->xdpy);
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
 
@@ -221,7 +218,7 @@ set_user_time (ClutterBackendX11 *backend_x11,
     }
 }
 
-#ifdef USE_XINPUT
+#if 0 /* See XInput keyboard comment below USE_XINPUT */
 static void
 convert_xdevicekey_to_xkey (XDeviceKeyEvent *xkev, XEvent *xevent)
 {
@@ -888,29 +885,6 @@ clutter_x11_handle_event (XEvent *xevent)
 
   return CLUTTER_X11_FILTER_CONTINUE;
 }
-
-/**
- * clutter_x11_disable_event_retrieval
- *
- * Disables retrieval of X events in the main loop. Use to create event-less
- * canvas or in conjunction with clutter_x11_handle_event.
- *
- * This function can only be called before calling clutter_init().
- *
- * Since: 0.8
- */
-void
-clutter_x11_disable_event_retrieval (void)
-{
-  ClutterBackendX11      *backend;
-  ClutterMainContext  *clutter_context;
-
-  clutter_context = clutter_context_get_default ();
-  backend = CLUTTER_BACKEND_X11 (clutter_context->backend);
-
-  backend->no_xevent_retrieval = TRUE;
-}
-
 
 static gboolean
 clutter_event_prepare (GSource *source,

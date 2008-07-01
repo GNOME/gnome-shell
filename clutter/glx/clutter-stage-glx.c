@@ -180,7 +180,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
                                            mask, &xattr);
         }
 
-      if (!backend_x11->no_xevent_retrieval)
+      if (clutter_x11_has_event_retrieval())
         {
           if (clutter_x11_has_xinput())
             {
