@@ -274,7 +274,6 @@ main (int argc, char *argv[])
 
   clutter_main ();
 
-  g_free (oh->tv);
   g_free (oh->hand);
   g_free (oh);
 

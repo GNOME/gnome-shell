@@ -1,3 +1,11 @@
+2008-07-01  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-texture.c:
+	Correct documentation about accepted pixel formats
+
+	* tests/test-stage-read-pixels.c: (main):
+	Don't try to free a ClutterTexture after main, fixes segfault on quit
+
 2008-07-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-bspline.h:

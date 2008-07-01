@@ -1072,7 +1072,8 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
  * @width: Width in pixels of image data.
  * @height: Height in pixels of image data
  * @rowstride: Distance in bytes between row starts.
- * @bpp: bytes per pixel ( Currently only 4 supported )
+ * @bpp: bytes per pixel (Currently only 3 and 4 supported, 
+ *                        depending on @has_alpha)
  * @flags: #ClutterTextureFlags
  * @error: return location for a #GError, or %NULL.
  *
@@ -1476,7 +1477,8 @@ clutter_texture_get_base_size (ClutterTexture *texture,
  * @width: Width in pixels of region to update.
  * @height: Height in pixels of region to update.
  * @rowstride: Distance in bytes between row starts on source buffer.
- * @bpp: bytes per pixel ( Currently only 4 supported )
+ * @bpp: bytes per pixel (Currently only 3 and 4 supported, 
+ *                        depending on @has_alpha)
  * @flags: #ClutterTextureFlags
  * @error: return location for a #GError, or %NULL
  *
