@@ -89,11 +89,20 @@ static gboolean update_snapshot (gpointer data)
   SuperOH *oh = data;
   gint    width = CLUTTER_STAGE_WIDTH();
   gint    height = CLUTTER_STAGE_HEIGHT();
+  gint    x, y, rowstride;
   guchar *pixels;
 
   pixels = clutter_stage_read_pixels (CLUTTER_STAGE (oh->stage), 0, 0, width, height);
   g_assert (pixels);
 
+  /* Alpha data is not guaranteed to be sensible and we don't need it, 
+   * overwrite it with full-alpha.
+   */
+  rowstride = width * 4;
+  for (y = 0; y < height; y++)
+    for (x = 3; x < rowstride; x += 4)
+      pixels[(y * rowstride) + x] = 0xff;
+  
   clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (oh->tv), pixels, TRUE, width, height, width *4,
    4, 0, NULL);
   g_free (pixels);

@@ -1,3 +1,13 @@
+2008-07-01  Chris Lord  <chris@openedhand.com>
+
+	* clutter/clutter-stage.c:
+	Add a note to the clutter_stage_read_pixels doc that the alpha channel
+	isn't guaranteed to contain sensible data
+
+	* tests/test-stage-read-pixels.c: (update_snapshot):
+	Overwrite the alpha data when using clutter_stage_read_pixels; fixes
+	this test on non-nvidia drivers
+
 2008-07-01  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/glx/clutter-stage-glx.c:

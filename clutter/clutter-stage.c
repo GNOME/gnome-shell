@@ -1122,6 +1122,9 @@ clutter_stage_hide_cursor (ClutterStage *stage)
  * Makes a screenshot of the stage in RGBA 8bit data, returns a
  * linear buffer with @width * 4 as rowstride.
  *
+ * The alpha data contained in the returned buffer is driver-dependent, 
+ * and not guaranteed to hold any sensible value.
+ *
  * Return value: a pointer to newly allocated memory with the buffer
  *   or %NULL if the read failed. Use g_free() on the returned data
  *   to release the resources it has allocated.
