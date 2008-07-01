@@ -44,11 +44,11 @@
 
     <section id="cogl-intro">
       <title>About COGL</title>
-      <para>
 
-      COGL is a low level OpenGL abstraction library developed for (and part of) Clutter. It is used primarily by #ClutterActor's to provide a common rendering API that works transparently across OpenGL >=1.4, OpenGL ES 1.1 and OpenGL ES 2.0.
-
-      </para>
+      <para>COGL is a low level OpenGL abstraction library developed for (and
+      part of) Clutter. It is used primarily by Clutter to provide a common
+      rendering API that works transparently across OpenGL >=1.4,
+      OpenGL ES 1.1 and OpenGL ES 2.0.</para>
 
     </section>
 
@@ -58,5 +58,45 @@
     <xi:include href="xml/cogl-texture.xml"/>
     <xi:include href="xml/cogl-shaders.xml"/>
     <xi:include href="xml/cogl-offscreen.xml"/>
+
   </chapter>
+
+  <index>
+    <title>Index</title>
+  </index>
+
+  <appendix id="license">
+    <title>License</title>
+
+    <para>
+      This library is free software; you can redistribute it and/or
+      modify it under the terms of the <citetitle>GNU Library General
+      Public License</citetitle> as published by the Free Software
+      Foundation; either version 2 of the License, or (at your option)
+      any later version.
+    </para>
+
+    <para>
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      <citetitle>GNU Library General Public License</citetitle> for
+      more details.
+    </para>
+
+    <para>
+      You may obtain a copy of the <citetitle>GNU Library General
+      Public License</citetitle> from the Free Software Foundation by
+      visiting <ulink type="http" url="http://www.fsf.org">their Web
+      site</ulink> or by writing to:
+
+      <address>
+        Free Software Foundation, Inc.
+        <street>59 Temple Place</street> - Suite 330
+        <city>Boston</city>, <state>MA</state> <postcode>02111-1307</postcode>
+        <country>USA</country>
+      </address>
+    </para>
+  </appendix>
+
 </book>
