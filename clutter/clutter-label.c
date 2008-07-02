@@ -93,19 +93,28 @@ struct _ClutterLabelPrivate
   PangoAttrList        *attrs;
   PangoAttrList        *effective_attrs;
   PangoLayout          *layout;
+
+  ClutterUnit           layout_width;
+  ClutterUnit           layout_height;
+  guint                 layout_dirty     : 1;
 };
 
 /*
- * clutter_label_create_layout:
+ * clutter_label_create_layout_no_cache:
  * @label: a #ClutterLabel
  * @allocation_width: the width of the layout, or -1
  *
  * Creates a new #PangoLayout for the given @allocation_width, using
  * the layout properties of the @label.
+ *
+ * This function will not touch the glyphs cache.
+ *
+ * This function should be used by clutter_label_get_preferred_width()
+ * and clutter_label_get_preferred_height().
  */
 static PangoLayout *
-clutter_label_create_layout (ClutterLabel *label,
-                             ClutterUnit   allocation_width)
+clutter_label_create_layout_no_cache (ClutterLabel *label,
+                                      ClutterUnit   allocation_width)
 {
   ClutterLabelPrivate *priv = label->priv;
   PangoLayout *layout;
@@ -167,9 +176,29 @@ clutter_label_create_layout (ClutterLabel *label,
         }
     }
 
-  pango_clutter_ensure_glyph_cache_for_layout (layout);
-
   return layout;
+}
+
+/*
+ * clutter_label_create_layout:
+ * @label: a #ClutterLabel
+ * @allocation_width: the allocation width
+ *
+ * Link clutter_label_create_layout_no_cache(), but will also
+ * ensure the glyphs cache. This function should be called by
+ * clutter_label_allocate().
+ */
+static PangoLayout *
+clutter_label_create_layout (ClutterLabel *label,
+                             ClutterUnit   allocation_width)
+{
+  PangoLayout *retval;
+
+  retval = clutter_label_create_layout_no_cache (label, allocation_width);
+
+  pango_clutter_ensure_glyph_cache_for_layout (retval);
+
+  return retval;
 }
 
 static void
@@ -219,8 +248,11 @@ clutter_label_get_preferred_width (ClutterActor *self,
 
   /* we create a layout to compute the width request; we ignore the
    * passed height because ClutterLabel is a height-for-width actor
+   *
+   * the layout is destroyed soon after, so it's cheap to do
+   * computations with it
    */
-  layout = clutter_label_create_layout (label, -1);
+  layout = clutter_label_create_layout_no_cache (label, -1);
 
   pango_layout_get_extents (layout, NULL, &logical_rect);
 
@@ -263,7 +295,7 @@ clutter_label_get_preferred_height (ClutterActor *self,
       /* we create a new layout to compute the height for the
        * given width and then discard it
        */
-      layout = clutter_label_create_layout (label, for_width);
+      layout = clutter_label_create_layout_no_cache (label, for_width);
 
       pango_layout_get_extents (layout, NULL, &logical_rect);
       height = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.height);
@@ -287,15 +319,33 @@ clutter_label_allocate (ClutterActor          *self,
   ClutterLabelPrivate *priv = label->priv;
   ClutterActorClass *parent_class;
 
-  /* the allocation was changed, so we must recreate the layout */
+  /* we try really hard not to recreate the layout unless
+   * stricly necessary to avoid hitting the GL machinery
+   * too hard. if the allocation did not really change and
+   * no other detail of the layout that might affect it
+   * did change as well, then we simply bail out
+   */
   if (priv->layout)
     {
+      if (!priv->layout_dirty &&
+          (box->x2 - box->x1) == priv->layout_width &&
+          (box->y2 - box->y1) == priv->layout_height)
+        {
+          goto out;
+        }
+        
       g_object_unref (priv->layout);
       priv->layout = NULL;
     }
 
+  CLUTTER_NOTE (ACTOR, "Creating the PangoLayout");
   priv->layout = clutter_label_create_layout (label, box->x2 - box->x1);
 
+  priv->layout_width  = box->x2 - box->x1;
+  priv->layout_height = box->y2 - box->y1;
+  priv->layout_dirty  = FALSE;
+
+out:
   parent_class = CLUTTER_ACTOR_CLASS (clutter_label_parent_class);
   parent_class->allocate (self, box, origin_changed);
 }
@@ -576,6 +626,8 @@ clutter_label_init (ClutterLabel *self)
 
   priv->font_name     = g_strdup (DEFAULT_FONT_NAME);
   priv->font_desc     = pango_font_description_from_string (priv->font_name);
+
+  priv->layout_dirty  = TRUE;
 }
 
 /**
@@ -668,7 +720,9 @@ clutter_label_set_text (ClutterLabel *label,
   priv = label->priv;
 
   g_free (priv->text);
+
   priv->text = g_strdup (text);
+  priv->layout_dirty = TRUE;
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (label));
 
@@ -738,6 +792,7 @@ clutter_label_set_font_name (ClutterLabel *label,
     pango_font_description_free (priv->font_desc);
 
   priv->font_desc = desc;
+  priv->layout_dirty = TRUE;
 
   if (label->priv->text && label->priv->text[0] != '\0')
     clutter_actor_queue_relayout (CLUTTER_ACTOR (label));
@@ -832,6 +887,7 @@ clutter_label_set_ellipsize (ClutterLabel          *label,
   if ((PangoEllipsizeMode) priv->ellipsize != mode)
     {
       priv->ellipsize = mode;
+      priv->layout_dirty = TRUE;
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (label));
 
@@ -885,6 +941,7 @@ clutter_label_set_line_wrap (ClutterLabel *label,
   if (priv->wrap != wrap)
     {
       priv->wrap = wrap;
+      priv->layout_dirty = TRUE;
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (label));
 
@@ -935,6 +992,7 @@ clutter_label_set_line_wrap_mode (ClutterLabel *label,
   if (priv->wrap_mode != wrap_mode)
     {
       priv->wrap_mode = wrap_mode;
+      priv->layout_dirty = TRUE;
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (label));
 
@@ -987,28 +1045,6 @@ static inline void
 clutter_label_set_attributes_internal (ClutterLabel  *label,
 				       PangoAttrList *attrs)
 {
-  ClutterLabelPrivate *priv;
-
-  priv = label->priv;
-
-  if (attrs)
-    pango_attr_list_ref (attrs);
-  
-  if (priv->attrs)
-    pango_attr_list_unref (priv->attrs);
-
-  if (!priv->use_markup)
-    {
-      if (attrs)
-	pango_attr_list_ref (attrs);
-
-      if (priv->effective_attrs)
-	pango_attr_list_unref (priv->effective_attrs);
-      priv->effective_attrs = attrs;
-    }
-
-  label->priv->attrs = attrs;
-  g_object_notify (G_OBJECT (label), "attributes");
 }
 
 /**
@@ -1027,9 +1063,33 @@ void
 clutter_label_set_attributes (ClutterLabel     *label,
 			      PangoAttrList    *attrs)
 {
+  ClutterLabelPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_LABEL (label));
 
-  clutter_label_set_attributes_internal (label, attrs);
+  priv = label->priv;
+
+  if (attrs)
+    pango_attr_list_ref (attrs);
+  
+  if (priv->attrs)
+    pango_attr_list_unref (priv->attrs);
+
+  if (!priv->use_markup)
+    {
+      if (attrs)
+	pango_attr_list_ref (attrs);
+
+      if (priv->effective_attrs)
+	pango_attr_list_unref (priv->effective_attrs);
+
+      priv->effective_attrs = attrs;
+    }
+
+  priv->attrs = attrs;
+  priv->layout_dirty = TRUE;
+
+  g_object_notify (G_OBJECT (label), "attributes");
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (label));
 }
@@ -1075,6 +1135,7 @@ clutter_label_set_use_markup (ClutterLabel *label,
   if (priv->use_markup != setting)
     {
       priv->use_markup = setting;
+      priv->layout_dirty = TRUE;
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (label));
 
@@ -1120,6 +1181,7 @@ clutter_label_set_alignment (ClutterLabel   *label,
   if (priv->alignment != alignment)
     {
       priv->alignment = alignment;
+      priv->layout_dirty = TRUE;
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (label));
 
@@ -1169,6 +1231,7 @@ clutter_label_set_justify (ClutterLabel *label,
   if (priv->justify != justify)
     {
       priv->justify = justify;
+      priv->layout_dirty = TRUE;
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (label));
 

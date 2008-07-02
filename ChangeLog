@@ -1,3 +1,17 @@
+2008-07-02  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-label.c:
+	(clutter_label_create_layout_no_cache),
+	(clutter_label_create_layout): Split the layout creation in two
+	functions: one creating the layout, the other creating the layout
+	and hitting the glyphs cache. The first one is for the offscren
+	operations - like requesting the preferred size; the second one
+	is for paint and allocation.
+	
+	(clutter_label_allocate): Try to aggressively cache the PangoLayout
+	between allocations - to avoid recreating it even when the label
+	just moved because of an animation. See bug #1010.
+
 2008-07-02  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/fruity/clutter-fruity.c: made the multi touch code more
