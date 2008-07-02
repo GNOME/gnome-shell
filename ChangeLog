@@ -1,3 +1,10 @@
+2008-07-02  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/fruity/clutter-fruity.c: made the multi touch code more
+	robust. There are situations though where the device seems to stop
+	generating any touch events until all fingers have been lifted and
+	a new interaction session is started.
+
 2008-07-02  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/eglx/clutter-stage-egl.c (clutter_stage_egl_realize):

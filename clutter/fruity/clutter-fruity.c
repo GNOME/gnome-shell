@@ -78,11 +78,17 @@ typedef struct {
 
   bool mapped[MAX_FINGERS] = {false, false, false, false, false}; /* an event has been mapped to this device */
   int  evs[MAX_FINGERS] = {0,0,0,0,0};
-  
-  for (i = 0; i < event->fingerCount; i++) 
+
+  /* using numPoints (with the points[i].status check) seems to
+     * be no different from using numFingers :/ */
+
+  for (i = 0; i < event->numPoints; i++) 
     {
       bool found = false;
 
+      if (event->points[i].status != 3) /* skip if finger not down */
+        continue;
+      
       /* NSLog(@"IncomingEvent: %d, pos: %f, %f", i, event->points[i].x, event->points[i].y);*/
 
       /* check if this finger maps to one of the existing devices */
@@ -98,13 +104,14 @@ typedef struct {
           if (!dev->is_down) 
             continue; /* device isn't down we cannot really match against it */
 
-          int dist = ABS(event->points[i].x - dev->x) +
-                     ABS(event->points[i].y - dev->y);
-          if (dist < 20) 
+          int dist = (event->points[i].x - dev->x) * (event->points[i].x - dev->x) +
+                     (event->points[i].y - dev->y) * (event->points[i].y - dev->y);
+          if (dist < 20 * 20) 
             {
               found = true;
               mapped[j] = true;
 
+		      /* only generate motion events if we've changed position */
               if (dist >= 1)
                 {
                   dev->x = event->points[i].x;
@@ -130,6 +137,7 @@ typedef struct {
         
           dev->x = event->points[i].x;
           dev->y = event->points[i].y;
+          g_assert (dev->is_down == FALSE);
           dev->is_down = TRUE;
 
           mapped[j] = true;
@@ -140,7 +148,7 @@ typedef struct {
         }
     }
 
-  for (j = 0; j < MAX_FINGERS; j++) 
+  for (j = 0; j < MAX_FINGERS; j++)
     {
       ClutterFruityFingerDevice *dev;
 
@@ -213,7 +221,7 @@ typedef struct {
   }
 }
 
-#if 0 // old stylie
+#if 0 // old style
 - (void) mouseDown:(GSEvent*)event
 {
     CGPoint location= GSEventGetLocationInWindow(event);
@@ -274,13 +282,14 @@ typedef struct {
 
 /* New... */
 
+#if 0
 - (void)gestureChanged:(GSEvent*)event {
-  /*NSLog(@"gestureChanged:");*/
+  NSLog(@"gestureChanged:");
   [self doEvent: event];
 }
 
 - (void)gestureEnded:(GSEvent*)event {
-  /*NSLog(@"gestureEnded:");*/
+  NSLog(@"gestureEnded:");
   [self doEvent: event];
 }
 
@@ -288,6 +297,7 @@ typedef struct {
   /*NSLog(@"gestureStarted:");*/
   [self doEvent: event];
 }
+#endif
 
 - (void)mouseDown:(GSEvent*)event {
   /*NSLog(@"mouseDown:");*/
@@ -405,6 +415,13 @@ typedef struct {
 {
    if (alive && g_main_context_pending (NULL))
       g_main_context_iteration (NULL, FALSE);
+}
+
+- (id)initWithFrame:(struct CGRect)frame {
+	[super initWithFrame: frame];
+	[super setTapDelegate: self];
+	[super setGestureDelegate: self];
+	return self;
 }
 
 @end
