@@ -1,3 +1,10 @@
+2008-07-02  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/eglx/clutter-stage-egl.c (clutter_stage_egl_realize):
+	Use clutter_x11_has_event_retrieval() instead of
+	!backend_x11->no_xevent_retrieval to reflect the changes to the
+	GLX backend in revision 3078
+
 2008-07-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 1010 - ClutterLabel does not update the layout (Lee Jusung)

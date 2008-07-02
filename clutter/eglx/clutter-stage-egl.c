@@ -177,9 +177,9 @@ clutter_stage_egl_realize (ClutterActor *actor)
                                WhitePixel (stage_x11->xdpy,
                                            stage_x11->xscreen));
 
-      if (!backend_x11->no_xevent_retrieval)
+      if (clutter_x11_has_event_retrieval ())
         {
-          if (clutter_x11_has_xinput())
+          if (clutter_x11_has_xinput ())
             {
               XSelectInput (stage_x11->xdpy, stage_x11->xwin,
                             StructureNotifyMask |
