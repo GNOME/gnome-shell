@@ -93,8 +93,6 @@ struct _ClutterLabelPrivate
   PangoAttrList        *attrs;
   PangoAttrList        *effective_attrs;
   PangoLayout          *layout;
-
-  ClutterUnit           layout_width;
 };
 
 /*
@@ -289,18 +287,14 @@ clutter_label_allocate (ClutterActor          *self,
   ClutterLabelPrivate *priv = label->priv;
   ClutterActorClass *parent_class;
 
-  if (priv->layout_width != (box->x2 - box->x1))
+  /* the allocation was changed, so we must recreate the layout */
+  if (priv->layout)
     {
-      /* the allocation was changed, so we must recreate the layout */
-      if (priv->layout)
-        {
-          g_object_unref (priv->layout);
-          priv->layout = NULL;
-        }
-
-      priv->layout = clutter_label_create_layout (label, box->x2 - box->x1);
-      priv->layout_width = box->x2 - box->x1;
+      g_object_unref (priv->layout);
+      priv->layout = NULL;
     }
+
+  priv->layout = clutter_label_create_layout (label, box->x2 - box->x1);
 
   parent_class = CLUTTER_ACTOR_CLASS (clutter_label_parent_class);
   parent_class->allocate (self, box, origin_changed);

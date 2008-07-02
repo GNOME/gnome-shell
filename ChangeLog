@@ -1,3 +1,15 @@
+2008-07-02  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug 1010 - ClutterLabel does not update the layout (Lee Jusung)
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_queue_relayout): Remove some pointer dereferencing.
+	
+	* clutter/clutter-label.c:
+	(clutter_label_allocate): Revert the change of r2883 and remove the
+	layout width cache and force a recreation of the layout every time
+	we receive an allocation.
+
 2008-07-01  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-actor.c (clutter_actor_get_transformed_sizeu):

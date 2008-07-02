@@ -3042,17 +3042,17 @@ clutter_actor_queue_relayout (ClutterActor *self)
       priv->needs_allocation)
     return; /* save some cpu cycles */
 
-  self->priv->needs_width_request  = TRUE;
-  self->priv->needs_height_request = TRUE;
-  self->priv->needs_allocation     = TRUE;
+  priv->needs_width_request  = TRUE;
+  priv->needs_height_request = TRUE;
+  priv->needs_allocation     = TRUE;
 
   /* always repaint also */
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);
 
   /* We need to go all the way up the hierarchy */
-  if (self->priv->parent_actor)
-    clutter_actor_queue_relayout (self->priv->parent_actor);
+  if (priv->parent_actor)
+    clutter_actor_queue_relayout (priv->parent_actor);
 }
 
 /**
