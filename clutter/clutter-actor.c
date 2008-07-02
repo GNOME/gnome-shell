@@ -1265,7 +1265,6 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
                                            ClutterVertex  verts[4])
 {
   ClutterActorPrivate   *priv;
-  ClutterActor          *stage;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -1276,7 +1275,17 @@ clutter_actor_get_abs_allocation_vertices (ClutterActor  *self,
    * clutter_actor_transform_and_project_box()
    */
   if (priv->needs_allocation)
-    _clutter_stage_maybe_relayout (stage);
+    {
+      ClutterActor *stage = clutter_actor_get_stage (self);
+
+      /* FIXME: if were not yet added to a stage, its probably unsafe to
+       * return default - idealy the func should fail.
+       */
+      if (stage == NULL)
+	stage = clutter_stage_get_default ();
+
+      _clutter_stage_maybe_relayout (stage);
+    }
 
   clutter_actor_transform_and_project_box (self,
 					   &self->priv->allocation,

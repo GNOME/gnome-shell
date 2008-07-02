@@ -1,3 +1,10 @@
+2008-07-02  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-actor.c
+	(clutter_actor_get_abs_allocation_vertices): The initialization of
+	the local stage pointer got moved away in revision 3081 so it was
+	crashing if the function is called before the layout is run.
+
 2008-07-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-label.c:
