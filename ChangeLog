@@ -1,3 +1,9 @@
+2008-07-03  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/cogl/common/cogl-bitmap-pixbuf.c:
+	(_cogl_bitmap_from_file): removed debug g_printf that announces each
+	successful image load done by the internal image backend.
+
 2008-07-02  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-actor.c
