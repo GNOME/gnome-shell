@@ -1,3 +1,8 @@
+2008-07-03  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-shader.c (bind_glsl_shader): Fix a cut-and-paste
+	error which broke vertex shaders
+
 2008-07-03  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/cogl/common/cogl-bitmap-pixbuf.c:
