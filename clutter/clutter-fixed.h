@@ -284,13 +284,43 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /*< public >*/
 /* Fixed point math routines */
-extern inline
+G_INLINE_FUNC
 ClutterFixed clutter_qmulx (ClutterFixed op1,
-                            ClutterFixed op2);
+			    ClutterFixed op2);
+#if defined (G_CAN_INLINE)
+G_INLINE_FUNC
+ClutterFixed clutter_qmulx (ClutterFixed op1,
+			    ClutterFixed op2)
+{
+#ifdef __arm__
+    int res_low, res_hi;
 
-extern inline
+    __asm__ ("smull %0, %1, %2, %3     \n"
+	     "mov   %0, %0,     lsr %4 \n"
+	     "add   %1, %0, %1, lsl %5 \n"
+	     : "=r"(res_hi), "=r"(res_low)\
+	     : "r"(op1), "r"(op2), "i"(CFX_Q), "i"(32-CFX_Q));
+
+    return (ClutterFixed) res_low;
+#else
+    long long r = (long long) op1 * (long long) op2;
+
+    return (unsigned int)(r >> CFX_Q);
+#endif
+}
+#endif
+
+G_INLINE_FUNC
 ClutterFixed clutter_qdivx (ClutterFixed op1,
-                            ClutterFixed op2);
+			    ClutterFixed op2);
+#if defined (G_CAN_INLINE)
+G_INLINE_FUNC
+ClutterFixed clutter_qdivx (ClutterFixed op1,
+			    ClutterFixed op2)
+{
+  return (ClutterFixed) ((((gint64) op1) << CFX_Q) / op2);
+}
+#endif
 
 ClutterFixed clutter_sinx (ClutterFixed angle);
 ClutterFixed clutter_sini (ClutterAngle angle);

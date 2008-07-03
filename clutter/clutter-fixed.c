@@ -30,6 +30,7 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
+#define G_IMPLEMENTS_INLINES
 #include "clutter-fixed.h"
 #include "clutter-private.h"
 
@@ -504,7 +505,7 @@ clutter_tani (ClutterAngle angle)
 /* 257-value table of atan. atan_tbl[0] is atan(0.0) and atan_tbl[256]
    is atan(1). The angles are radians in ClutterFixed
    truncated to 16-bit (they're all less than one) */
-static guint16 atan_tbl[] = 
+static guint16 atan_tbl[] =
   {
     0x0000, 0x00FF, 0x01FF, 0x02FF, 0x03FF, 0x04FF, 0x05FF, 0x06FF,
     0x07FF, 0x08FF, 0x09FE, 0x0AFE, 0x0BFD, 0x0CFD, 0x0DFC, 0x0EFB,

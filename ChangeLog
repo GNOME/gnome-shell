@@ -1,3 +1,9 @@
+2008-07-03  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-fixed.c
+	Fixed inlining of clutter_qmulx() and clutter_qdivx() (bug 1022).
+
 2008-07-03  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-shader.c (bind_glsl_shader): Fix a cut-and-paste
@@ -25,7 +31,7 @@
 	and hitting the glyphs cache. The first one is for the offscren
 	operations - like requesting the preferred size; the second one
 	is for paint and allocation.
-	
+
 	(clutter_label_allocate): Try to aggressively cache the PangoLayout
 	between allocations - to avoid recreating it even when the label
 	just moved because of an animation. See bug #1010.
@@ -50,7 +56,7 @@
 
 	* clutter/clutter-actor.c:
 	(clutter_actor_queue_relayout): Remove some pointer dereferencing.
-	
+
 	* clutter/clutter-label.c:
 	(clutter_label_allocate): Revert the change of r2883 and remove the
 	layout width cache and force a recreation of the layout every time
@@ -96,7 +102,7 @@
 
 2008-07-01  Øyvind Kolås  <pippin@o-hand.com>
 
-	Bug 1013 - Per device grabs are not obeyed in pointer device 
+	Bug 1013 - Per device grabs are not obeyed in pointer device
                    propagation.
 
 	* clutter/clutter-event.c: (clutter_event_get_device_id): swap
@@ -138,7 +144,7 @@
 
 	Bug 985 - MSC math.h / M_PI issue
 
-	* clutter/cogl/gl/cogl.c (set_clip_plane): 
+	* clutter/cogl/gl/cogl.c (set_clip_plane):
 	* clutter/clutter-alpha.c (sinc_func): Use G_PI instead of M_PI
 	because M_PI isn't defined in MSVC without a special
 	#define. Thanks to Haakon Sporsheim
@@ -190,8 +196,8 @@
 
 2008-06-30  Matthew Allum  <mallum@openedhand.com>
 
-	Bug 997 - automatic updates not working for named TFP pixmaps, 
-	          at least in x11    
+	Bug 997 - automatic updates not working for named TFP pixmaps,
+	          at least in x11
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* clutter/glx/clutter-glx-texture-pixmap.h:
@@ -200,7 +206,7 @@
 	* clutter/x11/clutter-x11-texture-pixmap.h:
 	* clutter/x11/clutter-x11.h:
 	* configure.ac:
-	* tests/test-pixmap.c: 
+	* tests/test-pixmap.c:
 	Rework Andy Wingos patch a little adding more safety for now also
 	handling redirect Windows (as well as pixmaps)
 
@@ -227,14 +233,14 @@
 
 	* clutter/glx/clutter-stage-glx.c: (clutter_stage_glx_realize): select
 	for KeyPressMask and KeyReleaseMask even with XInput enabled.
-	* clutter/x11/clutter-backend-x11.c: (_clutter_x11_register_xinput): 
+	* clutter/x11/clutter-backend-x11.c: (_clutter_x11_register_xinput):
 	Disabled the XInput keyboard code paths (comments and #if 0's)
 	* clutter/x11/clutter-event-x11.c: (event_translate): always handle
 	keyboard events without regard to XInput.
 
 2008-06-29  Matthew Allum  <mallum@openedhand.com>
 
-	* clutter/x11/clutter-event-x11.c: 
+	* clutter/x11/clutter-event-x11.c:
 	ifdef convert_xdevicekey_to_xkey () with XINPUT check.
 	(fix via Andy Wingo)
 
@@ -258,15 +264,15 @@
 2008-06-27  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gl/cogl.c:
-	Temp workaround for 10.4 ATI card OSX folks, see #929 
+	Temp workaround for 10.4 ATI card OSX folks, see #929
 	(Tommi Komulainen)
-	
+
 	Bug 998 - clutter always captures X input events
-	
+
 	* clutter/eglx/clutter-stage-egl.c:
 	* clutter/glx/clutter-stage-glx.c:
 	When we disable X event retrival, dont still select for window
-	events. 
+	events.
 
 2008-06-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -385,7 +391,7 @@
 	the override in place for backends providing a fixed size
 	on a stage.
 
-2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com> 
+2008-06-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c:
 	(clutter_actor_set_min_width),
@@ -497,7 +503,7 @@
 2008-06-25  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/eglnative/clutter-stage-egl.c:
-	* clutter/eglx/clutter-stage-egl.c: 
+	* clutter/eglx/clutter-stage-egl.c:
 	Disable passing of attribs to eglCreateContext() on GLES 1.1 h/w
 
 2008-06-25  Neil Roberts  <neil@o-hand.com>
@@ -535,14 +541,14 @@
 
 2008-06-24  Neil Roberts  <neil@o-hand.com>
 
-	* clutter/cogl/gles/cogl-gles2-wrapper.h: 
+	* clutter/cogl/gles/cogl-gles2-wrapper.h:
 	* clutter/cogl/gles/cogl-gles2-wrapper.c: All of the settings and
 	uniforms are now proxied into COGL variables instead of setting
 	the GL uniforms directly. Just before glDrawArrays is executed a
 	shader is generated using the given settings to avoid using 'if'
 	statements. The shaders are cached.
 
-	* clutter/cogl/gles/cogl-fixed-vertex-shader.glsl: 
+	* clutter/cogl/gles/cogl-fixed-vertex-shader.glsl:
 	* clutter/cogl/gles/cogl-fixed-fragment-shader.glsl: The shaders
 	are now split into parts using comments instead of 'if' statements
 	so that the simplest shader can be generated on the fly.
@@ -550,7 +556,7 @@
 	* clutter/cogl/gles/stringify.sh: Now splits up the shader sources
 	into separate C strings where deliminated by special comments.
 
-	* clutter/cogl/gles/cogl-program.h: 
+	* clutter/cogl/gles/cogl-program.h:
 	* clutter/cogl/gles/cogl-program.c: A custom shader can no longer
 	be directly linked with the fixed-functionality replacement
 	because the replacement changes depending on the settings. Instead
@@ -656,22 +662,22 @@
 
 	Bug 918 - Group doesn't clip if it's children are clipped
 
-	* clutter/cogl/common/cogl-clip-stack.h: 
+	* clutter/cogl/common/cogl-clip-stack.h:
 	* clutter/cogl/common/cogl-clip-stack.c: Added functions to
 	maintain a stack of clipping rectangles.
 
-	* clutter/cogl/gles/cogl.c: 
+	* clutter/cogl/gles/cogl.c:
 	* clutter/cogl/gl/cogl.c: The cogl_clip_set and unset functions
 	have moved into cogl-clip-stack.c which calls back to cogl.c to
 	set the actual rectangles. Multiple clip rectangles are combined
 	by merging the stencil buffers.
 
-	* clutter/cogl/gles/cogl-primitives.c (_cogl_path_fill_nodes): 
+	* clutter/cogl/gles/cogl-primitives.c (_cogl_path_fill_nodes):
 	* clutter/cogl/gl/cogl-primitives.c (_cogl_path_fill_nodes): Merge
 	the stencil buffer with the contents of the clipping stack after
 	drawing the path.
 
-	* clutter/cogl/gles/cogl-context.h (CoglContext): 
+	* clutter/cogl/gles/cogl-context.h (CoglContext):
 	* clutter/cogl/gl/cogl-context.h (CoglContext): Store the number
 	of available stencil bits.
 
@@ -756,7 +762,7 @@
 	* configure.ac:
 	* tests/Makefile.am:
 	* tests/test-devices.c:
-	Merge of 'xinput' branch giving initial basic support of 
+	Merge of 'xinput' branch giving initial basic support of
 	multiple input devices.
 
 2008-06-23  Matthew Allum  <mallum@openedhand.com>
@@ -792,7 +798,7 @@
 	* clutter/clutter-actor.h:
 	Clean up of parenting code (see #972)
 	Doc updates to section intro.
-	Add clutter_actor_allocate_preferred_size () utility call 
+	Add clutter_actor_allocate_preferred_size () utility call
 
 	* clutter/clutter-group.c: (clutter_fixed_layout_allocate):
 	Use clutter_actor_allocate_preferred_size ()
@@ -807,7 +813,7 @@
 	reparenting.
 
 	(clutter_actor_unparent): Ditto, as above.
-	
+
 	(clutter_actor_reparent): Emit ::parent-set with the old
 	parent and set the IN_REPARENT flag unconditionally.
 
