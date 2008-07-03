@@ -1,3 +1,8 @@
+2008-07-03  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/x11/Makefile.am: Fix distchecking by adding the
+	generated enum types files to DISTCLEANFILES.
+
 2008-07-03  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:

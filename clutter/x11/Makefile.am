@@ -60,7 +60,10 @@ pkgconfigdir   = $(libdir)/pkgconfig
 
 CLEANFILES = clutter-x11-$(CLUTTER_API_VERSION).pc
 
-DISTCLEANFILES = stamp-clutter-x11-enum-types.h
+DISTCLEANFILES = \
+	stamp-clutter-x11-enum-types.h \
+	clutter-x11-enum-types.h \
+	clutter-x11-enum-types.c
 
 EXTRA_DIST = \
 	clutter-x11.pc.in \
