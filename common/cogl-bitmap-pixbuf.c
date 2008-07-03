@@ -303,8 +303,6 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
   bmp->height = height;
   bmp->rowstride = width * 4;
 
-  g_print ("we successfully used stb_image to load %s\n", filename);
-  
   return TRUE;
 }
 #endif
