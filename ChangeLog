@@ -1,5 +1,10 @@
 2008-07-04  Neil Roberts  <neil@o-hand.com>
 
+	* build/mingw/mingw-cross-compile.sh: Default to the win32 flavour
+	instead of the SDL flavour
+
+2008-07-04  Neil Roberts  <neil@o-hand.com>
+
 	Bug 1015 - Cloning unparented actors with FBOs doesn't work with
 	new layout code
 

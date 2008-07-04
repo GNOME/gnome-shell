@@ -336,7 +336,7 @@ if y_or_n "Do you want to checkout and build Clutter?"; then
 	exit 1;
     fi;
     ( cd "$CLUTTER_BUILD_DIR" && ./autogen.sh --prefix="$ROOT_DIR" \
-	--host="$TARGET" --target="$TARGET" --with-flavour=sdl );
+	--host="$TARGET" --target="$TARGET" --with-flavour=win32 );
     if [ "$?" -ne 0 ]; then
 	echo "autogen failed";
 	exit 1;
