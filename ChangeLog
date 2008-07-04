@@ -1,3 +1,20 @@
+2008-07-04  Neil Roberts  <neil@o-hand.com>
+
+	Bug 1015 - Cloning unparented actors with FBOs doesn't work with
+	new layout code
+
+	* clutter/clutter-texture.c (clutter_texture_new_from_actor): Now
+	parents the source actor if it doesn't already have a parent so
+	that it will get an allocation during layout.
+
+	* tests/test-fbo.c: One of the tests tries to ensure that the
+	ClutterTexture clone keeps the source actor alive by derefing
+	it. However as actors have a floating reference then test-fbo
+	doesn't have its own reference once the source is parented so
+	unrefing just steals the parent's reference and causes
+	badness. The test now claims the floating reference before cloning
+	the source so that it can safely be unref'd later.
+
 2008-07-03  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/x11/Makefile.am: Fix distchecking by adding the

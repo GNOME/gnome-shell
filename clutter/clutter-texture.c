@@ -414,6 +414,23 @@ clutter_texture_get_preferred_height (ClutterActor *self,
 }
 
 static void
+clutter_texture_allocate (ClutterActor          *self,
+			  const ClutterActorBox *box,
+			  gboolean               origin_changed)
+{
+  ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
+
+  /* chain up to set actor->allocation */
+  CLUTTER_ACTOR_CLASS (clutter_texture_parent_class)->allocate (self, box,
+								origin_changed);
+
+  /* If we adopted the source fbo then allocate that at its preferred
+     size */
+  if (priv->fbo_source && clutter_actor_get_parent (priv->fbo_source) == self)
+    clutter_actor_allocate_preferred_size (priv->fbo_source, origin_changed);
+}
+
+static void
 clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
@@ -651,8 +668,9 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   actor_class->realize        = clutter_texture_realize;
   actor_class->unrealize      = clutter_texture_unrealize;
 
-  actor_class->get_preferred_width = clutter_texture_get_preferred_width;
+  actor_class->get_preferred_width  = clutter_texture_get_preferred_width;
   actor_class->get_preferred_height = clutter_texture_get_preferred_height;
+  actor_class->allocate             = clutter_texture_allocate;
 
   gobject_class->dispose      = clutter_texture_dispose;
   gobject_class->set_property = clutter_texture_set_property;
@@ -1644,8 +1662,19 @@ on_fbo_parent_change (ClutterActor        *actor,
  * <itemizedlist>
  *   <listitem>
  *     <para>The source actor must be made visible (i.e by calling
- *     #clutter_actor_show). The source actor does not however have to
- *     have a parent.</para>
+ *     #clutter_actor_show).</para>
+ *   </listitem>
+ *   <listitem>
+ *     <para>The source actor must have a parent in order for it to be
+ *     allocated a size from the layouting mechanism. If the source
+ *     actor does not have a parent when this function is called then
+ *     the ClutterTexture will adopt it and allocate it at its
+ *     preferred size. Using this you can clone an actor that is
+ *     otherwise not displayed. Because of this feature if you do
+ *     intend to display the source actor then you must make sure that
+ *     the actor is parented before calling
+ *     clutter_texture_new_from_actor() or that you unparent it before
+ *     adding it to a container.</para>
  *   </listitem>
  *   <listitem>
  *     <para>Avoid reparenting the source with the created texture.</para>
@@ -1709,7 +1738,12 @@ clutter_texture_new_from_actor (ClutterActor *actor)
 
   priv = texture->priv;
 
-  priv->fbo_source = g_object_ref(actor);
+  priv->fbo_source = g_object_ref_sink (actor);
+
+  /* If the actor doesn't have a parent then claim it so that it will
+     get a size allocation during layout */
+  if (clutter_actor_get_parent (actor) == NULL)
+    clutter_actor_set_parent (actor, CLUTTER_ACTOR (texture));
 
   /* Connect up any signals which could change our underlying size */
   g_signal_connect (actor,
@@ -1766,6 +1800,12 @@ texture_fbo_free_resources (ClutterTexture *texture)
 
   if (priv->fbo_source != NULL)
     {
+      /* If we parented the texture then unparent it again so that it
+	 will lose the reference */
+      if (clutter_actor_get_parent (priv->fbo_source)
+	  == CLUTTER_ACTOR (texture))
+	clutter_actor_unparent (priv->fbo_source);
+
       g_signal_handlers_disconnect_by_func
                             (priv->fbo_source,
                              G_CALLBACK(on_fbo_parent_change),

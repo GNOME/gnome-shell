@@ -166,6 +166,8 @@ main (gint   argc,
 
   /* non visual breaks */
   foo_source = make_source();
+  g_object_ref_sink (foo_source);
+
   clutter_actor_show_all (foo_source);
   if ((fbo = clutter_texture_new_from_actor (foo_source)) == NULL)
     g_error("foo fbo creation failed");
