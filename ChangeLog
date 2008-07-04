@@ -1,3 +1,8 @@
+2008-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-label.c: Properly document the behaviour
+	of the :alignment property.
+
 2008-07-04  Neil Roberts  <neil@o-hand.com>
 
 	* build/mingw/mingw-cross-compile.sh: Default to the win32 flavour

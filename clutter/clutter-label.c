@@ -1167,6 +1167,10 @@ clutter_label_get_use_markup (ClutterLabel *label)
  * @alignment: A #PangoAlignment
  *
  * Sets text alignment of the label.
+ *
+ * The alignment will only be used when the contents of the
+ * label are enough to wrap, and the #ClutterLabel:wrap
+ * property is set to %TRUE.
  **/
 void
 clutter_label_set_alignment (ClutterLabel   *label,
