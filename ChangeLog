@@ -1,3 +1,8 @@
+2008-07-05  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-actor.h: Remove redundant duplicate declaration
+	of clutter_actor_allocate_preferred_size
+
 2008-07-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 1033 - Manually parsing command line options prevents
