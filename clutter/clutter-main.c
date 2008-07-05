@@ -1126,8 +1126,6 @@ post_parse_hook (GOptionContext  *context,
   else
     retval = TRUE;
 
-  clutter_is_initialized = retval;
-
   return retval;
 }
 
@@ -1239,6 +1237,8 @@ clutter_init_real (GError **error)
   _clutter_feature_init ();
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
+
+  clutter_is_initialized = TRUE;
 
   return CLUTTER_INIT_SUCCESS;
 }
