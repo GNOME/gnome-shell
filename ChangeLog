@@ -1,3 +1,10 @@
+2008-07-07  Matthew Allum  <mallum@openedhand.com>
+
+        Bug 1019 - clutter-frame-source.h not included by clutter.h
+
+	* clutter/clutter.h:
+        Add missing header include.
+
 2008-07-05  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-actor.h: Remove redundant duplicate declaration

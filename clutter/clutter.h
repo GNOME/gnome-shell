@@ -55,6 +55,7 @@
 #include "clutter-model.h"
 #include "clutter-stage.h"
 #include "clutter-texture.h"
+#include "clutter-frame-source.h"
 #include "clutter-timeout-pool.h"
 #include "clutter-timeline.h"
 #include "clutter-score.h"
