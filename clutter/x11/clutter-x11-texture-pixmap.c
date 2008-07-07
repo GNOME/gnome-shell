@@ -975,7 +975,7 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
   if (!clutter_x11_has_composite_extension())
     return;
 
-  if (priv->window == window)
+  if (priv->window == window && automatic == priv->window_redirect_automatic)
     return;
 
   if (priv->window)
@@ -983,16 +983,18 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
       clutter_x11_trap_x_errors ();
       XCompositeUnredirectWindow(clutter_x11_get_default_display (),
                                   priv->window,
-                                  priv->window_redirect_automatic);
+                                  priv->window_redirect_automatic ?
+                                  CompositeRedirectAutomatic : CompositeRedirectManual);
 
       clutter_x11_untrap_x_errors ();
     }
 
-  if (window == None)
-    return;
 
   priv->window = window;
   priv->window_redirect_automatic = automatic;
+
+  if (window == None)
+    return;
 
   clutter_x11_trap_x_errors ();
 

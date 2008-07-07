@@ -1,5 +1,14 @@
 2008-07-07  Matthew Allum  <mallum@openedhand.com>
 
+        Bug 1016 - Changing window-redirect-automatic property after 
+                   creating ClutterX11TexturePixmap doesn't work.
+
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+        (clutter_x11_texture_pixmap_set_window):
+        Sync up redirection prop correctly (Jason Tackaberry)
+
+2008-07-07  Matthew Allum  <mallum@openedhand.com>
+
         Bug 1019 - clutter-frame-source.h not included by clutter.h
 
 	* clutter/clutter.h:
