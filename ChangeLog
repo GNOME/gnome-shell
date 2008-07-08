@@ -1,3 +1,13 @@
+2008-07-08  Matthew Allum  <mallum@openedhand.com>
+
+        Bug 1011 - Fix TFP fallback mechanism (take 2)
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* tests/test-pixmap.c:
+        Slightly modified patch from Gwenole Beauchesne applied 
+       to better handle both falling back to non accelerated tfp
+       and improvements to the test case.
+
 2008-07-07  Matthew Allum  <mallum@openedhand.com>
 
         Bug 1016 - Changing window-redirect-automatic property after 

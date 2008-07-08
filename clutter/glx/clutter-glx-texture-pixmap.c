@@ -222,16 +222,10 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
 
   priv = CLUTTER_GLX_TEXTURE_PIXMAP (actor)->priv;
 
-  if (priv->use_fallback
-      || !_have_tex_from_pixmap_ext
-      || !clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT))
+  if (priv->use_fallback)
     {
-      /* Fall back */
       CLUTTER_NOTE (TEXTURE, "texture from pixmap appears unsupported");
       CLUTTER_NOTE (TEXTURE, "Falling back to X11 manual mechansim");
-      /* FIXME: Also check for sliced npots ? */
-
-      priv->use_fallback = TRUE;
 
       CLUTTER_ACTOR_CLASS (clutter_glx_texture_pixmap_parent_class)->
         realize (actor);
@@ -461,6 +455,10 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   dpy = clutter_x11_get_default_display ();
 
+  if (priv->use_fallback == TRUE
+      || !clutter_glx_texture_pixmap_using_extension (texture))
+    goto cleanup;
+
   priv->use_fallback = FALSE;
 
   g_object_get (texture,
@@ -555,7 +553,12 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
   else
     {
       priv->use_fallback = TRUE;
-      priv->glx_pixmap = None;
+      priv->glx_pixmap   = None;
+
+      /* Some fucky logic here - we've fallen back and need to make sure
+       * we realize here..  
+      */
+      clutter_actor_realize (CLUTTER_ACTOR (texture));
     }
 }
 
@@ -658,7 +661,8 @@ clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
 
   priv = CLUTTER_GLX_TEXTURE_PIXMAP (texture)->priv;
 
-  return (_have_tex_from_pixmap_ext);
+  return (_have_tex_from_pixmap_ext 
+          && clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT));
 }
 
 /**

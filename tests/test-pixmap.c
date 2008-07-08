@@ -1,4 +1,3 @@
-
 #include <config.h>
 
 #include <stdlib.h>
@@ -19,11 +18,46 @@
 #define IMAGE "redhand.png"
 
 # ifdef USE_GDKPIXBUF
+static gboolean disable_x11 = FALSE;
+static gboolean disable_glx = FALSE;
+
+static GOptionEntry g_options[] = 
+{
+  { "disable-x11",
+    0, 0,
+    G_OPTION_ARG_NONE,
+    &disable_x11,
+    "Disable redirection through X11 pixmap",
+    NULL },
+  { "disable-glx",
+    0, 0,
+    G_OPTION_ARG_NONE,
+    &disable_glx,
+    "Disable redirection through GLX pixmap",
+    NULL },
+
+  { NULL }
+};
 
 static gboolean
-stage_press_cb (ClutterActor    *actor,
-		ClutterEvent    *event,
-		gpointer         data)
+stage_key_release_cb (ClutterActor    *actor,
+		      ClutterEvent    *event,
+		      gpointer         data)
+{
+  switch (clutter_key_event_symbol (&event->key))
+    {
+    case CLUTTER_q:
+    case CLUTTER_Q:
+      clutter_main_quit ();
+      break;
+    }
+  return FALSE;
+}
+
+static gboolean
+stage_button_press_cb (ClutterActor    *actor,
+		       ClutterEvent    *event,
+		       gpointer         data)
 {
   Pixmap        pxm = (Pixmap)data;
   Display      *dpy = clutter_x11_get_default_display ();
@@ -40,7 +74,6 @@ stage_press_cb (ClutterActor    *actor,
 
   return FALSE;
 }
-
 
 Pixmap
 create_pixmap (guint *width, guint *height, guint *depth)
@@ -145,23 +178,28 @@ create_pixmap (guint *width, guint *height, guint *depth)
 int
 main (int argc, char **argv)
 {
-# ifdef USE_GDKPIXBUF
+#ifdef USE_GDKPIXBUF
+  GOptionContext       *context;
   ClutterActor         *stage, *tex;
   Pixmap                pixmap;
   const ClutterColor    gry = { 0x99, 0x99, 0x99, 0xFF };
   Window                win_remote;
+  gboolean              glx_only = FALSE;
   guint w, h, d;
 
   clutter_init (&argc, &argv);
 
+  context = g_option_context_new (" - text-pixmap options");
+  g_option_context_add_main_entries (context, g_options, NULL);
+  g_option_context_parse (context, &argc, &argv, NULL);	
+
   if (argc < 2)
     g_error ("usage: %s <window id>", argv[0]);
 
-  win_remote = strtol(argv[1], NULL, 0);
+  win_remote = strtol (argv[1], NULL, 0);
 
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &gry);
-
 
   /* a pixmap */
   pixmap = create_pixmap (&w, &h, &d);
@@ -175,33 +213,40 @@ main (int argc, char **argv)
                               - clutter_actor_get_height (tex));
 
   /* a window */
-  tex = clutter_x11_texture_pixmap_new_with_window (win_remote);
+  if (!disable_x11)
+    {
+      tex = clutter_x11_texture_pixmap_new_with_window (win_remote);
 
-  clutter_actor_set_position (tex, 0, 0);
+      clutter_actor_set_position (tex, 0, 0);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), tex);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), tex);
 
-  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex), 
-                                            TRUE);
+      clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex), 
+						TRUE);
+    }
 
 #  ifdef HAVE_CLUTTER_GLX
   /* a window with glx */
-  tex = clutter_glx_texture_pixmap_new_with_window (win_remote);
+  if (!disable_glx)
+    {
+      tex = clutter_glx_texture_pixmap_new_with_window (win_remote);
 
-  clutter_actor_set_position (tex,
-                              clutter_actor_get_width (stage) 
-                              - clutter_actor_get_width (tex),
-                              0);
+      clutter_actor_set_position (tex,
+				  clutter_actor_get_width (stage) 
+				  - clutter_actor_get_width (tex),
+				  0);
 
-  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex), 
-                                            TRUE);
+      clutter_container_add_actor (CLUTTER_CONTAINER (stage), tex);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               tex);
-#  endif /* HAVE_CLUTTER_GLX */
+      clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (tex), 
+						TRUE);
+    }
+#endif /* HAVE_CLUTTER_GLX */
 
+  g_signal_connect (stage, "key-release-event", 
+                    G_CALLBACK (stage_key_release_cb), (gpointer)pixmap);
   g_signal_connect (stage, "button-press-event", 
-                    G_CALLBACK (stage_press_cb), (gpointer)pixmap);
+                    G_CALLBACK (stage_button_press_cb), (gpointer)pixmap);
 
   clutter_actor_show_all (stage);
 
