@@ -482,20 +482,6 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   return TRUE;
 }
 
-static void
-_cogl_texture_set_alignment_for_rowstride (gint rowstride)
-{
-  gint alignment = 1;
-
-  while ((rowstride & 1) == 0 && alignment < 8)
-    {
-      alignment <<= 1;
-      rowstride >>= 1;
-    }
-
-  GE( glPixelStorei (GL_UNPACK_ALIGNMENT, alignment) );
-}
-
 static gboolean
 _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 				      gint         src_x,
@@ -864,42 +850,6 @@ _cogl_texture_slices_free (CoglTexture *tex)
       
       g_array_free (tex->slice_gl_handles, TRUE);
     }
-}
-
-static gboolean
-_cogl_pixel_format_from_gl_internal (GLenum            gl_int_format,
-				     CoglPixelFormat  *out_format)
-{
-  /* It doesn't really matter we convert to exact same
-     format (some have no cogl match anyway) since format
-     is re-matched against cogl when getting or setting
-     texture image data.
-  */
-  
-  switch (gl_int_format)
-    {
-    case GL_ALPHA:
-      
-      *out_format = COGL_PIXEL_FORMAT_A_8;
-      return TRUE;
-      
-    case GL_LUMINANCE:
-      
-      *out_format = COGL_PIXEL_FORMAT_G_8;
-      return TRUE;
-      
-    case GL_RGB:
-      
-      *out_format = COGL_PIXEL_FORMAT_RGB_888;
-      return TRUE;
-      
-    case GL_RGBA:
-      
-      *out_format = COGL_PIXEL_FORMAT_RGBA_8888;
-      return TRUE;
-    }
-  
-  return FALSE;
 }
 
 static CoglPixelFormat

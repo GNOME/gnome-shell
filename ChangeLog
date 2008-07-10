@@ -1,5 +1,11 @@
 2008-07-10  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/cogl/gles/cogl-fbo.c:
+	* clutter/cogl/gles/cogl-texture.c:
+        Fix warnings with eglnative build
+
+2008-07-10  Matthew Allum  <mallum@openedhand.com>
+
 	* README:
         Sync up/improve ready for 0.8 release.
 
