@@ -507,10 +507,7 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   attribs[i++] = GLX_TEXTURE_TARGET_EXT;
 
-  if (clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT))
-    attribs[i++] = GLX_TEXTURE_2D_EXT;
-  else
-    attribs[i++] = GLX_TEXTURE_RECTANGLE_EXT;
+  attribs[i++] = GLX_TEXTURE_2D_EXT;
 
   attribs[i++] = None;
 
@@ -661,8 +658,11 @@ clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
 
   priv = CLUTTER_GLX_TEXTURE_PIXMAP (texture)->priv;
 
-  return (_have_tex_from_pixmap_ext 
-          && clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT));
+  return (_have_tex_from_pixmap_ext); 
+  /* Assume NPOT TFP's are supported even if regular NPOT isn't advertised 
+   * but tfp is. Seemingly some Intel drivers do this ?
+  */
+  /* && clutter_feature_available (COGL_FEATURE_TEXTURE_NPOT)); */
 }
 
 /**

@@ -1,3 +1,9 @@
+2008-07-10  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+        Assume TFP npots sized textures are always supported if TFP ext is!
+        (Based on patch from James Ketrenos)
+
 2008-07-08  Matthew Allum  <mallum@openedhand.com>
 
         Bug 1011 - Fix TFP fallback mechanism (take 2)
