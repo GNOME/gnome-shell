@@ -170,11 +170,25 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 0.8
 -------------------------------
 
+* The COGL GL wrapper API has been completely overhauled and now
+  contains many new features including new greatly improved texture
+  abstractions (slicing, mipmapping, deformations etc, greatly
+  simplifying ClutterTexture), image loading and abstraction, path
+  based primitive drawing, clipping, and improved FBO and shader
+  support. It is now also fully documented.
+
+  GL Texture Rectangle ext is no longer used, the regular 2D NPOTS
+  extension is preffered instead but not required. 
+
 * Clutter now has basic suppport for multiple input devices assuming
   the backend supports it (currently X11 based via XInput and Fruity
   backends). New API supporting this includes
   clutter_event_get_device_id, clutter_get_input_device_for_id,
   clutter_grab_pointer_for_device & clutter_ungrab_pointer_for_device.
+
+  XInput support needs to be explicitly enabled at runtime by calling
+  clutter_x11_enable_xinput () before clutter_init. clutter_x11_has_xinput () 
+  can then be called after to check if XInput extension present and use-able.
 
 * The functions that return the transformed position of an actor have
   been renamed to be more explicit about it:
@@ -184,10 +198,11 @@ Release Notes for Clutter 0.8
 
   Their behaviour has not been changed.
 
-* Clutter does not strictly depend on GdkPixbuf anymore; this means that
-  you will have to include <gdk-pixbuf/gdk-pixbuf.h> yourself if you are
-  operating with GdkPixbuf objects and not including that header. The
-  GdkPixbuf-based API has been removed from Clutter core:
+* To increase portability, Clutter does not strictly depend on
+  GdkPixbuf anymore; this means that you will have to include
+  <gdk-pixbuf/gdk-pixbuf.h> yourself if you are operating with
+  GdkPixbuf objects and not including that header. The GdkPixbuf-based
+  API has been removed from Clutter core:
 
     clutter_texture_new_from_pixbuf
     clutter_texture_set_pixbuf
@@ -205,12 +220,24 @@ Release Notes for Clutter 0.8
                                        4, 0,
                                        &error);
 
+  ClutterTexture also now has a new filename property and
+  clutter_texture_new_from_file which is intended as an alternate to
+  common previous GdkPixbuf primary usage (i.e loading images from
+  disk).
+
+  To read texture data back into a pixbuf or system memory use a combination
+  of clutter_texture_get_cogl_texture & cogl_texture_get_data.
+
   The clutter-gtk integration library has API for using GdkPixbuf with
   ClutterTextures (among others).
 
-* The COGL GL wrapper API has been overhauled and now contains many
-  new features including new texture abstractions, path based
-  primitive drawing, improved FBO support and is now fully documented.
+  ClutterTexture now supports a keep-aspect property which is set to FALSE
+  by default.
+
+* clutter_texture_from_actor will now reparent source actors if they
+  are not parented. This behaviour may change in future releases.
+  There are known not yet fixed issues with source actors that set
+  depth or use clipping.
 
 * The size negotiation API has been completely changed in order to allow
   the creation of non-fixed layout managers. These functions have been
@@ -221,11 +248,15 @@ Release Notes for Clutter 0.8
 
   from the ClutterActor API, as well as their virtual functions inside
   the ClutterActorClass. The size of an actor is now split into two
-  different concepts: the preferred size (width and height separatedly)
-  and the size that has been allocated by the container to which that
-  actor belongs. Clutter still defaults to the fixed layout management
-  of the actors, but supports fluid layout managers written using the
-  new API.
+  different concepts: the preferred size (width and height
+  separatedly) and the size that has been allocated by the container
+  to which that actor belongs. Clutter still defaults to the fixed
+  layout management (i.e ClutterGroup) of the actors, but supports
+  fluid layout managers written using the new API.
+
+  Composite actors (actors with 'private' children not implementing the
+  container interface) now need to implement an allocate method here pass
+  an allocation to any composite children.
 
 * Clutter now depends on PangoCairo for the font rendering. The PangoClutter
   API is still considered semi-private and no guarantees are made on its
@@ -255,12 +286,13 @@ Release Notes for Clutter 0.8
   A single GL context is used across all stages meaning GL resources 
   are shared. 
 
-* There is now an experimental native iPod Touch/iPhone UIKit backend.
+* There is now an experimental native iPod Touch/iPhone UIKit backend
+  named 'fruity'.
 
 * There is now an experimental native Win32 WGL backend.
 
 * COGL (and therefor Clutter) now optionally features initial support for 
-  OpenGL ES 2.0
+  OpenGL ES 2.0. It features support for shaders. 
 
 * Some more focused timeline unit tests have been added and some tweaks to
   timeline semantics were made; E.g. For a 10 frame timeline here are some
@@ -292,6 +324,12 @@ Release Notes for Clutter 0.8
   a key-press-event handler. This deprecates the usage of
   clutter_entry_handle_key_event() to update the contents of the
   entry using the ClutterKeyEvent.
+
+* The Clutter X11 and GLX backends feature support for wrapping external
+  X Drawables (such as windows as pixmaps) via the 'texture_from_pixmap' GLX
+  extension if available and fallback to slower XGetImage copys if not.
+
+* ClutterContainer can have per child custom propertys via ClutterChildMeta. 
 
 Release Notes for Clutter 0.6
 -------------------------------

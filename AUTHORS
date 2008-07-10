@@ -1,7 +1,13 @@
-Matthew Allum <mallum@o-hand.com> - primary authour
-Emmanuele Bassi <ebassi@o-hand.com> - python bindings, gobject/glib mastery
-Iain Holmes <iain@o-hand.com> - GTK Clutter widget
-Jorn Baayen <jorn@o-hand.com> - Gstreamer bits
-Tomas Frydrych <tf@o-hand.com> - Fixed point + behaviour + maths magic
+Matthew Allum <mallum@o-hand.com> - Primary cat hurding authour.
+Emmanuele Bassi <ebassi@o-hand.com> - python bindings, gobject/glib mastery.
+Iain Holmes <iain@o-hand.com> - Original GTK Clutter widget.
+Jorn Baayen <jorn@o-hand.com> - Original Gstreamer bits.
+Tomas Frydrych <tf@o-hand.com> - Fixed point + behaviour + maths magic.
 Neil Patel <njp@o-hand.com> - ClutterEntry, lots of API stress testing.
-Neil Roberts <neil@o-hand.com> - PangoClutter Renderer and win32 backend
+Neil Roberts <neil@o-hand.com> - PangoClutter Renderer, COGL and win32 backend.
+Rober Bragg <bob@o-hand.com> - COGL, timeline mastery.
+Ivan Leben <ivan@o-hand.com> - COGL.
+Øyvind Kolås <pippin@o-hand.com> - Event handling, Clever magic stuff, Shaders, COGL.
+Chris Lord <chris@o-hand.com> - Many bug fixes.
+Havoc Pennington - New layout magic.
+Tommi Komulainen - OSX Backend.

@@ -1,5 +1,13 @@
 2008-07-10  Matthew Allum  <mallum@openedhand.com>
 
+	* README:
+        Sync up/improve ready for 0.8 release.
+
+	* AUTHORS:
+        Sync up to date - hope I havn't missed anyone..
+
+2008-07-10  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/glx/clutter-glx-texture-pixmap.c:
         Assume TFP npots sized textures are always supported if TFP ext is!
         (Based on patch from James Ketrenos)
