@@ -1,3 +1,8 @@
+2008-07-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-sections.txt: Add the missing X11 backend
+	API.
+
 2008-07-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* cogl/cogl-docs.sgml: Add an index to the COGL API reference

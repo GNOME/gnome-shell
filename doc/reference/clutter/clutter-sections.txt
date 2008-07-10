@@ -1121,6 +1121,7 @@ clutter_redraw
 <TITLE>X11 Specific Support</TITLE>
 clutter_x11_set_display
 clutter_x11_disable_event_retrieval
+clutter_x11_has_event_retrieval
 clutter_x11_get_stage_from_window
 clutter_x11_handle_event
 clutter_x11_get_default_display
@@ -1131,6 +1132,7 @@ clutter_x11_get_stage_window
 clutter_x11_set_stage_foreign
 clutter_x11_trap_x_errors
 clutter_x11_untrap_x_errors
+clutter_x11_has_composite_extension
 
 <SUBSECTION>
 ClutterX11FilterFunc
@@ -1145,6 +1147,7 @@ ClutterX11XInputEventTypes
 clutter_x11_get_input_device_type
 clutter_x11_get_input_devices
 clutter_x11_has_xinput
+clutter_x11_enable_xinput
 </SECTION>
 
 <SECTION>
