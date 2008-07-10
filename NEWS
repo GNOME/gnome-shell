@@ -1,3 +1,42 @@
+Clutter 0.8.0 (10/07/2008)
+===============================================================================
+
+ * List of changes between 0.7.6 and 0.8.0
+
+   o Assume that non-power-of-two sized textures are always supported
+     if texture-from-pixmap support is present.
+
+   o Increase documentation coverage.
+
+   o Disable the XINPUT support by default.
+
+   o Improve the behaviour of clutter_actor_get_transformed_size().
+
+   o Fix a copy-and-paste bug which broke the vertex shaders.
+
+ * List of bugs fixed since 0.7.6
+
+   o #983 - cogl-bitmap-fallback.c compiler error/warning due to cast issue
+   o #985 - MSC math.h / M_PI issue
+   o #998 - clutter always captures X input events
+   o #1000 - clutter-x11 should define gtypes for its enumerations
+   o #1004 - Fix "edge-detect" shader
+   o #1007 - Fix TFP fallback mechanism
+   o #1008 - tfp still a bit borked
+   o #1010 - ClutterLabel does not update the layout
+   o #1011 - Fix TFP fallback mechanism (take 2)
+   o #1012 - clutter_stage_read_pixels() has incorrect alpha data
+             on some (most?) cards"
+   o #1013 - Per device grabs are not obeyed in pointer device propagation.
+   o #1015 - Cloning unparented actors with FBOs doesn't work with new
+             layout code
+   o #1016 - Changing window-redirect-automatic property after creating
+             ClutterX11TexturePixmap doesn't work
+   o #1019 - clutter-frame-source.h not included by clutter.h
+   o #1022 - extern inline functions in clutter-fixed.h
+   o #1033 - Manually parsing command line options prevents initializing
+             Clutter
+
 Clutter 0.7.6 (27/06/2008)
 ===============================================================================
 

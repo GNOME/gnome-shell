@@ -1,48 +1,59 @@
+2008-07-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac: Post release bump to 0.3.1.
+
+======== Release 0.8.0 ========================================================
+
+2008-07-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac:
+	* NEWS: Release 0.8.0.
+
 2008-07-10  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gles/cogl-fbo.c:
 	* clutter/cogl/gles/cogl-texture.c:
-        Fix warnings with eglnative build
+	Fix warnings with eglnative build
 
 2008-07-10  Matthew Allum  <mallum@openedhand.com>
 
 	* README:
-        Sync up/improve ready for 0.8 release.
+	Sync up/improve ready for 0.8 release.
 
 	* AUTHORS:
-        Sync up to date - hope I havn't missed anyone..
+	Sync up to date - hope I havn't missed anyone..
 
 2008-07-10  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
-        Assume TFP npots sized textures are always supported if TFP ext is!
-        (Based on patch from James Ketrenos)
+	Assume TFP npots sized textures are always supported if TFP ext is!
+	(Based on patch from James Ketrenos)
 
 2008-07-08  Matthew Allum  <mallum@openedhand.com>
 
-        Bug 1011 - Fix TFP fallback mechanism (take 2)
+	Bug 1011 - Fix TFP fallback mechanism (take 2)
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* tests/test-pixmap.c:
-        Slightly modified patch from Gwenole Beauchesne applied 
-       to better handle both falling back to non accelerated tfp
-       and improvements to the test case.
+	Slightly modified patch from Gwenole Beauchesne applied 
+	to better handle both falling back to non accelerated tfp
+	and improvements to the test case.
 
 2008-07-07  Matthew Allum  <mallum@openedhand.com>
 
-        Bug 1016 - Changing window-redirect-automatic property after 
-                   creating ClutterX11TexturePixmap doesn't work.
+	Bug 1016 - Changing window-redirect-automatic property after 
+	           creating ClutterX11TexturePixmap doesn't work.
 
 	* clutter/x11/clutter-x11-texture-pixmap.c:
-        (clutter_x11_texture_pixmap_set_window):
-        Sync up redirection prop correctly (Jason Tackaberry)
+	(clutter_x11_texture_pixmap_set_window):
+	Sync up redirection prop correctly (Jason Tackaberry)
 
 2008-07-07  Matthew Allum  <mallum@openedhand.com>
 
-        Bug 1019 - clutter-frame-source.h not included by clutter.h
+	Bug 1019 - clutter-frame-source.h not included by clutter.h
 
 	* clutter/clutter.h:
-        Add missing header include.
+	Add missing header include.
 
 2008-07-05  Neil Roberts  <neil@o-hand.com>
 
@@ -188,14 +199,14 @@
 	* clutter/x11/clutter-event-x11.c:
 	* clutter/x11/clutter-x11.h:
 	* tests/test-devices.c:
-        Disable use of XInput and add an explicit clutter_x11_enable_xinput
-        to enable it.
-        Also fix up the x11 pre-init calls to not need g_type_init.
+	Disable use of XInput and add an explicit clutter_x11_enable_xinput
+	to enable it.
+	Also fix up the x11 pre-init calls to not need g_type_init.
 
 2008-07-01  Øyvind Kolås  <pippin@o-hand.com>
 
 	Bug 1013 - Per device grabs are not obeyed in pointer device
-                   propagation.
+	           propagation.
 
 	* clutter/clutter-event.c: (clutter_event_get_device_id): swap
 	arguments of g_return_val_if_fail around.
