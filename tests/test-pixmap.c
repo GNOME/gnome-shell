@@ -184,7 +184,6 @@ main (int argc, char **argv)
   Pixmap                pixmap;
   const ClutterColor    gry = { 0x99, 0x99, 0x99, 0xFF };
   Window                win_remote;
-  gboolean              glx_only = FALSE;
   guint w, h, d;
 
   clutter_init (&argc, &argv);
