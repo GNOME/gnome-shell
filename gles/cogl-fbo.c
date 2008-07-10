@@ -181,6 +181,8 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
       GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE) );
       
       break;
+    default:
+      break;
     }
   
   /* Store new target */
