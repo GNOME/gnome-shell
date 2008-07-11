@@ -1,6 +1,12 @@
 2008-07-11  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.c:
+	Move G_IMPLEMENT_INLINES before all other #include statements (bug
+	#1038).
+
+2008-07-11  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.c:
 	Changed #define G_IMPLEMENTS_INLINES to G_IMPLEMENT_INLINES (bug
 	#1038).
 

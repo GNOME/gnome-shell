@@ -23,6 +23,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#define G_IMPLEMENT_INLINES
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -30,7 +32,6 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
-#define G_IMPLEMENT_INLINES
 #include "clutter-fixed.h"
 #include "clutter-private.h"
 
