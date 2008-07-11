@@ -30,7 +30,7 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
-#define G_IMPLEMENTS_INLINES
+#define G_IMPLEMENT_INLINES
 #include "clutter-fixed.h"
 #include "clutter-private.h"
 

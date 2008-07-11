@@ -1,3 +1,9 @@
+2008-07-11  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.c:
+	Changed #define G_IMPLEMENTS_INLINES to G_IMPLEMENT_INLINES (bug
+	#1038).
+
 2008-07-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Post release bump to 0.3.1.
@@ -35,13 +41,13 @@
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* tests/test-pixmap.c:
-	Slightly modified patch from Gwenole Beauchesne applied 
+	Slightly modified patch from Gwenole Beauchesne applied
 	to better handle both falling back to non accelerated tfp
 	and improvements to the test case.
 
 2008-07-07  Matthew Allum  <mallum@openedhand.com>
 
-	Bug 1016 - Changing window-redirect-automatic property after 
+	Bug 1016 - Changing window-redirect-automatic property after
 	           creating ClutterX11TexturePixmap doesn't work.
 
 	* clutter/x11/clutter-x11-texture-pixmap.c:
