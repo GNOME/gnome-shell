@@ -307,12 +307,13 @@ sed -e 's/^Cflags:.*$/Cflags: -I${includedir}\/pango-1.0 -I${includedir}\/freety
 mv "$ROOT_DIR/lib/pkgconfig/pangoft2.pc"{.tmp,};
 
 echo "Extracting Mesa headers...";
-if ! tar -C "$ROOT_DIR" \
+if ! tar -C "$DOWNLOAD_DIR" \
     -jxf "$DOWNLOAD_DIR/MesaLib-7.0.3.tar.bz2" \
-    --strip 1 Mesa-7.0.3/include; then
+    Mesa-7.0.3/include; then
     echo "Failed to extract Mesa headers";
     exit 1;
 fi;
+cp -R "$DOWNLOAD_DIR/Mesa-7.0.3/include/"* "$ROOT_DIR/include";
 
 ##
 # Build

@@ -1,3 +1,9 @@
+2008-07-13  Neil Roberts  <neil@o-hand.com>
+
+	* build/mingw/mingw-cross-compile.sh: Avoid using the --strip
+	option to tar because it isn't supported in the version shipped
+	with MSYS.
+
 2008-07-11  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.c:
