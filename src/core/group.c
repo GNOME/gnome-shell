@@ -109,8 +109,6 @@ meta_window_get_group (MetaWindow *window)
   if (window->unmanaging)
     return NULL;
 
-  g_assert (window->group != NULL);
-
   return window->group;
 }
 

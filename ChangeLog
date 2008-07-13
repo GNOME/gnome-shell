@@ -1,4 +1,12 @@
-2008-06-30  Thomas Thurman  <tthurman@gnome.org
+2008-07-12  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/group.c (meta_window_get_group): This function can now
+        officially return NULL.
+        * src/core/window.c (meta_window_same_application): Two windows can't
+        belong to the same application unless they both belong to some
+        application.  (Both belonging to no application is not the same.)
+
+2008-06-30  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/bell.c (meta_bell_set_audible): Fix typo that
           slipped through.

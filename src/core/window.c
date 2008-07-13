@@ -7556,9 +7556,13 @@ gboolean
 meta_window_same_application (MetaWindow *window,
                               MetaWindow *other_window)
 {
+  MetaGroup *group       = meta_window_get_group (window);
+  MetaGroup *other_group = meta_window_get_group (other_window);
+
   return
-    meta_window_get_group (window) ==
-    meta_window_get_group (other_window);
+    group!=NULL &&
+    other_group!=NULL &&
+    group==other_group;
 }
 
 void
