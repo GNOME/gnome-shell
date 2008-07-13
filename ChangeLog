@@ -1,3 +1,8 @@
+2008-07-13  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+        Call XSync in unredirect X error trap (Thanks to Andy Wingo)
+
 2008-07-13  Neil Roberts  <neil@o-hand.com>
 
 	* build/mingw/mingw-cross-compile.sh: Avoid using the --strip

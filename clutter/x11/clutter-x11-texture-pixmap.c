@@ -985,7 +985,7 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
                                   priv->window,
                                   priv->window_redirect_automatic ?
                                   CompositeRedirectAutomatic : CompositeRedirectManual);
-
+      XSync (clutter_x11_get_default_display (), False);
       clutter_x11_untrap_x_errors ();
     }
 
