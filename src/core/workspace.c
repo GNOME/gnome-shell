@@ -116,15 +116,25 @@ meta_workspace_free (MetaWorkspace *workspace)
   g_free (workspace->work_area_xinerama);
 
   g_list_free (workspace->mru_list);
-  g_slist_free (workspace->all_struts);
   g_list_free (workspace->list_containing_self);
 
-  for (i = 0; i < screen->n_xinerama_infos; i++)
-    meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
-  g_free (workspace->xinerama_region);
-  meta_rectangle_free_list_and_elements (workspace->screen_region);
-  meta_rectangle_free_list_and_elements (workspace->screen_edges);
-  meta_rectangle_free_list_and_elements (workspace->xinerama_edges);
+  /* screen.c:update_num_workspaces(), which calls us, removes windows from
+   * workspaces first, which can cause the workareas on the workspace to be
+   * invalidated (and hence for struts/regions/edges to be freed).
+   * So, no point trying to double free it; that causes a crash
+   * anyway.  #361804.
+   */
+
+  if (!workspace->work_areas_invalid)
+    {
+      g_slist_free (workspace->all_struts);
+      for (i = 0; i < screen->n_xinerama_infos; i++)
+        meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
+      g_free (workspace->xinerama_region);
+      meta_rectangle_free_list_and_elements (workspace->screen_region);
+      meta_rectangle_free_list_and_elements (workspace->screen_edges);
+      meta_rectangle_free_list_and_elements (workspace->xinerama_edges);
+    }
 
   g_free (workspace);
 

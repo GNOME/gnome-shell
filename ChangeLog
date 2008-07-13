@@ -1,3 +1,10 @@
+2008-07-13  Elijah Newren  <newren gmail com>
+
+        * src/core/workspace.c (meta_workspace_free): Don't attempt to
+        double-free struts, edges and regions if work areas have already
+        been invalidated at the time of freeing a workspace.
+        Possible fix to #361804.
+
 2008-07-12  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/constraints.c (do_screen_and_xinerama_relative_constraints):
