@@ -1,5 +1,10 @@
 2008-07-12  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/constraints.c (do_screen_and_xinerama_relative_constraints):
+        Don't allocate memory for log messages unless we're logging.
+
+2008-07-12  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/group.c (meta_window_get_group): This function can now
         officially return NULL.
         * src/core/window.c (meta_window_same_application): Two windows can't

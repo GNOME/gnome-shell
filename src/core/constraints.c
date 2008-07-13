@@ -1070,13 +1070,16 @@ do_screen_and_xinerama_relative_constraints (
   MetaRectangle how_far_it_can_be_smushed, min_size, max_size;
 
 #ifdef WITH_VERBOSE_MODE
-  /* First, log some debugging information */
-  char spanning_region[1 + 28 * g_list_length (region_spanning_rectangles)];
+  if (meta_is_verbose ())
+    {
+      /* First, log some debugging information */
+      char spanning_region[1 + 28 * g_list_length (region_spanning_rectangles)];
 
-  meta_topic (META_DEBUG_GEOMETRY,
-              "screen/xinerama constraint; region_spanning_rectangles: %s\n",
-              meta_rectangle_region_to_string (region_spanning_rectangles, ", ", 
-                                               spanning_region));
+      meta_topic (META_DEBUG_GEOMETRY,
+             "screen/xinerama constraint; region_spanning_rectangles: %s\n",
+             meta_rectangle_region_to_string (region_spanning_rectangles, ", ",
+                                              spanning_region));
+    }
 #endif
 
   /* Determine whether constraint applies; exit if it doesn't */
