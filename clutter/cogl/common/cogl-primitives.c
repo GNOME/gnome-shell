@@ -497,7 +497,7 @@ cogl_path_rel_curve_to (ClutterFixed x1,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   cogl_path_curve_to (ctx->path_pen.x + x1,
-                      ctx->path_pen.y + y2,
+                      ctx->path_pen.y + y1,
                       ctx->path_pen.x + x2,
                       ctx->path_pen.y + y2,
                       ctx->path_pen.x + x3,
