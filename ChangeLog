@@ -1,3 +1,8 @@
+2008-07-13  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/display.c (event_callback): meta_display_screen_for_root()
+        can return NULL, so check for that.  Fixes #422242.  Also tidying.
+
 2008-07-13  Elijah Newren  <newren gmail com>
 
         * src/core/workspace.c (meta_workspace_free): Don't attempt to
