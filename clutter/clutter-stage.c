@@ -357,7 +357,7 @@ clutter_stage_set_property (GObject      *object,
       if (CLUTTER_ACTOR_IS_REALIZED (actor))
         {
           /* Backend needs to check this prop and handle accordingly
-           * in realise. 
+           * in realise.
            * FIXME: More 'obvious' implementation needed?
           */
           clutter_actor_unrealize (actor);
@@ -462,7 +462,7 @@ clutter_stage_dispose (GObject *object)
     }
 
   clutter_actor_unrealize (CLUTTER_ACTOR (object));
-  
+
   _clutter_stage_manager_remove_stage (stage_manager, stage);
 
   if (priv->impl)
@@ -803,7 +803,7 @@ clutter_stage_get_color (ClutterStage *stage,
  * @stage: A #ClutterStage
  * @perspective: A #ClutterPerspective
  *
- * Set the stage perspective. This is the fixed point version of 
+ * Set the stage perspective. This is the fixed point version of
  * clutter_stage_set_perspective().
  **/
 void
@@ -830,7 +830,7 @@ clutter_stage_set_perspectivex (ClutterStage       *stage,
  * @stage: A #ClutterStage
  * @perspective: return location for a #ClutterPerspective
  *
- * Retrieves the stage perspective. This is the fixed point version of 
+ * Retrieves the stage perspective. This is the fixed point version of
  * clutter_stage_get_perspective().
  */
 void
@@ -1100,7 +1100,7 @@ clutter_stage_hide_cursor (ClutterStage *stage)
       iface = CLUTTER_STAGE_WINDOW_GET_IFACE (impl);
       if (iface->set_cursor_visible)
         {
-          priv->is_cursor_visible = TRUE;
+          priv->is_cursor_visible = FALSE;
 
           iface->set_cursor_visible (impl, FALSE);
 
@@ -1122,7 +1122,7 @@ clutter_stage_hide_cursor (ClutterStage *stage)
  * Makes a screenshot of the stage in RGBA 8bit data, returns a
  * linear buffer with @width * 4 as rowstride.
  *
- * The alpha data contained in the returned buffer is driver-dependent, 
+ * The alpha data contained in the returned buffer is driver-dependent,
  * and not guaranteed to hold any sensible value.
  *
  * Return value: a pointer to newly allocated memory with the buffer
@@ -1180,7 +1180,7 @@ clutter_stage_read_pixels (ClutterStage *stage,
         {
           memcpy (temprow,
                   pixels + y * rowstride, rowstride);
-          memcpy (pixels + y * rowstride, 
+          memcpy (pixels + y * rowstride,
                   pixels + (height - y - 1) * rowstride, rowstride);
           memcpy (pixels + (height - y - 1) * rowstride,
                   temprow,

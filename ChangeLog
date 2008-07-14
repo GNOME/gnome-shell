@@ -1,3 +1,11 @@
+2008-07-14  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-stage.c:
+	(clutter_stage_hide_cursor):
+	Fixed C&P bug that made it impossible to show cursor once hidden.
+
+	Stripped trailing whitespace.
+
 2008-07-13  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/x11/clutter-x11-texture-pixmap.c:
