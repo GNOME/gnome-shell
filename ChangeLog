@@ -1,3 +1,7 @@
+2008-07-14  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.23.55 release.
+
 2008-07-13  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/display.c (event_callback): meta_display_screen_for_root()
