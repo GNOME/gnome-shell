@@ -1,3 +1,7 @@
+2008-07-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter.h: Include missing installed files.
+
 2008-07-14  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-stage.c:
