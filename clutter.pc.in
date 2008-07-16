@@ -5,6 +5,7 @@ includedir=${prefix}/include
 backend=@clutterbackend@
 apiversion=@CLUTTER_API_VERSION@
 requires=@CLUTTER_REQUIRES@
+cogl=@CLUTTER_COGL@
 
 Name: Clutter
 Description: Clutter Core Library (${backend} backend)

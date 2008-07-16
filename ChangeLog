@@ -1,3 +1,8 @@
+2008-07-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter.pc.in: Add a variable containing the COGL backend
+	inside the pkg-config file, for configure-time checks.
+
 2008-07-14  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/cogl/common/cogl-primitives.c (cogl_path_rel_curve_to):
