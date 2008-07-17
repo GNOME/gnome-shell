@@ -15,7 +15,7 @@ LDADD = $(CLUTTER_LIBS) $(top_builddir)/clutter/x11/libclutter-x11.la
 
 noinst_LTLIBRARIES = libclutter-eglx.la
 
-libclutter_eglx_la_SOURCES = \
+libclutter_eglx_la_DEPENDENCIES = \
 	$(top_builddir)/clutter/x11/libclutter-x11.la
 
 libclutter_eglx_la_SOURCES = \
