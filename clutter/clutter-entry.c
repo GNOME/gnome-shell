@@ -409,15 +409,11 @@ clutter_entry_paint_cursor (ClutterEntry *entry)
 
   if (priv->show_cursor)
     {
-      cogl_push_matrix ();
-
       cogl_color (&priv->fgcol);
       cogl_rectangle (priv->cursor_pos.x,
                       priv->cursor_pos.y,
                       priv->cursor_pos.width,
                       priv->cursor_pos.height);
-
-      cogl_pop_matrix ();
     }
 }
 

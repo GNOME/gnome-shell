@@ -165,8 +165,6 @@ clutter_clone_texture_paint (ClutterActor *self)
   if (!CLUTTER_ACTOR_IS_REALIZED (parent_texture))
     clutter_actor_realize (parent_texture);
 
-  cogl_push_matrix ();
-
   col.alpha = clutter_actor_get_paint_opacity (self);
   cogl_color (&col);
 
@@ -201,8 +199,6 @@ clutter_clone_texture_paint (ClutterActor *self)
 			  CLUTTER_INT_TO_FIXED (x_2 - x_1),
 			  CLUTTER_INT_TO_FIXED (y_2 - y_1),
 			  0, 0, t_w, t_h);
-
-  cogl_pop_matrix ();
 }
 
 static void

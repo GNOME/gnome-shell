@@ -88,8 +88,6 @@ clutter_group_paint (ClutterActor *actor)
 
   CLUTTER_NOTE (PAINT, "ClutterGroup paint enter");
 
-  cogl_push_matrix ();
-
   for (child_item = priv->children;
        child_item != NULL;
        child_item = child_item->next)
@@ -101,8 +99,6 @@ clutter_group_paint (ClutterActor *actor)
       if (CLUTTER_ACTOR_IS_VISIBLE (child))
 	clutter_actor_paint (child);
     }
-
-  cogl_pop_matrix ();
 
   CLUTTER_NOTE (PAINT, "ClutterGroup paint leave");
 }

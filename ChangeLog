@@ -1,3 +1,16 @@
+2008-07-17  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-texture.c: 
+	* clutter/clutter-rectangle.c: 
+	* clutter/clutter-group.c: 
+	* clutter/clutter-entry.c: 
+	* clutter/clutter-clone-texture.c: Remove unnecessary calls to
+	cogl_{push,pop}_matrix. The matrix is preserved in
+	clutter_actor_paint whenever the actor's transformation is applied
+	so there should be no need to push the matrix in actor paint
+	implementations unless it does some additional transformations
+	itself.
+
 2008-07-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter.pc.in: Add a variable containing the COGL backend

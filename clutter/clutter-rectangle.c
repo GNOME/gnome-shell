@@ -82,8 +82,6 @@ clutter_rectangle_paint (ClutterActor *self)
                 "painting rect '%s'",
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
-  cogl_push_matrix();
-
   clutter_actor_get_allocation_geometry (self, &geom);
 
   /* parent paint call will have translated us into position so
@@ -144,8 +142,6 @@ clutter_rectangle_paint (ClutterActor *self)
 
       cogl_rectangle (0, 0, geom.width, geom.height);
     }
-
-  cogl_pop_matrix();
 }
 
 static void

@@ -480,8 +480,6 @@ clutter_texture_paint (ClutterActor *self)
                 "painting texture '%s'",
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
-  cogl_push_matrix ();
-
   col.alpha = clutter_actor_get_paint_opacity (self);
   cogl_color (&col);
 
@@ -508,8 +506,6 @@ clutter_texture_paint (ClutterActor *self)
 			  CLUTTER_INT_TO_FIXED (x_2 - x_1),
 			  CLUTTER_INT_TO_FIXED (y_2 - y_1),
 			  0, 0, t_w, t_h);
-
-  cogl_pop_matrix ();
 }
 
 static void
