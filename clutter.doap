@@ -1,8 +1,8 @@
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
          xmlns="http://usefulinc.com/ns/doap#">
-<Project>
+
   <name>Clutter</name>
   <shortname>clutter</shortname>
   <created>2006-11-18</created>
