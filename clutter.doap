@@ -1,107 +1,112 @@
-<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	xmlns:foaf="http://xmlns.com/foaf/0.1/"
-	xmlns="http://usefulinc.com/ns/doap#">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns="http://usefulinc.com/ns/doap#">
+<Project>
+  <name>Clutter</name>
+  <shortname>clutter</shortname>
+  <created>2006-11-18</created>
 
-	<name>Clutter</name>
-	<shortname>clutter</shortname>
-	<created>2006-11-18</created>
+  <shortdesc xml:lang="en">
+    Clutter is an OpenGL based interface library
+  </shortdesc>
 
-	<shortdesc xml:lang="en">Clutter is an OpenGL based interface library</shortdesc>
+  <description xml:lang="en">
+    Clutter is an open source software library for creating fast, visually
+    rich and animated graphical user interfaces. Clutter uses OpenGL (and
+    optionally OpenGL ES for use on Mobile and embedded platforms) for
+    rendering, but with an API which hides the underlying GL complexity
+    from the developer. The Clutter API is intended to be easy to use,
+    efficient and flexible.
+  </description>
 
-	<description xml:lang="en"> 
-	
-	Clutter is a GObject based library for creating fast, visually
-	rich graphical user interfaces. It is intended for creating
-	single window heavily stylised applications such as media box
-	ui's, presentations or kiosk style programs in preference to
-	regular 'desktop' style applications. 
+  <homepage rdf:resource="http://www.clutter-project.org" />
+  <download-page rdf:resource="http://www.clutter-project.org/sources" />
+  <license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
+  <bug-database rdf:resource="http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter"/>
+  <mailing-list rdf:resource="mailto:clutter+subscribe@o-hand.com" />
 
-	</description>
+  <programming-language>C</programming-language>
 
-	<homepage rdf:resource="http://www.clutter-project.org" />
-        <download-page rdf:resource="http://www.clutter-project.org/sources" />
-	<license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
+  <category rdf:resource="http://labs.o-hand.com/doap/category/library"/>
+  <category rdf:resource="http://labs.o-hand.com/doap/category/graphics"/>
+  <category rdf:resource="http://labs.o-hand.com/doap/category/embedded"/>
+  <category rdf:resource="http://labs.o-hand.com/doap/category/clutter"/>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Matthew Allum</foaf:name>
+      <foaf:mbox rdf:resource="mailto:mallum@o-hand.com"/>
+    </foaf:Person>
+  </maintainer>
 
-        <bug-database rdf:resource="http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter"/>
+  <author>
+    <foaf:Person>
+      <foaf:name>Matthew Allum</foaf:name>
+      <foaf:mbox rdf:resource="mailto:mallum@o-hand.com"/>
+    </foaf:Person>
+  </author>
 
-        <mailing-list rdf:resource="mailto:clutter+subscribe@o-hand.com" />
+  <author>
+    <foaf:Person>
+      <foaf:name>Emmanuele Bassi</foaf:name>
+      <foaf:mbox rdf:resource="mailto:ebassi@o-hand.com"/>
+    </foaf:Person>
+  </author>
 
-        <os>Linux</os>
-        <programming-language>C</programming-language>
-        <programming-language>Python</programming-language>
-        <programming-language>Perl</programming-language>
+  <repository>
+    <SVNRepository>
+      <browse rdf:resource="http://svn.o-hand.com/view/clutter"/>
+      <location rdf:resource="https://svn.o-hand.com/repos/clutter"/>
+    </SVNRepository>
+  </repository>
 
-        <category rdf:resource="http://labs.o-hand.com/doap/category/library"/>
-        <category rdf:resource="http://labs.o-hand.com/doap/category/graphics"/>
-        <category rdf:resource="http://labs.o-hand.com/doap/category/embedded"/>
-        <category rdf:resource="http://labs.o-hand.com/doap/category/clutter"/>
-	<maintainer>
-		<foaf:Person>
-			<foaf:name>Matthew Allum</foaf:name>
-                        <foaf:mbox rdf:resource="mailto:mallum@o-hand.com"/>
-		</foaf:Person>
-	</maintainer>
+  <release>
+    <Version>
+      <name>0.8 Release</name>
+      <created>2008-07-10</created>
+      <branch></branch>
+      <revision>0.8</revision>
+      <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.8/clutter-0.8.0.tar.gz" />
+    </Version>
+  </release>
 
-	<author>
-		<foaf:Person>
-			<foaf:name>Matthew Allum</foaf:name>
-                        <foaf:mbox rdf:resource="mailto:mallum@o-hand.com"/>
-		</foaf:Person>
-	</author>
+  <release>
+    <Version>
+       <name>0.6 Release</name>
+       <created>2008-02-18</created>
+       <branch></branch>
+       <revision>0.6</revision>
+       <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.6/clutter-0.6.0.tar.gz" />
+    </Version>
+  </release>
 
-	<author>
-		<foaf:Person>
-			<foaf:name>Emmanuele Bassi</foaf:name>
-                        <foaf:mbox rdf:resource="mailto:ebassi@o-hand.com"/>
-		</foaf:Person>
-	</author>
+  <release>
+    <Version>
+      <name>0.4 Release</name>
+      <created>2007-08-07</created>
+      <branch></branch>
+      <revision>0.4</revision>
+      <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.4/clutter-0.4.0.tar.gz" />
+    </Version>
+  </release>
 
-        <repository>
-		<SVNRepository>
-			<browse rdf:resource="http://svn.o-hand.com/view/clutter"/>
-			<location rdf:resource="https://svn.o-hand.com/repos/clutter"/>
-		</SVNRepository>
-        </repository>
+  <release>
+    <Version>
+      <name>0.2 Release</name>
+      <created>2007-01-18</created>
+      <branch></branch>
+      <revision>0.2</revision>
+      <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.2/clutter-0.2.0.tar.gz" />
+    </Version>
+  </release>
 
-	<release>
-		<Version>
-			<name>0.6 Release</name>
-			<created>2008-02-18</created>
-			<branch></branch>
-			<revision>0.6</revision>
-		       <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.6/clutter-0.6.0.tar.gz" />
-		</Version>
-	</release>
-
-	<release>
-		<Version>
-			<name>0.4 Release</name>
-			<created>2007-08-07</created>
-			<branch></branch>
-			<revision>0.4</revision>
-		       <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.4/clutter-0.4.0.tar.gz" />
-		</Version>
-	</release>
-
-	<release>
-		<Version>
-			<name>0.2 Release</name>
-			<created>2007-01-18</created>
-			<branch></branch>
-			<revision>0.2</revision>
-		       <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.2/clutter-0.2.0.tar.gz" />
-		</Version>
-	</release>
-
-	<release>
-		<Version>
-			<name>First Release</name>
-			<created>2006-06-22</created>
-			<branch></branch>
-			<revision>0.1</revision>
-		       <file-release rdf:resource="http://projects.o-hand.com/clutter/sources/clutter-0.1.0.tar.gz" />
-		</Version>
-	</release>
-
-
+  <release>
+    <Version>
+      <name>First Release</name>
+      <created>2006-06-22</created>
+      <branch></branch>
+      <revision>0.1</revision>
+      <file-release rdf:resource="http://projects.o-hand.com/clutter/sources/clutter-0.1.0.tar.gz" />
+    </Version>
+  </release>
 </Project>
