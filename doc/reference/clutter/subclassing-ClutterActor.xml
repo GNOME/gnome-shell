@@ -334,7 +334,9 @@ foo_actor_allocate (ClutterActor          *actor,
     using the GL or GLES API.</para>
 
     <note><para>Actors performing transformations should push the GL matrix
-    first and then pop the GL matrix before returning.</para></note>
+    first and then pop the GL matrix before returning. COGL provides wrapper
+    functions for this operation, cogl_push_matrix() and cogl_pop_matrix().
+    </para></note>
   
     <example id="simple-actor-paint-example">
       <title>Paint implementation of a simple actor</title>
@@ -349,8 +351,6 @@ foo_actor_paint (ClutterActor *actor)
   FooActor *foo_actor = FOO_ACTOR (actor);
   ClutterColor color = { 0, };
   ClutterUnit w, h, r;
-
-  cogl_push_matrix ();
 
   /* FooActor has a specific background color */
   color.red   = foo_actor-&gt;bg_color.red;
@@ -383,8 +383,6 @@ foo_actor_paint (ClutterActor *actor)
 
   /* and fill it with the current color */
   cogl_fill ();
-
-  cogl_pop_matrix ();
 }
       </programlisting>
     </example>
@@ -401,18 +399,13 @@ foo_actor_paint (ClutterActor *actor)
     <example id="container-actor-paint-example">
       <title>Paint implementation of a container</title>
       <para>In this example, <classname>FooActor</classname> is a simple
-      container invoking clutter_actor_paint() on every visible child. To
-      allow transformations on itself to affect the children, the GL modelview
-      matrix is pushed at the beginning of the paint sequence, and the popped
-      at the end.</para>
+      container invoking clutter_actor_paint() on every visible child.</para>
       <programlisting>
 static void
 foo_actor_paint (ClutterActor *actor)
 {
   FooActor *foo_actor = FOO_ACTOR (actor);
   GList *child;
-
-  cogl_push_matrix ();
 
   for (child = foo_actor-&gt;children;
        child != NULL;
@@ -424,8 +417,6 @@ foo_actor_paint (ClutterActor *actor)
       if (CLUTTER_ACTOR_IS_VISIBLE (child_actor))
         clutter_actor_paint (child_actor);
     }
-
-  cogl_pop_matrix ();
 }
       </programlisting>
     </example>
@@ -462,8 +453,6 @@ foo_actor_pick (ClutterActor       *actor,
   /* this is the arc radius for the rounded rectangle corners */
   r = CLUTTER_UNITS_TO_FIXED (foo_actor->radius);
 
-  cogl_push_matrix ();
-
   /* use the passed color to paint ourselves */
   cogl_color (pick_color);
 
@@ -472,8 +461,6 @@ foo_actor_pick (ClutterActor       *actor,
 
   /* and fill it with the current color */
   cogl_fill ();
-
-  cogl_pop_matrix ();
 }
       </programlisting>
     </example>

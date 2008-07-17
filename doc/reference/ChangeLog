@@ -1,3 +1,9 @@
+2008-07-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/subclassing-ClutterActor.xml: Update the ClutterActor
+	subclassing section by removing the cogl_push/pop_matrix() calls
+	where not needed.
+
 2008-07-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-sections.txt: Add the missing X11 backend
