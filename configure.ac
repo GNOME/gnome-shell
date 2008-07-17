@@ -587,6 +587,17 @@ dnl = GTK Doc check ========================================================
 
 GTK_DOC_CHECK([1.8])
 
+# we don't want to build the documentation from a SVN checkout unless we
+# explicitly tell configure to do so; this allows avoiding to recurse into
+# the documentation directory when building Clutter inside Poky for a
+# target device that doesn't have gtk-doc installed. for reference
+# see: http://bugzilla.openedhand.com/show_bug.cgi?id=1047
+#
+# we use autogen.sh as it exists only inside the SVN checkouts, and it
+# is not packaged into tarballs.
+AM_CONDITIONAL([BUILD_GTK_DOC],
+               [test "x$enable_gtk_doc" = "xyes" || test ! -f "autogen.sh"])
+
 dnl = Manual ===============================================================
 
 AC_ARG_ENABLE(manual,
@@ -668,22 +679,22 @@ AC_OUTPUT
 dnl ========================================================================
 
 echo ""
-echo "                    Clutter $VERSION"
-echo "                 ==================="
+echo "                     Clutter    $VERSION"
+echo "                   ===================="
 echo ""
-echo "                   prefix:   ${prefix}"
+echo "                      prefix:   ${prefix}"
 echo ""
-echo "                  Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
+echo "                     Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
 if test "x$clutterbackend" = "xeglx" || test "x$clutterbackend" = "xglx"; then
-  echo "                   XInput:   ${xinput}"
+  echo "                      XInput:   ${xinput}"
 fi
-echo "               GL Headers:   ${CLUTTER_GL_HEADER}"
-echo "            Image backend:   ${imagebackend}"
-echo "           Target library:   ${clutterbackendlib}"
-echo "              Debug level:   ${enable_debug}"
-echo "           Compiler flags:   ${CPPFLAGS}"
-echo "        API Documentation:   ${enable_gtk_doc}"
-echo "     Manual Documentation:   ${enable_manual}"
+echo "                  GL Headers:   ${CLUTTER_GL_HEADER}"
+echo "               Image backend:   ${imagebackend}"
+echo "              Target library:   ${clutterbackendlib}"
+echo "                 Debug level:   ${enable_debug}"
+echo "              Compiler flags:   ${CPPFLAGS}"
+echo "     Build API Documentation:   ${enable_gtk_doc}"
+echo "  Build Manual Documentation:   ${enable_manual}"
 echo ""
 
 

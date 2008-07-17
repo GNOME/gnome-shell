@@ -2,7 +2,7 @@ NULL =
 
 SUBDIRS = clutter tests po
 
-if ENABLE_GTK_DOC
+if BUILD_GTK_DOC
 SUBDIRS += doc
 endif
 

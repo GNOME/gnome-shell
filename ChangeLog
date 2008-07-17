@@ -1,3 +1,13 @@
+2008-07-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug 1047 -  API documentation from release tarball is not
+	            installed by "make install"
+
+	* configure.ac:
+	* Makefile.am: Make the recursion into the documentation
+	directory depend on on whether we explicitly enable it or
+	if we are not inside an SVN checkout.
+
 2008-07-17  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-texture.c: 
