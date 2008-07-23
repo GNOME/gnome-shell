@@ -1,3 +1,10 @@
+2008-07-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug 1062 - clutter_actor_query_coords() replacement in 0.8
+
+	* clutter/clutter-deprecated.h: Fix the deprecation warning
+	for clutter_actor_query_coords(). (Gwenole Beauchesne)
+
 2008-07-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 1047 -  API documentation from release tarball is not

@@ -45,7 +45,7 @@
 #define clutter_texture_new_from_pixbuf              clutter_texture_new_from_pixbuf_DEPRECATED_BY_clutter_texture_new_from_file_OR_clutter_texture_new_AND_clutter_texture_set_from_rgb_data
 #define clutter_texture_set_pixbuf                   clutter_texture_set_pixbuf+DEPRECATED_BY_clutter_texture_set_from_rgb_data
 
-#define clutter_actor_query_coords                   clutter_actor_query_coords_REPLACED_BY_clutter_actor_get_width_request_AND_clutter_actor_get_height_request
+#define clutter_actor_query_coords                   clutter_actor_query_coords_REPLACED_BY_clutter_actor_get_preferred_size_OR_clutter_actor_get_allocation_box
 #define clutter_actor_request_coords                 clutter_actor_request_coords_REPLACED_BY_clutter_actor_allocate             
 
 #define clutter_actor_get_abs_position               clutter_actor_get_abs_position_REPLACED_BY_clutter_actor_get_transformed_position
