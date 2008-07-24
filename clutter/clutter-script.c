@@ -53,7 +53,7 @@
  *   "type"   : "ClutterRectangle",
  *   "width"  : 100,
  *   "height" : 100,
- *   "color"  : "0xff0000ff"
+ *   "color"  : "&num;ff0000ff"
  * }
  * ]|
  *

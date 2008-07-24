@@ -1,3 +1,9 @@
+2008-07-24  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-script.c: The example in the documentation
+	showed a color being specified as '0xff0000ff' but it should be
+	'#ff0000ff'
+
 2008-07-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 1062 - clutter_actor_query_coords() replacement in 0.8
