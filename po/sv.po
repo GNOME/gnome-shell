@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-17 21:37+0200\n"
-"PO-Revision-Date: 2008-07-17 21:37+0100\n"
+"POT-Creation-Date: 2008-07-25 23:48+0200\n"
+"PO-Revision-Date: 2008-07-25 23:49+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -1375,7 +1375,7 @@ msgstr "Flytta till arbetsyta _nedanför"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:105
 msgid "_Close"
-msgstr "_Stäng"
+msgstr "S_täng"
 
 #: ../src/ui/menu.c:203
 #, c-format
