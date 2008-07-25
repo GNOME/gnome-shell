@@ -1,3 +1,9 @@
+2008-07-25  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_remove_clip)
+	(clutter_actor_set_clipu): Queue a redraw when the clip is
+	changed.
+
 2008-07-24  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-script.c: The example in the documentation

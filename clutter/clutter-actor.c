@@ -5424,6 +5424,8 @@ clutter_actor_set_clipu (ClutterActor *self,
 
   priv->has_clip = TRUE;
 
+  clutter_actor_queue_redraw (self);
+
   g_object_notify (G_OBJECT (self), "has-clip");
   g_object_notify (G_OBJECT (self), "clip");
 }
@@ -5468,6 +5470,8 @@ clutter_actor_remove_clip (ClutterActor *self)
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   self->priv->has_clip = FALSE;
+
+  clutter_actor_queue_redraw (self);
 
   g_object_notify (G_OBJECT (self), "has-clip");
 }
