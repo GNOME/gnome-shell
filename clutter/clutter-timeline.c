@@ -1593,7 +1593,7 @@ clutter_timeline_list_markers (ClutterTimeline *timeline,
       retval = g_new0 (gchar*, g_slist_length (markers) + 1);
 
       for (i = 0, l = markers; l != NULL; i++, l = l->next)
-        retval[i] = g_strdup (l->data);
+        retval[i] = g_strdup (((TimelineMarker *) l->data)->name);
     }
 
   if (n_markers)

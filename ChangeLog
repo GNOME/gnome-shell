@@ -1,3 +1,9 @@
+2008-07-26  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-timeline.c (clutter_timeline_list_markers): When
+	requesting the list of markers it was returning the marker data as
+	a string instead of the name so it was copying garbage.
+
 2008-07-25  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-actor.c (clutter_actor_remove_clip)
