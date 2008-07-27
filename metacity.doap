@@ -1,0 +1,71 @@
+<Project
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns="http://usefulinc.com/ns/doap#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:admin="http://webns.net/mvcb/">
+
+ <name>The Metacity Window Manager</name>
+ <shortname>Metacity</shortname>
+
+ <!-- It's a blog.  Metacity has no homepage. -->
+ <homepage rdf:resource="http://blogs.gnome.org/metacity/" />
+
+ <!-- The date when the source control was initialised. -->
+ <created>2001-05-30</created>
+
+ <shortdesc xml:lang="en">
+A simple GTK+ window manager that tries not to get in your way.
+</shortdesc>
+ <description xml:lang="en">
+A window manager for GNOME, with a focus on simplicity and usability
+rather than novelties or gimmicks.  It uses GTK+ 2 for drawing window frames,
+so that it inherits colours, fonts, and so on from the GTK+ theme.  Its author
+has characterised it as a &quot;boring window manager for the adult in you.
+Many window managers are like Marshmallow Froot Loops; Metacity is like Cheerios.&quot;
+ </description>
+
+ <!-- I haven't found anything appropriate; I made this up. -->
+ <category>window-manager</category>
+
+ <wiki rdf:resource="http://live.gnome.org/Metacity" />
+ <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=metacity" />
+ <screenshots rdf:resource="http://commons.wikimedia.org/wiki/Image:Metacity-screenshot.png" />
+
+ <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/metacity-devel-list" />
+
+ <programming-language>C</programming-language>
+ <license rdf:resource="http://usefulinc.com/doap/licenses/gpl" />
+ <download-page rdf:resource="http://download.gnome.org/sources/metacity/" />
+
+ <repository>
+   <SVNRepository>
+     <location rdf:resource="http://svn.gnome.org/svn/metacity/trunk" />
+     <browse rdf:resource="http://svn.gnome.org/viewvc/metacity/" />
+   </SVNRepository>
+ </repository> 
+
+ <maintainer>
+  <foaf:Person>
+     <foaf:name>Havoc Pennington</foaf:name>
+  </foaf:Person>
+ </maintainer>
+
+ <maintainer>
+  <foaf:Person>
+     <foaf:name>Elijah Newren</foaf:name>
+  </foaf:Person>
+ </maintainer>
+
+ <maintainer>
+  <foaf:Person>
+     <foaf:name>Thomas Thurman</foaf:name>
+  </foaf:Person>
+ </maintainer>
+
+ <!-- Releases would go here, but there have been dozens.
+      Maybe another time.
+   -->
+
+</Project>

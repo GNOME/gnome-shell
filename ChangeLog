@@ -1,3 +1,7 @@
+2008-07-26  Thomas Thurman  <tthurman@gnome.org>
+
+	* metacity.doap (added): DOAP file (first pass, anyway).
+
 2008-07-14  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.23.89.
