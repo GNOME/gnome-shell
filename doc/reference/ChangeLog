@@ -1,3 +1,9 @@
+2008-07-30  Ross Burton  <ross@openedhand.com>
+
+	* clutter/version.xml.in:
+	* cogl/version.xml.in:
+	Remove trailing newline as it upsets Devhelp
+
 2008-07-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/subclassing-ClutterActor.xml: Update the ClutterActor
