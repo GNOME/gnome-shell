@@ -1220,7 +1220,9 @@ clutter_model_set_sorting_column (ClutterModel *model,
   g_return_if_fail (CLUTTER_IS_MODEL (model));
   priv = model->priv;
 
-  if (column >= clutter_model_get_n_columns (model))
+  /* The extra comparison for >= 0 is because column gets promoted to
+     unsigned in the second comparison */
+  if (column >= 0 && column >= clutter_model_get_n_columns (model))
     {
       g_warning ("%s: Invalid column id value %d\n", G_STRLOC, column);
       return;

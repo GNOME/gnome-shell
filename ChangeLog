@@ -1,3 +1,13 @@
+2008-07-30  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-model.c (clutter_model_set_sorting_column): This
+	function is supposed to accept -1 to disable sorting. However it
+	checks for whether the column is >= the number of columns, but
+	clutter_model_get_n_columns() returns an unsigned int so the
+	column number also gets promoted to unsigned for the
+	comparison. Therefore -1 is always greater than the number of
+	columns so it wouldn't let you set it.
+
 2008-07-26  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-timeline.c (clutter_timeline_list_markers): When
