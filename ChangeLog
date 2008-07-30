@@ -1,3 +1,10 @@
+2008-07-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-units.h: Fix the upper and lower boundaries of
+	ClutterFixed and ClutterUnit types; G_MAXINT16 and G_MININT16
+	were not enough to describe those values.
+
 2008-07-30  Ross Burton  <ross@openedhand.com>
 
 	* clutter/clutter-main.c:

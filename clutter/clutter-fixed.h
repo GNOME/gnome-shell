@@ -435,7 +435,7 @@ typedef struct _ClutterParamSpecFixed   ClutterParamSpecFixed;
  *
  * Since: 0.8
  */
-#define CLUTTER_MAXFIXED        G_MAXINT16
+#define CLUTTER_MAXFIXED        CFX_MAX
 
 /**
  * CLUTTER_MINFIXED:
@@ -444,7 +444,7 @@ typedef struct _ClutterParamSpecFixed   ClutterParamSpecFixed;
  *
  * Since: 0.8
  */
-#define CLUTTER_MINFIXED        G_MININT16
+#define CLUTTER_MINFIXED        CFX_MIN
 
 /**
  * ClutterParamSpecFixed

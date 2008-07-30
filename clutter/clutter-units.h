@@ -152,7 +152,7 @@ typedef gint32 ClutterUnit;
  *
  * Since: 0.8
  */
-#define CLUTTER_MAXUNIT         G_MAXINT16
+#define CLUTTER_MAXUNIT         (0x7fffffff)
 
 /**
  * CLUTTER_MINUNIT:
@@ -161,7 +161,7 @@ typedef gint32 ClutterUnit;
  *
  * Since: 0.8
  */
-#define CLUTTER_MINUNIT         G_MININT16
+#define CLUTTER_MINUNIT         (0x80000000)
 
 /**
  * CLUTTER_VALUE_HOLDS_UNIT:
