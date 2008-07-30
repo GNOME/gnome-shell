@@ -570,6 +570,23 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			 "The color of the main stage",
 			 CLUTTER_TYPE_COLOR,
 			 CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterStage:perspective:
+   *
+   * The parameters used for the perspective projection from 3D
+   * coordinates to 2D
+   *
+   * Since: 0.8.2
+   */
+  g_object_class_install_property
+    (gobject_class, PROP_PERSPECTIVE,
+     g_param_spec_boxed ("perspective",
+			 "Perspective",
+			 "Perspective projection parameters",
+			 CLUTTER_TYPE_PERSPECTIVE,
+			 CLUTTER_PARAM_READWRITE));
+
   /**
    * ClutterStage:title:
    *

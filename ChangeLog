@@ -1,3 +1,10 @@
+2008-07-30  Neil Roberts  <neil@o-hand.com>
+
+	* clutter/clutter-stage.c (clutter_stage_class_init): Added the
+	'perspective' property. All of the machinery was there to
+	implement the property but somehow the call that actually installs
+	it was missing.
+
 2008-07-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-fixed.h:
