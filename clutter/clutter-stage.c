@@ -478,6 +478,10 @@ clutter_stage_dispose (GObject *object)
 static void
 clutter_stage_finalize (GObject *object)
 {
+  ClutterStage *stage = CLUTTER_STAGE (object);
+
+  g_free (stage->priv->title);
+  
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
 

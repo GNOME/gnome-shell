@@ -408,6 +408,10 @@ clutter_context_free (ClutterMainContext *context)
   g_object_unref (context->font_map);
   context->font_map = NULL;
 
+#ifdef CLUTTER_ENABLE_DEBUG
+  g_timer_destroy (context->timer);
+#endif
+  
   /* XXX: The cleaning up of the event queue should be moved here from
           the backend base class. */
 

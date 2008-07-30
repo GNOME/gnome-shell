@@ -1,3 +1,11 @@
+2008-07-30  Ross Burton  <ross@openedhand.com>
+
+	* clutter/clutter-main.c:
+	Destroy the debugging timer when the context is freed.
+
+	* clutter/clutter-stage.c:
+	Free the stage title when the stage is finalized.
+
 2008-07-30  Neil Roberts  <neil@o-hand.com>
 
 	* clutter/clutter-model.c (clutter_model_set_sorting_column): This
