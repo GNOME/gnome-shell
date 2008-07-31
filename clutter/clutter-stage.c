@@ -455,13 +455,13 @@ clutter_stage_dispose (GObject *object)
   ClutterStagePrivate *priv = stage->priv;
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
 
+  clutter_actor_unrealize (CLUTTER_ACTOR (object));
+
   if (priv->update_idle)
     {
       g_source_remove (priv->update_idle);
       priv->update_idle = 0;
     }
-
-  clutter_actor_unrealize (CLUTTER_ACTOR (object));
 
   _clutter_stage_manager_remove_stage (stage_manager, stage);
 
