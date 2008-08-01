@@ -431,6 +431,62 @@ clutter_texture_allocate (ClutterActor          *self,
 }
 
 static void
+clutter_texture_set_fbo_projection (ClutterActor *self)
+{
+  ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
+  ClutterVertex verts[4];
+  ClutterFixed viewport[4];
+  ClutterFixed  x_min, x_max, y_min, y_max;
+  ClutterPerspective perspective;
+  ClutterStage *stage;
+  ClutterFixed tan_angle, near_size;
+  int i;
+
+  /* Get the bounding rectangle of the source as drawn in screen
+     coordinates */
+  clutter_actor_get_abs_allocation_vertices (priv->fbo_source, verts);
+
+  x_min = x_max = verts[0].x;
+  y_min = y_max = verts[0].y;
+
+  for (i = 1; i < G_N_ELEMENTS (verts); ++i)
+    {
+      if (verts[i].x < x_min)
+	x_min = verts[i].x;
+
+      if (verts[i].x > x_max)
+	x_max = verts[i].x;
+
+      if (verts[i].y < y_min)
+	y_min = verts[i].y;
+
+      if (verts[i].y > y_max)
+	y_max = verts[i].y;
+    }
+
+  stage = CLUTTER_STAGE (clutter_actor_get_stage (self));
+  clutter_stage_get_perspectivex (stage, &perspective);
+
+  /* Convert the coordinates back to [-1,1] range */
+  cogl_get_viewport (viewport);
+  x_min = CFX_QDIV (x_min, viewport[2]) * 2 - CFX_ONE;
+  x_max = CFX_QDIV (x_max, viewport[2]) * 2 - CFX_ONE;
+  y_min = CFX_QDIV (y_min, viewport[3]) * 2 - CFX_ONE;
+  y_max = CFX_QDIV (y_max, viewport[3]) * 2 - CFX_ONE;
+
+  /* Set up a projection matrix so that the actor will be projected as
+     if it was drawn at its original location */
+  tan_angle = clutter_tani (CLUTTER_ANGLE_FROM_DEGX (perspective.fovy / 2));
+  near_size = CFX_QMUL (perspective.z_near, tan_angle);
+
+  cogl_frustum (CFX_QMUL (x_min, near_size),
+		CFX_QMUL (x_max, near_size),
+		CFX_QMUL (-y_min, near_size),
+		CFX_QMUL (-y_max, near_size),
+		perspective.z_near, perspective.z_far);
+}
+
+static void
 clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
@@ -447,6 +503,8 @@ clutter_texture_paint (ClutterActor *self)
     {
       ClutterMainContext *context;
       ClutterShader      *shader = NULL;
+      ClutterActor       *stage = NULL;
+      ClutterPerspective  perspective;
 
       context = clutter_context_get_default ();
 
@@ -462,14 +520,51 @@ clutter_texture_paint (ClutterActor *self)
       /* Redirect drawing to the fbo */
       cogl_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->fbo_handle);
 
+      if ((stage = clutter_actor_get_stage (self)))
+	{
+	  guint               stage_width, stage_height;
+	  ClutterActor       *source_parent;
+
+	  clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
+	  clutter_actor_get_size (stage, &stage_width, &stage_height);
+
+	  /* Use below to set the modelview matrix as if the viewport
+	     was still the same size as the stage */
+	  cogl_setup_viewport (stage_width, stage_height,
+			       perspective.fovy,
+			       perspective.aspect,
+			       perspective.z_near,
+			       perspective.z_far);
+	  /* Use a projection matrix that makes the actor appear as it
+	     would if it was rendered at its normal screen location */
+	  clutter_texture_set_fbo_projection (self);
+	  /* Reset the viewport to the size of the FBO */
+	  cogl_viewport (priv->width, priv->height);
+	  /* Reapply the source's parent transformations */
+	  if ((source_parent = clutter_actor_get_parent (priv->fbo_source)))
+	    _clutter_actor_apply_modelview_transform_recursive (source_parent,
+								NULL);
+	}
+
       /* cogl_paint_init is called to clear the buffers */
       cogl_paint_init (&transparent_col);
+
+      /* Clear the clipping stack so that if the FBO actor is being
+	 clipped then it won't affect drawing the source */
+      cogl_clip_stack_save ();
 
       /* Render out actor scene to fbo */
       clutter_actor_paint (priv->fbo_source);
 
+      cogl_clip_stack_restore ();
+
       /* Restore drawing to the frame buffer */
       cogl_draw_buffer (COGL_WINDOW_BUFFER, COGL_INVALID_HANDLE);
+
+      /* Restore the perspective matrix using cogl_perspective so that
+	 the inverse matrix will be right */
+      cogl_perspective (perspective.fovy, perspective.aspect,
+			perspective.z_near, perspective.z_far);
 
       /* If there is a shader on top of the shader stack, turn it back on. */
       if (shader)
@@ -1600,13 +1695,13 @@ on_fbo_source_size_change (GObject          *object,
       priv->width        = w;
       priv->height       = h;
 
-      priv->texture = cogl_texture_new_with_size (priv->width,
-						  priv->height,
+      priv->texture = cogl_texture_new_with_size (MAX (priv->width, 1),
+						  MAX (priv->height, 1),
 						  -1,
                           priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
 						  COGL_PIXEL_FORMAT_RGBA_8888);
 
-      cogl_texture_set_filters (priv->texture,   
+      cogl_texture_set_filters (priv->texture,
             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
             clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
 
@@ -1671,6 +1766,21 @@ on_fbo_parent_change (ClutterActor        *actor,
  *     the actor is parented before calling
  *     clutter_texture_new_from_actor() or that you unparent it before
  *     adding it to a container.</para>
+ *   </listitem>
+ *   <listitem>
+ *     <para>When getting the image for the clone texture, Clutter
+ *     will attempt to render the source actor exactly as it would
+ *     appear if it was rendered on screen. The source actor's parent
+ *     transformations are taken into account. Therefore if your
+ *     source actor is rotated along the X or Y axes so that it has
+ *     some depth, the texture will appear differently depending on
+ *     the on-screen location of the source actor. While painting the
+ *     source actor, Clutter will set up a temporary asymmetric
+ *     perspective matrix as the projection matrix so that the source
+ *     actor will be projected as if a small section of the screen was
+ *     being viewed. Before version 0.8.2, an orthogonal identity
+ *     projection was used which meant that the source actor would be
+ *     clipped if any part of it was not on the zero Z-plane.</para>
  *   </listitem>
  *   <listitem>
  *     <para>Avoid reparenting the source with the created texture.</para>

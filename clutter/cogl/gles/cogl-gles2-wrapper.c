@@ -667,6 +667,31 @@ cogl_wrap_glMultMatrixx (const GLfixed *m)
 }
 
 void
+cogl_wrap_glFrustumx (GLfixed left, GLfixed right,
+		      GLfixed bottom, GLfixed top,
+		      GLfixed z_near, GLfixed z_far)
+{
+  float matrix[16];
+  float two_near = CLUTTER_FIXED_TO_FLOAT (2 * z_near);
+
+  memset (matrix, 0, sizeof (matrix));
+
+  matrix[0] = two_near / CLUTTER_FIXED_TO_FLOAT (right - left);
+  matrix[5] = two_near / CLUTTER_FIXED_TO_FLOAT (top - bottom);
+  matrix[8] = CLUTTER_FIXED_TO_FLOAT (right + left)
+    / CLUTTER_FIXED_TO_FLOAT (right - left);
+  matrix[9] = CLUTTER_FIXED_TO_FLOAT (top + bottom)
+    / CLUTTER_FIXED_TO_FLOAT (top - bottom);
+  matrix[10] = -CLUTTER_FIXED_TO_FLOAT (z_far + z_near)
+    / CLUTTER_FIXED_TO_FLOAT (z_far - z_near);
+  matrix[11] = -1.0f;
+  matrix[14] = -two_near * CLUTTER_FIXED_TO_FLOAT (z_far)
+    / CLUTTER_FIXED_TO_FLOAT (z_far - z_near);
+
+  cogl_wrap_glMultMatrix (matrix);
+}
+
+void
 cogl_wrap_glScalex (GLfixed x, GLfixed y, GLfixed z)
 {
   float matrix[16];

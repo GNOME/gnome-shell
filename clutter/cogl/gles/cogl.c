@@ -661,7 +661,10 @@ cogl_perspective (ClutterFixed fovy,
 
   memset (&m[0], 0, sizeof (m));
 
-  /*
+  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+  GE( cogl_wrap_glLoadIdentity () );
+
+ /*
    * Based on the original algorithm in perspective():
    * 
    * 1) xmin = -xmax => xmax + xmin == 0 && xmax - xmin == 2 * xmax
@@ -688,6 +691,8 @@ cogl_perspective (ClutterFixed fovy,
 
   GE( cogl_wrap_glMultMatrixx (m) );
 
+  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+
   /* Calculate and store the inverse of the matrix */
   memset (ctx->inverse_projection, 0, sizeof (ClutterFixed) * 16);
 
@@ -703,6 +708,51 @@ cogl_perspective (ClutterFixed fovy,
 }
 
 void
+cogl_frustum (ClutterFixed        left,
+	      ClutterFixed        right,
+	      ClutterFixed        bottom,
+	      ClutterFixed        top,
+	      ClutterFixed        z_near,
+	      ClutterFixed        z_far)
+{
+  ClutterFixed c, d;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+  GE( cogl_wrap_glLoadIdentity () );
+
+  GE( cogl_wrap_glFrustumx (left, right,
+			    bottom, top,
+			    z_near, z_far) );
+
+  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+
+  /* Calculate and store the inverse of the matrix */
+  memset (ctx->inverse_projection, 0, sizeof (ClutterFixed) * 16);
+
+  c = -CFX_QDIV (z_far + z_near, z_far - z_near);
+  d = -CFX_QDIV (2 * CFX_QMUL (z_far, z_near), z_far - z_near);
+
+#define M(row,col)  ctx->inverse_projection[col*4+row]
+  M(0,0) = CFX_QDIV (right - left, 2 * z_near);
+  M(0,3) = CFX_QDIV (right + left, 2 * z_near);
+  M(1,1) = CFX_QDIV (top - bottom, 2 * z_near);
+  M(1,3) = CFX_QDIV (top + bottom, 2 * z_near);
+  M(2,3) = -CFX_ONE;
+  M(3,2) = CFX_QDIV (CFX_ONE, d);
+  M(3,3) = CFX_QDIV (c, d);
+#undef M  
+}
+
+void
+cogl_viewport (guint width,
+	       guint height)
+{
+  GE( glViewport (0, 0, width, height) );
+}
+
+void
 cogl_setup_viewport (guint        w,
 		     guint        h,
 		     ClutterFixed fovy,
@@ -715,8 +765,6 @@ cogl_setup_viewport (guint        w,
   ClutterFixed z_camera;
   
   GE( glViewport (0, 0, width, height) );
-  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
-  GE( cogl_wrap_glLoadIdentity () );
 
   /* For Ortho projection.
    * cogl_wrap_glOrthox (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
@@ -724,7 +772,6 @@ cogl_setup_viewport (guint        w,
 
   cogl_perspective (fovy, aspect, z_near, z_far);
   
-  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
   GE( cogl_wrap_glLoadIdentity () );
 
   /*

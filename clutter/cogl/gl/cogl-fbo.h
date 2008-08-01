@@ -32,6 +32,7 @@ typedef struct
   int    width;
   int    height;
   GLuint gl_handle;
+  GLuint gl_stencil_handle;
   
 } CoglFbo;
 

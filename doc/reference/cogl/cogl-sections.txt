@@ -13,7 +13,9 @@ CoglPixelFormat
 CoglBufferTarget
 <SUBSECTION>
 cogl_perspective
+cogl_frustum
 cogl_setup_viewport
+cogl_viewport
 cogl_get_modelview_matrix
 cogl_get_projection_matrix
 cogl_get_viewport
@@ -28,6 +30,8 @@ cogl_rotate
 <SUBSECTION>
 cogl_clip_set
 cogl_clip_unset
+cogl_clip_stack_save
+cogl_clip_stack_restore
 <SUBSECTION>
 cogl_enable_depth_test
 cogl_alpha_func

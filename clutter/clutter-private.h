@@ -210,6 +210,9 @@ gboolean _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
                                                const GValue          *handler_return,
                                                gpointer               dummy);
 
+void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
+						       ClutterActor *ancestor);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_PRIVATE_H */

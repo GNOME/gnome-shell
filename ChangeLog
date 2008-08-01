@@ -1,5 +1,30 @@
 2008-08-01  Neil Roberts  <neil@o-hand.com>
 
+	Bug 945 - Clipping+fbo cloning bugs
+
+	* clutter/cogl/gl/cogl.c: 
+	* clutter/cogl/gles/cogl.c: 
+	* clutter/cogl/cogl.h.in: Add cogl_clip_stack_save,
+	cogl_clip_stack_restore, cogl_viewport and cogl_frustum.
+
+	* clutter/cogl/gl/cogl-fbo.h: 
+	* clutter/cogl/gl/cogl-fbo.c: Try to attach a stencil buffer when
+	creating an FBO.
+
+	* clutter/cogl/common/cogl-clip-stack.c: Add functions to save and
+	restore the whole state of the stack.
+
+	* clutter/clutter-texture.c (clutter_texture_paint): When
+	rendering the FBO source, setup a temporary asymmetric perspective
+	projection matrix to render it as it would appear on screen.
+
+	* clutter/clutter-private.h: 
+	* clutter/clutter-actor.c
+	(_clutter_actor_apply_modelview_transform_recursive): No longer
+	static and exported in clutter-private.h
+
+2008-08-01  Neil Roberts  <neil@o-hand.com>
+
 	Bug 1071 - clutter_timeline_get_duration doesn't always work
 
 	* clutter/clutter-timeline.c: Calculate the 'duration' property

@@ -746,6 +746,9 @@ cogl_perspective (ClutterFixed fovy,
 
   memset (&m[0], 0, sizeof (m));
 
+  GE( glMatrixMode (GL_PROJECTION) );
+  GE( glLoadIdentity () );
+
   /*
    * Based on the original algorithm in perspective():
    *
@@ -773,6 +776,8 @@ cogl_perspective (ClutterFixed fovy,
 
   GE( glMultMatrixf (m) );
 
+  GE( glMatrixMode (GL_MODELVIEW) );
+
   /* Calculate and store the inverse of the matrix */
   memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
 
@@ -787,6 +792,60 @@ cogl_perspective (ClutterFixed fovy,
 }
 
 void
+cogl_frustum (ClutterFixed        left,
+	      ClutterFixed        right,
+	      ClutterFixed        bottom,
+	      ClutterFixed        top,
+	      ClutterFixed        z_near,
+	      ClutterFixed        z_far)
+{
+  GLfloat c, d;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  GE( glMatrixMode (GL_PROJECTION) );
+  GE( glLoadIdentity () );
+
+  GE( glFrustum (CLUTTER_FIXED_TO_DOUBLE (left),
+		 CLUTTER_FIXED_TO_DOUBLE (right),
+		 CLUTTER_FIXED_TO_DOUBLE (bottom),
+		 CLUTTER_FIXED_TO_DOUBLE (top),
+		 CLUTTER_FIXED_TO_DOUBLE (z_near),
+		 CLUTTER_FIXED_TO_DOUBLE (z_far)) );
+
+  GE( glMatrixMode (GL_MODELVIEW) );
+
+  /* Calculate and store the inverse of the matrix */
+  memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
+
+  c = -CLUTTER_FIXED_TO_FLOAT (z_far + z_near)
+    / CLUTTER_FIXED_TO_FLOAT (z_far - z_near);
+  d = -CLUTTER_FIXED_TO_FLOAT (2 * CFX_QMUL (z_far, z_near))
+    / CLUTTER_FIXED_TO_FLOAT (z_far - z_near);
+
+#define M(row,col)  ctx->inverse_projection[col*4+row]
+  M(0,0) = CLUTTER_FIXED_TO_FLOAT (right - left)
+    / CLUTTER_FIXED_TO_FLOAT (2 * z_near);
+  M(0,3) = CLUTTER_FIXED_TO_FLOAT (right + left)
+    / CLUTTER_FIXED_TO_FLOAT (2 * z_near);
+  M(1,1) = CLUTTER_FIXED_TO_FLOAT (top - bottom)
+    / CLUTTER_FIXED_TO_FLOAT (2 * z_near);
+  M(1,3) = CLUTTER_FIXED_TO_FLOAT (top + bottom)
+    / CLUTTER_FIXED_TO_FLOAT (2 * z_near);
+  M(2,3) = -1.0f;
+  M(3,2) = 1.0f / d;
+  M(3,3) = c / d;
+#undef M
+}
+
+void
+cogl_viewport (guint width,
+	       guint height)
+{
+  GE( glViewport (0, 0, width, height) );
+}
+
+void
 cogl_setup_viewport (guint        width,
 		     guint        height,
 		     ClutterFixed fovy,
@@ -798,12 +857,8 @@ cogl_setup_viewport (guint        width,
 
   GE( glViewport (0, 0, width, height) );
 
-  GE( glMatrixMode (GL_PROJECTION) );
-  GE( glLoadIdentity () );
-
   cogl_perspective (fovy, aspect, z_near, z_far);
 
-  GE( glMatrixMode (GL_MODELVIEW) );
   GE( glLoadIdentity () );
 
   /*
@@ -968,6 +1023,10 @@ _cogl_features_init ()
       ctx->pf_glGenRenderbuffersEXT =
 	(COGL_PFNGLGENRENDERBUFFERSEXTPROC)
 	cogl_get_proc_address ("glGenRenderbuffersEXT");
+      
+      ctx->pf_glDeleteRenderbuffersEXT =
+	(COGL_PFNGLDELETERENDERBUFFERSEXTPROC)
+	cogl_get_proc_address ("glDeleteRenderbuffersEXT");
       
       ctx->pf_glBindRenderbufferEXT =
 	(COGL_PFNGLBINDRENDERBUFFEREXTPROC)

@@ -362,8 +362,6 @@ static guint actor_signals[LAST_SIGNAL] = { 0, };
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
 static void _clutter_actor_apply_modelview_transform           (ClutterActor *self);
-static void _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
-                                                                ClutterActor *ancestor);
 
 static void clutter_actor_shader_pre_paint  (ClutterActor *actor,
                                              gboolean      repeat);
@@ -1373,7 +1371,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
  * This function does not push/pop matrix; it is the responsibility
  * of the caller to do so as appropriate
  */
-static void
+void
 _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
 						    ClutterActor *ancestor)
 {

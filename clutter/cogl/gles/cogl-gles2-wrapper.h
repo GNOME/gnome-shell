@@ -204,6 +204,9 @@ void cogl_wrap_glPopMatrix ();
 void cogl_wrap_glMatrixMode (GLenum mode);
 void cogl_wrap_glLoadIdentity ();
 void cogl_wrap_glMultMatrixx (const GLfixed *m);
+void cogl_wrap_glFrustumx (GLfixed left, GLfixed right,
+			   GLfixed bottom, GLfixed top,
+			   GLfixed z_near, GLfixed z_far);
 void cogl_wrap_glScalex (GLfixed x, GLfixed y, GLfixed z);
 void cogl_wrap_glTranslatex (GLfixed x, GLfixed y, GLfixed z);
 void cogl_wrap_glRotatex (GLfixed angle, GLfixed x, GLfixed y, GLfixed z);
@@ -268,6 +271,7 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 #define cogl_wrap_glMatrixMode         glMatrixMode
 #define cogl_wrap_glLoadIdentity       glLoadIdentity
 #define cogl_wrap_glMultMatrixx        glMultMatrixx
+#define cogl_wrap_glFrustumx           glFrustumx
 #define cogl_wrap_glScalex             glScalex
 #define cogl_wrap_glTranslatex         glTranslatex
 #define cogl_wrap_glRotatex            glRotatex

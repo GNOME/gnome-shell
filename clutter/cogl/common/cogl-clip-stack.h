@@ -26,11 +26,6 @@
 #ifndef __COGL_CLIP_STACK_H
 #define __COGL_CLIP_STACK_H
 
-void cogl_clip_set (ClutterFixed x_offset,
-		    ClutterFixed y_offset,
-		    ClutterFixed width,
-		    ClutterFixed height);
-void cogl_clip_unset (void);
 void _cogl_clip_stack_rebuild (gboolean just_stencil);
 void _cogl_clip_stack_merge (void);
 
