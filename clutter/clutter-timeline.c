@@ -107,7 +107,6 @@ struct _ClutterTimelinePrivate
   guint fps;
   guint n_frames;
   guint delay;
-  guint duration;
 
   gint skipped_frames;
 
@@ -256,7 +255,7 @@ clutter_timeline_set_property (GObject      *object,
       clutter_timeline_set_speed (timeline, g_value_get_uint (value));
       break;
     case PROP_NUM_FRAMES:
-      priv->n_frames = g_value_get_uint (value);
+      clutter_timeline_set_n_frames (timeline, g_value_get_uint (value));
       break;
     case PROP_LOOP:
       priv->loop = g_value_get_boolean (value);
@@ -303,7 +302,7 @@ clutter_timeline_get_property (GObject    *object,
       g_value_set_uint (value, priv->delay);
       break;
     case PROP_DURATION:
-      g_value_set_uint (value, priv->duration);
+      g_value_set_uint (value, clutter_timeline_get_duration (timeline));
       break;
     case PROP_DIRECTION:
       g_value_set_enum (value, priv->direction);
@@ -1058,9 +1057,17 @@ clutter_timeline_set_n_frames (ClutterTimeline *timeline,
 
   if (priv->n_frames != n_frames)
     {
+      g_object_ref (timeline);
+
+      g_object_freeze_notify (G_OBJECT (timeline));
+
       priv->n_frames = n_frames;
 
       g_object_notify (G_OBJECT (timeline), "num-frames");
+      g_object_notify (G_OBJECT (timeline), "duration");
+
+      g_object_thaw_notify (G_OBJECT (timeline));
+      g_object_unref (timeline);
     }
 }
 
@@ -1099,7 +1106,13 @@ clutter_timeline_set_speed (ClutterTimeline *timeline,
                                                    timeline, NULL);
         }
 
+      g_object_freeze_notify (G_OBJECT (timeline));
+
+      g_object_notify (G_OBJECT (timeline), "duration");
       g_object_notify (G_OBJECT (timeline), "fps");
+
+      g_object_thaw_notify (G_OBJECT (timeline));
+
       g_object_unref (timeline);
     }
 }
@@ -1267,9 +1280,13 @@ clutter_timeline_set_delay (ClutterTimeline *timeline,
 guint
 clutter_timeline_get_duration (ClutterTimeline *timeline)
 {
+  ClutterTimelinePrivate *priv;
+
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
 
-  return timeline->priv->duration;
+  priv = timeline->priv;
+
+  return priv->n_frames * 1000 / priv->fps;
 }
 
 /**
@@ -1287,27 +1304,17 @@ clutter_timeline_set_duration (ClutterTimeline *timeline,
                                guint            msecs)
 {
   ClutterTimelinePrivate *priv;
+  guint n_frames;
 
   g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
 
   priv = timeline->priv;
 
-  if (priv->duration != msecs)
-    {
-      g_object_ref (timeline);
+  n_frames = msecs * priv->fps / 1000;
+  if (n_frames < 1)
+    n_frames = 1;
 
-      g_object_freeze_notify (G_OBJECT (timeline));
-
-      priv->duration = msecs;
-
-      priv->n_frames = priv->duration * priv->fps / 1000;
-
-      g_object_notify (G_OBJECT (timeline), "num-frames");
-      g_object_notify (G_OBJECT (timeline), "duration");
-
-      g_object_thaw_notify (G_OBJECT (timeline));
-      g_object_unref (timeline);
-    }
+  clutter_timeline_set_n_frames (timeline, n_frames);
 }
 
 /**

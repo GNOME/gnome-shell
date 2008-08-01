@@ -1,5 +1,13 @@
 2008-08-01  Neil Roberts  <neil@o-hand.com>
 
+	Bug 1071 - clutter_timeline_get_duration doesn't always work
+
+	* clutter/clutter-timeline.c: Calculate the 'duration' property
+	on-demand instead of storing it as a member variable. Notify
+	duration property changes whenever the fps or num_frames changes.
+
+2008-08-01  Neil Roberts  <neil@o-hand.com>
+
 	Bug 1069 - Warnings with ClutterScore
 
 	* clutter/clutter-score.c (clutter_score_is_playing): Check
