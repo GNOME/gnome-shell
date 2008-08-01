@@ -409,7 +409,8 @@ clutter_score_is_playing (ClutterScore *score)
   if (score->priv->is_paused)
     return FALSE;
 
-  return (g_hash_table_size (score->priv->running_timelines) != 0);
+  return score->priv->running_timelines
+    && g_hash_table_size (score->priv->running_timelines) != 0;
 }
 
 /* destroy_entry:
@@ -728,6 +729,11 @@ foreach_running_timeline (gpointer key,
       break;
 
     case ACTION_STOP:
+      if (entry->complete_id)
+	{
+	  g_signal_handler_disconnect (entry->timeline, entry->complete_id);
+	  entry->complete_id = 0;
+	}
       clutter_timeline_stop (entry->timeline);
       break;
     }

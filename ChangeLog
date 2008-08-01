@@ -1,3 +1,14 @@
+2008-08-01  Neil Roberts  <neil@o-hand.com>
+
+	Bug 1069 - Warnings with ClutterScore
+
+	* clutter/clutter-score.c (clutter_score_is_playing): Check
+	whether priv->running_timelines is NULL before checking its
+	length.
+	(foreach_running_timeline): Remove the completed signal handler
+	when stopping the score. Otherwise the completed callback will get
+	called multiple times if the timeline is started later.
+
 2008-07-31  Neil Roberts  <neil@o-hand.com>
 
 	Bug 1075 - Difficult to bind clutter_stage_new
