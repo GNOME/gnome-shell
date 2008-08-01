@@ -338,11 +338,32 @@ void            cogl_get_bitmasks             (gint               *red,
  * @z_near: Nearest visible point
  * @z_far: Furthest visible point along the z-axis
  *
- * Multiplies the current set matrix with a projection matrix based
- * on the provided values.
+ * Replaces the current projection matrix with a perspective matrix
+ * based on the provided values.
  */
 void            cogl_perspective              (ClutterFixed        fovy,
                                                ClutterFixed        aspect,
+                                               ClutterFixed        z_near,
+                                               ClutterFixed        z_far);
+
+/**
+ * cogl_frustum:
+ * @left: Left clipping plane
+ * @right: Right clipping plane
+ * @bottom: Bottom clipping plane
+ * @top: Top clipping plane
+ * @z_near: Nearest visible point
+ * @z_far: Furthest visible point along the z-axis
+ *
+ * Replaces the current projection matrix with a perspective matrix
+ * for the given viewing frustum.
+ *
+ * Since: 0.8.2
+ */
+void            cogl_frustum                  (ClutterFixed        left,
+					       ClutterFixed        right,
+					       ClutterFixed        bottom,
+					       ClutterFixed        top,
                                                ClutterFixed        z_near,
                                                ClutterFixed        z_far);
 
@@ -368,6 +389,18 @@ void            cogl_setup_viewport           (guint               width,
                                                ClutterFixed        aspect,
                                                ClutterFixed        z_near,
                                                ClutterFixed        z_far);
+
+/**
+ * cogl_viewport:
+ * @width: Width of the viewport
+ * @height: Height of the viewport
+ *
+ * Replace the current viewport with the given values.
+ *
+ * Since: 0.8.2
+ */
+void            cogl_viewport                 (guint               width,
+					       guint               height);
 
 /**
  * cogl_push_matrix:
@@ -510,6 +543,29 @@ void            cogl_clip_set                 (ClutterFixed        x_offset,
  * operations extend to full size of the viewport again.
  */
 void            cogl_clip_unset               (void);
+
+/**
+ * cogl_clip_stack_save:
+ *
+ * Save the entire state of the clipping stack and then clear all
+ * clipping. The previous state can be returned to with
+ * cogl_clip_stack_restore(). Each call to cogl_clip_set() after this
+ * must be matched by a call to cogl_clip_unset() before calling
+ * cogl_clip_stack_restore().
+ *
+ * Since: 0.8.2
+ */
+void            cogl_clip_stack_save          (void);
+
+/**
+ * cogl_clip_stack_restore:
+ *
+ * Restore the state of the clipping stack that was previously saved
+ * by cogl_clip_stack_save().
+ *
+ * Since: 0.8.2
+ */
+void            cogl_clip_stack_restore       (void);
 
 /**
  * cogl_enable_depth_test:

@@ -37,6 +37,7 @@
 
 /* Expecting EXT functions not to be defined - redirect to pointers in context  */
 #define glGenRenderbuffersEXT                ctx->pf_glGenRenderbuffersEXT
+#define glDeleteRenderbuffersEXT             ctx->pf_glDeleteRenderbuffersEXT
 #define glBindRenderbufferEXT                ctx->pf_glBindRenderbufferEXT
 #define glRenderbufferStorageEXT             ctx->pf_glRenderbufferStorageEXT
 #define glGenFramebuffersEXT                 ctx->pf_glGenFramebuffersEXT
@@ -68,6 +69,7 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   CoglTexSliceSpan *y_span;
   GLuint            tex_gl_handle;
   GLuint            fbo_gl_handle;
+  GLuint            gl_stencil_handle;
   GLenum            status;
   
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
@@ -92,21 +94,47 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
   y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
   tex_gl_handle = g_array_index (tex->slice_gl_handles, GLuint, 0);
-  
+
+  /* Create a renderbuffer for stenciling */
+  GE( glGenRenderbuffersEXT (1, &gl_stencil_handle) );
+  GE( glBindRenderbufferEXT (GL_RENDERBUFFER_EXT, gl_stencil_handle) );
+  GE( glRenderbufferStorageEXT (GL_RENDERBUFFER_EXT, GL_STENCIL_INDEX8_EXT,
+				cogl_texture_get_width (texhandle),
+				cogl_texture_get_height (texhandle)) );
+  GE( glBindRenderbufferEXT (GL_RENDERBUFFER_EXT, 0) );
+
   /* Generate framebuffer */
   glGenFramebuffersEXT (1, &fbo_gl_handle);
   GE( glBindFramebufferEXT (GL_FRAMEBUFFER_EXT, fbo_gl_handle) );
   GE( glFramebufferTexture2DEXT (GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
 				 tex->gl_target, tex_gl_handle, 0) );
+  GE( glFramebufferRenderbufferEXT (GL_FRAMEBUFFER_EXT,
+				    GL_STENCIL_ATTACHMENT_EXT,
+				    GL_RENDERBUFFER_EXT, gl_stencil_handle) );
   
   /* Make sure it's complete */
   status = glCheckFramebufferStatusEXT (GL_FRAMEBUFFER_EXT);
   
   if (status != GL_FRAMEBUFFER_COMPLETE_EXT)
     {
-      GE( glDeleteFramebuffersEXT (1, &fbo_gl_handle) );
-      GE( glBindFramebufferEXT (GL_FRAMEBUFFER_EXT, 0) );
-      return COGL_INVALID_HANDLE;
+      /* Stencil renderbuffers aren't always supported. Try again
+	 without the stencil buffer */
+      GE( glFramebufferRenderbufferEXT (GL_FRAMEBUFFER_EXT,
+					GL_STENCIL_ATTACHMENT_EXT,
+					GL_RENDERBUFFER_EXT,
+					0) );
+      GE( glDeleteRenderbuffersEXT (1, &gl_stencil_handle) );
+      gl_stencil_handle = 0;
+      
+      status = glCheckFramebufferStatusEXT (GL_FRAMEBUFFER_EXT);
+  
+      if (status != GL_FRAMEBUFFER_COMPLETE_EXT)
+	{
+	  /* Still failing, so give up */
+	  GE( glDeleteFramebuffersEXT (1, &fbo_gl_handle) );
+	  GE( glBindFramebufferEXT (GL_FRAMEBUFFER_EXT, 0) );
+	  return COGL_INVALID_HANDLE;
+	}
     }
   
   GE( glBindFramebufferEXT (GL_FRAMEBUFFER_EXT, 0) );
@@ -114,10 +142,11 @@ cogl_offscreen_new_to_texture (CoglHandle texhandle)
   /* Allocate and init a CoglFbo object (store non-wasted size
      for subsequent blits and viewport setup) */
   fbo = (CoglFbo*) g_malloc (sizeof (CoglFbo));
-  fbo->ref_count = 1;
-  fbo->width     = x_span->size - x_span->waste;
-  fbo->height    = y_span->size - y_span->waste;
-  fbo->gl_handle = fbo_gl_handle;
+  fbo->ref_count         = 1;
+  fbo->width             = x_span->size - x_span->waste;
+  fbo->height            = y_span->size - y_span->waste;
+  fbo->gl_handle         = fbo_gl_handle;
+  fbo->gl_stencil_handle = gl_stencil_handle;
 
   COGL_HANDLE_DEBUG_NEW (offscreen, fbo);
   
@@ -140,7 +169,8 @@ _cogl_offscreen_free (CoglFbo *fbo)
 
   /* Frees FBO resources but its handle is not
      released! Do that separately before this! */
-
+  if (fbo->gl_stencil_handle)
+    GE( glDeleteRenderbuffersEXT (1, &fbo->gl_stencil_handle) );
   GE( glDeleteFramebuffersEXT (1, &fbo->gl_handle) );
   g_free (fbo);
 }
