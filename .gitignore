@@ -26,6 +26,7 @@ configure
 depcomp
 doc/manual/clutter-manual.xml
 doc/reference/clutter/clutter-*.txt
+!/doc/reference/clutter/clutter-sections.txt
 doc/reference/clutter/html
 doc/reference/clutter/tmpl
 doc/reference/clutter/xml
@@ -37,6 +38,7 @@ doc/reference/clutter/clutter.prerequisites
 doc/reference/clutter/clutter.signals
 doc/reference/clutter/*.stamp
 doc/reference/cogl/cogl-*.txt
+!/doc/reference/cogl/cogl-sections.txt
 doc/reference/cogl/html
 doc/reference/cogl/tmpl
 doc/reference/cogl/xml
