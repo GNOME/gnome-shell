@@ -1,3 +1,8 @@
+2008-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-main.c: Rework and improve the documentation
+	of the thread-safe timeout and idle source installer functions.
+
 2008-08-01  Neil Roberts  <neil@o-hand.com>
 
 	Bug 945 - Clipping+fbo cloning bugs

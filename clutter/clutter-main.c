@@ -649,45 +649,85 @@ clutter_threads_dispatch_free (gpointer data)
  * @notify: functio to call when the idle source is removed
  *
  * Adds a function to be called whenever there are no higher priority
- * events pending.  If the function returns %FALSE it is automatically
+ * events pending. If the function returns %FALSE it is automatically
  * removed from the list of event sources and will not be called again.
  *
- * This variant of g_idle_add_full() calls @function with the Clutter lock
- * held. It can be thought of a MT-safe version for Clutter actors for the
- * following use case, where you have to worry about idle_callback()
- * running in thread A and accessing @self after it has been finalized
- * in thread B:
+ * This function can be considered a thread-safe variant of g_idle_add_full():
+ * it will call @function while holding the Clutter lock. It is logically
+ * equivalent to the following implementation:
  *
- * <informalexample><programlisting>
+ * |[
  * static gboolean
- * idle_callback (gpointer data)
+ * idle_safe_callback (gpointer data)
  * {
- *    // clutter_threads_enter(); would be needed for g_idle_add()
+ *    SafeClosure *closure = data;
+ *    gboolean res = FALSE;
  *
- *    SomeActor *self = data;
- *    /<!-- -->* do stuff with self *<!-- -->/
+ *    /&ast; mark the critical section &ast;/
  *
- *    self->idle_id = 0;
+ *    clutter_threads_enter();
  *
- *    // clutter_threads_leave(); would be needed for g_idle_add()
- *    return FALSE;
+ *    /&ast; the callback does not need to acquire the Clutter
+ *     &ast; lock itself, as it is held by the this proxy handler
+ *     &ast;/
+ *    res = closure->callback (closure->data);
+ *
+ *    clutter_threads_leave();
+ *
+ *    return res;
  * }
- * static void
- * some_actor_do_stuff_later (SomeActor *self)
+ * static gulong
+ * add_safe_idle (GSourceFunc callback,
+ *                gpointer    data)
  * {
- *    self->idle_id = clutter_threads_add_idle (idle_callback, self)
- *    // using g_idle_add() here would require thread protection in the callback
+ *   SafeClosure *closure = g_new0 (SafeClosure, 1);
+ *
+ *   closure-&gt;callback = callback;
+ *   closure-&gt;data = data;
+ *
+ *   return g_add_idle_full (G_PRIORITY_DEFAULT_IDLE,
+ *                           idle_safe_callback,
+ *                           closure,
+ *                           g_free)
+ * }
+ *]|
+ *
+ * This function should be used by threaded applications to make sure
+ * that @func is emitted under the Clutter threads lock and invoked
+ * from the same thread that started the Clutter main loop. For instance,
+ * it can be used to update the UI using the results from a worker
+ * thread:
+ *
+ * |[
+ * static gboolean
+ * update_ui (gpointer data)
+ * {
+ *   SomeClosure *closure = data;
+ *
+ *   /&ast; it is safe to call Clutter API from this function because
+ *    &ast; it is invoked from the same thread that started the main
+ *    &ast; loop and under the Clutter thread lock
+ *    &ast;/
+ *   clutter_label_set_text (CLUTTER_LABEL (closure-&gt;label),
+ *                           closure-&gt;text);
+ *
+ *   g_object_unref (closure-&gt;label);
+ *   g_free (closure);
+ *
+ *   return FALSE;
  * }
  *
- * static void
- * some_actor_finalize (GObject *object)
- * {
- *    SomeActor *self = SOME_ACTOR (object);
- *    if (self->idle_id)
- *      g_source_remove (self->idle_id);
- *    G_OBJECT_CLASS (parent_class)->finalize (object);
- * }
- * </programlisting></informalexample>
+ *   /&ast; within another thread &ast;/
+ *   closure = g_new0 (SomeClosure, 1);
+ *   /&ast; always take a reference on GObject instances &ast;/
+ *   closure-&gt;label = g_object_ref (my_application-&gt;label);
+ *   closure-&gt;text = g_strdup (processed_text_to_update_the_label);
+ *
+ *   clutter_threads_add_idle_full (G_PRIORITY_HIGH_IDLE,
+ *                                  update_ui,
+ *                                  closure,
+ *                                  NULL);
+ * ]|
  *
  * Return value: the ID (greater than 0) of the event source.
  *
@@ -718,7 +758,8 @@ clutter_threads_add_idle_full (gint           priority,
  * @func: function to call
  * @data: data to pass to the function
  *
- * Simple wrapper around clutter_threads_add_idle_full()
+ * Simple wrapper around clutter_threads_add_idle_full() using the
+ * default priority.
  *
  * Return value: the ID (greater than 0) of the event source.
  *
@@ -744,21 +785,21 @@ clutter_threads_add_idle (GSourceFunc func,
  * @data: data to pass to the function
  * @notify: function to call when the timeout source is removed
  *
- * Sets a function to be called at regular intervals holding the Clutter lock,
- * with the given priority.  The function is called repeatedly until it
- * returns %FALSE, at which point the timeout is automatically destroyed
- * and the function will not be called again.  The @notify function is
- * called when the timeout is destroyed.  The first call to the
- * function will be at the end of the first @interval.
+ * Sets a function to be called at regular intervals holding the Clutter
+ * threads lock, with the given priority. The function is called repeatedly
+ * until it returns %FALSE, at which point the timeout is automatically
+ * removed and the function will not be called again. The @notify function
+ * is called when the timeout is removed.
  *
- * Note that timeout functions may be delayed, due to the processing of other
- * event sources. Thus they should not be relied on for precise timing.
- * After each call to the timeout function, the time of the next
- * timeout is recalculated based on the current time and the given interval
- * (it does not try to 'catch up' time lost in delays).
+ * The first call to the function will be at the end of the first @interval.
  *
- * This variant of g_timeout_add_full() can be thought of a MT-safe version
- * for Clutter actors. See also clutter_threads_add_idle_full().
+ * It is important to note that, due to how the Clutter main loop is
+ * implemented, the timing will not be accurate and it will not try to
+ * "keep up" with the interval. A more reliable source is available
+ * using clutter_threads_add_frame_source_full(), which is also internally
+ * used by #ClutterTimeline.
+ *
+ * See also clutter_threads_add_idle_full().
  *
  * Return value: the ID (greater than 0) of the event source.
  *
@@ -820,12 +861,11 @@ clutter_threads_add_timeout (guint       interval,
  * @data: data to pass to the function
  * @notify: function to call when the timeout source is removed
  *
- * Sets a function to be called at regular intervals holding the Clutter lock,
- * with the given priority.  The function is called repeatedly until it
- * returns %FALSE, at which point the timeout is automatically destroyed
- * and the function will not be called again.  The @notify function is
- * called when the timeout is destroyed.  The first call to the
- * function will be at the end of the first @interval.
+ * Sets a function to be called at regular intervals holding the Clutter
+ * threads lock, with the given priority. The function is called repeatedly
+ * until it returns %FALSE, at which point the timeout is automatically
+ * removed and the function will not be called again. The @notify function
+ * is called when the timeout is removed.
  *
  * This function is similar to clutter_threads_add_timeout_full()
  * except that it will try to compensate for delays. For example, if
@@ -837,9 +877,8 @@ clutter_threads_add_timeout (guint       interval,
  * to invoke the function multiple times to catch up missing frames if
  * @func takes more than @interval ms to execute.
  *
- * This variant of clutter_frame_source_add_full() can be thought of a
- * MT-safe version for Clutter actors.
-
+ * See also clutter_threads_add_idle_full().
+ *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 0.8
