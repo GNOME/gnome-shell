@@ -2115,41 +2115,51 @@ typedef struct {
 /* default signal connection code */
 static void
 clutter_script_default_connect (ClutterScript *script,
-                                GObject       *object,
+                                GObject       *gobject,
                                 const gchar   *signal_name,
                                 const gchar   *signal_handler,
-                                GObject       *connect_object,
+                                GObject       *connect_gobject,
                                 GConnectFlags  flags,
                                 gpointer       user_data)
 {
   ConnectData *data = user_data;
-  GCallback func;
-  
-  if (!g_module_symbol (data->module, signal_handler, (gpointer)&func))
+  GCallback function;
+
+  if (!data->module)
+    return;
+
+  if (!g_module_symbol (data->module, signal_handler, (gpointer) &function))
     {
       g_warning ("Could not find a signal handler '%s' for signal '%s::%s'",
                  signal_handler,
-                 connect_object ? G_OBJECT_TYPE_NAME (connect_object)
-                                : G_OBJECT_TYPE_NAME (object),
+                 connect_gobject ? G_OBJECT_TYPE_NAME (connect_gobject)
+                                 : G_OBJECT_TYPE_NAME (gobject),
                  signal_name);
       return;
     }
 
   CLUTTER_NOTE (SCRIPT,
                 "connecting %s::%s to %s (afetr:%s, swapped:%s, object:%s)",
-                (connect_object ? G_OBJECT_TYPE_NAME (connect_object)
-                                : G_OBJECT_TYPE_NAME (object)),
+                (connect_gobject ? G_OBJECT_TYPE_NAME (connect_gobject)
+                                 : G_OBJECT_TYPE_NAME (gobject)),
                 signal_name,
                 signal_handler,
                 (flags & G_CONNECT_AFTER) ? "true" : "false",
                 (flags & G_CONNECT_SWAPPED) ? "true" : "false",
-                (connect_object ? G_OBJECT_TYPE_NAME (connect_object)
-                                : "<none>"));
+                (connect_gobject ? G_OBJECT_TYPE_NAME (connect_gobject)
+                                 : "<none>"));
 
-  if (connect_object)
-    g_signal_connect_object (object, signal_name, func, connect_object, flags);
+  if (connect_gobject != NULL)
+    g_signal_connect_object (gobject,
+                             signal_name, function,
+                             connect_gobject,
+                             flags);
   else
-    g_signal_connect_data (object, signal_name, func, data->data, NULL, flags);
+    g_signal_connect_data (gobject,
+                           signal_name, function,
+                           data->data,
+                           NULL,
+                           flags);
 }
 
 /**
@@ -2160,14 +2170,12 @@ clutter_script_default_connect (ClutterScript *script,
  * Connects all the signals defined into a UI definition file to their
  * handlers.
  *
- * This method is a simpler variation of clutter_script_connect_signals_full().
- * It uses #GModule's introspective features (by opening the module %NULL) 
- * to look at the application's symbol table. From here it tries to match
- * the signal handler names given in the interface description with
- * symbols in the application and connects the signals.
+ * This method invokes clutter_script_connect_signals_full() internally
+ * and uses  #GModule's introspective features (by opening the current
+ * module's scope) to look at the application's symbol table.
  * 
- * Note that this function will not work correctly if #GModule is not
- * supported on the platform.
+ * Note that this function will not work if #GModule is not supported by
+ * the platform Clutter is running on.
  *
  * Since: 0.6
  */
