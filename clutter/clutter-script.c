@@ -86,7 +86,7 @@
  *   "angle-end"   : 360.0,
  *   "axis"        : "z-axis",
  *   "alpha"       : {
- *     "timeline" : { "num-frames" : 240, "fps" : 60, "loop" : true },
+ *     "timeline" : { "duration" : 4000, "fps" : 60, "loop" : true },
  *     "function" : "sine"
  *   }
  * }
@@ -233,31 +233,34 @@ warn_missing_attribute (ClutterScript *script,
     }
 }
 
-#if 0
 static void
 warn_invalid_value (ClutterScript *script,
                     const gchar   *attribute,
+                    const gchar   *expected,
                     JsonNode      *node)
 {
   ClutterScriptPrivate *priv = script->priv;
 
   if (G_LIKELY (node))
     {
-      g_warning ("%s:%d: invalid value of type `%s' for attribute `%s'",
+      g_warning ("%s:%d: invalid value of type `%s' for attribute `%s':"
+                 "a value of type `%s' is expected",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
                  json_node_type_name (node),
-                 attribute);
+                 attribute,
+                 expected);
     }
   else
     {
-      g_warning ("%s:%d: invalid value for attribute `%s'",
+      g_warning ("%s:%d: invalid value for attribute `%s':"
+                 "a value of type `%s' is expected",
                  priv->is_filename ? priv->filename : "<input>",
                  json_parser_get_current_line (priv->parser),
-                 attribute);
+                 attribute,
+                 expected);
     }
 }
-#endif
 
 static const gchar *
 get_id_from_node (JsonNode *node)
@@ -316,8 +319,9 @@ parse_children (ObjectInfo *oinfo,
 }
 
 static GList *
-parse_signals (ObjectInfo *oinfo,
-               JsonNode   *node)
+parse_signals (ClutterScript *script,
+               ObjectInfo    *oinfo,
+               JsonNode      *node)
 {
   JsonArray *array;
   GList *retval;
@@ -325,7 +329,7 @@ parse_signals (ObjectInfo *oinfo,
 
   if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
     {
-      g_warning ("Expecting an array for signal definitions");
+      warn_invalid_value (script, "signals", "Array", node);
       return NULL;
     }
 
@@ -345,7 +349,7 @@ parse_signals (ObjectInfo *oinfo,
 
       if (JSON_NODE_TYPE (val) != JSON_NODE_OBJECT)
         {
-          g_warning ("Expecting an array of objects");
+          warn_invalid_value (script, "signals array", "Object", node);
           continue;
         }
 
@@ -354,7 +358,7 @@ parse_signals (ObjectInfo *oinfo,
       /* mandatory: "name" */
       if (!json_object_has_member (object, "name"))
         {
-          g_warning ("Missing `name' attribute in signal definition");
+          warn_missing_attribute (script, NULL, "name");
           continue;
         }
       else
@@ -365,7 +369,7 @@ parse_signals (ObjectInfo *oinfo,
             name = json_node_get_string (val);
           else
             {
-              g_warning ("Signal `name' member must be a string");
+              warn_invalid_value (script, "name", "string", val);
               continue;
             }
         }
@@ -373,7 +377,7 @@ parse_signals (ObjectInfo *oinfo,
       /* mandatory: "handler" */
       if (!json_object_has_member (object, "handler"))
         {
-          g_warning ("Missing `handler' attribute in signal definition");
+          warn_missing_attribute (script, NULL, "handler");
           continue;
         }
       else
@@ -384,7 +388,7 @@ parse_signals (ObjectInfo *oinfo,
             handler = json_node_get_string (val);
           else
             {
-              g_warning ("Signal `handler' member must be a string");
+              warn_invalid_value (script, "handler", "string", val);
               continue;
             }
         }
@@ -511,20 +515,69 @@ construct_timeline (ClutterScript *script,
 static const struct
 {
   const gchar *name;
+  const gchar *short_name;
   ClutterAlphaFunc symbol;
 } clutter_alphas[] = {
-  { "clutter_ramp_inc_func",       CLUTTER_ALPHA_RAMP_INC },
-  { "clutter_ramp_dec_func",       CLUTTER_ALPHA_RAMP_DEC },
-  { "clutter_ramp_func",           CLUTTER_ALPHA_RAMP },
-  { "clutter_sine_inc_func",       CLUTTER_ALPHA_SINE_INC },
-  { "clutter_sine_dec_func",       CLUTTER_ALPHA_SINE_DEC },
-  { "clutter_sine_half_func",      CLUTTER_ALPHA_SINE_HALF },
-  { "clutter_sine_func",           CLUTTER_ALPHA_SINE },
-  { "clutter_square_func",         CLUTTER_ALPHA_SQUARE },
-  { "clutter_smoothstep_inc_func", CLUTTER_ALPHA_SMOOTHSTEP_INC },
-  { "clutter_smoothstep_dec_func", CLUTTER_ALPHA_SMOOTHSTEP_DEC },
-  { "clutter_exp_inc_func",        CLUTTER_ALPHA_EXP_INC },
-  { "clutter_exp_dec_func",        CLUTTER_ALPHA_EXP_DEC }
+  {
+    "clutter_ramp_inc_func",
+    "ramp-inc",
+    CLUTTER_ALPHA_RAMP_INC
+  },
+  {
+    "clutter_ramp_dec_func",
+    "ramp-dec",
+    CLUTTER_ALPHA_RAMP_DEC
+  },
+  {
+    "clutter_ramp_func",
+    "ramp",
+    CLUTTER_ALPHA_RAMP
+  },
+  {
+    "clutter_sine_inc_func",
+    "sine-inc",
+    CLUTTER_ALPHA_SINE_INC
+  },
+  {
+    "clutter_sine_dec_func",
+    "sine-dec",
+    CLUTTER_ALPHA_SINE_DEC
+  },
+  {
+    "clutter_sine_half_func",
+    "sine-half",
+    CLUTTER_ALPHA_SINE_HALF
+  },
+  {
+    "clutter_sine_func",
+    "sine",
+    CLUTTER_ALPHA_SINE
+  },
+  {
+    "clutter_square_func",
+    "square",
+    CLUTTER_ALPHA_SQUARE
+  },
+  {
+    "clutter_smoothstep_inc_func",
+    "smoothstep-inc",
+    CLUTTER_ALPHA_SMOOTHSTEP_INC
+  },
+  {
+    "clutter_smoothstep_dec_func",
+    "smoothstep-dec",
+    CLUTTER_ALPHA_SMOOTHSTEP_DEC
+  },
+  {
+    "clutter_exp_inc_func",
+    "exp-inc",
+    CLUTTER_ALPHA_EXP_INC
+  },
+  {
+    "clutter_exp_dec_func",
+    "exp-dec",
+    CLUTTER_ALPHA_EXP_DEC
+  }
 };
 
 static const gint n_clutter_alphas = G_N_ELEMENTS (clutter_alphas);
@@ -534,14 +587,13 @@ resolve_alpha_func (const gchar *name)
 {
   static GModule *module = NULL;
   ClutterAlphaFunc func;
-  GString *symbol_name;
-  gchar c, *symbol;
   gint i;
 
   CLUTTER_NOTE (SCRIPT, "Looking up `%s' alpha function", name);
 
   for (i = 0; i < n_clutter_alphas; i++)
-    if (strcmp (name, clutter_alphas[i].name) == 0)
+    if (strcmp (name, clutter_alphas[i].name) == 0 ||
+        strcmp (name, clutter_alphas[i].short_name) == 0)
       {
         CLUTTER_NOTE (SCRIPT, "Found `%s' alpha function in the whitelist",
                       name);
@@ -557,44 +609,6 @@ resolve_alpha_func (const gchar *name)
                     name);
       return func;
     }
-
-  symbol_name = g_string_new ("");
-  g_string_append (symbol_name, "clutter_");
-  for (i = 0; name[i] != '\0'; i++)
-    {
-      c = name[i];
-      
-      if (name[i] == '-')
-        g_string_append_c (symbol_name, '_');
-      else
-        g_string_append_c (symbol_name, g_ascii_tolower (name[i]));
-    }
-  g_string_append (symbol_name, "_func");
-
-  symbol = g_string_free (symbol_name, FALSE);
-
-  CLUTTER_NOTE (SCRIPT, "Looking `%s' alpha function", symbol);
-
-  for (i = 0; i < n_clutter_alphas; i++)
-    if (strcmp (symbol, clutter_alphas[i].name) == 0)
-      {
-        CLUTTER_NOTE (SCRIPT,
-                      "Found `%s' (%s) alpha function in the whitelist",
-                      name, symbol);
-        g_free (symbol);
-        return clutter_alphas[i].symbol;
-      }
-
-  if (g_module_symbol (module, symbol, (gpointer)&func))
-    {
-      CLUTTER_NOTE (SCRIPT,
-                    "Found `%s' (%s) alpha function in the symbols table",
-                    name, symbol);
-      g_free (symbol);
-      return func;
-    }
-
-  g_free (symbol);
 
   return NULL;
 }
@@ -738,7 +752,7 @@ json_object_end (JsonParser *parser,
   if (json_object_has_member (object, "signals"))
     {
       val = json_object_get_member (object, "signals");
-      oinfo->signals = parse_signals (oinfo, val);
+      oinfo->signals = parse_signals (script, oinfo, val);
 
       json_object_remove_member (object, "signals");
     }
@@ -830,6 +844,54 @@ clutter_script_parse_node (ClutterScript *script,
                   return TRUE;
                 }
             }
+          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_KNOT))
+            {
+              ClutterKnot knot = { 0, };
+
+              /* knot := { "x" : (int), "y" : (int) } */
+
+              if (clutter_script_parse_knot (script, node, &knot))
+                {
+                  g_value_set_boxed (value, &knot);
+                  return TRUE;
+                }
+            }
+          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_GEOMETRY))
+            {
+              ClutterGeometry geom = { 0, };
+
+              /* geometry := {
+               *        "x" : (int),
+               *        "y" : (int),
+               *        "width" : (int),
+               *        "height" : (int)
+               * }
+               */
+
+              if (clutter_script_parse_geometry (script, node, &geom))
+                {
+                  g_value_set_boxed (value, &geom);
+                  return TRUE;
+                }
+            }
+          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_COLOR))
+            {
+              ClutterColor color = { 0, };
+
+              /* color := {
+               *        "red" : (int),
+               *        "green" : (int),
+               *        "blue" : (int),
+               *        "alpha" : (int)
+               * }
+               */
+
+              if (clutter_script_parse_color (script, node, &color))
+                {
+                  g_value_set_boxed (value, &color);
+                  return TRUE;
+                }
+            }
          }
       return FALSE;
 
@@ -844,6 +906,8 @@ clutter_script_parse_node (ClutterScript *script,
             {
               ClutterKnot knot = { 0, };
 
+              /* knot := [ (int), (int) ] */
+
               if (clutter_script_parse_knot (script, node, &knot))
                 {
                   g_value_set_boxed (value, &knot);
@@ -854,11 +918,50 @@ clutter_script_parse_node (ClutterScript *script,
             {
               ClutterGeometry geom = { 0, };
 
+              /* geometry := [ (int), (int), (int), (int) ] */
+
               if (clutter_script_parse_geometry (script, node, &geom))
                 {
                   g_value_set_boxed (value, &geom);
                   return TRUE;
                 }
+            }
+          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_COLOR))
+            {
+              ClutterColor color = { 0, };
+
+              /* color := [ (int), (int), (int), (int) ] */
+
+              if (clutter_script_parse_color (script, node, &color))
+                {
+                  g_value_set_boxed (value, &color);
+                  return TRUE;
+                }
+            }
+          else if (G_VALUE_HOLDS (value, G_TYPE_STRV))
+            {
+              JsonArray *array = json_node_get_array (node);
+              guint i, array_len = json_array_get_length (array);
+              GPtrArray *str_array = g_ptr_array_sized_new (array_len);
+
+              /* strv := [ (str), (str), ... ] */
+
+              for (i = 0; i < array_len; i++)
+                {
+                  JsonNode *val = json_array_get_element (array, i);
+
+                  if (JSON_NODE_TYPE (val) != JSON_NODE_VALUE &&
+                      json_node_get_string (val) == NULL)
+                    continue;
+
+                  g_ptr_array_add (str_array,
+                                   (gpointer) json_node_get_string (val));
+                }
+
+              g_value_set_boxed (value, str_array->pdata);
+              g_ptr_array_free (str_array, TRUE);
+
+              return TRUE;
             }
         }
       return FALSE;
@@ -1240,6 +1343,10 @@ add_children (ClutterScript    *script,
   oinfo->children = unresolved;
 }
 
+/* top-level classes: these classes are the roots of the
+ * hiearchy; some of them must be unreferenced, whilst
+ * others are owned by other instances
+ */
 static const struct
 {
   const gchar *type_name;
@@ -1396,6 +1503,17 @@ clutter_script_construct_object (ClutterScript *script,
           break;
         }
     }
+
+  /* XXX - at the moment, we are adding the children (and constructing
+   * the scenegraph) after we applied all the properties of an object;
+   * this usually ensures that an object is fully constructed before
+   * it is added to its parent. unfortunately, this also means that
+   * children cannot reference the parent's state inside their own
+   * definition.
+   *
+   * see bug:
+   *   http://bugzilla.openedhand.com/show_bug.cgi?id=1042
+   */
 
   if (oinfo->children && CLUTTER_IS_CONTAINER (object))
     add_children (script, CLUTTER_CONTAINER (object), oinfo);
@@ -1994,6 +2112,7 @@ typedef struct {
   gpointer data;
 } ConnectData;
 
+/* default signal connection code */
 static void
 clutter_script_default_connect (ClutterScript *script,
                                 GObject       *object,
@@ -2003,30 +2122,34 @@ clutter_script_default_connect (ClutterScript *script,
                                 GConnectFlags  flags,
                                 gpointer       user_data)
 {
-  ConnectData *cd = user_data;
+  ConnectData *data = user_data;
   GCallback func;
   
-  if (!g_module_symbol (cd->module, signal_handler, (gpointer)&func))
+  if (!g_module_symbol (data->module, signal_handler, (gpointer)&func))
     {
-      g_warning ("Could not find signal handler '%s'", signal_handler);
+      g_warning ("Could not find a signal handler '%s' for signal '%s::%s'",
+                 signal_handler,
+                 connect_object ? G_OBJECT_TYPE_NAME (connect_object)
+                                : G_OBJECT_TYPE_NAME (object),
+                 signal_name);
       return;
     }
 
   CLUTTER_NOTE (SCRIPT,
-                "connecting `%s::%s to %s (a:%d,s:%d,o:%s)",
-                (connect_object ? g_type_name (G_OBJECT_TYPE (connect_object))
-                                : g_type_name (G_OBJECT_TYPE (object))),
+                "connecting %s::%s to %s (afetr:%s, swapped:%s, object:%s)",
+                (connect_object ? G_OBJECT_TYPE_NAME (connect_object)
+                                : G_OBJECT_TYPE_NAME (object)),
                 signal_name,
                 signal_handler,
-                (flags & G_CONNECT_AFTER),
-                (flags & G_CONNECT_SWAPPED),
-                connect_object ? g_type_name (G_OBJECT_TYPE (connect_object))
-                               : "<none>");
+                (flags & G_CONNECT_AFTER) ? "true" : "false",
+                (flags & G_CONNECT_SWAPPED) ? "true" : "false",
+                (connect_object ? G_OBJECT_TYPE_NAME (connect_object)
+                                : "<none>"));
 
   if (connect_object)
     g_signal_connect_object (object, signal_name, func, connect_object, flags);
   else
-    g_signal_connect_data (object, signal_name, func, cd->data, NULL, flags);
+    g_signal_connect_data (object, signal_name, func, data->data, NULL, flags);
 }
 
 /**
@@ -2057,7 +2180,11 @@ clutter_script_connect_signals (ClutterScript *script,
   g_return_if_fail (CLUTTER_IS_SCRIPT (script));
 
   if (!g_module_supported ())
-    g_critical ("clutter_script_connect_signals() requires working GModule");
+    {
+      g_critical ("clutter_script_connect_signals() requires a working "
+                  "GModule support from GLib");
+      return;
+    }
 
   cd = g_new (ConnectData, 1);
   cd->module = g_module_open (NULL, G_MODULE_BIND_LAZY);
@@ -2096,12 +2223,10 @@ connect_each_object (gpointer key,
   for (l = oinfo->signals; l != NULL; l = l->next)
     {
       SignalInfo *sinfo = l->data;
-      GObject *connect_object;
+      GObject *connect_object = NULL;
 
       if (sinfo->object)
         connect_object = clutter_script_get_object (script, sinfo->object);
-      else
-        connect_object = NULL;
 
       if (sinfo->object && !connect_object)
         unresolved = g_list_prepend (unresolved, sinfo);
@@ -2118,6 +2243,10 @@ connect_each_object (gpointer key,
         }
     }
 
+  /* keep the unresolved signal handlers around, in case
+   * clutter_script_connect_signals() is called multiple
+   * times (e.g. after a UI definition merge)
+   */
   g_list_free (oinfo->signals);
   oinfo->signals = unresolved;
 }
@@ -2131,9 +2260,12 @@ connect_each_object (gpointer key,
  * Connects all the signals defined into a UI definition file to their
  * handlers.
  *
- * This function is similar to clutter_script_connect_signals() but it
- * does not require GModule to be supported. It is mainly targeted at
- * interpreted languages for controlling the signal connection.
+ * This function allows to control how the signal handlers are
+ * going to be connected to their respective signals. It is meant
+ * primarily for language bindings to allow resolving the function
+ * names using the native API.
+ *
+ * Applications should use clutter_script_connect_signals().
  *
  * Since: 0.6
  */
@@ -2214,7 +2346,9 @@ clutter_script_add_search_paths (ClutterScript       *script,
                 g_strv_length (new_paths));
 
   priv->search_paths = new_paths;
-  g_strfreev (old_paths);
+
+  if (old_paths)
+    g_strfreev (old_paths);
 }
 
 /**

@@ -27,7 +27,9 @@
 #define __CLUTTER_KEYSYMS_H__
 
 /* This file based on GDK's gdkkeysyms.h which in turn
- * I think is from xlibs keysymdef.h
+ * is taken from:
+ *
+ * http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
 */
 
 #define CLUTTER_VoidSymbol 0xFFFFFF

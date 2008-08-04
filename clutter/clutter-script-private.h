@@ -28,6 +28,7 @@
 
 #include <glib-object.h>
 #include "json/json-types.h"
+#include "clutter-color.h"
 #include "clutter-types.h"
 #include "clutter-script.h"
 
@@ -99,6 +100,9 @@ gboolean clutter_script_parse_knot        (ClutterScript   *script,
 gboolean clutter_script_parse_geometry    (ClutterScript   *script,
                                            JsonNode        *node,
                                            ClutterGeometry *geometry);
+gboolean clutter_script_parse_color       (ClutterScript   *script,
+                                           JsonNode        *node,
+                                           ClutterColor    *color);
 GObject *clutter_script_parse_alpha       (ClutterScript   *script,
                                            JsonNode        *node);
 

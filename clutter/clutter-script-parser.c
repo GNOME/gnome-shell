@@ -39,27 +39,47 @@ GType
 clutter_script_get_type_from_class (const gchar *name)
 {
   static GModule *module = NULL;
-  GTypeGetFunc func;
-  GString *symbol_name = g_string_new ("");
-  char c, *symbol;
-  int i;
+  GString *symbol_name = g_string_sized_new (64);
   GType gtype = G_TYPE_INVALID;
+  GTypeGetFunc func;
+  gchar *symbol;
+  gint i;
 
-  if (!module)
-    module = g_module_open (NULL, 0);
+  if (G_UNLIKELY (!module))
+    module = g_module_open (NULL, G_MODULE_BIND_LAZY);
   
   for (i = 0; name[i] != '\0'; i++)
     {
-      c = name[i];
-      /* skip if uppercase, first or previous is uppercase */
+      gchar c = name[i];
+
+      /* the standard naming policy for GObject-based libraries
+       * is:
+       *
+       *   NAME := INITIAL_WORD WORD+
+       *   INITIAL_WORD := [A-Z][a-z0-9]*
+       *   WORD := [A-Z]{1,2}[a-z0-9]+ | [A-Z]{2,}
+       *
+       * for instance:
+       *
+       *   GString -> g_string
+       *   GtkCTree -> gtk_ctree
+       *   ClutterX11TexturePixmap -> clutter_x11_texture_pixmap
+       *
+       * see:
+       *
+       * http://mail.gnome.org/archives/gtk-devel-list/2007-June/msg00022.html
+       */
+
       if ((c == g_ascii_toupper (c) &&
-           i > 0 && name[i-1] != g_ascii_toupper (name[i-1])) ||
-          (i > 2 && name[i]   == g_ascii_toupper (name[i]) &&
-           name[i-1] == g_ascii_toupper (name[i-1]) &&
-           name[i-2] == g_ascii_toupper (name[i-2])))
+           i > 0 && name[i - 1] != g_ascii_toupper (name[i - 1])) ||
+          (i > 2 && name[i] == g_ascii_toupper (name[i]) &&
+           name[i - 1] == g_ascii_toupper (name[i - 1]) &&
+           name[i - 2] == g_ascii_toupper (name[i - 2])))
         g_string_append_c (symbol_name, '_');
+
       g_string_append_c (symbol_name, g_ascii_tolower (c));
     }
+
   g_string_append (symbol_name, "_get_type");
   
   symbol = g_string_free (symbol_name, FALSE);
@@ -75,6 +95,20 @@ clutter_script_get_type_from_class (const gchar *name)
   return gtype;
 }
 
+/*
+ * clutter_script_enum_from_string:
+ * @type: a #GType for an enumeration type
+ * @string: the enumeration value as a string
+ * @enum_value: return location for the enumeration value as an integer
+ *
+ * Converts an enumeration value inside @string into a numeric
+ * value and places it into @enum_value.
+ *
+ * The enumeration value can be an integer, the enumeration nick
+ * or the enumeration name, as part of the #GEnumValue structure.
+ *
+ * Return value: %TRUE if the conversion was successfull.
+ */
 gboolean
 clutter_script_enum_from_string (GType        type, 
                                  const gchar *string,
@@ -115,14 +149,11 @@ clutter_script_flags_from_string (GType        type,
                                   const gchar *string,
                                   gint        *flags_value)
 {
-  GFlagsClass *fclass;
   gchar *endptr, *prevptr;
   guint i, j, ret, value;
   gchar *flagstr;
   GFlagsValue *fv;
   const gchar *flag;
-  gunichar ch;
-  gboolean eos;
 
   g_return_val_if_fail (G_TYPE_IS_FLAGS (type), 0);
   g_return_val_if_fail (string != 0, 0);
@@ -134,13 +165,14 @@ clutter_script_flags_from_string (GType        type,
     *flags_value = value;
   else
     {
+      GFlagsClass *fclass;
+
       fclass = g_type_class_ref (type);
 
       flagstr = g_strdup (string);
       for (value = i = j = 0; ; i++)
 	{
-	  
-	  eos = flagstr[i] == '\0';
+          gboolean eos = (flagstr[i] == '\0') ? TRUE : FALSE;
 	  
 	  if (!eos && flagstr[i] != '|')
 	    continue;
@@ -157,24 +189,30 @@ clutter_script_flags_from_string (GType        type,
 	  /* trim spaces */
 	  for (;;)
 	    {
-	      ch = g_utf8_get_char (flag);
+	      gunichar ch = g_utf8_get_char (flag);
 	      if (!g_unichar_isspace (ch))
 		break;
+
 	      flag = g_utf8_next_char (flag);
 	    }
 	  
 	  while (endptr > flag)
 	    {
+              gunichar ch;
+
 	      prevptr = g_utf8_prev_char (endptr);
+
 	      ch = g_utf8_get_char (prevptr);
 	      if (!g_unichar_isspace (ch))
 		break;
+
 	      endptr = prevptr;
 	    }
 	  
 	  if (endptr > flag)
 	    {
 	      *endptr = '\0';
+
 	      fv = g_flags_get_value_by_name (fclass, flag);
 	      
 	      if (!fv)
@@ -340,6 +378,86 @@ clutter_script_parse_geometry (ClutterScript   *script,
 
     case JSON_NODE_OBJECT:
       return parse_geometry_from_object (json_node_get_object (node), geometry);
+
+    default:
+      break;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+parse_color_from_array (JsonArray    *array,
+                        ClutterColor *color)
+{
+  JsonNode *val;
+
+  if (json_array_get_length (array) < 4)
+    return FALSE;
+
+  val = json_array_get_element (array, 0);
+  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
+    color->red = CLAMP (json_node_get_int (val), 0, 255);
+
+  val = json_array_get_element (array, 1);
+  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
+    color->green = CLAMP (json_node_get_int (val), 0, 255);
+
+  val = json_array_get_element (array, 2);
+  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
+    color->blue = CLAMP (json_node_get_int (val), 0, 255);
+
+  val = json_array_get_element (array, 3);
+  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
+    color->alpha = CLAMP (json_node_get_int (val), 0, 255);
+
+  return TRUE;
+}
+
+static gboolean
+parse_color_from_object (JsonObject   *object,
+                         ClutterColor *color)
+{
+  JsonNode *val;
+
+  if (json_object_get_size (object) < 4)
+    return FALSE;
+
+  val = json_object_get_member (object, "red");
+  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
+    color->red = CLAMP (json_node_get_int (val), 0, 255);
+
+  val = json_object_get_member (object, "green");
+  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
+    color->green = CLAMP (json_node_get_int (val), 0, 255);
+
+  val = json_object_get_member (object, "blue");
+  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
+    color->blue = CLAMP (json_node_get_int (val), 0, 255);
+
+  val = json_object_get_member (object, "alpha");
+  if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE)
+    color->alpha = CLAMP (json_node_get_int (val), 0, 255);
+
+  return TRUE;
+}
+
+gboolean
+clutter_script_parse_color (ClutterScript *script,
+                            JsonNode      *node,
+                            ClutterColor  *color)
+{
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
+  g_return_val_if_fail (node != NULL, FALSE);
+  g_return_val_if_fail (color != NULL, FALSE);
+
+  switch (JSON_NODE_TYPE (node))
+    {
+    case JSON_NODE_ARRAY:
+      return parse_color_from_array (json_node_get_array (node), color);
+
+    case JSON_NODE_OBJECT:
+      return parse_color_from_object (json_node_get_object (node), color);
 
     default:
       break;

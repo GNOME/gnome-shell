@@ -1,5 +1,15 @@
 2008-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script-parser.c:
+	* clutter/clutter-script-private.h: Clean up the code; add a
+	conversion function for reading a ClutterColor out of a
+	JSON object or array definition.
+
+	* clutter/clutter-script.c: Clean up the code; document properly
+	how we translate from type name to type function.
+
+2008-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-main.c: Rework and improve the documentation
 	of the thread-safe timeout and idle source installer functions.
 
