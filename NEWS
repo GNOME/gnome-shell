@@ -1,3 +1,14 @@
+2.23.89
+=======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Added DOAP file. (Thomas)
+
+Translations
+  Khaled Hosny (ar), Luca Ferretti (it), Takeshi AIHANA (ja), Wouter
+  Bolsterlee (nl), Vladimir Melo (pt_BR), Daniel Nylander (sv)
+
 2.23.55
 =======
 

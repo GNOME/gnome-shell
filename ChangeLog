@@ -1,3 +1,7 @@
+2008-08-04  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.23.89 release.
+
 2008-07-26  Thomas Thurman  <tthurman@gnome.org>
 
 	* metacity.doap (added): DOAP file (first pass, anyway).
