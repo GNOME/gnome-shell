@@ -1,5 +1,9 @@
 2008-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-keysyms.h: Resync with keysymdef.h inside Xorg.
+
+2008-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-script.c:
 	(clutter_script_default_connect): Improve wording and debug
 	messages in the default autoconnection for signal handlers.
