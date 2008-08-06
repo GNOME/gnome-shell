@@ -1,3 +1,15 @@
+2008-08-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-child-meta.c:
+	(clutter_child_meta_set_property),
+	(clutter_child_meta_class_init): Make the :container and
+	:actor properties of ChildMeta construct-only, to allow
+	bindings to actually use ChildMeta without abusing the API.
+
+	* clutter/clutter-container.c (create_child_meta): Instead of
+	setting the members of the ChildMeta structure, use the
+	constructor properties.
+
 2008-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-keysyms.h: Resync with keysymdef.h inside Xorg.

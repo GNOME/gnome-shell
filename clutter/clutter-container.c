@@ -641,9 +641,10 @@ create_child_meta (ClutterContainer *container,
       return;
     }
 
-  child_meta            = g_object_new (iface->child_meta_type, NULL);
-  child_meta->container = container;
-  child_meta->actor     = actor;
+  child_meta = g_object_new (iface->child_meta_type,
+                             "container", container,
+                             "actor", actor,
+                             NULL);
 
   data_list = g_object_get_qdata (G_OBJECT (container), quark_child_meta);
   data_list = g_slist_prepend (data_list, child_meta);

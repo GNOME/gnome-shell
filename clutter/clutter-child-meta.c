@@ -47,7 +47,7 @@
 #include "clutter-debug.h"
 #include "clutter-private.h"
 
-G_DEFINE_TYPE (ClutterChildMeta, clutter_child_meta, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (ClutterChildMeta, clutter_child_meta, G_TYPE_OBJECT);
 
 enum
 {
@@ -56,6 +56,30 @@ enum
   PROP_CONTAINER,
   PROP_ACTOR
 };
+
+static void
+clutter_child_meta_set_property (GObject      *object,
+                                 guint         prop_id,
+                                 const GValue *value,
+                                 GParamSpec   *pspec)
+{
+  ClutterChildMeta *child_meta = CLUTTER_CHILD_META (object);
+
+  switch (prop_id) 
+    {
+    case PROP_CONTAINER:
+      child_meta->container = g_value_get_object (value);
+      break;
+
+    case PROP_ACTOR:
+      child_meta->actor = g_value_get_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
 
 static void 
 clutter_child_meta_get_property (GObject    *object,
@@ -87,6 +111,7 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec *pspec;
 
+  gobject_class->set_property = clutter_child_meta_set_property;
   gobject_class->get_property = clutter_child_meta_get_property;
 
   /**
@@ -100,7 +125,8 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
                                "Container",
                                "The container that created this data",
                                CLUTTER_TYPE_CONTAINER,
-                               CLUTTER_PARAM_READABLE);
+                               G_PARAM_CONSTRUCT_ONLY |
+                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CONTAINER, pspec);
 
   /**
@@ -114,7 +140,8 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
                                "Actor",
                                "The actor wrapped by this data",
                                CLUTTER_TYPE_ACTOR,
-                               CLUTTER_PARAM_READABLE);
+                               G_PARAM_CONSTRUCT_ONLY |
+                               CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_ACTOR, pspec);
 }
 
