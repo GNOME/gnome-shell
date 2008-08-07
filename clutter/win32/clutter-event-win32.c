@@ -467,10 +467,16 @@ message_translate (ClutterBackend *backend,
 
       event->type = CLUTTER_SCROLL;
       event->scroll.time = msg->time;
-      event->scroll.x = GET_X_LPARAM (msg->lParam);
-      event->scroll.y = GET_Y_LPARAM (msg->lParam);
       event->scroll.modifier_state
 	= get_modifier_state (LOWORD (msg->wParam));
+
+      /* conversion to window coordinates is required */
+      {
+	POINT pt = { GET_X_LPARAM (msg->lParam), GET_Y_LPARAM (msg->lParam) };
+	ScreenToClient (msg->hwnd, &pt);
+	event->scroll.x = pt.x;
+	event->scroll.y = pt.y;
+      }
 
       if (stage_win32->scroll_pos >= WHEEL_DELTA)
 	{

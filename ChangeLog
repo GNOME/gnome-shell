@@ -1,3 +1,12 @@
+2008-08-07  Neil Roberts  <neil@o-hand.com>
+
+	Bug 1091 - WM_MOUSEWHEEL (scroll-event) not handled correctlly
+
+	* clutter/win32/clutter-event-win32.c (message_translate): The
+	coordinates in a WM_MOUSEWEEL message are given relative to the
+	screen so they need to be converted to client coordinates before
+	use. Thanks to Roman Yazmin.
+
 2008-08-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-child-meta.c:
