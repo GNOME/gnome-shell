@@ -1,3 +1,7 @@
+2008-08-13  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-branch bump to 2.25.0.
+
 2008-08-04  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.23.144.
