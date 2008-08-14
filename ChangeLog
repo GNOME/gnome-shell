@@ -1,3 +1,17 @@
+2008-08-14   Patrick Niklaus  <marex@compiz-fusion.org>
+
+          Icons for windows are taken from the desktop theme, not from
+          the Metacity theme or from the fallback icon that Metacity
+          provided.  Closes #524343.
+
+        * src/ui/ui.c: Use GtkIconTheme to load the default window icon.
+          Assumes the existence of an icon called "window", otherwise
+          falls back to "gtk-missing-image". Fixes #524343.
+        * src/ui/preview-widget: See above.
+        * src/include/common.h: Add META_DEFAULT_ICON_NAME.
+        * src/Makefile.am: Remove default_icon.png from inlinepixbufs.h.
+        * src/default_icon.png: Removed.
+
 2008-08-14  Akira TAGOH  <akira@tagoh.org>
 
         * doc/man/metacity-message.1: new manual page.

@@ -180,9 +180,8 @@ else
 install-data-local:
 endif
 
-IMAGES=default_icon.png stock_maximize.png stock_minimize.png stock_delete.png
-VARIABLES=default_icon_data $(srcdir)/default_icon.png \
-          stock_maximize_data $(srcdir)/stock_maximize.png \
+IMAGES=stock_maximize.png stock_minimize.png stock_delete.png
+VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
           stock_minimize_data $(srcdir)/stock_minimize.png \
           stock_delete_data $(srcdir)/stock_delete.png
 
