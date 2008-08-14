@@ -1,3 +1,8 @@
+2008-08-14  Akira TAGOH  <akira@tagoh.org>
+
+        * doc/man/metacity-message.1: new manual page.
+        * doc/man/Makefile.am: added new reference.
+
 2008-08-13  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-branch bump to 2.25.0.
