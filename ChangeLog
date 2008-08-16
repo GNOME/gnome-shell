@@ -1,3 +1,17 @@
+2008-08-16  Ted Percival  <ted@midg3t.net>
+
+        Ensure the user_rect is set sanely for windows that start maximized.
+        Prevents maximized windows from warping across the screen.
+        Fixes bug #504692.
+
+        * src/core/window.c (save_user_placement): renamed version of
+        meta_window_save_user_rect().
+        * src/core/window.c (force_save_user_placement): similar, but will
+        always save user_rect even if the window is maximised or fullscreen.
+        * src/core/window.c (meta_window_move_resize_internal): unplaced
+        windows have force_save_user_placement() called instead of
+        save_user_placement().
+
 2008-08-14   Patrick Niklaus  <marex@compiz-fusion.org>
 
           Icons for windows are taken from the desktop theme, not from

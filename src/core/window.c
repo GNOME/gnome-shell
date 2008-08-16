@@ -75,7 +75,8 @@ static void     meta_window_show          (MetaWindow     *window);
 static void     meta_window_hide          (MetaWindow     *window);
 
 static void     meta_window_save_rect         (MetaWindow    *window);
-static void     meta_window_save_user_rect    (MetaWindow    *window);
+static void     save_user_window_placement    (MetaWindow    *window);
+static void     force_save_user_window_placement (MetaWindow    *window);
 
 static void meta_window_move_resize_internal (MetaWindow         *window,
                                               MetaMoveResizeFlags flags,
@@ -2450,11 +2451,28 @@ meta_window_save_rect (MetaWindow *window)
     }
 }
 
+/**
+ * Save the user_rect regardless of whether the window is maximized or
+ * fullscreen. See save_user_window_placement() for most uses.
+ *
+ * \param window  Store current position of this window for future reference
+ */
 static void
-meta_window_save_user_rect (MetaWindow *window)
+force_save_user_window_placement (MetaWindow *window)
 {
-  /* We do not save maximized or fullscreen dimensions, otherwise the
-   * window may snap back to those dimensions (Bug #461927). */
+  meta_window_get_client_root_coords (window, &window->user_rect);
+}
+
+/**
+ * Save the user_rect, but only if the window is neither maximized nor
+ * fullscreen, otherwise the window may snap back to those dimensions
+ * (bug #461927).
+ *
+ * \param window  Store current position of this window for future reference
+ */
+static void
+save_user_window_placement (MetaWindow *window)
+{
   if (!(META_WINDOW_MAXIMIZED (window) || window->fullscreen))
     {
       MetaRectangle user_rect;
@@ -3520,13 +3538,11 @@ meta_window_move_resize_internal (MetaWindow          *window,
   if (need_configure_notify)
     send_configure_notify (window);
 
-  /* user_rect is the position to restore towards if strut changes occur.  Thus
-   * we want user_rect to reflect user position/size changes OR the initial
-   * placement of the window.
-   */
-  if (is_user_action || !window->placed)
-    meta_window_save_user_rect(window);
-  
+  if (!window->placed)
+    force_save_user_window_placement (window);
+  else if (is_user_action)
+    save_user_window_placement (window);
+
   if (need_move_frame || need_resize_frame ||
       need_move_client || need_resize_client)
     {
@@ -4568,7 +4584,7 @@ meta_window_move_resize_request (MetaWindow *window,
    *
    * See also bug 426519.
    */
-  meta_window_save_user_rect(window);
+  save_user_window_placement (window);
 }
 
 gboolean
