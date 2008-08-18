@@ -30,7 +30,6 @@
 #include <clutter/glx/clutter-glx.h>
 
 #include <cogl/cogl.h>
-
 #define SHADOW_RADIUS 10
 #define SHADOW_OPACITY	0.9
 #define SHADOW_OFFSET_X	(-SHADOW_RADIUS)
@@ -41,7 +40,7 @@
 #define TILE_HEIGHT (3*MAX_TILE_SZ)
 
 ClutterActor*
-tidy_texture_frame_new (ClutterTexture *texture, 
+tidy_texture_frame_new (ClutterTexture *texture,
 			gint            left,
 			gint            top,
 			gint            right,
@@ -60,7 +59,7 @@ composite_at_least_version (MetaDisplay *display,
 
   if (major == -1)
     meta_display_get_compositor_version (display, &major, &minor);
-  
+
   return (major > maj || (major == maj && minor >= min));
 }
 
@@ -68,16 +67,23 @@ composite_at_least_version (MetaDisplay *display,
 
 typedef enum _MetaCompWindowType
 {
-  META_COMP_WINDOW_NORMAL,
-  META_COMP_WINDOW_DND,
-  META_COMP_WINDOW_DESKTOP,
-  META_COMP_WINDOW_DOCK,
-  META_COMP_WINDOW_MENU,
+  /*
+   * Types shared with MetaWindow
+   */
+  META_COMP_WINDOW_NORMAL  = META_WINDOW_NORMAL,
+  META_COMP_WINDOW_DESKTOP = META_WINDOW_DESKTOP,
+  META_COMP_WINDOW_DOCK    = META_WINDOW_DOCK,
+  META_COMP_WINDOW_MENU    = META_WINDOW_MENU,
+
+  /*
+   * Extended types that WM does not care about, but we do.
+   */
+  META_COMP_WINDOW_TOOLTIP = 0xf000,
   META_COMP_WINDOW_DROP_DOWN_MENU,
-  META_COMP_WINDOW_TOOLTIP,
+  META_COMP_WINDOW_DND,
 } MetaCompWindowType;
 
-typedef struct _MetaCompositorClutter 
+typedef struct _MetaCompositorClutter
 {
   MetaCompositor compositor;
 
@@ -86,23 +92,12 @@ typedef struct _MetaCompositorClutter
   Atom atom_x_root_pixmap;
   Atom atom_x_set_root;
   Atom atom_net_wm_window_opacity;
-  Atom atom_net_wm_window_type_dnd;
-
-  Atom atom_net_wm_window_type;
-  Atom atom_net_wm_window_type_desktop;
-  Atom atom_net_wm_window_type_dock;
-  Atom atom_net_wm_window_type_menu;
-  Atom atom_net_wm_window_type_dialog;
-  Atom atom_net_wm_window_type_normal;
-  Atom atom_net_wm_window_type_utility;
-  Atom atom_net_wm_window_type_splash;
-  Atom atom_net_wm_window_type_toolbar;
 
   guint show_redraw : 1;
   guint debug : 1;
 } MetaCompositorClutter;
 
-typedef struct _MetaCompScreen 
+typedef struct _MetaCompScreen
 {
   MetaScreen   *screen;
 
@@ -120,7 +115,7 @@ typedef struct _MetaCompScreen
 
 } MetaCompScreen;
 
-typedef struct _MetaCompWindow 
+typedef struct _MetaCompWindow
 {
   MetaScreen       *screen;
   MetaWindow       *window;
@@ -135,12 +130,11 @@ typedef struct _MetaCompWindow
   gboolean          shaped;
 
   MetaCompWindowType type;
+  Damage            damage;
 
-  Damage             damage;
+  gboolean          needs_shadow;
 
-  gboolean           needs_shadow;
-
-  XserverRegion      extents;
+  XserverRegion     extents;
 
 } MetaCompWindow;
 
@@ -153,7 +147,7 @@ find_window_for_screen (MetaScreen *screen,
 
   if (info == NULL)
       return NULL;
-  
+
   return g_hash_table_lookup (info->windows_by_xid, (gpointer) xwindow);
 }
 
@@ -163,16 +157,16 @@ find_window_in_display (MetaDisplay *display,
 {
   GSList *index;
 
-  for (index = meta_display_get_screens (display); 
-       index; 
-       index = index->next) 
+  for (index = meta_display_get_screens (display);
+       index;
+       index = index->next)
     {
       MetaCompWindow *cw = find_window_for_screen (index->data, xwindow);
 
       if (cw != NULL)
         return cw;
     }
-  
+
   return NULL;
 }
 
@@ -186,7 +180,7 @@ find_window_for_child_window_in_display (MetaDisplay *display,
 
   XQueryTree (meta_display_get_xdisplay (display), xwindow, &ignored1,
               &parent, &ignored2, &ignored_children);
-  
+
   if (parent != None)
     return find_window_in_display (display, parent);
 
@@ -197,46 +191,80 @@ static void
 get_window_type (MetaDisplay    *display,
                  MetaCompWindow *cw)
 {
-  MetaCompositorClutter *compositor = (MetaCompositorClutter *)display;
   int n_atoms;
-  Atom *atoms, type_atom;
+  Atom *atoms;
   int i;
 
-  type_atom = None;
+  /*
+   * If the window is managed by the WM, get the type from the WM,
+   * otherwise do it the hard way.
+   */
+  if (cw->window && meta_window_get_type_atom (cw->window) != None) {
+    cw->type = (MetaCompWindowType) meta_window_get_type (cw->window);
+    return;
+  }
+
   n_atoms = 0;
   atoms = NULL;
-  
-  meta_prop_get_atom_list (display, cw->id, 
-                           compositor->atom_net_wm_window_type,
+
+  /*
+   * Assume normal
+   */
+  cw->type = META_COMP_WINDOW_NORMAL;
+
+  meta_prop_get_atom_list (display, cw->id,
+                           meta_display_get_atom (display,
+					       META_ATOM__NET_WM_WINDOW_TYPE),
                            &atoms, &n_atoms);
 
-  for (i = 0; i < n_atoms; i++) 
+  for (i = 0; i < n_atoms; i++)
     {
-      if (atoms[i] == compositor->atom_net_wm_window_type_dnd ||
-          atoms[i] == compositor->atom_net_wm_window_type_desktop ||
-          atoms[i] == compositor->atom_net_wm_window_type_dock ||
-          atoms[i] == compositor->atom_net_wm_window_type_toolbar ||
-          atoms[i] == compositor->atom_net_wm_window_type_menu ||
-          atoms[i] == compositor->atom_net_wm_window_type_dialog ||
-          atoms[i] == compositor->atom_net_wm_window_type_normal ||
-          atoms[i] == compositor->atom_net_wm_window_type_utility ||
-          atoms[i] == compositor->atom_net_wm_window_type_splash)
+      if (atoms[i] ==
+	  meta_display_get_atom (display,
+				 META_ATOM__NET_WM_WINDOW_TYPE_DND))
+	{
+	  cw->type = META_COMP_WINDOW_DND;
+	  break;
+	}
+      else if (atoms[i] ==
+	       meta_display_get_atom (display,
+				      META_ATOM__NET_WM_WINDOW_TYPE_DESKTOP))
+	{
+	  cw->type = META_COMP_WINDOW_DESKTOP;
+	  break;
+	}
+      else if (atoms[i] ==
+	       meta_display_get_atom (display,
+				      META_ATOM__NET_WM_WINDOW_TYPE_DOCK))
+	{
+	  cw->type = META_COMP_WINDOW_DOCK;
+	  break;
+	}
+      else if ( atoms[i] ==
+		meta_display_get_atom (display,
+				     META_ATOM__NET_WM_WINDOW_TYPE_TOOLBAR) ||
+		atoms[i] ==
+		meta_display_get_atom (display,
+				     META_ATOM__NET_WM_WINDOW_TYPE_MENU) ||
+		atoms[i] ==
+		meta_display_get_atom (display,
+				     META_ATOM__NET_WM_WINDOW_TYPE_DIALOG) ||
+		atoms[i] ==
+		meta_display_get_atom (display,
+				     META_ATOM__NET_WM_WINDOW_TYPE_NORMAL) ||
+		atoms[i] ==
+		meta_display_get_atom (display,
+				     META_ATOM__NET_WM_WINDOW_TYPE_UTILITY) ||
+		atoms[i] ==
+		meta_display_get_atom (display,
+				       META_ATOM__NET_WM_WINDOW_TYPE_SPLASH))
         {
-          type_atom = atoms[i];
-          break;
+	  cw->type = META_COMP_WINDOW_NORMAL;
+	  break;
         }
     }
 
   meta_XFree (atoms);
-
-  if (type_atom == compositor->atom_net_wm_window_type_dnd)
-    cw->type = META_COMP_WINDOW_DND;
-  else if (type_atom == compositor->atom_net_wm_window_type_desktop)
-    cw->type = META_COMP_WINDOW_DESKTOP;
-  else if (type_atom == compositor->atom_net_wm_window_type_dock)
-    cw->type = META_COMP_WINDOW_DOCK;
-  else
-    cw->type = META_COMP_WINDOW_NORMAL;
 }
 
 static gboolean
@@ -255,7 +283,7 @@ is_shaped (MetaDisplay *display,
                           &xbs, &ybs, &wbs, &hbs);
       return (bounding_shaped != 0);
     }
-  
+
   return FALSE;
 }
 
@@ -265,7 +293,7 @@ window_has_shadow (MetaCompWindow *cw)
   /* Always put a shadow around windows with a frame - This should override
      the restriction about not putting a shadow around shaped windows
      as the frame might be the reason the window is shaped */
-  if (cw->window) 
+  if (cw->window)
     {
       if (meta_window_get_frame (cw->window)) {
         meta_verbose ("Window has shadow because it has a frame\n");
@@ -293,29 +321,34 @@ window_has_shadow (MetaCompWindow *cw)
   }
 #endif
 
-  if (cw->type == META_COMP_WINDOW_MENU || 
-      cw->type == META_COMP_WINDOW_DROP_DOWN_MENU) {
+  if (cw->type == META_COMP_WINDOW_MENU
+#if 0
+      || cw->type == META_COMP_WINDOW_DROP_DOWN_MENU
+#endif
+      ) {
     meta_verbose ("Window has shadow as it is a menu\n");
     return TRUE;
   }
 
+#if 0
   if (cw->type == META_COMP_WINDOW_TOOLTIP) {
     meta_verbose ("Window has shadow as it is a tooltip\n");
     return TRUE;
   }
+#endif
 
   meta_verbose ("Window has no shadow as it fell through\n");
   return FALSE;
 }
 
 
-static void 
+static void
 clutter_cmp_destroy (MetaCompositor *compositor)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 
 #endif
-}     
+}
 
 static XserverRegion
 win_extents (MetaCompWindow *cw)
@@ -329,7 +362,7 @@ win_extents (MetaCompWindow *cw)
   r.y = cw->attrs.y;
   r.width = cw->attrs.width + cw->attrs.border_width * 2;
   r.height = cw->attrs.height + cw->attrs.border_width * 2;
-  
+
   return XFixesCreateRegion (xdisplay, &r, 1);
 }
 
@@ -342,12 +375,12 @@ add_damage (MetaScreen     *screen,
   Display *xdisplay = meta_display_get_xdisplay (display);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  if (info->all_damage) 
+  if (info->all_damage)
     {
-      XFixesUnionRegion (xdisplay, info->all_damage, 
+      XFixesUnionRegion (xdisplay, info->all_damage,
                          info->all_damage, damage);
       XFixesDestroyRegion (xdisplay, damage);
-    } 
+    }
   else
     info->all_damage = damage;
 }
@@ -361,31 +394,32 @@ free_win (MetaCompWindow *cw,
   MetaCompScreen *info = meta_screen_get_compositor_data (cw->screen);
 
   /* See comment in map_win */
-  if (cw->back_pixmap && destroy) 
+  if (cw->back_pixmap && destroy)
     {
       XFreePixmap (xdisplay, cw->back_pixmap);
       cw->back_pixmap = None;
     }
-  
-  if (cw->extents) 
+
+  if (cw->extents)
     {
       XFixesDestroyRegion (xdisplay, cw->extents);
       cw->extents = None;
     }
 
-  if (destroy) 
-    { 
-      if (cw->damage != None) 
+  if (destroy)
+    {
+      if (cw->damage != None)
         {
           meta_error_trap_push (display);
           XDamageDestroy (xdisplay, cw->damage);
           meta_error_trap_pop (display, FALSE);
-          
+
           cw->damage = None;
         }
 
       /* The window may not have been added to the list in this case,
          but we can check anyway */
+
       if (cw->type == META_COMP_WINDOW_DOCK)
         info->dock_windows = g_slist_remove (info->dock_windows, cw);
 
@@ -413,13 +447,13 @@ destroy_win (MetaDisplay *display,
   printf("destroying a window... %p\n", cw);
 
   screen = cw->screen;
-  
-  if (cw->extents != None) 
+
+  if (cw->extents != None)
     {
       add_damage (screen, cw->extents);
       cw->extents = None;
     }
-  
+
   info = meta_screen_get_compositor_data (screen);
   info->windows = g_list_remove (info->windows, (gconstpointer) cw);
   g_hash_table_remove (info->windows_by_xid, (gpointer) xwindow);
@@ -443,16 +477,16 @@ restack_win (MetaCompWindow *cw,
   next = g_list_next (sibling);
   previous_above = None;
 
-  if (next) 
+  if (next)
     {
       MetaCompWindow *ncw = (MetaCompWindow *) next->data;
       previous_above = ncw->id;
     }
 
-  /* If above is set to None, the window whose state was changed is on 
+  /* If above is set to None, the window whose state was changed is on
    * the bottom of the stack with respect to sibling.
    */
-  if (above == None) 
+  if (above == None)
     {
       /* Insert at bottom of window stack */
       info->windows = g_list_delete_link (info->windows, sibling);
@@ -461,18 +495,18 @@ restack_win (MetaCompWindow *cw,
       if (cw->shadow)
         clutter_actor_raise_top (cw->shadow);
       clutter_actor_raise_top (cw->actor);
-    } 
-  else if (previous_above != above) 
+    }
+  else if (previous_above != above)
     {
       GList *index;
-      
+
       for (index = info->windows; index; index = index->next) {
         MetaCompWindow *cw2 = (MetaCompWindow *) index->data;
         if (cw2->id == above)
           break;
       }
-      
-      if (index != NULL) 
+
+      if (index != NULL)
         {
           MetaCompWindow *above_win = (MetaCompWindow *) index->data;
 
@@ -515,17 +549,17 @@ resize_win (MetaCompWindow *cw,
   cw->attrs.y = y;
 
   clutter_actor_set_position (cw->actor, x, y);
-  
+
   if (cw->shadow)
-    clutter_actor_set_position (cw->shadow, 
-                                x + SHADOW_OFFSET_X , 
+    clutter_actor_set_position (cw->shadow,
+                                x + SHADOW_OFFSET_X ,
                                 y + SHADOW_OFFSET_Y);
 
   /* Note, let named named pixmap resync actually resize actor */
 
-  if (cw->attrs.width != width || cw->attrs.height != height) 
+  if (cw->attrs.width != width || cw->attrs.height != height)
     {
-      if (cw->back_pixmap) 
+      if (cw->back_pixmap)
         {
           XFreePixmap (xdisplay, cw->back_pixmap);
           cw->back_pixmap = None;
@@ -542,9 +576,9 @@ resize_win (MetaCompWindow *cw,
 
   cw->extents = win_extents (cw);
 
-  if (damage) 
+  if (damage)
     {
-      XFixesUnionRegion (xdisplay, damage, damage, cw->extents);      
+      XFixesUnionRegion (xdisplay, damage, damage, cw->extents);
     }
   else
     {
@@ -569,7 +603,7 @@ map_win (MetaDisplay *display,
   cw->attrs.map_state = IsViewable;
   cw->damaged = FALSE;
 
-  if (cw->back_pixmap) 
+  if (cw->back_pixmap)
     {
       XFreePixmap (xdisplay, cw->back_pixmap);
       cw->back_pixmap = None;
@@ -590,18 +624,18 @@ unmap_win (MetaDisplay *display,
   MetaCompWindow *cw = find_window_for_screen (screen, id);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  if (cw == NULL) 
+  if (cw == NULL)
     {
       return;
     }
 
-  if (cw->window && cw->window == info->focus_window) 
+  if (cw->window && cw->window == info->focus_window)
     info->focus_window = NULL;
 
   cw->attrs.map_state = IsUnmapped;
   cw->damaged = FALSE;
 
-  if (cw->extents != None) 
+  if (cw->extents != None)
     {
       add_damage (screen, cw->extents);
       cw->extents = None;
@@ -627,18 +661,20 @@ add_win (MetaScreen *screen,
   MetaCompWindow *cw;
   gulong event_mask;
 
-  if (info == NULL) 
+  if (info == NULL)
     return;
 
-  if (xwindow == info->output) 
+  if (xwindow == info->output)
     return;
+
+  printf ("adding window\n");
 
   cw = g_new0 (MetaCompWindow, 1);
   cw->screen = screen;
   cw->window = window;
   cw->id = xwindow;
 
-  if (!XGetWindowAttributes (xdisplay, xwindow, &cw->attrs)) 
+  if (!XGetWindowAttributes (xdisplay, xwindow, &cw->attrs))
     {
       g_free (cw);
       return;
@@ -649,7 +685,7 @@ add_win (MetaScreen *screen,
   /* If Metacity has decided not to manage this window then the input events
      won't have been set on the window */
   event_mask = cw->attrs.your_event_mask | PropertyChangeMask;
-  
+
   XSelectInput (xdisplay, xwindow, event_mask);
 
   cw->damaged = FALSE;
@@ -663,7 +699,7 @@ add_win (MetaScreen *screen,
   cw->extents = None;
 
   /* Only add the window to the list of docks if it needs a shadow */
-  if (cw->type == META_COMP_WINDOW_DOCK) 
+  if (cw->type == META_COMP_WINDOW_DOCK)
     {
       meta_verbose ("Appending %p to dock windows\n", cw);
       info->dock_windows = g_slist_append (info->dock_windows, cw);
@@ -715,10 +751,10 @@ add_win (MetaScreen *screen,
                                            MAX_TILE_SZ,
                                            MAX_TILE_SZ);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (info->stage), 
+      clutter_container_add_actor (CLUTTER_CONTAINER (info->stage),
                                    cw->shadow);
-      clutter_actor_set_position (cw->shadow, 
-                                  cw->attrs.x + SHADOW_OFFSET_X , 
+      clutter_actor_set_position (cw->shadow,
+                                  cw->attrs.x + SHADOW_OFFSET_X ,
                                   cw->attrs.y + SHADOW_OFFSET_Y);
       clutter_actor_hide (cw->shadow);
     }
@@ -777,7 +813,7 @@ repair_win (MetaCompWindow *cw)
           return;
         }
 
-      clutter_x11_texture_pixmap_set_pixmap 
+      clutter_x11_texture_pixmap_set_pixmap
                        (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
                         cw->back_pixmap);
 
@@ -785,22 +821,22 @@ repair_win (MetaCompWindow *cw)
                     "pixmap-width", &pxm_width,
                     "pixmap-height", &pxm_height,
                     NULL);
-      
+
       clutter_actor_set_size (cw->actor, pxm_width, pxm_height);
 
       if (cw->shadow)
-        clutter_actor_set_size (cw->shadow, 
-                                pxm_width + (2 * SHADOW_RADIUS), 
+        clutter_actor_set_size (cw->shadow,
+                                pxm_width + (2 * SHADOW_RADIUS),
                                 pxm_height  + (2 * SHADOW_RADIUS));
 
       clutter_actor_show (cw->actor);
     }
 
-  if (!cw->damaged) 
+  if (!cw->damaged)
     {
       XDamageSubtract (xdisplay, cw->damage, None, None);
-    } 
-  else 
+    }
+  else
     {
       XRectangle   *r_damage;
       XRectangle    r_bounds;
@@ -810,12 +846,12 @@ repair_win (MetaCompWindow *cw)
       parts = XFixesCreateRegion (xdisplay, 0, 0);
       XDamageSubtract (xdisplay, cw->damage, None, parts);
 
-      if (1) /* clutter_glx_texture_pixmap_using_extension 
+      if (1) /* clutter_glx_texture_pixmap_using_extension
                 (CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor))) */
         {
-          clutter_x11_texture_pixmap_update_area 
-            (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor), 
-             0, 
+          clutter_x11_texture_pixmap_update_area
+            (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
+             0,
              0,
              clutter_actor_get_width (cw->actor),
              clutter_actor_get_height (cw->actor));
@@ -823,7 +859,7 @@ repair_win (MetaCompWindow *cw)
         }
       else
         {
-          r_damage = XFixesFetchRegionAndBounds (xdisplay, 
+          r_damage = XFixesFetchRegionAndBounds (xdisplay,
                                                  parts,
                                                  &r_count,
                                                  &r_bounds);
@@ -832,7 +868,7 @@ repair_win (MetaCompWindow *cw)
             {
               for (i = 0; i < r_count; ++i)
                 {
-                  clutter_x11_texture_pixmap_update_area 
+                  clutter_x11_texture_pixmap_update_area
                     (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
                      r_damage[i].x,
                      r_damage[i].y,
@@ -840,7 +876,7 @@ repair_win (MetaCompWindow *cw)
                      r_damage[i].height);
                 }
             }
-          
+
           XFree (r_damage);
         }
     }
@@ -865,7 +901,7 @@ process_create (MetaCompositorClutter *compositor,
     return;
 
   /* This is quite silly as we end up creating windows as then immediatly
-   * destroying them as they (likely) become framed and thus reparented. 
+   * destroying them as they (likely) become framed and thus reparented.
   */
   if (!find_window_in_display (compositor->display, event->window))
     add_win (screen, window, event->window);
@@ -887,7 +923,7 @@ process_reparent (MetaCompositorClutter *compositor,
   else
     {
       printf("reparent: destroying a window %li\n", event->window);
-      destroy_win (compositor->display, event->window, FALSE); 
+      destroy_win (compositor->display, event->window, FALSE);
     }
 }
 
@@ -917,15 +953,15 @@ process_configure_notify (MetaCompositorClutter  *compositor,
   MetaDisplay *display = compositor->display;
   MetaCompWindow *cw = find_window_in_display (display, event->window);
 
-  if (cw) 
+  if (cw)
     {
       restack_win (cw, event->above);
-      resize_win (cw, 
+      resize_win (cw,
                   event->x, event->y, event->width, event->height,
                   event->border_width, event->override_redirect);
     }
   else
-    { 
+    {
       MetaScreen *screen;
       MetaCompScreen *info;
 
@@ -952,7 +988,7 @@ process_circulate_notify (MetaCompositorClutter  *compositor,
   GList *first;
   Window above;
 
-  if (!cw) 
+  if (!cw)
     return;
 
   screen = cw->screen;
@@ -1000,7 +1036,7 @@ process_expose (MetaCompositorClutter *compositor,
     }
   else
     {
-      screen = meta_display_screen_for_root (compositor->display, 
+      screen = meta_display_screen_for_root (compositor->display,
                                              event->window);
       if (screen == NULL)
         return;
@@ -1010,7 +1046,7 @@ process_expose (MetaCompositorClutter *compositor,
   rect[0].y = event->y + origin_y;
   rect[0].width = event->width;
   rect[0].height = event->height;
-  
+
   expose_area (screen, rect, 1);
 }
 
@@ -1021,7 +1057,7 @@ process_unmap (MetaCompositorClutter *compositor,
 {
   MetaCompWindow *cw;
 
-  if (event->from_configure) 
+  if (event->from_configure)
     {
       /* Ignore unmap caused by parent's resize */
       return;
@@ -1040,7 +1076,7 @@ process_map (MetaCompositorClutter *compositor,
              XMapEvent             *event,
              MetaWindow            *window)
 {
-  MetaCompWindow *cw = find_window_in_display (compositor->display, 
+  MetaCompWindow *cw = find_window_in_display (compositor->display,
                                                event->window);
 
   if (cw)
@@ -1061,7 +1097,7 @@ process_property_notify (MetaCompositorClutter *compositor,
   background_atoms[0] = compositor->atom_x_root_pixmap;
   background_atoms[1] = compositor->atom_x_set_root;
 
-  for (p = 0; p < 2; p++) 
+  for (p = 0; p < 2; p++)
     {
       if (event->atom == background_atoms[p])
         {
@@ -1076,20 +1112,20 @@ process_property_notify (MetaCompositorClutter *compositor,
     }
 
   /* Check for the opacity changing */
-  if (event->atom == compositor->atom_net_wm_window_opacity) 
+  if (event->atom == compositor->atom_net_wm_window_opacity)
     {
       MetaCompWindow *cw = find_window_in_display (display, event->window);
       gulong value;
 
-      if (!cw) 
+      if (!cw)
         {
           /* Applications can set this for their toplevel windows, so
            * this must be propagated to the window managed by the compositor
            */
-          cw = find_window_for_child_window_in_display (display, 
+          cw = find_window_for_child_window_in_display (display,
                                                         event->window);
         }
-      
+
       if (!cw)
         return;
 
@@ -1108,7 +1144,8 @@ process_property_notify (MetaCompositorClutter *compositor,
       return;
     }
 
-  if (event->atom == compositor->atom_net_wm_window_type) 
+  if (event->atom == meta_display_get_atom (display,
+					    META_ATOM__NET_WM_WINDOW_TYPE))
     {
       MetaCompWindow *cw = find_window_in_display (display, event->window);
 
@@ -1130,12 +1167,12 @@ show_overlay_window (MetaScreen *screen,
   XserverRegion region;
 
   region = XFixesCreateRegion (xdisplay, NULL, 0);
-      
+
   XFixesSetWindowShapeRegion (xdisplay, cow, ShapeBounding, 0, 0, 0);
   XFixesSetWindowShapeRegion (xdisplay, cow, ShapeInput, 0, 0, region);
-      
+
   XFixesDestroyRegion (xdisplay, region);
-      
+
   damage_screen (screen);
 }
 
@@ -1154,7 +1191,7 @@ get_output_window (MetaScreen *screen)
   return output;
 }
 
-static void 
+static void
 clutter_cmp_manage_screen (MetaCompositor *compositor,
                            MetaScreen     *screen)
 {
@@ -1185,7 +1222,7 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   info = g_new0 (MetaCompScreen, 1);
   info->screen = screen;
-  
+
   meta_screen_set_compositor_data (screen, info);
 
   info->output = get_output_window (screen);
@@ -1210,7 +1247,7 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
   /* Shadow setup */
-  
+
   data = shadow_gaussian_make_tile ();
 
   info->shadow_src = clutter_texture_new ();
@@ -1231,13 +1268,13 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   /* Now we're up and running we can show the output if needed */
   show_overlay_window (screen, info->output);
 
-  info->destroy_effect 
+  info->destroy_effect
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (200),
                                     CLUTTER_ALPHA_SINE_INC);
 #endif
 }
 
-static void 
+static void
 clutter_cmp_unmanage_screen (MetaCompositor *compositor,
                              MetaScreen     *screen)
 {
@@ -1246,7 +1283,7 @@ clutter_cmp_unmanage_screen (MetaCompositor *compositor,
 #endif
 }
 
-static void 
+static void
 clutter_cmp_add_window (MetaCompositor    *compositor,
                         MetaWindow        *window,
                         Window             xwindow,
@@ -1262,7 +1299,7 @@ clutter_cmp_add_window (MetaCompositor    *compositor,
 #endif
 }
 
-static void 
+static void
 clutter_cmp_remove_window (MetaCompositor *compositor,
                            Window          xwindow)
 {
@@ -1271,7 +1308,7 @@ clutter_cmp_remove_window (MetaCompositor *compositor,
 #endif
 }
 
-static void 
+static void
 clutter_cmp_set_updates (MetaCompositor *compositor,
                          MetaWindow     *window,
                          gboolean        update)
@@ -1281,7 +1318,7 @@ clutter_cmp_set_updates (MetaCompositor *compositor,
 #endif
 }
 
-static void 
+static void
 clutter_cmp_process_event (MetaCompositor *compositor,
                            XEvent         *event,
                            MetaWindow     *window)
@@ -1295,12 +1332,12 @@ clutter_cmp_process_event (MetaCompositor *compositor,
    */
 
   meta_error_trap_push (xrc->display);
-  switch (event->type) 
+  switch (event->type)
     {
     case CirculateNotify:
       process_circulate_notify (xrc, (XCirculateEvent *) event);
       break;
-      
+
     case ConfigureNotify:
       process_configure_notify (xrc, (XConfigureEvent *) event);
       break;
@@ -1320,19 +1357,19 @@ clutter_cmp_process_event (MetaCompositor *compositor,
     case MapNotify:
       process_map (xrc, (XMapEvent *) event, window);
       break;
-      
+
     case ReparentNotify:
       process_reparent (xrc, (XReparentEvent *) event, window);
       break;
-      
+
     case CreateNotify:
       process_create (xrc, (XCreateWindowEvent *) event, window);
       break;
-      
+
     case DestroyNotify:
       process_destroy (xrc, (XDestroyWindowEvent *) event);
       break;
-      
+
     default:
       if (event->type == meta_display_get_damage_event_base (xrc->display) + XDamageNotify)
         {
@@ -1340,9 +1377,9 @@ clutter_cmp_process_event (MetaCompositor *compositor,
         }
 
 
-      /* else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify) 
+      /* else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify)
         process_shape (xrc, (XShapeEvent *) event);
-      else 
+      else
         {
           meta_error_trap_pop (xrc->display, FALSE);
           return;
@@ -1350,13 +1387,13 @@ clutter_cmp_process_event (MetaCompositor *compositor,
       */
       break;
     }
-  
+
   meta_error_trap_pop (xrc->display, FALSE);
 
 #endif
 }
 
-static Pixmap 
+static Pixmap
 clutter_cmp_get_window_pixmap (MetaCompositor *compositor,
                                MetaWindow     *window)
 {
@@ -1367,7 +1404,7 @@ clutter_cmp_get_window_pixmap (MetaCompositor *compositor,
 #endif
 }
 
-static void 
+static void
 clutter_cmp_set_active_window (MetaCompositor *compositor,
                                MetaScreen     *screen,
                                MetaWindow     *window)
@@ -1377,7 +1414,7 @@ clutter_cmp_set_active_window (MetaCompositor *compositor,
 #endif
 }
 
-static void  
+static void
 on_destroy_effect_complete (ClutterActor *actor,
                             gpointer user_data)
 {
@@ -1386,7 +1423,7 @@ on_destroy_effect_complete (ClutterActor *actor,
   free_win (cw, TRUE);
 }
 
-static void 
+static void
 clutter_cmp_destroy_window (MetaCompositor *compositor,
                             MetaWindow     *window)
 {
@@ -1412,12 +1449,12 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
    * unmap events etc fail
   */
   info->windows = g_list_remove (info->windows, (gconstpointer) cw);
-  g_hash_table_remove (info->windows_by_xid, 
+  g_hash_table_remove (info->windows_by_xid,
                        (gpointer) (f ? meta_frame_get_xwindow (f) :
                                    meta_window_get_xwindow (window)));
 
   /* Crappy TV power down effect */
-  clutter_actor_move_anchor_point_from_gravity (cw->actor, 
+  clutter_actor_move_anchor_point_from_gravity (cw->actor,
                                                 CLUTTER_GRAVITY_CENTER);
 
   clutter_effect_fade (info->destroy_effect,
@@ -1434,7 +1471,7 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
                         NULL);
   if (cw->shadow)
     {
-      clutter_actor_move_anchor_point_from_gravity (cw->shadow, 
+      clutter_actor_move_anchor_point_from_gravity (cw->shadow,
                                                     CLUTTER_GRAVITY_CENTER);
 
       clutter_effect_fade (info->destroy_effect,
@@ -1476,16 +1513,6 @@ meta_compositor_clutter_new (MetaDisplay *display)
     "_XROOTPMAP_ID",
     "_XSETROOT_ID",
     "_NET_WM_WINDOW_OPACITY",
-    "_NET_WM_WINDOW_TYPE_DND",
-    "_NET_WM_WINDOW_TYPE",
-    "_NET_WM_WINDOW_TYPE_DESKTOP",
-    "_NET_WM_WINDOW_TYPE_DOCK",
-    "_NET_WM_WINDOW_TYPE_MENU",
-    "_NET_WM_WINDOW_TYPE_DIALOG",
-    "_NET_WM_WINDOW_TYPE_NORMAL",
-    "_NET_WM_WINDOW_TYPE_UTILITY",
-    "_NET_WM_WINDOW_TYPE_SPLASH",
-    "_NET_WM_WINDOW_TYPE_TOOLBAR"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   MetaCompositorClutter *clc;
@@ -1513,16 +1540,6 @@ meta_compositor_clutter_new (MetaDisplay *display)
   clc->atom_x_root_pixmap = atoms[0];
   clc->atom_x_set_root = atoms[1];
   clc->atom_net_wm_window_opacity = atoms[2];
-  clc->atom_net_wm_window_type_dnd = atoms[3];
-  clc->atom_net_wm_window_type = atoms[4];
-  clc->atom_net_wm_window_type_desktop = atoms[5];
-  clc->atom_net_wm_window_type_dock = atoms[6];
-  clc->atom_net_wm_window_type_menu = atoms[7];
-  clc->atom_net_wm_window_type_dialog = atoms[8];
-  clc->atom_net_wm_window_type_normal = atoms[9];
-  clc->atom_net_wm_window_type_utility = atoms[10];
-  clc->atom_net_wm_window_type_splash = atoms[11];
-  clc->atom_net_wm_window_type_toolbar = atoms[12];
 
   return compositor;
 #else
@@ -1798,7 +1815,7 @@ shadow_gaussian_make_tile ()
     for (y = 0; y < pheight; y++)
       {
 	d = sum_gaussian (gaussian_map, opacity,
-                          x-center, y-center, 
+                          x-center, y-center,
                           TILE_WIDTH, TILE_HEIGHT);
 
 	_d[y*3*pwidth + (pwidth - x - 1) + 2*pwidth].r = 0;
@@ -1855,12 +1872,12 @@ typedef struct _TidyTextureFrameClass   TidyTextureFrameClass;
 struct _TidyTextureFrame
 {
   ClutterCloneTexture              parent;
-  
+
   /*< priv >*/
   TidyTextureFramePrivate    *priv;
 };
 
-struct _TidyTextureFrameClass 
+struct _TidyTextureFrameClass
 {
   ClutterCloneTextureClass parent_class;
 
@@ -1869,7 +1886,7 @@ struct _TidyTextureFrameClass
   void (*_clutter_box_2) (void);
   void (*_clutter_box_3) (void);
   void (*_clutter_box_4) (void);
-}; 
+};
 
 GType         tidy_texture_frame_get_type (void) G_GNUC_CONST;
 
@@ -1938,7 +1955,7 @@ tidy_texture_frame_paint (ClutterActor *self)
   tex_width  = cogl_texture_get_width (cogl_texture);
   tex_height = cogl_texture_get_height (cogl_texture);
 
-  clutter_actor_get_size (self, &width, &height); 
+  clutter_actor_get_size (self, &width, &height);
 
   tx1 = CLUTTER_INT_TO_FIXED (priv->left) / tex_width;
   tx2 = CLUTTER_INT_TO_FIXED (tex_width - priv->right) / tex_width;
@@ -1949,17 +1966,17 @@ tidy_texture_frame_paint (ClutterActor *self)
   cogl_color (&col);
 
   ex = width - priv->right;
-  if (ex < 0) 
+  if (ex < 0)
     ex = priv->right; 		/* FIXME ? */
 
   ey = height - priv->bottom;
-  if (ey < 0) 
+  if (ey < 0)
     ey = priv->bottom; 		/* FIXME ? */
 
 #define FX(x) CLUTTER_INT_TO_FIXED(x)
 
   /* top left corner */
-  cogl_texture_rectangle (cogl_texture, 
+  cogl_texture_rectangle (cogl_texture,
                           0,
                           0,
                           FX(priv->left), /* FIXME: clip if smaller */
@@ -1993,7 +2010,7 @@ tidy_texture_frame_paint (ClutterActor *self)
 
   /* mid left */
   cogl_texture_rectangle (cogl_texture,
-                          0, 
+                          0,
                           FX(priv->top),
                           FX(priv->left),
                           FX(ey),
@@ -2023,10 +2040,10 @@ tidy_texture_frame_paint (ClutterActor *self)
                           ty1,
                           CFX_ONE,
                           ty2);
-  
+
   /* bottom left */
   cogl_texture_rectangle (cogl_texture,
-                          0, 
+                          0,
                           FX(ey),
                           FX(priv->left),
                           FX(height),
@@ -2069,7 +2086,7 @@ tidy_texture_frame_set_property (GObject      *object,
 				    GParamSpec   *pspec)
 {
   TidyTextureFrame         *ctexture = TIDY_TEXTURE_FRAME (object);
-  TidyTextureFramePrivate  *priv = ctexture->priv;  
+  TidyTextureFramePrivate  *priv = ctexture->priv;
 
   switch (prop_id)
     {
@@ -2098,7 +2115,7 @@ tidy_texture_frame_get_property (GObject    *object,
 				    GParamSpec *pspec)
 {
   TidyTextureFrame *ctexture = TIDY_TEXTURE_FRAME (object);
-  TidyTextureFramePrivate  *priv = ctexture->priv;  
+  TidyTextureFramePrivate  *priv = ctexture->priv;
 
   switch (prop_id)
     {
@@ -2131,7 +2148,7 @@ tidy_texture_frame_class_init (TidyTextureFrameClass *klass)
   gobject_class->set_property = tidy_texture_frame_set_property;
   gobject_class->get_property = tidy_texture_frame_get_property;
 
-  g_object_class_install_property 
+  g_object_class_install_property
             (gobject_class,
 	     PROP_LEFT,
 	     g_param_spec_int ("left",
@@ -2141,7 +2158,7 @@ tidy_texture_frame_class_init (TidyTextureFrameClass *klass)
 			       0,
 			       TIDY_PARAM_READWRITE));
 
-  g_object_class_install_property 
+  g_object_class_install_property
             (gobject_class,
 	     PROP_TOP,
 	     g_param_spec_int ("top",
@@ -2151,7 +2168,7 @@ tidy_texture_frame_class_init (TidyTextureFrameClass *klass)
 			       0,
 			       TIDY_PARAM_READWRITE));
 
-  g_object_class_install_property 
+  g_object_class_install_property
             (gobject_class,
 	     PROP_BOTTOM,
 	     g_param_spec_int ("bottom",
@@ -2160,8 +2177,8 @@ tidy_texture_frame_class_init (TidyTextureFrameClass *klass)
 			       0, G_MAXINT,
 			       0,
 			       TIDY_PARAM_READWRITE));
-  
-  g_object_class_install_property 
+
+  g_object_class_install_property
             (gobject_class,
 	     PROP_RIGHT,
 	     g_param_spec_int ("right",
@@ -2170,7 +2187,7 @@ tidy_texture_frame_class_init (TidyTextureFrameClass *klass)
 			       0, G_MAXINT,
 			       0,
 			       TIDY_PARAM_READWRITE));
-  
+
   g_type_class_add_private (gobject_class, sizeof (TidyTextureFramePrivate));
 }
 
@@ -2183,7 +2200,7 @@ tidy_texture_frame_init (TidyTextureFrame *self)
 }
 
 ClutterActor*
-tidy_texture_frame_new (ClutterTexture *texture, 
+tidy_texture_frame_new (ClutterTexture *texture,
 			gint            left,
 			gint            top,
 			gint            right,
