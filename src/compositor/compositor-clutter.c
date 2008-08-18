@@ -30,12 +30,12 @@
 #include <clutter/glx/clutter-glx.h>
 
 #include <cogl/cogl.h>
-#define SHADOW_RADIUS 10
+#define SHADOW_RADIUS 8
 #define SHADOW_OPACITY	0.9
 #define SHADOW_OFFSET_X	(-SHADOW_RADIUS)
 #define SHADOW_OFFSET_Y	(-SHADOW_RADIUS)
 
-#define MAX_TILE_SZ 30 	/* make sure size/2 < MAX_TILE_SZ */
+#define MAX_TILE_SZ 8 	/* Must be <= shaddow radius */
 #define TILE_WIDTH  (3*MAX_TILE_SZ)
 #define TILE_HEIGHT (3*MAX_TILE_SZ)
 
