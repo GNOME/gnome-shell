@@ -1,5 +1,9 @@
 2008-08-18  Thomas Thurman  <tthurman@gnome.org>
 
+        * configure.in: Post-release version bump to 2.25.1.
+
+2008-08-18  Thomas Thurman  <tthurman@gnome.org>
+
         * configure.in: correct incorrect version number
 
 2008-08-18  Thomas Thurman  <tthurman@gnome.org>
