@@ -106,7 +106,6 @@ typedef struct _MetaCompScreen
   GHashTable   *windows_by_xid;
   MetaWindow   *focus_window;
   Window        output;
-  XserverRegion all_damage;
   GSList       *dock_windows;
 
   ClutterEffectTemplate *destroy_effect;
@@ -133,9 +132,6 @@ typedef struct _MetaCompWindow
   Damage            damage;
 
   gboolean          needs_shadow;
-
-  XserverRegion     extents;
-
 } MetaCompWindow;
 
 
@@ -356,41 +352,6 @@ clutter_cmp_destroy (MetaCompositor *compositor)
 #endif
 }
 
-static XserverRegion
-win_extents (MetaCompWindow *cw)
-{
-  MetaScreen *screen = cw->screen;
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
-  XRectangle r;
-
-  r.x = cw->attrs.x;
-  r.y = cw->attrs.y;
-  r.width = cw->attrs.width + cw->attrs.border_width * 2;
-  r.height = cw->attrs.height + cw->attrs.border_width * 2;
-
-  return XFixesCreateRegion (xdisplay, &r, 1);
-}
-
-
-static void
-add_damage (MetaScreen     *screen,
-            XserverRegion   damage)
-{
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-
-  if (info->all_damage)
-    {
-      XFixesUnionRegion (xdisplay, info->all_damage,
-                         info->all_damage, damage);
-      XFixesDestroyRegion (xdisplay, damage);
-    }
-  else
-    info->all_damage = damage;
-}
-
 static void
 free_win (MetaCompWindow *cw,
           gboolean        destroy)
@@ -404,12 +365,6 @@ free_win (MetaCompWindow *cw,
     {
       XFreePixmap (xdisplay, cw->back_pixmap);
       cw->back_pixmap = None;
-    }
-
-  if (cw->extents)
-    {
-      XFixesDestroyRegion (xdisplay, cw->extents);
-      cw->extents = None;
     }
 
   if (destroy)
@@ -453,12 +408,6 @@ destroy_win (MetaDisplay *display,
   printf("destroying a window... %p\n", cw);
 
   screen = cw->screen;
-
-  if (cw->extents != None)
-    {
-      add_damage (screen, cw->extents);
-      cw->extents = None;
-    }
 
   info = meta_screen_get_compositor_data (screen);
   info->windows = g_list_remove (info->windows, (gconstpointer) cw);
@@ -539,17 +488,6 @@ resize_win (MetaCompWindow *cw,
   MetaScreen *screen = cw->screen;
   MetaDisplay *display = meta_screen_get_display (screen);
   Display *xdisplay = meta_display_get_xdisplay (display);
-  XserverRegion damage;
-
-  if (cw->extents)
-    {
-      damage = XFixesCreateRegion (xdisplay, NULL, 0);
-      XFixesCopyRegion (xdisplay, damage, cw->extents);
-    }
-  else
-    {
-      damage = None;
-    }
 
   cw->attrs.x = x;
   cw->attrs.y = y;
@@ -576,23 +514,6 @@ resize_win (MetaCompWindow *cw,
   cw->attrs.height = height;
   cw->attrs.border_width = border_width;
   cw->attrs.override_redirect = override_redirect;
-
-  if (cw->extents)
-    XFixesDestroyRegion (xdisplay, cw->extents);
-
-  cw->extents = win_extents (cw);
-
-  if (damage)
-    {
-      XFixesUnionRegion (xdisplay, damage, damage, cw->extents);
-    }
-  else
-    {
-      damage = XFixesCreateRegion (xdisplay, NULL, 0);
-      XFixesCopyRegion (xdisplay, damage, cw->extents);
-    }
-
-  add_damage (screen, damage);
 }
 
 static void
@@ -640,12 +561,6 @@ unmap_win (MetaDisplay *display,
 
   cw->attrs.map_state = IsUnmapped;
   cw->damaged = FALSE;
-
-  if (cw->extents != None)
-    {
-      add_damage (screen, cw->extents);
-      cw->extents = None;
-    }
 
   free_win (cw, FALSE);
 
@@ -701,8 +616,6 @@ add_win (MetaScreen *screen,
     cw->damage = None;
   else
     cw->damage = XDamageCreate (xdisplay, xwindow, XDamageReportNonEmpty);
-
-  cw->extents = None;
 
   /* Only add the window to the list of docks if it needs a shadow */
   if (cw->type == META_COMP_WINDOW_DOCK)
@@ -771,26 +684,6 @@ add_win (MetaScreen *screen,
 
   if (cw->attrs.map_state == IsViewable)
     map_win (display, screen, xwindow);
-}
-
-static void
-damage_screen (MetaScreen *screen)
-{
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
-  XserverRegion region;
-  int width, height;
-  XRectangle r;
-
-  r.x = 0;
-  r.y = 0;
-  meta_screen_get_size (screen, &width, &height);
-  r.width = width;
-  r.height = height;
-
-  region = XFixesCreateRegion (xdisplay, &r, 1);
-
-  add_damage (screen, region);
 }
 
 static void
@@ -968,17 +861,7 @@ process_configure_notify (MetaCompositorClutter  *compositor,
     }
   else
     {
-      MetaScreen *screen;
-      MetaCompScreen *info;
-
-      /* Might be the root window? */
-      screen = meta_display_screen_for_root (display, event->window);
-      if (screen == NULL)
-        return;
-
-      info = meta_screen_get_compositor_data (screen);
-
-      damage_screen (screen);
+      /* FIXME -- handle root window resizing */
     }
 }
 
@@ -1009,53 +892,6 @@ process_circulate_notify (MetaCompositorClutter  *compositor,
   restack_win (cw, above);
 
 }
-
-static void
-expose_area (MetaScreen *screen,
-             XRectangle *rects,
-             int         nrects)
-{
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
-  XserverRegion region;
-
-  region = XFixesCreateRegion (xdisplay, rects, nrects);
-
-  add_damage (screen, region);
-}
-
-static void
-process_expose (MetaCompositorClutter *compositor,
-                XExposeEvent          *event)
-{
-  MetaCompWindow *cw = find_window_in_display (compositor->display,
-                                               event->window);
-  MetaScreen *screen = NULL;
-  XRectangle rect[1];
-  int origin_x = 0, origin_y = 0;
-
-  if (cw != NULL)
-    {
-      screen = cw->screen;
-      origin_x = cw->attrs.x; /* + cw->attrs.border_width; ? */
-      origin_y = cw->attrs.y; /* + cw->attrs.border_width; ? */
-    }
-  else
-    {
-      screen = meta_display_screen_for_root (compositor->display,
-                                             event->window);
-      if (screen == NULL)
-        return;
-    }
-
-  rect[0].x = event->x + origin_x;
-  rect[0].y = event->y + origin_y;
-  rect[0].width = event->width;
-  rect[0].height = event->height;
-
-  expose_area (screen, rect, 1);
-}
-
 
 static void
 process_unmap (MetaCompositorClutter *compositor,
@@ -1094,28 +930,6 @@ process_property_notify (MetaCompositorClutter *compositor,
                          XPropertyEvent        *event)
 {
   MetaDisplay *display = compositor->display;
-  Display *xdisplay = meta_display_get_xdisplay (display);
-  MetaScreen *screen;
-  int p;
-  Atom background_atoms[2];
-
-  /* Check for the background property changing */
-  background_atoms[0] = compositor->atom_x_root_pixmap;
-  background_atoms[1] = compositor->atom_x_set_root;
-
-  for (p = 0; p < 2; p++)
-    {
-      if (event->atom == background_atoms[p])
-        {
-          screen = meta_display_screen_for_root (display, event->window);
-
-          if (screen)
-            {
-              damage_screen (screen);
-              return;
-            }
-        }
-    }
 
   /* Check for the opacity changing */
   if (event->atom == compositor->atom_net_wm_window_opacity)
@@ -1141,10 +955,6 @@ process_property_notify (MetaCompositorClutter *compositor,
         value = 0xffffffff;
 
       clutter_actor_set_opacity (cw->actor, 200); /* FIXME */
-
-      if (cw->extents)
-        XFixesDestroyRegion (xdisplay, cw->extents);
-      cw->extents = win_extents (cw);
 
       cw->damaged = TRUE;
       return;
@@ -1178,8 +988,6 @@ show_overlay_window (MetaScreen *screen,
   XFixesSetWindowShapeRegion (xdisplay, cow, ShapeInput, 0, 0, region);
 
   XFixesDestroyRegion (xdisplay, region);
-
-  damage_screen (screen);
 }
 
 static Window
@@ -1233,7 +1041,6 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   info->output = get_output_window (screen);
 
-  info->all_damage = None;
   info->windows = NULL;
   info->windows_by_xid = g_hash_table_new (g_direct_hash, g_direct_equal);
 
@@ -1353,7 +1160,6 @@ clutter_cmp_process_event (MetaCompositor *compositor,
       break;
 
     case Expose:
-      process_expose (xrc, (XExposeEvent *) event);
       break;
 
     case UnmapNotify:
