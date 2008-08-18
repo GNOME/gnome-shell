@@ -1,3 +1,20 @@
+2.25.1
+======
+
+Thanks to Patrick Niklaus, Ted Percival, Eric Piel, Akira TAGOH, and Thomas
+Thurman for improvements in this version.
+
+  - Fix memory allocation problem in struts (Eric) (probably #468075)
+  - Ensure windows which start maximised know where to jump back
+    to, so they don't warp to other screens (Ted) (#504692)
+  - Added header comments to some files (Thomas)
+  - Icons for windows which are uncooperative enough not to provide
+    an icon are taken from the theme, not built in (Patrick) (#524343)
+  - Added manual page for metacity-message (Akira, from Debian downstream)
+
+Translations
+  Khaled Hosny (ar), Petr Kovar (cs), Ilkka Tuohela (fi), Duarte Loreto (pt), Djavan
+  Fagundes (pt_BR)
 2.23.89
 =======
 
