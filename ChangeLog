@@ -1,3 +1,16 @@
+2008-08-18  Thomas Thurman  <tthurman@gnome.org>
+
+        Adding doxygen headers to some files.
+
+        * src/core/metacity-Xatomtype.h
+        * src/core/main.c
+        * src/core/screen-private.h
+        * src/core/window-private.h
+        * src/core/keybindings.h
+        * src/core/session.h
+        * src/core/workspace.h
+        * src/core/window-props.h ()
+
 2008-08-18  Eric Piel  <e.a.b.piel@tudelft.nl>
 
         * src/core/workspace.c (ensure_work_areas_validated): add a copy of

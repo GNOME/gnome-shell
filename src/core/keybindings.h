@@ -1,6 +1,11 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity Keybindings */
+/**
+ * \file keybindings.h  Grab and ungrab keys, and process the key events
+ *
+ * Performs global X grabs on the keys we need to be told about, like
+ * the one to close a window.  It also deals with incoming key events.
+ */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington

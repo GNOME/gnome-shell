@@ -1,6 +1,13 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity Session Management */
+/**
+ * \file session.h   Session management
+ *
+ * Maps windows to information about their placing and state on startup.
+ * This is window matching, which we have a policy of leaving in general
+ * to programs such as Devil's Pie, but the session manager specification
+ * requires us to do it here.
+ */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington

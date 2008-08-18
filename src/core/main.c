@@ -23,14 +23,15 @@
  */
 
 /**
- * \file core/main.c Program startup
- *
+ * \file 
+ * Program startup.
  * Functions which parse the command-line arguments, create the display,
  * kick everything off and then close down Metacity when it's time to go.
  */
 
 /**
- * \mainpage Metacity - a boring window manager for the adult in you
+ * \mainpage
+ * Metacity - a boring window manager for the adult in you
  *
  * Many window managers are like Marshmallow Froot Loops; Metacity
  * is like Cheerios.
