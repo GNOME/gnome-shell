@@ -191,6 +191,7 @@ clutter_entry_set_property (GObject      *object,
       break;
     case PROP_X_ALIGN:
       entry->priv->x_align = g_value_get_double (value);
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (object));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -492,7 +493,7 @@ clutter_entry_paint (ClutterActor *self)
   else
     {
       priv->text_x = (actor_width - text_width) * priv->x_align;
-      priv->cursor_pos.x += priv->entry_padding;
+      priv->cursor_pos.x += priv->text_x + priv->entry_padding;
     }
 
   memcpy (&color, &priv->fgcol, sizeof (ClutterColor));

@@ -1,3 +1,13 @@
+2008-08-18  Neil Roberts  <neil@o-hand.com>
+
+	Bug 1085 - Cursor is in wrong position on ClutterEntry if set
+	x-align property
+
+	* clutter/clutter-entry.c (clutter_entry_paint): When calculating
+	the position to draw the cursor at, take into account the
+	alignment of the text. Queue a redraw when the x-align property is
+	changed.
+
 2008-08-07  Neil Roberts  <neil@o-hand.com>
 
 	Bug 1091 - WM_MOUSEWHEEL (scroll-event) not handled correctlly
