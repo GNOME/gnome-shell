@@ -5183,3 +5183,10 @@ meta_display_get_shape_event_base (MetaDisplay *display)
 }
 #endif
 #endif
+
+Atom meta_display_get_atom (MetaDisplay *display, MetaAtom meta_atom)
+{
+  Atom *atoms = & display->atom_WM_PROTOCOLS;
+
+  return atoms[meta_atom - 1];
+}

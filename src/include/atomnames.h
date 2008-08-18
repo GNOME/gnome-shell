@@ -1,12 +1,12 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002, 2003, 2004 Red Hat, Inc.
  * Copyright (C) 2003, 2004 Rob Adams
  * Copyright (C) 2004-2006 Elijah Newren
  * Copyright (C) 2008 Thomas Thurman
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -16,7 +16,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -42,7 +42,7 @@
 
 #ifndef EWMH_ATOMS_ONLY
 
-item(WM_PROTOCOLS)
+item(WM_PROTOCOLS) /* MUST BE FIRST */
 item(WM_TAKE_FOCUS)
 item(WM_DELETE_WINDOW)
 item(WM_STATE)
@@ -54,7 +54,7 @@ item(WM_WINDOW_ROLE)
 item(UTF8_STRING)
 item(WM_ICON_SIZE)
 item(_KWM_WIN_ICON)
-item(_METACITY_RESTART_MESSAGE)    
+item(_METACITY_RESTART_MESSAGE)
 item(_METACITY_RELOAD_THEME_MESSAGE)
 item(_METACITY_SET_KEYBINDINGS_MESSAGE)
 item(_METACITY_TOGGLE_VERBOSE)
@@ -122,6 +122,7 @@ item(_NET_WM_STRUT)
 item(_NET_WM_STATE_HIDDEN)
 item(_NET_WM_WINDOW_TYPE_UTILITY)
 item(_NET_WM_WINDOW_TYPE_SPLASH)
+item(_NET_WM_WINDOW_TYPE_DND)
 item(_NET_WM_STATE_FULLSCREEN)
 item(_NET_WM_PING)
 item(_NET_WM_PID)
