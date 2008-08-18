@@ -5,6 +5,7 @@
 /* 
  * Copyright (C) 2001 Havoc Pennington, Copyright (C) 2002 Red Hat Inc.
  * Copyright (C) 2006 Elijah Newren
+ * Copyright (C) 2008 Thomas Thurman
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -46,7 +47,6 @@
  * not given a name here, because the purpose of the unified handlers
  * is that keys should be referred to exactly once.
  */
-#define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
 #define KEY_GNOME_ACCESSIBILITY "/desktop/gnome/interface/accessibility"
@@ -62,7 +62,6 @@
 
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
-#define KEY_CURSOR_SIZE "/desktop/gnome/peripherals/mouse/cursor_size"
 
 #ifdef HAVE_GCONF
 static GConfClient *default_client = NULL;
@@ -90,6 +89,7 @@ static gboolean provide_visual_bell = FALSE;
 static gboolean bell_is_audible = TRUE;
 static gboolean reduced_resources = FALSE;
 static gboolean gnome_accessibility = FALSE;
+static gboolean gnome_animations = TRUE;
 static char *cursor_theme = NULL;
 static int   cursor_size = 24;
 static gboolean compositing_manager = FALSE;
@@ -107,8 +107,6 @@ static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 #ifdef HAVE_GCONF
 static gboolean handle_preference_update_enum (const gchar *key, GConfValue *value);
 
-static gboolean update_num_workspaces     (int         value);
-static gboolean update_auto_raise_delay    (int        value);
 static gboolean update_window_binding     (const char *name,
                                            const char *value);
 static gboolean update_screen_binding     (const char *name,
@@ -124,7 +122,6 @@ static gboolean update_command            (const char  *name,
                                            const char  *value);
 static gboolean update_workspace_name     (const char  *name,
                                            const char  *value);
-static gboolean update_cursor_size        (int size);
 
 static void change_notify (GConfClient    *client,
                            guint           cnxn_id,
@@ -246,16 +243,16 @@ static GConfEnumStringPair symtab_titlebar_action[] =
 typedef struct
 {
   gchar *key;
+  MetaPreference pref;
   GConfEnumStringPair *symtab;
   gpointer target;
-  MetaPreference pref;
 } MetaEnumPreference;
 
 typedef struct
 {
   gchar *key;
-  gboolean *target;
   MetaPreference pref;
+  gboolean *target;
   gboolean becomes_true_on_destruction;
 } MetaBoolPreference;
 
@@ -285,101 +282,131 @@ typedef struct
   /**
    * Where to write the incoming string.
    *
+   * This must be NULL if the handler is non-NULL.
    * If the incoming string is NULL, no change will be made.
-   * This is ignored if the handler is non-NULL.
    */
   gchar **target;
 
 } MetaStringPreference;
 
+#define METAINTPREFERENCE_NO_CHANGE_ON_DESTROY G_MININT
+
+typedef struct
+{
+  gchar *key;
+  MetaPreference pref;
+  gint *target;
+  /**
+   * Minimum and maximum values of the integer.
+   * If the new value is out of bounds, it will be discarded with a warning.
+   */
+  gint minimum, maximum;
+  /**
+   * Value to use if the key is destroyed.
+   * If this is METAINTPREFERENCE_NO_CHANGE_ON_DESTROY, it will
+   * not be changed when the key is destroyed.
+   */
+  gint value_if_destroyed;
+} MetaIntPreference;
+
+/* FIXMEs: */
+/* @@@ Don't use NULL lines at the end; glib can tell you how big it is */
+/* @@@ /apps/metacity/general should be assumed if first char is not / */
+/* @@@ Will it ever be possible to merge init and update? If not, why not? */
+
 static MetaEnumPreference preferences_enum[] =
   {
     { "/apps/metacity/general/focus_new_windows",
+      META_PREF_FOCUS_NEW_WINDOWS,
       symtab_focus_new_windows,
       &focus_new_windows,
-      META_PREF_FOCUS_NEW_WINDOWS,
     },
     { "/apps/metacity/general/focus_mode",
+      META_PREF_FOCUS_MODE,
       symtab_focus_mode,
       &focus_mode,
-      META_PREF_FOCUS_MODE,
     },
     { "/apps/metacity/general/visual_bell_type",
+      META_PREF_VISUAL_BELL_TYPE,
       symtab_visual_bell_type,
       &visual_bell_type,
-      META_PREF_VISUAL_BELL_TYPE,
     },
     { "/apps/metacity/general/action_double_click_titlebar",
+      META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR,
       symtab_titlebar_action,
       &action_double_click_titlebar,
-      META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR,
     },
     { "/apps/metacity/general/action_middle_click_titlebar",
+      META_PREF_ACTION_MIDDLE_CLICK_TITLEBAR,
       symtab_titlebar_action,
       &action_middle_click_titlebar,
-      META_PREF_ACTION_MIDDLE_CLICK_TITLEBAR,
     },
     { "/apps/metacity/general/action_right_click_titlebar",
+      META_PREF_ACTION_RIGHT_CLICK_TITLEBAR,
       symtab_titlebar_action,
       &action_right_click_titlebar,
-      META_PREF_ACTION_RIGHT_CLICK_TITLEBAR,
     },
-    { NULL, NULL, NULL, 0 },
+    { NULL, 0, NULL, NULL },
   };
 
 static MetaBoolPreference preferences_bool[] =
   {
     { "/apps/metacity/general/raise_on_click",
-      &raise_on_click,
       META_PREF_RAISE_ON_CLICK,
+      &raise_on_click,
       TRUE,
     },
     { "/apps/metacity/general/titlebar_uses_system_font",
-      &use_system_font,
       META_PREF_TITLEBAR_FONT, /* note! shares a pref */
+      &use_system_font,
       TRUE,
     },
     { "/apps/metacity/general/application_based",
-      NULL, /* feature is known but disabled */
       META_PREF_APPLICATION_BASED,
+      NULL, /* feature is known but disabled */
       FALSE,
     },
     { "/apps/metacity/general/disable_workarounds",
-      &disable_workarounds,
       META_PREF_DISABLE_WORKAROUNDS,
+      &disable_workarounds,
       FALSE,
     },
     { "/apps/metacity/general/auto_raise",
-      &auto_raise,
       META_PREF_AUTO_RAISE,
+      &auto_raise,
       FALSE,
     },
     { "/apps/metacity/general/visual_bell",
-      &provide_visual_bell, /* FIXME: change the name: it's confusing */
       META_PREF_VISUAL_BELL,
+      &provide_visual_bell, /* FIXME: change the name: it's confusing */
       FALSE,
     },
     { "/apps/metacity/general/audible_bell",
-      &bell_is_audible, /* FIXME: change the name: it's confusing */
       META_PREF_AUDIBLE_BELL,
+      &bell_is_audible, /* FIXME: change the name: it's confusing */
       FALSE,
     },
     { "/apps/metacity/general/reduced_resources",
-      &reduced_resources,
       META_PREF_REDUCED_RESOURCES,
+      &reduced_resources,
       FALSE,
     },
     { "/desktop/gnome/interface/accessibility",
-      &gnome_accessibility,
       META_PREF_GNOME_ACCESSIBILITY,
+      &gnome_accessibility,
       FALSE,
+    },
+    { "/desktop/gnome/interface/enable_animations",
+      META_PREF_GNOME_ANIMATIONS,
+      &gnome_animations,
+      TRUE,
     },
     { "/apps/metacity/general/compositing_manager",
-      &compositing_manager,
       META_PREF_COMPOSITING_MANAGER,
+      &compositing_manager,
       FALSE,
     },
-    { NULL, NULL, 0, FALSE },
+    { NULL, 0, NULL, FALSE },
   };
 
 static MetaStringPreference preferences_string[] =
@@ -415,6 +442,31 @@ static MetaStringPreference preferences_string[] =
       &cursor_theme,
     },
     { NULL, 0, NULL, NULL },
+  };
+
+static MetaIntPreference preferences_int[] =
+  {
+    { "/apps/metacity/general/num_workspaces",
+      META_PREF_NUM_WORKSPACES,
+      &num_workspaces,
+      /* I would actually recommend we change the destroy value to 4
+       * and get rid of METAINTPREFERENCE_NO_CHANGE_ON_DESTROY entirely.
+       *  -- tthurman
+       */
+      1, MAX_REASONABLE_WORKSPACES, METAINTPREFERENCE_NO_CHANGE_ON_DESTROY,
+    },
+    { "/apps/metacity/general/auto_raise_delay",
+      META_PREF_AUTO_RAISE_DELAY,
+      &auto_raise_delay,
+      0, 10000, 0,
+      /* @@@ Get rid of MAX_REASONABLE_AUTO_RAISE_DELAY */
+    },
+    { "/desktop/gnome/peripherals/mouse/cursor_size",
+      META_PREF_CURSOR_SIZE,
+      &cursor_size,
+      1, 128, 24,
+    },
+    { NULL, 0, NULL, 0, 0, 0, },
   };
 
 static void
@@ -505,6 +557,44 @@ handle_preference_init_string (void)
 
           *(cursor->target) = value;
         }
+
+      ++cursor;
+    }
+}
+
+static void
+handle_preference_init_int (void)
+{
+  MetaIntPreference *cursor = preferences_int;
+
+  
+  while (cursor->key!=NULL)
+    {
+      gint value;
+      GError *error = NULL;
+
+      value = gconf_client_get_int (default_client,
+                                    cursor->key,
+                                    &error);
+      cleanup_error (&error);
+
+      if (value < cursor->minimum || value > cursor->maximum)
+        {
+          meta_warning (_("%d stored in GConf key %s is out of range %d to %d\n"),
+                        value, cursor->key,  cursor->minimum, cursor->maximum);
+          /* Former behaviour for out-of-range values was:
+           *   - number of workspaces was clamped;
+           *   - auto raise delay was always reset to zero even if too high!;
+           *   - cursor size was ignored.
+           *
+           * These seem to be meaningless variations.  If they did
+           * have meaning we could have put them into MetaIntPreference.
+           * The last of these is the closest to how we behave for
+           * other types, so I think we should standardise on that.
+           */
+        }
+      else if (cursor->target)
+        *cursor->target = value;
 
       ++cursor;
     }
@@ -689,6 +779,70 @@ handle_preference_update_string (const gchar *key, GConfValue *value)
   return TRUE;
 }
 
+static gboolean
+handle_preference_update_int (const gchar *key, GConfValue *value)
+{
+  MetaIntPreference *cursor = preferences_int;
+  gint new_value;
+
+  while (cursor->key!=NULL && strcmp (key, cursor->key)!=0)
+    ++cursor;
+
+  if (cursor->key==NULL)
+    /* Didn't recognise that key. */
+    return FALSE;
+
+  if (cursor->target==NULL)
+    /* No work for us to do. */
+    return TRUE;
+      
+  if (value==NULL)
+    {
+      /* Value was destroyed. */
+
+      if (cursor->value_if_destroyed != METAINTPREFERENCE_NO_CHANGE_ON_DESTROY)
+        *((gint *)cursor->target) = cursor->value_if_destroyed;
+
+      return TRUE;
+    }
+
+  /* Check the type. */
+
+  if (value->type != GCONF_VALUE_INT)
+    {
+      meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                    key);
+      /* But we did recognise it. */
+      return TRUE;
+    }
+
+  new_value = gconf_value_get_int (value);
+
+  if (new_value < cursor->minimum || new_value > cursor->maximum)
+    {
+      meta_warning (_("%d stored in GConf key %s is out of range %d to %d\n"),
+                    new_value, cursor->key,
+                    cursor->minimum, cursor->maximum);
+      return TRUE;
+    }
+
+  /* Did it change?  If so, tell the listeners about it. */
+
+  if (*cursor->target != new_value)
+    {
+      *cursor->target = new_value;
+      queue_changed (cursor->pref);
+    }
+
+  return TRUE;
+  
+}
+
+
+/****************************************************************************/
+/* Listeners.                                                               */
+/****************************************************************************/
+
 void
 meta_prefs_add_listener (MetaPrefsChangedFunc func,
                          gpointer             data)
@@ -817,12 +971,18 @@ meta_prefs_remove_listener (MetaPrefsChangedFunc func,
 
 #endif /* HAVE_GCONF */
 
+
+/****************************************************************************/
+/* Initialisation.                                                          */
+/****************************************************************************/
 
+/* @@@ again, use glib's ability to tell you the size of the array */
 static gchar *gconf_dirs_we_are_interested_in[] = {
   "/apps/metacity",
   KEY_TERMINAL_DIR,
   KEY_GNOME_ACCESSIBILITY,
   "/desktop/gnome/peripherals/mouse",
+  "/desktop/gnome/interface",
   NULL,
 };
 
@@ -831,8 +991,6 @@ meta_prefs_init (void)
 {
 #ifdef HAVE_GCONF
   GError *err = NULL;
-  int int_val;
-  GConfValue *gconf_val;
   gchar **gconf_dir_cursor;
   
   if (default_client != NULL)
@@ -857,40 +1015,9 @@ meta_prefs_init (void)
   handle_preference_init_enum ();
   handle_preference_init_bool ();
   handle_preference_init_string ();
+  handle_preference_init_int ();
 
-  /* To follow: initialisation with ordinary ints. */
-
-  /* Pick up initial values using the legacy system. */
-
-  gconf_val = gconf_client_get (default_client, KEY_AUTO_RAISE_DELAY,
-				  &err);
-  cleanup_error (&err);
-  if (gconf_val)
-    {
-      if (gconf_val->type == GCONF_VALUE_INT)
-        update_auto_raise_delay (gconf_value_get_int (gconf_val));
-      else
-        meta_warning(_("Type of %s was not integer"), KEY_AUTO_RAISE_DELAY);
-
-      gconf_value_free (gconf_val);
-    }
-  
-
-  /* If the keys aren't set in the database, we use essentially
-   * bogus values instead of any kind of default. This is
-   * just lazy. But they keys ought to be set, anyhow.
-   */
-  
-  int_val = gconf_client_get_int (default_client, KEY_NUM_WORKSPACES,
-                                  &err);
-  cleanup_error (&err);
-  update_num_workspaces (int_val);
-
-  int_val = gconf_client_get_int (default_client, KEY_CURSOR_SIZE,
-                                  &err);
-  cleanup_error (&err);
-  update_cursor_size (int_val);
-
+  /* @@@ Is there any reason we don't do the add_dir here? */
   for (gconf_dir_cursor=gconf_dirs_we_are_interested_in;
        *gconf_dir_cursor!=NULL;
        gconf_dir_cursor++)
@@ -917,16 +1044,15 @@ meta_prefs_init (void)
   init_button_layout();
 #endif /* HAVE_GCONF */
   
-  /* Load keybindings prefs */
   init_bindings ();
-
-  /* commands */
   init_commands ();
-
-  /* workspace names */
   init_workspace_names ();
-
 }
+
+
+/****************************************************************************/
+/* Updates.                                                                 */
+/****************************************************************************/
 
 #ifdef HAVE_GCONF
 
@@ -934,6 +1060,7 @@ gboolean (*preference_update_handler[]) (const gchar*, GConfValue*) = {
   handle_preference_update_enum,
   handle_preference_update_bool,
   handle_preference_update_string,
+  handle_preference_update_int,
   NULL
 };
 
@@ -967,25 +1094,10 @@ change_notify (GConfClient    *client,
 
   /* Otherwise, use the enormous if statement. We'll move entries
    * out of here as it becomes possible to deal with them in a
-   * more general way. */
+   * more general way.
+   */
 
-  if (strcmp (key, KEY_NUM_WORKSPACES) == 0)
-    {
-      int d;
-
-      if (value && value->type != GCONF_VALUE_INT)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_NUM_WORKSPACES);
-          goto out;
-        }
-
-      d = value ? gconf_value_get_int (value) : num_workspaces;
-
-      if (update_num_workspaces (d))
-        queue_changed (META_PREF_NUM_WORKSPACES);
-    }
-  else if (g_str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX))
+  if (g_str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX))
     {
       if (g_str_has_suffix (key, KEY_LIST_BINDINGS_SUFFIX))
         {
@@ -1055,23 +1167,6 @@ change_notify (GConfClient    *client,
              queue_changed (META_PREF_SCREEN_KEYBINDINGS);
         }
     }
-  else if (strcmp (key, KEY_AUTO_RAISE_DELAY) == 0)
-    {
-      int d;
-
-      if (value && value->type != GCONF_VALUE_INT)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        KEY_AUTO_RAISE_DELAY);
-          goto out;
-        }        
-      
-      d = value ? gconf_value_get_int (value) : 0;
-
-      if (update_auto_raise_delay (d))
-        queue_changed (META_PREF_AUTO_RAISE_DELAY);
-    
-    }
   else if (g_str_has_prefix (key, KEY_COMMAND_PREFIX))
     {
       const char *str;
@@ -1104,22 +1199,6 @@ change_notify (GConfClient    *client,
       if (update_workspace_name (key, str))
         queue_changed (META_PREF_WORKSPACE_NAMES);
     }
-  else if (strcmp (key, KEY_CURSOR_SIZE) == 0)
-    {
-      int d;
-
-      if (value && value->type != GCONF_VALUE_INT)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                       KEY_CURSOR_SIZE);
-          goto out;
-        }
-
-      d = value ? gconf_value_get_int (value) : 24;
-
-      if (update_cursor_size (d))
-	queue_changed (META_PREF_CURSOR_SIZE);
-    }
   else
     {
       meta_topic (META_DEBUG_PREFS, "Key %s doesn't mean anything to Metacity\n",
@@ -1144,6 +1223,7 @@ cleanup_error (GError **error)
 }
 
 /* get_bool returns TRUE if *val is filled in, FALSE otherwise */
+/* @@@ probably worth moving this inline; only used once */
 static gboolean
 get_bool (const char *key, gboolean *val)
 {
@@ -1225,27 +1305,16 @@ meta_prefs_get_cursor_theme (void)
   return cursor_theme;
 }
 
-#ifdef HAVE_GCONF
-static gboolean
-update_cursor_size (int value)
-{
-  int old = cursor_size;
-
-  if (value >= 1 && value <= 128)
-    cursor_size = value;
-  else
-    meta_warning (_("%d stored in GConf key %s is not a reasonable cursor_size; must be in the range 1..128\n"),
-                    value, KEY_CURSOR_SIZE);
-
-  return old != value;
-}
-#endif
-
 int
 meta_prefs_get_cursor_size (void)
 {
   return cursor_size;
 }
+
+
+/****************************************************************************/
+/* Handlers for string preferences.                                         */
+/****************************************************************************/
 
 #ifdef HAVE_GCONF
 
@@ -1591,28 +1660,6 @@ meta_prefs_get_titlebar_font (void)
     return titlebar_font;
 }
 
-#ifdef HAVE_GCONF
-static gboolean
-update_num_workspaces (int value)
-{
-  int old = num_workspaces;
-
-  if (value < 1 || value > MAX_REASONABLE_WORKSPACES)
-    {
-      meta_warning (_("%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"),
-                    value, KEY_NUM_WORKSPACES, MAX_REASONABLE_WORKSPACES);
-      if (value < 1)
-        value = 1;
-      else if (value > MAX_REASONABLE_WORKSPACES)
-        value = MAX_REASONABLE_WORKSPACES;
-    }
-  
-  num_workspaces = value;
-
-  return old != num_workspaces;
-}
-#endif /* HAVE_GCONF */
-
 int
 meta_prefs_get_num_workspaces (void)
 {
@@ -1636,24 +1683,6 @@ meta_prefs_get_disable_workarounds (void)
 #ifdef HAVE_GCONF
 #define MAX_REASONABLE_AUTO_RAISE_DELAY 10000
   
-static gboolean
-update_auto_raise_delay (int value)
-{
-  int old = auto_raise_delay;
-
-  if (value < 0 || value > MAX_REASONABLE_AUTO_RAISE_DELAY)
-    {
-      meta_warning (_("%d stored in GConf key %s is out of range 0 to %d\n"),
-                    value, KEY_AUTO_RAISE_DELAY, 
-		    MAX_REASONABLE_AUTO_RAISE_DELAY);
-      value = 0;
-    }
-  
-  auto_raise_delay = value;
-
-  return old != auto_raise_delay;
-}
-
 #endif /* HAVE_GCONF */
 
 #ifdef WITH_VERBOSE_MODE
@@ -1737,6 +1766,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_GNOME_ACCESSIBILITY:
       return "GNOME_ACCESSIBILTY";
+
+    case META_PREF_GNOME_ANIMATIONS:
+      return "GNOME_ANIMATIONS";
 
     case META_PREF_CURSOR_THEME:
       return "CURSOR_THEME";
@@ -2838,6 +2870,12 @@ gboolean
 meta_prefs_get_gnome_accessibility ()
 {
   return gnome_accessibility;
+}
+
+gboolean
+meta_prefs_get_gnome_animations ()
+{
+  return gnome_animations;
 }
 
 MetaKeyBindingAction

@@ -1,6 +1,27 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity animation effects */
+/**
+ * \file effects.h "Special effects" other than compositor effects.
+ * 
+ * Before we had a serious compositor, we supported swooping
+ * rectangles for minimising and so on.  These are still supported
+ * today, even when the compositor is enabled.  The file contains two
+ * parts:
+ *
+ *  1) A set of functions, each of which implements a special effect.
+ *     (Only the minimize function does anything interesting; we should
+ *      probably get rid of the rest.)
+ *
+ *  2) A set of functions for moving a highlighted wireframe box around
+ *     the screen, optionally with height and width shown in the middle.
+ *     This is used for moving and resizing when reduced_resources is set.
+ *
+ * There was formerly a system which allowed callers to drop in their
+ * own handlers for various things; it was never used (people who want
+ * their own handlers can just modify this file, after all) and it added
+ * a good deal of extra complexity, so it has been removed.  If you want it,
+ * it can be found in svn r3769.
+ */
 
 /* 
  * Copyright (C) 2001 Anders Carlsson, Havoc Pennington
@@ -27,116 +48,104 @@
 #include "util.h"
 #include "screen-private.h"
 
-typedef struct MetaEffect MetaEffect;
-typedef struct MetaEffectPriv MetaEffectPriv;
-
-#define META_MINIMIZE_ANIMATION_LENGTH 0.25
-#define META_SHADE_ANIMATION_LENGTH 0.2
-
-typedef enum
-{
-  META_BOX_ANIM_SCALE,
-  META_BOX_ANIM_SLIDE_UP
-
-} MetaBoxAnimType;
-
 typedef enum
 {
   META_EFFECT_MINIMIZE,
   META_EFFECT_UNMINIMIZE,
-  META_EFFECT_MENU_MAP,
-  META_EFFECT_MENU_UNMAP,
-  META_EFFECT_DIALOG_MAP,
-  META_EFFECT_DIALOG_UNMAP,
-  META_EFFECT_TOPLEVEL_MAP,
-  META_EFFECT_TOPLEVEL_UNMAP,
-  META_EFFECT_WIREFRAME_BEGIN,
-  META_EFFECT_WIREFRAME_UPDATE,
-  META_EFFECT_WIREFRAME_END,
   META_EFFECT_FOCUS,
   META_EFFECT_CLOSE,
   META_NUM_EFFECTS
 } MetaEffectType;
 
-typedef void (* MetaEffectHandler) (MetaEffect *effect,
-				    gpointer    data);
-typedef void (* MetaEffectFinished) (const MetaEffect *effect,
-				     gpointer	      data);
+/**
+ * A callback which will be called when the effect has finished.
+ */
+typedef void (* MetaEffectFinished) (gpointer    data);
 
-typedef struct
-{
-  MetaRectangle window_rect;
-  MetaRectangle icon_rect;
-} MetaMinimizeEffect, MetaUnminimizeEffect;
-
-#if 0
-/* Solaris abhors an empty struct. #397296. */
-typedef struct
-{
-    
-} MetaCloseEffect;
-
-typedef struct
-{
-} MetaFocusEffect;
-#endif
-
-struct MetaEffect
-{
-  MetaWindow *window;
-  MetaEffectType type;
-  gpointer info;		/* effect handler can hang data here */
-  
-  union
-  {
-    MetaMinimizeEffect	    minimize;
-    MetaUnminimizeEffect    unminimize;
-#if 0
-    /* These don't currently exist, so we aren't using them. #397296. */
-    MetaCloseEffect	    close;
-    MetaFocusEffect	    focus;
-#endif
-  } u;
-  
-  MetaEffectPriv *priv;
-};
-
-void        meta_push_effect_handler (MetaEffectHandler   handler,
-				      gpointer            data);
-void	    meta_pop_effect_handler  (void);
-
+/**
+ * Performs the minimize effect.
+ *
+ * \param window       The window we're moving
+ * \param window_rect  Its current state
+ * \param target       Where it should end up
+ * \param finished     Callback for when it's finished
+ * \param data         Data for callback
+ */
 void        meta_effect_run_minimize     (MetaWindow         *window,
-					  MetaRectangle	     *window_rect,
-					  MetaRectangle	     *target,
-					  MetaEffectFinished  finished,
-					  gpointer            data);
+                                          MetaRectangle	     *window_rect,
+                                          MetaRectangle	     *target,
+                                          MetaEffectFinished  finished,
+                                          gpointer            data);
+
+/**
+ * Performs the unminimize effect.  There is no such effect.
+ * FIXME: delete this.
+ *
+ * \param window       The window we're moving
+ * \param icon_rect    Its current state
+ * \param window_rect  Where it should end up
+ * \param finished     Callback for when it's finished
+ * \param data         Data for callback
+ */
 void        meta_effect_run_unminimize (MetaWindow         *window,
-					MetaRectangle      *window_rect,
-					MetaRectangle	     *icon_rect,
-					MetaEffectFinished  finished,
-					gpointer            data);
+                                          MetaRectangle      *window_rect,
+                                          MetaRectangle      *icon_rect,
+                                          MetaEffectFinished  finished,
+                                          gpointer            data);
+
+/**
+ * Performs the close effect.  There is no such effect.
+ * FIXME: delete this.
+ *
+ * \param window       The window we're moving
+ * \param finished     Callback for when it's finished
+ * \param data         Data for callback
+ */
 void        meta_effect_run_close        (MetaWindow         *window,
-					  MetaEffectFinished  finished,
-					  gpointer            data);
+                                          MetaEffectFinished  finished,
+                                          gpointer            data);
+
+/**
+ * Performs the focus effect.  There is no such effect.
+ * FIXME: delete this.
+ *
+ * \param window       The window we're moving
+ * \param finished     Callback for when it's finished
+ * \param data         Data for callback
+ */
 void        meta_effect_run_focus        (MetaWindow         *window,
-					  MetaEffectFinished  finished,
-					  gpointer            data);
-void        meta_effect_end              (MetaEffect         *effect);
+                                          MetaEffectFinished  finished,
+                                          gpointer            data);
 
-
-
-/* Stuff that should become static functions */
-
-void meta_effects_draw_box_animation (MetaScreen     *screen,
-                                      MetaRectangle  *initial_rect,
-                                      MetaRectangle  *destination_rect,
-                                      double          seconds_duration,
-                                      MetaBoxAnimType anim_type);
-
+/**
+ * Grabs the server and paints a wireframe rectangle on the screen.
+ * Since this involves starting a grab, please be considerate of other
+ * users and don't keep the grab for long.  You may move the wireframe
+ * around using meta_effects_update_wireframe() and remove it, and undo
+ * the grab, using meta_effects_end_wireframe().
+ *
+ * \param screen  The screen to draw the rectangle on.
+ * \param rect    The size of the rectangle to draw.
+ * \param width   The width to display in the middle (or 0 not to)
+ * \param height  The width to display in the middle (or 0 not to)
+ */
 void meta_effects_begin_wireframe  (MetaScreen          *screen,
                                     const MetaRectangle *rect,
                                     int                  width,
                                     int                  height);
+
+/**
+ * Moves a wireframe rectangle around after its creation by
+ * meta_effects_begin_wireframe().  (Perhaps we ought to remember the old
+ * positions and not require people to pass them in?)
+ *
+ * \param old_rect  Where the rectangle is now
+ * \param old_width The width that was displayed on it (or 0 if there wasn't)
+ * \param old_height The height that was displayed on it (or 0 if there wasn't)
+ * \param new_rect  Where the rectangle is going
+ * \param new_width The width that will be displayed on it (or 0 not to)
+ * \param new_height The height that will be displayed on it (or 0 not to)
+ */
 void meta_effects_update_wireframe (MetaScreen          *screen,
                                     const MetaRectangle *old_rect,
                                     int                  old_width,
@@ -144,6 +153,15 @@ void meta_effects_update_wireframe (MetaScreen          *screen,
                                     const MetaRectangle *new_rect,
                                     int                  new_width,
                                     int                  new_height);
+
+/**
+ * Removes a wireframe rectangle from the screen and ends the grab started by
+ * meta_effects_begin_wireframe().
+ *
+ * \param old_rect  Where the rectangle is now
+ * \param old_width The width that was displayed on it (or 0 if there wasn't)
+ * \param old_height The height that was displayed on it (or 0 if there wasn't)
+ */
 void meta_effects_end_wireframe    (MetaScreen          *screen,
                                     const MetaRectangle *old_rect,
                                     int                  width,

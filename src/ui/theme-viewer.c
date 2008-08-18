@@ -29,6 +29,7 @@
 #include <gtk/gtk.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
@@ -815,6 +816,24 @@ main (int argc, char **argv)
   
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_default_size (GTK_WINDOW (window), 350, 350);
+
+  if (strcmp (global_theme->name, global_theme->readable_name)==0)
+    gtk_window_set_title (GTK_WINDOW (window),
+                          global_theme->readable_name);
+  else
+    {
+      /* The theme directory name is different from the name the theme
+       * gives itself within its file.  Display both, directory name first.
+       */
+      gchar *title =  g_strconcat (global_theme->name, " - ",
+                                   global_theme->readable_name,
+                                   NULL);
+
+      gtk_window_set_title (GTK_WINDOW (window),
+                            title);
+
+      g_free (title);
+    }       
 
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);

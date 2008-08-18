@@ -1,3 +1,186 @@
+2008-08-04  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.23.89 release.
+
+2008-07-26  Thomas Thurman  <tthurman@gnome.org>
+
+	* metacity.doap (added): DOAP file (first pass, anyway).
+
+2008-07-14  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.23.89.
+
+2008-07-14  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.23.55 release.
+
+2008-07-13  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/display.c (event_callback): meta_display_screen_for_root()
+        can return NULL, so check for that.  Fixes #422242.  Also tidying.
+
+2008-07-13  Elijah Newren  <newren gmail com>
+
+        * src/core/workspace.c (meta_workspace_free): Don't attempt to
+        double-free struts, edges and regions if work areas have already
+        been invalidated at the time of freeing a workspace.
+        Possible fix to #361804.
+
+2008-07-12  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/constraints.c (do_screen_and_xinerama_relative_constraints):
+        Don't allocate memory for log messages unless we're logging.
+
+2008-07-12  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/group.c (meta_window_get_group): This function can now
+        officially return NULL.
+        * src/core/window.c (meta_window_same_application): Two windows can't
+        belong to the same application unless they both belong to some
+        application.  (Both belonging to no application is not the same.)
+
+2008-06-30  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/bell.c (meta_bell_set_audible): Fix typo that
+          slipped through.
+
+2008-06-30  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/bell.[ch]: Move comments for non-statics from the .c to .h.
+        * Doxyfile: adapt better for C, and make quiet.
+
+2008-06-29  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/ui/theme-viewer.c (main): display the theme name
+          in the title bar.  Closes #430198.
+
+2008-06-29  Thomas Thurman  <tthurman@gnome.org>
+
+        Allow toggling of non-compositor effects (since there's a
+        non-Metacity key to do so: /desktop/gnome/interface/enable_animations).
+        Closes #92867.
+
+        * src/include/prefs.h: add META_PREFS_GNOME_ANIMATIONS key and
+          meta_prefs_get_gnome_animations() function
+        * src/include/prefs.c: added meta_prefs_get_gnome_animations()
+          function, and made supporting changes to structs.
+        * src/core/effects.c (run_handler): checked whether enable_animations
+          is set before running an effect.
+        * src/core/effects.c (meta_effect_run_minimize): remove debug message.
+
+2008-06-29  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/bell.c: remove meta_ prefix on all static functions.
+
+2008-06-29  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/stack.c (stack_sync_to_server): lose meta prefix
+          since it's static. 
+        * src/core/stack.c (meta_stack_remove, stack_do_window_deletions):
+          replace our own cast with glib macro designed to do the same thing
+
+2008-06-28  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/display.c, src/compositor/compositor-xrender.c: add checks
+          for HAVE_SHAPE where appropriate.
+        * src/core/xprops.c: fix type error which was causing warnings.
+
+2008-06-28  Thomas Thurman  <tthurman@gnome.org>
+
+        Some refactoring, simplifying, and commenting of the non-composited
+        effects code.  effects.c could still do with some polish, which will
+        come along later.
+
+        * src/core/effects.h (meta_push_effect_handler): removed since it's
+          never used and does nothing very useful.
+        * src/core/effects.h (meta_pop_effect_handler): removed since its
+          only effect is to crash the program.
+        * src/core/effects.h (META_MINIMIZE_ANIMATION_LENGTH,
+          META_SHADE_ANIMATION_LENGTH): move to effects.c because they're used
+          nowhere else.
+        * src/core/effects.c: there were three versions of the box-zoom effect.
+          Remove the one which was never used, and make only the ones which
+          are used with certain configure settings be compiled.
+        * src/core/effects.h (meta_effect_end): move to effects.c, make static,
+          and rename to effect_free.
+        * src/core/effects.h (meta_effects_draw_box_animation): move to
+          effects.c, make static, and rename to draw_box_animation.
+        * src/core/effects.h (MetaEffectType): remove the values which weren't
+          used.
+        * src/core/window.c (meta_window_shade): remove commented-out code to
+          call effect for shading.
+        * src/core/effects.h (MetaEffectFinish): remove useless MetaEffect
+          parameter.
+        * src/core/window.c (finish_minimize): remove MetaEffect parameter.
+
+2008-06-27  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/stack.h: Commented everything.
+
+2008-06-26  Thomas Thurman  <tthurman@gnome.org>
+
+        Keep the compiler from giving some warnings.
+        
+        * src/compositor/compositor-xrender.c (xrender_begin_move,
+          xrender_update_move, xrender_end_move, xrender_free_window): four
+          functions which were never called and contain no code #iffed out.
+        * src/tools/metacity-mag.c (grab_area_at_mouse): fixed typecast error.
+
+2008-06-26  Thomas Thurman  <tthurman@gnome.org>
+
+        Refactor so the long scary stack functions are less long and scary:
+
+        * stack.c (stack_ensure_sorted): the five parts of this long function
+          broken out into the new functions stack_do_window_deletions,
+          stack_do_window_additions, stack_do_relayer, stack_do_constrain
+          (which was already separate: see next) and stack_do_resort.
+        * stack.c (constrain_stacking): renamed to stack_do_constrain.
+        * stack.c (stack_ignore_sorted): lose meta prefix since it's static.
+        
+2008-06-16  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.23.55.
+
+2008-06-16  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.23.34 release.
+
+2008-06-16  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.23.34 release.
+
+2008-06-13  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/window-props.c: Some commenting.
+
+        * src/core/prefs.c: Added unified handling of integer preferences.
+          Re-ordered fields in existing preferences so that changing to
+          a union-based system will be easier in the future.
+
+2008-06-10  Thomas Thurman  <tthurman@gnome.org>
+
+        * test/tokentest/tokentest.c (draw_string_to_spec): doubles are
+	  %f or %g, not %d
+        * test/tokentest/tokentest.ini: re-created fair copy accordingly
+
+2008-06-10  Thomas Thurman  <tthurman@gnome.org>
+
+        * test/tokentest:  A preliminary attempt at a test for the
+          theme expression tokeniser.
+
+2008-06-05  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/compositor/compositor-xrender.c (paint_root, destroy_win,
+        create_root_buffer, paint_windows, repair_screen, window_has_shadow,
+        xrender_set_active_window, paint_dock_shadows, unmap_win, restack_win,
+        make_shadow, resize_win, process_property_notify, free_win,
+        process_configure_notify, process_circulate_notify, add_damage):
+        defensive programming; check meta_screen_get_compositor_data()
+        throughout in case it returns NULL.  In particular, when this
+        happened in a certain situation in xrender_set_active_window
+        this caused a segfault; refs #530702 (and LP#178953 has more data)
+        but this doesn't close them.
+
 2008-06-02  Thomas Thurman  <tthurman@gnome.org>
 
         * NEWS: 2.23.34 release.

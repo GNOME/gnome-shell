@@ -1412,8 +1412,7 @@ meta_window_should_be_showing (MetaWindow  *window)
 }
 
 static void
-finish_minimize (const MetaEffect *effect,
-		 gpointer	   data)
+finish_minimize (gpointer data)
 {
   MetaWindow *window = data;
   /* FIXME: It really sucks to put timestamp pinging here; it'd
@@ -1440,11 +1439,11 @@ implement_showing (MetaWindow *window,
   /* Actually show/hide the window */
   meta_verbose ("Implement showing = %d for window %s\n",
                 showing, window->desc);
-   
+    
   if (!showing)
     {
       gboolean on_workspace;
-      
+
       on_workspace = meta_window_located_on_workspace (window, 
                                                        window->screen->active_workspace);
       
@@ -1484,7 +1483,7 @@ implement_showing (MetaWindow *window,
         }
       else
         {
-          finish_minimize (NULL, window);
+          finish_minimize (window);
         }
     }
   else
@@ -2776,31 +2775,7 @@ meta_window_shade (MetaWindow  *window,
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Shading %s\n", window->desc);
   if (!window->shaded)
-    {
-#if 0
-      if (window->mapped)
-        {
-          /* Animation */
-          MetaRectangle starting_size;
-          MetaRectangle titlebar_size;
-          
-          meta_window_get_outer_rect (window, &starting_size);
-          if (window->frame)
-            {
-              starting_size.y += window->frame->child_y;
-              starting_size.height -= window->frame->child_y;
-            }
-          titlebar_size = starting_size;
-          titlebar_size.height = 0;
-          
-          meta_effects_draw_box_animation (window->screen,
-                                           &starting_size,
-                                           &titlebar_size,
-                                           META_SHADE_ANIMATION_LENGTH,
-                                           META_BOX_ANIM_SLIDE_UP);
-        }
-#endif
-      
+    {      
       window->shaded = TRUE;
 
       meta_window_queue(window, META_QUEUE_MOVE_RESIZE | META_QUEUE_CALC_SHOWING);
@@ -3874,7 +3849,6 @@ meta_window_get_wireframe_geometry (MetaWindow    *window,
                                     int           *width,
                                     int           *height)
 {
-
   if (!window->display->grab_wireframe_active)
     return;
 
@@ -7582,9 +7556,13 @@ gboolean
 meta_window_same_application (MetaWindow *window,
                               MetaWindow *other_window)
 {
+  MetaGroup *group       = meta_window_get_group (window);
+  MetaGroup *other_group = meta_window_get_group (other_window);
+
   return
-    meta_window_get_group (window) ==
-    meta_window_get_group (other_window);
+    group!=NULL &&
+    other_group!=NULL &&
+    group==other_group;
 }
 
 void

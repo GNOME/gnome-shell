@@ -1,3 +1,61 @@
+2.23.89
+=======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Added DOAP file. (Thomas)
+
+Translations
+  Khaled Hosny (ar), Luca Ferretti (it), Takeshi AIHANA (ja), Wouter
+  Bolsterlee (nl), Vladimir Melo (pt_BR), Daniel Nylander (sv)
+
+2.23.55
+=======
+
+Thanks to Elijah Newren and Thomas Thurman for improvements in this version.
+
+Contrary to rumour, this release does not add tabbing to everything.
+
+  - Display theme name in title bar of theme viewer (Thomas) (#430198)
+  - Allow toggling of non-compositor effects (Thomas) (#92867)
+  - Add some extra null checks (Thomas) (#422242)
+  - Check for double-freeing at the time of workspace freeing (Elijah) (#361804)
+  - Don't generate log messages unless we're logging (Thomas)
+  - Two windows which don't belong to any application can't be considered to
+    belong to the same application (Thomas)
+  - Various tidyings (Thomas)
+
+Translations
+  Yavor Doganov (bg), Gabor Kelemen (hu), Kjartan Maraas (nb), Matej
+  Urbančič (sl), Daniel Nylander (sv), Theppitak Karoonboonyanan (th)
+
+
+2.23.34
+=======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Commenting and tidying (Thomas)
+  - Fix possible compositor crash (Thomas) (#530702)
+
+Translations
+  Khaled Hosny (ar), Yavor Doganov (bg), Jorge González (es), Kjartan Maraas (nb),
+  Yannig Marchegay (Kokoyaya) (oc), Theppitak Karoonboonyanan (th), Clytie
+  Siddall (vi)
+
+2.23.34
+=======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Commenting and tidying (Thomas)
+  - Fix possible compositor crash (Thomas) (#530702)
+
+Translations
+  Khaled Hosny (ar), Yavor Doganov (bg), Jorge González (es), Kjartan Maraas (nb),
+  Yannig Marchegay (Kokoyaya) (oc), Theppitak Karoonboonyanan (th), Clytie
+  Siddall (vi)
+
 2.23.34
 =======
 

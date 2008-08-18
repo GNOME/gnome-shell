@@ -56,6 +56,7 @@ typedef enum
   META_PREF_VISUAL_BELL_TYPE,
   META_PREF_REDUCED_RESOURCES,
   META_PREF_GNOME_ACCESSIBILITY,
+  META_PREF_GNOME_ANIMATIONS,
   META_PREF_CURSOR_THEME,
   META_PREF_CURSOR_SIZE,
   META_PREF_COMPOSITING_MANAGER
@@ -86,6 +87,7 @@ gboolean                    meta_prefs_get_auto_raise         (void);
 int                         meta_prefs_get_auto_raise_delay   (void);
 gboolean                    meta_prefs_get_reduced_resources  (void);
 gboolean                    meta_prefs_get_gnome_accessibility (void);
+gboolean                    meta_prefs_get_gnome_animations   (void);
 
 const char*                 meta_prefs_get_command            (int i);
 

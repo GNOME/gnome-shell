@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-21 02:57+0000\n"
-"PO-Revision-Date: 2008-05-13 17:49+0200\n"
-"Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
+"POT-Creation-Date: 2008-07-29 01:26+0200\n"
+"PO-Revision-Date: 2008-07-29 01:26+0200\n"
+"Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,12 +51,12 @@ msgstr "Niet begrepen: de laatste tekens ‘%s’ in ‘%s’"
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Verwerken bericht ‘%s’ van dialoogvenster-proces mislukt\n"
 
-#: ../src/core/delete.c:270
+#: ../src/core/delete.c:253
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Fout bij lezen van dialoogvenster-proces: %s\n"
 
-#: ../src/core/delete.c:353
+#: ../src/core/delete.c:336
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -64,7 +64,7 @@ msgstr ""
 "Fout bij het opstarten van het metacity-dialoogvenster waarbij gevraagd "
 "wordt naar het vernietigen van een toepassing: %s\n"
 
-#: ../src/core/delete.c:462
+#: ../src/core/delete.c:445
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Ophalen hostnaam mislukt: %s\n"
@@ -74,12 +74,12 @@ msgstr "Ophalen hostnaam mislukt: %s\n"
 msgid "Missing %s extension required for compositing"
 msgstr "Benodige extensie ‘%s’ voor ‘compositing’ ontbreekt"
 
-#: ../src/core/display.c:438
+#: ../src/core/display.c:334
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display ‘%s’ mislukt\n"
 
-#: ../src/core/errors.c:271
+#: ../src/core/errors.c:272
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -90,7 +90,7 @@ msgstr ""
 "waarschijnlijk is de X-server uitgezet of heeft u de window-manager "
 "vernietigd.\n"
 
-#: ../src/core/errors.c:278
+#: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatale IO-fout %d (%s) op display ‘%s’.\n"
@@ -105,19 +105,19 @@ msgstr ""
 "Een ander programma gebruikt reeds de %s-toets met controletoets %x als "
 "toetsbinding\n"
 
-#: ../src/core/keybindings.c:2722
+#: ../src/core/keybindings.c:2729
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fout bij het starten van een metacity-dialoogvenster om een foutmelding te "
 "tonen over een opdracht: %s\n"
 
-#: ../src/core/keybindings.c:2827
+#: ../src/core/keybindings.c:2834
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Er is geen opdracht %d gedefinieerd.\n"
 
-#: ../src/core/keybindings.c:3855
+#: ../src/core/keybindings.c:3862
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Er is geen opdracht voor de terminal gedefinieerd.\n"
@@ -180,7 +180,7 @@ msgstr ""
 "Kon geen thema vinden! Zorg ervoor dat %s bestaat en de gebruikelijke "
 "thema's bevat.\n"
 
-#: ../src/core/main.c:516
+#: ../src/core/main.c:500
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Herstarten mislukt: %s\n"
@@ -193,25 +193,25 @@ msgstr "Herstarten mislukt: %s\n"
 #. * (We know the old value, so we can look up a suitable string in
 #. * the symtab.)
 #.
-#: ../src/core/prefs.c:450 ../src/core/prefs.c:564
+#: ../src/core/prefs.c:502 ../src/core/prefs.c:654
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-sleutel '%s' is ingesteld op een ongeldige waarde\n"
 
-#: ../src/core/prefs.c:537 ../src/core/prefs.c:607 ../src/core/prefs.c:655
-#: ../src/core/prefs.c:961 ../src/core/prefs.c:979 ../src/core/prefs.c:995
-#: ../src/core/prefs.c:1014 ../src/core/prefs.c:1030 ../src/core/prefs.c:1047
-#: ../src/core/prefs.c:1064 ../src/core/prefs.c:1080 ../src/core/prefs.c:1096
+#: ../src/core/prefs.c:583 ../src/core/prefs.c:823
+#, c-format
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
+msgstr "%d opgeslagen in GConf-sleutel %s valt buiten het bereik %d tot %d\n"
+
+#: ../src/core/prefs.c:627 ../src/core/prefs.c:701 ../src/core/prefs.c:749
+#: ../src/core/prefs.c:813 ../src/core/prefs.c:1108 ../src/core/prefs.c:1124
+#: ../src/core/prefs.c:1143 ../src/core/prefs.c:1159 ../src/core/prefs.c:1176
+#: ../src/core/prefs.c:1192
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-sleutel ‘%s’ is op een ongeldig type ingesteld\n"
 
-#: ../src/core/prefs.c:856
-#, c-format
-msgid "Type of %s was not integer"
-msgstr "Type van %s was geen geheel getal"
-
-#: ../src/core/prefs.c:1165
+#: ../src/core/prefs.c:1262
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -219,23 +219,12 @@ msgstr ""
 "Werkoplossing voor gebroken toepassingen uitgezet. Bepaalde toepassingen "
 "zullen niet naar behoren functioneren.\n"
 
-# volgens mij is cursor_size hier niet bedoeld als sneltoets voor cursorsize,
-# is het een onjuist gebruik van een variabele.
-#: ../src/core/prefs.c:1220
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-"range 1..128\n"
-msgstr ""
-"%d opgeslagen in GConf-sleutel %s is geen redelijke grootte voor een cursor; "
-"het moet liggen in het bereik 1 - 128\n"
-
-#: ../src/core/prefs.c:1246
+#: ../src/core/prefs.c:1332
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kon lettertypebeschrijving ‘%s’ niet verwerken van Gconf-sleutel %s\n"
 
-#: ../src/core/prefs.c:1306
+#: ../src/core/prefs.c:1392
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -244,31 +233,17 @@ msgstr ""
 "‘%s’, gevonden in de configuratiedatabase, is geen geldige waarde voor de "
 "muisknop-optietoets\n"
 
-#: ../src/core/prefs.c:1585
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-"%d opgeslagen in GConf-sleutel %s is geen redelijk aantal werkbladen, "
-"huidige maximum is %d\n"
-
-#: ../src/core/prefs.c:1629
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "%d opgeslagen in GConf-sleutel %s valt buiten het bereik 0 %d\n"
-
-#: ../src/core/prefs.c:1760
+#: ../src/core/prefs.c:1809
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fout bij het instellen van het aantal werkbladen op %d: %s\n"
 
-#: ../src/core/prefs.c:2125 ../src/core/prefs.c:2637
+#: ../src/core/prefs.c:2174 ../src/core/prefs.c:2686
 #, c-format
 msgid "Workspace %d"
 msgstr "Werkblad %d"
 
-#: ../src/core/prefs.c:2155 ../src/core/prefs.c:2328
+#: ../src/core/prefs.c:2204 ../src/core/prefs.c:2377
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -277,17 +252,17 @@ msgstr ""
 "‘%s’ in de configuratiedatabase is geen geldige waarde voor toetsbinding ‘%"
 "s’\n"
 
-#: ../src/core/prefs.c:2718
+#: ../src/core/prefs.c:2767
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fout bij het instellen van de naam voor werkblad %d op ‘%s’: %s\n"
 
-#: ../src/core/screen.c:410
+#: ../src/core/screen.c:350
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Scherm %d op display '%s' is ongeldig\n"
 
-#: ../src/core/screen.c:426
+#: ../src/core/screen.c:366
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -296,28 +271,28 @@ msgstr ""
 "Scherm %d op display ‘%s’ heeft al een windowmanager; probeer de optie: --"
 "replace te gebruiken om de huidige windowmanager te vervangen.\n"
 
-#: ../src/core/screen.c:453
+#: ../src/core/screen.c:393
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Kon windowmanager-selectie niet verkrijgen op scherm %d display ‘%s’\n"
 
-#: ../src/core/screen.c:511
+#: ../src/core/screen.c:451
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Scherm %d op display ‘%s’ heeft al een windowmanager\n"
 
-#: ../src/core/screen.c:721
+#: ../src/core/screen.c:661
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kon scherm %d op display ‘%s’ niet vrijmaken\n"
 
-#: ../src/core/session.c:826 ../src/core/session.c:833
+#: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kon map '%s' niet aanmaken: %s\n"
 
-#: ../src/core/session.c:843
+#: ../src/core/session.c:854
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kon sessiebestand '%s' niet openen voor schrijven: %s\n"
@@ -332,53 +307,54 @@ msgstr "Fout bij schrijven sessiebestand '%s': %s\n"
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fout bij sluiten sessiebestand '%s': %s\n"
 
-#: ../src/core/session.c:1075
+#. oh, just give up
+#: ../src/core/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Lezen van opgeslagen sessiebestand %s mislukt: %s\n"
 
-#: ../src/core/session.c:1110
+#: ../src/core/session.c:1132
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Verwerken van opgeslagen sessiebestand mislukt: %s\n"
 
-#: ../src/core/session.c:1159
+#: ../src/core/session.c:1181
 #, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "<metacity_session>-attribuut opgemerkt maar we hebben reeds de sessie-ID"
 
-#: ../src/core/session.c:1172
+#: ../src/core/session.c:1194
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Onbekend attribuut %s op <metacity_session> element"
 
-#: ../src/core/session.c:1189
+#: ../src/core/session.c:1211
 #, c-format
 msgid "nested <window> tag"
 msgstr "ingebedde <window> markering"
 
-#: ../src/core/session.c:1247 ../src/core/session.c:1279
+#: ../src/core/session.c:1269 ../src/core/session.c:1301
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Onbekend attribuut %s op <window> element"
 
-#: ../src/core/session.c:1351
+#: ../src/core/session.c:1373
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Onbekend attribuut %s op <maximized> element"
 
-#: ../src/core/session.c:1411
+#: ../src/core/session.c:1433
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Onbekend attribuut %s op <geometry> element"
 
-#: ../src/core/session.c:1431
+#: ../src/core/session.c:1453
 #, c-format
 msgid "Unknown element %s"
 msgstr "Onbekend element %s"
 
-#: ../src/core/session.c:1868
+#: ../src/core/session.c:1879
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -423,23 +399,23 @@ msgstr "Windowmanager waarschuwing:"
 msgid "Window manager error: "
 msgstr "Windowmanager fout:"
 
-#: ../src/core/window-props.c:195
+#: ../src/core/window-props.c:206
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %lu ingesteld\n"
 
-#: ../src/core/window-props.c:327
+#: ../src/core/window-props.c:338
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (op %s)"
 
-#: ../src/core/window-props.c:1409
+#: ../src/core/window-props.c:1420
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ongeldig WM_TRANSIENT_FOR venster 0x%lx opgegeven voor %s.\n"
 
 #. first time through
-#: ../src/core/window.c:5658
+#: ../src/core/window.c:5648
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -455,7 +431,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6223
+#: ../src/core/window.c:6213
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -545,7 +521,14 @@ msgid ""
 "silently ignored so that buttons can be added in future metacity versions "
 "without breaking older versions. A special spacer tag can be used to insert "
 "some space between two adjacent buttons."
-msgstr "Schikking van de knoppen op de titelbalk. De waarde moet een tekenreeks zijn zoals: ‘menu:minimize,maximize,spacer,close’; de punt-komma scheidt de linkerhoek van het venster met de rechterhoek, de knop-namen zijn gescheiden door komma's. Dubbele knoppen zijn niet toegestaan. Onbekende knop-namen worden genegeerd zodat in toekomstige versies van metacity, knoppen kunnen worden toegevoegd zonder oudere versies te breken. De waarde ‘spacer’ kan gebruikt worden om ruimte tussen twee naastgelegen knoppen te creëren."
+msgstr ""
+"Schikking van de knoppen op de titelbalk. De waarde moet een tekenreeks zijn "
+"zoals: ‘menu:minimize,maximize,spacer,close’; de punt-komma scheidt de "
+"linkerhoek van het venster met de rechterhoek, de knop-namen zijn gescheiden "
+"door komma's. Dubbele knoppen zijn niet toegestaan. Onbekende knop-namen "
+"worden genegeerd zodat in toekomstige versies van metacity, knoppen kunnen "
+"worden toegevoegd zonder oudere versies te breken. De waarde ‘spacer’ kan "
+"gebruikt worden om ruimte tussen twee naastgelegen knoppen te creëren."
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
@@ -2259,7 +2242,16 @@ msgid ""
 "minimize the window, 'shade' which will roll the window up, 'menu' which "
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
-msgstr "Deze optie bepaalt het effect van dubbelklikken op de titelbalk. Geldige waardes zijn ‘toggle_shade’, welke het venster zal oprollen/afrollen, ‘toggle_maximize’ welke het venster zal maximaliseren/herstellen, ‘toggle_maximize_horizontally’ en ‘toggle_maximize_vertically’ welke het venster alleen horizontaal of verticaal zal maximaliseren/herstellen,  ‘minimize’ welke het venster zal minimaliseren, ‘shade’ welke het venster zal oprollen, ‘menu’ welke het menu-venster zal tonen, ‘lower’ welke het venster achter alle andere vensters zal zetten,  en 'none' welke niets zal doen."
+msgstr ""
+"Deze optie bepaalt het effect van dubbelklikken op de titelbalk. Geldige "
+"waardes zijn ‘toggle_shade’, welke het venster zal oprollen/afrollen, "
+"‘toggle_maximize’ welke het venster zal maximaliseren/herstellen, "
+"‘toggle_maximize_horizontally’ en ‘toggle_maximize_vertically’ welke het "
+"venster alleen horizontaal of verticaal zal maximaliseren/herstellen,  "
+"‘minimize’ welke het venster zal minimaliseren, ‘shade’ welke het venster "
+"zal oprollen, ‘menu’ welke het menu-venster zal tonen, ‘lower’ welke het "
+"venster achter alle andere vensters zal zetten,  en 'none' welke niets zal "
+"doen."
 
 #: ../src/metacity.schemas.in.h:188
 msgid ""
@@ -2271,7 +2263,16 @@ msgid ""
 "minimize the window, 'shade' which will roll the window up, 'menu' which "
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
-msgstr "Deze optie bepaalt het effect van klikken op de titelbalk met de middelste muisknop. Geldige waardes zijn 'toggle_shade', welke het venster zal oprollen/afrollen, 'toggle_maximize' welke het venster zal maximaliseren/herstellen, ‘toggle_maximize_horizontally’ en ‘toggle_maximize_vertically’ welke het venster alleen horizontaal of verticaal zal maximaliseren/herstellen,  ‘minimize’ welke het venster zal minimaliseren, ‘shade’ welke het venster zal oprollen, ‘menu’ welke het menu-venster zal tonen, ‘lower’ welke het venster achter alle andere vensters zal zetten,  en 'none' welke niets zal doen."
+msgstr ""
+"Deze optie bepaalt het effect van klikken op de titelbalk met de middelste "
+"muisknop. Geldige waardes zijn 'toggle_shade', welke het venster zal "
+"oprollen/afrollen, 'toggle_maximize' welke het venster zal maximaliseren/"
+"herstellen, ‘toggle_maximize_horizontally’ en ‘toggle_maximize_vertically’ "
+"welke het venster alleen horizontaal of verticaal zal maximaliseren/"
+"herstellen,  ‘minimize’ welke het venster zal minimaliseren, ‘shade’ welke "
+"het venster zal oprollen, ‘menu’ welke het menu-venster zal tonen, ‘lower’ "
+"welke het venster achter alle andere vensters zal zetten,  en 'none' welke "
+"niets zal doen."
 
 #: ../src/metacity.schemas.in.h:189
 msgid ""
@@ -2283,7 +2284,16 @@ msgid ""
 "minimize the window, 'shade' which will roll the window up, 'menu' which "
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
-msgstr "Deze optie bepaalt het effect van klikken op de titelbalk met de rechter muisknop. Geldige waardes zijn 'toggle_shade', welke het venster zal oprollen/afrollen, 'toggle_maximize' welke het venster zal maximaliseren/herstellen, ‘toggle_maximize_horizontally’ en ‘toggle_maximize_vertically’ welke het venster alleen horizontaal of verticaal zal maximaliseren/herstellen,  ‘minimize’ welke het venster zal minimaliseren, ‘shade’ welke het venster zal oprollen, ‘menu’ welke het menu-venster zal tonen, ‘lower’ welke het venster achter alle andere vensters zal zetten,  en 'none' welke niets zal doen."
+msgstr ""
+"Deze optie bepaalt het effect van klikken op de titelbalk met de rechter "
+"muisknop. Geldige waardes zijn 'toggle_shade', welke het venster zal "
+"oprollen/afrollen, 'toggle_maximize' welke het venster zal maximaliseren/"
+"herstellen, ‘toggle_maximize_horizontally’ en ‘toggle_maximize_vertically’ "
+"welke het venster alleen horizontaal of verticaal zal maximaliseren/"
+"herstellen,  ‘minimize’ welke het venster zal minimaliseren, ‘shade’ welke "
+"het venster zal oprollen, ‘menu’ welke het menu-venster zal tonen, ‘lower’ "
+"welke het venster achter alle andere vensters zal zetten,  en 'none' welke "
+"niets zal doen."
 
 #: ../src/metacity.schemas.in.h:190
 msgid ""
@@ -3194,157 +3204,157 @@ msgstr "Geen geldig bestand gevonden voor thema %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Themabestand %s bevatte geen root <metacity_theme> element"
 
-#: ../src/ui/theme-viewer.c:74
+#: ../src/ui/theme-viewer.c:75
 msgid "/_Windows"
 msgstr "/_Vensters"
 
-#: ../src/ui/theme-viewer.c:75
+#: ../src/ui/theme-viewer.c:76
 msgid "/Windows/tearoff"
 msgstr "/Vensters/tearoff"
 
-#: ../src/ui/theme-viewer.c:76
+#: ../src/ui/theme-viewer.c:77
 msgid "/Windows/_Dialog"
 msgstr "/Vensters/_Dialoogvenster"
 
-#: ../src/ui/theme-viewer.c:77
+#: ../src/ui/theme-viewer.c:78
 msgid "/Windows/_Modal dialog"
 msgstr "/Vensters/_Modaal dialoogvenster"
 
-#: ../src/ui/theme-viewer.c:78
+#: ../src/ui/theme-viewer.c:79
 msgid "/Windows/_Utility"
 msgstr "/Vensters/_Gereedschap"
 
-#: ../src/ui/theme-viewer.c:79
+#: ../src/ui/theme-viewer.c:80
 msgid "/Windows/_Splashscreen"
 msgstr "/Vensters/_Introvenster"
 
-#: ../src/ui/theme-viewer.c:80
+#: ../src/ui/theme-viewer.c:81
 msgid "/Windows/_Top dock"
 msgstr "/Vensters/_Bovenpaneel"
 
-#: ../src/ui/theme-viewer.c:81
+#: ../src/ui/theme-viewer.c:82
 msgid "/Windows/_Bottom dock"
 msgstr "/Vensters/_Onderpaneel"
 
-#: ../src/ui/theme-viewer.c:82
+#: ../src/ui/theme-viewer.c:83
 msgid "/Windows/_Left dock"
 msgstr "/Vensters/_Linker paneel"
 
-#: ../src/ui/theme-viewer.c:83
+#: ../src/ui/theme-viewer.c:84
 msgid "/Windows/_Right dock"
 msgstr "/Vensters/_Rechter paneel"
 
-#: ../src/ui/theme-viewer.c:84
+#: ../src/ui/theme-viewer.c:85
 msgid "/Windows/_All docks"
 msgstr "/Vensters/Alle panelen"
 
-#: ../src/ui/theme-viewer.c:85
+#: ../src/ui/theme-viewer.c:86
 msgid "/Windows/Des_ktop"
 msgstr "/Vensters/_Bureaublad"
 
-#: ../src/ui/theme-viewer.c:134
+#: ../src/ui/theme-viewer.c:135
 msgid "Open another one of these windows"
 msgstr "Nog zo'n venster openen"
 
-#: ../src/ui/theme-viewer.c:141
+#: ../src/ui/theme-viewer.c:142
 msgid "This is a demo button with an 'open' icon"
 msgstr "Dit is een demoknop met een 'openen'-pictogram"
 
-#: ../src/ui/theme-viewer.c:148
+#: ../src/ui/theme-viewer.c:149
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Dit is een demoknop met een 'afsluiten'-pictogram"
 
-#: ../src/ui/theme-viewer.c:241
+#: ../src/ui/theme-viewer.c:242
 msgid "This is a sample message in a sample dialog"
 msgstr "Dit is een voorbeeldbericht in een voorbeelddialoogvenster"
 
-#: ../src/ui/theme-viewer.c:324
+#: ../src/ui/theme-viewer.c:325
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Nepmenu-item %d\n"
 
-#: ../src/ui/theme-viewer.c:358
+#: ../src/ui/theme-viewer.c:359
 msgid "Border-only window"
 msgstr "Venster met alleen randen"
 
-#: ../src/ui/theme-viewer.c:360
+#: ../src/ui/theme-viewer.c:361
 msgid "Bar"
 msgstr "Balk"
 
-#: ../src/ui/theme-viewer.c:377
+#: ../src/ui/theme-viewer.c:378
 msgid "Normal Application Window"
 msgstr "Normaal programmavenster"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:382
 msgid "Dialog Box"
 msgstr "Dialoogvenster"
 
-#: ../src/ui/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:386
 msgid "Modal Dialog Box"
 msgstr "Blokkerend dialoogvenster"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:390
 msgid "Utility Palette"
 msgstr "Gereedschapskist"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:394
 msgid "Torn-off Menu"
 msgstr "Losgescheurd menu"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:398
 msgid "Border"
 msgstr "Rand"
 
-#: ../src/ui/theme-viewer.c:725
+#: ../src/ui/theme-viewer.c:726
 #, c-format
 msgid "Button layout test %d"
 msgstr "Knoppenopmaaktest %d"
 
-#: ../src/ui/theme-viewer.c:754
+#: ../src/ui/theme-viewer.c:755
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milliseconden om een vensterraamwerk te tekenen"
 
-#: ../src/ui/theme-viewer.c:797
+#: ../src/ui/theme-viewer.c:798
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Gebruik: metacity-theme-viewer [THEMANAAM]\n"
 
-#: ../src/ui/theme-viewer.c:804
+#: ../src/ui/theme-viewer.c:805
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Fout bij laden van thema: %s\n"
 
-#: ../src/ui/theme-viewer.c:810
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Thema ‘%s’ in %g seconden geladen\n"
 
-#: ../src/ui/theme-viewer.c:833
+#: ../src/ui/theme-viewer.c:852
 msgid "Normal Title Font"
 msgstr "Lettertype voor normale titel"
 
-#: ../src/ui/theme-viewer.c:839
+#: ../src/ui/theme-viewer.c:858
 msgid "Small Title Font"
 msgstr "Lettertype voor kleine titel"
 
-#: ../src/ui/theme-viewer.c:845
+#: ../src/ui/theme-viewer.c:864
 msgid "Large Title Font"
 msgstr "Lettertype voor grote titel"
 
-#: ../src/ui/theme-viewer.c:850
+#: ../src/ui/theme-viewer.c:869
 msgid "Button Layouts"
 msgstr "Knoppenopmaak"
 
-#: ../src/ui/theme-viewer.c:855
+#: ../src/ui/theme-viewer.c:874
 msgid "Benchmark"
 msgstr "Benchmark"
 
-#: ../src/ui/theme-viewer.c:902
+#: ../src/ui/theme-viewer.c:921
 msgid "Window Title Goes Here"
 msgstr "Hier komt de titel"
 
-#: ../src/ui/theme-viewer.c:1006
+#: ../src/ui/theme-viewer.c:1025
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -3355,39 +3365,39 @@ msgstr ""
 "en %g seconden op wandklok inclusief X serverbronnen (%g milliseconden per "
 "frame)\n"
 
-#: ../src/ui/theme-viewer.c:1225
+#: ../src/ui/theme-viewer.c:1244
 msgid "position expression test returned TRUE but set error"
 msgstr "positie-expressietest gaf WAAR terug, maar gaf wel een fout"
 
-#: ../src/ui/theme-viewer.c:1227
+#: ../src/ui/theme-viewer.c:1246
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "positie-expressietest gaf ONWAAR terug, maar gaf geen fout"
 
-#: ../src/ui/theme-viewer.c:1231
+#: ../src/ui/theme-viewer.c:1250
 msgid "Error was expected but none given"
 msgstr "Fout verwacht maar niet ontvangen"
 
-#: ../src/ui/theme-viewer.c:1233
+#: ../src/ui/theme-viewer.c:1252
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Fout %d verwacht maar %d gekregen"
 
-#: ../src/ui/theme-viewer.c:1239
+#: ../src/ui/theme-viewer.c:1258
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Geen fout verwacht maar kreeg wel een fout: %s"
 
-#: ../src/ui/theme-viewer.c:1243
+#: ../src/ui/theme-viewer.c:1262
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x-waarde is %d, %d verwacht"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y-waarde is %d, %d verwacht"
 
-#: ../src/ui/theme-viewer.c:1311
+#: ../src/ui/theme-viewer.c:1330
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
@@ -3484,7 +3494,7 @@ msgstr "Kon alpha-waarde ‘%s’ niet verwerken in gemengde kleur"
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Alpha-waarde ‘%s’ in gemengde kleur zit niet tussen 0.0 en 1.0"
 
-#: ../src/ui/theme.c:1285
+#: ../src/ui/theme.c:1284
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -3492,27 +3502,27 @@ msgstr ""
 "Schaduwformaat is ‘schaduw/basiskleur/factor’, ‘%s’ voldoet niet aan dit "
 "formaat"
 
-#: ../src/ui/theme.c:1296
+#: ../src/ui/theme.c:1295
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Kon schaduwfactor ‘%s’ in schaduwkleur niet verwerken"
 
-#: ../src/ui/theme.c:1306
+#: ../src/ui/theme.c:1305
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Schaduwfactor ‘%s’ in schaduwkleur is negatief"
 
-#: ../src/ui/theme.c:1336
+#: ../src/ui/theme.c:1334
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Kon kleur ‘%s’ niet verwerken"
 
-#: ../src/ui/theme.c:1594
+#: ../src/ui/theme.c:1584
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Coördinaatuitdrukking bevat letterteken '%s' wat niet is toegestaan"
 
-#: ../src/ui/theme.c:1621
+#: ../src/ui/theme.c:1611
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -3521,14 +3531,14 @@ msgstr ""
 "Coördinaatuitdrukking bevat floating-point getal '%s' wat niet kon worden "
 "verwerkt"
 
-#: ../src/ui/theme.c:1635
+#: ../src/ui/theme.c:1625
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Coördinaatuitdrukking bevat geheel getal '%s' wat niet kon worden verwerkt"
 
 # hoe vertalen we operator en operand?
-#: ../src/ui/theme.c:1757
+#: ../src/ui/theme.c:1747
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -3537,17 +3547,17 @@ msgstr ""
 "Coördinaatuitdrukking bevat een onbekende functie aan het begin van deze "
 "tekst: ‘%s’"
 
-#: ../src/ui/theme.c:1814
+#: ../src/ui/theme.c:1804
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Coördinaatuitdrukking was leeg of was niet begrepen"
 
-#: ../src/ui/theme.c:1925 ../src/ui/theme.c:1935 ../src/ui/theme.c:1969
+#: ../src/ui/theme.c:1915 ../src/ui/theme.c:1925 ../src/ui/theme.c:1959
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Coördinaatuitdrukking resulteert in een deling door nul"
 
-#: ../src/ui/theme.c:1977
+#: ../src/ui/theme.c:1967
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -3555,26 +3565,26 @@ msgstr ""
 "Coördinaatuitdrukking probeert een mod-functie te gebruiken op een floating-"
 "point getal"
 
-#: ../src/ui/theme.c:2033
+#: ../src/ui/theme.c:2023
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "Coördinaatuitdrukking bevat een functie ‘%s’ waar een argument werd verwacht"
 
-#: ../src/ui/theme.c:2042
+#: ../src/ui/theme.c:2032
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "Coördinaatuitdrukking bevat een argument waar een functie werd verwacht"
 
-#: ../src/ui/theme.c:2050
+#: ../src/ui/theme.c:2040
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "Coördinaatuitdrukking eindigde met een functie in plaats van een argument"
 
-#: ../src/ui/theme.c:2060
+#: ../src/ui/theme.c:2050
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3583,7 +3593,7 @@ msgstr ""
 "Coördinaatuitdrukking bevat functie ‘%c’ volgend op functie ‘%c’ zonder "
 "argument in het midden"
 
-#: ../src/ui/theme.c:2207 ../src/ui/theme.c:2248
+#: ../src/ui/theme.c:2197 ../src/ui/theme.c:2238
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Coördinaatuitdrukking bevat een onbekende variabele of constante ‘%s’"
@@ -3591,32 +3601,32 @@ msgstr "Coördinaatuitdrukking bevat een onbekende variabele of constante ‘%s�
 # Dit is zo'n dergelijk moeilijke vertaling als in het Nederlands, dat het
 # Engelse origineel een beter restultaat oplevert.
 #  -- Michiel Sikkes, zo 9 apr 2006
-#: ../src/ui/theme.c:2302
+#: ../src/ui/theme.c:2292
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Coordinate experssion parser overflowed its buffer."
 
-#: ../src/ui/theme.c:2331
+#: ../src/ui/theme.c:2321
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Coördinaatuitdrukking bevat een sluithaakje zonder openingshaakje"
 
-#: ../src/ui/theme.c:2395
+#: ../src/ui/theme.c:2385
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Coördinaatuitdrukking bevat een openingshaakje zonder sluithaakje"
 
-#: ../src/ui/theme.c:2406
+#: ../src/ui/theme.c:2396
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Coördinaatuitdrukking bevat schijnbaar geen functies of argumenten"
 
-#: ../src/ui/theme.c:2608 ../src/ui/theme.c:2628 ../src/ui/theme.c:2648
+#: ../src/ui/theme.c:2598 ../src/ui/theme.c:2618 ../src/ui/theme.c:2638
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Expressie in thema resulteerde in een foutmelding: %s\n"
 
-#: ../src/ui/theme.c:4167
+#: ../src/ui/theme.c:4157
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3625,25 +3635,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"iets\"/> moet voor deze "
 "kader-stijl gespecificeerd worden"
 
-#: ../src/ui/theme.c:4643 ../src/ui/theme.c:4668
+#: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Ontbrekende <frame state=\"%s\" resize=\"%s\" docus=\"%s\" style=\"iets\"/>"
 
-#: ../src/ui/theme.c:4712
+#: ../src/ui/theme.c:4702
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Laden thema ‘%s’ mislukt: %s\n"
 
-#: ../src/ui/theme.c:4838 ../src/ui/theme.c:4845 ../src/ui/theme.c:4852
-#: ../src/ui/theme.c:4859 ../src/ui/theme.c:4866
+#: ../src/ui/theme.c:4828 ../src/ui/theme.c:4835 ../src/ui/theme.c:4842
+#: ../src/ui/theme.c:4849 ../src/ui/theme.c:4856
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Geen <%s> ingesteld voor thema ‘%s’ "
 
-#: ../src/ui/theme.c:4874
+#: ../src/ui/theme.c:4864
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3652,7 +3662,7 @@ msgstr ""
 "Geen kader-stijl ingesteld voor venstertype ‘%s’ in thema ‘%s’, voeg een "
 "<window type=\"%s\" style_set=\"iets\"/> element toe"
 
-#: ../src/ui/theme.c:5241 ../src/ui/theme.c:5303 ../src/ui/theme.c:5366
+#: ../src/ui/theme.c:5231 ../src/ui/theme.c:5293 ../src/ui/theme.c:5356
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3660,7 +3670,7 @@ msgstr ""
 "Door de gebruiker gedefinieerde constanten moeten met een hoofdletter "
 "beginnen; ‘%s’ doet dat niet"
 
-#: ../src/ui/theme.c:5249 ../src/ui/theme.c:5311 ../src/ui/theme.c:5374
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5301 ../src/ui/theme.c:5364
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constante ‘%s’ is reeds gedefinieerd"
@@ -3669,3 +3679,22 @@ msgstr "Constante ‘%s’ is reeds gedefinieerd"
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Gebruik: %s\n"
+
+#~ msgid "Type of %s was not integer"
+#~ msgstr "Type van %s was geen geheel getal"
+
+# volgens mij is cursor_size hier niet bedoeld als sneltoets voor cursorsize,
+# is het een onjuist gebruik van een variabele.
+#~ msgid ""
+#~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
+#~ "range 1..128\n"
+#~ msgstr ""
+#~ "%d opgeslagen in GConf-sleutel %s is geen redelijke grootte voor een "
+#~ "cursor; het moet liggen in het bereik 1 - 128\n"
+
+#~ msgid ""
+#~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
+#~ "current maximum is %d\n"
+#~ msgstr ""
+#~ "%d opgeslagen in GConf-sleutel %s is geen redelijk aantal werkbladen, "
+#~ "huidige maximum is %d\n"
