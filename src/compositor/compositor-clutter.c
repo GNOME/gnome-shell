@@ -290,6 +290,12 @@ is_shaped (MetaDisplay *display,
 static gboolean
 window_has_shadow (MetaCompWindow *cw)
 {
+  if (cw->attrs.override_redirect)
+    {
+      meta_verbose ("Window has shadow because it is override redirect.\n");
+      return TRUE;
+    }
+
   /* Always put a shadow around windows with a frame - This should override
      the restriction about not putting a shadow around shaped windows
      as the frame might be the reason the window is shaped */
