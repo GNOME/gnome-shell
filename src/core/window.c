@@ -8156,3 +8156,15 @@ meta_window_get_xwindow (MetaWindow *window)
 {
   return window->xwindow;
 }
+
+MetaWindowType
+meta_window_get_type (MetaWindow *window)
+{
+  return window->type;
+}
+
+Atom
+meta_window_get_type_atom (MetaWindow *window)
+{
+  return window->type_atom;
+}

@@ -44,19 +44,6 @@ typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
 
 typedef enum
 {
-  META_WINDOW_NORMAL,
-  META_WINDOW_DESKTOP,
-  META_WINDOW_DOCK,
-  META_WINDOW_DIALOG,
-  META_WINDOW_MODAL_DIALOG,
-  META_WINDOW_TOOLBAR,
-  META_WINDOW_MENU,
-  META_WINDOW_UTILITY,
-  META_WINDOW_SPLASHSCREEN
-} MetaWindowType;
-
-typedef enum
-{
   META_MAXIMIZE_HORIZONTAL = 1 << 0,
   META_MAXIMIZE_VERTICAL   = 1 << 1
 } MetaMaximizeFlags;

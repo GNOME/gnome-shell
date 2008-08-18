@@ -28,6 +28,19 @@
 #include "boxes.h"
 #include "types.h"
 
+typedef enum
+{
+  META_WINDOW_NORMAL,
+  META_WINDOW_DESKTOP,
+  META_WINDOW_DOCK,
+  META_WINDOW_DIALOG,
+  META_WINDOW_MODAL_DIALOG,
+  META_WINDOW_TOOLBAR,
+  META_WINDOW_MENU,
+  META_WINDOW_UTILITY,
+  META_WINDOW_SPLASHSCREEN,
+} MetaWindowType;
+
 MetaFrame *meta_window_get_frame (MetaWindow *window);
 gboolean meta_window_has_focus (MetaWindow *window);
 gboolean meta_window_is_shaded (MetaWindow *window);
@@ -35,5 +48,7 @@ MetaRectangle *meta_window_get_rect (MetaWindow *window);
 MetaScreen *meta_window_get_screen (MetaWindow *window);
 MetaDisplay *meta_window_get_display (MetaWindow *window);
 Window meta_window_get_xwindow (MetaWindow *window);
+MetaWindowType meta_window_get_type (MetaWindow *window);
+Atom meta_window_get_type_atom (MetaWindow *window);
 
 #endif
