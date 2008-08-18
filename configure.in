@@ -31,7 +31,7 @@ AC_HEADER_STDC
 AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 
-#### Integer sizes 
+#### Integer sizes
 
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(short)
@@ -164,7 +164,7 @@ AC_CHECK_HEADERS(execinfo.h, [AC_CHECK_FUNCS(backtrace)])
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
-# GOptionEntry requires	glib-2.6.0    
+# GOptionEntry requires	glib-2.6.0
 PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.6.0)
 # gtk_window_set_icon_name requires gtk2+-2.60
 PKG_CHECK_MODULES(METACITY_MESSAGE, gtk+-2.0 >= 2.6.0)
@@ -206,7 +206,7 @@ else
   echo "Building without libstartup-notification"
 fi
 
-## init this, it gets set either in the compositor check below 
+## init this, it gets set either in the compositor check below
 ## or the render-specific check later
 have_xrender=no
 
@@ -281,10 +281,10 @@ if $PKG_CONFIG xcursor; then
 if test x$have_xcursor = xyes; then
   echo "Building with Xcursor"
   METACITY_PC_MODULES="$METACITY_PC_MODULES xcursor"
-  AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support]) 
+  AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support])
 fi
 
-METACITY_PC_MODULES="$METACITY_PC_MODULES clutter-0.7"
+METACITY_PC_MODULES="$METACITY_PC_MODULES clutter-0.8"
 
 PKG_CHECK_MODULES(METACITY, $METACITY_PC_MODULES)
 
@@ -320,7 +320,7 @@ if test "${try_xinerama}" != no; then
                                 AC_DEFINE(HAVE_XINERAMA, , [Have some version of Xinerama]),
                                 use_solaris_xinerama=no,
                                 [#include <X11/Xlib.h>])
-            fi	
+            fi
             AC_MSG_CHECKING(for Xinerama support on Solaris)
             AC_MSG_RESULT($use_solaris_xinerama);
             ;;
@@ -329,12 +329,12 @@ if test "${try_xinerama}" != no; then
             use_xfree_xinerama=yes
             AC_CHECK_LIB(Xinerama, XineramaQueryExtension,
                 [AC_CHECK_HEADER(X11/extensions/Xinerama.h,
-                                 X_EXTRA_LIBS="-lXinerama $X_EXTRA_LIBS"   
+                                 X_EXTRA_LIBS="-lXinerama $X_EXTRA_LIBS"
                                  if test -z "`echo $ALL_X_LIBS | grep "\-lXext" 2> /dev/null`"; then
                                      X_EXTRA_LIBS="-lXext $X_EXTRA_LIBS"
                                  fi
                                  AC_DEFINE(HAVE_XFREE_XINERAMA, , [Have XFree86-style Xinerama])
-                                 AC_DEFINE(HAVE_XINERAMA,, [Have some version of Xinerama]), 
+                                 AC_DEFINE(HAVE_XINERAMA,, [Have some version of Xinerama]),
                                  use_xfree_xinerama=no,
                                  [#include <X11/Xlib.h>])],
                 use_xfree_xinerama=no, -lXext $ALL_X_LIBS)
@@ -426,7 +426,7 @@ case "$METACITY_LIBS" in
     found_sm=yes
     ;;
  *)
-  AC_CHECK_LIB(SM, SmcSaveYourselfDone, 
+  AC_CHECK_LIB(SM, SmcSaveYourselfDone,
                [AC_CHECK_HEADERS(X11/SM/SMlib.h,
                                 METACITY_LIBS="-lSM -lICE $METACITY_LIBS" found_sm=yes)],
                , $METACITY_LIBS)
@@ -448,7 +448,7 @@ if test "$found_sm" = "yes"; then
    AC_DEFINE(HAVE_SM, , [Building with SM support])
 fi
 
-AM_CONDITIONAL(HAVE_SM, test "$found_sm" = "yes") 
+AM_CONDITIONAL(HAVE_SM, test "$found_sm" = "yes")
 
 HOST_ALIAS=$host_alias
 AC_SUBST(HOST_ALIAS)
@@ -461,7 +461,7 @@ fi
 
 AC_SUBST(GDK_PIXBUF_CSOURCE)
 
-if test x$enable_gconf = xyes; then 
+if test x$enable_gconf = xyes; then
    AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
    if test x"$GCONFTOOL" = xno; then
      AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])

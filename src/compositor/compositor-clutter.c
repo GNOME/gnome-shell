@@ -1945,7 +1945,7 @@ tidy_texture_frame_paint (ClutterActor *self)
   ty1 = CLUTTER_INT_TO_FIXED (priv->top) / tex_height;
   ty2 = CLUTTER_INT_TO_FIXED (tex_height - priv->bottom) / tex_height;
 
-  col.alpha = clutter_actor_get_abs_opacity (self);
+  col.alpha = clutter_actor_get_paint_opacity (self);
   cogl_color (&col);
 
   ex = width - priv->right;
