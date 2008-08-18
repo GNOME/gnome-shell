@@ -1,3 +1,10 @@
+2008-08-18  Eric Piel  <e.a.b.piel@tudelft.nl>
+
+        * src/core/workspace.c (ensure_work_areas_validated): add a copy of
+         each strut in a window to the workspace's strut list, instead of
+         using the copy in the list (which would mean it was double-freed).
+         Believed to fix #468075.
+
 2008-08-16  Ted Percival  <ted@midg3t.net>
 
         Ensure the user_rect is set sanely for windows that start maximized.
