@@ -131,7 +131,6 @@ typedef struct _MetaCompWindow
   Damage            damage;
 
   gboolean          needs_shadow    : 1;
-  gboolean          damaged         : 1;
   gboolean          shaped          : 1;
   gboolean          destroy_pending : 1;
 
@@ -534,7 +533,6 @@ map_win (MetaDisplay *display,
     return;
 
   cw->attrs.map_state = IsViewable;
-  cw->damaged = FALSE;
 
   if (cw->back_pixmap)
     {
@@ -566,7 +564,6 @@ unmap_win (MetaDisplay *display,
     info->focus_window = NULL;
 
   cw->attrs.map_state = IsUnmapped;
-  cw->damaged = FALSE;
 
   free_win (cw, FALSE);
 
@@ -615,7 +612,6 @@ add_win (MetaScreen *screen,
 
   XSelectInput (xdisplay, xwindow, event_mask);
 
-  cw->damaged = FALSE;
   cw->shaped = is_shaped (display, xwindow);
 
   if (cw->attrs.class == InputOnly)
@@ -737,66 +733,61 @@ repair_win (MetaCompWindow *cw)
       clutter_actor_show (cw->actor);
     }
 
-  if (!cw->damaged)
+  /*
+   * TODO -- on some gfx hardware updating the whole texture instead of
+   * the individual rectangles is actually quicker, so we might want to
+   * make this a configurable option (on desktop HW with multiple pipelines
+   * it is usually quicker to just update the damaged parts).
+   *
+   * If we are using TFP we update the whole texture (this simply trigers
+   * the texture rebind).
+   */
+  if (CLUTTER_GLX_IS_TEXTURE_PIXMAP (cw->actor) &&
+      clutter_glx_texture_pixmap_using_extension (
+				CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor)))
     {
       XDamageSubtract (xdisplay, cw->damage, None, None);
+
+      clutter_x11_texture_pixmap_update_area
+	(CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
+	 0,
+	 0,
+	 clutter_actor_get_width (cw->actor),
+	 clutter_actor_get_height (cw->actor));
     }
   else
     {
       XRectangle   *r_damage;
       XRectangle    r_bounds;
-      int           i, r_count;
       XserverRegion parts;
-#if 0
-      if (clutter_glx_texture_pixmap_using_extension (
-				CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor)))
-	{
-	  clutter_actor_queue_redraw (cw->actor);
-	  XDamageSubtract (xdisplay, cw->damage, None, None);
-	  return;
-	}
-#endif
+      int           i, r_count;
+
       parts = XFixesCreateRegion (xdisplay, 0, 0);
       XDamageSubtract (xdisplay, cw->damage, None, parts);
 
-      if (1) /* clutter_glx_texture_pixmap_using_extension
-                (CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor))) */
-        {
-          clutter_x11_texture_pixmap_update_area
-            (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
-             0,
-             0,
-             clutter_actor_get_width (cw->actor),
-             clutter_actor_get_height (cw->actor));
+      r_damage = XFixesFetchRegionAndBounds (xdisplay,
+					     parts,
+					     &r_count,
+					     &r_bounds);
 
-        }
-      else
-        {
-          r_damage = XFixesFetchRegionAndBounds (xdisplay,
-                                                 parts,
-                                                 &r_count,
-                                                 &r_bounds);
+      if (r_damage)
+	{
+	  for (i = 0; i < r_count; ++i)
+	    {
+	      clutter_x11_texture_pixmap_update_area
+		(CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
+		 r_damage[i].x,
+		 r_damage[i].y,
+		 r_damage[i].width,
+		 r_damage[i].height);
+	    }
+	}
 
-          if (r_damage)
-            {
-              for (i = 0; i < r_count; ++i)
-                {
-                  clutter_x11_texture_pixmap_update_area
-                    (CLUTTER_X11_TEXTURE_PIXMAP (cw->actor),
-                     r_damage[i].x,
-                     r_damage[i].y,
-                     r_damage[i].width,
-                     r_damage[i].height);
-                }
-            }
-
-          XFree (r_damage);
-        }
+      XFree (r_damage);
+      XFixesDestroyRegion (xdisplay, parts);
     }
 
   meta_error_trap_pop (display, FALSE);
-
-  cw->damaged = TRUE;
 }
 
 
@@ -998,7 +989,6 @@ process_property_notify (MetaCompositorClutter *compositor,
 
       clutter_actor_set_opacity (cw->actor, 200); /* FIXME */
 
-      cw->damaged = TRUE;
       return;
     }
 
