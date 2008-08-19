@@ -1,3 +1,15 @@
+2008-08-19  Neil Roberts  <neil@o-hand.com>
+
+	Bug 1103 - Two typos in clutter documentation
+
+	* doc/reference/clutter/subclassing-ClutterActor.xml: Update the
+	custom actor example since the Cogl API was changed to namespace
+	all of the path related functions in cogl_path_*. Thanks to Nati
+	Berkover.
+	
+	* clutter/clutter-score.c: Add missing parameter in example of
+	calling clutter_score_start().
+
 2008-08-18  Neil Roberts  <neil@o-hand.com>
 
 	Bug 1085 - Cursor is in wrong position on ClutterEntry if set

@@ -52,7 +52,7 @@
  *   clutter_score_append (score, timeline_1, timeline_2);
  *   clutter_score_append (score, timeline_1, timeline_3);
  *
- *   clutter_score_start ();
+ *   clutter_score_start (score);
  * ]|
  *
  * A #ClutterScore takes a reference on the timelines it manages,

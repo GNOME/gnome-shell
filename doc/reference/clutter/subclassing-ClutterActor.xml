@@ -379,10 +379,10 @@ foo_actor_paint (ClutterActor *actor)
    * allocation or, if the actor has a fixed size, the size that
    * has been set.
    */
-  cogl_round_rectangle (0, 0, w, h, r, 5);
+  cogl_path_round_rectangle (0, 0, w, h, r, 5);
 
   /* and fill it with the current color */
-  cogl_fill ();
+  cogl_path_fill ();
 }
       </programlisting>
     </example>
