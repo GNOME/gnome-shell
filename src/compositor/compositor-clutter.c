@@ -39,6 +39,8 @@
 #define TILE_WIDTH  (3*MAX_TILE_SZ)
 #define TILE_HEIGHT (3*MAX_TILE_SZ)
 
+#define DESTROY_TIMEOUT   300
+
 ClutterActor*
 tidy_texture_frame_new (ClutterTexture *texture,
 			gint            left,
@@ -125,13 +127,14 @@ typedef struct _MetaCompWindow
   Pixmap            back_pixmap;
   int               mode;
 
-  gboolean          damaged;
-  gboolean          shaped;
-
   MetaCompWindowType type;
   Damage            damage;
 
-  gboolean          needs_shadow;
+  gboolean          needs_shadow    : 1;
+  gboolean          damaged         : 1;
+  gboolean          shaped          : 1;
+  gboolean          destroy_pending : 1;
+
 } MetaCompWindow;
 
 
@@ -386,6 +389,9 @@ free_win (MetaCompWindow *cw,
 
       clutter_actor_destroy (cw->actor);
 
+      if (cw->shadow)
+	clutter_actor_destroy (cw->shadow);
+
       g_free (cw);
     }
 }
@@ -405,7 +411,7 @@ destroy_win (MetaDisplay *display,
   if (cw == NULL)
     return;
 
-  printf("destroying a window... %p\n", cw);
+  meta_verbose ("destroying a window... 0x%x (%p)\n", (guint) xwindow, cw);
 
   screen = cw->screen;
 
@@ -588,7 +594,7 @@ add_win (MetaScreen *screen,
   if (xwindow == info->output)
     return;
 
-  printf ("adding window\n");
+  meta_verbose ("add window: Meta %p, xwin 0x%x\n", window, (guint) xwindow);
 
   cw = g_new0 (MetaCompWindow, 1);
   cw->screen = screen;
@@ -620,14 +626,14 @@ add_win (MetaScreen *screen,
   /* Only add the window to the list of docks if it needs a shadow */
   if (cw->type == META_COMP_WINDOW_DOCK)
     {
-      meta_verbose ("Appending %p to dock windows\n", cw);
+      meta_verbose ("Appending 0x%x to dock windows\n", (guint)xwindow);
       info->dock_windows = g_slist_append (info->dock_windows, cw);
     }
 
 #if 0
   /* Add this to the list at the top of the stack
      before it is mapped so that map_win can find it again */
-  printf("added %li type:", xwindow);
+  printf ("added 0x%x (%p) type:", (guint)xwindow, cw);
 
   switch (cw->type)
     {
@@ -708,7 +714,7 @@ repair_win (MetaCompWindow *cw)
 
       if (cw->back_pixmap == None)
         {
-          printf ("Unable to get named pixmap for %p\n", cw);
+          meta_verbose ("Unable to get named pixmap for %p\n", cw);
           return;
         }
 
@@ -741,7 +747,15 @@ repair_win (MetaCompWindow *cw)
       XRectangle    r_bounds;
       int           i, r_count;
       XserverRegion parts;
-
+#if 0
+      if (clutter_glx_texture_pixmap_using_extension (
+				CLUTTER_GLX_TEXTURE_PIXMAP (cw->actor)))
+	{
+	  clutter_actor_queue_redraw (cw->actor);
+	  XDamageSubtract (xdisplay, cw->damage, None, None);
+	  return;
+	}
+#endif
       parts = XFixesCreateRegion (xdisplay, 0, 0);
       XDamageSubtract (xdisplay, cw->damage, None, parts);
 
@@ -816,12 +830,14 @@ process_reparent (MetaCompositorClutter *compositor,
   screen = meta_display_screen_for_root (compositor->display, event->parent);
   if (screen != NULL)
     {
-        printf("reparent: adding a new window %li\n", event->window);
-        add_win (screen, window, event->window);
+      meta_verbose ("reparent: adding a new window 0x%x\n",
+		    (guint)event->window);
+      add_win (screen, window, event->window);
     }
   else
     {
-      printf("reparent: destroying a window %li\n", event->window);
+      meta_verbose ("reparent: destroying a window 0%x\n",
+		    (guint)event->window);
       destroy_win (compositor->display, event->window, FALSE);
     }
 }
@@ -837,10 +853,21 @@ static void
 process_damage (MetaCompositorClutter *compositor,
                 XDamageNotifyEvent    *event)
 {
-  MetaCompWindow *cw = find_window_in_display (compositor->display,
-                                               event->drawable);
-  if (cw == NULL)
+  XEvent   next;
+  Display *dpy = event->display;
+  Drawable drawable = event->drawable;
+
+  MetaCompWindow *cw = find_window_in_display (compositor->display, drawable);
+
+  if (!cw || cw->destroy_pending)
     return;
+
+  if (XCheckTypedWindowEvent (dpy, drawable, DestroyNotify, &next))
+    {
+      cw->destroy_pending = TRUE;
+      process_destroy (compositor, (XDestroyWindowEvent *) &next);
+      return;
+    }
 
   repair_win (cw);
 }
@@ -898,6 +925,8 @@ process_unmap (MetaCompositorClutter *compositor,
                XUnmapEvent           *event)
 {
   MetaCompWindow *cw;
+  Window          xwin = event->window;
+  Display        *dpy = event->display;
 
   if (event->from_configure)
     {
@@ -905,11 +934,24 @@ process_unmap (MetaCompositorClutter *compositor,
       return;
     }
 
-  cw = find_window_in_display (compositor->display, event->window);
+  cw = find_window_in_display (compositor->display, xwin);
+
   if (cw)
     {
-      printf("processing unmap  of %p\n", cw);
-      unmap_win (compositor->display, cw->screen, event->window);
+      XEvent next;
+
+      if (cw->destroy_pending)
+	return;
+
+      if (XCheckTypedWindowEvent (dpy, xwin, DestroyNotify, &next))
+	{
+	  cw->destroy_pending = TRUE;
+	  process_destroy (compositor, (XDestroyWindowEvent *) &next);
+	  return;
+	}
+
+      meta_verbose ("processing unmap  of 0x%x (%p)\n", (guint)xwin, cw);
+      unmap_win (compositor->display, cw->screen, xwin);
     }
 }
 
@@ -1082,7 +1124,8 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   show_overlay_window (screen, info->output);
 
   info->destroy_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (200),
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							DESTROY_TIMEOUT),
                                     CLUTTER_ALPHA_SINE_INC);
 #endif
 }
@@ -1253,9 +1296,10 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
                                f ? meta_frame_get_xwindow (f) :
                                meta_window_get_xwindow (window));
   if (!cw)
-      return;
+    return;
 
-  printf("animating destroy of %p\n", cw);
+  meta_verbose ("Animating destroy of 0x%x\n",
+		(guint)meta_window_get_xwindow (window));
 
   /* We remove the window from internal lookup hashes and thus any other
    * unmap events etc fail
@@ -1271,13 +1315,13 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
 
   clutter_effect_fade (info->destroy_effect,
 		       cw->actor,
-		       0x99,
+		       0,
 		       on_destroy_effect_complete,
 		       (gpointer)cw);
 
   clutter_effect_scale (info->destroy_effect   ,
                         cw->actor,
-                        10.0,
+                        1.0,
                         0.0,
                         NULL,
                         NULL);
@@ -1294,7 +1338,7 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
 
       clutter_effect_scale (info->destroy_effect,
                             cw->shadow,
-                            5.0,
+                            1.0,
                             0.0,
                             NULL,
                             NULL);
