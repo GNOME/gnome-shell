@@ -32,8 +32,8 @@
 #include <cogl/cogl.h>
 #define SHADOW_RADIUS 8
 #define SHADOW_OPACITY	0.9
-#define SHADOW_OFFSET_X	(-SHADOW_RADIUS)
-#define SHADOW_OFFSET_Y	(-SHADOW_RADIUS)
+#define SHADOW_OFFSET_X	(SHADOW_RADIUS)
+#define SHADOW_OFFSET_Y	(SHADOW_RADIUS)
 
 #define MAX_TILE_SZ 8 	/* Must be <= shaddow radius */
 #define TILE_WIDTH  (3*MAX_TILE_SZ)
@@ -747,9 +747,7 @@ repair_win (MetaCompWindow *cw)
       clutter_actor_set_size (cw->actor, pxm_width, pxm_height);
 
       if (cw->shadow)
-        clutter_actor_set_size (cw->shadow,
-                                pxm_width + (2 * SHADOW_RADIUS),
-                                pxm_height  + (2 * SHADOW_RADIUS));
+        clutter_actor_set_size (cw->shadow, pxm_width, pxm_height);
 
       clutter_actor_show (cw->actor);
     }
