@@ -125,14 +125,16 @@ typedef struct _MetaCompWindow
   ClutterActor     *actor;
   ClutterActor     *shadow;
   Pixmap            back_pixmap;
-  int               mode;
 
   MetaCompWindowType type;
   Damage            damage;
 
+  guint8            opacity;
+
   gboolean          needs_shadow    : 1;
   gboolean          shaped          : 1;
   gboolean          destroy_pending : 1;
+  gboolean          argb32          : 1;
 
 } MetaCompWindow;
 
@@ -288,6 +290,14 @@ is_shaped (MetaDisplay *display,
 static gboolean
 window_has_shadow (MetaCompWindow *cw)
 {
+  /*
+   * Do not add shadows to ARGB windows (since they are probably transparent
+   */
+  if (cw->argb32 || cw->opacity != 0xff) {
+    meta_verbose ("Window has no shadow as it is ARGB\n");
+    return FALSE;
+  }
+
   if (cw->attrs.override_redirect)
     {
       meta_verbose ("Window has shadow because it is override redirect.\n");
@@ -317,13 +327,6 @@ window_has_shadow (MetaCompWindow *cw)
     meta_verbose ("Window has no shadow as it is DND or Desktop\n");
     return FALSE;
   }
-
-#if 0
-  if (cw->mode != WINDOW_ARGB) {
-    meta_verbose ("Window has shadow as it is not ARGB\n");
-    return TRUE;
-  }
-#endif
 
   if (cw->type == META_COMP_WINDOW_MENU
 #if 0
@@ -584,6 +587,7 @@ add_win (MetaScreen *screen,
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
   MetaCompWindow *cw;
   gulong event_mask;
+  XRenderPictFormat *format;
 
   if (info == NULL)
     return;
@@ -597,6 +601,7 @@ add_win (MetaScreen *screen,
   cw->screen = screen;
   cw->window = window;
   cw->id = xwindow;
+  cw->opacity = 0xff;
 
   if (!XGetWindowAttributes (xdisplay, xwindow, &cw->attrs))
     {
@@ -618,6 +623,14 @@ add_win (MetaScreen *screen,
     cw->damage = None;
   else
     cw->damage = XDamageCreate (xdisplay, xwindow, XDamageReportNonEmpty);
+
+  format = XRenderFindVisualFormat (xdisplay, cw->attrs.visual);
+
+  if (format && format->type == PictTypeDirect &&
+      format->direct.alphaMask)
+    {
+	cw->argb32 = TRUE;
+    }
 
   /* Only add the window to the list of docks if it needs a shadow */
   if (cw->type == META_COMP_WINDOW_DOCK)
@@ -985,9 +998,14 @@ process_property_notify (MetaCompositorClutter *compositor,
       if (meta_prop_get_cardinal (display, event->window,
                                   compositor->atom_net_wm_window_opacity,
                                   &value) == FALSE)
-        value = 0xffffffff;
+	{
+	  guint8 opacity;
 
-      clutter_actor_set_opacity (cw->actor, 200); /* FIXME */
+	  opacity = (guint8)((gfloat)value * 255.0 / ((gfloat)0xffffffff));
+
+	  cw->opacity = opacity;
+	  clutter_actor_set_opacity (cw->actor, opacity);
+	}
 
       return;
     }
