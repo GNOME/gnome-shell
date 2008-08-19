@@ -40,6 +40,7 @@
 #define TILE_HEIGHT (3*MAX_TILE_SZ)
 
 #define DESTROY_TIMEOUT   300
+#define MINIMIZE_TIMEOUT  600
 
 ClutterActor*
 tidy_texture_frame_new (ClutterTexture *texture,
@@ -111,6 +112,7 @@ typedef struct _MetaCompScreen
   GSList       *dock_windows;
 
   ClutterEffectTemplate *destroy_effect;
+  ClutterEffectTemplate *minimize_effect;
 
   ClutterActor *shadow_src;
 
@@ -131,10 +133,11 @@ typedef struct _MetaCompWindow
 
   guint8            opacity;
 
-  gboolean          needs_shadow    : 1;
-  gboolean          shaped          : 1;
-  gboolean          destroy_pending : 1;
-  gboolean          argb32          : 1;
+  gboolean          needs_shadow         : 1;
+  gboolean          shaped               : 1;
+  gboolean          destroy_pending      : 1;
+  gboolean          argb32               : 1;
+  gboolean          minimize_in_progress : 1;
 
 } MetaCompWindow;
 
@@ -543,6 +546,8 @@ map_win (MetaDisplay *display,
       cw->back_pixmap = None;
     }
 
+  cw->minimize_in_progress = FALSE;
+
   if (cw->shadow)
     clutter_actor_show (cw->shadow);
 
@@ -570,10 +575,13 @@ unmap_win (MetaDisplay *display,
 
   free_win (cw, FALSE);
 
-  clutter_actor_hide (cw->actor);
+  if (!cw->minimize_in_progress)
+    {
+      clutter_actor_hide (cw->actor);
 
-  if (cw->shadow)
-    clutter_actor_hide (cw->shadow);
+      if (cw->shadow)
+	clutter_actor_hide (cw->shadow);
+    }
 }
 
 
@@ -1135,6 +1143,12 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
 							DESTROY_TIMEOUT),
                                     CLUTTER_ALPHA_SINE_INC);
+
+
+  info->minimize_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							MINIMIZE_TIMEOUT),
+                                    CLUTTER_ALPHA_SINE_INC);
 #endif
 }
 
@@ -1355,6 +1369,93 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
 #endif
 }
 
+static void
+on_minimize_effect_complete (ClutterActor *actor,
+			     gpointer user_data)
+{
+  MetaCompWindow *cw = (MetaCompWindow *)user_data;
+
+  /*
+   * Must reverse the effect of the effect once we hide the actor.
+   */
+  clutter_actor_hide (cw->actor);
+  clutter_actor_set_opacity (cw->actor, cw->opacity);
+  clutter_actor_set_scale (cw->actor, 1.0, 1.0);
+  clutter_actor_move_anchor_point_from_gravity (cw->actor,
+                                                CLUTTER_GRAVITY_NORTH_WEST);
+
+  if (cw->shadow)
+    {
+      clutter_actor_hide (cw->shadow);
+      clutter_actor_set_opacity (cw->shadow, 0xff);
+      clutter_actor_set_scale (cw->shadow, 1.0, 1.0);
+      clutter_actor_move_anchor_point_from_gravity (cw->shadow,
+                                                CLUTTER_GRAVITY_NORTH_WEST);
+    }
+}
+
+static void
+clutter_cmp_minimize_window (MetaCompositor *compositor,
+                            MetaWindow     *window)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaCompWindow *cw = NULL;
+  MetaCompScreen *info;
+  MetaScreen *screen;
+  MetaFrame *f = meta_window_get_frame (window);
+
+  screen = meta_window_get_screen (window);
+  info = meta_screen_get_compositor_data (screen);
+
+  /* Chances are we actually get the window frame here */
+  cw = find_window_for_screen (screen,
+                               f ? meta_frame_get_xwindow (f) :
+                               meta_window_get_xwindow (window));
+  if (!cw)
+    return;
+
+  meta_verbose ("Animating minimize of 0x%x\n",
+		(guint)meta_window_get_xwindow (window));
+
+  cw->minimize_in_progress = TRUE;
+
+  clutter_actor_move_anchor_point_from_gravity (cw->actor,
+                                                CLUTTER_GRAVITY_SOUTH_WEST);
+
+  clutter_effect_fade (info->minimize_effect,
+		       cw->actor,
+		       0,
+		       on_minimize_effect_complete,
+		       (gpointer)cw);
+
+  clutter_effect_scale (info->minimize_effect,
+                        cw->actor,
+                        0.0,
+                        0.0,
+                        NULL,
+                        NULL);
+
+  if (cw->shadow)
+    {
+      clutter_actor_move_anchor_point_from_gravity (cw->shadow,
+						  CLUTTER_GRAVITY_SOUTH_WEST);
+
+      clutter_effect_fade (info->minimize_effect,
+                           cw->shadow,
+                           0,
+                           NULL,
+                           NULL);
+
+      clutter_effect_scale (info->minimize_effect,
+                            cw->shadow,
+                            0.0,
+                            0.0,
+                            NULL,
+                            NULL);
+    }
+
+#endif
+}
 
 static MetaCompositor comp_info = {
   clutter_cmp_destroy,
@@ -1366,7 +1467,8 @@ static MetaCompositor comp_info = {
   clutter_cmp_process_event,
   clutter_cmp_get_window_pixmap,
   clutter_cmp_set_active_window,
-  clutter_cmp_destroy_window
+  clutter_cmp_destroy_window,
+  clutter_cmp_minimize_window
 };
 
 MetaCompositor *

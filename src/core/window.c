@@ -1475,6 +1475,13 @@ implement_showing (MetaWindow *window,
 
           meta_window_get_outer_rect (window, &window_rect);
 
+          if (window->display->compositor)
+            {
+              meta_compositor_minimize_window (window->display->compositor,
+                                               window);
+              finish_minimize (window);
+            }
+          else
           meta_effect_run_minimize (window,
                                     &window_rect,
                                     &icon_rect,

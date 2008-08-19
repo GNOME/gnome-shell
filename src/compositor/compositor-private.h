@@ -53,6 +53,8 @@ struct _MetaCompositor
   void (*destroy_window) (MetaCompositor *compositor,
                           MetaWindow     *window);
 
+  void (*minimize_window) (MetaCompositor *compositor,
+                           MetaWindow     *window);
 };
 
 #endif
