@@ -312,14 +312,14 @@ static gboolean meta_comp_window_has_shadow (MetaCompWindow *self);
 static void
 meta_comp_window_constructed (GObject *object)
 {
-  MetaCompWindow        *self = META_COMP_WINDOW (object);
-  MetaCompWindowPrivate *priv = self->priv;
-  MetaScreen            *screen = priv->screen;
-  MetaDisplay           *display = meta_screen_get_display (screen);
-  Window                 xwindow = priv->xwindow;
+  MetaCompWindow        *self     = META_COMP_WINDOW (object);
+  MetaCompWindowPrivate *priv     = self->priv;
+  MetaScreen            *screen   = priv->screen;
+  MetaDisplay           *display  = meta_screen_get_display (screen);
+  Window                 xwindow  = priv->xwindow;
   Display               *xdisplay = meta_display_get_xdisplay (display);
+  MetaCompScreen        *info     = meta_screen_get_compositor_data (screen);
   XRenderPictFormat     *format;
-  MetaCompScreen        *info = meta_screen_get_compositor_data (screen);
 
   meta_comp_window_get_window_type (self);
 
@@ -1136,7 +1136,30 @@ process_configure_notify (MetaCompositorClutter  *compositor,
     }
   else
     {
-      /* FIXME -- handle root window resizing */
+      GSList *l = meta_display_get_screens (display);
+
+      while (l)
+	{
+	  MetaScreen *screen = l->data;
+	  Window      xroot  = meta_screen_get_xroot (screen);
+
+	  if (event->window == xroot)
+	    {
+	      gint            width;
+	      gint            height;
+	      MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+	      meta_screen_get_size (screen, &width, &height);
+	      clutter_actor_set_size (info->stage, width, height);
+
+	      meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
+			    meta_screen_get_screen_number (screen),
+			    width, height);
+	      break;
+	    }
+
+	  l = l->next;
+	}
     }
 }
 
