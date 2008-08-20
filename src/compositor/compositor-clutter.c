@@ -166,7 +166,7 @@ struct _MetaCompWindowPrivate
   gboolean          destroy_pending      : 1;
   gboolean          argb32               : 1;
   gboolean          minimize_in_progress : 1;
-
+  gboolean          disposed             : 1;
 };
 
 enum
@@ -180,18 +180,17 @@ static void meta_comp_window_class_init (MetaCompWindowClass *klass);
 static void meta_comp_window_init       (MetaCompWindow *self);
 static void meta_comp_window_dispose    (GObject *object);
 static void meta_comp_window_finalize   (GObject *object);
-static void meta_comp_window_constructed (MetaCompWindow *self);
+static void meta_comp_window_constructed (GObject *object);
 static void meta_comp_window_set_property (GObject       *object,
-					    guint         prop_id,
-					    const GValue *value,
-					    GParamSpec   *pspec);
-
+					   guint         prop_id,
+					   const GValue *value,
+					   GParamSpec   *pspec);
 static void meta_comp_window_get_property (GObject      *object,
-					    guint         prop_id,
-					    GValue       *value,
-					    GParamSpec   *pspec);
-
+					   guint         prop_id,
+					   GValue       *value,
+					   GParamSpec   *pspec);
 static void meta_comp_window_get_window_type (MetaCompWindow *self);
+static void meta_comp_window_detach (MetaCompWindow *self);
 
 GType meta_comp_window_get_type (void);
 
@@ -257,8 +256,9 @@ static gboolean is_shaped (MetaDisplay *display, Window xwindow);
 static gboolean meta_comp_window_has_shadow (MetaCompWindow *self);
 
 static void
-meta_comp_window_constructed (MetaCompWindow *self)
+meta_comp_window_constructed (GObject *object)
 {
+  MetaCompWindow *self = META_COMP_WINDOW (object);
   MetaCompWindowPrivate *priv = self->priv;
   MetaScreen *screen = priv->screen;
   MetaDisplay *display = meta_screen_get_display (screen);
@@ -319,6 +319,43 @@ meta_comp_window_constructed (MetaCompWindow *self)
 static void
 meta_comp_window_dispose (GObject *object)
 {
+  MetaCompWindow        *self = META_COMP_WINDOW (object);
+  MetaCompWindowPrivate *priv = self->priv;
+  MetaScreen            *screen;
+  MetaDisplay           *display;
+  Display               *xdisplay;
+  MetaCompScreen        *info;
+
+  if (priv->disposed)
+    return;
+
+  priv->disposed = TRUE;
+
+  screen   = priv->screen;
+  display  = meta_screen_get_display (screen);
+  xdisplay = meta_display_get_xdisplay (display);
+  info     = meta_screen_get_compositor_data (screen);
+
+  meta_comp_window_detach (self);
+
+  if (priv->damage != None)
+    {
+      meta_error_trap_push (display);
+      XDamageDestroy (xdisplay, priv->damage);
+      meta_error_trap_pop (display, FALSE);
+
+      priv->damage = None;
+    }
+
+  /*
+   * Check we are not in the dock list -- FIXME (do this in a cleaner way)
+   */
+  if (priv->type == META_COMP_WINDOW_DOCK)
+    info->dock_windows = g_slist_remove (info->dock_windows, self);
+
+  info->windows = g_list_remove (info->windows, (gconstpointer) self);
+  g_hash_table_remove (info->windows_by_xid, (gpointer) priv->xwindow);
+
   G_OBJECT_CLASS (meta_comp_window_parent_class)->dispose (object);
 }
 
@@ -605,70 +642,33 @@ clutter_cmp_destroy (MetaCompositor *compositor)
 }
 
 static void
-free_win (MetaCompWindow *self,
-          gboolean        destroy)
+meta_comp_window_detach (MetaCompWindow *self)
 {
   MetaCompWindowPrivate *priv = self->priv;
   MetaScreen  *screen = priv->screen;
   MetaDisplay *display = meta_screen_get_display (screen);
   Display *xdisplay = meta_display_get_xdisplay (display);
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
-  /* See comment in map_win */
-  if (priv->back_pixmap && destroy)
+  if (priv->back_pixmap)
     {
       XFreePixmap (xdisplay, priv->back_pixmap);
       priv->back_pixmap = None;
     }
-
-  if (destroy)
-    {
-      if (priv->damage != None)
-        {
-          meta_error_trap_push (display);
-          XDamageDestroy (xdisplay, priv->damage);
-          meta_error_trap_pop (display, FALSE);
-
-          priv->damage = None;
-        }
-
-      /* The window may not have been added to the list in this case,
-         but we can check anyway */
-
-      if (priv->type == META_COMP_WINDOW_DOCK)
-        info->dock_windows = g_slist_remove (info->dock_windows, self);
-
-      clutter_actor_destroy (CLUTTER_ACTOR (self));
-    }
 }
 
-
 static void
-destroy_win (MetaDisplay *display,
-             Window       xwindow,
-             gboolean     gone)
+destroy_win (MetaDisplay *display, Window xwindow)
 {
-  MetaScreen *screen;
-  MetaCompScreen *info;
   MetaCompWindow *cw;
-  MetaCompWindowPrivate *priv;
 
   cw = find_window_in_display (display, xwindow);
 
   if (cw == NULL)
     return;
 
-  priv = cw->priv;
-
   meta_verbose ("destroying a window... 0x%x (%p)\n", (guint) xwindow, cw);
 
-  screen = priv->screen;
-
-  info = meta_screen_get_compositor_data (screen);
-  info->windows = g_list_remove (info->windows, (gconstpointer) cw);
-  g_hash_table_remove (info->windows_by_xid, (gpointer) xwindow);
-
-  free_win (cw, TRUE);
+  clutter_actor_destroy (CLUTTER_ACTOR (cw));
 }
 
 static void
@@ -810,7 +810,7 @@ unmap_win (MetaDisplay *display,
 
   priv->attrs.map_state = IsUnmapped;
 
-  free_win (cw, FALSE);
+  meta_comp_window_detach (cw);
 
   if (!priv->minimize_in_progress)
     {
@@ -1038,7 +1038,7 @@ process_reparent (MetaCompositorClutter *compositor,
     {
       meta_verbose ("reparent: destroying a window 0%x\n",
 		    (guint)event->window);
-      destroy_win (compositor->display, event->window, FALSE);
+      destroy_win (compositor->display, event->window);
     }
 }
 
@@ -1046,7 +1046,7 @@ static void
 process_destroy (MetaCompositorClutter *compositor,
                  XDestroyWindowEvent   *event)
 {
-  destroy_win (compositor->display, event->window, FALSE);
+  destroy_win (compositor->display, event->window);
 }
 
 static void
@@ -1492,9 +1492,7 @@ static void
 on_destroy_effect_complete (ClutterActor *actor,
                             gpointer user_data)
 {
-  MetaCompWindow *cw = (MetaCompWindow *)user_data;
-
-  free_win (cw, TRUE);
+  clutter_actor_destroy (actor);
 }
 
 static void
