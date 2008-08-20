@@ -140,6 +140,8 @@ typedef struct _MetaCompositorClutter
   Atom            atom_x_set_root;
   Atom            atom_net_wm_window_opacity;
 
+  ClutterActor   *shadow_src;
+
   gboolean        show_redraw : 1;
   gboolean        debug       : 1;
 } MetaCompositorClutter;
@@ -157,8 +159,6 @@ typedef struct _MetaCompScreen
 
   ClutterEffectTemplate *destroy_effect;
   ClutterEffectTemplate *minimize_effect;
-
-  ClutterActor          *shadow_src;
 } MetaCompScreen;
 
 /*
@@ -318,7 +318,6 @@ meta_comp_window_constructed (GObject *object)
   MetaDisplay           *display  = meta_screen_get_display (screen);
   Window                 xwindow  = priv->xwindow;
   Display               *xdisplay = meta_display_get_xdisplay (display);
-  MetaCompScreen        *info     = meta_screen_get_compositor_data (screen);
   XRenderPictFormat     *format;
 
   meta_comp_window_get_window_type (self);
@@ -337,8 +336,11 @@ meta_comp_window_constructed (GObject *object)
 
   if (meta_comp_window_has_shadow (self))
     {
+      MetaCompositorClutter *compositor =
+	(MetaCompositorClutter*)meta_display_get_compositor (display);
+
       priv->shadow =
-	tidy_texture_frame_new (CLUTTER_TEXTURE (info->shadow_src),
+	tidy_texture_frame_new (CLUTTER_TEXTURE (compositor->shadow_src),
 				MAX_TILE_SZ,
 				MAX_TILE_SZ,
 				MAX_TILE_SZ,
@@ -1331,7 +1333,6 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   Window          xroot         = meta_screen_get_xroot (screen);
   Window          xwin;
   gint            width, height;
-  guchar        *data;
 
   /* Check if the screen is already managed */
   if (meta_screen_get_compositor_data (screen))
@@ -1372,23 +1373,6 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
 
   XReparentWindow (xdisplay, xwin, info->output, 0, 0);
-
-  /* Shadow setup */
-
-  data = shadow_gaussian_make_tile ();
-
-  info->shadow_src = clutter_texture_new ();
-
-  clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (info->shadow_src),
-                                     data,
-                                     TRUE,
-                                     TILE_WIDTH,
-                                     TILE_HEIGHT,
-                                     TILE_WIDTH*4,
-                                     4,
-                                     0,
-                                     NULL);
-  free (data);
 
   clutter_actor_show_all (info->stage);
 
@@ -1683,11 +1667,12 @@ meta_compositor_clutter_new (MetaDisplay *display)
   MetaCompositorClutter *clc;
   MetaCompositor        *compositor;
   Display               *xdisplay = meta_display_get_xdisplay (display);
+  guchar                *data;
 
   if (!composite_at_least_version (display, 0, 3))
     return NULL;
 
-  clc = g_new (MetaCompositorClutter, 1);
+  clc = g_new0 (MetaCompositorClutter, 1);
   clc->compositor = comp_info;
 
   compositor = (MetaCompositor *) clc;
@@ -1701,6 +1686,23 @@ meta_compositor_clutter_new (MetaDisplay *display)
   clc->atom_x_root_pixmap = atoms[0];
   clc->atom_x_set_root = atoms[1];
   clc->atom_net_wm_window_opacity = atoms[2];
+
+  /* Shadow setup */
+
+  data = shadow_gaussian_make_tile ();
+
+  clc->shadow_src = clutter_texture_new ();
+
+  clutter_texture_set_from_rgb_data (CLUTTER_TEXTURE (clc->shadow_src),
+                                     data,
+                                     TRUE,
+                                     TILE_WIDTH,
+                                     TILE_HEIGHT,
+                                     TILE_WIDTH*4,
+                                     4,
+                                     0,
+                                     NULL);
+  free (data);
 
   return compositor;
 #else
