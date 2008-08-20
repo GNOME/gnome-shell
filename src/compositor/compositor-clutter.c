@@ -19,6 +19,7 @@
 #include "compositor-clutter.h"
 #include "xprops.h"
 #include <X11/Xatom.h>
+#include <X11/Xlibint.h>
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
@@ -42,6 +43,52 @@
 
 #define DESTROY_TIMEOUT   300
 #define MINIMIZE_TIMEOUT  600
+
+/*
+ * Register GType wrapper for XWindowAttributes, so we do not have to
+ * query window attributes in the MetaCompWindow constructor but can pass
+ * them as a property to the constructor (so we can gracefully handle the case
+ * where no attributes can be retrieved).
+ *
+ * NB -- we only need a subset of the attribute; at some point we might want
+ * to just store the relevant values rather than the whole struct.
+ */
+#define META_TYPE_XATTRS (meta_xattrs_get_type ())
+
+GType meta_xattrs_get_type   (void) G_GNUC_CONST;
+
+static XWindowAttributes *
+meta_xattrs_copy (const XWindowAttributes *attrs)
+{
+  XWindowAttributes *result;
+
+  g_return_val_if_fail (attrs != NULL, NULL);
+
+  result = (XWindowAttributes*) Xmalloc (sizeof (XWindowAttributes));
+  *result = *attrs;
+
+  return result;
+}
+
+static void
+meta_xattrs_free (XWindowAttributes *attrs)
+{
+  g_return_if_fail (attrs != NULL);
+
+  XFree (attrs);
+}
+
+GType
+meta_xattrs_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (!our_type)
+    our_type = g_boxed_type_register_static ("XWindowAttributes",
+		                     (GBoxedCopyFunc) meta_xattrs_copy,
+				     (GBoxedFreeFunc) meta_xattrs_free);
+  return our_type;
+}
 
 static ClutterActor* tidy_texture_frame_new (ClutterTexture *texture,
 					     gint            left,
@@ -142,11 +189,12 @@ struct _MetaCompWindow
 
 struct _MetaCompWindowPrivate
 {
+  XWindowAttributes attrs;
+
   MetaWindow       *window;
   Window            xwindow;
   MetaScreen       *screen;
 
-  XWindowAttributes attrs;
   ClutterActor     *actor;
   ClutterActor     *shadow;
   Pixmap            back_pixmap;
@@ -169,6 +217,7 @@ enum
   PROP_MCW_META_WINDOW = 1,
   PROP_MCW_META_SCREEN,
   PROP_MCW_X_WINDOW,
+  PROP_MCW_X_WINDOW_ATTRIBUTES
 };
 
 static void meta_comp_window_class_init (MetaCompWindowClass *klass);
@@ -234,6 +283,16 @@ meta_comp_window_class_init (MetaCompWindowClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_MCW_X_WINDOW,
                                    pspec);
+
+  pspec = g_param_spec_boxed ("x-window-attributes",
+			      "XWindowAttributes",
+			      "XWindowAttributes",
+			      META_TYPE_XATTRS,
+			      G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+
+  g_object_class_install_property (object_class,
+                                   PROP_MCW_X_WINDOW_ATTRIBUTES,
+                                   pspec);
 }
 
 static void
@@ -259,25 +318,10 @@ meta_comp_window_constructed (GObject *object)
   MetaDisplay           *display = meta_screen_get_display (screen);
   Window                 xwindow = priv->xwindow;
   Display               *xdisplay = meta_display_get_xdisplay (display);
-  gulong                 event_mask;
   XRenderPictFormat     *format;
   MetaCompScreen        *info = meta_screen_get_compositor_data (screen);
 
-  if (!XGetWindowAttributes (xdisplay, xwindow, &priv->attrs))
-    {
-      g_warning ("Could not get attributes for xwindow");
-      /* FIXME */
-      return;
-    }
-
   meta_comp_window_get_window_type (self);
-
-  /*
-   * If Metacity has decided not to manage this window then the input events
-   * won't have been set on the window
-   */
-  event_mask = priv->attrs.your_event_mask | PropertyChangeMask;
-  XSelectInput (xdisplay, xwindow, event_mask);
 
   priv->shaped = is_shaped (display, xwindow);
 
@@ -377,6 +421,9 @@ meta_comp_window_set_property (GObject      *object,
     case PROP_MCW_X_WINDOW:
       priv->xwindow = g_value_get_ulong (value);
       break;
+    case PROP_MCW_X_WINDOW_ATTRIBUTES:
+      priv->attrs = *((XWindowAttributes*)g_value_get_boxed (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -401,6 +448,9 @@ meta_comp_window_get_property (GObject      *object,
       break;
     case PROP_MCW_X_WINDOW:
       g_value_set_ulong (value, priv->xwindow);
+      break;
+    case PROP_MCW_X_WINDOW_ATTRIBUTES:
+      g_value_set_boxed (value, &priv->attrs);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -802,6 +852,8 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
   MetaCompScreen        *info = meta_screen_get_compositor_data (screen);
   MetaCompWindow        *cw;
   MetaCompWindowPrivate *priv;
+  Display               *xdisplay = meta_display_get_xdisplay (display);
+  XWindowAttributes      attrs;
 
   if (info == NULL)
     return;
@@ -809,12 +861,28 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
   if (xwindow == info->output)
     return;
 
+  if (!XGetWindowAttributes (xdisplay, xwindow, &attrs))
+      return;
+
+  /*
+   * If Metacity has decided not to manage this window then the input events
+   * won't have been set on the window
+   */
+  if (!(attrs.your_event_mask & PropertyChangeMask))
+    {
+      gulong event_mask;
+
+      event_mask = attrs.your_event_mask | PropertyChangeMask;
+      XSelectInput (xdisplay, xwindow, event_mask);
+    }
+
   meta_verbose ("add window: Meta %p, xwin 0x%x\n", window, (guint) xwindow);
 
   cw = g_object_new (META_TYPE_COMP_WINDOW,
-		     "meta-window", window,
-		     "x-window",    xwindow,
-		     "meta-screen", screen,
+		     "meta-window",         window,
+		     "x-window",            xwindow,
+		     "meta-screen",         screen,
+		     "x-window-attributes", &attrs,
 		     NULL);
 
   priv = cw->priv;
