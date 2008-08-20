@@ -143,6 +143,11 @@ AC_ARG_ENABLE(compositor,
                  [disable metacity's compositing manager]),,
   enable_compositor=auto)
 
+AC_ARG_WITH(clutter,
+  AC_HELP_STRING([--with-clutter],
+                 [Use clutter for compositing]),,
+  with_clutter=auto)
+
 AC_ARG_ENABLE(xsync,
   AC_HELP_STRING([--disable-xsync],
                  [disable metacity's use of the XSync extension]),,
@@ -229,6 +234,18 @@ else
    have_xcomposite=no
 fi
 
+if test x$with_clutter = xyes; then
+   have_xcomposite=yes
+   have_clutter=yes
+   echo "CompositeExt support and Clutter forced on"
+elif test x$with_clutter = xauto; then
+   have_clutter=no
+else
+   have_clutter=no
+fi
+
+AM_CONDITIONAL(WITH_CLUTTER, test "$have_clutter" = "yes")
+
 if test x$have_xcomposite = xyes; then
   echo "Building with CompositeExt"
   METACITY_PC_MODULES="$METACITY_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender xdamage"
@@ -270,6 +287,12 @@ if test x$have_xrender = xyes; then
   AC_DEFINE(HAVE_RENDER, , [Building with Render extension support])
 fi
 
+if test x$have_clutter = xyes; then
+  CLUTTER_PACKAGE=clutter-0.8
+  METACITY_PC_MODULES="$METACITY_PC_MODULES $CLUTTER_PACKAGE "
+  AC_DEFINE(WITH_CLUTTER, , [Building with Clutter compositor])
+fi
+
 AC_MSG_CHECKING([Xcursor])
 if $PKG_CONFIG xcursor; then
      have_xcursor=yes
@@ -283,8 +306,6 @@ if test x$have_xcursor = xyes; then
   METACITY_PC_MODULES="$METACITY_PC_MODULES xcursor"
   AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support])
 fi
-
-METACITY_PC_MODULES="$METACITY_PC_MODULES clutter-0.8"
 
 PKG_CHECK_MODULES(METACITY, $METACITY_PC_MODULES)
 
@@ -527,6 +548,7 @@ metacity-$VERSION:
 	Xsync:                    ${found_xsync}
 	Render:                   ${have_xrender}
 	Xcursor:                  ${have_xcursor}
+	Clutter:                  ${have_clutter}
 "
 
 METACITY_MINOR_VERSION=metacity_minor_version

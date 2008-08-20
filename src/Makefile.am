@@ -14,10 +14,6 @@ metacity_SOURCES= 				\
 	include/boxes.h				\
 	compositor/compositor.c			\
 	compositor/compositor-private.h		\
-	compositor/compositor-xrender.c		\
-	compositor/compositor-xrender.h		\
-	compositor/compositor-clutter.c		\
-	compositor/compositor-clutter.h		\
 	include/compositor.h			\
 	core/constraints.c			\
 	core/constraints.h			\
@@ -99,6 +95,14 @@ metacity_SOURCES= 				\
 	ui/themewidget.c			\
 	ui/themewidget.h			\
 	ui/ui.c
+
+if WITH_CLUTTER
+metacity_SOURCES +=	compositor/compositor-clutter.c	\
+			compositor/compositor-clutter.h
+else
+metacity_SOURCES +=	compositor/compositor-xrender.c \
+			compositor/compositor-xrender.h
+endif
 
 # by setting libmetacity_private_la_CFLAGS, the files shared with
 # metacity proper will be compiled with different names.

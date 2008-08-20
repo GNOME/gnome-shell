@@ -1599,10 +1599,6 @@ meta_compositor_clutter_new (MetaDisplay *display)
   clc = g_new (MetaCompositorClutter, 1);
   clc->compositor = comp_info;
 
-  clutter_x11_set_display (xdisplay);
-  clutter_x11_disable_event_retrieval ();
-  clutter_init (NULL, NULL);
-
   compositor = (MetaCompositor *) clc;
 
   clc->display = display;

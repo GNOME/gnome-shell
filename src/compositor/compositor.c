@@ -28,9 +28,13 @@ MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+#ifdef WITH_CLUTTER
   /* At some point we would have a way to select between backends */
   /* return meta_compositor_xrender_new (display); */
   return meta_compositor_clutter_new (display);
+#else
+  return meta_compositor_xrender_new (display);
+#endif
 #else
   return NULL;
 #endif
