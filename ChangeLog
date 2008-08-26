@@ -1,3 +1,11 @@
+2008-08-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug 1090 - Label somtimes returns natural_width < min_width
+
+	* clutter/clutter-label.c:
+	(clutter_label_get_preferred_width): Check that the width of the
+	layout is always greater than 0. (Johan Bilien)
+
 2008-08-19  Neil Roberts  <neil@o-hand.com>
 
 	Bug 1103 - Two typos in clutter documentation

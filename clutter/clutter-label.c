@@ -245,6 +245,7 @@ clutter_label_get_preferred_width (ClutterActor *self,
   ClutterLabelPrivate *priv = label->priv;
   PangoRectangle logical_rect = { 0, };
   PangoLayout *layout;
+  ClutterUnit layout_width;
 
   /* we create a layout to compute the width request; we ignore the
    * passed height because ClutterLabel is a height-for-width actor
@@ -256,16 +257,20 @@ clutter_label_get_preferred_width (ClutterActor *self,
 
   pango_layout_get_extents (layout, NULL, &logical_rect);
 
+  layout_width = logical_rect.width > 0
+    ? CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.width)
+    : 1;
+
   if (min_width_p)
     {
       if (priv->wrap || priv->ellipsize)
         *min_width_p = 1;
       else
-        *min_width_p = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.width);
+        *min_width_p = layout_width;
     }
 
   if (natural_width_p)
-    *natural_width_p = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.width);
+    *natural_width_p = layout_width; 
 
   g_object_unref (layout);
 }
