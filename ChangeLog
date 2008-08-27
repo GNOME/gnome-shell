@@ -1,3 +1,11 @@
+2008-08-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Bug 1099 - No ClutterScript API to get a list of IDs in a given file
+
+	* clutter/clutter-script.[ch]: Add clutter_script_list_objects(),
+	a function for retrieving all the objects built by a ClutterScript
+	instance. (Based on a patch by Noah Gibbs)
+
 2008-08-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 1090 - Label somtimes returns natural_width < min_width

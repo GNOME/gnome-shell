@@ -1,3 +1,8 @@
+2008-08-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* doc/reference/clutter/clutter-sections.txt: Add
+	clutter_script_list_objects().
+
 2008-07-30  Ross Burton  <ross@openedhand.com>
 
 	* clutter/version.xml.in:

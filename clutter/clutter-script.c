@@ -2424,3 +2424,44 @@ clutter_script_lookup_filename (ClutterScript *script,
   return retval;
 }
 
+/**
+ * clutter_script_list_objects:
+ * @script: a #ClutterScript
+ *
+ * Retrieves all the objects created by @script.
+ *
+ * Note: this function does not increment the reference count of the
+ * objects it returns.
+ *
+ * Return value: a list of #GObject<!-- -->s, or %NULL. The objects are
+ *   owned by the #ClutterScript instance. Use g_list_free() on the
+ *   returned value when done.
+ *
+ * Since: 0.8.2
+ */
+GList *
+clutter_script_list_objects (ClutterScript *script)
+{
+  GList *objects, *l;
+  GList *retval;
+
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), NULL);
+
+  clutter_script_ensure_objects (script);
+  if (!script->priv->objects)
+    return NULL;
+
+  retval = NULL;
+  objects = g_hash_table_get_values (script->priv->objects);
+  for (l = objects; l != NULL; l = l->next)
+    {
+      ObjectInfo *oinfo = l->data;
+
+      if (oinfo->object)
+        retval = g_list_prepend (retval, oinfo->object);
+    }
+
+  g_list_free (objects);
+
+  return retval;
+}

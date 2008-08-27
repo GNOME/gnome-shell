@@ -125,11 +125,14 @@ guint          clutter_script_load_from_data       (ClutterScript  *script,
                                                     const gchar    *data,
                                                     gssize          length,
                                                     GError        **error);
+
 GObject *      clutter_script_get_object           (ClutterScript  *script,
                                                     const gchar    *name);
 gint           clutter_script_get_objects          (ClutterScript  *script,
                                                     const gchar    *first_name,
                                                     ...) G_GNUC_NULL_TERMINATED;
+GList *        clutter_script_list_objects         (ClutterScript  *script);
+
 void           clutter_script_unmerge_objects      (ClutterScript  *script,
                                                     guint           merge_id);
 void           clutter_script_ensure_objects       (ClutterScript  *script);
