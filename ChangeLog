@@ -1,5 +1,15 @@
 2008-08-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Bug 1082 - Texture bitmap is destroyed in wrong way
+
+	* clutter/cogl/common/cogl-bitmap-pixbuf.c:
+	(_cogl_bitmap_from_file): Make a copy of the pixbuf data in
+	the internal image loader so that we can keep working under
+	the assumption that we are using the GLib memory allocation
+	and deallocation functions.
+
+2008-08-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Bug 1099 - No ClutterScript API to get a list of IDs in a given file
 
 	* clutter/clutter-script.[ch]: Add clutter_script_list_objects(),
