@@ -297,11 +297,13 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
   if (pixels == NULL) return FALSE;
  
   /* Store bitmap info */
-  bmp->data = pixels;
+  bmp->data = g_memdup (pixels, height * width * 4);
   bmp->format = COGL_PIXEL_FORMAT_RGBA_8888;
   bmp->width = width;
   bmp->height = height;
   bmp->rowstride = width * 4;
+
+  free (pixels);
 
   return TRUE;
 }
