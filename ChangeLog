@@ -1,3 +1,8 @@
+2008-08-30  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/window.c (process_property_notify): moving all
+	messages about properties to the top, as a start at #549886
+
 2008-08-18  Thomas Thurman  <tthurman@gnome.org>
 
         * NEWS: fix version number which broke

@@ -5338,18 +5338,25 @@ process_property_notify (MetaWindow     *window,
    * can just call reload on the property in the event and get rid of
    * this if-else chain.
    */
-  
+
+  if (meta_is_verbose ()) /* avoid looking up the name if we don't have to */
+    {
+      char *property_name = XGetAtomName (window->display->xdisplay,
+                                          event->atom);
+
+      meta_verbose ("Property notify on %s for %s\n",
+                    window->desc, property_name);
+      XFree (property_name);
+    }
+ 
   if (event->atom == XA_WM_NAME)
     {
-      meta_verbose ("Property notify on %s for WM_NAME\n", window->desc);
-
       /* don't bother reloading WM_NAME if using _NET_WM_NAME already */
       if (!window->using_net_wm_name)
         meta_window_reload_property (window, XA_WM_NAME);
     }
   else if (event->atom == window->display->atom__NET_WM_NAME)
     {
-      meta_verbose ("Property notify on %s for NET_WM_NAME\n", window->desc);
       meta_window_reload_property (window, window->display->atom__NET_WM_NAME);
       
       /* if _NET_WM_NAME was unset, reload WM_NAME */
@@ -5358,15 +5365,12 @@ process_property_notify (MetaWindow     *window,
     }
   else if (event->atom == XA_WM_ICON_NAME)
     {
-      meta_verbose ("Property notify on %s for WM_ICON_NAME\n", window->desc);
-
       /* don't bother reloading WM_ICON_NAME if using _NET_WM_ICON_NAME already */
       if (!window->using_net_wm_icon_name)
         meta_window_reload_property (window, XA_WM_ICON_NAME);
     }
   else if (event->atom == window->display->atom__NET_WM_ICON_NAME)
     {
-      meta_verbose ("Property notify on %s for NET_WM_ICON_NAME\n", window->desc);
       meta_window_reload_property (window, window->display->atom__NET_WM_ICON_NAME);
       
       /* if _NET_WM_ICON_NAME was unset, reload WM_ICON_NAME */
@@ -5375,8 +5379,6 @@ process_property_notify (MetaWindow     *window,
     }  
   else if (event->atom == XA_WM_NORMAL_HINTS)
     {
-      meta_verbose ("Property notify on %s for WM_NORMAL_HINTS\n", window->desc);
-      
       meta_window_reload_property (window, XA_WM_NORMAL_HINTS);
       
       /* See if we need to constrain current size */
@@ -5384,40 +5386,28 @@ process_property_notify (MetaWindow     *window,
     }
   else if (event->atom == window->display->atom_WM_PROTOCOLS)
     {
-      meta_verbose ("Property notify on %s for WM_PROTOCOLS\n", window->desc);
-      
       meta_window_reload_property (window, window->display->atom_WM_PROTOCOLS);
     }
   else if (event->atom == XA_WM_HINTS)
     {
-      meta_verbose ("Property notify on %s for WM_HINTS\n", window->desc);
-
       meta_window_reload_property (window, XA_WM_HINTS);
     }
   else if (event->atom == window->display->atom__MOTIF_WM_HINTS)
     {
-      meta_verbose ("Property notify on %s for MOTIF_WM_HINTS\n", window->desc);
-      
       meta_window_reload_property (window,
                                    window->display->atom__MOTIF_WM_HINTS);
     }
   else if (event->atom == XA_WM_CLASS)
     {
-      meta_verbose ("Property notify on %s for WM_CLASS\n", window->desc);
-      
       meta_window_reload_property (window, XA_WM_CLASS);
     }
   else if (event->atom == XA_WM_TRANSIENT_FOR)
     {
-      meta_verbose ("Property notify on %s for WM_TRANSIENT_FOR\n", window->desc);
-      
       meta_window_reload_property (window, XA_WM_TRANSIENT_FOR);
     }
   else if (event->atom ==
            window->display->atom_WM_WINDOW_ROLE)
     {
-      meta_verbose ("Property notify on %s for WM_WINDOW_ROLE\n", window->desc);
-      
       update_role (window);
     }
   else if (event->atom ==
@@ -5430,12 +5420,10 @@ process_property_notify (MetaWindow     *window,
   else if (event->atom ==
            window->display->atom__NET_WM_WINDOW_TYPE)
     {
-      meta_verbose ("Property notify on %s for NET_WM_WINDOW_TYPE\n", window->desc);
       update_net_wm_type (window);
     }
   else if (event->atom == window->display->atom__NET_WM_ICON)
     {
-      meta_verbose ("Property notify on %s for NET_WM_ICON\n", window->desc);
       meta_icon_cache_property_changed (&window->icon_cache,
                                         window->display,
                                         event->atom);
@@ -5443,8 +5431,6 @@ process_property_notify (MetaWindow     *window,
     }
   else if (event->atom == window->display->atom__KWM_WIN_ICON)
     {
-      meta_verbose ("Property notify on %s for KWM_WIN_ICON\n", window->desc);
-
       meta_icon_cache_property_changed (&window->icon_cache,
                                         window->display,
                                         event->atom);
@@ -5453,20 +5439,15 @@ process_property_notify (MetaWindow     *window,
   else if ((event->atom == window->display->atom__NET_WM_STRUT) ||
 	   (event->atom == window->display->atom__NET_WM_STRUT_PARTIAL))
     {
-      meta_verbose ("Property notify on %s for _NET_WM_STRUT\n", window->desc);
       meta_window_update_struts (window);
     }
   else if (event->atom == window->display->atom__NET_STARTUP_ID)
     {
-      meta_verbose ("Property notify on %s for _NET_STARTUP_ID\n", window->desc);
-      
       meta_window_reload_property (window,
                                    window->display->atom__NET_STARTUP_ID);
     }
   else if (event->atom == window->display->atom__NET_WM_SYNC_REQUEST_COUNTER)
     {
-      meta_verbose ("Property notify on %s for _NET_WM_SYNC_REQUEST_COUNTER\n", window->desc);
-      
       meta_window_reload_property (window,
                                    window->display->atom__NET_WM_SYNC_REQUEST_COUNTER);
     }
@@ -5474,8 +5455,6 @@ process_property_notify (MetaWindow     *window,
     {
       Window xid;
       Atom atom__NET_WM_USER_TIME;
-
-      meta_verbose ("Property notify on %s for _NET_WM_USER_TIME\n", window->desc);
 
       atom__NET_WM_USER_TIME = window->display->atom__NET_WM_USER_TIME;
       if (window->user_time_window)
