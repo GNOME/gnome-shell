@@ -217,7 +217,16 @@ typedef struct
   gboolean disable_sm;
   gboolean print_version;
   gboolean sync;
+  gboolean composite;
+  gboolean no_composite;
 } MetaArguments;
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+#define COMPOSITE_OPTS_FLAGS 0
+#else /* HAVE_COMPOSITE_EXTENSIONS */
+/* No compositor, so don't show the arguments in --help */
+#define COMPOSITE_OPTS_FLAGS G_OPTION_FLAG_HIDDEN
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 /**
  * Parses argc and argv and returns the
@@ -235,7 +244,8 @@ static void
 meta_parse_options (int *argc, char ***argv,
                     MetaArguments *meta_args)
 {
-  MetaArguments my_args = {NULL, NULL, NULL, FALSE, FALSE, FALSE};
+  MetaArguments my_args = {NULL, NULL, NULL,
+                           FALSE, FALSE, FALSE, FALSE, FALSE};
   GOptionEntry options[] = {
     {
       "sm-disable", 0, 0, G_OPTION_ARG_NONE,
@@ -256,7 +266,7 @@ meta_parse_options (int *argc, char ***argv,
       "ID"
     },
     {
-      "display", 0, 0, G_OPTION_ARG_STRING,
+      "display", 'd', 0, G_OPTION_ARG_STRING,
       &my_args.display_name, N_("X Display to use"),
       "DISPLAY"
     },
@@ -276,6 +286,18 @@ meta_parse_options (int *argc, char ***argv,
       "sync", 0, 0, G_OPTION_ARG_NONE,
       &my_args.sync,
       N_("Make X calls synchronous"),
+      NULL
+    },
+    {
+      "composite", 'c', COMPOSITE_OPTS_FLAGS, G_OPTION_ARG_NONE,
+      &my_args.composite,
+      N_("Turn compositing on"),
+      NULL
+    },
+    {
+      "no-composite", 0, COMPOSITE_OPTS_FLAGS, G_OPTION_ARG_NONE,
+      &my_args.no_composite,
+      N_("Turn compositing off"),
       NULL
     },
     {NULL}
@@ -473,7 +495,10 @@ main (int argc, char **argv)
   g_free (meta_args.save_file);
   g_free (meta_args.display_name);
   g_free (meta_args.client_id);
-  
+
+  if (meta_args.composite || meta_args.no_composite)
+    meta_prefs_set_compositing_manager (meta_args.composite);
+
   if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);
   

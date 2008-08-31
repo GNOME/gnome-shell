@@ -49,6 +49,7 @@
  */
 #define KEY_TITLEBAR_FONT "/apps/metacity/general/titlebar_font"
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
+#define KEY_COMPOSITOR "/apps/metacity/general/compositing_manager"
 #define KEY_GNOME_ACCESSIBILITY "/desktop/gnome/interface/accessibility"
 
 #define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
@@ -2942,6 +2943,24 @@ gboolean
 meta_prefs_get_compositing_manager (void)
 {
   return compositing_manager;
+}
+
+void
+meta_prefs_set_compositing_manager (gboolean whether)
+{
+  GError *err = NULL;
+
+  gconf_client_set_bool (default_client,
+                         KEY_COMPOSITOR,
+                         whether,
+                         &err);
+
+  if (err)
+    {
+      meta_warning (_("Error setting compositor status: %s\n"),
+                    err->message);
+      g_error_free (err);
+    }
 }
 
 #ifndef HAVE_GCONF

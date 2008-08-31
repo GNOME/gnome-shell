@@ -1,3 +1,10 @@
+2008-08-31  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/prefs.[ch] (meta_prefs_set_compositing_manager): new
+          function.
+        * src/core/main.c (meta_parse_options): turn the compositing
+          manager on or off as necessary.
+
 2008-08-30  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/window.c (process_property_notify): moving all

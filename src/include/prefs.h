@@ -113,6 +113,13 @@ const char* meta_prefs_get_cursor_theme      (void);
 int         meta_prefs_get_cursor_size       (void);
 gboolean    meta_prefs_get_compositing_manager (void);
 
+/**
+ * Sets whether the compositor is turned on.
+ *
+ * \param whether   TRUE to turn on, FALSE to turn off
+ */
+void meta_prefs_set_compositing_manager (gboolean whether);
+
 /* Screen bindings */
 #define META_KEYBINDING_WORKSPACE_1              "switch_to_workspace_1"
 #define META_KEYBINDING_WORKSPACE_2              "switch_to_workspace_2"
