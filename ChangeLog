@@ -1,5 +1,9 @@
 2008-09-01  Thomas Thurman  <tthurman@gnome.org>
 
+        * NEWS: 2.25.1 release.
+
+2008-09-01  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/workspace.c: When a workspace's list of struts
           is freed, free the struts too.  Closes #549952, and #468075.
 

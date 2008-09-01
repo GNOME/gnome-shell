@@ -1,3 +1,19 @@
+2.25.1
+======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Fix small memory leak, found by Matthias Clasen (Thomas) (#549952)
+  - Added move_to_center keybinding suggested by
+    Khanh-Dang Nguyen Thu Lam (Thomas) (#549979)
+  - Compositor can be turned on and off from the command line
+    (#545323) (Thomas)
+
+Translations
+  Khaled Hosny (ar), Petr Kovar (cs), Iñaki Larrañaga Murgoitio (eu), Ilkka
+  Tuohela (fi), Žygimantas Beručka (lt), Duarte Loreto (pt), Djavan
+  Fagundes (pt_BR), Laurent Dhima (sq)
+
 2.25.0
 ======
 
