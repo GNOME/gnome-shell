@@ -1,5 +1,10 @@
 2008-09-01  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/workspace.c: When a workspace's list of struts
+          is freed, free the struts too.  Closes #549952, and #468075.
+
+2008-09-01  Thomas Thurman  <tthurman@gnome.org>
+
         Add new move_to_center keybinding, requested by Khanh-Dang Nguyen
         Thu Lam; closes #549979.
 
