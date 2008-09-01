@@ -1,3 +1,13 @@
+2008-09-01  Thomas Thurman  <tthurman@gnome.org>
+
+        Add new move_to_center keybinding, requested by Khanh-Dang Nguyen
+        Thu Lam; closes #549979.
+
+        * src/include/prefs.h (void): add name of new binding
+        * src/core/prefs.c: added pref for it
+        * src/core/keybindings.c (handle_move_to_center): new function
+        * src/metacity.schemas.in: included new binding
+
 2008-08-31  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/prefs.[ch] (meta_prefs_set_compositing_manager): new

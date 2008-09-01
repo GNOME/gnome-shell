@@ -231,6 +231,7 @@ void meta_prefs_set_compositing_manager (gboolean whether);
 #define META_KEYBINDING_MOVE_TO_SIDE_S           "move_to_side_s"
 #define META_KEYBINDING_MOVE_TO_SIDE_E           "move_to_side_e"
 #define META_KEYBINDING_MOVE_TO_SIDE_W           "move_to_side_w"
+#define META_KEYBINDING_MOVE_TO_CENTER           "move_to_center"
 
 typedef enum _MetaKeyBindingAction
 {

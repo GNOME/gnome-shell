@@ -1329,6 +1329,30 @@ you set
       </locale>
     </schema>
 
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_center</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_center</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Move window to center of screen</short>
+         <long>
+            This keybinding moves a window into the center
+            of the screen.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
     <!-- Global Keybindings -->
 
 
