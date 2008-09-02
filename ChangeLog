@@ -1,3 +1,10 @@
+2008-09-02  Thomas Thurman  <tthurman@gnome.org>
+
+        Desktop file moved, according to policy change.  Closes #549479.
+
+        * src/metacity.desktop.in: Don't display the desktop file
+        * src/Makefile.am: Desktop file goes in apps directory
+
 2008-09-01  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.25.2.

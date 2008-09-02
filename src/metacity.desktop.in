@@ -3,6 +3,7 @@ Type=Application
 Encoding=UTF-8
 _Name=Metacity
 Exec=metacity
+NoDisplay=true
 # name of loadable control center module
 X-GNOME-WMSettingsModule=metacity
 # name we put on the WM spec check window
