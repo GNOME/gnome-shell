@@ -16,6 +16,3 @@ X-GNOME-Bugzilla-Component=general
 X-GNOME-Autostart-Phase=WindowManager
 X-GNOME-Provides=windowmanager
 X-GNOME-Autostart-Notify=true
-
-[Window Manager]
-SessionManaged=true

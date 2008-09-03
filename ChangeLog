@@ -1,3 +1,8 @@
+2008-09-03  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/metacity.desktop.in: removed invalid "Window Manager" group
+          at request of Matthias Clasen.
+
 2008-09-02  Thomas Thurman  <tthurman@gnome.org>
 
         Desktop file moved, according to policy change.  Closes #549479.
