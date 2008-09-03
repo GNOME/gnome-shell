@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-29 02:20+0100\n"
+"POT-Creation-Date: 2008-08-18 15:06+0100\n"
 "PO-Revision-Date: 2008-01-13 01:49+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -117,7 +117,7 @@ msgstr "لم يُعرّف أمر %d.\n"
 msgid "No terminal command has been defined.\n"
 msgstr "لم يُعرّف أمر طرفيّة.\n"
 
-#: ../src/core/main.c:115
+#: ../src/core/main.c:116
 #, fuzzy, c-format
 msgid ""
 "metacity %s\n"
@@ -131,46 +131,46 @@ msgstr ""
 "هذا برنامج حر، راجع المصدر لشروط النسخ. لا يوجد أي ضمان، و لا ضمان بيع و لا "
 "مناسبة لأي هدف.\n"
 
-#: ../src/core/main.c:242
+#: ../src/core/main.c:243
 msgid "Disable connection to session manager"
 msgstr "عطّل الاتصال بمدير الجلسة"
 
-#: ../src/core/main.c:248
+#: ../src/core/main.c:249
 msgid "Replace the running window manager with Metacity"
 msgstr "استبدل مدير النوافذ الذي يعمل بمِتسِتي"
 
-#: ../src/core/main.c:254
+#: ../src/core/main.c:255
 msgid "Specify session management ID"
 msgstr "حدّد رقم هويّة إدارة الجلسة"
 
-#: ../src/core/main.c:259
+#: ../src/core/main.c:260
 msgid "X Display to use"
 msgstr "معراض س الذي سيستعمل"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:266
 msgid "Initialize session from savefile"
 msgstr "ابدأ الجلسة من ملف محفوظ"
 
-#: ../src/core/main.c:271
+#: ../src/core/main.c:272
 msgid "Print version"
 msgstr "اطبع الإصدارة"
 
-#: ../src/core/main.c:277
+#: ../src/core/main.c:278
 msgid "Make X calls synchronous"
 msgstr "اجعل نداءات س متزامنة"
 
-#: ../src/core/main.c:428
+#: ../src/core/main.c:429
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "فشلت قراءة دليل السِمات : %s\n"
 
-#: ../src/core/main.c:444
+#: ../src/core/main.c:445
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "تعذّر ايجاد سِمة! تأكد من وجود %s و احتواءه على السِمات معتادة.\n"
 
-#: ../src/core/main.c:500
+#: ../src/core/main.c:501
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "فشلت اعادة التشغيل: %s\n"
@@ -402,7 +402,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "نافذة WM_TRANSIENT_FOR  0x%lx غير صحيحة ل %s.\n"
 
 #. first time through
-#: ../src/core/window.c:5648
+#: ../src/core/window.c:5664
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -418,7 +418,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6213
+#: ../src/core/window.c:6229
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

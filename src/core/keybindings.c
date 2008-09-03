@@ -234,6 +234,11 @@ static void handle_move_to_corner_se          (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_move_to_center     (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_spew_mark          (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
@@ -489,6 +494,7 @@ static const MetaKeyHandler window_handlers[] = {
   { META_KEYBINDING_MOVE_TO_CORNER_NE, handle_move_to_corner_ne, NULL },
   { META_KEYBINDING_MOVE_TO_CORNER_SW, handle_move_to_corner_sw, NULL },
   { META_KEYBINDING_MOVE_TO_CORNER_SE, handle_move_to_corner_se, NULL },
+  { META_KEYBINDING_MOVE_TO_CENTER,    handle_move_to_center, NULL },
   { NULL, NULL, NULL }
 };
 
@@ -3035,6 +3041,36 @@ handle_move_to_side_w     (MetaDisplay    *display,
     {
       handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, FALSE, FALSE);
     }
+}
+
+static void
+handle_move_to_center  (MetaDisplay    *display,
+                        MetaScreen     *screen,
+                        MetaWindow     *window,
+                        XEvent         *event,
+                        MetaKeyBinding *binding)
+{
+  MetaRectangle work_area;
+  MetaRectangle outer;
+  int orig_x, orig_y;
+  int frame_width, frame_height;
+
+  if (!window)
+    return;
+
+  meta_window_get_work_area_all_xineramas (window, &work_area);
+  meta_window_get_outer_rect (window, &outer);
+  meta_window_get_position (window, &orig_x, &orig_y);
+
+  frame_width = (window->frame ? window->frame->child_x : 0);
+  frame_height = (window->frame ? window->frame->child_y : 0);
+
+  meta_window_move_resize (window,
+          TRUE,
+          work_area.x + (work_area.width +frame_width -outer.width )/2,
+          work_area.y + (work_area.height+frame_height-outer.height)/2,
+          window->rect.width,
+          window->rect.height);
 }
 
 static gboolean

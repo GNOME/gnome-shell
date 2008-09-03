@@ -35,6 +35,9 @@ static void set_active_space_hint        (MetaScreen *screen);
 static void focus_ancestor_or_mru_window (MetaWorkspace *workspace,
                                           MetaWindow    *not_this_one,
                                           guint32        timestamp);
+static void free_this                    (gpointer candidate,
+                                          gpointer dummy);
+static void workspace_free_struts        (MetaWorkspace *workspace);
 
 static void
 maybe_add_to_list (MetaScreen *screen, MetaWindow *window, gpointer data)
@@ -77,6 +80,29 @@ meta_workspace_new (MetaScreen *screen)
   workspace->showing_desktop = FALSE;
   
   return workspace;
+}
+
+/** Foreach function for workspace_free_struts() */
+static void
+free_this (gpointer candidate, gpointer dummy)
+{
+  g_free (candidate);
+}
+
+/**
+ * Frees the struts list of a workspace.
+ *
+ * \param workspace  The workspace.
+ */
+static void
+workspace_free_struts (MetaWorkspace *workspace)
+{
+  if (workspace->all_struts == NULL)
+    return;
+    
+  g_slist_foreach (workspace->all_struts, free_this, NULL);
+  g_slist_free (workspace->all_struts);
+  workspace->all_struts = NULL;
 }
 
 void
@@ -127,7 +153,7 @@ meta_workspace_free (MetaWorkspace *workspace)
 
   if (!workspace->work_areas_invalid)
     {
-      g_slist_free (workspace->all_struts);
+      workspace_free_struts (workspace);
       for (i = 0; i < screen->n_xinerama_infos; i++)
         meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
       g_free (workspace->xinerama_region);
@@ -457,8 +483,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
   g_free (workspace->work_area_xinerama);
   workspace->work_area_xinerama = NULL;
       
-  g_slist_free (workspace->all_struts);
-  workspace->all_struts = NULL;
+  workspace_free_struts (workspace);
 
   for (i = 0; i < workspace->screen->n_xinerama_infos; i++)
     meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
@@ -514,9 +539,12 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
       MetaWindow *win = tmp->data;
       GSList *s_iter;
 
-      for (s_iter = win->struts; s_iter != NULL; s_iter = s_iter->next)
+      for (s_iter = win->struts; s_iter != NULL; s_iter = s_iter->next) {
+        MetaStrut *cpy = g_new (MetaStrut, 1);
+        *cpy = *((MetaStrut *)s_iter->data);
         workspace->all_struts = g_slist_prepend (workspace->all_struts,
-                                                 s_iter->data);
+                                                 cpy);
+      }
     }
   g_list_free (windows);
 

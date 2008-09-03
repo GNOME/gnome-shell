@@ -1,6 +1,14 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* $Xorg: Xatomtype.h,v 1.4 2001/02/09 02:03:38 xorgcvs Exp $ */
+/**
+ * \file metacity-Xatomtype.h  Types for communicating with X about properties
+ *
+ * This files defines crock C structures for calling XGetWindowProperty and
+ * XChangeProperty.  All fields must be longs as the semantics of property
+ * routines will handle conversion to and from actual 32 bit objects.  If your
+ * compiler doesn't treat &structoflongs the same as &arrayoflongs[0], you
+ * will have some work to do.
+ */
 
 /***********************************************************
 
@@ -51,14 +59,6 @@ SOFTWARE.
 
 #ifndef _XATOMTYPE_H_
 #define _XATOMTYPE_H_
-
-/*
- * This files defines crock C structures for calling XGetWindowProperty and
- * XChangeProperty.  All fields must be longs as the semantics of property
- * routines will handle conversion to and from actual 32 bit objects.  If your
- * compiler doesn't treat &structoflongs the same as &arrayoflongs[0], you
- * will have some work to do.
- */
 
 #define BOOL long
 #define SIGNEDINT long

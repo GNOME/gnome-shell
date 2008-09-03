@@ -1,6 +1,13 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity X screen handler */
+/**
+ * \file screen-private.h  Screens which Metacity manages
+ *
+ * Managing X screens.
+ * This file contains methods on this class which are available to
+ * routines in core but not outside it.  (See screen.h for the routines
+ * which the rest of the world is allowed to use.)
+ */
 
 /* 
  * Copyright (C) 2001 Havoc Pennington

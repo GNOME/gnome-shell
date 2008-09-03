@@ -1,3 +1,111 @@
+2008-09-01  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.1 release.
+
+2008-09-01  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/workspace.c: When a workspace's list of struts
+          is freed, free the struts too.  Closes #549952, and #468075.
+
+2008-09-01  Thomas Thurman  <tthurman@gnome.org>
+
+        Add new move_to_center keybinding, requested by Khanh-Dang Nguyen
+        Thu Lam; closes #549979.
+
+        * src/include/prefs.h (void): add name of new binding
+        * src/core/prefs.c: added pref for it
+        * src/core/keybindings.c (handle_move_to_center): new function
+        * src/metacity.schemas.in: included new binding
+
+2008-08-31  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/prefs.[ch] (meta_prefs_set_compositing_manager): new
+          function.
+        * src/core/main.c (meta_parse_options): turn the compositing
+          manager on or off as necessary.
+
+2008-08-30  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/window.c (process_property_notify): moving all
+	messages about properties to the top, as a start at #549886
+
+2008-08-18  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: fix version number which broke
+
+2008-08-18  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release version bump to 2.25.1.
+
+2008-08-18  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: correct incorrect version number
+
+2008-08-18  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.1 release.
+
+2008-08-18  Thomas Thurman  <tthurman@gnome.org>
+
+        Adding doxygen headers to some files.
+
+        * src/core/metacity-Xatomtype.h
+        * src/core/main.c
+        * src/core/screen-private.h
+        * src/core/window-private.h
+        * src/core/keybindings.h
+        * src/core/session.h
+        * src/core/workspace.h
+        * src/core/window-props.h ()
+
+2008-08-18  Eric Piel  <e.a.b.piel@tudelft.nl>
+
+        * src/core/workspace.c (ensure_work_areas_validated): add a copy of
+         each strut in a window to the workspace's strut list, instead of
+         using the copy in the list (which would mean it was double-freed).
+         Believed to fix #468075.
+
+2008-08-16  Ted Percival  <ted@midg3t.net>
+
+        Ensure the user_rect is set sanely for windows that start maximized.
+        Prevents maximized windows from warping across the screen.
+        Fixes bug #504692.
+
+        * src/core/window.c (save_user_placement): renamed version of
+        meta_window_save_user_rect().
+        * src/core/window.c (force_save_user_placement): similar, but will
+        always save user_rect even if the window is maximised or fullscreen.
+        * src/core/window.c (meta_window_move_resize_internal): unplaced
+        windows have force_save_user_placement() called instead of
+        save_user_placement().
+
+2008-08-14   Patrick Niklaus  <marex@compiz-fusion.org>
+
+          Icons for windows are taken from the desktop theme, not from
+          the Metacity theme or from the fallback icon that Metacity
+          provided.  Closes #524343.
+
+        * src/ui/ui.c: Use GtkIconTheme to load the default window icon.
+          Assumes the existence of an icon called "window", otherwise
+          falls back to "gtk-missing-image". Fixes #524343.
+        * src/ui/preview-widget: See above.
+        * src/include/common.h: Add META_DEFAULT_ICON_NAME.
+        * src/Makefile.am: Remove default_icon.png from inlinepixbufs.h.
+        * src/default_icon.png: Removed.
+
+2008-08-14  Akira TAGOH  <akira@tagoh.org>
+
+        * doc/man/metacity-message.1: new manual page.
+        * doc/man/Makefile.am: added new reference.
+
+2008-08-13  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-branch bump to 2.25.0.
+
+2008-08-04  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.23.144.
+
 2008-08-04  Thomas Thurman  <tthurman@gnome.org>
 
         * NEWS: 2.23.89 release.

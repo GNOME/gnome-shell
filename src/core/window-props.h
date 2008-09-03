@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /**
- * \file window-props.c    MetaWindow property handling
+ * \file window-props.h    MetaWindow property handling
  *
  * A system which can inspect sets of properties of given windows
  * and take appropriate action given their values.

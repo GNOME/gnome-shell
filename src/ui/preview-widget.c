@@ -25,6 +25,7 @@
 #define _XOPEN_SOURCE 600 /* for the maths routines over floats */
 
 #include <math.h>
+#include <gtk/gtkicontheme.h>
 #include "preview-widget.h"
 
 static void     meta_preview_class_init    (MetaPreviewClass *klass);
@@ -411,8 +412,6 @@ meta_preview_set_button_layout (MetaPreview            *preview,
   gtk_widget_queue_draw (GTK_WIDGET (preview));
 }
 
-#include "inlinepixbufs.h"
-
 GdkPixbuf*
 meta_preview_get_icon (void)
 {
@@ -420,20 +419,27 @@ meta_preview_get_icon (void)
 
   if (default_icon == NULL)
     {
-      GdkPixbuf *base;
+      GtkIconTheme *theme;
+      gboolean icon_exists;
 
-      base = gdk_pixbuf_new_from_inline (-1, default_icon_data,
-                                         FALSE,
-                                         NULL);
+      theme = gtk_icon_theme_get_default ();
 
-      g_assert (base);
+      icon_exists = gtk_icon_theme_has_icon (theme, META_DEFAULT_ICON_NAME);
 
-      default_icon = gdk_pixbuf_scale_simple (base,
-                                              META_ICON_WIDTH,
-                                              META_ICON_HEIGHT,
-                                              GDK_INTERP_BILINEAR);
+      if (icon_exists)
+          default_icon = gtk_icon_theme_load_icon (theme,
+                                                   META_DEFAULT_ICON_NAME,
+                                                   META_ICON_WIDTH,
+                                                   0,
+                                                   NULL);
+      else
+          default_icon = gtk_icon_theme_load_icon (theme,
+                                                   "gtk-missing-image",
+                                                   META_ICON_WIDTH,
+                                                   0,
+                                                   NULL);
 
-      g_object_unref (G_OBJECT (base));
+      g_assert (default_icon);
     }
   
   return default_icon;
@@ -446,20 +452,27 @@ meta_preview_get_mini_icon (void)
 
   if (default_icon == NULL)
     {
-      GdkPixbuf *base;
+      GtkIconTheme *theme;
+      gboolean icon_exists;
 
-      base = gdk_pixbuf_new_from_inline (-1, default_icon_data,
-                                         FALSE,
-                                         NULL);
+      theme = gtk_icon_theme_get_default ();
 
-      g_assert (base);
+      icon_exists = gtk_icon_theme_has_icon (theme, META_DEFAULT_ICON_NAME);
 
-      default_icon = gdk_pixbuf_scale_simple (base,
-                                              META_MINI_ICON_WIDTH,
-                                              META_MINI_ICON_HEIGHT,
-                                              GDK_INTERP_BILINEAR);
+      if (icon_exists)
+          default_icon = gtk_icon_theme_load_icon (theme,
+                                                   META_DEFAULT_ICON_NAME,
+                                                   META_MINI_ICON_WIDTH,
+                                                   0,
+                                                   NULL);
+      else
+          default_icon = gtk_icon_theme_load_icon (theme,
+                                                   "gtk-missing-image",
+                                                   META_MINI_ICON_WIDTH,
+                                                   0,
+                                                   NULL);
 
-      g_object_unref (G_OBJECT (base));
+      g_assert (default_icon);
     }
   
   return default_icon;
