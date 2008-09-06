@@ -1,3 +1,87 @@
+2008-09-06  Thomas Thurman  <tthurman@gnome.org>
+
+        An attempt to keep all information about window bindings
+        in the same place.  Screen bindings to come.
+
+        * src/core/window-bindings.h: new file, list of all window bindings
+        * src/include/prefs.h: drop all the existing window-binding macros
+
+        * src/core/schema-bindings.c (): output all the schema blocks that
+        would appear in metacity.schema for these window bindings.  This
+        ought to become part of the build process, and hopefully will soon.
+        When this works it will also close #469361.
+
+        * src/core/keybindings.c: generate handle_* prototypes using
+        x-macros;  populate window_handlers using x-macros;  rename several
+        functions to have consistent names;  do_handle_move_to_workspace(),
+        handle_move_to_workspace_flip(), and handle_move_to_workspace() all
+        merged into handle_move_to_workspace.
+
+        * src/core/prefs.c: generate window_bindings and window_string_bindings
+        using x-macros;  (meta_prefs_set_compositing_manager) fix unrelated
+        problem with use of GConf functions when GConf was disabled.
+
+        * src/core/core.c (meta_core_get_menu_accelerator): binding names
+        given as literals since this is the only place in the code they
+        now appear
+
+
+2008-09-06  Thomas Thurman  <tthurman@gnome.org>
+
+        An attempt to keep all information about window bindings
+        in the same place.  Screen bindings to come.
+
+        * src/core/window-bindings.h: new file, list of all window bindings
+        * src/include/prefs.h: drop all the existing window-binding macros
+
+        * src/core/schema-bindings.c (): output all the schema blocks that
+        would appear in metacity.schema for these window bindings.  This
+        ought to become part of the build process, and hopefully will soon.
+        When this works it will also close #469361.
+
+        * src/core/keybindings.c: generate handle_* prototypes using
+        x-macros;  populate window_handlers using x-macros;  rename several
+        functions to have consistent names;  do_handle_move_to_workspace(),
+        handle_move_to_workspace_flip(), and handle_move_to_workspace() all
+        merged into handle_move_to_workspace.
+
+        * src/core/prefs.c: generate window_bindings and window_string_bindings
+        using x-macros;  (meta_prefs_set_compositing_manager) fix unrelated
+        problem with use of GConf functions when GConf was disabled.
+
+        * src/core/core.c (meta_core_get_menu_accelerator): binding names
+        given as literals since this is the only place in the code they
+        now appear
+
+
+2008-09-06  Thomas Thurman  <tthurman@gnome.org>
+
+        An attempt to keep all information about window bindings
+        in the same place.  Screen bindings to come.
+
+        * src/core/window-bindings.h: new file, list of all window bindings
+        * src/include/prefs.h: drop all the existing window-binding macros
+
+        * src/core/schema-bindings.c (): output all the schema blocks that
+        would appear in metacity.schema for these window bindings.  This
+        ought to become part of the build process, and hopefully will soon.
+        When this works it will also close #469361.
+
+        * src/core/keybindings.c: generate handle_* prototypes using
+        x-macros;  populate window_handlers using x-macros;  rename several
+        functions to have consistent names;  do_handle_move_to_workspace(),
+        handle_move_to_workspace_flip(), and handle_move_to_workspace() all
+        merged into handle_move_to_workspace.
+
+        * src/core/prefs.c: generate window_bindings and window_string_bindings
+        using x-macros;  (meta_prefs_set_compositing_manager) fix unrelated
+        problem with use of GConf functions when GConf was disabled.
+
+        * src/core/core.c (meta_core_get_menu_accelerator): binding names
+        given as literals since this is the only place in the code they
+        now appear
+
+
 2008-09-03  Thomas Thurman  <tthurman@gnome.org>
 
         * src/metacity.desktop.in: removed invalid "Window Manager" group

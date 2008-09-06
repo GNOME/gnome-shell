@@ -1888,48 +1888,10 @@ static MetaKeyPref screen_bindings[] = {
 };
 
 static MetaKeyPref window_bindings[] = {
-  { META_KEYBINDING_WINDOW_MENU, NULL, FALSE },
-  { META_KEYBINDING_TOGGLE_FULLSCREEN, NULL, FALSE },
-  { META_KEYBINDING_TOGGLE_MAXIMIZE, NULL, FALSE },
-  { META_KEYBINDING_TOGGLE_ABOVE, NULL, FALSE },
-  { META_KEYBINDING_MAXIMIZE, NULL, FALSE },
-  { META_KEYBINDING_UNMAXIMIZE, NULL, FALSE },
-  { META_KEYBINDING_TOGGLE_SHADE, NULL, FALSE },
-  { META_KEYBINDING_MINIMIZE, NULL, FALSE },
-  { META_KEYBINDING_CLOSE, NULL, FALSE },
-  { META_KEYBINDING_BEGIN_MOVE, NULL, FALSE },
-  { META_KEYBINDING_BEGIN_RESIZE, NULL, FALSE },
-  { META_KEYBINDING_TOGGLE_STICKY, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_1, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_2, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_3, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_4, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_5, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_6, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_7, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_8, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_9, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_10, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_11, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_12, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_LEFT, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_RIGHT, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_UP, NULL, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_DOWN, NULL, FALSE },
-  { META_KEYBINDING_RAISE_OR_LOWER, NULL, FALSE },
-  { META_KEYBINDING_RAISE, NULL, FALSE },
-  { META_KEYBINDING_LOWER, NULL, FALSE },
-  { META_KEYBINDING_MAXIMIZE_VERTICALLY, NULL, FALSE },
-  { META_KEYBINDING_MAXIMIZE_HORIZONTALLY, NULL, FALSE },
-  { META_KEYBINDING_MOVE_TO_CORNER_NW, NULL, FALSE },
-  { META_KEYBINDING_MOVE_TO_CORNER_NE, NULL, FALSE },
-  { META_KEYBINDING_MOVE_TO_CORNER_SW, NULL, FALSE },
-  { META_KEYBINDING_MOVE_TO_CORNER_SE, NULL, FALSE },
-  { META_KEYBINDING_MOVE_TO_SIDE_N, NULL, FALSE },
-  { META_KEYBINDING_MOVE_TO_SIDE_S, NULL, FALSE },
-  { META_KEYBINDING_MOVE_TO_SIDE_E, NULL, FALSE },
-  { META_KEYBINDING_MOVE_TO_SIDE_W, NULL, FALSE },
-  { META_KEYBINDING_MOVE_TO_CENTER, NULL, FALSE },
+#define item(name, suffix, param, a, b, c) \
+  { #name suffix, NULL, FALSE },
+#include "window-bindings.h"
+#undef item
   { NULL, NULL, FALSE }
 };
 
@@ -1961,23 +1923,16 @@ static MetaSimpleKeyMapping screen_string_bindings[] = {
   { NULL,                                   NULL                         }
 };
 
-/* Name field must occur in the same order as window_bindings, though entries
- * can be skipped
- */
 static MetaSimpleKeyMapping window_string_bindings[] = {
-  { META_KEYBINDING_WINDOW_MENU,            "<Alt>Print"                 },
-  { META_KEYBINDING_MAXIMIZE,               "<Alt>F10"                   },
-  { META_KEYBINDING_UNMAXIMIZE,             "<Alt>F5"                    },
-  { META_KEYBINDING_MINIMIZE,               "<Alt>F9"                    },
-  { META_KEYBINDING_CLOSE,                  "<Alt>F4"                    },
-  { META_KEYBINDING_BEGIN_MOVE,             "<Alt>F7"                    },
-  { META_KEYBINDING_BEGIN_RESIZE,           "<Alt>F8"                    },
-  { META_KEYBINDING_MOVE_WORKSPACE_LEFT,    "<Control><Shift><Alt>Left"  },
-  { META_KEYBINDING_MOVE_WORKSPACE_RIGHT,   "<Control><Shift><Alt>Right" },
-  { META_KEYBINDING_MOVE_WORKSPACE_UP,      "<Control><Shift><Alt>Up"    },
-  { META_KEYBINDING_MOVE_WORKSPACE_DOWN,    "<Control><Shift><Alt>Down"  },
+#define ONLY_BOUND_BY_DEFAULT
+#define item(name, suffix, param, short, long, keystroke) \
+  { #name suffix,                           keystroke                    },
+#include "window-bindings.h"
+#undef item
+#undef ONLY_BOUND_BY_DEFAULT
   { NULL,                                   NULL                         }
 };
+
 #endif /* NOT HAVE_GCONF */
 
 static void
@@ -2949,6 +2904,7 @@ meta_prefs_get_compositing_manager (void)
 void
 meta_prefs_set_compositing_manager (gboolean whether)
 {
+#ifdef HAVE_GCONF
   GError *err = NULL;
 
   gconf_client_set_bool (default_client,
@@ -2962,6 +2918,9 @@ meta_prefs_set_compositing_manager (gboolean whether)
                     err->message);
       g_error_free (err);
     }
+#else
+  compositing_manager = whether;
+#endif
 }
 
 #ifndef HAVE_GCONF
