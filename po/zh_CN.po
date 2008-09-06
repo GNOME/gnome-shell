@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-13 04:00+0000\n"
+"POT-Creation-Date: 2008-08-14 04:06+0000\n"
 "PO-Revision-Date: 2008-02-24 20:13+0800\n"
 "Last-Translator: Funda Wang <fundawang@gmail.com>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -31,36 +31,36 @@ msgstr "窗口管理"
 msgid "Unknown window information request: %d"
 msgstr "未知的窗口信息请求：%d"
 
-#: ../src/core/delete.c:67 ../src/core/delete.c:94
+#: ../src/core/delete.c:70 ../src/core/delete.c:97
 #: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:481
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "无法将“%s”解析为整数"
 
-#: ../src/core/delete.c:74 ../src/core/delete.c:101
+#: ../src/core/delete.c:77 ../src/core/delete.c:104
 #: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:490
 #: ../src/ui/theme-parser.c:545
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "不理解结尾字符“%s”(位于字符串“%s”中)"
 
-#: ../src/core/delete.c:132
+#: ../src/core/delete.c:135
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "无法通过对话进程解析消息“%s”\n"
 
-#: ../src/core/delete.c:267
+#: ../src/core/delete.c:253
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "读取对话显示进程时出错：%s\n"
 
-#: ../src/core/delete.c:350
+#: ../src/core/delete.c:336
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "启动 metacity-dialog 查询有关杀死应用程序的情况时出错：%s\n"
 
-#: ../src/core/delete.c:459
+#: ../src/core/delete.c:445
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "无法获取主机名：%s\n"
@@ -70,12 +70,12 @@ msgstr "无法获取主机名：%s\n"
 msgid "Missing %s extension required for compositing"
 msgstr "缺少复合特特效所需的 %s 扩展"
 
-#: ../src/core/display.c:438
+#: ../src/core/display.c:334
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "无法打开 X Window System 显示“%s”\n"
 
-#: ../src/core/errors.c:271
+#: ../src/core/errors.c:272
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -86,33 +86,34 @@ msgstr ""
 "可能是 X 服务器已关闭或者您杀死/摧毁了\n"
 "窗口管理器。\n"
 
-#: ../src/core/errors.c:278
+#: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "严重的 IO 错误 %d (%s) 出现在显示“%s”上。\n"
 
-#: ../src/core/keybindings.c:1087
+#: ../src/core/keybindings.c:1090
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "某个其它程序已经将按键 %s 和修饰键 %x 配合使用作为一种组合\n"
 
-#: ../src/core/keybindings.c:2733
+#: ../src/core/keybindings.c:2729
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "用 metacity-dialog 输出一个命令错误消息时出错：%s\n"
 
-#: ../src/core/keybindings.c:2838
+#: ../src/core/keybindings.c:2834
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "命令 %d 尚未定义。\n"
 
-#: ../src/core/keybindings.c:3866
+#: ../src/core/keybindings.c:3862
+#, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "终端命令尚未定义。\n"
 
-#: ../src/core/main.c:112
+#: ../src/core/main.c:115
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -126,143 +127,122 @@ msgstr ""
 "这是自由软件：版权条款请参见源码.\n"
 "不存在任何保证：即使是对商用性或者适合某种特定目的也不作保证。\n"
 
-#: ../src/core/main.c:239
+#: ../src/core/main.c:242
 msgid "Disable connection to session manager"
 msgstr "禁止连接到会话管理器"
 
-#: ../src/core/main.c:245
+#: ../src/core/main.c:248
 msgid "Replace the running window manager with Metacity"
 msgstr "将运行中的窗口管理器替换为 Metacity"
 
-#: ../src/core/main.c:251
+#: ../src/core/main.c:254
 msgid "Specify session management ID"
 msgstr "指定会话管理 ID"
 
-#: ../src/core/main.c:256
+#: ../src/core/main.c:259
 msgid "X Display to use"
 msgstr "要使用的 X 显示"
 
-#: ../src/core/main.c:262
+#: ../src/core/main.c:265
 msgid "Initialize session from savefile"
 msgstr "从保存文件中初始化会话"
 
-#: ../src/core/main.c:268
+#: ../src/core/main.c:271
 msgid "Print version"
 msgstr "打印版本"
 
-#: ../src/core/main.c:274
+#: ../src/core/main.c:277
 msgid "Make X calls synchronous"
 msgstr "使 X 调用同步"
 
-#: ../src/core/main.c:425
+#: ../src/core/main.c:428
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "扫描主题目录失败：%s\n"
 
-#: ../src/core/main.c:441
+#: ../src/core/main.c:444
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "无法找到主题！请确认 %s 存在并且含有正常的主题。\n"
 
-#: ../src/core/main.c:513
+#: ../src/core/main.c:500
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "无法重启动：%s\n"
 
-#: ../src/core/prefs.c:434
+#.
+#. * We found it, but it was invalid.  Complain.
+#. *
+#. * FIXME: This replicates the original behaviour, but in the future
+#. * we might consider reverting invalid keys to their original values.
+#. * (We know the old value, so we can look up a suitable string in
+#. * the symtab.)
+#.
+#: ../src/core/prefs.c:502 ../src/core/prefs.c:654
 #, c-format
-msgid "Type of %s was not integer"
-msgstr "%s 的类型不是整型"
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "GConf 关键字“%s”被设置为无效值\n"
 
-#: ../src/core/prefs.c:572 ../src/core/prefs.c:600 ../src/core/prefs.c:616
-#: ../src/core/prefs.c:632 ../src/core/prefs.c:648 ../src/core/prefs.c:664
-#: ../src/core/prefs.c:680 ../src/core/prefs.c:696 ../src/core/prefs.c:716
-#: ../src/core/prefs.c:732 ../src/core/prefs.c:748 ../src/core/prefs.c:766
-#: ../src/core/prefs.c:782 ../src/core/prefs.c:801 ../src/core/prefs.c:817
-#: ../src/core/prefs.c:852 ../src/core/prefs.c:868 ../src/core/prefs.c:885
-#: ../src/core/prefs.c:901 ../src/core/prefs.c:917 ../src/core/prefs.c:933
-#: ../src/core/prefs.c:949 ../src/core/prefs.c:964 ../src/core/prefs.c:979
-#: ../src/core/prefs.c:994 ../src/core/prefs.c:1010 ../src/core/prefs.c:1026
-#: ../src/core/prefs.c:1042 ../src/core/prefs.c:1058
+#: ../src/core/prefs.c:583 ../src/core/prefs.c:823
+#, c-format
+msgid "%d stored in GConf key %s is out of range %d to %d\n"
+msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 %3$d 到 %4$d 的范围\n"
+
+#: ../src/core/prefs.c:627 ../src/core/prefs.c:701 ../src/core/prefs.c:749
+#: ../src/core/prefs.c:813 ../src/core/prefs.c:1108 ../src/core/prefs.c:1124
+#: ../src/core/prefs.c:1143 ../src/core/prefs.c:1159 ../src/core/prefs.c:1176
+#: ../src/core/prefs.c:1192
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 关键字“%s”被设置为无效的类型\n"
 
-#: ../src/core/prefs.c:1103
+#: ../src/core/prefs.c:1262
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
+msgstr "有缺陷的应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
+
+#: ../src/core/prefs.c:1332
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "无法解析字体说明“%s”(来自 GConf 关键字 %s)\n"
+
+#: ../src/core/prefs.c:1392
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "在配置数据库中找到的“%s”不是鼠标按钮修饰键的有效值\n"
 
-#: ../src/core/prefs.c:1127 ../src/core/prefs.c:1148 ../src/core/prefs.c:1705
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf 关键字“%s”被设置为无效值\n"
-
-#: ../src/core/prefs.c:1277
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-"range 1..128\n"
-msgstr ""
-"存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的光标大小；必须介于 1 到 "
-"128 之间\n"
-
-#: ../src/core/prefs.c:1357
-#, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "无法解析字体说明“%s”(来自 GConf 关键字 %s)\n"
-
-#: ../src/core/prefs.c:1599
-#, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-"存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值为 %"
-"3$d\n"
-
-#: ../src/core/prefs.c:1659
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr "有缺陷的应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
-
-#: ../src/core/prefs.c:1732
-#, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 0 到 %3$d 的范围\n"
-
-#: ../src/core/prefs.c:1881
+#: ../src/core/prefs.c:1809
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "将工作区数量设置为 %d 时出错：%s\n"
 
-#: ../src/core/prefs.c:2246 ../src/core/prefs.c:2780 ../src/ui/menu.c:199
+#: ../src/core/prefs.c:2174 ../src/core/prefs.c:2686
 #, c-format
 msgid "Workspace %d"
 msgstr "工作区 %d"
 
-#: ../src/core/prefs.c:2276 ../src/core/prefs.c:2446
+#: ../src/core/prefs.c:2204 ../src/core/prefs.c:2377
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "在配置数据库中找到的“%s”不是按键组合“%s”的有效值\n"
 
-#: ../src/core/prefs.c:2861
+#: ../src/core/prefs.c:2767
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "将工作区 %d 的名称设置为“%s”时出错：%s\n"
 
-#: ../src/core/screen.c:410
+#: ../src/core/screen.c:350
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "显示“%2$s”上的屏幕 %1$d 无效\n"
 
-#: ../src/core/screen.c:426
+#: ../src/core/screen.c:366
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -271,28 +251,28 @@ msgstr ""
 "显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器；请尝试使用 --replace 选项替换当"
 "前的窗口管理器。\n"
 
-#: ../src/core/screen.c:453
+#: ../src/core/screen.c:393
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "无法获得显示“%2$s”上的屏幕 %1$d 的窗口管理器选定项\n"
 
-#: ../src/core/screen.c:511
+#: ../src/core/screen.c:451
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器\n"
 
-#: ../src/core/screen.c:721
+#: ../src/core/screen.c:661
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "无法释放显示“%2$s”上的屏幕 %1$d\n"
 
-#: ../src/core/session.c:826 ../src/core/session.c:833
+#: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "无法创建目录“%s”：%s\n"
 
-#: ../src/core/session.c:843
+#: ../src/core/session.c:854
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "无法打开会话文件“%s”进行写入：%s\n"
@@ -307,108 +287,112 @@ msgstr "写入会话文件“%s”时出错：%s\n"
 msgid "Error closing session file '%s': %s\n"
 msgstr "关闭会话文件“%s”时出错：%s\n"
 
-#: ../src/core/session.c:1075
+#. oh, just give up
+#: ../src/core/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "无法读取保存的会话文件 %s：%s\n"
 
-#: ../src/core/session.c:1110
+#: ../src/core/session.c:1132
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "无法解析保存的会话文件：%s\n"
 
-#: ../src/core/session.c:1159
+#: ../src/core/session.c:1181
+#, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> 属性已看到，但我们已经拥有该会话 ID"
 
-#: ../src/core/session.c:1172
+#: ../src/core/session.c:1194
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session> 元素上未知的属性 %s"
 
-#: ../src/core/session.c:1189
+#: ../src/core/session.c:1211
+#, c-format
 msgid "nested <window> tag"
 msgstr "嵌套 <window> 标记"
 
-#: ../src/core/session.c:1247 ../src/core/session.c:1279
+#: ../src/core/session.c:1269 ../src/core/session.c:1301
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "<window> 元素上未知的属性 %s"
 
-#: ../src/core/session.c:1351
+#: ../src/core/session.c:1373
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "<maximized> 元素上未知的属性 %s"
 
-#: ../src/core/session.c:1411
+#: ../src/core/session.c:1433
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "<geometry> 元素上未知的属性 %s"
 
-#: ../src/core/session.c:1431
+#: ../src/core/session.c:1453
 #, c-format
 msgid "Unknown element %s"
 msgstr "未知的元素 %s"
 
-#: ../src/core/session.c:1868
+#: ../src/core/session.c:1879
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr "启动 metacity-dialog 以警告应用程序不支持会话管理时出错：%s\n"
 
-#: ../src/core/util.c:98
+#: ../src/core/util.c:101
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "无法打开调试日志：%s\n"
 
-#: ../src/core/util.c:108
+#: ../src/core/util.c:111
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "无法对日志文件 %s 进行 fdopen() 操作：%s\n"
 
-#: ../src/core/util.c:114
+#: ../src/core/util.c:117
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "打开的日志文件 %s\n"
 
-#: ../src/core/util.c:133 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity 编译的时候没有加入详细模式的支持\n"
 
-#: ../src/core/util.c:231
+#: ../src/core/util.c:236
 msgid "Window manager: "
 msgstr "窗口管理器："
 
-#: ../src/core/util.c:379
+#: ../src/core/util.c:388
 msgid "Bug in window manager: "
 msgstr "窗口管理器中的错误："
 
-#: ../src/core/util.c:408
+#: ../src/core/util.c:421
 msgid "Window manager warning: "
 msgstr "窗口管理器警告："
 
-#: ../src/core/util.c:432
+#: ../src/core/util.c:449
 msgid "Window manager error: "
 msgstr "窗口管理器错误："
 
-#: ../src/core/window-props.c:192
+#: ../src/core/window-props.c:206
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "应用程序设置一个假的 _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:324
+#: ../src/core/window-props.c:338
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (于 %s)"
 
-#: ../src/core/window-props.c:1406
+#: ../src/core/window-props.c:1420
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "为 %2$s 指定了无效的 WM_TRANSIENT_FOR 窗口 0x%1$lx。\n"
 
 #. first time through
-#: ../src/core/window.c:5650
+#: ../src/core/window.c:5648
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -424,7 +408,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6215
+#: ../src/core/window.c:6213
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -501,16 +485,17 @@ msgstr "标题栏上按钮的排列"
 #: ../src/metacity.schemas.in.h:8
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,close\"; the colon separates the left corner of "
-"the window from the right corner, and the button names are comma-separated. "
-"Duplicate buttons are not allowed. Unknown button names are silently ignored "
-"so that buttons can be added in future metacity versions without breaking "
-"older versions."
+"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
+"corner of the window from the right corner, and the button names are comma-"
+"separated. Duplicate buttons are not allowed. Unknown button names are "
+"silently ignored so that buttons can be added in future metacity versions "
+"without breaking older versions. A special spacer tag can be used to insert "
+"some space between two adjacent buttons."
 msgstr ""
-"标题栏上按钮的排列。它的值必须是一个字符串，比如“menu:minimize,maximize,"
+"标题栏上按钮的排列。它的值必须是一个字符串，比如“menu:minimize,maximize,spacer,"
 "close”；冒号分隔窗口左上角和右上角的按钮，按钮名称之间用逗号分隔。不允许指定"
 "重复的按钮。未知的按钮名称将被忽略，因此在将来版本的 metacity 中可以添加新的"
-"按钮，而不至于破坏旧的版本。"
+"按钮，而不至于破坏旧的版本。而特殊的 spacer 标记可在两个按钮之间添加一些空格。"
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
@@ -636,9 +621,9 @@ msgid ""
 "actions, and ignore raise requests generated by applications. See http://"
 "bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 msgstr ""
-"许多动作(如点击客户区域，移动窗口或改变其大小)一般会有提升窗口的"
-"副作用。将此设定为 false 将会使其它的用户动作不再提升窗口，且忽略"
-"应用程序生成的提升请求。参见 http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+"许多动作(如点击客户区域，移动窗口或改变其大小)一般会有提升窗口的副作用。将此"
+"设定为 false 将会使其它的用户动作不再提升窗口，且忽略应用程序生成的提升请求。"
+"参见 http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:29
 msgid "Maximize window"
@@ -2066,36 +2051,51 @@ msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'minimize' which will minimize the window, and 'none' which will not do "
-"anything."
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
 msgstr ""
 "这个选项决定在标题栏上双击的效果。当前有效的选项包括，“toggle_shade”将卷起/展"
-"开窗口，“toggle_maximize”将最大化/还原窗口，“minimize”将最小化窗口，"
-"而“none”将不执行任何操作。"
+"开窗口，“toggle_maximize”将最大化/还原窗口，“toggle_maximize_horizontally”和"
+"“toggle_maximize_vertically”将分别在水平和垂直方向上最大化窗口，“minimize”将最小化窗口，"
+"“shade”将卷起窗口，“menu”将显示窗口菜单，“lower”将把窗口推至最后b，而"
+"“none”将不执行任何操作。"
 
 #: ../src/metacity.schemas.in.h:188
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'minimize' which will minimize the window, and 'none' which will not do "
-"anything."
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
 msgstr ""
-"这个选项决定在标题栏上单击中键击的效果。当前有效的选项包括，“toggle_shade”将"
-"卷起/展开窗口，“toggle_maximize”将最大化/还原窗口，“minimize”将最小化窗口，"
-"而“none”将不执行任何操作。"
+"这个选项决定在标题栏上单击中键的效果。当前有效的选项包括，“toggle_shade”将卷起/展"
+"开窗口，“toggle_maximize”将最大化/还原窗口，“toggle_maximize_horizontally”和"
+"“toggle_maximize_vertically”将分别在水平和垂直方向上最大化窗口，“minimize”将最小化窗口，"
+"“shade”将卷起窗口，“menu”将显示窗口菜单，“lower”将把窗口推至最后b，而"
+"“none”将不执行任何操作。"
 
 #: ../src/metacity.schemas.in.h:189
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'minimize' which will minimize the window, and 'none' which will not do "
-"anything."
+"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
+"maximize/unmaximize the window in that direction only, 'minimize' which will "
+"minimize the window, 'shade' which will roll the window up, 'menu' which "
+"will display the window menu, 'lower' which will put the window behind all "
+"the others, and 'none' which will not do anything."
 msgstr ""
-"这个选项决定在标题栏上单击右键的效果。当前有效的选项包括，“toggle_shade”将卷"
-"起/展开窗口，“toggle_maximize”将最大化/还原窗口，“minimize”将最小化窗口，"
-"而“none”将不执行任何操作。"
+"这个选项决定在标题栏上单击右键的效果。当前有效的选项包括，“toggle_shade”将卷起/展"
+"开窗口，“toggle_maximize”将最大化/还原窗口，“toggle_maximize_horizontally”和"
+"“toggle_maximize_vertically”将分别在水平和垂直方向上最大化窗口，“minimize”将最小化窗口，"
+"“shade”将卷起窗口，“menu”将显示窗口菜单，“lower”将把窗口推至最后b，而"
+"“none”将不执行任何操作。"
 
 #: ../src/metacity.schemas.in.h:190
 msgid ""
@@ -2287,16 +2287,22 @@ msgstr "移动到下侧工作区(_D)"
 msgid "_Close"
 msgstr "关闭(_C)"
 
-#: ../src/ui/menu.c:208
+#: ../src/ui/menu.c:203
+#, c-format
+msgid "Workspace %d%n"
+msgstr "工作区 %d%n"
+
+#: ../src/ui/menu.c:213
+#, c-format
 msgid "Workspace 1_0"
 msgstr "工作区 1_0"
 
-#: ../src/ui/menu.c:210
+#: ../src/ui/menu.c:215
 #, c-format
 msgid "Workspace %s%d"
 msgstr "工作区 %s%d"
 
-#: ../src/ui/menu.c:390
+#: ../src/ui/menu.c:395
 msgid "Move to Another _Workspace"
 msgstr "移动到另外的工作区(_W)"
 
@@ -2975,156 +2981,157 @@ msgstr "找不到主题 %s 的有效文件\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "主题文件 %s 不包含根 <metacity_theme> 元素"
 
-#: ../src/ui/theme-viewer.c:74
+#: ../src/ui/theme-viewer.c:75
 msgid "/_Windows"
 msgstr "/窗口(_W)"
 
-#: ../src/ui/theme-viewer.c:75
+#: ../src/ui/theme-viewer.c:76
 msgid "/Windows/tearoff"
 msgstr "/窗口(W)/撕下"
 
-#: ../src/ui/theme-viewer.c:76
+#: ../src/ui/theme-viewer.c:77
 msgid "/Windows/_Dialog"
 msgstr "/窗口(W)/对话框(_D)"
 
-#: ../src/ui/theme-viewer.c:77
+#: ../src/ui/theme-viewer.c:78
 msgid "/Windows/_Modal dialog"
 msgstr "/窗口(W)/模态对话框(_M)"
 
-#: ../src/ui/theme-viewer.c:78
+#: ../src/ui/theme-viewer.c:79
 msgid "/Windows/_Utility"
 msgstr "/窗口(W)/工具(_U)"
 
-#: ../src/ui/theme-viewer.c:79
+#: ../src/ui/theme-viewer.c:80
 msgid "/Windows/_Splashscreen"
 msgstr "/窗口(W)/启动屏幕(_S)"
 
-#: ../src/ui/theme-viewer.c:80
+#: ../src/ui/theme-viewer.c:81
 msgid "/Windows/_Top dock"
 msgstr "/窗口(W)/上侧停靠(_T)"
 
-#: ../src/ui/theme-viewer.c:81
+#: ../src/ui/theme-viewer.c:82
 msgid "/Windows/_Bottom dock"
 msgstr "/窗口(W)/下侧停靠(_B)"
 
-#: ../src/ui/theme-viewer.c:82
+#: ../src/ui/theme-viewer.c:83
 msgid "/Windows/_Left dock"
 msgstr "/窗口(W)/左侧停靠(_L)"
 
-#: ../src/ui/theme-viewer.c:83
+#: ../src/ui/theme-viewer.c:84
 msgid "/Windows/_Right dock"
 msgstr "/窗口(W)/右侧停靠(_R)"
 
-#: ../src/ui/theme-viewer.c:84
+#: ../src/ui/theme-viewer.c:85
 msgid "/Windows/_All docks"
 msgstr "/窗口(W)/全部停靠(_A)"
 
-#: ../src/ui/theme-viewer.c:85
+#: ../src/ui/theme-viewer.c:86
 msgid "/Windows/Des_ktop"
 msgstr "/窗口(W)/桌面(_K)"
 
-#: ../src/ui/theme-viewer.c:134
+#: ../src/ui/theme-viewer.c:135
 msgid "Open another one of these windows"
 msgstr "打开这些窗口中的另外一个"
 
-#: ../src/ui/theme-viewer.c:141
+#: ../src/ui/theme-viewer.c:142
 msgid "This is a demo button with an 'open' icon"
 msgstr "这是一个演示按钮，带有“打开”图标"
 
-#: ../src/ui/theme-viewer.c:148
+#: ../src/ui/theme-viewer.c:149
 msgid "This is a demo button with a 'quit' icon"
 msgstr "这是一个演示按钮，带有“退出”图标"
 
-#: ../src/ui/theme-viewer.c:241
+#: ../src/ui/theme-viewer.c:242
 msgid "This is a sample message in a sample dialog"
 msgstr "这是示例对话框中的示例消息"
 
-#: ../src/ui/theme-viewer.c:324
+#: ../src/ui/theme-viewer.c:325
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "虚假菜单项 %d\n"
 
-#: ../src/ui/theme-viewer.c:358
+#: ../src/ui/theme-viewer.c:359
 msgid "Border-only window"
 msgstr "只有边框的窗口"
 
-#: ../src/ui/theme-viewer.c:360
+#: ../src/ui/theme-viewer.c:361
 msgid "Bar"
 msgstr "栏"
 
-#: ../src/ui/theme-viewer.c:377
+#: ../src/ui/theme-viewer.c:378
 msgid "Normal Application Window"
 msgstr "普通的应用程序窗口"
 
-#: ../src/ui/theme-viewer.c:381
+#: ../src/ui/theme-viewer.c:382
 msgid "Dialog Box"
 msgstr "对话框"
 
-#: ../src/ui/theme-viewer.c:385
+#: ../src/ui/theme-viewer.c:386
 msgid "Modal Dialog Box"
 msgstr "模态对话框"
 
-#: ../src/ui/theme-viewer.c:389
+#: ../src/ui/theme-viewer.c:390
 msgid "Utility Palette"
 msgstr "工具盘"
 
-#: ../src/ui/theme-viewer.c:393
+#: ../src/ui/theme-viewer.c:394
 msgid "Torn-off Menu"
 msgstr "撕下的菜单"
 
-#: ../src/ui/theme-viewer.c:397
+#: ../src/ui/theme-viewer.c:398
 msgid "Border"
 msgstr "边框"
 
-#: ../src/ui/theme-viewer.c:725
+#: ../src/ui/theme-viewer.c:726
 #, c-format
 msgid "Button layout test %d"
 msgstr "按钮布局测试 %d"
 
-#: ../src/ui/theme-viewer.c:754
+#: ../src/ui/theme-viewer.c:755
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g 毫秒用来绘制一个窗口框架"
 
-#: ../src/ui/theme-viewer.c:797
+#: ../src/ui/theme-viewer.c:798
+#, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "用法：metacity-theme-viewer [主题名称]\n"
 
-#: ../src/ui/theme-viewer.c:804
+#: ../src/ui/theme-viewer.c:805
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "装入主题出错：%s\n"
 
-#: ../src/ui/theme-viewer.c:810
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "在 %2$g 秒内装入主题“%1$s”\n"
 
-#: ../src/ui/theme-viewer.c:833
+#: ../src/ui/theme-viewer.c:852
 msgid "Normal Title Font"
 msgstr "普通标题字体"
 
-#: ../src/ui/theme-viewer.c:839
+#: ../src/ui/theme-viewer.c:858
 msgid "Small Title Font"
 msgstr "小标题字体"
 
-#: ../src/ui/theme-viewer.c:845
+#: ../src/ui/theme-viewer.c:864
 msgid "Large Title Font"
 msgstr "大标题字体"
 
-#: ../src/ui/theme-viewer.c:850
+#: ../src/ui/theme-viewer.c:869
 msgid "Button Layouts"
 msgstr "按钮布局"
 
-#: ../src/ui/theme-viewer.c:855
+#: ../src/ui/theme-viewer.c:874
 msgid "Benchmark"
 msgstr "基准"
 
-#: ../src/ui/theme-viewer.c:902
+#: ../src/ui/theme-viewer.c:921
 msgid "Window Title Goes Here"
 msgstr "窗口标题在这里"
 
-#: ../src/ui/theme-viewer.c:1006
+#: ../src/ui/theme-viewer.c:1025
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -3134,39 +3141,39 @@ msgstr ""
 "在 %2$g 的客户端秒(每帧 %3$g 毫秒)和包括 X 服务器资源在内的 %4$g 秒时钟时间"
 "(每帧 %5$g 毫秒)内绘制 %1$d 帧\n"
 
-#: ../src/ui/theme-viewer.c:1225
+#: ../src/ui/theme-viewer.c:1244
 msgid "position expression test returned TRUE but set error"
 msgstr "位置表达式测试返回了 TRUE 但设置错误"
 
-#: ../src/ui/theme-viewer.c:1227
+#: ../src/ui/theme-viewer.c:1246
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "位置表达式测试返回了 FALSE 但并没有设置错误"
 
-#: ../src/ui/theme-viewer.c:1231
+#: ../src/ui/theme-viewer.c:1250
 msgid "Error was expected but none given"
 msgstr "期待错误但没有给出错误"
 
-#: ../src/ui/theme-viewer.c:1233
+#: ../src/ui/theme-viewer.c:1252
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "期待错误 %d，但给出了 %d"
 
-#: ../src/ui/theme-viewer.c:1239
+#: ../src/ui/theme-viewer.c:1258
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "未期待错误，但返回了错误：%s"
 
-#: ../src/ui/theme-viewer.c:1243
+#: ../src/ui/theme-viewer.c:1262
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x 值为 %d，但应该为 %d"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1265
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y 值为 %d，但应该为 %d "
 
-#: ../src/ui/theme-viewer.c:1311
+#: ../src/ui/theme-viewer.c:1330
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
@@ -3203,14 +3210,16 @@ msgid "Button aspect ratio %g is not reasonable"
 msgstr "按钮长宽比 %g 不合理"
 
 #: ../src/ui/theme.c:357
+#, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "框架几何布局没有指定按钮大小"
 
-#: ../src/ui/theme.c:988
+#: ../src/ui/theme.c:1022
+#, c-format
 msgid "Gradients should have at least two colors"
 msgstr "渐变应至少有两种颜色"
 
-#: ../src/ui/theme.c:1114
+#: ../src/ui/theme.c:1148
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3219,7 +3228,7 @@ msgstr ""
 "GTK 颜色规范必须将状态包含在方括号中，例如 gtk:fg[NORMAL]其中 NORMAL 是状态；"
 "无法解析“%s”"
 
-#: ../src/ui/theme.c:1128
+#: ../src/ui/theme.c:1162
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3228,139 +3237,148 @@ msgstr ""
 "GTK 颜色规范必须在状态后有一个闭方括号，例如 gtk:fg[NORMAL]，其中 NORMAL 是状"
 "态；无法解析“%s”"
 
-#: ../src/ui/theme.c:1139
+#: ../src/ui/theme.c:1173
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "不理解颜色规范中的状态“%s”"
 
-#: ../src/ui/theme.c:1152
+#: ../src/ui/theme.c:1186
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "不理解颜色规范中的颜色组成部分“%s”"
 
-#: ../src/ui/theme.c:1182
+#: ../src/ui/theme.c:1216
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr "混合格式为“blend/bg_color/fg_color/alpha”，“%s”不符合该格式"
 
-#: ../src/ui/theme.c:1193
+#: ../src/ui/theme.c:1227
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "无法解析混合色中的 Alpha 值“%s”"
 
-#: ../src/ui/theme.c:1203
+#: ../src/ui/theme.c:1237
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "混合色中的 Alpha 值“%s”不在 0.0 到 1.0 之间"
 
-#: ../src/ui/theme.c:1251
+#: ../src/ui/theme.c:1284
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "阴影格式为“shade/base_color/factor”，“%s”不符合该格式"
 
-#: ../src/ui/theme.c:1262
+#: ../src/ui/theme.c:1295
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "无法解析阴影色中的阴影因子“%s”"
 
-#: ../src/ui/theme.c:1272
+#: ../src/ui/theme.c:1305
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "阴影色中的阴影因子“%s”为负数"
 
-#: ../src/ui/theme.c:1302
+#: ../src/ui/theme.c:1334
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "无法解析颜色“%s”"
 
-#: ../src/ui/theme.c:1560
+#: ../src/ui/theme.c:1584
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "坐标表达式包含不允许的字符“%s”"
 
-#: ../src/ui/theme.c:1587
+#: ../src/ui/theme.c:1611
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "坐标表达式包含无法解析的浮点数“%s”"
 
-#: ../src/ui/theme.c:1601
+#: ../src/ui/theme.c:1625
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "坐标表达式包含无法解析的整数“%s”"
 
-#: ../src/ui/theme.c:1723
+#: ../src/ui/theme.c:1747
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "坐标表达式在该文本开始处包含未知的运算符：“%s”"
 
-#: ../src/ui/theme.c:1780
+#: ../src/ui/theme.c:1804
+#, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "坐标表达式为空或无法理解"
 
-#: ../src/ui/theme.c:1891 ../src/ui/theme.c:1901 ../src/ui/theme.c:1935
+#: ../src/ui/theme.c:1915 ../src/ui/theme.c:1925 ../src/ui/theme.c:1959
+#, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "坐标表达式用零做除数"
 
-#: ../src/ui/theme.c:1943
+#: ../src/ui/theme.c:1967
+#, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "坐标表达式试图对浮点数使用 mod 运算符"
 
-#: ../src/ui/theme.c:1999
+#: ../src/ui/theme.c:2023
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "坐标表达式的运算符“%s”应该是一个操作数"
 
-#: ../src/ui/theme.c:2008
+#: ../src/ui/theme.c:2032
+#, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "坐标表达式的某个操作数应该是运算符"
 
-#: ../src/ui/theme.c:2016
+#: ../src/ui/theme.c:2040
+#, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "坐标表达式以运算符结尾，而不是以操作数结尾"
 
-#: ../src/ui/theme.c:2026
+#: ../src/ui/theme.c:2050
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "坐标表达式的运算符“%c”后面跟着运算符“%c”，之间没有操作数"
 
-#: ../src/ui/theme.c:2173 ../src/ui/theme.c:2214
+#: ../src/ui/theme.c:2197 ../src/ui/theme.c:2238
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "坐标表达式有未知的变量或常数“%s”"
 
-#: ../src/ui/theme.c:2268
+#: ../src/ui/theme.c:2292
+#, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "坐标表达式溢出了其缓冲区。"
 
-#: ../src/ui/theme.c:2297
+#: ../src/ui/theme.c:2321
+#, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "坐标表达式有一个闭括号，而没有开括号"
 
-#: ../src/ui/theme.c:2361
+#: ../src/ui/theme.c:2385
+#, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "坐标表达式有一个开括号，而没有闭括号"
 
-#: ../src/ui/theme.c:2372
+#: ../src/ui/theme.c:2396
+#, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "坐标表达式似乎没有任何运算符或操作数"
 
-#: ../src/ui/theme.c:2574 ../src/ui/theme.c:2594 ../src/ui/theme.c:2614
+#: ../src/ui/theme.c:2598 ../src/ui/theme.c:2618 ../src/ui/theme.c:2638
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "主题包含的一个表达式产生错误：%s\n"
 
-#: ../src/ui/theme.c:4133
+#: ../src/ui/theme.c:4157
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3369,25 +3387,25 @@ msgstr ""
 "必须为该框架风格指定<button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: ../src/ui/theme.c:4609 ../src/ui/theme.c:4634
+#: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "缺少 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:4678
+#: ../src/ui/theme.c:4702
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "无法载入主题“%s”：%s\n"
 
-#: ../src/ui/theme.c:4804 ../src/ui/theme.c:4811 ../src/ui/theme.c:4818
-#: ../src/ui/theme.c:4825 ../src/ui/theme.c:4832
+#: ../src/ui/theme.c:4828 ../src/ui/theme.c:4835 ../src/ui/theme.c:4842
+#: ../src/ui/theme.c:4849 ../src/ui/theme.c:4856
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "没有为主题“%2$s”设置 <%1$s>"
 
-#: ../src/ui/theme.c:4840
+#: ../src/ui/theme.c:4864
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3396,13 +3414,13 @@ msgstr ""
 "没有为窗口类型“%s”(在主题“%s”中)设置框架风格，请添加一个 <window type=\"%s\" "
 "style_set=\"whatever\"/> 元素"
 
-#: ../src/ui/theme.c:5207 ../src/ui/theme.c:5269 ../src/ui/theme.c:5332
+#: ../src/ui/theme.c:5231 ../src/ui/theme.c:5293 ../src/ui/theme.c:5356
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "用户定义的常数必须以大写字母开头；而“%s”却不必"
 
-#: ../src/ui/theme.c:5215 ../src/ui/theme.c:5277 ../src/ui/theme.c:5340
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5301 ../src/ui/theme.c:5364
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "常数“%s”已被定义"
@@ -3411,6 +3429,23 @@ msgstr "常数“%s”已被定义"
 #, c-format
 msgid "Usage: %s\n"
 msgstr "用法：%s\n"
+
+#~ msgid "Type of %s was not integer"
+#~ msgstr "%s 的类型不是整型"
+
+#~ msgid ""
+#~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
+#~ "range 1..128\n"
+#~ msgstr ""
+#~ "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的光标大小；必须介于 1 "
+#~ "到 128 之间\n"
+
+#~ msgid ""
+#~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
+#~ "current maximum is %d\n"
+#~ msgstr ""
+#~ "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值"
+#~ "为 %3$d\n"
 
 #~ msgid ""
 #~ "Setting this option to false can lead to buggy behavior, so users are "
