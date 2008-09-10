@@ -1708,10 +1708,20 @@ clutter_actor_set_property (GObject      *object,
       }
       break;
     case PROP_ANCHOR_X:
-      priv->anchor_x = CLUTTER_UNITS_FROM_DEVICE (g_value_get_int (value));
+      {
+	int anchor_x = g_value_get_int (value);
+	clutter_actor_set_anchor_pointu (actor,
+					 CLUTTER_UNITS_FROM_DEVICE (anchor_x),
+					 priv->anchor_y);
+      }
       break;
     case PROP_ANCHOR_Y:
-      priv->anchor_y = CLUTTER_UNITS_FROM_DEVICE (g_value_get_int (value));
+      {
+	int anchor_y = g_value_get_int (value);
+	clutter_actor_set_anchor_pointu (actor,
+					 priv->anchor_x,
+					 CLUTTER_UNITS_FROM_DEVICE (anchor_y));
+      }
       break;
     case PROP_SHOW_ON_SET_PARENT:
       priv->show_on_set_parent = g_value_get_boolean (value);
@@ -6155,6 +6165,7 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
                                  ClutterUnit   anchor_y)
 {
   ClutterActorPrivate *priv;
+  gboolean changed = FALSE;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -6166,15 +6177,20 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
     {
       priv->anchor_x = anchor_x;
       g_object_notify (G_OBJECT (self), "anchor-x");
+      changed = TRUE;
     }
 
   if (priv->anchor_y != anchor_y)
     {
       priv->anchor_y = anchor_y;
       g_object_notify (G_OBJECT (self), "anchor-y");
+      changed = TRUE;
     }
 
   g_object_thaw_notify (G_OBJECT (self));
+
+  if (changed && CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
 }
 
 /**

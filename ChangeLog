@@ -1,3 +1,14 @@
+2008-09-10  Neil Roberts  <neil@o-hand.com>
+
+	Bug 1137 - Setting the anchor point does not trigger a re-paint
+
+	* clutter/clutter-actor.c (clutter_actor_set_property): When
+	changing the anchor point properties, use set_anchor_pointu
+	instead of changing the value directly so that a redraw will be
+	queued.
+	(clutter_actor_set_anchor_pointu): Queue a redraw when the anchor
+	point is changed. Thanks to Johan Bilien.
+
 2008-08-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 1082 - Texture bitmap is destroyed in wrong way
