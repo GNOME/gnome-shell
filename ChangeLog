@@ -1,5 +1,21 @@
 2008-09-12  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1034 - Picking doesn't work on Eee PC
+
+	* clutter/clutter-main.c (_clutter_id_to_color): When choosing a
+	pick color, set all but the most significant of the unused
+	bits. This should make make it more likely that the GL
+	implementation will round down to the right value.
+
+	* tests/test-pick.c: Test case for picking. It creates 192 actors
+	at known positions and stores their gids. It then calls
+	clutter_stage_get_actor_at_pos with each position to check that
+	the right gid is returned.
+
+	* tests/Makefile.am (noinst_PROGRAMS): Add test-pick
+
+2008-09-12  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1010 - ClutterLabel does not update the layout (again)
 
 	* clutter/clutter-label.c: Bring back layout caching. This time it

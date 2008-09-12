@@ -304,9 +304,9 @@ _clutter_id_to_color (guint id, ClutterColor *col)
     blue  = blue  * 2 + 1;
 
   /* shift up to be full 8bit values */ 
-  red   = red   << (8 - ctx->fb_r_mask);
-  green = green << (8 - ctx->fb_g_mask);
-  blue  = blue  << (8 - ctx->fb_b_mask);
+  red   = (red   << (8 - ctx->fb_r_mask)) | (0xff >> (ctx->fb_r_mask + 1));
+  green = (green << (8 - ctx->fb_g_mask)) | (0xff >> (ctx->fb_g_mask + 1));
+  blue  = (blue  << (8 - ctx->fb_b_mask)) | (0xff >> (ctx->fb_b_mask + 1));
 
   col->red   = red;
   col->green = green;
