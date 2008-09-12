@@ -1,3 +1,13 @@
+2008-09-12  Vincent Untz  <vuntz@gnome.org>
+
+        Install desktop files in both
+        .../share/applications and .../share/gnome/wm-properties.
+        Copied in from the 2.23.x branch.  Closes #549479.
+
+        * src/metacity-wm.desktop.in: new file
+        * src/.cvsignore: include the above
+        * src/Makefile.am: install the above
+
 2008-09-06  Thomas Thurman  <tthurman@gnome.org>
 
         An attempt to keep all information about window bindings

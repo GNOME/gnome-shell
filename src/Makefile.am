@@ -154,12 +154,17 @@ testboxes_LDADD= @METACITY_LIBS@
 testgradient_LDADD= @METACITY_LIBS@
 testasyncgetprop_LDADD= @METACITY_LIBS@
 
+@INTLTOOL_DESKTOP_RULE@
+
 desktopfilesdir=$(datadir)/applications
 desktopfiles_in_files=metacity.desktop.in
 desktopfiles_files=$(desktopfiles_in_files:.desktop.in=.desktop)
 desktopfiles_DATA = $(desktopfiles_files)
 
-@INTLTOOL_DESKTOP_RULE@
+wmpropertiesdir=$(datadir)/gnome/wm-properties
+wmproperties_in_files=metacity-wm.desktop.in
+wmproperties_files=$(wmproperties_in_files:.desktop.in=.desktop)
+wmproperties_DATA = $(wmproperties_files)
 
 schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_in_files = metacity.schemas.in
@@ -186,7 +191,7 @@ VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
           stock_delete_data $(srcdir)/stock_delete.png
 
 BUILT_SOURCES = inlinepixbufs.h
-CLEANFILES = inlinepixbufs.h metacity.desktop metacity.schemas 50-metacity-desktop-key.xml 50-metacity-key.xml
+CLEANFILES = inlinepixbufs.h metacity.desktop metacity-wm.desktop metacity.schemas 50-metacity-desktop-key.xml 50-metacity-key.xml
 
 inlinepixbufs.h: $(IMAGES)
 	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
@@ -196,8 +201,10 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libmetacity-private.pc
 
 EXTRA_DIST=$(desktopfiles_files) 	\
+	$(wmproperties_files)         \
 	$(IMAGES) $(schema_DATA) 	\
 	$(desktopfiles_in_files)	\
+	$(wmproperties_in_files)	\
 	$(schema_in_files)		\
 	$(xml_in_files)			\
 	libmetacity-private.pc.in

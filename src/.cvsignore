@@ -9,6 +9,7 @@ testboxes
 testgradient
 inlinepixbufs.h
 metacity.desktop
+metacity-wm.desktop
 metacity.schemas
 libmetacity-private.pc
 testasyncgetprop
