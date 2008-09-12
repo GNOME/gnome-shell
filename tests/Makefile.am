@@ -14,7 +14,7 @@ noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
 		  test-cogl-tex-polygon test-stage-read-pixels \
 		  test-random-text test-clip test-paint-wrapper \
 		  test-texture-quality test-entry-auto test-layout \
-		  test-invariants
+		  test-invariants test-label-cache
 
 if X11_TESTS
 noinst_PROGRAMS += test-pixmap
@@ -72,5 +72,6 @@ test_entry_auto_SOURCES	          = test-entry-auto.c
 test_layout_SOURCES               = test-layout.c
 test_invariants_SOURCES           = test-invariants.c
 test_devices_SOURCES              = test-devices.c
+test_label_cache_SOURCES          = test-label-cache.c
 
 EXTRA_DIST = redhand.png test-script.json

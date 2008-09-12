@@ -1,3 +1,25 @@
+2008-09-12  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1010 - ClutterLabel does not update the layout (again)
+
+	* clutter/clutter-label.c: Bring back layout caching. This time it
+	will cache up to three different layouts. The width for which each
+	layout was generated is stored so that if the same width is
+	requested again it can use the cached version. If no cached
+	version is available it will try to replace the oldest
+	layout. 'Age' is determined by a counter which is incremented
+	every time a layout is created. The cache is cleared after any
+	property changes that might affect the layout.
+	(struct _ClutterLabelPrivate): Removed extents_width,
+	extents_height and context because they weren't used anywhere.
+
+	* tests/test-label-cache.c: Add a test which checks whether the
+	label is using a different layout when properties are
+	changed. Also compares the extents of the label's layout with an
+	independent layout and fails if they aren't the same.
+
+	* tests/Makefile.am (noinst_PROGRAMS): Add test-label-cache
+
 2008-09-10  Neil Roberts  <neil@o-hand.com>
 
 	Bug 1137 - Setting the anchor point does not trigger a re-paint
