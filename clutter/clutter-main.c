@@ -1289,7 +1289,7 @@ clutter_init_real (GError **error)
 /**
  * clutter_init_with_args:
  * @argc: a pointer to the number of command line arguments
- * @argv: a pointer to the array of comman line arguments
+ * @argv: a pointer to the array of command line arguments
  * @parameter_string: a string which is displayed in the
  *   first line of <option>--help</option> output, after
  *   <literal><replaceable>programname</replaceable> [OPTION...]</literal>

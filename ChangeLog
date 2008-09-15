@@ -1,3 +1,7 @@
+2008-09-15  Øyvind Kolås  <pippin@linux.intel.com>
+
+	* clutter/clutter-main.c: amended typo in gtk-doc.
+
 2008-09-12  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1034 - Picking doesn't work on Eee PC
