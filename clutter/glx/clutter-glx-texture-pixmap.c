@@ -536,12 +536,7 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
     {
       priv->glx_pixmap = glx_pixmap;
       
-      if (!clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (texture)))
-	{
-	  create_cogl_texture (CLUTTER_TEXTURE (texture),
-			       pixmap_width,
-			       pixmap_height);
-        }
+      create_cogl_texture (CLUTTER_TEXTURE (texture), pixmap_width, pixmap_height);
 
       CLUTTER_NOTE (TEXTURE, "Created GLXPixmap");
 

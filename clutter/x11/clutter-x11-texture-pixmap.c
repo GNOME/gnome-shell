@@ -63,7 +63,12 @@ enum
   PROP_DEPTH,
   PROP_AUTO,
   PROP_WINDOW,
-  PROP_WINDOW_REDIRECT_AUTOMATIC
+  PROP_WINDOW_REDIRECT_AUTOMATIC,
+  PROP_WINDOW_MAPPED,
+  PROP_DESTROYED,
+  PROP_WINDOW_X,
+  PROP_WINDOW_Y,
+  PROP_WINDOW_OVERRIDE_REDIRECT
 };
 
 enum
@@ -73,7 +78,7 @@ enum
   LAST_SIGNAL
 };
 
-static ClutterX11FilterReturn 
+static ClutterX11FilterReturn
 on_x_event_filter (XEvent *xev, ClutterEvent *cev, gpointer data);
 
 static void
@@ -82,6 +87,10 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
                                              gint                     y,
                                              gint                     width,
                                              gint                     height);
+static void
+clutter_x11_texture_pixmap_set_mapped (ClutterX11TexturePixmap *texture, gboolean mapped);
+static void
+clutter_x11_texture_pixmap_destroyed (ClutterX11TexturePixmap *texture);
 
 static guint signals[LAST_SIGNAL] = { 0, };
 
@@ -95,12 +104,18 @@ struct _ClutterX11TexturePixmapPrivate
   XImage       *image;
   XShmSegmentInfo shminfo;
 
-  gboolean      automatic_updates;     
+  gboolean      automatic_updates;
   Damage        damage;
   Drawable      damage_drawable;
 
+  /* FIXME: lots of gbooleans. coalesce into bitfields */
   gboolean	have_shm;
   gboolean      window_redirect_automatic;
+  gboolean      window_mapped;
+  gboolean      destroyed;
+  gboolean      owns_pixmap;
+  gboolean      override_redirect;
+  gint          window_x, window_y;
 };
 
 static int _damage_event_base = 0;
@@ -236,7 +251,7 @@ failed_image_create:
   return FALSE;
 }
 
-static ClutterX11FilterReturn 
+static ClutterX11FilterReturn
 on_x_event_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
 {
   ClutterX11TexturePixmap        *texture;
@@ -244,13 +259,13 @@ on_x_event_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
   Display                        *dpy;
 
   texture = CLUTTER_X11_TEXTURE_PIXMAP (data);
-  
+
   g_return_val_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture), \
                         CLUTTER_X11_FILTER_CONTINUE);
 
   dpy = clutter_x11_get_default_display();
   priv = texture->priv;
-  
+
   if (xev->type == _damage_event_base + XDamageNotify)
     {
       XserverRegion  parts;
@@ -258,7 +273,7 @@ on_x_event_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
       XRectangle    *r_damage;
       XRectangle     r_bounds;
       XDamageNotifyEvent *dev = (XDamageNotifyEvent*)xev;
-      
+
       if (dev->drawable != priv->damage_drawable)
         return CLUTTER_X11_FILTER_CONTINUE;
 
@@ -271,7 +286,7 @@ on_x_event_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
       parts = XFixesCreateRegion (dpy, 0, 0);
       XDamageSubtract (dpy, priv->damage, None, parts);
 
-      r_damage = XFixesFetchRegionAndBounds (dpy, 
+      r_damage = XFixesFetchRegionAndBounds (dpy,
                                              parts,
                                              &r_count,
                                              &r_bounds);
@@ -293,6 +308,40 @@ on_x_event_filter (XEvent *xev, ClutterEvent *cev, gpointer data)
     }
 
   return  CLUTTER_X11_FILTER_CONTINUE;
+}
+
+static ClutterX11FilterReturn
+on_x_event_filter_too (XEvent *xev, ClutterEvent *cev, gpointer data)
+{
+  ClutterX11TexturePixmap        *texture;
+  ClutterX11TexturePixmapPrivate *priv;
+
+  texture = CLUTTER_X11_TEXTURE_PIXMAP (data);
+
+  g_return_val_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture), \
+                        CLUTTER_X11_FILTER_CONTINUE);
+
+  priv = texture->priv;
+
+  if (xev->xany.window != priv->window)
+    return CLUTTER_X11_FILTER_CONTINUE;
+
+  switch (xev->type) {
+  case MapNotify:
+  case ConfigureNotify:
+    clutter_x11_texture_pixmap_sync_window (texture);
+    break;
+  case UnmapNotify:
+    clutter_x11_texture_pixmap_set_mapped (texture, FALSE);
+    break;
+  case DestroyNotify:
+    clutter_x11_texture_pixmap_destroyed (texture);
+    break;
+  default:
+    break;
+  }
+
+  return CLUTTER_X11_FILTER_CONTINUE;
 }
 
 
@@ -329,7 +378,7 @@ clutter_x11_texture_pixmap_init (ClutterX11TexturePixmap *self)
 
   if (!check_extensions (self))
     {
-      /* FIMXE: means display lacks needed extensions for at least auto. 
+      /* FIMXE: means display lacks needed extensions for at least auto.
        *        - a _can_autoupdate() method ?
       */
     }
@@ -344,6 +393,11 @@ clutter_x11_texture_pixmap_init (ClutterX11TexturePixmap *self)
   self->priv->pixmap_width = 0;
   self->priv->shminfo.shmid = -1;
   self->priv->window_redirect_automatic = TRUE;
+  self->priv->window_mapped = FALSE;
+  self->priv->destroyed = FALSE;
+  self->priv->override_redirect = FALSE;
+  self->priv->window_x = 0;
+  self->priv->window_y = 0;
 }
 
 static void
@@ -353,6 +407,14 @@ clutter_x11_texture_pixmap_dispose (GObject *object)
   ClutterX11TexturePixmapPrivate *priv = texture->priv;
 
   free_damage_resources (texture);
+
+  clutter_x11_remove_filter (on_x_event_filter_too, (gpointer)texture);
+
+  if (priv->owns_pixmap && priv->pixmap)
+    {
+      XFreePixmap (clutter_x11_get_default_display (), priv->pixmap);
+      priv->pixmap = None;
+    }
 
   if (priv->image)
     {
@@ -438,6 +500,21 @@ clutter_x11_texture_pixmap_get_property (GObject      *object,
       break;
     case PROP_WINDOW_REDIRECT_AUTOMATIC:
       g_value_set_boolean (value, priv->window_redirect_automatic);
+      break;
+    case PROP_WINDOW_MAPPED:
+      g_value_set_boolean (value, priv->window_mapped);
+      break;
+    case PROP_DESTROYED:
+      g_value_set_boolean (value, priv->destroyed);
+      break;
+    case PROP_WINDOW_X:
+      g_value_set_int (value, priv->window_x);
+      break;
+    case PROP_WINDOW_Y:
+      g_value_set_int (value, priv->window_y);
+      break;
+    case PROP_WINDOW_OVERRIDE_REDIRECT:
+      g_value_set_boolean (value, priv->override_redirect);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -544,8 +621,54 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
                                 TRUE,
                                 G_PARAM_READWRITE);
 
-  g_object_class_install_property (object_class, 
+  g_object_class_install_property (object_class,
                                    PROP_WINDOW_REDIRECT_AUTOMATIC, pspec);
+
+
+  pspec = g_param_spec_boolean ("window-mapped",
+                                "Window Mapped",
+                                "If window is mapped",
+                                FALSE,
+                                G_PARAM_READABLE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_WINDOW_MAPPED, pspec);
+
+
+  pspec = g_param_spec_boolean ("destroyed",
+                                "Destroyed",
+                                "If window has been destroyed",
+                                FALSE,
+                                G_PARAM_READABLE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_DESTROYED, pspec);
+
+  pspec = g_param_spec_int ("window-x",
+                            "Window X",
+                            "X position of window on screen according to X11",
+                            G_MININT, G_MAXINT, 0, G_PARAM_READABLE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_WINDOW_X, pspec);
+
+
+  pspec = g_param_spec_int ("window-y",
+                            "Window Y",
+                            "Y position of window on screen according to X11",
+                            G_MININT, G_MAXINT, 0, G_PARAM_READABLE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_WINDOW_Y, pspec);
+
+  pspec = g_param_spec_boolean ("window-override-redirect",
+                                "Window Override Redirect",
+                                "If this is an override-redirect window",
+                                FALSE,
+                                G_PARAM_READABLE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_WINDOW_OVERRIDE_REDIRECT, pspec);
 
 
   /**
@@ -608,7 +731,7 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
     return;
 
   if (priv->shminfo.shmid == -1)
-    try_alloc_shm (texture);    
+    try_alloc_shm (texture);
 
   clutter_x11_trap_x_errors ();
 
@@ -855,7 +978,7 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
                                        Pixmap                   pixmap)
 {
   Window       root;
-  int          x, y; 
+  int          x, y;
   unsigned int width, height, border_width, depth;
   Status       status = 0;
   gboolean     new_pixmap = FALSE, new_pixmap_width = FALSE;
@@ -870,21 +993,21 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
   clutter_x11_trap_x_errors ();
 
   status = XGetGeometry (clutter_x11_get_default_display(),
-                         (Drawable)pixmap, 
+                         (Drawable)pixmap,
                          &root,
-                         &x, 
-                         &y, 
+                         &x,
+                         &y,
                          &width,
-                         &height, 
+                         &height,
                          &border_width,
                          &depth);
-  
+
   if (clutter_x11_untrap_x_errors () || status == 0)
     {
       if (pixmap != None)
         g_warning ("Unable to query pixmap: %lx", pixmap);
       pixmap = None;
-      width = height = depth = 0; 
+      width = height = depth = 0;
     }
 
   if (priv->image)
@@ -892,9 +1015,12 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
       XDestroyImage (priv->image);
       priv->image = NULL;
     }
-  
+
   if (priv->pixmap != pixmap)
     {
+      if (priv->pixmap && priv->owns_pixmap)
+        XFreePixmap (clutter_x11_get_default_display (), priv->pixmap);
+
       priv->pixmap = pixmap;
       new_pixmap = TRUE;
     }
@@ -929,7 +1055,6 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
     g_object_notify (G_OBJECT (texture), "pixmap-height");
   if (new_pixmap_depth)
     g_object_notify (G_OBJECT (texture), "pixmap-depth");
-  g_object_unref (texture);
 
   free_shm_resources (texture);
 
@@ -945,6 +1070,13 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
                                                 priv->pixmap_height);
 
     }
+
+  /*
+   * Keep ref until here in case a notify causes removal from the scene; can't
+   * lower the notifies because glx's notify handler needs to run before
+   * update_area
+   */
+  g_object_unref (texture);
 }
 
 /**
@@ -967,6 +1099,8 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
                                        gboolean                 automatic)
 {
   ClutterX11TexturePixmapPrivate *priv;
+  XWindowAttributes attr;
+  Display *dpy = clutter_x11_get_default_display ();
 
   g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
 
@@ -980,6 +1114,7 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
 
   if (priv->window)
     {
+      clutter_x11_remove_filter (on_x_event_filter_too, (gpointer)texture);
       clutter_x11_trap_x_errors ();
       XCompositeUnredirectWindow(clutter_x11_get_default_display (),
                                   priv->window,
@@ -989,28 +1124,50 @@ clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
       clutter_x11_untrap_x_errors ();
     }
 
-
   priv->window = window;
   priv->window_redirect_automatic = automatic;
+  priv->window_mapped = FALSE;
+  priv->destroyed = FALSE;
 
   if (window == None)
     return;
 
   clutter_x11_trap_x_errors ();
+  {
+    if (!XGetWindowAttributes (dpy, window, &attr))
+      {
+        XSync (dpy, False);
+        clutter_x11_untrap_x_errors ();
+        g_warning ("bad window 0x%x", (guint32)window);
+        priv->window = None;
+        return;
+      }
 
-  XCompositeRedirectWindow 
-                     (clutter_x11_get_default_display (),
-                      window,
-                      automatic ? 
-                      CompositeRedirectAutomatic : CompositeRedirectManual);
-  XSync (clutter_x11_get_default_display (), False);
+    XCompositeRedirectWindow
+                       (dpy,
+                        window,
+                        automatic ?
+                        CompositeRedirectAutomatic : CompositeRedirectManual);
+    XSync (dpy, False);
+  }
+
   clutter_x11_untrap_x_errors ();
+
+  if (priv->window)
+    {
+      XSelectInput (dpy, priv->window,
+                    attr.your_event_mask | StructureNotifyMask);
+      clutter_x11_add_filter (on_x_event_filter_too, (gpointer)texture);
+    }
 
   g_object_ref (texture);
   g_object_notify (G_OBJECT (texture), "window");
-  g_object_unref (texture);
+
+  clutter_x11_texture_pixmap_set_mapped (texture,
+                                         attr.map_state == IsViewable);
 
   clutter_x11_texture_pixmap_sync_window (texture);
+  g_object_unref (texture);
 }
 
 /**
@@ -1026,34 +1183,102 @@ void
 clutter_x11_texture_pixmap_sync_window (ClutterX11TexturePixmap *texture)
 {
   ClutterX11TexturePixmapPrivate *priv;
-  Pixmap pixmap, prev_pixmap;
+  Pixmap pixmap;
 
   g_return_if_fail (CLUTTER_X11_IS_TEXTURE_PIXMAP (texture));
 
   priv = texture->priv;
+
+  if (priv->destroyed)
+    return;
 
   if (!clutter_x11_has_composite_extension())
     {
       clutter_x11_texture_pixmap_set_pixmap (texture, priv->window);
       return;
     }
-      
-  /* we own the pixmap */
-  prev_pixmap = priv->pixmap;
-  
+
   if (priv->window)
     {
+      XWindowAttributes attr;
       Display *dpy = clutter_x11_get_default_display ();
+      gboolean mapped, notify_x, notify_y, notify_override_redirect;
+
+      /*
+       * Make sure the window is mapped when getting the pixmap -- it's what
+       * compiz does.
+       */
 
       clutter_x11_trap_x_errors ();
-      pixmap = XCompositeNameWindowPixmap (dpy, priv->window);
+      XGrabServer (dpy);
+
+      XGetWindowAttributes (dpy, priv->window, &attr);
+      mapped = attr.map_state == IsViewable;
+      if (mapped)
+        pixmap = XCompositeNameWindowPixmap (dpy, priv->window);
+      else
+        pixmap = None;
+
+      XUngrabServer (dpy);
       clutter_x11_untrap_x_errors ();
 
-      clutter_x11_texture_pixmap_set_pixmap (texture, pixmap);
+      notify_x = attr.x != priv->window_x;
+      notify_y = attr.y != priv->window_y;
+      notify_override_redirect = attr.override_redirect != priv->override_redirect;
+      priv->window_x = attr.x;
+      priv->window_y = attr.y;
+      priv->override_redirect = attr.override_redirect;
 
-      if (prev_pixmap)
-        XFreePixmap (dpy, prev_pixmap);
+      g_object_ref (texture); /* guard against unparent */
+      if (pixmap)
+        {
+          clutter_x11_texture_pixmap_set_pixmap (texture, pixmap);
+          priv->owns_pixmap = TRUE;
+        }
+      clutter_x11_texture_pixmap_set_mapped (texture, mapped);
+      /* could do more clever things with a signal, i guess.. */
+      if (notify_override_redirect)
+        g_object_notify (G_OBJECT (texture), "window-override-redirect");
+      if (notify_x)
+        g_object_notify (G_OBJECT (texture), "window-x");
+      if (notify_y)
+        g_object_notify (G_OBJECT (texture), "window-y");
+      g_object_unref (texture);
     }
+}
+
+static void
+clutter_x11_texture_pixmap_set_mapped (ClutterX11TexturePixmap *texture,
+                                       gboolean mapped)
+{
+  ClutterX11TexturePixmapPrivate *priv;
+
+  priv = texture->priv;
+
+  if (mapped != priv->window_mapped)
+    {
+      priv->window_mapped = mapped;
+      g_object_notify (G_OBJECT (texture), "window-mapped");
+    }
+}
+
+static void
+clutter_x11_texture_pixmap_destroyed (ClutterX11TexturePixmap *texture)
+{
+  ClutterX11TexturePixmapPrivate *priv;
+
+  priv = texture->priv;
+
+  if (!priv->destroyed)
+    {
+      priv->destroyed = TRUE;
+      g_object_notify (G_OBJECT (texture), "destroyed");
+    }
+
+  /*
+   * Don't set window to None, that would destroy the pixmap, which might still
+   * be useful e.g. for destroy animations -- app's responsibility.
+   */
 }
 
 /**
@@ -1103,13 +1328,13 @@ clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,
       clutter_x11_add_filter (on_x_event_filter, (gpointer)texture);
 
       clutter_x11_trap_x_errors ();
-          
+
       if (priv->window)
         priv->damage_drawable = priv->window;
       else
         priv->damage_drawable = priv->pixmap;
-      
-      priv->damage = XDamageCreate (dpy, 
+
+      priv->damage = XDamageCreate (dpy,
                                     priv->damage_drawable,
                                     XDamageReportNonEmpty);
 

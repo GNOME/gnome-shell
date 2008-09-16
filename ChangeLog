@@ -1,3 +1,10 @@
+2008-09-16  Tomas Frydrych  <tf@linux.intel.com>
+
+	* clutter/glx/clutter-glx-texture-pixmap.c:
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+	TFP resyncing on MapNotify/ConfigureNotify (bug  1020; patch by
+	Andy Wingo <wingo@pobox.com>).
+	
 2008-09-15  Øyvind Kolås  <pippin@linux.intel.com>
 
 	* clutter/clutter-main.c: amended typo in gtk-doc.
