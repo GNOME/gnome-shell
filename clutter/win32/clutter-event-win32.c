@@ -351,7 +351,11 @@ message_translate (ClutterBackend *backend,
   switch (msg->message)
     {
     case WM_SIZE:
-      if (!stage_win32->is_foreign_win)
+      if (!stage_win32->is_foreign_win
+	  /* Ignore size changes resulting from the stage being
+	     minimized - otherwise the window size will be set to
+	     0,0 */
+	  && msg->wParam != SIZE_MINIMIZED)
 	{
 	  WORD new_width = LOWORD (msg->lParam);
 	  WORD new_height = HIWORD (msg->lParam);

@@ -1,3 +1,17 @@
+2008-09-16  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1100 - WM_SIZE not handled correctly, user_resize and
+	window_style correction.
+
+	* clutter/win32/clutter-stage-win32.c (get_window_style): Remove
+	the WS_MAXIMIZEBOX style if the stage isn't resizable.
+	(clutter_stage_win32_set_user_resize): Queue a redraw of the
+	window frame when the user_resize property is changed.
+
+	* clutter/win32/clutter-event-win32.c (message_translate): Don't
+	update the size of the stage when handling WM_SIZE messages that
+	result from the stage being minimized. Thanks to Roman Yazmin.
+
 2008-09-16  Tomas Frydrych  <tf@linux.intel.com>
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:

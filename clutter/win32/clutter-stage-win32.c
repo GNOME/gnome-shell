@@ -258,7 +258,7 @@ get_window_style (ClutterStageWin32 *stage_win32)
   else if (clutter_stage_get_user_resizable (wrapper))
     return WS_OVERLAPPEDWINDOW;
   else
-    return WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME;
+    return WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX;
 }
 
 static void
@@ -272,6 +272,8 @@ clutter_stage_win32_set_user_resize (ClutterStageWindow *stage_window,
   SetWindowLongW (hwnd, GWL_STYLE,
 		  get_window_style (CLUTTER_STAGE_WIN32 (stage_window))
 		  | (old_style & WS_VISIBLE));
+  /* Queue a redraw of the frame */
+  RedrawWindow (hwnd, NULL, NULL, RDW_FRAME | RDW_INVALIDATE);
 }
 
 static ClutterActor *
