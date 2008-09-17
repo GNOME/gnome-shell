@@ -6264,6 +6264,12 @@ clutter_actor_get_anchor_pointu (ClutterActor *self,
  * actor postion so that its relative position within its parent remains
  * unchanged.
  *
+ * Note that the anchor is still stored as a point and the gravity
+ * value is forgotten. For example, if you set the anchor point to
+ * %CLUTTER_GRAVITY_SOUTH_EAST and later double the size of the actor,
+ * the anchor point will not move to the bottom right and will now be
+ * in the center of the actor.
+ *
  * Since: 0.6
  */
 void
@@ -6298,6 +6304,12 @@ clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
  *
  * Sets an anchor point on the actor, based on the given gravity (this is a
  * convenience function wrapping clutter_actor_set_anchor_point()).
+ *
+ * Note that the anchor is still stored as a point and the gravity
+ * value is forgotten. For example, if you set the anchor point to
+ * %CLUTTER_GRAVITY_SOUTH_EAST and later double the size of the actor,
+ * the anchor point will not move to the bottom right and will now be
+ * in the center of the actor.
  *
  * Since: 0.6
  */

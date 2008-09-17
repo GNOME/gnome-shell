@@ -1,3 +1,13 @@
+2008-09-17  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1121 - Setting anchor point doesn't work if set too early
+
+	* clutter/clutter-actor.c
+	(clutter_actor_set_anchor_point_from_gravity)
+	(clutter_actor_move_anchor_point_from_gravity): Add documentation
+	to make it clear that the anchor point won't move when the actor
+	is resized.
+
 2008-09-16  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1100 - WM_SIZE not handled correctly, user_resize and
