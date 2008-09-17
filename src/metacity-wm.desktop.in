@@ -3,7 +3,6 @@ Type=Application
 Encoding=UTF-8
 _Name=Metacity
 Exec=metacity
-NoDisplay=true
 # name of loadable control center module
 X-GNOME-WMSettingsModule=metacity
 # name we put on the WM spec check window
@@ -16,3 +15,7 @@ X-GNOME-Bugzilla-Component=general
 X-GNOME-Autostart-Phase=WindowManager
 X-GNOME-Provides=windowmanager
 X-GNOME-Autostart-Notify=true
+
+[Window Manager]
+SessionManaged=true
+

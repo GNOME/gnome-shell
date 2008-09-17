@@ -520,87 +520,87 @@ meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
   switch (menu_op)
     {
     case META_MENU_OP_DELETE:
-      name = META_KEYBINDING_CLOSE;
+      name = "close";
       break;
     case META_MENU_OP_MINIMIZE:
-      name = META_KEYBINDING_MINIMIZE;
+      name = "minimize";
       break;
     case META_MENU_OP_UNMAXIMIZE:
-      name = META_KEYBINDING_UNMAXIMIZE;
+      name = "unmaximize";
       break;
     case META_MENU_OP_MAXIMIZE:
-      name = META_KEYBINDING_MAXIMIZE;
+      name = "maximize";
       break;
     case META_MENU_OP_UNSHADE:
     case META_MENU_OP_SHADE:
-      name = META_KEYBINDING_TOGGLE_SHADE;
+      name = "toggle_shaded";
       break;
     case META_MENU_OP_UNSTICK:
     case META_MENU_OP_STICK:
-      name = META_KEYBINDING_TOGGLE_STICKY;
+      name = "toggle_on_all_workspaces";
       break;
     case META_MENU_OP_ABOVE:
     case META_MENU_OP_UNABOVE:
-      name = META_KEYBINDING_TOGGLE_ABOVE;
+      name = "toggle_above";
       break;
     case META_MENU_OP_WORKSPACES:
       switch (workspace)
         {
         case 1:
-          name = META_KEYBINDING_MOVE_WORKSPACE_1;
+          name = "move_to_workspace_1";
           break;
         case 2:
-          name = META_KEYBINDING_MOVE_WORKSPACE_2;
+          name = "move_to_workspace_2";
           break;
         case 3:
-          name = META_KEYBINDING_MOVE_WORKSPACE_3;
+          name = "move_to_workspace_3";
           break; 
         case 4:
-          name = META_KEYBINDING_MOVE_WORKSPACE_4;
+          name = "move_to_workspace_4";
           break; 
         case 5:
-          name = META_KEYBINDING_MOVE_WORKSPACE_5;
+          name = "move_to_workspace_5";
           break; 
         case 6:
-          name = META_KEYBINDING_MOVE_WORKSPACE_6;
+          name = "move_to_workspace_6";
           break; 
         case 7:
-          name = META_KEYBINDING_MOVE_WORKSPACE_7;
+          name = "move_to_workspace_7";
           break; 
         case 8:
-          name = META_KEYBINDING_MOVE_WORKSPACE_8;
+          name = "move_to_workspace_8";
           break; 
         case 9:
-          name = META_KEYBINDING_MOVE_WORKSPACE_9;
+          name = "move_to_workspace_9";
           break; 
         case 10:
-          name = META_KEYBINDING_MOVE_WORKSPACE_10;
+          name = "move_to_workspace_10";
           break;
         case 11:
-          name = META_KEYBINDING_MOVE_WORKSPACE_11;
+          name = "move_to_workspace_11";
           break;
         case 12:
-          name = META_KEYBINDING_MOVE_WORKSPACE_12;
+          name = "move_to_workspace_12";
           break;
         }
       break;
     case META_MENU_OP_MOVE:
-      name = META_KEYBINDING_BEGIN_MOVE;
+      name = "begin_move";
       break;
     case META_MENU_OP_RESIZE:
-      name = META_KEYBINDING_BEGIN_RESIZE;
+      name = "begin_resize";
       break;
     case META_MENU_OP_MOVE_LEFT:
-      name = META_KEYBINDING_MOVE_WORKSPACE_LEFT;
+      name = "move_to_workspace_left";
       break;
     case META_MENU_OP_MOVE_RIGHT:
-      name = META_KEYBINDING_MOVE_WORKSPACE_RIGHT;
+      name = "move_to_workspace_right";
       break;
     case META_MENU_OP_MOVE_UP:
-      name = META_KEYBINDING_MOVE_WORKSPACE_UP;
+      name = "move_to_workspace_up";
       break;
     case META_MENU_OP_MOVE_DOWN:
-      name = META_KEYBINDING_MOVE_WORKSPACE_DOWN;
+      name = "move_to_workspace_down";
       break;
     case META_MENU_OP_RECOVER:
       /* No keybinding for this one */

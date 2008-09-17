@@ -54,12 +54,18 @@ typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
                                      XEvent         *event,
                                      MetaKeyBinding *binding);
 
+/* Prototypes for handlers */
+#define item(name, suffix, param, short, long, stroke) \
+static void \
+handle_##name (MetaDisplay    *display,\
+               MetaScreen     *screen,\
+               MetaWindow     *window,\
+               XEvent         *event,\
+               MetaKeyBinding *binding);
+#include "window-bindings.h"
+#undef item
+
 static void handle_activate_workspace (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_activate_menu      (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
                                        XEvent         *event,
@@ -99,142 +105,12 @@ static void handle_panel_keybinding   (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
-static void handle_toggle_above       (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_toggle_maximize    (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_maximize           (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_unmaximize         (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_toggle_shade       (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_close_window       (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_minimize_window    (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_begin_move         (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_begin_resize       (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_toggle_sticky      (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_workspace  (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_workspace_flip  (MetaDisplay    *display,
-                                            MetaScreen     *screen,
-                                            MetaWindow     *window,
-                                            XEvent         *event,
-                                            MetaKeyBinding *binding);
 static void handle_workspace_switch   (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
-static void handle_raise_or_lower     (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_raise              (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_lower              (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
 static void handle_run_command        (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_maximize_vert      (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_maximize_horiz     (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_side_n     (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_side_w     (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_side_s     (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_side_e     (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_corner_nw          (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_corner_ne          (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_corner_sw          (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_corner_se          (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_move_to_center     (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
                                        XEvent         *event,
@@ -437,65 +313,17 @@ static const MetaKeyHandler screen_handlers[] = {
 };
   
 static const MetaKeyHandler window_handlers[] = {
-  { META_KEYBINDING_WINDOW_MENU, handle_activate_menu, NULL },
-  { META_KEYBINDING_TOGGLE_FULLSCREEN, handle_toggle_fullscreen, NULL },
-  { META_KEYBINDING_TOGGLE_ABOVE, handle_toggle_above, NULL },
-  { META_KEYBINDING_TOGGLE_MAXIMIZE, handle_toggle_maximize, NULL },
-  { META_KEYBINDING_MAXIMIZE, handle_maximize, NULL },
-  { META_KEYBINDING_UNMAXIMIZE, handle_unmaximize, NULL },
-  { META_KEYBINDING_TOGGLE_SHADE, handle_toggle_shade, NULL },
-  { META_KEYBINDING_CLOSE, handle_close_window, NULL },
-  { META_KEYBINDING_MINIMIZE, handle_minimize_window, NULL },
-  { META_KEYBINDING_BEGIN_MOVE, handle_begin_move, },
-  { META_KEYBINDING_BEGIN_RESIZE, handle_begin_resize, },
-  { META_KEYBINDING_TOGGLE_STICKY, handle_toggle_sticky, },
-  { META_KEYBINDING_MOVE_WORKSPACE_1, handle_move_to_workspace,
-    GINT_TO_POINTER (0) },
-  { META_KEYBINDING_MOVE_WORKSPACE_2, handle_move_to_workspace,
-    GINT_TO_POINTER (1) },
-  { META_KEYBINDING_MOVE_WORKSPACE_3, handle_move_to_workspace,
-    GINT_TO_POINTER (2) },
-  { META_KEYBINDING_MOVE_WORKSPACE_4, handle_move_to_workspace,
-    GINT_TO_POINTER (3) },
-  { META_KEYBINDING_MOVE_WORKSPACE_5, handle_move_to_workspace,
-    GINT_TO_POINTER (4) },
-  { META_KEYBINDING_MOVE_WORKSPACE_6, handle_move_to_workspace,
-    GINT_TO_POINTER (5) },
-  { META_KEYBINDING_MOVE_WORKSPACE_7, handle_move_to_workspace,
-    GINT_TO_POINTER (6) },
-  { META_KEYBINDING_MOVE_WORKSPACE_8, handle_move_to_workspace,
-    GINT_TO_POINTER (7) },
-  { META_KEYBINDING_MOVE_WORKSPACE_9, handle_move_to_workspace,
-    GINT_TO_POINTER (8) },
-  { META_KEYBINDING_MOVE_WORKSPACE_10, handle_move_to_workspace,
-    GINT_TO_POINTER (9) },
-  { META_KEYBINDING_MOVE_WORKSPACE_11, handle_move_to_workspace,
-    GINT_TO_POINTER (10) },
-  { META_KEYBINDING_MOVE_WORKSPACE_12, handle_move_to_workspace,
-    GINT_TO_POINTER (11) },
-  { META_KEYBINDING_MOVE_WORKSPACE_LEFT, handle_move_to_workspace_flip,
-    GINT_TO_POINTER (META_MOTION_LEFT) },
-  { META_KEYBINDING_MOVE_WORKSPACE_RIGHT, handle_move_to_workspace_flip,
-    GINT_TO_POINTER (META_MOTION_RIGHT) },
-  { META_KEYBINDING_MOVE_WORKSPACE_UP, handle_move_to_workspace_flip,
-    GINT_TO_POINTER (META_MOTION_UP) },
-  { META_KEYBINDING_MOVE_WORKSPACE_DOWN, handle_move_to_workspace_flip,
-    GINT_TO_POINTER (META_MOTION_DOWN) },
-  { META_KEYBINDING_RAISE_OR_LOWER, handle_raise_or_lower, NULL},
-  { META_KEYBINDING_RAISE, handle_raise, NULL},
-  { META_KEYBINDING_LOWER, handle_lower, NULL},
-  { META_KEYBINDING_MAXIMIZE_VERTICALLY, handle_maximize_vert, NULL },
-  { META_KEYBINDING_MAXIMIZE_HORIZONTALLY, handle_maximize_horiz, NULL },
-  { META_KEYBINDING_MOVE_TO_SIDE_N, handle_move_to_side_n, NULL },
-  { META_KEYBINDING_MOVE_TO_SIDE_S, handle_move_to_side_s, NULL },
-  { META_KEYBINDING_MOVE_TO_SIDE_E, handle_move_to_side_e, NULL },
-  { META_KEYBINDING_MOVE_TO_SIDE_W, handle_move_to_side_w, NULL },
-  { META_KEYBINDING_MOVE_TO_CORNER_NW, handle_move_to_corner_nw, NULL },
-  { META_KEYBINDING_MOVE_TO_CORNER_NE, handle_move_to_corner_ne, NULL },
-  { META_KEYBINDING_MOVE_TO_CORNER_SW, handle_move_to_corner_sw, NULL },
-  { META_KEYBINDING_MOVE_TO_CORNER_SE, handle_move_to_corner_se, NULL },
-  { META_KEYBINDING_MOVE_TO_CENTER,    handle_move_to_center, NULL },
-  { NULL, NULL, NULL }
+/* TODO: Eventually, we should stop using GINT_TO_POINTER here, because
+ * they're always integers.
+ *
+ * TODO: Are window bindings only ever called on non-null windows?
+ * If so, we can remove the check from all of them.
+ */
+#define item(name, suffix, param, a, b, c) { #name, handle_##name, \
+   GINT_TO_POINTER (param) },
+#include "window-bindings.h"
+#undef item
+   { NULL, NULL, NULL }
 };
 
 static void
@@ -2856,7 +2684,7 @@ handle_run_command (MetaDisplay    *display,
 
 
 static void
-handle_maximize_vert (MetaDisplay    *display,
+handle_maximize_vertically (MetaDisplay    *display,
                       MetaScreen     *screen,
                       MetaWindow     *window,
                       XEvent         *event,
@@ -2872,7 +2700,7 @@ handle_maximize_vert (MetaDisplay    *display,
 }
 
 static void
-handle_maximize_horiz (MetaDisplay    *display,
+handle_maximize_horizontally (MetaDisplay    *display,
                        MetaScreen     *screen,
                        MetaWindow     *window,
                        XEvent         *event,
@@ -3265,7 +3093,7 @@ handle_panel_keybinding (MetaDisplay    *display,
 }
 
 static void
-handle_activate_menu (MetaDisplay    *display,
+handle_activate_window_menu (MetaDisplay    *display,
                       MetaScreen     *screen,
                       MetaWindow     *event_window,
                       XEvent         *event,
@@ -3502,7 +3330,7 @@ handle_toggle_above       (MetaDisplay    *display,
 }
 
 static void
-handle_toggle_maximize    (MetaDisplay    *display,
+handle_toggle_maximized    (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
@@ -3554,7 +3382,7 @@ handle_unmaximize         (MetaDisplay    *display,
 }
 
 static void
-handle_toggle_shade       (MetaDisplay    *display,
+handle_toggle_shaded      (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
@@ -3570,7 +3398,7 @@ handle_toggle_shade       (MetaDisplay    *display,
 }
 
 static void
-handle_close_window       (MetaDisplay    *display,
+handle_close              (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
@@ -3582,7 +3410,7 @@ handle_close_window       (MetaDisplay    *display,
 }
 
 static void
-handle_minimize_window (MetaDisplay    *display,
+handle_minimize        (MetaDisplay    *display,
                         MetaScreen     *screen,
                         MetaWindow     *window,
                         XEvent         *event,
@@ -3626,7 +3454,7 @@ handle_begin_resize       (MetaDisplay    *display,
 }
 
 static void
-handle_toggle_sticky      (MetaDisplay    *display,
+handle_toggle_on_all_workspaces (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
@@ -3642,23 +3470,31 @@ handle_toggle_sticky      (MetaDisplay    *display,
 }
 
 static void
-do_handle_move_to_workspace  (MetaDisplay    *display,
+handle_move_to_workspace  (MetaDisplay    *display,
                               MetaScreen     *screen,
                               MetaWindow     *window,
                               XEvent         *event,
-                              MetaKeyBinding *binding,
-                              gboolean        flip)
+                              MetaKeyBinding *binding)
 {
   int which;
+  gboolean flip;
   MetaWorkspace *workspace;
   
   which = GPOINTER_TO_INT (binding->handler->data);
+  /* If which is zero or positive, it's a workspace number, and the window
+   * should move to the workspace with that number.
+   *
+   * However, if it's negative, it's a direction with respect to the current
+   * position; it's expressed as a member of the MetaMotionDirection enum,
+   * all of whose members are negative.  Such a change is called a flip.
+   */
+  flip = (which < 0);
 
   if (window == NULL || window->always_sticky)
     return;
   
   workspace = NULL;
-  if (which < 0)
+  if (flip)
     {      
       workspace = meta_workspace_get_neighbor (screen->active_workspace,
                                                which);
@@ -3676,7 +3512,7 @@ do_handle_move_to_workspace  (MetaDisplay    *display,
         {
           meta_topic (META_DEBUG_FOCUS,
                       "Resetting mouse_mode to FALSE due to "
-                      "do_handle_move_to_workspace() call with flip set.\n");
+                      "handle_move_to_workspace() call with flip set.\n");
           workspace->screen->display->mouse_mode = FALSE;
           meta_workspace_activate_with_focus (workspace,
                                               window,
@@ -3687,35 +3523,6 @@ do_handle_move_to_workspace  (MetaDisplay    *display,
     {
       /* We could offer to create it I suppose */
     }  
-}
-
-static void
-handle_move_to_workspace  (MetaDisplay    *display,
-                           MetaScreen     *screen,
-                           MetaWindow     *window,
-                           XEvent         *event,
-                           MetaKeyBinding *binding)
-{
-  do_handle_move_to_workspace (display,
-                               screen,
-                               window,
-                               event,
-                               binding,
-                               FALSE);
-}
-static void
-handle_move_to_workspace_flip  (MetaDisplay    *display,
-                                MetaScreen     *screen,
-                                MetaWindow     *window,
-                                XEvent         *event,
-                                MetaKeyBinding *binding)
-{
-  do_handle_move_to_workspace (display,
-                               screen,
-                               window,
-                               event,
-                               binding,
-                               TRUE);
 }
 
 static void 

@@ -1,3 +1,39 @@
+2008-09-17  Gabor Kelemen  <kelemeng@gnome.hu>
+
+	* hu.po: Translation updated.
+
+2008-09-14  Duarte Loreto <happyguy_pt@hotmail.com>
+
+	* pt.po: Fixed Portuguese terminology.
+
+2008-09-12  Hendrik Richter  <hendrikr@gnome.org>
+
+	* de.po: Updated German translation.
+
+2008-09-12  Goran Rakić  <grakic@devbase.net>
+
+        * sr.po, sr@latin.po: Updated Serbian translation (by Miloš Popović).
+
+2008-09-09  Robert Sedak  <robert.sedak@sk.t-com.hr>
+
+	* hr.po: Updated Croatian translation.
+
+2008-09-08  Priit Laes  <plaes at svn dot gnome dot org>
+
+	* et.po: Translation updated by Mattias Põldaru
+
+2008-09-07  Seán de Búrca  <sdeburca@svn.gnome.org>
+
+	* ga.po: Updated Irish translation.
+
+2008-09-06  Funda Wang  <fundawang@gmail.com>
+
+	* zh_CN.po: Updated zh_CN translation.
+
+2008-09-06  Claude Paroz  <claude@2xlibre.net>
+
+	* fr.po: Updated French translation.
+
 2008-08-24  Gintautas Miliauskas  <gintas@akl.lt>
 
 	* lt.po: Updated Lithuanian translation.
