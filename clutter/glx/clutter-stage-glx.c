@@ -167,7 +167,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
                                             stage_x11->xwin_root,
                                             stage_x11->xvisinfo->visual,
                                             AllocNone);
-          mask = CWBackPixel | CWBorderPixel | CWColormap;
+          mask = CWBorderPixel | CWColormap;
           stage_x11->xwin = XCreateWindow (stage_x11->xdpy,
                                            stage_x11->xwin_root,
                                            0, 0,

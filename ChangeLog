@@ -1,5 +1,14 @@
 2008-09-17  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1145 - Flicker on resize the window
+
+	* clutter/glx/clutter-stage-glx.c (clutter_stage_glx_realize):
+	Don't set a backing pixel on the X window. Otherwise when the
+	window resizes it will flicker when X paints the background
+	immediatly before Clutter repaints the whole stage.
+
+2008-09-17  Neil Roberts  <neil@linux.intel.com>
+
 	* clutter/clutter-types.h: Swap left and right in the
 	documentation for ClutterGravity.
 
