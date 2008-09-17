@@ -1,5 +1,10 @@
 2008-09-17  Neil Roberts  <neil@linux.intel.com>
 
+	* clutter/clutter-types.h: Swap left and right in the
+	documentation for ClutterGravity.
+
+2008-09-17  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1121 - Setting anchor point doesn't work if set too early
 
 	* clutter/clutter-actor.c
