@@ -39,6 +39,7 @@
 #ifdef WITH_CLUTTER
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
+#include "compositor.h"
 #endif
 
 static void meta_stock_icons_init (void);
@@ -67,7 +68,15 @@ meta_ui_init (int *argc, char ***argv)
    */
   clutter_x11_set_display (gdk_display);
   clutter_x11_disable_event_retrieval ();
-  clutter_init (argc, argv);
+  if (clutter_init (argc, argv) != CLUTTER_INIT_SUCCESS)
+    {
+      g_message ("Unable to initialize Clutter; falling back on Xrender\n");
+      meta_compositor_can_use_clutter__ = 0;
+    }
+  else
+    {
+      meta_compositor_can_use_clutter__ = 1;
+    }
 #endif
 
 

@@ -28,6 +28,9 @@
 #include "types.h"
 #include "boxes.h"
 
+#ifdef WITH_CLUTTER
+extern int meta_compositor_can_use_clutter__;
+#endif
 MetaCompositor *meta_compositor_new (MetaDisplay *display);
 void meta_compositor_destroy (MetaCompositor *compositor);
 

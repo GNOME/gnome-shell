@@ -24,6 +24,10 @@
 #include "compositor-xrender.h"
 #include "compositor-clutter.h"
 
+#ifdef WITH_CLUTTER
+int meta_compositor_can_use_clutter__ = 0;
+#endif
+
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
@@ -31,10 +35,11 @@ meta_compositor_new (MetaDisplay *display)
 #ifdef WITH_CLUTTER
   /* At some point we would have a way to select between backends */
   /* return meta_compositor_xrender_new (display); */
-  return meta_compositor_clutter_new (display);
-#else
-  return meta_compositor_xrender_new (display);
+  if (meta_compositor_can_use_clutter__)
+    return meta_compositor_clutter_new (display);
+  else
 #endif
+  return meta_compositor_xrender_new (display);
 #else
   return NULL;
 #endif
