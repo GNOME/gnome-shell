@@ -1,5 +1,13 @@
 2008-09-18  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1044 - cogl_get_viewport error
+
+	* clutter/cogl/gles/cogl.c (cogl_get_viewport): Use glGetIntegerv
+	instead of glGetFixedv to read the viewport because the latter
+	converts incorrectly on some hardware.
+
+2008-09-18  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1080 - clutter_stage_read_pixels has upside-down y coordinate
 
 	* clutter/clutter-stage.c (clutter_stage_read_pixels): Use
