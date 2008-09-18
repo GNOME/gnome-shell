@@ -862,7 +862,13 @@ cogl_get_projection_matrix (ClutterFixed m[16])
 void
 cogl_get_viewport (ClutterFixed v[4])
 {
-  cogl_wrap_glGetFixedv(GL_VIEWPORT, &v[0]);
+  GLint viewport[4];
+  int i;
+
+  cogl_wrap_glGetIntegerv (GL_VIEWPORT, viewport);
+
+  for (i = 0; i < 4; i++)
+    v[i] = CLUTTER_INT_TO_FIXED (viewport[i]);
 }
 
 void
