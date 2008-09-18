@@ -1558,6 +1558,10 @@ cogl_texture_set_region (CoglHandle       handle,
   if (format == COGL_PIXEL_FORMAT_ANY)
     return FALSE;
   
+  /* Shortcut out early if the image is empty */
+  if (width == 0 || height == 0)
+    return TRUE;
+   
   /* Init source bitmap */
   source_bmp.width = width;
   source_bmp.height = height;
