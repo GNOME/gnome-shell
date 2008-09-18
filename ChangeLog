@@ -1,5 +1,14 @@
 2008-09-18  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1048 - SIGFPE in cogl_texture_set_region() with nvidia
+
+	* clutter/cogl/gl/cogl-texture.c (cogl_texture_set_region):
+	* clutter/cogl/gles/cogl-texture.c (cogl_texture_set_region):
+	Don't attempt to upload any data if the width or height of the
+	subregion is zero. Thanks to Gwenole Beauchesne.
+
+2008-09-18  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1044 - cogl_get_viewport error
 
 	* clutter/cogl/gles/cogl.c (cogl_get_viewport): Use glGetIntegerv
