@@ -1,10 +1,18 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+/**
+ * \file workspace.h    Workspaces
+ *
+ * A workspace is a set of windows which all live on the same
+ * screen.  (You may also see the name "desktop" around the place,
+ * which is the EWMH's name for the same thing.)  Only one workspace
+ * of a screen may be active at once; all windows on all other workspaces
+ * are unmapped.
+ */
+
 /*
- * Copyright (C) 2008 Matthew Allum
- * Copyright (C) 2007 Iain Holmes
- * Based on xcompmgr - (c) 2003 Keith Packard
- *          xfwm4    - (c) 2005-2007 Olivier Fourdan
+ * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2004, 2005 Elijah Newren
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,14 +30,15 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_COMPOSITOR_CLUTTER_H_
-#define META_COMPOSITOR_CLUTTER_H_
+#ifndef META_WORKSPACE_H
+#define META_WORKSPACE_H
 
 #include "types.h"
-#include "compositor-clutter-plugin.h"
+#include "boxes.h"
+#include "screen.h"
 
-MetaCompositor *meta_compositor_clutter_new (MetaDisplay *display);
-
-void meta_compositor_clutter_window_effect_completed (ClutterActor *actor, gulong event);
-
+int  meta_workspace_index (MetaWorkspace *workspace);
+MetaScreen *meta_workspace_get_screen (MetaWorkspace *workspace);
+void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
+                                                 MetaRectangle *area);
 #endif

@@ -23,6 +23,7 @@
 #include "compositor-private.h"
 #include "compositor-xrender.h"
 #include "compositor-clutter.h"
+#include "prefs.h"
 
 #ifdef WITH_CLUTTER
 int meta_compositor_can_use_clutter__ = 0;
@@ -35,7 +36,7 @@ meta_compositor_new (MetaDisplay *display)
 #ifdef WITH_CLUTTER
   /* At some point we would have a way to select between backends */
   /* return meta_compositor_xrender_new (display); */
-  if (meta_compositor_can_use_clutter__)
+  if (meta_compositor_can_use_clutter__ && !meta_prefs_get_clutter_disabled ())
     return meta_compositor_clutter_new (display);
   else
 #endif
@@ -188,3 +189,55 @@ meta_compositor_minimize_window (MetaCompositor *compositor,
     compositor->minimize_window (compositor, window);
 #endif
 }
+
+void
+meta_compositor_maximize_window (MetaCompositor    *compositor,
+                                 MetaWindow        *window,
+                                 int                x,
+                                 int                y,
+                                 int                width,
+                                 int                height)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->maximize_window)
+    compositor->maximize_window (compositor, window, x, y, width, height);
+#endif
+}
+
+void
+meta_compositor_unmaximize_window (MetaCompositor    *compositor,
+                                   MetaWindow        *window,
+                                   int                x,
+                                   int                y,
+                                   int                width,
+                                   int                height)
+
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->unmaximize_window)
+    compositor->unmaximize_window (compositor, window, x, y, width, height);
+#endif
+}
+
+void
+meta_compositor_update_workspace_geometry (MetaCompositor *compositor,
+                                           MetaWorkspace  *workspace)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->update_workspace_geometry)
+    compositor->update_workspace_geometry (compositor, workspace);
+#endif
+}
+
+void
+meta_compositor_switch_workspace (MetaCompositor *compositor,
+                                  MetaScreen     *screen,
+                                  MetaWorkspace  *from,
+                                  MetaWorkspace  *to)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->switch_workspace)
+    compositor->switch_workspace (compositor, screen, from, to);
+#endif
+}
+

@@ -33,7 +33,7 @@
 #include "window-private.h"
 #include "frame-private.h"
 #include "prefs.h"
-#include "workspace.h"
+#include "workspace-private.h"
 #include "keybindings.h"
 #include "stack.h"
 #include "xprops.h"
@@ -2800,3 +2800,10 @@ meta_screen_unset_cm_selection (MetaScreen *screen)
   XSetSelectionOwner (screen->display->xdisplay, a, None, CurrentTime);
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
+
+GList *
+meta_screen_get_workspaces (MetaScreen *screen)
+{
+  return screen->workspaces;
+}
+

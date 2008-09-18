@@ -30,7 +30,7 @@
 #include "tabpopup.h"
 /* FIXME these two includes are 100% broken ...
  */
-#include "../core/workspace.h"
+#include "../core/workspace-private.h"
 #include "../core/frame-private.h"
 #include "draw-workspace.h"
 #include <gtk/gtk.h>

@@ -55,6 +55,28 @@ struct _MetaCompositor
 
   void (*minimize_window) (MetaCompositor *compositor,
                            MetaWindow     *window);
+
+  void (*maximize_window) (MetaCompositor    *compositor,
+                           MetaWindow        *window,
+                           int                x,
+                           int                y,
+                           int                width,
+                           int                height);
+
+  void (*unmaximize_window) (MetaCompositor    *compositor,
+                             MetaWindow        *window,
+                             int                x,
+                             int                y,
+                             int                width,
+                             int                height);
+
+  void (*update_workspace_geometry) (MetaCompositor *compositor,
+                                     MetaWorkspace   *workspace);
+
+  void (*switch_workspace) (MetaCompositor *compositor,
+                            MetaScreen     *screen,
+                            MetaWorkspace  *from,
+                            MetaWorkspace  *to);
 };
 
 #endif

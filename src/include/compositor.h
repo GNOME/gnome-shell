@@ -27,6 +27,28 @@
 
 #include "types.h"
 #include "boxes.h"
+#include "window.h"
+#include "workspace.h"
+
+typedef enum _MetaCompWindowType
+{
+  /*
+   * Types shared with MetaWindow
+   */
+  META_COMP_WINDOW_NORMAL  = META_WINDOW_NORMAL,
+  META_COMP_WINDOW_DESKTOP = META_WINDOW_DESKTOP,
+  META_COMP_WINDOW_DOCK    = META_WINDOW_DOCK,
+  META_COMP_WINDOW_MENU    = META_WINDOW_MENU,
+
+  /*
+   * Extended types that WM does not care about, but we do.
+   */
+  META_COMP_WINDOW_TOOLTIP = 0xf000,
+  META_COMP_WINDOW_DROP_DOWN_MENU,
+  META_COMP_WINDOW_DND,
+  META_COMP_WINDOW_OVERRIDE,
+} MetaCompWindowType;
+
 
 #ifdef WITH_CLUTTER
 extern int meta_compositor_can_use_clutter__;
@@ -79,6 +101,31 @@ void
 meta_compositor_minimize_window (MetaCompositor *compositor,
                                  MetaWindow     *window);
 
+void
+meta_compositor_maximize_window (MetaCompositor    *compositor,
+                                 MetaWindow        *window,
+                                 int                x,
+                                 int                y,
+                                 int                width,
+                                 int                height);
+
+void
+meta_compositor_unmaximize_window (MetaCompositor    *compositor,
+                                   MetaWindow        *window,
+                                   int                x,
+                                   int                y,
+                                   int                width,
+                                   int                height);
+
+void
+meta_compositor_update_workspace_geometry (MetaCompositor *compositor,
+                                           MetaWorkspace  *workspace);
+
+void
+meta_compositor_switch_workspace (MetaCompositor *compositor,
+                                  MetaScreen     *screen,
+                                  MetaWorkspace  *from,
+                                  MetaWorkspace  *to);
 #endif
 
 

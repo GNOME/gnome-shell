@@ -25,7 +25,7 @@
 #include "edge-resistance.h"
 #include "boxes.h"
 #include "display-private.h"
-#include "workspace.h"
+#include "workspace-private.h"
 
 /* A simple macro for whether a given window's edges are potentially
  * relevant for resistance/snapping during a move/resize operation

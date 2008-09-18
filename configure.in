@@ -8,6 +8,9 @@ m4_define([metacity_micro_version], [2])
 
 m4_define([metacity_version],
           [metacity_major_version.metacity_minor_version.metacity_micro_version])
+
+m4_define([metacity_clutter_plugin_api_version], [1])
+
 AC_INIT([metacity], [metacity_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=metacity])
 
@@ -16,6 +19,15 @@ AC_CONFIG_HEADERS(config.h)
 
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
+
+METACITY_MAJOR_VERSION=metacity_major_version
+METACITY_MINOR_VERSION=metacity_minor_version
+METACITY_MICRO_VERSION=metacity_micro_version
+METACITY_CLUTTER_PLUGIN_API_VERSION=metacity_clutter_plugin_api_version
+AC_SUBST(METACITY_MAJOR_VERSION)
+AC_SUBST(METACITY_MINOR_VERSION)
+AC_SUBST(METACITY_MICRO_VERSION)
+AC_SUBST(METACITY_CLUTTER_PLUGIN_API_VERSION)
 
 # Honor aclocal flags
 AC_SUBST(ACLOCAL_AMFLAGS, "\${ACLOCAL_FLAGS}")
@@ -290,6 +302,7 @@ fi
 if test x$have_clutter = xyes; then
   CLUTTER_PACKAGE=clutter-0.8
   METACITY_PC_MODULES="$METACITY_PC_MODULES $CLUTTER_PACKAGE "
+  PKG_CHECK_MODULES(CLUTTER, $CLUTTER_PACKAGE)
   AC_DEFINE(WITH_CLUTTER, , [Building with Clutter compositor])
 fi
 
@@ -509,6 +522,7 @@ src/wm-tester/Makefile
 src/libmetacity-private.pc
 src/tools/Makefile
 src/themes/Makefile
+src/compositor/clutter-plugins/Makefile
 po/Makefile.in
 ])
 

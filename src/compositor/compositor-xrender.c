@@ -81,17 +81,6 @@ composite_at_least_version (MetaDisplay *display,
 
 #endif
 
-typedef enum _MetaCompWindowType
-{
-  META_COMP_WINDOW_NORMAL,
-  META_COMP_WINDOW_DND,
-  META_COMP_WINDOW_DESKTOP,
-  META_COMP_WINDOW_DOCK,
-  META_COMP_WINDOW_MENU,
-  META_COMP_WINDOW_DROP_DOWN_MENU,
-  META_COMP_WINDOW_TOOLTIP,
-} MetaCompWindowType;
-
 typedef enum _MetaShadowType
 {
   META_SHADOW_SMALL,

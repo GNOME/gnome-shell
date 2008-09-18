@@ -30,9 +30,10 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_WORKSPACE_H
-#define META_WORKSPACE_H
+#ifndef META_WORKSPACE_PRIVATE_H
+#define META_WORKSPACE_PRIVATE_H
 
+#include "workspace.h"
 #include "window-private.h"
 
 /* Negative to avoid conflicting with real workspace
@@ -80,7 +81,6 @@ void           meta_workspace_activate_with_focus (MetaWorkspace *workspace,
                                                    guint32        timestamp);
 void           meta_workspace_activate            (MetaWorkspace *workspace,
                                                    guint32        timestamp);
-int            meta_workspace_index         (MetaWorkspace *workspace);
 GList*         meta_workspace_list_windows  (MetaWorkspace *workspace);
 
 void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);
@@ -88,8 +88,6 @@ void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);
 
 void meta_workspace_get_work_area_for_xinerama  (MetaWorkspace *workspace,
                                                  int            which_xinerama,
-                                                 MetaRectangle *area);
-void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
                                                  MetaRectangle *area);
 GList* meta_workspace_get_onscreen_region       (MetaWorkspace *workspace);
 GList* meta_workspace_get_onxinerama_region     (MetaWorkspace *workspace,

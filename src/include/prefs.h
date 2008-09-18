@@ -2,10 +2,10 @@
 
 /* Metacity preferences */
 
-/* 
+/*
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2006 Elijah Newren
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of the
@@ -15,7 +15,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -59,7 +59,11 @@ typedef enum
   META_PREF_GNOME_ANIMATIONS,
   META_PREF_CURSOR_THEME,
   META_PREF_CURSOR_SIZE,
-  META_PREF_COMPOSITING_MANAGER
+  META_PREF_COMPOSITING_MANAGER,
+#ifdef WITH_CLUTTER
+  META_PREF_CLUTTER_DISABLED,
+  META_PREF_CLUTTER_PLUGINS
+#endif
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -119,6 +123,21 @@ gboolean    meta_prefs_get_compositing_manager (void);
  * \param whether   TRUE to turn on, FALSE to turn off
  */
 void meta_prefs_set_compositing_manager (gboolean whether);
+
+#ifdef WITH_CLUTTER
+
+gboolean meta_prefs_get_clutter_disabled (void);
+void     meta_prefs_set_clutter_disabled (gboolean whether);
+
+GSList * meta_prefs_get_clutter_plugins (void);
+
+/**
+ * Sets whether the compositor is turned on.
+ *
+ * \param whether   TRUE to turn on, FALSE to turn off
+ */
+void meta_prefs_set_clutter_plugins (GSList *list);
+#endif
 
 /* Screen bindings */
 #define META_KEYBINDING_WORKSPACE_1              "switch_to_workspace_1"

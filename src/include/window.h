@@ -41,6 +41,12 @@ typedef enum
   META_WINDOW_SPLASHSCREEN,
 } MetaWindowType;
 
+typedef enum
+{
+  META_MAXIMIZE_HORIZONTAL = 1 << 0,
+  META_MAXIMIZE_VERTICAL   = 1 << 1
+} MetaMaximizeFlags;
+
 MetaFrame *meta_window_get_frame (MetaWindow *window);
 gboolean meta_window_has_focus (MetaWindow *window);
 gboolean meta_window_is_shaded (MetaWindow *window);
@@ -50,5 +56,6 @@ MetaDisplay *meta_window_get_display (MetaWindow *window);
 Window meta_window_get_xwindow (MetaWindow *window);
 MetaWindowType meta_window_get_type (MetaWindow *window);
 Atom meta_window_get_type_atom (MetaWindow *window);
-
+MetaWorkspace *meta_window_get_workspace (MetaWindow *window);
+gboolean meta_window_is_on_all_workspaces (MetaWindow *window);
 #endif

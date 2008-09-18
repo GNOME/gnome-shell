@@ -30,7 +30,7 @@
 #include "util.h"
 #include "frame-private.h"
 #include "errors.h"
-#include "workspace.h"
+#include "workspace-private.h"
 #include "stack.h"
 #include "keybindings.h"
 #include "ui.h"
@@ -2582,9 +2582,23 @@ meta_window_maximize (MetaWindow        *window,
                                      directions,
                                      NULL);
 
-      /* move_resize with new maximization constraints
-       */
-      meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
+      if (window->display->compositor)
+        {
+          meta_window_move_resize_now (window);
+
+          meta_compositor_maximize_window (window->display->compositor,
+                                           window,
+                                           window->frame->rect.x,
+                                           window->frame->rect.y,
+                                           window->frame->rect.width,
+                                           window->frame->rect.height);
+        }
+      else
+        {
+          /* move_resize with new maximization constraints
+           */
+          meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
+        }
     }
 }
 
@@ -2681,12 +2695,32 @@ meta_window_unmaximize (MetaWindow        *window,
           window->display->grab_anchor_window_pos = target_rect;
         }
 
-      meta_window_move_resize (window,
-                               FALSE,
-                               target_rect.x,
-                               target_rect.y,
-                               target_rect.width,
-                               target_rect.height);
+      if (window->display->compositor)
+        {
+          meta_window_move_resize (window,
+                                   FALSE,
+                                   target_rect.x,
+                                   target_rect.y,
+                                   target_rect.width,
+                                   target_rect.height);
+          meta_window_move_resize_now (window);
+
+          meta_compositor_unmaximize_window (window->display->compositor,
+                                           window,
+                                           window->frame->rect.x,
+                                           window->frame->rect.y,
+                                           window->frame->rect.width,
+                                           window->frame->rect.height);
+        }
+      else
+        {
+          meta_window_move_resize (window,
+                                   FALSE,
+                                   target_rect.x,
+                                   target_rect.y,
+                                   target_rect.width,
+                                   target_rect.height);
+        }
 
       if (window->display->grab_wireframe_active)
         {
@@ -8170,3 +8204,19 @@ meta_window_get_type_atom (MetaWindow *window)
 {
   return window->type_atom;
 }
+
+MetaWorkspace *
+meta_window_get_workspace (MetaWindow *window)
+{
+  if (window->on_all_workspaces)
+    return window->screen->active_workspace;
+
+  return window->workspace;
+}
+
+gboolean
+meta_window_is_on_all_workspaces (MetaWindow *window)
+{
+  return window->on_all_workspaces;
+}
+

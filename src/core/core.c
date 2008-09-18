@@ -26,7 +26,7 @@
 #include <config.h>
 #include "core.h"
 #include "frame-private.h"
-#include "workspace.h"
+#include "workspace-private.h"
 #include "prefs.h"
 
 /* Looks up the MetaWindow representing the frame of the given X window.

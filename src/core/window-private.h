@@ -49,12 +49,6 @@ typedef struct _MetaWindowQueue MetaWindowQueue;
 typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
                                            void       *data);
 
-typedef enum
-{
-  META_MAXIMIZE_HORIZONTAL = 1 << 0,
-  META_MAXIMIZE_VERTICAL   = 1 << 1
-} MetaMaximizeFlags;
-
 typedef enum {
   META_CLIENT_TYPE_UNKNOWN = 0,
   META_CLIENT_TYPE_APPLICATION = 1,

@@ -25,7 +25,7 @@
 
 #include <config.h>
 #include "constraints.h"
-#include "workspace.h"
+#include "workspace-private.h"
 #include "place.h"
 
 #include <stdlib.h>

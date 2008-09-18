@@ -25,8 +25,14 @@
 
 #include <config.h>
 #include "workspace.h"
+#include "workspace-private.h"
 #include "errors.h"
 #include "prefs.h"
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+#include "compositor.h"
+#endif
+
 #include <X11/Xatom.h>
 #include <string.h>
 
@@ -383,6 +389,19 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
       meta_topic (META_DEBUG_FOCUS, "Focusing default window on new workspace\n");
       meta_workspace_focus_default_window (workspace, NULL, timestamp);
     }
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  {
+    /*
+     * Notify the compositor that the active workspace changed.
+     */
+    MetaScreen     *screen = workspace->screen;
+    MetaDisplay    *display = meta_screen_get_display (screen);
+    MetaCompositor *comp = meta_display_get_compositor (display);
+
+    meta_compositor_switch_workspace (comp, screen, old, workspace);
+  }
+#endif
 }
 
 void
@@ -682,6 +701,19 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 
   /* We're all done, YAAY!  Record that everything has been validated. */
   workspace->work_areas_invalid = FALSE;
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  {
+    /*
+     * Notify the compositor that the workspace geometry has changed.
+     */
+    MetaScreen     *screen = workspace->screen;
+    MetaDisplay    *display = meta_screen_get_display (screen);
+    MetaCompositor *comp = meta_display_get_compositor (display);
+
+    meta_compositor_update_workspace_geometry (comp, workspace);
+  }
+#endif
 }
 
 void
@@ -974,3 +1006,10 @@ focus_ancestor_or_mru_window (MetaWorkspace *workspace,
                                               timestamp);
     }
 }
+
+MetaScreen *
+meta_workspace_get_screen (MetaWorkspace *workspace)
+{
+  return workspace->screen;
+}
+

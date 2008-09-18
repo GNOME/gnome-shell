@@ -17,6 +17,7 @@
 #include "window.h"
 #include "compositor-private.h"
 #include "compositor-clutter.h"
+#include "compositor-clutter-plugin-manager.h"
 #include "xprops.h"
 #include <X11/Xatom.h>
 #include <X11/Xlibint.h>
@@ -41,16 +42,13 @@
 #define TILE_WIDTH  (3*MAX_TILE_SZ)
 #define TILE_HEIGHT (3*MAX_TILE_SZ)
 
-#define DESTROY_TIMEOUT   300
-#define MINIMIZE_TIMEOUT  600
-
 /*
  * Register GType wrapper for XWindowAttributes, so we do not have to
  * query window attributes in the MetaCompWindow constructor but can pass
  * them as a property to the constructor (so we can gracefully handle the case
  * where no attributes can be retrieved).
  *
- * NB -- we only need a subset of the attribute; at some point we might want
+ * NB -- we only need a subset of the attributes; at some point we might want
  * to just store the relevant values rather than the whole struct.
  */
 #define META_TYPE_XATTRS (meta_xattrs_get_type ())
@@ -110,26 +108,7 @@ composite_at_least_version (MetaDisplay *display, int maj, int min)
 
   return (major > maj || (major == maj && minor >= min));
 }
-
 #endif
-
-typedef enum _MetaCompWindowType
-{
-  /*
-   * Types shared with MetaWindow
-   */
-  META_COMP_WINDOW_NORMAL  = META_WINDOW_NORMAL,
-  META_COMP_WINDOW_DESKTOP = META_WINDOW_DESKTOP,
-  META_COMP_WINDOW_DOCK    = META_WINDOW_DOCK,
-  META_COMP_WINDOW_MENU    = META_WINDOW_MENU,
-
-  /*
-   * Extended types that WM does not care about, but we do.
-   */
-  META_COMP_WINDOW_TOOLTIP = 0xf000,
-  META_COMP_WINDOW_DROP_DOWN_MENU,
-  META_COMP_WINDOW_DND,
-} MetaCompWindowType;
 
 typedef struct _MetaCompositorClutter
 {
@@ -157,8 +136,9 @@ typedef struct _MetaCompScreen
   Window                 output;
   GSList                *dock_windows;
 
-  ClutterEffectTemplate *destroy_effect;
-  ClutterEffectTemplate *minimize_effect;
+  gint                   switch_workspace_in_progress;
+
+  MetaCompositorClutterPluginManager *plugin_mgr;
 } MetaCompScreen;
 
 /*
@@ -204,12 +184,28 @@ struct _MetaCompWindowPrivate
 
   guint8            opacity;
 
-  gboolean          needs_shadow         : 1;
-  gboolean          shaped               : 1;
-  gboolean          destroy_pending      : 1;
-  gboolean          argb32               : 1;
-  gboolean          minimize_in_progress : 1;
-  gboolean          disposed             : 1;
+  /*
+   * These need to be counters rather than flags, since more plugins
+   * can implement same effect; the practicality of stacking effects
+   * might be dubious, but we have to at least handle it correctly.
+   */
+  gint              minimize_in_progress;
+  gint              maximize_in_progress;
+  gint              unmaximize_in_progress;
+  gint              map_in_progress;
+  gint              destroy_in_progress;
+
+  gboolean          needs_shadow           : 1;
+  gboolean          shaped                 : 1;
+  gboolean          destroy_pending        : 1;
+  gboolean          argb32                 : 1;
+  gboolean          disposed               : 1;
+  gboolean          is_minimized           : 1;
+
+  /* Desktop switching flags */
+  gboolean          needs_map              : 1;
+  gboolean          needs_unmap            : 1;
+  gboolean          needs_repair           : 1;
 };
 
 enum
@@ -515,6 +511,12 @@ meta_comp_window_get_window_type (MetaCompWindow *self)
   Atom                  *atoms;
   gint                   i;
 
+  if (priv->attrs.override_redirect)
+    {
+      priv->type = META_COMP_WINDOW_OVERRIDE;
+      return;
+    }
+
   /*
    * If the window is managed by the WM, get the type from the WM,
    * otherwise do it the hard way.
@@ -613,7 +615,7 @@ meta_comp_window_has_shadow (MetaCompWindow *self)
   MetaCompWindowPrivate * priv = self->priv;
 
   /*
-   * Do not add shadows to ARGB windows (since they are probably transparent
+   * Do not add shadows to ARGB windows (since they are probably transparent)
    */
   if (priv->argb32 || priv->opacity != 0xff)
     {
@@ -685,6 +687,170 @@ meta_comp_window_has_shadow (MetaCompWindow *self)
   return FALSE;
 }
 
+static void repair_win (MetaCompWindow *cw);
+static void map_win    (MetaCompWindow *cw);
+static void unmap_win  (MetaCompWindow *cw);
+
+static void
+meta_compositor_clutter_finish_workspace_switch (MetaCompScreen *info)
+{
+  GList *last = g_list_last (info->windows);
+  GList *l    = last;
+
+  while (l)
+    {
+      MetaCompWindow        *cw   = l->data;
+      MetaCompWindowPrivate *priv = cw->priv;
+
+      if (priv->needs_map && !priv->needs_unmap)
+	{
+	  map_win (cw);
+	}
+
+      if (priv->needs_unmap)
+	{
+	  unmap_win (cw);
+	}
+
+      l = l->prev;
+    }
+
+  /*
+   * Now fix up stacking order in case the plugin messed it up.
+   */
+  l = last;
+  while (l)
+    {
+      ClutterActor *a     = l->data;
+      GList        *prev  = l->prev;
+
+      if (prev)
+	{
+	  ClutterActor *above_me = prev->data;
+
+	  clutter_actor_raise (above_me, a);
+	}
+      else
+	{
+	  ClutterActor *a = l->data;
+	  clutter_actor_raise_top (a);
+	}
+
+      l = prev;
+    }
+}
+
+void
+meta_compositor_clutter_window_effect_completed (ClutterActor *actor,
+						 gulong        event)
+{
+  MetaCompWindow        *cw     = META_COMP_WINDOW (actor);
+  MetaCompWindowPrivate *priv   = cw->priv;
+  MetaScreen            *screen = priv->screen;
+  MetaCompScreen        *info   = meta_screen_get_compositor_data (screen);
+
+    switch (event)
+    {
+    case META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE:
+      {
+	ClutterActor *a      = CLUTTER_ACTOR (cw);
+	gint          height = clutter_actor_get_height (a);
+
+	priv->minimize_in_progress--;
+	if (priv->minimize_in_progress < 0)
+	  {
+	    g_warning ("Error in minimize accounting.");
+	    priv->minimize_in_progress = 0;
+	  }
+
+	if (!priv->minimize_in_progress)
+	  {
+	    priv->is_minimized = TRUE;
+	    clutter_actor_set_position (a, 0, -height);
+	  }
+      }
+      break;
+    case META_COMPOSITOR_CLUTTER_PLUGIN_MAP:
+      /*
+       * Make sure that the actor is at the correct place in case
+       * the plugin fscked.
+       */
+      priv->map_in_progress--;
+
+      if (priv->map_in_progress < 0)
+	{
+	  g_warning ("Error in map accounting.");
+	  priv->map_in_progress = 0;
+	}
+
+      if (!priv->map_in_progress)
+	{
+	  priv->is_minimized = FALSE;
+	  clutter_actor_set_anchor_point (actor, 0, 0);
+	  clutter_actor_set_position (actor, priv->attrs.x, priv->attrs.y);
+	  clutter_actor_show_all (actor);
+	}
+      break;
+    case META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY:
+      priv->destroy_in_progress--;
+
+      if (priv->destroy_in_progress < 0)
+	{
+	  g_warning ("Error in destroy accounting.");
+	  priv->destroy_in_progress = 0;
+	}
+
+      if (!priv->destroy_in_progress)
+	{
+	  clutter_actor_destroy (actor);
+	}
+      break;
+    case META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE:
+      priv->unmaximize_in_progress--;
+      if (priv->unmaximize_in_progress < 0)
+	{
+	  g_warning ("Error in unmaximize accounting.");
+	  priv->unmaximize_in_progress = 0;
+	}
+
+      if (!priv->unmaximize_in_progress)
+	{
+	  clutter_actor_set_position (actor, priv->attrs.x, priv->attrs.y);
+	  meta_comp_window_detach (cw);
+	  repair_win (cw);
+	}
+      break;
+    case META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE:
+      priv->maximize_in_progress--;
+      if (priv->maximize_in_progress < 0)
+	{
+	  g_warning ("Error in maximize accounting.");
+	  priv->maximize_in_progress = 0;
+	}
+
+      if (!priv->maximize_in_progress)
+	{
+	  clutter_actor_set_position (actor, priv->attrs.x, priv->attrs.y);
+	  meta_comp_window_detach (cw);
+	  repair_win (cw);
+	}
+      break;
+    case META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE:
+      /* FIXME -- must redo stacking order */
+      info->switch_workspace_in_progress--;
+      if (info->switch_workspace_in_progress < 0)
+	{
+	  g_warning ("Error in workspace_switch accounting!");
+	  info->switch_workspace_in_progress = 0;
+	}
+
+      if (!info->switch_workspace_in_progress)
+	meta_compositor_clutter_finish_workspace_switch (info);
+      break;
+    default: ;
+    }
+}
+
 
 static void
 clutter_cmp_destroy (MetaCompositor *compositor)
@@ -694,19 +860,23 @@ clutter_cmp_destroy (MetaCompositor *compositor)
 #endif
 }
 
+/*
+ * If force is TRUE, free the back pixmap; if FALSE, only free it if the
+ * backing pixmap has actually changed.
+ */
 static void
 meta_comp_window_detach (MetaCompWindow *self)
 {
-  MetaCompWindowPrivate *priv = self->priv;
-  MetaScreen  *screen = priv->screen;
-  MetaDisplay *display = meta_screen_get_display (screen);
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  MetaCompWindowPrivate *priv     = self->priv;
+  MetaScreen            *screen   = priv->screen;
+  MetaDisplay           *display  = meta_screen_get_display (screen);
+  Display               *xdisplay = meta_display_get_xdisplay (display);
 
-  if (priv->back_pixmap)
-    {
-      XFreePixmap (xdisplay, priv->back_pixmap);
-      priv->back_pixmap = None;
-    }
+  if (!priv->back_pixmap)
+    return;
+
+  XFreePixmap (xdisplay, priv->back_pixmap);
+  priv->back_pixmap = None;
 }
 
 static void
@@ -718,8 +888,6 @@ destroy_win (MetaDisplay *display, Window xwindow)
 
   if (cw == NULL)
     return;
-
-  meta_verbose ("destroying a window... 0x%x (%p)\n", (guint) xwindow, cw);
 
   clutter_actor_destroy (CLUTTER_ACTOR (cw));
 }
@@ -752,7 +920,8 @@ restack_win (MetaCompWindow *cw, Window above)
       info->windows = g_list_delete_link (info->windows, sibling);
       info->windows = g_list_append (info->windows, cw);
 
-      clutter_actor_raise_top (CLUTTER_ACTOR (cw));
+      if (!info->switch_workspace_in_progress)
+	clutter_actor_raise_top (CLUTTER_ACTOR (cw));
     }
   else if (previous_above != above)
     {
@@ -772,7 +941,8 @@ restack_win (MetaCompWindow *cw, Window above)
           info->windows = g_list_delete_link (info->windows, sibling);
           info->windows = g_list_insert_before (info->windows, index, cw);
 
-          clutter_actor_raise (CLUTTER_ACTOR (cw), above_win);
+	  if (!info->switch_workspace_in_progress)
+	    clutter_actor_raise (CLUTTER_ACTOR (cw), above_win);
         }
     }
 }
@@ -790,60 +960,116 @@ resize_win (MetaCompWindow *cw,
 
   priv->attrs.x = x;
   priv->attrs.y = y;
-
-  clutter_actor_set_position (CLUTTER_ACTOR (cw), x, y);
-
-  /* Note, let named named pixmap resync actually resize actor */
-
-  if (priv->attrs.width != width || priv->attrs.height != height)
-    meta_comp_window_detach (cw);
-
   priv->attrs.width             = width;
   priv->attrs.height            = height;
   priv->attrs.border_width      = border_width;
   priv->attrs.override_redirect = override_redirect;
+
+  if (priv->maximize_in_progress   ||
+      priv->unmaximize_in_progress ||
+      priv->map_in_progress)
+    return;
+
+  meta_comp_window_detach (cw);
+  clutter_actor_set_position (CLUTTER_ACTOR (cw), x, y);
 }
 
 static void
-map_win (MetaDisplay *display, MetaScreen  *screen, Window id)
+map_win (MetaCompWindow *cw)
 {
-  MetaCompWindow        *cw = find_window_for_screen (screen, id);
   MetaCompWindowPrivate *priv;
+  MetaCompScreen        *info;
 
   if (cw == NULL)
     return;
 
   priv = cw->priv;
+  info = meta_screen_get_compositor_data (priv->screen);
+
+  if (priv->attrs.map_state == IsViewable)
+    return;
 
   priv->attrs.map_state = IsViewable;
 
-  priv->minimize_in_progress = FALSE;
+  /*
+   * Now repair the window; this ensures that the actor is correctly sized
+   * before we run any effects on it.
+   */
+  priv->needs_map = FALSE;
+  meta_comp_window_detach (cw);
+  repair_win (cw);
 
-  clutter_actor_show (CLUTTER_ACTOR (cw));
+  /*
+   * Make sure the position is set correctly (we might have got moved while
+   * unmapped.
+   */
+  if (!info->switch_workspace_in_progress)
+    {
+      clutter_actor_set_anchor_point (CLUTTER_ACTOR (cw), 0, 0);
+      clutter_actor_set_position (CLUTTER_ACTOR (cw),
+				  cw->priv->attrs.x, cw->priv->attrs.y);
+    }
+
+  priv->map_in_progress++;
+
+  /*
+   * If a plugin manager is present, try to run an effect; if no effect of this
+   * type is present, destroy the actor.
+   */
+  if (info->switch_workspace_in_progress || !info->plugin_mgr ||
+      !meta_compositor_clutter_plugin_manager_event_0 (info->plugin_mgr,
+				CLUTTER_ACTOR (cw),
+                                META_COMPOSITOR_CLUTTER_PLUGIN_MAP,
+				cw->priv->type, 0))
+    {
+      clutter_actor_show_all (CLUTTER_ACTOR (cw));
+      priv->map_in_progress--;
+      priv->is_minimized = FALSE;
+    }
 }
 
-
 static void
-unmap_win (MetaDisplay *display, MetaScreen *screen, Window id)
+unmap_win (MetaCompWindow *cw)
 {
-  MetaCompWindow        *cw = find_window_for_screen (screen, id);
-  MetaCompScreen        *info = meta_screen_get_compositor_data (screen);
   MetaCompWindowPrivate *priv;
+  MetaCompScreen        *info;
 
   if (cw == NULL)
     return;
 
   priv = cw->priv;
+  info = meta_screen_get_compositor_data (priv->screen);
+
+  /*
+   * If the needs_unmap flag is set, we carry on even if the winow is
+   * already marked as unmapped; this is necessary so windows temporarily
+   * shown during an effect (like desktop switch) are properly hidden again.
+   */
+  if (priv->attrs.map_state == IsUnmapped && !priv->needs_unmap)
+    return;
 
   if (priv->window && priv->window == info->focus_window)
     info->focus_window = NULL;
 
+  if (info->switch_workspace_in_progress)
+    {
+      /*
+       * Cannot unmap windows while switching desktops effect is in progress.
+       */
+      priv->needs_unmap = TRUE;
+      return;
+    }
+
   priv->attrs.map_state = IsUnmapped;
 
-  meta_comp_window_detach (cw);
-
   if (!priv->minimize_in_progress)
-    clutter_actor_hide (CLUTTER_ACTOR (cw));
+    {
+      ClutterActor *a = CLUTTER_ACTOR (cw);
+      clutter_actor_hide (a);
+    }
+
+  priv->needs_unmap = FALSE;
+  priv->needs_map   = FALSE;
 }
 
 
@@ -895,7 +1121,6 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
 			       CLUTTER_ACTOR (cw));
   clutter_actor_hide (CLUTTER_ACTOR (cw));
 
-  /* Only add the window to the list of docks if it needs a shadow */
   if (priv->type == META_COMP_WINDOW_DOCK)
     {
       meta_verbose ("Appending 0x%x to dock windows\n", (guint)xwindow);
@@ -940,18 +1165,23 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
   g_hash_table_insert (info->windows_by_xid, (gpointer) xwindow, cw);
 
   if (priv->attrs.map_state == IsViewable)
-    map_win (display, screen, xwindow);
+    {
+      /* Need to reset the map_state for map_win() to work */
+      priv->attrs.map_state = IsUnmapped;
+      map_win (cw);
+    }
 }
 
 static void
 repair_win (MetaCompWindow *cw)
 {
-  MetaCompWindowPrivate *priv = cw->priv;
-  MetaScreen            *screen = priv->screen;
-  MetaDisplay           *display = meta_screen_get_display (screen);
+  MetaCompWindowPrivate *priv     = cw->priv;
+  MetaScreen            *screen   = priv->screen;
+  MetaDisplay           *display  = meta_screen_get_display (screen);
   Display               *xdisplay = meta_display_get_xdisplay (display);
-  MetaCompScreen        *info = meta_screen_get_compositor_data (screen);
-  Window                 xwindow = priv->xwindow;
+  MetaCompScreen        *info     = meta_screen_get_compositor_data (screen);
+  Window                 xwindow  = priv->xwindow;
+  gboolean               full     = FALSE;
 
   if (xwindow == meta_screen_get_xroot (screen) ||
       xwindow == clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage)))
@@ -962,8 +1192,23 @@ repair_win (MetaCompWindow *cw)
   if (priv->back_pixmap == None)
     {
       gint pxm_width, pxm_height;
+      XWindowAttributes attr;
 
-      priv->back_pixmap = XCompositeNameWindowPixmap (xdisplay, xwindow);
+      meta_error_trap_push (display);
+
+      XGrabServer (xdisplay);
+
+      XGetWindowAttributes (xdisplay, xwindow, &attr);
+
+      if (attr.map_state == IsViewable)
+	priv->back_pixmap = XCompositeNameWindowPixmap (xdisplay, xwindow);
+      else
+	{
+	  priv->back_pixmap = None;
+	}
+
+      XUngrabServer (xdisplay);
+      meta_error_trap_pop (display, FALSE);
 
       if (priv->back_pixmap == None)
         {
@@ -984,6 +1229,8 @@ repair_win (MetaCompWindow *cw)
 
       if (priv->shadow)
         clutter_actor_set_size (priv->shadow, pxm_width, pxm_height);
+
+      full = TRUE;
     }
 
   /*
@@ -995,9 +1242,10 @@ repair_win (MetaCompWindow *cw)
    * If we are using TFP we update the whole texture (this simply trigers
    * the texture rebind).
    */
-  if (CLUTTER_GLX_IS_TEXTURE_PIXMAP (priv->actor) &&
-      clutter_glx_texture_pixmap_using_extension (
-				CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor)))
+  if (full ||
+      (CLUTTER_GLX_IS_TEXTURE_PIXMAP (priv->actor) &&
+       clutter_glx_texture_pixmap_using_extension (
+				CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor))))
     {
       XDamageSubtract (xdisplay, priv->damage, None, None);
 
@@ -1041,6 +1289,8 @@ repair_win (MetaCompWindow *cw)
     }
 
   meta_error_trap_pop (display, FALSE);
+
+  priv->needs_repair = FALSE;
 }
 
 
@@ -1109,9 +1359,20 @@ process_damage (MetaCompositorClutter *compositor,
 
   priv = cw->priv;
 
-  if (priv->destroy_pending)
-    return;
+  if (priv->destroy_pending        ||
+      priv->maximize_in_progress   ||
+      priv->unmaximize_in_progress)
+    {
+      priv->needs_repair = TRUE;
+      return;
+    }
 
+  /*
+   * Check if the event queue does not already contain DetstroyNotify for this
+   * window -- if it does, we need to stop updating the pixmap (to avoid damage
+   * notifications that come from the window teardown), and process the destroy
+   * immediately.
+   */
   if (XCheckTypedWindowEvent (dpy, drawable, DestroyNotify, &next))
     {
       priv->destroy_pending = TRUE;
@@ -1138,6 +1399,9 @@ process_configure_notify (MetaCompositorClutter  *compositor,
     }
   else
     {
+      /*
+       * Check for root window geometry change
+       */
       GSList *l = meta_display_get_screens (display);
 
       while (l)
@@ -1188,8 +1452,8 @@ process_circulate_notify (MetaCompositorClutter  *compositor,
     above = top->priv->xwindow;
   else
     above = None;
-  restack_win (cw, above);
 
+  restack_win (cw, above);
 }
 
 static void
@@ -1213,7 +1477,7 @@ process_unmap (MetaCompositorClutter *compositor,
       XEvent next;
       MetaCompWindowPrivate *priv = cw->priv;
 
-      if (priv->destroy_pending)
+      if (priv->attrs.map_state == IsUnmapped || priv->destroy_pending)
 	return;
 
       if (XCheckTypedWindowEvent (dpy, xwin, DestroyNotify, &next))
@@ -1224,7 +1488,7 @@ process_unmap (MetaCompositorClutter *compositor,
 	}
 
       meta_verbose ("processing unmap  of 0x%x (%p)\n", (guint)xwin, cw);
-      unmap_win (compositor->display, priv->screen, xwin);
+      unmap_win (cw);
     }
 }
 
@@ -1237,7 +1501,7 @@ process_map (MetaCompositorClutter *compositor,
                                                event->window);
 
   if (cw)
-    map_win (compositor->display, cw->priv->screen, event->window);
+    map_win (cw);
 }
 
 static void
@@ -1374,21 +1638,13 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
+  info->plugin_mgr =
+    meta_compositor_clutter_plugin_manager_new (screen, info->stage);
+
   clutter_actor_show_all (info->stage);
 
   /* Now we're up and running we can show the output if needed */
   show_overlay_window (screen, info->output);
-
-  info->destroy_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							DESTROY_TIMEOUT),
-                                    CLUTTER_ALPHA_SINE_INC);
-
-
-  info->minimize_effect
-    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
-							MINIMIZE_TIMEOUT),
-                                    CLUTTER_ALPHA_SINE_INC);
 #endif
 }
 
@@ -1532,21 +1788,15 @@ clutter_cmp_set_active_window (MetaCompositor *compositor,
 }
 
 static void
-on_destroy_effect_complete (ClutterActor *actor,
-                            gpointer user_data)
-{
-  clutter_actor_destroy (actor);
-}
-
-static void
 clutter_cmp_destroy_window (MetaCompositor *compositor,
                             MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MetaCompWindow *cw     = NULL;
-  MetaScreen     *screen = meta_window_get_screen (window);
-  MetaCompScreen *info   = meta_screen_get_compositor_data (screen);
-  MetaFrame      *f      = meta_window_get_frame (window);
+  MetaCompWindow        *cw     = NULL;
+  MetaScreen            *screen = meta_window_get_screen (window);
+  MetaCompScreen        *info   = meta_screen_get_compositor_data (screen);
+  MetaFrame             *f      = meta_window_get_frame (window);
+  MetaCompWindowPrivate *priv;
 
   /* Chances are we actually get the window frame here */
   cw = find_window_for_screen (screen,
@@ -1554,6 +1804,8 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
                                meta_window_get_xwindow (window));
   if (!cw)
     return;
+
+  priv = cw->priv;
 
   /*
    * We remove the window from internal lookup hashes and thus any other
@@ -1564,38 +1816,22 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
                        (gpointer) (f ? meta_frame_get_xwindow (f) :
                                    meta_window_get_xwindow (window)));
 
-  clutter_actor_move_anchor_point_from_gravity (CLUTTER_ACTOR (cw),
-                                                CLUTTER_GRAVITY_CENTER);
-
-  clutter_effect_fade (info->destroy_effect,
-		       CLUTTER_ACTOR (cw),
-		       0,
-		       on_destroy_effect_complete,
-		       (gpointer)cw);
-
-  clutter_effect_scale (info->destroy_effect   ,
-                        CLUTTER_ACTOR (cw),
-                        1.0,
-                        0.0,
-                        NULL,
-                        NULL);
-#endif
-}
-
-static void
-on_minimize_effect_complete (ClutterActor *actor,
-			     gpointer user_data)
-{
-  MetaCompWindow *cw = (MetaCompWindow *)user_data;
-
   /*
-   * Must reverse the effect of the effect once we hide the actor.
+   * If a plugin manager is present, try to run an effect; if no effect of this
+   * type is present, destroy the actor.
    */
-  clutter_actor_hide (CLUTTER_ACTOR (cw));
-  clutter_actor_set_opacity (CLUTTER_ACTOR (cw), cw->priv->opacity);
-  clutter_actor_set_scale (CLUTTER_ACTOR (cw), 1.0, 1.0);
-  clutter_actor_move_anchor_point_from_gravity (CLUTTER_ACTOR (cw),
-                                                CLUTTER_GRAVITY_NORTH_WEST);
+  priv->destroy_in_progress++;
+
+  if (!info->plugin_mgr ||
+      !meta_compositor_clutter_plugin_manager_event_0 (info->plugin_mgr,
+				CLUTTER_ACTOR (cw),
+                                META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY,
+				cw->priv->type, 0))
+    {
+      priv->destroy_in_progress--;
+      clutter_actor_destroy (CLUTTER_ACTOR (cw));
+    }
+#endif
 }
 
 static void
@@ -1617,28 +1853,184 @@ clutter_cmp_minimize_window (MetaCompositor *compositor, MetaWindow *window)
   if (!cw)
     return;
 
-  meta_verbose ("Animating minimize of 0x%x\n",
-		(guint)meta_window_get_xwindow (window));
+  /*
+   * If there is a plugin manager, try to run an effect; if no effect is
+   * executed, hide the actor.
+   */
+  cw->priv->minimize_in_progress++;
 
-  cw->priv->minimize_in_progress = TRUE;
+  if (!info->plugin_mgr ||
+      !meta_compositor_clutter_plugin_manager_event_0 (info->plugin_mgr,
+				CLUTTER_ACTOR (cw),
+				META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE,
+				cw->priv->type, 0))
+    {
+      ClutterActor *a      = CLUTTER_ACTOR (cw);
+      gint          height = clutter_actor_get_height (a);
 
-  clutter_actor_move_anchor_point_from_gravity (CLUTTER_ACTOR (cw),
-                                                CLUTTER_GRAVITY_SOUTH_WEST);
-
-  clutter_effect_fade (info->minimize_effect,
-		       CLUTTER_ACTOR (cw),
-		       0,
-		       on_minimize_effect_complete,
-		       (gpointer)cw);
-
-  clutter_effect_scale (info->minimize_effect,
-                        CLUTTER_ACTOR (cw),
-                        0.0,
-                        0.0,
-                        NULL,
-                        NULL);
+      cw->priv->is_minimized = TRUE;
+      cw->priv->minimize_in_progress--;
+      clutter_actor_set_position (a, 0, -height);
+    }
 #endif
 }
+
+static void
+clutter_cmp_maximize_window (MetaCompositor *compositor, MetaWindow *window,
+			     gint x, gint y, gint width, gint height)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaCompWindow *cw;
+  MetaCompScreen *info;
+  MetaScreen     *screen;
+  MetaFrame      *f = meta_window_get_frame (window);
+
+  screen = meta_window_get_screen (window);
+  info = meta_screen_get_compositor_data (screen);
+
+  /* Chances are we actually get the window frame here */
+  cw = find_window_for_screen (screen,
+                               f ? meta_frame_get_xwindow (f) :
+                               meta_window_get_xwindow (window));
+  if (!cw)
+    return;
+
+  cw->priv->maximize_in_progress++;
+
+  if (!info->plugin_mgr ||
+      !meta_compositor_clutter_plugin_manager_event_4i (info->plugin_mgr,
+				CLUTTER_ACTOR (cw),
+				META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE,
+				cw->priv->type, 0, x, y, width, height))
+    {
+      cw->priv->maximize_in_progress--;
+    }
+#endif
+}
+
+static void
+clutter_cmp_unmaximize_window (MetaCompositor *compositor, MetaWindow *window,
+			       gint x, gint y, gint width, gint height)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaCompWindow *cw;
+  MetaCompScreen *info;
+  MetaScreen     *screen;
+  MetaFrame      *f = meta_window_get_frame (window);
+
+  screen = meta_window_get_screen (window);
+  info = meta_screen_get_compositor_data (screen);
+
+  /* Chances are we actually get the window frame here */
+  cw = find_window_for_screen (screen,
+                               f ? meta_frame_get_xwindow (f) :
+                               meta_window_get_xwindow (window));
+  if (!cw)
+    return;
+
+  cw->priv->unmaximize_in_progress++;
+
+  if (!info->plugin_mgr ||
+      !meta_compositor_clutter_plugin_manager_event_4i (info->plugin_mgr,
+				CLUTTER_ACTOR (cw),
+				META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE,
+				cw->priv->type, 0, x, y, width, height))
+    {
+      cw->priv->unmaximize_in_progress--;
+    }
+#endif
+}
+
+static void
+clutter_cmp_update_workspace_geometry (MetaCompositor *compositor,
+				       MetaWorkspace  *workspace)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaScreen     *screen = meta_workspace_get_screen (workspace);
+  MetaCompScreen *info;
+  MetaCompositorClutterPluginManager *mgr;
+
+  info = meta_screen_get_compositor_data (screen);
+  mgr  = info->plugin_mgr;
+
+  if (!mgr || !workspace)
+    return;
+
+  meta_compositor_clutter_plugin_manager_update_workspace (mgr, workspace);
+#endif
+}
+
+static void
+clutter_cmp_switch_workspace (MetaCompositor *compositor,
+			      MetaScreen     *screen,
+			      MetaWorkspace  *from,
+			      MetaWorkspace  *to)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaCompScreen *info;
+  GList          *l;
+  gint            to_indx, from_indx;
+
+  info      = meta_screen_get_compositor_data (screen);
+  to_indx   = meta_workspace_index (to);
+  from_indx = meta_workspace_index (from);
+
+  l = info->windows;
+  while (l)
+    {
+      MetaCompWindow *cw = l->data;
+      MetaWindow     *mw = cw->priv->window;
+      gboolean        sticky;
+      gint            workspace = -1;
+
+      sticky = (!mw || meta_window_is_on_all_workspaces (mw));
+
+      if (!sticky)
+	{
+	  MetaWorkspace *w;
+
+	  w = meta_window_get_workspace (cw->priv->window);
+	  workspace = meta_workspace_index (w);
+
+	  /*
+	   * If the window is not on the target workspace, mark it for
+	   * unmap.
+	   */
+	  if (to_indx != workspace)
+	    {
+	      cw->priv->needs_unmap = TRUE;
+	    }
+	  else
+	    {
+	      cw->priv->needs_map = TRUE;
+	      cw->priv->needs_unmap = FALSE;
+	    }
+	}
+
+      /*
+       * Attach workspace number to the actor, so the plugin can use it.
+       */
+      g_object_set_data (G_OBJECT (cw),
+			 META_COMPOSITOR_CLUTTER_PLUGIN_WORKSPACE_KEY,
+			 GINT_TO_POINTER (workspace));
+
+      l = l->next;
+    }
+
+  info->switch_workspace_in_progress++;
+
+  if (!info->plugin_mgr ||
+      !meta_compositor_clutter_plugin_manager_switch_workspace (
+						info->plugin_mgr,
+						(const GList **)&info->windows,
+						from_indx,
+						to_indx))
+    {
+      info->switch_workspace_in_progress--;
+    }
+#endif
+}
+
 
 static MetaCompositor comp_info = {
   clutter_cmp_destroy,
@@ -1651,7 +2043,11 @@ static MetaCompositor comp_info = {
   clutter_cmp_get_window_pixmap,
   clutter_cmp_set_active_window,
   clutter_cmp_destroy_window,
-  clutter_cmp_minimize_window
+  clutter_cmp_minimize_window,
+  clutter_cmp_maximize_window,
+  clutter_cmp_unmaximize_window,
+  clutter_cmp_update_workspace_geometry,
+  clutter_cmp_switch_workspace
 };
 
 MetaCompositor *

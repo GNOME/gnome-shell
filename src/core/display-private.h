@@ -49,7 +49,6 @@
 typedef struct _MetaKeyBinding MetaKeyBinding;
 typedef struct _MetaStack      MetaStack;
 typedef struct _MetaUISlave    MetaUISlave;
-typedef struct _MetaWorkspace  MetaWorkspace;
 
 typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
 typedef struct _MetaGroupPropHooks  MetaGroupPropHooks;

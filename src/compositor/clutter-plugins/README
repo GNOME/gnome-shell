@@ -1,0 +1,41 @@
+
+Plugins implement effects associated with WM events, such as window map,
+minimizing, maximizing, unmaximizing, destruction and workspace switching. The
+plugin API is documented in src/include/compositor-clutter-plugin.h; in
+addition the simple plugin can be used as a reference implementation.
+
+The API is intended to be generic, exposing no implementation details of the WM
+to the plugins; this will facilitate reuse without modification with another WM
+(there are plans to use the same plugin API with Matchbox 2).
+
+Multiple plugins can implement the same effect and be loaded at the same time;
+however, stacking arbitrary effects in this way might not work as expected;
+this is particularly true of more complex effects, such as those for workspace
+switching.
+
+Plugins are installed in ${prefix}/lib/metacity/plugins/clutter; from there the
+WM will load plugins listed in the clutter_plugins key in the Metacity gconf
+general preferences group. Each entry in preferences has the format
+
+  'name: optional parameters'
+
+where 'name' is the name of the library without the .so suffix.
+
+As noted above, additional parameters can be passed to the plugin via the
+preference key. In such case, the plugin name is immediately followed by a
+colon, separating it from the parameters. Two common parameters should be
+handled by all plugins:
+
+  'debug'   indicates that the plugin is run in a debug mode (what exactly that
+            means is left to the plugin to determine).
+
+  'disable' parameter indicates which effects within the plugin should be
+            disabled; the format of the disable parameter is
+
+              'disable: effect1[, effect2];'
+
+            where effect1, etc., matches the effects listed in the
+            compositor-clutter-plugin.h file (currently one of 'map', 'destroy',
+            'maximize', 'unmaximize', 'switch-workspace'). Example 'disable:
+            minimize, maximize;'.
+

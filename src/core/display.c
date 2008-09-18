@@ -44,7 +44,7 @@
 #include "prefs.h"
 #include "resizepopup.h"
 #include "xprops.h"
-#include "workspace.h"
+#include "workspace-private.h"
 #include "bell.h"
 #include "effects.h"
 #include "compositor.h"

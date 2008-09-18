@@ -45,4 +45,5 @@ void meta_screen_set_cm_selection (MetaScreen *screen);
 void meta_screen_unset_cm_selection (MetaScreen *screen);
 #endif
 
+GList *meta_screen_get_workspaces (MetaScreen *screen);
 #endif
