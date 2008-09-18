@@ -1171,7 +1171,7 @@ clutter_stage_read_pixels (ClutterStage *stage,
   g_return_val_if_fail (x >= 0 && y >= 0, NULL);
 
   /* Force a redraw of the stage before reading back pixels */
-  clutter_stage_paint (CLUTTER_ACTOR (stage));
+  clutter_redraw (stage);
   clutter_stage_ensure_current (stage);
 
   glGetIntegerv (GL_VIEWPORT, viewport);
@@ -1190,6 +1190,21 @@ clutter_stage_read_pixels (ClutterStage *stage,
 
   pixels  = g_malloc (height * rowstride);
   temprow = g_malloc (rowstride);
+
+  /* Setup the pixel store parameters that may have been changed by
+     Cogl */
+  glPixelStorei (GL_PACK_ALIGNMENT, 4);
+#ifdef HAVE_COGL_GL
+  glPixelStorei (GL_PACK_ROW_LENGTH, 0);
+  glPixelStorei (GL_PACK_SKIP_PIXELS, 0);
+  glPixelStorei (GL_PACK_SKIP_ROWS, 0);
+#endif /* HAVE_COGL_GL */
+
+  /* The y co-ordinate should be given in OpenGL's coordinate system
+     so 0 is the bottom row */
+  y = stage_height - 1 - y - height;
+
+  glFinish ();
 
   /* check whether we need to read into a smaller temporary buffer */
   glReadPixels (x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
