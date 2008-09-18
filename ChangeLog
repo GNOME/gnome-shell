@@ -1,3 +1,17 @@
+2008-09-18  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1080 - clutter_stage_read_pixels has upside-down y coordinate
+
+	* clutter/clutter-stage.c (clutter_stage_read_pixels): Use
+	OpenGL's coordinate system for the arguments to glReadPixels (so
+	that y zero is the bottom of the window). Use clutter_redraw
+	instead of clutter_stage_paint to ensure the right GL context is
+	selected. Set some of the glPixelStore parameters that might have
+	been changed by Cogl.
+
+	* tests/test-stage-read-pixels.c: Replace with a different test
+	that gets a sub-region of the stage around the cursor.
+
 2008-09-17  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1145 - Flicker on resize the window
