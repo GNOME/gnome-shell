@@ -1059,6 +1059,85 @@ clutter_arg_no_debug_cb (const char *key,
 }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
+GQuark
+clutter_init_error_quark (void)
+{
+  return g_quark_from_static_string ("clutter-init-error-quark");
+}
+
+static ClutterInitError
+clutter_init_real (GError **error)
+{
+  ClutterMainContext *ctx;
+  ClutterActor *stage;
+
+  /* Note, creates backend if not already existing, though parse args will
+   * have likely created it
+   */
+  ctx = clutter_context_get_default ();
+
+  /* Stage will give us a GL Context etc */
+  stage = clutter_stage_get_default ();
+  if (!stage)
+    {
+      if (error)
+        g_set_error (error, CLUTTER_INIT_ERROR,
+                     CLUTTER_INIT_ERROR_INTERNAL,
+                     "Unable to create the default stage");
+      else
+        g_critical ("Unable to create the default stage");
+
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
+
+  clutter_actor_realize (stage);
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
+    {
+      if (error)
+        g_set_error (error, CLUTTER_INIT_ERROR,
+                     CLUTTER_INIT_ERROR_INTERNAL,
+                     "Unable to realize the default stage");
+      else
+        g_critical ("Unable to realize the default stage");
+
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
+
+  /* Now we can safely assume we have a valid GL context and can 
+   * start issueing cogl commands
+  */
+
+  /* Figure out framebuffer masks used for pick */
+  cogl_get_bitmasks (&ctx->fb_r_mask, &ctx->fb_g_mask, &ctx->fb_b_mask, NULL);
+
+  ctx->fb_r_mask_used = ctx->fb_r_mask;
+  ctx->fb_g_mask_used = ctx->fb_g_mask;
+  ctx->fb_b_mask_used = ctx->fb_b_mask;
+
+#ifndef HAVE_CLUTTER_FRUITY
+  /* We always do fuzzy picking for the fruity backend */
+  if (g_getenv ("CLUTTER_FUZZY_PICK") != NULL)
+#endif
+    {
+      ctx->fb_r_mask_used--;
+      ctx->fb_g_mask_used--;
+      ctx->fb_b_mask_used--;
+    }
+
+  /* Initiate event collection */
+  _clutter_backend_init_events (ctx->backend);
+
+  /* finally features - will call to backend and cogl */
+  _clutter_feature_init ();
+
+  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
+
+  clutter_is_initialized = TRUE;
+
+  return CLUTTER_INIT_SUCCESS;
+}
+
 static GOptionEntry clutter_args[] = {
   { "clutter-show-fps", 0, 0, G_OPTION_ARG_NONE, &clutter_show_fps,
     "Show frames per second", NULL },
@@ -1169,6 +1248,9 @@ post_parse_hook (GOptionContext  *context,
   else
     retval = TRUE;
 
+  if (retval)
+    clutter_init_real (error);
+
   return retval;
 }
 
@@ -1224,84 +1306,6 @@ clutter_get_option_group (void)
   _clutter_backend_add_options (context->backend, group);
 
   return group;
-}
-
-GQuark
-clutter_init_error_quark (void)
-{
-  return g_quark_from_static_string ("clutter-init-error-quark");
-}
-
-static ClutterInitError
-clutter_init_real (GError **error)
-{
-  ClutterMainContext *ctx;
-  ClutterActor *stage;
-
-  /* Note, creates backend if not already existing, though parse args will
-   * have likely created it
-   */
-  ctx = clutter_context_get_default ();
-
-  /* Stage will give us a GL Context etc */
-  stage = clutter_stage_get_default ();
-  if (!stage)
-    {
-      if (error)
-        g_set_error (error, CLUTTER_INIT_ERROR,
-                     CLUTTER_INIT_ERROR_INTERNAL,
-                     "Unable to create the default stage");
-      else
-        g_critical ("Unable to create the default stage");
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
-
-  clutter_actor_realize (stage);
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (stage))
-    {
-      if (error)
-        g_set_error (error, CLUTTER_INIT_ERROR,
-                     CLUTTER_INIT_ERROR_INTERNAL,
-                     "Unable to realize the default stage");
-      else
-        g_critical ("Unable to realize the default stage");
-
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
-
-  /* Now we can safely assume we have a valid GL context and can 
-   * start issueing cogl commands
-  */
-
-  /* Figure out framebuffer masks used for pick */
-  cogl_get_bitmasks (&ctx->fb_r_mask, &ctx->fb_g_mask, &ctx->fb_b_mask, NULL);
-
-  ctx->fb_r_mask_used = ctx->fb_r_mask;
-  ctx->fb_g_mask_used = ctx->fb_g_mask;
-  ctx->fb_b_mask_used = ctx->fb_b_mask;
-
-#ifndef HAVE_CLUTTER_FRUITY
-  /* We always do fuzzy picking for the fruity backend */
-  if (g_getenv ("CLUTTER_FUZZY_PICK") != NULL)
-#endif
-    {
-      ctx->fb_r_mask_used--;
-      ctx->fb_g_mask_used--;
-      ctx->fb_b_mask_used--;
-    }
-
-  /* Initiate event collection */
-  _clutter_backend_init_events (ctx->backend);
-
-  /* finally features - will call to backend and cogl */
-  _clutter_feature_init ();
-
-  clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
-
-  clutter_is_initialized = TRUE;
-
-  return CLUTTER_INIT_SUCCESS;
 }
 
 /**
@@ -1367,10 +1371,17 @@ clutter_init_with_args (int            *argc,
    * us by g_option_context_parse()
    */
   if (!res)
-    return CLUTTER_INIT_ERROR_INTERNAL;
+    {
+      /* if there has been an error in the initialization, the
+       * error id will be preserved inside the GError code
+       */
+      if (error && *error)
+        return (*error)->code;
+      else
+        return CLUTTER_INIT_ERROR_INTERNAL;
+    }
 
-  /* Do the real work.. */
-  return clutter_init_real (error);
+  return CLUTTER_INIT_SUCCESS;
 }
 
 static gboolean
@@ -1396,8 +1407,12 @@ clutter_parse_args (int    *argc,
 
   if (!g_option_context_parse (option_context, argc, argv, &error))
     {
-      g_warning ("%s", error->message);
-      g_error_free (error);
+      if (error)
+        {
+          g_warning ("%s", error->message);
+          g_error_free (error);
+        }
+
       ret = FALSE;
     }
 
@@ -1439,7 +1454,7 @@ clutter_init (int    *argc,
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
-  return clutter_init_real (NULL);
+  return CLUTTER_INIT_SUCCESS; 
 }
 
 gboolean

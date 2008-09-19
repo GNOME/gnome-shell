@@ -1,5 +1,17 @@
 2008-09-19  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1033 - Manually parsing command line options prevents
+	initializing clutter
+
+	* clutter/clutter-main.c:
+	(post_parse_hook), (clutter_init_with_args),
+	(clutter_parse_args), (clutter_init): Move the initialization
+	of Clutter at the end of the post-parse hook of Clutter's
+	GOptionGroup. Clutter must be initialized at the end of the
+	argument parsing.
+
+2008-09-19  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/clutter-main.c: Properly document the
 	clutter_get_option_group() function and the invariant that
 	after parsing Clutter's option group the library will be
