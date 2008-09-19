@@ -52,8 +52,10 @@
 #include "ui.h"
 #include "session.h"
 #include "prefs.h"
+#include "compositor.h"
 
 #include <glib-object.h>
+#include <gdk/gdkx.h>
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -65,6 +67,11 @@
 #include <fcntl.h>
 #include <locale.h>
 #include <time.h>
+
+#ifdef WITH_CLUTTER
+#include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
+#endif
 
 /**
  * The exit code we'll return to our parent process when we eventually die.
@@ -240,7 +247,7 @@ typedef struct
  * \param argv  Pointer to the array of arguments Metacity was given
  * \param meta_args  The result of parsing the arguments.
  **/
-static void
+static GOptionContext *
 meta_parse_options (int *argc, char ***argv,
                     MetaArguments *meta_args)
 {
@@ -307,15 +314,77 @@ meta_parse_options (int *argc, char ***argv,
 
   ctx = g_option_context_new (NULL);
   g_option_context_add_main_entries (ctx, options, "metacity");
+  
+#ifdef WITH_CLUTTER
+  /*
+   * We have to do two passes on the options; first for metacity options alone,
+   * and then on the metacity and clutter options combined (parsing clutter
+   * options causes implicit call to clutter_init(), and we need to set the
+   * metacity display for clutter before clutter can be initialized; this is
+   * suboptimal, but there is reluctance to change this behaviour, see clutter
+   * bug 1033).
+   *
+   * NB: double parsing of the options means that the clutter options will
+   *     not appear in the automatically generated strings.
+   */
+  g_option_context_set_ignore_unknown_options (ctx, TRUE);
+#endif
+
   if (!g_option_context_parse (ctx, argc, argv, &error))
     {
       g_print ("metacity: %s\n", error->message);
       exit(1);
     }
-  g_option_context_free (ctx);
+
   /* Return the parsed options through the meta_args param. */
   *meta_args = my_args;
+  return ctx;
 }
+
+
+#ifdef WITH_CLUTTER
+static void
+meta_clutter_init (GOptionContext *ctx, int *argc, char ***argv)
+{
+  GError *error = NULL;
+  
+  clutter_x11_set_display (gdk_display);
+  clutter_x11_disable_event_retrieval ();
+  
+  g_option_context_add_group (ctx, clutter_get_option_group());
+  g_option_context_set_ignore_unknown_options (ctx, FALSE);
+
+  if (!g_option_context_parse (ctx, argc, argv, &error))
+    {
+      /*
+       * If the failure is due to generic GOption error, exit with
+       * a message, otherwise fall back on Xrender backend.
+       */
+      if (error->domain == G_OPTION_ERROR)
+        {
+          g_print ("metacity: %s; exiting.\n", error->message);
+          exit(1);
+        }
+      
+      g_message ("Unable to initialize Clutter [%s]", error->message);
+
+      g_error_free (error);
+      meta_compositor_can_use_clutter__ = 0;
+    }
+  else
+    {
+      meta_compositor_can_use_clutter__ = 1;
+
+#if !CLUTTER_CHECK_VERSION(0,8,2)
+      /*
+       * This is to work around clutter bug; should not be necessary after
+       * 0.8.2
+       */
+      clutter_init (argc, argv);
+#endif
+    }
+}
+#endif
 
 /**
  * Selects which display Metacity should use. It first tries to use
@@ -358,6 +427,7 @@ main (int argc, char **argv)
     "Pango", "GLib-GObject", "GThread"
   };
   guint i;
+  GOptionContext *ctx;
   
   if (setlocale (LC_ALL, "") == NULL)
     meta_warning ("Locale not understood by C library, internationalization will not work\n");
@@ -390,7 +460,7 @@ main (int argc, char **argv)
   textdomain (GETTEXT_PACKAGE);
 
   /* Parse command line arguments.*/
-  meta_parse_options (&argc, &argv, &meta_args);
+  ctx = meta_parse_options (&argc, &argv, &meta_args);
 
   meta_set_syncing (meta_args.sync || (g_getenv ("METACITY_SYNC") != NULL));
 
@@ -410,6 +480,15 @@ main (int argc, char **argv)
   g_type_init ();
 
   meta_ui_init (&argc, &argv);  
+
+#ifdef WITH_CLUTTER
+  /*
+   * Clutter can only be initialized after the UI.
+   */
+  meta_clutter_init (ctx, &argc, &argv);
+#endif
+
+  g_option_context_free (ctx);
 
   /* must be after UI init so we can override GDK handlers */
   meta_errors_init ();
