@@ -1,5 +1,13 @@
 2008-09-19  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/clutter-main.c: Properly document the
+	clutter_get_option_group() function and the invariant that
+	after parsing Clutter's option group the library will be
+	initialized. (Thanks to Tomas Frydrych for pointing this
+	out)
+
+2008-09-19  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/x11/clutter-backend-x11.c: Properly document the
 	usage of clutter_x11_set_display().
 

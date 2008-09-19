@@ -1180,7 +1180,25 @@ post_parse_hook (GOptionContext  *context,
  * g_option_context_add_group(), if you are using g_option_context_parse()
  * to parse your commandline arguments.
  *
- * Return value: a GOptionGroup for the commandline arguments
+ * Calling g_option_context_parse() with Clutter's #GOptionGroup will result
+ * in Clutter's initialization. That is, the following code:
+ *
+ * |[
+ *   g_option_context_set_main_group (context, clutter_get_option_group ());
+ *   res = g_option_context_parse (context, &amp;argc, &amp;argc, NULL);
+ * ]|
+ *
+ * is functionally equivalent to:
+ *
+ * |[
+ *   clutter_init (&amp;argc, &amp;argv);
+ * ]|
+ *
+ * After g_option_context_parse() on a #GOptionContext containing the
+ * Clutter #GOptionGroup has returned %TRUE, Clutter is guaranteed to be
+ * initialized.
+ *
+ * Return value: a #GOptionGroup for the commandline arguments
  *   recognized by Clutter
  *
  * Since: 0.2
