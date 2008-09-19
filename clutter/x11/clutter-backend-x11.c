@@ -411,8 +411,14 @@ clutter_x11_get_default_display (void)
  * clutter_x11_set_display:
  * @xdpy: pointer to a X display connection.
  *
- * Sets the display connection clutter should use; must be called
- * before clutter_init().
+ * Sets the display connection Clutter should use; must be called
+ * before clutter_init(), clutter_init_with_args() or other functions
+ * pertaining Clutter's initialization process.
+ *
+ * If you are parsing the command line arguments by retrieving Clutter's
+ * #GOptionGroup with clutter_get_option_group() and calling
+ * g_option_context_parse() yourself, you should also call
+ * clutter_x11_set_display() before g_option_context_parse().
  *
  * Since: 0.8
  */

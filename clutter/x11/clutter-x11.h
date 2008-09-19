@@ -118,26 +118,21 @@ void         clutter_x11_remove_filter (ClutterX11FilterFunc func,
 
 ClutterX11FilterReturn clutter_x11_handle_event (XEvent *xevent);
 
-void         clutter_x11_disable_event_retrieval (void);
+void     clutter_x11_set_display (Display *xdpy);
 
-gboolean     clutter_x11_has_event_retrieval (void);
+void     clutter_x11_disable_event_retrieval (void);
+gboolean clutter_x11_has_event_retrieval (void);
 
 ClutterStage *clutter_x11_get_stage_from_window (Window win);
 
-GSList*
-clutter_x11_get_input_devices (void);
+GSList* clutter_x11_get_input_devices (void);
 
-ClutterX11InputDeviceType
-clutter_x11_get_input_device_type (ClutterX11XInputDevice *device);
+ClutterX11InputDeviceType clutter_x11_get_input_device_type (ClutterX11XInputDevice *device);
 
-void
-clutter_x11_enable_xinput ();
+void     clutter_x11_enable_xinput (void);
+gboolean clutter_x11_has_xinput (void);
 
-gboolean
-clutter_x11_has_xinput (void);
-
-gboolean
-clutter_x11_has_composite_extension (void);
+gboolean clutter_x11_has_composite_extension (void);
 
 G_END_DECLS
 

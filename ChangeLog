@@ -1,3 +1,11 @@
+2008-09-19  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/x11/clutter-backend-x11.c: Properly document the
+	usage of clutter_x11_set_display().
+
+	* clutter/x11/clutter-x11.h: clutter_x11_set_display() is
+	public API and should be declared in the header we install.
+
 2008-09-18  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1048 - SIGFPE in cogl_texture_set_region() with nvidia
