@@ -13,7 +13,7 @@ src/core/screen.c
 src/core/schema-bindings.c
 src/core/session.c
 src/core/util.c
-src/core/window-bindings.c
+src/core/window-bindings.h
 src/core/window.c
 src/core/window-props.c
 src/core/xprops.c

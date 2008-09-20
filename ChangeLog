@@ -1,5 +1,9 @@
 2008-09-20  Thomas Thurman  <tthurman@gnome.org>
 
+        * po/POTFILES.in: fix name of window-bindings.h
+
+2008-09-20  Thomas Thurman  <tthurman@gnome.org>
+
         * po/POTFILES.in: added new files and re-sorted
 
 2008-09-12  Vincent Untz  <vuntz@gnome.org>
