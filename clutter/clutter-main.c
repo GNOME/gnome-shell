@@ -395,29 +395,6 @@ _clutter_do_pick (ClutterStage   *stage,
   return clutter_get_actor_by_gid (id);
 }
 
-static void
-clutter_context_free (ClutterMainContext *context)
-{
-  /* this will take care of destroying the stage */
-  g_object_unref (context->backend);
-  context->backend = NULL;
-
-  clutter_id_pool_free (context->id_pool);
-  context->id_pool = NULL;
-
-  g_object_unref (context->font_map);
-  context->font_map = NULL;
-
-#ifdef CLUTTER_ENABLE_DEBUG
-  g_timer_destroy (context->timer);
-#endif
-  
-  /* XXX: The cleaning up of the event queue should be moved here from
-          the backend base class. */
-
-  g_free (context);
-}
-
 PangoContext *
 _clutter_context_create_pango_context (ClutterMainContext *self)
 {
@@ -473,8 +450,10 @@ clutter_main_level (void)
 void
 clutter_main (void)
 {
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
   GMainLoop *loop;
+
+  /* Make sure there is a context */
+  CLUTTER_CONTEXT ();
 
   if (!clutter_is_initialized)
     {
@@ -509,11 +488,6 @@ clutter_main (void)
   g_main_loop_unref (loop);
 
   clutter_main_loop_level--;
-
-  if (clutter_main_loop_level == 0)
-    {
-      clutter_context_free (context);
-    }
 
   CLUTTER_MARK ();
 }

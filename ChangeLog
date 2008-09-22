@@ -1,5 +1,17 @@
 2008-09-22  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 856 - Teardown sequence is borked
+
+	* clutter/clutter-main.c: Don't free the ClutterMainContext so
+	that the main loop can be restarted.
+
+	* clutter/eglx/clutter-backend-egl.c: 
+	* clutter/eglnative/clutter-backend-egl.c: Register an atexit
+	handler which disposes the backend object so that we are still
+	guaranteed to call eglTerminate on GLES.
+
+2008-09-22  Neil Roberts  <neil@linux.intel.com>
+
 	* tests/test-unproject.c (on_event): 
 	* tests/test-project.c (on_event): Use a return value for the
 	'event' signal handler, otherwise it might accidentally return
