@@ -93,8 +93,7 @@ find_handle_index (ClutterActor * a)
     return -1;
 }
 
-
-void 
+gboolean
 on_event (ClutterStage *stage,
 	  ClutterEvent *event,
 	  gpointer      user_data)
@@ -198,6 +197,8 @@ on_event (ClutterStage *stage,
     default:
       break;
     }
+
+  return FALSE;
 }
 
 

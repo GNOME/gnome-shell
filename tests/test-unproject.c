@@ -11,7 +11,7 @@ ClutterActor *label;
 #define RECT_W 320
 #define RECT_H 240
 
-void
+gboolean
 on_event (ClutterStage *stage,
 	  ClutterEvent *event,
 	  gpointer      user_data)
@@ -63,6 +63,8 @@ on_event (ClutterStage *stage,
     default:
       break;
     }
+
+  return FALSE;
 }
 
 

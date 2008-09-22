@@ -1,3 +1,11 @@
+2008-09-22  Neil Roberts  <neil@linux.intel.com>
+
+	* tests/test-unproject.c (on_event): 
+	* tests/test-project.c (on_event): Use a return value for the
+	'event' signal handler, otherwise it might accidentally return
+	TRUE for unhandled events and you won't be able to close the
+	window.
+
 2008-09-19  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	Bug 1033 - Manually parsing command line options prevents
