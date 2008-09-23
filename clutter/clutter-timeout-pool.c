@@ -422,8 +422,9 @@ clutter_timeout_pool_finalize (GSource *source)
  * Inside Clutter, every #ClutterTimeline share the same timeout pool, unless
  * the CLUTTER_TIMELINE=no-pool environment variable is set.
  *
- * Return value: the newly created #ClutterTimeoutPool. Use g_source_unref()
- *   to release the resources allocated by this function
+ * Return value: the newly created #ClutterTimeoutPool. The created pool
+ *   is owned by the GLib default context and should not be unreferenced
+ *   or freed
  *
  * Since: 0.4
  */
@@ -442,9 +443,12 @@ clutter_timeout_pool_new (gint priority)
     g_source_set_priority (source, priority);
 
   pool = (ClutterTimeoutPool *) source;
+
   g_get_current_time (&pool->start_time);
   pool->next_id = 1;
   pool->id = g_source_attach (source, NULL);
+
+  /* let the default GLib context manage the pool */
   g_source_unref (source);
 
   return pool;

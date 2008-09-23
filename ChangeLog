@@ -1,5 +1,11 @@
 2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/clutter-timeout-pool.c:
+	(clutter_timeout_pool_new): Fix previous commit: g_source_unref()
+	is not needed. (Thanks to Neil Roberts)
+
+2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1154 - clutter_timeout_pool_new() documentation doesn't say
 	how to free
 
