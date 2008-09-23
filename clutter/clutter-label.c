@@ -154,7 +154,8 @@ clutter_label_create_layout_no_cache (ClutterLabel *label,
         pango_layout_set_markup (layout, priv->text, -1);
     }
 
-  if (allocation_width > 0)
+  if (allocation_width > 0 &&
+      (priv->ellipsize != PANGO_ELLIPSIZE_NONE || priv->wrap))
     {
       int layout_width, layout_height;
 

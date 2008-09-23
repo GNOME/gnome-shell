@@ -1,5 +1,13 @@
 2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1125 - Save an extra pango_layout_get_size in many cases
+
+	* clutter/clutter-label.c:
+	(clutter_label_create_layout_no_cache): Add a simple check
+	before calling pango_layout_get_size(). (Johan Bilien)
+
+2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/clutter-alpha.c:
 	(clutter_alpha_get_alpha): Do not return the cached value but
 	just compute the current alpha value. The use case is pretty
