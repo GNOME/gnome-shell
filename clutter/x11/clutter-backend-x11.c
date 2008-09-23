@@ -57,7 +57,7 @@ struct _ClutterX11XInputDevice
   int                num_events;
 #endif
   ClutterX11InputDeviceType type; /* FIXME: generic to ClutterInputDevice? */
-};  
+};
 
 #ifdef USE_XINPUT
 void  _clutter_x11_register_xinput ();
@@ -181,7 +181,7 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
       if (clutter_synchronise)
         XSynchronize (backend_x11->xdpy, True);
-      
+
       XInternAtoms (backend_x11->xdpy,
                     (char **) atom_names, n_atom_names,
                     False, atoms);
@@ -425,7 +425,9 @@ clutter_x11_get_default_display (void)
 void
 clutter_x11_set_display (Display *xdpy)
 {
-  if (backend_singleton && backend_singleton->xdpy)
+  ClutterMainContext *ctx = clutter_context_get_default ();
+
+  if (ctx->is_initialized)
     {
       g_critical ("Display connection already exists. You can only call "
 		  "clutter_x11_set_display() once before clutter_init()\n");
@@ -450,11 +452,13 @@ clutter_x11_set_display (Display *xdpy)
 void
 clutter_x11_enable_xinput ()
 {
-  if (backend_singleton != NULL)
+  ClutterMainContext *ctx = clutter_context_get_default ();
+
+  if (ctx->is_initialized)
     {
       g_warning  ("clutter_x11_enable_xinput should "
                   "be called before clutter_init");
-      return; 
+      return;
     }
 
   _enable_xinput = TRUE;
@@ -473,11 +477,13 @@ clutter_x11_enable_xinput ()
 void
 clutter_x11_disable_event_retrieval (void)
 {
-  if (backend_singleton != NULL)
+  ClutterMainContext *ctx = clutter_context_get_default ();
+
+  if (ctx->is_initialized)
     {
       g_warning  ("clutter_x11_disable_event_retrieval should "
                   "be called before clutter_init");
-      return; 
+      return;
     }
 
   _no_xevent_retrieval = TRUE;
@@ -614,7 +620,7 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
 
 #ifdef USE_XINPUT
 
-void 
+void
 _clutter_x11_register_xinput ()
 {
   XDeviceInfo *xdevices = NULL;
@@ -629,7 +635,7 @@ _clutter_x11_register_xinput ()
   gint num_events = 0;
   gint i = 0, j = 0;
   gboolean have_an_xpointer = FALSE;
-  
+
   ClutterBackendX11      *x11b;
   ClutterX11XInputDevice *device = NULL;
 
@@ -671,12 +677,12 @@ _clutter_x11_register_xinput ()
       return;
     }
 
-  for (i = 0; i < num_devices; i++) 
+  for (i = 0; i < num_devices; i++)
   {
     num_events = 0;
     info = xdevices + i;
 
-    CLUTTER_NOTE (BACKEND, "Considering %li with type %d", 
+    CLUTTER_NOTE (BACKEND, "Considering %li with type %d",
                   info->id, info->use);
 
     /* Only want 'raw' devices themselves not virtual ones */
@@ -720,7 +726,7 @@ _clutter_x11_register_xinput ()
           break;
       }
 
-      CLUTTER_NOTE (BACKEND, "Registering XINPUT device with XID: %li", 
+      CLUTTER_NOTE (BACKEND, "Registering XINPUT device with XID: %li",
                     xdevice->device_id);
 
       /* We must go through all the classes supported by this device and
@@ -737,33 +743,33 @@ _clutter_x11_register_xinput ()
 #if 0
       /* We do not do XInput keyboard events yet, since it is broken */
           case KeyClass:
-            DeviceKeyPress (xdevice, 
-                x11b->event_types [CLUTTER_X11_XINPUT_KEY_PRESS_EVENT], 
+            DeviceKeyPress (xdevice,
+                x11b->event_types [CLUTTER_X11_XINPUT_KEY_PRESS_EVENT],
                 device->xevent_list [num_events]);
             num_events++;
 
-            DeviceKeyRelease (xdevice, 
-                x11b->event_types [CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT], 
+            DeviceKeyRelease (xdevice,
+                x11b->event_types [CLUTTER_X11_XINPUT_KEY_RELEASE_EVENT],
                 device->xevent_list [num_events]);
             num_events++;
             break;
 #endif
 
           case ButtonClass:
-            DeviceButtonPress (xdevice, 
-                x11b->event_types [CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT], 
+            DeviceButtonPress (xdevice,
+                x11b->event_types [CLUTTER_X11_XINPUT_BUTTON_PRESS_EVENT],
                 device->xevent_list [num_events]);
             num_events++;
 
-            DeviceButtonRelease (xdevice, 
-                x11b->event_types [CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT], 
+            DeviceButtonRelease (xdevice,
+                x11b->event_types [CLUTTER_X11_XINPUT_BUTTON_RELEASE_EVENT],
                 device->xevent_list [num_events]);
             num_events++;
             break;
 
           case ValuatorClass:
-            DeviceMotionNotify (xdevice, 
-                x11b->event_types [CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT], 
+            DeviceMotionNotify (xdevice,
+                x11b->event_types [CLUTTER_X11_XINPUT_MOTION_NOTIFY_EVENT],
                                    device->xevent_list [num_events]);
             num_events++;
             break;
@@ -813,15 +819,15 @@ _clutter_x11_select_events (Window xwin)
       return;
     }
 
-  for (list_it = context->input_devices; 
-       list_it != NULL; 
+  for (list_it = context->input_devices;
+       list_it != NULL;
        list_it = list_it->next)
   {
     device = (ClutterX11XInputDevice *)list_it->data;
 
-    XSelectExtensionEvent (backend_singleton->xdpy, 
+    XSelectExtensionEvent (backend_singleton->xdpy,
                            xwin,
-                           device->xevent_list, 
+                           device->xevent_list,
                            device->num_events);
   }
 }
@@ -841,8 +847,8 @@ _clutter_x11_get_device_for_xid (XID id)
       return NULL;
     }
 
-  for (list_it = context->input_devices; 
-       list_it != NULL; 
+  for (list_it = context->input_devices;
+       list_it != NULL;
        list_it = list_it->next)
   {
     device = (ClutterX11XInputDevice *)list_it->data;
@@ -894,7 +900,7 @@ clutter_x11_get_input_device_type (ClutterX11XInputDevice *device)
 
 /**
  * clutter_x11_has_xinput:
- * 
+ *
  * Gets whether Clutter has XInput support.
  *
  * Return value: %TRUE if Clutter was compiled with XInput support
@@ -939,9 +945,9 @@ clutter_x11_has_composite_extension (void)
   if (XCompositeQueryExtension (dpy, &event, &error))
     {
       int major = 0, minor = 0;
-      if (XCompositeQueryVersion (dpy, &major, &minor)) 
+      if (XCompositeQueryVersion (dpy, &major, &minor))
         {
-          if (major >= 0 && minor >= 3) 
+          if (major >= 0 && minor >= 3)
             have_composite = TRUE;
         }
     }

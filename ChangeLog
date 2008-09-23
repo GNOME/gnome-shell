@@ -1,3 +1,15 @@
+2008-09-23  Tomas Frydrych  <tf@linux.intel.com>
+
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/x11/clutter-backend-x11.c:
+	(clutter_get_option_group_without_init):
+	Function to obtain clutter option group without opening display
+	(for use with foreign display and gtk_clutter_init). Bug 1033.
+
+	Stripped trailing whitespace.
+	
 2008-09-22  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 856 - Teardown sequence is borked

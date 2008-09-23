@@ -89,6 +89,7 @@ ClutterInitError clutter_init_with_args   (int          *argc,
                                            char         *translation_domain,
                                            GError      **error);
 GOptionGroup *   clutter_get_option_group (void);
+GOptionGroup *   clutter_get_option_group_without_init (void);
 
 /* Mainloop */
 void             clutter_main                       (void);

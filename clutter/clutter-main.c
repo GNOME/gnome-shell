@@ -287,14 +287,14 @@ _clutter_id_to_color (guint id, ClutterColor *col)
   ctx = clutter_context_get_default ();
 
   /* compute the numbers we'll store in the components */
-  red   = (id >> (ctx->fb_g_mask_used+ctx->fb_b_mask_used)) 
+  red   = (id >> (ctx->fb_g_mask_used+ctx->fb_b_mask_used))
                 & (0xff >> (8-ctx->fb_r_mask_used));
   green = (id >> ctx->fb_b_mask_used) & (0xff >> (8-ctx->fb_g_mask_used));
   blue  = (id)  & (0xff >> (8-ctx->fb_b_mask_used));
 
   /* shift left bits a bit and add one, this circumvents
    * at least some potential rounding errors in GL/GLES
-   * driver / hw implementation. 
+   * driver / hw implementation.
    */
   if (ctx->fb_r_mask_used != ctx->fb_r_mask)
     red = red * 2 + 1;
@@ -303,7 +303,7 @@ _clutter_id_to_color (guint id, ClutterColor *col)
   if (ctx->fb_b_mask_used != ctx->fb_b_mask)
     blue  = blue  * 2 + 1;
 
-  /* shift up to be full 8bit values */ 
+  /* shift up to be full 8bit values */
   red   = (red   << (8 - ctx->fb_r_mask)) | (0xff >> (ctx->fb_r_mask + 1));
   green = (green << (8 - ctx->fb_g_mask)) | (0xff >> (ctx->fb_g_mask + 1));
   blue  = (blue  << (8 - ctx->fb_b_mask)) | (0xff >> (ctx->fb_b_mask + 1));
@@ -314,8 +314,8 @@ _clutter_id_to_color (guint id, ClutterColor *col)
   col->alpha = 0xff;
 }
 
-guint 
-_clutter_pixel_to_id (guchar pixel[4])                 
+guint
+_clutter_pixel_to_id (guchar pixel[4])
 {
   ClutterMainContext *ctx;
   gint  red, green, blue;
@@ -333,12 +333,12 @@ _clutter_pixel_to_id (guchar pixel[4])
   /* divide potentially by two if 'fuzzy' */
   red   = red   >> (ctx->fb_r_mask - ctx->fb_r_mask_used);
   green = green >> (ctx->fb_g_mask - ctx->fb_g_mask_used);
-  blue  = blue  >> (ctx->fb_b_mask - ctx->fb_b_mask_used);  
+  blue  = blue  >> (ctx->fb_b_mask - ctx->fb_b_mask_used);
 
   /* combine the correct per component values into the final id */
-  id =  blue + (green <<  ctx->fb_b_mask_used) 
+  id =  blue + (green <<  ctx->fb_b_mask_used)
           + (red << (ctx->fb_b_mask_used + ctx->fb_g_mask_used));
-  
+
   return id;
 }
 
@@ -353,7 +353,7 @@ _clutter_do_pick (ClutterStage   *stage,
   GLint               viewport[4];
   ClutterColor        white = { 0xff, 0xff, 0xff, 0xff };
   guint32             id;
-  
+
   context = clutter_context_get_default ();
 
   _clutter_backend_ensure_context (context->backend, stage);
@@ -956,7 +956,6 @@ clutter_context_get_default (void)
   if (G_UNLIKELY(!ClutterCntx))
     {
       ClutterMainContext *ctx;
-      gdouble resolution;
 
       ClutterCntx = ctx = g_new0 (ClutterMainContext, 1);
       ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
@@ -968,13 +967,6 @@ clutter_context_get_default (void)
       ctx->timer          =  g_timer_new ();
       g_timer_start (ctx->timer);
 #endif
-
-      ctx->font_map = PANGO_CLUTTER_FONT_MAP (pango_clutter_font_map_new ());
-
-      resolution = clutter_backend_get_resolution (ctx->backend);
-      pango_clutter_font_map_set_resolution (ctx->font_map, resolution);
-
-      pango_clutter_font_map_set_use_mipmapping (ctx->font_map, TRUE);
     }
 
   return ClutterCntx;
@@ -1044,11 +1036,42 @@ clutter_init_real (GError **error)
 {
   ClutterMainContext *ctx;
   ClutterActor *stage;
+  gdouble resolution;
+  ClutterBackend *backend;
 
   /* Note, creates backend if not already existing, though parse args will
    * have likely created it
    */
   ctx = clutter_context_get_default ();
+  backend = ctx->backend;
+
+  if (!ctx->options_parsed)
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+		   CLUTTER_INIT_ERROR_INTERNAL,
+		   "When using clutter_get_option_group_without_init() "
+		   "you must parse options before calling clutter_init()");
+
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
+
+  /*
+   * Call backend post parse hooks.
+   */
+  if (CLUTTER_BACKEND_GET_CLASS (backend)->post_parse)
+    if (!CLUTTER_BACKEND_GET_CLASS (backend)->post_parse (backend, error))
+      return CLUTTER_INIT_ERROR_BACKEND;
+
+  /*
+   * Resolution requires display to be open, so can only be queried after
+   * the post_parse hooks run.
+   */
+  ctx->font_map = PANGO_CLUTTER_FONT_MAP (pango_clutter_font_map_new ());
+
+  resolution = clutter_backend_get_resolution (ctx->backend);
+  pango_clutter_font_map_set_resolution (ctx->font_map, resolution);
+
+  pango_clutter_font_map_set_use_mipmapping (ctx->font_map, TRUE);
 
   /* Stage will give us a GL Context etc */
   stage = clutter_stage_get_default ();
@@ -1078,7 +1101,7 @@ clutter_init_real (GError **error)
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
-  /* Now we can safely assume we have a valid GL context and can 
+  /* Now we can safely assume we have a valid GL context and can
    * start issueing cogl commands
   */
 
@@ -1108,6 +1131,7 @@ clutter_init_real (GError **error)
   clutter_stage_set_title (CLUTTER_STAGE (stage), g_get_prgname ());
 
   clutter_is_initialized = TRUE;
+  ctx->is_initialized = TRUE;
 
   return CLUTTER_INIT_SUCCESS;
 }
@@ -1144,7 +1168,7 @@ pre_parse_hook (GOptionContext  *context,
 
   if (clutter_is_initialized)
     return TRUE;
-  
+
   if (setlocale (LC_ALL, "") == NULL)
     g_warning ("Locale not supported by C library.\n"
                "Using the fallback 'C' locale.");
@@ -1197,7 +1221,6 @@ post_parse_hook (GOptionContext  *context,
 {
   ClutterMainContext *clutter_context;
   ClutterBackend *backend;
-  gboolean retval = FALSE;
 
   if (clutter_is_initialized)
     return TRUE;
@@ -1216,16 +1239,16 @@ post_parse_hook (GOptionContext  *context,
     }
 
   clutter_context->frame_rate = clutter_default_fps;
+  clutter_context->options_parsed = TRUE;
 
-  if (CLUTTER_BACKEND_GET_CLASS (backend)->post_parse)
-    retval = CLUTTER_BACKEND_GET_CLASS (backend)->post_parse (backend, error);
-  else
-    retval = TRUE;
+  /*
+   * If not asked to defer display setup, call clutter_init_real(),
+   * which in turn calls the backend post parse hooks.
+   */
+  if (!clutter_context->defer_display_setup)
+    return clutter_init_real (error);
 
-  if (retval)
-    clutter_init_real (error);
-
-  return retval;
+  return TRUE;
 }
 
 /**
@@ -1265,6 +1288,8 @@ clutter_get_option_group (void)
   ClutterMainContext *context;
   GOptionGroup *group;
 
+  clutter_base_init ();
+
   context = clutter_context_get_default ();
 
   group = g_option_group_new ("clutter",
@@ -1278,6 +1303,39 @@ clutter_get_option_group (void)
 
   /* add backend-specific options */
   _clutter_backend_add_options (context->backend, group);
+
+  return group;
+}
+
+/**
+ * clutter_get_option_group_without_init:
+ *
+ * Returns a #GOptionGroup for the command line arguments recognized
+ * by Clutter. You should add this group to your #GOptionContext with
+ * g_option_context_add_group(), if you are using g_option_context_parse()
+ * to parse your commandline arguments. Unlike clutter_get_option_group(),
+ * calling g_option_context_parse() with the #GOptionGroup returned by this
+ * function requires a subsequent explicit call to clutter_init(); use this
+ * function when needing to set foreign display connection with
+ * clutter_x11_set_display(), or with gtk_clutter_init().
+ *
+ * Return value: a #GOptionGroup for the commandline arguments
+ *   recognized by Clutter
+ *
+ * Since: 0.8.2
+ */
+GOptionGroup *
+clutter_get_option_group_without_init (void)
+{
+  ClutterMainContext *context;
+  GOptionGroup *group;
+
+  clutter_base_init ();
+
+  context = clutter_context_get_default ();
+  context->defer_display_setup = TRUE;
+
+  group = clutter_get_option_group ();
 
   return group;
 }
@@ -1321,41 +1379,49 @@ clutter_init_with_args (int            *argc,
   GOptionContext *context;
   GOptionGroup *group;
   gboolean res;
+  ClutterMainContext *ctx;
 
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
   clutter_base_init ();
 
-  if (argc && *argc > 0 && *argv)
-    g_set_prgname ((*argv)[0]);
+  ctx = clutter_context_get_default ();
 
-  group   = clutter_get_option_group ();
-  context = g_option_context_new (parameter_string);
-
-  g_option_context_add_group (context, group);
-
-  if (entries)
-    g_option_context_add_main_entries (context, entries, translation_domain);
-
-  res = g_option_context_parse (context, argc, argv, error);
-  g_option_context_free (context);
-
-  /* if res is FALSE, the error is filled for
-   * us by g_option_context_parse()
-   */
-  if (!res)
+  if (!ctx->defer_display_setup)
     {
-      /* if there has been an error in the initialization, the
-       * error id will be preserved inside the GError code
-       */
-      if (error && *error)
-        return (*error)->code;
-      else
-        return CLUTTER_INIT_ERROR_INTERNAL;
-    }
+      if (argc && *argc > 0 && *argv)
+	g_set_prgname ((*argv)[0]);
 
-  return CLUTTER_INIT_SUCCESS;
+      group   = clutter_get_option_group ();
+      context = g_option_context_new (parameter_string);
+
+      g_option_context_add_group (context, group);
+
+      if (entries)
+	g_option_context_add_main_entries (context, entries, translation_domain);
+
+      res = g_option_context_parse (context, argc, argv, error);
+      g_option_context_free (context);
+
+      /* if res is FALSE, the error is filled for
+       * us by g_option_context_parse()
+       */
+      if (!res)
+	{
+	  /* if there has been an error in the initialization, the
+	   * error id will be preserved inside the GError code
+	   */
+	  if (error && *error)
+	    return (*error)->code;
+	  else
+	    return CLUTTER_INIT_ERROR_INTERNAL;
+	}
+
+      return CLUTTER_INIT_SUCCESS;
+    }
+  else
+    return clutter_init_real (error);
 }
 
 static gboolean
@@ -1382,10 +1448,10 @@ clutter_parse_args (int    *argc,
   if (!g_option_context_parse (option_context, argc, argv, &error))
     {
       if (error)
-        {
-          g_warning ("%s", error->message);
-          g_error_free (error);
-        }
+	{
+	  g_warning ("%s", error->message);
+	  g_error_free (error);
+	}
 
       ret = FALSE;
     }
@@ -1411,24 +1477,34 @@ ClutterInitError
 clutter_init (int    *argc,
               char ***argv)
 {
+  ClutterMainContext *ctx;
+  GError *error = NULL;
+
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
   clutter_base_init ();
 
-  if (argc && *argc > 0 && *argv)
-    g_set_prgname ((*argv)[0]);
+  ctx = clutter_context_get_default ();
 
-  /* parse_args will trigger backend creation and things like
-   * DISPLAY connection etc.
-  */
-  if (clutter_parse_args (argc, argv) == FALSE)
+  if (!ctx->defer_display_setup)
     {
-      CLUTTER_NOTE (MISC, "failed to parse arguments.");
-      return CLUTTER_INIT_ERROR_INTERNAL;
-    }
+      if (argc && *argc > 0 && *argv)
+	g_set_prgname ((*argv)[0]);
 
-  return CLUTTER_INIT_SUCCESS; 
+      /* parse_args will trigger backend creation and things like
+       * DISPLAY connection etc.
+       */
+      if (clutter_parse_args (argc, argv) == FALSE)
+	{
+	  CLUTTER_NOTE (MISC, "failed to parse arguments.");
+	  return CLUTTER_INIT_ERROR_INTERNAL;
+	}
+
+      return CLUTTER_INIT_SUCCESS;
+    }
+  else
+    return clutter_init_real (&error);
 }
 
 gboolean
@@ -1495,7 +1571,7 @@ event_click_count_generate (ClutterEvent *event)
           }
 
         /* store time and position for this click for comparison with
-         * next event 
+         * next event
          */
         previous_time = event->button.time;
         previous_x    = event->button.x;
@@ -1702,7 +1778,7 @@ generate_enter_leave_events (ClutterEvent *event)
 
   if (last_actor && last_actor != motion_current_actor)
     {
-      g_signal_handlers_disconnect_by_func 
+      g_signal_handlers_disconnect_by_func
                        (last_actor,
                         G_CALLBACK (unset_motion_last_actor),
                         event->motion.device);
@@ -1774,7 +1850,7 @@ clutter_do_event (ClutterEvent *event)
             else
               clutter_actor_destroy (stage);
           }
-        
+
         break;
 
       case CLUTTER_KEY_PRESS:
@@ -1850,13 +1926,13 @@ clutter_do_event (ClutterEvent *event)
             /* global grabs */
             if (context->pointer_grab_actor != NULL)
               {
-                clutter_actor_event (context->pointer_grab_actor, 
+                clutter_actor_event (context->pointer_grab_actor,
                                      event, FALSE);
                 break;
               }
             else if (device != NULL && device->pointer_grab_actor != NULL)
               {
-                clutter_actor_event (device->pointer_grab_actor, 
+                clutter_actor_event (device->pointer_grab_actor,
                                      event, FALSE);
                 break;
               }
@@ -2063,7 +2139,7 @@ on_pointer_grab_weak_notify (gpointer data,
 {
   ClutterInputDevice *dev = (ClutterInputDevice *)data;
   ClutterMainContext *context;
-  
+
   context = clutter_context_get_default ();
 
   if (dev)
@@ -2368,7 +2444,7 @@ clutter_set_motion_events_frequency (guint frequency)
  * renderer. This will free up some memory and GL texture
  * resources. The cache will be automatically refilled as more text is
  * drawn.
- * 
+ *
  * Since: 0.8
  */
 void
@@ -2417,7 +2493,7 @@ clutter_get_use_mipmapped_text (void)
   if (font_map)
     return pango_clutter_font_map_get_use_mipmapping (font_map);
 
-  return FALSE;    
+  return FALSE;
 }
 
 /**
@@ -2439,8 +2515,8 @@ clutter_get_input_device_for_id (gint id)
 
   context = clutter_context_get_default ();
 
-  for (item = context->input_devices; 
-       item != NULL; 
+  for (item = context->input_devices;
+       item != NULL;
        item = item->next)
   {
     device = item->data;

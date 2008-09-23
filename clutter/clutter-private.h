@@ -91,13 +91,15 @@ struct _ClutterMainContext
                                           system backend */
   ClutterStageManager *stage_manager;  /* stages */
   GQueue          *events_queue;       /* the main event queue */
-  
+
   guint            is_initialized : 1;  
+  guint            motion_events_per_actor : 1;/* set for enter/leave events */
+  guint            defer_display_setup : 1;
+  guint            options_parsed : 1;
+
   GTimer          *timer;	       /* Used for debugging scheduler */
 
   ClutterPickMode  pick_mode;          /* Indicates pick render mode   */
-
-  guint            motion_events_per_actor : 1;/* set for enter/leave events */
 
   guint            motion_frequency;   /* Motion events per second */
   gint             num_reactives;      /* Num of reactive actors */
