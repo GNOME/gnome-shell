@@ -317,17 +317,11 @@ meta_parse_options (int *argc, char ***argv,
   
 #ifdef WITH_CLUTTER
   /*
-   * We have to do two passes on the options; first for metacity options alone,
-   * and then on the metacity and clutter options combined (parsing clutter
-   * options causes implicit call to clutter_init(), and we need to set the
-   * metacity display for clutter before clutter can be initialized; this is
-   * suboptimal, but there is reluctance to change this behaviour, see clutter
-   * bug 1033).
-   *
-   * NB: double parsing of the options means that the clutter options will
-   *     not appear in the automatically generated strings.
+   * This function is only available in clutter >= 0.8.2
    */
-  g_option_context_set_ignore_unknown_options (ctx, TRUE);
+#if CLUTTER_CHECK_VERSION(0,8,2)
+  g_option_context_add_group (ctx, clutter_get_option_group_without_init ());
+#endif
 #endif
 
   if (!g_option_context_parse (ctx, argc, argv, &error))
@@ -346,42 +340,17 @@ meta_parse_options (int *argc, char ***argv,
 static void
 meta_clutter_init (GOptionContext *ctx, int *argc, char ***argv)
 {
-  GError *error = NULL;
-  
   clutter_x11_set_display (gdk_display);
   clutter_x11_disable_event_retrieval ();
   
-  g_option_context_add_group (ctx, clutter_get_option_group());
-  g_option_context_set_ignore_unknown_options (ctx, FALSE);
-
-  if (!g_option_context_parse (ctx, argc, argv, &error))
-    {
-      /*
-       * If the failure is due to generic GOption error, exit with
-       * a message, otherwise fall back on Xrender backend.
-       */
-      if (error->domain == G_OPTION_ERROR)
+  if (CLUTTER_INIT_SUCCESS == clutter_init (argc, argv))
         {
-          g_print ("metacity: %s; exiting.\n", error->message);
-          exit(1);
-        }
-      
-      g_message ("Unable to initialize Clutter [%s]", error->message);
-
-      g_error_free (error);
-      meta_compositor_can_use_clutter__ = 0;
+      meta_compositor_can_use_clutter__ = 1;
     }
   else
     {
-      meta_compositor_can_use_clutter__ = 1;
-
-#if !CLUTTER_CHECK_VERSION(0,8,2)
-      /*
-       * This is to work around clutter bug; should not be necessary after
-       * 0.8.2
-       */
-      clutter_init (argc, argv);
-#endif
+      g_message ("Unable to initialize Clutter.\n");
+      meta_compositor_can_use_clutter__ = 0;
     }
 }
 #endif
