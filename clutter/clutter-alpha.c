@@ -92,32 +92,8 @@ timeline_new_frame_cb (ClutterTimeline *timeline,
   ClutterAlphaPrivate *priv = alpha->priv;
 
   /* Update alpha value and notify */
-  if (G_LIKELY (priv->closure))
-    {
-      GValue params = { 0, };
-      GValue result_value = { 0, };
-
-      g_object_ref (alpha);
-
-      g_value_init (&result_value, G_TYPE_UINT);
-
-      g_value_init (&params, CLUTTER_TYPE_ALPHA);
-      g_value_set_object (&params, alpha);
-		     
-      g_closure_invoke (priv->closure,
-                        &result_value,
-                        1,
-                        &params,
-                        NULL);
-
-      priv->alpha = g_value_get_uint (&result_value);
-
-      g_value_unset (&result_value);
-      g_value_unset (&params);
-
-      g_object_notify (G_OBJECT (alpha), "alpha");
-      g_object_unref (alpha);
-    }
+  priv->alpha = clutter_alpha_get_alpha (alpha);
+  g_object_notify (G_OBJECT (alpha), "alpha");
 }
 
 static void 
@@ -175,9 +151,7 @@ clutter_alpha_finalize (GObject *object)
   ClutterAlphaPrivate *priv = CLUTTER_ALPHA (object)->priv;
 
   if (priv->closure)
-    {
-      g_closure_unref (priv->closure);
-    }
+    g_closure_unref (priv->closure);
 
   G_OBJECT_CLASS (clutter_alpha_parent_class)->finalize (object);
 }
@@ -258,9 +232,40 @@ clutter_alpha_init (ClutterAlpha *self)
 guint32
 clutter_alpha_get_alpha (ClutterAlpha *alpha)
 {
-  g_return_val_if_fail (CLUTTER_IS_ALPHA (alpha), FALSE);
-  
-  return alpha->priv->alpha;
+  ClutterAlphaPrivate *priv;
+  guint32 retval = 0;
+
+  g_return_val_if_fail (CLUTTER_IS_ALPHA (alpha), 0);
+
+  priv = alpha->priv;
+
+  if (G_LIKELY (priv->closure))
+    {
+      GValue params = { 0, };
+      GValue result_value = { 0, };
+
+      g_object_ref (alpha);
+
+      g_value_init (&result_value, G_TYPE_UINT);
+
+      g_value_init (&params, CLUTTER_TYPE_ALPHA);
+      g_value_set_object (&params, alpha);
+		     
+      g_closure_invoke (priv->closure,
+                        &result_value,
+                        1,
+                        &params,
+                        NULL);
+
+      retval = g_value_get_uint (&result_value);
+
+      g_value_unset (&result_value);
+      g_value_unset (&params);
+
+      g_object_unref (alpha);
+    }
+
+  return retval;
 }
 
 /**
@@ -318,13 +323,11 @@ clutter_alpha_set_func (ClutterAlpha    *alpha,
                         gpointer         data,
                         GDestroyNotify   destroy)
 {
-  ClutterAlphaPrivate *priv;
   GClosure *closure;
 
   g_return_if_fail (CLUTTER_IS_ALPHA (alpha));
+  g_return_if_fail (func != NULL);
   
-  priv = alpha->priv;
-
   closure = g_cclosure_new (G_CALLBACK (func), data, (GClosureNotify) destroy);
   clutter_alpha_set_closure (alpha, closure);
 }
