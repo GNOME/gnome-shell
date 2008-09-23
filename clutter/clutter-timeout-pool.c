@@ -422,7 +422,8 @@ clutter_timeout_pool_finalize (GSource *source)
  * Inside Clutter, every #ClutterTimeline share the same timeout pool, unless
  * the CLUTTER_TIMELINE=no-pool environment variable is set.
  *
- * Return value: the newly created #ClutterTimeoutPool
+ * Return value: the newly created #ClutterTimeoutPool. Use g_source_unref()
+ *   to release the resources allocated by this function
  *
  * Since: 0.4
  */

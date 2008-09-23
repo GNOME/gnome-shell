@@ -1,5 +1,14 @@
 2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1154 - clutter_timeout_pool_new() documentation doesn't say
+	how to free
+
+	* clutter/clutter-timeout-pool.c: Update the documentation to
+	note that you must use g_source_unref() to free the timeout
+	pool. (Murray Cumming)
+
+2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1124 - Clutter causes an additional size request in each
 	allocation
 
