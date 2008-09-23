@@ -344,7 +344,7 @@ meta_clutter_init (GOptionContext *ctx, int *argc, char ***argv)
   clutter_x11_disable_event_retrieval ();
   
   if (CLUTTER_INIT_SUCCESS == clutter_init (argc, argv))
-        {
+    {
       meta_compositor_can_use_clutter__ = 1;
     }
   else
