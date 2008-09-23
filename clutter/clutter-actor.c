@@ -710,10 +710,7 @@ static void
 clutter_actor_store_old_geometry (ClutterActor    *self,
                                   ClutterActorBox *box)
 {
-  box->x1 = clutter_actor_get_xu (self);
-  box->y1 = clutter_actor_get_yu (self);
-  box->x2 = box->x1 + clutter_actor_get_widthu (self);
-  box->y2 = box->y1 + clutter_actor_get_heightu (self);
+  *box = self->priv->allocation;
 }
 
 static inline void

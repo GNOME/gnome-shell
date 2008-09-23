@@ -1,5 +1,14 @@
 2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1124 - Clutter causes an additional size request in each
+	allocation
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_store_old_geometry): Store the allocation instead
+	of causing a new size-request cycle. (Johan Bilien)
+
+2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1125 - Save an extra pango_layout_get_size in many cases
 
 	* clutter/clutter-label.c:
