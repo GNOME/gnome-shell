@@ -422,9 +422,13 @@ clutter_timeout_pool_finalize (GSource *source)
  * Inside Clutter, every #ClutterTimeline share the same timeout pool, unless
  * the CLUTTER_TIMELINE=no-pool environment variable is set.
  *
+ * #ClutterTimeoutPool is part of the #ClutterTimeline implementation
+ * and should not be used by application developers.
+ *
  * Return value: the newly created #ClutterTimeoutPool. The created pool
- *   is owned by the GLib default context and should not be unreferenced
- *   or freed
+ *   is owned by the GLib default context and will be automatically
+ *   destroyed when the context is destroyed. It is possible to force
+ *   the destruction of the timeout pool using g_source_destroy()
  *
  * Since: 0.4
  */

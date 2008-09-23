@@ -1,5 +1,9 @@
 2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/clutter-timeout-pool.c: Reword previous commit.
+
+2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/clutter-timeout-pool.c:
 	(clutter_timeout_pool_new): Fix previous commit: g_source_unref()
 	is not needed. (Thanks to Neil Roberts)
