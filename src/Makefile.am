@@ -105,6 +105,8 @@ metacity_SOURCES= 				\
 if WITH_CLUTTER
 metacity_SOURCES +=	compositor/compositor-clutter.c			\
 			compositor/compositor-clutter.h			\
+			compositor/shaped-texture.c			\
+			compositor/shaped-texture.h			\
 			include/compositor-clutter-plugin.h		\
 			compositor/compositor-clutter-plugin-manager.c	\
 			compositor/compositor-clutter-plugin-manager.h
