@@ -305,6 +305,8 @@ meta_comp_window_init (MetaCompWindow *self)
 
 static gboolean is_shaped (MetaDisplay *display, Window xwindow);
 static gboolean meta_comp_window_has_shadow (MetaCompWindow *self);
+static void update_shape (MetaCompositorClutter *compositor,
+                          MetaCompWindow *cw);
 
 static void
 meta_comp_window_constructed (GObject *object)
@@ -350,6 +352,10 @@ meta_comp_window_constructed (GObject *object)
 
   priv->actor = meta_shaped_texture_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
+
+  update_shape ((MetaCompositorClutter *)
+                 meta_display_get_compositor (display),
+                 self);
 }
 
 static void
@@ -1385,6 +1391,67 @@ process_damage (MetaCompositorClutter *compositor,
 }
 
 static void
+update_shape (MetaCompositorClutter *compositor,
+              MetaCompWindow *cw)
+{
+  MetaCompWindowPrivate *priv = cw->priv;
+
+  meta_shaped_texture_clear_rectangles (META_SHAPED_TEXTURE (priv->actor));
+
+#ifdef HAVE_SHAPE
+  if (priv->shaped)
+    {
+      Display *xdisplay = meta_display_get_xdisplay (compositor->display);
+      XRectangle *rects;
+      int n_rects, ordering;
+
+      rects = XShapeGetRectangles (xdisplay,
+                                   priv->xwindow,
+                                   ShapeBounding,
+                                   &n_rects,
+                                   &ordering);
+
+      if (rects)
+        {
+          meta_shaped_texture_add_rectangles (META_SHAPED_TEXTURE (priv->actor),
+                                              n_rects, rects);
+
+          XFree (rects);
+        }
+    }
+#endif
+}
+
+#ifdef HAVE_SHAPE
+static void
+process_shape (MetaCompositorClutter *compositor,
+               XShapeEvent           *event)
+{
+  MetaCompWindow *cw = find_window_in_display (compositor->display,
+                                               event->window);
+  MetaCompWindowPrivate *priv = cw->priv;
+
+  if (cw == NULL)
+    return;
+
+  if (event->kind == ShapeBounding) 
+    {
+      if (!event->shaped && priv->shaped)
+        priv->shaped = FALSE;
+      
+      resize_win (cw, priv->attrs.x, priv->attrs.y,
+                  event->width + event->x, event->height + event->y,
+                  priv->attrs.border_width, priv->attrs.override_redirect);
+      
+      if (event->shaped && !priv->shaped)
+        priv->shaped = TRUE;
+
+      update_shape (compositor, cw);
+    }
+}
+#endif
+
+static void
 process_configure_notify (MetaCompositorClutter  *compositor,
                           XConfigureEvent        *event)
 {
@@ -1749,11 +1816,11 @@ clutter_cmp_process_event (MetaCompositor *compositor,
         {
           process_damage (xrc, (XDamageNotifyEvent *) event);
         }
-
-
-      /* else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify)
+#ifdef HAVE_SHAPE
+      else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify) 
         process_shape (xrc, (XShapeEvent *) event);
-      else
+#endif /* HAVE_SHAPE */
+      /* else
         {
           meta_error_trap_pop (xrc->display, FALSE);
           return;
