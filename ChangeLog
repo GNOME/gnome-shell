@@ -1,3 +1,10 @@
+2008-09-24  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	Bug 1130 - CLUTTER_MOTION is not emitted when time goes backwards.
+
+	* clutter/clutter-main.c (clutter_do_event): Check for time
+	rollbacks inside the motion event throttling. (Pierce Liu)
+
 2008-09-23  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-timeout-pool.c: Reword previous commit.

@@ -1903,7 +1903,16 @@ clutter_do_event (ClutterEvent *event)
                   delta,
                   event->any.time);
 
-            if (event->any.time < (local_motion_time + delta))
+            /* we need to guard against roll-overs and the
+             * case where the time is rolled backwards and
+             * the backend is not ensuring a monotonic clock
+             * for the events.
+             *
+             * see:
+             *   http://bugzilla.openedhand.com/show_bug.cgi?id=1130
+             */
+            if (event->any.time >= local_motion_time &&
+                event->any.time < (local_motion_time + delta))
               break;
             else
               local_motion_time = event->any.time;
