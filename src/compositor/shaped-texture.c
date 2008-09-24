@@ -258,8 +258,8 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
                                 GL_TEXTURE_HEIGHT,
                                 &priv->mask_gl_height);
 
-      if (priv->mask_gl_width == tex_width
-          && priv->mask_gl_height == tex_height)
+      if ((guint) priv->mask_gl_width == tex_width
+          && (guint) priv->mask_gl_height == tex_height)
         meta_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
                                              priv->mask_tex_coords);
       else
@@ -375,7 +375,8 @@ meta_shaped_texture_paint (ClutterActor *actor)
                                                                - alloc.y1),
                                        vertex_coords);
 
-  if (paint_gl_width == tex_width && paint_gl_height == tex_height)
+  if ((guint) paint_gl_width == tex_width
+      && (guint) paint_gl_height == tex_height)
     meta_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
                                          paint_tex_coords);
   else
