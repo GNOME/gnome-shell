@@ -95,7 +95,7 @@ meta_shaped_texture_init (MetaShapedTexture *self)
 
   priv = self->priv = META_SHAPED_TEXTURE_GET_PRIVATE (self);
 
-  priv->rectangles = g_array_new (FALSE, FALSE, sizeof (ClutterGeometry));
+  priv->rectangles = g_array_new (FALSE, FALSE, sizeof (XRectangle));
 
   priv->mask_texture = COGL_INVALID_HANDLE;
 }
@@ -209,15 +209,15 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
   if (priv->mask_texture == COGL_INVALID_HANDLE)
     {
       guchar *mask_data;
-      const ClutterGeometry *rect;
+      const XRectangle *rect;
 
       /* Create data for an empty image */
       mask_data = g_malloc0 (tex_width * tex_height);
       
       /* Cut out a hole for each rectangle */
-      for (rect = (ClutterGeometry *) priv->rectangles->data
+      for (rect = (XRectangle *) priv->rectangles->data
              + priv->rectangles->len;
-           rect-- > (ClutterGeometry *) priv->rectangles->data;)
+           rect-- > (XRectangle *) priv->rectangles->data;)
         {
           gint x1 = rect->x, x2 = x1 + rect->width;
           gint y1 = rect->y, y2 = y1 + rect->height;
@@ -472,7 +472,7 @@ meta_shaped_texture_clear_rectangles (MetaShapedTexture *stex)
 
 void
 meta_shaped_texture_add_rectangle (MetaShapedTexture *stex,
-                                   const ClutterGeometry *rect)
+                                   const XRectangle *rect)
 {
   g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
 
@@ -482,7 +482,7 @@ meta_shaped_texture_add_rectangle (MetaShapedTexture *stex,
 void
 meta_shaped_texture_add_rectangles (MetaShapedTexture *stex,
                                     size_t num_rects,
-                                    const ClutterGeometry *rects)
+                                    const XRectangle *rects)
 {
   MetaShapedTexturePrivate *priv;
 

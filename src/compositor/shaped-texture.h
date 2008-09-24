@@ -75,10 +75,10 @@ ClutterActor *meta_shaped_texture_new (void);
 void meta_shaped_texture_clear_rectangles (MetaShapedTexture *stex);
 
 void meta_shaped_texture_add_rectangle (MetaShapedTexture *stex,
-                                        const ClutterGeometry *rect);
+                                        const XRectangle *rect);
 void meta_shaped_texture_add_rectangles (MetaShapedTexture *stex,
                                          size_t num_rects,
-                                         const ClutterGeometry *rects);
+                                         const XRectangle *rects);
 
 G_END_DECLS
 
