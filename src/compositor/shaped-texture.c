@@ -24,6 +24,7 @@
  */
 
 #include <clutter/clutter-texture.h>
+#include <clutter/glx/clutter-glx.h>
 #include <cogl/cogl.h>
 #include <string.h>
 
@@ -39,7 +40,7 @@ static void meta_shaped_texture_pick (ClutterActor *actor,
 static void meta_shaped_texture_dirty_mask (MetaShapedTexture *stex);
 
 G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
-               CLUTTER_TYPE_TEXTURE);
+               CLUTTER_GLX_TYPE_TEXTURE_PIXMAP);
 
 #define META_SHAPED_TEXTURE_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), META_TYPE_SHAPED_TEXTURE, \

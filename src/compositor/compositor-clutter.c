@@ -19,6 +19,7 @@
 #include "compositor-clutter.h"
 #include "compositor-clutter-plugin-manager.h"
 #include "xprops.h"
+#include "shaped-texture.h"
 #include <X11/Xatom.h>
 #include <X11/Xlibint.h>
 #include <X11/extensions/shape.h>
@@ -347,7 +348,7 @@ meta_comp_window_constructed (GObject *object)
       clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->shadow);
     }
 
-  priv->actor = clutter_glx_texture_pixmap_new ();
+  priv->actor = meta_shaped_texture_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
 }
 

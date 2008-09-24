@@ -27,6 +27,7 @@
 #define __META_SHAPED_TEXTURE_H__
 
 #include <clutter/clutter-texture.h>
+#include <clutter/glx/clutter-glx.h>
 
 G_BEGIN_DECLS
 
@@ -57,12 +58,12 @@ typedef struct _MetaShapedTexturePrivate MetaShapedTexturePrivate;
 
 struct _MetaShapedTextureClass
 {
-  ClutterTextureClass parent_class;
+  ClutterGLXTexturePixmapClass parent_class;
 };
 
 struct _MetaShapedTexture
 {
-  ClutterTexture parent;
+  ClutterGLXTexturePixmap parent;
 
   MetaShapedTexturePrivate *priv;
 };
