@@ -1,3 +1,72 @@
+Clutter 0.8.2 (xx/09/2008)
+===============================================================================
+
+ * List of changes between 0.8.0 and 0.8.2
+
+   o Add constructor-only properties for the :container and :actor
+     properties of ClutterChildMeta
+   o Resync the Clutter keysyms with X.org ones.
+   o Documentation fixes and improvements
+   o Allow defining ClutterColor as an object or an array inside
+     ClutterScript UI definitions
+   o Added the missing :perspective property to ClutterStage
+   o Fixed the upper and lower boundaries for ClutterUnit and
+     ClutterFixed properties
+   o Fix a bug that prevented disabling sorting on ClutterModel
+   o Fix a bug in clutter_timeline_list_markers()
+   o Queue a redraw when the clip is changed
+   o Optimize calls to push and pop the matrix when painting
+   o Add a variable to the pkgconfig file for extracting the
+     COGL backend, for configure-time checks
+   o Fix a typo in cogl_path_rel_curve_to()
+   o Fix showing the cursor after it being hidden once
+   o Add a function for obtaining Clutter's option group without
+     initializing Clutter
+
+ * List of bugs fixed since 0.8.0
+
+   o #856 - Teardown sequence is borked
+   o #945 - Clipping+fbo cloning bugs
+   o #1010 - ClutterLabel does not update the layout (again)
+   o #1020 - TFP resyncing on MapNotify/ConfigureNotify [Andy Wingo]
+   o #1033 - Manually parsing command line options prevents
+     initializing clutter
+   o #1034 - Picking doesn't work on Eee PC
+   o #1038 - Clutter 0.8 won't build due to redefined functions
+   o #1044 - cogl_get_viewport error
+   o #1047 - API documentation from release tarball is not
+     installed by "make install" [Mirco Müller]
+   o #1048 - SIGFPE in cogl_texture_set_region() with
+     nvidia [Gwenole Beauchesne]
+   o #1062 - clutter_actor_query_coords() replacement in
+     0.8 [Gwenole Beauchesne]
+   o #1069 - Warnings with ClutterScore
+   o #1071 - clutter_timeline_get_duration doesn't always work
+   o #1075 - Difficult to bind clutter_stage_new
+   o #1080 - clutter_stage_read_pixels has upside-down y coordinate
+   o #1082 - Texture bitmap is destroyed in wrong way
+   o #1085 - Cursor is in wrong position on ClutterEntry if set
+     x-align property
+   o #1090 - Label somtimes returns natural_width < min_width [Johan Bilien]
+   o #1091 - WM_MOUSEWHEEL (scroll-event) not handled
+     correctly [Roman Yazmin]
+   o #1099 - No ClutterScript API to get a list of IDs in a given
+     file [Noah Gibbs]
+   o #1100 - WM_SIZE not handled correctly, user_resize and
+     window_style correction
+   o #1103 - Two typos in clutter documentation
+   o #1121 - Setting anchor point doesn't work if set too early
+   o #1124 - Clutter causes an additional size request in each
+     allocation [Johan Bilien]
+   o #1125 - Save an extra pango_layout_get_size in many
+     cases [Johan Bilien]
+   o #1130 - CLUTTER_MOTION is not emitted when time goes
+     backwards. [Pierce Liu]
+   o #1137 - Setting the anchor point does not trigger a re-paint
+   o #1145 - Flicker on resize the window
+   o #1154 - clutter_timeout_pool_new() documentation doesn't say
+     how to free [Murray Cumming]
+
 Clutter 0.8.0 (10/07/2008)
 ===============================================================================
 

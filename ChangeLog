@@ -1,5 +1,17 @@
 2008-09-25  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* configure.ac: Post release bump to 0.8.3
+
+======== Release 0.8.2 ========================================================
+
+2008-09-25  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* configure.ac:
+	* README:
+	* NEWS: Release 0.8.2
+
+2008-09-25  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/clutter-event.h: Fix missing documentation.
 
 2008-09-24  Emmanuele Bassi  <ebassi@linux.intel.com>

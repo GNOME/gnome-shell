@@ -177,7 +177,7 @@ Release Notes for Clutter 0.8
   based primitive drawing, clipping, and improved FBO and shader
   support. It is now also fully documented.
 
-  GL Texture Rectangle ext is no longer used, the regular 2D NPOTS
+* GL Texture Rectangle ext is no longer used, the regular 2D NPOTS
   extension is preffered instead but not required. 
 
 * Clutter now has basic suppport for multiple input devices assuming
@@ -327,9 +327,9 @@ Release Notes for Clutter 0.8
 
 * The Clutter X11 and GLX backends feature support for wrapping external
   X Drawables (such as windows as pixmaps) via the 'texture_from_pixmap' GLX
-  extension if available and fallback to slower XGetImage copys if not.
+  extension if available and fallback to slower XGetImage copies if not.
 
-* ClutterContainer can have per child custom propertys via ClutterChildMeta. 
+* ClutterContainer can have per child custom properties via ClutterChildMeta. 
 
 Release Notes for Clutter 0.6
 -------------------------------
