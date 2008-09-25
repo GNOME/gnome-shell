@@ -321,6 +321,12 @@ meta_comp_window_constructed (GObject *object)
 
   meta_comp_window_get_window_type (self);
 
+#ifdef HAVE_SHAPE
+  /* Listen for ShapeNotify events on the window */
+  if (meta_display_has_shape (display))
+    XShapeSelectInput (xdisplay, xwindow, ShapeNotifyMask);
+#endif
+
   priv->shaped = is_shaped (display, xwindow);
 
   if (priv->attrs.class == InputOnly)
@@ -1445,16 +1451,7 @@ process_shape (MetaCompositorClutter *compositor,
 
   if (event->kind == ShapeBounding)
     {
-      if (!event->shaped && priv->shaped)
-        priv->shaped = FALSE;
-
-      resize_win (cw, priv->attrs.x, priv->attrs.y,
-                  event->width + event->x, event->height + event->y,
-                  priv->attrs.border_width, priv->attrs.override_redirect);
-
-      if (event->shaped && !priv->shaped)
-        priv->shaped = TRUE;
-
+      priv->shaped = event->shaped;
       update_shape (compositor, cw);
     }
 }
