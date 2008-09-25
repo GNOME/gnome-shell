@@ -1,3 +1,8 @@
+2008-09-25  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-sections.txt: Add
+	clutter_get_option_group_without_init()
+
 2008-08-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* doc/reference/clutter/clutter-sections.txt: Add

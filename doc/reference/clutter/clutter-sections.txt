@@ -1062,6 +1062,7 @@ ClutterInitError
 clutter_init
 clutter_init_with_args
 clutter_get_option_group
+clutter_get_option_group_without_init
 
 <SUBSECTION>
 clutter_main
