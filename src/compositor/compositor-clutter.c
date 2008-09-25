@@ -626,17 +626,9 @@ meta_comp_window_has_shadow (MetaCompWindow *self)
    */
   if (priv->argb32 || priv->opacity != 0xff)
     {
-      meta_verbose ("Window has no shadow as it is ARGB\n");
+      meta_verbose ("Window 0x%x has no shadow as it is ARGB\n",
+		    (guint)priv->xwindow);
       return FALSE;
-    }
-
-  /*
-   * Add shadows to override redirect windows (e.g., Gtk menus).
-   */
-  if (priv->attrs.override_redirect)
-    {
-      meta_verbose ("Window has shadow because it is override redirect.\n");
-      return TRUE;
     }
 
   /*
@@ -648,7 +640,8 @@ meta_comp_window_has_shadow (MetaCompWindow *self)
     {
       if (meta_window_get_frame (priv->window))
 	{
-	  meta_verbose ("Window has shadow because it has a frame\n");
+	  meta_verbose ("Window 0x%x has shadow because it has a frame\n",
+			(guint)priv->xwindow);
 	  return TRUE;
 	}
     }
@@ -658,8 +651,20 @@ meta_comp_window_has_shadow (MetaCompWindow *self)
    */
   if (priv->shaped)
     {
-      meta_verbose ("Window has no shadow as it is shaped\n");
+      meta_verbose ("Window 0x%x has no shadow as it is shaped\n",
+		    (guint)priv->xwindow);
       return FALSE;
+    }
+
+  /*
+   * Add shadows to override redirect windows (e.g., Gtk menus).
+   * This must have lower priority than window shape test.
+   */
+  if (priv->attrs.override_redirect)
+    {
+      meta_verbose ("Window 0x%x has shadow because it is override redirect.\n",
+		    (guint)priv->xwindow);
+      return TRUE;
     }
 
   /*
@@ -668,7 +673,8 @@ meta_comp_window_has_shadow (MetaCompWindow *self)
   if (priv->type == META_COMP_WINDOW_DND ||
       priv->type == META_COMP_WINDOW_DESKTOP)
     {
-      meta_verbose ("Window has no shadow as it is DND or Desktop\n");
+      meta_verbose ("Window 0x%x has no shadow as it is DND or Desktop\n",
+		    (guint)priv->xwindow);
       return FALSE;
     }
 
@@ -678,19 +684,22 @@ meta_comp_window_has_shadow (MetaCompWindow *self)
 #endif
       )
     {
-      meta_verbose ("Window has shadow as it is a menu\n");
+      meta_verbose ("Window 0x%x has shadow as it is a menu\n",
+		    (guint)priv->xwindow);
       return TRUE;
     }
 
 #if 0
   if (priv->type == META_COMP_WINDOW_TOOLTIP)
     {
-      meta_verbose ("Window has shadow as it is a tooltip\n");
+      meta_verbose ("Window 0x%x has shadow as it is a tooltip\n",
+		    (guint)priv->xwindow);
       return TRUE;
     }
 #endif
 
-  meta_verbose ("Window has no shadow as it fell through\n");
+  meta_verbose ("Window 0x%x has no shadow as it fell through\n",
+		(guint)priv->xwindow);
   return FALSE;
 }
 
@@ -1434,15 +1443,15 @@ process_shape (MetaCompositorClutter *compositor,
   if (cw == NULL)
     return;
 
-  if (event->kind == ShapeBounding) 
+  if (event->kind == ShapeBounding)
     {
       if (!event->shaped && priv->shaped)
         priv->shaped = FALSE;
-      
+
       resize_win (cw, priv->attrs.x, priv->attrs.y,
                   event->width + event->x, event->height + event->y,
                   priv->attrs.border_width, priv->attrs.override_redirect);
-      
+
       if (event->shaped && !priv->shaped)
         priv->shaped = TRUE;
 
@@ -1817,7 +1826,7 @@ clutter_cmp_process_event (MetaCompositor *compositor,
           process_damage (xrc, (XDamageNotifyEvent *) event);
         }
 #ifdef HAVE_SHAPE
-      else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify) 
+      else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify)
         process_shape (xrc, (XShapeEvent *) event);
 #endif /* HAVE_SHAPE */
       /* else
