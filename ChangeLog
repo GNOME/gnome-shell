@@ -1,3 +1,7 @@
+2008-09-25  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-event.h: Fix missing documentation.
+
 2008-09-24  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	Bug 1130 - CLUTTER_MOTION is not emitted when time goes backwards.

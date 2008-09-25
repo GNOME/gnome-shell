@@ -284,6 +284,7 @@ struct _ClutterButtonEvent
  * @x: event X coordinate
  * @y: event Y coordinate
  * @related: actor related to the crossing
+ * @device: reserved for future use
  *
  * Event for the movement of the pointer across different actors
  *
