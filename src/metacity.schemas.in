@@ -361,7 +361,7 @@
       <applyto>/apps/metacity/general/clutter_plugins</applyto>
       <owner>metacity</owner>
       <type>list</type>
-      <default></default>
+      <default>[simple]</default>
       <locale name="C">
         <short>Clutter Plugins</short>
         <long>
