@@ -213,7 +213,7 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
 
       /* Create data for an empty image */
       mask_data = g_malloc0 (tex_width * tex_height);
-      
+
       /* Cut out a hole for each rectangle */
       for (rect = (XRectangle *) priv->rectangles->data
              + priv->rectangles->len;
