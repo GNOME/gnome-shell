@@ -2,8 +2,8 @@
 # An odd micro number indicates in-progress development, (eg. from CVS)
 # An even micro number indicates a released version.
 m4_define([clutter_major_version], [0])
-m4_define([clutter_minor_version], [8])
-m4_define([clutter_micro_version], [3])
+m4_define([clutter_minor_version], [9])
+m4_define([clutter_micro_version], [0])
 
 m4_define([clutter_version],
           [clutter_major_version.clutter_minor_version.clutter_micro_version])
@@ -13,7 +13,7 @@ m4_define([clutter_api_version],
 
 # increase the interface age by 2 for each release;
 # if the API changes, set to 0
-m4_define([clutter_interface_age], [2])
+m4_define([clutter_interface_age], [0])
 m4_define([clutter_binary_age],
           [m4_eval(100 * clutter_minor_version + clutter_micro_version)])
 
@@ -520,7 +520,7 @@ fi
 AC_SUBST(JSON_PREFIX)
 AM_CONDITIONAL(LOCAL_JSON_GLIB, test "x$have_json" = "xno")
 
-CLUTTER_REQUIRES="pangocairo >= 1.18 glib-2.0 >= 2.14 gobject-2.0 gthread-2.0 gmodule-2.0 $BACKEND_PC_FILES $JSON_GLIB_PC"
+CLUTTER_REQUIRES="pangocairo >= 1.18 gobject-2.0 >= 2.14 gthread-2.0 gmodule-2.0 $BACKEND_PC_FILES $JSON_GLIB_PC"
 
 if test "x$imagebackend" = "xgdk-pixbuf"; then
         CLUTTER_REQUIRES="$CLUTTER_REQUIRES gdk-pixbuf-2.0"

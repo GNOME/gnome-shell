@@ -1,3 +1,7 @@
+2008-09-29  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* configure.ac: Post branch bump to 0.9.0
+
 2008-09-25  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* configure.ac: Post release bump to 0.8.3
