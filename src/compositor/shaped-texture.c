@@ -23,8 +23,13 @@
  * 02111-1307, USA.
  */
 
+#include <config.h>
+
 #include <clutter/clutter-texture.h>
+#include <clutter/x11/clutter-x11.h>
+#ifdef HAVE_GLX_TEXTURE_PIXMAP
 #include <clutter/glx/clutter-glx.h>
+#endif /* HAVE_GLX_TEXTURE_PIXMAP */
 #include <cogl/cogl.h>
 #include <string.h>
 
@@ -39,8 +44,13 @@ static void meta_shaped_texture_pick (ClutterActor *actor,
 
 static void meta_shaped_texture_dirty_mask (MetaShapedTexture *stex);
 
+#ifdef HAVE_GLX_TEXTURE_PIXMAP
 G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
                CLUTTER_GLX_TYPE_TEXTURE_PIXMAP);
+#else /* HAVE_GLX_TEXTURE_PIXMAP */
+G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
+               CLUTTER_X11_TYPE_TEXTURE_PIXMAP);
+#endif /* HAVE_GLX_TEXTURE_PIXMAP */
 
 #define META_SHAPED_TEXTURE_GET_PRIVATE(obj) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), META_TYPE_SHAPED_TEXTURE, \
@@ -67,7 +77,7 @@ struct _MetaShapedTexturePrivate
   CoglHandle mask_texture;
 
   guint mask_width, mask_height;
-  GLint mask_gl_width, mask_gl_height;
+  guint mask_gl_width, mask_gl_height;
   GLfloat mask_tex_coords[8];
 
   GArray *rectangles;
@@ -184,6 +194,39 @@ meta_shaped_texture_set_coord_array (GLfloat x1, GLfloat y1,
 }
 
 static void
+meta_shaped_texture_get_gl_size (CoglHandle tex,
+                                 guint *width,
+                                 guint *height)
+{
+  /* glGetTexLevelParameteriv isn't supported on GL ES so we need to
+     calculate the size that Cogl has used */
+
+  /* If NPOTs textures are supported then assume the GL texture is
+     exactly the right size */
+  if ((cogl_get_features () & COGL_FEATURE_TEXTURE_NPOT))
+    {
+      *width = cogl_texture_get_width (tex);
+      *height = cogl_texture_get_height (tex);
+    }
+  /* Otherwise assume that Cogl has used the next power of two */
+  else
+    {
+      guint tex_width = cogl_texture_get_width (tex);
+      guint tex_height = cogl_texture_get_height (tex);
+      guint real_width = 1;
+      guint real_height = 1;
+
+      while (real_width < tex_width)
+        real_width <<= 1;
+      while (real_height < tex_height)
+        real_height <<= 1;
+
+      *width = real_width;
+      *height = real_height;
+    }
+}
+
+static void
 meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
 {
   MetaShapedTexturePrivate *priv = stex->priv;
@@ -250,14 +293,9 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
 
       cogl_texture_get_gl_texture (priv->mask_texture, &mask_gl_tex, NULL);
 
-      glBindTexture (GL_TEXTURE_2D, mask_gl_tex);
-
-      glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
-                                GL_TEXTURE_WIDTH,
-                                &priv->mask_gl_width);
-      glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
-                                GL_TEXTURE_HEIGHT,
-                                &priv->mask_gl_height);
+      meta_shaped_texture_get_gl_size (priv->mask_texture,
+                                       &priv->mask_gl_width,
+                                       &priv->mask_gl_height);
 
       if ((guint) priv->mask_gl_width == tex_width
           && (guint) priv->mask_gl_height == tex_height)
@@ -284,7 +322,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
   GLboolean vertex_array_was_enabled, tex_coord_array_was_enabled;
   GLboolean color_array_was_enabled;
   GLuint paint_gl_tex, mask_gl_tex;
-  GLint paint_gl_width, paint_gl_height;
+  guint paint_gl_width, paint_gl_height;
   GLfloat vertex_coords[8], paint_tex_coords[8];
   ClutterActorBox alloc;
   static const ClutterColor white = { 0xff, 0xff, 0xff, 0xff };
@@ -338,12 +376,9 @@ meta_shaped_texture_paint (ClutterActor *actor)
   /* We need the actual size of the texture so that we can calculate
      the right texture coordinates if NPOTs textures are not supported
      and Cogl has oversized the texture */
-  glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
-                            GL_TEXTURE_WIDTH,
-                            &paint_gl_width);
-  glGetTexLevelParameteriv (GL_TEXTURE_2D, 0,
-                            GL_TEXTURE_HEIGHT,
-                            &paint_gl_height);
+  meta_shaped_texture_get_gl_size (paint_tex,
+                                   &paint_gl_width,
+                                   &paint_gl_height);
 
   /* Put the mask texture in the second texture unit */
   tst_active_texture (GL_TEXTURE1);

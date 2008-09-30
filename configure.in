@@ -304,6 +304,19 @@ if test x$have_clutter = xyes; then
   METACITY_PC_MODULES="$METACITY_PC_MODULES $CLUTTER_PACKAGE "
   PKG_CHECK_MODULES(CLUTTER, $CLUTTER_PACKAGE)
   AC_DEFINE(WITH_CLUTTER, , [Building with Clutter compositor])
+
+  dnl Check for the clutter-glx-texture-pixmap header
+  metacity_save_cppflags="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS $CLUTTER_CFLAGS"
+  AC_CHECK_HEADER([clutter/glx/clutter-glx-texture-pixmap.h],
+                  [have_glx_texture_pixmap=yes],
+                  [have_glx_texture_pixmap=no])
+  CPPFLAGS="$metacity_save_cppflags"
+
+  if test x$have_glx_texture_pixmap = xyes; then
+    AC_DEFINE(HAVE_GLX_TEXTURE_PIXMAP, ,
+              [Is ClutterGLXTexturePixmap available?])
+  fi
 fi
 
 AC_MSG_CHECKING([Xcursor])
