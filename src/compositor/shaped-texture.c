@@ -345,6 +345,14 @@ meta_shaped_texture_paint (ClutterActor *actor)
   if (paint_tex == COGL_INVALID_HANDLE)
     return;
 
+  /* If the texture is sliced then the multitexturing won't work */
+  if (cogl_texture_is_sliced (paint_tex))
+    {
+      CLUTTER_ACTOR_CLASS (meta_shaped_texture_parent_class)
+        ->paint (actor);
+      return;
+    }
+
   tex_width = cogl_texture_get_width (paint_tex);
   tex_height = cogl_texture_get_height (paint_tex);
 
