@@ -1718,61 +1718,90 @@ unset_motion_last_actor (ClutterActor *actor, ClutterInputDevice *dev)
     dev->motion_last_actor = NULL;
 }
 
+static ClutterInputDevice * clutter_event_get_device (ClutterEvent *event);
+
+/* This function should perhaps be public and in clutter-event.c ?
+ */
+static ClutterInputDevice *
+clutter_event_get_device (ClutterEvent *event)
+{
+  g_return_val_if_fail (event != NULL, NULL);
+
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+    case CLUTTER_STAGE_STATE:
+    case CLUTTER_DESTROY_NOTIFY:
+    case CLUTTER_CLIENT_MESSAGE:
+    case CLUTTER_DELETE:
+    case CLUTTER_ENTER:
+    case CLUTTER_LEAVE:
+      return NULL;
+      break;
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+      return event->button.device;
+    case CLUTTER_MOTION:
+      return event->motion.device;
+    case CLUTTER_SCROLL:
+      return event->scroll.device;
+      break;
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      break;
+    }
+  return NULL;
+}
+
 static inline void
 generate_enter_leave_events (ClutterEvent *event)
 {
   ClutterMainContext *context              = ClutterCntx;
   ClutterActor       *motion_current_actor = event->motion.source;
   ClutterActor       *last_actor           = context->motion_last_actor;
+  ClutterInputDevice *device               = clutter_event_get_device (event);
 
-  if (event->motion.device != NULL)
-    last_actor = event->motion.device->motion_last_actor;
+  if (device != NULL)
+    last_actor = device->motion_last_actor;
 
   if (last_actor != motion_current_actor)
     {
       if (motion_current_actor)
         {
+          gint         x, y;
           ClutterEvent cev;
 
-          cev.crossing.device  = event->motion.device;
+          cev.crossing.device  = device;
+          clutter_event_get_coords (event, &x, &y);
 
           if (context->motion_last_actor)
             {
               cev.crossing.type    = CLUTTER_LEAVE;
               cev.crossing.time    = event->any.time;
               cev.crossing.flags   = 0;
-              cev.crossing.x       = event->motion.x;
-              cev.crossing.y       = event->motion.y;
+              cev.crossing.x       = x;
+              cev.crossing.y       = y;
               cev.crossing.source  = last_actor;
               cev.crossing.stage   = event->any.stage;
-
-              /* unref in free  */
               cev.crossing.related = motion_current_actor;
 
-              g_queue_push_head (context->events_queue,
-                                 clutter_event_copy (&cev));
+              emit_pointer_event (&cev, device);
             }
 
           cev.crossing.type    = CLUTTER_ENTER;
           cev.crossing.time    = event->any.time;
           cev.crossing.flags   = 0;
-          cev.crossing.x       = event->motion.x;
-          cev.crossing.y       = event->motion.y;
+          cev.crossing.x       = x;
+          cev.crossing.y       = y;
           cev.crossing.source  = motion_current_actor;
           cev.crossing.stage   = event->any.stage;
 
           if (context->motion_last_actor)
             cev.crossing.related = last_actor;
           else
-            {
-              /* the previous actor we were getting events from seems to have
-               * vanished
-               */
-              cev.crossing.related = NULL;
-            }
+            cev.crossing.related = NULL;
 
-          g_queue_push_head (context->events_queue,
-			     clutter_event_copy (&cev));
+          emit_pointer_event (&cev, device);
         }
     }
 
@@ -1781,18 +1810,18 @@ generate_enter_leave_events (ClutterEvent *event)
       g_signal_handlers_disconnect_by_func
                        (last_actor,
                         G_CALLBACK (unset_motion_last_actor),
-                        event->motion.device);
+                        device);
     }
 
   if (motion_current_actor && last_actor != motion_current_actor)
     {
       g_signal_connect (motion_current_actor, "destroy",
                         G_CALLBACK (unset_motion_last_actor),
-                        event->motion.device);
+                        device);
     }
 
-  if (event->motion.device != NULL)
-    event->motion.device->motion_last_actor = motion_current_actor;
+  if (device != NULL)
+    device->motion_last_actor = motion_current_actor;
   else
     context->motion_last_actor = motion_current_actor;
 }
@@ -2012,12 +2041,10 @@ clutter_do_event (ClutterEvent *event)
           CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p",
                         x, y, actor);
 
-          if (event->type == CLUTTER_MOTION)
-            {
-              /* Generate enter leave events (if any) */
-              generate_enter_leave_events (event);
-            }
-          else /* (button event) */
+          /* Create, enter/leave events if needed */
+          generate_enter_leave_events (event);
+
+          if (event->type != CLUTTER_MOTION)
             {
               /* Generate click count */
               event_click_count_generate (event);

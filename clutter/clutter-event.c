@@ -412,19 +412,6 @@ clutter_event_copy (ClutterEvent *event)
   new_event = clutter_event_new (CLUTTER_NOTHING);
   *new_event = *event;
 
-  /* deep copies or references must be added here */
-  switch (new_event->type)
-    {
-    case CLUTTER_ENTER:
-    case CLUTTER_LEAVE:
-      if (new_event->crossing.related)
-        g_object_ref (new_event->crossing.related);
-      break;
-
-    default:
-      break;
-    }
-
   return new_event;
 }
 
@@ -439,10 +426,6 @@ clutter_event_free (ClutterEvent *event)
 {
   if (G_LIKELY (event))
     {
-      if ((event->type == CLUTTER_LEAVE || event->type == CLUTTER_ENTER) &&
-          event->crossing.related)
-        g_object_unref (event->crossing.related);
-
       g_slice_free (ClutterEvent, event);
     }
 }

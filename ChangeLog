@@ -1,3 +1,22 @@
+2008-10-01  Øyvind Kolås  <pippin@linux.intel.com>
+
+	Bug 1108 - Enter/Leave events logics wrt. skipped motion events
+
+	Handle dropped motion events when computing crossing events,
+	based on a patch from Gwenole Beauchesne.
+
+	* clutter/clutter-main.c: (clutter_event_get_device): internal static
+	utility function.
+	(clutter_do_event): generate enter/leave events for all pointer
+	events.
+	(generate_enter_leave_events): modified enter/leave events generator
+	to work for all pointer event types. Enter/leave events are now
+	delivered before the motion/button event that caused the crossing to
+	happen.
+	* clutter/clutter-event.c: (clutter_event_copy), (clutter_event_free):
+	removed reference counting logic that is not needed when the crossing
+	events are directly delivered.
+
 2008-09-29  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* configure.ac: Post branch bump to 0.9.0
