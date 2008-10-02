@@ -189,6 +189,12 @@ struct MetaCompositorClutterPlugin
    */
   gboolean (*reload) (void);
 
+  /* General XEvent filter. This is fired *before* metacity itself handles
+   * an event. Return TRUE to block any further processing. 
+  */
+  gboolean (*xevent_filter) (XEvent *event);
+
+
 #ifdef META_COMPOSITOR_CLUTTER_BUILDING_PLUGIN
   const
 #endif

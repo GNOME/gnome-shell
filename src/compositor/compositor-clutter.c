@@ -130,7 +130,7 @@ typedef struct _MetaCompScreen
 {
   MetaScreen            *screen;
 
-  ClutterActor          *stage;
+  ClutterActor          *stage, *window_group, *overlay_group;
   GList                 *windows;
   GHashTable            *windows_by_xid;
   MetaWindow            *focus_window;
@@ -980,10 +980,13 @@ resize_win (MetaCompWindow *cw,
 {
   MetaCompWindowPrivate *priv = cw->priv;
 
+  if (priv->attrs.width != width || priv->attrs.height != height)
+    meta_comp_window_detach (cw);
+
+  priv->attrs.width = width;
+  priv->attrs.height = height;
   priv->attrs.x = x;
   priv->attrs.y = y;
-  priv->attrs.width             = width;
-  priv->attrs.height            = height;
   priv->attrs.border_width      = border_width;
   priv->attrs.override_redirect = override_redirect;
 
@@ -992,7 +995,6 @@ resize_win (MetaCompWindow *cw,
       priv->map_in_progress)
     return;
 
-  meta_comp_window_detach (cw);
   clutter_actor_set_position (CLUTTER_ACTOR (cw), x, y);
 }
 
@@ -1139,7 +1141,7 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
 
   clutter_actor_set_position (CLUTTER_ACTOR (cw),
 			      priv->attrs.x, priv->attrs.y);
-  clutter_container_add_actor (CLUTTER_CONTAINER (info->stage),
+  clutter_container_add_actor (CLUTTER_CONTAINER (info->window_group),
 			       CLUTTER_ACTOR (cw));
   clutter_actor_hide (CLUTTER_ACTOR (cw));
 
@@ -1712,10 +1714,29 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
+  info->window_group = clutter_group_new ();
+  info->overlay_group = clutter_group_new ();
+
+  {
+    ClutterActor *foo;
+    foo = clutter_label_new_with_text ("Sans Bold 148", "OVERLAY");
+    clutter_actor_set_opacity (foo, 100);
+    clutter_container_add_actor (CLUTTER_CONTAINER (info->overlay_group),
+                                 foo);
+  }
+
+  clutter_container_add (CLUTTER_CONTAINER (info->stage),
+                         info->window_group,
+                         info->overlay_group,
+                         NULL);
+
+
+
   info->plugin_mgr =
     meta_compositor_clutter_plugin_manager_new (screen, info->stage);
 
   clutter_actor_show_all (info->stage);
+  clutter_actor_show_all (info->overlay_group);
 
   /* Now we're up and running we can show the output if needed */
   show_overlay_window (screen, info->output);
@@ -1773,11 +1794,27 @@ clutter_cmp_process_event (MetaCompositor *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaCompositorClutter *xrc = (MetaCompositorClutter *) compositor;
+
+  if (window)
+    {
+      MetaCompScreen *info;
+      MetaScreen     *screen;
+
+      screen = meta_window_get_screen (window);
+      info = meta_screen_get_compositor_data (screen);
+
+      if (meta_compositor_clutter_plugin_manager_xevent_filter 
+                                                       (info->plugin_mgr, 
+                                                        event) == TRUE)
+        return;
+    }
+
   /*
    * This trap is so that none of the compositor functions cause
    * X errors. This is really a hack, but I'm afraid I don't understand
    * enough about Metacity/X to know how else you are supposed to do it
    */
+
 
   meta_error_trap_push (xrc->display);
   switch (event->type)

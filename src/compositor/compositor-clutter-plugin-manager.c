@@ -642,3 +642,33 @@ meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositorClutterPl
 
   return retval;
 }
+
+/*
+ * The public method that the compositor hooks into for desktop switching.
+ *
+ * Returns TRUE if at least one of the plugins handled the event type (i.e.,
+ * if the return value is FALSE, there will be no subsequent call to the
+ * manager completed() callback, and the compositor must ensure that any
+ * appropriate post-effect cleanup is carried out.
+ */
+gboolean
+meta_compositor_clutter_plugin_manager_xevent_filter
+                        (MetaCompositorClutterPluginManager *mgr, XEvent *xev)
+{
+  GList *l = mgr->plugins;
+
+  while (l)
+    {
+      MetaCompositorClutterPlugin        *plg = l->data;
+
+      if (plg->xevent_filter)
+        {
+          if (plg->xevent_filter (xev) == TRUE)
+            return TRUE;
+        }
+
+      l = l->next;
+    }
+
+  return FALSE;
+}

@@ -55,4 +55,6 @@ gboolean meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositor
                                                            gint          from,
                                                            gint          to);
 
+gboolean meta_compositor_clutter_plugin_manager_xevent_filter (MetaCompositorClutterPluginManager *mgr, 
+                                                                 XEvent *xev);
 #endif
