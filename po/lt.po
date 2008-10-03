@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-24 23:44-0400\n"
-"PO-Revision-Date: 2008-08-24 23:44-0400\n"
+"POT-Creation-Date: 2008-09-21 04:05+0300\n"
+"PO-Revision-Date: 2008-09-21 04:04+0300\n"
 "Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "MIME-Version: 1.0\n"
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritinė IO klaida %d (%s) ekrane „%s“.\n"
 
-#: ../src/core/keybindings.c:1090
+#: ../src/core/keybindings.c:924
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -104,19 +104,19 @@ msgstr ""
 "Kažkokia kita programa jau naudoja %s klavišą su modifikatoriais %x kaip "
 "susiejimą\n"
 
-#: ../src/core/keybindings.c:2729
+#: ../src/core/keybindings.c:2563
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Įvyko klaida paleidžiant metacity-dialog, išvedantį informaciją apie "
 "komandos klaidą: %s\n"
 
-#: ../src/core/keybindings.c:2834
+#: ../src/core/keybindings.c:2668
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Komanda %d neaprašyta.\n"
 
-#: ../src/core/keybindings.c:3862
+#: ../src/core/keybindings.c:3705
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "Terminalo komanda nebuvo nurodyta.\n"
@@ -138,40 +138,49 @@ msgstr ""
 "Nėra JOKIOS garantijos; net dėl PREKIAVIMO ar TAM TIKRO PANAUDOJIMO TIKSLO "
 "ATITIKIMO.\n"
 
-#: ../src/core/main.c:243
+#: ../src/core/main.c:253
 msgid "Disable connection to session manager"
 msgstr "Išjungti susijungimą su sesijos valdykle"
 
-#: ../src/core/main.c:249
+#: ../src/core/main.c:259
 msgid "Replace the running window manager with Metacity"
 msgstr "Pakeisti veikiančią langų valdyklę su Metacity"
 
-#: ../src/core/main.c:255
+#: ../src/core/main.c:265
 msgid "Specify session management ID"
 msgstr "Nurodyti sesijos valdymo ID"
 
-#: ../src/core/main.c:260
+#: ../src/core/main.c:270
 msgid "X Display to use"
 msgstr "Naudotinas X ekranas"
 
-#: ../src/core/main.c:266
+#: ../src/core/main.c:276
 msgid "Initialize session from savefile"
 msgstr "Inicializuoti sesiją iš išsaugojimo failo"
 
-#: ../src/core/main.c:272
+#: ../src/core/main.c:282
 msgid "Print version"
 msgstr "Parodyti versiją"
 
-#: ../src/core/main.c:278
+#: ../src/core/main.c:288
 msgid "Make X calls synchronous"
 msgstr "Sinchronizuoti X iškvietimus"
 
-#: ../src/core/main.c:429
+#: ../src/core/main.c:294
+#, fuzzy
+msgid "Turn compositing on"
+msgstr "Kompozicijos valdyklė"
+
+#: ../src/core/main.c:300
+msgid "Turn compositing off"
+msgstr ""
+
+#: ../src/core/main.c:451
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Nepavyko nuskanuoti temų aplanko: %s\n"
 
-#: ../src/core/main.c:445
+#: ../src/core/main.c:467
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -179,7 +188,7 @@ msgstr ""
 "Nepavyko rasti temos! Įsitikinkite, kad %s egzistuoja ir kad ten yra "
 "įprastos temos.\n"
 
-#: ../src/core/main.c:501
+#: ../src/core/main.c:526
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Nepavyko perleisti: %s\n"
@@ -192,25 +201,25 @@ msgstr "Nepavyko perleisti: %s\n"
 #. * (We know the old value, so we can look up a suitable string in
 #. * the symtab.)
 #.
-#: ../src/core/prefs.c:502 ../src/core/prefs.c:654
+#: ../src/core/prefs.c:503 ../src/core/prefs.c:655
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf rakte „%s“ nurodyta netinkama reikšmė\n"
 
-#: ../src/core/prefs.c:583 ../src/core/prefs.c:823
+#: ../src/core/prefs.c:584 ../src/core/prefs.c:824
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d reikšmė, saugoma GConf rakte %s, netelpa tarp %d ir %d\n"
 
-#: ../src/core/prefs.c:627 ../src/core/prefs.c:701 ../src/core/prefs.c:749
-#: ../src/core/prefs.c:813 ../src/core/prefs.c:1108 ../src/core/prefs.c:1124
-#: ../src/core/prefs.c:1143 ../src/core/prefs.c:1159 ../src/core/prefs.c:1176
-#: ../src/core/prefs.c:1192
+#: ../src/core/prefs.c:628 ../src/core/prefs.c:702 ../src/core/prefs.c:750
+#: ../src/core/prefs.c:814 ../src/core/prefs.c:1109 ../src/core/prefs.c:1125
+#: ../src/core/prefs.c:1144 ../src/core/prefs.c:1160 ../src/core/prefs.c:1177
+#: ../src/core/prefs.c:1193
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf raktui „%s“ nustatytas neteisingas tipas\n"
 
-#: ../src/core/prefs.c:1262
+#: ../src/core/prefs.c:1263
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -218,12 +227,12 @@ msgstr ""
 "Apsauga nuo sugadintų programų atjungta. Kai kurios programos gali pradėti "
 "keistai elgtis.\n"
 
-#: ../src/core/prefs.c:1332
+#: ../src/core/prefs.c:1333
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nepavyko apdoroti šrifto aprašymo „%s“ saugomo GConf rakte %s\n"
 
-#: ../src/core/prefs.c:1392
+#: ../src/core/prefs.c:1393
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -232,17 +241,17 @@ msgstr ""
 "„%s“ reikšmė rasta nustatymų duomenų bazėje yra netinkama pelės mygtuko "
 "keitiklio aprašymui\n"
 
-#: ../src/core/prefs.c:1809
+#: ../src/core/prefs.c:1810
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Įvyko klaida nustatant darbalaukų skaičių į %d: %s\n"
 
-#: ../src/core/prefs.c:2174 ../src/core/prefs.c:2686
+#: ../src/core/prefs.c:2131 ../src/core/prefs.c:2643
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbalaukis %d"
 
-#: ../src/core/prefs.c:2204 ../src/core/prefs.c:2377
+#: ../src/core/prefs.c:2161 ../src/core/prefs.c:2334
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -251,9 +260,14 @@ msgstr ""
 "„%s“ reikšmė rasta konfiguracijos duomenų bazė yra netinkama klavišų "
 "kombinacijai „%s“\n"
 
-#: ../src/core/prefs.c:2767
+#: ../src/core/prefs.c:2724
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "Įvyko klaida pervadinant darbalaukį %d į „%s“: %s\n"
+
+#: ../src/core/prefs.c:2917
+#, fuzzy, c-format
+msgid "Error setting compositor status: %s\n"
 msgstr "Įvyko klaida pervadinant darbalaukį %d į „%s“: %s\n"
 
 #: ../src/core/screen.c:350
@@ -286,6 +300,21 @@ msgstr "Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę\n"
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nepavyko pasitraukti iš ekrano %d vaizduoklyje „%s“\n"
+
+#: ../src/core/schema-bindings.c:77
+#, fuzzy
+msgid ""
+"The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
+"special string \"disabled\", then there will be no keybinding for this "
+"action."
+msgstr ""
+"Klavišų kombinacija, kuri uždaro langą. Klavišų kombinacijos formatas gali "
+"būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti didžiąsias "
+"bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir "
+"\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
+"nebus susieta jokia klavišų kombinacija."
 
 #: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
@@ -399,23 +428,384 @@ msgstr "Langų valdyklės perspėjimas:"
 msgid "Window manager error: "
 msgstr "Langų valdyklės klaida:"
 
-#: ../src/core/window-props.c:206
-#, c-format
-msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "Programa nustatė netinkamą _NET_WM_PID %lu\n"
+#: ../src/core/window-bindings.h:69 ../src/metacity.schemas.in.h:6
+msgid "Activate window menu"
+msgstr "Parodyti lango meniu"
 
-#: ../src/core/window-props.c:338
-#, c-format
-msgid "%s (on %s)"
-msgstr "%s (kompiuteryje %s)"
+#: ../src/core/window-bindings.h:70
+msgid "The keybinding used to activate the window menu."
+msgstr ""
 
-#: ../src/core/window-props.c:1420
-#, c-format
-msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr "Nekorektiškas WM_TRANSIENT_FOR langas 0x%lx nurodytas %s.\n"
+#: ../src/core/window-bindings.h:76 ../src/metacity.schemas.in.h:194
+msgid "Toggle fullscreen mode"
+msgstr "Perjungti viso ekrano veikseną"
+
+#: ../src/core/window-bindings.h:77
+#, fuzzy
+msgid "The keybinding used to toggle fullscreen mode."
+msgstr "Perjungti viso ekrano veikseną"
+
+#: ../src/core/window-bindings.h:80 ../src/metacity.schemas.in.h:195
+msgid "Toggle maximization state"
+msgstr "Perjungti lango išdidinimo veikseną"
+
+#: ../src/core/window-bindings.h:81
+msgid "The keybinding used to toggle maximization."
+msgstr ""
+
+#: ../src/core/window-bindings.h:84 ../src/metacity.schemas.in.h:193
+msgid "Toggle always on top state"
+msgstr "Perjungti visada viršuje būseną"
+
+#: ../src/core/window-bindings.h:85
+msgid ""
+"The keybinding used to toggle always on top.  A window that is always on top "
+"will always be visible over other overlapping windows."
+msgstr ""
+
+#: ../src/core/window-bindings.h:92 ../src/metacity.schemas.in.h:29
+msgid "Maximize window"
+msgstr "Išdidinti langą"
+
+#: ../src/core/window-bindings.h:93
+msgid "The keybinding used to maximize a window."
+msgstr ""
+
+#: ../src/core/window-bindings.h:96 ../src/metacity.schemas.in.h:199
+msgid "Unmaximize window"
+msgstr "Sutraukti langą"
+
+#: ../src/core/window-bindings.h:97
+msgid "The keybinding used to unmaximize a window."
+msgstr ""
+
+#: ../src/core/window-bindings.h:103 ../src/metacity.schemas.in.h:196
+msgid "Toggle shaded state"
+msgstr "Perjungti lango sutraukimo būseną"
+
+#: ../src/core/window-bindings.h:104
+msgid "The keybinding used to toggle shaded/unshaded state."
+msgstr ""
+
+#: ../src/core/window-bindings.h:110 ../src/metacity.schemas.in.h:32
+msgid "Minimize window"
+msgstr "Sumažinti langą"
+
+#: ../src/core/window-bindings.h:111
+msgid "The keybinding used to minimize a window."
+msgstr ""
+
+#: ../src/core/window-bindings.h:114 ../src/metacity.schemas.in.h:11
+msgid "Close window"
+msgstr "Užverti langą"
+
+#: ../src/core/window-bindings.h:115
+msgid "The keybinding used to close a window."
+msgstr ""
+
+#: ../src/core/window-bindings.h:118 ../src/metacity.schemas.in.h:46
+msgid "Move window"
+msgstr "Perkelti langą"
+
+#: ../src/core/window-bindings.h:119
+msgid ""
+"The keybinding used to enter \"move mode\" and begin moving a window using "
+"the keyboard."
+msgstr ""
+
+#: ../src/core/window-bindings.h:123 ../src/metacity.schemas.in.h:77
+msgid "Resize window"
+msgstr "Keisti lango dydį"
+
+#: ../src/core/window-bindings.h:131 ../src/metacity.schemas.in.h:197
+msgid "Toggle window on all workspaces"
+msgstr "Perjungti lango buvimo visuose darbalaukiuose būseną"
+
+#: ../src/core/window-bindings.h:132
+msgid ""
+"The keybinding used to toggle whether the window is on all workspaces or "
+"just one."
+msgstr ""
+
+#: ../src/core/window-bindings.h:138 ../src/metacity.schemas.in.h:60
+msgid "Move window to workspace 1"
+msgstr "Perkelti langą į darbalaukį Nr.1"
+
+#: ../src/core/window-bindings.h:139
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 1."
+msgstr "Perkelti langą į darbalaukį Nr.1"
+
+#: ../src/core/window-bindings.h:142 ../src/metacity.schemas.in.h:64
+msgid "Move window to workspace 2"
+msgstr "Perkelti langą į darbalaukį Nr.2"
+
+#: ../src/core/window-bindings.h:143
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 2."
+msgstr "Perkelti langą į darbalaukį Nr.2"
+
+#: ../src/core/window-bindings.h:146 ../src/metacity.schemas.in.h:65
+msgid "Move window to workspace 3"
+msgstr "Perkelti langą į darbalaukį Nr.3"
+
+#: ../src/core/window-bindings.h:147
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 3."
+msgstr "Perkelti langą į darbalaukį Nr.3"
+
+#: ../src/core/window-bindings.h:150 ../src/metacity.schemas.in.h:66
+msgid "Move window to workspace 4"
+msgstr "Perkelti langą į darbalaukį Nr.4"
+
+#: ../src/core/window-bindings.h:151
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 4."
+msgstr "Perkelti langą į darbalaukį Nr.4"
+
+#: ../src/core/window-bindings.h:154 ../src/metacity.schemas.in.h:67
+msgid "Move window to workspace 5"
+msgstr "Perkelti langą į darbalaukį Nr.5"
+
+#: ../src/core/window-bindings.h:155
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 5."
+msgstr "Perkelti langą į darbalaukį Nr.5"
+
+#: ../src/core/window-bindings.h:158 ../src/metacity.schemas.in.h:68
+msgid "Move window to workspace 6"
+msgstr "Perkelti langą į darbalaukį Nr.6"
+
+#: ../src/core/window-bindings.h:159
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 6."
+msgstr "Perkelti langą į darbalaukį Nr.6"
+
+#: ../src/core/window-bindings.h:162 ../src/metacity.schemas.in.h:69
+msgid "Move window to workspace 7"
+msgstr "Perkelti langą į darbalaukį Nr.7"
+
+#: ../src/core/window-bindings.h:163
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 7."
+msgstr "Perkelti langą į darbalaukį Nr.7"
+
+#: ../src/core/window-bindings.h:166 ../src/metacity.schemas.in.h:70
+msgid "Move window to workspace 8"
+msgstr "Perkelti langą į darbalaukį Nr.8"
+
+#: ../src/core/window-bindings.h:167
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 8."
+msgstr "Perkelti langą į darbalaukį Nr.8"
+
+#: ../src/core/window-bindings.h:170 ../src/metacity.schemas.in.h:71
+msgid "Move window to workspace 9"
+msgstr "Perkelti langą į darbalaukį Nr.9"
+
+#: ../src/core/window-bindings.h:171
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 9."
+msgstr "Perkelti langą į darbalaukį Nr.9"
+
+#: ../src/core/window-bindings.h:174 ../src/metacity.schemas.in.h:61
+msgid "Move window to workspace 10"
+msgstr "Perkelti langą į darbalaukį Nr.10"
+
+#: ../src/core/window-bindings.h:175
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 10."
+msgstr "Perkelti langą į darbalaukį Nr.10"
+
+#: ../src/core/window-bindings.h:178 ../src/metacity.schemas.in.h:62
+msgid "Move window to workspace 11"
+msgstr "Perkelti langą į darbalaukį Nr.11"
+
+#: ../src/core/window-bindings.h:179
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 11."
+msgstr "Perkelti langą į darbalaukį Nr.11"
+
+#: ../src/core/window-bindings.h:182 ../src/metacity.schemas.in.h:63
+msgid "Move window to workspace 12"
+msgstr "Perkelti langą į darbalaukį Nr.12"
+
+#: ../src/core/window-bindings.h:183
+#, fuzzy
+msgid "The keybinding used to move a window to workspace 12."
+msgstr "Perkelti langą į darbalaukį Nr.12"
+
+#: ../src/core/window-bindings.h:197 ../src/metacity.schemas.in.h:48
+msgid "Move window one workspace to the left"
+msgstr "Perkelti langą į kairiau esantį darbalaukį"
+
+#: ../src/core/window-bindings.h:198
+#, fuzzy
+msgid "The keybinding used to move a window one workspace to the left."
+msgstr "Perkelti langą į kairiau esantį darbalaukį"
+
+#: ../src/core/window-bindings.h:201 ../src/metacity.schemas.in.h:49
+msgid "Move window one workspace to the right"
+msgstr "Perkelti langą į dešiniau esantį darbalaukį"
+
+#: ../src/core/window-bindings.h:202
+#, fuzzy
+msgid "The keybinding used to move a window one workspace to the right."
+msgstr "Perkelti langą į dešiniau esantį darbalaukį"
+
+#: ../src/core/window-bindings.h:205 ../src/metacity.schemas.in.h:50
+msgid "Move window one workspace up"
+msgstr "Perkelti langą į aukščiau esantį darbalaukį"
+
+#: ../src/core/window-bindings.h:206
+#, fuzzy
+msgid "The keybinding used to move a window one workspace up."
+msgstr "Perkelti langą į aukščiau esantį darbalaukį"
+
+#: ../src/core/window-bindings.h:209 ../src/metacity.schemas.in.h:47
+msgid "Move window one workspace down"
+msgstr "Perkelti langą į žemiau esantį darbalaukį"
+
+#: ../src/core/window-bindings.h:210
+#, fuzzy
+msgid "The keybinding used to move a window one workspace down."
+msgstr "Perkelti langą į žemiau esantį darbalaukį"
+
+#: ../src/core/window-bindings.h:216 ../src/metacity.schemas.in.h:75
+msgid "Raise obscured window, otherwise lower"
+msgstr "Iškelti neaktyvų langą, arba nuleisti aktyvų"
+
+#: ../src/core/window-bindings.h:217
+msgid ""
+"This keybinding changes whether a window is above or below other windows.  "
+"If the window is covered by another one, it raises the window above all "
+"others, and if the window is already fully visible, it lowers it below all "
+"others."
+msgstr ""
+
+#: ../src/core/window-bindings.h:223 ../src/metacity.schemas.in.h:76
+msgid "Raise window above other windows"
+msgstr "Iškelti langą virš kitų langų"
+
+#: ../src/core/window-bindings.h:224
+#, fuzzy
+msgid "This keybinding raises the window above other windows."
+msgstr "Iškelti langą virš kitų langų"
+
+#: ../src/core/window-bindings.h:227 ../src/metacity.schemas.in.h:27
+msgid "Lower window below other windows"
+msgstr "Nuleisti langą žemiau kitų langų"
+
+#: ../src/core/window-bindings.h:228
+#, fuzzy
+msgid "This keybinding lowers a window below other windows."
+msgstr "Nuleisti langą žemiau kitų langų"
+
+#: ../src/core/window-bindings.h:232 ../src/metacity.schemas.in.h:31
+msgid "Maximize window vertically"
+msgstr "Išdidinti langą vertikaliai"
+
+#: ../src/core/window-bindings.h:233
+msgid "This keybinding resizes a window to fill available vertical space."
+msgstr ""
+
+#: ../src/core/window-bindings.h:237 ../src/metacity.schemas.in.h:30
+msgid "Maximize window horizontally"
+msgstr "Išdidinti langą horizontaliai"
+
+#: ../src/core/window-bindings.h:238
+msgid "This keybinding resizes a window to fill available horizontal space."
+msgstr ""
+
+#: ../src/core/window-bindings.h:243 ../src/metacity.schemas.in.h:55
+msgid "Move window to north-west corner"
+msgstr "Perkelti langą į ekrano viršutinį dešinįjį kampą"
+
+#: ../src/core/window-bindings.h:244
+msgid ""
+"This keybinding moves a window into the north-west (top left) corner of the "
+"screen."
+msgstr ""
+
+#: ../src/core/window-bindings.h:248 ../src/metacity.schemas.in.h:54
+msgid "Move window to north-east corner"
+msgstr "Perkelti langą į ekrano viršutinį kairįjį kampą"
+
+#: ../src/core/window-bindings.h:249
+msgid ""
+"This keybinding moves a window into the north-east (top right) corner of the "
+"screen."
+msgstr ""
+
+#: ../src/core/window-bindings.h:253 ../src/metacity.schemas.in.h:58
+msgid "Move window to south-west corner"
+msgstr "Perkelti langą į ekrano apatinį dešinįjį kampą"
+
+#: ../src/core/window-bindings.h:254
+msgid ""
+"This keybinding moves a window into the north-east (bottom left) corner of "
+"the screen."
+msgstr ""
+
+#: ../src/core/window-bindings.h:258 ../src/metacity.schemas.in.h:57
+msgid "Move window to south-east corner"
+msgstr "Perkelti langą į ekrano apatinį kairįjį kampą"
+
+#: ../src/core/window-bindings.h:259
+msgid ""
+"This keybinding moves a window into the north-east (bottom right) corner of "
+"the screen."
+msgstr ""
+
+#: ../src/core/window-bindings.h:264 ../src/metacity.schemas.in.h:53
+msgid "Move window to north side of screen"
+msgstr "Perkelti langą į viršutinę ekrano dalį"
+
+#: ../src/core/window-bindings.h:265
+#, fuzzy
+msgid ""
+"This keybinding moves a window against the north (top) side of the screen."
+msgstr "Perkelti langą į viršutinę ekrano dalį"
+
+#: ../src/core/window-bindings.h:269 ../src/metacity.schemas.in.h:56
+msgid "Move window to south side of screen"
+msgstr "Perkelti langą į apatinę ekrano pusę"
+
+#: ../src/core/window-bindings.h:270
+msgid ""
+"This keybinding moves a window against the south (bottom) side of the screen."
+msgstr ""
+
+#: ../src/core/window-bindings.h:274 ../src/metacity.schemas.in.h:52
+msgid "Move window to east side of screen"
+msgstr "Perkelti langą į kairę ekrano pusę"
+
+#: ../src/core/window-bindings.h:275
+msgid ""
+"This keybinding moves a window against the east (right) side of the screen."
+msgstr ""
+
+#: ../src/core/window-bindings.h:279 ../src/metacity.schemas.in.h:59
+msgid "Move window to west side of screen"
+msgstr "Perkelti langą į dešinę ekrano pusę"
+
+#: ../src/core/window-bindings.h:280
+msgid ""
+"This keybinding moves a window against the west (left) side of the screen."
+msgstr ""
+
+#: ../src/core/window-bindings.h:285 ../src/metacity.schemas.in.h:51
+#, fuzzy
+msgid "Move window to center of screen"
+msgstr "Perkelti langą į kairę ekrano pusę"
+
+#: ../src/core/window-bindings.h:286
+#, fuzzy
+msgid "This keybinding moves a window into the center of the screen."
+msgstr "Perkelti langą į kairę ekrano pusę"
 
 #. first time through
-#: ../src/core/window.c:5664
+#: ../src/core/window.c:5643
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -431,7 +821,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6229
+#: ../src/core/window.c:6208
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -440,6 +830,21 @@ msgstr ""
 "Langas %s nustatė MWM požymį teigdamas, kad jo dydis nėra kintamas, tačiau "
 "tuo pat metu nustatė ir leistinas mažiausio dydžio %d x %d bei didžiausio "
 "dydžio %d x %d reikšmes; tai yra beprasmiška.\n"
+
+#: ../src/core/window-props.c:206
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "Programa nustatė netinkamą _NET_WM_PID %lu\n"
+
+#: ../src/core/window-props.c:338
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (kompiuteryje %s)"
+
+#: ../src/core/window-props.c:1420
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr "Nekorektiškas WM_TRANSIENT_FOR langas 0x%lx nurodytas %s.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -469,7 +874,7 @@ msgstr ""
 "Požymis %s lange 0x%lx naudoja nepriimtinus UTF-8 simbolius sąrašo punkte %"
 "d\n"
 
-#: ../src/metacity.desktop.in.h:1
+#: ../src/metacity.desktop.in.h:1 ../src/metacity-wm.desktop.in.h:1
 msgid "Metacity"
 msgstr "Metacity"
 
@@ -502,10 +907,6 @@ msgstr "Veiksmas spustelėjus antraštės juostą viduriniuoju pelės mygtuku"
 #: ../src/metacity.schemas.in.h:5
 msgid "Action on title bar right-click"
 msgstr "Veiksmas spustelėjus antraštės juostą dešiniuoju pelės mygtuku"
-
-#: ../src/metacity.schemas.in.h:6
-msgid "Activate window menu"
-msgstr "Parodyti lango meniu"
 
 #: ../src/metacity.schemas.in.h:7
 msgid "Arrangement of buttons on the titlebar"
@@ -543,10 +944,6 @@ msgstr ""
 "langą (kairysis spustelėjimas), keis jo dydį (vidurinis spustelėjimas), arba "
 "parodys lango meniu (dešinysis spustelėjimas). Specialus klavišas gali būti "
 "nustatytas kaip pavyzdžiui \"&lt;Alt&gt;\" arba \"&lt;Super&gt;\"."
-
-#: ../src/metacity.schemas.in.h:11
-msgid "Close window"
-msgstr "Užverti langą"
 
 #: ../src/metacity.schemas.in.h:12
 msgid "Commands to run in response to keybindings"
@@ -654,10 +1051,6 @@ msgstr ""
 "Jei reikšmė teigiama, atsisakyti dalies galimybių vardan efektyvesnio "
 "resursų panaudojimo"
 
-#: ../src/metacity.schemas.in.h:27
-msgid "Lower window below other windows"
-msgstr "Nuleisti langą žemiau kitų langų"
-
 #: ../src/metacity.schemas.in.h:28
 msgid ""
 "Many actions (e.g. clicking in the client area, moving or resizing the "
@@ -671,22 +1064,6 @@ msgstr ""
 "(nerekomenduojama), pakėlimas bus atsietas nuo kitų veiksmų ir programų "
 "užklausos pakelti langą bus ignoruojamos. Žr. http://bugzilla.gnome.org/"
 "show_bug.cgi?id=445447#c6."
-
-#: ../src/metacity.schemas.in.h:29
-msgid "Maximize window"
-msgstr "Išdidinti langą"
-
-#: ../src/metacity.schemas.in.h:30
-msgid "Maximize window horizontally"
-msgstr "Išdidinti langą horizontaliai"
-
-#: ../src/metacity.schemas.in.h:31
-msgid "Maximize window vertically"
-msgstr "Išdidinti langą vertikaliai"
-
-#: ../src/metacity.schemas.in.h:32
-msgid "Minimize window"
-msgstr "Sumažinti langą"
 
 #: ../src/metacity.schemas.in.h:33
 msgid "Modifier to use for modified window click actions"
@@ -741,115 +1118,15 @@ msgstr "Persijunginėti tarp langų su iššokančio lango pagalba"
 msgid "Move focus backwards between windows using popup display"
 msgstr "Perkelti langų aktyvinimą atgal kartu su iššokančiu langu"
 
-#: ../src/metacity.schemas.in.h:46
-msgid "Move window"
-msgstr "Perkelti langą"
-
-#: ../src/metacity.schemas.in.h:47
-msgid "Move window one workspace down"
-msgstr "Perkelti langą į žemiau esantį darbalaukį"
-
-#: ../src/metacity.schemas.in.h:48
-msgid "Move window one workspace to the left"
-msgstr "Perkelti langą į kairiau esantį darbalaukį"
-
-#: ../src/metacity.schemas.in.h:49
-msgid "Move window one workspace to the right"
-msgstr "Perkelti langą į dešiniau esantį darbalaukį"
-
-#: ../src/metacity.schemas.in.h:50
-msgid "Move window one workspace up"
-msgstr "Perkelti langą į aukščiau esantį darbalaukį"
-
-#: ../src/metacity.schemas.in.h:51
-msgid "Move window to east side of screen"
-msgstr "Perkelti langą į kairę ekrano pusę"
-
-#: ../src/metacity.schemas.in.h:52
-msgid "Move window to north side of screen"
-msgstr "Perkelti langą į viršutinę ekrano dalį"
-
-#: ../src/metacity.schemas.in.h:53
-msgid "Move window to north-east corner"
-msgstr "Perkelti langą į ekrano viršutinį kairįjį kampą"
-
-#: ../src/metacity.schemas.in.h:54
-msgid "Move window to north-west corner"
-msgstr "Perkelti langą į ekrano viršutinį dešinįjį kampą"
-
-#: ../src/metacity.schemas.in.h:55
-msgid "Move window to south side of screen"
-msgstr "Perkelti langą į apatinę ekrano pusę"
-
-#: ../src/metacity.schemas.in.h:56
-msgid "Move window to south-east corner"
-msgstr "Perkelti langą į ekrano apatinį kairįjį kampą"
-
-#: ../src/metacity.schemas.in.h:57
-msgid "Move window to south-west corner"
-msgstr "Perkelti langą į ekrano apatinį dešinįjį kampą"
-
-#: ../src/metacity.schemas.in.h:58
-msgid "Move window to west side of screen"
-msgstr "Perkelti langą į dešinę ekrano pusę"
-
-#: ../src/metacity.schemas.in.h:59
-msgid "Move window to workspace 1"
-msgstr "Perkelti langą į darbalaukį Nr.1"
-
-#: ../src/metacity.schemas.in.h:60
-msgid "Move window to workspace 10"
-msgstr "Perkelti langą į darbalaukį Nr.10"
-
-#: ../src/metacity.schemas.in.h:61
-msgid "Move window to workspace 11"
-msgstr "Perkelti langą į darbalaukį Nr.11"
-
-#: ../src/metacity.schemas.in.h:62
-msgid "Move window to workspace 12"
-msgstr "Perkelti langą į darbalaukį Nr.12"
-
-#: ../src/metacity.schemas.in.h:63
-msgid "Move window to workspace 2"
-msgstr "Perkelti langą į darbalaukį Nr.2"
-
-#: ../src/metacity.schemas.in.h:64
-msgid "Move window to workspace 3"
-msgstr "Perkelti langą į darbalaukį Nr.3"
-
-#: ../src/metacity.schemas.in.h:65
-msgid "Move window to workspace 4"
-msgstr "Perkelti langą į darbalaukį Nr.4"
-
-#: ../src/metacity.schemas.in.h:66
-msgid "Move window to workspace 5"
-msgstr "Perkelti langą į darbalaukį Nr.5"
-
-#: ../src/metacity.schemas.in.h:67
-msgid "Move window to workspace 6"
-msgstr "Perkelti langą į darbalaukį Nr.6"
-
-#: ../src/metacity.schemas.in.h:68
-msgid "Move window to workspace 7"
-msgstr "Perkelti langą į darbalaukį Nr.7"
-
-#: ../src/metacity.schemas.in.h:69
-msgid "Move window to workspace 8"
-msgstr "Perkelti langą į darbalaukį Nr.8"
-
-#: ../src/metacity.schemas.in.h:70
-msgid "Move window to workspace 9"
-msgstr "Perkelti langą į darbalaukį Nr.9"
-
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:72
 msgid "Name of workspace"
 msgstr "Darbalaukio vardas"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:73
 msgid "Number of workspaces"
 msgstr "Darbalaukų kiekis"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:74
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -859,35 +1136,23 @@ msgstr ""
 "reikšmė, kad netyčia nesunaikintumėte savo darbo aplinkos įvedę labai "
 "didelio skaičių."
 
-#: ../src/metacity.schemas.in.h:74
-msgid "Raise obscured window, otherwise lower"
-msgstr "Iškelti neaktyvų langą, arba nuleisti aktyvų"
-
-#: ../src/metacity.schemas.in.h:75
-msgid "Raise window above other windows"
-msgstr "Iškelti langą virš kitų langų"
-
-#: ../src/metacity.schemas.in.h:76
-msgid "Resize window"
-msgstr "Keisti lango dydį"
-
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:78
 msgid "Run a defined command"
 msgstr "Paleisti nurodytą komandą"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:79
 msgid "Run a terminal"
 msgstr "Paleisti terminalą"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:80
 msgid "Show the panel menu"
 msgstr "Rodyti skydelio meniu"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:81
 msgid "Show the panel run application dialog"
 msgstr "Rodyti skydelio programų paleidimo langą"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:82
 msgid ""
 "Some applications disregard specifications in ways that result in window "
 "manager misfeatures. This option puts Metacity in a rigorously correct mode, "
@@ -898,83 +1163,83 @@ msgstr ""
 "nesklandumų. Ši parinktis įjungia griežtą veikseną, kuri padaro aplinką "
 "vienalytiškesnę, jei nenaudojate nekorektiškų programų."
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 1"
 msgstr "Perjungti į darbalaukį Nr.1"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:84
 msgid "Switch to workspace 10"
 msgstr "Perjungti į darbalaukį Nr.10"
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:85
 msgid "Switch to workspace 11"
 msgstr "Perjungti į darbalaukį Nr.11"
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:86
 msgid "Switch to workspace 12"
 msgstr "Perjungti į darbalaukį Nr.12"
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:87
 msgid "Switch to workspace 2"
 msgstr "Perjungti į darbalaukį Nr.2"
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:88
 msgid "Switch to workspace 3"
 msgstr "Perjungti į darbalaukį Nr.3"
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:89
 msgid "Switch to workspace 4"
 msgstr "Perjungti į darbalaukį Nr.4"
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:90
 msgid "Switch to workspace 5"
 msgstr "Perjungti į darbalaukį Nr.5"
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:91
 msgid "Switch to workspace 6"
 msgstr "Perjungti į darbalaukį Nr.6"
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:92
 msgid "Switch to workspace 7"
 msgstr "Perjungti į darbalaukį Nr.7"
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:93
 msgid "Switch to workspace 8"
 msgstr "Perjungti į darbalaukį Nr.8"
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:94
 msgid "Switch to workspace 9"
 msgstr "Perjungti į darbalaukį Nr.9"
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:95
 msgid "Switch to workspace above this one"
 msgstr "Perjungti į aukščiau esantį darbalaukį"
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:96
 msgid "Switch to workspace below this one"
 msgstr "Perjungti į žemiau esantį darbalaukį"
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:97
 msgid "Switch to workspace on the left"
 msgstr "Perjungti į kairiau esantį darbalaukį"
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:98
 msgid "Switch to workspace on the right"
 msgstr "Perjungti į dešiniau esantį darbalaukį"
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:99
 msgid "System Bell is Audible"
 msgstr "Sisteminis signalas yra garsinis"
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:100
 msgid "Take a screenshot"
 msgstr "Padaryti ekrano nuotrauką"
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:101
 msgid "Take a screenshot of a window"
 msgstr "Padaryti lango nuotrauką"
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -992,7 +1257,7 @@ msgstr ""
 "yra nežinoma (paprastai tai būna kai suveikia standartinis sisteminis "
 "pyptelėjimas), mirga tuo momentu naudojamo lango antraštė."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -1002,7 +1267,7 @@ msgstr ""
 "klavišų kombinacijas, kurios atitinka nurodytas komanda. Paspaudus klavišo "
 "kombinaciją priskirtą run_command_N bus įvykdyta komanda command_N."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -1010,7 +1275,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_screenshot raktas nustato "
 "klavišų kombinaciją, kuri iškviečia šiame nustatyme nurodytą komandą."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -1019,7 +1284,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_window_screenshot raktas "
 "nustato klavišų kombinaciją, kuri iškviečia šiame nustatyme nurodytą komandą."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -1036,7 +1301,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1052,7 +1317,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1068,7 +1333,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1084,7 +1349,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1100,7 +1365,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1115,7 +1380,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1130,7 +1395,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1145,7 +1410,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1160,7 +1425,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1175,7 +1440,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1190,7 +1455,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1205,7 +1470,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1220,7 +1485,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1235,7 +1500,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1250,7 +1515,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1265,7 +1530,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1280,7 +1545,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1295,7 +1560,7 @@ msgstr ""
 "„&lt;Ctrl&gt;“. Nustačius specialų požymį „disabled“, su šiuo veiksmu nebus "
 "susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1310,7 +1575,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1327,7 +1592,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1344,7 +1609,7 @@ msgstr ""
 "Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį „disabled“, su šiuo "
 "veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1360,7 +1625,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1375,7 +1640,7 @@ msgstr ""
 "Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį „disabled“, su šiuo "
 "veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1390,7 +1655,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1406,7 +1671,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1422,7 +1687,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1438,7 +1703,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1453,7 +1718,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1468,7 +1733,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1483,7 +1748,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1498,7 +1763,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1513,7 +1778,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1528,7 +1793,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1543,7 +1808,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1558,7 +1823,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1573,7 +1838,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1588,7 +1853,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1603,7 +1868,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:144
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1618,7 +1883,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1633,7 +1898,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1650,7 +1915,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:147
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1667,7 +1932,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:148
 msgid ""
 "The keybinding used to move focus backwards between windows of an "
 "application without a popup window. Holding \"shift\" together with this "
@@ -1685,7 +1950,7 @@ msgstr ""
 "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
 "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:149
 msgid ""
 "The keybinding used to move focus backwards between windows of an "
 "application, using a popup window. Holding \"shift\" together with this "
@@ -1703,7 +1968,7 @@ msgstr ""
 "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
 "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:150
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1721,7 +1986,7 @@ msgstr ""
 "Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia "
 "klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1739,7 +2004,7 @@ msgstr ""
 "Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia "
 "klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:152
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1756,7 +2021,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1773,7 +2038,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:154
 msgid ""
 "The keybinding used to move focus between windows of an application without "
 "a popup window. Holding the \"shift\" key while using this binding reverses "
@@ -1791,7 +2056,7 @@ msgstr ""
 "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
 "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "The keybinding used to move focus between windows of an application, using a "
 "popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
@@ -1810,7 +2075,7 @@ msgstr ""
 "Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia "
 "klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1829,7 +2094,7 @@ msgstr ""
 "Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia "
 "klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1848,7 +2113,7 @@ msgstr ""
 "Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia "
 "klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:158
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1865,7 +2130,7 @@ msgstr ""
 "sutrumpinimus kaip „&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų "
 "požymį „disabled“, su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:159
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1880,7 +2145,7 @@ msgstr ""
 "„&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį „disabled“, su "
 "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:160
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1895,7 +2160,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:161
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1910,7 +2175,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:162
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1926,7 +2191,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:163
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1941,7 +2206,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:164
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1957,7 +2222,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:165
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1972,7 +2237,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
 "nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:166
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1989,7 +2254,7 @@ msgstr ""
 "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
 "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:167
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -2005,7 +2270,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:168
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2020,21 +2285,21 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:169
 msgid "The name of a workspace."
 msgstr "Darbalaukio vardas"
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.h:170
 msgid "The screenshot command"
 msgstr "Ekrano fotografavimo komanda"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.h:171
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "Tema nurodo langų rėmelių, antraščių ir kitų elementų išvaizdą."
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.h:172
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -2042,7 +2307,7 @@ msgstr ""
 "Uždelsimo laikas prieš pakeliant langą, jei auto_raise požymis yra "
 "teigiamas. Laikas nurodomas tūkstantosiomis sekundės dalimis."
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.h:173
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -2056,11 +2321,11 @@ msgstr ""
 "kursorius, o \"mouse\" reiškia, kad langai bus aktyvuojami kai ant jų bus "
 "užvestas kursorius ir aktyvacija bus atšaukta kursoriui pasitraukus."
 
-#: ../src/metacity.schemas.in.h:173
+#: ../src/metacity.schemas.in.h:174
 msgid "The window screenshot command"
 msgstr "Langų fotografavimo komanda"
 
-#: ../src/metacity.schemas.in.h:174
+#: ../src/metacity.schemas.in.h:175
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another one, it raises the window above all others, "
@@ -2080,7 +2345,7 @@ msgstr ""
 "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
 "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:175
+#: ../src/metacity.schemas.in.h:176
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2095,7 +2360,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:176
+#: ../src/metacity.schemas.in.h:177
 msgid ""
 "This keybinding moves a window against the north (top) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2111,7 +2376,24 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:177
+#: ../src/metacity.schemas.in.h:178
+#, fuzzy
+msgid ""
+"This keybinding moves a window into the center of the screen. The format "
+"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
+"parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr ""
+"Ši klavišų kombinacija priglaudžia langą prie kairiojo ekrano krašto. "
+"Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva "
+"ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
+"sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
+"požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
+
+#: ../src/metacity.schemas.in.h:179
 msgid ""
 "This keybinding moves a window into the east (right) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2127,7 +2409,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:178
+#: ../src/metacity.schemas.in.h:180
 msgid ""
 "This keybinding moves a window into the north-east (top right) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2143,7 +2425,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:179
+#: ../src/metacity.schemas.in.h:181
 msgid ""
 "This keybinding moves a window into the north-west (top left) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2159,7 +2441,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:180
+#: ../src/metacity.schemas.in.h:182
 msgid ""
 "This keybinding moves a window into the south (bottom) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2175,7 +2457,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:181
+#: ../src/metacity.schemas.in.h:183
 msgid ""
 "This keybinding moves a window into the south-east (bottom right) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2191,7 +2473,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:182
+#: ../src/metacity.schemas.in.h:184
 msgid ""
 "This keybinding moves a window into the south-west (bottom left) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2207,7 +2489,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:183
+#: ../src/metacity.schemas.in.h:185
 msgid ""
 "This keybinding moves a window into the west (left) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2223,7 +2505,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:184
+#: ../src/metacity.schemas.in.h:186
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2238,7 +2520,7 @@ msgstr ""
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:185
+#: ../src/metacity.schemas.in.h:187
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2254,7 +2536,7 @@ msgstr ""
 "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
 "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:186
+#: ../src/metacity.schemas.in.h:188
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2270,7 +2552,7 @@ msgstr ""
 "Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį „disabled“, su šiuo "
 "veiksmu nebus susieta jokia klavišų kombinacija."
 
-#: ../src/metacity.schemas.in.h:187
+#: ../src/metacity.schemas.in.h:189
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2288,7 +2570,7 @@ msgstr ""
 "– paslėpti langą, „shade“ – suvynioti langą, „menu“ – parodyti lango meniu, "
 "„lower“ – nukelti langą už kitų langų ir „none“ – nedaryti nieko."
 
-#: ../src/metacity.schemas.in.h:188
+#: ../src/metacity.schemas.in.h:190
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2307,7 +2589,7 @@ msgstr ""
 "langą, „menu“ – parodyti lango meniu, „lower“ – nukelti langą už kitų langų "
 "ir „none“ – nedaryti nieko."
 
-#: ../src/metacity.schemas.in.h:189
+#: ../src/metacity.schemas.in.h:191
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2326,7 +2608,7 @@ msgstr ""
 "langą, „menu“ – parodyti lango meniu, „lower“ – nukelti langą už kitų langų "
 "ir „none“ – nedaryti nieko."
 
-#: ../src/metacity.schemas.in.h:190
+#: ../src/metacity.schemas.in.h:192
 msgid ""
 "This option provides additional control over how newly created windows get "
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
@@ -2337,27 +2619,7 @@ msgstr ""
 "reikšmės: „smart“ įjungia normalią veikseną, o „strict“ neaktyvina langų, "
 "paleistų iš terminalo."
 
-#: ../src/metacity.schemas.in.h:191
-msgid "Toggle always on top state"
-msgstr "Perjungti visada viršuje būseną"
-
-#: ../src/metacity.schemas.in.h:192
-msgid "Toggle fullscreen mode"
-msgstr "Perjungti viso ekrano veikseną"
-
-#: ../src/metacity.schemas.in.h:193
-msgid "Toggle maximization state"
-msgstr "Perjungti lango išdidinimo veikseną"
-
-#: ../src/metacity.schemas.in.h:194
-msgid "Toggle shaded state"
-msgstr "Perjungti lango sutraukimo būseną"
-
-#: ../src/metacity.schemas.in.h:195
-msgid "Toggle window on all workspaces"
-msgstr "Perjungti lango buvimo visuose darbalaukiuose būseną"
-
-#: ../src/metacity.schemas.in.h:196
+#: ../src/metacity.schemas.in.h:198
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -2368,29 +2630,30 @@ msgstr ""
 "sutrikimams, triukšmingoje aplinkoje arba kai garsinis signalas yra "
 "išjungtas."
 
-#: ../src/metacity.schemas.in.h:197
-msgid "Unmaximize window"
-msgstr "Sutraukti langą"
-
-#: ../src/metacity.schemas.in.h:198
+#: ../src/metacity.schemas.in.h:200
 msgid "Use standard system font in window titles"
 msgstr "Langų antraštėse naudoti standartinį sistemos šriftą"
 
-#: ../src/metacity.schemas.in.h:199
+#: ../src/metacity.schemas.in.h:201
 msgid "Visual Bell Type"
 msgstr "Vaizdinio signalo tipas"
 
-#: ../src/metacity.schemas.in.h:200
+#: ../src/metacity.schemas.in.h:202
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "Ar pakėlimas turėtų būti pašalinis kitų naudotojo veiksmų efektas"
 
-#: ../src/metacity.schemas.in.h:201
+#: ../src/metacity.schemas.in.h:203
 msgid "Window focus mode"
 msgstr "Langų aktyvinimo veiksena"
 
-#: ../src/metacity.schemas.in.h:202
+#: ../src/metacity.schemas.in.h:204
 msgid "Window title font"
 msgstr "Lango antraštės šriftas"
+
+#: ../src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Naudojimas: %s\n"
 
 #: ../src/ui/frames.c:1077
 msgid "Close Window"
@@ -2675,6 +2938,278 @@ msgstr ""
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
+
+#: ../src/ui/theme.c:256
+msgid "top"
+msgstr "viršus"
+
+#: ../src/ui/theme.c:258
+msgid "bottom"
+msgstr "apačia"
+
+#: ../src/ui/theme.c:260
+msgid "left"
+msgstr "kairė"
+
+#: ../src/ui/theme.c:262
+msgid "right"
+msgstr "dešinė"
+
+#: ../src/ui/theme.c:289
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "rėmelio aprašyme nenurodytas „%s“ matmuo"
+
+#: ../src/ui/theme.c:308
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "rėmelio aprašyme nenurodytas paraštės „%2$s“ „%1$s“ matmuo"
+
+#: ../src/ui/theme.c:345
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr "Mygtuko dydžio santykis %g yra nenuosaikus"
+
+#: ../src/ui/theme.c:357
+#, c-format
+msgid "Frame geometry does not specify size of buttons"
+msgstr "Rėmelio aprašyme nenurodytas mygtukų dydis"
+
+#: ../src/ui/theme.c:1022
+#, c-format
+msgid "Gradients should have at least two colors"
+msgstr "Aprašant persiliejančias spalvas reikia nurodyti bent dvi spalvas"
+
+#: ../src/ui/theme.c:1148
+#, c-format
+msgid ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK spalvų aprašymas turi turėti būsenos aprašymą patalpintą tarp laužtinių "
+"skliaustų, pvz.: gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti \"%"
+"s\""
+
+#: ../src/ui/theme.c:1162
+#, c-format
+msgid ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr ""
+"GTK spalvų aprašymas po būsenos turi turėti uždarančius laužtinius "
+"skliaustus, pvz.: gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti "
+"\"%s\""
+
+#: ../src/ui/theme.c:1173
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "Nesuprantama spalvų aprašymo būsena \"%s\""
+
+#: ../src/ui/theme.c:1186
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "Spalvų aprašyme nurodytas nesuprantamas spalvos komponentas \"%s\""
+
+#: ../src/ui/theme.c:1216
+#, c-format
+msgid ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
+msgstr ""
+"Išplaukimo formatas yra \"blend/bg_color/fg_color/alpha\", \"%s\" neatitinka "
+"šio formato"
+
+#: ../src/ui/theme.c:1227
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr ""
+"Nepavyko aprodoti skaidrumo reikšmės \"%s\" priskirtos išplaukiančiai spalva"
+
+#: ../src/ui/theme.c:1237
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr ""
+"Skaidrumo reikšmė \"%s\" tarp išplaukiančios spalvos yra ne tarp 0.0 ir 1.0"
+
+#: ../src/ui/theme.c:1284
+#, c-format
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Šešėlio formatas yra \"shade/base_color/factor\", \"%s\" neatitinka šio "
+"formato"
+
+#: ../src/ui/theme.c:1295
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "Nepavyko apdoroti šešėlinės spalvos šešėlių rodiklio \"%s\""
+
+#: ../src/ui/theme.c:1305
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "Šešėlio rodiklis \"%s\" tarp šešėlinės spalvos yra neigiamas"
+
+#: ../src/ui/theme.c:1334
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "Nepavyko apdoroti spalvos \"%s\""
+
+#: ../src/ui/theme.c:1584
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "Koordinačių išraiška turi neleistiną simbolį '%s'"
+
+#: ../src/ui/theme.c:1611
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr ""
+"Koordinačių išraiška turi skaičių su slankiu kableliu '%s', kuris negali "
+"būti apdorotas"
+
+#: ../src/ui/theme.c:1625
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr ""
+"Koordinačių išraiška turi sveiką skaičių '%s', kuris negali būti apdorotas"
+
+#: ../src/ui/theme.c:1747
+#, c-format
+msgid ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
+msgstr ""
+"Koordinačių išraiškoje nurodytas nežinomas operatorius šio teksto pradžioje: "
+"\"%s\""
+
+#: ../src/ui/theme.c:1804
+#, c-format
+msgid "Coordinate expression was empty or not understood"
+msgstr "Koordinačių išraiška tuščia arba nesuprantama"
+
+#: ../src/ui/theme.c:1915 ../src/ui/theme.c:1925 ../src/ui/theme.c:1959
+#, c-format
+msgid "Coordinate expression results in division by zero"
+msgstr "Koordinačių išraiška sukelia dalybą iš nulio"
+
+#: ../src/ui/theme.c:1967
+#, c-format
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"Koordinačių išraiška bando panaudoti liekanos operatorių (mod) slankaus "
+"kablelio skaičiui"
+
+#: ../src/ui/theme.c:2023
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+"Koordinačių išraiškoje įvestas operatorius \"%s\" ten, kur turi būti vedamas "
+"operandas"
+
+#: ../src/ui/theme.c:2032
+#, c-format
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "Koordinačių išraiškoje operandas įrašytas operatoriaus vietoje"
+
+#: ../src/ui/theme.c:2040
+#, c-format
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "Koordinačių išraiška pasibaigė operatoriumi, o ne operandu"
+
+#: ../src/ui/theme.c:2050
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"Koordinačių išraiškoje operatorius \"%c\" eina po operatoriaus \"%c\" be "
+"tarpinio operando"
+
+#: ../src/ui/theme.c:2197 ../src/ui/theme.c:2238
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "Koordinačių išraiška saugo nežinomą kintamąjį arba konstantą \"%s\""
+
+#: ../src/ui/theme.c:2292
+#, c-format
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "Koordinačių išraiškų skaitytuvas perpildė buferį."
+
+#: ../src/ui/theme.c:2321
+#, c-format
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+"Koordinačių išraiškoje įvesti uždarantys skliaustai, nors atidarančių "
+"skliaustų nerasta"
+
+#: ../src/ui/theme.c:2385
+#, c-format
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+"Koordinačių išraiškoje po atidarančių skliaustų neįvesti uždarantys "
+"skliaustai"
+
+#: ../src/ui/theme.c:2396
+#, c-format
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "Koordinačių išraiška neturi jokių operatorių ar operandų"
+
+#: ../src/ui/theme.c:2598 ../src/ui/theme.c:2618 ../src/ui/theme.c:2638
+#, c-format
+msgid "Theme contained an expression that resulted in an error: %s\n"
+msgstr "Temoje esanti išraiška sukėlė klaidą: %s\n"
+
+#: ../src/ui/theme.c:4157
+#, c-format
+msgid ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
+msgstr ""
+"Šiam rėmelio stiliui turi būti nurodytas <button function=\"%s\" state=\"%s"
+"\" draw_ops=\"kažkokswhatever\"/> požymis"
+
+#: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
+#, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Trūksta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"kažkoks\"/>"
+
+#: ../src/ui/theme.c:4702
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "Nepavyko paleisti temos \"%s\": %s\n"
+
+#: ../src/ui/theme.c:4828 ../src/ui/theme.c:4835 ../src/ui/theme.c:4842
+#: ../src/ui/theme.c:4849 ../src/ui/theme.c:4856
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr "Temoje \"%2$s\" trūksta <%1$s> nustatymų"
+
+#: ../src/ui/theme.c:4864
+#, c-format
+msgid ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
+msgstr ""
+"Rėmelio stilius nenurodytas lango tipui \"%s\" temoje \"%s\", pridėkite "
+"<window type=\"%s\" style_set=\"kažkoks\"/> elementą"
+
+#: ../src/ui/theme.c:5231 ../src/ui/theme.c:5293 ../src/ui/theme.c:5356
+#, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr ""
+"Naudotojo nustatytos konstantos turi prasidėti didžiąja raide; „%s“ nėra "
+"didžioji"
+
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5301 ../src/ui/theme.c:5364
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "Konstanta „%s“ jau aprašyta"
 
 #: ../src/ui/theme-parser.c:227 ../src/ui/theme-parser.c:245
 #, c-format
@@ -3429,283 +3964,6 @@ msgstr "y reikšmė buvo %d, tikėtasi %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "Koordinačių %d išraiška apdorota per %g sekundžių (%g sekundžių vidurkis)\n"
-
-#: ../src/ui/theme.c:256
-msgid "top"
-msgstr "viršus"
-
-#: ../src/ui/theme.c:258
-msgid "bottom"
-msgstr "apačia"
-
-#: ../src/ui/theme.c:260
-msgid "left"
-msgstr "kairė"
-
-#: ../src/ui/theme.c:262
-msgid "right"
-msgstr "dešinė"
-
-#: ../src/ui/theme.c:289
-#, c-format
-msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "rėmelio aprašyme nenurodytas „%s“ matmuo"
-
-#: ../src/ui/theme.c:308
-#, c-format
-msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "rėmelio aprašyme nenurodytas paraštės „%2$s“ „%1$s“ matmuo"
-
-#: ../src/ui/theme.c:345
-#, c-format
-msgid "Button aspect ratio %g is not reasonable"
-msgstr "Mygtuko dydžio santykis %g yra nenuosaikus"
-
-#: ../src/ui/theme.c:357
-#, c-format
-msgid "Frame geometry does not specify size of buttons"
-msgstr "Rėmelio aprašyme nenurodytas mygtukų dydis"
-
-#: ../src/ui/theme.c:1022
-#, c-format
-msgid "Gradients should have at least two colors"
-msgstr "Aprašant persiliejančias spalvas reikia nurodyti bent dvi spalvas"
-
-#: ../src/ui/theme.c:1148
-#, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK spalvų aprašymas turi turėti būsenos aprašymą patalpintą tarp laužtinių "
-"skliaustų, pvz.: gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti \"%"
-"s\""
-
-#: ../src/ui/theme.c:1162
-#, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"GTK spalvų aprašymas po būsenos turi turėti uždarančius laužtinius "
-"skliaustus, pvz.: gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti "
-"\"%s\""
-
-#: ../src/ui/theme.c:1173
-#, c-format
-msgid "Did not understand state \"%s\" in color specification"
-msgstr "Nesuprantama spalvų aprašymo būsena \"%s\""
-
-#: ../src/ui/theme.c:1186
-#, c-format
-msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Spalvų aprašyme nurodytas nesuprantamas spalvos komponentas \"%s\""
-
-#: ../src/ui/theme.c:1216
-#, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"Išplaukimo formatas yra \"blend/bg_color/fg_color/alpha\", \"%s\" neatitinka "
-"šio formato"
-
-#: ../src/ui/theme.c:1227
-#, c-format
-msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
-"Nepavyko aprodoti skaidrumo reikšmės \"%s\" priskirtos išplaukiančiai spalva"
-
-#: ../src/ui/theme.c:1237
-#, c-format
-msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
-"Skaidrumo reikšmė \"%s\" tarp išplaukiančios spalvos yra ne tarp 0.0 ir 1.0"
-
-#: ../src/ui/theme.c:1284
-#, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Šešėlio formatas yra \"shade/base_color/factor\", \"%s\" neatitinka šio "
-"formato"
-
-#: ../src/ui/theme.c:1295
-#, c-format
-msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Nepavyko apdoroti šešėlinės spalvos šešėlių rodiklio \"%s\""
-
-#: ../src/ui/theme.c:1305
-#, c-format
-msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Šešėlio rodiklis \"%s\" tarp šešėlinės spalvos yra neigiamas"
-
-#: ../src/ui/theme.c:1334
-#, c-format
-msgid "Could not parse color \"%s\""
-msgstr "Nepavyko apdoroti spalvos \"%s\""
-
-#: ../src/ui/theme.c:1584
-#, c-format
-msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordinačių išraiška turi neleistiną simbolį '%s'"
-
-#: ../src/ui/theme.c:1611
-#, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr ""
-"Koordinačių išraiška turi skaičių su slankiu kableliu '%s', kuris negali "
-"būti apdorotas"
-
-#: ../src/ui/theme.c:1625
-#, c-format
-msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-"Koordinačių išraiška turi sveiką skaičių '%s', kuris negali būti apdorotas"
-
-#: ../src/ui/theme.c:1747
-#, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
-"Koordinačių išraiškoje nurodytas nežinomas operatorius šio teksto pradžioje: "
-"\"%s\""
-
-#: ../src/ui/theme.c:1804
-#, c-format
-msgid "Coordinate expression was empty or not understood"
-msgstr "Koordinačių išraiška tuščia arba nesuprantama"
-
-#: ../src/ui/theme.c:1915 ../src/ui/theme.c:1925 ../src/ui/theme.c:1959
-#, c-format
-msgid "Coordinate expression results in division by zero"
-msgstr "Koordinačių išraiška sukelia dalybą iš nulio"
-
-#: ../src/ui/theme.c:1967
-#, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"Koordinačių išraiška bando panaudoti liekanos operatorių (mod) slankaus "
-"kablelio skaičiui"
-
-#: ../src/ui/theme.c:2023
-#, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"Koordinačių išraiškoje įvestas operatorius \"%s\" ten, kur turi būti vedamas "
-"operandas"
-
-#: ../src/ui/theme.c:2032
-#, c-format
-msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "Koordinačių išraiškoje operandas įrašytas operatoriaus vietoje"
-
-#: ../src/ui/theme.c:2040
-#, c-format
-msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Koordinačių išraiška pasibaigė operatoriumi, o ne operandu"
-
-#: ../src/ui/theme.c:2050
-#, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"Koordinačių išraiškoje operatorius \"%c\" eina po operatoriaus \"%c\" be "
-"tarpinio operando"
-
-#: ../src/ui/theme.c:2197 ../src/ui/theme.c:2238
-#, c-format
-msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Koordinačių išraiška saugo nežinomą kintamąjį arba konstantą \"%s\""
-
-#: ../src/ui/theme.c:2292
-#, c-format
-msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Koordinačių išraiškų skaitytuvas perpildė buferį."
-
-#: ../src/ui/theme.c:2321
-#, c-format
-msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-"Koordinačių išraiškoje įvesti uždarantys skliaustai, nors atidarančių "
-"skliaustų nerasta"
-
-#: ../src/ui/theme.c:2385
-#, c-format
-msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
-"Koordinačių išraiškoje po atidarančių skliaustų neįvesti uždarantys "
-"skliaustai"
-
-#: ../src/ui/theme.c:2396
-#, c-format
-msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "Koordinačių išraiška neturi jokių operatorių ar operandų"
-
-#: ../src/ui/theme.c:2598 ../src/ui/theme.c:2618 ../src/ui/theme.c:2638
-#, c-format
-msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "Temoje esanti išraiška „%s“ sukėlė klaidą: %s\n"
-
-#: ../src/ui/theme.c:4157
-#, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"Šiam rėmelio stiliui turi būti nurodytas <button function=\"%s\" state=\"%s"
-"\" draw_ops=\"kažkokswhatever\"/> požymis"
-
-#: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
-#, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Trūksta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"kažkoks\"/>"
-
-#: ../src/ui/theme.c:4702
-#, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Nepavyko paleisti temos \"%s\": %s\n"
-
-#: ../src/ui/theme.c:4828 ../src/ui/theme.c:4835 ../src/ui/theme.c:4842
-#: ../src/ui/theme.c:4849 ../src/ui/theme.c:4856
-#, c-format
-msgid "No <%s> set for theme \"%s\""
-msgstr "Temoje \"%2$s\" trūksta <%1$s> nustatymų"
-
-#: ../src/ui/theme.c:4864
-#, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"Rėmelio stilius nenurodytas lango tipui \"%s\" temoje \"%s\", pridėkite "
-"<window type=\"%s\" style_set=\"kažkoks\"/> elementą"
-
-#: ../src/ui/theme.c:5231 ../src/ui/theme.c:5293 ../src/ui/theme.c:5356
-#, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Naudotojo nustatytos konstantos turi prasidėti didžiąja raide; „%s“ nėra "
-"didžioji"
-
-#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5301 ../src/ui/theme.c:5364
-#, c-format
-msgid "Constant \"%s\" has already been defined"
-msgstr "Konstanta „%s“ jau aprašyta"
-
-#: ../src/tools/metacity-message.c:150
-#, c-format
-msgid "Usage: %s\n"
-msgstr "Naudojimas: %s\n"
 
 #~ msgid ""
 #~ "Setting this option to false can lead to buggy behavior, so users are "

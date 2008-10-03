@@ -1,3 +1,17 @@
+2008-09-26  Thomas Thurman  <tthurman@gnome.org>
+
+        * autogen.sh: not all versions of /bin/sh can handle this script,
+          so specify one.  Also update the error message because we don't
+          use CVS these days.
+
+2008-09-20  Thomas Thurman  <tthurman@gnome.org>
+
+        * po/POTFILES.in: fix name of window-bindings.h
+
+2008-09-20  Thomas Thurman  <tthurman@gnome.org>
+
+        * po/POTFILES.in: added new files and re-sorted
+
 2008-09-12  Vincent Untz  <vuntz@gnome.org>
 
         Install desktop files in both

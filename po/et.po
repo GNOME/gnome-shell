@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-04 04:21+0000\n"
-"PO-Revision-Date: 2008-09-04 21:54+0300\n"
-"Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
+"PO-Revision-Date: 2008-09-24 07:55+0300\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -542,23 +542,24 @@ msgstr "Peida kõik aknad ja fokusseeri töölaud"
 
 #: ../src/metacity.schemas.in.h:22
 msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay specified by the auto_raise_delay key. This is not related to clicking on a window to raise it, nor to entering a window during drag-and-drop."
-msgstr "Kui väärtus on tõene ja fookuse režiim on \"sloppy\" või \"mouse\" siis fokuseeritud aken tõstetakse automaatselt pärast auto_raise_delay võtme määratud viivitust. See ei ole seotud akna peal selle tõstmiseks klõpsamisega ega lohistamisel aknasse sisenemisega."
+msgstr "Kui märgitud ja fookuse režiim on \"sloppy\" või \"mouse\", siis tõstetakse fokuseeritud aken automaatselt pärast auto_raise_delay võtme määratud viivitust. See ei ole seotud aknal klõpsamisega selle tõstmiseks ega lohistamisel aknasse sisenemisega."
 
 #: ../src/metacity.schemas.in.h:23
 msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
-msgstr "Kui tõene, ignoreeritakse titlebar_font valikut ja akende tiitliribal kasutatakse standardset rakenduste kirjastiili."
+msgstr "Kui märgitud, siis titlebar_font valikut eiratakse ja akende tiitliribal kasutatakse standardset rakenduste kirjastiili."
 
 #: ../src/metacity.schemas.in.h:24
 msgid "If true, metacity will give the user less feedback by using wireframes, avoiding animations, or other means. This is a significant reduction in usability for many users, but may allow legacy applications to continue working, and may also be a useful tradeoff for terminal servers. However, the wireframe feature is disabled when accessibility is on."
-msgstr "Kui tõene, annab metacity kasutajale vähem tagasisidet kasutades sõrestikvaadet, hoidudes animatsioonides ja teistest tagasiside viisidest. See vähendab mõne kasutaja jaoks oluliselt kasutatavust, aga võib jätta ammused pärandprogrammid tööle, lisaks võib olla kasulik kompromiss terminalide serveris. Siiski on sõrestikvaade keelatud, kui kasutatavuse on sisse lülitatud."
+msgstr "Kui märgitud, annab metacity kasutajale vähem tagasisidet kasutades sõrestikvaadet, hoidudes animatsioonides ja teistest tagasiside viisidest. See vähendab mõne kasutaja jaoks oluliselt kasutatavust, aga võib jätta ammused pärandprogrammid tööle, lisaks võib olla kasulik kompromiss terminaliserveris. Siiski on hõlbustuste sisselülitamise korral sõrestikvaade keelatud."
 
 #: ../src/metacity.schemas.in.h:25
 msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. Application-based mode is, however, largely unimplemented at the moment."
-msgstr "Kui tõene, haldab Metacity akende asemel rakendusi. Põhimõte on pisut abstraktne, aga üldiselt on rakenduste baasil süsteem rohkem Maci ja vähem Windowsi moodi. Kui sa fokuseerid akna rakenduste-baasil režiimis, tõstetakse kõik selle rakenduse aknad. Lisaks rakenduste-baasil režiimis ei edastata fokuseerimise klõpse teiste rakenduste akendele. Rakenduste-baasil režiim on hetkel siiski veel teostamata."
+msgstr "Kui märgitud, haldab Metacity akende asemel rakendusi. Põhimõte on pisut abstraktne, aga üldiselt on rakenduste baasil süsteem rohkem Maci ja vähem Windowsi moodi. Kui sa fokuseerid akna rakenduste-baasil režiimis, tõstetakse kõik selle rakenduse aknad. Lisaks rakenduste-baasil režiimis ei edastata fokuseerimise klõpse teiste rakenduste akendele. Rakenduste-baasil režiim on hetkel siiski veel teostamata."
 
 #: ../src/metacity.schemas.in.h:26
 msgid "If true, trade off usability for less resource usage"
-msgstr "Kui tõene, tehakse kompromiss kasutatavausega et säästa ressursse"
+msgstr ""
+"Kui märgitud, tehakse kasutatavause arvelt kompromiss ressursside säästmisekst"
 
 #: ../src/metacity.schemas.in.h:27
 msgid "Lower window below other windows"
@@ -566,7 +567,7 @@ msgstr "Saada aken teiste taha"
 
 #: ../src/metacity.schemas.in.h:28
 msgid "Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Setting this option to false, which is strongly discouraged, will decouple raising from other user actions, and ignore raise requests generated by applications. See http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-msgstr "Paljud tegevused (nt klõpsamine kliendialas, akna liigutamine või suuruse muutmine) tõstavad tavaliselt kõrvalnähuna akna. Selle valiku määramisel vääraks, mis on rangelt mittesoovitav, eraldab tõstmise teistest kasutajategevustest ja ignoreerib rakenduste esiletõstmise nõudeid. Vaata http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+msgstr "Paljud tegevused (nt klõpsamine kliendialas, akna liigutamine või suuruse muutmine) tõstavad tavaliselt kõrvalnähuna akna kõige pealmiseks. Selle valiku märkimata jätmisel (mis on rangelt mittesoovitav) eraldab tõstmise teistest kasutajategevustest ja eirab rakenduste esiletõstmise nõudeid. Vaata http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:29
 msgid "Maximize window"
@@ -1250,7 +1251,7 @@ msgstr "Lülitab sisse visuaalse süsteemi piiksu näitaja; on kasulik lärmakas
 
 #: ../src/metacity.schemas.in.h:199
 msgid "Unmaximize window"
-msgstr "Taasta akna suurus"
+msgstr "Akna suuruse taastamine"
 
 #: ../src/metacity.schemas.in.h:200
 msgid "Use standard system font in window titles"
@@ -1353,7 +1354,6 @@ msgstr "Muuda s_uurust"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:84
-#, fuzzy
 msgid "Move Titlebar On_screen"
 msgstr "Liiguta tiitliriba mööda _ekraani"
 
@@ -2215,7 +2215,6 @@ msgid "Modal Dialog Box"
 msgstr "Modaalne dialoogikast"
 
 #: ../src/ui/theme-viewer.c:390
-#, fuzzy
 msgid "Utility Palette"
 msgstr "Rakendite palett"
 
