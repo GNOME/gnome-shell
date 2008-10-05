@@ -1,5 +1,9 @@
 2008-10-05  Thomas Thurman  <tthurman@gnome.org>
 
+        * tools/ppa-magic.py: experimental tool for Launchpad upload
+
+2008-10-05  Thomas Thurman  <tthurman@gnome.org>
+
         * metacity.doap: Havoc is an author; Thomas has an email address;
           add a ton of release information going back to the early days,
 	  although not right to the beginning.
