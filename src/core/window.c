@@ -659,8 +659,11 @@ meta_window_new_with_attrs (MetaDisplay       *display,
     meta_window_ensure_frame (window);
 
   meta_window_grab_keys (window);
-  meta_display_grab_window_buttons (window->display, window->xwindow);
-  meta_display_grab_focus_window_button (window->display, window);
+  if (window->type != META_WINDOW_DOCK)
+    {
+      meta_display_grab_window_buttons (window->display, window->xwindow);
+      meta_display_grab_focus_window_button (window->display, window);
+    }
 
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK)

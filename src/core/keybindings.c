@@ -65,68 +65,27 @@ handle_##name (MetaDisplay    *display,\
 #include "window-bindings.h"
 #undef item
 
-static void handle_activate_workspace (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_tab_forward        (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_tab_backward       (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_cycle_forward      (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_cycle_backward     (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_toggle_fullscreen  (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_toggle_desktop     (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_panel_keybinding   (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_workspace_switch   (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_run_command        (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_spew_mark          (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
-static void handle_run_terminal       (MetaDisplay    *display,
-                                       MetaScreen     *screen,
-                                       MetaWindow     *window,
-                                       XEvent         *event,
-                                       MetaKeyBinding *binding);
+#define item(name, suffix, param, can_reverse, short, long, stroke) \
+static void \
+handle_##name (MetaDisplay    *display,\
+               MetaScreen     *screen,\
+               MetaWindow     *window,\
+               XEvent         *event,\
+               MetaKeyBinding *binding);
+#include "screen-bindings.h"
+#undef item
 
-/* debug */
+/* These can't be bound to anything, but they are used to handle
+ * various other events.  TODO: Possibly we should include them as event
+ * handler functions and have some kind of flag to say they're unbindable.
+ */
+
+static void handle_workspace_switch  (MetaDisplay    *display,
+                                      MetaScreen     *screen,
+                                      MetaWindow     *window,
+                                      XEvent         *event,
+                                      MetaKeyBinding *binding);
+
 static gboolean process_mouse_move_resize_grab (MetaDisplay *display,
                                                 MetaScreen  *screen,
                                                 MetaWindow  *window,
@@ -162,7 +121,7 @@ typedef struct
 {
   const char *name;
   MetaKeyHandlerFunc func;
-  void *data;
+  gint data, flags;
 } MetaKeyHandler;
 
 struct _MetaKeyBinding
@@ -176,154 +135,25 @@ struct _MetaKeyBinding
 };
 
 static const MetaKeyHandler screen_handlers[] = {
-  { META_KEYBINDING_WORKSPACE_1, handle_activate_workspace,
-    GINT_TO_POINTER (0) },
-  { META_KEYBINDING_WORKSPACE_2, handle_activate_workspace,
-    GINT_TO_POINTER (1) },
-  { META_KEYBINDING_WORKSPACE_3, handle_activate_workspace,
-    GINT_TO_POINTER (2) },
-  { META_KEYBINDING_WORKSPACE_4, handle_activate_workspace,
-    GINT_TO_POINTER (3) },
-  { META_KEYBINDING_WORKSPACE_5, handle_activate_workspace,
-    GINT_TO_POINTER (4) },
-  { META_KEYBINDING_WORKSPACE_6, handle_activate_workspace,
-    GINT_TO_POINTER (5) },
-  { META_KEYBINDING_WORKSPACE_7, handle_activate_workspace,
-    GINT_TO_POINTER (6) },
-  { META_KEYBINDING_WORKSPACE_8, handle_activate_workspace,
-    GINT_TO_POINTER (7) },
-  { META_KEYBINDING_WORKSPACE_9, handle_activate_workspace,
-    GINT_TO_POINTER (8) },
-  { META_KEYBINDING_WORKSPACE_10, handle_activate_workspace,
-    GINT_TO_POINTER (9) },
-  { META_KEYBINDING_WORKSPACE_11, handle_activate_workspace,
-    GINT_TO_POINTER (10) },
-  { META_KEYBINDING_WORKSPACE_12, handle_activate_workspace,
-    GINT_TO_POINTER (11) },
-  { META_KEYBINDING_WORKSPACE_LEFT, handle_workspace_switch,
-    GINT_TO_POINTER (META_MOTION_LEFT) },
-  { META_KEYBINDING_WORKSPACE_RIGHT, handle_workspace_switch,
-    GINT_TO_POINTER (META_MOTION_RIGHT) },
-  { META_KEYBINDING_WORKSPACE_UP, handle_workspace_switch,
-    GINT_TO_POINTER (META_MOTION_UP) },
-  { META_KEYBINDING_WORKSPACE_DOWN, handle_workspace_switch,
-    GINT_TO_POINTER (META_MOTION_DOWN) },
-  { META_KEYBINDING_SWITCH_WINDOWS, handle_tab_forward,
-    GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
-  { META_KEYBINDING_SWITCH_WINDOWS_BACKWARD, handle_tab_backward,
-    GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
-  { META_KEYBINDING_SWITCH_PANELS, handle_tab_forward,
-    GINT_TO_POINTER (META_TAB_LIST_DOCKS) },
-  { META_KEYBINDING_SWITCH_PANELS_BACKWARD, handle_tab_backward,
-    GINT_TO_POINTER (META_TAB_LIST_DOCKS) },
-  { META_KEYBINDING_SWITCH_GROUP, handle_tab_forward,
-    GINT_TO_POINTER (META_TAB_LIST_GROUP) },
-  { META_KEYBINDING_SWITCH_GROUP_BACKWARD, handle_tab_backward,
-    GINT_TO_POINTER (META_TAB_LIST_GROUP) },
-  { META_KEYBINDING_CYCLE_GROUP, handle_cycle_forward,
-    GINT_TO_POINTER (META_TAB_LIST_GROUP) },
-  { META_KEYBINDING_CYCLE_GROUP_BACKWARD, handle_cycle_backward,
-    GINT_TO_POINTER (META_TAB_LIST_GROUP) },
-  { META_KEYBINDING_CYCLE_WINDOWS, handle_cycle_forward,
-    GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
-  { META_KEYBINDING_CYCLE_WINDOWS_BACKWARD, handle_cycle_backward,
-    GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
-  { META_KEYBINDING_CYCLE_PANELS, handle_cycle_forward,
-    GINT_TO_POINTER (META_TAB_LIST_DOCKS) },  
-  { META_KEYBINDING_CYCLE_PANELS_BACKWARD, handle_cycle_backward,
-    GINT_TO_POINTER (META_TAB_LIST_DOCKS) },  
-  { META_KEYBINDING_SHOW_DESKTOP, handle_toggle_desktop,
-    NULL },
-  { META_KEYBINDING_PANEL_MAIN_MENU, handle_panel_keybinding,
-    GINT_TO_POINTER (META_KEYBINDING_ACTION_PANEL_MAIN_MENU) },
-  { META_KEYBINDING_PANEL_RUN_DIALOG, handle_panel_keybinding,
-    GINT_TO_POINTER (META_KEYBINDING_ACTION_PANEL_RUN_DIALOG) },
-  { META_KEYBINDING_COMMAND_1, handle_run_command,
-    GINT_TO_POINTER (0) },
-  { META_KEYBINDING_COMMAND_2, handle_run_command,
-    GINT_TO_POINTER (1) },
-  { META_KEYBINDING_COMMAND_3, handle_run_command,
-    GINT_TO_POINTER (2) },
-  { META_KEYBINDING_COMMAND_4, handle_run_command,
-    GINT_TO_POINTER (3) },
-  { META_KEYBINDING_COMMAND_5, handle_run_command,
-    GINT_TO_POINTER (4) },
-  { META_KEYBINDING_COMMAND_6, handle_run_command,
-    GINT_TO_POINTER (5) },
-  { META_KEYBINDING_COMMAND_7, handle_run_command,
-    GINT_TO_POINTER (6) },
-  { META_KEYBINDING_COMMAND_8, handle_run_command,
-    GINT_TO_POINTER (7) },
-  { META_KEYBINDING_COMMAND_9, handle_run_command,
-    GINT_TO_POINTER (8) },
-  { META_KEYBINDING_COMMAND_10, handle_run_command,
-    GINT_TO_POINTER (9) },
-  { META_KEYBINDING_COMMAND_11, handle_run_command,
-    GINT_TO_POINTER (10) },
-  { META_KEYBINDING_COMMAND_12, handle_run_command,
-    GINT_TO_POINTER (11) },
-  { META_KEYBINDING_COMMAND_13, handle_run_command,
-    GINT_TO_POINTER (12) },
-  { META_KEYBINDING_COMMAND_14, handle_run_command,
-    GINT_TO_POINTER (13) },
-  { META_KEYBINDING_COMMAND_15, handle_run_command,
-    GINT_TO_POINTER (14) },
-  { META_KEYBINDING_COMMAND_16, handle_run_command,
-    GINT_TO_POINTER (15) },
-  { META_KEYBINDING_COMMAND_17, handle_run_command,
-    GINT_TO_POINTER (16) },
-  { META_KEYBINDING_COMMAND_18, handle_run_command,
-    GINT_TO_POINTER (17) },
-  { META_KEYBINDING_COMMAND_19, handle_run_command,
-    GINT_TO_POINTER (18) },
-  { META_KEYBINDING_COMMAND_20, handle_run_command,
-    GINT_TO_POINTER (19) },
-  { META_KEYBINDING_COMMAND_21, handle_run_command,
-    GINT_TO_POINTER (20) },
-  { META_KEYBINDING_COMMAND_22, handle_run_command,
-    GINT_TO_POINTER (21) },
-  { META_KEYBINDING_COMMAND_23, handle_run_command,
-    GINT_TO_POINTER (22) },
-  { META_KEYBINDING_COMMAND_24, handle_run_command,
-    GINT_TO_POINTER (23) },
-  { META_KEYBINDING_COMMAND_25, handle_run_command,
-    GINT_TO_POINTER (24) },
-  { META_KEYBINDING_COMMAND_26, handle_run_command,
-    GINT_TO_POINTER (25) },
-  { META_KEYBINDING_COMMAND_27, handle_run_command,
-    GINT_TO_POINTER (26) },
-  { META_KEYBINDING_COMMAND_28, handle_run_command,
-    GINT_TO_POINTER (27) },
-  { META_KEYBINDING_COMMAND_29, handle_run_command,
-    GINT_TO_POINTER (28) },
-  { META_KEYBINDING_COMMAND_30, handle_run_command,
-    GINT_TO_POINTER (29) },
-  { META_KEYBINDING_COMMAND_31, handle_run_command,
-    GINT_TO_POINTER (30) },
-  { META_KEYBINDING_COMMAND_32, handle_run_command,
-    GINT_TO_POINTER (31) },
-  { META_KEYBINDING_COMMAND_SCREENSHOT, handle_run_command,
-    GINT_TO_POINTER (32) },
-  { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, handle_run_command,
-    GINT_TO_POINTER (33) },
-  { META_KEYBINDING_RUN_COMMAND_TERMINAL, handle_run_terminal,
-    NULL },
-  { META_KEYBINDING_SET_SPEW_MARK, handle_spew_mark, NULL },
-  { NULL, NULL, NULL }
+#define item(name, suffix, param, flags, short, long, stroke) \
+   { #name suffix, handle_##name, param, flags },
+#include "screen-bindings.h"
+#undef item
+  { NULL, NULL, 0, 0 }
 };
   
 static const MetaKeyHandler window_handlers[] = {
-/* TODO: Eventually, we should stop using GINT_TO_POINTER here, because
- * they're always integers.
+/* FIXME: The flags=1 thing is pretty ugly here, but it'll really have
+ * to wait until and if we merge the window and screen binding files.
  *
  * TODO: Are window bindings only ever called on non-null windows?
  * If so, we can remove the check from all of them.
  */
-#define item(name, suffix, param, a, b, c) { #name, handle_##name, \
-   GINT_TO_POINTER (param) },
+#define item(name, suffix, param, short, long, stroke) \
+  { #name suffix, handle_##name, param, 1 },
 #include "window-bindings.h"
 #undef item
-   { NULL, NULL, NULL }
+   { NULL, NULL, 0, 0 }
 };
 
 static void
@@ -2490,27 +2320,32 @@ process_tab_grab (MetaDisplay *display,
 }
 
 static void
-handle_activate_workspace (MetaDisplay    *display,
+handle_switch_to_workspace (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *event_window,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  int which;
+  gint which = binding->handler->data;
   MetaWorkspace *workspace;
   
-  which = GPOINTER_TO_INT (binding->handler->data);
- 
-  workspace = NULL;
   if (which < 0)
-    {      
-      workspace = meta_workspace_get_neighbor (screen->active_workspace,
-                                               which);
-    }
-  else
     {
-      workspace = meta_screen_get_workspace_by_index (screen, which);
+      /* Negative workspace numbers are directions with respect to the
+       * current workspace.  While we could insta-switch here by setting
+       * workspace to the result of meta_workspace_get_neighbor(), when
+       * people request a workspace switch to the left or right via
+       * the keyboard, they actually want a tab popup.  So we should
+       * go there instead.
+       *
+       * Note that we're the only caller of that function, so perhaps
+       * we should merge with it.
+       */
+      handle_workspace_switch (display, screen, event_window, event, binding);
+      return;
     }
+
+  workspace = meta_screen_get_workspace_by_index (screen, which);
   
   if (workspace)
     {
@@ -2649,12 +2484,10 @@ handle_run_command (MetaDisplay    *display,
                     XEvent         *event,
                     MetaKeyBinding *binding)
 {
-  int which;
+  gint which = binding->handler->data;
   const char *command;
   GError *err;
   
-  which = GPOINTER_TO_INT (binding->handler->data);
- 
   command = meta_prefs_get_command (which);
 
   if (command == NULL)
@@ -3023,7 +2856,7 @@ process_workspace_switch_grab (MetaDisplay *display,
 }
 
 static void
-handle_toggle_desktop (MetaDisplay    *display,
+handle_show_desktop (MetaDisplay    *display,
                        MetaScreen     *screen,
                        MetaWindow     *window,
                        XEvent         *event,
@@ -3041,21 +2874,20 @@ handle_toggle_desktop (MetaDisplay    *display,
 }
 
 static void
-handle_panel_keybinding (MetaDisplay    *display,
+handle_panel (MetaDisplay    *display,
                          MetaScreen     *screen,
                          MetaWindow     *window,
                          XEvent         *event,
                          MetaKeyBinding *binding)
 {
-  MetaKeyBindingAction action;
+  MetaKeyBindingAction action = binding->handler->data;
   Atom action_atom;
   XClientMessageEvent ev;
-  
-  action = GPOINTER_TO_INT (binding->handler->data);
 
   action_atom = None;
   switch (action)
     {
+    /* FIXME: The numbers are wrong */
     case META_KEYBINDING_ACTION_PANEL_MAIN_MENU:
       action_atom = display->atom__GNOME_PANEL_ACTION_MAIN_MENU;
       break;
@@ -3161,11 +2993,9 @@ do_choose_window (MetaDisplay    *display,
                   gboolean        backward,
                   gboolean        show_popup)
 {
-  MetaTabList type;
+  MetaTabList type = binding->handler->data;
   MetaWindow *initial_selection;
-  
-  type = GPOINTER_TO_INT (binding->handler->data);
-  
+
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Tab list = %u show_popup = %d\n", type, show_popup);
   
@@ -3254,48 +3084,31 @@ do_choose_window (MetaDisplay    *display,
 }
 
 static void
-handle_tab_forward (MetaDisplay    *display,
+handle_switch (MetaDisplay    *display,
                     MetaScreen     *screen,
                     MetaWindow     *event_window,
                     XEvent         *event,
                     MetaKeyBinding *binding)
 {
-  do_choose_window (display, screen,
-                    event_window, event, binding, FALSE, TRUE);
+  gint backwards = binding->handler->flags & BINDING_IS_REVERSED;
+
+  do_choose_window (display, screen, event_window, event, binding,
+                    backwards, TRUE);
 }
 
 static void
-handle_tab_backward (MetaDisplay    *display,
-                     MetaScreen     *screen,
-                     MetaWindow     *event_window,
-                     XEvent         *event,
-                     MetaKeyBinding *binding)
+handle_cycle (MetaDisplay    *display,
+                    MetaScreen     *screen,
+                    MetaWindow     *event_window,
+                    XEvent         *event,
+                    MetaKeyBinding *binding)
 {
-  do_choose_window (display, screen,
-                    event_window, event, binding, TRUE, TRUE);
+  gint backwards = binding->handler->flags & BINDING_IS_REVERSED;
+
+  do_choose_window (display, screen, event_window, event, binding,
+                    backwards, FALSE);
 }
 
-static void
-handle_cycle_forward (MetaDisplay    *display,
-                      MetaScreen     *screen,
-                      MetaWindow     *event_window,
-                      XEvent         *event,
-                      MetaKeyBinding *binding)
-{
-  do_choose_window (display, screen,
-                    event_window, event, binding, FALSE, FALSE); 
-}
-
-static void
-handle_cycle_backward (MetaDisplay    *display,
-                       MetaScreen     *screen,
-                       MetaWindow     *event_window,
-                       XEvent         *event,
-                       MetaKeyBinding *binding)
-{
-  do_choose_window (display, screen,
-                    event_window, event, binding, TRUE, FALSE); 
-}
 
 static void
 handle_toggle_fullscreen  (MetaDisplay    *display,
@@ -3476,11 +3289,10 @@ handle_move_to_workspace  (MetaDisplay    *display,
                               XEvent         *event,
                               MetaKeyBinding *binding)
 {
-  int which;
-  gboolean flip;
+  gint which = binding->handler->data;
+  gboolean flip = (which < 0);
   MetaWorkspace *workspace;
   
-  which = GPOINTER_TO_INT (binding->handler->data);
   /* If which is zero or positive, it's a workspace number, and the window
    * should move to the workspace with that number.
    *
@@ -3488,7 +3300,6 @@ handle_move_to_workspace  (MetaDisplay    *display,
    * position; it's expressed as a member of the MetaMotionDirection enum,
    * all of whose members are negative.  Such a change is called a flip.
    */
-  flip = (which < 0);
 
   if (window == NULL || window->always_sticky)
     return;
@@ -3607,11 +3418,9 @@ handle_workspace_switch  (MetaDisplay    *display,
                           XEvent         *event,
                           MetaKeyBinding *binding)
 {
-  int motion;
+  gint motion = binding->handler->data;
   unsigned int grab_mask;
      
-  motion = GPOINTER_TO_INT (binding->handler->data);
-
   g_assert (motion < 0); 
 
   meta_topic (META_DEBUG_KEYBINDINGS,
@@ -3665,7 +3474,7 @@ handle_workspace_switch  (MetaDisplay    *display,
 }
 
 static void
-handle_spew_mark (MetaDisplay    *display,
+handle_set_spew_mark (MetaDisplay    *display,
                   MetaScreen     *screen,
                   MetaWindow     *window,
                   XEvent         *event,

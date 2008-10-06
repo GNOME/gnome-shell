@@ -1,3 +1,43 @@
+2008-10-06  William Lachance  <wrlach@gmail.com>
+
+        Pass modified mouse button events down to panel windows
+        instead of dealing with them ourselves.  Closes #554428.
+
+        * src/core/display.c (prefs_changed_callback): don't grab mouse
+          buttons on panels
+        * src/core/window.c (meta_window_new_with_attrs): ditto
+
+2008-10-05  Thomas Thurman  <tthurman@gnome.org>
+
+        Second half of the switch to using x-macros for keybindings so that
+        we don't have lots of places with the same information which must
+        stay in the same order.  This time it's screen bindings.
+
+        * src/core/screen-bindings.h: New file, containing screen bindings.
+        * src/core/schema-bindings.c: added ability to output screen bindings.
+        * src/core/window-bindings.h: tiny tweak to comment
+        * src/core/keybindings.c: generate function prototypes using s-b.h;
+          several handlers modified to use ints rather than ints cast into
+          pointers, or renamed.
+        * src/include/prefs.h: generate names of bindings using s-b.h;
+          generate screen_handlers using s-b.h;
+          arguments to bindings are ints and not ints cast to pointers;
+          several handler functions renamed to consistent names.
+        * src/core/prefs.c (meta_prefs_set_num_workspaces, init_bindings):
+          generate screen_handlers using s-b.h;
+          generate screen_string_bindings using s-b.h (and add check for
+          null bindings in init_bindings to enable this simply).
+
+2008-10-05  Thomas Thurman  <tthurman@gnome.org>
+
+        * tools/ppa-magic.py: experimental tool for Launchpad upload
+
+2008-10-05  Thomas Thurman  <tthurman@gnome.org>
+
+        * metacity.doap: Havoc is an author; Thomas has an email address;
+          add a ton of release information going back to the early days,
+	  although not right to the beginning.
+
 2008-09-26  Thomas Thurman  <tthurman@gnome.org>
 
         * autogen.sh: not all versions of /bin/sh can handle this script,
