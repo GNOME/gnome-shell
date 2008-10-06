@@ -18,6 +18,7 @@
 #include "compositor-private.h"
 #include "compositor-clutter.h"
 #include "compositor-clutter-plugin-manager.h"
+#include "tidy-texture-frame.h"
 #include "xprops.h"
 #include "shaped-texture.h"
 #include "tidy-texture-frame.h"
