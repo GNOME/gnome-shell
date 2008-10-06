@@ -1,3 +1,12 @@
+2008-10-06  William Lachance  <wrlach@gmail.com>
+
+        Pass modified mouse button events down to panel windows
+        instead of dealing with them ourselves.  Closes #554428.
+
+        * src/core/display.c (prefs_changed_callback): don't grab mouse
+          buttons on panels
+        * src/core/window.c (meta_window_new_with_attrs): ditto
+
 2008-10-05  Thomas Thurman  <tthurman@gnome.org>
 
         Second half of the switch to using x-macros for keybindings so that

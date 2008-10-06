@@ -4920,8 +4920,11 @@ prefs_changed_callback (MetaPreference pref,
       while (tmp != NULL)
         {
           MetaWindow *w = tmp->data;
-          meta_display_grab_focus_window_button (display, w);
-          meta_display_grab_window_buttons (display, w->xwindow);
+          if (w->type != META_WINDOW_DOCK)
+            {
+              meta_display_grab_focus_window_button (display, w);
+              meta_display_grab_window_buttons (display, w->xwindow);
+            }
           tmp = tmp->next;
         }
 
