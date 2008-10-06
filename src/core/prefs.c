@@ -1815,80 +1815,16 @@ meta_prefs_set_num_workspaces (int n_workspaces)
 #endif /* HAVE_GCONF */
 }
 
-/* Indexes must correspond to MetaKeybindingAction */
 static MetaKeyPref screen_bindings[] = {
-  { META_KEYBINDING_WORKSPACE_1, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_2, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_3, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_4, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_5, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_6, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_7, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_8, NULL, FALSE }, 
-  { META_KEYBINDING_WORKSPACE_9, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_10, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_11, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_12, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_LEFT, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_RIGHT, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_UP, NULL, FALSE },
-  { META_KEYBINDING_WORKSPACE_DOWN, NULL, FALSE },
-  { META_KEYBINDING_SWITCH_GROUP, NULL, TRUE },
-  { META_KEYBINDING_SWITCH_GROUP_BACKWARD, NULL, TRUE },
-  { META_KEYBINDING_SWITCH_WINDOWS, NULL, TRUE },
-  { META_KEYBINDING_SWITCH_WINDOWS_BACKWARD, NULL, TRUE },
-  { META_KEYBINDING_SWITCH_PANELS, NULL, TRUE },
-  { META_KEYBINDING_SWITCH_PANELS_BACKWARD, NULL, TRUE },
-  { META_KEYBINDING_CYCLE_GROUP, NULL, TRUE },
-  { META_KEYBINDING_CYCLE_GROUP_BACKWARD, NULL, TRUE },
-  { META_KEYBINDING_CYCLE_WINDOWS, NULL, TRUE },
-  { META_KEYBINDING_CYCLE_WINDOWS_BACKWARD, NULL, TRUE },
-  { META_KEYBINDING_CYCLE_PANELS, NULL, TRUE },
-  { META_KEYBINDING_CYCLE_PANELS_BACKWARD, NULL, TRUE },
-  { META_KEYBINDING_SHOW_DESKTOP, NULL, FALSE },
-  { META_KEYBINDING_PANEL_MAIN_MENU, NULL, FALSE },
-  { META_KEYBINDING_PANEL_RUN_DIALOG, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_1, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_2, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_3, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_4, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_5, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_6, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_7, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_8, NULL, FALSE }, 
-  { META_KEYBINDING_COMMAND_9, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_10, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_11, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_12, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_13, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_14, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_15, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_16, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_17, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_18, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_19, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_20, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_21, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_22, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_23, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_24, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_25, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_26, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_27, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_28, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_29, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_30, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_31, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_32, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_SCREENSHOT, NULL, FALSE },
-  { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, NULL, FALSE },
-  { META_KEYBINDING_RUN_COMMAND_TERMINAL, NULL, FALSE },
-  { META_KEYBINDING_SET_SPEW_MARK, NULL, FALSE },
+#define item(name, suffix, param, has_inverse, short, long, stroke) \
+  { #name suffix, NULL, has_inverse },
+#include "screen-bindings.h"
+#undef item
   { NULL, NULL, FALSE}
 };
 
 static MetaKeyPref window_bindings[] = {
-#define item(name, suffix, param, a, b, c) \
+#define item(name, suffix, param, short, long, stroke) \
   { #name suffix, NULL, FALSE },
 #include "window-bindings.h"
 #undef item
@@ -1902,24 +1838,18 @@ typedef struct
   const char *keybinding;
 } MetaSimpleKeyMapping;
 
-/* Name field must occur in the same order as screen_bindings, though entries
- * can be skipped
+/* FIXME: This would be neater if the array only contained entries whose
+ * default keystroke was non-null.  You can do this by defining
+ * ONLY_BOUND_BY_DEFAULT around various blocks at the cost of making
+ * the bindings file way more complicated.  However, we could stop this being
+ * data and move it into code.  Then the compiler would optimise away
+ * the problem lines.
  */
 static MetaSimpleKeyMapping screen_string_bindings[] = {
-  { META_KEYBINDING_WORKSPACE_LEFT,         "<Control><Alt>Left"         },
-  { META_KEYBINDING_WORKSPACE_RIGHT,        "<Control><Alt>Right"        },
-  { META_KEYBINDING_WORKSPACE_UP,           "<Control><Alt>Up"           },
-  { META_KEYBINDING_WORKSPACE_DOWN,         "<Control><Alt>Down"         },
-  { META_KEYBINDING_SWITCH_WINDOWS,         "<Alt>Tab"                   },
-  { META_KEYBINDING_SWITCH_PANELS,          "<Control><Alt>Tab"          },
-  { META_KEYBINDING_CYCLE_GROUP,            "<Alt>F6"                    },
-  { META_KEYBINDING_CYCLE_WINDOWS,          "<Alt>Escape"                },
-  { META_KEYBINDING_CYCLE_PANELS,           "<Control><Alt>Escape"       },
-  { META_KEYBINDING_SHOW_DESKTOP,           "<Control><Alt>d"            },
-  { META_KEYBINDING_PANEL_MAIN_MENU,        "<Alt>F1"                    },
-  { META_KEYBINDING_PANEL_RUN_DIALOG,       "<Alt>F2"                    },
-  { META_KEYBINDING_COMMAND_SCREENSHOT,     "Print"                      },
-  { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, "<Alt>Print"                 },
+#define item(name, suffix, param, is_reverse, short, long, keystroke) \
+  { #name suffix,                           keystroke                    },
+#include "screen-bindings.h"
+#undef item
   { NULL,                                   NULL                         }
 };
 
@@ -2030,6 +1960,9 @@ init_bindings (void)
   int which = 0;
   while (window_string_bindings[i].name)
     {
+      if (window_string_bindings[i].keybinding == NULL)
+        continue;
+
       /* Find which window_bindings entry this window_string_bindings entry
        * corresponds to.
        */
@@ -2048,6 +1981,9 @@ init_bindings (void)
   which = 0;
   while (screen_string_bindings[i].name)
     {
+      if (screen_string_bindings[i].keybinding == NULL)
+        continue;
+    
       /* Find which window_bindings entry this window_string_bindings entry
        * corresponds to.
        */

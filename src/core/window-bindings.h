@@ -20,7 +20,7 @@
  */
 
 /**
- * \file  A list of window binding information.
+ * \file  A list of window keybinding information.
  *
  * Each action which can have a keystroke bound to it is listed below.
  * To use this file, define "item" to be a six-argument macro (you can
