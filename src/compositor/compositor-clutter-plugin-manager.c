@@ -58,7 +58,7 @@ struct MetaCompositorClutterPluginPrivate
  */
 static void
 meta_compositor_clutter_effect_completed (MetaCompositorClutterPlugin *plugin,
-                                          ClutterActor                *actor,
+                                          MetaCompWindow              *actor,
                                           unsigned long                event)
 {
   if (!actor)
@@ -347,8 +347,13 @@ meta_compositor_clutter_plugin_manager_load (MetaCompositorClutterPluginManager 
                                                             plg, params)))
                 mgr->plugins = g_list_prepend (mgr->plugins, p);
               else
-                g_module_close (plg);
+                {
+                  g_message ("Plugin load for [%s] failed\n", path);
+                  g_module_close (plg);
+                }
             }
+          else
+            g_message ("Unable to load plugin [%s]\n", path);
 
           g_free (path);
           g_free (plg_string);
@@ -451,10 +456,10 @@ meta_compositor_clutter_plugin_manager_new (MetaScreen   *screen,
   return mgr;
 }
 
-void
+static void
 meta_compositor_clutter_plugin_manager_kill_effect (MetaCompositorClutterPluginManager *mgr,
-                                                    ClutterActor *actor,
-                                                    unsigned long events)
+                                                    MetaCompWindow *actor,
+                                                    unsigned long   events)
 {
   GList *l = mgr->plugins;
 
@@ -484,10 +489,8 @@ meta_compositor_clutter_plugin_manager_kill_effect (MetaCompositorClutterPluginM
  */
 gboolean
 meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPluginManager *mgr,
-                                                     ClutterActor  *actor,
-                                                     unsigned long  event,
-                                                     MetaCompWindowType type,
-                                                     gint           workspace)
+                                                     MetaCompWindow  *actor,
+                                                     unsigned long    event)
 {
   GList *l = mgr->plugins;
   gboolean retval = FALSE;
@@ -509,7 +512,7 @@ meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPlugin
                   meta_compositor_clutter_plugin_manager_kill_effect (mgr,
                                                                 actor,
                                                                 ALL_BUT_SWITCH);
-                  plg->minimize (actor, type, workspace);
+                  plg->minimize (actor);
                 }
               break;
             case META_COMPOSITOR_CLUTTER_PLUGIN_MAP:
@@ -518,13 +521,13 @@ meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPlugin
                   meta_compositor_clutter_plugin_manager_kill_effect (mgr,
                                                                 actor,
                                                                 ALL_BUT_SWITCH);
-                  plg->map (actor, type, workspace);
+                  plg->map (actor);
                 }
               break;
             case META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY:
               if (plg->destroy)
                 {
-                  plg->destroy (actor, type, workspace);
+                  plg->destroy (actor);
                 }
               break;
             default:
@@ -549,14 +552,12 @@ meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPlugin
  */
 gboolean
 meta_compositor_clutter_plugin_manager_event_maximize (MetaCompositorClutterPluginManager *mgr,
-                                                 ClutterActor  *actor,
-                                                 unsigned long  event,
-                                                 MetaCompWindowType type,
-                                                 gint           workspace,
-                                                 gint           target_x,
-                                                 gint           target_y,
-                                                 gint           target_width,
-                                                 gint           target_height)
+                                                 MetaCompWindow  *actor,
+                                                 unsigned long    event,
+                                                 gint             target_x,
+                                                 gint             target_y,
+                                                 gint             target_width,
+                                                 gint             target_height)
 {
   GList *l = mgr->plugins;
   gboolean retval = FALSE;
@@ -578,7 +579,7 @@ meta_compositor_clutter_plugin_manager_event_maximize (MetaCompositorClutterPlug
                   meta_compositor_clutter_plugin_manager_kill_effect (mgr,
                                                                 actor,
                                                                 ALL_BUT_SWITCH);
-                  plg->maximize (actor, type, workspace,
+                  plg->maximize (actor,
                                  target_x, target_y,
                                  target_width, target_height);
                 }
@@ -589,7 +590,7 @@ meta_compositor_clutter_plugin_manager_event_maximize (MetaCompositorClutterPlug
                   meta_compositor_clutter_plugin_manager_kill_effect (mgr,
                                                                 actor,
                                                                 ALL_BUT_SWITCH);
-                  plg->unmaximize (actor, type, workspace,
+                  plg->unmaximize (actor,
                                    target_x, target_y,
                                    target_width, target_height);
                 }
@@ -635,7 +636,7 @@ meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositorClutterPl
             {
               retval = TRUE;
               meta_compositor_clutter_plugin_manager_kill_effect (mgr,
-                                               CLUTTER_ACTOR ((*actors)->data),
+                                            META_COMP_WINDOW ((*actors)->data),
                             META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE);
               plg->switch_workspace (actors, from, to);
             }
@@ -659,7 +660,12 @@ gboolean
 meta_compositor_clutter_plugin_manager_xevent_filter
                         (MetaCompositorClutterPluginManager *mgr, XEvent *xev)
 {
-  GList *l = mgr->plugins;
+  GList *l;
+
+  if (!mgr)
+    return FALSE;
+
+  l = mgr->plugins;
 
   while (l)
     {

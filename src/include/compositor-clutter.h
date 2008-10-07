@@ -25,12 +25,9 @@
 #ifndef META_COMPOSITOR_CLUTTER_H_
 #define META_COMPOSITOR_CLUTTER_H_
 
+#include <clutter/clutter.h>
+
 #include "types.h"
-#include "compositor-clutter-plugin.h"
-
-MetaCompositor *meta_compositor_clutter_new (MetaDisplay *display);
-
-void meta_compositor_clutter_window_effect_completed (ClutterActor *actor, gulong event);
 
 /*
  * MetaCompWindow object (ClutterGroup sub-class)
@@ -63,5 +60,12 @@ GType meta_comp_window_get_type (void);
 Window             meta_comp_window_get_x_window    (MetaCompWindow *mcw);
 MetaCompWindowType meta_comp_window_get_window_type (MetaCompWindow *mcw);
 gint               meta_comp_window_get_workspace   (MetaCompWindow *mcw);
+
+
+/* Compositor API */
+MetaCompositor *meta_compositor_clutter_new (MetaDisplay *display);
+
+void meta_compositor_clutter_window_effect_completed (MetaCompWindow *actor, gulong event);
+
 
 #endif

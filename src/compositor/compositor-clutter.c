@@ -772,13 +772,13 @@ meta_compositor_clutter_finish_workspace_switch (MetaCompScreen *info)
 }
 
 void
-meta_compositor_clutter_window_effect_completed (ClutterActor *actor,
-						 gulong        event)
+meta_compositor_clutter_window_effect_completed (MetaCompWindow *cw,
+						 gulong          event)
 {
-  MetaCompWindow        *cw     = META_COMP_WINDOW (actor);
   MetaCompWindowPrivate *priv   = cw->priv;
   MetaScreen            *screen = priv->screen;
   MetaCompScreen        *info   = meta_screen_get_compositor_data (screen);
+  ClutterActor          *actor  = CLUTTER_ACTOR (cw);
 
     switch (event)
     {
@@ -1051,9 +1051,8 @@ map_win (MetaCompWindow *cw)
    */
   if (info->switch_workspace_in_progress || !info->plugin_mgr ||
       !meta_compositor_clutter_plugin_manager_event_simple (info->plugin_mgr,
-				CLUTTER_ACTOR (cw),
-                                META_COMPOSITOR_CLUTTER_PLUGIN_MAP,
-				cw->priv->type, 0))
+				cw,
+                                META_COMPOSITOR_CLUTTER_PLUGIN_MAP))
     {
       clutter_actor_show_all (CLUTTER_ACTOR (cw));
       priv->map_in_progress--;
@@ -1947,9 +1946,8 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
 
   if (!info->plugin_mgr ||
       !meta_compositor_clutter_plugin_manager_event_simple (info->plugin_mgr,
-				CLUTTER_ACTOR (cw),
-                                META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY,
-				cw->priv->type, 0))
+				cw,
+                                META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY))
     {
       priv->destroy_in_progress--;
       clutter_actor_destroy (CLUTTER_ACTOR (cw));
@@ -1984,9 +1982,8 @@ clutter_cmp_minimize_window (MetaCompositor *compositor, MetaWindow *window)
 
   if (!info->plugin_mgr ||
       !meta_compositor_clutter_plugin_manager_event_simple (info->plugin_mgr,
-				CLUTTER_ACTOR (cw),
-				META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE,
-				cw->priv->type, 0))
+				cw,
+				META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE))
     {
       ClutterActor *a      = CLUTTER_ACTOR (cw);
       gint          height = clutter_actor_get_height (a);
@@ -2022,9 +2019,9 @@ clutter_cmp_maximize_window (MetaCompositor *compositor, MetaWindow *window,
 
   if (!info->plugin_mgr ||
       !meta_compositor_clutter_plugin_manager_event_maximize (info->plugin_mgr,
-				CLUTTER_ACTOR (cw),
+				cw,
 				META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE,
-				cw->priv->type, 0, x, y, width, height))
+				x, y, width, height))
     {
       cw->priv->maximize_in_progress--;
     }
@@ -2055,9 +2052,9 @@ clutter_cmp_unmaximize_window (MetaCompositor *compositor, MetaWindow *window,
 
   if (!info->plugin_mgr ||
       !meta_compositor_clutter_plugin_manager_event_maximize (info->plugin_mgr,
-				CLUTTER_ACTOR (cw),
+				cw,
 				META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE,
-				cw->priv->type, 0, x, y, width, height))
+				x, y, width, height))
     {
       cw->priv->unmaximize_in_progress--;
     }
@@ -2129,13 +2126,6 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
 	      cw->priv->needs_unmap = FALSE;
 	    }
 	}
-
-      /*
-       * Attach workspace number to the actor, so the plugin can use it.
-       */
-      g_object_set_data (G_OBJECT (cw),
-			 META_COMPOSITOR_CLUTTER_PLUGIN_WORKSPACE_KEY,
-			 GINT_TO_POINTER (workspace));
 
       l = l->next;
     }

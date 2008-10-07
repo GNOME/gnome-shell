@@ -7,7 +7,7 @@ INCLUDES=@METACITY_CFLAGS@ -I $(top_srcdir)/src/include -DMETACITY_LIBEXECDIR=\"
 
 default_la_CFLAGS   = -fPIC
 default_la_SOURCES  = default.c
-default_la_LDFLAGS  = -module -avoid-version
+default_la_LDFLAGS  = -module -avoid-version -no-undefined
 default_la_LIBADD   = @CLUTTER_LIBS@
 pkglib_LTLIBRARIES = default.la
 

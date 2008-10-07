@@ -32,19 +32,15 @@ typedef struct MetaCompositorClutterPluginManager MetaCompositorClutterPluginMan
 
 MetaCompositorClutterPluginManager * meta_compositor_clutter_plugin_manager_new (MetaScreen *screen, ClutterActor *stage);
 gboolean meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPluginManager *mgr,
-                                                       ClutterActor  *actor,
-                                                       unsigned long  event,
-                                                       MetaCompWindowType type,
-                                                       gint           workspace);
+                                                       MetaCompWindow  *actor,
+                                                       unsigned long    event);
 
 gboolean meta_compositor_clutter_plugin_manager_event_maximize (MetaCompositorClutterPluginManager *mgr,
-                                                          ClutterActor  *actor,
-                                                          unsigned long  event,
-                                                          MetaCompWindowType type,
-                                                          gint           workspace,
-                                                          gint           target_x,
-                                                          gint           target_y,
-                                                          gint           target_width,
+                                                          MetaCompWindow  *actor,
+                                                          unsigned long    event,
+                                                          gint             target_x,
+                                                          gint             target_y,
+                                                          gint             target_width,
                                                           gint           target_height);
 void meta_compositor_clutter_plugin_manager_update_workspaces (MetaCompositorClutterPluginManager *mgr);
 

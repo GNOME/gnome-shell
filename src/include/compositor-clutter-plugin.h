@@ -27,6 +27,7 @@
 #include "types.h"
 #include "config.h"
 #include "compositor.h"
+#include "compositor-clutter.h"
 
 #include <clutter/clutter.h>
 
@@ -93,12 +94,6 @@ typedef struct MetaCompositorClutterPlugin MetaCompositorClutterPlugin;
 
 #define META_COMPOSITOR_CLUTTER_PLUGIN_ALL_EFFECTS      0xffffffffUL
 
-/*
- * A key that the switch_workspace() handler can use to retrive workspace
- * the actor is on.
- */
-#define META_COMPOSITOR_CLUTTER_PLUGIN_WORKSPACE_KEY "MCCP-Manager-workspace"
-
 struct MetaCompositorClutterPlugin
 {
   /*
@@ -136,33 +131,23 @@ struct MetaCompositorClutterPlugin
    * On completion, each event handler must call the manager completed()
    * callback function.
    */
-  void (*minimize)         (ClutterActor       *actor,
-                            MetaCompWindowType  type,
-                            gint                workspace);
+  void (*minimize)         (MetaCompWindow     *actor);
 
-  void (*maximize)         (ClutterActor       *actor,
-                            MetaCompWindowType  type,
-                            gint                workspace,
+  void (*maximize)         (MetaCompWindow     *actor,
                             gint                x,
                             gint                y,
                             gint                width,
                             gint                height);
 
-  void (*unmaximize)       (ClutterActor       *actor,
-                            MetaCompWindowType  type,
-                            gint                workspace,
+  void (*unmaximize)       (MetaCompWindow     *actor,
                             gint                x,
                             gint                y,
                             gint                width,
                             gint                height);
 
-  void (*map)              (ClutterActor       *actor,
-                            MetaCompWindowType  type,
-                            gint                workspace);
+  void (*map)              (MetaCompWindow     *actor);
 
-  void (*destroy)          (ClutterActor       *actor,
-                            MetaCompWindowType  type,
-                            gint                workspace);
+  void (*destroy)          (MetaCompWindow     *actor);
 
   /*
    * Each actor in the list has a workspace number attached to it using
@@ -179,7 +164,7 @@ struct MetaCompositorClutterPlugin
    * The events parameter is a bitmask indicating which effects are to be
    * killed.
    */
-  void (*kill_effect)      (ClutterActor       *actor,
+  void (*kill_effect)      (MetaCompWindow     *actor,
                             gulong              events);
 
 
@@ -190,7 +175,7 @@ struct MetaCompositorClutterPlugin
   gboolean (*reload) (void);
 
   /* General XEvent filter. This is fired *before* metacity itself handles
-   * an event. Return TRUE to block any further processing. 
+   * an event. Return TRUE to block any further processing.
   */
   gboolean (*xevent_filter) (XEvent *event);
 
@@ -253,7 +238,7 @@ struct MetaCompositorClutterPlugin
    * actor list, but the actor parameter must not be NULL.
    */
   void (*completed) (MetaCompositorClutterPlugin *plugin,
-                     ClutterActor                *actor,
+                     MetaCompWindow              *actor,
                      unsigned long                event);
 
   /* Private; manager private data. */
