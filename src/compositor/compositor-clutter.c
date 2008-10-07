@@ -1043,7 +1043,7 @@ map_win (MetaCompWindow *cw)
    * type is present, destroy the actor.
    */
   if (info->switch_workspace_in_progress || !info->plugin_mgr ||
-      !meta_compositor_clutter_plugin_manager_event_0 (info->plugin_mgr,
+      !meta_compositor_clutter_plugin_manager_event_simple (info->plugin_mgr,
 				CLUTTER_ACTOR (cw),
                                 META_COMPOSITOR_CLUTTER_PLUGIN_MAP,
 				cw->priv->type, 0))
@@ -1808,8 +1808,8 @@ clutter_cmp_process_event (MetaCompositor *compositor,
       screen = meta_window_get_screen (window);
       info = meta_screen_get_compositor_data (screen);
 
-      if (meta_compositor_clutter_plugin_manager_xevent_filter 
-                                                       (info->plugin_mgr, 
+      if (meta_compositor_clutter_plugin_manager_xevent_filter
+                                                       (info->plugin_mgr,
                                                         event) == TRUE)
         return;
     }
@@ -1939,7 +1939,7 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
   priv->destroy_in_progress++;
 
   if (!info->plugin_mgr ||
-      !meta_compositor_clutter_plugin_manager_event_0 (info->plugin_mgr,
+      !meta_compositor_clutter_plugin_manager_event_simple (info->plugin_mgr,
 				CLUTTER_ACTOR (cw),
                                 META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY,
 				cw->priv->type, 0))
@@ -1976,7 +1976,7 @@ clutter_cmp_minimize_window (MetaCompositor *compositor, MetaWindow *window)
   cw->priv->minimize_in_progress++;
 
   if (!info->plugin_mgr ||
-      !meta_compositor_clutter_plugin_manager_event_0 (info->plugin_mgr,
+      !meta_compositor_clutter_plugin_manager_event_simple (info->plugin_mgr,
 				CLUTTER_ACTOR (cw),
 				META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE,
 				cw->priv->type, 0))
@@ -2014,7 +2014,7 @@ clutter_cmp_maximize_window (MetaCompositor *compositor, MetaWindow *window,
   cw->priv->maximize_in_progress++;
 
   if (!info->plugin_mgr ||
-      !meta_compositor_clutter_plugin_manager_event_4i (info->plugin_mgr,
+      !meta_compositor_clutter_plugin_manager_event_maximize (info->plugin_mgr,
 				CLUTTER_ACTOR (cw),
 				META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE,
 				cw->priv->type, 0, x, y, width, height))
@@ -2047,7 +2047,7 @@ clutter_cmp_unmaximize_window (MetaCompositor *compositor, MetaWindow *window,
   cw->priv->unmaximize_in_progress++;
 
   if (!info->plugin_mgr ||
-      !meta_compositor_clutter_plugin_manager_event_4i (info->plugin_mgr,
+      !meta_compositor_clutter_plugin_manager_event_maximize (info->plugin_mgr,
 				CLUTTER_ACTOR (cw),
 				META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE,
 				cw->priv->type, 0, x, y, width, height))

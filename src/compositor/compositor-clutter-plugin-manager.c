@@ -483,11 +483,11 @@ meta_compositor_clutter_plugin_manager_kill_effect (MetaCompositorClutterPluginM
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-meta_compositor_clutter_plugin_manager_event_0 (MetaCompositorClutterPluginManager *mgr,
-                                                ClutterActor  *actor,
-                                                unsigned long  event,
-                                                MetaCompWindowType type,
-                                                gint           workspace)
+meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPluginManager *mgr,
+                                                     ClutterActor  *actor,
+                                                     unsigned long  event,
+                                                     MetaCompWindowType type,
+                                                     gint           workspace)
 {
   GList *l = mgr->plugins;
   gboolean retval = FALSE;
@@ -539,8 +539,8 @@ meta_compositor_clutter_plugin_manager_event_0 (MetaCompositorClutterPluginManag
 }
 
 /*
- * The public method that the compositor hooks into for events that require
- * up to 4 additional integer parameters.
+ * The public method that the compositor hooks into for maximize and unmaximize
+ * events.
  *
  * Returns TRUE if at least one of the plugins handled the event type (i.e.,
  * if the return value is FALSE, there will be no subsequent call to the
@@ -548,15 +548,15 @@ meta_compositor_clutter_plugin_manager_event_0 (MetaCompositorClutterPluginManag
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-meta_compositor_clutter_plugin_manager_event_4i (MetaCompositorClutterPluginManager *mgr,
+meta_compositor_clutter_plugin_manager_event_maximize (MetaCompositorClutterPluginManager *mgr,
                                                  ClutterActor  *actor,
                                                  unsigned long  event,
                                                  MetaCompWindowType type,
                                                  gint           workspace,
-                                                 gint           i0,
-                                                 gint           i1,
-                                                 gint           i2,
-                                                 gint           i3)
+                                                 gint           target_x,
+                                                 gint           target_y,
+                                                 gint           target_width,
+                                                 gint           target_height)
 {
   GList *l = mgr->plugins;
   gboolean retval = FALSE;
@@ -578,7 +578,9 @@ meta_compositor_clutter_plugin_manager_event_4i (MetaCompositorClutterPluginMana
                   meta_compositor_clutter_plugin_manager_kill_effect (mgr,
                                                                 actor,
                                                                 ALL_BUT_SWITCH);
-                  plg->maximize (actor, type, workspace, i0, i1, i2, i3);
+                  plg->maximize (actor, type, workspace,
+                                 target_x, target_y,
+                                 target_width, target_height);
                 }
               break;
             case META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE:
@@ -587,7 +589,9 @@ meta_compositor_clutter_plugin_manager_event_4i (MetaCompositorClutterPluginMana
                   meta_compositor_clutter_plugin_manager_kill_effect (mgr,
                                                                 actor,
                                                                 ALL_BUT_SWITCH);
-                  plg->unmaximize (actor, type, workspace, i0, i1, i2, i3);
+                  plg->unmaximize (actor, type, workspace,
+                                   target_x, target_y,
+                                   target_width, target_height);
                 }
               break;
             default:

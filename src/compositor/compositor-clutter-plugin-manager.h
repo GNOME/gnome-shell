@@ -31,21 +31,21 @@
 typedef struct MetaCompositorClutterPluginManager MetaCompositorClutterPluginManager;
 
 MetaCompositorClutterPluginManager * meta_compositor_clutter_plugin_manager_new (MetaScreen *screen, ClutterActor *stage);
-gboolean meta_compositor_clutter_plugin_manager_event_0 (MetaCompositorClutterPluginManager *mgr,
+gboolean meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPluginManager *mgr,
                                                        ClutterActor  *actor,
                                                        unsigned long  event,
                                                        MetaCompWindowType type,
                                                        gint           workspace);
 
-gboolean meta_compositor_clutter_plugin_manager_event_4i (MetaCompositorClutterPluginManager *mgr,
+gboolean meta_compositor_clutter_plugin_manager_event_maximize (MetaCompositorClutterPluginManager *mgr,
                                                           ClutterActor  *actor,
                                                           unsigned long  event,
                                                           MetaCompWindowType type,
                                                           gint           workspace,
-                                                          gint           i0,
-                                                          gint           i1,
-                                                          gint           i2,
-                                                          gint           i3);
+                                                          gint           target_x,
+                                                          gint           target_y,
+                                                          gint           target_width,
+                                                          gint           target_height);
 void meta_compositor_clutter_plugin_manager_update_workspaces (MetaCompositorClutterPluginManager *mgr);
 
 void meta_compositor_clutter_plugin_manager_update_workspace (MetaCompositorClutterPluginManager *mgr, MetaWorkspace *w);
@@ -55,6 +55,6 @@ gboolean meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositor
                                                            gint          from,
                                                            gint          to);
 
-gboolean meta_compositor_clutter_plugin_manager_xevent_filter (MetaCompositorClutterPluginManager *mgr, 
+gboolean meta_compositor_clutter_plugin_manager_xevent_filter (MetaCompositorClutterPluginManager *mgr,
                                                                  XEvent *xev);
 #endif
