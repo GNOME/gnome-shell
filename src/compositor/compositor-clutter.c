@@ -20,6 +20,7 @@
 #include "compositor-clutter-plugin-manager.h"
 #include "xprops.h"
 #include "shaped-texture.h"
+#include "tidy-texture-frame.h"
 #include <X11/Xatom.h>
 #include <X11/Xlibint.h>
 #include <X11/extensions/shape.h>
@@ -90,12 +91,6 @@ meta_xattrs_get_type (void)
 				     (GBoxedFreeFunc) meta_xattrs_free);
   return our_type;
 }
-
-static ClutterActor* tidy_texture_frame_new (ClutterTexture *texture,
-					     gint            left,
-					     gint            top,
-					     gint            right,
-					     gint            bottom);
 
 static unsigned char* shadow_gaussian_make_tile (void);
 
