@@ -38,7 +38,7 @@
 #define MAP_TIMEOUT       250
 #define SWITCH_TIMEOUT    500
 
-#define ACTOR_DATA_KEY "MCCP-Simple-actor-data"
+#define ACTOR_DATA_KEY "MCCP-Default-actor-data"
 
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;
@@ -78,7 +78,7 @@ MetaCompositorClutterPlugin META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT =
     .version_api   = METACITY_CLUTTER_PLUGIN_API_VERSION,
 
     /* Human readable name (for use in UI) */
-    .name = "Simple Effects",
+    .name = "Default Effects",
 
     /* Which types of events this plugin supports */
     .features = META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE   |
