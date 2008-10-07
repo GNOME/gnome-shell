@@ -32,4 +32,36 @@ MetaCompositor *meta_compositor_clutter_new (MetaDisplay *display);
 
 void meta_compositor_clutter_window_effect_completed (ClutterActor *actor, gulong event);
 
+/*
+ * MetaCompWindow object (ClutterGroup sub-class)
+ */
+#define META_TYPE_COMP_WINDOW            (meta_comp_window_get_type ())
+#define META_COMP_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_COMP_WINDOW, MetaCompWindow))
+#define META_COMP_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_COMP_WINDOW, MetaCompWindowClass))
+#define IS_META_COMP_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_COMP_WINDOW_TYPE))
+#define META_IS_COMP_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_COMP_WINDOW))
+#define META_COMP_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), META_TYPE_COMP_WINDOW, MetaCompWindowClass))
+
+typedef struct _MetaCompWindow        MetaCompWindow;
+typedef struct _MetaCompWindowClass   MetaCompWindowClass;
+typedef struct _MetaCompWindowPrivate MetaCompWindowPrivate;
+
+struct _MetaCompWindowClass
+{
+  ClutterGroupClass parent_class;
+};
+
+struct _MetaCompWindow
+{
+  ClutterGroup           parent;
+
+  MetaCompWindowPrivate *priv;
+};
+
+GType meta_comp_window_get_type (void);
+
+Window             meta_comp_window_get_x_window    (MetaCompWindow *mcw);
+MetaCompWindowType meta_comp_window_get_window_type (MetaCompWindow *mcw);
+gint               meta_comp_window_get_workspace   (MetaCompWindow *mcw);
+
 #endif

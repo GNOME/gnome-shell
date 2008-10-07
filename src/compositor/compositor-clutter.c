@@ -140,31 +140,8 @@ typedef struct _MetaCompScreen
 } MetaCompScreen;
 
 /*
- * MetaCompWindow object (ClutterGroup sub-class)
+ * MetaCompWindow implementation
  */
-#define META_TYPE_COMP_WINDOW            (meta_comp_window_get_type ())
-#define META_COMP_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_COMP_WINDOW, MetaCompWindow))
-#define META_COMP_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_COMP_WINDOW, MetaCompWindowClass))
-#define IS_META_COMP_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_COMP_WINDOW_TYPE))
-#define META_IS_COMP_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_COMP_WINDOW))
-#define META_COMP_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), META_TYPE_COMP_WINDOW, MetaCompWindowClass))
-
-typedef struct _MetaCompWindow        MetaCompWindow;
-typedef struct _MetaCompWindowClass   MetaCompWindowClass;
-typedef struct _MetaCompWindowPrivate MetaCompWindowPrivate;
-
-struct _MetaCompWindowClass
-{
-  ClutterGroupClass parent_class;
-};
-
-struct _MetaCompWindow
-{
-  ClutterGroup           parent;
-
-  MetaCompWindowPrivate *priv;
-};
-
 struct _MetaCompWindowPrivate
 {
   XWindowAttributes attrs;
@@ -227,10 +204,8 @@ static void meta_comp_window_get_property (GObject      *object,
 					   guint         prop_id,
 					   GValue       *value,
 					   GParamSpec   *pspec);
-static void meta_comp_window_get_window_type (MetaCompWindow *self);
+static void meta_comp_window_query_window_type (MetaCompWindow *self);
 static void meta_comp_window_detach (MetaCompWindow *self);
-
-GType meta_comp_window_get_type (void);
 
 G_DEFINE_TYPE (MetaCompWindow, meta_comp_window, CLUTTER_TYPE_GROUP);
 
@@ -316,7 +291,7 @@ meta_comp_window_constructed (GObject *object)
   Display               *xdisplay = meta_display_get_xdisplay (display);
   XRenderPictFormat     *format;
 
-  meta_comp_window_get_window_type (self);
+  meta_comp_window_query_window_type (self);
 
 #ifdef HAVE_SHAPE
   /* Listen for ShapeNotify events on the window */
@@ -511,7 +486,7 @@ find_window_for_child_window_in_display (MetaDisplay *display, Window xwindow)
 }
 
 static void
-meta_comp_window_get_window_type (MetaCompWindow *self)
+meta_comp_window_query_window_type (MetaCompWindow *self)
 {
   MetaCompWindowPrivate *priv    = self->priv;
   MetaScreen            *screen  = priv->screen;
@@ -704,6 +679,43 @@ meta_comp_window_has_shadow (MetaCompWindow *self)
   meta_verbose ("Window 0x%x has no shadow as it fell through\n",
 		(guint)priv->xwindow);
   return FALSE;
+}
+
+Window
+meta_comp_window_get_x_window (MetaCompWindow *mcw)
+{
+  if (!mcw)
+    return None;
+
+  return mcw->priv->xwindow;
+}
+
+MetaCompWindowType
+meta_comp_window_get_window_type (MetaCompWindow *mcw)
+{
+  if (!mcw)
+    return 0;
+
+  return mcw->priv->type;
+}
+
+gint
+meta_comp_window_get_workspace (MetaCompWindow *mcw)
+{
+  MetaCompWindowPrivate *priv;
+  MetaWorkspace         *workspace;
+
+  if (!mcw)
+    return -1;
+
+  priv = mcw->priv;
+
+  if (!priv->window || meta_window_is_on_all_workspaces (priv->window))
+    return -1;
+
+  workspace = meta_window_get_workspace (priv->window);
+
+  return meta_workspace_index (workspace);
 }
 
 static void repair_win (MetaCompWindow *cw);
@@ -1626,7 +1638,7 @@ process_property_notify (MetaCompositorClutter *compositor,
       if (!cw)
         return;
 
-      meta_comp_window_get_window_type (cw);
+      meta_comp_window_query_window_type (cw);
       return;
     }
 }
