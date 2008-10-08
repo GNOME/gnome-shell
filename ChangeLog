@@ -1,3 +1,8 @@
+2008-10-08  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* tests/test-depth.c (raise_top), (main): Fix a shadowing
+	with raise() from signal.h.
+
 2008-10-01  Øyvind Kolås  <pippin@linux.intel.com>
 
 	Bug 1108 - Enter/Leave events logics wrt. skipped motion events

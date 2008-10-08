@@ -11,13 +11,13 @@ timeline_completed (ClutterTimeline *timeline,
   clutter_timeline_start (timeline);
 }
 
-static ClutterActor *raise[2];
+static ClutterActor *raise_actor[2];
 static gboolean raise_no = 0;
 
 static gboolean
 raise_top (gpointer ignored)
 {
-  clutter_actor_raise_top (raise[raise_no]);
+  clutter_actor_raise_top (raise_actor[raise_no]);
   raise_no = !raise_no;
   return TRUE;
 }
@@ -199,8 +199,8 @@ main (int argc, char *argv[])
 
   clutter_timeline_start (timeline);
 
-  raise[0] = rect;
-  raise[1] = hand;
+  raise_actor[0] = rect;
+  raise_actor[1] = hand;
   g_timeout_add (2000, raise_top, NULL);
 
   clutter_main ();
