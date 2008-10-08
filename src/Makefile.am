@@ -3,10 +3,10 @@ lib_LTLIBRARIES = libmetacity-private.la
 SUBDIRS=wm-tester tools themes
 
 if WITH_CLUTTER
-SUBDIRS += compositor/clutter-plugins
+SUBDIRS += compositor/clutter/clutter-plugins
 endif
 
-INCLUDES=@METACITY_CFLAGS@ -I $(srcdir)/include -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\" -DMETACITY_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"metacity\" -DSN_API_NOT_YET_FROZEN=1 -DMETACITY_MAJOR_VERSION=$(METACITY_MAJOR_VERSION) -DMETACITY_MINOR_VERSION=$(METACITY_MINOR_VERSION) -DMETACITY_MICRO_VERSION=$(METACITY_MICRO_VERSION) -DMETACITY_CLUTTER_PLUGIN_API_VERSION=$(METACITY_CLUTTER_PLUGIN_API_VERSION) -DMETACITY_PKGLIBDIR=\"$(pkglibdir)\"
+INCLUDES=@METACITY_CFLAGS@ -I $(srcdir)/include -I$(srcdir)/compositor -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\" -DMETACITY_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"metacity\" -DSN_API_NOT_YET_FROZEN=1 -DMETACITY_MAJOR_VERSION=$(METACITY_MAJOR_VERSION) -DMETACITY_MINOR_VERSION=$(METACITY_MINOR_VERSION) -DMETACITY_MICRO_VERSION=$(METACITY_MICRO_VERSION) -DMETACITY_CLUTTER_PLUGIN_API_VERSION=$(METACITY_CLUTTER_PLUGIN_API_VERSION) -DMETACITY_PKGLIBDIR=\"$(pkglibdir)\"
 
 metacity_SOURCES= 				\
 	core/async-getprop.c			\
@@ -103,15 +103,16 @@ metacity_SOURCES= 				\
 	ui/ui.c
 
 if WITH_CLUTTER
-metacity_SOURCES +=	compositor/compositor-clutter.c			\
-			compositor/compositor-clutter.h			\
-			compositor/tidy-texture-frame.c			\
-			compositor/tidy-texture-frame.h			\
-			compositor/shaped-texture.c			\
-			compositor/shaped-texture.h			\
-			include/compositor-clutter-plugin.h		\
-			compositor/compositor-clutter-plugin-manager.c	\
-			compositor/compositor-clutter-plugin-manager.h
+metacity_SOURCES += \
+	compositor/clutter/compositor-clutter.c	\
+	compositor/clutter/compositor-clutter.h	\
+	compositor/clutter/tidy-texture-frame.c	\
+	compositor/clutter/tidy-texture-frame.h	\
+	compositor/clutter/shaped-texture.c	\
+	compositor/clutter/shaped-texture.h	\
+	include/compositor-clutter-plugin.h	\
+	compositor/clutter/compositor-clutter-plugin-manager.c	\
+	compositor/clutter/compositor-clutter-plugin-manager.h
 endif
 
 # by setting libmetacity_private_la_CFLAGS, the files shared with
