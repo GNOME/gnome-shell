@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libmetacity-private.la libmetacity.la
+lib_LTLIBRARIES = libmetacity-private.la
 
 SUBDIRS=wm-tester tools themes
 
@@ -8,10 +8,7 @@ endif
 
 INCLUDES=@METACITY_CFLAGS@ -I $(srcdir)/include -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\" -DMETACITY_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"metacity\" -DSN_API_NOT_YET_FROZEN=1 -DMETACITY_MAJOR_VERSION=$(METACITY_MAJOR_VERSION) -DMETACITY_MINOR_VERSION=$(METACITY_MINOR_VERSION) -DMETACITY_MICRO_VERSION=$(METACITY_MICRO_VERSION) -DMETACITY_CLUTTER_PLUGIN_API_VERSION=$(METACITY_CLUTTER_PLUGIN_API_VERSION) -DMETACITY_PKGLIBDIR=\"$(pkglibdir)\"
 
-metacity_SOURCES=				\
-	core/metacity.c
-
-libmetacity_la_SOURCES= 			\
+metacity_SOURCES= 				\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
 	core/atomnames.h                        \
@@ -106,8 +103,7 @@ libmetacity_la_SOURCES= 			\
 	ui/ui.c
 
 if WITH_CLUTTER
-libmetacity_la_SOURCES +=						\
-			compositor/compositor-clutter.c			\
+metacity_SOURCES +=	compositor/compositor-clutter.c			\
 			compositor/compositor-clutter.h			\
 			compositor/tidy-texture-frame.c			\
 			compositor/tidy-texture-frame.h			\
@@ -160,19 +156,19 @@ bin_PROGRAMS=metacity metacity-theme-viewer
 libexec_PROGRAMS=metacity-dialog
 
 EFENCE=
-metacity_LDADD=@METACITY_LIBS@ libmetacity.la $(EFENCE)
+metacity_LDADD=@METACITY_LIBS@ $(EFENCE)
 metacity_theme_viewer_LDADD= @METACITY_LIBS@ libmetacity-private.la
 metacity_dialog_LDADD=@METACITY_LIBS@
 
-testboxes_SOURCES=core/testboxes.c
-testgradient_SOURCES=ui/testgradient.c
-testasyncgetprop_SOURCES=core/testasyncgetprop.c
+testboxes_SOURCES=include/util.h core/util.c include/boxes.h core/boxes.c core/testboxes.c
+testgradient_SOURCES=ui/gradient.h ui/gradient.c ui/testgradient.c
+testasyncgetprop_SOURCES=core/async-getprop.h core/async-getprop.c core/testasyncgetprop.c
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
-testboxes_LDADD= @METACITY_LIBS@ libmetacity.la
-testgradient_LDADD= @METACITY_LIBS@ libmetacity.la
-testasyncgetprop_LDADD= @METACITY_LIBS@ libmetacity.la
+testboxes_LDADD= @METACITY_LIBS@
+testgradient_LDADD= @METACITY_LIBS@
+testasyncgetprop_LDADD= @METACITY_LIBS@
 
 @INTLTOOL_DESKTOP_RULE@
 

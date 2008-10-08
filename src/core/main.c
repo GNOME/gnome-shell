@@ -386,7 +386,7 @@ void meta_select_display (gchar *display_name)
  * functions.
  */
 int
-meta_main (int argc, char **argv)
+main (int argc, char **argv)
 {
   struct sigaction act;
   sigset_t empty_mask;

@@ -40,6 +40,4 @@ void meta_quit (MetaExitCode code);
 
 void meta_restart (void);
 
-int meta_main (int argc, char **argv);
-
 #endif
