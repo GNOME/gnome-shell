@@ -157,6 +157,7 @@ libexec_PROGRAMS=metacity-dialog
 
 EFENCE=
 metacity_LDADD=@METACITY_LIBS@ $(EFENCE)
+metacity_LDFLAGS=-export-dynamic
 metacity_theme_viewer_LDADD= @METACITY_LIBS@ libmetacity-private.la
 metacity_dialog_LDADD=@METACITY_LIBS@
 
