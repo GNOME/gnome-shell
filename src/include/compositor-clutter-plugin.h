@@ -245,4 +245,22 @@ struct MetaCompositorClutterPlugin
   void *manager_private;
 };
 
+G_INLINE_FUNC
+void
+meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
+                                           MetaCompWindow              *actor,
+                                           unsigned long                event);
+
+#if defined (G_CAN_INLINE)
+G_INLINE_FUNC
+void
+meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
+                                           MetaCompWindow              *actor,
+                                           unsigned long                event)
+{
+  if (plugin->completed)
+    plugin->completed (plugin, actor, event);
+}
+#endif
+
 #endif

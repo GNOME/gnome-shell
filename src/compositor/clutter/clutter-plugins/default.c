@@ -187,8 +187,7 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
   ppriv->desktop1 = NULL;
   ppriv->desktop2 = NULL;
 
-  if (plugin->completed)
-    plugin->completed (plugin, actor_for_cb,
+  meta_comp_clutter_plugin_effect_completed (plugin, actor_for_cb,
                        META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE);
 }
 
@@ -219,8 +218,7 @@ switch_workspace (const GList **actors, gint from, gint to)
 
   if (from == to)
     {
-      if (plugin->completed)
-        plugin->completed (plugin, NULL,
+      meta_comp_clutter_plugin_effect_completed (plugin, NULL,
                            META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE);
       return;
     }
@@ -314,8 +312,8 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
   plugin->running--;
 
   /* Now notify the manager that we are done with this effect */
-  if (plugin->completed)
-    plugin->completed (plugin, mcw, META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE);
+  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+                                      META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE);
 }
 
 /*
@@ -352,8 +350,9 @@ minimize (MetaCompWindow *mcw)
                                                   on_minimize_effect_complete,
                                                   NULL);
     }
-  else if (plugin->completed)
-    plugin->completed (plugin, mcw, META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE);
+  else
+    meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+                                       META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE);
 }
 
 /*
@@ -380,8 +379,8 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
   plugin->running--;
 
   /* Now notify the manager that we are done with this effect */
-  if (plugin->completed)
-    plugin->completed (plugin, mcw, META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE);
+  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+                                     META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE);
 }
 
 /*
@@ -444,8 +443,8 @@ maximize (MetaCompWindow *mcw,
       return;
     }
 
-  if (plugin->completed)
-    plugin->completed (plugin, mcw, META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE);
+  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+                                      META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE);
 }
 
 /*
@@ -470,7 +469,8 @@ unmaximize (MetaCompWindow *mcw,
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
-  plugin->completed (plugin, mcw, META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE);
+  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+                                   META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE);
 }
 
 static void
@@ -492,8 +492,8 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   plugin->running--;
 
   /* Now notify the manager that we are done with this effect */
-  if (plugin->completed)
-    plugin->completed (plugin, mcw, META_COMPOSITOR_CLUTTER_PLUGIN_MAP);
+  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+                                        META_COMPOSITOR_CLUTTER_PLUGIN_MAP);
 }
 
 /*
@@ -533,8 +533,9 @@ map (MetaCompWindow *mcw)
       apriv->is_minimized = FALSE;
 
     }
-  else if (plugin->completed)
-    plugin->completed (plugin, mcw, META_COMPOSITOR_CLUTTER_PLUGIN_MAP);
+  else
+    meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+                                           META_COMPOSITOR_CLUTTER_PLUGIN_MAP);
 }
 
 /*
@@ -553,8 +554,8 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 
   plugin->running--;
 
-  if (plugin->completed)
-    plugin->completed (plugin, mcw, META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY);
+  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+                                       META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY);
 }
 
 /*
@@ -587,8 +588,9 @@ destroy (MetaCompWindow *mcw)
                                                  on_destroy_effect_complete,
                                                  NULL);
     }
-  else if (plugin->completed)
-    plugin->completed (plugin, mcw, META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY);
+  else
+    meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+                                       META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY);
 }
 
 static void

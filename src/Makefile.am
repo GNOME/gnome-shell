@@ -103,14 +103,15 @@ metacity_SOURCES= 				\
 	ui/ui.c
 
 if WITH_CLUTTER
-metacity_SOURCES += \
-	compositor/clutter/compositor-clutter.c	\
-	compositor/clutter/compositor-clutter.h	\
-	compositor/clutter/tidy-texture-frame.c	\
-	compositor/clutter/tidy-texture-frame.h	\
-	compositor/clutter/shaped-texture.c	\
-	compositor/clutter/shaped-texture.h	\
-	include/compositor-clutter-plugin.h	\
+metacity_SOURCES += 						\
+	compositor/clutter/compositor-clutter.c			\
+	compositor/clutter/compositor-clutter.h			\
+	compositor/clutter/tidy-texture-frame.c			\
+	compositor/clutter/tidy-texture-frame.h			\
+	compositor/clutter/shaped-texture.c			\
+	compositor/clutter/shaped-texture.h			\
+	compositor/clutter/compositor-clutter-plugin.c		\
+	include/compositor-clutter-plugin.h			\
 	compositor/clutter/compositor-clutter-plugin-manager.c	\
 	compositor/clutter/compositor-clutter-plugin-manager.h
 endif
