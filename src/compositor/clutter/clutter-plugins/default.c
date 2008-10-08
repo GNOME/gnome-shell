@@ -127,8 +127,6 @@ struct ActorPrivate
 {
   ClutterActor *orig_parent;
 
-  gint          workspace;
-
   ClutterTimeline *tml_minimize;
   ClutterTimeline *tml_maximize;
   ClutterTimeline *tml_destroy;
@@ -242,8 +240,6 @@ switch_workspace (const GList **actors, gint from, gint to)
       gint            workspace;
 
       workspace = meta_comp_window_get_workspace (mcw);
-
-      priv->workspace = workspace;
 
       if (workspace == to || workspace == from)
         {
