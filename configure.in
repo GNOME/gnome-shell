@@ -535,7 +535,7 @@ src/wm-tester/Makefile
 src/libmetacity-private.pc
 src/tools/Makefile
 src/themes/Makefile
-src/compositor/clutter-plugins/Makefile
+src/compositor/clutter/clutter-plugins/Makefile
 po/Makefile.in
 ])
 
