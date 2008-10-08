@@ -337,8 +337,6 @@ minimize (MetaCompWindow *mcw)
     {
       ActorPrivate *apriv  = get_actor_private (mcw);
 
-      printf ("running minimize effect\n");
-
       apriv->is_minimized = TRUE;
 
       clutter_actor_move_anchor_point_from_gravity (actor,
@@ -469,9 +467,6 @@ unmaximize (MetaCompWindow *mcw,
       ActorPrivate *apriv  = get_actor_private (mcw);
 
       apriv->is_maximized = FALSE;
-
-      printf ("Doing unmaximize to target %d,%d;%dx%d\n",
-              end_x, end_y, end_width, end_height);
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
