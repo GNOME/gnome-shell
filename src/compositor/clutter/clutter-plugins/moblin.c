@@ -155,10 +155,17 @@ get_actor_private (MetaCompWindow *actor)
   return priv;
 }
 
+static inline
+MetaCompositorClutterPlugin *
+get_plugin ()
+{
+  return &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+}
+
 static void
 on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   PluginPrivate               *ppriv  = plugin->plugin_private;
   GList                       *l = *((GList**)data);
   MetaCompWindow              *actor_for_cb = l->data;
@@ -194,7 +201,7 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 static void
 switch_workspace (const GList **actors, gint from, gint to)
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   PluginPrivate               *ppriv  = plugin->plugin_private;
   GList                       *l;
   gint                         n_workspaces;
@@ -295,7 +302,7 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
    * Must reverse the effect of the effect; must hide it first to ensure
    * that the restoration will not be visible.
    */
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   ActorPrivate   *apriv;
   MetaCompWindow *mcw = META_COMP_WINDOW (actor);
 
@@ -324,7 +331,7 @@ static void
 minimize (MetaCompWindow *mcw)
 
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   PluginPrivate               *priv   = plugin->plugin_private;
   MetaCompWindowType           type;
   ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
@@ -365,7 +372,7 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
   /*
    * Must reverse the effect of the effect.
    */
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   MetaCompWindow              *mcw = META_COMP_WINDOW (actor);
   ActorPrivate                *apriv  = get_actor_private (mcw);
 
@@ -395,7 +402,7 @@ static void
 maximize (MetaCompWindow *mcw,
           gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   PluginPrivate               *priv   = plugin->plugin_private;
   MetaCompWindowType           type;
   ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
@@ -456,7 +463,7 @@ static void
 unmaximize (MetaCompWindow *mcw,
             gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   MetaCompWindowType           type;
 
   type = meta_comp_window_get_window_type (mcw);
@@ -479,7 +486,7 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   /*
    * Must reverse the effect of the effect.
    */
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   MetaCompWindow              *mcw    = META_COMP_WINDOW (actor);
   ActorPrivate                *apriv  = get_actor_private (mcw);
 
@@ -503,7 +510,7 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
 static void
 map (MetaCompWindow *mcw)
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   PluginPrivate               *priv   = plugin->plugin_private;
   MetaCompWindowType           type;
   ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
@@ -546,7 +553,7 @@ map (MetaCompWindow *mcw)
 static void
 on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   MetaCompWindow              *mcw    = META_COMP_WINDOW (actor);
   ActorPrivate                *apriv  = get_actor_private (mcw);
 
@@ -564,7 +571,7 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 static void
 destroy (MetaCompWindow *mcw)
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   PluginPrivate               *priv   = plugin->plugin_private;
   MetaCompWindowType           type;
   ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
@@ -596,7 +603,7 @@ destroy (MetaCompWindow *mcw)
 static void
 kill_effect (MetaCompWindow *mcw, gulong event)
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
   ActorPrivate                *apriv;
   ClutterActor                *actor = CLUTTER_ACTOR (mcw);
 
@@ -675,7 +682,7 @@ g_module_check_init (GModule *module)
 static gboolean
 do_init ()
 {
-  MetaCompositorClutterPlugin *plugin = &META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT;
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
 
   PluginPrivate *priv = g_new0 (PluginPrivate, 1);
   const gchar   *params;
