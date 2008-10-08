@@ -1,9 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity main */
-
 /* 
- * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2008 Intel Corporation
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,25 +19,8 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_MAIN_H
-#define META_MAIN_H
-
-#include <glib.h>
-
-typedef enum
+int
+main (int argc, char **argv)
 {
-  META_EXIT_SUCCESS,
-  META_EXIT_ERROR
-} MetaExitCode;
-
-/* exit immediately */
-void meta_exit (MetaExitCode code);
-
-/* g_main_quit() then fall out of main() */
-void meta_quit (MetaExitCode code);
-
-void meta_restart (void);
-
-int meta_main (int argc, char **argv);
-
-#endif
+  return meta_main (argc, argv);
+}
