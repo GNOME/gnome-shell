@@ -311,9 +311,18 @@ static gboolean
 meta_compositor_clutter_plugin_manager_load (MetaCompositorClutterPluginManager *mgr)
 {
   const gchar *dpath = METACITY_PKGLIBDIR "/plugins/clutter/";
-  GSList      *plugins;
+  GSList      *plugins, *fallback = NULL;
 
   plugins = meta_prefs_get_clutter_plugins ();
+
+  if (!plugins)
+    {
+      /*
+       * If no plugins are specified, try to load the default plugin.
+       */
+      fallback = g_slist_append (fallback, "default");
+      plugins = fallback;
+    }
 
   while (plugins)
     {
@@ -359,6 +368,10 @@ meta_compositor_clutter_plugin_manager_load (MetaCompositorClutterPluginManager 
 
       plugins = plugins->next;
     }
+
+
+  if (fallback)
+    g_slist_free (fallback);
 
   if (mgr->plugins != NULL)
     {
