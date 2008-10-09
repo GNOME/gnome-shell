@@ -398,8 +398,49 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
     MetaScreen     *screen = workspace->screen;
     MetaDisplay    *display = meta_screen_get_display (screen);
     MetaCompositor *comp = meta_display_get_compositor (display);
+    MetaWorkspaceLayout layout1, layout2;
+    gint num_workspaces, current_space, new_space;
+    MetaMotionDirection direction = 0;
 
-    meta_compositor_switch_workspace (comp, screen, old, workspace);
+    current_space = meta_workspace_index (old);
+    new_space     = meta_workspace_index (workspace);
+
+    num_workspaces = meta_screen_get_n_workspaces (workspace->screen);
+    meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
+                                       current_space, &layout1);
+
+    meta_screen_calc_workspace_layout (workspace->screen, num_workspaces,
+                                       new_space, &layout2);
+
+    if (layout1.current_col < layout2.current_col)
+      direction = META_MOTION_RIGHT;
+    if (layout1.current_col > layout2.current_col)
+      direction = META_MOTION_LEFT;
+
+    if (layout1.current_row < layout2.current_row)
+      {
+        if (!direction)
+          direction = META_MOTION_DOWN;
+        else if (direction == META_MOTION_RIGHT)
+          direction = META_MOTION_DOWN_RIGHT;
+        else
+          direction = META_MOTION_DOWN_LEFT;
+      }
+
+    if (layout1.current_row > layout2.current_row)
+      {
+        if (!direction)
+          direction = META_MOTION_UP;
+        else if (direction == META_MOTION_RIGHT)
+          direction = META_MOTION_UP_RIGHT;
+        else
+          direction = META_MOTION_UP_LEFT;
+      }
+
+    meta_screen_free_workspace_layout (&layout1);
+    meta_screen_free_workspace_layout (&layout2);
+
+    meta_compositor_switch_workspace (comp, screen, old, workspace, direction);
   }
 #endif
 }
@@ -769,6 +810,14 @@ meta_motion_direction_to_string (MetaMotionDirection direction)
       return "Left";
     case META_MOTION_RIGHT:
       return "Right";
+    case META_MOTION_UP_RIGHT:
+      return "Up-Right";
+    case META_MOTION_DOWN_RIGHT:
+      return "Down-Right";
+    case META_MOTION_UP_LEFT:
+      return "Up-Left";
+    case META_MOTION_DOWN_LEFT:
+      return "Down-Left";
     }
 
   return "Unknown";
@@ -807,6 +856,7 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
     case META_MOTION_DOWN:
       layout.current_row += 1;
       break;
+    default:;
     }
 
   if (layout.current_col < 0)

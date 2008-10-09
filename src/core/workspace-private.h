@@ -36,17 +36,6 @@
 #include "workspace.h"
 #include "window-private.h"
 
-/* Negative to avoid conflicting with real workspace
- * numbers
- */
-typedef enum
-{
-  META_MOTION_UP = -1,
-  META_MOTION_DOWN = -2,
-  META_MOTION_LEFT = -3,
-  META_MOTION_RIGHT = -4
-} MetaMotionDirection;
-
 struct _MetaWorkspace
 {
   MetaScreen *screen;

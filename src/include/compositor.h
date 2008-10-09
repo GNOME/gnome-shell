@@ -122,10 +122,11 @@ meta_compositor_update_workspace_geometry (MetaCompositor *compositor,
                                            MetaWorkspace  *workspace);
 
 void
-meta_compositor_switch_workspace (MetaCompositor *compositor,
-                                  MetaScreen     *screen,
-                                  MetaWorkspace  *from,
-                                  MetaWorkspace  *to);
+meta_compositor_switch_workspace (MetaCompositor     *compositor,
+                                  MetaScreen         *screen,
+                                  MetaWorkspace      *from,
+                                  MetaWorkspace      *to,
+                                  MetaMotionDirection direction);
 #endif
 
 

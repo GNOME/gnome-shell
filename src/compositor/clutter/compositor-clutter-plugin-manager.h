@@ -49,7 +49,8 @@ void meta_compositor_clutter_plugin_manager_update_workspace (MetaCompositorClut
 gboolean meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositorClutterPluginManager *mgr,
                                                            const GList **actors,
                                                            gint          from,
-                                                           gint          to);
+                                                           gint          to,
+                                                           MetaMotionDirection direction);
 
 gboolean meta_compositor_clutter_plugin_manager_xevent_filter (MetaCompositorClutterPluginManager *mgr,
                                                                  XEvent *xev);

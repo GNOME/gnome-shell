@@ -627,7 +627,8 @@ gboolean
 meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositorClutterPluginManager *mgr,
                                                          const GList **actors,
                                                          gint          from,
-                                                         gint          to)
+                                                         gint          to,
+                                                         MetaMotionDirection direction)
 {
   GList *l = mgr->plugins;
   gboolean retval = FALSE;
@@ -647,7 +648,7 @@ meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositorClutterPl
               meta_compositor_clutter_plugin_manager_kill_effect (mgr,
                                             META_COMP_WINDOW ((*actors)->data),
                             META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE);
-              plg->switch_workspace (actors, from, to);
+              plg->switch_workspace (actors, from, to, direction);
             }
         }
 

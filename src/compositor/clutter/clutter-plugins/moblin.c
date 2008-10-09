@@ -52,7 +52,8 @@ static void maximize   (MetaCompWindow *actor,
 static void unmaximize (MetaCompWindow *actor,
                         gint x, gint y, gint width, gint height);
 
-static void switch_workspace (const GList **actors, gint from, gint to);
+static void switch_workspace (const GList **actors, gint from, gint to,
+                              MetaMotionDirection direction);
 
 static void kill_effect (MetaCompWindow *actor, gulong event);
 
@@ -197,7 +198,8 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 }
 
 static void
-switch_workspace (const GList **actors, gint from, gint to)
+switch_workspace (const GList **actors, gint from, gint to,
+                  MetaMotionDirection direction)
 {
   MetaCompositorClutterPlugin *plugin = get_plugin ();
   PluginPrivate               *ppriv  = plugin->plugin_private;

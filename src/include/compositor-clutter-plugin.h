@@ -156,7 +156,8 @@ struct MetaCompositorClutterPlugin
    */
   void (*switch_workspace) (const GList       **actors,
                             gint                from,
-                            gint                to);
+                            gint                to,
+                            MetaMotionDirection direction);
 
   /*
    * Called if an effect should be killed prematurely; the plugin must

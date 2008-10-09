@@ -37,6 +37,22 @@
 #include "boxes.h"
 #include "screen.h"
 
+/* Negative to avoid conflicting with real workspace
+ * numbers
+ */
+typedef enum
+{
+  META_MOTION_UP = -1,
+  META_MOTION_DOWN = -2,
+  META_MOTION_LEFT = -3,
+  META_MOTION_RIGHT = -4,
+  /* These are only used for effects */
+  META_MOTION_UP_LEFT = -5,
+  META_MOTION_UP_RIGHT = -6,
+  META_MOTION_DOWN_LEFT = -7,
+  META_MOTION_DOWN_RIGHT = -8
+} MetaMotionDirection;
+
 int  meta_workspace_index (MetaWorkspace *workspace);
 MetaScreen *meta_workspace_get_screen (MetaWorkspace *workspace);
 void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,

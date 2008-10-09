@@ -2108,7 +2108,8 @@ static void
 clutter_cmp_switch_workspace (MetaCompositor *compositor,
 			      MetaScreen     *screen,
 			      MetaWorkspace  *from,
-			      MetaWorkspace  *to)
+			      MetaWorkspace  *to,
+			      MetaMotionDirection direction)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaCompScreen *info;
@@ -2118,6 +2119,8 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
   info      = meta_screen_get_compositor_data (screen);
   to_indx   = meta_workspace_index (to);
   from_indx = meta_workspace_index (from);
+
+  printf ("Direction of switch %d\n", direction);
 
   l = info->windows;
   while (l)
@@ -2161,7 +2164,8 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
 						info->plugin_mgr,
 						(const GList **)&info->windows,
 						from_indx,
-						to_indx))
+						to_indx,
+						direction))
     {
       info->switch_workspace_in_progress--;
     }

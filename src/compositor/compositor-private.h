@@ -73,10 +73,11 @@ struct _MetaCompositor
   void (*update_workspace_geometry) (MetaCompositor *compositor,
                                      MetaWorkspace   *workspace);
 
-  void (*switch_workspace) (MetaCompositor *compositor,
-                            MetaScreen     *screen,
-                            MetaWorkspace  *from,
-                            MetaWorkspace  *to);
+  void (*switch_workspace) (MetaCompositor     *compositor,
+                            MetaScreen         *screen,
+                            MetaWorkspace      *from,
+                            MetaWorkspace      *to,
+                            MetaMotionDirection direction);
 };
 
 #endif

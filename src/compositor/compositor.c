@@ -230,14 +230,15 @@ meta_compositor_update_workspace_geometry (MetaCompositor *compositor,
 }
 
 void
-meta_compositor_switch_workspace (MetaCompositor *compositor,
-                                  MetaScreen     *screen,
-                                  MetaWorkspace  *from,
-                                  MetaWorkspace  *to)
+meta_compositor_switch_workspace (MetaCompositor     *compositor,
+                                  MetaScreen         *screen,
+                                  MetaWorkspace      *from,
+                                  MetaWorkspace      *to,
+                                  MetaMotionDirection direction)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   if (compositor && compositor->switch_workspace)
-    compositor->switch_workspace (compositor, screen, from, to);
+    compositor->switch_workspace (compositor, screen, from, to, direction);
 #endif
 }
 
