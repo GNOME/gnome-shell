@@ -30,7 +30,7 @@
 
 typedef struct MetaCompositorClutterPluginManager MetaCompositorClutterPluginManager;
 
-MetaCompositorClutterPluginManager * meta_compositor_clutter_plugin_manager_new (MetaScreen *screen, ClutterActor *stage);
+MetaCompositorClutterPluginManager * meta_compositor_clutter_plugin_manager_new (MetaScreen *screen);
 gboolean meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPluginManager *mgr,
                                                        MetaCompWindow  *actor,
                                                        unsigned long    event);
@@ -53,4 +53,5 @@ gboolean meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositor
 
 gboolean meta_compositor_clutter_plugin_manager_xevent_filter (MetaCompositorClutterPluginManager *mgr,
                                                                  XEvent *xev);
+
 #endif

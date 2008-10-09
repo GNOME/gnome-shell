@@ -212,8 +212,6 @@ struct MetaCompositorClutterPlugin
                    *                switch-workspace
                    */
 
-  ClutterActor *stage;
-
   gint   screen_width;
   gint   screen_height;
 
@@ -264,3 +262,9 @@ meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
 #endif
 
 #endif
+
+ClutterActor *
+meta_comp_clutter_plugin_get_overlay_group (MetaCompositorClutterPlugin *plugin);
+
+ClutterActor *
+meta_comp_clutter_plugin_get_stage (MetaCompositorClutterPlugin *plugin);

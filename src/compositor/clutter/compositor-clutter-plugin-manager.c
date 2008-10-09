@@ -35,7 +35,6 @@ static gboolean meta_compositor_clutter_plugin_manager_reload (MetaCompositorClu
 struct MetaCompositorClutterPluginManager
 {
   MetaScreen   *screen;
-  ClutterActor *stage;
 
   GList        *plugins; /* TODO -- maybe use hash table */
   GList        *unload;  /* Plugins that are disabled and pending unload */
@@ -47,7 +46,8 @@ typedef struct MetaCompositorClutterPluginPrivate MetaCompositorClutterPluginPri
 
 struct MetaCompositorClutterPluginPrivate
 {
-  GModule *module;
+  MetaCompositorClutterPluginManager *self;
+  GModule                            *module;
 
   gboolean disabled : 1;
 };
@@ -127,10 +127,9 @@ update_plugin_workspaces (MetaScreen                  *screen,
  * struct.
  */
 static MetaCompositorClutterPlugin *
-meta_compositor_clutter_plugin_load (MetaScreen   *screen,
-                                     ClutterActor *stage,
-                                     GModule      *module,
-                                     const gchar  *params)
+meta_compositor_clutter_plugin_load (MetaCompositorClutterPluginManager *mgr,
+                                     GModule                            *module,
+                                     const gchar                        *params)
 {
   MetaCompositorClutterPlugin *plg;
 
@@ -146,14 +145,14 @@ meta_compositor_clutter_plugin_load (MetaScreen   *screen,
           priv                 = g_new0 (MetaCompositorClutterPluginPrivate, 1);
           plg->params          = g_strdup (params);
           plg->completed       = meta_compositor_clutter_effect_completed;
-          plg->stage           = stage;
           plg->manager_private = priv;
           priv->module         = module;
+          priv->self           = mgr;
 
-          meta_screen_get_size (screen,
+          meta_screen_get_size (mgr->screen,
                                 &plg->screen_width, &plg->screen_height);
 
-          update_plugin_workspaces (screen, plg);
+          update_plugin_workspaces (mgr->screen, plg);
 
           /*
            * Check for and run the plugin init function.
@@ -342,8 +341,7 @@ meta_compositor_clutter_plugin_manager_load (MetaCompositorClutterPluginManager 
             {
               MetaCompositorClutterPlugin *p;
 
-              if ((p = meta_compositor_clutter_plugin_load (mgr->screen,
-                                                            mgr->stage,
+              if ((p = meta_compositor_clutter_plugin_load (mgr,
                                                             plg, params)))
                 mgr->plugins = g_list_prepend (mgr->plugins, p);
               else
@@ -437,15 +435,13 @@ meta_compositor_clutter_plugin_manager_update_workspaces (MetaCompositorClutterP
 }
 
 MetaCompositorClutterPluginManager *
-meta_compositor_clutter_plugin_manager_new (MetaScreen   *screen,
-                                            ClutterActor *stage)
+meta_compositor_clutter_plugin_manager_new (MetaScreen *screen)
 {
   MetaCompositorClutterPluginManager *mgr;
 
   mgr = g_new0 (MetaCompositorClutterPluginManager, 1);
 
-  mgr->screen = screen;
-  mgr->stage  = stage;
+  mgr->screen        = screen;
 
   if (!meta_compositor_clutter_plugin_manager_init (mgr))
     {
@@ -681,4 +677,25 @@ meta_compositor_clutter_plugin_manager_xevent_filter
     }
 
   return FALSE;
+}
+
+/*
+ * Public accessors for plugins, exposed from compositor-clutter-plugin.h
+ */
+ClutterActor *
+meta_comp_clutter_plugin_get_overlay_group (MetaCompositorClutterPlugin *plugin)
+{
+  MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
+  MetaCompositorClutterPluginManager *mgr  = priv->self;
+
+  return meta_compositor_clutter_get_overlay_group_for_screen (mgr->screen);
+}
+
+ClutterActor *
+meta_comp_clutter_plugin_get_stage (MetaCompositorClutterPlugin *plugin)
+{
+  MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
+  MetaCompositorClutterPluginManager *mgr  = priv->self;
+
+  return meta_compositor_clutter_get_stage_for_screen (mgr->screen);
 }

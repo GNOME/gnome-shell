@@ -67,5 +67,7 @@ MetaCompositor *meta_compositor_clutter_new (MetaDisplay *display);
 
 void meta_compositor_clutter_window_effect_completed (MetaCompWindow *actor, gulong event);
 
+ClutterActor * meta_compositor_clutter_get_stage_for_screen (MetaScreen *screen);
+ClutterActor * meta_compositor_clutter_get_overlay_group_for_screen (MetaScreen *screen);
 
 #endif

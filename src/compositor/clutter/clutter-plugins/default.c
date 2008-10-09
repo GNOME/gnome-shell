@@ -205,7 +205,9 @@ switch_workspace (const GList **actors, gint from, gint to)
   gint                         n_workspaces;
   ClutterActor                *group1  = clutter_group_new ();
   ClutterActor                *group2  = clutter_group_new ();
-  ClutterActor                *stage   = plugin->stage;
+  ClutterActor                *stage;
+
+  stage = meta_comp_clutter_plugin_get_stage (plugin);
 
 #if 1
   clutter_actor_set_anchor_point (group2,

@@ -1673,6 +1673,29 @@ get_output_window (MetaScreen *screen)
   return output;
 }
 
+ClutterActor *
+meta_compositor_clutter_get_stage_for_screen (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  if (!info)
+    return NULL;
+
+  return info->stage;
+}
+
+ClutterActor *
+meta_compositor_clutter_get_overlay_group_for_screen (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  if (!info)
+    return NULL;
+
+  return info->overlay_group;
+}
+
+
 static void
 clutter_cmp_manage_screen (MetaCompositor *compositor,
                            MetaScreen     *screen)
@@ -1745,7 +1768,7 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
 
   info->plugin_mgr =
-    meta_compositor_clutter_plugin_manager_new (screen, info->stage);
+    meta_compositor_clutter_plugin_manager_new (screen);
 
   clutter_actor_show_all (info->stage);
   clutter_actor_show_all (info->overlay_group);
