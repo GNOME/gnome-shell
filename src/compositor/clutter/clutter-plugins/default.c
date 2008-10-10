@@ -40,6 +40,7 @@
 #define SWITCH_TIMEOUT    500
 
 #define ACTOR_DATA_KEY "MCCP-Default-actor-data"
+static GQuark actor_data_quark = 0;
 
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;
@@ -140,15 +141,28 @@ struct ActorPrivate
 /*
  * Actor private data accessor
  */
+static void
+free_actor_private (gpointer data)
+{
+  if (G_LIKELY (data != NULL))
+    g_slice_free (ActorPrivate, data);
+}
+
 static ActorPrivate *
 get_actor_private (MetaCompWindow *actor)
 {
-  ActorPrivate * priv = g_object_get_data (G_OBJECT (actor), ACTOR_DATA_KEY);
+  ActorPrivate *priv = g_object_get_qdata (G_OBJECT (actor), actor_data_quark);
 
-  if (!priv)
+  if (G_UNLIKELY (actor_data_quark == 0))
+    actor_data_quark = g_quark_from_static_string (ACTOR_DATA_KEY);
+
+  if (G_UNLIKELY (!priv))
     {
-      priv = g_new0 (ActorPrivate, 1);
-      g_object_set_data_full (G_OBJECT (actor), ACTOR_DATA_KEY, priv, g_free);
+      priv = g_slice_new0 (ActorPrivate);
+
+      g_object_set_qdata_full (G_OBJECT (actor),
+                               actor_data_quark, priv,
+                               free_actor_private);
     }
 
   return priv;
