@@ -110,7 +110,6 @@ metacity_SOURCES += 						\
 	compositor/clutter/tidy-texture-frame.h			\
 	compositor/clutter/shaped-texture.c			\
 	compositor/clutter/shaped-texture.h			\
-	compositor/clutter/compositor-clutter-plugin.c		\
 	include/compositor-clutter-plugin.h			\
 	compositor/clutter/compositor-clutter-plugin-manager.c	\
 	compositor/clutter/compositor-clutter-plugin-manager.h

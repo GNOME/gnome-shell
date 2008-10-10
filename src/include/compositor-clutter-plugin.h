@@ -229,43 +229,18 @@ struct MetaCompositorClutterPlugin
                           * data.
                           */
 
-  /*
-   * Manager callback for completed effects; this function must be called on the
-   * completion of each effect.
-   *
-   * For switch-workspace effect the plugin might pass back any actor from the
-   * actor list, but the actor parameter must not be NULL.
-   */
-  void (*completed) (MetaCompositorClutterPlugin *plugin,
-                     MetaCompWindow              *actor,
-                     unsigned long                event);
-
   /* Private; manager private data. */
   void *manager_private;
 };
 
-G_INLINE_FUNC
 void
 meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
                                            MetaCompWindow              *actor,
                                            unsigned long                event);
-
-#if defined (G_CAN_INLINE)
-G_INLINE_FUNC
-void
-meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
-                                           MetaCompWindow              *actor,
-                                           unsigned long                event)
-{
-  if (plugin->completed)
-    plugin->completed (plugin, actor, event);
-}
-#endif
-
-#endif
 
 ClutterActor *
 meta_comp_clutter_plugin_get_overlay_group (MetaCompositorClutterPlugin *plugin);
 
 ClutterActor *
 meta_comp_clutter_plugin_get_stage (MetaCompositorClutterPlugin *plugin);
+#endif

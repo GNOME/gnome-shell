@@ -52,23 +52,6 @@ struct MetaCompositorClutterPluginPrivate
   gboolean disabled : 1;
 };
 
-/*
- * This function gets called when an effect completes. It is responsible for
- * any post-effect cleanup.
- */
-static void
-meta_compositor_clutter_effect_completed (MetaCompositorClutterPlugin *plugin,
-                                          MetaCompWindow              *actor,
-                                          unsigned long                event)
-{
-  if (!actor)
-    {
-      g_warning ("Plugin [%s] passed NULL for actor!",
-                 (plugin && plugin->name) ? plugin->name : "unknown");
-    }
-
-  meta_compositor_clutter_window_effect_completed (actor, event);
-}
 
 static void
 free_plugin_workspaces (MetaCompositorClutterPlugin *plg)
@@ -144,7 +127,6 @@ meta_compositor_clutter_plugin_load (MetaCompositorClutterPluginManager *mgr,
 
           priv                 = g_new0 (MetaCompositorClutterPluginPrivate, 1);
           plg->params          = g_strdup (params);
-          plg->completed       = meta_compositor_clutter_effect_completed;
           plg->manager_private = priv;
           priv->module         = module;
           priv->self           = mgr;
@@ -713,3 +695,18 @@ meta_comp_clutter_plugin_get_stage (MetaCompositorClutterPlugin *plugin)
 
   return meta_compositor_clutter_get_stage_for_screen (mgr->screen);
 }
+
+void
+meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
+                                           MetaCompWindow              *actor,
+                                           unsigned long                event)
+{
+  if (!actor)
+    {
+      g_warning ("Plugin [%s] passed NULL for actor!",
+                 (plugin && plugin->name) ? plugin->name : "unknown");
+    }
+
+  meta_compositor_clutter_window_effect_completed (actor, event);
+}
+

@@ -25,11 +25,3 @@
 
 #include "compositor-clutter-plugin.h"
 
-void
-meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
-                                           MetaCompWindow              *actor,
-                                           unsigned long                event)
-{
-  if (plugin->completed)
-    plugin->completed (plugin, actor, event);
-}
