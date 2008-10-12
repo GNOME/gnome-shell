@@ -1,5 +1,14 @@
 2008-10-12  Thomas Thurman  <tthurman@gnome.org>
 
+        Fix annoying bug where alt-tab and friends would jump
+        backwards a space on initial movement.
+
+        * src/core/screen-bindings.h: although reversed bindings
+        are necessarily reversible, don't set both bits in the
+        constant, or when we test for them we'll get confused.
+
+2008-10-12  Thomas Thurman  <tthurman@gnome.org>
+
         An attempt to make life a little easier for our beloved translators;
         this has the same behaviour as before, but removes over thirty
         translation strings.

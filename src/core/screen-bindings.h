@@ -81,7 +81,7 @@
 
 #define BINDING_PER_WINDOW    0x01
 #define BINDING_REVERSES      0x02
-#define BINDING_IS_REVERSED   0x06 /* REVERSES is implied */
+#define BINDING_IS_REVERSED   0x04
 
 /* FIXME: There is somewhere better for these; remove them */
 #define PANEL_MAIN_MENU            -1
@@ -90,6 +90,9 @@
 #endif /* _BINDINGS_DEFINED_CONSTANTS */
 
 /***********************************/
+
+/* convenience, since in this file they must always be set together */
+#define REVERSES_AND_REVERSED (BINDING_REVERSES | BINDING_IS_REVERSED)
 
 item (switch_to_workspace, "_1", 1, 0,
         _("Switch to workspace 1"),
@@ -185,7 +188,7 @@ item (switch, "_group",            META_TAB_LIST_GROUP,    BINDING_REVERSES,
         _("Move between windows of an application with popup"),
         _("The keybinding used to move focus between windows of an"
           "application, using a popup window."),           NULL)
-item (switch, "_group_backwards",  META_TAB_LIST_GROUP,    BINDING_IS_REVERSED,
+item (switch, "_group_backwards",  META_TAB_LIST_GROUP,    REVERSES_AND_REVERSED,
         _("Move backwards between windows of an application with popup"),
         _("The keybinding used to move focus backwards between windows"
           "of an application, using a popup window."),     NULL)
@@ -193,7 +196,7 @@ item (switch, "_windows",          META_TAB_LIST_NORMAL,   BINDING_REVERSES,
         _("Move between windows with popup"),
         _("The keybinding used to move focus between windows, "
           "using a popup window."),                        "<Alt>Tab")
-item (switch, "_windows_backwards",META_TAB_LIST_NORMAL,   BINDING_IS_REVERSED,
+item (switch, "_windows_backwards",META_TAB_LIST_NORMAL,   REVERSES_AND_REVERSED,
         _("Move focus backwards between windows using popup display"),
         _("The keybinding used to move focus backwards between windows, "
           "using a popup window."),                        NULL)
@@ -201,7 +204,7 @@ item (switch, "_panels",           META_TAB_LIST_DOCKS,    BINDING_REVERSES,
         _("Move between panels and the desktop with popup"),
         _("The keybinding used to move focus between panels and the desktop, "
           "using a popup window."),                        "<Control><Alt>Tab")
-item (switch, "_panels_backwards", META_TAB_LIST_DOCKS,    BINDING_IS_REVERSED,
+item (switch, "_panels_backwards", META_TAB_LIST_DOCKS,    REVERSES_AND_REVERSED,
         _("Move backwards between panels and the desktop with popup"),
         _("The keybinding used to move focus backwards between panels "
           "and the desktop, using a popup window."),       NULL)
@@ -209,7 +212,7 @@ item (cycle,  "_group",            META_TAB_LIST_GROUP,    BINDING_REVERSES,
         _("Move between windows of an application immediately"),
         _("The keybinding used to move focus between windows of an "
           "application without a popup window."),          "<Alt>F6")
-item (cycle,  "_group_backwards",  META_TAB_LIST_GROUP,    BINDING_IS_REVERSED,
+item (cycle,  "_group_backwards",  META_TAB_LIST_GROUP,    REVERSES_AND_REVERSED,
         _("Move backwards between windows of an application immediately"),
         _("The keybinding used to move focus backwards between windows "
           "of an application without a popup window."),    NULL)
@@ -217,7 +220,7 @@ item (cycle,  "_windows",          META_TAB_LIST_NORMAL,   BINDING_REVERSES,
         _("Move between windows immediately"),
         _("The keybinding used to move focus between windows without "
           "a popup window."),                              "<Alt>Escape")
-item (cycle,  "_windows_backwards",META_TAB_LIST_NORMAL,   BINDING_IS_REVERSED,
+item (cycle,  "_windows_backwards",META_TAB_LIST_NORMAL,   REVERSES_AND_REVERSED,
         _("Move backwards between windows immediately"),
         _("The keybinding used to move focus backwards between windows "
           "without a popup window."),                       NULL)
@@ -225,7 +228,7 @@ item (cycle,  "_panels",           META_TAB_LIST_DOCKS,    BINDING_REVERSES,
         _("Move between panels and the desktop immediately"),
         _("The keybinding used to move focus between panels and "
           "the desktop, without a popup window."),      "<Control><Alt>Escape")
-item (cycle,  "_panels_backwards", META_TAB_LIST_DOCKS,    BINDING_IS_REVERSED,
+item (cycle,  "_panels_backwards", META_TAB_LIST_DOCKS,    REVERSES_AND_REVERSED,
         _("Move backward between panels and the desktop immediately"),
         _("The keybinding used to move focus backwards between panels and "
           "the desktop, without a popup window."),         NULL)
@@ -302,6 +305,8 @@ item (run_terminal, "", 0, 0,
 
 /* No descriptions because this is undocumented */
 item (set_spew_mark, "", 0, 0, NULL, NULL, NULL)
+
+#undef REVERSES_AND_REVERSED
 
 /* eof screen-bindings.h */
 
