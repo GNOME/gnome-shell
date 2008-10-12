@@ -136,6 +136,17 @@ metacity_theme_viewer_SOURCES=  \
 metacity_dialog_SOURCES= 	\
 	ui/metacity-dialog.c
 
+if GCONF_SCHEMAS_INSTALL
+schema_bindings_SOURCES =       \
+        core/schema-bindings.c
+
+schema_bindings_LDADD = @METACITY_LIBS@
+metacity.schemas.in: schema_bindings
+	@echo Generating keybinding schemas...
+	./schema_bindings > metacity.schemas.in
+
+endif
+
 bin_PROGRAMS=metacity metacity-theme-viewer
 libexec_PROGRAMS=metacity-dialog
 
@@ -148,7 +159,7 @@ testboxes_SOURCES=include/util.h core/util.c include/boxes.h core/boxes.c core/t
 testgradient_SOURCES=ui/gradient.h ui/gradient.c ui/testgradient.c
 testasyncgetprop_SOURCES=core/async-getprop.h core/async-getprop.c core/testasyncgetprop.c
 
-noinst_PROGRAMS=testboxes testgradient testasyncgetprop
+noinst_PROGRAMS=testboxes testgradient testasyncgetprop schema_bindings
 
 testboxes_LDADD= @METACITY_LIBS@
 testgradient_LDADD= @METACITY_LIBS@

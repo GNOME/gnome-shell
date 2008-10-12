@@ -26,12 +26,22 @@
  * the GConf .schemas file.
  *
  * FIXME: also need to make 50-metacity-desktop-key.xml
+ *
+ * FIXME: this actually breaks i18n because the schemas.in->schemas process
+ * doesn't recognise the concatenated strings, and so we will have to do
+ * them ourselves; this will need to be fixed before the next release.
  */
 
 #include <stdio.h>
+#include <string.h>
+#include <errno.h>
 #include <glib.h>
 
 #define _(x) x
+
+static void single_stanza (gboolean is_window, char *name, char *default_value,
+               gboolean can_reverse, gboolean going_backwards,
+               char *short_description, char *long_description);
 
 char *liberal, *could_go_backwards, *could_go_forwards;
 
@@ -50,7 +60,7 @@ const char* window_string = \
 	"      </locale>\n" \
 	"    </schema>\n\n\n";
 
-void
+static void
 single_stanza (gboolean is_window, char *name, char *default_value,
                gboolean can_reverse, gboolean going_backwards,
                char *short_description, char *long_description)
@@ -94,10 +104,12 @@ single_stanza (gboolean is_window, char *name, char *default_value,
         }
 
       if (going_backwards)
-        printf (could_go_forwards);
+        printf ("%s\n", could_go_forwards);
       else
-        printf (could_go_backwards);
+        printf ("%s\n", could_go_backwards);
     }
+
+  printf ("          %s\n", liberal);
   
   printf ("        </long>\n");
   printf ("      </locale>\n");
@@ -108,9 +120,36 @@ single_stanza (gboolean is_window, char *name, char *default_value,
   g_free (long_description);
 }
 
-void
+static void produce_bindings ();
+
+static void
 produce_bindings ()
 {
+  FILE *metacity_schemas_in_in = fopen("metacity.schemas.in.in", "r");
+
+  if (!metacity_schemas_in_in)
+    {
+      g_error ("Cannot compile without metacity.schemas.in.in: %s\n",
+        strerror (errno));
+    }
+
+  while (!feof (metacity_schemas_in_in))
+    {
+      /* 10240 is ridiculous overkill; we're writing the input file and
+       * the lines are always 80 chars or less.
+       */
+      char buffer[10240];
+      
+      fgets (buffer, sizeof (buffer), metacity_schemas_in_in);
+      
+      if (strstr (buffer, "<!-- GENERATED -->"))
+         break;
+         
+      printf ("%s", buffer);
+    }
+
+  if (!feof (metacity_schemas_in_in))
+    {
 #define item(name, suffix, param, short, long, keystroke) \
   single_stanza (TRUE, #name suffix, \
               keystroke, \
@@ -127,15 +166,30 @@ produce_bindings ()
                short, long);
 #include "screen-bindings.h"
 #undef item
+    }
+
+  while (!feof (metacity_schemas_in_in))
+    {
+      char buffer[10240];
+      
+      fgets (buffer, sizeof (buffer), metacity_schemas_in_in);
+      
+      printf ("%s", buffer);
+    }
+
+  fclose (metacity_schemas_in_in);
 }
 
 int
 main ()
 {
-  /* XXX: TODO: find out what/how gdk i18ns the keycaps as, and add a
-   * translator comment
+  /* Translators: Please don't translate "Control", "Shift", etc, since these
+   * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
+   * "disabled" must also stay as it is.
    */
-  liberal = g_markup_escape_text(_("The parser is fairly liberal and allows "\
+  liberal = g_markup_escape_text(_("The format looks like \"<Control>a\" or "
+        "<Shift><Alt>F1\". \n"\
+        "The parser is fairly liberal and allows "\
   	"lower or upper case, and also abbreviations such as \"<Ctl>\" and " \
 	"\"<Ctrl>\". If you set the option to the special string " \
 	"\"disabled\", then there will be no keybinding for this action."), -1);
@@ -154,6 +208,8 @@ main ()
   g_free (could_go_forwards);
   g_free (could_go_backwards);
   g_free (liberal);
+  
+  return 0;
 }
 
 /* eof schema-bindings.c */

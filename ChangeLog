@@ -1,5 +1,23 @@
 2008-10-12  Thomas Thurman  <tthurman@gnome.org>
 
+        Make the bindings in src/core/*-bindings.h generate
+        GConf schemas too.  Note that there's an i18n issue
+        (documented in schema-bindings.c) which will be fixed
+        next checkin.
+
+        * src/core/schema-bindings.c: major fixup to make it
+          ready for use as part of the actual build process.
+        * src/Makefile.am: added magic to make it call schema-bindings
+          after it builds it.
+        * src/core/window-bindings.h: added comments;
+          also, window menu was listed variously as alt-Space
+          and alt-Print; it should have been alt-Space.
+        * src/metacity.schemas.in.in: renamed from s/\.in$//,
+          sentinel added for the generated bindings,
+          warning at the top now untrue, and removed.
+
+2008-10-12  Thomas Thurman  <tthurman@gnome.org>
+
         Fix annoying bug where alt-tab and friends would jump
         backwards a space on initial movement.
 

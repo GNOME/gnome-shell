@@ -59,6 +59,11 @@
  * Some code out there wants only the entries which have a default
  * binding (i.e. whose sixth parameter is not NULL).  You can get only these
  * by defining ONLY_BOUND_BY_DEFAULT before you include this file.
+ * 
+ * Possible future work:
+ *  - merge with screen-bindings.h somehow
+ *  - ONLY_BOUND_BY_DEFAULT is crack, get rid of it
+ *  - "suffix" is confusing; write it out in full
  */
 
 #ifndef item
@@ -68,7 +73,7 @@
 item (activate_window_menu, "", 0,
         _("Activate window menu"),
         _("The keybinding used to activate the window menu."),
-        "<Alt>Print")
+        "<Alt>Space")
 
 #ifndef ONLY_BOUND_BY_DEFAULT
 
