@@ -110,6 +110,9 @@ update_size_window (MetaResizePopup *popup)
   
   g_return_if_fail (popup->size_window != NULL);
   
+  /* Translators: This represents the size of a window.  The first number is
+   * the width of the window and the second is the height.
+   */
   str = g_strdup_printf (_("%d x %d"),
                          popup->horizontal_size,
                          popup->vertical_size);

@@ -197,6 +197,11 @@ static void text_handler          (GMarkupParseContext  *context,
                                    gpointer              user_data,
                                    GError              **error);
 
+/* Translators: This means that an attribute which should have been found
+ * on an XML element was not in fact found.
+ */
+#define ATTRIBUTE_NOT_FOUND _("No \"%s\" attribute on element <%s>")
+
 static GMarkupParser metacity_theme_parser = {
   start_element_handler,
   end_element_handler,
@@ -321,8 +326,12 @@ typedef struct
 {
   const char  *name;
   const char **retloc;
+  gboolean required;
 } LocateAttr;
 
+/* Attribute names can have a leading '!' to indicate that they are
+ * required.
+ */
 static gboolean
 locate_attributes (GMarkupParseContext *context,
                    const char  *element_name,
@@ -347,9 +356,13 @@ locate_attributes (GMarkupParseContext *context,
 
   retval = TRUE;
 
+  /* FIXME: duplicated code; refactor loop */
   n_attrs = 1;
   attrs[0].name = first_attribute_name;
   attrs[0].retloc = first_attribute_retloc;
+  attrs[0].required = attrs[0].name[0]=='!';
+  if (attrs[0].required)
+    attrs[0].name++; /* skip past it */
   *first_attribute_retloc = NULL;
   
   va_start (args, first_attribute_retloc);
@@ -365,6 +378,10 @@ locate_attributes (GMarkupParseContext *context,
       
       attrs[n_attrs].name = name;
       attrs[n_attrs].retloc = retloc;
+      attrs[n_attrs].required = attrs[n_attrs].name[0]=='!';
+      if (attrs[n_attrs].required)
+        attrs[n_attrs].name++; /* skip past it */
+
       n_attrs += 1;
       *retloc = NULL;      
 
@@ -390,6 +407,7 @@ locate_attributes (GMarkupParseContext *context,
 
               if (*retloc != NULL)
                 {
+                
                   set_error (error, context,
                              G_MARKUP_ERROR,
                              G_MARKUP_ERROR_PARSE,
@@ -408,6 +426,12 @@ locate_attributes (GMarkupParseContext *context,
 
       if (!found)
         {
+      j = 0;
+      while (j < n_attrs)
+        {
+          g_warning ("It could have been %s.\n", attrs[j++].name);
+        }
+                  
           set_error (error, context,
                      G_MARKUP_ERROR,
                      G_MARKUP_ERROR_PARSE,
@@ -419,6 +443,24 @@ locate_attributes (GMarkupParseContext *context,
 
       ++i;
     }
+
+    /* Did we catch them all? */
+    i = 0;
+    while (i < n_attrs)
+      {
+        if (attrs[i].required && *(attrs[i].retloc)==NULL)
+          {
+            set_error (error, context,
+                       G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_PARSE,
+                       ATTRIBUTE_NOT_FOUND,
+                       attrs[i].name, element_name);
+            retval = FALSE;
+            goto out;
+          }
+
+        ++i;
+      }
 
  out:
   return retval;
@@ -785,25 +827,9 @@ parse_toplevel_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "name", &name, "value", &value,
+                              "!name", &name, "!value", &value,
                               NULL))
         return;
-
-      if (name == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "name", element_name);
-          return;
-        }
-      
-      if (value == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "value", element_name);
-          return;
-        }
 
       if (strchr (value, '.') && parse_double (value, &dval, context, error))
         {
@@ -869,7 +895,7 @@ parse_toplevel_element (GMarkupParseContext  *context,
 
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "name", &name, "parent", &parent,
+                              "!name", &name, "parent", &parent,
                               "has_title", &has_title, "title_scale", &title_scale,
                               "rounded_top_left", &rounded_top_left,
                               "rounded_top_right", &rounded_top_right,
@@ -878,14 +904,6 @@ parse_toplevel_element (GMarkupParseContext  *context,
                               "hide_buttons", &hide_buttons,
                               NULL))
         return;
-
-      if (name == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "name", element_name);
-          return;
-        }
 
       has_title_val = TRUE;
       if (has_title && !parse_boolean (has_title, &has_title_val, context, error))
@@ -972,17 +990,9 @@ parse_toplevel_element (GMarkupParseContext  *context,
 
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "name", &name,
+                              "!name", &name,
                               NULL))
         return;
-
-      if (name == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "name", element_name);
-          return;
-        }
 
       if (meta_theme_lookup_draw_op_list (info->theme, name))
         {
@@ -1011,20 +1021,12 @@ parse_toplevel_element (GMarkupParseContext  *context,
 
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "name", &name, "parent", &parent,
+                              "!name", &name, "parent", &parent,
                               "geometry", &geometry,
                               "background", &background,
                               "alpha", &alpha,
                               NULL))
         return;
-
-      if (name == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "name", element_name);
-          return;
-        }
 
       if (meta_theme_lookup_style (info->theme, name))
         {
@@ -1125,17 +1127,9 @@ parse_toplevel_element (GMarkupParseContext  *context,
 
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "name", &name, "parent", &parent,
+                              "!name", &name, "parent", &parent,
                               NULL))
         return;
-
-      if (name == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "name", element_name);
-          return;
-        }
 
       if (meta_theme_lookup_style_set (info->theme, name))
         {
@@ -1175,25 +1169,9 @@ parse_toplevel_element (GMarkupParseContext  *context,
 
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "type", &type_name, "style_set", &style_set_name,
+                              "!type", &type_name, "!style_set", &style_set_name,
                               NULL))
         return;
-
-      if (type_name == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "type", element_name);
-          return;
-        }
-
-      if (style_set_name == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "style_set", element_name);
-          return;
-        }
 
       type = meta_frame_type_from_string (type_name);
 
@@ -1363,23 +1341,9 @@ parse_distance (GMarkupParseContext  *context,
   
   if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                           error,
-                          "name", &name, "value", &value,
+                          "!name", &name, "!value", &value,
                           NULL))
     return;
-
-  if (name == NULL)
-    {
-      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("No \"name\" attribute on element <%s>"), element_name);
-      return;
-    }
-
-  if (value == NULL)
-    {
-      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("No \"value\" attribute on element <%s>"), element_name);
-      return;
-    }
 
   val = 0;
   if (!parse_positive_integer (value, &val, context, info->theme, error))
@@ -1450,23 +1414,9 @@ parse_aspect_ratio (GMarkupParseContext  *context,
   
   if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                           error,
-                          "name", &name, "value", &value,
+                          "!name", &name, "!value", &value,
                           NULL))
     return;
-
-  if (name == NULL)
-    {
-      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("No \"name\" attribute on element <%s>"), element_name);
-      return;
-    }
-
-  if (value == NULL)
-    {
-      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("No \"value\" attribute on element <%s>"), element_name);
-      return;
-    }
 
   val = 0;
   if (!parse_double (value, &val, context, error))
@@ -1516,49 +1466,14 @@ parse_border (GMarkupParseContext  *context,
   
   if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                           error,
-                          "name", &name,
-                          "top", &top,
-                          "bottom", &bottom,
-                          "left", &left,
-                          "right", &right,
+                          "!name", &name,
+                          "!top", &top,
+                          "!bottom", &bottom,
+                          "!left", &left,
+                          "!right", &right,
                           NULL))
     return;
   
-  if (name == NULL)
-    {
-      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("No \"name\" attribute on element <%s>"), element_name);
-      return;
-    }
-
-  if (top == NULL)
-    {
-      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("No \"top\" attribute on element <%s>"), element_name);
-      return;
-    }
-
-  if (bottom == NULL)
-    {
-      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("No \"bottom\" attribute on element <%s>"), element_name);
-      return;
-    }
-
-  if (left == NULL)
-    {
-      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("No \"left\" attribute on element <%s>"), element_name);
-      return;
-    }
-
-  if (right == NULL)
-    {
-      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("No \"right\" attribute on element <%s>"), element_name);
-      return;
-    }
-
   top_val = 0;
   if (!parse_positive_integer (top, &top_val, context, info->theme, error))
     return;
@@ -1721,49 +1636,14 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "color", &color,
-                              "x1", &x1, "y1", &y1,
-                              "x2", &x2, "y2", &y2,
+                              "!color", &color,
+                              "!x1", &x1, "!y1", &y1,
+                              "!x2", &x2, "!y2", &y2,
                               "dash_on_length", &dash_on_length,
                               "dash_off_length", &dash_off_length,
                               "width", &width,
                               NULL))
         return;
-
-      if (color == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"color\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
-      if (x1 == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x1\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y1 == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y1\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (x2 == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x2\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y2 == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y2\" attribute on element <%s>"), element_name);
-          return;
-        }
 
 #if 0
       if (!check_expression (x1, FALSE, info->theme, context, error))
@@ -1837,47 +1717,12 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "color", &color,
-                              "x", &x, "y", &y,
-                              "width", &width, "height", &height,
+                              "!color", &color,
+                              "!x", &x, "!y", &y,
+                              "!width", &width, "!height", &height,
                               "filled", &filled,
                               NULL))
         return;
-
-      if (color == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"color\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"width\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"height\" attribute on element <%s>"), element_name);
-          return;
-        }
 
 #if 0
       if (!check_expression (x, FALSE, info->theme, context, error))
@@ -1944,9 +1789,9 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "color", &color,
-                              "x", &x, "y", &y,
-                              "width", &width, "height", &height,
+                              "!color", &color,
+                              "!x", &x, "!y", &y,
+                              "!width", &width, "!height", &height,
                               "filled", &filled,
                               "start_angle", &start_angle,
                               "extent_angle", &extent_angle,
@@ -1954,41 +1799,6 @@ parse_draw_op_element (GMarkupParseContext  *context,
                               "to", &to,
                               NULL))
         return;
-
-      if (color == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"color\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"width\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"height\" attribute on element <%s>"), element_name);
-          return;
-        }
 
       if (META_THEME_ALLOWS (info->theme, META_THEME_DEGREES_IN_ARCS) )
         {
@@ -2011,14 +1821,14 @@ parse_draw_op_element (GMarkupParseContext  *context,
           if (start_angle == NULL)
             {
               set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                         _("No \"start_angle\" attribute on element <%s>"), element_name);
+                         ATTRIBUTE_NOT_FOUND, "start_angle", element_name);
               return;
             }
 
           if (extent_angle == NULL)
             {
               set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                         _("No \"extent_angle\" attribute on element <%s>"), element_name);
+                         ATTRIBUTE_NOT_FOUND, "extent_angle", element_name);
               return;
             }
         }
@@ -2106,39 +1916,11 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "x", &x, "y", &y,
-                              "width", &width, "height", &height,
+                              "!x", &x, "!y", &y,
+                              "!width", &width, "!height", &height,
                               NULL))
         return;
       
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"width\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"height\" attribute on element <%s>"), element_name);
-          return;
-        }
-
 #if 0
       if (!check_expression (x, FALSE, info->theme, context, error))
         return;
@@ -2179,54 +1961,13 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "color", &color,
-                              "x", &x, "y", &y,
-                              "width", &width, "height", &height,
-                              "alpha", &alpha,
+                              "!color", &color,
+                              "!x", &x, "!y", &y,
+                              "!width", &width, "!height", &height,
+                              "!alpha", &alpha,
                               NULL))
         return;
 
-      if (color == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"color\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"width\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"height\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (alpha == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"alpha\" attribute on element <%s>"), element_name);
-          return;
-        }
 #if 0
       if (!check_expression (x, FALSE, info->theme, context, error))
         return;
@@ -2286,47 +2027,12 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "type", &type,
-                              "x", &x, "y", &y,
-                              "width", &width, "height", &height,
+                              "!type", &type,
+                              "!x", &x, "!y", &y,
+                              "!width", &width, "!height", &height,
                               "alpha", &alpha,
                               NULL))
         return;
-
-      if (type == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"type\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"width\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"height\" attribute on element <%s>"), element_name);
-          return;
-        }
 
 #if 0
       if (!check_expression (x, FALSE, info->theme, context, error))
@@ -2394,48 +2100,14 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "x", &x, "y", &y,
-                              "width", &width, "height", &height,
-                              "alpha", &alpha, "filename", &filename,
+                              "!x", &x, "!y", &y,
+                              "!width", &width, "!height", &height,
+                              "alpha", &alpha, "!filename", &filename,
                               "colorize", &colorize,
                               "fill_type", &fill_type,
                               NULL))
         return;
       
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"width\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"height\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (filename == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"filename\" attribute on element <%s>"), element_name);
-          return;
-        }
 #if 0      
       if (!check_expression (x, TRUE, info->theme, context, error))
         return;
@@ -2594,63 +2266,15 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "state", &state,
-                              "shadow", &shadow,
-                              "arrow", &arrow,
-                              "x", &x, "y", &y,
-                              "width", &width, "height", &height,
+                              "!state", &state,
+                              "!shadow", &shadow,
+                              "!arrow", &arrow,
+                              "!x", &x, "!y", &y,
+                              "!width", &width, "!height", &height,
                               "filled", &filled,
                               NULL))
         return;
 
-      if (state == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"state\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (shadow == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"shadow\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (arrow == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"arrow\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"width\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"height\" attribute on element <%s>"), element_name);
-          return;
-        }
 #if 0
       if (!check_expression (x, FALSE, info->theme, context, error))
         return;
@@ -2731,54 +2355,13 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "state", &state,
-                              "shadow", &shadow,
-                              "x", &x, "y", &y,
-                              "width", &width, "height", &height,
+                              "!state", &state,
+                              "!shadow", &shadow,
+                              "!x", &x, "!y", &y,
+                              "!width", &width, "!height", &height,
                               NULL))
         return;
 
-      if (state == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"state\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (shadow == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"shadow\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"width\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"height\" attribute on element <%s>"), element_name);
-          return;
-        }
 #if 0
       if (!check_expression (x, FALSE, info->theme, context, error))
         return;
@@ -2839,39 +2422,11 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "state", &state,
-                              "x", &x, "y1", &y1, "y2", &y2,
+                              "!state", &state,
+                              "!x", &x, "!y1", &y1, "!y2", &y2,
                               NULL))
         return;
 
-      if (state == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"state\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y1 == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y1\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y2 == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y2\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
 #if 0
       if (!check_expression (x, FALSE, info->theme, context, error))
         return;
@@ -2921,40 +2476,13 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "x", &x, "y", &y,
-                              "width", &width, "height", &height,
+                              "!x", &x, "!y", &y,
+                              "!width", &width, "!height", &height,
                               "alpha", &alpha,
                               "fill_type", &fill_type,
                               NULL))
         return;
       
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"width\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"height\" attribute on element <%s>"), element_name);
-          return;
-        }
 #if 0      
       if (!check_expression (x, FALSE, info->theme, context, error))
         return;
@@ -3012,32 +2540,11 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "color", &color,
-                              "x", &x, "y", &y,
+                              "!color", &color,
+                              "!x", &x, "!y", &y,
                               NULL))
         return;
 
-      if (color == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"color\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
-      if (x == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"x\" attribute on element <%s>"), element_name);
-          return;
-        }
-
-      if (y == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"y\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
 #if 0
       if (!check_expression (x, FALSE, info->theme, context, error))
         return;
@@ -3083,16 +2590,9 @@ parse_draw_op_element (GMarkupParseContext  *context,
                               error,
                               "x", &x, "y", &y,
                               "width", &width, "height", &height,
-                              "name", &name,
+                              "!name", &name,
                               NULL))
         return;
-
-      if (name == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"), "name", element_name);
-          return;
-        }
 
       /* x/y/width/height default to 0,0,width,height - should
        * probably do this for all the draw ops
@@ -3170,34 +2670,13 @@ parse_draw_op_element (GMarkupParseContext  *context,
                               error,
                               "x", &x, "y", &y,
                               "width", &width, "height", &height,
-                              "name", &name,
+                              "!name", &name,
                               "tile_xoffset", &tile_xoffset,
                               "tile_yoffset", &tile_yoffset,
-                              "tile_width", &tile_width,
-                              "tile_height", &tile_height,
+                              "!tile_width", &tile_width,
+                              "!tile_height", &tile_height,
                               NULL))
         return;
-
-      if (name == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"), "name", element_name);
-          return;
-        }
-
-      if (tile_width == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"), "tile_width", element_name);
-          return;
-        }
-
-      if (tile_height == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"), "tile_height", element_name);
-          return;
-        }
 
       /* These default to 0 */
 #if 0
@@ -3304,17 +2783,9 @@ parse_gradient_element (GMarkupParseContext  *context,
 
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "value", &value,
+                              "!value", &value,
                               NULL))
         return;
-
-      if (value == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"value\" attribute on <%s> element"),
-                     element_name);
-          return;
-        }
 
       color_spec = parse_color (info->theme, value, error);
       if (color_spec == NULL)
@@ -3360,18 +2831,10 @@ parse_style_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "position", &position,
+                              "!position", &position,
                               "draw_ops", &draw_ops,
                               NULL))
         return;
-
-      if (position == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"position\" attribute on <%s> element"),
-                     element_name);
-          return;
-        }
 
       info->piece = meta_frame_piece_from_string (position);
       if (info->piece == META_FRAME_PIECE_LAST)
@@ -3421,28 +2884,12 @@ parse_style_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "function", &function,
-                              "state", &state,
+                              "!function", &function,
+                              "!state", &state,
                               "draw_ops", &draw_ops,
                               NULL))
         return;
 
-      if (function == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"function\" attribute on <%s> element"),
-                     element_name);
-          return;
-        }
-
-      if (state == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"state\" attribute on <%s> element"),
-                     element_name);
-          return;
-        }
-      
       info->button_type = meta_button_type_from_string (function, info->theme);
       if (info->button_type == META_BUTTON_TYPE_LAST)
         {
@@ -3536,36 +2983,12 @@ parse_style_set_element (GMarkupParseContext  *context,
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "focus", &focus,
-                              "state", &state,
+                              "!focus", &focus,
+                              "!state", &state,
                               "resize", &resize,
-                              "style", &style,
+                              "!style", &style,
                               NULL))
         return;
-
-      if (focus == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"focus\" attribute on <%s> element"),
-                     element_name);
-          return;
-        }
-
-      if (state == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"state\" attribute on <%s> element"),
-                     element_name);
-          return;
-        }
-      
-      if (style == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"style\" attribute on <%s> element"),
-                     element_name);
-          return;
-        }
 
       frame_focus = meta_frame_focus_from_string (focus);
       if (frame_focus == META_FRAME_FOCUS_LAST)
@@ -3601,8 +3024,8 @@ parse_style_set_element (GMarkupParseContext  *context,
           if (resize == NULL)
             {
               set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                         _("No \"resize\" attribute on <%s> element"),
-                         element_name);
+                         ATTRIBUTE_NOT_FOUND,
+                         "resize", element_name);
               return;
             }
 

@@ -1,3 +1,23 @@
+2008-10-12  Thomas Thurman  <tthurman@gnome.org>
+
+        An attempt to make life a little easier for our beloved translators;
+        this has the same behaviour as before, but removes over thirty
+        translation strings.
+
+        * src/core/session.c (start_element_handler): all "attribute not found
+          on element" strings are identical
+        * src/ui/theme-parser.c (locate_attributes): allow attribute names to
+          be preceded with "!" (in the code) to show they're required.
+          (parse_aspect_ratio, parse_distance, parse_toplevel_element,
+           parse_style_element, parse_gradient_element, static, parse_border,
+           parse_style_set_element, parse_draw_op_element): use the new "!"
+           prefix for locate_attributes(), or in some cases just the identical
+           constant, for generating this error.
+        * src/ui/theme.c (check_state, meta_theme_validate): add
+          translator comments
+        * src/ui/resizepopup.c (update_size_window): add
+          translator comments
+
 2008-10-06  William Lachance  <wrlach@gmail.com>
 
         Pass modified mouse button events down to panel windows
