@@ -34,50 +34,12 @@
 /*
  * This file defines the plugin API.
  *
- * Effects plugin is shared library loaded via dlopen(); it is recommended
- * that the GModule API is used (otherwise you are on your own to do proper
- * plugin clean up when the module is unloaded).
+ * Effects plugin is shared library loaded via g_module_open(); it is
+ * recommended that the GModule API is used (otherwise you are on your own to
+ * do proper plugin clean up when the module is unloaded).
  *
  * The plugin interface is exported via the MetaCompositorClutterPlugin struct.
  */
-
-/*
- * Alias MetaRectangle to PluginWorkspaceRectangle in anticipation of
- * making this file metacity-independent (we want the plugins to be portable
- * between different WMs.
- */
-typedef MetaRectangle PluginWorkspaceRectangle;
-
-/*
- * The name of the header struct; use as:
- *
- * MetaCompositorClutterPlugin META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT =
- *   {
- *     ...
- *   };
- *
- * See clutter-plugins/simple.c for example code.
- */
-#define META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT MCCPS__
-
-/*
- * Definition for the plugin init function; use as:
- *
- *   META_COMPOSITOR_CLUTTER_PLUGIN_INIT_FUNC
- *   {
- *     init code ...
- *   }
- *
- * See clutter-plugins/simple.c for example code.
- */
-#define META_COMPOSITOR_CLUTTER_PLUGIN_INIT_FUNC \
-  gboolean mccp_init__(void);                    \
-  gboolean mccp_init__()
-
-
-/* Private; must match the above */
-#define META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT_NAME    "MCCPS__"
-#define META_COMPOSITOR_CLUTTER_PLUGIN_INIT_FUNC_NAME "mccp_init__"
 
 typedef struct MetaCompositorClutterPlugin MetaCompositorClutterPlugin;
 
@@ -85,14 +47,14 @@ typedef struct MetaCompositorClutterPlugin MetaCompositorClutterPlugin;
  * Feature flags: identify events that the plugin can handle; a plugin can
  * handle one or more events.
  */
-#define META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE         0x00000001UL
-#define META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE         0x00000002UL
-#define META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE       0x00000004UL
-#define META_COMPOSITOR_CLUTTER_PLUGIN_MAP              0x00000008UL
-#define META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY          0x00000010UL
-#define META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE 0x00000020UL
+#define META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE         (1<<0)
+#define META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE         (1<<1)
+#define META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE       (1<<2)
+#define META_COMPOSITOR_CLUTTER_PLUGIN_MAP              (1<<3)
+#define META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY          (1<<4)
+#define META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE (1<<5)
 
-#define META_COMPOSITOR_CLUTTER_PLUGIN_ALL_EFFECTS      0xffffffffUL
+#define META_COMPOSITOR_CLUTTER_PLUGIN_ALL_EFFECTS      (~0)
 
 struct MetaCompositorClutterPlugin
 {
@@ -117,6 +79,47 @@ struct MetaCompositorClutterPlugin
 #endif
   gchar   *name;     /* Human-readable name for UI */
   gulong   features; /* or-ed feature flags */
+  
+  /* 
+   * This function is called once the plugin has been loaded.
+   *
+   * @params is a string containing additional parameters for the plugin and is
+   * specified after the plugin name in the gconf database, separated by a
+   * colon.
+   *
+   * The following parameter tokens need to be handled by all
+   * plugins:
+   *
+   *   'debug'
+   *             Indicates running in debug mode; the plugin
+   *             might want to print useful debug info, or
+   *             extend effect duration, etc.
+   *   
+   *   'disable: ...;'
+   *
+   *             The disable token indicates that the effects
+   *             listed after the colon should be disabled.
+   *
+   *             The list is comma-separated, terminated by a
+   *             semicolon and consisting of the following
+   *             tokens:
+   *
+   *                minimize
+   *                maximize
+   *                unmaximize
+   *                map
+   *                destroy
+   *                switch-workspace
+   *
+   *   FIXME: ^^^ Instead of configuring in terms of what should be
+   *   disabled, and needing a mechanism for coping with the user
+   *   mistakenly not disabling the right things, it might be neater
+   *   if plugins were enabled on a per effect basis in the first
+   *   place. I.e. in gconf we could have effect:plugin key value
+   *   pairs.
+   */
+
+  gboolean (*do_init) (const char *params);
 
   /*
    * Event handlers
@@ -153,6 +156,7 @@ struct MetaCompositorClutterPlugin
    * Each actor in the list has a workspace number attached to it using
    * g_object_set_data() with key META_COMPOSITOR_CLUTTER_PLUGIN_WORKSPACE_KEY;
    * workspace < 0 indicates the window is sticky (i.e., on all desktops).
+   * TODO: Add accessor for sticky bit in new MetaCompWindow structure
    */
   void (*switch_workspace) (const GList       **actors,
                             gint                from,
@@ -168,58 +172,22 @@ struct MetaCompositorClutterPlugin
   void (*kill_effect)      (MetaCompWindow     *actor,
                             gulong              events);
 
-
   /*
    * The plugin manager will call this function when module should be reloaded.
    * This happens, for example, when the parameters for the plugin changed.
    */
-  gboolean (*reload) (void);
+  gboolean (*reload) (const char *params);
 
   /* General XEvent filter. This is fired *before* metacity itself handles
    * an event. Return TRUE to block any further processing.
-  */
+   */
   gboolean (*xevent_filter) (XEvent *event);
 
-
-#ifdef META_COMPOSITOR_CLUTTER_BUILDING_PLUGIN
-  const
-#endif
-  gchar *params;  /* String containing additional parameters for the plugin;
-                   * this is specified after the pluing name in the gconf
-                   * database, separated by a colon.
-                   *
-                   * The following parameter tokens need to be handled by all
-                   * plugins:
-                   *
-                   *   'debug'
-                   *             Indicates running in debug mode; the plugin
-                   *             might want to print useful debug info, or
-                   *             extend effect duration, etc.
-                   *
-                   *   'disable: ...;'
-                   *
-                   *             The disable token indicates that the effects
-                   *             listed after the colon should be disabled.
-                   *
-                   *             The list is comma-separated, terminated by a
-                   *             semicolon and consisting of the following
-                   *             tokens:
-                   *
-                   *                minimize
-                   *                maximize
-                   *                unmaximize
-                   *                map
-                   *                destroy
-                   *                switch-workspace
-                   */
-
-  gint   screen_width;
-  gint   screen_height;
-
-  GList *work_areas; /* List of PluginWorkspaceRectangles defining the
-                      * geometry of individual workspaces.
-                      */
-
+  /* List of PluginWorkspaceRectangles defining the geometry of individual
+   * workspaces. */
+  GList *work_areas; 
+  
+  /* FIXME: It should be possible to hide this from plugins */
   gint   running; /* Plugin must increase this counter for each effect it starts
                    * decrease it again once the effect finishes.
                    */
@@ -243,4 +211,10 @@ meta_comp_clutter_plugin_get_overlay_group (MetaCompositorClutterPlugin *plugin)
 
 ClutterActor *
 meta_comp_clutter_plugin_get_stage (MetaCompositorClutterPlugin *plugin);
-#endif
+
+void
+meta_comp_clutter_plugin_query_screen_size (MetaCompositorClutterPlugin *plugin,
+					    int				*width,
+					    int				*height);
+
+#endif /* META_COMPOSITOR_CLUTTER_PLUGIN_H_ */

@@ -30,7 +30,8 @@
 #include <gmodule.h>
 #include <string.h>
 
-static gboolean meta_compositor_clutter_plugin_manager_reload (MetaCompositorClutterPluginManager *mgr);
+static gboolean meta_compositor_clutter_plugin_manager_reload (
+		      MetaCompositorClutterPluginManager *plugin_mgr);
 
 struct MetaCompositorClutterPluginManager
 {
@@ -42,23 +43,23 @@ struct MetaCompositorClutterPluginManager
   guint         idle_unload_id;
 };
 
-typedef struct MetaCompositorClutterPluginPrivate MetaCompositorClutterPluginPrivate;
-
-struct MetaCompositorClutterPluginPrivate
+typedef struct MetaCompositorClutterPluginPrivate
 {
+  char				     *name;
   MetaCompositorClutterPluginManager *self;
   GModule                            *module;
+  gulong			      features;
 
   gboolean disabled : 1;
-};
+} MetaCompositorClutterPluginPrivate;
 
 
 static void
-free_plugin_workspaces (MetaCompositorClutterPlugin *plg)
+free_plugin_workspaces (MetaCompositorClutterPlugin *plugin)
 {
   GList *l;
 
-  l = plg->work_areas;
+  l = plugin->work_areas;
 
   while (l)
     {
@@ -66,21 +67,21 @@ free_plugin_workspaces (MetaCompositorClutterPlugin *plg)
       l = l->next;
     }
 
-  if (plg->work_areas)
-    g_list_free (plg->work_areas);
+  if (plugin->work_areas)
+    g_list_free (plugin->work_areas);
 
-  plg->work_areas = NULL;
+  plugin->work_areas = NULL;
 }
 
 /*
  * Gets work area geometry and stores it in list in the plugin.
  *
- * If the plg list is already populated, we simply replace it (we are dealing
- * with a small number of items in the list and unfrequent changes).
+ * If the plugin list is already populated, we simply replace it (we are
+ * dealing with a small number of items in the list and unfrequent changes).
  */
 static void
 update_plugin_workspaces (MetaScreen                  *screen,
-                          MetaCompositorClutterPlugin *plg)
+                          MetaCompositorClutterPlugin *plugin)
 {
   GList *l, *l2 = NULL;
 
@@ -89,9 +90,9 @@ update_plugin_workspaces (MetaScreen                  *screen,
   while (l)
     {
       MetaWorkspace  *w = l->data;
-      PluginWorkspaceRectangle *r;
+      MetaRectangle *r;
 
-      r = g_new0 (PluginWorkspaceRectangle, 1);
+      r = g_new0 (MetaRectangle, 1);
 
       meta_workspace_get_work_area_all_xineramas (w, (MetaRectangle*)r);
 
@@ -100,9 +101,57 @@ update_plugin_workspaces (MetaScreen                  *screen,
       l = l->next;
     }
 
-  free_plugin_workspaces (plg);
+  free_plugin_workspaces (plugin);
 
-  plg->work_areas = l2;
+  plugin->work_areas = l2;
+}
+
+/**
+ * parse_disable_params:
+ * @params: as read from gconf, a ':' seperated list of plugin options
+ * @features: The mask of features the plugin advertises
+ *
+ * This function returns a new mask of features removing anything that
+ * the user has disabled.
+ */
+static gulong
+parse_disable_params (const char *params, gulong features)
+{
+  char *p;
+  
+  if (!params)
+    return features;
+
+  if ((p = strstr (params, "disable:")))
+    {
+      gchar *d = g_strdup (p+8);
+
+      p = strchr (d, ';');
+
+      if (p)
+	*p = 0;
+
+      if (strstr (d, "minimize"))
+	features &= ~ META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE;
+
+      if (strstr (d, "maximize"))
+	features &= ~ META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE;
+
+      if (strstr (d, "unmaximize"))
+	features &= ~ META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE;
+
+      if (strstr (d, "map"))
+	features &= ~ META_COMPOSITOR_CLUTTER_PLUGIN_MAP;
+
+      if (strstr (d, "destroy"))
+	features &= ~ META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY;
+
+      if (strstr (d, "switch-workspace"))
+	features &= ~META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE;
+
+      g_free (d);
+    }
+  return features;
 }
 
 /*
@@ -110,51 +159,48 @@ update_plugin_workspaces (MetaScreen                  *screen,
  * struct.
  */
 static MetaCompositorClutterPlugin *
-meta_compositor_clutter_plugin_load (MetaCompositorClutterPluginManager *mgr,
-                                     GModule                            *module,
-                                     const gchar                        *params)
+meta_compositor_clutter_plugin_load (
+    MetaCompositorClutterPluginManager *plugin_mgr,
+    GModule                            *module,
+    const gchar                        *params)
 {
-  MetaCompositorClutterPlugin *plg;
+  MetaCompositorClutterPlugin *plugin;
 
-  if (g_module_symbol (module,
-                       META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT_NAME,
-                       (gpointer *)&plg))
+  if (g_module_symbol (module, "metacity_plugin", (gpointer *)&plugin))
     {
-      if (plg->version_api == METACITY_CLUTTER_PLUGIN_API_VERSION)
+      if (plugin->version_api == METACITY_CLUTTER_PLUGIN_API_VERSION)
         {
           MetaCompositorClutterPluginPrivate *priv;
-          gboolean (*init_func) (void);
 
-          priv                 = g_new0 (MetaCompositorClutterPluginPrivate, 1);
-          plg->params          = g_strdup (params);
-          plg->manager_private = priv;
-          priv->module         = module;
-          priv->self           = mgr;
+          priv		= g_new0 (MetaCompositorClutterPluginPrivate, 1);
+	  priv->name	= _(plugin->name);
+          priv->module  = module;
+          priv->self	= plugin_mgr;
 
-          meta_screen_get_size (mgr->screen,
-                                &plg->screen_width, &plg->screen_height);
+	  /* FIXME: instead of hanging private data of the plugin descriptor
+	   * we could make the descriptor const if we were to hang it off
+	   * a plugin manager structure */
+          plugin->manager_private = priv;
 
-          update_plugin_workspaces (mgr->screen, plg);
+          update_plugin_workspaces (plugin_mgr->screen, plugin);
+
+	  priv->features = parse_disable_params (params, plugin->features);
 
           /*
            * Check for and run the plugin init function.
            */
-          if (g_module_symbol (module,
-                                META_COMPOSITOR_CLUTTER_PLUGIN_INIT_FUNC_NAME,
-                                (gpointer *)&init_func) &&
-              !init_func())
+          if (!plugin->do_init || !(plugin->do_init (params)))
             {
-              g_free (plg->params);
               g_free (priv);
 
-              free_plugin_workspaces (plg);
+              free_plugin_workspaces (plugin);
 
               return NULL;
             }
 
-          meta_verbose ("Loaded plugin [%s]\n", plg->name);
+          meta_verbose ("Loaded plugin [%s]\n", priv->name);
 
-          return plg;
+          return plugin;
         }
     }
 
@@ -167,25 +213,22 @@ meta_compositor_clutter_plugin_load (MetaCompositorClutterPluginManager *mgr,
  * removal later.
  */
 static gboolean
-meta_compositor_clutter_plugin_unload (MetaCompositorClutterPlugin *plg)
+meta_compositor_clutter_plugin_unload (MetaCompositorClutterPlugin *plugin)
 {
   MetaCompositorClutterPluginPrivate *priv;
   GModule *module;
 
-  priv = plg->manager_private;
+  priv = plugin->manager_private;
   module = priv->module;
 
-  if (plg->running)
+  if (plugin->running)
     {
       priv->disabled = TRUE;
       return FALSE;
     }
 
-  g_free (plg->params);
-  plg->params = NULL;
-
   g_free (priv);
-  plg->manager_private = NULL;
+  plugin->manager_private = NULL;
 
   g_module_close (module);
 
@@ -197,23 +240,24 @@ meta_compositor_clutter_plugin_unload (MetaCompositorClutterPlugin *plg)
  * pending for removal.
  */
 static gboolean
-meta_compositor_clutter_plugin_manager_idle_unload (MetaCompositorClutterPluginManager *mgr)
+meta_compositor_clutter_plugin_manager_idle_unload (
+    MetaCompositorClutterPluginManager *plugin_mgr)
 {
-  GList *l = mgr->unload;
+  GList *l = plugin_mgr->unload;
   gboolean dont_remove = TRUE;
 
   while (l)
     {
-      MetaCompositorClutterPlugin *plg = l->data;
+      MetaCompositorClutterPlugin *plugin = l->data;
 
-      if (meta_compositor_clutter_plugin_unload (plg))
+      if (meta_compositor_clutter_plugin_unload (plugin))
         {
           /* Remove from list */
           GList *p = l->prev;
           GList *n = l->next;
 
           if (!p)
-            mgr->unload = n;
+            plugin_mgr->unload = n;
           else
             p->next = n;
 
@@ -228,11 +272,11 @@ meta_compositor_clutter_plugin_manager_idle_unload (MetaCompositorClutterPluginM
         l = l->next;
     }
 
-  if (!mgr->unload)
+  if (!plugin_mgr->unload)
     {
       /* If no more unloads are pending, remove the handler as well */
       dont_remove = FALSE;
-      mgr->idle_unload_id = 0;
+      plugin_mgr->idle_unload_id = 0;
     }
 
   return dont_remove;
@@ -242,47 +286,48 @@ meta_compositor_clutter_plugin_manager_idle_unload (MetaCompositorClutterPluginM
  * Unloads all plugins
  */
 static void
-meta_compositor_clutter_plugin_manager_unload (MetaCompositorClutterPluginManager *mgr)
+meta_compositor_clutter_plugin_manager_unload (
+    MetaCompositorClutterPluginManager *plugin_mgr)
 {
-  GList *plugins = mgr->plugins;
+  GList *plugins = plugin_mgr->plugins;
 
   while (plugins)
     {
-      MetaCompositorClutterPlugin *plg = plugins->data;
+      MetaCompositorClutterPlugin *plugin = plugins->data;
 
       /* If the plugin could not be removed, move it to the unload list */
-      if (!meta_compositor_clutter_plugin_unload (plg))
+      if (!meta_compositor_clutter_plugin_unload (plugin))
         {
-          mgr->unload = g_list_prepend (mgr->unload, plg);
+          plugin_mgr->unload = g_list_prepend (plugin_mgr->unload, plugin);
 
-          if (!mgr->idle_unload_id)
+          if (!plugin_mgr->idle_unload_id)
             {
-              mgr->idle_unload_id = g_idle_add ((GSourceFunc)
+              plugin_mgr->idle_unload_id = g_idle_add ((GSourceFunc)
                             meta_compositor_clutter_plugin_manager_idle_unload,
-                            mgr);
+                            plugin_mgr);
             }
         }
 
       plugins = plugins->next;
     }
 
-  g_list_free (mgr->plugins);
-  mgr->plugins = NULL;
+  g_list_free (plugin_mgr->plugins);
+  plugin_mgr->plugins = NULL;
 }
 
 static void
 prefs_changed_callback (MetaPreference pref,
                         void          *data)
 {
-  MetaCompositorClutterPluginManager *mgr = data;
+  MetaCompositorClutterPluginManager *plugin_mgr = data;
 
   if (pref == META_PREF_CLUTTER_PLUGINS)
     {
-      meta_compositor_clutter_plugin_manager_reload (mgr);
+      meta_compositor_clutter_plugin_manager_reload (plugin_mgr);
     }
   else if (pref == META_PREF_NUM_WORKSPACES)
     {
-      meta_compositor_clutter_plugin_manager_update_workspaces (mgr);
+      meta_compositor_clutter_plugin_manager_update_workspaces (plugin_mgr);
     }
 }
 
@@ -290,7 +335,8 @@ prefs_changed_callback (MetaPreference pref,
  * Loads all plugins listed in gconf registry.
  */
 static gboolean
-meta_compositor_clutter_plugin_manager_load (MetaCompositorClutterPluginManager *mgr)
+meta_compositor_clutter_plugin_manager_load (
+    MetaCompositorClutterPluginManager *plugin_mgr)
 {
   const gchar *dpath = METACITY_PKGLIBDIR "/plugins/clutter/";
   GSList      *plugins, *fallback = NULL;
@@ -308,17 +354,17 @@ meta_compositor_clutter_plugin_manager_load (MetaCompositorClutterPluginManager 
 
   while (plugins)
     {
-      gchar   *plg_string;
+      gchar   *plugin_string;
       gchar   *params;
 
-      plg_string = g_strdup (plugins->data);
+      plugin_string = g_strdup (plugins->data);
 
-      if (plg_string)
+      if (plugin_string)
         {
-          GModule *plg;
+          GModule *plugin;
           gchar   *path;
 
-          params = strchr (plg_string, ':');
+          params = strchr (plugin_string, ':');
 
           if (params)
             {
@@ -326,26 +372,26 @@ meta_compositor_clutter_plugin_manager_load (MetaCompositorClutterPluginManager 
               ++params;
             }
 
-          path = g_strconcat (dpath, plg_string, ".so", NULL);
+          path = g_strconcat (dpath, plugin_string, ".so", NULL);
 
-          if ((plg = g_module_open (path, 0)))
+          if ((plugin = g_module_open (path, 0)))
             {
               MetaCompositorClutterPlugin *p;
 
-              if ((p = meta_compositor_clutter_plugin_load (mgr,
-                                                            plg, params)))
-                mgr->plugins = g_list_prepend (mgr->plugins, p);
+              if ((p = meta_compositor_clutter_plugin_load (plugin_mgr,
+                                                            plugin, params)))
+                plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, p);
               else
                 {
                   g_message ("Plugin load for [%s] failed\n", path);
-                  g_module_close (plg);
+                  g_module_close (plugin);
                 }
             }
           else
             g_message ("Unable to load plugin [%s]\n", path);
 
           g_free (path);
-          g_free (plg_string);
+          g_free (plugin_string);
         }
 
       plugins = plugins->next;
@@ -355,9 +401,9 @@ meta_compositor_clutter_plugin_manager_load (MetaCompositorClutterPluginManager 
   if (fallback)
     g_slist_free (fallback);
 
-  if (mgr->plugins != NULL)
+  if (plugin_mgr->plugins != NULL)
     {
-      meta_prefs_add_listener (prefs_changed_callback, mgr);
+      meta_prefs_add_listener (prefs_changed_callback, plugin_mgr);
       return TRUE;
     }
 
@@ -368,44 +414,47 @@ meta_compositor_clutter_plugin_manager_load (MetaCompositorClutterPluginManager 
  * Reloads all plugins
  */
 static gboolean
-meta_compositor_clutter_plugin_manager_reload (MetaCompositorClutterPluginManager *mgr)
+meta_compositor_clutter_plugin_manager_reload (
+    MetaCompositorClutterPluginManager *plugin_mgr)
 {
   /* TODO -- brute force; should we build a list of plugins to load and list of
    * plugins to unload? We are probably not going to have large numbers of
    * plugins loaded at the same time, so it might not be worth it.
    */
-  meta_compositor_clutter_plugin_manager_unload (mgr);
-  return meta_compositor_clutter_plugin_manager_load (mgr);
+  meta_compositor_clutter_plugin_manager_unload (plugin_mgr);
+  return meta_compositor_clutter_plugin_manager_load (plugin_mgr);
 }
 
 static gboolean
-meta_compositor_clutter_plugin_manager_init (MetaCompositorClutterPluginManager *mgr)
+meta_compositor_clutter_plugin_manager_init (
+    MetaCompositorClutterPluginManager *plugin_mgr)
 {
-  return meta_compositor_clutter_plugin_manager_load (mgr);
+  return meta_compositor_clutter_plugin_manager_load (plugin_mgr);
 }
 
 void
-meta_compositor_clutter_plugin_manager_update_workspace (MetaCompositorClutterPluginManager *mgr, MetaWorkspace *w)
+meta_compositor_clutter_plugin_manager_update_workspace (
+    MetaCompositorClutterPluginManager *plugin_mgr, MetaWorkspace *workspace)
 {
   GList *l;
-  gint   n;
+  gint   index;
 
-  n = meta_workspace_index (w);
-  l = mgr->plugins;
+  index = meta_workspace_index (workspace);
+  l = plugin_mgr->plugins;
 
   while (l)
     {
-      MetaCompositorClutterPlugin *plg = l->data;
-      PluginWorkspaceRectangle    *r = g_list_nth_data (plg->work_areas, n);
+      MetaCompositorClutterPlugin *plugin = l->data;
+      MetaRectangle *rect = g_list_nth_data (plugin->work_areas, index);
 
-      if (r)
+      if (rect)
         {
-          meta_workspace_get_work_area_all_xineramas (w, (MetaRectangle*)r);
+          meta_workspace_get_work_area_all_xineramas (workspace, rect);
         }
       else
         {
           /* Something not entirely right; redo the whole thing */
-          update_plugin_workspaces (mgr->screen, plg);
+          update_plugin_workspaces (plugin_mgr->screen, plugin);
           return;
         }
 
@@ -414,16 +463,17 @@ meta_compositor_clutter_plugin_manager_update_workspace (MetaCompositorClutterPl
 }
 
 void
-meta_compositor_clutter_plugin_manager_update_workspaces (MetaCompositorClutterPluginManager *mgr)
+meta_compositor_clutter_plugin_manager_update_workspaces (
+    MetaCompositorClutterPluginManager *plugin_mgr)
 {
   GList *l;
 
-  l = mgr->plugins;
+  l = plugin_mgr->plugins;
   while (l)
     {
-      MetaCompositorClutterPlugin *plg = l->data;
+      MetaCompositorClutterPlugin *plugin = l->data;
 
-      update_plugin_workspaces (mgr->screen, plg);
+      update_plugin_workspaces (plugin_mgr->screen, plugin);
 
       l = l->next;
     }
@@ -432,35 +482,38 @@ meta_compositor_clutter_plugin_manager_update_workspaces (MetaCompositorClutterP
 MetaCompositorClutterPluginManager *
 meta_compositor_clutter_plugin_manager_new (MetaScreen *screen)
 {
-  MetaCompositorClutterPluginManager *mgr;
+  MetaCompositorClutterPluginManager *plugin_mgr;
 
-  mgr = g_new0 (MetaCompositorClutterPluginManager, 1);
+  plugin_mgr = g_new0 (MetaCompositorClutterPluginManager, 1);
 
-  mgr->screen        = screen;
+  plugin_mgr->screen        = screen;
 
-  if (!meta_compositor_clutter_plugin_manager_init (mgr))
+  if (!meta_compositor_clutter_plugin_manager_init (plugin_mgr))
     {
-      g_free (mgr);
-      mgr = NULL;
+      g_free (plugin_mgr);
+      plugin_mgr = NULL;
     }
 
-  return mgr;
+  return plugin_mgr;
 }
 
 static void
-meta_compositor_clutter_plugin_manager_kill_effect (MetaCompositorClutterPluginManager *mgr,
-                                                    MetaCompWindow *actor,
-                                                    unsigned long   events)
+meta_compositor_clutter_plugin_manager_kill_effect (
+    MetaCompositorClutterPluginManager *plugin_mgr,
+    MetaCompWindow *actor,
+    unsigned long   events)
 {
-  GList *l = mgr->plugins;
+  GList *l = plugin_mgr->plugins;
 
   while (l)
     {
-      MetaCompositorClutterPlugin        *plg = l->data;
-      MetaCompositorClutterPluginPrivate *priv = plg->manager_private;
+      MetaCompositorClutterPlugin        *plugin = l->data;
+      MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
 
-      if (!priv->disabled && (plg->features & events) && plg->kill_effect)
-        plg->kill_effect (actor, events);
+      if (!priv->disabled
+	  && (plugin->features & events)
+	  && plugin->kill_effect)
+        plugin->kill_effect (actor, events);
 
       l = l->next;
     }
@@ -479,46 +532,51 @@ meta_compositor_clutter_plugin_manager_kill_effect (MetaCompositorClutterPluginM
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPluginManager *mgr,
-                                                     MetaCompWindow  *actor,
-                                                     unsigned long    event)
+meta_compositor_clutter_plugin_manager_event_simple (
+    MetaCompositorClutterPluginManager *plugin_mgr,
+    MetaCompWindow  *actor,
+    unsigned long    event)
 {
-  GList *l = mgr->plugins;
+  GList *l = plugin_mgr->plugins;
   gboolean retval = FALSE;
 
   while (l)
     {
-      MetaCompositorClutterPlugin        *plg = l->data;
-      MetaCompositorClutterPluginPrivate *priv = plg->manager_private;
+      MetaCompositorClutterPlugin        *plugin = l->data;
+      MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
 
-      if (!priv->disabled && (plg->features & event))
+      if (!priv->disabled && (plugin->features & event))
         {
           retval = TRUE;
 
           switch (event)
             {
             case META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE:
-              if (plg->minimize)
+              if (plugin->minimize)
                 {
-                  meta_compositor_clutter_plugin_manager_kill_effect (mgr,
-                                                                actor,
-                                                                ALL_BUT_SWITCH);
-                  plg->minimize (actor);
+                  meta_compositor_clutter_plugin_manager_kill_effect (
+		      plugin_mgr,
+		      actor,
+		      ALL_BUT_SWITCH);
+
+                  plugin->minimize (actor);
                 }
               break;
             case META_COMPOSITOR_CLUTTER_PLUGIN_MAP:
-              if (plg->map)
+              if (plugin->map)
                 {
-                  meta_compositor_clutter_plugin_manager_kill_effect (mgr,
-                                                                actor,
-                                                                ALL_BUT_SWITCH);
-                  plg->map (actor);
+                  meta_compositor_clutter_plugin_manager_kill_effect (
+		      plugin_mgr,
+		      actor,
+		      ALL_BUT_SWITCH);
+
+                  plugin->map (actor);
                 }
               break;
             case META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY:
-              if (plg->destroy)
+              if (plugin->destroy)
                 {
-                  plg->destroy (actor);
+                  plugin->destroy (actor);
                 }
               break;
             default:
@@ -542,46 +600,50 @@ meta_compositor_clutter_plugin_manager_event_simple (MetaCompositorClutterPlugin
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-meta_compositor_clutter_plugin_manager_event_maximize (MetaCompositorClutterPluginManager *mgr,
-                                                 MetaCompWindow  *actor,
-                                                 unsigned long    event,
-                                                 gint             target_x,
-                                                 gint             target_y,
-                                                 gint             target_width,
-                                                 gint             target_height)
+meta_compositor_clutter_plugin_manager_event_maximize (
+    MetaCompositorClutterPluginManager *plugin_mgr,
+    MetaCompWindow  *actor,
+    unsigned long    event,
+    gint             target_x,
+    gint             target_y,
+    gint             target_width,
+    gint             target_height)
 {
-  GList *l = mgr->plugins;
+  GList *l = plugin_mgr->plugins;
   gboolean retval = FALSE;
 
   while (l)
     {
-      MetaCompositorClutterPlugin        *plg = l->data;
-      MetaCompositorClutterPluginPrivate *priv = plg->manager_private;
+      MetaCompositorClutterPlugin        *plugin = l->data;
+      MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
 
-      if (!priv->disabled && (plg->features & event))
+      if (!priv->disabled && (plugin->features & event))
         {
           retval = TRUE;
 
           switch (event)
             {
             case META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE:
-              if (plg->maximize)
+              if (plugin->maximize)
                 {
-                  meta_compositor_clutter_plugin_manager_kill_effect (mgr,
-                                                                actor,
-                                                                ALL_BUT_SWITCH);
-                  plg->maximize (actor,
+                  meta_compositor_clutter_plugin_manager_kill_effect (
+		      plugin_mgr,
+		      actor,
+		      ALL_BUT_SWITCH);
+
+                  plugin->maximize (actor,
                                  target_x, target_y,
                                  target_width, target_height);
                 }
               break;
             case META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE:
-              if (plg->unmaximize)
+              if (plugin->unmaximize)
                 {
-                  meta_compositor_clutter_plugin_manager_kill_effect (mgr,
-                                                                actor,
-                                                                ALL_BUT_SWITCH);
-                  plg->unmaximize (actor,
+                  meta_compositor_clutter_plugin_manager_kill_effect (
+		      plugin_mgr,
+		      actor,
+		      ALL_BUT_SWITCH);
+                  plugin->unmaximize (actor,
                                    target_x, target_y,
                                    target_width, target_height);
                 }
@@ -606,31 +668,34 @@ meta_compositor_clutter_plugin_manager_event_maximize (MetaCompositorClutterPlug
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositorClutterPluginManager *mgr,
-                                                         const GList **actors,
-                                                         gint          from,
-                                                         gint          to,
-                                                         MetaMotionDirection direction)
+meta_compositor_clutter_plugin_manager_switch_workspace (
+    MetaCompositorClutterPluginManager *plugin_mgr,
+    const GList **actors,
+    gint          from,
+    gint          to,
+    MetaMotionDirection direction)
 {
-  GList *l = mgr->plugins;
+  GList *l = plugin_mgr->plugins;
   gboolean retval = FALSE;
 
   while (l)
     {
-      MetaCompositorClutterPlugin        *plg = l->data;
-      MetaCompositorClutterPluginPrivate *priv = plg->manager_private;
+      MetaCompositorClutterPlugin        *plugin = l->data;
+      MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
 
       if (!priv->disabled &&
-          (plg->features & META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE) &&
+          (plugin->features & META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE) &&
           (actors && *actors))
         {
-          if (plg->switch_workspace)
+          if (plugin->switch_workspace)
             {
               retval = TRUE;
-              meta_compositor_clutter_plugin_manager_kill_effect (mgr,
-                                            META_COMP_WINDOW ((*actors)->data),
-                            META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE);
-              plg->switch_workspace (actors, from, to, direction);
+              meta_compositor_clutter_plugin_manager_kill_effect (
+		  plugin_mgr,
+		  META_COMP_WINDOW ((*actors)->data),
+		  META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE);
+
+              plugin->switch_workspace (actors, from, to, direction);
             }
         }
 
@@ -649,23 +714,23 @@ meta_compositor_clutter_plugin_manager_switch_workspace (MetaCompositorClutterPl
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-meta_compositor_clutter_plugin_manager_xevent_filter
-                        (MetaCompositorClutterPluginManager *mgr, XEvent *xev)
+meta_compositor_clutter_plugin_manager_xevent_filter (
+    MetaCompositorClutterPluginManager *plugin_mgr, XEvent *xev)
 {
   GList *l;
 
-  if (!mgr)
+  if (!plugin_mgr)
     return FALSE;
 
-  l = mgr->plugins;
+  l = plugin_mgr->plugins;
 
   while (l)
     {
-      MetaCompositorClutterPlugin        *plg = l->data;
+      MetaCompositorClutterPlugin *plugin = l->data;
 
-      if (plg->xevent_filter)
+      if (plugin->xevent_filter)
         {
-          if (plg->xevent_filter (xev) == TRUE)
+          if (plugin->xevent_filter (xev) == TRUE)
             return TRUE;
         }
 
@@ -682,18 +747,18 @@ ClutterActor *
 meta_comp_clutter_plugin_get_overlay_group (MetaCompositorClutterPlugin *plugin)
 {
   MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
-  MetaCompositorClutterPluginManager *mgr  = priv->self;
+  MetaCompositorClutterPluginManager *plugin_mgr = priv->self;
 
-  return meta_compositor_clutter_get_overlay_group_for_screen (mgr->screen);
+  return meta_compositor_clutter_get_overlay_group_for_screen (plugin_mgr->screen);
 }
 
 ClutterActor *
 meta_comp_clutter_plugin_get_stage (MetaCompositorClutterPlugin *plugin)
 {
   MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
-  MetaCompositorClutterPluginManager *mgr  = priv->self;
+  MetaCompositorClutterPluginManager *plugin_mgr  = priv->self;
 
-  return meta_compositor_clutter_get_stage_for_screen (mgr->screen);
+  return meta_compositor_clutter_get_stage_for_screen (plugin_mgr->screen);
 }
 
 void
@@ -708,5 +773,16 @@ meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
     }
 
   meta_compositor_clutter_window_effect_completed (actor, event);
+}
+
+void
+meta_comp_clutter_plugin_query_screen_size (MetaCompositorClutterPlugin *plugin,
+					    int				*width,
+					    int				*height)
+{
+  MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
+  MetaCompositorClutterPluginManager *plugin_mgr  = priv->self;
+
+  meta_screen_get_size (plugin_mgr->screen, width, height);
 }
 
