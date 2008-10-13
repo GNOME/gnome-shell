@@ -1,3 +1,8 @@
+2008-10-13  Thomas Thurman  <tthurman@gnome.org>
+
+	* la.po: Committed initial Latin translation.
+        * LINGUAS: added Latin.
+
 2008-10-12  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
