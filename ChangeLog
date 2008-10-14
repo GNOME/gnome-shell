@@ -1,5 +1,9 @@
 2008-10-13  Thomas Thurman  <tthurman@gnome.org>
 
+        * po/POTFILES.in: add screen-bindings.h
+
+2008-10-13  Thomas Thurman  <tthurman@gnome.org>
+
         * po/POTFILES.in: raw schemas is now .in.in
         * po/LINGUAS: add Latin
 

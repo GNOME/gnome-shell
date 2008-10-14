@@ -10,6 +10,7 @@ src/core/keybindings.c
 src/core/main.c
 src/core/prefs.c
 src/core/screen.c
+src/core/screen-bindings.h
 src/core/schema-bindings.c
 src/core/session.c
 src/core/util.c
