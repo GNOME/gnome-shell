@@ -1,3 +1,14 @@
+2008-10-15  Thomas Thurman  <tthurman@gnome.org>
+
+        Since Patrick Niklaus's checkin of 2008-08-14 dealt with windows with
+        no icons not using fallback icons, we don't need fallback icons.
+
+        * src/ui/theme.h: remove fallback icons from struct.
+        * src/core/iconcache.c (meta_read_icons): don't look for fallbacks.
+        * src/*/ui.[ch] (meta_ui_get_fallback_icons): removed
+        * src/ui/theme-parser.c (typedef, parse_toplevel_element): don't
+          parse fallback specifications.
+
 2008-10-13  Thomas Thurman  <tthurman@gnome.org>
 
         * po/POTFILES.in: add screen-bindings.h

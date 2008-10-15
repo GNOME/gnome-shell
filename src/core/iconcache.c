@@ -817,30 +817,14 @@ meta_read_icons (MetaScreen     *screen,
   if (icon_cache->want_fallback &&
       icon_cache->origin < USING_FALLBACK_ICON)
     {
-      GdkPixbuf *fallback_icon;
-      GdkPixbuf *fallback_mini_icon;
-      
-      fallback_icon = NULL;
-      fallback_mini_icon = NULL;
+      get_fallback_icons (screen,
+                          iconp,
+                          ideal_width,
+                          ideal_height,
+                          mini_iconp,
+                          ideal_mini_width,
+                          ideal_mini_height);
 
-      meta_ui_get_fallback_icons(&fallback_icon, &fallback_mini_icon);
-
-      if (fallback_icon == NULL || fallback_mini_icon == NULL)
-        {
-          get_fallback_icons (screen,
-                              iconp,
-                              ideal_width,
-                              ideal_height,
-                              mini_iconp,
-                              ideal_mini_width,
-                              ideal_mini_height);
-        }
-
-      if (fallback_icon != NULL)
-        *iconp = fallback_icon;
-      if (fallback_mini_icon != NULL)
-        *mini_iconp = fallback_mini_icon;
-      
       replace_cache (icon_cache, USING_FALLBACK_ICON,
                      *iconp, *mini_iconp);
       

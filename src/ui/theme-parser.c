@@ -72,9 +72,8 @@ typedef enum
   STATE_FRAME,
   /* assigning style sets to windows */
   STATE_WINDOW,
-  /* and menu icons */
+  /* things we don't use any more but we can still parse: */
   STATE_MENU_ICON,
-  /* fallback icons */
   STATE_FALLBACK
 } ParseState;
 
@@ -1218,40 +1217,9 @@ parse_toplevel_element (GMarkupParseContext  *context,
     }
   else if (ELEMENT_IS ("fallback"))
     {
-      const char *icon = NULL;
-      const char *mini_icon = NULL;
-      
-      if (!locate_attributes (context, element_name, attribute_names, attribute_values,
-                              error,
-                              "icon", &icon,
-                              "mini_icon", &mini_icon,
-                              NULL))
-        return;
-
-      if (icon)
-        {
-          if (info->theme->fallback_icon != NULL)
-            {
-              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                         _("Theme already has a fallback icon"));
-              return;
-            }
-
-          info->theme->fallback_icon = meta_theme_load_image(info->theme, icon, 64, error);
-        }
-
-      if (mini_icon)
-        {
-          if (info->theme->fallback_mini_icon != NULL)
-            {
-              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                         _("Theme already has a fallback mini_icon"));
-              return;
-            }
-
-          info->theme->fallback_mini_icon = meta_theme_load_image(info->theme, mini_icon, 16, error);
-        }
-
+      /* Not supported any more, but we have to parse it if they include it,
+       * for backwards compatibility.
+       */
       push_state (info, STATE_FALLBACK);
     }
    else

@@ -805,8 +805,6 @@ struct _MetaTheme
   GHashTable *style_sets_by_name;
   MetaFrameStyleSet *style_sets_by_type[META_FRAME_TYPE_LAST];
 
-  GdkPixbuf *fallback_icon, *fallback_mini_icon;
-
   GQuark quark_width;
   GQuark quark_height;
   GQuark quark_object_width;
