@@ -40,6 +40,8 @@
 #define SWITCH_TIMEOUT      500
 #define PANEL_SLIDE_TIMEOUT 250;                \
 
+#define PANEL_SLIDE_THRESHOLD 3
+
 #define ACTOR_DATA_KEY "MCCP-Moblin-actor-data"
 
 typedef struct PluginPrivate PluginPrivate;
@@ -113,7 +115,7 @@ struct PluginPrivate
   ClutterEffectTemplate *maximize_effect;
   ClutterEffectTemplate *map_effect;
   ClutterEffectTemplate *switch_workspace_effect;
-  ClutterEffectTemplate *panel_slide;
+  ClutterEffectTemplate *panel_slide_effect;
 
   /* Valid only when switch_workspace effect is in progress */
   ClutterTimeline       *tml_switch_workspace1;
@@ -125,6 +127,7 @@ struct PluginPrivate
   ClutterActor          *panel;
 
   gboolean               debug_mode : 1;
+  gboolean               panel_out  : 1;
 };
 
 /*
@@ -609,6 +612,40 @@ destroy (MetaCompWindow *mcw)
 static gboolean
 xevent_filter (XEvent *xev)
 {
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
+  PluginPrivate               *priv   = plugin->plugin_private;
+
+  if (xev->type != MotionNotify)
+    return FALSE;
+
+  if (priv->panel_out)
+    {
+      guint height = clutter_actor_get_height (priv->panel);
+      gint  x      = clutter_actor_get_x (priv->panel);
+
+      if (xev->xmotion.y_root > (gint)height)
+        {
+          /* TODO -- slide back in, reset input on stage window */
+          clutter_effect_scale (priv->panel_slide_effect,
+                                priv->panel, x, -height,
+                                NULL, NULL);
+        }
+
+      return TRUE;
+    }
+  else if (xev->xmotion.y_root < PANEL_SLIDE_THRESHOLD)
+    {
+      gint  x      = clutter_actor_get_x (priv->panel);
+
+      /* TODO -- reset input on stage window */
+      clutter_effect_scale (priv->panel_slide_effect,
+                            priv->panel, x, 0,
+                            NULL, NULL);
+
+      return TRUE;
+    }
+
+  return FALSE;
 }
 
 static void
@@ -797,7 +834,7 @@ do_init ()
   priv->panel = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->panel);
 
-  priv->panel_slide
+  priv->panel_slide_effect
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
 							panel_slide_timeout),
                                     CLUTTER_ALPHA_SINE_INC);
