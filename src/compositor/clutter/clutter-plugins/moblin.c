@@ -55,6 +55,8 @@ static void unmaximize (MetaCompWindow *actor,
 static void switch_workspace (const GList **actors, gint from, gint to,
                               MetaMotionDirection direction);
 
+static gboolean xevent_filter (XEvent *xev);
+
 static void kill_effect (MetaCompWindow *actor, gulong event);
 
 static gboolean reload (void);
@@ -117,6 +119,8 @@ struct PluginPrivate
   GList                **actors;
   ClutterActor          *desktop1;
   ClutterActor          *desktop2;
+
+  ClutterActor          *panel;
 
   gboolean               debug_mode : 1;
 };
@@ -600,6 +604,11 @@ destroy (MetaCompWindow *mcw)
                                        META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY);
 }
 
+static gboolean
+xevent_filter (XEvent *xev)
+{
+}
+
 static void
 kill_effect (MetaCompWindow *mcw, gulong event)
 {
@@ -692,6 +701,8 @@ do_init ()
   guint          map_timeout      = MAP_TIMEOUT;
   guint          switch_timeout   = SWITCH_TIMEOUT;
   const gchar   *name;
+  ClutterActor  *overlay, *background;
+  ClutterColor   clr = {0xff, 0, 0, 0xff};
 
   plugin->plugin_private = priv;
 
@@ -777,6 +788,19 @@ do_init ()
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
 							switch_timeout),
                                     CLUTTER_ALPHA_SINE_INC);
+
+  overlay = meta_comp_clutter_plugin_get_overlay_group (plugin);
+
+  priv->panel = clutter_group_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->panel);
+
+  /* FIME -- size and color */
+  background = clutter_rectangle_new_with_color (&clr);
+  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), background);
+  clutter_actor_set_size (background, 300, 40);
+
+  clutter_actor_set_position (background, 0,
+                              -clutter_actor_get_height (background));
 
   return TRUE;
 }

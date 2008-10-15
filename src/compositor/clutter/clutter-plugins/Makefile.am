@@ -14,10 +14,8 @@ moblin_la_CFLAGS   = -fPIC
 moblin_la_SOURCES  = moblin.c
 moblin_la_LDFLAGS  = -module -avoid-version -no-undefined
 moblin_la_LIBADD   = @CLUTTER_LIBS@
+
 pkglib_LTLIBRARIES = default.la moblin.la
-
-pkglib_LTLIBRARIES = default.la
-
 
 # post-install hook to remove the .la and .a files we are not interested in
 # (There is no way to stop libtool generating static libs locally, and we
