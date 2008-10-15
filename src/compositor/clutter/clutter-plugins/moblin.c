@@ -623,24 +623,24 @@ xevent_filter (XEvent *xev)
       guint height = clutter_actor_get_height (priv->panel);
       gint  x      = clutter_actor_get_x (priv->panel);
 
-      if (xev->xmotion.y_root > (gint)height)
+      if (xev->xmotion.y > (gint)height)
         {
           /* TODO -- slide back in, reset input on stage window */
-          clutter_effect_scale (priv->panel_slide_effect,
-                                priv->panel, x, -height,
-                                NULL, NULL);
+          clutter_effect_move (priv->panel_slide_effect,
+                               priv->panel, x, -height,
+                               NULL, NULL);
         }
 
       return TRUE;
     }
-  else if (xev->xmotion.y_root < PANEL_SLIDE_THRESHOLD)
+  else if (xev->xmotion.y < PANEL_SLIDE_THRESHOLD)
     {
-      gint  x      = clutter_actor_get_x (priv->panel);
+      gint  x = clutter_actor_get_x (priv->panel);
 
       /* TODO -- reset input on stage window */
-      clutter_effect_scale (priv->panel_slide_effect,
-                            priv->panel, x, 0,
-                            NULL, NULL);
+      clutter_effect_move (priv->panel_slide_effect,
+                           priv->panel, x, 0,
+                           NULL, NULL);
 
       return TRUE;
     }
@@ -722,6 +722,48 @@ g_module_check_init (GModule *module)
   return NULL;
 }
 #endif
+
+static gboolean
+stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
+{
+  if (event->type == CLUTTER_MOTION)
+    {
+      ClutterMotionEvent          *mev = (ClutterMotionEvent *) event;
+      MetaCompositorClutterPlugin *plugin = get_plugin ();
+      PluginPrivate               *priv   = plugin->plugin_private;
+
+      if (priv->panel_out)
+        {
+          guint height = clutter_actor_get_height (priv->panel);
+          gint  x      = clutter_actor_get_x (priv->panel);
+
+          if (mev->y > (gint)height)
+            {
+              /* TODO -- slide back in, reset input on stage window */
+              clutter_effect_move (priv->panel_slide_effect,
+                                   priv->panel, x, -height,
+                                   NULL, NULL);
+            }
+
+          return TRUE;
+        }
+      else if (mev->y < PANEL_SLIDE_THRESHOLD)
+        {
+          gint  x = clutter_actor_get_x (priv->panel);
+
+          /* TODO -- reset input on stage window */
+          clutter_effect_move (priv->panel_slide_effect,
+                               priv->panel, x, 0,
+                               NULL, NULL);
+
+          return TRUE;
+        }
+
+      return FALSE;
+    }
+
+  return FALSE;
+}
 
 /*
  * Core of the plugin init function, called for initial initialization and
@@ -846,6 +888,9 @@ do_init ()
 
   clutter_actor_set_position (background, 0,
                               -clutter_actor_get_height (background));
+
+  g_signal_connect (meta_comp_clutter_plugin_get_stage (plugin),
+                    "key-release-event", G_CALLBACK (stage_input_cb), NULL);
 
   return TRUE;
 }
