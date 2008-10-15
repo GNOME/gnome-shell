@@ -33,11 +33,12 @@
 #include <gmodule.h>
 #include <string.h>
 
-#define DESTROY_TIMEOUT   250
-#define MINIMIZE_TIMEOUT  250
-#define MAXIMIZE_TIMEOUT  250
-#define MAP_TIMEOUT       250
-#define SWITCH_TIMEOUT    500
+#define DESTROY_TIMEOUT     250
+#define MINIMIZE_TIMEOUT    250
+#define MAXIMIZE_TIMEOUT    250
+#define MAP_TIMEOUT         250
+#define SWITCH_TIMEOUT      500
+#define PANEL_SLIDE_TIMEOUT 250;                \
 
 #define ACTOR_DATA_KEY "MCCP-Moblin-actor-data"
 
@@ -112,6 +113,7 @@ struct PluginPrivate
   ClutterEffectTemplate *maximize_effect;
   ClutterEffectTemplate *map_effect;
   ClutterEffectTemplate *switch_workspace_effect;
+  ClutterEffectTemplate *panel_slide;
 
   /* Valid only when switch_workspace effect is in progress */
   ClutterTimeline       *tml_switch_workspace1;
@@ -695,11 +697,12 @@ do_init ()
 
   PluginPrivate *priv = g_new0 (PluginPrivate, 1);
   const gchar   *params;
-  guint          destroy_timeout  = DESTROY_TIMEOUT;
-  guint          minimize_timeout = MINIMIZE_TIMEOUT;
-  guint          maximize_timeout = MAXIMIZE_TIMEOUT;
-  guint          map_timeout      = MAP_TIMEOUT;
-  guint          switch_timeout   = SWITCH_TIMEOUT;
+  guint          destroy_timeout     = DESTROY_TIMEOUT;
+  guint          minimize_timeout    = MINIMIZE_TIMEOUT;
+  guint          maximize_timeout    = MAXIMIZE_TIMEOUT;
+  guint          map_timeout         = MAP_TIMEOUT;
+  guint          switch_timeout      = SWITCH_TIMEOUT;
+  guint          panel_slide_timeout = PANEL_SLIDE_TIMEOUT;
   const gchar   *name;
   ClutterActor  *overlay, *background;
   ClutterColor   clr = {0xff, 0, 0, 0xff};
@@ -793,6 +796,11 @@ do_init ()
 
   priv->panel = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->panel);
+
+  priv->panel_slide
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							panel_slide_timeout),
+                                    CLUTTER_ALPHA_SINE_INC);
 
   /* FIME -- size and color */
   background = clutter_rectangle_new_with_color (&clr);
