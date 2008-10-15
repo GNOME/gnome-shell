@@ -243,7 +243,7 @@ msgstr ""
 #: ../src/core/screen.c:350
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr ""
+msgstr "album %s in xystro %s mendosum est\n"
 
 #: ../src/core/screen.c:366
 #, c-format
@@ -806,7 +806,7 @@ msgstr ""
 
 #: ../src/metacity.desktop.in.h:1 ../src/metacity-wm.desktop.in.h:1
 msgid "Metacity"
-msgstr ""
+msgstr "Metacity"
 
 #: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
@@ -1101,7 +1101,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:48
 msgid "Window title font"
-msgstr ""
+msgstr "typus tituli fenestrae"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
