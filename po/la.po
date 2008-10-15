@@ -243,7 +243,7 @@ msgstr ""
 #: ../src/core/screen.c:350
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "album %s in xystro %s mendosum est\n"
+msgstr "album %s in xystro %s mendosus est\n"
 
 #: ../src/core/screen.c:366
 #, c-format
