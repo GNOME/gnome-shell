@@ -1668,7 +1668,14 @@ get_output_window (MetaScreen *screen)
   xroot = meta_screen_get_xroot (screen);
 
   output = XCompositeGetOverlayWindow (xdisplay, xroot);
-  XSelectInput (xdisplay, output, ExposureMask);
+  XSelectInput (xdisplay, output,
+		FocusChangeMask   |
+		ExposureMask      |
+		PointerMotionMask |
+		KeyPressMask      |
+		KeyReleaseMask    |
+		ButtonPressMask   |
+		ButtonReleaseMask);
 
   return output;
 }
