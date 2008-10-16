@@ -41,7 +41,7 @@
 #define PANEL_SLIDE_TIMEOUT 250;                \
 
 #define PANEL_SLIDE_THRESHOLD 3
-
+#define PANEL_HEIGHT          40
 #define ACTOR_DATA_KEY "MCCP-Moblin-actor-data"
 
 typedef struct PluginPrivate PluginPrivate;
@@ -893,7 +893,7 @@ do_init ()
   /* FIME -- size and color */
   background = clutter_rectangle_new_with_color (&clr);
   clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), background);
-  clutter_actor_set_size (background, 300, 40);
+  clutter_actor_set_size (background, plugin->screen_width, PANEL_HEIGHT);
 
   clutter_actor_set_position (background, 0,
                               -clutter_actor_get_height (background));
