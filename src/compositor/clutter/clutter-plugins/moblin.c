@@ -30,6 +30,7 @@
 #define N_(x) x
 
 #include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
 #include <gmodule.h>
 #include <string.h>
 
@@ -40,7 +41,7 @@
 #define SWITCH_TIMEOUT      500
 #define PANEL_SLIDE_TIMEOUT 250;                \
 
-#define PANEL_SLIDE_THRESHOLD 3
+#define PANEL_SLIDE_THRESHOLD 2
 #define PANEL_HEIGHT          40
 #define ACTOR_DATA_KEY "MCCP-Moblin-actor-data"
 
@@ -98,6 +99,7 @@ MetaCompositorClutterPlugin META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT =
     .unmaximize       = unmaximize,
     .switch_workspace = switch_workspace,
     .kill_effect      = kill_effect,
+    .xevent_filter    = xevent_filter,
 
     /* The reload handler */
     .reload           = reload
@@ -126,6 +128,8 @@ struct PluginPrivate
 
   gboolean               debug_mode : 1;
   gboolean               panel_out  : 1;
+  gboolean               panel_out_in_progress : 1;
+  gboolean               panel_back_in_progress : 1;
 };
 
 /*
@@ -612,58 +616,30 @@ on_panel_effect_complete (ClutterActor *panel, gpointer data)
 {
   gboolean reactive = GPOINTER_TO_INT (data);
   MetaCompositorClutterPlugin *plugin = get_plugin ();
+  PluginPrivate *priv = plugin->plugin_private;
 
   if (reactive)
-    meta_comp_clutter_plugin_set_stage_reactive (plugin, reactive);
+    {
+      priv->panel_out_in_progress = FALSE;
+      meta_comp_clutter_plugin_set_stage_reactive (plugin, reactive);
+    }
   else
-    meta_comp_clutter_plugin_set_stage_input_area (plugin, 0, 0,
+    {
+      priv->panel_back_in_progress = FALSE;
+      meta_comp_clutter_plugin_set_stage_input_area (plugin, 0, 0,
                                                    plugin->screen_width, 1);
+    }
 }
 
 static gboolean
 xevent_filter (XEvent *xev)
 {
   MetaCompositorClutterPlugin *plugin = get_plugin ();
-  PluginPrivate               *priv   = plugin->plugin_private;
+  ClutterActor                *stage;
 
-  if (xev->type != MotionNotify)
-    return FALSE;
+  stage = meta_comp_clutter_plugin_get_stage (plugin);
 
-  printf ("got xevent type %d on 0x%x @ y %d\n",
-          xev->type,
-          (gint) xev->xmotion.window,
-          xev->xmotion.y_root);
-
-  if (priv->panel_out)
-    {
-      guint height = clutter_actor_get_height (priv->panel);
-      gint  x      = clutter_actor_get_x (priv->panel);
-
-      if (xev->xmotion.y_root > (gint)height)
-        {
-          clutter_effect_move (priv->panel_slide_effect,
-                               priv->panel, x, -height,
-                               on_panel_effect_complete,
-                               GINT_TO_POINTER (FALSE));
-        }
-
-      priv->panel_out = FALSE;
-
-      return TRUE;
-    }
-  else if (xev->xmotion.y_root < PANEL_SLIDE_THRESHOLD)
-    {
-      gint  x = clutter_actor_get_x (priv->panel);
-
-      clutter_effect_move (priv->panel_slide_effect,
-                           priv->panel, x, 0,
-                           on_panel_effect_complete,
-                           GINT_TO_POINTER (TRUE ));
-
-      priv->panel_out = TRUE;
-
-      return TRUE;
-    }
+  clutter_x11_handle_event (xev);
 
   return FALSE;
 }
@@ -746,15 +722,14 @@ g_module_check_init (GModule *module)
 static gboolean
 stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
-  printf ("Got event, type %d\n", event->type);
-
   if (event->type == CLUTTER_MOTION)
     {
       ClutterMotionEvent          *mev = (ClutterMotionEvent *) event;
       MetaCompositorClutterPlugin *plugin = get_plugin ();
       PluginPrivate               *priv   = plugin->plugin_private;
 
-      printf ("got stage motion event at y %d\n", mev->y);
+      if (priv->panel_out_in_progress || priv->panel_back_in_progress)
+        return FALSE;
 
       if (priv->panel_out)
         {
@@ -763,13 +738,13 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
           if (mev->y > (gint)height)
             {
+              priv->panel_back_in_progress  = TRUE;
               clutter_effect_move (priv->panel_slide_effect,
                                    priv->panel, x, -height,
                                    on_panel_effect_complete,
                                    GINT_TO_POINTER (FALSE));
+              priv->panel_out = FALSE;
             }
-
-          priv->panel_out = FALSE;
 
           return TRUE;
         }
@@ -777,10 +752,11 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         {
           gint  x = clutter_actor_get_x (priv->panel);
 
+          priv->panel_out_in_progress  = TRUE;
           clutter_effect_move (priv->panel_slide_effect,
                                priv->panel, x, 0,
                                on_panel_effect_complete,
-                               GINT_TO_POINTER (TRUE ));
+                               GINT_TO_POINTER (TRUE));
 
           priv->panel_out = TRUE;
 
@@ -791,6 +767,23 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
     }
 
   return FALSE;
+}
+
+static ClutterActor *
+make_panel (gint width)
+{
+  ClutterActor *panel;
+  ClutterActor *background;
+  ClutterColor  clr = {0xff, 0, 0, 0xff};
+
+  panel = clutter_group_new ();
+
+  /* FIME -- size and color */
+  background = clutter_rectangle_new_with_color (&clr);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
+  clutter_actor_set_size (background, width, PANEL_HEIGHT);
+
+  return panel;
 }
 
 /*
@@ -811,8 +804,8 @@ do_init ()
   guint          switch_timeout      = SWITCH_TIMEOUT;
   guint          panel_slide_timeout = PANEL_SLIDE_TIMEOUT;
   const gchar   *name;
-  ClutterActor  *overlay, *background;
-  ClutterColor   clr = {0xff, 0, 0, 0xff};
+  ClutterActor  *overlay;
+  ClutterActor  *panel;
 
   plugin->plugin_private = priv;
 
@@ -901,30 +894,22 @@ do_init ()
 
   overlay = meta_comp_clutter_plugin_get_overlay_group (plugin);
 
-  priv->panel = clutter_group_new ();
-  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), priv->panel);
+  panel = priv->panel = make_panel (plugin->screen_width);
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), panel);
 
   priv->panel_slide_effect
     =  clutter_effect_template_new (clutter_timeline_new_for_duration (
 							panel_slide_timeout),
                                     CLUTTER_ALPHA_SINE_INC);
 
-  /* FIME -- size and color */
-  background = clutter_rectangle_new_with_color (&clr);
-  clutter_container_add_actor (CLUTTER_CONTAINER (priv->panel), background);
-  clutter_actor_set_size (background, plugin->screen_width, PANEL_HEIGHT);
-
-  clutter_actor_set_position (background, 0,
-                              -clutter_actor_get_height (background));
+  clutter_actor_set_position (panel, 0,
+                              -clutter_actor_get_height (panel));
 
   g_signal_connect (meta_comp_clutter_plugin_get_stage (plugin),
                     "motion-event", G_CALLBACK (stage_input_cb), NULL);
 
-  g_signal_connect (meta_comp_clutter_plugin_get_stage (plugin),
-                    "button-press-event", G_CALLBACK (stage_input_cb), NULL);
-
   meta_comp_clutter_plugin_set_stage_input_area (plugin, 0, 0,
-                                                 plugin->screen_width, 60);
+                                                 plugin->screen_width, 1);
 
   clutter_set_motion_events_enabled (TRUE);
 

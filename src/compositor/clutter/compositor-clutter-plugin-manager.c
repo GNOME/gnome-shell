@@ -32,6 +32,7 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/Xfixes.h>
 #include <X11/extensions/shape.h>
+#include <clutter/x11/clutter-x11.h>
 
 static gboolean meta_compositor_clutter_plugin_manager_reload (MetaCompositorClutterPluginManager *mgr);
 
@@ -722,9 +723,12 @@ meta_comp_clutter_plugin_set_stage_reactive (MetaCompositorClutterPlugin *plugin
   MetaCompositorClutterPluginManager *mgr  = priv->self;
   MetaDisplay *display = meta_screen_get_display (mgr->screen);
   Display     *xdpy    = meta_display_get_xdisplay (display);
-  Window       overlay;
+  Window       xstage, xoverlay;
+  ClutterActor *stage;
 
-  overlay = meta_compositor_clutter_get_overlay_window (mgr->screen);
+  stage = meta_compositor_clutter_get_stage_for_screen (mgr->screen);
+  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+  xoverlay = meta_compositor_clutter_get_overlay_window (mgr->screen);
 
   static XserverRegion region = None;
 
@@ -733,12 +737,16 @@ meta_comp_clutter_plugin_set_stage_reactive (MetaCompositorClutterPlugin *plugin
 
   if (reactive)
     {
-      XFixesSetWindowShapeRegion (xdpy, overlay,
+      XFixesSetWindowShapeRegion (xdpy, xstage,
+                                  ShapeInput, 0, 0, None);
+      XFixesSetWindowShapeRegion (xdpy, xoverlay,
                                   ShapeInput, 0, 0, None);
     }
   else
     {
-      XFixesSetWindowShapeRegion (xdpy, overlay,
+      XFixesSetWindowShapeRegion (xdpy, xstage,
+                                  ShapeInput, 0, 0, region);
+      XFixesSetWindowShapeRegion (xdpy, xoverlay,
                                   ShapeInput, 0, 0, region);
     }
 }
@@ -751,11 +759,14 @@ meta_comp_clutter_plugin_set_stage_input_area (MetaCompositorClutterPlugin *plug
   MetaCompositorClutterPluginManager *mgr  = priv->self;
   MetaDisplay  *display = meta_screen_get_display (mgr->screen);
   Display      *xdpy    = meta_display_get_xdisplay (display);
-  Window        overlay;
+  Window        xstage, xoverlay;
+  ClutterActor *stage;
   XRectangle    rect;
   XserverRegion region;
 
-  overlay = meta_compositor_clutter_get_overlay_window (mgr->screen);
+  stage = meta_compositor_clutter_get_stage_for_screen (mgr->screen);
+  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+  xoverlay = meta_compositor_clutter_get_overlay_window (mgr->screen);
 
   rect.x = x;
   rect.y = y;
@@ -764,5 +775,6 @@ meta_comp_clutter_plugin_set_stage_input_area (MetaCompositorClutterPlugin *plug
 
   region = XFixesCreateRegion (xdpy, &rect, 1);
 
-  XFixesSetWindowShapeRegion (xdpy, overlay, ShapeInput, 0, 0, region);
+  XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
+  XFixesSetWindowShapeRegion (xdpy, xoverlay, ShapeInput, 0, 0, region);
 }
