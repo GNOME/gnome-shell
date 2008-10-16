@@ -97,7 +97,7 @@ MetaCompositorClutterPlugin META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT =
     .maximize         = maximize,
     .unmaximize       = unmaximize,
     .switch_workspace = switch_workspace,
-
+    .xevent_filter    = xevent_filter,
     .kill_effect      = kill_effect,
 
     /* The reload handler */
@@ -625,6 +625,8 @@ xevent_filter (XEvent *xev)
 
   if (xev->type != MotionNotify)
     return FALSE;
+
+  printf ("got xevent type %d\n", xev->type);
 
   if (priv->panel_out)
     {
