@@ -22,7 +22,7 @@
 #include <config.h>
 #include "compositor-private.h"
 #include "compositor-xrender.h"
-#include "compositor-clutter.h"
+#include "compositor-mutter.h"
 #include "prefs.h"
 
 #ifdef WITH_CLUTTER
@@ -37,7 +37,7 @@ meta_compositor_new (MetaDisplay *display)
   /* At some point we would have a way to select between backends */
   /* return meta_compositor_xrender_new (display); */
   if (meta_compositor_can_use_clutter__ && !meta_prefs_get_clutter_disabled ())
-    return meta_compositor_clutter_new (display);
+    return mutter_new (display);
   else
 #endif
   return meta_compositor_xrender_new (display);

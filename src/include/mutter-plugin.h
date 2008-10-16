@@ -21,13 +21,13 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_COMPOSITOR_CLUTTER_PLUGIN_H_
-#define META_COMPOSITOR_CLUTTER_PLUGIN_H_
+#ifndef MUTTER_PLUGIN_H_
+#define MUTTER_PLUGIN_H_
 
 #include "types.h"
 #include "config.h"
 #include "compositor.h"
-#include "compositor-clutter.h"
+#include "compositor-mutter.h"
 
 #include <clutter/clutter.h>
 
@@ -38,25 +38,25 @@
  * recommended that the GModule API is used (otherwise you are on your own to
  * do proper plugin clean up when the module is unloaded).
  *
- * The plugin interface is exported via the MetaCompositorClutterPlugin struct.
+ * The plugin interface is exported via the MutterPlugin struct.
  */
 
-typedef struct MetaCompositorClutterPlugin MetaCompositorClutterPlugin;
+typedef struct MutterPlugin MutterPlugin;
 
 /*
  * Feature flags: identify events that the plugin can handle; a plugin can
  * handle one or more events.
  */
-#define META_COMPOSITOR_CLUTTER_PLUGIN_MINIMIZE         (1<<0)
-#define META_COMPOSITOR_CLUTTER_PLUGIN_MAXIMIZE         (1<<1)
-#define META_COMPOSITOR_CLUTTER_PLUGIN_UNMAXIMIZE       (1<<2)
-#define META_COMPOSITOR_CLUTTER_PLUGIN_MAP              (1<<3)
-#define META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY          (1<<4)
-#define META_COMPOSITOR_CLUTTER_PLUGIN_SWITCH_WORKSPACE (1<<5)
+#define MUTTER_PLUGIN_MINIMIZE         (1<<0)
+#define MUTTER_PLUGIN_MAXIMIZE         (1<<1)
+#define MUTTER_PLUGIN_UNMAXIMIZE       (1<<2)
+#define MUTTER_PLUGIN_MAP              (1<<3)
+#define MUTTER_PLUGIN_DESTROY          (1<<4)
+#define MUTTER_PLUGIN_SWITCH_WORKSPACE (1<<5)
 
-#define META_COMPOSITOR_CLUTTER_PLUGIN_ALL_EFFECTS      (~0)
+#define MUTTER_PLUGIN_ALL_EFFECTS      (~0)
 
-struct MetaCompositorClutterPlugin
+struct MutterPlugin
 {
   /*
    * Version information; the first three numbers match the Metacity version
@@ -74,7 +74,7 @@ struct MetaCompositorClutterPlugin
    */
   guint version_api;
 
-#ifndef META_COMPOSITOR_CLUTTER_BUILDING_PLUGIN
+#ifndef MUTTER_BUILDING_PLUGIN
   const
 #endif
   gchar   *name;     /* Human-readable name for UI */
@@ -134,29 +134,29 @@ struct MetaCompositorClutterPlugin
    * On completion, each event handler must call the manager completed()
    * callback function.
    */
-  void (*minimize)         (MetaCompWindow     *actor);
+  void (*minimize)         (MutterWindow     *actor);
 
-  void (*maximize)         (MetaCompWindow     *actor,
+  void (*maximize)         (MutterWindow     *actor,
                             gint                x,
                             gint                y,
                             gint                width,
                             gint                height);
 
-  void (*unmaximize)       (MetaCompWindow     *actor,
+  void (*unmaximize)       (MutterWindow     *actor,
                             gint                x,
                             gint                y,
                             gint                width,
                             gint                height);
 
-  void (*map)              (MetaCompWindow     *actor);
+  void (*map)              (MutterWindow     *actor);
 
-  void (*destroy)          (MetaCompWindow     *actor);
+  void (*destroy)          (MutterWindow     *actor);
 
   /*
    * Each actor in the list has a workspace number attached to it using
-   * g_object_set_data() with key META_COMPOSITOR_CLUTTER_PLUGIN_WORKSPACE_KEY;
+   * g_object_set_data() with key MUTTER_PLUGIN_WORKSPACE_KEY;
    * workspace < 0 indicates the window is sticky (i.e., on all desktops).
-   * TODO: Add accessor for sticky bit in new MetaCompWindow structure
+   * TODO: Add accessor for sticky bit in new MutterWindow structure
    */
   void (*switch_workspace) (const GList       **actors,
                             gint                from,
@@ -169,7 +169,7 @@ struct MetaCompositorClutterPlugin
    * The events parameter is a bitmask indicating which effects are to be
    * killed.
    */
-  void (*kill_effect)      (MetaCompWindow     *actor,
+  void (*kill_effect)      (MutterWindow     *actor,
                             gulong              events);
 
   /*
@@ -202,19 +202,19 @@ struct MetaCompositorClutterPlugin
 };
 
 void
-meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
-                                           MetaCompWindow              *actor,
+meta_comp_clutter_plugin_effect_completed (MutterPlugin *plugin,
+                                           MutterWindow              *actor,
                                            unsigned long                event);
 
 ClutterActor *
-meta_comp_clutter_plugin_get_overlay_group (MetaCompositorClutterPlugin *plugin);
+meta_comp_clutter_plugin_get_overlay_group (MutterPlugin *plugin);
 
 ClutterActor *
-meta_comp_clutter_plugin_get_stage (MetaCompositorClutterPlugin *plugin);
+meta_comp_clutter_plugin_get_stage (MutterPlugin *plugin);
 
 void
-meta_comp_clutter_plugin_query_screen_size (MetaCompositorClutterPlugin *plugin,
+meta_comp_clutter_plugin_query_screen_size (MutterPlugin *plugin,
 					    int				*width,
 					    int				*height);
 
-#endif /* META_COMPOSITOR_CLUTTER_PLUGIN_H_ */
+#endif /* MUTTER_PLUGIN_H_ */

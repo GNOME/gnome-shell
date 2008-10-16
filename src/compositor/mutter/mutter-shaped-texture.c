@@ -33,28 +33,28 @@
 #include <cogl/cogl.h>
 #include <string.h>
 
-#include "shaped-texture.h"
+#include "mutter-shaped-texture.h"
 
-static void meta_shaped_texture_dispose (GObject *object);
-static void meta_shaped_texture_finalize (GObject *object);
+static void mutter_shaped_texture_dispose (GObject *object);
+static void mutter_shaped_texture_finalize (GObject *object);
 
-static void meta_shaped_texture_paint (ClutterActor *actor);
-static void meta_shaped_texture_pick (ClutterActor *actor,
-                                      const ClutterColor *color);
+static void mutter_shaped_texture_paint (ClutterActor *actor);
+static void mutter_shaped_texture_pick (ClutterActor *actor,
+					const ClutterColor *color);
 
-static void meta_shaped_texture_dirty_mask (MetaShapedTexture *stex);
+static void mutter_shaped_texture_dirty_mask (MutterShapedTexture *stex);
 
 #ifdef HAVE_GLX_TEXTURE_PIXMAP
-G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
+G_DEFINE_TYPE (MutterShapedTexture, mutter_shaped_texture,
                CLUTTER_GLX_TYPE_TEXTURE_PIXMAP);
 #else /* HAVE_GLX_TEXTURE_PIXMAP */
-G_DEFINE_TYPE (MetaShapedTexture, meta_shaped_texture,
+G_DEFINE_TYPE (MutterShapedTexture, mutter_shaped_texture,
                CLUTTER_X11_TYPE_TEXTURE_PIXMAP);
 #endif /* HAVE_GLX_TEXTURE_PIXMAP */
 
-#define META_SHAPED_TEXTURE_GET_PRIVATE(obj) \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), META_TYPE_SHAPED_TEXTURE, \
-                                MetaShapedTexturePrivate))
+#define MUTTER_SHAPED_TEXTURE_GET_PRIVATE(obj) \
+  (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MUTTER_TYPE_SHAPED_TEXTURE, \
+                                MutterShapedTexturePrivate))
 
 enum TstMultiTexSupport
   {
@@ -72,7 +72,7 @@ typedef void (* TstClientActiveTextureFunc) (GLenum texture);
 static TstActiveTextureFunc tst_active_texture;
 static TstClientActiveTextureFunc tst_client_active_texture;
 
-struct _MetaShapedTexturePrivate
+struct _MutterShapedTexturePrivate
 {
   CoglHandle mask_texture;
 
@@ -84,26 +84,26 @@ struct _MetaShapedTexturePrivate
 };
 
 static void
-meta_shaped_texture_class_init (MetaShapedTextureClass *klass)
+mutter_shaped_texture_class_init (MutterShapedTextureClass *klass)
 {
   GObjectClass *gobject_class = (GObjectClass *) klass;
   ClutterActorClass *actor_class = (ClutterActorClass *) klass;
 
-  gobject_class->dispose = meta_shaped_texture_dispose;
-  gobject_class->finalize = meta_shaped_texture_finalize;
+  gobject_class->dispose = mutter_shaped_texture_dispose;
+  gobject_class->finalize = mutter_shaped_texture_finalize;
 
-  actor_class->paint = meta_shaped_texture_paint;
-  actor_class->pick = meta_shaped_texture_pick;
+  actor_class->paint = mutter_shaped_texture_paint;
+  actor_class->pick = mutter_shaped_texture_pick;
 
-  g_type_class_add_private (klass, sizeof (MetaShapedTexturePrivate));
+  g_type_class_add_private (klass, sizeof (MutterShapedTexturePrivate));
 }
 
 static void
-meta_shaped_texture_init (MetaShapedTexture *self)
+mutter_shaped_texture_init (MutterShapedTexture *self)
 {
-  MetaShapedTexturePrivate *priv;
+  MutterShapedTexturePrivate *priv;
 
-  priv = self->priv = META_SHAPED_TEXTURE_GET_PRIVATE (self);
+  priv = self->priv = MUTTER_SHAPED_TEXTURE_GET_PRIVATE (self);
 
   priv->rectangles = g_array_new (FALSE, FALSE, sizeof (XRectangle));
 
@@ -111,30 +111,30 @@ meta_shaped_texture_init (MetaShapedTexture *self)
 }
 
 static void
-meta_shaped_texture_dispose (GObject *object)
+mutter_shaped_texture_dispose (GObject *object)
 {
-  MetaShapedTexture *self = (MetaShapedTexture *) object;
+  MutterShapedTexture *self = (MutterShapedTexture *) object;
 
-  meta_shaped_texture_dirty_mask (self);
+  mutter_shaped_texture_dirty_mask (self);
 
-  G_OBJECT_CLASS (meta_shaped_texture_parent_class)->dispose (object);
+  G_OBJECT_CLASS (mutter_shaped_texture_parent_class)->dispose (object);
 }
 
 static void
-meta_shaped_texture_finalize (GObject *object)
+mutter_shaped_texture_finalize (GObject *object)
 {
-  MetaShapedTexture *self = (MetaShapedTexture *) object;
-  MetaShapedTexturePrivate *priv = self->priv;
+  MutterShapedTexture *self = (MutterShapedTexture *) object;
+  MutterShapedTexturePrivate *priv = self->priv;
 
   g_array_free (priv->rectangles, TRUE);
 
-  G_OBJECT_CLASS (meta_shaped_texture_parent_class)->finalize (object);
+  G_OBJECT_CLASS (mutter_shaped_texture_parent_class)->finalize (object);
 }
 
 static void
-meta_shaped_texture_dirty_mask (MetaShapedTexture *stex)
+mutter_shaped_texture_dirty_mask (MutterShapedTexture *stex)
 {
-  MetaShapedTexturePrivate *priv = stex->priv;
+  MutterShapedTexturePrivate *priv = stex->priv;
 
   if (priv->mask_texture != COGL_INVALID_HANDLE)
     {
@@ -144,7 +144,7 @@ meta_shaped_texture_dirty_mask (MetaShapedTexture *stex)
 }
 
 static gboolean
-meta_shaped_texture_is_multi_tex_supported (void)
+mutter_shaped_texture_is_multi_tex_supported (void)
 {
   const gchar *extensions;
   GLint max_tex_units = 0;
@@ -179,9 +179,9 @@ meta_shaped_texture_is_multi_tex_supported (void)
 }
 
 static void
-meta_shaped_texture_set_coord_array (GLfloat x1, GLfloat y1,
-                                     GLfloat x2, GLfloat y2,
-                                     GLfloat *coords)
+mutter_shaped_texture_set_coord_array (GLfloat x1, GLfloat y1,
+				       GLfloat x2, GLfloat y2,
+				       GLfloat *coords)
 {
   coords[0] = x1;
   coords[1] = y2;
@@ -194,9 +194,9 @@ meta_shaped_texture_set_coord_array (GLfloat x1, GLfloat y1,
 }
 
 static void
-meta_shaped_texture_get_gl_size (CoglHandle tex,
-                                 guint *width,
-                                 guint *height)
+mutter_shaped_texture_get_gl_size (CoglHandle tex,
+				   guint *width,
+				   guint *height)
 {
   /* glGetTexLevelParameteriv isn't supported on GL ES so we need to
      calculate the size that Cogl has used */
@@ -227,9 +227,9 @@ meta_shaped_texture_get_gl_size (CoglHandle tex,
 }
 
 static void
-meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
+mutter_shaped_texture_ensure_mask (MutterShapedTexture *stex)
 {
-  MetaShapedTexturePrivate *priv = stex->priv;
+  MutterShapedTexturePrivate *priv = stex->priv;
   CoglHandle paint_tex;
   guint tex_width, tex_height;
   GLuint mask_gl_tex;
@@ -246,7 +246,7 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
      recreate it */
   if (priv->mask_texture != COGL_INVALID_HANDLE
       && (priv->mask_width != tex_width || priv->mask_height != tex_height))
-    meta_shaped_texture_dirty_mask (stex);
+    mutter_shaped_texture_dirty_mask (stex);
 
   /* If we don't have a mask texture yet then create one */
   if (priv->mask_texture == COGL_INVALID_HANDLE)
@@ -293,29 +293,29 @@ meta_shaped_texture_ensure_mask (MetaShapedTexture *stex)
 
       cogl_texture_get_gl_texture (priv->mask_texture, &mask_gl_tex, NULL);
 
-      meta_shaped_texture_get_gl_size (priv->mask_texture,
-                                       &priv->mask_gl_width,
-                                       &priv->mask_gl_height);
+      mutter_shaped_texture_get_gl_size (priv->mask_texture,
+					 &priv->mask_gl_width,
+					 &priv->mask_gl_height);
 
       if ((guint) priv->mask_gl_width == tex_width
           && (guint) priv->mask_gl_height == tex_height)
-        meta_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
-                                             priv->mask_tex_coords);
+        mutter_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
+					       priv->mask_tex_coords);
       else
-        meta_shaped_texture_set_coord_array (0.0f, 0.0f,
-                                             tex_width
-                                             / (GLfloat) priv->mask_gl_width,
-                                             tex_height
-                                             / (GLfloat) priv->mask_gl_height,
-                                             priv->mask_tex_coords);
+        mutter_shaped_texture_set_coord_array (0.0f, 0.0f,
+					       tex_width
+					       / (GLfloat) priv->mask_gl_width,
+					       tex_height
+					       / (GLfloat) priv->mask_gl_height,
+					       priv->mask_tex_coords);
     }
 }
 
 static void
-meta_shaped_texture_paint (ClutterActor *actor)
+mutter_shaped_texture_paint (ClutterActor *actor)
 {
-  MetaShapedTexture *stex = (MetaShapedTexture *) actor;
-  MetaShapedTexturePrivate *priv = stex->priv;
+  MutterShapedTexture *stex = (MutterShapedTexture *) actor;
+  MutterShapedTexturePrivate *priv = stex->priv;
   CoglHandle paint_tex;
   guint tex_width, tex_height;
   GLboolean texture_was_enabled, blend_was_enabled;
@@ -330,9 +330,9 @@ meta_shaped_texture_paint (ClutterActor *actor)
   /* If there are no rectangles or multi-texturing isn't supported,
      fallback to the regular paint method */
   if (priv->rectangles->len < 1
-      || !meta_shaped_texture_is_multi_tex_supported ())
+      || !mutter_shaped_texture_is_multi_tex_supported ())
     {
-      CLUTTER_ACTOR_CLASS (meta_shaped_texture_parent_class)
+      CLUTTER_ACTOR_CLASS (mutter_shaped_texture_parent_class)
         ->paint (actor);
       return;
     }
@@ -348,7 +348,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
   /* If the texture is sliced then the multitexturing won't work */
   if (cogl_texture_is_sliced (paint_tex))
     {
-      CLUTTER_ACTOR_CLASS (meta_shaped_texture_parent_class)
+      CLUTTER_ACTOR_CLASS (mutter_shaped_texture_parent_class)
         ->paint (actor);
       return;
     }
@@ -356,7 +356,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
   tex_width = cogl_texture_get_width (paint_tex);
   tex_height = cogl_texture_get_height (paint_tex);
 
-  meta_shaped_texture_ensure_mask (stex);
+  mutter_shaped_texture_ensure_mask (stex);
 
   cogl_texture_get_gl_texture (paint_tex, &paint_gl_tex, NULL);
   cogl_texture_get_gl_texture (priv->mask_texture, &mask_gl_tex, NULL);
@@ -384,7 +384,7 @@ meta_shaped_texture_paint (ClutterActor *actor)
   /* We need the actual size of the texture so that we can calculate
      the right texture coordinates if NPOTs textures are not supported
      and Cogl has oversized the texture */
-  meta_shaped_texture_get_gl_size (paint_tex,
+  mutter_shaped_texture_get_gl_size (paint_tex,
                                    &paint_gl_width,
                                    &paint_gl_height);
 
@@ -412,24 +412,24 @@ meta_shaped_texture_paint (ClutterActor *actor)
 
   clutter_actor_get_allocation_box (actor, &alloc);
 
-  meta_shaped_texture_set_coord_array (0, 0,
-                                       CLUTTER_UNITS_TO_FLOAT (alloc.x2
-                                                               - alloc.x1),
-                                       CLUTTER_UNITS_TO_FLOAT (alloc.y2
-                                                               - alloc.y1),
-                                       vertex_coords);
+  mutter_shaped_texture_set_coord_array (0, 0,
+					 CLUTTER_UNITS_TO_FLOAT (alloc.x2
+								 - alloc.x1),
+					 CLUTTER_UNITS_TO_FLOAT (alloc.y2
+					                         - alloc.y1),
+					 vertex_coords);
 
   if ((guint) paint_gl_width == tex_width
       && (guint) paint_gl_height == tex_height)
-    meta_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
+    mutter_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
                                          paint_tex_coords);
   else
-    meta_shaped_texture_set_coord_array (0.0f, 0.0f,
-                                         tex_width
-                                         / (GLfloat) paint_gl_width,
-                                         tex_height
-                                         / (GLfloat) paint_gl_height,
-                                         paint_tex_coords);
+    mutter_shaped_texture_set_coord_array (0.0f, 0.0f,
+					   tex_width
+					   / (GLfloat) paint_gl_width,
+					   tex_height
+					   / (GLfloat) paint_gl_height,
+					   paint_tex_coords);
 
   glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
 
@@ -455,16 +455,16 @@ meta_shaped_texture_paint (ClutterActor *actor)
 }
 
 static void
-meta_shaped_texture_pick (ClutterActor *actor,
-                          const ClutterColor *color)
+mutter_shaped_texture_pick (ClutterActor *actor,
+			    const ClutterColor *color)
 {
-  MetaShapedTexture *stex = (MetaShapedTexture *) actor;
-  MetaShapedTexturePrivate *priv = stex->priv;
+  MutterShapedTexture *stex = (MutterShapedTexture *) actor;
+  MutterShapedTexturePrivate *priv = stex->priv;
 
   /* If there are no rectangles then use the regular pick */
   if (priv->rectangles->len < 1
-      || !meta_shaped_texture_is_multi_tex_supported ())
-    CLUTTER_ACTOR_CLASS (meta_shaped_texture_parent_class)
+      || !mutter_shaped_texture_is_multi_tex_supported ())
+    CLUTTER_ACTOR_CLASS (mutter_shaped_texture_parent_class)
       ->pick (actor, color);
   else if (clutter_actor_should_pick_paint (actor))
     {
@@ -476,7 +476,7 @@ meta_shaped_texture_pick (ClutterActor *actor,
       if (paint_tex == COGL_INVALID_HANDLE)
         return;
 
-      meta_shaped_texture_ensure_mask (stex);
+      mutter_shaped_texture_ensure_mask (stex);
 
       cogl_color (color);
 
@@ -492,49 +492,49 @@ meta_shaped_texture_pick (ClutterActor *actor,
 }
 
 ClutterActor *
-meta_shaped_texture_new (void)
+mutter_shaped_texture_new (void)
 {
-  ClutterActor *self = g_object_new (META_TYPE_SHAPED_TEXTURE, NULL);
+  ClutterActor *self = g_object_new (MUTTER_TYPE_SHAPED_TEXTURE, NULL);
 
   return self;
 }
 
 void
-meta_shaped_texture_clear_rectangles (MetaShapedTexture *stex)
+mutter_shaped_texture_clear_rectangles (MutterShapedTexture *stex)
 {
-  MetaShapedTexturePrivate *priv;
+  MutterShapedTexturePrivate *priv;
 
-  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
+  g_return_if_fail (MUTTER_IS_SHAPED_TEXTURE (stex));
 
   priv = stex->priv;
 
   g_array_set_size (priv->rectangles, 0);
-  meta_shaped_texture_dirty_mask (stex);
+  mutter_shaped_texture_dirty_mask (stex);
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
 }
 
 void
-meta_shaped_texture_add_rectangle (MetaShapedTexture *stex,
-                                   const XRectangle *rect)
+mutter_shaped_texture_add_rectangle (MutterShapedTexture *stex,
+				     const XRectangle *rect)
 {
-  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
+  g_return_if_fail (MUTTER_IS_SHAPED_TEXTURE (stex));
 
-  meta_shaped_texture_add_rectangles (stex, 1, rect);
+  mutter_shaped_texture_add_rectangles (stex, 1, rect);
 }
 
 void
-meta_shaped_texture_add_rectangles (MetaShapedTexture *stex,
-                                    size_t num_rects,
-                                    const XRectangle *rects)
+mutter_shaped_texture_add_rectangles (MutterShapedTexture *stex,
+				      size_t num_rects,
+				      const XRectangle *rects)
 {
-  MetaShapedTexturePrivate *priv;
+  MutterShapedTexturePrivate *priv;
 
-  g_return_if_fail (META_IS_SHAPED_TEXTURE (stex));
+  g_return_if_fail (MUTTER_IS_SHAPED_TEXTURE (stex));
 
   priv = stex->priv;
 
   g_array_append_vals (priv->rectangles, rects, num_rects);
 
-  meta_shaped_texture_dirty_mask (stex);
+  mutter_shaped_texture_dirty_mask (stex);
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stex));
 }
