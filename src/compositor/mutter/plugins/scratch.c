@@ -781,7 +781,7 @@ make_panel (gint width)
 {
   ClutterActor *panel;
   ClutterActor *background;
-  ClutterColor  clr = {0xff, 0, 0, 0xff};
+  ClutterColor  clr = {0x44, 0x44, 0x44, 0x7f};
 
   panel = clutter_group_new ();
 
