@@ -248,4 +248,8 @@ void
 meta_comp_clutter_plugin_set_stage_reactive (MetaCompositorClutterPlugin *plugin,
                                              gboolean reactive);
 
+void
+meta_comp_clutter_plugin_set_stage_input_area (MetaCompositorClutterPlugin *plugin,
+                                               gint x, gint y, gint width, gint height);
+
 #endif

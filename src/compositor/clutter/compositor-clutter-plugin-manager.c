@@ -743,3 +743,26 @@ meta_comp_clutter_plugin_set_stage_reactive (MetaCompositorClutterPlugin *plugin
     }
 }
 
+void
+meta_comp_clutter_plugin_set_stage_input_area (MetaCompositorClutterPlugin *plugin,
+                                                 gint x, gint y, gint width, gint height)
+{
+  MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
+  MetaCompositorClutterPluginManager *mgr  = priv->self;
+  MetaDisplay  *display = meta_screen_get_display (mgr->screen);
+  Display      *xdpy    = meta_display_get_xdisplay (display);
+  Window        overlay;
+  XRectangle    rect;
+  XserverRegion region;
+
+  overlay = meta_compositor_clutter_get_overlay_window (mgr->screen);
+
+  rect.x = x;
+  rect.y = y;
+  rect.width = width;
+  rect.height = height;
+
+  region = XFixesCreateRegion (xdpy, &rect, 1);
+
+  XFixesSetWindowShapeRegion (xdpy, overlay, ShapeInput, 0, 0, region);
+}

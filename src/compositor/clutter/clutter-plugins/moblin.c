@@ -97,7 +97,6 @@ MetaCompositorClutterPlugin META_COMPOSITOR_CLUTTER_PLUGIN_STRUCT =
     .maximize         = maximize,
     .unmaximize       = unmaximize,
     .switch_workspace = switch_workspace,
-    .xevent_filter    = xevent_filter,
     .kill_effect      = kill_effect,
 
     /* The reload handler */
@@ -614,7 +613,11 @@ on_panel_effect_complete (ClutterActor *panel, gpointer data)
   gboolean reactive = GPOINTER_TO_INT (data);
   MetaCompositorClutterPlugin *plugin = get_plugin ();
 
-  meta_comp_clutter_plugin_set_stage_reactive (plugin, reactive);
+  if (reactive)
+    meta_comp_clutter_plugin_set_stage_reactive (plugin, reactive);
+  else
+    meta_comp_clutter_plugin_set_stage_input_area (plugin, 0, 0,
+                                                   plugin->screen_width, 1);
 }
 
 static gboolean
@@ -626,14 +629,17 @@ xevent_filter (XEvent *xev)
   if (xev->type != MotionNotify)
     return FALSE;
 
-  printf ("got xevent type %d\n", xev->type);
+  printf ("got xevent type %d on 0x%x @ y %d\n",
+          xev->type,
+          (gint) xev->xmotion.window,
+          xev->xmotion.y_root);
 
   if (priv->panel_out)
     {
       guint height = clutter_actor_get_height (priv->panel);
       gint  x      = clutter_actor_get_x (priv->panel);
 
-      if (xev->xmotion.y > (gint)height)
+      if (xev->xmotion.y_root > (gint)height)
         {
           clutter_effect_move (priv->panel_slide_effect,
                                priv->panel, x, -height,
@@ -641,9 +647,11 @@ xevent_filter (XEvent *xev)
                                GINT_TO_POINTER (FALSE));
         }
 
+      priv->panel_out = FALSE;
+
       return TRUE;
     }
-  else if (xev->xmotion.y < PANEL_SLIDE_THRESHOLD)
+  else if (xev->xmotion.y_root < PANEL_SLIDE_THRESHOLD)
     {
       gint  x = clutter_actor_get_x (priv->panel);
 
@@ -651,6 +659,8 @@ xevent_filter (XEvent *xev)
                            priv->panel, x, 0,
                            on_panel_effect_complete,
                            GINT_TO_POINTER (TRUE ));
+
+      priv->panel_out = TRUE;
 
       return TRUE;
     }
@@ -736,11 +746,15 @@ g_module_check_init (GModule *module)
 static gboolean
 stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
+  printf ("Got event, type %d\n", event->type);
+
   if (event->type == CLUTTER_MOTION)
     {
       ClutterMotionEvent          *mev = (ClutterMotionEvent *) event;
       MetaCompositorClutterPlugin *plugin = get_plugin ();
       PluginPrivate               *priv   = plugin->plugin_private;
+
+      printf ("got stage motion event at y %d\n", mev->y);
 
       if (priv->panel_out)
         {
@@ -755,6 +769,8 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
                                    GINT_TO_POINTER (FALSE));
             }
 
+          priv->panel_out = FALSE;
+
           return TRUE;
         }
       else if (mev->y < PANEL_SLIDE_THRESHOLD)
@@ -765,6 +781,8 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
                                priv->panel, x, 0,
                                on_panel_effect_complete,
                                GINT_TO_POINTER (TRUE ));
+
+          priv->panel_out = TRUE;
 
           return TRUE;
         }
@@ -900,7 +918,15 @@ do_init ()
                               -clutter_actor_get_height (background));
 
   g_signal_connect (meta_comp_clutter_plugin_get_stage (plugin),
-                    "key-release-event", G_CALLBACK (stage_input_cb), NULL);
+                    "motion-event", G_CALLBACK (stage_input_cb), NULL);
+
+  g_signal_connect (meta_comp_clutter_plugin_get_stage (plugin),
+                    "button-press-event", G_CALLBACK (stage_input_cb), NULL);
+
+  meta_comp_clutter_plugin_set_stage_input_area (plugin, 0, 0,
+                                                 plugin->screen_width, 60);
+
+  clutter_set_motion_events_enabled (TRUE);
 
   return TRUE;
 }
