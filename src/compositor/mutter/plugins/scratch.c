@@ -42,27 +42,24 @@
 
 #define PANEL_SLIDE_THRESHOLD 2
 #define PANEL_HEIGHT          40
-#define ACTOR_DATA_KEY "MCCP-Moblin-actor-data"
+#define ACTOR_DATA_KEY "MCCP-scratch-actor-data"
+static GQuark actor_data_quark = 0;
 
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;
 
-static gboolean do_init (const char *params);
-static void minimize   (MutterWindow *actor);
-static void map        (MutterWindow *actor);
-static void destroy    (MutterWindow *actor);
-static void maximize   (MutterWindow *actor,
-                        gint x, gint y, gint width, gint height);
-static void unmaximize (MutterWindow *actor,
-                        gint x, gint y, gint width, gint height);
-
-static void switch_workspace (const GList **actors, gint from, gint to,
-                              MetaMotionDirection direction);
-
-static void kill_effect (MutterWindow *actor, gulong event);
-
+static gboolean do_init  (const char *params);
+static void     minimize (MutterWindow *actor);
+static void     map      (MutterWindow *actor);
+static void     destroy  (MutterWindow *actor);
+static void     maximize (MutterWindow *actor,
+                          gint x, gint y, gint width, gint height);
+static void     unmaximize (MutterWindow *actor,
+                            gint x, gint y, gint width, gint height);
+static void     switch_workspace (const GList **actors, gint from, gint to,
+                                  MetaMotionDirection direction);
+static void     kill_effect (MutterWindow *actor, gulong event);
 static gboolean xevent_filter (XEvent *xev);
-
 static gboolean reload (const char *params);
 
 /*
@@ -154,15 +151,28 @@ struct ActorPrivate
 /*
  * Actor private data accessor
  */
+static void
+free_actor_private (gpointer data)
+{
+  if (G_LIKELY (data != NULL))
+    g_slice_free (ActorPrivate, data);
+}
+
 static ActorPrivate *
 get_actor_private (MutterWindow *actor)
 {
-  ActorPrivate * priv = g_object_get_data (G_OBJECT (actor), ACTOR_DATA_KEY);
+  ActorPrivate *priv = g_object_get_qdata (G_OBJECT (actor), actor_data_quark);
 
-  if (!priv)
+  if (G_UNLIKELY (actor_data_quark == 0))
+    actor_data_quark = g_quark_from_static_string (ACTOR_DATA_KEY);
+
+  if (G_UNLIKELY (!priv))
     {
-      priv = g_new0 (ActorPrivate, 1);
-      g_object_set_data_full (G_OBJECT (actor), ACTOR_DATA_KEY, priv, g_free);
+      priv = g_slice_new0 (ActorPrivate);
+
+      g_object_set_qdata_full (G_OBJECT (actor),
+                               actor_data_quark, priv,
+                               free_actor_private);
     }
 
   return priv;
@@ -178,16 +188,16 @@ get_plugin ()
 static void
 on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 {
-  MutterPlugin *plugin = get_plugin ();
-  PluginPrivate               *ppriv  = plugin->plugin_private;
-  GList                       *l = *((GList**)data);
-  MutterWindow              *actor_for_cb = l->data;
+  MutterPlugin   *plugin = get_plugin ();
+  PluginPrivate  *ppriv  = plugin->plugin_private;
+  GList          *l      = *((GList**)data);
+  MutterWindow   *actor_for_cb = l->data;
 
   while (l)
     {
-      ClutterActor   *a = l->data;
-      MutterWindow *mcw = MUTTER_WINDOW (a);
-      ActorPrivate   *priv = get_actor_private (mcw);
+      ClutterActor *a    = l->data;
+      MutterWindow *mcw  = MUTTER_WINDOW (a);
+      ActorPrivate *priv = get_actor_private (mcw);
 
       if (priv->orig_parent)
         {
@@ -215,15 +225,15 @@ static void
 switch_workspace (const GList **actors, gint from, gint to,
                   MetaMotionDirection direction)
 {
-  MutterPlugin *plugin = get_plugin ();
-  PluginPrivate               *ppriv  = plugin->plugin_private;
-  GList                       *l;
-  gint                         n_workspaces;
-  ClutterActor                *group1  = clutter_group_new ();
-  ClutterActor                *group2  = clutter_group_new ();
-  ClutterActor                *stage;
-  gint                         screen_width;
-  gint                         screen_height;
+  MutterPlugin  *plugin = get_plugin ();
+  PluginPrivate *ppriv  = plugin->plugin_private;
+  GList         *l;
+  gint           n_workspaces;
+  ClutterActor  *group1  = clutter_group_new ();
+  ClutterActor  *group2  = clutter_group_new ();
+  ClutterActor  *stage;
+  gint           screen_width;
+  gint           screen_height;
 
   stage = mutter_plugin_get_stage (plugin);
 
@@ -243,7 +253,7 @@ switch_workspace (const GList **actors, gint from, gint to,
   if (from == to)
     {
       mutter_plugin_effect_completed (plugin, NULL,
-                           MUTTER_PLUGIN_SWITCH_WORKSPACE);
+                                      MUTTER_PLUGIN_SWITCH_WORKSPACE);
       return;
     }
 
@@ -254,9 +264,9 @@ switch_workspace (const GList **actors, gint from, gint to,
   while (l)
     {
       MutterWindow *mcw  = l->data;
-      ActorPrivate   *priv = get_actor_private (mcw);
-      ClutterActor   *a    = CLUTTER_ACTOR (mcw);
-      gint            workspace;
+      ActorPrivate *priv = get_actor_private (mcw);
+      ClutterActor *a    = CLUTTER_ACTOR (mcw);
+      gint          workspace;
 
       workspace = mutter_window_get_workspace (mcw);
 
@@ -289,7 +299,7 @@ switch_workspace (const GList **actors, gint from, gint to,
       l = l->prev;
     }
 
-  ppriv->actors  = (GList **)actors;
+  ppriv->actors   = (GList **)actors;
   ppriv->desktop1 = group1;
   ppriv->desktop2 = group2;
 
@@ -318,7 +328,7 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
    * that the restoration will not be visible.
    */
   MutterPlugin *plugin = get_plugin ();
-  ActorPrivate   *apriv;
+  ActorPrivate *apriv;
   MutterWindow *mcw = MUTTER_WINDOW (actor);
 
   apriv = get_actor_private (MUTTER_WINDOW (actor));
@@ -346,16 +356,16 @@ static void
 minimize (MutterWindow *mcw)
 
 {
-  MutterPlugin     *plugin = get_plugin ();
-  PluginPrivate    *priv   = plugin->plugin_private;
-  MetaCompWindowType  type;
-  ClutterActor     *actor  = CLUTTER_ACTOR (mcw);
+  MutterPlugin      *plugin = get_plugin ();
+  PluginPrivate     *priv   = plugin->plugin_private;
+  MetaCompWindowType type;
+  ClutterActor      *actor  = CLUTTER_ACTOR (mcw);
 
   type = mutter_window_get_window_type (mcw);
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mcw);
+      ActorPrivate *apriv = get_actor_private (mcw);
 
       apriv->is_minimized = TRUE;
 
@@ -373,8 +383,7 @@ minimize (MutterWindow *mcw)
                                                   NULL);
     }
   else
-    mutter_plugin_effect_completed (plugin, mcw,
-                                       MUTTER_PLUGIN_MINIMIZE);
+    mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MINIMIZE);
 }
 
 /*
@@ -388,8 +397,8 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
    * Must reverse the effect of the effect.
    */
   MutterPlugin *plugin = get_plugin ();
-  MutterWindow              *mcw = MUTTER_WINDOW (actor);
-  ActorPrivate                *apriv  = get_actor_private (mcw);
+  MutterWindow *mcw    = MUTTER_WINDOW (actor);
+  ActorPrivate *apriv  = get_actor_private (mcw);
 
   apriv->tml_maximize = NULL;
 
@@ -401,8 +410,7 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
   plugin->running--;
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (plugin, mcw,
-                                     MUTTER_PLUGIN_MAXIMIZE);
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAXIMIZE);
 }
 
 /*
@@ -417,21 +425,21 @@ static void
 maximize (MutterWindow *mcw,
           gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MutterPlugin *plugin = get_plugin ();
-  PluginPrivate               *priv   = plugin->plugin_private;
-  MetaCompWindowType           type;
-  ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
+  MutterPlugin       *plugin = get_plugin ();
+  PluginPrivate      *priv   = plugin->plugin_private;
+  MetaCompWindowType  type;
+  ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
 
-  gdouble  scale_x    = 1.0;
-  gdouble  scale_y    = 1.0;
-  gint     anchor_x   = 0;
-  gint     anchor_y   = 0;
+  gdouble  scale_x  = 1.0;
+  gdouble  scale_y  = 1.0;
+  gint     anchor_x = 0;
+  gint     anchor_y = 0;
 
   type = mutter_window_get_window_type (mcw);
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mcw);
+      ActorPrivate *apriv = get_actor_private (mcw);
       guint width, height;
       gint  x, y;
 
@@ -465,8 +473,7 @@ maximize (MutterWindow *mcw,
       return;
     }
 
-  mutter_plugin_effect_completed (plugin, mcw,
-                                      MUTTER_PLUGIN_MAXIMIZE);
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAXIMIZE);
 }
 
 /*
@@ -478,21 +485,20 @@ static void
 unmaximize (MutterWindow *mcw,
             gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MutterPlugin *plugin = get_plugin ();
-  MetaCompWindowType           type;
+  MutterPlugin       *plugin = get_plugin ();
+  MetaCompWindowType  type;
 
   type = mutter_window_get_window_type (mcw);
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mcw);
+      ActorPrivate *apriv = get_actor_private (mcw);
 
       apriv->is_maximized = FALSE;
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
-  mutter_plugin_effect_completed (plugin, mcw,
-                                   MUTTER_PLUGIN_UNMAXIMIZE);
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_UNMAXIMIZE);
 }
 
 static void
@@ -502,8 +508,8 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
    * Must reverse the effect of the effect.
    */
   MutterPlugin *plugin = get_plugin ();
-  MutterWindow              *mcw    = MUTTER_WINDOW (actor);
-  ActorPrivate                *apriv  = get_actor_private (mcw);
+  MutterWindow *mcw    = MUTTER_WINDOW (actor);
+  ActorPrivate *apriv  = get_actor_private (mcw);
 
   apriv->tml_map = NULL;
 
@@ -514,8 +520,7 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   plugin->running--;
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (plugin, mcw,
-                                        MUTTER_PLUGIN_MAP);
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 }
 
 /*
@@ -525,10 +530,10 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
 static void
 map (MutterWindow *mcw)
 {
-  MutterPlugin *plugin = get_plugin ();
-  PluginPrivate               *priv   = plugin->plugin_private;
-  MetaCompWindowType           type;
-  ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
+  MutterPlugin       *plugin = get_plugin ();
+  PluginPrivate      *priv   = plugin->plugin_private;
+  MetaCompWindowType  type;
+  ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
 
   type = mutter_window_get_window_type (mcw);
 
@@ -556,8 +561,7 @@ map (MutterWindow *mcw)
 
     }
   else
-    mutter_plugin_effect_completed (plugin, mcw,
-                                           MUTTER_PLUGIN_MAP);
+    mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_MAP);
 }
 
 /*
@@ -569,15 +573,14 @@ static void
 on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 {
   MutterPlugin *plugin = get_plugin ();
-  MutterWindow              *mcw    = MUTTER_WINDOW (actor);
-  ActorPrivate                *apriv  = get_actor_private (mcw);
+  MutterWindow *mcw    = MUTTER_WINDOW (actor);
+  ActorPrivate *apriv  = get_actor_private (mcw);
 
   apriv->tml_destroy = NULL;
 
   plugin->running--;
 
-  mutter_plugin_effect_completed (plugin, mcw,
-                                       MUTTER_PLUGIN_DESTROY);
+  mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
 
 /*
@@ -586,10 +589,10 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 static void
 destroy (MutterWindow *mcw)
 {
-  MutterPlugin *plugin = get_plugin ();
-  PluginPrivate               *priv   = plugin->plugin_private;
-  MetaCompWindowType           type;
-  ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
+  MutterPlugin       *plugin = get_plugin ();
+  PluginPrivate      *priv   = plugin->plugin_private;
+  MetaCompWindowType  type;
+  ClutterActor       *actor  = CLUTTER_ACTOR (mcw);
 
   type = mutter_window_get_window_type (mcw);
 
@@ -611,16 +614,15 @@ destroy (MutterWindow *mcw)
                                                  NULL);
     }
   else
-    mutter_plugin_effect_completed (plugin, mcw,
-                                       MUTTER_PLUGIN_DESTROY);
+    mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
 
 static void
 on_panel_effect_complete (ClutterActor *panel, gpointer data)
 {
   gboolean       reactive = GPOINTER_TO_INT (data);
-  MutterPlugin  *plugin = get_plugin ();
-  PluginPrivate *priv = plugin->plugin_private;
+  MutterPlugin  *plugin   = get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
   gint           screen_width, screen_height;
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
@@ -633,8 +635,7 @@ on_panel_effect_complete (ClutterActor *panel, gpointer data)
   else
     {
       priv->panel_back_in_progress = FALSE;
-      mutter_plugin_set_stage_input_area (plugin, 0, 0,
-                                          screen_width, 1);
+      mutter_plugin_set_stage_input_area (plugin, 0, 0, screen_width, 1);
     }
 }
 
@@ -655,8 +656,8 @@ static void
 kill_effect (MutterWindow *mcw, gulong event)
 {
   MutterPlugin *plugin = get_plugin ();
-  ActorPrivate                *apriv;
-  ClutterActor                *actor = CLUTTER_ACTOR (mcw);
+  ActorPrivate *apriv;
+  ClutterActor *actor = CLUTTER_ACTOR (mcw);
 
   if (!(plugin->features & event))
     {

@@ -41,14 +41,14 @@
 #define ACTOR_DATA_KEY "MCCP-Default-actor-data"
 static GQuark actor_data_quark = 0;
 
-static gboolean do_init (const char *params);
-static void minimize   (MutterWindow *actor);
-static void map        (MutterWindow *actor);
-static void destroy    (MutterWindow *actor);
-static void maximize   (MutterWindow *actor,
-                        gint x, gint y, gint width, gint height);
-static void unmaximize (MutterWindow *actor,
-                        gint x, gint y, gint width, gint height);
+static gboolean do_init    (const char *params);
+static void     minimize   (MutterWindow *actor);
+static void     map        (MutterWindow *actor);
+static void     destroy    (MutterWindow *actor);
+static void     maximize   (MutterWindow *actor,
+                            gint x, gint y, gint width, gint height);
+static void     unmaximize (MutterWindow *actor,
+                            gint x, gint y, gint width, gint height);
 
 static void switch_workspace (const GList **actors, gint from, gint to,
                               MetaMotionDirection direction);
@@ -175,14 +175,14 @@ static void
 on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 {
   DefaultPluginState  *state = plugin_state;
-  GList               *l = *((GList**)data);
-  MutterWindow      *actor_for_cb = l->data;
+  GList               *l     = *((GList**)data);
+  MutterWindow        *actor_for_cb = l->data;
 
   while (l)
     {
-      ClutterActor   *a = l->data;
+      ClutterActor *a = l->data;
       MutterWindow *mc_window = MUTTER_WINDOW (a);
-      ActorPrivate   *priv = get_actor_private (mc_window);
+      ActorPrivate *priv = get_actor_private (mc_window);
 
       if (priv->orig_parent)
         {
@@ -210,14 +210,14 @@ static void
 switch_workspace (const GList **actors, gint from, gint to,
                   MetaMotionDirection direction)
 {
-  MutterPlugin *plugin = &mutter_plugin;
-  DefaultPluginState          *state  = plugin_state;
-  GList                       *l;
-  gint                         n_workspaces;
-  ClutterActor                *workspace0  = clutter_group_new ();
-  ClutterActor                *workspace1  = clutter_group_new ();
-  ClutterActor                *stage;
-  int			       screen_width, screen_height;
+  MutterPlugin       *plugin = &mutter_plugin;
+  DefaultPluginState *state  = plugin_state;
+  GList              *l;
+  gint                n_workspaces;
+  ClutterActor       *workspace0  = clutter_group_new ();
+  ClutterActor       *workspace1  = clutter_group_new ();
+  ClutterActor       *stage;
+  int                 screen_width, screen_height;
 
   stage = mutter_plugin_get_stage (plugin);
 
@@ -250,9 +250,9 @@ switch_workspace (const GList **actors, gint from, gint to,
   while (l)
     {
       MutterWindow *mc_window	= l->data;
-      ActorPrivate   *priv	= get_actor_private (mc_window);
-      ClutterActor   *window	= CLUTTER_ACTOR (mc_window);
-      gint            win_workspace;
+      ActorPrivate *priv	= get_actor_private (mc_window);
+      ClutterActor *window	= CLUTTER_ACTOR (mc_window);
+      gint          win_workspace;
 
       win_workspace = mutter_window_get_workspace (mc_window);
 
@@ -286,7 +286,7 @@ switch_workspace (const GList **actors, gint from, gint to,
       l = l->prev;
     }
 
-  state->actors  = (GList **)actors;
+  state->actors   = (GList **)actors;
   state->desktop1 = workspace0;
   state->desktop2 = workspace1;
 
@@ -314,7 +314,7 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
    * Must reverse the effect of the effect; must hide it first to ensure
    * that the restoration will not be visible.
    */
-  ActorPrivate   *apriv;
+  ActorPrivate *apriv;
   MutterWindow *mc_window = MUTTER_WINDOW (actor);
 
   apriv = get_actor_private (MUTTER_WINDOW (actor));
@@ -342,15 +342,15 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
 static void
 minimize (MutterWindow *mc_window)
 {
-  DefaultPluginState  *state  = plugin_state;
-  MetaCompWindowType   type;
-  ClutterActor        *actor  = CLUTTER_ACTOR (mc_window);
+  DefaultPluginState *state  = plugin_state;
+  MetaCompWindowType  type;
+  ClutterActor       *actor  = CLUTTER_ACTOR (mc_window);
 
   type = mutter_window_get_window_type (mc_window);
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mc_window);
+      ActorPrivate *apriv = get_actor_private (mc_window);
 
       apriv->is_minimized = TRUE;
 
@@ -369,7 +369,7 @@ minimize (MutterWindow *mc_window)
     }
   else
     mutter_plugin_effect_completed (&mutter_plugin, mc_window,
-                                       MUTTER_PLUGIN_MINIMIZE);
+                                    MUTTER_PLUGIN_MINIMIZE);
 }
 
 /*
@@ -383,7 +383,7 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
    * Must reverse the effect of the effect.
    */
   MutterWindow  *mc_window = MUTTER_WINDOW (actor);
-  ActorPrivate    *apriv  = get_actor_private (mc_window);
+  ActorPrivate  *apriv     = get_actor_private (mc_window);
 
   apriv->tml_maximize = NULL;
 
@@ -412,8 +412,8 @@ static void
 maximize (MutterWindow *mc_window,
           gint end_x, gint end_y, gint end_width, gint end_height)
 {
-  MetaCompWindowType   type;
-  ClutterActor	      *actor  = CLUTTER_ACTOR (mc_window);
+  MetaCompWindowType  type;
+  ClutterActor	     *actor = CLUTTER_ACTOR (mc_window);
 
   gdouble  scale_x    = 1.0;
   gdouble  scale_y    = 1.0;
@@ -424,7 +424,7 @@ maximize (MutterWindow *mc_window,
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mc_window);
+      ActorPrivate *apriv = get_actor_private (mc_window);
       guint width, height;
       gint  x, y;
 
@@ -453,14 +453,14 @@ maximize (MutterWindow *mc_window,
 			      scale_x,
 			      scale_y,
 			      (ClutterEffectCompleteFunc)
-				on_maximize_effect_complete,
+                              on_maximize_effect_complete,
                               NULL);
 
       return;
     }
 
   mutter_plugin_effect_completed (&mutter_plugin, mc_window,
-                                      MUTTER_PLUGIN_MAXIMIZE);
+                                  MUTTER_PLUGIN_MAXIMIZE);
 }
 
 /*
@@ -476,14 +476,14 @@ unmaximize (MutterWindow *mc_window,
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mc_window);
+      ActorPrivate *apriv = get_actor_private (mc_window);
 
       apriv->is_maximized = FALSE;
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
   mutter_plugin_effect_completed (&mutter_plugin, mc_window,
-                                   MUTTER_PLUGIN_UNMAXIMIZE);
+                                  MUTTER_PLUGIN_UNMAXIMIZE);
 }
 
 static void
@@ -492,8 +492,8 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   /*
    * Must reverse the effect of the effect.
    */
-  MutterWindow  *mc_window  = MUTTER_WINDOW (actor);
-  ActorPrivate    *apriv      = get_actor_private (mc_window);
+  MutterWindow  *mc_window = MUTTER_WINDOW (actor);
+  ActorPrivate  *apriv     = get_actor_private (mc_window);
 
   apriv->tml_map = NULL;
 
@@ -504,8 +504,7 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin.running--;
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (&mutter_plugin, mc_window,
-                                        MUTTER_PLUGIN_MAP);
+  mutter_plugin_effect_completed (&mutter_plugin, mc_window, MUTTER_PLUGIN_MAP);
 }
 
 /*
@@ -515,14 +514,14 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
 static void
 map (MutterWindow *mc_window)
 {
-  MetaCompWindowType           type;
-  ClutterActor                *actor  = CLUTTER_ACTOR (mc_window);
+  MetaCompWindowType  type;
+  ClutterActor       *actor = CLUTTER_ACTOR (mc_window);
 
   type = mutter_window_get_window_type (mc_window);
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mc_window);
+      ActorPrivate *apriv = get_actor_private (mc_window);
 
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
@@ -545,7 +544,7 @@ map (MutterWindow *mc_window)
     }
   else
     mutter_plugin_effect_completed (&mutter_plugin, mc_window,
-                                           MUTTER_PLUGIN_MAP);
+                                    MUTTER_PLUGIN_MAP);
 }
 
 /*
@@ -557,8 +556,8 @@ static void
 on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 {
   MutterPlugin *plugin = &mutter_plugin;
-  MutterWindow              *mc_window = MUTTER_WINDOW (actor);
-  ActorPrivate                *apriv = get_actor_private (mc_window);
+  MutterWindow *mc_window = MUTTER_WINDOW (actor);
+  ActorPrivate *apriv = get_actor_private (mc_window);
 
   apriv->tml_destroy = NULL;
 
@@ -581,7 +580,7 @@ destroy (MutterWindow *mc_window)
 
   if (type == META_COMP_WINDOW_NORMAL)
     {
-      ActorPrivate *apriv  = get_actor_private (mc_window);
+      ActorPrivate *apriv = get_actor_private (mc_window);
 
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
@@ -598,15 +597,15 @@ destroy (MutterWindow *mc_window)
     }
   else
     mutter_plugin_effect_completed (&mutter_plugin, mc_window,
-                                       MUTTER_PLUGIN_DESTROY);
+                                    MUTTER_PLUGIN_DESTROY);
 }
 
 static void
 kill_effect (MutterWindow *mc_window, gulong event)
 {
   MutterPlugin *plugin = &mutter_plugin;
-  ActorPrivate                *apriv;
-  ClutterActor                *actor = CLUTTER_ACTOR (mc_window);
+  ActorPrivate *apriv;
+  ClutterActor *actor  = CLUTTER_ACTOR (mc_window);
 
   if (!(plugin->features & event))
     {
@@ -616,7 +615,7 @@ kill_effect (MutterWindow *mc_window, gulong event)
 
   if (event & MUTTER_PLUGIN_SWITCH_WORKSPACE)
     {
-      DefaultPluginState *state  = plugin_state;
+      DefaultPluginState *state = plugin_state;
 
       if (state->tml_switch_workspace1)
         {
