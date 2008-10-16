@@ -609,6 +609,15 @@ destroy (MetaCompWindow *mcw)
                                        META_COMPOSITOR_CLUTTER_PLUGIN_DESTROY);
 }
 
+static void
+on_panel_effect_complete (ClutterActor *panel, gpointer data)
+{
+  gboolean reactive = GPOINTER_TO_INT (data);
+  MetaCompositorClutterPlugin *plugin = get_plugin ();
+
+  meta_comp_clutter_plugin_set_stage_reactive (plugin, reactive);
+}
+
 static gboolean
 xevent_filter (XEvent *xev)
 {
@@ -625,10 +634,10 @@ xevent_filter (XEvent *xev)
 
       if (xev->xmotion.y > (gint)height)
         {
-          /* TODO -- slide back in, reset input on stage window */
           clutter_effect_move (priv->panel_slide_effect,
                                priv->panel, x, -height,
-                               NULL, NULL);
+                               on_panel_effect_complete,
+                               GINT_TO_POINTER (FALSE));
         }
 
       return TRUE;
@@ -637,10 +646,10 @@ xevent_filter (XEvent *xev)
     {
       gint  x = clutter_actor_get_x (priv->panel);
 
-      /* TODO -- reset input on stage window */
       clutter_effect_move (priv->panel_slide_effect,
                            priv->panel, x, 0,
-                           NULL, NULL);
+                           on_panel_effect_complete,
+                           GINT_TO_POINTER (TRUE ));
 
       return TRUE;
     }
@@ -739,10 +748,10 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
           if (mev->y > (gint)height)
             {
-              /* TODO -- slide back in, reset input on stage window */
               clutter_effect_move (priv->panel_slide_effect,
                                    priv->panel, x, -height,
-                                   NULL, NULL);
+                                   on_panel_effect_complete,
+                                   GINT_TO_POINTER (FALSE));
             }
 
           return TRUE;
@@ -751,10 +760,10 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
         {
           gint  x = clutter_actor_get_x (priv->panel);
 
-          /* TODO -- reset input on stage window */
           clutter_effect_move (priv->panel_slide_effect,
                                priv->panel, x, 0,
-                               NULL, NULL);
+                               on_panel_effect_complete,
+                               GINT_TO_POINTER (TRUE ));
 
           return TRUE;
         }
