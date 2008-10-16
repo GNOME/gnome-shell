@@ -44,9 +44,12 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
 
 /**
  * ClutterContainerIface:
- * @add: virtual function for adding an actor to the container
- * @remove: virtual function for removing an actor from the container
- * @foreach: virtual function for iterating over the container's children
+ * @add: virtual function for adding an actor to the container. The
+ *   implementation of this virtual function is required.
+ * @remove: virtual function for removing an actor from the container. The
+ *   implementation of this virtual function is required.
+ * @foreach: virtual function for iterating over the container's children.
+ *   The implementation of this virtual function is required.
  * @raise: virtual function for raising a child
  * @lower: virtual function for lowering a child
  * @sort_depth_order: virtual function for sorting the children of a
@@ -65,7 +68,9 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  * @actor_removed: class handler for #ClutterContainer::actor_removed
  * @child_notify: class handler for #ClutterContainer::child-notify
  *
- * Base interface for container actors.
+ * Base interface for container actors. The @add, @remove and @foreach
+ * virtual functions must be provided by any implementation; the other
+ * virtual functions are optional.
  *
  * Since: 0.4
  */
@@ -82,6 +87,8 @@ struct _ClutterContainerIface
   void (* foreach)          (ClutterContainer *container,
                              ClutterCallback   callback,
                              gpointer          user_data);
+
+  /* child stacking */
   void (* raise)            (ClutterContainer *container,
                              ClutterActor     *actor,
                              ClutterActor     *sibling);
@@ -91,7 +98,6 @@ struct _ClutterContainerIface
   void (* sort_depth_order) (ClutterContainer *container);
 
   /* ClutterChildMeta management */
-
   GType                child_meta_type;
   void              (* create_child_meta)  (ClutterContainer *container,
                                             ClutterActor     *actor);

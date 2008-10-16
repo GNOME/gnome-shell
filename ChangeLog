@@ -1,3 +1,14 @@
+2008-10-16  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-container.[ch]: Add checks to the Container
+	interface invocation methods, to avoid crashing or corrupting
+	the stack when an actor does not implement every virtual
+	function of the Container interface vtable. GObject allows this
+	to happen so we must handle the case gracefully. This also means
+	that we can classify some virtual function as mandatory (as is
+	the case for ::add, ::remove and ::foreach) and some other
+	optional.
+
 2008-10-08  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* tests/test-depth.c (raise_top), (main): Fix a shadowing

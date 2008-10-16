@@ -43,6 +43,23 @@
 #include "clutter-private.h"
 #include "clutter-enum-types.h"
 
+#define CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED(container,vfunc) \
+        G_STMT_START { \
+          g_warning ("Container of type `%s' does not implement " \
+                     "the required ClutterContainer::%s virtual " \
+                     "function.",                                 \
+                     G_OBJECT_TYPE_NAME ((container)),            \
+                     (vfunc));                                    \
+        } G_STMT_END
+
+#define CLUTTER_CONTAINER_NOTE_NOT_IMPLEMENTED(container,vfunc) \
+        G_STMT_START { \
+          CLUTTER_NOTE (ACTOR, "Container of type `%s' does not "    \
+                               "implement the ClutterContainer::%s " \
+                               "virtual function.",                  \
+                        G_OBJECT_TYPE_NAME ((container)),            \
+                        (vfunc));                                    \
+        } G_STMT_END
 
 /**
  * SECTION:clutter-container
@@ -69,24 +86,17 @@ enum
 static guint container_signals[LAST_SIGNAL] = { 0, };
 static GQuark quark_child_meta = 0;
 
-static ClutterChildMeta *
-get_child_meta (ClutterContainer *container,
-                ClutterActor     *actor);
+static ClutterChildMeta *get_child_meta     (ClutterContainer *container,
+                                             ClutterActor     *actor);
+static void              create_child_meta  (ClutterContainer *container,
+                                             ClutterActor     *actor);
+static void              destroy_child_meta (ClutterContainer *container,
+                                             ClutterActor     *actor);
 
-static void
-create_child_meta (ClutterContainer *container,
-                   ClutterActor     *actor);
-
-static void
-destroy_child_meta (ClutterContainer *container,
-                    ClutterActor     *actor);
-
-static void
-clutter_container_create_child_meta  (ClutterContainer *container,
-                                      ClutterActor     *actor);
-static void
-clutter_container_destroy_child_meta (ClutterContainer *container,
-                                      ClutterActor     *actor);
+static void clutter_container_create_child_meta  (ClutterContainer *container,
+                                                  ClutterActor     *actor);
+static void clutter_container_destroy_child_meta (ClutterContainer *container,
+                                                  ClutterActor     *actor);
 
 
 static void
@@ -178,7 +188,7 @@ clutter_container_get_type (void)
 
   if (G_UNLIKELY (!container_type))
     {
-      GTypeInfo container_info =
+      const GTypeInfo container_info =
       {
         sizeof (ClutterContainerIface),
         clutter_container_base_init,
@@ -239,17 +249,25 @@ void
 clutter_container_add_actor (ClutterContainer *container,
                              ClutterActor     *actor)
 {
+  ClutterContainerIface *iface;
   ClutterActor *parent;
 
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  if (!iface->add)
+    {
+      CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "add");
+      return;
+    }
+
   parent = clutter_actor_get_parent (actor);
   if (parent)
     {
       g_warning ("Attempting to add actor of type `%s' to a "
-		 "group of type `%s', but the actor has already "
-		 "a parent of type `%s'.",
+		 "container of type `%s', but the actor has "
+                 "already a parent of type `%s'.",
 		 g_type_name (G_OBJECT_TYPE (actor)),
 		 g_type_name (G_OBJECT_TYPE (container)),
 		 g_type_name (G_OBJECT_TYPE (parent)));
@@ -257,7 +275,8 @@ clutter_container_add_actor (ClutterContainer *container,
     }
 
   clutter_container_create_child_meta (container, actor);
-  CLUTTER_CONTAINER_GET_IFACE (container)->add (container, actor);
+
+  iface->add (container, actor);
 }
 
 /**
@@ -333,24 +352,33 @@ void
 clutter_container_remove_actor (ClutterContainer *container,
                                 ClutterActor     *actor)
 {
+  ClutterContainerIface *iface;
   ClutterActor *parent;
 
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  if (!iface->remove)
+    {
+      CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "remove");
+      return;
+    }
+
   parent = clutter_actor_get_parent (actor);
   if (parent != CLUTTER_ACTOR (container))
     {
       g_warning ("Attempting to remove actor of type `%s' from "
-		 "group of class `%s', but the group is not the "
-		 "actor's parent.",
+		 "group of class `%s', but the container is not "
+                 "the actor's parent.",
 		 g_type_name (G_OBJECT_TYPE (actor)),
 		 g_type_name (G_OBJECT_TYPE (container)));
       return;
     }
 
   clutter_container_destroy_child_meta (container, actor);
-  CLUTTER_CONTAINER_GET_IFACE (container)->remove (container, actor);
+
+  iface->remove (container, actor);
 }
 
 /**
@@ -429,12 +457,19 @@ clutter_container_foreach (ClutterContainer *container,
                            ClutterCallback   callback,
                            gpointer          user_data)
 {
+  ClutterContainerIface *iface;
+
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (callback != NULL);
 
-  CLUTTER_CONTAINER_GET_IFACE (container)->foreach (container,
-                                                    callback,
-                                                    user_data);
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  if (!iface->foreach)
+    {
+      CLUTTER_CONTAINER_WARN_NOT_IMPLEMENTED (container, "foreach");
+      return;
+    }
+
+  iface->foreach (container, callback, user_data);
 }
 
 /**
@@ -452,9 +487,18 @@ clutter_container_raise_child (ClutterContainer *container,
                                ClutterActor     *actor,
                                ClutterActor     *sibling)
 {
+  ClutterContainerIface *iface;
+
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
   g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
+
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  if (!iface->raise)
+    {
+      CLUTTER_CONTAINER_NOTE_NOT_IMPLEMENTED (container, "raise");
+      return;
+    };
 
   if (actor == sibling)
     return;
@@ -478,7 +522,7 @@ clutter_container_raise_child (ClutterContainer *container,
       return;
     }
 
-  CLUTTER_CONTAINER_GET_IFACE (container)->raise (container, actor, sibling);
+  iface->raise (container, actor, sibling);
 }
 
 /**
@@ -496,9 +540,18 @@ clutter_container_lower_child (ClutterContainer *container,
                                ClutterActor     *actor,
                                ClutterActor     *sibling)
 {
+  ClutterContainerIface *iface;
+
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
   g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
+
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  if (!iface->lower)
+    {
+      CLUTTER_CONTAINER_NOTE_NOT_IMPLEMENTED (container, "lower");
+      return;
+    }
 
   if (actor == sibling)
     return;
@@ -522,7 +575,7 @@ clutter_container_lower_child (ClutterContainer *container,
       return;
     }
 
-  CLUTTER_CONTAINER_GET_IFACE (container)->lower (container, actor, sibling);
+  iface->lower (container, actor, sibling);
 }
 
 /**
@@ -537,9 +590,15 @@ clutter_container_lower_child (ClutterContainer *container,
 void
 clutter_container_sort_depth_order (ClutterContainer *container)
 {
+  ClutterContainerIface *iface;
+
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
 
-  CLUTTER_CONTAINER_GET_IFACE (container)->sort_depth_order (container);
+  iface = CLUTTER_CONTAINER_GET_IFACE (container);
+  if (iface->sort_depth_order)
+    iface->sort_depth_order (container);
+  else
+    CLUTTER_CONTAINER_NOTE_NOT_IMPLEMENTED (container, "sort_depth_order");
 }
 
 /**
