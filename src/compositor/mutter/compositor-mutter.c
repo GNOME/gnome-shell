@@ -1645,6 +1645,7 @@ process_property_notify (Mutter *compositor,
 static void
 show_overlay_window (MetaScreen *screen, Window cow)
 {
+#if 0
   MetaDisplay   *display  = meta_screen_get_display (screen);
   Display       *xdisplay = meta_display_get_xdisplay (display);
   XserverRegion  region;
@@ -1655,6 +1656,7 @@ show_overlay_window (MetaScreen *screen, Window cow)
   XFixesSetWindowShapeRegion (xdisplay, cow, ShapeInput, 0, 0, region);
 
   XFixesDestroyRegion (xdisplay, region);
+#endif
 }
 
 static Window
@@ -1667,7 +1669,14 @@ get_output_window (MetaScreen *screen)
   xroot = meta_screen_get_xroot (screen);
 
   output = XCompositeGetOverlayWindow (xdisplay, xroot);
-  XSelectInput (xdisplay, output, ExposureMask);
+  XSelectInput (xdisplay,
+                output,
+                FocusChangeMask |
+                ExposureMask |
+		PointerMotionMask |
+                PropertyChangeMask |
+                ButtonPressMask | ButtonReleaseMask |
+                KeyPressMask | KeyReleaseMask);
 
   return output;
 }
@@ -1747,6 +1756,15 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
 
   XReparentWindow (xdisplay, xwin, info->output, 0, 0);
+
+  XSelectInput (xdisplay,
+                xwin,
+                FocusChangeMask |
+                ExposureMask |
+		PointerMotionMask |
+                PropertyChangeMask |
+                ButtonPressMask | ButtonReleaseMask |
+                KeyPressMask | KeyReleaseMask);
 
   info->window_group = clutter_group_new ();
   info->overlay_group = clutter_group_new ();
@@ -1841,6 +1859,29 @@ clutter_cmp_process_event (MetaCompositor *compositor,
                                                        (info->plugin_mgr,
                                                         event) == TRUE)
         return;
+    }
+  else
+    {
+      GSList *l;
+      Mutter *clc = (Mutter*)compositor;
+
+      l = meta_display_get_screens (clc->display);
+
+      while (l)
+	{
+	  MetaScreen     *screen = l->data;
+	  MetaCompScreen *info;
+
+	  info = meta_screen_get_compositor_data (screen);
+
+	  if (mutter_plugin_manager_xevent_filter (info->plugin_mgr,
+						   event) == TRUE)
+	    {
+	      return;
+	    }
+
+	  l = l->next;
+	}
     }
 
   /*
@@ -2245,6 +2286,15 @@ mutter_new (MetaDisplay *display)
   return NULL;
 #endif
 }
+
+Window
+mutter_get_overlay_window (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  return info->output;
+}
+
 
 /* ------------------------------- */
 /* Shadow Generation */

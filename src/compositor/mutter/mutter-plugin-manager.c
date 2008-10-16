@@ -28,6 +28,10 @@
 
 #include <gmodule.h>
 #include <string.h>
+#include <X11/Xlib.h>
+#include <X11/extensions/Xfixes.h>
+#include <X11/extensions/shape.h>
+#include <clutter/x11/clutter-x11.h>
 
 static gboolean mutter_plugin_manager_reload (
 		      MutterPluginManager *plugin_mgr);
@@ -117,7 +121,7 @@ static gulong
 parse_disable_params (const char *params, gulong features)
 {
   char *p;
-  
+
   if (!params)
     return features;
 
@@ -741,7 +745,7 @@ mutter_plugin_manager_xevent_filter (
  * Public accessors for plugins, exposed from mutter-plugin.h
  */
 ClutterActor *
-meta_comp_clutter_plugin_get_overlay_group (MutterPlugin *plugin)
+mutter_plugin_get_overlay_group (MutterPlugin *plugin)
 {
   MutterPluginPrivate *priv = plugin->manager_private;
   MutterPluginManager *plugin_mgr = priv->self;
@@ -750,7 +754,7 @@ meta_comp_clutter_plugin_get_overlay_group (MutterPlugin *plugin)
 }
 
 ClutterActor *
-meta_comp_clutter_plugin_get_stage (MutterPlugin *plugin)
+mutter_plugin_get_stage (MutterPlugin *plugin)
 {
   MutterPluginPrivate *priv = plugin->manager_private;
   MutterPluginManager *plugin_mgr  = priv->self;
@@ -759,9 +763,9 @@ meta_comp_clutter_plugin_get_stage (MutterPlugin *plugin)
 }
 
 void
-meta_comp_clutter_plugin_effect_completed (MutterPlugin *plugin,
-                                           MutterWindow              *actor,
-                                           unsigned long                event)
+mutter_plugin_effect_completed (MutterPlugin *plugin,
+                                MutterWindow *actor,
+                                unsigned long event)
 {
   if (!actor)
     {
@@ -773,9 +777,9 @@ meta_comp_clutter_plugin_effect_completed (MutterPlugin *plugin,
 }
 
 void
-meta_comp_clutter_plugin_query_screen_size (MutterPlugin *plugin,
-					    int				*width,
-					    int				*height)
+mutter_plugin_query_screen_size (MutterPlugin *plugin,
+                                 int          *width,
+                                 int          *height)
 {
   MutterPluginPrivate *priv = plugin->manager_private;
   MutterPluginManager *plugin_mgr  = priv->self;
@@ -783,3 +787,66 @@ meta_comp_clutter_plugin_query_screen_size (MutterPlugin *plugin,
   meta_screen_get_size (plugin_mgr->screen, width, height);
 }
 
+void
+mutter_plugin_set_stage_reactive (MutterPlugin *plugin,
+                                  gboolean      reactive)
+{
+  MutterPluginPrivate *priv = plugin->manager_private;
+  MutterPluginManager *mgr  = priv->self;
+  MetaDisplay *display = meta_screen_get_display (mgr->screen);
+  Display     *xdpy    = meta_display_get_xdisplay (display);
+  Window       xstage, xoverlay;
+  ClutterActor *stage;
+
+  stage = mutter_get_stage_for_screen (mgr->screen);
+  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+  xoverlay = mutter_get_overlay_window (mgr->screen);
+
+  static XserverRegion region = None;
+
+  if (region == None)
+    region = XFixesCreateRegion (xdpy, NULL, 0);
+
+  if (reactive)
+    {
+      XFixesSetWindowShapeRegion (xdpy, xstage,
+                                  ShapeInput, 0, 0, None);
+      XFixesSetWindowShapeRegion (xdpy, xoverlay,
+                                  ShapeInput, 0, 0, None);
+    }
+  else
+    {
+      XFixesSetWindowShapeRegion (xdpy, xstage,
+                                  ShapeInput, 0, 0, region);
+      XFixesSetWindowShapeRegion (xdpy, xoverlay,
+                                  ShapeInput, 0, 0, region);
+    }
+}
+
+void
+mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
+                                    gint x, gint y, gint width, gint height)
+{
+  MutterPluginPrivate *priv = plugin->manager_private;
+  MutterPluginManager *mgr  = priv->self;
+  MetaDisplay  *display = meta_screen_get_display (mgr->screen);
+  Display      *xdpy    = meta_display_get_xdisplay (display);
+  Window        xstage, xoverlay;
+  ClutterActor *stage;
+  XRectangle    rect;
+  XserverRegion region;
+
+  stage = mutter_get_stage_for_screen (mgr->screen);
+  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+  xoverlay = mutter_get_overlay_window (mgr->screen);
+
+  rect.x = x;
+  rect.y = y;
+  rect.width = width;
+  rect.height = height;
+
+  region = XFixesCreateRegion (xdpy, &rect, 1);
+
+  XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
+  XFixesSetWindowShapeRegion (xdpy, xoverlay, ShapeInput, 0, 0, region);
+}

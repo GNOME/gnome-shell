@@ -79,8 +79,8 @@ struct MutterPlugin
 #endif
   gchar   *name;     /* Human-readable name for UI */
   gulong   features; /* or-ed feature flags */
-  
-  /* 
+
+  /*
    * This function is called once the plugin has been loaded.
    *
    * @params is a string containing additional parameters for the plugin and is
@@ -94,7 +94,7 @@ struct MutterPlugin
    *             Indicates running in debug mode; the plugin
    *             might want to print useful debug info, or
    *             extend effect duration, etc.
-   *   
+   *
    *   'disable: ...;'
    *
    *             The disable token indicates that the effects
@@ -185,8 +185,8 @@ struct MutterPlugin
 
   /* List of PluginWorkspaceRectangles defining the geometry of individual
    * workspaces. */
-  GList *work_areas; 
-  
+  GList *work_areas;
+
   /* FIXME: It should be possible to hide this from plugins */
   gint   running; /* Plugin must increase this counter for each effect it starts
                    * decrease it again once the effect finishes.
@@ -202,19 +202,33 @@ struct MutterPlugin
 };
 
 void
-meta_comp_clutter_plugin_effect_completed (MutterPlugin *plugin,
-                                           MutterWindow              *actor,
-                                           unsigned long                event);
+mutter_plugin_effect_completed (MutterPlugin  *plugin,
+                                MutterWindow  *actor,
+                                unsigned long  event);
 
 ClutterActor *
-meta_comp_clutter_plugin_get_overlay_group (MutterPlugin *plugin);
+mutter_plugin_get_overlay_group (MutterPlugin *plugin);
 
 ClutterActor *
-meta_comp_clutter_plugin_get_stage (MutterPlugin *plugin);
+mutter_plugin_get_stage (MutterPlugin *plugin);
 
 void
-meta_comp_clutter_plugin_query_screen_size (MutterPlugin *plugin,
-					    int				*width,
-					    int				*height);
+mutter_plugin_query_screen_size (MutterPlugin *plugin,
+                                 int          *width,
+                                 int          *height);
+
+ClutterActor *
+mutter_plugin_get_overlay_group (MutterPlugin *plugin);
+
+ClutterActor *
+mutter_plugin_get_stage (MutterPlugin *plugin);
+
+void
+mutter_plugin_set_stage_reactive (MutterPlugin *plugin,
+                                  gboolean      reactive);
+
+void
+mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
+                                    gint x, gint y, gint width, gint height);
 
 #endif /* MUTTER_PLUGIN_H_ */

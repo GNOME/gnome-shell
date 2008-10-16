@@ -29,20 +29,25 @@
 #define N_(x) x
 
 #include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
 #include <gmodule.h>
 #include <string.h>
 
-#define DESTROY_TIMEOUT   250
-#define MINIMIZE_TIMEOUT  250
-#define MAXIMIZE_TIMEOUT  250
-#define MAP_TIMEOUT       250
-#define SWITCH_TIMEOUT    500
+#define DESTROY_TIMEOUT     250
+#define MINIMIZE_TIMEOUT    250
+#define MAXIMIZE_TIMEOUT    250
+#define MAP_TIMEOUT         250
+#define SWITCH_TIMEOUT      500
+#define PANEL_SLIDE_TIMEOUT 250;                \
 
+#define PANEL_SLIDE_THRESHOLD 2
+#define PANEL_HEIGHT          40
 #define ACTOR_DATA_KEY "MCCP-Moblin-actor-data"
 
 typedef struct PluginPrivate PluginPrivate;
 typedef struct ActorPrivate  ActorPrivate;
 
+static gboolean do_init (const char *params);
 static void minimize   (MutterWindow *actor);
 static void map        (MutterWindow *actor);
 static void destroy    (MutterWindow *actor);
@@ -56,14 +61,16 @@ static void switch_workspace (const GList **actors, gint from, gint to,
 
 static void kill_effect (MutterWindow *actor, gulong event);
 
-static gboolean reload (void);
+static gboolean xevent_filter (XEvent *xev);
+
+static gboolean reload (const char *params);
 
 /*
  * First we create the header struct and initialize its static members.
  * Any dynamically allocated data should be initialized in the
  * init () function below.
  */
-MutterPlugin MUTTER_PLUGIN_STRUCT =
+G_MODULE_EXPORT MutterPlugin mutter_plugin =
   {
     /*
      * These are predefined values; do not modify.
@@ -74,15 +81,17 @@ MutterPlugin MUTTER_PLUGIN_STRUCT =
     .version_api   = METACITY_CLUTTER_PLUGIN_API_VERSION,
 
     /* Human readable name (for use in UI) */
-    .name = "Default Effects",
+    .name = "Experimental effects",
+
+    /* Plugin load time initialiser */
+    .do_init = do_init,
 
     /* Which types of events this plugin supports */
     .features = MUTTER_PLUGIN_MINIMIZE   |
                 MUTTER_PLUGIN_DESTROY    |
                 MUTTER_PLUGIN_MAP        |
                 MUTTER_PLUGIN_MAXIMIZE   |
-                MUTTER_PLUGIN_UNMAXIMIZE |
-                MUTTER_PLUGIN_SWITCH_WORKSPACE,
+                MUTTER_PLUGIN_UNMAXIMIZE,
 
 
     /* And the corresponding handlers */
@@ -92,8 +101,8 @@ MutterPlugin MUTTER_PLUGIN_STRUCT =
     .maximize         = maximize,
     .unmaximize       = unmaximize,
     .switch_workspace = switch_workspace,
-
     .kill_effect      = kill_effect,
+    .xevent_filter    = xevent_filter,
 
     /* The reload handler */
     .reload           = reload
@@ -109,6 +118,7 @@ struct PluginPrivate
   ClutterEffectTemplate *maximize_effect;
   ClutterEffectTemplate *map_effect;
   ClutterEffectTemplate *switch_workspace_effect;
+  ClutterEffectTemplate *panel_slide_effect;
 
   /* Valid only when switch_workspace effect is in progress */
   ClutterTimeline       *tml_switch_workspace1;
@@ -117,7 +127,12 @@ struct PluginPrivate
   ClutterActor          *desktop1;
   ClutterActor          *desktop2;
 
+  ClutterActor          *panel;
+
   gboolean               debug_mode : 1;
+  gboolean               panel_out  : 1;
+  gboolean               panel_out_in_progress : 1;
+  gboolean               panel_back_in_progress : 1;
 };
 
 /*
@@ -157,7 +172,7 @@ static inline
 MutterPlugin *
 get_plugin ()
 {
-  return &MUTTER_PLUGIN_STRUCT;
+  return &mutter_plugin;
 }
 
 static void
@@ -192,8 +207,8 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
   ppriv->desktop1 = NULL;
   ppriv->desktop2 = NULL;
 
-  meta_comp_clutter_plugin_effect_completed (plugin, actor_for_cb,
-                       MUTTER_PLUGIN_SWITCH_WORKSPACE);
+  mutter_plugin_effect_completed (plugin, actor_for_cb,
+                                  MUTTER_PLUGIN_SWITCH_WORKSPACE);
 }
 
 static void
@@ -207,16 +222,17 @@ switch_workspace (const GList **actors, gint from, gint to,
   ClutterActor                *group1  = clutter_group_new ();
   ClutterActor                *group2  = clutter_group_new ();
   ClutterActor                *stage;
+  gint                         screen_width;
+  gint                         screen_height;
 
-  stage = meta_comp_clutter_plugin_get_stage (plugin);
+  stage = mutter_plugin_get_stage (plugin);
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
 #if 1
-  clutter_actor_set_anchor_point (group2,
-                                  plugin->screen_width,
-                                  plugin->screen_height);
-  clutter_actor_set_position (group2,
-                              plugin->screen_width,
-                              plugin->screen_height);
+  clutter_actor_set_anchor_point (group2, screen_width, screen_height);
+
+  clutter_actor_set_position (group2, screen_width, screen_height);
 #endif
 
   clutter_actor_set_scale (group2, 0.0, 0.0);
@@ -226,7 +242,7 @@ switch_workspace (const GList **actors, gint from, gint to,
 
   if (from == to)
     {
-      meta_comp_clutter_plugin_effect_completed (plugin, NULL,
+      mutter_plugin_effect_completed (plugin, NULL,
                            MUTTER_PLUGIN_SWITCH_WORKSPACE);
       return;
     }
@@ -242,7 +258,7 @@ switch_workspace (const GList **actors, gint from, gint to,
       ClutterActor   *a    = CLUTTER_ACTOR (mcw);
       gint            workspace;
 
-      workspace = meta_comp_window_get_workspace (mcw);
+      workspace = mutter_window_get_workspace (mcw);
 
       if (workspace == to || workspace == from)
         {
@@ -318,7 +334,7 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
   plugin->running--;
 
   /* Now notify the manager that we are done with this effect */
-  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+  mutter_plugin_effect_completed (plugin, mcw,
                                       MUTTER_PLUGIN_MINIMIZE);
 }
 
@@ -330,14 +346,14 @@ static void
 minimize (MutterWindow *mcw)
 
 {
-  MutterPlugin *plugin = get_plugin ();
-  PluginPrivate               *priv   = plugin->plugin_private;
-  MutterWindowType           type;
-  ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
+  MutterPlugin     *plugin = get_plugin ();
+  PluginPrivate    *priv   = plugin->plugin_private;
+  MetaCompWindowType  type;
+  ClutterActor     *actor  = CLUTTER_ACTOR (mcw);
 
-  type = meta_comp_window_get_window_type (mcw);
+  type = mutter_window_get_window_type (mcw);
 
-  if (type == MUTTER_WINDOW_NORMAL)
+  if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv  = get_actor_private (mcw);
 
@@ -346,7 +362,7 @@ minimize (MutterWindow *mcw)
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
 
-      MUTTER_PLUGIN_STRUCT.running++;
+      plugin->running++;
 
       apriv->tml_minimize = clutter_effect_scale (priv->minimize_effect,
                                                   actor,
@@ -357,7 +373,7 @@ minimize (MutterWindow *mcw)
                                                   NULL);
     }
   else
-    meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+    mutter_plugin_effect_completed (plugin, mcw,
                                        MUTTER_PLUGIN_MINIMIZE);
 }
 
@@ -385,7 +401,7 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
   plugin->running--;
 
   /* Now notify the manager that we are done with this effect */
-  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+  mutter_plugin_effect_completed (plugin, mcw,
                                      MUTTER_PLUGIN_MAXIMIZE);
 }
 
@@ -403,7 +419,7 @@ maximize (MutterWindow *mcw,
 {
   MutterPlugin *plugin = get_plugin ();
   PluginPrivate               *priv   = plugin->plugin_private;
-  MutterWindowType           type;
+  MetaCompWindowType           type;
   ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
 
   gdouble  scale_x    = 1.0;
@@ -411,9 +427,9 @@ maximize (MutterWindow *mcw,
   gint     anchor_x   = 0;
   gint     anchor_y   = 0;
 
-  type = meta_comp_window_get_window_type (mcw);
+  type = mutter_window_get_window_type (mcw);
 
-  if (type == MUTTER_WINDOW_NORMAL)
+  if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv  = get_actor_private (mcw);
       guint width, height;
@@ -449,7 +465,7 @@ maximize (MutterWindow *mcw,
       return;
     }
 
-  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+  mutter_plugin_effect_completed (plugin, mcw,
                                       MUTTER_PLUGIN_MAXIMIZE);
 }
 
@@ -463,11 +479,11 @@ unmaximize (MutterWindow *mcw,
             gint end_x, gint end_y, gint end_width, gint end_height)
 {
   MutterPlugin *plugin = get_plugin ();
-  MutterWindowType           type;
+  MetaCompWindowType           type;
 
-  type = meta_comp_window_get_window_type (mcw);
+  type = mutter_window_get_window_type (mcw);
 
-  if (type == MUTTER_WINDOW_NORMAL)
+  if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv  = get_actor_private (mcw);
 
@@ -475,7 +491,7 @@ unmaximize (MutterWindow *mcw,
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
-  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+  mutter_plugin_effect_completed (plugin, mcw,
                                    MUTTER_PLUGIN_UNMAXIMIZE);
 }
 
@@ -498,7 +514,7 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   plugin->running--;
 
   /* Now notify the manager that we are done with this effect */
-  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+  mutter_plugin_effect_completed (plugin, mcw,
                                         MUTTER_PLUGIN_MAP);
 }
 
@@ -511,19 +527,19 @@ map (MutterWindow *mcw)
 {
   MutterPlugin *plugin = get_plugin ();
   PluginPrivate               *priv   = plugin->plugin_private;
-  MutterWindowType           type;
+  MetaCompWindowType           type;
   ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
 
-  type = meta_comp_window_get_window_type (mcw);
+  type = mutter_window_get_window_type (mcw);
 
-  if (type == MUTTER_WINDOW_NORMAL)
+  if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv  = get_actor_private (mcw);
 
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
 
-      MUTTER_PLUGIN_STRUCT.running++;
+      plugin->running++;
 
       clutter_actor_set_scale (actor, 0.0, 0.0);
       clutter_actor_show (actor);
@@ -540,7 +556,7 @@ map (MutterWindow *mcw)
 
     }
   else
-    meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+    mutter_plugin_effect_completed (plugin, mcw,
                                            MUTTER_PLUGIN_MAP);
 }
 
@@ -560,7 +576,7 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 
   plugin->running--;
 
-  meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+  mutter_plugin_effect_completed (plugin, mcw,
                                        MUTTER_PLUGIN_DESTROY);
 }
 
@@ -572,12 +588,12 @@ destroy (MutterWindow *mcw)
 {
   MutterPlugin *plugin = get_plugin ();
   PluginPrivate               *priv   = plugin->plugin_private;
-  MutterWindowType           type;
+  MetaCompWindowType           type;
   ClutterActor                *actor  = CLUTTER_ACTOR (mcw);
 
-  type = meta_comp_window_get_window_type (mcw);
+  type = mutter_window_get_window_type (mcw);
 
-  if (type == MUTTER_WINDOW_NORMAL)
+  if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv  = get_actor_private (mcw);
 
@@ -595,8 +611,44 @@ destroy (MutterWindow *mcw)
                                                  NULL);
     }
   else
-    meta_comp_clutter_plugin_effect_completed (plugin, mcw,
+    mutter_plugin_effect_completed (plugin, mcw,
                                        MUTTER_PLUGIN_DESTROY);
+}
+
+static void
+on_panel_effect_complete (ClutterActor *panel, gpointer data)
+{
+  gboolean       reactive = GPOINTER_TO_INT (data);
+  MutterPlugin  *plugin = get_plugin ();
+  PluginPrivate *priv = plugin->plugin_private;
+  gint           screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+
+  if (reactive)
+    {
+      priv->panel_out_in_progress = FALSE;
+      mutter_plugin_set_stage_reactive (plugin, reactive);
+    }
+  else
+    {
+      priv->panel_back_in_progress = FALSE;
+      mutter_plugin_set_stage_input_area (plugin, 0, 0,
+                                          screen_width, 1);
+    }
+}
+
+static gboolean
+xevent_filter (XEvent *xev)
+{
+  MutterPlugin *plugin = get_plugin ();
+  ClutterActor                *stage;
+
+  stage = mutter_plugin_get_stage (plugin);
+
+  clutter_x11_handle_event (xev);
+
+  return FALSE;
 }
 
 static void
@@ -674,30 +726,100 @@ g_module_check_init (GModule *module)
 }
 #endif
 
+static gboolean
+stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
+{
+  if (event->type == CLUTTER_MOTION)
+    {
+      ClutterMotionEvent *mev = (ClutterMotionEvent *) event;
+      MutterPlugin       *plugin = get_plugin ();
+      PluginPrivate      *priv   = plugin->plugin_private;
+
+      if (priv->panel_out_in_progress || priv->panel_back_in_progress)
+        return FALSE;
+
+      if (priv->panel_out)
+        {
+          guint height = clutter_actor_get_height (priv->panel);
+          gint  x      = clutter_actor_get_x (priv->panel);
+
+          if (mev->y > (gint)height)
+            {
+              priv->panel_back_in_progress  = TRUE;
+              clutter_effect_move (priv->panel_slide_effect,
+                                   priv->panel, x, -height,
+                                   on_panel_effect_complete,
+                                   GINT_TO_POINTER (FALSE));
+              priv->panel_out = FALSE;
+            }
+
+          return TRUE;
+        }
+      else if (mev->y < PANEL_SLIDE_THRESHOLD)
+        {
+          gint  x = clutter_actor_get_x (priv->panel);
+
+          priv->panel_out_in_progress  = TRUE;
+          clutter_effect_move (priv->panel_slide_effect,
+                               priv->panel, x, 0,
+                               on_panel_effect_complete,
+                               GINT_TO_POINTER (TRUE));
+
+          priv->panel_out = TRUE;
+
+          return TRUE;
+        }
+
+      return FALSE;
+    }
+
+  return FALSE;
+}
+
+static ClutterActor *
+make_panel (gint width)
+{
+  ClutterActor *panel;
+  ClutterActor *background;
+  ClutterColor  clr = {0xff, 0, 0, 0xff};
+
+  panel = clutter_group_new ();
+
+  /* FIME -- size and color */
+  background = clutter_rectangle_new_with_color (&clr);
+  clutter_container_add_actor (CLUTTER_CONTAINER (panel), background);
+  clutter_actor_set_size (background, width, PANEL_HEIGHT);
+
+  return panel;
+}
+
 /*
  * Core of the plugin init function, called for initial initialization and
  * by the reload() function. Returns TRUE on success.
  */
 static gboolean
-do_init ()
+do_init (const char *params)
 {
   MutterPlugin *plugin = get_plugin ();
 
   PluginPrivate *priv = g_new0 (PluginPrivate, 1);
-  const gchar   *params;
-  guint          destroy_timeout  = DESTROY_TIMEOUT;
-  guint          minimize_timeout = MINIMIZE_TIMEOUT;
-  guint          maximize_timeout = MAXIMIZE_TIMEOUT;
-  guint          map_timeout      = MAP_TIMEOUT;
-  guint          switch_timeout   = SWITCH_TIMEOUT;
+  guint          destroy_timeout     = DESTROY_TIMEOUT;
+  guint          minimize_timeout    = MINIMIZE_TIMEOUT;
+  guint          maximize_timeout    = MAXIMIZE_TIMEOUT;
+  guint          map_timeout         = MAP_TIMEOUT;
+  guint          switch_timeout      = SWITCH_TIMEOUT;
+  guint          panel_slide_timeout = PANEL_SLIDE_TIMEOUT;
   const gchar   *name;
+  ClutterActor  *overlay;
+  ClutterActor  *panel;
+  gint           screen_width, screen_height;
 
   plugin->plugin_private = priv;
 
   name = plugin->name;
   plugin->name = _(name);
 
-  params = plugin->params;
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   if (params)
     {
@@ -706,7 +828,7 @@ do_init ()
       if (strstr (params, "debug"))
         {
           g_debug ("%s: Entering debug mode.",
-                   MUTTER_PLUGIN_STRUCT.name);
+                   plugin->name);
 
           priv->debug_mode = TRUE;
 
@@ -777,17 +899,35 @@ do_init ()
 							switch_timeout),
                                     CLUTTER_ALPHA_SINE_INC);
 
-  return TRUE;
-}
+  overlay = mutter_plugin_get_overlay_group (plugin);
 
-MUTTER_PLUGIN_INIT_FUNC
-{
-  return do_init ();
+  panel = priv->panel = make_panel (screen_width);
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), panel);
+
+  priv->panel_slide_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							panel_slide_timeout),
+                                    CLUTTER_ALPHA_SINE_INC);
+
+  clutter_actor_set_position (panel, 0,
+                              -clutter_actor_get_height (panel));
+
+  g_signal_connect (mutter_plugin_get_stage (plugin),
+                    "motion-event", G_CALLBACK (stage_input_cb), NULL);
+
+  mutter_plugin_set_stage_input_area (plugin, 0, 0, screen_width, 1);
+
+  clutter_set_motion_events_enabled (TRUE);
+
+  return TRUE;
 }
 
 static void
 free_plugin_private (PluginPrivate *priv)
 {
+  if (!priv)
+    return;
+
   g_object_unref (priv->destroy_effect);
   g_object_unref (priv->minimize_effect);
   g_object_unref (priv->maximize_effect);
@@ -795,7 +935,7 @@ free_plugin_private (PluginPrivate *priv)
 
   g_free (priv);
 
-  MUTTER_PLUGIN_STRUCT.plugin_private = NULL;
+  get_plugin()->plugin_private = NULL;
 }
 
 /*
@@ -803,13 +943,12 @@ free_plugin_private (PluginPrivate *priv)
  * changed.
  */
 static gboolean
-reload ()
+reload (const char *params)
 {
-  PluginPrivate *priv;
+  MutterPlugin  *plugin = get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
 
-  priv = MUTTER_PLUGIN_STRUCT.plugin_private;
-
-  if (do_init ())
+  if (do_init (params))
     {
       /* Success; free the old private struct */
       free_plugin_private (priv);
@@ -818,7 +957,7 @@ reload ()
   else
     {
       /* Fail -- fall back to the old private. */
-      MUTTER_PLUGIN_STRUCT.plugin_private = priv;
+      plugin->plugin_private = priv;
     }
 
   return FALSE;
@@ -827,12 +966,10 @@ reload ()
 /*
  * GModule unload function -- do any cleanup required.
  */
-void g_module_unload (GModule *module);
-void g_module_unload (GModule *module)
+G_MODULE_EXPORT void g_module_unload (GModule *module);
+G_MODULE_EXPORT void g_module_unload (GModule *module)
 {
-  PluginPrivate *priv;
-
-  priv = MUTTER_PLUGIN_STRUCT.plugin_private;
+  PluginPrivate *priv = get_plugin()->plugin_private;
 
   free_plugin_private (priv);
 }

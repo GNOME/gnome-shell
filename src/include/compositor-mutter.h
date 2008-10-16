@@ -69,5 +69,6 @@ void mutter_window_effect_completed (MutterWindow *actor, gulong event);
 
 ClutterActor * mutter_get_stage_for_screen (MetaScreen *screen);
 ClutterActor * mutter_get_overlay_group_for_screen (MetaScreen *screen);
+Window         mutter_get_overlay_window (MetaScreen *screen);
 
 #endif

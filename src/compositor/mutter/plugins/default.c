@@ -202,8 +202,8 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
   state->desktop1 = NULL;
   state->desktop2 = NULL;
 
-  meta_comp_clutter_plugin_effect_completed (&mutter_plugin, actor_for_cb,
-                       MUTTER_PLUGIN_SWITCH_WORKSPACE);
+  mutter_plugin_effect_completed (&mutter_plugin, actor_for_cb,
+                                  MUTTER_PLUGIN_SWITCH_WORKSPACE);
 }
 
 static void
@@ -219,9 +219,9 @@ switch_workspace (const GList **actors, gint from, gint to,
   ClutterActor                *stage;
   int			       screen_width, screen_height;
 
-  stage = meta_comp_clutter_plugin_get_stage (plugin);
+  stage = mutter_plugin_get_stage (plugin);
 
-  meta_comp_clutter_plugin_query_screen_size (plugin,
+  mutter_plugin_query_screen_size (plugin,
 					      &screen_width,
 					      &screen_height);
   clutter_actor_set_anchor_point (workspace1,
@@ -238,7 +238,7 @@ switch_workspace (const GList **actors, gint from, gint to,
 
   if (from == to)
     {
-      meta_comp_clutter_plugin_effect_completed (&mutter_plugin, NULL,
+      mutter_plugin_effect_completed (&mutter_plugin, NULL,
                            MUTTER_PLUGIN_SWITCH_WORKSPACE);
       return;
     }
@@ -331,7 +331,7 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
   /* Decrease the running effect counter */
   mutter_plugin.running--;
   /* Now notify the manager that we are done with this effect */
-  meta_comp_clutter_plugin_effect_completed (&mutter_plugin, mc_window,
+  mutter_plugin_effect_completed (&mutter_plugin, mc_window,
                                       MUTTER_PLUGIN_MINIMIZE);
 }
 
@@ -368,7 +368,7 @@ minimize (MutterWindow *mc_window)
                                                   NULL);
     }
   else
-    meta_comp_clutter_plugin_effect_completed (&mutter_plugin, mc_window,
+    mutter_plugin_effect_completed (&mutter_plugin, mc_window,
                                        MUTTER_PLUGIN_MINIMIZE);
 }
 
@@ -396,7 +396,7 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin.running--;
 
   /* Now notify the manager that we are done with this effect */
-  meta_comp_clutter_plugin_effect_completed (&mutter_plugin, mc_window,
+  mutter_plugin_effect_completed (&mutter_plugin, mc_window,
                                      MUTTER_PLUGIN_MAXIMIZE);
 }
 
@@ -459,7 +459,7 @@ maximize (MutterWindow *mc_window,
       return;
     }
 
-  meta_comp_clutter_plugin_effect_completed (&mutter_plugin, mc_window,
+  mutter_plugin_effect_completed (&mutter_plugin, mc_window,
                                       MUTTER_PLUGIN_MAXIMIZE);
 }
 
@@ -482,7 +482,7 @@ unmaximize (MutterWindow *mc_window,
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
-  meta_comp_clutter_plugin_effect_completed (&mutter_plugin, mc_window,
+  mutter_plugin_effect_completed (&mutter_plugin, mc_window,
                                    MUTTER_PLUGIN_UNMAXIMIZE);
 }
 
@@ -504,7 +504,7 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin.running--;
 
   /* Now notify the manager that we are done with this effect */
-  meta_comp_clutter_plugin_effect_completed (&mutter_plugin, mc_window,
+  mutter_plugin_effect_completed (&mutter_plugin, mc_window,
                                         MUTTER_PLUGIN_MAP);
 }
 
@@ -544,7 +544,7 @@ map (MutterWindow *mc_window)
 
     }
   else
-    meta_comp_clutter_plugin_effect_completed (&mutter_plugin, mc_window,
+    mutter_plugin_effect_completed (&mutter_plugin, mc_window,
                                            MUTTER_PLUGIN_MAP);
 }
 
@@ -564,7 +564,7 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 
   mutter_plugin.running--;
 
-  meta_comp_clutter_plugin_effect_completed (plugin, mc_window,
+  mutter_plugin_effect_completed (plugin, mc_window,
                                        MUTTER_PLUGIN_DESTROY);
 }
 
@@ -597,7 +597,7 @@ destroy (MutterWindow *mc_window)
                                                  NULL);
     }
   else
-    meta_comp_clutter_plugin_effect_completed (&mutter_plugin, mc_window,
+    mutter_plugin_effect_completed (&mutter_plugin, mc_window,
                                        MUTTER_PLUGIN_DESTROY);
 }
 
