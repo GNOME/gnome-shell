@@ -70,4 +70,7 @@ void meta_compositor_clutter_window_effect_completed (MetaCompWindow *actor, gul
 ClutterActor * meta_compositor_clutter_get_stage_for_screen (MetaScreen *screen);
 ClutterActor * meta_compositor_clutter_get_overlay_group_for_screen (MetaScreen *screen);
 
+Window meta_compositor_clutter_get_overlay_window (MetaScreen *screen);
+
+
 #endif

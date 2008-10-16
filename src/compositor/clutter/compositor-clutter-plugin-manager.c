@@ -29,6 +29,9 @@
 
 #include <gmodule.h>
 #include <string.h>
+#include <X11/Xlib.h>
+#include <X11/extensions/Xfixes.h>
+#include <X11/extensions/shape.h>
 
 static gboolean meta_compositor_clutter_plugin_manager_reload (MetaCompositorClutterPluginManager *mgr);
 
@@ -708,5 +711,35 @@ meta_comp_clutter_plugin_effect_completed (MetaCompositorClutterPlugin *plugin,
     }
 
   meta_compositor_clutter_window_effect_completed (actor, event);
+}
+
+
+void
+meta_comp_clutter_plugin_set_stage_reactive (MetaCompositorClutterPlugin *plugin,
+                                             gboolean reactive)
+{
+  MetaCompositorClutterPluginPrivate *priv = plugin->manager_private;
+  MetaCompositorClutterPluginManager *mgr  = priv->self;
+  MetaDisplay *display = meta_screen_get_display (mgr->screen);
+  Display     *xdpy    = meta_display_get_xdisplay (display);
+  Window       overlay;
+
+  overlay = meta_compositor_clutter_get_overlay_window (mgr->screen);
+
+  static XserverRegion region = None;
+
+  if (region == None)
+    region = XFixesCreateRegion (xdpy, NULL, 0);
+
+  if (reactive)
+    {
+      XFixesSetWindowShapeRegion (xdpy, overlay,
+                                  ShapeInput, 0, 0, None);
+    }
+  else
+    {
+      XFixesSetWindowShapeRegion (xdpy, overlay,
+                                  ShapeInput, 0, 0, region);
+    }
 }
 

@@ -243,4 +243,9 @@ meta_comp_clutter_plugin_get_overlay_group (MetaCompositorClutterPlugin *plugin)
 
 ClutterActor *
 meta_comp_clutter_plugin_get_stage (MetaCompositorClutterPlugin *plugin);
+
+void
+meta_comp_clutter_plugin_set_stage_reactive (MetaCompositorClutterPlugin *plugin,
+                                             gboolean reactive);
+
 #endif

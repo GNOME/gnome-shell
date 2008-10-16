@@ -2247,6 +2247,15 @@ meta_compositor_clutter_new (MetaDisplay *display)
 #endif
 }
 
+Window
+meta_compositor_clutter_get_overlay_window (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  return info->output;
+}
+
+
 /* ------------------------------- */
 /* Shadow Generation */
 
