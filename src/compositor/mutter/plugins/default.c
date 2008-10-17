@@ -105,7 +105,7 @@ G_MODULE_EXPORT MutterPlugin mutter_plugin =
 /*
  * Plugin private data that we store in the .plugin_private member.
  */
-typedef struct _DefaultPluginState
+typedef struct _PluginState
 {
   ClutterEffectTemplate *destroy_effect;
   ClutterEffectTemplate *minimize_effect;
@@ -121,7 +121,7 @@ typedef struct _DefaultPluginState
   ClutterActor          *desktop2;
 
   gboolean               debug_mode : 1;
-} DefaultPluginState;
+} PluginState;
 
 /*
  * Per actor private data we attach to each actor.
@@ -139,7 +139,7 @@ typedef struct _ActorPrivate
   gboolean      is_maximized : 1;
 } ActorPrivate;
 
-static DefaultPluginState *plugin_state;
+static PluginState *plugin_state;
 
 /*
  * Actor private data accessor
@@ -174,9 +174,9 @@ get_actor_private (MutterWindow *actor)
 static void
 on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 {
-  DefaultPluginState  *state = plugin_state;
-  GList               *l     = *((GList**)data);
-  MutterWindow        *actor_for_cb = l->data;
+  PluginState  *state = plugin_state;
+  GList        *l     = *((GList**)data);
+  MutterWindow *actor_for_cb = l->data;
 
   while (l)
     {
@@ -210,14 +210,14 @@ static void
 switch_workspace (const GList **actors, gint from, gint to,
                   MetaMotionDirection direction)
 {
-  MutterPlugin       *plugin = &mutter_plugin;
-  DefaultPluginState *state  = plugin_state;
-  GList              *l;
-  gint                n_workspaces;
-  ClutterActor       *workspace0  = clutter_group_new ();
-  ClutterActor       *workspace1  = clutter_group_new ();
-  ClutterActor       *stage;
-  int                 screen_width, screen_height;
+  MutterPlugin *plugin = &mutter_plugin;
+  PluginState  *state  = plugin_state;
+  GList        *l;
+  gint          n_workspaces;
+  ClutterActor *workspace0  = clutter_group_new ();
+  ClutterActor *workspace1  = clutter_group_new ();
+  ClutterActor *stage;
+  int           screen_width, screen_height;
 
   stage = mutter_plugin_get_stage (plugin);
 
@@ -342,7 +342,7 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
 static void
 minimize (MutterWindow *mc_window)
 {
-  DefaultPluginState *state  = plugin_state;
+  PluginState        *state  = plugin_state;
   MetaCompWindowType  type;
   ClutterActor       *actor  = CLUTTER_ACTOR (mc_window);
 
@@ -615,7 +615,7 @@ kill_effect (MutterWindow *mc_window, gulong event)
 
   if (event & MUTTER_PLUGIN_SWITCH_WORKSPACE)
     {
-      DefaultPluginState *state = plugin_state;
+      PluginState *state = plugin_state;
 
       if (state->tml_switch_workspace1)
         {
@@ -688,7 +688,7 @@ do_init (const char *params)
   guint map_timeout      = MAP_TIMEOUT;
   guint switch_timeout   = SWITCH_TIMEOUT;
 
-  plugin_state = g_new0 (DefaultPluginState, 1);
+  plugin_state = g_new0 (PluginState, 1);
 
   if (params)
     {
@@ -739,7 +739,7 @@ do_init (const char *params)
 }
 
 static void
-free_plugin_private (DefaultPluginState *state)
+free_plugin_private (PluginState *state)
 {
   if (!state)
     return;
@@ -759,7 +759,7 @@ free_plugin_private (DefaultPluginState *state)
 static gboolean
 reload (const char *params)
 {
-  DefaultPluginState *state;
+  PluginState *state;
 
   state = plugin_state;
 
