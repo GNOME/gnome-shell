@@ -22,10 +22,10 @@
 #include <config.h>
 #include "compositor-private.h"
 #include "compositor-xrender.h"
-#include "compositor-mutter.h"
 #include "prefs.h"
 
 #ifdef WITH_CLUTTER
+#include "compositor-mutter.h"
 int meta_compositor_can_use_clutter__ = 0;
 #endif
 
