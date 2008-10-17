@@ -1,3 +1,8 @@
+2008-10-17  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-color.c (clutter_color_parse): Add checks
+	for the arguments, to avoid trying to parse NULL strings.
+
 2008-10-16  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-container.[ch]: Add checks to the Container

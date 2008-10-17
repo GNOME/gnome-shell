@@ -482,6 +482,9 @@ clutter_color_parse (const gchar  *color,
 {
   PangoColor pango_color;
 
+  g_return_val_if_fail (color != NULL, FALSE);
+  g_return_val_if_fail (dest != NULL, FALSE);
+
   /* parse ourselves to get alpha */
   if (color[0] == '#')
     {
@@ -491,9 +494,9 @@ clutter_color_parse (const gchar  *color,
 	{
 	  if (strlen (color) == 9)
 	    {
-	      dest->red   = result >> 24 & 0xff;
+	      dest->red   = (result >> 24) & 0xff;
 	      dest->green = (result >> 16) & 0xff;
-	      dest->blue  = (result >> 8) & 0xff;
+	      dest->blue  = (result >>  8) & 0xff;
 	      dest->alpha = result & 0xff;
 
 	      return TRUE;
@@ -501,7 +504,7 @@ clutter_color_parse (const gchar  *color,
 	  else if (strlen (color) == 7)
 	    {
 	      dest->red   = (result >> 16) & 0xff;
-	      dest->green = (result >> 8) & 0xff;
+	      dest->green = (result >>  8) & 0xff;
 	      dest->blue  = result & 0xff;
 	      dest->alpha = 0xff;
 
