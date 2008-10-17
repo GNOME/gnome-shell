@@ -972,12 +972,17 @@ clutter_param_fixed_get_type
 <FILE>clutter-color</FILE>
 <TITLE>Colors</TITLE>
 ClutterColor
+clutter_color_new
 clutter_color_copy
 clutter_color_free
+
+<SUBSECTION>
 clutter_color_parse
 clutter_color_from_hls
 clutter_color_from_hlsx
 clutter_color_from_pixel
+
+<SUBSECTION>
 clutter_color_add
 clutter_color_subtract
 clutter_color_equal
@@ -985,14 +990,29 @@ clutter_color_lighten
 clutter_color_darken
 clutter_color_shade
 clutter_color_shadex
+
+<SUBSECTION>
 clutter_color_to_hls
 clutter_color_to_hlsx
 clutter_color_to_pixel
 clutter_color_to_string
+
+<SUBSECTION>
+ClutterParamSpecColor
+clutter_param_spec_color
+CLUTTER_VALUE_HOLDS_COLOR
+clutter_value_set_color
+clutter_value_get_color
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_COLOR
+CLUTTER_TYPE_PARAM_COLOR
+CLUTTER_PARAM_SPEC_COLOR
+CLUTTER_IS_PARAM_SPEC_COLOR
+
 <SUBSECTION Private>
 clutter_color_get_type
+clutter_param_color_get_type
 </SECTION>
 
 <SECTION>

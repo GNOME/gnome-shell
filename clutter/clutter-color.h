@@ -103,6 +103,50 @@ guint32       clutter_color_to_pixel   (const ClutterColor *src);
 void          clutter_color_from_pixel (ClutterColor       *dest,
                                         guint32             pixel);
 
+
+
+
+#define CLUTTER_TYPE_PARAM_COLOR           (clutter_param_color_get_type ())
+#define CLUTTER_PARAM_SPEC_COLOR(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), CLUTTER_TYPE_PARAM_COLOR, ClutterParamSpecColor))
+#define CLUTTER_IS_PARAM_SPEC_COLOR(pspec) (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), CLUTTER_TYPE_PARAM_COLOR))
+#define CLUTTER_VALUE_HOLDS_COLOR(x)       (G_VALUE_HOLDS ((x), CLUTTER_TYPE_COLOR))
+
+/**
+ * CLUTTER_VALUE_HOLDS_COLOR:
+ * @x: a #GValue
+ *
+ * Evaluates to %TRUE if @x holds a #ClutterColor<!-- -->.
+ *
+ * Since: 1.0
+ */
+
+typedef struct _ClutterParamSpecColor  ClutterParamSpecColor;
+
+/**
+  * ClutterParamSpecColor:
+  * @default_value: default color value
+  */
+struct _ClutterParamSpecColor
+{
+  /*< private >*/
+  GParamSpec    parent_instance;
+
+  /*< public >*/
+  ClutterColor *default_value;
+};
+
+GType               clutter_param_color_get_type (void) G_GNUC_CONST;
+
+void                clutter_value_set_color (GValue        *value,
+                                             ClutterColor  *color);
+const ClutterColor *clutter_value_get_color (const GValue  *value);
+
+GParamSpec         *clutter_param_spec_color (const gchar        *name,
+                                              const gchar        *nick,
+                                              const gchar        *blurb,
+                                              const ClutterColor *default_value,
+                                              GParamFlags         flags);
+
 G_END_DECLS
 
-#endif
+#endif /* _HAVE_CLUTTER_COLOR_H */

@@ -1,3 +1,8 @@
+2008-10-17  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-sections.txt: Add the new ClutterColor
+	symbols.
+
 2008-09-25  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-sections.txt: Add

@@ -1,3 +1,18 @@
+2008-10-17  Thomas Wood  <thomas@linux.intel.com>
+
+	reviewed by: Emmanuele Bassi <ebassi@linux.intel.com>
+
+	* clutter/clutter-color.[ch]: Add GParamSpec and GValue integration
+	for ClutterColor. With ClutterParamSpecColor it is possible to define
+	color properties; with the GValue integration it's possible to
+	automatically transform strings into colors and vice versa.
+
+	(clutter_color_free): Allow NULL parameter to match other boxed
+	types destructors.
+
+	(clutter_color_new): Add a constructor for the ClutterColor boxed
+	type, mostly for bindings.
+
 2008-10-17  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-color.c (clutter_color_parse): Add checks
