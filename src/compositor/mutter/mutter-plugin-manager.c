@@ -52,6 +52,10 @@ typedef struct MutterPluginPrivate
   MutterPluginManager *self;
   GModule                            *module;
   gulong			      features;
+  /* We use this to track the number of effects currently being managed
+   * by a plugin. Currently this is used to block unloading while effects
+   * are in progress. */
+  gint				      running; 
 
   gboolean disabled : 1;
 } MutterPluginPrivate;
@@ -224,7 +228,7 @@ mutter_plugin_unload (MutterPlugin *plugin)
   priv = plugin->manager_private;
   module = priv->module;
 
-  if (plugin->running)
+  if (priv->running)
     {
       priv->disabled = TRUE;
       return FALSE;
@@ -560,6 +564,7 @@ mutter_plugin_manager_event_simple (
 		      actor,
 		      ALL_BUT_SWITCH);
 
+		  priv->running++;
                   plugin->minimize (actor);
                 }
               break;
@@ -571,12 +576,14 @@ mutter_plugin_manager_event_simple (
 		      actor,
 		      ALL_BUT_SWITCH);
 
+		  priv->running++;
                   plugin->map (actor);
                 }
               break;
             case MUTTER_PLUGIN_DESTROY:
               if (plugin->destroy)
                 {
+		  priv->running++;
                   plugin->destroy (actor);
                 }
               break;
@@ -767,6 +774,10 @@ mutter_plugin_effect_completed (MutterPlugin *plugin,
                                 MutterWindow *actor,
                                 unsigned long event)
 {
+  MutterPluginPrivate *priv = plugin->manager_private;
+
+  priv->running--;
+
   if (!actor)
     {
       g_warning ("Plugin [%s] passed NULL for actor!",

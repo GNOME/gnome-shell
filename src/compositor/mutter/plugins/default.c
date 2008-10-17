@@ -328,8 +328,6 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
   clutter_actor_move_anchor_point_from_gravity (actor,
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
-  /* Decrease the running effect counter */
-  mutter_plugin.running--;
   /* Now notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (&mutter_plugin, mc_window,
                                   MUTTER_PLUGIN_MINIMIZE);
@@ -356,8 +354,6 @@ minimize (MutterWindow *mc_window)
 
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
-
-      mutter_plugin.running++;
 
       apriv->tml_minimize = clutter_effect_scale (state->minimize_effect,
                                                   actor,
@@ -391,9 +387,6 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
   clutter_actor_set_scale (actor, 1.0, 1.0);
   clutter_actor_move_anchor_point_from_gravity (actor,
                                                 CLUTTER_GRAVITY_NORTH_WEST);
-
-  /* Decrease the running effect counter */
-  mutter_plugin.running--;
 
   /* Now notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (&mutter_plugin, mc_window,
@@ -500,9 +493,6 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
   clutter_actor_move_anchor_point_from_gravity (actor,
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
-  /* Decrease the running effect counter */
-  mutter_plugin.running--;
-
   /* Now notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (&mutter_plugin, mc_window, MUTTER_PLUGIN_MAP);
 }
@@ -526,8 +516,6 @@ map (MutterWindow *mc_window)
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
 
-      mutter_plugin.running++;
-
       clutter_actor_set_scale (actor, 0.0, 0.0);
       clutter_actor_show (actor);
 
@@ -549,8 +537,7 @@ map (MutterWindow *mc_window)
 
 /*
  * Destroy effect completion callback; this is a simple effect that requires no
- * further action than decreasing the running effect counter and notifying the
- * manager that the effect is completed.
+ * further action than notifying the manager that the effect is completed.
  */
 static void
 on_destroy_effect_complete (ClutterActor *actor, gpointer data)
@@ -560,8 +547,6 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
   ActorPrivate *apriv = get_actor_private (mc_window);
 
   apriv->tml_destroy = NULL;
-
-  mutter_plugin.running--;
 
   mutter_plugin_effect_completed (plugin, mc_window,
                                   MUTTER_PLUGIN_DESTROY);
@@ -584,8 +569,6 @@ destroy (MutterWindow *mc_window)
 
       clutter_actor_move_anchor_point_from_gravity (actor,
                                                     CLUTTER_GRAVITY_CENTER);
-
-      mutter_plugin.running++;
 
       apriv->tml_destroy = clutter_effect_scale (plugin_state->destroy_effect,
                                                  actor,

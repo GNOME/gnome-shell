@@ -187,11 +187,6 @@ struct MutterPlugin
    * workspaces. */
   GList *work_areas;
 
-  /* FIXME: It should be possible to hide this from plugins */
-  gint   running; /* Plugin must increase this counter for each effect it starts
-                   * decrease it again once the effect finishes.
-                   */
-
   void  *plugin_private; /* Plugin private data go here; use the plugin init
                           * function to allocate and initialize any private
                           * data.
