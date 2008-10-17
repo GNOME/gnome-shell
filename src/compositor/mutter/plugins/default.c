@@ -332,7 +332,7 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin.running--;
   /* Now notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (&mutter_plugin, mc_window,
-                                      MUTTER_PLUGIN_MINIMIZE);
+                                  MUTTER_PLUGIN_MINIMIZE);
 }
 
 /*
@@ -397,7 +397,7 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
 
   /* Now notify the manager that we are done with this effect */
   mutter_plugin_effect_completed (&mutter_plugin, mc_window,
-                                     MUTTER_PLUGIN_MAXIMIZE);
+                                  MUTTER_PLUGIN_MAXIMIZE);
 }
 
 /*
@@ -564,7 +564,7 @@ on_destroy_effect_complete (ClutterActor *actor, gpointer data)
   mutter_plugin.running--;
 
   mutter_plugin_effect_completed (plugin, mc_window,
-                                       MUTTER_PLUGIN_DESTROY);
+                                  MUTTER_PLUGIN_DESTROY);
 }
 
 /*
