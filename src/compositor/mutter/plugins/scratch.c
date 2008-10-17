@@ -754,7 +754,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
               priv->panel_out = FALSE;
             }
 
-          return TRUE;
+          return FALSE;
         }
       else if (mev->y < PANEL_SLIDE_THRESHOLD)
         {
@@ -768,7 +768,7 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 
           priv->panel_out = TRUE;
 
-          return TRUE;
+          return FALSE;
         }
 
       return FALSE;
@@ -913,8 +913,12 @@ do_init (const char *params)
   clutter_actor_set_position (panel, 0,
                               -clutter_actor_get_height (panel));
 
+  /*
+   * Hook to the captured signal, so we get to see all events before our
+   * children and do not interfere with their event processing.
+   */
   g_signal_connect (mutter_plugin_get_stage (plugin),
-                    "motion-event", G_CALLBACK (stage_input_cb), NULL);
+                    "captured-event", G_CALLBACK (stage_input_cb), NULL);
 
   mutter_plugin_set_stage_input_area (plugin, 0, 0, screen_width, 1);
 
