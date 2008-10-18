@@ -1815,21 +1815,18 @@ meta_prefs_set_num_workspaces (int n_workspaces)
 #endif /* HAVE_GCONF */
 }
 
+#define item(name, suffix, param, flags, description, stroke) \
+  { #name suffix, NULL, flags & BINDING_REVERSES },
 static MetaKeyPref screen_bindings[] = {
-#define item(name, suffix, param, has_inverse, short, long, stroke) \
-  { #name suffix, NULL, has_inverse },
 #include "screen-bindings.h"
-#undef item
   { NULL, NULL, FALSE}
 };
 
 static MetaKeyPref window_bindings[] = {
-#define item(name, suffix, param, short, long, stroke) \
-  { #name suffix, NULL, FALSE },
 #include "window-bindings.h"
-#undef item
   { NULL, NULL, FALSE }
 };
+#undef item
 
 #ifndef HAVE_GCONF
 typedef struct
@@ -1839,14 +1836,14 @@ typedef struct
 } MetaSimpleKeyMapping;
 
 /* FIXME: This would be neater if the array only contained entries whose
- * default keystroke was non-null.  You can do this by defining
+ * default keystroke was non-null.  You COULD do this by defining
  * ONLY_BOUND_BY_DEFAULT around various blocks at the cost of making
  * the bindings file way more complicated.  However, we could stop this being
  * data and move it into code.  Then the compiler would optimise away
  * the problem lines.
  */
 static MetaSimpleKeyMapping screen_string_bindings[] = {
-#define item(name, suffix, param, is_reverse, short, long, keystroke) \
+#define item(name, suffix, param, flags, description, keystroke) \
   { #name suffix,                           keystroke                    },
 #include "screen-bindings.h"
 #undef item
@@ -1854,12 +1851,10 @@ static MetaSimpleKeyMapping screen_string_bindings[] = {
 };
 
 static MetaSimpleKeyMapping window_string_bindings[] = {
-#define ONLY_BOUND_BY_DEFAULT
-#define item(name, suffix, param, short, long, keystroke) \
+#define item(name, suffix, param, flags, description, keystroke) \
   { #name suffix,                           keystroke                    },
 #include "window-bindings.h"
 #undef item
-#undef ONLY_BOUND_BY_DEFAULT
   { NULL,                                   NULL                         }
 };
 

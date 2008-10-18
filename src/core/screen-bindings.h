@@ -59,12 +59,10 @@
  *       BINDING_IS_REVERSED - the same, but the senses are reversed from the
  *                             handler's point of view (let me know if I should
  *                             explain this better)
- *       
+ *
  *   5) a short description.  Mostly, you won't use this.
  *          It must be marked translatable (i.e. inside "_(...)").
- *   6) like short, except long.  Don't include all the stuff about
- *          the parser being fairly liberal.
- *   7) a string representing the default binding.
+ *   6) a string representing the default binding.
  *          If this is NULL, the action is unbound by default.
  *
  * Don't try to do XML entity escaping anywhere in the strings.
@@ -96,51 +94,39 @@
 
 item (switch_to_workspace, "_1", 1, 0,
         _("Switch to workspace 1"),
-        _("The keybinding that switches to workspace 1."),
         NULL)
 item (switch_to_workspace, "_2", 2, 0,
         _("Switch to workspace 2"),
-        _("The keybinding that switches to workspace 2."),
         NULL)
 item (switch_to_workspace, "_3", 3, 0,
         _("Switch to workspace 3"),
-        _("The keybinding that switches to workspace 3."),
         NULL)
 item (switch_to_workspace, "_4", 4, 0,
         _("Switch to workspace 4"),
-        _("The keybinding that switches to workspace 4."),
         NULL)
 item (switch_to_workspace, "_5", 5, 0,
         _("Switch to workspace 5"),
-        _("The keybinding that switches to workspace 5."),
         NULL)
 item (switch_to_workspace, "_6", 6, 0,
         _("Switch to workspace 6"),
-        _("The keybinding that switches to workspace 6."),
         NULL)
 item (switch_to_workspace, "_7", 7, 0,
         _("Switch to workspace 7"),
-        _("The keybinding that switches to workspace 7."),
         NULL)
 item (switch_to_workspace, "_8", 8, 0,
         _("Switch to workspace 8"),
-        _("The keybinding that switches to workspace 8."),
         NULL)
 item (switch_to_workspace, "_9", 9, 0,
         _("Switch to workspace 9"),
-        _("The keybinding that switches to workspace 9."),
         NULL)
 item (switch_to_workspace, "_10", 10, 0,
         _("Switch to workspace 10"),
-        _("The keybinding that switches to workspace 10."),
         NULL)
 item (switch_to_workspace, "_11", 11, 0,
         _("Switch to workspace 11"),
-        _("The keybinding that switches to workspace 11."),
         NULL)
 item (switch_to_workspace, "_12", 12, 0,
         _("Switch to workspace 12"),
-        _("The keybinding that switches to workspace 12."),
         NULL)
 
 /* META_MOTION_* are negative, and so distinct from workspace numbers,
@@ -152,27 +138,19 @@ item (switch_to_workspace, "_12", 12, 0,
  */
 
 item (switch_to_workspace, "_left",  META_MOTION_LEFT,  0,
-        _("Switch to workspace on the left"),
-        _("The keybinding that switches to the workspace on the left "
-          "of the current workspace."),
+        _("Switch to workspace on the left of the current workspace"),
         "<Control><Alt>Left")
 
 item (switch_to_workspace, "_right", META_MOTION_RIGHT, 0,
-        _("Switch to workspace on the right"),
-        _("The keybinding that switches to the workspace on the right "
-          "of the current workspace."),
+        _("Switch to workspace on the right of the current workspace"),
         "<Control><Alt>Right")
 
 item (switch_to_workspace, "_up",    META_MOTION_UP,    0,
-        _("Switch to workspace above this one"),
-        _("The keybinding that switches to the workspace above "
-          "the current workspace."),
+        _("Switch to workspace above the current workspace"),
         "<Control><Alt>Up")
 
 item (switch_to_workspace, "_down",  META_MOTION_DOWN,  0,
-        _("Switch to workspace below this one"),
-        _("The keybinding that switches to the workspace below "
-          "the current workspace."),
+        _("Switch to workspace below the current workspace"),
         "<Control><Alt>Down")
 
 /***********************************/
@@ -185,126 +163,107 @@ item (switch_to_workspace, "_down",  META_MOTION_DOWN,  0,
  */
 
 item (switch, "_group",            META_TAB_LIST_GROUP,    BINDING_REVERSES,
-        _("Move between windows of an application with popup"),
-        _("The keybinding used to move focus between windows of an"
-          "application, using a popup window."),           NULL)
+        _("Move between windows of an application, using a popup window"),
+        NULL)
 item (switch, "_group_backwards",  META_TAB_LIST_GROUP,    REVERSES_AND_REVERSED,
-        _("Move backwards between windows of an application with popup"),
-        _("The keybinding used to move focus backwards between windows"
-          "of an application, using a popup window."),     NULL)
+        _("Move backwards between windows of an application, "
+          "using a popup window"),
+        NULL)
 item (switch, "_windows",          META_TAB_LIST_NORMAL,   BINDING_REVERSES,
-        _("Move between windows with popup"),
-        _("The keybinding used to move focus between windows, "
-          "using a popup window."),                        "<Alt>Tab")
+        _("Move between windows, using a popup window"),
+        "<Alt>Tab")
 item (switch, "_windows_backwards",META_TAB_LIST_NORMAL,   REVERSES_AND_REVERSED,
-        _("Move focus backwards between windows using popup display"),
-        _("The keybinding used to move focus backwards between windows, "
-          "using a popup window."),                        NULL)
+        _("Move backwards between windows, using a popup window"),
+        NULL)
 item (switch, "_panels",           META_TAB_LIST_DOCKS,    BINDING_REVERSES,
-        _("Move between panels and the desktop with popup"),
-        _("The keybinding used to move focus between panels and the desktop, "
-          "using a popup window."),                        "<Control><Alt>Tab")
+        _("Move between panels and the desktop, using a popup window"),
+        "<Control><Alt>Tab")
 item (switch, "_panels_backwards", META_TAB_LIST_DOCKS,    REVERSES_AND_REVERSED,
-        _("Move backwards between panels and the desktop with popup"),
-        _("The keybinding used to move focus backwards between panels "
-          "and the desktop, using a popup window."),       NULL)
+        _("Move backwards between panels and the desktop, "
+          "using a popup window"),
+        NULL)
 item (cycle,  "_group",            META_TAB_LIST_GROUP,    BINDING_REVERSES,
         _("Move between windows of an application immediately"),
-        _("The keybinding used to move focus between windows of an "
-          "application without a popup window."),          "<Alt>F6")
+        "<Alt>F6")
 item (cycle,  "_group_backwards",  META_TAB_LIST_GROUP,    REVERSES_AND_REVERSED,
         _("Move backwards between windows of an application immediately"),
-        _("The keybinding used to move focus backwards between windows "
-          "of an application without a popup window."),    NULL)
+        NULL)
 item (cycle,  "_windows",          META_TAB_LIST_NORMAL,   BINDING_REVERSES,
         _("Move between windows immediately"),
-        _("The keybinding used to move focus between windows without "
-          "a popup window."),                              "<Alt>Escape")
+        "<Alt>Escape")
 item (cycle,  "_windows_backwards",META_TAB_LIST_NORMAL,   REVERSES_AND_REVERSED,
         _("Move backwards between windows immediately"),
-        _("The keybinding used to move focus backwards between windows "
-          "without a popup window."),                       NULL)
+        NULL)
 item (cycle,  "_panels",           META_TAB_LIST_DOCKS,    BINDING_REVERSES,
         _("Move between panels and the desktop immediately"),
-        _("The keybinding used to move focus between panels and "
-          "the desktop, without a popup window."),      "<Control><Alt>Escape")
+        "<Control><Alt>Escape")
 item (cycle,  "_panels_backwards", META_TAB_LIST_DOCKS,    REVERSES_AND_REVERSED,
-        _("Move backward between panels and the desktop immediately"),
-        _("The keybinding used to move focus backwards between panels and "
-          "the desktop, without a popup window."),         NULL)
+        _("Move backwards between panels and the desktop immediately"),
+        NULL)
 
 /***********************************/
      
 item (show_desktop, "", 0, 0,
-      _("Hide all windows and focus desktop"),
-      _("The keybinding used to hide all normal windows and set the "
-        "focus to the desktop background."),
+      _("Hide all normal windows and set focus to the desktop background"),
       "<Control><Alt>d")
 item (panel, "_main_menu", META_KEYBINDING_ACTION_PANEL_MAIN_MENU, 0,
-      _("Show the panel menu"),
-      _("The keybinding which shows the panel's main menu."),
+      _("Show the panel's main menu"),
       "<Alt>F1")
 item (panel, "_run_dialog", META_KEYBINDING_ACTION_PANEL_RUN_DIALOG, 0,
-      _("Show the panel run application dialog"),
-      _("The keybinding which display's the panel's \"Run Application\" "
-        "dialog box."),
+      _("Show the panel's \"Run Application\" dialog box"),
       "<Alt>F2")
 
 /* Yes, the param is offset by one.  Historical reasons.  (Maybe worth fixing
- * at some point.)  The short and long are NULL here because the stanza is
+ * at some point.)  The description is NULL here because the stanza is
  * irregularly shaped in metacity.schemas.in.  This will probably be fixed
  * as well.
  */
-item (run_command, "_1",   0, 0, NULL, NULL, NULL)
-item (run_command, "_2",   1, 0, NULL, NULL, NULL)
-item (run_command, "_3",   2, 0, NULL, NULL, NULL)
-item (run_command, "_4",   3, 0, NULL, NULL, NULL)
-item (run_command, "_5",   4, 0, NULL, NULL, NULL)
-item (run_command, "_6",   5, 0, NULL, NULL, NULL)
-item (run_command, "_7",   6, 0, NULL, NULL, NULL)
-item (run_command, "_8",   7, 0, NULL, NULL, NULL)
-item (run_command, "_9",   8, 0, NULL, NULL, NULL)
-item (run_command, "_10",  9, 0, NULL, NULL, NULL)
-item (run_command, "_11", 10, 0, NULL, NULL, NULL)
-item (run_command, "_12", 11, 0, NULL, NULL, NULL)
-item (run_command, "_13", 12, 0, NULL, NULL, NULL)
-item (run_command, "_14", 13, 0, NULL, NULL, NULL)
-item (run_command, "_15", 14, 0, NULL, NULL, NULL)
-item (run_command, "_16", 15, 0, NULL, NULL, NULL)
-item (run_command, "_17", 16, 0, NULL, NULL, NULL)
-item (run_command, "_18", 17, 0, NULL, NULL, NULL)
-item (run_command, "_19", 18, 0, NULL, NULL, NULL)
-item (run_command, "_20", 19, 0, NULL, NULL, NULL)
-item (run_command, "_21", 20, 0, NULL, NULL, NULL)
-item (run_command, "_22", 21, 0, NULL, NULL, NULL)
-item (run_command, "_23", 22, 0, NULL, NULL, NULL)
-item (run_command, "_24", 23, 0, NULL, NULL, NULL)
-item (run_command, "_25", 24, 0, NULL, NULL, NULL)
-item (run_command, "_26", 25, 0, NULL, NULL, NULL)
-item (run_command, "_27", 26, 0, NULL, NULL, NULL)
-item (run_command, "_28", 27, 0, NULL, NULL, NULL)
-item (run_command, "_29", 28, 0, NULL, NULL, NULL)
-item (run_command, "_30", 29, 0, NULL, NULL, NULL)
-item (run_command, "_31", 30, 0, NULL, NULL, NULL)
-item (run_command, "_32", 31, 0, NULL, NULL, NULL)
+item (run_command, "_1",   0, 0, NULL, NULL)
+item (run_command, "_2",   1, 0, NULL, NULL)
+item (run_command, "_3",   2, 0, NULL, NULL)
+item (run_command, "_4",   3, 0, NULL, NULL)
+item (run_command, "_5",   4, 0, NULL, NULL)
+item (run_command, "_6",   5, 0, NULL, NULL)
+item (run_command, "_7",   6, 0, NULL, NULL)
+item (run_command, "_8",   7, 0, NULL, NULL)
+item (run_command, "_9",   8, 0, NULL, NULL)
+item (run_command, "_10",  9, 0, NULL, NULL)
+item (run_command, "_11", 10, 0, NULL, NULL)
+item (run_command, "_12", 11, 0, NULL, NULL)
+item (run_command, "_13", 12, 0, NULL, NULL)
+item (run_command, "_14", 13, 0, NULL, NULL)
+item (run_command, "_15", 14, 0, NULL, NULL)
+item (run_command, "_16", 15, 0, NULL, NULL)
+item (run_command, "_17", 16, 0, NULL, NULL)
+item (run_command, "_18", 17, 0, NULL, NULL)
+item (run_command, "_19", 18, 0, NULL, NULL)
+item (run_command, "_20", 19, 0, NULL, NULL)
+item (run_command, "_21", 20, 0, NULL, NULL)
+item (run_command, "_22", 21, 0, NULL, NULL)
+item (run_command, "_23", 22, 0, NULL, NULL)
+item (run_command, "_24", 23, 0, NULL, NULL)
+item (run_command, "_25", 24, 0, NULL, NULL)
+item (run_command, "_26", 25, 0, NULL, NULL)
+item (run_command, "_27", 26, 0, NULL, NULL)
+item (run_command, "_28", 27, 0, NULL, NULL)
+item (run_command, "_29", 28, 0, NULL, NULL)
+item (run_command, "_30", 29, 0, NULL, NULL)
+item (run_command, "_31", 30, 0, NULL, NULL)
+item (run_command, "_32", 31, 0, NULL, NULL)
 
 item (run_command, "_screenshot", 32, 0,
       _("Take a screenshot"),
-      _("The keybinding which invokes the panel's screenshot utility."),
       "Print")
 item (run_command, "_window_screenshot", 33, 0,
       _("Take a screenshot of a window"),
-      _("The keybinding which invokes the panel's screenshot utility "
-        "to take a screenshot of a window."),
       "<Alt>Print")
 
 item (run_terminal, "", 0, 0,
       _("Run a terminal"),
-      _("The keybinding which invokes a terminal."),
       NULL)
 
-/* No descriptions because this is undocumented */
-item (set_spew_mark, "", 0, 0, NULL, NULL, NULL)
+/* No description because this is undocumented */
+item (set_spew_mark, "", 0, 0, NULL, NULL)
 
 #undef REVERSES_AND_REVERSED
 

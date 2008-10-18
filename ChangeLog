@@ -1,3 +1,26 @@
+2008-10-18  Thomas Thurman  <tthurman@gnome.org>
+
+        During a discussion with Rodney Dawes about making life easier
+        for the translators, he pointed out that the short and long
+        forms of almost all the keybindings say much the same thing
+        in different words.  I believe this is an unconscionable burden
+        to place on translators, and have therefore merged the short
+        and long descriptions into the short description.  The long
+        is now a general explanation of the format, plus possibly a
+        notice about reversibility.  Closes #469361, and should solve
+        the l10n issue previously mentioned.
+
+        * src/core/keybindings.c: reflect changes in *-bindings.h
+        * src/core/schema-bindings.c: reflect changes in *-bindings.h
+        * src/core/prefs.c: reflect changes in *-bindings.h
+        * src/core/window-bindings.h: Add flags field, always the same
+          currently, so that it's the same as screen-bindings.h.
+          Also, lose ONLY_BOUND_BY_DEFAULT, since we already had a
+          rather more elegant way to perform the same effect.
+          And merge the long and short descriptions.
+        * src/core/screen-bindings.h (, item): Merge the long and
+          short descriptions.
+
 2008-10-17  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Call GNOME_DOC_INIT() so we can use the gnome-doc-utils 

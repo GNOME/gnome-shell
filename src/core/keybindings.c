@@ -55,7 +55,7 @@ typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
                                      MetaKeyBinding *binding);
 
 /* Prototypes for handlers */
-#define item(name, suffix, param, short, long, stroke) \
+#define item(name, suffix, param, flags, description, stroke) \
 static void \
 handle_##name (MetaDisplay    *display,\
                MetaScreen     *screen,\
@@ -65,7 +65,7 @@ handle_##name (MetaDisplay    *display,\
 #include "window-bindings.h"
 #undef item
 
-#define item(name, suffix, param, can_reverse, short, long, stroke) \
+#define item(name, suffix, param, flags, description, stroke) \
 static void \
 handle_##name (MetaDisplay    *display,\
                MetaScreen     *screen,\
@@ -135,7 +135,7 @@ struct _MetaKeyBinding
 };
 
 static const MetaKeyHandler screen_handlers[] = {
-#define item(name, suffix, param, flags, short, long, stroke) \
+#define item(name, suffix, param, flags, description, stroke) \
    { #name suffix, handle_##name, param, flags },
 #include "screen-bindings.h"
 #undef item
@@ -143,14 +143,11 @@ static const MetaKeyHandler screen_handlers[] = {
 };
   
 static const MetaKeyHandler window_handlers[] = {
-/* FIXME: The flags=1 thing is pretty ugly here, but it'll really have
- * to wait until and if we merge the window and screen binding files.
- *
- * TODO: Are window bindings only ever called on non-null windows?
+/* TODO: Are window bindings only ever called on non-null windows?
  * If so, we can remove the check from all of them.
  */
-#define item(name, suffix, param, short, long, stroke) \
-  { #name suffix, handle_##name, param, 1 },
+#define item(name, suffix, param, flags, description, stroke) \
+  { #name suffix, handle_##name, param, flags },
 #include "window-bindings.h"
 #undef item
    { NULL, NULL, 0, 0 }

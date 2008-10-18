@@ -43,26 +43,23 @@
  * process.
  *
  * The arguments to item() are:
- *   1) name: the name of the binding; a bareword identifier
- *   2) suffix: a string to add to the binding name to make the handler name
+ *   1) the name of the binding; a bareword identifier
+ *   2) a suffix to add to the binding name to make the handler name
  *              (usually the empty string)
- *   3) param: an integer parameter to pass to the handler
- *   4) short: a short description.  Mostly, you won't use this.
- *             It must be marked translatable (i.e. inside "_(...)").
- *   5) long: like short, except long.  Don't include all the stuff about
- *            the parser being fairly liberal.
- *   6) keystroke: a string representing the default binding.
- *            If this is NULL, the action is unbound by default.
+ *   3) an integer parameter to pass to the handler
+ *   4) a set of boolean flags, ORed together.
+ *         This is used in *this* file for completeness, but at present
+ *         is not checked anywhere.  We use the flag BINDING_PER_WINDOW
+ *         on all window-based bindings (i.e. every binding in this file).
+ *   5) a short description.  Mostly, you won't use this.
+ *         It must be marked translatable (i.e. inside "_(...)").
+ *   6) a string representing the default binding.
+ *         If this is NULL, the action is unbound by default.
  *
  * Don't try to do XML entity escaping anywhere in the strings.
  *
- * Some code out there wants only the entries which have a default
- * binding (i.e. whose sixth parameter is not NULL).  You can get only these
- * by defining ONLY_BOUND_BY_DEFAULT before you include this file.
- * 
  * Possible future work:
  *  - merge with screen-bindings.h somehow
- *  - ONLY_BOUND_BY_DEFAULT is crack, get rid of it
  *  - "suffix" is confusing; write it out in full
  */
 
@@ -70,125 +67,102 @@
 #error "item () must be defined when you include window-bindings.h"
 #endif
 
-item (activate_window_menu, "", 0,
-        _("Activate window menu"),
-        _("The keybinding used to activate the window menu."),
+/***********************************/
+/* FIXME: this is duplicated from screen-bindings.h; find a better
+ * solution, which may involve merging the two files */
+
+#ifndef _BINDINGS_DEFINED_CONSTANTS
+#define _BINDINGS_DEFINED_CONSTANTS 1
+
+#define BINDING_PER_WINDOW    0x01
+#define BINDING_REVERSES      0x02
+#define BINDING_IS_REVERSED   0x04
+
+/* FIXME: There is somewhere better for these; remove them */
+#define PANEL_MAIN_MENU            -1
+#define PANEL_RUN_DIALOG           -2
+
+#endif /* _BINDINGS_DEFINED_CONSTANTS */
+
+
+item (activate_window_menu, "", 0, BINDING_PER_WINDOW,
+        _("Activate the window menu"),
         "<Alt>Space")
 
-#ifndef ONLY_BOUND_BY_DEFAULT
-
-item (toggle_fullscreen, "", 0,
+item (toggle_fullscreen, "", 0, BINDING_PER_WINDOW,
         _("Toggle fullscreen mode"),
-        _("The keybinding used to toggle fullscreen mode."),
         NULL)
-item (toggle_maximized, "", 0,
+item (toggle_maximized, "", 0, BINDING_PER_WINDOW,
         _("Toggle maximization state"),
-        _("The keybinding used to toggle maximization."),
         NULL)
-item (toggle_above, "", 0,
-        _("Toggle always on top state"),
-        _("The keybinding used to toggle always on top.  A window that is "
-          "always on top will always be visible over other overlapping "
-          "windows."),
+item (toggle_above, "", 0, BINDING_PER_WINDOW,
+        _("Toggle whether a window will always be visible over other windows"),
           NULL)
-#endif /* ONLY_BOUND_BY_DEFAULT */
 
-item (maximize, "", 0,
+item (maximize, "", 0, BINDING_PER_WINDOW,
         _("Maximize window"),
-        _("The keybinding used to maximize a window."),
         "<Alt>F10")
-item (unmaximize, "", 0,
+item (unmaximize, "", 0, BINDING_PER_WINDOW,
         _("Unmaximize window"),
-        _("The keybinding used to unmaximize a window."),
         "<Alt>F5")
 
-#ifndef ONLY_BOUND_BY_DEFAULT
-
-item (toggle_shaded, "", 0,
+item (toggle_shaded, "", 0, BINDING_PER_WINDOW,
         _("Toggle shaded state"),
-        _("The keybinding used to toggle shaded/unshaded state."),
         NULL)
         
-#endif /* ONLY_BOUND_BY_DEFAULT */
-
-item (minimize, "", 0,
+item (minimize, "", 0, BINDING_PER_WINDOW,
         _("Minimize window"),
-        _("The keybinding used to minimize a window."),
         "<Alt>F9")
-item (close, "", 0,
+item (close, "", 0, BINDING_PER_WINDOW,
         _("Close window"),
-        _("The keybinding used to close a window."),
         "<Alt>F4")
-item (begin_move, "", 0,
+item (begin_move, "", 0, BINDING_PER_WINDOW,
         _("Move window"),
-        _("The keybinding used to enter \"move mode\" "
-        "and begin moving a window using the keyboard."),
         "<Alt>F7")
-item (begin_resize, "", 0,
+item (begin_resize, "", 0, BINDING_PER_WINDOW,
         _("Resize window"),
-        ("The keybinding used to enter \"resize mode\" "
-        "and begin resizing a window using the keyboard."),
         "<Alt>F8")
 
-#ifndef ONLY_BOUND_BY_DEFAULT
-
-item (toggle_on_all_workspaces, "", 0,
-        _("Toggle window on all workspaces"),
-        _("The keybinding used to toggle whether the window is on all "
-          "workspaces or just one."),
+item (toggle_on_all_workspaces, "", 0, BINDING_PER_WINDOW,
+        _("Toggle whether window is on all workspaces or just one"),
           NULL)
 
-
-item (move_to_workspace, "_1", 1,
+item (move_to_workspace, "_1", 1, BINDING_PER_WINDOW,
         _("Move window to workspace 1"),
-        _("The keybinding used to move a window to workspace 1."),
         NULL)
-item (move_to_workspace, "_2", 2,
+item (move_to_workspace, "_2", 2, BINDING_PER_WINDOW,
         _("Move window to workspace 2"),
-        _("The keybinding used to move a window to workspace 2."),
         NULL)
-item (move_to_workspace, "_3", 3,
+item (move_to_workspace, "_3", 3, BINDING_PER_WINDOW,
         _("Move window to workspace 3"),
-        _("The keybinding used to move a window to workspace 3."),
         NULL)
-item (move_to_workspace, "_4", 4,
+item (move_to_workspace, "_4", 4, BINDING_PER_WINDOW,
         _("Move window to workspace 4"),
-        _("The keybinding used to move a window to workspace 4."),
         NULL)
-item (move_to_workspace, "_5", 5,
+item (move_to_workspace, "_5", 5, BINDING_PER_WINDOW,
         _("Move window to workspace 5"),
-        _("The keybinding used to move a window to workspace 5."),
         NULL)
-item (move_to_workspace, "_6", 6,
+item (move_to_workspace, "_6", 6, BINDING_PER_WINDOW,
         _("Move window to workspace 6"),
-        _("The keybinding used to move a window to workspace 6."),
         NULL)
-item (move_to_workspace, "_7", 7,
+item (move_to_workspace, "_7", 7, BINDING_PER_WINDOW,
         _("Move window to workspace 7"),
-        _("The keybinding used to move a window to workspace 7."),
         NULL)
-item (move_to_workspace, "_8", 8,
+item (move_to_workspace, "_8", 8, BINDING_PER_WINDOW,
         _("Move window to workspace 8"),
-        _("The keybinding used to move a window to workspace 8."),
         NULL)
-item (move_to_workspace, "_9", 9,
+item (move_to_workspace, "_9", 9, BINDING_PER_WINDOW,
         _("Move window to workspace 9"),
-        _("The keybinding used to move a window to workspace 9."),
         NULL)
-item (move_to_workspace, "_10", 10,
+item (move_to_workspace, "_10", 10, BINDING_PER_WINDOW,
         _("Move window to workspace 10"),
-        _("The keybinding used to move a window to workspace 10."),
         NULL)
-item (move_to_workspace, "_11", 11,
+item (move_to_workspace, "_11", 11, BINDING_PER_WINDOW,
         _("Move window to workspace 11"),
-        _("The keybinding used to move a window to workspace 11."),
         NULL)
-item (move_to_workspace, "_12", 12,
+item (move_to_workspace, "_12", 12, BINDING_PER_WINDOW,
         _("Move window to workspace 12"),
-        _("The keybinding used to move a window to workspace 12."),
         NULL)
-
-#endif /* ONLY_BOUND_BY_DEFAULT */
 
 /* META_MOTION_* are negative, and so distinct from workspace numbers,
  * which are always zero or positive.
@@ -198,101 +172,64 @@ item (move_to_workspace, "_12", 12,
  * workspace.h, of course.
  */
 
-item (move_to_workspace, "_left", META_MOTION_LEFT,
+item (move_to_workspace, "_left", META_MOTION_LEFT, BINDING_PER_WINDOW,
         _("Move window one workspace to the left"),
-        _("The keybinding used to move a window one workspace to the left."),
         "<Control><Shift><Alt>Left")
-item (move_to_workspace, "_right", META_MOTION_RIGHT,
+item (move_to_workspace, "_right", META_MOTION_RIGHT, BINDING_PER_WINDOW,
         _("Move window one workspace to the right"),
-        _("The keybinding used to move a window one workspace to the right."),
         "<Control><Shift><Alt>Right")
-item (move_to_workspace, "_up", META_MOTION_UP,
+item (move_to_workspace, "_up", META_MOTION_UP, BINDING_PER_WINDOW,
         _("Move window one workspace up"),
-        _("The keybinding used to move a window one workspace up."),
         "<Control><Shift><Alt>Up")
-item (move_to_workspace, "_down", META_MOTION_DOWN,
+item (move_to_workspace, "_down", META_MOTION_DOWN, BINDING_PER_WINDOW,
         _("Move window one workspace down"),
-        _("The keybinding used to move a window one workspace down."),
         "<Control><Shift><Alt>Down")
 
-#ifndef ONLY_BOUND_BY_DEFAULT
-
-item (raise_or_lower, "", 0,
-        _("Raise obscured window, otherwise lower"),
-        _("This keybinding changes whether a window is above or below "
-           "other windows.  If the window is covered by another one, it "
-           "raises the window above all others, and if the window is "
-           "already fully visible, it lowers it below all others."),
+item (raise_or_lower, "", 0, BINDING_PER_WINDOW,
+        _("Raise window if it's covered by another window, otherwise lower it"),
            NULL)
-item (raise, "", 0,
+item (raise, "", 0, BINDING_PER_WINDOW,
         _("Raise window above other windows"),
-        _("This keybinding raises the window above other windows."),
         NULL)
-item (lower, "", 0,
+item (lower, "", 0, BINDING_PER_WINDOW,
         _("Lower window below other windows"),
-        _("This keybinding lowers a window below other windows."),
         NULL)
 
-item (maximize_vertically, "", 0,
+item (maximize_vertically, "", 0, BINDING_PER_WINDOW,
         _("Maximize window vertically"),
-        _("This keybinding resizes a window to fill available "
-          "vertical space."),
           NULL)
-item (maximize_horizontally, "", 0,
+item (maximize_horizontally, "", 0, BINDING_PER_WINDOW,
         _("Maximize window horizontally"),
-        _("This keybinding resizes a window to fill available "
-          "horizontal space."),
           NULL)
 
-item (move_to_corner_nw, "", 0,
-        _("Move window to north-west corner"),
-        _("This keybinding moves a window into the north-west (top left) "
-          "corner of the screen."),
+item (move_to_corner_nw, "", 0, BINDING_PER_WINDOW,
+        _("Move window to north-west (top left) corner"),
           NULL)
-item (move_to_corner_ne, "", 0,
-        _("Move window to north-east corner"),
-        _("This keybinding moves a window into the north-east (top right) "
-          "corner of the screen."),
+item (move_to_corner_ne, "", 0, BINDING_PER_WINDOW,
+        _("Move window to north-east (top right) corner"),
           NULL)
-item (move_to_corner_sw, "", 0,
-        _("Move window to south-west corner"),
-        _("This keybinding moves a window into the north-east (bottom left) "
-          "corner of the screen."),
+item (move_to_corner_sw, "", 0, BINDING_PER_WINDOW,
+        _("Move window to south-west (bottom left) corner"),
           NULL)
-item (move_to_corner_se, "", 0,
-        _("Move window to south-east corner"),
-        _("This keybinding moves a window into the north-east (bottom right) "
-          "corner of the screen."),
+item (move_to_corner_se, "", 0, BINDING_PER_WINDOW,
+        _("Move window to south-east (bottom right) corner"),
           NULL)
 
-item (move_to_side_n, "", 0,
-        _("Move window to north side of screen"),
-        _("This keybinding moves a window against the north (top) "
-          "side of the screen."),
+item (move_to_side_n, "", 0, BINDING_PER_WINDOW,
+        _("Move window to north (top) side of screen"),
           NULL)
-item (move_to_side_s, "", 0,
-        _("Move window to south side of screen"),
-        _("This keybinding moves a window against the south (bottom) "
-          "side of the screen."),
+item (move_to_side_s, "", 0, BINDING_PER_WINDOW,
+        _("Move window to south (bottom) side of screen"),
           NULL)
-item (move_to_side_e, "", 0,
-        _("Move window to east side of screen"),
-        _("This keybinding moves a window against the east (right) "
-          "side of the screen."),
+item (move_to_side_e, "", 0, BINDING_PER_WINDOW,
+        _("Move window to east (right) side of screen"),
           NULL)
-item (move_to_side_w, "", 0,
-        _("Move window to west side of screen"),
-        _("This keybinding moves a window against the west (left) "
-          "side of the screen."),
+item (move_to_side_w, "", 0, BINDING_PER_WINDOW,
+        _("Move window to west (left) side of screen"),
           NULL)
-
-item (move_to_center, "", 0,
+item (move_to_center, "", 0, BINDING_PER_WINDOW,
         _("Move window to center of screen"),
-        _("This keybinding moves a window into the center "
-          "of the screen."),
           NULL)
-
-#endif /* ONLY_BOUND_BY_DEFAULT */
 
 /* eof window-bindings.h */
 
