@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-10-13 18:14-0400\n"
-"PO-Revision-Date: 2008-10-12 01:02-0400\n"
+"PO-Revision-Date: 2008-10-17 22:07-0400\n"
 "Last-Translator: Thomas Thurman <tthurman@gnome.org>\n"
 "Language-Team: Latin <la@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -221,7 +221,7 @@ msgstr ""
 #: ../src/core/prefs.c:2067 ../src/core/prefs.c:2579
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "area labori %d"
 
 #: ../src/core/prefs.c:2097 ../src/core/prefs.c:2270
 #, c-format
@@ -243,7 +243,7 @@ msgstr ""
 #: ../src/core/screen.c:350
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "album %s in xystro %s mendosus est\n"
+msgstr "album %d in apparatu visifico %s mendosus est\n"
 
 #: ../src/core/screen.c:366
 #, c-format
@@ -398,7 +398,7 @@ msgstr ""
 
 #: ../src/core/window-bindings.h:75
 msgid "The keybinding used to activate the window menu."
-msgstr ""
+msgstr "CAESAR ADSUM IAM FORTE"
 
 #: ../src/core/window-bindings.h:81
 msgid "Toggle fullscreen mode"
