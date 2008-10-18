@@ -1,3 +1,15 @@
+2008-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Call GNOME_DOC_INIT() so we can use the gnome-doc-utils 
+	variables in our Makefile.am:
+	* doc/Makefile.am:
+	* doc/creating_themes/Makefile.am
+	* doc/creating_themes/C/creating_metacity_themes.xml:
+	Added this new DocBook document, converted from the HTML here
+	http://blogs.gnome.org/metacity/2008/05/30/themes/
+	This will be installed for yelp and can be translated and hosted on 
+	library.gnome.org.
+
 2008-10-15  Thomas Thurman  <tthurman@gnome.org>
 
         Since Patrick Niklaus's checkin of 2008-08-14 dealt with windows with
