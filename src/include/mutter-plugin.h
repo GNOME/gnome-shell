@@ -44,8 +44,8 @@
 typedef struct MutterPlugin MutterPlugin;
 
 /*
- * Feature flags: identify events that the plugin can handle; a plugin can
- * handle one or more events.
+ * Effect flags: identify events that the plugin can handle, used by kill_effect
+ * function.
  */
 #define MUTTER_PLUGIN_MINIMIZE         (1<<0)
 #define MUTTER_PLUGIN_MAXIMIZE         (1<<1)
@@ -78,7 +78,6 @@ struct MutterPlugin
   const
 #endif
   gchar   *name;     /* Human-readable name for UI */
-  gulong   features; /* or-ed feature flags */
 
   /*
    * This function is called once the plugin has been loaded.
@@ -170,7 +169,7 @@ struct MutterPlugin
    * killed.
    */
   void (*kill_effect)      (MutterWindow     *actor,
-                            gulong              events);
+                            gulong            events);
 
   /*
    * The plugin manager will call this function when module should be reloaded.

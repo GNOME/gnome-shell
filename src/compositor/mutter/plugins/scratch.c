@@ -83,12 +83,7 @@ G_MODULE_EXPORT MutterPlugin mutter_plugin =
     /* Plugin load time initialiser */
     .do_init = do_init,
 
-    /* Which types of events this plugin supports */
-    /* This plugin only uses the xevent callback for now */
-    .features = 0,
-
-
-    /* And the corresponding handlers */
+    /* Effect handlers */
     .minimize         = minimize,
     .destroy          = destroy,
     .map              = map,
@@ -649,12 +644,6 @@ kill_effect (MutterWindow *mcw, gulong event)
   ActorPrivate *apriv;
   ClutterActor *actor = CLUTTER_ACTOR (mcw);
 
-  if (!(plugin->features & event))
-    {
-      /* Event we do not support */
-      return;
-    }
-
   if (event & MUTTER_PLUGIN_SWITCH_WORKSPACE)
     {
       PluginPrivate *ppriv  = plugin->plugin_private;
@@ -814,8 +803,6 @@ do_init (const char *params)
 
   if (params)
     {
-      gchar *p;
-
       if (strstr (params, "debug"))
         {
           g_debug ("%s: Entering debug mode.",
@@ -831,36 +818,6 @@ do_init (const char *params)
           maximize_timeout *= 2;
           map_timeout      *= 2;
           switch_timeout   *= 2;
-        }
-
-      if ((p = strstr (params, "disable:")))
-        {
-          gchar *d = g_strdup (p+8);
-
-          p = strchr (d, ';');
-
-          if (p)
-            *p = 0;
-
-          if (strstr (d, "minimize"))
-            plugin->features &= ~ MUTTER_PLUGIN_MINIMIZE;
-
-          if (strstr (d, "maximize"))
-            plugin->features &= ~ MUTTER_PLUGIN_MAXIMIZE;
-
-          if (strstr (d, "unmaximize"))
-            plugin->features &= ~ MUTTER_PLUGIN_UNMAXIMIZE;
-
-          if (strstr (d, "map"))
-            plugin->features &= ~ MUTTER_PLUGIN_MAP;
-
-          if (strstr (d, "destroy"))
-            plugin->features &= ~ MUTTER_PLUGIN_DESTROY;
-
-          if (strstr (d, "switch-workspace"))
-            plugin->features &= ~MUTTER_PLUGIN_SWITCH_WORKSPACE;
-
-          g_free (d);
         }
     }
 

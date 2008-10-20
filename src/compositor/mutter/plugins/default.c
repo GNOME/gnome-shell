@@ -79,16 +79,7 @@ G_MODULE_EXPORT MutterPlugin mutter_plugin =
     /* Plugin load time initialiser */
     .do_init = do_init,
 
-    /* Which types of events this plugin supports */
-    .features = MUTTER_PLUGIN_MINIMIZE   |
-                MUTTER_PLUGIN_DESTROY    |
-                MUTTER_PLUGIN_MAP        |
-                MUTTER_PLUGIN_MAXIMIZE   |
-                MUTTER_PLUGIN_UNMAXIMIZE |
-                MUTTER_PLUGIN_SWITCH_WORKSPACE,
-
-
-    /* And the corresponding handlers */
+    /* Effect handlers */
     .minimize         = minimize,
     .destroy          = destroy,
     .map              = map,
@@ -589,12 +580,6 @@ kill_effect (MutterWindow *mc_window, gulong event)
   MutterPlugin *plugin = &mutter_plugin;
   ActorPrivate *apriv;
   ClutterActor *actor  = CLUTTER_ACTOR (mc_window);
-
-  if (!(plugin->features & event))
-    {
-      /* Event we do not support */
-      return;
-    }
 
   if (event & MUTTER_PLUGIN_SWITCH_WORKSPACE)
     {

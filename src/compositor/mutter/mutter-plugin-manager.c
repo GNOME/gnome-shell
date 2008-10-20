@@ -55,7 +55,7 @@ typedef struct MutterPluginPrivate
   /* We use this to track the number of effects currently being managed
    * by a plugin. Currently this is used to block unloading while effects
    * are in progress. */
-  gint				      running; 
+  gint				      running;
 
   gboolean disabled : 1;
 } MutterPluginPrivate;
@@ -122,9 +122,32 @@ update_plugin_workspaces (MetaScreen                  *screen,
  * the user has disabled.
  */
 static gulong
-parse_disable_params (const char *params, gulong features)
+parse_disable_params (const char *params, MutterPlugin *plugin)
 {
-  char *p;
+  char  *p;
+  gulong features = 0;
+
+/*
+ * Feature flags: identify events that the plugin can handle; a plugin can
+ * handle one or more events.
+ */
+  if (plugin->minimize)
+    features |= MUTTER_PLUGIN_MINIMIZE;
+
+  if (plugin->maximize)
+    features |= MUTTER_PLUGIN_MAXIMIZE;
+
+  if (plugin->unmaximize)
+    features |= MUTTER_PLUGIN_UNMAXIMIZE;
+
+  if (plugin->map)
+    features |= MUTTER_PLUGIN_MAP;
+
+  if (plugin->destroy)
+    features |= MUTTER_PLUGIN_DESTROY;
+
+  if (plugin->switch_workspace)
+    features |= MUTTER_PLUGIN_SWITCH_WORKSPACE;
 
   if (!params)
     return features;
@@ -191,7 +214,7 @@ mutter_plugin_load (
 
           update_plugin_workspaces (plugin_mgr->screen, plugin);
 
-	  priv->features = parse_disable_params (params, plugin->features);
+	  priv->features = parse_disable_params (params, plugin);
 
           /*
            * Check for and run the plugin init function.
@@ -516,7 +539,7 @@ mutter_plugin_manager_kill_effect (
       MutterPluginPrivate *priv = plugin->manager_private;
 
       if (!priv->disabled
-	  && (plugin->features & events)
+	  && (priv->features & events)
 	  && plugin->kill_effect)
         plugin->kill_effect (actor, events);
 
@@ -550,7 +573,7 @@ mutter_plugin_manager_event_simple (
       MutterPlugin        *plugin = l->data;
       MutterPluginPrivate *priv = plugin->manager_private;
 
-      if (!priv->disabled && (plugin->features & event))
+      if (!priv->disabled && (priv->features & event))
         {
           retval = TRUE;
 
@@ -625,7 +648,7 @@ mutter_plugin_manager_event_maximize (
       MutterPlugin        *plugin = l->data;
       MutterPluginPrivate *priv = plugin->manager_private;
 
-      if (!priv->disabled && (plugin->features & event))
+      if (!priv->disabled && (priv->features & event))
         {
           retval = TRUE;
 
@@ -692,7 +715,7 @@ mutter_plugin_manager_switch_workspace (
       MutterPluginPrivate *priv = plugin->manager_private;
 
       if (!priv->disabled &&
-          (plugin->features & MUTTER_PLUGIN_SWITCH_WORKSPACE) &&
+          (priv->features & MUTTER_PLUGIN_SWITCH_WORKSPACE) &&
           (actors && *actors))
         {
           if (plugin->switch_workspace)
