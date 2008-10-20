@@ -68,14 +68,16 @@
  ****************************************************************************/
 
 /*
- * The t parameter of the bezier is from interval <0,1>, so we use
- * 14.18 fixed format to improve precission and simplify POW3 calculation.
+ * The t parameter of the bezier is from interval <0,1>, so we can use
+ * 14.18 format and special multiplication functions that preserve
+ * more of the least significant bits but would overflow if the value
+ * is > 1
  */
 #define CBZ_T_Q 18
 #define CBZ_T_ONE (1 << CBZ_T_Q)
-#define CBZ_T_POW2(x) ((x >> 9) * (x >> 9))
-#define CBZ_T_POW3(x) ((x >> 12) * (x >> 12) * (x >> 12))
-#define CBZ_T_MUL(x,y) ((x >> 9) * (y >> 9))
+#define CBZ_T_MUL(x,y) ((((x) >> 3) * ((y) >> 3)) >> 12)
+#define CBZ_T_POW2(x) CBZ_T_MUL (x, x)
+#define CBZ_T_POW3(x) CBZ_T_MUL (CBZ_T_POW2 (x), x)
 #define CBZ_T_DIV(x,y) ((((x) << 9)/(y)) << 9)
 
 /*

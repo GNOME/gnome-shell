@@ -1,3 +1,12 @@
+2008-10-20  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1195 - ClutterBehaviourBspline only works for very short paths
+
+	* clutter/clutter-behaviour-bspline.c: Changed the CBZ_T_POW3 and
+	CBZ_T_MUL functions so that they preserve more of the least
+	significant bits. This fixes some of the jaggy behaviour with
+	longer paths.
+
 2008-10-17  Thomas Wood  <thomas@linux.intel.com>
 
 	reviewed by: Emmanuele Bassi <ebassi@linux.intel.com>
