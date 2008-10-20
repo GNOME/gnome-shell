@@ -53,6 +53,10 @@ struct _ClutterColor
   guint8 alpha;
 };
 
+ClutterColor *clutter_color_new        (guint8              red,
+                                        guint8              green,
+                                        guint8              blue,
+                                        guint8              alpha);
 ClutterColor *clutter_color_copy       (const ClutterColor *color);
 void          clutter_color_free       (ClutterColor       *color);
 gboolean      clutter_color_parse      (const gchar        *color,
