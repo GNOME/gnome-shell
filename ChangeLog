@@ -1,3 +1,15 @@
+2008-10-20  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1043 - COGL calls glTexSubImage2D() with out-of-bounds
+	values (SIGSEGV)
+
+	* clutter/cogl/gl/cogl-texture.c
+	(_cogl_texture_upload_subregion_to_gl): When iterating over the
+	slices, discard ones that don't intersect immediatly otherwise it
+	will call glTexSubImage2D with a negative width/height and then
+	move the source position incorrectly. Thanks to Gwenole
+	Beauchesne.
+
 2008-10-20  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-color.h: Declare clutter_color_new() in the
