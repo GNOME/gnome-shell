@@ -395,6 +395,13 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
        _cogl_span_iter_next (&y_iter),
        source_y += inter_h )
     {
+      /* Discard slices out of the subregion early */
+      if (!y_iter.intersects)
+        {
+          inter_h = 0;
+          continue;
+        }
+
       /* Iterate horizontal spans */
       for (source_x = src_x,
 	   _cogl_span_iter_begin (&x_iter, tex->slice_x_spans,
@@ -406,6 +413,13 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 	   _cogl_span_iter_next (&x_iter),
 	   source_x += inter_w )
         {
+	  /* Discard slices out of the subregion early */
+	  if (!x_iter.intersects)
+            {
+              inter_w = 0;
+              continue;
+            }
+
 	  /* Pick intersection width and height */
 	  inter_w = CLUTTER_FIXED_TO_INT (x_iter.intersect_end -
 					  x_iter.intersect_start);
