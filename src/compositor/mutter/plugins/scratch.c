@@ -84,11 +84,8 @@ G_MODULE_EXPORT MutterPlugin mutter_plugin =
     .do_init = do_init,
 
     /* Which types of events this plugin supports */
-    .features = MUTTER_PLUGIN_MINIMIZE   |
-                MUTTER_PLUGIN_DESTROY    |
-                MUTTER_PLUGIN_MAP        |
-                MUTTER_PLUGIN_MAXIMIZE   |
-                MUTTER_PLUGIN_UNMAXIMIZE,
+    /* This plugin only uses the xevent callback for now */
+    .features = 0,
 
 
     /* And the corresponding handlers */
@@ -617,15 +614,26 @@ destroy (MutterWindow *mcw)
     mutter_plugin_effect_completed (plugin, mcw, MUTTER_PLUGIN_DESTROY);
 }
 
+/*
+ * Use this function to disable stage input
+ *
+ * Used by the completion callback for the panel in/out effects
+ */
+static void
+disable_stage (MutterPlugin *plugin)
+{
+  gint screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
+  mutter_plugin_set_stage_input_area (plugin, 0, 0, screen_width, 1);
+}
+
 static void
 on_panel_effect_complete (ClutterActor *panel, gpointer data)
 {
   gboolean       reactive = GPOINTER_TO_INT (data);
   MutterPlugin  *plugin   = get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
-  gint           screen_width, screen_height;
-
-  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   if (reactive)
     {
@@ -635,7 +643,7 @@ on_panel_effect_complete (ClutterActor *panel, gpointer data)
   else
     {
       priv->panel_back_in_progress = FALSE;
-      mutter_plugin_set_stage_input_area (plugin, 0, 0, screen_width, 1);
+      disable_stage (plugin);
     }
 }
 
