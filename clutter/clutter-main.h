@@ -84,9 +84,9 @@ ClutterInitError clutter_init             (int          *argc,
                                            char       ***argv);
 ClutterInitError clutter_init_with_args   (int          *argc,
                                            char       ***argv,
-                                           char         *parameter_string,
+                                           const char   *parameter_string,
                                            GOptionEntry *entries,
-                                           char         *translation_domain,
+                                           const char   *translation_domain,
                                            GError      **error);
 GOptionGroup *   clutter_get_option_group (void);
 GOptionGroup *   clutter_get_option_group_without_init (void);
