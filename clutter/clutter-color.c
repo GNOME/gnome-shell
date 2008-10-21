@@ -779,8 +779,8 @@ clutter_value_lcopy_color (const GValue *value,
  * Since: 1.0
  */
 void
-clutter_value_set_color (GValue       *value,
-                         ClutterColor *color)
+clutter_value_set_color (GValue             *value,
+                         const ClutterColor *color)
 {
   g_return_if_fail (CLUTTER_VALUE_HOLDS_COLOR (value));
 
@@ -797,7 +797,7 @@ clutter_value_set_color (GValue       *value,
  *
  * Since: 1.0
  */
-const ClutterColor *
+G_CONST_RETURN ClutterColor *
 clutter_value_get_color (const GValue *value)
 {
   g_return_val_if_fail (CLUTTER_VALUE_HOLDS_COLOR (value), NULL);
