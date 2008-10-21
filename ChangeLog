@@ -1,3 +1,8 @@
+2008-10-21   Christian Persch  <chpe@gnome.org>
+
+        * src/Makefile.am: fix build when schemas are not installed.
+        Closes #557335.
+
 2008-10-21  Tomas Frydrych  <tf@linux.intel.com>
 
        * src/core/screen-bindings.h: Fix off-by-one error.
