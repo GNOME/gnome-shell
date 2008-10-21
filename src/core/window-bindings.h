@@ -127,40 +127,40 @@ item (toggle_on_all_workspaces, "", 0, BINDING_PER_WINDOW,
         _("Toggle whether window is on all workspaces or just one"),
           NULL)
 
-item (move_to_workspace, "_1", 1, BINDING_PER_WINDOW,
+item (move_to_workspace, "_1", 0, BINDING_PER_WINDOW,
         _("Move window to workspace 1"),
         NULL)
-item (move_to_workspace, "_2", 2, BINDING_PER_WINDOW,
+item (move_to_workspace, "_2", 1, BINDING_PER_WINDOW,
         _("Move window to workspace 2"),
         NULL)
-item (move_to_workspace, "_3", 3, BINDING_PER_WINDOW,
+item (move_to_workspace, "_3", 2, BINDING_PER_WINDOW,
         _("Move window to workspace 3"),
         NULL)
-item (move_to_workspace, "_4", 4, BINDING_PER_WINDOW,
+item (move_to_workspace, "_4", 3, BINDING_PER_WINDOW,
         _("Move window to workspace 4"),
         NULL)
-item (move_to_workspace, "_5", 5, BINDING_PER_WINDOW,
+item (move_to_workspace, "_5", 4, BINDING_PER_WINDOW,
         _("Move window to workspace 5"),
         NULL)
-item (move_to_workspace, "_6", 6, BINDING_PER_WINDOW,
+item (move_to_workspace, "_6", 5, BINDING_PER_WINDOW,
         _("Move window to workspace 6"),
         NULL)
-item (move_to_workspace, "_7", 7, BINDING_PER_WINDOW,
+item (move_to_workspace, "_7", 6, BINDING_PER_WINDOW,
         _("Move window to workspace 7"),
         NULL)
-item (move_to_workspace, "_8", 8, BINDING_PER_WINDOW,
+item (move_to_workspace, "_8", 7, BINDING_PER_WINDOW,
         _("Move window to workspace 8"),
         NULL)
-item (move_to_workspace, "_9", 9, BINDING_PER_WINDOW,
+item (move_to_workspace, "_9", 8, BINDING_PER_WINDOW,
         _("Move window to workspace 9"),
         NULL)
-item (move_to_workspace, "_10", 10, BINDING_PER_WINDOW,
+item (move_to_workspace, "_10", 9, BINDING_PER_WINDOW,
         _("Move window to workspace 10"),
         NULL)
-item (move_to_workspace, "_11", 11, BINDING_PER_WINDOW,
+item (move_to_workspace, "_11", 10, BINDING_PER_WINDOW,
         _("Move window to workspace 11"),
         NULL)
-item (move_to_workspace, "_12", 12, BINDING_PER_WINDOW,
+item (move_to_workspace, "_12", 11, BINDING_PER_WINDOW,
         _("Move window to workspace 12"),
         NULL)
 

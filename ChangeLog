@@ -1,3 +1,15 @@
+2008-10-21  Tomas Frydrych  <tf@linux.intel.com>
+
+       * src/core/screen-bindings.h: Fix off-by-one error.
+       * src/core/window-bindings.h: Fix off-by-one error.
+       Closes #557201.
+
+2008-10-21  Tomas Frydrych  <tf@linux.intel.com>
+
+       * src/core/screen-bindings.h: Fix off-by-one error.
+       * src/core/window-bindings.h: Fix off-by-one error.
+       Closes #557201.
+
 2008-10-18  Thomas Thurman  <tthurman@gnome.org>
 
         During a discussion with Rodney Dawes about making life easier

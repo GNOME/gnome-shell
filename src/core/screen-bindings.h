@@ -92,40 +92,40 @@
 /* convenience, since in this file they must always be set together */
 #define REVERSES_AND_REVERSED (BINDING_REVERSES | BINDING_IS_REVERSED)
 
-item (switch_to_workspace, "_1", 1, 0,
+item (switch_to_workspace, "_1", 0, 0,
         _("Switch to workspace 1"),
         NULL)
-item (switch_to_workspace, "_2", 2, 0,
+item (switch_to_workspace, "_2", 1, 0,
         _("Switch to workspace 2"),
         NULL)
-item (switch_to_workspace, "_3", 3, 0,
+item (switch_to_workspace, "_3", 2, 0,
         _("Switch to workspace 3"),
         NULL)
-item (switch_to_workspace, "_4", 4, 0,
+item (switch_to_workspace, "_4", 3, 0,
         _("Switch to workspace 4"),
         NULL)
-item (switch_to_workspace, "_5", 5, 0,
+item (switch_to_workspace, "_5", 4, 0,
         _("Switch to workspace 5"),
         NULL)
-item (switch_to_workspace, "_6", 6, 0,
+item (switch_to_workspace, "_6", 5, 0,
         _("Switch to workspace 6"),
         NULL)
-item (switch_to_workspace, "_7", 7, 0,
+item (switch_to_workspace, "_7", 6, 0,
         _("Switch to workspace 7"),
         NULL)
-item (switch_to_workspace, "_8", 8, 0,
+item (switch_to_workspace, "_8", 7, 0,
         _("Switch to workspace 8"),
         NULL)
-item (switch_to_workspace, "_9", 9, 0,
+item (switch_to_workspace, "_9", 8, 0,
         _("Switch to workspace 9"),
         NULL)
-item (switch_to_workspace, "_10", 10, 0,
+item (switch_to_workspace, "_10", 9, 0,
         _("Switch to workspace 10"),
         NULL)
-item (switch_to_workspace, "_11", 11, 0,
+item (switch_to_workspace, "_11", 10, 0,
         _("Switch to workspace 11"),
         NULL)
-item (switch_to_workspace, "_12", 12, 0,
+item (switch_to_workspace, "_12", 11, 0,
         _("Switch to workspace 12"),
         NULL)
 
