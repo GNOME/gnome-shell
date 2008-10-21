@@ -600,16 +600,6 @@ mutter_window_has_shadow (MutterWindow *self)
   MutterWindowPrivate * priv = self->priv;
 
   /*
-   * Do not add shadows to ARGB windows (since they are probably transparent)
-   */
-  if (priv->argb32 || priv->opacity != 0xff)
-    {
-      meta_verbose ("Window 0x%x has no shadow as it is ARGB\n",
-		    (guint)priv->xwindow);
-      return FALSE;
-    }
-
-  /*
    * Always put a shadow around windows with a frame - This should override
    * the restriction about not putting a shadow around shaped windows
    * as the frame might be the reason the window is shaped
@@ -622,6 +612,16 @@ mutter_window_has_shadow (MutterWindow *self)
 			(guint)priv->xwindow);
 	  return TRUE;
 	}
+    }
+
+  /*
+   * Do not add shadows to ARGB windows (since they are probably transparent)
+   */
+  if (priv->argb32 || priv->opacity != 0xff)
+    {
+      meta_verbose ("Window 0x%x has no shadow as it is ARGB\n",
+		    (guint)priv->xwindow);
+      return FALSE;
     }
 
   /*
@@ -2586,7 +2586,7 @@ shadow_gaussian_make_tile ()
 	_d[y*3*pwidth + 3*pwidth*pheight + x + pwidth].r = 0;
 	_d[y*3*pwidth + 3*pwidth*pheight + x + pwidth].g = 0;
 	_d[y*3*pwidth + 3*pwidth*pheight + x + pwidth].b = 0;
-	_d[y*3*pwidth + 3*pwidth*pheight + x + pwidth].a = d;
+	_d[y*3*pwidth + 3*pwidth*pheight + x + pwidth].a = 0;
       }
 
   return data;
