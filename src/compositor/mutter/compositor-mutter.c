@@ -1643,20 +1643,18 @@ process_property_notify (Mutter *compositor,
 }
 
 static void
-show_overlay_window (MetaScreen *screen, Window cow)
+show_overlay_window (Display *xdisplay, Window xstage, Window xoverlay)
 {
-#if 0
-  MetaDisplay   *display  = meta_screen_get_display (screen);
-  Display       *xdisplay = meta_display_get_xdisplay (display);
   XserverRegion  region;
 
   region = XFixesCreateRegion (xdisplay, NULL, 0);
 
-  XFixesSetWindowShapeRegion (xdisplay, cow, ShapeBounding, 0, 0, 0);
-  XFixesSetWindowShapeRegion (xdisplay, cow, ShapeInput, 0, 0, region);
+  XFixesSetWindowShapeRegion (xdisplay, xoverlay, ShapeBounding, 0, 0, 0);
+
+  XFixesSetWindowShapeRegion (xdisplay, xoverlay, ShapeInput, 0, 0, region);
+  XFixesSetWindowShapeRegion (xdisplay, xstage,   ShapeInput, 0, 0, region);
 
   XFixesDestroyRegion (xdisplay, region);
-#endif
 }
 
 static Window
@@ -1783,15 +1781,17 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
                          NULL);
 
 
+  /*
+   * Must do this *before* creating the plugin manager, in case any of the
+   * plugins need to adjust the screen shape regions.
+   */
+  show_overlay_window (xdisplay, xwin, info->output);
 
   info->plugin_mgr =
     mutter_plugin_manager_new (screen);
 
   clutter_actor_show_all (info->stage);
   clutter_actor_show_all (info->overlay_group);
-
-  /* Now we're up and running we can show the output if needed */
-  show_overlay_window (screen, info->output);
 #endif
 }
 

@@ -861,6 +861,11 @@ do_init (const char *params)
                               -clutter_actor_get_height (panel));
 
   /*
+   * Set up the stage even processing
+   */
+  disable_stage (plugin);
+
+  /*
    * Hook to the captured signal, so we get to see all events before our
    * children and do not interfere with their event processing.
    */
