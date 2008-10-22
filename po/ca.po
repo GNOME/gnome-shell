@@ -1,13 +1,14 @@
 # Catalan translation of Metacity.
-# Copyright © 2002, 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+# Copyright © 2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 # Softcatala <info@softcatala.org>, 2002.
 # Jesús Moreno <jmmolas@wanadoo.es>, 2002.
-# Jordi Mallach <jordi@sindominio.net>, 2003, 2004, 2005, 2006, 2007.
+# Jordi Mallach <jordi@sindominio.net>, 2003, 2004, 2005, 2006, 2007, 2008.
+# David Planella <david.planella@gmail.com>, 2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.18\n"
+"Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-27 18:26+0200\n"
 "PO-Revision-Date: 2008-09-27 18:27+0200\n"
@@ -1229,7 +1230,7 @@ msgstr "Canvia a l'espai de treball sota aquest"
 
 #: ../src/metacity.schemas.in.h:97
 msgid "Switch to workspace on the left"
-msgstr "Canvia a l'espai de treball de la esquerra"
+msgstr "Canvia a l'espai de treball de l'esquerra"
 
 #: ../src/metacity.schemas.in.h:98
 msgid "Switch to workspace on the right"
@@ -2890,7 +2891,7 @@ msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Aquestes finestres no suporten «desa la configuració actual» i es tindràn que "
+"Aquestes finestres no suporten «desa la configuració actual» i s'hauran de "
 "reiniciar manualment la pròxima vegada que entreu."
 
 #: ../src/ui/metacity-dialog.c:310
