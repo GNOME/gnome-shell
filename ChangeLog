@@ -2,6 +2,7 @@
 
 	* doc/creating_themes/C/creating_metacity_themes.xml:
 	Fixed various tags to make this validate.
+	Bug #557337
 
 2008-10-22  Thomas Thurman  <tthurman@gnome.org>
 
