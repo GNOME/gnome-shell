@@ -1,5 +1,10 @@
 2008-10-22  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/window.c (meta_window_set_demands_attention): minimised
+          windows are necessarily obscured.
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
         Slight transformation of the x-macros used in keybindings
         to make them clearer: write handler names out in full
         because the old suffix system was confusing to people

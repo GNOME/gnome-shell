@@ -8062,6 +8062,10 @@ meta_window_set_demands_attention (MetaWindow *window)
       /* windows on other workspaces are necessarily obscured */
       obscured = TRUE;
     }
+  else if (window->minimized)
+    {
+      obscured = TRUE;
+    }
   else
     {
       meta_window_get_outer_rect (window, &candidate_rect);
@@ -8086,21 +8090,26 @@ meta_window_set_demands_attention (MetaWindow *window)
                 }
             }
         }
-      /* If the window's in full view, there's no point setting the flag. */
-  
-      meta_topic (META_DEBUG_WINDOW_OPS,
-          "Not marking %s as needing attention because it's in full view\n",
-          window->desc);
-      return;
     }
-    
-  /* Otherwise, go ahead and set the flag. */
-  
-  meta_topic (META_DEBUG_WINDOW_OPS,
-      "Marking %s as needing attention\n", window->desc);
 
-  window->wm_state_demands_attention = TRUE;
-  set_net_wm_state (window);
+  if (obscured)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Marking %s as needing attention\n",
+                  window->desc);
+
+      window->wm_state_demands_attention = TRUE;
+      set_net_wm_state (window);
+    }
+  else
+    {
+      /* If the window's in full view, there's no point setting the flag. */
+
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                 "Not marking %s as needing attention because "
+                 "it's in full view\n",
+                 window->desc);
+    }
 }
 
 void
