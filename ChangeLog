@@ -1,5 +1,10 @@
 2008-10-22  Thomas Thurman  <tthurman@gnome.org>
 
+        * configure.in: bump to 2.25.3 (thought the release script
+          had already done this)
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
         Fixes to make distcheck work again.
 
         * src/Makefile.am: include *-binding.h, and make the schema
