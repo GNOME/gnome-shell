@@ -1,3 +1,27 @@
+2.25.2
+======
+
+Thanks to Joe Marcus Clarke, Murray Cumming, Tomas Frydrych, William Lachance,
+Matthew Martin, Christian Persch, Thomas Thurman, and Vincent Untz for
+improvements in this version.
+
+  - Add handler for SIGTERM (Joe) (#553980)
+  - Minimised windows are necessarily obscured (Matthew) (#528927)
+  - Build fixes with the above (Christian, Tomas, Thomas) (#557335)
+    (#557201) (#469361)
+  - Changed keybindings to be in a single place (Thomas) (#469361)
+  - Add new document about themes (Murray)
+  - Remove obsolete support for fallback icons (Thomas)
+  - Pass modified mouse events to panels (William) (#554428)
+  - Change where desktop files should go (Vincent) (#549479)
+
+Translations
+  Yavor Doganov (bg), David Planella (ca), Kenneth Nielsen (da), Hendrik
+  Richter (de), Ivar Smolin (et), Claude Paroz (fr), Seán de Búrca (ga), Launchpad
+  Translations Administrators (hr), Gabor Kelemen (hu), Thomas Thurman (la),
+  Žygimantas Beručka (lt), Kjartan Maraas (nb), Duarte Loreto (pt), Djavan
+  Fagundes (pt_BR), Mugurel Tudor (ro), Pavol Šimo (sk), Laurent Dhima (sq),
+  Горан Ракић (sr), Theppitak Karoonboonyanan (th), Funda Wang (zh_CN)
 2.25.1
 ======
 
