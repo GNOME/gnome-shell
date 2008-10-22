@@ -1,3 +1,25 @@
+2.25.3
+======
+
+Brown paper bag release which fixes numerous build problems from last night's
+release of 2.25.2.  Apologies.
+
+Thanks to Murray Cumming, Thomas Thurman, and Götz Waschk for improvements
+in this version.
+
+  - Fix distcheck (Thomas) (#557356)
+  - add libm reference (Götz) (#557357)
+  - fix docbook tags (Murray) (#557337)
+
+Translations
+  Yavor Doganov (bg), David Planella (ca), Robert Millan (ca@valencia), Kenneth
+  Nielsen (da), Hendrik Richter (de), Ivar Smolin (et), Claude Paroz (fr), Seán de
+  Búrca (ga), Launchpad Translations Administrators (hr), Gabor Kelemen (hu),
+  Thomas Thurman (la), Žygimantas Beručka (lt), Kjartan Maraas (nb), Duarte
+  Loreto (pt), Djavan Fagundes (pt_BR), Mugurel Tudor (ro), Pavol Šimo (sk),
+  Laurent Dhima (sq), Горан Ракић (sr), Theppitak Karoonboonyanan (th),
+  Funda Wang (zh_CN)
+
 2.25.2
 ======
 

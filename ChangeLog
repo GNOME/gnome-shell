@@ -1,5 +1,9 @@
 2008-10-22  Thomas Thurman  <tthurman@gnome.org>
 
+        * NEWS: 2.25.3 release.
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
         * configure.in: bump to 2.25.3 (thought the release script
           had already done this)
 
