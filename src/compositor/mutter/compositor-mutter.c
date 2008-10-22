@@ -1334,7 +1334,9 @@ process_create (Mutter *compositor,
                 XCreateWindowEvent    *event,
                 MetaWindow            *window)
 {
-  MetaScreen *screen;
+  MetaScreen   *screen;
+  MutterWindow *cw;
+  Window        xwindow = event->window;
 
   screen = meta_display_screen_for_root (compositor->display, event->parent);
 
@@ -1345,8 +1347,21 @@ process_create (Mutter *compositor,
    * This is quite silly as we end up creating windows as then immediatly
    * destroying them as they (likely) become framed and thus reparented.
    */
-  if (!find_window_in_display (compositor->display, event->window))
-    add_win (screen, window, event->window);
+  cw = find_window_for_screen (screen, event->window);
+
+  if (!cw && window)
+    {
+      xwindow = meta_window_get_xwindow (window);
+
+      cw = find_window_for_screen (screen, xwindow);
+    }
+
+  if (cw)
+    {
+      destroy_win (compositor->display, xwindow);
+    }
+
+  add_win (screen, window, event->window);
 }
 
 static void
@@ -1356,6 +1371,7 @@ process_reparent (Mutter *compositor,
 {
   MetaScreen *screen;
   MutterWindow *mw;
+  Window        xwindow = event->window;
 
   screen = meta_display_screen_for_root (compositor->display, event->parent);
 
@@ -1364,11 +1380,19 @@ process_reparent (Mutter *compositor,
 
   mw = find_window_for_screen (screen, event->window);
 
+  if (!mw && window)
+    {
+      xwindow = meta_window_get_xwindow (window);
+
+      mw = find_window_for_screen (screen, xwindow);
+    }
+
+
   if (mw)
     {
       meta_verbose ("reparent: destroying a window 0%x\n",
 		    (guint)event->window);
-      destroy_win (compositor->display, event->window);
+      destroy_win (compositor->display, xwindow);
     }
 
   add_win (screen, window, event->window);
