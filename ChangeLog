@@ -1,7 +1,7 @@
 2008-10-22  Matthew Martin  <mtt.martin@gmail.com>
 
         * src/core/window.c (meta_window_set_demands_attention): minimised
-          windows are necessarily obscured.
+          windows are necessarily obscured.  Closes #528927.
 
 2008-10-22  Thomas Thurman  <tthurman@gnome.org>
 
@@ -20,12 +20,6 @@
 
         * src/Makefile.am: fix build when schemas are not installed.
         Closes #557335.
-
-2008-10-21  Tomas Frydrych  <tf@linux.intel.com>
-
-       * src/core/screen-bindings.h: Fix off-by-one error.
-       * src/core/window-bindings.h: Fix off-by-one error.
-       Closes #557201.
 
 2008-10-21  Tomas Frydrych  <tf@linux.intel.com>
 
