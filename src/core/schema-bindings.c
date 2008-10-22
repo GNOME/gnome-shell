@@ -26,10 +26,6 @@
  * the GConf .schemas file.
  *
  * FIXME: also need to make 50-metacity-desktop-key.xml
- *
- * FIXME: this actually breaks i18n because the schemas.in->schemas process
- * doesn't recognise the concatenated strings, and so we will have to do
- * them ourselves; this will need to be fixed before the next release.
  */
 
 #include <stdio.h>
@@ -132,16 +128,16 @@ produce_bindings ()
 
   if (!feof (metacity_schemas_in_in))
     {
-#define item(name, suffix, param, flags, description, keystroke) \
+#define keybind(name, handler, param, flags, stroke, description) \
   single_stanza ( \
                flags & BINDING_PER_WINDOW, \
-               #name suffix, \
-               keystroke, \
+               #name, \
+               stroke, \
                flags & BINDING_REVERSES, \
                description);
 #include "window-bindings.h"
 #include "screen-bindings.h"
-#undef item
+#undef keybind
     }
 
   while (!feof (metacity_schemas_in_in))

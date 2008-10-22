@@ -55,25 +55,16 @@ typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
                                      MetaKeyBinding *binding);
 
 /* Prototypes for handlers */
-#define item(name, suffix, param, flags, description, stroke) \
+#define keybind(name, handler, param, flags, stroke, description) \
 static void \
-handle_##name (MetaDisplay    *display,\
-               MetaScreen     *screen,\
-               MetaWindow     *window,\
-               XEvent         *event,\
-               MetaKeyBinding *binding);
+handler (MetaDisplay    *display,\
+         MetaScreen     *screen,\
+         MetaWindow     *window,\
+         XEvent         *event,\
+         MetaKeyBinding *binding);
 #include "window-bindings.h"
-#undef item
-
-#define item(name, suffix, param, flags, description, stroke) \
-static void \
-handle_##name (MetaDisplay    *display,\
-               MetaScreen     *screen,\
-               MetaWindow     *window,\
-               XEvent         *event,\
-               MetaKeyBinding *binding);
 #include "screen-bindings.h"
-#undef item
+#undef keybind
 
 /* These can't be bound to anything, but they are used to handle
  * various other events.  TODO: Possibly we should include them as event
@@ -134,11 +125,10 @@ struct _MetaKeyBinding
   const MetaKeyHandler *handler;
 };
 
+#define keybind(name, handler, param, flags, stroke, description) \
+   { #name, handler, param, flags },
 static const MetaKeyHandler screen_handlers[] = {
-#define item(name, suffix, param, flags, description, stroke) \
-   { #name suffix, handle_##name, param, flags },
 #include "screen-bindings.h"
-#undef item
   { NULL, NULL, 0, 0 }
 };
   
@@ -146,12 +136,10 @@ static const MetaKeyHandler window_handlers[] = {
 /* TODO: Are window bindings only ever called on non-null windows?
  * If so, we can remove the check from all of them.
  */
-#define item(name, suffix, param, flags, description, stroke) \
-  { #name suffix, handle_##name, param, flags },
 #include "window-bindings.h"
-#undef item
    { NULL, NULL, 0, 0 }
 };
+#undef keybind
 
 static void
 reload_keymap (MetaDisplay *display)

@@ -1815,8 +1815,8 @@ meta_prefs_set_num_workspaces (int n_workspaces)
 #endif /* HAVE_GCONF */
 }
 
-#define item(name, suffix, param, flags, description, stroke) \
-  { #name suffix, NULL, flags & BINDING_REVERSES },
+#define keybind(name, handler, param, flags, stroke, description) \
+  { #name, NULL, flags & BINDING_REVERSES },
 static MetaKeyPref screen_bindings[] = {
 #include "screen-bindings.h"
   { NULL, NULL, FALSE}
@@ -1826,7 +1826,7 @@ static MetaKeyPref window_bindings[] = {
 #include "window-bindings.h"
   { NULL, NULL, FALSE }
 };
-#undef item
+#undef keybind
 
 #ifndef HAVE_GCONF
 typedef struct
@@ -1842,21 +1842,20 @@ typedef struct
  * data and move it into code.  Then the compiler would optimise away
  * the problem lines.
  */
+
+#define keybind(name, handler, param, flags, stroke, description) \
+  { #name, keystroke },
+
 static MetaSimpleKeyMapping screen_string_bindings[] = {
-#define item(name, suffix, param, flags, description, keystroke) \
-  { #name suffix,                           keystroke                    },
 #include "screen-bindings.h"
-#undef item
   { NULL,                                   NULL                         }
 };
 
 static MetaSimpleKeyMapping window_string_bindings[] = {
-#define item(name, suffix, param, flags, description, keystroke) \
-  { #name suffix,                           keystroke                    },
 #include "window-bindings.h"
-#undef item
   { NULL,                                   NULL                         }
 };
+#undef keybind
 
 #endif /* NOT HAVE_GCONF */
 

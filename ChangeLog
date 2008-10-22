@@ -1,3 +1,16 @@
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        Slight transformation of the x-macros used in keybindings
+        to make them clearer: write handler names out in full
+        because the old suffix system was confusing to people
+        skim-reading, and switched the order of the last two
+        parameters so more would generally fit on a screen.
+
+        * src/core/keybindings.c, src/core/schema-bindings.c
+          src/core/prefs.c: sympathy changes
+        * src/core/window-bindings.h, src/core/screen-bindings.h:
+          transformation as above
+
 2008-10-21   Christian Persch  <chpe@gnome.org>
 
         * src/Makefile.am: fix build when schemas are not installed.
