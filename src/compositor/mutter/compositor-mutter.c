@@ -1355,21 +1355,23 @@ process_reparent (Mutter *compositor,
                   MetaWindow            *window)
 {
   MetaScreen *screen;
+  MutterWindow *mw;
 
   screen = meta_display_screen_for_root (compositor->display, event->parent);
 
-  if (screen != NULL)
-    {
-      meta_verbose ("reparent: adding a new window 0x%x\n",
-		    (guint)event->window);
-      add_win (screen, window, event->window);
-    }
-  else
+  if (!screen)
+    return;
+
+  mw = find_window_for_screen (screen, event->window);
+
+  if (mw)
     {
       meta_verbose ("reparent: destroying a window 0%x\n",
 		    (guint)event->window);
       destroy_win (compositor->display, event->window);
     }
+
+  add_win (screen, window, event->window);
 }
 
 static void
