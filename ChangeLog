@@ -1,3 +1,8 @@
+2008-10-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* doc/creating_themes/C/creating_metacity_themes.xml:
+	Fixed various tags to make this validate.
+
 2008-10-22  Thomas Thurman  <tthurman@gnome.org>
 
         * NEWS: 2.25.2 release.

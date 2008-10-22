@@ -47,7 +47,7 @@
 <title>Introduction</title>
 
 <para>This is an article about how to theme Metacity.  It is a work in progress, and I have had to dig deeply to find some answers; I may well have made mistakes and I welcome corrections and suggestions.</para>
-<para>GNOME lets you theme a bunch of different things, but we're only talking about <literal>window border</literal> themes here, which some people call Metacity themes; <link url="http://en.wikipedia.org/wiki/Metacity#Themes">Wikipedia begins a sentence</link> with &quot;Despite the incomplete state of Metacity theme development documentation&quot;, and though there <emphasis>is</emphasis> <link url="http://svn.gnome.org/viewvc/metacity/trunk/doc/theme-format.txt?view=markup">documentation in the source</link>, apparently not many people find it, and it's written more for programmers than theme designers.  Glynn Foster also wrote <link url="http://developer.gnome.org/doc/tutorials/metacity/metacity-themes.html">a very good introduction to Metacity themes</link> <sup><link url="http://home.arcor.de/rybaczyk/documents/tutorials/metacity/metacity-themes.de.html" hreflang="de">[de]</link></sup> six years ago, but things have changed a little since then.  <link url="http://lists.freedesktop.org/archives/compiz/2006-September/000445.html">Metacity themes can also be used by Compiz</link>, and perhaps by other window managers for all I know.</para>
+<para>GNOME lets you theme a bunch of different things, but we're only talking about <literal>window border</literal> themes here, which some people call Metacity themes; <ulink url="http://en.wikipedia.org/wiki/Metacity#Themes">Wikipedia begins a sentence</ulink> with &quot;Despite the incomplete state of Metacity theme development documentation&quot;, and though there <emphasis>is</emphasis> <ulink url="http://svn.gnome.org/viewvc/metacity/trunk/doc/theme-format.txt?view=markup">documentation in the source</ulink>, apparently not many people find it, and it's written more for programmers than theme designers.  Glynn Foster also wrote <ulink url="http://developer.gnome.org/doc/tutorials/metacity/metacity-themes.html">a very good introduction to Metacity themes</ulink> (<ulink url="http://home.arcor.de/rybaczyk/documents/tutorials/metacity/metacity-themes.de.html">[de]</ulink>) six years ago, but things have changed a little since then.  <ulink url="http://lists.freedesktop.org/archives/compiz/2006-September/000445.html">Metacity themes can also be used by Compiz</ulink>, and perhaps by other window managers for all I know.</para>
 
 <para>So, a Metacity theme is a set of instructions about how to &quot;decorate&quot; (draw the borders around) a window.  Presumably you don't want to style all windows identically, so the format lets you specify details for different kinds of window:</para>
 
@@ -91,9 +91,9 @@ for a theme installed for all users.</para></listitem>
 </itemizedlist>
 </para>
 
-<para>where <varname>N</varname> is the name of the theme and <varname>V</varname> is the version of the format.  Version 2, <link url="http://svn.gnome.org/viewvc/metacity?view=revision&amp;revision=2973">introduced in October 2006</link>, adds a few extra features, but it's rarely used.  Version 1 is the original format.  The formats are fixed once they're stable for both backwards and forwards compatibility; <link url="http://bugzilla.gnome.org/show_bug.cgi?id=482165">new features</link> can't be added without introducing a new version number, which is why improvements come out rarely and in large clumps.  <literal>metacity-1</literal> in the names is a fossil and doesn't mean version 1 of anything.</para>
+<para>where <varname>N</varname> is the name of the theme and <varname>V</varname> is the version of the format.  Version 2, <ulink url="http://svn.gnome.org/viewvc/metacity?view=revision&amp;revision=2973">introduced in October 2006</ulink>, adds a few extra features, but it's rarely used.  Version 1 is the original format.  The formats are fixed once they're stable for both backwards and forwards compatibility; <ulink url="http://bugzilla.gnome.org/show_bug.cgi?id=482165">new features</ulink> can't be added without introducing a new version number, which is why improvements come out rarely and in large clumps.  <literal>metacity-1</literal> in the names is a fossil and doesn't mean version 1 of anything.</para>
 
-<para>The metacity-theme-V.xml files are <link url="http://blogs.gnome.org/tthurman/2008/02/14/gmarkup/">GMarkup files</link>, which are very similar to XML.  For now, you actually have to write these in a text editor or something; you can either start with a blank page, or modify a theme someone else has made.  (I am thinking of writing a general theme editor program, but that'll have to wait until I've reduced Metacity's open bug queue a little.)  If you want to see a fully-fledged one, you can look at <link url="http://svn.gnome.org/viewvc/metacity/trunk/src/themes/Atlanta/metacity-theme-1.xml?view=markup">the current version of &quot;Atlanta&quot;</link>, one of the simplest themes, but even that is quite complicated-looking at first.</para>
+<para>The metacity-theme-V.xml files are <ulink url="http://blogs.gnome.org/tthurman/2008/02/14/gmarkup/">GMarkup files</ulink>, which are very similar to XML.  For now, you actually have to write these in a text editor or something; you can either start with a blank page, or modify a theme someone else has made.  (I am thinking of writing a general theme editor program, but that'll have to wait until I've reduced Metacity's open bug queue a little.)  If you want to see a fully-fledged one, you can look at <ulink url="http://svn.gnome.org/viewvc/metacity/trunk/src/themes/Atlanta/metacity-theme-1.xml?view=markup">the current version of &quot;Atlanta&quot;</ulink>, one of the simplest themes, but even that is quite complicated-looking at first.</para>
 <para>So, let's talk about what actually goes inside the files.  As in any XML file, &lt;!-<!-- x -->- &#8230; <!-- x -->&gt; are comments.  At its most basic, it would go:</para>
 
 <para>
@@ -139,6 +139,7 @@ for a theme installed for all users.</para></listitem>
     <term>frame_style_set:</term><listitem><para>tells Metacity how to draw windows according to whether they're focused or not, maximised or not, shaded or not, and allowing resizing vertically, horizontally, both, or neither.  It looks like this:</para></listitem>
   </varlistentry>
 </variablelist>
+</para>
 
 <para>
 <programlisting>
@@ -167,7 +168,9 @@ for a theme installed for all users.</para></listitem>
 </variablelist>
 </para>
 
+<para>
 <varname>N</varname> is the name of a <literal>frame_style</literal> to apply to a window which has these attributes.</para>
+
 <para>A <literal>frame_style_set</literal> tag may also have a &quot;parent&quot; tag, which should be the name of another <literal>frame_style_set</literal>. This means that if Metacity wants to know about a kind of window which that <literal>frame_style_set</literal> doesn't describe, it should look in the parent.  Most of the more complicated tags in Metacity theme files also have a &quot;parent&quot; attribute which work the same way.  This is particularly useful because, taken together, all the <literal>frame_style_set</literal>s in a theme file must be capable of matching every possible kind of window; if a window turns up that they can't match, there will be an error at runtime.</para>
 
 <para>Let's recap what we've seen so far. The combination of a <literal>window</literal>, which matches a window's state (normal, dialog, and so forth), with an entry in the corresponding <literal>frame_style_set</literal>, which matches its focus, shadedness, maximisedness, and resize permissions where relevant, will allow you to make a list of rules to match any window against.  The next piece of this puzzle lets you specify what Metacity should do with such windows once it's matched them.</para>
@@ -213,7 +216,7 @@ for a theme installed for all users.</para></listitem>
 </itemizedlist>
 </para>
 
-<para><emphasis>What</emphasis> Metacity draws in these pieces is decided by the theme.  If a <literal>frame_style</literal> or its parents don't specify a particular piece, nothing will be drawn for that piece.  You have two ways to specify what to draw: one is that the <literal>piece</literal> tag can have a <literal>draw_ops</literal> tag inside it which lists a sequence of drawing operations in Metacity's custom format.  <link url="http://bugzilla.gnome.org/show_bug.cgi?id=107012">You might ask why we don't use SVG</link>; one answer is that SVG support wasn't very strong when this format was designed, and another answer is that these days you can use SVG all you like; just include it as an image and Metacity will know what to do.</para>
+<para><emphasis>What</emphasis> Metacity draws in these pieces is decided by the theme.  If a <literal>frame_style</literal> or its parents don't specify a particular piece, nothing will be drawn for that piece.  You have two ways to specify what to draw: one is that the <literal>piece</literal> tag can have a <literal>draw_ops</literal> tag inside it which lists a sequence of drawing operations in Metacity's custom format.  <ulink url="http://bugzilla.gnome.org/show_bug.cgi?id=107012">You might ask why we don't use SVG</ulink>; one answer is that SVG support wasn't very strong when this format was designed, and another answer is that these days you can use SVG all you like; just include it as an image and Metacity will know what to do.</para>
 
 <para>An alternative to including a draw_ops tag inside a piece tag is to add a draw_ops attribute to the piece tag.  Then you can add a draw_ops tag at top level (inside the metacity_theme tag) with a name attribute, and Metacity will use that.  This is useful if you use similar draw_ops over and over.</para>
 <para>I'm not going to document draw_ops at present, because this is already very long.  I will write it up later and link it from here.</para>
@@ -228,7 +231,7 @@ for a theme installed for all users.</para></listitem>
 <listitem><para><literal>menu</literal> is the menu button you can click to get a list of actions you can perform on the window.</para></listitem>
 
 <listitem><para><literal>shade</literal>, <literal>above</literal>, <literal>stick</literal> are similar to the original buttons but only allowed in version 2</para></listitem>
-<listitem><para><literal>unshade</literal>, <literal>unabove</literal>, <literal>unstick</literal> are the toggled versions of these buttons.  Again, version 2 only.  <strike>It is not immediately apparent to me how the toggled version of <literal>maximize</literal> is generated, though I suppose I must have known at some point.</strike></para></listitem>
+<listitem><para><literal>unshade</literal>, <literal>unabove</literal>, <literal>unstick</literal> are the toggled versions of these buttons.  Again, version 2 only.</para></listitem>
 
 </itemizedlist>
 </para>
@@ -250,10 +253,10 @@ for a theme installed for all users.</para></listitem>
 <chapter>
 <title>Other things which lie around a file</title>
 
-<para>The most important other thing in a theme file is the metadata held in the <literal>info</literal> tag.  This contains a set of tags each of which contains some text explaining something about the theme itself, in a sort of <link url="http://en.wikipedia.org/wiki/Dublin_Core">Dublin Core</link> sort of way.  (Next time around, we should probably use the actual Dublin Core.)  The tags are <literal>name</literal>, <literal>author</literal>, <literal>copyright</literal>, <literal>date</literal>, and <literal>description</literal>.</para>
+<para>The most important other thing in a theme file is the metadata held in the <literal>info</literal> tag.  This contains a set of tags each of which contains some text explaining something about the theme itself, in a sort of <ulink url="http://en.wikipedia.org/wiki/Dublin_Core">Dublin Core</ulink> sort of way.  (Next time around, we should probably use the actual Dublin Core.)  The tags are <literal>name</literal>, <literal>author</literal>, <literal>copyright</literal>, <literal>date</literal>, and <literal>description</literal>.</para>
 
 <para>Version 1 of the format had a <literal>menu_icon</literal> tag at top level, which let themes specify the icons beside options in the menu you get from the menu icon.  This has become redundant; the icons are taken from the icon theme!  The tag can still be used in all formats, but does nothing and is deprecated.</para>
-<para>Version 2 of the format has a <literal>fallback</literal> tag at top level, which let the theme specify what icon a window should be considered to have if it doesn't provide an icon of its own.  This should also be taken from the icon theme, <link url="http://bugzilla.gnome.org/show_bug.cgi?id=524343">if anyone fancies fixing it</link>, and the tag should also then be deprecated.  It shouldn't be hard.</para>
+<para>Version 2 of the format has a <literal>fallback</literal> tag at top level, which let the theme specify what icon a window should be considered to have if it doesn't provide an icon of its own.  This should also be taken from the icon theme, <ulink url="http://bugzilla.gnome.org/show_bug.cgi?id=524343">if anyone fancies fixing it</ulink>, and the tag should also then be deprecated.  It shouldn't be hard.</para>
 
 </chapter>
 
@@ -261,13 +264,13 @@ for a theme installed for all users.</para></listitem>
 <title>When you're working on a theme</title>
 
 <para>When you're editing a theme, you can view it without using it on the whole desktop using
-<command>metacity-theme-viewer <emphasis>YourThemeName</emphasis></command></para>
+<command>metacity-theme-viewer YourThemeName</command></para>
 <para>and view it on the whole desktop using
-<command>gconftool -<!-- x -->-type=string -<!-- x -->-set /apps/metacity/general/theme <emphasis>YourThemeName</emphasis></command></para>
+<command>gconftool -<!-- x -->-type=string -<!-- x -->-set /apps/metacity/general/theme YourThemeName</command></para>
 
 <para>Whenever you change the selected theme in GConf, Metacity will load the newly-chosen theme.  This is how control-center does it.  But when you change a theme, as you're working on it, you might want to ask Metacity to reload the theme which is currently used on the whole desktop to reflect your changes.  You can do this using the little-known <command>metacity-message</command> program, with the command <literal>metacity-message reload-theme</literal>.  This works by sending the ClientMessage <literal>_METACITY_RELOAD_THEME_MESSAGE</literal> to the root window, in case you're interested.</para>
 
-<para>Once you're done with your theme, consider submitting it to <link url="http://art.gnome.org/themes/metacity/">the art.gnome.org site</link>, or <link url="http://www.gnome-look.org/index.php?xcontentmode=101">the gnome-look site</link>.</para>
+<para>Once you're done with your theme, consider submitting it to <ulink url="http://art.gnome.org/themes/metacity/">the art.gnome.org site</ulink>, or <ulink url="http://www.gnome-look.org/index.php?xcontentmode=101">the gnome-look site</ulink>.</para>
 
 </chapter>
 
