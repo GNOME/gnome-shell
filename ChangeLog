@@ -1,4 +1,4 @@
-2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+2008-10-22  Matthew Martin  <mtt.martin@gmail.com>
 
         * src/core/window.c (meta_window_set_demands_attention): minimised
           windows are necessarily obscured.
