@@ -1,3 +1,7 @@
+2008-10-22  Götz Waschk  <waschk@mandriva.org>
+
+        * configure.in: add libm reference.  Closes #557357.
+
 2008-10-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* doc/creating_themes/C/creating_metacity_themes.xml:
