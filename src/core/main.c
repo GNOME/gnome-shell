@@ -323,8 +323,8 @@ meta_parse_options (int *argc, char ***argv,
  * try to use the environment variable METACITY_DISPLAY. If that
  * also is NULL, use the default - :0.0
  */
-static
-void meta_select_display (gchar *display_name)
+static void
+meta_select_display (gchar *display_name)
 {
   gchar *envVar = "";
   if (display_name)
@@ -334,6 +334,23 @@ void meta_select_display (gchar *display_name)
       g_getenv ("METACITY_DISPLAY"), NULL);
   /* DO NOT FREE envVar, putenv() sucks */
   putenv (envVar);
+}
+
+static void
+meta_finalize (void)
+{
+  meta_display_close (meta_get_display (),
+                      CurrentTime); /* I doubt correct timestamps matter here */
+
+  meta_session_shutdown ();
+}
+
+static void
+sigterm_handler (int signum)
+{
+  meta_finalize ();
+
+  exit (meta_exit_code);
 }
     
 /**
@@ -374,6 +391,11 @@ main (int argc, char **argv)
     g_printerr ("Failed to register SIGXFSZ handler: %s\n",
                 g_strerror (errno));
 #endif
+
+  act.sa_handler = &sigterm_handler;
+  if (sigaction (SIGTERM, &act, NULL) < 0)
+    g_printerr ("Failed to register SIGTERM handler: %s\n",
+		g_strerror (errno));
 
   if (g_getenv ("METACITY_VERBOSE"))
     meta_set_verbose (TRUE);
@@ -504,11 +526,8 @@ main (int argc, char **argv)
   
   g_main_loop_run (meta_main_loop);
 
-  meta_display_close (meta_get_display (),
-                      CurrentTime); /* I doubt correct timestamps matter here */
+  meta_finalize ();
 
-  meta_session_shutdown ();
-  
   if (meta_restart_after_quit)
     {
       GError *err;

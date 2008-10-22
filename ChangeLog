@@ -1,3 +1,9 @@
+2008-10-22  Joe Marcus Clarke  <marcus@freebsd.org>
+
+        * src/core/main.c (meta_finalize, sigterm_handler): new functions
+        * src/core/main.c (main): add sigterm_handler in case we receive
+          a SIGTERM.  Closes #553980.
+
 2008-10-22  Matthew Martin  <mtt.martin@gmail.com>
 
         * src/core/window.c (meta_window_set_demands_attention): minimised
