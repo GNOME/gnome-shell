@@ -1,3 +1,11 @@
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        Fixes to make distcheck work again.
+
+        * src/Makefile.am: include *-binding.h, and make the schema
+          building work when builddir != srcdir
+        * po/POTFILES.in (src/core/keybindings.): include *-binding.h
+
 2008-10-22  Götz Waschk  <waschk@mandriva.org>
 
         * configure.in: add libm reference.  Closes #557357.

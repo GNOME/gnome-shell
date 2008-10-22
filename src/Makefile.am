@@ -96,7 +96,9 @@ metacity_SOURCES= 				\
 	ui/theme.h				\
 	ui/themewidget.c			\
 	ui/themewidget.h			\
-	ui/ui.c
+	ui/ui.c					\
+	include/window-bindings.h		\
+	include/screen-bindings.h
 
 # by setting libmetacity_private_la_CFLAGS, the files shared with
 # metacity proper will be compiled with different names.
@@ -140,9 +142,9 @@ schema_bindings_SOURCES =       \
         core/schema-bindings.c
 
 schema_bindings_LDADD = @METACITY_LIBS@
-metacity.schemas.in: schema_bindings
+metacity.schemas.in: schema_bindings metacity.schemas.in.in
 	@echo Generating keybinding schemas...
-	./schema_bindings > metacity.schemas.in
+	cd ${srcdir};${builddir}/schema_bindings > metacity.schemas.in
 
 bin_PROGRAMS=metacity metacity-theme-viewer
 libexec_PROGRAMS=metacity-dialog
@@ -199,7 +201,7 @@ VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
           stock_delete_data $(srcdir)/stock_delete.png
 
 BUILT_SOURCES = inlinepixbufs.h
-CLEANFILES = inlinepixbufs.h metacity.desktop metacity-wm.desktop metacity.schemas 50-metacity-desktop-key.xml 50-metacity-key.xml
+CLEANFILES = inlinepixbufs.h metacity.desktop metacity-wm.desktop metacity.schemas metacity.schemas.in 50-metacity-desktop-key.xml 50-metacity-key.xml
 
 inlinepixbufs.h: $(IMAGES)
 	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
