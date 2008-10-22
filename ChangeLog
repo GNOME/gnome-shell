@@ -6,6 +6,10 @@
 
         * NEWS: 2.25.2 release.
 
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.2 release.
+
 2008-10-22  Joe Marcus Clarke  <marcus@freebsd.org>
 
         * src/core/main.c (meta_finalize, sigterm_handler): new functions
