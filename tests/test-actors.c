@@ -32,12 +32,6 @@ static GOptionEntry super_oh_entries[] = {
   { NULL }
 };
 
-static gint
-get_radius (void)
-{
-  return (CLUTTER_STAGE_HEIGHT() + CLUTTER_STAGE_HEIGHT()) / n_hands ;
-}
-
 /* input handler */
 static gboolean
 input_cb (ClutterActor *stage,
@@ -190,7 +184,6 @@ main (int argc, char *argv[])
   for (i = 0; i < n_hands; i++)
     {
       gint x, y, w, h;
-      gint radius = get_radius ();
 
       /* Create a texture from file, then clone in to same resources */
       if (i == 0)
@@ -210,12 +203,12 @@ main (int argc, char *argv[])
       h = clutter_actor_get_height (oh->hand[0]);
 
       x = CLUTTER_STAGE_WIDTH () / 2
-	+ radius
+	+ RADIUS
 	* cos (i * M_PI / (n_hands / 2))
 	- w / 2;
 
       y = CLUTTER_STAGE_HEIGHT () / 2
-	+ radius
+	+ RADIUS
 	* sin (i * M_PI / (n_hands / 2))
 	- h / 2;
 

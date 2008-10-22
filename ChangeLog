@@ -1,3 +1,8 @@
+2008-10-22  Thomas Wood  <thomas@linux.intel.com>
+
+	* tests/test-actors.c: Don't adjust the radius based on the number of
+	actors
+
 2008-10-21  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-color.[ch] (clutter_value_set_color): Constify
