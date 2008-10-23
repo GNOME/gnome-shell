@@ -1228,7 +1228,7 @@ static void
 set_net_wm_state (MetaWindow *window)
 {
   int i;
-  unsigned long data[11];
+  unsigned long data[12];
   
   i = 0;
   if (window->shaded)
@@ -1284,6 +1284,11 @@ set_net_wm_state (MetaWindow *window)
   if (window->wm_state_demands_attention)
     {
       data[i] = window->display->atom__NET_WM_STATE_DEMANDS_ATTENTION;
+      ++i;
+    }
+  if (window->on_all_workspaces)
+    {
+      data[i] = window->display->atom__NET_WM_STATE_STICKY;
       ++i;
     }
 
@@ -4928,9 +4933,19 @@ meta_window_client_message (MetaWindow *window,
         {
           if ((action == _NET_WM_STATE_ADD) ||
               (action == _NET_WM_STATE_TOGGLE && !window->wm_state_demands_attention))
-            meta_window_set_demands_attention(window);
+            meta_window_set_demands_attention (window);
           else
-            meta_window_unset_demands_attention(window);
+            meta_window_unset_demands_attention (window);
+        }
+      
+       if (first == display->atom__NET_WM_STATE_STICKY ||
+          second == display->atom__NET_WM_STATE_STICKY)
+        {
+          if ((action == _NET_WM_STATE_ADD) ||
+              (action == _NET_WM_STATE_TOGGLE && !window->on_all_workspaces))
+            meta_window_stick (window);
+          else
+            meta_window_unstick (window);
         }
       
       return TRUE;

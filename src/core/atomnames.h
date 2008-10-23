@@ -33,7 +33,7 @@
  * again.
  *
  * If you also define EWMH_ATOMS_ONLY then you will only get _NET_WM_*
- * hints rather than all of them.
+ * atoms rather than all of them.
  */
 
 #ifndef item
@@ -154,6 +154,7 @@ item(_NET_DESKTOP_VIEWPORT)
 item(_NET_WM_USER_TIME_WINDOW)
 item(_NET_WM_ACTION_ABOVE)
 item(_NET_WM_ACTION_BELOW)
+item(_NET_WM_STATE_STICKY)
 
 #if 0
 /* We apparently never use: */

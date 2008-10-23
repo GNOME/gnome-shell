@@ -580,6 +580,8 @@ reload_net_wm_state (MetaWindow    *window,
         window->wm_state_below = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_DEMANDS_ATTENTION)
         window->wm_state_demands_attention = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_STICKY)
+        window->on_all_workspaces = TRUE;
 
       ++i;
     }

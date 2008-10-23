@@ -1,3 +1,15 @@
+2008-10-23  Thomas Thurman  <tthurman@gnome.org>
+
+        Support _NET_WM_STATE_STICKY (i.e. allow third-party apps to decide
+        whether a window is on all workspaces).  Bug found by Ka-Hing
+        Cheung.  Closes #557536.
+
+        * src/core/window.c (set_net_wm_state): report it
+        * src/core/window.c (meta_window_client_message): set sticky
+          if we receive it
+        * src/core/window-props.c: set sticky if we find it
+        * src/core/atomnames.h: add _NET_WM_STATE_STICKY
+
 2008-10-22  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/schema-bindings.c: support builds outside tree properly.
