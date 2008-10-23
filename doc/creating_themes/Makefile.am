@@ -6,7 +6,7 @@ dist-hook: doc-dist-hook
 
 # The name of the directory in /usr/share/gnome/help/, 
 # and the name of the main .xml file:
-DOC_MODULE = creating_metacity_themes
+DOC_MODULE = creating-metacity-themes
 
 # The names of any files included via entity declarations.
 DOC_ENTITIES =

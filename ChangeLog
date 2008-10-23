@@ -1,3 +1,9 @@
+2008-10-23  Frederic Peters  <fpeters@0d.be>
+
+	* doc/creating_themes/Makefile.am:
+	* doc/creating_themes/C/creating_metacity_themes.xml: renamed document
+	to creating-metacity-themes to match other manuals usage of dashes.
+
 2008-10-23  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.25.8.
