@@ -116,6 +116,7 @@ struct PluginPrivate
   ClutterActor          *desktop1;
   ClutterActor          *desktop2;
 
+  ClutterActor          *d_overlay ; /* arrow indicator */
   ClutterActor          *panel;
 
   gboolean               debug_mode : 1;
@@ -202,6 +203,7 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
 
   clutter_actor_destroy (ppriv->desktop1);
   clutter_actor_destroy (ppriv->desktop2);
+  clutter_actor_destroy (ppriv->d_overlay);
 
   ppriv->actors = NULL;
   ppriv->tml_switch_workspace1 = NULL;
@@ -223,7 +225,11 @@ switch_workspace (const GList **actors, gint from, gint to,
   gint           n_workspaces;
   ClutterActor  *group1  = clutter_group_new ();
   ClutterActor  *group2  = clutter_group_new ();
-  ClutterActor  *stage;
+  ClutterActor  *group3  = clutter_group_new ();
+  ClutterActor  *stage, *label, *rect;
+  gint           to_x, to_y, from_x = 0, from_y = 0;
+  ClutterColor   white = { 0xff, 0xff, 0xff, 0xff };
+  ClutterColor   black = { 0x44, 0x44, 0x44, 0xff };
   gint           screen_width;
   gint           screen_height;
 
@@ -231,19 +237,18 @@ switch_workspace (const GList **actors, gint from, gint to,
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-#if 1
-  clutter_actor_set_anchor_point (group2, screen_width, screen_height);
-
-  clutter_actor_set_position (group2, screen_width, screen_height);
-#endif
-
   clutter_actor_set_scale (group2, 0.0, 0.0);
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group2);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), group1);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group3);
 
   if (from == to)
     {
+      clutter_actor_destroy (group3);
+      clutter_actor_destroy (group2);
+      clutter_actor_destroy (group1);
+
       mutter_plugin_effect_completed (plugin, NULL,
                                       MUTTER_PLUGIN_SWITCH_WORKSPACE);
       return;
@@ -291,22 +296,111 @@ switch_workspace (const GList **actors, gint from, gint to,
       l = l->prev;
     }
 
-  ppriv->actors   = (GList **)actors;
+  rect = clutter_rectangle_new ();
+  clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &black);
+  clutter_container_add_actor (CLUTTER_CONTAINER (group3), rect);
+
+  label = clutter_label_new ();
+  clutter_label_set_font_name (CLUTTER_LABEL (label), "Sans Bold 148");
+  clutter_label_set_color (CLUTTER_LABEL (label), &white);
+  clutter_container_add_actor (CLUTTER_CONTAINER (group3), label);
+
+  clutter_actor_set_size (rect,
+                          clutter_actor_get_width (label),
+                          clutter_actor_get_height (label));
+
+
+  clutter_actor_set_opacity (group3, 0);
+
+  ppriv->actors  = (GList **)actors;
   ppriv->desktop1 = group1;
   ppriv->desktop2 = group2;
+  ppriv->d_overlay = group3;
 
-  ppriv->tml_switch_workspace2 = clutter_effect_scale (
-                                           ppriv->switch_workspace_effect,
-                                           group2, 1.0, 1.0,
-                                           on_switch_workspace_effect_complete,
-                                           (gpointer)actors);
+  clutter_effect_fade (ppriv->switch_workspace_effect, group3,
+                       128,
+                       NULL, NULL);
 
-  ppriv->tml_switch_workspace1 = clutter_effect_scale (
-                                           ppriv->switch_workspace_effect,
-                                           group1, 0.0, 0.0,
-                                           NULL, NULL);
+#if 0
+  ppriv->tml_switch_workspace2 =
+    clutter_effect_scale (ppriv->switch_workspace_effect, group2,
+                          1.0, 1.0,
+                          on_switch_workspace_effect_complete,
+                          actors);
+
+  ppriv->tml_switch_workspace1 =
+    clutter_effect_scale (ppriv->switch_workspace_effect, group1,
+                          0.0, 0.0,
+                          NULL, NULL);
+#endif
+
+  switch (direction)
+    {
+    case META_MOTION_UP:
+      clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\221");
+
+      from_x = 0;
+      from_y = screen_height;
+
+      to_x = 0;
+      to_y = 0;
+      clutter_actor_set_position (group2, 0, screen_height);
+      break;
+
+    case META_MOTION_DOWN:
+      clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\223");
+
+      from_x = 0;
+      from_y = screen_height;
+
+      to_x = 0;
+      to_y = 0;
+      clutter_actor_set_position (group2, 0, screen_height * -1);
+      break;
+
+    case META_MOTION_LEFT:
+      clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\220");
+
+      from_x = screen_width * -1;
+      from_y = 0;
+
+      to_x = 0;
+      to_y = 0;
+      clutter_actor_set_position (group2, screen_width, 0);
+      break;
+
+    case META_MOTION_RIGHT:
+      clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\222");
+
+      from_x = screen_width;
+      from_y = 0;
+
+      to_x = 0;
+      to_y = 0;
+      clutter_actor_set_position (group2, screen_width * -1, 0);
+      break;
+
+    default:
+      break;
+    }
+
+  clutter_actor_set_position (group3,
+                              (screen_width - clutter_actor_get_width (group3)) / 2,
+                              (screen_height - clutter_actor_get_height (group3)) / 2);
+
+
+#if 1
+  ppriv->tml_switch_workspace2 =
+    clutter_effect_move (ppriv->switch_workspace_effect, group2,
+                         to_x, to_y,
+                         on_switch_workspace_effect_complete,
+                         actors);
+  ppriv->tml_switch_workspace1 =
+    clutter_effect_move (ppriv->switch_workspace_effect, group1,
+                         from_x, from_y,
+                         NULL, NULL);
+#endif
 }
-
 
 /*
  * Minimize effect completion callback; this function restores actor state, and
