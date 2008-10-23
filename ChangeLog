@@ -1,5 +1,12 @@
 2008-10-23  Thomas Thurman  <tthurman@gnome.org>
 
+        * src/core/schema-bindings.c: fix stupid thinko which
+          caused defaults to be incorrect
+        * src/include/window-bindings.h: "space" needs to be
+          lowercase
+
+2008-10-23  Thomas Thurman  <tthurman@gnome.org>
+
         Support _NET_WM_STATE_STICKY (i.e. allow third-party apps to decide
         whether a window is on all workspaces).  Bug found by Ka-Hing
         Cheung.  Closes #557536.

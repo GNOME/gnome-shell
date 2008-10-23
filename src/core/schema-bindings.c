@@ -48,21 +48,6 @@ char *about_keybindings, *about_reversible_keybindings;
 char *source_filename, *target_filename;
 FILE *source_file, *target_file;
 
-const char* window_string = \
-	"    <schema>\n" \
-	"      <key>/schemas/apps/metacity/%s_keybindings/%s%s</key>\n" \
-	"      <applyto>/apps/metacity/%s_keybindings/%s%s</applyto>\n" \
-	"      <owner>metacity</owner>\n" \
-	"      <type>string</type>\n" \
-	"      <default>%s</default>\n" \
-	"      <locale name=\"C\">\n" \
-	"         <short>%s</short>\n" \
-	"         <long>\n" \
-	"          %s  %s\n" \
-	"         </long>\n" \
-	"      </locale>\n" \
-	"    </schema>\n\n\n";
-
 static void
 single_stanza (gboolean is_window, const char *name,
                const char *default_value,
@@ -77,7 +62,7 @@ single_stanza (gboolean is_window, const char *name,
 
   escaped_description = g_markup_escape_text (description, -1);
   escaped_default_value = default_value==NULL? "disabled":
-        g_markup_escape_text (description, -1);
+        g_markup_escape_text (default_value, -1);
   
   fprintf (target_file, "    <schema>\n");
   fprintf (target_file, "      <key>/schemas/apps/metacity/%s_keybindings/%s</key>\n",

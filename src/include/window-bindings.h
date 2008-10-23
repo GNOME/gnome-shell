@@ -44,7 +44,7 @@
 
 
 keybind (activate_window_menu, handle_activate_window_menu, 0,
-        BINDING_PER_WINDOW, "<Alt>Space",
+        BINDING_PER_WINDOW, "<Alt>space",
         _("Activate the window menu"))
 keybind (toggle_fullscreen, handle_toggle_fullscreen, 0, BINDING_PER_WINDOW,
         NULL,
