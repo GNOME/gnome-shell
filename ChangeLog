@@ -1,5 +1,9 @@
 2008-10-23  Thomas Thurman  <tthurman@gnome.org>
 
+        * configure.in: Post-release bump to 2.25.5.
+
+2008-10-23  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/schema-bindings.c: fix stupid thinko which
           caused defaults to be incorrect
         * src/include/window-bindings.h: "space" needs to be
