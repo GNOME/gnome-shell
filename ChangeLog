@@ -2,6 +2,7 @@
 
         * src/core/schema-bindings.c: support builds outside tree properly.
 	* src/Makefile.am: ditto.
+	* po/POTFILES.skip: ditto.
 
 2008-10-22  Thomas Thurman  <tthurman@gnome.org>
 
