@@ -1,3 +1,15 @@
+2.25.5
+======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Allow third-party apps to decide whether a window appears
+    on all workspaces (Thomas) (#557536)
+  - Fixed keybindings script (again) (Thomas)
+
+Translations
+  David Planella (ca), Robert Millan (ca@valencia)
+
 2.25.3
 ======
 

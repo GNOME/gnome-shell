@@ -62,7 +62,7 @@ def check_we_are_up_to_date():
   changed = []
   for line in commands.getoutput('/usr/bin/svn status').split('\n'):
     if line!='' and (line[0]=='C' or line[0]=='M'):
-      if line.find('release-wrangler.py')==-1:
+      if line.find('release-wrangler.py')==-1 and line.find('ChangeLog')==-1:
         # we should be insensitive to changes in this script itself
         # to avoid chicken-and-egg problems
         changed.append(line[1:].lstrip())
