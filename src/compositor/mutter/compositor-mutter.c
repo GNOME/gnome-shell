@@ -1795,8 +1795,10 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   {
     ClutterActor *foo;
-    foo = clutter_label_new_with_text ("Sans Bold 148", "OVERLAY");
+    foo = clutter_label_new_with_text ("Sans Bold 48px", 
+                                       "Yessir. The compositor is running.");
     clutter_actor_set_opacity (foo, 100);
+    clutter_actor_set_position (foo, 20, height - 50);
     clutter_container_add_actor (CLUTTER_CONTAINER (info->overlay_group),
                                  foo);
   }
