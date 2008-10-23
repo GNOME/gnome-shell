@@ -30,6 +30,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <errno.h>
 
 #include <glib.h>
@@ -43,6 +44,9 @@ static void single_stanza (gboolean is_window, const char *name,
                const char *description);
 
 char *about_keybindings, *about_reversible_keybindings;
+
+char *source_filename, *target_filename;
+FILE *source_file, *target_file;
 
 const char* window_string = \
 	"    <schema>\n" \
@@ -75,22 +79,22 @@ single_stanza (gboolean is_window, const char *name,
   escaped_default_value = default_value==NULL? "disabled":
         g_markup_escape_text (description, -1);
   
-  printf ("    <schema>\n");
-  printf ("      <key>/schemas/apps/metacity/%s_keybindings/%s</key>\n",
+  fprintf (target_file, "    <schema>\n");
+  fprintf (target_file, "      <key>/schemas/apps/metacity/%s_keybindings/%s</key>\n",
             keybinding_type, name);
-  printf ("      <applyto>/apps/metacity/%s_keybindings/%s</applyto>\n",
+  fprintf (target_file, "      <applyto>/apps/metacity/%s_keybindings/%s</applyto>\n",
             keybinding_type, name);
-  printf ("      <owner>metacity</owner>\n");
-  printf ("      <type>string</type>\n");
-  printf ("      <default>%s</default>\n", escaped_default_value);
+  fprintf (target_file, "      <owner>metacity</owner>\n");
+  fprintf (target_file, "      <type>string</type>\n");
+  fprintf (target_file, "      <default>%s</default>\n", escaped_default_value);
   
-  printf ("      <locale name=\"C\">\n");
-  printf ("        <short>%s</short>\n", description);
-  printf ("        <long>%s</long>\n",
+  fprintf (target_file, "      <locale name=\"C\">\n");
+  fprintf (target_file, "        <short>%s</short>\n", description);
+  fprintf (target_file, "        <long>%s</long>\n",
                    can_reverse? about_reversible_keybindings:
                    about_keybindings);
-  printf ("      </locale>\n");
-  printf ("    </schema>\n\n");
+  fprintf (target_file, "      </locale>\n");
+  fprintf (target_file, "    </schema>\n\n");
 
   g_free (escaped_description);
 
@@ -103,30 +107,38 @@ static void produce_bindings ();
 static void
 produce_bindings ()
 {
-  FILE *metacity_schemas_in_in = fopen("metacity.schemas.in.in", "r");
+  source_file = fopen(source_filename, "r");
 
-  if (!metacity_schemas_in_in)
+  if (!source_file)
     {
-      g_error ("Cannot compile without metacity.schemas.in.in: %s\n",
-        strerror (errno));
+      g_error ("Cannot compile without %s: %s\n",
+        source_filename, strerror (errno));
     }
 
-  while (!feof (metacity_schemas_in_in))
+  target_file = fopen(target_filename, "w");
+
+  if (!target_file)
+    {
+      g_error ("Cannot create %s: %s\n",
+        target_filename, strerror (errno));
+    }
+
+  while (!feof (source_file))
     {
       /* 10240 is ridiculous overkill; we're writing the input file and
        * the lines are always 80 chars or less.
        */
       char buffer[10240];
       
-      fgets (buffer, sizeof (buffer), metacity_schemas_in_in);
+      fgets (buffer, sizeof (buffer), source_file);
       
       if (strstr (buffer, "<!-- GENERATED -->"))
          break;
          
-      printf ("%s", buffer);
+      fprintf (target_file, "%s", buffer);
     }
 
-  if (!feof (metacity_schemas_in_in))
+  if (!feof (source_file))
     {
 #define keybind(name, handler, param, flags, stroke, description) \
   single_stanza ( \
@@ -140,21 +152,35 @@ produce_bindings ()
 #undef keybind
     }
 
-  while (!feof (metacity_schemas_in_in))
+  while (!feof (source_file))
     {
       char buffer[10240];
       
-      fgets (buffer, sizeof (buffer), metacity_schemas_in_in);
+      fgets (buffer, sizeof (buffer), source_file);
       
-      printf ("%s", buffer);
+      fprintf (target_file, "%s", buffer);
     }
 
-  fclose (metacity_schemas_in_in);
+  if (fclose (source_file)!=0)
+      g_error ("Cannot close %s: %s\n",
+        source_filename, strerror (errno));
+
+  if (fclose (target_file)!=0)
+      g_error ("Cannot close %s: %s\n",
+        target_filename, strerror (errno));
 }
 
 int
-main ()
+main (int argc, char **argv)
 {
+  if (argc!=3)
+    {
+      g_error ("Syntax: %s <source.in.in> <target.in>\n", argv[0]);
+    }
+  
+  source_filename = argv[1];
+  target_filename = argv[2];
+
   /* Translators: Please don't translate "Control", "Shift", etc, since these
    * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
    * "disabled" must also stay as it is.
