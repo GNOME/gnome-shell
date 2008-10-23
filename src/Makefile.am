@@ -139,12 +139,13 @@ metacity_dialog_SOURCES= 	\
 	ui/metacity-dialog.c
 
 schema_bindings_SOURCES =       \
-        core/schema-bindings.c
+        core/schema-bindings.c			\
+	metacity.schemas.in.in
 
 schema_bindings_LDADD = @METACITY_LIBS@
-metacity.schemas.in: schema_bindings metacity.schemas.in.in
-	@echo Generating keybinding schemas...
-	cd ${srcdir};${builddir}/schema_bindings > metacity.schemas.in
+metacity.schemas.in: schema_bindings ${srcdir}/metacity.schemas.in.in
+	@echo Generating keybinding schemas... ${srcdir}/metacity.schemas.in.in
+	${builddir}/schema_bindings ${srcdir}/metacity.schemas.in.in ${builddir}/metacity.schemas.in
 
 bin_PROGRAMS=metacity metacity-theme-viewer
 libexec_PROGRAMS=metacity-dialog
