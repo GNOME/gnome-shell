@@ -1,5 +1,10 @@
 2008-10-23  Frederic Peters  <fpeters@0d.be>
 
+	* doc/creating_themes/C/creating-metacity-themes.xml: added missing @id
+	on <book> top element.
+
+2008-10-23  Frederic Peters  <fpeters@0d.be>
+
 	* doc/creating_themes/Makefile.am:
 	* doc/creating_themes/C/creating_metacity_themes.xml: renamed document
 	to creating-metacity-themes to match other manuals usage of dashes.

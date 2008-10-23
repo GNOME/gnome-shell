@@ -3,7 +3,7 @@
   "http://docbook.org/docbook/xml/4.5/docbookx.dtd" [
 ]>
 
-<book>
+<book id="index">
 
   <bookinfo>
 
