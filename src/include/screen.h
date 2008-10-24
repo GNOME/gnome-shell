@@ -53,4 +53,8 @@ void meta_screen_remove_workspace (MetaScreen    *screen,
                                    MetaWorkspace *workspace,
                                    guint32        timestamp);
 
+MetaWorkspace *meta_screen_append_new_workspace (MetaScreen    *screen,
+                                                 gboolean       activate,
+                                                 guint32        timestamp);
+
 #endif

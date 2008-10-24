@@ -1125,6 +1125,28 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   meta_screen_queue_workarea_recalc (screen);
 }
 
+MetaWorkspace *
+meta_screen_append_new_workspace (MetaScreen *screen, gboolean activate,
+                                  guint32 timestamp)
+{
+  MetaWorkspace *w;
+
+  /* This also adds the workspace to the screen list */
+  w = meta_workspace_new (screen);
+
+  if (!w)
+    return NULL;
+
+  if (activate)
+    meta_workspace_activate (w, timestamp);
+
+  set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
+
+  meta_screen_queue_workarea_recalc (screen);
+
+  return w;
+}
+
 
 static void
 update_num_workspaces (MetaScreen *screen,
