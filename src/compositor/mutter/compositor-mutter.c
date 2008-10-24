@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 #define _GNU_SOURCE
 #define _XOPEN_SOURCE 500 /* for usleep() */
 
@@ -10,6 +12,7 @@
 
 #include <gdk/gdk.h>
 
+#include "../../core/window-private.h"
 #include "display.h"
 #include "screen.h"
 #include "frame.h"
@@ -20,6 +23,7 @@
 #include "mutter-plugin-manager.h"
 #include "tidy/tidy-texture-frame.h"
 #include "xprops.h"
+#include "prefs.h"
 #include "mutter-shaped-texture.h"
 #include <X11/Xatom.h>
 #include <X11/Xlibint.h>
@@ -45,6 +49,16 @@
 #define MAX_TILE_SZ 8 	/* Must be <= shaddow radius */
 #define TILE_WIDTH  (3*MAX_TILE_SZ)
 #define TILE_HEIGHT (3*MAX_TILE_SZ)
+
+#define CHECK_LIST_INTEGRITY_START(list)	\
+  {int len2__; int len__ = g_list_length(list);
+
+#define CHECK_LIST_INTEGRITY_END(list)			    \
+  len2__ = g_list_length(list);				    \
+  if (len__ != len2__)					    \
+    g_warning ("Integrity check of list failed at %s:%d\n", \
+	       __FILE__, __LINE__); }
+
 
 /*
  * Register GType wrapper for XWindowAttributes, so we do not have to
@@ -447,7 +461,7 @@ find_window_for_screen (MetaScreen *screen, Window xwindow)
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
   if (info == NULL)
-      return NULL;
+    return NULL;
 
   return g_hash_table_lookup (info->windows_by_xid, (gpointer) xwindow);
 }
@@ -690,6 +704,18 @@ mutter_window_get_x_window (MutterWindow *mcw)
   return mcw->priv->xwindow;
 }
 
+MetaWindow *
+mutter_window_get_meta_window (MutterWindow *mcw)
+{
+  return mcw->priv->window;
+}
+
+ClutterActor *
+mutter_window_get_texture (MutterWindow *mcw)
+{
+  return mcw->priv->actor;
+}
+
 MetaCompWindowType
 mutter_window_get_window_type (MutterWindow *mcw)
 {
@@ -697,6 +723,15 @@ mutter_window_get_window_type (MutterWindow *mcw)
     return 0;
 
   return mcw->priv->type;
+}
+
+gboolean
+mutter_window_is_override_redirect (MutterWindow *mcw)
+{
+  if (!mcw->priv->window)
+    return TRUE;
+
+  return FALSE;
 }
 
 gint
@@ -718,6 +753,23 @@ mutter_window_get_workspace (MutterWindow *mcw)
   return meta_workspace_index (workspace);
 }
 
+gboolean
+mutter_window_is_hidden (MutterWindow *mcw)
+{
+  MutterWindowPrivate *priv;
+
+  if (!mcw)
+    return TRUE;
+
+  priv = mcw->priv;
+
+  if (!priv->window)
+    return FALSE;
+
+  return meta_window_is_hidden (priv->window);
+}
+
+
 static void repair_win (MutterWindow *cw);
 static void map_win    (MutterWindow *cw);
 static void unmap_win  (MutterWindow *cw);
@@ -726,54 +778,83 @@ static void
 mutter_finish_workspace_switch (MetaCompScreen *info)
 {
   GList *last = g_list_last (info->windows);
-  GList *l    = last;
+  GList *l;
+
+/*   printf ("FINISHING DESKTOP SWITCH\n"); */
+
+  if (!meta_prefs_get_live_hidden_windows ())
+    {
+      /* When running in the traditional mode where hidden windows get
+       * unmapped, we need to fix up the map status for each window, since
+       * we are ignoring unmap requests during the effect.
+       */
+      l = last;
+
+      while (l)
+	{
+	  MutterWindow        *cw   = l->data;
+	  MutterWindowPrivate *priv = cw->priv;
+
+	  if (priv->needs_map && !priv->needs_unmap)
+	    {
+	      map_win (cw);
+	    }
+
+	  if (priv->needs_unmap)
+	    {
+	      unmap_win (cw);
+	    }
+
+	  l = l->prev;
+	}
+    }
+
+  /*
+   * Fix up stacking order in case the plugin messed it up.
+   */
+  l = last;
 
   while (l)
     {
-      MutterWindow        *cw   = l->data;
-      MutterWindowPrivate *priv = cw->priv;
+      ClutterActor *a  = l->data;
+      MutterWindow *mw = l->data;
+      MetaWindow   *window = mw->priv->window;
 
-      if (priv->needs_map && !priv->needs_unmap)
+      /*
+       * If this window is not marked as hidden, we raise it.
+       * If it has no MetaWindow associated (i.e., override redirect), we
+       * raise it too. Everything else we push to the bottom.
+       */
+      if (!window || !meta_window_is_hidden (window))
 	{
-	  map_win (cw);
+#if 0
+	  printf ("raising %p [0x%x] (%s) to top\n",
+		  a,
+		  (guint)mw->priv->xwindow,
+		  mw->priv->window ? mw->priv->window->desc : "unknown");
+#endif
+	  clutter_actor_raise_top (a);
 	}
-
-      if (priv->needs_unmap)
+      else
 	{
-	  unmap_win (cw);
+#if 0
+	  printf ("lowering %p [0x%x] (%s) to bottom\n",
+		  a,
+		  (guint)mw->priv->xwindow,
+		  mw->priv->window ? mw->priv->window->desc : "unknown");
+#endif
+	  clutter_actor_lower_bottom (a);
 	}
 
       l = l->prev;
     }
 
-  /*
-   * Now fix up stacking order in case the plugin messed it up.
-   */
-  l = last;
-  while (l)
-    {
-      ClutterActor *a     = l->data;
-      GList        *prev  = l->prev;
+/*   printf ("... FINISHED DESKTOP SWITCH\n"); */
 
-      if (prev)
-	{
-	  ClutterActor *above_me = prev->data;
-
-	  clutter_actor_raise (above_me, a);
-	}
-      else
-	{
-	  ClutterActor *a = l->data;
-	  clutter_actor_raise_top (a);
-	}
-
-      l = prev;
-    }
 }
 
 void
-mutter_window_effect_completed (MutterWindow *cw,
-						 gulong          event)
+mutter_window_effect_completed (MutterWindow *cw, gulong event)
 {
   MutterWindowPrivate *priv   = cw->priv;
   MetaScreen            *screen = priv->screen;
@@ -784,8 +865,7 @@ mutter_window_effect_completed (MutterWindow *cw,
     {
     case MUTTER_PLUGIN_MINIMIZE:
       {
-	ClutterActor *a      = CLUTTER_ACTOR (cw);
-	gint          height = clutter_actor_get_height (a);
+	ClutterActor *a = CLUTTER_ACTOR (cw);
 
 	priv->minimize_in_progress--;
 	if (priv->minimize_in_progress < 0)
@@ -797,7 +877,19 @@ mutter_window_effect_completed (MutterWindow *cw,
 	if (!priv->minimize_in_progress)
 	  {
 	    priv->is_minimized = TRUE;
-	    clutter_actor_set_position (a, 0, -height);
+
+	    /*
+	     * We must ensure that the minimized actor is pushed down the stack
+	     * (the XConfigureEvent has 'above' semantics, i.e., when a window
+	     * is lowered, we get a bunch of 'raise' notifications, but might
+	     * not get any notification for the window that has been lowered.
+	     */
+	    clutter_actor_lower_bottom (a);
+
+	    /* Make sure that after the effect finishes, the actor is
+	     * made visible for sake of live previews.
+	     */
+	    clutter_actor_show (a);
 	  }
       }
       break;
@@ -911,16 +1003,51 @@ mutter_window_detach (MutterWindow *self)
 }
 
 static void
-destroy_win (MetaDisplay *display, Window xwindow)
+destroy_win (MutterWindow *cw, gboolean no_effect)
 {
-  MutterWindow *cw;
+  MetaCompScreen      *info;
+  MutterWindowPrivate *priv;
+  MetaScreen          *screen;
 
-  cw = find_window_in_display (display, xwindow);
-
-  if (cw == NULL)
+  if (!cw)
     return;
 
-  clutter_actor_destroy (CLUTTER_ACTOR (cw));
+  priv = cw->priv;
+
+  screen = priv->screen;
+  info   = meta_screen_get_compositor_data (screen);
+
+
+  /*
+   * We remove the window from internal lookup hashes and thus any other
+   * unmap events etc fail
+   */
+  info->windows = g_list_remove (info->windows, (gconstpointer) cw);
+  g_hash_table_remove (info->windows_by_xid, (gpointer)priv->xwindow);
+
+  if (no_effect || priv->type == META_COMP_WINDOW_OVERRIDE)
+    {
+      /*
+       * No effects, just kill it.
+       */
+      clutter_actor_destroy (CLUTTER_ACTOR (cw));
+      return;
+    }
+
+  /*
+   * If a plugin manager is present, try to run an effect; if no effect of this
+   * type is present, destroy the actor.
+   */
+  priv->destroy_in_progress++;
+
+  if (!info->plugin_mgr ||
+      !mutter_plugin_manager_event_simple (info->plugin_mgr,
+					   cw,
+					   MUTTER_PLUGIN_DESTROY))
+    {
+      priv->destroy_in_progress--;
+      clutter_actor_destroy (CLUTTER_ACTOR (cw));
+    }
 }
 
 static void
@@ -931,6 +1058,13 @@ restack_win (MutterWindow *cw, Window above)
   MetaCompScreen        *info = meta_screen_get_compositor_data (screen);
   Window                 previous_above;
   GList                 *sibling, *next;
+  gboolean               hide = FALSE;
+  gboolean               live_mode;
+
+  live_mode = meta_prefs_get_live_hidden_windows ();
+
+  if (priv->window && meta_window_is_hidden (priv->window))
+    hide = TRUE;
 
   sibling = g_list_find (info->windows, (gconstpointer) cw);
   next = g_list_next (sibling);
@@ -947,45 +1081,135 @@ restack_win (MutterWindow *cw, Window above)
    */
   if (above == None)
     {
+#if 0
+      printf ("Raising to top %p [0x%x] (%s)\n",
+	      cw, (guint) priv->xwindow,
+	      priv->window ? priv->window->desc : "unknown");
+#endif
       /* Insert at bottom of window stack */
+      CHECK_LIST_INTEGRITY_START(info->windows)
       info->windows = g_list_delete_link (info->windows, sibling);
       info->windows = g_list_append (info->windows, cw);
+      CHECK_LIST_INTEGRITY_END(info->windows)
 
       if (!info->switch_workspace_in_progress)
-	clutter_actor_raise_top (CLUTTER_ACTOR (cw));
+	{
+	  clutter_actor_raise_top (CLUTTER_ACTOR (cw));
+	}
     }
   else if (previous_above != above)
     {
       GList *index;
 
-      for (index = info->windows; index; index = index->next)
+      /* Find the window that matches 'above'; if the window is hidden (i.e.,
+       * minimized, on a different desktop) find the first window above it tha
+       * is not and use it instead; if we cannot find any such window then
+       * fallback to raise to top (without this, we end up stacking up the act
+       * in the wrong place, and it probably will not be visible at all).
+       */
+       for (index = info->windows; index; index = index->next)
 	{
 	  MutterWindow *cw2 = (MutterWindow *) index->data;
 	  if (cw2->priv->xwindow == above)
-	    break;
+           {
+             if (live_mode && !hide && cw2->priv->window &&
+                 meta_window_is_hidden (cw2->priv->window))
+               {
+                 index = index->prev;
+
+                 while (index)
+                   {
+                     MutterWindow *prev = index->data;
+
+                     if (!prev->priv->window ||
+                         !meta_window_is_hidden (prev->priv->window))
+                       {
+                         break;
+                       }
+
+                     index = index->prev;
+                   }
+               }
+             break;
+           }
 	}
 
       if (index != NULL)
         {
-          ClutterActor *above_win = index->data;
+	  if (index != sibling)
+	    {
+	      ClutterActor *above_win = index->data;
+	      MutterWindow *cw2 = index->data;
 
-          info->windows = g_list_delete_link (info->windows, sibling);
-          info->windows = g_list_insert_before (info->windows, index, cw);
+	      CHECK_LIST_INTEGRITY_START(info->windows)
+	      info->windows = g_list_delete_link (info->windows, sibling);
 
-	  if (!info->switch_workspace_in_progress)
-	    clutter_actor_raise (CLUTTER_ACTOR (cw), above_win);
+	      info->windows = g_list_insert_before (info->windows, index, cw);
+	      CHECK_LIST_INTEGRITY_END(info->windows)
+
+#if 0
+		printf ("Raising %p [0x%x] (%s) hidden %d, above %p [0x%x] (%s)\n",
+			cw, (guint) priv->xwindow,
+			priv->window ? priv->window->desc : "unknown", hide,
+			cw2, (guint) cw2->priv->xwindow,
+			cw2->priv->window ? cw2->priv->window->desc : "unknown");
+#endif
+	      if (!info->switch_workspace_in_progress)
+		{
+		  clutter_actor_raise (CLUTTER_ACTOR (cw), above_win);
+		}
+	    }
         }
+      else if (live_mode)
+	{
+	  if (!hide)
+	    {
+#if 0
+	      printf ("Raising to top as fallback %p [0x%x] (%s)\n",
+		      cw, (guint) priv->xwindow,
+		      priv->window ? priv->window->desc : "unknown");
+#endif
+	      /* Insert at bottom of window stack */
+	      CHECK_LIST_INTEGRITY_START(info->windows)
+	      info->windows = g_list_delete_link (info->windows, sibling);
+	      info->windows = g_list_append (info->windows, cw);
+	      CHECK_LIST_INTEGRITY_END(info->windows)
+
+	      if (!info->switch_workspace_in_progress)
+		{
+		  clutter_actor_raise_top (CLUTTER_ACTOR (cw));
+		}
+	    }
+	  else
+	    {
+#if 0
+	      printf ("Lowering to bottom as fallback %p [0x%x] (%s)\n",
+		      cw, (guint) priv->xwindow,
+		      priv->window ? priv->window->desc : "unknown");
+#endif
+	      /* Insert at bottom of window stack */
+	      CHECK_LIST_INTEGRITY_START(info->windows)
+	      info->windows = g_list_delete_link (info->windows, sibling);
+	      info->windows = g_list_prepend (info->windows, cw);
+	      CHECK_LIST_INTEGRITY_END(info->windows)
+
+	      if (!info->switch_workspace_in_progress)
+		{
+		  clutter_actor_lower_bottom (CLUTTER_ACTOR (cw));
+		}
+	    }
+	}
     }
 }
 
 static void
 resize_win (MutterWindow *cw,
-            int             x,
-            int             y,
-            int             width,
-            int             height,
-            int             border_width,
-            gboolean        override_redirect)
+            int           x,
+            int           y,
+            int           width,
+            int           height,
+            int           border_width,
+            gboolean      override_redirect)
 {
   MutterWindowPrivate *priv = cw->priv;
 
@@ -1093,15 +1317,15 @@ unmap_win (MutterWindow *cw)
     }
 
   priv->attrs.map_state = IsUnmapped;
-
-  if (!priv->minimize_in_progress)
-    {
-      ClutterActor *a = CLUTTER_ACTOR (cw);
-      clutter_actor_hide (a);
-    }
-
   priv->needs_unmap = FALSE;
   priv->needs_map   = FALSE;
+
+  if (!priv->minimize_in_progress &&
+      (!meta_prefs_get_live_hidden_windows () ||
+       priv->type == META_COMP_WINDOW_OVERRIDE))
+    {
+      clutter_actor_hide (CLUTTER_ACTOR (cw));
+    }
 }
 
 
@@ -1114,6 +1338,7 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
   MutterWindowPrivate *priv;
   Display               *xdisplay = meta_display_get_xdisplay (display);
   XWindowAttributes      attrs;
+  gulong                 events_needed;
 
   if (info == NULL)
     return;
@@ -1122,17 +1347,19 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
     return;
 
   if (!XGetWindowAttributes (xdisplay, xwindow, &attrs))
-      return;
+    return;
 
   /*
    * If Metacity has decided not to manage this window then the input events
    * won't have been set on the window
    */
-  if (!(attrs.your_event_mask & PropertyChangeMask))
+  events_needed = PropertyChangeMask | SubstructureNotifyMask;
+
+  if (!(attrs.your_event_mask & PropertyChangeMask) ||
+      !(attrs.your_event_mask & SubstructureNotifyMask))
     {
       gulong event_mask;
-
-      event_mask = attrs.your_event_mask | PropertyChangeMask;
+      event_mask = attrs.your_event_mask | events_needed;
       XSelectInput (xdisplay, xwindow, event_mask);
     }
 
@@ -1159,8 +1386,8 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
       info->dock_windows = g_slist_append (info->dock_windows, cw);
     }
 
+  meta_verbose ("added 0x%x (%p) type:", (guint)xwindow, cw);
 #if 0
-  printf ("added 0x%x (%p) type:", (guint)xwindow, cw);
 
   switch (cw->type)
     {
@@ -1335,8 +1562,8 @@ process_create (Mutter *compositor,
                 MetaWindow            *window)
 {
   MetaScreen   *screen;
-  MutterWindow *cw;
   Window        xwindow = event->window;
+  MutterWindow *mw;
 
   screen = meta_display_screen_for_root (compositor->display, event->parent);
 
@@ -1347,18 +1574,18 @@ process_create (Mutter *compositor,
    * This is quite silly as we end up creating windows as then immediatly
    * destroying them as they (likely) become framed and thus reparented.
    */
-  cw = find_window_for_screen (screen, event->window);
+  mw = find_window_for_screen (screen, xwindow);
 
-  if (!cw && window)
+  if (!mw && window)
     {
       xwindow = meta_window_get_xwindow (window);
 
-      cw = find_window_for_screen (screen, xwindow);
+      mw = find_window_for_screen (screen, xwindow);
     }
 
-  if (cw)
+  if (mw)
     {
-      destroy_win (compositor->display, xwindow);
+      destroy_win (mw, TRUE);
     }
 
   add_win (screen, window, event->window);
@@ -1369,16 +1596,24 @@ process_reparent (Mutter *compositor,
                   XReparentEvent        *event,
                   MetaWindow            *window)
 {
-  MetaScreen *screen;
+  MetaScreen   *screen;
   MutterWindow *mw;
   Window        xwindow = event->window;
+  gboolean      viewable = FALSE;
 
   screen = meta_display_screen_for_root (compositor->display, event->parent);
 
   if (!screen)
     return;
 
-  mw = find_window_for_screen (screen, event->window);
+  mw = find_window_for_screen (screen, xwindow);
+
+  if (!mw && window)
+    {
+      xwindow = meta_window_get_xwindow (window);
+
+      mw = find_window_for_screen (screen, xwindow);
+    }
 
   if (!mw && window)
     {
@@ -1390,19 +1625,23 @@ process_reparent (Mutter *compositor,
 
   if (mw)
     {
-      meta_verbose ("reparent: destroying a window 0%x\n",
-		    (guint)event->window);
-      destroy_win (compositor->display, xwindow);
+      viewable = (mw->priv->attrs.map_state == IsViewable);
+      destroy_win (mw, TRUE);
     }
 
   add_win (screen, window, event->window);
 }
 
 static void
-process_destroy (Mutter *compositor,
-                 XDestroyWindowEvent   *event)
+process_destroy (Mutter *compositor, XDestroyWindowEvent *event)
 {
-  destroy_win (compositor->display, event->window);
+  MutterWindow *cw =
+    find_window_in_display (compositor->display, event->window);
+
+  if (!cw)
+    return;
+
+  destroy_win (cw, FALSE);
 }
 
 static void
@@ -1437,7 +1676,7 @@ process_damage (Mutter *compositor,
   if (XCheckTypedWindowEvent (dpy, drawable, DestroyNotify, &next))
     {
       priv->destroy_pending = TRUE;
-      process_destroy (compositor, (XDestroyWindowEvent *) &next);
+      destroy_win (cw, FALSE);
       return;
     }
 
@@ -1501,7 +1740,18 @@ process_configure_notify (Mutter  *compositor,
                           XConfigureEvent        *event)
 {
   MetaDisplay *display = compositor->display;
-  MutterWindow *cw = find_window_in_display (display, event->window);
+  MutterWindow *cw;
+
+  /*
+   * We get each configure event twice; once through the WM solicitation of the
+   * events on the root window, and once through solicitation on the window
+   * itself -- we will only handle the latter, in which case the event and
+   * window members of the config event are identical.
+   */
+  if (event->event != event->window)
+    return;
+
+  cw = find_window_in_display (display, event->window);
 
   if (cw)
     {
@@ -1596,25 +1846,28 @@ process_unmap (Mutter *compositor,
       if (XCheckTypedWindowEvent (dpy, xwin, DestroyNotify, &next))
 	{
 	  priv->destroy_pending = TRUE;
-	  process_destroy (compositor, (XDestroyWindowEvent *) &next);
+	  destroy_win (cw, FALSE);
 	  return;
 	}
 
-      meta_verbose ("processing unmap  of 0x%x (%p)\n", (guint)xwin, cw);
       unmap_win (cw);
     }
 }
 
 static void
-process_map (Mutter *compositor,
-             XMapEvent             *event,
-             MetaWindow            *window)
+process_map (Mutter     *compositor,
+             XMapEvent  *event,
+             MetaWindow *window)
 {
-  MutterWindow *cw = find_window_in_display (compositor->display,
-                                               event->window);
+  MutterWindow *cw;
+  Window        xwindow = event->window;
+
+  cw = find_window_in_display (compositor->display, xwindow);
 
   if (cw)
-    map_win (cw);
+    {
+      map_win (cw);
+    }
 }
 
 static void
@@ -1727,6 +1980,16 @@ mutter_get_overlay_group_for_screen (MetaScreen *screen)
   return info->overlay_group;
 }
 
+GList *
+mutter_get_windows (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  if (!info)
+    return NULL;
+
+  return info->windows;
+}
 
 static void
 clutter_cmp_manage_screen (MetaCompositor *compositor,
@@ -1843,6 +2106,7 @@ clutter_cmp_add_window (MetaCompositor    *compositor,
   MetaScreen            *screen = meta_screen_for_x_screen (attrs->screen);
 
   meta_error_trap_push (xrc->display);
+
   add_win (screen, window, xwindow);
   meta_error_trap_pop (xrc->display, FALSE);
 #endif
@@ -1883,9 +2147,8 @@ clutter_cmp_process_event (MetaCompositor *compositor,
       screen = meta_window_get_screen (window);
       info = meta_screen_get_compositor_data (screen);
 
-      if (mutter_plugin_manager_xevent_filter
-                                                       (info->plugin_mgr,
-                                                        event) == TRUE)
+      if (mutter_plugin_manager_xevent_filter (info->plugin_mgr,
+					       event) == TRUE)
         return;
     }
   else
@@ -2006,44 +2269,20 @@ clutter_cmp_destroy_window (MetaCompositor *compositor,
                             MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MutterWindow        *cw     = NULL;
-  MetaScreen            *screen = meta_window_get_screen (window);
-  MetaCompScreen        *info   = meta_screen_get_compositor_data (screen);
-  MetaFrame             *f      = meta_window_get_frame (window);
-  MutterWindowPrivate *priv;
+  MutterWindow         *cw     = NULL;
+  MetaScreen           *screen = meta_window_get_screen (window);
+  MetaFrame            *f      = meta_window_get_frame (window);
+  Window                xwindow;
 
   /* Chances are we actually get the window frame here */
-  cw = find_window_for_screen (screen,
-                               f ? meta_frame_get_xwindow (f) :
-                               meta_window_get_xwindow (window));
+  xwindow = f ? meta_frame_get_xwindow (f) : meta_window_get_xwindow (window);
+
+  cw = find_window_for_screen (screen, xwindow);
+
   if (!cw)
     return;
 
-  priv = cw->priv;
-
-  /*
-   * We remove the window from internal lookup hashes and thus any other
-   * unmap events etc fail
-   */
-  info->windows = g_list_remove (info->windows, (gconstpointer) cw);
-  g_hash_table_remove (info->windows_by_xid,
-                       (gpointer) (f ? meta_frame_get_xwindow (f) :
-                                   meta_window_get_xwindow (window)));
-
-  /*
-   * If a plugin manager is present, try to run an effect; if no effect of this
-   * type is present, destroy the actor.
-   */
-  priv->destroy_in_progress++;
-
-  if (!info->plugin_mgr ||
-      !mutter_plugin_manager_event_simple (info->plugin_mgr,
-				cw,
-                                MUTTER_PLUGIN_DESTROY))
-    {
-      priv->destroy_in_progress--;
-      clutter_actor_destroy (CLUTTER_ACTOR (cw));
-    }
+  destroy_win (cw, FALSE);
 #endif
 }
 
@@ -2077,12 +2316,8 @@ clutter_cmp_minimize_window (MetaCompositor *compositor, MetaWindow *window)
 				cw,
 				MUTTER_PLUGIN_MINIMIZE))
     {
-      ClutterActor *a      = CLUTTER_ACTOR (cw);
-      gint          height = clutter_actor_get_height (a);
-
       cw->priv->is_minimized = TRUE;
       cw->priv->minimize_in_progress--;
-      clutter_actor_set_position (a, 0, -height);
     }
 #endif
 }
@@ -2181,65 +2416,109 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaCompScreen *info;
-  GList          *l;
   gint            to_indx, from_indx;
 
   info      = meta_screen_get_compositor_data (screen);
   to_indx   = meta_workspace_index (to);
   from_indx = meta_workspace_index (from);
 
-  printf ("Direction of switch %d\n", direction);
-
-  l = info->windows;
-  while (l)
+  if (!meta_prefs_get_live_hidden_windows ())
     {
-      MutterWindow *cw = l->data;
-      MetaWindow     *mw = cw->priv->window;
-      gboolean        sticky;
-      gint            workspace = -1;
+      /*
+       * We are in the traditional mode where hidden windows get unmapped,
+       * we need to pre-calculate the map status of each window so that once
+       * the effect finishes we can put everything into proper order
+       * (we need to ignore the map notifications during the effect so that
+       * actors do not just disappear while the effect is running).
+       */
+      GList *l = info->windows;
 
-      sticky = (!mw || meta_window_is_on_all_workspaces (mw));
-
-      if (!sticky)
+      while (l)
 	{
-	  MetaWorkspace *w;
+	  MutterWindow *cw = l->data;
+	  MetaWindow     *mw = cw->priv->window;
+	  gboolean        sticky;
+	  gint            workspace = -1;
 
-	  w = meta_window_get_workspace (cw->priv->window);
-	  workspace = meta_workspace_index (w);
+	  sticky = (!mw || meta_window_is_on_all_workspaces (mw));
 
-	  /*
-	   * If the window is not on the target workspace, mark it for
-	   * unmap.
-	   */
-	  if (to_indx != workspace)
+	  if (!sticky)
 	    {
-	      cw->priv->needs_unmap = TRUE;
+	      MetaWorkspace *w;
+
+	      w = meta_window_get_workspace (cw->priv->window);
+	      workspace = meta_workspace_index (w);
+
+	      /*
+	       * If the window is not on the target workspace, mark it for
+	       * unmap.
+	       */
+	      if (to_indx != workspace)
+		{
+		  cw->priv->needs_unmap = TRUE;
+		}
+	      else
+		{
+		  cw->priv->needs_map = TRUE;
+		  cw->priv->needs_unmap = FALSE;
+		}
 	    }
-	  else
-	    {
-	      cw->priv->needs_map = TRUE;
-	      cw->priv->needs_unmap = FALSE;
-	    }
+
+	  l = l->next;
 	}
-
-      l = l->next;
     }
 
   info->switch_workspace_in_progress++;
 
   if (!info->plugin_mgr ||
-      !mutter_plugin_manager_switch_workspace (
-						info->plugin_mgr,
-						(const GList **)&info->windows,
-						from_indx,
-						to_indx,
-						direction))
+      !mutter_plugin_manager_switch_workspace (info->plugin_mgr,
+					       (const GList **)&info->windows,
+					       from_indx,
+					       to_indx,
+					       direction))
     {
       info->switch_workspace_in_progress--;
+
+      /* We have to explicitely call this to fix up stacking order of the
+       * actors; this is because the abs stacking position of actors does not
+       * necessarily change during the window hiding/unhiding, only their
+       * relative position toward the destkop window.
+       */
+      mutter_finish_workspace_switch (info);
     }
 #endif
 }
 
+static void
+clutter_cmp_ensure_stack_order (MetaCompositor *compositor,
+                                MetaScreen     *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+  GList          *l    = g_list_last (info->windows);
+
+  while (l)
+    {
+      ClutterActor *a  = l->data;
+      MutterWindow *mw = l->data;
+      MetaWindow   *window = mw->priv->window;
+
+      /*
+       * If this window is not marked as hidden, we raise it.
+       * If it has no MetaWindow associated (i.e., override redirect), we
+       * raise it too. Everything else we push to the bottom.
+       */
+      if (!window || !meta_window_is_hidden (window))
+	{
+	  clutter_actor_raise_top (a);
+	}
+      else
+	{
+	  clutter_actor_lower_bottom (a);
+	}
+
+      l = l->prev;
+    }
+}
 
 static MetaCompositor comp_info = {
   clutter_cmp_destroy,
@@ -2256,7 +2535,8 @@ static MetaCompositor comp_info = {
   clutter_cmp_maximize_window,
   clutter_cmp_unmaximize_window,
   clutter_cmp_update_workspace_geometry,
-  clutter_cmp_switch_workspace
+  clutter_cmp_switch_workspace,
+  clutter_cmp_ensure_stack_order,
 };
 
 MetaCompositor *

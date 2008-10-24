@@ -884,3 +884,13 @@ mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
   XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
   XFixesSetWindowShapeRegion (xdpy, xoverlay, ShapeInput, 0, 0, region);
 }
+
+GList *
+mutter_plugin_get_windows (MutterPlugin *plugin)
+{
+  MutterPluginPrivate *priv = plugin->manager_private;
+  MutterPluginManager *plugin_mgr  = priv->self;
+
+  return mutter_get_windows (plugin_mgr->screen);
+}
+

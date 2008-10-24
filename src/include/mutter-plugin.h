@@ -225,4 +225,7 @@ void
 mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
                                     gint x, gint y, gint width, gint height);
 
+GList *
+mutter_plugin_get_windows (MutterPlugin *plugin);
+
 #endif /* MUTTER_PLUGIN_H_ */

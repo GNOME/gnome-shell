@@ -242,3 +242,12 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
 #endif
 }
 
+void
+meta_compositor_ensure_stack_order (MetaCompositor *compositor,
+                                    MetaScreen     *screen)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->ensure_stack_order)
+    compositor->ensure_stack_order (compositor, screen);
+#endif
+}

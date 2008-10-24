@@ -78,6 +78,9 @@ struct _MetaCompositor
                             MetaWorkspace      *from,
                             MetaWorkspace      *to,
                             MetaMotionDirection direction);
+
+  void (*ensure_stack_order) (MetaCompositor *compositor,
+                              MetaScreen     *screen);
 };
 
 #endif

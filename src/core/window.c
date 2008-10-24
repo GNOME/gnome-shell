@@ -472,6 +472,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->tab_unminimized = FALSE;
   window->iconic = FALSE;
   window->mapped = attrs->map_state != IsUnmapped;
+  window->hidden = 0;
   /* if already mapped, no need to worry about focus-on-first-time-showing */
   window->showing_for_first_time = !window->mapped;
   /* if already mapped we don't want to do the placement thing */
@@ -2243,8 +2244,22 @@ meta_window_show (MetaWindow *window)
           XMapWindow (window->display->xdisplay, window->xwindow);
           meta_error_trap_pop (window->display, FALSE);
           did_show = TRUE;
-          
-          if (window->was_minimized)
+          window->hidden = FALSE;
+        }
+      else if (meta_prefs_get_live_hidden_windows ())
+        {
+          if (window->hidden && window->type != META_WINDOW_DESKTOP)
+            {
+              window->hidden = FALSE;
+              meta_stack_freeze (window->screen->stack);
+              meta_window_update_layer (window);
+              meta_window_raise (window);
+              meta_stack_thaw (window->screen->stack);
+              did_show = TRUE;
+            }
+        }
+
+      if (did_show && window->was_minimized)
             {
               MetaRectangle window_rect;
               MetaRectangle icon_rect;
@@ -2261,7 +2276,6 @@ meta_window_show (MetaWindow *window)
                                               NULL, NULL);
                 }
             }
-        }      
       
       if (window->iconic)
         {
@@ -2309,33 +2323,83 @@ static void
 meta_window_hide (MetaWindow *window)
 {
   gboolean did_hide;
-  
+
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Hiding window %s\n", window->desc);
 
   did_hide = FALSE;
-  
-  if (window->frame && window->frame->mapped)
-    {
-      meta_topic (META_DEBUG_WINDOW_STATE, "Frame actually needs unmap\n");
-      window->frame->mapped = FALSE;
-      meta_ui_unmap_frame (window->screen->ui, window->frame->xwindow);
-      did_hide = TRUE;
-    }
 
-  if (window->mapped)
+  if (meta_prefs_get_live_hidden_windows ())
     {
-      meta_topic (META_DEBUG_WINDOW_STATE,
-                  "%s actually needs unmap\n", window->desc);
-      meta_topic (META_DEBUG_WINDOW_STATE,
-                  "Incrementing unmaps_pending on %s for hide\n",
-                  window->desc);
-      window->mapped = FALSE;
-      window->unmaps_pending += 1;
-      meta_error_trap_push (window->display);      
-      XUnmapWindow (window->display->xdisplay, window->xwindow);
-      meta_error_trap_pop (window->display, FALSE);
+      gboolean was_mapped;
+
+      if (window->hidden)
+        return;
+
+      was_mapped = window->mapped;
+
+      if (!was_mapped)
+        meta_window_show (window);
+
+      window->hidden = TRUE;
       did_hide = TRUE;
+
+      meta_stack_freeze (window->screen->stack);
+      meta_window_update_layer (window);
+      meta_window_lower (window);
+      meta_stack_thaw (window->screen->stack);
+
+      /*
+       * The X server does not implement lower-below semantics for restacking
+       * windows, only raise-above; consequently each single lower-bottom call
+       * gets translated to a bunch of raise-above moves, and often there will
+       * be no ConfigureNotify at all for the window we are lowering (only for
+       * its siblings). If we mix the lower-bottom sequence of calls with
+       * mapping of windows, the batch of ConfigureNotify events that is
+       * generated does not correctly reflect the stack order, and if the
+       * Compositor relies on these for its own internal stack, it will
+       * invariably end up with wrong stacking order.
+       *
+       * I have not been able to find a way to get this just work so that the
+       * resulting ConfigureNotify messages would reflect the actual state of
+       * the stack, so in the special case we map a window while hiding it, we
+       * explitely notify the compositor that it should ensure its stacking
+       * matches the cannonical stack of the WM.
+       *
+       * NB: this is uncommon, and generally only happens on the WM start up,
+       *     when we are taking over pre-existing windows, so this brute-force
+       *     fix is OK performance wise.
+       */
+      if (!was_mapped && window->display->compositor)
+        {
+          meta_compositor_ensure_stack_order (window->display->compositor,
+                                              window->screen);
+        }
+    }
+  else
+    {
+      if (window->frame && window->frame->mapped)
+        {
+          meta_topic (META_DEBUG_WINDOW_STATE, "Frame actually needs unmap\n");
+          window->frame->mapped = FALSE;
+          meta_ui_unmap_frame (window->screen->ui, window->frame->xwindow);
+          did_hide = TRUE;
+        }
+
+      if (window->mapped)
+        {
+          meta_topic (META_DEBUG_WINDOW_STATE,
+                      "%s actually needs unmap\n", window->desc);
+          meta_topic (META_DEBUG_WINDOW_STATE,
+                      "Incrementing unmaps_pending on %s for hide\n",
+                      window->desc);
+          window->mapped = FALSE;
+          window->unmaps_pending += 1;
+          meta_error_trap_push (window->display);
+          XUnmapWindow (window->display->xdisplay, window->xwindow);
+          meta_error_trap_pop (window->display, FALSE);
+          did_hide = TRUE;
+        }
     }
 
   if (!window->iconic)
@@ -7974,7 +8038,7 @@ meta_window_update_layer (MetaWindow *window)
   
   meta_stack_freeze (window->screen->stack);
   group = meta_window_get_group (window);
-  if (group)
+  if (!window->hidden && group)
     meta_group_update_layers (group);
   else
     meta_stack_update_layer (window->screen->stack, window);
@@ -8221,5 +8285,11 @@ gboolean
 meta_window_is_on_all_workspaces (MetaWindow *window)
 {
   return window->on_all_workspaces;
+}
+
+gboolean
+meta_window_is_hidden (MetaWindow *window)
+{
+  return window->hidden;
 }
 

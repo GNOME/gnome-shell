@@ -127,6 +127,11 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
                                   MetaWorkspace      *from,
                                   MetaWorkspace      *to,
                                   MetaMotionDirection direction);
+
+void
+meta_compositor_ensure_stack_order (MetaCompositor *compositor,
+                                    MetaScreen     *screen);
+
 #endif
 
 

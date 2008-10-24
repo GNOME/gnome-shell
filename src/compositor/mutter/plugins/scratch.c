@@ -33,6 +33,12 @@
 #include <gmodule.h>
 #include <string.h>
 
+#include "../tidy/tidy-grid.h"
+
+/* For debugging only */
+#include "../../../core/window-private.h"
+#include "compositor-mutter.h"
+
 #define DESTROY_TIMEOUT     250
 #define MINIMIZE_TIMEOUT    250
 #define MAXIMIZE_TIMEOUT    250
@@ -43,6 +49,10 @@
 #define PANEL_SLIDE_THRESHOLD 2
 #define PANEL_HEIGHT          40
 #define ACTOR_DATA_KEY "MCCP-scratch-actor-data"
+
+#define SWITCHER_CELL_WIDTH  200
+#define SWITCHER_CELL_HEIGHT 200
+
 static GQuark actor_data_quark = 0;
 
 typedef struct PluginPrivate PluginPrivate;
@@ -119,6 +129,8 @@ struct PluginPrivate
   ClutterActor          *d_overlay ; /* arrow indicator */
   ClutterActor          *panel;
 
+  ClutterActor          *switcher;
+
   gboolean               debug_mode : 1;
   gboolean               panel_out  : 1;
   gboolean               panel_out_in_progress : 1;
@@ -131,6 +143,8 @@ struct PluginPrivate
 struct ActorPrivate
 {
   ClutterActor *orig_parent;
+  gint          orig_x;
+  gint          orig_y;
 
   ClutterTimeline *tml_minimize;
   ClutterTimeline *tml_maximize;
@@ -800,36 +814,225 @@ g_module_check_init (GModule *module)
 }
 #endif
 
+static void switcher_clone_weak_notify (gpointer data, GObject *object);
+
+static void
+switcher_origin_weak_notify (gpointer data, GObject *object)
+{
+  ClutterActor *clone = data;
+
+  /*
+   * The original MutterWindow destroyed; remove the weak reference the
+   * we added to the clone referencing the original window, then
+   * destroy the clone.
+   */
+  g_object_weak_unref (G_OBJECT (clone), switcher_clone_weak_notify, object);
+  clutter_actor_destroy (clone);
+}
+
+static void
+switcher_clone_weak_notify (gpointer data, GObject *object)
+{
+  ClutterActor *origin = data;
+
+  /*
+   * Clone destroyed -- this function gets only called whent the clone
+   * is destroyed while the original MutterWindow still exists, so remove
+   * the weak reference we added on the origin for sake of the clone.
+   */
+  g_object_weak_unref (G_OBJECT (origin), switcher_origin_weak_notify, object);
+}
+
+static gboolean
+switcher_clone_input_cb (ClutterActor *clone,
+                         ClutterEvent *event,
+                         gpointer      data)
+{
+  MutterWindow  *mw = data;
+  MetaWindow    *window;
+  MetaWorkspace *workspace;
+
+  printf ("Actor %p (%s) clicked\n",
+          clone, clutter_actor_get_name (clone));
+
+  window    = mutter_window_get_meta_window (mw);
+  workspace = meta_window_get_workspace (window);
+
+  meta_workspace_activate_with_focus (workspace, window, event->any.time);
+
+  return FALSE;
+}
+
+/*
+ * This is a simple example of how a switcher might access the windows.
+ *
+ * Note that we use ClutterCloneTexture hooked up to the texture *inside*
+ * MutterWindow (with FBO support, we could clone the entire MutterWindow,
+ * although for the switcher purposes that is probably not what is wanted
+ * anyway).
+ */
+static void
+hide_switcher (void)
+{
+  MutterPlugin  *plugin = get_plugin ();
+  PluginPrivate *priv   = plugin->plugin_private;
+
+  if (!priv->switcher)
+    return;
+
+  clutter_actor_destroy (priv->switcher);
+  priv->switcher = NULL;
+}
+
+static void
+show_switcher (void)
+{
+  MutterPlugin  *plugin   = get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+  ClutterActor  *stage;
+  GList         *l;
+  ClutterActor  *switcher;
+  TidyGrid      *grid;
+  guint          panel_height;
+  gint           panel_y;
+
+  switcher = tidy_grid_new ();
+
+  grid = TIDY_GRID (switcher);
+
+  tidy_grid_set_homogenous_rows (grid, TRUE);
+  tidy_grid_set_homogenous_columns (grid, TRUE);
+  tidy_grid_set_column_major (grid, TRUE);
+  tidy_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+  tidy_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
+
+  l = mutter_plugin_get_windows (plugin);
+  while (l)
+    {
+      MutterWindow       *mw   = l->data;
+      MetaCompWindowType  type = mutter_window_get_window_type (mw);
+      ClutterActor       *a    = CLUTTER_ACTOR (mw);
+      ClutterActor       *texture;
+      ClutterActor       *clone;
+      guint               w, h;
+      gdouble             s_x, s_y, s;
+
+      /*
+       * Only show regular windows.
+       */
+      if (mutter_window_is_override_redirect (mw) ||
+          type != META_COMP_WINDOW_NORMAL)
+        {
+          l = l->next;
+          continue;
+        }
+
+#if 0
+      printf ("Adding %p:%s\n",
+              mw,
+              mutter_window_get_meta_window (mw) ?
+              mutter_window_get_meta_window (mw)->desc : "unknown");
+#endif
+
+      texture = mutter_window_get_texture (mw);
+      clone   = clutter_clone_texture_new (CLUTTER_TEXTURE (texture));
+
+      clutter_actor_set_name (clone, mutter_window_get_meta_window (mw)->desc);
+      g_signal_connect (clone,
+                        "button-press-event",
+                        G_CALLBACK (switcher_clone_input_cb), mw);
+
+      g_object_weak_ref (G_OBJECT (mw), switcher_origin_weak_notify, clone);
+      g_object_weak_ref (G_OBJECT (clone), switcher_clone_weak_notify, mw);
+
+      /*
+       * Scale clone to fit the predefined size of the grid cell
+       */
+      clutter_actor_get_size (a, &w, &h);
+      s_x = (gdouble) SWITCHER_CELL_WIDTH  / (gdouble) w;
+      s_y = (gdouble) SWITCHER_CELL_HEIGHT / (gdouble) h;
+
+      s = s_x < s_y ? s_x : s_y;
+
+      if (s_x < s_y)
+        clutter_actor_set_size (clone,
+                                (guint)((gdouble)w * s_x),
+                                (guint)((gdouble)h * s_x));
+      else
+        clutter_actor_set_size (clone,
+                                (guint)((gdouble)w * s_y),
+                                (guint)((gdouble)h * s_y));
+
+      clutter_actor_set_reactive (clone, TRUE);
+
+      clutter_container_add_actor (CLUTTER_CONTAINER (grid), clone);
+      l = l->next;
+    }
+
+  if (priv->switcher)
+    hide_switcher ();
+
+  priv->switcher = switcher;
+
+  panel_height = clutter_actor_get_height (priv->panel);
+  panel_y      = clutter_actor_get_y (priv->panel);
+
+  clutter_actor_set_position (switcher, 10, panel_height + panel_y);
+
+  stage = mutter_plugin_get_stage (plugin);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), switcher);
+}
+
+static void
+toggle_switcher ()
+{
+  MutterPlugin  *plugin   = get_plugin ();
+  PluginPrivate *priv     = plugin->plugin_private;
+
+  if (priv->switcher)
+    hide_switcher ();
+  else
+    show_switcher ();
+}
+
 static gboolean
 stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
 {
-  if (event->type == CLUTTER_MOTION)
+  gboolean capture = GPOINTER_TO_INT (data);
+
+  if ((capture && event->type == CLUTTER_MOTION) ||
+      (!capture && event->type == CLUTTER_BUTTON_PRESS))
     {
-      ClutterMotionEvent *mev = (ClutterMotionEvent *) event;
+      gint event_y;
       MutterPlugin       *plugin = get_plugin ();
       PluginPrivate      *priv   = plugin->plugin_private;
+
+      if (event->type == CLUTTER_MOTION)
+        event_y = ((ClutterMotionEvent*)event)->y;
+      else
+        event_y = ((ClutterButtonEvent*)event)->y;
 
       if (priv->panel_out_in_progress || priv->panel_back_in_progress)
         return FALSE;
 
-      if (priv->panel_out)
+      if (priv->panel_out &&
+          (event->type == CLUTTER_BUTTON_PRESS || !priv->switcher))
         {
           guint height = clutter_actor_get_height (priv->panel);
           gint  x      = clutter_actor_get_x (priv->panel);
 
-          if (mev->y > (gint)height)
+          if (event_y > (gint)height)
             {
               priv->panel_back_in_progress  = TRUE;
+
               clutter_effect_move (priv->panel_slide_effect,
                                    priv->panel, x, -height,
                                    on_panel_effect_complete,
                                    GINT_TO_POINTER (FALSE));
               priv->panel_out = FALSE;
             }
-
-          return FALSE;
         }
-      else if (mev->y < PANEL_SLIDE_THRESHOLD)
+      else if (event_y < PANEL_SLIDE_THRESHOLD)
         {
           gint  x = clutter_actor_get_x (priv->panel);
 
@@ -840,11 +1043,20 @@ stage_input_cb (ClutterActor *stage, ClutterEvent *event, gpointer data)
                                GINT_TO_POINTER (TRUE));
 
           priv->panel_out = TRUE;
-
-          return FALSE;
         }
+    }
+  else if (event->type == CLUTTER_KEY_RELEASE)
+    {
+      ClutterKeyEvent *kev = (ClutterKeyEvent *) event;
 
-      return FALSE;
+      g_print ("*** key press event (key:%c) ***\n",
+	       clutter_key_event_symbol (kev));
+
+    }
+
+  if (!capture && (event->type == CLUTTER_BUTTON_PRESS))
+    {
+      toggle_switcher ();
     }
 
   return FALSE;
@@ -964,7 +1176,12 @@ do_init (const char *params)
    * children and do not interfere with their event processing.
    */
   g_signal_connect (mutter_plugin_get_stage (plugin),
-                    "captured-event", G_CALLBACK (stage_input_cb), NULL);
+                    "captured-event", G_CALLBACK (stage_input_cb),
+                    GINT_TO_POINTER (TRUE));
+
+  g_signal_connect (mutter_plugin_get_stage (plugin),
+                    "button-press-event", G_CALLBACK (stage_input_cb),
+                    GINT_TO_POINTER (FALSE));
 
   mutter_plugin_set_stage_input_area (plugin, 0, 0, screen_width, 1);
 

@@ -240,7 +240,13 @@ get_standalone_layer (MetaWindow *window)
 {
   MetaStackLayer layer;
   gboolean focused_transient = FALSE;
-  
+
+  if (window->hidden)
+    {
+      layer = META_LAYER_DESKTOP;
+      return layer;
+    }
+
   switch (window->type)
     {
     case META_WINDOW_DESKTOP:
@@ -329,7 +335,8 @@ compute_layer (MetaWindow *window)
    * windows getting in fullscreen layer if any terminal is
    * fullscreen.
    */
-  if (WINDOW_HAS_TRANSIENT_TYPE(window) &&
+  if (window->layer != META_LAYER_DESKTOP &&
+      WINDOW_HAS_TRANSIENT_TYPE(window) &&
       (window->xtransient_for == None ||
        window->transient_parent_is_root_window))
     {
@@ -854,7 +861,6 @@ stack_do_relayer (MetaStack *stack)
           meta_topic (META_DEBUG_STACK,
                       "Window %s moved from layer %u to %u\n",
                       w->desc, old_layer, w->layer);
-              
           stack->need_resort = TRUE;
           stack->need_constrain = TRUE;
           /* don't need to constrain as constraining

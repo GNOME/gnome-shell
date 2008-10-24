@@ -68,6 +68,8 @@
 #define KEY_CLUTTER_PLUGINS  "/apps/metacity/general/clutter_plugins"
 #endif
 
+#define KEY_LIVE_HIDDEN_WINDOWS "/apps/metacity/general/live_hidden_windows"
+
 #ifdef HAVE_GCONF
 static GConfClient *default_client = NULL;
 static GList *changes = NULL;
@@ -113,6 +115,8 @@ static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 static gboolean clutter_disabled = FALSE;
 static GSList *clutter_plugins = NULL;
 #endif
+
+static gboolean live_hidden_windows = FALSE;
 
 #ifdef HAVE_GCONF
 static gboolean handle_preference_update_enum (const gchar *key, GConfValue *value);
@@ -423,6 +427,11 @@ static MetaBoolPreference preferences_bool[] =
       FALSE,
     },
 #endif
+    { "/apps/metacity/general/live_hidden_windows",
+      META_PREF_LIVE_HIDDEN_WINDOWS,
+      &live_hidden_windows,
+      FALSE,
+    },
     { NULL, 0, NULL, FALSE },
   };
 
@@ -1827,6 +1836,8 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_CLUTTER_PLUGINS:
       return "CLUTTER_PLUGINS";
 #endif
+    case META_PREF_LIVE_HIDDEN_WINDOWS:
+      return "LIVE_HIDDEN_WINDOWS";
     }
 
   return "(unknown)";
@@ -2961,6 +2972,34 @@ meta_prefs_set_clutter_plugins (GSList *list)
     }
 }
 #endif
+
+gboolean
+meta_prefs_get_live_hidden_windows (void)
+{
+  return live_hidden_windows;
+}
+
+void
+meta_prefs_set_live_hidden_windows (gboolean whether)
+{
+#ifdef HAVE_GCONF
+  GError *err = NULL;
+
+  gconf_client_set_bool (default_client,
+                         KEY_LIVE_HIDDEN_WINDOWS,
+                         whether,
+                         &err);
+
+  if (err)
+    {
+      meta_warning (_("Error setting live hidden windows status status: %s\n"),
+                    err->message);
+      g_error_free (err);
+    }
+#else
+  live_hidden_windows = whether;
+#endif
+}
 
 #ifndef HAVE_GCONF
 static void

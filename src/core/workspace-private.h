@@ -65,11 +65,6 @@ void           meta_workspace_remove_window (MetaWorkspace *workspace,
                                              MetaWindow    *window);
 void           meta_workspace_relocate_windows (MetaWorkspace *workspace,
                                                 MetaWorkspace *new_home);
-void           meta_workspace_activate_with_focus (MetaWorkspace *workspace,
-                                                   MetaWindow    *focus_this,
-                                                   guint32        timestamp);
-void           meta_workspace_activate            (MetaWorkspace *workspace,
-                                                   guint32        timestamp);
 GList*         meta_workspace_list_windows  (MetaWorkspace *workspace);
 
 void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);

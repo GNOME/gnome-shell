@@ -57,4 +57,8 @@ int  meta_workspace_index (MetaWorkspace *workspace);
 MetaScreen *meta_workspace_get_screen (MetaWorkspace *workspace);
 void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
                                                  MetaRectangle *area);
+void meta_workspace_activate (MetaWorkspace *workspace, guint32 timestamp);
+void meta_workspace_activate_with_focus (MetaWorkspace *workspace,
+                                         MetaWindow    *focus_this,
+                                         guint32        timestamp);
 #endif

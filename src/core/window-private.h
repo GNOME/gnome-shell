@@ -150,6 +150,11 @@ struct _MetaWindow
    */
   guint mapped : 1;
   
+  /* Whether window has been hidden from view by lowering it to the bottom
+   * of window stack.
+   */
+  guint hidden : 1;
+
   /* Iconic is the state in WM_STATE; happens for workspaces/shading
    * in addition to minimize
    */
@@ -393,11 +398,6 @@ void        meta_window_change_workspace   (MetaWindow  *window,
 void        meta_window_stick              (MetaWindow  *window);
 void        meta_window_unstick            (MetaWindow  *window);
 
-void        meta_window_activate           (MetaWindow  *window,
-                                            guint32      current_time);
-void        meta_window_activate_with_workspace  (MetaWindow    *window,
-                                                  guint32        current_time,
-                                                  MetaWorkspace *workspace);   
 void        meta_window_make_fullscreen_internal (MetaWindow    *window);
 void        meta_window_make_fullscreen    (MetaWindow  *window);
 void        meta_window_unmake_fullscreen  (MetaWindow  *window);

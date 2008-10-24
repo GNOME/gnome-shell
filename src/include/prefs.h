@@ -62,8 +62,9 @@ typedef enum
   META_PREF_COMPOSITING_MANAGER,
 #ifdef WITH_CLUTTER
   META_PREF_CLUTTER_DISABLED,
-  META_PREF_CLUTTER_PLUGINS
+  META_PREF_CLUTTER_PLUGINS,
 #endif
+  META_PREF_LIVE_HIDDEN_WINDOWS,
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -138,6 +139,10 @@ GSList * meta_prefs_get_clutter_plugins (void);
  */
 void meta_prefs_set_clutter_plugins (GSList *list);
 #endif
+
+gboolean meta_prefs_get_live_hidden_windows (void);
+void     meta_prefs_set_live_hidden_windows (gboolean whether);
+
 
 /* XXX FIXME This should be x-macroed, but isn't yet because it would be
  * difficult (or perhaps impossible) to add the suffixes using the current

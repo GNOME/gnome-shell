@@ -306,7 +306,19 @@ meta_workspace_queue_calc_showing  (MetaWorkspace *workspace)
   tmp = workspace->windows;
   while (tmp != NULL)
     {
-      meta_window_queue (tmp->data, META_QUEUE_CALC_SHOWING);
+      if (meta_prefs_get_live_hidden_windows ())
+        {
+          /*
+           * When we hide rather than unmap windows, we need the show/hide
+           * status of the window to be recalculated *before* we call the
+           * compositor switch_workspace hook.
+           */
+          meta_window_calc_showing (tmp->data);
+        }
+      else
+        {
+          meta_window_queue (tmp->data, META_QUEUE_CALC_SHOWING);
+        }
 
       tmp = tmp->next;
     }
