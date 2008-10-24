@@ -1082,6 +1082,50 @@ set_desktop_viewport_hint (MetaScreen *screen)
   meta_error_trap_pop (screen->display, FALSE);
 }
 
+void
+meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
+                              guint32 timestamp)
+{
+  GList         *l;
+  MetaWorkspace *neighbour = NULL;
+
+  l = screen->workspaces;
+  while (l)
+    {
+      MetaWorkspace *w = l->data;
+
+      if (w == workspace)
+        {
+          if (l->prev)
+            neighbour = l->prev->data;
+          else if (l->next)
+            neighbour = l->next->data;
+          else
+            {
+              /* Cannot remove the only workspace! */
+              return;
+            }
+
+          break;
+        }
+
+      l = l->next;
+    }
+
+  meta_workspace_relocate_windows (workspace, neighbour);
+
+  if (workspace == screen->active_workspace)
+    meta_workspace_activate (neighbour, timestamp);
+
+  /* This also removes the workspace from the screens list */
+  meta_workspace_free (workspace);
+
+  set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
+
+  meta_screen_queue_workarea_recalc (screen);
+}
+
+
 static void
 update_num_workspaces (MetaScreen *screen,
                        guint32     timestamp)

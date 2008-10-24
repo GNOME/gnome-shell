@@ -49,5 +49,8 @@ GList *meta_screen_get_workspaces (MetaScreen *screen);
 
 MetaWorkspace* meta_screen_get_workspace_by_index (MetaScreen    *screen,
                                                    int            index);
+void meta_screen_remove_workspace (MetaScreen    *screen,
+                                   MetaWorkspace *workspace,
+                                   guint32        timestamp);
 
 #endif
