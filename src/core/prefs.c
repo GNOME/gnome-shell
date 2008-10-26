@@ -1381,7 +1381,7 @@ mouse_button_mods_handler (MetaPreference pref,
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Mouse button modifier has new gconf value \"%s\"\n",
               string_value);
-  if (meta_ui_parse_modifier (string_value, &mods))
+  if (string_value && meta_ui_parse_modifier (string_value, &mods))
     {
       mouse_button_mods = mods;
     }
