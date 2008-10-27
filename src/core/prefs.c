@@ -650,8 +650,11 @@ handle_preference_update_enum (const gchar *key, GConfValue *value)
        * we might consider reverting invalid keys to their original values.
        * (We know the old value, so we can look up a suitable string in
        * the symtab.)
+       *
+       * (Empty comment follows so the translators don't see this.)
        */
-      
+
+      /*  */      
       meta_warning (_("GConf key '%s' is set to an invalid value\n"),
                     key);
       return TRUE;
@@ -1324,7 +1327,7 @@ titlebar_handler (MetaPreference pref,
                   const gchar    *string_value,
                   gboolean       *inform_listeners)
 {
-  PangoFontDescription *new_desc;
+  PangoFontDescription *new_desc = NULL;
 
   if (string_value)
     new_desc = pango_font_description_from_string (string_value);

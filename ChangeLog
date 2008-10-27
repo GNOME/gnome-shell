@@ -1,3 +1,9 @@
+2008-10-27  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/prefs.c (titlebar_handler, handle_preference_update_enum):
+        Add initialisation which I missed on the previous checkin.  Also
+        an extra comment.
+
 2008-10-27  Brian Cameron  <brian.cameron@sun.com>
 
         Fix some crashes with the new GDM 2.24.  Closes #558058.
