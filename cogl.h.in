@@ -580,6 +580,18 @@ void            cogl_clip_stack_restore       (void);
 void            cogl_enable_depth_test        (gboolean            setting);
 
 /**
+ * cogl_enable_backface_culling:
+ * @setting: %TRUE to enable backface culling or %FALSE to disable.
+ *
+ * Sets whether textures positioned so that their backface is showing
+ * should be hidden. This can be used to efficiently draw two-sided
+ * textures or fully closed cubes without enabling depth testing. Only
+ * calls to cogl_texture_rectangle() and cogl_texture_polygon() are
+ * affected. Backface culling is disabled by default.
+ */
+void            cogl_enable_backface_culling  (gboolean            setting);
+
+/**
  * cogl_alpha_func:
  * @func: the comparison function to use, one of CGL_NEVER, CGL_LESS,
  * CGL_EQUAL, CGL_LEQUAL, CGL_GREATER, CGL_NOTEQUAL, CGL_GEQUAL and GL_ALWAYS.

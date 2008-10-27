@@ -40,6 +40,8 @@ typedef struct
   guint8            color_alpha;
   COGLenum          blend_src_factor;
   COGLenum          blend_dst_factor;
+
+  gboolean          enable_backface_culling;
   
   /* Primitives */
   CoglFixedVec2     path_start;
