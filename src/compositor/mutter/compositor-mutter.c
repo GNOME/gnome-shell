@@ -1353,9 +1353,12 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
    * If Metacity has decided not to manage this window then the input events
    * won't have been set on the window
    */
-  events_needed = PropertyChangeMask | SubstructureNotifyMask;
+  events_needed = PropertyChangeMask     |
+                  SubstructureNotifyMask |
+                  StructureNotifyMask;
 
-  if (!(attrs.your_event_mask & PropertyChangeMask) ||
+  if (!(attrs.your_event_mask & PropertyChangeMask)      ||
+      !(attrs.your_event_mask & StructureNotifyMask)     ||
       !(attrs.your_event_mask & SubstructureNotifyMask))
     {
       gulong event_mask;
@@ -1376,6 +1379,11 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
 
   clutter_actor_set_position (CLUTTER_ACTOR (cw),
 			      priv->attrs.x, priv->attrs.y);
+
+  if (!window)
+    printf ("!!! override 0x%x at %d, %d\n",
+            (guint)xwindow, priv->attrs.x, priv->attrs.y);
+
   clutter_container_add_actor (CLUTTER_CONTAINER (info->window_group),
 			       CLUTTER_ACTOR (cw));
   clutter_actor_hide (CLUTTER_ACTOR (cw));
@@ -2058,7 +2066,7 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   {
     ClutterActor *foo;
-    foo = clutter_label_new_with_text ("Sans Bold 48px", 
+    foo = clutter_label_new_with_text ("Sans Bold 48px",
                                        "Yessir. The compositor is running.");
     clutter_actor_set_opacity (foo, 100);
     clutter_actor_set_position (foo, 20, height - 50);
