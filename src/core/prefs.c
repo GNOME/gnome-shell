@@ -2976,7 +2976,11 @@ meta_prefs_set_clutter_plugins (GSList *list)
 gboolean
 meta_prefs_get_live_hidden_windows (void)
 {
+#if 0
   return live_hidden_windows;
+#else
+  return TRUE;
+#endif
 }
 
 void
