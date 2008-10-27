@@ -73,9 +73,8 @@ static gboolean xevent_filter (XEvent *xev);
 static gboolean reload (const char *params);
 
 /*
- * First we create the header struct and initialize its static members.
- * Any dynamically allocated data should be initialized in the
- * init () function below.
+ * Create the plugin struct; function pointers initialized in
+ * g_module_check_init().
  */
 MUTTER_DECLARE_PLUGIN ();
 
