@@ -212,6 +212,35 @@ _cogl_subregion_gl_store_rules (gint     bmp_rowstride,
   GE( glPixelStorei (SKIP_PIXELS, src_x) );
 }
 
+static guchar *
+_cogl_texture_allocate_waste_buffer (CoglTexture *tex)
+{
+  CoglTexSliceSpan *last_x_span;
+  CoglTexSliceSpan *last_y_span;
+  guchar           *waste_buf = NULL;
+
+  /* If the texture has any waste then allocate a buffer big enough to
+     fill the gaps */
+  last_x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan,
+                                tex->slice_x_spans->len - 1);
+  last_y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan,
+                                tex->slice_y_spans->len - 1);
+  if (last_x_span->waste > 0 || last_y_span->waste > 0)
+    {
+      gint bpp = _cogl_get_format_bpp (tex->bitmap.format);
+      CoglTexSliceSpan  *first_x_span
+        = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
+      CoglTexSliceSpan  *first_y_span
+        = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
+      guint right_size = first_y_span->size * last_x_span->waste;
+      guint bottom_size = first_x_span->size * last_y_span->waste;
+
+      waste_buf = g_malloc (MAX (right_size, bottom_size) * bpp);
+    }
+
+  return waste_buf;
+}
+
 static gboolean
 _cogl_texture_upload_to_gl (CoglTexture *tex)
 {
@@ -220,9 +249,12 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
   GLuint             gl_handle;
   gint               bpp;
   gint               x,y;
+  guchar            *waste_buf;
   
   bpp = _cogl_get_format_bpp (tex->bitmap.format);
-  
+
+  waste_buf = _cogl_texture_allocate_waste_buffer (tex);
+
   /* Iterate vertical slices */
   for (y = 0; y < tex->slice_y_spans->len; ++y)
     {
@@ -253,9 +285,78 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
 			       y_span->size - y_span->waste,
 			       tex->gl_format, tex->gl_type,
 			       tex->bitmap.data) );
+
+          /* Fill the waste with a copies of the rightmost pixels */
+          if (x_span->waste > 0)
+            {
+              const guchar *src = tex->bitmap.data
+                + y_span->start * tex->bitmap.rowstride
+                + (x_span->start + x_span->size - x_span->waste - 1) * bpp;
+              guchar *dst = waste_buf;
+              guint wx, wy;
+
+              for (wy = 0; wy < y_span->size - y_span->waste; wy++)
+                {
+                  for (wx = 0; wx < x_span->waste; wx++)
+                    {
+                      memcpy (dst, src, bpp);
+                      dst += bpp;
+                    }
+                  src += tex->bitmap.rowstride;
+                }
+
+              _cogl_subregion_gl_store_rules (x_span->waste * bpp,
+                                              x_span->waste,
+                                              bpp,
+                                              0, 0, FALSE);
+
+              GE( glTexSubImage2D (tex->gl_target, 0,
+                                   x_span->size - x_span->waste, 0,
+                                   x_span->waste,
+                                   y_span->size - y_span->waste,
+                                   tex->gl_format, tex->gl_type,
+                                   waste_buf) );
+            }
+
+          if (y_span->waste > 0)
+            {
+              const guchar *src = tex->bitmap.data
+                + ((y_span->start + y_span->size - y_span->waste - 1)
+                   * tex->bitmap.rowstride)
+                + x_span->start * bpp;
+              guchar *dst = waste_buf;
+              guint wy, wx;
+
+              for (wy = 0; wy < y_span->waste; wy++)
+                {
+                  memcpy (dst, src, (x_span->size - x_span->waste) * bpp);
+                  dst += (x_span->size - x_span->waste) * bpp;
+
+                  for (wx = 0; wx < x_span->waste; wx++)
+                    {
+                      memcpy (dst, dst - bpp, bpp);
+                      dst += bpp;
+                    }
+                }
+
+              _cogl_subregion_gl_store_rules (x_span->size * bpp,
+                                              x_span->size,
+                                              bpp,
+                                              0, 0, FALSE);
+
+              GE( glTexSubImage2D (tex->gl_target, 0,
+                                   0, y_span->size - y_span->waste,
+                                   x_span->size,
+                                   y_span->waste,
+                                   tex->gl_format, tex->gl_type,
+                                   waste_buf) );
+            }
 	}
     }
-  
+
+  if (waste_buf)
+    g_free (waste_buf);
+
   return TRUE;
 }
 
@@ -374,16 +475,21 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 				      GLuint       source_gl_format,
 				      GLuint       source_gl_type)
 {
-  gint         bpp;
-  CoglSpanIter x_iter;
-  CoglSpanIter y_iter;
-  GLuint       gl_handle;
-  gint         source_x = 0, source_y = 0;
-  gint         inter_w = 0, inter_h = 0;
-  gint         local_x = 0, local_y = 0;
+  CoglTexSliceSpan *x_span;
+  CoglTexSliceSpan *y_span;
+  gint              bpp;
+  CoglSpanIter      x_iter;
+  CoglSpanIter      y_iter;
+  GLuint            gl_handle;
+  gint              source_x = 0, source_y = 0;
+  gint              inter_w = 0, inter_h = 0;
+  gint              local_x = 0, local_y = 0;
+  guchar           *waste_buf;
   
   bpp = _cogl_get_format_bpp (source_bmp->format);
   
+  waste_buf = _cogl_texture_allocate_waste_buffer (tex);
+
   /* Iterate vertical spans */
   for (source_y = src_y,
        _cogl_span_iter_begin (&y_iter, tex->slice_y_spans,
@@ -402,6 +508,9 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
           continue;
         }
 
+      y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan,
+                               y_iter.index);
+
       /* Iterate horizontal spans */
       for (source_x = src_x,
 	   _cogl_span_iter_begin (&x_iter, tex->slice_x_spans,
@@ -419,6 +528,9 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
               inter_w = 0;
               continue;
             }
+
+          x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan,
+                                   x_iter.index);
 
 	  /* Pick intersection width and height */
 	  inter_w = CLUTTER_FIXED_TO_INT (x_iter.intersect_end -
@@ -455,9 +567,96 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 			       source_gl_format,
 			       source_gl_type,
 			       source_bmp->data) );
+
+          /* If the x_span is sliced and the upload touches the
+             rightmost pixels then fill the waste with copies of the
+             pixels */
+          if (x_span->waste > 0
+              && local_x < x_span->size - x_span->waste
+              && local_x + inter_w >= x_span->size - x_span->waste)
+            {
+              const guchar *src = source_bmp->data
+                + (src_y + CLUTTER_FIXED_TO_INT (y_iter.intersect_start)
+                   - dst_y) * source_bmp->rowstride
+                + (src_x + x_span->start + x_span->size - x_span->waste
+                   - dst_x - 1) * bpp;
+              guchar *dst = waste_buf;
+              guint wx, wy;
+
+              for (wy = 0; wy < inter_h; wy++)
+                {
+                  for (wx = 0; wx < x_span->waste; wx++)
+                    {
+                      memcpy (dst, src, bpp);
+                      dst += bpp;
+                    }
+                  src += source_bmp->rowstride;
+                }
+
+              _cogl_subregion_gl_store_rules (x_span->waste * bpp,
+                                              x_span->waste,
+                                              bpp,
+                                              0, 0, FALSE);
+
+              GE( glTexSubImage2D (tex->gl_target, 0,
+                                   x_span->size - x_span->waste, local_y,
+                                   x_span->waste,
+                                   inter_h,
+                                   source_gl_format,
+                                   source_gl_type,
+                                   waste_buf) );
+            }
+
+          /* same for the bottom-most pixels */
+          if (y_span->waste > 0
+              && local_y < y_span->size - y_span->waste
+              && local_y + inter_h >= y_span->size - y_span->waste)
+            {
+              const guchar *src = source_bmp->data
+                + (src_x + CLUTTER_FIXED_TO_INT (x_iter.intersect_start)
+                   - dst_x) * bpp
+                + (src_y + y_span->start + y_span->size - y_span->waste
+                   - dst_y - 1) * source_bmp->rowstride;
+              guchar *dst = waste_buf;
+              guint wy, wx;
+              guint copy_width;
+
+              if (local_x + inter_w >= x_span->size - x_span->waste)
+                copy_width = x_span->size - local_x;
+              else
+                copy_width = inter_w;
+
+              for (wy = 0; wy < y_span->waste; wy++)
+                {
+                  memcpy (dst, src, inter_w * bpp);
+                  dst += inter_w * bpp;
+
+                  for (wx = inter_w; wx < copy_width; wx++)
+                    {
+                      memcpy (dst, dst - bpp, bpp);
+                      dst += bpp;
+                    }
+                }
+
+              _cogl_subregion_gl_store_rules (copy_width * bpp,
+                                              copy_width,
+                                              bpp,
+                                              0, 0, FALSE);
+
+              GE( glTexSubImage2D (tex->gl_target, 0,
+                                   local_x, y_span->size - y_span->waste,
+                                   copy_width,
+                                   y_span->waste,
+                                   source_gl_format,
+                                   source_gl_type,
+                                   waste_buf) );
+            }
 	}
     }
-  
+
+  if (waste_buf)
+    g_free (waste_buf);
+
   return TRUE;
 }
 

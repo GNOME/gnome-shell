@@ -1,3 +1,19 @@
+2008-10-27  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1196 - Texture border drawing problems
+
+	* clutter/cogl/gl/cogl-texture.c (_cogl_texture_upload_subregion_to_gl)
+	(_cogl_texture_upload_to_gl):
+
+	* clutter/cogl/gles/cogl-texture.c (_cogl_texture_upload_to_gl)
+	(_cogl_texture_upload_subregion_to_gl):
+	
+	When uploading data to a sliced texture, fill the waste pixels
+	with copies of the edge of the real texture data. Otherwise the
+	value of the waste pixels are undefined so it will show artifacts
+	when the texture is scaled with GL_LINEAR and the pixels are
+	blended in.
+
 2008-10-22  Thomas Wood  <thomas@linux.intel.com>
 
 	* tests/test-actors.c: Don't adjust the radius based on the number of
