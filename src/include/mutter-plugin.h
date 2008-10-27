@@ -62,8 +62,11 @@ typedef struct MutterPlugin MutterPlugin;
       METACITY_MINOR_VERSION,                                           \
       METACITY_MICRO_VERSION,                                           \
       METACITY_CLUTTER_PLUGIN_API_VERSION                               \
-    }
-
+    };                                                                  \
+  static inline MutterPlugin * mutter_get_plugin ()                     \
+  {                                                                     \
+    return &mutter_plugin;                                              \
+  }
 
 struct MutterPlugin
 {
@@ -203,6 +206,10 @@ struct MutterPlugin
   /* Private; manager private data. */
   void *manager_private;
 };
+
+#ifndef MUTTER_PLUGIN_FROM_MANAGER_
+static inline MutterPlugin *mutter_get_plugin ();
+#endif
 
 void
 mutter_plugin_effect_completed (MutterPlugin  *plugin,

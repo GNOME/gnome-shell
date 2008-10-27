@@ -85,12 +85,6 @@ typedef struct _PluginState
   gboolean               debug_mode : 1;
 } PluginState;
 
-static inline MutterPlugin *
-get_plugin ()
-{
-  return &mutter_plugin;
-}
-
 
 /*
  * Per actor private data we attach to each actor.
@@ -171,7 +165,7 @@ on_switch_workspace_effect_complete (ClutterActor *group, gpointer data)
   state->desktop1 = NULL;
   state->desktop2 = NULL;
 
-  mutter_plugin_effect_completed (get_plugin(), actor_for_cb,
+  mutter_plugin_effect_completed (mutter_get_plugin(), actor_for_cb,
                                   MUTTER_PLUGIN_SWITCH_WORKSPACE);
 }
 
@@ -179,7 +173,7 @@ static void
 switch_workspace (const GList **actors, gint from, gint to,
                   MetaMotionDirection direction)
 {
-  MutterPlugin *plugin = get_plugin();
+  MutterPlugin *plugin = mutter_get_plugin();
   PluginState  *state  = plugin_state;
   GList        *l;
   gint          n_workspaces;
@@ -207,7 +201,7 @@ switch_workspace (const GList **actors, gint from, gint to,
 
   if (from == to)
     {
-      mutter_plugin_effect_completed (get_plugin(), NULL,
+      mutter_plugin_effect_completed (mutter_get_plugin(), NULL,
                            MUTTER_PLUGIN_SWITCH_WORKSPACE);
       return;
     }
@@ -298,7 +292,7 @@ on_minimize_effect_complete (ClutterActor *actor, gpointer data)
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (get_plugin(), mc_window,
+  mutter_plugin_effect_completed (mutter_get_plugin(), mc_window,
                                   MUTTER_PLUGIN_MINIMIZE);
 }
 
@@ -333,7 +327,7 @@ minimize (MutterWindow *mc_window)
                                                   NULL);
     }
   else
-    mutter_plugin_effect_completed (get_plugin(), mc_window,
+    mutter_plugin_effect_completed (mutter_get_plugin(), mc_window,
                                     MUTTER_PLUGIN_MINIMIZE);
 }
 
@@ -358,7 +352,7 @@ on_maximize_effect_complete (ClutterActor *actor, gpointer data)
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (get_plugin(), mc_window,
+  mutter_plugin_effect_completed (mutter_get_plugin(), mc_window,
                                   MUTTER_PLUGIN_MAXIMIZE);
 }
 
@@ -421,7 +415,7 @@ maximize (MutterWindow *mc_window,
       return;
     }
 
-  mutter_plugin_effect_completed (get_plugin(), mc_window,
+  mutter_plugin_effect_completed (mutter_get_plugin(), mc_window,
                                   MUTTER_PLUGIN_MAXIMIZE);
 }
 
@@ -444,7 +438,7 @@ unmaximize (MutterWindow *mc_window,
     }
 
   /* Do this conditionally, if the effect requires completion callback. */
-  mutter_plugin_effect_completed (get_plugin(), mc_window,
+  mutter_plugin_effect_completed (mutter_get_plugin(), mc_window,
                                   MUTTER_PLUGIN_UNMAXIMIZE);
 }
 
@@ -463,7 +457,7 @@ on_map_effect_complete (ClutterActor *actor, gpointer data)
                                                 CLUTTER_GRAVITY_NORTH_WEST);
 
   /* Now notify the manager that we are done with this effect */
-  mutter_plugin_effect_completed (get_plugin(), mc_window, MUTTER_PLUGIN_MAP);
+  mutter_plugin_effect_completed (mutter_get_plugin(), mc_window, MUTTER_PLUGIN_MAP);
 }
 
 /*
@@ -500,7 +494,7 @@ map (MutterWindow *mc_window)
 
     }
   else
-    mutter_plugin_effect_completed (get_plugin(), mc_window,
+    mutter_plugin_effect_completed (mutter_get_plugin(), mc_window,
                                     MUTTER_PLUGIN_MAP);
 }
 
@@ -511,7 +505,7 @@ map (MutterWindow *mc_window)
 static void
 on_destroy_effect_complete (ClutterActor *actor, gpointer data)
 {
-  MutterPlugin *plugin = get_plugin();
+  MutterPlugin *plugin = mutter_get_plugin();
   MutterWindow *mc_window = MUTTER_WINDOW (actor);
   ActorPrivate *apriv = get_actor_private (mc_window);
 
@@ -548,7 +542,7 @@ destroy (MutterWindow *mc_window)
                                                  NULL);
     }
   else
-    mutter_plugin_effect_completed (get_plugin(), mc_window,
+    mutter_plugin_effect_completed (mutter_get_plugin(), mc_window,
                                     MUTTER_PLUGIN_DESTROY);
 }
 
@@ -608,7 +602,7 @@ const gchar * g_module_check_init (GModule *module);
 const gchar *
 g_module_check_init (GModule *module)
 {
-  MutterPlugin *plugin = get_plugin ();
+  MutterPlugin *plugin = mutter_get_plugin ();
 
   /* Human readable name (for use in UI) */
   plugin->name = "Default Effects";
@@ -650,7 +644,7 @@ do_init (const char *params)
     {
       if (strstr (params, "debug"))
         {
-          g_debug ("%s: Entering debug mode.", get_plugin()->name);
+          g_debug ("%s: Entering debug mode.", mutter_get_plugin()->name);
 
           plugin_state->debug_mode = TRUE;
 

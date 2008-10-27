@@ -26,7 +26,10 @@
 
 #include "types.h"
 #include "screen.h"
+
+#define  MUTTER_PLUGIN_FROM_MANAGER_
 #include "mutter-plugin.h"
+#undef   MUTTER_PLUGIN_FROM_MANAGER_
 
 typedef struct MutterPluginManager MutterPluginManager;
 
