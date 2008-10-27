@@ -77,35 +77,7 @@ static gboolean reload (const char *params);
  * Any dynamically allocated data should be initialized in the
  * init () function below.
  */
-G_MODULE_EXPORT MutterPlugin mutter_plugin =
-  {
-    /*
-     * These are predefined values; do not modify.
-     */
-    .version_major = METACITY_MAJOR_VERSION,
-    .version_minor = METACITY_MINOR_VERSION,
-    .version_micro = METACITY_MICRO_VERSION,
-    .version_api   = METACITY_CLUTTER_PLUGIN_API_VERSION,
-
-    /* Human readable name (for use in UI) */
-    .name = "Experimental effects",
-
-    /* Plugin load time initialiser */
-    .do_init = do_init,
-
-    /* Effect handlers */
-    .minimize         = minimize,
-    .destroy          = destroy,
-    .map              = map,
-    .maximize         = maximize,
-    .unmaximize       = unmaximize,
-    .switch_workspace = switch_workspace,
-    .kill_effect      = kill_effect,
-    .xevent_filter    = xevent_filter,
-
-    /* The reload handler */
-    .reload           = reload
-  };
+MUTTER_DECLARE_PLUGIN ();
 
 /*
  * Plugin private data that we store in the .plugin_private member.
@@ -798,21 +770,33 @@ kill_effect (MutterWindow *mcw, gulong event)
 }
 
 
-#if 0
 const gchar * g_module_check_init (GModule *module);
 const gchar *
 g_module_check_init (GModule *module)
 {
-  /*
-   * Unused; left here for documentation purposes.
-   *
-   * NB: this function is called *before* the plugin manager does its own
-   *     initialization of the plugin struct, so you cannot process fields
-   *     like .params in here; use the init function below instead.
-   */
+  MutterPlugin *plugin = get_plugin ();
+
+  /* Human readable name (for use in UI) */
+  plugin->name = "Experimental effects",
+
+  /* Plugin load time initialiser */
+  plugin->do_init = do_init;
+
+  /* Effect handlers */
+  plugin->minimize         = minimize;
+  plugin->destroy          = destroy;
+  plugin->map              = map;
+  plugin->maximize         = maximize;
+  plugin->unmaximize       = unmaximize;
+  plugin->switch_workspace = switch_workspace;
+  plugin->kill_effect      = kill_effect;
+  plugin->xevent_filter    = xevent_filter;
+
+  /* The reload handler */
+  plugin->reload           = reload;
+
   return NULL;
 }
-#endif
 
 static void switcher_clone_weak_notify (gpointer data, GObject *object);
 

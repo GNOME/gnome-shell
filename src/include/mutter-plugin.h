@@ -56,6 +56,15 @@ typedef struct MutterPlugin MutterPlugin;
 
 #define MUTTER_PLUGIN_ALL_EFFECTS      (~0)
 
+#define MUTTER_DECLARE_PLUGIN() G_MODULE_EXPORT MutterPlugin mutter_plugin = \
+    {                                                                   \
+      METACITY_MAJOR_VERSION,                                           \
+      METACITY_MINOR_VERSION,                                           \
+      METACITY_MICRO_VERSION,                                           \
+      METACITY_CLUTTER_PLUGIN_API_VERSION                               \
+    }
+
+
 struct MutterPlugin
 {
   /*
