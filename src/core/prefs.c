@@ -1326,13 +1326,14 @@ titlebar_handler (MetaPreference pref,
 {
   PangoFontDescription *new_desc;
 
-  new_desc = pango_font_description_from_string (string_value);
+  if (string_value)
+    new_desc = pango_font_description_from_string (string_value);
 
   if (new_desc == NULL)
     {
       meta_warning (_("Could not parse font description "
                       "\"%s\" from GConf key %s\n"),
-                    string_value,
+                    string_value ? string_value : "(null)",
                     KEY_TITLEBAR_FONT);
 
       *inform_listeners = FALSE;
@@ -1476,16 +1477,17 @@ button_layout_handler (MetaPreference pref,
                          gboolean *inform_listeners)
 {
   MetaButtonLayout new_layout;
-  char **sides;
+  char **sides = NULL;
   int i;
   
   /* We need to ignore unknown button functions, for
    * compat with future versions
    */
   
-  sides = g_strsplit (string_value, ":", 2);
+  if (string_value)
+    sides = g_strsplit (string_value, ":", 2);
 
-  if (sides[0] != NULL)
+  if (sides != NULL && sides[0] != NULL)
     {
       char **buttons;
       int b;
@@ -1545,7 +1547,7 @@ button_layout_handler (MetaPreference pref,
       g_strfreev (buttons);
     }
 
-  if (sides[0] != NULL && sides[1] != NULL)
+  if (sides != NULL && sides[0] != NULL && sides[1] != NULL)
     {
       char **buttons;
       int b;

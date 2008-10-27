@@ -1,3 +1,11 @@
+2008-10-27  Brian Cameron  <brian.cameron@sun.com>
+
+        Fix some crashes with the new GDM 2.24.  Closes #558058.
+
+        * src/ui/ui.c (meta_ui_parse_modifier): another null check
+        * src/core/prefs.c (titlebar_handler, button_layout_handler):
+          more null checks.
+
 2008-10-26  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/prefs.c (mouse_button_mods_handler): Ignore values
