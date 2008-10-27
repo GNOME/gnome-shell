@@ -1924,6 +1924,9 @@ _cogl_texture_quad_sw (CoglTexture *tex,
       enable_flags |= COGL_ENABLE_BLEND;
     }
   
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
   cogl_enable (enable_flags);
   
   GE( cogl_wrap_glTexCoordPointer (2, GL_FIXED, 0, tex_coords) );
@@ -2021,18 +2024,18 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 	  
 	  GE( cogl_gles2_wrapper_bind_texture (tex->gl_target, gl_handle,
 					       tex->gl_intformat) );
-	  
+
 	  /* Draw textured quad */
-	  tex_coords[0] = slice_tx1; tex_coords[1] = slice_ty1;
-	  tex_coords[2] = slice_tx2; tex_coords[3] = slice_ty1;
-	  tex_coords[4] = slice_tx1; tex_coords[5] = slice_ty2;
-	  tex_coords[6] = slice_tx2; tex_coords[7] = slice_ty2;
-	  
-	  quad_coords[0] = slice_qx1; quad_coords[1] = slice_qy1;
-	  quad_coords[2] = slice_qx2; quad_coords[3] = slice_qy1;
-	  quad_coords[4] = slice_qx1; quad_coords[5] = slice_qy2;
-	  quad_coords[6] = slice_qx2; quad_coords[7] = slice_qy2;
-	  
+          tex_coords[0] = slice_tx1; tex_coords[1] = slice_ty2;
+          tex_coords[2] = slice_tx2; tex_coords[3] = slice_ty2;
+          tex_coords[4] = slice_tx1; tex_coords[5] = slice_ty1;
+          tex_coords[6] = slice_tx2; tex_coords[7] = slice_ty1;
+
+          quad_coords[0] = slice_qx1; quad_coords[1] = slice_qy2;
+          quad_coords[2] = slice_qx2; quad_coords[3] = slice_qy2;
+          quad_coords[4] = slice_qx1; quad_coords[5] = slice_qy1;
+          quad_coords[6] = slice_qx2; quad_coords[7] = slice_qy1;
+
 	  GE (cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
 	}
     }
@@ -2071,6 +2074,9 @@ _cogl_texture_quad_hw (CoglTexture *tex,
       enable_flags |= COGL_ENABLE_BLEND;
     }
   
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
   cogl_enable (enable_flags);
   
   GE( cogl_wrap_glTexCoordPointer (2, GL_FIXED, 0, tex_coords) );
@@ -2090,16 +2096,16 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   ty2 = ty2 * (y_span->size - y_span->waste) / y_span->size;
 
   /* Draw textured quad */
-  tex_coords[0] = tx1; tex_coords[1] = ty1;
-  tex_coords[2] = tx2; tex_coords[3] = ty1;
-  tex_coords[4] = tx1; tex_coords[5] = ty2;
-  tex_coords[6] = tx2; tex_coords[7] = ty2;
-  
-  quad_coords[0] = x1; quad_coords[1] = y1;
-  quad_coords[2] = x2; quad_coords[3] = y1;
-  quad_coords[4] = x1; quad_coords[5] = y2;
-  quad_coords[6] = x2; quad_coords[7] = y2;
-  
+  tex_coords[0] = tx1; tex_coords[1] = ty2;
+  tex_coords[2] = tx2; tex_coords[3] = ty2;
+  tex_coords[4] = tx1; tex_coords[5] = ty1;
+  tex_coords[6] = tx2; tex_coords[7] = ty1;
+
+  quad_coords[0] = x1; quad_coords[1] = y2;
+  quad_coords[2] = x2; quad_coords[3] = y2;
+  quad_coords[4] = x1; quad_coords[5] = y1;
+  quad_coords[6] = x2; quad_coords[7] = y1;
+
   GE (cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
 }
 
@@ -2257,6 +2263,9 @@ cogl_texture_polygon (CoglHandle         handle,
     }
   else if (ctx->color_alpha < 255)
     enable_flags |= COGL_ENABLE_BLEND;
+
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
 
   if (use_color)
     {

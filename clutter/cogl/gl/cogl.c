@@ -314,6 +314,10 @@ cogl_enable (gulong flags)
   cogl_toggle_flag (ctx, flags,
 		    COGL_ENABLE_TEXTURE_2D,
 		    GL_TEXTURE_2D);
+
+  cogl_toggle_flag (ctx, flags,
+                    COGL_ENABLE_BACKFACE_CULLING,
+                    GL_CULL_FACE);
   
   cogl_toggle_client_flag (ctx, flags,
 			   COGL_ENABLE_VERTEX_ARRAY,
@@ -365,6 +369,14 @@ cogl_enable_depth_test (gboolean setting)
       glDisable (GL_DEPTH_TEST);                                               
       glDisable (GL_ALPHA_TEST);
     }
+}
+
+void
+cogl_enable_backface_culling (gboolean setting)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  ctx->enable_backface_culling = setting;
 }
 
 void

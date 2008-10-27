@@ -1,5 +1,32 @@
 2008-10-27  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1189 - Backface culling
+
+	* clutter/cogl/gl/cogl-texture.c (cogl_texture_polygon)
+	(_cogl_texture_quad_sw, _cogl_texture_quad_hw):
+	* clutter/cogl/gles/cogl-texture.c (cogl_texture_polygon)
+	(_cogl_texture_quad_sw, _cogl_texture_quad_hw): Enable backface
+	culling in GL if it is requested.
+
+	* clutter/cogl/gles/cogl-texture.c (_cogl_texture_quad_sw)
+	(_cogl_texture_quad_hw):
+	* clutter/cogl/gl/cogl-texture.c (_cogl_texture_quad_sw)
+	(_cogl_texture_quad_hw): Reorder the
+	vertices so that they are counter-clockwise.
+
+	* clutter/cogl/gles/cogl-context.h (CoglContext): 
+	* clutter/cogl/gl/cogl-context.h (CoglContext): Added a flag to
+	store whether backface culling is currently enabled.
+
+	* clutter/cogl/gles/cogl.c (cogl_enable_backface_culling): 
+	* clutter/cogl/gl/cogl.c (cogl_enable_backface_culling): New
+	function
+
+	* doc/reference/cogl/cogl-sections.txt: Add
+	cogl_enable_backface_culling
+
+2008-10-27  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1196 - Texture border drawing problems
 
 	* clutter/cogl/gl/cogl-texture.c (_cogl_texture_upload_subregion_to_gl)

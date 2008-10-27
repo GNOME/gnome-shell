@@ -1949,6 +1949,9 @@ _cogl_texture_quad_sw (CoglTexture *tex,
     {
       enable_flags |= COGL_ENABLE_BLEND;
     }
+
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
   
   cogl_enable (enable_flags);
   
@@ -2050,21 +2053,21 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 	  
 	  /* Draw textured quad */
 	  glBegin (GL_QUADS);
-	  
+
 	  glTexCoord2f (CFX_F(slice_tx1), CFX_F(slice_ty1));
 	  glVertex2f   (CFX_F(slice_qx1), CFX_F(slice_qy1));
-	  
-	  glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty1));
-	  glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy1));
-	  
-	  glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty2));
-	  glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy2));
-	  
+
 	  glTexCoord2f (CFX_F(slice_tx1), CFX_F(slice_ty2));
 	  glVertex2f   (CFX_F(slice_qx1), CFX_F(slice_qy2));
-	  
+
+	  glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty2));
+	  glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy2));
+
+	  glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty1));
+	  glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy1));
+
 	  GE( glEnd () );
-	  
+
 #undef CFX_F
 	}
     }
@@ -2101,6 +2104,9 @@ _cogl_texture_quad_hw (CoglTexture *tex,
       enable_flags |= COGL_ENABLE_BLEND;
     }
   
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
   cogl_enable (enable_flags);
   
   /* Pick and bind opengl texture object */
@@ -2117,24 +2123,24 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   ty2 = ty2 * (y_span->size - y_span->waste) / y_span->size;
 
 #define CFX_F(x) CLUTTER_FIXED_TO_FLOAT(x)
-  
+
   /* Draw textured quad */
   glBegin (GL_QUADS);
-  
+
   glTexCoord2f (CFX_F(tx1), CFX_F(ty1));
   glVertex2f   (CFX_F(x1),  CFX_F(y1));
-  
-  glTexCoord2f (CFX_F(tx2), CFX_F(ty1));
-  glVertex2f   (CFX_F(x2),  CFX_F(y1));
-  
-  glTexCoord2f (CFX_F(tx2), CFX_F(ty2));
-  glVertex2f   (CFX_F(x2),  CFX_F(y2));
-  
+
   glTexCoord2f (CFX_F(tx1), CFX_F(ty2));
   glVertex2f   (CFX_F(x1),  CFX_F(y2));
-  
+
+  glTexCoord2f (CFX_F(tx2), CFX_F(ty2));
+  glVertex2f   (CFX_F(x2),  CFX_F(y2));
+
+  glTexCoord2f (CFX_F(tx2), CFX_F(ty1));
+  glVertex2f   (CFX_F(x2),  CFX_F(y1));
+
   GE( glEnd () );
-  
+
 #undef CFX_F
 }
 
@@ -2231,6 +2237,9 @@ cogl_texture_polygon (CoglHandle         handle,
   int               i, x, y, vnum;
   GLuint            gl_handle;
   CoglTexSliceSpan *y_span, *x_span;
+  gulong            enable_flags;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Check if valid texture */
   if (!cogl_is_texture (handle))
@@ -2261,7 +2270,12 @@ cogl_texture_polygon (CoglHandle         handle,
   tex = _cogl_texture_pointer_from_handle (handle);
   
   /* Prepare GL state */
-  cogl_enable (COGL_ENABLE_TEXTURE_2D | COGL_ENABLE_BLEND);
+  enable_flags = COGL_ENABLE_TEXTURE_2D | COGL_ENABLE_BLEND;
+
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
+  cogl_enable (enable_flags);
 
   /* Temporarily change the wrapping mode on all of the slices to use
      a transparent border */
