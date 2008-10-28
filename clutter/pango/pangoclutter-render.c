@@ -34,7 +34,7 @@
 #include <pango/pango-fontmap.h>
 #include <pango/pangocairo.h>
 #include <pango/pango-renderer.h>
-#include <cairo/cairo.h>
+#include <cairo.h>
 
 #include "pangoclutter.h"
 #include "pangoclutter-private.h"
