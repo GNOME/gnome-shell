@@ -21,6 +21,7 @@
  * 02111-1307, USA.
  */
 
+#include "config.h"
 #include "mutter-plugin-manager.h"
 #include "prefs.h"
 #include "errors.h"

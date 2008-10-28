@@ -147,7 +147,16 @@ libmetacityinclude_HEADERS =			\
 	include/common.h			\
 	ui/preview-widget.h			\
 	ui/theme-parser.h			\
-	ui/theme.h
+	ui/theme.h				\
+	include/prefs.h				\
+	include/window.h			\
+	include/workspace.h			\
+	include/compositor.h			\
+	include/compositor-mutter.h		\
+	include/types.h				\
+	include/screen.h			\
+	include/display.h			\
+	include/mutter-plugin.h
 
 metacity_theme_viewer_SOURCES=  \
 	ui/theme-viewer.c
@@ -218,14 +227,15 @@ inlinepixbufs.h: $(IMAGES)
 
 pkgconfigdir = $(libdir)/pkgconfig
 
-pkgconfig_DATA = libmetacity-private.pc
+pkgconfig_DATA = libmetacity-private.pc metacity-plugins.pc
 
 EXTRA_DIST=$(desktopfiles_files) 	\
-	$(wmproperties_files)         \
+	$(wmproperties_files)		\
 	$(IMAGES) $(schema_DATA) 	\
 	$(desktopfiles_in_files)	\
 	$(wmproperties_in_files)	\
 	$(schema_in_files)		\
 	$(xml_in_files)			\
-	libmetacity-private.pc.in
+	libmetacity-private.pc.in	\
+	metacity-plugins.pc.in
 

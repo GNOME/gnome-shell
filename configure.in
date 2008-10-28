@@ -299,8 +299,9 @@ if test x$have_xrender = xyes; then
   AC_DEFINE(HAVE_RENDER, , [Building with Render extension support])
 fi
 
+CLUTTER_PACKAGE=clutter-0.8
+AC_SUBST(CLUTTER_PACKAGE)
 if test x$have_clutter = xyes; then
-  CLUTTER_PACKAGE=clutter-0.8
   METACITY_PC_MODULES="$METACITY_PC_MODULES $CLUTTER_PACKAGE "
   PKG_CHECK_MODULES(CLUTTER, $CLUTTER_PACKAGE)
   AC_DEFINE(WITH_CLUTTER, , [Building with Clutter compositor])
@@ -533,6 +534,7 @@ doc/man/Makefile
 src/Makefile
 src/wm-tester/Makefile
 src/libmetacity-private.pc
+src/metacity-plugins.pc
 src/tools/Makefile
 src/themes/Makefile
 src/compositor/mutter/plugins/Makefile
