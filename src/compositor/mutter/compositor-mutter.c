@@ -1334,8 +1334,8 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
 {
   MetaDisplay           *display = meta_screen_get_display (screen);
   MetaCompScreen        *info = meta_screen_get_compositor_data (screen);
-  MutterWindow        *cw;
-  MutterWindowPrivate *priv;
+  MutterWindow          *cw;
+  MutterWindowPrivate   *priv;
   Display               *xdisplay = meta_display_get_xdisplay (display);
   XWindowAttributes      attrs;
   gulong                 events_needed;
@@ -1355,8 +1355,16 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
    */
   events_needed = PropertyChangeMask | SubstructureNotifyMask;
 
-  if (!(attrs.your_event_mask & PropertyChangeMask) ||
-      !(attrs.your_event_mask & SubstructureNotifyMask))
+  /*
+   * Need ConfigureNotify for override windows.
+   */
+  if (!window)
+    events_needed |= StructureNotifyMask;
+
+  /*
+   * Check the event mask contains all we need.
+   */
+  if ((attrs.your_event_mask & events_needed) != events_needed)
     {
       gulong event_mask;
       event_mask = attrs.your_event_mask | events_needed;
@@ -1376,6 +1384,7 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
 
   clutter_actor_set_position (CLUTTER_ACTOR (cw),
 			      priv->attrs.x, priv->attrs.y);
+
   clutter_container_add_actor (CLUTTER_CONTAINER (info->window_group),
 			       CLUTTER_ACTOR (cw));
   clutter_actor_hide (CLUTTER_ACTOR (cw));
@@ -2069,7 +2078,7 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   {
     ClutterActor *foo;
-    foo = clutter_label_new_with_text ("Sans Bold 48px", 
+    foo = clutter_label_new_with_text ("Sans Bold 48px",
                                        "Yessir. The compositor is running.");
     clutter_actor_set_opacity (foo, 100);
     clutter_actor_set_position (foo, 20, height - 50);
