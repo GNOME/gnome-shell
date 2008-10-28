@@ -1,3 +1,9 @@
+2008-10-28  Thomas Wood  <thomas@linux.intel.com>
+
+	* clutter/clutter-color.c (param_color_set_default): Set the no copy
+	flag when setting the default param spec value to prevent invalid
+	frees.
+
 2008-10-27  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1189 - Backface culling

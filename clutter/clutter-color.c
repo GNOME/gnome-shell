@@ -826,6 +826,7 @@ param_color_set_default (GParamSpec *pspec,
                         GValue     *value)
 {
   value->data[0].v_pointer = CLUTTER_PARAM_SPEC_COLOR (pspec)->default_value;
+  value->data[1].v_uint = G_VALUE_NOCOPY_CONTENTS;
 }
 
 static gint
