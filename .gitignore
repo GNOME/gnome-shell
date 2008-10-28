@@ -101,3 +101,13 @@ tests/test-layout
 tests/test-random-text
 tests/test-texture-quality
 tests/test-paint-wrapper
+tests/test-devices
+tests/test-entry-auto
+tests/test-invariants
+tests/test-label-cache
+tests/test-pick
+mkinstalldirs
+/clutter/x11/clutter-x11-enum-types.[ch]
+/clutter/x11/stamp-clutter-x11-enum-types.h
+/po/Makefile.in.in
+/po/POTFILES
