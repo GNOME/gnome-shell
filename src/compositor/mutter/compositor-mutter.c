@@ -1980,6 +1980,17 @@ mutter_get_overlay_group_for_screen (MetaScreen *screen)
   return info->overlay_group;
 }
 
+ClutterActor *
+mutter_get_window_group_for_screen (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  if (!info)
+    return NULL;
+
+  return info->window_group;
+}
+
 GList *
 mutter_get_windows (MetaScreen *screen)
 {

@@ -220,6 +220,9 @@ ClutterActor *
 mutter_plugin_get_overlay_group (MutterPlugin *plugin);
 
 ClutterActor *
+mutter_plugin_get_window_group (MutterPlugin *plugin);
+
+ClutterActor *
 mutter_plugin_get_stage (MutterPlugin *plugin);
 
 void

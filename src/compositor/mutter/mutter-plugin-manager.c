@@ -418,6 +418,8 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
           else
             g_message ("Unable to load plugin [%s]\n", path);
 
+              g_message ("got this far with [%s]\n", path);
+
           g_free (path);
           g_free (plugin_string);
         }
@@ -790,6 +792,15 @@ mutter_plugin_get_stage (MutterPlugin *plugin)
   MutterPluginManager *plugin_mgr  = priv->self;
 
   return mutter_get_stage_for_screen (plugin_mgr->screen);
+}
+
+ClutterActor *
+mutter_plugin_get_window_group (MutterPlugin *plugin)
+{
+  MutterPluginPrivate *priv = plugin->manager_private;
+  MutterPluginManager *plugin_mgr  = priv->self;
+
+  return mutter_get_window_group_for_screen (plugin_mgr->screen);
 }
 
 void

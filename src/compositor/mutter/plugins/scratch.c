@@ -88,6 +88,7 @@ struct PluginPrivate
   ClutterEffectTemplate *maximize_effect;
   ClutterEffectTemplate *map_effect;
   ClutterEffectTemplate *switch_workspace_effect;
+  ClutterEffectTemplate *switch_workspace_arrow_effect;
   ClutterEffectTemplate *panel_slide_effect;
 
   /* Valid only when switch_workspace effect is in progress */
@@ -204,10 +205,10 @@ switch_workspace (const GList **actors, gint from, gint to,
   ClutterActor  *group1  = clutter_group_new ();
   ClutterActor  *group2  = clutter_group_new ();
   ClutterActor  *group3  = clutter_group_new ();
-  ClutterActor  *stage, *label, *rect;
+  ClutterActor  *stage, *label, *rect, *window_layer, *overlay_layer;
   gint           to_x, to_y, from_x = 0, from_y = 0;
   ClutterColor   white = { 0xff, 0xff, 0xff, 0xff };
-  ClutterColor   black = { 0x44, 0x44, 0x44, 0xff };
+  ClutterColor   black = { 0x33, 0x33, 0x33, 0xff };
   gint           screen_width;
   gint           screen_height;
 
@@ -215,11 +216,12 @@ switch_workspace (const GList **actors, gint from, gint to,
 
   mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
-  clutter_actor_set_scale (group2, 0.0, 0.0);
+  window_layer = mutter_plugin_get_window_group (plugin);
+  overlay_layer = mutter_plugin_get_overlay_group (plugin);
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group2);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group1);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group3);
+  clutter_container_add_actor (CLUTTER_CONTAINER (window_layer), group1);
+  clutter_container_add_actor (CLUTTER_CONTAINER (window_layer), group2);
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay_layer), group3);
 
   if (from == to)
     {
@@ -274,110 +276,89 @@ switch_workspace (const GList **actors, gint from, gint to,
       l = l->prev;
     }
 
+  /* Make arrow indicator */
   rect = clutter_rectangle_new ();
-  clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &black);
+  clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect), &white);
   clutter_container_add_actor (CLUTTER_CONTAINER (group3), rect);
 
   label = clutter_label_new ();
   clutter_label_set_font_name (CLUTTER_LABEL (label), "Sans Bold 148");
-  clutter_label_set_color (CLUTTER_LABEL (label), &white);
+  clutter_label_set_color (CLUTTER_LABEL (label), &black);
   clutter_container_add_actor (CLUTTER_CONTAINER (group3), label);
 
   clutter_actor_set_size (rect,
                           clutter_actor_get_width (label),
                           clutter_actor_get_height (label));
 
-
-  clutter_actor_set_opacity (group3, 0);
-
   ppriv->actors  = (GList **)actors;
   ppriv->desktop1 = group1;
   ppriv->desktop2 = group2;
   ppriv->d_overlay = group3;
-
-  clutter_effect_fade (ppriv->switch_workspace_effect, group3,
-                       128,
-                       NULL, NULL);
-
-#if 0
-  ppriv->tml_switch_workspace2 =
-    clutter_effect_scale (ppriv->switch_workspace_effect, group2,
-                          1.0, 1.0,
-                          on_switch_workspace_effect_complete,
-                          actors);
-
-  ppriv->tml_switch_workspace1 =
-    clutter_effect_scale (ppriv->switch_workspace_effect, group1,
-                          0.0, 0.0,
-                          NULL, NULL);
-#endif
 
   switch (direction)
     {
     case META_MOTION_UP:
       clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\221");
 
-      from_x = 0;
-      from_y = screen_height;
-
       to_x = 0;
-      to_y = 0;
-      clutter_actor_set_position (group2, 0, screen_height);
+      to_y = -screen_height;
       break;
 
     case META_MOTION_DOWN:
       clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\223");
 
-      from_x = 0;
-      from_y = screen_height;
-
       to_x = 0;
-      to_y = 0;
-      clutter_actor_set_position (group2, 0, screen_height * -1);
+      to_y = -screen_height;
       break;
 
     case META_MOTION_LEFT:
       clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\220");
 
-      from_x = screen_width * -1;
-      from_y = 0;
-
-      to_x = 0;
+      to_x = -screen_width * -1;
       to_y = 0;
-      clutter_actor_set_position (group2, screen_width, 0);
       break;
 
     case META_MOTION_RIGHT:
       clutter_label_set_text (CLUTTER_LABEL (label), "\342\206\222");
 
-      from_x = screen_width;
-      from_y = 0;
-
-      to_x = 0;
+      to_x = -screen_width;
       to_y = 0;
-      clutter_actor_set_position (group2, screen_width * -1, 0);
       break;
 
     default:
       break;
     }
 
-  clutter_actor_set_position (group3,
-                              (screen_width - clutter_actor_get_width (group3)) / 2,
-                              (screen_height - clutter_actor_get_height (group3)) / 2);
+  /* dest group offscreen and on top */
+  clutter_actor_set_position (group2, to_x, to_y); /* *-1 for simpler */
+  clutter_actor_raise_top (group2);
+
+  /* center arrow */
+  clutter_actor_set_position 
+                    (group3,
+                     (screen_width - clutter_actor_get_width (group3)) / 2,
+                     (screen_height - clutter_actor_get_height (group3)) / 2);
 
 
-#if 1
+  /* workspace were going too */
   ppriv->tml_switch_workspace2 =
     clutter_effect_move (ppriv->switch_workspace_effect, group2,
-                         to_x, to_y,
+                         0, 0,
                          on_switch_workspace_effect_complete,
+
                          actors);
+  /* coming from */
   ppriv->tml_switch_workspace1 =
     clutter_effect_move (ppriv->switch_workspace_effect, group1,
-                         from_x, from_y,
+                         to_x, to_y,
                          NULL, NULL);
-#endif
+
+  /* arrow */
+  clutter_effect_fade (ppriv->switch_workspace_arrow_effect, group3,
+                       0,
+                       NULL, NULL);
+
+
 }
 
 /*
@@ -1129,6 +1110,15 @@ do_init (const char *params)
 							switch_timeout),
                                     CLUTTER_ALPHA_SINE_INC);
 
+  /* better syncing as multiple groups run off this */
+  clutter_effect_template_set_timeline_clone (priv->switch_workspace_effect,
+                                              TRUE);
+
+  priv->switch_workspace_arrow_effect
+    =  clutter_effect_template_new (clutter_timeline_new_for_duration (
+							switch_timeout*4),
+                                    CLUTTER_ALPHA_SINE_INC);
+
   overlay = mutter_plugin_get_overlay_group (plugin);
 
   panel = priv->panel = make_panel (screen_width);
@@ -1176,6 +1166,7 @@ free_plugin_private (PluginPrivate *priv)
   g_object_unref (priv->minimize_effect);
   g_object_unref (priv->maximize_effect);
   g_object_unref (priv->switch_workspace_effect);
+  g_object_unref (priv->switch_workspace_arrow_effect);
 
   g_free (priv);
 

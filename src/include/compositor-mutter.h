@@ -74,5 +74,6 @@ ClutterActor * mutter_get_stage_for_screen (MetaScreen *screen);
 ClutterActor * mutter_get_overlay_group_for_screen (MetaScreen *screen);
 Window         mutter_get_overlay_window (MetaScreen *screen);
 GList        * mutter_get_windows (MetaScreen *screen);
+ClutterActor * mutter_get_window_group_for_screen (MetaScreen *screen);
 
 #endif
