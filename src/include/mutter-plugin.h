@@ -25,7 +25,6 @@
 #define MUTTER_PLUGIN_H_
 
 #include "types.h"
-#include "config.h"
 #include "compositor.h"
 #include "compositor-mutter.h"
 
