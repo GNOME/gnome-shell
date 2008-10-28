@@ -846,12 +846,15 @@ show_switcher (void)
 {
   MutterPlugin  *plugin   = mutter_get_plugin ();
   PluginPrivate *priv     = plugin->plugin_private;
-  ClutterActor  *stage;
+  ClutterActor  *overlay;
   GList         *l;
   ClutterActor  *switcher;
   TidyGrid      *grid;
   guint          panel_height;
   gint           panel_y;
+  gint           screen_width, screen_height;
+
+  mutter_plugin_query_screen_size (plugin, &screen_width, &screen_height);
 
   switcher = tidy_grid_new ();
 
@@ -859,7 +862,7 @@ show_switcher (void)
 
   tidy_grid_set_homogenous_rows (grid, TRUE);
   tidy_grid_set_homogenous_columns (grid, TRUE);
-  tidy_grid_set_column_major (grid, TRUE);
+  tidy_grid_set_column_major (grid, FALSE);
   tidy_grid_set_row_gap (grid, CLUTTER_UNITS_FROM_INT (10));
   tidy_grid_set_column_gap (grid, CLUTTER_UNITS_FROM_INT (10));
 
@@ -936,8 +939,10 @@ show_switcher (void)
 
   clutter_actor_set_position (switcher, 10, panel_height + panel_y);
 
-  stage = mutter_plugin_get_stage (plugin);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), switcher);
+  overlay = mutter_plugin_get_overlay_group (plugin); 
+  clutter_container_add_actor (CLUTTER_CONTAINER (overlay), switcher);
+
+  clutter_actor_set_width (grid, screen_width);
 }
 
 static void
