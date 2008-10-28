@@ -1,3 +1,8 @@
+2008-10-28  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/include/screen-bindings.h: fix accidental name change of
+	  run_command_terminal.  Closes #557943.
+
 2008-10-27  Thomas Thurman  <tthurman@gnome.org>
 
         * src/core/prefs.c (titlebar_handler, handle_preference_update_enum):

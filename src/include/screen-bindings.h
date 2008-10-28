@@ -247,7 +247,7 @@ keybind (run_command_screenshot, handle_run_command, 32, 0, "Print",
 keybind (run_command_window_screenshot, handle_run_command, 33, 0,"<Alt>Print",
       _("Take a screenshot of a window"))
 
-keybind (run_terminal, handle_run_terminal, 0, 0, NULL, _("Run a terminal"))
+keybind (run_command_terminal, handle_run_terminal, 0, 0, NULL, _("Run a terminal"))
 
 /* No description because this is undocumented */
 keybind (set_spew_mark, handle_set_spew_mark, 0, 0, NULL, NULL)
