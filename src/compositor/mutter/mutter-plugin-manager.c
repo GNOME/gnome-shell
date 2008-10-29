@@ -368,7 +368,7 @@ prefs_changed_callback (MetaPreference pref,
 static gboolean
 mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
 {
-  const gchar *dpath = METACITY_PKGLIBDIR "/plugins/clutter/";
+  const gchar *dpath = MUTTER_PLUGIN_DIR "/";
   GSList      *plugins, *fallback = NULL;
 
   plugins = meta_prefs_get_clutter_plugins ();
