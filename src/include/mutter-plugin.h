@@ -29,6 +29,7 @@
 #include "compositor-mutter.h"
 
 #include <clutter/clutter.h>
+#include <X11/extensions/Xfixes.h>
 
 /*
  * This file defines the plugin API.
@@ -242,6 +243,10 @@ mutter_plugin_set_stage_reactive (MutterPlugin *plugin,
 void
 mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
                                     gint x, gint y, gint width, gint height);
+
+void
+mutter_plugin_set_stage_input_region (MutterPlugin *plugin,
+                                      XserverRegion region);
 
 GList *
 mutter_plugin_get_windows (MutterPlugin *plugin);

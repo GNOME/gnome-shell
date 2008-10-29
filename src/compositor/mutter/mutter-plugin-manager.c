@@ -895,6 +895,27 @@ mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
 
   XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
   XFixesSetWindowShapeRegion (xdpy, xoverlay, ShapeInput, 0, 0, region);
+
+  XFixesDestroyRegion (xdpy, region);
+}
+
+void
+mutter_plugin_set_stage_input_region (MutterPlugin *plugin,
+                                      XserverRegion region)
+{
+  MutterPluginPrivate *priv = plugin->manager_private;
+  MutterPluginManager *mgr  = priv->self;
+  MetaDisplay  *display = meta_screen_get_display (mgr->screen);
+  Display      *xdpy    = meta_display_get_xdisplay (display);
+  Window        xstage, xoverlay;
+  ClutterActor *stage;
+
+  stage = mutter_get_stage_for_screen (mgr->screen);
+  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+  xoverlay = mutter_get_overlay_window (mgr->screen);
+
+  XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
+  XFixesSetWindowShapeRegion (xdpy, xoverlay, ShapeInput, 0, 0, region);
 }
 
 GList *
