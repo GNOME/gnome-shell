@@ -1,4 +1,25 @@
+#include "../config.h"
+
 /*#define TEST_GROUP */
+
+/* These variables are used instead of the standard GLSL variables on
+   GLES 2 */
+#ifdef HAVE_COGL_GLES2
+
+#define GLES2_VARS \
+  "precision mediump float;\n" \
+  "varying vec2 tex_coord;\n" \
+  "varying vec4 frag_color;\n"
+#define TEX_COORD "tex_coord"
+#define COLOR_VAR "frag_color"
+
+#else /* HAVE_COGL_GLES2 */
+
+#define GLES2_VARS ""
+#define TEX_COORD "gl_TexCoord[0]"
+#define COLOR_VAR "gl_Color"
+
+#endif /* HAVE_COGL_GLES2 */
 
 #include <clutter/clutter.h>
 
@@ -34,17 +55,19 @@ ClutterShader*
 make_shader(void)
 {
   ClutterShader *shader;
+  GError *error = NULL;
 
   shader = clutter_shader_new ();
   clutter_shader_set_fragment_source (shader, 
    
+	GLES2_VARS
         "uniform float radius ;"
         "uniform sampler2D rectTexture;"
 	"uniform float x_step, y_step;"
         ""
         "void main()"
         "{"
-        "    vec4 color = texture2D(rectTexture, gl_TexCoord[0].st);"
+        "    vec4 color = texture2D(rectTexture, " TEX_COORD ".st);"
         "    float u;"
         "    float v;"
         "    int count = 1;"
@@ -52,18 +75,24 @@ make_shader(void)
         "      for (v=-radius;v<radius;v++)"
         "        {"
         "          color += texture2D(rectTexture, "
-        "                             vec2(gl_TexCoord[0].s + u"
+        "                             vec2(" TEX_COORD ".s + u"
         "                                  * 2.0 * x_step,"
-        "                                  gl_TexCoord[0].t + v"
+        "                                  " TEX_COORD ".t + v"
         "                                  * 2.0 * y_step));"
         "          count ++;"
         "        }"
         ""
         "    gl_FragColor = color / float(count);"
-        "    gl_FragColor = gl_FragColor * gl_Color;"
+        "    gl_FragColor = gl_FragColor * " COLOR_VAR ";"
         "}",
         -1
    );
+
+  if (!clutter_shader_compile (shader, &error))
+    {
+      fprintf (stderr, "shader compilation failed:\n%s", error->message);
+      g_error_free (error);
+    }
 
   return shader;
 }

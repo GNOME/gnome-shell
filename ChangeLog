@@ -1,5 +1,24 @@
 2008-10-29  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1074 - FBOs on GLES
+
+	* clutter/cogl/gles/cogl-fbo.c: Copy the code from gl/cogl-fbo but
+	use the API calls directly instead of loading an extension because
+	it is part of the core in GLES 2.
+
+	* clutter/cogl/gles/cogl.c (_cogl_features_init): Report
+	COGL_FEATURE_OFFSCREEN.
+
+	* clutter/cogl/gles/cogl-fbo.h (CoglFbo): Add gl_stencil_handle.
+
+	* clutter/cogl/gles/cogl-context.h (CoglContext): Add
+	viewport_store
+
+	* tests/test-fbo.c (make_shader): Conditionally use the GLES 2
+	names of the shader variables
+
+2008-10-29  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1206 - Picking disabled dithering
 
 	* clutter/clutter-main.c (_clutter_do_pick): After picking is

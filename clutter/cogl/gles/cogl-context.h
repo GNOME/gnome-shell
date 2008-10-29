@@ -79,6 +79,10 @@ typedef struct
 
 #ifdef HAVE_COGL_GLES2
   CoglGles2Wrapper     gles2;
+
+  /* Viewport store for FBOs. Needed because glPushAttrib() isn't
+     supported */
+  GLint                viewport_store[4];
 #endif
   
 } CoglContext;
