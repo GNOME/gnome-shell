@@ -5,7 +5,7 @@
  *
  * Authored By Matthew Allum  <mallum@openedhand.com>
  *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2008 OpenedHand
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,78 +33,278 @@
 #include "cogl-texture.h"
 #include "cogl-fbo.h"
 #include "cogl-context.h"
+#include "cogl-handle.h"
+#include "cogl-gles2-wrapper.h"
 
-/* Expecting EXT functions not to be defined - redirect to pointers in context  */
-#define glGenRenderbuffersEXT                ctx->pf_glGenRenderbuffersEXT
-#define glBindRenderbufferEXT                ctx->pf_glBindRenderbufferEXT
-#define glRenderbufferStorageEXT             ctx->pf_glRenderbufferStorageEXT
-#define glGenFramebuffersEXT                 ctx->pf_glGenFramebuffersEXT
-#define glBindFramebufferEXT                 ctx->pf_glBindFramebufferEXT
-#define glFramebufferTexture2DEXT            ctx->pf_glFramebufferTexture2DEXT
-#define glFramebufferRenderbufferEXT         ctx->pf_glFramebufferRenderbufferEXT
-#define glCheckFramebufferStatusEXT          ctx->pf_glCheckFramebufferStatusEXT
-#define glDeleteFramebuffersEXT              ctx->pf_glDeleteFramebuffersEXT
-#define glBlitFramebufferEXT                 ctx->pf_glBlitFramebufferEXT
-#define glRenderbufferStorageMultisampleEXT  ctx->pf_glRenderbufferStorageMultisampleEXT
+#ifdef HAVE_COGL_GLES2
 
-static gint
-_cogl_fbo_handle_find (CoglHandle handle)
+static void _cogl_offscreen_free (CoglFbo *fbo);
+
+COGL_HANDLE_DEFINE (Fbo, offscreen, fbo_handles);
+
+CoglHandle
+cogl_offscreen_new_to_texture (CoglHandle texhandle)
 {
-  gint i;
-  
-  _COGL_GET_CONTEXT (ctx, -1);
-  
-  if (ctx->fbo_handles == NULL)
-    return -1;
-  
-  for (i=0; i < ctx->fbo_handles->len; ++i)
-    if (g_array_index (ctx->fbo_handles, CoglHandle, i) == handle)
-      return i;
-  
-  return -1;
-}
-/*
-static CoglHandle
-_cogl_fbo_handle_new (CoglFbo *fbo)
-{
+  CoglTexture      *tex;
+  CoglFbo          *fbo;
+  CoglTexSliceSpan *x_span;
+  CoglTexSliceSpan *y_span;
+  GLuint            tex_gl_handle;
+  GLuint            fbo_gl_handle;
+  GLuint            gl_stencil_handle;
+  GLenum            status;
+
   _COGL_GET_CONTEXT (ctx, COGL_INVALID_HANDLE);
-  
-  CoglHandle handle = (CoglHandle)fbo;
-  
-  if (ctx->fbo_handles == NULL)
-    ctx->fbo_handles = g_array_new (FALSE, FALSE, sizeof (CoglHandle));
-  
-  g_array_append_val (ctx->fbo_handles, handle);
-  
-  return handle;
+
+  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
+    return COGL_INVALID_HANDLE;
+
+  /* Make texhandle is a valid texture object */
+  if (!cogl_is_texture (texhandle))
+    return COGL_INVALID_HANDLE;
+
+  tex = _cogl_texture_pointer_from_handle (texhandle);
+
+  /* The texture must not be sliced */
+  if (tex->slice_gl_handles == NULL)
+    return COGL_INVALID_HANDLE;
+
+  if (tex->slice_gl_handles->len != 1)
+    return COGL_INVALID_HANDLE;
+
+  /* Pick the single texture slice width, height and GL id */
+  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
+  y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
+  tex_gl_handle = g_array_index (tex->slice_gl_handles, GLuint, 0);
+
+  /* Create a renderbuffer for stenciling */
+  GE( glGenRenderbuffers (1, &gl_stencil_handle) );
+  GE( glBindRenderbuffer (GL_RENDERBUFFER, gl_stencil_handle) );
+  GE( glRenderbufferStorage (GL_RENDERBUFFER, GL_STENCIL_INDEX8,
+			     cogl_texture_get_width (texhandle),
+			     cogl_texture_get_height (texhandle)) );
+  GE( glBindRenderbuffer (GL_RENDERBUFFER, 0) );
+
+  /* Generate framebuffer */
+  glGenFramebuffers (1, &fbo_gl_handle);
+  GE( glBindFramebuffer (GL_FRAMEBUFFER, fbo_gl_handle) );
+  GE( glFramebufferTexture2D (GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+			      tex->gl_target, tex_gl_handle, 0) );
+  GE( glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+				 GL_STENCIL_ATTACHMENT,
+				 GL_RENDERBUFFER, gl_stencil_handle) );
+
+  /* Make sure it's complete */
+  status = glCheckFramebufferStatus (GL_FRAMEBUFFER);
+
+  if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+      /* Stencil renderbuffers aren't always supported. Try again
+	 without the stencil buffer */
+      GE( glFramebufferRenderbuffer (GL_FRAMEBUFFER,
+				     GL_STENCIL_ATTACHMENT,
+				     GL_RENDERBUFFER,
+				     0) );
+      GE( glDeleteRenderbuffers (1, &gl_stencil_handle) );
+      gl_stencil_handle = 0;
+
+      status = glCheckFramebufferStatus (GL_FRAMEBUFFER);
+
+      if (status != GL_FRAMEBUFFER_COMPLETE)
+	{
+	  /* Still failing, so give up */
+	  GE( glDeleteFramebuffers (1, &fbo_gl_handle) );
+	  GE( glBindFramebuffer (GL_FRAMEBUFFER, 0) );
+	  return COGL_INVALID_HANDLE;
+	}
+    }
+
+  GE( glBindFramebuffer (GL_FRAMEBUFFER, 0) );
+
+  /* Allocate and init a CoglFbo object (store non-wasted size
+     for subsequent blits and viewport setup) */
+  fbo = (CoglFbo*) g_malloc (sizeof (CoglFbo));
+  fbo->ref_count         = 1;
+  fbo->width             = x_span->size - x_span->waste;
+  fbo->height            = y_span->size - y_span->waste;
+  fbo->gl_handle         = fbo_gl_handle;
+  fbo->gl_stencil_handle = gl_stencil_handle;
+
+  COGL_HANDLE_DEBUG_NEW (offscreen, fbo);
+
+  return _cogl_offscreen_handle_new (fbo);
+}
+
+CoglHandle
+cogl_offscreen_new_multisample ()
+{
+  if (!cogl_features_available (COGL_FEATURE_OFFSCREEN_MULTISAMPLE))
+    return COGL_INVALID_HANDLE;
+
+  return COGL_INVALID_HANDLE;
 }
 
 static void
-_cogl_fbo_handle_release (CoglHandle handle)
+_cogl_offscreen_free (CoglFbo *fbo)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  gint i;
-  
-  if ( (i = _cogl_fbo_handle_find (handle)) == -1)
-    return;
-  
-  g_array_remove_index_fast (ctx->fbo_handles, i);
+
+  /* Frees FBO resources but its handle is not
+     released! Do that separately before this! */
+  if (fbo->gl_stencil_handle)
+    GE( glDeleteRenderbuffers (1, &fbo->gl_stencil_handle) );
+  GE( glDeleteFramebuffers (1, &fbo->gl_handle) );
+  g_free (fbo);
 }
 
-static CoglFbo*
-_cogl_fbo_pointer_from_handle (CoglHandle handle)
+void
+cogl_offscreen_blit_region (CoglHandle src_buffer,
+			    CoglHandle dst_buffer,
+			    int src_x,
+			    int src_y,
+			    int src_w,
+			    int src_h,
+			    int dst_x,
+			    int dst_y,
+			    int dst_w,
+			    int dst_h)
 {
-  return (CoglFbo*) handle;
-}*/
+  /* Not supported on GLES */
+  return;
+}
+
+void
+cogl_offscreen_blit (CoglHandle src_buffer,
+		     CoglHandle dst_buffer)
+{
+  /* Not supported on GLES */
+  return;
+}
+
+void
+cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
+{
+  CoglFbo *fbo = NULL;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (target == COGL_OFFSCREEN_BUFFER)
+    {
+      GLboolean scissor_enabled;
+      GLint scissor_box[4];
+
+      /* Make sure it is a valid fbo handle */
+      if (!cogl_is_offscreen (offscreen))
+	return;
+
+      fbo = _cogl_offscreen_pointer_from_handle (offscreen);
+
+      /* Check current draw buffer target */
+      if (ctx->draw_buffer != COGL_OFFSCREEN_BUFFER)
+	{
+	  /* Push the viewport and matrix setup if redirecting
+             from a non-screen buffer */
+	  GE( glGetIntegerv (GL_VIEWPORT, ctx->viewport_store) );
+
+	  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+	  GE( cogl_wrap_glPushMatrix () );
+	  GE( cogl_wrap_glLoadIdentity () );
+
+	  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+	  GE( cogl_wrap_glPushMatrix () );
+	  GE( cogl_wrap_glLoadIdentity () );
+	}
+      else
+	{
+	  /* Override viewport and matrix setup if redirecting
+             from another offscreen buffer */
+	  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+	  GE( cogl_wrap_glLoadIdentity () );
+
+	  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+	  GE( cogl_wrap_glLoadIdentity () );
+	}
+
+      /* Setup new viewport and matrices */
+      GE( glViewport (0, 0, fbo->width, fbo->height) );
+      GE( cogl_wrap_glTranslatex (-CFX_ONE, -CFX_ONE, 0) );
+      GE( cogl_wrap_glScalex (CFX_QDIV (CLUTTER_INT_TO_FIXED (2),
+					CLUTTER_INT_TO_FIXED (fbo->width)),
+			      CFX_QDIV (CLUTTER_INT_TO_FIXED (2),
+					CLUTTER_INT_TO_FIXED (fbo->height)),
+			      CFX_ONE) );
+
+      /* Bind offscreen framebuffer object */
+      GE( glBindFramebuffer (GL_FRAMEBUFFER, fbo->gl_handle) );
+      GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE) );
+
+      /* Some implementation require a clear before drawing
+         to an fbo. Luckily it is affected by scissor test. */
+      /* FIXME: test where exactly this is needed end whether
+         a glClear with 0 argument is enough */
+
+      scissor_enabled = glIsEnabled (GL_SCISSOR_TEST);
+      GE( glGetIntegerv (GL_SCISSOR_BOX, scissor_box) );
+      GE( glScissor (0, 0, 0, 0) );
+      GE( glEnable (GL_SCISSOR_TEST) );
+      GE( glClear (GL_COLOR_BUFFER_BIT) );
+      if (!scissor_enabled)
+	glDisable (GL_SCISSOR_TEST);
+      glScissor (scissor_box[0], scissor_box[1],
+		 scissor_box[2], scissor_box[3]);
+
+    }
+  else if ((target & COGL_WINDOW_BUFFER) ||
+	   (target & COGL_MASK_BUFFER))
+    {
+      /* Check current draw buffer target */
+      if (ctx->draw_buffer == COGL_OFFSCREEN_BUFFER)
+	{
+	  /* Pop viewport and matrices if redirecting back
+             from an offscreen buffer */
+	  GE( glViewport (ctx->viewport_store[0], ctx->viewport_store[1],
+			  ctx->viewport_store[2], ctx->viewport_store[3]) );
+
+	  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+	  GE( cogl_wrap_glPopMatrix () );
+
+	  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+	  GE( cogl_wrap_glPopMatrix () );
+	}
+
+      /* Bind window framebuffer object */
+      GE( glBindFramebuffer (GL_FRAMEBUFFER, 0) );
+
+
+      if (target == COGL_WINDOW_BUFFER)
+	{
+	  /* Draw to RGB channels */
+	  GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE) );
+	}
+      else if (target == COGL_MASK_BUFFER)
+	{
+	  /* Draw only to ALPHA channel */
+	  GE( glColorMask (GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE) );
+	}
+      else
+	{
+	  /* Draw to all channels */
+	  GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE) );
+	}
+    }
+
+  /* Store new target */
+  ctx->draw_buffer = target;
+}
+
+#else /* HAVE_COGL_GLES2 */
+
+/* No support on regular OpenGL 1.1 */
 
 gboolean
-cogl_is_offscreen_buffer (CoglHandle handle)
-{ 
-  if (handle == COGL_INVALID_HANDLE)
-    return FALSE;
-  
-  return _cogl_fbo_handle_find (handle) >= 0;
+cogl_is_offscreen (CoglHandle handle)
+{
+  return FALSE;
 }
 
 CoglHandle
@@ -153,38 +353,6 @@ cogl_offscreen_blit (CoglHandle src_buffer,
 void
 cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  switch (target)
-    {
-    case COGL_OFFSCREEN_BUFFER:
-      
-      /* Not supported */
-      return;
-      
-    case COGL_WINDOW_BUFFER:
-      
-      /* Draw to RGB channels */
-      GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE) );
-      
-      break;
-      
-    case COGL_MASK_BUFFER:
-      
-      /* Draw only to ALPHA channel */
-      GE( glColorMask (GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE) );
-      
-      break;
-    case COGL_WINDOW_BUFFER & COGL_MASK_BUFFER:
-      
-      /* Draw to all channels */
-      GE( glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE) );
-      
-      break;
-    default:
-      break;
-    }
-  
-  /* Store new target */
-  ctx->draw_buffer = target;
 }
+
+#endif /* HAVE_COGL_GLES2 */

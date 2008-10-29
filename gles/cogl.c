@@ -830,7 +830,7 @@ _cogl_features_init ()
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
 
 #ifdef HAVE_COGL_GLES2
-  flags |= COGL_FEATURE_SHADERS_GLSL;
+  flags |= COGL_FEATURE_SHADERS_GLSL | COGL_FEATURE_OFFSCREEN;
 #endif
 
   ctx->feature_flags = flags;
