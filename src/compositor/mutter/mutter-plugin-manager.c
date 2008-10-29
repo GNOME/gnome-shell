@@ -927,3 +927,13 @@ mutter_plugin_get_windows (MutterPlugin *plugin)
   return mutter_get_windows (plugin_mgr->screen);
 }
 
+Display *
+mutter_plugin_get_xdisplay (MutterPlugin *plugin)
+{
+  MutterPluginPrivate *priv    = plugin->manager_private;
+  MutterPluginManager *mgr     = priv->self;
+  MetaDisplay         *display = meta_screen_get_display (mgr->screen);
+  Display             *xdpy    = meta_display_get_xdisplay (display);
+
+  return xdpy;
+}

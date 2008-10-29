@@ -230,12 +230,6 @@ mutter_plugin_query_screen_size (MutterPlugin *plugin,
                                  int          *width,
                                  int          *height);
 
-ClutterActor *
-mutter_plugin_get_overlay_group (MutterPlugin *plugin);
-
-ClutterActor *
-mutter_plugin_get_stage (MutterPlugin *plugin);
-
 void
 mutter_plugin_set_stage_reactive (MutterPlugin *plugin,
                                   gboolean      reactive);
@@ -250,5 +244,8 @@ mutter_plugin_set_stage_input_region (MutterPlugin *plugin,
 
 GList *
 mutter_plugin_get_windows (MutterPlugin *plugin);
+
+Display *
+mutter_plugin_get_xdisplay (MutterPlugin *plugin);
 
 #endif /* MUTTER_PLUGIN_H_ */
