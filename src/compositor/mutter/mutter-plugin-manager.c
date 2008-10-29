@@ -409,14 +409,12 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
                 plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, p);
               else
                 {
-                  g_message ("Plugin load for [%s] failed\n", path);
+                  g_message ("Plugin load for [%s] failed", path);
                   g_module_close (plugin);
                 }
             }
           else
-            g_message ("Unable to load plugin [%s]\n", path);
-
-              g_message ("got this far with [%s]\n", path);
+            g_message ("Unable to load plugin [%s]: %s", path, g_module_error());
 
           g_free (path);
           g_free (plugin_string);
