@@ -1340,7 +1340,7 @@ parse_distance (GMarkupParseContext  *context,
             info->layout->button_sizing == META_BUTTON_SIZING_FIXED))
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("Cannot specify both button_width/button_height and aspect ratio for buttons"));
+                     _("Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"));
           return;      
         }
 
@@ -1354,7 +1354,7 @@ parse_distance (GMarkupParseContext  *context,
             info->layout->button_sizing == META_BUTTON_SIZING_FIXED))
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("Cannot specify both button_width/button_height and aspect ratio for buttons"));
+                     _("Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"));
           return;      
         }
 
@@ -1366,7 +1366,6 @@ parse_distance (GMarkupParseContext  *context,
                  _("Distance \"%s\" is unknown"), name);
       return;
     }
-}
 
 static void
 parse_aspect_ratio (GMarkupParseContext  *context,
@@ -1399,7 +1398,7 @@ parse_aspect_ratio (GMarkupParseContext  *context,
       if (info->layout->button_sizing != META_BUTTON_SIZING_LAST)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("Cannot specify both button_width/button_height and aspect ratio for buttons"));
+                     _("Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"));
           return;
         }
       

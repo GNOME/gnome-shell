@@ -1,3 +1,8 @@
+2008-10-29  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/ui/theme-parser.c: variable names in messages should be
+	  double-quoted.  Closes #558309.
+
 2008-10-28  Thomas Thurman  <tthurman@gnome.org>
 
 	* src/include/screen-bindings.h: fix accidental name change of
