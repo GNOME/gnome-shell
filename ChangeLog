@@ -1,3 +1,12 @@
+2008-10-29  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1206 - Picking disabled dithering
+
+	* clutter/clutter-main.c (_clutter_do_pick): After picking is
+	finished, restore the state of glEnable (GL_DITHER). Otherwise it
+	will cause the scene to look different after the first pick on low
+	depth displays. (Thanks to Michael Boccara for the patch)
+
 2008-10-28  Thomas Wood  <thomas@linux.intel.com>
 
 	* clutter/clutter-color.c (param_color_set_default): Set the no copy

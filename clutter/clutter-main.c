@@ -353,6 +353,7 @@ _clutter_do_pick (ClutterStage   *stage,
   GLint               viewport[4];
   ClutterColor        white = { 0xff, 0xff, 0xff, 0xff };
   guint32             id;
+  GLboolean           dither_was_on;
 
   context = clutter_context_get_default ();
 
@@ -364,6 +365,7 @@ _clutter_do_pick (ClutterStage   *stage,
   cogl_paint_init (&white);
 
   /* Disable dithering (if any) when doing the painting in pick mode */
+  dither_was_on = glIsEnabled (GL_DITHER);
   glDisable (GL_DITHER);
 
   /* Render the entire scence in pick mode - just single colored silhouette's
@@ -381,8 +383,9 @@ _clutter_do_pick (ClutterStage   *stage,
   */
   glFinish();
 
-  /* glEnable (GL_DITHER); we never enabled this originally, so its
-     probably not safe to then enable it */
+  /* Restore whether GL_DITHER was enabled */
+  if (dither_was_on)
+    glEnable (GL_DITHER);
 
   /* Read the color of the screen co-ords pixel */
   glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
