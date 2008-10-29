@@ -10,12 +10,7 @@ default_la_SOURCES  = default.c
 default_la_LDFLAGS  = -module -avoid-version -no-undefined
 default_la_LIBADD   = @CLUTTER_LIBS@
 
-scratch_la_CFLAGS   = -fPIC
-scratch_la_SOURCES  = scratch.c
-scratch_la_LDFLAGS  = -module -avoid-version -no-undefined
-scratch_la_LIBADD   = @CLUTTER_LIBS@
-
-pkglib_LTLIBRARIES = default.la scratch.la
+pkglib_LTLIBRARIES = default.la
 
 # post-install hook to remove the .la and .a files we are not interested in
 # (There is no way to stop libtool generating static libs locally, and we
