@@ -41,7 +41,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
-#include <clutter/clutter-stage.h>
+#include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11-enum-types.h>
 #include <clutter/x11/clutter-x11-texture-pixmap.h>
 

@@ -3,6 +3,7 @@ libclutterinclude_HEADERS = clutter-eglx.h
 
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterEGL\" \
+        -DCLUTTER_COMPILATION \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter \
 	-I$(top_srcdir)/clutter/x11 \

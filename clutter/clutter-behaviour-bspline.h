@@ -21,6 +21,10 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
 #ifndef __CLUTTER_BEHAVIOUR_BSPLINE_H__
 #define __CLUTTER_BEHAVIOUR_BSPLINE_H__
 

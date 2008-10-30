@@ -1,5 +1,38 @@
 2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1212 - Allow only a single include file for Clutter
+
+	* clutter/*.h: Only allow including clutter.h in third
+	party code.
+
+	* clutter/cogl/cogl-color.h:
+	* clutter/cogl/cogl-fixed.h:
+	* clutter/cogl/cogl.h.in: Only allow including cogl.h in
+	third party code.
+
+	* clutter/cogl/common/Makefile.am:
+	* clutter/cogl/gl/Makefile.am:
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/eglnative/Makefile.am:
+	* clutter/eglx/Makefile.am:
+	* clutter/fruity/Makefile.am:
+	* clutter/glx/Makefile.am:
+	* clutter/glx/clutter-glx.h:
+	* clutter/osx/Makefile.am:
+	* clutter/pango/Makefile.am:
+	* clutter/sdl/Makefile.am:
+	* clutter/win32/Makefile.am:
+	* clutter/x11/Makefile.am: Fix build environment.
+
+	* clutter/x11/clutter-x11-texture-pixmap.h:
+	* clutter/x11/clutter-x11.h: Fix inclusion rules.
+
+	* tests/test-pixmap.c: Fix inclusion of GdkPixbuf header.
+
+	* README: Update release notes.
+
+2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1211 - Drop ClutterFeatureFlags usage from COGL
 
 	* clutter/cogl/cogl.h.in:

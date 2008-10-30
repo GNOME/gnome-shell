@@ -18,40 +18,27 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HAVE_CLUTTER_CLONE_TEXTURE_H
-#define _HAVE_CLUTTER_CLONE_TEXTURE_H
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
+#ifndef __CLUTTER_CLONE_TEXTURE_H__
+#define __CLUTTER_CLONE_TEXTURE_H__
 
 #include <clutter/clutter-actor.h>
 #include <clutter/clutter-texture.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_CLONE_TEXTURE (clutter_clone_texture_get_type ())
-
-#define CLUTTER_CLONE_TEXTURE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_CLONE_TEXTURE, ClutterCloneTexture))
-
-#define CLUTTER_CLONE_TEXTURE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CLUTTER_TYPE_CLONE_TEXTURE, ClutterCloneTextureClass))
-
-#define CLUTTER_IS_CLONE_TEXTURE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_CLONE_TEXTURE))
-
-#define CLUTTER_IS_CLONE_TEXTURE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CLUTTER_TYPE_CLONE_TEXTURE))
-
-#define CLUTTER_CLONE_TEXTURE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CLUTTER_TYPE_CLONE_TEXTURE, ClutterCloneTextureClass))
+#define CLUTTER_TYPE_CLONE_TEXTURE              (clutter_clone_texture_get_type ())
+#define CLUTTER_CLONE_TEXTURE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_CLONE_TEXTURE, ClutterCloneTexture))
+#define CLUTTER_CLONE_TEXTURE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_CLONE_TEXTURE, ClutterCloneTextureClass))
+#define CLUTTER_IS_CLONE_TEXTURE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_CLONE_TEXTURE))
+#define CLUTTER_IS_CLONE_TEXTURE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_CLONE_TEXTURE))
+#define CLUTTER_CLONE_TEXTURE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_CLONE_TEXTURE, ClutterCloneTextureClass))
 
 typedef struct _ClutterCloneTexture        ClutterCloneTexture;
 typedef struct _ClutterCloneTexturePrivate ClutterCloneTexturePrivate;
@@ -59,14 +46,15 @@ typedef struct _ClutterCloneTextureClass   ClutterCloneTextureClass;
 
 struct _ClutterCloneTexture
 {
+  /*< private >*/
   ClutterActor                 parent;
-  
-  /*< priv >*/
+
   ClutterCloneTexturePrivate    *priv;
 };
 
 struct _ClutterCloneTextureClass 
 {
+  /*< private >*/
   ClutterActorClass parent_class;
 
   /* padding for future expansion */
@@ -85,4 +73,4 @@ void            clutter_clone_texture_set_parent_texture (ClutterCloneTexture *c
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_CLONE_TEXTURE_H__ */

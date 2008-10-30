@@ -18,13 +18,15 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HAVE_CLUTTER_RECTANGLE_H
-#define _HAVE_CLUTTER_RECTANGLE_H
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
+#ifndef __CLUTTER_RECTANGLE_H__
+#define __CLUTTER_RECTANGLE_H__
 
 #include <glib-object.h>
 #include <clutter/clutter-actor.h>
@@ -32,27 +34,12 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_RECTANGLE clutter_rectangle_get_type()
-
-#define CLUTTER_RECTANGLE(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_RECTANGLE, ClutterRectangle))
-
-#define CLUTTER_RECTANGLE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CLUTTER_TYPE_RECTANGLE, ClutterRectangleClass))
-
-#define CLUTTER_IS_RECTANGLE(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_RECTANGLE))
-
-#define CLUTTER_IS_RECTANGLE_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CLUTTER_TYPE_RECTANGLE))
-
-#define CLUTTER_RECTANGLE_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CLUTTER_TYPE_RECTANGLE, ClutterRectangleClass))
+#define CLUTTER_TYPE_RECTANGLE                  (clutter_rectangle_get_type())
+#define CLUTTER_RECTANGLE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_RECTANGLE, ClutterRectangle))
+#define CLUTTER_RECTANGLE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_RECTANGLE, ClutterRectangleClass))
+#define CLUTTER_IS_RECTANGLE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_RECTANGLE))
+#define CLUTTER_IS_RECTANGLE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_RECTANGLE))
+#define CLUTTER_RECTANGLE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_RECTANGLE, ClutterRectangleClass))
 
 typedef struct _ClutterRectangle        ClutterRectangle;
 typedef struct _ClutterRectangleClass   ClutterRectangleClass;
@@ -60,14 +47,15 @@ typedef struct _ClutterRectanglePrivate ClutterRectanglePrivate;
 
 struct _ClutterRectangle
 {
+  /*< private >*/
   ClutterActor           parent;
 
-  /*< private >*/
   ClutterRectanglePrivate *priv;
 }; 
 
 struct _ClutterRectangleClass 
 {
+  /*< private >*/
   ClutterActorClass parent_class;
 
   /* padding for future expansion */
@@ -96,4 +84,4 @@ void          clutter_rectangle_set_border_color (ClutterRectangle   *rectangle,
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_RECTANGLE_H__ */

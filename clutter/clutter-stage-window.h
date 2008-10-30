@@ -2,9 +2,6 @@
 #define __CLUTTER_STAGE_WINDOW_H__
 
 #include <clutter/clutter-actor.h>
-#ifdef USE_GDKPIXBUF
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#endif
 
 G_BEGIN_DECLS
 

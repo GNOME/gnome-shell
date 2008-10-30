@@ -7,6 +7,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter \
 	-I$(top_srcdir)/clutter/x11 \
 	-I$(top_builddir)/clutter \
+        -DCLUTTER_COMPILATION \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS) \
 	$(GCC_FLAGS)

@@ -18,38 +18,34 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HAVE_CLUTTER_MEDIA_H
-#define _HAVE_CLUTTER_MEDIA_H
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
+#ifndef __CLUTTER_MEDIA_H__
+#define __CLUTTER_MEDIA_H__
 
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_MEDIA clutter_media_get_type()
+#define CLUTTER_TYPE_MEDIA                      (clutter_media_get_type ())
+#define CLUTTER_MEDIA(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_MEDIA, ClutterMedia))
+#define CLUTTER_IS_MEDIA(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_MEDIA))
+#define CLUTTER_MEDIA_GET_INTERFACE(obj)        (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_MEDIA, ClutterMediaInterface))
 
-#define CLUTTER_MEDIA(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_MEDIA, ClutterMedia))
-
-#define CLUTTER_IS_MEDIA(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_MEDIA))
-
-#define CLUTTER_MEDIA_GET_INTERFACE(obj) \
-  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), \
-  CLUTTER_TYPE_MEDIA, ClutterMediaInterface))
-
-typedef struct _ClutterMedia           ClutterMedia;      
+typedef struct _ClutterMedia           ClutterMedia; /* dummy typedef */
 typedef struct _ClutterMediaInterface  ClutterMediaInterface;
 
 struct _ClutterMediaInterface
 {
+  /*< private >*/
   GTypeInterface	    base_iface;
+
+  /*< public >*/
   void (*set_uri)           (ClutterMedia *media,
 			     const char   *uri);
   const char *(*get_uri)    (ClutterMedia *media);
@@ -73,7 +69,7 @@ struct _ClutterMediaInterface
 };
 
 
-GType clutter_media_get_type     (void);
+GType clutter_media_get_type     (void) G_GNUC_CONST;
 
 void
 clutter_media_set_uri            (ClutterMedia *media,
@@ -117,4 +113,4 @@ clutter_media_set_filename       (ClutterMedia *media,
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_MEDIA_H__ */

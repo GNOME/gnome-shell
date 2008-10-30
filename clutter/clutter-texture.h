@@ -21,8 +21,12 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HAVE_CLUTTER_TEXTURE_H
-#define _HAVE_CLUTTER_TEXTURE_H
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
+#ifndef __CLUTTER_TEXTURE_H__
+#define __CLUTTER_TEXTURE_H__
 
 #include <clutter/clutter-actor.h>
 #include <cogl/cogl.h>
@@ -180,4 +184,4 @@ void                  clutter_texture_set_cogl_texture      (ClutterTexture     
 
 G_END_DECLS
 
-#endif /* _HAVE_CLUTTER_TEXTURE_H */
+#endif /* __CLUTTER_TEXTURE_H__ */

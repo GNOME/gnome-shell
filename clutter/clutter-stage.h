@@ -18,10 +18,12 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
 
 #ifndef __CLUTTER_STAGE_H__
 #define __CLUTTER_STAGE_H__
@@ -30,10 +32,6 @@
 #include <clutter/clutter-group.h>
 #include <clutter/clutter-color.h>
 #include <clutter/clutter-event.h>
-
-#ifdef USE_GDKPIXBUF
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#endif
 
 G_BEGIN_DECLS
 
@@ -64,7 +62,7 @@ G_BEGIN_DECLS
 /**
  * CLUTTER_STAGE_WIDTH:
  *
- * Macro that evaluates to the current stage width
+ * Macro that evaluates to the width of the default stage
  *
  * Since: 0.2
  */
@@ -74,7 +72,7 @@ G_BEGIN_DECLS
 /**
  * CLUTTER_STAGE_HEIGHT:
  *
- * Macro that evaluates to the current stage height
+ * Macro that evaluates to the height of the default stage
  *
  * Since: 0.2
  */

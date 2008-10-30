@@ -18,10 +18,13 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
 /**
  * SECTION:clutter-main
  * @short_description: Various 'global' clutter functions.
@@ -30,8 +33,8 @@
  * functions for mainloops, events and threads
  */
 
-#ifndef _HAVE_CLUTTER_FEATURE_H
-#define _HAVE_CLUTTER_FEATURE_H
+#ifndef __CLUTTER_FEATURE_H__
+#define __CLUTTER_FEATURE_H__
 
 #include <glib.h>
 
@@ -74,5 +77,4 @@ ClutterFeatureFlags clutter_feature_get_all         (void);
 
 G_END_DECLS
 
-#endif
-
+#endif /* __CLUTTER_FEATURE_H__ */

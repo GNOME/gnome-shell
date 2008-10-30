@@ -23,8 +23,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef _HAVE_CLUTTER_H
-#define _HAVE_CLUTTER_H
+#ifndef __CLUTTER_H__
+#define __CLUTTER_H__
+
+#define __CLUTTER_H_INSIDE__
 
 #include "clutter-actor.h"
 #include "clutter-alpha.h"
@@ -70,4 +72,6 @@
 
 #include "clutter-enum-types.h"
 
-#endif
+#undef __CLUTTER_H_INSIDE__
+
+#endif /* __CLUTTER_H__ */

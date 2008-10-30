@@ -19,13 +19,15 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HAVE_CLUTTER_UNITS_H
-#define _HAVE_CLUTTER_UNITS_H
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly.h"
+#endif
+
+#ifndef __CLUTTER_UNITS_H__
+#define __CLUTTER_UNITS_H__
 
 #include <glib-object.h>
 #include <clutter/clutter-fixed.h>
@@ -213,4 +215,4 @@ GParamSpec *clutter_param_spec_unit (const gchar *name,
 
 G_END_DECLS
 
-#endif /* _HAVE_CLUTTER_UNITS_H */
+#endif /* __CLUTTER_UNITS_H__ */

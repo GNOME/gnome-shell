@@ -28,9 +28,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
-
-
-#include <clutter/clutter-texture.h>
+#include <clutter/clutter.h>
 #include <X11/Xlib.h>
 
 G_BEGIN_DECLS

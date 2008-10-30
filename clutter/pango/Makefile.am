@@ -16,6 +16,7 @@ libpangoclutter_la_SOURCES = $(source_c)     \
 INCLUDES = \
 	@GCC_FLAGS@ @CLUTTER_CFLAGS@ 			\
 	$(CLUTTER_DEBUG_CFLAGS)				\
+        -DCLUTTER_COMPILATION                           \
 	-I$(top_srcdir)                         	\
 	-I$(top_srcdir)/clutter				\
 	-I$(top_builddir)/clutter

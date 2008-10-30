@@ -18,6 +18,8 @@
 #define IMAGE "redhand.png"
 
 # ifdef USE_GDKPIXBUF
+# include <gdk-pixbuf/gdk-pixbuf.h>
+
 static gboolean disable_x11 = FALSE;
 static gboolean disable_glx = FALSE;
 

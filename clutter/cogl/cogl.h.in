@@ -42,6 +42,8 @@
 #ifndef __COGL_H__
 #define __COGL_H__
 
+#define __COGL_H_INSIDE__
+
 #include <glib.h>
 
 #include <cogl/cogl-defines-@CLUTTER_COGL@.h>
@@ -1586,5 +1588,7 @@ void            cogl_draw_buffer              (CoglBufferTarget    target,
                                                CoglHandle          offscreen);
 
 G_END_DECLS
+
+#undef __COGL_H_INSIDE__
 
 #endif /* __COGL_H__ */

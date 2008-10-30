@@ -165,6 +165,10 @@
 #include <glib-object.h>
 #include <gmodule.h>
 
+#ifdef USE_GDKPIXBUF
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#endif
+
 #include "clutter-actor.h"
 #include "clutter-alpha.h"
 #include "clutter-behaviour.h"

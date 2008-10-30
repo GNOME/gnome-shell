@@ -3,6 +3,7 @@ libclutterinclude_HEADERS = clutter-sdl.h
 
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterSDL\" \
+        -DCLUTTER_COMPILATION \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter/ \
 	-I$(top_builddir)/clutter/ \

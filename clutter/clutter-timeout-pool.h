@@ -18,9 +18,7 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  *
  * ClutterTimeoutPool: pool of timeout functions using the same slice of
  *                     the GLib main loop
@@ -29,6 +27,10 @@
  *
  * Based on similar code by Tristan van Berkom
  */
+
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
 
 #ifndef __CLUTTER_TIMEOUT_POOL_H__
 #define __CLUTTER_TIMEOUT_POOL_H__

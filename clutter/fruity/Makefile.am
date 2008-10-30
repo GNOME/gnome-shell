@@ -2,6 +2,7 @@ libclutterincludedir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
 
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterFruity\" \
+        -DCLUTTER_COMPILATION \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter \
 	$(CLUTTER_CFLAGS) \

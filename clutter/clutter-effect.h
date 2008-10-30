@@ -18,13 +18,15 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CLUTTER_EFFECT
-#define _CLUTTER_EFFECT
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
+#ifndef __CLUTTER_EFFECT_H__
+#define __CLUTTER_EFFECT_H__
 
 #include <glib-object.h>
 #include <clutter/clutter-actor.h>
@@ -157,4 +159,4 @@ ClutterTimeline *clutter_effect_rotate (ClutterEffectTemplate     *template_,
 
 G_END_DECLS
 
-#endif /* _CLUTTER_EFFECT */
+#endif /* __CLUTTER_EFFECT_H__ */

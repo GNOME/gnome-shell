@@ -23,8 +23,12 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HAVE_CLUTTER_BEHAVIOUR_H
-#define _HAVE_CLUTTER_BEHAVIOUR_H
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
+#ifndef __CLUTTER_BEHAVIOUR_H__
+#define __CLUTTER_BEHAVIOUR_H__
 
 #include <glib-object.h>
 #include <clutter/clutter-alpha.h>

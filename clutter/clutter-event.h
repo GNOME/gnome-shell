@@ -21,8 +21,12 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HAVE_CLUTTER_EVENT_H
-#define _HAVE_CLUTTER_EVENT_H
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
+
+#ifndef __CLUTTER_EVENT_H__
+#define __CLUTTER_EVENT_H__
 
 #include <glib-object.h>
 #include <clutter/clutter-types.h>
@@ -443,4 +447,4 @@ ClutterStage*       clutter_event_get_stage     (ClutterEvent *event);
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_EVENT_H__ */
