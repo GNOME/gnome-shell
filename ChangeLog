@@ -1,5 +1,23 @@
 2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1219 - Clean up cogl.h
+
+	* clutter/cogl/cogl.h.in:
+	* clutter/cogl/cogl-offscreen.h:
+	* clutter/cogl/cogl-path.h:
+	* clutter/cogl/cogl-shader.h:
+	* clutter/cogl/cogl-texture.h:
+	* clutter/cogl/cogl-types.h: Split up the massive cogl.h file
+	into sub-header for each section of the API.
+
+	* clutter/cogl/gl/*:
+	* clutter/cogl/gles/*: Update the GL and GLES implementations
+	of COGL to cope with the new header structure.
+
+	* doc/reference/cogl/Makefile.am: Fix symbol retrieval.
+
+2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1215 - Move the Pango renderer to the public API
 
 	* clutter/pango/*: Rename PangoClutter -> CoglPango.

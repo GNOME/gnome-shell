@@ -30,7 +30,7 @@
 #include "cogl.h"
 #include "cogl-internal.h"
 #include "cogl-util.h"
-#include "cogl-texture.h"
+#include "cogl-texture-private.h"
 #include "cogl-fbo.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"

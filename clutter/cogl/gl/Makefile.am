@@ -3,7 +3,13 @@ libclutterinclude_HEADERS = \
         $(top_builddir)/clutter/cogl/cogl.h \
         $(top_builddir)/clutter/cogl/cogl-defines-gl.h \
         $(top_builddir)/clutter/cogl/cogl-color.h \
-        $(top_builddir)/clutter/cogl/cogl-fixed.h
+        $(top_builddir)/clutter/cogl/cogl-fixed.h \
+        $(top_builddir)/clutter/cogl/cogl-offscreen.h \
+        $(top_builddir)/clutter/cogl/cogl-path.h \
+        $(top_builddir)/clutter/cogl/cogl-shader.h \
+        $(top_builddir)/clutter/cogl/cogl-texture.h \
+        $(top_builddir)/clutter/cogl/cogl-types.h
+
 
 INCLUDES = \
 	-I$(top_srcdir) \
@@ -27,10 +33,15 @@ libclutter_cogl_la_SOURCES = \
 	$(top_builddir)/clutter/cogl/cogl-defines-gl.h \
         $(top_builddir)/clutter/cogl/cogl-color.h \
         $(top_builddir)/clutter/cogl/cogl-fixed.h \
+        $(top_builddir)/clutter/cogl/cogl-offscreen.h \
+        $(top_builddir)/clutter/cogl/cogl-path.h \
+        $(top_builddir)/clutter/cogl/cogl-shader.h \
+        $(top_builddir)/clutter/cogl/cogl-texture.h \
+        $(top_builddir)/clutter/cogl/cogl-types.h \
 	cogl-internal.h \
-	cogl-texture.h \
+	cogl-texture-private.h \
 	cogl-fbo.h \
-	cogl-shader.h \
+	cogl-shader-private.h \
 	cogl-program.h \
 	cogl-context.h \
 	cogl.c \

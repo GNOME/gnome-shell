@@ -36,7 +36,7 @@
 #include "cogl-fixed-vertex-shader.h"
 #include "cogl-fixed-fragment-shader.h"
 #include "cogl-context.h"
-#include "cogl-shader.h"
+#include "cogl-shader-private.h"
 #include "cogl-program.h"
 
 #define _COGL_GET_GLES2_WRAPPER(wvar, retval)			\

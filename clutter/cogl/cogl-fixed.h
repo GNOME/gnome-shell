@@ -5,7 +5,7 @@
 #ifndef __COGL_FIXED_H__
 #define __COGL_FIXED_H__
 
-#include <glib.h>
+#include <cogl/cogl-types.h>
 
 /**
  * SECTION:cogl-fixed
@@ -44,17 +44,6 @@
  */
 
 G_BEGIN_DECLS
-
-/**
- * CoglFixed:
- *
- * Fixed point number using a (16.16) notation.
- */
-typedef gint32 CoglFixed;
-
-/*
- * some commonly used constants
- */
 
 /**
  * COGL_FIXED_BITS:
@@ -613,16 +602,6 @@ guint     cogl_fixed_pow  (guint     x,
  * Since: 1.0
  */
 gint      cogl_sqrti      (gint      x);
-
-/**
- * CoglAngle:
- *
- * Integer representation of an angle such that 1024 corresponds to
- * full circle (i.e., 2 * pi).
- *
- * Since: 1.0
- */
-typedef gint32 CoglAngle;
 
 /**
  * COGL_ANGLE_FROM_DEG:

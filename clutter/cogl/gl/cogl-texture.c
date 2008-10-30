@@ -31,7 +31,7 @@
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
-#include "cogl-texture.h"
+#include "cogl-texture-private.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
 
