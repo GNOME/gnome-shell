@@ -18,9 +18,7 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -29,8 +27,8 @@
 
 #include <glib.h>
 
-#include "pangoclutter-glyph-cache.h"
-#include "cogl/cogl.h"
+#include "cogl-pango-glyph-cache.h"
+#include "cogl-pango-private.h"
 
 /* Minimum width/height for each texture */
 #define MIN_TEXTURE_SIZE  256
@@ -38,28 +36,28 @@
    put in the same band */
 #define BAND_HEIGHT_ROUND 4
 
-typedef struct _PangoClutterGlyphCacheKey     PangoClutterGlyphCacheKey;
-typedef struct _PangoClutterGlyphCacheTexture PangoClutterGlyphCacheTexture;
-typedef struct _PangoClutterGlyphCacheBand    PangoClutterGlyphCacheBand;
+typedef struct _CoglPangoGlyphCacheKey     CoglPangoGlyphCacheKey;
+typedef struct _CoglPangoGlyphCacheTexture CoglPangoGlyphCacheTexture;
+typedef struct _CoglPangoGlyphCacheBand    CoglPangoGlyphCacheBand;
 
-struct _PangoClutterGlyphCache
+struct _CoglPangoGlyphCache
 {
   /* Hash table to quickly check whether a particular glyph in a
      particular font is already cached */
   GHashTable                    *hash_table;
 
   /* List of textures */
-  PangoClutterGlyphCacheTexture *textures;
+  CoglPangoGlyphCacheTexture *textures;
 
   /* List of horizontal bands of glyphs */
-  PangoClutterGlyphCacheBand    *bands;
+  CoglPangoGlyphCacheBand    *bands;
 
   /* If TRUE all of the textures will be created with automatic mipmap
      generation enabled */
   gboolean                       use_mipmapping;
 };
 
-struct _PangoClutterGlyphCacheKey
+struct _CoglPangoGlyphCacheKey
 {
   PangoFont  *font;
   PangoGlyph  glyph;
@@ -68,7 +66,7 @@ struct _PangoClutterGlyphCacheKey
 /* Represents one texture that will be used to store glyphs. The
    texture is divided into horizontal bands which all contain glyphs
    of approximatly the same height */
-struct _PangoClutterGlyphCacheTexture
+struct _CoglPangoGlyphCacheTexture
 {
   /* The width and height of the texture which should always be a
      power of two. This can vary so that glyphs larger than
@@ -81,12 +79,12 @@ struct _PangoClutterGlyphCacheTexture
   /* The actual texture */
   CoglHandle texture;
 
-  PangoClutterGlyphCacheTexture *next;
+  CoglPangoGlyphCacheTexture *next;
 };
 
 /* Represents one horizontal band of a texture. Each band contains
    glyphs of a similar height */
-struct _PangoClutterGlyphCacheBand
+struct _CoglPangoGlyphCacheBand
 {
   /* The y position of the top of the band */
   int        top;
@@ -104,28 +102,28 @@ struct _PangoClutterGlyphCacheBand
   /* The texture containing this band */
   CoglHandle texture;
 
-  PangoClutterGlyphCacheBand *next;
+  CoglPangoGlyphCacheBand *next;
 };
 
 static void
-pango_clutter_glyph_cache_value_free (PangoClutterGlyphCacheValue *value)
+cogl_pango_glyph_cache_value_free (CoglPangoGlyphCacheValue *value)
 {
   cogl_texture_unref (value->texture);
-  g_slice_free (PangoClutterGlyphCacheValue, value);
+  g_slice_free (CoglPangoGlyphCacheValue, value);
 }
 
 static void
-pango_clutter_glyph_cache_key_free (PangoClutterGlyphCacheKey *key)
+cogl_pango_glyph_cache_key_free (CoglPangoGlyphCacheKey *key)
 {
   g_object_unref (key->font);
-  g_slice_free (PangoClutterGlyphCacheKey, key);
+  g_slice_free (CoglPangoGlyphCacheKey, key);
 }
 
 static guint
-pango_clutter_glyph_cache_hash_func (gconstpointer key)
+cogl_pango_glyph_cache_hash_func (gconstpointer key)
 {
-  const PangoClutterGlyphCacheKey *cache_key
-    = (const PangoClutterGlyphCacheKey *) key;
+  const CoglPangoGlyphCacheKey *cache_key
+    = (const CoglPangoGlyphCacheKey *) key;
 
   /* Generate a number affected by both the font and the glyph
      number. We can safely directly compare the pointers because the
@@ -135,13 +133,13 @@ pango_clutter_glyph_cache_hash_func (gconstpointer key)
 }
 
 static gboolean
-pango_clutter_glyph_cache_equal_func (gconstpointer a,
+cogl_pango_glyph_cache_equal_func (gconstpointer a,
 				      gconstpointer b)
 {
-  const PangoClutterGlyphCacheKey *key_a
-    = (const PangoClutterGlyphCacheKey *) a;
-  const PangoClutterGlyphCacheKey *key_b
-    = (const PangoClutterGlyphCacheKey *) b;
+  const CoglPangoGlyphCacheKey *key_a
+    = (const CoglPangoGlyphCacheKey *) a;
+  const CoglPangoGlyphCacheKey *key_b
+    = (const CoglPangoGlyphCacheKey *) b;
 
   /* We can safely directly compare the pointers for the fonts because
      the key holds a reference to the font so it is not possible that
@@ -151,45 +149,45 @@ pango_clutter_glyph_cache_equal_func (gconstpointer a,
 }
 
 static void
-pango_clutter_glyph_cache_free_textures (PangoClutterGlyphCacheTexture *node)
+cogl_pango_glyph_cache_free_textures (CoglPangoGlyphCacheTexture *node)
 {
-  PangoClutterGlyphCacheTexture *next;
+  CoglPangoGlyphCacheTexture *next;
 
   while (node)
     {
       next = node->next;
       cogl_texture_unref (node->texture);
-      g_slice_free (PangoClutterGlyphCacheTexture, node);
+      g_slice_free (CoglPangoGlyphCacheTexture, node);
       node = next;
     }
 }
 
 static void
-pango_clutter_glyph_cache_free_bands (PangoClutterGlyphCacheBand *node)
+cogl_pango_glyph_cache_free_bands (CoglPangoGlyphCacheBand *node)
 {
-  PangoClutterGlyphCacheBand *next;
+  CoglPangoGlyphCacheBand *next;
 
   while (node)
     {
       next = node->next;
       cogl_texture_unref (node->texture);
-      g_slice_free (PangoClutterGlyphCacheBand, node);
+      g_slice_free (CoglPangoGlyphCacheBand, node);
       node = next;
     }
 }
 
-PangoClutterGlyphCache *
-pango_clutter_glyph_cache_new (gboolean use_mipmapping)
+CoglPangoGlyphCache *
+cogl_pango_glyph_cache_new (gboolean use_mipmapping)
 {
-  PangoClutterGlyphCache *cache;
+  CoglPangoGlyphCache *cache;
 
-  cache = g_malloc (sizeof (PangoClutterGlyphCache));
+  cache = g_malloc (sizeof (CoglPangoGlyphCache));
 
   cache->hash_table = g_hash_table_new_full
-    (pango_clutter_glyph_cache_hash_func,
-     pango_clutter_glyph_cache_equal_func,
-     (GDestroyNotify) pango_clutter_glyph_cache_key_free,
-     (GDestroyNotify) pango_clutter_glyph_cache_value_free);
+    (cogl_pango_glyph_cache_hash_func,
+     cogl_pango_glyph_cache_equal_func,
+     (GDestroyNotify) cogl_pango_glyph_cache_key_free,
+     (GDestroyNotify) cogl_pango_glyph_cache_value_free);
 
   cache->textures = NULL;
   cache->bands = NULL;
@@ -199,55 +197,55 @@ pango_clutter_glyph_cache_new (gboolean use_mipmapping)
 }
 
 void
-pango_clutter_glyph_cache_clear (PangoClutterGlyphCache *cache)
+cogl_pango_glyph_cache_clear (CoglPangoGlyphCache *cache)
 {
-  pango_clutter_glyph_cache_free_textures (cache->textures);
+  cogl_pango_glyph_cache_free_textures (cache->textures);
   cache->textures = NULL;
-  pango_clutter_glyph_cache_free_bands (cache->bands);
+  cogl_pango_glyph_cache_free_bands (cache->bands);
   cache->bands = NULL;
 
   g_hash_table_remove_all (cache->hash_table);
 }
 
 void
-pango_clutter_glyph_cache_free (PangoClutterGlyphCache *cache)
+cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache)
 {
-  pango_clutter_glyph_cache_clear (cache);
+  cogl_pango_glyph_cache_clear (cache);
 
   g_hash_table_unref (cache->hash_table);
 
   g_free (cache);
 }
 
-PangoClutterGlyphCacheValue *
-pango_clutter_glyph_cache_lookup (PangoClutterGlyphCache *cache,
+CoglPangoGlyphCacheValue *
+cogl_pango_glyph_cache_lookup (CoglPangoGlyphCache *cache,
 				  PangoFont              *font,
 				  PangoGlyph              glyph)
 {
-  PangoClutterGlyphCacheKey key;
+  CoglPangoGlyphCacheKey key;
 
   key.font = font;
   key.glyph = glyph;
 
-  return (PangoClutterGlyphCacheValue *)
+  return (CoglPangoGlyphCacheValue *)
     g_hash_table_lookup (cache->hash_table, &key);
 }
 
-PangoClutterGlyphCacheValue *
-pango_clutter_glyph_cache_set (PangoClutterGlyphCache *cache,
-			       PangoFont              *font,
-			       PangoGlyph              glyph,
-			       gconstpointer           pixels,
-			       int                     width,
-			       int                     height,
-			       int                     stride,
-			       int                     draw_x,
-			       int                     draw_y)
+CoglPangoGlyphCacheValue *
+cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
+			    PangoFont           *font,
+			    PangoGlyph           glyph,
+			    gconstpointer        pixels,
+			    int                  width,
+			    int                  height,
+			    int                  stride,
+			    int                  draw_x,
+			    int                  draw_y)
 {
-  int                          band_height;
-  PangoClutterGlyphCacheBand  *band;
-  PangoClutterGlyphCacheKey   *key;
-  PangoClutterGlyphCacheValue *value;
+  int                       band_height;
+  CoglPangoGlyphCacheBand  *band;
+  CoglPangoGlyphCacheKey   *key;
+  CoglPangoGlyphCacheValue *value;
 
   /* Reserve an extra pixel gap around the glyph so that it can pull
      in blank pixels when linear filtering is enabled */
@@ -264,7 +262,7 @@ pango_clutter_glyph_cache_set (PangoClutterGlyphCache *cache,
        band = band->next);
   if (band == NULL)
     {
-      PangoClutterGlyphCacheTexture *texture;
+      CoglPangoGlyphCacheTexture *texture;
 
       /* Look for a texture with enough vertical space left for a band
 	 with this height */
@@ -279,7 +277,7 @@ pango_clutter_glyph_cache_set (PangoClutterGlyphCache *cache,
 	  /* Allocate a new texture that is the nearest power of two
 	     greater than the band height or the minimum size,
 	     whichever is lower */
-	  texture = g_slice_new (PangoClutterGlyphCacheTexture);
+	  texture = g_slice_new (CoglPangoGlyphCacheTexture);
 
 	  texture->texture_size = MIN_TEXTURE_SIZE;
 	  while (texture->texture_size < band_height
@@ -312,7 +310,7 @@ pango_clutter_glyph_cache_set (PangoClutterGlyphCache *cache,
 				      CGL_LINEAR);
 	}
 
-      band = g_slice_new (PangoClutterGlyphCacheBand);
+      band = g_slice_new (CoglPangoGlyphCacheBand);
       band->top = texture->texture_size - texture->space_remaining;
       band->height = band_height;
       band->space_remaining = texture->texture_size;
@@ -338,11 +336,11 @@ pango_clutter_glyph_cache_set (PangoClutterGlyphCache *cache,
 			   stride,
 			   pixels);
 
-  key = g_slice_new (PangoClutterGlyphCacheKey);
+  key = g_slice_new (CoglPangoGlyphCacheKey);
   key->font = g_object_ref (font);
   key->glyph = glyph;
 
-  value = g_slice_new (PangoClutterGlyphCacheValue);
+  value = g_slice_new (CoglPangoGlyphCacheValue);
   value->texture = cogl_texture_ref (band->texture);
   value->tx1 = COGL_FIXED_FROM_INT (band->space_remaining)
              / band->texture_size;

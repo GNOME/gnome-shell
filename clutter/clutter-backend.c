@@ -388,8 +388,8 @@ clutter_backend_set_resolution (ClutterBackend *backend,
     priv->resolution = fixed_dpi;
 
   if (CLUTTER_CONTEXT ()->font_map)
-    pango_clutter_font_map_set_resolution (CLUTTER_CONTEXT ()->font_map,
-					   COGL_FIXED_TO_FLOAT (fixed_dpi));
+    cogl_pango_font_map_set_resolution (CLUTTER_CONTEXT ()->font_map,
+					COGL_FIXED_TO_FLOAT (fixed_dpi));
 }
 
 /**

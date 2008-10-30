@@ -1,5 +1,21 @@
 2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1215 - Move the Pango renderer to the public API
+
+	* clutter/pango/*: Rename PangoClutter -> CoglPango.
+
+	* clutter/Makefile.am:
+	* clutter/clutter-backend.c:
+	* clutter/clutter-entry.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-main.[ch]:
+	* clutter/clutter-private.h: Update the users of the Pango
+	renderer API.
+
+	* README: Update release notes.
+
+2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1212 - Allow only a single include file for Clutter
 
 	* clutter/*.h: Only allow including clutter.h in third

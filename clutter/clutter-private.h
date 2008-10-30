@@ -45,7 +45,7 @@
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
 #include "clutter-stage.h"
-#include "pango/pangoclutter.h"
+#include "pango/cogl-pango.h"
 
 G_BEGIN_DECLS
 
@@ -124,7 +124,7 @@ struct _ClutterMainContext
   gint fb_r_mask, fb_g_mask, fb_b_mask;
   gint fb_r_mask_used, fb_g_mask_used, fb_b_mask_used;
 
-  PangoClutterFontMap *font_map;       /* Global font map */
+  CoglPangoFontMap *font_map;       /* Global font map */
 
   GSList              *input_devices; /* For extra input devices, i.e
                                          MultiTouch */

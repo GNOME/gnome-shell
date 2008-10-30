@@ -50,6 +50,7 @@
 #include "clutter-frame-source.h"
 
 #include "cogl/cogl.h"
+#include "pango/cogl-pango.h"
 
 /* main context */
 static ClutterMainContext *ClutterCntx  = NULL;
@@ -410,7 +411,7 @@ _clutter_context_create_pango_context (ClutterMainContext *self)
   if (resolution < 0)
     resolution = 96.0; /* fall back */
 
-  context = pango_clutter_font_map_create_context (self->font_map);
+  context = cogl_pango_font_map_create_context (self->font_map);
 
   pango_cairo_context_set_resolution (context, resolution);
 
@@ -1070,12 +1071,11 @@ clutter_init_real (GError **error)
    * Resolution requires display to be open, so can only be queried after
    * the post_parse hooks run.
    */
-  ctx->font_map = PANGO_CLUTTER_FONT_MAP (pango_clutter_font_map_new ());
+  ctx->font_map = COGL_PANGO_FONT_MAP (cogl_pango_font_map_new ());
 
   resolution = clutter_backend_get_resolution (ctx->backend);
-  pango_clutter_font_map_set_resolution (ctx->font_map, resolution);
-
-  pango_clutter_font_map_set_use_mipmapping (ctx->font_map, TRUE);
+  cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
+  cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
 
   /* Stage will give us a GL Context etc */
   stage = clutter_stage_get_default ();
@@ -2491,7 +2491,7 @@ void
 clutter_clear_glyph_cache (void)
 {
   if (CLUTTER_CONTEXT ()->font_map)
-    pango_clutter_font_map_clear_glyph_cache (CLUTTER_CONTEXT ()->font_map);
+    cogl_pango_font_map_clear_glyph_cache (CLUTTER_CONTEXT ()->font_map);
 }
 
 /**
@@ -2508,8 +2508,8 @@ void
 clutter_set_use_mipmapped_text (gboolean value)
 {
   if (CLUTTER_CONTEXT ()->font_map)
-    pango_clutter_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
-					       value);
+    cogl_pango_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
+					    value);
 }
 
 /**
@@ -2526,12 +2526,12 @@ clutter_set_use_mipmapped_text (gboolean value)
 gboolean
 clutter_get_use_mipmapped_text (void)
 {
-  PangoClutterFontMap *font_map = NULL;
+  CoglPangoFontMap *font_map = NULL;
 
   font_map = CLUTTER_CONTEXT ()->font_map;
 
-  if (font_map)
-    return pango_clutter_font_map_get_use_mipmapping (font_map);
+  if (G_LIKELY (font_map))
+    return cogl_pango_font_map_get_use_mipmapping (font_map);
 
   return FALSE;
 }
@@ -2564,6 +2564,28 @@ clutter_get_input_device_for_id (gint id)
     if (device->id == id)
       return device;
   }
+
+  return NULL;
+}
+
+/**
+ * clutter_get_font_map:
+ *
+ * Retrieves the #PangoFontMap instance used by Clutter.
+ * You can use the global font map object with the COGL
+ * Pango API.
+ *
+ * Return value: the #PangoFontMap instance. The returned
+ *   value is owned by Clutter and it should never be
+ *   unreferenced.
+ *
+ * Since: 1.0
+ */
+PangoFontMap *
+clutter_get_font_map (void)
+{
+  if (CLUTTER_CONTEXT ()->font_map)
+    return PANGO_FONT_MAP (CLUTTER_CONTEXT ()->font_map);
 
   return NULL;
 }

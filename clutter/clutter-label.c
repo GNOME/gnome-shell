@@ -41,7 +41,7 @@
 #include "clutter-debug.h"
 #include "clutter-units.h"
 
-#include "pangoclutter.h"
+#include "cogl-pango.h"
 
 #define DEFAULT_FONT_NAME	"Sans 10"
 
@@ -265,7 +265,7 @@ clutter_label_create_layout (ClutterLabel *label,
   oldest_cache->layout
     = clutter_label_create_layout_no_cache (label, allocation_width);
 
-  pango_clutter_ensure_glyph_cache_for_layout (oldest_cache->layout);
+  cogl_pango_ensure_glyph_cache_for_layout (oldest_cache->layout);
 
   /* Mark the 'time' this cache was created and advance the time */
   oldest_cache->age = priv->cache_age++;
@@ -281,7 +281,7 @@ clutter_label_paint (ClutterActor *self)
   ClutterLabel        *label = CLUTTER_LABEL (self);
   ClutterLabelPrivate *priv = label->priv;
   PangoLayout         *layout;
-  ClutterColor color = { 0, };
+  CoglColor            color;
   ClutterActorBox alloc = { 0, };
 
   if (priv->font_desc == NULL || priv->text == NULL)
@@ -297,10 +297,13 @@ clutter_label_paint (ClutterActor *self)
   clutter_actor_get_allocation_box (self, &alloc);
   layout = clutter_label_create_layout (label, alloc.x2 - alloc.x1);
 
-  memcpy (&color, &priv->fgcol, sizeof (ClutterColor));
-  color.alpha = clutter_actor_get_paint_opacity (self);
+  cogl_color_set_from_4ub (&color,
+                           priv->fgcol.red,
+                           priv->fgcol.green,
+                           priv->fgcol.blue,
+                           clutter_actor_get_paint_opacity (self));
 
-  pango_clutter_render_layout (layout, 0, 0, &color, 0);
+  cogl_pango_render_layout (layout, 0, 0, &color, 0);
 }
 
 static void

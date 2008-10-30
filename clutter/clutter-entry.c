@@ -49,7 +49,8 @@
 #include "clutter-private.h"
 #include "clutter-rectangle.h"
 #include "clutter-units.h"
-#include "pangoclutter.h"
+
+#include "cogl-pango.h"
 
 #define DEFAULT_FONT_NAME	"Sans 10"
 #define ENTRY_CURSOR_WIDTH      1
@@ -309,7 +310,7 @@ clutter_entry_ensure_layout (ClutterEntry *entry, gint width)
 	pango_layout_set_width (priv->layout, -1);
 
       /* Prime the cache for the layout */
-      pango_clutter_ensure_glyph_cache_for_layout (priv->layout);
+      cogl_pango_ensure_glyph_cache_for_layout (priv->layout);
     }
 }
 
@@ -434,7 +435,7 @@ clutter_entry_paint (ClutterActor *self)
   gint                  width, actor_width;
   gint                  text_width;
   gint                  cursor_x;
-  ClutterColor          color = { 0, };
+  CoglColor             color;
 
   entry  = CLUTTER_ENTRY(self);
   priv   = entry->priv;
@@ -504,12 +505,15 @@ clutter_entry_paint (ClutterActor *self)
       priv->cursor_pos.x += priv->text_x + priv->entry_padding;
     }
 
-  memcpy (&color, &priv->fgcol, sizeof (ClutterColor));
-  color.alpha = clutter_actor_get_paint_opacity (self);
+  cogl_color_set_from_4ub (&color,
+                           priv->fgcol.red,
+                           priv->fgcol.green,
+                           priv->fgcol.blue,
+                           clutter_actor_get_paint_opacity (self));
 
-  pango_clutter_render_layout (priv->layout,
-                               priv->text_x + priv->entry_padding, 0,
-                               &color, 0);
+  cogl_pango_render_layout (priv->layout,
+                            priv->text_x + priv->entry_padding, 0,
+                            &color, 0);
 
   if (CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor)
     CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor (entry);

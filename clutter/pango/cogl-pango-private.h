@@ -18,26 +18,21 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _HAVE_PANGO_CLUTTER_PRIVATE_H
-#define _HAVE_PANGO_CLUTTER_PRIVATE_H
+#ifndef __COGL_PANGO_PRIVATE_H__
+#define __COGL_PANGO_PRIVATE_H__
 
-#include "pangoclutter.h"
+#include "cogl-pango.h"
 
 G_BEGIN_DECLS
 
-PangoRenderer *_pango_clutter_font_map_get_renderer       (PangoClutterFontMap  *fm);
-
-void           _pango_clutter_renderer_clear_glyph_cache  (PangoClutterRenderer *renderer);
-
-void           _pango_clutter_renderer_set_use_mipmapping (PangoClutterRenderer *renderer,
-                                                           gboolean              value);
-gboolean       _pango_clutter_renderer_get_use_mipmapping (PangoClutterRenderer *renderer);
+void           _cogl_pango_renderer_clear_glyph_cache  (CoglPangoRenderer *renderer);
+void           _cogl_pango_renderer_set_use_mipmapping (CoglPangoRenderer *renderer,
+                                                        gboolean           value);
+gboolean       _cogl_pango_renderer_get_use_mipmapping (CoglPangoRenderer *renderer);
 
 G_END_DECLS
 
-#endif /* _HAVE_PANGO_CLUTTER_H */
+#endif /* __COGL_PANGO_PRIVATE_H__ */

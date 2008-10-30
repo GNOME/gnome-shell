@@ -189,14 +189,14 @@ source_h_priv = \
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
   $(CLUTTER_LIBS) \
-  $(top_builddir)/clutter/pango/libpangoclutter.la \
+  $(top_builddir)/clutter/pango/libcoglpango.la \
   $(top_builddir)/clutter/$(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
   $(top_builddir)/clutter/cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
   $(clutter_json_libadd) \
   $(backendextralib)
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_DEPENDENCIES = \
-  pango/libpangoclutter.la \
+  pango/libcoglpango.la \
   $(CLUTTER_FLAVOUR)/libclutter-$(CLUTTER_FLAVOUR).la \
   cogl/$(CLUTTER_COGL)/libclutter-cogl.la \
   $(clutter_json_dep) \

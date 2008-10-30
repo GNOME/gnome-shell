@@ -30,6 +30,7 @@
 
 #include <clutter/clutter-actor.h>
 #include <clutter/clutter-stage.h>
+#include <pango/pango.h>
 
 G_BEGIN_DECLS
 
@@ -164,6 +165,7 @@ void             clutter_grab_pointer_for_device     (ClutterActor  *actor,
 
 void             clutter_ungrab_pointer_for_device   (gint id);
 
+PangoFontMap *   clutter_get_font_map                (void);
 
 G_END_DECLS
 

@@ -18,9 +18,7 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -37,21 +35,21 @@
 #include <pango/pangocairo.h>
 #include <pango/pango-renderer.h>
 
-#include "pangoclutter.h"
-#include "pangoclutter-private.h"
+#include "cogl-pango.h"
+#include "cogl-pango-private.h"
 
-static GQuark pango_clutter_font_map_get_renderer_key (void) G_GNUC_CONST;
+static GQuark cogl_pango_font_map_get_renderer_key (void) G_GNUC_CONST;
 
 PangoFontMap *
-pango_clutter_font_map_new (void)
+cogl_pango_font_map_new (void)
 {
   return pango_cairo_font_map_new ();
 }
 
 PangoContext *
-pango_clutter_font_map_create_context (PangoClutterFontMap *fm)
+cogl_pango_font_map_create_context (CoglPangoFontMap *fm)
 {
-  g_return_val_if_fail (PANGO_CLUTTER_IS_FONT_MAP (fm), NULL);
+  g_return_val_if_fail (COGL_PANGO_IS_FONT_MAP (fm), NULL);
 
   /* We can just directly use the pango context from the Cairo font
      map */
@@ -59,22 +57,24 @@ pango_clutter_font_map_create_context (PangoClutterFontMap *fm)
 }
 
 PangoRenderer *
-_pango_clutter_font_map_get_renderer (PangoClutterFontMap *fm)
+cogl_pango_font_map_get_renderer (CoglPangoFontMap *fm)
 {
   PangoRenderer *renderer;
+
+  g_return_val_if_fail (COGL_PANGO_IS_FONT_MAP (fm), NULL);
 
   /* We want to keep a cached pointer to the renderer from the font
      map instance but as we don't have a proper subclass we have to
      store it in the object data instead */
 
   renderer = g_object_get_qdata (G_OBJECT (fm),
-				 pango_clutter_font_map_get_renderer_key ());
+				 cogl_pango_font_map_get_renderer_key ());
 
   if (G_UNLIKELY (renderer == NULL))
     {
-      renderer = g_object_new (PANGO_CLUTTER_TYPE_RENDERER, NULL);
+      renderer = g_object_new (COGL_PANGO_TYPE_RENDERER, NULL);
       g_object_set_qdata_full (G_OBJECT (fm),
-			       pango_clutter_font_map_get_renderer_key (),
+			       cogl_pango_font_map_get_renderer_key (),
 			       renderer,
 			       g_object_unref);
     }
@@ -83,52 +83,52 @@ _pango_clutter_font_map_get_renderer (PangoClutterFontMap *fm)
 }
 
 void
-pango_clutter_font_map_set_resolution (PangoClutterFontMap *font_map,
-				       double               dpi)
+cogl_pango_font_map_set_resolution (CoglPangoFontMap *font_map,
+				    double            dpi)
 {
-  g_return_if_fail (PANGO_CLUTTER_IS_FONT_MAP (font_map));
+  g_return_if_fail (COGL_PANGO_IS_FONT_MAP (font_map));
 
   pango_cairo_font_map_set_resolution (PANGO_CAIRO_FONT_MAP (font_map), dpi);
 }
 
 void
-pango_clutter_font_map_clear_glyph_cache (PangoClutterFontMap *fm)
+cogl_pango_font_map_clear_glyph_cache (CoglPangoFontMap *fm)
 {
   PangoRenderer *renderer;
 
-  renderer = _pango_clutter_font_map_get_renderer (fm);
+  renderer = cogl_pango_font_map_get_renderer (fm);
 
-  _pango_clutter_renderer_clear_glyph_cache (PANGO_CLUTTER_RENDERER (renderer));
+  _cogl_pango_renderer_clear_glyph_cache (COGL_PANGO_RENDERER (renderer));
 }
 
 void
-pango_clutter_font_map_set_use_mipmapping (PangoClutterFontMap *fm,
-					   gboolean             value)
+cogl_pango_font_map_set_use_mipmapping (CoglPangoFontMap *fm,
+                                        gboolean          value)
 {
-  PangoClutterRenderer *renderer;
+  CoglPangoRenderer *renderer;
 
-  renderer = PANGO_CLUTTER_RENDERER (_pango_clutter_font_map_get_renderer (fm));
+  renderer = COGL_PANGO_RENDERER (cogl_pango_font_map_get_renderer (fm));
 
-  _pango_clutter_renderer_set_use_mipmapping (renderer, value);
+  _cogl_pango_renderer_set_use_mipmapping (renderer, value);
 }
 
 gboolean
-pango_clutter_font_map_get_use_mipmapping (PangoClutterFontMap *fm)
+cogl_pango_font_map_get_use_mipmapping (CoglPangoFontMap *fm)
 {
-  PangoClutterRenderer *renderer;
+  CoglPangoRenderer *renderer;
 
-  renderer = PANGO_CLUTTER_RENDERER (_pango_clutter_font_map_get_renderer (fm));
+  renderer = COGL_PANGO_RENDERER (cogl_pango_font_map_get_renderer (fm));
 
-  return _pango_clutter_renderer_get_use_mipmapping (renderer);
+  return _cogl_pango_renderer_get_use_mipmapping (renderer);
 }
 
 static GQuark
-pango_clutter_font_map_get_renderer_key (void)
+cogl_pango_font_map_get_renderer_key (void)
 {
   static GQuark renderer_key = 0;
 
   if (G_UNLIKELY (renderer_key == 0))
-      renderer_key = g_quark_from_static_string ("PangoClutterFontMap");
+      renderer_key = g_quark_from_static_string ("CoglPangoFontMap");
 
   return renderer_key;
 }
