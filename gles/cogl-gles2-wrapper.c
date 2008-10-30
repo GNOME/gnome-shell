@@ -118,7 +118,7 @@ cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper)
   /* Initialize the fogging options */
   cogl_wrap_glDisable (GL_FOG);
   cogl_wrap_glFogx (GL_FOG_MODE, GL_LINEAR);
-  cogl_wrap_glFogx (GL_FOG_DENSITY, CFX_ONE);
+  cogl_wrap_glFogx (GL_FOG_DENSITY, COGL_FIXED_1);
   cogl_wrap_glFogx (GL_FOG_START, 0);
   cogl_wrap_glFogx (GL_FOG_END, 1);
   cogl_wrap_glFogxv (GL_FOG_COLOR, default_fog_color);
@@ -506,10 +506,10 @@ cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper, GLenum matrix_num)
 void
 cogl_wrap_glClearColorx (GLclampx r, GLclampx g, GLclampx b, GLclampx a)
 {
-  glClearColor (CLUTTER_FIXED_TO_FLOAT (r),
-		CLUTTER_FIXED_TO_FLOAT (g),
-		CLUTTER_FIXED_TO_FLOAT (b),
-		CLUTTER_FIXED_TO_FLOAT (a));
+  glClearColor (COGL_FIXED_TO_FLOAT (r),
+		COGL_FIXED_TO_FLOAT (g),
+		COGL_FIXED_TO_FLOAT (b),
+		COGL_FIXED_TO_FLOAT (a));
 }
 
 void
@@ -661,7 +661,7 @@ cogl_wrap_glMultMatrixx (const GLfixed *m)
   int i;
 
   for (i = 0; i < 16; i++)
-    new_matrix[i] = CLUTTER_FIXED_TO_FLOAT (m[i]);
+    new_matrix[i] = COGL_FIXED_TO_FLOAT (m[i]);
 
   cogl_wrap_glMultMatrix (new_matrix);
 }
@@ -672,21 +672,21 @@ cogl_wrap_glFrustumx (GLfixed left, GLfixed right,
 		      GLfixed z_near, GLfixed z_far)
 {
   float matrix[16];
-  float two_near = CLUTTER_FIXED_TO_FLOAT (2 * z_near);
+  float two_near = COGL_FIXED_TO_FLOAT (2 * z_near);
 
   memset (matrix, 0, sizeof (matrix));
 
-  matrix[0] = two_near / CLUTTER_FIXED_TO_FLOAT (right - left);
-  matrix[5] = two_near / CLUTTER_FIXED_TO_FLOAT (top - bottom);
-  matrix[8] = CLUTTER_FIXED_TO_FLOAT (right + left)
-    / CLUTTER_FIXED_TO_FLOAT (right - left);
-  matrix[9] = CLUTTER_FIXED_TO_FLOAT (top + bottom)
-    / CLUTTER_FIXED_TO_FLOAT (top - bottom);
-  matrix[10] = -CLUTTER_FIXED_TO_FLOAT (z_far + z_near)
-    / CLUTTER_FIXED_TO_FLOAT (z_far - z_near);
+  matrix[0] = two_near / COGL_FIXED_TO_FLOAT (right - left);
+  matrix[5] = two_near / COGL_FIXED_TO_FLOAT (top - bottom);
+  matrix[8] = COGL_FIXED_TO_FLOAT (right + left)
+    / COGL_FIXED_TO_FLOAT (right - left);
+  matrix[9] = COGL_FIXED_TO_FLOAT (top + bottom)
+    / COGL_FIXED_TO_FLOAT (top - bottom);
+  matrix[10] = -COGL_FIXED_TO_FLOAT (z_far + z_near)
+    / COGL_FIXED_TO_FLOAT (z_far - z_near);
   matrix[11] = -1.0f;
-  matrix[14] = -two_near * CLUTTER_FIXED_TO_FLOAT (z_far)
-    / CLUTTER_FIXED_TO_FLOAT (z_far - z_near);
+  matrix[14] = -two_near * COGL_FIXED_TO_FLOAT (z_far)
+    / COGL_FIXED_TO_FLOAT (z_far - z_near);
 
   cogl_wrap_glMultMatrix (matrix);
 }
@@ -697,9 +697,9 @@ cogl_wrap_glScalex (GLfixed x, GLfixed y, GLfixed z)
   float matrix[16];
 
   memset (matrix, 0, sizeof (matrix));
-  matrix[0] = CLUTTER_FIXED_TO_FLOAT (x);
-  matrix[5] = CLUTTER_FIXED_TO_FLOAT (y);
-  matrix[10] = CLUTTER_FIXED_TO_FLOAT (z);
+  matrix[0] = COGL_FIXED_TO_FLOAT (x);
+  matrix[5] = COGL_FIXED_TO_FLOAT (y);
+  matrix[10] = COGL_FIXED_TO_FLOAT (z);
   matrix[15] = 1.0f;
 
   cogl_wrap_glMultMatrix (matrix);
@@ -714,9 +714,9 @@ cogl_wrap_glTranslatex (GLfixed x, GLfixed y, GLfixed z)
   matrix[0] = 1.0f;
   matrix[5] = 1.0f;
   matrix[10] = 1.0f;
-  matrix[12] = CLUTTER_FIXED_TO_FLOAT (x);
-  matrix[13] = CLUTTER_FIXED_TO_FLOAT (y);
-  matrix[14] = CLUTTER_FIXED_TO_FLOAT (z);
+  matrix[12] = COGL_FIXED_TO_FLOAT (x);
+  matrix[13] = COGL_FIXED_TO_FLOAT (y);
+  matrix[14] = COGL_FIXED_TO_FLOAT (z);
   matrix[15] = 1.0f;
 
   cogl_wrap_glMultMatrix (matrix);
@@ -726,10 +726,10 @@ void
 cogl_wrap_glRotatex (GLfixed angle, GLfixed x, GLfixed y, GLfixed z)
 {
   float matrix[16];
-  float xf = CLUTTER_FIXED_TO_FLOAT (x);
-  float yf = CLUTTER_FIXED_TO_FLOAT (y);
-  float zf = CLUTTER_FIXED_TO_FLOAT (z);
-  float anglef = CLUTTER_FIXED_TO_FLOAT (angle) * G_PI / 180.0f;
+  float xf = COGL_FIXED_TO_FLOAT (x);
+  float yf = COGL_FIXED_TO_FLOAT (y);
+  float zf = COGL_FIXED_TO_FLOAT (z);
+  float anglef = COGL_FIXED_TO_FLOAT (angle) * G_PI / 180.0f;
   float c = cosf (anglef);
   float s = sinf (anglef);
   
@@ -761,17 +761,17 @@ cogl_wrap_glOrthox (GLfixed left, GLfixed right, GLfixed bottom, GLfixed top,
 		    GLfixed near, GLfixed far)
 {
   float matrix[16];
-  float xrange = CLUTTER_FIXED_TO_FLOAT (right - left);
-  float yrange = CLUTTER_FIXED_TO_FLOAT (top - bottom);
-  float zrange = CLUTTER_FIXED_TO_FLOAT (far - near);
+  float xrange = COGL_FIXED_TO_FLOAT (right - left);
+  float yrange = COGL_FIXED_TO_FLOAT (top - bottom);
+  float zrange = COGL_FIXED_TO_FLOAT (far - near);
 
   memset (matrix, 0, sizeof (matrix));
   matrix[0] = 2.0f / xrange;
   matrix[5] = 2.0f / yrange;
   matrix[10] = 2.0f / zrange;
-  matrix[12] = CLUTTER_FIXED_TO_FLOAT (right + left) / xrange;
-  matrix[13] = CLUTTER_FIXED_TO_FLOAT (top + bottom) / yrange;
-  matrix[14] = CLUTTER_FIXED_TO_FLOAT (far + near) / zrange;
+  matrix[12] = COGL_FIXED_TO_FLOAT (right + left) / xrange;
+  matrix[13] = COGL_FIXED_TO_FLOAT (top + bottom) / yrange;
+  matrix[14] = COGL_FIXED_TO_FLOAT (far + near) / zrange;
   matrix[15] = 1.0f;
 
   cogl_wrap_glMultMatrix (matrix);
@@ -1030,10 +1030,10 @@ void
 cogl_wrap_glColor4x (GLclampx r, GLclampx g, GLclampx b, GLclampx a)
 {
   glVertexAttrib4f (COGL_GLES2_WRAPPER_COLOR_ATTRIB,
-		    CLUTTER_FIXED_TO_FLOAT (r),
-		    CLUTTER_FIXED_TO_FLOAT (g),
-		    CLUTTER_FIXED_TO_FLOAT (b),
-		    CLUTTER_FIXED_TO_FLOAT (a));
+		    COGL_FIXED_TO_FLOAT (r),
+		    COGL_FIXED_TO_FLOAT (g),
+		    COGL_FIXED_TO_FLOAT (b),
+		    COGL_FIXED_TO_FLOAT (a));
 }
 
 void
@@ -1043,11 +1043,12 @@ cogl_wrap_glClipPlanex (GLenum plane, GLfixed *equation)
 }
 
 static void
-cogl_gles2_float_array_to_fixed (int size, const GLfloat *floats,
-				 GLfixed *fixeds)
+cogl_gles2_float_array_to_fixed (int            size,
+                                 const GLfloat *floats,
+				 GLfixed       *fixeds)
 {
   while (size-- > 0)
-    *(fixeds++) = CLUTTER_FLOAT_TO_FIXED (*(floats++));
+    *(fixeds++) = COGL_FIXED_FROM_FLOAT (*(floats++));
 }
 
 void
@@ -1110,17 +1111,17 @@ cogl_wrap_glFogx (GLenum pname, GLfixed param)
       
     case GL_FOG_DENSITY:
       _COGL_GLES2_CHANGE_UNIFORM (w, FOG_DENSITY, fog_density,
-				  CLUTTER_FIXED_TO_FLOAT (param));
+				  COGL_FIXED_TO_FLOAT (param));
       break;
 
     case GL_FOG_START:
       _COGL_GLES2_CHANGE_UNIFORM (w, FOG_START, fog_start,
-				  CLUTTER_FIXED_TO_FLOAT (param));
+				  COGL_FIXED_TO_FLOAT (param));
       break;
 
     case GL_FOG_END:
       _COGL_GLES2_CHANGE_UNIFORM (w, FOG_END, fog_end,
-				  CLUTTER_FIXED_TO_FLOAT (param));
+				  COGL_FIXED_TO_FLOAT (param));
       break;
     }
 }
@@ -1134,7 +1135,8 @@ cogl_wrap_glFogxv (GLenum pname, const GLfixed *params)
   if (pname == GL_FOG_COLOR)
     {
       for (i = 0; i < 4; i++)
-	w->fog_color[i] = CLUTTER_FIXED_TO_FLOAT (params[i]);
+	w->fog_color[i] = COGL_FIXED_TO_FLOAT (params[i]);
+
       w->dirty_uniforms |= COGL_GLES2_DIRTY_FOG_COLOR;
     }
 }

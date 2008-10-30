@@ -55,15 +55,15 @@ struct _CoglSpanIter
   gint              index;
   GArray           *array;
   CoglTexSliceSpan *span;
-  ClutterFixed      pos;
-  ClutterFixed      next_pos;
-  ClutterFixed      origin;
-  ClutterFixed      cover_start;
-  ClutterFixed      cover_end;
-  ClutterFixed      intersect_start;
-  ClutterFixed      intersect_end;
-  ClutterFixed      intersect_start_local;
-  ClutterFixed      intersect_end_local;
+  CoglFixed      pos;
+  CoglFixed      next_pos;
+  CoglFixed      origin;
+  CoglFixed      cover_start;
+  CoglFixed      cover_end;
+  CoglFixed      intersect_start;
+  CoglFixed      intersect_end;
+  CoglFixed      intersect_start_local;
+  CoglFixed      intersect_end_local;
   gboolean          intersects;
 };
 
@@ -108,7 +108,7 @@ _cogl_span_iter_update (CoglSpanIter *iter)
   
   /* Offset next position by span size */
   iter->next_pos = iter->pos +
-    CLUTTER_INT_TO_FIXED (iter->span->size - iter->span->waste);
+    COGL_FIXED_FROM_INT (iter->span->size - iter->span->waste);
   
   /* Check if span intersects the area to cover */
   if (iter->next_pos <= iter->cover_start ||
@@ -137,9 +137,9 @@ _cogl_span_iter_update (CoglSpanIter *iter)
 static void
 _cogl_span_iter_begin (CoglSpanIter  *iter,
 		       GArray        *array,
-		       ClutterFixed   origin,
-		       ClutterFixed   cover_start,
-		       ClutterFixed   cover_end)
+		       CoglFixed   origin,
+		       CoglFixed   cover_start,
+		       CoglFixed   cover_end)
 {
   /* Copy info */
   iter->index = 0;
@@ -342,10 +342,10 @@ _cogl_texture_draw_and_read (CoglTexture  *tex,
                              GLint        *viewport)
 {
   gint               bpp;
-  ClutterFixed       rx1, ry1;
-  ClutterFixed       rx2, ry2;
-  ClutterFixed       tx1, ty1;
-  ClutterFixed       tx2, ty2;
+  CoglFixed       rx1, ry1;
+  CoglFixed       rx2, ry2;
+  CoglFixed       tx1, ty1;
+  CoglFixed       tx2, ty2;
   int                bw,  bh;
   CoglBitmap         rect_bmp;
   CoglHandle         handle;
@@ -366,9 +366,9 @@ _cogl_texture_draw_and_read (CoglTexture  *tex,
       /* Draw the texture image */
       cogl_texture_rectangle (handle,
                               0, 0,
-                              CLUTTER_INT_TO_FIXED (tex->bitmap.width),
-                              CLUTTER_INT_TO_FIXED (tex->bitmap.height),
-                              0, 0, CFX_ONE, CFX_ONE);
+                              COGL_FIXED_FROM_INT (tex->bitmap.width),
+                              COGL_FIXED_FROM_INT (tex->bitmap.height),
+                              0, 0, COGL_FIXED_1, COGL_FIXED_1);
       
       /* Read into target bitmap */
       GE( glPixelStorei (GL_PACK_ALIGNMENT, 1) );
@@ -383,7 +383,7 @@ _cogl_texture_draw_and_read (CoglTexture  *tex,
       ry1 = 0; ry2 = 0;
       ty1 = 0; ty2 = 0;
       
-#define CFIX CLUTTER_INT_TO_FIXED
+#define CFIX COGL_FIXED_FROM_INT
       
       /* Walk Y axis until whole bitmap height consumed */
       for (bh = tex->bitmap.height; bh > 0; bh -= viewport[3])
@@ -394,7 +394,7 @@ _cogl_texture_draw_and_read (CoglTexture  *tex,
           
           /* Normalized texture Y coords */
           ty1 = ty2;
-          ty2 = CFX_QDIV (CFIX (ry2), CFIX (tex->bitmap.height));
+          ty2 = COGL_FIXED_DIV (CFIX (ry2), CFIX (tex->bitmap.height));
           
           rx1 = 0; rx2 = 0;
           tx1 = 0; tx2 = 0;
@@ -408,7 +408,7 @@ _cogl_texture_draw_and_read (CoglTexture  *tex,
               
               /* Normalized texture X coords */
               tx1 = tx2;
-              tx2 = CFX_QDIV (CFIX (rx2), CFIX (tex->bitmap.width));
+              tx2 = COGL_FIXED_DIV (CFIX (rx2), CFIX (tex->bitmap.width));
               
               /* Clear buffer with transparent black, draw with white
 		 for direct copy to framebuffer */
@@ -486,10 +486,10 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   GE( cogl_wrap_glPushMatrix () );
   GE( cogl_wrap_glLoadIdentity () );
   
-  GE( cogl_wrap_glOrthox (0, CLUTTER_INT_TO_FIXED (viewport[2]),
-			  0, CLUTTER_INT_TO_FIXED (viewport[3]),
-			  CLUTTER_INT_TO_FIXED (0),
-			  CLUTTER_INT_TO_FIXED (100)) );
+  GE( cogl_wrap_glOrthox (0, COGL_FIXED_FROM_INT (viewport[2]),
+			  0, COGL_FIXED_FROM_INT (viewport[3]),
+			  COGL_FIXED_FROM_INT (0),
+			  COGL_FIXED_FROM_INT (100)) );
   
   GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
   GE( cogl_wrap_glPushMatrix () );
@@ -608,8 +608,8 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
   /* Iterate vertical spans */
   for (source_y = src_y,
        _cogl_span_iter_begin (&y_iter, tex->slice_y_spans,
-			      0, CLUTTER_INT_TO_FIXED (dst_y),
-			      CLUTTER_INT_TO_FIXED (dst_y + height));
+			      0, COGL_FIXED_FROM_INT (dst_y),
+			      COGL_FIXED_FROM_INT (dst_y + height));
        
        !_cogl_span_iter_end (&y_iter);
        
@@ -629,8 +629,8 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
       /* Iterate horizontal spans */
       for (source_x = src_x,
 	   _cogl_span_iter_begin (&x_iter, tex->slice_x_spans,
-				  0, CLUTTER_INT_TO_FIXED (dst_x),
-				  CLUTTER_INT_TO_FIXED (dst_x + width));
+				  0, COGL_FIXED_FROM_INT (dst_x),
+				  COGL_FIXED_FROM_INT (dst_x + width));
 	   
 	   !_cogl_span_iter_end (&x_iter);
 	   
@@ -648,16 +648,16 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
                                    x_iter.index);
 
 	  /* Pick intersection width and height */
-	  inter_w = CLUTTER_FIXED_TO_INT (x_iter.intersect_end -
-					  x_iter.intersect_start);
-	  inter_h = CLUTTER_FIXED_TO_INT (y_iter.intersect_end -
-					  y_iter.intersect_start);
+	  inter_w = COGL_FIXED_TO_INT (x_iter.intersect_end -
+                                       x_iter.intersect_start);
+	  inter_h = COGL_FIXED_TO_INT (y_iter.intersect_end -
+                                       y_iter.intersect_start);
 	  
 	  /* Localize intersection top-left corner to slice*/
-	  local_x = CLUTTER_FIXED_TO_INT (x_iter.intersect_start -
-					  x_iter.pos);
-	  local_y = CLUTTER_FIXED_TO_INT (y_iter.intersect_start -
-					  y_iter.pos);
+	  local_x = COGL_FIXED_TO_INT (x_iter.intersect_start -
+                                       x_iter.pos);
+	  local_y = COGL_FIXED_TO_INT (y_iter.intersect_start -
+                                       y_iter.pos);
 	  
 	  /* Pick slice GL handle */
 	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint,
@@ -702,7 +702,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
               && local_x + inter_w >= x_span->size - x_span->waste)
             {
               const guchar *src = source_bmp->data
-                + (src_y + CLUTTER_FIXED_TO_INT (y_iter.intersect_start)
+                + (src_y + COGL_FIXED_TO_INT (y_iter.intersect_start)
                    - dst_y) * source_bmp->rowstride
                 + (src_x + x_span->start + x_span->size - x_span->waste
                    - dst_x - 1) * bpp;
@@ -734,7 +734,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
               && local_y + inter_h >= y_span->size - y_span->waste)
             {
               const guchar *src = source_bmp->data
-                + (src_x + CLUTTER_FIXED_TO_INT (x_iter.intersect_start)
+                + (src_x + COGL_FIXED_TO_INT (x_iter.intersect_start)
                    - dst_x) * bpp
                 + (src_y + y_span->start + y_span->size - y_span->waste
                    - dst_y - 1) * source_bmp->rowstride;
@@ -1886,24 +1886,24 @@ cogl_texture_get_data (CoglHandle       handle,
 
 static void
 _cogl_texture_quad_sw (CoglTexture *tex,
-		       ClutterFixed x1,
-		       ClutterFixed y1,
-		       ClutterFixed x2,
-		       ClutterFixed y2,
-		       ClutterFixed tx1,
-		       ClutterFixed ty1,
-		       ClutterFixed tx2,
-		       ClutterFixed ty2)
+		       CoglFixed x1,
+		       CoglFixed y1,
+		       CoglFixed x2,
+		       CoglFixed y2,
+		       CoglFixed tx1,
+		       CoglFixed ty1,
+		       CoglFixed tx2,
+		       CoglFixed ty2)
 {
   CoglSpanIter       iter_x    ,  iter_y;
-  ClutterFixed       tw        ,  th;
-  ClutterFixed       tqx       ,  tqy;
-  ClutterFixed       first_tx  ,  first_ty;
-  ClutterFixed       first_qx  ,  first_qy;
-  ClutterFixed       slice_tx1 ,  slice_ty1;
-  ClutterFixed       slice_tx2 ,  slice_ty2;
-  ClutterFixed       slice_qx1 ,  slice_qy1;
-  ClutterFixed       slice_qx2 ,  slice_qy2;
+  CoglFixed       tw        ,  th;
+  CoglFixed       tqx       ,  tqy;
+  CoglFixed       first_tx  ,  first_ty;
+  CoglFixed       first_qx  ,  first_qy;
+  CoglFixed       slice_tx1 ,  slice_ty1;
+  CoglFixed       slice_tx2 ,  slice_ty2;
+  CoglFixed       slice_qx1 ,  slice_qy1;
+  CoglFixed       slice_qx2 ,  slice_qy2;
   GLfixed            tex_coords[8];
   GLfixed            quad_coords[8];
   GLuint             gl_handle;
@@ -1933,27 +1933,27 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   GE( cogl_wrap_glVertexPointer   (2, GL_FIXED, 0, quad_coords) );
   
   /* Scale ratio from texture to quad widths */
-  tw = CLUTTER_INT_TO_FIXED (tex->bitmap.width);
-  th = CLUTTER_INT_TO_FIXED (tex->bitmap.height);
+  tw = COGL_FIXED_FROM_INT (tex->bitmap.width);
+  th = COGL_FIXED_FROM_INT (tex->bitmap.height);
   
-  tqx = CFX_QDIV (x2-x1, CFX_QMUL (tw, (tx2 - tx1)));
-  tqy = CFX_QDIV (y2-y1, CFX_QMUL (th, (ty2 - ty1)));
+  tqx = COGL_FIXED_DIV (x2-x1, COGL_FIXED_MUL (tw, (tx2 - tx1)));
+  tqy = COGL_FIXED_DIV (y2-y1, COGL_FIXED_MUL (th, (ty2 - ty1)));
 
   /* Integral texture coordinate for first tile */
-  first_tx = CLUTTER_INT_TO_FIXED (CLUTTER_FIXED_FLOOR (tx1));
-  first_ty = CLUTTER_INT_TO_FIXED (CLUTTER_FIXED_FLOOR (ty1));
+  first_tx = COGL_FIXED_FROM_INT (COGL_FIXED_FLOOR (tx1));
+  first_ty = COGL_FIXED_FROM_INT (COGL_FIXED_FLOOR (ty1));
   
   /* Denormalize texture coordinates */
-  first_tx = CFX_QMUL (first_tx, tw);
-  first_ty = CFX_QMUL (first_ty, th);
-  tx1 = CFX_QMUL (tx1, tw);
-  ty1 = CFX_QMUL (ty1, th);
-  tx2 = CFX_QMUL (tx2, tw);
-  ty2 = CFX_QMUL (ty2, th);
+  first_tx = COGL_FIXED_MUL (first_tx, tw);
+  first_ty = COGL_FIXED_MUL (first_ty, th);
+  tx1 = COGL_FIXED_MUL (tx1, tw);
+  ty1 = COGL_FIXED_MUL (ty1, th);
+  tx2 = COGL_FIXED_MUL (tx2, tw);
+  ty2 = COGL_FIXED_MUL (ty2, th);
 
   /* Quad coordinate of the first tile */
-  first_qx = x1 - CFX_QMUL (tx1 - first_tx, tqx);
-  first_qy = y1 - CFX_QMUL (ty1 - first_ty, tqy);
+  first_qx = x1 - COGL_FIXED_MUL (tx1 - first_tx, tqx);
+  first_qy = y1 - COGL_FIXED_MUL (ty1 - first_ty, tqy);
   
   
   /* Iterate until whole quad height covered */
@@ -1967,10 +1967,10 @@ _cogl_texture_quad_sw (CoglTexture *tex,
       
       /* Span-quad intersection in quad coordinates */
       slice_qy1 = first_qy +
-	CFX_QMUL (iter_y.intersect_start - first_ty, tqy);
+	COGL_FIXED_MUL (iter_y.intersect_start - first_ty, tqy);
       
       slice_qy2 = first_qy +
-	CFX_QMUL (iter_y.intersect_end - first_ty, tqy);
+	COGL_FIXED_MUL (iter_y.intersect_end - first_ty, tqy);
       
       /* Localize slice texture coordinates */
       slice_ty1 = iter_y.intersect_start - iter_y.pos;
@@ -1992,10 +1992,10 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 	  
 	  /* Span-quad intersection in quad coordinates */
 	  slice_qx1 = first_qx +
-	    CFX_QMUL (iter_x.intersect_start - first_tx, tqx);
+	    COGL_FIXED_MUL (iter_x.intersect_start - first_tx, tqx);
 	  
 	  slice_qx2 = first_qx +
-	    CFX_QMUL (iter_x.intersect_end - first_tx, tqx);
+	    COGL_FIXED_MUL (iter_x.intersect_end - first_tx, tqx);
 	  
 	  /* Localize slice texture coordinates */
 	  slice_tx1 = iter_x.intersect_start - iter_x.pos;
@@ -2007,14 +2007,14 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 	  
 #if COGL_DEBUG
 	  printf("~~~~~ slice (%d,%d)\n", iter_x.index, iter_y.index);
-	  printf("qx1: %f\n", CLUTTER_FIXED_TO_FLOAT (slice_qx1));
-	  printf("qy1: %f\n", CLUTTER_FIXED_TO_FLOAT (slice_qy1));
-	  printf("qx2: %f\n", CLUTTER_FIXED_TO_FLOAT (slice_qx2));
-	  printf("qy2: %f\n", CLUTTER_FIXED_TO_FLOAT (slice_qy2));
-	  printf("tx1: %f\n", CLUTTER_FIXED_TO_FLOAT (slice_tx1));
-	  printf("ty1: %f\n", CLUTTER_FIXED_TO_FLOAT (slice_ty1));
-	  printf("tx2: %f\n", CLUTTER_FIXED_TO_FLOAT (slice_tx2));
-	  printf("ty2: %f\n", CLUTTER_FIXED_TO_FLOAT (slice_ty2));
+	  printf("qx1: %f\n", COGL_FIXED_TO_FLOAT (slice_qx1));
+	  printf("qy1: %f\n", COGL_FIXED_TO_FLOAT (slice_qy1));
+	  printf("qx2: %f\n", COGL_FIXED_TO_FLOAT (slice_qx2));
+	  printf("qy2: %f\n", COGL_FIXED_TO_FLOAT (slice_qy2));
+	  printf("tx1: %f\n", COGL_FIXED_TO_FLOAT (slice_tx1));
+	  printf("ty1: %f\n", COGL_FIXED_TO_FLOAT (slice_ty1));
+	  printf("tx2: %f\n", COGL_FIXED_TO_FLOAT (slice_tx2));
+	  printf("ty2: %f\n", COGL_FIXED_TO_FLOAT (slice_ty2));
 #endif
 	  
 	  /* Pick and bind opengl texture object */
@@ -2043,14 +2043,14 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 
 static void
 _cogl_texture_quad_hw (CoglTexture *tex,
-		       ClutterFixed x1,
-		       ClutterFixed y1,
-		       ClutterFixed x2,
-		       ClutterFixed y2,
-		       ClutterFixed tx1,
-		       ClutterFixed ty1,
-		       ClutterFixed tx2,
-		       ClutterFixed ty2)
+		       CoglFixed x1,
+		       CoglFixed y1,
+		       CoglFixed x2,
+		       CoglFixed y2,
+		       CoglFixed tx1,
+		       CoglFixed ty1,
+		       CoglFixed tx2,
+		       CoglFixed ty2)
 {
   GLfixed           tex_coords[8];
   GLfixed           quad_coords[8];
@@ -2111,17 +2111,17 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 
 void
 cogl_texture_rectangle (CoglHandle   handle,
-			ClutterFixed x1,
-			ClutterFixed y1,
-			ClutterFixed x2,
-			ClutterFixed y2,
-			ClutterFixed tx1,
-			ClutterFixed ty1,
-			ClutterFixed tx2,
-			ClutterFixed ty2)
+			CoglFixed x1,
+			CoglFixed y1,
+			CoglFixed x2,
+			CoglFixed y2,
+			CoglFixed tx1,
+			CoglFixed ty1,
+			CoglFixed tx2,
+			CoglFixed ty2)
 {
   CoglTexture       *tex;
-  ClutterFixed       tempx;
+  CoglFixed       tempx;
   
   /* Check if valid texture */
   if (!cogl_is_texture (handle))
@@ -2170,9 +2170,9 @@ cogl_texture_rectangle (CoglHandle   handle,
     }
   
   /* Tile textured quads */
-  if (tex->slice_gl_handles->len == 1
-      && tx1 >= -CFX_ONE && tx2 <= CFX_ONE
-      && ty1 >= -CFX_ONE && ty2 <= CFX_ONE)
+  if (tex->slice_gl_handles->len == 1 &&
+      tx1 >= -COGL_FIXED_1 && tx2 <= COGL_FIXED_1 &&
+      ty1 >= -COGL_FIXED_1 && ty2 <= COGL_FIXED_1)
     {
       _cogl_texture_quad_hw (tex, x1,y1, x2,y2, tx1,ty1, tx2,ty2);
     }

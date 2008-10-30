@@ -64,10 +64,10 @@ _cogl_rectangle (gint x,
 
 
 void
-_cogl_rectanglex (ClutterFixed x,
-                  ClutterFixed y,
-                  ClutterFixed width,
-                  ClutterFixed height)
+_cogl_rectanglex (CoglFixed x,
+                  CoglFixed y,
+                  CoglFixed width,
+                  CoglFixed height)
 {
   GLfixed rect_verts[8] = {
     x,         y,
@@ -102,8 +102,8 @@ _cogl_path_clear_nodes ()
 }
 
 void
-_cogl_path_add_node (ClutterFixed x,
-		     ClutterFixed y)
+_cogl_path_add_node (CoglFixed x,
+		     CoglFixed y)
 {
   CoglFixedVec2   *new_nodes = NULL;
   
@@ -168,10 +168,10 @@ _cogl_path_fill_nodes ()
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  bounds_x = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.x);
-  bounds_y = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.y);
-  bounds_w = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.x - ctx->path_nodes_min.x);
-  bounds_h = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.y - ctx->path_nodes_min.y);
+  bounds_x = COGL_FIXED_FLOOR (ctx->path_nodes_min.x);
+  bounds_y = COGL_FIXED_FLOOR (ctx->path_nodes_min.y);
+  bounds_w = COGL_FIXED_CEIL (ctx->path_nodes_max.x - ctx->path_nodes_min.x);
+  bounds_h = COGL_FIXED_CEIL (ctx->path_nodes_max.y - ctx->path_nodes_min.y);
 
   if (cogl_features_available (COGL_FEATURE_STENCIL_BUFFER))
     {
@@ -223,14 +223,14 @@ _cogl_path_fill_nodes ()
       for (i=0; i < bounds_h; i++) 
 	scanlines[i]=NULL;
 
-      first_x = prev_x = CLUTTER_FIXED_TO_INT (ctx->path_nodes[0].x);
-      first_y = prev_y = CLUTTER_FIXED_TO_INT (ctx->path_nodes[0].y);
+      first_x = prev_x = COGL_FIXED_TO_INT (ctx->path_nodes[0].x);
+      first_y = prev_y = COGL_FIXED_TO_INT (ctx->path_nodes[0].y);
 
       /* create scanline intersection list */
       for (i=1; i<ctx->path_nodes_size; i++)
 	{
-	  gint dest_x = CLUTTER_FIXED_TO_INT (ctx->path_nodes[i].x);
-	  gint dest_y = CLUTTER_FIXED_TO_INT (ctx->path_nodes[i].y);
+	  gint dest_x = COGL_FIXED_TO_INT (ctx->path_nodes[i].x);
+	  gint dest_y = COGL_FIXED_TO_INT (ctx->path_nodes[i].y);
 	  gint ydir;
 	  gint dx;
 	  gint dy;
@@ -326,10 +326,10 @@ _cogl_path_fill_nodes ()
 		if (!next)
 		  break;
 
-		x0 = CLUTTER_INT_TO_FIXED (GPOINTER_TO_INT (iter->data));
-		x1 = CLUTTER_INT_TO_FIXED (GPOINTER_TO_INT (next->data));
-		y0 = CLUTTER_INT_TO_FIXED (bounds_y + i);
-		y1 = CLUTTER_INT_TO_FIXED (bounds_y + i + 1) + 2048;
+		x0 = COGL_FIXED_FROM_INT (GPOINTER_TO_INT (iter->data));
+		x1 = COGL_FIXED_FROM_INT (GPOINTER_TO_INT (next->data));
+		y0 = COGL_FIXED_FROM_INT (bounds_y + i);
+		y1 = COGL_FIXED_FROM_INT (bounds_y + i + 1) + 2048;
 		/* render scanlines 1.0625 high to avoid gaps when
 		   transformed */
 
