@@ -26,4 +26,5 @@ libclutter_cogl_common_la_SOURCES = 	\
 	cogl-bitmap-pixbuf.c 		\
 	cogl-clip-stack.h 		\
 	cogl-clip-stack.c               \
-        cogl-fixed.c
+        cogl-fixed.c                    \
+        cogl-color.c

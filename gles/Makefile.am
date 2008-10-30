@@ -2,6 +2,7 @@ libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/cogl
 libclutterinclude_HEADERS = \
         $(top_builddir)/clutter/cogl/cogl.h \
         $(top_builddir)/clutter/cogl/cogl-defines-gles.h \
+        $(top_builddir)/clutter/cogl/cogl-color.h \
         $(top_builddir)/clutter/cogl/cogl-fixed.h
 
 INCLUDES = \
@@ -23,6 +24,7 @@ noinst_LTLIBRARIES = libclutter-cogl.la
 libclutter_cogl_la_SOURCES = \
 	$(top_builddir)/clutter/cogl/cogl.h \
 	$(top_builddir)/clutter/cogl/cogl-defines-gles.h \
+        $(top_builddir)/clutter/cogl/cogl-color.h \
         $(top_builddir)/clutter/cogl/cogl-fixed.h \
 	cogl-internal.h \
 	cogl-texture.h \

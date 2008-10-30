@@ -86,16 +86,16 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 }
 
 void
-cogl_paint_init (const ClutterColor *color)
+cogl_paint_init (const CoglColor *color)
 {
 #if COGL_DEBUG
   fprintf(stderr, "\n ============== Paint Start ================ \n");
 #endif
 
-  cogl_wrap_glClearColorx ((color->red << 16) / 0xff, 
-			   (color->green << 16) / 0xff,
-			   (color->blue << 16) / 0xff, 
-			   0xff);
+  cogl_wrap_glClearColorx (cogl_color_get_red (color),
+			   cogl_color_get_green (color),
+			   cogl_color_get_blue (color),
+			   0);
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   cogl_wrap_glDisable (GL_LIGHTING);
@@ -291,7 +291,7 @@ cogl_enable_backface_culling (gboolean setting)
 }
 
 void
-cogl_color (const ClutterColor *color)
+cogl_color (const CoglColor *color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -315,14 +315,14 @@ cogl_color (const ClutterColor *color)
 
 #else
   /* conversion can cause issues with picking on some gles implementations */
-  GE( cogl_wrap_glColor4x ((color->red << 16) / 0xff,  
-			   (color->green << 16) / 0xff,  
-			   (color->blue << 16) / 0xff,   
-			   (color->alpha << 16) / 0xff));
+  GE( cogl_wrap_glColor4x (cogl_color_get_red (color),
+                           cogl_color_get_green (color),
+                           cogl_color_get_blue (color),
+                           cogl_color_get_alpha (color)) );
 #endif
   
   /* Store alpha for proper blending enables */
-  ctx->color_alpha = color->alpha;
+  ctx->color_alpha = cogl_color_get_alpha_byte (color);
 }
 
 static void
@@ -898,17 +898,17 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 }
 
 void
-cogl_fog_set (const ClutterColor *fog_color,
+cogl_fog_set (const CoglColor *fog_color,
               CoglFixed        density,
               CoglFixed        z_near,
               CoglFixed        z_far)
 {
   GLfixed fogColor[4];
 
-  fogColor[0] = (fog_color->red   << 16) / 0xff;
-  fogColor[1] = (fog_color->green << 16) / 0xff;
-  fogColor[2] = (fog_color->blue  << 16) / 0xff;
-  fogColor[3] = (fog_color->alpha << 16) / 0xff;
+  fogColor[0] = cogl_color_get_red (fog_color);
+  fogColor[1] = cogl_color_get_green (fog_color);
+  fogColor[2] = cogl_color_get_blue (fog_color);
+  fogColor[3] = cogl_color_get_alpha (fog_color);
 
   cogl_wrap_glEnable (GL_FOG);
 

@@ -169,12 +169,12 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 }
 
 void
-cogl_paint_init (const ClutterColor *color)
+cogl_paint_init (const CoglColor *color)
 {
-  GE( glClearColor (((float) color->red / 0xff * 1.0),
-		    ((float) color->green / 0xff * 1.0),
-		    ((float) color->blue / 0xff * 1.0),
-		    0.0) );
+  GE( glClearColor (cogl_color_get_red_float (color),
+                    cogl_color_get_green_float (color),
+                    cogl_color_get_blue_float (color),
+                    0.0) );
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   glDisable (GL_LIGHTING);
@@ -380,17 +380,17 @@ cogl_enable_backface_culling (gboolean setting)
 }
 
 void
-cogl_color (const ClutterColor *color)
+cogl_color (const CoglColor *color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  glColor4ub (color->red,
-	      color->green,
-	      color->blue,
-	      color->alpha);
+  glColor4f (cogl_color_get_red_float (color),
+	     cogl_color_get_green_float (color),
+	     cogl_color_get_blue_float (color),
+	     cogl_color_get_alpha_float (color));
   
   /* Store alpha for proper blending enables */
-  ctx->color_alpha = color->alpha;
+  ctx->color_alpha = cogl_color_get_alpha_byte (color);
 }
 
 static void
@@ -1242,17 +1242,17 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 }
 
 void
-cogl_fog_set (const ClutterColor *fog_color,
+cogl_fog_set (const CoglColor *fog_color,
               CoglFixed        density,
               CoglFixed        start,
               CoglFixed        stop)
 {
   GLfloat fogColor[4];
 
-  fogColor[0] = ((float) fog_color->red   / 0xff * 1.0);
-  fogColor[1] = ((float) fog_color->green / 0xff * 1.0);
-  fogColor[2] = ((float) fog_color->blue  / 0xff * 1.0);
-  fogColor[3] = ((float) fog_color->alpha / 0xff * 1.0);
+  fogColor[0] = cogl_color_get_red_float (fog_color);
+  fogColor[1] = cogl_color_get_green_float (fog_color);
+  fogColor[2] = cogl_color_get_blue_float (fog_color);
+  fogColor[3] = cogl_color_get_alpha_float (fog_color);
 
   glEnable (GL_FOG);
 

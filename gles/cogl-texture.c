@@ -336,10 +336,10 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
 }
 
 static void
-_cogl_texture_draw_and_read (CoglTexture  *tex,
-                             CoglBitmap   *target_bmp,
-                             ClutterColor *back_color,
-                             GLint        *viewport)
+_cogl_texture_draw_and_read (CoglTexture *tex,
+                             CoglBitmap  *target_bmp,
+                             CoglColor   *back_color,
+                             GLint       *viewport)
 {
   gint               bpp;
   CoglFixed       rx1, ry1;
@@ -460,15 +460,17 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
 				GLuint       target_gl_format,
 				GLuint       target_gl_type)
 {
-  gint               bpp;
-  GLint              viewport[4];
-  ClutterColor       cwhite = {0xFF, 0xFF, 0xFF, 0xFF};
-  CoglBitmap         alpha_bmp;
-  COGLenum           old_src_factor;
-  COGLenum           old_dst_factor;
-  
+  gint       bpp;
+  GLint      viewport[4];
+  CoglColor  cwhite;
+  CoglBitmap alpha_bmp;
+  COGLenum   old_src_factor;
+  COGLenum   old_dst_factor;
+
   _COGL_GET_CONTEXT (ctx, FALSE);
-  
+
+  cogl_color_set_from_4ub (&cwhite, 0xff, 0xff, 0xff, 0xff);
+
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
   
   /* Viewport needs to have some size and be inside the window for this */
