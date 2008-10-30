@@ -1,5 +1,16 @@
 2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/cogl/cogl-color.h:
+	* clutter/cogl/cogl-fixed.h:
+	* clutter/cogl/cogl-offscreen.h:
+	* clutter/cogl/cogl-path.h:
+	* clutter/cogl/cogl-shader.h:
+	* clutter/cogl/cogl-texture.h:
+	* clutter/cogl/cogl-types.h: Add copyright and licensing
+	notice to the newly added files.
+
+2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1219 - Clean up cogl.h
 
 	* clutter/cogl/cogl.h.in:
