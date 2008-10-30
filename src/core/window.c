@@ -2348,33 +2348,6 @@ meta_window_hide (MetaWindow *window)
       meta_window_update_layer (window);
       meta_window_lower (window);
       meta_stack_thaw (window->screen->stack);
-
-      /*
-       * The X server does not implement lower-below semantics for restacking
-       * windows, only raise-above; consequently each single lower-bottom call
-       * gets translated to a bunch of raise-above moves, and often there will
-       * be no ConfigureNotify at all for the window we are lowering (only for
-       * its siblings). If we mix the lower-bottom sequence of calls with
-       * mapping of windows, the batch of ConfigureNotify events that is
-       * generated does not correctly reflect the stack order, and if the
-       * Compositor relies on these for its own internal stack, it will
-       * invariably end up with wrong stacking order.
-       *
-       * I have not been able to find a way to get this just work so that the
-       * resulting ConfigureNotify messages would reflect the actual state of
-       * the stack, so in the special case we map a window while hiding it, we
-       * explitely notify the compositor that it should ensure its stacking
-       * matches the cannonical stack of the WM.
-       *
-       * NB: this is uncommon, and generally only happens on the WM start up,
-       *     when we are taking over pre-existing windows, so this brute-force
-       *     fix is OK performance wise.
-       */
-      if (!was_mapped && window->display->compositor)
-        {
-          meta_compositor_ensure_stack_order (window->display->compositor,
-                                              window->screen);
-        }
     }
   else
     {

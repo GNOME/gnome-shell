@@ -772,17 +772,6 @@ meta_screen_manage_all_windows (MetaScreen *screen)
     }
   meta_stack_thaw (screen->stack);
 
-  /*
-   * Because the windows have already been created/mapped/etc, if the compositor
-   * maintains a separate stack based on ConfigureNotify restack messages, it
-   * will not necessarily get what it needs; we explicitely notify the
-   * compositor to fix up its stacking order.
-   *
-   * For more on this issue, see comments in meta_window_hide().
-   */
-  if (screen->display->compositor)
-    meta_compositor_ensure_stack_order (screen->display->compositor, screen);
-
   g_list_foreach (windows, (GFunc)g_free, NULL);
   g_list_free (windows);
 

@@ -1065,6 +1065,9 @@ stack_sync_to_server (MetaStack *stack)
   meta_topic (META_DEBUG_STACK, "Syncing window stack to server\n");  
 
   stack_ensure_sorted (stack);
+
+  meta_compositor_sync_stack (stack->screen->display->compositor,
+			      stack->sorted);
   
   /* Create stacked xwindow arrays.
    * Painfully, "stacked" is in bottom-to-top order for the
