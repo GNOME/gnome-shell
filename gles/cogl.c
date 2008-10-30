@@ -816,8 +816,8 @@ cogl_setup_viewport (guint        w,
 static void
 _cogl_features_init ()
 {
-  ClutterFeatureFlags flags = 0;
-  int                 max_clip_planes = 0;
+  CoglFeatureFlags flags = 0;
+  int              max_clip_planes = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -838,7 +838,7 @@ _cogl_features_init ()
   ctx->features_cached = TRUE;
 }
 
-ClutterFeatureFlags
+CoglFeatureFlags
 cogl_get_features ()
 {
   _COGL_GET_CONTEXT (ctx, 0);

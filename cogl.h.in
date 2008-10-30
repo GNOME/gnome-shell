@@ -43,7 +43,6 @@
 #define __COGL_H__
 
 #include <glib.h>
-#include <clutter/clutter-feature.h>
 
 #include <cogl/cogl-defines-@CLUTTER_COGL@.h>
 #include <cogl/cogl-fixed.h>
@@ -176,7 +175,6 @@ typedef enum
   COGL_FEATURE_OFFSCREEN_BLIT         = (1 << 8),
   COGL_FEATURE_FOUR_CLIP_PLANES       = (1 << 9),
   COGL_FEATURE_STENCIL_BUFFER         = (1 << 10)
-
 } CoglFeatureFlags;
 
 /**
@@ -274,7 +272,7 @@ typedef void (* CoglFuncPtr) (void);
  *
  * Since: 0.8
  */
-ClutterFeatureFlags cogl_get_features         (void);
+CoglFeatureFlags cogl_get_features         (void);
 
 /**
  * cogl_features_available:

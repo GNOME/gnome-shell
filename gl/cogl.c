@@ -939,9 +939,9 @@ really_enable_npot (void)
 static void
 _cogl_features_init ()
 {
-  ClutterFeatureFlags flags = 0;
-  const gchar        *gl_extensions;
-  GLint               max_clip_planes = 0;
+  CoglFeatureFlags  flags = 0;
+  const gchar      *gl_extensions;
+  GLint             max_clip_planes = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -1121,7 +1121,7 @@ _cogl_features_init ()
   ctx->features_cached = TRUE;
 }
 
-ClutterFeatureFlags
+CoglFeatureFlags
 cogl_get_features ()
 {
   _COGL_GET_CONTEXT (ctx, 0);
