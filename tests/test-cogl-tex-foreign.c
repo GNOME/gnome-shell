@@ -79,9 +79,8 @@ static void
 test_coglbox_paint(ClutterActor *self)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
-  
-  ClutterColor cback =  {0x66, 0x66, 0xDD, 0xFF};
-  ClutterColor cwhite = {0xFF, 0xFF, 0xFF, 0xFF};
+  CoglColor cback;
+  CoglColor cwhite;
   ClutterFixed texcoords[4] = {
     CLUTTER_FLOAT_TO_FIXED (0.3f),
     CLUTTER_FLOAT_TO_FIXED (0.3f),
@@ -91,9 +90,11 @@ test_coglbox_paint(ClutterActor *self)
   
   priv = TEST_COGLBOX_GET_PRIVATE (self);
   
+  cogl_color_set_from_4ub (&cback, 0x66, 0x66, 0xdd, 0xff);
   cogl_color (&cback);
   cogl_rectangle (0,0,400,400);
   
+  cogl_color_set_from_4ub (&cwhite, 0xff, 0xff, 0xff, 0xff);
   cogl_color (&cwhite);
 
   cogl_push_matrix ();

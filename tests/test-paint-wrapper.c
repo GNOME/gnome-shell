@@ -123,13 +123,14 @@ static void
 hand_pre_paint (ClutterActor *actor,
                 gpointer      user_data)
 {
-  ClutterColor red = { 255, 0, 0, 128 };
+  CoglColor red;
   guint w, h;
 
   g_assert (hand_pre_paint_guard == FALSE);
 
   clutter_actor_get_size (actor, &w, &h);
 
+  cogl_color_set_from_4ub (&red, 255, 0, 0, 128);
   cogl_color (&red);
   cogl_rectangle (0, 0, w / 2, h / 2);
 
@@ -140,13 +141,14 @@ static void
 hand_post_paint (ClutterActor *actor,
                  gpointer      user_data)
 {
-  ClutterColor green = { 0, 255, 0, 128 };
+  CoglColor green;
   guint w, h;
 
   g_assert (hand_pre_paint_guard == TRUE);
 
   clutter_actor_get_size (actor, &w, &h);
 
+  cogl_color_set_from_4ub (&green, 0, 255, 0, 128);
   cogl_color (&green);
   cogl_rectangle (w / 2, h / 2, w / 2, h / 2);
 

@@ -209,16 +209,22 @@ static void
 clutter_stage_paint (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+  CoglColor stage_color;
 
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_PAINT);
 
   CLUTTER_NOTE (PAINT, "Initializing stage paint");
 
-  cogl_paint_init (&priv->color);
+  cogl_color_set_from_4ub (&stage_color,
+                           priv->color.red,
+                           priv->color.green,
+                           priv->color.blue,
+                           priv->color.alpha);
+  cogl_paint_init (&stage_color);
 
   if (priv->use_fog)
     {
-      cogl_fog_set (&priv->color,
+      cogl_fog_set (&stage_color,
                     priv->fog.density,
                     priv->fog.z_near,
                     priv->fog.z_far);

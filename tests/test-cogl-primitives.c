@@ -176,9 +176,8 @@ static void
 test_coglbox_paint(ClutterActor *self)
 {
   TestCoglboxPrivate *priv;
-  
-  ClutterColor cfill;
-  ClutterColor cstroke;
+  CoglColor cfill;
+  CoglColor cstroke;
   
   static GTimer *timer = NULL;
   static gint paint_index = 0;
@@ -202,16 +201,9 @@ test_coglbox_paint(ClutterActor *self)
       paint_index = paint_index % NUM_PAINT_FUNCS;
       g_timer_start (timer);
     }
-  
-  cfill.red    = 0;
-  cfill.green  = 160;
-  cfill.blue   = 0;
-  cfill.alpha  = 255;
-  
-  cstroke.red    = 200;
-  cstroke.green  = 0;
-  cstroke.blue   = 0;
-  cstroke.alpha  = 255;
+
+  cogl_color_set_from_4ub (&cfill, 0, 160, 0, 255);
+  cogl_color_set_from_4ub (&cstroke, 200, 0, 0, 255);
   
   cogl_push_matrix ();
   

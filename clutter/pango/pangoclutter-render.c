@@ -47,7 +47,7 @@ struct _PangoClutterRenderer
   PangoRenderer parent_instance;
 
   /* The color to draw the glyphs with */
-  ClutterColor color;
+  CoglColor color;
 
   /* Two caches of glyphs as textures, one with mipmapped textures and
      one without */
@@ -143,7 +143,11 @@ pango_clutter_render_layout_subpixel (PangoLayout  *layout,
     (PANGO_CLUTTER_FONT_MAP (font_map));
   priv = PANGO_CLUTTER_RENDERER (renderer);
 
-  priv->color = *color;
+  cogl_color_set_from_4ub (&priv->color,
+                           color->red,
+                           color->green,
+                           color->blue,
+                           color->alpha);
 
   pango_renderer_draw_layout (renderer, layout, x, y);
 }
@@ -180,7 +184,11 @@ pango_clutter_render_layout_line (PangoLayoutLine  *line,
     (PANGO_CLUTTER_FONT_MAP (font_map));
   priv = PANGO_CLUTTER_RENDERER (renderer);
 
-  priv->color = *color;
+  cogl_color_set_from_4ub (&priv->color,
+                           color->red,
+                           color->green,
+                           color->blue,
+                           color->alpha);
 
   pango_renderer_draw_layout_line (renderer, line, x, y);
 }
@@ -320,14 +328,15 @@ pango_clutter_renderer_set_color_for_part (PangoRenderer   *renderer,
 {
   PangoColor *pango_color = pango_renderer_get_color (renderer, part);
   PangoClutterRenderer *priv = PANGO_CLUTTER_RENDERER (renderer);
-  ClutterColor clutter_color;
+  CoglColor clutter_color;
 
   if (pango_color)
     {
-      clutter_color.red = pango_color->red >> 8;
-      clutter_color.green = pango_color->green >> 8;
-      clutter_color.blue = pango_color->blue >> 8;
-      clutter_color.alpha = priv->color.alpha;
+      cogl_color_set_from_4ub (&clutter_color,
+                               pango_color->red >> 8,
+                               pango_color->green >> 8,
+                               pango_color->blue >> 8,
+                               cogl_color_get_alpha_byte (&priv->color));
     }
   else
     clutter_color = priv->color;

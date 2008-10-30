@@ -492,8 +492,8 @@ clutter_texture_paint (ClutterActor *self)
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
   gint            x_1, y_1, x_2, y_2;
-  ClutterColor    col = { 0xff, 0xff, 0xff, 0xff };
-  ClutterColor    transparent_col = { 0, 0, 0, 0 };
+  CoglColor       col;
+  CoglColor       transparent_col;
   ClutterFixed    t_w, t_h;
 
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR(texture)))
@@ -547,6 +547,7 @@ clutter_texture_paint (ClutterActor *self)
 	}
 
       /* cogl_paint_init is called to clear the buffers */
+      cogl_color_set_from_4ub (&transparent_col, 0, 0, 0, 0);
       cogl_paint_init (&transparent_col);
 
       /* Clear the clipping stack so that if the FBO actor is being
@@ -575,7 +576,12 @@ clutter_texture_paint (ClutterActor *self)
                 "painting texture '%s'",
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
-  col.alpha = clutter_actor_get_paint_opacity (self);
+
+  cogl_color_set_from_4ub (&col,
+                           255,
+                           255,
+                           255,
+                           clutter_actor_get_paint_opacity (self));
   cogl_color (&col);
 
   clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);

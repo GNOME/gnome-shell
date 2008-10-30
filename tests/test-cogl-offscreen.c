@@ -80,13 +80,7 @@ static void
 test_coglbox_paint(ClutterActor *self)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
-  
-  ClutterColor cback       = {0x66, 0x66, 0xDD, 0xFF};
-  ClutterColor cred        = {0xFF, 0x0,  0x0,  0xFF};
-  ClutterColor cgreen      = {0x0,  0xFF, 0x0,  0xFF};
-  ClutterColor cfullopaque = {0xFF, 0xFF, 0xFF, 0xFF};
-  ClutterColor chalfopaque = {0xFF, 0xFF, 0xFF, 0x88};
-  
+  CoglColor color;
   ClutterFixed texcoords[4] = {
     CLUTTER_FLOAT_TO_FIXED (0.0f),
     CLUTTER_FLOAT_TO_FIXED (0.0f),
@@ -95,11 +89,13 @@ test_coglbox_paint(ClutterActor *self)
     };
   
   priv = TEST_COGLBOX_GET_PRIVATE (self);
-  
-  cogl_color (&cback);
+
+  cogl_color_set_from_4ub (&color, 0x66, 0x66, 0xdd, 0xff);
+  cogl_color (&color);
   cogl_rectangle (0,0,400,400);
-  
-  cogl_color (&cfullopaque);
+
+  cogl_color_set_from_4ub (&color, 0xff, 0xff, 0xff, 0xff);
+  cogl_color (&color);
   cogl_texture_rectangle (priv->texhand_id,
 			  0,0,
 			  CLUTTER_INT_TO_FIXED (400),
@@ -110,15 +106,18 @@ test_coglbox_paint(ClutterActor *self)
   
   cogl_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->offscreen_id);
   
-  cogl_color (&cred);
+  cogl_color_set_from_4ub (&color, 0xff, 0, 0, 0xff);
+  cogl_color (&color);
   cogl_rectangle (20,20,100,100);
-  
-  cogl_color (&cgreen);
+
+  cogl_color_set_from_4ub (&color, 0, 0xff, 0, 0xff);
+  cogl_color (&color);
   cogl_rectangle (80,80,100,100);
   
   cogl_draw_buffer (COGL_WINDOW_BUFFER, 0);
-  
-  cogl_color (&chalfopaque);
+
+  cogl_color_set_from_4ub (&color, 0xff, 0xff, 0xff, 0x88);
+  cogl_color (&color);
   cogl_texture_rectangle (priv->texture_id,
 			  CLUTTER_INT_TO_FIXED (100),
 			  CLUTTER_INT_TO_FIXED (100),

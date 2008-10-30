@@ -1,5 +1,45 @@
 2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1210 - Add CoglColor API
+
+	* clutter/cogl/cogl-color.h:
+	* clutter/cogl/cogl.h.in:
+	* clutter/cogl/common/Makefile.am:
+	* clutter/cogl/common/cogl-color.c:
+	* clutter/cogl/gl/Makefile.am:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/cogl/gles/cogl-texture.c:
+	* clutter/cogl/gles/cogl.c: Add a new color-type, to be used by
+	COGL. CoglColor is optimized to allow the minimum amount of
+	conversions possible for both GL and GLES implementations.
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-entry.c:
+	* clutter/clutter-main.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c: Use CoglColor when needed.
+
+	* clutter/pango/pangoclutter-render.c: Use CoglColor when needed.
+
+	* doc/reference/cogl/cogl-docs.sgml:
+	* doc/reference/cogl/cogl-sections.txt: Update the documentation.
+
+	* tests/test-cogl-offscreen.c:
+	* tests/test-cogl-primitives.c:
+	* tests/test-cogl-tex-convert.c:
+	* tests/test-cogl-tex-foreign.c:
+	* tests/test-cogl-tex-getset.c:
+	* tests/test-cogl-tex-polygon.c:
+	* tests/test-cogl-tex-tile.c:
+	* tests/test-paint-wrapper.c: Update the tests.
+
+	* README: Update release notes.
+
+2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1209 - Move fixed point API in COGL
 
 	* clutter/cogl/cogl-fixed.h:

@@ -170,6 +170,11 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 1.0
 -------------------------------
 
+* COGL has an internal Color type, used to store a color definition
+  that can be efficiently used with the least amount of conversions
+  by both the GL and GLES implementations. The COGL API has been
+  changed to drop the usage of ClutterColor in favour of CoglColor.
+
 * The fixed point API implementation Clutter uses internally has been
   moved from the Clutter namespace to the COGL one. The ClutterFixed
   type and relative API is just a wrapper around CoglFixed and its

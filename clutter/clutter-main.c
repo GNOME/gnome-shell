@@ -351,7 +351,7 @@ _clutter_do_pick (ClutterStage   *stage,
   ClutterMainContext *context;
   guchar              pixel[4];
   GLint               viewport[4];
-  ClutterColor        white = { 0xff, 0xff, 0xff, 0xff };
+  CoglColor           white;
   guint32             id;
   GLboolean           dither_was_on;
 
@@ -362,6 +362,7 @@ _clutter_do_pick (ClutterStage   *stage,
   /* needed for when a context switch happens */
   _clutter_stage_maybe_setup_viewport (stage);
 
+  cogl_color_set_from_4ub (&white, 255, 255, 255, 255);
   cogl_paint_init (&white);
 
   /* Disable dithering (if any) when doing the painting in pick mode */

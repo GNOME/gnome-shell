@@ -43,12 +43,11 @@
 #define __COGL_H__
 
 #include <glib.h>
-#include <clutter/clutter-color.h>
 #include <clutter/clutter-feature.h>
-#include <clutter/clutter-types.h>
 
 #include <cogl/cogl-defines-@CLUTTER_COGL@.h>
 #include <cogl/cogl-fixed.h>
+#include <cogl/cogl-color.h>
 
 G_BEGIN_DECLS
 
@@ -212,7 +211,7 @@ struct _CoglTextureVertex
 {
   CoglFixed x, y, z;
   CoglFixed tx, ty;
-  ClutterColor color;
+  CoglColor color;
 };
 
 typedef struct _CoglTextureVertex CoglTextureVertex;
@@ -618,7 +617,7 @@ void            cogl_alpha_func               (COGLenum            func,
  * with @fog_color. Fogging will remain enabled until the next call to
  * cogl_paint_init().
  */
-void            cogl_fog_set                  (const ClutterColor *fog_color,
+void            cogl_fog_set                  (const CoglColor *fog_color,
                                                CoglFixed        density,
                                                CoglFixed        z_near,
                                                CoglFixed        z_far);
@@ -630,7 +629,7 @@ void            cogl_fog_set                  (const ClutterColor *fog_color,
  * Clears the color buffer to @color. The depth buffer and stencil
  * buffers are also cleared and fogging and lighting are disabled.
  */
-void            cogl_paint_init               (const ClutterColor *color);
+void            cogl_paint_init               (const CoglColor *color);
 
 /**
  * SECTION:cogl-texture
@@ -1019,12 +1018,12 @@ void            cogl_texture_polygon          (CoglHandle          handle,
 
 /**
  * cogl_color:
- * @color: new current @ClutterColor.
+ * @color: new current @CoglColor.
  *
  * Changes the color of cogl's current paint, which is used for filling and stroking
  * primitives.
  */
-void            cogl_color                    (const ClutterColor *color);
+void            cogl_color                    (const CoglColor *color);
 
 
 /**
