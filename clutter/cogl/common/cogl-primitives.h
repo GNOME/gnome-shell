@@ -32,8 +32,8 @@ typedef struct _CoglBezCubic     CoglBezCubic;
 
 struct _CoglFixedVec2
 {
-  ClutterFixed x;
-  ClutterFixed y;
+  CoglFixed x;
+  CoglFixed y;
 };
 
 #ifdef CLUTTER_COGL_HAS_GL

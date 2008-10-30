@@ -45,10 +45,10 @@
 #include <glib.h>
 #include <clutter/clutter-color.h>
 #include <clutter/clutter-feature.h>
-#include <clutter/clutter-fixed.h>
 #include <clutter/clutter-types.h>
 
 #include <cogl/cogl-defines-@CLUTTER_COGL@.h>
+#include <cogl/cogl-fixed.h>
 
 G_BEGIN_DECLS
 
@@ -210,8 +210,8 @@ typedef enum
  */
 struct _CoglTextureVertex
 {
-  ClutterFixed x, y, z;
-  ClutterFixed tx, ty;
+  CoglFixed x, y, z;
+  CoglFixed tx, ty;
   ClutterColor color;
 };
 
@@ -341,10 +341,10 @@ void            cogl_get_bitmasks             (gint               *red,
  * Replaces the current projection matrix with a perspective matrix
  * based on the provided values.
  */
-void            cogl_perspective              (ClutterFixed        fovy,
-                                               ClutterFixed        aspect,
-                                               ClutterFixed        z_near,
-                                               ClutterFixed        z_far);
+void            cogl_perspective              (CoglFixed        fovy,
+                                               CoglFixed        aspect,
+                                               CoglFixed        z_near,
+                                               CoglFixed        z_far);
 
 /**
  * cogl_frustum:
@@ -360,12 +360,12 @@ void            cogl_perspective              (ClutterFixed        fovy,
  *
  * Since: 0.8.2
  */
-void            cogl_frustum                  (ClutterFixed        left,
-					       ClutterFixed        right,
-					       ClutterFixed        bottom,
-					       ClutterFixed        top,
-                                               ClutterFixed        z_near,
-                                               ClutterFixed        z_far);
+void            cogl_frustum                  (CoglFixed        left,
+					       CoglFixed        right,
+					       CoglFixed        bottom,
+					       CoglFixed        top,
+                                               CoglFixed        z_near,
+                                               CoglFixed        z_far);
 
 /**
  * cogl_setup_viewport:
@@ -385,10 +385,10 @@ void            cogl_frustum                  (ClutterFixed        left,
  */
 void            cogl_setup_viewport           (guint               width,
                                                guint               height,
-                                               ClutterFixed        fovy,
-                                               ClutterFixed        aspect,
-                                               ClutterFixed        z_near,
-                                               ClutterFixed        z_far);
+                                               CoglFixed        fovy,
+                                               CoglFixed        aspect,
+                                               CoglFixed        z_near,
+                                               CoglFixed        z_far);
 
 /**
  * cogl_viewport:
@@ -425,8 +425,8 @@ void            cogl_pop_matrix               (void);
  * Multiplies the current model-view matrix by one that scales the x
  * and y axes by the given values.
  */
-void            cogl_scale                    (ClutterFixed        x,
-                                               ClutterFixed        y);
+void            cogl_scale                    (CoglFixed        x,
+                                               CoglFixed        y);
 
 /**
  * cogl_translatex:
@@ -437,9 +437,9 @@ void            cogl_scale                    (ClutterFixed        x,
  * Multiplies the current model-view matrix by one that translates the
  * model along all three axes according to the given values.
  */
-void            cogl_translatex               (ClutterFixed        x,
-                                               ClutterFixed        y,
-                                               ClutterFixed        z);
+void            cogl_translatex               (CoglFixed        x,
+                                               CoglFixed        y,
+                                               CoglFixed        z);
 
 /**
  * cogl_translate:
@@ -468,7 +468,7 @@ void            cogl_translate                (gint                x,
  * degrees about the vertex (0, 0, 1) causes a small counter-clockwise
  * rotation.
  */
-void            cogl_rotatex                  (ClutterFixed        angle,
+void            cogl_rotatex                  (CoglFixed        angle,
                                                gint                x,
                                                gint                y,
                                                gint                z);
@@ -491,32 +491,32 @@ void            cogl_rotate                   (gint                angle,
 
 /**
  * cogl_get_modelview_matrix:
- * @m: pointer to a 4x4 array of #ClutterFixed<!-- -->s to receive the matrix
+ * @m: pointer to a 4x4 array of #CoglFixed<!-- -->s to receive the matrix
  *
  * Stores the current model-view matrix in @m. The matrix is in
  * column-major order.
  */
-void            cogl_get_modelview_matrix     (ClutterFixed        m[16]);
+void            cogl_get_modelview_matrix     (CoglFixed        m[16]);
 
 /**
  * cogl_get_projection_matrix:
- * @m: pointer to a 4x4 array of #ClutterFixed<!-- -->s to receive the matrix
+ * @m: pointer to a 4x4 array of #CoglFixed<!-- -->s to receive the matrix
  *
  * Stores the current projection matrix in @m. The matrix is in
  * column-major order.
  */
-void            cogl_get_projection_matrix    (ClutterFixed        m[16]);
+void            cogl_get_projection_matrix    (CoglFixed        m[16]);
 
 /**
  * cogl_get_viewport:
- * @v: pointer to a 4 element array of #ClutterFixed<!-- -->s to
+ * @v: pointer to a 4 element array of #CoglFixed<!-- -->s to
  * receive the viewport dimensions.
  *
  * Stores the current viewport in @v. @v[0] and @v[1] get the x and y
  * position of the viewport and @v[2] and @v[3] get the width and
  * height.
  */
-void            cogl_get_viewport             (ClutterFixed        v[4]);
+void            cogl_get_viewport             (CoglFixed        v[4]);
 
 /**
  * cogl_clip_set:
@@ -531,10 +531,10 @@ void            cogl_get_viewport             (ClutterFixed        v[4]);
  * be displayed. The rectangle dimensions are transformed by the
  * current model-view matrix.
  */
-void            cogl_clip_set                 (ClutterFixed        x_offset,
-                                               ClutterFixed        y_offset,
-                                               ClutterFixed        width,
-                                               ClutterFixed        height);
+void            cogl_clip_set                 (CoglFixed        x_offset,
+                                               CoglFixed        y_offset,
+                                               CoglFixed        width,
+                                               CoglFixed        height);
 
 /**
  * cogl_clip_unset:
@@ -602,7 +602,7 @@ void            cogl_enable_backface_culling  (gboolean            setting);
  * initial reference value is 1.0.
  */
 void            cogl_alpha_func               (COGLenum            func, 
-                                               ClutterFixed        ref);
+                                               CoglFixed        ref);
 
 /**
  * cogl_fog_set:
@@ -619,9 +619,9 @@ void            cogl_alpha_func               (COGLenum            func,
  * cogl_paint_init().
  */
 void            cogl_fog_set                  (const ClutterColor *fog_color,
-                                               ClutterFixed        density,
-                                               ClutterFixed        z_near,
-                                               ClutterFixed        z_far);
+                                               CoglFixed        density,
+                                               CoglFixed        z_near,
+                                               CoglFixed        z_far);
 
 /**
  * cogl_paint_init:
@@ -954,14 +954,14 @@ void            cogl_texture_unref            (CoglHandle          handle);
  * texture pass in @tx1=0.0 @ty1=0.0 @tx2=1.0 @ty2=1.0.
  */
 void            cogl_texture_rectangle        (CoglHandle          handle,
-                                               ClutterFixed        x1,
-                                               ClutterFixed        y1,
-                                               ClutterFixed        x2,
-                                               ClutterFixed        y2,
-                                               ClutterFixed        tx1,
-                                               ClutterFixed        ty1,
-                                               ClutterFixed        tx2,
-                                               ClutterFixed        ty2);
+                                               CoglFixed        x1,
+                                               CoglFixed        y1,
+                                               CoglFixed        x2,
+                                               CoglFixed        y2,
+                                               CoglFixed        tx1,
+                                               CoglFixed        ty1,
+                                               CoglFixed        tx2,
+                                               CoglFixed        ty2);
 
 /**
  * cogl_texture_polygon:
@@ -1051,10 +1051,10 @@ void            cogl_rectangle                (gint                x,
  *
  * A fixed-point version of cogl_fast_fill_rectangle.
  **/
-void            cogl_rectanglex               (ClutterFixed        x,
-                                               ClutterFixed        y,
-                                               ClutterFixed        width,
-                                               ClutterFixed        height);
+void            cogl_rectanglex               (CoglFixed        x,
+                                               CoglFixed        y,
+                                               CoglFixed        width,
+                                               CoglFixed        height);
 
 /**
  * cogl_path_fill:
@@ -1081,8 +1081,8 @@ void            cogl_path_stroke          (void);
  * Clears the previously constructed shape and begins a new path
  * contour by moving the pen to the given coordinates.
  **/
-void            cogl_path_move_to        (ClutterFixed        x,
-                                          ClutterFixed        y);
+void            cogl_path_move_to        (CoglFixed        x,
+                                          CoglFixed        y);
 
 
 /**
@@ -1094,8 +1094,8 @@ void            cogl_path_move_to        (ClutterFixed        x,
  * contour by moving the pen to the given coordinates relative
  * to the current pen location.
  **/
-void            cogl_path_rel_move_to    (ClutterFixed        x,
-                                          ClutterFixed        y);
+void            cogl_path_rel_move_to    (CoglFixed        x,
+                                          CoglFixed        y);
 
 /**
  * cogl_path_line_to:
@@ -1105,8 +1105,8 @@ void            cogl_path_rel_move_to    (ClutterFixed        x,
  * Adds a straight line segment to the current path that ends at the
  * given coordinates.
  **/
-void            cogl_path_line_to        (ClutterFixed        x,
-                                          ClutterFixed        y);
+void            cogl_path_line_to        (CoglFixed        x,
+                                          CoglFixed        y);
 
 /**
  * cogl_path_rel_line_to:
@@ -1116,8 +1116,8 @@ void            cogl_path_line_to        (ClutterFixed        x,
  * Adds a straight line segment to the current path that ends at the
  * given coordinates relative to the current pen location.
  **/
-void            cogl_path_rel_line_to    (ClutterFixed        x,
-                                          ClutterFixed        y);
+void            cogl_path_rel_line_to    (CoglFixed        x,
+                                          CoglFixed        y);
 
 
 /**
@@ -1134,12 +1134,12 @@ void            cogl_path_rel_line_to    (ClutterFixed        x,
  * of the arc. If you perform a move_to to the arcs start just before
  * drawing it you create a free standing arc.
  **/
-void            cogl_path_arc                 (ClutterFixed        center_x,
-                                               ClutterFixed        center_y,
-                                               ClutterFixed        radius_x,
-                                               ClutterFixed        radius_y,
-                                               ClutterAngle        angle_1,
-                                               ClutterAngle        angle_2);
+void            cogl_path_arc                 (CoglFixed        center_x,
+                                               CoglFixed        center_y,
+                                               CoglFixed        radius_x,
+                                               CoglFixed        radius_y,
+                                               CoglAngle        angle_1,
+                                               CoglAngle        angle_2);
 
 
 
@@ -1156,12 +1156,12 @@ void            cogl_path_arc                 (ClutterFixed        center_x,
  * second, third and fourth control points and using current pen location
  * as the first control point.
  **/
-void            cogl_path_curve_to            (ClutterFixed        x1,
-                                               ClutterFixed        y1,
-                                               ClutterFixed        x2,
-                                               ClutterFixed        y2,
-                                               ClutterFixed        x3,
-                                               ClutterFixed        y3);
+void            cogl_path_curve_to            (CoglFixed        x1,
+                                               CoglFixed        y1,
+                                               CoglFixed        x2,
+                                               CoglFixed        y2,
+                                               CoglFixed        x3,
+                                               CoglFixed        y3);
 
 /**
  * cogl_path_rel_curve_to:
@@ -1177,12 +1177,12 @@ void            cogl_path_curve_to            (ClutterFixed        x1,
  * as the first control point. The given coordinates are relative to the
  * current pen location.
  */
-void            cogl_path_rel_curve_to        (ClutterFixed        x1,
-                                               ClutterFixed        y1,
-                                               ClutterFixed        x2,
-                                               ClutterFixed        y2,
-                                               ClutterFixed        x3,
-                                               ClutterFixed        y3);
+void            cogl_path_rel_curve_to        (CoglFixed        x1,
+                                               CoglFixed        y1,
+                                               CoglFixed        x2,
+                                               CoglFixed        y2,
+                                               CoglFixed        x3,
+                                               CoglFixed        y3);
 
 /**
  * cogl_path_close:
@@ -1202,10 +1202,10 @@ void            cogl_path_close               (void);
  * Clears the previously constructed shape and constructs a straight
  * line shape start and ending at the given coordinates.
  **/
-void            cogl_path_line                (ClutterFixed        x1,
-                                               ClutterFixed        y1,
-                                               ClutterFixed        x2,
-                                               ClutterFixed        y2);
+void            cogl_path_line                (CoglFixed        x1,
+                                               CoglFixed        y1,
+                                               CoglFixed        x2,
+                                               CoglFixed        y2);
 
 /**
  * cogl_path_polyline:
@@ -1224,8 +1224,8 @@ void            cogl_path_line                (ClutterFixed        x1,
  * fashion for the rest of the vertices. (num_points - 1) segments will
  * be constructed.
  **/
-void            cogl_path_polyline            (ClutterFixed       *coords,
-                                               gint                num_points);
+void            cogl_path_polyline            (CoglFixed       *coords,
+                                               gint             num_points);
 
 
 /**
@@ -1242,8 +1242,8 @@ void            cogl_path_polyline            (ClutterFixed       *coords,
  * represents the Y coordinate of the first vertex, continuing in the same
  * fashion for the rest of the vertices.
  **/
-void            cogl_path_polygon             (ClutterFixed       *coords,
-                                               gint                num_points);
+void            cogl_path_polygon             (CoglFixed       *coords,
+                                               gint             num_points);
 
 
 /**
@@ -1256,10 +1256,10 @@ void            cogl_path_polygon             (ClutterFixed       *coords,
  * Clears the previously constructed shape and constructs a rectangular
  * shape at the given coordinates.
  **/
-void            cogl_path_rectangle           (ClutterFixed        x,
-                                               ClutterFixed        y,
-                                               ClutterFixed        width,
-                                               ClutterFixed        height);
+void            cogl_path_rectangle           (CoglFixed        x,
+                                               CoglFixed        y,
+                                               CoglFixed        width,
+                                               CoglFixed        height);
 
 /**
  * cogl_path_ellipse:
@@ -1271,10 +1271,10 @@ void            cogl_path_rectangle           (ClutterFixed        x,
  * Clears the previously constructed shape and constructs an ellipse
  * shape.
  **/
-void            cogl_path_ellipse             (ClutterFixed        center_x,
-                                               ClutterFixed        center_y,
-                                               ClutterFixed        radius_x,
-                                               ClutterFixed        radius_y);
+void            cogl_path_ellipse             (CoglFixed        center_x,
+                                               CoglFixed        center_y,
+                                               CoglFixed        radius_x,
+                                               CoglFixed        radius_y);
 
 /**
  * cogl_path_round_rectangle:
@@ -1289,12 +1289,12 @@ void            cogl_path_ellipse             (ClutterFixed        center_x,
  * Clears the previously constructed shape and constructs a rectangular
  * shape with rounded corners.
  **/
-void            cogl_path_round_rectangle     (ClutterFixed        x,
-                                               ClutterFixed        y,
-                                               ClutterFixed        width,
-                                               ClutterFixed        height,
-                                               ClutterFixed        radius,
-                                               ClutterAngle        arc_step);
+void            cogl_path_round_rectangle     (CoglFixed        x,
+                                               CoglFixed        y,
+                                               CoglFixed        width,
+                                               CoglFixed        height,
+                                               CoglFixed        radius,
+                                               CoglAngle        arc_step);
 
 /**
  * SECTION:cogl-shaders

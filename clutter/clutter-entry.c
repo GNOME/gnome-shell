@@ -446,8 +446,9 @@ clutter_entry_paint (ClutterActor *self)
   else
     width = priv->width;
 
-  cogl_clip_set (0, 0, CLUTTER_INT_TO_FIXED (width),
-		 CLUTTER_INT_TO_FIXED (clutter_actor_get_height (self)));
+  cogl_clip_set (0, 0,
+                 COGL_FIXED_FROM_INT (width),
+		 COGL_FIXED_FROM_INT (clutter_actor_get_height (self)));
 
   actor_width = width - (2 * priv->entry_padding);
   clutter_entry_ensure_layout (entry, actor_width);

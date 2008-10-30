@@ -53,20 +53,20 @@ _cogl_rectangle (gint x,
 
 
 void
-_cogl_rectanglex (ClutterFixed x,
-                  ClutterFixed y,
-                  ClutterFixed width,
-                  ClutterFixed height)
+_cogl_rectanglex (CoglFixed x,
+                  CoglFixed y,
+                  CoglFixed width,
+                  CoglFixed height)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   cogl_enable (ctx->color_alpha < 255
 	       ? COGL_ENABLE_BLEND : 0);
   
-  GE( glRectf (CLUTTER_FIXED_TO_FLOAT (x),
-	       CLUTTER_FIXED_TO_FLOAT (y),
-	       CLUTTER_FIXED_TO_FLOAT (x + width),
-	       CLUTTER_FIXED_TO_FLOAT (y + height)) );
+  GE( glRectf (COGL_FIXED_TO_FLOAT (x),
+	       COGL_FIXED_TO_FLOAT (y),
+	       COGL_FIXED_TO_FLOAT (x + width),
+	       COGL_FIXED_TO_FLOAT (y + height)) );
 }
 
 void
@@ -83,8 +83,8 @@ _cogl_path_clear_nodes ()
 }
 
 void
-_cogl_path_add_node (ClutterFixed x,
-		     ClutterFixed y)
+_cogl_path_add_node (CoglFixed x,
+		     CoglFixed y)
 {
   CoglFloatVec2   *new_nodes = NULL;
   
@@ -102,8 +102,8 @@ _cogl_path_add_node (ClutterFixed x,
       ctx->path_nodes_cap *= 2;
     }
   
-  ctx->path_nodes [ctx->path_nodes_size] .x = CLUTTER_FIXED_TO_FLOAT (x);
-  ctx->path_nodes [ctx->path_nodes_size] .y = CLUTTER_FIXED_TO_FLOAT (y);
+  ctx->path_nodes [ctx->path_nodes_size] .x = COGL_FIXED_TO_FLOAT (x);
+  ctx->path_nodes [ctx->path_nodes_size] .y = COGL_FIXED_TO_FLOAT (y);
   ctx->path_nodes_size++;
     
   if (ctx->path_nodes_size == 1)
@@ -165,10 +165,10 @@ _cogl_path_fill_nodes ()
   GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
   GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
 
-  bounds_x = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.x);
-  bounds_y = CLUTTER_FIXED_FLOOR (ctx->path_nodes_min.y);
-  bounds_w = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.x - ctx->path_nodes_min.x);
-  bounds_h = CLUTTER_FIXED_CEIL (ctx->path_nodes_max.y - ctx->path_nodes_min.y);
+  bounds_x = COGL_FIXED_FLOOR (ctx->path_nodes_min.x);
+  bounds_y = COGL_FIXED_FLOOR (ctx->path_nodes_min.y);
+  bounds_w = COGL_FIXED_CEIL (ctx->path_nodes_max.x - ctx->path_nodes_min.x);
+  bounds_h = COGL_FIXED_CEIL (ctx->path_nodes_max.y - ctx->path_nodes_min.y);
   
   cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
   

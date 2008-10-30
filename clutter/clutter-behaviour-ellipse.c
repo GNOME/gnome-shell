@@ -109,8 +109,8 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
   ClutterBehaviourEllipsePrivate *priv = e->priv;
   gint x, y, z;
 
-  x = CLUTTER_FIXED_TO_INT (priv->a * clutter_cosi (angle));
-  y = CLUTTER_FIXED_TO_INT (priv->b * clutter_sini (angle));
+  x = COGL_FIXED_TO_INT (priv->a * cogl_angle_cos (angle));
+  y = COGL_FIXED_TO_INT (priv->b * cogl_angle_sin (angle));
   z = 0;
 
   if (priv->angle_tilt_z)
@@ -125,40 +125,40 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
        */
       ClutterFixed x2, y2;
 
-      x2 = x * clutter_cosi (priv->angle_tilt_z)
-           - y * clutter_sini (priv->angle_tilt_z);
+      x2 = x * cogl_angle_cos (priv->angle_tilt_z)
+         - y * cogl_angle_sin (priv->angle_tilt_z);
 
-      y2 = y * clutter_cosi (priv->angle_tilt_z)
-           + x * clutter_sini (priv->angle_tilt_z);
+      y2 = y * cogl_angle_cos (priv->angle_tilt_z)
+         + x * cogl_angle_sin (priv->angle_tilt_z);
 
-      x = CLUTTER_FIXED_TO_INT (x2);
-      y = CLUTTER_FIXED_TO_INT (y2);
+      x = COGL_FIXED_TO_INT (x2);
+      y = COGL_FIXED_TO_INT (y2);
     }
 
   if (priv->angle_tilt_x)
     {
       ClutterFixed z2, y2;
 
-      z2 = - y * clutter_sini (priv->angle_tilt_x);
+      z2 = - y * cogl_angle_sin (priv->angle_tilt_x);
 
-      y2 = y * clutter_cosi (priv->angle_tilt_x);
+      y2 = y * cogl_angle_cos (priv->angle_tilt_x);
 
-      z = CLUTTER_FIXED_TO_INT (z2);
-      y = CLUTTER_FIXED_TO_INT (y2);
+      z = COGL_FIXED_TO_INT (z2);
+      y = COGL_FIXED_TO_INT (y2);
     }
 
   if (priv->angle_tilt_y)
     {
       ClutterFixed x2, z2;
 
-      x2 = x * clutter_cosi (priv->angle_tilt_y)
-        - z * clutter_sini (priv->angle_tilt_y);
+      x2 = x * cogl_angle_cos (priv->angle_tilt_y)
+         - z * cogl_angle_sin (priv->angle_tilt_y);
 
-      z2 = z * clutter_cosi (priv->angle_tilt_y)
-        + x * clutter_sini (priv->angle_tilt_y);
+      z2 = z * cogl_angle_cos (priv->angle_tilt_y)
+         + x * cogl_angle_sin (priv->angle_tilt_y);
 
-      x = CLUTTER_FIXED_TO_INT (x2);
-      z = CLUTTER_FIXED_TO_INT (z2);
+      x = COGL_FIXED_TO_INT (x2);
+      z = COGL_FIXED_TO_INT (z2);
     }
 
   knot->x = x;
@@ -192,7 +192,7 @@ clamp_angle (ClutterAngle a)
   /* Need to add the 256 offset here, since the user space 0 maps to our
    * -256
    */
-  rounds = (a+256) / 1024;
+  rounds = (a + 256) / 1024;
   a1 = rounds * 1024;
   a2 = a - a1;
 
@@ -244,23 +244,23 @@ clutter_behaviour_ellipse_set_property (GObject      *gobject,
     {
     case PROP_ANGLE_START:
       priv->angle_start =
-        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value)) - 256;
+        COGL_ANGLE_FROM_DEG (g_value_get_double (value)) - 256;
       break;
     case PROP_ANGLE_END:
       priv->angle_end =
-        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value)) - 256;
+        COGL_ANGLE_FROM_DEG (g_value_get_double (value)) - 256;
       break;
     case PROP_ANGLE_TILT_X:
       priv->angle_tilt_x =
-        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value));
+        COGL_ANGLE_FROM_DEG (g_value_get_double (value));
       break;
     case PROP_ANGLE_TILT_Y:
       priv->angle_tilt_y =
-        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value));
+        COGL_ANGLE_FROM_DEG (g_value_get_double (value));
       break;
     case PROP_ANGLE_TILT_Z:
       priv->angle_tilt_z =
-        CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value));
+        COGL_ANGLE_FROM_DEG (g_value_get_double (value));
       break;
     case PROP_WIDTH:
       priv->a = g_value_get_int (value) >> 1;
@@ -298,23 +298,23 @@ clutter_behaviour_ellipse_get_property (GObject    *gobject,
     {
     case PROP_ANGLE_START:
       g_value_set_double (value,
-                          CLUTTER_ANGLE_TO_DEG (priv->angle_start + 256));
+                          COGL_ANGLE_TO_DEG (priv->angle_start + 256));
       break;
     case PROP_ANGLE_END:
       g_value_set_double (value,
-                          CLUTTER_ANGLE_TO_DEG (priv->angle_end + 256));
+                          COGL_ANGLE_TO_DEG (priv->angle_end + 256));
       break;
     case PROP_ANGLE_TILT_X:
       g_value_set_double (value,
-                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_x));
+                          COGL_ANGLE_TO_DEG (priv->angle_tilt_x));
       break;
     case PROP_ANGLE_TILT_Y:
       g_value_set_double (value,
-                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_y));
+                          COGL_ANGLE_TO_DEG (priv->angle_tilt_y));
       break;
     case PROP_ANGLE_TILT_Z:
       g_value_set_double (value,
-                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_z));
+                          COGL_ANGLE_TO_DEG (priv->angle_tilt_z));
       break;
     case PROP_WIDTH:
       g_value_set_int (value, (priv->a << 1));
@@ -609,8 +609,8 @@ clutter_behaviour_ellipse_newx (ClutterAlpha          * alpha,
                        "width", width,
                        "height", height,
                        "direction", direction,
-                       "angle-start", CLUTTER_ANGLE_FROM_DEGX (start),
-                       "angle-end", CLUTTER_ANGLE_FROM_DEGX (end),
+                       "angle-start", COGL_ANGLE_FROM_DEGX (start),
+                       "angle-end", COGL_ANGLE_FROM_DEGX (end),
                        NULL);
 }
 
@@ -781,7 +781,7 @@ clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   clutter_behaviour_ellipse_set_angle_startx (self,
-                                        CLUTTER_FLOAT_TO_FIXED (angle_start));
+                                              COGL_FIXED_FROM_FLOAT (angle_start));
 }
 
 /**
@@ -803,7 +803,7 @@ clutter_behaviour_ellipse_set_angle_startx (ClutterBehaviourEllipse *self,
   ClutterAngle new_angle;
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle = clamp_angle (CLUTTER_ANGLE_FROM_DEGX (angle_start) - 256);
+  new_angle = clamp_angle (COGL_ANGLE_FROM_DEGX (angle_start) - 256);
 
   priv = self->priv;
   if (priv->angle_start != new_angle)
@@ -828,7 +828,7 @@ clutter_behaviour_ellipse_get_angle_start (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
 
-  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_start + 256);
+  return COGL_ANGLE_TO_DEG (self->priv->angle_start + 256);
 }
 
 /**
@@ -846,7 +846,7 @@ clutter_behaviour_ellipse_get_angle_startx (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
 
-  return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_start);
+  return COGL_ANGLE_TO_DEGX (self->priv->angle_start);
 }
 
 /**
@@ -866,7 +866,7 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   clutter_behaviour_ellipse_set_angle_endx (self,
-                                          CLUTTER_FLOAT_TO_FIXED (angle_end));
+                                            COGL_FIXED_FROM_FLOAT (angle_end));
 }
 
 /**
@@ -889,7 +889,7 @@ clutter_behaviour_ellipse_set_angle_endx (ClutterBehaviourEllipse *self,
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle = clamp_angle (CLUTTER_ANGLE_FROM_DEGX (angle_end) - 256);
+  new_angle = clamp_angle (COGL_ANGLE_FROM_DEGX (angle_end) - 256);
 
   priv = self->priv;
 
@@ -916,7 +916,7 @@ clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
 
-  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_end + 256);
+  return COGL_ANGLE_TO_DEG (self->priv->angle_end + 256);
 }
 
 /**
@@ -934,7 +934,7 @@ clutter_behaviour_ellipse_get_angle_endx (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
 
-  return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_end);
+  return COGL_ANGLE_TO_DEGX (self->priv->angle_end);
 }
 
 /**
@@ -956,8 +956,8 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   clutter_behaviour_ellipse_set_angle_tiltx (self,
-                                         axis,
-                                         CLUTTER_FLOAT_TO_FIXED (angle_tilt));
+                                             axis,
+                                             COGL_FIXED_FROM_FLOAT (angle_tilt));
 }
 
 /**
@@ -981,7 +981,7 @@ clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse *self,
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle = CLUTTER_ANGLE_FROM_DEGX (angle_tilt);
+  new_angle = COGL_ANGLE_FROM_DEGX (angle_tilt);
 
   priv = self->priv;
 
@@ -1036,11 +1036,11 @@ clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self,
   switch (axis)
     {
     case CLUTTER_X_AXIS:
-      return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt_x);
+      return COGL_ANGLE_TO_DEG (self->priv->angle_tilt_x);
     case CLUTTER_Y_AXIS:
-      return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt_y);
+      return COGL_ANGLE_TO_DEG (self->priv->angle_tilt_y);
     case CLUTTER_Z_AXIS:
-      return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt_z);
+      return COGL_ANGLE_TO_DEG (self->priv->angle_tilt_z);
     }
 
   return 0;
@@ -1066,11 +1066,11 @@ clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse *self,
   switch (axis)
     {
     case CLUTTER_X_AXIS:
-      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_x);
+      return COGL_ANGLE_TO_DEGX (self->priv->angle_tilt_x);
     case CLUTTER_Y_AXIS:
-      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_y);
+      return COGL_ANGLE_TO_DEGX (self->priv->angle_tilt_y);
     case CLUTTER_Z_AXIS:
-      return CLUTTER_ANGLE_TO_DEGX (self->priv->angle_tilt_z);
+      return COGL_ANGLE_TO_DEGX (self->priv->angle_tilt_z);
     }
 
   return 0;
@@ -1098,9 +1098,9 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle_x = CLUTTER_ANGLE_FROM_DEG (angle_tilt_x);
-  new_angle_y = CLUTTER_ANGLE_FROM_DEG (angle_tilt_y);
-  new_angle_z = CLUTTER_ANGLE_FROM_DEG (angle_tilt_z);
+  new_angle_x = COGL_ANGLE_FROM_DEG (angle_tilt_x);
+  new_angle_y = COGL_ANGLE_FROM_DEG (angle_tilt_y);
+  new_angle_z = COGL_ANGLE_FROM_DEG (angle_tilt_z);
 
   priv = self->priv;
 
@@ -1152,9 +1152,9 @@ clutter_behaviour_ellipse_set_tiltx (ClutterBehaviourEllipse *self,
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle_x = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_x);
-  new_angle_y = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_y);
-  new_angle_z = CLUTTER_ANGLE_FROM_DEGX (angle_tilt_z);
+  new_angle_x = COGL_ANGLE_FROM_DEGX (angle_tilt_x);
+  new_angle_y = COGL_ANGLE_FROM_DEGX (angle_tilt_y);
+  new_angle_z = COGL_ANGLE_FROM_DEGX (angle_tilt_z);
 
   priv = self->priv;
 
@@ -1208,13 +1208,13 @@ clutter_behaviour_ellipse_get_tilt (ClutterBehaviourEllipse *self,
   priv = self->priv;
 
   if (angle_tilt_x)
-    *angle_tilt_x = CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_x);
+    *angle_tilt_x = COGL_ANGLE_TO_DEG (priv->angle_tilt_x);
 
   if (angle_tilt_y)
-    *angle_tilt_y = CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_y);
+    *angle_tilt_y = COGL_ANGLE_TO_DEG (priv->angle_tilt_y);
 
   if (angle_tilt_z)
-    *angle_tilt_z = CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_z);
+    *angle_tilt_z = COGL_ANGLE_TO_DEG (priv->angle_tilt_z);
 }
 
 /**
@@ -1244,13 +1244,13 @@ clutter_behaviour_ellipse_get_tiltx (ClutterBehaviourEllipse *self,
   priv = self->priv;
 
   if (angle_tilt_x)
-    *angle_tilt_x = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_x);
+    *angle_tilt_x = COGL_ANGLE_TO_DEGX (priv->angle_tilt_x);
 
   if (angle_tilt_y)
-    *angle_tilt_y = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_y);
+    *angle_tilt_y = COGL_ANGLE_TO_DEGX (priv->angle_tilt_y);
 
   if (angle_tilt_z)
-    *angle_tilt_z = CLUTTER_ANGLE_TO_DEGX (priv->angle_tilt_z);
+    *angle_tilt_z = COGL_ANGLE_TO_DEGX (priv->angle_tilt_z);
 }
 
 /**

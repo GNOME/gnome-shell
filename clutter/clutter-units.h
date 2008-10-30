@@ -48,11 +48,11 @@ typedef gint32 ClutterUnit;
  * decide to change this relationship in the future.
  */
 
-#define CLUTTER_UNITS_FROM_INT(x)        CLUTTER_INT_TO_FIXED ((x))
-#define CLUTTER_UNITS_TO_INT(x)          CLUTTER_FIXED_TO_INT ((x))
+#define CLUTTER_UNITS_FROM_INT(x)        (COGL_FIXED_FROM_INT ((x)))
+#define CLUTTER_UNITS_TO_INT(x)          (COGL_FIXED_TO_INT ((x)))
 
-#define CLUTTER_UNITS_FROM_FLOAT(x)      CLUTTER_FLOAT_TO_FIXED ((x))
-#define CLUTTER_UNITS_TO_FLOAT(x)        CLUTTER_FIXED_TO_FLOAT ((x))
+#define CLUTTER_UNITS_FROM_FLOAT(x)      (COGL_FIXED_FROM_FLOAT ((x)))
+#define CLUTTER_UNITS_TO_FLOAT(x)        (COGL_FIXED_TO_FLOAT ((x)))
 
 #define CLUTTER_UNITS_FROM_FIXED(x)      (x)
 #define CLUTTER_UNITS_TO_FIXED(x)        (x)

@@ -32,19 +32,19 @@
 
 /* These are defined in the particular backend (float in GL vs fixed
    in GL ES) */
-void _cogl_set_clip_planes (ClutterFixed x,
-			    ClutterFixed y,
-			    ClutterFixed width,
-			    ClutterFixed height);
+void _cogl_set_clip_planes (CoglFixed x,
+			    CoglFixed y,
+			    CoglFixed width,
+			    CoglFixed height);
 void _cogl_init_stencil_buffer (void);
-void _cogl_add_stencil_clip (ClutterFixed x,
-			     ClutterFixed y,
-			     ClutterFixed width,
-			     ClutterFixed height,
+void _cogl_add_stencil_clip (CoglFixed x,
+			     CoglFixed y,
+			     CoglFixed width,
+			     CoglFixed height,
 			     gboolean     first);
 void _cogl_disable_clip_planes (void);
 void _cogl_disable_stencil_buffer (void);
-void _cogl_set_matrix (const ClutterFixed *matrix);
+void _cogl_set_matrix (const CoglFixed *matrix);
 
 typedef struct _CoglClipStackEntry CoglClipStackEntry;
 
@@ -57,13 +57,13 @@ struct _CoglClipStackEntry
   gboolean            clear;
 
   /* The rectangle for this clip */
-  ClutterFixed        x_offset;
-  ClutterFixed        y_offset;
-  ClutterFixed        width;
-  ClutterFixed        height;
+  CoglFixed        x_offset;
+  CoglFixed        y_offset;
+  CoglFixed        width;
+  CoglFixed        height;
 
   /* The matrix that was current when the clip was set */
-  ClutterFixed        matrix[16];
+  CoglFixed        matrix[16];
 };
 
 static GList *cogl_clip_stack_top = NULL;
@@ -90,10 +90,10 @@ _cogl_clip_stack_add (const CoglClipStackEntry *entry, int depth)
 }
 
 void
-cogl_clip_set (ClutterFixed x_offset,
-	       ClutterFixed y_offset,
-	       ClutterFixed width,
-	       ClutterFixed height)
+cogl_clip_set (CoglFixed x_offset,
+	       CoglFixed y_offset,
+	       CoglFixed width,
+	       CoglFixed height)
 {
   CoglClipStackEntry *entry = g_slice_new (CoglClipStackEntry);
 

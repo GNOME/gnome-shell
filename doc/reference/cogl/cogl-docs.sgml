@@ -58,6 +58,7 @@
     <xi:include href="xml/cogl-texture.xml"/>
     <xi:include href="xml/cogl-shaders.xml"/>
     <xi:include href="xml/cogl-offscreen.xml"/>
+    <xi:include href="xml/cogl-fixed.xml"/>
 
   </chapter>
 

@@ -98,9 +98,9 @@ test_coglbox_paint(ClutterActor *self)
   cos_frame = clutter_cosi (CLUTTER_ANGLE_FROM_DEG (priv->frame));
   
   pingpong_frame = (priv->frame <= 180 ? priv->frame : 360 - priv->frame);
-  frac_frame = CFX_QDIV (CLUTTER_INT_TO_FIXED (pingpong_frame),
-			CLUTTER_INT_TO_FIXED (180));
-  frac_frame += (CFX_ONE >> 1);
+  frac_frame = COGL_FIXED_DIV (CLUTTER_INT_TO_FIXED (pingpong_frame),
+                               CLUTTER_INT_TO_FIXED (180));
+  frac_frame += (COGL_FIXED_1 >> 1);
   frac_frame <<= 1;
   
   for (t=0; t<4; t+=2)
@@ -108,8 +108,8 @@ test_coglbox_paint(ClutterActor *self)
       texcoords[t]   += cos_frame;
       texcoords[t+1] += sin_frame;
       
-      texcoords[t]   = CFX_QMUL (texcoords[t], frac_frame);
-      texcoords[t+1] = CFX_QMUL (texcoords[t+1], frac_frame);
+      texcoords[t]   = COGL_FIXED_MUL (texcoords[t], frac_frame);
+      texcoords[t+1] = COGL_FIXED_MUL (texcoords[t+1], frac_frame);
     }
   
   priv = TEST_COGLBOX_GET_PRIVATE (self);

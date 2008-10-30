@@ -21,9 +21,9 @@ init_handles ()
       clutter_group_add (CLUTTER_GROUP (main_stage), p[i]);
 
       clutter_actor_set_position (p[i],
-				  CLUTTER_FIXED_INT (v[i].x) -
+				  CLUTTER_FIXED_TO_INT (v[i].x) -
 				  clutter_actor_get_width (p[i])/2,
-				  CLUTTER_FIXED_INT (v[i].y) -
+				  CLUTTER_FIXED_TO_INT (v[i].y) -
 				  clutter_actor_get_height (p[i])/2);
 
       clutter_actor_raise_top (p[i]);
@@ -41,9 +41,9 @@ init_handles ()
   clutter_actor_set_position (p[4], 0, 0);
   clutter_group_add (CLUTTER_GROUP (main_stage), p[4]);
   clutter_actor_set_position (p[4],
-			      CLUTTER_FIXED_INT (v2.x) -
+			      CLUTTER_FIXED_TO_INT (v2.x) -
 			      clutter_actor_get_width (p[4])/2,
-			      CLUTTER_FIXED_INT (v2.y) -
+			      CLUTTER_FIXED_TO_INT (v2.y) -
 			      clutter_actor_get_height (p[4])/2);
 
   clutter_actor_raise_top (p[4]);
@@ -62,9 +62,9 @@ place_handles ()
   for (i = 0; i < 4; ++i)
     {
       clutter_actor_set_position (p[i],
-				  CLUTTER_FIXED_INT (v[i].x) -
+				  CLUTTER_FIXED_TO_INT (v[i].x) -
 				  clutter_actor_get_width (p[i])/2,
-				  CLUTTER_FIXED_INT (v[i].y) -
+				  CLUTTER_FIXED_TO_INT (v[i].y) -
 				  clutter_actor_get_height (p[i])/2);
     }
 
@@ -74,9 +74,9 @@ place_handles ()
   
   clutter_actor_apply_transform_to_point (rect, &v1, &v2);
   clutter_actor_set_position (p[4],
-			      CLUTTER_FIXED_INT (v2.x) -
+			      CLUTTER_FIXED_TO_INT (v2.x) -
 			      clutter_actor_get_width (p[4])/2,
-			      CLUTTER_FIXED_INT (v2.y) -
+			      CLUTTER_FIXED_TO_INT (v2.y) -
 			      clutter_actor_get_height (p[4])/2);
 }
 
@@ -148,8 +148,8 @@ on_event (ClutterStage *stage,
 			 CLUTTER_FIXED_TO_FLOAT (yp));
 			 
 		clutter_actor_move_by (rect,
-				       CLUTTER_FIXED_INT(xp),
-				       CLUTTER_FIXED_INT(yp));
+				       CLUTTER_FIXED_TO_INT(xp),
+				       CLUTTER_FIXED_TO_INT(yp));
 	      }
 	    else
 	      {

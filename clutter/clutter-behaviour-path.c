@@ -116,8 +116,8 @@ interpolate (const ClutterKnot *start,
 	     ClutterKnot       *out,
 	     ClutterFixed       t)
 {
-  out->x = start->x + CLUTTER_FIXED_TO_INT (t * (end->x - start->x));
-  out->y = start->y + CLUTTER_FIXED_TO_INT (t * (end->y - start->y));
+  out->x = start->x + COGL_FIXED_TO_INT (t * (end->x - start->x));
+  out->y = start->y + COGL_FIXED_TO_INT (t * (end->y - start->y));
 }
 
 static gint
@@ -140,12 +140,12 @@ node_distance (const ClutterKnot *start,
    * clib sqrt if the precission would be less than 10%
    */
 #if INT_MAX > CLUTTER_SQRTI_ARG_10_PERCENT
-  if (t <= CLUTTER_SQRTI_ARG_10_PERCENT)
-    return clutter_sqrti (t);
+  if (t <= COGL_SQRTI_ARG_10_PERCENT)
+    return cogl_sqrti (t);
   else
-    return CLUTTER_FLOAT_TO_INT(sqrt(t));
+    return COGL_FLOAT_TO_INT (sqrt(t));
 #else
-    return clutter_sqrti (t);
+    return cogl_sqrti (t);
 #endif
 }
 
@@ -246,7 +246,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
 	      ClutterKnot new;
 	      ClutterFixed t;
 
-	      t = CLUTTER_INT_TO_FIXED (offset - dist) / dist_to_next;
+	      t = COGL_FIXED_FROM_INT (offset - dist) / dist_to_next;
 
               interpolate (knot, next, &new, t);
 

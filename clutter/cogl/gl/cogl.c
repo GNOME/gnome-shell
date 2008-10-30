@@ -209,19 +209,19 @@ cogl_pop_matrix (void)
 }
 
 void
-cogl_scale (ClutterFixed x, ClutterFixed y)
+cogl_scale (CoglFixed x, CoglFixed y)
 {
-  glScaled (CLUTTER_FIXED_TO_DOUBLE (x),
-	    CLUTTER_FIXED_TO_DOUBLE (y),
+  glScaled (COGL_FIXED_TO_DOUBLE (x),
+	    COGL_FIXED_TO_DOUBLE (y),
 	    1.0);
 }
 
 void
-cogl_translatex (ClutterFixed x, ClutterFixed y, ClutterFixed z)
+cogl_translatex (CoglFixed x, CoglFixed y, CoglFixed z)
 {
-  glTranslated (CLUTTER_FIXED_TO_DOUBLE (x),
-		CLUTTER_FIXED_TO_DOUBLE (y),
-		CLUTTER_FIXED_TO_DOUBLE (z));
+  glTranslated (COGL_FIXED_TO_DOUBLE (x),
+		COGL_FIXED_TO_DOUBLE (y),
+		COGL_FIXED_TO_DOUBLE (z));
 }
 
 void
@@ -231,12 +231,12 @@ cogl_translate (gint x, gint y, gint z)
 }
 
 void
-cogl_rotatex (ClutterFixed angle, gint x, gint y, gint z)
+cogl_rotatex (CoglFixed angle, gint x, gint y, gint z)
 {
-  glRotated (CLUTTER_FIXED_TO_DOUBLE (angle),
-	     CLUTTER_FIXED_TO_DOUBLE (x),
-	     CLUTTER_FIXED_TO_DOUBLE (y),
-	     CLUTTER_FIXED_TO_DOUBLE (z));
+  glRotated (COGL_FIXED_TO_DOUBLE (angle),
+	     COGL_FIXED_TO_DOUBLE (x),
+	     COGL_FIXED_TO_DOUBLE (y),
+	     COGL_FIXED_TO_DOUBLE (z));
 }
 
 void
@@ -459,24 +459,24 @@ set_clip_plane (GLint plane_num,
 }
 
 void
-_cogl_set_clip_planes (ClutterFixed x_offset,
-		       ClutterFixed y_offset,
-		       ClutterFixed width,
-		       ClutterFixed height)
+_cogl_set_clip_planes (CoglFixed x_offset,
+		       CoglFixed y_offset,
+		       CoglFixed width,
+		       CoglFixed height)
 {
   GLfloat modelview[16], projection[16];
 
-  GLfloat vertex_tl[4] = { CLUTTER_FIXED_TO_FLOAT (x_offset),
-			   CLUTTER_FIXED_TO_FLOAT (y_offset),
+  GLfloat vertex_tl[4] = { COGL_FIXED_TO_FLOAT (x_offset),
+			   COGL_FIXED_TO_FLOAT (y_offset),
 			   0.0f, 1.0f };
-  GLfloat vertex_tr[4] = { CLUTTER_FIXED_TO_FLOAT (x_offset + width),
-			   CLUTTER_FIXED_TO_FLOAT (y_offset),
+  GLfloat vertex_tr[4] = { COGL_FIXED_TO_FLOAT (x_offset + width),
+			   COGL_FIXED_TO_FLOAT (y_offset),
 			   0.0f, 1.0f };
-  GLfloat vertex_bl[4] = { CLUTTER_FIXED_TO_FLOAT (x_offset),
-			   CLUTTER_FIXED_TO_FLOAT (y_offset + height),
+  GLfloat vertex_bl[4] = { COGL_FIXED_TO_FLOAT (x_offset),
+			   COGL_FIXED_TO_FLOAT (y_offset + height),
 			   0.0f, 1.0f };
-  GLfloat vertex_br[4] = { CLUTTER_FIXED_TO_FLOAT (x_offset + width),
-			   CLUTTER_FIXED_TO_FLOAT (y_offset + height),
+  GLfloat vertex_br[4] = { COGL_FIXED_TO_FLOAT (x_offset + width),
+			   COGL_FIXED_TO_FLOAT (y_offset + height),
 			   0.0f, 1.0f };
 
   GE( glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
@@ -520,10 +520,10 @@ compare_y_coordinate (const void *a, const void *b)
 }
 
 void
-_cogl_add_stencil_clip (ClutterFixed x_offset,
-			ClutterFixed y_offset,
-			ClutterFixed width,
-			ClutterFixed height,
+_cogl_add_stencil_clip (CoglFixed x_offset,
+			CoglFixed y_offset,
+			CoglFixed width,
+			CoglFixed height,
 			gboolean first)
 {
   gboolean has_clip_planes
@@ -550,10 +550,10 @@ _cogl_add_stencil_clip (ClutterFixed x_offset,
       /* Punch out a hole to allow the rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
-      GE( glRectf (CLUTTER_FIXED_TO_FLOAT (x_offset),
-		   CLUTTER_FIXED_TO_FLOAT (y_offset),
-		   CLUTTER_FIXED_TO_FLOAT (x_offset + width),
-		   CLUTTER_FIXED_TO_FLOAT (y_offset + height)) );
+      GE( glRectf (COGL_FIXED_TO_FLOAT (x_offset),
+		   COGL_FIXED_TO_FLOAT (y_offset),
+		   COGL_FIXED_TO_FLOAT (x_offset + width),
+		   COGL_FIXED_TO_FLOAT (y_offset + height)) );
     }
   else if (ctx->num_stencil_bits > 1)
     {
@@ -561,10 +561,10 @@ _cogl_add_stencil_clip (ClutterFixed x_offset,
 	 rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
-      GE( glRectf (CLUTTER_FIXED_TO_FLOAT (x_offset),
-		   CLUTTER_FIXED_TO_FLOAT (y_offset),
-		   CLUTTER_FIXED_TO_FLOAT (x_offset + width),
-		   CLUTTER_FIXED_TO_FLOAT (y_offset + height)) );
+      GE( glRectf (COGL_FIXED_TO_FLOAT (x_offset),
+		   COGL_FIXED_TO_FLOAT (y_offset),
+		   COGL_FIXED_TO_FLOAT (x_offset + width),
+		   COGL_FIXED_TO_FLOAT (y_offset + height)) );
 
       /* Subtract one from all pixels in the stencil buffer so that
 	 only pixels where both the original stencil buffer and the
@@ -592,17 +592,17 @@ _cogl_add_stencil_clip (ClutterFixed x_offset,
       int i;
       GLfloat points[16] =
 	{
-	  CLUTTER_FIXED_TO_FLOAT (x_offset),
-	  CLUTTER_FIXED_TO_FLOAT (y_offset),
+	  COGL_FIXED_TO_FLOAT (x_offset),
+	  COGL_FIXED_TO_FLOAT (y_offset),
 	  0, 1,
-	  CLUTTER_FIXED_TO_FLOAT (x_offset + width),
-	  CLUTTER_FIXED_TO_FLOAT (y_offset),
+	  COGL_FIXED_TO_FLOAT (x_offset + width),
+	  COGL_FIXED_TO_FLOAT (y_offset),
 	  0, 1,
-	  CLUTTER_FIXED_TO_FLOAT (x_offset),
-	  CLUTTER_FIXED_TO_FLOAT (y_offset + height),
+	  COGL_FIXED_TO_FLOAT (x_offset),
+	  COGL_FIXED_TO_FLOAT (y_offset + height),
 	  0, 1,
-	  CLUTTER_FIXED_TO_FLOAT (x_offset + width),
-	  CLUTTER_FIXED_TO_FLOAT (y_offset + height),
+	  COGL_FIXED_TO_FLOAT (x_offset + width),
+	  COGL_FIXED_TO_FLOAT (y_offset + height),
 	  0, 1
 	};
 
@@ -708,13 +708,13 @@ _cogl_add_stencil_clip (ClutterFixed x_offset,
 }
 
 void
-_cogl_set_matrix (const ClutterFixed *matrix)
+_cogl_set_matrix (const CoglFixed *matrix)
 {
   float float_matrix[16];
   int i;
 
   for (i = 0; i < 16; i++)
-    float_matrix[i] = CLUTTER_FIXED_TO_FLOAT (matrix[i]);
+    float_matrix[i] = COGL_FIXED_TO_FLOAT (matrix[i]);
 
   GE( glLoadIdentity () );
   GE( glMultMatrixf (float_matrix) );
@@ -737,20 +737,20 @@ _cogl_disable_clip_planes (void)
 
 void
 cogl_alpha_func (COGLenum     func,
-		 ClutterFixed ref)
+		 CoglFixed ref)
 {
-  GE( glAlphaFunc (func, CLUTTER_FIXED_TO_FLOAT(ref)) );
+  GE( glAlphaFunc (func, COGL_FIXED_TO_FLOAT(ref)) );
 }
 
 void
-cogl_perspective (ClutterFixed fovy,
-		  ClutterFixed aspect,
-		  ClutterFixed zNear,
-		  ClutterFixed zFar)
+cogl_perspective (CoglFixed fovy,
+		  CoglFixed aspect,
+		  CoglFixed zNear,
+		  CoglFixed zFar)
 {
-  ClutterFixed xmax, ymax;
-  ClutterFixed x, y, c, d;
-  ClutterFixed fovy_rad_half = CLUTTER_FIXED_MUL (fovy, CFX_PI) / 360;
+  CoglFixed xmax, ymax;
+  CoglFixed x, y, c, d;
+  CoglFixed fovy_rad_half = COGL_FIXED_MUL (fovy, COGL_FIXED_PI) / 360;
 
   GLfloat m[16];
 
@@ -768,22 +768,25 @@ cogl_perspective (ClutterFixed fovy,
    * same true for y, hence: a == 0 && b == 0;
    *
    * 2) When working with small numbers, we are loosing significant
-   * precision, hence we use clutter_qmulx() here, not the fast macro.
+   * precision
    */
-  ymax = clutter_qmulx (zNear, CLUTTER_FIXED_DIV (clutter_sinx (fovy_rad_half),
-						  clutter_cosx (fovy_rad_half)));
-  xmax = clutter_qmulx (ymax, aspect);
+  ymax =
+    COGL_FIXED_MUL (zNear,
+                    COGL_FIXED_FAST_DIV (cogl_fixed_sin (fovy_rad_half),
+                                         cogl_fixed_cos (fovy_rad_half)));
 
-  x = CLUTTER_FIXED_DIV (zNear, xmax);
-  y = CLUTTER_FIXED_DIV (zNear, ymax);
-  c = CLUTTER_FIXED_DIV (-(zFar + zNear), ( zFar - zNear));
-  d = CLUTTER_FIXED_DIV (-(clutter_qmulx (2*zFar, zNear)), (zFar - zNear));
+  xmax = COGL_FIXED_FAST_DIV (ymax, aspect);
+
+  x = COGL_FIXED_FAST_DIV (zNear, xmax);
+  y = COGL_FIXED_FAST_DIV (zNear, ymax);
+  c = COGL_FIXED_FAST_DIV (-(zFar + zNear), ( zFar - zNear));
+  d = cogl_fixed_mul_div (-(2 * zFar), zNear, (zFar - zNear));
 
 #define M(row,col)  m[col*4+row]
-  M(0,0) = CLUTTER_FIXED_TO_FLOAT (x);
-  M(1,1) = CLUTTER_FIXED_TO_FLOAT (y);
-  M(2,2) = CLUTTER_FIXED_TO_FLOAT (c);
-  M(2,3) = CLUTTER_FIXED_TO_FLOAT (d);
+  M(0,0) = COGL_FIXED_TO_FLOAT (x);
+  M(1,1) = COGL_FIXED_TO_FLOAT (y);
+  M(2,2) = COGL_FIXED_TO_FLOAT (c);
+  M(2,3) = COGL_FIXED_TO_FLOAT (d);
   M(3,2) = -1.0F;
 
   GE( glMultMatrixf (m) );
@@ -794,22 +797,22 @@ cogl_perspective (ClutterFixed fovy,
   memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
 
 #define m ctx->inverse_projection
-  M(0, 0) = 1.0f / CLUTTER_FIXED_TO_FLOAT (x);
-  M(1, 1) = 1.0f / CLUTTER_FIXED_TO_FLOAT (y);
+  M(0, 0) = 1.0f / COGL_FIXED_TO_FLOAT (x);
+  M(1, 1) = 1.0f / COGL_FIXED_TO_FLOAT (y);
   M(2, 3) = -1.0f;
-  M(3, 2) = 1.0f / CLUTTER_FIXED_TO_FLOAT (d);
-  M(3, 3) = CLUTTER_FIXED_TO_FLOAT (c) / CLUTTER_FIXED_TO_FLOAT (d);
+  M(3, 2) = 1.0f / COGL_FIXED_TO_FLOAT (d);
+  M(3, 3) = COGL_FIXED_TO_FLOAT (c) / COGL_FIXED_TO_FLOAT (d);
 #undef m
 #undef M
 }
 
 void
-cogl_frustum (ClutterFixed        left,
-	      ClutterFixed        right,
-	      ClutterFixed        bottom,
-	      ClutterFixed        top,
-	      ClutterFixed        z_near,
-	      ClutterFixed        z_far)
+cogl_frustum (CoglFixed        left,
+	      CoglFixed        right,
+	      CoglFixed        bottom,
+	      CoglFixed        top,
+	      CoglFixed        z_near,
+	      CoglFixed        z_far)
 {
   GLfloat c, d;
 
@@ -818,32 +821,32 @@ cogl_frustum (ClutterFixed        left,
   GE( glMatrixMode (GL_PROJECTION) );
   GE( glLoadIdentity () );
 
-  GE( glFrustum (CLUTTER_FIXED_TO_DOUBLE (left),
-		 CLUTTER_FIXED_TO_DOUBLE (right),
-		 CLUTTER_FIXED_TO_DOUBLE (bottom),
-		 CLUTTER_FIXED_TO_DOUBLE (top),
-		 CLUTTER_FIXED_TO_DOUBLE (z_near),
-		 CLUTTER_FIXED_TO_DOUBLE (z_far)) );
+  GE( glFrustum (COGL_FIXED_TO_DOUBLE (left),
+		 COGL_FIXED_TO_DOUBLE (right),
+		 COGL_FIXED_TO_DOUBLE (bottom),
+		 COGL_FIXED_TO_DOUBLE (top),
+		 COGL_FIXED_TO_DOUBLE (z_near),
+		 COGL_FIXED_TO_DOUBLE (z_far)) );
 
   GE( glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
   memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
 
-  c = -CLUTTER_FIXED_TO_FLOAT (z_far + z_near)
-    / CLUTTER_FIXED_TO_FLOAT (z_far - z_near);
-  d = -CLUTTER_FIXED_TO_FLOAT (2 * CFX_QMUL (z_far, z_near))
-    / CLUTTER_FIXED_TO_FLOAT (z_far - z_near);
+  c = -COGL_FIXED_TO_FLOAT (z_far + z_near)
+    / COGL_FIXED_TO_FLOAT (z_far - z_near);
+  d = -COGL_FIXED_TO_FLOAT (2 * COGL_FIXED_MUL (z_far, z_near))
+    / COGL_FIXED_TO_FLOAT (z_far - z_near);
 
 #define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) = CLUTTER_FIXED_TO_FLOAT (right - left)
-    / CLUTTER_FIXED_TO_FLOAT (2 * z_near);
-  M(0,3) = CLUTTER_FIXED_TO_FLOAT (right + left)
-    / CLUTTER_FIXED_TO_FLOAT (2 * z_near);
-  M(1,1) = CLUTTER_FIXED_TO_FLOAT (top - bottom)
-    / CLUTTER_FIXED_TO_FLOAT (2 * z_near);
-  M(1,3) = CLUTTER_FIXED_TO_FLOAT (top + bottom)
-    / CLUTTER_FIXED_TO_FLOAT (2 * z_near);
+  M(0,0) = COGL_FIXED_TO_FLOAT (right - left)
+    / COGL_FIXED_TO_FLOAT (2 * z_near);
+  M(0,3) = COGL_FIXED_TO_FLOAT (right + left)
+    / COGL_FIXED_TO_FLOAT (2 * z_near);
+  M(1,1) = COGL_FIXED_TO_FLOAT (top - bottom)
+    / COGL_FIXED_TO_FLOAT (2 * z_near);
+  M(1,3) = COGL_FIXED_TO_FLOAT (top + bottom)
+    / COGL_FIXED_TO_FLOAT (2 * z_near);
   M(2,3) = -1.0f;
   M(3,2) = 1.0f / d;
   M(3,3) = c / d;
@@ -860,10 +863,10 @@ cogl_viewport (guint width,
 void
 cogl_setup_viewport (guint        width,
 		     guint        height,
-		     ClutterFixed fovy,
-		     ClutterFixed aspect,
-		     ClutterFixed z_near,
-		     ClutterFixed z_far)
+		     CoglFixed fovy,
+		     CoglFixed aspect,
+		     CoglFixed z_near,
+		     CoglFixed z_far)
 {
   GLfloat z_camera;
 
@@ -891,13 +894,13 @@ cogl_setup_viewport (guint        width,
   z_camera = DEFAULT_Z_CAMERA;
 
 
-  if (fovy != CFX_60)
+  if (fovy != COGL_FIXED_60)
   {
-    ClutterFixed fovy_rad = CFX_MUL (fovy, CFX_PI) / 180;
+    CoglFixed fovy_rad = COGL_FIXED_MUL (fovy, COGL_FIXED_PI) / 180;
 
     z_camera =
-      CLUTTER_FIXED_TO_FLOAT (CFX_DIV (clutter_sinx (fovy_rad),
-				       clutter_cosx (fovy_rad)) >> 1);
+      COGL_FIXED_TO_FLOAT (COGL_FIXED_DIV (cogl_fixed_sin (fovy_rad),
+				           cogl_fixed_cos (fovy_rad)) >> 1);
   }
 
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
@@ -1141,75 +1144,75 @@ cogl_features_available (CoglFeatureFlags features)
 }
 
 void
-cogl_get_modelview_matrix (ClutterFixed m[16])
+cogl_get_modelview_matrix (CoglFixed m[16])
 {
   GLdouble md[16];
 
   glGetDoublev(GL_MODELVIEW_MATRIX, &md[0]);
 
 #define M(m,row,col)  m[col*4+row]
-  M(m,0,0) = CLUTTER_FLOAT_TO_FIXED (M(md,0,0));
-  M(m,0,1) = CLUTTER_FLOAT_TO_FIXED (M(md,0,1));
-  M(m,0,2) = CLUTTER_FLOAT_TO_FIXED (M(md,0,2));
-  M(m,0,3) = CLUTTER_FLOAT_TO_FIXED (M(md,0,3));
+  M(m,0,0) = COGL_FIXED_FROM_FLOAT (M(md,0,0));
+  M(m,0,1) = COGL_FIXED_FROM_FLOAT (M(md,0,1));
+  M(m,0,2) = COGL_FIXED_FROM_FLOAT (M(md,0,2));
+  M(m,0,3) = COGL_FIXED_FROM_FLOAT (M(md,0,3));
 
-  M(m,1,0) = CLUTTER_FLOAT_TO_FIXED (M(md,1,0));
-  M(m,1,1) = CLUTTER_FLOAT_TO_FIXED (M(md,1,1));
-  M(m,1,2) = CLUTTER_FLOAT_TO_FIXED (M(md,1,2));
-  M(m,1,3) = CLUTTER_FLOAT_TO_FIXED (M(md,1,3));
+  M(m,1,0) = COGL_FIXED_FROM_FLOAT (M(md,1,0));
+  M(m,1,1) = COGL_FIXED_FROM_FLOAT (M(md,1,1));
+  M(m,1,2) = COGL_FIXED_FROM_FLOAT (M(md,1,2));
+  M(m,1,3) = COGL_FIXED_FROM_FLOAT (M(md,1,3));
 
-  M(m,2,0) = CLUTTER_FLOAT_TO_FIXED (M(md,2,0));
-  M(m,2,1) = CLUTTER_FLOAT_TO_FIXED (M(md,2,1));
-  M(m,2,2) = CLUTTER_FLOAT_TO_FIXED (M(md,2,2));
-  M(m,2,3) = CLUTTER_FLOAT_TO_FIXED (M(md,2,3));
+  M(m,2,0) = COGL_FIXED_FROM_FLOAT (M(md,2,0));
+  M(m,2,1) = COGL_FIXED_FROM_FLOAT (M(md,2,1));
+  M(m,2,2) = COGL_FIXED_FROM_FLOAT (M(md,2,2));
+  M(m,2,3) = COGL_FIXED_FROM_FLOAT (M(md,2,3));
 
-  M(m,3,0) = CLUTTER_FLOAT_TO_FIXED (M(md,3,0));
-  M(m,3,1) = CLUTTER_FLOAT_TO_FIXED (M(md,3,1));
-  M(m,3,2) = CLUTTER_FLOAT_TO_FIXED (M(md,3,2));
-  M(m,3,3) = CLUTTER_FLOAT_TO_FIXED (M(md,3,3));
+  M(m,3,0) = COGL_FIXED_FROM_FLOAT (M(md,3,0));
+  M(m,3,1) = COGL_FIXED_FROM_FLOAT (M(md,3,1));
+  M(m,3,2) = COGL_FIXED_FROM_FLOAT (M(md,3,2));
+  M(m,3,3) = COGL_FIXED_FROM_FLOAT (M(md,3,3));
 #undef M
 }
 
 void
-cogl_get_projection_matrix (ClutterFixed m[16])
+cogl_get_projection_matrix (CoglFixed m[16])
 {
   GLdouble md[16];
 
   glGetDoublev(GL_PROJECTION_MATRIX, &md[0]);
 
 #define M(m,row,col)  m[col*4+row]
-  M(m,0,0) = CLUTTER_FLOAT_TO_FIXED (M(md,0,0));
-  M(m,0,1) = CLUTTER_FLOAT_TO_FIXED (M(md,0,1));
-  M(m,0,2) = CLUTTER_FLOAT_TO_FIXED (M(md,0,2));
-  M(m,0,3) = CLUTTER_FLOAT_TO_FIXED (M(md,0,3));
+  M(m,0,0) = COGL_FIXED_FROM_FLOAT (M(md,0,0));
+  M(m,0,1) = COGL_FIXED_FROM_FLOAT (M(md,0,1));
+  M(m,0,2) = COGL_FIXED_FROM_FLOAT (M(md,0,2));
+  M(m,0,3) = COGL_FIXED_FROM_FLOAT (M(md,0,3));
 
-  M(m,1,0) = CLUTTER_FLOAT_TO_FIXED (M(md,1,0));
-  M(m,1,1) = CLUTTER_FLOAT_TO_FIXED (M(md,1,1));
-  M(m,1,2) = CLUTTER_FLOAT_TO_FIXED (M(md,1,2));
-  M(m,1,3) = CLUTTER_FLOAT_TO_FIXED (M(md,1,3));
+  M(m,1,0) = COGL_FIXED_FROM_FLOAT (M(md,1,0));
+  M(m,1,1) = COGL_FIXED_FROM_FLOAT (M(md,1,1));
+  M(m,1,2) = COGL_FIXED_FROM_FLOAT (M(md,1,2));
+  M(m,1,3) = COGL_FIXED_FROM_FLOAT (M(md,1,3));
 
-  M(m,2,0) = CLUTTER_FLOAT_TO_FIXED (M(md,2,0));
-  M(m,2,1) = CLUTTER_FLOAT_TO_FIXED (M(md,2,1));
-  M(m,2,2) = CLUTTER_FLOAT_TO_FIXED (M(md,2,2));
-  M(m,2,3) = CLUTTER_FLOAT_TO_FIXED (M(md,2,3));
+  M(m,2,0) = COGL_FIXED_FROM_FLOAT (M(md,2,0));
+  M(m,2,1) = COGL_FIXED_FROM_FLOAT (M(md,2,1));
+  M(m,2,2) = COGL_FIXED_FROM_FLOAT (M(md,2,2));
+  M(m,2,3) = COGL_FIXED_FROM_FLOAT (M(md,2,3));
 
-  M(m,3,0) = CLUTTER_FLOAT_TO_FIXED (M(md,3,0));
-  M(m,3,1) = CLUTTER_FLOAT_TO_FIXED (M(md,3,1));
-  M(m,3,2) = CLUTTER_FLOAT_TO_FIXED (M(md,3,2));
-  M(m,3,3) = CLUTTER_FLOAT_TO_FIXED (M(md,3,3));
+  M(m,3,0) = COGL_FIXED_FROM_FLOAT (M(md,3,0));
+  M(m,3,1) = COGL_FIXED_FROM_FLOAT (M(md,3,1));
+  M(m,3,2) = COGL_FIXED_FROM_FLOAT (M(md,3,2));
+  M(m,3,3) = COGL_FIXED_FROM_FLOAT (M(md,3,3));
 #undef M
 }
 
 void
-cogl_get_viewport (ClutterFixed v[4])
+cogl_get_viewport (CoglFixed v[4])
 {
   GLdouble vd[4];
   glGetDoublev(GL_VIEWPORT, &vd[0]);
 
-  v[0] = CLUTTER_FLOAT_TO_FIXED (vd[0]);
-  v[1] = CLUTTER_FLOAT_TO_FIXED (vd[1]);
-  v[2] = CLUTTER_FLOAT_TO_FIXED (vd[2]);
-  v[3] = CLUTTER_FLOAT_TO_FIXED (vd[3]);
+  v[0] = COGL_FIXED_FROM_FLOAT (vd[0]);
+  v[1] = COGL_FIXED_FROM_FLOAT (vd[1]);
+  v[2] = COGL_FIXED_FROM_FLOAT (vd[2]);
+  v[3] = COGL_FIXED_FROM_FLOAT (vd[3]);
 }
 
 void
@@ -1240,9 +1243,9 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 
 void
 cogl_fog_set (const ClutterColor *fog_color,
-              ClutterFixed        density,
-              ClutterFixed        start,
-              ClutterFixed        stop)
+              CoglFixed        density,
+              CoglFixed        start,
+              CoglFixed        stop)
 {
   GLfloat fogColor[4];
 
@@ -1258,7 +1261,7 @@ cogl_fog_set (const ClutterColor *fog_color,
   glFogi (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
-  glFogf (GL_FOG_DENSITY, CLUTTER_FIXED_TO_FLOAT (density));
-  glFogf (GL_FOG_START, CLUTTER_FIXED_TO_FLOAT (start));
-  glFogf (GL_FOG_END, CLUTTER_FIXED_TO_FLOAT (stop));
+  glFogf (GL_FOG_DENSITY, COGL_FIXED_TO_FLOAT (density));
+  glFogf (GL_FOG_START, COGL_FIXED_TO_FLOAT (start));
+  glFogf (GL_FOG_END, COGL_FIXED_TO_FLOAT (stop));
 }

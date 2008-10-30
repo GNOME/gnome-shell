@@ -351,13 +351,13 @@ clutter_texture_get_preferred_width (ClutterActor *self,
               /* Set the natural width so as to preserve the aspect ratio */
               ClutterFixed ratio, height;
 
-              ratio = clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->width),
-                                     CLUTTER_INT_TO_FIXED (priv->height));
+              ratio = COGL_FIXED_MUL (COGL_FIXED_FROM_INT (priv->width),
+                                      COGL_FIXED_FROM_INT (priv->height));
 
               height = CLUTTER_UNITS_TO_FIXED (for_height);
 
               *natural_width_p =
-                CLUTTER_UNITS_FROM_FIXED (clutter_qmulx (ratio, height));
+                CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL (ratio, height));
             }
         }
     }
@@ -396,13 +396,13 @@ clutter_texture_get_preferred_height (ClutterActor *self,
               /* Set the natural height so as to preserve the aspect ratio */
               ClutterFixed ratio, width;
               
-              ratio = clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->height),
-                                     CLUTTER_INT_TO_FIXED (priv->width));
+              ratio = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (priv->height),
+                                      COGL_FIXED_FROM_INT (priv->width));
 
               width = CLUTTER_UNITS_TO_FIXED (for_width);
               
               *natural_height_p =
-                CLUTTER_UNITS_FROM_FIXED (clutter_qmulx (ratio, width));
+                CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL (ratio, width));
             }
         }
     }
@@ -469,20 +469,20 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
 
   /* Convert the coordinates back to [-1,1] range */
   cogl_get_viewport (viewport);
-  x_min = CFX_QDIV (x_min, viewport[2]) * 2 - CFX_ONE;
-  x_max = CFX_QDIV (x_max, viewport[2]) * 2 - CFX_ONE;
-  y_min = CFX_QDIV (y_min, viewport[3]) * 2 - CFX_ONE;
-  y_max = CFX_QDIV (y_max, viewport[3]) * 2 - CFX_ONE;
+  x_min = COGL_FIXED_DIV (x_min, viewport[2]) * 2 - COGL_FIXED_1;
+  x_max = COGL_FIXED_DIV (x_max, viewport[2]) * 2 - COGL_FIXED_1;
+  y_min = COGL_FIXED_DIV (y_min, viewport[3]) * 2 - COGL_FIXED_1;
+  y_max = COGL_FIXED_DIV (y_max, viewport[3]) * 2 - COGL_FIXED_1;
 
   /* Set up a projection matrix so that the actor will be projected as
      if it was drawn at its original location */
   tan_angle = clutter_tani (CLUTTER_ANGLE_FROM_DEGX (perspective.fovy / 2));
-  near_size = CFX_QMUL (perspective.z_near, tan_angle);
+  near_size = COGL_FIXED_MUL (perspective.z_near, tan_angle);
 
-  cogl_frustum (CFX_QMUL (x_min, near_size),
-		CFX_QMUL (x_max, near_size),
-		CFX_QMUL (-y_min, near_size),
-		CFX_QMUL (-y_max, near_size),
+  cogl_frustum (COGL_FIXED_MUL (x_min, near_size),
+		COGL_FIXED_MUL (x_max, near_size),
+		COGL_FIXED_MUL (-y_min, near_size),
+		COGL_FIXED_MUL (-y_max, near_size),
 		perspective.z_near, perspective.z_far);
 }
 
@@ -586,20 +586,21 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_opacity (self));
 
   if (priv->repeat_x && priv->width > 0)
-    t_w = CFX_QDIV (CLUTTER_INT_TO_FIXED (x_2 - x_1),
-		    CLUTTER_INT_TO_FIXED (priv->width));
+    t_w = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (x_2 - x_1),
+		          COGL_FIXED_FROM_INT (priv->width));
   else
-    t_w = CFX_ONE;
+    t_w = COGL_FIXED_1;
+
   if (priv->repeat_y && priv->height > 0)
-    t_h = CFX_QDIV (CLUTTER_INT_TO_FIXED (y_2 - y_1),
-		    CLUTTER_INT_TO_FIXED (priv->height));
+    t_h = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (y_2 - y_1),
+                          COGL_FIXED_FROM_INT (priv->height));
   else
-    t_h = CFX_ONE;
+    t_h = COGL_FIXED_1;
 
   /* Paint will have translated us */
   cogl_texture_rectangle (priv->texture, 0, 0,
-			  CLUTTER_INT_TO_FIXED (x_2 - x_1),
-			  CLUTTER_INT_TO_FIXED (y_2 - y_1),
+			  COGL_FIXED_FROM_INT (x_2 - x_1),
+			  COGL_FIXED_FROM_INT (y_2 - y_1),
 			  0, 0, t_w, t_h);
 }
 

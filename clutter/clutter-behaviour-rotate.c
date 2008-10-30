@@ -108,8 +108,8 @@ ClutterFixed clamp_angle (ClutterFixed a)
   ClutterFixed a1, a2;
   gint rounds;
 
-  rounds = a / CFX_360;
-  a1 = rounds * CFX_360;
+  rounds = a / COGL_FIXED_360;
+  a1 = rounds * COGL_FIXED_360;
   a2 = a - a1;
 
   return a2;
@@ -126,7 +126,7 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
   rotate_behaviour = CLUTTER_BEHAVIOUR_ROTATE (behaviour);
   priv = rotate_behaviour->priv;
 
-  factor = CLUTTER_INT_TO_FIXED (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
+  factor = COGL_FIXED_FROM_INT (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
   angle = 0;
 
   start = priv->angle_start;
@@ -134,14 +134,14 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
 
   if (priv->direction == CLUTTER_ROTATE_CW && start >= end)
     {
-      end += CFX_360;
+      end += COGL_FIXED_360;
     }
   else if (priv->direction == CLUTTER_ROTATE_CCW && start <= end)
     {
-      end -= CFX_360;
+      end -= COGL_FIXED_360;
     }
 
-  angle = CFX_MUL ((end - start), factor)  + start;
+  angle = COGL_FIXED_FAST_MUL ((end - start), factor)  + start;
 
   clutter_behaviour_actors_foreach (behaviour,
 				    alpha_notify_foreach,
@@ -163,10 +163,10 @@ clutter_behaviour_rotate_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_ANGLE_START:
-      priv->angle_start = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+      priv->angle_start = COGL_FIXED_FROM_FLOAT (g_value_get_double (value));
       break;
     case PROP_ANGLE_END:
-      priv->angle_end = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+      priv->angle_end = COGL_FIXED_FROM_FLOAT (g_value_get_double (value));
       break;
     case PROP_AXIS:
       priv->axis = g_value_get_enum (value);
@@ -211,10 +211,10 @@ clutter_behaviour_rotate_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_ANGLE_START:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->angle_start));
+      g_value_set_double (value, COGL_FIXED_TO_DOUBLE (priv->angle_start));
       break;
     case PROP_ANGLE_END:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->angle_end));
+      g_value_set_double (value, COGL_FIXED_TO_DOUBLE (priv->angle_end));
       break;
     case PROP_AXIS:
       g_value_set_enum (value, priv->axis);
@@ -367,8 +367,8 @@ clutter_behaviour_rotate_init (ClutterBehaviourRotate *rotate)
 
   rotate->priv = priv = CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE (rotate);
 
-  priv->angle_start = CLUTTER_FLOAT_TO_FIXED (0.0);
-  priv->angle_end = CLUTTER_FLOAT_TO_FIXED (0.0);
+  priv->angle_start = COGL_FIXED_FROM_FLOAT (0.0);
+  priv->angle_end = COGL_FIXED_FROM_FLOAT (0.0);
   priv->axis = CLUTTER_Z_AXIS;
   priv->direction = CLUTTER_ROTATE_CW;
   priv->center_x = priv->center_y = priv->center_z = 0;
@@ -568,10 +568,10 @@ clutter_behaviour_rotate_get_bounds (ClutterBehaviourRotate *rotate,
   priv = rotate->priv;
 
   if (angle_start)
-    *angle_start = CLUTTER_FIXED_TO_DOUBLE (priv->angle_start);
+    *angle_start = COGL_FIXED_TO_DOUBLE (priv->angle_start);
 
   if (angle_end)
-    *angle_end = CLUTTER_FIXED_TO_DOUBLE (priv->angle_end);
+    *angle_end = COGL_FIXED_TO_DOUBLE (priv->angle_end);
 }
 
 /**
@@ -593,8 +593,8 @@ clutter_behaviour_rotate_set_bounds (ClutterBehaviourRotate *rotate,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ROTATE (rotate));
 
   clutter_behaviour_rotate_set_boundsx (rotate,
-                                        CLUTTER_FLOAT_TO_FIXED (angle_start),
-                                        CLUTTER_FLOAT_TO_FIXED (angle_end));
+                                        COGL_FIXED_FROM_FLOAT (angle_start),
+                                        COGL_FIXED_FROM_FLOAT (angle_end));
 }
 
 /**

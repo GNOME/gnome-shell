@@ -1,3 +1,67 @@
+2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	Bug 1209 - Move fixed point API in COGL
+
+	* clutter/cogl/cogl-fixed.h:
+	* clutter/cogl/cogl.h.in:
+	* clutter/cogl/common/Makefile.am:
+	* clutter/cogl/common/cogl-fixed.c: Add fixed point API, modelled
+	after the ClutterFixed. The CoglFixed API supercedes the ClutterFixed
+	one and avoids the dependency of COGL on Clutter's own API.
+
+	* clutter/cogl/common/cogl-clip-stack.c:
+	* clutter/cogl/common/cogl-primitives.c:
+	* clutter/cogl/common/cogl-primitives.h: Update internal usage of
+	ClutterFixed to CoglFixed.
+
+	* clutter/cogl/gl/Makefile.am:
+	* clutter/cogl/gl/cogl-primitives.c:
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gl/cogl.c: Ditto, in the GL implementation of the
+	COGL API.
+
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/cogl/gles/cogl-fbo.c:
+	* clutter/cogl/gles/cogl-gles2-wrapper.c:
+	* clutter/cogl/gles/cogl-primitives.c:
+	* clutter/cogl/gles/cogl-texture.c:
+	* clutter/cogl/gles/cogl.c: Ditto, in the GLES implementation of
+	the COGL API.
+
+	* clutter/pango/pangoclutter-glyph-cache.c:
+	* clutter/pango/pangoclutter-glyph-cache.h: Ditto, in the Pango
+	renderer glyphs cache.
+
+	* clutter/clutter-fixed.c:
+	* clutter/clutter-fixed.h: ClutterFixed and related API becomes
+	a simple transition API for bindings and public Clutter API.
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-alpha.c:
+	* clutter/clutter-backend.c:
+	* clutter/clutter-behaviour-depth.c:
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter-behaviour-path.c:
+	* clutter/clutter-behaviour-rotate.c:
+	* clutter/clutter-behaviour-scale.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-color.c:
+	* clutter/clutter-entry.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-units.h: Move from the internal usage of
+	ClutterFixed to CoglFixed.
+
+	* doc/reference/clutter/clutter-sections.txt:
+	* doc/reference/cogl/cogl-docs.sgml:
+	* doc/reference/cogl/cogl-sections.txt: Update the documentation.
+
+	* tests/test-cogl-tex-tile.c:
+	* tests/test-project.c: Fix tests after the API change
+
+	* README: Add release notes.
+
 2008-10-29  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1074 - FBOs on GLES

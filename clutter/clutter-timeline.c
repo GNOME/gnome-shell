@@ -1332,7 +1332,7 @@ clutter_timeline_get_progress (ClutterTimeline *timeline)
 {
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0.);
 
-  return CLUTTER_FIXED_TO_DOUBLE (clutter_timeline_get_progressx (timeline));
+  return COGL_FIXED_TO_DOUBLE (clutter_timeline_get_progressx (timeline));
 }
 
 /**
@@ -1355,11 +1355,11 @@ clutter_timeline_get_progressx (ClutterTimeline *timeline)
 
   priv = timeline->priv;
 
-  progress = clutter_qdivx (CLUTTER_INT_TO_FIXED (priv->current_frame_num),
-			    CLUTTER_INT_TO_FIXED (priv->n_frames));
+  progress = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (priv->current_frame_num),
+			     COGL_FIXED_FROM_INT (priv->n_frames));
 
   if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
-    progress = CFX_ONE - progress;
+    progress = COGL_FIXED_1 - progress;
 
   return progress;
 }

@@ -344,13 +344,14 @@ pango_clutter_glyph_cache_set (PangoClutterGlyphCache *cache,
 
   value = g_slice_new (PangoClutterGlyphCacheValue);
   value->texture = cogl_texture_ref (band->texture);
-  value->tx1 = CLUTTER_INT_TO_FIXED (band->space_remaining)
-    / band->texture_size;
-  value->tx2 = CLUTTER_INT_TO_FIXED (band->space_remaining + width)
-    / band->texture_size;
-  value->ty1 = CLUTTER_INT_TO_FIXED (band->top) / band->texture_size;
-  value->ty2 = CLUTTER_INT_TO_FIXED (band->top + height)
-    / band->texture_size;
+  value->tx1 = COGL_FIXED_FROM_INT (band->space_remaining)
+             / band->texture_size;
+  value->tx2 = COGL_FIXED_FROM_INT (band->space_remaining + width)
+             / band->texture_size;
+  value->ty1 = COGL_FIXED_FROM_INT (band->top)
+             / band->texture_size;
+  value->ty2 = COGL_FIXED_FROM_INT (band->top + height)
+             / band->texture_size;
   value->draw_x = draw_x;
   value->draw_y = draw_y;
   value->draw_width = width;

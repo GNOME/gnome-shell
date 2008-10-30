@@ -167,6 +167,15 @@ RELEASE NOTES
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (See NEWS for general new feature info).
 
+Release Notes for Clutter 1.0
+-------------------------------
+
+* The fixed point API implementation Clutter uses internally has been
+  moved from the Clutter namespace to the COGL one. The ClutterFixed
+  type and relative API is just a wrapper around CoglFixed and its
+  API. The change removed the private (yet publicly exported) and
+  the already deprecated ClutterFixed API.
+
 Release Notes for Clutter 0.8
 -------------------------------
 

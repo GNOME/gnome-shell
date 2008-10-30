@@ -184,20 +184,20 @@ clutter_clone_texture_paint (ClutterActor *self)
   tex_height = cogl_texture_get_height (cogl_texture);
 
   if (priv->repeat_x && tex_width > 0)
-    t_w = CFX_QDIV (CLUTTER_INT_TO_FIXED (x_2 - x_1),
-		    CLUTTER_INT_TO_FIXED (tex_width));
+    t_w = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (x_2 - x_1),
+                          COGL_FIXED_FROM_INT (tex_width));
   else
-    t_w = CFX_ONE;
+    t_w = COGL_FIXED_1;
   if (priv->repeat_y && tex_height > 0)
-    t_h = CFX_QDIV (CLUTTER_INT_TO_FIXED (y_2 - y_1),
-		    CLUTTER_INT_TO_FIXED (tex_height));
+    t_h = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (y_2 - y_1),
+                          COGL_FIXED_FROM_INT (tex_height));
   else
-    t_h = CFX_ONE;
+    t_h = COGL_FIXED_1;
 
   /* Parent paint translated us into position */
   cogl_texture_rectangle (cogl_texture, 0, 0,
-			  CLUTTER_INT_TO_FIXED (x_2 - x_1),
-			  CLUTTER_INT_TO_FIXED (y_2 - y_1),
+			  COGL_FIXED_FROM_INT (x_2 - x_1),
+			  COGL_FIXED_FROM_INT (y_2 - y_1),
 			  0, 0, t_w, t_h);
 }
 

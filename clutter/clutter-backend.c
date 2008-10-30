@@ -383,13 +383,13 @@ clutter_backend_set_resolution (ClutterBackend *backend,
 
   priv = backend->priv;
 
-  fixed_dpi = CLUTTER_FLOAT_TO_FIXED (dpi);
+  fixed_dpi = COGL_FIXED_FROM_FLOAT (dpi);
   if (priv->resolution != fixed_dpi)
     priv->resolution = fixed_dpi;
 
   if (CLUTTER_CONTEXT ()->font_map)
     pango_clutter_font_map_set_resolution (CLUTTER_CONTEXT ()->font_map,
-					   CLUTTER_FIXED_TO_FLOAT (fixed_dpi));
+					   COGL_FIXED_TO_FLOAT (fixed_dpi));
 }
 
 /**
@@ -409,7 +409,7 @@ clutter_backend_get_resolution (ClutterBackend *backend)
 {
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1.0);
 
-  return CLUTTER_FIXED_TO_FLOAT (backend->priv->resolution);
+  return COGL_FIXED_TO_FLOAT (backend->priv->resolution);
 }
 
 /**

@@ -37,9 +37,9 @@ typedef struct _PangoClutterGlyphCacheValue PangoClutterGlyphCacheValue;
 
 struct _PangoClutterGlyphCacheValue
 {
-  CoglHandle   texture;
-  ClutterFixed tx1, ty1, tx2, ty2;
-  int          draw_x, draw_y, draw_width, draw_height;
+  CoglHandle texture;
+  CoglFixed  tx1, ty1, tx2, ty2;
+  int        draw_x, draw_y, draw_width, draw_height;
 };
 
 PangoClutterGlyphCache *pango_clutter_glyph_cache_new (gboolean use_mipmapping);

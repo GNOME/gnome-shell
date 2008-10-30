@@ -789,17 +789,25 @@ mtx_transform (ClutterFixed m[16],
     _w = *w;
 
     /* We care lot about precision here, so have to use QMUL */
-    *x = CFX_QMUL (M (m, 0, 0), _x) + CFX_QMUL (M (m, 0, 1), _y) +
-	 CFX_QMUL (M (m, 0, 2), _z) + CFX_QMUL (M (m, 0, 3), _w);
+    *x = COGL_FIXED_MUL (M (m, 0, 0), _x)
+       + COGL_FIXED_MUL (M (m, 0, 1), _y)
+       + COGL_FIXED_MUL (M (m, 0, 2), _z)
+       + COGL_FIXED_MUL (M (m, 0, 3), _w);
 
-    *y = CFX_QMUL (M (m, 1, 0), _x) + CFX_QMUL (M (m, 1, 1), _y) +
-	 CFX_QMUL (M (m, 1, 2), _z) + CFX_QMUL (M (m, 1, 3), _w);
+    *y = COGL_FIXED_MUL (M (m, 1, 0), _x)
+       + COGL_FIXED_MUL (M (m, 1, 1), _y)
+       + COGL_FIXED_MUL (M (m, 1, 2), _z)
+       + COGL_FIXED_MUL (M (m, 1, 3), _w);
 
-    *z = CFX_QMUL (M (m, 2, 0), _x) + CFX_QMUL (M (m, 2, 1), _y) +
-	 CFX_QMUL (M (m, 2, 2), _z) + CFX_QMUL (M (m, 2, 3), _w);
+    *z = COGL_FIXED_MUL (M (m, 2, 0), _x)
+       + COGL_FIXED_MUL (M (m, 2, 1), _y)
+       + COGL_FIXED_MUL (M (m, 2, 2), _z)
+       + COGL_FIXED_MUL (M (m, 2, 3), _w);
 
-    *w = CFX_QMUL (M (m, 3, 0), _x) + CFX_QMUL (M (m, 3, 1), _y) +
-	 CFX_QMUL (M (m, 3, 2), _z) + CFX_QMUL (M (m, 3, 3), _w);
+    *w = COGL_FIXED_MUL (M (m, 3, 0), _x)
+       + COGL_FIXED_MUL (M (m, 3, 1), _y)
+       + COGL_FIXED_MUL (M (m, 3, 2), _z)
+       + COGL_FIXED_MUL (M (m, 3, 3), _w);
 
     /* Specially for Matthew: was going to put a comment here, but could not
      * think of anything at all to say ;)
@@ -856,8 +864,8 @@ clutter_actor_transform_point (ClutterActor *actor,
 /* Help macros to scale from OpenGL <-1,1> coordinates system to our
  * X-window based <0,window-size> coordinates
  */
-#define MTX_GL_SCALE_X(x,w,v1,v2) (CFX_QMUL (((CFX_QDIV ((x), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
-#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - CFX_QMUL (((CFX_QDIV ((y), (w)) + CFX_ONE) >> 1), (v1)) + (v2))
+#define MTX_GL_SCALE_X(x,w,v1,v2) (COGL_FIXED_MUL (((COGL_FIXED_DIV ((x), (w)) + COGL_FIXED_1) >> 1), (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - COGL_FIXED_MUL (((COGL_FIXED_DIV ((y), (w)) + COGL_FIXED_1) >> 1), (v1)) + (v2))
 #define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
 
 /**
@@ -886,7 +894,7 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
 						 ClutterVertex *vertex)
 {
   ClutterFixed  v[4];
-  ClutterFixed  w = CFX_ONE;
+  ClutterFixed  w = COGL_FIXED_1;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
@@ -902,9 +910,9 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
    * The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
    * we would have to divide the original verts with it.
    */
-  vertex->x = CFX_QMUL ((point->x + CFX_ONE / 2), v[2]);
-  vertex->y = CFX_QMUL ((CFX_ONE / 2 - point->y), v[3]);
-  vertex->z = CFX_QMUL ((point->z + CFX_ONE / 2), v[2]);
+  vertex->x = COGL_FIXED_MUL ((point->x + COGL_FIXED_0_5), v[2]);
+  vertex->y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - point->y), v[3]);
+  vertex->z = COGL_FIXED_MUL ((point->z + COGL_FIXED_0_5), v[2]);
 }
 
 /**
@@ -926,7 +934,7 @@ clutter_actor_apply_transform_to_point (ClutterActor  *self,
 {
   ClutterFixed  mtx_p[16];
   ClutterFixed  v[4];
-  ClutterFixed  w = CFX_ONE;
+  ClutterFixed  w = COGL_FIXED_1;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -966,7 +974,7 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
   _x = 0;
   _y = 0;
   _z = 0;
-  _w = CFX_ONE;
+  _w = COGL_FIXED_1;
 
   mtx_transform (mtx, &_x, &_y, &_z, &_w);
 
@@ -978,7 +986,7 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
   _x = self->priv->allocation.x2 - self->priv->allocation.x1;
   _y = 0;
   _z = 0;
-  _w = CFX_ONE;
+  _w = COGL_FIXED_1;
 
   mtx_transform (mtx, &_x, &_y, &_z, &_w);
 
@@ -990,7 +998,7 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
   _x = 0;
   _y = self->priv->allocation.y2 - self->priv->allocation.y1;
   _z = 0;
-  _w = CFX_ONE;
+  _w = COGL_FIXED_1;
 
   mtx_transform (mtx, &_x, &_y, &_z, &_w);
 
@@ -1002,7 +1010,7 @@ clutter_actor_transform_vertices_relative (ClutterActor  *self,
   _x = self->priv->allocation.x2 - self->priv->allocation.x1;
   _y = self->priv->allocation.y2 - self->priv->allocation.y1;
   _z = 0;
-  _w = CFX_ONE;
+  _w = COGL_FIXED_1;
 
   mtx_transform (mtx, &_x, &_y, &_z, &_w);
 
@@ -1057,7 +1065,7 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
   _x = 0;
   _y = 0;
   _z = 0;
-  _w = CFX_ONE;
+  _w = COGL_FIXED_1;
 
   mtx_transform (mtx, &_x, &_y, &_z, &_w);
 
@@ -1069,7 +1077,7 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
   _x = box->x2 - box->x1;
   _y = 0;
   _z = 0;
-  _w = CFX_ONE;
+  _w = COGL_FIXED_1;
 
   mtx_transform (mtx, &_x, &_y, &_z, &_w);
 
@@ -1081,7 +1089,7 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
   _x = 0;
   _y = box->y2 - box->y1;
   _z = 0;
-  _w = CFX_ONE;
+  _w = COGL_FIXED_1;
 
   mtx_transform (mtx, &_x, &_y, &_z, &_w);
 
@@ -1093,7 +1101,7 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
   _x = box->x2 - box->x1;
   _y = box->y2 - box->y1;
   _z = 0;
-  _w = CFX_ONE;
+  _w = COGL_FIXED_1;
 
   mtx_transform (mtx, &_x, &_y, &_z, &_w);
 
@@ -1220,21 +1228,21 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
    * The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
    * we would have to devide the original verts with it.
    */
-  verts[0].x = CFX_QMUL ((verts[0].x + CFX_ONE / 2), v[2]);
-  verts[0].y = CFX_QMUL ((CFX_ONE / 2 - verts[0].y), v[3]);
-  verts[0].z = CFX_QMUL ((verts[0].z + CFX_ONE / 2), v[2]);
+  verts[0].x = COGL_FIXED_MUL ((verts[0].x + COGL_FIXED_0_5), v[2]);
+  verts[0].y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - verts[0].y), v[3]);
+  verts[0].z = COGL_FIXED_MUL ((verts[0].z + COGL_FIXED_0_5), v[2]);
 
-  verts[1].x = CFX_QMUL ((verts[1].x + CFX_ONE / 2), v[2]);
-  verts[1].y = CFX_QMUL ((CFX_ONE / 2 - verts[1].y), v[3]);
-  verts[1].z = CFX_QMUL ((verts[1].z + CFX_ONE / 2), v[2]);
+  verts[1].x = COGL_FIXED_MUL ((verts[1].x + COGL_FIXED_0_5), v[2]);
+  verts[1].y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - verts[1].y), v[3]);
+  verts[1].z = COGL_FIXED_MUL ((verts[1].z + COGL_FIXED_0_5), v[2]);
 
-  verts[2].x = CFX_QMUL ((verts[2].x + CFX_ONE / 2), v[2]);
-  verts[2].y = CFX_QMUL ((CFX_ONE / 2 - verts[2].y), v[3]);
-  verts[2].z = CFX_QMUL ((verts[2].z + CFX_ONE / 2), v[2]);
+  verts[2].x = COGL_FIXED_MUL ((verts[2].x + COGL_FIXED_0_5), v[2]);
+  verts[2].y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - verts[2].y), v[3]);
+  verts[2].z = COGL_FIXED_MUL ((verts[2].z + COGL_FIXED_0_5), v[2]);
 
-  verts[3].x = CFX_QMUL ((verts[3].x + CFX_ONE / 2), v[2]);
-  verts[3].y = CFX_QMUL ((CFX_ONE / 2 - verts[3].y), v[3]);
-  verts[3].z = CFX_QMUL ((verts[3].z + CFX_ONE / 2), v[2]);
+  verts[3].x = COGL_FIXED_MUL ((verts[3].x + COGL_FIXED_0_5), v[2]);
+  verts[3].y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - verts[3].y), v[3]);
+  verts[3].z = COGL_FIXED_MUL ((verts[3].z + COGL_FIXED_0_5), v[2]);
 }
 
 /**
@@ -1310,7 +1318,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
    * the translations included in the rotation are not scaled and so the
    * entire object will move on the screen as a result of rotating it).
    */
-  if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
+  if (priv->scale_x != COGL_FIXED_1 || priv->scale_y != COGL_FIXED_1)
     cogl_scale (priv->scale_x, priv->scale_y);
 
    if (priv->rzang)
@@ -1319,7 +1327,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
 		       CLUTTER_UNITS_TO_FIXED (priv->rzy),
 		       0);
 
-      cogl_rotatex (priv->rzang, 0, 0, CFX_ONE);
+      cogl_rotatex (priv->rzang, 0, 0, COGL_FIXED_1);
 
       cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->rzx),
 		       CLUTTER_UNITS_TO_FIXED (-priv->rzy),
@@ -1332,7 +1340,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
 		       0,
 		       CLUTTER_UNITS_TO_FIXED (priv->z + priv->ryz));
 
-      cogl_rotatex (priv->ryang, 0, CFX_ONE, 0);
+      cogl_rotatex (priv->ryang, 0, COGL_FIXED_1, 0);
 
       cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->ryx),
 		       0,
@@ -1345,7 +1353,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
 		       CLUTTER_UNITS_TO_FIXED (priv->rxy),
 		       CLUTTER_UNITS_TO_FIXED (priv->z + priv->rxz));
 
-      cogl_rotatex (priv->rxang, CFX_ONE, 0, 0);
+      cogl_rotatex (priv->rxang, COGL_FIXED_1, 0, 0);
 
       cogl_translatex (0,
 		       CLUTTER_UNITS_TO_FIXED (-priv->rxy),
@@ -1605,14 +1613,14 @@ clutter_actor_set_property (GObject      *object,
     case PROP_SCALE_X:
       clutter_actor_set_scalex
                          (actor,
-			  CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value)),
+			  COGL_FIXED_FROM_FLOAT (g_value_get_double (value)),
 			  priv->scale_y);
       break;
     case PROP_SCALE_Y:
       clutter_actor_set_scalex
                          (actor,
 			  priv->scale_x,
-			  CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value)));
+			  COGL_FIXED_FROM_FLOAT (g_value_get_double (value)));
       break;
     case PROP_CLIP:
       {
@@ -1630,7 +1638,7 @@ clutter_actor_set_property (GObject      *object,
       {
         ClutterFixed angle;
 
-        angle = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+        angle = COGL_FIXED_FROM_FLOAT (g_value_get_double (value));
         clutter_actor_set_rotation_internal (actor,
                                              CLUTTER_X_AXIS,
                                              angle,
@@ -1643,7 +1651,7 @@ clutter_actor_set_property (GObject      *object,
       {
         ClutterFixed angle;
 
-        angle = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+        angle = COGL_FIXED_FROM_FLOAT (g_value_get_double (value));
         clutter_actor_set_rotation_internal (actor,
                                              CLUTTER_Y_AXIS,
                                              angle,
@@ -1656,7 +1664,7 @@ clutter_actor_set_property (GObject      *object,
       {
         ClutterFixed angle;
 
-        angle = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+        angle = COGL_FIXED_FROM_FLOAT (g_value_get_double (value));
         clutter_actor_set_rotation_internal (actor,
                                              CLUTTER_Z_AXIS,
                                              angle,
@@ -1823,22 +1831,22 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
     case PROP_SCALE_X:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->scale_x));
+      g_value_set_double (value, COGL_FIXED_TO_DOUBLE (priv->scale_x));
       break;
     case PROP_SCALE_Y:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->scale_y));
+      g_value_set_double (value, COGL_FIXED_TO_DOUBLE (priv->scale_y));
       break;
     case PROP_REACTIVE:
       g_value_set_boolean (value, clutter_actor_get_reactive (actor));
       break;
     case PROP_ROTATION_ANGLE_X:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->rxang));
+      g_value_set_double (value, COGL_FIXED_TO_DOUBLE (priv->rxang));
       break;
     case PROP_ROTATION_ANGLE_Y:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->ryang));
+      g_value_set_double (value, COGL_FIXED_TO_DOUBLE (priv->ryang));
       break;
     case PROP_ROTATION_ANGLE_Z:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->rzang));
+      g_value_set_double (value, COGL_FIXED_TO_DOUBLE (priv->rzang));
       break;
     case PROP_ROTATION_CENTER_X:
       {
@@ -2960,8 +2968,8 @@ clutter_actor_init (ClutterActor *self)
   priv->has_clip     = FALSE;
   priv->opacity      = 0xff;
   priv->id           = clutter_id_pool_add (CLUTTER_CONTEXT()->id_pool, self);
-  priv->scale_x      = CFX_ONE;
-  priv->scale_y      = CFX_ONE;
+  priv->scale_x      = COGL_FIXED_1;
+  priv->scale_y      = COGL_FIXED_1;
   priv->shader_data  = NULL;
   priv->show_on_set_parent = TRUE;
 
@@ -4854,8 +4862,8 @@ clutter_actor_set_scale (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   clutter_actor_set_scalex (self,
-			    CLUTTER_FLOAT_TO_FIXED (scale_x),
-			    CLUTTER_FLOAT_TO_FIXED (scale_y));
+			    COGL_FIXED_FROM_FLOAT (scale_x),
+			    COGL_FIXED_FROM_FLOAT (scale_y));
 }
 
 /**
@@ -4902,10 +4910,10 @@ clutter_actor_get_scale (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   if (scale_x)
-    *scale_x = CLUTTER_FIXED_TO_FLOAT (self->priv->scale_x);
+    *scale_x = COGL_FIXED_TO_FLOAT (self->priv->scale_x);
 
   if (scale_y)
-    *scale_y = CLUTTER_FIXED_TO_FLOAT (self->priv->scale_y);
+    *scale_y = COGL_FIXED_TO_FLOAT (self->priv->scale_y);
 }
 
 /**
@@ -5162,7 +5170,7 @@ clutter_actor_set_rotationu (ClutterActor      *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   clutter_actor_set_rotation_internal (self, axis,
-                                       CLUTTER_FLOAT_TO_FIXED (angle),
+                                       COGL_FIXED_FROM_FLOAT (angle),
                                        x, y, z);
 }
 
@@ -5232,7 +5240,7 @@ clutter_actor_set_rotation (ClutterActor      *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   clutter_actor_set_rotationx (self, axis,
-                               CLUTTER_FLOAT_TO_FIXED (angle),
+                               COGL_FIXED_FROM_FLOAT (angle),
                                x, y, z);
 }
 
@@ -5273,7 +5281,7 @@ clutter_actor_get_rotationu (ClutterActor      *self,
   switch (axis)
     {
     case CLUTTER_X_AXIS:
-      retval = CLUTTER_FIXED_TO_DOUBLE (priv->rxang);
+      retval = COGL_FIXED_TO_DOUBLE (priv->rxang);
       if (y)
         *y = priv->rxy;
       if (z)
@@ -5281,7 +5289,7 @@ clutter_actor_get_rotationu (ClutterActor      *self,
       break;
 
     case CLUTTER_Y_AXIS:
-      retval = CLUTTER_FIXED_TO_DOUBLE (priv->ryang);
+      retval = COGL_FIXED_TO_DOUBLE (priv->ryang);
       if (x)
         *x = priv->ryx;
       if (z)
@@ -5289,7 +5297,7 @@ clutter_actor_get_rotationu (ClutterActor      *self,
       break;
 
     case CLUTTER_Z_AXIS:
-      retval = CLUTTER_FIXED_TO_DOUBLE (priv->rzang);
+      retval = COGL_FIXED_TO_DOUBLE (priv->rzang);
       if (x)
         *x = priv->rzx;
       if (y)
@@ -5388,9 +5396,9 @@ clutter_actor_get_rotation (ClutterActor      *self,
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.0);
 
-  return CLUTTER_FIXED_TO_FLOAT (clutter_actor_get_rotationx (self,
-                                                              axis,
-                                                              x, y, z));
+  return COGL_FIXED_TO_FLOAT (clutter_actor_get_rotationx (self,
+                                                           axis,
+                                                           x, y, z));
 }
 
 /**
@@ -6521,7 +6529,7 @@ parse_rotation_array (ClutterActor *actor,
   /* angle */
   element = json_array_get_element (array, 0);
   if (JSON_NODE_TYPE (element) == JSON_NODE_VALUE)
-    info->angle = CLUTTER_FLOAT_TO_FIXED (json_node_get_double (element));
+    info->angle = COGL_FIXED_FROM_FLOAT (json_node_get_double (element));
   else
     return FALSE;
 
@@ -6825,11 +6833,11 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
   if (!du || !dv)
     return FALSE;
 
-#define FP2FX CLUTTER_FLOAT_TO_FIXED
-#define FX2FP CLUTTER_FIXED_TO_DOUBLE
+#define FP2FX COGL_FIXED_FROM_FLOAT
+#define FX2FP COGL_FIXED_TO_DOUBLE
 #define FP2INT CLUTTER_FLOAT_TO_INT
-#define DET2X(a,b, c,d) (CFX_QMUL(a,d) - CFX_QMUL(b,c))
-#define DET2FP(a,b, c,d) (a*d - b*c)
+#define DET2X(a,b,c,d)  (COGL_FIXED_MUL (a, d) - COGL_FIXED_MUL (b, c))
+#define DET2FP(a,b,c,d) (a*d - b*c)
 
   /*
    * First, find mapping from unit uv square to xy quadrilateral; this
@@ -6850,7 +6858,7 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
       RQ[2][1] = v[0].y;
       RQ[0][2] = 0;
       RQ[1][2] = 0;
-      RQ[2][2] = CFX_ONE;
+      RQ[2][2] = COGL_FIXED_1;
     }
   else
     { /*
@@ -6881,12 +6889,12 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
       RQ[0][2] = FP2FX (DET2FP (FX2FP(px),dx2, FX2FP(py),dy2) / del);
       RQ[1][2] = FP2FX (DET2FP (dx1,FX2FP(px), dy1,FX2FP(py)) / del);
       RQ[1][2] = FP2FX (DET2FP(dx1,FX2FP(px), dy1,FX2FP(py))/del);
-      RQ[2][2] = CFX_ONE;
-      RQ[0][0] = v[1].x - v[0].x + CFX_QMUL (RQ[0][2], v[1].x);
-      RQ[1][0] = v[2].x - v[0].x + CFX_QMUL (RQ[1][2], v[2].x);
+      RQ[2][2] = COGL_FIXED_1;
+      RQ[0][0] = v[1].x - v[0].x + COGL_FIXED_MUL (RQ[0][2], v[1].x);
+      RQ[1][0] = v[2].x - v[0].x + COGL_FIXED_MUL (RQ[1][2], v[2].x);
       RQ[2][0] = v[0].x;
-      RQ[0][1] = v[1].y - v[0].y + CFX_QMUL (RQ[0][2], v[1].y);
-      RQ[1][1] = v[2].y - v[0].y + CFX_QMUL (RQ[1][2], v[2].y);
+      RQ[0][1] = v[1].y - v[0].y + COGL_FIXED_MUL (RQ[0][2], v[1].y);
+      RQ[1][1] = v[2].y - v[0].y + COGL_FIXED_MUL (RQ[1][2], v[2].y);
       RQ[2][1] = v[0].y;
     }
 
@@ -6918,8 +6926,9 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
   /*
    * Check the resutling martix is OK.
    */
-  det = CFX_QMUL (RQ[0][0], ST[0][0]) + CFX_QMUL (RQ[0][1], ST[0][1]) +
-    CFX_QMUL (RQ[0][2], ST[0][2]);
+  det = COGL_FIXED_MUL (RQ[0][0], ST[0][0])
+      + COGL_FIXED_MUL (RQ[0][1], ST[0][1])
+      + COGL_FIXED_MUL (RQ[0][2], ST[0][2]);
 
   if (!det)
     return FALSE;
@@ -7332,7 +7341,7 @@ clutter_actor_is_scaled (ClutterActor *self)
 
   priv = self->priv;
 
-  if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
+  if (priv->scale_x != COGL_FIXED_1 || priv->scale_y != COGL_FIXED_1)
     return TRUE;
 
   return FALSE;
