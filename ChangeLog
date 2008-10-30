@@ -1,5 +1,15 @@
 2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1211 - Drop ClutterFeatureFlags usage from COGL
+
+	* clutter/cogl/cogl.h.in:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c: Do not use ClutterFeatureFlags
+	when CoglFeatureFlags will do. This removes the last usage
+	of Clutter API inside COGL.
+
+2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1210 - Add CoglColor API
 
 	* clutter/cogl/cogl-color.h:
