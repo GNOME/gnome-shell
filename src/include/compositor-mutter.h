@@ -64,6 +64,7 @@ gboolean           mutter_window_is_hidden            (MutterWindow *mcw);
 MetaWindow *       mutter_window_get_meta_window      (MutterWindow *mcw);
 ClutterActor *     mutter_window_get_texture          (MutterWindow *mcw);
 gboolean           mutter_window_is_override_redirect (MutterWindow *mcw);
+const char *       mutter_window_get_description      (MutterWindow *mcw);
 
 /* Compositor API */
 MetaCompositor *mutter_new (MetaDisplay *display);

@@ -173,6 +173,8 @@ struct _MutterWindowPrivate
 
   guint8            opacity;
 
+  gchar *           desc;
+
   /*
    * These need to be counters rather than flags, since more plugins
    * can implement same effect; the practicality of stacking effects
@@ -389,6 +391,8 @@ mutter_window_dispose (GObject *object)
 
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
   g_hash_table_remove (info->windows_by_xid, (gpointer) priv->xwindow);
+
+  g_free (priv->desc);
 
   G_OBJECT_CLASS (mutter_window_parent_class)->dispose (object);
 }
@@ -734,11 +738,30 @@ mutter_window_is_override_redirect (MutterWindow *mcw)
   return FALSE;
 }
 
+const char *mutter_window_get_description (MutterWindow *mcw)
+{
+  /*
+   * For windows managed by the WM, we just defer to the WM for the window
+   * description. For override-redirect windows, we create the description
+   * ourselves, but only on demand.
+   */
+  if (mcw->priv->window)
+    return meta_window_get_description (mcw->priv->window);
+
+  if (G_UNLIKELY (mcw->priv->desc == NULL))
+    {
+      mcw->priv->desc = g_strdup_printf ("Override Redirect (0x%x)",
+                                         (guint) mcw->priv->xwindow);
+    }
+
+  return mcw->priv->desc;
+}
+
 gint
 mutter_window_get_workspace (MutterWindow *mcw)
 {
   MutterWindowPrivate *priv;
-  MetaWorkspace         *workspace;
+  MetaWorkspace       *workspace;
 
   if (!mcw)
     return -1;

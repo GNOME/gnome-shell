@@ -8293,3 +8293,11 @@ meta_window_is_hidden (MetaWindow *window)
   return window->hidden;
 }
 
+const char *
+meta_window_get_description (MetaWindow *window)
+{
+  if (!window)
+    return NULL;
+
+  return window->desc;
+}
