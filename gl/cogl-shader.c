@@ -28,7 +28,7 @@
 #endif
 
 #include "cogl.h"
-#include "cogl-shader.h"
+#include "cogl-shader-private.h"
 #include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"

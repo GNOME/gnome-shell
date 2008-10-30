@@ -37,7 +37,7 @@
 
 #include <string.h>
 
-#include "cogl-shader.h"
+#include "cogl-shader-private.h"
 #include "cogl-program.h"
 
 static void _cogl_program_free (CoglProgram *program);

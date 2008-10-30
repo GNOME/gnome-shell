@@ -3,6 +3,7 @@
 #endif
 
 #include "cogl-color.h"
+#include "cogl-fixed.h"
 
 void
 cogl_color_set_from_4ub (CoglColor *dest,

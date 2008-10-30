@@ -55,11 +55,10 @@ CFILE_GLOB=\
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
 	cogl-bitmap.h \
-	cogl-context.h \
-	cogl-defines.h \
-	cogl-internal.h \
-	cogl-primitives.h \
-	cogl-texture.h \
+	cogl-defines-gl.h \
+        cogl-defines-gles.h \
+	cogl-handle.h \
+        cogl-primitives.h \
 	gl \
 	gles
 

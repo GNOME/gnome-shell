@@ -5,31 +5,9 @@
 #ifndef __COGL_COLOR_H__
 #define __COGL_COLOR_H__
 
-#include <glib.h>
-#include <cogl/cogl-fixed.h>
+#include <cogl/cogl-types.h>
 
 G_BEGIN_DECLS
-
-typedef struct _CoglColor       CoglColor;
-
-/**
- * CoglColor:
- *
- * A structure for holding a color definition. The contents of
- * the CoglColor structure are private and should never by accessed
- * directly.
- *
- * Since: 1.0
- */
-struct _CoglColor
-{
-  /*< private >*/
-  CoglFixed red;
-  CoglFixed green;
-  CoglFixed blue;
-
-  CoglFixed alpha;
-};
 
 /**
  * cogl_color_set_from_4ub:
