@@ -558,6 +558,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->stack_position = -1;
   window->initial_workspace = 0; /* not used */
   window->initial_timestamp = 0; /* not used */
+
+  window->compositor_private = NULL;
   
   meta_display_register_x_window (display, &window->xwindow, window);
 
