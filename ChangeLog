@@ -1,3 +1,9 @@
+2008-10-31  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/pango/cogl-pango-fontmap.c:
+	* clutter/pango/cogl-pango-render.c: Whitespace fixes and code
+	duplication removal. Plus, start documenting the CoglPango API.
+
 2008-10-31  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c: (clutter_texture_set_filter_quality),

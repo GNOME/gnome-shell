@@ -21,6 +21,14 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * SECTION:cogl-pango
+ * @short_description: COGL-based text rendering using Pango
+ *
+ * FIXME
+ *
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -40,12 +48,31 @@
 
 static GQuark cogl_pango_font_map_get_renderer_key (void) G_GNUC_CONST;
 
+/**
+ * cogl_pango_font_map_new:
+ *
+ * Creates a new font map.
+ *
+ * Return value: the newly created #PangoFontMap
+ *
+ * Since: 1.0
+ */
 PangoFontMap *
 cogl_pango_font_map_new (void)
 {
   return pango_cairo_font_map_new ();
 }
 
+/**
+ * cogl_pango_font_map_create_context:
+ * @fm: a #CoglPangoFontMap
+ *
+ * Creates a new #PangoContext from the passed font map.
+ *
+ * Return value: the newly created #PangoContext
+ *
+ * Since: 1.0
+ */
 PangoContext *
 cogl_pango_font_map_create_context (CoglPangoFontMap *fm)
 {
@@ -56,6 +83,16 @@ cogl_pango_font_map_create_context (CoglPangoFontMap *fm)
   return pango_cairo_font_map_create_context (PANGO_CAIRO_FONT_MAP (fm));
 }
 
+/**
+ * cogl_pango_font_map_get_renderer:
+ * @fm: a #CoglPangoFontMap
+ *
+ * Retrieves the #CoglPangoRenderer for the passed font map.
+ *
+ * Return value: a #PangoRenderer
+ *
+ * Since: 1.0
+ */
 PangoRenderer *
 cogl_pango_font_map_get_renderer (CoglPangoFontMap *fm)
 {
@@ -82,6 +119,15 @@ cogl_pango_font_map_get_renderer (CoglPangoFontMap *fm)
   return renderer;
 }
 
+/**
+ * cogl_pango_font_map_set_resolution:
+ * @font_map: a #CoglPangoFontMap
+ * @dpi: DPI to set
+ *
+ * Sets the resolution to be used by @font_map at @dpi.
+ *
+ * Since: 1.0
+ */
 void
 cogl_pango_font_map_set_resolution (CoglPangoFontMap *font_map,
 				    double            dpi)
@@ -91,6 +137,14 @@ cogl_pango_font_map_set_resolution (CoglPangoFontMap *font_map,
   pango_cairo_font_map_set_resolution (PANGO_CAIRO_FONT_MAP (font_map), dpi);
 }
 
+/**
+ * cogl_pango_font_map_clear_glyph_cache:
+ * @fm: a #CoglPangoFontMap
+ *
+ * Clears the glyph cache for @fm.
+ *
+ * Since: 1.0
+ */
 void
 cogl_pango_font_map_clear_glyph_cache (CoglPangoFontMap *fm)
 {
@@ -101,6 +155,16 @@ cogl_pango_font_map_clear_glyph_cache (CoglPangoFontMap *fm)
   _cogl_pango_renderer_clear_glyph_cache (COGL_PANGO_RENDERER (renderer));
 }
 
+/**
+ * cogl_pango_font_map_set_use_mipmapping:
+ * @fm: a #CoglPangoFontMap
+ * @value: %TRUE to enable the use of mipmapping
+ *
+ * Sets whether the renderer for the passed font map should use
+ * mipmapping when rendering a #PangoLayout.
+ *
+ * Since: 1.0
+ */
 void
 cogl_pango_font_map_set_use_mipmapping (CoglPangoFontMap *fm,
                                         gboolean          value)
@@ -112,6 +176,17 @@ cogl_pango_font_map_set_use_mipmapping (CoglPangoFontMap *fm,
   _cogl_pango_renderer_set_use_mipmapping (renderer, value);
 }
 
+/**
+ * cogl_pango_font_map_get_use_mipmapping:
+ * @fm: a #CoglPangoFontMap
+ *
+ * Retrieves whether the #CoglPangoRenderer used by @fm will
+ * use mipmapping when rendering the glyphs.
+ *
+ * Return value: %TRUE if mipmapping is used, %FALSE otherwise.
+ *
+ * Since: 1.0
+ */
 gboolean
 cogl_pango_font_map_get_use_mipmapping (CoglPangoFontMap *fm)
 {
