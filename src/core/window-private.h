@@ -348,6 +348,10 @@ struct _MetaWindow
 
   /* maintained by group.c */
   MetaGroup *group;
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  void *compositor_private;
+#endif
 };
 
 /* These differ from window->has_foo_func in that they consider

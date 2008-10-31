@@ -474,6 +474,13 @@ static MutterWindow *
 find_window_in_display (MetaDisplay *display, Window xwindow)
 {
   GSList *index;
+  MetaWindow *window = meta_display_lookup_x_window (display, xwindow);
+
+  if (window)
+    {
+      if (window->compositor_private)
+	return window->compositor_private;
+    }
 
   for (index = meta_display_get_screens (display);
        index;
@@ -1028,6 +1035,7 @@ mutter_window_detach (MutterWindow *self)
 static void
 destroy_win (MutterWindow *cw, gboolean no_effect)
 {
+  MetaWindow	      *window;
   MetaCompScreen      *info;
   MutterWindowPrivate *priv;
   MetaScreen          *screen;
@@ -1036,6 +1044,14 @@ destroy_win (MutterWindow *cw, gboolean no_effect)
     return;
 
   priv = cw->priv;
+
+  window = meta_display_lookup_x_window (priv->screen->display, priv->xwindow);
+  if (window)
+    window->compositor_private = NULL;
+  
+  /* If not override redirect */
+  if (window)
+    window->compositor_private = NULL;
 
   screen = priv->screen;
   info   = meta_screen_get_compositor_data (screen);
@@ -1295,6 +1311,11 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
 
   printf("\n");
 #endif
+  
+  /* Hang our compositor window state off the MetaWindow for fast retrieval
+   * if we have one */
+  if (window)
+    window->compositor_private = cw;
 
   /*
    * Add this to the list at the top of the stack before it is mapped so that
@@ -1450,7 +1471,7 @@ process_create (Mutter *compositor,
 {
   MetaScreen   *screen;
   Window        xwindow = event->window;
-  MutterWindow *mw;
+  MutterWindow *cw;
 
   screen = meta_display_screen_for_root (compositor->display, event->parent);
 
@@ -1461,18 +1482,18 @@ process_create (Mutter *compositor,
    * This is quite silly as we end up creating windows as then immediatly
    * destroying them as they (likely) become framed and thus reparented.
    */
-  mw = find_window_for_screen (screen, xwindow);
+  cw = find_window_for_screen (screen, xwindow);
 
-  if (!mw && window)
+  if (!cw && window)
     {
       xwindow = meta_window_get_xwindow (window);
 
-      mw = find_window_for_screen (screen, xwindow);
+      cw = find_window_for_screen (screen, xwindow);
     }
 
-  if (mw)
+  if (cw)
     {
-      destroy_win (mw, TRUE);
+      destroy_win (cw, TRUE);
     }
 
   add_win (screen, window, event->window);
@@ -1484,7 +1505,7 @@ process_reparent (Mutter *compositor,
                   MetaWindow            *window)
 {
   MetaScreen   *screen;
-  MutterWindow *mw;
+  MutterWindow *cw;
   Window        xwindow = event->window;
   gboolean      viewable = FALSE;
 
@@ -1492,28 +1513,16 @@ process_reparent (Mutter *compositor,
 
   if (!screen)
     return;
+  
+  if (window)
+    cw = window->compositor_private;
+  else
+    cw = find_window_for_screen (screen, xwindow);
 
-  mw = find_window_for_screen (screen, xwindow);
-
-  if (!mw && window)
+  if (cw)
     {
-      xwindow = meta_window_get_xwindow (window);
-
-      mw = find_window_for_screen (screen, xwindow);
-    }
-
-  if (!mw && window)
-    {
-      xwindow = meta_window_get_xwindow (window);
-
-      mw = find_window_for_screen (screen, xwindow);
-    }
-
-
-  if (mw)
-    {
-      viewable = (mw->priv->attrs.map_state == IsViewable);
-      destroy_win (mw, TRUE);
+      viewable = (cw->priv->attrs.map_state == IsViewable);
+      destroy_win (cw, TRUE);
     }
 
   add_win (screen, window, event->window);
@@ -1604,11 +1613,11 @@ update_shape (Mutter *compositor,
 
 #ifdef HAVE_SHAPE
 static void
-process_shape (Mutter *compositor,
-               XShapeEvent           *event)
+process_shape (Mutter	    *compositor,
+               XShapeEvent  *event)
 {
   MutterWindow *cw = find_window_in_display (compositor->display,
-                                               event->window);
+                                             event->window);
   MutterWindowPrivate *priv = cw->priv;
 
   if (cw == NULL)
@@ -1679,20 +1688,20 @@ process_configure_notify (Mutter  *compositor,
 }
 
 static void
-process_unmap (Mutter *compositor,
-               XUnmapEvent           *event)
+process_unmap (Mutter	    *compositor,
+               XUnmapEvent  *event)
 {
-  MutterWindow *cw;
-  Window          xwin = event->window;
-  Display        *dpy = event->display;
+  MutterWindow	*cw;
+  Window         xwin = event->window;
+  Display       *dpy = event->display;
 
   if (event->from_configure)
     {
       /* Ignore unmap caused by parent's resize */
       return;
     }
-
-  cw = find_window_in_display (compositor->display, xwin);
+  
+  cw = find_window_in_display (compositor->display, event->window);
 
   if (cw)
     {
@@ -1720,8 +1729,11 @@ process_map (Mutter     *compositor,
 {
   MutterWindow *cw;
   Window        xwindow = event->window;
-
-  cw = find_window_in_display (compositor->display, xwindow);
+  
+  if (window)
+    cw = window->compositor_private;
+  else
+    cw = find_window_in_display (compositor->display, xwindow);
 
   if (cw)
     {
@@ -1730,8 +1742,8 @@ process_map (Mutter     *compositor,
 }
 
 static void
-process_property_notify (Mutter *compositor,
-                         XPropertyEvent        *event)
+process_property_notify (Mutter		*compositor,
+                         XPropertyEvent *event)
 {
   MetaDisplay *display = compositor->display;
 
@@ -1739,7 +1751,7 @@ process_property_notify (Mutter *compositor,
   if (event->atom == compositor->atom_net_wm_window_opacity)
     {
       MutterWindow *cw = find_window_in_display (display, event->window);
-      gulong          value;
+      gulong        value;
 
       if (!cw)
         {
@@ -2353,28 +2365,14 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
   
   for (tmp = stack; tmp != NULL; tmp = tmp->next)
     {
-      MetaWindow     *window = tmp->data;
-      MutterWindow   *cw;
-      MetaCompScreen *info;
-      MetaScreen     *screen;
-      MetaFrame      *f = meta_window_get_frame (window);
-      Window	      xwindow;
-
-      screen = meta_window_get_screen (window);
-      info = meta_screen_get_compositor_data (screen);
-
-      /* Chances are we actually get the window frame here */
-      xwindow = f ? meta_frame_get_xwindow (f) :
-		    meta_window_get_xwindow (window);
-      cw = find_window_for_screen (screen, xwindow);
+      MetaWindow    *window = tmp->data;
+      MutterWindow  *cw = window->compositor_private;
       if (!cw)
 	{
 	  meta_verbose ("Failed to find corresponding MutterWindow "
-			"for window 0x%08x\n", (unsigned int)xwindow);
+			"for window %p\n", window);
 	  continue;
 	}
-
-      /* TODO: cw = window->compositor_priv; */
       
 #if 0
       /* FIXME: There should be a seperate composite manager hook
