@@ -4,11 +4,13 @@ const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
 
 const Panel = imports.ui.panel;
+const Overlay = imports.ui.overlay;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
 let panel = null;
+let overlay = null;
 
 function start() {
     let global = Shell.global_get();
@@ -20,9 +22,25 @@ function start() {
 
     // Mutter currently hardcodes putting "Yessir. The compositor is running""
     // in the overlay. Clear that out.
-    children = global.overlay_group.get_children();
+    let children = global.overlay_group.get_children();
     for (let i = 0; i < children.length; i++)
 	children[i].destroy();
 
     panel = new Panel.Panel();
+    overlay = new Overlay.Overlay();
+    global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);
+}
+
+function show_overlay() {
+    let global = Shell.global_get();
+
+    overlay.show();
+    global.set_stage_input_area(0, 0, global.screen_width, global.screen_height);
+}
+
+function hide_overlay() {
+    let global = Shell.global_get();
+
+    overlay.hide();
+    global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);
 }
