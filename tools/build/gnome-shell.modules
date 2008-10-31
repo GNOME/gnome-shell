@@ -1,0 +1,61 @@
+<?xml version="1.0"?><!--*- mode: nxml; indent-tabs-mode: nil -*-->
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<?xml-stylesheet type="text/xsl" href="moduleset.xsl"?>
+<!-- vim:set ts=2 expandtab: -->
+<moduleset>
+  <repository type="svn" name="svn.gnome.org" default="yes"
+      href="http://svn.gnome.org/svn/"/>
+  <repository type="git" name="fishsoup.net"
+      href="git://git.fishsoup.net/"/>
+  <repository type="svn" name="svn.o-hand.com"
+      href="http://svn.o-hand.com/repos/"/>
+
+  <autotools id="gobject-introspection">
+    <branch/>
+  </autotools>
+
+  <autotools id="gir-repository">
+    <branch/>
+    <dependencies>
+        <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gjs">
+    <branch/>
+    <dependencies>
+        <dep package="gobject-introspection"/>
+    </dependencies>
+    <after>
+      <dep package="gir-repository"/>
+    </after>
+  </autotools>
+
+  <autotools id="clutter">
+    <branch repo="svn.o-hand.com" module="clutter/branches/clutter-0-8"/>
+  </autotools>
+
+  <autotools id="metacity-clutter" autogenargs="--with-clutter">
+    <branch repo="fishsoup.net" module="metacity-clutter" revision="clutter"/>
+    <dependencies>
+      <dep package="clutter"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnome-shell">
+    <branch/>
+    <dependencies>
+        <dep package="gobject-introspection"/>
+        <dep package="gir-repository"/>
+        <dep package="metacity-clutter"/>
+    </dependencies>
+  </autotools>
+
+  <metamodule id="meta-gnome-shell">
+    <dependencies>
+      <dep package="gir-repository"/>
+      <dep package="gjs"/>
+    </dependencies>
+  </metamodule>
+
+</moduleset>

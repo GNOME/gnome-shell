@@ -1,0 +1,13 @@
+# -*- mode: python -*-
+
+# The username for repositories can be overridden.
+#
+#repos["svn.gnome.org"] = "svn+ssh://myusername@svn.gnome.org/svn/"
+
+# Directory where to check sources out
+#
+#checkoutroot = '/opt/gnome-shell/source'
+
+# Directory where to install
+#
+#prefix = '/opt/gnome-shell/install'

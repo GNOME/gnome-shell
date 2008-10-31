@@ -1,0 +1,50 @@
+# -*- mode: python -*-
+#
+# jhbuildrc for building gnome-shell. Customizations shuld be done in
+# ~/.jhbuildrc-custom
+#
+# Copyright (C) 2008 Red Hat, Inc.
+#
+# Some ideas and a bit of code taken from gtk-osx-build
+#
+# Copyright (C) 2006, 2007, 2008 Imendio AB
+#
+# Use .jhbuildrc-custom to override the moduleset, modules to build,
+# the source checkout location, installation prefix, or svn usernames
+# etc.
+#
+# JHBUILDRC_GNOME_SHELL - Do not edit this line (or anything else)
+
+# Only rebuild modules that have changed
+build_policy = 'updated'
+
+moduleset = 'http://svn.gnome.org/svn/gnome-shell/trunk/tools/build/gnome-shell.modules'
+
+modules = [ 'gnome-shell' ]
+
+# what directory should the source be checked out to?
+checkoutroot = os.path.expanduser('~/gnome-shell/source')
+
+# the prefix to configure/install modules to (must have write access)
+prefix = os.path.expanduser('~/gnome-shell/install')
+
+# Use system libraries for the builds
+addpath('PKG_CONFIG_PATH', os.path.join(os.sep, 'usr', 'lib', 'pkgconfig'))
+addpath('PKG_CONFIG_PATH', os.path.join(os.sep, 'usr', 'share', 'pkgconfig'))
+
+# Look in /usr/share for icons, D-BUS service files, etc
+addpath('XDG_DATA_DIRS', '/usr/share')
+# Look in /etc/xdg for system-global autostart files
+addpath('XDG_CONFIG_DIRS', '/etc/xdg')
+
+# Rebuild faster
+os.environ['INSTALL'] = os.path.expanduser('~/bin/install-check')
+
+# Import optional user RC for further customization. You can override
+# the prefix or default build setup for example, or CFLAGS or
+# module_autogenargs, etc.
+#
+_userrc = os.path.join(os.environ['HOME'], '.jhbuildrc-custom')
+if os.path.exists(_userrc):
+    execfile(_userrc)
+
