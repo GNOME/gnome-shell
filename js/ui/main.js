@@ -1,13 +1,12 @@
+/* -*- mode: js2; js2-basic-offset: 4; -*- */
+
 const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
 
-function start() {
-    let global = Shell.global_get();
+const Panel = imports.ui.panel;
 
-    let message = new Clutter.Label({font_name: "Sans Bold 64px", text: "DRAFT"});
-    message.set_opacity(75);
-    message.set_anchor_point_from_gravity (Clutter.Gravity.CENTER);
-    message.set_rotation(Clutter.RotateAxis.Z_AXIS, - 45, 0, 0, 0);
-    message.set_position(global.screen_width / 2, global.screen_height / 2);
-    global.overlay_group.add_actor(message);
+let panel = null;
+
+function start() {
+    panel = new Panel.Panel();
 }
