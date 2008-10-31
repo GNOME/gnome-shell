@@ -133,11 +133,20 @@ void     meta_prefs_set_clutter_disabled (gboolean whether);
 GSList * meta_prefs_get_clutter_plugins (void);
 
 /**
- * Sets whether the compositor is turned on.
+ * Sets the list of plugins persistently in GConf
  *
- * \param whether   TRUE to turn on, FALSE to turn off
+ * \param list   list of plugin:option pairs
  */
 void meta_prefs_set_clutter_plugins (GSList *list);
+
+/**
+ * Sets the list of plugins temporarily for this process. The value
+ * from GConf will be ignored.
+ *
+ * \param list   list of plugin:option pairs
+ */
+void meta_prefs_override_clutter_plugins (GSList *list);
+
 #endif
 
 gboolean meta_prefs_get_live_hidden_windows (void);

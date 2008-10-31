@@ -220,6 +220,7 @@ typedef struct
   gchar *save_file;
   gchar *display_name;
   gchar *client_id;
+  gchar *mutter_plugins;
   gboolean replace_wm;
   gboolean disable_sm;
   gboolean print_version;
@@ -251,7 +252,7 @@ static GOptionContext *
 meta_parse_options (int *argc, char ***argv,
                     MetaArguments *meta_args)
 {
-  MetaArguments my_args = {NULL, NULL, NULL,
+  MetaArguments my_args = {NULL, NULL, NULL, NULL,
                            FALSE, FALSE, FALSE, FALSE, FALSE};
   GOptionEntry options[] = {
     {
@@ -307,6 +308,14 @@ meta_parse_options (int *argc, char ***argv,
       N_("Turn compositing off"),
       NULL
     },
+#ifdef WITH_CLUTTER
+    {
+      "mutter-plugins", 0, 0, G_OPTION_ARG_STRING,
+      &my_args.mutter_plugins,
+      N_("Comma-separated list of compositor plugins"),
+      "PLUGINS"
+    },
+#endif
     {NULL}
   };
   GOptionContext *ctx;
@@ -546,6 +555,25 @@ main (int argc, char **argv)
 
   if (meta_args.composite || meta_args.no_composite)
     meta_prefs_set_compositing_manager (meta_args.composite);
+
+  if (meta_args.mutter_plugins)
+    {
+      char **plugins = g_strsplit (meta_args.mutter_plugins, ",", -1);
+      char **plugin;
+      GSList *plugins_list = NULL;
+
+      for (plugin = plugins; *plugin; plugin++)
+        {
+          g_strstrip (*plugin);
+          plugins_list = g_slist_prepend (plugins_list, *plugin);
+        }
+
+      plugins_list = g_slist_reverse (plugins_list);
+      meta_prefs_override_clutter_plugins (plugins_list);
+
+      g_slist_free(plugins_list);
+      g_strfreev (plugins);
+    }
 
   if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);

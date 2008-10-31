@@ -113,6 +113,7 @@ static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 
 #ifdef WITH_CLUTTER
 static gboolean clutter_disabled = FALSE;
+static gboolean clutter_plugins_overridden = FALSE;
 static GSList *clutter_plugins = NULL;
 #endif
 
@@ -1044,8 +1045,9 @@ meta_prefs_init (void)
   handle_preference_init_int ();
 
 #ifdef WITH_CLUTTER
-  clutter_plugins = gconf_client_get_list (default_client, KEY_CLUTTER_PLUGINS,
-                                           GCONF_VALUE_STRING, &err);
+  if (!clutter_plugins_overridden)
+    clutter_plugins = gconf_client_get_list (default_client, KEY_CLUTTER_PLUGINS,
+                                             GCONF_VALUE_STRING, &err);
 
   cleanup_error (&err);
 #endif
@@ -1233,7 +1235,7 @@ change_notify (GConfClient    *client,
         queue_changed (META_PREF_WORKSPACE_NAMES);
     }
 #ifdef WITH_CLUTTER
-  else if (g_str_equal (key, KEY_CLUTTER_PLUGINS))
+  else if (g_str_equal (key, KEY_CLUTTER_PLUGINS) && !clutter_plugins_overridden)
     {
       GError *err = NULL;
       GSList *l;
@@ -2970,6 +2972,21 @@ meta_prefs_set_clutter_plugins (GSList *list)
                     err->message);
       g_error_free (err);
     }
+}
+
+void
+meta_prefs_override_clutter_plugins (GSList *list)
+{
+  GError *err = NULL;
+  GSList *l;
+
+  clutter_plugins_overridden = TRUE;
+  clutter_plugins = NULL;
+
+  for (l = list; l; l = l->next)
+    clutter_plugins = g_slist_prepend (clutter_plugins, g_strdup(l->data));
+
+  clutter_plugins = g_slist_reverse (clutter_plugins);
 }
 #endif
 
