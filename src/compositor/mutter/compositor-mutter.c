@@ -1507,6 +1507,13 @@ repair_win (MutterWindow *cw)
           return;
         }
 
+      /* MUST call before setting pixmap or serious performance issues
+       * seemingly caused by cogl_texture_set_filters() in set_filter
+       * Not sure if that call is actually needed.
+       */
+      clutter_texture_set_filter_quality (CLUTTER_TEXTURE (priv->actor),
+                                          CLUTTER_TEXTURE_QUALITY_HIGH );
+
       clutter_x11_texture_pixmap_set_pixmap
                        (CLUTTER_X11_TEXTURE_PIXMAP (priv->actor),
                         priv->back_pixmap);
