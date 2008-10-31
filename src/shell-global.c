@@ -119,6 +119,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         G_PARAM_READABLE));
 }
 
+/**
+ * shell_global_get:
+ *
+ * Gets the singleton global object that represents the desktop.
+ *
+ * Return value: (transfer none): the singleton global object
+ */
 ShellGlobal *
 shell_global_get (void)
 {
@@ -130,6 +137,16 @@ shell_global_get (void)
   return the_object;
 }
 
+/**
+ * shell_global_set_stage_input_area:
+ * x: X coordinate of rectangle
+ * y: X coordinate of rectangle
+ * width: width of rectangle
+ * height: Height of rectangle
+ *
+ * Sets the area of the stage that is responsive to mouse clicks as
+ * a rectangle.
+ */
 void
 shell_global_set_stage_input_area (ShellGlobal *global,
                                    int          x,
