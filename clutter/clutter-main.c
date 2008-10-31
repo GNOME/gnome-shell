@@ -1063,9 +1063,8 @@ clutter_init_real (GError **error)
   /*
    * Call backend post parse hooks.
    */
-  if (CLUTTER_BACKEND_GET_CLASS (backend)->post_parse)
-    if (!CLUTTER_BACKEND_GET_CLASS (backend)->post_parse (backend, error))
-      return CLUTTER_INIT_ERROR_BACKEND;
+  if (!_clutter_backend_post_parse (backend, error))
+    return CLUTTER_INIT_ERROR_BACKEND;
 
   /*
    * Resolution requires display to be open, so can only be queried after
@@ -1208,10 +1207,7 @@ pre_parse_hook (GOptionContext  *context,
       clutter_default_fps = CLAMP (default_fps, 1, 1000);
     }
 
-  if (CLUTTER_BACKEND_GET_CLASS (backend)->pre_parse)
-    return CLUTTER_BACKEND_GET_CLASS (backend)->pre_parse (backend, error);
-
-  return TRUE;
+  return _clutter_backend_pre_parse (backend, error);
 }
 
 /* post_parse_hook: initialise the context and data structures

@@ -1,3 +1,16 @@
+2008-10-31  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	Bug 1200 - Crash with invalid DISPLAY
+
+	* clutter/clutter-main.c: Use the ClutterBackend wrapper API
+	instead of directly checking the class structure.
+
+	* clutter/glx/clutter-backend-glx.c: Return the correct value
+	in case of failure.
+
+	* clutter/x11/clutter-backend-x11.c: Bail out if XOpenDisplay()
+	failed.
+
 2008-10-30  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/cogl/cogl-color.h:

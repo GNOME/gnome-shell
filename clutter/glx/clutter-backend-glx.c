@@ -135,13 +135,15 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
           g_set_error (error, CLUTTER_INIT_ERROR,
                        CLUTTER_INIT_ERROR_BACKEND,
                        "XServer appears to lack required GLX support");
-          return 1;
+
+          return FALSE;
         }
     }
+  else
+    return FALSE;
 
   return TRUE;
 }
-
 
 static const GOptionEntry entries[] =
 {
