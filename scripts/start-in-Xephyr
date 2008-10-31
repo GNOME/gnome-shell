@@ -46,7 +46,7 @@ try:
                 'GI_TYPELIB_PATH' : plugin_dir,
                 'LD_LIBRARY_PATH' : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir})
     args = 'DEBUG' in os.environ and os.environ['DEBUG'].split() or []
-    args.extend(['metacity', '--clutter-plugins=' + plugin, '--replace'])
+    args.extend(['metacity', '--mutter-plugins=' + plugin, '--replace'])
     print args
     subprocess.Popen(args, env=env)
 
