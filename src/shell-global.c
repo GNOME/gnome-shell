@@ -17,7 +17,8 @@ enum {
 
   PROP_OVERLAY_GROUP,
   PROP_SCREEN_WIDTH,
-  PROP_SCREEN_HEIGHT
+  PROP_SCREEN_HEIGHT,
+  PROP_STAGE
 };
 
 G_DEFINE_TYPE(ShellGlobal, shell_global, G_TYPE_OBJECT);
@@ -65,6 +66,9 @@ shell_global_get_property(GObject         *object,
         g_value_set_int (value, height);
       }
       break;
+    case PROP_STAGE:
+      g_value_set_object (value, mutter_plugin_get_stage (global->plugin));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -106,6 +110,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                      "Screen height, in pixels",
                                                      0, G_MAXINT, 1,
                                                      G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_STAGE,
+                                   g_param_spec_object ("stage",
+                                                        "Stage",
+                                                        "Stage holding the desktop scene graph",
+                                                        CLUTTER_TYPE_ACTOR,
+                                                        G_PARAM_READABLE));
 }
 
 ShellGlobal *
