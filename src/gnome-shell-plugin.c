@@ -83,7 +83,6 @@ static gboolean
 do_init (const char *params)
 {
   MutterPlugin *plugin = mutter_get_plugin();
-  ClutterActor *overlay_group;
   GError *error = NULL;
   int status;
   const char *shell_js;
@@ -101,9 +100,6 @@ do_init (const char *params)
         }
     }
 
-  overlay_group = mutter_plugin_get_overlay_group (plugin);
-  shell_global_set_overlay_group (shell_global_get(), overlay_group);
-
   shell_js = g_getenv("GNOME_SHELL_JS");
   if (!shell_js)
     shell_js = JSDIR;
@@ -111,6 +107,8 @@ do_init (const char *params)
   search_path = g_strsplit(shell_js, ":", -1);
   plugin_state->gjs_context = gjs_context_new_with_search_path(search_path);
   g_strfreev(search_path);
+
+  _shell_global_set_plugin (shell_global_get(), plugin);
 
   if (!gjs_context_eval (plugin_state->gjs_context,
                          "const Main = imports.ui.main; Main.start();",

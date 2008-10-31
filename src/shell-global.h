@@ -1,6 +1,7 @@
 #ifndef __SHELL_GLOBAL_H__
 #define __SHELL_GLOBAL_H__
 
+#include "mutter-plugin.h"
 #include <clutter/clutter.h>
 #include <glib-object.h>
 
@@ -20,12 +21,8 @@ GType            shell_global_get_type            (void) G_GNUC_CONST;
 
 ShellGlobal *shell_global_get (void);
 
-void shell_global_set_overlay_group (ShellGlobal  *global,
-				     ClutterActor *overlay_group);
-
-ClutterActor *shell_global_get_overlay_group (ShellGlobal  *global);
-
-void shell_global_print_hello (ShellGlobal *global);
+void _shell_global_set_plugin (ShellGlobal  *global,
+			       MutterPlugin *plugin);
 
 G_END_DECLS
 
