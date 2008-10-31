@@ -29,6 +29,7 @@
 #include <glib/gi18n-lib.h>
 
 #include <clutter/clutter.h>
+#include <clutter/x11/clutter-x11.h>
 #include <gjs/gjs.h>
 #include <gmodule.h>
 #include <string.h>
@@ -38,6 +39,7 @@
 static gboolean do_init (const char *params);
 static gboolean reload  (const char *params);
 
+static gboolean xevent_filter (XEvent *xev);
 
 /*
  * Create the plugin struct; function pointers initialized in
@@ -71,6 +73,9 @@ g_module_check_init (GModule *module)
 
   /* The reload handler */
   plugin->reload = reload;
+
+  /* Event handling */
+  plugin->xevent_filter = xevent_filter;
 
   return NULL;
 }
@@ -157,6 +162,12 @@ reload (const char *params)
     }
 
   return FALSE;
+}
+
+static gboolean
+xevent_filter (XEvent *xev)
+{
+  return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
 }
 
 /*
