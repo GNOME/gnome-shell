@@ -340,7 +340,7 @@ typedef struct _ClutterParamSpecFixed   ClutterParamSpecFixed;
  *
  * Since: 0.8
  */
-#define CLUTTER_MINFIXED        COGL_FIXED_MAX
+#define CLUTTER_MINFIXED        COGL_FIXED_MIN
 
 /**
  * ClutterParamSpecFixed
