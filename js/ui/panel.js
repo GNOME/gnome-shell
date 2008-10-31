@@ -53,7 +53,7 @@ Panel.prototype = {
 
     _startClock: function() {
 	let me = this;
-	Mainloop.timeout_add_seconds(1,
+	Mainloop.timeout_add_seconds(60,
 	    function() {
 		me._updateClock();
 		return true;
@@ -61,7 +61,7 @@ Panel.prototype = {
     },
 
     _updateClock: function() {
-	this._clock.set_text(new Date().toLocaleFormat("%H:%M:%S"));
+	this._clock.set_text(new Date().toLocaleFormat("%H:%M"));
 	this._clock.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
 
 	return true;
