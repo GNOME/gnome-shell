@@ -48,14 +48,8 @@
         <dep package="gobject-introspection"/>
         <dep package="gir-repository"/>
         <dep package="metacity-clutter"/>
+        <dep package="gjs"/>
     </dependencies>
   </autotools>
-
-  <metamodule id="meta-gnome-shell">
-    <dependencies>
-      <dep package="gir-repository"/>
-      <dep package="gjs"/>
-    </dependencies>
-  </metamodule>
 
 </moduleset>
