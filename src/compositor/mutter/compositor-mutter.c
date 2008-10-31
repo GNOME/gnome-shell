@@ -2120,8 +2120,8 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   info->plugin_mgr =
     mutter_plugin_manager_new (screen);
 
-  clutter_actor_show_all (info->stage);
-  clutter_actor_show_all (info->overlay_group);
+  clutter_actor_show (info->stage);
+  clutter_actor_show (info->overlay_group);
 #endif
 }
 
