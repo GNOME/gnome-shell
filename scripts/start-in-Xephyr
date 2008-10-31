@@ -1,0 +1,60 @@
+#!/usr/bin/python
+
+import os,sys,subprocess,signal
+import random
+import shutil
+import tempfile
+import time
+
+# Uninstalled paths
+scripts_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+top_dir = os.path.dirname(scripts_dir)
+plugin_dir = os.path.join(top_dir, "src")
+plugin = os.path.join(plugin_dir, "libgnome-shell.la")
+js_dir = os.path.join(top_dir, "js")
+
+tmpdir = tempfile.mkdtemp("", "gnome-shell.")
+try:
+    display = ":" + str(random.randint(10, 99))
+    xauth_file = os.path.join(tmpdir, "database")
+
+    # Create a random 128-byte key and format it as hex
+    f = open("/dev/urandom", "r")
+    key = f.read(16)
+    f.close()
+    hexkey = "".join(("%02x" % ord(byte) for byte in key))
+
+    # Store that in an xauthority file as the key for connecting to our Xephyr
+    os.environ['XAUTHORITY'] = xauth_file
+    retcode = subprocess.call(["xauth", "add", display,  "MIT-MAGIC-COOKIE-1", hexkey])
+    if retcode != 0:
+        raise RuntimeError("xauth failed")
+
+    # Launch Xephyr
+    xephyr = subprocess.Popen(["Xephyr", display, "-screen", "800x600", "-host-cursor"])
+    os.environ['DISPLAY'] = display
+
+    # Wait for server to get going: LAME
+    time.sleep(1)
+
+    # Start xterm to have some window in our session
+    subprocess.Popen(["xterm"])
+
+    # Now launch metacity-clutter with our plugin
+    env=dict(os.environ)
+    env.update({'GNOME_SHELL_JS'  : js_dir,
+                'GI_TYPELIB_PATH' : plugin_dir,
+                'LD_LIBRARY_PATH' : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir})
+    args = 'DEBUG' in os.environ and os.environ['DEBUG'].split() or []
+    args.extend(['metacity', '--clutter-plugins=' + plugin, '--replace'])
+    print args
+    subprocess.Popen(args, env=env)
+
+    # Wait for Xephyr to exit
+    try:
+        retcode = xephyr.wait()
+    except KeyboardInterrupt, e:
+        os.kill(xephyr.pid, signal.SIGKILL)
+finally:
+    shutil.rmtree(tmpdir)
+
