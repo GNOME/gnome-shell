@@ -1162,7 +1162,6 @@ restack_win (MutterWindow *cw, Window above)
 	  if (index != sibling)
 	    {
 	      ClutterActor *above_win = index->data;
-	      MutterWindow *cw2 = index->data;
 
 	      CHECK_LIST_INTEGRITY_START(info->windows)
 	      info->windows = g_list_delete_link (info->windows, sibling);
