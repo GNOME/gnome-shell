@@ -399,7 +399,10 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
               ++params;
             }
 
-          path = g_strconcat (dpath, plugin_string, ".so", NULL);
+          if (g_path_is_absolute (plugin_string))
+            path = g_strdup (plugin_string);
+          else
+            path = g_strconcat (dpath, plugin_string, ".so", NULL);
 
           if ((plugin = g_module_open (path, G_MODULE_BIND_LOCAL)))
             {
