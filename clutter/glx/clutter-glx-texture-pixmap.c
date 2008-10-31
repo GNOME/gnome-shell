@@ -66,8 +66,12 @@ typedef void    (*ReleaseTexImage) (Display     *display,
                                     GLXDrawable  drawable,
                                     int          buffer);
 
+typedef void    (*GenerateMipmap) (GLenum target);
+
+
 static BindTexImage      _gl_bind_tex_image = NULL;
 static ReleaseTexImage   _gl_release_tex_image = NULL;
+static GenerateMipmap    _gl_generate_mipmap = NULL;
 static gboolean          _have_tex_from_pixmap_ext = FALSE;
 static gboolean          _ext_check_done = FALSE;
 
@@ -80,7 +84,7 @@ struct _ClutterGLXTexturePixmapPrivate
   gboolean      use_fallback;
 
   gboolean      bound;
-  
+  gint          can_mipmap;
 };
 
 static void 
@@ -115,6 +119,14 @@ texture_bind (ClutterGLXTexturePixmap *tex)
   /* FIXME: fire off an error here? */
   glBindTexture (target, handle);
 
+  if (clutter_texture_get_filter_quality (CLUTTER_TEXTURE (tex)) 
+         == CLUTTER_TEXTURE_QUALITY_HIGH && tex->priv->can_mipmap)
+    {
+      cogl_texture_set_filters (cogl_tex, 
+                                CGL_LINEAR_MIPMAP_LINEAR,
+                                CGL_LINEAR);
+    }
+
   return TRUE;
 }
 
@@ -147,6 +159,9 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
           if (_gl_bind_tex_image && _gl_release_tex_image)
             _have_tex_from_pixmap_ext = TRUE;
         }
+
+      _gl_generate_mipmap =
+        (GenerateMipmap)cogl_get_proc_address ("glGenerateMipmapEXT");
 
       _ext_check_done = TRUE;
     }
@@ -200,7 +215,7 @@ create_cogl_texture (ClutterTexture *texture,
   if (handle)
     {
       clutter_texture_set_cogl_texture (texture, handle);
-      
+
       CLUTTER_ACTOR_SET_FLAGS (texture, CLUTTER_ACTOR_REALIZED);
 
       clutter_glx_texture_pixmap_update_area
@@ -292,12 +307,22 @@ clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
 }
 
 static GLXFBConfig *
-get_fbconfig_for_depth (guint depth)
+get_fbconfig_for_depth (ClutterGLXTexturePixmap *texture, guint depth)
 {
   GLXFBConfig *fbconfigs, *ret = NULL;
   int          n_elements, i, found;
   Display     *dpy;
   int          db, stencil, alpha, mipmap, rgba, value;
+
+  static GLXFBConfig *cached_config = NULL;
+  static gboolean     have_cached_config = FALSE;
+  static int          cached_mipmap = 0;
+
+  if (have_cached_config)
+    {
+      texture->priv->can_mipmap = cached_mipmap;
+      return cached_config;
+    }
 
   dpy = clutter_x11_get_default_display ();
 
@@ -311,7 +336,6 @@ get_fbconfig_for_depth (guint depth)
   rgba    = 0;
 
   found = n_elements;
-
 
   for (i = 0; i < n_elements; i++)
     {
@@ -383,6 +407,19 @@ get_fbconfig_for_depth (guint depth)
 
       stencil = value;
 
+      if (_gl_generate_mipmap)
+        {
+          glXGetFBConfigAttrib (dpy,
+                                fbconfigs[i],
+                                GLX_BIND_TO_MIPMAP_TEXTURE_EXT,
+                                &value);
+
+          if (value < mipmap)
+            continue;
+
+          mipmap =  value;
+        }
+
       found = i;
     }
 
@@ -394,6 +431,10 @@ get_fbconfig_for_depth (guint depth)
 
   if (n_elements)
     XFree (fbconfigs);
+
+  have_cached_config = TRUE;
+  cached_config = ret;
+  texture->priv->can_mipmap = cached_mipmap = mipmap;
 
   return ret;
 }
@@ -473,7 +514,7 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
       goto cleanup;
     }
 
-  fbconfig = get_fbconfig_for_depth (depth);
+  fbconfig = get_fbconfig_for_depth (texture, depth);
 
   if (!fbconfig)
     {
@@ -499,9 +540,9 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   quality = clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture));
 
-  if (quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-    mipmap = 1;
-  
+  if (quality == CLUTTER_TEXTURE_QUALITY_HIGH && priv->can_mipmap)
+    mipmap = priv->can_mipmap;
+
   attribs[i++] = GLX_MIPMAP_TEXTURE_EXT;
   attribs[i++] = mipmap;
 
@@ -525,8 +566,6 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
       glx_pixmap = None;
     }
 
-  g_free (fbconfig);
-
  cleanup:
 
   if (priv->glx_pixmap)
@@ -536,7 +575,8 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
     {
       priv->glx_pixmap = glx_pixmap;
       
-      create_cogl_texture (CLUTTER_TEXTURE (texture), pixmap_width, pixmap_height);
+      create_cogl_texture (CLUTTER_TEXTURE (texture), 
+                           pixmap_width, pixmap_height);
 
       CLUTTER_NOTE (TEXTURE, "Created GLXPixmap");
 
@@ -605,6 +645,28 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
         CLUTTER_NOTE (TEXTURE, "Update bind_tex_image failed");
 
       priv->bound = TRUE;
+
+      if (_gl_generate_mipmap
+          && priv->can_mipmap
+          &&  clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture))
+              == CLUTTER_TEXTURE_QUALITY_HIGH)
+        {
+          /* FIXME: It may make more sense to set a flag here and only
+           *        generate the mipmap on a pre paint.. compressing need
+           *        to call generate mipmap 
+           *        May break clones however..
+          */
+          GLuint     handle = 0;
+          GLenum     target = 0;
+          CoglHandle cogl_tex;
+          cogl_tex = clutter_texture_get_cogl_texture 
+                                        (CLUTTER_TEXTURE(texture));
+
+          cogl_texture_get_gl_texture (cogl_tex, &handle, &target);
+      
+          _gl_generate_mipmap (target);
+        }
+
     }
   else
     g_warning ("Failed to bind initial tex");

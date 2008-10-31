@@ -1393,10 +1393,12 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
   priv = texture->priv;
 
   old_quality = clutter_texture_get_filter_quality (texture);
+
   if (filter_quality != old_quality)
     {
       priv->filter_quality = filter_quality;
 
+      /* Is this actually needed - causes problems with TFP mipmaps */
       if (priv->texture != COGL_INVALID_HANDLE)
 	cogl_texture_set_filters (priv->texture,
              clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
@@ -1409,7 +1411,7 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
           clutter_texture_unrealize (CLUTTER_ACTOR (texture));
           clutter_texture_realize (CLUTTER_ACTOR (texture));
         }
-      
+
       g_object_notify (G_OBJECT (texture), "filter-quality");
 
       if (CLUTTER_ACTOR_IS_VISIBLE (texture))
@@ -1436,15 +1438,7 @@ clutter_texture_get_filter_quality (ClutterTexture *texture)
 
   priv = texture->priv;
 
-  if (priv->texture == COGL_INVALID_HANDLE)
-    return texture->priv->max_tile_waste;
-  else
-    /* If we have a valid texture handle then use the filter quality
-       from that instead */
-
-  return cogl_filters_to_clutter_texture_quality (
-      cogl_texture_get_min_filter (texture->priv->texture),
-      cogl_texture_get_mag_filter (texture->priv->texture));
+  return priv->filter_quality;
 }
 
 /**
