@@ -404,7 +404,7 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
 
           path = g_strconcat (dpath, plugin_string, ".so", NULL);
 
-          if ((plugin = g_module_open (path, 0)))
+          if ((plugin = g_module_open (path, G_MODULE_BIND_LOCAL)))
             {
               MutterPlugin *p;
 
