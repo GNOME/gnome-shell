@@ -1,18 +1,22 @@
 #!/usr/bin/python
 
-import os,sys,subprocess,signal
+import os
 import random
 import shutil
+import signal
+import subprocess
+import sys
 import tempfile
 import time
 
-# Uninstalled paths
-scripts_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-top_dir = os.path.dirname(scripts_dir)
-plugin_dir = os.path.join(top_dir, "src")
-plugin = os.path.join(plugin_dir, "libgnome-shell.la")
-js_dir = os.path.join(top_dir, "js")
+from launcher import Launcher
 
+launcher = Launcher()
+
+# GL_EXT_texture_from_pixmap doesn't work in Xepyhr
+launcher.set_use_tfp(False)
+
+# Temporary directory to hold our X credentials
 tmpdir = tempfile.mkdtemp("", "gnome-shell.")
 try:
     display = ":" + str(random.randint(10, 99))
@@ -41,15 +45,8 @@ try:
     subprocess.Popen(["xterm"])
 
     # Now launch metacity-clutter with our plugin
-    env=dict(os.environ)
-    env.update({'GNOME_SHELL_JS'  : js_dir,
-                'GI_TYPELIB_PATH' : plugin_dir,
-                'LD_LIBRARY_PATH' : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir})
-    args = 'DEBUG' in os.environ and os.environ['DEBUG'].split() or []
-    args.extend(['metacity', '--mutter-plugins=' + plugin, '--replace'])
-    print args
-    subprocess.Popen(args, env=env)
-
+    shell = launcher.start_shell()
+    
     # Wait for Xephyr to exit
     try:
         retcode = xephyr.wait()
