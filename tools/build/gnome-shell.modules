@@ -39,6 +39,7 @@
   <autotools id="metacity-clutter" autogenargs="--with-clutter">
     <branch repo="fishsoup.net" module="metacity-clutter" revision="clutter"/>
     <dependencies>
+      <dep package="gir-repository"/>
       <dep package="clutter"/>
     </dependencies>
   </autotools>
