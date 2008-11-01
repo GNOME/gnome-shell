@@ -73,6 +73,11 @@
 #include <clutter/x11/clutter-x11.h>
 #endif
 
+#ifdef HAVE_INTROSPECTION
+#include <girepository.h>
+#include "compositor/mutter/mutter-plugin-manager.h"
+#endif
+
 /**
  * The exit code we'll return to our parent process when we eventually die.
  */
@@ -228,6 +233,7 @@ typedef struct
   gboolean composite;
   gboolean no_composite;
   gboolean no_tab_popup;
+  gchar *introspect;
 } MetaArguments;
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -323,6 +329,13 @@ meta_parse_options (int *argc, char ***argv,
       N_("Whether window popup/frame should be shown when cycling windows."),
       NULL
     },
+#ifdef HAVE_INTROSPECTION
+    {
+      "introspect-dump", 0, 0, G_OPTION_ARG_STRING,
+      &my_args.introspect,
+      N_("Internal argument for GObject introspection"), "INTROSPECT"
+    },
+#endif
     {NULL}
   };
   GOptionContext *ctx;
@@ -513,6 +526,8 @@ main (int argc, char **argv)
       meta_warning ("Could not change to home directory %s.\n",
                     g_get_home_dir ());
 
+  g_type_init ();
+
   meta_print_self_identity ();
   
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
@@ -521,6 +536,56 @@ main (int argc, char **argv)
 
   /* Parse command line arguments.*/
   ctx = meta_parse_options (&argc, &argv, &meta_args);
+
+#ifdef WITH_CLUTTER
+  /* This must come before the introspect below, so we load all the plugins
+   * in order to get their get_type functions.
+   */
+  if (meta_args.mutter_plugins)
+    {
+      char **plugins = g_strsplit (meta_args.mutter_plugins, ",", -1);
+      char **plugin;
+      GSList *plugins_list = NULL;
+
+      for (plugin = plugins; *plugin; plugin++)
+        {
+          g_strstrip (*plugin);
+          plugins_list = g_slist_prepend (plugins_list, *plugin);
+        }
+
+      plugins_list = g_slist_reverse (plugins_list);
+      meta_prefs_override_clutter_plugins (plugins_list);
+
+      g_slist_free(plugins_list);
+      g_strfreev (plugins);
+    }
+#endif /* WITH_CLUTTER */
+
+#ifdef HAVE_INTROSPECTION
+  g_irepository_prepend_search_path (METACITY_PKGLIBDIR);  
+  if (meta_args.introspect)
+    {
+      GError *error = NULL;
+      if (meta_args.mutter_plugins)
+        {
+          /* We need to load all plugins so that we can call their
+           * get_type functions.  We do not call
+           * mutter_plugin_manager_initialize because almost nothing else
+           * is initialized at this point, and we don't plan to run any real
+           * plugin code.
+           */
+          MutterPluginManager *mgr = mutter_plugin_manager_new (NULL);
+          if (!mutter_plugin_manager_load (mgr))
+            g_critical ("failed to load plugins");
+        }
+      if (!g_irepository_dump (meta_args.introspect, &error))
+        {
+          g_printerr ("failed to dump: %s\n", error->message);
+          return 1;
+        }
+      return 0;
+    }
+#endif
 
   meta_set_syncing (meta_args.sync || (g_getenv ("METACITY_SYNC") != NULL));
 
@@ -537,8 +602,6 @@ main (int argc, char **argv)
   
   meta_main_loop = g_main_loop_new (NULL, FALSE);
   
-  g_type_init ();
-
   meta_ui_init (&argc, &argv);  
 
 #ifdef WITH_CLUTTER
@@ -637,27 +700,6 @@ main (int argc, char **argv)
 
   if (meta_args.composite || meta_args.no_composite)
     meta_prefs_set_compositing_manager (meta_args.composite);
-
-#ifdef WITH_CLUTTER
-  if (meta_args.mutter_plugins)
-    {
-      char **plugins = g_strsplit (meta_args.mutter_plugins, ",", -1);
-      char **plugin;
-      GSList *plugins_list = NULL;
-
-      for (plugin = plugins; *plugin; plugin++)
-        {
-          g_strstrip (*plugin);
-          plugins_list = g_slist_prepend (plugins_list, *plugin);
-        }
-
-      plugins_list = g_slist_reverse (plugins_list);
-      meta_prefs_override_clutter_plugins (plugins_list);
-
-      g_slist_free(plugins_list);
-      g_strfreev (plugins);
-    }
-#endif
 
   if (meta_args.no_tab_popup)
     {

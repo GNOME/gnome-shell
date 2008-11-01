@@ -8,7 +8,7 @@ endif
 
 INCLUDES=@METACITY_CFLAGS@ -I $(srcdir)/include -I$(srcdir)/compositor -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\" -DMETACITY_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"metacity\" -DSN_API_NOT_YET_FROZEN=1 -DMETACITY_MAJOR_VERSION=$(METACITY_MAJOR_VERSION) -DMETACITY_MINOR_VERSION=$(METACITY_MINOR_VERSION) -DMETACITY_MICRO_VERSION=$(METACITY_MICRO_VERSION) -DMETACITY_CLUTTER_PLUGIN_API_VERSION=$(METACITY_CLUTTER_PLUGIN_API_VERSION) -DMETACITY_PKGLIBDIR=\"$(pkglibdir)\" -DMUTTER_PLUGIN_DIR=\"@MUTTER_PLUGIN_DIR@\"
 
-metacity_SOURCES= 				\
+metacity_SOURCES= 			\
 	core/async-getprop.c			\
 	core/async-getprop.h			\
 	core/bell.c				\
@@ -103,7 +103,7 @@ metacity_SOURCES= 				\
 	include/all-keybindings.h
 
 if WITH_CLUTTER
-metacity_SOURCES += 					\
+metacity_SOURCES += 				\
 	compositor/mutter/compositor-mutter.c		\
 	compositor/mutter/mutter-shaped-texture.c	\
 	compositor/mutter/mutter-shaped-texture.h	\
@@ -141,7 +141,7 @@ libmetacity_private_la_LIBADD  = @METACITY_LIBS@
 
 libmetacityincludedir = $(includedir)/metacity-1/metacity-private
 
-libmetacityinclude_HEADERS =			\
+libmetacityinclude_base_headers =		\
 	include/boxes.h				\
 	ui/gradient.h				\
 	include/util.h				\
@@ -149,7 +149,6 @@ libmetacityinclude_HEADERS =			\
 	ui/preview-widget.h			\
 	ui/theme-parser.h			\
 	ui/theme.h				\
-	include/atomnames.h			\
 	include/prefs.h				\
 	include/window.h			\
 	include/workspace.h			\
@@ -161,6 +160,14 @@ libmetacityinclude_HEADERS =			\
 	include/group.h				\
 	include/keybindings.h			\
 	include/mutter-plugin.h
+
+# Excluded from scanning for introspection but installed
+libmetacityinclude_extra_headers =		\
+	include/atomnames.h
+
+libmetacityinclude_HEADERS =			\
+	$(libmetacityinclude_base_headers)	\
+	$(libmetacityinclude_extra_headers)
 
 metacity_theme_viewer_SOURCES=  \
 	ui/theme-viewer.c
@@ -180,9 +187,45 @@ metacity.schemas.in: schema_bindings ${srcdir}/metacity.schemas.in.in
 bin_PROGRAMS=metacity metacity-theme-viewer
 libexec_PROGRAMS=metacity-dialog
 
+api_version = $(METACITY_MAJOR_VERSION).$(METACITY_MINOR_VERSION)
+
+if WITH_INTROSPECTION
+# These files are in package-private directories, even though they may be used
+# by plugins.  If you're writing a plugin, use g-ir-compiler --add-include-path
+# and g-ir-compiler --includedir.
+girdir = $(pkglibdir)
+gir_DATA = Meta-$(api_version).gir
+
+typelibdir = $(pkglibdir)
+typelib_DATA = Meta-$(api_version).typelib
+
+# We need to strip out the attribute that would point back to libmetacity-introspect
+# so that libgirepository looks for symbols in the executable instead
+Meta-$(api_version).gir: $(G_IR_SCANNER) metacity $(libmetacityinclude_HEADERS) $(metacity_SOURCES)
+	$(G_IR_SCANNER)					\
+		--namespace=Meta			\
+		--nsversion=$(api_version)		\
+		--include=GObject-2.0			\
+		--include=Gdk-2.0			\
+		--include=Gtk-2.0			\
+		--include=Clutter-0.9			\
+		--pkg=clutter-0.9			\
+		--pkg=gtk+-2.0				\
+		--include=xfixes-4.0			\
+		--program=./metacity			\
+		$(filter %.c,$(metacity_SOURCES))	\
+		$(libmetacityinclude_base_headers)	\
+		$(INCLUDES)				\
+		-o $@
+
+Meta-$(api_version).typelib: $(G_IR_COMPILER) Meta-$(api_version).gir
+	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. $(G_IR_COMPILER) Meta-$(api_version).gir -o $@
+endif
+
 EFENCE=
-metacity_LDADD=@METACITY_LIBS@ $(EFENCE)
+metacity_LDADD=@METACITY_LIBS@ libmetacity-private.la $(EFENCE)
 metacity_LDFLAGS=-export-dynamic
+
 metacity_theme_viewer_LDADD= @METACITY_LIBS@ libmetacity-private.la
 metacity_dialog_LDADD=@METACITY_LIBS@
 
@@ -192,9 +235,9 @@ testasyncgetprop_SOURCES=core/async-getprop.h core/async-getprop.c core/testasyn
 
 noinst_PROGRAMS=testboxes testgradient testasyncgetprop schema_bindings
 
-testboxes_LDADD= @METACITY_LIBS@
-testgradient_LDADD= @METACITY_LIBS@
-testasyncgetprop_LDADD= @METACITY_LIBS@
+testboxes_LDADD= @METACITY_LIBS@ libmetacity-private.la
+testgradient_LDADD= @METACITY_LIBS@ libmetacity-private.la
+testasyncgetprop_LDADD= @METACITY_LIBS@ libmetacity-private.la
 
 @INTLTOOL_DESKTOP_RULE@
 
