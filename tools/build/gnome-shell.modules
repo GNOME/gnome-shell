@@ -18,6 +18,7 @@
     <branch/>
     <dependencies>
         <dep package="gobject-introspection"/>
+        <dep package="clutter"/>
     </dependencies>
   </autotools>
 
