@@ -1,0 +1,66 @@
+#!/usr/bin/python
+
+import os,sys,subprocess,signal
+import random
+import shutil
+import tempfile
+import time
+
+# Uninstalled paths
+scripts_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+top_dir = os.path.dirname(scripts_dir)
+plugin_dir = os.path.join(top_dir, "src")
+plugin = os.path.join(plugin_dir, "libgnome-shell.la")
+js_dir = os.path.join(top_dir, "js")
+
+try:
+    # Kill gnome-panel in a way that it won't autorespawn
+    pidof = subprocess.Popen(["/sbin/pidof", "gnome-panel"], stdout=subprocess.PIPE)
+    pids = pidof.communicate()[0].split()
+    pidof.wait()
+    devnull = open("/dev/null", "w")
+    for pid in pids:
+        subprocess.call(["gdb", "-batch-silent",
+                         "-ex", "call panel_session_do_not_restart()",
+                         "-ex", "call exit()",
+                         "-p", pid], stdout=devnull, stderr=devnull)
+    devnull.close()
+
+    # Check if GLX supports GL_ARB_texture_non_power_of_two; currently clutter
+    # can only use GLX_EXT_texture_for_pixmap if we have that extension.
+    glxinfo = subprocess.Popen(["glxinfo"], stdout=subprocess.PIPE)
+    glxinfo_output = glxinfo.communicate()[0]
+    glxinfo.wait()
+
+    have_npot_textures = "GL_ARB_texture_non_power_of_two" in glxinfo_output
+    
+    # Now launch metacity-clutter with our plugin
+    env=dict(os.environ)
+    env.update({'GNOME_SHELL_JS'  : js_dir,
+                'GI_TYPELIB_PATH' : plugin_dir,
+                'LD_LIBRARY_PATH' : os.environ.get('LD_LIBRARY_PATH', '') + ':' + plugin_dir})
+
+    if have_npot_textures:
+        # If we have NPOT textures, then we want to use GLX_EXT_texture_from_pixmap; in
+        # most cases, we have to force indirect rendering to do this. DRI2 will lift
+        # that restriction; in which case what we should do is parse the information
+        # from glxinfo more carefully... if the extension isn't listed under
+        # "GLX extensions" with LIBGL_ALWAYS_INDIRECT unset, then set LIBGL_ALWAYS_INDIRECT
+        # and try again.
+        env['LIBGL_ALWAYS_INDIRECT'] = '1'
+        
+    args = 'DEBUG' in os.environ and os.environ['DEBUG'].split() or []
+    args.extend(['metacity', '--mutter-plugins=' + plugin, '--replace'])
+    metacity = subprocess.Popen(args, env=env)
+
+    # Wait for metacity to exit
+    try:
+        metacity.wait()
+    except KeyboardInterrupt, e:
+        os.kill(metacity.pid, signal.SIGKILL)
+        metacity.wait()
+finally:
+    # Restart gnome-panel and window manager
+
+    subprocess.Popen(["/usr/bin/metacity"])
+    subprocess.Popen(["/usr/bin/gnome-panel"])
