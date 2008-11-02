@@ -17,7 +17,7 @@ try:
     for pid in pids:
         subprocess.call(["gdb", "-batch-silent",
                          "-ex", "call panel_session_do_not_restart()",
-                         "-ex", "call exit()",
+                         "-ex", "call exit(0)",
                          "-p", pid], stdout=devnull, stderr=devnull)
     devnull.close()
 
