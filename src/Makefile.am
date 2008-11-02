@@ -27,7 +27,7 @@ libgnome_shell_introspect_la_SOURCES =		\
 libgnome_shell_introspect_la_LDFLAGS = -avoid-version -module -rpath $(libdir)
 libgnome_shell_introspect_la_LIBADD = $(MUTTER_PLUGIN_LIBS)
 
-typelibdir = $(libdir)/girepository
+typelibdir = $(pkglibdir)/girepository
 typelib_DATA = Shell-0.1.typelib
 
 # After we run g-ir-scanner, we need to change the library name written in
