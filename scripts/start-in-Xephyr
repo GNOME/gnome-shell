@@ -43,6 +43,8 @@ try:
 
     # Start xterm to have some window in our session
     subprocess.Popen(["xterm"])
+    subprocess.Popen(["xlogo"])
+    subprocess.Popen(["xeyes"])
 
     # Now launch metacity-clutter with our plugin
     shell = launcher.start_shell()
