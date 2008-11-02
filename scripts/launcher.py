@@ -71,7 +71,7 @@ class Launcher:
             env['GJS_DEBUG_TOPICS'] = 'JS LOG'
 
         if self.options.debug:
-            args = list(self.options.debug_command)
+            args = list(self.debug_command)
         else:
             args = []
                 
