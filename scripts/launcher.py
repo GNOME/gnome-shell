@@ -66,9 +66,9 @@ class Launcher:
             env['LIBGL_ALWAYS_INDIRECT'] = '1'
 
         if not self.options.verbose:
-            # Unless verbose() is specified, only let gjs log things that are explicit log()
-            # commands form javascript
-            env['GJS_DEBUG_TOPICS'] = 'JS LOG'
+            # Unless verbose() is specified, only let gjs show errors and things that are
+            # explicitly logged via log() from javascript
+            env['GJS_DEBUG_TOPICS'] = 'JS ERROR;JS LOG'
 
         if self.options.debug:
             args = list(self.debug_command)
