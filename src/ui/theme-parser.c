@@ -1366,6 +1366,7 @@ parse_distance (GMarkupParseContext  *context,
                  _("Distance \"%s\" is unknown"), name);
       return;
     }
+}
 
 static void
 parse_aspect_ratio (GMarkupParseContext  *context,
