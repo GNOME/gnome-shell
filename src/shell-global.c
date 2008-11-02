@@ -159,6 +159,21 @@ shell_global_set_stage_input_area (ShellGlobal *global,
   mutter_plugin_set_stage_input_area (global->plugin, x, y, width, height);
 }
 
+/**
+ * shell_global_get_windows:
+ *
+ * Gets the list of MutterWindows for the plugin's screen
+ *
+ * Return value: (element-type MutterWindow) (transfer none): the list of windows
+ */
+GList *
+shell_global_get_windows (ShellGlobal *global)
+{
+  g_return_if_fail (SHELL_IS_GLOBAL (global));
+
+  return mutter_plugin_get_windows (global->plugin);
+}
+
 void
 _shell_global_set_plugin (ShellGlobal  *global,
                           MutterPlugin *plugin)

@@ -38,6 +38,7 @@ Shell-0.1.gir: libgnome-shell-introspect.la $(libgnome_shell_la_SOURCES)
 		--nsversion=0.1				\
 		--include=GObject-2.0			\
 		--include=Clutter-0.8			\
+		--include=Meta-2.25			\
 		--library=gnome-shell-introspect	\
 		$(libgnome_shell_la_SOURCES)		\
 		$(INCLUDES)				\

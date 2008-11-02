@@ -14,6 +14,11 @@ mutter_plugin_get_stage (MutterPlugin *plugin)
   return NULL;
 }
 
+GList *
+mutter_plugin_get_windows (MutterPlugin *plugin)
+{
+}
+
 void
 mutter_plugin_query_screen_size (MutterPlugin *plugin,
                                  int          *width,

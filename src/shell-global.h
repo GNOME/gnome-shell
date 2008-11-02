@@ -21,12 +21,13 @@ GType            shell_global_get_type            (void) G_GNUC_CONST;
 
 ShellGlobal *shell_global_get (void);
 
-void
-shell_global_set_stage_input_area (ShellGlobal *global,
-                                   int          x,
-                                   int          y,
-                                   int          width,
-                                   int          height);
+void shell_global_set_stage_input_area (ShellGlobal *global,
+					int          x,
+					int          y,
+					int          width,
+					int          height);
+
+GList *shell_global_get_windows (ShellGlobal *global);
 
 void _shell_global_set_plugin (ShellGlobal  *global,
 			       MutterPlugin *plugin);
