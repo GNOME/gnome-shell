@@ -26,8 +26,10 @@ Panel.prototype = {
 
 	let background = new Clutter.Rectangle({ color: PANEL_BACKGROUND_COLOR,
 						 reactive: true,
-					         width: global.screen_width,
-					         height: PANEL_HEIGHT });
+					         width: global.screen_width+2,
+					         height: PANEL_HEIGHT+1,
+	                                         border_width: 1});
+	background.set_position(-1, -1)
 	this._group.add_actor(background);
 
 	let message = new Clutter.Label({ font_name: "Sans Bold 16px",
