@@ -190,10 +190,9 @@ parse_disable_params (const char *params, MutterPlugin *plugin)
  * struct.
  */
 static MutterPlugin *
-mutter_plugin_load (
-    MutterPluginManager *plugin_mgr,
-    GModule                            *module,
-    const gchar                        *params)
+mutter_plugin_load (MutterPluginManager *plugin_mgr,
+                    GModule             *module,
+                    const gchar         *params)
 {
   MutterPlugin *plugin;
 
@@ -271,8 +270,7 @@ mutter_plugin_unload (MutterPlugin *plugin)
  * pending for removal.
  */
 static gboolean
-mutter_plugin_manager_idle_unload (
-    MutterPluginManager *plugin_mgr)
+mutter_plugin_manager_idle_unload (MutterPluginManager *plugin_mgr)
 {
   GList *l = plugin_mgr->unload;
   gboolean dont_remove = TRUE;
@@ -317,8 +315,7 @@ mutter_plugin_manager_idle_unload (
  * Unloads all plugins
  */
 static void
-mutter_plugin_manager_unload (
-    MutterPluginManager *plugin_mgr)
+mutter_plugin_manager_unload (MutterPluginManager *plugin_mgr)
 {
   GList *plugins = plugin_mgr->plugins;
 
@@ -445,8 +442,7 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
  * Reloads all plugins
  */
 static gboolean
-mutter_plugin_manager_reload (
-    MutterPluginManager *plugin_mgr)
+mutter_plugin_manager_reload (MutterPluginManager *plugin_mgr)
 {
   /* TODO -- brute force; should we build a list of plugins to load and list of
    * plugins to unload? We are probably not going to have large numbers of
@@ -457,15 +453,14 @@ mutter_plugin_manager_reload (
 }
 
 static gboolean
-mutter_plugin_manager_init (
-    MutterPluginManager *plugin_mgr)
+mutter_plugin_manager_init (MutterPluginManager *plugin_mgr)
 {
   return mutter_plugin_manager_load (plugin_mgr);
 }
 
 void
-mutter_plugin_manager_update_workspace (
-    MutterPluginManager *plugin_mgr, MetaWorkspace *workspace)
+mutter_plugin_manager_update_workspace (MutterPluginManager *plugin_mgr,
+                                        MetaWorkspace *workspace)
 {
   GList *l;
   gint   index;
@@ -494,8 +489,7 @@ mutter_plugin_manager_update_workspace (
 }
 
 void
-mutter_plugin_manager_update_workspaces (
-    MutterPluginManager *plugin_mgr)
+mutter_plugin_manager_update_workspaces (MutterPluginManager *plugin_mgr)
 {
   GList *l;
 
@@ -529,10 +523,9 @@ mutter_plugin_manager_new (MetaScreen *screen)
 }
 
 static void
-mutter_plugin_manager_kill_effect (
-    MutterPluginManager *plugin_mgr,
-    MutterWindow *actor,
-    unsigned long   events)
+mutter_plugin_manager_kill_effect (MutterPluginManager *plugin_mgr,
+                                   MutterWindow        *actor,
+                                   unsigned long        events)
 {
   GList *l = plugin_mgr->plugins;
 
@@ -563,10 +556,9 @@ mutter_plugin_manager_kill_effect (
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-mutter_plugin_manager_event_simple (
-    MutterPluginManager *plugin_mgr,
-    MutterWindow  *actor,
-    unsigned long    event)
+mutter_plugin_manager_event_simple (MutterPluginManager *plugin_mgr,
+                                    MutterWindow        *actor,
+                                    unsigned long        event)
 {
   GList *l = plugin_mgr->plugins;
   gboolean retval = FALSE;
@@ -634,14 +626,13 @@ mutter_plugin_manager_event_simple (
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-mutter_plugin_manager_event_maximize (
-    MutterPluginManager *plugin_mgr,
-    MutterWindow  *actor,
-    unsigned long    event,
-    gint             target_x,
-    gint             target_y,
-    gint             target_width,
-    gint             target_height)
+mutter_plugin_manager_event_maximize (MutterPluginManager *plugin_mgr,
+                                      MutterWindow        *actor,
+                                      unsigned long        event,
+                                      gint                 target_x,
+                                      gint                 target_y,
+                                      gint                 target_width,
+                                      gint                 target_height)
 {
   GList *l = plugin_mgr->plugins;
   gboolean retval = FALSE;
@@ -702,12 +693,11 @@ mutter_plugin_manager_event_maximize (
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-mutter_plugin_manager_switch_workspace (
-    MutterPluginManager *plugin_mgr,
-    const GList **actors,
-    gint          from,
-    gint          to,
-    MetaMotionDirection direction)
+mutter_plugin_manager_switch_workspace (MutterPluginManager *plugin_mgr,
+                                        const GList        **actors,
+                                        gint                 from,
+                                        gint                 to,
+                                        MetaMotionDirection  direction)
 {
   GList *l = plugin_mgr->plugins;
   gboolean retval = FALSE;
@@ -748,8 +738,8 @@ mutter_plugin_manager_switch_workspace (
  * appropriate post-effect cleanup is carried out.
  */
 gboolean
-mutter_plugin_manager_xevent_filter (
-    MutterPluginManager *plugin_mgr, XEvent *xev)
+mutter_plugin_manager_xevent_filter (MutterPluginManager *plugin_mgr,
+                                     XEvent              *xev)
 {
   GList *l;
 
