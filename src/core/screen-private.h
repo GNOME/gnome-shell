@@ -148,9 +148,6 @@ void          meta_screen_queue_window_resizes (MetaScreen                 *scre
 
 int           meta_screen_get_n_workspaces    (MetaScreen                 *screen);
 
-MetaWorkspace* meta_screen_get_workspace_by_index (MetaScreen    *screen,
-                                                   int            index);
-
 void          meta_screen_set_cursor          (MetaScreen                 *screen,
                                                MetaCursor                  cursor);
 void          meta_screen_update_cursor       (MetaScreen                 *screen);
