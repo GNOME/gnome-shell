@@ -48,4 +48,4 @@ Shell-0.1.gir: libgnome-shell-introspect.la $(libgnome_shell_la_SOURCES)
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
 Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir
-	LD_LIBRARY_PATH=. g-ir-compiler Shell-0.1.gir -o $@
+	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Shell-0.1.gir -o $@
