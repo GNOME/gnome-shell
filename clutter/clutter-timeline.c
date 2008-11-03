@@ -575,6 +575,37 @@ clutter_timeline_init (ClutterTimeline *self)
                                                  timeline_marker_free);
 }
 
+static void
+emit_frame_signal (ClutterTimeline *timeline)
+{
+  ClutterTimelinePrivate *priv = timeline->priv;
+  gint i;
+
+  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
+                 priv->current_frame_num);
+
+  for (i = priv->skipped_frames; i >= 0; i--)
+    {
+      gint frame_num = priv->current_frame_num
+        + (priv->direction == CLUTTER_TIMELINE_FORWARD ? -i : i);
+      GSList *markers, *l;
+
+      markers = g_hash_table_lookup (priv->markers_by_frame,
+                                     GUINT_TO_POINTER (frame_num));
+      for (l = markers; l; l = l->next)
+        {
+          TimelineMarker *marker = l->data;
+
+          CLUTTER_NOTE (SCHEDULER, "Marker `%s' reached", marker->name);
+
+          g_signal_emit (timeline, timeline_signals[MARKER_REACHED],
+                         marker->quark,
+                         marker->name,
+                         marker->frame_num);
+        }
+    }
+}
+
 static gboolean
 timeline_timeout_func (gpointer data)
 {
@@ -636,31 +667,8 @@ timeline_timeout_func (gpointer data)
        (priv->current_frame_num <= 0))
        ))
     {
-      gint i;
-
-      /* Fire off signal */
-      g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
-                     priv->current_frame_num);
-
-      for (i = priv->skipped_frames; i >= 0; i--)
-        {
-          gint frame_num = priv->current_frame_num - i;
-          GSList *markers, *l;
-
-          markers = g_hash_table_lookup (priv->markers_by_frame,
-                                         GUINT_TO_POINTER (frame_num));
-          for (l = markers; l; l = l->next)
-            {
-              TimelineMarker *marker = l->data;
-
-              CLUTTER_NOTE (SCHEDULER, "Marker `%s' reached", marker->name);
-
-              g_signal_emit (timeline, timeline_signals[MARKER_REACHED],
-                             marker->quark,
-                             marker->name,
-                             marker->frame_num);
-            }
-        }
+      /* Emit the signal */
+      emit_frame_signal (timeline);
 
       /* Signal pauses timeline ? */
       if (!priv->timeout_id)
@@ -679,17 +687,24 @@ timeline_timeout_func (gpointer data)
       guint overflow_frame_num = priv->current_frame_num;
       gint end_frame;
 
-      /* In case the signal handlers want to take a peek... */
+      /* Update the current frame number in case the signal handlers
+         want to take a peek. Don't count skipped frames that run past
+         the end of the timeline */
       if (priv->direction == CLUTTER_TIMELINE_FORWARD)
-        priv->current_frame_num = priv->n_frames;
+        {
+          priv->skipped_frames -= priv->current_frame_num - priv->n_frames;
+          priv->current_frame_num = priv->n_frames;
+        }
       else if (priv->direction == CLUTTER_TIMELINE_BACKWARD)
-        priv->current_frame_num = 0;
+        {
+          priv->skipped_frames += priv->current_frame_num;
+          priv->current_frame_num = 0;
+        }
 
       end_frame = priv->current_frame_num;
 
-      /* Fire off signal */
-      g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
-                     priv->current_frame_num);
+      /* Emit the signal */
+      emit_frame_signal (timeline);
 
       /* Did the signal handler modify the current_frame_num */
       if (priv->current_frame_num != end_frame)

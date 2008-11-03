@@ -1,3 +1,19 @@
+2008-11-03  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1207 - Timelines sometime miss markers
+
+	* clutter/clutter-timeline.c (timeline_timeout_func): Move the
+	code for firing the new-frame and marker-reached signals into a
+	separate static function so that it can also be called when the
+	last frame is reached. Also fix an issue where the frame numbers
+	were changed in the wrong direction when detecting missed markers
+	in a reversed timeline. Based on a patch by Michael Boccara.
+
+	* tests/test-timeline.c: Now tries to automatically verify whether
+	the test worked by keeping track of all the signal emissions. The
+	timelines are run a second time with an extra timeout that causes
+	delays to simulate skipped frames.
+
 2008-10-31  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/pango/cogl-pango-fontmap.c:
