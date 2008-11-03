@@ -783,24 +783,20 @@ mutter_window_get_workspace (MutterWindow *mcw)
   return meta_workspace_index (workspace);
 }
 
-gboolean
-mutter_window_is_hidden (MutterWindow *mcw)
-{
-  MutterWindowPrivate *priv;
 
+mutter_window_showing_on_its_workspace (MutterWindow *mcw)
+{
   if (!mcw)
+    return FALSE;
+  
+  /* If override redirect: */
+  if (!mcw->priv->window)
     return TRUE;
 
-  priv = mcw->priv;
-
-  if (!priv->window)
-    return FALSE;
-
-  return meta_window_is_hidden (priv->window);
+  return meta_window_showing_on_its_workspace (mcw->priv->window);
 }
 
-
-static void repair_win (MutterWindow *cw);
+tatic void repair_win (MutterWindow *cw);
 static void map_win    (MutterWindow *cw);
 static void unmap_win  (MutterWindow *cw);
 

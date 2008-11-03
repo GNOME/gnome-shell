@@ -64,5 +64,8 @@ void     meta_window_activate_with_workspace (MetaWindow    *window,
                                               guint32        current_time,
                                               MetaWorkspace *workspace);
 const char * meta_window_get_description (MetaWindow *window);
+/* Return whether the window would be showing if we were on its workspace */
+gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
+
 
 #endif
