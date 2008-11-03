@@ -1,3 +1,10 @@
+2008-11-03  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	Bug 1231 - Build fails in gles flavour in revision 3442
+
+	* clutter/cogl/gles/cogl-context.h: Fix remaining use of
+	ClutterFixed over CoglFixed. (Michael Boccara)
+
 2008-11-03  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1207 - Timelines sometime miss markers
