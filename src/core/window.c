@@ -476,7 +476,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   /* if already mapped, no need to worry about focus-on-first-time-showing */
   window->showing_for_first_time = !window->mapped;
   /* if already mapped we don't want to do the placement thing */
-  window->placed = window->mapped;
+  window->placed = (window->mapped && !window->hidden);
   if (window->placed)
     meta_topic (META_DEBUG_PLACEMENT,
                 "Not placing window 0x%lx since it's already mapped\n",
@@ -1461,7 +1461,7 @@ implement_showing (MetaWindow *window,
        * be minimized, and we are on the current workspace.
        */
       if (on_workspace && window->minimized && window->mapped &&
-          !meta_prefs_get_reduced_resources ())
+          !window->hidden && !meta_prefs_get_reduced_resources ())
         {
           MetaRectangle icon_rect, window_rect;
           gboolean result;
@@ -2246,9 +2246,9 @@ meta_window_show (MetaWindow *window)
           XMapWindow (window->display->xdisplay, window->xwindow);
           meta_error_trap_pop (window->display, FALSE);
           did_show = TRUE;
-          window->hidden = FALSE;
         }
-      else if (meta_prefs_get_live_hidden_windows ())
+      
+      if (meta_prefs_get_live_hidden_windows ())
         {
           if (window->hidden)
             {
@@ -2340,7 +2340,14 @@ meta_window_hide (MetaWindow *window)
         return;
 
       if (!window->mapped)
-        meta_window_show (window);
+	{
+	  meta_topic (META_DEBUG_WINDOW_STATE,
+                      "%s actually needs map\n", window->desc);
+          window->mapped = TRUE;
+          meta_error_trap_push (window->display);
+          XMapWindow (window->display->xdisplay, window->xwindow);
+          meta_error_trap_pop (window->display, FALSE);
+	}
 
       meta_stack_freeze (window->screen->stack);
       window->hidden = TRUE;
@@ -4126,7 +4133,7 @@ meta_window_focus (MetaWindow  *window,
 
   meta_window_flush_calc_showing (window);
 
-  if (!window->mapped && !window->shaded)
+  if ((!window->mapped || window->hidden) && !window->shaded)
     {
       meta_topic (META_DEBUG_FOCUS,
                   "Window %s is not showing, not focusing after all\n",
