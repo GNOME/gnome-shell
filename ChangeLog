@@ -1,5 +1,12 @@
 2008-11-03  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/cogl/gl/Makefile.am: Whitespace fixes.
+
+	* clutter/cogl/gles/Makefile.am: Put back a missing backslash
+	that broke the GLES build.
+
+2008-11-03  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1231 - Build fails in gles flavour in revision 3442
 
 	* clutter/cogl/gles/cogl-context.h: Fix remaining use of
