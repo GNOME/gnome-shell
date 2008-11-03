@@ -38,10 +38,10 @@ addpath('XDG_DATA_DIRS', '/usr/share')
 addpath('XDG_CONFIG_DIRS', '/etc/xdg')
 
 #
-# For Ubuntu Intrepid, libmozjs lives in /usr/lib/xulrunner-<version>/lib
+# For Ubuntu Intrepid, libmozjs lives in /usr/lib/xulrunner-<version>
 # However, that path isn't in ld.so.conf, meaning that it's basically
 # impossible to use the xulrunner .pc files and libraries. Work around
-# this by deriving the path and adding it to LD_SO_CONF ourself.
+# this by deriving the path and adding it to LD_LIBRARY_PATH ourself.
 #
 import re
 import subprocess
@@ -50,7 +50,7 @@ _pkgconfig = subprocess.Popen(['pkg-config', '--variable=sdkdir', 'mozilla-js'],
 _sdkdir = _pkgconfig.communicate()[0].strip()
 _pkgconfig.wait()
 if _pkgconfig.returncode == 0:
-    _libdir = re.sub('-(sdk|devel)', '', _sdkdir) + '/lib'
+    _libdir = re.sub('-(sdk|devel)', '', _sdkdir)
     if os.path.exists(_libdir + '/libmozjs.so'):
         addpath('LD_LIBRARY_PATH', _libdir)
 
