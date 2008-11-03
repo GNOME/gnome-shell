@@ -142,6 +142,7 @@ typedef struct _MetaCompScreen
   MetaScreen            *screen;
 
   ClutterActor          *stage, *window_group, *overlay_group;
+  ClutterActor		*hidden_group;
   GList                 *windows;
   GHashTable            *windows_by_xid;
   MetaWindow            *focus_window;
@@ -1952,12 +1953,15 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   g_object_set_property (G_OBJECT (info->window_group),
 			 "show-on-set-parent", FALSE);
   info->overlay_group = clutter_group_new ();
+  info->hidden_group = clutter_group_new ();
 
   clutter_container_add (CLUTTER_CONTAINER (info->stage),
                          info->window_group,
                          info->overlay_group,
+			 info->hidden_group,
                          NULL);
 
+  clutter_actor_hide (info->hidden_group);
 
   /*
    * Must do this *before* creating the plugin manager, in case any of the
@@ -2435,17 +2439,24 @@ clutter_cmp_set_window_hidden (MetaCompositor *compositor,
 			       gboolean	       hidden)
 {
   MutterWindow *cw = window->compositor_private;
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
   g_return_if_fail (cw);
-  
+
   if (hidden)
     {
       /* FIXME: There needs to be a way to queue this if there is an effect
        * in progress for this window */
-      clutter_actor_hide (CLUTTER_ACTOR (cw));
+      if (clutter_actor_get_parent (CLUTTER_ACTOR (cw)) != info->hidden_group)
+	clutter_actor_reparent (CLUTTER_ACTOR (cw),
+				info->hidden_group);
     }
   else
-    clutter_actor_show (CLUTTER_ACTOR (cw));
+    {
+      if (clutter_actor_get_parent (CLUTTER_ACTOR (cw)) != info->window_group)
+	clutter_actor_reparent (CLUTTER_ACTOR (cw),
+				info->window_group);
+    }
 }
 
 static MetaCompositor comp_info = {

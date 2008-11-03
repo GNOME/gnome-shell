@@ -2254,12 +2254,12 @@ meta_window_show (MetaWindow *window)
             {
               meta_stack_freeze (window->screen->stack);
               window->hidden = FALSE;
-              meta_stack_thaw (window->screen->stack);
 	      /* Inform the compositor that the window isn't hidden */
 	      meta_compositor_set_window_hidden (window->display->compositor,
 						 window->screen,
 						 window,
 						 window->hidden);
+              meta_stack_thaw (window->screen->stack);
               did_show = TRUE;
             }
         }
@@ -2344,12 +2344,12 @@ meta_window_hide (MetaWindow *window)
 
       meta_stack_freeze (window->screen->stack);
       window->hidden = TRUE;
-      meta_stack_thaw (window->screen->stack);
       /* Tell the compositor this window is now hidden */
       meta_compositor_set_window_hidden (window->display->compositor,
 					 window->screen,
 					 window,
 					 window->hidden);
+      meta_stack_thaw (window->screen->stack);
 
       did_hide = TRUE;
     }
