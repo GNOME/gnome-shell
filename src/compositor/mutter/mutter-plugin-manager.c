@@ -927,3 +927,13 @@ mutter_plugin_get_xdisplay (MutterPlugin *plugin)
 
   return xdpy;
 }
+
+MetaScreen *
+mutter_plugin_get_screen (MutterPlugin *plugin)
+{
+  MutterPluginPrivate *priv    = plugin->manager_private;
+  MutterPluginManager *mgr     = priv->self;
+
+  return mgr->screen;
+}
+

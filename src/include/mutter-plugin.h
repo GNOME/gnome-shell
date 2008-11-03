@@ -248,4 +248,7 @@ mutter_plugin_get_windows (MutterPlugin *plugin);
 Display *
 mutter_plugin_get_xdisplay (MutterPlugin *plugin);
 
+MetaScreen *
+mutter_plugin_get_screen (MutterPlugin *plugin);
+
 #endif /* MUTTER_PLUGIN_H_ */
