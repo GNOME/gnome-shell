@@ -1240,7 +1240,6 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
       return;
     }
 
-  g_printerr ("window =%p\n", window);
   if (info == NULL)
     return;
 
@@ -1414,7 +1413,7 @@ repair_win (MutterWindow *cw)
       full = TRUE;
     }
 
-  /*
+ /*
    * TODO -- on some gfx hardware updating the whole texture instead of
    * the individual rectangles is actually quicker, so we might want to
    * make this a configurable option (on desktop HW with multiple pipelines
@@ -2382,16 +2381,11 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
   GList *tmp;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
   
-  g_printerr ("----------------------------------------\n");
   for (tmp = stack; tmp != NULL; tmp = tmp->next)
     {
       MetaWindow    *window = tmp->data;
       MutterWindow  *cw = window->compositor_private;
       GList	    *link;
-
-      /* FIXME -debug */
-      g_printerr ("sync DEBUG window = %p stack_position=%d\n",
-		  window, window->stack_position);
 
       if (!cw)
 	{
@@ -2400,36 +2394,12 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
 	  continue;
 	}
       
-#if 0
-      /* This is a failsafe, it shouldn't be needed if everything is
-       * well behaved, but if some plugin accidentally shows a
-       * hidden window, this may help. */
-      if (window->hidden)
-	clutter_actor_hide (CLUTTER_ACTOR (cw));
-#endif
-
       clutter_actor_lower_bottom (CLUTTER_ACTOR (cw));
 
       /* Also maintain the order of info->windows */
       info->windows = g_list_remove (info->windows, (gconstpointer)cw);
       info->windows = g_list_prepend (info->windows, cw);
     }
-
-#if 0
-  /* FIXME debug */
-  {
-    g_printerr ("----------------------------------------\n");
-    MetaWindow *window = stack->data;
-    MutterWindow *cw = window->compositor_private;
-    ClutterActor *parent = clutter_actor_get_parent (cw);
-    for (tmp = clutter_container_get_children (parent);
-	 tmp != NULL; 
-	 tmp = tmp->next)
-      {
-	g_printerr ("sync DEBUG: %p\n", tmp->data);
-      }
-  }
-#endif
 }
 
 static void
