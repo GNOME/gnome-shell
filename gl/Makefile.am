@@ -10,7 +10,6 @@ libclutterinclude_HEADERS = \
         $(top_builddir)/clutter/cogl/cogl-texture.h \
         $(top_builddir)/clutter/cogl/cogl-types.h
 
-
 INCLUDES = \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/clutter \

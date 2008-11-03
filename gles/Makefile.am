@@ -36,7 +36,7 @@ libclutter_cogl_la_SOURCES = \
         $(top_builddir)/clutter/cogl/cogl-path.h \
         $(top_builddir)/clutter/cogl/cogl-shader.h \
         $(top_builddir)/clutter/cogl/cogl-texture.h \
-        $(top_builddir)/clutter/cogl/cogl-types.h
+        $(top_builddir)/clutter/cogl/cogl-types.h \
 	cogl-internal.h \
 	cogl-texture-private.h \
 	cogl-fbo.h \
@@ -66,7 +66,7 @@ EXTRA_DIST = cogl-defines.h.in \
 	cogl-fixed-vertex-shader.glsl \
 	cogl-fixed-fragment-shader.glsl
 
-libclutter_cogl_la_LIBADD =  $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
+libclutter_cogl_la_LIBADD = $(top_builddir)/clutter/cogl/common/libclutter-cogl-common.la
 
 .glsl.h :
 	/bin/sh $(top_srcdir)/clutter/cogl/gles/stringify.sh -h $<
