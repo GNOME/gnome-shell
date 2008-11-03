@@ -57,4 +57,6 @@ MetaWorkspace *meta_screen_append_new_workspace (MetaScreen    *screen,
                                                  gboolean       activate,
                                                  guint32        timestamp);
 
+int meta_screen_get_active_workspace_index (MetaScreen *screen);
+
 #endif
