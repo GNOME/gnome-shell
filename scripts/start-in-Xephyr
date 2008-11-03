@@ -29,14 +29,19 @@ try:
     hexkey = "".join(("%02x" % ord(byte) for byte in key))
 
     # Store that in an xauthority file as the key for connecting to our Xephyr
-    os.environ['XAUTHORITY'] = xauth_file
-    retcode = subprocess.call(["xauth", "add", display,  "MIT-MAGIC-COOKIE-1", hexkey])
+    retcode = subprocess.call(["xauth",
+                               "-f", xauth_file,
+                               "add", display,  "MIT-MAGIC-COOKIE-1", hexkey])
     if retcode != 0:
         raise RuntimeError("xauth failed")
 
     # Launch Xephyr
-    xephyr = subprocess.Popen(["Xephyr", display, "-screen", "800x600", "-host-cursor"])
+    xephyr = subprocess.Popen(["Xephyr", display,
+                               "-auth", xauth_file,
+                               "-screen", "800x600",
+                               "-host-cursor"])
     os.environ['DISPLAY'] = display
+    os.environ['XAUTHORITY'] = xauth_file
 
     # Wait for server to get going: LAME
     time.sleep(1)
