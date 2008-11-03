@@ -35,6 +35,10 @@
 #include "prefs.h"
 #include "workspace.h"
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+#include "compositor.h"
+#endif
+
 #include <X11/Xatom.h>
 
 #define WINDOW_HAS_TRANSIENT_TYPE(w)                    \
@@ -1057,6 +1061,7 @@ stack_sync_to_server (MetaStack *stack)
   GArray *stacked;
   GArray *root_children_stacked;
   GList *tmp;
+  GArray *all_hidden;
   
   /* Bail out if frozen */
   if (stack->freeze_count > 0)
@@ -1067,6 +1072,7 @@ stack_sync_to_server (MetaStack *stack)
   stack_ensure_sorted (stack);
 
   meta_compositor_sync_stack (stack->screen->display->compositor,
+			      stack->screen,
 			      stack->sorted);
   
   /* Create stacked xwindow arrays.
@@ -1076,29 +1082,42 @@ stack_sync_to_server (MetaStack *stack)
    */
   stacked = g_array_new (FALSE, FALSE, sizeof (Window));
   root_children_stacked = g_array_new (FALSE, FALSE, sizeof (Window));
+  all_hidden = g_array_new (FALSE, FALSE, sizeof (Window));
+
+  /* The screen guard window sits above all hidden windows and acts as
+   * a barrier to input reaching these windows. */
+  g_array_append_val (all_hidden, stack->screen->guard_window);
 
   meta_topic (META_DEBUG_STACK, "Top to bottom: ");
   meta_push_no_msg_prefix ();
-  
-  tmp = stack->sorted;
-  while (tmp != NULL)
+
+  for (tmp = stack->sorted; tmp != NULL; tmp = tmp->next)
     {
-      MetaWindow *w;
+      MetaWindow *w = tmp->data;
+      Window top_level_window;
       
-      w = tmp->data;
-      
+      meta_topic (META_DEBUG_STACK, "%u:%d - %s ",
+		  w->layer, w->stack_position, w->desc);
+
       /* remember, stacked is in reverse order (bottom to top) */
       g_array_prepend_val (stacked, w->xwindow);
       
-      /* build XRestackWindows() array from top to bottom */
       if (w->frame)
-        g_array_append_val (root_children_stacked, w->frame->xwindow);
+	top_level_window = w->frame->xwindow;
       else
-        g_array_append_val (root_children_stacked, w->xwindow);
-      
-      meta_topic (META_DEBUG_STACK, "%u:%d - %s ", w->layer, w->stack_position, w->desc);
-          
-      tmp = tmp->next;
+	top_level_window = w->xwindow;
+
+      /* We don't restack hidden windows along with the rest, though they are
+       * reflected in the _NET hints. Hidden windows all get pushed below
+       * the screens fullscreen guard_window. */
+      if (w->hidden)
+	{
+	  g_array_append_val (all_hidden, top_level_window);
+	  continue;
+	}
+
+      /* build XRestackWindows() array from top to bottom */
+      g_array_append_val (root_children_stacked, top_level_window);
     }
 
   meta_topic (META_DEBUG_STACK, "\n");
@@ -1215,6 +1234,13 @@ stack_sync_to_server (MetaStack *stack)
                            (Window *) newp, new_end - newp);
         }
     }
+
+  /* Push hidden windows to the bottom of the stack under the guard window */
+  XLowerWindow (stack->screen->display->xdisplay, stack->screen->guard_window);
+  XRestackWindows (stack->screen->display->xdisplay,
+		   (Window *)all_hidden->data,
+		   all_hidden->len);
+  g_array_free (all_hidden, TRUE);
 
   meta_error_trap_pop (stack->screen->display, FALSE);
   /* on error, a window was destroyed; it should eventually

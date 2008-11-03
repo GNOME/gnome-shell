@@ -783,7 +783,7 @@ mutter_window_get_workspace (MutterWindow *mcw)
   return meta_workspace_index (workspace);
 }
 
-
+gboolean
 mutter_window_showing_on_its_workspace (MutterWindow *mcw)
 {
   if (!mcw)
@@ -796,7 +796,7 @@ mutter_window_showing_on_its_workspace (MutterWindow *mcw)
   return meta_window_showing_on_its_workspace (mcw->priv->window);
 }
 
-tatic void repair_win (MutterWindow *cw);
+static void repair_win (MutterWindow *cw);
 static void map_win    (MutterWindow *cw);
 static void unmap_win  (MutterWindow *cw);
 
@@ -834,7 +834,8 @@ mutter_finish_workspace_switch (MetaCompScreen *info)
 	  l = l->prev;
 	}
     }
-
+  
+#if 0
   /*
    * Fix up stacking order in case the plugin messed it up.
    */
@@ -874,6 +875,7 @@ mutter_finish_workspace_switch (MetaCompScreen *info)
 
       l = l->prev;
     }
+#endif
 
 /*   printf ("... FINISHED DESKTOP SWITCH\n"); */
 
@@ -1222,7 +1224,22 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
   Display               *xdisplay = meta_display_get_xdisplay (display);
   XWindowAttributes      attrs;
   gulong                 events_needed;
+  
+  /* Note: this blacklist internal windows is copied from screen.c
+   * Ideally add_win shouldn't be driven by CreateNotify events and
+   * should instead be an event directly from metacity core. */
+  if (xwindow == screen->no_focus_window ||
+      xwindow == screen->flash_window ||
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+      xwindow == screen->wm_cm_selection_window ||
+      xwindow == screen->guard_window ||
+#endif
+      xwindow == screen->wm_sn_selection_window) {
+      meta_verbose ("Not managing our own windows\n");
+      return;
+    }
 
+  g_printerr ("window =%p\n", window);
   if (info == NULL)
     return;
 
@@ -1932,6 +1949,8 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
                 KeyPressMask | KeyReleaseMask);
 
   info->window_group = clutter_group_new ();
+  g_object_set_property (G_OBJECT (info->window_group),
+			 "show-on-set-parent", FALSE);
   info->overlay_group = clutter_group_new ();
 
   clutter_container_add (CLUTTER_CONTAINER (info->stage),
@@ -2285,9 +2304,11 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
   info      = meta_screen_get_compositor_data (screen);
   to_indx   = meta_workspace_index (to);
   from_indx = meta_workspace_index (from);
-
+  
   if (!meta_prefs_get_live_hidden_windows ())
     {
+      GList *l;
+
       /*
        * We are in the traditional mode where hidden windows get unmapped,
        * we need to pre-calculate the map status of each window so that once
@@ -2295,14 +2316,12 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
        * (we need to ignore the map notifications during the effect so that
        * actors do not just disappear while the effect is running).
        */
-      GList *l = info->windows;
-
-      while (l)
+      for (l = info->windows; l != NULL; l = l->next)
 	{
 	  MutterWindow *cw = l->data;
-	  MetaWindow     *mw = cw->priv->window;
-	  gboolean        sticky;
-	  gint            workspace = -1;
+	  MetaWindow   *mw = cw->priv->window;
+	  gboolean      sticky;
+	  gint          workspace = -1;
 
 	  sticky = (!mw || meta_window_is_on_all_workspaces (mw));
 
@@ -2327,8 +2346,6 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
 		  cw->priv->needs_unmap = FALSE;
 		}
 	    }
-
-	  l = l->next;
 	}
     }
 
@@ -2355,14 +2372,23 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
 
 static void
 clutter_cmp_sync_stack (MetaCompositor *compositor,
+			MetaScreen     *screen,
 			GList	       *stack)
 {
   GList *tmp;
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
   
+  g_printerr ("----------------------------------------\n");
   for (tmp = stack; tmp != NULL; tmp = tmp->next)
     {
       MetaWindow    *window = tmp->data;
       MutterWindow  *cw = window->compositor_private;
+      GList	    *link;
+
+      /* FIXME -debug */
+      g_printerr ("sync DEBUG window = %p stack_position=%d\n",
+		  window, window->stack_position);
+
       if (!cw)
 	{
 	  meta_verbose ("Failed to find corresponding MutterWindow "
@@ -2371,15 +2397,55 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
 	}
       
 #if 0
-      /* FIXME: There should be a seperate composite manager hook
-       * for hiding/unhiding the actor when the window becomes
-       * hidden or not */
-      if (meta_window_is_hidden (window))
+      /* This is a failsafe, it shouldn't be needed if everything is
+       * well behaved, but if some plugin accidentally shows a
+       * hidden window, this may help. */
+      if (window->hidden)
 	clutter_actor_hide (CLUTTER_ACTOR (cw));
 #endif
 
       clutter_actor_lower_bottom (CLUTTER_ACTOR (cw));
+
+      /* Also maintain the order of info->windows */
+      info->windows = g_list_remove (info->windows, (gconstpointer)cw);
+      info->windows = g_list_prepend (info->windows, cw);
     }
+
+#if 0
+  /* FIXME debug */
+  {
+    g_printerr ("----------------------------------------\n");
+    MetaWindow *window = stack->data;
+    MutterWindow *cw = window->compositor_private;
+    ClutterActor *parent = clutter_actor_get_parent (cw);
+    for (tmp = clutter_container_get_children (parent);
+	 tmp != NULL; 
+	 tmp = tmp->next)
+      {
+	g_printerr ("sync DEBUG: %p\n", tmp->data);
+      }
+  }
+#endif
+}
+
+static void
+clutter_cmp_set_window_hidden (MetaCompositor *compositor,
+			       MetaScreen     *screen,
+			       MetaWindow     *window,
+			       gboolean	       hidden)
+{
+  MutterWindow *cw = window->compositor_private;
+
+  g_return_if_fail (cw);
+  
+  if (hidden)
+    {
+      /* FIXME: There needs to be a way to queue this if there is an effect
+       * in progress for this window */
+      clutter_actor_hide (CLUTTER_ACTOR (cw));
+    }
+  else
+    clutter_actor_show (CLUTTER_ACTOR (cw));
 }
 
 static MetaCompositor comp_info = {
@@ -2398,7 +2464,8 @@ static MetaCompositor comp_info = {
   clutter_cmp_unmaximize_window,
   clutter_cmp_update_workspace_geometry,
   clutter_cmp_switch_workspace,
-  clutter_cmp_sync_stack
+  clutter_cmp_sync_stack,
+  clutter_cmp_set_window_hidden
 };
 
 MetaCompositor *

@@ -2250,34 +2250,37 @@ meta_window_show (MetaWindow *window)
         }
       else if (meta_prefs_get_live_hidden_windows ())
         {
-          if (window->hidden && window->type != META_WINDOW_DESKTOP)
+          if (window->hidden)
             {
-              window->hidden = FALSE;
               meta_stack_freeze (window->screen->stack);
-              meta_window_update_layer (window);
-              meta_window_raise (window);
+              window->hidden = FALSE;
               meta_stack_thaw (window->screen->stack);
+	      /* Inform the compositor that the window isn't hidden */
+	      meta_compositor_set_window_hidden (window->display->compositor,
+						 window->screen,
+						 window,
+						 window->hidden);
               did_show = TRUE;
             }
         }
 
       if (did_show && window->was_minimized)
-            {
-              MetaRectangle window_rect;
-              MetaRectangle icon_rect;
-              
-              window->was_minimized = FALSE;
-              
-              if (meta_window_get_icon_geometry (window, &icon_rect))
-                {
-                  meta_window_get_outer_rect (window, &window_rect);
-                  
-                  meta_effect_run_unminimize (window,
-                                              &window_rect,
-                                              &icon_rect,
-                                              NULL, NULL);
-                }
-            }
+	{
+	  MetaRectangle window_rect;
+	  MetaRectangle icon_rect;
+	  
+	  window->was_minimized = FALSE;
+	  
+	  if (meta_window_get_icon_geometry (window, &icon_rect))
+	    {
+	      meta_window_get_outer_rect (window, &window_rect);
+	      
+	      meta_effect_run_unminimize (window,
+					  &window_rect,
+					  &icon_rect,
+					  NULL, NULL);
+	    }
+	}
       
       if (window->iconic)
         {
@@ -2333,23 +2336,22 @@ meta_window_hide (MetaWindow *window)
 
   if (meta_prefs_get_live_hidden_windows ())
     {
-      gboolean was_mapped;
-
       if (window->hidden)
         return;
 
-      was_mapped = window->mapped;
-
-      if (!was_mapped)
+      if (!window->mapped)
         meta_window_show (window);
 
-      window->hidden = TRUE;
-      did_hide = TRUE;
-
       meta_stack_freeze (window->screen->stack);
-      meta_window_update_layer (window);
-      meta_window_lower (window);
+      window->hidden = TRUE;
       meta_stack_thaw (window->screen->stack);
+      /* Tell the compositor this window is now hidden */
+      meta_compositor_set_window_hidden (window->display->compositor,
+					 window->screen,
+					 window,
+					 window->hidden);
+
+      did_hide = TRUE;
     }
   else
     {
@@ -8013,7 +8015,7 @@ meta_window_update_layer (MetaWindow *window)
   
   meta_stack_freeze (window->screen->stack);
   group = meta_window_get_group (window);
-  if (!window->hidden && group)
+  if (group)
     meta_group_update_layers (group);
   else
     meta_stack_update_layer (window->screen->stack, window);

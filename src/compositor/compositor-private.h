@@ -80,7 +80,13 @@ struct _MetaCompositor
                             MetaMotionDirection direction);
 
   void (*sync_stack) (MetaCompositor *compositor,
+		      MetaScreen     *screen,
 		      GList	     *stack);
+  
+  void (*set_window_hidden) (MetaCompositor *compositor,
+			     MetaScreen	    *screen,
+			     MetaWindow	    *window,
+			     gboolean	     hidden);
 };
 
 #endif
