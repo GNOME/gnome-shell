@@ -42,7 +42,7 @@ if [ ! -f $HOME/.jhbuildrc-custom ]; then
     echo "done"
 fi
 
-if test "x`echo $PATH | grep $HOME/bin`" == x; then
+if test "x`echo $PATH | grep $HOME/bin`" = x; then
     echo "PATH does not contain $HOME/bin, it is recommended that you add that."
     echo
 fi
