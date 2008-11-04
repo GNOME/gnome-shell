@@ -142,11 +142,15 @@
  *
  * <programlisting><![CDATA[
  *   "id"         := the unique name of a ClutterScript object
- *   "type"       := the class literal name, also used to infer the type function
+ *   "type"       := the class literal name, also used to infer the type
+ *                   function
  *   "type_func"  := the GType function name, for non-standard classes
  *   "children"   := an array of names or objects to add as children
  *   "behaviours" := an array of names or objects to apply to an actor
  *   "signals"    := an array of signal definitions to connect to an object
+ *   "is-default" := a boolean flag used when defining the #ClutterStage;
+ *                   if set to "true" the default stage will be used instead
+ *                   of creating a new #ClutterStage instance
  * ]]></programlisting>
  *
  * #ClutterScript is available since Clutter 0.6
