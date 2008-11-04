@@ -599,7 +599,10 @@ start_children_entries (GNode    *node,
 {
   ClutterScoreEntry *entry = node->data;
 
-  start_entry (entry);
+  /* If data is NULL, start all entries that have no marker, otherwise
+     only start entries that have the same marker */
+  if (data == NULL ? entry->marker == NULL : !strcmp (data, entry->marker))
+    start_entry (entry);
 }
 
 static void
@@ -623,7 +626,7 @@ on_timeline_marker (ClutterTimeline   *timeline,
       g_node_children_foreach (parent,
                                G_TRAVERSE_ALL,
                                start_children_entries,
-                               NULL);
+                               (gpointer) marker_name);
     }
 }
 

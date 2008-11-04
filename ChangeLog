@@ -1,3 +1,16 @@
+2008-11-04  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1181 - In Score, timelines, appended at markers, are also
+	called on complete
+
+	* clutter/clutter-score.c (start_children_entries): Use the name
+	of the marker to start as the data parameter and only start child
+	timelines that have the same marker name. Previously the
+	ClutterScore would just start all child entries when a marker was
+	reached or the timeline completed regardless of whether they were
+	added with a marker or not. Thanks to Mihail Naydenov for
+	reporting the bug.
+
 2008-11-03  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/cogl/gl/Makefile.am: Whitespace fixes.
