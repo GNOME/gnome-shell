@@ -146,8 +146,6 @@ void          meta_screen_foreach_window      (MetaScreen                 *scree
 void          meta_screen_queue_frame_redraws (MetaScreen                 *screen);
 void          meta_screen_queue_window_resizes (MetaScreen                 *screen);
 
-int           meta_screen_get_n_workspaces    (MetaScreen                 *screen);
-
 void          meta_screen_set_cursor          (MetaScreen                 *screen,
                                                MetaCursor                  cursor);
 void          meta_screen_update_cursor       (MetaScreen                 *screen);

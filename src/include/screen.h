@@ -47,6 +47,8 @@ void meta_screen_unset_cm_selection (MetaScreen *screen);
 
 GList *meta_screen_get_workspaces (MetaScreen *screen);
 
+int meta_screen_get_n_workspaces (MetaScreen *screen);
+
 MetaWorkspace* meta_screen_get_workspace_by_index (MetaScreen    *screen,
                                                    int            index);
 void meta_screen_remove_workspace (MetaScreen    *screen,
