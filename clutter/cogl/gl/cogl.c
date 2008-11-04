@@ -775,7 +775,7 @@ cogl_perspective (CoglFixed fovy,
                     COGL_FIXED_FAST_DIV (cogl_fixed_sin (fovy_rad_half),
                                          cogl_fixed_cos (fovy_rad_half)));
 
-  xmax = COGL_FIXED_FAST_DIV (ymax, aspect);
+  xmax = COGL_FIXED_MUL (ymax, aspect);
 
   x = COGL_FIXED_FAST_DIV (zNear, xmax);
   y = COGL_FIXED_FAST_DIV (zNear, ymax);

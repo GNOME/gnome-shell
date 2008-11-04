@@ -1,5 +1,12 @@
 2008-11-04  Neil Roberts  <neil@linux.intel.com>
 
+	* clutter/cogl/gl/cogl.c (cogl_perspective): Use the accurate
+	64-bit multiplication macro instead of COGL_FIXED_FAST_DIV for
+	calculating xmax as was done previously. This fixes
+	test-perspective and other tests that had a gone a bit skewiff.
+
+2008-11-04  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1181 - In Score, timelines, appended at markers, are also
 	called on complete
 
