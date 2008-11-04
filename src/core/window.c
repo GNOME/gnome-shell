@@ -2341,11 +2341,16 @@ meta_window_hide (MetaWindow *window)
 
       if (!window->mapped)
 	{
+	  Window top_level_window;
 	  meta_topic (META_DEBUG_WINDOW_STATE,
                       "%s actually needs map\n", window->desc);
           window->mapped = TRUE;
           meta_error_trap_push (window->display);
-          XMapWindow (window->display->xdisplay, window->xwindow);
+	  if (window->frame)
+	    top_level_window = window->frame->xwindow;
+	  else
+	    top_level_window = window->xwindow;
+	  XMapWindow (window->display->xdisplay, top_level_window);
           meta_error_trap_pop (window->display, FALSE);
 	}
 
