@@ -78,7 +78,10 @@ class Launcher:
         plugin = os.path.join(self.plugin_dir, "libgnome-shell.la")
         args.extend(['metacity', '--mutter-plugins=' + plugin, '--replace'])
         return subprocess.Popen(args, env=env)
-            
+    
+    def is_verbose (self):
+        """Returns whether the Launcher was started in verbose mode"""
+        return self.options.verbose        
         
 
         
