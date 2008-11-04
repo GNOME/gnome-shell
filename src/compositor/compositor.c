@@ -243,11 +243,25 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
 }
 
 void
-meta_compositor_ensure_stack_order (MetaCompositor *compositor,
-                                    MetaScreen     *screen)
+meta_compositor_sync_stack (MetaCompositor  *compositor,
+			    MetaScreen	    *screen,
+			    GList	    *stack)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor && compositor->ensure_stack_order)
-    compositor->ensure_stack_order (compositor, screen);
+  if (compositor && compositor->sync_stack)
+    compositor->sync_stack (compositor, screen, stack);
 #endif
 }
+
+void
+meta_compositor_set_window_hidden (MetaCompositor *compositor,
+				   MetaScreen	  *screen,
+				   MetaWindow	  *window,
+				   gboolean	   hidden)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->set_window_hidden)
+    compositor->set_window_hidden (compositor, screen, window, hidden);
+#endif
+}
+

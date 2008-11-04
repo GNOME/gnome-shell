@@ -129,9 +129,9 @@ meta_compositor_switch_workspace (MetaCompositor     *compositor,
                                   MetaMotionDirection direction);
 
 void
-meta_compositor_ensure_stack_order (MetaCompositor *compositor,
-                                    MetaScreen     *screen);
-
+meta_compositor_sync_stack (MetaCompositor  *compositor,
+			    MetaScreen      *screen,
+			    GList	    *stack);
 #endif
 
 

@@ -476,7 +476,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   /* if already mapped, no need to worry about focus-on-first-time-showing */
   window->showing_for_first_time = !window->mapped;
   /* if already mapped we don't want to do the placement thing */
-  window->placed = window->mapped;
+  window->placed = (window->mapped && !window->hidden);
   if (window->placed)
     meta_topic (META_DEBUG_PLACEMENT,
                 "Not placing window 0x%lx since it's already mapped\n",
@@ -558,6 +558,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->stack_position = -1;
   window->initial_workspace = 0; /* not used */
   window->initial_timestamp = 0; /* not used */
+
+  window->compositor_private = NULL;
   
   meta_display_register_x_window (display, &window->xwindow, window);
 
@@ -1459,7 +1461,7 @@ implement_showing (MetaWindow *window,
        * be minimized, and we are on the current workspace.
        */
       if (on_workspace && window->minimized && window->mapped &&
-          !meta_prefs_get_reduced_resources ())
+          !window->hidden && !meta_prefs_get_reduced_resources ())
         {
           MetaRectangle icon_rect, window_rect;
           gboolean result;
@@ -2244,38 +2246,41 @@ meta_window_show (MetaWindow *window)
           XMapWindow (window->display->xdisplay, window->xwindow);
           meta_error_trap_pop (window->display, FALSE);
           did_show = TRUE;
-          window->hidden = FALSE;
         }
-      else if (meta_prefs_get_live_hidden_windows ())
+      
+      if (meta_prefs_get_live_hidden_windows ())
         {
-          if (window->hidden && window->type != META_WINDOW_DESKTOP)
+          if (window->hidden)
             {
-              window->hidden = FALSE;
               meta_stack_freeze (window->screen->stack);
-              meta_window_update_layer (window);
-              meta_window_raise (window);
+              window->hidden = FALSE;
+	      /* Inform the compositor that the window isn't hidden */
+	      meta_compositor_set_window_hidden (window->display->compositor,
+						 window->screen,
+						 window,
+						 window->hidden);
               meta_stack_thaw (window->screen->stack);
               did_show = TRUE;
             }
         }
 
       if (did_show && window->was_minimized)
-            {
-              MetaRectangle window_rect;
-              MetaRectangle icon_rect;
-              
-              window->was_minimized = FALSE;
-              
-              if (meta_window_get_icon_geometry (window, &icon_rect))
-                {
-                  meta_window_get_outer_rect (window, &window_rect);
-                  
-                  meta_effect_run_unminimize (window,
-                                              &window_rect,
-                                              &icon_rect,
-                                              NULL, NULL);
-                }
-            }
+	{
+	  MetaRectangle window_rect;
+	  MetaRectangle icon_rect;
+	  
+	  window->was_minimized = FALSE;
+	  
+	  if (meta_window_get_icon_geometry (window, &icon_rect))
+	    {
+	      meta_window_get_outer_rect (window, &window_rect);
+	      
+	      meta_effect_run_unminimize (window,
+					  &window_rect,
+					  &icon_rect,
+					  NULL, NULL);
+	    }
+	}
       
       if (window->iconic)
         {
@@ -2331,50 +2336,34 @@ meta_window_hide (MetaWindow *window)
 
   if (meta_prefs_get_live_hidden_windows ())
     {
-      gboolean was_mapped;
-
       if (window->hidden)
         return;
 
-      was_mapped = window->mapped;
-
-      if (!was_mapped)
-        meta_window_show (window);
-
-      window->hidden = TRUE;
-      did_hide = TRUE;
+      if (!window->mapped)
+	{
+	  Window top_level_window;
+	  meta_topic (META_DEBUG_WINDOW_STATE,
+                      "%s actually needs map\n", window->desc);
+          window->mapped = TRUE;
+          meta_error_trap_push (window->display);
+	  if (window->frame)
+	    top_level_window = window->frame->xwindow;
+	  else
+	    top_level_window = window->xwindow;
+	  XMapWindow (window->display->xdisplay, top_level_window);
+          meta_error_trap_pop (window->display, FALSE);
+	}
 
       meta_stack_freeze (window->screen->stack);
-      meta_window_update_layer (window);
-      meta_window_lower (window);
+      window->hidden = TRUE;
+      /* Tell the compositor this window is now hidden */
+      meta_compositor_set_window_hidden (window->display->compositor,
+					 window->screen,
+					 window,
+					 window->hidden);
       meta_stack_thaw (window->screen->stack);
 
-      /*
-       * The X server does not implement lower-below semantics for restacking
-       * windows, only raise-above; consequently each single lower-bottom call
-       * gets translated to a bunch of raise-above moves, and often there will
-       * be no ConfigureNotify at all for the window we are lowering (only for
-       * its siblings). If we mix the lower-bottom sequence of calls with
-       * mapping of windows, the batch of ConfigureNotify events that is
-       * generated does not correctly reflect the stack order, and if the
-       * Compositor relies on these for its own internal stack, it will
-       * invariably end up with wrong stacking order.
-       *
-       * I have not been able to find a way to get this just work so that the
-       * resulting ConfigureNotify messages would reflect the actual state of
-       * the stack, so in the special case we map a window while hiding it, we
-       * explitely notify the compositor that it should ensure its stacking
-       * matches the cannonical stack of the WM.
-       *
-       * NB: this is uncommon, and generally only happens on the WM start up,
-       *     when we are taking over pre-existing windows, so this brute-force
-       *     fix is OK performance wise.
-       */
-      if (!was_mapped && window->display->compositor)
-        {
-          meta_compositor_ensure_stack_order (window->display->compositor,
-                                              window->screen);
-        }
+      did_hide = TRUE;
     }
   else
     {
@@ -4149,7 +4138,7 @@ meta_window_focus (MetaWindow  *window,
 
   meta_window_flush_calc_showing (window);
 
-  if (!window->mapped && !window->shaded)
+  if ((!window->mapped || window->hidden) && !window->shaded)
     {
       meta_topic (META_DEBUG_FOCUS,
                   "Window %s is not showing, not focusing after all\n",
@@ -8038,7 +8027,7 @@ meta_window_update_layer (MetaWindow *window)
   
   meta_stack_freeze (window->screen->stack);
   group = meta_window_get_group (window);
-  if (!window->hidden && group)
+  if (group)
     meta_group_update_layers (group);
   else
     meta_stack_update_layer (window->screen->stack, window);

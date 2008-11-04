@@ -311,6 +311,38 @@ reload_xinerama_infos (MetaScreen *screen)
   g_assert (screen->xinerama_infos != NULL);
 }
 
+/* The guard window allows us to leave minimized windows mapped so
+ * that compositor code may provide live previews of them.
+ * Instead of being unmapped/withdrawn, they get pushed underneath
+ * the guard window. */
+static Window
+create_guard_window (Display *xdisplay, MetaScreen *screen)
+{
+  XSetWindowAttributes attributes;
+  Window guard_window;
+  
+  attributes.event_mask = NoEventMask;
+  attributes.override_redirect = True;
+  attributes.background_pixel = BlackPixel (xdisplay, screen->number);
+
+  guard_window =
+    XCreateWindow (xdisplay,
+		   screen->xroot,
+		   0, /* x */
+		   0, /* y */
+		   screen->rect.width,
+		   screen->rect.height,
+		   0, /* border width */
+		   CopyFromParent, /* depth */
+		   CopyFromParent, /* class */
+		   CopyFromParent, /* visual */
+		   CWEventMask|CWOverrideRedirect|CWBackPixel,
+		   &attributes);
+  XLowerWindow (xdisplay, guard_window);
+  XMapWindow (xdisplay, guard_window);
+  return guard_window;
+}
+
 MetaScreen*
 meta_screen_new (MetaDisplay *display,
                  int          number,
@@ -490,6 +522,8 @@ meta_screen_new (MetaDisplay *display,
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
   screen->compositor_data = NULL;
+ 
+  screen->guard_window = create_guard_window (xdisplay, screen);
 
   {
     XFontStruct *font_info;
@@ -760,6 +794,7 @@ meta_screen_manage_all_windows (MetaScreen *screen)
           info->xwindow == screen->flash_window ||
 #ifdef HAVE_COMPOSITE_EXTENSIONS
           info->xwindow == screen->wm_cm_selection_window ||
+	  info->xwindow == screen->guard_window ||
 #endif
           info->xwindow == screen->wm_sn_selection_window) {
         meta_verbose ("Not managing our own windows\n");
@@ -771,17 +806,6 @@ meta_screen_manage_all_windows (MetaScreen *screen)
                                     info->xwindow, &info->attrs);
     }
   meta_stack_thaw (screen->stack);
-
-  /*
-   * Because the windows have already been created/mapped/etc, if the compositor
-   * maintains a separate stack based on ConfigureNotify restack messages, it
-   * will not necessarily get what it needs; we explicitely notify the
-   * compositor to fix up its stacking order.
-   *
-   * For more on this issue, see comments in meta_window_hide().
-   */
-  if (screen->display->compositor)
-    meta_compositor_ensure_stack_order (screen->display->compositor, screen);
 
   g_list_foreach (windows, (GFunc)g_free, NULL);
   g_list_free (windows);

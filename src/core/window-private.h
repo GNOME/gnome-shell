@@ -348,6 +348,10 @@ struct _MetaWindow
 
   /* maintained by group.c */
   MetaGroup *group;
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  void *compositor_private;
+#endif
 };
 
 /* These differ from window->has_foo_func in that they consider
@@ -423,9 +427,6 @@ void        meta_window_resize_with_gravity (MetaWindow  *window,
                                              int          h,
                                              int          gravity);
 
-
-/* Return whether the window would be showing if we were on its workspace */
-gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
 
 /* Return whether the window should be currently mapped */
 gboolean    meta_window_should_be_showing   (MetaWindow  *window);
