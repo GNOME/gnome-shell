@@ -1,3 +1,8 @@
+2008-11-04  Thomas Wood  <thomas@linux.intel.com>
+
+	* clutter/clutter-color.c: Update ClutterColor documentation as
+	changes have been backported to 0.8.4.
+
 2008-11-04  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-script.c: Document the "is-default" member of

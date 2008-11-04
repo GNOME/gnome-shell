@@ -677,7 +677,7 @@ clutter_color_free (ClutterColor *color)
  * Return value: the newly allocated color. Use clutter_color_free()
  *   when done
  *
- * Since: 1.0
+ * Since: 0.8.4
  */
 ClutterColor *
 clutter_color_new (guint8 red,
@@ -821,7 +821,7 @@ clutter_value_lcopy_color (const GValue *value,
  *
  * Sets @value to @color.
  *
- * Since: 1.0
+ * Since: 0.8.4
  */
 void
 clutter_value_set_color (GValue             *value,
@@ -840,7 +840,7 @@ clutter_value_set_color (GValue             *value,
  *
  * Return value: the colors inside the passed #GValue
  *
- * Since: 1.0
+ * Since: 0.8.4
  */
 G_CONST_RETURN ClutterColor *
 clutter_value_get_color (const GValue *value)
@@ -940,7 +940,7 @@ clutter_param_color_get_type (void)
  *
  * Return value: the newly created #GParamSpec
  *
- * Since: 1.0
+ * Since: 0.8.4
  */
 GParamSpec *
 clutter_param_spec_color (const gchar        *name,
