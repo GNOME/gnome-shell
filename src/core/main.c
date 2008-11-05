@@ -346,6 +346,50 @@ meta_parse_options (int *argc, char ***argv,
 
 
 #ifdef WITH_CLUTTER
+/* Metacity is responsible for pulling events off the X queue, so Clutter
+ * doesn't need (and shouldn't) run its normal event source which polls
+ * the X fd, but we do have to deal with dispatching events that accumulate
+ * in the clutter queue. This happens, for example, when clutter generate
+ * enter/leave events on mouse motion - several events are queued in the
+ * clutter queue but only one dispatched. It could also happen because of
+ * explicit calls to clutter_event_put(). We add a very simple custom
+ * event loop source which is simply responsible for pulling events off
+ * of the queue and dispatching them before we block for new events.
+ */
+
+static gboolean 
+event_prepare (GSource    *source,
+               gint       *timeout_)
+{
+  *timeout_ = -1;
+
+  return clutter_events_pending ();
+}
+
+static gboolean 
+event_check (GSource *source)
+{
+  return clutter_events_pending ();
+}
+
+static gboolean
+event_dispatch (GSource    *source,
+                GSourceFunc callback,
+                gpointer    user_data)
+{
+  ClutterEvent *event = clutter_event_get ();
+  if (event)
+    clutter_do_event (event);
+
+  return TRUE;
+}
+
+static GSourceFuncs event_funcs = {
+  event_prepare,
+  event_check,
+  event_dispatch
+};
+
 static void
 meta_clutter_init (GOptionContext *ctx, int *argc, char ***argv)
 {
@@ -355,6 +399,10 @@ meta_clutter_init (GOptionContext *ctx, int *argc, char ***argv)
   if (CLUTTER_INIT_SUCCESS == clutter_init (argc, argv))
     {
       meta_compositor_can_use_clutter__ = 1;
+
+      GSource *source = g_source_new (&event_funcs, sizeof (GSource));
+      g_source_attach (source, NULL);
+      g_source_unref (source);
     }
   else
     {
