@@ -233,6 +233,7 @@ mutter_shaped_texture_ensure_mask (MutterShapedTexture *stex)
   CoglHandle paint_tex;
   guint tex_width, tex_height;
   GLuint mask_gl_tex;
+  GLenum mask_target;
 
   paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex));
 
@@ -291,14 +292,17 @@ mutter_shaped_texture_ensure_mask (MutterShapedTexture *stex)
       priv->mask_width = tex_width;
       priv->mask_height = tex_height;
 
-      cogl_texture_get_gl_texture (priv->mask_texture, &mask_gl_tex, NULL);
+      cogl_texture_get_gl_texture (priv->mask_texture, &mask_gl_tex, &mask_target);
 
       mutter_shaped_texture_get_gl_size (priv->mask_texture,
 					 &priv->mask_gl_width,
 					 &priv->mask_gl_height);
 
-      if ((guint) priv->mask_gl_width == tex_width
-          && (guint) priv->mask_gl_height == tex_height)
+      if (mask_target == GL_TEXTURE_RECTANGLE_ARB)
+	mutter_shaped_texture_set_coord_array (0.0f, 0.0f, tex_width, tex_height,
+					       priv->mask_tex_coords);
+      else if ((guint) priv->mask_gl_width == tex_width
+	       && (guint) priv->mask_gl_height == tex_height)
         mutter_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
 					       priv->mask_tex_coords);
       else
@@ -322,6 +326,7 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   GLboolean vertex_array_was_enabled, tex_coord_array_was_enabled;
   GLboolean color_array_was_enabled;
   GLuint paint_gl_tex, mask_gl_tex;
+  GLenum paint_target, mask_target;
   guint paint_gl_width, paint_gl_height;
   GLfloat vertex_coords[8], paint_tex_coords[8];
   ClutterActorBox alloc;
@@ -358,18 +363,18 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 
   mutter_shaped_texture_ensure_mask (stex);
 
-  cogl_texture_get_gl_texture (paint_tex, &paint_gl_tex, NULL);
-  cogl_texture_get_gl_texture (priv->mask_texture, &mask_gl_tex, NULL);
+  cogl_texture_get_gl_texture (paint_tex, &paint_gl_tex, &paint_target);
+  cogl_texture_get_gl_texture (priv->mask_texture, &mask_gl_tex, &mask_target);
 
   /* We need to keep track of the some of the old state so that we
      don't confuse Cogl */
-  texture_was_enabled = glIsEnabled (GL_TEXTURE_2D);
+  texture_was_enabled = glIsEnabled (paint_target);
   blend_was_enabled = glIsEnabled (GL_BLEND);
   vertex_array_was_enabled = glIsEnabled (GL_VERTEX_ARRAY);
   tex_coord_array_was_enabled = glIsEnabled (GL_TEXTURE_COORD_ARRAY);
   color_array_was_enabled = glIsEnabled (GL_COLOR_ARRAY);
 
-  glEnable (GL_TEXTURE_2D);
+  glEnable (paint_target);
   glEnable (GL_BLEND);
   glEnableClientState (GL_VERTEX_ARRAY);
   glEnableClientState (GL_TEXTURE_COORD_ARRAY);
@@ -379,7 +384,7 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   cogl_color (&white);
 
   /* Put the main painting texture in the first texture unit */
-  glBindTexture (GL_TEXTURE_2D, paint_gl_tex);
+  glBindTexture (paint_target, paint_gl_tex);
 
   /* We need the actual size of the texture so that we can calculate
      the right texture coordinates if NPOTs textures are not supported
@@ -391,9 +396,9 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   /* Put the mask texture in the second texture unit */
   tst_active_texture (GL_TEXTURE1);
   tst_client_active_texture (GL_TEXTURE1);
-  glBindTexture (GL_TEXTURE_2D, mask_gl_tex);
+  glBindTexture (mask_target, mask_gl_tex);
 
-  glEnable (GL_TEXTURE_2D);
+  glEnable (mask_target);
 
   glEnableClientState (GL_TEXTURE_COORD_ARRAY);
   glTexCoordPointer (2, GL_FLOAT, 0, priv->mask_tex_coords);
@@ -419,8 +424,11 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 					                         - alloc.y1),
 					 vertex_coords);
 
-  if ((guint) paint_gl_width == tex_width
-      && (guint) paint_gl_height == tex_height)
+  if (paint_target == GL_TEXTURE_RECTANGLE_ARB)
+    mutter_shaped_texture_set_coord_array (0.0f, 0.0f, tex_width, tex_height,
+					   paint_tex_coords);
+  else if ((guint) paint_gl_width == tex_width
+	&& (guint) paint_gl_height == tex_height)
     mutter_shaped_texture_set_coord_array (0.0f, 0.0f, 1.0f, 1.0f,
                                          paint_tex_coords);
   else
@@ -434,7 +442,7 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
 
   /* Disable the second texture unit and coord array */
-  glDisable (GL_TEXTURE_2D);
+  glDisable (mask_target);
   glDisableClientState (GL_TEXTURE_COORD_ARRAY);
 
   /* Go back to operating on the first texture unit */
@@ -443,7 +451,7 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 
   /* Restore the old state */
   if (!texture_was_enabled)
-    glDisable (GL_TEXTURE_2D);
+    glDisable (paint_target);
   if (!blend_was_enabled)
     glDisable (GL_BLEND);
   if (!vertex_array_was_enabled)
