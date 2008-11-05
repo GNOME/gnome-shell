@@ -135,6 +135,7 @@ typedef struct _Mutter
 
   gboolean        show_redraw : 1;
   gboolean        debug       : 1;
+  gboolean        no_mipmaps  : 1;
 } Mutter;
 
 typedef struct _MetaCompScreen
@@ -1353,12 +1354,15 @@ repair_win (MutterWindow *cw)
   MetaDisplay           *display  = meta_screen_get_display (screen);
   Display               *xdisplay = meta_display_get_xdisplay (display);
   MetaCompScreen        *info     = meta_screen_get_compositor_data (screen);
+  Mutter                *compositor;
   Window                 xwindow  = priv->xwindow;
   gboolean               full     = FALSE;
 
   if (xwindow == meta_screen_get_xroot (screen) ||
       xwindow == clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage)))
     return;
+
+  compositor = (Mutter*)meta_display_get_compositor (display);
 
   meta_error_trap_push (display);
 
@@ -1393,8 +1397,9 @@ repair_win (MutterWindow *cw)
        * seemingly caused by cogl_texture_set_filters() in set_filter
        * Not sure if that call is actually needed.
        */
-      clutter_texture_set_filter_quality (CLUTTER_TEXTURE (priv->actor),
-                                          CLUTTER_TEXTURE_QUALITY_HIGH );
+      if (!compositor->no_mipmaps)
+        clutter_texture_set_filter_quality (CLUTTER_TEXTURE (priv->actor),
+                                            CLUTTER_TEXTURE_QUALITY_HIGH );
 
       clutter_x11_texture_pixmap_set_pixmap
                        (CLUTTER_X11_TEXTURE_PIXMAP (priv->actor),
@@ -2473,6 +2478,9 @@ mutter_new (MetaDisplay *display)
   compositor = (MetaCompositor *) clc;
 
   clc->display = display;
+
+  if (g_getenv("MUTTER_DISABLE_MIPMAPS"))
+    clc->no_mipmaps = TRUE;
 
   meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
   XInternAtoms (xdisplay, atom_names, G_N_ELEMENTS (atom_names),
