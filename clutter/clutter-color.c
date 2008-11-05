@@ -689,10 +689,10 @@ clutter_color_new (guint8 red,
 
   color = g_slice_new (ClutterColor);
 
-  color->red   = CLAMP (red,   0, 255);
-  color->green = CLAMP (green, 0, 255);
-  color->blue  = CLAMP (blue,  0, 255);
-  color->alpha = CLAMP (alpha, 0, 255);
+  color->red   = red;
+  color->green = green;
+  color->blue  = blue;
+  color->alpha = alpha;
 
   return color;
 }
