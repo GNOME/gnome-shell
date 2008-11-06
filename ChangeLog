@@ -1,3 +1,9 @@
+2008-11-06  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	Bug 1233 - CLUTTER_ALPHA_SINE_INC is broken in trunk
+
+	* clutter/clutter-alpha.c: Fix a rollover in the sine functions.
+
 2008-11-05  Neil Roberts  <neil@linux.intel.com>
 
 	* clutter/clutter-color.c (clutter_color_new): Remove CLAMP macros

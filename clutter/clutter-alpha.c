@@ -585,7 +585,9 @@ sincx1024_func (ClutterAlpha *alpha,
   sine = ((cogl_angle_sin (x) + offset) / 2)
        * CLUTTER_ALPHA_MAX_ALPHA;
 
-  return COGL_FIXED_TO_INT (sine);
+  sine = sine >> COGL_FIXED_Q;
+
+  return sine;
 }
 
 #if 0
@@ -717,7 +719,7 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
 
   sine = cogl_angle_sin (x) * CLUTTER_ALPHA_MAX_ALPHA;
 
-  return COGL_FIXED_TO_INT (sine);
+  return ((guint32) sine) >> COGL_FIXED_Q;
 }
 
 /**
@@ -759,7 +761,7 @@ clutter_sine_dec_func (ClutterAlpha *alpha,
 
   sine = cogl_angle_sin (x) * CLUTTER_ALPHA_MAX_ALPHA;
 
-  return COGL_FIXED_TO_INT (sine);
+  return ((guint32) sine) >> COGL_FIXED_Q;
 }
 
 /**
