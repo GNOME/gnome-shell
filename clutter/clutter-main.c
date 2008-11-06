@@ -298,16 +298,16 @@ _clutter_id_to_color (guint id, ClutterColor *col)
    * driver / hw implementation.
    */
   if (ctx->fb_r_mask_used != ctx->fb_r_mask)
-    red = red * 2 + 1;
+    red = red * 2;
   if (ctx->fb_g_mask_used != ctx->fb_g_mask)
-    green = green * 2 + 1;
+    green = green * 2;
   if (ctx->fb_b_mask_used != ctx->fb_b_mask)
-    blue  = blue  * 2 + 1;
+    blue  = blue  * 2;
 
   /* shift up to be full 8bit values */
-  red   = (red   << (8 - ctx->fb_r_mask)) | (0xff >> (ctx->fb_r_mask + 1));
-  green = (green << (8 - ctx->fb_g_mask)) | (0xff >> (ctx->fb_g_mask + 1));
-  blue  = (blue  << (8 - ctx->fb_b_mask)) | (0xff >> (ctx->fb_b_mask + 1));
+  red   = (red   << (8 - ctx->fb_r_mask)) | (0x7f >> (ctx->fb_r_mask_used));
+  green = (green << (8 - ctx->fb_g_mask)) | (0x7f >> (ctx->fb_g_mask_used));
+  blue  = (blue  << (8 - ctx->fb_b_mask)) | (0x7f >> (ctx->fb_b_mask_used));
 
   col->red   = red;
   col->green = green;

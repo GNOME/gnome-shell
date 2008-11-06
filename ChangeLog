@@ -1,5 +1,18 @@
 2008-11-06  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1230 - Pick fails on low precision color buffers
+
+	* clutter/clutter-main.c (_clutter_id_to_color): When using fuzzy
+	picking to pick a color for an actor, it would previously set the
+	fuzzy bit and then all but the most significant of the remaining
+	unused bits. This meant that for 16-bit displays it would end up
+	with a strange pattern for the unused bits like 1011 which could
+	cause it to round up. Now it just sets all but the most
+	significant of all of the unused bits giving a pattern like
+	0111. Thanks to Guy Zadickario for the patch.
+
+2008-11-06  Neil Roberts  <neil@linux.intel.com>
+
 	* clutter/cogl/gles/cogl.c (cogl_perspective): 
 	* clutter/cogl/common/cogl-fixed.c (cogl_fixed_sin)
 	(cogl_angle_sin, cogl_angle_tan, cogl_fixed_sqrt): Replaced uses
