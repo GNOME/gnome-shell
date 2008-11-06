@@ -46,10 +46,11 @@ try:
     # Wait for server to get going: LAME
     time.sleep(1)
 
-    # Start xterm to have some window in our session
-    subprocess.Popen(["xterm"])
-    subprocess.Popen(["xlogo"])
-    subprocess.Popen(["xeyes"])
+    # Start some windows in our session. Specify explicit geometries
+    # so we don't end up with the title bars underneath the panel
+    subprocess.Popen(["xterm", "-geometry", "+30+30"])
+    subprocess.Popen(["xlogo", "-geometry", "-0-0"])
+    subprocess.Popen(["xeyes", "-geometry", "-0+30"])
 
     # Now launch metacity-clutter with our plugin
     shell = launcher.start_shell()
