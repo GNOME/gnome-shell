@@ -54,7 +54,8 @@ class Launcher:
         env=dict(os.environ)
         env.update({'GNOME_SHELL_JS'  : self.js_dir,
                     'GI_TYPELIB_PATH' : self.plugin_dir,
-                    'LD_LIBRARY_PATH' : os.environ.get('LD_LIBRARY_PATH', '') + ':' + self.plugin_dir})
+                    'LD_LIBRARY_PATH' : os.environ.get('LD_LIBRARY_PATH', '') + ':' + self.plugin_dir,
+                    'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 
         if use_tfp:
             # If we have NPOT textures, then we want to use GLX_EXT_texture_from_pixmap; in
