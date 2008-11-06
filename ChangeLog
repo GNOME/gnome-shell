@@ -1,3 +1,11 @@
+2008-11-06  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/cogl/gles/cogl.c (cogl_perspective): 
+	* clutter/cogl/common/cogl-fixed.c (cogl_fixed_sin)
+	(cogl_angle_sin, cogl_angle_tan, cogl_fixed_sqrt): Replaced uses
+	of 1 + ~x with just -x which is equivalent and easier to
+	understand.
+
 2008-11-06  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	Bug 1233 - CLUTTER_ALPHA_SINE_INC is broken in trunk

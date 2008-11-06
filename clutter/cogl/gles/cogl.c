@@ -700,7 +700,7 @@ cogl_perspective (CoglFixed fovy,
   M(1,1) = y;
   M(2,2) = c;
   M(2,3) = d;
-  M(3,2) = 1 + ~COGL_FIXED_1;
+  M(3,2) = -COGL_FIXED_1;
 
   GE( cogl_wrap_glMultMatrixx (m) );
 

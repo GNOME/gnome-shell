@@ -368,8 +368,8 @@ cogl_fixed_sin (CoglFixed angle)
   /* convert negative angle to positive + sign */
   if ((int) angle < 0)
     {
-      sign  = 1 + ~sign;
-      angle = 1 + ~angle;
+      sign  = -sign;
+      angle = -angle;
     }
 
   /* reduce to <0, 2*pi) */
@@ -378,7 +378,7 @@ cogl_fixed_sin (CoglFixed angle)
   /* reduce to first quadrant and sign */
   if (angle > COGL_FIXED_PI)
     {
-      sign = 1 + ~sign;
+      sign = -sign;
 
       if (angle > COGL_FIXED_PI + COGL_FIXED_PI_2)
         {
@@ -427,7 +427,7 @@ cogl_fixed_sin (CoglFixed angle)
   angle = ((low * d2 + high * d1) / (COGL_SIN_STEP));
 
   if (sign < 0)
-    angle = (1 + ~angle);
+    angle = -angle;
 
   return angle;
 }
@@ -441,8 +441,8 @@ cogl_angle_sin (CoglAngle angle)
   /* reduce negative angle to positive + sign */
   if (angle < 0)
     {
-      sign  = 1 + ~sign;
-      angle = 1 + ~angle;
+      sign  = -sign;
+      angle = -angle;
     }
 
   /* reduce to <0, 2*pi) */
@@ -451,7 +451,7 @@ cogl_angle_sin (CoglAngle angle)
   /* reduce to first quadrant and sign */
   if (angle > 512)
     {
-      sign = 1 + ~sign;
+      sign = -sign;
 
       if (angle > 768)
 	{
@@ -476,7 +476,7 @@ cogl_angle_sin (CoglAngle angle)
   result = sin_tbl[angle];
 
   if (sign < 0)
-    result = (1 + ~result);
+    result = -result;
 
   return result;
 }
@@ -490,8 +490,8 @@ cogl_angle_tan (CoglAngle angle)
   /* reduce negative angle to positive + sign */
   if (angle < 0)
     {
-      sign  = 1 + ~sign;
-      angle = 1 + ~angle;
+      sign  = -sign;
+      angle = -angle;
     }
 
   /* reduce to <0,  pi) */
@@ -500,14 +500,14 @@ cogl_angle_tan (CoglAngle angle)
   /* reduce to first quadrant and sign */
   if (angle > 256)
     {
-      sign = 1 + ~sign;
+      sign = -sign;
       angle = 512 - angle;
     }
 
   result = tan_tbl[angle];
 
   if (sign < 0)
-    result = (1 + ~result);
+    result = -result;
 
   return result;
 }
@@ -655,7 +655,7 @@ cogl_fixed_sqrt (CoglFixed x)
     if (sh > 0)
 	x = x << sh;
     else if (sh < 0)
-	x = (x >> (1 + ~sh));
+	x = x >> -sh;
 
     return x;
 }
