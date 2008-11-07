@@ -77,11 +77,8 @@ struct _ClutterTexturePrivate
 {
   gint                         width;
   gint                         height;
-  guint                        sync_actor_size : 1;
   gint                         max_tile_waste;
   ClutterTextureQuality        filter_quality;
-  guint                        repeat_x : 1;
-  guint                        repeat_y : 1;
   CoglHandle                   texture;
   gboolean                     no_slice;
 
@@ -94,6 +91,9 @@ struct _ClutterTexturePrivate
   guint                        local_data_has_alpha;
   guchar                      *local_data;
 
+  guint                        sync_actor_size : 1;
+  guint                        repeat_x : 1;
+  guint                        repeat_y : 1;
   guint                        in_dispose : 1;
   guint                        keep_aspect_ratio : 1;
 };

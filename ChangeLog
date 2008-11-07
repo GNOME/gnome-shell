@@ -1,5 +1,16 @@
 2008-11-07  Matthew Allum  <mallum@linux.intel.com>
 
+        Bug 1238 - [PATCH] Pack bitfields in ClutterTexturePrivate
+
+	* clutter/clutter-texture.c: 
+
+        Using 'guint my_field : 1' for booleans to save space only
+        makes sense if you group all such fields together. Fix
+        grouping for ClutterTexturePrivate. Thanks to Owen Taylor for
+        patch.
+
+2008-11-07  Matthew Allum  <mallum@linux.intel.com>
+
        Bug 1237 - clutter_texture_set_filter_quality calls 
                   clutter_texture_[un]realize
 
