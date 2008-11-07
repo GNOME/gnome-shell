@@ -2396,7 +2396,6 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
     {
       MetaWindow    *window = tmp->data;
       MutterWindow  *cw = window->compositor_private;
-      GList	    *link;
 
       if (!cw)
 	{
