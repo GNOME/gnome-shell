@@ -200,14 +200,14 @@ Overlay.prototype = {
 
 	let me = this;
 	clone.connect("button-press-event",
-		      function() {
-			  me._activateWindow(w);
+		      function(clone, event) {
+			  me._activateWindow(w, event.get_time());
 		      });
     },
 
-    _activateWindow : function(w) {
+    _activateWindow : function(w, time) {
 	this._deactivate();
-	log("Activate "+ w.get_description());
+	w.get_meta_window().activate(time);
     },
 
     _deactivate : function() {
