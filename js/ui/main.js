@@ -26,6 +26,12 @@ function start() {
     for (let i = 0; i < children.length; i++)
 	children[i].destroy();
 
+    global.connect('panel-run-dialog', function (panel) {
+      log("showing main menu!");
+      var p = new Shell.Process({'args' : ['gnome-terminal', 'gnome-terminal']})
+      p.run()
+    });
+
     panel = new Panel.Panel();
     overlay = new Overlay.Overlay();
     global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);

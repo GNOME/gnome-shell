@@ -17,6 +17,16 @@ typedef struct _ShellGlobalClass ShellGlobalClass;
 #define SHELL_IS_GLOBAL_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_GLOBAL))
 #define SHELL_GLOBAL_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_GLOBAL, ShellGlobalClass))
 
+struct _ShellGlobalClass
+{
+  GObjectClass parent_class;
+
+  void (*panel_run_dialog) (ShellGlobal *global,
+			    int      timestamp);
+  void (*panel_main_menu) (ShellGlobal *global,
+			   int      timestamp);
+};
+
 GType            shell_global_get_type            (void) G_GNUC_CONST;
 
 ShellGlobal *shell_global_get (void);

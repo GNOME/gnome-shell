@@ -30,9 +30,13 @@
 
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
+#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 #include <gjs/gjs.h>
 #include <gmodule.h>
 #include <string.h>
+
+#include "display.h"
 
 #include "shell-global.h"
 
@@ -54,6 +58,9 @@ typedef struct _PluginState
 {
   gboolean               debug_mode : 1;
   GjsContext            *gjs_context;
+  Atom panel_action;
+  Atom panel_action_run_dialog;
+  Atom panel_action_main_menu;
 } PluginState;
 
 
@@ -88,10 +95,15 @@ static gboolean
 do_init (const char *params)
 {
   MutterPlugin *plugin = mutter_get_plugin();
+  MetaScreen *screen;
+  MetaDisplay *display;
   GError *error = NULL;
   int status;
   const char *shell_js;
   char **search_path;
+
+  screen = mutter_plugin_get_screen (plugin);
+  display = meta_screen_get_display (screen);
 
   plugin_state = g_new0 (PluginState, 1);
 
@@ -114,6 +126,13 @@ do_init (const char *params)
   g_strfreev(search_path);
 
   _shell_global_set_plugin (shell_global_get(), plugin);
+
+  plugin_state->panel_action = XInternAtom (meta_display_get_xdisplay (display),
+                                            "_GNOME_PANEL_ACTION", FALSE);
+  plugin_state->panel_action_run_dialog = XInternAtom (meta_display_get_xdisplay (display),
+                                                       "_GNOME_PANEL_ACTION_RUN_DIALOG", FALSE);
+  plugin_state->panel_action_main_menu = XInternAtom (meta_display_get_xdisplay (display),
+                                                      "_GNOME_PANEL_ACTION_MAIN_MENU", FALSE);
 
   if (!gjs_context_eval (plugin_state->gjs_context,
                          "const Main = imports.ui.main; Main.start();",
@@ -165,8 +184,42 @@ reload (const char *params)
 }
 
 static gboolean
+handle_panel_event (XEvent *xev)
+{
+  MetaScreen *screen;
+  MetaDisplay *display;
+  XClientMessageEvent *xev_client;
+  Window root;
+
+  screen = mutter_plugin_get_screen (mutter_get_plugin ());
+  display = meta_screen_get_display (screen);
+
+  if (xev->type != ClientMessage)
+    return FALSE;
+
+  root = meta_screen_get_xroot (screen);
+
+  xev_client = (XClientMessageEvent*) xev;
+  if (!(xev_client->window == root &&
+        xev_client->message_type == plugin_state->panel_action &&
+        xev_client->format == 32))
+    return FALSE;
+
+  if (xev_client->data.l[0] == plugin_state->panel_action_run_dialog)
+    g_signal_emit_by_name (shell_global_get (), "panel-run-dialog",
+                           (guint32) xev_client->data.l[1]);
+  else if (xev_client->data.l[0] == plugin_state->panel_action_main_menu)
+    g_signal_emit_by_name (shell_global_get (), "panel-main-menu",
+                           (guint32) xev_client->data.l[1]);
+
+  return TRUE;
+}
+
+static gboolean
 xevent_filter (XEvent *xev)
 {
+  if (handle_panel_event (xev))
+    return TRUE;
   return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
 }
 

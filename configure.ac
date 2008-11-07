@@ -16,7 +16,7 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
                    [The prefix for our gettext translation domains.])
 
-PKG_CHECK_MODULES(MUTTER_PLUGIN, metacity-plugins gjs-gi-1.0)
+PKG_CHECK_MODULES(MUTTER_PLUGIN, gtk+-2.0 metacity-plugins gjs-gi-1.0)
 
 changequote(,)dnl
 if test "x$GCC" = "xyes"; then
