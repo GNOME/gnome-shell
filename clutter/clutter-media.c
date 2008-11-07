@@ -27,7 +27,13 @@
  * SECTION:clutter-media
  * @short_description: An interface for controlling playback of media data.
  *
- * #ClutterMedia is an interface  for controlling playback of media data.
+ * #ClutterMedia is an interface for controlling playback of media sources.
+ *
+ * It is not implemented inside Clutter, but other integration libraries
+ * like Clutter-GStreamer, implement it to offer a uniform API for
+ * applications.
+ *
+ * ClutterMedia is available since Clutter 0.2
  */
 
 #ifdef HAVE_CONFIG_H
@@ -203,6 +209,8 @@ clutter_media_base_init (gpointer g_iface)
  * @uri: URI
  *
  * Sets the URI of @media to @uri.
+ *
+ * Since: 0.2
  */
 void
 clutter_media_set_uri (ClutterMedia *media,
@@ -220,6 +228,8 @@ clutter_media_set_uri (ClutterMedia *media,
  * Retrieves the URI from @media.
  *
  * Return value: The URI as a string.
+ *
+ * Since: 0.2
  */
 const char*
 clutter_media_get_uri (ClutterMedia *media)
@@ -235,6 +245,8 @@ clutter_media_get_uri (ClutterMedia *media)
  * @playing: TRUE to start playing, FALSE to stop.
  *
  * Starts or stops @media playing.
+ *
+ * Since: 0.2
  */
 void
 clutter_media_set_playing (ClutterMedia *media,
@@ -252,6 +264,8 @@ clutter_media_set_playing (ClutterMedia *media,
  * Retrieves the playing status of @media.
  *
  * Return value: %TRUE if playing, %FALSE if stopped.
+ *
+ * Since: 0.2
  */
 gboolean
 clutter_media_get_playing (ClutterMedia *media)
@@ -267,6 +281,8 @@ clutter_media_get_playing (ClutterMedia *media)
  * @position: The desired position.
  *
  * Sets the playback position of @media to @position.
+ *
+ * Since: 0.2
  */
 void
 clutter_media_set_position (ClutterMedia *media,
@@ -284,6 +300,8 @@ clutter_media_set_position (ClutterMedia *media,
  * Retrieves the position of @media.
  *
  * Return value: The playback position.
+ *
+ * Since: 0.2
  */
 int
 clutter_media_get_position (ClutterMedia *media)
@@ -299,6 +317,8 @@ clutter_media_get_position (ClutterMedia *media)
  * @volume: The volume as a double between 0.0 and 1.0
  *
  * Sets the playback volume of @media to @volume.
+ *
+ * Since: 0.2
  */
 void
 clutter_media_set_volume (ClutterMedia *media,
@@ -316,6 +336,8 @@ clutter_media_set_volume (ClutterMedia *media,
  * Retrieves the playback volume of @media.
  *
  * Return value: The playback volume between 0.0 and 1.0
+ *
+ * Since: 0.2
  */
 double
 clutter_media_get_volume (ClutterMedia *media)
@@ -332,6 +354,8 @@ clutter_media_get_volume (ClutterMedia *media)
  * Retrieves whether @media is seekable or not.
  *
  * Return value: %TRUE if @media can seek, %FALSE otherwise.
+ *
+ * Since: 0.2
  */
 gboolean
 clutter_media_get_can_seek (ClutterMedia *media)
@@ -348,6 +372,8 @@ clutter_media_get_can_seek (ClutterMedia *media)
  * Retrieves the amount of the stream that is buffered.
  *
  * Return value: percentage value
+ *
+ * Since: 0.2
  */
 int
 clutter_media_get_buffer_percent (ClutterMedia *media)
@@ -364,6 +390,8 @@ clutter_media_get_buffer_percent (ClutterMedia *media)
  * Retrieves the duration of the media stream that @media represents.
  *
  * Return value: The length of the media stream.
+ *
+ * Since: 0.2
  */
 int
 clutter_media_get_duration (ClutterMedia *media)
@@ -381,6 +409,8 @@ clutter_media_get_duration (ClutterMedia *media)
  * @filename: A filename to media file.
  *
  * Sets the filename of the media source.
+ *
+ * Since: 0.2
  */
 void
 clutter_media_set_filename (ClutterMedia *media,
@@ -398,9 +428,7 @@ clutter_media_set_filename (ClutterMedia *media,
       g_free (abs_path);
     }
   else
-    {
-      uri = g_filename_to_uri (filename, NULL, &uri_error);
-    }
+    uri = g_filename_to_uri (filename, NULL, &uri_error);
 
   if (uri_error)
     {

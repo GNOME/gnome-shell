@@ -1,21 +1,26 @@
+2008-11-07  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-media.c: Improve documentation of the
+	ClutterMedia interface.
+
 2008-11-07  Matthew Allum  <mallum@linux.intel.com>
 
-        Bug 1238 - [PATCH] Pack bitfields in ClutterTexturePrivate
+	Bug 1238 - [PATCH] Pack bitfields in ClutterTexturePrivate
 
 	* clutter/clutter-texture.c: 
 
-        Using 'guint my_field : 1' for booleans to save space only
-        makes sense if you group all such fields together. Fix
-        grouping for ClutterTexturePrivate. Thanks to Owen Taylor for
-        patch.
+	Using 'guint my_field : 1' for booleans to save space only
+	makes sense if you group all such fields together. Fix
+	grouping for ClutterTexturePrivate. Thanks to Owen Taylor for
+	patch.
 
 2008-11-07  Matthew Allum  <mallum@linux.intel.com>
 
        Bug 1237 - clutter_texture_set_filter_quality calls 
-                  clutter_texture_[un]realize
+	          clutter_texture_[un]realize
 
 	* clutter/clutter-texture.c: (clutter_texture_set_filter_quality):
-        Call clutter_actor_[un]realize and keep visibility state
+	Call clutter_actor_[un]realize and keep visibility state
 
 2008-11-07  Matthew Allum  <mallum@linux.intel.com>
 
@@ -25,11 +30,11 @@
 	* clutter/clutter-private.h:
 	* clutter/clutter-texture.c:
 	* clutter/x11/clutter-x11-texture-pixmap.c:
-        
-        Attempt to lower overhead of updating TFP's (particularly mipmaped).
-        Compresses mipmap updates only for visible TFPs.
-        Avoiding updates for non visible TFP's whilst keeping visible
-        clones working ok.
+	
+	Attempt to lower overhead of updating TFP's (particularly mipmaped).
+	Compresses mipmap updates only for visible TFPs.
+	Avoiding updates for non visible TFP's whilst keeping visible
+	clones working ok.
 
 2008-11-06  Neil Roberts  <neil@linux.intel.com>
 
@@ -134,10 +139,10 @@
 
 	* clutter/clutter-texture.c: (clutter_texture_set_filter_quality),
 	(clutter_texture_get_filter_quality):
-        Fix up some logic, typos.        
+	Fix up some logic, typos.        
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
-        Improve support for mipmaped TFP textures.
+	Improve support for mipmaped TFP textures.
 
 2008-10-31  Emmanuele Bassi  <ebassi@linux.intel.com>
 
@@ -1001,7 +1006,7 @@
 2008-07-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 1047 -  API documentation from release tarball is not
-	            installed by "make install"
+		    installed by "make install"
 
 	* configure.ac:
 	* Makefile.am: Make the recursion into the documentation
@@ -1047,7 +1052,7 @@
 2008-07-13  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/x11/clutter-x11-texture-pixmap.c:
-        Call XSync in unredirect X error trap (Thanks to Andy Wingo)
+	Call XSync in unredirect X error trap (Thanks to Andy Wingo)
 
 2008-07-13  Neil Roberts  <neil@o-hand.com>
 
@@ -1111,7 +1116,7 @@
 2008-07-07  Matthew Allum  <mallum@openedhand.com>
 
 	Bug 1016 - Changing window-redirect-automatic property after
-	           creating ClutterX11TexturePixmap doesn't work.
+		   creating ClutterX11TexturePixmap doesn't work.
 
 	* clutter/x11/clutter-x11-texture-pixmap.c:
 	(clutter_x11_texture_pixmap_set_window):
@@ -1132,7 +1137,7 @@
 2008-07-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 1033 - Manually parsing command line options prevents
-	           initializing clutter (Armin Burgmeier)
+		   initializing clutter (Armin Burgmeier)
 
 	* clutter/clutter-main.c:
 	(post_parse_hook), (clutter_init_real): Set the is_initialized
@@ -1275,7 +1280,7 @@
 2008-07-01  Øyvind Kolås  <pippin@o-hand.com>
 
 	Bug 1013 - Per device grabs are not obeyed in pointer device
-	           propagation.
+		   propagation.
 
 	* clutter/clutter-event.c: (clutter_event_get_device_id): swap
 	arguments of g_return_val_if_fail around.
@@ -1369,7 +1374,7 @@
 2008-06-30  Matthew Allum  <mallum@openedhand.com>
 
 	Bug 997 - automatic updates not working for named TFP pixmaps,
-	          at least in x11
+		  at least in x11
 
 	* clutter/glx/clutter-glx-texture-pixmap.c:
 	* clutter/glx/clutter-glx-texture-pixmap.h:
@@ -1385,7 +1390,7 @@
 2008-06-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 980 - cogl-bitmap-fallback.c compiler error/warning due to
-	          cast issue (Haakon Sporsheim)
+		  cast issue (Haakon Sporsheim)
 
 	* clutter/cogl/common/cogl-bitmap-fallback.c:
 	(_cogl_unpremult_alpha_last),
@@ -1888,7 +1893,7 @@
 2008-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug 984 - pango_clutter_render_layout() declared void, but
-	          returns (Haakon Sporsheim)
+		  returns (Haakon Sporsheim)
 
 	* clutter/pango/pangoclutter-render.c:
 	(pango_clutter_render_layout): Do not use a return statement.
@@ -2120,7 +2125,7 @@
 2008-06-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #953 - Actors are not hidden before unrealized or
-	           disposed (Tommi Komulainen)
+		   disposed (Tommi Komulainen)
 
 	* clutter/clutter-actor.c:
 	(clutter_actor_unrealize): Hide a visible actor when unrealizing
@@ -2842,7 +2847,7 @@
 2008-05-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Bug #943 - Signals are only emitted within a certain area of
-	           the stage
+		   the stage
 
 	* clutter/clutter-main.c (clutter_do_event): Use the proper
 	API and not the macros for the default stage, in case we are
