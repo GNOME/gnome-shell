@@ -1,5 +1,13 @@
 2008-11-07  Matthew Allum  <mallum@linux.intel.com>
 
+       Bug 1237 - clutter_texture_set_filter_quality calls 
+                  clutter_texture_[un]realize
+
+	* clutter/clutter-texture.c: (clutter_texture_set_filter_quality):
+        Call clutter_actor_[un]realize and keep visibility state
+
+2008-11-07  Matthew Allum  <mallum@linux.intel.com>
+
 	* clutter/clutter-actor.c:
 	* clutter/clutter-actor.h:
 	* clutter/clutter-clone-texture.c:

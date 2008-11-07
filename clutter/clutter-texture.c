@@ -1415,8 +1415,15 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
            filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH) &&
            CLUTTER_ACTOR_IS_REALIZED (texture))
         {
-          clutter_texture_unrealize (CLUTTER_ACTOR (texture));
-          clutter_texture_realize (CLUTTER_ACTOR (texture));
+          gboolean was_visible;
+
+          was_visible = CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (texture));
+
+          clutter_actor_unrealize (CLUTTER_ACTOR (texture));
+          clutter_actor_realize (CLUTTER_ACTOR (texture));
+
+          if (was_visible)
+            clutter_actor_show (CLUTTER_ACTOR (texture));
         }
 
       g_object_notify (G_OBJECT (texture), "filter-quality");
