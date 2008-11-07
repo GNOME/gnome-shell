@@ -128,6 +128,45 @@ static gboolean idle_calc_showing (gpointer data);
 static gboolean idle_move_resize (gpointer data);
 static gboolean idle_update_icon (gpointer data);
 
+G_DEFINE_TYPE (MetaWindow, meta_window, G_TYPE_OBJECT);
+
+static void
+meta_window_finalize (GObject *object)
+{
+  MetaWindow *window = META_WINDOW (object);
+  
+  if (window->icon)
+    g_object_unref (G_OBJECT (window->icon));
+
+  if (window->mini_icon)
+    g_object_unref (G_OBJECT (window->mini_icon));
+
+  meta_icon_cache_free (&window->icon_cache);
+  
+  g_free (window->sm_client_id);
+  g_free (window->wm_client_machine);
+  g_free (window->startup_id);
+  g_free (window->role);
+  g_free (window->res_class);
+  g_free (window->res_name);
+  g_free (window->title);
+  g_free (window->icon_name);
+  g_free (window->desc);
+}
+
+static void
+meta_window_class_init (MetaWindowClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_window_finalize;
+}
+
+static void
+meta_window_init (MetaWindow *self)
+{
+}
+
 #ifdef WITH_VERBOSE_MODE
 static const char*
 wm_state_to_string (int state)
@@ -386,7 +425,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   g_assert (!attrs->override_redirect);
   
-  window = g_new (MetaWindow, 1);
+  window = g_object_new (META_TYPE_WINDOW, NULL);
 
   window->constructing = TRUE;
   
@@ -980,8 +1019,8 @@ meta_window_apply_session_info (MetaWindow *window,
 }
 
 void
-meta_window_free (MetaWindow  *window,
-                  guint32      timestamp)
+meta_window_unmanage (MetaWindow  *window,
+                      guint32      timestamp)
 {
   GList *tmp;
   
@@ -1194,24 +1233,7 @@ meta_window_free (MetaWindow  *window,
   
   meta_error_trap_pop (window->display, FALSE);
 
-  if (window->icon)
-    g_object_unref (G_OBJECT (window->icon));
-
-  if (window->mini_icon)
-    g_object_unref (G_OBJECT (window->mini_icon));
-
-  meta_icon_cache_free (&window->icon_cache);
-  
-  g_free (window->sm_client_id);
-  g_free (window->wm_client_machine);
-  g_free (window->startup_id);
-  g_free (window->role);
-  g_free (window->res_class);
-  g_free (window->res_name);
-  g_free (window->title);
-  g_free (window->icon_name);
-  g_free (window->desc);
-  g_free (window);
+  g_object_unref (window);
 }
 
 static void
@@ -8300,13 +8322,13 @@ meta_window_get_xwindow (MetaWindow *window)
 }
 
 MetaWindowType
-meta_window_get_type (MetaWindow *window)
+meta_window_get_window_type (MetaWindow *window)
 {
   return window->type;
 }
 
 Atom
-meta_window_get_type_atom (MetaWindow *window)
+meta_window_get_window_type_atom (MetaWindow *window)
 {
   return window->type_atom;
 }

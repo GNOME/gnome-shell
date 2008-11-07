@@ -66,6 +66,8 @@ typedef enum {
 
 struct _MetaWindow
 {
+  GObject parent_instance;
+  
   MetaDisplay *display;
   MetaScreen *screen;
   MetaWorkspace *workspace;
@@ -233,7 +235,7 @@ struct _MetaWindow
   /* Has this window not ever been shown yet? */
   guint showing_for_first_time : 1;
 
-  /* Are we in meta_window_free()? */
+  /* Are we in meta_window_unmanage()? */
   guint unmanaging : 1;
 
   /* Are we in meta_window_new()? */
@@ -354,6 +356,11 @@ struct _MetaWindow
 #endif
 };
 
+struct _MetaWindowClass
+{
+  GObjectClass parent_class;
+};
+
 /* These differ from window->has_foo_func in that they consider
  * the dynamic window state such as "maximized", not just the
  * window's type
@@ -377,7 +384,7 @@ MetaWindow* meta_window_new_with_attrs     (MetaDisplay *display,
                                             Window       xwindow,
                                             gboolean     must_be_viewable,
                                             XWindowAttributes *attrs);
-void        meta_window_free               (MetaWindow  *window,
+void        meta_window_unmanage           (MetaWindow  *window,
                                             guint32      timestamp);
 void        meta_window_calc_showing       (MetaWindow  *window);
 void        meta_window_queue              (MetaWindow  *window,

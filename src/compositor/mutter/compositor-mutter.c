@@ -241,10 +241,11 @@ mutter_window_class_init (MutterWindowClass *klass)
   object_class->get_property = mutter_window_get_property;
   object_class->constructed  = mutter_window_constructed;
 
-  pspec = g_param_spec_pointer ("meta-window",
-				"MetaWindow",
-				"MetaWindow",
-				G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  pspec = g_param_spec_object ("meta-window",
+                               "MetaWindow",
+                               "The displayed MetaWindow",
+                               META_TYPE_WINDOW,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
   g_object_class_install_property (object_class,
                                    PROP_MCW_META_WINDOW,
@@ -416,7 +417,7 @@ mutter_window_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_MCW_META_WINDOW:
-      priv->window = g_value_get_pointer (value);
+      priv->window = g_value_get_object (value);
       break;
     case PROP_MCW_META_SCREEN:
       priv->screen = g_value_get_pointer (value);
@@ -444,7 +445,7 @@ mutter_window_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_MCW_META_WINDOW:
-      g_value_set_pointer (value, priv->window);
+      g_value_set_object (value, priv->window);
       break;
     case PROP_MCW_META_SCREEN:
       g_value_set_pointer (value, priv->screen);
@@ -533,9 +534,9 @@ mutter_window_query_window_type (MutterWindow *self)
    * If the window is managed by the WM, get the type from the WM,
    * otherwise do it the hard way.
    */
-  if (priv->window && meta_window_get_type_atom (priv->window) != None)
+  if (priv->window && meta_window_get_window_type_atom (priv->window) != None)
     {
-      priv->type = (MetaCompWindowType) meta_window_get_type (priv->window);
+      priv->type = (MetaCompWindowType) meta_window_get_window_type (priv->window);
       return;
     }
 
