@@ -1,0 +1,31 @@
+
+How:
+----
+
+You should including the following at the top of your new unit test:
+#include "test-conform-common.h"
+
+Instead of a main () function add an entry point with a prototype as follows:
+
+void
+test_blah (TestConformSimpleFixture *fixture,
+           gconstpointer data)
+{
+
+}
+
+Add a TEST_CONFORM_SIMPLE() entry in test-conform-main.c
+
+
+Notes:
+------
+
+NB: A test fails if it exists. (regardless of the exist status)
+
+Don't call clutter_init since that is handled in test-conform-common.c
+
+Make sure you clean up *everything* you create. Noteable things you might miss
+include timelines, behaviours, and all actors you add to the stage. This is important because otherwise you can cause cascading failures in other tests.
+
+Use stage = clutter_stage_new () with a corresponding clutter_actor_destroy instead of clutter_stage_get_default ().
+

@@ -21,6 +21,10 @@ clutter-$(CLUTTER_API_VERSION).pc: clutter.pc
 clutter-$(CLUTTER_FLAVOUR)-$(CLUTTER_API_VERSION).pc: clutter.pc
 	@cp $< $@
 
+.PHONY: test-report full-report
+test-report full-report:
+	$(MAKE) -C tests/conform $(@)
+
 pkgconfig_DATA = $(pcfiles)
 pkgconfigdir   = $(libdir)/pkgconfig
 

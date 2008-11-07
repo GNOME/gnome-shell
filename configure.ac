@@ -56,7 +56,7 @@ AC_SUBST(CLUTTER_LT_LDFLAGS)
 dnl ========================================================================
 
 # Checks for programs.
-AC_PROG_CC
+AM_PROG_CC_C_O
 #_AM_DEPENDENCIES([OBJC]) 
 #AC_PROG_OBJC            
 AC_DISABLE_STATIC
@@ -520,7 +520,7 @@ fi
 AC_SUBST(JSON_PREFIX)
 AM_CONDITIONAL(LOCAL_JSON_GLIB, test "x$have_json" = "xno")
 
-CLUTTER_REQUIRES="pangocairo >= 1.18 gobject-2.0 >= 2.14 gthread-2.0 gmodule-no-export-2.0 $BACKEND_PC_FILES $JSON_GLIB_PC"
+CLUTTER_REQUIRES="pangocairo >= 1.18 gobject-2.0 >= 2.16 gthread-2.0 gmodule-no-export-2.0 $BACKEND_PC_FILES $JSON_GLIB_PC"
 
 if test "x$imagebackend" = "xgdk-pixbuf"; then
         CLUTTER_REQUIRES="$CLUTTER_REQUIRES gdk-pixbuf-2.0"
@@ -663,6 +663,11 @@ AC_CONFIG_FILES([
         clutter/json/Makefile
         clutter/pango/Makefile
         tests/Makefile
+        tests/conform/Makefile
+        tests/data/Makefile
+        tests/interactive/Makefile
+        tests/micro-bench/Makefile
+        tests/tools/Makefile
         doc/Makefile
         doc/reference/Makefile
         doc/reference/clutter/Makefile

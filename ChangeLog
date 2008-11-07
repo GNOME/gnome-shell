@@ -1,3 +1,35 @@
+2008-11-07  Robert Bragg  <robert@linux.intel.com>
+
+	Bug 1162 - Re-works the tests/ to use the glib-2.16 unit testing
+	framework
+	
+	* configure.ac:
+	* tests/*:
+	The tests have been reorganised into different categories: conformance,
+	interactive and micro benchmarks.
+	- conformance tests can be run as part of automated tests
+	- interactive tests are basically all the existing tests
+	- micro benchmarks focus on a single performance metric
+	
+	I converted the timeline tests to conformance tests and also added some
+	tests from Neil Roberts and Ebassi.
+	
+	Note: currently only the conformance tests use the glib test APIs,
+	though the micro benchmarks should too.
+	
+	The other change is to make the unit tests link into monolithic binaries
+	which makes the build time for unit tests considerably faster. To deal
+	with the extra complexity this adds to debugging individual tests I
+	have added some sugar to the makefiles so all the tests can be run
+	directly via a symlink and when an individual test is run this way,
+	then a note is printed to the terminal explaining exactly how that test
+	may be debugged using GDB.
+
+	There is a convenience make rule: 'make test-report', that will run all
+	the conformance tests and hopefully even open the results in your web
+	browser. It skips some of the slower timeline tests, but you can run
+	those using 'make full-report'
+
 2008-11-07  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-media.c: Improve documentation of the
