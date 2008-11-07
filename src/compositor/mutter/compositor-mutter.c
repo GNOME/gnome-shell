@@ -790,7 +790,7 @@ mutter_window_showing_on_its_workspace (MutterWindow *mcw)
 {
   if (!mcw)
     return FALSE;
-  
+
   /* If override redirect: */
   if (!mcw->priv->window)
     return TRUE;
@@ -836,7 +836,7 @@ mutter_finish_workspace_switch (MetaCompScreen *info)
 	  l = l->prev;
 	}
     }
-  
+
 #if 0
   /*
    * Fix up stacking order in case the plugin messed it up.
@@ -1048,7 +1048,7 @@ destroy_win (MutterWindow *cw, gboolean no_effect)
   window = meta_display_lookup_x_window (priv->screen->display, priv->xwindow);
   if (window)
     window->compositor_private = NULL;
-  
+
   /* If not override redirect */
   if (window)
     window->compositor_private = NULL;
@@ -1226,7 +1226,7 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
   Display               *xdisplay = meta_display_get_xdisplay (display);
   XWindowAttributes      attrs;
   gulong                 events_needed;
-  
+
   /* Note: this blacklist internal windows is copied from screen.c
    * Ideally add_win shouldn't be driven by CreateNotify events and
    * should instead be an event directly from metacity core. */
@@ -1325,7 +1325,7 @@ add_win (MetaScreen *screen, MetaWindow *window, Window xwindow)
 
   printf("\n");
 #endif
-  
+
   /* Hang our compositor window state off the MetaWindow for fast retrieval
    * if we have one */
   if (window)
@@ -1531,7 +1531,7 @@ process_reparent (Mutter *compositor,
 
   if (!screen)
     return;
-  
+
   if (window)
     cw = window->compositor_private;
   else
@@ -1718,7 +1718,7 @@ process_unmap (Mutter	    *compositor,
       /* Ignore unmap caused by parent's resize */
       return;
     }
-  
+
   cw = find_window_in_display (compositor->display, event->window);
 
   if (cw)
@@ -1747,7 +1747,7 @@ process_map (Mutter     *compositor,
 {
   MutterWindow *cw;
   Window        xwindow = event->window;
-  
+
   if (window)
     cw = window->compositor_private;
   else
@@ -1954,8 +1954,14 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
                 KeyPressMask | KeyReleaseMask);
 
   info->window_group = clutter_group_new ();
-  g_object_set_property (G_OBJECT (info->window_group),
-			 "show-on-set-parent", FALSE);
+#if 0
+  /*
+   * Fixed the property setting (g_object_set_property needs GValue,
+   * but setting this breaks everything, so it is disabled.
+   */
+  g_object_set (G_OBJECT (info->window_group),
+                "show-on-set-parent", FALSE, NULL);
+#endif
   info->overlay_group = clutter_group_new ();
   info->hidden_group = clutter_group_new ();
 
@@ -2312,7 +2318,7 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
   info      = meta_screen_get_compositor_data (screen);
   to_indx   = meta_workspace_index (to);
   from_indx = meta_workspace_index (from);
-  
+
   if (!meta_prefs_get_live_hidden_windows ())
     {
       GList *l;
@@ -2385,7 +2391,7 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
 {
   GList *tmp;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-  
+
   for (tmp = stack; tmp != NULL; tmp = tmp->next)
     {
       MetaWindow    *window = tmp->data;
@@ -2398,7 +2404,7 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
 			"for window %p\n", window);
 	  continue;
 	}
-      
+
       clutter_actor_lower_bottom (CLUTTER_ACTOR (cw));
 
       /* Also maintain the order of info->windows */
