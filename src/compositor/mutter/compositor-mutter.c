@@ -645,12 +645,26 @@ mutter_window_get_x_window (MutterWindow *mcw)
   return mcw->priv->xwindow;
 }
 
+/**
+ * mutter_window_get_meta_window:
+ *
+ * Gets the MetaWindow object that the the MutterWindow is displaying
+ *
+ * Return value: (transfer none): the displayed MetaWindow
+ */
 MetaWindow *
 mutter_window_get_meta_window (MutterWindow *mcw)
 {
   return mcw->priv->window;
 }
 
+/**
+ * mutter_window_get_texture:
+ *
+ * Gets the ClutterActor that is used to display the contents of the window
+ *
+ * Return value: (transfer none): the ClutterActor for the contents
+ */
 ClutterActor *
 mutter_window_get_texture (MutterWindow *mcw)
 {
