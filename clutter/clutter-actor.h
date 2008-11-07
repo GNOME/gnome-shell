@@ -553,6 +553,8 @@ void clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
                                                       ClutterVertex *point,
                                                       ClutterVertex *vertex);
 
+gboolean clutter_actor_get_paint_visibility           (ClutterActor *self);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_ACTOR_H */

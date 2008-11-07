@@ -165,6 +165,19 @@ clutter_clone_texture_paint (ClutterActor *self)
   if (!CLUTTER_ACTOR_IS_REALIZED (parent_texture))
     clutter_actor_realize (parent_texture);
 
+   /* If 'parent' texture isn't visible we run its paint to be sure it 
+    * updates. Needed for TFP and likely FBOs. 
+    * Potentially could cause issues 
+    */
+  if (!clutter_actor_get_paint_visibility(parent_texture))
+    {
+      CLUTTER_SET_PRIVATE_FLAGS(parent_texture,
+                                CLUTTER_TEXTURE_IN_CLONE_PAINT);
+      g_signal_emit_by_name (priv->parent_texture, "paint", NULL);
+      CLUTTER_UNSET_PRIVATE_FLAGS(parent_texture,
+                                  CLUTTER_TEXTURE_IN_CLONE_PAINT);
+    }
+
   cogl_color_set_from_4ub (&col, 255, 255, 255,
                            clutter_actor_get_paint_opacity (self));
   cogl_color (&col);

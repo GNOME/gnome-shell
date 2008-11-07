@@ -1,3 +1,17 @@
+2008-11-07  Matthew Allum  <mallum@linux.intel.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-private.h:
+	* clutter/clutter-texture.c:
+	* clutter/x11/clutter-x11-texture-pixmap.c:
+        
+        Attempt to lower overhead of updating TFP's (particularly mipmaped).
+        Compresses mipmap updates only for visible TFPs.
+        Avoiding updates for non visible TFP's whilst keeping visible
+        clones working ok.
+
 2008-11-06  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1230 - Pick fails on low precision color buffers

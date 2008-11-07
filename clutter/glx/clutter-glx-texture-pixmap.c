@@ -85,6 +85,7 @@ struct _ClutterGLXTexturePixmapPrivate
 
   gboolean      bound;
   gint          can_mipmap;
+  gint          mipmap_generate_queued;
 };
 
 static void 
@@ -131,6 +132,29 @@ texture_bind (ClutterGLXTexturePixmap *tex)
 }
 
 static void
+on_glx_texture_pixmap_pre_paint (ClutterGLXTexturePixmap *texture,
+                                 gpointer                 user_data)
+{
+  if (texture->priv->mipmap_generate_queued)
+    {
+      GLuint     handle = 0;
+      GLenum     target = 0;
+      CoglHandle cogl_tex;
+      cogl_tex = clutter_texture_get_cogl_texture 
+        (CLUTTER_TEXTURE(texture));
+
+      texture_bind (texture);
+
+      cogl_texture_get_gl_texture (cogl_tex, &handle, &target);
+      
+      _gl_generate_mipmap (target);
+
+      texture->priv->mipmap_generate_queued = 0;
+    }
+
+}
+
+static void
 clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
 {
   ClutterGLXTexturePixmapPrivate *priv;
@@ -139,6 +163,10 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
       G_TYPE_INSTANCE_GET_PRIVATE (self,
                                    CLUTTER_GLX_TYPE_TEXTURE_PIXMAP,
                                    ClutterGLXTexturePixmapPrivate);
+
+  g_signal_connect (CLUTTER_ACTOR(self),
+                    "paint", G_CALLBACK (on_glx_texture_pixmap_pre_paint),
+                    NULL);
 
   if (_ext_check_done == FALSE)
     {
@@ -580,6 +608,15 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
       CLUTTER_NOTE (TEXTURE, "Created GLXPixmap");
 
+      /* Get ready to queue initial mipmap generation */
+      if (_gl_generate_mipmap
+          && priv->can_mipmap
+          &&  clutter_texture_get_filter_quality (CLUTTER_TEXTURE (texture))
+          == CLUTTER_TEXTURE_QUALITY_HIGH)
+        {
+          priv->mipmap_generate_queued++;
+        }
+
       return;
     }
   else
@@ -656,15 +693,7 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
            *        to call generate mipmap 
            *        May break clones however..
           */
-          GLuint     handle = 0;
-          GLenum     target = 0;
-          CoglHandle cogl_tex;
-          cogl_tex = clutter_texture_get_cogl_texture 
-                                        (CLUTTER_TEXTURE(texture));
-
-          cogl_texture_get_gl_texture (cogl_tex, &handle, &target);
-      
-          _gl_generate_mipmap (target);
+          priv->mipmap_generate_queued++;
         }
 
     }

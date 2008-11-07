@@ -59,8 +59,9 @@ typedef enum {
 					  * viewport / perspective etc
 					  * needs (re)setting.
                                           */
-  CLUTTER_ACTOR_IN_PAINT       = 1 << 4, /* Used to avoid recursion */
-  CLUTTER_ACTOR_IN_RELAYOUT    = 1 << 5  /* Used to avoid recursion */
+  CLUTTER_ACTOR_IN_PAINT         = 1 << 4, /* Used to avoid recursion */
+  CLUTTER_ACTOR_IN_RELAYOUT      = 1 << 5, /* Used to avoid recursion */
+  CLUTTER_TEXTURE_IN_CLONE_PAINT = 1 << 6  /* Used for safety in clones */
 } ClutterPrivateFlags;
 
 typedef enum {

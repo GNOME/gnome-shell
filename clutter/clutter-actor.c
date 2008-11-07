@@ -5687,6 +5687,30 @@ clutter_actor_get_parent (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_get_paint_visibility:
+ * @self: A #ClutterActor
+ *
+ * Retrieves the 'paint' visibility of an actor recursively checking for non
+ * visible parents.
+ *
+ * Return Value: TRUE if the actor is visibile and will be painted.
+ *
+ * Since: 0.8.4
+ */
+gboolean
+clutter_actor_get_paint_visibility (ClutterActor *actor)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
+
+  while (actor 
+         && !(CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL)
+         && CLUTTER_ACTOR_IS_VISIBLE (actor))
+    actor = clutter_actor_get_parent (actor);
+
+  return (CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL);
+}
+
+/**
  * clutter_actor_unparent:
  * @self: a #ClutterActor
  *
