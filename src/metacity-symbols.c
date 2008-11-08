@@ -39,6 +39,12 @@ mutter_plugin_get_screen (MutterPlugin *plugin)
   return NULL;
 }
 
+ClutterActor *
+mutter_plugin_get_window_group (MutterPlugin *plugin)
+{
+  return NULL;
+}
+
 Display *
 meta_display_get_xdisplay (MetaDisplay *display)
 {

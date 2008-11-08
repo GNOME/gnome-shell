@@ -103,13 +103,24 @@ Overlay.prototype = {
 		window_index++;
 	    }
 
+	    // All the the actors in the window group are completely obscured,
+	    // hiding the group holding them while the overlay is displayed greatly
+	    // increases performance of the overlay especially when there are many
+	    // windows visible.
+	    //
+	    // If we switched to displaying the actors in the overlay rather than
+	    // clones of them, this would obviously no longer be necessary.
+	    global.window_group.hide()
 	    this._group.show();
 	}
     },
 
     hide : function() {
 	if (this.visible) {
+	    let global = Shell.global_get();
+
 	    this.visible = false;
+	    global.window_group.show()
 	    this._group.hide();
 
 	    for (let i = 0; i < this._window_clones.length; i++) {

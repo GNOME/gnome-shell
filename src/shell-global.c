@@ -14,7 +14,8 @@ enum {
   PROP_OVERLAY_GROUP,
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
-  PROP_STAGE
+  PROP_STAGE,
+  PROP_WINDOW_GROUP
 };
 
 /* Signals */
@@ -74,6 +75,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_STAGE:
       g_value_set_object (value, mutter_plugin_get_stage (global->plugin));
+      break;
+    case PROP_WINDOW_GROUP:
+      g_value_set_object (value, mutter_plugin_get_window_group (global->plugin));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -139,6 +143,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                    g_param_spec_object ("stage",
                                                         "Stage",
                                                         "Stage holding the desktop scene graph",
+                                                        CLUTTER_TYPE_ACTOR,
+                                                        G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_WINDOW_GROUP,
+                                   g_param_spec_object ("window-group",
+                                                        "Window Group",
+                                                        "Actor holding window actors",
                                                         CLUTTER_TYPE_ACTOR,
                                                         G_PARAM_READABLE));
 }
