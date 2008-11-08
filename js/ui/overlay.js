@@ -92,13 +92,14 @@ Overlay.prototype = {
 		n_windows++;
 	    }
 
-	    // Now create actors for all the desktop windows
+	    // Now create actors for all the desktop windows. Do it in
+	    // reverse order so that the active actor ends up on top
 	    let window_index = 0;
-	    for (let i = 0; i < windows.length; i++) {
+	    for (let i = windows.length - 1; i >= 0; i--) {
 		let w = windows[i];
 		if (w == desktop_window || w.is_override_redirect())
 		    continue;
-		this._createWindowClone(w, window_index, n_windows);
+		this._createWindowClone(w, n_windows - window_index - 1, n_windows);
 
 		window_index++;
 	    }
@@ -155,6 +156,7 @@ Overlay.prototype = {
 		      });
     },
 
+    // window_index == 0 => top in stacking order
     _computeWindowPosition : function(window_index, n_windows) {
 	if (n_windows in POSITIONS)
 	    return POSITIONS[n_windows][window_index];
@@ -162,7 +164,12 @@ Overlay.prototype = {
 	// If we don't have a predefined scheme for this window count, overlap the windows
 	// along the diagonal of the desktop (improve this!)
 	let fraction = Math.sqrt(1/n_windows);
-	let x_center = (fraction / 2) + (1 - fraction) * window_index / (n_windows - 1);
+
+	// The top window goes at the lower right - this is different from the
+	// fixed position schemes where the windows are in "reading order"
+	// and the top window goes at the upper left.
+	let pos = (n_windows - window_index - 1) / (n_windows - 1);
+	let x_center = (fraction / 2) + (1 - fraction) * pos;
 	let y_center = x_center;
 
 	return [x_center, y_center, fraction];
