@@ -36,6 +36,7 @@
 #include "place.h"
 #include "prefs.h"
 #include "effects.h"
+#include "util.h"
 
 #include <X11/keysym.h>
 #include <string.h>
@@ -2343,81 +2344,52 @@ handle_switch_to_workspace (MetaDisplay    *display,
 }
 
 static void
-error_on_generic_command (const char *key,
-                          const char *command,
-                          const char *message,
-                          int         screen_number,
-                          guint32     timestamp)
-{
-  GError *err;
-  char *argv[10];
-  char numbuf[32];
-  char timestampbuf[32];
-  
-  sprintf (numbuf, "%d", screen_number);
-  sprintf (timestampbuf, "%u", timestamp);
-  
-  argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
-  argv[1] = "--screen";
-  argv[2] = numbuf;
-  argv[3] = "--timestamp";
-  argv[4] = timestampbuf;
-  argv[5] = "--command-failed-error";
-  argv[6] = (char *)key;
-  argv[7] = (char*) (command ? command : "");
-  argv[8] = (char*) message;
-  argv[9] = NULL;
-  
-  err = NULL;
-  if (!g_spawn_async_with_pipes ("/",
-                                 argv,
-                                 NULL,
-                                 0,
-                                 NULL, NULL,
-                                 NULL,
-                                 NULL,
-                                 NULL,
-                                 NULL,
-                                 &err))
-    {
-      meta_warning (_("Error launching metacity-dialog to print an error about a command: %s\n"),
-                    err->message);
-      g_error_free (err);
-    }
-}
-
-static void
 error_on_command (int         command_index,
                   const char *command,
                   const char *message,
                   int         screen_number,
                   guint32     timestamp)
 {
-  char *key;
-  
-  meta_warning ("Error on command %d \"%s\": %s\n",
-                command_index, command, message);  
+  if (command_index < 0)
+    meta_warning ("Error on terminal command \"%s\": %s\n", command, message);  
+  else
+    meta_warning ("Error on command %d \"%s\": %s\n",
+                  command_index, command, message);  
 
-  key = meta_prefs_get_gconf_key_for_command (command_index);
+  /*
+    metacity-dialog said:
+        
+    FIXME offer to change the value of the command's gconf key
+  */
 
-  error_on_generic_command (key, command, message, screen_number, timestamp);
-  
-  g_free (key);
-}
+  if (command && strcmp(command, "")!=0)
+    {
+      char *text = g_strdup_printf (
+                                    /* Displayed when a keybinding which is
+                                     * supposed to launch a program fails.
+                                     */
+                                    _("There was an error running "
+                                      "<tt>%s</tt>:\n\n%s"),
+                                    command,
+                                    message);
 
-static void
-error_on_terminal_command (const char *command,
-                           const char *message,
-                           int         screen_number,
-                           guint32     timestamp)
-{
-  const char *key;
-  
-  meta_warning ("Error on terminal command \"%s\": %s\n", command, message);  
+      meta_show_dialog ("--error",
+                        text,
+                        NULL,
+                        screen_number,
+                        NULL, NULL);
 
-  key = meta_prefs_get_gconf_key_for_terminal_command ();
+      g_free (text);
 
-  error_on_generic_command (key, command, message, screen_number, timestamp);
+    }
+  else
+    {
+      meta_show_dialog ("--error",
+                        message,
+                        NULL,
+                        screen_number,
+                        NULL, NULL);
+    }
 }
 
 static void
@@ -3497,7 +3469,7 @@ handle_run_terminal (MetaDisplay    *display,
 		  "keybinding press\n");
       
       s = g_strdup_printf (_("No terminal command has been defined.\n"));
-      error_on_terminal_command (NULL, s, screen->number, event->xkey.time);
+      error_on_command (-1, NULL, s, screen->number, event->xkey.time);
       g_free (s);
       
       return;
@@ -3506,8 +3478,8 @@ handle_run_terminal (MetaDisplay    *display,
   err = NULL;
   if (!meta_spawn_command_line_async_on_screen (command, screen, &err))
     {
-      error_on_terminal_command (command, err->message, screen->number,
-		      		 event->xkey.time);
+      error_on_command (-1, command, err->message, screen->number,
+                        event->xkey.time);
       
       g_error_free (err);
     }

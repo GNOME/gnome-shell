@@ -1,3 +1,12 @@
+2008-11-08  Thomas Thurman  <tthurman@gnome.org>
+
+	* configure.in: added dependency on Zenity
+	* src/core/keybindings.c: remove error_on_generic_command() and
+	  error_on_terminal_command(); rewrite error_on_command
+	  in terms of meta_show_dialog()
+	* src/core/util.c: add meta_show_dialog() to call Zenity
+	* src/include/util.h: ditto
+
 2008-11-03  Olav Vitters  <olav@bkor.dhs.org>
 
 	* src/ui/theme-parser.c: Fix build by readding accidentally removed

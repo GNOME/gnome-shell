@@ -471,6 +471,10 @@ else
   GCONF_SCHEMAS_INSTALL_FALSE=
 fi
 
+AC_PATH_PROG(ZENITY, zenity, no)
+if test x"$ZENITY" = xno; then
+  AC_MSG_ERROR([zenity not found in your path - needed for dialogs])
+fi
 
 AC_ARG_ENABLE(debug,
 	[  --enable-debug		enable debugging],,
