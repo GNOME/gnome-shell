@@ -154,7 +154,6 @@ Overlay.prototype = {
 	let x_center = (fraction / 2) + (1 - fraction) * window_index / (n_windows - 1);
 	let y_center = x_center;
 
-	log(x_center + "," + y_center + "," + fraction);
 	return [x_center, y_center, fraction];
     },
 
