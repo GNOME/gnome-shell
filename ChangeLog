@@ -1,3 +1,16 @@
+2008-11-08  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* tests/conform/Makefile.am:
+	* tests/conform/test-actor-invariants.c:
+	* tests/conform/test-conform-main.c: Move the actor invariants
+	unit to the conform section of the test suite.
+
+	* tests/interactive/Makefile.am:
+	* tests/interactive/test-entry-auto.c:
+	* tests/interactive/test-invariants.c: Remove the entry-auto
+	and invariants test, since those two belong to the conform
+	section.
+
 2008-11-07  Robert Bragg  <robert@linux.intel.com>
 
 	Bug 1162 - Re-works the tests/ to use the glib-2.16 unit testing

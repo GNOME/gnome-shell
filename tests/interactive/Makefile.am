@@ -35,9 +35,7 @@ UNIT_TESTS = \
 	test-clip.c \
 	test-paint-wrapper.c \
 	test-texture-quality.c \
-	test-entry-auto.c \
-	test-layout.c \
-	test-invariants.c
+	test-layout.c
 
 #FIXME - this is is a bit of a yukky way of ensuring the tests find our data:
 test-script.json:
@@ -52,6 +50,7 @@ wrappers: test-interactive
 	do \
 		ln -sf $(top_srcdir)/tests/interactive/wrapper.sh $${i%*.c}; \
 	done
+
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
 # a phony rule that will generate symlink scripts for running individual tests
 BUILT_SOURCES = wrappers redhand.png test-script.json

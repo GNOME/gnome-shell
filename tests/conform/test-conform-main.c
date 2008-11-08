@@ -75,6 +75,11 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/fixed", test_fixed_constants);
 
+  TEST_CONFORM_SIMPLE ("/invariants", test_initial_state);
+  TEST_CONFORM_SIMPLE ("/invatiants", test_realized);
+  TEST_CONFORM_SIMPLE ("/invariants", test_mapped);
+  TEST_CONFORM_SIMPLE ("/invariants", test_show_on_set_parent);
+
   g_test_run ();
   return EXIT_SUCCESS;
 }

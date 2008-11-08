@@ -14,7 +14,8 @@ test_conformance_SOURCES = \
 	test-label-cache.c \
 	test-clutter-entry.c \
 	test-clutter-rectangle.c \
-	test-clutter-fixed.c
+	test-clutter-fixed.c \
+        test-actor-invariants.c
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers
