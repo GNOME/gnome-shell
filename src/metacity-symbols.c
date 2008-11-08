@@ -17,6 +17,7 @@ mutter_plugin_get_stage (MutterPlugin *plugin)
 GList *
 mutter_plugin_get_windows (MutterPlugin *plugin)
 {
+  return NULL;
 }
 
 void
@@ -35,19 +36,23 @@ mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
 MetaScreen *
 mutter_plugin_get_screen (MutterPlugin *plugin)
 {
+  return NULL;
 }
 
 Display *
 meta_display_get_xdisplay (MetaDisplay *display)
 {
+  return NULL;
 }
 
 MetaDisplay *
 meta_screen_get_display (MetaScreen *display)
 {
+  return NULL;
 }
 
 Window
 meta_screen_get_xroot (MetaScreen *display)
 {
+  return None;
 }
