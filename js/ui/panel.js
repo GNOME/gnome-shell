@@ -5,10 +5,7 @@ const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
 
-// The mutual import here causes things to break in weird ways,
-//  (http://bugzilla.gnome.org/show_bug.cgi?id=558741)
-// So we do a local import below
-// const Main = imports.ui.main;
+const Main = imports.ui.main;
 
 const PANEL_HEIGHT = 32;
 const PANEL_BACKGROUND_COLOR = new Clutter.Color();
@@ -46,9 +43,6 @@ Panel.prototype = {
 
 	message.connect('button-press-event',
 	    function(o, event) {
-		// See comment above
-	        let Main = imports.ui.main;
-
 		if (Main.overlay.visible)
 		    Main.hide_overlay();
 		else

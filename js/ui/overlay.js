@@ -5,6 +5,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Tweener = imports.tweener.tweener;
 
+const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 
 const OVERLAY_BACKGROUND_COLOR = new Clutter.Color();
@@ -228,7 +229,6 @@ Overlay.prototype = {
     },
 
     _deactivate : function() {
-	let Main = imports.ui.main;
 	Main.hide_overlay();
     }
 };
