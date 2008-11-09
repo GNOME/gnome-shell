@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-07 14:50+0100\n"
-"PO-Revision-Date: 2008-11-08 20:33+0100\n"
+"POT-Creation-Date: 2008-11-08 19:36+0000\n"
+"PO-Revision-Date: 2008-11-09 12:25+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Error fatal de E/S %d (%s) en la pantalla «%s».\n"
 
-#: ../src/core/keybindings.c:739
+#: ../src/core/keybindings.c:740
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -106,19 +106,26 @@ msgstr ""
 "Algún otro programa ya está usando la clave %s con el modificador %x como "
 "una vinculación\n"
 
-#: ../src/core/keybindings.c:2383
+#. Displayed when a keybinding which is
+#. * supposed to launch a program fails.
+#.
+#: ../src/core/keybindings.c:2371
 #, c-format
-msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+msgid ""
+"There was an error running <tt>%s</tt>:\n"
+"\n"
+"%s"
 msgstr ""
-"Ocurrió un error al lanzar metacity-dialog para imprimir un error acerca de "
-"un comando: %s\n"
+"Hubo un error al ejecutar <tt>%s</tt>:\n"
+"\n"
+"%s"
 
-#: ../src/core/keybindings.c:2486
+#: ../src/core/keybindings.c:2458
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No ha sido definido ningún comando %d.\n"
 
-#: ../src/core/keybindings.c:3499
+#: ../src/core/keybindings.c:3471
 #, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "No ha sido definido ningún comando de terminal.\n"
@@ -315,7 +322,6 @@ msgstr "No se ha podido liberar el monitor %d en la pantalla «%s»\n"
 #. * "disabled" must also stay as it is.
 #.
 #: ../src/core/schema-bindings.c:174
-#, fuzzy
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -324,15 +330,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"La combinación de teclas usado para cerrar una ventana. El formato se ve "
-"como «&lt;Control&gt;a» o «&lt;Mayús&gt;&lt;Alt&gt;F1». El intérprete  es "
-"bastante liberal y permite tanto mayúsculas como minúsculas además de "
-"abreviaturas como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si configura "
-"esta opción con la cadena especial «disabled» entonces no habrá combinación "
-"de teclas para esta acción."
+"El formato parece a «<Control>a» o «<Shift><Alt>F1».\n"
+"\n"
+"El intérprete  es bastante liberal y permite tanto mayúsculas como "
+"minúsculas además de abreviaturas como por ejemplo «<Ctl>» y «<Ctrl>». Si "
+"configura esta opción con la cadena especial «disabled» entonces no habrá "
+"combinación de teclas para esta acción."
 
 #: ../src/core/schema-bindings.c:182
-#, fuzzy
 msgid ""
 "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
 "\n"
@@ -344,12 +349,15 @@ msgid ""
 "This keybinding may be reversed by holding down the \"shift\" key; "
 "therefore, \"shift\" cannot be one of the keys it uses."
 msgstr ""
-"La combinación de teclas usado para cerrar una ventana. El formato se ve "
-"como «&lt;Control&gt;a» o «&lt;Mayús&gt;&lt;Alt&gt;F1». El intérprete  es "
-"bastante liberal y permite tanto mayúsculas como minúsculas además de "
-"abreviaturas como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si configura "
-"esta opción con la cadena especial «disabled» entonces no habrá combinación "
-"de teclas para esta acción."
+"El formato se parece a «<Control>a» o «<Shift><Alt>F1»\n"
+"\n"
+"El intérprete es bastante liberal y permite tanto mayúsculas como minúsculas "
+"además de abreviaturas como por ejemplo «<Ctl>» y «<Ctrl>». Si configura esta "
+"opción con la cadena especial «disabled» entonces no habrá combinación de "
+"teclas para esta acción.\n"
+"\n"
+"Esta combinación de teclas puede invertirse manteniendo pulsada la tecla "
+"«Mayús»; por ello «Mayús» no puede ser una de las teclas de la combinación."
 
 #: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
@@ -451,6 +459,13 @@ msgstr "Advertencia del gestor de ventanas: "
 #: ../src/core/util.c:449
 msgid "Window manager error: "
 msgstr "Error del gestor de ventanas: "
+
+#. Translators: This is the title used on dialog boxes
+#. eof window-bindings.h
+#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
+#: ../src/metacity-wm.desktop.in.h:1
+msgid "Metacity"
+msgstr "Metacity"
 
 #. first time through
 #: ../src/core/window.c:5661
@@ -831,11 +846,6 @@ msgstr "Mover la ventana al lado oeste (izquierda) de la pantalla"
 #: ../src/include/window-bindings.h:174
 msgid "Move window to center of screen"
 msgstr "Mover la ventana al centro de la pantalla"
-
-#. eof window-bindings.h
-#: ../src/metacity.desktop.in.h:1 ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "Metacity"
 
 #: ../src/metacity.schemas.in.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
@@ -2406,6 +2416,12 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expresiones de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to print an error about a command: %s\n"
+#~ msgstr ""
+#~ "Ocurrió un error al lanzar metacity-dialog para imprimir un error acerca "
+#~ "de un comando: %s\n"
 
 #~ msgid "Unknown attribute %s on <metacity_session> element"
 #~ msgstr "Atributo desconocido %s en el elemento <metacity_session>"
