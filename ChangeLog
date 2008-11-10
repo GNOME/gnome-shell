@@ -1,5 +1,9 @@
 2008-11-10  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/clutter-texture.c: Remove an unused function.
+
+2008-11-10  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* tests/conform/test-label-cache.c:
 	* tests/conform/test-pick.c:
 	* tests/conform/test-timeline.c: Show all the output messages only

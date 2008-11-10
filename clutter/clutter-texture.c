@@ -166,25 +166,6 @@ clutter_texture_quality_to_cogl_mag_filter (ClutterTextureQuality buf_filter)
   return 0;
 }
 
-static ClutterTextureQuality
-cogl_filters_to_clutter_texture_quality (COGLenum min,
-                                         COGLenum mag)
-{
-  switch (min)
-    {
-      case CGL_NEAREST:
-         g_assert (mag == min); /* just for sanity */
-         return CLUTTER_TEXTURE_QUALITY_LOW;
-      case CGL_LINEAR:
-         g_assert (mag == min); /* just for sanity */
-         return CLUTTER_TEXTURE_QUALITY_MEDIUM;
-      case CGL_LINEAR_MIPMAP_LINEAR:
-         g_assert (mag == CGL_LINEAR); /* just for sanity */
-         return CLUTTER_TEXTURE_QUALITY_HIGH;
-    }
-  return 0;
-}
-
 static void
 texture_free_gl_resources (ClutterTexture *texture)
 {
