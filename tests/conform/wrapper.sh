@@ -1,7 +1,7 @@
 #!/bin/sh
 
 UNIT_TEST=`basename $0`
-UNIT_TEST_PATH=`./test-conformance -l |grep $UNIT_TEST`
+UNIT_TEST_PATH=`./test-conformance -l -m thorough |grep "$UNIT_TEST\$"`
 
 echo "Running: gtester -p $UNIT_TEST_PATH ./test-conformance"
 echo ""

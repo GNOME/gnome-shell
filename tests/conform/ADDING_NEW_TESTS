@@ -20,7 +20,7 @@ Add a TEST_CONFORM_SIMPLE() entry in test-conform-main.c
 Notes:
 ------
 
-NB: A test fails if it exists. (regardless of the exist status)
+NB: A test fails if it exits. (regardless of the exit status)
 
 Don't call clutter_init since that is handled in test-conform-common.c
 

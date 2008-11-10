@@ -23,7 +23,7 @@ main (int argc, char **argv)
   main_symbol_name = g_strdup_printf ("%s_main", unit_test);
   main_symbol_name = g_strdelimit (main_symbol_name, "-", '_');
 
-  if (!g_module_symbol (module, main_symbol_name, &unit_test_main))
+  if (!g_module_symbol (module, main_symbol_name, (gpointer *)&unit_test_main))
     g_error ("Failed to look up main symbol for the test: %s", unit_test);
 
   ret = unit_test_main (argc - 1, argv + 1);

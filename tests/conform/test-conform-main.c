@@ -43,6 +43,7 @@ main (int argc, char **argv)
   shared_state->argc_addr = &argc;
   shared_state->argv_addr = &argv;
   
+  TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
   if (g_test_slow ())
     {
       TEST_CONFORM_SIMPLE ("/timeline", test_timeline_dup_frames);

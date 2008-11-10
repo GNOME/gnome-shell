@@ -1,3 +1,23 @@
+2008-11-10  Robert Bragg  <robert@linux.intel.com>
+	* tests/conform/Makefile.am:
+	* tests/conform/wrapper.sh:
+	* tests/conform/test-conform-main.c:
+	* tests/conform/test-timeline.c:
+	Adds Neil's updates to test-timeline.c so it now works with the new unit
+	testing infrastructure.
+	
+	Also some fixes to ensure wrappers get setup correctly for the timeline
+	tests.
+
+	* tests/interactive/test-main.c:
+	cast the symbol return pointer as (gpointer *) to avoid warning
+
+	* tests/conform/test-pick.c:
+	g_assert that the test passes, instead of using exit()
+
+	* test/conform/ADDING_NEW_TESTS:
+	Fixes a silly typo
+
 2008-11-08  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* tests/conform/Makefile.am:

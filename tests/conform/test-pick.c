@@ -15,7 +15,7 @@ struct _State
   int y, x;
   guint32 gids[ACTORS_X * ACTORS_Y];
   guint actor_width, actor_height;
-  int ret;
+  gboolean pass;
 };
 
 static gboolean
@@ -48,7 +48,7 @@ on_timeout (State *state)
 	  }
 
 	if (!pass)
-	  state->ret = 1;
+	  state->pass = FALSE;
       }
 
   clutter_main_quit ();
@@ -63,7 +63,7 @@ test_pick (TestConformSimpleFixture *fixture,
   int y, x;
   State state;
   
-  state.ret = 0;
+  state.pass = TRUE;
 
   state.stage = clutter_stage_new ();
 
@@ -96,10 +96,8 @@ test_pick (TestConformSimpleFixture *fixture,
 
   clutter_actor_destroy (state.stage);
 
-  printf ("end result: %s\n", state.ret ? "FAIL" : "pass");
-
-  if (state.ret)
-    exit (state.ret);
+  g_print ("end result: %s\n", state.pass ? "pass" : "FAIL");
+  g_assert (state.pass);
 
   return;
 }
