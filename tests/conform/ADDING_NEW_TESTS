@@ -27,5 +27,5 @@ Don't call clutter_init since that is handled in test-conform-common.c
 Make sure you clean up *everything* you create. Noteable things you might miss
 include timelines, behaviours, and all actors you add to the stage. This is important because otherwise you can cause cascading failures in other tests.
 
-Use stage = clutter_stage_new () with a corresponding clutter_actor_destroy instead of clutter_stage_get_default ().
+Be aware that to help avoid tests causing cascading side effects for other tests all children of the default stage are destroyed between tests.
 

@@ -71,7 +71,7 @@ test_pick (TestConformSimpleFixture *fixture,
   
   state.pass = TRUE;
 
-  state.stage = clutter_stage_new ();
+  state.stage = clutter_stage_get_default ();
 
   clutter_actor_set_size (state.stage, STAGE_WIDTH, STAGE_HEIGHT);
   state.actor_width = STAGE_WIDTH / ACTORS_X;
@@ -100,7 +100,6 @@ test_pick (TestConformSimpleFixture *fixture,
 
   clutter_main ();
 
-  clutter_actor_destroy (state.stage);
 
   if (g_test_verbose ())
     g_print ("end result: %s\n", state.pass ? "FAIL" : "pass");
