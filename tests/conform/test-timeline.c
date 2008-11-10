@@ -45,7 +45,9 @@ static void
 timeline_complete_cb (ClutterTimeline *timeline,
                       TimelineData    *data)
 {
-  printf ("%i: Completed\n", data->timeline_num);
+  if (g_test_verbose ())
+    g_print ("%i: Completed\n", data->timeline_num);
+
   data->completed_count++;
 }
 
@@ -54,9 +56,10 @@ timeline_new_frame_cb (ClutterTimeline *timeline,
                        gint             frame_no,
                        TimelineData    *data)
 {
-  printf ("%i: Doing frame %d, delta = %i\n",
-          data->timeline_num, frame_no,
-          clutter_timeline_get_delta (timeline, NULL));
+  if (g_test_verbose ())
+    g_print ("%i: Doing frame %d, delta = %i\n",
+             data->timeline_num, frame_no,
+             clutter_timeline_get_delta (timeline, NULL));
   data->frame_hit_count[frame_no]++;
 }
 
@@ -66,9 +69,10 @@ timeline_marker_reached_cb (ClutterTimeline *timeline,
                             guint            frame_num,
                             TimelineData    *data)
 {
-  printf ("%i: Marker `%s' (%d) reached, delta = %i\n",
-          data->timeline_num, marker_name, frame_num,
-          clutter_timeline_get_delta (timeline, NULL));
+  if (g_test_verbose ())
+    g_print ("%i: Marker `%s' (%d) reached, delta = %i\n",
+             data->timeline_num, marker_name, frame_num,
+             clutter_timeline_get_delta (timeline, NULL));
   data->markers_hit = g_slist_prepend (data->markers_hit,
                                        g_strdup (marker_name));
 }
@@ -105,8 +109,9 @@ check_timeline (ClutterTimeline *timeline,
         marker_reached_count[i]++;
       else
         {
-          printf ("FAIL: unknown marker '%s' hit for %i\n",
-                  (char *) node->data, data->timeline_num);
+          if (g_test_verbose ())
+            g_print ("FAIL: unknown marker '%s' hit for %i\n",
+                     (char *) node->data, data->timeline_num);
           succeeded = FALSE;
         }
     }
@@ -114,8 +119,9 @@ check_timeline (ClutterTimeline *timeline,
   for (i = 0; i < n_markers; i++)
     if (marker_reached_count[i] != 1)
       {
-        printf ("FAIL: marker '%s' hit %i times for %i\n",
-                markers[i], marker_reached_count[i], data->timeline_num);
+        if (g_test_verbose ())
+          g_print ("FAIL: marker '%s' hit %i times for %i\n",
+                   markers[i], marker_reached_count[i], data->timeline_num);
         succeeded = FALSE;
       }
 
@@ -127,17 +133,19 @@ check_timeline (ClutterTimeline *timeline,
 
       if (missed_frame_count)
         {
-          printf ("FAIL: missed %i frame%s for %i\n",
-                  missed_frame_count, missed_frame_count == 1 ? "" : "s",
-                  data->timeline_num);
+          if (g_test_verbose ())
+            g_print ("FAIL: missed %i frame%s for %i\n",
+                     missed_frame_count, missed_frame_count == 1 ? "" : "s",
+                     data->timeline_num);
           succeeded = FALSE;
         }
     }
 
   if (data->completed_count != 1)
     {
-      printf ("FAIL: timeline %i completed %i times\n",
-              data->timeline_num, data->completed_count);
+      if (g_test_verbose ())
+        g_print ("FAIL: timeline %i completed %i times\n",
+                 data->timeline_num, data->completed_count);
       succeeded = FALSE;
     }
 
@@ -238,7 +246,8 @@ test_timeline (TestConformSimpleFixture *fixture,
                     "completed", G_CALLBACK (timeline_complete_cb),
                     &data_3);
 
-  printf ("Without delay...\n");
+  if (g_test_verbose ())
+    g_print ("Without delay...\n");
 
   clutter_timeline_start (timeline_1);
   clutter_timeline_start (timeline_2);
@@ -255,7 +264,8 @@ test_timeline (TestConformSimpleFixture *fixture,
   if (!check_timeline (timeline_3, &data_3, TRUE))
     pass = FALSE;
 
-  printf ("With delay...\n");
+  if (g_test_verbose ())
+    g_print ("With delay...\n");
 
   timeline_data_destroy (&data_1);
   timeline_data_init (&data_1, 1);
@@ -288,6 +298,8 @@ test_timeline (TestConformSimpleFixture *fixture,
   timeline_data_destroy (&data_2);
   timeline_data_destroy (&data_3);
 
-  g_printf ("Overall result: %s\n", pass == TRUE ? "PASS" : "FAIL");
+  if (g_test_verbose ())
+    g_print ("Overall result: %s\n", pass == TRUE ? "PASS" : "FAIL");
+
   g_assert (pass == TRUE);
 }

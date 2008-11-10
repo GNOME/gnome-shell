@@ -35,16 +35,22 @@ on_timeout (State *state)
 					    y * state->actor_height
 					    + state->actor_height / 2);
 
-	printf ("actor %u -> ", state->gids[y * ACTORS_X + x]);
+        if (g_test_verbose ())
+          g_print ("actor %u -> ", state->gids[y * ACTORS_X + x]);
 	
 	if (actor == NULL)
-	  printf ("NULL:     FAIL\n");
+          {
+            if (g_test_verbose ())
+              g_print ("NULL:     FAIL\n");
+          }
 	else
 	  {
 	    gid = clutter_actor_get_gid (actor);
 	    if (gid == state->gids[y * ACTORS_X + x])
 	      pass = TRUE;
-	    printf ("% 8i: %s\n", gid, pass ? "pass" : "FAIL");
+
+            if (g_test_verbose ())
+              g_print ("% 8i: %s\n", gid, pass ? "pass" : "FAIL");
 	  }
 
 	if (!pass)
@@ -96,9 +102,9 @@ test_pick (TestConformSimpleFixture *fixture,
 
   clutter_actor_destroy (state.stage);
 
-  g_print ("end result: %s\n", state.pass ? "pass" : "FAIL");
-  g_assert (state.pass);
+  if (g_test_verbose ())
+    g_print ("end result: %s\n", state.pass ? "FAIL" : "pass");
 
-  return;
+  g_assert (state.pass);
 }
 

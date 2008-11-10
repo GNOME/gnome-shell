@@ -59,7 +59,8 @@ check_result (CallbackData *data, const char *note,
   PangoRectangle test_extents;
   gboolean fail = FALSE;
 
-  printf ("%s: ", note);
+  if (g_test_verbose ())
+    g_print ("%s: ", note);
 
   /* Force a redraw to get the on_paint handler to run */
   force_redraw (data);
@@ -69,27 +70,42 @@ check_result (CallbackData *data, const char *note,
   pango_layout_get_extents (data->test_layout, NULL, &test_extents);
   if (memcmp (&test_extents, &data->label_extents, sizeof (PangoRectangle)))
     {
-      printf ("extents are different, ");
+      if (g_test_verbose ())
+        g_print ("extents are different, ");
       fail = TRUE;
     }
   else
-    printf ("extents are the same, ");
+    {
+      if (g_test_verbose ())
+        g_print ("extents are the same, ");
+    }
 
   if (data->layout_changed)
-    printf ("layout changed, ");
+    {
+      if (g_test_verbose ())
+        g_print ("layout changed, ");
+    }
   else
-    printf ("layout did not change, ");
+    {
+      if (g_test_verbose ())
+        g_print ("layout did not change, ");
+    }
 
   if (data->layout_changed != layout_should_change)
     fail = TRUE;
 
   if (fail)
     {
-      printf ("FAIL\n");
+      if (g_test_verbose ())
+        g_print ("FAIL\n");
+
       data->test_failed = TRUE;
     }
   else
-    printf ("pass\n");
+    {
+      if (g_test_verbose ())
+        g_print ("pass\n");
+    }
 
   return fail;
 }
@@ -225,7 +241,6 @@ test_label_cache (TestConformSimpleFixture *fixture,
 		  gconstpointer _data)
 {
   CallbackData data;
-  int ret = 0;
 
   memset (&data, 0, sizeof (data));
 
@@ -245,16 +260,17 @@ test_label_cache (TestConformSimpleFixture *fixture,
 
   clutter_main ();
 
-  printf ("\nOverall result: ");
+  if (g_test_verbose ())
+    g_print ("\nOverall result: ");
 
-  if (data.test_failed)
+  if (g_test_verbose ())
     {
-      printf ("FAIL\n");
-      exit (1);
+      if (data.test_failed)
+        g_print ("FAIL\n");
+      else
+        g_print ("pass\n");
     }
   else
-    printf ("pass\n");
-
-  return;
+    g_assert (data.test_failed != TRUE);
 }
 
