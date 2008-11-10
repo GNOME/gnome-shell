@@ -1,3 +1,9 @@
+2008-11-10  Elijah Newren  <newren gmail com> 
+
+	* src/metacity.schemas.in.in: updated description of
+	  raise_on_click:
+	  http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6
+
 2008-11-08  Thomas Thurman  <tthurman@gnome.org>
 
 	* configure.in: added dependency on Zenity
