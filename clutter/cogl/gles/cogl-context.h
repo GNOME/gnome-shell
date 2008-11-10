@@ -77,6 +77,9 @@ typedef struct
   GArray              *program_handles;
   GArray              *shader_handles;
 
+  /* Mesh */
+  GArray           *mesh_handles;
+
 #ifdef HAVE_COGL_GLES2
   CoglGles2Wrapper     gles2;
 

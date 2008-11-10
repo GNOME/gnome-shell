@@ -34,6 +34,41 @@
 	Privides basic coverage testing for the mesh API.
 
 2008-11-10  Robert Bragg  <robert@linux.intel.com>
+
+	Bug 1164 - Implements the proposed Mesh API
+	
+	* clutter/cogl/cogl-mesh.h
+	* clutter/cogl/cogl-types.h
+	* clutter/cogl/cogl.h.in
+	* clutter/cogl/common/Makefile.am
+	* clutter/cogl/common/cogl-mesh-private.h
+	* clutter/cogl/common/cogl-mesh.c
+	* clutter/cogl/gl/cogl-context.c
+	* clutter/cogl/gl/cogl-context.h
+	* clutter/cogl/gl/cogl-defines.h.in
+	* clutter/cogl/gl/cogl.c
+	* clutter/cogl/gles/cogl-context.c
+	* clutter/cogl/gles/cogl-context.h:
+	The Mesh API provides a means for submitting an extensible number of
+	per vertex attributes to OpenGL in a way that doesn't require format
+	conversions and so that the data can be mapped into the GPU (in vertex
+	buffer objects) for - hopefully - fast re-use.
+
+	There are a number of things we can potentially use this API for, but
+	right now this just provides a foundation to build on. Please read
+	the extensive list of TODO items in cogl-mesh.c for examples.
+
+	Please refer to the cogl-mesh section in the reference manual for
+	documentation of the API.
+
+	* tests/conform/Makefile.am
+	* tests/conform/test-conform-main.c
+	* tests/conform/test-mesh-contiguous.c
+	* tests/conform/test-mesh-interleved.c
+	* tests/conform/test-mesh-mutability.c:
+	Privides basic coverage testing for the mesh API.
+
+2008-11-10  Robert Bragg  <robert@linux.intel.com>
 	
 	* tests/conform/ADDING_NEW_TESTS
 	* tests/conform/test-conform-common.c

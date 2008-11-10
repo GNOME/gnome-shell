@@ -67,6 +67,8 @@ cogl_create_context ()
   _context->program_handles = NULL;
   _context->shader_handles = NULL;
   _context->draw_buffer = COGL_WINDOW_BUFFER;
+
+  _context->mesh_handles = NULL;
   
   _context->blend_src_factor = CGL_SRC_ALPHA;
   _context->blend_dst_factor = CGL_ONE_MINUS_SRC_ALPHA;

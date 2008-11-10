@@ -51,7 +51,7 @@ main (int argc, char **argv)
       TEST_CONFORM_SIMPLE ("/timeline", test_timeline_rewind);
       TEST_CONFORM_SIMPLE ("/timeline", test_timeline_smoothness);
     }
-
+  
   TEST_CONFORM_SIMPLE ("/picking", test_pick);
 
   TEST_CONFORM_SIMPLE ("/label", test_label_cache);
@@ -75,11 +75,15 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_color);
 
   TEST_CONFORM_SIMPLE ("/fixed", test_fixed_constants);
-
+  
   TEST_CONFORM_SIMPLE ("/invariants", test_initial_state);
   TEST_CONFORM_SIMPLE ("/invatiants", test_realized);
   TEST_CONFORM_SIMPLE ("/invariants", test_mapped);
   TEST_CONFORM_SIMPLE ("/invariants", test_show_on_set_parent);
+
+  TEST_CONFORM_SIMPLE ("/mesh", test_mesh_contiguous);
+  TEST_CONFORM_SIMPLE ("/mesh", test_mesh_interleved);
+  TEST_CONFORM_SIMPLE ("/mesh", test_mesh_mutability);
 
   g_test_run ();
   return EXIT_SUCCESS;

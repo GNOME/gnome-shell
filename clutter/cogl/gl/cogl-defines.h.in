@@ -842,6 +842,61 @@ typedef void
   (GLint                 location,
    GLfloat               v0);
 
+typedef void
+  (APIENTRYP		 COGL_PFNGLVERTEXATTRIBPOINTERARBPROC)
+  (GLuint		 index,
+   GLint		 size,
+   GLenum		 type,
+   GLboolean		 normalized,
+   GLsizei		 stride,
+   const GLvoid		*pointer);
+
+typedef void
+  (APIENTRYP		 COGL_PFNGLENABLEVERTEXATTRIBARRAYARBPROC)
+  (GLuint		 index);
+
+typedef void
+  (APIENTRYP		 COGL_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC)
+  (GLuint		 index);
+
+typedef void
+  (APIENTRYP		 COGL_PFNGLGENBUFFERSARBPROC)
+  (GLuint		 n,
+   GLuint		*buffers);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLBINDBUFFERARBPROC)
+  (GLenum		 target, 
+   GLuint		 buffer);
+
+typedef void
+  (APIENTRYP		 COGL_PFNGLBUFFERDATAARBPROC)
+  (GLenum		 target, 
+   GLsizeiptr		 size, 
+   const GLvoid		*data, 
+   GLenum		 usage);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLBUFFERDATASUBARBPROC)
+  (GLenum		 target, 
+   GLintptr		 offset, 
+   GLsizeiptr		 size,
+   const GLvoid		*data);
+
+typedef void *
+  (APIENTRYP		 COGL_PFNGLMAPBUFFERARBPROC)
+  (GLenum		 target, 
+   GLenum		 access);
+
+typedef GLboolean
+  (APIENTRYP		 COGL_PFNGLUNMAPBUFFERARBPROC)
+  (GLenum		 target);
+
+typedef void
+  (APIENTRYP		 COGL_PFNGLDELETEBUFFERSARBPROC)
+  (GLsizei		 n,
+   const GLuint		*buffers);
+
 G_END_DECLS
 
 #endif

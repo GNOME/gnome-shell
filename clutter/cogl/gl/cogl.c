@@ -1015,6 +1015,18 @@ _cogl_features_init ()
       ctx->pf_glUniform1fARB =
 	(COGL_PFNGLUNIFORM1FARBPROC)
 	cogl_get_proc_address ("glUniform1fARB");
+
+      ctx->pf_glVertexAttribPointerARB =
+	(COGL_PFNGLVERTEXATTRIBPOINTERARBPROC)
+	cogl_get_proc_address ("glVertexAttribPointerARB");
+
+      ctx->pf_glEnableVertexAttribArrayARB =
+	(COGL_PFNGLENABLEVERTEXATTRIBARRAYARBPROC)
+	cogl_get_proc_address ("glEnableVertexAttribArrayARB");
+
+      ctx->pf_glDisableVertexAttribArrayARB =
+	(COGL_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC)
+	cogl_get_proc_address ("glDisableVertexAttribArrayARB");
       
       if (ctx->pf_glCreateProgramObjectARB    &&
 	  ctx->pf_glCreateShaderObjectARB     &&
@@ -1027,7 +1039,10 @@ _cogl_features_init ()
 	  ctx->pf_glDeleteObjectARB           &&
 	  ctx->pf_glGetInfoLogARB             &&
 	  ctx->pf_glGetObjectParameterivARB   &&
-	  ctx->pf_glUniform1fARB)
+	  ctx->pf_glUniform1fARB	      &&
+	  ctx->pf_glVertexAttribPointerARB    &&
+	  ctx->pf_glEnableVertexAttribArrayARB &&
+	  ctx->pf_glDisableVertexAttribArrayARB)
 	flags |= COGL_FEATURE_SHADERS_GLSL;
     }
   
@@ -1115,6 +1130,39 @@ _cogl_features_init ()
   GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
   if (max_clip_planes >= 4)
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
+
+  if (cogl_check_extension ("GL_ARB_vertex_buffer_object", gl_extensions))
+    {
+      ctx->pf_glGenBuffersARB =
+	    (COGL_PFNGLGENBUFFERSARBPROC)
+	    cogl_get_proc_address ("glGenBuffersARB");
+      ctx->pf_glBindBufferARB =
+	    (COGL_PFNGLBINDBUFFERARBPROC)
+	    cogl_get_proc_address ("glBindBufferARB");
+      ctx->pf_glBufferDataARB =
+	    (COGL_PFNGLBUFFERDATAARBPROC)
+	    cogl_get_proc_address ("glBufferDataARB");
+      ctx->pf_glBufferDataSubARB =
+	    (COGL_PFNGLBUFFERDATASUBARBPROC)
+	    cogl_get_proc_address ("glBufferDataSubARB");
+      ctx->pf_glDeleteBuffersARB =
+	    (COGL_PFNGLDELETEBUFFERSARBPROC)
+	    cogl_get_proc_address ("glDeleteBuffersARB");
+      ctx->pf_glMapBufferARB =
+	    (COGL_PFNGLMAPBUFFERARBPROC)
+	    cogl_get_proc_address ("glMapBufferARB");
+      ctx->pf_glUnmapBufferARB =
+	    (COGL_PFNGLUNMAPBUFFERARBPROC)
+	    cogl_get_proc_address ("glUnmapBufferARB");
+      if (ctx->pf_glGenBuffersARB
+	  && ctx->pf_glBindBufferARB
+	  && ctx->pf_glBufferDataARB
+	  && ctx->pf_glBufferDataSubARB
+	  && ctx->pf_glDeleteBuffersARB
+	  && ctx->pf_glMapBufferARB
+	  && ctx->pf_glUnmapBufferARB)
+      flags |= COGL_FEATURE_VBOS;
+    }
 
   /* Cache features */
   ctx->feature_flags = flags;
@@ -1265,3 +1313,4 @@ cogl_fog_set (const CoglColor *fog_color,
   glFogf (GL_FOG_START, COGL_FIXED_TO_FLOAT (start));
   glFogf (GL_FOG_END, COGL_FIXED_TO_FLOAT (stop));
 }
+

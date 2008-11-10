@@ -183,6 +183,7 @@ typedef enum
  * @COGL_FEATURE_OFFSCREEN_BLIT:
  * @COGL_FEATURE_FOUR_CLIP_PLANES:
  * @COGL_FEATURE_STENCIL_BUFFER:
+ * @COGL_FEATURE_VBOS:
  *
  * Flags for the supported features.
  */
@@ -197,7 +198,8 @@ typedef enum
   COGL_FEATURE_OFFSCREEN_MULTISAMPLE  = (1 << 7),
   COGL_FEATURE_OFFSCREEN_BLIT         = (1 << 8),
   COGL_FEATURE_FOUR_CLIP_PLANES       = (1 << 9),
-  COGL_FEATURE_STENCIL_BUFFER         = (1 << 10)
+  COGL_FEATURE_STENCIL_BUFFER         = (1 << 10),
+  COGL_FEATURE_VBOS		      = (1 << 11)
 } CoglFeatureFlags;
 
 /**
