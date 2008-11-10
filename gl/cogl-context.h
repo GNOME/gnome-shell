@@ -68,6 +68,9 @@ typedef struct
   /* Programs */
   GArray           *program_handles;
   
+  /* Mesh */
+  GArray           *mesh_handles;
+  
   /* Relying on glext.h to define these */
   COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
   COGL_PFNGLDELETERENDERBUFFERSEXTPROC             pf_glDeleteRenderbuffersEXT;
@@ -94,7 +97,18 @@ typedef struct
   COGL_PFNGLGETINFOLOGARBPROC                      pf_glGetInfoLogARB;
   COGL_PFNGLGETOBJECTPARAMETERIVARBPROC            pf_glGetObjectParameterivARB;
   COGL_PFNGLUNIFORM1FARBPROC                       pf_glUniform1fARB;
-  
+  COGL_PFNGLVERTEXATTRIBPOINTERARBPROC		   pf_glVertexAttribPointerARB;
+  COGL_PFNGLENABLEVERTEXATTRIBARRAYARBPROC	   pf_glEnableVertexAttribArrayARB;
+  COGL_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC	   pf_glDisableVertexAttribArrayARB;
+
+  COGL_PFNGLGENBUFFERSARBPROC			   pf_glGenBuffersARB;
+  COGL_PFNGLBINDBUFFERARBPROC			   pf_glBindBufferARB;
+  COGL_PFNGLBUFFERDATAARBPROC			   pf_glBufferDataARB;
+  COGL_PFNGLBUFFERDATASUBARBPROC		   pf_glBufferDataSubARB;
+  COGL_PFNGLMAPBUFFERARBPROC			   pf_glMapBufferARB;
+  COGL_PFNGLUNMAPBUFFERARBPROC			   pf_glUnmapBufferARB;
+  COGL_PFNGLDELETEBUFFERSARBPROC		   pf_glDeleteBuffersARB;
+
 } CoglContext;
 
 CoglContext *

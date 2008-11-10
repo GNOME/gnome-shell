@@ -257,3 +257,18 @@ cogl_color_get_green_float
 cogl_color_get_blue_float
 cogl_color_get_alpha_float
 </SECTION>
+
+<SECTION>
+<FILE>cogl-mesh</FILE>
+<TITLE>Mesh API</TITLE>
+cogl_mesh_new
+cogl_mesh_ref
+cogl_mesh_unref
+cogl_mesh_add_attribute
+cogl_mesh_delete_attribute
+cogl_mesh_enable_attribute
+cogl_mesh_disable_attribute
+cogl_mesh_draw_arrays
+cogl_mesh_draw_range_elements
+</SECTION>
+

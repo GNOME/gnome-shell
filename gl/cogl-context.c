@@ -67,6 +67,8 @@ cogl_create_context ()
   _context->shader_handles = NULL;
 
   _context->program_handles = NULL;
+
+  _context->mesh_handles = NULL;
   
   _context->pf_glGenRenderbuffersEXT = NULL;
   _context->pf_glBindRenderbufferEXT = NULL;
