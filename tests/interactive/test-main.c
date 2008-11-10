@@ -12,7 +12,7 @@ main (int argc, char **argv)
   int (*unit_test_main) (int argc, char **argv);
   int ret;
 
-  if (argc != 2)
+  if (argc < 2)
     g_error ("Usage: %s unit_test", argv[0]);
   
   module = g_module_open (NULL, 0);

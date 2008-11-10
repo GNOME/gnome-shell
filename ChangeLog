@@ -1,3 +1,10 @@
+2008-11-10  Neil Roberts  <neil@linux.intel.com>
+
+	* tests/interactive/test-main.c (main): Allow more than two
+	arguments so that the remaining arguments can be passed to the
+	test. This is needed for test-behave for example which can take a
+	--path argument.
+
 2008-11-10  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-texture.c: Remove an unused function.
