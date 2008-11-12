@@ -1094,16 +1094,6 @@ resolve_new_cogl_mesh_vbo (CoglMesh *mesh,
     }
 }
 
-/**
- * cogl_mesh_submit:
- * @handle: A Cogl mesh handle
- * 
- * This function copies all the user added attributes into a buffer object
- * managed by the OpenGL driver.
- *
- * After the attributes have been submitted, then you may no longer add or
- * remove attributes from a mesh, though you can enable or disable them.
- */
 void
 cogl_mesh_submit (CoglHandle handle)
 {

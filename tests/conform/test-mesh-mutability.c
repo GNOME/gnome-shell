@@ -116,7 +116,7 @@ on_paint (ClutterActor *actor, TestState *state)
   if (state->frame >= 2)
     validate_result (state);
   else
-    sleep (1);
+    g_usleep (G_USEC_PER_SEC);
   
   state->frame++;
 }
@@ -125,6 +125,8 @@ static gboolean
 queue_redraw (gpointer stage)
 {
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+
+  return TRUE;
 }
 
 void

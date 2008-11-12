@@ -1,3 +1,23 @@
+2008-11-12  Neil Roberts  <neil@linux.intel.com>
+
+	Fix warnings in mesh tests
+
+	* tests/conform/test-mesh-mutability.c (on_paint):
+	* tests/conform/test-mesh-interleved.c (on_paint):
+	* tests/conform/test-mesh-contiguous.c (on_paint): Use g_usleep
+	instead of sleep
+
+	* tests/conform/test-mesh-mutability.c (queue_redraw):
+	* tests/conform/test-mesh-interleved.c (queue_redraw):
+	* tests/conform/test-mesh-contiguous.c (queue_redraw): Added
+	missing return statement
+
+	* clutter/cogl/cogl-mesh.h: Add a declaration for
+	cogl_mesh_submit
+
+	* clutter/cogl/common/cogl-mesh.c (cogl_mesh_submit): Move the
+	documentation to cogl-mesh.h to match the rest of the functions
+
 2008-11-10  Robert Bragg  <robert@linux.intel.com>
 
 	Bug 1164 - Implements the proposed Mesh API
