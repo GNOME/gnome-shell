@@ -417,6 +417,7 @@ clutter_actor_apply_relative_transform_to_point
 clutter_actor_get_transformed_position
 clutter_actor_get_transformed_size
 clutter_actor_get_paint_opacity
+clutter_actor_get_paint_visibility
 clutter_actor_get_abs_allocation_vertices
 
 <SUBSECTION>
@@ -1092,6 +1093,7 @@ clutter_get_motion_events_frequency
 clutter_clear_glyph_cache
 clutter_set_use_mipmapped_text
 clutter_get_use_mipmapped_text
+clutter_get_font_map
 
 <SUBSECTION>
 clutter_threads_set_lock_functions
