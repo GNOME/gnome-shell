@@ -1,5 +1,11 @@
 2008-11-12  Neil Roberts  <neil@linux.intel.com>
 
+	* clutter/clutter-rectangle.c (clutter_rectangle_paint): Fixed so
+	that it doesn't use the alpha value from the border colour to draw
+	the rectangle
+
+2008-11-12  Neil Roberts  <neil@linux.intel.com>
+
 	* clutter/cogl/gles/Makefile.am (libclutterinclude_HEADERS):
 	* clutter/cogl/gl/Makefile.am (libclutterinclude_HEADERS):
 	* clutter/cogl/common/Makefile.am

@@ -85,18 +85,18 @@ clutter_rectangle_paint (ClutterActor *self)
                                               : "unknown");
   clutter_actor_get_allocation_geometry (self, &geom);
 
-  /* compute the composited opacity of the actor taking into
-   * account the opacity of the color set by the user
-   */
-  tmp_alpha = clutter_actor_get_paint_opacity (self)
-            * priv->border_color.alpha
-            / 255;
-
   /* parent paint call will have translated us into position so
    * paint from 0, 0
    */
   if (priv->has_border)
     {
+      /* compute the composited opacity of the actor taking into
+       * account the opacity of the color set by the user
+       */
+      tmp_alpha = clutter_actor_get_paint_opacity (self)
+        * priv->border_color.alpha
+        / 255;
+
       /* paint the border */
       cogl_color_set_from_4ub (&tmp_col,
                                priv->border_color.red,
@@ -123,6 +123,10 @@ clutter_rectangle_paint (ClutterActor *self)
                       priv->border_width,
                       geom.height - priv->border_width);
 
+      tmp_alpha = clutter_actor_get_paint_opacity (self)
+        * priv->color.alpha
+        / 255;
+
       /* now paint the rectangle */
       cogl_color_set_from_4ub (&tmp_col,
                                priv->color.red,
@@ -137,6 +141,13 @@ clutter_rectangle_paint (ClutterActor *self)
     }
   else
     {
+      /* compute the composited opacity of the actor taking into
+       * account the opacity of the color set by the user
+       */
+      tmp_alpha = clutter_actor_get_paint_opacity (self)
+        * priv->color.alpha
+        / 255;
+
       cogl_color_set_from_4ub (&tmp_col,
                                priv->color.red,
                                priv->color.green,
