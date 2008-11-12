@@ -1,5 +1,14 @@
 2008-11-12  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1057 - cogl_texture_rectangle doesn't support backward
+	coordinates
+
+	* clutter/cogl/gl/cogl-texture.c: Instead of sorting the vertex
+	and texture coordinates passed to cogl_texture_rectangle, just
+	swap both sets whenever the texture coordinates are backward.
+
+2008-11-12  Neil Roberts  <neil@linux.intel.com>
+
 	* clutter/clutter-rectangle.c (clutter_rectangle_paint): Fixed so
 	that it doesn't use the alpha value from the border colour to draw
 	the rectangle
