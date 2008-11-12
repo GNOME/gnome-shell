@@ -349,23 +349,20 @@ static void
 foo_actor_paint (ClutterActor *actor)
 {
   FooActor *foo_actor = FOO_ACTOR (actor);
-  ClutterColor color = { 0, };
   ClutterUnit w, h, r;
 
-  /* FooActor has a specific background color */
-  color.red   = foo_actor-&gt;bg_color.red;
-  color.green = foo_actor-&gt;bg_color.green;
-  color.blue  = foo_actor-&gt;bg_color.blue;
 
-  /* the alpha component must take into account the absolute
+  /* FooActor has a specific background color
+   *
+   * the alpha component must take into account the absolute
    * opacity of the actor on the screen at this point in the
    * scenegraph; this value is obtained by calling
    * clutter_actor_get_paint_opacity().
    */
-  color.alpha = clutter_actor_get_paint_opacity (actor);
-
-  /* set the color of the pen */
-  cogl_color (&amp;color);
+  cogl_set_source_color4ub (priv-&gt;fgcol.red,
+                            priv-&gt;fgcol.green,
+                            priv-&gt;fgcol.blue,
+                            clutter_actor_get_paint_opacity (actor));
 
   /* get the size of the actor with sub-pixel precision */
   w = CLUTTER_UNITS_TO_FIXED (clutter_actor_get_widthu (actor));
@@ -439,7 +436,8 @@ foo_actor_pick (ClutterActor       *actor,
                 const ClutterColor *pick_color)
 {
   FooActor *foo_actor = FOO_ACTOR (actor);
-  ClutterUnit w, h, r;
+  ClutterUnit width, height;
+  ClutterFixed radius;
 
   /* it is possible to avoid a costly paint by checking whether the
    * actor should really be painted in pick mode
@@ -447,17 +445,19 @@ foo_actor_pick (ClutterActor       *actor,
   if (!clutter_actor_should_pick_paint (actor))
     return;
 
-  w = CLUTTER_UNITS_TO_FIXED (clutter_actor_get_widthu (actor));
-  h = CLUTTER_UNITS_TO_FIXED (clutter_actor_get_heightu (actor));
+  clutter_actor_get_sizeu (actor, &amp;width, &amp;height);
 
   /* this is the arc radius for the rounded rectangle corners */
-  r = CLUTTER_UNITS_TO_FIXED (foo_actor->radius);
+  radius = CLUTTER_UNITS_TO_FIXED (foo_actor-&amp;radius);
 
   /* use the passed color to paint ourselves */
-  cogl_color (pick_color);
+  cogl_set_source_color4ub (pick_color-&gt;red,
+                            pick_color-&gt;green,
+                            pick_color-&gt;blue,
+                            pick_color-&gt;alpha);
 
   /* paint a round rectangle */
-  cogl_round_rectangle (0, 0, w, h, r, 5);
+  cogl_round_rectangle (0, 0, width, height, radius, 5);
 
   /* and fill it with the current color */
   cogl_fill ();

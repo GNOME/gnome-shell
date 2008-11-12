@@ -473,7 +473,6 @@ clutter_texture_paint (ClutterActor *self)
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   ClutterTexturePrivate *priv = texture->priv;
   gint            x_1, y_1, x_2, y_2;
-  CoglColor       col;
   CoglColor       transparent_col;
   ClutterFixed    t_w, t_h;
 
@@ -565,12 +564,8 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
 
-  cogl_color_set_from_4ub (&col,
-                           255,
-                           255,
-                           255,
-                           clutter_actor_get_paint_opacity (self));
-  cogl_color (&col);
+  cogl_set_source_color4ub (255, 255, 255,
+                            clutter_actor_get_paint_opacity (self));
 
   clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
 

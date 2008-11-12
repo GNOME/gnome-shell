@@ -608,14 +608,10 @@ clutter_actor_real_pick (ClutterActor       *self,
    */
   if (clutter_actor_should_pick_paint (self))
     {
-      CoglColor c;
-
-      cogl_color_set_from_4ub (&c,
-                               color->red,
-                               color->green,
-                               color->blue,
-                               color->alpha);
-      cogl_color (&c);
+      cogl_set_source_color4ub (color->red,
+                                color->green,
+                                color->blue,
+                                color->alpha);
       cogl_rectangle (0, 0,
                       clutter_actor_get_width (self),
                       clutter_actor_get_height (self));

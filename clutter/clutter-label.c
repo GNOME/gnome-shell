@@ -281,8 +281,8 @@ clutter_label_paint (ClutterActor *self)
   ClutterLabel        *label = CLUTTER_LABEL (self);
   ClutterLabelPrivate *priv = label->priv;
   PangoLayout         *layout;
-  CoglColor            color;
   ClutterActorBox alloc = { 0, };
+  CoglColor color = { 0, };
 
   if (priv->font_desc == NULL || priv->text == NULL)
     {

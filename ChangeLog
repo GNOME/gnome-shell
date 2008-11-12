@@ -1,3 +1,50 @@
+2008-11-12  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/cogl/cogl-color.h:
+	* clutter/cogl/cogl-path.h:
+	* clutter/cogl/cogl-types.h: 
+	* clutter/cogl/common/cogl-color.c: Deprecated cogl_color()
+	in favour of cogl_set_source_color() and friends; store the
+	CoglColor components as unsigned bytes instead of fixed point
+	normalized values; add functions for allocating, copying and
+	freeing CoglColor, for use of language bindings.
+
+	* clutter/cogl/cogl.h.in:
+	* clutter/cogl/cogl-deprecated.h: Added cogl-deprecated.h,
+	an header file containing the deprecation symbols similar
+	to clutter-deprecated.h.
+
+	* clutter/cogl/gl/Makefile.am:
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/cogl/gles/cogl-texture.c:
+	* clutter/cogl/gles/cogl.c: Update the GL and GLES implementations
+	of COGL after the CoglColor changes.
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-entry.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-texture.c: Do not use CoglColor whenever it
+	is possible, and use cogl_set_source_color4ub() instead.
+
+	* clutter/pango/cogl-pango-render.c: Ditto as above.
+
+	* doc/reference/clutter/subclassing-ClutterActor.xml:
+	* doc/reference/cogl/cogl-sections.txt: Update the documentation.
+
+	* tests/interactive/test-cogl-offscreen.c:
+	* tests/interactive/test-cogl-primitives.c:
+	* tests/interactive/test-cogl-tex-convert.c:
+	* tests/interactive/test-cogl-tex-foreign.c:
+	* tests/interactive/test-cogl-tex-getset.c:
+	* tests/interactive/test-cogl-tex-polygon.c:
+	* tests/interactive/test-cogl-tex-tile.c:
+	* tests/interactive/test-paint-wrapper.c: Drop the usage of
+	CoglColor whenever it is possible.
+
 2008-11-12  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1057 - cogl_texture_rectangle doesn't support backward

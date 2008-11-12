@@ -347,24 +347,20 @@ cogl_pango_ensure_glyph_cache_for_layout (PangoLayout *layout)
 
 static void
 cogl_pango_renderer_set_color_for_part (PangoRenderer   *renderer,
-					   PangoRenderPart  part)
+                                        PangoRenderPart  part)
 {
   PangoColor *pango_color = pango_renderer_get_color (renderer, part);
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
-  CoglColor color;
 
   if (pango_color)
     {
-      cogl_color_set_from_4ub (&color,
-                               pango_color->red >> 8,
-                               pango_color->green >> 8,
-                               pango_color->blue >> 8,
-                               cogl_color_get_alpha_byte (&priv->color));
+      cogl_set_source_color4ub (pango_color->red >> 8,
+                                pango_color->green >> 8,
+                                pango_color->blue >> 8,
+                                cogl_color_get_alpha_byte (&priv->color));
     }
   else
-    color = priv->color;
-
-  cogl_color (&color);
+    cogl_set_source_color (&priv->color);
 }
 
 static void

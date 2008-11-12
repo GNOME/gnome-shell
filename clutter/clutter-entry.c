@@ -411,14 +411,11 @@ clutter_entry_paint_cursor (ClutterEntry *entry)
 
   if (priv->show_cursor)
     {
-      CoglColor cursor_color;
+      cogl_set_source_color4ub (priv->fgcol.red,
+                                priv->fgcol.green,
+                                priv->fgcol.blue,
+                                priv->fgcol.alpha);
 
-      cogl_color_set_from_4ub (&cursor_color,
-                               priv->fgcol.red,
-                               priv->fgcol.green,
-                               priv->fgcol.blue,
-                               priv->fgcol.alpha);
-      cogl_color (&cursor_color);
       cogl_rectangle (priv->cursor_pos.x,
                       priv->cursor_pos.y,
                       priv->cursor_pos.width,
@@ -435,7 +432,7 @@ clutter_entry_paint (ClutterActor *self)
   gint                  width, actor_width;
   gint                  text_width;
   gint                  cursor_x;
-  CoglColor             color;
+  CoglColor             color = { 0, };
 
   entry  = CLUTTER_ENTRY(self);
   priv   = entry->priv;

@@ -2317,7 +2317,7 @@ cogl_texture_polygon (CoglHandle         handle,
 	      GLfloat tx, ty;
 
 	      if (use_color)
-		cogl_color (&vertices[vnum].color);
+		cogl_set_source_color (&vertices[vnum].color);
 
 	      /* Transform the texture co-ordinates so they are
 		 relative to the slice */

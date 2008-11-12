@@ -80,25 +80,20 @@ static void
 test_coglbox_paint(ClutterActor *self)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
-  CoglColor cback;
-  CoglColor cwhite;
-  
   ClutterFixed texcoords[4] = {
     CLUTTER_FLOAT_TO_FIXED (0.0f),
     CLUTTER_FLOAT_TO_FIXED (0.0f),
     CLUTTER_FLOAT_TO_FIXED (1.0f),
     CLUTTER_FLOAT_TO_FIXED (1.0f)
     };
-  
+
   priv = TEST_COGLBOX_GET_PRIVATE (self);
-  
-  cogl_color_set_from_4ub (&cback, 0x66, 0x66, 0xdd, 0xff);
-  cogl_color (&cback);
-  cogl_rectangle (0,0,400,400);
-  
-  cogl_color_set_from_4ub (&cwhite, 0xff, 0xff, 0xff, 0xff);
-  cogl_color (&cwhite);
-  
+
+  cogl_set_source_color4ub (0x66, 0x66, 0xdd, 0xff);
+  cogl_rectangle (0, 0, 400, 400);
+
+  cogl_set_source_color4ub (0xff, 0xff, 0xff, 0xff);
+
   cogl_push_matrix ();
   cogl_texture_rectangle (priv->cogl_tex_id[0],
 			  0, 0,
@@ -106,37 +101,37 @@ test_coglbox_paint(ClutterActor *self)
 			  CLUTTER_INT_TO_FIXED (213),
 			  texcoords[0], texcoords[1],
 			  texcoords[2], texcoords[3]);
-  
+
   cogl_pop_matrix ();
   cogl_push_matrix ();
-  cogl_translate (200,0,0);
+  cogl_translate (200, 0, 0);
   cogl_texture_rectangle (priv->cogl_tex_id[1],
 			  0, 0,
 			  CLUTTER_INT_TO_FIXED (200),
 			  CLUTTER_INT_TO_FIXED (213),
 			  texcoords[0], texcoords[1],
 			  texcoords[2], texcoords[3]);
-  
+
   cogl_pop_matrix ();
   cogl_push_matrix ();
-  cogl_translate (0,200,0);
+  cogl_translate (0, 200, 0);
   cogl_texture_rectangle (priv->cogl_tex_id[2],
 			  0, 0,
 			  CLUTTER_INT_TO_FIXED (200),
 			  CLUTTER_INT_TO_FIXED (213),
 			  texcoords[0], texcoords[1],
 			  texcoords[2], texcoords[3]);
-  
+
   cogl_pop_matrix ();
   cogl_push_matrix ();
-  cogl_translate (200,200,0);
+  cogl_translate (200, 200, 0);
   cogl_texture_rectangle (priv->cogl_tex_id[3],
 			  0, 0,
 			  CLUTTER_INT_TO_FIXED (200),
 			  CLUTTER_INT_TO_FIXED (213),
 			  texcoords[0], texcoords[1],
 			  texcoords[2], texcoords[3]);
-  
+
   cogl_pop_matrix();
 }
 

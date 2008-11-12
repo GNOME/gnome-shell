@@ -230,11 +230,11 @@ typedef enum
 struct _CoglColor
 {
   /*< private >*/
-  CoglFixed red;
-  CoglFixed green;
-  CoglFixed blue;
+  guint8 red;
+  guint8 green;
+  guint8 blue;
 
-  CoglFixed alpha;
+  guint8 alpha;
 };
 
 /**

@@ -63,9 +63,6 @@ cogl_util_next_p2
 <SECTION>
 <FILE>cogl-primitives</FILE>
 <TITLE>Primitives</TITLE>
-cogl_color
-cogl_path_fill
-cogl_path_stroke
 cogl_path_move_to
 cogl_path_close
 cogl_path_line_to
@@ -80,6 +77,15 @@ cogl_path_polygon
 cogl_path_rectangle
 cogl_path_round_rectangle
 cogl_path_ellipse
+
+<SUBSECTION>
+cogl_path_fill
+cogl_path_stroke
+cogl_set_source_color
+cogl_set_source_color4ub
+cogl_set_source_color4x
+
+<SUBSECTION>
 cogl_rectangle
 cogl_rectanglex
 </SECTION>
@@ -236,8 +242,12 @@ cogl_double_to_unit
 <FILE>cogl-color</FILE>
 <TITLE>Color Type</TITLE>
 CoglColor
+cogl_color_new
+cogl_color_copy
+cogl_color_free
 cogl_color_set_from_4ub
 cogl_color_set_from_4d
+cogl_color_set_from_4x
 
 <SUBSECTION>
 cogl_color_get_red
@@ -264,11 +274,13 @@ cogl_color_get_alpha_float
 cogl_mesh_new
 cogl_mesh_ref
 cogl_mesh_unref
+CoglMeshAttributeFlags
 cogl_mesh_add_attribute
 cogl_mesh_delete_attribute
 cogl_mesh_enable_attribute
 cogl_mesh_disable_attribute
 cogl_mesh_draw_arrays
 cogl_mesh_draw_range_elements
+cogl_mesh_submit
 </SECTION>
 

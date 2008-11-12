@@ -142,7 +142,6 @@ clutter_clone_texture_paint (ClutterActor *self)
   ClutterCloneTexturePrivate  *priv;
   ClutterActor                *parent_texture;
   gint                         x_1, y_1, x_2, y_2;
-  CoglColor                    col;
   CoglHandle                   cogl_texture;
   ClutterFixed                 t_w, t_h;
   guint                        tex_width, tex_height;
@@ -178,9 +177,8 @@ clutter_clone_texture_paint (ClutterActor *self)
                                   CLUTTER_TEXTURE_IN_CLONE_PAINT);
     }
 
-  cogl_color_set_from_4ub (&col, 255, 255, 255,
-                           clutter_actor_get_paint_opacity (self));
-  cogl_color (&col);
+  cogl_set_source_color4ub (255, 255, 255,
+                            clutter_actor_get_paint_opacity (self));
 
   clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
 

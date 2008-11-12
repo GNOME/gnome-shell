@@ -90,7 +90,6 @@ test_coglbox_fade_texture (CoglHandle tex_id,
 			   ClutterFixed ty2)
 {
   CoglTextureVertex vertices[4];
-  CoglColor white;
   int i;
   
   vertices[0].x = x1;
@@ -125,8 +124,7 @@ test_coglbox_fade_texture (CoglHandle tex_id,
 
   cogl_texture_polygon (tex_id, 4, vertices, TRUE);
 
-  cogl_color_set_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
-  cogl_color (&white);
+  cogl_set_source_color4ub (255, 255, 255, 255);
 }
 
 static void
@@ -171,12 +169,10 @@ test_coglbox_paint (ClutterActor *self)
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
   CoglHandle tex_handle = priv->use_sliced ? priv->sliced_tex
                                            : priv->not_sliced_tex;
-  CoglColor white;
   int tex_width = cogl_texture_get_width (tex_handle);
   int tex_height = cogl_texture_get_height (tex_handle);
 
-  cogl_color_set_from_4ub (&white, 255, 255, 255, 255);
-  cogl_color (&white);
+  cogl_set_source_color4ub (255, 255, 255, 255);
 
   cogl_texture_set_filters (tex_handle,
 			    priv->use_linear_filtering

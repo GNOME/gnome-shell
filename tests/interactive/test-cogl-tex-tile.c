@@ -80,21 +80,16 @@ static void
 test_coglbox_paint(ClutterActor *self)
 {
   TestCoglboxPrivate *priv = TEST_COGLBOX_GET_PRIVATE (self);
-  
-  CoglColor cback =  {0x66, 0x66, 0xDD, 0xFF};
-  CoglColor cwhite = {0xFF, 0xFF, 0xFF, 0xFF};
   ClutterFixed texcoords[4] = {
     CLUTTER_FLOAT_TO_FIXED (0.0f),
     CLUTTER_FLOAT_TO_FIXED (0.0f),
     CLUTTER_FLOAT_TO_FIXED (1.0f),
     CLUTTER_FLOAT_TO_FIXED (1.0f)
-    };
-  
+  };
   gint         pingpong_frame;
   ClutterFixed sin_frame, cos_frame;
   ClutterFixed frac_frame;
   gint t;
-  
   sin_frame = clutter_sini (CLUTTER_ANGLE_FROM_DEG (priv->frame));
   cos_frame = clutter_cosi (CLUTTER_ANGLE_FROM_DEG (priv->frame));
   
@@ -117,13 +112,11 @@ test_coglbox_paint(ClutterActor *self)
   
   cogl_push_matrix ();
 
-  cogl_color_set_from_4ub (&cback, 0x66, 0x66, 0xdd, 0xff);
-  cogl_color (&cback);
-  cogl_rectangle (0,0,400,400);
+  cogl_set_source_color4ub (0x66, 0x66, 0xdd, 0xff);
+  cogl_rectangle (0, 0, 400, 400);
   
-  cogl_color_set_from_4ub (&cwhite, 0xff, 0xff, 0xff, 0xff);
-  cogl_color (&cwhite);
-  cogl_translate (100,100,0);
+  cogl_set_source_color4ub (0xff, 0xff, 0xff, 0xff);
+  cogl_translate (100, 100, 0);
   cogl_texture_rectangle (priv->cogl_tex_id,
 			  0, 0,
 			  CLUTTER_INT_TO_FIXED (200),
