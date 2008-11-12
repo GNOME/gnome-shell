@@ -8,7 +8,8 @@ libclutterinclude_HEADERS = \
         $(top_builddir)/clutter/cogl/cogl-path.h \
         $(top_builddir)/clutter/cogl/cogl-shader.h \
         $(top_builddir)/clutter/cogl/cogl-texture.h \
-        $(top_builddir)/clutter/cogl/cogl-types.h
+        $(top_builddir)/clutter/cogl/cogl-types.h \
+        $(top_builddir)/clutter/cogl/cogl-mesh.h
 
 INCLUDES = \
 	-I$(top_srcdir) \

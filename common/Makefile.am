@@ -29,5 +29,4 @@ libclutter_cogl_common_la_SOURCES = 	\
 	cogl-clip-stack.c               \
         cogl-fixed.c                    \
         cogl-color.c			\
-	cogl-mesh.c			\
-	cogl-mesh.h
+	cogl-mesh.c
