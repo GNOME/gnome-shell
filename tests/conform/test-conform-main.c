@@ -85,7 +85,9 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/mesh", test_mesh_interleved);
   TEST_CONFORM_SIMPLE ("/mesh", test_mesh_mutability);
 
-  g_test_run ();
-  return EXIT_SUCCESS;
-}
+  TEST_CONFORM_SIMPLE ("/opacity", test_label_opacity);
+  TEST_CONFORM_SIMPLE ("/opacity", test_rectangle_opacity);
+  TEST_CONFORM_SIMPLE ("/opacity", test_paint_opacity);
 
+  return g_test_run ();
+}

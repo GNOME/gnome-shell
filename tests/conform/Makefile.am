@@ -18,7 +18,8 @@ test_conformance_SOURCES = \
 	test-clutter-entry.c \
 	test-clutter-rectangle.c \
 	test-clutter-fixed.c \
-        test-actor-invariants.c
+        test-actor-invariants.c \
+        test-paint-opacity.c
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers
