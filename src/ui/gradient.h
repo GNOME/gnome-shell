@@ -25,7 +25,7 @@
 #define META_GRADIENT_H
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <gdk/gdkcolor.h>
+#include <gdk/gdk.h>
 
 typedef enum
 {

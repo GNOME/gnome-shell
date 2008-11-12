@@ -27,7 +27,7 @@
 #include "boxes.h"
 #include "gradient.h"
 #include "common.h"
-#include <gtk/gtkrc.h>
+#include <gtk/gtk.h>
 
 typedef struct _MetaFrameStyle MetaFrameStyle;
 typedef struct _MetaFrameStyleSet MetaFrameStyleSet;

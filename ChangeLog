@@ -1,3 +1,20 @@
+2008-11-11  Maxim Ermilov  <zaspire@rambler.ru>
+
+        Clean up #includes according to the GNOME Goal.
+	Closes #560449.  Patch is 122467.
+
+	* src/core/place.c:
+	* src/ui/draw-workspace.h:
+	* src/ui/gradient.h:
+	* src/ui/metaaccellabel.c:
+	* src/ui/metaaccellabel.h:
+	* src/ui/preview-widget.c:
+	* src/ui/preview-widget.h:
+	* src/ui/resizepopup.c:
+	* src/ui/theme.c:
+	* src/ui/theme.h:
+	* src/ui/themewidget.h:
+
 2008-11-10  Elijah Newren  <newren gmail com> 
 
 	* src/metacity.schemas.in.in: updated description of

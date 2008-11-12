@@ -22,7 +22,7 @@
  */
 
 #include "theme.h"
-#include <gtk/gtkbin.h>
+#include <gtk/gtk.h>
 
 #ifndef META_PREVIEW_WIDGET_H
 #define META_PREVIEW_WIDGET_H

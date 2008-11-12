@@ -57,9 +57,7 @@
 #include "theme-parser.h"
 #include "util.h"
 #include "gradient.h"
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtkicontheme.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>

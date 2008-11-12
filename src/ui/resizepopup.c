@@ -24,11 +24,7 @@
 #include <config.h>
 #include "resizepopup.h"
 #include "util.h"
-#include <gtk/gtkwindow.h>
-#include <gtk/gtklabel.h>
-#include <gtk/gtkframe.h>
-#include <gtk/gtkmain.h>
-#include <gdk/gdkx.h>
+#include <gtk/gtk.h>
 
 struct _MetaResizePopup
 {
