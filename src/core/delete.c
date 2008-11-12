@@ -491,7 +491,7 @@ meta_window_present_delete_dialog (MetaWindow *window, guint32 timestamp)
 
           if (w->xtransient_for == window->xwindow &&
               w->res_class &&
-              g_strcasecmp (w->res_class, "metacity-dialog") == 0)
+              g_ascii_strcasecmp (w->res_class, "metacity-dialog") == 0)
             {
               meta_window_activate (w, timestamp);
               break;

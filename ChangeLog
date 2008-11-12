@@ -1,3 +1,11 @@
+2008-11-11  Thomas Thurman  <tthurman@gnome.org>
+
+        Removed deprecated calls.  Closes #560445.
+
+	* src/core/delete.c: remove deprecated g_strcasecmp.
+	* src/include/main.h: no actual deprecated call, but
+	  a mention of one which was out of date.
+
 2008-11-11  Maxim Ermilov  <zaspire@rambler.ru>
 
         Clean up #includes according to the GNOME Goal.
