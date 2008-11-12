@@ -1,5 +1,13 @@
 2008-11-12  Neil Roberts  <neil@linux.intel.com>
 
+	* clutter/cogl/gles/Makefile.am (libclutterinclude_HEADERS):
+	* clutter/cogl/gl/Makefile.am (libclutterinclude_HEADERS):
+	* clutter/cogl/common/Makefile.am
+	(libclutter_cogl_common_la_SOURCES): Move cogl-mesh.h into the
+	headers for libclutter so that it will get installed.
+
+2008-11-12  Neil Roberts  <neil@linux.intel.com>
+
 	Fix warnings in mesh tests
 
 	* tests/conform/test-mesh-mutability.c (on_paint):
