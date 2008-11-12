@@ -291,7 +291,7 @@ cogl_enable_backface_culling (gboolean setting)
 }
 
 void
-cogl_color (const CoglColor *color)
+cogl_set_source_color (const CoglColor *color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   

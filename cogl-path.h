@@ -51,16 +51,6 @@ G_BEGIN_DECLS
  */
 
 /**
- * cogl_color:
- * @color: new current @CoglColor.
- *
- * Changes the color of cogl's current paint, which is used for filling and stroking
- * primitives.
- */
-void            cogl_color                    (const CoglColor *color);
-
-
-/**
  * cogl_rectangle:
  * @x: X coordinate of the top-left corner
  * @y: Y coordinate of the top-left corner

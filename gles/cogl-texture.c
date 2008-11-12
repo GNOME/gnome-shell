@@ -505,7 +505,7 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
   old_dst_factor = ctx->blend_dst_factor;
   
   /* Direct copy operation */
-  cogl_color (&cwhite);
+  cogl_set_source_color (&cwhite);
   cogl_blend_func (CGL_ONE, CGL_ZERO);
   _cogl_texture_draw_and_read (tex, target_bmp,
                                &cwhite, viewport);
@@ -2302,5 +2302,5 @@ cogl_texture_polygon (CoglHandle         handle,
   /* Set the last color so that the cache of the alpha value will work
      properly */
   if (use_color && n_vertices > 0)
-    cogl_color (&vertices[n_vertices - 1].color);
+    cogl_set_source_color (&vertices[n_vertices - 1].color);
 }

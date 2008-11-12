@@ -3,6 +3,7 @@ libclutterinclude_HEADERS = \
         $(top_builddir)/clutter/cogl/cogl.h \
         $(top_builddir)/clutter/cogl/cogl-defines-gl.h \
         $(top_builddir)/clutter/cogl/cogl-color.h \
+        $(top_builddir)/clutter/cogl/cogl-deprecated.h \
         $(top_builddir)/clutter/cogl/cogl-fixed.h \
         $(top_builddir)/clutter/cogl/cogl-offscreen.h \
         $(top_builddir)/clutter/cogl/cogl-path.h \
@@ -32,6 +33,7 @@ libclutter_cogl_la_SOURCES = \
 	$(top_builddir)/clutter/cogl/cogl.h \
 	$(top_builddir)/clutter/cogl/cogl-defines-gl.h \
         $(top_builddir)/clutter/cogl/cogl-color.h \
+	$(top_builddir)/clutter/cogl/cogl-deprecated.h \
         $(top_builddir)/clutter/cogl/cogl-fixed.h \
         $(top_builddir)/clutter/cogl/cogl-offscreen.h \
         $(top_builddir)/clutter/cogl/cogl-path.h \

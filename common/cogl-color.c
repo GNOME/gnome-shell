@@ -5,6 +5,28 @@
 #include "cogl-color.h"
 #include "cogl-fixed.h"
 
+CoglColor *
+cogl_color_new (void)
+{
+  return g_slice_new (CoglColor);
+}
+
+CoglColor *
+cogl_color_copy (const CoglColor *color)
+{
+  if (G_LIKELY (color))
+    return g_slice_dup (CoglColor, color);
+
+  return NULL;
+}
+
+void
+cogl_color_free (CoglColor *color)
+{
+  if (G_LIKELY (color))
+    g_slice_free (CoglColor, color);
+}
+
 void
 cogl_color_set_from_4ub (CoglColor *dest,
                          guint8     red,
@@ -14,10 +36,10 @@ cogl_color_set_from_4ub (CoglColor *dest,
 {
   g_return_if_fail (dest != NULL);
 
-  dest->red   = COGL_FIXED_FROM_FLOAT ((float) red   / 0xff * 1.0);
-  dest->green = COGL_FIXED_FROM_FLOAT ((float) green / 0xff * 1.0);
-  dest->blue  = COGL_FIXED_FROM_FLOAT ((float) blue  / 0xff * 1.0);
-  dest->alpha = COGL_FIXED_FROM_FLOAT ((float) alpha / 0xff * 1.0);
+  dest->red   = red;
+  dest->green = green;
+  dest->blue  = blue;
+  dest->alpha = alpha;
 }
 
 void
@@ -29,80 +51,119 @@ cogl_color_set_from_4d (CoglColor *dest,
 {
   g_return_if_fail (dest != NULL);
 
-  dest->red   = COGL_FIXED_FROM_FLOAT (CLAMP (red,   0.0, 1.0));
-  dest->green = COGL_FIXED_FROM_FLOAT (CLAMP (green, 0.0, 1.0));
-  dest->blue  = COGL_FIXED_FROM_FLOAT (CLAMP (blue,  0.0, 1.0));
-  dest->alpha = COGL_FIXED_FROM_FLOAT (CLAMP (alpha, 0.0, 1.0));
+  dest->red   = 255 * red;
+  dest->green = 255 * green;
+  dest->blue  = 255 * blue;
+  dest->alpha = 255 * alpha;
+}
+
+void
+cogl_color_set_from_4x (CoglColor *dest,
+                        CoglFixed  red,
+                        CoglFixed  green,
+                        CoglFixed  blue,
+                        CoglFixed  alpha)
+{
+  g_return_if_fail (dest != NULL);
+
+  dest->red   = COGL_FIXED_TO_INT (red * 255);
+  dest->green = COGL_FIXED_TO_INT (green * 255);
+  dest->blue  = COGL_FIXED_TO_INT (blue * 255);
+  dest->alpha = COGL_FIXED_TO_INT (alpha * 255);
 }
 
 unsigned char
 cogl_color_get_red_byte (const CoglColor *color)
 {
-  return COGL_FIXED_TO_INT (color->red * 255);
+  return color->red;
 }
 
 float
 cogl_color_get_red_float (const CoglColor *color)
 {
-  return COGL_FIXED_TO_FLOAT (color->red);
+  return (float) color->red / 255.0;
 }
 
 CoglFixed
 cogl_color_get_red (const CoglColor *color)
 {
-  return color->red;
+  return COGL_FIXED_FROM_FLOAT ((float) color->red / 255.0);
 }
 
 unsigned char
 cogl_color_get_green_byte (const CoglColor *color)
 {
-  return COGL_FIXED_TO_INT (color->green * 255);
+  return color->green;
 }
 
 float
 cogl_color_get_green_float (const CoglColor *color)
 {
-  return COGL_FIXED_TO_FLOAT (color->green);
+  return (float) color->green / 255.0;
 }
 
 CoglFixed
 cogl_color_get_green (const CoglColor *color)
 {
-  return color->green;
+  return COGL_FIXED_FROM_FLOAT ((float) color->green / 255.0);
 }
 
 unsigned char
 cogl_color_get_blue_byte (const CoglColor *color)
 {
-  return COGL_FIXED_TO_INT (color->blue * 255);
+  return color->blue;
 }
 
 float
 cogl_color_get_blue_float (const CoglColor *color)
 {
-  return COGL_FIXED_TO_FLOAT (color->blue);
+  return (float) color->blue / 255.0;
 }
 
 CoglFixed
 cogl_color_get_blue (const CoglColor *color)
 {
-  return color->blue;
+  return COGL_FIXED_FROM_FLOAT ((float) color->blue / 255.0);
 }
 
 unsigned char
 cogl_color_get_alpha_byte (const CoglColor *color)
 {
-  return COGL_FIXED_TO_INT (color->alpha * 255);
+  return color->alpha;
 }
 
 float
 cogl_color_get_alpha_float (const CoglColor *color)
 {
-  return COGL_FIXED_TO_FLOAT (color->alpha);
+  return (float) color->alpha / 255.0;
 }
 
 CoglFixed
 cogl_color_get_alpha (const CoglColor *color)
 {
-  return color->alpha;
+  return COGL_FIXED_FROM_FLOAT ((float) color->alpha / 255.0);
+}
+
+void
+cogl_set_source_color4ub (guint8 red,
+                          guint8 green,
+                          guint8 blue,
+                          guint8 alpha)
+{
+  CoglColor c = { 0, };
+
+  cogl_color_set_from_4ub (&c, red, green, blue, alpha);
+  cogl_set_source_color (&c);
+}
+
+void
+cogl_set_source_color4x (CoglFixed red,
+                         CoglFixed green,
+                         CoglFixed blue,
+                         CoglFixed alpha)
+{
+  CoglColor c = { 0, };
+
+  cogl_color_set_from_4x (&c, red, green, blue, alpha);
+  cogl_set_source_color (&c);
 }

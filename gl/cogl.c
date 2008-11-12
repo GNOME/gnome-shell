@@ -380,14 +380,14 @@ cogl_enable_backface_culling (gboolean setting)
 }
 
 void
-cogl_color (const CoglColor *color)
+cogl_set_source_color (const CoglColor *color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  glColor4f (cogl_color_get_red_float (color),
-	     cogl_color_get_green_float (color),
-	     cogl_color_get_blue_float (color),
-	     cogl_color_get_alpha_float (color));
+  glColor4ub (cogl_color_get_red_byte (color),
+	      cogl_color_get_green_byte (color),
+	      cogl_color_get_blue_byte (color),
+	      cogl_color_get_alpha_byte (color));
   
   /* Store alpha for proper blending enables */
   ctx->color_alpha = cogl_color_get_alpha_byte (color);
