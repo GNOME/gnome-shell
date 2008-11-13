@@ -5698,13 +5698,17 @@ clutter_actor_get_paint_visibility (ClutterActor *actor)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
 
-  while (actor 
-         && !(CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL)
-         && CLUTTER_ACTOR_IS_VISIBLE (actor))
-    actor = clutter_actor_get_parent (actor);
+  do
+    {
+      if (!CLUTTER_ACTOR_IS_VISIBLE (actor))
+        return FALSE;
 
-  return ((CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL)
-          ? TRUE : FALSE);
+      if (CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL)
+        return TRUE;
+    }
+  while ((actor = clutter_actor_get_parent (actor)) != NULL);
+
+  return FALSE;
 }
 
 /**

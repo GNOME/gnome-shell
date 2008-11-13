@@ -1,3 +1,8 @@
+2008-11-13  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/clutter-actor.c (clutter_actor_get_paint_visibility):
+	Fix logic so that it won't return TRUE for a hidden stage.
+
 2008-11-13  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-behaviour-ellipse.c:
