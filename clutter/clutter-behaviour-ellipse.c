@@ -32,8 +32,9 @@
  * #ClutterBehaviourEllipse interpolates actors along a path defined by
  *  an ellipse.
  *
- * Note, on applying an ellipse behaviour to an actor its position will
- * be set to what is dictated by the ellipses initial position.
+ * <note><para>When applying an ellipse behaviour to an actor, the
+ * behaviour will update the actor's position and depth and set them
+ * to what is dictated by the ellipses initial position.</para></note>
  *
  * Since: 0.4
  */
@@ -339,20 +340,18 @@ clutter_behaviour_ellipse_applied (ClutterBehaviour *behave,
                                    ClutterActor     *actor)
 {
   ClutterBehaviourEllipse *e = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
-  knot3d knot;
+  ClutterBehaviourEllipsePrivate *priv = e->priv;;
+  knot3d knot = { 0, };
 
-  clutter_behaviour_ellipse_advance (e, e->priv->angle_start, &knot);
+  clutter_behaviour_ellipse_advance (e, priv->angle_start, &knot);
 
   clutter_actor_set_position (actor, knot.x, knot.y);
-  clutter_actor_set_depth (actor, knot.z);
 
-#if 0
-  /* no need to chain up: ClutterBehaviourEllipse's parent class does
-   * not have a class closure for ::apply
+  /* the depth should be changed only if there is a tilt on
+   * any of the X or the Y axis
    */
-  if (CLUTTER_BEHAVIOUR_CLASS (clutter_behaviour_ellipse_parent_class)->apply)
-    CLUTTER_BEHAVIOUR_CLASS (clutter_behaviour_ellipse_parent_class)->apply (behave, actor);
-#endif
+  if (priv->angle_tilt_x != 0 || priv->angle_tilt_y != 0)
+    clutter_actor_set_depth (actor, knot.z);
 }
 
 static void

@@ -1,3 +1,11 @@
+2008-11-13  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-behaviour-ellipse.c:
+	(clutter_behaviour_ellipse_applied): Do not reset the depth
+	of the actors to which the Ellipse behaviour has been applied
+	to, unless the behaviour is going to update it because it has
+	a tilt on the X or Y axis.
+
 2008-11-13  Neil Roberts  <neil@linux.intel.com>
 
 	* clutter/clutter-actor.c (clutter_actor_get_reactive)
