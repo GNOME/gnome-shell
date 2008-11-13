@@ -66,7 +66,7 @@ on_paint (ClutterActor *actor, TestState *state)
 {
   /* Draw a faded blue triangle */
   cogl_mesh_enable_attribute (state->mesh, "gl_Color::blue");
-  glColor4ub (0xff, 0x00, 0x00, 0xff);
+  cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_mesh_draw_arrays (state->mesh,
 			 GL_TRIANGLE_STRIP, /* mode */
 			 0, /* first */
@@ -77,7 +77,7 @@ on_paint (ClutterActor *actor, TestState *state)
    * the triangle will remain faded blue */
   cogl_translate (100, 0, 0);
   cogl_mesh_disable_attribute (state->mesh, "gl_Color::blue");
-  glColor4ub (0xff, 0x00, 0x00, 0xff);
+  cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_mesh_draw_arrays (state->mesh,
 			 GL_TRIANGLE_STRIP, /* mode */
 			 0, /* first */
@@ -88,7 +88,7 @@ on_paint (ClutterActor *actor, TestState *state)
    * the triangle will remain red */
   cogl_translate (100, 0, 0);
   cogl_mesh_enable_attribute (state->mesh, "gl_Color::blue");
-  glColor4ub (0xff, 0x00, 0x00, 0xff);
+  cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
   cogl_mesh_draw_arrays (state->mesh,
 			 GL_TRIANGLE_STRIP, /* mode */
 			 0, /* first */

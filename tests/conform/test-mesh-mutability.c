@@ -72,7 +72,7 @@ on_paint (ClutterActor *actor, TestState *state)
    * Draw a red triangle
    */
 
-  glColor4ub (0xff, 0x00, 0x00, 0xff);
+  cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
 
   cogl_mesh_add_attribute (state->mesh,
 			   "gl_Vertex",

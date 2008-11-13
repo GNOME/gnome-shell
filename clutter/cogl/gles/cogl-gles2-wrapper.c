@@ -68,6 +68,7 @@
 #define COGL_GLES2_WRAPPER_VERTEX_ATTRIB    0
 #define COGL_GLES2_WRAPPER_TEX_COORD_ATTRIB 1
 #define COGL_GLES2_WRAPPER_COLOR_ATTRIB     2
+#define COGL_GLES2_WRAPPER_NORMAL_ATTRIB    3
 
 static GLuint
 cogl_gles2_wrapper_create_shader (GLenum type, const char *source)
@@ -424,6 +425,8 @@ cogl_gles2_wrapper_bind_attributes (GLuint program)
 			"tex_coord_attrib");
   glBindAttribLocation (program, COGL_GLES2_WRAPPER_COLOR_ATTRIB,
 			"color_attrib");
+  glBindAttribLocation (program, COGL_GLES2_WRAPPER_NORMAL_ATTRIB,
+			"normal_attrib");
 }
 
 void
@@ -798,6 +801,13 @@ cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
 			  const GLvoid *pointer)
 {
   glVertexAttribPointer (COGL_GLES2_WRAPPER_COLOR_ATTRIB, size, type,
+			 GL_TRUE, stride, pointer);
+}
+
+void
+cogl_wrap_glNormalPointer (GLenum type, GLsizei stride, const GLvoid *pointer)
+{
+  glVertexAttribPointer (COGL_GLES2_WRAPPER_NORMAL_ATTRIB, 1, type,
 			 GL_FALSE, stride, pointer);
 }
 
@@ -992,6 +1002,9 @@ cogl_wrap_glEnableClientState (GLenum array)
     case GL_COLOR_ARRAY:
       glEnableVertexAttribArray (COGL_GLES2_WRAPPER_COLOR_ATTRIB);
       break;
+    case GL_NORMAL_ARRAY:
+      glEnableVertexAttribArray (COGL_GLES2_WRAPPER_NORMAL_ATTRIB);
+      break;
     }
 }
 
@@ -1008,6 +1021,9 @@ cogl_wrap_glDisableClientState (GLenum array)
       break;
     case GL_COLOR_ARRAY:
       glDisableVertexAttribArray (COGL_GLES2_WRAPPER_COLOR_ATTRIB);
+      break;
+    case GL_NORMAL_ARRAY:
+      glDisableVertexAttribArray (COGL_GLES2_WRAPPER_NORMAL_ATTRIB);
       break;
     }
 }

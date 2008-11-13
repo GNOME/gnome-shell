@@ -1,3 +1,25 @@
+2008-11-13  Robert Bragg  <robert@linux.intel.com>
+
+	Gets the mesh API working with GLES2
+
+	* clutter/cogl/common/cogl-mesh.c:
+	Make sure we use the appropriate cogl_wrap_gl* funcs as appropriate
+
+	* clutter/cogl/gles/cogl-gles2-wrapper.c
+	* clutter/cogl/gles/cogl-gles2-wrapper.h:
+	In our glColorPointer wrapper we needed to mark our color attribute
+	as normalized.
+
+	* tests/conform/Makefile.am:
+	When creating unit test symlinks we use the -l gtester option to
+	list tests, but when using the PVR SDK the test binary also spews
+	out some extra info that caused lots of random symlinks to be
+	created. We now grep for lines starting with a '/'
+
+	* tests/conform/test-mesh-contiguous.c
+	* tests/conform/test-mesh-mutability.c:
+	Use cogl_set_source_color instead of directly calling glColor4ub
+
 2008-11-13  Neil Roberts  <neil@linux.intel.com>
 
 	* clutter/clutter-actor.c (clutter_actor_get_paint_visibility):
