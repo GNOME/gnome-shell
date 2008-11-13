@@ -1,3 +1,10 @@
+2008-11-13  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/clutter-actor.c (clutter_actor_get_reactive)
+	(clutter_actor_get_paint_visibility): Be sure to return exactly
+	TRUE or FALSE instead of zero or some non-zero value in these
+	functions that return a gboolean. Thanks to Kai Wei for spotting.
+
 2008-11-12  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* tests/conform/Makefile.am:

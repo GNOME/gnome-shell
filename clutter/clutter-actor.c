@@ -5703,7 +5703,8 @@ clutter_actor_get_paint_visibility (ClutterActor *actor)
          && CLUTTER_ACTOR_IS_VISIBLE (actor))
     actor = clutter_actor_get_parent (actor);
 
-  return (CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL);
+  return ((CLUTTER_PRIVATE_FLAGS (actor) & CLUTTER_ACTOR_IS_TOPLEVEL)
+          ? TRUE : FALSE);
 }
 
 /**
@@ -6085,7 +6086,7 @@ clutter_actor_get_reactive (ClutterActor *actor)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
 
-  return CLUTTER_ACTOR_IS_REACTIVE (actor);
+  return CLUTTER_ACTOR_IS_REACTIVE (actor) ? TRUE : FALSE;
 }
 
 /**
