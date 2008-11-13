@@ -1,3 +1,12 @@
+2008-11-13  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/cogl/gles/cogl-gles2-wrapper.h:
+	* clutter/cogl/gles/cogl-gles2-wrapper.c:
+	Initialise the 'tex' sampler uniform to 0. The GLSL spec
+	specifically says that you must initialize sampler uniforms. This
+	fixes texturing for GLES 2 when using the PowerVR simulator via
+	software Mesa.
+
 2008-11-13  Robert Bragg  <robert@linux.intel.com>
 
 	Gets the mesh API working with GLES2
