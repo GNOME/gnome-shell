@@ -140,7 +140,7 @@
  * GL/GLES compatability defines for VBO thingies:
  */
 
-#if HAVE_COGL_GL
+#if defined (HAVE_COGL_GL)
 
 #define glGenBuffers ctx->pf_glGenBuffersARB
 #define glBindBuffer ctx->pf_glBindBufferARB
@@ -153,12 +153,25 @@
 #define GL_ARRAY_BUFFER GL_ARRAY_BUFFER_ARB
 #endif
 
-#else
+#elif defined (HAVE_COGL_GLES)
 
 /* NB: GLES has had VBOs/GLSL since 1.1, so we don't need any defines in
  * this case except for glBufferSubData which, just for the fun of it, has a
  * different name:
  */
+#define glBufferDataSub glBufferSubData
+
+#elif defined (HAVE_COGL_GLES2)
+
+#define glVertexPointer cogl_wrap_glVertexPointer
+#define glNormalPointer cogl_wrap_glNormalPointer
+#define glTexCoordPointer cogl_wrap_glTexCoordPointer
+#define glColorPointer cogl_wrap_glColorPointer
+#define glDrawArrays cogl_wrap_glDrawArrays
+
+#define glEnableClientState cogl_wrap_glEnableClientState
+#define glDisableClientState cogl_wrap_glDisableClientState
+
 #define glBufferDataSub glBufferSubData
 
 #endif
@@ -167,21 +180,23 @@
  * GL/GLES compatability defines for shader things:
  */
 
-#ifdef HAVE_COGL_GL
+#if defined (HAVE_COGL_GL)
+
 #define glVertexAttribPointer ctx->pf_glVertexAttribPointerARB
 #define glEnableVertexAttribArray ctx->pf_glEnableVertexAttribArrayARB
 #define glDisableVertexAttribArray ctx->pf_glEnableVertexAttribArrayARB
 #define MAY_HAVE_PROGRAMABLE_GL
-#endif
 
-#ifdef HAVE_COGL_GLES2
+#elif defined (HAVE_COGL_GLES2)
+
 /* NB: GLES2 had shaders in core since day one so again we don't need
  * defines in this case: */
 #define MAY_HAVE_PROGRAMABLE_GL
+
 #endif
 
 #ifndef HAVE_COGL_GL
-/* GLES doesn't glDrawRangeElements, so we simply pretend it does
+/* GLES doesn't have glDrawRangeElements, so we simply pretend it does
  * but that it makes no use of the start, end constraints: */
 #define glDrawRangeElements(mode, start, end, count, type, indices) \
   glDrawElements (mode, count, type, indices)

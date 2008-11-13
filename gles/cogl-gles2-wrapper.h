@@ -162,6 +162,7 @@ struct _CoglGles2WrapperShader
 #define GL_VERTEX_ARRAY        0x8074
 #define GL_TEXTURE_COORD_ARRAY 0x8078
 #define GL_COLOR_ARRAY         0x8076
+#define GL_NORMAL_ARRAY        0x8075
 
 #define GL_LIGHTING            0x0B50
 #define GL_ALPHA_TEST          0x0BC0
@@ -223,6 +224,8 @@ void cogl_wrap_glVertexPointer (GLint size, GLenum type, GLsizei stride,
 				const GLvoid *pointer);
 void cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
 			       const GLvoid *pointer);
+void cogl_wrap_glNormalPointer (GLenum type, GLsizei stride,
+				const GLvoid *pointer);
 
 void cogl_wrap_glTexEnvx (GLenum target, GLenum pname, GLfixed param);
 
@@ -281,6 +284,7 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 #define cogl_wrap_glTexCoordPointer    glTexCoordPointer
 #define cogl_wrap_glVertexPointer      glVertexPointer
 #define cogl_wrap_glColorPointer       glColorPointer
+#define cogl_wrap_glNormalPointer      glNormalPointer
 #define cogl_wrap_glTexEnvx            glTexEnvx
 #define cogl_wrap_glEnableClientState  glEnableClientState
 #define cogl_wrap_glDisableClientState glDisableClientState
