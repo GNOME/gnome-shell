@@ -41,12 +41,19 @@ struct MutterPluginManager
 {
   MetaScreen   *screen;
 
-  GList        *plugins;
-  GList        *unload;  /* Plugins that are disabled and pending unload */
+  GList /* MutterPluginPending */ *pending_plugin_modules; /* Plugins not yet fully loaded */
+  GList /* MutterPlugin */       *plugins;  /* TODO -- maybe use hash table */
+  GList                          *unload;  /* Plugins that are disabled and pending unload */
 
   guint         idle_unload_id;
 };
 
+typedef struct MutterPluginPending
+{
+  MutterModule *module;
+  char *path;
+  char *params;
+} MutterPluginPending;
 
 /*
  * Checks that the plugin is compatible with the WM and sets up the plugin
@@ -200,7 +207,7 @@ mutter_plugin_manager_get_module (const gchar *path)
 /*
  * Loads all plugins listed in gconf registry.
  */
-static gboolean
+gboolean
 mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
 {
   const gchar *dpath = MUTTER_PLUGIN_DIR "/";
@@ -246,7 +253,6 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
 
           if (module)
             {
-              MutterPlugin *p;
               gboolean      use_succeeded;
 
               /*
@@ -258,18 +264,15 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
                */
               use_succeeded = g_type_module_use (G_TYPE_MODULE (module));
 
-              if (use_succeeded &&
-                  (p = mutter_plugin_load (plugin_mgr, module, params)))
-                {
-                  plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, p);
-                }
-              else
-                {
-                  g_warning ("Plugin load for [%s] failed", path);
-                }
-
               if (use_succeeded)
-                g_type_module_unuse (G_TYPE_MODULE (module));
+                {
+                  MutterPluginPending *pending = g_new0 (MutterPluginPending, 1);
+                  pending->module = module;
+                  pending->path = g_strdup (path);
+                  pending->params = g_strdup (params);
+                  plugin_mgr->pending_plugin_modules =
+                    g_list_prepend (plugin_mgr->pending_plugin_modules, pending);
+                }
             }
           else
             g_warning ("Unable to load plugin module [%s]: %s",
@@ -286,13 +289,42 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
   if (fallback)
     g_slist_free (fallback);
 
-  if (plugin_mgr->plugins != NULL)
+  if (plugin_mgr->pending_plugin_modules != NULL)
     {
       meta_prefs_add_listener (prefs_changed_callback, plugin_mgr);
       return TRUE;
     }
 
   return FALSE;
+}
+
+gboolean
+mutter_plugin_manager_initialize (MutterPluginManager *plugin_mgr)
+{
+  GList *iter;
+
+  for (iter = plugin_mgr->pending_plugin_modules; iter; iter = iter->next)
+    {
+      MutterPluginPending *pending = (MutterPluginPending*) iter->data;
+      MutterPlugin *p;
+
+      if ((p = mutter_plugin_load (plugin_mgr, pending->module, pending->params)))
+        {
+          plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, p);
+        }
+      else
+        {
+          g_warning ("Plugin load for [%s] failed", pending->path);
+        }
+
+      g_type_module_unuse (G_TYPE_MODULE (pending->module));
+      g_free (pending->path);
+      g_free (pending->params);
+      g_free (pending);
+    }
+  g_list_free (plugin_mgr->pending_plugin_modules);
+  plugin_mgr->pending_plugin_modules = NULL;
+  return TRUE;
 }
 
 /*
@@ -306,12 +338,6 @@ mutter_plugin_manager_reload (MutterPluginManager *plugin_mgr)
    * plugins loaded at the same time, so it might not be worth it.
    */
   mutter_plugin_manager_unload (plugin_mgr);
-  return mutter_plugin_manager_load (plugin_mgr);
-}
-
-static gboolean
-mutter_plugin_manager_init (MutterPluginManager *plugin_mgr)
-{
   return mutter_plugin_manager_load (plugin_mgr);
 }
 
@@ -329,12 +355,6 @@ mutter_plugin_manager_new (MetaScreen *screen)
   plugin_mgr = g_new0 (MutterPluginManager, 1);
 
   plugin_mgr->screen        = screen;
-
-  if (!mutter_plugin_manager_init (plugin_mgr))
-    {
-      g_free (plugin_mgr);
-      plugin_mgr = NULL;
-    }
 
   return plugin_mgr;
 }

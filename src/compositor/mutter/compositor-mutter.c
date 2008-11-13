@@ -1906,6 +1906,10 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   info->plugin_mgr =
     mutter_plugin_manager_new (screen);
+  if (!mutter_plugin_manager_load (info->plugin_mgr))
+    g_critical ("failed to load plugins");
+  if (!mutter_plugin_manager_initialize (info->plugin_mgr))
+    g_critical ("failed to initialize plugins");
 
   /*
    * Delay the creation of the overlay window as long as we can, to avoid
