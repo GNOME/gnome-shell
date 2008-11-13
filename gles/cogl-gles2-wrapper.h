@@ -54,8 +54,9 @@ enum
     COGL_GLES2_DIRTY_FOG_END          = 1 << 5,
     COGL_GLES2_DIRTY_FOG_COLOR        = 1 << 6,
     COGL_GLES2_DIRTY_ALPHA_TEST_REF   = 1 << 7,
+    COGL_GLES2_DIRTY_TEXTURE_UNIT     = 1 << 8,
 
-    COGL_GLES2_DIRTY_ALL              = (1 << 8) - 1
+    COGL_GLES2_DIRTY_ALL              = (1 << 9) - 1
   };
 
 struct _CoglGles2WrapperUniforms
@@ -71,6 +72,8 @@ struct _CoglGles2WrapperUniforms
   GLint     fog_color_uniform;
 
   GLint     alpha_test_ref_uniform;
+
+  GLint     texture_unit_uniform;
 };
 
 struct _CoglGles2WrapperSettings
