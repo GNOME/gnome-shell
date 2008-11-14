@@ -68,8 +68,6 @@ Tidy-1.0.gir: $(libgnome_shell_la_SOURCES) Makefile
 		-o $@
 CLEANFILES += Tidy-1.0.gir
 
-# The dependency on libgnome-shell.la here is because g-ir-compiler opens it
-# (not the fake library, since we've already done the rewriting)
-Tidy-1.0.typelib: libgnome-shell.la Tidy-1.0.gir
+Tidy-1.0.typelib: libtidy-1.0.la Tidy-1.0.gir
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Tidy-1.0.gir -o $@
 CLEANFILES += Tidy-1.0.typelib
