@@ -2,9 +2,11 @@ BUILT_SOURCES =
 CLEANFILES =
 
 include Makefile-tidy.am
+include Makefile-tray.am
 
 gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
+	-Itray					\
 	-DGETTEXT_PACKAGE=gnome-shell		\
 	-DJSDIR=\"$(pkgdatadir)/js\"
 
@@ -16,10 +18,15 @@ libgnome_shell_la_SOURCES =			\
 	shell-process.c				\
 	shell-process.h				\
 	shell-global.c				\
-	shell-global.h
+	shell-global.h				\
+	shell-tray-manager.c			\
+	shell-tray-manager.h
 
 libgnome_shell_la_LDFLAGS = -avoid-version -module
-libgnome_shell_la_LIBADD = $(MUTTER_PLUGIN_LIBS) libtidy-1.0.la
+libgnome_shell_la_LIBADD =	\
+	$(MUTTER_PLUGIN_LIBS)	\
+	libtidy-1.0.la		\
+	libtray.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 # We can't have any undefined symbols when g-ir-scanner dlopens the library
@@ -33,7 +40,10 @@ libgnome_shell_introspect_la_SOURCES =		\
 # The dummy -rpath here is needed to convince libtool to build a
 # noinst_LTLIBRARY shared
 libgnome_shell_introspect_la_LDFLAGS = -avoid-version -module -rpath $(libdir)
-libgnome_shell_introspect_la_LIBADD = $(MUTTER_PLUGIN_LIBS) libtidy-1.0.la
+libgnome_shell_introspect_la_LIBADD =	\
+	$(MUTTER_PLUGIN_LIBS)		\
+	libtidy-1.0.la			\
+	libtray.la
 libgnome_shell_introspect_la_CPPFLAGS = $(gnome_shell_cflags)
 
 typelibdir = $(pkglibdir)/girepository
@@ -49,7 +59,7 @@ Shell-0.1.gir: libgnome-shell-introspect.la $(libgnome_shell_la_SOURCES) Makefil
 		--include=Clutter-0.8			\
 		--include=Meta-2.25			\
 		--library=gnome-shell-introspect	\
--		$(libgnome_shell_la_SOURCES)		\
+		$(libgnome_shell_la_SOURCES)		\
 		$(libgnome_shell_la_CPPFLAGS)		\
 		-o $@.tmp
 	sed 's/gnome-shell-introspect/gnome-shell/' < $@.tmp > $@ && rm $@.tmp

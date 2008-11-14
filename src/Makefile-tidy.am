@@ -1,8 +1,5 @@
 NULL =
 
-GLIB_GENMARSHAL = `pkg-config --variable=glib_genmarshal glib-2.0`
-GLIB_MKENUMS = `pkg-config --variable=glib_mkenums glib-2.0`
-
 tidy_cflags =					\
 	-I$(top_srcdir)/src			\
 	-DPREFIX=\""$(prefix)"\"		\
@@ -20,7 +17,7 @@ tidy_built_sources = \
 
 BUILT_SOURCES += $(tidy_built_sources)
 
-STAMP_FILES = stamp-tidy-marshal.h stamp-tidy-enum-types.h
+TIDY_STAMP_FILES = stamp-tidy-marshal.h stamp-tidy-enum-types.h
 
 # please, keep this sorted alphabetically
 tidy_source_h =					\
@@ -100,7 +97,7 @@ libtidy_1_0_la_SOURCES = \
 libtidy_1_0_la_CPPFLAGS = $(tidy_cflags)
 libtidy_1_0_la_LDFLAGS = $(LDADD)
 
-CLEANFILES += $(STAMP_FILES) $(BUILT_SOURCES)
+CLEANFILES += $(TIDY_STAMP_FILES) $(BUILT_SOURCES)
 
 EXTRA_DIST =					\
 	tidy/tidy-enum-types.h.in		\
