@@ -45,11 +45,13 @@ Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) $(libgnome_shell_la_SOURCES) Makefile
 		$(libgnome_shell_la_SOURCES)		\
 		$(libgnome_shell_la_CPPFLAGS)		\
 		-o $@
+CLEANFILES += Shell-1.0.gir
 
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
 Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Shell-0.1.gir -o $@
+CLEANFILES += Shell-1.0.typelib
 
 # After we run g-ir-scanner, we need to change the library name written in
 # the .gir file from the "fake" second copy of the library to the real name
@@ -63,10 +65,11 @@ Tidy-1.0.gir: $(libgnome_shell_la_SOURCES) Makefile
 		$(tidy_source_h)			\
 		$(tidy_source_c)			\
 		$(tidy_cflags)				\
-		-o $@.tmp
-	sed 's/gnome-shell-introspect/gnome-shell/' < $@.tmp > $@ && rm $@.tmp
+		-o $@
+CLEANFILES += Tidy-1.0.gir
 
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
 Tidy-1.0.typelib: libgnome-shell.la Tidy-1.0.gir
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Tidy-1.0.gir -o $@
+CLEANFILES += Tidy-1.0.typelib
