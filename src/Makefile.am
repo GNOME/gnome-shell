@@ -34,19 +34,17 @@ typelib_DATA = Shell-0.1.typelib Tidy-1.0.typelib
 
 # After we run g-ir-scanner, we need to change the library name written in
 # the .gir file from the "fake" second copy of the library to the real name
-Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell-introspect.la $(libgnome_shell_la_SOURCES) Makefile
+Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) $(libgnome_shell_la_SOURCES) Makefile
 	$(G_IR_SCANNER)		\
 		--namespace=Shell			\
 		--nsversion=0.1				\
-		--include=GObject-2.0			\
 		--include=Clutter-0.8			\
 		--include=Meta-2.25			\
 		--program=metacity			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(libgnome_shell_la_SOURCES)		\
 		$(libgnome_shell_la_CPPFLAGS)		\
-		-o $@.tmp
-	sed 's/gnome-shell-introspect/gnome-shell/' < $@.tmp > $@ && rm $@.tmp
+		-o $@
 
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
@@ -55,13 +53,13 @@ Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir
 
 # After we run g-ir-scanner, we need to change the library name written in
 # the .gir file from the "fake" second copy of the library to the real name
-Tidy-1.0.gir: libgnome-shell-introspect.la $(libgnome_shell_la_SOURCES) Makefile
-	g-ir-scanner					\
+Tidy-1.0.gir: $(libgnome_shell_la_SOURCES) Makefile
+	$(G_IR_SCANNER)					\
 		--namespace=Tidy			\
 		--nsversion=1.0				\
-		--include=GObject-2.0			\
 		--include=Clutter-0.8			\
-		--library=gnome-shell-introspect	\
+		--library=tidy-1.0			\
+		--pkg=clutter-0.8			\
 		$(tidy_source_h)			\
 		$(tidy_source_c)			\
 		$(tidy_cflags)				\
