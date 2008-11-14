@@ -21,6 +21,16 @@ PKG_CHECK_MODULES(TRAY, gtk+-2.0)
 
 # Sets GLIB_GENMARSHAL and GLIB_MKENUMS
 AM_PATH_GLIB_2_0()
+G_IR_SCANNER=`$PKG_CONFIG --variable=g_ir_scanner gobject-introspection-1.0`
+AC_SUBST(G_IR_SCANNER)
+G_IR_COMPILER=`$PKG_CONFIG --variable=g_ir_compiler gobject-introspection-1.0`
+AC_SUBST(G_IR_COMPILER)
+G_IR_GENERATE=`$PKG_CONFIG --variable=g_ir_generate gobject-introspection-1.0`
+AC_SUBST(G_IR_GENERATE)
+GIRDIR=`$PKG_CONFIG --variable=girdir gobject-introspection-1.0`
+AC_SUBST(GIRDIR)
+TYPELIBDIR="$($PKG_CONFIG --variable=typelibdir gobject-introspection-1.0)"
+AC_SUBST(TYPELIBDIR)
 
 changequote(,)dnl
 if test "x$GCC" = "xyes"; then
@@ -35,6 +45,9 @@ if test "x$GCC" = "xyes"; then
   esac
 fi
 changequote([,])dnl
+
+AC_PATH_PROG(metacity, [metacity])
+AC_SUBST(metacity)
 
 AC_OUTPUT([
   Makefile
