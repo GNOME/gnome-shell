@@ -768,6 +768,7 @@ clutter_score_start (ClutterScore *score)
     }
   else
     {
+      g_signal_emit (score, score_signals[STARTED], 0);
       g_node_children_foreach (priv->root,
                                G_TRAVERSE_ALL,
                                start_children_entries,
