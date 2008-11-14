@@ -55,7 +55,7 @@ CLEANFILES += Shell-1.0.typelib
 
 # After we run g-ir-scanner, we need to change the library name written in
 # the .gir file from the "fake" second copy of the library to the real name
-Tidy-1.0.gir: $(libgnome_shell_la_SOURCES) Makefile
+Tidy-1.0.gir: $(tidy_source_h) $(tidy_source_c) Makefile
 	$(G_IR_SCANNER)					\
 		--namespace=Tidy			\
 		--nsversion=1.0				\
