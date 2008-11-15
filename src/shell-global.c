@@ -175,9 +175,9 @@ shell_global_get (void)
 /**
  * shell_global_set_stage_input_area:
  * x: X coordinate of rectangle
- * y: X coordinate of rectangle
+ * y: Y coordinate of rectangle
  * width: width of rectangle
- * height: Height of rectangle
+ * height: height of rectangle
  *
  * Sets the area of the stage that is responsive to mouse clicks as
  * a rectangle.

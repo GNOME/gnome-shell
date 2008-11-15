@@ -48,5 +48,6 @@ function hide_overlay() {
     let global = Shell.global_get();
 
     overlay.hide();
+    panel.overlayHidden();
     global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);
 }
