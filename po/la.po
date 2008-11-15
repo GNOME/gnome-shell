@@ -17,16 +17,16 @@ msgstr ""
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
 msgid "Desktop"
-msgstr "tabula"
+msgstr "Mensa"
 
 #: ../src/50-metacity-key.xml.in.h:1
 msgid "Window Management"
-msgstr "regimine fenestrarum"
+msgstr "Regimine Fenestrarum"
 
 #: ../src/core/core.c:206
 #, c-format
 msgid "Unknown window information request: %d"
-msgstr "petitio rerum fenestrae ignoratus: %d"
+msgstr "Petitio rerum fenestrae ignoratus: %d"
 
 #: ../src/core/delete.c:70 ../src/core/delete.c:97
 #: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:523
@@ -1603,13 +1603,13 @@ msgstr ""
 #: ../src/ui/theme.c:4706
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "Thema \"%s\" imponi non potuit: %s\n"
 
 #: ../src/ui/theme.c:4836 ../src/ui/theme.c:4843 ../src/ui/theme.c:4850
 #: ../src/ui/theme.c:4857 ../src/ui/theme.c:4864
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "<%s> non est in thema \"%s\""
 
 #: ../src/ui/theme.c:4872
 #, c-format
@@ -1635,7 +1635,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:203
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr ""
+msgstr "Adiunctum \"%s\" non est in elementis <%s>"
 
 #: ../src/ui/theme-parser.c:232 ../src/ui/theme-parser.c:250
 #, c-format
