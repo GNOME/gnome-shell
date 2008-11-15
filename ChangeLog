@@ -1,3 +1,10 @@
+2008-11-14  Robert Bragg  <ebassi@linux.intel.com>
+	
+	* tests/interactive/Makefile.am
+	* tests/interactive/test-pixmap.c:
+	test-pixmap + test-devices accidentally got dropped from the makefiles
+	when changing the unit test layout; this puts them back.
+
 2008-11-14  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	Bug 1265 - ClutterScore doesn't emit 'started' signal (Bastian

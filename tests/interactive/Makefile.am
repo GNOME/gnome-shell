@@ -37,6 +37,11 @@ UNIT_TESTS = \
 	test-texture-quality.c \
 	test-layout.c
 
+if X11_TESTS
+UNIT_TESTS += test-pixmap.c
+UNIT_TESTS += test-devices.c
+endif
+
 #FIXME - this is is a bit of a yukky way of ensuring the tests find our data:
 test-script.json:
 	ln -sf $(top_srcdir)/tests/data/test-script.json

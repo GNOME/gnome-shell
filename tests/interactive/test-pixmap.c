@@ -259,5 +259,5 @@ test_pixmap_main (int argc, char **argv)
 }
 
 #else /* HAVE_CLUTTER_GLX */
-int main (int argc, char **argv) { return EXIT_SUCCESS; };
+int test_pixmap_main (int argc, char **argv) { return EXIT_SUCCESS; };
 #endif /* HAVE_CLUTTER_GLX */
