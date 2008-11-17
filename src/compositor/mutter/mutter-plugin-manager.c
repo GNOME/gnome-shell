@@ -587,4 +587,3 @@ mutter_plugin_manager_xevent_filter (MutterPluginManager *plugin_mgr,
 
   return FALSE;
 }
-

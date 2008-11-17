@@ -505,6 +505,16 @@ mutter_plugin_get_xdisplay (MutterPlugin *plugin)
   return xdpy;
 }
 
+/**
+ * mutter_plugin_get_screen:
+ * @plugin: a #MutterPlugin
+ *
+ * Gets the #MetaScreen corresponding to a plugin. Each plugin instance
+ * is associated with exactly one screen; if Metacity is managing
+ * multiple screens, multiple plugin instances will be created.
+ *
+ * Return value: (transfer none): the #MetaScreen for the plugin
+ */
 MetaScreen *
 mutter_plugin_get_screen (MutterPlugin *plugin)
 {

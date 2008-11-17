@@ -8610,6 +8610,14 @@ meta_window_get_rect (MetaWindow *window)
   return &window->rect;
 }
 
+/**
+ * meta_window_get_screen:
+ * @window: a #MetaWindow
+ *
+ * Gets the #MetaScreen that the window is on.
+ *
+ * Return value: (transfer none): the #MetaScreen for the window
+ */
 MetaScreen *
 meta_window_get_screen (MetaWindow *window)
 {
@@ -8640,6 +8648,16 @@ meta_window_get_window_type_atom (MetaWindow *window)
   return window->type_atom;
 }
 
+/**
+ * meta_window_get_workspace:
+ * @window: a #MetaWindow
+ *
+ * Gets the #MetaWorkspace that the window is currently displayed on.
+ * If the window is on all workspaces, returns the currently active
+ * workspace.
+ *
+ * Return value: (transfer none): the #MetaWorkspace for the window
+ */
 MetaWorkspace *
 meta_window_get_workspace (MetaWindow *window)
 {

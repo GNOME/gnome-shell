@@ -929,6 +929,15 @@ meta_screen_composite_all_windows (MetaScreen *screen)
 #endif
 }
 
+/**
+ * meta_screen_for_x_screen:
+ * @xscreen: an X screen structure.
+ *
+ * Gets the #MetaScreen corresponding to an X screen structure.
+ *
+ * Return value: (transfer none): the #MetaScreen for the X screen
+ *   %NULL if Metacity is not managing the screen.
+ */
 MetaScreen*
 meta_screen_for_x_screen (Screen *xscreen)
 {
@@ -1089,6 +1098,18 @@ meta_screen_get_n_workspaces (MetaScreen *screen)
   return g_list_length (screen->workspaces);
 }
 
+/**
+ * meta_screen_get_workspace_by_index:
+ * @screen: a #MetaScreen
+ * @index: index of one of the screen's workspaces
+ *
+ * Gets the workspace object for one of a screen's workspaces given the workspace
+ * index. It's valid to call this function with an out-of-range index and it
+ * will robustly return %NULL.
+ *
+ * Return value: (transfer none): the workspace object with specified index, or %NULL
+ *   if the index is out of range.
+ */
 MetaWorkspace*
 meta_screen_get_workspace_by_index (MetaScreen  *screen,
                                     int          idx)
@@ -1244,6 +1265,19 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
 
+/**
+ * meta_screen_append_new_workspace:
+ * @screen: a #MetaScreen
+ * @activate: %TRUE if the workspace should be switched to after creation
+ * @timestamp: if switching to a new workspace, timestamp to be used when
+ *   focusing a window on the new workspace. (Doesn't hurt to pass a valid
+ *   timestamp when available even if not switching workspaces.)
+ *
+ * Append a new workspace to the screen and (optionally) switch to that
+ * screen.
+ *
+ * Return value: (transfer none): the newly appended workspace.
+ */
 MetaWorkspace *
 meta_screen_append_new_workspace (MetaScreen *screen, gboolean activate,
                                   guint32 timestamp)

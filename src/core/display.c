@@ -942,6 +942,14 @@ meta_display_close (MetaDisplay *display,
   meta_quit (META_EXIT_SUCCESS);
 }
 
+/**
+ * meta_display_screen_for_root:
+ * @display: a #MetaDisplay
+ *
+ * Return the #MetaScreen corresponding to a specified X root window ID.
+ *
+ * Return Value: (transfer none): the screen for the specified root window ID, or %NULL
+ */
 MetaScreen*
 meta_display_screen_for_root (MetaDisplay *display,
                               Window       xroot)
@@ -5194,6 +5202,18 @@ meta_display_has_shape (MetaDisplay *display)
   return META_DISPLAY_HAS_SHAPE (display);
 }
 
+/**
+ * meta_display_get_focus_window:
+ * @display: a #MetaDisplay
+ *
+ * Get the window that, according to events received from X server,
+ * currently has the input focus. We may have already sent a request
+ * to the X server to move the focus window elsewhere. (The
+ * expected_focus_window records where we've last set the input
+ * focus.)
+ *
+ * Return Value: (transfer none): The current focus window
+ */
 MetaWindow *
 meta_display_get_focus_window (MetaDisplay *display)
 {

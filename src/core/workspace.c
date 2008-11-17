@@ -1252,6 +1252,14 @@ focus_ancestor_or_mru_window (MetaWorkspace *workspace,
     }
 }
 
+/**
+ * meta_workspace_get_screen:
+ * @workspace: a #MetaWorkspace
+ *
+ * Gets the #MetaScreen that the workspace is part of.
+ *
+ * Return value: (transfer none): the #MetaScreen for the workspace
+ */
 MetaScreen *
 meta_workspace_get_screen (MetaWorkspace *workspace)
 {
