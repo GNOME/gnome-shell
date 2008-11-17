@@ -143,6 +143,12 @@ struct _MetaWindow
 
   /* Whether we're fullscreen */
   guint fullscreen : 1;
+
+  /* Area to cover when in fullscreen mode.  If _NET_WM_FULLSCREEN_MONITORS has
+   * been overridden (via a client message), the window will cover the union of
+   * these monitors.  If not, this is the single monitor which the window's
+   * origin is on. */
+  long fullscreen_monitors[4];
   
   /* Whether we're trying to constrain the window to be fully onscreen */
   guint require_fully_onscreen : 1;
@@ -420,6 +426,11 @@ void        meta_window_activate_with_workspace  (MetaWindow    *window,
 void        meta_window_make_fullscreen_internal (MetaWindow    *window);
 void        meta_window_make_fullscreen    (MetaWindow  *window);
 void        meta_window_unmake_fullscreen  (MetaWindow  *window);
+void        meta_window_update_fullscreen_monitors (MetaWindow    *window,
+                                                    unsigned long  top,
+                                                    unsigned long  bottom,
+                                                    unsigned long  left,
+                                                    unsigned long  right);
 
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,

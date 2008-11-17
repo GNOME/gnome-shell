@@ -1,3 +1,27 @@
+2008-11-16  David Trowbridge  <trowbrds@gmail.com>
+ 
+ 	This change adds support for the new _NET_WM_FULLSCREEN_MONITORS
+ 	property and client message.  This allows client applications to request
+ 	that a fullscreen window cover more than one monitor.
+ 
+ 	* src/include/boxes.h:
+	* src/core/boxes.c: Add meta_rectangle_union
+ 
+ 	* src/core/window-private.h:
+	* src/core/window.c:
+ 	(meta_window_new_with_attrs, meta_window_free, set_net_wm_state,
+ 	meta_window_update_fullscreen_monitors, meta_window_client_message): Add
+ 	MetaWindow property to store fullscreen monitors field, update
+ 	_NET_WM_FULLSCREEN_MONITORS property on windows, and handle client
+ 	message.
+ 
+ 	* src/core/atomnames.h: Add _NET_WM_FULLSCREEN_MONITORS atom.
+ 
+ 	* src/core/constraints.c (setup_constraint_info): If
+ 	_NET_WM_FULLSCREEN_MONITORS is interesting, use the data stored in
+ 	MetaWindow::fullscreen_monitors to determine the fullscreen area instead
+ 	of the basic xinerama_info area.
+ 
 2008-11-11  Thomas Thurman  <tthurman@gnome.org>
 
         Removed deprecated calls.  Closes #560445.

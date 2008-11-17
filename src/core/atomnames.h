@@ -155,6 +155,7 @@ item(_NET_WM_USER_TIME_WINDOW)
 item(_NET_WM_ACTION_ABOVE)
 item(_NET_WM_ACTION_BELOW)
 item(_NET_WM_STATE_STICKY)
+item(_NET_WM_FULLSCREEN_MONITORS)
 
 #if 0
 /* We apparently never use: */
