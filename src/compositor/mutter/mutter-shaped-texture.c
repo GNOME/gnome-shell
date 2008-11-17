@@ -138,6 +138,15 @@ mutter_shaped_texture_dirty_mask (MutterShapedTexture *stex)
 
   if (priv->mask_texture != COGL_INVALID_HANDLE)
     {
+      GLuint mask_gl_tex;
+      GLenum mask_gl_target;
+
+      cogl_texture_get_gl_texture (priv->mask_texture,
+                                   &mask_gl_tex, &mask_gl_target);
+
+      if (mask_gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+        glDeleteTextures (1, &mask_gl_tex);
+
       cogl_texture_unref (priv->mask_texture);
       priv->mask_texture = COGL_INVALID_HANDLE;
     }
@@ -254,6 +263,7 @@ mutter_shaped_texture_ensure_mask (MutterShapedTexture *stex)
     {
       guchar *mask_data;
       const XRectangle *rect;
+      GLenum paint_gl_target;
 
       /* Create data for an empty image */
       mask_data = g_malloc0 (tex_width * tex_height);
@@ -280,12 +290,36 @@ mutter_shaped_texture_ensure_mask (MutterShapedTexture *stex)
             memset (p, 255, x2 - x1);
         }
 
-      priv->mask_texture = cogl_texture_new_from_data (tex_width, tex_height,
-                                                       -1, FALSE,
-                                                       COGL_PIXEL_FORMAT_A_8,
-                                                       COGL_PIXEL_FORMAT_ANY,
-                                                       tex_width,
-                                                       mask_data);
+      cogl_texture_get_gl_texture (paint_tex, NULL, &paint_gl_target);
+
+      if (paint_gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+        {
+          GLuint tex;
+
+          glGenTextures (1, &tex);
+          glBindTexture (CGL_TEXTURE_RECTANGLE_ARB, tex);
+          glPixelStorei (GL_UNPACK_ROW_LENGTH, tex_width);
+          glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+          glPixelStorei (GL_UNPACK_SKIP_ROWS, 0);
+          glPixelStorei (GL_UNPACK_SKIP_PIXELS, 0);
+          glTexImage2D (CGL_TEXTURE_RECTANGLE_ARB, 0,
+                        GL_ALPHA, tex_width, tex_height,
+                        0, GL_ALPHA, GL_UNSIGNED_BYTE, mask_data);
+
+          priv->mask_texture
+            = cogl_texture_new_from_foreign (tex,
+                                             CGL_TEXTURE_RECTANGLE_ARB,
+                                             tex_width, tex_height,
+                                             0, 0,
+                                             COGL_PIXEL_FORMAT_A_8);
+        }
+      else
+        priv->mask_texture = cogl_texture_new_from_data (tex_width, tex_height,
+                                                         -1, FALSE,
+                                                         COGL_PIXEL_FORMAT_A_8,
+                                                         COGL_PIXEL_FORMAT_ANY,
+                                                         tex_width,
+                                                         mask_data);
 
       g_free (mask_data);
 
