@@ -69,6 +69,27 @@ static void meta_screen_sn_event   (SnMonitorEvent *event,
                                     void           *user_data);
 #endif
 
+G_DEFINE_TYPE (MetaScreen, meta_screen, G_TYPE_OBJECT);
+
+static void
+meta_screen_finalize (GObject *object)
+{
+  /* Actual freeing done in meta_screen_free() for now */
+}
+
+static void
+meta_screen_class_init (MetaScreenClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_screen_finalize;
+}
+
+static void
+meta_screen_init (MetaScreen *screen)
+{
+}
+
 static int
 set_wm_check_hint (MetaScreen *screen)
 {
@@ -488,7 +509,7 @@ meta_screen_new (MetaDisplay *display,
       return NULL;
     }
   
-  screen = g_new (MetaScreen, 1);
+  screen = g_object_new (META_TYPE_SCREEN, NULL);
   screen->closing = 0;
   
   screen->display = display;
@@ -718,7 +739,8 @@ meta_screen_free (MetaScreen *screen,
     g_free (screen->xinerama_infos);
   
   g_free (screen->screen_name);
-  g_free (screen);
+
+  g_object_unref (screen);
 
   XFlush (display->xdisplay);
   meta_display_ungrab (display);
@@ -1142,7 +1164,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
     meta_workspace_activate (neighbour, timestamp);
 
   /* This also removes the workspace from the screens list */
-  meta_workspace_free (workspace);
+  meta_workspace_remove (workspace);
 
   set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
 
@@ -1236,7 +1258,7 @@ update_num_workspaces (MetaScreen *screen,
       MetaWorkspace *w = tmp->data;
 
       g_assert (w->windows == NULL);
-      meta_workspace_free (w);
+      meta_workspace_remove (w);
       
       tmp = tmp->next;
     }

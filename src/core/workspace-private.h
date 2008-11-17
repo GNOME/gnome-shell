@@ -38,6 +38,7 @@
 
 struct _MetaWorkspace
 {
+  GObject parent_instance;
   MetaScreen *screen;
   
   GList *windows;
@@ -49,6 +50,7 @@ struct _MetaWorkspace
   MetaRectangle *work_area_xinerama;
   GList  *screen_region;
   GList  **xinerama_region;
+  gint n_xinerama_regions;
   GList  *screen_edges;
   GList  *xinerama_edges;
   GSList *all_struts;
@@ -57,8 +59,13 @@ struct _MetaWorkspace
   guint showing_desktop : 1;
 };
 
+struct _MetaWorkspaceClass
+{
+  GObjectClass parent_class;
+};
+
 MetaWorkspace* meta_workspace_new           (MetaScreen    *screen);
-void           meta_workspace_free          (MetaWorkspace *workspace);
+void           meta_workspace_remove        (MetaWorkspace *workspace);
 void           meta_workspace_add_window    (MetaWorkspace *workspace,
                                              MetaWindow    *window);
 void           meta_workspace_remove_window (MetaWorkspace *workspace,
