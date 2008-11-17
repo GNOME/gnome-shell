@@ -7,14 +7,16 @@ const DEFAULT_BUTTON_COLOR = new Clutter.Color();
 DEFAULT_BUTTON_COLOR.from_pixel(0xeeddccff);
 
 const DEFAULT_PRESSED_BUTTON_COLOR = new Clutter.Color();
-DEFAULT_PRESSED_BUTTON_COLOR.from_pixel(0xddccbbff);
+DEFAULT_PRESSED_BUTTON_COLOR.from_pixel(0xccbbaaff);
 
 // Time for animation making the button darker
 const ANIMATION_TIME = 0.3;
 
-const FULL_OPACITY = 255;
+const NO_OPACITY = 0;
 
-const PARTIAL_OPACITY = 0.5 * 255;
+const PARTIAL_OPACITY = 0.4 * 255;
+
+const FULL_OPACITY = 255;
 
 function Button(text, button_color, pressed_button_color, min_width, min_height) {
     this._init(text, button_color, pressed_button_color, min_width, min_height);
@@ -46,18 +48,24 @@ Button.prototype = {
 
         this.button = new Clutter.Group({reactive: true});
         this._background = new Clutter.Rectangle({ color: this._button_color});
+        this._pressed_background = new Clutter.Rectangle({ color: this._pressed_button_color, opacity: NO_OPACITY});
         this._label = new Clutter.Label({ font_name: "Sans Bold 16px",
 	  			         text: text});
 	this._label.set_position(5, 5);
-        this._background.set_width(Math.max(this._label.get_width()+10, min_width))
-        this._background.set_height(Math.max(this._label.get_height()+10, min_height))
+        let background_width = Math.max(this._label.get_width()+10, min_width);
+        let background_height = Math.max(this._label.get_height()+10, min_height);
+        this._background.set_width(background_width)
+        this._background.set_height(background_height)
+        this._pressed_background.set_width(background_width)
+        this._pressed_background.set_height(background_height)
         this.button.add_actor(this._background);
+        this.button.add_actor(this._pressed_background);
         this.button.add_actor(this._label);
         let me = this; 
         this.button.connect('button-press-event',
 	    function(o, event) {     
                 me._is_between_press_and_release = true;  
-	        Tweener.addTween(me._background,
+	        Tweener.addTween(me._pressed_background,
 			        { time: ANIMATION_TIME,
 			          opacity: FULL_OPACITY,
 			          transition: "linear"
@@ -78,9 +86,8 @@ Button.prototype = {
 	    function(o, event) {
                 me._mouse_is_over_button = true; 
                 if (!me._active) {
-                    Tweener.removeTweens(me._background);         
-                    me._background.set_opacity(PARTIAL_OPACITY); 
-                    me._background.set_color(me._pressed_button_color);
+                    Tweener.removeTweens(me._pressed_background);         
+                    me._pressed_background.set_opacity(PARTIAL_OPACITY); 
                 } 
 		return false;
             });
@@ -89,9 +96,8 @@ Button.prototype = {
                 me._is_between_press_and_release = false;     
                 me._mouse_is_over_button = false;
                 if (!me._active) {
-                    Tweener.removeTweens(me._background); 
-                    me._background.set_opacity(FULL_OPACITY);
-                    me._background.set_color(me._button_color); 
+                    Tweener.removeTweens(me._pressed_background); 
+                    me._pressed_background.set_opacity(NO_OPACITY);
                 }
 		return false;
             });
@@ -100,13 +106,11 @@ Button.prototype = {
     release : function() {
         if (!this._is_between_press_and_release) {  
             this._active = false;
-            Tweener.removeTweens(this._background);  
+            Tweener.removeTweens(this._pressed_background);  
             if (this._mouse_is_over_button) {       
-                this._background.set_opacity(PARTIAL_OPACITY); 
-                this._background.set_color(this._pressed_button_color);
+                this._pressed_background.set_opacity(PARTIAL_OPACITY);
             } else {
-                this._background.set_opacity(FULL_OPACITY);
-                this._background.set_color(this._button_color); 
+                this._pressed_background.set_opacity(NO_OPACITY);
             }
         }
     }

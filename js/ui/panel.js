@@ -14,7 +14,7 @@ const TRAY_HEIGHT = 24;
 const PANEL_BACKGROUND_COLOR = new Clutter.Color();
 PANEL_BACKGROUND_COLOR.from_pixel(0xeeddccff);
 const PRESSED_BUTTON_BACKGROUND_COLOR = new Clutter.Color();
-PRESSED_BUTTON_BACKGROUND_COLOR.from_pixel(0xddccbbff);
+PRESSED_BUTTON_BACKGROUND_COLOR.from_pixel(0xccbbaaff);
 
 function Panel() {
     this._init();
