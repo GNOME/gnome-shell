@@ -74,5 +74,7 @@ void meta_workspace_activate_with_focus (MetaWorkspace *workspace,
                                          guint32        timestamp);
 
 void meta_workspace_update_window_hints (MetaWorkspace *workspace);
+void meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
+                                        GSList        *struts);
 
 #endif

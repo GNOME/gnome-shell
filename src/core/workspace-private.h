@@ -53,6 +53,7 @@ struct _MetaWorkspace
   gint n_xinerama_regions;
   GList  *screen_edges;
   GList  *xinerama_edges;
+  GSList *builtin_struts;
   GSList *all_struts;
   guint work_areas_invalid : 1;
 

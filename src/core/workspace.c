@@ -49,7 +49,6 @@ static void focus_ancestor_or_mru_window (MetaWorkspace *workspace,
                                           guint32        timestamp);
 static void free_this                    (gpointer candidate,
                                           gpointer dummy);
-static void workspace_free_struts        (MetaWorkspace *workspace);
 
 G_DEFINE_TYPE (MetaWorkspace, meta_workspace, G_TYPE_OBJECT);
 
@@ -185,6 +184,7 @@ meta_workspace_new (MetaScreen *screen)
   workspace->xinerama_edges = NULL;
   workspace->list_containing_self = g_list_prepend (NULL, workspace);
 
+  workspace->builtin_struts = NULL;
   workspace->all_struts = NULL;
 
   workspace->showing_desktop = FALSE;
@@ -200,12 +200,12 @@ free_this (gpointer candidate, gpointer dummy)
 }
 
 /**
- * Frees the struts list of a workspace.
+ * Frees the combined struts list of a workspace.
  *
  * \param workspace  The workspace.
  */
 static void
-workspace_free_struts (MetaWorkspace *workspace)
+workspace_free_all_struts (MetaWorkspace *workspace)
 {
   if (workspace->all_struts == NULL)
     return;
@@ -213,6 +213,22 @@ workspace_free_struts (MetaWorkspace *workspace)
   g_slist_foreach (workspace->all_struts, free_this, NULL);
   g_slist_free (workspace->all_struts);
   workspace->all_struts = NULL;
+}
+
+/**
+ * Frees the struts list set with meta_workspace_set_builtin_struts
+ *
+ * \param workspace  The workspace.
+ */
+static void
+workspace_free_builtin_struts (MetaWorkspace *workspace)
+{
+  if (workspace->builtin_struts == NULL)
+    return;
+    
+  g_slist_foreach (workspace->builtin_struts, free_this, NULL);
+  g_slist_free (workspace->builtin_struts);
+  workspace->builtin_struts = NULL;
 }
 
 void
@@ -254,6 +270,8 @@ meta_workspace_remove (MetaWorkspace *workspace)
   g_list_free (workspace->mru_list);
   g_list_free (workspace->list_containing_self);
 
+  workspace_free_builtin_struts (workspace);
+
   /* screen.c:update_num_workspaces(), which calls us, removes windows from
    * workspaces first, which can cause the workareas on the workspace to be
    * invalidated (and hence for struts/regions/edges to be freed).
@@ -263,7 +281,7 @@ meta_workspace_remove (MetaWorkspace *workspace)
 
   if (!workspace->work_areas_invalid)
     {
-      workspace_free_struts (workspace);
+      workspace_free_all_struts (workspace);
       for (i = 0; i < screen->n_xinerama_infos; i++)
         meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
       g_free (workspace->xinerama_region);
@@ -680,7 +698,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
   g_free (workspace->work_area_xinerama);
   workspace->work_area_xinerama = NULL;
       
-  workspace_free_struts (workspace);
+  workspace_free_all_struts (workspace);
 
   for (i = 0; i < workspace->screen->n_xinerama_infos; i++)
     meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
@@ -712,6 +730,26 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
   meta_screen_queue_workarea_recalc (workspace->screen);
 }
 
+static MetaStrut *
+copy_strut(MetaStrut *original)
+{
+  return g_memdup(original, sizeof(MetaStrut));
+}
+
+static GSList *
+copy_strut_list(GSList *original)
+{
+  GSList *result = NULL;
+
+  while (original)
+    {
+      result = g_slist_prepend (result, copy_strut (original->data));
+      original = original->next;
+    }
+
+  return g_slist_reverse (result);
+}
+
 static void
 ensure_work_areas_validated (MetaWorkspace *workspace)
 {
@@ -729,7 +767,10 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   g_assert (workspace->screen_edges == NULL);
   g_assert (workspace->xinerama_edges == NULL);
 
-  /* STEP 1: Get the list of struts */  
+  /* STEP 1: Get the list of struts */
+
+  workspace->all_struts = copy_strut_list (workspace->builtin_struts);
+
   windows = meta_workspace_list_windows (workspace);
   for (tmp = windows; tmp != NULL; tmp = tmp->next)
     {
@@ -737,10 +778,8 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
       GSList *s_iter;
 
       for (s_iter = win->struts; s_iter != NULL; s_iter = s_iter->next) {
-        MetaStrut *cpy = g_new (MetaStrut, 1);
-        *cpy = *((MetaStrut *)s_iter->data);
         workspace->all_struts = g_slist_prepend (workspace->all_struts,
-                                                 cpy);
+                                                 copy_strut(s_iter->data));
       }
     }
   g_list_free (windows);
@@ -892,6 +931,25 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
     meta_compositor_update_workspace_geometry (comp, workspace);
   }
 #endif
+}
+
+/**
+ * meta_workspace_set_builtin_struts:
+ * @workspace: a #MetaWorkspace
+ * @struts: (element-type Strut) (transfer none): list of #MetaStrut
+ *
+ * Sets a list of struts that will be used in addition to the struts
+ * of the windows in the workspace when computing the work area of
+ * the workspace.
+ */
+void
+meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
+                                   GSList        *struts)
+{
+  workspace_free_builtin_struts (workspace);
+  workspace->builtin_struts = copy_strut_list (struts);
+
+  meta_workspace_invalidate_work_area (workspace);
 }
 
 void
