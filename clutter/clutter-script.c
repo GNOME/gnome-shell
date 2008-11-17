@@ -882,7 +882,7 @@ clutter_script_parse_node (ClutterScript *script,
                   return TRUE;
                 }
             }
-          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_COLOR))
+          else if (CLUTTER_VALUE_HOLDS_COLOR (value))
             {
               ClutterColor color = { 0, };
 
@@ -934,7 +934,7 @@ clutter_script_parse_node (ClutterScript *script,
                   return TRUE;
                 }
             }
-          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_COLOR))
+          else if (CLUTTER_VALUE_HOLDS_COLOR (value))
             {
               ClutterColor color = { 0, };
 

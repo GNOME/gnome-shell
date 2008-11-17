@@ -50,6 +50,8 @@ G_DEFINE_TYPE (ClutterLabel, clutter_label, CLUTTER_TYPE_ACTOR)
 /* Probably move into main */
 static PangoContext *_context = NULL;
 
+static const ClutterColor default_text_color = { 0, 0, 0, 255 };
+
 enum
 {
   PROP_0,
@@ -98,6 +100,12 @@ struct _ClutterLabelPrivate
 
   gchar                *text;
   gchar                *font_name;
+
+  PangoAttrList        *attrs;
+  PangoAttrList        *effective_attrs;
+
+  ClutterLabelCachedLayout cached_layouts[CLUTTER_LABEL_N_CACHED_LAYOUTS];
+  guint                 cache_age;
   
   guint                 alignment        : 2;
   guint                 wrap             : 1;
@@ -107,12 +115,6 @@ struct _ClutterLabelPrivate
   guint                 single_line_mode : 1;
   guint                 wrap_mode        : 3;
   guint                 justify          : 1;
-
-  PangoAttrList        *attrs;
-  PangoAttrList        *effective_attrs;
-
-  ClutterLabelCachedLayout cached_layouts[CLUTTER_LABEL_N_CACHED_LAYOUTS];
-  guint                 cache_age;
 };
 
 /*
@@ -441,7 +443,7 @@ clutter_label_set_property (GObject      *object,
       clutter_label_set_text (label, g_value_get_string (value));
       break;
     case PROP_COLOR:
-      clutter_label_set_color (label, g_value_get_boxed (value));
+      clutter_label_set_color (label, clutter_value_get_color (value));
       break;
     case PROP_ATTRIBUTES:
       clutter_label_set_attributes (label, g_value_get_boxed (value));
@@ -478,7 +480,6 @@ clutter_label_get_property (GObject    *object,
 {
   ClutterLabel        *label;
   ClutterLabelPrivate *priv;
-  ClutterColor         color;
 
   label = CLUTTER_LABEL (object);
   priv = label->priv;
@@ -492,8 +493,7 @@ clutter_label_get_property (GObject    *object,
       g_value_set_string (value, priv->text);
       break;
     case PROP_COLOR:
-      clutter_label_get_color (label, &color);
-      g_value_set_boxed (value, &color);
+      clutter_value_set_color (value, &priv->fgcol);
       break;
     case PROP_ATTRIBUTES:
       g_value_set_boxed (value, priv->attrs);
@@ -527,6 +527,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec        *pspec;
 
   actor_class->paint                = clutter_label_paint;
   actor_class->get_preferred_width  = clutter_label_get_preferred_width;
@@ -538,76 +539,119 @@ clutter_label_class_init (ClutterLabelClass *klass)
   gobject_class->set_property = clutter_label_set_property;
   gobject_class->get_property = clutter_label_get_property;
 
-  g_object_class_install_property
-    (gobject_class, PROP_FONT_NAME,
-     g_param_spec_string ("font-name",
-			  "Font Name",
-			  "Pango font description",
-			  NULL,
-			  CLUTTER_PARAM_READWRITE));
-  g_object_class_install_property
-    (gobject_class, PROP_TEXT,
-     g_param_spec_string ("text",
-			  "Text",
-			  "Text to render",
-			  NULL,
-			  CLUTTER_PARAM_READWRITE));
-  g_object_class_install_property
-    (gobject_class, PROP_COLOR,
-     g_param_spec_boxed ("color",
-			 "Font Colour",
-			 "Font Colour",
-			 CLUTTER_TYPE_COLOR,
-			 CLUTTER_PARAM_READWRITE));
-  g_object_class_install_property 
-    (gobject_class, PROP_ATTRIBUTES,
-     g_param_spec_boxed ("attributes",
-			 "Attributes",
-			 "A list of style attributes to apply to the " 
-			 "text of the label",
-			 PANGO_TYPE_ATTR_LIST,
-			 CLUTTER_PARAM_READWRITE));
-  g_object_class_install_property 
-    (gobject_class, PROP_USE_MARKUP,
-     g_param_spec_boolean ("use-markup",
-			   "Use markup",
-			   "The text of the label includes XML markup. " 
-			   "See pango_parse_markup()",
-			   FALSE,
-			   CLUTTER_PARAM_READWRITE));
-  g_object_class_install_property 
-    (gobject_class, PROP_WRAP,
-     g_param_spec_boolean ("wrap",
-			   "Line wrap",
-			   "If set, wrap lines if the text becomes too wide",
-			   FALSE,
-			   CLUTTER_PARAM_READWRITE));
-  g_object_class_install_property 
-    (gobject_class, PROP_WRAP_MODE,
-     g_param_spec_enum ("wrap-mode",
-			"Line wrap mode",
-			"If wrap is set, controls how line-wrapping is done",
-			PANGO_TYPE_WRAP_MODE,
-			PANGO_WRAP_WORD,
-			CLUTTER_PARAM_READWRITE));
-  g_object_class_install_property 
-    (gobject_class, PROP_ELLIPSIZE,
-     g_param_spec_enum ( "ellipsize",
-			 "Ellipsize",
-			 "The preferred place to ellipsize the string, "
-			 "if the label does not have enough room to "
-			 "display the entire string",
-			 PANGO_TYPE_ELLIPSIZE_MODE,
-			 PANGO_ELLIPSIZE_NONE,
-			 CLUTTER_PARAM_READWRITE));
-  g_object_class_install_property 
-    (gobject_class, PROP_ALIGNMENT,
-     g_param_spec_enum ( "alignment",
-			 "Alignment",
-			 "The preferred alignment for the string",
-			 PANGO_TYPE_ALIGNMENT,
-			 PANGO_ALIGN_LEFT,
-			 CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterLabel:font-name:
+   *
+   * The font to be used by the #ClutterLabel, as a string
+   * that can be parsed by pango_font_description_from_string().
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_string ("font-name",
+                               "Font Name",
+                               "The font to be used by the label",
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_FONT_NAME, pspec);
+
+  pspec = g_param_spec_string ("text",
+                               "Text",
+                               "The text to render",
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
+
+  pspec = clutter_param_spec_color ("color",
+                                    "Font Color",
+                                    "Color of the font used by the label",
+                                    &default_text_color,
+                                    CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
+
+  pspec = g_param_spec_boxed ("attributes",
+                              "Attributes",
+                              "A list of style attributes to apply to "
+                              "the text of the label",
+                              PANGO_TYPE_ATTR_LIST,
+                              CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_ATTRIBUTES, pspec);
+
+  /**
+   * ClutterLabel:use-markup:
+   *
+   * Whether the text of the label includes Pango markup. See
+   * pango_layout_set_markup() in the Pango documentation.
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_boolean ("use-markup",
+                                "Use markup",
+                                "Whether or not the text of the label "
+                                "includes Pango markup",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_USE_MARKUP, pspec);
+
+  /**
+   * ClutterLabel:wrap:
+   *
+   * Whether to wrap the lines of #ClutterLabel:text if the contents
+   * exceed the available allocation. The wrapping strategy is
+   * controlled by the #ClutterLabel:wrap-mode property.
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_boolean ("wrap",
+                                "Line wrap",
+                                "If set, wrap the lines if the text "
+                                "becomes too wide",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_WRAP, pspec);
+
+  /**
+   * ClutterLabel:wrap-mode:
+   *
+   * If #ClutterLabel:wrap is set to %TRUE, this property will
+   * control how the text is wrapped.
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_enum ("wrap-mode",
+                             "Line wrap mode",
+                             "Control how line-wrapping is done",
+                             PANGO_TYPE_WRAP_MODE,
+                             PANGO_WRAP_WORD,
+                             CLUTTER_PARAM_READWRITE);
+    g_object_class_install_property (gobject_class, PROP_WRAP_MODE, pspec);
+
+  pspec = g_param_spec_enum ("ellipsize",
+                             "Ellipsize",
+                             "The preferred place to ellipsize the string, "
+                             "if the label does not have enough room to "
+                             "display the entire string",
+                             PANGO_TYPE_ELLIPSIZE_MODE,
+                             PANGO_ELLIPSIZE_NONE,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_ELLIPSIZE, pspec);
+
+  /**
+   * ClutterLabel:alignment:
+   *
+   * The preferred alignment for the text. This property controls
+   * the alignment of multi-line paragraphs.
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_enum ("alignment",
+                             "Alignment",
+                             "The preferred alignment for the string, "
+                             "for multi-line text",
+                             PANGO_TYPE_ALIGNMENT,
+                             PANGO_ALIGN_LEFT,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_ALIGNMENT, pspec);
+
   /**
    * ClutterLabel:justify:
    *
@@ -616,13 +660,13 @@ clutter_label_class_init (ClutterLabelClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_JUSTIFY,
-                                   g_param_spec_boolean ("justify",
-                                                         "Justify",
-                                                         "Whether the contents of the label should be justified",
-                                                         FALSE,
-                                                         CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("justify",
+                                "Justify",
+                                "Whether the contents of the label "
+                                "should be justified",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_JUSTIFY, pspec);
 
   g_type_class_add_private (gobject_class, sizeof (ClutterLabelPrivate));
 }
@@ -652,10 +696,7 @@ clutter_label_init (ClutterLabel *self)
   priv->text          = NULL;
   priv->attrs         = NULL;
 
-  priv->fgcol.red     = 0;
-  priv->fgcol.green   = 0;
-  priv->fgcol.blue    = 0;
-  priv->fgcol.alpha   = 255;
+  priv->fgcol         = default_text_color;
 
   priv->font_name     = g_strdup (DEFAULT_FONT_NAME);
   priv->font_desc     = pango_font_description_from_string (priv->font_name);

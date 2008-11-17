@@ -120,6 +120,8 @@ enum
 
 static guint stage_signals[LAST_SIGNAL] = { 0, };
 
+static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
+
 static void
 clutter_stage_get_preferred_width (ClutterActor *self,
                                    ClutterUnit   for_height,
@@ -354,7 +356,7 @@ clutter_stage_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_stage_set_color (stage, g_value_get_boxed (value));
+      clutter_stage_set_color (stage, clutter_value_get_color (value));
       break;
     case PROP_OFFSCREEN:
       if (priv->is_offscreen == g_value_get_boolean (value))
@@ -414,7 +416,6 @@ clutter_stage_get_property (GObject    *object,
 {
   ClutterStage        *stage;
   ClutterStagePrivate *priv;
-  ClutterColor         color;
   ClutterPerspective   perspective;
 
   stage = CLUTTER_STAGE(object);
@@ -423,8 +424,7 @@ clutter_stage_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_stage_get_color (stage, &color);
-      g_value_set_boxed (value, &color);
+      clutter_value_set_color (value, &priv->color);
       break;
     case PROP_OFFSCREEN:
       g_value_set_boolean (value, priv->is_offscreen);
@@ -497,6 +497,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec *pspec;
 
   gobject_class->set_property = clutter_stage_set_property;
   gobject_class->get_property = clutter_stage_get_property;
@@ -569,13 +570,12 @@ clutter_stage_class_init (ClutterStageClass *klass)
    *
    * The color of the main stage.
    */
-  g_object_class_install_property
-    (gobject_class, PROP_COLOR,
-     g_param_spec_boxed ("color",
-			 "Color",
-			 "The color of the main stage",
-			 CLUTTER_TYPE_COLOR,
-			 CLUTTER_PARAM_READWRITE));
+  pspec = clutter_param_spec_color ("color",
+                                    "Color",
+                                    "The color of the stage",
+                                    &default_stage_color,
+                                    CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
 
   /**
    * ClutterStage:perspective:
@@ -729,10 +729,7 @@ clutter_stage_init (ClutterStage *self)
   priv->is_cursor_visible = TRUE;
   priv->use_fog           = FALSE;
 
-  priv->color.red   = 0xff;
-  priv->color.green = 0xff;
-  priv->color.blue  = 0xff;
-  priv->color.alpha = 0xff;
+  priv->color = default_stage_color;
 
   priv->perspective.fovy   = COGL_FIXED_60; /* 60 Degrees */
   priv->perspective.aspect = COGL_FIXED_1;

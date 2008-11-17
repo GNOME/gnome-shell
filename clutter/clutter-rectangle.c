@@ -33,10 +33,11 @@
 #include "config.h"
 #endif
 
-#include "clutter-rectangle.h"
+#include "clutter-color.h"
+#include "clutter-debug.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
+#include "clutter-rectangle.h"
 
 #include "cogl/cogl.h"
 
@@ -66,6 +67,9 @@ struct _ClutterRectanglePrivate
 
   guint has_border : 1;
 };
+
+static const ClutterColor default_color        = { 255, 255, 255, 255 };
+static const ClutterColor default_border_color = {   0,   0,   0, 255 };
 
 static void
 clutter_rectangle_paint (ClutterActor *self)
@@ -163,11 +167,11 @@ clutter_rectangle_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_rectangle_set_color (rectangle, g_value_get_boxed (value));
+      clutter_rectangle_set_color (rectangle, clutter_value_get_color (value));
       break;
     case PROP_BORDER_COLOR:
       clutter_rectangle_set_border_color (rectangle,
-                                          g_value_get_boxed (value));
+                                          clutter_value_get_color (value));
       break;
     case PROP_BORDER_WIDTH:
       clutter_rectangle_set_border_width (rectangle,
@@ -188,24 +192,21 @@ clutter_rectangle_get_property (GObject    *object,
 				GValue     *value,
 				GParamSpec *pspec)
 {
-  ClutterRectangle *rectangle = CLUTTER_RECTANGLE(object);
-  ClutterColor      color;
+  ClutterRectanglePrivate *priv = CLUTTER_RECTANGLE(object)->priv;
 
   switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_rectangle_get_color (rectangle, &color);
-      g_value_set_boxed (value, &color);
+      clutter_value_set_color (value, &priv->color);
       break;
     case PROP_BORDER_COLOR:
-      clutter_rectangle_get_border_color (rectangle, &color);
-      g_value_set_boxed (value, &color);
+      clutter_value_set_color (value, &priv->border_color);
       break;
     case PROP_BORDER_WIDTH:
-      g_value_set_uint (value, rectangle->priv->border_width);
+      g_value_set_uint (value, priv->border_width);
       break;
     case PROP_HAS_BORDER:
-      g_value_set_boolean (value, rectangle->priv->has_border);
+      g_value_set_boolean (value, priv->has_border);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -230,8 +231,9 @@ clutter_rectangle_dispose (GObject *object)
 static void
 clutter_rectangle_class_init (ClutterRectangleClass *klass)
 {
-  GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec        *pspec;
 
   actor_class->paint        = clutter_rectangle_paint;
 
@@ -245,13 +247,13 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
    *
    * The color of the rectangle.
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_COLOR,
-                                   g_param_spec_boxed ("color",
-                                                       "Color",
-                                                       "The color of the rectangle",
-                                                       CLUTTER_TYPE_COLOR,
-                                                       CLUTTER_PARAM_READWRITE));
+  pspec = clutter_param_spec_color ("color",
+                                    "Color",
+                                    "The color of the rectangle",
+                                    &default_color,
+                                    CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
+
   /**
    * ClutterRectangle:border-color:
    *
@@ -259,13 +261,13 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
    *
    * Since: 0.2
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_BORDER_COLOR,
-                                   g_param_spec_boxed ("border-color",
-                                                       "Border Color",
-                                                       "The color of the border of the rectangle",
-                                                       CLUTTER_TYPE_COLOR,
-                                                       CLUTTER_PARAM_READWRITE));
+  pspec = clutter_param_spec_color ("border-color",
+                                    "Border Color",
+                                    "The color of the border of the rectangle",
+                                    &default_border_color,
+                                    CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_BORDER_COLOR, pspec);
+
   /**
    * ClutterRectangle:border-width:
    *
@@ -306,15 +308,8 @@ clutter_rectangle_init (ClutterRectangle *self)
 
   self->priv = priv = CLUTTER_RECTANGLE_GET_PRIVATE (self);
 
-  priv->color.red = 0xff;
-  priv->color.green = 0xff;
-  priv->color.blue = 0xff;
-  priv->color.alpha = 0xff;
-
-  priv->border_color.red = 0x00;
-  priv->border_color.green = 0x00;
-  priv->border_color.blue = 0x00;
-  priv->border_color.alpha = 0xff;
+  priv->color = default_color;
+  priv->border_color = default_border_color;
 
   priv->border_width = 0;
 

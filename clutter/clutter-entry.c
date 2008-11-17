@@ -61,6 +61,8 @@ G_DEFINE_TYPE (ClutterEntry, clutter_entry, CLUTTER_TYPE_ACTOR);
 /* Probably move into main */
 static PangoContext         *_context  = NULL;
 
+static const ClutterColor default_text_color = { 0, 0, 0, 255 };
+
 enum
 {
   PROP_0,
@@ -170,7 +172,7 @@ clutter_entry_set_property (GObject      *object,
       clutter_entry_set_text (entry, g_value_get_string (value));
       break;
     case PROP_COLOR:
-      clutter_entry_set_color (entry, g_value_get_boxed (value));
+      clutter_entry_set_color (entry, clutter_value_get_color (value));
       break;
     case PROP_ALIGNMENT:
       clutter_entry_set_alignment (entry, g_value_get_enum (value));
@@ -208,7 +210,6 @@ clutter_entry_get_property (GObject    *object,
 {
   ClutterEntry        *entry;
   ClutterEntryPrivate *priv;
-  ClutterColor         color;
 
   entry = CLUTTER_ENTRY(object);
   priv = entry->priv;
@@ -222,8 +223,7 @@ clutter_entry_get_property (GObject    *object,
       g_value_set_string (value, priv->text);
       break;
     case PROP_COLOR:
-      clutter_entry_get_color (entry, &color);
-      g_value_set_boxed (value, &color);
+      clutter_value_set_color (value, &priv->fgcol);
       break;
     case PROP_ALIGNMENT:
       g_value_set_enum (value, priv->alignment);
@@ -671,6 +671,7 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec *pspec;
 
   klass->paint_cursor = clutter_entry_paint_cursor;
 
@@ -719,13 +720,12 @@ clutter_entry_class_init (ClutterEntryClass *klass)
    *
    * Since: 0.4
    */
-  g_object_class_install_property
-    (gobject_class, PROP_COLOR,
-     g_param_spec_boxed ("color",
-			 "Font Colour",
-			 "Font Colour",
-			 CLUTTER_TYPE_COLOR,
-			 CLUTTER_PARAM_READWRITE));
+  pspec = clutter_param_spec_color ("color",
+                                    "Color",
+                                    "The color of the text",
+                                    &default_text_color,
+                                    CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
   /**
    * ClutterEntry:alignment:
    *
@@ -923,10 +923,7 @@ clutter_entry_init (ClutterEntry *self)
   priv->entry_padding = ENTRY_PADDING;
   priv->x_align       = 0.0;
 
-  priv->fgcol.red     = 0;
-  priv->fgcol.green   = 0;
-  priv->fgcol.blue    = 0;
-  priv->fgcol.alpha   = 255;
+  priv->fgcol         = default_text_color;
 
   priv->font_name     = g_strdup (DEFAULT_FONT_NAME);
   priv->desc          = pango_font_description_from_string (priv->font_name);
