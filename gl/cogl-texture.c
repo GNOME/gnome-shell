@@ -49,10 +49,6 @@
     printf("err: 0x%x\n", err); \
 } */
 
-static void _cogl_texture_free (CoglTexture *tex);
-
-COGL_HANDLE_DEFINE (Texture, texture, texture_handles);
-
 struct _CoglSpanIter
 {
   gint              index;
@@ -69,6 +65,11 @@ struct _CoglSpanIter
   CoglFixed      intersect_end_local;
   gboolean          intersects;
 };
+
+static void _cogl_texture_free (CoglTexture *tex);
+
+COGL_HANDLE_DEFINE (Texture, texture, texture_handles);
+
 
 static void
 _cogl_texture_bitmap_free (CoglTexture *tex)
@@ -100,8 +101,8 @@ _cogl_span_iter_update (CoglSpanIter *iter)
 			       iter->index);
   
   /* Offset next position by span size */
-  iter->next_pos = iter->pos
-                 + COGL_FIXED_FROM_INT (iter->span->size - iter->span->waste);
+  iter->next_pos = iter->pos +
+    COGL_FIXED_FROM_INT (iter->span->size - iter->span->waste);
   
   /* Check if span intersects the area to cover */
   if (iter->next_pos <= iter->cover_start ||
@@ -168,48 +169,37 @@ _cogl_span_iter_end (CoglSpanIter *iter)
 }
 
 static void
-_cogl_subregion_gl_store_rules (gint     bmp_rowstride,
-				gint     bmp_width,
-				gint     bmp_bpp,
-				gint     src_x,
-				gint     src_y,
-				gboolean pack)
+prep_for_gl_pixels_upload (gint	       pixels_rowstride,
+			   gint	       pixels_src_x,
+			   gint	       pixels_src_y,
+			   gint	       pixels_bpp)
 {
-  const GLenum ALIGNMENT = pack ?
-    GL_PACK_ALIGNMENT : GL_UNPACK_ALIGNMENT;
+  GE( glPixelStorei (GL_UNPACK_ROW_LENGTH, pixels_rowstride / pixels_bpp) );
   
-  const GLenum ROW_LENGTH = pack ?
-    GL_PACK_ROW_LENGTH : GL_UNPACK_ROW_LENGTH;
+  GE( glPixelStorei (GL_UNPACK_SKIP_PIXELS, pixels_src_x) );
+  GE( glPixelStorei (GL_UNPACK_SKIP_ROWS, pixels_src_y) );
   
-  const GLenum SKIP_ROWS = pack ?
-    GL_PACK_SKIP_ROWS : GL_UNPACK_SKIP_ROWS;
-  
-  const GLenum SKIP_PIXELS = pack ?
-    GL_PACK_SKIP_PIXELS : GL_UNPACK_SKIP_PIXELS;
-  
-  /* Encode the part of the rowstride that is a multiple of bmp_bpp in
-     ROW_LENGTH and the remainder in ALIGNMENT */
-  GE( glPixelStorei (ROW_LENGTH, bmp_rowstride / bmp_bpp) );
-
-  if (bmp_rowstride == bmp_width * bmp_bpp)
-    {
-      GE( glPixelStorei (ALIGNMENT, 1) );
-    }
+  if (!(pixels_rowstride & 0x7))
+    GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 8) );
+  else if (!(pixels_rowstride & 0x3))
+    GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 4) );
+  else if (!(pixels_rowstride & 0x1))
+    GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 2) );
   else
-    {
-      if ((bmp_rowstride % 4) == 0)
-	{
-	  GE( glPixelStorei (ALIGNMENT, 4) );
-	}
-      else
-	{
-	  if ((bmp_rowstride % 2) == 0)
-	    GE( glPixelStorei (ALIGNMENT, 2) );
-	}
-    }
-  
-  GE( glPixelStorei (SKIP_ROWS, src_y) );
-  GE( glPixelStorei (SKIP_PIXELS, src_x) );
+    GE( glPixelStorei (GL_UNPACK_ALIGNMENT, 1) );
+}
+
+static void
+prep_for_gl_pixels_download (gint pixels_rowstride)
+{
+  if (!(pixels_rowstride & 0x7))
+    GE( glPixelStorei (GL_PACK_ALIGNMENT, 8) );
+  else if (!(pixels_rowstride & 0x3))
+    GE( glPixelStorei (GL_PACK_ALIGNMENT, 4) );
+  else if (!(pixels_rowstride & 0x1))
+    GE( glPixelStorei (GL_PACK_ALIGNMENT, 2) );
+  else
+    GE( glPixelStorei (GL_PACK_ALIGNMENT, 1) );
 }
 
 static guchar *
@@ -270,17 +260,17 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
 				     y * tex->slice_x_spans->len + x);
 	  
 	  /* Setup gl alignment to match rowstride and top-left corner */
-	  _cogl_subregion_gl_store_rules (tex->bitmap.rowstride,
-					  tex->bitmap.width,
-					  bpp,
-					  x_span->start,
-					  y_span->start,
-					  FALSE);
+	  prep_for_gl_pixels_upload (tex->bitmap.rowstride,
+				     x_span->start,
+				     y_span->start,
+				     bpp);
 	  
 	  /* Upload new image data */
 	  GE( glBindTexture (tex->gl_target, gl_handle) );
-	  
-	  GE( glTexSubImage2D (tex->gl_target, 0, 0, 0,
+
+	  GE( glTexSubImage2D (tex->gl_target, 0,
+			       0,
+			       0,
 			       x_span->size - x_span->waste,
 			       y_span->size - y_span->waste,
 			       tex->gl_format, tex->gl_type,
@@ -305,13 +295,14 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
                   src += tex->bitmap.rowstride;
                 }
 
-              _cogl_subregion_gl_store_rules (x_span->waste * bpp,
-                                              x_span->waste,
-                                              bpp,
-                                              0, 0, FALSE);
+              prep_for_gl_pixels_upload (x_span->waste * bpp,
+					 0, /* src x */
+					 0, /* src y */
+					 bpp);
 
               GE( glTexSubImage2D (tex->gl_target, 0,
-                                   x_span->size - x_span->waste, 0,
+                                   x_span->size - x_span->waste,
+				   0,
                                    x_span->waste,
                                    y_span->size - y_span->waste,
                                    tex->gl_format, tex->gl_type,
@@ -339,13 +330,14 @@ _cogl_texture_upload_to_gl (CoglTexture *tex)
                     }
                 }
 
-              _cogl_subregion_gl_store_rules (x_span->size * bpp,
-                                              x_span->size,
-                                              bpp,
-                                              0, 0, FALSE);
+              prep_for_gl_pixels_upload (x_span->size * bpp,
+					 0, /* src x */
+					 0, /* src y */
+					 bpp);
 
               GE( glTexSubImage2D (tex->gl_target, 0,
-                                   0, y_span->size - y_span->waste,
+                                   0,
+				   y_span->size - y_span->waste,
                                    x_span->size,
                                    y_span->waste,
                                    tex->gl_format, tex->gl_type,
@@ -401,17 +393,16 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
 	      slice_bmp.height = y_span->size;
 	      slice_bmp.rowstride = bpp * slice_bmp.width;
 	      slice_bmp.data = (guchar*) g_malloc (slice_bmp.rowstride *
-						 slice_bmp.height);
+						   slice_bmp.height);
 	      
 	      /* Setup gl alignment to 0,0 top-left corner */
-	      _cogl_subregion_gl_store_rules (slice_bmp.rowstride,
-					      slice_bmp.width,
-					      bpp, 0, 0, TRUE);
+	      prep_for_gl_pixels_download (slice_bmp.rowstride);
 	      
 	      /* Download slice image data into temp bmp */
 	      GE( glBindTexture (tex->gl_target, gl_handle) );
 	      
-	      GE (glGetTexImage (tex->gl_target, 0,
+	      GE (glGetTexImage (tex->gl_target,
+				 0, /* level */
 				 target_gl_format,
 				 target_gl_type,
 				 slice_bmp.data) );
@@ -428,34 +419,21 @@ _cogl_texture_download_from_gl (CoglTexture *tex,
 	      g_free (slice_bmp.data);
 	    }
 	  else
-	    { 
-	      /* Setup gl alignment to match rowstride and top-left corner */
-	      
-	      /* FIXME: for some strange reason any value other than 0
-               * for GL_PACK_SKIP_PIXELS or GL_PACK_SKIP_ROWS corrupts the
-               * memory. As a workaround we offset data pointer manually
+	    {
+	      GLvoid *dst = target_bmp->data
+			    + x_span->start * bpp
+			    + y_span->start * target_bmp->rowstride;
 
-	      _cogl_subregion_gl_store_rules (target_bmp->rowstride,
-					      target_bmp->width,
-					      bpp,
-					      x_span->start,
-					      y_span->start,
-					      TRUE);*/
-	      _cogl_subregion_gl_store_rules (target_bmp->rowstride,
-					      target_bmp->width,
-					      bpp,
-					      0, 0,
-					      TRUE);
+	      prep_for_gl_pixels_download (target_bmp->rowstride);
 	      
 	      /* Download slice image data */
 	      GE( glBindTexture (tex->gl_target, gl_handle) );
 	      
-	      GE( glGetTexImage (tex->gl_target, 0,
+	      GE( glGetTexImage (tex->gl_target,
+				 0, /* level */
 				 target_gl_format,
 				 target_gl_type,
-				 target_bmp->data +
-				 x_span->start * bpp +
-				 y_span->start * target_bmp->rowstride) );
+				 dst) );
 	    }
 	}
     }
@@ -487,7 +465,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
   guchar           *waste_buf;
   
   bpp = _cogl_get_format_bpp (source_bmp->format);
-  
+
   waste_buf = _cogl_texture_allocate_waste_buffer (tex);
 
   /* Iterate vertical spans */
@@ -550,13 +528,10 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
 				     x_iter.index);
 	  
 	  /* Setup gl alignment to match rowstride and top-left corner */
-	  
-	  _cogl_subregion_gl_store_rules (source_bmp->rowstride,
-					  source_bmp->width,
-					  bpp,
-					  source_x,
-					  source_y,
-					  FALSE);
+	  prep_for_gl_pixels_upload (source_bmp->rowstride,
+				     source_x,
+				     source_y,
+				     bpp);
 	  
 	  /* Upload new image data */
 	  GE( glBindTexture (tex->gl_target, gl_handle) );
@@ -599,13 +574,14 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
                   src += source_bmp->rowstride;
                 }
 
-              _cogl_subregion_gl_store_rules (x_span->waste * bpp,
-                                              x_span->waste,
-                                              bpp,
-                                              0, 0, FALSE);
+              prep_for_gl_pixels_upload (x_span->waste * bpp,
+					 0, /* src x */
+					 0, /* src y */
+					 bpp);
 
               GE( glTexSubImage2D (tex->gl_target, 0,
-                                   x_span->size - x_span->waste, local_y,
+                                   x_span->size - x_span->waste,
+				   local_y,
                                    x_span->waste,
                                    inter_h,
                                    source_gl_format,
@@ -650,13 +626,14 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
                     }
                 }
 
-              _cogl_subregion_gl_store_rules (copy_width * bpp,
-                                              copy_width,
-                                              bpp,
-                                              0, 0, FALSE);
+              prep_for_gl_pixels_upload (copy_width * bpp,
+					 0, /* src x */
+					 0, /* src y */
+					 bpp);
 
               GE( glTexSubImage2D (tex->gl_target, 0,
-                                   local_x, y_span->size - y_span->waste,
+                                   local_x,
+				   y_span->size - y_span->waste,
                                    copy_width,
                                    y_span->waste,
                                    source_gl_format,
@@ -764,7 +741,7 @@ _cogl_texture_size_supported (GLenum gl_target,
 			      int    width,
 			      int    height)
 {
-if (gl_target ==  GL_TEXTURE_2D)
+  if (gl_target ==  GL_TEXTURE_2D)
     {
       /* Proxy texture allows for a quick check for supported size */
       
@@ -805,7 +782,7 @@ _cogl_texture_slices_create (CoglTexture *tex)
   
   bpp = _cogl_get_format_bpp (tex->bitmap.format);
   
-  /* Initialize size of largest slice according to supported features*/
+  /* Initialize size of largest slice according to supported features */
   if (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT))
     {
       max_width = tex->bitmap.width;
@@ -904,7 +881,7 @@ _cogl_texture_slices_create (CoglTexture *tex)
 		       max_height, tex->max_waste,
 		       tex->slice_y_spans);
     }
-	  
+  
   /* Init and resize GL handle array */
   n_slices = n_x_slices * n_y_slices;
   
@@ -946,18 +923,22 @@ _cogl_texture_slices_create (CoglTexture *tex)
 	    y_span->size - y_span->waste);
 #endif
 	  /* Setup texture parameters */
-	  GE( glBindTexture   (tex->gl_target, gl_handles[y * n_x_slices + x]) );
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER, tex->mag_filter) );
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER, tex->min_filter) );
-	  
+	  GE( glBindTexture (tex->gl_target,
+			     gl_handles[y * n_x_slices + x]) );
+	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER,
+			       tex->mag_filter) );
+	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER,
+			       tex->min_filter) );
+
 	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S,
 			       tex->wrap_mode) );
 	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T,
 			       tex->wrap_mode) );
           
           if (tex->auto_mipmap)
-            GE( glTexParameteri (tex->gl_target, GL_GENERATE_MIPMAP, GL_TRUE) );
-          
+            GE( glTexParameteri (tex->gl_target, GL_GENERATE_MIPMAP,
+				 GL_TRUE) );
+
 	  /* Use a transparent border color so that we can leave the
 	     color buffer alone when using texture co-ordinates
 	     outside of the texture */
@@ -1284,7 +1265,7 @@ cogl_texture_new_from_data (guint              width,
 
   tex->is_foreign = FALSE;
   tex->auto_mipmap = auto_mipmap;
-  
+
   tex->bitmap.width = width;
   tex->bitmap.height = height;
   tex->bitmap.data = (guchar*)data;
@@ -1361,7 +1342,7 @@ cogl_texture_new_from_file (const gchar     *filename,
   
   tex->is_foreign = FALSE;
   tex->auto_mipmap = auto_mipmap;
-  
+
   tex->bitmap = bmp;
   tex->bitmap_owner = TRUE;
   
@@ -1414,10 +1395,10 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 			       CoglPixelFormat  format)
 {
   /* NOTE: width, height and internal format are not queriable
-     in GLES, hence such a function prototype. However, here
-     they are still queried from the texture for improved
-     robustness and for completeness in case GLES 1.0 gets
-     unsupported in favor of a new version and cleaner api
+     in GLES, hence such a function prototype. However, for
+     OpenGL they are still queried from the texture for improved
+     robustness and for completeness in case one day GLES gains
+     support for them.
   */
   
   GLenum           gl_error = 0;
@@ -1468,7 +1449,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   GE( glGetTexLevelParameteriv (gl_target, 0,
 				GL_TEXTURE_HEIGHT,
 				&gl_height) );
-  
+
   GE( glGetTexParameteriv (gl_target,
 			   GL_TEXTURE_MIN_FILTER,
 			   &gl_min_filter) );
@@ -1501,8 +1482,6 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
       return COGL_INVALID_HANDLE;
     }
   
-  bpp = _cogl_get_format_bpp (format);
-  
   /* Create new texture */
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
   
@@ -1513,6 +1492,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   tex->is_foreign = TRUE;
   tex->auto_mipmap = (gl_gen_mipmap == GL_TRUE) ? TRUE : FALSE;
   
+  bpp = _cogl_get_format_bpp (format);
   tex->bitmap.format = format;
   tex->bitmap.width = gl_width - x_pot_waste;
   tex->bitmap.height = gl_height - y_pot_waste;
@@ -1737,9 +1717,11 @@ cogl_texture_set_filters (CoglHandle handle,
   for (i=0; i<tex->slice_gl_handles->len; ++i)
     {
       gl_handle = g_array_index (tex->slice_gl_handles, GLuint, i);
-      GE( glBindTexture   (tex->gl_target, gl_handle) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER, tex->mag_filter) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER, tex->min_filter) );
+      GE( glBindTexture (tex->gl_target, gl_handle) );
+      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MAG_FILTER,
+			   tex->mag_filter) );
+      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER,
+			   tex->min_filter) );
     }
 }
 
@@ -1935,7 +1917,7 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 		       CoglFixed tx2,
 		       CoglFixed ty2)
 {
-  CoglSpanIter       iter_x    ,  iter_y;
+  CoglSpanIter    iter_x    ,  iter_y;
   CoglFixed       tw        ,  th;
   CoglFixed       tqx       ,  tqy;
   CoglFixed       first_tx  ,  first_ty;
@@ -1944,18 +1926,21 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   CoglFixed       slice_tx2 ,  slice_ty2;
   CoglFixed       slice_qx1 ,  slice_qy1;
   CoglFixed       slice_qx2 ,  slice_qy2;
-  GLuint             gl_handle;
-  gulong enable_flags = 0;
+  GLfloat         tex_coords[8];
+  GLfloat         quad_coords[8];
+  GLuint          gl_handle;
+  gulong          enable_flags = (COGL_ENABLE_TEXTURE_2D
+                                  | COGL_ENABLE_VERTEX_ARRAY
+                                  | COGL_ENABLE_TEXCOORD_ARRAY);
   
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
 #if COGL_DEBUG
   printf("=== Drawing Tex Quad (Software Tiling Mode) ===\n");
 #endif
   
-  /* Prepare GL state */
-  enable_flags |= COGL_ENABLE_TEXTURE_2D;
   
+  /* Prepare GL state */
   if (ctx->color_alpha < 255
       || tex->bitmap.format & COGL_A_BIT)
     {
@@ -1964,9 +1949,9 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
-  
+
   cogl_enable (enable_flags);
-  
+
   /* If the texture coordinates are backwards then swap both the
      geometry and texture coordinates so that the texture will be
      flipped but we can still use the same algorithm to iterate the
@@ -1989,6 +1974,9 @@ _cogl_texture_quad_sw (CoglTexture *tex,
       ty1 = ty2;
       ty2 = temp;
     }
+  
+  GE( glTexCoordPointer (2, GL_FLOAT, 0, tex_coords) );
+  GE( glVertexPointer   (2, GL_FLOAT, 0, quad_coords) );
   
   /* Scale ratio from texture to quad widths */
   tw = COGL_FIXED_FROM_INT (tex->bitmap.width);
@@ -2083,25 +2071,21 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 				     iter_x.index);
 	  
 	  GE( glBindTexture (tex->gl_target, gl_handle) );
-	  
+
 #define CFX_F COGL_FIXED_TO_FLOAT
 	  
 	  /* Draw textured quad */
-	  glBegin (GL_QUADS);
+          tex_coords[0] = CFX_F(slice_tx1); tex_coords[1] = CFX_F(slice_ty2);
+          tex_coords[2] = CFX_F(slice_tx2); tex_coords[3] = CFX_F(slice_ty2);
+          tex_coords[4] = CFX_F(slice_tx1); tex_coords[5] = CFX_F(slice_ty1);
+          tex_coords[6] = CFX_F(slice_tx2); tex_coords[7] = CFX_F(slice_ty1);
 
-	  glTexCoord2f (CFX_F(slice_tx1), CFX_F(slice_ty1));
-	  glVertex2f   (CFX_F(slice_qx1), CFX_F(slice_qy1));
+          quad_coords[0] = CFX_F(slice_qx1); quad_coords[1] = CFX_F(slice_qy2);
+          quad_coords[2] = CFX_F(slice_qx2); quad_coords[3] = CFX_F(slice_qy2);
+          quad_coords[4] = CFX_F(slice_qx1); quad_coords[5] = CFX_F(slice_qy1);
+          quad_coords[6] = CFX_F(slice_qx2); quad_coords[7] = CFX_F(slice_qy1);
 
-	  glTexCoord2f (CFX_F(slice_tx1), CFX_F(slice_ty2));
-	  glVertex2f   (CFX_F(slice_qx1), CFX_F(slice_qy2));
-
-	  glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty2));
-	  glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy2));
-
-	  glTexCoord2f (CFX_F(slice_tx2), CFX_F(slice_ty1));
-	  glVertex2f   (CFX_F(slice_qx2), CFX_F(slice_qy1));
-
-	  GE( glEnd () );
+	  GE (glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
 
 #undef CFX_F
 	}
@@ -2119,11 +2103,15 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 		       CoglFixed tx2,
 		       CoglFixed ty2)
 {
+  GLfloat           tex_coords[8];
+  GLfloat           quad_coords[8];
+  GLuint            gl_handle;
   CoglTexSliceSpan *x_span;
   CoglTexSliceSpan *y_span;
-  GLuint            gl_handle;
-  gulong enable_flags = 0;
-  
+  gulong            enable_flags = (COGL_ENABLE_TEXTURE_2D
+                                   | COGL_ENABLE_VERTEX_ARRAY
+                                   | COGL_ENABLE_TEXCOORD_ARRAY);
+
 #if COGL_DEBUG
   printf("=== Drawing Tex Quad (Hardware Tiling Mode) ===\n");
 #endif
@@ -2131,8 +2119,6 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   /* Prepare GL state */
-  enable_flags |= COGL_ENABLE_TEXTURE_2D;
-  
   if (ctx->color_alpha < 255
       || tex->bitmap.format & COGL_A_BIT)
     {
@@ -2144,10 +2130,14 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 
   cogl_enable (enable_flags);
   
+  GE( glTexCoordPointer (2, GL_FLOAT, 0, tex_coords) );
+  GE( glVertexPointer   (2, GL_FLOAT, 0, quad_coords) );
+  
   /* Pick and bind opengl texture object */
   gl_handle = g_array_index (tex->slice_gl_handles, GLuint, 0);
   GE( glBindTexture (tex->gl_target, gl_handle) );
   
+  /* Don't include the waste in the texture coordinates */
   x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
   y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
 
@@ -2160,21 +2150,17 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 #define CFX_F(x) COGL_FIXED_TO_FLOAT(x)
   
   /* Draw textured quad */
-  glBegin (GL_QUADS);
+  tex_coords[0] = CFX_F(tx1); tex_coords[1] = CFX_F(ty2);
+  tex_coords[2] = CFX_F(tx2); tex_coords[3] = CFX_F(ty2);
+  tex_coords[4] = CFX_F(tx1); tex_coords[5] = CFX_F(ty1);
+  tex_coords[6] = CFX_F(tx2); tex_coords[7] = CFX_F(ty1);
 
-  glTexCoord2f (CFX_F(tx1), CFX_F(ty1));
-  glVertex2f   (CFX_F(x1),  CFX_F(y1));
+  quad_coords[0] = CFX_F(x1); quad_coords[1] = CFX_F(y2);
+  quad_coords[2] = CFX_F(x2); quad_coords[3] = CFX_F(y2);
+  quad_coords[4] = CFX_F(x1); quad_coords[5] = CFX_F(y1);
+  quad_coords[6] = CFX_F(x2); quad_coords[7] = CFX_F(y1);
 
-  glTexCoord2f (CFX_F(tx1), CFX_F(ty2));
-  glVertex2f   (CFX_F(x1),  CFX_F(y2));
-
-  glTexCoord2f (CFX_F(tx2), CFX_F(ty2));
-  glVertex2f   (CFX_F(x2),  CFX_F(y2));
-
-  glTexCoord2f (CFX_F(tx2), CFX_F(ty1));
-  glVertex2f   (CFX_F(x2),  CFX_F(y1));
-
-  GE( glEnd () );
+  GE (glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
 
 #undef CFX_F
 }
@@ -2216,11 +2202,11 @@ cogl_texture_rectangle (CoglHandle   handle,
     }
   else
     {
-      if (tex->slice_gl_handles->len == 1 &&
-          tx1 >= -COGL_FIXED_1 &&
-          tx2 <= COGL_FIXED_1 &&
-          ty1 >= -COGL_FIXED_1 &&
-          ty2 <= COGL_FIXED_1)
+      if (tex->slice_gl_handles->len == 1
+          && tx1 >= -COGL_FIXED_1
+          && tx2 <= COGL_FIXED_1
+          && ty1 >= -COGL_FIXED_1
+          && ty2 <= COGL_FIXED_1)
 	{
 	  _cogl_texture_quad_hw (tex, x1,y1, x2,y2, tx1,ty1, tx2,ty2);
 	}
@@ -2238,10 +2224,11 @@ cogl_texture_polygon (CoglHandle         handle,
 		      gboolean           use_color)
 {
   CoglTexture      *tex;
-  int               i, x, y, vnum;
+  int               i, x, y;
   GLuint            gl_handle;
   CoglTexSliceSpan *y_span, *x_span;
   gulong            enable_flags;
+  CoglTextureGLVertex *p;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -2250,7 +2237,7 @@ cogl_texture_polygon (CoglHandle         handle,
     return;
 
   tex = _cogl_texture_pointer_from_handle (handle);
-  
+
   /* The polygon will have artifacts where the slices join if the wrap
      mode is GL_LINEAR because the filtering will pull in pixels from
      the transparent border. To make it clear that the function
@@ -2271,13 +2258,47 @@ cogl_texture_polygon (CoglHandle         handle,
       return;
     }
 
-  tex = _cogl_texture_pointer_from_handle (handle);
+  /* Make sure there is enough space in the global texture vertex
+     array. This is used so we can render the polygon with a single
+     call to OpenGL but still support any number of vertices */
+  if (ctx->texture_vertices_size < n_vertices)
+    {
+      guint nsize = ctx->texture_vertices_size;
+      
+      if (nsize == 0)
+	nsize = 1;
+      do
+	nsize *= 2;
+      while (nsize < n_vertices);
+      
+      ctx->texture_vertices_size = nsize;
+
+      ctx->texture_vertices = g_realloc (ctx->texture_vertices,
+					 nsize
+					 * sizeof (CoglTextureGLVertex));
+    }
   
   /* Prepare GL state */
-  enable_flags = COGL_ENABLE_TEXTURE_2D | COGL_ENABLE_BLEND;
+  enable_flags = (COGL_ENABLE_TEXTURE_2D
+		  | COGL_ENABLE_VERTEX_ARRAY
+		  | COGL_ENABLE_TEXCOORD_ARRAY
+		  | COGL_ENABLE_BLEND);
+
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
+  if (use_color)
+    {
+      enable_flags |= COGL_ENABLE_COLOR_ARRAY;
+      GE( glColorPointer (4, GL_UNSIGNED_BYTE, sizeof (CoglTextureGLVertex),
+			  ctx->texture_vertices[0].c) );
+    }
+
+  GE( glVertexPointer (3, GL_FLOAT, sizeof (CoglTextureGLVertex),
+		       ctx->texture_vertices[0].v) );
+  GE( glTexCoordPointer (2, GL_FLOAT, sizeof (CoglTextureGLVertex),
+			 ctx->texture_vertices[0].t) );
 
   cogl_enable (enable_flags);
 
@@ -2308,34 +2329,30 @@ cogl_texture_polygon (CoglHandle         handle,
 
 	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint, i++);
 
-	  GE( glBindTexture (tex->gl_target, gl_handle) );
-
-	  glBegin (GL_TRIANGLE_FAN);
-
-	  for (vnum = 0; vnum < n_vertices; vnum++)
+	  /* Convert the vertices into an array of GLfloats ready to pass to
+	     OpenGL */
+	  for (i = 0, p = ctx->texture_vertices; i < n_vertices; i++, p++)
 	    {
-	      GLfloat tx, ty;
+#define CFX_F COGL_FIXED_TO_FLOAT
 
-	      if (use_color)
-		cogl_set_source_color (&vertices[vnum].color);
+	      p->v[0] = CFX_F(vertices[i].x);
+	      p->v[1] = CFX_F(vertices[i].y);
+	      p->v[2] = CFX_F(vertices[i].z);
+	      p->t[0] = CFX_F(vertices[i].tx
+			      * (x_span->size - x_span->waste) / x_span->size);
+	      p->t[1] = CFX_F(vertices[i].ty
+			      * (y_span->size - y_span->waste) / y_span->size);
+	      p->c[0] = cogl_color_get_red_byte(&vertices[i].color);
+	      p->c[1] = cogl_color_get_green_byte(&vertices[i].color);
+	      p->c[2] = cogl_color_get_blue_byte(&vertices[i].color);
+	      p->c[3] = cogl_color_get_alpha_byte(&vertices[i].color);
 
-	      /* Transform the texture co-ordinates so they are
-		 relative to the slice */
-	      tx = (COGL_FIXED_TO_FLOAT (vertices[vnum].tx)
-		    - x_span->start / (GLfloat) tex->bitmap.width)
-		* tex->bitmap.width / x_span->size;
-	      ty = (COGL_FIXED_TO_FLOAT (vertices[vnum].ty)
-		    - y_span->start / (GLfloat) tex->bitmap.height)
-		* tex->bitmap.height / y_span->size;
-
-	      glTexCoord2f (tx, ty);
-
-	      glVertex3f (COGL_FIXED_TO_FLOAT (vertices[vnum].x),
-			  COGL_FIXED_TO_FLOAT (vertices[vnum].y),
-			  COGL_FIXED_TO_FLOAT (vertices[vnum].z));
+#undef CFX_F
 	    }
 
-	  GE( glEnd () );
+	  GE( glBindTexture (tex->gl_target, gl_handle) );
+
+	  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices) );
 	}
     }
   

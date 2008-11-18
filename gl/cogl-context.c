@@ -57,6 +57,8 @@ cogl_create_context ()
   _context->path_nodes_size = 0;
   
   _context->texture_handles = NULL;
+  _context->texture_vertices_size = 0;
+  _context->texture_vertices = NULL;
   
   _context->fbo_handles = NULL;
   _context->draw_buffer = COGL_WINDOW_BUFFER;

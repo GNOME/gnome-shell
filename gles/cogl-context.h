@@ -32,9 +32,9 @@
 
 typedef struct
 {
-  GLfixed v[3];
-  GLfixed t[2];
-  GLfixed c[4];
+  GLfloat v[3];
+  GLfloat t[2];
+  GLubyte c[4];
 } CoglTextureGLVertex;
 
 typedef struct
