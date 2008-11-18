@@ -218,11 +218,22 @@ COGLint         cogl_program_get_uniform_location
  * @uniform_no: the unform to set.
  * @value: the new value of the uniform.
  *
- * Changes the value of a uniform in the currently used (see
- * cogl_program_use()) shader program.
+ * Changes the value of a floating point uniform in the currently
+ * used (see cogl_program_use()) shader program.
  */
 void            cogl_program_uniform_1f       (COGLint           uniform_no,
                                                gfloat            value);
+
+/**
+ * cogl_program_uniform_1i:
+ * @uniform_no: the unform to set.
+ * @value: the new value of the uniform.
+ *
+ * Changes the value of an integer uniform in the currently
+ * used (see cogl_program_use()) shader program.
+ */
+void            cogl_program_uniform_1i       (COGLint           uniform_no,
+                                               gint              value);
 
  /**
  * cogl_program_uniform_float:

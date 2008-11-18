@@ -168,6 +168,14 @@ cogl_program_uniform_1f (COGLint uniform_no,
 }
 
 void
+cogl_program_uniform_1i (COGLint uniform_no,
+                         gint    value)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  glUniform1iARB (uniform_no, value);
+}
+
+void
 cogl_program_uniform_float (COGLint  uniform_no,
                             gint     size,
                             gint     count,

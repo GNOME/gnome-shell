@@ -1,5 +1,16 @@
 2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/cogl/cogl-shader.h: Add a function for setting an
+	integer uniform, similar to cogl_program_uniform_1f().
+
+	* clutter/cogl/gl/cogl-program.c: Implement the GL version
+	of cogl_program_uniform_1i().
+
+	* clutter/cogl/gles/cogl-program.c: Implement the GLES version
+	of cogl_program_uniform_1i().
+
+2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	Bug 1049 - Clutter doesn't support most GLSL uniforms (patch
 	by Chris Lord and Neil Roberts)
 

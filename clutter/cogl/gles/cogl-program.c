@@ -166,6 +166,13 @@ cogl_program_uniform_1f (COGLint uniform_no,
   cogl_program_uniform_float (uniform_no, 1, 1, &value);
 }
 
+void
+cogl_program_uniform_1i (COGLint uniform_no,
+                         gint    value)
+{
+  cogl_program_uniform_int (uniform_no, 1, 1, &value);
+}
+
 static void
 cogl_program_uniform_x (COGLint uniform_no,
 			gint size,
