@@ -213,7 +213,7 @@ test_threads_main (int argc, char *argv[])
   timeline = clutter_timeline_new (150, 50);
   clutter_timeline_set_loop (timeline, TRUE);
   r_behaviour = clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
-                                                                      CLUTTER_ALPHA_RAMP_INC,
+                                                                      clutter_ramp_inc_func,
                                                                       NULL, NULL),
                                               CLUTTER_Z_AXIS,
                                               CLUTTER_ROTATE_CW,
@@ -221,7 +221,7 @@ test_threads_main (int argc, char *argv[])
   clutter_behaviour_apply (r_behaviour, rect);
 
   p_behaviour = clutter_behaviour_path_new (clutter_alpha_new_full (timeline,
-                                                                    CLUTTER_ALPHA_SINE,
+                                                                    clutter_ramp_inc_func,
                                                                     NULL, NULL),
                                             knots,
                                             G_N_ELEMENTS (knots));

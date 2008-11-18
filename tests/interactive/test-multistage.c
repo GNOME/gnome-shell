@@ -75,10 +75,8 @@ on_button_press (ClutterActor *actor,
   timeline = clutter_timeline_new_for_duration (2000);
   g_object_set (timeline, "loop", TRUE, NULL);  
 
-  alpha = clutter_alpha_new_full (timeline,
-                                  CLUTTER_ALPHA_RAMP_INC,
-                                  NULL, NULL);
-
+  alpha = clutter_alpha_new_for_mode (CLUTTER_LINEAR);
+  clutter_alpha_set_timeline (alpha, timeline);
   r_behave = clutter_behaviour_rotate_new (alpha,
 					   CLUTTER_Y_AXIS,
 					   CLUTTER_ROTATE_CW,

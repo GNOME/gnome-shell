@@ -18,7 +18,7 @@ test_effects_main (int argc, char *argv[])
   timeline = clutter_timeline_new_for_duration (5000);
   clutter_timeline_set_loop (timeline, TRUE);
   tmpl =
-    clutter_effect_template_new (timeline, CLUTTER_ALPHA_RAMP_INC);
+    clutter_effect_template_new (timeline, clutter_ramp_inc_func);
 
   stage = clutter_stage_get_default ();
   container = CLUTTER_CONTAINER (stage);

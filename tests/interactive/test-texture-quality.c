@@ -43,6 +43,7 @@ G_MODULE_EXPORT gint
 test_texture_quality_main (int argc, char *argv[])
 {
   ClutterTimeline  *timeline;
+  ClutterAlpha     *alpha;
   ClutterBehaviour *depth_behavior;
   ClutterActor     *stage;
   ClutterActor     *image;
@@ -80,10 +81,9 @@ test_texture_quality_main (int argc, char *argv[])
                     "completed", G_CALLBACK (timeline_completed),
                     NULL);
 
-  depth_behavior = clutter_behaviour_depth_new (
-       clutter_alpha_new_full (timeline, CLUTTER_ALPHA_RAMP_INC, NULL, NULL),
-       -2500, 400);
-
+  alpha = clutter_alpha_new_for_mode (CLUTTER_LINEAR);
+  clutter_alpha_set_timeline (alpha, timeline);
+  depth_behavior = clutter_behaviour_depth_new (alpha, -2500, 400);
   clutter_behaviour_apply (depth_behavior, image);
 
   clutter_actor_show (stage);

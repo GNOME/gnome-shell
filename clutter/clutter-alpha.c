@@ -58,10 +58,11 @@
 #include <math.h>
 
 #include "clutter-alpha.h"
+#include "clutter-debug.h"
+#include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
 
 G_DEFINE_TYPE (ClutterAlpha, clutter_alpha, G_TYPE_INITIALLY_UNOWNED);
 
@@ -74,6 +75,8 @@ struct _ClutterAlphaPrivate
   guint32 alpha;
 
   GClosure *closure;
+
+  ClutterAnimationMode mode;
 };
 
 enum
@@ -81,7 +84,8 @@ enum
   PROP_0,
   
   PROP_TIMELINE,
-  PROP_ALPHA
+  PROP_ALPHA,
+  PROP_MODE
 };
 
 static void
@@ -113,6 +117,9 @@ clutter_alpha_set_property (GObject      *object,
     case PROP_TIMELINE:
       clutter_alpha_set_timeline (alpha, g_value_get_object (value));
       break;
+    case PROP_MODE:
+      clutter_alpha_set_mode (alpha, g_value_get_enum (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -138,6 +145,9 @@ clutter_alpha_get_property (GObject    *object,
       break;
     case PROP_ALPHA:
       g_value_set_uint (value, priv->alpha);
+      break;
+    case PROP_MODE:
+      g_value_set_enum (value, priv->mode);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -209,6 +219,25 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
                                                       CLUTTER_ALPHA_MAX_ALPHA,
                                                       0,
                                                       CLUTTER_PARAM_READABLE));
+  /**
+   * ClutterAlpha:mode:
+   *
+   * The progress function as a #ClutterAnimationMode enumeration
+   * value. If %CLUTTER_CUSTOM_MODE is used then the function set
+   * using clutter_alpha_set_closure() or clutter_alpha_set_func()
+   * will be used.
+   *
+   * Since: 1.0
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_MODE,
+                                   g_param_spec_enum ("mode",
+                                                      "Mode",
+                                                      "Progress mode",
+                                                      CLUTTER_TYPE_ANIMATION_MODE,
+                                                      CLUTTER_CUSTOM_MODE,
+                                                      G_PARAM_CONSTRUCT |
+                                                      CLUTTER_PARAM_READWRITE));
 }
 
 static void
@@ -217,6 +246,8 @@ clutter_alpha_init (ClutterAlpha *self)
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
 					    CLUTTER_TYPE_ALPHA,
 					    ClutterAlphaPrivate);
+
+  self->priv->mode = CLUTTER_CUSTOM_MODE;
 }
 
 /**
@@ -302,6 +333,9 @@ clutter_alpha_set_closure (ClutterAlpha *alpha,
 
       g_closure_set_marshal (closure, marshal);
     }
+
+  priv->mode = CLUTTER_CUSTOM_MODE;
+  g_object_notify (G_OBJECT (alpha), "mode");
 }
 
 /**
@@ -370,6 +404,8 @@ clutter_alpha_set_timeline (ClutterAlpha    *alpha,
                         G_CALLBACK (timeline_new_frame_cb),
                         alpha);
     }
+
+  g_object_notify (G_OBJECT (alpha), "timeline");
 }
 
 /**
@@ -442,6 +478,106 @@ clutter_alpha_new_full (ClutterTimeline  *timeline,
   clutter_alpha_set_func (retval, func, data, destroy);
 
   return retval;
+}
+
+/**
+ * clutter_alpha_new_for_mode:
+ * @mode: a #ClutterAnimationMode value
+ *
+ * Creates a new #ClutterAlpha using @mode to set the
+ * progress function using its symbolic name.
+ *
+ * Return value: the newly created #ClutterAlpha
+ *
+ * Since: 1.0
+ */
+ClutterAlpha *
+clutter_alpha_new_for_mode (ClutterAnimationMode mode)
+{
+  return g_object_new (CLUTTER_TYPE_ALPHA,
+                       "mode", mode,
+                       NULL);
+}
+
+/**
+ * clutter_alpha_get_mode:
+ * @alpha: a #ClutterAlpha
+ *
+ * Retrieves the #ClutterAnimatioMode used by @alpha.
+ *
+ * Return value: the animation mode
+ *
+ * Since: 1.0
+ */
+ClutterAnimationMode
+clutter_alpha_get_mode (ClutterAlpha *alpha)
+{
+  g_return_val_if_fail (CLUTTER_IS_ALPHA (alpha), CLUTTER_CUSTOM_MODE);
+
+  return alpha->priv->mode;
+}
+
+/**
+ * clutter_alpha_set_mode:
+ * @alpha: a #ClutterAlpha
+ * @mode: a #ClutterAnimationMode
+ *
+ * Sets the progress function of @alpha using the symbolic value
+ * of @mode, as taken by the #ClutterAnimationMode enumeration
+ *
+ * Since: 1.0
+ */
+void
+clutter_alpha_set_mode (ClutterAlpha      *alpha,
+                        ClutterAnimationMode  mode)
+{
+  ClutterAlphaPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ALPHA (alpha));
+
+  priv = alpha->priv;
+
+  priv->mode = mode;
+
+  switch (priv->mode)
+    {
+    case CLUTTER_LINEAR:
+      clutter_alpha_set_func (alpha, clutter_ramp_inc_func, NULL, NULL);
+      break;
+
+    case CLUTTER_SINE_IN:
+      clutter_alpha_set_func (alpha, clutter_sine_in_func, NULL, NULL);
+      break;
+
+    case CLUTTER_SINE_OUT:
+      clutter_alpha_set_func (alpha, clutter_sine_out_func, NULL, NULL);
+      break;
+
+    case CLUTTER_SINE_IN_OUT:
+      clutter_alpha_set_func (alpha, clutter_sine_inc_func, NULL, NULL);
+      break;
+
+    case CLUTTER_EASE_IN:
+      clutter_alpha_set_func (alpha, clutter_ease_in_func, NULL, NULL);
+      break;
+
+    case CLUTTER_EASE_OUT:
+      clutter_alpha_set_func (alpha, clutter_ease_out_func, NULL, NULL);
+      break;
+
+    case CLUTTER_EASE_IN_OUT:
+      clutter_alpha_set_func (alpha, clutter_ease_in_out_func, NULL, NULL);
+      break;
+
+    case CLUTTER_CUSTOM_MODE:
+      break;
+
+    default:
+      g_assert_not_reached ();
+      break;
+    }
+
+  g_object_notify (G_OBJECT (alpha), "mode");
 }
 
 /**
@@ -789,11 +925,11 @@ guint32
 clutter_sine_half_func (ClutterAlpha *alpha,
 			gpointer      dummy)
 {
-  ClutterTimeline * timeline;
-  gint              frame;
-  gint              n_frames;
-  ClutterAngle      x;
-  ClutterFixed      sine;
+  ClutterTimeline *timeline;
+  gint             frame;
+  gint             n_frames;
+  ClutterAngle     x;
+  ClutterFixed     sine;
   
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
@@ -803,7 +939,115 @@ clutter_sine_half_func (ClutterAlpha *alpha,
 
   sine = cogl_angle_sin (x) * CLUTTER_ALPHA_MAX_ALPHA;
 
-  return COGL_FIXED_TO_INT (sine);
+  return ((guint32) sine) >> COGL_FIXED_Q;
+}
+
+/**
+ * clutter_sine_in_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for (sin(x) + 1) over the
+ * interval [-pi/2, 0].
+ *
+ * You can use this function as the alpha function for
+ * clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 1.0
+ */
+guint32
+clutter_sine_in_func (ClutterAlpha *alpha,
+                      gpointer      dummy)
+{
+  ClutterTimeline *timeline;
+  gint             frame;
+  gint             n_frames;
+  ClutterAngle     x;
+  ClutterFixed     sine;
+
+  timeline = clutter_alpha_get_timeline (alpha);
+  frame    = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  /* XXX- if we use 768 we overflow */
+  x = 256 * frame / n_frames + 767;
+
+  sine = (cogl_angle_sin (x) + 1) * CLUTTER_ALPHA_MAX_ALPHA;
+
+  return ((guint32) sine) >> COGL_FIXED_Q;
+}
+
+/**
+ * clutter_sine_in_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for sin(x) over the interval [0, pi/2].
+ *
+ * You can use this function as the alpha function for
+ * clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 1.0
+ */
+guint32
+clutter_sine_out_func (ClutterAlpha *alpha,
+                       gpointer      dummy)
+{
+  ClutterTimeline *timeline;
+  gint             frame;
+  gint             n_frames;
+  ClutterAngle     x;
+  ClutterFixed     sine;
+
+  timeline = clutter_alpha_get_timeline (alpha);
+  frame    = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  x = 256 * frame / n_frames;
+
+  sine = cogl_angle_sin (x) * CLUTTER_ALPHA_MAX_ALPHA;
+
+  return ((guint32) sine) >> COGL_FIXED_Q;
+}
+
+/**
+ * clutter_sine_in_out_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for (sin(x) + 1) / 2 over the
+ * interval [-pi/2, pi/2].
+ *
+ * You can use this function as the alpha function for
+ * clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 1.0
+ */
+guint32
+clutter_sine_in_out_func (ClutterAlpha *alpha,
+                          gpointer      dummy)
+{
+  ClutterTimeline *timeline;
+  gint             frame;
+  gint             n_frames;
+  ClutterAngle     x;
+  ClutterFixed     sine;
+
+  timeline = clutter_alpha_get_timeline (alpha);
+  frame    = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  x = -256 * frame / n_frames + 256;
+
+  sine = (cogl_angle_sin (x) + 1) / 2 * CLUTTER_ALPHA_MAX_ALPHA;
+
+  return ((guint32) sine) >> COGL_FIXED_Q;
 }
 
 /**
@@ -812,6 +1056,8 @@ clutter_sine_half_func (ClutterAlpha *alpha,
  * Convenience symbol for clutter_square_func().
  *
  * Since: 0.4
+ *
+ * Deprecated: 1.0: Use clutter_square_func() instead
  */
 
 /**
@@ -1024,4 +1270,132 @@ clutter_exp_dec_func (ClutterAlpha *alpha,
   result = CLAMP (cogl_fixed_pow2 (x) - 1, 0, CLUTTER_ALPHA_MAX_ALPHA);
 
   return result;
+}
+
+static inline gdouble
+clutter_cubic_bezier (ClutterAlpha *alpha,
+                      gdouble       x_1,
+                      gdouble       y_1,
+                      gdouble       x_2,
+                      gdouble       y_2)
+{
+  ClutterTimeline *timeline;
+  gdouble t, b_t, res;
+
+  /* the cubic bezier has a parametric form of:
+   *
+   * B(t) =        (1 - t)^3 * P_0
+   *      + 3t   * (1 - t)^2 * P_1
+   *      + 3t^2 * (1 - t)   * P_2
+   *      + 3t^3             * P_3      (with t included in [0, 1])
+   *
+   * the P_0 and P_3 points are set to (0, 0) and (1, 1) respectively,
+   * and the curve never passes through P_1 and P_2 - with these two
+   * points merely acting as control points for the curve starting
+   * from P_0 and ending at P_3.
+   *
+   * since the starting point is (0, 0) we can simplify the previous
+   * parametric form to:
+   *
+   * B(t) = 3t   * (1 - t)^2 * P_1
+   *      + 3t^2 * (1 - t)   * P_2
+   *      + 3t^3             * P_3      (with t included in [0, 1])
+   *
+   * and, similarly, since the final point is (1, 1) we can simplify
+   * it further to:
+   *
+   * B(t) = 3t   * (1 - t)^2 * P_1
+   *      + 3t^2 * (1 - t)   * P_2
+   *      + 3t^3                        (with t included in [0, 1])
+   *
+   * since an alpha function has only a time parameter and we have two
+   * coordinates for each point, we pass the time as the first
+   * coordinate for the point and then we solve the cubic beziér curve
+   * for the second coordinate at the same point.
+   */
+
+  timeline  = clutter_alpha_get_timeline (alpha);
+  t = clutter_timeline_get_progress (timeline);
+
+  b_t = 3 * t          * pow (1 - t, 2) * x_1
+      + 3 * pow (t, 2) * (1 - t)        * x_2
+      + 3 * pow (t, 3);
+
+  res = 3 * b_t          * pow (1 - b_t, 2) * y_1
+      + 3 * pow (b_t, 2) * (1 - b_t)        * y_2
+      + 3 * pow (b_t, 3);
+
+  return res;
+}
+
+/**
+ * clutter_ease_in_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a cubic Beziér curve with control
+ * points at (0.42, 0) and (1, 0). You can use this function as the
+ * alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 1.0
+ */
+guint32
+clutter_ease_in_func (ClutterAlpha *alpha,
+                      gpointer      dummy)
+{
+  gdouble res;
+
+  res = clutter_cubic_bezier (alpha, 0.42, 0, 1, 0);
+
+  return CLAMP (res * CLUTTER_ALPHA_MAX_ALPHA, 0, CLUTTER_ALPHA_MAX_ALPHA);
+}
+
+/**
+ * clutter_ease_out_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a cubic Beziér curve with control
+ * points at (0, 0) and (0.58, 1). You can use this function as the
+ * alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 1.0
+ */
+guint32
+clutter_ease_out_func (ClutterAlpha *alpha,
+                       gpointer      dummy)
+{
+  gdouble res;
+
+  res = clutter_cubic_bezier (alpha, 0, 0, 0.58, 1);
+
+  return CLAMP (res * CLUTTER_ALPHA_MAX_ALPHA, 0, CLUTTER_ALPHA_MAX_ALPHA);
+}
+
+/**
+ * clutter_ease_in_out_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a cubic Beziér curve with control
+ * points at (0.42, 0) and (0.58, 1). You can use this function as
+ * the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 1.0
+ */
+guint32
+clutter_ease_in_out_func (ClutterAlpha *alpha,
+                          gpointer      dummy)
+{
+  gdouble res;
+
+  res = clutter_cubic_bezier (alpha, 0.42, 0, 0.58, 1);
+
+  return CLAMP (res * CLUTTER_ALPHA_MAX_ALPHA, 0, CLUTTER_ALPHA_MAX_ALPHA);
 }

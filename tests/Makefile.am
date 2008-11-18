@@ -1,4 +1,3 @@
-
 SUBDIRS = data conform interactive micro-bench tools
 
 EXTRA_DIST = README
@@ -12,4 +11,3 @@ test-report full-report:
 
 # run make test as part of make check
 check-local: test
-

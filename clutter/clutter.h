@@ -30,6 +30,7 @@
 
 #include "clutter-actor.h"
 #include "clutter-alpha.h"
+#include "clutter-animation.h"
 #include "clutter-backend.h"
 #include "clutter-color.h"
 #include "clutter-container.h"
@@ -50,6 +51,7 @@
 #include "clutter-feature.h"
 #include "clutter-rectangle.h"
 #include "clutter-group.h"
+#include "clutter-interval.h"
 #include "clutter-keysyms.h" 
 #include "clutter-label.h"
 #include "clutter-list-model.h"

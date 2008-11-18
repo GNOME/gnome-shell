@@ -765,7 +765,7 @@ test_layout_main (int argc, char *argv[])
                     NULL);
 
   behaviour = clutter_behaviour_scale_new (clutter_alpha_new_full (main_timeline,
-                                                                   CLUTTER_ALPHA_SINE,
+                                                                   clutter_sine_func,
                                                                    NULL, NULL),
                                            1.0, 1.0, 2.0, 2.0);
 

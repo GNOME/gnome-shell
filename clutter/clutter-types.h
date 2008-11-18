@@ -186,6 +186,33 @@ typedef enum {
   CLUTTER_REQUEST_WIDTH_FOR_HEIGHT
 } ClutterRequestMode;
 
+/**
+ * ClutterAnimationMode:
+ * @CLUTTER_CUSTOM_MODE: custom progress function
+ * @CLUTTER_LINEAR: linear progress
+ * @CLUTTER_SINE_IN: sine-in progress
+ * @CLUTTER_SINE_OUT: sine-out progress
+ * @CLUTTER_SINE_IN_OUT: sine-in-out progress
+ * @CLUTTER_EASE_IN: ease-in progress
+ * @CLUTTER_EASE_OUT: ease-out progress
+ * @CLUTTER_EASE_IN_OUT: ease-in-out progress
+ *
+ * The animation modes used by #ClutterAlpha and #ClutterAnimation. This
+ * enumeration can be expanded in later versions of Clutter.
+ *
+ * Since: 1.0
+ */
+typedef enum {
+  CLUTTER_CUSTOM_MODE,
+  CLUTTER_LINEAR,
+  CLUTTER_SINE_IN,
+  CLUTTER_SINE_OUT,
+  CLUTTER_SINE_IN_OUT,
+  CLUTTER_EASE_IN,
+  CLUTTER_EASE_OUT,
+  CLUTTER_EASE_IN_OUT
+} ClutterAnimationMode;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TYPES_H__ */

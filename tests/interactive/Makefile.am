@@ -35,7 +35,9 @@ UNIT_TESTS = \
 	test-clip.c \
 	test-paint-wrapper.c \
 	test-texture-quality.c \
-	test-layout.c
+	test-layout.c \
+        test-animation.c \
+        test-easing.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c

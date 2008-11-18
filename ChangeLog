@@ -1,5 +1,79 @@
 2008-11-17  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1014 - Clutter Animation API Improvements
+
+	* clutter/Makefile.am:
+	* clutter/clutter.h: Update the build
+
+	* clutter/clutter-types.h: Add AnimationMode, an enumeration
+	for easing functions.
+
+	* clutter/clutter-alpha.[ch]: Add the :mode property to
+	control the function bound to an Alpha instance using an
+	enumeration value. Also add six new alpha functions:
+
+		- ease-in, ease-out, ease-in-out
+		- sine-in, sine-out, sine-in-out
+
+	* clutter/clutter-deprecated.h: Deprecate the #defines for
+	the alpha functions. They will be replaced by entries in the
+	ClutterAnimationMode.
+
+	* clutter/clutter-interval.[ch]: Add ClutterInterval, an
+	object for defining, validating and computing an interval
+	between two values.
+
+	* clutter/clutter-animation.[ch]: Add ClutterAnimation, an
+	object responsible for animation the properties of a single
+	actor along an interval of values. ClutterAnimation memory
+	management is automatic. A simple wrapper method for
+	ClutterActor is provided:
+
+		clutter_actor_animate()
+
+	which will create, or update, an animation for the passed
+	actor.
+
+	* clutter/clutter-debug.h:
+	* clutter/clutter-main.c: Add a new 'animation' debug note.
+
+	* clutter/clutter-script.c: Clean up the alpha functions
+	whitelist, and add the new functions.
+
+	* doc/reference/clutter/Makefile.am:
+	* doc/reference/clutter/clutter-sections.txt: Update the
+	API reference.
+
+	* doc/reference/clutter/clutter-animation.xml: Renamed to
+	doc/reference/clutter/clutter-animation-tutorial.xml to
+	avoid clashes with the ClutterAnimation section.
+
+	* doc/reference/clutter/clutter-docs.sgml: Renamed to
+	doc/reference/clutter/clutter-docs.xml, as it was an XML
+	file and not a SGML file.
+
+	* tests/Makefile.am:
+	* tests/interactive/Makefile.am:
+	* tests/interactive/test-animation.c:
+	* tests/interactive/test-easing.c: Add two tests for the
+	new simple animation API and the easing functions.
+
+	* tests/interactive/test-actors.c:
+	* tests/interactive/test-behave.c:
+	* tests/interactive/test-depth.c:
+	* tests/interactive/test-effects.c:
+	* tests/interactive/test-layout.c:
+	* tests/interactive/test-multistage.c:
+	* tests/interactive/test-paint-wrapper.c:
+	* tests/interactive/test-rotate.c:
+	* tests/interactive/test-scale.c:
+	* tests/interactive/test-texture-quality.c:
+	* tests/interactive/test-threads.c:
+	* tests/interactive/test-viewport.c: Update interactive tests
+	to the deprecations and new alpha API.
+
+2008-11-17  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/clutter-entry.c:
 	* clutter/clutter-label.c:
 	* clutter/clutter-rectangle.c:

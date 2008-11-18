@@ -160,7 +160,7 @@ test_depth_main (int argc, char *argv[])
                     NULL);
 
   d_behave = clutter_behaviour_depth_new (clutter_alpha_new_full (timeline,
-                                                                  CLUTTER_ALPHA_RAMP_INC,
+                                                                  clutter_ramp_inc_func,
                                                                   NULL, NULL),
                                           -100, 100);
   clutter_behaviour_apply (d_behave, label);
@@ -171,7 +171,7 @@ test_depth_main (int argc, char *argv[])
   clutter_actor_set_position (janus, 300, 350);
 
   r_behave = clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
-                                                                  CLUTTER_ALPHA_RAMP_INC,
+                                                                  clutter_ramp_inc_func,
                                                                   NULL, NULL),
                                           CLUTTER_Y_AXIS,
                                           CLUTTER_ROTATE_CW,
@@ -188,7 +188,7 @@ test_depth_main (int argc, char *argv[])
   clutter_actor_set_opacity (box, 0x44);
 
   r_behave = clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
-                                                                  CLUTTER_ALPHA_RAMP_INC,
+                                                                  clutter_ramp_inc_func,
                                                                   NULL, NULL),
                                           CLUTTER_Y_AXIS,
                                           CLUTTER_ROTATE_CW,

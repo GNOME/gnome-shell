@@ -52,4 +52,17 @@
 #define clutter_actor_get_abs_size                   clutter_actor_get_abs_size_REPLACED_BY_clutter_actor_get_transformed_size
 #define clutter_actor_get_abs_opacity                clutter_actor_get_abs_opacity_REPLACED_BY_clutter_actor_get_paint_opacity
 
+#define CLUTTER_ALPHA_RAMP_INC          CLUTTER_ALPHA_RAMP_INC_DEPRECATED_BY_clutter_ramp_inc_func
+#define CLUTTER_ALPHA_RAMP_DEC          CLUTTER_ALPHA_RAMP_DEC_DEPRECATED_BY_clutter_ramp_dec_func
+#define CLUTTER_ALPHA_RAMP              CLUTTER_ALPHA_RAMP_DEPRECATED_BY_clutter_ramp_func
+#define CLUTTER_ALPHA_SINE_INC          CLUTTER_ALPHA_SINE_INC_DEPRECATED_BY_clutter_sine_inc_func
+#define CLUTTER_ALPHA_SINE_DEC          CLUTTER_ALPHA_SINE_DEC_DEPRECATED_BY_clutter_sine_dec_func
+#define CLUTTER_ALPHA_SINE_HALF         CLUTTER_ALPHA_SINE_HALF_DEPRECATED_BY_clutter_sine_half_func
+#define CLUTTER_ALPHA_SINE              CLUTTER_ALPHA_SINE_DEPRECATED_BY_clutter_sine_func
+#define CLUTTER_ALPHA_SQUARE            CLUTTER_ALPHA_SQUARE_DEPRECATED_BY_clutter_quare_func
+#define CLUTTER_ALPHA_SMOOTHSTEP_INC    CLUTTER_ALPHA_SMOOTHSTEP_INC_DEPRECATED_BY_clutter_smoothstep_inc_func
+#define CLUTTER_ALPHA_SMOOTHSTEP_DEC    CLUTTER_ALPHA_SMOOTHSTEP_DEC_DEPRECATED_BY_clutter_smoothstep_dec_func
+#define CLUTTER_ALPHA_EXP_INC           CLUTTER_ALPHA_EXP_INC_DEPRECATED_BY_clutter_exp_inc_func
+#define CLUTTER_ALPHA_EXP_DEC           CLUTTER_ALPHA_EXP_DEC_DEPRECATED_BY_clutter_exp_dec_func
+
 #endif /* CLUTTER_DEPRECATED_H */

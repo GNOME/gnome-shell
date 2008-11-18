@@ -37,12 +37,11 @@ test_viewport_main (int argc, char *argv[])
 
   /* Make a timeline */
   timeline = clutter_timeline_new (200, 26); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, NULL);  
+  clutter_timeline_set_loop (timeline, TRUE);
 
-  /* Set an alpha func to power behaviour - ramp is constant rise/fall */
-  alpha = clutter_alpha_new_full (timeline,
-                                  CLUTTER_ALPHA_RAMP_INC,
-                                  NULL, NULL);
+  /* Set an alpha func to power behaviour */
+  alpha = clutter_alpha_new_for_mode (CLUTTER_LINEAR);
+  clutter_alpha_set_timeline (alpha, timeline);
 
   /* Create a behaviour for that alpha */
   r_behave = clutter_behaviour_rotate_new (alpha,

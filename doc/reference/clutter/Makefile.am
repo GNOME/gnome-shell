@@ -12,7 +12,7 @@ AUTOMAKE_OPTIONS = 1.6
 DOC_MODULE=clutter
 
 # The top-level SGML file. You can change this if you want to.
-DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
+DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
 
 # The directory containing the source code. Relative to $(srcdir).
 # gtk-doc will search all .c & .h files beneath here for inline comments
@@ -99,7 +99,7 @@ HTML_IMAGES=\
 content_files= \
 	version.xml \
 	subclassing-ClutterActor.xml \
-        clutter-animation.xml \
+        clutter-animation-tutorial.xml \
 	creating-behaviours.xml \
 	clutter-overview.xml \
 	building-clutter.xml
@@ -109,7 +109,7 @@ content_files= \
 # e.g. expand_content_files=running.sgml
 expand_content_files= \
 	subclassing-ClutterActor.xml \
-        clutter-animation.xml \
+        clutter-animation-tutorial.xml \
 	creating-behaviours.xml \
 	clutter-overview.xml \
 	building-clutter.xml

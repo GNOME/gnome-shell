@@ -47,6 +47,7 @@ BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 source_h =					\
 	$(srcdir)/clutter-actor.h		\
 	$(srcdir)/clutter-alpha.h		\
+	$(srcdir)/clutter-animation.h           \
 	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-behaviour.h     	\
 	$(srcdir)/clutter-behaviour-bspline.h 	\
@@ -68,6 +69,7 @@ source_h =					\
 	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-frame-source.h        \
 	$(srcdir)/clutter-group.h 		\
+        $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
 	$(srcdir)/clutter-label.h 		\
 	$(srcdir)/clutter-list-model.h		\
@@ -133,6 +135,7 @@ CLEANFILES = $(STAMPFILES)
 source_c = \
         clutter-actor.c			\
 	clutter-alpha.c 		\
+	clutter-animation.c             \
 	clutter-backend.c		\
         clutter-behaviour.c 		\
 	clutter-behaviour-bspline.c	\
@@ -155,6 +158,7 @@ source_c = \
 	clutter-frame-source.c		\
 	clutter-group.c 		\
 	clutter-id-pool.c 		\
+        clutter-interval.c              \
 	clutter-label.c 		\
 	clutter-list-model.c		\
 	clutter-main.c 			\

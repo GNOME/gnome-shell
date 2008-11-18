@@ -526,66 +526,26 @@ static const struct
   const gchar *short_name;
   ClutterAlphaFunc symbol;
 } clutter_alphas[] = {
-  {
-    "clutter_ramp_inc_func",
-    "ramp-inc",
-    CLUTTER_ALPHA_RAMP_INC
-  },
-  {
-    "clutter_ramp_dec_func",
-    "ramp-dec",
-    CLUTTER_ALPHA_RAMP_DEC
-  },
-  {
-    "clutter_ramp_func",
-    "ramp",
-    CLUTTER_ALPHA_RAMP
-  },
-  {
-    "clutter_sine_inc_func",
-    "sine-inc",
-    CLUTTER_ALPHA_SINE_INC
-  },
-  {
-    "clutter_sine_dec_func",
-    "sine-dec",
-    CLUTTER_ALPHA_SINE_DEC
-  },
-  {
-    "clutter_sine_half_func",
-    "sine-half",
-    CLUTTER_ALPHA_SINE_HALF
-  },
-  {
-    "clutter_sine_func",
-    "sine",
-    CLUTTER_ALPHA_SINE
-  },
-  {
-    "clutter_square_func",
-    "square",
-    CLUTTER_ALPHA_SQUARE
-  },
-  {
-    "clutter_smoothstep_inc_func",
-    "smoothstep-inc",
-    CLUTTER_ALPHA_SMOOTHSTEP_INC
-  },
-  {
-    "clutter_smoothstep_dec_func",
-    "smoothstep-dec",
-    CLUTTER_ALPHA_SMOOTHSTEP_DEC
-  },
-  {
-    "clutter_exp_inc_func",
-    "exp-inc",
-    CLUTTER_ALPHA_EXP_INC
-  },
-  {
-    "clutter_exp_dec_func",
-    "exp-dec",
-    CLUTTER_ALPHA_EXP_DEC
-  }
+#define ALPHA_FUNC(func,nick)   { #func, nick, func }
+  ALPHA_FUNC (clutter_ramp_inc_func,       "ramp-inc"),
+  ALPHA_FUNC (clutter_ramp_dec_func,       "ramp-dec"),
+  ALPHA_FUNC (clutter_ramp_func,           "ramp"),
+  ALPHA_FUNC (clutter_sine_inc_func,       "sine-inc"),
+  ALPHA_FUNC (clutter_sine_dec_func,       "sine-dec"),
+  ALPHA_FUNC (clutter_sine_half_func,      "sine-half"),
+  ALPHA_FUNC (clutter_sine_in_func,        "sine-in"),
+  ALPHA_FUNC (clutter_sine_out_func,       "sine-out"),
+  ALPHA_FUNC (clutter_sine_in_out_func,    "sine-in-out"),
+  ALPHA_FUNC (clutter_sine_func,           "sine"),
+  ALPHA_FUNC (clutter_square_func,         "square"),
+  ALPHA_FUNC (clutter_smoothstep_inc_func, "smoothstep-inc"),
+  ALPHA_FUNC (clutter_smoothstep_dec_func, "smoothstep-dec"),
+  ALPHA_FUNC (clutter_exp_inc_func,        "exp-inc"),
+  ALPHA_FUNC (clutter_exp_dec_func,        "exp-dec"),
+  ALPHA_FUNC (clutter_ease_in_func,        "ease-in"),
+  ALPHA_FUNC (clutter_ease_out_func,       "ease-out"),
+  ALPHA_FUNC (clutter_ease_in_out_func,    "ease-in-out")
+#undef ALPHA_FUNC
 };
 
 static const gint n_clutter_alphas = G_N_ELEMENTS (clutter_alphas);

@@ -101,9 +101,10 @@
     </chapter>
 
     <chapter>
-      <title>Simple effects API</title>
+      <title>High Level API</title>
 
-      <xi:include href="xml/clutter-effect.xml"/>
+      <xi:include href="xml/clutter-interval.xml"/>
+      <xi:include href="xml/clutter-animation.xml"/>
     </chapter>
 
   </part>
@@ -164,7 +165,7 @@
 
     <xi:include href="subclassing-ClutterActor.xml"/>
 
-    <xi:include href="clutter-animation.xml"/>
+    <xi:include href="clutter-animation-tutorial.xml"/>
 
     <xi:include href="creating-behaviours.xml"/>
 
