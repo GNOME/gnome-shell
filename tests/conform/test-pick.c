@@ -102,7 +102,7 @@ test_pick (TestConformSimpleFixture *fixture,
 
 
   if (g_test_verbose ())
-    g_print ("end result: %s\n", state.pass ? "FAIL" : "pass");
+    g_print ("end result: %s\n", state.pass ? "pass" : "FAIL");
 
   g_assert (state.pass);
 }

@@ -1,5 +1,10 @@
 2008-11-18  Neil Roberts  <neil@linux.intel.com>
 
+	* tests/conform/test-pick.c (test_pick): The final result message
+	when --verbose is used was the wrong way around
+
+2008-11-18  Neil Roberts  <neil@linux.intel.com>
+
 	* tests/conform/test-conform-main.c (main): Fixed a typo in the
 	name of the path for test_realized.
 
