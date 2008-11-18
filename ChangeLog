@@ -1,3 +1,10 @@
+2008-11-18  Neil Roberts  <neil@linux.intel.com>
+
+	* tests/conform/test-timeline.c (test_timeline): Remove the delay
+	idle handler after the test is finished, otherwise it will
+	continue running during subsequent tests. This was breaking
+	test_timeline_interpolate.
+
 2008-11-18  Robert Bragg  <robert@linux.intel.com>
 	
 	* clutter/cogl/common/cogl-mesh.c:

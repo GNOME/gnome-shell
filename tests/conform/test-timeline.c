@@ -185,6 +185,7 @@ test_timeline (TestConformSimpleFixture *fixture,
   gchar **markers;
   gsize n_markers;
   gboolean pass = TRUE;
+  guint delay_tag;
 
   timeline_data_init (&data_1, 1);
   timeline_1 = clutter_timeline_new (FRAME_COUNT, 30);
@@ -279,7 +280,7 @@ test_timeline (TestConformSimpleFixture *fixture,
   clutter_timeline_start (timeline_3);
 
   clutter_threads_add_timeout (2000, timeout_cb, NULL);
-  clutter_threads_add_timeout (99, delay_cb, NULL);
+  delay_tag = clutter_threads_add_timeout (99, delay_cb, NULL);
 
   clutter_main ();
 
@@ -297,6 +298,8 @@ test_timeline (TestConformSimpleFixture *fixture,
   timeline_data_destroy (&data_1);
   timeline_data_destroy (&data_2);
   timeline_data_destroy (&data_3);
+
+  g_source_remove (delay_tag);
 
   if (g_test_verbose ())
     g_print ("Overall result: %s\n", pass == TRUE ? "PASS" : "FAIL");
