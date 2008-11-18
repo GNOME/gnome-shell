@@ -85,7 +85,7 @@ tidy-enum-types.c: stamp-tidy-enum-types.h tidy/tidy-enum-types.c.in
 	cp xgen-tetc tidy-enum-types.c && \
 	rm -f xgen-tetc
 
-lib_LTLIBRARIES = libtidy-1.0.la
+noinst_LTLIBRARIES = libtidy-1.0.la
 
 libtidy_1_0_la_LIBADD = $(TIDY_LIBS)
 libtidy_1_0_la_SOURCES = \

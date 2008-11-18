@@ -41,7 +41,7 @@ na-marshal.c: Makefile tray/na-marshal.list
 	cp -f xgen-tmc na-marshal.c && \
 	rm -f xgen-tmc
 
-lib_LTLIBRARIES += libtray.la
+noinst_LTLIBRARIES += libtray.la
 
 libtray_la_LIBADD = $(TRAY_LIBS)
 libtray_la_SOURCES =	\
