@@ -33,8 +33,8 @@ on_button_press (ClutterActor       *actor,
   ClutterAnimation *animation;
   ClutterAnimationMode cur_mode;
   gchar *text;
-  gint stage_width, stage_height;
-  gint label_width, label_height;
+  guint stage_width, stage_height;
+  guint label_width, label_height;
 
   text = g_strdup_printf ("Easing mode: %s (%d of %d)\n",
                           easing_modes[current_mode].name,
@@ -71,8 +71,8 @@ test_easing_main (int argc, char *argv[])
   ClutterColor stage_color = { 0x66, 0x66, 0xdd, 0xff };
   ClutterColor rect_color = { 0x44, 0xdd, 0x44, 0xff };
   gchar *text;
-  gint stage_width, stage_height;
-  gint label_width, label_height;
+  guint stage_width, stage_height;
+  guint label_width, label_height;
 
   clutter_init (&argc, &argv);
 

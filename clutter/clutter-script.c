@@ -2323,7 +2323,8 @@ clutter_script_add_search_paths (ClutterScript       *script,
   for (i = 0; i < n_paths; i++, iter++)
     new_paths[iter] = g_strdup (paths[i]);
 
-  CLUTTER_NOTE (SCRIPT, "Added %d new search paths (new size: %d)",
+  CLUTTER_NOTE (SCRIPT,
+                "Added %" G_GSIZE_FORMAT " new search paths (new size: %d)",
                 n_paths,
                 g_strv_length (new_paths));
 

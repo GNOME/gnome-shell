@@ -1,5 +1,23 @@
 2008-11-18  Neil Roberts  <neil@linux.intel.com>
 
+	Fixed some trivial compiler warnings
+
+	* tests/interactive/test-pixmap.c (create_pixmap): Use a format
+	string instead of passing the error message directly to g_error.
+
+	* tests/interactive/test-easing.c (test_easing_main)
+	(on_button_press):
+	* tests/interactive/test-animation.c (on_button_press): Use
+	unsigned variables for the results from clutter_actor_get_size
+	otherwise it complains about the pointer signedness being
+	different.
+
+	* clutter/clutter-script.c (clutter_script_add_search_paths): Use
+	G_GSIZE_FORMAT instead of %d for a gsize parameter otherwise it
+	gets upset on 64-bit.
+
+2008-11-18  Neil Roberts  <neil@linux.intel.com>
+
 	* tests/conform/test-timeline.c (test_timeline): Remove the delay
 	idle handler after the test is finished, otherwise it will
 	continue running during subsequent tests. This was breaking

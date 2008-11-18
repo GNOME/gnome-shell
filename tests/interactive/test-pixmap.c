@@ -94,7 +94,7 @@ create_pixmap (guint *width, guint *height, guint *depth)
 
   pixbuf = gdk_pixbuf_new_from_file (IMAGE, &error);
   if (error)
-    g_error (error->message);
+    g_error ("%s", error->message);
 
   /* We assume that the image had an alpha channel */
   g_assert (gdk_pixbuf_get_has_alpha (pixbuf));

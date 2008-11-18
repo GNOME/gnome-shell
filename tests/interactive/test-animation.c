@@ -22,7 +22,7 @@ on_button_press (ClutterActor       *actor,
 {
   ClutterAnimation *animation;
   gint old_x, old_y, new_x, new_y;
-  gint old_width, old_height, new_width, new_height;
+  guint old_width, old_height, new_width, new_height;
   guint8 old_op, new_op;
 
   clutter_actor_get_position (actor, &old_x, &old_y);
