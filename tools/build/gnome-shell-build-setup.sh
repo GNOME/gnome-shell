@@ -47,5 +47,13 @@ if test "x`echo $PATH | grep $HOME/bin`" = x; then
     echo
 fi
 
+system=`lsb_release -is`
+if test x$system = xUbuntu -o x$system = xDebian ; then
+    if dpkg --status xulrunner-1.9-dev > /dev/null 2>&1; then : ; else
+        echo "Please run, as root, 'apt-get install xulrunner-1.9-dev' before building gnome-shell."
+        echo
+    fi
+fi
+
 echo "Done."
 
