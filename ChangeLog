@@ -1,5 +1,11 @@
 2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/clutter-texture.c:
+	(clutter_texture_get_preferred_width): Fix the usage of the
+	fixed point division macro.
+
+2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* tests/conform/test-conform-main.c (main): Do not run the
 	conformance test suite if we are on X11 but we do not have
 	a DISPLAY available. Some of the tests require a DISPLAY,

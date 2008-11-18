@@ -332,7 +332,7 @@ clutter_texture_get_preferred_width (ClutterActor *self,
               /* Set the natural width so as to preserve the aspect ratio */
               ClutterFixed ratio, height;
 
-              ratio = COGL_FIXED_MUL (COGL_FIXED_FROM_INT (priv->width),
+              ratio = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (priv->width),
                                       COGL_FIXED_FROM_INT (priv->height));
 
               height = CLUTTER_UNITS_TO_FIXED (for_height);
