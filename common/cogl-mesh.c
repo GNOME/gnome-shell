@@ -300,7 +300,6 @@ validate_custom_attribute_name (const char *attribute_name)
 {
   char *detail_seperator = NULL;
   int name_len;
-  const char *p;
   int i;
 
   detail_seperator = strstr (attribute_name, "::");
@@ -309,11 +308,13 @@ validate_custom_attribute_name (const char *attribute_name)
   else
     name_len = strlen (attribute_name);
 
-  if (name_len == 0 || !g_ascii_isalpha (*p) || *p != '_')
+  if (name_len == 0
+      || !g_ascii_isalpha (attribute_name[0])
+      || attribute_name[0] != '_')
     return FALSE;
   
   for (i = 1; i < name_len; i++)
-    if (!g_ascii_isalnum (*p) || *p != '_')
+    if (!g_ascii_isalnum (attribute_name[i]) || attribute_name[i] != '_')
       return FALSE;
 
   return TRUE;
