@@ -80,8 +80,15 @@ Overlay.prototype = {
 	    this._desktop_x = screen_width - this._desktop_width - 10;
 	    this._desktop_y = Panel.PANEL_HEIGHT + (screen_height - this._desktop_height - Panel.PANEL_HEIGHT) / 2;
 
+            // If a file manager is displaying desktop icons, there will be a desktop window.
+            // This window will have the size of the whole desktop. When such window is not present 
+            // (e.g. when the preference for showing icons on the desktop is disabled by the user 
+            // or we are running inside a Xephyr window), we should create a desktop rectangle 
+            // to serve as the background.
 	    if (desktop_window)
 		this._createDesktopClone(desktop_window);
+            else 
+                this._createDesktopRectangle();
 
 	    // Count the total number of windows so we know what layout scheme to use
 	    let n_windows = 0;
@@ -138,10 +145,31 @@ Overlay.prototype = {
 					       reactive: true,
 					       x: 0,
 					       y: 0 });
-	this._window_clones.push(clone);
-	this._group.add_actor(clone);
+        this._addDesktop(clone);
+    },
 
-	Tweener.addTween(clone,
+    _createDesktopRectangle : function() {   
+        let global = Shell.global_get();
+        // In the case when we have a desktop window from the file manager, its height is
+        // full-screen, i.e. it includes the height of the panel, so we should not subtract
+        // the height of the panel from global.screen_height here either to have them show
+        // up identically.
+        // We are also using (0,0) coordinates in both cases which makes the background
+        // window animate out from behind the panel. 
+	let desktop_rectangle = new Clutter.Rectangle({ color: global.stage.color,
+					                reactive: true,
+					                x: 0,
+					                y: 0,
+                                                        width: global.screen_width,
+                                                        height: global.screen_height });
+        this._addDesktop(desktop_rectangle);
+    },
+
+    _addDesktop : function(desktop) {
+	this._window_clones.push(desktop);
+	this._group.add_actor(desktop);
+
+	Tweener.addTween(desktop,
 			 { x: this._desktop_x,
 			   y: this._desktop_y,
 			   scale_x: DESKTOP_SCALE,
@@ -151,7 +179,7 @@ Overlay.prototype = {
 			 });
 
 	let me = this;
-	clone.connect("button-press-event",
+	desktop.connect("button-press-event",
 		      function() {
 			  me._deactivate();
 		      });
