@@ -238,9 +238,10 @@ set_shader_num (ClutterActor *actor, gint new_no)
         {
           clutter_actor_set_shader (actor, NULL);
           clutter_actor_set_shader (actor, shader);
-          clutter_actor_set_shader_param (actor, "radius", 3.0);
-          clutter_actor_set_shader_param (actor, "brightness", 0.4);
-          clutter_actor_set_shader_param (actor, "contrast", -1.9);
+          clutter_actor_set_shader_param_int (actor, "tex", 0);
+          clutter_actor_set_shader_param_float (actor, "radius", 3.0);
+          clutter_actor_set_shader_param_float (actor, "brightness", 0.4);
+          clutter_actor_set_shader_param_float (actor, "contrast", -1.9);
 
 	  if (CLUTTER_IS_TEXTURE (actor))
 	    {
@@ -249,10 +250,10 @@ set_shader_num (ClutterActor *actor, gint new_no)
 	      tex_height = clutter_actor_get_height (actor);
 	      tex_height = clutter_util_next_p2 (tex_height);
 
-	      clutter_actor_set_shader_param (actor, "x_step",
-					      1.0f / tex_width);
-	      clutter_actor_set_shader_param (actor, "y_step",
-					      1.0f / tex_height);
+	      clutter_actor_set_shader_param_float (actor, "x_step",
+					            1.0f / tex_width);
+	      clutter_actor_set_shader_param_float (actor, "y_step",
+					            1.0f / tex_height);
   	    }
         }
     }
@@ -376,10 +377,10 @@ test_shader_main (gint argc, gchar *argv[])
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
 
+  clutter_actor_set_shader_param_int (actor, "tex", 0);
+  clutter_actor_set_shader_param_float (actor, "brightness", 0.4);
+  clutter_actor_set_shader_param_float (actor, "contrast", -1.9);
 
-  clutter_actor_set_shader_param (actor, "brightness", 0.4);
-  clutter_actor_set_shader_param (actor, "contrast", -1.9);
-                                 
   clutter_actor_set_reactive (actor, TRUE);
   g_signal_connect (actor, "button-release-event",
                     G_CALLBACK (button_release_cb), NULL);

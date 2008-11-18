@@ -505,6 +505,12 @@ gboolean              clutter_actor_set_shader                (ClutterActor     
 ClutterShader *       clutter_actor_get_shader                (ClutterActor          *self);
 void                  clutter_actor_set_shader_param          (ClutterActor          *self,
                                                                const gchar           *param,
+                                                               const GValue          *value);
+void                  clutter_actor_set_shader_param_int      (ClutterActor          *self,
+                                                               const gchar           *param,
+                                                               gint                   value);
+void                  clutter_actor_set_shader_param_float    (ClutterActor          *self,
+                                                               const gchar           *param,
                                                                gfloat                 value);
 
 void     clutter_actor_set_anchor_point               (ClutterActor   *self,

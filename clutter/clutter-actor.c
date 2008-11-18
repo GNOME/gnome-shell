@@ -7085,27 +7085,21 @@ clutter_actor_box_get_type (void)
 
 /******************************************************************************/
 
-typedef struct _BoxedFloat BoxedFloat;
-
-struct _BoxedFloat
-{
-  gfloat value;
-};
-
-static void
-boxed_float_free (gpointer data)
-{
-  if (G_LIKELY (data))
-    g_slice_free (BoxedFloat, data);
-}
-
 struct _ShaderData
 {
   ClutterShader *shader;
-  GHashTable    *float1f_hash; /*< list of values that should be set
+  GHashTable    *value_hash;   /*< list of GValue's that should be set
                                 *  on the shader before each paint cycle
                                 */
 };
+
+static void
+shader_value_free (gpointer data)
+{
+  GValue *var = data;
+  g_value_unset (var);
+  g_slice_free (GValue, var);
+}
 
 static void
 destroy_shader_data (ClutterActor *self)
@@ -7122,10 +7116,10 @@ destroy_shader_data (ClutterActor *self)
       shader_data->shader = NULL;
     }
 
-  if (shader_data->float1f_hash)
+  if (shader_data->value_hash)
     {
-      g_hash_table_destroy (shader_data->float1f_hash);
-      shader_data->float1f_hash = NULL;
+      g_hash_table_destroy (shader_data->value_hash);
+      shader_data->value_hash = NULL;
     }
 
   g_free (shader_data);
@@ -7196,10 +7190,10 @@ clutter_actor_set_shader (ClutterActor  *self,
   if (!shader_data)
     {
       actor_priv->shader_data = shader_data = g_new0 (ShaderData, 1);
-      shader_data->float1f_hash =
+      shader_data->value_hash =
         g_hash_table_new_full (g_str_hash, g_str_equal,
                                g_free,
-                               boxed_float_free);
+                               shader_value_free);
     }
   if (shader_data->shader)
     {
@@ -7224,10 +7218,10 @@ set_each_param (gpointer key,
                 gpointer value,
                 gpointer user_data)
 {
-  ClutterShader *shader = CLUTTER_SHADER (user_data);
-  BoxedFloat *box = value;
+  ClutterShader *shader      = user_data;
+  GValue        *var         = value;
 
-  clutter_shader_set_uniform_1f (shader, key, box->value);
+  clutter_shader_set_uniform (shader, (const gchar *)key, var);
 }
 
 static void
@@ -7252,7 +7246,7 @@ clutter_actor_shader_pre_paint (ClutterActor *actor,
     {
       clutter_shader_set_is_enabled (shader, TRUE);
 
-      g_hash_table_foreach (shader_data->float1f_hash, set_each_param, shader);
+      g_hash_table_foreach (shader_data->value_hash, set_each_param, shader);
 
       if (!repeat)
         context->shaders = g_slist_prepend (context->shaders, actor);
@@ -7301,19 +7295,24 @@ clutter_actor_shader_post_paint (ClutterActor *actor)
  * Sets the value for a named parameter of the shader applied
  * to @actor.
  *
- * Since: 0.6
+ * Since: 1.0
  */
 void
 clutter_actor_set_shader_param (ClutterActor *self,
                                 const gchar  *param,
-                                gfloat        value)
+                                const GValue *value)
 {
   ClutterActorPrivate *priv;
   ShaderData *shader_data;
-  BoxedFloat *box;
+  GValue *var;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (param != NULL);
+  g_return_if_fail (CLUTTER_VALUE_HOLDS_SHADER_FLOAT (value) ||
+                    CLUTTER_VALUE_HOLDS_SHADER_INT (value) ||
+                    CLUTTER_VALUE_HOLDS_SHADER_MATRIX (value) ||
+                    G_VALUE_HOLDS_FLOAT (value) ||
+                    G_VALUE_HOLDS_INT (value));
 
   priv = self->priv;
   shader_data = priv->shader_data;
@@ -7321,12 +7320,65 @@ clutter_actor_set_shader_param (ClutterActor *self,
   if (!shader_data)
     return;
 
-  box = g_slice_new (BoxedFloat);
-  box->value = value;
-  g_hash_table_insert (shader_data->float1f_hash, g_strdup (param), box);
+  var = g_slice_new0 (GValue);
+  g_value_init (var, G_VALUE_TYPE (value));
+  g_value_copy (value, var);
+  g_hash_table_insert (shader_data->value_hash, g_strdup (param), var);
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);
+}
+
+/**
+ * clutter_actor_set_shader_param_float:
+ * @self: a #ClutterActor
+ * @param: the name of the parameter
+ * @value: the value of the parameter
+ *
+ * Sets the value for a named float parameter of the shader applied
+ * to @actor.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_set_shader_param_float (ClutterActor *self,
+                                      const gchar  *param,
+                                      gfloat        value)
+{
+  GValue var = { 0, };
+
+  g_value_init (&var, G_TYPE_FLOAT);
+  g_value_set_float (&var, value);
+
+  clutter_actor_set_shader_param (self, param, &var);
+
+  g_value_unset (&var);
+}
+
+/**
+ * clutter_actor_set_shader_param_int:
+ * @self: a #ClutterActor
+ * @param: the name of the parameter
+ * @value: the value of the parameter
+ *
+ * Sets the value for a named int parameter of the shader applied to
+ * @actor.
+ *
+ * Since: 0.8
+ */
+void
+clutter_actor_set_shader_param_int (ClutterActor *self,
+                                    const gchar  *param,
+                                    gint          value)
+{
+  GValue var = { 0, };
+
+  g_value_init (&var, G_TYPE_INT);
+  g_value_set_int (&var, value);
+
+  clutter_actor_set_shader_param (self, param, &var);
+
+  g_value_unset (&var);
 }
 
 /**

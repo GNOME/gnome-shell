@@ -1503,6 +1503,10 @@ clutter_shader_is_compiled
 clutter_shader_set_is_enabled
 clutter_shader_get_is_enabled
 clutter_shader_set_uniform_1f
+clutter_shader_set_uniform
+clutter_shader_get_cogl_program
+clutter_shader_get_cogl_fragment_shader
+clutter_shader_get_cogl_vertex_shader
 
 <SUBSECTION Standard>
 CLUTTER_IS_SHADER

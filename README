@@ -170,6 +170,12 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 1.0
 -------------------------------
 
+* The clutter_actor_set_shader_param() function now takes a
+  GValue, which can be set using the clutter_value_set_shader()
+  family of functions. The floating point wrapper has been
+  rename clutter_actor_set_shader_param_float() to match the newly
+  added clutter_actor_set_shader_param_int().
+
 * The Pango renderer API has been exposed as public API, after
   a full rename from PangoClutter to CoglPango, to avoid namespace
   collisions with upstream Pango. The Pango font map, renderer and

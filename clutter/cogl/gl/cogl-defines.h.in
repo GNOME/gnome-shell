@@ -838,11 +838,6 @@ typedef void
    GLint                *params);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLUNIFORM1FARBPROC)
-  (GLint                 location,
-   GLfloat               v0);
-
-typedef void
   (APIENTRYP		 COGL_PFNGLVERTEXATTRIBPOINTERARBPROC)
   (GLuint		 index,
    GLint		 size,
@@ -896,6 +891,127 @@ typedef void
   (APIENTRYP		 COGL_PFNGLDELETEBUFFERSARBPROC)
   (GLsizei		 n,
    const GLuint		*buffers);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM1FARBPROC)
+  (GLint                 location,
+   GLfloat               v0);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM2FARBPROC)
+  (GLint                 location,
+   GLfloat               v0,
+   GLfloat               v1);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM3FARBPROC)
+  (GLint                 location,
+   GLfloat               v0,
+   GLfloat               v1,
+   GLfloat               v2);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM4FARBPROC)
+  (GLint                 location,
+   GLfloat               v0,
+   GLfloat               v1,
+   GLfloat               v2,
+   GLfloat               v3);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM1FVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   const GLfloat *       value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM2FVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   const GLfloat *       value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM3FVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   const GLfloat *       value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM4FVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   const GLfloat *       value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM1IARBPROC)
+  (GLint                 location,
+   GLint                 v0);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM2IARBPROC)
+  (GLint                 location,
+   GLint                 v0,
+   GLint                 v1);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM3IARBPROC)
+  (GLint                 location,
+   GLint                 v0,
+   GLint                 v1,
+   GLint                 v2);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM4IARBPROC)
+  (GLint                 location,
+   GLint                 v0,
+   GLint                 v1,
+   GLint                 v2,
+   GLint                 v3);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM1IVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   const GLint *         value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM2IVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   const GLint *         value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM3IVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   const GLint *         value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORM4IVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   const GLint *         value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORMMATRIX2FVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   GLboolean             transpose,
+   const GLfloat        *value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORMMATRIX3FVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   GLboolean             transpose,
+   const GLfloat        *value);
+
+typedef void
+  (APIENTRYP             COGL_PFNGLUNIFORMMATRIX4FVARBPROC)
+  (GLint                 location,
+   GLsizei               count,
+   GLboolean             transpose,
+   const GLfloat        *value);
 
 G_END_DECLS
 

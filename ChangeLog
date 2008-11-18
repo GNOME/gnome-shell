@@ -1,5 +1,44 @@
 2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	Bug 1049 - Clutter doesn't support most GLSL uniforms (patch
+	by Chris Lord and Neil Roberts)
+
+	* README: Update release notes.
+
+	* clutter/Makefile.am:
+	* clutter/clutter-shader-types.[ch]: Add GValue types for
+	shader values.
+
+	* clutter/clutter-actor.[ch]: Update the shader API to use
+	the newly added GValue support for GLSL shader uniform
+	setters.
+
+	* clutter/clutter-shader.[ch]: Add float and integer convenience
+	API for single value GLSL uniform setters.
+
+	* clutter/cogl/cogl-shader.h: Add new uniform setters.
+
+	* clutter/cogl/gl/cogl-context.c:
+	* clutter/cogl/gl/cogl-context.h:
+	* clutter/cogl/gl/cogl-defines.h.in:
+	* clutter/cogl/gl/cogl-program.c:
+	* clutter/cogl/gl/cogl.c: Update the GL implementation of COGL
+	to handle the GLSL uniform setters.
+
+	* clutter/cogl/gles/cogl-gles2-wrapper.c:
+	* clutter/cogl/gles/cogl-gles2-wrapper.h:
+	* clutter/cogl/gles/cogl-internal.h:
+	* clutter/cogl/gles/cogl-program.c: Update the GLES 2.0 implementation
+	of COGL to handle the GLSL uniform setters.
+
+	* doc/reference/clutter/clutter-sections.txt:
+	* doc/reference/cogl/cogl-sections.txt: Update the documentation.
+
+	* tests/interactive/test-fbo.c:
+	* tests/interactive/test-shader.c: Update the shader tests.
+
+2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/clutter-texture.c:
 	(clutter_texture_get_preferred_width): Fix the usage of the
 	fixed point division macro.

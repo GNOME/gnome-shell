@@ -163,13 +163,92 @@ void
 cogl_program_uniform_1f (COGLint uniform_no,
                          gfloat  value)
 {
+  cogl_program_uniform_float (uniform_no, 1, 1, &value);
+}
+
+static void
+cogl_program_uniform_x (COGLint uniform_no,
+			gint size,
+			gint count,
+			CoglBoxedType type,
+			size_t value_size,
+			gconstpointer value)
+{
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (uniform_no >= 0 && uniform_no < COGL_GLES2_NUM_CUSTOM_UNIFORMS)
+  if (uniform_no >= 0 && uniform_no < COGL_GLES2_NUM_CUSTOM_UNIFORMS
+      && size >= 1 && size <= 4 && count >= 1)
     {
-      ctx->gles2.custom_uniforms[uniform_no] = value;
+      CoglBoxedValue *bv = ctx->gles2.custom_uniforms + uniform_no;
+
+      if (count == 1)
+	{
+	  if (bv->count > 1)
+	    g_free (bv->v.array);
+
+	  memcpy (bv->v.float_value, value, value_size);
+	}
+      else
+	{
+	  if (bv->count > 1)
+	    {
+	      if (bv->count != count || bv->size != size || bv->type != type)
+		{
+		  g_free (bv->v.array);
+		  bv->v.array = g_malloc (count * value_size);
+		}
+	    }
+	  else
+	    bv->v.array = g_malloc (count * value_size);
+
+	  memcpy (bv->v.array, value, count * value_size);
+	}
+
+      bv->type = type;
+      bv->size = size;
+      bv->count = count;
+
       ctx->gles2.dirty_custom_uniforms |= 1 << uniform_no;
     }
+}
+
+void
+cogl_program_uniform_float (COGLint  uniform_no,
+                            gint     size,
+                            gint     count,
+                            const GLfloat *value)
+{
+  cogl_program_uniform_x (uniform_no, size, count, COGL_BOXED_FLOAT,
+			  sizeof (float) * size, value);
+}
+
+void
+cogl_program_uniform_int (COGLint  uniform_no,
+			  gint   size,
+			  gint   count,
+			  const GLint *value)
+{
+  cogl_program_uniform_x (uniform_no, size, count, COGL_BOXED_INT,
+			  sizeof (gint) * size, value);
+}
+
+void
+cogl_program_uniform_matrix (COGLint   uniform_no,
+                             gint      size,
+                             gint      count,
+                             gboolean  transpose,
+                             const GLfloat  *value)
+{
+  CoglBoxedValue *bv;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  bv = ctx->gles2.custom_uniforms + uniform_no;
+
+  cogl_program_uniform_x (uniform_no, size, count, COGL_BOXED_MATRIX,
+			  sizeof (float) * size * size, value);
+
+  bv->transpose = transpose;
 }
 
 #else /* HAVE_COGL_GLES2 */
@@ -227,5 +306,31 @@ cogl_program_uniform_1f (COGLint uniform_no,
                          gfloat  value)
 {
 }
+
+void
+cogl_program_uniform_float (COGLint  uniform_no,
+                            gint     size,
+                            gint     count,
+                            const GLfloat *value)
+{
+}
+
+void
+cogl_program_uniform_int (COGLint  uniform_no,
+                          gint     size,
+                          gint     count,
+                          const COGLint *value)
+{
+}
+
+void
+cogl_program_uniform_matrix (COGLint   uniform_no,
+                             gint      size,
+                             gint      count,
+                             gboolean  transpose,
+                             const GLfloat  *value)
+{
+}
+
 
 #endif /* HAVE_COGL_GLES2 */

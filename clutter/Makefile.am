@@ -81,6 +81,7 @@ source_h =					\
 	$(srcdir)/clutter-script.h		\
 	$(srcdir)/clutter-scriptable.h		\
 	$(srcdir)/clutter-shader.h		\
+	$(srcdir)/clutter-shader-types.h	\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-stage-manager.h	\
 	$(srcdir)/clutter-texture.h 		\
@@ -171,6 +172,7 @@ source_c = \
 	clutter-script-parser.c		\
 	clutter-scriptable.c		\
 	clutter-shader.c		\
+	clutter-shader-types.c		\
 	clutter-stage.c			\
 	clutter-stage-manager.c		\
 	clutter-stage-window.c		\

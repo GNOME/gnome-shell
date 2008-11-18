@@ -142,10 +142,10 @@ test_fbo_main (gint argc, gchar *argv[])
   /* apply a shader to it */
   shader = make_shader();
   clutter_actor_set_shader (fbo, shader);
-  clutter_actor_set_shader_param (fbo, "radius", 2.0);
-  clutter_actor_set_shader_param (fbo, "x_step",
+  clutter_actor_set_shader_param_float (fbo, "radius", 2.0);
+  clutter_actor_set_shader_param_float (fbo, "x_step",
 				  1.0f / clutter_util_next_p2 (fbo_width));
-  clutter_actor_set_shader_param (fbo, "y_step",
+  clutter_actor_set_shader_param_float (fbo, "y_step",
 				  1.0f / clutter_util_next_p2 (fbo_height));
 
   /* Third from cloning the fbo texture */

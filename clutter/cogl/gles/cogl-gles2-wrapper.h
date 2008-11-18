@@ -26,6 +26,8 @@
 #ifndef __COGL_GLES2_WRAPPER_H__
 #define __COGL_GLES2_WRAPPER_H__
 
+#include "cogl-internal.h"
+
 G_BEGIN_DECLS
 
 #ifdef HAVE_COGL_GLES2
@@ -131,7 +133,7 @@ struct _CoglGles2Wrapper
   GLfloat fog_start;
   GLfloat fog_end;
   GLfloat fog_color[4];
-  GLfloat custom_uniforms[COGL_GLES2_NUM_CUSTOM_UNIFORMS];
+  CoglBoxedValue custom_uniforms[COGL_GLES2_NUM_CUSTOM_UNIFORMS];
 };
 
 struct _CoglGles2WrapperProgram

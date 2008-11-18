@@ -94,6 +94,24 @@ cogl_create_context ()
   _context->pf_glGetInfoLogARB = NULL;
   _context->pf_glGetObjectParameterivARB = NULL;
   _context->pf_glUniform1fARB = NULL;
+  _context->pf_glUniform2fARB = NULL;
+  _context->pf_glUniform3fARB = NULL;
+  _context->pf_glUniform4fARB = NULL;
+  _context->pf_glUniform1fvARB = NULL;
+  _context->pf_glUniform2fvARB = NULL;
+  _context->pf_glUniform3fvARB = NULL;
+  _context->pf_glUniform4fvARB = NULL;
+  _context->pf_glUniform1iARB = NULL;
+  _context->pf_glUniform2iARB = NULL;
+  _context->pf_glUniform3iARB = NULL;
+  _context->pf_glUniform4iARB = NULL;
+  _context->pf_glUniform1ivARB = NULL;
+  _context->pf_glUniform2ivARB = NULL;
+  _context->pf_glUniform3ivARB = NULL;
+  _context->pf_glUniform4ivARB = NULL;
+  _context->pf_glUniformMatrix2fvARB = NULL;
+  _context->pf_glUniformMatrix3fvARB = NULL;
+  _context->pf_glUniformMatrix4fvARB = NULL;
   
   /* Init OpenGL state */
   GE( glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) );

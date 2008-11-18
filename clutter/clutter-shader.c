@@ -70,7 +70,6 @@ struct _ClutterShaderPrivate
 {
   guint       compiled         : 1; /* Shader is bound to the GL context */
   guint       is_enabled       : 1;
-
   guint       vertex_is_glsl   : 1;
   guint       fragment_is_glsl : 1;
 
@@ -94,9 +93,6 @@ enum
 };
 
 G_DEFINE_TYPE (ClutterShader, clutter_shader, G_TYPE_OBJECT);
-
-G_CONST_RETURN gchar *clutter_shader_get_source (ClutterShader      *shader,
-                                                 ClutterShaderType   type);
 
 static void
 clutter_shader_finalize (GObject *object)
@@ -192,7 +188,6 @@ clutter_shader_constructor (GType                  type,
 
   return object;
 }
-
 
 static void
 clutter_shader_class_init (ClutterShaderClass *klass)
@@ -341,8 +336,8 @@ clutter_shader_set_fragment_source (ClutterShader      *shader,
 
   g_free (priv->fragment_source);
 
-  CLUTTER_NOTE (SHADER, "setting fragment shader (GLSL:%s, len:%" 
-		G_GSSIZE_FORMAT ")",
+  CLUTTER_NOTE (SHADER,
+                "setting fragment shader (GLSL:%s, len:%" G_GSSIZE_FORMAT ")",
                 is_glsl ? "yes" : "no",
                 length);
 
@@ -387,8 +382,8 @@ clutter_shader_set_vertex_source (ClutterShader      *shader,
 
   g_free (priv->vertex_source);
 
-  CLUTTER_NOTE (SHADER, "setting vertex shader (GLSL:%s, len:%" 
-		G_GSSIZE_FORMAT ")",
+  CLUTTER_NOTE (SHADER,
+                "setting vertex shader (GLSL:%s, len:%" G_GSSIZE_FORMAT ")",
                 is_glsl ? "yes" : "no",
                 length);
 
@@ -668,6 +663,7 @@ clutter_shader_set_uniform_1f (ClutterShader *shader,
   GLfloat               foo      = value;
 
   g_return_if_fail (CLUTTER_IS_SHADER (shader));
+  g_return_if_fail (name != NULL);
 
   priv = shader->priv;
 
@@ -675,13 +671,83 @@ clutter_shader_set_uniform_1f (ClutterShader *shader,
   cogl_program_uniform_1f (location, foo);
 }
 
+/**
+ * clutter_shader_set_uniform:
+ * @shader: a #ClutterShader.
+ * @name: name of uniform in GLSL shader program to set.
+ * @value: a #ClutterShaderFloat, #ClutterShaderInt or #ClutterShaderMatrix
+ *         #GValue.
+ *
+ * Sets a user configurable variable in the GLSL shader programs attached to
+ * a #ClutterShader.
+ *
+ * Since: 1.0
+ */
+void
+clutter_shader_set_uniform (ClutterShader *shader,
+                            const gchar   *name,
+                            const GValue  *value)
+{
+  ClutterShaderPrivate *priv;
+  GLint                 location = 0;
+  gsize                 size;
+
+  g_return_if_fail (CLUTTER_IS_SHADER (shader));
+  g_return_if_fail (name != NULL);
+  g_return_if_fail (value != NULL);
+  g_return_if_fail (CLUTTER_VALUE_HOLDS_SHADER_FLOAT (value) ||
+                    CLUTTER_VALUE_HOLDS_SHADER_INT (value) ||
+                    CLUTTER_VALUE_HOLDS_SHADER_MATRIX (value) ||
+                    G_VALUE_HOLDS_FLOAT (value) ||
+                    G_VALUE_HOLDS_INT (value));
+
+  priv = shader->priv;
+  g_return_if_fail (priv->program != COGL_INVALID_HANDLE);
+
+  location = cogl_program_get_uniform_location (priv->program, name);
+
+  if (CLUTTER_VALUE_HOLDS_SHADER_FLOAT (value))
+    {
+      const GLfloat *floats;
+
+      floats = clutter_value_get_shader_float (value, &size);
+      cogl_program_uniform_float (location, size, 1, floats);
+    }
+  else if (CLUTTER_VALUE_HOLDS_SHADER_INT (value))
+    {
+      const COGLint *ints;
+
+      ints = clutter_value_get_shader_int (value, &size);
+      cogl_program_uniform_int (location, size, 1, ints);
+    }
+  else if (CLUTTER_VALUE_HOLDS_SHADER_MATRIX (value))
+    {
+      const GLfloat *matrix;
+
+      matrix = clutter_value_get_shader_matrix (value, &size);
+      cogl_program_uniform_matrix (location, size, 1, FALSE, matrix);
+    }
+  else if (G_VALUE_HOLDS_FLOAT (value))
+    {
+      GLfloat float_val = g_value_get_float (value);
+
+      cogl_program_uniform_float (location, 1, 1, &float_val);
+    }
+  else if (G_VALUE_HOLDS_INT (value))
+    {
+      COGLint int_val = g_value_get_int (value);
+
+      cogl_program_uniform_int (location, 1, 1, &int_val);
+    }
+  else
+    g_assert_not_reached ();
+}
+
 /*
  * _clutter_shader_release_all:
  *
  * Iterate through all #ClutterShaders and tell them to release GL context
  * related sources.
- *
- * Since: 0.6
  */
 void
 _clutter_shader_release_all (void)
@@ -728,6 +794,57 @@ clutter_shader_get_vertex_source (ClutterShader *shader)
 {
   g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
   return shader->priv->vertex_source;
+}
+
+/**
+ * clutter_shader_get_cogl_program:
+ * @shader: a #ClutterShader
+ *
+ * Retrieves the underlying #CoglHandle for the shader program.
+ *
+ * Return value: A #CoglHandle for the shader program, or %NULL
+ *
+ * Since: 1.0
+ */
+CoglHandle
+clutter_shader_get_cogl_program (ClutterShader *shader)
+{
+  g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
+  return shader->priv->program;
+}
+
+/**
+ * clutter_shader_get_cogl_fragment_shader:
+ * @shader: a #ClutterShader
+ *
+ * Retrieves the underlying #CoglHandle for the fragment shader.
+ *
+ * Return value: A #CoglHandle for the fragment shader, or %NULL
+ *
+ * Since: 1.0
+ */
+CoglHandle
+clutter_shader_get_cogl_fragment_shader (ClutterShader *shader)
+{
+  g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
+  return shader->priv->fragment_shader;
+}
+
+/**
+ * clutter_shader_get_cogl_vertex_shader:
+ * @shader: a #ClutterShader
+ *
+ * Retrieves the underlying #CoglHandle for the vertex shader.
+ *
+ * Return value: A #CoglHandle for the vertex shader, or %NULL
+ *
+ * Since: 1.0
+ */
+CoglHandle
+clutter_shader_get_cogl_vertex_shader (ClutterShader *shader)
+{
+  g_return_val_if_fail (CLUTTER_IS_SHADER (shader), NULL);
+  return shader->priv->vertex_shader;
 }
 
 GQuark

@@ -26,6 +26,30 @@
 #ifndef __COGL_INTERNAL_H
 #define __COGL_INTERNAL_H
 
+typedef enum {
+  COGL_BOXED_NONE,
+  COGL_BOXED_INT,
+  COGL_BOXED_FLOAT,
+  COGL_BOXED_MATRIX
+} CoglBoxedType;
+
+typedef struct _CoglBoxedValue
+{
+  CoglBoxedType type;
+  int size, count;
+  gboolean transpose;
+
+  union {
+    gfloat float_value[4];
+    gint int_value[4];
+    gfloat matrix[16];
+    gfloat *float_array;
+    gint *int_array;
+    gpointer array;
+  } v;
+} CoglBoxedValue;
+
+
 #define COGL_DEBUG 0
 
 #if COGL_DEBUG

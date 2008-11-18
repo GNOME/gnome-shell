@@ -188,10 +188,10 @@ void            cogl_program_link             (CoglHandle        handle);
 
 /**
  * cogl_program_use:
- * @handle: a #CoglHandle for a shader program or COGL_INVALID_HANDLE.
+ * @handle: a #CoglHandle for a shader program or %COGL_INVALID_HANDLE.
  *
  * Activate a specific shader program replacing that part of the GL
- * rendering pipeline, if passed in COGL_INVALID_HANDLE the default
+ * rendering pipeline, if passed in %COGL_INVALID_HANDLE the default
  * behavior of GL is reinstated.
  */
 void            cogl_program_use              (CoglHandle        handle);
@@ -201,28 +201,76 @@ void            cogl_program_use              (CoglHandle        handle);
  * @handle: a #CoglHandle for a shader program.
  * @uniform_name: the name of a uniform.
  *
- * Retrieve the location (offset) of a uniform variable in a shader program, a
- * uniform is a variable that is constant for all vertices/fragments for a
+ * Retrieve the location (offset) of a uniform variable in a shader program,
+ * a uniform is a variable that is constant for all vertices/fragments for a
  * shader object and is possible to modify as an external parameter.
  *
- * Returns: the offset of a uniform in a specified program, this uniform can be
- * set using #cogl_program_uniform_1f when the program is in use.
+ * Return value: the offset of a uniform in a specified program.
+ *   This uniform can be set using cogl_program_uniform_1f() when the
+ *   program is in use.
  */
 COGLint         cogl_program_get_uniform_location
                                               (CoglHandle        handle,
                                                const gchar      *uniform_name);
-
 
 /**
  * cogl_program_uniform_1f:
  * @uniform_no: the unform to set.
  * @value: the new value of the uniform.
  *
- * Changes the value of a uniform in the currently used (see #cogl_program_use)
- * shader program.
+ * Changes the value of a uniform in the currently used (see
+ * cogl_program_use()) shader program.
  */
 void            cogl_program_uniform_1f       (COGLint           uniform_no,
                                                gfloat            value);
+
+ /**
+ * cogl_program_uniform_float:
+ * @uniform_no: the uniform to set.
+ * @size: Size of float vector.
+ * @count: Size of array of uniforms.
+ * @value: the new value of the uniform.
+ *
+ * Changes the value of a float vector uniform, or uniform array in the
+ * currently used (see #cogl_program_use) shader program.
+ */
+void            cogl_program_uniform_float    (COGLint           uniform_no,
+                                               gint              size,
+                                               gint              count,
+                                               const GLfloat    *value);
+
+/**
+ * cogl_program_uniform_int:
+ * @uniform_no: the uniform to set.
+ * @size: Size of int vector.
+ * @count: Size of array of uniforms.
+ * @value: the new value of the uniform.
+ *
+ * Changes the value of a int vector uniform, or uniform array in the
+ * currently used (see cogl_program_use()) shader program.
+ */
+void            cogl_program_uniform_int      (COGLint           uniform_no,
+                                               gint              size,
+                                               gint              count,
+                                               const COGLint    *value);
+
+/**
+ * cogl_program_uniform_matrix:
+ * @uniform_no: the uniform to set.
+ * @size: Size of matrix.
+ * @count: Size of array of uniforms.
+ * @transpose: Whether to transpose the matrix when setting the uniform.
+ * @value: the new value of the uniform.
+ *
+ * Changes the value of a matrix uniform, or uniform array in the
+ * currently used (see cogl_program_use()) shader program. The @size
+ * parameter is used to determine the square size of the matrix.
+ */
+void            cogl_program_uniform_matrix   (COGLint           uniform_no,
+                                               gint              size,
+                                               gint              count,
+                                               gboolean          transpose,
+                                               const GLfloat    *value);
 
 G_END_DECLS
 
