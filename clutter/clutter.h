@@ -67,6 +67,8 @@
 #include "clutter-score.h"
 #include "clutter-script.h"
 #include "clutter-scriptable.h"
+#include "clutter-shader.h"
+#include "clutter-shader-types.h"
 #include "clutter-types.h"
 #include "clutter-units.h"
 #include "clutter-util.h"

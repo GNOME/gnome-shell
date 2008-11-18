@@ -1,5 +1,10 @@
 2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/clutter.h: Add clutter-shader.h and
+	clutter-shader-types.h to the global include.
+
+2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/cogl/cogl-shader.h: Add a function for setting an
 	integer uniform, similar to cogl_program_uniform_1f().
 
