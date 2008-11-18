@@ -462,6 +462,7 @@ void
 cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
 {
   GSList *node, *next;
+  int i;
 
   for (node = wrapper->compiled_programs; node; node = next)
     {
@@ -486,6 +487,10 @@ cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper)
       g_slist_free1 (node);
     }
   wrapper->compiled_fragment_shaders = NULL;
+
+  for (i = 0; i < COGL_GLES2_NUM_CUSTOM_UNIFORMS; i++)
+    if (wrapper->custom_uniforms[i].count > 1)
+      g_free (wrapper->custom_uniforms[i].v.array);
 }
 
 void
@@ -814,6 +819,78 @@ cogl_wrap_glNormalPointer (GLenum type, GLsizei stride, const GLvoid *pointer)
 			 GL_FALSE, stride, pointer);
 }
 
+static void
+cogl_gles2_do_set_uniform (GLint location, CoglBoxedValue *value)
+{
+  switch (value->type)
+    {
+    case COGL_BOXED_NONE:
+      break;
+
+    case COGL_BOXED_INT:
+      {
+	gint *ptr;
+
+	if (value->count == 1)
+	  ptr = value->v.int_value;
+	else
+	  ptr = value->v.int_array;
+
+	switch (value->size)
+	  {
+	  case 1: glUniform1iv (location, value->count, ptr); break;
+	  case 2: glUniform2iv (location, value->count, ptr); break;
+	  case 3: glUniform3iv (location, value->count, ptr); break;
+	  case 4: glUniform4iv (location, value->count, ptr); break;
+	  }
+      }
+      break;
+
+    case COGL_BOXED_FLOAT:
+      {
+	gfloat *ptr;
+
+	if (value->count == 1)
+	  ptr = value->v.float_value;
+	else
+	  ptr = value->v.float_array;
+
+	switch (value->size)
+	  {
+	  case 1: glUniform1fv (location, value->count, ptr); break;
+	  case 2: glUniform2fv (location, value->count, ptr); break;
+	  case 3: glUniform3fv (location, value->count, ptr); break;
+	  case 4: glUniform4fv (location, value->count, ptr); break;
+	  }
+      }
+      break;
+
+    case COGL_BOXED_MATRIX:
+      {
+	gfloat *ptr;
+
+	if (value->count == 1)
+	  ptr = value->v.matrix;
+	else
+	  ptr = value->v.float_array;
+
+	switch (value->size)
+	  {
+	  case 2:
+	    glUniformMatrix2fv (location, value->count, value->transpose, ptr);
+	    break;
+	  case 3:
+	    glUniformMatrix3fv (location, value->count, value->transpose, ptr);
+	    break;
+	  case 4:
+	    glUniformMatrix4fv (location, value->count, value->transpose, ptr);
+	    break;
+	  }
+      }
+      break;
+    }
+}
+
 void
 cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count)
 {
@@ -914,8 +991,8 @@ cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count)
 		  program->custom_uniforms[i]
 		    = glGetUniformLocation (program->program, uniform_name);
 		if (program->custom_uniforms[i] >= 0)
-		  glUniform1f (program->custom_uniforms[i],
-			       w->custom_uniforms[i]);
+		  cogl_gles2_do_set_uniform (program->custom_uniforms[i],
+					     &w->custom_uniforms[i]);
 	      }
 	}
       

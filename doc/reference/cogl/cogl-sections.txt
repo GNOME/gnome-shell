@@ -138,6 +138,9 @@ cogl_program_link
 cogl_program_use
 cogl_program_get_uniform_location
 cogl_program_uniform_1f
+cogl_program_uniform_float
+cogl_program_uniform_int
+cogl_program_uniform_matrix
 </SECTION>
 
 <SECTION>

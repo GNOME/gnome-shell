@@ -43,6 +43,24 @@
 #define glLinkProgramARB                ctx->pf_glLinkProgramARB
 #define glGetUniformLocationARB         ctx->pf_glGetUniformLocationARB
 #define glUniform1fARB                  ctx->pf_glUniform1fARB
+#define glUniform2fARB                  ctx->pf_glUniform2fARB
+#define glUniform3fARB                  ctx->pf_glUniform3fARB
+#define glUniform4fARB                  ctx->pf_glUniform4fARB
+#define glUniform1fvARB                 ctx->pf_glUniform1fvARB
+#define glUniform2fvARB                 ctx->pf_glUniform2fvARB
+#define glUniform3fvARB                 ctx->pf_glUniform3fvARB
+#define glUniform4fvARB                 ctx->pf_glUniform4fvARB
+#define glUniform1iARB                  ctx->pf_glUniform1iARB
+#define glUniform2iARB                  ctx->pf_glUniform2iARB
+#define glUniform3iARB                  ctx->pf_glUniform3iARB
+#define glUniform4iARB                  ctx->pf_glUniform4iARB
+#define glUniform1ivARB                 ctx->pf_glUniform1ivARB
+#define glUniform2ivARB                 ctx->pf_glUniform2ivARB
+#define glUniform3ivARB                 ctx->pf_glUniform3ivARB
+#define glUniform4ivARB                 ctx->pf_glUniform4ivARB
+#define glUniformMatrix2fvARB           ctx->pf_glUniformMatrix2fvARB
+#define glUniformMatrix3fvARB           ctx->pf_glUniformMatrix3fvARB
+#define glUniformMatrix4fvARB           ctx->pf_glUniformMatrix4fvARB
 #define glDeleteObjectARB               ctx->pf_glDeleteObjectARB
 
 static void _cogl_program_free (CoglProgram *program);
@@ -121,7 +139,7 @@ cogl_program_use (CoglHandle handle)
     {
       program = _cogl_program_pointer_from_handle (handle);
       gl_handle = program->gl_handle;
-    }  
+    }
 
   glUseProgramObjectARB (gl_handle);
 }
@@ -147,4 +165,83 @@ cogl_program_uniform_1f (COGLint uniform_no,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   glUniform1fARB (uniform_no, value);
+}
+
+void
+cogl_program_uniform_float (COGLint  uniform_no,
+                            gint     size,
+                            gint     count,
+                            const GLfloat *value)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  switch (size)
+    {
+    case 1:
+      glUniform1fvARB (uniform_no, count, value);
+      break;
+    case 2:
+      glUniform2fvARB (uniform_no, count, value);
+      break;
+    case 3:
+      glUniform3fvARB (uniform_no, count, value);
+      break;
+    case 4:
+      glUniform4fvARB (uniform_no, count, value);
+      break;
+    default:
+      g_warning ("%s called with invalid size parameter", G_STRFUNC);
+    }
+}
+
+void
+cogl_program_uniform_int (COGLint  uniform_no,
+                          gint     size,
+                          gint     count,
+                          const COGLint *value)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  switch (size)
+    {
+    case 1:
+      glUniform1ivARB (uniform_no, count, value);
+      break;
+    case 2:
+      glUniform2ivARB (uniform_no, count, value);
+      break;
+    case 3:
+      glUniform3ivARB (uniform_no, count, value);
+      break;
+    case 4:
+      glUniform4ivARB (uniform_no, count, value);
+      break;
+    default:
+      g_warning ("%s called with invalid size parameter", G_STRFUNC);
+    }
+}
+
+void
+cogl_program_uniform_matrix (COGLint   uniform_no,
+                             gint      size,
+                             gint      count,
+                             gboolean  transpose,
+                             const GLfloat  *value)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  switch (size)
+    {
+    case 2 :
+      glUniformMatrix2fvARB (uniform_no, count, transpose, value);
+      break;
+    case 3 :
+      glUniformMatrix3fvARB (uniform_no, count, transpose, value);
+      break;
+    case 4 :
+      glUniformMatrix4fvARB (uniform_no, count, transpose, value);
+      break;
+    default :
+      g_warning ("%s called with invalid size parameter", G_STRFUNC);
+    }
 }

@@ -96,7 +96,7 @@ typedef struct
   COGL_PFNGLDELETEOBJECTARBPROC                    pf_glDeleteObjectARB;
   COGL_PFNGLGETINFOLOGARBPROC                      pf_glGetInfoLogARB;
   COGL_PFNGLGETOBJECTPARAMETERIVARBPROC            pf_glGetObjectParameterivARB;
-  COGL_PFNGLUNIFORM1FARBPROC                       pf_glUniform1fARB;
+
   COGL_PFNGLVERTEXATTRIBPOINTERARBPROC		   pf_glVertexAttribPointerARB;
   COGL_PFNGLENABLEVERTEXATTRIBARRAYARBPROC	   pf_glEnableVertexAttribArrayARB;
   COGL_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC	   pf_glDisableVertexAttribArrayARB;
@@ -109,6 +109,25 @@ typedef struct
   COGL_PFNGLUNMAPBUFFERARBPROC			   pf_glUnmapBufferARB;
   COGL_PFNGLDELETEBUFFERSARBPROC		   pf_glDeleteBuffersARB;
 
+  COGL_PFNGLUNIFORM1FARBPROC                       pf_glUniform1fARB;
+  COGL_PFNGLUNIFORM2FARBPROC                       pf_glUniform2fARB;
+  COGL_PFNGLUNIFORM3FARBPROC                       pf_glUniform3fARB;
+  COGL_PFNGLUNIFORM4FARBPROC                       pf_glUniform4fARB;
+  COGL_PFNGLUNIFORM1FVARBPROC                      pf_glUniform1fvARB;
+  COGL_PFNGLUNIFORM2FVARBPROC                      pf_glUniform2fvARB;
+  COGL_PFNGLUNIFORM3FVARBPROC                      pf_glUniform3fvARB;
+  COGL_PFNGLUNIFORM4FVARBPROC                      pf_glUniform4fvARB;
+  COGL_PFNGLUNIFORM1IARBPROC                       pf_glUniform1iARB;
+  COGL_PFNGLUNIFORM2IARBPROC                       pf_glUniform2iARB;
+  COGL_PFNGLUNIFORM3IARBPROC                       pf_glUniform3iARB;
+  COGL_PFNGLUNIFORM4IARBPROC                       pf_glUniform4iARB;
+  COGL_PFNGLUNIFORM1IVARBPROC                      pf_glUniform1ivARB;
+  COGL_PFNGLUNIFORM2IVARBPROC                      pf_glUniform2ivARB;
+  COGL_PFNGLUNIFORM3IVARBPROC                      pf_glUniform3ivARB;
+  COGL_PFNGLUNIFORM4IVARBPROC                      pf_glUniform4ivARB;
+  COGL_PFNGLUNIFORMMATRIX2FVARBPROC                pf_glUniformMatrix2fvARB;
+  COGL_PFNGLUNIFORMMATRIX3FVARBPROC                pf_glUniformMatrix3fvARB;
+  COGL_PFNGLUNIFORMMATRIX4FVARBPROC                pf_glUniformMatrix4fvARB;
 } CoglContext;
 
 CoglContext *
