@@ -56,7 +56,8 @@ const char *_cogl_error_string(GLenum errorCode);
 #define COGL_ENABLE_TEXTURE_RECT      (1<<4)
 #define COGL_ENABLE_VERTEX_ARRAY      (1<<5)
 #define COGL_ENABLE_TEXCOORD_ARRAY    (1<<6)
-#define COGL_ENABLE_BACKFACE_CULLING  (1<<7)
+#define COGL_ENABLE_COLOR_ARRAY       (1<<7)
+#define COGL_ENABLE_BACKFACE_CULLING  (1<<8)
 
 gint
 _cogl_get_format_bpp (CoglPixelFormat format);

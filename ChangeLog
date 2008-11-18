@@ -1,5 +1,39 @@
 2008-11-18  Robert Bragg  <robert@linux.intel.com>
 
+	A comparison of gl/cogl-texture.c and gles/cogl-texture.c, to reduce
+	differences and improve maintainability.
+
+	* clutter/cogl/gl/cogl-context.h:
+	Adds a CoglTextureGLVertex typedef + texture_vertices and
+	texture_vertices_size members to CoglContext for using vertex arrays
+	like GLES does
+
+	* clutter/cogl/gl/cogl-context.c:
+	Initializes texture_vertices + texture_vertices_size members
+
+	* clutter/cogl/gl/cogl-internal.h:
+	Adds COGL_ENABLE_COLOR_ARRAY
+
+	* clutter/cogl/gl/cogl.c:
+	Add COGL_ENABLE_COLOR_ARRAY support to cogl_enable
+
+	* clutter/cogl/gles/cogl-context.h:
+	Change the CoglTextureGLVertex to use GLfloat for the position
+	and texture coord attributes and GLubyte for the color.
+
+	* clutter/cogl/gles/cogl-texture-private.h:
+	Adds a wrap_mode member like GL has.
+
+	* clutter/cogl/gl/cogl-texture.c
+	* clutter/cogl/gles/cogl-texture.c:
+	Improves the comparability of the files, such that the remaining
+	differences, better reflect the fundamental differences needed
+	between GL and GLES. Notably GL no longer uses glBegin/glEnd for
+	submitting vertices, it uses vertex arrays like GLES and this gives
+	a small but measurable fps improvement for test-text.
+
+2008-11-17  Robert Bragg  <robert@linux.intel.com>
+
 	* clutter/cogl/gl/cogl-internal.h
 	* clutter/cogl/gles/cogl-internal.h:
 	Removes semicolon after the GE() macro since that breaks using it as a

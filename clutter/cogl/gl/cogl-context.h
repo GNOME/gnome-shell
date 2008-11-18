@@ -30,6 +30,13 @@
 
 typedef struct
 {
+  GLfloat v[3];
+  GLfloat t[2];
+  GLubyte c[4];
+} CoglTextureGLVertex;
+
+typedef struct
+{
   /* Features cache */
   CoglFeatureFlags  feature_flags;
   gboolean          features_cached;
@@ -56,7 +63,9 @@ typedef struct
   GLfloat           inverse_projection[16];
   
   /* Textures */
-  GArray           *texture_handles;
+  GArray	      *texture_handles;
+  CoglTextureGLVertex *texture_vertices;
+  gulong               texture_vertices_size;
   
   /* Framebuffer objects */
   GArray           *fbo_handles;

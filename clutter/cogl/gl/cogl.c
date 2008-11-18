@@ -327,6 +327,9 @@ cogl_enable (gulong flags)
 			   COGL_ENABLE_TEXCOORD_ARRAY,
 			   GL_TEXTURE_COORD_ARRAY);
   
+  cogl_toggle_client_flag (ctx, flags,
+			   COGL_ENABLE_COLOR_ARRAY,
+			   GL_COLOR_ARRAY);
 }
 
 gulong
