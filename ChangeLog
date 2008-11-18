@@ -1,3 +1,8 @@
+2008-11-18  Neil Roberts  <neil@linux.intel.com>
+
+	* tests/conform/test-conform-main.c (main): Fixed a typo in the
+	name of the path for test_realized.
+
 2008-11-17  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	Bug 1014 - Clutter Animation API Improvements
