@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include <clutter/clutter.h>
 
 #include <glib.h>
@@ -30,6 +32,18 @@ int
 main (int argc, char **argv)
 {
   TestConformSharedState *shared_state = g_new0 (TestConformSharedState, 1);
+  const gchar *display;
+
+#ifdef HAVE_CLUTTER_GLX
+  /* on X11 we need a display connection to run the test suite */
+  display = g_getenv ("DISPLAY");
+  if (!display || *display == '\0')
+    {
+      g_print ("No DISPLAY found. Unable to run the conformance "
+               "test suite without a display.");
+      return EXIT_SUCCESS;
+    }
+#endif
 
   g_test_init (&argc, &argv, NULL);
   

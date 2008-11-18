@@ -1,5 +1,15 @@
 2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* tests/conform/test-conform-main.c (main): Do not run the
+	conformance test suite if we are on X11 but we do not have
+	a DISPLAY available. Some of the tests require a DISPLAY,
+	and everything passes through a clutter_init() call which will
+	fail anyway. If we are running make distcheck on an headless
+	box we might as well just skip the conformance test suite
+	without a meaningless error.
+
+2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* tests/conform/test-mesh-contiguous.c:
 	* tests/conform/test-mesh-interleved.c:
 	* tests/conform/test-mesh-mutability.c: Remove the last bare
