@@ -34,12 +34,14 @@ validate_result (TestState *state)
 
   /* Should see a red pixel */
   glReadPixels (110, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
-  g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
+  if (g_test_verbose ())
+    g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] != 0 && pixel[GREEN] == 0 && pixel[BLUE] == 0);
 
   /* Should see a green pixel */
   glReadPixels (210, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
-  g_print ("pixel 1 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
+  if (g_test_verbose ())
+    g_print ("pixel 1 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] == 0 && pixel[GREEN] != 0 && pixel[BLUE] == 0);
 
 #undef RED
@@ -195,6 +197,7 @@ test_mesh_mutability (TestConformSimpleFixture *fixture,
 
   cogl_mesh_unref (state.mesh);
 
-  g_print ("OK\n");
+  if (g_test_verbose ())
+    g_print ("OK\n");
 }
 

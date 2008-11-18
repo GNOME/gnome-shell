@@ -1,5 +1,12 @@
 2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* tests/conform/test-mesh-contiguous.c:
+	* tests/conform/test-mesh-interleved.c:
+	* tests/conform/test-mesh-mutability.c: Remove the last bare
+	g_print() from the conformance test suite.
+
+2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/clutter-alpha.h:
 	* clutter/clutter-alpha.c:
 	(clutter_alpha_set_mode): Use a lookup table to find the alpha

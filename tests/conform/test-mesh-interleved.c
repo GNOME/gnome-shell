@@ -36,6 +36,7 @@ validate_result (TestState *state)
 {
   GLubyte pixel[4];
   GLint y_off = state->stage_geom.height - 90;
+
   /* NB: glReadPixels is done in GL screen space so y = 0 is at the bottom */
 
   /* NB: We ignore the alpha, since we don't know if our render target is
@@ -47,7 +48,8 @@ validate_result (TestState *state)
 
   /* Should see a blue pixel */
   glReadPixels (10, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
-  g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
+  if (g_test_verbose ())
+    g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] == 0 && pixel[GREEN] == 0 && pixel[BLUE] != 0);
    
 #undef RED
@@ -162,6 +164,7 @@ test_mesh_interleved (TestConformSimpleFixture *fixture,
 
   cogl_mesh_unref (state.mesh);
 
-  g_print ("OK\n");
+  if (g_test_verbose ())
+    g_print ("OK\n");
 }
 
