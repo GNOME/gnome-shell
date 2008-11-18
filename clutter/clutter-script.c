@@ -518,7 +518,8 @@ construct_timeline (ClutterScript *script,
 }
 
 /* ugh. if g_module_open() fails (*cough* python *cough*) we need a fallback
- * for finding at least our own functions.
+ * for finding at least our own functions. keep the nick in sync with the
+ * ClutterAnimationMode enumeration
  */
 static const struct
 {
@@ -542,9 +543,14 @@ static const struct
   ALPHA_FUNC (clutter_smoothstep_dec_func, "smoothstep-dec"),
   ALPHA_FUNC (clutter_exp_inc_func,        "exp-inc"),
   ALPHA_FUNC (clutter_exp_dec_func,        "exp-dec"),
+  ALPHA_FUNC (clutter_ramp_inc_func,       "linear"),
   ALPHA_FUNC (clutter_ease_in_func,        "ease-in"),
   ALPHA_FUNC (clutter_ease_out_func,       "ease-out"),
-  ALPHA_FUNC (clutter_ease_in_out_func,    "ease-in-out")
+  ALPHA_FUNC (clutter_ease_in_out_func,    "ease-in-out"),
+  ALPHA_FUNC (clutter_exp_in_func,         "exp-in"),
+  ALPHA_FUNC (clutter_exp_out_func,        "exp-out"),
+  ALPHA_FUNC (clutter_exp_in_out_func,     "exp-in-out"),
+  ALPHA_FUNC (clutter_smoothstep_inc_func, "smooth-in-out")
 #undef ALPHA_FUNC
 };
 

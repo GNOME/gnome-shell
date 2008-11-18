@@ -1,3 +1,23 @@
+2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-alpha.c:
+	(clutter_alpha_set_mode): Use a lookup table to find the alpha
+	function given the animation mode.
+
+	(clutter_exp_in_func),
+	(clutter_exp_out_func),
+	(clutter_exp_in_out_func): Add new exponential functions.
+
+	* clutter/clutter-script.c: Update the lookup table with the
+	new animation modes; match "linear" to the ramp-inc alpha
+	function.
+
+	* clutter/clutter-types.h: Add new AnimationMode values.
+
+	* tests/interactive/test-easing.c: Update the easing functions
+	test.
+
 2008-11-18  Neil Roberts  <neil@linux.intel.com>
 
 	* tests/conform/test-pick.c (test_pick): The final result message

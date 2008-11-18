@@ -37,31 +37,16 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_ALPHA clutter_alpha_get_type()
+#define CLUTTER_TYPE_ALPHA              (clutter_alpha_get_type ())
+#define CLUTTER_ALPHA(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_ALPHA, ClutterAlpha))
+#define CLUTTER_ALPHA_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_ALPHA, ClutterAlphaClass))
+#define CLUTTER_IS_ALPHA(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_ALPHA))
+#define CLUTTER_IS_ALPHA_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_ALPHA))
+#define CLUTTER_ALPHA_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ALPHA, ClutterAlphaClass))
 
-#define CLUTTER_ALPHA(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_ALPHA, ClutterAlpha))
-
-#define CLUTTER_ALPHA_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CLUTTER_TYPE_ALPHA, ClutterAlphaClass))
-
-#define CLUTTER_IS_ALPHA(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_ALPHA))
-
-#define CLUTTER_IS_ALPHA_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CLUTTER_TYPE_ALPHA))
-
-#define CLUTTER_ALPHA_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CLUTTER_TYPE_ALPHA, ClutterAlphaClass))
-
-typedef struct _ClutterAlpha        ClutterAlpha;
-typedef struct _ClutterAlphaClass   ClutterAlphaClass; 
-typedef struct _ClutterAlphaPrivate ClutterAlphaPrivate;
+typedef struct _ClutterAlpha            ClutterAlpha;
+typedef struct _ClutterAlphaClass       ClutterAlphaClass;
+typedef struct _ClutterAlphaPrivate     ClutterAlphaPrivate;
 
 /**
  * ClutterAlphaFunc:
@@ -121,7 +106,7 @@ struct _ClutterAlphaClass
  *
  * Since: 0.2
  */
-#define CLUTTER_ALPHA_MAX_ALPHA 0xffff
+#define CLUTTER_ALPHA_MAX_ALPHA (0xffff)
 
 GType clutter_alpha_get_type (void) G_GNUC_CONST;
 
@@ -188,6 +173,13 @@ guint32             clutter_ease_in_func        (ClutterAlpha     *alpha,
 guint32             clutter_ease_out_func       (ClutterAlpha     *alpha,
                                                  gpointer          dummy);
 guint32             clutter_ease_in_out_func    (ClutterAlpha     *alpha,
+                                                 gpointer          dummy);
+
+guint32             clutter_exp_in_func         (ClutterAlpha     *alpha,
+                                                 gpointer          dummy);
+guint32             clutter_exp_out_func        (ClutterAlpha     *alpha,
+                                                 gpointer          dummy);
+guint32             clutter_exp_in_out_func     (ClutterAlpha     *alpha,
                                                  gpointer          dummy);
 
 G_END_DECLS

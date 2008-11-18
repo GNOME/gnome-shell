@@ -12,7 +12,11 @@ const struct {
   { "sine-in-out", CLUTTER_SINE_IN_OUT },
   { "ease-in", CLUTTER_EASE_IN },
   { "ease-out", CLUTTER_EASE_OUT },
-  { "ease-in-out", CLUTTER_EASE_IN_OUT }
+  { "ease-in-out", CLUTTER_EASE_IN_OUT },
+  { "expo-in", CLUTTER_EXPO_IN },
+  { "expo-out", CLUTTER_EXPO_OUT },
+  { "expo-in-out", CLUTTER_EXPO_IN_OUT },
+  { "smooth-in-out", CLUTTER_SMOOTH_IN_OUT }
 };
 
 static const gint n_easing_modes = G_N_ELEMENTS (easing_modes);

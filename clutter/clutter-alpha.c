@@ -32,14 +32,23 @@
  * of time.
  *
  * #ClutterAlpha is a class for calculating an integer value between
- * 0 and %CLUTTER_ALPHA_MAX_ALPHA as a function of time.  You should
- * provide a #ClutterTimeline and bind it to the #ClutterAlpha object;
- * you should also provide a function returning the alpha value depending
- * on the position inside the timeline; this function will be executed
- * each time a new frame in the #ClutterTimeline is reached.  Since the
- * alpha function is controlled by the timeline instance, you can pause
- * or stop the #ClutterAlpha from calling the alpha function by controlling
- * the #ClutterTimeline object.
+ * 0 and %CLUTTER_ALPHA_MAX_ALPHA as a function of time.
+ *
+ * A #ClutterAlpha binds a #ClutterTimeline to a progress function which
+ * translates the time T into an adimensional factor alpha. The factor can
+ * then be used to drive a #ClutterBehaviour, which will translate the
+ * alpha value into something meaningful for a #ClutterActor.
+ *
+ * You should provide a #ClutterTimeline and bind it to the #ClutterAlpha
+ * instance using clutter_alpha_set_timeline(); you should also provide a
+ * function returning the alpha value depending on the progress of the
+ * timeline, using clutter_alpha_set_func() or clutter_alpha_set_closure().
+ * The alpha function will be executed each time a new frame in the
+ * #ClutterTimeline is reached.
+ *
+ * Since the alpha function is controlled by the timeline instance, you can
+ * pause, stop or resume the #ClutterAlpha from calling the alpha function by
+ * using the appropriate functions of the #ClutterTimeline object.
  *
  * #ClutterAlpha is used to "drive" a #ClutterBehaviour instance.
  *
@@ -341,7 +350,7 @@ clutter_alpha_set_closure (ClutterAlpha *alpha,
 /**
  * clutter_alpha_set_func:
  * @alpha: A #ClutterAlpha
- * @func: A #ClutterAlphaAlphaFunc
+ * @func: A #ClutterAlphaFunc
  * @data: user data to be passed to the alpha function, or %NULL
  * @destroy: notify function used when disposing the alpha function
  *
@@ -517,6 +526,25 @@ clutter_alpha_get_mode (ClutterAlpha *alpha)
   return alpha->priv->mode;
 }
 
+/* XXX - keep in sync with ClutterAnimationMode */
+static const struct {
+  ClutterAnimationMode mode;
+  ClutterAlphaFunc func;
+} animation_modes[] = {
+  { CLUTTER_CUSTOM_MODE, NULL },
+  { CLUTTER_LINEAR, clutter_ramp_inc_func },
+  { CLUTTER_SINE_IN, clutter_sine_in_func },
+  { CLUTTER_SINE_OUT, clutter_sine_out_func },
+  { CLUTTER_SINE_IN_OUT, clutter_sine_in_out_func },
+  { CLUTTER_EASE_IN, clutter_ease_in_func },
+  { CLUTTER_EASE_OUT, clutter_ease_out_func },
+  { CLUTTER_EASE_IN_OUT, clutter_ease_in_out_func },
+  { CLUTTER_EXPO_IN, clutter_exp_in_func },
+  { CLUTTER_EXPO_OUT, clutter_exp_out_func },
+  { CLUTTER_EXPO_IN_OUT, clutter_exp_in_out_func },
+  { CLUTTER_SMOOTH_IN_OUT, clutter_smoothstep_inc_func }
+};
+
 /**
  * clutter_alpha_set_mode:
  * @alpha: a #ClutterAlpha
@@ -539,43 +567,10 @@ clutter_alpha_set_mode (ClutterAlpha      *alpha,
 
   priv->mode = mode;
 
-  switch (priv->mode)
-    {
-    case CLUTTER_LINEAR:
-      clutter_alpha_set_func (alpha, clutter_ramp_inc_func, NULL, NULL);
-      break;
-
-    case CLUTTER_SINE_IN:
-      clutter_alpha_set_func (alpha, clutter_sine_in_func, NULL, NULL);
-      break;
-
-    case CLUTTER_SINE_OUT:
-      clutter_alpha_set_func (alpha, clutter_sine_out_func, NULL, NULL);
-      break;
-
-    case CLUTTER_SINE_IN_OUT:
-      clutter_alpha_set_func (alpha, clutter_sine_inc_func, NULL, NULL);
-      break;
-
-    case CLUTTER_EASE_IN:
-      clutter_alpha_set_func (alpha, clutter_ease_in_func, NULL, NULL);
-      break;
-
-    case CLUTTER_EASE_OUT:
-      clutter_alpha_set_func (alpha, clutter_ease_out_func, NULL, NULL);
-      break;
-
-    case CLUTTER_EASE_IN_OUT:
-      clutter_alpha_set_func (alpha, clutter_ease_in_out_func, NULL, NULL);
-      break;
-
-    case CLUTTER_CUSTOM_MODE:
-      break;
-
-    default:
-      g_assert_not_reached ();
-      break;
-    }
+  /* sanity check to avoid getting an out of sync enum/function mapping */
+  g_assert (animation_modes[mode].mode == mode);
+  if (G_LIKELY (animation_modes[mode].func != NULL))
+    clutter_alpha_set_func (alpha, animation_modes[mode].func, NULL, NULL);
 
   g_object_notify (G_OBJECT (alpha), "mode");
 }
@@ -1398,4 +1393,56 @@ clutter_ease_in_out_func (ClutterAlpha *alpha,
   res = clutter_cubic_bezier (alpha, 0.42, 0, 0.58, 1);
 
   return CLAMP (res * CLUTTER_ALPHA_MAX_ALPHA, 0, CLUTTER_ALPHA_MAX_ALPHA);
+}
+
+guint32
+clutter_exp_in_func (ClutterAlpha *alpha,
+                     gpointer      dummy)
+{
+  ClutterTimeline *timeline;
+  gdouble          progress, res;
+
+  timeline = clutter_alpha_get_timeline (alpha);
+  progress = clutter_timeline_get_progress (timeline);
+
+  res = pow (2, 10 * (progress - 1));
+  res = CLAMP (res * CLUTTER_ALPHA_MAX_ALPHA, 0, CLUTTER_ALPHA_MAX_ALPHA);
+
+  return res;
+}
+
+guint32
+clutter_exp_out_func (ClutterAlpha *alpha,
+                      gpointer      dummy)
+{
+  ClutterTimeline *timeline;
+  gdouble          progress, res;
+
+  timeline = clutter_alpha_get_timeline (alpha);
+  progress = clutter_timeline_get_progress (timeline);
+
+  res = -pow (2, (-10 * progress)) + 1;
+  res = CLAMP (res * CLUTTER_ALPHA_MAX_ALPHA, 0, CLUTTER_ALPHA_MAX_ALPHA);
+
+  return res;
+}
+
+guint32
+clutter_exp_in_out_func (ClutterAlpha *alpha,
+                         gpointer      dummy)
+{
+  ClutterTimeline *timeline;
+  gdouble          progress, res;
+
+  timeline = clutter_alpha_get_timeline (alpha);
+  progress = clutter_timeline_get_progress (timeline);
+
+  if (progress < 0.5)
+    res = 0.5 * pow (2, (10 * (progress - 1)));
+  else
+    res = 0.5 * -pow (2, (-10 * progress)) + 1;
+
+  res = CLAMP (res * CLUTTER_ALPHA_MAX_ALPHA, 0, CLUTTER_ALPHA_MAX_ALPHA);
+
+  return res;
 }

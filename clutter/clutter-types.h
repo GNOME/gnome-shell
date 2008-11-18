@@ -196,6 +196,10 @@ typedef enum {
  * @CLUTTER_EASE_IN: ease-in progress
  * @CLUTTER_EASE_OUT: ease-out progress
  * @CLUTTER_EASE_IN_OUT: ease-in-out progress
+ * @CLUTTER_EXPO_IN: exponential in progress
+ * @CLUTTER_EXPO_OUT: exponential out progress
+ * @CLUTTER_EXPO_IN_OUT: exponential in-out progress
+ * @CLUTTER_SMOOTH_IN_OUT: smoothstep in-out progress
  *
  * The animation modes used by #ClutterAlpha and #ClutterAnimation. This
  * enumeration can be expanded in later versions of Clutter.
@@ -204,13 +208,18 @@ typedef enum {
  */
 typedef enum {
   CLUTTER_CUSTOM_MODE,
+
   CLUTTER_LINEAR,
   CLUTTER_SINE_IN,
   CLUTTER_SINE_OUT,
   CLUTTER_SINE_IN_OUT,
   CLUTTER_EASE_IN,
   CLUTTER_EASE_OUT,
-  CLUTTER_EASE_IN_OUT
+  CLUTTER_EASE_IN_OUT,
+  CLUTTER_EXPO_IN,
+  CLUTTER_EXPO_OUT,
+  CLUTTER_EXPO_IN_OUT,
+  CLUTTER_SMOOTH_IN_OUT,
 } ClutterAnimationMode;
 
 G_END_DECLS
