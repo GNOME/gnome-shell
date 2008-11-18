@@ -1,3 +1,10 @@
+2008-11-18  Robert Bragg  <robert@linux.intel.com>
+
+	* clutter/cogl/gl/cogl-internal.h
+	* clutter/cogl/gles/cogl-internal.h:
+	Removes semicolon after the GE() macro since that breaks using it as a
+	single statement.
+
 2008-11-18  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter.h: Add clutter-shader.h and

@@ -46,7 +46,7 @@ const char *_cogl_error_string(GLenum errorCode);
 
 #else /* COGL_DEBUG */
 
-#define GE(x) (x);
+#define GE(x) (x)
 
 #endif /* COGL_DEBUG */
 
