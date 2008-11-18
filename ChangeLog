@@ -1,4 +1,10 @@
 2008-11-18  Robert Bragg  <robert@linux.intel.com>
+	
+	* clutter/cogl/common/cogl-mesh.c:
+	Re-works validate_custom_attribute_name() so it doesn't access an
+	un-initialised variable.
+
+2008-11-18  Robert Bragg  <robert@linux.intel.com>
 
 	A comparison of gl/cogl-texture.c and gles/cogl-texture.c, to reduce
 	differences and improve maintainability.
@@ -32,7 +38,7 @@
 	submitting vertices, it uses vertex arrays like GLES and this gives
 	a small but measurable fps improvement for test-text.
 
-2008-11-17  Robert Bragg  <robert@linux.intel.com>
+2008-11-18  Robert Bragg  <robert@linux.intel.com>
 
 	* clutter/cogl/gl/cogl-internal.h
 	* clutter/cogl/gles/cogl-internal.h:
