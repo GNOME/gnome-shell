@@ -54,21 +54,21 @@ Panel.prototype = {
 	this._grid.set_position(global.screen_width - 2, (PANEL_HEIGHT - TRAY_HEIGHT) / 2);
 
 	this._traymanager = new Shell.TrayManager();
-	let panel = this;
+	let me = this;
         // the anchor point needs to be updated each time the height/width of the content might have changed, because 
         // it doesn't get updated on its own
         this._traymanager.connect('tray-icon-added',
 	    function(o, icon) {
-		panel._grid.add_actor(icon);
+		me._grid.add_actor(icon);
 		/* bump the clock back to the end */
-		panel._grid.remove_actor(panel._clock);
-		panel._grid.add_actor(panel._clock);
-		panel._grid.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+		me._grid.remove_actor(me._clock);
+		me._grid.add_actor(me._clock);
+		me._grid.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
 	    });
 	this._traymanager.connect('tray-icon-removed',
 	    function(o, icon) {
-		panel._grid.remove_actor(icon);
-		panel._grid.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+		me._grid.remove_actor(icon);
+		me._grid.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
 	    });
 	this._traymanager.manage_stage(global.stage);
 
