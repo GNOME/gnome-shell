@@ -5,12 +5,14 @@ const Clutter = imports.gi.Clutter;
 
 const Panel = imports.ui.panel;
 const Overlay = imports.ui.overlay;
+const RunDialog = imports.ui.run_dialog;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
 let panel = null;
 let overlay = null;
+let run_dialog = null;
 
 function start() {
     let global = Shell.global_get();
@@ -26,10 +28,16 @@ function start() {
     for (let i = 0; i < children.length; i++)
 	children[i].destroy();
 
-    global.connect('panel-run-dialog', function (panel) {
-      log("showing main menu!");
-      var p = new Shell.Process({'args' : ['gnome-terminal', 'gnome-terminal']})
-      p.run()
+    global.connect('panel-run-dialog', function(panel) {
+        // Make sure not more than one run dialog is shown.
+        if (!run_dialog) {
+            run_dialog = new RunDialog.RunDialog();
+            run_dialog.on_run = run_dialog.on_cancel = function() {
+                run_dialog.destroy();
+                run_dialog = null;
+            };
+            run_dialog.show();
+        }
     });
 
     panel = new Panel.Panel();
