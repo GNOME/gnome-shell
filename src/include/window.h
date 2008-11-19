@@ -67,5 +67,6 @@ const char * meta_window_get_description (MetaWindow *window);
 /* Return whether the window would be showing if we were on its workspace */
 gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
 
+const char* meta_window_get_startup_id (MetaWindow *window);
 
 #endif
