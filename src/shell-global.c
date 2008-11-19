@@ -2,6 +2,9 @@
 
 #include "shell-global.h"
 
+#include "display.h"
+#include <clutter/x11/clutter-x11.h>
+
 struct _ShellGlobal {
   GObject parent;
 
@@ -216,4 +219,22 @@ _shell_global_set_plugin (ShellGlobal  *global,
   g_return_if_fail (SHELL_IS_GLOBAL (global));
 
   global->plugin = plugin;
+}
+
+/**
+ * shell_global_focus_stage:
+ *
+ * Set the keyboard focus to the Clutter stage window.  This function
+ * is best used in combination with some sort of visual notification
+ * that the shell has taken over input.
+ */
+void
+shell_global_focus_stage (ShellGlobal *global)
+{
+  MetaScreen *screen = mutter_plugin_get_screen (global->plugin);
+  MetaDisplay *display = meta_screen_get_display (screen);
+  Display *xdisplay = meta_display_get_xdisplay (display);
+  ClutterStage *stage = CLUTTER_STAGE (mutter_plugin_get_stage (global->plugin));
+  Window stagewin = clutter_x11_get_stage_window (stage);
+  XSetInputFocus (xdisplay, stagewin, RevertToParent, CurrentTime);
 }

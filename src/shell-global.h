@@ -42,6 +42,10 @@ GList *shell_global_get_windows (ShellGlobal *global);
 void _shell_global_set_plugin (ShellGlobal  *global,
 			       MutterPlugin *plugin);
 
+MetaScreen * shell_global_get_screen (ShellGlobal *global);
+
+void shell_global_focus_stage (ShellGlobal *global);
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */
