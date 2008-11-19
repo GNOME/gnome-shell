@@ -24,7 +24,7 @@ const WINDOW_OPACITY = 0.9 * 255;
 // counts we fall back to an algorithm. We need more schemes here
 // unless we have a really good algorithm.
 //
-// Each triplet is [x_center, y_center, scale] where the scale
+// Each triplet is [xCenter, yCenter, scale] where the scale
 // is relative to the width of the desktop.
 const POSITIONS = {
     1: [[0.5, 0.5, 0.8]],
@@ -55,7 +55,7 @@ Overlay.prototype = {
 	this._group.hide();
 	global.overlay_group.add_actor(this._group);
 
-	this._window_clones = []
+	this._windowClones = []
     },
 
     show : function() {
@@ -64,52 +64,52 @@ Overlay.prototype = {
 
 	    let global = Shell.global_get();
 	    let windows = global.get_windows();
-	    let desktop_window = null;
+	    let desktopWindow = null;
 
-	    let screen_width = global.screen_width
-	    let screen_height = global.screen_height
+	    let screenWidth = global.screen_width
+	    let screenHeight = global.screen_height
 
 	    for (let i = 0; i < windows.length; i++)
 		if (windows[i].get_window_type() == Meta.WindowType.DESKTOP)
-		    desktop_window = windows[i];
+		    desktopWindow = windows[i];
 
 	    // The desktop windows are shown on top of a scaled down version of the
 	    // desktop. This is positioned at the right side of the screen
-	    this._desktop_width = screen_width * DESKTOP_SCALE;
-	    this._desktop_height = screen_height * DESKTOP_SCALE;
-	    this._desktop_x = screen_width - this._desktop_width - 10;
-	    this._desktop_y = Panel.PANEL_HEIGHT + (screen_height - this._desktop_height - Panel.PANEL_HEIGHT) / 2;
+	    this._desktopWidth = screenWidth * DESKTOP_SCALE;
+	    this._desktopHeight = screenHeight * DESKTOP_SCALE;
+	    this._desktopX = screenWidth - this._desktopWidth - 10;
+	    this._desktopY = Panel.PANEL_HEIGHT + (screenHeight - this._desktopHeight - Panel.PANEL_HEIGHT) / 2;
 
             // If a file manager is displaying desktop icons, there will be a desktop window.
             // This window will have the size of the whole desktop. When such window is not present 
             // (e.g. when the preference for showing icons on the desktop is disabled by the user 
             // or we are running inside a Xephyr window), we should create a desktop rectangle 
             // to serve as the background.
-	    if (desktop_window)
-		this._createDesktopClone(desktop_window);
+	    if (desktopWindow)
+		this._createDesktopClone(desktopWindow);
             else 
                 this._createDesktopRectangle();
 
 	    // Count the total number of windows so we know what layout scheme to use
-	    let n_windows = 0;
+	    let numberOfWindows = 0;
 	    for (let i = 0; i < windows.length; i++) {
 		let w = windows[i];
-		if (w == desktop_window || w.is_override_redirect())
+		if (w == desktopWindow || w.is_override_redirect())
 		    continue;
 
-		n_windows++;
+		numberOfWindows++;
 	    }
 
 	    // Now create actors for all the desktop windows. Do it in
 	    // reverse order so that the active actor ends up on top
-	    let window_index = 0;
+	    let windowIndex = 0;
 	    for (let i = windows.length - 1; i >= 0; i--) {
 		let w = windows[i];
-		if (w == desktop_window || w.is_override_redirect())
+		if (w == desktopWindow || w.is_override_redirect())
 		    continue;
-		this._createWindowClone(w, n_windows - window_index - 1, n_windows);
+		this._createWindowClone(w, numberOfWindows - windowIndex - 1, numberOfWindows);
 
-		window_index++;
+		windowIndex++;
 	    }
 
 	    // All the the actors in the window group are completely obscured,
@@ -132,11 +132,11 @@ Overlay.prototype = {
 	    global.window_group.show()
 	    this._group.hide();
 
-	    for (let i = 0; i < this._window_clones.length; i++) {
-		this._window_clones[i].destroy();
+	    for (let i = 0; i < this._windowClones.length; i++) {
+		this._windowClones[i].destroy();
 	    }
 
-	    this._window_clones = [];
+	    this._windowClones = [];
 	}
     },
 
@@ -156,22 +156,22 @@ Overlay.prototype = {
         // up identically.
         // We are also using (0,0) coordinates in both cases which makes the background
         // window animate out from behind the panel. 
-	let desktop_rectangle = new Clutter.Rectangle({ color: global.stage.color,
+	let desktopRectangle = new Clutter.Rectangle({ color: global.stage.color,
 					                reactive: true,
 					                x: 0,
 					                y: 0,
                                                         width: global.screen_width,
                                                         height: global.screen_height });
-        this._addDesktop(desktop_rectangle);
+        this._addDesktop(desktopRectangle);
     },
 
     _addDesktop : function(desktop) {
-	this._window_clones.push(desktop);
+	this._windowClones.push(desktop);
 	this._group.add_actor(desktop);
 
 	Tweener.addTween(desktop,
-			 { x: this._desktop_x,
-			   y: this._desktop_y,
+			 { x: this._desktopX,
+			   y: this._desktopY,
 			   scale_x: DESKTOP_SCALE,
 			   scale_y: DESKTOP_SCALE,
 			   time: ANIMATION_TIME,
@@ -185,26 +185,26 @@ Overlay.prototype = {
 		      });
     },
 
-    // window_index == 0 => top in stacking order
-    _computeWindowPosition : function(window_index, n_windows) {
-	if (n_windows in POSITIONS)
-	    return POSITIONS[n_windows][window_index];
+    // windowIndex == 0 => top in stacking order
+    _computeWindowPosition : function(windowIndex, numberOfWindows) {
+	if (numberOfWindows in POSITIONS)
+	    return POSITIONS[numberOfWindows][windowIndex];
 
 	// If we don't have a predefined scheme for this window count, overlap the windows
 	// along the diagonal of the desktop (improve this!)
-	let fraction = Math.sqrt(1/n_windows);
+	let fraction = Math.sqrt(1/numberOfWindows);
 
 	// The top window goes at the lower right - this is different from the
 	// fixed position schemes where the windows are in "reading order"
 	// and the top window goes at the upper left.
-	let pos = (n_windows - window_index - 1) / (n_windows - 1);
-	let x_center = (fraction / 2) + (1 - fraction) * pos;
-	let y_center = x_center;
+	let pos = (numberOfWindows - windowIndex - 1) / (numberOfWindows - 1);
+	let xCenter = (fraction / 2) + (1 - fraction) * pos;
+	let yCenter = xCenter;
 
-	return [x_center, y_center, fraction];
+	return [xCenter, yCenter, fraction];
     },
 
-    _createWindowClone : function(w, window_index, n_windows) {
+    _createWindowClone : function(w, windowIndex, numberOfWindows) {
 	// We show the window using "clones" of the texture .. separate
 	// actors that mirror the original actors for the window. For
 	// animation purposes, it may be better to actually move the
@@ -215,28 +215,28 @@ Overlay.prototype = {
 					       x: w.x,
 					       y: w.y });
 
-	let [x_center, y_center, fraction] = this._computeWindowPosition(window_index, n_windows);
+	let [xCenter, yCenter, fraction] = this._computeWindowPosition(windowIndex, numberOfWindows);
 
-	let desired_size = this._desktop_width * fraction;
+	let desiredSize = this._desktopWidth * fraction;
 
-	x_center = this._desktop_x + x_center * this._desktop_width;
-	y_center = this._desktop_y + y_center * this._desktop_height;
+	xCenter = this._desktopX + xCenter * this._desktopWidth;
+	yCenter = this._desktopY + yCenter * this._desktopHeight;
 
 	let size = clone.width;
 	if (clone.height > size)
 	    size = clone.height;
 
 	// Never scale up
-	let scale = desired_size / size;
+	let scale = desiredSize / size;
 	if (scale > 1)
 	    scale = 1;
 
 	this._group.add_actor(clone);
-	this._window_clones.push(clone);
+	this._windowClones.push(clone);
 
 	Tweener.addTween(clone,
-			 { x: x_center - 0.5 * scale * w.width,
-			   y: y_center - 0.5 * scale * w.height,
+			 { x: xCenter - 0.5 * scale * w.width,
+			   y: yCenter - 0.5 * scale * w.height,
 			   scale_x: scale,
 			   scale_y: scale,
 			   time: ANIMATION_TIME,
