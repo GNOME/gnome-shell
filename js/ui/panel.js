@@ -34,7 +34,7 @@ Panel.prototype = {
 	background.set_position(-1, -1);
 	this._group.add_actor(background);
 
- 	this.button = new Button.Button("Activities", PANEL_BACKGROUND_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR, true, null, PANEL_HEIGHT);
+ 	this.button = new Button.Button("Activities", PANEL_BACKGROUND_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR, true, null, PANEL_HEIGHT-1);
 
  	this._group.add_actor(this.button.button);
 

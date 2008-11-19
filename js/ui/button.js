@@ -18,8 +18,8 @@ const PARTIAL_OPACITY = 0.4 * 255;
 
 const FULL_OPACITY = 255;
 
-function Button(text, buttonColor, pressedButtonColor, minWidth, minHeight) {
-    this._init(text, buttonColor, pressedButtonColor, minWidth, minHeight);
+function Button(text, buttonColor, pressedButtonColor, staysPressed, minWidth, minHeight) {
+    this._init(text, buttonColor, pressedButtonColor, staysPressed, minWidth, minHeight);
 }
 
 Button.prototype = {
