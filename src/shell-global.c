@@ -15,6 +15,7 @@ enum {
   PROP_0,
 
   PROP_OVERLAY_GROUP,
+  PROP_SCREEN,
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
   PROP_STAGE,
@@ -59,6 +60,9 @@ shell_global_get_property(GObject         *object,
     {
     case PROP_OVERLAY_GROUP:
       g_value_set_object (value, mutter_plugin_get_overlay_group (global->plugin));
+      break;
+    case PROP_SCREEN:
+      g_value_set_object (value, mutter_plugin_get_screen (global->plugin));
       break;
     case PROP_SCREEN_WIDTH:
       {
@@ -125,6 +129,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Overlay Group",
                                                         "Actor holding objects that appear above the desktop contents",
                                                         CLUTTER_TYPE_ACTOR,
+                                                        G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_SCREEN,
+                                   g_param_spec_object ("screen",
+                                                        "Screen",
+                                                        "Metacity screen object for the shell",
+                                                        META_TYPE_SCREEN,
                                                         G_PARAM_READABLE));
   g_object_class_install_property (gobject_class,
                                    PROP_SCREEN_WIDTH,
