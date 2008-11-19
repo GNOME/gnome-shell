@@ -38,7 +38,7 @@ try:
     # Launch Xephyr
     xephyr = subprocess.Popen(["Xephyr", display,
                                "-auth", xauth_file,
-                               "-screen", "800x600",
+                               "-screen", "1024x748",
                                "-host-cursor"])
     os.environ['DISPLAY'] = display
     os.environ['XAUTHORITY'] = xauth_file
