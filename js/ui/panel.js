@@ -2,11 +2,12 @@
 
 const Mainloop = imports.mainloop;
 
-const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
+const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
 const Tidy = imports.gi.Tidy;
-const Button = imports.ui.button;
 
+const Button = imports.ui.button;
 const Main = imports.ui.main;
 
 const PANEL_HEIGHT = 32;
@@ -86,10 +87,40 @@ Panel.prototype = {
 		return true;
             });
 
+	this._setStruts();
+	global.screen.connect('notify::n-workspaces',
+	    function() {
+		me._setStruts();
+	    });
+
 	global.stage.add_actor(this._group);
 
 	this._updateClock();
 	this._startClock();
+    },
+
+    // Struts determine the area along each side of the screen that is reserved
+    // and not available to applications
+    _setStruts: function() {
+	let global = Shell.global_get();
+
+	let struts = [
+            new Meta.Strut({
+		rect: {
+		    x: 0,
+		    y: 0,
+		    width: global.screen_width,
+		    height: PANEL_HEIGHT
+		},
+		side: Meta.Direction.TOP
+	    })
+	];
+
+	let screen = global.screen;
+	for (let i = 0; i < screen.n_workspaces; i++) {
+	    let workspace = screen.get_workspace_by_index(i);
+	    workspace.set_builtin_struts(struts);
+	}
     },
 
     _startClock: function() {
