@@ -61,4 +61,6 @@ MetaWorkspace *meta_screen_append_new_workspace (MetaScreen    *screen,
 
 int meta_screen_get_active_workspace_index (MetaScreen *screen);
 
+MetaWorkspace * meta_screen_get_active_workspace (MetaScreen *screen);
+
 #endif

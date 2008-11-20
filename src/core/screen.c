@@ -2918,3 +2918,9 @@ meta_screen_get_active_workspace_index (MetaScreen *screen)
 
   return meta_workspace_index (active);
 }
+
+MetaWorkspace *
+meta_screen_get_active_workspace (MetaScreen *screen)
+{
+  return screen->active_workspace;
+}
