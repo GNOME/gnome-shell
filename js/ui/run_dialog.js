@@ -1,5 +1,6 @@
 /* -*- mode: js2; js2-basic-offset: 4; -*- */
 
+const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
 
@@ -22,10 +23,6 @@ function RunDialog() {
 };
 
 RunDialog.prototype = {
-    // Event handlers that can be set by the caller.
-    on_run : null,
-    on_cancel : null,
-
     _init : function() {
         let global = Shell.global_get();
 
@@ -82,8 +79,7 @@ RunDialog.prototype = {
         // this._entry.connect('key-press-event', function(o, e) {
         //     if (the pressed key is the escape key) {
         //         me.hide();
-        //         if (me.on_cancel)
-        //             me.on_cancel();
+        //         me.emit('cancel');
         //         return false;
         //     } else
         //         return true;
@@ -104,8 +100,7 @@ RunDialog.prototype = {
             }
         }
 
-        if (this.on_run)
-            this.on_run();
+	this.emit('run');
     },
 
     show : function() {
@@ -120,3 +115,4 @@ RunDialog.prototype = {
         this._group.destroy();
     }
 };
+Signals.addSignalMethods(RunDialog.prototype);
