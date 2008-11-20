@@ -24,11 +24,16 @@ on_button_press (ClutterActor       *actor,
   gint old_x, old_y, new_x, new_y;
   guint old_width, old_height, new_width, new_height;
   guint8 old_op, new_op;
+  gdouble new_angle;
+  ClutterVertex vertex = { 0, };
 
   clutter_actor_get_position (actor, &old_x, &old_y);
   clutter_actor_get_size (actor, &old_width, &old_height);
   old_op = clutter_actor_get_opacity (actor);
 
+  /* determine the final state of the animation depending on
+   * the state of the actor
+   */
   if (!is_expanded)
     {
       new_x = old_x - 100;
@@ -36,6 +41,7 @@ on_button_press (ClutterActor       *actor,
       new_width = old_width + 200;
       new_height = old_height + 200;
       new_op = 255;
+      new_angle = 360.0;
     }
   else
     {
@@ -44,7 +50,11 @@ on_button_press (ClutterActor       *actor,
       new_width = old_width - 200;
       new_height = old_height - 200;
       new_op = 128;
+      new_angle = 0.0;
     }
+
+  vertex.x = CLUTTER_UNITS_FROM_FLOAT ((float) new_width / 2);
+  vertex.y = CLUTTER_UNITS_FROM_FLOAT ((float) new_height / 2);
 
   animation =
     clutter_actor_animate (actor, CLUTTER_EASE_IN, 2000,
@@ -53,6 +63,8 @@ on_button_press (ClutterActor       *actor,
                            "width", new_width,
                            "height", new_height,
                            "opacity", new_op,
+                           "rotation-angle-z", new_angle,
+                           "fixed::rotation-center-z", &vertex,
                            "fixed::reactive", FALSE,
                            NULL);
   g_signal_connect (animation,
