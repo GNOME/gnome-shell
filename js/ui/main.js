@@ -32,10 +32,12 @@ function start() {
         // Make sure not more than one run dialog is shown.
         if (!run_dialog) {
             run_dialog = new RunDialog.RunDialog();
-            run_dialog.on_run = run_dialog.on_cancel = function() {
+	    let handler = function() {
                 run_dialog.destroy();
                 run_dialog = null;
             };
+            run_dialog.connect('run', handler);
+            run_dialog.connect('cancel', handler);
             run_dialog.show();
         }
     });
