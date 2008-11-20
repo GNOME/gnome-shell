@@ -26,8 +26,10 @@
 #define MUTTER_H_
 
 #include <clutter/clutter.h>
+#include <X11/Xlib.h>
 
 #include "types.h"
+#include "compositor.h"
 
 /*
  * MutterWindow object (ClutterGroup sub-class)

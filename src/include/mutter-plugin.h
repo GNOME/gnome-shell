@@ -30,6 +30,7 @@
 
 #include <clutter/clutter.h>
 #include <X11/extensions/Xfixes.h>
+#include <gmodule.h>
 
 /*
  * This file defines the plugin API.

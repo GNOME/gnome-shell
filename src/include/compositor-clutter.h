@@ -26,6 +26,7 @@
 #define META_COMPOSITOR_CLUTTER_H_
 
 #include <clutter/clutter.h>
+#include <xlib/xlib.h>
 
 #include "types.h"
 
