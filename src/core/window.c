@@ -4775,6 +4775,44 @@ meta_window_property_notify (MetaWindow *window,
   return process_property_notify (window, &event->xproperty);  
 }
 
+/*
+ * Move window to the requested workspace; append controls whether new WS
+ * should be created if one does not exist.
+ */
+void
+meta_window_change_workspace_by_index (MetaWindow *window,
+                                       gint        space_index,
+                                       gboolean    append)
+{
+  MetaWorkspace *workspace;
+  MetaScreen    *screen;
+
+  if (space_index == -1)
+    {
+      meta_window_stick (window);
+      return;
+    }
+
+  screen = window->screen;
+
+  workspace =
+    meta_screen_get_workspace_by_index (screen, space_index);
+
+  if (!workspace && append)
+    {
+      guint32 timestamp = meta_display_get_current_time (window->display);
+      workspace = meta_screen_append_new_workspace (screen, FALSE, timestamp);
+    }
+
+  if (workspace)
+    {
+      if (window->on_all_workspaces)
+        meta_window_unstick (window);
+
+      meta_window_change_workspace (window, workspace);
+    }
+}
+
 #define _NET_WM_MOVERESIZE_SIZE_TOPLEFT      0
 #define _NET_WM_MOVERESIZE_SIZE_TOP          1
 #define _NET_WM_MOVERESIZE_SIZE_TOPRIGHT     2

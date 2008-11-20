@@ -68,5 +68,7 @@ const char * meta_window_get_description (MetaWindow *window);
 gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
 
 const char* meta_window_get_startup_id (MetaWindow *window);
-
+void meta_window_change_workspace_by_index (MetaWindow *window,
+                                            gint        space_index,
+                                            gboolean    append);
 #endif
