@@ -132,6 +132,13 @@ void
 meta_compositor_sync_stack (MetaCompositor  *compositor,
 			    MetaScreen      *screen,
 			    GList	    *stack);
+
+void
+meta_compositor_set_window_hidden (MetaCompositor *compositor,
+				   MetaScreen	  *screen,
+				   MetaWindow	  *window,
+				   gboolean	   hidden);
+
 #endif
 
 
