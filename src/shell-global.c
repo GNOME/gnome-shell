@@ -169,6 +169,31 @@ shell_global_class_init (ShellGlobalClass *klass)
 }
 
 /**
+ * shell_clutter_texture_set_from_pixbuf: 
+ * texture: #ClutterTexture to be modified
+ * pixbuf: #GdkPixbuf to set as an image for #ClutterTexture
+ *
+ * Convenience function for setting an image for #ClutterTexture based on #GdkPixbuf.
+ * Copied from an example posted by hp in this thread http://mail.gnome.org/archives/gtk-devel-list/2008-September/msg00218.html
+ *
+ * Return value: %TRUE on success, %FALSE on failure
+ */
+gboolean
+shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
+                                       GdkPixbuf      *pixbuf)
+{
+    return clutter_texture_set_from_rgb_data (texture,
+                                              gdk_pixbuf_get_pixels (pixbuf),
+                                              gdk_pixbuf_get_has_alpha (pixbuf),
+                                              gdk_pixbuf_get_width (pixbuf),
+                                              gdk_pixbuf_get_height (pixbuf),
+                                              gdk_pixbuf_get_rowstride (pixbuf),
+                                              gdk_pixbuf_get_has_alpha (pixbuf)
+                                              ? 4 : 3,
+                                              0, NULL);
+}
+
+/**
  * shell_global_get:
  *
  * Gets the singleton global object that represents the desktop.
