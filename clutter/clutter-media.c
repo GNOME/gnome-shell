@@ -47,8 +47,8 @@
 
 enum
 {
-  EOS,
-  ERROR,
+  EOS_SIGNAL,
+  ERROR_SIGNAL, /* can't be called 'ERROR' otherwise it clashes with wingdi.h */
 
   LAST_SIGNAL
 };
@@ -174,7 +174,7 @@ clutter_media_base_init (gpointer g_iface)
        *
        * Since: 0.2
        */
-      media_signals[EOS] =
+      media_signals[EOS_SIGNAL] =
         g_signal_new ("eos",
                       CLUTTER_TYPE_MEDIA,
                       G_SIGNAL_RUN_LAST,
@@ -191,7 +191,7 @@ clutter_media_base_init (gpointer g_iface)
        *
        * Since: 0.2
        */
-      media_signals[ERROR] =
+      media_signals[ERROR_SIGNAL] =
         g_signal_new ("error",
                       CLUTTER_TYPE_MEDIA,
                       G_SIGNAL_RUN_LAST,
@@ -432,7 +432,7 @@ clutter_media_set_filename (ClutterMedia *media,
 
   if (uri_error)
     {
-      g_signal_emit (media, media_signals[ERROR], 0, uri_error);
+      g_signal_emit (media, media_signals[ERROR_SIGNAL], 0, uri_error);
       g_error_free (uri_error);
       return;
     }

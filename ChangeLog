@@ -1,5 +1,13 @@
 2008-11-21  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1269 - mingw32 building failed at clutter-media.c
+
+	* clutter/clutter-media.c: Rename the 'ERROR' signal enum to
+	'ERROR_SIGNAL' otherwise it clashes with windgi.h. Thanks to David
+	Kedves
+
+2008-11-21  Neil Roberts  <neil@linux.intel.com>
+
 	* clutter/pango/cogl-pango.h: Include pango/pango.h to get
 	pango-renderer.h. In versions prior to 1.18.4 pangocairo.h does
 	not include pango-renderer.h
