@@ -25,6 +25,7 @@
 #define __PANGO_CLUTTER_H__
 
 #include <glib-object.h>
+#include <pango/pango.h>
 #include <pango/pangocairo.h>
 #include <cogl/cogl.h>
 
