@@ -27,6 +27,7 @@ GType    shell_wm_get_type                    (void) G_GNUC_CONST;
 ShellWM *shell_wm_new                         (MutterPlugin *plugin);
 
 GList   *shell_wm_get_switch_workspace_actors (ShellWM      *wm);
+void     shell_wm_completed_switch_workspace  (ShellWM      *wm);
 
 G_END_DECLS
 

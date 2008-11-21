@@ -7,6 +7,7 @@
 struct _ShellWM {
   GObject parent;
 
+  MutterPlugin *plugin;
   GList *switch_workspace_actors;
 };
 
@@ -104,8 +105,64 @@ shell_wm_switch_workspace (const GList **actors,
   shell_wm_set_switch_workspace_actors (wm, (GList *)*actors);
   g_signal_emit (wm, shell_wm_signals[SWITCH_WORKSPACE], 0,
                  from, to, direction);
+}
+
+/**
+ * shell_wm_get_switch_workspace_actors:
+ * @wm: the #ShellWM
+ *
+ * A workaround for a missing feature in gobject-introspection. Returns
+ * the list of windows involved in a switch-workspace operation (which
+ * cannot be passed directly to the signal handler because there's no
+ * way to annotate the element-type of a signal parameter.)
+ *
+ * Return value: (element-type MutterWindow) (transfer full): the list
+ * of windows
+ **/
+GList *
+shell_wm_get_switch_workspace_actors (ShellWM *wm)
+{
+  GList *l;
+
+  for (l = wm->switch_workspace_actors; l; l = l->next)
+    g_object_ref (l->data);
+  return g_list_copy (wm->switch_workspace_actors);
+}
+
+static void
+shell_wm_set_switch_workspace_actors (ShellWM *wm, GList *actors)
+{
+  const GList *l;
+
+  for (l = wm->switch_workspace_actors; l; l = l->next)
+    g_object_unref (l->data);
+  g_list_free (wm->switch_workspace_actors);
+  wm->switch_workspace_actors = g_list_copy (actors);
+  for (l = wm->switch_workspace_actors; l; l = l->next)
+    g_object_ref (l->data);
+}
+
+/**
+ * shell_wm_completed_switch_workspace:
+ * @wm: the ShellWM
+ *
+ * The plugin must call this when it has finished switching the
+ * workspace.
+ **/
+void
+shell_wm_completed_switch_workspace (ShellWM *wm)
+{
+  g_return_if_fail (wm->switch_workspace_actors != NULL);
+
+  /* mutter_plugin_effect_completed() requires us to pass a window,
+   * though it doesn't matter *which* window in this case.
+   */
+  mutter_plugin_effect_completed (wm->plugin,
+                                  wm->switch_workspace_actors->data,
+                                  MUTTER_PLUGIN_SWITCH_WORKSPACE);
   shell_wm_set_switch_workspace_actors (wm, NULL);
 }
+
 
 static void
 shell_wm_kill_effect (MutterWindow *actor,
@@ -141,6 +198,11 @@ shell_wm_kill_effect (MutterWindow *actor,
 ShellWM *
 shell_wm_new (MutterPlugin *plugin)
 {
+  ShellWM *wm;
+
+  wm = g_object_new (SHELL_TYPE_WM, NULL);
+  wm->plugin = plugin;
+
 #ifdef NOT_YET
   plugin->minimize         = shell_wm_minimize;
   plugin->maximize         = shell_wm_maximize;
@@ -151,44 +213,5 @@ shell_wm_new (MutterPlugin *plugin)
   plugin->switch_workspace = shell_wm_switch_workspace;
   plugin->kill_effect      = shell_wm_kill_effect;
 
-  return g_object_new (SHELL_TYPE_WM, NULL);
-}
-
-/**
- * shell_wm_get_switch_workspace_actors:
- * @wm: the #ShellWM
- *
- * A workaround for a missing feature in gobject-introspection. Returns
- * the list of windows involved in a switch-workspace operation (which
- * cannot be passed directly to the signal handler because there's no
- * way to annotate the element-type of a signal parameter.)
- *
- * You must call this from the #ShellWM::switch-workspace signal
- * handler itself; if you need the value again later, you must save a
- * copy yourself.
- *
- * Return value: (element-type MutterWindow) (transfer full): the list
- * of windows
- **/
-GList *
-shell_wm_get_switch_workspace_actors (ShellWM *wm)
-{
-  GList *l;
-
-  for (l = wm->switch_workspace_actors; l; l = l->next)
-    g_object_ref (l->data);
-  return g_list_copy (wm->switch_workspace_actors);
-}
-
-static void
-shell_wm_set_switch_workspace_actors (ShellWM *wm, GList *actors)
-{
-  const GList *l;
-
-  for (l = wm->switch_workspace_actors; l; l = l->next)
-    g_object_unref (l->data);
-  g_list_free (wm->switch_workspace_actors);
-  wm->switch_workspace_actors = g_list_copy (actors);
-  for (l = wm->switch_workspace_actors; l; l = l->next)
-    g_object_ref (l->data);
+  return wm;
 }
