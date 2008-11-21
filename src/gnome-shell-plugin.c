@@ -84,6 +84,11 @@ g_module_check_init (GModule *module)
   /* Event handling */
   plugin->xevent_filter = xevent_filter;
 
+  /* This will also create the ShellWM, which will set the appropriate
+   * window management callbacks in plugin.
+   */
+  _shell_global_set_plugin (shell_global_get(), plugin);
+
   return NULL;
 }
 
@@ -124,8 +129,6 @@ do_init (const char *params)
   search_path = g_strsplit(shell_js, ":", -1);
   plugin_state->gjs_context = gjs_context_new_with_search_path(search_path);
   g_strfreev(search_path);
-
-  _shell_global_set_plugin (shell_global_get(), plugin);
 
   plugin_state->panel_action = XInternAtom (meta_display_get_xdisplay (display),
                                             "_GNOME_PANEL_ACTION", FALSE);

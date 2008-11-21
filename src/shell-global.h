@@ -42,7 +42,9 @@ void shell_global_set_stage_input_area (ShellGlobal *global,
 					int          width,
 					int          height);
 
-GList *shell_global_get_windows (ShellGlobal *global);
+GList        *shell_global_get_windows       (ShellGlobal *global);
+ClutterActor *shell_global_get_window_group  (ShellGlobal *global);
+ClutterActor *shell_global_get_overlay_group (ShellGlobal *global);
 
 void _shell_global_set_plugin (ShellGlobal  *global,
 			       MutterPlugin *plugin);

@@ -6,6 +6,7 @@ const Clutter = imports.gi.Clutter;
 const Panel = imports.ui.panel;
 const Overlay = imports.ui.overlay;
 const RunDialog = imports.ui.run_dialog;
+const WindowManager = imports.ui.windowmanager;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
@@ -13,6 +14,7 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 let panel = null;
 let overlay = null;
 let run_dialog = null;
+let wm = null;
 
 function start() {
     let global = Shell.global_get();
@@ -43,8 +45,10 @@ function start() {
     });
 
     panel = new Panel.Panel();
-    overlay = new Overlay.Overlay();
     global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);
+
+    overlay = new Overlay.Overlay();
+    wm = new WindowManager.WindowManager();
 }
 
 function show_overlay() {

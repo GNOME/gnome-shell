@@ -13,7 +13,17 @@ gnome_shell_cflags =				\
 plugindir = $(libdir)/metacity/plugins/clutter
 plugin_LTLIBRARIES = libgnome-shell.la
 
+shell_built_sources = \
+	shell-marshal.h \
+	shell-marshal.c
+
+BUILT_SOURCES += $(shell_built_sources)
+
+SHELL_STAMP_FILES = stamp-shell-marshal.h
+CLEANFILES += $(SHELL_STAMP_FILES)
+
 libgnome_shell_la_SOURCES =			\
+	$(shell_built_sources)			\
 	gnome-shell-plugin.c			\
 	shell-app-monitor.c			\
 	shell-app-monitor.h			\
@@ -22,7 +32,29 @@ libgnome_shell_la_SOURCES =			\
 	shell-global.c				\
 	shell-global.h				\
 	shell-tray-manager.c			\
-	shell-tray-manager.h
+	shell-tray-manager.h			\
+	shell-wm.c				\
+	shell-wm.h
+
+shell-marshal.h: stamp-shell-marshal.h
+	@true
+stamp-shell-marshal.h: Makefile shell-marshal.list
+	$(GLIB_GENMARSHAL) \
+		--prefix=_shell_marshal \
+		--header \
+	$(srcdir)/shell-marshal.list > xgen-tmh && \
+	(cmp -s xgen-tmh shell-marshal.h || cp -f xgen-tmh shell-marshal.h) && \
+	rm -f xgen-tmh && \
+	echo timestamp > $(@F)
+
+shell-marshal.c: Makefile shell-marshal.list
+	(echo "#include \"shell-marshal.h\"" ; \
+	 $(GLIB_GENMARSHAL) \
+		--prefix=_shell_marshal \
+		--body \
+	 $(srcdir)/shell-marshal.list ) > xgen-tmc && \
+	cp -f xgen-tmc shell-marshal.c && \
+	rm -f xgen-tmc
 
 libgnome_shell_la_LDFLAGS = -avoid-version -module
 libgnome_shell_la_LIBADD =	\

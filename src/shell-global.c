@@ -1,6 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 #include "shell-global.h"
+#include "shell-wm.h"
 
 #include "display.h"
 #include <clutter/x11/clutter-x11.h>
@@ -9,6 +10,7 @@ struct _ShellGlobal {
   GObject parent;
 
   MutterPlugin *plugin;
+  ShellWM *wm;
 };
 
 enum {
@@ -19,7 +21,8 @@ enum {
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
   PROP_STAGE,
-  PROP_WINDOW_GROUP
+  PROP_WINDOW_GROUP,
+  PROP_WINDOW_MANAGER
 };
 
 /* Signals */
@@ -85,6 +88,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_WINDOW_GROUP:
       g_value_set_object (value, mutter_plugin_get_window_group (global->plugin));
+      break;
+    case PROP_WINDOW_MANAGER:
+      g_value_set_object (value, global->wm);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -165,6 +171,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Window Group",
                                                         "Actor holding window actors",
                                                         CLUTTER_TYPE_ACTOR,
+                                                        G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_WINDOW_MANAGER,
+                                   g_param_spec_object ("window-manager",
+                                                        "Window Manager",
+                                                        "Window management interface",
+                                                        SHELL_TYPE_WM,
                                                         G_PARAM_READABLE));
 }
 
@@ -253,8 +266,10 @@ _shell_global_set_plugin (ShellGlobal  *global,
                           MutterPlugin *plugin)
 {
   g_return_if_fail (SHELL_IS_GLOBAL (global));
+  g_return_if_fail (global->plugin == NULL);
 
   global->plugin = plugin;
+  global->wm = shell_wm_new (plugin);
 }
 
 /**
@@ -273,4 +288,20 @@ shell_global_focus_stage (ShellGlobal *global)
   ClutterStage *stage = CLUTTER_STAGE (mutter_plugin_get_stage (global->plugin));
   Window stagewin = clutter_x11_get_stage_window (stage);
   XSetInputFocus (xdisplay, stagewin, RevertToParent, CurrentTime);
+}
+
+ClutterActor *
+shell_global_get_overlay_group (ShellGlobal *global)
+{
+  g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
+
+  return mutter_plugin_get_overlay_group (global->plugin);
+}
+
+ClutterActor *
+shell_global_get_window_group (ShellGlobal *global)
+{
+  g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
+
+  return mutter_plugin_get_window_group (global->plugin);
 }
