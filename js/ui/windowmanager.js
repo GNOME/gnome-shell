@@ -6,12 +6,12 @@ const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
 
-function WindowManager(shellwm) {
-    this._init(shellwm);
+function WindowManager() {
+    this._init();
 }
 
 WindowManager.prototype = {
-    _init : function(shellwm) {
+    _init : function() {
 	let global = Shell.global_get();
         let shellwm = global.window_manager;
 
