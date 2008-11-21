@@ -54,11 +54,15 @@ shell_app_monitor_init (ShellAppMonitor *self)
 					    ShellAppMonitorPrivate);
   for (iter = g_get_system_data_dirs (); *iter; iter++) 
     {
+      char *app_path;
       GFile *dir;
       GFileMonitor *monitor;
       GError *error = NULL;
 
-      dir = g_file_new_for_path (*iter);
+      app_path = g_build_filename (*iter, "applications", NULL);
+
+      dir = g_file_new_for_path (app_path);
+      g_free (app_path);
       monitor = g_file_monitor_directory (dir, 0, NULL, &error);
       if (!monitor) {
         g_warning ("failed to monitor %s", error->message);
