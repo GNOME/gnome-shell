@@ -1256,6 +1256,13 @@ _cogl_features_init ()
       flags |= COGL_FEATURE_VBOS;
     }
 
+  /* This should always be available because it is defined in GL 1.2,
+     but we can't call it directly because under Windows functions >
+     1.1 aren't exported */
+  ctx->pf_glDrawRangeElements =
+        (COGL_PFNGLDRAWRANGEELEMENTSPROC)
+        cogl_get_proc_address ("glDrawRangeElements");
+
   /* Cache features */
   ctx->feature_flags = flags;
   ctx->features_cached = TRUE;
