@@ -601,7 +601,9 @@ start_children_entries (GNode    *node,
 
   /* If data is NULL, start all entries that have no marker, otherwise
      only start entries that have the same marker */
-  if (data == NULL ? entry->marker == NULL : !strcmp (data, entry->marker))
+  if (data == NULL
+      ? entry->marker == NULL
+      : (entry->marker && !strcmp (data, entry->marker)))
     start_entry (entry);
 }
 

@@ -1,3 +1,15 @@
+2008-11-21  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1280 - clutter_score_append_at_marker lead to segmentation
+	fault in trunk and incorrect appearance in clutter-0.8
+
+	* clutter/clutter-score.c (start_children_entries): Check whether
+	the child timeline is actually attached at a marker before
+	comparing whether the marker's name matches the marker
+	reached. This fixes a crash that happens when a marker is reached
+	on a timeline that also has child timelines attached at the
+	end. Thanks to zhangwei for spotting.
+
 2008-11-20  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-actor.c:
