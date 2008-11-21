@@ -1,8 +1,7 @@
 /* -*- mode: js2; js2-basic-offset: 4; -*- */
 
-const Mainloop = imports.mainloop;
-
 const Clutter = imports.gi.Clutter;
+const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Tidy = imports.gi.Tidy;
