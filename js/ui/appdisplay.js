@@ -36,13 +36,13 @@ AppDisplayItem.prototype = {
 	this._group = new Clutter.Group({reactive: true,
 					 width: width,
 					 height: APPDISPLAY_HEIGHT});
-	this._bg = new Clutter.Rectangle({ color: APPDISPLAY_BACKGROUND_COLOR,
-	 				   reactive: true, x: 0, y: 0 });
-	this._group.add_actor(this._bg);
-	this._bg.connect('button-press-event', function(group, e) {
+	this._group.connect('button-press-event', function(group, e) {
 	    me.emit('launch');
 	    return true;
 	});
+	this._bg = new Clutter.Rectangle({ color: APPDISPLAY_BACKGROUND_COLOR,
+	 				   x: 0, y: 0 });
+	this._group.add_actor(this._bg);
 
         this._icon = new Clutter.Texture({ width: 48, height: 48, x: 0, y: 0 });
 	let gicon = appinfo.get_icon();
