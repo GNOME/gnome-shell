@@ -1,5 +1,12 @@
 2008-11-21  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1270 - Update to mingw-cross-compile.sh
+
+	* build/mingw/mingw-cross-compile.sh: Update to download latest
+	binaries. Patch thanks to David Kedves.
+
+2008-11-21  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1271 - mingw compiling failed: undefined reference to
 	`_glDrawRangeElements@24'
 

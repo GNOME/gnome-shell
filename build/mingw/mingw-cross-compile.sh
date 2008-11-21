@@ -7,32 +7,34 @@
 TOR_URL="http://ftp.gnome.org/pub/gnome/binaries/win32";
 
 TOR_BINARIES=( \
-    glib-2.14.4 \
-    gtk+-2.12.3 \
-    pango-1.18.3 \
-    atk-1.20.0 );
+    glib/2.18/glib{-dev,}_2.18.2-1_win32.zip \
+    gtk+/2.14/gtk+{-dev,}_2.14.4-2_win32.zip \
+    pango/1.22/pango{-dev,}_1.22.0-1_win32.zip \
+    atk/1.24/atk{-dev,}_1.24.0-1_win32.zip );
 
 TOR_DEP_URL="http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies";
 
 TOR_DEPS=( \
-    cairo-{dev-,}1.4.10.zip \
-    gettext-runtime-{dev-,}0.17.zip \
+    cairo-{dev-,}1.6.4-2.zip \
+    gettext-runtime-{dev-,}0.17-1.zip \
     fontconfig-{dev-,}2.4.2-tml-20071015.zip \
-    freetype-{dev-,}2.3.4.zip \
+    freetype-{dev-,}2.3.6.zip \
     expat-2.0.0.zip );
 
-SF_URL="http://surfnet.dl.sourceforge.net/sourceforge";
+#SF_URL="http://kent.dl.sourceforge.net/sourceforge";
+#SF_URL="http://surfnet.dl.sourceforge.net/sourceforge";
+SF_URL="http://mesh.dl.sourceforge.net/sourceforge";
 
 OTHER_DEPS=( \
     "http://www.gimp.org/~tml/gimp/win32/libiconv-1.9.1.bin.woe32.zip" \
     "${SF_URL}/libpng/zlib123-dll.zip" \
-    "http://www.libsdl.org/release/SDL-devel-1.2.12-mingw32.tar.gz" \
-    "${SF_URL}/mesa3d/MesaLib-7.0.3.tar.bz2" );
+    "http://www.libsdl.org/release/SDL-devel-1.2.13-mingw32.tar.gz" \
+    "${SF_URL}/mesa3d/MesaLib-7.2.tar.bz2" );
 
 GNUWIN32_URL="${SF_URL}/gnuwin32";
 
 GNUWIN32_DEPS=( \
-    libpng-1.2.8-{bin,lib}.zip \
+    libpng-1.2.33-{bin,lib}.zip \
     jpeg-6b-4-{bin,lib}.zip \
     tiff-3.8.2-1-{bin,lib}.zip );
 
@@ -48,7 +50,7 @@ function download_file ()
 	    curl -C - -o "$DOWNLOAD_DIR/$filename" "$url";
 	    ;;
 	*)
-	    "$DOWNLOAD_PROG" -O "$DOWNLOAD_DIR/$filename" -c "$url";
+	    $DOWNLOAD_PROG -O "$DOWNLOAD_DIR/$filename" -c "$url";
 	    ;;
     esac;
 
@@ -78,7 +80,7 @@ function guess_dir ()
     eval $var="\"$dir\"";
 
     if [ ! -d "$dir" ]; then
-	if ! mkdir "$dir"; then
+	if ! mkdir -p "$dir"; then
 	    echo "Error making directory $dir";
 	    exit 1;
 	fi;
@@ -188,7 +190,8 @@ guess_dir DOWNLOAD_DIR "downloads" \
 if [ -z "$DOWNLOAD_PROG" ]; then
     # If no download program has been specified then check if wget or
     # curl exists
-    for x in curl wget; do
+    #wget first, because my curl can't download libsdl...
+    for x in wget curl; do
 	if [ "`type -t $x`" != "" ]; then
 	    DOWNLOAD_PROG="$x";
 	    break;
@@ -214,13 +217,8 @@ quoted_root_dir=`echo "$ROOT_DIR" | sed "$SLASH_SCRIPT" `;
 ##
 
 for bin in "${TOR_BINARIES[@]}"; do
-    pkg="${bin%-*}";
-    ver="${bin#*-}";
-    major_ver="${ver%.*}";
-    download_file "$TOR_URL/$pkg/$major_ver/$pkg-$ver.zip" \
-	"$pkg-$ver.zip";
-    download_file "$TOR_URL/$pkg/$major_ver/$pkg-dev-$ver.zip" \
-	"$pkg-dev-$ver.zip";
+    bn="${bin##*/}";
+    download_file "$TOR_URL/$bin" "$bn"
 done;
 
 for dep in "${TOR_DEPS[@]}"; do
@@ -241,12 +239,9 @@ done;
 ##
 
 for bin in "${TOR_BINARIES[@]}"; do
-    pkg="${bin%-*}";
-    ver="${bin#*-}";
-    echo "Extracting $pkg...";
-    for fn in "$DOWNLOAD_DIR/${pkg}"{-dev,}"-${ver}.zip"; do
-	do_unzip "$fn";
-    done;
+    echo "Extracting $bin...";
+    bn="${bin##*/}";
+    do_unzip "$DOWNLOAD_DIR/$bn";
 done;
 
 for dep in "${TOR_DEPS[@]}"; do
@@ -271,17 +266,17 @@ fi;
 
 echo "Extracting SDL...";
 if ! tar -C "$ROOT_DIR" \
-    -zxf "$DOWNLOAD_DIR/SDL-devel-1.2.12-mingw32.tar.gz"; then
+    -zxf "$DOWNLOAD_DIR/SDL-devel-1.2.13-mingw32.tar.gz"; then
     echo "Failed to extract SDL";
     exit 1;
 fi;
 for x in bin docs include lib man share; do
-    if ! cp -pR "$ROOT_DIR/SDL-1.2.12/$x" "$ROOT_DIR/"; then
+    if ! cp -pR "$ROOT_DIR/SDL-1.2.13/$x" "$ROOT_DIR/"; then
 	echo "Failed to copy SDL files";
 	exit 1;
     fi;
 done;
-rm -fr "$ROOT_DIR/SDL-1.2.12";
+rm -fr "$ROOT_DIR/SDL-1.2.13";
 export SDL_CONFIG="$ROOT_DIR/bin/sdl-config";
 
 echo "Fixing SDL libtool files...";
@@ -308,12 +303,12 @@ mv "$ROOT_DIR/lib/pkgconfig/pangoft2.pc"{.tmp,};
 
 echo "Extracting Mesa headers...";
 if ! tar -C "$DOWNLOAD_DIR" \
-    -jxf "$DOWNLOAD_DIR/MesaLib-7.0.3.tar.bz2" \
-    Mesa-7.0.3/include; then
+    -jxf "$DOWNLOAD_DIR/MesaLib-7.2.tar.bz2" \
+    Mesa-7.2/include; then
     echo "Failed to extract Mesa headers";
     exit 1;
 fi;
-cp -R "$DOWNLOAD_DIR/Mesa-7.0.3/include/"* "$ROOT_DIR/include";
+cp -R "$DOWNLOAD_DIR/Mesa-7.2/include/"* "$ROOT_DIR/include";
 
 ##
 # Build
