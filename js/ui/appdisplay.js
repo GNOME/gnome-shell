@@ -37,14 +37,14 @@ AppDisplayItem.prototype = {
 					 width: width,
 					 height: APPDISPLAY_HEIGHT});
 	this._bg = new Clutter.Rectangle({ color: APPDISPLAY_BACKGROUND_COLOR,
-	 				   reactive: true });
+	 				   reactive: true, x: 0, y: 0 });
 	this._group.add_actor(this._bg);
 	this._bg.connect('button-press-event', function(group, e) {
 	    me.emit('launch');
 	    return true;
 	});
 
-        this._icon = new Clutter.Texture({ width: 48, height: 48 });
+        this._icon = new Clutter.Texture({ width: 48, height: 48, x: 0, y: 0 });
 	let gicon = appinfo.get_icon();
 	let path = null;
         if (gicon != null) {
@@ -63,26 +63,18 @@ AppDisplayItem.prototype = {
                                      font_name: "Sans 14px",
                                      width: text_width,
                                      ellipsize: Pango.EllipsizeMode.END,
-		     		     text: name});
+		     		     text: name,
+				     x: this._icon.width + 4,
+				     y: 0});
 	this._group.add_actor(this._name);
 	this._comment = new Clutter.Label({ color: APPDISPLAY_COMMENT_COLOR,
                                              font_name: "Sans 12px",
                                              width: text_width,
                                              ellipsize: Pango.EllipsizeMode.END,
-		     		             text: comment})
+		     		             text: comment,
+					     x: this._name.x,
+					     y: this._name.height + 4})
 	this._group.add_actor(this._comment);
-
-	this._group.connect("notify::allocation", function (grp, prop) {
-            let x = me._group.x;
-            let y = me._group.y;
-	    let width = me._group.width;
-	    let height = me._group.height;
-	    me._bg.set_position(x, y);
-            me._icon.set_position(x, y);
-	    let text_x = x + me._icon.width + 4;
-	    me._name.set_position(text_x, y);
-            me._comment.set_position(text_x, y + me._name.get_height() + 4);
-        });
 
         this.actor = this._group;
     }
@@ -106,9 +98,7 @@ AppDisplay.prototype = {
 	this._appmonitor.connect('changed', function(mon) {
             me._appsStale = true;
 	});
-        this._grid = new Tidy.Grid({x: x, y: y, width: width, height: height,
-                                    column_major: true,
-		     	 	    column_gap: APPDISPLAY_PADDING });
+        this._grid = new Tidy.Grid({x: x, y: y, width: width, height: height});
 	global.stage.add_actor(this._grid);
         this._appset = {}; // Map<appid, appinfo>
 	this._displayed = {} // Map<appid, AppDisplay>
