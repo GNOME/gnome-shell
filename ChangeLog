@@ -1,5 +1,29 @@
 2008-11-21  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1271 - mingw compiling failed: undefined reference to
+	`_glDrawRangeElements@24'
+
+	Resolve glDrawRangeElements with cogl_get_proc_address instead of
+	calling it directly because functions defined in GL > 1.1 are not
+	directly exported under Windows.
+
+	* clutter/cogl/common/cogl-mesh.c: Use the function pointer from
+	the context
+
+	* clutter/cogl/gl/cogl-context.c (cogl_create_context): Initialise
+	function pointer.
+
+	* clutter/cogl/gl/cogl-context.h (CoglContext): Add a function
+	pointer
+
+	* clutter/cogl/gl/cogl-defines.h.in: Add a typedef for the
+	function pointer.
+
+	* clutter/cogl/gl/cogl.c (_cogl_features_init): Resolve
+	glDrawRangeElements
+
+2008-11-21  Neil Roberts  <neil@linux.intel.com>
+
 	* tests/interactive/Makefile.am:
 	* tests/conform/Makefile.am: Use $(EXEEXT) when specifying a
 	dependency on an executable otherwise there won't be a rule to

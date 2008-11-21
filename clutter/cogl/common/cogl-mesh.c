@@ -196,11 +196,18 @@
 #endif
 
 #ifndef HAVE_COGL_GL
+
 /* GLES doesn't have glDrawRangeElements, so we simply pretend it does
  * but that it makes no use of the start, end constraints: */
 #define glDrawRangeElements(mode, start, end, count, type, indices) \
   glDrawElements (mode, count, type, indices)
-#endif
+
+#else /* HAVE_COGL_GL */
+
+#define glDrawRangeElements(mode, start, end, count, type, indices) \
+  ctx->pf_glDrawRangeElements (mode, start, end, count, type, indices)
+
+#endif /* HAVE_COGL_GL */
 
 static void _cogl_mesh_free (CoglMesh *mesh);
 
@@ -1588,6 +1595,8 @@ cogl_mesh_draw_range_elements (CoglHandle handle,
 			       const GLvoid *indices)
 {
   CoglMesh *mesh;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   if (!cogl_is_mesh (handle))
     return;

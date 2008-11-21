@@ -1013,6 +1013,15 @@ typedef void
    GLboolean             transpose,
    const GLfloat        *value);
 
+typedef void
+  (APIENTRYP             COGL_PFNGLDRAWRANGEELEMENTSPROC)
+  (GLenum                mode,
+   GLuint                start,
+   GLuint                end,
+   GLsizei               count,
+   GLenum                type,
+   const GLvoid         *indices);
+
 G_END_DECLS
 
 #endif

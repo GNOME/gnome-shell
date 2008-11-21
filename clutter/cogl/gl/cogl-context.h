@@ -137,6 +137,8 @@ typedef struct
   COGL_PFNGLUNIFORMMATRIX2FVARBPROC                pf_glUniformMatrix2fvARB;
   COGL_PFNGLUNIFORMMATRIX3FVARBPROC                pf_glUniformMatrix3fvARB;
   COGL_PFNGLUNIFORMMATRIX4FVARBPROC                pf_glUniformMatrix4fvARB;
+
+  COGL_PFNGLDRAWRANGEELEMENTSPROC                  pf_glDrawRangeElements;
 } CoglContext;
 
 CoglContext *

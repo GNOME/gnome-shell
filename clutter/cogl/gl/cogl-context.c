@@ -114,6 +114,8 @@ cogl_create_context ()
   _context->pf_glUniformMatrix2fvARB = NULL;
   _context->pf_glUniformMatrix3fvARB = NULL;
   _context->pf_glUniformMatrix4fvARB = NULL;
+
+  _context->pf_glDrawRangeElements = NULL;
   
   /* Init OpenGL state */
   GE( glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) );
