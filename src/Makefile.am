@@ -15,6 +15,8 @@ plugin_LTLIBRARIES = libgnome-shell.la
 
 libgnome_shell_la_SOURCES =			\
 	gnome-shell-plugin.c			\
+	shell-app-monitor.c			\
+	shell-app-monitor.h			\
 	shell-process.c				\
 	shell-process.h				\
 	shell-global.c				\

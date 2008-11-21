@@ -1,15 +1,27 @@
 /* -*- mode: js2; js2-basic-offset: 4; -*- */
 
-const Clutter = imports.gi.Clutter;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
+const Signals = imports.signals;
+const Mainloop = imports.mainloop;
 const Tweener = imports.tweener.tweener;
+const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const Gtk = imports.gi.Gtk;
 
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
+const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
+const AppDisplay = imports.ui.appdisplay;
 
 const OVERLAY_BACKGROUND_COLOR = new Clutter.Color();
 OVERLAY_BACKGROUND_COLOR.from_pixel(0x000000ff);
+
+const SIDESHOW_PAD = 6;
+const SIDESHOW_MIN_WIDTH = 250;
+const SIDESHOW_SEARCH_BG_COLOR = new Clutter.Color();
+SIDESHOW_SEARCH_BG_COLOR.from_pixel(0xffffffff);
+const SIDESHOW_TEXT_COLOR = new Clutter.Color();
+SIDESHOW_TEXT_COLOR.from_pixel(0xffffffff);
 
 // Time for initial animation going into overlay mode
 const ANIMATION_TIME = 0.3;
@@ -33,12 +45,90 @@ const POSITIONS = {
     4: [[0.25, 0.25, 0.3],   [0.75, 0.25, 0.3], [0.75, 0.75, 0.3], [0.25, 0.75, 0.3]]
 };
 
+function Sideshow(width) {
+    this._init(width);
+}
+
+Sideshow.prototype = {
+    _init : function(width) {
+	let me = this;
+
+	let global = Shell.global_get();
+        this._group = new Clutter.Group();
+	this._group.hide();
+	global.stage.add_actor(this._group);
+	let icontheme = Gtk.icon_theme_get_default();
+	let rect = new Clutter.Rectangle({ color: SIDESHOW_SEARCH_BG_COLOR,
+					     x: SIDESHOW_PAD,
+                                             y: Panel.PANEL_HEIGHT + SIDESHOW_PAD,
+					     width: width,
+					     height: 24});
+        this._group.add_actor(rect);
+
+	let searchIconTexture = new Clutter.Texture({ x: SIDESHOW_PAD + 2,
+                                                      y: rect.y + 2 });
+	let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
+        searchIconTexture.set_from_file(searchIconPath);
+        this._group.add_actor(searchIconTexture);
+
+        this._searchEntry = new Clutter.Entry({
+                                             font_name: "Sans 14px",
+					     x: searchIconTexture.x
+                                                 + searchIconTexture.width + 4,
+                                             y: searchIconTexture.y,
+					     width: rect.width - (searchIconTexture.x),
+                                             height: searchIconTexture.height});
+        this._group.add_actor(this._searchEntry);
+	global.stage.set_key_focus(this._searchEntry);
+	this._searchQueued = false;
+	this._searchEntry.connect('notify::text', function (se, prop) {
+	    if (me._searchQueued)
+                return;
+            Mainloop.timeout_add(250, function() {
+                me._searchQueued = false;
+                me._appdisplay.setSearch(me._searchEntry.text);
+		return false;
+            });
+        });
+
+        let appsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
+                                           font_name: "Sans Bold 14px",
+					   text: "Applications",
+                                           x: SIDESHOW_PAD,
+                                           y: this._searchEntry.y + this._searchEntry.height + 10,
+					   height: 16});
+        this._group.add_actor(appsText);
+
+	let menuY = appsText.y + appsText.height + 6;
+	this._appdisplay = new AppDisplay.AppDisplay(SIDESHOW_PAD,
+                menuY, width, global.screen_height - menuY);
+
+        /* Proxy the activated signal */
+        this._appdisplay.connect('activated', function(appdisplay) {
+          me.emit('activated');
+        });
+    },
+
+    show: function() {
+    	  this._group.show();
+    	  this._appdisplay.show();
+    },
+
+    hide: function() {
+    	  this._group.hide();
+    	  this._appdisplay.hide();
+    }
+};
+Signals.addSignalMethods(Sideshow.prototype);
+
 function Overlay() {
     this._init();
-};
+}
 
 Overlay.prototype = {
     _init : function() {
+	let me = this;
+
 	let global = Shell.global_get();
 
 	this._group = new Clutter.Group();
@@ -56,6 +146,29 @@ Overlay.prototype = {
 	global.overlay_group.add_actor(this._group);
 
 	this._windowClones = []
+
+	// TODO - recalculate everything when desktop size changes
+	this._recalculateSize();
+
+        this._sideshow = new Sideshow(this._desktopX - 10);
+	this._sideshow.connect('activated', function(sideshow) {
+	    // TODO - have some sort of animation/effect while
+	    // transitioning to the new app.  We definitely need
+	    // startup-notification integration at least.
+	    me.hide();
+	});
+    },
+
+    _recalculateSize: function () {
+	let global = Shell.global_get();
+        let screenWidth = global.screen_width;
+	let screenHeight = global.screen_height;
+        // The desktop windows are shown on top of a scaled down version of the
+	// desktop. This is positioned at the right side of the screen
+	this._desktopWidth = screenWidth * DESKTOP_SCALE;
+	this._desktopHeight = screenHeight * DESKTOP_SCALE;
+	this._desktopX = screenWidth - this._desktopWidth - 10;
+	this._desktopY = Panel.PANEL_HEIGHT + (screenHeight - this._desktopHeight - Panel.PANEL_HEIGHT) / 2;
     },
 
     show : function() {
@@ -63,22 +176,17 @@ Overlay.prototype = {
 	    this.visible = true;
 
 	    let global = Shell.global_get();
+
+	    global.focus_stage();
+
 	    let windows = global.get_windows();
 	    let desktopWindow = null;
 
-	    let screenWidth = global.screen_width
-	    let screenHeight = global.screen_height
+            this._recalculateSize();
 
 	    for (let i = 0; i < windows.length; i++)
 		if (windows[i].get_window_type() == Meta.WindowType.DESKTOP)
 		    desktopWindow = windows[i];
-
-	    // The desktop windows are shown on top of a scaled down version of the
-	    // desktop. This is positioned at the right side of the screen
-	    this._desktopWidth = screenWidth * DESKTOP_SCALE;
-	    this._desktopHeight = screenHeight * DESKTOP_SCALE;
-	    this._desktopX = screenWidth - this._desktopWidth - 10;
-	    this._desktopY = Panel.PANEL_HEIGHT + (screenHeight - this._desktopHeight - Panel.PANEL_HEIGHT) / 2;
 
             // If a file manager is displaying desktop icons, there will be a desktop window.
             // This window will have the size of the whole desktop. When such window is not present 
@@ -112,6 +220,8 @@ Overlay.prototype = {
 		windowIndex++;
 	    }
 
+            this._sideshow.show();
+
 	    // All the the actors in the window group are completely obscured,
 	    // hiding the group holding them while the overlay is displayed greatly
 	    // increases performance of the overlay especially when there are many
@@ -135,6 +245,8 @@ Overlay.prototype = {
 	    for (let i = 0; i < this._windowClones.length; i++) {
 		this._windowClones[i].destroy();
 	    }
+
+            this._sideshow.hide();
 
 	    this._windowClones = [];
 	}
@@ -166,6 +278,8 @@ Overlay.prototype = {
     },
 
     _addDesktop : function(desktop) {
+	let me = this;
+
 	this._windowClones.push(desktop);
 	this._group.add_actor(desktop);
 
@@ -178,7 +292,6 @@ Overlay.prototype = {
 			   transition: "linear"
 			 });
 
-	let me = this;
 	desktop.connect("button-press-event",
 		      function() {
 			  me._deactivate();
@@ -205,6 +318,8 @@ Overlay.prototype = {
     },
 
     _createWindowClone : function(w, windowIndex, numberOfWindows) {
+	let me = this;
+
 	// We show the window using "clones" of the texture .. separate
 	// actors that mirror the original actors for the window. For
 	// animation purposes, it may be better to actually move the
@@ -244,7 +359,6 @@ Overlay.prototype = {
 			   transition: "linear"
 			  });
 
-	let me = this;
 	clone.connect("button-press-event",
 		      function(clone, event) {
 			  me._activateWindow(w, event.get_time());
