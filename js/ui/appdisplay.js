@@ -10,12 +10,12 @@ const Tidy = imports.gi.Tidy;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
-const MENU_NAME_COLOR = new Clutter.Color();
-MENU_NAME_COLOR.from_pixel(0xffffffff);
-const MENU_COMMENT_COLOR = new Clutter.Color();
-MENU_COMMENT_COLOR.from_pixel(0xffffffbb);
-const MENU_BACKGROUND_COLOR = new Clutter.Color();
-MENU_BACKGROUND_COLOR.from_pixel(0x000000ff);
+const APPDISPLAY_NAME_COLOR = new Clutter.Color();
+APPDISPLAY_NAME_COLOR.from_pixel(0xffffffff);
+const APPDISPLAY_COMMENT_COLOR = new Clutter.Color();
+APPDISPLAY_COMMENT_COLOR.from_pixel(0xffffffbb);
+const APPDISPLAY_BACKGROUND_COLOR = new Clutter.Color();
+APPDISPLAY_BACKGROUND_COLOR.from_pixel(0x000000ff);
 
 const APPDISPLAY_HEIGHT = 50;
 const APPDISPLAY_PADDING = 4;
@@ -36,7 +36,7 @@ AppDisplayItem.prototype = {
 	this._group = new Clutter.Group({reactive: true,
 					 width: width,
 					 height: APPDISPLAY_HEIGHT});
-	this._bg = new Clutter.Rectangle({ color: MENU_BACKGROUND_COLOR,
+	this._bg = new Clutter.Rectangle({ color: APPDISPLAY_BACKGROUND_COLOR,
 	 				   reactive: true });
 	this._group.add_actor(this._bg);
 	this._bg.connect('button-press-event', function(group, e) {
@@ -59,13 +59,13 @@ AppDisplayItem.prototype = {
 
 	let comment = appinfo.get_description();
 	let text_width = width - me._icon.width + 4;
-	this._name = new Clutter.Label({ color: MENU_NAME_COLOR,
+	this._name = new Clutter.Label({ color: APPDISPLAY_NAME_COLOR,
                                      font_name: "Sans 14px",
                                      width: text_width,
                                      ellipsize: Pango.EllipsizeMode.END,
 		     		     text: name});
 	this._group.add_actor(this._name);
-	this._comment = new Clutter.Label({ color: MENU_COMMENT_COLOR,
+	this._comment = new Clutter.Label({ color: APPDISPLAY_COMMENT_COLOR,
                                              font_name: "Sans 12px",
                                              width: text_width,
                                              ellipsize: Pango.EllipsizeMode.END,
