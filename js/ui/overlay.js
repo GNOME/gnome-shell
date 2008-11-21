@@ -155,7 +155,7 @@ Overlay.prototype = {
 	    // TODO - have some sort of animation/effect while
 	    // transitioning to the new app.  We definitely need
 	    // startup-notification integration at least.
-	    me.hide();
+	    me._deactivate();
 	});
     },
 
