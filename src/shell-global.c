@@ -289,19 +289,3 @@ shell_global_focus_stage (ShellGlobal *global)
   Window stagewin = clutter_x11_get_stage_window (stage);
   XSetInputFocus (xdisplay, stagewin, RevertToParent, CurrentTime);
 }
-
-ClutterActor *
-shell_global_get_overlay_group (ShellGlobal *global)
-{
-  g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
-
-  return mutter_plugin_get_overlay_group (global->plugin);
-}
-
-ClutterActor *
-shell_global_get_window_group (ShellGlobal *global)
-{
-  g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
-
-  return mutter_plugin_get_window_group (global->plugin);
-}
