@@ -1,5 +1,12 @@
 2008-11-21  Neil Roberts  <neil@linux.intel.com>
 
+	* tests/interactive/Makefile.am:
+	* tests/conform/Makefile.am: Use $(EXEEXT) when specifying a
+	dependency on an executable otherwise there won't be a rule to
+	build it on Windows.
+
+2008-11-21  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1269 - mingw32 building failed at clutter-media.c
 
 	* clutter/clutter-media.c: Rename the 'ERROR' signal enum to

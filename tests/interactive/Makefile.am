@@ -52,7 +52,7 @@ redhand.png:
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers
-wrappers: test-interactive
+wrappers: test-interactive$(EXEEXT)
 	for i in $(UNIT_TESTS); \
 	do \
 		ln -sf $(top_srcdir)/tests/interactive/wrapper.sh $${i%*.c}; \

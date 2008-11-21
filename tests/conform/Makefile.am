@@ -23,7 +23,7 @@ test_conformance_SOURCES = \
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers
-wrappers: test-conformance
+wrappers: test-conformance$(EXEEXT)
 	for i in `./test-conformance -l -m thorough|grep '^/'`; \
 	do \
 		ln -sf $(top_srcdir)/tests/conform/wrapper.sh `basename $$i`; \
