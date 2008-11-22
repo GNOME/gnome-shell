@@ -366,6 +366,17 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   ClutterActorBox alloc;
   static const ClutterColor white = { 0xff, 0xff, 0xff, 0xff };
 
+  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stex)))
+    clutter_actor_realize (CLUTTER_ACTOR (stex));
+
+  paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex));
+
+  tex_width = cogl_texture_get_width (paint_tex);
+  tex_height = cogl_texture_get_height (paint_tex);
+
+  if (tex_width == 0 || tex_width == 0) /* no contents yet */
+    return;
+
   /* If there are no rectangles or multi-texturing isn't supported,
      fallback to the regular paint method */
   if (priv->rectangles->len < 1
@@ -375,11 +386,6 @@ mutter_shaped_texture_paint (ClutterActor *actor)
         ->paint (actor);
       return;
     }
-
-  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stex)))
-    clutter_actor_realize (CLUTTER_ACTOR (stex));
-
-  paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex));
 
   if (paint_tex == COGL_INVALID_HANDLE)
     return;
@@ -391,9 +397,6 @@ mutter_shaped_texture_paint (ClutterActor *actor)
         ->paint (actor);
       return;
     }
-
-  tex_width = cogl_texture_get_width (paint_tex);
-  tex_height = cogl_texture_get_height (paint_tex);
 
   mutter_shaped_texture_ensure_mask (stex);
 
@@ -512,11 +515,18 @@ mutter_shaped_texture_pick (ClutterActor *actor,
     {
       CoglHandle paint_tex;
       ClutterActorBox alloc;
+      guint tex_width, tex_height;
 
       paint_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (stex));
 
       if (paint_tex == COGL_INVALID_HANDLE)
         return;
+
+      tex_width = cogl_texture_get_width (paint_tex);
+      tex_height = cogl_texture_get_height (paint_tex);
+
+      if (tex_width == 0 || tex_width == 0) /* no contents yet */
+	return;
 
       mutter_shaped_texture_ensure_mask (stex);
 
