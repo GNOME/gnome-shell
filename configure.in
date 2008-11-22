@@ -484,7 +484,7 @@ if test "x$enable_debug" = "xyes"; then
 fi
 
 # Warnings are there for a reason
-CFLAGS="$CFLAGS -Wall -Werror"
+CFLAGS="$CFLAGS -Wall -Werror -ansi"
 
 # Use gnome-doc-utils:
 GNOME_DOC_INIT([0.9.0])

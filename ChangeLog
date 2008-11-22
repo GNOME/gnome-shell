@@ -1,5 +1,9 @@
 2008-11-22  Thomas Thurman  <tthurman@gnome.org>
 
+	* configure.in: Set -ansi so people stop complaining about C99.
+
+2008-11-22  Thomas Thurman  <tthurman@gnome.org>
+
 	* src/core/prefs.c: fix stupid infinite loop when GConf is turned off.
 
 2008-11-22  Thomas Thurman  <tthurman@gnome.org>
