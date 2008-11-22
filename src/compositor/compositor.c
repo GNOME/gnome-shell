@@ -106,14 +106,16 @@ meta_compositor_set_updates (MetaCompositor *compositor,
 #endif
 }
 
-void
+gboolean
 meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
                                MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   if (compositor && compositor->process_event)
-    compositor->process_event (compositor, event, window);
+    return compositor->process_event (compositor, event, window);
+  else
+    return FALSE;
 #endif
 }
 

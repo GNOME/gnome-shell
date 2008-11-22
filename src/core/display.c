@@ -2424,9 +2424,10 @@ event_callback (XEvent   *event,
 
   if (display->compositor)
     {
-      meta_compositor_process_event (display->compositor,
-				     event,
-				     window);
+      if (meta_compositor_process_event (display->compositor,
+                                         event,
+                                         window))
+        filter_out_event = TRUE;
     }
   
   display->current_time = CurrentTime;

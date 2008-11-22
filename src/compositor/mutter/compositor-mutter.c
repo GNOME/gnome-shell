@@ -1748,7 +1748,7 @@ clutter_cmp_set_updates (MetaCompositor *compositor,
 #endif
 }
 
-static void
+static gboolean
 clutter_cmp_process_event (MetaCompositor *compositor,
                            XEvent         *event,
                            MetaWindow     *window)
@@ -1764,11 +1764,10 @@ clutter_cmp_process_event (MetaCompositor *compositor,
       screen = meta_window_get_screen (window);
       info = meta_screen_get_compositor_data (screen);
 
-      if (mutter_plugin_manager_xevent_filter (info->plugin_mgr,
-					       event) == TRUE)
+      if (mutter_plugin_manager_xevent_filter (info->plugin_mgr, event))
 	{
 	  DEBUG_TRACE ("clutter_cmp_process_event (filtered,window==NULL)\n");
-	  return;
+	  return TRUE;
 	}
     }
   else
@@ -1785,11 +1784,10 @@ clutter_cmp_process_event (MetaCompositor *compositor,
 
 	  info = meta_screen_get_compositor_data (screen);
 
-	  if (mutter_plugin_manager_xevent_filter (info->plugin_mgr,
-						   event) == TRUE)
+	  if (mutter_plugin_manager_xevent_filter (info->plugin_mgr, event))
 	    {
 	      DEBUG_TRACE ("clutter_cmp_process_event (filtered,window==NULL)\n");
-	      return;
+	      return TRUE;
 	    }
 
 	  l = l->next;
@@ -1828,6 +1826,11 @@ clutter_cmp_process_event (MetaCompositor *compositor,
 
   meta_error_trap_pop (xrc->display, FALSE);
 
+  /* The above handling is basically just "observing" the events, so we return
+   * FALSE to indicate that the event should not be filtered out; if we have
+   * GTK+ windows in the same process, GTK+ needs the ConfigureNotify event, for example.
+   */
+  return FALSE;
 #endif
 }
 

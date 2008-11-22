@@ -39,9 +39,9 @@ struct _MetaCompositor
   void (*set_updates) (MetaCompositor *compositor,
                        MetaWindow     *window,
                        gboolean        update);
-  void (*process_event) (MetaCompositor *compositor,
-                         XEvent         *event,
-                         MetaWindow     *window);
+  gboolean (*process_event) (MetaCompositor *compositor,
+                             XEvent         *event,
+                             MetaWindow     *window);
   Pixmap (*get_window_pixmap) (MetaCompositor *compositor,
                                MetaWindow     *window);
   void (*set_active_window) (MetaCompositor *compositor,

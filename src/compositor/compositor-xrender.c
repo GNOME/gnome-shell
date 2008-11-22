@@ -2391,14 +2391,14 @@ process_destroy (MetaCompositorXRender *compositor,
   destroy_win (compositor->display, event->window, FALSE);
 }
 
-static void
+static gboolean
 process_damage (MetaCompositorXRender *compositor,
                 XDamageNotifyEvent    *event)
 {
   MetaCompWindow *cw = find_window_in_display (compositor->display,
                                                event->drawable);
   if (cw == NULL)
-    return;
+    return FALSE;
 
   repair_win (cw);
 
@@ -2406,6 +2406,8 @@ process_damage (MetaCompositorXRender *compositor,
   if (event->more == FALSE)
     add_repair (compositor->display);
 #endif
+
+  return TRUE;
 }
   
 static void
@@ -2737,7 +2739,7 @@ xrender_free_window (MetaCompositor *compositor,
 }
 #endif /* 0 */
 
-static void
+static gboolean
 xrender_process_event (MetaCompositor *compositor,
                        XEvent         *event,
                        MetaWindow     *window)
@@ -2798,7 +2800,7 @@ xrender_process_event (MetaCompositor *compositor,
       else 
         {
           meta_error_trap_pop (xrc->display, FALSE);
-          return;
+          return FALSE;
         }
       break;
     }
@@ -2808,7 +2810,7 @@ xrender_process_event (MetaCompositor *compositor,
   repair_display (xrc->display);
 #endif
   
-  return;
+  return FALSE;
 #endif
 }
 
