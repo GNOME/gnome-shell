@@ -21,8 +21,8 @@
 
 /** \file  Schema bindings generator.
  *
- * This program simply takes the items given in the binding lists in
- * window-bindings.h and scheme-bindings.h and turns them into a portion of
+ * This program simply takes the items given in the binding list in
+ * all-keybindings.h and turns them into a portion of
  * the GConf .schemas file.
  *
  * FIXME: also need to make 50-metacity-desktop-key.xml
@@ -92,6 +92,11 @@ static void produce_bindings ();
 static void
 produce_bindings ()
 {
+  /* 10240 is ridiculous overkill; we're writing the input file and
+   * the lines are always 80 chars or less.
+   */
+  char buffer[10240];
+
   source_file = fopen(source_filename, "r");
 
   if (!source_file)
@@ -108,15 +113,8 @@ produce_bindings ()
         target_filename, strerror (errno));
     }
 
-  while (!feof (source_file))
+  while (fgets (buffer, sizeof (buffer), source_file))
     {
-      /* 10240 is ridiculous overkill; we're writing the input file and
-       * the lines are always 80 chars or less.
-       */
-      char buffer[10240];
-      
-      fgets (buffer, sizeof (buffer), source_file);
-      
       if (strstr (buffer, "<!-- GENERATED -->"))
          break;
          
@@ -132,19 +130,12 @@ produce_bindings ()
                stroke, \
                flags & BINDING_REVERSES, \
                description);
-#include "window-bindings.h"
-#include "screen-bindings.h"
+#include "all-keybindings.h"
 #undef keybind
     }
 
-  while (!feof (source_file))
-    {
-      char buffer[10240];
-      
-      fgets (buffer, sizeof (buffer), source_file);
-      
+  while (fgets (buffer, sizeof (buffer), source_file))
       fprintf (target_file, "%s", buffer);
-    }
 
   if (fclose (source_file)!=0)
       g_error ("Cannot close %s: %s\n",

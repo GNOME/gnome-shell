@@ -486,7 +486,7 @@ preview_collection (int font_size,
   i = 0;
   while (i < META_FRAME_TYPE_LAST)
     {
-      const char *title;
+      const char *title = NULL;
       GtkWidget *contents;
       GtkWidget *align;
       double xalign, yalign;

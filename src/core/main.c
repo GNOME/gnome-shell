@@ -403,7 +403,9 @@ main (int argc, char **argv)
     meta_set_debugging (TRUE);
 
   if (g_get_home_dir ())
-    chdir (g_get_home_dir ());
+    if (chdir (g_get_home_dir ()) < 0)
+      meta_warning ("Could not change to home directory %s.\n",
+                    g_get_home_dir ());
 
   meta_print_self_identity ();
   

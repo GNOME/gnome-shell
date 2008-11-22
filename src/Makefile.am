@@ -97,8 +97,7 @@ metacity_SOURCES= 				\
 	ui/themewidget.c			\
 	ui/themewidget.h			\
 	ui/ui.c					\
-	include/window-bindings.h		\
-	include/screen-bindings.h
+	include/all-keybindings.h
 
 # by setting libmetacity_private_la_CFLAGS, the files shared with
 # metacity proper will be compiled with different names.

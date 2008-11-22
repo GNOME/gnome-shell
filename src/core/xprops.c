@@ -1051,7 +1051,7 @@ meta_prop_get_values (MetaDisplay   *display,
                                       &results.type, &results.format,
                                       &results.n_items,
                                       &results.bytes_after,
-                                      (unsigned char **)(&results.prop)) != Success ||
+                                      (char **)(&results.prop)) != Success ||
           results.type == None)
         {
           values[i].type = META_PROP_VALUE_INVALID;

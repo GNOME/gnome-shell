@@ -1,3 +1,39 @@
+2008-11-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/all-keybindings.h: "backward", not "backwards" throughout.
+
+2008-11-20  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: turned on -Wall and -Werror in order to
+          trap as many problems as possible.
+        * src/ui/resizepopup.c: added correct #include.
+        * src/ui/theme-viewer.c: initialised variable.
+        * src/core/xprops.c: corrected cast.
+        * src/core/main.c: added warning if chdir() fails.
+        * src/core/schema-bindings.c: checking the return
+          result of fgets().
+
+2008-11-20  Thomas Thurman  <tthurman@gnome.org>
+
+        Merged screen and window keybinding tables so that
+	we can use just one file for the both.  Also incidentally
+	closes #528337.  Further efficiencies of scale to come.
+
+	* src/include/prefs.h: replace META_PREF_*_KEYBINDINGS
+	  with META_PREF_KEYBINDINGS
+	* src/core/keybindings.c: replace *_bindings with key_bindings
+	  and similar throughout; all window-based functions are now
+	  guaranteed to receive a window so don't need to check for
+	  themselves
+	  (find_handler): moved so it can also be called from
+			  rebuild_binding_table
+        * src/core/display-private.h: replace *_bindings with key_bindings
+        * src/core/prefs.c: update_*_binding becomes update_key_binding;
+          (change_notify): tidy up references to "enormous if statement"
+			   since it's almost entirely gone now
+        * src/core/all-keybindings.h: new merged version of
+			   screen-bindings.h and window-bindings.h.
+
 2008-11-16  David Trowbridge  <trowbrds@gmail.com>
  
  	This change adds support for the new _NET_WM_FULLSCREEN_MONITORS

@@ -108,17 +108,13 @@ static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 #ifdef HAVE_GCONF
 static gboolean handle_preference_update_enum (const gchar *key, GConfValue *value);
 
-static gboolean update_window_binding     (const char *name,
-                                           const char *value);
-static gboolean update_screen_binding     (const char *name,
-                                           const char *value);
+static gboolean update_key_binding     (const char *name,
+                                        const char *value);
 static gboolean find_and_update_list_binding (MetaKeyPref *bindings,
                                               const char  *name,
                                               GSList      *value);
-static gboolean update_window_list_binding (const char *name,
-                                            GSList      *value);
-static gboolean update_screen_list_binding (const char *name,
-                                            GSList      *value);
+static gboolean update_key_list_binding (const char *name,
+                                         GSList      *value);
 static gboolean update_command            (const char  *name,
                                            const char  *value);
 static gboolean update_workspace_name     (const char  *name,
@@ -1091,17 +1087,13 @@ change_notify (GConfClient    *client,
   while (preference_update_handler[i]!=NULL)
     {
       if (preference_update_handler[i] (key, value))
-        goto out; /* Get rid of this when we're done with the if */
+        goto out; /* Get rid of this eventually */
 
       i++;
     }
-
-  /* Otherwise, use the enormous if statement. We'll move entries
-   * out of here as it becomes possible to deal with them in a
-   * more general way.
-   */
-
-  if (g_str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX))
+  
+  if (g_str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX) ||
+      g_str_has_prefix (key, KEY_SCREEN_BINDINGS_PREFIX))
     {
       if (g_str_has_suffix (key, KEY_LIST_BINDINGS_SUFFIX))
         {
@@ -1116,8 +1108,8 @@ change_notify (GConfClient    *client,
 
           list = value ? gconf_value_get_list (value) : NULL;
 
-          if (update_window_list_binding (key, list))
-             queue_changed (META_PREF_WINDOW_KEYBINDINGS);
+          if (update_key_list_binding (key, list))
+            queue_changed (META_PREF_KEYBINDINGS);
         }
       else
         {
@@ -1132,43 +1124,8 @@ change_notify (GConfClient    *client,
 
           str = value ? gconf_value_get_string (value) : NULL;
 
-          if (update_window_binding (key, str))
-             queue_changed (META_PREF_WINDOW_KEYBINDINGS);
-        }
-    }
-  else if (g_str_has_prefix (key, KEY_SCREEN_BINDINGS_PREFIX))
-    {
-      if (g_str_has_suffix (key, KEY_LIST_BINDINGS_SUFFIX))
-        {
-          GSList *list;
-
-          if (value && value->type != GCONF_VALUE_LIST)
-            {
-              meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                            key);
-              goto out;
-            }
-
-          list = value ? gconf_value_get_list (value) : NULL;
-
-          if (update_screen_list_binding (key, list))
-             queue_changed (META_PREF_SCREEN_KEYBINDINGS);
-         }
-      else
-        {
-          const char *str;
-
-          if (value && value->type != GCONF_VALUE_STRING)
-            {
-               meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                            key);
-               goto out;
-            }
-
-          str = value ? gconf_value_get_string (value) : NULL;
-
-          if (update_screen_binding (key, str))
-             queue_changed (META_PREF_SCREEN_KEYBINDINGS);
+          if (update_key_binding (key, str))
+            queue_changed (META_PREF_KEYBINDINGS);
         }
     }
   else if (g_str_has_prefix (key, KEY_COMMAND_PREFIX))
@@ -1722,11 +1679,8 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_APPLICATION_BASED:
       return "APPLICATION_BASED";
 
-    case META_PREF_SCREEN_KEYBINDINGS:
-      return "SCREEN_KEYBINDINGS";
-
-    case META_PREF_WINDOW_KEYBINDINGS:
-      return "WINDOW_KEYBINDINGS";
+    case META_PREF_KEYBINDINGS:
+      return "KEYBINDINGS";
 
     case META_PREF_DISABLE_WORKAROUNDS:
       return "DISABLE_WORKAROUNDS";
@@ -1821,19 +1775,21 @@ meta_prefs_set_num_workspaces (int n_workspaces)
 }
 
 #define keybind(name, handler, param, flags, stroke, description) \
-  { #name, NULL, flags & BINDING_REVERSES },
-static MetaKeyPref screen_bindings[] = {
-#include "screen-bindings.h"
-  { NULL, NULL, FALSE}
-};
-
-static MetaKeyPref window_bindings[] = {
-#include "window-bindings.h"
+  { #name, NULL, !!(flags & BINDING_REVERSES), !!(flags & BINDING_PER_WINDOW) },
+static MetaKeyPref key_bindings[] = {
+#include "all-keybindings.h"
   { NULL, NULL, FALSE }
 };
 #undef keybind
 
 #ifndef HAVE_GCONF
+
+/**
+ * A type to map names of keybindings (such as "switch_windows")
+ * to the binding strings themselves (such as "<Alt>Tab").
+ * It exists only when GConf is turned off in ./configure and
+ * functions as a sort of ersatz GConf.
+ */
 typedef struct
 {
   const char *name;
@@ -1849,16 +1805,11 @@ typedef struct
  */
 
 #define keybind(name, handler, param, flags, stroke, description) \
-  { #name, keystroke },
+  { #name, stroke },
 
-static MetaSimpleKeyMapping screen_string_bindings[] = {
-#include "screen-bindings.h"
-  { NULL,                                   NULL                         }
-};
-
-static MetaSimpleKeyMapping window_string_bindings[] = {
-#include "window-bindings.h"
-  { NULL,                                   NULL                         }
+static MetaSimpleKeyMapping key_string_bindings[] = {
+#include "all-keybindings.h"
+  { NULL, NULL }
 };
 #undef keybind
 
@@ -1867,81 +1818,44 @@ static MetaSimpleKeyMapping window_string_bindings[] = {
 static void
 init_bindings (void)
 {
-#ifdef HAVE_GCONF
-  int i;
+#ifdef HAVE_GCONF  
+  int i = 0;
   GError *err;
-  
-  i = 0;
-  while (window_bindings[i].name)
+
+  while (key_bindings[i].name)
     {
       GSList *list_val, *tmp;
       char *str_val;
       char *key;
-
-      key = g_strconcat (KEY_WINDOW_BINDINGS_PREFIX, "/",
-                         window_bindings[i].name, NULL);
-
+ 
+      key = g_strconcat (key_bindings[i].per_window?
+                         KEY_WINDOW_BINDINGS_PREFIX:
+                         KEY_SCREEN_BINDINGS_PREFIX,
+                         "/",
+                         key_bindings[i].name, NULL);
+ 
       err = NULL;
       str_val = gconf_client_get_string (default_client, key, &err);
       cleanup_error (&err);
 
-      update_binding (&window_bindings[i], str_val);
+      update_binding (&key_bindings[i], str_val);
 
       g_free (str_val);      
       g_free (key);
 
-      key = g_strconcat (KEY_WINDOW_BINDINGS_PREFIX, "/",
-                         window_bindings[i].name,
+      key = g_strconcat (key_bindings[i].per_window?
+                         KEY_WINDOW_BINDINGS_PREFIX:
+                         KEY_SCREEN_BINDINGS_PREFIX,
+                         "/",
+                         key_bindings[i].name,
                          KEY_LIST_BINDINGS_SUFFIX, NULL);
 
       err = NULL;
 
       list_val = gconf_client_get_list (default_client, key, GCONF_VALUE_STRING, &err);
       cleanup_error (&err);
-
-      update_list_binding (&window_bindings[i], list_val, META_LIST_OF_STRINGS);
-
-      tmp = list_val;
-      while (tmp)
-        {
-          g_free (tmp->data);
-          tmp = tmp->next;
-        }
-      g_slist_free (list_val);
-      g_free (key);
-
-      ++i;
-    }
-
-  i = 0;
-  while (screen_bindings[i].name)
-    {
-      GSList *list_val, *tmp;
-      char *str_val;
-      char *key;
-
-      key = g_strconcat (KEY_SCREEN_BINDINGS_PREFIX, "/",
-                         screen_bindings[i].name, NULL);
-
-      err = NULL;
-      str_val = gconf_client_get_string (default_client, key, &err);
-      cleanup_error (&err);
-
-      update_binding (&screen_bindings[i], str_val);
-
-      g_free (str_val);      
-      g_free (key);
-
-      key = g_strconcat (KEY_SCREEN_BINDINGS_PREFIX, "/",
-                         screen_bindings[i].name,
-                         KEY_LIST_BINDINGS_SUFFIX, NULL);
-
-      err = NULL;
-
-      list_val = gconf_client_get_list (default_client, key, GCONF_VALUE_STRING, &err);
-      cleanup_error (&err);
-
-      update_list_binding (&screen_bindings[i], list_val, META_LIST_OF_STRINGS);
+ 
+      update_list_binding (&key_bindings[i], list_val, META_LIST_OF_STRINGS);
 
       tmp = list_val;
       while (tmp)
@@ -1957,42 +1871,18 @@ init_bindings (void)
 #else /* HAVE_GCONF */
   int i = 0;
   int which = 0;
-  while (window_string_bindings[i].name)
+  while (key_string_bindings[i].name)
     {
-      if (window_string_bindings[i].keybinding == NULL)
-        continue;
-
-      /* Find which window_bindings entry this window_string_bindings entry
-       * corresponds to.
-       */
-      while (strcmp(window_bindings[which].name, 
-                    window_string_bindings[i].name) != 0)
-        which++;
-
-      /* Set the binding */
-      update_binding (&window_bindings[which],
-                      window_string_bindings[i].keybinding);
-
-      ++i;
-    }
-
-  i = 0;
-  which = 0;
-  while (screen_string_bindings[i].name)
-    {
-      if (screen_string_bindings[i].keybinding == NULL)
+      if (key_string_bindings[i].keybinding == NULL)
         continue;
     
-      /* Find which window_bindings entry this window_string_bindings entry
-       * corresponds to.
-       */
-      while (strcmp(screen_bindings[which].name, 
-                    screen_string_bindings[i].name) != 0)
+      while (strcmp(key_bindings[which].name, 
+                    key_string_bindings[i].name) != 0)
         which++;
 
       /* Set the binding */
-      update_binding (&screen_bindings[which], 
-                      screen_string_bindings[i].keybinding);
+      update_binding (&key_bindings[which], 
+                      key_string_bindings[i].keybinding);
 
       ++i;
     }
@@ -2079,7 +1969,7 @@ update_binding (MetaKeyPref *binding,
   MetaVirtualModifier mods;
   MetaKeyCombo *combo;
   gboolean changed;
-  
+
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Binding \"%s\" has new gconf value \"%s\"\n",
               binding->name, value ? value : "none");
@@ -2112,8 +2002,8 @@ update_binding (MetaKeyPref *binding,
 
 #ifdef HAVE_GCONF
    /* Bug 329676: Bindings which can be shifted must not have no modifiers,
-   * nor only SHIFT as a modifier.
-   */
+    * nor only SHIFT as a modifier.
+    */
 
   if (binding->add_shift &&
       0 != keysym &&
@@ -2147,6 +2037,11 @@ update_binding (MetaKeyPref *binding,
                     binding->name,
                     old_setting);
 
+      /* FIXME: add_shift is currently screen_bindings only, but
+       * there's no really good reason it should always be.
+       * So we shouldn't blindly add KEY_SCREEN_BINDINGS_PREFIX
+       * onto here.
+       */
       key = g_strconcat (KEY_SCREEN_BINDINGS_PREFIX, "/",
                          binding->name, NULL);
       
@@ -2350,17 +2245,10 @@ find_and_update_binding (MetaKeyPref *bindings,
 }
 
 static gboolean
-update_window_binding (const char *name,
+update_key_binding (const char *name,
                        const char *value)
 {
-  return find_and_update_binding (window_bindings, name, value);
-}
-
-static gboolean
-update_screen_binding (const char *name,
-                       const char *value)
-{
-  return find_and_update_binding (screen_bindings, name, value);
+  return find_and_update_binding (key_bindings, name, value);
 }
 
 static gboolean
@@ -2393,17 +2281,10 @@ find_and_update_list_binding (MetaKeyPref *bindings,
 }
 
 static gboolean
-update_window_list_binding (const char *name,
+update_key_list_binding (const char *name,
                             GSList *value)
 {
-  return find_and_update_list_binding (window_bindings, name, value);
-}
-
-static gboolean
-update_screen_list_binding (const char *name,
-                            GSList *value)
-{
-  return find_and_update_list_binding (screen_bindings, name, value);
+  return find_and_update_list_binding (key_bindings, name, value);
 }
 
 static gboolean
@@ -2706,20 +2587,12 @@ meta_prefs_get_visual_bell_type (void)
 }
 
 void
-meta_prefs_get_screen_bindings (const MetaKeyPref **bindings,
+meta_prefs_get_key_bindings (const MetaKeyPref **bindings,
                                 int                *n_bindings)
 {
   
-  *bindings = screen_bindings;
-  *n_bindings = (int) G_N_ELEMENTS (screen_bindings) - 1;
-}
-
-void
-meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
-                                int                *n_bindings)
-{
-  *bindings = window_bindings;
-  *n_bindings = (int) G_N_ELEMENTS (window_bindings) - 1;
+  *bindings = key_bindings;
+  *n_bindings = (int) G_N_ELEMENTS (key_bindings) - 1;
 }
 
 MetaActionTitlebar
@@ -2775,10 +2648,10 @@ meta_prefs_get_keybinding_action (const char *name)
 {
   int i;
 
-  i = G_N_ELEMENTS (screen_bindings) - 2; /* -2 for dummy entry at end */
+  i = G_N_ELEMENTS (key_bindings) - 2; /* -2 for dummy entry at end */
   while (i >= 0)
     {
-      if (strcmp (screen_bindings[i].name, name) == 0)
+      if (strcmp (key_bindings[i].name, name) == 0)
         return (MetaKeyBindingAction) i;
       
       --i;
@@ -2798,12 +2671,13 @@ meta_prefs_get_window_binding (const char          *name,
 {
   int i;
 
-  i = G_N_ELEMENTS (window_bindings) - 2; /* -2 for dummy entry at end */
+  i = G_N_ELEMENTS (key_bindings) - 2; /* -2 for dummy entry at end */
   while (i >= 0)
     {
-      if (strcmp (window_bindings[i].name, name) == 0)
+      if (key_bindings[i].per_window &&
+          strcmp (key_bindings[i].name, name) == 0)
         {
-          GSList *s = window_bindings[i].bindings;
+          GSList *s = key_bindings[i].bindings;
 
           while (s)
             {
