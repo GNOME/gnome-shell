@@ -1474,23 +1474,22 @@ repair_win (MutterWindow *cw)
   if (priv->back_pixmap == None)
     {
       gint pxm_width, pxm_height;
-      XWindowAttributes attr;
 
       meta_error_trap_push (display);
 
-      XGrabServer (xdisplay);
+      priv->back_pixmap = XCompositeNameWindowPixmap (xdisplay, xwindow);
 
-      XGetWindowAttributes (xdisplay, xwindow, &attr);
-
-      if (attr.map_state == IsViewable)
-	priv->back_pixmap = XCompositeNameWindowPixmap (xdisplay, xwindow);
-      else
-	{
-	  priv->back_pixmap = None;
-	}
-
-      XUngrabServer (xdisplay);
-      meta_error_trap_pop (display, FALSE);
+      if (meta_error_trap_pop_with_return (display, FALSE) != Success)
+        {
+          /* Probably a BadMatch if the window isn't viewable; we could
+           * GrabServer/GetWindowAttributes/NameWindowPixmap/UngrabServer/Sync
+           * to avoid this, but there's no reason to take two round trips
+           * when one will do. (We need that Sync if we want to handle failures
+           * for any reason other than !viewable. That's unlikely, but maybe
+           * we'll BadAlloc or something.)
+           */
+          priv->back_pixmap = None;
+        }
 
       if (priv->back_pixmap == None)
         {
