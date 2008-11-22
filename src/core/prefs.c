@@ -1875,8 +1875,10 @@ init_bindings (void)
   int which = 0;
   while (key_string_bindings[i].name)
     {
-      if (key_string_bindings[i].keybinding == NULL)
+      if (key_string_bindings[i].keybinding == NULL) {
+        ++i;
         continue;
+      }
     
       while (strcmp(key_bindings[which].name, 
                     key_string_bindings[i].name) != 0)
