@@ -68,8 +68,8 @@
 static GConfClient *default_client = NULL;
 static GList *changes = NULL;
 static guint changed_idle;
-#endif
 static GList *listeners = NULL;
+#endif
 
 static gboolean use_system_font = FALSE;
 static PangoFontDescription *titlebar_font = NULL;
@@ -976,6 +976,7 @@ meta_prefs_remove_listener (MetaPrefsChangedFunc func,
 /* Initialisation.                                                          */
 /****************************************************************************/
 
+#ifdef HAVE_GCONF
 /* @@@ again, use glib's ability to tell you the size of the array */
 static gchar *gconf_dirs_we_are_interested_in[] = {
   "/apps/metacity",
@@ -985,6 +986,7 @@ static gchar *gconf_dirs_we_are_interested_in[] = {
   "/desktop/gnome/interface",
   NULL,
 };
+#endif
 
 void
 meta_prefs_init (void)

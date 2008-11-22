@@ -1,5 +1,10 @@
 2008-11-22  Thomas Thurman  <tthurman@gnome.org>
 
+	* src/core/prefs.c: fix two places where there was a warning
+	if GConf was turned off.
+
+2008-11-22  Thomas Thurman  <tthurman@gnome.org>
+
         * src/core/all-keybindings.h: "backward", not "backwards" throughout.
 
 2008-11-20  Thomas Thurman  <tthurman@gnome.org>
