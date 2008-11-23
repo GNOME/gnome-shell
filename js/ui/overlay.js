@@ -24,7 +24,7 @@ const SIDESHOW_TEXT_COLOR = new Clutter.Color();
 SIDESHOW_TEXT_COLOR.from_pixel(0xffffffff);
 
 // Time for initial animation going into overlay mode
-const ANIMATION_TIME = 0.3;
+const ANIMATION_TIME = 0.5;
 
 // How much to scale the desktop down by in overlay mode
 const DESKTOP_SCALE = 0.75;
@@ -283,13 +283,16 @@ Overlay.prototype = {
 	this._windowClones.push(desktop);
 	this._group.add_actor(desktop);
 
+	// Since the right side only moves a little bit (the width of padding
+	// we add) it looks less jittery to put the anchor there.
+	desktop.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
 	Tweener.addTween(desktop,
-			 { x: this._desktopX,
+			 { x: this._desktopX + this._desktopWidth,
 			   y: this._desktopY,
 			   scale_x: DESKTOP_SCALE,
 			   scale_y: DESKTOP_SCALE,
 			   time: ANIMATION_TIME,
-			   transition: "linear"
+			   transition: "easeOutQuad"
 			 });
 
 	desktop.connect("button-press-event",
@@ -356,7 +359,7 @@ Overlay.prototype = {
 			   scale_y: scale,
 			   time: ANIMATION_TIME,
 			   opacity: WINDOW_OPACITY,
-			   transition: "linear"
+			   transition: "easeOutQuad"
 			  });
 
 	clone.connect("button-press-event",
