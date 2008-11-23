@@ -2,8 +2,15 @@
 
 	reviewed by: Thomas Thurman
 
+	* src/Makefile.am: reorder compiler flags so local includes come last.
+	  Closes #562033.
+
+2008-11-23  Daniel Macks  <dmacks@netspace.org>
+
+	reviewed by: Thomas Thurman
+
 	* configure.in: only accept --enable-compositor if we find we can
-	  actually composite.
+	  actually composite.  Closes #560990.
 
 2008-11-23  Thomas Thurman  <tthurman@gnome.org>
 
