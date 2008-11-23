@@ -1,3 +1,10 @@
+2008-11-23  Daniel Macks  <dmacks@netspace.org>
+
+	reviewed by: Thomas Thurman
+
+	* configure.in: only accept --enable-compositor if we find we can
+	  actually composite.
+
 2008-11-23  Thomas Thurman  <tthurman@gnome.org>
 
 	* src/core/display.c: remove apparently spurious warnings about

@@ -211,17 +211,8 @@ fi
 have_xrender=no
 
 XCOMPOSITE_VERSION=0.2
-AC_MSG_CHECKING([Xcomposite >= $XCOMPOSITE_VERSION])
-if $PKG_CONFIG --atleast-version $XCOMPOSITE_VERSION xcomposite; then
-   have_xcomposite=yes
-else
-   have_xcomposite=no
-fi
-AC_MSG_RESULT($have_xcomposite)
-
 if test x$enable_compositor = xyes; then
    have_xcomposite=yes
-   echo "CompositeExt support forced on"
 elif test x$enable_compositor = xauto; then
    echo "Building compositing manager by default now."
    have_xcomposite=yes
@@ -230,9 +221,18 @@ else
 fi
 
 if test x$have_xcomposite = xyes; then
-  echo "Building with CompositeExt"
+   AC_MSG_CHECKING([Xcomposite >= $XCOMPOSITE_VERSION])
+   if $PKG_CONFIG --atleast-version $XCOMPOSITE_VERSION xcomposite; then
+      AC_MSG_RESULT([yes])
+   else
+      AC_MSG_ERROR([no. Use --disable-compositor to disable.])
+   fi
+fi
+
+if test x$have_xcomposite = xyes; then
   METACITY_PC_MODULES="$METACITY_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender xdamage"
   AC_DEFINE(HAVE_COMPOSITE_EXTENSIONS, , [Building with compositing manager support])
+  echo "Building with compositing manager"
 
   ## force on render also
   have_xrender=yes
