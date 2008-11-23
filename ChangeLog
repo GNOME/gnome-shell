@@ -1,3 +1,13 @@
+2008-11-23  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/display.c: remove apparently spurious warnings about
+	operations on window "none"
+
+2008-11-23  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/util.c: Set _POSIX_C_SOURCE to 200112L as it should always
+	have been, in an attempt to close #561962.
+
 2008-11-22  Thomas Thurman  <tthurman@gnome.org>
 
 	* configure.in: Set -ansi so people stop complaining about C99.

@@ -23,7 +23,7 @@
  */
 
 #define _GNU_SOURCE
-#define _POSIX_C_SOURCE /* for fdopen() */
+#define _POSIX_C_SOURCE 200112L /* for fdopen() */
 
 #include <config.h>
 #include "util.h"
