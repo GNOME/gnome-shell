@@ -39,6 +39,15 @@ typedef enum
   META_WINDOW_MENU,
   META_WINDOW_UTILITY,
   META_WINDOW_SPLASHSCREEN,
+
+  /* override redirect window types: */
+  META_WINDOW_DROPDOWN_MENU,
+  META_WINDOW_POPUP_MENU,
+  META_WINDOW_TOOLTIP,
+  META_WINDOW_NOTIFICATION,
+  META_WINDOW_COMBO,
+  META_WINDOW_DND,
+  META_WINDOW_OVERRIDE_OTHER
 } MetaWindowType;
 
 typedef enum
@@ -72,4 +81,7 @@ void meta_window_change_workspace_by_index (MetaWindow *window,
                                             gint        space_index,
                                             gboolean    append,
                                             guint32     timestamp);
+void *meta_window_get_compositor_private (MetaWindow *window);
+void meta_window_set_compositor_private (MetaWindow *window, void *priv);
+void meta_window_configure_notify (MetaWindow *window, XConfigureEvent *event);
 #endif

@@ -2020,7 +2020,8 @@ event_callback (XEvent   *event,
                               "Window %s withdrawn\n",
                               window->desc);
 
-                  meta_effect_run_close (window, NULL, NULL);
+		  if (!window->override_redirect)
+		    meta_effect_run_close (window, NULL, NULL);
 
                   /* Unmanage withdrawn window */		  
                   window->withdrawn = TRUE;
@@ -2045,6 +2046,15 @@ event_callback (XEvent   *event,
         }
       break;
     case MapNotify:
+      /* NB: override redirect windows wont cause a map request so we
+       * watch out for map notifies against any root windows too if a
+       * compositor is enabled: */
+      if (display->compositor && window == NULL
+	  && meta_display_screen_for_root (display, event->xmap.event))
+        {
+          window = meta_window_new (display, event->xmap.window,
+                                    FALSE);
+        }
       break;
     case MapRequest:
       if (window == NULL)
@@ -2073,29 +2083,32 @@ event_callback (XEvent   *event,
     case ReparentNotify:
       break;
     case ConfigureNotify:
-      /* Handle screen resize */
-      {
-	MetaScreen *screen;
+      if (window && window->override_redirect)
+	meta_window_configure_notify (window, &event->xconfigure);
+      else
+	/* Handle screen resize */
+	{
+	  MetaScreen *screen;
 
-        screen = meta_display_screen_for_root (display,
-                                               event->xconfigure.window);
+	  screen = meta_display_screen_for_root (display,
+						 event->xconfigure.window);
 
-	if (screen != NULL)
-          {
+	  if (screen != NULL)
+	    {
 #ifdef HAVE_RANDR
-            /* do the resize the official way */
-            XRRUpdateConfiguration (event);
+	      /* do the resize the official way */
+	      XRRUpdateConfiguration (event);
 #else
-            /* poke around in Xlib */
-            screen->xscreen->width   = event->xconfigure.width;
-            screen->xscreen->height  = event->xconfigure.height;
+	      /* poke around in Xlib */
+	      screen->xscreen->width   = event->xconfigure.width;
+	      screen->xscreen->height  = event->xconfigure.height;
 #endif
-            
-            meta_screen_resize (screen, 
-                                event->xconfigure.width,
-                                event->xconfigure.height);
-          }
-      }
+	      
+	      meta_screen_resize (screen, 
+				  event->xconfigure.width,
+				  event->xconfigure.height);
+	    }
+	}
       break;
     case ConfigureRequest:
       /* This comment and code is found in both twm and fvwm */

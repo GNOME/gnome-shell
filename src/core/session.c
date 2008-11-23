@@ -698,6 +698,20 @@ window_type_to_string (MetaWindowType type)
       return "splashscreen";
     case META_WINDOW_UTILITY:
       return "utility";
+    case META_WINDOW_DROPDOWN_MENU:
+      return "dropdown_menu";
+    case META_WINDOW_POPUP_MENU:
+      return "popup_menu";
+    case META_WINDOW_TOOLTIP:
+      return "tooltip";
+    case META_WINDOW_NOTIFICATION:
+      return "notification";
+    case META_WINDOW_COMBO:
+      return "combo";
+    case META_WINDOW_DND:
+      return "dnd";
+    case META_WINDOW_OVERRIDE_OTHER:
+      return "override_redirect";
     }
 
   return "";

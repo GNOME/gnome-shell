@@ -110,6 +110,9 @@ struct _MetaWindow
   /* Initial timestamp property */
   guint32 initial_timestamp;  
   
+  /* Whether this is an override redirect window or not */
+  guint override_redirect : 1;
+
   /* Whether we're maximized */
   guint maximized_horizontally : 1;
   guint maximized_vertically : 1;

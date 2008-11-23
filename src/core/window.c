@@ -53,6 +53,10 @@
 #include <X11/extensions/shape.h>
 #endif
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+#include <X11/extensions/Xcomposite.h>
+#endif
+
 static int destroying_windows_disallowed = 0;
 
 
@@ -253,6 +257,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   Atom initial_props[N_INITIAL_PROPS];
   int i;
   gboolean has_shape;
+  MetaScreen *screen;
 
   g_assert (attrs != NULL);
   g_assert (N_INITIAL_PROPS == (int) G_N_ELEMENTS (initial_props));
@@ -266,12 +271,43 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       return NULL;
     }
 
-  if (attrs->override_redirect)
+  screen = NULL;
+  for (tmp = display->screens; tmp != NULL; tmp = tmp->next)
     {
-      meta_verbose ("Deciding not to manage override_redirect window 0x%lx\n", xwindow);
-      return NULL;
+      MetaScreen *scr = tmp->data;
+
+      if (scr->xroot == attrs->root)
+        {
+          screen = tmp->data;
+          break;
+        }
     }
   
+  g_assert (screen);
+  
+  /* A black list of override redirect windows that we don't need to manage: */
+  if (attrs->override_redirect &&
+      (xwindow == screen->no_focus_window ||
+       xwindow == screen->flash_window ||
+       xwindow == screen->wm_sn_selection_window ||
+       attrs->class == InputOnly ||
+       /* any windows created via meta_create_offscreen_window: */
+       (attrs->x == -100 && attrs->y == -100
+	&& attrs->width == 1 && attrs->height == 1) ||
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+       xwindow == screen->wm_cm_selection_window ||
+       xwindow == screen->guard_window ||
+       (display->compositor &&
+        xwindow == XCompositeGetOverlayWindow (display->xdisplay,
+					       screen->xroot)
+       )
+#endif
+      )
+     ) {
+    meta_verbose ("Not managing our own windows\n");
+    return NULL;
+  }
+
   /* Grab server */
   meta_display_grab (display);
   meta_error_trap_push (display); /* Push a trap over all of window
@@ -330,6 +366,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   event_mask =
     PropertyChangeMask | EnterWindowMask | LeaveWindowMask |
     FocusChangeMask | ColormapChangeMask;
+  if (attrs->override_redirect)
+    event_mask |= StructureNotifyMask;
 
   XSelectInput (display->xdisplay, xwindow, event_mask);
 
@@ -384,8 +422,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       return NULL;
     }
 
-  g_assert (!attrs->override_redirect);
-  
   window = g_new (MetaWindow, 1);
 
   window->constructing = TRUE;
@@ -408,24 +444,11 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->sync_request_time.tv_usec = 0;
 #endif
   
-  window->screen = NULL;
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *scr = tmp->data;
-
-      if (scr->xroot == attrs->root)
-        {
-          window->screen = tmp->data;
-          break;
-        }
-      
-      tmp = tmp->next;
-    }
-  
-  g_assert (window->screen);
+  window->screen = screen;
 
   window->desc = g_strdup_printf ("0x%lx", window->xwindow);
+
+  window->override_redirect = attrs->override_redirect;
 
   /* avoid tons of stack updates */
   meta_stack_freeze (window->screen->stack);
@@ -608,10 +631,12 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   
   meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
   
-  update_sm_hints (window); /* must come after transient_for */
+  if (!window->override_redirect)
+    update_sm_hints (window); /* must come after transient_for */
   update_role (window);
   update_net_wm_type (window);
-  meta_window_update_icon_now (window);
+  if (!window->override_redirect)
+    meta_window_update_icon_now (window);
 
   if (window->initially_iconic)
     {
@@ -672,14 +697,15 @@ meta_window_new_with_attrs (MetaDisplay       *display,
     meta_window_ensure_frame (window);
 
   meta_window_grab_keys (window);
-  if (window->type != META_WINDOW_DOCK)
+  if (window->type != META_WINDOW_DOCK && !window->override_redirect)
     {
       meta_display_grab_window_buttons (window->display, window->xwindow);
       meta_display_grab_focus_window_button (window->display, window);
     }
 
   if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK)
+      window->type == META_WINDOW_DOCK ||
+      window->override_redirect)
     {
       /* Change the default, but don't enforce this if the user
        * focuses the dock/desktop and unsticks it using key shortcuts.
@@ -759,7 +785,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
     }
   
   /* for the various on_all_workspaces = TRUE possible above */
-  meta_window_set_current_workspace_hint (window);
+  if (!window->override_redirect)
+    meta_window_set_current_workspace_hint (window);
   
   meta_window_update_struts (window);
 
@@ -800,11 +827,14 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       }
   }
   
-  /* FIXME we have a tendency to set this then immediately
-   * change it again.
-   */
-  set_wm_state (window, window->iconic ? IconicState : NormalState);
-  set_net_wm_state (window);
+  if (!window->override_redirect)
+    {
+      /* FIXME we have a tendency to set this then immediately
+       * change it again.
+       */
+      set_wm_state (window, window->iconic ? IconicState : NormalState);
+      set_net_wm_state (window);
+    }
 
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
@@ -836,6 +866,9 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   meta_display_ungrab (display);
  
   window->constructing = FALSE;
+
+  if (screen->display->compositor)
+    meta_compositor_add_window (screen->display->compositor, window);
 
   return window;
 }
@@ -988,7 +1021,7 @@ meta_window_free (MetaWindow  *window,
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
   if (window->display->compositor)
-    meta_compositor_destroy_window (window->display->compositor, window);
+    meta_compositor_remove_window (window->display->compositor, window);
   
   if (window->display->window_with_menu == window)
     {
@@ -1495,7 +1528,9 @@ implement_showing (MetaWindow *window,
           if (window->display->compositor)
             {
               meta_compositor_minimize_window (window->display->compositor,
-                                               window);
+                                               window,
+					       &window_rect,
+					       &icon_rect);
               finish_minimize (window);
             }
           else
@@ -2001,6 +2036,14 @@ window_state_on_map (MetaWindow *window,
     case META_WINDOW_DESKTOP:
     case META_WINDOW_SPLASHSCREEN:
     case META_WINDOW_MENU:
+    /* override redirect types: */
+    case META_WINDOW_DROPDOWN_MENU:
+    case META_WINDOW_POPUP_MENU:
+    case META_WINDOW_TOOLTIP:
+    case META_WINDOW_NOTIFICATION:
+    case META_WINDOW_COMBO:
+    case META_WINDOW_DND:
+    case META_WINDOW_OVERRIDE_OTHER:
       /* don't focus any of these; places_on_top may be irrelevant for some of
        * these (e.g. dock)--but you never know--the focus window might also be
        * of the same type in some weird situation...
@@ -2274,22 +2317,33 @@ meta_window_show (MetaWindow *window)
             }
         }
 
-      if (did_show && window->was_minimized)
+      if (did_show)
 	{
-	  MetaRectangle window_rect;
 	  MetaRectangle icon_rect;
-	  
-	  window->was_minimized = FALSE;
-	  
-	  if (meta_window_get_icon_geometry (window, &icon_rect))
+
+	  if (window->was_minimized
+	      && meta_window_get_icon_geometry (window, &icon_rect))
 	    {
+	      MetaRectangle window_rect;
+	      
 	      meta_window_get_outer_rect (window, &window_rect);
 	      
-	      meta_effect_run_unminimize (window,
-					  &window_rect,
-					  &icon_rect,
-					  NULL, NULL);
+	      if (window->display->compositor)
+		meta_compositor_unminimize_window (window->display->compositor,
+						   window,
+						   &window_rect,
+						   &icon_rect);
+	      else
+		meta_effect_run_unminimize (window,
+					    &window_rect,
+					    &icon_rect,
+					    NULL, NULL);
 	    }
+	  else
+	    meta_compositor_map_window (window->display->compositor,
+					window);
+
+	  window->was_minimized = FALSE;
 	}
       
       if (window->iconic)
@@ -2373,10 +2427,16 @@ meta_window_hide (MetaWindow *window)
 					 window->hidden);
       meta_stack_thaw (window->screen->stack);
 
+      meta_compositor_unmap_window (window->display->compositor,
+				    window);
+
       did_hide = TRUE;
     }
   else
     {
+      meta_compositor_unmap_window (window->display->compositor,
+				    window);
+
       if (window->frame && window->frame->mapped)
         {
           meta_topic (META_DEBUG_WINDOW_STATE, "Frame actually needs unmap\n");
@@ -2650,14 +2710,14 @@ meta_window_maximize (MetaWindow        *window,
 
       if (window->display->compositor)
         {
+	  MetaRectangle window_rect;
+
           meta_window_move_resize_now (window);
 
+	  meta_window_get_outer_rect (window, &window_rect);
           meta_compositor_maximize_window (window->display->compositor,
                                            window,
-                                           window->frame->rect.x,
-                                           window->frame->rect.y,
-                                           window->frame->rect.width,
-                                           window->frame->rect.height);
+					   &window_rect);
         }
       else
         {
@@ -2763,6 +2823,8 @@ meta_window_unmaximize (MetaWindow        *window,
 
       if (window->display->compositor)
         {
+	  MetaRectangle window_rect;
+
           meta_window_move_resize (window,
                                    FALSE,
                                    target_rect.x,
@@ -2771,12 +2833,11 @@ meta_window_unmaximize (MetaWindow        *window,
                                    target_rect.height);
           meta_window_move_resize_now (window);
 
+	  meta_window_get_outer_rect (window, &window_rect);
+
           meta_compositor_unmaximize_window (window->display->compositor,
-                                           window,
-                                           window->frame->rect.x,
-                                           window->frame->rect.y,
-                                           window->frame->rect.width,
-                                           window->frame->rect.height);
+					     window,
+					     &window_rect);
         }
       else
         {
@@ -3801,6 +3862,22 @@ idle_move_resize (gpointer data)
   destroying_windows_disallowed -= 1;
   
   return FALSE;
+}
+
+/* This is used to notify us of an unrequested configuration
+ * (only applicable to override redirect windows) */
+void
+meta_window_configure_notify (MetaWindow *window, XConfigureEvent *event)
+{
+  g_assert (window->override_redirect);
+  g_assert (window->frame == NULL);
+
+  window->rect.x = event->x;
+  window->rect.y = event->y;
+  window->rect.width = event->width;
+  window->rect.height = event->height;
+  if (!event->override_redirect && !event->send_event)
+    meta_warning ("Unhandled change of windows override redirect status\n");
 }
 
 void
@@ -5847,10 +5924,18 @@ update_net_wm_type (MetaWindow *window)
           atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DOCK ||
           atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_TOOLBAR ||
           atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_MENU ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL ||
           atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY ||
-          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH)
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG ||
+          atoms[i] ==
+	    window->display->atom__NET_WM_WINDOW_TYPE_DROPDOWN_MENU ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_POPUP_MENU ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_TOOLTIP ||
+          atoms[i] ==
+	    window->display->atom__NET_WM_WINDOW_TYPE_NOTIFICATION ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_COMBO ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_DND ||
+          atoms[i] == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
         {
           window->type_atom = atoms[i];
           break;
@@ -6177,7 +6262,24 @@ recalc_window_type (MetaWindow *window)
 
   old_type = window->type;
   
-  if (window->type_atom != None)
+  if (window->override_redirect)
+    {
+      if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DROPDOWN_MENU)
+        window->type = META_WINDOW_DROPDOWN_MENU;
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_POPUP_MENU)
+        window->type = META_WINDOW_POPUP_MENU;
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLTIP)
+        window->type = META_WINDOW_TOOLTIP;
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NOTIFICATION)
+        window->type = META_WINDOW_NOTIFICATION;
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_COMBO)
+        window->type = META_WINDOW_COMBO;
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DND)
+        window->type = META_WINDOW_DND;
+      else
+	window->type = META_WINDOW_OVERRIDE_OTHER;
+    }
+  else if (window->type_atom != None)
     {
       if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DESKTOP)
         window->type = META_WINDOW_DESKTOP;
@@ -6187,14 +6289,14 @@ recalc_window_type (MetaWindow *window)
         window->type = META_WINDOW_TOOLBAR;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_MENU)
         window->type = META_WINDOW_MENU;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG)
-        window->type = META_WINDOW_DIALOG;
-      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
-        window->type = META_WINDOW_NORMAL;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY)
         window->type = META_WINDOW_UTILITY;
       else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH)
         window->type = META_WINDOW_SPLASHSCREEN;
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG)
+        window->type = META_WINDOW_DIALOG;
+      else if (window->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
+        window->type = META_WINDOW_NORMAL;
       else
         meta_bug ("Set a type atom for %s that wasn't handled in recalc_window_type\n",
                   window->desc);
@@ -6219,7 +6321,8 @@ recalc_window_type (MetaWindow *window)
     {
       recalc_window_features (window);
       
-      set_net_wm_state (window);
+      if (!window->override_redirect)
+	set_net_wm_state (window);
       
       /* Update frame */
       if (window->decorated)
@@ -6370,12 +6473,14 @@ recalc_window_features (MetaWindow *window)
     window->decorated = FALSE;
 
   if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK)
+      window->type == META_WINDOW_DOCK ||
+      window->override_redirect)
     window->always_sticky = TRUE;
   
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK ||
-      window->type == META_WINDOW_SPLASHSCREEN)
+      window->type == META_WINDOW_SPLASHSCREEN ||
+      window->override_redirect)
     {
       window->decorated = FALSE;
       window->has_close_func = FALSE;
@@ -6463,6 +6568,13 @@ recalc_window_features (MetaWindow *window)
     case META_WINDOW_MENU:
     case META_WINDOW_UTILITY:
     case META_WINDOW_SPLASHSCREEN:
+    case META_WINDOW_DROPDOWN_MENU:
+    case META_WINDOW_POPUP_MENU:
+    case META_WINDOW_TOOLTIP:
+    case META_WINDOW_NOTIFICATION:
+    case META_WINDOW_COMBO:
+    case META_WINDOW_DND:
+    case META_WINDOW_OVERRIDE_OTHER:
       window->skip_taskbar = TRUE;
       window->skip_pager = TRUE;
       break;
@@ -8340,3 +8452,20 @@ meta_window_get_description (MetaWindow *window)
 
   return window->desc;
 }
+
+void *
+meta_window_get_compositor_private (MetaWindow *window)
+{
+  if (!window)
+    return NULL;
+  return window->compositor_private;
+}
+
+void
+meta_window_set_compositor_private (MetaWindow *window, void *priv)
+{
+  if (!window)
+    return;
+  window->compositor_private = priv;
+}
+

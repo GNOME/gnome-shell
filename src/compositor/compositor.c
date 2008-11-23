@@ -57,23 +57,21 @@ meta_compositor_destroy (MetaCompositor *compositor)
 
 void
 meta_compositor_add_window (MetaCompositor    *compositor,
-                            MetaWindow        *window,
-                            Window             xwindow,
-                            XWindowAttributes *attrs)
+                            MetaWindow        *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   if (compositor && compositor->add_window)
-    compositor->add_window (compositor, window, xwindow, attrs);
+    compositor->add_window (compositor, window);
 #endif
 }
 
 void
 meta_compositor_remove_window (MetaCompositor *compositor,
-                               Window          xwindow)
+                               MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   if (compositor && compositor->remove_window)
-    compositor->remove_window (compositor, xwindow);
+    compositor->remove_window (compositor, window);
 #endif
 }
 
@@ -165,57 +163,69 @@ void meta_compositor_end_move (MetaCompositor *compositor,
 {
 }
 
-void meta_compositor_free_window (MetaCompositor *compositor,
-                                  MetaWindow     *window)
+void
+meta_compositor_map_window (MetaCompositor *compositor,
+			    MetaWindow	   *window)
 {
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->map_window)
+    compositor->map_window (compositor, window);
+#endif
 }
 
 void
-meta_compositor_destroy_window (MetaCompositor *compositor,
-                                MetaWindow     *window)
+meta_compositor_unmap_window (MetaCompositor *compositor,
+			      MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  if (compositor && compositor->destroy_window)
-    compositor->destroy_window (compositor, window);
+  if (compositor && compositor->unmap_window)
+    compositor->unmap_window (compositor, window);
 #endif
 }
 
 void
 meta_compositor_minimize_window (MetaCompositor *compositor,
-                                 MetaWindow     *window)
+                                 MetaWindow     *window,
+				 MetaRectangle	*window_rect,
+				 MetaRectangle	*icon_rect)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   if (compositor && compositor->minimize_window)
-    compositor->minimize_window (compositor, window);
+    compositor->minimize_window (compositor, window, window_rect, icon_rect);
+#endif
+}
+
+void
+meta_compositor_unminimize_window (MetaCompositor    *compositor,
+                                   MetaWindow        *window,
+				   MetaRectangle     *window_rect,
+				   MetaRectangle     *icon_rect)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->unminimize_window)
+    compositor->unminimize_window (compositor, window, window_rect, icon_rect);
 #endif
 }
 
 void
 meta_compositor_maximize_window (MetaCompositor    *compositor,
                                  MetaWindow        *window,
-                                 int                x,
-                                 int                y,
-                                 int                width,
-                                 int                height)
+				 MetaRectangle	   *window_rect)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   if (compositor && compositor->maximize_window)
-    compositor->maximize_window (compositor, window, x, y, width, height);
+    compositor->maximize_window (compositor, window, window_rect);
 #endif
 }
 
 void
 meta_compositor_unmaximize_window (MetaCompositor    *compositor,
                                    MetaWindow        *window,
-                                   int                x,
-                                   int                y,
-                                   int                width,
-                                   int                height)
-
+				   MetaRectangle     *window_rect)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   if (compositor && compositor->unmaximize_window)
-    compositor->unmaximize_window (compositor, window, x, y, width, height);
+    compositor->unmaximize_window (compositor, window, window_rect);
 #endif
 }
 

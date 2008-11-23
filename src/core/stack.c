@@ -265,6 +265,14 @@ get_standalone_layer (MetaWindow *window)
         layer = META_LAYER_DOCK;
       break;
 
+    case META_WINDOW_DROPDOWN_MENU:
+    case META_WINDOW_POPUP_MENU:
+    case META_WINDOW_TOOLTIP:
+    case META_WINDOW_NOTIFICATION:
+    case META_WINDOW_COMBO:
+    case META_WINDOW_OVERRIDE_OTHER:
+      layer = META_LAYER_OVERRIDE_REDIRECT;
+      break;
     default:       
       meta_window_foreach_transient (window,
                                      is_focused_foreach,
@@ -1062,6 +1070,7 @@ stack_sync_to_server (MetaStack *stack)
   GArray *root_children_stacked;
   GList *tmp;
   GArray *all_hidden;
+  int n_override_redirect = 0;
   
   /* Bail out if frozen */
   if (stack->freeze_count > 0)
@@ -1100,7 +1109,10 @@ stack_sync_to_server (MetaStack *stack)
 		  w->layer, w->stack_position, w->desc);
 
       /* remember, stacked is in reverse order (bottom to top) */
-      g_array_prepend_val (stacked, w->xwindow);
+      if (w->override_redirect)
+	n_override_redirect++;
+      else
+	g_array_prepend_val (stacked, w->xwindow);
       
       if (w->frame)
 	top_level_window = w->frame->xwindow;
@@ -1124,7 +1136,7 @@ stack_sync_to_server (MetaStack *stack)
   meta_pop_no_msg_prefix ();
 
   /* All windows should be in some stacking order */
-  if (stacked->len != stack->windows->len)
+  if (stacked->len != stack->windows->len - n_override_redirect)
     meta_bug ("%u windows stacked, %u windows exist in stack\n",
               stacked->len, stack->windows->len);
   
