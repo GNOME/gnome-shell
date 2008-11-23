@@ -16,8 +16,7 @@ src/core/util.c
 src/core/window.c
 src/core/window-props.c
 src/core/xprops.c
-src/include/screen-bindings.h
-src/include/window-bindings.h
+src/include/all-keybindings.h
 src/metacity.desktop.in
 src/metacity.schemas.in.in
 src/metacity-wm.desktop.in
