@@ -1,3 +1,33 @@
+2.25.8
+======
+
+Thanks to Brian Cameron, Maxim Ermilov, Daniel Macks, Elijah Newren, Frederic
+Peters, Thomas Thurman, David Trowbridge, and Olav Vitters for improvements in
+this version.
+
+  - Reorder compiler flags (Daniel) (#562033)
+  - Fix compositor switch (Daniel) (#560990)
+  - Remove spurious warnings about operations on window "none" (Thomas)
+  - Fix _POSIX_C_SOURCE which was breaking OS X builds (Thomas) (#561962)
+  - -Werror -Wall and -ansi are now standard compile flags (Thomas)
+  - Merge screen and window keybindings files; fix minor alt-tab bug
+    in the process (Thomas) (#528337)
+  - Support _NET_WM_FULLSCREEN_MONITORS (David)
+  - Remove some deprecated calls (Thomas) (#560445)
+  - Clean up #includes (Maxim) (#560449)
+  - Update description of raise_on_click (Elijah)
+  - First dialogue delegated to zenity (Thomas)
+  - fix theme-parser typo (Olav)
+  - double-quote variable names in messages (Thomas) (#558309)
+  - fix accidental renaming of run_command_terminal (Thomas) (#557943)
+  - some null checks; problems exposed by new GDM (Brian) (#558058)
+  - ignore mouse button modifier if it's missing (Thomas) (Launchpad 258054, Launchpad 266929)
+  - fix docbook markup (Frederic)
+
+Translations
+  Astur (ast), Jorge González (es), Thomas Thurman (la), Leonardo Ferreira
+  Fontenelle (pt_BR), Daniel Nylander (sv)
+
 2.25.5
 ======
 
