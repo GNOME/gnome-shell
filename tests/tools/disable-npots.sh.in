@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# This script sets up the LD_PRELOAD environment to use
+# libdisable-npots.la
+
+# Read the .la file so we can get the library name
+. "--builddir--/tests/tools/libdisable-npots.la"
+
+if test -n "$LD_PRELOAD"; then
+    LD_PRELOAD="${LD_PRELOAD}:";
+fi
+
+export LD_PRELOAD="${LD_PRELOAD}--builddir--/tests/tools/.libs/${dlname}"
+
+exec "$@"

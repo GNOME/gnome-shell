@@ -39,19 +39,62 @@ test_conformance_CFLAGS = \
 	$(CLUTTER_CFLAGS)
 test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
 
-.PHONY: test test-report full-report
+.PHONY: test
+.PHONY: test-report test-report-normal test-report-disable-npots
+.PHONY: full-report full-report-normal full-report-disable-npots
+.PHONY: full-report-generate
+
 test:
 	gtester -o=test-conformance-results.xml ./test-conformance
 
-test-report:
+test-report-normal:
 	gtester -o=test-conformance-results.xml -k ./test-conformance \
-	  && gtester-report test-conformance-results.xml > test-conformance-results.html \
+	  && ( gtester-report test-conformance-results.xml \
+	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (normal)</' \
+              > test-conformance-results.html ) \
 	  && gnome-open ./test-conformance-results.html
 
-full-report:
+test-report-disable-npots:
+	../tools/disable-npots.sh \
+	  gtester -o=test-conformance-results-dn.xml -k ./test-conformance \
+	  && ( gtester-report test-conformance-results-dn.xml \
+	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (no NPOTs)</' \
+              > test-conformance-results-dn.html ) \
+	  && gnome-open ./test-conformance-results-dn.html
+
+test-report: test-report-normal
+
+full-report-normal:
 	gtester -o=test-conformance-results.xml -k -m=slow ./test-conformance \
-	  && gtester-report test-conformance-results.xml > test-conformance-results.html \
-	  && gnome-open ./test-conformance-results.html
+	  && ( gtester-report test-conformance-results.xml \
+	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (normal)</' \
+              > test-conformance-results.html )
+
+full-report-disable-npots:
+	../tools/disable-npots.sh \
+	  gtester -o=test-conformance-results-dn.xml -k -m=slow ./test-conformance \
+	  && ( gtester-report test-conformance-results-dn.xml \
+	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (no NPOTs)</' \
+              > test-conformance-results-dn.html )
+
+REPORTS = test-conformance-results.html
+
+if HAVE_LIBDL
+
+REPORTS += test-conformance-results-dn.html
+
+full-report-generate: full-report-normal full-report-disable-npots
+
+else
+
+full-report-generate: full-report-normal
+
+endif
+
+full-report: full-report-generate
+	for x in $(REPORTS); do \
+		gnome-open "$$x"; \
+	done
 
 EXTRA_DIST = ADDING_NEW_TESTS
 

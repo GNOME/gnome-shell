@@ -1,5 +1,28 @@
 2008-11-24  Neil Roberts  <neil@linux.intel.com>
 
+	Add a wrapper library to help testing without NPOTs.
+
+	* tests/tools/Makefile.am: Optionally build the
+	libdisable-npots.la library depending on whether libdl was
+	detected in the configure script. A helper script is also
+	generated to setup the LD_PRELOAD.
+
+	* tests/conform/Makefile.am: There are now two versions of the
+	test-report and full-report rules. test-report-normal is the same
+	as before and test-report-disable-npots runs the tests with the
+	disable-npots wrapper script. The full-report rule runs both of
+	them and displays two separate HTML files. The test-report rule
+	just runs the normal version as before.
+
+	* configure.ac: Add a test for libdl
+
+	* tests/tools/disable-npots.sh.in: New file. Template for the
+	helper script
+
+	* tests/tools/disable-npots.c: New file
+
+2008-11-24  Neil Roberts  <neil@linux.intel.com>
+
 	* clutter/cogl/gl/cogl-texture.c (cogl_texture_polygon): Fix the
 	equation for calculating texture coordinates when using sliced
 	textures. This became broken in revision 3520.

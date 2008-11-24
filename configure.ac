@@ -242,6 +242,11 @@ if test "x$xinput" = "xyes"; then
       X11_LIBS="$X11_LIBS -lXi"
 fi
 
+dnl This is only used to decide whether to build
+dnl tests/tools/disable-npots.la
+AC_CHECK_LIB(dl, dlopen, HAVE_LIBDL=yes, HAVE_LIBDL=no)
+AM_CONDITIONAL(HAVE_LIBDL, test "x$HAVE_LIBDL" != "xno")
+
 clutter_gl_header=""
 use_gles2_wrapper="no"
 
