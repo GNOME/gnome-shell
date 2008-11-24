@@ -2224,7 +2224,7 @@ cogl_texture_polygon (CoglHandle         handle,
 		      gboolean           use_color)
 {
   CoglTexture      *tex;
-  int               i, x, y;
+  int               i, x, y, tex_num;
   GLuint            gl_handle;
   CoglTexSliceSpan *y_span, *x_span;
   gulong            enable_flags;
@@ -2314,7 +2314,7 @@ cogl_texture_polygon (CoglHandle         handle,
 			   GL_CLAMP_TO_BORDER) );
     }
 
-  i = 0;
+  tex_num = 0;
 
   /* Render all of the slices with the full geometry but use a
      transparent border color so that any part of the texture not
@@ -2327,7 +2327,7 @@ cogl_texture_polygon (CoglHandle         handle,
 	{
 	  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, x);
 
-	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint, i++);
+	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint, tex_num++);
 
 	  /* Convert the vertices into an array of GLfloats ready to pass to
 	     OpenGL */
@@ -2338,10 +2338,14 @@ cogl_texture_polygon (CoglHandle         handle,
 	      p->v[0] = CFX_F(vertices[i].x);
 	      p->v[1] = CFX_F(vertices[i].y);
 	      p->v[2] = CFX_F(vertices[i].z);
-	      p->t[0] = CFX_F(vertices[i].tx
-			      * (x_span->size - x_span->waste) / x_span->size);
-	      p->t[1] = CFX_F(vertices[i].ty
-			      * (y_span->size - y_span->waste) / y_span->size);
+	      p->t[0] = CFX_F((vertices[i].tx
+                               - (COGL_FIXED_FROM_INT (x_span->start)
+                                  / tex->bitmap.width))
+                              * tex->bitmap.width / x_span->size);
+	      p->t[1] = CFX_F((vertices[i].ty
+                               - (COGL_FIXED_FROM_INT (y_span->start)
+                                  / tex->bitmap.height))
+			      * tex->bitmap.height / y_span->size);
 	      p->c[0] = cogl_color_get_red_byte(&vertices[i].color);
 	      p->c[1] = cogl_color_get_green_byte(&vertices[i].color);
 	      p->c[2] = cogl_color_get_blue_byte(&vertices[i].color);

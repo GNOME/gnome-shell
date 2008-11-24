@@ -1,3 +1,9 @@
+2008-11-24  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/cogl/gl/cogl-texture.c (cogl_texture_polygon): Fix the
+	equation for calculating texture coordinates when using sliced
+	textures. This became broken in revision 3520.
+
 2008-11-21  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1270 - Update to mingw-cross-compile.sh
