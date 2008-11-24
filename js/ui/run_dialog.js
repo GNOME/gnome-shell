@@ -26,8 +26,9 @@ RunDialog.prototype = {
     _init : function() {
         let global = Shell.global_get();
 
-        // All actors are inside _group.
-        this._group = new Clutter.Group();
+        // All actors are inside _group. We create it initially
+	// hidden then show it in show()
+        this._group = new Clutter.Group({ visible: false });
         global.stage.add_actor(this._group);
 
         this._overlay = new Clutter.Rectangle({ color: OVERLAY_COLOR,
@@ -74,19 +75,6 @@ RunDialog.prototype = {
             return false;
         });
 
-        // TODO: Detect escape key and make it cancel the operation.
-        //       Use me.on_cancel() if it exists. Something like this:
-        // this._entry.connect('key-press-event', function(o, e) {
-        //     if (the pressed key is the escape key) {
-        //         me.hide();
-        //         me.emit('cancel');
-        //         return false;
-        //     } else
-        //         return true;
-        // });
-
-        global.focus_stage();
-        global.stage.set_key_focus(this._entry);
     },
 
     _run : function(command) {
@@ -104,14 +92,41 @@ RunDialog.prototype = {
     },
 
     show : function() {
+	if (this._group.visible) // Already shown
+	    return false;
+
+	if (!Main.startModal())
+	    return false;
+
         this._group.show_all();
+
+        // TODO: Detect escape key and make it cancel the operation.
+        //       Use me.on_cancel() if it exists. Something like this:
+        // this._entry.connect('key-press-event', function(o, e) {
+        //     if (the pressed key is the escape key) {
+        //         me.hide();
+        //         me.emit('cancel');
+        //         return false;
+        //     } else
+        //         return true;
+        // });
+
+	let global = Shell.global_get();
+        global.stage.set_key_focus(this._entry);
+
+	return true;
     },
 
     hide : function() {
-        this._group.hide();
+	if (!this._group.visible)
+	    return;
+
+	this._group.hide();
+	Main.endModal();
     },
 
     destroy : function(){
+	this.hide();
         this._group.destroy();
     }
 };

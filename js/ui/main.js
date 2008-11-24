@@ -103,13 +103,14 @@ function start() {
         // Make sure not more than one run dialog is shown.
         if (!run_dialog) {
             run_dialog = new RunDialog.RunDialog();
-	    let handler = function() {
+	    let end_handler = function() {
                 run_dialog.destroy();
                 run_dialog = null;
             };
-            run_dialog.connect('run', handler);
-            run_dialog.connect('cancel', handler);
-            run_dialog.show();
+            run_dialog.connect('run', end_handler);
+            run_dialog.connect('cancel', end_handler);
+            if (!run_dialog.show())
+		end_handler();
         }
     });
 
@@ -120,17 +121,33 @@ function start() {
     wm = new WindowManager.WindowManager();
 }
 
-function show_overlay() {
+// Used to go into a mode where all keyboard and mouse input goes to
+// the stage. Returns true if we successfully grabbed the keyboard and
+// went modal, false otherwise
+function startModal() {
     let global = Shell.global_get();
 
-    overlay.show();
+    if (!global.grab_keyboard())
+	return false;
+
     global.set_stage_input_area(0, 0, global.screen_width, global.screen_height);
+
+    return true;
+}
+
+function endModal() {
+    let global = Shell.global_get();
+
+    global.ungrab_keyboard();
+    global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);
+}
+
+function show_overlay() {
+    if (startModal())
+	overlay.show();
 }
 
 function hide_overlay() {
-    let global = Shell.global_get();
-
     overlay.hide();
-    panel.overlayHidden();
-    global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);
+    endModal();
 }

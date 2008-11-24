@@ -11,6 +11,7 @@ struct _ShellGlobal {
 
   MutterPlugin *plugin;
   ShellWM *wm;
+  gboolean keyboard_grabbed;
 };
 
 enum {
@@ -273,19 +274,64 @@ _shell_global_set_plugin (ShellGlobal  *global,
 }
 
 /**
- * shell_global_focus_stage:
+ * shell_global_grab_keyboard:
+ * @global: a #ShellGlobal
  *
- * Set the keyboard focus to the Clutter stage window.  This function
- * is best used in combination with some sort of visual notification
- * that the shell has taken over input.
+ * Grab the keyboard to the stage window. The stage will receive
+ * all keyboard events until shell_global_ungrab_keyboard() is called.
+ * This is appropriate to do when the desktop goes into a special
+ * mode where no normal global key shortcuts or application keyboard
+ * processing should happen.
  */
-void
-shell_global_focus_stage (ShellGlobal *global)
+gboolean
+shell_global_grab_keyboard (ShellGlobal *global)
 {
   MetaScreen *screen = mutter_plugin_get_screen (global->plugin);
   MetaDisplay *display = meta_screen_get_display (screen);
   Display *xdisplay = meta_display_get_xdisplay (display);
   ClutterStage *stage = CLUTTER_STAGE (mutter_plugin_get_stage (global->plugin));
   Window stagewin = clutter_x11_get_stage_window (stage);
-  XSetInputFocus (xdisplay, stagewin, RevertToParent, CurrentTime);
+
+  /* FIXME: we need to coordinate with the rest of Metacity or we
+   * may grab the keyboard away from other portions of Metacity
+   * and leave Metacity in a confused state. An X client is allowed
+   * to overgrab itself, though not allowed to grab they keyboard
+   * away from another applications.
+   */
+  if (global->keyboard_grabbed)
+    return FALSE;
+
+  if (XGrabKeyboard (xdisplay, stagewin,
+                     False, /* owner_events - steal events from the rest of metacity */
+                     GrabModeAsync, GrabModeAsync,
+                     CurrentTime) != Success)
+    return FALSE; /* probably AlreadyGrabbed, some other app has a keyboard grab */
+
+  global->keyboard_grabbed = TRUE;
+
+  return TRUE;
+}
+
+/**
+ * shell_global_ungrab_keyboard:
+ * @global: a #ShellGlobal
+ *
+ * Undoes the effect of shell_global_grab_keyboard
+ */
+void
+shell_global_ungrab_keyboard (ShellGlobal *global)
+{
+  MetaScreen *screen;
+  MetaDisplay *display;
+  Display *xdisplay;
+
+  g_return_if_fail (global->keyboard_grabbed);
+
+  screen = mutter_plugin_get_screen (global->plugin);
+  display = meta_screen_get_display (screen);
+  xdisplay = meta_display_get_xdisplay (display);
+
+  XUngrabKeyboard (xdisplay, CurrentTime);
+
+  global->keyboard_grabbed = FALSE;
 }

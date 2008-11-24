@@ -178,8 +178,6 @@ Overlay.prototype = {
 
 	    let global = Shell.global_get();
 
-	    global.focus_stage();
-
 	    let windows = global.get_windows();
 	    let desktopWindow = null;
 

@@ -49,7 +49,8 @@ void _shell_global_set_plugin (ShellGlobal  *global,
 
 MetaScreen * shell_global_get_screen (ShellGlobal *global);
 
-void shell_global_focus_stage (ShellGlobal *global);
+gboolean shell_global_grab_keyboard   (ShellGlobal *global);
+void     shell_global_ungrab_keyboard (ShellGlobal *global);
 
 G_END_DECLS
 
