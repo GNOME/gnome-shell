@@ -53,7 +53,7 @@ Panel.prototype = {
 	this._grid.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
 	this._grid.set_position(global.screen_width - 2, (PANEL_HEIGHT - TRAY_HEIGHT) / 2);
 
-	this._traymanager = new Shell.TrayManager();
+	this._traymanager = new Shell.TrayManager({ bg_color: PANEL_BACKGROUND_COLOR });
 	let me = this;
         // the anchor point needs to be updated each time the height/width of the content might have changed, because 
         // it doesn't get updated on its own

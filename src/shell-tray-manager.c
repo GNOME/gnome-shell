@@ -12,6 +12,7 @@ struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
   ClutterStage *stage;
   GdkWindow *stage_window;
+  ClutterColor bg_color;
 
   GHashTable *icons;
 };
@@ -22,6 +23,12 @@ typedef struct {
   GtkWidget *window;
   ClutterActor *actor;
 } ShellTrayManagerChild;
+
+enum {
+  PROP_0,
+
+  PROP_BG_COLOR
+};
 
 /* Signals */
 enum
@@ -34,6 +41,9 @@ enum
 G_DEFINE_TYPE (ShellTrayManager, shell_tray_manager, G_TYPE_OBJECT);
 
 static guint shell_tray_manager_signals [LAST_SIGNAL] = { 0 };
+
+/* Sea Green - obnoxious to force people to set the background color */
+static const ClutterColor default_color = { 0xbb, 0xff, 0xaa };
 
 static void na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *child, gpointer manager);
 static void na_tray_icon_removed (NaTrayManager *na_manager, GtkWidget *child, gpointer manager);
@@ -52,6 +62,50 @@ free_tray_icon (gpointer data)
 }
 
 static void
+shell_tray_manager_set_property(GObject         *object,
+                                guint            prop_id,
+                                const GValue    *value,
+                                GParamSpec      *pspec)
+{
+  ShellTrayManager *manager = SHELL_TRAY_MANAGER (object);
+
+  switch (prop_id)
+    {
+    case PROP_BG_COLOR:
+      {
+        ClutterColor *color = g_value_get_boxed (value);
+        if (color)
+          manager->priv->bg_color = *color;
+        else
+          manager->priv->bg_color = default_color;
+      }
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+shell_tray_manager_get_property(GObject         *object,
+                                guint            prop_id,
+                                GValue          *value,
+                                GParamSpec      *pspec)
+{
+  ShellTrayManager *manager = SHELL_TRAY_MANAGER (object);
+
+  switch (prop_id)
+    {
+    case PROP_BG_COLOR:
+      g_value_set_boxed (value, &manager->priv->bg_color);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 shell_tray_manager_init (ShellTrayManager *manager)
 {
   manager->priv = G_TYPE_INSTANCE_GET_PRIVATE (manager, SHELL_TYPE_TRAY_MANAGER,
@@ -60,6 +114,7 @@ shell_tray_manager_init (ShellTrayManager *manager)
 
   manager->priv->icons = g_hash_table_new_full (NULL, NULL,
                                                 NULL, free_tray_icon);
+  manager->priv->bg_color = default_color;
 
   g_signal_connect (manager->priv->na_manager, "tray-icon-added",
                     G_CALLBACK (na_tray_icon_added), manager);
@@ -88,6 +143,8 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
   g_type_class_add_private (klass, sizeof (ShellTrayManagerPrivate));
 
   gobject_class->finalize = shell_tray_manager_finalize;
+  gobject_class->set_property = shell_tray_manager_set_property;
+  gobject_class->get_property = shell_tray_manager_get_property;
 
   shell_tray_manager_signals[TRAY_ICON_ADDED] =
     g_signal_new ("tray-icon-added",
@@ -107,6 +164,18 @@ shell_tray_manager_class_init (ShellTrayManagerClass *klass)
 		  g_cclosure_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
+
+  /* Lifting the CONSTRUCT_ONLY here isn't hard; you just need to
+   * iterate through the icons, reset the background pixmap, and
+   * call na_tray_child_force_redraw()
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_BG_COLOR,
+                                   g_param_spec_boxed ("bg-color",
+                                                       "BG Color",
+                                                       "Background color (only if we don't have transparency)",
+                                                       CLUTTER_TYPE_COLOR,
+                                                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
 
 ShellTrayManager *
@@ -159,6 +228,27 @@ actor_moved (GObject *object, GParamSpec *param, gpointer user_data)
   gtk_window_move (GTK_WINDOW (child->window), wx, wy);
 }
 
+static GdkPixmap *
+create_bg_pixmap (GdkColormap  *colormap,
+                  ClutterColor *color)
+{
+  GdkScreen *screen = gdk_colormap_get_screen (colormap);
+  GdkVisual *visual = gdk_colormap_get_visual (colormap);
+  GdkPixmap *pixmap = gdk_pixmap_new (gdk_screen_get_root_window (screen),
+                                      1, 1,
+                                      visual->depth);
+
+  cairo_t *cr = gdk_cairo_create (pixmap);
+  cairo_set_source_rgb (cr,
+                        color->red / 255.,
+                        color->green / 255.,
+                        color->blue / 255.);
+  cairo_paint (cr);
+  cairo_destroy (cr);
+
+  return pixmap;
+}
+
 static void
 na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
                     gpointer user_data)
@@ -167,12 +257,35 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   GtkWidget *win;
   ClutterActor *icon;
   ShellTrayManagerChild *child;
+  GdkPixmap *bg_pixmap;
 
   win = gtk_window_new (GTK_WINDOW_POPUP);
   gtk_container_add (GTK_CONTAINER (win), socket);
 
+  /* The colormap of the socket matches that of its contents; make
+   * the window we put it in match that as well */
+  gtk_widget_set_colormap (win, gtk_widget_get_colormap (socket));
+
   gtk_widget_set_size_request (win, 24, 24);
   gtk_widget_realize (win);
+
+  /* If the tray child is using an RGBA colormap (and so we have real
+   * transparency), we don't need to worry about the background. If
+   * not, we obey the bg-color property by creating a 1x1 pixmap of
+   * that color and setting it as our background. Then "parent-relative"
+   * background on the socket and the plug within that will cause
+   * the icons contents to appear on top of our background color.
+   *
+   * Ordering warning: na_tray_child_is_composited() doesn't work
+   *   until the tray child has been realized.
+   */
+  if (!na_tray_child_is_composited (NA_TRAY_CHILD (socket)))
+    {
+      bg_pixmap = create_bg_pixmap (gtk_widget_get_colormap (win),
+                                    &manager->priv->bg_color);
+      gdk_window_set_back_pixmap (win->window, bg_pixmap, FALSE);
+      g_object_unref (bg_pixmap);
+    }
 
   gtk_widget_set_parent_window (win, manager->priv->stage_window);
   gdk_window_reparent (win->window, manager->priv->stage_window, 0, 0);
