@@ -146,6 +146,7 @@ libmetacityinclude_HEADERS =			\
 	ui/preview-widget.h			\
 	ui/theme-parser.h			\
 	ui/theme.h				\
+	include/atomnames.h			\
 	include/prefs.h				\
 	include/window.h			\
 	include/workspace.h			\
