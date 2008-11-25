@@ -203,12 +203,17 @@ AppDisplay.prototype = {
         if (search == null || search == '')
             return true;
         let name = appinfo.get_name().toLowerCase();
-        let description = appinfo.get_description();
-        if (description) description = description.toLowerCase();
 	if (name.indexOf(search) >= 0)
 	    return true;
-	if (description && description.indexOf(search) >= 0)
-	    return true;
+        let description = appinfo.get_description();
+	if (description) {
+            description = description.toLowerCase();
+            if (description.indexOf(search) >= 0)
+	        return true;
+        }
+        let exec = appinfo.get_executable().toLowerCase();
+        if (exec.indexOf(search) >= 0)
+            return true;
 	return false;
     },
 
