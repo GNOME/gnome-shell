@@ -53,5 +53,7 @@ MetaWindow *meta_display_get_focus_window (MetaDisplay *display);
 int meta_display_get_damage_event_base (MetaDisplay *display);
 int meta_display_get_shape_event_base (MetaDisplay *display);
 Atom meta_display_get_atom (MetaDisplay *display, MetaAtom meta_atom);
+guint32 meta_display_get_current_time (MetaDisplay *display);
+guint32 meta_display_get_current_time_roundtrip (MetaDisplay *display);
 
 #endif
