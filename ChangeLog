@@ -1,3 +1,7 @@
+2008-11-26  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/xprops.c: add casts (#562106)
+
 2008-11-25  Thomas Thurman  <tthurman@gnome.org>
 
 	* metacity.doap: change to standard description.

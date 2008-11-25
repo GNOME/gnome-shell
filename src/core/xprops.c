@@ -673,9 +673,9 @@ meta_prop_get_text_property (MetaDisplay   *display,
 /* From Xmd.h */
 #ifndef cvtINT32toInt
 #if SIZEOF_VOID_P == 8
-#define cvtINT8toInt(val)   (((val) & 0x00000080) ? ((val) | 0xffffffffffffff00) : (val))
-#define cvtINT16toInt(val)  (((val) & 0x00008000) ? ((val) | 0xffffffffffff0000) : (val))
-#define cvtINT32toInt(val)  (((val) & 0x80000000) ? ((val) | 0xffffffff00000000) : (val))
+#define cvtINT8toInt(val)   ((((unsigned int)val) & 0x00000080) ? (((unsigned int)val) | 0xffffffffffffff00) : ((unsigned int)val))
+#define cvtINT16toInt(val)  ((((unsigned int)val) & 0x00008000) ? (((unsigned int)val) | 0xffffffffffff0000) : ((unsigned int)val))
+#define cvtINT32toInt(val)  ((((unsigned int)val) & 0x80000000) ? (((unsigned int)val) | 0xffffffff00000000) : ((unsigned int)val))
 #define cvtINT8toShort(val)  cvtINT8toInt(val)
 #define cvtINT16toShort(val) cvtINT16toInt(val)
 #define cvtINT32toShort(val) cvtINT32toInt(val)
