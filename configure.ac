@@ -384,11 +384,6 @@ case $clutterbackend in
       AC_MSG_ERROR([GLX not found and GLX backend requested]);
     fi
 
-    if test "x$imagebackend" = "xgdk-pixbuf"; then
-        # xlib pixbuf needed for exporting the stage
-        BACKEND_PC_FILES="gdk-pixbuf-xlib-2.0"
-    fi
-
     GLX_LIBS="$X11_LIBS -lGL"
     GLX_CFLAGS="$X11_CFLAGS"
     backendextra=x11

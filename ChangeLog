@@ -1,3 +1,9 @@
+2008-11-25  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* configure.ac: Remove stray dependency on gdk-pixbuf-xlib; we
+	don't use the xlib specific API anymore. (thanks to Matthias
+	Clasen)
+
 2008-11-25  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1299 - clutter_score_remove will segmentation fault if
