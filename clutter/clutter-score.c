@@ -505,30 +505,17 @@ traverse_children (GNode    *node,
     case REMOVE_BY_ID:
       if (closure->d.id == entry->id)
         {
-          if (entry->complete_id)
-            {
-              g_signal_handler_disconnect (entry->timeline, entry->complete_id);
-              entry->complete_id = 0;
-            }
-
-          if (entry->marker_id)
-            {
-              g_signal_handler_disconnect (entry->timeline, entry->marker_id);
-              entry->marker_id = 0;
-            }
-
-          g_object_unref (entry->timeline);
-
+          /* Destroy all the child entries of this node */
           g_node_traverse (node,
                            G_POST_ORDER,
                            G_TRAVERSE_ALL,
                            -1,
                            destroy_entry, NULL);
 
-          g_free (entry->marker);
-          g_slice_free (ClutterScoreEntry, entry);
-
+          /* Keep track of this node so that it will be destroyed
+             further up */
           closure->result = node;
+
           retval = TRUE;
         }
       break;

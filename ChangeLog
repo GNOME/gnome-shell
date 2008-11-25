@@ -1,3 +1,13 @@
+2008-11-25  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1299 - clutter_score_remove will segmentation fault if
+	timelines are more than 52 and continue to remove them
+
+	* clutter/clutter-score.c (traverse_children): Don't destroy the
+	entry in the handler for REMOVE_BY_ID. It will be removed again
+	anyway in the call to g_node_traverse. This was causing a
+	crash. Thanks to zhangwei for spotting.
+
 2008-11-24  Neil Roberts  <neil@linux.intel.com>
 
 	Add a wrapper library to help testing without NPOTs.
