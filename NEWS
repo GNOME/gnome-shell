@@ -1,3 +1,14 @@
+2.25.13
+=======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Add casts to fix failure to build from source on 64bit hosts (Thomas) (#562106)
+  - Added script to produce annoucements (Thomas)
+
+Translations
+  Jorge González (es)
+
 2.25.8
 ======
 
