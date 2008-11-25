@@ -10,6 +10,32 @@ const Tidy = imports.gi.Tidy;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
+// TODO - move this into GConf once we're not a plugin anymore
+// but have taken over metacity
+// This list is taken from GNOME Online popular applications
+// http://online.gnome.org/applications
+// but with nautilus removed
+const DEFAULT_APPLICATIONS = [
+    'mozilla-firefox.desktop',
+    'gnome-terminal.desktop',
+    'evolution.desktop',
+    'evince.desktop',
+    'gedit.desktop',
+    'mozilla-thunderbird.desktop',
+    'totem.desktop',
+    'gnome-file-roller.desktop',
+    'rhythmbox.desktop',
+    'epiphany.desktop',
+    'xchat.desktop',
+    'openoffice.org-1.9-writer.desktop',
+    'emacs.desktop',
+    'gnome-system-monitor.desktop',
+    'openoffice.org-1.9-calc.desktop',
+    'eclipse.desktop',
+    'openoffice.org-1.9-impress.desktop',
+    'vncviewer.desktop'
+];
+
 const APPDISPLAY_NAME_COLOR = new Clutter.Color();
 APPDISPLAY_NAME_COLOR.from_pixel(0xffffffff);
 const APPDISPLAY_COMMENT_COLOR = new Clutter.Color();
@@ -89,6 +115,7 @@ AppDisplay.prototype = {
     _init : function(x, y, width, height) {
 	let me = this;
 	let global = Shell.global_get();
+        this._search = '';
         this._x = x;
 	this._y = y;
 	this._width = width;
@@ -105,7 +132,7 @@ AppDisplay.prototype = {
 	this._max_items = this._height / (APPDISPLAY_HEIGHT + APPDISPLAY_PADDING);
     },
 
-    _refresh: function() {
+    _refreshCache: function() {
         let me = this;
 
         if (!this._appsStale)
@@ -121,12 +148,32 @@ AppDisplay.prototype = {
 	    let appid = appinfo.get_id();
 	    this._appset[appid] = appinfo;
         }
-	for (i = 0; i < apps.length && i < this._max_items; i++) {
-	    let appinfo = apps[i];
-	    let appid = appinfo.get_id();
-	    this._filterAdd(appid);
-        }
         this._appsStale = false;
+    },
+
+    _removeItem: function(appid) {
+        let item = this._displayed[appid];
+        let group = item.actor;
+	group.destroy();
+	delete this._displayed[appid];
+    },
+
+    _removeAll: function() {
+        for (appid in this._displayed)
+            this._removeItem(appid);
+     },
+
+    _setDefaultList: function() {
+        this._removeAll();
+        let added = 0;
+	for (let i = 0; i < DEFAULT_APPLICATIONS.length && added < this._max_items; i++) {
+	    let appid = DEFAULT_APPLICATIONS[i];
+	    let appinfo = this._appset[appid];
+	    if (appinfo) {
+	      this._filterAdd(appid);
+              added += 1;
+            }
+        }
     },
 
     _filterAdd: function(appid) {
@@ -147,10 +194,9 @@ AppDisplay.prototype = {
     },
 
     _filterRemove: function(appid) {
+        // In the future, do some sort of fade out or other effect here
         let item = this._displayed[appid];
-	let group = item.actor;
-	group.destroy();
-	delete this._displayed[appid];
+        this._removeItem(item);
     },
 
     _appinfoMatches: function(appinfo, search) {
@@ -166,35 +212,48 @@ AppDisplay.prototype = {
 	return false;
     },
 
+    _sortApps: function(appids) {
+        let me = this;
+        return appids.sort(function (a,b) {
+            let appA = me._appset[a];
+            let appB = me._appset[b];
+            return appA.get_name().localeCompare(appB.get_name());
+        });
+    },
+
     _doSearchFilter: function() {
-        let c = 0;
-        for (appid in this._displayed) {
-            let app = this._appset[appid];
-            if (!this._appinfoMatches(app, this._search))
-                this._filterRemove(appid);
-            else
-                c += 1;
-        }
+        this._removeAll();
+        let matchedApps = [];
         for (appid in this._appset) {
-	    if (c >= this._max_items)
+	    if (matchedApps.length >= this._max_items)
 	        break;
             if (appid in this._displayed)
                 continue;
             let app = this._appset[appid];
-            if (this._appinfoMatches(app, this._search)) {
-                this._filterAdd(appid);
-                c += 1;
-            }
+            if (this._appinfoMatches(app, this._search))
+	        matchedApps.push(appid);
         }
+        this._sortApps(matchedApps);
+        for (let i = 0; i < matchedApps.length; i++) {
+            this._filterAdd(matchedApps[i]);
+        }
+    },
+
+    _redisplay: function() {
+        this._refreshCache();
+        if (!this._search)
+            this._setDefaultList();
+        else
+            this._doSearchFilter();
     },
 
     setSearch: function(text) {
         this._search = text.toLowerCase();
-        this._doSearchFilter();
+        this._redisplay();
     },
 
     show: function() {
-        this._refresh();
+        this._redisplay();
         this._grid.show();
     },
 
