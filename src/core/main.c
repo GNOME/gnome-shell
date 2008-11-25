@@ -556,6 +556,7 @@ main (int argc, char **argv)
   if (meta_args.composite || meta_args.no_composite)
     meta_prefs_set_compositing_manager (meta_args.composite);
 
+#ifdef WITH_CLUTTER
   if (meta_args.mutter_plugins)
     {
       char **plugins = g_strsplit (meta_args.mutter_plugins, ",", -1);
@@ -574,6 +575,7 @@ main (int argc, char **argv)
       g_slist_free(plugins_list);
       g_strfreev (plugins);
     }
+#endif
 
   if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);
