@@ -18,7 +18,7 @@ WindowManager.prototype = {
     _init : function() {
         let me = this;
 
-        this._global = Shell.global_get();
+        this._global = Shell.Global.get();
         this._shellwm = this._global.window_manager;
 
         this._switchData = null;

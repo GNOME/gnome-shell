@@ -57,7 +57,7 @@ AppDisplayItem.prototype = {
 
 	let name = appinfo.get_name();
 
-	let icontheme = Gtk.icon_theme_get_default();
+	let icontheme = Gtk.IconTheme.get_default();
 
 	this._group = new Clutter.Group({reactive: true,
 					 width: width,
@@ -114,7 +114,7 @@ function AppDisplay(x, y, width, height) {
 AppDisplay.prototype = {
     _init : function(x, y, width, height) {
 	let me = this;
-	let global = Shell.global_get();
+	let global = Shell.Global.get();
         this._search = '';
         this._x = x;
 	this._y = y;

@@ -22,7 +22,7 @@ function Panel() {
 
 Panel.prototype = {
     _init : function() {
-	let global = Shell.global_get();
+	let global = Shell.Global.get();
 
 	this._group = new Clutter.Group();
 
@@ -101,7 +101,7 @@ Panel.prototype = {
     // Struts determine the area along each side of the screen that is reserved
     // and not available to applications
     _setStruts: function() {
-	let global = Shell.global_get();
+	let global = Shell.Global.get();
 
 	let struts = [
             new Meta.Strut({

@@ -54,11 +54,11 @@ Sideshow.prototype = {
     _init : function(width) {
 	let me = this;
 
-	let global = Shell.global_get();
+	let global = Shell.Global.get();
         this._group = new Clutter.Group();
 	this._group.hide();
 	global.stage.add_actor(this._group);
-	let icontheme = Gtk.icon_theme_get_default();
+	let icontheme = Gtk.IconTheme.get_default();
 	let rect = new Clutter.Rectangle({ color: SIDESHOW_SEARCH_BG_COLOR,
 					     x: SIDESHOW_PAD,
                                              y: Panel.PANEL_HEIGHT + SIDESHOW_PAD,
@@ -130,7 +130,7 @@ Overlay.prototype = {
     _init : function() {
 	let me = this;
 
-	let global = Shell.global_get();
+	let global = Shell.Global.get();
 
 	this._group = new Clutter.Group();
 	this.visible = false;
@@ -161,7 +161,7 @@ Overlay.prototype = {
     },
 
     _recalculateSize: function () {
-	let global = Shell.global_get();
+	let global = Shell.Global.get();
         let screenWidth = global.screen_width;
 	let screenHeight = global.screen_height;
         // The desktop windows are shown on top of a scaled down version of the
@@ -176,7 +176,7 @@ Overlay.prototype = {
 	if (!this.visible) {
 	    this.visible = true;
 
-	    let global = Shell.global_get();
+	    let global = Shell.Global.get();
 
 	    let windows = global.get_windows();
 	    let desktopWindow = null;
@@ -235,7 +235,7 @@ Overlay.prototype = {
 
     hide : function() {
 	if (this.visible) {
-	    let global = Shell.global_get();
+	    let global = Shell.Global.get();
 
 	    this.visible = false;
 	    global.window_group.show()
@@ -260,7 +260,7 @@ Overlay.prototype = {
     },
 
     _createDesktopRectangle : function() {   
-        let global = Shell.global_get();
+        let global = Shell.Global.get();
         // In the case when we have a desktop window from the file manager, its height is
         // full-screen, i.e. it includes the height of the panel, so we should not subtract
         // the height of the panel from global.screen_height here either to have them show

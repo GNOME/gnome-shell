@@ -84,7 +84,7 @@ ClutterFrameTicker.prototype = {
 Signals.addSignalMethods(ClutterFrameTicker.prototype);
 
 function start() {
-    let global = Shell.global_get();
+    let global = Shell.Global.get();
 
     Tweener.setFrameTicker(new ClutterFrameTicker());
 
@@ -125,7 +125,7 @@ function start() {
 // the stage. Returns true if we successfully grabbed the keyboard and
 // went modal, false otherwise
 function startModal() {
-    let global = Shell.global_get();
+    let global = Shell.Global.get();
 
     if (!global.grab_keyboard())
 	return false;
@@ -136,7 +136,7 @@ function startModal() {
 }
 
 function endModal() {
-    let global = Shell.global_get();
+    let global = Shell.Global.get();
 
     global.ungrab_keyboard();
     global.set_stage_input_area(0, 0, global.screen_width, Panel.PANEL_HEIGHT);

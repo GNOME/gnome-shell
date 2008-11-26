@@ -24,7 +24,7 @@ function RunDialog() {
 
 RunDialog.prototype = {
     _init : function() {
-        let global = Shell.global_get();
+        let global = Shell.Global.get();
 
         // All actors are inside _group. We create it initially
 	// hidden then show it in show()
@@ -111,7 +111,7 @@ RunDialog.prototype = {
         //         return true;
         // });
 
-	let global = Shell.global_get();
+	let global = Shell.Global.get();
         global.stage.set_key_focus(this._entry);
 
 	return true;
