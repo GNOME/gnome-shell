@@ -1,3 +1,12 @@
+2008-11-26  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/cogl/gl/cogl-texture.c (cogl_texture_rectangle): Fixed
+	the test for whether to use hardware tiling. Previously it assumed
+	that texture coordinates are in increasing order but this is not
+	the case since bug 1057 was fixed. The texture coordinates are now
+	sorted later. It also allowed negative coordinates which doesn't
+	make sense if the texture has waste.
+
 2008-11-25  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* configure.ac: Remove stray dependency on gdk-pixbuf-xlib; we
