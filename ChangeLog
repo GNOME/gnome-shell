@@ -1,5 +1,10 @@
 2008-11-26  Thomas Thurman  <tthurman@gnome.org>
 
+	* tools/announce-wrangler.py: linked language codes to po files
+	* tools/commit-wrangler.py: print revision url
+
+2008-11-26  Thomas Thurman  <tthurman@gnome.org>
+
 	* tools/announce-wrangler.py: renamed ini file
 	* tools/commit-wrangler.py: rewriting in terms of moap
 

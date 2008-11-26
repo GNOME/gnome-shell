@@ -27,6 +27,7 @@ import sys
 import os
 import posixpath
 import ConfigParser
+import re
 
 # FIXME: Needs tidying into separate functions.
 
@@ -106,8 +107,7 @@ if os.stat(change_filename)[8] == time_before:
 
 # Update the changelog
 
-print commands.getoutput("moap cl ci")
+checkin = commands.getoutput("moap cl ci")
 
-#print
-#print 'http://svn.gnome.org/viewvc/metacity?rev=%s&view=rev' % (checkin)
+print re.sub(".*Committed revision (\\d+).*", 'http://svn.gnome.org/viewvc/metacity?rev=\\1&view=rev', checkin)
 

@@ -4,6 +4,7 @@ import glob
 import wordpresslib # http://www.blackbirdblog.it/programmazione/progetti/28
 import ConfigParser
 import os
+import re
 
 doaps = glob.glob("*.doap")
 
@@ -119,6 +120,10 @@ Where can I get it ?
 print "============ x8 x8 x8 ===== SEND THIS TO gnome-announce-list"
 print text_version
 print "============ x8 x8 x8 ===== ENDS"
+
+translations = re.sub('\((.*)\)',
+                      '(<a href="http://svn.gnome.org/viewvc/metacity/trunk/po/\\1.po">\\1</a>)',
+                      translations)
 
 html_version = """\
 <b>What is it ?</b><br />
