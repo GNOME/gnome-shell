@@ -2193,28 +2193,19 @@ cogl_texture_rectangle (CoglHandle   handle,
   
   if (tx1 == tx2 || ty1 == ty2)
     return;
-  
-  /* Pick tiling mode according to hw support */
-  if (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT)
-      && tex->slice_gl_handles->len == 1)
-    {
-      _cogl_texture_quad_hw (tex, x1,y1, x2,y2, tx1,ty1, tx2,ty2);
-    }
+
+  /* If there is only one GL texture and either the texture is NPOT
+     (no waste) or all of the coordinates are in the range [0,1] then
+     we can use hardware tiling */
+  if (tex->slice_gl_handles->len == 1
+      && (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT)
+          || (tx1 >= 0 && tx1 <= COGL_FIXED_1
+              && tx2 >= 0 && tx2 <= COGL_FIXED_1
+              && ty1 >= 0 && ty1 <= COGL_FIXED_1
+              && ty2 >= 0 && ty2 <= COGL_FIXED_1)))
+    _cogl_texture_quad_hw (tex, x1,y1, x2,y2, tx1,ty1, tx2,ty2);
   else
-    {
-      if (tex->slice_gl_handles->len == 1
-          && tx1 >= -COGL_FIXED_1
-          && tx2 <= COGL_FIXED_1
-          && ty1 >= -COGL_FIXED_1
-          && ty2 <= COGL_FIXED_1)
-	{
-	  _cogl_texture_quad_hw (tex, x1,y1, x2,y2, tx1,ty1, tx2,ty2);
-	}
-      else
-	{
-	  _cogl_texture_quad_sw (tex, x1,y1, x2,y2, tx1,ty1, tx2,ty2);
-	}
-    }
+    _cogl_texture_quad_sw (tex, x1,y1, x2,y2, tx1,ty1, tx2,ty2);
 }
 
 void
