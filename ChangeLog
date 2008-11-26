@@ -1,3 +1,9 @@
+2008-11-26  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-group.c:
+	(clutter_group_real_raise), (clutter_group_real_lower): Repaint
+	the Group on raise and lower.
+
 2008-11-26  Neil Roberts  <neil@linux.intel.com>
 
 	* clutter/cogl/gl/cogl-texture.c (cogl_texture_rectangle): Fixed

@@ -502,6 +502,9 @@ clutter_group_real_raise (ClutterContainer *container,
     {
       clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
     }
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (container))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
 
 static void
@@ -541,6 +544,9 @@ clutter_group_real_lower (ClutterContainer *container,
     {
       clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
     }
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (container))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (container));
 }
 
 static gint
@@ -563,7 +569,7 @@ clutter_group_real_sort_depth_order (ClutterContainer *container)
 
   priv->children = g_list_sort (priv->children, sort_z_order);
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (self)))
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
 }
