@@ -137,7 +137,7 @@ html_version = """\
                 text_list(text_links, 'html'))
 
 cp = ConfigParser.ConfigParser()
-cp.read(os.environ['HOME']+'/.config/release-wrangler.ini')
+cp.read(os.environ['HOME']+'/.config/metacity/tools.ini')
 
 wp = wordpresslib.WordPressClient(
     cp.get('release-wrangler', 'blogurl'),

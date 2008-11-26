@@ -26,6 +26,7 @@ import commands
 import sys
 import os
 import posixpath
+import ConfigParser
 
 # FIXME: Needs tidying into separate functions.
 
@@ -83,85 +84,30 @@ def wordwrap(str, prefix=''):
 
 #####################
 
+change_filename = 'ChangeLog'
+
 get_up_to_date()
 
-discoveries = {}
+cp = ConfigParser.ConfigParser()
+cp.read(os.environ['HOME']+'/.config/metacity/tools.ini')
 
-current_file = '?'
+os.environ['CHANGE_LOG_NAME'] = cp.get('commit-wrangler', 'name')
+os.environ['CHANGE_LOG_EMAIL_ADDRESS'] = cp.get('commit-wrangler', 'address')
 
-diff = commands.getstatusoutput('svn diff --diff-cmd $(which diff) -x -up')[1]
-
-for line in diff.split('\n'):
-    if line.startswith('---'):
-        current_file = line[4:line.find('\t')]
-    elif line.startswith('@@'):
-        atatpos = line.find('@@', 3)+3
-        discoveries.setdefault(current_file,{})[line[atatpos:line.find(' ',atatpos)]] = 1
-
-# yes, I know this is MY username. I will come back and fix it
-# later, but for now there is a lot else to do. FIXME
-your_username = 'Thomas Thurman  <tthurman@gnome.org>'
-
-change_filename = posixpath.expanduser("~/.commit-wrangler.txt")
-change = open(change_filename, 'w')
-change.write('# You are checking in a single changeset.\n')
-change.write('# The message below is the one which will be used\n')
-change.write('# both in the checkin and the changelog.\n')
-change.write('# Any lines starting with a "#" don\'t go in.\n')
-change.write('#\n')
-
-change.write('%s  %s\n\n' % (
-    time.strftime('%Y-%m-%d',time.gmtime()),
-    your_username))
-
-for filename in discoveries:
-    change.write(wordwrap('* %s (%s): something' % (
-                filename, ', '.join(discoveries[filename])),
-                '        ')+'\n')
-
-change.write('\n#\n#\n##############\n#\n#\n#\n')
-change.write('# And this is the original diff:\n#\n#')
-change.write(diff.replace('\n','\n#'))
-change.write('\n#\n#\n##############\n# EOF\n')
-change.close()
+print commands.getoutput('moap cl prep')
 
 time_before = os.stat(change_filename)[8]
 os.system(favourite_editor()+' +6 %s ' % (change_filename))
 
 if os.stat(change_filename)[8] == time_before:
-    print 'No change; aborting.'
+    print 'No change; aborting:'
+    print commands.getoutput('svn revert '+change_filename)
     sys.exit(0)
 
 # Update the changelog
 
-changelog_new = open('ChangeLog.tmp', 'w')
-changelog_justfunc = open(change_filename+'.justfunc', 'w')
-change = open(change_filename, 'r')
-for line in change.readlines():
-    if not line.startswith('#'):
-        changelog_new.write(line)
-        changelog_justfunc.write(line)
-change.close()
-changelog_justfunc.close()
+print commands.getoutput("moap cl ci")
 
-changelog = open('ChangeLog', 'r')
-for line in changelog.readlines():
-    changelog_new.write(line)
-
-changelog.close()
-changelog_new.close()
-
-os.rename('ChangeLog.tmp', 'ChangeLog')
-
-committing = commands.getstatusoutput('svn commit --file %s.justfunc' % (change_filename))[1]
-
-print 'Committed: ', committing
-
-checkin = committing[committing.find('Committed revision')+19:]
-checkin = checkin[:checkin.find('.')]
-# this number will be useful in the future for updating
-# Bugzilla.
-
-print
-print 'http://svn.gnome.org/viewvc/metacity?rev=%s&view=rev' % (checkin)
+#print
+#print 'http://svn.gnome.org/viewvc/metacity?rev=%s&view=rev' % (checkin)
 
