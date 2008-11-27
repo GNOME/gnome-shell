@@ -2252,23 +2252,9 @@ cogl_texture_polygon (CoglHandle         handle,
   /* Make sure there is enough space in the global texture vertex
      array. This is used so we can render the polygon with a single
      call to OpenGL but still support any number of vertices */
-  if (ctx->texture_vertices_size < n_vertices)
-    {
-      guint nsize = ctx->texture_vertices_size;
-      
-      if (nsize == 0)
-	nsize = 1;
-      do
-	nsize *= 2;
-      while (nsize < n_vertices);
-      
-      ctx->texture_vertices_size = nsize;
+  g_array_set_size (ctx->texture_vertices, n_vertices);
+  p = (CoglTextureGLVertex *) ctx->texture_vertices->data;
 
-      ctx->texture_vertices = g_realloc (ctx->texture_vertices,
-					 nsize
-					 * sizeof (CoglTextureGLVertex));
-    }
-  
   /* Prepare GL state */
   enable_flags = (COGL_ENABLE_TEXTURE_2D
 		  | COGL_ENABLE_VERTEX_ARRAY
@@ -2282,14 +2268,12 @@ cogl_texture_polygon (CoglHandle         handle,
   if (use_color)
     {
       enable_flags |= COGL_ENABLE_COLOR_ARRAY;
-      GE( glColorPointer (4, GL_UNSIGNED_BYTE, sizeof (CoglTextureGLVertex),
-			  ctx->texture_vertices[0].c) );
+      GE( glColorPointer (4, GL_UNSIGNED_BYTE,
+                          sizeof (CoglTextureGLVertex), p->c) );
     }
 
-  GE( glVertexPointer (3, GL_FLOAT, sizeof (CoglTextureGLVertex),
-		       ctx->texture_vertices[0].v) );
-  GE( glTexCoordPointer (2, GL_FLOAT, sizeof (CoglTextureGLVertex),
-			 ctx->texture_vertices[0].t) );
+  GE( glVertexPointer (3, GL_FLOAT, sizeof (CoglTextureGLVertex), p->v ) );
+  GE( glTexCoordPointer (2, GL_FLOAT, sizeof (CoglTextureGLVertex), p->t ) );
 
   cogl_enable (enable_flags);
 
@@ -2320,9 +2304,11 @@ cogl_texture_polygon (CoglHandle         handle,
 
 	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint, tex_num++);
 
+          p = (CoglTextureGLVertex *) ctx->texture_vertices->data;
+
 	  /* Convert the vertices into an array of GLfloats ready to pass to
 	     OpenGL */
-	  for (i = 0, p = ctx->texture_vertices; i < n_vertices; i++, p++)
+	  for (i = 0; i < n_vertices; i++, p++)
 	    {
 #define CFX_F COGL_FIXED_TO_FLOAT
 

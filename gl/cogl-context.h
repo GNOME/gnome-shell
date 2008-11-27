@@ -64,8 +64,7 @@ typedef struct
   
   /* Textures */
   GArray	      *texture_handles;
-  CoglTextureGLVertex *texture_vertices;
-  gulong               texture_vertices_size;
+  GArray              *texture_vertices;
   
   /* Framebuffer objects */
   GArray           *fbo_handles;
