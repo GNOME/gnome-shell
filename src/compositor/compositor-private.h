@@ -79,6 +79,12 @@ struct _MetaCompositor
 			     MetaScreen	    *screen,
 			     MetaWindow	    *window,
 			     gboolean	     hidden);
+  void (*sync_window_geometry) (MetaCompositor	*compositor,
+				MetaWindow	*window);
+  void (*sync_screen_size) (MetaCompositor *compositor,
+			    MetaScreen	   *screen,
+			    guint	    width,
+			    guint	    height);
 };
 
 #endif

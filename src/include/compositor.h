@@ -145,6 +145,15 @@ meta_compositor_set_window_hidden (MetaCompositor *compositor,
 				   MetaScreen	  *screen,
 				   MetaWindow	  *window,
 				   gboolean	   hidden);
+
+void
+meta_compositor_sync_window_geometry (MetaCompositor *compositor,
+				      MetaWindow     *window);
+void
+meta_compositor_sync_screen_size (MetaCompositor  *compositor,
+				  MetaScreen	  *screen,
+				  guint		   width,
+				  guint		   height);
 #endif
 
 

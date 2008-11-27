@@ -275,3 +275,25 @@ meta_compositor_set_window_hidden (MetaCompositor *compositor,
 #endif
 }
 
+void
+meta_compositor_sync_window_geometry (MetaCompositor *compositor,
+				      MetaWindow *window)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->sync_window_geometry)
+    compositor->sync_window_geometry (compositor, window);
+#endif
+}
+
+void
+meta_compositor_sync_screen_size (MetaCompositor  *compositor,
+				  MetaScreen	  *screen,
+				  guint		   width,
+				  guint		   height)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  if (compositor && compositor->sync_screen_size)
+    compositor->sync_screen_size (compositor, screen, width, height);
+#endif
+}
+

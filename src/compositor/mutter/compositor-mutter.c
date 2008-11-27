@@ -59,6 +59,8 @@
     g_warning ("Integrity check of list failed at %s:%d\n", \
 	       __FILE__, __LINE__); }
 
+/* #define DEBUG_TRACE g_print */
+#define DEBUG_TRACE(X) 
 
 /*
  * Register GType wrapper for XWindowAttributes, so we do not have to
@@ -1451,60 +1453,6 @@ process_shape (Mutter	    *compositor,
 #endif
 
 static void
-process_configure_notify (Mutter  *compositor,
-                          XConfigureEvent        *event)
-{
-  MetaDisplay *display = compositor->display;
-  MutterWindow *cw;
-
-  /*
-   * We get each configure event twice; once through the WM solicitation of the
-   * events on the root window, and once through solicitation on the window
-   * itself -- we will only handle the latter, in which case the event and
-   * window members of the config event are identical.
-   */
-  if (event->event != event->window)
-    return;
-
-  cw = find_window_in_display (display, event->window);
-
-  if (cw)
-    {
-      sync_actor_position (cw);
-    }
-  else
-    {
-      /*
-       * Check for root window geometry change
-       */
-      GSList *l = meta_display_get_screens (display);
-
-      while (l)
-	{
-	  MetaScreen *screen = l->data;
-	  Window      xroot  = meta_screen_get_xroot (screen);
-
-	  if (event->window == xroot)
-	    {
-	      gint            width;
-	      gint            height;
-	      MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-
-	      meta_screen_get_size (screen, &width, &height);
-	      clutter_actor_set_size (info->stage, width, height);
-	      
-	      meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
-			    meta_screen_get_screen_number (screen),
-			    width, height);
-	      break;
-	    }
-
-	  l = l->next;
-	}
-    }
-}
-
-static void
 process_property_notify (Mutter		*compositor,
                          XPropertyEvent *event)
 {
@@ -1526,7 +1474,10 @@ process_property_notify (Mutter		*compositor,
         }
 
       if (!cw)
-        return;
+	{
+	  DEBUG_TRACE ("process_property_notify: opacity, early exit\n");
+	  return;
+	}
 
       if (meta_prop_get_cardinal (display, event->window,
                                   compositor->atom_net_wm_window_opacity,
@@ -1548,11 +1499,16 @@ process_property_notify (Mutter		*compositor,
       MutterWindow *cw = find_window_in_display (display, event->window);
 
       if (!cw)
-        return;
+	{
+	  DEBUG_TRACE ("process_property_notify: net_wm_type, early exit\n");
+	  return;
+	}
 
       mutter_window_query_window_type (cw);
+      DEBUG_TRACE ("process_property_notify: net_wm_type\n");
       return;
     }
+  DEBUG_TRACE ("process_property_notify: unknown\n");
 }
 
 static void
@@ -1741,6 +1697,7 @@ clutter_cmp_add_window (MetaCompositor    *compositor,
   MetaScreen *screen = meta_window_get_screen (window);
   MetaDisplay *display = meta_screen_get_display (screen);
 
+  DEBUG_TRACE ("clutter_cmp_add_window\n");
   meta_error_trap_push (display);
 
   add_win (window);
@@ -1756,6 +1713,7 @@ clutter_cmp_remove_window (MetaCompositor *compositor,
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MutterWindow         *cw     = NULL;
   
+  DEBUG_TRACE ("clutter_cmp_remove_window\n");
   cw = meta_window_get_compositor_private (window);
   if (!cw)
     return;
@@ -1792,7 +1750,10 @@ clutter_cmp_process_event (MetaCompositor *compositor,
 
       if (mutter_plugin_manager_xevent_filter (info->plugin_mgr,
 					       event) == TRUE)
-        return;
+	{
+	  DEBUG_TRACE ("clutter_cmp_process_event (filtered,window==NULL)\n");
+	  return;
+	}
     }
   else
     {
@@ -1811,6 +1772,7 @@ clutter_cmp_process_event (MetaCompositor *compositor,
 	  if (mutter_plugin_manager_xevent_filter (info->plugin_mgr,
 						   event) == TRUE)
 	    {
+	      DEBUG_TRACE ("clutter_cmp_process_event (filtered,window==NULL)\n");
 	      return;
 	    }
 
@@ -1828,10 +1790,6 @@ clutter_cmp_process_event (MetaCompositor *compositor,
   meta_error_trap_push (xrc->display);
   switch (event->type)
     {
-    case ConfigureNotify:
-      process_configure_notify (xrc, (XConfigureEvent *) event);
-      break;
-
     case PropertyNotify:
       process_property_notify (xrc, (XPropertyEvent *) event);
       break;
@@ -1839,11 +1797,15 @@ clutter_cmp_process_event (MetaCompositor *compositor,
     default:
       if (event->type == meta_display_get_damage_event_base (xrc->display) + XDamageNotify)
         {
+	  DEBUG_TRACE ("clutter_cmp_process_event (process_damage)\n");
           process_damage (xrc, (XDamageNotifyEvent *) event);
         }
 #ifdef HAVE_SHAPE
       else if (event->type == meta_display_get_shape_event_base (xrc->display) + ShapeNotify)
-        process_shape (xrc, (XShapeEvent *) event);
+	{
+	  DEBUG_TRACE ("clutter_cmp_process_event (process_shape)\n");
+	  process_shape (xrc, (XShapeEvent *) event);
+	}
 #endif /* HAVE_SHAPE */
       break;
     }
@@ -1879,6 +1841,7 @@ clutter_cmp_map_window (MetaCompositor *compositor, MetaWindow *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MutterWindow *cw = meta_window_get_compositor_private (window);
+  DEBUG_TRACE ("clutter_cmp_map_window\n");
   if (!cw)
     return;
   
@@ -1891,6 +1854,7 @@ clutter_cmp_unmap_window (MetaCompositor *compositor, MetaWindow *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MutterWindow *cw = meta_window_get_compositor_private (window);
+  DEBUG_TRACE ("clutter_cmp_unmap_window\n");
   if (!cw)
     return;
 
@@ -1908,6 +1872,8 @@ clutter_cmp_minimize_window (MetaCompositor *compositor,
   MutterWindow	 *cw = meta_window_get_compositor_private (window);
   MetaScreen	 *screen = meta_window_get_screen (window);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  DEBUG_TRACE ("clutter_cmp_minimize_window\n");
 
   g_return_if_fail (info);
 
@@ -1964,6 +1930,7 @@ clutter_cmp_unminimize_window (MetaCompositor *compositor,
     }
 #else
   MutterWindow	 *cw = meta_window_get_compositor_private (window);
+  DEBUG_TRACE ("clutter_cmp_unminimize_window\n");
   if (!cw)
     return;
 
@@ -1983,6 +1950,7 @@ clutter_cmp_maximize_window (MetaCompositor *compositor,
   MetaScreen	 *screen = meta_window_get_screen (window);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
+  DEBUG_TRACE ("clutter_cmp_maximize_window\n");
   g_return_if_fail (info);
 
   if (!cw)
@@ -2014,6 +1982,7 @@ clutter_cmp_unmaximize_window (MetaCompositor *compositor,
 
   g_return_if_fail (info);
 
+  DEBUG_TRACE ("clutter_cmp_unmaximize_window\n");
   if (!cw)
     return;
 
@@ -2040,6 +2009,7 @@ clutter_cmp_update_workspace_geometry (MetaCompositor *compositor,
   MetaCompScreen *info;
   MutterPluginManager *mgr;
 
+  DEBUG_TRACE ("clutter_cmp_update_workspace_geometry\n");
   info = meta_screen_get_compositor_data (screen);
   mgr  = info->plugin_mgr;
 
@@ -2065,6 +2035,7 @@ clutter_cmp_switch_workspace (MetaCompositor *compositor,
   to_indx   = meta_workspace_index (to);
   from_indx = meta_workspace_index (from);
 
+  DEBUG_TRACE ("clutter_cmp_switch_workspace\n");
   if (!meta_prefs_get_live_hidden_windows ())
     {
       GList *l;
@@ -2152,7 +2123,8 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
 {
   GList *tmp;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-  
+
+  DEBUG_TRACE ("clutter_cmp_sync_stack\n");
   /* NB: The first entry in stack, is stacked the highest */
 
   for (tmp = stack; tmp != NULL; tmp = tmp->next)
@@ -2183,6 +2155,7 @@ clutter_cmp_set_window_hidden (MetaCompositor *compositor,
   MutterWindow *cw = window->compositor_private;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
+  DEBUG_TRACE ("clutter_cmp_set_window_hidden\n");
   if (!cw)
     return;
 
@@ -2200,6 +2173,46 @@ clutter_cmp_set_window_hidden (MetaCompositor *compositor,
 	clutter_actor_reparent (CLUTTER_ACTOR (cw),
 				info->window_group);
     }
+}
+
+static void
+clutter_cmp_sync_window_geometry (MetaCompositor *compositor,
+				  MetaWindow *window)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MutterWindow	 *cw = meta_window_get_compositor_private (window);
+  MetaScreen	 *screen = meta_window_get_screen (window);
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  DEBUG_TRACE ("clutter_cmp_sync_window_geometry\n");
+  g_return_if_fail (info);
+
+  if (!cw)
+    return;
+
+  sync_actor_position (cw);
+  
+#endif
+}
+
+static void
+clutter_cmp_sync_screen_size (MetaCompositor *compositor,
+			      MetaScreen     *screen,
+			      guint	      width,
+			      guint	      height)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  DEBUG_TRACE ("clutter_cmp_sync_screen_size\n");
+  g_return_if_fail (info);
+
+  clutter_actor_set_size (info->stage, width, height);
+  
+  meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
+		meta_screen_get_screen_number (screen),
+		width, height);
+#endif
 }
 
 static MetaCompositor comp_info = {
@@ -2221,7 +2234,9 @@ static MetaCompositor comp_info = {
   clutter_cmp_update_workspace_geometry,
   clutter_cmp_switch_workspace,
   clutter_cmp_sync_stack,
-  clutter_cmp_set_window_hidden
+  clutter_cmp_set_window_hidden,
+  clutter_cmp_sync_window_geometry,
+  clutter_cmp_sync_screen_size
 };
 
 MetaCompositor *
