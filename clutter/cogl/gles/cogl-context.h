@@ -72,6 +72,7 @@ typedef struct
      can be flushed */
   GLuint               texture_current;
   GLenum               texture_target;
+  GLenum               texture_format;
 
   /* Framebuffer objects */
   GArray              *fbo_handles;
