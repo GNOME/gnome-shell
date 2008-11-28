@@ -65,7 +65,12 @@ typedef struct
   /* Textures */
   GArray	      *texture_handles;
   GArray              *texture_vertices;
-  
+  /* The gl texture number that the above vertices apply to. This to
+     detect when a different slice is encountered so that the vertices
+     can be flushed */
+  GLuint               texture_current;
+  GLenum               texture_target;
+
   /* Framebuffer objects */
   GArray           *fbo_handles;
   CoglBufferTarget  draw_buffer;
