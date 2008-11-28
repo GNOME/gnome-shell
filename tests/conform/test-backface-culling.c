@@ -7,9 +7,20 @@
 
 static const ClutterColor stage_color = { 0x0, 0x0, 0x0, 0xff };
 
+#ifdef CLUTTER_COGL_HAS_GL
+
 /* Size the texture so that it is just off a power of two to enourage
    it so use software tiling when NPOTs aren't available */
 #define TEXTURE_SIZE 33
+
+#else /* CLUTTER_COGL_HAS_GL */
+
+/* We can't use the funny-sized texture on GL ES because it will break
+   cogl_texture_polygon. However there is only one code path for
+   rendering quads so there is no need */
+#define TEXTURE_SIZE 32
+
+#endif /* CLUTTER_COGL_HAS_GL */
 
 /* Amount of pixels to skip off the top, bottom, left and right of the
    texture when reading back the stage */
