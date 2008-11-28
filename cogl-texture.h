@@ -385,6 +385,11 @@ void            cogl_texture_polygon          (CoglHandle          handle,
                                                CoglTextureVertex  *vertices,
                                                gboolean            use_color);
 
+void            cogl_texture_multiple_rectangles
+                                              (CoglHandle          handle,
+                                               const CoglFixed    *verts,
+                                               guint               n_rects);
+
 G_END_DECLS
 
 #endif /* __COGL_TEXTURE_H__ */

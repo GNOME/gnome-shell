@@ -2172,15 +2172,9 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 }
 
 void
-cogl_texture_rectangle (CoglHandle   handle,
-			CoglFixed x1,
-			CoglFixed y1,
-			CoglFixed x2,
-			CoglFixed y2,
-			CoglFixed tx1,
-			CoglFixed ty1,
-			CoglFixed tx2,
-			CoglFixed ty2)
+cogl_texture_multiple_rectangles (CoglHandle       handle,
+                                  const CoglFixed *verts,
+                                  guint            n_rects)
 {
   CoglTexture    *tex;
   gulong          enable_flags = (COGL_ENABLE_TEXTURE_2D
@@ -2202,9 +2196,6 @@ cogl_texture_rectangle (CoglHandle   handle,
   if (tex->slice_gl_handles->len == 0)
     return;
   
-  if (tx1 == tx2 || ty1 == ty2)
-    return;
-
   /* Prepare GL state */
   if (ctx->color_alpha < 255
       || tex->bitmap.format & COGL_A_BIT)
@@ -2217,20 +2208,55 @@ cogl_texture_rectangle (CoglHandle   handle,
 
   g_array_set_size (ctx->texture_vertices, 0);
 
-  /* If there is only one GL texture and either the texture is NPOT
-     (no waste) or all of the coordinates are in the range [0,1] then
-     we can use hardware tiling */
-  if (tex->slice_gl_handles->len == 1
-      && (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT)
-          || (tx1 >= 0 && tx1 <= COGL_FIXED_1
-              && tx2 >= 0 && tx2 <= COGL_FIXED_1
-              && ty1 >= 0 && ty1 <= COGL_FIXED_1
-              && ty2 >= 0 && ty2 <= COGL_FIXED_1)))
-    _cogl_texture_quad_hw (tex, x1,y1, x2,y2, tx1,ty1, tx2,ty2);
-  else
-    _cogl_texture_quad_sw (tex, x1,y1, x2,y2, tx1,ty1, tx2,ty2);
+  while (n_rects-- > 0)
+    {
+      if (verts[4] != verts[6] && verts[5] != verts[7])
+        {
+          /* If there is only one GL texture and either the texture is
+             NPOT (no waste) or all of the coordinates are in the
+             range [0,1] then we can use hardware tiling */
+          if (tex->slice_gl_handles->len == 1
+              && (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT)
+                  || (verts[4] >= 0 && verts[4] <= COGL_FIXED_1
+                      && verts[6] >= 0 && verts[6] <= COGL_FIXED_1
+                      && verts[5] >= 0 && verts[5] <= COGL_FIXED_1
+                      && verts[7] >= 0 && verts[7] <= COGL_FIXED_1)))
+            _cogl_texture_quad_hw (tex, verts[0],verts[1], verts[2],verts[3],
+                                   verts[4],verts[5], verts[6],verts[7]);
+          else
+            _cogl_texture_quad_sw (tex, verts[0],verts[1], verts[2],verts[3],
+                                   verts[4],verts[5], verts[6],verts[7]);
+        }
+
+      verts += 8;
+    }
 
   _cogl_texture_flush_vertices ();
+}
+
+void
+cogl_texture_rectangle (CoglHandle   handle,
+			CoglFixed x1,
+			CoglFixed y1,
+			CoglFixed x2,
+			CoglFixed y2,
+			CoglFixed tx1,
+			CoglFixed ty1,
+			CoglFixed tx2,
+			CoglFixed ty2)
+{
+  CoglFixed verts[8];
+
+  verts[0] = x1;
+  verts[1] = y1;
+  verts[2] = x2;
+  verts[3] = y2;
+  verts[4] = tx1;
+  verts[5] = ty1;
+  verts[6] = tx2;
+  verts[7] = ty2;
+
+  cogl_texture_multiple_rectangles (handle, verts, 1);
 }
 
 void
