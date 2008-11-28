@@ -1,5 +1,16 @@
 2008-11-28  Neil Roberts  <neil@linux.intel.com>
 
+	* tests/conform/test-backface-culling.c: New test for backface
+	culling
+
+	* tests/conform/test-conform-main.c (main): Add
+	/texture/test_backface_culing
+
+	* tests/conform/Makefile.am (test_conformance_SOURCES): Add
+	test-backface-culling.c
+
+2008-11-28  Neil Roberts  <neil@linux.intel.com>
+
 	* tests/conform/test-mesh-mutability.c:
 	* tests/conform/test-mesh-interleved.c:
 	* tests/conform/test-mesh-contiguous.c: Remove the idle source
