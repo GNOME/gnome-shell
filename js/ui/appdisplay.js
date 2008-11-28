@@ -42,6 +42,8 @@ const APPDISPLAY_COMMENT_COLOR = new Clutter.Color();
 APPDISPLAY_COMMENT_COLOR.from_pixel(0xffffffbb);
 const APPDISPLAY_BACKGROUND_COLOR = new Clutter.Color();
 APPDISPLAY_BACKGROUND_COLOR.from_pixel(0x000000ff);
+const APPDISPLAY_SELECTED_BACKGROUND_COLOR = new Clutter.Color();
+APPDISPLAY_SELECTED_BACKGROUND_COLOR.from_pixel(0x00ff0055);
 
 const APPDISPLAY_HEIGHT = 50;
 const APPDISPLAY_PADDING = 4;
@@ -67,7 +69,7 @@ _init: function(appinfo, width) {
 		return true;
 	});
 	this._bg = new Clutter.Rectangle({ color: APPDISPLAY_BACKGROUND_COLOR,
-		x: 0, y: 0 });
+		x: 0, y: 0, width: width, height: APPDISPLAY_HEIGHT });
 	this._group.add_actor(this._bg);
 
 	this._icon = new Clutter.Texture({ width: 48, height: 48, x: 0, y: 0 });
@@ -108,7 +110,15 @@ launch: function() {
 },
 appinfo: function () {
     return this._appinfo;
-}
+},
+markSelected: function(isSelected) {
+   let color;
+   if (isSelected)
+       color = APPDISPLAY_SELECTED_BACKGROUND_COLOR;
+   else
+       color = APPDISPLAY_BACKGROUND_COLOR;
+   this._bg.color = color;
+}   
 }
 Signals.addSignalMethods(AppDisplayItem.prototype);
 
@@ -134,6 +144,7 @@ _init : function(x, y, width, height) {
 	global.stage.add_actor(this._grid);
 	this._appset = {}; // Map<appid, appinfo>
 	this._displayed = {} // Map<appid, AppDisplay>
+	this._selectedIndex = -1;
 	this._max_items = this._height / (APPDISPLAY_HEIGHT + APPDISPLAY_PADDING);
 },
 
@@ -146,9 +157,9 @@ _refreshCache: function() {
 		this._displayed[id].destroy();
 	this._appset = {};
 	this._displayed = {};
+	this._selectedIndex = -1;
 	let apps = Gio.app_info_get_all();
-	let i = 0;
-	for (i = 0; i < apps.length; i++) {
+	for (let i = 0; i < apps.length; i++) {
 		let appinfo = apps[i];
 		let appid = appinfo.get_id();
 		this._appset[appid] = appinfo;
@@ -182,12 +193,18 @@ _setDefaultList: function() {
 	}
 },
 
+_getNDisplayed: function() {
+    // Is there a better way to do .size() ?
+    let c = 0; for (i in this._displayed) { c += 1; };
+    return c;
+},
+
 _filterAdd: function(appid) {
 	let me = this;
 
 	let appinfo = this._appset[appid];
 	let name = appinfo.get_name();
-	let index = 0; for (i in this._displayed) { index += 1; };
+	let index = this._getNDisplayed();
 
 	let appdisplay = new AppDisplayItem(appinfo, this._width);
 	appdisplay.connect('activate', function() {
@@ -238,7 +255,7 @@ _doSearchFilter: function() {
 	for (appid in this._appset) {
 		if (matchedApps.length >= this._max_items)
 			break;
-		if (appid in this._displayed)
+		if (this._displayed[appid])
 			continue;
 		let app = this._appset[appid];
 		if (this._appinfoMatches(app, this._search))
@@ -263,25 +280,63 @@ setSearch: function(text) {
 	this._redisplay();
 },
 
+_findDisplayedByIndex: function(index) {
+    let displayedActors = this._grid.get_children();
+    let actor = displayedActors[index];
+    return this._findDisplayedByActor(actor);
+},
+
+_findDisplayedByActor: function(actor) {
+    for (appid in this._displayed) {
+        let item = this._displayed[appid];
+        if (item.actor == actor) {
+            return item;
+        }
+    }    
+    return null;
+},
+
 searchActivate: function() {
+    if (this._selectedIndex != -1) {
+        let selected = this._findDisplayedByIndex(this._selectedIndex);
+        selected.launch();
+        this.emit('activated');
+        return;
+    }     
     let displayedActors = this._grid.get_children();
     if (displayedActors.length != 1)
         return;
     let selectedActor = displayedActors[0];
-    let selectedMenuItem = null;
-    for (appid in this._displayed) {
-        let item = this._displayed[appid];
-        if (item.actor == selectedActor) {
-            selectedMenuItem = item;
-            break;
-        }
-    }
-    log("selected " + selectedMenuItem);    
-    if (!selectedMenuItem)
-        return;
-    
+    let selectedMenuItem = this._findDisplayedByActor(selectedActor);
     selectedMenuItem.launch();
     this.emit('activated');
+},
+
+_selectIndex: function(index) {
+    if (this._selectedIndex != -1) {
+        let prev = this._findDisplayedByIndex(this._selectedIndex);
+        log("demarking " + prev);        
+        prev.markSelected(false);
+    }
+    this._selectedIndex = index;
+    let item = this._findDisplayedByIndex(index);
+    log("marking " + item);    
+    item.markSelected(true);
+},
+
+selectUp: function() {
+    let prev = this._selectedIndex-1;
+    if (prev < 0)
+        return;
+    this._selectIndex(prev);
+},
+
+selectDown: function() {
+    let next = this._selectedIndex+1;
+    let nDisplayed = this._getNDisplayed();
+    if (next >= nDisplayed)
+        return;
+    this._selectIndex(next);
 },
 
 show: function() {
