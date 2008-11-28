@@ -49,11 +49,22 @@ fi
 
 system=`lsb_release -is`
 if test x$system = xUbuntu -o x$system = xDebian ; then
-    if dpkg --status xulrunner-1.9-dev > /dev/null 2>&1; then : ; else
-        echo "Please run, as root, 'apt-get install xulrunner-1.9-dev' before building gnome-shell."
-        echo
-    fi
+  reqd=""
+  for pkg in libgconf2-dev git-core gtk-doc-tools libgl1-mesa-dev \
+    mesa-common-dev libffi-dev libgtk2.0-dev flex build-essential \
+    curl xulrunner-1.9-dev; do
+      if dpkg --status $pkg > /dev/null 2>&1; then : ; else
+        reqd="$pkg $reqd"
+      fi
+  done
+  if test ! x$reqd = x; then
+    echo "Please run, as root, 'apt-get install $reqd' before building gnome-shell."
+    echo
+  fi
 fi
+
++
+ echo "Done."
 
 echo "Done."
 
