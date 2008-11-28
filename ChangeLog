@@ -1,3 +1,11 @@
+2008-11-28  Neil Roberts  <neil@linux.intel.com>
+
+	* tests/conform/test-mesh-mutability.c:
+	* tests/conform/test-mesh-interleved.c:
+	* tests/conform/test-mesh-contiguous.c: Remove the idle source
+	after the test is complete so that it won't interfere with other
+	tests.
+
 2008-11-26  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	* clutter/clutter-group.c:
