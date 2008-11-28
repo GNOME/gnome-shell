@@ -63,7 +63,7 @@ _init: function(appinfo, width) {
 		width: width,
 		height: APPDISPLAY_HEIGHT});
 	this._group.connect('button-press-event', function(group, e) {
-		me.emit('launch');
+		me.emit('activate');
 		return true;
 	});
 	this._bg = new Clutter.Rectangle({ color: APPDISPLAY_BACKGROUND_COLOR,
@@ -102,6 +102,12 @@ _init: function(appinfo, width) {
 		y: this._name.height + 4})
 	this._group.add_actor(this._comment);
 	this.actor = this._group;
+},
+launch: function() {
+    this._appinfo.launch([], null);
+},
+appinfo: function () {
+    return this._appinfo;
 }
 }
 Signals.addSignalMethods(AppDisplayItem.prototype);
@@ -155,6 +161,7 @@ _removeItem: function(appid) {
 	let group = item.actor;
 	group.destroy();
 	delete this._displayed[appid];
+	
 },
 
 _removeAll: function() {
@@ -180,11 +187,11 @@ _filterAdd: function(appid) {
 
 	let appinfo = this._appset[appid];
 	let name = appinfo.get_name();
-	let index = 0; for (i in this._displayed) { index += 1; }
+	let index = 0; for (i in this._displayed) { index += 1; };
 
 	let appdisplay = new AppDisplayItem(appinfo, this._width);
-	appdisplay.connect('launch', function() {
-		appinfo.launch([], null);
+	appdisplay.connect('activate', function() {
+	    appdisplay.launch();
 		me.emit('activated');
 	});
 	let group = appdisplay.actor;
@@ -254,6 +261,27 @@ _redisplay: function() {
 setSearch: function(text) {
 	this._search = text.toLowerCase();
 	this._redisplay();
+},
+
+searchActivate: function() {
+    let displayedActors = this._grid.get_children();
+    if (displayedActors.length != 1)
+        return;
+    let selectedActor = displayedActors[0];
+    let selectedMenuItem = null;
+    for (appid in this._displayed) {
+        let item = this._displayed[appid];
+        if (item.actor == selectedActor) {
+            selectedMenuItem = item;
+            break;
+        }
+    }
+    log("selected " + selectedMenuItem);    
+    if (!selectedMenuItem)
+        return;
+    
+    selectedMenuItem.launch();
+    this.emit('activated');
 },
 
 show: function() {

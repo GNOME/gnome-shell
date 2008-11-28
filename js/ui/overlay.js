@@ -82,14 +82,24 @@ _init : function(width) {
     this._group.add_actor(this._searchEntry);
     global.stage.set_key_focus(this._searchEntry);
     this._searchQueued = false;
-    this._searchEntry.connect('notify::text', function (se, prop) {
+    this._searchActive = false;
+    this._searchEntry.connect('notify::text', function (se, prop) {           
         if (me._searchQueued)
             return;
         Mainloop.timeout_add(250, function() {
+            let text = me._searchEntry.text;            
             me._searchQueued = false;
-            me._appdisplay.setSearch(me._searchEntry.text);
+            me._searchActive = text != '';              
+            me._appdisplay.setSearch(text);
             return false;
         });
+    });
+    this._searchEntry.connect('activate', function (se) {
+        log("activate " + me._searchActive);
+        if (!me._searchActive)
+            return false;
+        me._appdisplay.searchActivate();
+        return true;
     });
 
     let appsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
