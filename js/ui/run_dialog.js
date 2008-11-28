@@ -92,6 +92,7 @@ _run : function(command) {
 },
 
 show : function() {
+    let me = this;
     if (this._group.visible) // Already shown
         return false;
 
@@ -100,16 +101,14 @@ show : function() {
 
     this._group.show_all();
 
-    // TODO: Detect escape key and make it cancel the operation.
-    //       Use me.on_cancel() if it exists. Something like this:
-    // this._entry.connect('key-press-event', function(o, e) {
-    //     if (the pressed key is the escape key) {
-    //         me.hide();
-    //         me.emit('cancel');
-    //         return false;
-    //     } else
-    //         return true;
-    // });
+    this._entry.connect('key-press-event', function(o, e) {
+        if (e.get_code() == 9) {
+            me.hide();
+            me.emit('cancel');
+            return true;
+        } else
+            return false;
+    });
 
     let global = Shell.Global.get();
     global.stage.set_key_focus(this._entry);
