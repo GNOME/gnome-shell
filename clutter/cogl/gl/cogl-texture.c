@@ -1922,7 +1922,7 @@ _cogl_texture_flush_vertices (void)
                              sizeof (CoglTextureGLVertex), p->t ) );
 
       GE( glBindTexture (ctx->texture_target, ctx->texture_current) );
-      GE( glDrawArrays (GL_QUADS, 0, ctx->texture_vertices->len) );
+      GE( glDrawArrays (GL_TRIANGLES, 0, ctx->texture_vertices->len) );
 
       g_array_set_size (ctx->texture_vertices, 0);
     }
@@ -2082,9 +2082,9 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 
           /* Add the quad to the list of queued vertices */
           g_array_set_size (ctx->texture_vertices,
-                            ctx->texture_vertices->len + 4);
+                            ctx->texture_vertices->len + 6);
           p = &g_array_index (ctx->texture_vertices, CoglTextureGLVertex,
-                              ctx->texture_vertices->len - 4);
+                              ctx->texture_vertices->len - 6);
 
 #define CFX_F(x) COGL_FIXED_TO_FLOAT(x)
 
@@ -2094,11 +2094,18 @@ _cogl_texture_quad_sw (CoglTexture *tex,
           p->v[0] = CFX_F (slice_qx2); p->v[1] = CFX_F (slice_qy2);
           p->t[0] = CFX_F (slice_tx2); p->t[1] = CFX_F (slice_ty2);
           p++;
-          p->v[0] = CFX_F (slice_qx2); p->v[1] = CFX_F (slice_qy1);
-          p->t[0] = CFX_F (slice_tx2); p->t[1] = CFX_F (slice_ty1);
-          p++;
           p->v[0] = CFX_F (slice_qx1); p->v[1] = CFX_F (slice_qy1);
           p->t[0] = CFX_F (slice_tx1); p->t[1] = CFX_F (slice_ty1);
+          p++;
+
+          p->v[0] = CFX_F (slice_qx1); p->v[1] = CFX_F (slice_qy1);
+          p->t[0] = CFX_F (slice_tx1); p->t[1] = CFX_F (slice_ty1);
+          p++;
+          p->v[0] = CFX_F (slice_qx2); p->v[1] = CFX_F (slice_qy2);
+          p->t[0] = CFX_F (slice_tx2); p->t[1] = CFX_F (slice_ty2);
+          p++;
+          p->v[0] = CFX_F (slice_qx2); p->v[1] = CFX_F (slice_qy1);
+          p->t[0] = CFX_F (slice_tx2); p->t[1] = CFX_F (slice_ty1);
           p++;
 
 #undef CFX_F
@@ -2149,9 +2156,9 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   ty2 = ty2 * (y_span->size - y_span->waste) / y_span->size;
 
   /* Add the quad to the list of queued vertices */
-  g_array_set_size (ctx->texture_vertices, ctx->texture_vertices->len + 4);
+  g_array_set_size (ctx->texture_vertices, ctx->texture_vertices->len + 6);
   p = &g_array_index (ctx->texture_vertices, CoglTextureGLVertex,
-                      ctx->texture_vertices->len - 4);
+                      ctx->texture_vertices->len - 6);
 
 #define CFX_F(x) COGL_FIXED_TO_FLOAT(x)
 
@@ -2161,11 +2168,18 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   p->v[0] = CFX_F (x2); p->v[1] = CFX_F (y2);
   p->t[0] = CFX_F (tx2); p->t[1] = CFX_F (ty2);
   p++;
-  p->v[0] = CFX_F (x2); p->v[1] = CFX_F (y1);
-  p->t[0] = CFX_F (tx2); p->t[1] = CFX_F (ty1);
-  p++;
   p->v[0] = CFX_F (x1); p->v[1] = CFX_F (y1);
   p->t[0] = CFX_F (tx1); p->t[1] = CFX_F (ty1);
+  p++;
+
+  p->v[0] = CFX_F (x1); p->v[1] = CFX_F (y1);
+  p->t[0] = CFX_F (tx1); p->t[1] = CFX_F (ty1);
+  p++;
+  p->v[0] = CFX_F (x2); p->v[1] = CFX_F (y2);
+  p->t[0] = CFX_F (tx2); p->t[1] = CFX_F (ty2);
+  p++;
+  p->v[0] = CFX_F (x2); p->v[1] = CFX_F (y1);
+  p->t[0] = CFX_F (tx2); p->t[1] = CFX_F (ty1);
   p++;
 
 #undef CFX_F
