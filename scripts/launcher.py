@@ -45,8 +45,8 @@ class Launcher:
         # Allow disabling usage of the EXT_texture_for_pixmap extension.
         # FIXME: Move this to ClutterGlxPixmap like
         # CLUTTER_PIXMAP_TEXTURE_RECTANGLE=disable.
-        if 'GNOME_SHELL_DISABLE_DISABLE_TFP' in os.environ and
-           os.environ['GNOME_SHELL_DISABLE_DISABLE_TFP'] != '':
+        if 'GNOME_SHELL_DISABLE_TFP' in os.environ and
+           os.environ['GNOME_SHELL_DISABLE_TFP'] != '':
            use_tfp = False
 
         if use_tfp:
