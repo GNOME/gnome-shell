@@ -41,6 +41,14 @@ class Launcher:
         """Starts gnome-shell. Returns a subprocess.Popen object"""
 
         use_tfp = self.use_tfp
+
+        # Allow disabling usage of the EXT_texture_for_pixmap extension.
+        # FIXME: Move this to ClutterGlxPixmap like
+        # CLUTTER_PIXMAP_TEXTURE_RECTANGLE=disable.
+        if 'GNOME_SHELL_DISABLE_DISABLE_TFP' in os.environ and
+           os.environ['GNOME_SHELL_DISABLE_DISABLE_TFP'] != '':
+           use_tfp = False
+
         if use_tfp:
             # Check if GLX supports GL_ARB_texture_non_power_of_two; currently clutter
             # can only use GLX_EXT_texture_for_pixmap if we have that extension.
