@@ -1,5 +1,9 @@
 2008-12-01  Thomas Thurman  <tthurman@gnome.org>
 
+        * NEWS: 2.25.21 release.
+
+2008-12-01  Thomas Thurman  <tthurman@gnome.org>
+
 	* configure.in: gnome-doc-tools version doesn't need to be so high.
 	* src/compositor/compositor-xrender.c: disable the entire file if the
           compositor is disabled.

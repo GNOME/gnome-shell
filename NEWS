@@ -1,3 +1,15 @@
+2.25.21
+=======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Fixes to allow building without compositor again (Thomas)
+  - Fixes for -Wall problems (Thomas)
+  - Various tool updates (Thomas)
+
+Translations: none
+
+
 2.25.13
 =======
 
