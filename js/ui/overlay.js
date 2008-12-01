@@ -11,6 +11,7 @@ const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+const Big = imports.gi.Big;
 const AppDisplay = imports.ui.appdisplay;
 
 const OVERLAY_BACKGROUND_COLOR = new Clutter.Color();
@@ -59,11 +60,12 @@ Sideshow.prototype = {
         this.actor.hide();
         global.stage.add_actor(this.actor);
         let icontheme = Gtk.IconTheme.get_default();
-        let rect = new Clutter.Rectangle({ color: SIDESHOW_SEARCH_BG_COLOR,
-                                             x: SIDESHOW_PAD,
-                                             y: Panel.PANEL_HEIGHT + SIDESHOW_PAD,
-                                             width: width,
-                                             height: 24});
+        let rect = new Big.Box({ background_color: SIDESHOW_SEARCH_BG_COLOR,
+                                 corner_radius: 4,
+                                 x: SIDESHOW_PAD,
+                                 y: Panel.PANEL_HEIGHT + SIDESHOW_PAD,
+                                 width: width,
+                                 height: 24});
         this.actor.add_actor(rect);
 
         let searchIconTexture = new Clutter.Texture({ x: SIDESHOW_PAD + 2,
