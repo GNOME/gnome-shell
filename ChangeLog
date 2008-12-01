@@ -1,3 +1,20 @@
+2008-12-01  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1305 - NPOT textures unaligned to a pixel sometimes have
+	border artifacts
+
+	* clutter/cogl/gl/cogl-texture.c: Set the wrap mode of a texture
+	on demand
+
+	Instead of setting the wrap mode once per texture at creation, it
+	is now changed whenever the texture is drawn. The previous value
+	is cached so that it isn't changed if the value is the same.
+
+	This is used in _cogl_texture_quad_hw to only enable GL_REPEAT
+	mode when the coordinates are not in the range [0,1]. Otherwise it
+	can pull in pixels from the other edge when the texture is
+	rendered off-pixel.
+
 2008-11-28  Neil Roberts  <neil@linux.intel.com>
 
 	* tests/conform/test-backface-culling.c (TEXTURE_SIZE): Don't set
