@@ -1,4 +1,4 @@
-/* -*- mode: js2; js2-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*- */
+/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
@@ -23,110 +23,111 @@ function RunDialog() {
 };
 
 RunDialog.prototype = {
-        _init : function() {
-    let global = Shell.Global.get();
+    _init : function() {
+        let global = Shell.Global.get();
 
-    // All actors are inside _group. We create it initially
-    // hidden then show it in show()
-    this._group = new Clutter.Group({ visible: false });
-    global.stage.add_actor(this._group);
+        // All actors are inside _group. We create it initially
+        // hidden then show it in show()
+        this._group = new Clutter.Group({ visible: false });
+        global.stage.add_actor(this._group);
 
-    this._overlay = new Clutter.Rectangle({ color: OVERLAY_COLOR,
-        width: global.screen_width,
-        height: global.screen_height,
-        border_width: 0,
-        reactive: true });
-    this._group.add_actor(this._overlay);
+        this._overlay = new Clutter.Rectangle({ color: OVERLAY_COLOR,
+                                                width: global.screen_width,
+                                                height: global.screen_height,
+                                                border_width: 0,
+                                                reactive: true });
+        this._group.add_actor(this._overlay);
 
-    let boxGroup = new Clutter.Group();
-    boxGroup.set_position((global.screen_width - BOX_WIDTH) / 2,
-            (global.screen_height - BOX_HEIGHT) / 2);
-    this._group.add_actor(boxGroup);
+        let boxGroup = new Clutter.Group();
+        boxGroup.set_position((global.screen_width - BOX_WIDTH) / 2,
+                              (global.screen_height - BOX_HEIGHT) / 2);
+        this._group.add_actor(boxGroup);
 
-    let box = new Clutter.Rectangle({ color: BOX_BACKGROUND_COLOR,
-        reactive: false,
-        width: BOX_WIDTH,
-        height: BOX_HEIGHT,
-        border_width: 0 });
-    boxGroup.add_actor(box);
+        let box = new Clutter.Rectangle({ color: BOX_BACKGROUND_COLOR,
+                                          reactive: false,
+                                          width: BOX_WIDTH,
+                                          height: BOX_HEIGHT,
+                                          border_width: 0 });
+        boxGroup.add_actor(box);
 
-    let label = new Clutter.Label({ color: BOX_TEXT_COLOR,
-        font_name: '18px Sans',
-        text: 'Please enter a command:' });
-    label.set_position(6, 6);
-    boxGroup.add_actor(label);
+        let label = new Clutter.Label({ color: BOX_TEXT_COLOR,
+                                        font_name: '18px Sans',
+                                        text: 'Please enter a command:' });
+        label.set_position(6, 6);
+        boxGroup.add_actor(label);
 
-    this._entry = new Clutter.Entry({ color: BOX_TEXT_COLOR,
-        font_name: '20px Sans Bold',
-        reactive: true,
-        text: '',
-        entry_padding: 0,
-        width: BOX_WIDTH - 12,
-        height: BOX_HEIGHT - 12 });
-    // TODO: Implement relative positioning using Tidy.
-    this._entry.set_position(6, 30);
-    boxGroup.add_actor(this._entry);
+        this._entry = new Clutter.Entry({ color: BOX_TEXT_COLOR,
+                                          font_name: '20px Sans Bold',
+                                          reactive: true,
+                                          text: '',
+                                          entry_padding: 0,
+                                          width: BOX_WIDTH - 12,
+                                          height: BOX_HEIGHT - 12 });
+        // TODO: Implement relative positioning using Tidy.
+        this._entry.set_position(6, 30);
+        boxGroup.add_actor(this._entry);
 
-    let me = this;
+        let me = this;
 
-    this._entry.connect('activate', function (o, e) {
-        me.hide();
-        me._run(o.get_text());
-        return false;
-    });
-
-},
-
-_run : function(command) {
-    if (command) {
-        var p = new Shell.Process({'args' : [command]});
-        try {
-            p.run();
-        } catch (e) {
-            // TODO: Give the user direct feedback.
-            log('Could not run command ' + command + '.');
-        }
-    }
-
-    this.emit('run');
-},
-
-show : function() {
-    let me = this;
-    if (this._group.visible) // Already shown
-        return false;
-
-    if (!Main.startModal())
-        return false;
-
-    this._group.show_all();
-
-    this._entry.connect('key-press-event', function(o, e) {
-        if (e.get_code() == 9) {
+        this._entry.connect('activate', function (o, e) {
             me.hide();
-            me.emit('cancel');
-            return true;
-        } else
+            me._run(o.get_text());
             return false;
-    });
+        });
 
-    let global = Shell.Global.get();
-    global.stage.set_key_focus(this._entry);
+    },
 
-    return true;
-},
+    _run : function(command) {
+        if (command) {
+            var p = new Shell.Process({'args' : [command]});
+            try {
+                p.run();
+            } catch (e) {
+                // TODO: Give the user direct feedback.
+                log('Could not run command ' + command + '.');
+            }
+        }
 
-hide : function() {
-    if (!this._group.visible)
-        return;
+        this.emit('run');
+    },
 
-    this._group.hide();
-    Main.endModal();
-},
+    show : function() {
+        let me = this;
 
-destroy : function(){
-    this.hide();
-    this._group.destroy();
-}
+        if (this._group.visible) // Already shown
+            return false;
+
+        if (!Main.startModal())
+            return false;
+
+        this._group.show_all();
+
+        this._entry.connect('key-press-event', function(o, e) {
+            if (e.get_code() == 9) {
+                me.hide();
+                me.emit('cancel');
+                return true;
+            } else
+                return false;
+        });
+
+        let global = Shell.Global.get();
+        global.stage.set_key_focus(this._entry);
+
+        return true;
+    },
+
+    hide : function() {
+        if (!this._group.visible)
+            return;
+
+        this._group.hide();
+        Main.endModal();
+    },
+
+    destroy : function(){
+        this.hide();
+        this._group.destroy();
+    }
 };
 Signals.addSignalMethods(RunDialog.prototype);
