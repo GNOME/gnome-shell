@@ -7,6 +7,7 @@ const Pango = imports.gi.Pango;
 const Gtk = imports.gi.Gtk;
 
 const Tidy = imports.gi.Tidy;
+const Big = imports.gi.Big;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
@@ -68,9 +69,10 @@ AppDisplayItem.prototype = {
             me.emit('activate');
             return true;
         });
-        this._bg = new Clutter.Rectangle({ color: APPDISPLAY_BACKGROUND_COLOR,
-                                           x: 0, y: 0,
-                                           width: width, height: APPDISPLAY_HEIGHT });
+        this._bg = new Big.Box({ background_color: APPDISPLAY_BACKGROUND_COLOR,
+                                 corner_radius: 4,
+                                 x: 0, y: 0,
+                                 width: width, height: APPDISPLAY_HEIGHT });
         this._group.add_actor(this._bg);
 
         this._icon = new Clutter.Texture({ width: 48, height: 48, x: 0, y: 0 });
@@ -118,7 +120,7 @@ AppDisplayItem.prototype = {
            color = APPDISPLAY_SELECTED_BACKGROUND_COLOR;
        else
            color = APPDISPLAY_BACKGROUND_COLOR;
-       this._bg.color = color;
+       this._bg.background_color = color;
     }
 };
 
