@@ -95,14 +95,11 @@ Sideshow.prototype = {
             });
         });
         this._searchEntry.connect('activate', function (se) {
-            if (!me._searchActive)
-                return false;
             me._appdisplay.searchActivate();
             return true;
         });
         this._searchEntry.connect('key-press-event', function (se, e) {
             let code = e.get_code();
-            log("code: " + code);
             if (code == 111) {
                 me._appdisplay.selectUp();
                 return true;

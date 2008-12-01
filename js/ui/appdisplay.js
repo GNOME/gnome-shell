@@ -316,12 +316,10 @@ AppDisplay.prototype = {
     _selectIndex: function(index) {
         if (this._selectedIndex != -1) {
             let prev = this._findDisplayedByIndex(this._selectedIndex);
-            log("demarking " + prev);
             prev.markSelected(false);
         }
         this._selectedIndex = index;
         let item = this._findDisplayedByIndex(index);
-        log("marking " + item);
         item.markSelected(true);
     },
 
