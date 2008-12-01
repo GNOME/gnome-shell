@@ -24,7 +24,7 @@
 
 #include <clutter/clutter-units.h>
 #include <clutter/clutter-actor.h>
-#include <clutter-cairo/clutter-cairo.h>
+#include <clutter-cairo.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 

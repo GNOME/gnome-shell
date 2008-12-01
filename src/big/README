@@ -20,3 +20,6 @@ private locations as we do for gnome-shell. (We install the typelib
 into a private location, link the source files directly into the
 gnome-shell plugin so no external library is needed, and we don't
 install the header files at all.)
+
+Patches applied:
+http://bugzilla.gnome.org/show_bug.cgi?id=562929
