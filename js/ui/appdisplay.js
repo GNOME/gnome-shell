@@ -87,7 +87,7 @@ AppDisplayItem.prototype = {
         this._group.add_actor(this._icon);
 
         let comment = appinfo.get_description();
-        let text_width = width - me._icon.width + 4;
+        let text_width = width - (me._icon.width + 4);
         this._name = new Clutter.Label({ color: APPDISPLAY_NAME_COLOR,
                                      font_name: "Sans 14px",
                                      width: text_width,
