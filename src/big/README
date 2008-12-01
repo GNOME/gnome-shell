@@ -1,0 +1,22 @@
+The Clutter actors and other files in this directory were created by
+litl, LLC.  They are released under the terms of the Library General
+Public license.
+
+The idea is that these actors may eventually make their way into Clutter
+or into other libraries.
+
+litl has requested that these actors should not be publically
+installed under the 'big_*' names to avoid conflicts with their
+development. So if you use them in your applications, do *NOT*
+install:
+
+ - A 'libbig' library
+ - The header files
+ - gobject-introspection data for these actors
+
+Into public locations. You can of course, take the code and rename it,
+as long as you respect the provisions of the LGPL, or install into
+private locations as we do for gnome-shell. (We install the typelib
+into a private location, link the source files directly into the
+gnome-shell plugin so no external library is needed, and we don't
+install the header files at all.)
