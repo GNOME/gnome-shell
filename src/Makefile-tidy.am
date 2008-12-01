@@ -1,5 +1,3 @@
-NULL =
-
 tidy_cflags =					\
 	-I$(top_srcdir)/src			\
 	-DPREFIX=\""$(prefix)"\"		\
@@ -85,7 +83,7 @@ tidy-enum-types.c: stamp-tidy-enum-types.h tidy/tidy-enum-types.c.in
 	cp xgen-tetc tidy-enum-types.c && \
 	rm -f xgen-tetc
 
-noinst_LTLIBRARIES = libtidy-1.0.la
+noinst_LTLIBRARIES += libtidy-1.0.la
 
 libtidy_1_0_la_LIBADD = $(TIDY_LIBS)
 libtidy_1_0_la_SOURCES = \
@@ -99,7 +97,7 @@ libtidy_1_0_la_LDFLAGS = $(LDADD)
 
 CLEANFILES += $(TIDY_STAMP_FILES) $(BUILT_SOURCES)
 
-EXTRA_DIST =					\
+EXTRA_DIST +=					\
 	tidy/tidy-enum-types.h.in		\
 	tidy/tidy-enum-types.c.in		\
 	tidy/tidy-private.h			\

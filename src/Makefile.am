@@ -1,7 +1,11 @@
+NULL = 
 BUILT_SOURCES =
 CLEANFILES =
+EXTRA_DIST = 
+noinst_LTLIBRARIES = 
 
 include Makefile-tidy.am
+include Makefile-big.am
 include Makefile-tray.am
 
 gnome_shell_cflags =				\
@@ -60,12 +64,13 @@ shell-marshal.c: Makefile shell-marshal.list
 libgnome_shell_la_LDFLAGS = -avoid-version -module
 libgnome_shell_la_LIBADD =	\
 	$(MUTTER_PLUGIN_LIBS)	\
+	libbig-1.0.la		\
 	libtidy-1.0.la		\
 	libtray.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
 typelibdir = $(pkglibdir)
-typelib_DATA = Shell-0.1.typelib Tidy-1.0.typelib
+typelib_DATA = Shell-0.1.typelib Tidy-1.0.typelib Big-1.0.typelib
 
 Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la Makefile
 	$(G_IR_SCANNER)		\
@@ -103,3 +108,20 @@ CLEANFILES += Tidy-1.0.gir
 Tidy-1.0.typelib: libtidy-1.0.la Tidy-1.0.gir
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Tidy-1.0.gir -o $@
 CLEANFILES += Tidy-1.0.typelib
+
+Big-1.0.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefile
+	$(G_IR_SCANNER)					\
+		--namespace=Big			\
+		--nsversion=1.0				\
+		--include=ClutterCairo-0.8			\
+		--program=metacity			\
+	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
+		$(big_source_h)			\
+		$(big_source_c)			\
+		$(big_cflags)				\
+		-o $@
+CLEANFILES += Big-1.0.gir
+
+Big-1.0.typelib: libbig-1.0.la Big-1.0.gir
+	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Big-1.0.gir -o $@
+CLEANFILES += Big-1.0.typelib

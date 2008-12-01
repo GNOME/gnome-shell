@@ -1,0 +1,67 @@
+big_cflags =					\
+	-I$(top_srcdir)/src			\
+	-DPREFIX=\""$(prefix)"\"		\
+	-DLIBDIR=\""$(libdir)"\"		\
+	-DG_DISABLE_DEPRECATED			\
+	-DG_LOG_DOMAIN=\"Big\"			\
+	$(BIG_CFLAGS)			\
+	$(NULL)
+
+big_built_sources = \
+	big-enum-types.h 	\
+	big-enum-types.c 	\
+	$(NULL)
+
+BUILT_SOURCES += $(big_built_sources)
+
+BIG_STAMP_FILES = stamp-big-marshal.h stamp-big-enum-types.h
+
+# please, keep this sorted alphabetically
+big_source_h =					\
+	big/box.h				\
+	big/rectangle.h			\
+	big/theme-image.h		\
+	$(NULL)
+
+# please, keep this sorted alphabetically
+big_source_c =					\
+	big/box.c			\
+	big/rectangle.c			\
+	big/theme-image.c			\
+	$(NULL)
+
+big-enum-types.h: stamp-big-enum-types.h Makefile
+	@true
+stamp-big-enum-types.h: $(big_source_h) big/big-enum-types.h.in
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	    --template $(srcdir)/big/big-enum-types.h.in \
+	  $(big_source_h) ) >> xgen-teth && \
+	(cmp xgen-teth big-enum-types.h || cp xgen-teth big-enum-types.h) && \
+	rm -f xgen-teth && \
+	echo timestamp > $(@F)
+
+big-enum-types.c: stamp-big-enum-types.h big/big-enum-types.c.in
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	    --template $(srcdir)/big/big-enum-types.c.in \
+	  $(big_source_h) ) >> xgen-tetc && \
+	cp xgen-tetc big-enum-types.c && \
+	rm -f xgen-tetc
+
+noinst_LTLIBRARIES += libbig-1.0.la
+
+libbig_1_0_la_LIBADD = $(BIG_LIBS)
+libbig_1_0_la_SOURCES = \
+	$(big_source_c) \
+	$(big_source_h) \
+	$(big_built_sources) \
+	$(NULL)
+libbig_1_0_la_CPPFLAGS = $(big_cflags)
+libbig_1_0_la_LDFLAGS = $(LDADD)
+
+CLEANFILES += $(BIG_STAMP_FILES) $(BUILT_SOURCES)
+
+EXTRA_DIST +=					\
+	big/big-enum-types.h.in		\
+	big/big-enum-types.c.in
