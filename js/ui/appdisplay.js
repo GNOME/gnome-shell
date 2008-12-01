@@ -124,17 +124,15 @@ AppDisplayItem.prototype = {
 
 Signals.addSignalMethods(AppDisplayItem.prototype);
 
-function AppDisplay(x, y, width, height) {
-    this._init(x, y, width, height);
+function AppDisplay(width, height) {
+    this._init(width, height);
 }
 
 AppDisplay.prototype = {
-    _init : function(x, y, width, height) {
+    _init : function(width, height) {
         let me = this;
         let global = Shell.Global.get();
         this._search = '';
-        this._x = x;
-        this._y = y;
         this._width = width;
         this._height = height;
         this._appmonitor = new Shell.AppMonitor();
@@ -142,12 +140,12 @@ AppDisplay.prototype = {
         this._appmonitor.connect('changed', function(mon) {
             me._appsStale = true;
         });
-        this._grid = new Tidy.Grid({x: x, y: y, width: width, height: height});
-        global.stage.add_actor(this._grid);
+        this._grid = new Tidy.Grid({width: width, height: height});
         this._appset = {}; // Map<appid, appinfo>
         this._displayed = {}; // Map<appid, AppDisplay>
         this._selectedIndex = -1;
         this._max_items = this._height / (APPDISPLAY_HEIGHT + APPDISPLAY_PADDING);
+        this.actor = this._grid;
     },
 
     _refreshCache: function() {

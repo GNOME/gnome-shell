@@ -55,22 +55,22 @@ Sideshow.prototype = {
         let me = this;
 
         let global = Shell.Global.get();
-        this._group = new Clutter.Group();
-        this._group.hide();
-        global.stage.add_actor(this._group);
+        this.actor = new Clutter.Group();
+        this.actor.hide();
+        global.stage.add_actor(this.actor);
         let icontheme = Gtk.IconTheme.get_default();
         let rect = new Clutter.Rectangle({ color: SIDESHOW_SEARCH_BG_COLOR,
                                              x: SIDESHOW_PAD,
                                              y: Panel.PANEL_HEIGHT + SIDESHOW_PAD,
                                              width: width,
                                              height: 24});
-        this._group.add_actor(rect);
+        this.actor.add_actor(rect);
 
         let searchIconTexture = new Clutter.Texture({ x: SIDESHOW_PAD + 2,
                                                       y: rect.y + 2 });
         let searchIconPath = icontheme.lookup_icon('gtk-find', 16, 0).get_filename();
         searchIconTexture.set_from_file(searchIconPath);
-        this._group.add_actor(searchIconTexture);
+        this.actor.add_actor(searchIconTexture);
 
         this._searchEntry = new Clutter.Entry({
                                              font_name: "Sans 14px",
@@ -79,7 +79,7 @@ Sideshow.prototype = {
                                              y: searchIconTexture.y,
                                              width: rect.width - (searchIconTexture.x),
                                              height: searchIconTexture.height});
-        this._group.add_actor(this._searchEntry);
+        this.actor.add_actor(this._searchEntry);
         global.stage.set_key_focus(this._searchEntry);
         this._searchQueued = false;
         this._searchActive = false;
@@ -116,11 +116,13 @@ Sideshow.prototype = {
                                            x: SIDESHOW_PAD,
                                            y: this._searchEntry.y + this._searchEntry.height + 10,
                                            height: 16});
-        this._group.add_actor(appsText);
+        this.actor.add_actor(appsText);
 
         let menuY = appsText.y + appsText.height + 6;
-        this._appdisplay = new AppDisplay.AppDisplay(SIDESHOW_PAD,
-                menuY, width, global.screen_height - menuY);
+        this._appdisplay = new AppDisplay.AppDisplay(width, global.screen_height - menuY);
+        this._appdisplay.actor.x = SIDESHOW_PAD;
+        this._appdisplay.actor.y = menuY;
+        this.actor.add_actor(this._appdisplay.actor);
 
         /* Proxy the activated signal */
         this._appdisplay.connect('activated', function(appdisplay) {
@@ -129,12 +131,12 @@ Sideshow.prototype = {
     },
 
     show: function() {
-          this._group.show();
+          this.actor.show();
           this._appdisplay.show();
     },
 
     hide: function() {
-          this._group.hide();
+          this.actor.hide();
           this._appdisplay.hide();
     }
 };
@@ -240,6 +242,14 @@ Overlay.prototype = {
         }
 
         this._sideshow.show();
+        // Slide in the sidebar as if it was attached to the left
+        // edge of the desktop as it shrinks down
+        this._sideshow.actor.x = - this._sideshow.actor.width;
+        Tweener.addTween(this._sideshow.actor,
+                         { x: 0,
+                           time: ANIMATION_TIME,
+                           transition: "easeOutQuad"
+                         });
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the overlay is displayed greatly
