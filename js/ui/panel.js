@@ -94,8 +94,8 @@ Panel.prototype = {
 
         global.stage.add_actor(this._group);
 
+        // Start the clock
         this._updateClock();
-        this._startClock();
     },
 
     // Struts determine the area along each side of the screen that is reserved
@@ -122,19 +122,20 @@ Panel.prototype = {
         }
     },
 
-    _startClock: function() {
-        let me = this;
-        // TODO: this makes the clock updated every 60 seconds, but not necessarily on the minute, so it is inaccurate
-        Mainloop.timeout_add_seconds(60,
-            function() {
-                me._updateClock();
-                return true;
-            });
-    },
-
     _updateClock: function() {
-        this._clock.set_text(new Date().toLocaleFormat("%H:%M"));
-        return true;
+        let me = this;
+        let display_date = new Date();
+        let msec_remaining = 60000 - (1000 * display_date.getSeconds() +
+                                      display_date.getMilliseconds());
+        if (msec_remaining < 500) {
+            display_date.setMinutes(display_time.getMinutes() + 1);
+            msec_remaining += 60000;
+        }
+        this._clock.set_text(display_date.toLocaleFormat("%H:%M"));
+        Mainloop.timeout_add(msec_remaining, function() {
+            me._updateClock();
+            return false;
+        });
     },
 
     overlayHidden: function() {
