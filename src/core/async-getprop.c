@@ -586,7 +586,7 @@ ag_task_get_reply_and_free (AgGetPropertyTask  *task,
                             int                *actual_format,
                             unsigned long      *nitems,
                             unsigned long      *bytesafter,
-                            char              **prop)
+                            unsigned char     **prop)
 {
   Display *dpy;
 
@@ -615,7 +615,7 @@ ag_task_get_reply_and_free (AgGetPropertyTask  *task,
   *nitems = task->n_items;
   *bytesafter = task->bytes_after;
 
-  *prop = task->data; /* pass out ownership of task->data */
+  *prop = (unsigned char*) task->data; /* pass out ownership of task->data */
 
   SyncHandle ();
 

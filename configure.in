@@ -231,7 +231,7 @@ fi
 
 if test x$have_xcomposite = xyes; then
   METACITY_PC_MODULES="$METACITY_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender xdamage"
-  AC_DEFINE(HAVE_COMPOSITE_EXTENSIONS, , [Building with compositing manager support])
+  AC_DEFINE(HAVE_COMPOSITE_EXTENSIONS, 1, [Building with compositing manager support])
   echo "Building with compositing manager"
 
   ## force on render also
@@ -487,7 +487,7 @@ fi
 CFLAGS="$CFLAGS -Wall -Werror -ansi"
 
 # Use gnome-doc-utils:
-GNOME_DOC_INIT([0.9.0])
+GNOME_DOC_INIT([0.8.0])
 
 AC_CONFIG_FILES([
 Makefile

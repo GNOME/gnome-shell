@@ -26,6 +26,8 @@
 
 #include <config.h>
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -3071,3 +3073,6 @@ meta_compositor_xrender_new (MetaDisplay *display)
   return NULL;
 #endif
 }
+
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+

@@ -225,11 +225,12 @@ read_rgb_icon (MetaDisplay   *display,
   gulong nitems;
   gulong bytes_after;
   int result, err;
-  gulong *data;
+  guchar *data;
   gulong *best;
   int w, h;
   gulong *best_mini;
   int mini_w, mini_h;
+  gulong *data_as_long = (gulong*) data;
 
   meta_error_trap_push_with_return (display);
   type = None;
@@ -239,8 +240,7 @@ read_rgb_icon (MetaDisplay   *display,
                                display->atom__NET_WM_ICON,
 			       0, G_MAXLONG,
 			       False, XA_CARDINAL, &type, &format, &nitems,
-			       &bytes_after, ((guchar **)&data));
-
+			       &bytes_after, &data);
   err = meta_error_trap_pop_with_return (display, TRUE);
 
   if (err != Success ||
@@ -253,7 +253,7 @@ read_rgb_icon (MetaDisplay   *display,
       return FALSE;
     }
 
-  if (!find_best_size (data, nitems,
+  if (!find_best_size (data_as_long, nitems,
                        ideal_width, ideal_height,
                        &w, &h, &best))
     {
@@ -261,7 +261,7 @@ read_rgb_icon (MetaDisplay   *display,
       return FALSE;
     }
 
-  if (!find_best_size (data, nitems,
+  if (!find_best_size (data_as_long, nitems,
                        ideal_mini_width, ideal_mini_height,
                        &mini_w, &mini_h, &best_mini))
     {
@@ -464,7 +464,8 @@ get_kwm_win_icon (MetaDisplay *display,
   int format;
   gulong nitems;
   gulong bytes_after;
-  Pixmap *icons;
+  guchar *data;
+  Pixmap *icons = (Pixmap*) icons;
   int err, result;
 
   *pixmap = None;
@@ -478,7 +479,7 @@ get_kwm_win_icon (MetaDisplay *display,
 			       False,
                                display->atom__KWM_WIN_ICON,
 			       &type, &format, &nitems,
-			       &bytes_after, (guchar **)&icons);
+			       &bytes_after, &data);
 
   err = meta_error_trap_pop_with_return (display, TRUE);
   if (err != Success ||

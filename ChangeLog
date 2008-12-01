@@ -1,3 +1,13 @@
+2008-12-01  Thomas Thurman  <tthurman@gnome.org>
+
+	* configure.in: gnome-doc-tools version doesn't need to be so high.
+	* src/compositor/compositor-xrender.c: disable the entire file if the
+          compositor is disabled.
+	* src/core/async-getprop.[ch]: fixes for -Wall
+	* src/core/iconcache.c: fixes for -Wall
+	* src/core/testasyncgetprop.c: fixes for -Wall
+	* src/core/xprops.c: fixes for -Wall
+
 2008-11-26  Thomas Thurman  <tthurman@gnome.org>
 
 	* tools/announce-wrangler.py: linked language codes to po files
