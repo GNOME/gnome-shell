@@ -35,6 +35,10 @@
   <autotools id="clutter">
     <branch repo="svn.o-hand.com" module="clutter/branches/clutter-0-8"/>
   </autotools>
+  
+  <autotools id="clutter-cairo">
+    <branch repo="svn.o-hand.com" module="clutter/branches/clutter-cairo-0-8"/>
+  </autotools>  
 
   <autotools id="metacity-clutter" autogenargs="--with-clutter">
     <branch repo="fishsoup.net" module="metacity-clutter" revision="clutter"/>
