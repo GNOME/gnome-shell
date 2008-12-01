@@ -21,7 +21,7 @@ function Panel() {
 }
 
 Panel.prototype = {
-        _init : function() {
+_init : function() {
     let global = Shell.Global.get();
 
     this._group = new Clutter.Group();
