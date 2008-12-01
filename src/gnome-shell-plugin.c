@@ -33,6 +33,7 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <gjs/gjs.h>
+#include <girepository.h>
 #include <gmodule.h>
 #include <string.h>
 
@@ -121,6 +122,8 @@ do_init (const char *params)
           plugin_state->debug_mode = TRUE;
         }
     }
+
+  g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
 
   shell_js = g_getenv("GNOME_SHELL_JS");
   if (!shell_js)

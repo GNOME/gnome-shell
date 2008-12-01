@@ -8,6 +8,7 @@ gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
 	-Itray					\
 	-DGETTEXT_PACKAGE=gnome-shell		\
+	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
 	-DJSDIR=\"$(pkgdatadir)/js\"
 
 plugindir = $(libdir)/metacity/plugins/clutter
@@ -63,13 +64,14 @@ libgnome_shell_la_LIBADD =	\
 	libtray.la
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
-typelibdir = $(pkglibdir)/girepository
+typelibdir = $(pkglibdir)
 typelib_DATA = Shell-0.1.typelib Tidy-1.0.typelib
 
 Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la Makefile
 	$(G_IR_SCANNER)		\
 		--namespace=Shell			\
 		--nsversion=0.1				\
+		--add-include-path=$(libdir)/metacity/ \
 		--include=Clutter-0.8			\
 		--include=Meta-2.25			\
 		--program=metacity			\
@@ -82,7 +84,7 @@ CLEANFILES += Shell-1.0.gir
 # The dependency on libgnome-shell.la here is because g-ir-compiler opens it
 # (not the fake library, since we've already done the rewriting)
 Shell-0.1.typelib: libgnome-shell.la Shell-0.1.gir
-	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler Shell-0.1.gir -o $@
+	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$$LD_LIBRARY_PATH:}. g-ir-compiler --includedir=$(libdir)/metacity/ Shell-0.1.gir -o $@
 CLEANFILES += Shell-1.0.typelib
 
 Tidy-1.0.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makefile
