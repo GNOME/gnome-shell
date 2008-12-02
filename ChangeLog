@@ -1,3 +1,7 @@
+2008-12-02  Matt Kraai  <kraai@ftbfs.org>
+
+	* src/core/iconcache.c: patches to fixes for -Wall.  Closes #562939.
+
 2008-12-01  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.25.34.

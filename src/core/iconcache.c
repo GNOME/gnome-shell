@@ -230,7 +230,7 @@ read_rgb_icon (MetaDisplay   *display,
   int w, h;
   gulong *best_mini;
   int mini_w, mini_h;
-  gulong *data_as_long = (gulong*) data;
+  gulong *data_as_long;
 
   meta_error_trap_push_with_return (display);
   type = None;
@@ -252,6 +252,8 @@ read_rgb_icon (MetaDisplay   *display,
       XFree (data);
       return FALSE;
     }
+
+  data_as_long = (gulong *)data;
 
   if (!find_best_size (data_as_long, nitems,
                        ideal_width, ideal_height,
@@ -465,7 +467,7 @@ get_kwm_win_icon (MetaDisplay *display,
   gulong nitems;
   gulong bytes_after;
   guchar *data;
-  Pixmap *icons = (Pixmap*) icons;
+  Pixmap *icons;
   int err, result;
 
   *pixmap = None;
@@ -480,6 +482,7 @@ get_kwm_win_icon (MetaDisplay *display,
                                display->atom__KWM_WIN_ICON,
 			       &type, &format, &nitems,
 			       &bytes_after, &data);
+  icons = (Pixmap *)data;
 
   err = meta_error_trap_pop_with_return (display, TRUE);
   if (err != Success ||
