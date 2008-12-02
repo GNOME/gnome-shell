@@ -127,6 +127,8 @@ typedef struct
   Window xwindow;
 } MetaAutoRaiseData;
 
+G_DEFINE_TYPE(MetaDisplay, meta_display, G_TYPE_OBJECT);
+
 /**
  * The display we're managing.  This is a singleton object.  (Historically,
  * this was a list of displays, but there was never any way to add more
@@ -162,6 +164,12 @@ static void    sanity_check_timestamps   (MetaDisplay *display,
                                           guint32      known_good_timestamp);
 
 MetaGroup*     get_focussed_group (MetaDisplay *display);
+
+static void
+meta_display_class_init (MetaDisplayClass *klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+}
 
 /**
  * Destructor for MetaPingData structs. Will destroy the
@@ -298,6 +306,13 @@ disable_compositor (MetaDisplay *display)
   display->compositor = NULL;
 }
 
+static void
+meta_display_init (MetaDisplay *disp)
+{
+  /* Some stuff could go in here that's currently in _open,
+   * but it doesn't really matter. */
+}
+
 /**
  * Opens a new display, sets it up, initialises all the X extensions
  * we will need, and adds it to the list of displays.
@@ -340,7 +355,7 @@ meta_display_open (void)
     XSynchronize (xdisplay, True);
   
   g_assert (the_display == NULL);
-  the_display = g_new (MetaDisplay, 1);
+  the_display = g_object_new (META_TYPE_DISPLAY, NULL);
 
   the_display->closing = 0;
   

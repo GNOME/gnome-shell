@@ -74,6 +74,8 @@ typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
 
 struct _MetaDisplay
 {
+  GObject parent_instance;
+  
   char *name;
   Display *xdisplay;
 
@@ -296,6 +298,11 @@ struct _MetaDisplay
 #define META_DISPLAY_HAS_DAMAGE(display) FALSE
 #define META_DISPLAY_HAS_XFIXES(display) FALSE
 #endif
+};
+
+struct _MetaDisplayClass
+{
+  GObjectClass parent_class;
 };
 
 /* Xserver time can wraparound, thus comparing two timestamps needs to take
