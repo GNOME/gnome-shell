@@ -1,5 +1,9 @@
 2008-12-02  Thomas Thurman  <tthurman@gnome.org>
 
+        * configure.in: Post-release bump to 2.25.55.
+
+2008-12-02  Thomas Thurman  <tthurman@gnome.org>
+
         * NEWS: 2.25.34 release.
 
 2008-12-02  Matt Kraai  <kraai@ftbfs.org>
