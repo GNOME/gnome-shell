@@ -247,6 +247,8 @@ void meta_prefs_get_window_binding (const char          *name,
                                     unsigned int        *keysym,
                                     MetaVirtualModifier *modifiers);
 
+void meta_prefs_get_overlay_binding (MetaKeyCombo *combo);
+
 typedef enum
 {
   META_VISUAL_BELL_INVALID = 0,

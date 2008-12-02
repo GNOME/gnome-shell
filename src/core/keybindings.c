@@ -234,7 +234,14 @@ reload_keycodes (MetaDisplay *display)
 {
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Reloading keycodes for binding tables\n");
-
+  
+  if (display->overlay_key_combo.keysym 
+      && display->overlay_key_combo.keycode == 0)
+    {
+      display->overlay_key_combo.keycode = XKeysymToKeycode (
+          display->xdisplay, display->overlay_key_combo.keysym);
+    }
+  
   if (display->key_bindings)
     {
       int i;
@@ -422,6 +429,19 @@ rebuild_key_binding_table (MetaDisplay *display)
 }
 
 static void
+rebuild_special_bindings (MetaDisplay *display)
+{
+  MetaKeyCombo combo;
+  
+  meta_prefs_get_overlay_binding (&combo);
+
+  if (combo.keysym != None || combo.keycode != 0)
+    {
+      display->overlay_key_combo = combo;
+    }
+}
+
+static void
 regrab_key_bindings (MetaDisplay *display)
 {
   GSList *tmp;
@@ -521,6 +541,7 @@ bindings_changed_callback (MetaPreference pref,
     {
     case META_PREF_KEYBINDINGS:
       rebuild_key_binding_table (display);
+      rebuild_special_bindings (display);
       reload_keycodes (display);
       reload_modifiers (display);
       regrab_key_bindings (display);
@@ -562,6 +583,7 @@ meta_display_init_keys (MetaDisplay *display)
   reload_modmap (display);
 
   rebuild_key_binding_table (display);
+  rebuild_special_bindings (display);
 
   reload_keycodes (display);
   reload_modifiers (display);
@@ -742,11 +764,18 @@ ungrab_all_keys (MetaDisplay *display,
 void
 meta_screen_grab_keys (MetaScreen *screen)
 {
+  MetaDisplay *display = screen->display;  
   if (screen->all_keys_grabbed)
     return;
 
   if (screen->keys_grabbed)
     return;
+  
+  if (display->overlay_key_combo.keycode != 0)
+    meta_grab_key (display, screen->xroot,
+                   display->overlay_key_combo.keysym,
+                   display->overlay_key_combo.keycode,
+                   display->overlay_key_combo.modifiers);
 
   grab_keys (screen->display->key_bindings,
              screen->display->n_key_bindings,
@@ -1140,6 +1169,31 @@ primary_modifier_still_pressed (MetaDisplay *display,
     return TRUE;
 }
 
+static gboolean
+process_overlay_key (MetaDisplay *display,
+                     MetaScreen *Screen,
+                     XEvent *event,
+                     KeySym keysym)
+{
+  if (event->xkey.keycode != display->overlay_key_combo.keycode)
+    {
+      display->overlay_key_only_pressed = FALSE;
+      return FALSE;
+    }
+
+  if (event->xkey.type == KeyPress)
+    {
+      display->overlay_key_only_pressed = TRUE;
+    }
+  else if (event->xkey.type == KeyRelease && display->overlay_key_only_pressed)
+    {
+      display->overlay_key_only_pressed = FALSE;
+      meta_display_overlay_key_activate (display);
+    }
+
+  return TRUE;
+}
+
 /* now called from only one place, may be worth merging */
 static gboolean
 process_event (MetaKeyBinding       *bindings,
@@ -1238,6 +1292,7 @@ meta_display_process_key_event (MetaDisplay *display,
   KeySym keysym;
   gboolean keep_grab;
   gboolean all_keys_grabbed;
+  gboolean handled;
   const char *str;
   MetaScreen *screen;
 
@@ -1361,11 +1416,15 @@ meta_display_process_key_event (MetaDisplay *display,
           return;
         }
       }
+  
+  handled = process_overlay_key (display, screen, event, keysym);
+  
   /* Do the normal keybindings */
-  process_event (display->key_bindings,
-                 display->n_key_bindings,
-                 display, screen, window, event, keysym,
-                 !all_keys_grabbed && window);
+  if (!handled)
+    process_event (display->key_bindings,
+                   display->n_key_bindings,
+                   display, screen, window, event, keysym,
+                   !all_keys_grabbed && window);
 }
 
 static gboolean

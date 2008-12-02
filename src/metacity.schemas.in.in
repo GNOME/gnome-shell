@@ -4,6 +4,25 @@
     <!-- General preferences -->        
 
     <schema>
+      <key>/schemas/apps/metacity/general/overlay_key</key>
+      <applyto>/apps/metacity/general/overlay_key</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Super_L&gt;</default>
+      <locale name="C">
+         <short>Modifier to use for extended window management operations</short>
+         <long>
+			This key will initiate the "overlay", which is a combination window
+			overview and application launching system.  The default is intended
+			to be the "Windows key" on PC hardware.
+
+			It's expected that this binding either the default or set to 
+			the empty string.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/general/mouse_button_modifier</key>
       <applyto>/apps/metacity/general/mouse_button_modifier</applyto>
       <owner>metacity</owner>

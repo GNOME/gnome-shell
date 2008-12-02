@@ -57,6 +57,7 @@
 #define KEY_TERMINAL_DIR "/desktop/gnome/applications/terminal"
 #define KEY_TERMINAL_COMMAND KEY_TERMINAL_DIR "/exec"
 
+#define KEY_OVERLAY_KEY "/apps/metacity/general/overlay_key"
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
 #define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
 #define KEY_LIST_BINDINGS_SUFFIX "_list"
@@ -1217,6 +1218,10 @@ change_notify (GConfClient    *client,
       if (update_workspace_name (key, str))
         queue_changed (META_PREF_WORKSPACE_NAMES);
     }
+  else if (g_str_equal (key, KEY_OVERLAY_KEY))
+    {
+      queue_changed (META_PREF_KEYBINDINGS);
+    }
 #ifdef WITH_CLUTTER
   else if (g_str_equal (key, KEY_CLUTTER_PLUGINS) && !clutter_plugins_overridden)
     {
@@ -1873,6 +1878,8 @@ static MetaKeyPref key_bindings[] = {
 };
 #undef keybind
 
+static MetaKeyCombo overlay_key_combo = { 0, 0, 0 };
+
 #ifndef HAVE_GCONF
 
 /**
@@ -1905,6 +1912,37 @@ static MetaSimpleKeyMapping key_string_bindings[] = {
 #undef keybind
 
 #endif /* NOT HAVE_GCONF */
+
+/* These bindings are for modifiers alone, so they need special handling */
+static void
+init_special_bindings (void)
+{
+#ifdef HAVE_GCONF
+  char *val;
+  GError *err = NULL;
+#endif
+  
+  /* Default values for bindings which are global, but take special handling */
+  meta_ui_parse_accelerator ("Super_L", &overlay_key_combo.keysym, 
+                             &overlay_key_combo.keycode, 
+                             &overlay_key_combo.modifiers);
+
+#ifdef HAVE_GCONF
+  val = gconf_client_get_string (default_client, KEY_OVERLAY_KEY, &err);
+  cleanup_error (&err);
+    
+  if (val && meta_ui_parse_accelerator (val, &overlay_key_combo.keysym, 
+                                        &overlay_key_combo.keycode, 
+                                        &overlay_key_combo.modifiers))
+    ;
+  else
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Failed to parse value for overlay_key\n");
+    }
+  g_free (val);
+#endif
+}
 
 static void
 init_bindings (void)
@@ -1959,9 +1997,11 @@ init_bindings (void)
 
       ++i;
     }
+
 #else /* HAVE_GCONF */
   int i = 0;
   int which = 0;
+  
   while (key_string_bindings[i].name)
     {
       if (key_string_bindings[i].keybinding == NULL) {
@@ -1980,6 +2020,8 @@ init_bindings (void)
       ++i;
     }
 #endif /* HAVE_GCONF */
+  
+  init_special_bindings ();  
 }
 
 static void
@@ -2686,6 +2728,12 @@ meta_prefs_get_key_bindings (const MetaKeyPref **bindings,
   
   *bindings = key_bindings;
   *n_bindings = (int) G_N_ELEMENTS (key_bindings) - 1;
+}
+
+void 
+meta_prefs_get_overlay_binding (MetaKeyCombo *combo)
+{
+  *combo = overlay_key_combo;
 }
 
 MetaActionTitlebar

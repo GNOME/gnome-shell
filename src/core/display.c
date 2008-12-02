@@ -129,6 +129,15 @@ typedef struct
 
 G_DEFINE_TYPE(MetaDisplay, meta_display, G_TYPE_OBJECT);
 
+/* Signals */
+enum
+{
+  OVERLAY_KEY,
+  LAST_SIGNAL
+};
+
+static guint display_signals [LAST_SIGNAL] = { 0 };
+
 /**
  * The display we're managing.  This is a singleton object.  (Historically,
  * this was a list of displays, but there was never any way to add more
@@ -168,6 +177,14 @@ MetaGroup*     get_focussed_group (MetaDisplay *display);
 static void
 meta_display_class_init (MetaDisplayClass *klass)
 {
+  display_signals[OVERLAY_KEY] =
+    g_signal_new ("overlay-key",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);  
 }
 
 /**
@@ -5165,6 +5182,12 @@ meta_display_remove_autoraise_callback (MetaDisplay *display)
       display->autoraise_timeout_id = 0;
       display->autoraise_window = NULL;
     }
+}
+
+void
+meta_display_overlay_key_activate (MetaDisplay *display)
+{
+  g_signal_emit (display, display_signals[OVERLAY_KEY], 0);
 }
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS

@@ -38,6 +38,7 @@
 #include "boxes.h"
 #include "display.h"
 #include "keybindings-private.h"
+#include "prefs.h"
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 #include <libsn/sn.h>
@@ -214,6 +215,8 @@ struct _MetaDisplay
   unsigned int hyper_mask;
   unsigned int super_mask;
   unsigned int meta_mask;
+  MetaKeyCombo overlay_key_combo;
+  gboolean overlay_key_only_pressed;
   
   /* Xinerama cache */
   unsigned int xinerama_cache_invalidated : 1;
@@ -433,5 +436,7 @@ gboolean meta_display_focus_sentinel_clear (MetaDisplay *display);
 void meta_display_queue_autoraise_callback  (MetaDisplay *display,
                                              MetaWindow  *window);
 void meta_display_remove_autoraise_callback (MetaDisplay *display);
+
+void meta_display_overlay_key_activate (MetaDisplay *display);
 
 #endif
