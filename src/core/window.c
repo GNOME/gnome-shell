@@ -315,7 +315,17 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   
   meta_error_trap_push_with_return (display);
   
+  /*
+   * XAddToSaveSet can only be called on windows created by a different client.
+   * with Mutter we want to be able to create manageable windows from within
+   * the process (such as a dummy desktop window), so we do not want this
+   * call failing to prevent the window from being managed -- wrap it in its
+   * own error trap (we use the _with_return() version here to ensure that
+   * XSync() is done on the pop, otherwise the error will not get caught).
+   */
+  meta_error_trap_push_with_return (display);
   XAddToSaveSet (display->xdisplay, xwindow);
+  meta_error_trap_pop_with_return (display, FALSE);
 
   event_mask =
     PropertyChangeMask | EnterWindowMask | LeaveWindowMask |
