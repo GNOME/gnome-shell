@@ -19,6 +19,7 @@
     <dependencies>
         <dep package="gobject-introspection"/>
         <dep package="clutter"/>
+        <dep package="clutter-cairo"/>
     </dependencies>
   </autotools>
 
