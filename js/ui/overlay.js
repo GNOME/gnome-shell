@@ -81,6 +81,7 @@ Sideshow.prototype = {
             });
         });
         this._searchEntry.connect('activate', function (se) {
+            me._searchEntry.text = '';
             me._appdisplay.searchActivate();
             return true;
         });
