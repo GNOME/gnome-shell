@@ -1,3 +1,13 @@
+2008-12-03  Robert Bragg  <robert@linux.intel.com>
+
+	Bug 1303 - clutter_glx_texture_pixmap_using_extension doesn't check if
+	fallbacks are being used
+
+	* glx/clutter-glx-texture-pixmap.c:
+	clutter_glx_texture_pixmap_using_extension now checks to see if
+	priv->use_fallback is TRUE not just that the tfp extension is
+	available.
+
 2008-12-01  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1305 - NPOT textures unaligned to a pixel sometimes have
