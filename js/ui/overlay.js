@@ -86,7 +86,10 @@ Sideshow.prototype = {
         });
         this._searchEntry.connect('key-press-event', function (se, e) {
             let code = e.get_code();
-            if (code == 111) {
+            if (code == 9) {
+                me._searchEntry.text = '';
+                return true;
+            } else if (code == 111) {
                 me._appdisplay.selectUp();
                 return true;
             } else if (code == 116) {
