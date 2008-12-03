@@ -128,7 +128,7 @@ Panel.prototype = {
         let msec_remaining = 60000 - (1000 * display_date.getSeconds() +
                                       display_date.getMilliseconds());
         if (msec_remaining < 500) {
-            display_date.setMinutes(display_time.getMinutes() + 1);
+            display_date.setMinutes(display_date.getMinutes() + 1);
             msec_remaining += 60000;
         }
         this._clock.set_text(display_date.toLocaleFormat("%H:%M"));
