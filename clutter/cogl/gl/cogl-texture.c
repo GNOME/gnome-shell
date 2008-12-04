@@ -1911,7 +1911,7 @@ _cogl_texture_flush_vertices (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (ctx->texture_vertices > 0)
+  if (ctx->texture_vertices->len > 0)
     {
       CoglTextureGLVertex *p
         = (CoglTextureGLVertex *) ctx->texture_vertices->data;
