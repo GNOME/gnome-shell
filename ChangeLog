@@ -1,5 +1,20 @@
 2008-12-04  Neil Roberts  <neil@linux.intel.com>
 
+	Bug 1297 - Bring back support for GL_ARB_texture_rectangle
+
+	* clutter/cogl/gl/cogl-texture.c (cogl_texture_new_from_foreign,
+	(_cogl_texture_quad_hw, cogl_texture_polygon),
+	(_cogl_texture_quad_sw): Support GL_ARB_texture_rectangle textures
+
+	* clutter/glx/clutter-glx-texture-pixmap.c: Use rectangle textures
+	when NPOTs are not available or it is forced by the
+	CLUTTER_PIXMAP_TEXTURE_RECTANGLE environment variable.
+
+	* clutter/cogl/gl/cogl.c (cogl_enable): Allow enabling
+	GL_TEXTURE_RECTANGLE_ARB.
+
+2008-12-04  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1172 - Disjoint paths and clip to path
 
 	* clutter/cogl/cogl-path.h:

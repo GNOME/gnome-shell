@@ -40,6 +40,13 @@
  *
  * The class requires the GLX_EXT_texture_from_pixmap OpenGL extension
  * (http://people.freedesktop.org/~davidr/GLX_EXT_texture_from_pixmap.txt)
+ *
+ * The GL_ARB_texture_non_power_of_two extension will be used if it is
+ * available. Otherwise it will try to use the
+ * GL_ARB_texture_rectangle extension. If both are available you can
+ * force it to prefer the rectangle extension by setting the
+ * CLUTTER_PIXMAP_TEXTURE_RECTANGLE to 'force'. To prevent it ever
+ * using the rectangle extension you can set it to 'disable'.
  */
 
 
@@ -47,6 +54,8 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
+#include <string.h>
 
 #include "../x11/clutter-x11-texture-pixmap.h"
 #include "clutter-glx-texture-pixmap.h"
@@ -68,12 +77,20 @@ typedef void    (*ReleaseTexImage) (Display     *display,
 
 typedef void    (*GenerateMipmap) (GLenum target);
 
+typedef enum
+{
+  CLUTTER_GLX_RECTANGLE_DISALLOW,
+  CLUTTER_GLX_RECTANGLE_ALLOW,
+  CLUTTER_GLX_RECTANGLE_FORCE
+} RectangleState;
 
 static BindTexImage      _gl_bind_tex_image = NULL;
 static ReleaseTexImage   _gl_release_tex_image = NULL;
 static GenerateMipmap    _gl_generate_mipmap = NULL;
 static gboolean          _have_tex_from_pixmap_ext = FALSE;
 static gboolean          _ext_check_done = FALSE;
+static gboolean          _have_tex_rectangle = FALSE;
+static RectangleState    _rectangle_state = CLUTTER_GLX_RECTANGLE_ALLOW;
 
 struct _ClutterGLXTexturePixmapPrivate
 {
@@ -86,6 +103,8 @@ struct _ClutterGLXTexturePixmapPrivate
   gboolean      bound;
   gint          can_mipmap;
   gint          mipmap_generate_queued;
+
+  gboolean      using_rectangle;
 };
 
 static void 
@@ -170,7 +189,9 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
 
   if (_ext_check_done == FALSE)
     {
+      const char *gl_extensions = NULL;
       const gchar *glx_extensions = NULL;
+      const char *rect_env;
 
       glx_extensions =
         glXQueryExtensionsString (clutter_x11_get_default_display (),
@@ -191,16 +212,59 @@ clutter_glx_texture_pixmap_init (ClutterGLXTexturePixmap *self)
       _gl_generate_mipmap =
         (GenerateMipmap)cogl_get_proc_address ("glGenerateMipmapEXT");
 
+      gl_extensions = (char *) glGetString (GL_EXTENSIONS);
+      _have_tex_rectangle = cogl_check_extension ("GL_ARB_texture_rectangle",
+                                                  gl_extensions);
+
+      if ((rect_env = g_getenv ("CLUTTER_PIXMAP_TEXTURE_RECTANGLE")))
+        {
+          if (strcasecmp (rect_env, "force") == 0)
+            _rectangle_state = CLUTTER_GLX_RECTANGLE_FORCE;
+	  else if (strcasecmp (rect_env, "disable") == 0)
+            _rectangle_state = CLUTTER_GLX_RECTANGLE_DISALLOW;
+	  else if (rect_env[0])
+	    g_warning ("Unknown value for CLUTTER_PIXMAP_TEXTURE_RECTANGLE, "
+		       "should be 'force' or 'disable'");
+        }
+
       _ext_check_done = TRUE;
+    }
+}
+
+static void
+clutter_glx_texture_pixmap_free_rectangle (ClutterGLXTexturePixmap *texture)
+{
+  ClutterGLXTexturePixmapPrivate *priv = texture->priv;
+  CoglHandle cogl_tex;
+
+  /* Cogl won't free the GL texture resource if it was created with
+     new_from_foreign so we need to free it manually */
+  if (priv->using_rectangle)
+    {
+      cogl_tex = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (texture));
+
+      if (cogl_tex != COGL_INVALID_HANDLE)
+        {
+          GLuint gl_handle;
+          GLenum gl_target;
+
+          cogl_texture_get_gl_texture (cogl_tex, &gl_handle, &gl_target);
+
+          if (gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+            glDeleteTextures (1, &gl_handle);
+        }
+
+      priv->using_rectangle = FALSE;
     }
 }
 
 static void
 clutter_glx_texture_pixmap_dispose (GObject *object)
 {
-  ClutterGLXTexturePixmapPrivate *priv;
+  ClutterGLXTexturePixmap *texture = CLUTTER_GLX_TEXTURE_PIXMAP (object);
+  ClutterGLXTexturePixmapPrivate *priv = texture->priv;
 
-  priv = CLUTTER_GLX_TEXTURE_PIXMAP (object)->priv;
+  clutter_glx_texture_pixmap_free_rectangle (texture);
 
   if (priv->glx_pixmap != None)
     {
@@ -229,19 +293,69 @@ clutter_glx_texture_pixmap_notify (GObject *object, GParamSpec *pspec)
 }
 
 static gboolean
+should_use_rectangle (void)
+{
+  /* Use the rectangle only if it is available and either:
+
+     the CLUTTER_PIXMAP_TEXTURE_RECTANGLE environment variable is
+     set to 'force'
+
+     *or*
+
+     the env var is set to 'allow' (which is the default) and NPOTs
+     textures are not available */
+  return _have_tex_rectangle
+    && ((_rectangle_state == CLUTTER_GLX_RECTANGLE_ALLOW
+         && !clutter_feature_available (CLUTTER_FEATURE_TEXTURE_NPOT))
+        || _rectangle_state == CLUTTER_GLX_RECTANGLE_FORCE);
+}
+
+static gboolean
 create_cogl_texture (ClutterTexture *texture,
 		     guint width,
 		     guint height)
 {
+  ClutterGLXTexturePixmap *texture_glx = CLUTTER_GLX_TEXTURE_PIXMAP (texture);
+  ClutterGLXTexturePixmapPrivate *priv = texture_glx->priv;
   CoglHandle  handle;
+  gboolean    using_rectangle;
 
-  handle 
-    = cogl_texture_new_with_size (width, height,
-                                  -1, FALSE,
-                                  COGL_PIXEL_FORMAT_RGBA_8888|COGL_BGR_BIT);
+  /* We want to use the GL_ARB_texture_rectangle extension on some
+     chipsets because GL_ARB_texture_non_power_of_two is not always
+     supported or might be buggy */
+  if (should_use_rectangle ())
+    {
+      GLuint tex = 0;
+
+      using_rectangle = TRUE;
+
+      glGenTextures (1, &tex);
+      glBindTexture (CGL_TEXTURE_RECTANGLE_ARB, tex);
+      glTexImage2D (CGL_TEXTURE_RECTANGLE_ARB, 0,
+                    GL_RGBA, width, height,
+                    0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+      handle = cogl_texture_new_from_foreign (tex, CGL_TEXTURE_RECTANGLE_ARB,
+                                              width, height,
+                                              0, 0,
+                                              COGL_PIXEL_FORMAT_RGBA_8888
+                                              | COGL_BGR_BIT);
+    }
+  else
+    {
+      handle
+        = cogl_texture_new_with_size (width, height,
+                                      -1, FALSE,
+                                      COGL_PIXEL_FORMAT_RGBA_8888|COGL_BGR_BIT);
+
+      using_rectangle = FALSE;
+    }
 
   if (handle)
     {
+      clutter_glx_texture_pixmap_free_rectangle (texture_glx);
+      priv->using_rectangle = using_rectangle;
+
       clutter_texture_set_cogl_texture (texture, handle);
 
       CLUTTER_ACTOR_SET_FLAGS (texture, CLUTTER_ACTOR_REALIZED);
@@ -301,11 +415,13 @@ clutter_glx_texture_pixmap_realize (ClutterActor *actor)
 static void
 clutter_glx_texture_pixmap_unrealize (ClutterActor *actor)
 {
-  ClutterGLXTexturePixmapPrivate *priv;
+  ClutterGLXTexturePixmap        *texture = CLUTTER_GLX_TEXTURE_PIXMAP (actor);
+  ClutterGLXTexturePixmapPrivate *priv = texture->priv;
   Display                        *dpy;
 
-  priv = CLUTTER_GLX_TEXTURE_PIXMAP (actor)->priv;
   dpy = clutter_x11_get_default_display();
+
+  clutter_glx_texture_pixmap_free_rectangle (texture);
 
   if (!_have_tex_from_pixmap_ext)
     {
@@ -575,7 +691,8 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   attribs[i++] = GLX_TEXTURE_TARGET_EXT;
 
-  attribs[i++] = GLX_TEXTURE_2D_EXT;
+  attribs[i++] = (should_use_rectangle ()
+                  ? GLX_TEXTURE_RECTANGLE_EXT : GLX_TEXTURE_2D_EXT);
 
   attribs[i++] = None;
 
@@ -637,13 +754,12 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
                                         gint                     width,
                                         gint                     height)
 {
-  ClutterGLXTexturePixmapPrivate       *priv;
+  ClutterGLXTexturePixmap *texture_glx = CLUTTER_GLX_TEXTURE_PIXMAP (texture);
+  ClutterGLXTexturePixmapPrivate       *priv = texture_glx->priv;
   Display                              *dpy;
-
 
   CLUTTER_NOTE (TEXTURE, "Updating texture pixmap");
 
-  priv = CLUTTER_GLX_TEXTURE_PIXMAP (texture)->priv;
   dpy = clutter_x11_get_default_display();
 
   if (!CLUTTER_ACTOR_IS_REALIZED (texture))
@@ -652,6 +768,9 @@ clutter_glx_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
   if (priv->use_fallback)
     {
       CLUTTER_NOTE (TEXTURE, "Falling back to X11");
+
+      clutter_glx_texture_pixmap_free_rectangle (texture_glx);
+
       parent_class->update_area (texture,
                                  x, y,
                                  width, height);
