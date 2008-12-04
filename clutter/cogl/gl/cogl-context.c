@@ -52,9 +52,8 @@ cogl_create_context ()
   _context->enable_flags = 0;
   _context->color_alpha = 255;
   
-  _context->path_nodes = NULL;
-  _context->path_nodes_cap = 0;
-  _context->path_nodes_size = 0;
+  _context->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
+  _context->last_path = 0;
   
   _context->texture_handles = NULL;
   _context->texture_vertices = g_array_new (FALSE, FALSE,
@@ -122,6 +121,9 @@ cogl_create_context ()
   GE( glColorMask (TRUE, TRUE, TRUE, FALSE) );
   GE( glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
   cogl_enable (0);
+
+  /* Initialise the clip stack */
+  _cogl_clip_stack_state_init ();
   
   return TRUE;
 }
@@ -131,6 +133,11 @@ cogl_destroy_context ()
 {
   if (_context == NULL)
     return;
+
+  _cogl_clip_stack_state_destroy ();
+
+  if (_context->path_nodes)
+    g_array_free (_context->path_nodes, TRUE);
 
   if (_context->texture_handles)
     g_array_free (_context->texture_handles, TRUE);

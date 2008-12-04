@@ -27,6 +27,7 @@
 #define __COGL_CONTEXT_H
 
 #include "cogl-primitives.h"
+#include "cogl-clip-stack.h"
 
 typedef struct
 {
@@ -40,7 +41,6 @@ typedef struct
   /* Features cache */
   CoglFeatureFlags  feature_flags;
   gboolean          features_cached;
-  GLint             num_stencil_bits;
   
   /* Enable cache */
   gulong            enable_flags;
@@ -53,9 +53,8 @@ typedef struct
   /* Primitives */
   CoglFixedVec2     path_start;
   CoglFixedVec2     path_pen;
-  CoglFloatVec2    *path_nodes;
-  guint             path_nodes_cap;
-  guint             path_nodes_size;
+  GArray           *path_nodes;
+  guint             last_path;
   CoglFixedVec2     path_nodes_min;
   CoglFixedVec2     path_nodes_max;
 
@@ -70,6 +69,7 @@ typedef struct
      can be flushed */
   GLuint               texture_current;
   GLenum               texture_target;
+  GLenum               texture_wrap_mode;
 
   /* Framebuffer objects */
   GArray           *fbo_handles;
@@ -80,6 +80,9 @@ typedef struct
 
   /* Programs */
   GArray           *program_handles;
+
+  /* Clip stack */
+  CoglClipStackState clip;
   
   /* Mesh */
   GArray           *mesh_handles;

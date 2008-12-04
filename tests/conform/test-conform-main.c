@@ -103,5 +103,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/opacity", test_rectangle_opacity);
   TEST_CONFORM_SIMPLE ("/opacity", test_paint_opacity);
 
+  TEST_CONFORM_SIMPLE ("/texture", test_backface_culling);
+
   return g_test_run ();
 }

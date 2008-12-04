@@ -99,6 +99,7 @@ test_mesh_interleved (TestConformSimpleFixture *fixture,
   ClutterActor *stage;
   ClutterColor stage_clr = {0x0, 0x0, 0x0, 0xff};
   ClutterActor *group;
+  guint idle_source;
 
   state.frame = 0;
 
@@ -116,7 +117,7 @@ test_mesh_interleved (TestConformSimpleFixture *fixture,
   /* We force continuous redrawing of the stage, since we need to skip
    * the first few frames, and we wont be doing anything else that
    * will trigger redrawing. */
-  g_idle_add (queue_redraw, stage);
+  idle_source = g_idle_add (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
   
@@ -163,6 +164,8 @@ test_mesh_interleved (TestConformSimpleFixture *fixture,
   clutter_main ();
 
   cogl_mesh_unref (state.mesh);
+
+  g_source_remove (idle_source);
 
   if (g_test_verbose ())
     g_print ("OK\n");

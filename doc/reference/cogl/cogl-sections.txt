@@ -29,9 +29,12 @@ cogl_rotatex
 cogl_rotate
 <SUBSECTION>
 cogl_clip_set
+cogl_clip_set_from_path
+cogl_clip_set_from_path_preserve
 cogl_clip_unset
 cogl_clip_stack_save
 cogl_clip_stack_restore
+cogl_clip_ensure
 <SUBSECTION>
 cogl_enable_depth_test
 cogl_enable_backface_culling
@@ -63,6 +66,7 @@ cogl_util_next_p2
 <SECTION>
 <FILE>cogl-primitives</FILE>
 <TITLE>Primitives</TITLE>
+cogl_path_new
 cogl_path_move_to
 cogl_path_close
 cogl_path_line_to
@@ -80,7 +84,9 @@ cogl_path_ellipse
 
 <SUBSECTION>
 cogl_path_fill
+cogl_path_fill_preserve
 cogl_path_stroke
+cogl_path_stroke_preserve
 cogl_set_source_color
 cogl_set_source_color4ub
 cogl_set_source_color4x

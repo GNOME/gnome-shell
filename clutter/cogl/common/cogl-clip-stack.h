@@ -26,7 +26,20 @@
 #ifndef __COGL_CLIP_STACK_H
 #define __COGL_CLIP_STACK_H
 
-void _cogl_clip_stack_rebuild (gboolean just_stencil);
+typedef struct _CoglClipStackState CoglClipStackState;
+
+struct _CoglClipStackState
+{
+  /* Stack of stacks */
+  GSList *stacks;
+
+  gboolean stack_dirty;
+  gboolean stencil_used;
+};
+
+void _cogl_clip_stack_state_init (void);
+void _cogl_clip_stack_state_destroy (void);
+void _cogl_clip_stack_rebuild (void);
 void _cogl_clip_stack_merge (void);
 
 #endif /* __COGL_CLIP_STACK_H */

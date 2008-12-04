@@ -70,43 +70,26 @@ _cogl_rectanglex (CoglFixed x,
 }
 
 void
-_cogl_path_clear_nodes ()
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  if (ctx->path_nodes)
-    g_free(ctx->path_nodes);
-  
-  ctx->path_nodes = (CoglFloatVec2*) g_malloc (2 * sizeof(CoglFloatVec2));
-  ctx->path_nodes_size = 0;
-  ctx->path_nodes_cap = 2;
-}
-
-void
-_cogl_path_add_node (CoglFixed x,
+_cogl_path_add_node (gboolean new_sub_path,
+		     CoglFixed x,
 		     CoglFixed y)
 {
-  CoglFloatVec2   *new_nodes = NULL;
+  CoglPathNode new_node;
   
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  if (ctx->path_nodes_size == ctx->path_nodes_cap)
-    {
-      new_nodes = g_realloc (ctx->path_nodes,
-			     2 * ctx->path_nodes_cap
-			     * sizeof (CoglFloatVec2));
-      
-      if (new_nodes == NULL) return;
 
-      ctx->path_nodes = new_nodes;
-      ctx->path_nodes_cap *= 2;
-    }
-  
-  ctx->path_nodes [ctx->path_nodes_size] .x = COGL_FIXED_TO_FLOAT (x);
-  ctx->path_nodes [ctx->path_nodes_size] .y = COGL_FIXED_TO_FLOAT (y);
-  ctx->path_nodes_size++;
-    
-  if (ctx->path_nodes_size == 1)
+  new_node.x = COGL_FIXED_TO_FLOAT (x);
+  new_node.y = COGL_FIXED_TO_FLOAT (y);
+  new_node.path_size = 0;
+
+  if (new_sub_path || ctx->path_nodes->len == 0)
+    ctx->last_path = ctx->path_nodes->len;
+
+  g_array_append_val (ctx->path_nodes, new_node);
+
+  g_array_index (ctx->path_nodes, CoglPathNode, ctx->last_path).path_size++;
+
+  if (ctx->path_nodes->len == 1)
     {
       ctx->path_nodes_min.x = ctx->path_nodes_max.x = x;
       ctx->path_nodes_min.y = ctx->path_nodes_max.y = y;
@@ -123,55 +106,158 @@ _cogl_path_add_node (CoglFixed x,
 void
 _cogl_path_stroke_nodes ()
 {
+  guint path_start = 0;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   cogl_enable (COGL_ENABLE_VERTEX_ARRAY
 	       | (ctx->color_alpha < 255
 		  ? COGL_ENABLE_BLEND : 0));
+
+  while (path_start < ctx->path_nodes->len)
+    {
+      CoglPathNode *path = &g_array_index (ctx->path_nodes, CoglPathNode,
+                                           path_start);
+
+      GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
+                           (guchar *) path
+                           + G_STRUCT_OFFSET (CoglPathNode, x)) );
+      GE( glDrawArrays (GL_LINE_STRIP, 0, path->path_size) );
+      
+      path_start += path->path_size;
+    }
+}
+
+static void
+_cogl_path_get_bounds (CoglFixedVec2 nodes_min,
+                       CoglFixedVec2 nodes_max,
+                       gint *bounds_x,
+                       gint *bounds_y,
+                       guint *bounds_w,
+                       guint *bounds_h)
+{
+  *bounds_x = COGL_FIXED_FLOOR (nodes_min.x);
+  *bounds_y = COGL_FIXED_FLOOR (nodes_min.y);
+  *bounds_w = COGL_FIXED_CEIL (nodes_max.x
+                               - COGL_FIXED_FROM_INT (*bounds_x));
+  *bounds_h = COGL_FIXED_CEIL (nodes_max.y
+                               - COGL_FIXED_FROM_INT (*bounds_y));
+}
+
+void
+_cogl_add_path_to_stencil_buffer (CoglFixedVec2 nodes_min,
+                                  CoglFixedVec2 nodes_max,
+                                  guint         path_size,
+                                  CoglPathNode *path,
+                                  gboolean      merge)
+{
+  guint path_start = 0;
+  guint sub_path_num = 0;
+  gint bounds_x;
+  gint bounds_y;
+  guint bounds_w;
+  guint bounds_h;
+
+  _cogl_path_get_bounds (nodes_min, nodes_max,
+                         &bounds_x, &bounds_y, &bounds_w, &bounds_h);
+
+  if (merge)
+    {
+      GE( glStencilMask (2) );
+      GE( glStencilFunc (GL_LEQUAL, 0x2, 0x6) );
+    }
+  else
+    {
+      GE( glClear (GL_STENCIL_BUFFER_BIT) );
+      GE( glStencilMask (1) );
+      GE( glStencilFunc (GL_LEQUAL, 0x1, 0x3) );
+    }
+
+  GE( glEnable (GL_STENCIL_TEST) );
+  GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
+
+  GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
+  GE( glDepthMask (FALSE) );
   
-  GE( glVertexPointer (2, GL_FLOAT, 0, ctx->path_nodes) );
-  GE( glDrawArrays (GL_LINE_STRIP, 0, ctx->path_nodes_size) );
+  while (path_start < path_size)
+    {
+      cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
+
+      GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
+                           (guchar *) path
+                           + G_STRUCT_OFFSET (CoglPathNode, x)) );
+      GE( glDrawArrays (GL_TRIANGLE_FAN, 0, path->path_size) );
+
+      if (sub_path_num > 0)
+        {
+          /* Union the two stencil buffers bits into the least
+             significant bit */
+          GE( glStencilMask (merge ? 6 : 3) );
+          GE( glStencilOp (GL_ZERO, GL_REPLACE, GL_REPLACE) );
+          cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
+
+          GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
+        }
+
+      GE( glStencilMask (merge ? 4 : 2) );
+
+      path_start += path->path_size;
+      path += path->path_size;
+      sub_path_num++;
+    }
+
+  if (merge)
+    {
+      /* Now we have the new stencil buffer in bit 1 and the old
+         stencil buffer in bit 0 so we need to intersect them */
+      GE( glStencilMask (3) );
+      GE( glStencilFunc (GL_NEVER, 0x2, 0x3) );
+      GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
+      /* Decrement all of the bits twice so that only pixels where the
+         value is 3 will remain */
+      GE( glPushMatrix () );
+      GE( glLoadIdentity () );
+      GE( glMatrixMode (GL_PROJECTION) );
+      GE( glPushMatrix () );
+      GE( glLoadIdentity () );
+      GE( glRecti (-1, 1, 1, -1) );
+      GE( glRecti (-1, 1, 1, -1) );
+      GE( glPopMatrix () );
+      GE( glMatrixMode (GL_MODELVIEW) );
+      GE( glPopMatrix () );
+    }
+  
+  GE( glStencilMask (~(GLuint) 0) );
+  GE( glDepthMask (TRUE) );
+  GE( glColorMask (TRUE, TRUE, TRUE, TRUE) );
+  
+  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
+  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
 }
 
 void
 _cogl_path_fill_nodes ()
 {
-  guint bounds_x;
-  guint bounds_y;
+  gint bounds_x;
+  gint bounds_y;
   guint bounds_w;
   guint bounds_h;
-  
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  GE( glClear (GL_STENCIL_BUFFER_BIT) );
 
-  GE( glEnable (GL_STENCIL_TEST) );
-  GE( glStencilFunc (GL_NEVER, 0x0, 0x1) );
-  GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
+  _cogl_add_path_to_stencil_buffer (ctx->path_nodes_min,
+                                    ctx->path_nodes_max,
+                                    ctx->path_nodes->len,
+                                    &g_array_index (ctx->path_nodes,
+                                                    CoglPathNode, 0),
+                                    ctx->clip.stencil_used);
 
-  GE( glStencilMask (1) );
-  
-  cogl_enable (COGL_ENABLE_VERTEX_ARRAY
-	       | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
-  
-  GE( glVertexPointer (2, GL_FLOAT, 0, ctx->path_nodes) );
-  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, ctx->path_nodes_size) );
-  
-  GE( glStencilMask (~(GLuint) 0) );
-  
-  /* Merge the stencil buffer with any clipping rectangles */
-  _cogl_clip_stack_merge ();
-  
-  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
-  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+  _cogl_path_get_bounds (ctx->path_nodes_min, ctx->path_nodes_max,
+                         &bounds_x, &bounds_y, &bounds_w, &bounds_h);
 
-  bounds_x = COGL_FIXED_FLOOR (ctx->path_nodes_min.x);
-  bounds_y = COGL_FIXED_FLOOR (ctx->path_nodes_min.y);
-  bounds_w = COGL_FIXED_CEIL (ctx->path_nodes_max.x - ctx->path_nodes_min.x);
-  bounds_h = COGL_FIXED_CEIL (ctx->path_nodes_max.y - ctx->path_nodes_min.y);
-  
   cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
-  
-  /* Rebuild the stencil clip */
-  _cogl_clip_stack_rebuild (TRUE);
+
+  /* The stencil buffer now contains garbage so the clip area needs to
+     be rebuilt */
+  ctx->clip.stack_dirty = TRUE;
 }
