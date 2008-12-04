@@ -2324,6 +2324,8 @@ cogl_texture_rectangle (CoglHandle   handle,
   /* Check if valid texture */
   if (!cogl_is_texture (handle))
     return;
+
+  cogl_clip_ensure ();
   
   tex = _cogl_texture_pointer_from_handle (handle);
   
@@ -2378,6 +2380,8 @@ cogl_texture_polygon (CoglHandle         handle,
   /* Check if valid texture */
   if (!cogl_is_texture (handle))
     return;
+
+  cogl_clip_ensure ();
 
   tex = _cogl_texture_pointer_from_handle (handle);
 

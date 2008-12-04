@@ -763,6 +763,29 @@ _cogl_texture_size_supported (GLenum gl_target,
     }
 }
 
+static void
+_cogl_texture_set_wrap_mode_parameter (CoglTexture *tex,
+                                       GLenum wrap_mode)
+{
+  /* Only set the wrap mode if it's different from the current
+     value to avoid too many GL calls */
+  if (tex->wrap_mode != wrap_mode)
+    {
+      int i;
+
+      for (i = 0; i < tex->slice_gl_handles->len; i++)
+        {
+          GLuint texnum = g_array_index (tex->slice_gl_handles, GLuint, i);
+
+          GE( glBindTexture (tex->gl_target, texnum) );
+          GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S, wrap_mode) );
+          GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T, wrap_mode) );
+        }
+
+      tex->wrap_mode = wrap_mode;
+    }
+}
+
 static gboolean
 _cogl_texture_slices_create (CoglTexture *tex)
 {  
@@ -890,15 +913,10 @@ _cogl_texture_slices_create (CoglTexture *tex)
 					     n_slices);
   
   g_array_set_size (tex->slice_gl_handles, n_slices);
-  
-  
-  /* Hardware repeated tiling if supported, else tile in software*/
-  if (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT)
-      && n_slices == 1)
-    tex->wrap_mode = GL_REPEAT;
-  else
-    tex->wrap_mode = GL_CLAMP_TO_EDGE;
-  
+
+  /* Wrap mode not yet set */
+  tex->wrap_mode = GL_FALSE;
+
   /* Generate a "working set" of GL texture objects
    * (some implementations might supported faster
    *  re-binding between textures inside a set) */
@@ -930,11 +948,6 @@ _cogl_texture_slices_create (CoglTexture *tex)
 	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_MIN_FILTER,
 			       tex->min_filter) );
 
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S,
-			       tex->wrap_mode) );
-	  GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T,
-			       tex->wrap_mode) );
-          
           if (tex->auto_mipmap)
             GE( glTexParameteri (tex->gl_target, GL_GENERATE_MIPMAP,
 				 GL_TRUE) );
@@ -1414,16 +1427,22 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   CoglTexture     *tex;
   CoglTexSliceSpan x_span;
   CoglTexSliceSpan y_span;
-  
-  /* Allow 2-dimensional textures only */
-  if (gl_target != GL_TEXTURE_2D)
+
+  /* GL_ARB_texture_rectangle textures are supported if they are
+     created from foreign because some chipsets have trouble with
+     GL_ARB_texture_non_power_of_two. There is no Cogl call to create
+     them directly to emphasize the fact that they don't work fully
+     (for example, no mipmapping and complicated shader support) */
+
+  /* Allow 2-dimensional or rectangle textures only */
+  if (gl_target != GL_TEXTURE_2D && gl_target != CGL_TEXTURE_RECTANGLE_ARB)
     return COGL_INVALID_HANDLE;
-  
+
   /* Make sure it is a valid GL texture object */
   gl_istexture = glIsTexture (gl_handle);
   if (gl_istexture == GL_FALSE)
     return COGL_INVALID_HANDLE;
-  
+
   /* Make sure binding succeeds */
   gl_error = glGetError ();
   glBindTexture (gl_target, gl_handle);
@@ -1507,7 +1526,10 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   tex->min_filter = gl_min_filter;
   tex->mag_filter = gl_mag_filter;
   tex->max_waste = 0;
-  
+
+  /* Wrap mode not yet set */
+  tex->wrap_mode = GL_FALSE;
+
   /* Create slice arrays */
   tex->slice_x_spans =
     g_array_sized_new (FALSE, FALSE,
@@ -1533,24 +1555,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
   g_array_append_val (tex->slice_y_spans, y_span);
   
   g_array_append_val (tex->slice_gl_handles, gl_handle);
-  
-  /* Force appropriate wrap parameter */
-  if (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT) &&
-      gl_target == GL_TEXTURE_2D)
-    {
-      /* Hardware repeated tiling */
-      tex->wrap_mode = GL_REPEAT;
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S, GL_REPEAT) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T, GL_REPEAT) );
-    }
-  else
-    {
-      /* Any tiling will be done in software */
-      tex->wrap_mode = GL_CLAMP_TO_EDGE;
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE) );
-    }
-  
+
   return _cogl_texture_handle_new (tex);
 }
 
@@ -1957,6 +1962,14 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   printf("=== Drawing Tex Quad (Software Tiling Mode) ===\n");
 #endif
 
+  /* We can't use hardware repeat so we need to set clamp to edge
+     otherwise it might pull in edge pixels from the other side */
+  if (ctx->texture_vertices->len > 0
+      && ctx->texture_wrap_mode != GL_CLAMP_TO_EDGE)
+    _cogl_texture_flush_vertices ();
+  _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_EDGE);
+  ctx->texture_wrap_mode = GL_CLAMP_TO_EDGE;
+
   /* If the texture coordinates are backwards then swap both the
      geometry and texture coordinates so that the texture will be
      flipped but we can still use the same algorithm to iterate the
@@ -2019,17 +2032,19 @@ _cogl_texture_quad_sw (CoglTexture *tex,
       
       slice_qy2 = first_qy +
 	COGL_FIXED_MUL (iter_y.intersect_end - first_ty, tqy);
-      
+
       /* Localize slice texture coordinates */
       slice_ty1 = iter_y.intersect_start - iter_y.pos;
       slice_ty2 = iter_y.intersect_end - iter_y.pos;
-      
+
       /* Normalize texture coordinates to current slice
          (rectangle texture targets take denormalized) */
-      slice_ty1 /= iter_y.span->size;
-      slice_ty2 /= iter_y.span->size;
-      
-      
+      if (tex->gl_target != CGL_TEXTURE_RECTANGLE_ARB)
+        {
+          slice_ty1 /= iter_y.span->size;
+          slice_ty2 /= iter_y.span->size;
+        }
+
       /* Iterate until whole quad width covered */
       for (_cogl_span_iter_begin (&iter_x, tex->slice_x_spans,
 				  first_tx, tx1, tx2) ;
@@ -2049,12 +2064,15 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 	  /* Localize slice texture coordinates */
 	  slice_tx1 = iter_x.intersect_start - iter_x.pos;
 	  slice_tx2 = iter_x.intersect_end - iter_x.pos;
-	  
+
 	  /* Normalize texture coordinates to current slice
              (rectangle texture targets take denormalized) */
-          slice_tx1 /= iter_x.span->size;
-          slice_tx2 /= iter_x.span->size;
-	  
+          if (tex->gl_target != CGL_TEXTURE_RECTANGLE_ARB)
+            {
+              slice_tx1 /= iter_x.span->size;
+              slice_tx2 /= iter_x.span->size;
+            }
+
 #if COGL_DEBUG
 	  printf("~~~~~ slice (%d,%d)\n", iter_x.index, iter_y.index);
 	  printf("qx1: %f\n", COGL_FIXED_TO_FLOAT (slice_qx1));
@@ -2128,6 +2146,7 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   CoglTexSliceSpan    *x_span;
   CoglTexSliceSpan    *y_span;
   CoglTextureGLVertex *p;
+  GLenum               wrap_mode;
 
 #if COGL_DEBUG
   printf("=== Drawing Tex Quad (Hardware Tiling Mode) ===\n");
@@ -2135,15 +2154,31 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  /* If the texture coords are all in the range [0,1] then we want to
+     clamp the coords to the edge otherwise it can pull in edge pixels
+     from the wrong side when scaled */
+  if (tx1 >= 0 && tx1 <= COGL_FIXED_1
+      && tx2 >= 0 && tx2 <= COGL_FIXED_1
+      && ty1 >= 0 && ty1 <= COGL_FIXED_1
+      && ty2 >= 0 && ty2 <= COGL_FIXED_1)
+    wrap_mode = GL_CLAMP_TO_EDGE;
+  else
+    wrap_mode = GL_REPEAT;
+
   /* Pick and bind opengl texture object */
   gl_handle = g_array_index (tex->slice_gl_handles, GLuint, 0);
 
   /* If we're using a different texture from the one already queued
      then flush the vertices */
-  if (ctx->texture_vertices->len > 0 && gl_handle != ctx->texture_current)
+  if (ctx->texture_vertices->len > 0
+      && (gl_handle != ctx->texture_current
+          || ctx->texture_wrap_mode != wrap_mode))
     _cogl_texture_flush_vertices ();
   ctx->texture_target = tex->gl_target;
   ctx->texture_current = gl_handle;
+  ctx->texture_wrap_mode = wrap_mode;
+
+  _cogl_texture_set_wrap_mode_parameter (tex, wrap_mode);
 
   /* Don't include the waste in the texture coordinates */
   x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
@@ -2159,6 +2194,15 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   g_array_set_size (ctx->texture_vertices, ctx->texture_vertices->len + 6);
   p = &g_array_index (ctx->texture_vertices, CoglTextureGLVertex,
                       ctx->texture_vertices->len - 6);
+
+  /* Denormalize texture coordinates for rectangle textures */
+  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
+    {
+      tx1 *= x_span->size;
+      tx2 *= x_span->size;
+      ty1 *= y_span->size;
+      ty2 *= y_span->size;
+    }
 
 #define CFX_F(x) COGL_FIXED_TO_FLOAT(x)
 
@@ -2191,8 +2235,7 @@ cogl_texture_multiple_rectangles (CoglHandle       handle,
                                   guint            n_rects)
 {
   CoglTexture    *tex;
-  gulong          enable_flags = (COGL_ENABLE_TEXTURE_2D
-                                  | COGL_ENABLE_VERTEX_ARRAY
+  gulong          enable_flags = (COGL_ENABLE_VERTEX_ARRAY
                                   | COGL_ENABLE_TEXCOORD_ARRAY);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -2201,6 +2244,8 @@ cogl_texture_multiple_rectangles (CoglHandle       handle,
   if (!cogl_is_texture (handle))
     return;
   
+  cogl_clip_ensure ();
+
   tex = _cogl_texture_pointer_from_handle (handle);
   
   /* Make sure we got stuff to draw */
@@ -2211,6 +2256,11 @@ cogl_texture_multiple_rectangles (CoglHandle       handle,
     return;
   
   /* Prepare GL state */
+ if (tex->gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+    enable_flags |= COGL_ENABLE_TEXTURE_RECT;
+  else
+    enable_flags |= COGL_ENABLE_TEXTURE_2D;
+
   if (ctx->color_alpha < 255
       || tex->bitmap.format & COGL_A_BIT)
     enable_flags |= COGL_ENABLE_BLEND;
@@ -2230,7 +2280,8 @@ cogl_texture_multiple_rectangles (CoglHandle       handle,
              NPOT (no waste) or all of the coordinates are in the
              range [0,1] then we can use hardware tiling */
           if (tex->slice_gl_handles->len == 1
-              && (cogl_features_available (COGL_FEATURE_TEXTURE_NPOT)
+              && ((cogl_features_available (COGL_FEATURE_TEXTURE_NPOT)
+                   && tex->gl_target == GL_TEXTURE_2D)
                   || (verts[4] >= 0 && verts[4] <= COGL_FIXED_1
                       && verts[6] >= 0 && verts[6] <= COGL_FIXED_1
                       && verts[5] >= 0 && verts[5] <= COGL_FIXED_1
@@ -2292,6 +2343,8 @@ cogl_texture_polygon (CoglHandle         handle,
   if (!cogl_is_texture (handle))
     return;
 
+  cogl_clip_ensure ();
+
   tex = _cogl_texture_pointer_from_handle (handle);
 
   /* The polygon will have artifacts where the slices join if the wrap
@@ -2321,11 +2374,14 @@ cogl_texture_polygon (CoglHandle         handle,
   p = (CoglTextureGLVertex *) ctx->texture_vertices->data;
 
   /* Prepare GL state */
-  enable_flags = (COGL_ENABLE_TEXTURE_2D
-		  | COGL_ENABLE_VERTEX_ARRAY
+  enable_flags = (COGL_ENABLE_VERTEX_ARRAY
 		  | COGL_ENABLE_TEXCOORD_ARRAY
 		  | COGL_ENABLE_BLEND);
 
+  if (tex->gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+    enable_flags |= COGL_ENABLE_TEXTURE_RECT;
+  else
+    enable_flags |= COGL_ENABLE_TEXTURE_2D;
 
   if (ctx->enable_backface_culling)
     enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
@@ -2344,15 +2400,7 @@ cogl_texture_polygon (CoglHandle         handle,
 
   /* Temporarily change the wrapping mode on all of the slices to use
      a transparent border */
-  for (i = 0; i < tex->slice_gl_handles->len; i++)
-    {
-      GE( glBindTexture (tex->gl_target,
-			 g_array_index (tex->slice_gl_handles, GLuint, i)) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S,
-			   GL_CLAMP_TO_BORDER) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T,
-			   GL_CLAMP_TO_BORDER) );
-    }
+  _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_BORDER);
 
   tex_num = 0;
 
@@ -2375,19 +2423,31 @@ cogl_texture_polygon (CoglHandle         handle,
 	     OpenGL */
 	  for (i = 0; i < n_vertices; i++, p++)
 	    {
+              CoglFixed tx, ty;
+
 #define CFX_F COGL_FIXED_TO_FLOAT
+
+              tx = ((vertices[i].tx
+                     - (COGL_FIXED_FROM_INT (x_span->start)
+                        / tex->bitmap.width))
+                    * tex->bitmap.width / x_span->size);
+              ty = ((vertices[i].ty
+                     - (COGL_FIXED_FROM_INT (y_span->start)
+                        / tex->bitmap.height))
+                    * tex->bitmap.height / y_span->size);
+
+              /* Scale the coordinates up for rectangle textures */
+              if (tex->gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+                {
+                  tx *= x_span->size;
+                  ty *= y_span->size;
+                }
 
 	      p->v[0] = CFX_F(vertices[i].x);
 	      p->v[1] = CFX_F(vertices[i].y);
 	      p->v[2] = CFX_F(vertices[i].z);
-	      p->t[0] = CFX_F((vertices[i].tx
-                               - (COGL_FIXED_FROM_INT (x_span->start)
-                                  / tex->bitmap.width))
-                              * tex->bitmap.width / x_span->size);
-	      p->t[1] = CFX_F((vertices[i].ty
-                               - (COGL_FIXED_FROM_INT (y_span->start)
-                                  / tex->bitmap.height))
-			      * tex->bitmap.height / y_span->size);
+	      p->t[0] = CFX_F(tx);
+	      p->t[1] = CFX_F(ty);
 	      p->c[0] = cogl_color_get_red_byte(&vertices[i].color);
 	      p->c[1] = cogl_color_get_green_byte(&vertices[i].color);
 	      p->c[2] = cogl_color_get_blue_byte(&vertices[i].color);
@@ -2400,14 +2460,5 @@ cogl_texture_polygon (CoglHandle         handle,
 
 	  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices) );
 	}
-    }
-  
-  /* Restore the wrapping mode */
-  for (i = 0; i < tex->slice_gl_handles->len; i++)
-    {
-      GE( glBindTexture (tex->gl_target,
-			 g_array_index (tex->slice_gl_handles, GLuint, i)) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_S, tex->wrap_mode) );
-      GE( glTexParameteri (tex->gl_target, GL_TEXTURE_WRAP_T, tex->wrap_mode) );
     }
 }
