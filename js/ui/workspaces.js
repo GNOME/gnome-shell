@@ -106,7 +106,6 @@ Workspaces.prototype = {
 
             // Do the windows in reverse order so that the active
             // actor ends up on top
-//            for (let i = wswindows.length - 1, windowIndex = 0; i >= 0; i--) {
             for (let i = 0, windowIndex = 0; i < wswindows.length; i++) {
                 let win = wswindows[i];
                 if (win.get_window_type() == Meta.WindowType.DESKTOP ||
