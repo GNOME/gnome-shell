@@ -26,80 +26,176 @@ const POSITIONS = {
         5: [[0.165, 0.25, 0.28], [0.495, 0.25, 0.28], [0.825, 0.25, 0.28], [0.25, 0.75, 0.4], [0.75, 0.75, 0.4]]
 };
 
+// spacing between desktops
+const GRID_SPACING = 15;
+
 function Desktops(x, y, width, height) {
     this._init(x, y, width, height);
 }
 
 Desktops.prototype = {
     _init : function(x, y, width, height) {
-        this._windowClones = [];
+
+        this._group = new Clutter.Group();
+
         this._x = x;
         this._y = y;
         this._width = width;
         this._height = height;
-
-        this._group = new Clutter.Group();
+        this._workspaces = [];
     },
 
     show : function() {
         let global = Shell.Global.get();
 
         let windows = global.get_windows();
-        let desktopWindow = null;
+        let activeWorkspace = global.screen.get_active_workspace_index();
 
-        for (let i = 0; i < windows.length; i++)
-            if (windows[i].get_window_type() == Meta.WindowType.DESKTOP)
-                desktopWindow = windows[i];
-
-        // If a file manager is displaying desktop icons, there will
-        // be a desktop window. This window will have the size of the
-        // whole desktop. When such window is not present (e.g. when
-        // the preference for showing icons on the desktop is disabled
-        // by the user or we are running inside a Xephyr window), we
-        // should create a desktop rectangle to serve as the
-        // background.
-        if (desktopWindow)
-            this._createDesktopClone(desktopWindow);
-        else
-            this._createDesktopRectangle();
-
-        // Count the total number of windows so we know what layout scheme to use
-        let numberOfWindows = 0;
-        for (let i = 0; i < windows.length; i++) {
-            let w = windows[i];
-            if (w == desktopWindow || w.is_override_redirect())
-                continue;
-
-            numberOfWindows++;
+        // Create a group for each workspace (which lets us raise all of
+        // its clone windows together when the workspace is activated)
+        // and add the desktop windows
+        this._workspaces = [];
+        for (let w = 0; w < global.screen.n_workspaces; w++) {
+            this._workspaces[w] = new Clutter.Group();
+            this._group.add_actor(this._workspaces[w]);
         }
+        this._createDesktopActors(windows);
 
-        // Now create actors for all the desktop windows. Do it in
-        // reverse order so that the active actor ends up on top
-        let windowIndex = 0;
-        for (let i = windows.length - 1; i >= 0; i--) {
-            let w = windows[i];
-            if (w == desktopWindow || w.is_override_redirect())
-                continue;
-            this._createWindowClone(w, numberOfWindows - windowIndex - 1, numberOfWindows);
+        // The workspaces will go into a grid that is either square,
+        // or else 1 cell wider than it is tall.
+        // FIXME: need to make the metacity internal layout agree with this!
+        let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
+        let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
 
-            windowIndex++;
+        let wsWidth = (this._width - (gridWidth - 1) * GRID_SPACING) / gridWidth;
+        let wsHeight = (this._height - (gridHeight - 1) * GRID_SPACING) / gridHeight;
+        let scale = wsWidth / global.screen_width;
+
+        // Position/scale the desktop windows and their children. This
+        // would be easier if we instead just positioned and scaled
+        // the entire workspace group, but if we do that then the
+        // windows of the active workspace will trace out a curved
+        // path as they move into place, which looks odd. Positioning
+        // everything independently lets us move them in a straight
+        // line.
+        for (let w = 0, x = this._x, y = this._y; w < this._workspaces.length; w++) {
+            let workspace = this._workspaces[w];
+            let desktop = workspace.get_nth_child(0);
+
+            if (w == activeWorkspace) {
+                // The currently-active workspace needs to
+                // slide/shrink into place
+                workspace.raise_top();
+                Tweener.addTween(desktop,
+                                 { x: x,
+                                   y: y,
+                                   scale_x: scale,
+                                   scale_y: scale,
+                                   time: Overlay.ANIMATION_TIME,
+                                   transition: "easeOutQuad"
+                                 });
+            } else {
+                // Other workspaces can start out in place; they'll be
+                // revealed as the active workspace shrinks
+                desktop.set_position(x, y);
+                desktop.set_scale(scale, scale);
+            }
+
+            // Now handle the rest of the windows in this workspace
+            let wswindows = windows.filter(function (win) { return win.get_workspace() == w; });
+
+            // Do the windows in reverse order so that the active
+            // actor ends up on top
+//            for (let i = wswindows.length - 1, windowIndex = 0; i >= 0; i--) {
+            for (let i = 0, windowIndex = 0; i < wswindows.length; i++) {
+                let win = wswindows[i];
+                if (win.get_window_type() == Meta.WindowType.DESKTOP ||
+                    win.is_override_redirect())
+                    continue;
+
+                this._createWindowClone(wswindows[i], this._workspaces[w],
+                                        x, y, scale,
+                                        wswindows.length - windowIndex - 1,
+                                        wswindows.length,
+                                        w == activeWorkspace);
+                windowIndex++;
+            }
+
+            x += (wsWidth + GRID_SPACING);
+            if (x >= this._x + this._width - GRID_SPACING) {
+                x = this._x;
+                y += wsHeight + GRID_SPACING;
+            }
         }
     },
 
     hide : function() {
-        for (let i = 0; i < this._windowClones.length; i++) {
-            this._windowClones[i].destroy();
-        }
+        let global = Shell.Global.get();
+        let activeWorkspace = global.screen.get_active_workspace_index();
 
-        this._windowClones = [];
+        this._workspaces[activeWorkspace].raise_top();
+        let windows = this._workspaces[activeWorkspace].get_children();
+        for (let i = 0; i < windows.length; i++) {
+            Tweener.addTween(windows[i],
+                             { x: windows[i].orig_x || 0,
+                               y: windows[i].orig_y || 0,
+                               scale_x: 1.0,
+                               scale_y: 1.0,
+                               time: Overlay.ANIMATION_TIME,
+                               opacity: 255,
+                               transition: "easeOutQuad"
+                             });
+        }
+    },
+    
+    hideDone : function() {
+        for (let w = 0; w < this._workspaces.length; w++) {
+            this._workspaces[w].destroy();
+        }
+        this._workspaces = [];
     },
 
-    _createDesktopClone : function(w) {
-        let clone = new Clutter.CloneTexture({ parent_texture: w.get_texture(),
-                                               reactive: true,
-                                               x: 0,
-                                               y: 0 });
-        this._addDesktop(clone);
+    _createDesktopActors : function(windows) {
+        let me = this;
+        let global = Shell.Global.get();
+
+        // Find the desktop window or windows
+        for (let i = 0; i < windows.length; i++) {
+            if (windows[i].get_window_type() != Meta.WindowType.DESKTOP)
+                continue;
+
+            if (windows[i].get_meta_window().is_on_all_workspaces()) {
+                for (let w = 0; w < this._workspaces.length; w++)
+                    this._workspaces[w].add_actor(this._cloneWindow(windows[i]));
+                break;
+            } else
+                this._workspaces[windows[i].get_workspace()].add_actor(this._cloneWindow(windows[i]));
+        }
+
+        // Create dummy desktops for workspaces that don't have
+        // desktop windows, and hook up button events on all desktops
+        for (let w = 0; w < this._workspaces.length; w++) {
+            if (this._workspaces[w].get_n_children() == 0)
+                this._workspaces[w].add_actor(this._createDesktopRectangle());
+
+            let workspace = global.screen.get_workspace_by_index(w);
+            this._workspaces[w].get_nth_child(0).connect(
+                "button-press-event",
+                function(clone, event) {
+                    workspace.activate(event.get_time());
+                    me._deactivate();
+                });
+        }
+    },
+
+    _cloneWindow : function(window) {
+        let w = new Clutter.CloneTexture({ parent_texture: window.get_texture(),
+                                           reactive: true,
+                                           x: window.x,
+                                           y: window.y });
+        w.orig_x = window.x;
+        w.orig_y = window.y;
+        return w;
     },
 
     _createDesktopRectangle : function() {
@@ -113,40 +209,15 @@ Desktops.prototype = {
         // coordinates in both cases which makes the background window
         // animate out from behind the panel.
 
-        let desktopRectangle = new Clutter.Rectangle({ color: global.stage.color,
-                                                       reactive: true,
-                                                       x: 0,
-                                                       y: 0,
-                                                       width: global.screen_width,
-                                                       height: global.screen_height });
-        this._addDesktop(desktopRectangle);
+        return new Clutter.Rectangle({ color: global.stage.color,
+                                       reactive: true,
+                                       x: 0,
+                                       y: 0,
+                                       width: global.screen_width,
+                                       height: global.screen_height });
     },
 
-    _addDesktop : function(desktop) {
-        let me = this;
-
-        this._windowClones.push(desktop);
-        this._group.add_actor(desktop);
-
-        // Since the right side only moves a little bit (the width of padding
-        // we add) it looks less jittery to put the anchor there.
-        desktop.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
-        Tweener.addTween(desktop,
-                         { x: this._x + this._width,
-                           y: this._y,
-                           scale_x: Overlay.DESKTOP_SCALE,
-                           scale_y: Overlay.DESKTOP_SCALE,
-                           time: Overlay.ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
-
-        desktop.connect("button-press-event",
-                        function() {
-                            me._deactivate();
-                        });
-    },
-
-    //windowIndex == 0 => top in stacking order
+    // windowIndex == 0 => top in stacking order
     _computeWindowPosition : function(windowIndex, numberOfWindows) {
         if (numberOfWindows in POSITIONS)
             return POSITIONS[numberOfWindows][windowIndex];
@@ -166,25 +237,23 @@ Desktops.prototype = {
         return [xCenter, yCenter, fraction];
     },
 
-    _createWindowClone : function(w, windowIndex, numberOfWindows) {
+    _createWindowClone : function(w, workspace, wsX, wsY, wsScale,
+                                  windowIndex, numberOfWindows, animate) {
         let me = this;
+        let global = Shell.Global.get();
 
         // We show the window using "clones" of the texture .. separate
         // actors that mirror the original actors for the window. For
         // animation purposes, it may be better to actually move the
         // original actors about instead.
 
-        let clone = new Clutter.CloneTexture({ parent_texture: w.get_texture(),
-                                               reactive: true,
-                                               x: w.x,
-                                               y: w.y });
-
+        let clone = this._cloneWindow(w);
         let [xCenter, yCenter, fraction] = this._computeWindowPosition(windowIndex, numberOfWindows);
 
-        let desiredSize = this._width * fraction;
+        let desiredSize = global.screen_width * fraction;
 
-        xCenter = this._x + xCenter * this._width;
-        yCenter = this._y + yCenter * this._height;
+        xCenter = wsX + wsScale * (xCenter * global.screen_width);
+        yCenter = wsY + wsScale * (yCenter * global.screen_height);
 
         let size = clone.width;
         if (clone.height > size)
@@ -194,29 +263,45 @@ Desktops.prototype = {
         let scale = desiredSize / size;
         if (scale > 1)
             scale = 1;
+        scale *= wsScale;
 
-        this._group.add_actor(clone);
-        this._windowClones.push(clone);
+        workspace.add_actor(clone);
 
-        Tweener.addTween(clone,
-                         { x: xCenter - 0.5 * scale * w.width,
-                           y: yCenter - 0.5 * scale * w.height,
-                           scale_x: scale,
-                           scale_y: scale,
-                           time: Overlay.ANIMATION_TIME,
-                           opacity: WINDOW_OPACITY,
-                           transition: "easeOutQuad"
-                         });
+        if (animate) {
+            Tweener.addTween(clone,
+                             { x: xCenter - 0.5 * scale * w.width,
+                               y: yCenter - 0.5 * scale * w.height,
+                               scale_x: scale,
+                               scale_y: scale,
+                               time: Overlay.ANIMATION_TIME,
+                               opacity: WINDOW_OPACITY,
+                               transition: "easeOutQuad"
+                             });
+        } else {
+            clone.set_position(xCenter - 0.5 * scale * w.width,
+                               yCenter - 0.5 * scale * w.height);
+            clone.set_scale(scale, scale);
+            clone.set_opacity(WINDOW_OPACITY);
+        }
 
         clone.connect("button-press-event",
                       function(clone, event) {
+                          clone.raise_top();
                           me._activateWindow(w, event.get_time());
                       });
     },
 
     _activateWindow : function(w, time) {
+        let global = Shell.Global.get();
+        let activeWorkspace = global.screen.get_active_workspace_index();
+        let windowWorkspace = w.get_workspace();
+
+        if (windowWorkspace != activeWorkspace) {
+            let workspace = global.screen.get_workspace_by_index(windowWorkspace);
+            workspace.activate_with_focus(w.get_meta_window(), time);
+        } else
+            w.get_meta_window().activate(time);
         this._deactivate();
-        w.get_meta_window().activate(time);
     },
 
     _deactivate : function() {

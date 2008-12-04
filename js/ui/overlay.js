@@ -31,18 +31,17 @@ const ANIMATION_TIME = 0.5;
 // How much to scale the desktop down by in overlay mode
 const DESKTOP_SCALE = 0.75;
 
-function Sideshow(width) {
-    this._init(width);
+function Sideshow(parent, width) {
+    this._init(parent, width);
 }
 
 Sideshow.prototype = {
-    _init : function(width) {
+    _init : function(parent, width) {
         let me = this;
 
         let global = Shell.Global.get();
         this.actor = new Clutter.Group();
-        this.actor.hide();
-        global.stage.add_actor(this.actor);
+        parent.add_actor(this.actor);
         let icontheme = Gtk.IconTheme.get_default();
         let rect = new Big.Box({ background_color: SIDESHOW_SEARCH_BG_COLOR,
                                  corner_radius: 4,
@@ -121,13 +120,10 @@ Sideshow.prototype = {
     },
 
     show: function() {
-          this.actor.show();
           this._appdisplay.show();
     },
 
     hide: function() {
-          this.actor.hide();
-          this._appdisplay.hide();
     }
 };
 Signals.addSignalMethods(Sideshow.prototype);
@@ -163,7 +159,7 @@ Overlay.prototype = {
                                                this._desktopWidth, this._desktopHeight);
         this._group.add_actor(this._desktops._group);
 
-        this._sideshow = new Sideshow(this._desktopX - 10);
+        this._sideshow = new Sideshow(this._group, this._desktopX - 10);
         this._sideshow.connect('activated', function(sideshow) {
             // TODO - have some sort of animation/effect while
             // transitioning to the new app.  We definitely need
@@ -195,16 +191,9 @@ Overlay.prototype = {
 
         this._recalculateSize();
 
-        this._desktops.show();
         this._sideshow.show();
-        // Slide in the sidebar as if it was attached to the left
-        // edge of the desktop as it shrinks down
-        this._sideshow.actor.x = - this._sideshow.actor.width;
-        Tweener.addTween(this._sideshow.actor,
-                         { x: 0,
-                           time: ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
+        this._desktops.show();
+        this._desktops._group.raise_top();
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the overlay is displayed greatly
@@ -221,14 +210,25 @@ Overlay.prototype = {
         if (!this.visible)
             return;
 
+        this._desktops.hide();
+        this._sideshow.hide();
+
+        // Dummy tween, just waiting for the workspace animation
+        Tweener.addTween(this,
+                         { time: ANIMATION_TIME,
+                           onComplete: this._hideDone,
+                           onCompleteScope: this
+                         });
+    },
+    
+    _hideDone: function() {
         let global = Shell.Global.get();
 
         this.visible = false;
         global.window_group.show();
+        this._group.lower_bottom();
         this._group.hide();
-
-        this._desktops.hide();
-        this._sideshow.hide();
+        this._desktops.hideDone();
     },
 
     _deactivate : function() {

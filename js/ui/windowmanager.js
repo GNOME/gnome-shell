@@ -34,6 +34,12 @@ WindowManager.prototype = {
     },
 
     switchWorkspace : function(windows, from, to, direction) {
+        // If the overlay is active, it will do the transition itself
+        if (Main.overlayActive) {
+            this._shellwm.completed_switch_workspace();
+            return;
+        }
+
         /* @direction is the direction that the "camera" moves, so the
          * screen contents have to move one screen's worth in the
          * opposite direction.

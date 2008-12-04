@@ -15,6 +15,7 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 
 let panel = null;
 let overlay = null;
+let overlayActive = false;
 let run_dialog = null;
 let wm = null;
 
@@ -143,11 +144,14 @@ function endModal() {
 }
 
 function show_overlay() {
-    if (startModal())
+    if (startModal()) {
+        overlayActive = true;
         overlay.show();
+    }
 }
 
 function hide_overlay() {
     overlay.hide();
+    overlayActive = false;
     endModal();
 }
