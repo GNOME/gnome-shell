@@ -204,11 +204,11 @@ test_coglbox_paint(ClutterActor *self)
   cogl_push_matrix ();
   
   paint_func[paint_index] ();
-  
+
   cogl_translate (100, 100, 0);
   cogl_set_source_color4ub (0, 160, 0, 255);
-  cogl_path_stroke ();
-  
+  cogl_path_stroke_preserve ();
+
   cogl_translate (150, 0, 0);
   cogl_set_source_color4ub (200, 0, 0, 255);
   cogl_path_fill ();

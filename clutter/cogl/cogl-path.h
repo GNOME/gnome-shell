@@ -82,28 +82,60 @@ void            cogl_rectanglex               (CoglFixed        x,
 /**
  * cogl_path_fill:
  *
- * Fills the constructed shape using the current drawing color.
+ * Fills the constructed shape using the current drawing color. The
+ * current path is then cleared. To use the path again, call
+ * cogl_path_fill_preserve() instead.
  **/
-void            cogl_path_fill            (void);
+void            cogl_path_fill                (void);
+
+/**
+ * cogl_path_fill_preserve:
+ *
+ * Fills the constructed shape using the current drawing color and
+ * preserves the path to be used again.
+ *
+ * Since: 1.0
+ **/
+void            cogl_path_fill_preserve       (void);
 
 /**
  * cogl_path_stroke:
  *
- * Strokes the constructed shape using the current drawing color
- * and a width of 1 pixel (regardless of the current transformation
- * matrix).
+ * Strokes the constructed shape using the current drawing color and a
+ * width of 1 pixel (regardless of the current transformation
+ * matrix). To current path is then cleared. To use the path again,
+ * call cogl_path_stroke_preserve() instead.
  **/
-void            cogl_path_stroke          (void);
+void            cogl_path_stroke              (void);
 
+
+/**
+ * cogl_path_stroke_preserve:
+ *
+ * Strokes the constructed shape using the current drawing color and
+ * preserves the path to be used again.
+ *
+ * Since: 1.0
+ **/
+void            cogl_path_stroke_preserve     (void);
+
+/**
+ * cogl_path_new:
+ *
+ * Clears the current path and starts a new one.
+ *
+ * Since: 1.0
+ */
+void            cogl_path_new                 (void);
 
 /**
  * cogl_path_move_to:
  * @x: X coordinate of the pen location to move to.
  * @y: Y coordinate of the pen location to move to.
  *
- * Clears the previously constructed shape and begins a new path
- * contour by moving the pen to the given coordinates.
- **/
+ * Moves the pen to the given location. If there is an existing path
+ * this will start a new disjoint subpath.
+  **/
 void            cogl_path_move_to        (CoglFixed        x,
                                           CoglFixed        y);
 
@@ -113,9 +145,9 @@ void            cogl_path_move_to        (CoglFixed        x,
  * @x: X offset from the current pen location to move the pen to.
  * @y: Y offset from the current pen location to move the pen to.
  *
- * Clears the previously constructed shape and begins a new path
- * contour by moving the pen to the given coordinates relative
- * to the current pen location.
+ * Moves the pen to the given offset relative to the current pen
+ * location. If there is an existing path this will start a new
+ * disjoint subpath.
  **/
 void            cogl_path_rel_move_to    (CoglFixed        x,
                                           CoglFixed        y);
@@ -222,8 +254,9 @@ void            cogl_path_close               (void);
  * @x2: X coordinate of the end line vertex
  * @y2: Y coordinate of the end line vertex
  *
- * Clears the previously constructed shape and constructs a straight
- * line shape start and ending at the given coordinates.
+ * Constructs a straight line shape starting and ending at the given
+ * coordinates. If there is an existing path this will start a new
+ * disjoint sub-path.
  **/
 void            cogl_path_line                (CoglFixed        x1,
                                                CoglFixed        y1,
@@ -236,10 +269,11 @@ void            cogl_path_line                (CoglFixed        x1,
  * values that specify the vertex coordinates.
  * @num_points: The total number of vertices.
  *
- * Clears the previously constructed shape and constructs a series of straight
- * line segments, starting from the first given vertex coordinate. Each
- * subsequent segment stars where the previous one ended and ends at the next
- * given vertex coordinate.
+ * Constructs a series of straight line segments, starting from the
+ * first given vertex coordinate. If there is an existing path this
+ * will start a new disjoint sub-path. Each subsequent segment starts
+ * where the previous one ended and ends at the next given vertex
+ * coordinate.
  *
  * The coords array must contain 2 * num_points values. The first value
  * represents the X coordinate of the first vertex, the second value
@@ -257,8 +291,8 @@ void            cogl_path_polyline            (CoglFixed       *coords,
  * values that specify the vertex coordinates.
  * @num_points: The total number of vertices.
  *
- * Clears the previously constructed shape and constructs a polygonal
- * shape of the given number of vertices.
+ * Constructs a polygonal shape of the given number of vertices. If
+ * there is an existing path this will start a new disjoint sub-path.
  *
  * The coords array must contain 2 * num_points values. The first value
  * represents the X coordinate of the first vertex, the second value
@@ -276,8 +310,8 @@ void            cogl_path_polygon             (CoglFixed       *coords,
  * @width: Rectangle width.
  * @height: Rectangle height.
  *
- * Clears the previously constructed shape and constructs a rectangular
- * shape at the given coordinates.
+ * Constructs a rectangular shape at the given coordinates. If there
+ * is an existing path this will start a new disjoint sub-path.
  **/
 void            cogl_path_rectangle           (CoglFixed        x,
                                                CoglFixed        y,
@@ -291,8 +325,8 @@ void            cogl_path_rectangle           (CoglFixed        x,
  * @radius_x: X radius of the ellipse
  * @radius_y: Y radius of the ellipse
  *
- * Clears the previously constructed shape and constructs an ellipse
- * shape.
+ * Constructs an ellipse shape. If there is an existing path this will
+ * start a new disjoint sub-path.
  **/
 void            cogl_path_ellipse             (CoglFixed        center_x,
                                                CoglFixed        center_y,
@@ -309,9 +343,9 @@ void            cogl_path_ellipse             (CoglFixed        center_x,
  * @arc_step: Angle increment resolution for subdivision of
  * the corner arcs.
  *
- * Clears the previously constructed shape and constructs a rectangular
- * shape with rounded corners.
- **/
+ * Constructs a rectangular shape with rounded corners. If there is an
+ * existing path this will start a new disjoint sub-path.
+  **/
 void            cogl_path_round_rectangle     (CoglFixed        x,
                                                CoglFixed        y,
                                                CoglFixed        width,

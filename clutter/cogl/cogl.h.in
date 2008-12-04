@@ -332,6 +332,9 @@ void            cogl_get_viewport             (CoglFixed        v[4]);
  * will be clipped so that only the portion inside the rectangle will
  * be displayed. The rectangle dimensions are transformed by the
  * current model-view matrix.
+ *
+ * The rectangle is intersected with the current clip region. To undo
+ * the effect of this function, call cogl_clip_unset().
  */
 void            cogl_clip_set                 (CoglFixed        x_offset,
                                                CoglFixed        y_offset,
@@ -339,12 +342,48 @@ void            cogl_clip_set                 (CoglFixed        x_offset,
                                                CoglFixed        height);
 
 /**
+ * cogl_clip_set_from_path:
+ *
+ * Sets a new clipping area using the current path. The current path
+ * is then cleared. The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
+ * cogl_clip_unset().
+ *
+ * Since: 1.0
+ */
+void            cogl_clip_set_from_path       (void);
+
+/**
+ * cogl_clip_set_from_path_preserve:
+ *
+ * Sets a new clipping area using the current path. The current path
+ * is then cleared. The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
+ * cogl_clip_unset().
+ *
+ * Since: 1.0
+ */
+void            cogl_clip_set_from_path_preserve (void);
+
+/**
  * cogl_clip_unset:
  *
- * Removes the current clipping rectangle so that all drawing
- * operations extend to full size of the viewport again.
+ * Reverts the clipping region to the state before the last call to
+ * cogl_clip_set().
  */
 void            cogl_clip_unset               (void);
+
+/**
+ * cogl_clip_ensure:
+ *
+ * Ensures that the current clipping region has been set in GL. This
+ * will automatically be called before any Cogl primitives but it
+ * maybe be neccessary to call if you are using raw GL calls with
+ * clipping.
+ *
+ * Since: 1.0
+ */
+void            cogl_clip_ensure              (void);
 
 /**
  * cogl_clip_stack_save:

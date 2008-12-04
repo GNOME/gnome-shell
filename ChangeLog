@@ -1,3 +1,58 @@
+2008-12-04  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1172 - Disjoint paths and clip to path
+
+	* clutter/cogl/cogl-path.h:
+	* clutter/cogl/common/cogl-primitives.c:
+	* clutter/cogl/common/cogl-primitives.h:
+	* clutter/cogl/gl/cogl-primitives.c:
+	* clutter/cogl/gles/cogl-primitives.c: Changed the semantics of
+	cogl_path_move_to. Previously this always started a new path but
+	now it instead starts a new disjoint sub path. The path isn't
+	cleared until you call either cogl_path_stroke, cogl_path_fill or
+	cogl_path_new. There are also cogl_path_stroke_preserve and
+	cogl_path_fill_preserve functions.
+
+	* clutter/cogl/gl/cogl-context.c:
+	* clutter/cogl/gl/cogl-context.h:
+	* clutter/cogl/gles/cogl-context.c:
+	* clutter/cogl/gles/cogl-context.h: Convert the path nodes array
+	to a GArray.
+
+	* clutter/cogl/gl/cogl-texture.c:
+	* clutter/cogl/gles/cogl-texture.c: Call cogl_clip_ensure
+
+	* clutter/cogl/common/cogl-clip-stack.c:
+	* clutter/cogl/common/cogl-clip-stack.h: Simplified the clip
+	stack code quite a bit to make it more maintainable.  Previously
+	whenever you added a new clip it would go through a separate route
+	to immediately intersect with the current clip and when you
+	removed it again it would immediately rebuild the entire clip. Now
+	when you add or remove a clip it doesn't do anything immediately
+	but just sets a dirty flag instead.
+
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c: Taken away the code to intersect
+	stencil clips when there is exactly one stencil bit. It won't work
+	with path clips and I don't know of any platform that doesn't have
+	eight or zero stencil bits. It needs at least three bits to
+	intersect a path with an existing clip. cogl_features_init now
+	just decides you don't have a stencil buffer at all if you have
+	less than three bits.
+
+	* clutter/cogl/cogl.h.in: New functions and documentation.
+
+	* tests/interactive/test-clip.c: Replaced with a different test
+	that lets you add and remove clips. The three different mouse
+	buttons add clips in different shapes. This makes it easier to
+	test multiple levels of clipping.
+
+	* tests/interactive/test-cogl-primitives.c: Use
+	cogl_path_stroke_preserve when using the same path again.
+
+	* doc/reference/cogl/cogl-sections.txt: Document the new
+	functions.
+
 2008-12-03  Robert Bragg  <robert@linux.intel.com>
 
 	Bug 1303 - clutter_glx_texture_pixmap_using_extension doesn't check if

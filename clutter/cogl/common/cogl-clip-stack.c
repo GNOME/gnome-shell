@@ -27,8 +27,11 @@
 #include "config.h"
 #endif
 
+#include <string.h>
 #include "cogl.h"
 #include "cogl-clip-stack.h"
+#include "cogl-primitives.h"
+#include "cogl-context.h"
 
 /* These are defined in the particular backend (float in GL vs fixed
    in GL ES) */
@@ -36,58 +39,64 @@ void _cogl_set_clip_planes (CoglFixed x,
 			    CoglFixed y,
 			    CoglFixed width,
 			    CoglFixed height);
-void _cogl_init_stencil_buffer (void);
 void _cogl_add_stencil_clip (CoglFixed x,
 			     CoglFixed y,
 			     CoglFixed width,
 			     CoglFixed height,
 			     gboolean     first);
+void _cogl_add_path_to_stencil_buffer (CoglFixedVec2 nodes_min,
+                                       CoglFixedVec2 nodes_max,
+                                       guint         path_size,
+                                       CoglPathNode *path,
+                                       gboolean      merge);
+void _cogl_enable_clip_planes (void);
 void _cogl_disable_clip_planes (void);
 void _cogl_disable_stencil_buffer (void);
 void _cogl_set_matrix (const CoglFixed *matrix);
 
-typedef struct _CoglClipStackEntry CoglClipStackEntry;
+typedef struct _CoglClipStack CoglClipStack;
 
-struct _CoglClipStackEntry
+typedef struct _CoglClipStackEntryRect CoglClipStackEntryRect;
+typedef struct _CoglClipStackEntryPath CoglClipStackEntryPath;
+
+typedef enum
+  {
+    COGL_CLIP_STACK_RECT,
+    COGL_CLIP_STACK_PATH
+  } CoglClipStackEntryType;
+
+struct _CoglClipStack
 {
-  /* If this is set then this entry clears the clip stack. This is
-     used to clear the stack when drawing an FBO put to keep the
-     entries so they can be restored when the FBO drawing is
-     completed */
-  gboolean            clear;
-
-  /* The rectangle for this clip */
-  CoglFixed        x_offset;
-  CoglFixed        y_offset;
-  CoglFixed        width;
-  CoglFixed        height;
-
-  /* The matrix that was current when the clip was set */
-  CoglFixed        matrix[16];
+  GList *stack_top;
 };
 
-static GList *cogl_clip_stack_top = NULL;
-static int    cogl_clip_stack_depth = 0;
-
-static void
-_cogl_clip_stack_add (const CoglClipStackEntry *entry, int depth)
+struct _CoglClipStackEntryRect
 {
-  int has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
+  CoglClipStackEntryType     type;
 
-  /* If this is the first entry and we support clip planes then use
-     that instead */
-  if (depth == 1 && has_clip_planes)
-    _cogl_set_clip_planes (entry->x_offset,
-			   entry->y_offset,
-			   entry->width,
-			   entry->height);
-  else
-    _cogl_add_stencil_clip (entry->x_offset,
-			    entry->y_offset,
-			    entry->width,
-			    entry->height,
-			    depth == (has_clip_planes ? 2 : 1));
-}
+  /* The rectangle for this clip */
+  CoglFixed                  x_offset;
+  CoglFixed                  y_offset;
+  CoglFixed                  width;
+  CoglFixed                  height;
+
+  /* The matrix that was current when the clip was set */
+  CoglFixed                  matrix[16];
+};
+
+struct _CoglClipStackEntryPath
+{
+  CoglClipStackEntryType     type;
+
+  /* The matrix that was current when the clip was set */
+  CoglFixed                  matrix[16];
+
+  CoglFixedVec2              path_nodes_min;
+  CoglFixedVec2              path_nodes_max;
+
+  guint                      path_size;
+  CoglPathNode               path[1];
+};
 
 void
 cogl_clip_set (CoglFixed x_offset,
@@ -95,10 +104,17 @@ cogl_clip_set (CoglFixed x_offset,
 	       CoglFixed width,
 	       CoglFixed height)
 {
-  CoglClipStackEntry *entry = g_slice_new (CoglClipStackEntry);
+  CoglClipStackEntryRect *entry;
+  CoglClipStack *stack;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  stack = (CoglClipStack *) ctx->clip.stacks->data;
+
+  entry = g_slice_new (CoglClipStackEntryRect);
 
   /* Make a new entry */
-  entry->clear = FALSE;
+  entry->type = COGL_CLIP_STACK_RECT;
   entry->x_offset = x_offset;
   entry->y_offset = y_offset;
   entry->width = width;
@@ -106,127 +122,231 @@ cogl_clip_set (CoglFixed x_offset,
 
   cogl_get_modelview_matrix (entry->matrix);
 
-  /* Add the entry to the current clip */
-  _cogl_clip_stack_add (entry, ++cogl_clip_stack_depth);
+  /* Store it in the stack */
+  stack->stack_top = g_list_prepend (stack->stack_top, entry);
+
+  ctx->clip.stack_dirty = TRUE;
+}
+
+void
+cogl_clip_set_from_path_preserve (void)
+{
+  CoglClipStackEntryPath *entry;
+  CoglClipStack *stack;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  stack = (CoglClipStack *) ctx->clip.stacks->data;
+
+  entry = g_malloc (sizeof (CoglClipStackEntryPath)
+                    + sizeof (CoglPathNode) * (ctx->path_nodes->len - 1));
+
+  entry->type = COGL_CLIP_STACK_PATH;
+  entry->path_nodes_min = ctx->path_nodes_min;
+  entry->path_nodes_max = ctx->path_nodes_max;
+  entry->path_size = ctx->path_nodes->len;
+  memcpy (entry->path, ctx->path_nodes->data,
+          sizeof (CoglPathNode) * ctx->path_nodes->len);
+
+  cogl_get_modelview_matrix (entry->matrix);
 
   /* Store it in the stack */
-  cogl_clip_stack_top = g_list_prepend (cogl_clip_stack_top, entry);
+  stack->stack_top = g_list_prepend (stack->stack_top, entry);
+
+  ctx->clip.stack_dirty = TRUE;
+}
+
+void
+cogl_clip_set_from_path (void)
+{
+  cogl_clip_set_from_path_preserve ();
+
+  cogl_path_new ();
 }
 
 void
 cogl_clip_unset (void)
 {
-  g_return_if_fail (cogl_clip_stack_top != NULL);
+  gpointer entry;
+  CoglClipStack *stack;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  stack = (CoglClipStack *) ctx->clip.stacks->data;
+
+  g_return_if_fail (stack->stack_top != NULL);
+
+  entry = stack->stack_top->data;
 
   /* Remove the top entry from the stack */
-  g_slice_free (CoglClipStackEntry, cogl_clip_stack_top->data);
-  cogl_clip_stack_top = g_list_delete_link (cogl_clip_stack_top,
-					    cogl_clip_stack_top);
-  cogl_clip_stack_depth--;
+  if (*(CoglClipStackEntryType *) entry == COGL_CLIP_STACK_RECT)
+    g_slice_free (CoglClipStackEntryRect, entry);
+  else
+    g_free (entry);
 
-  /* Rebuild the clip */
-  _cogl_clip_stack_rebuild (FALSE);
+  stack->stack_top = g_list_delete_link (stack->stack_top,
+                                         stack->stack_top);
+
+  ctx->clip.stack_dirty = TRUE;
 }
 
 void
-_cogl_clip_stack_rebuild (gboolean just_stencil)
+_cogl_clip_stack_rebuild (void)
 {
   int has_clip_planes = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
+  gboolean using_clip_planes = FALSE;
+  gboolean using_stencil_buffer = FALSE;
   GList *node;
-  int depth = 0;
+  CoglClipStack *stack;
 
-  /* Disable clip planes if the stack is empty */
-  if (has_clip_planes && cogl_clip_stack_depth < 1)
-    _cogl_disable_clip_planes ();
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Disable the stencil buffer if there isn't enough entries */
-  if (cogl_clip_stack_depth < (has_clip_planes ? 2 : 1))
-    _cogl_disable_stencil_buffer ();
+  stack = (CoglClipStack *) ctx->clip.stacks->data;
+
+  ctx->clip.stack_dirty = FALSE;
+  ctx->clip.stencil_used = FALSE;
+
+  _cogl_disable_clip_planes ();
+  _cogl_disable_stencil_buffer ();
+  
+  /* If the stack is empty then there's nothing else to do */
+  if (stack->stack_top == NULL)
+    return;
 
   /* Find the bottom of the stack */
-  for (node = cogl_clip_stack_top; depth < cogl_clip_stack_depth - 1;
-       node = node->next)
-    depth++;
+  for (node = stack->stack_top; node->next; node = node->next);
 
   /* Re-add every entry from the bottom of the stack up */
-  depth = 1;
-  for (; depth <= cogl_clip_stack_depth; node = node->prev, depth++)
-    if (!just_stencil || !has_clip_planes || depth > 1)
-      {
-	const CoglClipStackEntry *entry = (CoglClipStackEntry *) node->data;
-	cogl_push_matrix ();
-	_cogl_set_matrix (entry->matrix);
-	_cogl_clip_stack_add (entry, depth);
-	cogl_pop_matrix ();
-      }
+  for (; node; node = node->prev)
+    {
+      gpointer entry = node->data;
+
+      if (*(CoglClipStackEntryType *) entry == COGL_CLIP_STACK_PATH)
+        {
+          CoglClipStackEntryPath *path = (CoglClipStackEntryPath *) entry;
+
+          cogl_push_matrix ();
+          _cogl_set_matrix (path->matrix);
+
+          _cogl_add_path_to_stencil_buffer (path->path_nodes_min,
+                                            path->path_nodes_max,
+                                            path->path_size,
+                                            path->path,
+                                            using_stencil_buffer);
+
+          cogl_pop_matrix ();
+
+          using_stencil_buffer = TRUE;
+
+          /* We can't use clip planes any more */
+          has_clip_planes = FALSE;
+        }
+      else
+        {
+          CoglClipStackEntryRect *rect = (CoglClipStackEntryRect *) entry;
+
+          cogl_push_matrix ();
+          _cogl_set_matrix (rect->matrix);
+
+          /* If this is the first entry and we support clip planes then use
+             that instead */
+          if (has_clip_planes)
+            {
+              _cogl_set_clip_planes (rect->x_offset,
+                                     rect->y_offset,
+                                     rect->width,
+                                     rect->height);
+              using_clip_planes = TRUE;
+              /* We can't use clip planes a second time */
+              has_clip_planes = FALSE;
+            }
+          else
+            {
+              _cogl_add_stencil_clip (rect->x_offset,
+                                      rect->y_offset,
+                                      rect->width,
+                                      rect->height,
+                                      !using_stencil_buffer);
+              using_stencil_buffer = TRUE;
+            }
+
+          cogl_pop_matrix ();
+        }
+    }
+
+  /* Enabling clip planes is delayed to now so that they won't affect
+     setting up the stencil buffer */
+  if (using_clip_planes)
+    _cogl_enable_clip_planes ();
+
+  ctx->clip.stencil_used = using_stencil_buffer;
 }
 
 void
-_cogl_clip_stack_merge (void)
+cogl_clip_ensure (void)
 {
-  GList *node = cogl_clip_stack_top;
-  int i;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Merge the current clip stack on top of whatever is in the stencil
-     buffer */
-  if (cogl_clip_stack_depth)
-    {
-      for (i = 0; i < cogl_clip_stack_depth - 1; i++)
-	node = node->next;
-
-      /* Skip the first entry if we have clipping planes */
-      if (cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES))
-	node = node->prev;
-
-      while (node)
-	{
-	  const CoglClipStackEntry *entry = (CoglClipStackEntry *) node->data;
-	  cogl_push_matrix ();
-	  _cogl_set_matrix (entry->matrix);
-	  _cogl_clip_stack_add (entry, 3);
-	  cogl_pop_matrix ();
-
-	  node = node->prev;
-	}
-    }
+  if (ctx->clip.stack_dirty)
+    _cogl_clip_stack_rebuild ();
 }
 
 void
 cogl_clip_stack_save (void)
 {
-  CoglClipStackEntry *entry = g_slice_new (CoglClipStackEntry);
+  CoglClipStack *stack;
 
-  /* Push an entry into the stack to mark that it should be cleared */
-  entry->clear = TRUE;
-  cogl_clip_stack_top = g_list_prepend (cogl_clip_stack_top, entry);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Reset the depth to zero */
-  cogl_clip_stack_depth = 0;
+  stack = g_slice_new (CoglClipStack);
+  stack->stack_top = NULL;
 
-  /* Rebuilding the stack will now disabling all clipping */
-  _cogl_clip_stack_rebuild (FALSE);
+  ctx->clip.stacks = g_slist_prepend (ctx->clip.stacks, stack);
+
+  ctx->clip.stack_dirty = TRUE;
 }
 
 void
 cogl_clip_stack_restore (void)
 {
-  GList *node;
+  CoglClipStack *stack;
 
-  /* The top of the stack should be a clear marker */
-  g_assert (cogl_clip_stack_top);
-  g_assert (((CoglClipStackEntry *) cogl_clip_stack_top->data)->clear);
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Remove the top entry */
-  g_slice_free (CoglClipStackEntry, cogl_clip_stack_top->data);
-  cogl_clip_stack_top = g_list_delete_link (cogl_clip_stack_top,
-					    cogl_clip_stack_top);
+  g_return_if_fail (ctx->clip.stacks != NULL);
 
-  /* Recalculate the depth of the stack */
-  cogl_clip_stack_depth = 0;
-  for (node = cogl_clip_stack_top;
-       node && !((CoglClipStackEntry *) node->data)->clear;
-       node = node->next)
-    cogl_clip_stack_depth++;
+  stack = (CoglClipStack *) ctx->clip.stacks->data;
 
-  _cogl_clip_stack_rebuild (FALSE);
+  /* Empty the current stack */
+  while (stack->stack_top)
+    cogl_clip_unset ();
+
+  /* Revert to an old stack */
+  g_slice_free (CoglClipStack, stack);
+  ctx->clip.stacks = g_slist_delete_link (ctx->clip.stacks,
+                                          ctx->clip.stacks);
+
+  ctx->clip.stack_dirty = TRUE;
+}
+
+void
+_cogl_clip_stack_state_init (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  ctx->clip.stacks = NULL;
+  ctx->clip.stack_dirty = TRUE;
+  
+  /* Add an intial stack */
+  cogl_clip_stack_save ();
+}
+
+void
+_cogl_clip_stack_state_destroy (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Destroy all of the stacks */
+  while (ctx->clip.stacks)
+    cogl_clip_stack_restore ();
 }
