@@ -7,7 +7,7 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 
-const Desktops = imports.ui.desktops;
+const Workspaces = imports.ui.workspaces;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 const Meta = imports.gi.Meta;
@@ -28,8 +28,8 @@ SIDESHOW_TEXT_COLOR.from_pixel(0xffffffff);
 // Time for initial animation going into overlay mode
 const ANIMATION_TIME = 0.5;
 
-// How much to scale the desktop down by in overlay mode
-const DESKTOP_SCALE = 0.75;
+// How much of the screen the workspace grid takes up
+const WORKSPACE_GRID_SCALE = 0.75;
 
 function Sideshow(parent, width) {
     this._init(parent, width);
@@ -155,11 +155,12 @@ Overlay.prototype = {
         // TODO - recalculate everything when desktop size changes
         this._recalculateSize();
 
-        this._desktops = new Desktops.Desktops(this._desktopX, this._desktopY,
-                                               this._desktopWidth, this._desktopHeight);
-        this._group.add_actor(this._desktops._group);
+        this._workspaces = new Workspaces.Workspaces(
+            this._workspaceGridX, this._workspaceGridY,
+            this._workspaceGridWidth, this._workspaceGridHeight);
+        this._group.add_actor(this._workspaces._group);
 
-        this._sideshow = new Sideshow(this._group, this._desktopX - 10);
+        this._sideshow = new Sideshow(this._group, this._workspaceGridX - 10);
         this._sideshow.connect('activated', function(sideshow) {
             // TODO - have some sort of animation/effect while
             // transitioning to the new app.  We definitely need
@@ -173,12 +174,11 @@ Overlay.prototype = {
         let screenWidth = global.screen_width;
         let screenHeight = global.screen_height;
 
-        // The desktop windows are shown on top of a scaled down version of the
-        // desktop. This is positioned at the right side of the screen
-        this._desktopWidth = screenWidth * DESKTOP_SCALE;
-        this._desktopHeight = screenHeight * DESKTOP_SCALE;
-        this._desktopX = screenWidth - this._desktopWidth - 10;
-        this._desktopY = Panel.PANEL_HEIGHT + (screenHeight - this._desktopHeight - Panel.PANEL_HEIGHT) / 2;
+        // The area allocated for the workspace grid
+        this._workspaceGridWidth = screenWidth * WORKSPACE_GRID_SCALE;
+        this._workspaceGridHeight = screenHeight * WORKSPACE_GRID_SCALE;
+        this._workspaceGridX = screenWidth - this._workspaceGridWidth - 10;
+        this._workspaceGridY = Panel.PANEL_HEIGHT + (screenHeight - this._workspaceGridHeight - Panel.PANEL_HEIGHT) / 2;
     },
 
     show : function() {
@@ -192,8 +192,8 @@ Overlay.prototype = {
         this._recalculateSize();
 
         this._sideshow.show();
-        this._desktops.show();
-        this._desktops._group.raise_top();
+        this._workspaces.show();
+        this._workspaces._group.raise_top();
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the overlay is displayed greatly
@@ -210,7 +210,7 @@ Overlay.prototype = {
         if (!this.visible)
             return;
 
-        this._desktops.hide();
+        this._workspaces.hide();
         this._sideshow.hide();
 
         // Dummy tween, just waiting for the workspace animation
@@ -228,7 +228,7 @@ Overlay.prototype = {
         global.window_group.show();
         this._group.lower_bottom();
         this._group.hide();
-        this._desktops.hideDone();
+        this._workspaces.hideDone();
     },
 
     _deactivate : function() {

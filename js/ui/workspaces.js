@@ -17,7 +17,7 @@ const WINDOW_OPACITY = 0.9 * 255;
 // unless we have a really good algorithm.
 
 // Each triplet is [xCenter, yCenter, scale] where the scale
-// is relative to the width of the desktop.
+// is relative to the width of the workspace.
 const POSITIONS = {
         1: [[0.5, 0.5, 0.8]],
         2: [[0.25, 0.5, 0.4], [0.75, 0.5, 0.4]],
@@ -26,14 +26,14 @@ const POSITIONS = {
         5: [[0.165, 0.25, 0.28], [0.495, 0.25, 0.28], [0.825, 0.25, 0.28], [0.25, 0.75, 0.4], [0.75, 0.75, 0.4]]
 };
 
-// spacing between desktops
+// spacing between workspaces
 const GRID_SPACING = 15;
 
-function Desktops(x, y, width, height) {
+function Workspaces(x, y, width, height) {
     this._init(x, y, width, height);
 }
 
-Desktops.prototype = {
+Workspaces.prototype = {
     _init : function(x, y, width, height) {
 
         this._group = new Clutter.Group();
@@ -223,7 +223,7 @@ Desktops.prototype = {
             return POSITIONS[numberOfWindows][windowIndex];
 
         // If we don't have a predefined scheme for this window count,
-        // overlap the windows along the diagonal of the desktop
+        // overlap the windows along the diagonal of the workspace
         // (improve this!)
         let fraction = Math.sqrt(1/numberOfWindows);
 
