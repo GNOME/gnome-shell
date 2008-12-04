@@ -29,6 +29,7 @@
 typedef struct _CoglFixedVec2    CoglFixedVec2;
 typedef struct _CoglBezQuad      CoglBezQuad;
 typedef struct _CoglBezCubic     CoglBezCubic;
+typedef struct _CoglPathNode     CoglPathNode;
 
 struct _CoglFixedVec2
 {
@@ -37,13 +38,32 @@ struct _CoglFixedVec2
 };
 
 #ifdef CLUTTER_COGL_HAS_GL
+
 typedef struct _CoglFloatVec2    CoglFloatVec2;
+
 struct _CoglFloatVec2
 {
   GLfloat x;
   GLfloat y;
 };
-#endif
+
+struct _CoglPathNode
+{
+  GLfloat x;
+  GLfloat y;
+  guint   path_size;
+};
+
+#else /* CLUTTER_COGL_HAS_GL */
+
+struct _CoglPathNode
+{
+  GLfixed x;
+  GLfixed y;
+  guint   path_size;
+};
+
+#endif /* CLUTTER_COGL_HAS_GL */
 
 struct _CoglBezQuad
 {

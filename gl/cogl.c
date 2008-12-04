@@ -457,8 +457,6 @@ set_clip_plane (GLint plane_num,
   GE( glClipPlane (plane_num, plane) );
 
   GE( glPopMatrix () );
-
-  GE( glEnable (plane_num) );
 }
 
 void
@@ -513,15 +511,6 @@ _cogl_set_clip_planes (CoglFixed x_offset,
   set_clip_plane (GL_CLIP_PLANE3, vertex_bl, vertex_tl);
 }
 
-static int
-compare_y_coordinate (const void *a, const void *b)
-{
-  GLfloat ay = ((const GLfloat *) a)[1];
-  GLfloat by = ((const GLfloat *) b)[1];
-  
-  return ay < by ? -1 : ay > by ? 1 : 0;
-}
-
 void
 _cogl_add_stencil_clip (CoglFixed x_offset,
 			CoglFixed y_offset,
@@ -529,18 +518,7 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
 			CoglFixed height,
 			gboolean first)
 {
-  gboolean has_clip_planes
-    = cogl_features_available (COGL_FEATURE_FOUR_CLIP_PLANES);
-  
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (has_clip_planes)
-    {
-      GE( glDisable (GL_CLIP_PLANE3) );
-      GE( glDisable (GL_CLIP_PLANE2) );
-      GE( glDisable (GL_CLIP_PLANE1) );
-      GE( glDisable (GL_CLIP_PLANE0) );
-    }
 
   if (first)
     {
@@ -558,7 +536,7 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
 		   COGL_FIXED_TO_FLOAT (x_offset + width),
 		   COGL_FIXED_TO_FLOAT (y_offset + height)) );
     }
-  else if (ctx->num_stencil_bits > 1)
+  else
     {
       /* Add one to every pixel of the stencil buffer in the
 	 rectangle */
@@ -583,127 +561,6 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
       GE( glMatrixMode (GL_MODELVIEW) );
       GE( glPopMatrix () );
     }
-  else
-    {
-      /* Slower fallback if there is exactly one stencil bit. This
-	 tries to draw enough triangles to tessalate around the
-	 rectangle so that it can subtract from the stencil buffer for
-	 every pixel in the screen except those in the rectangle */
-      GLfloat modelview[16], projection[16];
-      GLfloat temp_point[4];
-      GLfloat left_edge, right_edge, bottom_edge, top_edge;
-      int i;
-      GLfloat points[16] =
-	{
-	  COGL_FIXED_TO_FLOAT (x_offset),
-	  COGL_FIXED_TO_FLOAT (y_offset),
-	  0, 1,
-	  COGL_FIXED_TO_FLOAT (x_offset + width),
-	  COGL_FIXED_TO_FLOAT (y_offset),
-	  0, 1,
-	  COGL_FIXED_TO_FLOAT (x_offset),
-	  COGL_FIXED_TO_FLOAT (y_offset + height),
-	  0, 1,
-	  COGL_FIXED_TO_FLOAT (x_offset + width),
-	  COGL_FIXED_TO_FLOAT (y_offset + height),
-	  0, 1
-	};
-
-      GE( glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
-      GE( glGetFloatv (GL_PROJECTION_MATRIX, projection) );
-
-      /* Project all of the vertices into screen coordinates */
-      for (i = 0; i < 4; i++)
-	project_vertex (modelview, projection, points + i * 4);
-
-      /* Sort the points by y coordinate */
-      qsort (points, 4, sizeof (GLfloat) * 4, compare_y_coordinate);
-
-      /* Put the bottom two pairs and the top two pairs in
-	 left-right order */
-      if (points[0] > points[4])
-	{
-	  memcpy (temp_point, points, sizeof (GLfloat) * 4);
-	  memcpy (points, points + 4, sizeof (GLfloat) * 4);
-	  memcpy (points + 4, temp_point, sizeof (GLfloat) * 4);
-	}
-      if (points[8] > points[12])
-	{
-	  memcpy (temp_point, points + 8, sizeof (GLfloat) * 4);
-	  memcpy (points + 8, points + 12, sizeof (GLfloat) * 4);
-	  memcpy (points + 12, temp_point, sizeof (GLfloat) * 4);
-	}
-
-      /* If the clip rect goes outside of the screen then use the
-	 extents of the rect instead */
-      left_edge   = MIN (-1.0f, MIN (points[0], points[8]));
-      right_edge  = MAX ( 1.0f, MAX (points[4], points[12]));
-      bottom_edge = MIN (-1.0f, MIN (points[1], points[5]));
-      top_edge    = MAX ( 1.0f, MAX (points[9], points[13]));
-
-      /* Using the identity matrix for the projection and
-	 modelview matrix, draw the triangles around the inner
-	 rectangle */
-      GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
-      GE( glStencilOp (GL_ZERO, GL_ZERO, GL_ZERO) );
-      GE( glPushMatrix () );
-      GE( glLoadIdentity () );
-      GE( glMatrixMode (GL_PROJECTION) );
-      GE( glPushMatrix () );
-      GE( glLoadIdentity () );
-
-      /* Clear the left side */
-      glBegin (GL_TRIANGLE_STRIP);
-      glVertex2f (left_edge, bottom_edge);
-      glVertex2fv (points);
-      glVertex2f (left_edge, points[1]);
-      glVertex2fv (points + 8);
-      glVertex2f (left_edge, points[9]);
-      glVertex2f (left_edge, top_edge);
-      glEnd ();
-
-      /* Clear the right side */
-      glBegin (GL_TRIANGLE_STRIP);
-      glVertex2f (right_edge, top_edge);
-      glVertex2fv (points + 12);
-      glVertex2f (right_edge, points[13]);
-      glVertex2fv (points + 4);
-      glVertex2f (right_edge, points[5]);
-      glVertex2f (right_edge, bottom_edge);
-      glEnd ();
-
-      /* Clear the top side */
-      glBegin (GL_TRIANGLE_STRIP);
-      glVertex2f (left_edge, top_edge);
-      glVertex2fv (points + 8);
-      glVertex2f (points[8], top_edge);
-      glVertex2fv (points + 12);
-      glVertex2f (points[12], top_edge);
-      glVertex2f (right_edge, top_edge);
-      glEnd ();
-
-      /* Clear the bottom side */
-      glBegin (GL_TRIANGLE_STRIP);
-      glVertex2f (left_edge, bottom_edge);
-      glVertex2fv (points);
-      glVertex2f (points[0], bottom_edge);
-      glVertex2fv (points + 4);
-      glVertex2f (points[4], bottom_edge);
-      glVertex2f (right_edge, bottom_edge);
-      glEnd ();
-
-      GE( glPopMatrix () );
-      GE( glMatrixMode (GL_MODELVIEW) );
-      GE( glPopMatrix () );
-    }
-
-  if (has_clip_planes)
-    {
-      GE( glEnable (GL_CLIP_PLANE0) );
-      GE( glEnable (GL_CLIP_PLANE1) );
-      GE( glEnable (GL_CLIP_PLANE2) );
-      GE( glEnable (GL_CLIP_PLANE3) );
-    }
 
   /* Restore the stencil mode */
   GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
@@ -727,6 +584,15 @@ void
 _cogl_disable_stencil_buffer (void)
 {
   GE( glDisable (GL_STENCIL_TEST) );
+}
+
+void
+_cogl_enable_clip_planes (void)
+{
+  GE( glEnable (GL_CLIP_PLANE0) );
+  GE( glEnable (GL_CLIP_PLANE1) );
+  GE( glEnable (GL_CLIP_PLANE2) );
+  GE( glEnable (GL_CLIP_PLANE3) );
 }
 
 void
@@ -945,6 +811,7 @@ _cogl_features_init ()
   CoglFeatureFlags  flags = 0;
   const gchar      *gl_extensions;
   GLint             max_clip_planes = 0;
+  GLint             num_stencil_bits = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
@@ -1214,9 +1081,9 @@ _cogl_features_init ()
 	flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;
     }
 
-  ctx->num_stencil_bits = 0;
-  GE( glGetIntegerv (GL_STENCIL_BITS, &ctx->num_stencil_bits) );
-  if (ctx->num_stencil_bits > 0)
+  GE( glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
+  /* We need at least three stencil bits to combine clips */
+  if (num_stencil_bits > 2)
     flags |= COGL_FEATURE_STENCIL_BUFFER;
 
   GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );

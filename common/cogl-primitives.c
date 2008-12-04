@@ -37,8 +37,8 @@
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
 /* these are defined in the particular backend(float in gl vs fixed in gles)*/
-void _cogl_path_clear_nodes ();
-void _cogl_path_add_node    (CoglFixed x,
+void _cogl_path_add_node    (gboolean new_sub_path,
+			     CoglFixed x,
                              CoglFixed y);
 void _cogl_path_fill_nodes    ();
 void _cogl_path_stroke_nodes  ();
@@ -56,6 +56,8 @@ cogl_rectangle (gint x,
                 guint width,
                 guint height)
 {
+  cogl_clip_ensure ();
+
   _cogl_rectangle (x, y, width, height);
 }
 
@@ -65,6 +67,8 @@ cogl_rectanglex (CoglFixed x,
                  CoglFixed width,
                  CoglFixed height)
 {
+  cogl_clip_ensure ();
+
   _cogl_rectanglex (x, y, width, height);
 }
 
@@ -72,20 +76,40 @@ cogl_rectanglex (CoglFixed x,
 void
 cogl_path_fill (void)
 {
+  cogl_path_fill_preserve ();
+
+  cogl_path_new ();
+}
+
+void
+cogl_path_fill_preserve (void)
+{
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  cogl_clip_ensure ();
   
-  if (ctx->path_nodes_size == 0)
-    return;
-  
-  _cogl_path_fill_nodes();
+  if (ctx->path_nodes->len == 0)
+    return;  
+
+  _cogl_path_fill_nodes ();
 }
 
 void
 cogl_path_stroke (void)
 {
+  cogl_path_stroke_preserve ();
+
+  cogl_path_new ();
+}
+
+void
+cogl_path_stroke_preserve (void)
+{
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  if (ctx->path_nodes_size == 0)
+  cogl_clip_ensure ();
+
+  if (ctx->path_nodes->len == 0)
     return;
   
   _cogl_path_stroke_nodes();
@@ -99,11 +123,7 @@ cogl_path_move_to (CoglFixed x,
   
   /* FIXME: handle multiple contours maybe? */
  
- /* at the moment, a move_to is an implicit instruction to create
-  * a new path.
-  */ 
-  _cogl_path_clear_nodes ();
-  _cogl_path_add_node (x, y);
+  _cogl_path_add_node (TRUE, x, y);
   
   ctx->path_start.x = x;
   ctx->path_start.y = y;
@@ -127,7 +147,7 @@ cogl_path_line_to (CoglFixed x,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  _cogl_path_add_node (x, y);
+  _cogl_path_add_node (FALSE, x, y);
   
   ctx->path_pen.x = x;
   ctx->path_pen.y = y;
@@ -148,10 +168,17 @@ cogl_path_close (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  _cogl_path_add_node (ctx->path_start.x, ctx->path_start.y);
+  _cogl_path_add_node (FALSE, ctx->path_start.x, ctx->path_start.y);
   ctx->path_pen = ctx->path_start;
 }
 
+void
+cogl_path_new (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_array_set_size (ctx->path_nodes, 0);
+}
 
 void
 cogl_path_line (CoglFixed x1,
@@ -427,7 +454,7 @@ _cogl_path_bezier3_sub (CoglBezCubic *cubic)
 	  if (cindex == 0)
             return;
 
-	  _cogl_path_add_node (c->p4.x, c->p4.y);
+	  _cogl_path_add_node (FALSE, c->p4.x, c->p4.y);
 
 	  --cindex;
 
@@ -492,7 +519,7 @@ cogl_path_curve_to (CoglFixed x1,
   _cogl_path_bezier3_sub (&cubic);
 
   /* Add last point */
-  _cogl_path_add_node (cubic.p4.x, cubic.p4.y);
+  _cogl_path_add_node (FALSE, cubic.p4.x, cubic.p4.y);
   ctx->path_pen = cubic.p4;
 }
 
@@ -559,7 +586,7 @@ _cogl_path_bezier2_sub (CoglBezQuad *quad)
 	{
 	  /* Add subdivision point (skip last) */
 	  if (qindex == 0) return;
-	  _cogl_path_add_node (q->p3.x, q->p3.y);
+	  _cogl_path_add_node (FALSE, q->p3.x, q->p3.y);
 	  --qindex; continue;
 	}
       
@@ -607,7 +634,7 @@ cogl_path_curve2_to (CoglFixed x1,
   _cogl_path_bezier2_sub (&quad);
   
   /* Add last point */
-  _cogl_path_add_node (quad.p3.x, quad.p3.y);
+  _cogl_path_add_node (FALSE, quad.p3.x, quad.p3.y);
   ctx->path_pen = quad.p3;
 }
 
