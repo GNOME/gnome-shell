@@ -1175,7 +1175,7 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
  *
  * Return Value: a new #ClutterTimeline, cloned from @timeline
  *
- * Since 0.4
+ * Since: 0.4
  */
 ClutterTimeline *
 clutter_timeline_clone (ClutterTimeline *timeline)

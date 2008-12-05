@@ -1328,7 +1328,7 @@ clutter_stage_event (ClutterStage *stage,
  *
  * Sets the stage title.
  *
- * Since 0.4
+ * Since: 0.4
  **/
 void
 clutter_stage_set_title (ClutterStage       *stage,

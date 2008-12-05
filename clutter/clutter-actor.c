@@ -633,7 +633,7 @@ clutter_actor_real_pick (ClutterActor       *self,
  * silhouette. Containers should always recursively call pick for
  * each child.
  *
- * Since 0.4
+ * Since: 0.4
  **/
 void
 clutter_actor_pick (ClutterActor       *self,

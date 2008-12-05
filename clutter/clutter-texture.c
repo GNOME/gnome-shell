@@ -1253,7 +1253,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
  *
  * Return value: %TRUE if the texture was successfully updated
  *
- * Since 0.4.
+ * Since: 0.4
  **/
 gboolean
 clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
@@ -1586,7 +1586,7 @@ clutter_texture_get_base_size (ClutterTexture *texture,
  *
  * Return value: %TRUE on success, %FALSE on failure.
  *
- * Since 0.6.
+ * Since: 0.6
  */
 gboolean
 clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
