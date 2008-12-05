@@ -120,6 +120,15 @@ function start() {
 
     overlay = new Overlay.Overlay();
     wm = new WindowManager.WindowManager();
+    
+    let display = global.screen.get_display();
+    display.connect('overlay-key', function(display) {
+        if (overlay.visible) {
+            hide_overlay();
+        } else {
+            show_overlay();
+        }
+    });
 }
 
 // Used to go into a mode where all keyboard and mouse input goes to
