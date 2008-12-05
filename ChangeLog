@@ -1,5 +1,10 @@
 2008-12-05  Neil Roberts  <neil@linux.intel.com>
 
+	* clutter/clutter-entry.c: Fix the 'Since' annotation in the
+	gtk-doc.
+
+2008-12-05  Neil Roberts  <neil@linux.intel.com>
+
 	* clutter/clutter-timeline.c:
 	* clutter/clutter-texture.c:
 	* clutter/clutter-stage.c:
