@@ -1,7 +1,27 @@
 from optparse import OptionParser
 import os
+import re
 import subprocess
 import sys
+
+GLXINFO_RE = re.compile(r"^(\S.*):\s*\n((?:^\s+.*\n)*)", re.MULTILINE)
+
+def _get_glx_extensions():
+    """Return a tuple of server, client, and effective GLX extensions"""
+
+    glxinfo = subprocess.Popen(["glxinfo"], stdout=subprocess.PIPE)
+    glxinfo_output = glxinfo.communicate()[0]
+    glxinfo.wait()
+
+    glxinfo_map = {}
+    for m in GLXINFO_RE.finditer(glxinfo_output):
+        glxinfo_map[m.group(1)] = m.group(2)
+
+    server_glx_extensions = set(re.split("\s*,\s*", glxinfo_map['server glx extensions'].strip()))
+    client_glx_extensions = set(re.split("\s*,\s*", glxinfo_map['client glx extensions'].strip()))
+    glx_extensions = set(re.split("\s*,\s*", glxinfo_map['GLX extensions'].strip()))
+
+    return (server_glx_extensions, client_glx_extensions, glx_extensions)
 
 class Launcher:
     def __init__(self):
@@ -41,6 +61,7 @@ class Launcher:
         """Starts gnome-shell. Returns a subprocess.Popen object"""
 
         use_tfp = self.use_tfp
+        force_indirect = False
 
         # Allow disabling usage of the EXT_texture_for_pixmap extension.
         # FIXME: Move this to ClutterGlxPixmap like
@@ -50,13 +71,21 @@ class Launcher:
            use_tfp = False
 
         if use_tfp:
-            # Check if GLX supports GL_ARB_texture_non_power_of_two; currently clutter
-            # can only use GLX_EXT_texture_for_pixmap if we have that extension.
-            glxinfo = subprocess.Popen(["glxinfo"], stdout=subprocess.PIPE)
-            glxinfo_output = glxinfo.communicate()[0]
-            glxinfo.wait()
+            # Decide if we need to set LIBGL_ALWAYS_INDIRECT=1 to get the texture_from_pixmap
+            # extension; we take having the extension be supported on both the client and
+            # server but not in the list of effective extensions as a signal of needing
+            # to force indirect rendering.
+            #
+            # (The Xepyhr DRI support confuses this heuristic but we disable TFP in
+            # start-in-Xepyhr)
+            #
+            (server_glx_extensions, client_glx_extensions, glx_extensions) = _get_glx_extensions()
 
-            use_tfp = "GL_ARB_texture_non_power_of_two" in glxinfo_output
+            if ("GLX_EXT_texture_from_pixmap" in server_glx_extensions and
+                "GLX_EXT_texture_from_pixmap" in client_glx_extensions and
+                (not "GLX_EXT_texture_from_pixmap" in glx_extensions)):
+
+                force_indirect = True
 
         # Now launch metacity-clutter with our plugin
         env=dict(os.environ)
@@ -65,13 +94,13 @@ class Launcher:
                     'LD_LIBRARY_PATH' : os.environ.get('LD_LIBRARY_PATH', '') + ':' + self.plugin_dir,
                     'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 
-        if use_tfp:
-            # If we have NPOT textures, then we want to use GLX_EXT_texture_from_pixmap; in
-            # most cases, we have to force indirect rendering to do this. DRI2 will lift
-            # that restriction; in which case what we should do is parse the information
-            # from glxinfo more carefully... if the extension isn't listed under
-            # "GLX extensions" with LIBGL_ALWAYS_INDIRECT unset, then set LIBGL_ALWAYS_INDIRECT
-            # and try again.
+        if force_indirect:
+            if self.options.verbose:
+                print "Forcing indirect GL"
+
+            # This is Mesa specific; the NVIDIA proprietary drivers drivers use
+            # __GL_FORCE_INDIRECT=1 instead. But we don't need to force indirect
+            # rendering for NVIDIA.
             env['LIBGL_ALWAYS_INDIRECT'] = '1'
 
         if not self.options.verbose:
