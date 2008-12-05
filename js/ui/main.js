@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const Mainloop = imports.mainloop;
 const Tweener = imports.tweener.tweener;
 
 const Panel = imports.ui.panel;
@@ -123,11 +124,16 @@ function start() {
     
     let display = global.screen.get_display();
     display.connect('overlay-key', function(display) {
-        if (overlay.visible) {
-            hide_overlay();
-        } else {
-            show_overlay();
-        }
+        // Queue an idle for this, because we're getting called
+        // out of a metacity event handler, and doing a lot of
+        // work from inside there is...iffy.
+        Mainloop.idle_add(function () {
+            if (overlay.visible) {
+                hide_overlay();
+            } else {
+                show_overlay();
+            }
+        });
     });
 }
 
