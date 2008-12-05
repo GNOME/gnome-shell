@@ -291,7 +291,14 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   gdk_window_reparent (win->window, manager->priv->stage_window, 0, 0);
   gtk_widget_show_all (win);
 
-  icon = clutter_glx_texture_pixmap_new_with_window (GDK_WINDOW_XWINDOW (win->window));
+  icon = clutter_glx_texture_pixmap_new ();
+  /* Here automatic=FALSE  means to use CompositeRedirectManual - that is,
+   * the X server shouldn't draw the window onto the screen */
+  clutter_x11_texture_pixmap_set_window (CLUTTER_X11_TEXTURE_PIXMAP (icon),
+                                         GDK_WINDOW_XWINDOW (win->window),
+                                         FALSE);
+  /* Here automatic has a different meaning - whether ClutterX11TexturePixmap
+   * should process damage update and refresh the pixmap itself */
   clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (icon), TRUE);
   clutter_actor_set_size (icon, 24, 24);
 
