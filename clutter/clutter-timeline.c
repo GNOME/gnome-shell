@@ -372,7 +372,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                                    g_param_spec_uint ("fps",
                                                       "Frames Per Second",
                                                       "Timeline frames per second",
-                                                      1, 1000,
+                                                      1, G_MAXUINT,
                                                       60,
                                                       CLUTTER_PARAM_READWRITE));
   /**

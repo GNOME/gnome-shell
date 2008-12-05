@@ -1,3 +1,12 @@
+2008-12-05  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	Bug 1309 - clutter_timeline_new and clutter_timeline_set_speed
+	have two standard of the fps limitation
+
+	* clutter/clutter-timeline.c:
+	(clutter_timeline_class_init): Set the maximum value of the
+	:fps property to be G_MAXUINT. (Zhang Wei)
+
 2008-12-05  Neil Roberts  <neil@linux.intel.com>
 
 	* clutter/clutter-entry.c: Fix the 'Since' annotation in the
