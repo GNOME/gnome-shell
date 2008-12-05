@@ -4,7 +4,10 @@
 <!-- vim:set ts=2 expandtab: -->
 <moduleset>
   <repository type="svn" name="svn.gnome.org" default="yes"
-      href="http://svn.gnome.org/svn/"/>
+      href="http://svn.gnome.org/svn/">
+      <mirror type="bzr" href="http://bzr-mirror.gnome.org/bzr/" trunk-path="trunk" />
+      <mirror type="git" href="git://git-mirror.gnome.org/git/" />
+  </repository>
   <repository type="git" name="fishsoup.net"
       href="git://git.fishsoup.net/"/>
   <repository type="svn" name="svn.o-hand.com"
