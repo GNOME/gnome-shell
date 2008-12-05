@@ -30,6 +30,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-types.h>
+#include <cairo/cairo.h>
 
 G_BEGIN_DECLS
 
@@ -195,6 +196,9 @@ gboolean clutter_path_add_string (ClutterPath *path,
 void clutter_path_add_node (ClutterPath *path,
                             const ClutterPathNode *node);
 
+void clutter_path_add_cairo_path (ClutterPath *path,
+                                  const cairo_path_t *cpath);
+
 guint clutter_path_get_n_nodes (ClutterPath *path);
 
 void clutter_path_get_node (ClutterPath *path,
@@ -224,6 +228,9 @@ gboolean clutter_path_set_description (ClutterPath *path,
                                        const gchar *str);
 
 void clutter_path_clear (ClutterPath *path);
+
+void clutter_path_to_cairo_path (ClutterPath *path,
+                                 cairo_t *cr);
 
 guint clutter_path_get_position (ClutterPath *path,
                                  guint alpha,

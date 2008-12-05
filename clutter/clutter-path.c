@@ -737,6 +737,121 @@ clutter_path_add_node (ClutterPath *path,
 }
 
 /**
+ * clutter_path_add_cairo_path:
+ * @path: a #ClutterPath
+ * @cpath: a Cairo path
+ *
+ * Add the nodes of the Cairo path to the end of @path.
+ *
+ * Since: 1.0
+ */
+void
+clutter_path_add_cairo_path (ClutterPath *path,
+                             const cairo_path_t *cpath)
+{
+  int num_data;
+  const cairo_path_data_t *p;
+
+  g_return_if_fail (CLUTTER_IS_PATH (path));
+  g_return_if_fail (cpath != NULL);
+
+  /* Iterate over each command in the cairo path */
+  for (num_data = cpath->num_data, p = cpath->data;
+       num_data > 0;
+       num_data -= p->header.length, p += p->header.length)
+    {
+      switch (p->header.type)
+        {
+        case CAIRO_PATH_MOVE_TO:
+          g_assert (p->header.length >= 2);
+
+          clutter_path_add_move_to (path, p[1].point.x, p[1].point.y);
+          break;
+
+        case CAIRO_PATH_LINE_TO:
+          g_assert (p->header.length >= 2);
+
+          clutter_path_add_line_to (path, p[1].point.x, p[1].point.y);
+          break;
+
+        case CAIRO_PATH_CURVE_TO:
+          g_assert (p->header.length >= 4);
+
+          clutter_path_add_curve_to (path,
+                                     p[1].point.x, p[1].point.y,
+                                     p[2].point.x, p[2].point.y,
+                                     p[3].point.x, p[3].point.y);
+          break;
+
+        case CAIRO_PATH_CLOSE_PATH:
+          clutter_path_add_close (path);
+        }
+    }
+}
+
+static void
+clutter_path_add_node_to_cairo_path (const ClutterPathNode *node,
+                                     gpointer data)
+{
+  cairo_t *cr = data;
+
+  switch (node->type)
+    {
+    case CLUTTER_PATH_MOVE_TO:
+      cairo_move_to (cr, node->points[0].x, node->points[0].y);
+      break;
+
+    case CLUTTER_PATH_LINE_TO:
+      cairo_line_to (cr, node->points[0].x, node->points[0].y);
+      break;
+
+    case CLUTTER_PATH_CURVE_TO:
+      cairo_curve_to (cr,
+                      node->points[0].x, node->points[0].y,
+                      node->points[1].x, node->points[1].y,
+                      node->points[2].x, node->points[2].y);
+      break;
+
+    case CLUTTER_PATH_REL_MOVE_TO:
+      cairo_rel_move_to (cr, node->points[0].x, node->points[0].y);
+      break;
+
+    case CLUTTER_PATH_REL_LINE_TO:
+      cairo_rel_line_to (cr, node->points[0].x, node->points[0].y);
+      break;
+
+    case CLUTTER_PATH_REL_CURVE_TO:
+      cairo_rel_curve_to (cr,
+                          node->points[0].x, node->points[0].y,
+                          node->points[1].x, node->points[1].y,
+                          node->points[2].x, node->points[2].y);
+      break;
+
+    case CLUTTER_PATH_CLOSE:
+      cairo_close_path (cr);
+    }
+}
+
+/**
+ * clutter_path_to_cairo_path:
+ * @path: a #ClutterPath
+ * @cr: a Cairo context
+ *
+ * Add the nodes of the ClutterPath to the path in the Cairo context.
+ *
+ * Since: 1.0
+ */
+void
+clutter_path_to_cairo_path (ClutterPath *path,
+                            cairo_t *cr)
+{
+  g_return_if_fail (CLUTTER_IS_PATH (path));
+  g_return_if_fail (cr != NULL);
+
+  clutter_path_foreach (path, clutter_path_add_node_to_cairo_path, cr);
+}
+
+/**
  * clutter_path_get_n_nodes:
  * @path: a #ClutterPath
  *

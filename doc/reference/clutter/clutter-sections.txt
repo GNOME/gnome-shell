@@ -702,6 +702,7 @@ clutter_path_add_rel_curve_to
 clutter_path_add_close
 clutter_path_add_string
 clutter_path_add_node
+clutter_path_add_cairo_path
 clutter_path_get_n_nodes
 clutter_path_get_node
 clutter_path_get_nodes
@@ -711,6 +712,7 @@ clutter_path_remove_node
 clutter_path_replace_node
 clutter_path_get_description
 clutter_path_set_description
+clutter_path_to_cairo_path
 clutter_path_clear
 clutter_path_get_position
 clutter_path_get_length
