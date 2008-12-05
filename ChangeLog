@@ -1,3 +1,53 @@
+2008-12-05  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1252 - Merge ClutterBehaviourPath and ClutterBehaviourBspline
+
+	* clutter/clutter-path.h:
+	* clutter/clutter-path.c: Implementation of new ClutterPath object
+	to represent a path combining straight line and bezier curve
+	elements.
+
+	* clutter/clutter.h: Include clutter-path.h and remove
+	clutter-behaviour-bspline.h
+
+	* tests/interactive/test-threads.c (test_threads_main):
+	* tests/interactive/test-script.c:
+	* tests/interactive/test-behave.c (test_behave_main): Use new path
+	API
+
+	* clutter/clutter-effect.c: Use the new ClutterBehaviourPath API.
+
+	* clutter/clutter-bezier.h:
+	* clutter/clutter-bezier.c: Moved bezier curve handling code out
+	from clutter-behaviour-bspline.c to a separate file.
+
+	* clutter/clutter-behaviour-path.h:
+	* clutter/clutter-behaviour-path.c: Reimplemented to work with a
+	ClutterPath
+
+	* clutter/clutter-behaviour-bspline.h:
+	* clutter/clutter-behaviour-bspline.c: Removed
+
+	* clutter/Makefile.am: Add clutter-path and clutter-bezier, remove
+	clutter-behaviour-bspline.
+
+	* tests/conform/test-path.c: New automatic test for ClutterPath
+	consistency
+
+	* tests/conform/test-conform-main.c (main): Add test_path
+
+	* tests/conform/Makefile.am (test_conformance_SOURCES): Add
+	test-path.c
+
+	* clutter/clutter-sections.txt: Add ClutterPath docs
+
+	* clutter/clutter.types:
+	* clutter/clutter-docs.xml:
+	* doc/reference/clutter/clutter-animation-tutorial.xml: Remove
+	mention of ClutterBehaviourBspline
+
+	* clutter/clutter-marshal.list: Add VOID:UINT
+
 2008-12-04  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1297 - Bring back support for GL_ARB_texture_rectangle

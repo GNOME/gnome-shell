@@ -25,20 +25,29 @@
 
 /**
  * SECTION:clutter-behaviour-path
- * @short_description: A behaviour interpolating position along a path
+ * @short_description: A behaviour for moving actors along a #ClutterPath
  *
  * #ClutterBehaviourPath interpolates actors along a defined path.
  *
- * A path is a set of #ClutterKnots object given when creating a new
- * #ClutterBehaviourPath instance.  Knots can be also added to the path
- * using clutter_behaviour_path_append_knot().  The whole path can be
- * cleared using clutter_behaviour_path_clear().  Each time the behaviour
- * reaches a knot in the path, the "knot-reached" signal is emitted.
+ * A path is described by a #ClutterPath object. The path can contain
+ * straight line parts and bezier curves. If the path contains
+ * %CLUTTER_PATH_MOVE_TO parts then the actors will jump to those
+ * coordinates. This can be used make disjoint paths.
  *
- * This first knot in the path is reached with the lower bound value
- * provided by the #ClutterAlpha objectused by the behaviour; the last
- * knot in the path is reached with the upper bound value provided by
- * the #ClutterAlpha object used by the behaviour.
+ * When creating a path behaviour in a #ClutterScript, you can specify
+ * the path property directly as a string. For example:
+ *
+ * |[
+ * {
+ *   "id"     : "spline-path",
+ *   "type"   : "ClutterBehaviourPath",
+ *   "path"   : "M 50 50 L 100 100",
+ *   "alpha"  : {
+ *      "timeline" : "main-timeline",
+ *      "function" : "ramp
+ *    }
+ * }
+ * ]|
  *
  * <note>If the alpha function is a periodic function, i.e. it returns to
  * 0 after reaching %CLUTTER_ALPHA_MAX_ALPHA, then the actors will walk
@@ -54,13 +63,14 @@
 #include "clutter-actor.h"
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-path.h"
+#include "clutter-bezier.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
-#include "clutter-scriptable.h"
 #include "clutter-script-private.h"
+#include "clutter-scriptable.h"
 
 #include <math.h>
 
@@ -68,14 +78,14 @@ static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ClutterBehaviourPath,
                          clutter_behaviour_path,
-	                 CLUTTER_TYPE_BEHAVIOUR,
+                         CLUTTER_TYPE_BEHAVIOUR,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
                                                 clutter_scriptable_iface_init));
 
 struct _ClutterBehaviourPathPrivate
 {
-  GSList      *knots;
-  ClutterKnot *last_knot_passed;
+  ClutterPath *path;
+  guint        last_knot_passed;
 };
 
 #define CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE(obj)    \
@@ -96,71 +106,8 @@ enum
 {
   PROP_0,
 
-  PROP_KNOT
+  PROP_PATH
 };
-
-static void
-clutter_behaviour_path_finalize (GObject *object)
-{
-  ClutterBehaviourPath *self = CLUTTER_BEHAVIOUR_PATH(object);
-
-  g_slist_foreach (self->priv->knots, (GFunc) clutter_knot_free, NULL);
-  g_slist_free (self->priv->knots);
-
-  G_OBJECT_CLASS (clutter_behaviour_path_parent_class)->finalize (object);
-}
-
-static inline void
-interpolate (const ClutterKnot *start,
-	     const ClutterKnot *end,
-	     ClutterKnot       *out,
-	     ClutterFixed       t)
-{
-  out->x = start->x + COGL_FIXED_TO_INT (t * (end->x - start->x));
-  out->y = start->y + COGL_FIXED_TO_INT (t * (end->y - start->y));
-}
-
-static gint
-node_distance (const ClutterKnot *start,
-               const ClutterKnot *end)
-{
-  gint t;
-
-  g_return_val_if_fail (start != NULL, 0);
-  g_return_val_if_fail (end != NULL, 0);
-
-  if (clutter_knot_equal (start, end))
-        return 0;
-
-  t = (end->x - start->x) * (end->x - start->x) +
-    (end->y - start->y) * (end->y - start->y);
-
-  /*
-   * If we are using limited precision sqrti implementation, fallback on
-   * clib sqrt if the precission would be less than 10%
-   */
-#if INT_MAX > CLUTTER_SQRTI_ARG_10_PERCENT
-  if (t <= COGL_SQRTI_ARG_10_PERCENT)
-    return cogl_sqrti (t);
-  else
-    return COGL_FLOAT_TO_INT (sqrt(t));
-#else
-    return cogl_sqrti (t);
-#endif
-}
-
-static gint
-path_total_length (ClutterBehaviourPath *behave)
-{
-  GSList *l;
-  gint    len = 0;
-
-  for (l = behave->priv->knots; l != NULL; l = l->next)
-    if (l->next && l->next->data)
-      len += node_distance (l->data, l->next->data);
-
-  return len;
-}
 
 static void
 actor_apply_knot_foreach (ClutterBehaviour *behaviour,
@@ -175,105 +122,50 @@ actor_apply_knot_foreach (ClutterBehaviour *behaviour,
 }
 
 static void
-path_alpha_to_position (ClutterBehaviourPath *behave,
-                        guint32               alpha)
+clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave,
+                                     guint32           alpha_value)
 {
-  ClutterBehaviourPathPrivate *priv = behave->priv;
-  ClutterBehaviour *behaviour = CLUTTER_BEHAVIOUR (behave);
-  GSList  *l;
-  gint     total_len, offset, dist = 0;
+  ClutterBehaviourPath *pathb = CLUTTER_BEHAVIOUR_PATH (behave);
+  ClutterBehaviourPathPrivate *priv = pathb->priv;
+  ClutterKnot position;
+  guint knot_num;
 
-  /* FIXME: Optimise. Much of the data used here can be pre-generated
-   *        ( total_len, dist between knots ) when knots are added/removed.
-  */
-
-  /* Calculation as follows:
-   *  o Get total length of path
-   *  o Find the offset on path where alpha val corresponds to
-   *  o Figure out between which knots this offset lies.
-   *  o Interpolate new co-ords via dist between these knots
-   *  o Apply to actors.
-  */
-
-  total_len = path_total_length (behave);
-  offset = (alpha * total_len) / CLUTTER_ALPHA_MAX_ALPHA;
-
-  CLUTTER_NOTE (BEHAVIOUR, "alpha %i vs %i, len: %i vs %i",
-		alpha, CLUTTER_ALPHA_MAX_ALPHA,
-		offset, total_len);
-
-  if (offset == 0)
+  if (priv->path)
+    knot_num = clutter_path_get_position (priv->path, alpha_value, &position);
+  else
     {
-      /* first knot */
-      clutter_behaviour_actors_foreach (behaviour,
-					actor_apply_knot_foreach,
-					priv->knots->data);
-
-      priv->last_knot_passed = (ClutterKnot*)priv->knots->data;
-      g_signal_emit (behave, path_signals[KNOT_REACHED], 0,
-                     priv->knots->data);
-      return;
+      memset (&position, 0, sizeof (position));
+      knot_num = 0;
     }
 
-  if (offset == total_len)
+  clutter_behaviour_actors_foreach (behave,
+                                    actor_apply_knot_foreach,
+                                    &position);
+
+  if (knot_num != priv->last_knot_passed)
     {
-      /* Special case for last knot */
-      ClutterKnot *last_knot = (g_slist_last (priv->knots))->data;
-
-      clutter_behaviour_actors_foreach (behaviour,
-					actor_apply_knot_foreach,
-					last_knot);
-
-      priv->last_knot_passed = (ClutterKnot*)priv->knots->data;
-      g_signal_emit (behave, path_signals[KNOT_REACHED], 0, last_knot);
-
-      return;
-    }
-
-  for (l = priv->knots; l != NULL; l = l->next)
-    {
-      gint dist_to_next = 0;
-      ClutterKnot *knot = l->data;
-
-      if (l->next)
-        {
-          ClutterKnot *next = l->next->data;
-
-	  dist_to_next = node_distance (knot, next);
-
-          if (offset >= dist && offset < (dist + dist_to_next))
-            {
-	      ClutterKnot new;
-	      ClutterFixed t;
-
-	      t = COGL_FIXED_FROM_INT (offset - dist) / dist_to_next;
-
-              interpolate (knot, next, &new, t);
-
-              clutter_behaviour_actors_foreach (behaviour,
-					        actor_apply_knot_foreach,
-					        &new);
-
-	      if (knot != priv->last_knot_passed)
-		{
-		  /* We just passed a new Knot */
-		  priv->last_knot_passed = knot;
-		  g_signal_emit (behave, path_signals[KNOT_REACHED], 0, knot);
-		}
-
-	      return;
-	    }
-        }
-
-      dist += dist_to_next;
+      g_signal_emit (behave, path_signals[KNOT_REACHED], 0, knot_num);
+      priv->last_knot_passed = knot_num;
     }
 }
 
 static void
-clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave,
-                                     guint32           alpha_value)
+clutter_behaviour_path_get_property (GObject      *gobject,
+                                     guint         prop_id,
+                                     GValue       *value,
+                                     GParamSpec   *pspec)
 {
-  path_alpha_to_position (CLUTTER_BEHAVIOUR_PATH (behave), alpha_value);
+  ClutterBehaviourPath *pathb = CLUTTER_BEHAVIOUR_PATH (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_PATH:
+      g_value_set_object (value, clutter_behaviour_path_get_path (pathb));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -286,8 +178,8 @@ clutter_behaviour_path_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_KNOT:
-      clutter_behaviour_path_append_knot (pathb, g_value_get_boxed (value));
+    case PROP_PATH:
+      clutter_behaviour_path_set_path (pathb, g_value_get_object (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -296,33 +188,38 @@ clutter_behaviour_path_set_property (GObject      *gobject,
 }
 
 static void
+clutter_behaviour_path_dispose (GObject *gobject)
+{
+  ClutterBehaviourPath *pathb = CLUTTER_BEHAVIOUR_PATH (gobject);
+
+  clutter_behaviour_path_set_path (pathb, NULL);
+
+  G_OBJECT_CLASS (clutter_behaviour_path_parent_class)->dispose (gobject);
+}
+
+static void
 clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
+  GParamSpec *pspec;
 
+  gobject_class->get_property = clutter_behaviour_path_get_property;
   gobject_class->set_property = clutter_behaviour_path_set_property;
-  gobject_class->finalize = clutter_behaviour_path_finalize;
+  gobject_class->dispose = clutter_behaviour_path_dispose;
 
-  /**
-   * ClutterBehaviourPath:knot:
-   *
-   * This property can be used to append a new knot to the path.
-   *
-   * Since: 0.2
-   */
-  g_object_class_install_property (gobject_class,
-                                   PROP_KNOT,
-                                   g_param_spec_boxed ("knot",
-                                                       "Knot",
-                                                       "Can be used to append a knot to the path",
-                                                       CLUTTER_TYPE_KNOT,
-                                                       CLUTTER_PARAM_WRITABLE));
+  pspec = g_param_spec_object ("path",
+                               "Path",
+                               "The ClutterPath object representing the path "
+                               "to animate along",
+                               CLUTTER_TYPE_PATH,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_PATH, pspec);
 
   /**
    * ClutterBehaviourPath::knot-reached:
    * @pathb: the object which received the signal
-   * @knot: the #ClutterKnot reached
+   * @knot_num: the index of the #ClutterPathKnot reached
    *
    * This signal is emitted each time a node defined inside the path
    * is reached.
@@ -335,51 +232,16 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterBehaviourPathClass, knot_reached),
                   NULL, NULL,
-                  clutter_marshal_VOID__BOXED,
+                  clutter_marshal_VOID__UINT,
                   G_TYPE_NONE, 1,
-                  CLUTTER_TYPE_KNOT);
+                  G_TYPE_UINT);
 
   behave_class->alpha_notify = clutter_behaviour_path_alpha_notify;
 
   g_type_class_add_private (klass, sizeof (ClutterBehaviourPathPrivate));
 }
 
-static void
-clutter_behaviour_path_init (ClutterBehaviourPath *self)
-{
-  ClutterBehaviourPathPrivate *priv;
-
-  self->priv = priv = CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE (self);
-}
-
-static void
-clutter_behaviour_path_set_custom_property (ClutterScriptable *scriptable,
-                                            ClutterScript     *script,
-                                            const gchar       *name,
-                                            const GValue      *value)
-{
-  if (strcmp (name, "knots") == 0)
-    {
-      ClutterBehaviourPath *path = CLUTTER_BEHAVIOUR_PATH (scriptable);
-      GSList *knots, *l;
-
-      if (!G_VALUE_HOLDS (value, G_TYPE_POINTER))
-        return;
-
-      knots = g_value_get_pointer (value);
-      for (l = knots; l != NULL; l = l->next)
-        {
-          ClutterKnot *knot = l->data;
-
-          clutter_behaviour_path_append_knot (path, knot);
-          clutter_knot_free (knot);
-        }
-
-      g_slist_free (knots);
-    }
-  else
-    g_object_set_property (G_OBJECT (scriptable), name, value);
-}
+static ClutterScriptableIface *parent_scriptable_iface = NULL;
 
 static gboolean
 clutter_behaviour_path_parse_custom_node (ClutterScriptable *scriptable,
@@ -388,237 +250,190 @@ clutter_behaviour_path_parse_custom_node (ClutterScriptable *scriptable,
                                           const gchar       *name,
                                           JsonNode          *node)
 {
-  if (strcmp (name, "knots") == 0)
+  if (strcmp ("path", name) == 0)
     {
-      JsonArray *array;
-      guint knots_len, i;
-      GSList *knots = NULL;
+      ClutterPath *path;
+      GValue node_value = { 0 };
 
-      array = json_node_get_array (node);
-      knots_len = json_array_get_length (array);
+      path = g_object_ref_sink (clutter_path_new ());
 
-      for (i = 0; i < knots_len; i++)
-        {
-          JsonNode *val = json_array_get_element (array, i);
-          ClutterKnot knot = { 0, };
+      json_node_get_value (node, &node_value);
 
-          if (clutter_script_parse_knot (script, val, &knot))
-            {
-              CLUTTER_NOTE (SCRIPT, "parsed knot [ x:%d, y:%d ]",
-                            knot.x, knot.y);
+      if (!G_VALUE_HOLDS (&node_value, G_TYPE_STRING)
+          || !clutter_path_set_description (path,
+                                            g_value_get_string (&node_value)))
+        g_warning ("Invalid path description");
 
-              knots = g_slist_prepend (knots, clutter_knot_copy (&knot));
-            }
-        }
+      g_value_unset (&node_value);
 
-      g_value_init (value, G_TYPE_POINTER);
-      g_value_set_pointer (value, g_slist_reverse (knots));
+      g_value_init (value, G_TYPE_OBJECT);
+      g_value_take_object (value, path);
 
       return TRUE;
     }
-
-  return FALSE;
+  /* chain up */
+  else if (parent_scriptable_iface->parse_custom_node)
+    return parent_scriptable_iface->parse_custom_node (scriptable, script,
+                                                       value, name, node);
+  else
+    return FALSE;
 }
 
 static void
 clutter_scriptable_iface_init (ClutterScriptableIface *iface)
 {
+  parent_scriptable_iface = g_type_interface_peek_parent (iface);
+
+  if (!parent_scriptable_iface)
+    parent_scriptable_iface
+      = g_type_default_interface_peek (CLUTTER_TYPE_SCRIPTABLE);
+
   iface->parse_custom_node = clutter_behaviour_path_parse_custom_node;
-  iface->set_custom_property = clutter_behaviour_path_set_custom_property;
+}
+
+static void
+clutter_behaviour_path_init (ClutterBehaviourPath *self)
+{
+  ClutterBehaviourPathPrivate *priv;
+
+  self->priv = priv = CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE (self);
+
+  priv->path = NULL;
+  priv->last_knot_passed = G_MAXUINT;
 }
 
 /**
  * clutter_behaviour_path_new:
  * @alpha: a #ClutterAlpha, or %NULL
- * @knots: a list of #ClutterKnots, or %NULL for an empty path
- * @n_knots: the number of nodes in the path
+ * @path: a #ClutterPath or %NULL for an empty path
  *
  * Creates a new path behaviour. You can use this behaviour to drive
- * actors along the nodes of a path, described by the @knots.
+ * actors along the nodes of a path, described by @path.
+ *
+ * This will claim the floating reference on the #ClutterPath so you
+ * do not need to unref if it.
  *
  * Return value: a #ClutterBehaviour
  *
  * Since: 0.2
  */
 ClutterBehaviour *
-clutter_behaviour_path_new (ClutterAlpha      *alpha,
-			    const ClutterKnot *knots,
-                            guint              n_knots)
+clutter_behaviour_path_new (ClutterAlpha *alpha,
+                            ClutterPath  *path)
 {
-  ClutterBehaviourPath *behave;
-  gint i;
-
-  behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_PATH,
-                         "alpha", alpha,
-			 NULL);
-
-  for (i = 0; i < n_knots; i++)
-    {
-      ClutterKnot knot = knots[i];
-
-      clutter_behaviour_path_append_knot (behave, &knot);
-    }
-
-  return CLUTTER_BEHAVIOUR (behave);
+  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_PATH,
+                       "alpha", alpha,
+                       "path", path,
+                       NULL);
 }
 
 /**
- * clutter_behaviour_path_get_knots:
- * @pathb: a #ClutterBehvaiourPath
+ * clutter_behaviour_path_new_with_description:
+ * @alpha: a #ClutterAlpha
+ * @desc: a string description of the path
  *
- * Returns a copy of the list of knots contained by @pathb
+ * Creates a new path behaviour using the path described by @desc. See
+ * clutter_path_add_string() for a description of the format.
  *
- * Return value: a #GSList of the paths knots.
+ * Return value: a #ClutterBehaviour
  *
- * Since: 0.2
+ * Since: 1.0
  */
-GSList *
-clutter_behaviour_path_get_knots (ClutterBehaviourPath *pathb)
+ClutterBehaviour *
+clutter_behaviour_path_new_with_description (ClutterAlpha *alpha,
+                                             const gchar  *desc)
 {
-  GSList *retval, *l;
+  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_PATH,
+                       "alpha", alpha,
+                       "path", clutter_path_new_with_description (desc),
+                       NULL);
+}
 
+/**
+ * clutter_behaviour_path_new_with_knots:
+ * @alpha: a #ClutterAlpha
+ * @knots: an array of #ClutterKnot<!-- -->s
+ * @n_knots: number of entries in @knots
+ *
+ * Creates a new path behaviour that will make the actors visit all of
+ * the given knots in order with straight lines in between.
+ *
+ * A path will be created where the first knot is used in a
+ * %CLUTTER_PATH_MOVE_TO and the subsequent knots are used in
+ * %CLUTTER_PATH_LINE_TO<!-- -->s.
+ *
+ * Return value: a #ClutterBehaviour
+ *
+ * Since: 1.0
+ */
+ClutterBehaviour *
+clutter_behaviour_path_new_with_knots (ClutterAlpha      *alpha,
+                                       const ClutterKnot *knots,
+                                       guint              n_knots)
+{
+  ClutterPath *path = clutter_path_new ();
+  guint i;
+
+  if (n_knots > 0)
+    {
+      clutter_path_add_move_to (path, knots[0].x, knots[0].y);
+
+      for (i = 1; i < n_knots; i++)
+        clutter_path_add_line_to (path, knots[i].x, knots[i].y);
+    }
+
+  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_PATH,
+                       "alpha", alpha,
+                       "path", path,
+                       NULL);
+}
+
+/**
+ * clutter_behaviour_path_set_path:
+ * @pathb: the path behaviour
+ * @path: the new path to follow
+ *
+ * Change the path that the actors will follow. This will take the
+ * floating reference on the #ClutterPath so you do not need to unref
+ * it.
+ *
+ * Since: 1.0
+ */
+void
+clutter_behaviour_path_set_path (ClutterBehaviourPath *pathb,
+                                 ClutterPath          *path)
+{
+  ClutterBehaviourPathPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb));
+
+  priv = pathb->priv;
+
+  if (path)
+    g_object_ref_sink (path);
+
+  if (priv->path)
+    g_object_unref (priv->path);
+
+  priv->path = path;
+
+  g_object_notify (G_OBJECT (pathb), "path");
+}
+
+/**
+ * clutter_behaviour_path_get_path:
+ * @pathb: a #ClutterBehaviourPath instance
+ *
+ * Get the current path of the behaviour
+ *
+ * Return value: the path
+ *
+ * Since 1.0:
+ */
+ClutterPath *
+clutter_behaviour_path_get_path (ClutterBehaviourPath *pathb)
+{
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb), NULL);
 
-  retval = NULL;
-  for (l = pathb->priv->knots; l != NULL; l = l->next)
-    retval = g_slist_prepend (retval, l->data);
-
-  return g_slist_reverse (retval);
-}
-
-/**
- * clutter_behaviour_path_append_knot:
- * @pathb: a #ClutterBehvaiourPath
- * @knot:  a #ClutterKnot to append.
- *
- * Appends a #ClutterKnot to the path
- *
- * Since: 0.2
- */
-void
-clutter_behaviour_path_append_knot (ClutterBehaviourPath  *pathb,
-				    const ClutterKnot     *knot)
-{
-  ClutterBehaviourPathPrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb));
-  g_return_if_fail (knot != NULL);
-
-  priv = pathb->priv;
-  priv->knots = g_slist_append (priv->knots, clutter_knot_copy (knot));
-}
-
-/**
- * clutter_behaviour_path_insert_knot:
- * @pathb: a #ClutterBehvaiourPath
- * @offset: position in path to insert knot.
- * @knot:  a #ClutterKnot to append.
- *
- * Inserts a #ClutterKnot in the path at specified position. Values greater
- * than total number of knots will append the knot at the end of path.
- *
- * Since: 0.2
- */
-void
-clutter_behaviour_path_insert_knot (ClutterBehaviourPath  *pathb,
-				    guint                  offset,
-				    const ClutterKnot     *knot)
-{
-  ClutterBehaviourPathPrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb));
-  g_return_if_fail (knot != NULL);
-
-  priv = pathb->priv;
-  priv->knots = g_slist_insert (priv->knots, clutter_knot_copy (knot), offset);
-}
-
-/**
- * clutter_behaviour_path_remove_knot:
- * @pathb: a #ClutterBehvaiourPath
- * @offset: position in path to remove knot.
- *
- * Removes a #ClutterKnot in the path at specified offset.
- *
- * Since: 0.2
- */
-void
-clutter_behaviour_path_remove_knot (ClutterBehaviourPath  *pathb,
-				    guint                  offset)
-{
-  ClutterBehaviourPathPrivate *priv;
-  GSList                      *togo;
-
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb));
-
-  priv = pathb->priv;
-
-  togo = g_slist_nth (priv->knots, offset);
-
-  if (togo)
-    {
-      clutter_knot_free ((ClutterKnot*)togo->data);
-      priv->knots = g_slist_delete_link (priv->knots, togo);
-    }
-}
-
-static void
-clutter_behaviour_path_append_knots_valist (ClutterBehaviourPath *pathb,
-					    const ClutterKnot    *first_knot,
-					    va_list               args)
-{
-  const ClutterKnot * knot;
-
-  knot = first_knot;
-  while (knot)
-    {
-      clutter_behaviour_path_append_knot (pathb, knot);
-      knot = va_arg (args, ClutterKnot*);
-    }
-}
-
-/**
- * clutter_behaviour_path_append_knots:
- * @pathb: a #ClutterBehvaiourPath
- * @first_knot: the #ClutterKnot knot to add to the path
- * @Varargs: additional knots to add to the path
- *
- * Adds a NULL-terminated list of knots to a path.  This function is
- * equivalent to calling clutter_behaviour_path_append_knot() for each
- * member of the list.
- *
- * Since: 0.2
- */
-void
-clutter_behaviour_path_append_knots (ClutterBehaviourPath *pathb,
-				     const ClutterKnot    *first_knot,
-				     ...)
-{
-  va_list args;
-
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb));
-  g_return_if_fail (first_knot != NULL);
-
-  va_start (args, first_knot);
-  clutter_behaviour_path_append_knots_valist (pathb, first_knot, args);
-  va_end (args);
-}
-
-/**
- * clutter_behaviour_path_clear:
- * @pathb: a #ClutterBehvaiourPath
- *
- * Removes all knots from a path
- *
- * Since: 0.2
- */
-void
-clutter_behaviour_path_clear (ClutterBehaviourPath *pathb)
-{
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb));
-
-  g_slist_foreach (pathb->priv->knots, (GFunc) clutter_knot_free, NULL);
-  g_slist_free (pathb->priv->knots);
-
-  pathb->priv->knots = NULL;
+  return pathb->priv->path;
 }

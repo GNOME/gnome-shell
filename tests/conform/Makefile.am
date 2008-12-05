@@ -13,6 +13,7 @@ test_conformance_SOURCES = \
 	test-mesh-contiguous.c \
 	test-mesh-interleved.c \
 	test-mesh-mutability.c \
+	test-path.c \
 	test-pick.c \
 	test-label-cache.c \
 	test-clutter-entry.c \

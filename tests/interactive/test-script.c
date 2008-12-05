@@ -40,7 +40,7 @@ static const gchar *test_behaviour =
 "  {"
 "    \"id\"          : \"path-behaviour\","
 "    \"type\"        : \"ClutterBehaviourPath\","
-"    \"knots\"       : [ [ 50, 50 ], { \"x\" : 100, \"y\" : 100 } ],"
+"    \"path\"        : \"M 50 50 L 100 100\","
 "    \"alpha\"       : {"
 "      \"timeline\" : \"main-timeline\","
 "      \"function\" : \"ramp\""

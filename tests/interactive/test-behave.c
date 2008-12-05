@@ -65,9 +65,6 @@ typedef enum {
     PATH_BSPLINE
 } path_t;
 
-#define MAGIC 0.551784
-#define RADIUS 200
-
 G_MODULE_EXPORT int
 test_behave_main (int argc, char *argv[])
 {
@@ -81,25 +78,25 @@ test_behave_main (int argc, char *argv[])
   ClutterColor      rect_border_color = { 0, 0, 0, 0 };
   int               i;
   path_t            path_type = PATH_POLY;
-  
-  ClutterKnot       knots_poly[] = {{ 0, 0 }, { 0, 300 }, { 300, 300 },
-				    { 300, 0 }, {0, 0 }};
-  
-  ClutterKnot       origin = { 200, 200 };
 
-  ClutterKnot       knots_bspline[] = {{ -RADIUS, 0 },
-				       { -RADIUS, RADIUS*MAGIC },
-				       { -RADIUS*MAGIC, RADIUS },
-				       { 0, RADIUS },
-				       { RADIUS*MAGIC, RADIUS },
-				       { RADIUS, RADIUS*MAGIC },
-				       { RADIUS, 0 },
-				       { RADIUS, -RADIUS*MAGIC },
-				       { RADIUS*MAGIC, -RADIUS },
-				       { 0, -RADIUS },
-				       { -RADIUS*MAGIC, -RADIUS },
-				       { -RADIUS, -RADIUS*MAGIC },
-				       { -RADIUS, 0}};
+  const char       *knots_poly = ("M 0, 0   L 0, 300 L 300, 300 "
+                                  "L 300, 0 L 0, 0");
+
+  /* A spiral created with inkscake */
+  const char       *knots_bspline =
+    "M 34.285713,35.219326 "
+    "C 44.026891,43.384723 28.084874,52.378758 20.714286,51.409804 "
+    "C 0.7404474,48.783999 -4.6171866,23.967448 1.904757,8.0764719 "
+    "C 13.570984,-20.348756 49.798303,-26.746504 74.999994,-13.352108 "
+    "C 111.98449,6.3047056 119.56591,55.259271 99.047626,89.505034 "
+    "C 71.699974,135.14925 9.6251774,143.91924 -33.571422,116.17172 "
+    "C -87.929934,81.254291 -97.88804,5.8941057 -62.857155,-46.209236 "
+    "C -20.430061,-109.31336 68.300385,-120.45954 129.2857,-78.114021 "
+    "C 201.15479,-28.21129 213.48932,73.938876 163.80954,143.79074 "
+    "C 106.45226,224.43749 -9.1490153,237.96076 -87.85713,180.93363 "
+    "C -177.29029,116.13577 -192.00272,-12.937817 -127.61907,-100.49494 "
+    "C -55.390344,-198.72081 87.170553,-214.62275 183.57141,-142.87593 "
+    "C 290.59464,-63.223369 307.68641,92.835839 228.57145,198.07645";
 
   for (i = 0; i < argc; ++i)
     {
@@ -187,7 +184,11 @@ test_behave_main (int argc, char *argv[])
   switch (path_type)
     {
     case PATH_POLY:
-      p_behave = clutter_behaviour_path_new (alpha, knots_poly, 5);
+      {
+        ClutterPath *path = clutter_path_new ();
+        clutter_path_set_description (path, knots_poly);
+        p_behave = clutter_behaviour_path_new (alpha, path);
+      }
       break;
     case PATH_ELLIPSE:
       p_behave =
@@ -204,15 +205,11 @@ test_behave_main (int argc, char *argv[])
       break;
 
     case PATH_BSPLINE:
-      origin.x = 0;
-      origin.y = RADIUS;
-      p_behave =
-	clutter_behaviour_bspline_new (alpha, knots_bspline,
-				   sizeof (knots_bspline)/sizeof(ClutterKnot));
-
-      clutter_behaviour_bspline_set_origin (
-					CLUTTER_BEHAVIOUR_BSPLINE (p_behave),
-					&origin);
+      {
+        ClutterPath *path = clutter_path_new ();
+        clutter_path_set_description (path, knots_bspline);
+        p_behave = clutter_behaviour_path_new (alpha, path);
+      }
       break;
     }
 
