@@ -130,6 +130,14 @@ static gboolean idle_update_icon (gpointer data);
 
 G_DEFINE_TYPE (MetaWindow, meta_window, G_TYPE_OBJECT);
 
+enum {
+  PROP_0,
+
+  PROP_TITLE,
+  PROP_ICON,
+  PROP_MINI_ICON,  
+};
+
 static void
 meta_window_finalize (GObject *object)
 {
@@ -155,11 +163,76 @@ meta_window_finalize (GObject *object)
 }
 
 static void
+meta_window_get_property(GObject         *object,
+                         guint            prop_id,
+                         GValue          *value,
+                         GParamSpec      *pspec)
+{
+  MetaWindow *win = META_WINDOW (object);
+
+  switch (prop_id)
+    {
+    case PROP_TITLE:
+      g_value_set_string (value, win->title);
+      break;
+    case PROP_ICON:
+      g_value_set_object (value, win->icon);
+      break;
+    case PROP_MINI_ICON:
+      g_value_set_object (value, win->mini_icon);
+      break;            
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;      
+    }
+}
+
+static void
+meta_window_set_property(GObject         *object,
+                         guint            prop_id,
+                         const GValue    *value,
+                         GParamSpec      *pspec)
+{
+  switch (prop_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;      
+    }
+}
+
+static void
 meta_window_class_init (MetaWindowClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = meta_window_finalize;
+  
+  object_class->get_property = meta_window_get_property;
+  object_class->set_property = meta_window_set_property;
+  
+  g_object_class_install_property (object_class,
+                                   PROP_TITLE,
+                                   g_param_spec_string ("title",
+                                                        "Title",
+                                                        "The title of the window",
+                                                        NULL,
+                                                        G_PARAM_READABLE));  
+  g_object_class_install_property (object_class,
+                                   PROP_ICON,
+                                   g_param_spec_object ("icon",
+                                                        "Icon",
+                                                        "32 pixel sized icon",
+                                                        GDK_TYPE_PIXBUF,
+                                                        G_PARAM_READABLE));
+
+  g_object_class_install_property (object_class,
+                                   PROP_MINI_ICON,
+                                   g_param_spec_object ("mini-icon",
+                                                        "Mini Icon",
+                                                        "16 pixel sized icon",
+                                                        GDK_TYPE_PIXBUF,
+                                                        G_PARAM_READABLE));   
 }
 
 static void
@@ -5943,6 +6016,11 @@ meta_window_update_icon_now (MetaWindow *window)
       
       window->icon = icon;
       window->mini_icon = mini_icon;
+      
+      g_object_freeze_notify (G_OBJECT (window));
+      g_object_notify (G_OBJECT (window), "icon");
+      g_object_notify (G_OBJECT (window), "mini-icon");
+      g_object_thaw_notify (G_OBJECT (window));
 
       redraw_icon (window);
     }
