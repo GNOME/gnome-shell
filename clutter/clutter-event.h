@@ -68,6 +68,11 @@ G_BEGIN_DECLS
  * @CLUTTER_BUTTON3_MASK: Mask applied by the third pointer button
  * @CLUTTER_BUTTON4_MASK: Mask applied by the fourth pointer button
  * @CLUTTER_BUTTON5_MASK: Mask applied by the fifth pointer button
+ * @CLUTTER_SUPER_MASK: Mask applied by the Super key
+ * @CLUTTER_HYPER_MASK: Mask applied by the Hyper key
+ * @CLUTTER_META_MASK: Mask applied by the Meta key
+ * @CLUTTER_RELEASE_MASK: Mask applied during release
+ * @CLUTTER_MODIFIER_MASK: A mask covering all modifier types
  *
  * Masks applied to a #ClutterEvent by modifiers.
  *
@@ -86,7 +91,17 @@ typedef enum {
   CLUTTER_BUTTON2_MASK  = 1 << 9,
   CLUTTER_BUTTON3_MASK  = 1 << 10,
   CLUTTER_BUTTON4_MASK  = 1 << 11,
-  CLUTTER_BUTTON5_MASK  = 1 << 12
+  CLUTTER_BUTTON5_MASK  = 1 << 12,
+
+  /* bits 15 to 25 are currently unused; bit 29 is used internally */
+
+  CLUTTER_SUPER_MASK    = 1 << 26,
+  CLUTTER_HYPER_MASK    = 1 << 27,
+  CLUTTER_META_MASK     = 1 << 28,
+
+  CLUTTER_RELEASE_MASK  = 1 << 30,
+
+  CLUTTER_MODIFIER_MASK = 0x5c001fff
 } ClutterModifierType;
 
 /**

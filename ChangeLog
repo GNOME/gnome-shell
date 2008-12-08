@@ -1,3 +1,32 @@
+2008-12-08  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter.h: Add ClutterBindingPool to the build.
+
+	* clutter/clutter-binding-pool.c:
+	* clutter/clutter-binding-pool.h: Add ClutterBindingPool, a data
+	structure meant to hold (key symbol, modifiers) pairs and associate
+	them to a closure. The ClutterBindingPool can be used to install
+	key bindings for actors and then execute closures inside the
+	key-press-event signal handlers, removing the need for big
+	switch() or if() blocks for each key.
+
+	* clutter/clutter-event.c: Consistently use "key symbol" instead
+	of "key value".
+
+	* clutter/clutter-event.h: Add more modifier masks.
+
+	* clutter/clutter-marshal.list:
+
+	* tests/conform/Makefile.am:
+	* tests/conform/test-binding-pool.c:
+	* tests/conform/test-conform-main.c: Add ClutterBindingPool
+	conformance test.
+
+	* tests/interactive/Makefile.am:
+	* tests/interactive/test-binding-pool.c: Add interactive test (and
+	example code) for the ClutterBindingPool usage.
+
 2008-12-08  Neil Roberts  <neil@linux.intel.com>
 
 	* clutter/clutter-main.c (_clutter_do_pick): Restore the GL_DITHER

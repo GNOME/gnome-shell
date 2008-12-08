@@ -224,9 +224,9 @@ clutter_button_event_button (ClutterButtonEvent *buttev)
  * clutter_key_event_symbol:
  * @keyev: A #ClutterKeyEvent
  *
- * Retrieves the value of the key that caused @keyev.
+ * Retrieves the symbol of the key that caused @keyev.
  *
- * Return value: The keysym representing the key
+ * Return value: The key symbol representing the key
  */
 guint
 clutter_key_event_symbol (ClutterKeyEvent *keyev)
@@ -273,7 +273,7 @@ clutter_key_event_unicode (ClutterKeyEvent *keyev)
 
 /**
  * clutter_keysym_to_unicode:
- * @keyval: a clutter key symbol 
+ * @keyval: a key symbol 
  * 
  * Convert from a Clutter key symbol to the corresponding ISO10646 (Unicode)
  * character.

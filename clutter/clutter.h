@@ -41,6 +41,7 @@
 #include "clutter-behaviour-path.h"
 #include "clutter-behaviour-rotate.h"
 #include "clutter-behaviour-scale.h"
+#include "clutter-binding-pool.h"
 #include "clutter-child-meta.h"
 #include "clutter-clone-texture.h"
 #include "clutter-deprecated.h"
