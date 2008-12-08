@@ -1605,3 +1605,27 @@ CLUTTER_INTERVAL_GET_CLASS
 ClutterIntervalPrivate
 clutter_interval_get_type
 </SECTION>
+
+<SECTION>
+<TITLE>Key Bindings</TITLE>
+<FILE>clutter-binding-pool</FILE>
+ClutterBindingPool
+ClutterBindingActionFunc
+
+<SUBSECTION>
+clutter_binding_pool_new
+clutter_binding_pool_get_from_class
+clutter_binding_pool_find
+
+<SUBSECTION>
+clutter_binding_pool_install_action
+clutter_binding_pool_install_closure
+clutter_binding_pool_list_actions
+clutter_binding_pool_find_action
+clutter_binding_pool_remove_action
+clutter_binding_pool_block_action
+clutter_binding_pool_unblock_action
+
+<SUBSECTION>
+clutter_binding_pool_activate
+</SECTION>

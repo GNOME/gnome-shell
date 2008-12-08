@@ -116,6 +116,7 @@
       <title>General purpose API</title>
 
       <xi:include href="xml/clutter-color.xml"/>
+      <xi:include href="xml/clutter-binding-pool.xml"/>
       <xi:include href="xml/clutter-event.xml"/>
       <xi:include href="xml/clutter-fixed.xml"/>
       <xi:include href="xml/clutter-main.xml"/>
