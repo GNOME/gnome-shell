@@ -347,6 +347,11 @@ mutter_window_constructed (GObject *object)
     }
 
   priv->actor = mutter_shaped_texture_new ();
+
+  if (!clutter_glx_texture_pixmap_using_extension (
+	    CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor)))
+      g_warning ("NOTE: Not using GLX TFP!\n");
+
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
 
   update_shape ((Mutter *)
