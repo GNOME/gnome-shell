@@ -1,5 +1,10 @@
 2008-12-08  Emmanuele Bassi  <ebassi@linux.intel.com>
 
+	* clutter/clutter-binding-pool.h: Fix the ActivateFunc
+	documentation by adding a "return value" annotation.
+
+2008-12-08  Emmanuele Bassi  <ebassi@linux.intel.com>
+
 	* clutter/Makefile.am:
 	* clutter/clutter.h: Add ClutterBindingPool to the build.
 

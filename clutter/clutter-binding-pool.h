@@ -46,8 +46,8 @@ typedef struct _ClutterBindingPool      ClutterBindingPool;
  * clutter_binding_pool_install_action() and invoked by
  * clutter_binding_pool_activate().
  *
- * The function should return %TRUE if the key binding was
- * handled, and return %FALSE otherwise.
+ * Return value: the function should return %TRUE if the key
+ *   binding has been handled, and return %FALSE otherwise
  *
  * Since: 1.0
  */
