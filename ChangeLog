@@ -1,3 +1,9 @@
+2008-12-08  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/clutter-main.c (_clutter_do_pick): Restore the GL_DITHER
+	state after reading the pixel value instead of before. Suggested
+	in bug 1328 thanks to Guy Zadickario.
+
 2008-12-05  Emmanuele Bassi  <ebassi@linux.intel.com>
 
 	Bug 1309 - clutter_timeline_new and clutter_timeline_set_speed

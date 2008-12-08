@@ -386,12 +386,12 @@ _clutter_do_pick (ClutterStage   *stage,
   */
   glFinish();
 
+  /* Read the color of the screen co-ords pixel */
+  glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+
   /* Restore whether GL_DITHER was enabled */
   if (dither_was_on)
     glEnable (GL_DITHER);
-
-  /* Read the color of the screen co-ords pixel */
-  glReadPixels (x, viewport[3] - y -1, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     return CLUTTER_ACTOR (stage);
