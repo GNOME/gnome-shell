@@ -64,6 +64,7 @@ typedef struct
   /* Textures */
   GArray	      *texture_handles;
   GArray              *texture_vertices;
+  GArray              *texture_indices;
   /* The gl texture number that the above vertices apply to. This to
      detect when a different slice is encountered so that the vertices
      can be flushed */
