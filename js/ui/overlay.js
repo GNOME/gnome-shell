@@ -13,7 +13,7 @@ const Panel = imports.ui.panel;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Big = imports.gi.Big;
-const AppDisplay = imports.ui.appdisplay;
+const AppDisplay = imports.ui.appDisplay;
 
 const OVERLAY_BACKGROUND_COLOR = new Clutter.Color();
 OVERLAY_BACKGROUND_COLOR.from_pixel(0x000000ff);
@@ -75,13 +75,13 @@ Sideshow.prototype = {
                 let text = me._searchEntry.text;
                 me._searchQueued = false;
                 me._searchActive = text != '';
-                me._appdisplay.setSearch(text);
+                me._appDisplay.setSearch(text);
                 return false;
             });
         });
         this._searchEntry.connect('activate', function (se) {
             me._searchEntry.text = '';
-            me._appdisplay.searchActivate();
+            me._appDisplay.searchActivate();
             return true;
         });
         this._searchEntry.connect('key-press-event', function (se, e) {
@@ -90,10 +90,10 @@ Sideshow.prototype = {
                 me._searchEntry.text = '';
                 return true;
             } else if (code == 111) {
-                me._appdisplay.selectUp();
+                me._appDisplay.selectUp();
                 return true;
             } else if (code == 116) {
-                me._appdisplay.selectDown();
+                me._appDisplay.selectDown();
                 return true;
             }
             return false;
@@ -108,19 +108,19 @@ Sideshow.prototype = {
         this.actor.add_actor(appsText);
 
         let menuY = appsText.y + appsText.height + 6;
-        this._appdisplay = new AppDisplay.AppDisplay(width, global.screen_height - menuY);
-        this._appdisplay.actor.x = SIDESHOW_PAD;
-        this._appdisplay.actor.y = menuY;
-        this.actor.add_actor(this._appdisplay.actor);
+        this._appDisplay = new AppDisplay.AppDisplay(width, global.screen_height - menuY);
+        this._appDisplay.actor.x = SIDESHOW_PAD;
+        this._appDisplay.actor.y = menuY;
+        this.actor.add_actor(this._appDisplay.actor);
 
         /* Proxy the activated signal */
-        this._appdisplay.connect('activated', function(appdisplay) {
+        this._appDisplay.connect('activated', function(appDisplay) {
           me.emit('activated');
         });
     },
 
     show: function() {
-          this._appdisplay.show();
+          this._appDisplay.show();
     },
 
     hide: function() {

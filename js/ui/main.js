@@ -8,8 +8,8 @@ const Tweener = imports.tweener.tweener;
 
 const Panel = imports.ui.panel;
 const Overlay = imports.ui.overlay;
-const RunDialog = imports.ui.run_dialog;
-const WindowManager = imports.ui.windowmanager;
+const RunDialog = imports.ui.runDialog;
+const WindowManager = imports.ui.windowManager;
 
 const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
 DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
@@ -17,7 +17,7 @@ DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
 let panel = null;
 let overlay = null;
 let overlayActive = false;
-let run_dialog = null;
+let runDialog = null;
 let wm = null;
 
 // The "FrameTicker" object is an object used to feed new frames to Tweener
@@ -103,15 +103,15 @@ function start() {
 
     global.connect('panel-run-dialog', function(panel) {
         // Make sure not more than one run dialog is shown.
-        if (!run_dialog) {
-            run_dialog = new RunDialog.RunDialog();
+        if (!runDialog) {
+            runDialog = new RunDialog.RunDialog();
             let end_handler = function() {
-                run_dialog.destroy();
-                run_dialog = null;
+                runDialog.destroy();
+                runDialog = null;
             };
-            run_dialog.connect('run', end_handler);
-            run_dialog.connect('cancel', end_handler);
-            if (!run_dialog.show())
+            runDialog.connect('run', end_handler);
+            runDialog.connect('cancel', end_handler);
+            if (!runDialog.show())
                 end_handler();
         }
     });

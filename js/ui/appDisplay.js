@@ -54,13 +54,13 @@ function AppDisplayItem(node, width) {
 }
 
 AppDisplayItem.prototype = {
-    _init: function(appinfo, width) {
+    _init: function(appInfo, width) {
         let me = this;
-        this._appinfo = appinfo;
+        this._appInfo = appInfo;
 
-        let name = appinfo.get_name();
+        let name = appInfo.get_name();
 
-        let icontheme = Gtk.IconTheme.get_default();
+        let iconTheme = Gtk.IconTheme.get_default();
 
         this._group = new Clutter.Group({reactive: true,
                                          width: width,
@@ -76,10 +76,10 @@ AppDisplayItem.prototype = {
         this._group.add_actor(this._bg);
 
         this._icon = new Clutter.Texture({ width: 48, height: 48, x: 0, y: 0 });
-        let gicon = appinfo.get_icon();
+        let gicon = appInfo.get_icon();
         let path = null;
         if (gicon != null) {
-            let iconinfo = icontheme.lookup_by_gicon(gicon, 48, Gtk.IconLookupFlags.NO_SVG);
+            let iconinfo = iconTheme.lookup_by_gicon(gicon, 48, Gtk.IconLookupFlags.NO_SVG);
             if (iconinfo)
                 path = iconinfo.get_filename();
         }
@@ -88,7 +88,7 @@ AppDisplayItem.prototype = {
             this._icon.set_from_file(path);
         this._group.add_actor(this._icon);
 
-        let comment = appinfo.get_description();
+        let comment = appInfo.get_description();
         let text_width = width - (me._icon.width + 4);
         this._name = new Clutter.Label({ color: APPDISPLAY_NAME_COLOR,
                                      font_name: "Sans 14px",
@@ -109,10 +109,10 @@ AppDisplayItem.prototype = {
         this.actor = this._group;
     },
     launch: function() {
-        this._appinfo.launch([], null);
+        this._appInfo.launch([], null);
     },
-    appinfo: function () {
-        return this._appinfo;
+    appInfo: function () {
+        return this._appInfo;
     },
     markSelected: function(isSelected) {
        let color;
@@ -137,16 +137,16 @@ AppDisplay.prototype = {
         this._search = '';
         this._width = width;
         this._height = height;
-        this._appmonitor = new Shell.AppMonitor();
+        this._appMonitor = new Shell.AppMonitor();
         this._appsStale = true;
-        this._appmonitor.connect('changed', function(mon) {
+        this._appMonitor.connect('changed', function(mon) {
             me._appsStale = true;
         });
         this._grid = new Tidy.Grid({width: width, height: height});
-        this._appset = {}; // Map<appid, appinfo>
-        this._displayed = {}; // Map<appid, AppDisplay>
+        this._appSet = {}; // Map<appId, appInfo>
+        this._displayed = {}; // Map<appId, AppDisplay>
         this._selectedIndex = -1;
-        this._max_items = this._height / (APPDISPLAY_HEIGHT + APPDISPLAY_PADDING);
+        this._maxItems = this._height / (APPDISPLAY_HEIGHT + APPDISPLAY_PADDING);
         this.actor = this._grid;
     },
 
@@ -157,38 +157,38 @@ AppDisplay.prototype = {
             return;
         for (id in this._displayed)
             this._displayed[id].destroy();
-        this._appset = {};
+        this._appSet = {};
         this._displayed = {};
         this._selectedIndex = -1;
         let apps = Gio.app_info_get_all();
         for (let i = 0; i < apps.length; i++) {
-            let appinfo = apps[i];
-            let appid = appinfo.get_id();
-            this._appset[appid] = appinfo;
+            let appInfo = apps[i];
+            let appId = appInfo.get_id();
+            this._appSet[appId] = appInfo;
         }
         this._appsStale = false;
     },
 
-    _removeItem: function(appid) {
-        let item = this._displayed[appid];
+    _removeItem: function(appId) {
+        let item = this._displayed[appId];
         let group = item.actor;
         group.destroy();
-        delete this._displayed[appid];
+        delete this._displayed[appId];
     },
 
     _removeAll: function() {
-        for (appid in this._displayed)
-            this._removeItem(appid);
+        for (appId in this._displayed)
+            this._removeItem(appId);
      },
 
     _setDefaultList: function() {
         this._removeAll();
         let added = 0;
-        for (let i = 0; i < DEFAULT_APPLICATIONS.length && added < this._max_items; i++) {
-            let appid = DEFAULT_APPLICATIONS[i];
-            let appinfo = this._appset[appid];
-            if (appinfo) {
-              this._filterAdd(appid);
+        for (let i = 0; i < DEFAULT_APPLICATIONS.length && added < this._maxItems; i++) {
+            let appId = DEFAULT_APPLICATIONS[i];
+            let appInfo = this._appSet[appId];
+            if (appInfo) {
+              this._filterAdd(appId);
               added += 1;
             }
         }
@@ -200,52 +200,50 @@ AppDisplay.prototype = {
         return c;
     },
 
-    _filterAdd: function(appid) {
+    _filterAdd: function(appId) {
         let me = this;
 
-        let appinfo = this._appset[appid];
-        let name = appinfo.get_name();
-        let index = this._getNDisplayed();
+        let appInfo = this._appSet[appId];
 
-        let appdisplay = new AppDisplayItem(appinfo, this._width);
-        appdisplay.connect('activate', function() {
-            appdisplay.launch();
+        let appDisplayItem = new AppDisplayItem(appInfo, this._width);
+        appDisplayItem.connect('activate', function() {
+            appDisplayItem.launch();
             me.emit('activated');
         });
-        let group = appdisplay.actor;
+        let group = appDisplayItem.actor;
         this._grid.add_actor(group);
-        this._displayed[appid] = appdisplay;
+        this._displayed[appId] = appDisplayItem;
     },
 
-    _filterRemove: function(appid) {
+    _filterRemove: function(appId) {
         // In the future, do some sort of fade out or other effect here
-        let item = this._displayed[appid];
+        let item = this._displayed[appId];
         this._removeItem(item);
     },
 
-    _appinfoMatches: function(appinfo, search) {
+    _appInfoMatches: function(appInfo, search) {
         if (search == null || search == '')
             return true;
-        let name = appinfo.get_name().toLowerCase();
+        let name = appInfo.get_name().toLowerCase();
         if (name.indexOf(search) >= 0)
             return true;
-        let description = appinfo.get_description();
+        let description = appInfo.get_description();
         if (description) {
             description = description.toLowerCase();
             if (description.indexOf(search) >= 0)
                 return true;
         }
-        let exec = appinfo.get_executable().toLowerCase();
+        let exec = appInfo.get_executable().toLowerCase();
         if (exec.indexOf(search) >= 0)
             return true;
         return false;
     },
 
-    _sortApps: function(appids) {
+    _sortApps: function(appIds) {
         let me = this;
-        return appids.sort(function (a,b) {
-            let appA = me._appset[a];
-            let appB = me._appset[b];
+        return appIds.sort(function (a,b) {
+            let appA = me._appSet[a];
+            let appB = me._appSet[b];
             return appA.get_name().localeCompare(appB.get_name());
         });
     },
@@ -253,14 +251,14 @@ AppDisplay.prototype = {
     _doSearchFilter: function() {
         this._removeAll();
         let matchedApps = [];
-        for (appid in this._appset) {
-            if (matchedApps.length >= this._max_items)
+        for (appId in this._appSet) {
+            if (matchedApps.length >= this._maxItems)
                 break;
-            if (this._displayed[appid])
+            if (this._displayed[appId])
                 continue;
-            let app = this._appset[appid];
-            if (this._appinfoMatches(app, this._search))
-                matchedApps.push(appid);
+            let app = this._appSet[appId];
+            if (this._appInfoMatches(app, this._search))
+                matchedApps.push(appId);
         }
         this._sortApps(matchedApps);
         for (let i = 0; i < matchedApps.length; i++) {
@@ -288,8 +286,8 @@ AppDisplay.prototype = {
     },
 
     _findDisplayedByActor: function(actor) {
-        for (appid in this._displayed) {
-            let item = this._displayed[appid];
+        for (appId in this._displayed) {
+            let item = this._displayed[appId];
             if (item.actor == actor) {
                 return item;
             }
