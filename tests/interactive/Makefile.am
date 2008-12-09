@@ -37,7 +37,8 @@ UNIT_TESTS = \
 	test-texture-quality.c \
 	test-layout.c \
         test-animation.c \
-        test-easing.c
+        test-easing.c \
+        test-binding-pool.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c

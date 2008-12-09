@@ -132,6 +132,7 @@ stamp-h1
 /tests/conform/test_initial_state
 /tests/conform/test_label_cache
 /tests/conform/test_mapped
+/tests/conform/test_path
 /tests/conform/test_pick
 /tests/conform/test_realized
 /tests/conform/test_rect_set_color

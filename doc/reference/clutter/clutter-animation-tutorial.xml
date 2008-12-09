@@ -410,10 +410,6 @@ main (int argc, char *argv[])
 
   <variablelist>
     <varlistentry>
-      <term>#ClutterBehaviourBspline</term>
-      <listitem><simpara>Moves actors along a B-spline path</simpara></listitem>
-    </varlistentry>
-    <varlistentry>
       <term>#ClutterBehaviourDepth</term>
       <listitem><simpara>Changes the depth of actors</simpara></listitem>
     </varlistentry>

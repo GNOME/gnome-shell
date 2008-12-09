@@ -1312,7 +1312,7 @@ clutter_entry_set_alignment (ClutterEntry   *entry,
  *
  * Return value: The entry's #PangoAlignment
  *
- * Since 0.4
+ * Since: 0.4
  */
 PangoAlignment
 clutter_entry_get_alignment (ClutterEntry *entry)

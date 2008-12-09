@@ -32,6 +32,7 @@
 
 #include <clutter/clutter-alpha.h>
 #include <clutter/clutter-behaviour.h>
+#include <clutter/clutter-path.h>
 
 G_BEGIN_DECLS
 
@@ -82,7 +83,7 @@ struct _ClutterBehaviourPathClass
 
   /*< public >*/
   void (*knot_reached) (ClutterBehaviourPath *pathb,
-                        const ClutterKnot    *knot);
+                        guint                 knot_num);
 
   /*< private >*/
   void (*_clutter_path_1) (void);
@@ -94,21 +95,21 @@ struct _ClutterBehaviourPathClass
 GType clutter_behaviour_path_get_type (void) G_GNUC_CONST;
 
 ClutterBehaviour *clutter_behaviour_path_new          (ClutterAlpha         *alpha,
+                                                       ClutterPath          *path);
+
+ClutterBehaviour *clutter_behaviour_path_new_with_description
+                                                      (ClutterAlpha         *alpha,
+                                                       const gchar          *desc);
+
+ClutterBehaviour *clutter_behaviour_path_new_with_knots
+                                                      (ClutterAlpha         *alpha,
                                                        const ClutterKnot    *knots,
                                                        guint                 n_knots);
-GSList *          clutter_behaviour_path_get_knots    (ClutterBehaviourPath *pathb);
-void              clutter_behaviour_path_append_knot  (ClutterBehaviourPath *pathb,
-                                                       const ClutterKnot    *knot);
-void              clutter_behaviour_path_append_knots (ClutterBehaviourPath *pathb,
-                                                       const ClutterKnot    *first_knot,
-                                                       ...) G_GNUC_NULL_TERMINATED;
-void              clutter_behaviour_path_insert_knot  (ClutterBehaviourPath  *pathb,
-				                       guint                  offset,
-				                       const ClutterKnot     *knot);
-void              clutter_behaviour_path_remove_knot  (ClutterBehaviourPath  *pathb,
-				                       guint                  offset);
 
-void              clutter_behaviour_path_clear        (ClutterBehaviourPath  *pathb);
+void              clutter_behaviour_path_set_path     (ClutterBehaviourPath *pathb,
+                                                       ClutterPath          *path);
+
+ClutterPath *     clutter_behaviour_path_get_path     (ClutterBehaviourPath *pathb);
 
 G_END_DECLS
 

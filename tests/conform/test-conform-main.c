@@ -105,5 +105,9 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/texture", test_backface_culling);
 
+  TEST_CONFORM_SIMPLE ("/path", test_path);
+
+  TEST_CONFORM_SIMPLE ("/binding-pool", test_binding_pool);
+
   return g_test_run ();
 }

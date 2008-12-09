@@ -47,7 +47,6 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
-#include "clutter-behaviour-bspline.h"
 #include "clutter-behaviour-depth.h"
 #include "clutter-behaviour-ellipse.h"
 #include "clutter-behaviour-opacity.h"
@@ -658,7 +657,7 @@ clutter_effect_move (ClutterEffectTemplate     *template_,
 		     gpointer                   data)
 {
   ClutterEffectClosure *c;
-  ClutterKnot knots[2];
+  ClutterPath *path;
 
   c = clutter_effect_closure_new (template_,
 				  actor,
@@ -667,13 +666,14 @@ clutter_effect_move (ClutterEffectTemplate     *template_,
   c->completed_func = func;
   c->completed_data = data;
 
-  knots[0].x = clutter_actor_get_x (actor);
-  knots[0].y = clutter_actor_get_y (actor);
+  path = clutter_path_new ();
 
-  knots[1].x = x;
-  knots[1].y = y;
+  clutter_path_add_move_to (path,
+                            clutter_actor_get_x (actor),
+                            clutter_actor_get_y (actor));
+  clutter_path_add_line_to (path, x, y);
 
-  c->behave = clutter_behaviour_path_new (c->alpha, knots, 2);
+  c->behave = clutter_behaviour_path_new (c->alpha, path);
 
   clutter_behaviour_apply (c->behave, actor);
   clutter_timeline_start (c->timeline);
@@ -707,18 +707,30 @@ clutter_effect_path (ClutterEffectTemplate     *template_,
 		     gpointer                   data)
 {
   ClutterEffectClosure *c;
+  ClutterPath *path;
+  guint i;
 
   c = clutter_effect_closure_new (template_,
 				  actor,
 				  G_CALLBACK (on_effect_complete));
 
+  path = clutter_path_new ();
+
   c->completed_func = func;
   c->completed_data = data;
 
-  if (n_knots)
-    clutter_actor_set_position (actor, knots[0].x, knots[0].y);
+  path = clutter_path_new ();
 
-  c->behave = clutter_behaviour_path_new (c->alpha, knots, n_knots);
+  if (n_knots)
+    {
+      clutter_actor_set_position (actor, knots[0].x, knots[0].y);
+      clutter_path_add_move_to (path, knots[0].x, knots[0].y);
+
+      for (i = 1; i < n_knots; i++)
+        clutter_path_add_line_to (path, knots[i].x, knots[i].y);
+    }
+
+  c->behave = clutter_behaviour_path_new (c->alpha, path);
 
   clutter_behaviour_apply (c->behave, actor);
   clutter_timeline_start (c->timeline);

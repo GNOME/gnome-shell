@@ -13,6 +13,7 @@ test_conformance_SOURCES = \
 	test-mesh-contiguous.c \
 	test-mesh-interleved.c \
 	test-mesh-mutability.c \
+	test-path.c \
 	test-pick.c \
 	test-label-cache.c \
 	test-clutter-entry.c \
@@ -20,7 +21,8 @@ test_conformance_SOURCES = \
 	test-clutter-fixed.c \
         test-actor-invariants.c \
         test-paint-opacity.c \
-	test-backface-culling.c
+	test-backface-culling.c \
+        test-binding-pool.c
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers

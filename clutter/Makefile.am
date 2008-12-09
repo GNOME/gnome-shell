@@ -50,13 +50,13 @@ source_h =					\
 	$(srcdir)/clutter-animation.h           \
 	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-behaviour.h     	\
-	$(srcdir)/clutter-behaviour-bspline.h 	\
 	$(srcdir)/clutter-behaviour-depth.h 	\
 	$(srcdir)/clutter-behaviour-ellipse.h 	\
 	$(srcdir)/clutter-behaviour-opacity.h 	\
 	$(srcdir)/clutter-behaviour-path.h 	\
 	$(srcdir)/clutter-behaviour-rotate.h 	\
 	$(srcdir)/clutter-behaviour-scale.h 	\
+	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-child-meta.h		\
 	$(srcdir)/clutter-clone-texture.h 	\
 	$(srcdir)/clutter-color.h		\
@@ -76,6 +76,7 @@ source_h =					\
 	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
 	$(srcdir)/clutter-model.h		\
+	$(srcdir)/clutter-path.h		\
 	$(srcdir)/clutter-rectangle.h		\
 	$(srcdir)/clutter-score.h 		\
 	$(srcdir)/clutter-script.h		\
@@ -139,13 +140,14 @@ source_c = \
 	clutter-animation.c             \
 	clutter-backend.c		\
         clutter-behaviour.c 		\
-	clutter-behaviour-bspline.c	\
 	clutter-behaviour-depth.c	\
 	clutter-behaviour-ellipse.c	\
 	clutter-behaviour-opacity.c	\
 	clutter-behaviour-path.c	\
 	clutter-behaviour-rotate.c	\
 	clutter-behaviour-scale.c	\
+	clutter-bezier.c		\
+	clutter-binding-pool.c	        \
 	clutter-child-meta.c		\
 	clutter-clone-texture.c 	\
 	clutter-color.c 		\
@@ -166,6 +168,7 @@ source_c = \
 	clutter-marshal.c		\
 	clutter-media.c 		\
 	clutter-model.c			\
+	clutter-path.c			\
 	clutter-rectangle.c 		\
 	clutter-score.c 		\
 	clutter-script.c		\
@@ -184,6 +187,7 @@ source_c = \
 	$(NULL)
 
 source_h_priv = \
+	clutter-bezier.h		\
 	clutter-debug.h 		\
 	clutter-keysyms-table.h		\
 	clutter-model-private.h		\

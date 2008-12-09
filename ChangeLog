@@ -1,3 +1,117 @@
+2008-12-08  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/clutter-binding-pool.h: Fix the ActivateFunc
+	documentation by adding a "return value" annotation.
+
+2008-12-08  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter.h: Add ClutterBindingPool to the build.
+
+	* clutter/clutter-binding-pool.c:
+	* clutter/clutter-binding-pool.h: Add ClutterBindingPool, a data
+	structure meant to hold (key symbol, modifiers) pairs and associate
+	them to a closure. The ClutterBindingPool can be used to install
+	key bindings for actors and then execute closures inside the
+	key-press-event signal handlers, removing the need for big
+	switch() or if() blocks for each key.
+
+	* clutter/clutter-event.c: Consistently use "key symbol" instead
+	of "key value".
+
+	* clutter/clutter-event.h: Add more modifier masks.
+
+	* clutter/clutter-marshal.list:
+
+	* tests/conform/Makefile.am:
+	* tests/conform/test-binding-pool.c:
+	* tests/conform/test-conform-main.c: Add ClutterBindingPool
+	conformance test.
+
+	* tests/interactive/Makefile.am:
+	* tests/interactive/test-binding-pool.c: Add interactive test (and
+	example code) for the ClutterBindingPool usage.
+
+2008-12-08  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/clutter-main.c (_clutter_do_pick): Restore the GL_DITHER
+	state after reading the pixel value instead of before. Suggested
+	in bug 1328 thanks to Guy Zadickario.
+
+2008-12-05  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	Bug 1309 - clutter_timeline_new and clutter_timeline_set_speed
+	have two standard of the fps limitation
+
+	* clutter/clutter-timeline.c:
+	(clutter_timeline_class_init): Set the maximum value of the
+	:fps property to be G_MAXUINT. (Zhang Wei)
+
+2008-12-05  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/clutter-entry.c: Fix the 'Since' annotation in the
+	gtk-doc.
+
+2008-12-05  Neil Roberts  <neil@linux.intel.com>
+
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-behaviour-path.c:
+	* clutter/clutter-actor.c: Fix the 'Since' annotation in the
+	gtk-doc.
+
+2008-12-05  Neil Roberts  <neil@linux.intel.com>
+
+	Bug 1252 - Merge ClutterBehaviourPath and ClutterBehaviourBspline
+
+	* clutter/clutter-path.h:
+	* clutter/clutter-path.c: Implementation of new ClutterPath object
+	to represent a path combining straight line and bezier curve
+	elements.
+
+	* clutter/clutter.h: Include clutter-path.h and remove
+	clutter-behaviour-bspline.h
+
+	* tests/interactive/test-threads.c (test_threads_main):
+	* tests/interactive/test-script.c:
+	* tests/interactive/test-behave.c (test_behave_main): Use new path
+	API
+
+	* clutter/clutter-effect.c: Use the new ClutterBehaviourPath API.
+
+	* clutter/clutter-bezier.h:
+	* clutter/clutter-bezier.c: Moved bezier curve handling code out
+	from clutter-behaviour-bspline.c to a separate file.
+
+	* clutter/clutter-behaviour-path.h:
+	* clutter/clutter-behaviour-path.c: Reimplemented to work with a
+	ClutterPath
+
+	* clutter/clutter-behaviour-bspline.h:
+	* clutter/clutter-behaviour-bspline.c: Removed
+
+	* clutter/Makefile.am: Add clutter-path and clutter-bezier, remove
+	clutter-behaviour-bspline.
+
+	* tests/conform/test-path.c: New automatic test for ClutterPath
+	consistency
+
+	* tests/conform/test-conform-main.c (main): Add test_path
+
+	* tests/conform/Makefile.am (test_conformance_SOURCES): Add
+	test-path.c
+
+	* clutter/clutter-sections.txt: Add ClutterPath docs
+
+	* clutter/clutter.types:
+	* clutter/clutter-docs.xml:
+	* doc/reference/clutter/clutter-animation-tutorial.xml: Remove
+	mention of ClutterBehaviourBspline
+
+	* clutter/clutter-marshal.list: Add VOID:UINT
+
 2008-12-04  Neil Roberts  <neil@linux.intel.com>
 
 	Bug 1297 - Bring back support for GL_ARB_texture_rectangle

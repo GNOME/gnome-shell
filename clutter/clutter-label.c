@@ -1285,7 +1285,7 @@ clutter_label_set_alignment (ClutterLabel   *label,
  *
  * Return value: The label's #PangoAlignment
  *
- * Since 0.2
+ * Since: 0.2
  **/
 PangoAlignment
 clutter_label_get_alignment (ClutterLabel *label)

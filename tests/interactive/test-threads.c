@@ -177,6 +177,7 @@ test_threads_main (int argc, char *argv[])
   ClutterColor rect_color = { 0xee, 0x55, 0x55, 0x99 };
   ClutterColor progress_color = { 0x55, 0xee, 0x55, 0xbb };
   ClutterBehaviour *r_behaviour, *p_behaviour;
+  ClutterAlpha *alpha;
   const ClutterKnot knots[] = {
     {  75, 150 },
     { 400, 150 }
@@ -220,11 +221,11 @@ test_threads_main (int argc, char *argv[])
                                               0.0, 360.0);
   clutter_behaviour_apply (r_behaviour, rect);
 
-  p_behaviour = clutter_behaviour_path_new (clutter_alpha_new_full (timeline,
-                                                                    clutter_ramp_inc_func,
-                                                                    NULL, NULL),
-                                            knots,
-                                            G_N_ELEMENTS (knots));
+  alpha = clutter_alpha_new_full (timeline, clutter_ramp_inc_func,
+                                  NULL, NULL);
+  p_behaviour = clutter_behaviour_path_new_with_knots (alpha,
+                                                       knots,
+                                                       G_N_ELEMENTS (knots));
   clutter_behaviour_apply (p_behaviour, rect);
 
   g_signal_connect (stage,
