@@ -2054,8 +2054,40 @@ _cogl_texture_flush_vertices (void)
 
   if (ctx->texture_vertices->len > 0)
     {
+      int needed_indices;
       CoglTextureGLVertex *p
         = (CoglTextureGLVertex *) ctx->texture_vertices->data;
+
+      /* The indices are always the same sequence regardless of the
+         vertices so we only need to change it if there are more
+         vertices than ever before */
+      needed_indices = ctx->texture_vertices->len / 4 * 6;
+      if (needed_indices > ctx->texture_indices->len)
+        {
+          int old_len = ctx->texture_indices->len;
+          int vert_num = old_len / 6 * 4;
+          int i;
+          GLushort *q;
+
+          /* Add two triangles for each quad to the list of
+             indices. That makes six new indices but two of the
+             vertices in the triangles are shared. */
+          g_array_set_size (ctx->texture_indices, needed_indices);
+          q = &g_array_index (ctx->texture_indices, GLushort, old_len);
+
+          for (i = old_len;
+               i < ctx->texture_indices->len;
+               i += 6, vert_num += 4)
+            {
+              *(q++) = vert_num + 0;
+              *(q++) = vert_num + 1;
+              *(q++) = vert_num + 3;
+
+              *(q++) = vert_num + 1;
+              *(q++) = vert_num + 2;
+              *(q++) = vert_num + 3;
+            }
+        }
 
       GE( glVertexPointer (2, GL_FLOAT,
                            sizeof (CoglTextureGLVertex), p->v ) );
@@ -2064,12 +2096,11 @@ _cogl_texture_flush_vertices (void)
 
       GE( glBindTexture (ctx->texture_target, ctx->texture_current) );
       GE( glDrawElements (GL_TRIANGLES,
-                          ctx->texture_indices->len,
+                          needed_indices,
                           GL_UNSIGNED_SHORT,
                           ctx->texture_indices->data) );
 
       g_array_set_size (ctx->texture_vertices, 0);
-      g_array_set_size (ctx->texture_indices, 0);
     }
 }
 
@@ -2081,7 +2112,6 @@ _cogl_texture_add_quad_vertices (GLfloat x1, GLfloat y1,
 {
   CoglTextureGLVertex *p;
   GLushort first_vert;
-  GLushort *q;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -2103,21 +2133,6 @@ _cogl_texture_add_quad_vertices (GLfloat x1, GLfloat y1,
   p->v[0] = x2;  p->v[1] = y1;
   p->t[0] = tx2; p->t[1] = ty1;
   p++;
-
-  /* Add two triangles to the list of indices. That makes six new
-     indices but two of the vertices in the triangles are shared. */
-  g_array_set_size (ctx->texture_indices,
-                    ctx->texture_indices->len + 6);
-  q = &g_array_index (ctx->texture_indices, GLushort,
-                      ctx->texture_indices->len - 6);
-
-  *(q++) = first_vert + 0;
-  *(q++) = first_vert + 1;
-  *(q++) = first_vert + 3;
-
-  *(q++) = first_vert + 1;
-  *(q++) = first_vert + 2;
-  *(q++) = first_vert + 3;
 }
 
 static void
