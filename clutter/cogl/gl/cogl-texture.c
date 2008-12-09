@@ -2265,7 +2265,7 @@ cogl_texture_multiple_rectangles (CoglHandle       handle,
     return;
   
   /* Prepare GL state */
- if (tex->gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+  if (tex->gl_target == CGL_TEXTURE_RECTANGLE_ARB)
     enable_flags |= COGL_ENABLE_TEXTURE_RECT;
   else
     enable_flags |= COGL_ENABLE_TEXTURE_2D;
