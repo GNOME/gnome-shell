@@ -59,9 +59,11 @@ cogl_create_context ()
   _context->last_path = 0;
 
   _context->texture_handles = NULL;
-  _context->texture_vertices_size = 0;
-  _context->texture_vertices = NULL;
-  
+  _context->texture_vertices = g_array_new (FALSE, FALSE,
+                                            sizeof (CoglTextureGLVertex));
+  _context->texture_indices = g_array_new (FALSE, FALSE,
+                                           sizeof (GLushort));
+
   _context->fbo_handles = NULL;
   _context->program_handles = NULL;
   _context->shader_handles = NULL;
@@ -104,8 +106,10 @@ cogl_destroy_context ()
 #endif
 
   if (_context->texture_vertices)
-    g_free (_context->texture_vertices);
-  
+    g_array_free (_context->texture_vertices, TRUE);
+  if (_context->texture_indices)
+    g_array_free (_context->texture_indices, TRUE);
+
   if (_context->texture_handles)
     g_array_free (_context->texture_handles, TRUE);
   if (_context->fbo_handles)
