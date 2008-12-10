@@ -872,7 +872,7 @@ typedef void
    GLenum		 usage);
 
 typedef void
-  (APIENTRYP             COGL_PFNGLBUFFERDATASUBARBPROC)
+  (APIENTRYP             COGL_PFNGLBUFFERSUBDATAARBPROC)
   (GLenum		 target, 
    GLintptr		 offset, 
    GLsizeiptr		 size,
