@@ -1107,9 +1107,9 @@ _cogl_features_init ()
       ctx->pf_glBufferDataARB =
 	    (COGL_PFNGLBUFFERDATAARBPROC)
 	    cogl_get_proc_address ("glBufferDataARB");
-      ctx->pf_glBufferDataSubARB =
-	    (COGL_PFNGLBUFFERDATASUBARBPROC)
-	    cogl_get_proc_address ("glBufferDataSubARB");
+      ctx->pf_glBufferSubDataARB =
+	    (COGL_PFNGLBUFFERSUBDATAARBPROC)
+	    cogl_get_proc_address ("glBufferSubDataARB");
       ctx->pf_glDeleteBuffersARB =
 	    (COGL_PFNGLDELETEBUFFERSARBPROC)
 	    cogl_get_proc_address ("glDeleteBuffersARB");
@@ -1122,7 +1122,7 @@ _cogl_features_init ()
       if (ctx->pf_glGenBuffersARB
 	  && ctx->pf_glBindBufferARB
 	  && ctx->pf_glBufferDataARB
-	  && ctx->pf_glBufferDataSubARB
+	  && ctx->pf_glBufferSubDataARB
 	  && ctx->pf_glDeleteBuffersARB
 	  && ctx->pf_glMapBufferARB
 	  && ctx->pf_glUnmapBufferARB)
