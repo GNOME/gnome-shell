@@ -110,6 +110,7 @@ stamp-h1
 /tests/interactive/test-animation
 /tests/interactive/test-easing
 /tests/interactive/test-interactive
+/tests/interactive/test-binding-pool
 /tests/interactive/redhand.png
 /tests/interactive/test-script.json
 /tests/conform/test-conformance
@@ -149,6 +150,8 @@ stamp-h1
 /tests/conform/test_mesh_mutability
 /tests/conform/test_paint_opacity
 /tests/conform/test_rectangle_opacity
+/tests/conform/test_backface_culling
+/tests/conform/test_binding_pool
 /tests/micro-bench/test-text
 /tests/tools/disable-npots.sh
 /clutter/x11/clutter-x11-enum-types.[ch]
