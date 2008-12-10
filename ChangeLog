@@ -1,5 +1,16 @@
 2008-12-10  Neil Roberts  <neil@linux.intel.com>
 
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gl/cogl-defines.h.in:
+	* clutter/cogl/gl/cogl-context.h:
+	* clutter/cogl/common/cogl-mesh.c: Rename the glBufferDataSub
+	function to glBufferSubData. When calling glXGetProcAddress with
+	the former Mesa returns a stub dispatch function which will
+	segfault if you try to use it. With NVIDIA it returns NULL so
+	_cogl_features_init decides the card doesn't have VBO support.
+
+2008-12-10  Neil Roberts  <neil@linux.intel.com>
+
 	Bug 1323 - ClutterBehaviorDepth conflicts with other behaviors
 
 	* clutter/clutter-behaviour-ellipse.c (actor_apply_knot_foreach):

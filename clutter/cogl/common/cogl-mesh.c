@@ -145,21 +145,13 @@
 #define glGenBuffers ctx->pf_glGenBuffersARB
 #define glBindBuffer ctx->pf_glBindBufferARB
 #define glBufferData ctx->pf_glBufferDataARB
-#define glBufferDataSub ctx->pf_glBufferDataSubARB
+#define glBufferSubData ctx->pf_glBufferSubDataARB
 #define glDeleteBuffers ctx->pf_glDeleteBuffersARB
 #define glMapBuffer ctx->pf_glMapBufferARB
 #define glUnmapBuffer ctx->pf_glUnmapBufferARB
 #ifndef GL_ARRAY_BUFFER
 #define GL_ARRAY_BUFFER GL_ARRAY_BUFFER_ARB
 #endif
-
-#elif defined (HAVE_COGL_GLES)
-
-/* NB: GLES has had VBOs/GLSL since 1.1, so we don't need any defines in
- * this case except for glBufferSubData which, just for the fun of it, has a
- * different name:
- */
-#define glBufferDataSub glBufferSubData
 
 #elif defined (HAVE_COGL_GLES2)
 
@@ -171,8 +163,6 @@
 
 #define glEnableClientState cogl_wrap_glEnableClientState
 #define glDisableClientState cogl_wrap_glDisableClientState
-
-#define glBufferDataSub glBufferSubData
 
 #endif
 
@@ -979,7 +969,7 @@ upload_multipack_vbo_via_buffer_sub_data (CoglMeshVBO *cogl_vbo)
 
       PAD_FOR_ALIGNMENT (offset, gl_type_size);
 
-      GE (glBufferDataSub (GL_ARRAY_BUFFER,
+      GE (glBufferSubData (GL_ARRAY_BUFFER,
 			   offset,
 			   attribute_size,
 			   attribute->u.pointer));
