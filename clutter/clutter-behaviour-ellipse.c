@@ -178,10 +178,13 @@ actor_apply_knot_foreach (ClutterBehaviour *behave,
                           ClutterActor     *actor,
                           gpointer          data)
 {
+  ClutterBehaviourEllipsePrivate *priv
+    = ((ClutterBehaviourEllipse *) behave)->priv;
   knot3d *knot = data;
 
   clutter_actor_set_position (actor, knot->x, knot->y);
-  clutter_actor_set_depth (actor, knot->z);
+  if (priv->angle_tilt_x != 0 || priv->angle_tilt_y != 0)
+    clutter_actor_set_depth (actor, knot->z);
 }
 
 static inline ClutterAngle
