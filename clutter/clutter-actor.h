@@ -551,13 +551,13 @@ void     clutter_actor_box_get_from_vertices          (ClutterVertex    vtx[4],
 void clutter_actor_get_abs_allocation_vertices       (ClutterActor  *self,
                                                       ClutterVertex  verts[4]);
 
-void clutter_actor_apply_transform_to_point          (ClutterActor  *self,
-                                                      ClutterVertex *point,
-                                                      ClutterVertex *vertex);
-void clutter_actor_apply_relative_transform_to_point (ClutterActor  *self,
-                                                      ClutterActor  *ancestor,
-                                                      ClutterVertex *point,
-                                                      ClutterVertex *vertex);
+void clutter_actor_apply_transform_to_point          (ClutterActor        *self,
+                                                      const ClutterVertex *point,
+                                                      ClutterVertex       *vertex);
+void clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
+                                                      ClutterActor        *ancestor,
+                                                      const ClutterVertex *point,
+                                                      ClutterVertex       *vertex);
 
 gboolean clutter_actor_get_paint_visibility           (ClutterActor *self);
 
