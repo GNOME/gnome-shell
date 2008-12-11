@@ -1648,7 +1648,7 @@ clutter_text_class_init (ClutterTextClass *klass)
 
   /**
    * ClutterText::text-changed:
-   * @actor: the actor which received the event
+   * @self: the #ClutterText that emitted the signal
    *
    * The ::text-changed signal is emitted after @actor's text changes
    *
@@ -1663,6 +1663,15 @@ clutter_text_class_init (ClutterTextClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
+  /**
+   * ClutterText::cursor-event:
+   * @self: the #ClutterText that emitted the signal
+   * @geometry: the coordinates of the cursor
+   *
+   * FIXME
+   *
+   * Since: 1.0
+   */
   text_signals[CURSOR_EVENT] =
     g_signal_new ("cursor-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -1675,7 +1684,7 @@ clutter_text_class_init (ClutterTextClass *klass)
 
   /**
    * ClutterText::activate
-   * @actor: the actor which received the event
+   * @self: the #ClutterText that emitted the signal
    *
    * The ::activate signal is emitted each time the actor is 'activated'
    * by the user, normally by pressing the 'Enter' key.
@@ -2076,6 +2085,18 @@ clutter_text_get_selection_bound (ClutterText *self)
   return self->priv->selection_bound;
 }
 
+/**
+ * clutter_text_get_font_name:
+ * @self: a #ClutterText
+ *
+ * Retrieves the font name as set by clutter_text_set_font_name().
+ *
+ * Return value: a string containing the font name. The returned
+ *   string is owned by the #ClutterText actor and should not be
+ *   modified or freed
+ *
+ * Since: 1.0
+ */
 G_CONST_RETURN gchar *
 clutter_text_get_font_name (ClutterText *text)
 {
@@ -2084,6 +2105,23 @@ clutter_text_get_font_name (ClutterText *text)
   return text->priv->font_name;
 }
 
+/**
+ * clutter_text_set_font_name:
+ * @self: a #ClutterText
+ * @font_name: a font name
+ *
+ * Sets the font used by a #ClutterText. The @font_name string
+ * must be something that can be parsed by the
+ * pango_font_description_from_string() function, like:
+ *
+ * |[
+ *   clutter_text_set_font_name (text, "Sans 10pt");
+ *   clutter_text_set_font_name (text, "Serif 16px");
+ *   clutter_text_set_font_name (text, "Helvetica 10");
+ * ]|
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_font_name (ClutterText *self,
                             const gchar *font_name)
@@ -2126,6 +2164,28 @@ clutter_text_set_font_name (ClutterText *self,
   g_object_notify (G_OBJECT (self), "font-name");
 }
 
+/**
+ * clutter_text_get_text:
+ * @self: a #ClutterText
+ *
+ * Retrieves a pointer to the current contents of a #ClutterText
+ * actor.
+ *
+ * If you need a copy of the contents for manipulating, either
+ * use g_strdup() on the returned string, or use:
+ *
+ * |[
+ *    copy = clutter_text_get_chars (text, 0, -1);
+ * ]|
+ *
+ * Which will return a newly allocated string.
+ *
+ * Return value: the contents of the actor. The returned string
+ *   is owned by the #ClutterText actor and should never be
+ *   modified or freed
+ *
+ * Since: 1.0
+ */
 G_CONST_RETURN gchar *
 clutter_text_get_text (ClutterText *self)
 {
@@ -2134,6 +2194,15 @@ clutter_text_get_text (ClutterText *self)
   return self->priv->text;
 }
 
+/**
+ * clutter_text_set_text:
+ * @self: a #ClutterText
+ * @text: the text to set
+ *
+ * Sets the contents of a #ClutterText actor.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_text (ClutterText *self,
                        const gchar *text)
@@ -2188,6 +2257,17 @@ clutter_text_set_text (ClutterText *self,
   g_object_notify (G_OBJECT (self), "text");
 }
 
+/**
+ * clutter_text_get_layout:
+ * @self: a #ClutterText
+ *
+ * Retrieves the current #PangoLayout used by a #ClutterText actor.
+ *
+ * Return value: a #PangoLayout. The returned object is owned by
+ *   the #ClutterText actor and should not be modified or freed
+ *
+ * Since: 1.0
+ */
 PangoLayout *
 clutter_text_get_layout (ClutterText *self)
 {
@@ -2200,6 +2280,20 @@ clutter_text_get_layout (ClutterText *self)
   return clutter_text_create_layout (self, width);
 }
 
+/**
+ * clutter_text_set_color:
+ * @self: a #ClutterText
+ * @color: a #ClutterColor
+ *
+ * Sets the color of the contents of a #ClutterText actor.
+ *
+ * The overall opacity of the #ClutterText actor will be the
+ * result of the alpha value of @color and the composited
+ * opacity of the actor itself on the scenegraph, as returned
+ * by clutter_actor_get_paint_opacity().
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_color (ClutterText        *self,
                         const ClutterColor *color)
@@ -2219,6 +2313,15 @@ clutter_text_set_color (ClutterText        *self,
   g_object_notify (G_OBJECT (self), "color");
 }
 
+/**
+ * clutter_text_get_color:
+ * @self: a #ClutterText
+ * @color: return location for a #ClutterColor
+ *
+ * Retrieves the text color as set by clutter_text_get_color().
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_get_color (ClutterText  *self,
                         ClutterColor *color)
@@ -2287,6 +2390,17 @@ clutter_text_get_ellipsize (ClutterText *self)
   return self->priv->ellipsize;
 }
 
+/**
+ * clutter_text_get_line_wrap:
+ * @self: a #ClutterText
+ *
+ * Retrieves the value set using clutter_text_set_line_wrap().
+ *
+ * Return value: %TRUE if the #ClutterText actor should wrap
+ *   its contents
+ *
+ * Since: 1.0
+ */
 gboolean
 clutter_text_get_line_wrap (ClutterText *self)
 {
@@ -2295,6 +2409,16 @@ clutter_text_get_line_wrap (ClutterText *self)
   return self->priv->wrap;
 }
 
+/**
+ * clutter_text_set_line_wrap:
+ * @self: a #ClutterText
+ * @line_wrap: whether the contents should wrap
+ *
+ * Sets whether the contents of a #ClutterText actor should wrap,
+ * if they don't fit the size assigned to the actor.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_line_wrap (ClutterText *self,
                             gboolean     line_wrap)
@@ -2555,7 +2679,7 @@ clutter_text_get_use_markup (ClutterText *self)
  * on both margins. This setting is ignored if Clutter is compiled
  * against Pango &lt; 1.18.
  *
- * Since: 0.6
+ * Since: 1.0
  */
 void
 clutter_text_set_justify (ClutterText *self,
@@ -2616,6 +2740,17 @@ clutter_text_get_cursor_position (ClutterText *self)
   return self->priv->position;
 }
 
+/**
+ * clutter_text_set_cursor_position:
+ * @self: a #ClutterText
+ * @position: the new cursor position, in characters
+ *
+ * Sets the cursor of a #ClutterText actor at @position.
+ *
+ * The position is expressed in characters, not in bytes.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_cursor_position (ClutterText *self,
                                   gint         position)
@@ -2805,6 +2940,16 @@ clutter_text_get_max_length (ClutterText *self)
   return self->priv->max_length;
 }
 
+/**
+ * clutter_text_insert_unichar:
+ * @self: a #ClutterText
+ * @wc: a Unicode character
+ *
+ * Inserts @wc at the current cursor position of a
+ * #ClutterText actor.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_insert_unichar (ClutterText *self,
                              gunichar     wc)
@@ -2841,6 +2986,21 @@ clutter_text_insert_unichar (ClutterText *self,
   g_string_free (new, TRUE);
 }
 
+/**
+ * clutter_text_insert_text:
+ * @self: a #ClutterText
+ * @text: the text to be inserted
+ * @position: the position of the insertion, or -1
+ *
+ * Inserts @text into a #ClutterActor at the given position.
+ *
+ * If @position is a negative number, the text will be appended
+ * at the end of the current contents of the #ClutterText.
+ *
+ * The position is expressed in characters, not in bytes.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_insert_text (ClutterText *self,
                           const gchar *text,
@@ -2862,6 +3022,20 @@ clutter_text_insert_text (ClutterText *self,
   g_string_free (new, TRUE);
 }
 
+/**
+ * clutter_text_delete_text:
+ * @self: a #ClutterText
+ * @start_pos: starting position
+ * @end_pos: ending position
+ *
+ * Deletes the text inside a #ClutterText actor between @start_pos
+ * and @end_pos.
+ *
+ * The starting and ending positions are expressed in characters,
+ * not in bytes.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_delete_text (ClutterText *self,
                           gssize       start_pos,
@@ -2900,6 +3074,16 @@ clutter_text_delete_text (ClutterText *self,
   g_string_free (new, TRUE);
 }
 
+/**
+ * clutter_text_delete_chars:
+ * @self: a #ClutterText
+ * @n_chars: the number of characters to delete
+ *
+ * Deletes @n_chars inside a #ClutterText actor, starting from the
+ * current cursor position.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_delete_chars (ClutterText *self,
                            guint        n_chars)
@@ -2944,7 +3128,7 @@ clutter_text_delete_chars (ClutterText *self,
 
 /**
  * clutter_text_get_chars:
- * @self: a #ClutterTex
+ * @self: a #ClutterText
  * @start_pos: start of text, in characters
  * @end_pos: end of text, in characters
  *
