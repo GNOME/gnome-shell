@@ -68,6 +68,7 @@
 #include "clutter-stage.h"
 #include "clutter-stage-manager.h"
 #include "clutter-texture.h"
+#include "clutter-text.h"
 #include "clutter-timeline.h"
 #include "clutter-timeout-pool.h"
 #include "clutter-types.h"
