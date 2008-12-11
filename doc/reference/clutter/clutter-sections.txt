@@ -170,6 +170,9 @@ clutter_smoothstep_inc_func
 clutter_smoothstep_dec_func
 clutter_exp_inc_func
 clutter_exp_dec_func
+clutter_exp_in_func
+clutter_exp_out_func
+clutter_exp_in_out_func
 clutter_ease_in_func
 clutter_ease_out_func
 clutter_ease_in_out_func
@@ -438,6 +441,8 @@ clutter_actor_get_reactive
 clutter_actor_set_shader
 clutter_actor_get_shader
 clutter_actor_set_shader_param
+clutter_actor_set_shader_param_int
+clutter_actor_set_shader_param_float
 
 <SUBSECTION>
 clutter_actor_set_depthu
@@ -470,6 +475,9 @@ clutter_actor_set_scalex
 clutter_actor_get_scalex
 clutter_actor_set_rotationx
 clutter_actor_get_rotationx
+
+<SUBSECTION>
+clutter_actor_grab_key_focus
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
@@ -693,6 +701,8 @@ ClutterPathCallback
 ClutterPathNodeType
 clutter_path_new
 clutter_path_new_with_description
+
+<SUBSECTION>
 clutter_path_add_move_to
 clutter_path_add_rel_move_to
 clutter_path_add_line_to
@@ -702,6 +712,8 @@ clutter_path_add_rel_curve_to
 clutter_path_add_close
 clutter_path_add_string
 clutter_path_add_node
+
+<SUBSECTION>
 clutter_path_get_n_nodes
 clutter_path_get_node
 clutter_path_get_nodes
@@ -720,6 +732,21 @@ ClutterPathNode
 clutter_path_node_copy
 clutter_path_node_free
 clutter_path_node_equal
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_PATH
+CLUTTER_TYPE_PATH_NODE
+CLUTTER_PATH
+CLUTTER_PATH_CLASS
+CLUTTER_IS_PATH
+CLUTTER_IS_PATH_CLASS
+CLUTTER_PATH_GET_CLASS
+CLUTTER_PATH_RELATIVE
+
+<SUBSECTION Private>
+ClutterPathPrivate
+clutter_path_get_type
+clutter_path_node_get_type
 </SECTION>
 
 <SECTION>
@@ -1510,11 +1537,27 @@ clutter_shader_release
 clutter_shader_is_compiled
 clutter_shader_set_is_enabled
 clutter_shader_get_is_enabled
-clutter_shader_set_uniform_1f
+
+<SUBSECTION>
 clutter_shader_set_uniform
 clutter_shader_get_cogl_program
 clutter_shader_get_cogl_fragment_shader
 clutter_shader_get_cogl_vertex_shader
+clutter_shader_set_uniform_1f
+
+<SUBSECTION>
+ClutterShaderFloat
+CLUTTER_VALUE_HOLDS_SHADER_FLOAT
+clutter_value_set_shader_float
+clutter_value_get_shader_float
+ClutterShaderInt
+CLUTTER_VALUE_HOLDS_SHADER_INT
+clutter_value_set_shader_int
+clutter_value_get_shader_int
+ClutterShaderMatrix
+CLUTTER_VALUE_HOLDS_SHADER_MATRIX
+clutter_value_set_shader_matrix
+clutter_value_get_shader_matrix
 
 <SUBSECTION Standard>
 CLUTTER_IS_SHADER
@@ -1524,10 +1567,17 @@ CLUTTER_SHADER_CLASS
 CLUTTER_SHADER_ERROR
 CLUTTER_SHADER_GET_CLASS
 CLUTTER_TYPE_SHADER
+CLUTTER_TYPE_SHADER_FLOAT
+CLUTTER_TYPE_SHADER_INT
+CLUTTER_TYPE_SHADER_MATRIX
+
 <SUBSECTION Private>
 ClutterShaderPrivate
 clutter_shader_get_type
 clutter_shader_error_quark
+clutter_shader_float_get_type
+clutter_shader_int_get_type
+clutter_shader_matrix_get_type
 </SECTION>
 
 <SECTION>
@@ -1593,6 +1643,10 @@ clutter_interval_peek_final_value
 clutter_interval_set_interval
 clutter_interval_get_interval
 
+<SUBSECTION>
+clutter_interval_compute_value
+clutter_interval_validate
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_INTERVAL
 CLUTTER_INTERVAL
@@ -1614,7 +1668,7 @@ ClutterBindingActionFunc
 
 <SUBSECTION>
 clutter_binding_pool_new
-clutter_binding_pool_get_from_class
+clutter_binding_pool_get_for_class
 clutter_binding_pool_find
 
 <SUBSECTION>
@@ -1628,4 +1682,77 @@ clutter_binding_pool_unblock_action
 
 <SUBSECTION>
 clutter_binding_pool_activate
+</SECTION>
+
+<SECTION>
+<TITLE>ClutterText</TITLE>
+<FILE>clutter-text</FILE>
+ClutterText
+ClutterTextClass
+clutter_text_new
+clutter_text_new_full
+clutter_text_new_with_text
+
+<SUBSECTION>
+clutter_text_set_text
+clutter_text_get_text
+clutter_text_set_activatable
+clutter_text_get_activatable
+clutter_text_set_alignment
+clutter_text_get_alignment
+clutter_text_set_attributes
+clutter_text_get_attributes
+clutter_text_set_color
+clutter_text_get_color
+clutter_text_set_ellipsize
+clutter_text_get_ellipsize
+clutter_text_set_font_name
+clutter_text_get_font_name
+clutter_text_set_invisible_char
+clutter_text_get_invisible_char
+clutter_text_set_justify
+clutter_text_get_justify
+clutter_text_get_layout
+clutter_text_set_line_wrap
+clutter_text_get_line_wrap
+clutter_text_set_line_wrap_mode
+clutter_text_get_line_wrap_mode
+clutter_text_set_max_length
+clutter_text_get_max_length
+clutter_text_set_selectable
+clutter_text_get_selectable
+clutter_text_get_selection
+clutter_text_set_selection_bound
+clutter_text_get_selection_bound
+clutter_text_set_text_visible
+clutter_text_get_text_visible
+clutter_text_set_use_markup
+clutter_text_get_use_markup
+
+<SUBSECTION>
+clutter_text_set_editable
+clutter_text_get_editable
+clutter_text_insert_text
+clutter_text_insert_unichar
+clutter_text_delete_chars
+clutter_text_delete_text
+clutter_text_get_chars
+clutter_text_set_cursor_color
+clutter_text_get_cursor_color
+clutter_text_set_cursor_position
+clutter_text_get_cursor_position
+clutter_text_set_cursor_visible
+clutter_text_get_cursor_visible
+
+<SUBSECTION Standard>
+CLUTTER_IS_TEXT
+CLUTTER_IS_TEXT_CLASS
+CLUTTER_TEXT
+CLUTTER_TEXT_CLASS
+CLUTTER_TEXT_GET_CLASS
+CLUTTER_TYPE_TEXT
+
+<SUBSECTION Private>
+ClutterTextPrivate
+clutter_text_get_type
 </SECTION>
