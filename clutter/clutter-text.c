@@ -168,7 +168,8 @@ enum
   PROP_SELECTABLE,
   PROP_ACTIVATABLE,
   PROP_TEXT_VISIBLE,
-  PROP_INVISIBLE_CHAR
+  PROP_INVISIBLE_CHAR,
+  PROP_MAX_LENGTH
 };
 
 enum
@@ -667,6 +668,10 @@ clutter_text_set_property (GObject      *gobject,
       clutter_text_set_invisible_char (self, g_value_get_uint (value));
       break;
 
+    case PROP_MAX_LENGTH:
+      clutter_text_set_max_length (self, g_value_get_int (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
     }
@@ -732,6 +737,10 @@ clutter_text_get_property (GObject    *gobject,
 
     case PROP_INVISIBLE_CHAR:
       g_value_set_uint (value, priv->priv_char);
+      break;
+
+    case PROP_MAX_LENGTH:
+      g_value_set_int (value, priv->max_length);
       break;
 
     default:
@@ -1372,6 +1381,13 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 '*',
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_INVISIBLE_CHAR, pspec);
+
+  pspec = g_param_spec_int ("max-length",
+                            "Max Length",
+                            "Maximum length of the text inside the actor",
+                            -1, G_MAXINT, 0,
+                            CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_MAX_LENGTH, pspec);
 
   /**
    * ClutterText::text-changed:
@@ -2783,7 +2799,6 @@ clutter_text_get_invisible_char (ClutterText *self)
   return self->priv->priv_char;
 }
 
-#if 0
 /**
  * clutter_text_set_max_length:
  * @self: a #ClutterText
@@ -2794,56 +2809,53 @@ clutter_text_get_invisible_char (ClutterText *self)
  * current contents are longer than the given length, then they will be
  * truncated to fit.
  *
- * Since: 0.4
+ * Since: 1.0
  */
 void
 clutter_text_set_max_length (ClutterText *self,
-                              gint          max)
+                             gint         max)
 {
   ClutterTextPrivate *priv;
   gchar *new = NULL;
 
-  g_return_if_fail (CLUTTER_IS_TEXT (entry));
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   priv = self->priv;
 
   if (priv->max_length != max)
     {
-      g_object_ref (entry);
-
       if (max < 0)
         max = g_utf8_strlen (priv->text, -1);
 
       priv->max_length = max;
 
       new = g_strdup (priv->text);
-      clutter_text_set_text (entry, new);
+      clutter_text_set_text (self, new);
       g_free (new);
 
-      g_object_notify (G_OBJECT (entry), "max-length");
-      g_object_unref (entry);
+      g_object_notify (G_OBJECT (self), "max-length");
     }
 }
 
 /**
  * clutter_text_get_max_length:
- * @entry: a #ClutterText
+ * @self: a #ClutterText
  *
- * Gets the maximum length of text that can be set into @entry.
+ * Gets the maximum length of text that can be set into a text actor.
+ *
  * See clutter_text_set_max_length().
  *
  * Return value: the maximum number of characters.
  *
- * Since: 0.4
+ * Since: 1.0
  */
 gint
 clutter_text_get_max_length (ClutterText *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_TEXT (entry), -1);
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), 0);
 
   return self->priv->max_length;
 }
-#endif
 
 void
 clutter_text_insert_unichar (ClutterText *self,
