@@ -821,15 +821,15 @@ cursor_paint (ClutterText *self)
 
 static gboolean
 clutter_text_button_press (ClutterActor       *actor,
-                           ClutterButtonEvent *bev)
+                           ClutterButtonEvent *event)
 {
   ClutterText *self = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv = self->priv;
   ClutterUnit x, y;
   gint index_;
 
-  x = CLUTTER_UNITS_FROM_INT (bev->x);
-  y = CLUTTER_UNITS_FROM_INT (bev->y);
+  x = CLUTTER_UNITS_FROM_INT (event->x);
+  y = CLUTTER_UNITS_FROM_INT (event->y);
 
   clutter_actor_transform_stage_point (actor, x, y, &x, &y);
 
