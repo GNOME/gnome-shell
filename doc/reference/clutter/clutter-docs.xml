@@ -57,6 +57,7 @@
       <xi:include href="xml/clutter-rectangle.xml"/>
       <xi:include href="xml/clutter-texture.xml"/>
       <xi:include href="xml/clutter-clone-texture.xml"/>
+      <xi:include href="xml/clutter-cairo-texture.xml"/>
       <xi:include href="xml/clutter-label.xml"/>
       <xi:include href="xml/clutter-entry.xml"/>
     </chapter>
