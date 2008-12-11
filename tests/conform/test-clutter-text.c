@@ -159,6 +159,7 @@ test_text_prepend_some (TestConformSimpleFixture *fixture,
       int j;
 
       clutter_text_insert_unichar (text, t->unichar);
+
       g_assert_cmpint (get_nchars (text), ==, 1);
       g_assert_cmpint (get_nbytes (text), ==, 1 * t->nbytes);
       g_assert_cmpint (clutter_text_get_cursor_position (text), ==, -1);
@@ -166,6 +167,7 @@ test_text_prepend_some (TestConformSimpleFixture *fixture,
       for (j = 2; j <= 4; j++)
         {
           insert_unichar (text, t->unichar, 0);
+
           g_assert_cmpint (get_nchars (text), ==, j);
           g_assert_cmpint (get_nbytes (text), ==, j * t->nbytes);
           g_assert_cmpint (clutter_text_get_cursor_position (text), ==, 1);
@@ -310,6 +312,7 @@ test_text_cursor (TestConformSimpleFixture *fixture,
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
 
+  /* only editable entries listen to events */
   clutter_text_set_editable (text, TRUE);
 
   for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
@@ -356,6 +359,7 @@ test_text_event (TestConformSimpleFixture *fixture,
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
 
+  /* only editable entries listen to events */
   clutter_text_set_editable (text, TRUE);
 
   for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
