@@ -297,16 +297,16 @@ frame_cb (ClutterTimeline *timeline,
 }
 
 static void
-update_toggle_text (ClutterLabel *button, gboolean val)
+update_toggle_text (ClutterText *button, gboolean val)
 {
-  clutter_label_set_text (button, val ? "Enabled" : "Disabled");
+  clutter_text_set_text (button, val ? "Enabled" : "Disabled");
 }
 
 static gboolean
 on_toggle_click (ClutterActor *button, ClutterEvent *event,
 		 gboolean *toggle_val)
 {
-  update_toggle_text (CLUTTER_LABEL (button), *toggle_val = !*toggle_val);
+  update_toggle_text (CLUTTER_TEXT (button), *toggle_val = !*toggle_val);
 
   return TRUE;
 }
@@ -315,12 +315,12 @@ static ClutterActor *
 make_toggle (const char *label_text, gboolean *toggle_val)
 {
   ClutterActor *group = clutter_group_new ();
-  ClutterActor *label = clutter_label_new_with_text ("Sans 14", label_text);
-  ClutterActor *button = clutter_label_new_with_text ("Sans 14", "");
+  ClutterActor *label = clutter_text_new_with_text ("Sans 14", label_text);
+  ClutterActor *button = clutter_text_new_with_text ("Sans 14", "");
   
   clutter_actor_set_reactive (button, TRUE);
 
-  update_toggle_text (CLUTTER_LABEL (button), *toggle_val);
+  update_toggle_text (CLUTTER_TEXT (button), *toggle_val);
   
   clutter_actor_set_position (button, clutter_actor_get_width (label) + 10, 0);
   clutter_container_add (CLUTTER_CONTAINER (group), label, button, NULL);
@@ -373,7 +373,7 @@ test_cogl_tex_polygon_main (int argc, char *argv[])
   clutter_actor_set_position (filtering_toggle, 0,
 			      clutter_actor_get_y (slicing_toggle)
 			      - clutter_actor_get_height (filtering_toggle));
-  note = clutter_label_new_with_text ("Sans 10", "<- Click to change");
+  note = clutter_text_new_with_text ("Sans 10", "<- Click to change");
   clutter_actor_set_position (note,
 			      clutter_actor_get_width (filtering_toggle) + 10,
 			      (clutter_actor_get_height (stage)

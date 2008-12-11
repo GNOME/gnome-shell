@@ -29,11 +29,10 @@ on_event (ClutterStage *stage,
 
 	actor = clutter_stage_get_actor_at_pos (stage, x, y);
 
-
 	if (clutter_actor_transform_stage_point (actor,
-						CLUTTER_UNITS_FROM_DEVICE (x),
-						CLUTTER_UNITS_FROM_DEVICE (y),
-						&xu2, &yu2))
+                                                 CLUTTER_UNITS_FROM_DEVICE (x),
+						 CLUTTER_UNITS_FROM_DEVICE (y),
+						 &xu2, &yu2))
 	  {
 	    gchar *txt;
 
@@ -52,12 +51,11 @@ on_event (ClutterStage *stage,
 				     CLUTTER_UNITS_TO_DEVICE (xu2),
 				     CLUTTER_UNITS_TO_DEVICE (yu2));
 
-	    clutter_label_set_text (CLUTTER_LABEL (label), txt);
+	    clutter_text_set_text (CLUTTER_TEXT (label), txt);
 	    g_free (txt);
 	  }
 	else
-	  clutter_label_set_text (CLUTTER_LABEL (label),
-				  "Unprojection failed.");
+	  clutter_text_set_text (CLUTTER_TEXT (label), "Unprojection failed.");
       }
       break;
 
@@ -75,9 +73,9 @@ test_unproject_main (int argc, char *argv[])
   gchar *txt;
   ClutterActor *rect, *stage, *label0;
   int i, rotate_x = 0, rotate_y = 60, rotate_z = 0;
-  ClutterColor stage_clr = { 0x0, 0x0, 0x0, 0xff },
+  ClutterColor stage_clr = { 0x0,  0x0,  0x0,  0xff },
                white     = { 0xff, 0xff, 0xff, 0xff },
-               blue      = { 0, 0xff, 0xff, 0xff };
+               blue      = { 0x0,  0xff, 0xff, 0xff };
 
   for (i = 0; i < argc; ++i)
     {
@@ -95,11 +93,12 @@ test_unproject_main (int argc, char *argv[])
 	}
       else if (!strncmp (argv[i], "--help", 6))
 	{
-	  printf ("%s [--rotage-x=degrees] [--rotage-y=degrees] "
-		  "[--rotage-z=degrees]\n",
-		  argv[0]);
+	  g_print ("%s [--rotage-x=degrees] "
+                   "[--rotage-y=degrees] "
+                   "[--rotage-z=degrees]\n",
+		   argv[0]);
 
-	  exit (0);
+	  return EXIT_FAILURE;
 	}
     }
 
@@ -124,8 +123,8 @@ test_unproject_main (int argc, char *argv[])
 			 RECT_T, RECT_T + RECT_H,
 			 rotate_x, rotate_y, rotate_z);
 
-  label0 = clutter_label_new_with_text ("Mono 8pt", txt);
-  clutter_label_set_color (CLUTTER_LABEL (label0), &white);
+  label0 = clutter_text_new_with_text ("Mono 8pt", txt);
+  clutter_text_set_color (CLUTTER_TEXT (label0), &white);
 
   clutter_actor_set_position (label0, 10, 10);
   clutter_group_add (CLUTTER_GROUP (stage), label0);
@@ -133,9 +132,9 @@ test_unproject_main (int argc, char *argv[])
   g_free (txt);
 
   label =
-    clutter_label_new_with_text ("Mono 8pt", "Click around!");
+    clutter_text_new_with_text ("Mono 8pt", "Click around!");
 
-  clutter_label_set_color (CLUTTER_LABEL (label), &blue);
+  clutter_text_set_color (CLUTTER_TEXT (label), &blue);
 
   clutter_actor_set_position (label, 10, 50);
   clutter_group_add (CLUTTER_GROUP (stage), label);

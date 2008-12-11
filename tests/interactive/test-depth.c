@@ -83,10 +83,10 @@ janus_group (const gchar *front_text,
 
   group = clutter_group_new ();
   rectangle = clutter_rectangle_new_with_color (&slide_color);
-  front = clutter_label_new_with_text ("Sans 50px", front_text);
-  back = clutter_label_new_with_text ("Sans 50px", back_text);
-  clutter_label_set_color (CLUTTER_LABEL (front), &red);
-  clutter_label_set_color (CLUTTER_LABEL (back), &green);
+  front = clutter_text_new_with_text ("Sans 50px", front_text);
+  back = clutter_text_new_with_text ("Sans 50px", back_text);
+  clutter_text_set_color (CLUTTER_TEXT (front), &red);
+  clutter_text_set_color (CLUTTER_TEXT (back), &green);
 
   clutter_actor_get_size (front, &width, &height);
   clutter_actor_get_size (back, &width2, &height2);
@@ -134,7 +134,7 @@ test_depth_main (int argc, char *argv[])
   clutter_stage_add (stage, group);
   clutter_actor_show (group);
 
-  label = clutter_label_new_with_text ("Mono 26", "Clutter");
+  label = clutter_text_new_with_text ("Mono 26", "Clutter");
   clutter_actor_set_position (label, 120, 200);
   clutter_actor_show (label);
 
