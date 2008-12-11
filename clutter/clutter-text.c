@@ -57,7 +57,7 @@
 
 typedef struct _LayoutCache     LayoutCache;
 typedef struct _TextCommand     TextCommand;
-typedef struct _ClutterTextMapping      ClutterTextMapping;
+typedef struct _TextMapping     TextMapping;
 
 /* Probably move into main */
 static PangoContext *_context = NULL;
@@ -92,7 +92,7 @@ struct _TextCommand
                     ClutterEvent *event);
 };
 
-struct _ClutterTextMapping
+struct _TextMapping
 {
   ClutterModifierType    state;
   guint                  keyval;
@@ -976,7 +976,7 @@ clutter_text_key_press (ClutterActor    *actor,
 
   for (iter = priv->mappings; iter != NULL; iter = iter->next)
     {
-      ClutterTextMapping *mapping = iter->data;
+      TextMapping *mapping = iter->data;
 
       if (
           (mapping->keyval == keyval) &&
@@ -3014,7 +3014,7 @@ clutter_text_add_mapping (ClutterText           *ttext,
                           ClutterModifierType state,
                           const gchar        *commandline)
 {
-  ClutterTextMapping *tmapping = g_new (ClutterTextMapping, 1);
+  TextMapping *tmapping = g_new (TextMapping, 1);
   ClutterTextPrivate *priv = ttext->priv;
   tmapping->keyval = keyval;
   tmapping->state = state;
