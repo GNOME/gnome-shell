@@ -31,6 +31,7 @@ clutter/stamp-*
 config.*
 configure
 depcomp
+/doc/cookbook/version.xml
 doc/manual/clutter-manual.xml
 doc/reference/clutter/clutter-*.txt
 !/doc/reference/clutter/clutter-sections.txt

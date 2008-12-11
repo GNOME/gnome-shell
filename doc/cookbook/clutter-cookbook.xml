@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+               "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+<!ENTITY appurl "http://clutter-project.org">
+<!ENTITY docurl "http://clutter-project.org/docs/">
+<!ENTITY author_mail "ebassi@linux.intel.com">
+<!ENTITY version SYSTEM "version.xml">
+]>
+
+<book lang="en">
+  <bookinfo> <!-- {{{ -->
+    <author>
+      <firstname>Emmanuele</firstname>
+      <surname>Bassi</surname>
+      <address><email>&author_mail;</email></address>
+    </author>
+
+    <copyright>
+      <year>2008</year>
+      <holder>Intel Corporation</holder>
+    </copyright>
+
+    <legalnotice>
+      <para>This document is distributed under the terms of the GNU General
+      Public License as published by the Free Software Foundation; either
+      version 2 of the License, or (at your option) any later version. A copy
+      of this license can be found in the file COPYING included with the
+      source code of this program.</para>
+    </legalnotice>
+
+    <title>The Clutter Cookbook &version;</title>
+  </bookinfo> <!-- }}} -->
+
+  <chapter id="introduction"> <!-- {{{ -->
+    <title>Introduction</title>
+
+    <section>
+      <title>About Clutter</title>
+
+      <para>FIXME</para>
+    </section>
+
+    <section>
+      <title>About this document</title>
+
+      <para>This document tries to provide examples on how to perform some
+      common tasks when building an application or a toolkit using the
+      Clutter library.</para>
+
+      <para>This document is available in various formats like HTML,
+      text and PDF. The latest version is always available at
+      <ulink url="&docurl;">&docurl;</ulink>.</para>
+    </section>
+
+    <section>
+      <title>Where to get Clutter</title>
+
+      <para>You can obtain Clutter from <ulink url="&appurl;">&appurl;</ulink>
+      or perhaps from your distributor.</para>
+    </section>
+
+    <section>
+      <title>License</title>
+
+      <para>Clutter is distributed under the terms of the GNU Lesser General
+      Public License as published by the Free Software Foundation; either
+      version 2 of the License, or (at your option) any later version. A copy
+      of this license can be found in the file COPYING included with the
+      source code of this program.</para>
+    </section>
+
+  </chapter> <!-- introduction }}} -->
+
+  <chapter id="actors"> <!-- actors {{{ -->
+    <title>Actors</title>
+
+    <epigraph>
+      <attribution>the author of the epigraph</attribution>
+      <para>a short epigraph</para>
+    </epigraph>
+
+    <section id="actors-introduction">
+      <title>Introduction</title>
+
+      <para>introduction</para>
+    </section>
+
+    <section id="actors-recipe-1"> <!-- recipe 1 {{{ -->
+      <title>A problem involving actors</title>
+
+      <section>
+        <title>Problem</title>
+
+        <para>Description of the problem</para>
+      </section>
+
+      <section>
+        <title>Solution</title>
+
+        <para>The solution of the problem, with the source code</para>
+      </section>
+
+      <section>
+        <title>Discussion</title>
+
+        <para>Discussion of the solution, with eventual mentions of
+        possible alternatives</para>
+      </section>
+
+    </section> <!-- recipe 1 }}} -->
+
+  </chapter> <!-- actors }}} -->
+
+  <chapter id="textures"> <!-- textures {{{ -->
+    <title>Textures</title>
+
+    <epigraph>
+      <attribution>the author of the epigraph</attribution>
+      <para>a short epigraph</para>
+    </epigraph>
+
+    <section id="textures-introduction">
+      <title>Introduction</title>
+
+      <para>introduction</para>
+    </section>
+
+    <section> <!-- recipe 1 {{{ -->
+      <title>Maintaining the aspect ratio when loading a texture</title>
+
+      <section>
+        <title>Problem</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Solution</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Discussion</title>
+
+        <para></para>
+      </section>
+
+    </section> <!-- recipe 1 }}} -->
+
+  </chapter> <!-- textures }}} -->
+
+  <chapter id="animations"> <!-- animations {{{ -->
+    <title>Animations</title>
+
+    <epigraph>
+      <attribution>the author of the epigraph</attribution>
+      <para>a short epigraph</para>
+    </epigraph>
+
+    <section id="animations-introduction">
+      <title>Introduction</title>
+
+      <para>introduction</para>
+    </section>
+
+    <section> <!-- recipe 1 {{{ -->
+      <title>Inverting Animations</title>
+
+      <section>
+        <title>Problem</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Solution</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Discussion</title>
+
+        <para></para>
+      </section>
+
+    </section> <!-- recipe 1 }}} -->
+
+  </chapter> <!-- animations }}} -->
+
+  <appendix id="contributing"> <!-- {{{ -->
+    <title>Contributing to this document</title>
+
+    <para>This document is written in Docbook XML. The source file for this
+    document is located in the subdirectory "doc/cookbook" of the source
+    directory of Clutter.</para>
+  </appendix> <!-- contributing }}} -->
+
+</book>

@@ -844,6 +844,8 @@ AC_CONFIG_FILES([
         doc/reference/cogl/cogl-docs.xml
         doc/manual/clutter-manual.xml
         doc/manual/Makefile
+        doc/cookbook/version.xml
+        doc/cookbook/Makefile
         po/Makefile.in
         clutter.pc
 ])
