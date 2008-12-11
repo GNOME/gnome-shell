@@ -22,7 +22,7 @@ select_all (ClutterText     *ttext,
             ClutterEvent *event)
 {
   gint len;
-  len = g_utf8_strlen (clutter_label_get_text (CLUTTER_LABEL (ttext)), -1);
+  len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
 
   clutter_text_set_cursor_position (ttext, 0);
   clutter_text_set_selection_bound (ttext, len);
@@ -126,7 +126,7 @@ test_text_main (gint    argc,
   clutter_container_add (CLUTTER_CONTAINER (stage), text, NULL);
   clutter_actor_set_position (text, 40, 30);
   clutter_actor_set_width (text, 1024);
-  clutter_label_set_line_wrap (CLUTTER_LABEL (text), TRUE);
+  clutter_text_set_line_wrap (CLUTTER_TEXT (text), TRUE);
 
   clutter_actor_set_reactive (text, TRUE);
   clutter_stage_set_key_focus (CLUTTER_STAGE (stage), text);
@@ -159,11 +159,11 @@ test_text_main (gint    argc,
     {
       gchar                *utf8;
       g_file_get_contents (argv[1], &utf8, NULL, NULL);
-      clutter_label_set_text (CLUTTER_LABEL (text), utf8);
+      clutter_text_set_text (CLUTTER_TEXT (text), utf8);
     }
   else
     {
-      clutter_label_set_text (CLUTTER_LABEL (text), runes);
+      clutter_text_set_text (CLUTTER_TEXT (text), runes);
     }
 
   g_signal_connect (text, "cursor-event", G_CALLBACK (cursor_event), NULL);
