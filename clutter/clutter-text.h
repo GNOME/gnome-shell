@@ -124,6 +124,9 @@ void                  clutter_text_insert_text         (ClutterText        *self
 void                  clutter_text_delete_text         (ClutterText        *self,
                                                         gssize              start_pos,
                                                         gssize              end_pos);
+gchar *               clutter_text_get_chars           (ClutterText        *self,
+                                                        gssize              start_pos,
+                                                        gssize              end_pos);
 void                  clutter_text_set_editable        (ClutterText        *self,
                                                         gboolean            editable);
 gboolean              clutter_text_get_editable        (ClutterText        *self);
