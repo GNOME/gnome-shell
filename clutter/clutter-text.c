@@ -57,8 +57,6 @@
 #define CLUTTER_TEXT_GET_PRIVATE(obj)   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXT, ClutterTextPrivate))
 
 typedef struct _LayoutCache     LayoutCache;
-typedef struct _TextCommand     TextCommand;
-typedef struct _TextMapping     TextMapping;
 
 /* Probably move into main */
 static PangoContext *_context = NULL;
