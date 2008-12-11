@@ -46,11 +46,12 @@
 #define DEFAULT_FONT_NAME	"Sans 10"
 
 /* We need at least three cached layouts to run the allocation without
-   regenerating a new layout. First the layout will be generated at
-   full width to get the preferred width, then it will be generated at
-   the preferred width to get the preferred height and then it might
-   be regenerated at a different width to get the height for the
-   actual allocated width */
+ * regenerating a new layout. First the layout will be generated at
+ * full width to get the preferred width, then it will be generated at
+ * the preferred width to get the preferred height and then it might
+ * be regenerated at a different width to get the height for the
+ * actual allocated width
+ */
 #define N_CACHED_LAYOUTS 3
 
 #define CLUTTER_TEXT_GET_PRIVATE(obj)   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXT, ClutterTextPrivate))
@@ -63,52 +64,22 @@ static PangoContext *_context = NULL;
 static const ClutterColor default_cursor_color = {   0,   0,   0, 255 };
 static const ClutterColor default_text_color   = {   0,   0,   0, 255 };
 
-static gboolean clutter_text_key_press          (ClutterActor    *actor,
-                                              ClutterKeyEvent *kev);
-static gboolean clutter_text_position_to_coords (ClutterText        *ttext,
-                                              gint             position,
-                                              gint            *x,
-                                              gint            *y,
-                                              gint            *cursor_height);
-static gint     clutter_text_coords_to_position (ClutterText        *text,
-                                              gint             x,
-                                              gint             y);
-static void     clutter_text_set_property       (GObject         *gobject,
-                                              guint            prop_id,
-                                              const GValue    *value,
-                                              GParamSpec      *pspec);
-static void     clutter_text_get_property       (GObject         *gobject,
-                                              guint            prop_id,
-                                              GValue          *value,
-                                              GParamSpec      *pspec);
-static void     clutter_text_finalize           (GObject         *gobject);
-
-static void init_commands (ClutterText *ttext);
-static void init_mappings (ClutterText *ttext);
-
-void
-clutter_text_delete_text (ClutterText *ttext,
-                       gssize    start_pos,
-                       gssize    end_pos);
-
-static gboolean
-clutter_text_truncate_selection (ClutterText     *ttext,
-                              const gchar  *commandline,
-                              ClutterEvent *event);
-
 G_DEFINE_TYPE (ClutterText, clutter_text, CLUTTER_TYPE_ACTOR);
 
 struct _LayoutCache
 {
-  /* Cached layout. Pango internally caches the computed extents when
-     they are requested so there is no need to cache that as well */
+  /* Cached layout. Pango internally caches the computed extents
+   * when they are requested so there is no need to cache that as
+   * well
+   */
   PangoLayout *layout;
 
   /* The width that used to generate this layout */
   ClutterUnit  width;
 
-  /* A number representing the age of this cache (so that when a new
-     layout is needed the last used cache is replaced) */
+  /* A number representing the age of this cache (so that when a
+   * new layout is needed the last used cache is replaced)
+   */
   guint        age;
 };
 
@@ -124,8 +95,8 @@ struct _ClutterTextPrivate
   LayoutCache cached_layouts[N_CACHED_LAYOUTS];
   guint cache_age;
 
-  PangoAttrList        *attrs;
-  PangoAttrList        *effective_attrs;
+  PangoAttrList *attrs;
+  PangoAttrList *effective_attrs;
 
   guint alignment        : 2;
   guint wrap             : 1;
@@ -142,20 +113,28 @@ struct _ClutterTextPrivate
   guint in_select_drag   : 1;
   guint cursor_color_set : 1;
 
-  gint            position;   /* current cursor position */
-  gint            selection_bound; 
-                              /* current 'other end of selection' position */
-  gint            x_pos;      /* the x position in the pangolayout, used to
-                               * avoid drifting when repeatedly moving up|down
-                               */
-  ClutterColor    cursor_color;
-  ClutterGeometry cursor_pos; /* Where to draw the cursor */
+  /* current cursor position */
+  gint position;
 
-  GList          *mappings;
-  GList          *commands; /* each instance has it's own set of commands
-                               so that actor specific actions can be added
-                               to single actor classes
-                              */
+  /* current 'other end of selection' position */
+  gint selection_bound;
+
+  /* the x position in the pangolayout, used to
+   * avoid drifting when repeatedly moving up|down
+   */
+  gint            x_pos;
+
+  /* Where to draw the cursor */
+  ClutterGeometry cursor_pos;
+  ClutterColor cursor_color;
+
+  ClutterColor selection_color;
+
+  GList *mappings;
+  GList *commands; /* each instance has it's own set of commands
+                      so that actor specific actions can be added
+                      to single actor classes
+                    */
 };
 
 enum
@@ -165,11 +144,11 @@ enum
   PROP_FONT_NAME,
   PROP_TEXT,
   PROP_COLOR,
-  PROP_ATTRIBUTES,
   PROP_USE_MARKUP,
+  PROP_ATTRIBUTES,
   PROP_ALIGNMENT,
-  PROP_WRAP,
-  PROP_WRAP_MODE,
+  PROP_LINE_WRAP,
+  PROP_LINE_WRAP_MODE,
   PROP_JUSTIFY,
   PROP_ELLIPSIZE,
   PROP_POSITION,
@@ -193,14 +172,15 @@ enum
 
 static guint text_signals[LAST_SIGNAL] = { 0, };
 
-#define offset_real(text, pos)                                \
-   (pos==-1?g_utf8_strlen(text, -1):pos)                          \
+#define offset_real(text, pos)          \
+  (pos == -1 ? g_utf8_strlen (text, -1) : pos)
 
-#define offset_to_bytes(text,pos)\
-   (pos==-1?strlen(text):((gint)(g_utf8_offset_to_pointer (text, pos) - text)))
+#define offset_to_bytes(text,pos)       \
+  (pos == -1 ? strlen (text)           \
+             : ((gint) (g_utf8_offset_to_pointer (text, pos) - text)))
 
-#define bytes_to_offset(text, pos)                            \
-    (g_utf8_pointer_to_offset (text, text + pos))
+#define bytes_to_offset(text, pos)      \
+  (g_utf8_pointer_to_offset (text, text + pos))
 
 
 typedef struct TextCommand {
@@ -216,51 +196,26 @@ typedef struct ClutterTextMapping {
   const gchar           *action;
 } ClutterTextMapping;
 
-
 void
-clutter_text_mappings_clear (ClutterText *ttext)
+clutter_text_mappings_clear (ClutterText *self)
 {
-  ClutterTextPrivate *priv = ttext->priv;
-  GList *iter;
-  for (iter = priv->mappings; iter; iter=iter->next)
-    {
-      g_free (iter->data);
-    }
+  ClutterTextPrivate *priv = self->priv;
+
+  g_list_foreach (priv->mappings, (GFunc) g_free, NULL);
   g_list_free (priv->mappings);
   priv->mappings = NULL;
 }
 
-void clutter_text_add_mapping (ClutterText           *ttext,
-                            guint               keyval,
-                            ClutterModifierType state,
-                            const gchar        *commandline)
-{
-  ClutterTextMapping *tmapping = g_new (ClutterTextMapping, 1);
-  ClutterTextPrivate *priv = ttext->priv;
-  tmapping->keyval = keyval;
-  tmapping->state = state;
-  tmapping->action = commandline;
-  priv->mappings = g_list_append (priv->mappings, tmapping);
-}
+static void init_commands (ClutterText *ttext);
 
-void clutter_text_add_action (ClutterText    *ttext,
-                           const gchar *name,
-                           gboolean (*func) (ClutterText            *ttext,
-                                             const gchar         *commandline,
-                                             ClutterEvent        *event))
+static void
+init_mappings (ClutterText *ttext)
 {
-  TextCommand *tcommand = g_new (TextCommand, 1);
   ClutterTextPrivate *priv = ttext->priv;
-  tcommand->name = name;
-  tcommand->func = func;
-  priv->commands = g_list_append (priv->commands, tcommand);
-}
 
-static void init_mappings (ClutterText *ttext)
-{
-  ClutterTextPrivate *priv = ttext->priv;
   if (priv->mappings)
     return;
+
   clutter_text_add_mapping (ttext, CLUTTER_Left, 0,    "move-left");
   clutter_text_add_mapping (ttext, CLUTTER_KP_Left, 0, "move-left");
   clutter_text_add_mapping (ttext, CLUTTER_Right, 0,   "move-right");
@@ -274,12 +229,12 @@ static void init_mappings (ClutterText *ttext)
   clutter_text_add_mapping (ttext, CLUTTER_KP_Home, 0, "move-start-line");
   clutter_text_add_mapping (ttext, CLUTTER_End, 0,     "move-end-line");
   clutter_text_add_mapping (ttext, CLUTTER_KP_End, 0,  "move-end-line");
-  clutter_text_add_mapping (ttext, CLUTTER_BackSpace,0,"delete-previous");
+  clutter_text_add_mapping (ttext, CLUTTER_BackSpace, 0 , "delete-previous");
   clutter_text_add_mapping (ttext, CLUTTER_Delete, 0,  "delete-next");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_Delete,0,"delete-next");
+  clutter_text_add_mapping (ttext, CLUTTER_KP_Delete,0, "delete-next");
   clutter_text_add_mapping (ttext, CLUTTER_Return, 0,  "activate");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_Enter, 0,"activate");
-  clutter_text_add_mapping (ttext, CLUTTER_ISO_Enter,0,"activate");
+  clutter_text_add_mapping (ttext, CLUTTER_KP_Enter, 0, "activate");
+  clutter_text_add_mapping (ttext, CLUTTER_ISO_Enter, 0, "activate");
 }
 
 static PangoLayout *
@@ -514,56 +469,15 @@ clutter_text_ensure_cursor_position (ClutterText *ttext)
   g_signal_emit (ttext, text_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
 }
 
-gint
-clutter_text_get_cursor_position (ClutterText *ttext)
+static inline gboolean
+clutter_text_truncate_selection_internal (ClutterText *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_TEXT (ttext), -1);
-  return ttext->priv->position;
-}
+  ClutterTextPrivate *priv = self->priv;
+  gint start_index;
+  gint end_index;
 
-void
-clutter_text_set_cursor_position (ClutterText *ttext,
-                               gint       position)
-{
-  const gchar         *text;
-  ClutterTextPrivate *priv;
-  gint len;
-
-  g_return_if_fail (CLUTTER_IS_TEXT (ttext));
-
-  priv = ttext->priv;
-
-  text = clutter_text_get_text (ttext);
-  if (text == NULL)
-    return;
-
-  len = g_utf8_strlen (text, -1);
-
-  if (position < 0 || position >= len)
-    priv->position = -1;
-  else
-    priv->position = position;
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (ttext))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (ttext));
-}
-
-static gboolean
-clutter_text_truncate_selection (ClutterText     *ttext,
-                              const gchar  *commandline,
-                              ClutterEvent *event)
-{
-  const gchar *utf8 = clutter_text_get_text (ttext);
-  ClutterTextPrivate *priv;
-  gint             start_index;
-  gint             end_index;
-
-  priv = ttext->priv;
-
-  g_object_ref (ttext);
-
-  start_index = offset_real (utf8, priv->position);
-  end_index = offset_real (utf8, priv->selection_bound);
+  start_index = offset_real (priv->text, priv->position);
+  end_index = offset_real (priv->text, priv->selection_bound);
 
   if (end_index == start_index)
     return FALSE;
@@ -575,154 +489,98 @@ clutter_text_truncate_selection (ClutterText     *ttext,
       end_index = temp;
     }
 
-  clutter_text_delete_text (ttext, start_index, end_index);
+  clutter_text_delete_text (self, start_index, end_index);
+
   priv->position = start_index;
   priv->selection_bound = start_index;
+
   return TRUE;
 }
 
-
-void
-clutter_text_insert_unichar (ClutterText *ttext,
-                           gunichar   wc)
+static gboolean
+clutter_text_truncate_selection (ClutterText  *ttext,
+                                 const gchar  *commandline,
+                                 ClutterEvent *event)
 {
-  ClutterTextPrivate *priv;
-  GString *new = NULL;
-  const gchar *old_text;
-  glong pos;
-
-  g_return_if_fail (CLUTTER_IS_TEXT (ttext));
-  g_return_if_fail (g_unichar_validate (wc));
-
-  if (wc == 0)
-    return;
-
-  clutter_text_truncate_selection (ttext, NULL, 0);
-
-  priv = ttext->priv;
-
-  g_object_ref (ttext);
-
-  old_text = clutter_text_get_text (ttext);
-
-
-  new = g_string_new (old_text);
-  pos = offset_to_bytes (old_text, priv->position);
-  new = g_string_insert_unichar (new, pos, wc);
-
-  clutter_text_set_text (ttext, new->str);
-
-  if (priv->position >= 0)
-    {
-      clutter_text_set_cursor_position (ttext, priv->position + 1);
-      clutter_text_set_selection_bound (ttext, priv->position);
-    }
-
-  g_string_free (new, TRUE);
-
-  g_object_unref (ttext);
-
-  g_signal_emit (G_OBJECT (ttext), text_signals[TEXT_CHANGED], 0);
-}
-
-void
-clutter_text_delete_text (ClutterText *ttext,
-                       gssize    start_pos,
-                       gssize    end_pos)
-{
-  ClutterTextPrivate *priv;
-  GString *new = NULL;
-  gint start_bytes;
-  gint end_bytes;
-  const gchar *text;
-
-  g_return_if_fail (CLUTTER_IS_TEXT (ttext));
-
-  priv = ttext->priv;
-  text = clutter_text_get_text (ttext);
-
-  if (end_pos == -1)
-    {
-      start_bytes = offset_to_bytes (text, g_utf8_strlen (text, -1) - 1);
-      end_bytes = offset_to_bytes (text, g_utf8_strlen (text, -1));
-    }
-  else
-    {
-      start_bytes = offset_to_bytes (text, start_pos);
-      end_bytes = offset_to_bytes (text, end_pos);
-    }
-
-  new = g_string_new (text);
-
-  new = g_string_erase (new, start_bytes, end_bytes - start_bytes);
-
-  clutter_text_set_text (ttext, new->str);
-
-  g_string_free (new, TRUE);
-  g_signal_emit (G_OBJECT (ttext), text_signals[TEXT_CHANGED], 0);
-}
-
-static void
-clutter_text_finalize (GObject *gobject)
-{
-  ClutterTextPrivate *priv;
-  ClutterText        *ttext;
-  GList           *iter;
-
-  ttext = CLUTTER_TEXT (gobject);
-  priv = ttext->priv;
-
-  clutter_text_mappings_clear (ttext);
-
-  for (iter = priv->commands; iter; iter=iter->next)
-      g_free (iter->data);
-  g_list_free (priv->commands);
-  priv->commands = NULL;
+  return clutter_text_truncate_selection_internal (ttext);
 }
 
 static void
 clutter_text_set_property (GObject      *gobject,
-                        guint         prop_id,
-                        const GValue *value,
-                        GParamSpec   *pspec)
+                           guint         prop_id,
+                           const GValue *value,
+                           GParamSpec   *pspec)
 {
-  ClutterTextPrivate *priv;
-  ClutterText        *ttext;
-
-  ttext = CLUTTER_TEXT (gobject);
-  priv = ttext->priv;
+  ClutterText *self = CLUTTER_TEXT (gobject);
 
   switch (prop_id)
     {
     case PROP_TEXT:
-      clutter_text_set_text (ttext, g_value_get_string (value));
+      clutter_text_set_text (self, g_value_get_string (value));
       break;
+
     case PROP_COLOR:
-      clutter_text_set_color (ttext, clutter_value_get_color (value));
+      clutter_text_set_color (self, clutter_value_get_color (value));
       break;
+
     case PROP_FONT_NAME:
-      clutter_text_set_font_name (ttext, g_value_get_string (value));
+      clutter_text_set_font_name (self, g_value_get_string (value));
       break;
+
+    case PROP_USE_MARKUP:
+      clutter_text_set_use_markup (self, g_value_get_boolean (value));
+      break;
+
+    case PROP_ATTRIBUTES:
+      clutter_text_set_attributes (self, g_value_get_boxed (value));
+      break;
+
+    case PROP_ALIGNMENT:
+      clutter_text_set_alignment (self, g_value_get_enum (value));
+      break;
+
+    case PROP_LINE_WRAP:
+      clutter_text_set_line_wrap (self, g_value_get_boolean (value));
+      break;
+
+    case PROP_LINE_WRAP_MODE:
+      clutter_text_set_line_wrap_mode (self, g_value_get_enum (value));
+      break;
+
+    case PROP_JUSTIFY:
+      clutter_text_set_justify (self, g_value_get_boolean (value));
+      break;
+
+    case PROP_ELLIPSIZE:
+      clutter_text_set_ellipsize (self, g_value_get_enum (value));
+      break;
+
     case PROP_POSITION:
-      clutter_text_set_cursor_position (ttext, g_value_get_int (value));
+      clutter_text_set_cursor_position (self, g_value_get_int (value));
       break;
+
     case PROP_SELECTION_BOUND:
-      clutter_text_set_selection_bound (ttext, g_value_get_int (value));
+      clutter_text_set_selection_bound (self, g_value_get_int (value));
       break;
+
     case PROP_CURSOR_VISIBLE:
-      clutter_text_set_cursor_visible (ttext, g_value_get_boolean (value));
+      clutter_text_set_cursor_visible (self, g_value_get_boolean (value));
       break;
+
     case PROP_CURSOR_COLOR:
-      clutter_text_set_cursor_color (ttext, g_value_get_boxed (value));
+      clutter_text_set_cursor_color (self, g_value_get_boxed (value));
       break;
+
     case PROP_EDITABLE:
-      clutter_text_set_editable (ttext, g_value_get_boolean (value));
+      clutter_text_set_editable (self, g_value_get_boolean (value));
       break;
+
     case PROP_ACTIVATABLE:
-      clutter_text_set_activatable (ttext, g_value_get_boolean (value));
+      clutter_text_set_activatable (self, g_value_get_boolean (value));
       break;
+
     case PROP_SELECTABLE:
-      clutter_text_set_selectable (ttext, g_value_get_boolean (value));
+      clutter_text_set_selectable (self, g_value_get_boolean (value));
       break;
 
     default:
@@ -737,46 +595,85 @@ clutter_text_get_property (GObject    *gobject,
                         GValue     *value,
                         GParamSpec *pspec)
 {
-  ClutterTextPrivate *priv;
-
-  priv = CLUTTER_TEXT (gobject)->priv;
+  ClutterTextPrivate *priv = CLUTTER_TEXT (gobject)->priv;
 
   switch (prop_id)
     {
     case PROP_TEXT:
       g_value_set_string (value, priv->text);
       break;
+
     case PROP_FONT_NAME:
       g_value_set_string (value, priv->font_name);
       break;
+
     case PROP_COLOR:
       clutter_value_set_color (value, &priv->text_color);
       break;
+
     case PROP_CURSOR_VISIBLE:
       g_value_set_boolean (value, priv->cursor_visible);
       break;
+
     case PROP_CURSOR_COLOR:
       clutter_value_set_color (value, &priv->cursor_color);
       break;
+
     case PROP_POSITION:
       g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->position));
       break;
+
     case PROP_SELECTION_BOUND:
       g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->selection_bound));
       break;
+
     case PROP_EDITABLE:
       g_value_set_boolean (value, priv->editable);
       break;
+
     case PROP_SELECTABLE:
       g_value_set_boolean (value, priv->selectable);
       break;
+
     case PROP_ACTIVATABLE:
       g_value_set_boolean (value, priv->activatable);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
+}
+
+static void
+clutter_text_dispose (GObject *gobject)
+{
+  ClutterText *self = CLUTTER_TEXT (gobject);
+
+  /* get rid of the entire cache */
+  clutter_text_dirty_cache (self);
+
+  G_OBJECT_CLASS (clutter_text_parent_class)->dispose (gobject);
+}
+
+static void
+clutter_text_finalize (GObject *gobject)
+{
+  ClutterText *self = CLUTTER_TEXT (gobject);
+  ClutterTextPrivate *priv = self->priv;
+
+  if (priv->font_desc)
+    pango_font_description_free (priv->font_desc);
+
+  g_free (priv->text);
+  g_free (priv->font_name);
+
+  clutter_text_mappings_clear (self);
+
+  g_list_foreach (priv->commands, (GFunc) g_free, NULL);
+  g_list_free (priv->commands);
+
+  G_OBJECT_CLASS (clutter_text_parent_class)->finalize (gobject);
 }
 
 static void
@@ -875,8 +772,8 @@ cursor_paint (ClutterText *ttext)
 
 
 static gboolean
-clutter_text_press (ClutterActor       *actor,
-                 ClutterButtonEvent *bev)
+clutter_text_button_press (ClutterActor       *actor,
+                           ClutterButtonEvent *bev)
 {
   ClutterText *ttext = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv = ttext->priv;
@@ -899,14 +796,7 @@ clutter_text_press (ClutterActor       *actor,
     );
 
   /* we'll steal keyfocus if we do not have it */
-  {
-    ClutterActor *stage;
-    for (stage = actor;
-         clutter_actor_get_parent (stage);
-         stage = clutter_actor_get_parent (stage));
-    if (stage && CLUTTER_IS_STAGE (stage))
-      clutter_stage_set_key_focus (CLUTTER_STAGE (stage), actor);
-  }
+  clutter_actor_grab_key_focus (actor);
 
   priv->in_select_drag = TRUE;
   clutter_grab_pointer (actor);
@@ -917,7 +807,7 @@ clutter_text_press (ClutterActor       *actor,
 
 static gboolean
 clutter_text_motion (ClutterActor       *actor,
-                  ClutterMotionEvent *mev)
+                     ClutterMotionEvent *mev)
 {
   ClutterText *ttext = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv = ttext->priv;
@@ -926,9 +816,7 @@ clutter_text_motion (ClutterActor       *actor,
   const gchar          *text;
 
   if (!priv->in_select_drag)
-    {
-      return FALSE;
-    }
+    return FALSE;
 
   text = clutter_text_get_text (ttext);
 
@@ -941,9 +829,7 @@ clutter_text_motion (ClutterActor       *actor,
                                                 CLUTTER_UNITS_TO_INT (y));
 
   if (priv->selectable)
-    {
-      clutter_text_set_cursor_position (ttext, bytes_to_offset (text, index_));
-    }
+    clutter_text_set_cursor_position (ttext, bytes_to_offset (text, index_));
   else
     {
       clutter_text_set_cursor_position (ttext, bytes_to_offset (text, index_));
@@ -954,8 +840,8 @@ clutter_text_motion (ClutterActor       *actor,
 }
 
 static gboolean
-clutter_text_release (ClutterActor       *actor,
-                   ClutterButtonEvent *bev)
+clutter_text_button_release (ClutterActor       *actor,
+                             ClutterButtonEvent *bev)
 {
   ClutterText *ttext = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv = ttext->priv;
@@ -967,6 +853,54 @@ clutter_text_release (ClutterActor       *actor,
     }
   return FALSE;
 }
+
+static gboolean
+clutter_text_key_press (ClutterActor    *actor,
+                        ClutterKeyEvent *kev)
+{
+  ClutterTextPrivate *priv   = CLUTTER_TEXT (actor)->priv;
+  gint keyval = clutter_key_event_symbol (kev);
+  GList *iter;
+
+  if (!priv->editable)
+    return FALSE;
+
+  for (iter = priv->mappings; iter != NULL; iter = iter->next)
+    {
+      ClutterTextMapping *mapping = iter->data;
+
+      if (
+          (mapping->keyval == keyval) &&
+            (
+             (mapping->state == 0) ||
+             (mapping->state && (kev->modifier_state & mapping->state))
+            )
+         )
+        {
+          if (!g_str_equal (mapping->action, "activate") ||
+              priv->activatable)
+            return clutter_text_action (CLUTTER_TEXT (actor),
+                                        mapping->action,
+                                        (ClutterEvent *) kev);
+        }
+    }
+
+    {
+      gunichar key_unichar = clutter_key_event_unicode (kev);
+
+      if (key_unichar == '\r')  /* return is reported as CR we want LF */
+        key_unichar = '\n';
+
+      if (g_unichar_validate (key_unichar))
+        {
+          clutter_text_insert_unichar (CLUTTER_TEXT (actor), key_unichar);
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
 
 static void
 clutter_text_paint (ClutterActor *self)
@@ -1002,9 +936,9 @@ clutter_text_paint (ClutterActor *self)
 
 static void
 clutter_text_get_preferred_width (ClutterActor *self,
-                                   ClutterUnit   for_height,
-                                   ClutterUnit  *min_width_p,
-                                   ClutterUnit  *natural_width_p)
+                                  ClutterUnit   for_height,
+                                  ClutterUnit  *min_width_p,
+                                  ClutterUnit  *natural_width_p)
 {
   ClutterText *text = CLUTTER_TEXT (self);
   ClutterTextPrivate *priv = text->priv;
@@ -1034,9 +968,9 @@ clutter_text_get_preferred_width (ClutterActor *self,
 
 static void
 clutter_text_get_preferred_height (ClutterActor *self,
-                                    ClutterUnit   for_width,
-                                    ClutterUnit  *min_height_p,
-                                    ClutterUnit  *natural_height_p)
+                                   ClutterUnit   for_width,
+                                   ClutterUnit  *min_height_p,
+                                   ClutterUnit  *natural_height_p)
 {
   ClutterText *text = CLUTTER_TEXT (self);
 
@@ -1069,8 +1003,8 @@ clutter_text_get_preferred_height (ClutterActor *self,
 
 static void
 clutter_text_allocate (ClutterActor          *self,
-                        const ClutterActorBox *box,
-                        gboolean               origin_changed)
+                       const ClutterActorBox *box,
+                       gboolean               origin_changed)
 {
   ClutterText *text = CLUTTER_TEXT (self);
   ClutterActorClass *parent_class;
@@ -1084,13 +1018,6 @@ clutter_text_allocate (ClutterActor          *self,
 }
 
 static void
-clutter_text_constructed (GObject *object)
-{
-  if (G_OBJECT_CLASS (clutter_text_parent_class)->constructed != NULL)
-    G_OBJECT_CLASS (clutter_text_parent_class)->constructed (object);
-}
-
-static void
 clutter_text_class_init (ClutterTextClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -1099,7 +1026,7 @@ clutter_text_class_init (ClutterTextClass *klass)
 
   gobject_class->set_property = clutter_text_set_property;
   gobject_class->get_property = clutter_text_get_property;
-  gobject_class->constructed = clutter_text_constructed;
+  gobject_class->dispose = clutter_text_dispose;
   gobject_class->finalize = clutter_text_finalize;
 
   actor_class->paint = clutter_text_paint;
@@ -1107,8 +1034,8 @@ clutter_text_class_init (ClutterTextClass *klass)
   actor_class->get_preferred_height = clutter_text_get_preferred_height;
   actor_class->allocate = clutter_text_allocate;
   actor_class->key_press_event = clutter_text_key_press;
-  actor_class->button_press_event = clutter_text_press;
-  actor_class->button_release_event = clutter_text_release;
+  actor_class->button_press_event = clutter_text_button_press;
+  actor_class->button_release_event = clutter_text_button_release;
   actor_class->motion_event = clutter_text_motion;
 
   /**
@@ -1145,40 +1072,37 @@ clutter_text_class_init (ClutterTextClass *klass)
    *
    * Whether key events delivered to the actor causes editing.
    */
-  g_object_class_install_property
-    (gobject_class, PROP_EDITABLE,
-     g_param_spec_boolean ("editable",
-			"Editable",
-			"Whether the text is editable",
-			TRUE,
-			G_PARAM_READWRITE));
-
+  pspec = g_param_spec_boolean ("editable",
+                                "Editable",
+                                "Whether the text is editable",
+                                TRUE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_EDITABLE, pspec);
 
   /**
    * ClutterText:selectable:
    *
    * Whether it is possible to select text.
    */
-  g_object_class_install_property
-    (gobject_class, PROP_SELECTABLE,
-     g_param_spec_boolean ("selectable",
-			"Editable",
-			"Whether the text is selectable",
-			TRUE,
-			G_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("selectable",
+                                "Selectable",
+                                "Whether the text is selectable",
+                                TRUE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_SELECTABLE, pspec);
 
   /**
    * ClutterText:activatable:
    *
    * Toggles whether return invokes the activate signal or not.
    */
-  g_object_class_install_property
-    (gobject_class, PROP_ACTIVATABLE,
-     g_param_spec_boolean ("activatable",
-			"Editable",
-			"Whether return causes the activate signal to be fired",
-			TRUE,
-			G_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("activatable",
+                                "Activatable",
+                                "Whether pressing return causes the "
+                                "activate signal to be emitted",
+                                TRUE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_ACTIVATABLE, pspec);
 
   /**
    * ClutterText:cursor-visible:
@@ -1209,29 +1133,123 @@ clutter_text_class_init (ClutterTextClass *klass)
    *
    * The current input cursor position. -1 is taken to be the end of the text
    */
-  g_object_class_install_property
-    (gobject_class, PROP_POSITION,
-     g_param_spec_int ("position",
+  pspec = g_param_spec_int ("position",
                        "Position",
                        "The cursor position",
                        -1, G_MAXINT,
                        -1,
-                       G_PARAM_READWRITE));
-
+                       G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_POSITION, pspec);
 
   /**
    * ClutterText:selection-bound:
    *
    * The current input cursor position. -1 is taken to be the end of the text
    */
-  g_object_class_install_property
-    (gobject_class, PROP_SELECTION_BOUND,
-     g_param_spec_int ("selection-bound",
+  pspec = g_param_spec_int ("selection-bound",
                        "Selection-bound",
                        "The cursor position of the other end of the selection.",
                        -1, G_MAXINT,
                        -1,
-                       G_PARAM_READWRITE));
+                       G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_SELECTION_BOUND, pspec);
+
+  pspec = g_param_spec_boxed ("attributes",
+                              "Attributes",
+                              "A list of style attributes to apply to "
+                              "the contents of the actor",
+                              PANGO_TYPE_ATTR_LIST,
+                              CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_ATTRIBUTES, pspec);
+
+  /**
+   * ClutterText:use-markup:
+   *
+   * Whether the text includes Pango markup. See pango_layout_set_markup()
+   * in the Pango documentation.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_boolean ("use-markup",
+                                "Use markup",
+                                "Whether or not the text "
+                                "includes Pango markup",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_USE_MARKUP, pspec);
+
+  /**
+   * ClutterText:line-wrap:
+   *
+   * Whether to wrap the lines of #ClutterText:text if the contents
+   * exceed the available allocation. The wrapping strategy is
+   * controlled by the #ClutterText:line-wrap-mode property.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_boolean ("line-wrap",
+                                "Line wrap",
+                                "If set, wrap the lines if the text "
+                                "becomes too wide",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_LINE_WRAP, pspec);
+
+  /**
+   * ClutterText:line-wrap-mode:
+   *
+   * If #ClutterText:line-wrap is set to %TRUE, this property will
+   * control how the text is wrapped.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_enum ("line-wrap-mode",
+                             "Line wrap mode",
+                             "Control how line-wrapping is done",
+                             PANGO_TYPE_WRAP_MODE,
+                             PANGO_WRAP_WORD,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_LINE_WRAP_MODE, pspec);
+
+  pspec = g_param_spec_enum ("ellipsize",
+                             "Ellipsize",
+                             "The preferred place to ellipsize the string",
+                             PANGO_TYPE_ELLIPSIZE_MODE,
+                             PANGO_ELLIPSIZE_NONE,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_ELLIPSIZE, pspec);
+
+  /**
+   * ClutterText:alignment:
+   *
+   * The preferred alignment for the text. This property controls
+   * the alignment of multi-line paragraphs.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_enum ("alignment",
+                             "Alignment",
+                             "The preferred alignment for the string, "
+                             "for multi-line text",
+                             PANGO_TYPE_ALIGNMENT,
+                             PANGO_ALIGN_LEFT,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_ALIGNMENT, pspec);
+
+  /**
+   * ClutterText:justify:
+   *
+   * Whether the contents of the #ClutterText should be justified
+   * on both margins.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_boolean ("justify",
+                                "Justify",
+                                "Whether the text should be justified",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_JUSTIFY, pspec);
 
  /**
    * ClutterText::text-changed:
@@ -1248,7 +1266,6 @@ clutter_text_class_init (ClutterTextClass *klass)
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
 
-
   text_signals[CURSOR_EVENT] =
     g_signal_new ("cursor-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -1259,15 +1276,14 @@ clutter_text_class_init (ClutterTextClass *klass)
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_GEOMETRY | G_SIGNAL_TYPE_STATIC_SCOPE);
 
-
- /**
+  /**
    * ClutterText::activate
    * @actor: the actor which received the event
    *
    * The ::activate signal is emitted each time the entry is 'activated'
    * by the user, normally by pressing the 'Enter' key.
    *
-   * Since: 0.4
+   * Since: 1.0
    */
   text_signals[ACTIVATE] =
     g_signal_new ("activate",
@@ -1277,7 +1293,6 @@ clutter_text_class_init (ClutterTextClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-
 
   g_type_class_add_private (klass, sizeof (ClutterTextPrivate));
 }
@@ -1440,17 +1455,6 @@ clutter_text_get_cursor_color (ClutterText     *text,
   *color = priv->cursor_color;
 }
 
-
-gint
-clutter_text_get_selection_bound (ClutterText *text)
-{
-  ClutterTextPrivate *priv;
- 
-  priv = text->priv;
-
-  return priv->selection_bound;
-}
-
 gchar *
 clutter_text_get_selection (ClutterText *text)
 {
@@ -1487,20 +1491,34 @@ clutter_text_get_selection (ClutterText *text)
   return str;
 }
 
-
-
 void
-clutter_text_set_selection_bound (ClutterText *text,
-                               gint      selection_bound)
+clutter_text_set_selection_bound (ClutterText *self,
+                                  gint         selection_bound)
 {
   ClutterTextPrivate *priv;
 
-  priv = text->priv;
-  priv->selection_bound = selection_bound;
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (text));
+  priv = self->priv;
+
+  if (priv->selection_bound != selection_bound)
+    {
+      priv->selection_bound = selection_bound;
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (self))
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+
+      g_object_notify (G_OBJECT (self), "selection-bound");
+    }
 }
 
+gint
+clutter_text_get_selection_bound (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), -1);
+
+  return self->priv->selection_bound;
+}
 
 /****************************************************************/
 /* The following are the commands available for keybinding when */
@@ -1843,7 +1861,6 @@ clutter_text_action_delete_previous (ClutterText            *ttext,
   return TRUE;
 }
 
-
 static void init_commands (ClutterText *ttext)
 {
   ClutterTextPrivate *priv = ttext->priv;
@@ -1894,49 +1911,6 @@ clutter_text_action (ClutterText     *ttext,
     }
 
   g_warning ("unhandled text command %s", command);
-  return FALSE;
-}
-
-static gboolean
-clutter_text_key_press (ClutterActor    *actor,
-                     ClutterKeyEvent *kev)
-{
-  ClutterTextPrivate *priv   = CLUTTER_TEXT (actor)->priv;
-  gint             keyval = clutter_key_event_symbol (kev);
-  GList           *iter;
-
-  if (!priv->editable)
-    return FALSE;
-
-  for (iter=priv->mappings;iter;iter=iter->next)
-    {
-      ClutterTextMapping *mapping = iter->data;
-      
-      if (
-          (mapping->keyval == keyval) &&
-            (
-             (mapping->state == 0) || 
-             (mapping->state && (kev->modifier_state & mapping->state)) 
-            ) 
-         )
-        {
-          if (!g_str_equal (mapping->action, "activate") ||
-              priv->activatable)
-            return clutter_text_action (CLUTTER_TEXT (actor), mapping->action, (ClutterEvent*)kev);
-        }
-    }
-
-    {
-      gunichar key_unichar = clutter_key_event_unicode (kev);
-
-      if (key_unichar == '\r')  /* return is reported as CR we want LF */
-        key_unichar = '\n';
-      if (g_unichar_validate (key_unichar))
-        {
-          clutter_text_insert_unichar (CLUTTER_TEXT (actor), key_unichar);
-          return TRUE;
-        }
-    }
   return FALSE;
 }
 
@@ -2063,30 +2037,516 @@ clutter_text_get_color (ClutterText  *text,
   *color = priv->text_color;
 }
 
-gboolean
-clutter_text_get_line_wrap (ClutterText *text)
+/**
+ * clutter_text_set_ellipsize:
+ * @self: a #ClutterText
+ * @mode: a #PangoEllipsizeMode
+ *
+ * Sets the mode used to ellipsize (add an ellipsis: "...") to the
+ * text if there is not enough space to render the entire contents
+ * of a #ClutterText actor
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_ellipsize (ClutterText        *self,
+			    PangoEllipsizeMode  mode)
 {
-  g_return_val_if_fail (CLUTTER_IS_TEXT (text), FALSE);
+  ClutterTextPrivate *priv;
 
-  return text->priv->wrap;
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+  g_return_if_fail (mode >= PANGO_ELLIPSIZE_NONE &&
+		    mode <= PANGO_ELLIPSIZE_END);
+
+  priv = self->priv;
+
+  if ((PangoEllipsizeMode) priv->ellipsize != mode)
+    {
+      priv->ellipsize = mode;
+
+      clutter_text_dirty_cache (self);
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+      g_object_notify (G_OBJECT (self), "ellipsize");
+    }
+}
+
+/**
+ * clutter_text_get_ellipsize:
+ * @self: a #ClutterText
+ *
+ * Returns the ellipsizing position of a #ClutterText actor, as
+ * set by clutter_text_set_ellipsize().
+ *
+ * Return value: #PangoEllipsizeMode
+ *
+ * Since: 1.0
+ */
+PangoEllipsizeMode
+clutter_text_get_ellipsize (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), PANGO_ELLIPSIZE_NONE);
+
+  return self->priv->ellipsize;
+}
+
+gboolean
+clutter_text_get_line_wrap (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
+
+  return self->priv->wrap;
 }
 
 void
-clutter_text_set_line_wrap (ClutterText *text,
+clutter_text_set_line_wrap (ClutterText *self,
                             gboolean     line_wrap)
 {
   ClutterTextPrivate *priv;
 
-  g_return_if_fail (CLUTTER_IS_TEXT (text));
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  priv = text->priv;
+  priv = self->priv;
 
   if (priv->wrap != line_wrap)
     {
       priv->wrap = line_wrap;
 
-      clutter_text_dirty_cache (text);
+      clutter_text_dirty_cache (self);
 
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (text));
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+      g_object_notify (G_OBJECT (self), "line-wrap");
     }
 }
+
+/**
+ * clutter_text_set_line_wrap_mode:
+ * @self: a #ClutterText
+ * @wrap_mode: the line wrapping mode
+ *
+ * If line wrapping is enabled (see clutter_text_set_line_wrap()) this
+ * function controls how the line wrapping is performed. The default is
+ * %PANGO_WRAP_WORD which means wrap on word boundaries.
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_line_wrap_mode (ClutterText   *self,
+				 PangoWrapMode  wrap_mode)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (priv->wrap_mode != wrap_mode)
+    {
+      priv->wrap_mode = wrap_mode;
+
+      clutter_text_dirty_cache (self);
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+      g_object_notify (G_OBJECT (self), "line-wrap-mode");
+    }
+}
+
+/**
+ * clutter_text_get_line_wrap_mode:
+ * @self: a #ClutterText
+ *
+ * Retrieves the line wrap mode used by the #ClutterText actor.
+ *
+ * See clutter_text_set_line_wrap_mode ().
+ *
+ * Return value: the wrap mode used by the #ClutterText
+ *
+ * Since: 1.0
+ */
+PangoWrapMode
+clutter_text_get_line_wrap_mode (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), PANGO_WRAP_WORD);
+
+  return self->priv->wrap_mode;
+}
+
+/**
+ * clutter_text_set_attributes:
+ * @self: a #ClutterText
+ * @attrs: a #PangoAttrList or %NULL to unset the attributes
+ *
+ * Sets the attributes list that are going to be applied to the
+ * #ClutterText contents. The attributes set with this function
+ * will be ignored if the #ClutterText:use_markup property is
+ * set to %TRUE.
+ *
+ * The #ClutterText actor will take a reference on the #PangoAttrList
+ * passed to this function.
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_attributes (ClutterText   *self,
+			     PangoAttrList *attrs)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (attrs)
+    pango_attr_list_ref (attrs);
+
+  if (priv->attrs)
+    pango_attr_list_unref (priv->attrs);
+
+  if (!priv->use_markup)
+    {
+      if (attrs)
+	pango_attr_list_ref (attrs);
+
+      if (priv->effective_attrs)
+	pango_attr_list_unref (priv->effective_attrs);
+
+      priv->effective_attrs = attrs;
+    }
+
+  priv->attrs = attrs;
+
+  clutter_text_dirty_cache (self);
+
+  g_object_notify (G_OBJECT (self), "attributes");
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+}
+
+/**
+ * clutter_text_get_attributes:
+ * @self: a #ClutterText
+ *
+ * Gets the attribute list that was set on the #ClutterText actor
+ * clutter_text_set_attributes(), if any.
+ *
+ * Return value: the attribute list, or %NULL if none was set. The
+ *  returned value is owned by the #ClutterText and should not be
+ *  unreferenced.
+ *
+ * Since: 1.0
+ */
+PangoAttrList *
+clutter_text_get_attributes (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
+
+  return self->priv->attrs;
+}
+
+/**
+ * clutter_text_set_alignment:
+ * @self: a #ClutterText
+ * @alignment: A #PangoAlignment
+ *
+ * Sets text alignment of the #ClutterText actor.
+ *
+ * The alignment will only be used when the contents of the
+ * #ClutterText actor are enough to wrap, and the #ClutterText:line-wrap
+ * property is set to %TRUE.
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_alignment (ClutterText    *self,
+                            PangoAlignment  alignment)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (priv->alignment != alignment)
+    {
+      priv->alignment = alignment;
+
+      clutter_text_dirty_cache (self);
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+      g_object_notify (G_OBJECT (self), "alignment");
+    }
+}
+
+/**
+ * clutter_text_get_alignment:
+ * @self: a #ClutterText
+ *
+ * Retrieves the alignment of @self.
+ *
+ * Return value: a #PangoAlignment
+ *
+ * Since 1.0
+ */
+PangoAlignment
+clutter_text_get_alignment (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), PANGO_ALIGN_LEFT);
+
+  return self->priv->alignment;
+}
+
+/**
+ * clutter_text_set_use_markup:
+ * @self: a #ClutterText
+ * @setting: %TRUE if the text should be parsed for markup.
+ *
+ * Sets whether the contents of the #ClutterText actor contains markup
+ * in <link linkend="PangoMarkupFormat">Pango's text markup language</link>.
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_use_markup (ClutterText *self,
+			     gboolean     setting)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (priv->use_markup != setting)
+    {
+      priv->use_markup = setting;
+
+      clutter_text_dirty_cache (self);
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+      g_object_notify (G_OBJECT (self), "use-markup");
+    }
+}
+
+/**
+ * clutter_text_get_use_markup:
+ * @self: a #ClutterText
+ *
+ * Retrieves whether the contents of the #ClutterText actor should be
+ * parsed for the Pango text markup.
+ *
+ * Return value: %TRUE if the contents will be parsed for markup
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_text_get_use_markup (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
+
+  return self->priv->use_markup;
+}
+
+/**
+ * clutter_text_set_justify:
+ * @self: a #ClutterText
+ * @justify: whether the text should be justified
+ *
+ * Sets whether the text of the #ClutterText actor should be justified
+ * on both margins. This setting is ignored if Clutter is compiled
+ * against Pango &lt; 1.18.
+ *
+ * Since: 0.6
+ */
+void
+clutter_text_set_justify (ClutterText *self,
+                          gboolean     justify)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (priv->justify != justify)
+    {
+      priv->justify = justify;
+
+      clutter_text_dirty_cache (self);
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+      g_object_notify (G_OBJECT (self), "justify");
+    }
+}
+
+/**
+ * clutter_text_get_justify:
+ * @self: a #ClutterText
+ *
+ * Retrieves whether the #ClutterText actor should justify its contents
+ * on both margins.
+ *
+ * Return value: %TRUE if the text should be justified
+ *
+ * Since: 0.6
+ */
+gboolean
+clutter_text_get_justify (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
+
+  return self->priv->justify;
+}
+
+/**
+ * clutter_text_get_cursor_position:
+ * @self: a #ClutterText
+ *
+ * Retrieves the cursor position.
+ *
+ * Return value: the cursor position, in characters
+ *
+ * Since: 1.0
+ */
+gint
+clutter_text_get_cursor_position (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), -1);
+
+  return self->priv->position;
+}
+
+void
+clutter_text_set_cursor_position (ClutterText *self,
+                                  gint         position)
+{
+  ClutterTextPrivate *priv;
+  gint len;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (priv->text == NULL)
+    return;
+
+  len = g_utf8_strlen (priv->text, -1);
+
+  if (position < 0 || position >= len)
+    priv->position = -1;
+  else
+    priv->position = position;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+}
+
+void
+clutter_text_insert_unichar (ClutterText *self,
+                             gunichar     wc)
+{
+  ClutterTextPrivate *priv;
+  GString *new = NULL;
+  glong pos;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+  g_return_if_fail (g_unichar_validate (wc));
+
+  if (wc == 0)
+    return;
+
+  clutter_text_truncate_selection (self, NULL, 0);
+
+  priv = self->priv;
+
+  g_object_ref (self);
+
+  new = g_string_new (priv->text);
+  pos = offset_to_bytes (priv->text, priv->position);
+  new = g_string_insert_unichar (new, pos, wc);
+
+  clutter_text_set_text (self, new->str);
+
+  if (priv->position >= 0)
+    {
+      clutter_text_set_cursor_position (self, priv->position + 1);
+      clutter_text_set_selection_bound (self, priv->position);
+    }
+
+  g_string_free (new, TRUE);
+
+  g_object_unref (self);
+
+  g_signal_emit (G_OBJECT (self), text_signals[TEXT_CHANGED], 0);
+}
+
+void
+clutter_text_delete_text (ClutterText *ttext,
+                          gssize       start_pos,
+                          gssize       end_pos)
+{
+  ClutterTextPrivate *priv;
+  GString *new = NULL;
+  gint start_bytes;
+  gint end_bytes;
+  const gchar *text;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (ttext));
+
+  priv = ttext->priv;
+  text = clutter_text_get_text (ttext);
+
+  if (end_pos == -1)
+    {
+      start_bytes = offset_to_bytes (text, g_utf8_strlen (text, -1) - 1);
+      end_bytes = offset_to_bytes (text, g_utf8_strlen (text, -1));
+    }
+  else
+    {
+      start_bytes = offset_to_bytes (text, start_pos);
+      end_bytes = offset_to_bytes (text, end_pos);
+    }
+
+  new = g_string_new (text);
+
+  new = g_string_erase (new, start_bytes, end_bytes - start_bytes);
+
+  clutter_text_set_text (ttext, new->str);
+
+  g_string_free (new, TRUE);
+  g_signal_emit (G_OBJECT (ttext), text_signals[TEXT_CHANGED], 0);
+}
+
+
+void
+clutter_text_add_mapping (ClutterText           *ttext,
+                            guint               keyval,
+                            ClutterModifierType state,
+                            const gchar        *commandline)
+{
+  ClutterTextMapping *tmapping = g_new (ClutterTextMapping, 1);
+  ClutterTextPrivate *priv = ttext->priv;
+  tmapping->keyval = keyval;
+  tmapping->state = state;
+  tmapping->action = commandline;
+  priv->mappings = g_list_append (priv->mappings, tmapping);
+}
+
+void
+clutter_text_add_action (ClutterText    *ttext,
+                         const gchar *name,
+                         gboolean (*func) (ClutterText            *ttext,
+                                           const gchar         *commandline,
+                                           ClutterEvent        *event))
+{
+  TextCommand *tcommand = g_new (TextCommand, 1);
+  ClutterTextPrivate *priv = ttext->priv;
+  tcommand->name = name;
+  tcommand->func = func;
+  priv->commands = g_list_append (priv->commands, tcommand);
+}
+
