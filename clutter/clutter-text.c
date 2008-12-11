@@ -182,15 +182,47 @@ enum
 
 static guint text_signals[LAST_SIGNAL] = { 0, };
 
-#define offset_real(text, pos)          \
-  (pos == -1 ? g_utf8_strlen (text, -1) : pos)
+#define offset_real(t,p)                        \
+  ((p) == -1 ? g_utf8_strlen ((t), -1) : (p))
 
-#define offset_to_bytes(text,pos)       \
-  (pos == -1 ? strlen (text)           \
-             : ((gint) (g_utf8_offset_to_pointer (text, pos) - text)))
+static gint
+offset_to_bytes (const gchar *text,
+                 gint         pos)
+{
+  gchar *c = NULL;
+  gint i, j, len;
 
-#define bytes_to_offset(text, pos)      \
-  (g_utf8_pointer_to_offset (text, text + pos))
+  if (pos < 0)
+    return strlen (text);
+
+#if 0
+  if (pos < 1)
+    return pos;
+#endif
+
+  c = g_utf8_next_char (text);
+  j = 1;
+  len = strlen (text);
+
+  for (i = 0; i < len; i++)
+    {
+      if (&text[i] == c)
+        {
+          if (j == pos)
+            break;
+          else
+            {
+              c = g_utf8_next_char (c);
+              j++;
+            }
+        }
+    }
+
+  return i;
+}
+
+#define bytes_to_offset(t,p)                    \
+  (g_utf8_pointer_to_offset ((t), (t) + (p)))
 
 
 typedef struct TextCommand {
