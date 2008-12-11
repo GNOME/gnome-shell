@@ -561,6 +561,8 @@ void clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
 
 gboolean clutter_actor_get_paint_visibility           (ClutterActor *self);
 
+void clutter_actor_grab_key_focus (ClutterActor *self);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_ACTOR_H */

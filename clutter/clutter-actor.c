@@ -7564,3 +7564,28 @@ clutter_actor_allocate_preferred_size (ClutterActor *self,
 
   clutter_actor_allocate (self, &actor_box, absolute_origin_changed);
 }
+
+/**
+ * clutter_actor_grab_key_focus:
+ * @self: a #ClutterActor
+ *
+ * Sets the key focus of the #ClutterStage including @self
+ * to this #ClutterActor.
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_grab_key_focus (ClutterActor *self)
+{
+  ClutterActor *parent;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  parent = clutter_actor_get_parent (self);
+  if (!parent)
+    return;
+
+  parent = clutter_actor_get_stage (self);
+  if (parent && CLUTTER_IS_STAGE (parent))
+    clutter_stage_set_key_focus (CLUTTER_STAGE (parent), self);
+}
