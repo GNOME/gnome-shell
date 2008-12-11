@@ -40,6 +40,7 @@
 #include "clutter-behaviour-rotate.h"
 #include "clutter-behaviour-scale.h"
 #include "clutter-binding-pool.h"
+#include "clutter-cairo-texture.h"
 #include "clutter-child-meta.h"
 #include "clutter-clone-texture.h"
 #include "clutter-color.h"
