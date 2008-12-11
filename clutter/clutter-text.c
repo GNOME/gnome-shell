@@ -920,20 +920,36 @@ clutter_text_key_press (ClutterActor    *actor,
   pool = clutter_binding_pool_find (G_OBJECT_TYPE_NAME (actor));
   g_assert (pool != NULL);
 
-  res = clutter_binding_pool_activate (pool, keyval,
-                                       event->modifier_state,
-                                       G_OBJECT (actor));
+  /* we allow passing synthetic events that only contain
+   * the Unicode value and not the key symbol
+   */
+  if (keyval == 0 && (event->flags & CLUTTER_EVENT_FLAG_SYNTHETIC))
+    res = FALSE;
+  else
+    res = clutter_binding_pool_activate (pool, keyval,
+                                         event->modifier_state,
+                                         G_OBJECT (actor));
+
+  /* if the key binding has handled the event we bail out
+   * as fast as we can; otherwise, we try to insert the
+   * Unicode character inside the key event into the text
+   * actor
+   */
   if (res)
     return TRUE;
   else
     {
       gunichar key_unichar = clutter_key_event_unicode (event);
 
-      if (key_unichar == '\r')  /* return is reported as CR we want LF */
+      /* return is reported as CR, but we want LF */
+      if (key_unichar == '\r')
         key_unichar = '\n';
 
       if (g_unichar_validate (key_unichar))
         {
+          /* truncate the eventual selection so that the
+           * Unicode character can replace it
+           */
           clutter_text_truncate_selection (self);
           clutter_text_insert_unichar (self, key_unichar);
 
