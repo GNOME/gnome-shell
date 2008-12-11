@@ -31,6 +31,7 @@ UNIT_TESTS = \
 	test-cogl-tex-getset.c \
 	test-cogl-offscreen.c \
 	test-cogl-tex-polygon.c \
+	test-cogl-multi-texture.c \
 	test-stage-read-pixels.c \
 	test-random-text.c \
 	test-clip.c \
@@ -51,6 +52,12 @@ test-script.json:
 	ln -sf $(top_srcdir)/tests/data/test-script.json
 redhand.png:
 	ln -sf $(top_srcdir)/tests/data/redhand.png
+redhand_alpha.png:
+	ln -sf $(top_srcdir)/tests/data/redhand_alpha.png
+light0.png:
+	ln -sf $(top_srcdir)/tests/data/light0.png
+light1.png:
+	ln -sf $(top_srcdir)/tests/data/light1.png
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers
@@ -62,7 +69,7 @@ wrappers: test-interactive$(EXEEXT)
 
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
 # a phony rule that will generate symlink scripts for running individual tests
-BUILT_SOURCES = wrappers redhand.png test-script.json
+BUILT_SOURCES = wrappers redhand.png redhand_alpha.png light0.png light1.png test-script.json
 
 INCLUDES = -I$(top_srcdir)/ -I$(top_srcdir)/clutter -I$(top_builddir)/clutter
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
