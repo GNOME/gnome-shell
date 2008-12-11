@@ -135,6 +135,7 @@ test_text_main (gint    argc,
   clutter_text_set_selectable (CLUTTER_TEXT (text), TRUE);
   clutter_text_set_cursor_color (CLUTTER_TEXT (text), &cursor_color);
 
+#if 0
   clutter_text_add_action (CLUTTER_TEXT (text), "select-all", select_all);
   clutter_text_add_action (CLUTTER_TEXT (text), "copy",       copy);
   clutter_text_add_action (CLUTTER_TEXT (text), "paste",      paste);
@@ -154,6 +155,7 @@ test_text_main (gint    argc,
         CLUTTER_Page_Up, 0, "pageup");
   clutter_text_add_mapping (CLUTTER_TEXT (text),
         CLUTTER_Page_Down, 0, "pagedown");
+#endif
 
   if (argv[1])
     {
