@@ -127,36 +127,148 @@
     <title>Actors</title>
 
     <epigraph>
-      <attribution>the author of the epigraph</attribution>
-      <para>a short epigraph</para>
+      <attribution>Edmon Gween, actor, on his deathbed</attribution>
+      <para>An actor's a guy who if you ain't talkin' about him, ain't
+      listening.</para>
     </epigraph>
 
     <section id="actors-introduction">
       <title>Introduction</title>
 
-      <para>introduction</para>
+      <para>When building a User Interface with Clutter, the visible part
+      of the UI &mdash; that is, what is displayed on the screen &mdash; is
+      commonly referred to as "the scene graph". Like every graph, a scene
+      graph is composed by nodes.</para>
+
+      <para>Every node on the Clutter scene graph is an
+      <emphasis>actor</emphasis>. Every actor has a single relationship
+      with the others: it is either the parent of another actor or a
+      child of another actor.</para>
+
+      <para>Actors have different attributes: a position, a size, a
+      scale factor, a rotation angle on each axis (relative to a specific
+      center on the normal plane for that axis), an opacity factor.</para>
+
+      <para>The scene graph is not fixed: it can be changed, not only
+      by adding or removing actors, but also by changing the parent-child
+      relationship: it is possible, for instance, to move an entire
+      section of the scene graph from one parent actor to another.</para>
+
     </section>
 
     <section id="actors-recipe-1"> <!-- recipe 1 {{{ -->
-      <title>A problem involving actors</title>
+      <title>Knowing when an actor position or size change</title>
 
       <section>
         <title>Problem</title>
 
-        <para>Description of the problem</para>
+        <para>You want to know when the position or the size, or
+        both, of an actor change, for instance to update an unrelated
+        actor or some internal state.</para>
       </section>
 
       <section>
         <title>Solution</title>
 
-        <para>The solution of the problem, with the source code</para>
+        <para>You can use the <emphasis>notify</emphasis> signal,
+        detailed with the coordinate or the dimension you want
+        to know has changed:</para>
+
+        <informalexample>
+          <programlisting>
+g_signal_connect (actor, "notify::x",
+                  G_CALLBACK (on_x_changed), NULL);
+g_signal_connect (actor, "notify::height",
+                  G_CALLBACK (on_height_changed), NULL);
+g_signal_connect (actor, "notify::depth",
+                  G_CALLBACK (on_depth_changed), NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>If you want to know if any of the coordinates or
+        dimensions of an actor have been changed, except for depth,
+        you can use the <emphasis>allocation</emphasis> detailt for
+        the notify signal:</para>
+
+        <informalexample>
+          <programlisting>
+g_signal_connect (actor, "notify::allocation",
+                  G_CALLBACK (on_allocation_changed), NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>The signature for the handler of the "notify" signal is:</para>
+
+        <informalexample>
+          <programlisting>
+void
+on_notify (GObject    *gobject,
+           GParamSpec *pspec,
+           gpointer    user_data);
+          </programlisting>
+        </informalexample>
       </section>
 
       <section>
         <title>Discussion</title>
 
-        <para>Discussion of the solution, with eventual mentions of
-        possible alternatives</para>
+        <para>Any change the position and size of an actor will cause a
+        change in the allocation of the actor itself. This will update the
+        values of the :x, :y, :width and :height properties as well.</para>
+
+        <para>The first technique allows a greater deal of granularity,
+        allowing you to know what exactly changed. Inside the callback
+        for the signal you can query the value of the property:</para>
+
+        <informalexample>
+          <programlisting>
+void
+on_x_changed (GObject    *gobject,
+              GParamSpec *pspec,
+              gpointer    user_data)
+{
+  gint x_value = 0;
+
+  g_object_get (gobject, pspec->name, &amp;x_value, NULL);
+
+  g_print ("The new X coordinate is '%d' pixels\n", x_value);
+}
+          </programlisting>
+        </informalexample>
+
+        <para>The second technique is more indicated if you want to
+        get notification that any of the positional or dimensional
+        attributes changed, except for the depth:</para>
+
+        <informalexample>
+          <programlisting>
+void
+on_allocation_changed (GObject    *gobject,
+                       GParamSpec *pspec,
+                       gpointer    user_data)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (gobject);
+
+  g_print ("The bounding box is now: (%d, %d) (%d x %d)\n",
+           clutter_actor_get_x (actor),
+           clutter_actor_get_y (actor),
+           clutter_actor_get_width (actor),
+           clutter_actor_get_height (actor));
+}
+          </programlisting>
+        </informalexample>
+
+        <para>All actors will update these properties when their size
+        or position change.</para>
+
+        <para>The Stage, on the other hand, will not notify on position
+        changes, so it is not possible to use the :x and :y properties to
+        know that the platform-specific window embedding the stage has been
+        moved &mdash; if the platform supports a windowing system. In order
+        to achieve that you will have to use backend-specific API to extract
+        the surface used by the Stage and then platform-specific API to
+        retrieve its coordinates.</para>
+
       </section>
 
     </section> <!-- recipe 1 }}} -->
