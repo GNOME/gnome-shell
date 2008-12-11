@@ -31,8 +31,8 @@
 typedef struct _CoglTexture	      CoglTexture;
 typedef struct _CoglTexSliceSpan      CoglTexSliceSpan;
 typedef struct _CoglSpanIter	      CoglSpanIter;
-typedef struct _CoglMultiTexture      CoglMultiTexture;
-typedef struct _CoglMultiTextureLayer CoglMultiTextureLayer;
+typedef struct _CoglCompositeTexture      CoglCompositeTexture;
+typedef struct _CoglCompositeTextureLayer CoglCompositeTextureLayer;
 
 struct _CoglTexSliceSpan
 {
@@ -61,7 +61,7 @@ struct _CoglTexture
   gboolean           auto_mipmap;
 };
 
-struct _CoglMultiTextureLayer
+struct _CoglCompositeTextureLayer
 {
   guint		     ref_count;
 
@@ -74,7 +74,7 @@ struct _CoglMultiTextureLayer
    * unit. For example we should support dot3 normal mapping. */
 };
 
-struct _CoglMultiTexture
+struct _CoglCompositeTexture
 {
   guint	   ref_count;
   GList	  *layers;

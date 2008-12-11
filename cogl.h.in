@@ -33,9 +33,11 @@
 #include <cogl/cogl-defines-@CLUTTER_COGL@.h>
 
 #include <cogl/cogl-mesh.h>
+#include <cogl/cogl-matrix.h>
 #include <cogl/cogl-fixed.h>
 #include <cogl/cogl-color.h>
 #include <cogl/cogl-offscreen.h>
+#include <cogl/cogl-material.h>
 #include <cogl/cogl-path.h>
 #include <cogl/cogl-shader.h>
 #include <cogl/cogl-texture.h>

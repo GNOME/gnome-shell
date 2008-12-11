@@ -30,4 +30,5 @@ libclutter_cogl_common_la_SOURCES = 	\
         cogl-fixed.c                    \
         cogl-color.c			\
 	cogl-mesh.c			\
-	cogl-matrix.c
+	cogl-matrix.c			\
+	cogl-material.c
