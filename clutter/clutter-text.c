@@ -1391,6 +1391,8 @@ clutter_text_init (ClutterText *self)
   priv->font_name = g_strdup (DEFAULT_FONT_NAME);
   priv->font_desc = pango_font_description_from_string (priv->font_name);
 
+  priv->position = -1;
+
   priv->x_pos = -1;
   priv->cursor_visible = TRUE;
   priv->editable = FALSE;
