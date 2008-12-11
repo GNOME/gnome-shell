@@ -53,9 +53,10 @@
  *   cairo_destroy (cr);
  * ]|
  *
- * Note that you should never use the code above inside the
+ * <warning><para>Note that you should never use the code above inside the
  * #ClutterActor::paint or #ClutterActor::pick virtual functions or
- * signal handlers because of performance degradation.
+ * signal handlers because it will lead to performance
+ * degradation.</para></warning>
  *
  * <note><para>Since #ClutterCairoTexture uses a Cairo image surface
  * internally all the drawing operations will be performed in
@@ -87,6 +88,18 @@ enum
   PROP_SURFACE_WIDTH,
   PROP_SURFACE_HEIGHT
 };
+
+#ifdef CLUTTER_ENABLE_DEBUG
+#define clutter_return_val_if_paint_fail(obj,retval)    G_STMT_START {  \
+  if (CLUTTER_PRIVATE_FLAGS ((obj)) & CLUTTER_ACTOR_IN_PAINT) {         \
+    g_warning ("%s should not be called during the paint sequence "     \
+               "of a ClutterCairoTexture as it will likely cause "      \
+               "performance issues.", G_STRFUNC);                       \
+    return (retval);                                                    \
+  }                                                     } G_STMT_END
+#else
+#define clutter_return_val_if_paint_fail(obj,retval)    /* void */
+#endif /* CLUTTER_ENABLE_DEBUG */
 
 #define CLUTTER_CAIRO_TEXTURE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CAIRO_TEXTURE, ClutterCairoTexturePrivate))
 
@@ -564,6 +577,7 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
   cairo_t *cr;
 
   g_return_val_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self), NULL);
+  clutter_return_val_if_paint_fail (self, NULL);
 
   priv = self->priv;
 
@@ -619,6 +633,7 @@ cairo_t *
 clutter_cairo_texture_create (ClutterCairoTexture *self)
 {
   g_return_val_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self), NULL);
+  clutter_return_val_if_paint_fail (self, NULL);
 
   return clutter_cairo_texture_create_region (self, 0, 0, -1, -1);
 }
