@@ -719,22 +719,32 @@ static void
 cursor_paint (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+  guint8 real_opacity;
 
   if (priv->editable && priv->cursor_visible)
     {
       if (priv->cursor_color_set)
         {
+          real_opacity = clutter_actor_get_paint_opacity (actor)
+                       * priv->cursor_color.alpha
+                       / 255;
+
           cogl_set_source_color4ub (priv->cursor_color.red,
                                     priv->cursor_color.green,
                                     priv->cursor_color.blue,
-                                    priv->cursor_color.alpha);
+                                    real_opacity);
         }
       else
         {
+          real_opacity = clutter_actor_get_paint_opacity (actor)
+                       * priv->text_color.alpha
+                       / 255;
+
           cogl_set_source_color4ub (priv->text_color.red,
                                     priv->text_color.green,
                                     priv->text_color.blue,
-                                    priv->text_color.alpha);
+                                    real_opacity);
         }
 
       clutter_text_ensure_cursor_position (self);
@@ -942,6 +952,7 @@ clutter_text_paint (ClutterActor *self)
   PangoLayout *layout;
   ClutterActorBox alloc = { 0, };
   CoglColor color = { 0, };
+  guint8 real_opacity;
 
   if (priv->font_desc == NULL || priv->text == NULL)
     {
@@ -958,11 +969,15 @@ clutter_text_paint (ClutterActor *self)
   clutter_actor_get_allocation_box (self, &alloc);
   layout = clutter_text_create_layout (text, alloc.x2 - alloc.x1);
 
+  real_opacity = clutter_actor_get_paint_opacity (self)
+               * priv->text_color.alpha
+               / 255;
+
   cogl_color_set_from_4ub (&color,
                            priv->text_color.red,
                            priv->text_color.green,
                            priv->text_color.blue,
-                           clutter_actor_get_paint_opacity (self));
+                           real_opacity);
   cogl_pango_render_layout (layout, 0, 0, &color, 0);
 }
 
