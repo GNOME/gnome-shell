@@ -56,6 +56,8 @@
 #define CLUTTER_TEXT_GET_PRIVATE(obj)   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXT, ClutterTextPrivate))
 
 typedef struct _LayoutCache     LayoutCache;
+typedef struct _TextCommand     TextCommand;
+typedef struct _ClutterTextMapping      ClutterTextMapping;
 
 /* Probably move into main */
 static PangoContext *_context = NULL;
@@ -80,6 +82,21 @@ struct _LayoutCache
    * new layout is needed the last used cache is replaced)
    */
   guint        age;
+};
+
+struct _TextCommand
+{
+  const gchar *name;
+  gboolean (*func) (ClutterText     *ttext,
+                    const gchar  *commandline,
+                    ClutterEvent *event);
+};
+
+struct _ClutterTextMapping
+{
+  ClutterModifierType    state;
+  guint                  keyval;
+  const gchar           *action;
 };
 
 struct _ClutterTextPrivate
@@ -225,19 +242,6 @@ offset_to_bytes (const gchar *text,
 #define bytes_to_offset(t,p)                    \
   (g_utf8_pointer_to_offset ((t), (t) + (p)))
 
-
-typedef struct TextCommand {
-  const gchar *name;
-  gboolean (*func) (ClutterText     *ttext,
-                    const gchar  *commandline,
-                    ClutterEvent *event);
-} TextCommand;
-
-typedef struct ClutterTextMapping {
-  ClutterModifierType    state;
-  guint                  keyval;
-  const gchar           *action;
-} ClutterTextMapping;
 
 void
 clutter_text_mappings_clear (ClutterText *self)
