@@ -1755,7 +1755,7 @@ clutter_text_clear_selection (ClutterText *ttext)
 }
 
 static gboolean
-clutter_text_action_move_left (ClutterText     *ttext,
+clutter_text_action_move_left (ClutterText  *ttext,
                                const gchar  *commandline,
                                ClutterEvent *event)
 {
@@ -1785,9 +1785,9 @@ clutter_text_action_move_left (ClutterText     *ttext,
 
 
 static gboolean
-clutter_text_action_move_right (ClutterText            *ttext,
-                             const gchar         *commandline,
-                             ClutterEvent *event)
+clutter_text_action_move_right (ClutterText  *ttext,
+                                const gchar  *commandline,
+                                ClutterEvent *event)
 {
   ClutterTextPrivate *priv = ttext->priv;
   gint pos;
@@ -1863,9 +1863,9 @@ clutter_text_action_move_up (ClutterText  *ttext,
 }
 
 static gboolean
-clutter_text_action_move_down (ClutterText            *ttext,
-                            const gchar         *commandline,
-                            ClutterEvent *event)
+clutter_text_action_move_down (ClutterText  *ttext,
+                               const gchar  *commandline,
+                               ClutterEvent *event)
 {
   ClutterTextPrivate *priv = ttext->priv;
   gint                          line_no;
@@ -1888,14 +1888,12 @@ clutter_text_action_move_down (ClutterText            *ttext,
   else
     priv->x_pos = x;
 
-  layout_line = pango_layout_get_line_readonly (
-                    clutter_text_get_layout (ttext),
-                    line_no + 1);
+  layout_line =
+    pango_layout_get_line_readonly (clutter_text_get_layout (ttext),
+                                    line_no + 1);
 
   if (!layout_line)
-    {
-      return FALSE;
-    }
+    return FALSE;
 
   pango_layout_line_x_to_index (layout_line, x, &index_, NULL);
 
@@ -1912,23 +1910,25 @@ clutter_text_action_move_down (ClutterText            *ttext,
 }
 
 static gboolean
-clutter_text_action_move_start (ClutterText            *ttext,
-                             const gchar         *commandline,
-                             ClutterEvent *event)
+clutter_text_action_move_start (ClutterText  *ttext,
+                                const gchar  *commandline,
+                                ClutterEvent *event)
 {
   ClutterTextPrivate *priv = ttext->priv;
 
   clutter_text_set_cursor_position (ttext, 0);
+
   if (!(priv->selectable && event &&
       (event->key.modifier_state & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (ttext);
+
   return TRUE;
 }
 
 static gboolean
-clutter_text_action_move_end (ClutterText            *ttext,
-                           const gchar         *commandline,
-                           ClutterEvent *event)
+clutter_text_action_move_end (ClutterText  *ttext,
+                              const gchar  *commandline,
+                              ClutterEvent *event)
 {
   ClutterTextPrivate *priv = ttext->priv;
 
@@ -1941,9 +1941,9 @@ clutter_text_action_move_end (ClutterText            *ttext,
 }
 
 static gboolean
-clutter_text_action_move_start_line (ClutterText            *ttext,
-                                  const gchar         *commandline,
-                                  ClutterEvent *event)
+clutter_text_action_move_start_line (ClutterText  *ttext,
+                                     const gchar  *commandline,
+                                     ClutterEvent *event)
 {
   ClutterTextPrivate *priv = ttext->priv;
   gint                          line_no;
@@ -1962,9 +1962,8 @@ clutter_text_action_move_start_line (ClutterText            *ttext,
         &line_no,
         NULL);
 
-  layout_line = pango_layout_get_line_readonly (
-                    clutter_text_get_layout (ttext),
-                    line_no);
+  layout_line =
+    pango_layout_get_line_readonly (clutter_text_get_layout (ttext), line_no);
 
   pango_layout_line_x_to_index (layout_line, 0, &index_, NULL);
 
@@ -1979,9 +1978,9 @@ clutter_text_action_move_start_line (ClutterText            *ttext,
 }
 
 static gboolean
-clutter_text_action_move_end_line (ClutterText            *ttext,
-                                const gchar         *commandline,
-                                ClutterEvent *event)
+clutter_text_action_move_end_line (ClutterText  *ttext,
+                                   const gchar  *commandline,
+                                   ClutterEvent *event)
 {
   ClutterTextPrivate *priv = ttext->priv;
   gint                          line_no;
@@ -2002,9 +2001,8 @@ clutter_text_action_move_end_line (ClutterText            *ttext,
         &line_no,
         NULL);
 
-  layout_line = pango_layout_get_line_readonly (
-                    clutter_text_get_layout (ttext),
-                    line_no);
+  layout_line =
+    pango_layout_get_line_readonly (clutter_text_get_layout (ttext), line_no);
 
   pango_layout_line_x_to_index (layout_line, G_MAXINT, &index_, &trailing);
   index_ += trailing;
@@ -2021,9 +2019,9 @@ clutter_text_action_move_end_line (ClutterText            *ttext,
 }
 
 static gboolean
-clutter_text_action_delete_next (ClutterText *ttext,
-                              const gchar         *commandline,
-                              ClutterEvent *event)
+clutter_text_action_delete_next (ClutterText  *ttext,
+                                 const gchar  *commandline,
+                                 ClutterEvent *event)
 {
   ClutterTextPrivate *priv;
   gint pos;
@@ -2043,9 +2041,9 @@ clutter_text_action_delete_next (ClutterText *ttext,
 }
 
 static gboolean
-clutter_text_action_delete_previous (ClutterText            *ttext,
-                                  const gchar         *commandline,
-                                  ClutterEvent *event)
+clutter_text_action_delete_previous (ClutterText  *ttext,
+                                     const gchar  *commandline,
+                                     ClutterEvent *event)
 {
   ClutterTextPrivate *priv;
   gint pos;
@@ -2075,11 +2073,13 @@ clutter_text_action_delete_previous (ClutterText            *ttext,
   return TRUE;
 }
 
-static void init_commands (ClutterText *ttext)
+static void
+init_commands (ClutterText *ttext)
 {
   ClutterTextPrivate *priv = ttext->priv;
   if (priv->commands)
     return;
+
   clutter_text_add_action (ttext, "move-left",       clutter_text_action_move_left);
   clutter_text_add_action (ttext, "move-right",      clutter_text_action_move_right);
   clutter_text_add_action (ttext, "move-up",         clutter_text_action_move_up);
@@ -2095,9 +2095,9 @@ static void init_commands (ClutterText *ttext)
 }
 
 gboolean
-clutter_text_action (ClutterText     *ttext,
-                  const gchar  *command,
-                  ClutterEvent *event)
+clutter_text_action (ClutterText  *ttext,
+                     const gchar  *command,
+                     ClutterEvent *event)
 {
   gchar command2[64];
   gint i;
@@ -2137,18 +2137,18 @@ clutter_text_get_font_name (ClutterText *text)
 }
 
 void
-clutter_text_set_font_name (ClutterText *text,
+clutter_text_set_font_name (ClutterText *self,
                             const gchar *font_name)
 {
   ClutterTextPrivate *priv;
   PangoFontDescription *desc;
 
-  g_return_if_fail (CLUTTER_IS_TEXT (text));
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   if (!font_name || font_name[0] == '\0')
     font_name = DEFAULT_FONT_NAME;
 
-  priv = text->priv;
+  priv = self->priv;
 
   if (priv->font_name && strcmp (priv->font_name, font_name) == 0)
     return;
@@ -2170,20 +2170,20 @@ clutter_text_set_font_name (ClutterText *text,
 
   priv->font_desc = desc;
 
-  clutter_text_dirty_cache (text);
+  clutter_text_dirty_cache (self);
 
   if (priv->text && priv->text[0] != '\0')
-    clutter_actor_queue_relayout (CLUTTER_ACTOR (text));
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-  g_object_notify (G_OBJECT (text), "font-name");
+  g_object_notify (G_OBJECT (self), "font-name");
 }
 
 G_CONST_RETURN gchar *
-clutter_text_get_text (ClutterText *text)
+clutter_text_get_text (ClutterText *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_TEXT (text), NULL);
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
 
-  return text->priv->text;
+  return self->priv->text;
 }
 
 void
@@ -2241,46 +2241,46 @@ clutter_text_set_text (ClutterText *self,
 }
 
 PangoLayout *
-clutter_text_get_layout (ClutterText *text)
+clutter_text_get_layout (ClutterText *self)
 {
   ClutterUnit width;
 
-  g_return_val_if_fail (CLUTTER_IS_TEXT (text), NULL);
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
 
-  width = clutter_actor_get_widthu (CLUTTER_ACTOR (text));
+  width = clutter_actor_get_widthu (CLUTTER_ACTOR (self));
 
-  return clutter_text_create_layout (text, width);
+  return clutter_text_create_layout (self, width);
 }
 
 void
-clutter_text_set_color (ClutterText        *text,
+clutter_text_set_color (ClutterText        *self,
                         const ClutterColor *color)
 {
   ClutterTextPrivate *priv;
 
-  g_return_if_fail (CLUTTER_IS_TEXT (text));
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
   g_return_if_fail (color != NULL);
 
-  priv = text->priv;
+  priv = self->priv;
 
   priv->text_color = *color;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (text))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (text));
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 
-  g_object_notify (G_OBJECT (text), "color");
+  g_object_notify (G_OBJECT (self), "color");
 }
 
 void
-clutter_text_get_color (ClutterText  *text,
+clutter_text_get_color (ClutterText  *self,
                         ClutterColor *color)
 {
   ClutterTextPrivate *priv;
 
-  g_return_if_fail (CLUTTER_IS_TEXT (text));
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
   g_return_if_fail (color != NULL);
 
-  priv = text->priv;
+  priv = self->priv;
 
   *color = priv->text_color;
 }
