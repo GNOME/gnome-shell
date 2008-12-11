@@ -2962,7 +2962,7 @@ clutter_text_delete_chars (ClutterText *self,
 
   if (priv->position == -1)
     {
-      num_pos = offset_to_bytes (priv->text, len - n_chars);
+      num_pos = offset_to_bytes (priv->text, priv->n_chars - n_chars);
       new = g_string_erase (new, num_pos, -1);
     }
   else
