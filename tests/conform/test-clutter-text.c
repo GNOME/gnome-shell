@@ -11,7 +11,7 @@ typedef struct {
 } TestData;
 
 static const TestData
-test_data[] = {
+test_text_data[] = {
   { 0xe4,   "\xc3\xa4",     2 }, /* LATIN SMALL LETTER A WITH DIAERESIS */
   { 0x2665, "\xe2\x99\xa5", 3 }  /* BLACK HEART SUIT */
 };
@@ -22,9 +22,9 @@ test_text_utf8_validation (TestConformSimpleFixture *fixture,
 {
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_data); i++)
+  for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
-      const TestData *t = &test_data[i];
+      const TestData *t = &test_text_data[i];
       gunichar unichar;
       char bytes[6];
       int nbytes;
@@ -111,8 +111,8 @@ test_text_set_text (TestConformSimpleFixture *fixture,
   clutter_text_set_cursor_position (text, 5);
   g_assert_cmpint (clutter_text_get_cursor_position (text), ==, 5);
 
-  clutter_text_set_text (text, "");
   /* FIXME: cursor position should be -1?
+  clutter_text_set_text (text, "");
   g_assert_cmpint (clutter_text_get_cursor_position (text), ==, -1);
   */
 
@@ -126,14 +126,15 @@ test_text_append_some (TestConformSimpleFixture *fixture,
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_data); i++)
+  for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
-      const TestData *t = &test_data[i];
+      const TestData *t = &test_text_data[i];
       int j;
 
       for (j = 1; j <= 4; j++)
         {
           insert_unichar (text, t->unichar, DONT_MOVE_CURSOR);
+
           g_assert_cmpint (get_nchars (text), ==, j);
           g_assert_cmpint (get_nbytes (text), ==, j * t->nbytes);
           g_assert_cmpint (clutter_text_get_cursor_position (text), ==, -1);
@@ -152,9 +153,9 @@ test_text_prepend_some (TestConformSimpleFixture *fixture,
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_data); i++)
+  for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
-      const TestData *t = &test_data[i];
+      const TestData *t = &test_text_data[i];
       int j;
 
       clutter_text_insert_unichar (text, t->unichar);
@@ -183,14 +184,15 @@ test_text_insert (TestConformSimpleFixture *fixture,
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_data); i++)
+  for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
-      const TestData *t = &test_data[i];
+      const TestData *t = &test_text_data[i];
 
       clutter_text_insert_unichar (text, t->unichar);
       clutter_text_insert_unichar (text, t->unichar);
 
       insert_unichar (text, t->unichar, 1);
+
       g_assert_cmpint (get_nchars (text), ==, 3);
       g_assert_cmpint (get_nbytes (text), ==, 3 * t->nbytes);
       g_assert_cmpint (clutter_text_get_cursor_position (text), ==, 2);
@@ -208,9 +210,9 @@ test_text_delete_chars (TestConformSimpleFixture *fixture,
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_data); i++)
+  for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
-      const TestData *t = &test_data[i];
+      const TestData *t = &test_text_data[i];
       int j;
 
       for (j = 0; j < 4; j++)
@@ -241,9 +243,9 @@ test_text_delete_text (TestConformSimpleFixture *fixture,
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_data); i++)
+  for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
-      const TestData *t = &test_data[i];
+      const TestData *t = &test_text_data[i];
       int j;
 
       for (j = 0; j < 4; j++)
@@ -289,7 +291,7 @@ send_keyval (ClutterText *text, int keyval)
   clutter_actor_event (CLUTTER_ACTOR (text), (ClutterEvent *) &event, FALSE);
 }
 
-static inline void
+static void
 send_unichar (ClutterText *text, gunichar unichar)
 {
   ClutterKeyEvent event;
@@ -308,9 +310,11 @@ test_text_cursor (TestConformSimpleFixture *fixture,
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_data); i++)
+  clutter_text_set_editable (text, TRUE);
+
+  for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
-      const TestData *t = &test_data[i];
+      const TestData *t = &test_text_data[i];
       int j;
 
       for (j = 0; j < 4; ++j)
@@ -352,9 +356,11 @@ test_text_event (TestConformSimpleFixture *fixture,
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
   int i;
 
-  for (i = 0; i < G_N_ELEMENTS (test_data); i++)
+  clutter_text_set_editable (text, TRUE);
+
+  for (i = 0; i < G_N_ELEMENTS (test_text_data); i++)
     {
-      const TestData *t = &test_data[i];
+      const TestData *t = &test_text_data[i];
 
       send_unichar (text, t->unichar);
 
