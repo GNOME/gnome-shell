@@ -898,7 +898,8 @@ static gboolean
 clutter_text_key_press (ClutterActor    *actor,
                         ClutterKeyEvent *event)
 {
-  ClutterTextPrivate *priv = CLUTTER_TEXT (actor)->priv;
+  ClutterText *self = CLUTTER_TEXT (actor);
+  ClutterTextPrivate *priv = self->priv;
   ClutterBindingPool *pool;
   gboolean res;
   gint keyval;
@@ -925,7 +926,8 @@ clutter_text_key_press (ClutterActor    *actor,
 
       if (g_unichar_validate (key_unichar))
         {
-          clutter_text_insert_unichar (CLUTTER_TEXT (actor), key_unichar);
+          clutter_text_truncate_selection (self);
+          clutter_text_insert_unichar (self, key_unichar);
 
           return TRUE;
         }
