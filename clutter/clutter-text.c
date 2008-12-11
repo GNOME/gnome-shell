@@ -1274,7 +1274,7 @@ clutter_text_real_del_next (ClutterText         *self,
   gint len;
 
   if (clutter_text_truncate_selection (self))
-    return FALSE;
+    return TRUE;
 
   pos = priv->position;
   len = g_utf8_strlen (priv->text, -1);
@@ -1300,7 +1300,7 @@ clutter_text_real_del_prev (ClutterText         *self,
   gint len;
 
   if (clutter_text_truncate_selection (self))
-    return FALSE;
+    return TRUE;
 
   pos = priv->position;
   len = g_utf8_strlen (priv->text, -1);
