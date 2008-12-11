@@ -3,9 +3,10 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Copyright (C) 2006-2008 OpenedHand
+ * Copyright (C) 2008  Intel Corporation.
  *
- * Authored By Øyvind Kolås <pippin@o-hand.com>
+ * Authored By: Øyvind Kolås <pippin@o-hand.com>
+ *              Emmanuele Bassi <ebassi@linux.intel.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,8 +29,8 @@
 #ifndef __CLUTTER_TEXT_H__
 #define __CLUTTER_TEXT_H__
 
-#include <clutter/clutter-label.h>
-#include <clutter/clutter-types.h>
+#include <clutter/clutter-actor.h>
+#include <pango/pango.h>
 
 G_BEGIN_DECLS
 
@@ -54,13 +55,17 @@ struct _ClutterText
 
 struct _ClutterTextClass
 {
+  /*< private >*/
   ClutterActorClass parent_class;
 
+  /*< public >*/
   void (* text_changed) (ClutterText     *self);
   void (* activate)     (ClutterText     *self);
   void (* cursor_event) (ClutterText     *self,
                          ClutterGeometry *geometry);
 
+  /*< private >*/
+  /* padding for future expansion */
   void (* _clutter_reserved1) (void);
   void (* _clutter_reserved2) (void);
   void (* _clutter_reserved3) (void);
@@ -151,14 +156,14 @@ void                  clutter_text_set_selection_bound (ClutterText        *self
                                                         gint                selection_bound);
 gint                  clutter_text_get_selection_bound (ClutterText        *self);
 gchar *               clutter_text_get_selection       (ClutterText        *self);
-void                  clutter_text_set_visibility      (ClutterText        *self,
+void                  clutter_text_set_text_visible    (ClutterText        *self,
                                                         gboolean            visible);
-gboolean              clutter_text_get_visibility      (ClutterText        *self);
+gboolean              clutter_text_get_text_visible    (ClutterText        *self);
 void                  clutter_text_set_invisible_char  (ClutterText        *self,
-                                                         gunichar           wc);
+                                                        gunichar            wc);
 gunichar              clutter_text_get_invisible_char  (ClutterText        *self);
 void                  clutter_text_set_max_length      (ClutterText        *self,
-                                                         gint               max);
+                                                        gint                max);
 gint                  clutter_text_get_max_length      (ClutterText        *self);
 
 /* add a custom action that can be used in keybindings */
