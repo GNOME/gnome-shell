@@ -702,6 +702,10 @@ clutter_text_get_property (GObject    *gobject,
       clutter_value_set_color (value, &priv->cursor_color);
       break;
 
+    case PROP_CURSOR_COLOR_SET:
+      g_value_set_boolean (value, priv->cursor_color_set);
+      break;
+
     case PROP_POSITION:
       g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->position));
       break;
@@ -1215,11 +1219,18 @@ clutter_text_class_init (ClutterTextClass *klass)
   g_object_class_install_property (gobject_class, PROP_CURSOR_VISIBLE, pspec);
 
   pspec = clutter_param_spec_color ("cursor-color",
-                                    "Cursor Colour",
-                                    "Cursor  Colour",
+                                    "Cursor Color",
+                                    "Cursor Color",
                                     &default_cursor_color,
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CURSOR_COLOR, pspec);
+
+  pspec = g_param_spec_boolean ("cursor-color-set",
+                                "Cursor Color Set",
+                                "Whether the cursor color has been set",
+                                FALSE,
+                                CLUTTER_PARAM_READABLE);
+  g_object_class_install_property (gobject_class, PROP_CURSOR_COLOR_SET, pspec);
 
   /**
    * ClutterText:position:
