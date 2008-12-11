@@ -1327,10 +1327,10 @@ clutter_text_real_del_prev (ClutterText         *self,
 }
 
 static gboolean
-clutter_text_real_activate (ClutterText *self,
-                            const gchar *action,
-                            guint keyval,
-                            ClutterModifierType modifiers)
+clutter_text_real_activate (ClutterText         *self,
+                            const gchar         *action,
+                            guint                keyval,
+                            ClutterModifierType  modifiers)
 {
   ClutterTextPrivate *priv = self->priv;
 
@@ -1345,19 +1345,19 @@ clutter_text_real_activate (ClutterText *self,
 }
 
 static gboolean
-clutter_text_real_page_up (ClutterText *self,
-                           const gchar *action,
-                           guint keyval,
-                           ClutterModifierType modifiers)
+clutter_text_real_page_up (ClutterText         *self,
+                           const gchar         *action,
+                           guint                keyval,
+                           ClutterModifierType  modifiers)
 {
   return FALSE;
 }
 
 static gboolean
-clutter_text_real_page_down (ClutterText *self,
-                             const gchar *action,
-                             guint keyval,
-                             ClutterModifierType modifiers)
+clutter_text_real_page_down (ClutterText         *self,
+                             const gchar         *action,
+                             guint                keyval,
+                             ClutterModifierType  modifiers)
 {
   return FALSE;
 }
