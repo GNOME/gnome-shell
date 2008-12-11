@@ -38,10 +38,11 @@
  *
  * #ClutterCairoTexture will provide a #cairo_t context by using the
  * clutter_cairo_texture_create() and clutter_cairo_texture_create_region()
- * functions; you can use the Cairo API to draw on the context.
+ * functions; you can use the Cairo API to draw on the context and then
+ * call cairo_destroy() when done.
  *
  * As soon as the context is destroyed with cairo_destroy(), the contents
- * of the context will be uploaded into the #ClutterCairoTexture actor:
+ * of the surface will be uploaded into the #ClutterCairoTexture actor:
  *
  * |[
  *   cairo_t *cr;
@@ -410,7 +411,8 @@ clutter_cairo_texture_init (ClutterCairoTexture *self)
 
   /* FIXME - we are hardcoding the format; it would be good to have
    * a :surface-format construct-only property for creating
-   * textures with a different format
+   * textures with a different format and have the cairo surface
+   * match that format
    */
   priv->format = CAIRO_FORMAT_ARGB32;
 }
@@ -475,7 +477,12 @@ clutter_cairo_texture_context_destroy (void *data)
   /* BAH BAH BAH ! un-pre-multiply alpha...
    *
    * FIXME: Need to figure out if GL has a premult texture
-   *        format... or go back to battling glitz
+   *        format, or we need to change the order of the
+   *        paint sequence in Clutter. or go back to battling
+   *        glitz (ugh).
+   *
+   * in theory, this could be moved to a shader, but apparently
+   * the performance gain is not really worth it.
    */
   for (y = 0; y < cairo_height; y++)
     {
