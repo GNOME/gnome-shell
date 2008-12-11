@@ -122,7 +122,7 @@ struct _ClutterTextPrivate
   /* the x position in the pangolayout, used to
    * avoid drifting when repeatedly moving up|down
    */
-  gint            x_pos;
+  gint x_pos;
 
   /* Where to draw the cursor */
   ClutterGeometry cursor_pos;
@@ -243,9 +243,6 @@ clutter_text_create_layout_no_cache (ClutterText *text,
 {
   ClutterTextPrivate *priv = text->priv;
   PangoLayout *layout;
-
-  if (G_UNLIKELY (_context == NULL))
-    _context = _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
 
   layout = pango_layout_new (_context);
 
@@ -1024,6 +1021,8 @@ clutter_text_class_init (ClutterTextClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   GParamSpec *pspec;
 
+  _context = _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
+
   gobject_class->set_property = clutter_text_set_property;
   gobject_class->get_property = clutter_text_get_property;
   gobject_class->dispose = clutter_text_dispose;
@@ -1301,8 +1300,28 @@ static void
 clutter_text_init (ClutterText *self)
 {
   ClutterTextPrivate *priv;
+  int i;
 
   self->priv = priv = CLUTTER_TEXT_GET_PRIVATE (self);
+
+  priv->alignment     = PANGO_ALIGN_LEFT;
+  priv->wrap          = FALSE;
+  priv->wrap_mode     = PANGO_WRAP_WORD;
+  priv->ellipsize     = PANGO_ELLIPSIZE_NONE;
+  priv->use_underline = FALSE;
+  priv->use_markup    = FALSE;
+  priv->justify       = FALSE;
+
+  for (i = 0; i < N_CACHED_LAYOUTS; i++)
+    priv->cached_layouts[i].layout = NULL;
+
+  priv->text = NULL;
+
+  priv->text_color = default_text_color;
+  priv->cursor_color = default_cursor_color;
+
+  priv->font_name = g_strdup (DEFAULT_FONT_NAME);
+  priv->font_desc = pango_font_description_from_string (priv->font_name);
 
   priv->x_pos = -1;
   priv->cursor_visible = TRUE;
