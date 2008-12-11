@@ -478,67 +478,79 @@ clutter_text_coords_to_position (ClutterText *text,
 }
 
 static gboolean
-clutter_text_position_to_coords (ClutterText *ttext,
-                              gint      position,
-                              gint     *x,
-                              gint     *y,
-                              gint     *cursor_height)
+clutter_text_position_to_coords (ClutterText *self,
+                                 gint         position,
+                                 gint        *x,
+                                 gint        *y,
+                                 gint        *cursor_height)
 {
-  ClutterTextPrivate  *priv;
-  gint              index_;
-  PangoRectangle    rect;
-  const gchar      *text;
+  ClutterTextPrivate *priv = self->priv;
+  PangoRectangle rect;
+  gint priv_char_bytes;
+  gint index_;
 
-  text = clutter_text_get_text (ttext);
-
-  priv = ttext->priv;
+  if (!priv->text_visible && priv->priv_char)
+    priv_char_bytes = g_unichar_to_utf8 (priv->priv_char, NULL);
+  else
+    priv_char_bytes = 1;
 
   if (position == -1)
-    index_ = strlen (text);
+    {
+      if (priv->text_visible)
+        index_ = strlen (priv->text);
+      else
+        index_ = priv->n_chars * priv_char_bytes;
+    }
   else
-    index_ = offset_to_bytes (text, position);
+    {
+      if (priv->text_visible)
+        index_ = offset_to_bytes (priv->text, position);
+      else
+        index_ = priv->position * priv_char_bytes;
+    }
 
-  if (index_ > strlen (text))
-   index_ = strlen (text);
-
-  pango_layout_get_cursor_pos (clutter_text_get_layout (ttext),
-                               index_,
+  pango_layout_get_cursor_pos (clutter_text_get_layout (self), index_,
                                &rect, NULL);
 
   if (x)
     *x = rect.x / PANGO_SCALE;
+
   if (y)
     *y = (rect.y + rect.height) / PANGO_SCALE;
+
   if (cursor_height)
     *cursor_height = rect.height / PANGO_SCALE;
 
   return TRUE; /* FIXME: should return false if coords were outside text */
 }
 
-static void
-clutter_text_ensure_cursor_position (ClutterText *ttext)
+static inline void
+clutter_text_ensure_cursor_position (ClutterText *self)
 {
-  gint x,y,cursor_height;
-  
-  ClutterTextPrivate  *priv;
-  priv = ttext->priv;
+  ClutterTextPrivate *priv = self->priv;
+  gint x, y, cursor_height;
 
-  clutter_text_position_to_coords (ttext, priv->position, &x, &y, &cursor_height);
+  clutter_text_position_to_coords (self, priv->position,
+                                   &x, &y,
+                                   &cursor_height);
 
   priv->cursor_pos.x = x;
   priv->cursor_pos.y = y - cursor_height;
-  priv->cursor_pos.width = 2; 
+  priv->cursor_pos.width = 2;
   priv->cursor_pos.height = cursor_height;
 
-  g_signal_emit (ttext, text_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
+  g_signal_emit (self, text_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
 }
 
-static inline gboolean
+static gboolean
 clutter_text_truncate_selection_internal (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
   gint start_index;
   gint end_index;
+
+  if (!priv->text)
+    return TRUE;
 
   start_index = offset_real (priv->text, priv->position);
   end_index = offset_real (priv->text, priv->selection_bound);
@@ -1424,6 +1436,7 @@ clutter_text_init (ClutterText *self)
   priv->font_desc = pango_font_description_from_string (priv->font_name);
 
   priv->position = -1;
+  priv->selection_bound = -1;
 
   priv->x_pos = -1;
   priv->cursor_visible = TRUE;
@@ -1434,6 +1447,8 @@ clutter_text_init (ClutterText *self)
 
   priv->text_visible = TRUE;
   priv->priv_char = '*';
+
+  priv->max_length = 0;
 
   init_commands (self); /* FIXME: free */
   init_mappings (self); /* FIXME: free */
@@ -1696,9 +1711,9 @@ clutter_text_get_selection_bound (ClutterText *self)
 /****************************************************************/
 
 static gboolean
-clutter_text_action_activate (ClutterText            *ttext,
-                           const gchar         *commandline,
-                           ClutterEvent *event)
+clutter_text_action_activate (ClutterText  *ttext,
+                              const gchar  *commandline,
+                              ClutterEvent *event)
 {
   g_signal_emit (G_OBJECT (ttext), text_signals[ACTIVATE], 0);
   return TRUE;
@@ -1708,13 +1723,14 @@ static void
 clutter_text_clear_selection (ClutterText *ttext)
 {
   ClutterTextPrivate *priv = ttext->priv;
+
   priv->selection_bound = priv->position;
 }
 
 static gboolean
 clutter_text_action_move_left (ClutterText     *ttext,
-                            const gchar  *commandline,
-                            ClutterEvent *event)
+                               const gchar  *commandline,
+                               ClutterEvent *event)
 {
   ClutterTextPrivate *priv = ttext->priv;
   gint pos = priv->position;
@@ -1772,9 +1788,9 @@ clutter_text_action_move_right (ClutterText            *ttext,
 }
 
 static gboolean
-clutter_text_action_move_up (ClutterText            *ttext,
-                          const gchar         *commandline,
-                          ClutterEvent *event)
+clutter_text_action_move_up (ClutterText  *ttext,
+                             const gchar  *commandline,
+                             ClutterEvent *event)
 {
   ClutterTextPrivate *priv = ttext->priv;
   gint                          line_no;
@@ -1799,9 +1815,8 @@ clutter_text_action_move_up (ClutterText            *ttext,
   if (line_no < 0)
     return FALSE;
 
-  layout_line = pango_layout_get_line_readonly (
-                    clutter_text_get_layout (ttext),
-                    line_no);
+  layout_line =
+    pango_layout_get_line_readonly (clutter_text_get_layout (ttext), line_no);
 
   if (!layout_line)
     return TRUE;
@@ -1987,14 +2002,16 @@ clutter_text_action_delete_next (ClutterText *ttext,
   gint pos;
   gint len;
  
-  if (clutter_text_truncate_selection (ttext, NULL, 0))
+  if (clutter_text_truncate_selection_internal (ttext))
     return TRUE;
+
   priv = ttext->priv;
   pos = priv->position;
   len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
 
   if (len && pos != -1 && pos < len)
-    clutter_text_delete_text (ttext, pos, pos+1);;
+    clutter_text_delete_text (ttext, pos, pos+1);
+
   return TRUE;
 }
 
@@ -2007,8 +2024,9 @@ clutter_text_action_delete_previous (ClutterText            *ttext,
   gint pos;
   gint len;
  
-  if (clutter_text_truncate_selection (ttext, NULL, 0))
+  if (clutter_text_truncate_selection_internal (ttext))
     return TRUE;
+
   priv = ttext->priv;
   pos = priv->position;
   len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
@@ -2148,6 +2166,7 @@ clutter_text_set_text (ClutterText *self,
   ClutterTextPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_TEXT (self));
+  g_return_if_fail (text != NULL);
 
   priv = self->priv;
 
