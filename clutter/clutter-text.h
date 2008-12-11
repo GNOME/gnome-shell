@@ -101,7 +101,7 @@ void                  clutter_text_set_ellipsize       (ClutterText        *self
                                                         PangoEllipsizeMode  mode);
 PangoEllipsizeMode    clutter_text_get_ellipsize       (ClutterText        *self);
 void                  clutter_text_set_line_wrap       (ClutterText        *self,
-                                                        gboolean            wrap);
+                                                        gboolean            line_wrap);
 gboolean              clutter_text_get_line_wrap       (ClutterText        *self);
 void                  clutter_text_set_line_wrap_mode  (ClutterText        *self,
                                                         PangoWrapMode       wrap_mode);
@@ -123,7 +123,7 @@ gboolean              clutter_text_get_justify         (ClutterText        *self
 void                  clutter_text_insert_unichar      (ClutterText        *self,
                                                         gunichar            wc);
 void                  clutter_text_delete_chars        (ClutterText        *self,
-                                                        guint              len);
+                                                        guint               n_chars);
 void                  clutter_text_insert_text         (ClutterText        *self,
                                                         const gchar        *text,
                                                         gssize              position);

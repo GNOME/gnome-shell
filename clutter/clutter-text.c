@@ -22,6 +22,22 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * SECTION:clutter-text
+ * @short_description: An actor for displaying and editing text
+ *
+ * #ClutterText is an actor that displays custom text using Pango
+ * as the text rendering engine.
+ *
+ * #ClutterText also allows inline editing of the text if the
+ * actor is set editable using clutter_text_set_editable().
+ *
+ * Selection using keyboard or pointers can be enabled using
+ * clutter_text_set_selectable().
+ *
+ * #ClutterText is available since Clutter 1.0
+ */
+
 /* TODO: undo/redo hooks?
  */
 
