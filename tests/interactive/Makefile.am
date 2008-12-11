@@ -31,7 +31,7 @@ UNIT_TESTS = \
 	test-cogl-tex-getset.c \
 	test-cogl-offscreen.c \
 	test-cogl-tex-polygon.c \
-	test-cogl-multi-texture.c \
+	test-cogl-material.c \
 	test-stage-read-pixels.c \
 	test-random-text.c \
 	test-clip.c \
