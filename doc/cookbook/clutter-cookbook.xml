@@ -43,9 +43,9 @@
     Cookbook</emphasis>: approaching a programming problem is oftentimes
     similar to balancing Columbus's egg. The initial difficulties of dealing
     with, and more importantly solving, problems in the computer programming
-    field sometimes can sometimes only be overcome if somebody shows you how
-    to use a new tool. This is true for programming languages but also for
-    programming libraries.</para>
+    field sometimes can only be overcome if somebody shows you how to use a
+    new tool. This is true for programming languages but also for programming
+    libraries.</para>
 
     <para>This book has been written to try and give you a reference on
     how to solve common issues that you might have to face when using
@@ -65,16 +65,16 @@
 
     <para>Above all, this is a book for learning <emphasis>more</emphasis>
     about Clutter, and about how to use it in the most efficient and easiest
-    way. It is meant to help you move past the basic usage of Clutter</para>
+    way. It is meant to help you move past the basic usage of Clutter.</para>
 
     <para>This book is divided into chapters. Each chapter is dedicated to
-    a specific class, or a specific area. Each chapter starts with a short
-    introduction, followed by different <emphasis>recipes</emphasis>. Each
-    recipe has a problem, as a short statement describing what we want to
-    achieve; a solution, containing the source code; and a discussion
-    section, where the code is explained, where alternative approaches might
-    be usefule, caveats and references to the Clutter API for furher
-    studying.</para>
+    a specific class, like ClutterTexture, or a specific area, like animations.
+    Each chapter starts with a short introduction, followed by different
+    <emphasis>recipes</emphasis>. Each recipe starts with a problem, or a short
+    statement describing what we want to achieve; a solution, containing the
+    source code; and a discussion section, where the code is explained, where
+    alternative approaches might be useful, caveats and references to the
+    Clutter API for furher studying.</para>
 
     <para>This book, in the cookbook spirit, can be accessed mostly at
     random.</para>
@@ -98,8 +98,10 @@
     <section>
       <title>About this document</title>
 
-      <para>This document is available in various formats like HTML,
-      text and PDF. The latest version is always available at
+      <para>This document is available in various formats like HTML, and
+      PDF.</para>
+
+      <para>The latest version is always available at
       <ulink url="&docurl;">&docurl;</ulink>.</para>
 
     </section>
@@ -107,18 +109,20 @@
     <section>
       <title>Where to get Clutter</title>
 
-      <para>You can obtain Clutter from <ulink url="&appurl;">&appurl;</ulink>
-      or perhaps from your distributor.</para>
+      <para>You can obtain Clutter from <ulink url="&appurl;">&appurl;</ulink>.</para>
+
+      <para>Clutter is also available on all major GNU/Linux distributions,
+      in various package formats.</para>
+
+      <para>On OSX, Clutter is available with both Fink and MacPorts.</para>
+
+      <para>Binaries for Microsoft Windows are also available.</para>
     </section>
 
     <section>
       <title>License</title>
 
-      <para>Clutter is distributed under the terms of the GNU Lesser General
-      Public License as published by the Free Software Foundation; either
-      version 2 of the License, or (at your option) any later version. A copy
-      of this license can be found in the file COPYING included with the
-      source code of this program.</para>
+      <para>FIXME</para>
     </section>
 
   </chapter> <!-- introduction }}} -->
@@ -156,7 +160,7 @@
 
     </section>
 
-    <section id="actors-recipe-1"> <!-- recipe 1 {{{ -->
+    <section id="actors-allocation-notify"> <!-- {{{ -->
       <title>Knowing when an actor position or size change</title>
 
       <section>
@@ -177,11 +181,14 @@
         <informalexample>
           <programlisting>
 g_signal_connect (actor, "notify::x",
-                  G_CALLBACK (on_x_changed), NULL);
+                  G_CALLBACK (on_x_changed),
+                  NULL);
 g_signal_connect (actor, "notify::height",
-                  G_CALLBACK (on_height_changed), NULL);
+                  G_CALLBACK (on_height_changed),
+                  NULL);
 g_signal_connect (actor, "notify::depth",
-                  G_CALLBACK (on_depth_changed), NULL);
+                  G_CALLBACK (on_depth_changed),
+                  NULL);
           </programlisting>
         </informalexample>
 
@@ -193,7 +200,8 @@ g_signal_connect (actor, "notify::depth",
         <informalexample>
           <programlisting>
 g_signal_connect (actor, "notify::allocation",
-                  G_CALLBACK (on_allocation_changed), NULL);
+                  G_CALLBACK (on_allocation_changed),
+                  NULL);
           </programlisting>
         </informalexample>
 
@@ -229,7 +237,7 @@ on_x_changed (GObject    *gobject,
 {
   gint x_value = 0;
 
-  g_object_get (gobject, pspec->name, &amp;x_value, NULL);
+  g_object_get (gobject, pspec-&gt;name, &amp;x_value, NULL);
 
   g_print ("The new X coordinate is '%d' pixels\n", x_value);
 }
@@ -273,6 +281,63 @@ on_allocation_changed (GObject    *gobject,
 
     </section> <!-- recipe 1 }}} -->
 
+    <section id="actors-paint-wrappers"> <!-- {{{ -->
+      <title>Overriding the paint sequence</title>
+
+      <section>
+        <title>Problem</title>
+
+        <para>You want to override the way an actor paints itself
+        without creating a subclass.</para>
+      </section>
+
+      <section>
+        <title>Solution</title>
+
+        <para>You can use the <emphasis>paint</emphasis> signal to
+        invoke a callback that will be executed before the actor's
+        paint implementation:</para>
+
+        <informalexample>
+          <programlisting>
+g_signal_connect (actor, "paint",
+                  G_CALLBACK (on_paint),
+                  NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>You can paint something after the actor's paint implementation
+        by using the <function>g_signal_connect_after()</function> function
+        instead of <function>g_signal_connect()</function>:</para>
+
+        <informalexample>
+          <programlisting>
+g_signal_connect_after (actor, "paint",
+                        G_CALLBACK (on_paint_after),
+                        NULL);
+          </programlisting>
+        </informalexample>
+
+        <para>The signature for the handler of the "paint" signal is:</para>
+
+        <informalexample>
+          <programlisting>
+void
+on_paint (ClutterActor *actor,
+          gpointer      user_data);
+          </programlisting>
+        </informalexample>
+
+      </section>
+
+      <section>
+        <title>Discussion</title>
+
+        <para>...</para>
+      </section>
+
+    </section> <!-- }}} -->
+
   </chapter> <!-- actors }}} -->
 
   <chapter id="textures"> <!-- textures {{{ -->
@@ -289,13 +354,13 @@ on_allocation_changed (GObject    *gobject,
       <para>introduction</para>
     </section>
 
-    <section> <!-- recipe 1 {{{ -->
+    <section id="textures-aspect-ratio">
       <title>Maintaining the aspect ratio when loading a texture</title>
 
       <section>
         <title>Problem</title>
 
-        <para></para>
+        <para>You want to maintain the aspect ratio of a texture.</para>
       </section>
 
       <section>
@@ -334,19 +399,20 @@ on_allocation_changed (GObject    *gobject,
       <section>
         <title>Problem</title>
 
-        <para></para>
+        <para>You want to have an animation exactly mirroring another one
+        that you just played.</para>
       </section>
 
       <section>
         <title>Solution</title>
 
-        <para></para>
+        <para>...</para>
       </section>
 
       <section>
         <title>Discussion</title>
 
-        <para></para>
+        <para>...</para>
       </section>
 
     </section> <!-- recipe 1 }}} -->
@@ -360,5 +426,30 @@ on_allocation_changed (GObject    *gobject,
     document is located in the subdirectory "doc/cookbook" of the source
     directory of Clutter.</para>
   </appendix> <!-- contributing }}} -->
+
+<!--
+    <section id="recipe">
+      <title>Recipe</title>
+
+      <section>
+        <title>Problem</title>
+
+        <para>...</para>
+      </section>
+
+      <section>
+        <title>Solution</title>
+
+        <para>...</para>
+      </section>
+
+      <section>
+        <title>Discussion</title>
+
+        <para>...</para>
+      </section>
+
+    </section>
+-->
 
 </book>
