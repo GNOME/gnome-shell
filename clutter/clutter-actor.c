@@ -1453,6 +1453,9 @@ clutter_actor_paint (ClutterActor *self)
 	}
     }
 
+  /* mark that we are in the paint process */
+  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_PAINT);
+
   cogl_push_matrix();
 
   _clutter_actor_apply_modelview_transform (self);
@@ -1492,6 +1495,9 @@ clutter_actor_paint (ClutterActor *self)
     cogl_clip_unset();
 
   cogl_pop_matrix();
+
+  /* paint sequence complete */
+  CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_PAINT);
 }
 
 /* fixed point, unit based rotation setter, to be used by
