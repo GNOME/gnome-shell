@@ -1417,8 +1417,6 @@ clutter_text_class_init (ClutterTextClass *klass)
   ClutterBindingPool *binding_pool;
   GParamSpec *pspec;
 
-  _context = _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
-
   g_type_class_add_private (klass, sizeof (ClutterTextPrivate));
 
   gobject_class->set_property = clutter_text_set_property;
@@ -1828,6 +1826,9 @@ clutter_text_init (ClutterText *self)
 {
   ClutterTextPrivate *priv;
   int i;
+
+  if (G_UNLIKELY (_context == NULL))
+    _context = _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
 
   self->priv = priv = CLUTTER_TEXT_GET_PRIVATE (self);
 
