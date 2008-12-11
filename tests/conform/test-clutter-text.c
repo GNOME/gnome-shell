@@ -239,6 +239,37 @@ test_text_delete_chars (TestConformSimpleFixture *fixture,
 }
 
 void
+test_text_get_chars (TestConformSimpleFixture *fixture,
+                     gconstpointer             data)
+{
+  ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
+  gchar *chars;
+
+  clutter_text_set_text (text, "00abcdef11");
+  g_assert_cmpint (get_nchars (text), ==, 10);
+  g_assert_cmpint (get_nbytes (text), ==, 10);
+  g_assert_cmpstr (clutter_text_get_text (text), ==, "00abcdef11");
+
+  chars = clutter_text_get_chars (text, 2, -1);
+  g_assert_cmpstr (chars, ==, "abcdef11");
+  g_free (chars);
+
+  chars = clutter_text_get_chars (text, 0, 8);
+  g_assert_cmpstr (chars, ==, "00abcdef");
+  g_free (chars);
+
+  chars = clutter_text_get_chars (text, 2, 8);
+  g_assert_cmpstr (chars, ==, "abcdef");
+  g_free (chars);
+
+  chars = clutter_text_get_chars (text, 8, 12);
+  g_assert_cmpstr (chars, ==, "11");
+  g_free (chars);
+
+  clutter_actor_destroy (CLUTTER_ACTOR (text));
+}
+
+void
 test_text_delete_text (TestConformSimpleFixture *fixture,
 			gconstpointer data)
 {

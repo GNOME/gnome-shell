@@ -2998,14 +2998,47 @@ clutter_text_delete_chars (ClutterText *self,
   g_object_notify (G_OBJECT (self), "text");
 }
 
+/**
+ * clutter_text_get_chars:
+ * @self: a #ClutterTex
+ * @start_pos: start of text, in characters
+ * @end_pos: end of text, in characters
+ *
+ * Retrieves the contents of the #ClutterText actor between
+ * @start_pos and @end_pos.
+ *
+ * The positions are specified in characters, not in bytes.
+ *
+ * Return value: a newly allocated string with the contents of
+ *   the text actor between the specified positions. Use g_free()
+ *   to free the resources when done
+ *
+ * Since: 1.0
+ */
 gchar *
 clutter_text_get_chars (ClutterText *self,
                         gssize       start_pos,
                         gssize       end_pos)
 {
+  ClutterTextPrivate *priv;
+  gint start_index, end_index;
+
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
 
-  return NULL;
+  priv = self->priv;
+
+  if (end_pos < 0)
+    end_pos = priv->n_chars;
+
+  start_pos = MIN (priv->n_chars, start_pos);
+  end_pos = MIN (priv->n_chars, end_pos);
+
+  start_index = g_utf8_offset_to_pointer (priv->text, start_pos)
+              - priv->text;
+  end_index   = g_utf8_offset_to_pointer (priv->text, end_pos)
+              - priv->text;
+
+  return g_strndup (priv->text + start_index, end_index - start_index);
 }
 
 void
