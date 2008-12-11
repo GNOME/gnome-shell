@@ -66,6 +66,12 @@ typedef struct
   CoglTextureGLVertex *texture_vertices;
   gulong               texture_vertices_size;
   
+  /* Multi Textures */
+  GArray           *multi_texture_handles;
+
+  /* Multi Texture Layers */
+  GArray           *multi_texture_layer_handles;
+
   /* Framebuffer objects */
   GArray           *fbo_handles;
   CoglBufferTarget  draw_buffer;

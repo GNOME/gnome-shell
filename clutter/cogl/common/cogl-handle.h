@@ -57,6 +57,12 @@
 
 #define COGL_HANDLE_DEFINE(TypeName, type_name, handle_array)	\
 								\
+  static CoglHandle *					        \
+  _cogl_##type_name##_handle_from_pointer (Cogl##TypeName *obj)	\
+  {								\
+    return (CoglHandle)obj;				        \
+  }								\
+								\
   static gint							\
   _cogl_##type_name##_handle_find (CoglHandle handle)		\
   {								\
