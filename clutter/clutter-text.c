@@ -2824,7 +2824,28 @@ clutter_text_insert_unichar (ClutterText *self,
 }
 
 void
-clutter_text_delete_text (ClutterText *ttext,
+clutter_text_insert_text (ClutterText *self,
+                          const gchar *text,
+                          gssize       position)
+{
+  ClutterTextPrivate *priv;
+  GString *new = NULL;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+  g_return_if_fail (text != NULL);
+
+  priv = self->priv;
+
+  new = g_string_new (priv->text);
+  new = g_string_insert (new, position, text);
+
+  clutter_text_set_text (self, new->str);
+
+  g_string_free (new, TRUE);
+}
+
+void
+clutter_text_delete_text (ClutterText *self,
                           gssize       start_pos,
                           gssize       end_pos)
 {
@@ -2832,38 +2853,89 @@ clutter_text_delete_text (ClutterText *ttext,
   GString *new = NULL;
   gint start_bytes;
   gint end_bytes;
-  const gchar *text;
 
-  g_return_if_fail (CLUTTER_IS_TEXT (ttext));
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  priv = ttext->priv;
-  text = clutter_text_get_text (ttext);
+  priv = self->priv;
 
   if (end_pos == -1)
     {
-      start_bytes = offset_to_bytes (text, g_utf8_strlen (text, -1) - 1);
-      end_bytes = offset_to_bytes (text, g_utf8_strlen (text, -1));
+      start_bytes = offset_to_bytes (priv->text,
+                                     g_utf8_strlen (priv->text, -1) - 1);
+      end_bytes = offset_to_bytes (priv->text,
+                                   g_utf8_strlen (priv->text, -1));
     }
   else
     {
-      start_bytes = offset_to_bytes (text, start_pos);
-      end_bytes = offset_to_bytes (text, end_pos);
+      start_bytes = offset_to_bytes (priv->text, start_pos);
+      end_bytes = offset_to_bytes (priv->text, end_pos);
     }
 
-  new = g_string_new (text);
+  new = g_string_new (priv->text);
   new = g_string_erase (new, start_bytes, end_bytes - start_bytes);
 
-  clutter_text_set_text (ttext, new->str);
+  clutter_text_set_text (self, new->str);
 
   g_string_free (new, TRUE);
 }
 
+void
+clutter_text_delete_chars (ClutterText *self,
+                           guint        n_chars)
+{
+  ClutterTextPrivate *priv;
+  GString *new = NULL;
+  gint len;
+  gint pos;
+  gint num_pos;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (!priv->text)
+    return;
+
+  len = g_utf8_strlen (priv->text, -1);
+  new = g_string_new (priv->text);
+
+  if (priv->position == -1)
+    {
+      num_pos = offset_to_bytes (priv->text, len - n_chars);
+      new = g_string_erase (new, num_pos, -1);
+    }
+  else
+    {
+      pos = offset_to_bytes (priv->text, priv->position - n_chars);
+      num_pos = offset_to_bytes (priv->text, priv->position);
+      new = g_string_erase (new, pos, num_pos - pos);
+    }
+
+  clutter_text_set_text (self, new->str);
+
+  if (priv->position > 0)
+    clutter_text_set_cursor_position (self, priv->position - n_chars);
+
+  g_string_free (new, TRUE);
+
+  g_object_notify (G_OBJECT (self), "text");
+}
+
+gchar *
+clutter_text_get_chars (ClutterText *self,
+                        gssize       start_pos,
+                        gssize       end_pos)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
+
+  return NULL;
+}
 
 void
 clutter_text_add_mapping (ClutterText           *ttext,
-                            guint               keyval,
-                            ClutterModifierType state,
-                            const gchar        *commandline)
+                          guint               keyval,
+                          ClutterModifierType state,
+                          const gchar        *commandline)
 {
   ClutterTextMapping *tmapping = g_new (ClutterTextMapping, 1);
   ClutterTextPrivate *priv = ttext->priv;
