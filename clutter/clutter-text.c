@@ -83,14 +83,6 @@ static void     clutter_text_get_property       (GObject         *gobject,
                                               GParamSpec      *pspec);
 static void     clutter_text_finalize           (GObject         *gobject);
 
-G_CONST_RETURN gchar *clutter_text_get_text (ClutterText *text);
-void clutter_text_set_text (ClutterText *text, const gchar *str);
-PangoLayout *clutter_text_get_layout (ClutterText *text);
-void clutter_text_set_color (ClutterText *text, const ClutterColor *color);
-void clutter_text_get_color (ClutterText *text, ClutterColor *color);
-void clutter_text_set_font_name (ClutterText *text, const gchar *font_name);
-G_CONST_RETURN gchar *clutter_text_get_font_name (ClutterText *text);
-
 static void init_commands (ClutterText *ttext);
 static void init_mappings (ClutterText *ttext);
 

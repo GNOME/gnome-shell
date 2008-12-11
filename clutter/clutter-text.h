@@ -18,10 +18,12 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+#error "Only <clutter/clutter.h> can be included directly."
+#endif
 
 #ifndef __CLUTTER_TEXT_H__
 #define __CLUTTER_TEXT_H__
@@ -31,27 +33,12 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_TEXT (clutter_text_get_type ())
-
-#define CLUTTER_TEXT(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  CLUTTER_TYPE_TEXT, ClutterText))
-
-#define CLUTTER_TEXT_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  CLUTTER_TYPE_TEXT, ClutterTextClass))
-
-#define CLUTTER_IS_TEXT(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  CLUTTER_TYPE_TEXT))
-
-#define CLUTTER_IS_TEXT_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  CLUTTER_TYPE_TEXT))
-
-#define CLUTTER_TEXT_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  CLUTTER_TYPE_TEXT, ClutterTextClass))
+#define CLUTTER_TYPE_TEXT               (clutter_text_get_type ())
+#define CLUTTER_TEXT(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_TEXT, ClutterText))
+#define CLUTTER_TEXT_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_TEXT, ClutterTextClass))
+#define CLUTTER_IS_TEXT(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_TEXT))
+#define CLUTTER_IS_TEXT_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_TEXT))
+#define CLUTTER_TEXT_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_TEXT, ClutterTextClass))
 
 typedef struct _ClutterText        ClutterText;
 typedef struct _ClutterTextPrivate ClutterTextPrivate;
@@ -82,6 +69,18 @@ ClutterActor *clutter_text_new_full            (const gchar        *font_name,
                                              const ClutterColor *color);
 ClutterActor *clutter_text_new_with_text       (const gchar        *font_name,
                                              const gchar        *text);
+
+G_CONST_RETURN gchar *clutter_text_get_text      (ClutterText *text);
+void                  clutter_text_set_text      (ClutterText *text,
+                                                  const gchar *str);
+PangoLayout *         clutter_text_get_layout    (ClutterText *text);
+void                  clutter_text_set_color     (ClutterText *text,
+                                                  const ClutterColor *color);
+void                  clutter_text_get_color     (ClutterText *text,
+                                                  ClutterColor *color);
+void                  clutter_text_set_font_name (ClutterText *text,
+                                                  const gchar *font_name);
+G_CONST_RETURN gchar *clutter_text_get_font_name (ClutterText *text);
 
 void          clutter_text_set_editable        (ClutterText           *label,
                                              gboolean            editable);
