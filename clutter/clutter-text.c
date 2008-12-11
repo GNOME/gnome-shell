@@ -33,11 +33,12 @@
 
 #include "clutter-text.h"
 
+#include "clutter-binding-pool.h"
+#include "clutter-debug.h"
+#include "clutter-enum-types.h"
 #include "clutter-keysyms.h"
 #include "clutter-main.h"
-#include "clutter-enum-types.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
 #include "clutter-units.h"
 
 #include "cogl-pango.h"
@@ -82,21 +83,6 @@ struct _LayoutCache
    * new layout is needed the last used cache is replaced)
    */
   guint        age;
-};
-
-struct _TextCommand
-{
-  const gchar *name;
-  gboolean (*func) (ClutterText     *ttext,
-                    const gchar  *commandline,
-                    ClutterEvent *event);
-};
-
-struct _TextMapping
-{
-  ClutterModifierType    state;
-  guint                  keyval;
-  const gchar           *action;
 };
 
 struct _ClutterTextPrivate
@@ -150,12 +136,6 @@ struct _ClutterTextPrivate
   /* Where to draw the cursor */
   ClutterGeometry cursor_pos;
   ClutterColor cursor_color;
-
-  GList *mappings;
-  GList *commands; /* each instance has it's own set of commands
-                      so that actor specific actions can be added
-                      to single actor classes
-                    */
 
   gint max_length;
 
@@ -243,45 +223,12 @@ offset_to_bytes (const gchar *text,
   (g_utf8_pointer_to_offset ((t), (t) + (p)))
 
 
-void
-clutter_text_mappings_clear (ClutterText *self)
+static inline void
+clutter_text_clear_selection (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
 
-  g_list_foreach (priv->mappings, (GFunc) g_free, NULL);
-  g_list_free (priv->mappings);
-  priv->mappings = NULL;
-}
-
-static void init_commands (ClutterText *ttext);
-
-static void
-init_mappings (ClutterText *ttext)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-
-  if (priv->mappings)
-    return;
-
-  clutter_text_add_mapping (ttext, CLUTTER_Left, 0,    "move-left");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_Left, 0, "move-left");
-  clutter_text_add_mapping (ttext, CLUTTER_Right, 0,   "move-right");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_Right, 0,"move-right");
-  clutter_text_add_mapping (ttext, CLUTTER_Up, 0,      "move-up");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_Up, 0,   "move-up");
-  clutter_text_add_mapping (ttext, CLUTTER_Down, 0,    "move-down");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_Down, 0, "move-down");
-  clutter_text_add_mapping (ttext, CLUTTER_Begin, 0,   "move-start-line");
-  clutter_text_add_mapping (ttext, CLUTTER_Home, 0,    "move-start-line");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_Home, 0, "move-start-line");
-  clutter_text_add_mapping (ttext, CLUTTER_End, 0,     "move-end-line");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_End, 0,  "move-end-line");
-  clutter_text_add_mapping (ttext, CLUTTER_BackSpace, 0 , "delete-previous");
-  clutter_text_add_mapping (ttext, CLUTTER_Delete, 0,  "delete-next");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_Delete,0, "delete-next");
-  clutter_text_add_mapping (ttext, CLUTTER_Return, 0,  "activate");
-  clutter_text_add_mapping (ttext, CLUTTER_KP_Enter, 0, "activate");
-  clutter_text_add_mapping (ttext, CLUTTER_ISO_Enter, 0, "activate");
+  priv->selection_bound = priv->position;
 }
 
 static PangoLayout *
@@ -548,7 +495,7 @@ clutter_text_ensure_cursor_position (ClutterText *self)
 }
 
 static gboolean
-clutter_text_truncate_selection_internal (ClutterText *self)
+clutter_text_truncate_selection (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
   gint start_index;
@@ -576,14 +523,6 @@ clutter_text_truncate_selection_internal (ClutterText *self)
   priv->selection_bound = start_index;
 
   return TRUE;
-}
-
-static gboolean
-clutter_text_truncate_selection (ClutterText  *ttext,
-                                 const gchar  *commandline,
-                                 ClutterEvent *event)
-{
-  return clutter_text_truncate_selection_internal (ttext);
 }
 
 static void
@@ -775,11 +714,6 @@ clutter_text_finalize (GObject *gobject)
   g_free (priv->text);
   g_free (priv->font_name);
 
-  clutter_text_mappings_clear (self);
-
-  g_list_foreach (priv->commands, (GFunc) g_free, NULL);
-  g_list_free (priv->commands);
-
   G_OBJECT_CLASS (clutter_text_parent_class)->finalize (gobject);
 }
 
@@ -877,8 +811,6 @@ cursor_paint (ClutterText *self)
     }
 }
 
-
-
 static gboolean
 clutter_text_button_press (ClutterActor       *actor,
                            ClutterButtonEvent *bev)
@@ -909,7 +841,6 @@ clutter_text_button_press (ClutterActor       *actor,
 
   return TRUE;
 }
-
 
 static gboolean
 clutter_text_motion (ClutterActor       *actor,
@@ -965,37 +896,29 @@ clutter_text_button_release (ClutterActor       *actor,
 
 static gboolean
 clutter_text_key_press (ClutterActor    *actor,
-                        ClutterKeyEvent *kev)
+                        ClutterKeyEvent *event)
 {
-  ClutterTextPrivate *priv   = CLUTTER_TEXT (actor)->priv;
-  gint keyval = clutter_key_event_symbol (kev);
-  GList *iter;
+  ClutterTextPrivate *priv = CLUTTER_TEXT (actor)->priv;
+  ClutterBindingPool *pool;
+  gboolean res;
+  gint keyval;
 
   if (!priv->editable)
     return FALSE;
 
-  for (iter = priv->mappings; iter != NULL; iter = iter->next)
-    {
-      TextMapping *mapping = iter->data;
+  keyval = clutter_key_event_symbol (event);
 
-      if (
-          (mapping->keyval == keyval) &&
-            (
-             (mapping->state == 0) ||
-             (mapping->state && (kev->modifier_state & mapping->state))
-            )
-         )
-        {
-          if (!g_str_equal (mapping->action, "activate") ||
-              priv->activatable)
-            return clutter_text_action (CLUTTER_TEXT (actor),
-                                        mapping->action,
-                                        (ClutterEvent *) kev);
-        }
-    }
+  pool = clutter_binding_pool_find (G_OBJECT_TYPE_NAME (actor));
+  g_assert (pool != NULL);
 
+  res = clutter_binding_pool_activate (pool, keyval,
+                                       event->modifier_state,
+                                       G_OBJECT (actor));
+  if (res)
+    return TRUE;
+  else
     {
-      gunichar key_unichar = clutter_key_event_unicode (kev);
+      gunichar key_unichar = clutter_key_event_unicode (event);
 
       if (key_unichar == '\r')  /* return is reported as CR we want LF */
         key_unichar = '\n';
@@ -1003,6 +926,7 @@ clutter_text_key_press (ClutterActor    *actor,
       if (g_unichar_validate (key_unichar))
         {
           clutter_text_insert_unichar (CLUTTER_TEXT (actor), key_unichar);
+
           return TRUE;
         }
     }
@@ -1126,11 +1050,340 @@ clutter_text_allocate (ClutterActor          *self,
   parent_class->allocate (self, box, origin_changed);
 }
 
+static gboolean
+clutter_text_real_move_left (ClutterText         *self,
+                             const gchar         *action,
+                             guint                keyval,
+                             ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  gint pos = priv->position;
+  gint len;
+
+  len = g_utf8_strlen (priv->text, -1);
+
+  if (pos != 0 && len !=0)
+    {
+      if (pos == -1)
+        clutter_text_set_cursor_position (self, len - 1);
+      else
+        clutter_text_set_cursor_position (self, pos - 1);
+    }
+
+  if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
+    clutter_text_clear_selection (self);
+
+  return TRUE;
+}
+
+static gboolean
+clutter_text_real_move_right (ClutterText         *self,
+                              const gchar         *action,
+                              guint                keyval,
+                              ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  gint pos = priv->position;
+  gint len;
+
+  len = g_utf8_strlen (priv->text, -1);
+
+  if (pos != -1 && len !=0)
+    {
+      if (pos != len)
+        clutter_text_set_cursor_position (self, pos + 1);
+    }
+
+  if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
+    clutter_text_clear_selection (self);
+
+  return TRUE;
+}
+
+static gboolean
+clutter_text_real_move_up (ClutterText         *self,
+                           const gchar         *action,
+                           guint                keyval,
+                           ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  PangoLayoutLine *layout_line;
+  PangoLayout *layout;
+  gint line_no;
+  gint index_;
+  gint x;
+
+  layout = clutter_text_get_layout (self);
+
+  pango_layout_index_to_line_x (layout,
+                                offset_to_bytes (priv->text, priv->position),
+                                0,
+                                &line_no, &x);
+
+  if (priv->x_pos != -1)
+    x = priv->x_pos;
+  else
+    priv->x_pos = x;
+
+  line_no -= 1;
+  if (line_no < 0)
+    return FALSE;
+
+  layout_line = pango_layout_get_line_readonly (layout, line_no);
+  if (!layout_line)
+    return FALSE;
+
+  pango_layout_line_x_to_index (layout_line, x, &index_, NULL);
+
+  {
+    gint pos = bytes_to_offset (priv->text, index_);
+
+    clutter_text_set_cursor_position (self, pos);
+  }
+
+  if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
+    clutter_text_clear_selection (self);
+
+  return TRUE;
+}
+
+static gboolean
+clutter_text_real_move_down (ClutterText         *self,
+                             const gchar         *action,
+                             guint                keyval,
+                             ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  PangoLayoutLine *layout_line;
+  PangoLayout *layout;
+  gint line_no;
+  gint index_;
+  gint x;
+
+  layout = clutter_text_get_layout (self);
+
+  pango_layout_index_to_line_x (layout,
+                                offset_to_bytes (priv->text, priv->position),
+                                0,
+                                &line_no, &x);
+
+  if (priv->x_pos != -1)
+    x = priv->x_pos;
+  else
+    priv->x_pos = x;
+
+  layout_line = pango_layout_get_line_readonly (layout, line_no + 1);
+  if (!layout_line)
+    return FALSE;
+
+  pango_layout_line_x_to_index (layout_line, x, &index_, NULL);
+
+  {
+    gint pos = bytes_to_offset (priv->text, index_);
+
+    clutter_text_set_cursor_position (self, pos);
+  }
+
+  if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
+    clutter_text_clear_selection (self);
+
+  return TRUE;
+}
+
+static gboolean
+clutter_text_real_line_start (ClutterText         *self,
+                              const gchar         *action,
+                              guint                keyval,
+                              ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  PangoLayoutLine *layout_line;
+  PangoLayout *layout;
+  gint line_no;
+  gint index_;
+  gint position;
+
+  layout = clutter_text_get_layout (self);
+
+  pango_layout_index_to_line_x (layout,
+                                offset_to_bytes (priv->text, priv->position),
+                                0,
+                                &line_no, NULL);
+
+  layout_line = pango_layout_get_line_readonly (layout, line_no);
+  if (!layout_line)
+    return FALSE;
+
+  pango_layout_line_x_to_index (layout_line, 0, &index_, NULL);
+
+  position = bytes_to_offset (priv->text, index_);
+  clutter_text_set_cursor_position (self, position);
+
+  if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
+    clutter_text_clear_selection (self);
+
+  return TRUE;
+}
+
+static gboolean
+clutter_text_real_line_end (ClutterText         *self,
+                            const gchar         *action,
+                            guint                keyval,
+                            ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  PangoLayoutLine *layout_line;
+  PangoLayout *layout;
+  gint line_no;
+  gint index_;
+  gint trailing;
+  gint position;
+
+  layout = clutter_text_get_layout (self);
+  index_ = offset_to_bytes (priv->text, priv->position);
+
+  pango_layout_index_to_line_x (layout, index_,
+                                0,
+                                &line_no, NULL);
+
+  layout_line = pango_layout_get_line_readonly (layout, line_no);
+  if (!layout_line)
+    return FALSE;
+
+  pango_layout_line_x_to_index (layout_line, G_MAXINT, &index_, &trailing);
+  index_ += trailing;
+
+  position = bytes_to_offset (priv->text, index_);
+
+  clutter_text_set_cursor_position (self, position);
+
+  if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
+    clutter_text_clear_selection (self);
+
+  return TRUE;
+}
+
+static gboolean
+clutter_text_real_del_next (ClutterText         *self,
+                            const gchar         *action,
+                            guint                keyval,
+                            ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  gint pos;
+  gint len;
+
+  if (clutter_text_truncate_selection (self))
+    return FALSE;
+
+  pos = priv->position;
+  len = g_utf8_strlen (priv->text, -1);
+
+  if (len && pos != -1 && pos < len)
+    {
+      clutter_text_delete_text (self, pos, pos + 1);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+clutter_text_real_del_prev (ClutterText         *self,
+                            const gchar         *action,
+                            guint                keyval,
+                            ClutterModifierType  modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+  gint pos;
+  gint len;
+
+  if (clutter_text_truncate_selection (self))
+    return FALSE;
+
+  pos = priv->position;
+  len = g_utf8_strlen (priv->text, -1);
+
+  if (pos != 0 && len != 0)
+    {
+      if (pos == -1)
+        {
+          clutter_text_set_cursor_position (self, len - 1);
+          clutter_text_set_selection_bound (self, len - 1);
+        }
+      else
+        {
+          clutter_text_set_cursor_position (self, pos - 1);
+          clutter_text_set_selection_bound (self, pos - 1);
+        }
+
+      clutter_text_delete_text (self, pos - 1, pos);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+clutter_text_real_activate (ClutterText *self,
+                            const gchar *action,
+                            guint keyval,
+                            ClutterModifierType modifiers)
+{
+  ClutterTextPrivate *priv = self->priv;
+
+  if (priv->activatable)
+    {
+      g_signal_emit (self, text_signals[ACTIVATE], 0);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+clutter_text_real_page_up (ClutterText *self,
+                           const gchar *action,
+                           guint keyval,
+                           ClutterModifierType modifiers)
+{
+  return FALSE;
+}
+
+static gboolean
+clutter_text_real_page_down (ClutterText *self,
+                             const gchar *action,
+                             guint keyval,
+                             ClutterModifierType modifiers)
+{
+  return FALSE;
+}
+
+static void
+clutter_text_add_move_binding (ClutterBindingPool *pool,
+                               const gchar        *action,
+                               guint               key_val,
+                               GCallback           callback)
+{
+  clutter_binding_pool_install_action (pool, action,
+                                       key_val, 0,
+                                       callback,
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (pool, action,
+                                       key_val, CLUTTER_SHIFT_MASK,
+                                       callback,
+                                       NULL, NULL);
+}
+
 static void
 clutter_text_class_init (ClutterTextClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  ClutterBindingPool *binding_pool;
   GParamSpec *pspec;
 
   _context = _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
@@ -1437,6 +1690,97 @@ clutter_text_class_init (ClutterTextClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  binding_pool = clutter_binding_pool_get_for_class (klass);
+
+  clutter_text_add_move_binding (binding_pool, "move-left",
+                                 CLUTTER_Left,
+                                 G_CALLBACK (clutter_text_real_move_left));
+  clutter_text_add_move_binding (binding_pool, "move-left",
+                                 CLUTTER_KP_Left,
+                                 G_CALLBACK (clutter_text_real_move_left));
+  clutter_text_add_move_binding (binding_pool, "move-right",
+                                 CLUTTER_Right,
+                                 G_CALLBACK (clutter_text_real_move_right));
+  clutter_text_add_move_binding (binding_pool, "move-right",
+                                 CLUTTER_KP_Right,
+                                 G_CALLBACK (clutter_text_real_move_right));
+  clutter_text_add_move_binding (binding_pool, "move-up",
+                                 CLUTTER_Up,
+                                 G_CALLBACK (clutter_text_real_move_up));
+  clutter_text_add_move_binding (binding_pool, "move-up",
+                                 CLUTTER_KP_Up,
+                                 G_CALLBACK (clutter_text_real_move_up));
+  clutter_text_add_move_binding (binding_pool, "move-down",
+                                 CLUTTER_Down,
+                                 G_CALLBACK (clutter_text_real_move_down));
+  clutter_text_add_move_binding (binding_pool, "move-down",
+                                 CLUTTER_KP_Down,
+                                 G_CALLBACK (clutter_text_real_move_down));
+
+  clutter_binding_pool_install_action (binding_pool, "line-start",
+                                       CLUTTER_Home, 0,
+                                       G_CALLBACK (clutter_text_real_line_start),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "line-start",
+                                       CLUTTER_KP_Home, 0,
+                                       G_CALLBACK (clutter_text_real_line_start),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "line-start",
+                                       CLUTTER_Begin, 0,
+                                       G_CALLBACK (clutter_text_real_line_start),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "line-end",
+                                       CLUTTER_End, 0,
+                                       G_CALLBACK (clutter_text_real_line_end),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "line-end",
+                                       CLUTTER_KP_End, 0,
+                                       G_CALLBACK (clutter_text_real_line_end),
+                                       NULL, NULL);
+
+  clutter_binding_pool_install_action (binding_pool, "page-up",
+                                       CLUTTER_Page_Up, 0,
+                                       G_CALLBACK (clutter_text_real_page_up),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "page-up",
+                                       CLUTTER_KP_Page_Up, 0,
+                                       G_CALLBACK (clutter_text_real_page_up),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "page-down",
+                                       CLUTTER_Page_Down, 0,
+                                       G_CALLBACK (clutter_text_real_page_down),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "page-up",
+                                       CLUTTER_KP_Page_Down, 0,
+                                       G_CALLBACK (clutter_text_real_page_down),
+                                       NULL, NULL);
+
+  clutter_binding_pool_install_action (binding_pool, "delete-next",
+                                       CLUTTER_Delete, 0,
+                                       G_CALLBACK (clutter_text_real_del_next),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "delete-next",
+                                       CLUTTER_KP_Delete, 0,
+                                       G_CALLBACK (clutter_text_real_del_next),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "delete-prev",
+                                       CLUTTER_BackSpace, 0,
+                                       G_CALLBACK (clutter_text_real_del_prev),
+                                       NULL, NULL);
+
+  clutter_binding_pool_install_action (binding_pool, "activate",
+                                       CLUTTER_Return, 0,
+                                       G_CALLBACK (clutter_text_real_activate),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "activate",
+                                       CLUTTER_KP_Enter, 0,
+                                       G_CALLBACK (clutter_text_real_activate),
+                                       NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "activate",
+                                       CLUTTER_ISO_Enter, 0,
+                                       G_CALLBACK (clutter_text_real_activate),
+                                       NULL, NULL);
 }
 
 static void
@@ -1480,9 +1824,6 @@ clutter_text_init (ClutterText *self)
   priv->priv_char = '*';
 
   priv->max_length = 0;
-
-  init_commands (self); /* FIXME: free */
-  init_mappings (self); /* FIXME: free */
 }
 
 ClutterActor *
@@ -1733,403 +2074,6 @@ clutter_text_get_selection_bound (ClutterText *self)
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), -1);
 
   return self->priv->selection_bound;
-}
-
-/****************************************************************/
-/* The following are the commands available for keybinding when */
-/* using the entry, these can also be invoked programmatically  */
-/* through clutter_text_action()                                   */
-/****************************************************************/
-
-static gboolean
-clutter_text_action_activate (ClutterText  *ttext,
-                              const gchar  *commandline,
-                              ClutterEvent *event)
-{
-  g_signal_emit (G_OBJECT (ttext), text_signals[ACTIVATE], 0);
-  return TRUE;
-}
-
-static void
-clutter_text_clear_selection (ClutterText *ttext)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-
-  priv->selection_bound = priv->position;
-}
-
-static gboolean
-clutter_text_action_move_left (ClutterText  *ttext,
-                               const gchar  *commandline,
-                               ClutterEvent *event)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-  gint pos = priv->position;
-  gint len;
-  len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
-
-  if (pos != 0 && len !=0)
-    {
-      if (pos == -1)
-        {
-          clutter_text_set_cursor_position (ttext, len - 1);
-        }
-      else
-        {
-          clutter_text_set_cursor_position (ttext, pos - 1);
-        }
-    }
-
-  if (!(priv->selectable && event &&
-      (event->key.modifier_state & CLUTTER_SHIFT_MASK)))
-    clutter_text_clear_selection (ttext);
-
-  return TRUE;
-}
-
-
-static gboolean
-clutter_text_action_move_right (ClutterText  *ttext,
-                                const gchar  *commandline,
-                                ClutterEvent *event)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-  gint pos;
- 
-  gint len;
-  len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
-
-  pos = priv->position;
-  if (pos != -1 && len !=0)
-    {
-      if (pos != len)
-        {
-          clutter_text_set_cursor_position (ttext, pos + 1);
-        }
-    }
-
-  if (!(priv->selectable &&
-        event &&
-       (event->key.modifier_state & CLUTTER_SHIFT_MASK)))
-    {
-      clutter_text_clear_selection (ttext);
-    }
-
-  return TRUE;
-}
-
-static gboolean
-clutter_text_action_move_up (ClutterText  *ttext,
-                             const gchar  *commandline,
-                             ClutterEvent *event)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-  gint                          line_no;
-  gint                          index_;
-  gint                          x;
-  const gchar                  *text;
-  PangoLayoutLine              *layout_line;
-
-  text = clutter_text_get_text (ttext);
-
-  pango_layout_index_to_line_x (clutter_text_get_layout (ttext),
-                                offset_to_bytes (text, priv->position),
-                                0,
-                                &line_no, &x);
-  
-  if (priv->x_pos != -1)
-    x = priv->x_pos;
-  else
-    priv->x_pos = x;
-
-  line_no -= 1;
-  if (line_no < 0)
-    return FALSE;
-
-  layout_line =
-    pango_layout_get_line_readonly (clutter_text_get_layout (ttext), line_no);
-
-  if (!layout_line)
-    return TRUE;
-
-  pango_layout_line_x_to_index (layout_line, x, &index_, NULL);
-
-  {
-    gint pos = bytes_to_offset (text, index_);
-    clutter_text_set_cursor_position (ttext, pos);
-  }
-
-  if (!(priv->selectable && event &&
-      (event->key.modifier_state & CLUTTER_SHIFT_MASK)))
-    clutter_text_clear_selection (ttext);
-
-  return TRUE;
-}
-
-static gboolean
-clutter_text_action_move_down (ClutterText  *ttext,
-                               const gchar  *commandline,
-                               ClutterEvent *event)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-  gint                          line_no;
-  gint                          index_;
-  gint                          x;
-  const gchar                  *text;
-  PangoLayoutLine              *layout_line;
-
-  text = clutter_text_get_text (ttext);
-
-  pango_layout_index_to_line_x (
-        clutter_text_get_layout (ttext),
-        offset_to_bytes (text, priv->position),
-        0,
-        &line_no,
-        &x);
-  
-  if (priv->x_pos != -1)
-    x = priv->x_pos;
-  else
-    priv->x_pos = x;
-
-  layout_line =
-    pango_layout_get_line_readonly (clutter_text_get_layout (ttext),
-                                    line_no + 1);
-
-  if (!layout_line)
-    return FALSE;
-
-  pango_layout_line_x_to_index (layout_line, x, &index_, NULL);
-
-  {
-    gint pos = bytes_to_offset (text, index_);
-
-    clutter_text_set_cursor_position (ttext, pos);
-  }
-
-  if (!(priv->selectable && event &&
-      (event->key.modifier_state & CLUTTER_SHIFT_MASK)))
-    clutter_text_clear_selection (ttext);
-  return TRUE;
-}
-
-static gboolean
-clutter_text_action_move_start (ClutterText  *ttext,
-                                const gchar  *commandline,
-                                ClutterEvent *event)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-
-  clutter_text_set_cursor_position (ttext, 0);
-
-  if (!(priv->selectable && event &&
-      (event->key.modifier_state & CLUTTER_SHIFT_MASK)))
-    clutter_text_clear_selection (ttext);
-
-  return TRUE;
-}
-
-static gboolean
-clutter_text_action_move_end (ClutterText  *ttext,
-                              const gchar  *commandline,
-                              ClutterEvent *event)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-
-  clutter_text_set_cursor_position (ttext, -1);
-  if (!(priv->selectable && event &&
-      (event->key.modifier_state & CLUTTER_SHIFT_MASK)))
-    clutter_text_clear_selection (ttext);
-
-  return TRUE;
-}
-
-static gboolean
-clutter_text_action_move_start_line (ClutterText  *ttext,
-                                     const gchar  *commandline,
-                                     ClutterEvent *event)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-  gint                          line_no;
-  gint                          index_;
-  const gchar                  *text;
-  PangoLayoutLine              *layout_line;
-  gint                          position;
-
-  text = clutter_text_get_text (ttext);
-
-
-  pango_layout_index_to_line_x (
-        clutter_text_get_layout (ttext),
-        offset_to_bytes (text, priv->position),
-        0,
-        &line_no,
-        NULL);
-
-  layout_line =
-    pango_layout_get_line_readonly (clutter_text_get_layout (ttext), line_no);
-
-  pango_layout_line_x_to_index (layout_line, 0, &index_, NULL);
-
-  position = bytes_to_offset (text, index_);
-  clutter_text_set_cursor_position (ttext, position);
-
-  if (!(priv->selectable && event &&
-      (event->key.modifier_state & CLUTTER_SHIFT_MASK)))
-    clutter_text_clear_selection (ttext);
-
-  return TRUE;
-}
-
-static gboolean
-clutter_text_action_move_end_line (ClutterText  *ttext,
-                                   const gchar  *commandline,
-                                   ClutterEvent *event)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-  gint                          line_no;
-  gint                          index_;
-  gint                          trailing;
-  const gchar                  *text;
-  PangoLayoutLine              *layout_line;
-  gint                          position;
-
-  text = clutter_text_get_text (ttext);
-
-  index_ = offset_to_bytes (text, priv->position);
-
-  pango_layout_index_to_line_x (
-        clutter_text_get_layout (ttext),
-        index_,
-        0,
-        &line_no,
-        NULL);
-
-  layout_line =
-    pango_layout_get_line_readonly (clutter_text_get_layout (ttext), line_no);
-
-  pango_layout_line_x_to_index (layout_line, G_MAXINT, &index_, &trailing);
-  index_ += trailing;
-
-  position = bytes_to_offset (text, index_);
-
-  clutter_text_set_cursor_position (ttext, position);
-
-  if (!(priv->selectable && event &&
-      (event->key.modifier_state & CLUTTER_SHIFT_MASK)))
-    clutter_text_clear_selection (ttext);
-
-  return TRUE;
-}
-
-static gboolean
-clutter_text_action_delete_next (ClutterText  *ttext,
-                                 const gchar  *commandline,
-                                 ClutterEvent *event)
-{
-  ClutterTextPrivate *priv;
-  gint pos;
-  gint len;
- 
-  if (clutter_text_truncate_selection_internal (ttext))
-    return TRUE;
-
-  priv = ttext->priv;
-  pos = priv->position;
-  len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
-
-  if (len && pos != -1 && pos < len)
-    clutter_text_delete_text (ttext, pos, pos+1);
-
-  return TRUE;
-}
-
-static gboolean
-clutter_text_action_delete_previous (ClutterText  *ttext,
-                                     const gchar  *commandline,
-                                     ClutterEvent *event)
-{
-  ClutterTextPrivate *priv;
-  gint pos;
-  gint len;
- 
-  if (clutter_text_truncate_selection_internal (ttext))
-    return TRUE;
-
-  priv = ttext->priv;
-  pos = priv->position;
-  len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
-
-  if (pos != 0 && len !=0)
-    {
-      if (pos == -1)
-        {
-          clutter_text_set_cursor_position (ttext, len - 1);
-          clutter_text_set_selection_bound (ttext, len - 1);
-        }
-      else
-        {
-          clutter_text_set_cursor_position (ttext, pos - 1);
-          clutter_text_set_selection_bound (ttext, pos - 1);
-        }
-      clutter_text_delete_text (ttext, pos-1, pos);;
-    }
-  return TRUE;
-}
-
-static void
-init_commands (ClutterText *ttext)
-{
-  ClutterTextPrivate *priv = ttext->priv;
-  if (priv->commands)
-    return;
-
-  clutter_text_add_action (ttext, "move-left",       clutter_text_action_move_left);
-  clutter_text_add_action (ttext, "move-right",      clutter_text_action_move_right);
-  clutter_text_add_action (ttext, "move-up",         clutter_text_action_move_up);
-  clutter_text_add_action (ttext, "move-down",       clutter_text_action_move_down);
-  clutter_text_add_action (ttext, "move-start",      clutter_text_action_move_start);
-  clutter_text_add_action (ttext, "move-end",        clutter_text_action_move_end);
-  clutter_text_add_action (ttext, "move-start-line", clutter_text_action_move_start_line);
-  clutter_text_add_action (ttext, "move-end-line",   clutter_text_action_move_end_line);
-  clutter_text_add_action (ttext, "delete-previous", clutter_text_action_delete_previous);
-  clutter_text_add_action (ttext, "delete-next",     clutter_text_action_delete_next);
-  clutter_text_add_action (ttext, "activate",        clutter_text_action_activate);
-  clutter_text_add_action (ttext, "truncate-selection", clutter_text_truncate_selection);
-}
-
-gboolean
-clutter_text_action (ClutterText  *ttext,
-                     const gchar  *command,
-                     ClutterEvent *event)
-{
-  gchar command2[64];
-  gint i;
-  
-  GList *iter;
-  ClutterTextPrivate *priv = ttext->priv;
-
-  for (i=0; command[i] &&
-            command[i]!=' '&&
-            i<62; i++)
-    {
-      command2[i]=command[i];
-    }
-  command2[i]='\0';
-
-  if (!g_str_equal (command2, "move-up") &&
-      !g_str_equal (command2, "move-down"))
-    priv->x_pos = -1;
-
-  for (iter=priv->commands;iter;iter=iter->next)
-    {
-      TextCommand *tcommand = iter->data;
-      if (g_str_equal (command2, tcommand->name))
-        return tcommand->func (ttext, command, event);
-    }
-
-  g_warning ("unhandled text command %s", command);
-  return FALSE;
 }
 
 G_CONST_RETURN gchar *
@@ -3040,32 +2984,3 @@ clutter_text_get_chars (ClutterText *self,
 
   return g_strndup (priv->text + start_index, end_index - start_index);
 }
-
-void
-clutter_text_add_mapping (ClutterText           *ttext,
-                          guint               keyval,
-                          ClutterModifierType state,
-                          const gchar        *commandline)
-{
-  TextMapping *tmapping = g_new (TextMapping, 1);
-  ClutterTextPrivate *priv = ttext->priv;
-  tmapping->keyval = keyval;
-  tmapping->state = state;
-  tmapping->action = commandline;
-  priv->mappings = g_list_append (priv->mappings, tmapping);
-}
-
-void
-clutter_text_add_action (ClutterText    *ttext,
-                         const gchar *name,
-                         gboolean (*func) (ClutterText            *ttext,
-                                           const gchar         *commandline,
-                                           ClutterEvent        *event))
-{
-  TextCommand *tcommand = g_new (TextCommand, 1);
-  ClutterTextPrivate *priv = ttext->priv;
-  tcommand->name = name;
-  tcommand->func = func;
-  priv->commands = g_list_append (priv->commands, tcommand);
-}
-

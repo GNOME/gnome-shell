@@ -167,26 +167,6 @@ void                  clutter_text_set_max_length      (ClutterText        *self
                                                         gint                max);
 gint                  clutter_text_get_max_length      (ClutterText        *self);
 
-/* add a custom action that can be used in keybindings */
-void clutter_text_add_action (ClutterText    *ttext,
-                           const gchar *name,
-                           gboolean (*func) (ClutterText            *ttext,
-                                             const gchar         *commandline,
-                                             ClutterEvent        *event));
-
-/* invoke an action registered by you or one of the tidy text default actions */
-gboolean clutter_text_action      (ClutterText            *ttext,
-                                const gchar         *commandline,
-                                ClutterEvent        *event);
-
-void     clutter_text_mappings_clear (ClutterText *ttext);
-
-/* Add a keybinding to handle for the default keypress vfunc handler */
-void     clutter_text_add_mapping (ClutterText           *ttext,
-                                guint               keyval,
-                                ClutterModifierType state,
-                                const gchar        *commandline);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_TEXT_H__ */
