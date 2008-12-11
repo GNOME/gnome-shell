@@ -45,6 +45,18 @@
 
 #define DEFAULT_FONT_NAME	"Sans 10"
 
+/* We need at least three cached layouts to run the allocation without
+   regenerating a new layout. First the layout will be generated at
+   full width to get the preferred width, then it will be generated at
+   the preferred width to get the preferred height and then it might
+   be regenerated at a different width to get the height for the
+   actual allocated width */
+#define N_CACHED_LAYOUTS 3
+
+#define CLUTTER_TEXT_GET_PRIVATE(obj)   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXT, ClutterTextPrivate))
+
+typedef struct _LayoutCache     LayoutCache;
+
 /* Probably move into main */
 static PangoContext *_context = NULL;
 
@@ -71,6 +83,14 @@ static void     clutter_text_get_property       (GObject         *gobject,
                                               GParamSpec      *pspec);
 static void     clutter_text_finalize           (GObject         *gobject);
 
+G_CONST_RETURN gchar *clutter_text_get_text (ClutterText *text);
+void clutter_text_set_text (ClutterText *text, const gchar *str);
+PangoLayout *clutter_text_get_layout (ClutterText *text);
+void clutter_text_set_color (ClutterText *text, const ClutterColor *color);
+void clutter_text_get_color (ClutterText *text, ClutterColor *color);
+void clutter_text_set_font_name (ClutterText *text, const gchar *font_name);
+G_CONST_RETURN gchar *clutter_text_get_font_name (ClutterText *text);
+
 static void init_commands (ClutterText *ttext);
 static void init_mappings (ClutterText *ttext);
 
@@ -84,10 +104,45 @@ clutter_text_truncate_selection (ClutterText     *ttext,
                               const gchar  *commandline,
                               ClutterEvent *event);
 
-G_DEFINE_TYPE (ClutterText, clutter_text, CLUTTER_TYPE_LABEL);
+G_DEFINE_TYPE (ClutterText, clutter_text, CLUTTER_TYPE_ACTOR);
+
+struct _LayoutCache
+{
+  /* Cached layout. Pango internally caches the computed extents when
+     they are requested so there is no need to cache that as well */
+  PangoLayout *layout;
+
+  /* The width that used to generate this layout */
+  ClutterUnit  width;
+
+  /* A number representing the age of this cache (so that when a new
+     layout is needed the last used cache is replaced) */
+  guint        age;
+};
 
 struct _ClutterTextPrivate
 {
+  PangoFontDescription *font_desc;
+
+  gchar *text;
+  gchar *font_name;
+
+  ClutterColor text_color;
+
+  LayoutCache cached_layouts[N_CACHED_LAYOUTS];
+  guint cache_age;
+
+  PangoAttrList        *attrs;
+  PangoAttrList        *effective_attrs;
+
+  guint alignment        : 2;
+  guint wrap             : 1;
+  guint use_underline    : 1;
+  guint use_markup       : 1;
+  guint ellipsize        : 3;
+  guint single_line_mode : 1;
+  guint wrap_mode        : 3;
+  guint justify          : 1;
   guint editable         : 1;
   guint cursor_visible   : 1;
   guint activatable      : 1;
@@ -111,14 +166,20 @@ struct _ClutterTextPrivate
                               */
 };
 
-#define CLUTTER_TEXT_GET_PRIVATE(obj)                 \
-              (G_TYPE_INSTANCE_GET_PRIVATE ((obj),  \
-               CLUTTER_TYPE_TEXT,                     \
-               ClutterTextPrivate))
-
 enum
 {
   PROP_0,
+
+  PROP_FONT_NAME,
+  PROP_TEXT,
+  PROP_COLOR,
+  PROP_ATTRIBUTES,
+  PROP_USE_MARKUP,
+  PROP_ALIGNMENT,
+  PROP_WRAP,
+  PROP_WRAP_MODE,
+  PROP_JUSTIFY,
+  PROP_ELLIPSIZE,
   PROP_POSITION,
   PROP_SELECTION_BOUND,
   PROP_CURSOR_VISIBLE,
@@ -134,10 +195,11 @@ enum
   TEXT_CHANGED,
   CURSOR_EVENT,
   ACTIVATE,
+
   LAST_SIGNAL
 };
 
-static guint label_signals[LAST_SIGNAL] = { 0, };
+static guint text_signals[LAST_SIGNAL] = { 0, };
 
 #define offset_real(text, pos)                                \
    (pos==-1?g_utf8_strlen(text, -1):pos)                          \
@@ -228,11 +290,164 @@ static void init_mappings (ClutterText *ttext)
   clutter_text_add_mapping (ttext, CLUTTER_ISO_Enter,0,"activate");
 }
 
+static PangoLayout *
+clutter_text_create_layout_no_cache (ClutterText *text,
+                                     ClutterUnit  allocation_width)
+{
+  ClutterTextPrivate *priv = text->priv;
+  PangoLayout *layout;
+
+  if (G_UNLIKELY (_context == NULL))
+    _context = _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
+
+  layout = pango_layout_new (_context);
+
+  pango_layout_set_font_description (layout, priv->font_desc);
+
+  if (priv->effective_attrs)
+    pango_layout_set_attributes (layout, priv->effective_attrs);
+
+  pango_layout_set_alignment (layout, priv->alignment);
+  pango_layout_set_single_paragraph_mode (layout, priv->single_line_mode);
+  pango_layout_set_justify (layout, priv->justify);
+
+  if (priv->text)
+    {
+      if (!priv->use_markup)
+        pango_layout_set_text (layout, priv->text, -1);
+      else
+        pango_layout_set_markup (layout, priv->text, -1);
+    }
+
+  if (allocation_width > 0 &&
+      (priv->ellipsize != PANGO_ELLIPSIZE_NONE || priv->wrap))
+    {
+      int layout_width, layout_height;
+
+      pango_layout_get_size (layout, &layout_width, &layout_height);
+
+      /* No need to set ellipsize or wrap if we already have enough
+       * space, since we don't want to make the layout wider than it
+       * would be otherwise.
+       */
+
+      if (CLUTTER_UNITS_FROM_PANGO_UNIT (layout_width) > allocation_width)
+        {
+          if (priv->ellipsize != PANGO_ELLIPSIZE_NONE)
+            {
+              gint width;
+
+              width = allocation_width > 0
+                ? CLUTTER_UNITS_TO_PANGO_UNIT (allocation_width)
+                : -1;
+
+              pango_layout_set_ellipsize (layout, priv->ellipsize);
+              pango_layout_set_width (layout, width);
+            }
+          else if (priv->wrap)
+            {
+              gint width;
+
+              width = allocation_width > 0
+                ? CLUTTER_UNITS_TO_PANGO_UNIT (allocation_width)
+                : -1;
+
+              pango_layout_set_wrap (layout, priv->wrap_mode);
+              pango_layout_set_width (layout, width);
+            }
+        }
+    }
+
+  return layout;
+}
+
+static void
+clutter_text_dirty_cache (ClutterText *text)
+{
+  ClutterTextPrivate *priv = text->priv;
+  int i;
+
+  /* Delete the cached layouts so they will be recreated the next time
+     they are needed */
+  for (i = 0; i < N_CACHED_LAYOUTS; i++)
+    if (priv->cached_layouts[i].layout)
+      {
+	g_object_unref (priv->cached_layouts[i].layout);
+	priv->cached_layouts[i].layout = NULL;
+      }
+}
+
+/*
+ * clutter_text_create_layout:
+ * @text: a #ClutterText
+ * @allocation_width: the allocation width
+ *
+ * Like clutter_text_create_layout_no_cache(), but will also ensure
+ * the glyphs cache. If a previously cached layout generated using the
+ * same width is available then that will be used instead of
+ * generating a new one.
+ */
+static PangoLayout *
+clutter_text_create_layout (ClutterText *text,
+                            ClutterUnit   allocation_width)
+{
+  ClutterTextPrivate *priv = text->priv;
+  LayoutCache *oldest_cache = priv->cached_layouts;
+  gboolean found_free_cache = FALSE;
+  int i;
+
+  /* Search for a cached layout with the same width and keep track of
+     the oldest one */
+  for (i = 0; i < N_CACHED_LAYOUTS; i++)
+    {
+      if (priv->cached_layouts[i].layout == NULL)
+	{
+	  /* Always prefer free cache spaces */
+	  found_free_cache = TRUE;
+	  oldest_cache = priv->cached_layouts + i;
+	}
+      /* If this cached layout is using the same width then we can
+	 just return that directly */
+      else if (priv->cached_layouts[i].width == allocation_width)
+	{
+	  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for width %i",
+			text,
+                        CLUTTER_UNITS_TO_DEVICE (allocation_width));
+
+	  return priv->cached_layouts[i].layout;
+	}
+      else if (!found_free_cache &&
+               (priv->cached_layouts[i].age < oldest_cache->age))
+        {
+	  oldest_cache = priv->cached_layouts + i;
+        }
+    }
+
+  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache miss for width %i",
+		text,
+                CLUTTER_UNITS_TO_DEVICE (allocation_width));
+
+  /* If we make it here then we didn't have a cached version so we
+     need to recreate the layout */
+  if (oldest_cache->layout)
+    g_object_unref (oldest_cache->layout);
+
+  oldest_cache->layout =
+    clutter_text_create_layout_no_cache (text, allocation_width);
+
+  cogl_pango_ensure_glyph_cache_for_layout (oldest_cache->layout);
+
+  /* Mark the 'time' this cache was created and advance the time */
+  oldest_cache->age = priv->cache_age++;
+  oldest_cache->width = allocation_width;
+
+  return oldest_cache->layout;
+}
 
 static gint
 clutter_text_coords_to_position (ClutterText *text,
-                              gint      x,
-                              gint      y)
+                                 gint      x,
+                                 gint      y)
 {
   gint index_;
   gint px, py;
@@ -241,7 +456,7 @@ clutter_text_coords_to_position (ClutterText *text,
   px = x * PANGO_SCALE;
   py = y * PANGO_SCALE;
 
-  pango_layout_xy_to_index (clutter_label_get_layout (CLUTTER_LABEL (text)),
+  pango_layout_xy_to_index (clutter_text_get_layout (text),
                             px, py, &index_, &trailing);
 
   return index_ + trailing;
@@ -259,7 +474,7 @@ clutter_text_position_to_coords (ClutterText *ttext,
   PangoRectangle    rect;
   const gchar      *text;
 
-  text = clutter_label_get_text (CLUTTER_LABEL (ttext));
+  text = clutter_text_get_text (ttext);
 
   priv = ttext->priv;
 
@@ -276,7 +491,7 @@ clutter_text_position_to_coords (ClutterText *ttext,
    index_ = strlen (text);
 
   pango_layout_get_cursor_pos (
-        clutter_label_get_layout (CLUTTER_LABEL (ttext)),
+        clutter_text_get_layout (ttext),
         index_, &rect, NULL);
 
   if (x)
@@ -304,7 +519,7 @@ clutter_text_ensure_cursor_position (ClutterText *ttext)
   priv->cursor_pos.width = 2; 
   priv->cursor_pos.height = cursor_height;
 
-  g_signal_emit (ttext, label_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
+  g_signal_emit (ttext, text_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
 }
 
 gint
@@ -318,7 +533,6 @@ void
 clutter_text_set_cursor_position (ClutterText *ttext,
                                gint       position)
 {
-  ClutterLabel        *label = CLUTTER_LABEL (ttext);
   const gchar         *text;
   ClutterTextPrivate *priv;
   gint len;
@@ -327,7 +541,7 @@ clutter_text_set_cursor_position (ClutterText *ttext,
 
   priv = ttext->priv;
 
-  text = clutter_label_get_text (label);
+  text = clutter_text_get_text (ttext);
   if (text == NULL)
     return;
 
@@ -347,7 +561,7 @@ clutter_text_truncate_selection (ClutterText     *ttext,
                               const gchar  *commandline,
                               ClutterEvent *event)
 {
-  const gchar *utf8 = clutter_label_get_text (CLUTTER_LABEL (ttext));
+  const gchar *utf8 = clutter_text_get_text (ttext);
   ClutterTextPrivate *priv;
   gint             start_index;
   gint             end_index;
@@ -397,14 +611,14 @@ clutter_text_insert_unichar (ClutterText *ttext,
 
   g_object_ref (ttext);
 
-  old_text = clutter_label_get_text (CLUTTER_LABEL (ttext));
+  old_text = clutter_text_get_text (ttext);
 
 
   new = g_string_new (old_text);
   pos = offset_to_bytes (old_text, priv->position);
   new = g_string_insert_unichar (new, pos, wc);
 
-  clutter_label_set_text (CLUTTER_LABEL (ttext), new->str);
+  clutter_text_set_text (ttext, new->str);
 
   if (priv->position >= 0)
     {
@@ -416,7 +630,7 @@ clutter_text_insert_unichar (ClutterText *ttext,
 
   g_object_unref (ttext);
 
-  g_signal_emit (G_OBJECT (ttext), label_signals[TEXT_CHANGED], 0);
+  g_signal_emit (G_OBJECT (ttext), text_signals[TEXT_CHANGED], 0);
 }
 
 void
@@ -433,7 +647,7 @@ clutter_text_delete_text (ClutterText *ttext,
   g_return_if_fail (CLUTTER_IS_TEXT (ttext));
 
   priv = ttext->priv;
-  text = clutter_label_get_text (CLUTTER_LABEL (ttext));
+  text = clutter_text_get_text (ttext);
 
   if (end_pos == -1)
     {
@@ -450,10 +664,10 @@ clutter_text_delete_text (ClutterText *ttext,
 
   new = g_string_erase (new, start_bytes, end_bytes - start_bytes);
 
-  clutter_label_set_text (CLUTTER_LABEL (ttext), new->str);
+  clutter_text_set_text (ttext, new->str);
 
   g_string_free (new, TRUE);
-  g_signal_emit (G_OBJECT (ttext), label_signals[TEXT_CHANGED], 0);
+  g_signal_emit (G_OBJECT (ttext), text_signals[TEXT_CHANGED], 0);
 }
 
 static void
@@ -488,6 +702,15 @@ clutter_text_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
+    case PROP_TEXT:
+      clutter_text_set_text (ttext, g_value_get_string (value));
+      break;
+    case PROP_COLOR:
+      clutter_text_set_color (ttext, clutter_value_get_color (value));
+      break;
+    case PROP_FONT_NAME:
+      clutter_text_set_font_name (ttext, g_value_get_string (value));
+      break;
     case PROP_POSITION:
       clutter_text_set_cursor_position (ttext, g_value_get_int (value));
       break;
@@ -528,15 +751,20 @@ clutter_text_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
+    case PROP_TEXT:
+      g_value_set_string (value, priv->text);
+      break;
+    case PROP_FONT_NAME:
+      g_value_set_string (value, priv->font_name);
+      break;
+    case PROP_COLOR:
+      clutter_value_set_color (value, &priv->text_color);
+      break;
     case PROP_CURSOR_VISIBLE:
       g_value_set_boolean (value, priv->cursor_visible);
       break;
     case PROP_CURSOR_COLOR:
-      {
-        ClutterColor color;
-        clutter_text_get_cursor_color (CLUTTER_TEXT (gobject), &color);
-        g_value_set_boxed (value, &color);
-      }
+      clutter_value_set_color (value, &priv->cursor_color);
       break;
     case PROP_POSITION:
       g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->position));
@@ -560,10 +788,8 @@ clutter_text_get_property (GObject    *gobject,
 }
 
 static void
-cursor_paint (ClutterActor *actor,
-              gpointer      user_data)
+cursor_paint (ClutterText *ttext)
 {
-  ClutterText        *ttext = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv   = ttext->priv;
 
   if (priv->editable &&
@@ -579,7 +805,7 @@ cursor_paint (ClutterActor *actor,
       else
         {
           ClutterColor color;
-          clutter_label_get_color (CLUTTER_LABEL (actor), &color);
+          clutter_text_get_color (ttext, &color);
           cogl_set_source_color4ub (color.red,
                                     color.green,
                                     color.blue,
@@ -603,7 +829,7 @@ cursor_paint (ClutterActor *actor,
           gint lines;
           gint start_index;
           gint end_index;
-          const gchar *utf8 = clutter_label_get_text (CLUTTER_LABEL (ttext));
+          const gchar *utf8 = clutter_text_get_text (ttext);
 
           start_index = offset_to_bytes (utf8, priv->position);
           end_index = offset_to_bytes (utf8, priv->selection_bound);
@@ -615,7 +841,7 @@ cursor_paint (ClutterActor *actor,
               end_index = temp;
             }
           
-          PangoLayout *layout = clutter_label_get_layout (CLUTTER_LABEL (ttext));
+          PangoLayout *layout = clutter_text_get_layout (ttext);
           lines = pango_layout_get_line_count (layout);
           gint line_no;
           for (line_no = 0; line_no < lines; line_no++)
@@ -666,7 +892,7 @@ clutter_text_press (ClutterActor       *actor,
   gint                  index_;
   const gchar          *text;
 
-  text = clutter_label_get_text (CLUTTER_LABEL (actor));
+  text = clutter_text_get_text (ttext);
 
   x = CLUTTER_UNITS_FROM_INT (bev->x);
   y = CLUTTER_UNITS_FROM_INT (bev->y);
@@ -712,7 +938,7 @@ clutter_text_motion (ClutterActor       *actor,
       return FALSE;
     }
 
-  text = clutter_label_get_text (CLUTTER_LABEL (actor));
+  text = clutter_text_get_text (ttext);
 
   x = CLUTTER_UNITS_FROM_INT (mev->x);
   y = CLUTTER_UNITS_FROM_INT (mev->y);
@@ -751,12 +977,123 @@ clutter_text_release (ClutterActor       *actor,
 }
 
 static void
+clutter_text_paint (ClutterActor *self)
+{
+  ClutterText *text = CLUTTER_TEXT (self);
+  ClutterTextPrivate *priv = text->priv;
+  PangoLayout *layout;
+  ClutterActorBox alloc = { 0, };
+  CoglColor color = { 0, };
+
+  if (priv->font_desc == NULL || priv->text == NULL)
+    {
+      CLUTTER_NOTE (ACTOR, "desc: %p, text %p",
+		    priv->font_desc ? priv->font_desc : 0x0,
+		    priv->text ? priv->text : 0x0);
+      return;
+    }
+
+  cursor_paint (text);
+
+  CLUTTER_NOTE (PAINT, "painting text (text:`%s')", priv->text);
+
+  clutter_actor_get_allocation_box (self, &alloc);
+  layout = clutter_text_create_layout (text, alloc.x2 - alloc.x1);
+
+  cogl_color_set_from_4ub (&color,
+                           priv->text_color.red,
+                           priv->text_color.green,
+                           priv->text_color.blue,
+                           clutter_actor_get_paint_opacity (self));
+  cogl_pango_render_layout (layout, 0, 0, &color, 0);
+}
+
+static void
+clutter_text_get_preferred_width (ClutterActor *self,
+                                   ClutterUnit   for_height,
+                                   ClutterUnit  *min_width_p,
+                                   ClutterUnit  *natural_width_p)
+{
+  ClutterText *text = CLUTTER_TEXT (self);
+  ClutterTextPrivate *priv = text->priv;
+  PangoRectangle logical_rect = { 0, };
+  PangoLayout *layout;
+  ClutterUnit layout_width;
+
+  layout = clutter_text_create_layout (text, -1);
+
+  pango_layout_get_extents (layout, NULL, &logical_rect);
+
+  layout_width = logical_rect.width > 0
+    ? CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.width)
+    : 1;
+
+  if (min_width_p)
+    {
+      if (priv->wrap || priv->ellipsize)
+        *min_width_p = 1;
+      else
+        *min_width_p = layout_width;
+    }
+
+  if (natural_width_p)
+    *natural_width_p = layout_width;
+}
+
+static void
+clutter_text_get_preferred_height (ClutterActor *self,
+                                    ClutterUnit   for_width,
+                                    ClutterUnit  *min_height_p,
+                                    ClutterUnit  *natural_height_p)
+{
+  ClutterText *text = CLUTTER_TEXT (self);
+
+  if (for_width == 0)
+    {
+      if (min_height_p)
+        *min_height_p = 0;
+
+      if (natural_height_p)
+        *natural_height_p = 0;
+    }
+  else
+    {
+      PangoLayout *layout;
+      PangoRectangle logical_rect = { 0, };
+      ClutterUnit height;
+
+      layout = clutter_text_create_layout (text, for_width);
+
+      pango_layout_get_extents (layout, NULL, &logical_rect);
+      height = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.height);
+
+      if (min_height_p)
+        *min_height_p = height;
+
+      if (natural_height_p)
+        *natural_height_p = height;
+    }
+}
+
+static void
+clutter_text_allocate (ClutterActor          *self,
+                        const ClutterActorBox *box,
+                        gboolean               origin_changed)
+{
+  ClutterText *text = CLUTTER_TEXT (self);
+  ClutterActorClass *parent_class;
+
+  /* Ensure that there is a cached layout with the right width so that
+     we don't need to create the text during the paint run */
+  clutter_text_create_layout (text, box->x2 - box->x1);
+
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_text_parent_class);
+  parent_class->allocate (self, box, origin_changed);
+}
+
+static void
 clutter_text_constructed (GObject *object)
 {
-  g_signal_connect (CLUTTER_ACTOR (object),
-                    "paint", G_CALLBACK (cursor_paint),
-                    NULL);
-
   if (G_OBJECT_CLASS (clutter_text_parent_class)->constructed != NULL)
     G_OBJECT_CLASS (clutter_text_parent_class)->constructed (object);
 }
@@ -766,16 +1103,50 @@ clutter_text_class_init (ClutterTextClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  GParamSpec *pspec;
 
   gobject_class->set_property = clutter_text_set_property;
   gobject_class->get_property = clutter_text_get_property;
   gobject_class->constructed = clutter_text_constructed;
   gobject_class->finalize = clutter_text_finalize;
 
+  actor_class->paint = clutter_text_paint;
+  actor_class->get_preferred_width = clutter_text_get_preferred_width;
+  actor_class->get_preferred_height = clutter_text_get_preferred_height;
+  actor_class->allocate = clutter_text_allocate;
   actor_class->key_press_event = clutter_text_key_press;
   actor_class->button_press_event = clutter_text_press;
   actor_class->button_release_event = clutter_text_release;
   actor_class->motion_event = clutter_text_motion;
+
+  /**
+   * ClutterText:font-name:
+   *
+   * The font to be used by the #ClutterText, as a string
+   * that can be parsed by pango_font_description_from_string().
+   *
+   * Since: 0.2
+   */
+  pspec = g_param_spec_string ("font-name",
+                               "Font Name",
+                               "The font to be used by the text",
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_FONT_NAME, pspec);
+
+  pspec = g_param_spec_string ("text",
+                               "Text",
+                               "The text to render",
+                               NULL,
+                               CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
+
+  pspec = clutter_param_spec_color ("color",
+                                    "Font Color",
+                                    "Color of the font used by the text",
+                                    &default_text_color,
+                                    CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_COLOR, pspec);
 
   /**
    * ClutterText:editable:
@@ -876,7 +1247,7 @@ clutter_text_class_init (ClutterTextClass *klass)
    *
    * The ::text-changed signal is emitted after @entry's text changes
    */
-  label_signals[TEXT_CHANGED] =
+  text_signals[TEXT_CHANGED] =
     g_signal_new ("text-changed",
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
@@ -886,7 +1257,7 @@ clutter_text_class_init (ClutterTextClass *klass)
                   G_TYPE_NONE, 0);
 
 
-  label_signals[CURSOR_EVENT] =
+  text_signals[CURSOR_EVENT] =
     g_signal_new ("cursor-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
@@ -906,7 +1277,7 @@ clutter_text_class_init (ClutterTextClass *klass)
    *
    * Since: 0.4
    */
-  label_signals[ACTIVATE] =
+  text_signals[ACTIVATE] =
     g_signal_new ("activate",
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
@@ -925,19 +1296,21 @@ clutter_text_init (ClutterText *self)
   ClutterTextPrivate *priv;
 
   self->priv = priv = CLUTTER_TEXT_GET_PRIVATE (self);
+
   priv->x_pos = -1;
   priv->cursor_visible = TRUE;
   priv->editable = FALSE;
 
   priv->cursor_color_set = FALSE;
+
   init_commands (self); /* FIXME: free */
   init_mappings (self); /* FIXME: free */
 }
 
 ClutterActor *
 clutter_text_new_full (const gchar        *font_name,
-                     const gchar        *text,
-                     const ClutterColor *color)
+                       const gchar        *text,
+                       const ClutterColor *color)
 {
   return g_object_new (CLUTTER_TYPE_TEXT,
                        "font-name", font_name,
@@ -958,81 +1331,81 @@ clutter_text_new_with_text (const gchar *font_name,
 
 
 void
-clutter_text_set_editable (ClutterText *label,
-                        gboolean  editable)
+clutter_text_set_editable (ClutterText *text,
+                           gboolean     editable)
 {
   ClutterTextPrivate *priv;
 
-  priv = label->priv;
+  priv = text->priv;
   priv->editable = editable;
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (label));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (text));
 }
 
 gboolean
-clutter_text_get_editable (ClutterText *label)
+clutter_text_get_editable (ClutterText *text)
 {
   ClutterTextPrivate *priv;
-  priv = label->priv;
+  priv = text->priv;
   return priv->editable;
 }
 
 
 void
-clutter_text_set_selectable (ClutterText *label,
+clutter_text_set_selectable (ClutterText *text,
                           gboolean  selectable)
 {
   ClutterTextPrivate *priv;
 
-  priv = label->priv;
+  priv = text->priv;
   priv->selectable = selectable;
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (label));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (text));
 }
 
 gboolean
-clutter_text_get_selectable (ClutterText *label)
+clutter_text_get_selectable (ClutterText *text)
 {
   ClutterTextPrivate *priv;
-  priv = label->priv;
+  priv = text->priv;
   return priv->selectable;
 }
 
 
 void
-clutter_text_set_activatable (ClutterText *label,
+clutter_text_set_activatable (ClutterText *text,
                            gboolean  activatable)
 {
   ClutterTextPrivate *priv;
 
-  priv = label->priv;
+  priv = text->priv;
   priv->activatable = activatable;
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (label));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (text));
 }
 
 gboolean
-clutter_text_get_activatable (ClutterText *label)
+clutter_text_get_activatable (ClutterText *text)
 {
   ClutterTextPrivate *priv;
-  priv = label->priv;
+  priv = text->priv;
   return priv->activatable;
 }
 
 
 void
-clutter_text_set_cursor_visible (ClutterText *label,
+clutter_text_set_cursor_visible (ClutterText *text,
                               gboolean  cursor_visible)
 {
   ClutterTextPrivate *priv;
 
-  priv = label->priv;
+  priv = text->priv;
   priv->cursor_visible = cursor_visible;
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (label));
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (text));
 }
 
 gboolean
-clutter_text_get_cursor_visible (ClutterText *label)
+clutter_text_get_cursor_visible (ClutterText *text)
 {
   ClutterTextPrivate *priv;
-  priv = label->priv;
+  priv = text->priv;
   return priv->cursor_visible;
 }
 
@@ -1042,7 +1415,7 @@ clutter_text_set_cursor_color (ClutterText           *text,
 {
   ClutterTextPrivate *priv;
 
-  g_return_if_fail (CLUTTER_IS_LABEL (text));
+  g_return_if_fail (CLUTTER_IS_TEXT (text));
   g_return_if_fail (color != NULL);
 
   priv = text->priv;
@@ -1067,7 +1440,7 @@ clutter_text_get_cursor_color (ClutterText     *text,
 {
   ClutterTextPrivate *priv;
 
-  g_return_if_fail (CLUTTER_IS_LABEL (text));
+  g_return_if_fail (CLUTTER_IS_TEXT (text));
   g_return_if_fail (color != NULL);
 
   priv = text->priv;
@@ -1091,7 +1464,7 @@ clutter_text_get_selection (ClutterText *text)
 {
   ClutterTextPrivate *priv;
  
-  const gchar *utf8 = clutter_label_get_text (CLUTTER_LABEL (text));
+  const gchar *utf8 = clutter_text_get_text (text);
   gchar       *str;
   gint         len;
   gint         start_index;
@@ -1148,7 +1521,7 @@ clutter_text_action_activate (ClutterText            *ttext,
                            const gchar         *commandline,
                            ClutterEvent *event)
 {
-  g_signal_emit (G_OBJECT (ttext), label_signals[ACTIVATE], 0);
+  g_signal_emit (G_OBJECT (ttext), text_signals[ACTIVATE], 0);
   return TRUE;
 }
 
@@ -1167,7 +1540,7 @@ clutter_text_action_move_left (ClutterText     *ttext,
   ClutterTextPrivate *priv = ttext->priv;
   gint pos = priv->position;
   gint len;
-  len = g_utf8_strlen (clutter_label_get_text (CLUTTER_LABEL (ttext)), -1);
+  len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
 
   if (pos != 0 && len !=0)
     {
@@ -1198,7 +1571,7 @@ clutter_text_action_move_right (ClutterText            *ttext,
   gint pos;
  
   gint len;
-  len = g_utf8_strlen (clutter_label_get_text (CLUTTER_LABEL (ttext)), -1);
+  len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
 
   pos = priv->position;
   if (pos != -1 && len !=0)
@@ -1231,10 +1604,10 @@ clutter_text_action_move_up (ClutterText            *ttext,
   const gchar                  *text;
   PangoLayoutLine              *layout_line;
 
-  text = clutter_label_get_text (CLUTTER_LABEL (ttext));
+  text = clutter_text_get_text (ttext);
 
   pango_layout_index_to_line_x (
-        clutter_label_get_layout (CLUTTER_LABEL (ttext)),
+        clutter_text_get_layout (ttext),
         offset_to_bytes (text, priv->position),
         0,
         &line_no,
@@ -1250,7 +1623,7 @@ clutter_text_action_move_up (ClutterText            *ttext,
     return FALSE;
 
   layout_line = pango_layout_get_line_readonly (
-                    clutter_label_get_layout (CLUTTER_LABEL (ttext)),
+                    clutter_text_get_layout (ttext),
                     line_no);
 
   if (!layout_line)
@@ -1282,10 +1655,10 @@ clutter_text_action_move_down (ClutterText            *ttext,
   const gchar                  *text;
   PangoLayoutLine              *layout_line;
 
-  text = clutter_label_get_text (CLUTTER_LABEL (ttext));
+  text = clutter_text_get_text (ttext);
 
   pango_layout_index_to_line_x (
-        clutter_label_get_layout (CLUTTER_LABEL (ttext)),
+        clutter_text_get_layout (ttext),
         offset_to_bytes (text, priv->position),
         0,
         &line_no,
@@ -1297,7 +1670,7 @@ clutter_text_action_move_down (ClutterText            *ttext,
     priv->x_pos = x;
 
   layout_line = pango_layout_get_line_readonly (
-                    clutter_label_get_layout (CLUTTER_LABEL (ttext)),
+                    clutter_text_get_layout (ttext),
                     line_no + 1);
 
   if (!layout_line)
@@ -1358,18 +1731,18 @@ clutter_text_action_move_start_line (ClutterText            *ttext,
   PangoLayoutLine              *layout_line;
   gint                          position;
 
-  text = clutter_label_get_text (CLUTTER_LABEL (ttext));
+  text = clutter_text_get_text (ttext);
 
 
   pango_layout_index_to_line_x (
-        clutter_label_get_layout (CLUTTER_LABEL (ttext)),
+        clutter_text_get_layout (ttext),
         offset_to_bytes (text, priv->position),
         0,
         &line_no,
         NULL);
 
   layout_line = pango_layout_get_line_readonly (
-                    clutter_label_get_layout (CLUTTER_LABEL (ttext)),
+                    clutter_text_get_layout (ttext),
                     line_no);
 
   pango_layout_line_x_to_index (layout_line, 0, &index_, NULL);
@@ -1397,19 +1770,19 @@ clutter_text_action_move_end_line (ClutterText            *ttext,
   PangoLayoutLine              *layout_line;
   gint                          position;
 
-  text = clutter_label_get_text (CLUTTER_LABEL (ttext));
+  text = clutter_text_get_text (ttext);
 
   index_ = offset_to_bytes (text, priv->position);
 
   pango_layout_index_to_line_x (
-        clutter_label_get_layout (CLUTTER_LABEL (ttext)),
+        clutter_text_get_layout (ttext),
         index_,
         0,
         &line_no,
         NULL);
 
   layout_line = pango_layout_get_line_readonly (
-                    clutter_label_get_layout (CLUTTER_LABEL (ttext)),
+                    clutter_text_get_layout (ttext),
                     line_no);
 
   pango_layout_line_x_to_index (layout_line, G_MAXINT, &index_, &trailing);
@@ -1439,7 +1812,7 @@ clutter_text_action_delete_next (ClutterText *ttext,
     return TRUE;
   priv = ttext->priv;
   pos = priv->position;
-  len = g_utf8_strlen (clutter_label_get_text (CLUTTER_LABEL (ttext)), -1);
+  len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
 
   if (len && pos != -1 && pos < len)
     clutter_text_delete_text (ttext, pos, pos+1);;
@@ -1459,7 +1832,7 @@ clutter_text_action_delete_previous (ClutterText            *ttext,
     return TRUE;
   priv = ttext->priv;
   pos = priv->position;
-  len = g_utf8_strlen (clutter_label_get_text (CLUTTER_LABEL (ttext)), -1);
+  len = g_utf8_strlen (clutter_text_get_text (ttext), -1);
 
   if (pos != 0 && len !=0)
     {
@@ -1575,3 +1948,153 @@ clutter_text_key_press (ClutterActor    *actor,
   return FALSE;
 }
 
+G_CONST_RETURN gchar *
+clutter_text_get_font_name (ClutterText *text)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (text), NULL);
+
+  return text->priv->font_name;
+}
+
+void
+clutter_text_set_font_name (ClutterText *text,
+                            const gchar *font_name)
+{
+  ClutterTextPrivate *priv;
+  PangoFontDescription *desc;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (text));
+
+  if (!font_name || font_name[0] == '\0')
+    font_name = DEFAULT_FONT_NAME;
+
+  priv = text->priv;
+
+  if (priv->font_name && strcmp (priv->font_name, font_name) == 0)
+    return;
+
+  desc = pango_font_description_from_string (font_name);
+  if (!desc)
+    {
+      g_warning ("Attempting to create a PangoFontDescription for "
+		 "font name `%s', but failed.",
+		 font_name);
+      return;
+    }
+
+  g_free (priv->font_name);
+  priv->font_name = g_strdup (font_name);
+
+  if (priv->font_desc)
+    pango_font_description_free (priv->font_desc);
+
+  priv->font_desc = desc;
+
+  clutter_text_dirty_cache (text);
+
+  if (priv->text && priv->text[0] != '\0')
+    clutter_actor_queue_relayout (CLUTTER_ACTOR (text));
+
+  g_object_notify (G_OBJECT (text), "font-name");
+}
+
+G_CONST_RETURN gchar *
+clutter_text_get_text (ClutterText *text)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (text), NULL);
+
+  return text->priv->text;
+}
+
+void
+clutter_text_set_text (ClutterText *text,
+                       const gchar *str)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (text));
+
+  priv = text->priv;
+
+  g_free (priv->text);
+  priv->text = g_strdup (str);
+
+  clutter_text_dirty_cache (text);
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (text));
+
+  g_object_notify (G_OBJECT (text), "text");
+}
+
+PangoLayout *
+clutter_text_get_layout (ClutterText *text)
+{
+  ClutterUnit width;
+
+  g_return_val_if_fail (CLUTTER_IS_TEXT (text), NULL);
+
+  width = clutter_actor_get_widthu (CLUTTER_ACTOR (text));
+
+  return clutter_text_create_layout (text, width);
+}
+
+void
+clutter_text_set_color (ClutterText        *text,
+                        const ClutterColor *color)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (text));
+  g_return_if_fail (color != NULL);
+
+  priv = text->priv;
+
+  priv->text_color = *color;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (text))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (text));
+
+  g_object_notify (G_OBJECT (text), "color");
+}
+
+void
+clutter_text_get_color (ClutterText  *text,
+                        ClutterColor *color)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (text));
+  g_return_if_fail (color != NULL);
+
+  priv = text->priv;
+
+  *color = priv->text_color;
+}
+
+gboolean
+clutter_text_get_line_wrap (ClutterText *text)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (text), FALSE);
+
+  return text->priv->wrap;
+}
+
+void
+clutter_text_set_line_wrap (ClutterText *text,
+                            gboolean     line_wrap)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (text));
+
+  priv = text->priv;
+
+  if (priv->wrap != line_wrap)
+    {
+      priv->wrap = line_wrap;
+
+      clutter_text_dirty_cache (text);
+
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (text));
+    }
+}
