@@ -32,24 +32,76 @@
   </bookinfo> <!-- }}} -->
 
   <chapter id="introduction"> <!-- {{{ -->
-    <title>Introduction</title>
+    <title>Preface</title>
+
+    <epigraph>
+      <attribution>The Perl Cookbook</attribution>
+      <para>Let me show you that easy way, so others may easily follow.</para>
+    </epigraph>
+
+    <para>There is a wonderful simile in the preface of the <emphasis>Perl
+    Cookbook</emphasis>: approaching a programming problem is oftentimes
+    similar to balancing Columbus's egg. The initial difficulties of dealing
+    with, and more importantly solving, problems in the computer programming
+    field sometimes can sometimes only be overcome if somebody shows you how
+    to use a new tool. This is true for programming languages but also for
+    programming libraries.</para>
+
+    <para>This book has been written to try and give you a reference on
+    how to solve common issues that you might have to face when using
+    the Clutter toolkit.</para>
+
+    <para>This book is not meant to be a replacement for the API reference,
+    even though there will be descriptions of how Clutter works and how
+    its API looks like. We will require knowledge of the Clutter API, but
+    we will also point out where to find more information on the API that
+    examples have used.</para>
+
+    <para>Indeed, this book should be used as a companion to the API reference,
+    expanding the examples and showing how to achieve a specific result.</para>
+
+    <para>This is not a book for learning Clutter. This is also not a book
+    for learning C, or GObject or even GUI development.</para>
+
+    <para>Above all, this is a book for learning <emphasis>more</emphasis>
+    about Clutter, and about how to use it in the most efficient and easiest
+    way. It is meant to help you move past the basic usage of Clutter</para>
+
+    <para>This book is divided into chapters. Each chapter is dedicated to
+    a specific class, or a specific area. Each chapter starts with a short
+    introduction, followed by different <emphasis>recipes</emphasis>. Each
+    recipe has a problem, as a short statement describing what we want to
+    achieve; a solution, containing the source code; and a discussion
+    section, where the code is explained, where alternative approaches might
+    be usefule, caveats and references to the Clutter API for furher
+    studying.</para>
+
+    <para>This book, in the cookbook spirit, can be accessed mostly at
+    random.</para>
 
     <section>
       <title>About Clutter</title>
 
-      <para>FIXME</para>
+      <para>Clutter is an free and open source software library for creating
+      fast, visually rich and animated graphical user interfaces.</para>
+
+      <para>Clutter uses OpenGL (and, optionally, OpenGL ES on mobile and
+      embedded platforms) for rendering the user interface elements, but
+      at the same time it exposes an application program interface that hides
+      the underlying complexity of the OpenGL state machine from the
+      developer.</para>
+
+      <para>The program interface of Clutter is intended to be easy to use,
+      efficient, flexible and as self-documenting as possible.</para>
     </section>
 
     <section>
       <title>About this document</title>
 
-      <para>This document tries to provide examples on how to perform some
-      common tasks when building an application or a toolkit using the
-      Clutter library.</para>
-
       <para>This document is available in various formats like HTML,
       text and PDF. The latest version is always available at
       <ulink url="&docurl;">&docurl;</ulink>.</para>
+
     </section>
 
     <section>
