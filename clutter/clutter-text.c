@@ -2190,7 +2190,7 @@ clutter_text_set_text (ClutterText *self,
            g_free (priv->text);
 
            priv->text = g_strdup (text);
-           priv->n_bytes = priv->text ? strlen (priv->text) : 0;
+           priv->n_bytes = strlen (text);
            priv->n_chars = len;
         }
       else
@@ -2211,8 +2211,8 @@ clutter_text_set_text (ClutterText *self,
       g_free (priv->text);
 
       priv->text = g_strdup (text);
-      priv->n_bytes = priv->text ? strlen (priv->text) : 0;
-      priv->n_chars = priv->text ? g_utf8_strlen (priv->text, -1) : 0;
+      priv->n_bytes = strlen (text);
+      priv->n_chars = g_utf8_strlen (text, -1);
     }
 
   clutter_text_dirty_cache (self);
@@ -2221,7 +2221,7 @@ clutter_text_set_text (ClutterText *self,
 
   g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
 
-  g_object_notify (G_OBJECT (text), "text");
+  g_object_notify (G_OBJECT (self), "text");
 }
 
 PangoLayout *
@@ -2663,9 +2663,6 @@ clutter_text_set_cursor_position (ClutterText *self,
 
   priv = self->priv;
 
-  if (priv->text == NULL)
-    return;
-
   len = g_utf8_strlen (priv->text, -1);
 
   if (position < 0 || position >= len)
@@ -2862,14 +2859,15 @@ clutter_text_insert_unichar (ClutterText *self,
   if (wc == 0)
     return;
 
-  clutter_text_truncate_selection (self, NULL, 0);
-
   priv = self->priv;
 
-  g_object_ref (self);
-
   new = g_string_new (priv->text);
-  pos = offset_to_bytes (priv->text, priv->position);
+
+  if (priv->text)
+    pos = offset_to_bytes (priv->text, priv->position);
+  else
+    pos = 0;
+
   new = g_string_insert_unichar (new, pos, wc);
 
   clutter_text_set_text (self, new->str);
@@ -2881,8 +2879,6 @@ clutter_text_insert_unichar (ClutterText *self,
     }
 
   g_string_free (new, TRUE);
-
-  g_object_unref (self);
 }
 
 void
@@ -2919,6 +2915,9 @@ clutter_text_delete_text (ClutterText *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   priv = self->priv;
+
+  if (!priv->text)
+    return;
 
   if (end_pos == -1)
     {
