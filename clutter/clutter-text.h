@@ -78,6 +78,7 @@ struct _ClutterTextClass
 
 GType clutter_text_get_type (void) G_GNUC_CONST;
 
+ClutterActor *        clutter_text_new                 (void);
 ClutterActor *        clutter_text_new_full            (const gchar        *font_name,
                                                         const gchar        *text,
                                                         const ClutterColor *color);

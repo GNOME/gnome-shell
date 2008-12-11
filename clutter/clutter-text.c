@@ -1408,6 +1408,12 @@ clutter_text_init (ClutterText *self)
 }
 
 ClutterActor *
+clutter_text_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_TEXT, NULL);
+}
+
+ClutterActor *
 clutter_text_new_full (const gchar        *font_name,
                        const gchar        *text,
                        const ClutterColor *color)
