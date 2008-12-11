@@ -34,6 +34,7 @@
 
 #include "clutter-text.h"
 
+#include "clutter-keysyms.h"
 #include "clutter-main.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
@@ -87,19 +88,19 @@ G_DEFINE_TYPE (ClutterText, clutter_text, CLUTTER_TYPE_LABEL);
 
 struct _ClutterTextPrivate
 {
-  gboolean        editable;
-  gboolean        cursor_visible;
-  gboolean        activatable;
-  gboolean        selectable;
+  guint editable         : 1;
+  guint cursor_visible   : 1;
+  guint activatable      : 1;
+  guint selectable       : 1;
+  guint in_select_drag   : 1;
+  guint cursor_color_set : 1;
 
   gint            position;   /* current cursor position */
   gint            selection_bound; 
                               /* current 'other end of selection' position */
-  gboolean        in_select_drag;
   gint            x_pos;      /* the x position in the pangolayout, used to
                                * avoid drifting when repeatedly moving up|down
                                */
-  gboolean        cursor_color_set;
   ClutterColor    cursor_color;
   ClutterGeometry cursor_pos; /* Where to draw the cursor */
 
@@ -879,7 +880,7 @@ clutter_text_class_init (ClutterTextClass *klass)
     g_signal_new ("text-changed",
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (ClutterEntryClass, text_changed),
+                  G_STRUCT_OFFSET (ClutterTextClass, text_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -889,7 +890,7 @@ clutter_text_class_init (ClutterTextClass *klass)
     g_signal_new ("cursor-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ClutterEntryClass, cursor_event),
+		  G_STRUCT_OFFSET (ClutterTextClass, cursor_event),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
@@ -909,7 +910,7 @@ clutter_text_class_init (ClutterTextClass *klass)
     g_signal_new ("activate",
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (ClutterEntryClass, activate),
+                  G_STRUCT_OFFSET (ClutterTextClass, activate),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
