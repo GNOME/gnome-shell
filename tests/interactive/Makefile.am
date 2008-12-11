@@ -6,7 +6,6 @@ UNIT_TESTS = \
 	test-scale.c \
         test-actors.c \
 	test-behave.c \
-	test-entry.c \
 	test-project.c \
 	test-perspective.c \
 	test-rotate.c \
@@ -21,7 +20,6 @@ UNIT_TESTS = \
 	test-shader.c \
 	test-unproject.c \
 	test-viewport test-fbo.c \
-	test-opacity.c \
 	test-multistage.c \
 	test-cogl-primitives.c \
 	test-cogl-tex-tile.c \
