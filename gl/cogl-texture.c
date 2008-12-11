@@ -49,6 +49,16 @@
     printf("err: 0x%x\n", err); \
 } */
 
+static void _cogl_texture_free (CoglTexture *tex);
+static void _cogl_multi_texture_free (CoglMultiTexture *multi_texture);
+static void _cogl_multi_texture_layer_free (CoglMultiTextureLayer *layer);
+
+COGL_HANDLE_DEFINE (Texture, texture, texture_handles);
+COGL_HANDLE_DEFINE (MultiTexture, multi_texture, multi_texture_handles);
+COGL_HANDLE_DEFINE (MultiTextureLayer,
+		    multi_texture_layer,
+		    multi_texture_layer_handles);
+
 struct _CoglSpanIter
 {
   gint              index;
@@ -65,11 +75,6 @@ struct _CoglSpanIter
   CoglFixed      intersect_end_local;
   gboolean          intersects;
 };
-
-static void _cogl_texture_free (CoglTexture *tex);
-
-COGL_HANDLE_DEFINE (Texture, texture, texture_handles);
-
 
 static void
 _cogl_texture_bitmap_free (CoglTexture *tex)
@@ -2405,3 +2410,263 @@ cogl_texture_polygon (CoglHandle         handle,
 	}
     }
 }
+
+CoglHandle
+cogl_multi_texture_new (void)
+{
+  CoglMultiTexture *multi_tex = g_new0 (CoglMultiTexture, 1);
+  return _cogl_multi_texture_handle_new (multi_tex);
+}
+
+static void
+_cogl_multi_texture_free (CoglMultiTexture *multi_tex)
+{
+  g_list_foreach (multi_tex->layers,
+		  (GFunc)cogl_multi_texture_layer_unref, NULL);
+  g_free (multi_tex);
+}
+
+static CoglMultiTextureLayer *
+_cogl_multi_texture_get_layer (CoglMultiTexture *multi_tex, guint index)
+{
+  CoglMultiTextureLayer *layer;
+  GList			*tmp;
+
+  for (tmp = multi_tex->layers; tmp != NULL; tmp = tmp->next)
+    {
+      layer = tmp->data;
+      if (layer->index == index)
+	return layer;
+
+      /* The layers are always sorted, so we know this layer doesn't exists */
+      if (layer->index > index)
+	break;
+    }
+  /* NB: if we now insert a new layer before tmp, that will maintain order.
+   */
+
+  layer = g_new (CoglMultiTextureLayer, 1);
+
+  layer->ref_count = 1;
+  layer->index = index;
+  /* Note: comment after for() loop above */
+  multi_tex->layers = g_list_insert_before (multi_tex->layers, tmp, layer);
+
+  return layer;
+}
+
+void
+cogl_multi_texture_layer_set_texture (CoglHandle multi_texture_handle,
+				      guint layer_index,
+				      CoglHandle tex_handle)
+{
+  CoglMultiTexture	*multi_tex;
+  CoglMultiTextureLayer *layer;
+  CoglTexture		*tex;
+
+  if (!cogl_is_multi_texture (multi_texture_handle)
+      || !cogl_is_texture (tex_handle))
+    return;
+
+  multi_tex = _cogl_multi_texture_pointer_from_handle (multi_texture_handle);
+  layer = _cogl_multi_texture_get_layer (multi_tex, layer_index);
+  tex = _cogl_texture_pointer_from_handle (tex_handle);
+
+  cogl_texture_ref (tex_handle);
+
+  layer->tex = tex;
+}
+
+static void
+_cogl_multi_texture_layer_free (CoglMultiTextureLayer *layer)
+{
+  cogl_texture_unref (layer->tex);
+  g_free (layer);
+}
+
+void
+cogl_multi_texture_layer_remove (CoglHandle multi_texture_handle,
+				 guint layer_index)
+{
+  CoglMultiTexture	*multi_tex;
+  CoglMultiTextureLayer *layer;
+  GList			*tmp;
+
+  /* Check if valid multi texture */
+  if (!cogl_is_multi_texture (multi_texture_handle))
+    return;
+
+  multi_tex = _cogl_multi_texture_pointer_from_handle (multi_texture_handle);
+  for (tmp = multi_tex->layers; tmp != NULL; tmp = tmp->next)
+    {
+      layer = tmp->data;
+      if (layer->index == layer_index)
+	{
+	  CoglHandle handle =
+	    _cogl_multi_texture_layer_handle_from_pointer (layer);
+	  cogl_multi_texture_layer_unref (handle);
+	  multi_tex->layers = g_list_remove (multi_tex->layers, layer);
+	  return;
+	}
+    }
+}
+
+void
+cogl_multi_texture_rectangle (CoglHandle     multi_texture_handle,
+			      CoglFixed   x1,
+			      CoglFixed   y1,
+			      CoglFixed   x2,
+			      CoglFixed   y2,
+			      CoglFixed  *user_tex_coords)
+{
+  CoglMultiTexture  *multi_tex;
+  GLfloat	     quad_coords[8];
+  GList		    *tmp;
+  GList		    *valid_layers = NULL;
+  int		     count;
+  GLfloat	    *tex_coords_buff;
+  gulong	     enable_flags = 0;
+  /* FIXME - currently cogl deals with enabling texturing
+   * via enable flags, but that can't scale to n texture
+   * units. Currently we have to be carefull how we leave the
+   * environment so we don't break things. See the cleanup
+   * notes at the end of this function */
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Check if valid multi texture */
+  if (!cogl_is_multi_texture (multi_texture_handle))
+    return;
+
+  multi_tex = _cogl_multi_texture_pointer_from_handle (multi_texture_handle);
+
+#define CFX_F COGL_FIXED_TO_FLOAT
+  quad_coords[0] = CFX_F (x1);
+  quad_coords[1] = CFX_F (y1);
+  quad_coords[2] = CFX_F (x2);
+  quad_coords[3] = CFX_F (y1);
+  quad_coords[4] = CFX_F (x1);
+  quad_coords[5] = CFX_F (y2);
+  quad_coords[6] = CFX_F (x2);
+  quad_coords[7] = CFX_F (y2);
+#undef CFX_F
+
+  enable_flags  |= COGL_ENABLE_VERTEX_ARRAY;
+  GE( glVertexPointer (2, GL_FLOAT, 0, quad_coords));
+
+  for (count = 0, tmp = multi_tex->layers;
+       tmp != NULL;
+       count++, tmp = tmp->next)
+    {
+      CoglMultiTextureLayer *layer = tmp->data;
+
+      /* Skip empty layers */
+      if (!layer->tex)
+	{
+	  count--;
+	  continue;
+	}
+
+      /* FIXME - currently we don't support sliced textures */
+      if (layer->tex->slice_gl_handles == NULL
+	  || layer->tex->slice_gl_handles->len < 1)
+	continue;
+
+      if (count >= CGL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
+	{
+	  static gboolean shown_warning = FALSE;
+
+	  if (!shown_warning)
+	    {
+	      g_warning ("Your driver does not support enough texture layers"
+			 "to correctly handle this multi texturing");
+	      shown_warning = TRUE;
+	    }
+	  /* NB: We make a best effort attempt to display as many layers as
+	   * possible. */
+	  break;
+	}
+
+      if (layer->tex->bitmap.format & COGL_A_BIT)
+	enable_flags |= COGL_ENABLE_BLEND;
+
+      valid_layers = g_list_prepend (valid_layers, layer);
+    }
+  valid_layers = g_list_reverse (valid_layers);
+
+  /* Enable blending if the geometry has an associated alpha color,
+   * or - see above - we also check each layer texture and if any has
+   * an alpha channel also enable blending. */
+  if (ctx->color_alpha < 255)
+    enable_flags |= COGL_ENABLE_BLEND;
+  cogl_enable (enable_flags);
+
+  /* NB: It could be that no valid texture layers were found, but
+   * we will still submit a non-textured rectangle in that case. */
+  if (count)
+    tex_coords_buff = alloca (sizeof(GLfloat) * 8 * count);
+
+  /* NB: valid_layers is in order, sorted by index */
+  for (count = 0, tmp = valid_layers;
+       tmp != NULL;
+       count++, tmp = tmp->next)
+    {
+      CoglMultiTextureLayer *layer = tmp->data;
+      CoglFixed *in_tex_coords = &user_tex_coords[count * 4];
+      GLfloat *out_tex_coords = &tex_coords_buff[count * 8];
+      GLenum gl_tex_handle;
+
+#define CFX_F COGL_FIXED_TO_FLOAT
+      /* IN LAYOUT: [ tx1:0, ty1:1, tx2:2, ty2:3 ]  */
+      out_tex_coords[0] = CFX_F (in_tex_coords[0]); /* tx1 */
+      out_tex_coords[1] = CFX_F (in_tex_coords[1]); /* ty1 */
+      out_tex_coords[2] = CFX_F (in_tex_coords[2]); /* tx2 */
+      out_tex_coords[3] = CFX_F (in_tex_coords[1]); /* ty1 */
+      out_tex_coords[4] = CFX_F (in_tex_coords[0]); /* tx1 */
+      out_tex_coords[5] = CFX_F (in_tex_coords[3]); /* ty2 */
+      out_tex_coords[6] = CFX_F (in_tex_coords[2]); /* tx2 */
+      out_tex_coords[7] = CFX_F (in_tex_coords[3]); /* ty2 */
+#undef CFX_F
+
+      /* TODO - support sliced textures */
+      gl_tex_handle = g_array_index (layer->tex->slice_gl_handles, GLuint, 0);
+
+      GE (glActiveTexture (GL_TEXTURE0 + count));
+      GE (glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE));
+      GE (glBindTexture (GL_TEXTURE_2D, gl_tex_handle));
+      /* GE (glEnable (GL_TEXTURE_2D)); */
+
+      GE (glClientActiveTexture (GL_TEXTURE0 + count));
+      GE (glTexCoordPointer (2, GL_FLOAT, 0, out_tex_coords));
+      /* GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY)); */
+
+      /* FIXME - cogl only knows about one texture unit a.t.m
+       * (Also see cleanup note below) */
+      if (count == 0)
+	{
+	  enable_flags |= COGL_ENABLE_TEXTURE_2D | COGL_ENABLE_TEXCOORD_ARRAY;
+	  cogl_enable (enable_flags);
+	}
+      else
+	{
+	  GE (glEnable (GL_TEXTURE_2D));
+	  GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
+	}
+    }
+
+  glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
+
+  /* FIXME - cogl doesn't currently have a way of caching the
+   * enable states for more than one texture unit so for now,
+   * we just disable anything relating to additional units once
+   * we are done with them. */
+  while (--count > 0)
+    {
+      GE (glActiveTexture (GL_TEXTURE0 + count));
+      GE (glClientActiveTexture (GL_TEXTURE0 + count));
+
+      GE (glDisable (GL_TEXTURE_2D));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+    }
+}
+

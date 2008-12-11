@@ -31,6 +31,8 @@
 typedef struct _CoglTexture         CoglTexture;
 typedef struct _CoglTexSliceSpan    CoglTexSliceSpan;
 typedef struct _CoglSpanIter        CoglSpanIter;
+typedef struct _CoglMultiTexture      CoglMultiTexture;
+typedef struct _CoglMultiTextureLayer CoglMultiTextureLayer;
 
 struct _CoglTexSliceSpan
 {
@@ -59,7 +61,26 @@ struct _CoglTexture
   gboolean           auto_mipmap;
 };
 
+struct _CoglMultiTextureLayer
+{
+  guint	       ref_count;
+  guint	       index;	/*!< lowest index is blended first then others
+			     on top */
+  CoglTexture *tex;	/*!< The texture for this layer, or NULL
+			     for an empty layer */
+
+  /* TODO: Add more control over the texture environment for each texture
+   * unit. For example we should support dot3 normal mapping. */
+};
+
+struct _CoglMultiTexture
+{
+  guint	   ref_count;
+  GList	  *layers;
+};
+
 CoglTexture*
 _cogl_texture_pointer_from_handle (CoglHandle handle);
 
 #endif /* __COGL_TEXTURE_H */
+

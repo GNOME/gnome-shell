@@ -61,7 +61,9 @@ cogl_create_context ()
   _context->texture_handles = NULL;
   _context->texture_vertices_size = 0;
   _context->texture_vertices = NULL;
-  
+  _context->multi_texture_handles = NULL;
+  _context->multi_texture_layer_handles = NULL;
+
   _context->fbo_handles = NULL;
   _context->program_handles = NULL;
   _context->shader_handles = NULL;
