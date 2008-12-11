@@ -70,6 +70,7 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/label", test_label_cache);
 
+  /* ClutterEntry */
   TEST_CONFORM_SIMPLE ("/entry", test_entry_utf8_validation);
   TEST_CONFORM_SIMPLE ("/entry", test_entry_empty);
   TEST_CONFORM_SIMPLE ("/entry", test_entry_set_empty);
@@ -84,6 +85,22 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/entry", test_entry_cursor);
   TEST_CONFORM_SIMPLE ("/entry", test_entry_event);
+
+  /* ClutterText */
+  TEST_CONFORM_SIMPLE ("/text", test_text_utf8_validation);
+  TEST_CONFORM_SIMPLE ("/text", test_text_empty);
+  TEST_CONFORM_SIMPLE ("/text", test_text_set_empty);
+  TEST_CONFORM_SIMPLE ("/text", test_text_set_text);
+
+  TEST_CONFORM_SIMPLE ("/text", test_text_append_some);
+  TEST_CONFORM_SIMPLE ("/text", test_text_prepend_some);
+  TEST_CONFORM_SIMPLE ("/text", test_text_insert);
+
+  TEST_CONFORM_SIMPLE ("/text", test_text_delete_chars);
+  TEST_CONFORM_SIMPLE ("/text", test_text_delete_text);
+
+  TEST_CONFORM_SIMPLE ("/text", test_text_cursor);
+  TEST_CONFORM_SIMPLE ("/text", test_text_event);
 
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_size);
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_color);

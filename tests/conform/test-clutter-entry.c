@@ -10,7 +10,7 @@ typedef struct {
   gint       nbytes;
 } TestData;
 
-const TestData
+static const TestData
 test_data[] = {
   { 0xe4,   "\xc3\xa4",     2 }, /* LATIN SMALL LETTER A WITH DIAERESIS */
   { 0x2665, "\xe2\x99\xa5", 3 }  /* BLACK HEART SUIT */
