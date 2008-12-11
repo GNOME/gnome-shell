@@ -33,7 +33,22 @@
 #include <string.h>
 
 #include "clutter-text.h"
-#include <clutter/clutter.h>
+
+#include "clutter-main.h"
+#include "clutter-enum-types.h"
+#include "clutter-private.h"
+#include "clutter-debug.h"
+#include "clutter-units.h"
+
+#include "cogl-pango.h"
+
+#define DEFAULT_FONT_NAME	"Sans 10"
+
+/* Probably move into main */
+static PangoContext *_context = NULL;
+
+static const ClutterColor default_cursor_color = {   0,   0,   0, 255 };
+static const ClutterColor default_text_color   = {   0,   0,   0, 255 };
 
 static gboolean clutter_text_key_press          (ClutterActor    *actor,
                                               ClutterKeyEvent *kev);
