@@ -2386,7 +2386,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                         NULL,
                                                         CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::scale-x:
+   * ClutterActor:scale-x:
    *
    * The horizontal scale of the actor
    *
@@ -2403,7 +2403,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					     1.0,
 					     CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::scale-y:
+   * ClutterActor:scale-y:
    *
    * The vertical scale of the actor
    *
@@ -2420,7 +2420,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					     1.0,
 					     CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::rotation-angle-x:
+   * ClutterActor:rotation-angle-x:
    *
    * The rotation angle on the X axis.
    *
@@ -2437,7 +2437,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					     0.0,
 					     CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::rotation-angle-y:
+   * ClutterActor:rotation-angle-y:
    *
    * The rotation angle on the Y axis.
    *
@@ -2454,7 +2454,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					     0.0,
 					     CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::rotation-angle-z:
+   * ClutterActor:rotation-angle-z:
    *
    * The rotation angle on the Z axis.
    *
@@ -2471,7 +2471,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					     0.0,
 					     CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::rotation-center-x:
+   * ClutterActor:rotation-center-x:
    *
    * The rotation center on the X axis.
    *
@@ -2486,7 +2486,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					    CLUTTER_TYPE_VERTEX,
 					    CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::rotation-center-y:
+   * ClutterActor:rotation-center-y:
    *
    * The rotation center on the Y axis.
    *
@@ -2501,7 +2501,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					    CLUTTER_TYPE_VERTEX,
 					    CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::rotation-center-z:
+   * ClutterActor:rotation-center-z:
    *
    * The rotation center on the Z axis.
    *
@@ -2516,7 +2516,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					    CLUTTER_TYPE_VERTEX,
 					    CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::anchor-x:
+   * ClutterActor:anchor-x:
    *
    * The X coordinate of an actor's anchor point, relative to
    * the actor coordinate space, in pixels.
@@ -2533,7 +2533,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                           0,
 					  CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterActor::anchor-y:
+   * ClutterActor:anchor-y:
    *
    * The Y coordinate of an actor's anchor point, relative to
    * the actor coordinate space, in pixels.
