@@ -91,15 +91,14 @@ enum
 };
 
 #ifdef CLUTTER_ENABLE_DEBUG
-#define clutter_return_val_if_paint_fail(obj,retval)    G_STMT_START {  \
+#define clutter_warn_if_paint_fail(obj)                 G_STMT_START {  \
   if (CLUTTER_PRIVATE_FLAGS ((obj)) & CLUTTER_ACTOR_IN_PAINT) {         \
     g_warning ("%s should not be called during the paint sequence "     \
                "of a ClutterCairoTexture as it will likely cause "      \
                "performance issues.", G_STRFUNC);                       \
-    return (retval);                                                    \
   }                                                     } G_STMT_END
 #else
-#define clutter_return_val_if_paint_fail(obj,retval)    /* void */
+#define clutter_warn_if_paint_fail(obj)         /* void */
 #endif /* CLUTTER_ENABLE_DEBUG */
 
 #define CLUTTER_CAIRO_TEXTURE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CAIRO_TEXTURE, ClutterCairoTexturePrivate))
@@ -584,7 +583,8 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
   cairo_t *cr;
 
   g_return_val_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self), NULL);
-  clutter_return_val_if_paint_fail (self, NULL);
+
+  clutter_warn_if_paint_fail (self);
 
   priv = self->priv;
 
@@ -640,7 +640,8 @@ cairo_t *
 clutter_cairo_texture_create (ClutterCairoTexture *self)
 {
   g_return_val_if_fail (CLUTTER_IS_CAIRO_TEXTURE (self), NULL);
-  clutter_return_val_if_paint_fail (self, NULL);
+
+  clutter_warn_if_paint_fail (self);
 
   return clutter_cairo_texture_create_region (self, 0, 0, -1, -1);
 }
