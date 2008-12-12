@@ -4872,8 +4872,8 @@ clutter_actor_set_scalex (ClutterActor *self,
  */
 void
 clutter_actor_set_scale (ClutterActor *self,
-			 double        scale_x,
-			 double        scale_y)
+			 gdouble       scale_x,
+			 gdouble       scale_y)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
