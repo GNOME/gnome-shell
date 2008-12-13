@@ -343,7 +343,7 @@ clutter_behaviour_ellipse_applied (ClutterBehaviour *behave,
                                    ClutterActor     *actor)
 {
   ClutterBehaviourEllipse *e = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
-  ClutterBehaviourEllipsePrivate *priv = e->priv;;
+  ClutterBehaviourEllipsePrivate *priv = e->priv;
   knot3d knot = { 0, };
 
   clutter_behaviour_ellipse_advance (e, priv->angle_start, &knot);
