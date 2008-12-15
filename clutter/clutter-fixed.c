@@ -344,12 +344,12 @@ clutter_param_fixed_get_type (void)
  * Since: 0.8
  */
 GParamSpec *
-clutter_param_spec_fixed (const gchar *name,
-                          const gchar *nick,
-                          const gchar *blurb,
-                          ClutterUnit  minimum,
-                          ClutterUnit  maximum,
-                          ClutterUnit  default_value,
+clutter_param_spec_fixed (const gchar  *name,
+                          const gchar  *nick,
+                          const gchar  *blurb,
+                          ClutterFixed  minimum,
+                          ClutterFixed  maximum,
+                          ClutterFixed  default_value,
                           GParamFlags  flags)
 {
   ClutterParamSpecFixed *fspec;
