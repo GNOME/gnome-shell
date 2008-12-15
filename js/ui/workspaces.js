@@ -35,19 +35,15 @@ function Workspaces(x, y, width, height) {
 
 Workspaces.prototype = {
     _init : function(x, y, width, height) {
-
-        this._group = new Clutter.Group();
+        this.actor = new Clutter.Group();
 
         this._x = x;
         this._y = y;
         this._width = width;
         this._height = height;
         this._workspaces = [];
-    },
 
-    show : function() {
         let global = Shell.Global.get();
-
         let windows = global.get_windows();
         let activeWorkspace = global.screen.get_active_workspace_index();
 
@@ -57,7 +53,7 @@ Workspaces.prototype = {
         this._workspaces = [];
         for (let w = 0; w < global.screen.n_workspaces; w++) {
             this._workspaces[w] = new Clutter.Group();
-            this._group.add_actor(this._workspaces[w]);
+            this.actor.add_actor(this._workspaces[w]);
         }
         this._createDesktopActors(windows);
 
@@ -146,8 +142,8 @@ Workspaces.prototype = {
                              });
         }
     },
-    
-    hideDone : function() {
+
+    destroy : function() {
         for (let w = 0; w < this._workspaces.length; w++) {
             this._workspaces[w].destroy();
         }

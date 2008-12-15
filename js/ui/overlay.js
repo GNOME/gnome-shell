@@ -121,9 +121,6 @@ Sideshow.prototype = {
 
     show: function() {
           this._appDisplay.show();
-    },
-
-    hide: function() {
     }
 };
 Signals.addSignalMethods(Sideshow.prototype);
@@ -154,11 +151,6 @@ Overlay.prototype = {
 
         // TODO - recalculate everything when desktop size changes
         this._recalculateSize();
-
-        this._workspaces = new Workspaces.Workspaces(
-            this._workspaceGridX, this._workspaceGridY,
-            this._workspaceGridWidth, this._workspaceGridHeight);
-        this._group.add_actor(this._workspaces._group);
 
         this._sideshow = new Sideshow(this._group, this._workspaceGridX - 10);
         this._sideshow.connect('activated', function(sideshow) {
@@ -192,8 +184,12 @@ Overlay.prototype = {
         this._recalculateSize();
 
         this._sideshow.show();
-        this._workspaces.show();
-        this._workspaces._group.raise_top();
+
+        this._workspaces = new Workspaces.Workspaces(
+            this._workspaceGridX, this._workspaceGridY,
+            this._workspaceGridWidth, this._workspaceGridHeight);
+        this._group.add_actor(this._workspaces.actor);
+        this._workspaces.actor.raise_top();
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the overlay is displayed greatly
@@ -211,7 +207,6 @@ Overlay.prototype = {
             return;
 
         this._workspaces.hide();
-        this._sideshow.hide();
 
         // Dummy tween, just waiting for the workspace animation
         Tweener.addTween(this,
@@ -220,15 +215,16 @@ Overlay.prototype = {
                            onCompleteScope: this
                          });
     },
-    
+
     _hideDone: function() {
         let global = Shell.Global.get();
 
         this.visible = false;
         global.window_group.show();
-        this._group.lower_bottom();
         this._group.hide();
-        this._workspaces.hideDone();
+
+        this._workspaces.destroy();
+        this._workspaces = null;
     },
 
     _deactivate : function() {
