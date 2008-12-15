@@ -1209,19 +1209,23 @@ clutter_text_real_move_up (ClutterText         *self,
 
   layout = clutter_text_get_layout (self);
 
-  pango_layout_index_to_line_x (layout,
-                                offset_to_bytes (priv->text, priv->position),
+  if (priv->position == 0)
+    index_ = 0;
+  else
+    index_ = offset_to_bytes (priv->text, priv->position);
+
+  pango_layout_index_to_line_x (layout, index_,
                                 0,
                                 &line_no, &x);
+
+  line_no -= 1;
+  if (line_no < 0)
+    return FALSE;
 
   if (priv->x_pos != -1)
     x = priv->x_pos;
   else
     priv->x_pos = x;
-
-  line_no -= 1;
-  if (line_no < 0)
-    return FALSE;
 
   layout_line = pango_layout_get_line_readonly (layout, line_no);
   if (!layout_line)
@@ -1256,8 +1260,12 @@ clutter_text_real_move_down (ClutterText         *self,
 
   layout = clutter_text_get_layout (self);
 
-  pango_layout_index_to_line_x (layout,
-                                offset_to_bytes (priv->text, priv->position),
+  if (priv->position == 0)
+    index_ = 0;
+  else
+    index_ = offset_to_bytes (priv->text, priv->position);
+
+  pango_layout_index_to_line_x (layout, index_,
                                 0,
                                 &line_no, &x);
 
