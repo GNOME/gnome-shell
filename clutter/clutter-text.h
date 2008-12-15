@@ -76,10 +76,11 @@ struct _ClutterTextClass
   ClutterActorClass parent_class;
 
   /*< public >*/
-  void (* text_changed) (ClutterText     *self);
-  void (* activate)     (ClutterText     *self);
-  void (* cursor_event) (ClutterText     *self,
-                         ClutterGeometry *geometry);
+  /* signals, not vfuncs */
+  void (* text_changed) (ClutterText           *self);
+  void (* activate)     (ClutterText           *self);
+  void (* cursor_event) (ClutterText           *self,
+                         const ClutterGeometry *geometry);
 
   /*< private >*/
   /* padding for future expansion */
