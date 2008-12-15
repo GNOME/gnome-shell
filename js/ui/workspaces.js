@@ -26,7 +26,9 @@ const POSITIONS = {
         5: [[0.165, 0.25, 0.28], [0.495, 0.25, 0.28], [0.825, 0.25, 0.28], [0.25, 0.75, 0.4], [0.75, 0.75, 0.4]]
 };
 
-// spacing between workspaces
+// Spacing between workspaces. At the moment, the same spacing is used
+// in both zoomed-in and zoomed-out views; this is slightly
+// metaphor-breaking, but the alternatives are also weird.
 const GRID_SPACING = 15;
 
 function Workspaces(x, y, width, height) {
@@ -45,27 +47,44 @@ Workspaces.prototype = {
 
         let global = Shell.Global.get();
         let windows = global.get_windows();
-        let activeWorkspace = global.screen.get_active_workspace_index();
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let activeWorkspace;
 
-        // Create a group for each workspace (which lets us raise all of
-        // its clone windows together when the workspace is activated)
-        // and add the desktop windows
+        // Create a group for each workspace (which lets us raise all
+        // of its clone windows together when the workspace is
+        // activated), figure out their initial grid positions, and
+        // add the desktop windows
         this._workspaces = [];
         for (let w = 0; w < global.screen.n_workspaces; w++) {
             this._workspaces[w] = new Clutter.Group();
+            if (w == activeWorkspaceIndex)
+                activeWorkspace = this._workspaces[w];
             this.actor.add_actor(this._workspaces[w]);
         }
+        activeWorkspace.raise_top();
+        this._positionWorkspaces(global, activeWorkspace);
         this._createDesktopActors(windows);
 
-        // The workspaces will go into a grid that is either square,
-        // or else 1 cell wider than it is tall.
-        // FIXME: need to make the metacity internal layout agree with this!
-        let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
-        let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
+        // Create a backdrop rectangle, so that you don't see the
+        // other parts of the overlay (eg, sidebar) through the gaps
+        // between the workspaces when they're zooming in/out
+        this._backdrop = new Clutter.Rectangle({ color: Overlay.OVERLAY_BACKGROUND_COLOR,
+                                                 x: this._backdropX,
+                                                 y: this._backdropY,
+                                                 width: this._backdropWidth,
+                                                 height: this._backdropHeight
+                                               });
+        this.actor.add_actor(this._backdrop);
+        this._backdrop.lower_bottom();
+        Tweener.addTween(this._backdrop,
+                         { x: this._x,
+                           y: this._y,
+                           width: this._width,
+                           height: this._height,
+                           time: Overlay.ANIMATION_TIME,
+                           transition: "easeOutQuad"
+                         });
 
-        let wsWidth = (this._width - (gridWidth - 1) * GRID_SPACING) / gridWidth;
-        let wsHeight = (this._height - (gridHeight - 1) * GRID_SPACING) / gridHeight;
-        let scale = wsWidth / global.screen_width;
 
         // Position/scale the desktop windows and their children. This
         // would be easier if we instead just positioned and scaled
@@ -74,73 +93,72 @@ Workspaces.prototype = {
         // path as they move into place, which looks odd. Positioning
         // everything independently lets us move them in a straight
         // line.
-        for (let w = 0, x = this._x, y = this._y; w < this._workspaces.length; w++) {
+        for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
-            let desktop = workspace.get_nth_child(0);
 
-            if (w == activeWorkspace) {
-                // The currently-active workspace needs to
-                // slide/shrink into place
-                workspace.raise_top();
-                Tweener.addTween(desktop,
-                                 { x: x,
-                                   y: y,
-                                   scale_x: scale,
-                                   scale_y: scale,
-                                   time: Overlay.ANIMATION_TIME,
-                                   transition: "easeOutQuad"
-                                 });
-            } else {
-                // Other workspaces can start out in place; they'll be
-                // revealed as the active workspace shrinks
-                desktop.set_position(x, y);
-                desktop.set_scale(scale, scale);
-            }
+            let desktop = workspace.get_nth_child(0);
+            desktop.set_position(workspace.zoomedOutX, workspace.zoomedOutY);
+            desktop.origX = desktop.origY = 0;
+
+            Tweener.addTween(desktop,
+                             { x: workspace.gridX,
+                               y: workspace.gridY,
+                               scale_x: workspace.gridScale,
+                               scale_y: workspace.gridScale,
+                               time: Overlay.ANIMATION_TIME,
+                               transition: "easeOutQuad"
+                             });
 
             // Now handle the rest of the windows in this workspace
             let wswindows = windows.filter(function (win) { return win.get_workspace() == w; });
 
-            // Do the windows in reverse order so that the active
-            // actor ends up on top
             for (let i = 0, windowIndex = 0; i < wswindows.length; i++) {
                 let win = wswindows[i];
                 if (win.get_window_type() == Meta.WindowType.DESKTOP ||
                     win.is_override_redirect())
                     continue;
 
-                this._createWindowClone(wswindows[i], this._workspaces[w],
-                                        x, y, scale,
+                this._createWindowClone(wswindows[i], workspace,
                                         wswindows.length - windowIndex - 1,
-                                        wswindows.length,
-                                        w == activeWorkspace);
+                                        wswindows.length);
                 windowIndex++;
-            }
-
-            x += (wsWidth + GRID_SPACING);
-            if (x >= this._x + this._width - GRID_SPACING) {
-                x = this._x;
-                y += wsHeight + GRID_SPACING;
             }
         }
     },
 
     hide : function() {
         let global = Shell.Global.get();
-        let activeWorkspace = global.screen.get_active_workspace_index();
+        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let activeWorkspace = this._workspaces[activeWorkspaceIndex];
 
-        this._workspaces[activeWorkspace].raise_top();
-        let windows = this._workspaces[activeWorkspace].get_children();
-        for (let i = 0; i < windows.length; i++) {
-            Tweener.addTween(windows[i],
-                             { x: windows[i].orig_x || 0,
-                               y: windows[i].orig_y || 0,
-                               scale_x: 1.0,
-                               scale_y: 1.0,
-                               time: Overlay.ANIMATION_TIME,
-                               opacity: 255,
-                               transition: "easeOutQuad"
-                             });
+        this._positionWorkspaces(global, activeWorkspace);
+        activeWorkspace.raise_top();
+
+        for (let w = 0; w < this._workspaces.length; w++) {
+            let workspace = this._workspaces[w];
+            let windows = workspace.get_children();
+
+            for (let i = 0; i < windows.length; i++) {
+                Tweener.addTween(windows[i],
+                                 { x: workspace.zoomedOutX + windows[i].origX,
+                                   y: workspace.zoomedOutY + windows[i].origY,
+                                   scale_x: 1.0,
+                                   scale_y: 1.0,
+                                   time: Overlay.ANIMATION_TIME,
+                                   opacity: 255,
+                                   transition: "easeOutQuad"
+                                 });
+            }
         }
+
+        Tweener.addTween(this._backdrop,
+                         { x: this._backdropX,
+                           y: this._backdropY,
+                           width: this._backdropWidth,
+                           height: this._backdropHeight,
+                           time: Overlay.ANIMATION_TIME,
+                           transition: "easeOutQuad"
+                         });
     },
 
     destroy : function() {
@@ -148,6 +166,50 @@ Workspaces.prototype = {
             this._workspaces[w].destroy();
         }
         this._workspaces = [];
+
+        this._backdrop.destroy();
+        this._backdrop = null;
+    },
+
+    _positionWorkspaces : function(global, activeWorkspace) {
+        let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
+        let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
+
+        let wsWidth = (this._width - (gridWidth - 1) * GRID_SPACING) / gridWidth;
+        let wsHeight = (this._height - (gridHeight - 1) * GRID_SPACING) / gridHeight;
+        let scale = wsWidth / global.screen_width;
+
+        // Assign workspaces to grid positions
+        for (let w = 0, col = 0, row = 0; w < this._workspaces.length; w++) {
+            let workspace = this._workspaces[w];
+
+            workspace.gridRow = row;
+            workspace.gridCol = col;
+
+            workspace.gridX = this._x + workspace.gridCol * (wsWidth + GRID_SPACING);
+            workspace.gridY = this._y + workspace.gridRow * (wsHeight + GRID_SPACING);
+            workspace.gridScale = scale;
+
+            col++;
+            if (col == gridWidth) {
+                col = 0;
+                row++;
+            }
+        }
+
+        // Now figure out their zoomed-out coordinates
+        for (let w = 0; w < this._workspaces.length; w++) {
+            let workspace = this._workspaces[w];
+
+            workspace.zoomedOutX = (workspace.gridCol - activeWorkspace.gridCol) * (global.screen_width + GRID_SPACING);
+            workspace.zoomedOutY = (workspace.gridRow - activeWorkspace.gridRow) * (global.screen_height + GRID_SPACING);
+        }
+
+        // And the backdrop
+        this._backdropX = this._workspaces[0].zoomedOutX;
+        this._backdropY = this._workspaces[0].zoomedOutY;
+        this._backdropWidth = gridWidth * (global.screen_width + GRID_SPACING) - GRID_SPACING;
+        this._backdropHeight = gridHeight * (global.screen_height + GRID_SPACING) - GRID_SPACING;
     },
 
     _createDesktopActors : function(windows) {
@@ -188,8 +250,8 @@ Workspaces.prototype = {
                                            reactive: true,
                                            x: window.x,
                                            y: window.y });
-        w.orig_x = window.x;
-        w.orig_y = window.y;
+        w.origX = window.x;
+        w.origY = window.y;
         return w;
     },
 
@@ -232,8 +294,7 @@ Workspaces.prototype = {
         return [xCenter, yCenter, fraction];
     },
 
-    _createWindowClone : function(w, workspace, wsX, wsY, wsScale,
-                                  windowIndex, numberOfWindows, animate) {
+    _createWindowClone : function(w, workspace, windowIndex, numberOfWindows) {
         let me = this;
         let global = Shell.Global.get();
 
@@ -247,8 +308,8 @@ Workspaces.prototype = {
 
         let desiredSize = global.screen_width * fraction;
 
-        xCenter = wsX + wsScale * (xCenter * global.screen_width);
-        yCenter = wsY + wsScale * (yCenter * global.screen_height);
+        xCenter = workspace.gridX + workspace.gridScale * (xCenter * global.screen_width);
+        yCenter = workspace.gridY + workspace.gridScale * (yCenter * global.screen_height);
 
         let size = clone.width;
         if (clone.height > size)
@@ -258,26 +319,21 @@ Workspaces.prototype = {
         let scale = desiredSize / size;
         if (scale > 1)
             scale = 1;
-        scale *= wsScale;
+        scale *= workspace.gridScale;
 
         workspace.add_actor(clone);
 
-        if (animate) {
-            Tweener.addTween(clone,
-                             { x: xCenter - 0.5 * scale * w.width,
-                               y: yCenter - 0.5 * scale * w.height,
-                               scale_x: scale,
-                               scale_y: scale,
-                               time: Overlay.ANIMATION_TIME,
-                               opacity: WINDOW_OPACITY,
-                               transition: "easeOutQuad"
-                             });
-        } else {
-            clone.set_position(xCenter - 0.5 * scale * w.width,
-                               yCenter - 0.5 * scale * w.height);
-            clone.set_scale(scale, scale);
-            clone.set_opacity(WINDOW_OPACITY);
-        }
+        clone.set_position(workspace.zoomedOutX + clone.origX,
+                           workspace.zoomedOutY + clone.origY);
+        Tweener.addTween(clone,
+                         { x: xCenter - 0.5 * scale * w.width,
+                           y: yCenter - 0.5 * scale * w.height,
+                           scale_x: scale,
+                           scale_y: scale,
+                           time: Overlay.ANIMATION_TIME,
+                           opacity: WINDOW_OPACITY,
+                           transition: "easeOutQuad"
+                         });
 
         clone.connect("button-press-event",
                       function(clone, event) {
