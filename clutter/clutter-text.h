@@ -45,6 +45,13 @@ typedef struct _ClutterText        ClutterText;
 typedef struct _ClutterTextPrivate ClutterTextPrivate;
 typedef struct _ClutterTextClass   ClutterTextClass;
 
+/**
+ * ClutterText:
+ *
+ * The #ClutterText struct contains only private data.
+ *
+ * Since: 1.0
+ */
 struct _ClutterText
 {
   /*< private >*/
@@ -53,6 +60,16 @@ struct _ClutterText
   ClutterTextPrivate *priv;
 };
 
+/**
+ * ClutterTextClass:
+ * @text_changed: class handler for the #ClutterText::text-changed signal
+ * @activate: class handler for the #ClutterText::activate signal
+ * @cursor_event: class handler for the #ClutterText::cursor_event signal
+ *
+ * The #ClutterTextClass struct contains only private data.
+ *
+ * Since: 1.0
+ */
 struct _ClutterTextClass
 {
   /*< private >*/
