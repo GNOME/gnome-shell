@@ -171,6 +171,16 @@ Workspaces.prototype = {
         this._backdrop = null;
     },
 
+    // Assign grid positions to workspaces. We can't just do a simple
+    // row-major or column-major numbering, because we don't want the
+    // existing workspaces to get rearranged when we add a row or
+    // column. So we alternate between adding to rows and adding to
+    // columns. (So, eg, when going from a 2x2 grid of 4 workspaces to
+    // a 3x2 grid of 5 workspaces, the 4 existing workspaces stay
+    // where they are, and the 5th one is added to the end of the
+    // first row.)
+    //
+    // FIXME: need to make the metacity internal layout agree with this!
     _positionWorkspaces : function(global, activeWorkspace) {
         let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
         let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
@@ -179,8 +189,9 @@ Workspaces.prototype = {
         let wsHeight = (this._height - (gridHeight - 1) * GRID_SPACING) / gridHeight;
         let scale = wsWidth / global.screen_width;
 
-        // Assign workspaces to grid positions
-        for (let w = 0, col = 0, row = 0; w < this._workspaces.length; w++) {
+        let span = 1, n = 0, row = 0, col = 0, horiz = true;
+
+        for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
 
             workspace.gridRow = row;
@@ -190,10 +201,19 @@ Workspaces.prototype = {
             workspace.gridY = this._y + workspace.gridRow * (wsHeight + GRID_SPACING);
             workspace.gridScale = scale;
 
-            col++;
-            if (col == gridWidth) {
-                col = 0;
+            if (horiz) {
+                col++;
+                if (col == span) {
+                    row = 0;
+                    horiz = false;
+                }
+            } else {
                 row++;
+                if (row == span) {
+                    col = 0;
+                    horiz = true;
+                    span++;
+                }
             }
         }
 
