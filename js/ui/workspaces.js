@@ -37,6 +37,8 @@ function Workspaces(x, y, width, height) {
 
 Workspaces.prototype = {
     _init : function(x, y, width, height) {
+        let me = this;
+
         this.actor = new Clutter.Group();
 
         this._x = x;
@@ -54,7 +56,6 @@ Workspaces.prototype = {
         // of its clone windows together when the workspace is
         // activated), figure out their initial grid positions, and
         // add the desktop windows
-        this._workspaces = [];
         for (let w = 0; w < global.screen.n_workspaces; w++) {
             this._workspaces[w] = new Clutter.Group();
             if (w == activeWorkspaceIndex)
@@ -98,7 +99,6 @@ Workspaces.prototype = {
 
             let desktop = workspace.get_nth_child(0);
             desktop.set_position(workspace.zoomedOutX, workspace.zoomedOutY);
-            desktop.origX = desktop.origY = 0;
 
             Tweener.addTween(desktop,
                              { x: workspace.gridX,
@@ -124,6 +124,13 @@ Workspaces.prototype = {
                 windowIndex++;
             }
         }
+
+        // Track changes to the number of workspaces
+        this._nWorkspacesNotifyId =
+            global.screen.connect('notify::n-workspaces',
+                                  function() {
+                                      me._workspacesChanged();
+                                  });
     },
 
     hide : function() {
@@ -162,6 +169,8 @@ Workspaces.prototype = {
     },
 
     destroy : function() {
+        let global = Shell.Global.get();
+
         for (let w = 0; w < this._workspaces.length; w++) {
             this._workspaces[w].destroy();
         }
@@ -169,6 +178,8 @@ Workspaces.prototype = {
 
         this._backdrop.destroy();
         this._backdrop = null;
+
+        global.screen.disconnect(this._nWorkspacesNotifyId);
     },
 
     // Assign grid positions to workspaces. We can't just do a simple
@@ -182,6 +193,11 @@ Workspaces.prototype = {
     //
     // FIXME: need to make the metacity internal layout agree with this!
     _positionWorkspaces : function(global, activeWorkspace) {
+        if (!activeWorkspace) {
+            let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+            activeWorkspace = this._workspaces[activeWorkspaceIndex];
+        }
+
         let gridWidth = Math.ceil(Math.sqrt(this._workspaces.length));
         let gridHeight = Math.ceil(this._workspaces.length / gridWidth);
 
@@ -232,9 +248,23 @@ Workspaces.prototype = {
         this._backdropHeight = gridHeight * (global.screen_height + GRID_SPACING) - GRID_SPACING;
     },
 
-    _createDesktopActors : function(windows) {
-        let me = this;
+    _setupDesktop : function(desktop, workspaceNum) {
         let global = Shell.Global.get();
+        let workspace = global.screen.get_workspace_by_index(workspaceNum);
+        desktop.connect("button-press-event",
+                        function(clone, event) {
+                            workspace.activate(event.get_time());
+                            Main.hide_overlay();
+                        });
+        this._workspaces[workspaceNum].add_actor(desktop);
+        desktop.origX = desktop.origY = 0;
+    },
+
+    _createDesktopActors : function(windows) {
+        if (!windows) {
+            let global = Shell.Global.get();
+            windows = global.get_windows();
+        }
 
         // Find the desktop window or windows
         for (let i = 0; i < windows.length; i++) {
@@ -242,26 +272,23 @@ Workspaces.prototype = {
                 continue;
 
             if (windows[i].get_meta_window().is_on_all_workspaces()) {
-                for (let w = 0; w < this._workspaces.length; w++)
-                    this._workspaces[w].add_actor(this._cloneWindow(windows[i]));
+                for (let w = 0; w < this._workspaces.length; w++) {
+                    if (this._workspaces[w].get_n_children() == 0)
+                        this._setupDesktop(this._cloneWindow(windows[i]), w);
+                }
                 break;
-            } else
-                this._workspaces[windows[i].get_workspace()].add_actor(this._cloneWindow(windows[i]));
+            } else {
+                let desktopWorkspace = windows[i].get_workspace;
+                if (this._workspaces[desktopWorkspace].get_n_children() == 0)
+                    this._setupDesktop(this._cloneWindow(windows[i]), desktopWorkspace);
+            }
         }
 
         // Create dummy desktops for workspaces that don't have
         // desktop windows, and hook up button events on all desktops
         for (let w = 0; w < this._workspaces.length; w++) {
             if (this._workspaces[w].get_n_children() == 0)
-                this._workspaces[w].add_actor(this._createDesktopRectangle());
-
-            let workspace = global.screen.get_workspace_by_index(w);
-            this._workspaces[w].get_nth_child(0).connect(
-                "button-press-event",
-                function(clone, event) {
-                    workspace.activate(event.get_time());
-                    me._deactivate();
-                });
+                this._setupDesktop(this._createDesktopRectangle(), w);
         }
     },
 
@@ -372,11 +399,111 @@ Workspaces.prototype = {
             workspace.activate_with_focus(w.get_meta_window(), time);
         } else
             w.get_meta_window().activate(time);
-        this._deactivate();
+        Main.hide_overlay();
     },
 
-    _deactivate : function() {
-        Main.hide_overlay();
+    _workspacesChanged : function() {
+        let global = Shell.Global.get();
+
+        let oldNumWorkspaces = this._workspaces.length;
+        let newNumWorkspaces = global.screen.n_workspaces;
+
+        if (oldNumWorkspaces == newNumWorkspaces)
+            return;
+
+        let oldScale = this._workspaces[0].gridScale;
+        let oldGridWidth = Math.ceil(Math.sqrt(oldNumWorkspaces));
+        let oldGridHeight = Math.ceil(oldNumWorkspaces / oldGridWidth);
+        let lostWorkspaces = [];
+
+        if (newNumWorkspaces > oldNumWorkspaces) {
+            // Create new workspace groups
+            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
+                this._workspaces[w] = new Clutter.Group();
+                this.actor.add_actor(this._workspaces[w]);
+            }
+        } else {
+            // Truncate the list of workspaces
+            // FIXME: assumes that the workspaces are being removed from
+            // the end of the list, not the start/middle
+            lostWorkspaces = this._workspaces.splice(newNumWorkspaces);
+        }
+
+        // Figure out the new layout
+        this._positionWorkspaces(global);
+        let newScale = this._workspaces[0].gridScale;
+        let newGridWidth = Math.ceil(Math.sqrt(newNumWorkspaces));
+        let newGridHeight = Math.ceil(newNumWorkspaces / newGridWidth);
+
+        if (newGridWidth != oldGridWidth || newGridHeight != oldGridHeight) {
+            // We need to resize/move the existing workspaces/windows
+            let existingWorkspaces = Math.min(oldNumWorkspaces, newNumWorkspaces);
+            for (let w = 0; w < existingWorkspaces; w++) {
+                let workspace = this._workspaces[w];
+                let windows = workspace.get_children();
+                let desktop = windows[0];
+
+                for (let i = 0; i < windows.length; i++) {
+                    let newX = workspace.gridX + (windows[i].x - desktop.x) * newScale / oldScale;
+                    let newY = workspace.gridY + (windows[i].y - desktop.y) * newScale / oldScale;
+                    let newWindowScale = windows[i].scale_x * newScale / oldScale;
+
+                    Tweener.addTween(windows[i],
+                                     { x: newX,
+                                       y: newY,
+                                       scale_x: newWindowScale,
+                                       scale_y: newWindowScale,
+                                       time: Overlay.ANIMATION_TIME,
+                                       transition: "easeOutQuad"
+                                     });
+                }
+            }
+        }
+
+        if (newNumWorkspaces > oldNumWorkspaces) {
+            // Slide new workspaces in from offscreen
+            this._createDesktopActors();
+            for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
+                let workspace = this._workspaces[w];
+                let desktop = this._workspaces[w].get_nth_child(0);
+                if (workspace.gridCol > workspace.gridRow) {
+                    desktop.set_position(global.screen_width, workspace.gridY);
+                    desktop.set_scale(oldScale, oldScale);
+                } else {
+                    desktop.set_position(workspace.gridX, global.screen_height);
+                    desktop.set_scale(workspace.gridScale, workspace.gridScale);
+                }
+                Tweener.addTween(desktop,
+                                 { x: workspace.gridX,
+                                   y: workspace.gridY,
+                                   scale_x: workspace.gridScale,
+                                   scale_y: workspace.gridScale,
+                                   time: Overlay.ANIMATION_TIME,
+                                   transition: "easeOutQuad"
+                                 });
+            }
+        } else {
+            // Slide old workspaces out
+            for (let w = 0; w < lostWorkspaces.length; w++) {
+                let workspace = lostWorkspaces[w];
+                let desktop = lostWorkspaces[w].get_nth_child(0);
+                let destX = desktop.x, destY = desktop.y;
+                if (workspace.gridCol > workspace.gridRow)
+                    destX = global.screen_width;
+                else
+                    destY = global.screen_height;
+                Tweener.addTween(desktop,
+                                 { x: destX,
+                                   y: destY,
+                                   scale_x: newScale,
+                                   scale_y: newScale,
+                                   time: Overlay.ANIMATION_TIME,
+                                   transition: "easeOutQuad",
+                                   onComplete: function() { workspace.destroy(); }
+                                 });
+            }
+
+            // FIXME: deal with windows on the lost workspaces
+        }
     }
 };
-
