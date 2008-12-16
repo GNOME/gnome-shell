@@ -226,7 +226,7 @@ gboolean clutter_path_set_description (ClutterPath *path,
 void clutter_path_clear (ClutterPath *path);
 
 guint clutter_path_get_position (ClutterPath *path,
-                                 guint alpha,
+                                 gdouble progress,
                                  ClutterKnot *position);
 
 guint clutter_path_get_length (ClutterPath *path);

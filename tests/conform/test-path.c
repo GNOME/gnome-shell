@@ -435,7 +435,8 @@ path_test_get_position (CallbackData *data)
       ClutterKnot pos;
 
       clutter_path_get_position (data->path,
-                                 values[i] * CLUTTER_ALPHA_MAX_ALPHA, &pos);
+                                 values[i],
+                                 &pos);
 
       if (!float_fuzzy_equals (values[i + 1], pos.x)
           || !float_fuzzy_equals (values[i + 2], pos.y))

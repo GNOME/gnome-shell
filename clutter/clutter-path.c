@@ -86,7 +86,6 @@
 #include "clutter-types.h"
 #include "clutter-bezier.h"
 #include "clutter-private.h"
-#include "clutter-alpha.h"
 
 G_DEFINE_TYPE (ClutterPath, clutter_path, G_TYPE_INITIALLY_UNOWNED);
 
@@ -1202,12 +1201,12 @@ clutter_path_ensure_node_data (ClutterPath *path)
 /**
  * clutter_path_get_position:
  * @path: a #ClutterPath
- * @alpha: an alpha value
+ * @progress: a position along the path as a fraction of its length
  * @position: location to store the position
  *
- * The value in @alpha represents a position along the path where 0 is
- * the beginning and %CLUTTER_ALPHA_MAX_ALPHA is the end of the
- * path. An interpolated position is then stored in @position.
+ * The value in @progress represents a position along the path where
+ * 0.0 is the beginning and 1.0 is the end of the path. An
+ * interpolated position is then stored in @position.
  *
  * Return value: index of the node used to calculate the position.
  *
@@ -1215,16 +1214,16 @@ clutter_path_ensure_node_data (ClutterPath *path)
  */
 guint
 clutter_path_get_position (ClutterPath *path,
-                           guint alpha,
+                           gdouble progress,
                            ClutterKnot *position)
 {
   ClutterPathPrivate *priv;
   GSList *l;
-  guint length = 0, node_num = 0;
+  guint point_distance, length = 0, node_num = 0;
   ClutterPathNodeFull *node;
 
   g_return_val_if_fail (CLUTTER_IS_PATH (path), 0);
-  g_return_val_if_fail (alpha <= CLUTTER_ALPHA_MAX_ALPHA, 0);
+  g_return_val_if_fail (progress >= 0.0 && progress <= 1.0, 0);
 
   priv = path->priv;
 
@@ -1238,13 +1237,13 @@ clutter_path_get_position (ClutterPath *path,
       return 0;
     }
 
-  /* Convert the alpha fraction to a length along the path */
-  alpha = (alpha * priv->total_length) / CLUTTER_ALPHA_MAX_ALPHA;
+  /* Convert the progress to a length along the path */
+  point_distance = progress * priv->total_length;
 
   /* Find the node that covers this point */
   for (l = priv->nodes;
-       l->next && alpha >= (((ClutterPathNodeFull *) l->data)->length
-                            + length);
+       l->next && point_distance >= (((ClutterPathNodeFull *) l->data)->length
+                                     + length);
        l = l->next)
     {
       length += ((ClutterPathNodeFull *) l->data)->length;
@@ -1253,10 +1252,10 @@ clutter_path_get_position (ClutterPath *path,
 
   node = l->data;
 
-  /* Convert the alpha to a distance along the node */
-  alpha -= length;
-  if (alpha > node->length)
-    alpha = node->length;
+  /* Convert the point distance to a distance along the node */
+  point_distance -= length;
+  if (point_distance > node->length)
+    point_distance = node->length;
 
   switch (node->k.type & ~CLUTTER_PATH_RELATIVE)
     {
@@ -1272,16 +1271,16 @@ clutter_path_get_position (ClutterPath *path,
         {
           position->x = (node->k.points[1].x
                          + ((node->k.points[2].x - node->k.points[1].x)
-                            * (gint) alpha / (gint) node->length));
+                            * (gint) point_distance / (gint) node->length));
           position->y = (node->k.points[1].y
                          + ((node->k.points[2].y - node->k.points[1].y)
-                            * (gint) alpha / (gint) node->length));
+                            * (gint) point_distance / (gint) node->length));
         }
       break;
 
     case CLUTTER_PATH_CURVE_TO:
       _clutter_bezier_advance (node->bezier,
-                               alpha * CLUTTER_BEZIER_MAX_LENGTH
+                               point_distance * CLUTTER_BEZIER_MAX_LENGTH
                                / node->length,
                                position);
       break;

@@ -131,7 +131,10 @@ clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave,
   guint knot_num;
 
   if (priv->path)
-    knot_num = clutter_path_get_position (priv->path, alpha_value, &position);
+    knot_num = clutter_path_get_position (priv->path,
+                                          alpha_value
+                                          / (gdouble) CLUTTER_ALPHA_MAX_ALPHA,
+                                          &position);
   else
     {
       memset (&position, 0, sizeof (position));
