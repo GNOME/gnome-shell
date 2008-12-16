@@ -2011,12 +2011,40 @@ clutter_text_init (ClutterText *self)
   priv->cursor_size = DEFAULT_CURSOR_SIZE;
 }
 
+/**
+ * clutter_text_new:
+ *
+ * Creates a new #ClutterText actor. This actor can be used to
+ * display and edit text.
+ *
+ * Return value: the newly created #ClutterText actor
+ *
+ * Since: 1.0
+ */
 ClutterActor *
 clutter_text_new (void)
 {
   return g_object_new (CLUTTER_TYPE_TEXT, NULL);
 }
 
+/**
+ * clutter_text_new_full:
+ * @font_name: a string with a font description
+ * @text: the contents of the actor
+ * @color: the color to be used to render @text
+ *
+ * Creates a new #ClutterText actor, using @font_name as the font
+ * description; @text will be used to set the contents of the actor;
+ * and @color will be used as the color to render @text.
+ *
+ * This function is equivalent to calling clutter_text_new(),
+ * clutter_text_set_font_name(), clutter_text_set_text() and
+ * clutter_text_set_color().
+ *
+ * Return value: the newly created #ClutterText actor
+ *
+ * Since: 1.0
+ */
 ClutterActor *
 clutter_text_new_full (const gchar        *font_name,
                        const gchar        *text,
@@ -2029,6 +2057,21 @@ clutter_text_new_full (const gchar        *font_name,
                        NULL);
 }
 
+/**
+ * clutter_text_new_with_text:
+ * @font_name: a string with a font description
+ * @text: the contents of the actor
+ *
+ * Creates a new #ClutterText actor, using @font_name as the font
+ * description; @text will be used to set the contents of the actor.
+ *
+ * This function is equivalent to calling clutter_text_new(),
+ * clutter_text_set_font_name(), and clutter_text_set_text().
+ *
+ * Return value: the newly created #ClutterText actor
+ *
+ * Since: 1.0
+ */
 ClutterActor *
 clutter_text_new_with_text (const gchar *font_name,
                             const gchar *text)
@@ -2039,6 +2082,19 @@ clutter_text_new_with_text (const gchar *font_name,
                        NULL);
 }
 
+/**
+ * clutter_text_set_editable:
+ * @self: a #ClutterText
+ * @editable: whether the #ClutterText should be editable
+ *
+ * Sets whether the #ClutterText actor should be editable.
+ *
+ * An editable #ClutterText with key focus set using
+ * clutter_actor_grab_key_focus() or clutter_stage_take_key_focus()
+ * will receive key events and will update its contents accordingly.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_editable (ClutterText *self,
                            gboolean     editable)
@@ -2060,6 +2116,16 @@ clutter_text_set_editable (ClutterText *self,
     }
 }
 
+/**
+ * clutter_text_get_editable:
+ * @self: a #ClutterText
+ *
+ * Retrieves whether a #ClutterText is editable or not.
+ *
+ * Return value: %TRUE if the actor is editable
+ *
+ * Since: 1.0
+ */
 gboolean
 clutter_text_get_editable (ClutterText *self)
 {
@@ -2068,7 +2134,18 @@ clutter_text_get_editable (ClutterText *self)
   return self->priv->editable;
 }
 
-
+/**
+ * clutter_text_set_selectable:
+ * @self: a #ClutterText
+ * @selectable: whether the #ClutterText actor should be selectable
+ *
+ * Sets whether a #ClutterText actor should be selectable.
+ *
+ * A selectable #ClutterText will allow selecting its contents using
+ * the pointer or the keyboard.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_selectable (ClutterText *self,
                              gboolean     selectable)
@@ -2090,6 +2167,16 @@ clutter_text_set_selectable (ClutterText *self,
     }
 }
 
+/**
+ * clutter_text_get_selectable:
+ * @self: a #ClutterText
+ *
+ * Retrieves whether a #ClutterText is selectable or not.
+ *
+ * Return value: %TRUE if the actor is selectable
+ *
+ * Since: 1.0
+ */
 gboolean
 clutter_text_get_selectable (ClutterText *self)
 {
@@ -2098,7 +2185,22 @@ clutter_text_get_selectable (ClutterText *self)
   return self->priv->selectable;
 }
 
-
+/**
+ * clutter_text_set_activatable:
+ * @self: a #ClutterText
+ * @activatable: whether the #ClutterText actor should be activatable
+ *
+ * Sets whether a #ClutterText actor should be activatable.
+ *
+ * An activatable #ClutterText actor will emit the #ClutterText::activate
+ * signal whenever the 'Enter' (or 'Return') key is pressed; if it is not
+ * activatable, a new line will be appended to the current content.
+ *
+ * An activatable #ClutterText must also be set as editable using
+ * clutter_text_set_editable().
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_activatable (ClutterText *self,
                               gboolean     activatable)
@@ -2120,6 +2222,16 @@ clutter_text_set_activatable (ClutterText *self,
     }
 }
 
+/**
+ * clutter_text_get_activatable:
+ * @self: a #ClutterText
+ *
+ * Retrieves whether a #ClutterText is activatable or not.
+ *
+ * Return value: %TRUE if the actor is activatable
+ *
+ * Since: 1.0
+ */
 gboolean
 clutter_text_get_activatable (ClutterText *self)
 {
