@@ -1513,6 +1513,13 @@ clutter_text_class_init (ClutterTextClass *klass)
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_FONT_NAME, pspec);
 
+  /**
+   * ClutterText:text:
+   *
+   * The text to render inside the actor.
+   *
+   * Since: 1.0
+   */
   pspec = g_param_spec_string ("text",
                                "Text",
                                "The text to render",
@@ -1520,6 +1527,13 @@ clutter_text_class_init (ClutterTextClass *klass)
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
+  /**
+   * ClutterText:color:
+   *
+   * The color used to render the text.
+   *
+   * Since: 1.0
+   */
   pspec = clutter_param_spec_color ("color",
                                     "Font Color",
                                     "Color of the font used by the text",
@@ -1531,6 +1545,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * ClutterText:editable:
    *
    * Whether key events delivered to the actor causes editing.
+   *
+   * Since: 1.0
    */
   pspec = g_param_spec_boolean ("editable",
                                 "Editable",
@@ -1542,7 +1558,10 @@ clutter_text_class_init (ClutterTextClass *klass)
   /**
    * ClutterText:selectable:
    *
-   * Whether it is possible to select text.
+   * Whether it is possible to select text, either using the pointer
+   * or the keyboard.
+   *
+   * Since: 1.0
    */
   pspec = g_param_spec_boolean ("selectable",
                                 "Selectable",
@@ -1555,6 +1574,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * ClutterText:activatable:
    *
    * Toggles whether return invokes the activate signal or not.
+   *
+   * Since: 1.0
    */
   pspec = g_param_spec_boolean ("activatable",
                                 "Activatable",
@@ -1568,8 +1589,10 @@ clutter_text_class_init (ClutterTextClass *klass)
    * ClutterText:cursor-visible:
    *
    * Whether the input cursor is visible or not, it will only be visible
-   * if both cursor-visible is set and editable is set at the same time,
-   * the value defaults to TRUE.
+   * if both #ClutterText:cursor-visible and #ClutterText:editable are
+   * set to %TRUE.
+   *
+   * Since: 1.0
    */
   pspec = g_param_spec_boolean ("cursor-visible",
                                 "Cursor Visible",
@@ -1578,6 +1601,13 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CURSOR_VISIBLE, pspec);
 
+  /**
+   * ClutterText:cursor-color:
+   *
+   * The color of the cursor.
+   *
+   * Since: 1.0
+   */
   pspec = clutter_param_spec_color ("cursor-color",
                                     "Cursor Color",
                                     "Cursor Color",
@@ -1585,6 +1615,13 @@ clutter_text_class_init (ClutterTextClass *klass)
                                     CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CURSOR_COLOR, pspec);
 
+  /**
+   * ClutterText:cursor-color-set:
+   *
+   * Will be set to %TRUE if #ClutterText:cursor-color has been set.
+   *
+   * Since: 1.0
+   */
   pspec = g_param_spec_boolean ("cursor-color-set",
                                 "Cursor Color Set",
                                 "Whether the cursor color has been set",
@@ -1611,6 +1648,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * ClutterText:position:
    *
    * The current input cursor position. -1 is taken to be the end of the text
+   *
+   * Since: 1.0
    */
   pspec = g_param_spec_int ("position",
                             "Position",
@@ -1624,6 +1663,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * ClutterText:selection-bound:
    *
    * The current input cursor position. -1 is taken to be the end of the text
+   *
+   * Since: 1.0
    */
   pspec = g_param_spec_int ("selection-bound",
                             "Selection-bound",
@@ -1634,6 +1675,14 @@ clutter_text_class_init (ClutterTextClass *klass)
                             CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_SELECTION_BOUND, pspec);
 
+  /**
+   * ClutterText:attributes:
+   *
+   * A list of #PangoStyleAttribute<!-- -->s to be applied to the
+   * contents of the #ClutterText actor.
+   *
+   * Since: 1.0
+   */
   pspec = g_param_spec_boxed ("attributes",
                               "Attributes",
                               "A list of style attributes to apply to "
@@ -1691,6 +1740,13 @@ clutter_text_class_init (ClutterTextClass *klass)
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_LINE_WRAP_MODE, pspec);
 
+  /**
+   * ClutterText:ellipsize:
+   *
+   * The preferred place to ellipsize the contents of the #ClutterText actor
+   *
+   * Since: 1.0
+   */
   pspec = g_param_spec_enum ("ellipsize",
                              "Ellipsize",
                              "The preferred place to ellipsize the string",
@@ -1731,6 +1787,15 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_JUSTIFY, pspec);
 
+  /**
+   * ClutterText:text-visible:
+   *
+   * Whether the contents of the #ClutterText actor should be visible
+   * or substituted by a Unicode character, like in password text fields.
+   * The Unicode character is set using #ClutterText:invisible-char.
+   *
+   * Since: 1.0
+   */
   pspec = g_param_spec_boolean ("text-visible",
                                 "Text Visible",
                                 "Whether the text should be visible "
@@ -1740,6 +1805,14 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TEXT_VISIBLE, pspec);
 
+  /**
+   * ClutterText:invisible-char:
+   *
+   * The Unicode character used to render the contents of the #ClutterText
+   * actor if #ClutterText:text-invisible is set to %TRUE.
+   *
+   * Since: 1.0
+   */
   pspec = g_param_spec_unichar ("invisible-char",
                                 "Invisible Character",
                                 "The Unicode character used when the "
@@ -1748,6 +1821,13 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_INVISIBLE_CHAR, pspec);
 
+  /**
+   * ClutterText:max-length:
+   *
+   * The maximum length of the contents of the #ClutterText actor.
+   *
+   * Since: 1.0
+   */
   pspec = g_param_spec_int ("max-length",
                             "Max Length",
                             "Maximum length of the text inside the actor",
@@ -1777,7 +1857,10 @@ clutter_text_class_init (ClutterTextClass *klass)
    * @self: the #ClutterText that emitted the signal
    * @geometry: the coordinates of the cursor
    *
-   * FIXME
+   * The ::cursor-event signal is emitted whenever the cursor position
+   * changes inside a #ClutterText actor. Inside @geometry it is stored
+   * the current position and size of the cursor, relative to the actor
+   * itself.
    *
    * Since: 1.0
    */
@@ -1796,7 +1879,8 @@ clutter_text_class_init (ClutterTextClass *klass)
    * @self: the #ClutterText that emitted the signal
    *
    * The ::activate signal is emitted each time the actor is 'activated'
-   * by the user, normally by pressing the 'Enter' key.
+   * by the user, normally by pressing the 'Enter' key. The signal is
+   * emitted only if #ClutterText:activatable is set to %TRUE.
    *
    * Since: 1.0
    */
