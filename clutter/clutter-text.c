@@ -1458,7 +1458,7 @@ clutter_text_real_activate (ClutterText         *self,
   return FALSE;
 }
 
-static void
+static inline void
 clutter_text_add_move_binding (ClutterBindingPool *pool,
                                const gchar        *action,
                                guint               key_val,
@@ -1836,26 +1836,21 @@ clutter_text_class_init (ClutterTextClass *klass)
                                  CLUTTER_KP_Down,
                                  G_CALLBACK (clutter_text_real_move_down));
 
-  clutter_binding_pool_install_action (binding_pool, "line-start",
-                                       CLUTTER_Home, 0,
-                                       G_CALLBACK (clutter_text_real_line_start),
-                                       NULL, NULL);
-  clutter_binding_pool_install_action (binding_pool, "line-start",
-                                       CLUTTER_KP_Home, 0,
-                                       G_CALLBACK (clutter_text_real_line_start),
-                                       NULL, NULL);
-  clutter_binding_pool_install_action (binding_pool, "line-start",
-                                       CLUTTER_Begin, 0,
-                                       G_CALLBACK (clutter_text_real_line_start),
-                                       NULL, NULL);
-  clutter_binding_pool_install_action (binding_pool, "line-end",
-                                       CLUTTER_End, 0,
-                                       G_CALLBACK (clutter_text_real_line_end),
-                                       NULL, NULL);
-  clutter_binding_pool_install_action (binding_pool, "line-end",
-                                       CLUTTER_KP_End, 0,
-                                       G_CALLBACK (clutter_text_real_line_end),
-                                       NULL, NULL);
+  clutter_text_add_move_binding (binding_pool, "line-start",
+                                 CLUTTER_Home,
+                                 G_CALLBACK (clutter_text_real_line_start));
+  clutter_text_add_move_binding (binding_pool, "line-start",
+                                 CLUTTER_KP_Home,
+                                 G_CALLBACK (clutter_text_real_line_start));
+  clutter_text_add_move_binding (binding_pool, "line-start",
+                                 CLUTTER_Begin,
+                                 G_CALLBACK (clutter_text_real_line_start));
+  clutter_text_add_move_binding (binding_pool, "line-end",
+                                 CLUTTER_End,
+                                 G_CALLBACK (clutter_text_real_line_end));
+  clutter_text_add_move_binding (binding_pool, "line-end",
+                                 CLUTTER_KP_End,
+                                 G_CALLBACK (clutter_text_real_line_end));
 
   clutter_binding_pool_install_action (binding_pool, "delete-next",
                                        CLUTTER_Delete, 0,
