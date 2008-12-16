@@ -168,6 +168,9 @@ void                  clutter_text_set_cursor_color    (ClutterText        *self
                                                         const ClutterColor *color);
 void                  clutter_text_get_cursor_color    (ClutterText        *self,
                                                         ClutterColor       *color);
+void                  clutter_text_set_cursor_size     (ClutterText        *self,
+                                                        gint                size);
+guint                 clutter_text_get_cursor_size     (ClutterText        *self);
 void                  clutter_text_set_selectable      (ClutterText        *self,
                                                         gboolean            selectable);
 gboolean              clutter_text_get_selectable      (ClutterText        *self);

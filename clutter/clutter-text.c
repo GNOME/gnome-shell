@@ -153,7 +153,7 @@ struct _ClutterTextPrivate
   /* Where to draw the cursor */
   ClutterGeometry cursor_pos;
   ClutterColor cursor_color;
-  gint cursor_size;
+  guint cursor_size;
 
   gint max_length;
 
@@ -179,6 +179,7 @@ enum
   PROP_CURSOR_VISIBLE,
   PROP_CURSOR_COLOR,
   PROP_CURSOR_COLOR_SET,
+  PROP_CURSOR_SIZE,
   PROP_EDITABLE,
   PROP_SELECTABLE,
   PROP_ACTIVATABLE,
@@ -623,6 +624,10 @@ clutter_text_set_property (GObject      *gobject,
       clutter_text_set_cursor_color (self, g_value_get_boxed (value));
       break;
 
+    case PROP_CURSOR_SIZE:
+      clutter_text_set_cursor_size (self, g_value_get_int (value));
+      break;
+
     case PROP_EDITABLE:
       clutter_text_set_editable (self, g_value_get_boolean (value));
       break;
@@ -684,6 +689,10 @@ clutter_text_get_property (GObject    *gobject,
 
     case PROP_CURSOR_COLOR_SET:
       g_value_set_boolean (value, priv->cursor_color_set);
+      break;
+
+    case PROP_CURSOR_SIZE:
+      g_value_set_int (value, priv->cursor_size);
       break;
 
     case PROP_POSITION:
@@ -1582,6 +1591,21 @@ clutter_text_class_init (ClutterTextClass *klass)
                                 FALSE,
                                 CLUTTER_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_CURSOR_COLOR_SET, pspec);
+
+  /**
+   * ClutterText:cursor-size:
+   *
+   * The size of the cursor, in pixels. If set to -1 the size used will
+   * be the default cursor size of 2 pixels.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_int ("cursor-size",
+                            "Cursor Size",
+                            "The width of the cursor, in pixels",
+                            -1, G_MAXINT, DEFAULT_CURSOR_SIZE,
+                            CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_CURSOR_SIZE, pspec);
 
   /**
    * ClutterText:position:
@@ -2845,6 +2869,60 @@ clutter_text_set_cursor_position (ClutterText *self,
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+}
+
+/**
+ * clutter_text_set_cursor_size:
+ * @self: a #ClutterText
+ * @size: the size of the cursor, in pixels, or -1 to use the
+ *   default value
+ *
+ * Sets the size of the cursor of a #ClutterText. The cursor
+ * will only be visible if the #ClutterText:cursor-visible property
+ * is set to %TRUE.
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_cursor_size (ClutterText *self,
+                              gint         size)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (priv->cursor_size != size)
+    {
+      if (size < 0)
+        size = DEFAULT_CURSOR_SIZE;
+
+      priv->cursor_size = size;
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (self))
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+
+      g_object_notify (G_OBJECT (self), "cursor-size");
+    }
+}
+
+/**
+ * clutter_text_get_cursor_size:
+ * @self: a #ClutterText
+ *
+ * Retrieves the size of the cursor of a #ClutterText actor.
+ *
+ * Return value: the size of the cursor, in pixels
+ *
+ * Since: 1.0
+ */
+guint
+clutter_text_get_cursor_size (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), DEFAULT_CURSOR_SIZE);
+
+  return self->priv->cursor_size;
 }
 
 /**
