@@ -2266,6 +2266,24 @@ clutter_text_activate (ClutterText *self)
   return FALSE;
 }
 
+/**
+ * clutter_text_set_cursor_visible:
+ * @self: a #ClutterText
+ * @cursor_visible: whether the cursor should be visible
+ *
+ * Sets whether the cursor of a #ClutterText actor should be
+ * visible or not.
+ *
+ * The color of the cursor will be the same as the text color
+ * unless clutter_text_set_cursor_color() has been called.
+ *
+ * The size of the cursor can be set using clutter_text_set_cursor_size().
+ *
+ * The position of the cursor can be changed programmatically using
+ * clutter_text_set_cursor_position().
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_cursor_visible (ClutterText *self,
                                  gboolean     cursor_visible)
@@ -2287,6 +2305,16 @@ clutter_text_set_cursor_visible (ClutterText *self,
     }
 }
 
+/**
+ * clutter_text_get_cursor_visible:
+ * @self: a #ClutterText
+ *
+ * Retrieves whether the cursor of a #ClutterText actor is visible.
+ *
+ * Return value: %TRUE if the cursor is visible
+ *
+ * Since: 1.0
+ */
 gboolean
 clutter_text_get_cursor_visible (ClutterText *self)
 {
@@ -2295,6 +2323,18 @@ clutter_text_get_cursor_visible (ClutterText *self)
   return self->priv->cursor_visible;
 }
 
+/**
+ * clutter_text_set_cursor_color:
+ * @self: a #ClutterText
+ * @color: the color of the cursor, or %NULL to unset it
+ *
+ * Sets the color of the cursor of a #ClutterText actor.
+ *
+ * If @color is %NULL, the cursor color will be the same as the
+ * text color.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_cursor_color (ClutterText        *self,
                                const ClutterColor *color)
@@ -2320,7 +2360,15 @@ clutter_text_set_cursor_color (ClutterText        *self,
   g_object_notify (G_OBJECT (self), "cursor-color-set");
 }
 
-
+/**
+ * clutter_text_get_cursor_color:
+ * @self: a #ClutterText
+ * @color: return location for a #ClutterColor
+ *
+ * Retrieves the color of the cursor of a #ClutterText actor.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_get_cursor_color (ClutterText  *self,
                                ClutterColor *color)
