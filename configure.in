@@ -484,7 +484,9 @@ if test "x$enable_debug" = "xyes"; then
 fi
 
 # Warnings are there for a reason
-CFLAGS="$CFLAGS -Wall -Werror -ansi"
+if test "x$GCC" = "xyes"; then
+  CFLAGS="$CFLAGS -Wall -Werror -ansi"
+fi
 
 # Use gnome-doc-utils:
 GNOME_DOC_INIT([0.8.0])

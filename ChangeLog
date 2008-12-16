@@ -1,3 +1,7 @@
+2008-12-15  Erwann Chenede  <erwann.chenede@sun.com>
+
+	* configure.in: fix build on Solaris.  Closes #564123.
+
 2008-12-02  Thomas Thurman  <tthurman@gnome.org>
 
         * configure.in: Post-release bump to 2.25.55.
