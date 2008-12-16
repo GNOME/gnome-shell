@@ -2384,6 +2384,44 @@ clutter_text_get_cursor_color (ClutterText  *self,
 }
 
 /**
+ * clutter_text_set_selection:
+ * @self: a #ClutterText
+ * @start_pos: start of the selection, in characters
+ * @end_pos: end of the selection, in characters
+ *
+ * Selects the region of text between @start_pos and @end_pos.
+ *
+ * This function changes the position of the cursor to match
+ * @start_pos and the selection bound to match @end_pos.
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_selection (ClutterText *self,
+                            gssize       start_pos,
+                            gssize       end_pos)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (end_pos < 0)
+    end_pos = priv->n_chars;
+
+  start_pos = MIN (priv->n_chars, start_pos);
+  end_pos = MIN (priv->n_chars, end_pos);
+
+  g_object_freeze_notify (G_OBJECT (self));
+
+  clutter_text_set_cursor_position (self, start_pos);
+  clutter_text_set_selection_bound (self, end_pos);
+
+  g_object_thaw_notify (G_OBJECT (self));
+}
+
+/**
  * clutter_text_get_selection:
  * @self: a #ClutterText
  *

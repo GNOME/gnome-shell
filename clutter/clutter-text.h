@@ -177,6 +177,9 @@ gboolean              clutter_text_get_selectable      (ClutterText        *self
 void                  clutter_text_set_selection_bound (ClutterText        *self,
                                                         gint                selection_bound);
 gint                  clutter_text_get_selection_bound (ClutterText        *self);
+void                  clutter_text_set_selection       (ClutterText        *self,
+                                                        gssize              start_pos,
+                                                        gssize              end_pos);
 gchar *               clutter_text_get_selection       (ClutterText        *self);
 void                  clutter_text_set_text_visible    (ClutterText        *self,
                                                         gboolean            visible);
