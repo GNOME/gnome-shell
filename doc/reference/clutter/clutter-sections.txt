@@ -1721,6 +1721,7 @@ clutter_text_set_max_length
 clutter_text_get_max_length
 clutter_text_set_selectable
 clutter_text_get_selectable
+clutter_text_set_selection
 clutter_text_get_selection
 clutter_text_set_selection_bound
 clutter_text_get_selection_bound
