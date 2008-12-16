@@ -57,7 +57,7 @@
 #include "clutter-private.h"
 #include "clutter-units.h"
 
-#include "cogl-pango.h"
+#include "pango/cogl-pango.h"
 
 #define DEFAULT_FONT_NAME	"Sans 10"
 
@@ -93,13 +93,16 @@ struct _LayoutCache
    */
   PangoLayout *layout;
 
-  /* The width that used to generate this layout */
-  ClutterUnit  width;
+  /* The width that was used to generate this layout */
+  ClutterUnit width;
+
+  /* The height that was used to generate this layout */
+  ClutterUnit height;
 
   /* A number representing the age of this cache (so that when a
    * new layout is needed the last used cache is replaced)
    */
-  guint        age;
+  guint age;
 };
 
 struct _ClutterTextPrivate
@@ -247,7 +250,8 @@ clutter_text_clear_selection (ClutterText *self)
 
 static PangoLayout *
 clutter_text_create_layout_no_cache (ClutterText *text,
-                                     ClutterUnit  allocation_width)
+                                     ClutterUnit  allocation_width,
+                                     ClutterUnit  allocation_height)
 {
   ClutterTextPrivate *priv = text->priv;
   PangoLayout *layout;
@@ -300,44 +304,64 @@ clutter_text_create_layout_no_cache (ClutterText *text,
         pango_layout_set_markup (layout, priv->text, -1);
     }
 
-  if (allocation_width > 0 &&
-      (priv->ellipsize != PANGO_ELLIPSIZE_NONE || priv->wrap))
+  /* Cases, assuming ellipsize != NONE on actor:
+   *
+   * Width request: ellipsization can be set or not on layout,
+   * doesn't matter.
+   *
+   * Height request: ellipsization must never be set on layout
+   * if wrap=true, because we need to measure the wrapped
+   * height. It must always be set if wrap=false.
+   *
+   * Allocate: ellipsization must always be set.
+   *
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=560931
+   */
+  if (priv->ellipsize != PANGO_ELLIPSIZE_NONE)
     {
-      int layout_width, layout_height;
-
-      pango_layout_get_size (layout, &layout_width, &layout_height);
-
-      /* No need to set ellipsize or wrap if we already have enough
-       * space, since we don't want to make the layout wider than it
-       * would be otherwise.
-       */
-
-      if (CLUTTER_UNITS_FROM_PANGO_UNIT (layout_width) > allocation_width)
-        {
-          if (priv->ellipsize != PANGO_ELLIPSIZE_NONE)
-            {
-              gint width;
-
-              width = allocation_width > 0
-                ? CLUTTER_UNITS_TO_PANGO_UNIT (allocation_width)
-                : -1;
-
-              pango_layout_set_ellipsize (layout, priv->ellipsize);
-              pango_layout_set_width (layout, width);
-            }
-          else if (priv->wrap)
-            {
-              gint width;
-
-              width = allocation_width > 0
-                ? CLUTTER_UNITS_TO_PANGO_UNIT (allocation_width)
-                : -1;
-
-              pango_layout_set_wrap (layout, priv->wrap_mode);
-              pango_layout_set_width (layout, width);
-            }
-        }
+      if (allocation_height < 0 && priv->wrap)
+        ; /* must not set ellipsization on wrap=true height request */
+      else
+        pango_layout_set_ellipsize (layout, priv->ellipsize);
     }
+
+  if (priv->wrap)
+    pango_layout_set_wrap (layout, priv->wrap_mode);
+
+  if (allocation_width > 0)
+    {
+      gint width;
+
+      width = allocation_width > 0
+        ? CLUTTER_UNITS_FROM_PANGO_UNIT (allocation_width)
+        : -1;
+
+      pango_layout_set_width (layout, width);
+    }
+
+  /* Pango only uses height if ellipsization is enabled, so don't set
+   * height if ellipsize isn't set. Pango implicitly enables wrapping
+   * if height is set, so don't set height if wrapping is disabled.
+   * In other words, only set height if we want to both wrap then
+   * ellipsize.
+   *
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=560931 if this
+   * seems odd.
+   */
+  if (allocation_height > 0 &&
+      priv->wrap &&
+      priv->ellipsize != PANGO_ELLIPSIZE_NONE)
+    {
+      gint height;
+
+      height = allocation_height > 0
+        ? CLUTTER_UNITS_TO_PANGO_UNIT (allocation_height)
+        : -1;
+
+      pango_layout_set_height (layout, height);
+    }
+  else
+    pango_layout_set_height (layout, G_MAXINT);
 
   return layout;
 }
@@ -362,6 +386,7 @@ clutter_text_dirty_cache (ClutterText *text)
  * clutter_text_create_layout:
  * @text: a #ClutterText
  * @allocation_width: the allocation width
+ * @allocation_height: the allocation height
  *
  * Like clutter_text_create_layout_no_cache(), but will also ensure
  * the glyphs cache. If a previously cached layout generated using the
@@ -370,15 +395,17 @@ clutter_text_dirty_cache (ClutterText *text)
  */
 static PangoLayout *
 clutter_text_create_layout (ClutterText *text,
-                            ClutterUnit   allocation_width)
+                            ClutterUnit  allocation_width,
+                            ClutterUnit  allocation_height)
 {
   ClutterTextPrivate *priv = text->priv;
   LayoutCache *oldest_cache = priv->cached_layouts;
   gboolean found_free_cache = FALSE;
   int i;
 
-  /* Search for a cached layout with the same width and keep track of
-     the oldest one */
+  /* Search for a cached layout with the same width and keep
+   * track of the oldest one
+   */
   for (i = 0; i < N_CACHED_LAYOUTS; i++)
     {
       if (priv->cached_layouts[i].layout == NULL)
@@ -387,13 +414,16 @@ clutter_text_create_layout (ClutterText *text,
 	  found_free_cache = TRUE;
 	  oldest_cache = priv->cached_layouts + i;
 	}
-      /* If this cached layout is using the same width then we can
-	 just return that directly */
-      else if (priv->cached_layouts[i].width == allocation_width)
+      else if (priv->cached_layouts[i].width == allocation_width &&
+               priv->cached_layouts[i].height == allocation_height)
 	{
-	  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for width %i",
+          /* If this cached layout is using the same size then we can
+	   * just return that directly
+           */
+	  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache hit for size %i x %i",
 			text,
-                        CLUTTER_UNITS_TO_DEVICE (allocation_width));
+                        CLUTTER_UNITS_TO_DEVICE (allocation_width),
+                        CLUTTER_UNITS_TO_DEVICE (allocation_height));
 
 	  return priv->cached_layouts[i].layout;
 	}
@@ -404,9 +434,10 @@ clutter_text_create_layout (ClutterText *text,
         }
     }
 
-  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache miss for width %i",
+  CLUTTER_NOTE (ACTOR, "ClutterText: %p: cache miss for size %i x %i",
 		text,
-                CLUTTER_UNITS_TO_DEVICE (allocation_width));
+                CLUTTER_UNITS_TO_DEVICE (allocation_width),
+                CLUTTER_UNITS_TO_DEVICE (allocation_height));
 
   /* If we make it here then we didn't have a cached version so we
      need to recreate the layout */
@@ -414,13 +445,16 @@ clutter_text_create_layout (ClutterText *text,
     g_object_unref (oldest_cache->layout);
 
   oldest_cache->layout =
-    clutter_text_create_layout_no_cache (text, allocation_width);
+    clutter_text_create_layout_no_cache (text,
+                                         allocation_width,
+                                         allocation_height);
 
   cogl_pango_ensure_glyph_cache_for_layout (oldest_cache->layout);
 
   /* Mark the 'time' this cache was created and advance the time */
   oldest_cache->age = priv->cache_age++;
   oldest_cache->width = allocation_width;
+  oldest_cache->height = allocation_height;
 
   return oldest_cache->layout;
 }
@@ -1035,7 +1069,9 @@ clutter_text_paint (ClutterActor *self)
   CLUTTER_NOTE (PAINT, "painting text (text:`%s')", priv->text);
 
   clutter_actor_get_allocation_box (self, &alloc);
-  layout = clutter_text_create_layout (text, alloc.x2 - alloc.x1);
+  layout = clutter_text_create_layout (text,
+                                       alloc.x2 - alloc.x1,
+                                       alloc.y2 - alloc.y1);
 
   real_opacity = clutter_actor_get_paint_opacity (self)
                * priv->text_color.alpha
@@ -1062,7 +1098,7 @@ clutter_text_get_preferred_width (ClutterActor *self,
   gint logical_width;
   ClutterUnit layout_width;
 
-  layout = clutter_text_create_layout (text, -1);
+  layout = clutter_text_create_layout (text, -1, -1);
 
   pango_layout_get_extents (layout, NULL, &logical_rect);
 
@@ -1111,7 +1147,7 @@ clutter_text_get_preferred_height (ClutterActor *self,
       gint logical_height;
       ClutterUnit layout_height;
 
-      layout = clutter_text_create_layout (text, for_width);
+      layout = clutter_text_create_layout (text, for_width, -1);
 
       pango_layout_get_extents (layout, NULL, &logical_rect);
 
@@ -1124,7 +1160,12 @@ clutter_text_get_preferred_height (ClutterActor *self,
       layout_height = CLUTTER_UNITS_FROM_PANGO_UNIT (logical_height);
 
       if (min_height_p)
-        *min_height_p = layout_height;
+        {
+          if (text->priv->ellipsize)
+            *min_height_p = -1;
+          else
+            *min_height_p = layout_height;
+        }
 
       if (natural_height_p)
         *natural_height_p = layout_height;
@@ -1142,7 +1183,9 @@ clutter_text_allocate (ClutterActor          *self,
   /* Ensure that there is a cached layout with the right width so
    * that we don't need to create the text during the paint run
    */
-  clutter_text_create_layout (text, box->x2 - box->x1);
+  clutter_text_create_layout (text,
+                              box->x2 - box->x1,
+                              box->y2 - box->y1);
 
   parent_class = CLUTTER_ACTOR_CLASS (clutter_text_parent_class);
   parent_class->allocate (self, box, origin_changed);
@@ -2707,13 +2750,13 @@ clutter_text_set_text (ClutterText *self,
 PangoLayout *
 clutter_text_get_layout (ClutterText *self)
 {
-  ClutterUnit width;
+  ClutterUnit width, height;
 
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
 
-  width = clutter_actor_get_widthu (CLUTTER_ACTOR (self));
+  clutter_actor_get_sizeu (CLUTTER_ACTOR (self), &width, &height);
 
-  return clutter_text_create_layout (self, width);
+  return clutter_text_create_layout (self, width, height);
 }
 
 /**
