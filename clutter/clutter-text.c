@@ -1446,16 +1446,7 @@ clutter_text_real_activate (ClutterText         *self,
                             guint                keyval,
                             ClutterModifierType  modifiers)
 {
-  ClutterTextPrivate *priv = self->priv;
-
-  if (priv->activatable)
-    {
-      g_signal_emit (self, text_signals[ACTIVATE], 0);
-
-      return TRUE;
-    }
-
-  return FALSE;
+  return clutter_text_activate (self);
 }
 
 static inline void
