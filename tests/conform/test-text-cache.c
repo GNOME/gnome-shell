@@ -71,7 +71,17 @@ check_result (CallbackData *data, const char *note,
   if (memcmp (&test_extents, &data->label_extents, sizeof (PangoRectangle)))
     {
       if (g_test_verbose ())
-        g_print ("extents are different, ");
+        g_print ("extents are different: expected: %d, %d, %d, %d "
+                 "-> text: %d, %d, %d, %d\n",
+                 test_extents.x / 1024,
+                 test_extents.y / 1024,
+                 test_extents.width / 1024,
+                 test_extents.height / 1024,
+                 data->label_extents.x / 1024,
+                 data->label_extents.y / 1024,
+                 data->label_extents.width / 1024,
+                 data->label_extents.height / 1024);
+
       fail = TRUE;
     }
   else
@@ -121,27 +131,27 @@ do_tests (CallbackData *data)
   /* TEST 1: change the text */
   clutter_text_set_text (CLUTTER_TEXT (data->label), "Counter 0");
   pango_layout_set_text (data->test_layout, "Counter 0", -1);
-  check_result (data, "Change text", TRUE);
+  g_assert (check_result (data, "Change text", TRUE) == FALSE);
 
   /* TEST 2: change a single character */
   clutter_text_set_text (CLUTTER_TEXT (data->label), "Counter 1");
   pango_layout_set_text (data->test_layout, "Counter 1", -1);
-  check_result (data, "Change a single character", TRUE);
+  g_assert (check_result (data, "Change a single character", TRUE) == FALSE);
 
   /* TEST 3: move the label */
   clutter_actor_set_position (data->label, 10, 0);
-  check_result (data, "Move the label", FALSE);
+  g_assert (check_result (data, "Move the label", FALSE) == FALSE);
 
   /* TEST 4: change the font */
   clutter_text_set_font_name (CLUTTER_TEXT (data->label), "Serif 15");
   fd = pango_font_description_from_string ("Serif 15");
   pango_layout_set_font_description (data->test_layout, fd);
   pango_font_description_free (fd);
-  check_result (data, "Change the font", TRUE);
+  g_assert (check_result (data, "Change the font", TRUE) == FALSE);
 
   /* TEST 5: change the color */
   clutter_text_set_color (CLUTTER_TEXT (data->label), &red);
-  check_result (data, "Change the color", FALSE);
+  g_assert (check_result (data, "Change the color", FALSE) == FALSE);
 
   /* TEST 6: change the attributes */
   attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
@@ -154,19 +164,19 @@ do_tests (CallbackData *data)
   pango_layout_set_attributes (data->test_layout, attr_list_copy);
   pango_attr_list_unref (attr_list_copy);
   pango_attr_list_unref (attr_list);
-  check_result (data, "Change the attributes", TRUE);
+  g_assert (check_result (data, "Change the attributes", TRUE) == FALSE);
 
   /* TEST 7: change the text again */
   clutter_text_set_attributes (CLUTTER_TEXT (data->label), NULL);
   clutter_text_set_text (CLUTTER_TEXT (data->label), long_text);
   pango_layout_set_attributes (data->test_layout, NULL);
   pango_layout_set_text (data->test_layout, long_text, -1);
-  check_result (data, "Change the text again", TRUE);
+  g_assert (check_result (data, "Change the text again", TRUE) == FALSE);
 
   /* TEST 8: enable markup */
   clutter_text_set_use_markup (CLUTTER_TEXT (data->label), TRUE);
   pango_layout_set_markup (data->test_layout, long_text, -1);
-  check_result (data, "Enable markup", TRUE);
+  g_assert (check_result (data, "Enable markup", TRUE) == FALSE);
 
   /* This part can't be a test because Clutter won't restrict the
      width if wrapping and ellipsizing is disabled so the extents will
@@ -181,7 +191,7 @@ do_tests (CallbackData *data)
   clutter_text_set_ellipsize (CLUTTER_TEXT (data->label),
 			       PANGO_ELLIPSIZE_END);
   pango_layout_set_ellipsize (data->test_layout, PANGO_ELLIPSIZE_END);
-  check_result (data, "Enable ellipsize", TRUE);
+  g_assert (check_result (data, "Enable ellipsize", TRUE) == FALSE);
   clutter_text_set_ellipsize (CLUTTER_TEXT (data->label),
 			       PANGO_ELLIPSIZE_NONE);
   pango_layout_set_ellipsize (data->test_layout, PANGO_ELLIPSIZE_NONE);
@@ -190,13 +200,13 @@ do_tests (CallbackData *data)
   /* TEST 10: enable line wrap */
   clutter_text_set_line_wrap (CLUTTER_TEXT (data->label), TRUE);
   pango_layout_set_wrap (data->test_layout, PANGO_WRAP_WORD);
-  check_result (data, "Enable line wrap", TRUE);
+  g_assert (check_result (data, "Enable line wrap", TRUE) == FALSE);
 
   /* TEST 11: change wrap mode */
   clutter_text_set_line_wrap_mode (CLUTTER_TEXT (data->label),
 				    PANGO_WRAP_CHAR);
   pango_layout_set_wrap (data->test_layout, PANGO_WRAP_CHAR);
-  check_result (data, "Change wrap mode", TRUE);
+  g_assert (check_result (data, "Change wrap mode", TRUE) == FALSE);
 
   /* TEST 12: enable justify */
   clutter_text_set_justify (CLUTTER_TEXT (data->label), TRUE);
@@ -205,12 +215,12 @@ do_tests (CallbackData *data)
      justification after setting the text but this fixes it.
      See http://bugzilla.gnome.org/show_bug.cgi?id=551865 */
   pango_layout_context_changed (data->test_layout);
-  check_result (data, "Enable justify", TRUE);
+  g_assert (check_result (data, "Enable justify", TRUE) == FALSE);
 
   /* TEST 13: change alignment */
   clutter_text_set_alignment (CLUTTER_TEXT (data->label), PANGO_ALIGN_RIGHT);
   pango_layout_set_alignment (data->test_layout, PANGO_ALIGN_RIGHT);
-  check_result (data, "Change alignment", TRUE);
+  g_assert (check_result (data, "Change alignment", TRUE) == FALSE);
 
   clutter_main_quit ();
 
