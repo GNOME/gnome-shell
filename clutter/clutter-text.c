@@ -2240,6 +2240,41 @@ clutter_text_get_activatable (ClutterText *self)
   return self->priv->activatable;
 }
 
+/**
+ * clutter_text_activate:
+ * @self: a #ClutterText
+ *
+ * Emits the #ClutterText::activate signal, if @self has been set
+ * as activatable using clutter_text_set_activatable().
+ *
+ * This function can be used to emit the ::activate signal inside
+ * a #ClutterActor::captured-event or #ClutterActor::key-press-event
+ * signal handlers before the default signal handler for the
+ * #ClutterText is invoked.
+ *
+ * Return value: %TRUE if the ::activate signal has been emitted,
+ *   and %FALSE otherwise
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_text_activate (ClutterText *self)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
+
+  priv = self->priv;
+
+  if (priv->activatable)
+    {
+      g_signal_emit (self, text_signals[ACTIVATE], 0);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 void
 clutter_text_set_cursor_visible (ClutterText *self,
                                  gboolean     cursor_visible)
