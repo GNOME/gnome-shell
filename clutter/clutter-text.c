@@ -2383,19 +2383,30 @@ clutter_text_get_cursor_color (ClutterText  *self,
   *color = priv->cursor_color;
 }
 
+/**
+ * clutter_text_get_selection:
+ * @self: a #ClutterText
+ *
+ * Retrieves the currently selected text.
+ *
+ * Return value: a newly allocated string containing the currently
+ *   selected text, or %NULL. Use g_free() to free the returned
+ *   string.
+ *
+ * Since: 1.0
+ */
 gchar *
-clutter_text_get_selection (ClutterText *text)
+clutter_text_get_selection (ClutterText *self)
 {
   ClutterTextPrivate *priv;
-  const gchar *utf8 = clutter_text_get_text (text);
-  gchar       *str;
-  gint         len;
-  gint         start_index;
-  gint         end_index;
-  gint         start_offset;
-  gint         end_offset;
+  gchar *str;
+  gint len;
+  gint start_index, end_index;
+  gint start_offset, end_offset;
 
-  priv = text->priv;
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), NULL);
+
+  priv = self->priv;
 
   start_index = priv->position;
   end_index = priv->selection_bound;
@@ -2410,15 +2421,28 @@ clutter_text_get_selection (ClutterText *text)
       end_index = temp;
     }
 
-  start_offset = offset_to_bytes (utf8, start_index);
-  end_offset = offset_to_bytes (utf8, end_index);
+  start_offset = offset_to_bytes (priv->text, start_index);
+  end_offset = offset_to_bytes (priv->text, end_index);
   len = end_offset - start_offset;
 
   str = g_malloc (len + 1);
-  g_utf8_strncpy (str, utf8 + start_offset, end_index-start_index);
+  g_utf8_strncpy (str, priv->text + start_offset, end_index - start_index);
+
   return str;
 }
 
+/**
+ * clutter_text_set_selection_bound:
+ * @self: a #ClutterText
+ * @selection_bound: the position of the end of the selection, in characters
+ *
+ * Sets the other end of the selection, starting from the current
+ * cursor position.
+ *
+ * If @selection_bound is -1, the selection unset.
+ *
+ * Since: 1.0
+ */
 void
 clutter_text_set_selection_bound (ClutterText *self,
                                   gint         selection_bound)
@@ -2440,6 +2464,17 @@ clutter_text_set_selection_bound (ClutterText *self,
     }
 }
 
+/**
+ * clutter_text_get_selection_bound:
+ * @self: a #ClutterText
+ *
+ * Retrieves the other end of the selection of a #ClutterText actor,
+ * in characters from the current cursor position.
+ *
+ * Return value: the position of the other end of the selection
+ *
+ * Since: 1.0
+ */
 gint
 clutter_text_get_selection_bound (ClutterText *self)
 {
