@@ -1664,6 +1664,9 @@ clutter_text_get_cursor_visible
 clutter_text_set_cursor_size
 clutter_text_get_cursor_size
 
+<SUBSECTION>
+clutter_text_activate
+
 <SUBSECTION Standard>
 CLUTTER_IS_TEXT
 CLUTTER_IS_TEXT_CLASS
