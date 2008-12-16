@@ -211,11 +211,6 @@ offset_to_bytes (const gchar *text,
   if (pos < 0)
     return strlen (text);
 
-#if 0
-  if (pos < 1)
-    return pos;
-#endif
-
   c = g_utf8_next_char (text);
   j = 1;
   len = strlen (text);
@@ -1307,8 +1302,12 @@ clutter_text_real_line_start (ClutterText         *self,
 
   layout = clutter_text_get_layout (self);
 
-  pango_layout_index_to_line_x (layout,
-                                offset_to_bytes (priv->text, priv->position),
+  if (priv->position == 0)
+    index_ = 0;
+  else
+    index_ = offset_to_bytes (priv->text, priv->position);
+
+  pango_layout_index_to_line_x (layout, index_,
                                 0,
                                 &line_no, NULL);
 
@@ -1342,7 +1341,11 @@ clutter_text_real_line_end (ClutterText         *self,
   gint position;
 
   layout = clutter_text_get_layout (self);
-  index_ = offset_to_bytes (priv->text, priv->position);
+
+  if (priv->position == 0)
+    index_ = 0;
+  else
+    index_ = offset_to_bytes (priv->text, priv->position);
 
   pango_layout_index_to_line_x (layout, index_,
                                 0,
@@ -2145,6 +2148,7 @@ clutter_text_get_selection (ClutterText *text)
 
   if (end_index == start_index)
     return g_strdup ("");
+
   if (end_index < start_index)
     {
       gint temp = start_index;
