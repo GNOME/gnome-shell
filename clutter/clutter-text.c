@@ -1449,24 +1449,6 @@ clutter_text_real_activate (ClutterText         *self,
   return FALSE;
 }
 
-static gboolean
-clutter_text_real_page_up (ClutterText         *self,
-                           const gchar         *action,
-                           guint                keyval,
-                           ClutterModifierType  modifiers)
-{
-  return FALSE;
-}
-
-static gboolean
-clutter_text_real_page_down (ClutterText         *self,
-                             const gchar         *action,
-                             guint                keyval,
-                             ClutterModifierType  modifiers)
-{
-  return FALSE;
-}
-
 static void
 clutter_text_add_move_binding (ClutterBindingPool *pool,
                                const gchar        *action,
@@ -1849,23 +1831,6 @@ clutter_text_class_init (ClutterTextClass *klass)
   clutter_binding_pool_install_action (binding_pool, "line-end",
                                        CLUTTER_KP_End, 0,
                                        G_CALLBACK (clutter_text_real_line_end),
-                                       NULL, NULL);
-
-  clutter_binding_pool_install_action (binding_pool, "page-up",
-                                       CLUTTER_Page_Up, 0,
-                                       G_CALLBACK (clutter_text_real_page_up),
-                                       NULL, NULL);
-  clutter_binding_pool_install_action (binding_pool, "page-up",
-                                       CLUTTER_KP_Page_Up, 0,
-                                       G_CALLBACK (clutter_text_real_page_up),
-                                       NULL, NULL);
-  clutter_binding_pool_install_action (binding_pool, "page-down",
-                                       CLUTTER_Page_Down, 0,
-                                       G_CALLBACK (clutter_text_real_page_down),
-                                       NULL, NULL);
-  clutter_binding_pool_install_action (binding_pool, "page-up",
-                                       CLUTTER_KP_Page_Down, 0,
-                                       G_CALLBACK (clutter_text_real_page_down),
                                        NULL, NULL);
 
   clutter_binding_pool_install_action (binding_pool, "delete-next",
