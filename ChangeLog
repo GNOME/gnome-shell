@@ -1,3 +1,7 @@
+2008-12-16  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.55 release.
+
 2008-12-15  Erwann Chenede  <erwann.chenede@sun.com>
 
 	* configure.in: fix build on Solaris.  Closes #564123.

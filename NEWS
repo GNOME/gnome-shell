@@ -1,3 +1,13 @@
+2.25.55
+=======
+
+Thanks to Erwann Chenede for improvements in this version.
+
+  - Fix build on Solaris (Erwann) (#564123)
+
+Translations
+  Mattias Põldaru (et), Luca Ferretti (it)
+
 2.25.34
 =======
 
