@@ -811,8 +811,15 @@ cursor_paint (ClutterText *self)
           gint end_index;
           gint line_no;
 
-          start_index = offset_to_bytes (utf8, priv->position);
-          end_index = offset_to_bytes (utf8, priv->selection_bound);
+          if (priv->position == 0)
+            start_index = 0;
+          else
+            start_index = offset_to_bytes (utf8, priv->position);
+
+          if (priv->selection_bound == 0)
+            end_index = 0;
+          else
+            end_index = offset_to_bytes (utf8, priv->selection_bound);
 
           if (start_index > end_index)
             {
