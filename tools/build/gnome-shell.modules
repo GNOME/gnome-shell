@@ -10,8 +10,8 @@
   </repository>
   <repository type="git" name="fishsoup.net"
       href="git://git.fishsoup.net/"/>
-  <repository type="svn" name="svn.o-hand.com"
-      href="http://svn.o-hand.com/repos/"/>
+  <repository type="git" name="git.clutter-project.org"
+      href="git://git.clutter-project.org/"/>
 
   <autotools id="gobject-introspection">
     <branch/>
@@ -37,12 +37,12 @@
   </autotools>
 
   <autotools id="clutter">
-    <branch repo="svn.o-hand.com" module="clutter/branches/clutter-0-8"/>
+    <branch repo="git.clutter-project.org" module="clutter" revision="clutter-0-8"/>
   </autotools>
-  
+
   <autotools id="clutter-cairo">
-    <branch repo="svn.o-hand.com" module="clutter/branches/clutter-cairo-0-8"/>
-  </autotools>  
+    <branch repo="git.clutter-project.org" module="clutter-cairo" revision="clutter-cairo-0-8"/>
+  </autotools>
 
   <autotools id="metacity-clutter" autogenargs="--with-clutter">
     <branch repo="fishsoup.net" module="metacity-clutter" revision="clutter"/>
