@@ -243,6 +243,9 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
       priv->cr_surface_data = NULL;
     }
 
+  if (priv->width == 0 || priv->height == 0)
+    return;
+
 #if CAIRO_VERSION > 106000
   priv->rowstride = cairo_format_stride_for_width (priv->format, priv->width);
 #else
@@ -287,34 +290,15 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
 				     4, 0, NULL);
 }
 
-static GObject *
-clutter_cairo_texture_constructor (GType                  gtype,
-                                   guint                  n_properties,
-                                   GObjectConstructParam *properties)
+static void
+clutter_cairo_texture_constructed (GObject *gobject)
 {
-  GObjectClass               *parent_class;
-  GObject                    *obj;
-  ClutterCairoTexture        *cairo;
-  ClutterCairoTexturePrivate *priv;
-
-  parent_class = G_OBJECT_CLASS (clutter_cairo_texture_parent_class);
-  obj = parent_class->constructor (gtype, n_properties, properties);
-
-  /* Now all of the object properties are set */
-  cairo = CLUTTER_CAIRO_TEXTURE (obj);
-  priv = cairo->priv;
-
-  if (!priv->width || !priv->height)
-    {
-      g_warning ("Unable to create the Cairo surface: invalid size (%dx%d)",
-                 priv->width,
-                 priv->height);
-      return obj;
-    }
+  ClutterCairoTexture *cairo = CLUTTER_CAIRO_TEXTURE (gobject);
 
   clutter_cairo_texture_surface_resize_internal (cairo);
 
-  return obj;
+  if (G_OBJECT_CLASS (clutter_cairo_texture_parent_class)->constructed)
+    G_OBJECT_CLASS (clutter_cairo_texture_parent_class)->constructed (gobject);
 }
 
 static void
@@ -356,7 +340,7 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
   gobject_class->finalize     = clutter_cairo_texture_finalize;
   gobject_class->set_property = clutter_cairo_texture_set_property;
   gobject_class->get_property = clutter_cairo_texture_get_property;
-  gobject_class->constructor  = clutter_cairo_texture_constructor;
+  gobject_class->constructed  = clutter_cairo_texture_constructed;
 
   actor_class->get_preferred_width =
     clutter_cairo_texture_get_preferred_width;
@@ -593,6 +577,18 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
 
   if (height < 0)
     height = priv->height;
+
+  if (width == 0 || height == 0)
+    {
+      g_warning ("Unable to create a context for an image surface of "
+                 "width %d and height %d. Set the surface size to be "
+                 "at least 1 pixel by 1 pixel.",
+                 width, height);
+      return NULL;
+    }
+
+  if (!priv->cr_surface)
+    return NULL;
 
   ctxt = g_new0 (ClutterCairoTextureContext, 1);
   ctxt->cairo = self;
