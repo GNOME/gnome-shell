@@ -6172,7 +6172,7 @@ clutter_actor_move_anchor_point (ClutterActor *self,
  * clutter_actor_get_anchor_point:
  * @self: a #ClutterActor
  * @anchor_x: return location for the X coordinate of the anchor point
- * @anchor_y: return location for the y coordinate of the anchor point
+ * @anchor_y: return location for the Y coordinate of the anchor point
  *
  * Gets the current anchor point of the @actor in pixels.
  *
@@ -6280,8 +6280,8 @@ clutter_actor_move_anchor_pointu (ClutterActor *self,
 /**
  * clutter_actor_get_anchor_pointu:
  * @self: a #ClutterActor
- * @anchor_x: return location for the X coordinace of the anchor point
- * @anchor_y: return location for the X coordinace of the anchor point
+ * @anchor_x: return location for the X coordinate of the anchor point
+ * @anchor_y: return location for the Y coordinate of the anchor point
  *
  * Gets the current anchor point of the @actor in #ClutterUnit<!-- -->s.
  *
