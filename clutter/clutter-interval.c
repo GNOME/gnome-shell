@@ -206,7 +206,7 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
         ia = g_value_get_uint (initial);
         ib = g_value_get_uint (final);
 
-        res = (factor * (ib - ia)) + ia;
+        res = (factor * (ib - (gdouble) ia)) + ia;
 
         g_value_set_uint (value, res);
       }
@@ -219,7 +219,7 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
         ia = g_value_get_uchar (initial);
         ib = g_value_get_uchar (final);
 
-        res = (factor * (ib - ia)) + ia;
+        res = (factor * (ib - (gdouble) ia)) + ia;
 
         g_value_set_uchar (value, res);
       }
