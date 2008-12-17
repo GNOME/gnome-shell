@@ -112,6 +112,9 @@ metacity_SOURCES += 					\
 	compositor/mutter/mutter-plugin-manager.h	\
 	compositor/mutter/tidy/tidy-texture-frame.c	\
 	compositor/mutter/tidy/tidy-texture-frame.h	\
+	compositor/mutter/mutter-module.c		\
+	compositor/mutter/mutter-module.h		\
+	compositor/mutter/mutter-plugin.c		\
 	include/mutter-plugin.h
 endif
 

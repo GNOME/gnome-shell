@@ -348,6 +348,11 @@ mutter_window_constructed (GObject *object)
     }
 
   priv->actor = mutter_shaped_texture_new ();
+
+  if (!clutter_glx_texture_pixmap_using_extension (
+	    CLUTTER_GLX_TEXTURE_PIXMAP (priv->actor)))
+      g_warning ("NOTE: Not using GLX TFP!\n");
+
   clutter_container_add_actor (CLUTTER_CONTAINER (self), priv->actor);
 
   update_shape ((Mutter *)
@@ -2291,6 +2296,10 @@ clutter_cmp_update_workspace_geometry (MetaCompositor *compositor,
 				       MetaWorkspace  *workspace)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+#if 0
+  /* FIXME -- should do away with this function in favour of MetaWorkspace
+   * signal.
+   */
   MetaScreen     *screen = meta_workspace_get_screen (workspace);
   MetaCompScreen *info;
   MutterPluginManager *mgr;
@@ -2302,6 +2311,7 @@ clutter_cmp_update_workspace_geometry (MetaCompositor *compositor,
     return;
 
   mutter_plugin_manager_update_workspace (mgr, workspace);
+#endif
 #endif
 }
 
