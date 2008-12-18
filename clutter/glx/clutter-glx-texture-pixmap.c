@@ -696,6 +696,13 @@ clutter_glx_texture_pixmap_create_glx_pixmap (ClutterGLXTexturePixmap *texture)
 
   attribs[i++] = None;
 
+  /* Note: some drivers (e.g. Nvidia) get upset if you effectivly create a glx
+   * pixmap for the same server side object, even though you might have unique
+   * client side names, we currently avoid hitting this problem by destroying
+   * the current glx pixmap first */
+  if (priv->glx_pixmap)
+    clutter_glx_texture_pixmap_free_glx_pixmap (texture);
+
   clutter_x11_trap_x_errors ();
   glx_pixmap = glXCreatePixmap (dpy,
                                 *fbconfig,
