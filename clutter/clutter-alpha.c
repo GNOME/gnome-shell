@@ -1282,7 +1282,7 @@ clutter_cubic_bezier (ClutterAlpha *alpha,
    * B(t) =        (1 - t)^3 * P_0
    *      + 3t   * (1 - t)^2 * P_1
    *      + 3t^2 * (1 - t)   * P_2
-   *      + 3t^3             * P_3      (with t included in [0, 1])
+   *      + t^3              * P_3      (with t included in [0, 1])
    *
    * the P_0 and P_3 points are set to (0, 0) and (1, 1) respectively,
    * and the curve never passes through P_1 and P_2 - with these two
@@ -1294,14 +1294,14 @@ clutter_cubic_bezier (ClutterAlpha *alpha,
    *
    * B(t) = 3t   * (1 - t)^2 * P_1
    *      + 3t^2 * (1 - t)   * P_2
-   *      + 3t^3             * P_3      (with t included in [0, 1])
+   *      + t^3              * P_3      (with t included in [0, 1])
    *
    * and, similarly, since the final point is (1, 1) we can simplify
    * it further to:
    *
    * B(t) = 3t   * (1 - t)^2 * P_1
    *      + 3t^2 * (1 - t)   * P_2
-   *      + 3t^3                        (with t included in [0, 1])
+   *      + t^3                         (with t included in [0, 1])
    *
    * since an alpha function has only a time parameter and we have two
    * coordinates for each point, we pass the time as the first
@@ -1314,11 +1314,11 @@ clutter_cubic_bezier (ClutterAlpha *alpha,
 
   b_t = 3 * t          * pow (1 - t, 2) * x_1
       + 3 * pow (t, 2) * (1 - t)        * x_2
-      + 3 * pow (t, 3);
+      + pow (t, 3);
 
   res = 3 * b_t          * pow (1 - b_t, 2) * y_1
       + 3 * pow (b_t, 2) * (1 - b_t)        * y_2
-      + 3 * pow (b_t, 3);
+      + pow (b_t, 3);
 
   return res;
 }
