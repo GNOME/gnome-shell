@@ -2854,7 +2854,6 @@ meta_prefs_set_clutter_plugins (GSList *list)
 void
 meta_prefs_override_clutter_plugins (GSList *list)
 {
-  GError *err = NULL;
   GSList *l;
 
   clutter_plugins_overridden = TRUE;

@@ -355,6 +355,53 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/general/clutter_disabled</key>
+      <applyto>/apps/metacity/general/clutter_disabled</applyto>
+      <owner>metacity</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Clutter Disabled</short>
+        <long>
+          Determines whether Clutter compositing backend should be disabled.
+          Change to this option will not take effect until Metacity is
+          restarted.
+        </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/general/clutter_plugins</key>
+      <applyto>/apps/metacity/general/clutter_plugins</applyto>
+      <owner>metacity</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[default]</default>
+      <locale name="C">
+        <short>Clutter Plugins</short>
+        <long>
+          Plugins to load for the Clutter-based compositing manager.
+        </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/general/live_hidden_windows</key>
+      <applyto>/apps/metacity/general/live_hidden_windows</applyto>
+      <owner>metacity</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+        <short>Live Hidden Windows</short>
+        <long>
+          Determines whether hidden windows (i.e., minimized windows and
+          windows on other workspaces than the current one) should be kept
+          alive.
+        </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/workspace_names/name</key>
       <applyto>/apps/metacity/workspace_names/name_1</applyto>
       <applyto>/apps/metacity/workspace_names/name_2</applyto>
