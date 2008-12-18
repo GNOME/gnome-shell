@@ -268,7 +268,7 @@ patch or commit. Never use empty lines at the beginning or at the end of
 a file.
 
 Do enable the default git pre-commit hook that detect trailing
-whitespace for you and help you to avoid corrupting cairo's tree with
+whitespace for you and help you to avoid corrupting Clutter's tree with
 it. Do that as follows:
 
   chmod a+x .git/hooks/pre-commit
