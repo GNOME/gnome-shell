@@ -1,0 +1,379 @@
+Clutter Coding Style
+--------------------
+
+This document is intended to be a short description of the preferred
+coding style to be used for the Clutter source code.
+
+Coding style is a matter of consistency, readability and maintainance;
+coding style is also completely arbitrary and a matter of taste. This
+document will use examples at the very least to provide authoritative
+and consistent answers to common questions regarding the coding style,
+and will also try to identify the allowed exceptions.
+
+The examples will show the preferred coding style; the negative examples
+will be clearly identified. Please, don't submit code to Clutter that
+looks like any of these.
+
+Part of the rationales for these coding style rules are available either
+in the kernel CodingStyle document or in Cairo's CODING_STYLE one.
+
+When in doubt, check the surrounding code and try to imitate it.
+
++ Line width
+
+The maximum line width is 80 characters, whenever possible.
+
+Longer lines are usually an indication that you either need a function
+or a pre-processor macro.
+
++ Indentation
+
+Each new level is indented 2 or more spaces than the previous level:
+
+  if (condition)
+    single_statement ();
+
+This can only be achieved using space characters. It may not be achieved
+using tab characters alone, or using a combination of spaces and tabs.
+
+Do not change the editor's configuration to change the meaning of a
+tab character (see below); code using tabs to indent will not be accepted
+into Clutter.
+
+Even if two spaces for each indentation level allows deeper nesting than
+8 spaces, Clutter favours self-documenting function names that can take
+quite some space. For this reason you should avoid deeply nested code.
+
++ Tab characters
+
+The tab character must always be expanded to spaces. If a literal
+tab must be used inside the source, the tab must always be interpreted
+according to its traditional meaning:
+
+        Advance to the next column which is a multiple of 8.
+
++ Braces
+
+Curly braces should not be used for single statement blocks:
+
+  if (condition)
+    single_statement ();
+  else
+    another_single_statement (arg1);
+
+In case of multiple statements, curly braces should be put on another
+indentation level:
+
+  if (condition)
+    {
+      statement_1 ();
+      statement_2 ();
+      statement_3 ();
+    }
+
+If the condition or the arguments of the single statement need to be
+split on multiple lines, like:
+
+  if (condition_1 &&
+      (condition_2 || condition_3))
+    {
+      single_statement ();
+    }
+  else
+    {
+      another_single_statement (very_long_argument_1,
+                                argument_2,
+                                &return_argument_1,
+                                &return_argument_2);
+    }
+
+In general, new blocks should be placed on a new indentation level,
+like:
+
+  int retval = 0;
+
+  statement_1 ();
+  statement_2 ();
+
+  {
+    int var1 = 42;
+    gboolean res = FALSE;
+
+    res = statement_3 (var1);
+
+    retval = res == TRUE ? -1 : 1;
+  }
+
+While curly braces for function definitions should rest on a new line
+they should not add an indentation level:
+
+  /* valid */
+  static void
+  my_function (int argument)
+  {
+    do_my_things ();
+  }
+
+  /* invalid */
+  static void
+  my_function (int argument) {
+    do_my_things ();
+  }
+
+  /* invalid */
+  static void
+  my_function (int argument)
+    {
+      do_my_things ();
+    }
+
+Curly braces must not be placed on the same line as a condition:
+
+  if (condition) {
+    statement_1 ();
+    statement_2 ();
+  }
+
++ Functions
+
+Functions should be declared by placing the returned value on a separate
+line from the function name:
+
+  void
+  my_function (void)
+  {
+  }
+
+The arguments list must be broken into a new line for each argument,
+with the argument names right aligned, taking into account pointers:
+
+  void
+  my_function (some_type_t     type,
+               another_type_t *a_pointer,
+               final_type_t    another_type)
+  {
+  }
+
+The alignment also holds when invoking a function without breaking the
+80 characters limit:
+
+  align_function_arguments (first_argument,
+                            second_argument,
+                            third_argument);
+
+To respect the 80 characters limit do not break the function name from
+the arguments:
+
+  /* invalid */
+  a_very_long_function_name_with_long_parameters
+    (argument_the_first, argument_the_second);
+
+  /* valid */
+  first_a = argument_the_first;
+  second_a = argument_the_second;
+  a_very_long_function_name_with_long_parameters (first_a, second_a);
+
++ Whitespace
+
+Always put a space before a parenthesis but never after:
+
+  /* valid */
+  if (condition)
+    do_my_things ();
+
+  /* valid */
+  switch (condition)
+    {
+    }
+
+  /* invalid */
+  if(condition)
+    do_my_things();
+
+  /* invalid */
+  if ( condition )
+    do_my_things ( );
+
+A switch() should open a block on a new indentation level, and each case
+should start on the same indentation level as the curly braces, with the
+case block on a new indentation level:
+
+  /* valid */
+  switch (condition)
+    {
+    case FOO:
+      do_foo ();
+      break;
+
+    case BAR:
+      do_bar ();
+      break;
+    }
+
+  /* invalid */
+  switch (condition) {
+    case FOO: do_foo (); break;
+    case BAR: do_bar (); break;
+  }
+
+If a case block needs to declare new variables, the same rules as the
+inner blocks (see above) apply; the break statement should be placed
+outside of the inner block:
+
+  switch (condition)
+    {
+    case FOO:
+      {
+        int foo;
+
+        foo = do_foo ();
+      }
+      break;
+
+    ...
+    }
+
+When declaring a structure type use newlines to separate logical sections
+of the structure:
+
+  struct _ClutterActorPrivate
+  {
+    /* fixed position */
+    ClutterUnit fixed_x;
+    ClutterUnit fixed_y;
+
+    ClutterRequestMode request_mode;
+
+    /* requisition sizes */
+    ClutterUnit request_width_for_height;
+    ClutterUnit request_min_width;
+    ClutterUnit request_natural_width;
+    ClutterUnit request_height_for_width;
+    ClutterUnit request_min_height;
+    ClutterUnit request_natural_height;
+
+    ClutterActorBox allocation;
+
+    ...
+  };
+
+Do not eliminate whitespace and newlines just because something would
+fit on 80 characters:
+
+  /* invalid */
+  if (condition) foo (); else bar ();
+
+Do eliminate trailing whitespace on any line, preferably as a separate
+patch or commit. Never use empty lines at the beginning or at the end of
+a file.
+
+Do enable the default git pre-commit hook that detect trailing
+whitespace for you and help you to avoid corrupting cairo's tree with
+it. Do that as follows:
+
+  chmod a+x .git/hooks/pre-commit
+
+You might also find the git-stripspace utility helpful which acts as a
+filter to remove trailing whitespace as well as initial, final, and
+duplicate blank lines.
+
++ Headers
+
+Headers are special, for Clutter, in that they don't have to obey the
+80 characters limit. The only major rule for headers is that the functions
+definition should be vertically aligned in three columns:
+
+  return value          function_name           (type   argument,
+                                                 type   argument,
+                                                 type   argument);
+
+The maximum width of each column is given by the longest element in the
+column:
+
+  void                  clutter_type_set_property (ClutterType  *type,
+                                                   const gchar  *value,
+                                                   GError      **error);
+  G_CONST_RETURN gchar *clutter_type_get_property (ClutterType  *type);
+
+Public headers should never be included directly:
+
+  #if !defined(__CLUTTER_H_INSIDE__) && !defined(CLUTTER_COMPILATION)
+  #error "Only <clutter/clutter.h> can be included directly."
+  #endif
+
+Public headers should also have inclusion guards (for internal usage)
+and C++ guards:
+
+  #ifndef __CLUTTER_HEADER_H__
+  #define __CLUTTER_HEADER_H__
+
+  #include <clutter/clutter-actor.h>
+
+  G_BEGIN_DECLS
+
+  ...
+
+  G_END_DECLS
+
+  #endif /* __CLUTTER_HEADER_H__ */
+
++ GObject
+
+GObject classes definition and implementation require some additional
+coding style notices.
+
+Typedef declarations should be places at the beginning of the file:
+
+  typedef struct _ClutterActor          ClutterActor;
+  typedef struct _ClutterActorPrivate   ClutterActorPrivate;
+  typedef struct _ClutterActorClass     ClutterActorClass;
+
+This includes enumeration types:
+
+  typedef enum
+  {
+    CLUTTER_REQUEST_WIDTH_FOR_HEIGHT,
+    CLUTTER_REQUEST_HEIGHT_FOR_WIDTH
+  } ClutterRequestMode;
+
+And callback types:
+
+  typedef void (* ClutterCallback) (ClutterActor *actor,
+                                    gpointer      user_data);
+
+Instance structures should only contain the parent type and a pointer to a
+private data structure:
+
+  struct _ClutterRectangle
+  {
+    ClutterActor parent_instance;
+
+    ClutterRectanglePrivate *priv;
+  };
+
+All the properties should be stored inside the private data structure, which
+is defined inside the source file.
+
+The private data structure should only be accessed internally using the
+pointer inside the instance structure, and never using the
+G_TYPE_INSTANCE_GET_PRIVATE() macro or the g_type_instance_get_private()
+function.
+
+Always use the G_DEFINE_TYPE(), G_DEFINE_TYPE_WITH_CODE() macros, or
+their abstract variants G_DEFINE_ABSTRACT_TYPE() and
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE().
+
++ Memory allocation
+
+When dynamically allocating data on the heap either use g_new() or,
+if allocating multiple small data structures, g_slice_new().
+
+Public structure types should always be returned after being zero-ed,
+either explicitly, or by using g_new0() or g_slice_new0().
+
++ Macros
+
+Try to avoid macros unless strictly necessary. Remember to #undef them
+at the end of a block or a series of functions needing them.
+
+Inline functions are usually preferable to macros.

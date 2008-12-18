@@ -3,7 +3,7 @@ GENERAL
 
 General notes and rules on clutter core hacking;
 
- - GNU style indentation, please try hard to wrap at 80 chars.
+ - Follow the CODING_STYLE document.
 
  - All non static public API funcs should be documented in the source files
    via gtk-doc. Structures, enumerations and macros should be documented in
@@ -31,7 +31,7 @@ General notes and rules on clutter core hacking;
    ClutterUnit should always be used internally.
 
  - Properties should always be in floating point (never fixed point).
-   The preferred precision is double. 
+   The preferred precision is double.
 
  - Properties should use pixels whenever is possible. If sub-pixel
    precision is fundamental, use ClutterParamSpecUnit and
@@ -54,7 +54,9 @@ General notes and rules on clutter core hacking;
 
  - Use CLUTTER_NOTE() macro for debug statements.
 
- - New features should also include an exhaustive test unit under tests.
+ - New features should also include an exhaustive test unit under
+   tests/conform and, eventually, a user-interactive tes under
+   tests/interactive.
 
 RELEASES
 ========
