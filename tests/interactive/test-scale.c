@@ -16,17 +16,24 @@ static const ClutterGravity gravities[] = {
 };
 
 static gint gindex = 0;
+static ClutterActor *label;
 
 static void
-on_timeline_completed (ClutterTimeline *cluttertimeline,
-		       gpointer         data)
+set_next_gravity (ClutterActor *actor)
 {
-  ClutterActor *actor = CLUTTER_ACTOR (data);
+  ClutterGravity gravity = gravities[gindex];
+  GEnumClass *eclass;
+  GEnumValue *evalue;
+
+  clutter_actor_move_anchor_point_from_gravity (actor, gravities[gindex]);
+
+  eclass = g_type_class_ref (CLUTTER_TYPE_GRAVITY);
+  evalue = g_enum_get_value (eclass, gravity);
+  clutter_label_set_text (CLUTTER_LABEL (label), evalue->value_nick);
+  g_type_class_unref (eclass);
 
   if (++gindex >= G_N_ELEMENTS (gravities))
     gindex = 0;
-
-  clutter_actor_move_anchor_point_from_gravity (actor, gravities[gindex]);
 }
 
 G_MODULE_EXPORT int
@@ -52,11 +59,21 @@ test_scale_main (int argc, char *argv[])
 
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
+  label = clutter_label_new_with_text ("Sans 20px", "");
+  clutter_label_set_color (CLUTTER_LABEL (label),
+                           &(ClutterColor) { 0xff, 0xff, 0xff, 0xff });
+  clutter_actor_set_position (label,
+                              clutter_actor_get_x (rect),
+                              clutter_actor_get_y (rect)
+                              + clutter_actor_get_height (rect));
+
+  clutter_group_add (CLUTTER_GROUP (stage), label);
+
   rect_color.alpha = 0xff;
   rect = clutter_rectangle_new_with_color (&rect_color);
   clutter_actor_set_position (rect, 100, 100);
   clutter_actor_set_size (rect, 100, 100);
-  clutter_actor_move_anchor_point_from_gravity (rect, CLUTTER_GRAVITY_CENTER);
+  set_next_gravity (rect);
 
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
@@ -72,8 +89,8 @@ test_scale_main (int argc, char *argv[])
   clutter_behaviour_apply (behave, rect);
 
   clutter_timeline_set_loop (timeline, TRUE);
-  g_signal_connect (timeline, "completed",
-		    G_CALLBACK(on_timeline_completed), rect);
+  g_signal_connect_swapped (timeline, "completed",
+                            G_CALLBACK (set_next_gravity), rect);
   clutter_timeline_start (timeline);
 
   clutter_actor_show_all (stage);
