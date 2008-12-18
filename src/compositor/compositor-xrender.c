@@ -2443,23 +2443,21 @@ timeout_debug (MetaCompositorXRender *compositor)
 
 static void
 xrender_add_window (MetaCompositor    *compositor,
-                    MetaWindow        *window,
-                    Window             xwindow,
-                    XWindowAttributes *attrs)
+                    MetaWindow        *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaCompositorXRender *xrc = (MetaCompositorXRender *) compositor;
-  MetaScreen *screen = meta_screen_for_x_screen (attrs->screen);
+  MetaScreen *screen = meta_window_get_screen (window);
 
   meta_error_trap_push (xrc->display);
-  add_win (screen, window, xwindow);
+  add_win (screen, window, meta_window_get_xwindow (window));
   meta_error_trap_pop (xrc->display, FALSE);
 #endif
 }
 
 static void
 xrender_remove_window (MetaCompositor *compositor,
-                       Window          xwindow)
+                       MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 #endif
