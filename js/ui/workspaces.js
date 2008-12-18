@@ -2,7 +2,6 @@
 
 const Tweener = imports.tweener.tweener;
 const Clutter = imports.gi.Clutter;
-const GtkClutter = imports.gi.GtkClutter;
 const Pango = imports.gi.Pango;
 
 const Main = imports.ui.main;
