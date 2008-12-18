@@ -2,15 +2,23 @@
 
 const Tweener = imports.tweener.tweener;
 const Clutter = imports.gi.Clutter;
+const GtkClutter = imports.gi.GtkClutter;
+const Pango = imports.gi.Pango;
 
 const Main = imports.ui.main;
 const Overlay = imports.ui.overlay;
 const Panel = imports.ui.panel;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+const Big = imports.gi.Big;
 
 // Windows are slightly translucent in the overlay mode
 const WINDOW_OPACITY = 0.9 * 255;
+
+const WINDOWCLONE_BG_COLOR = new Clutter.Color();
+WINDOWCLONE_BG_COLOR.from_pixel(0x000000f0);
+const WINDOWCLONE_TITLE_COLOR = new Clutter.Color();
+WINDOWCLONE_TITLE_COLOR.from_pixel(0xffffffff);
 
 // Define a layout scheme for small window counts. For larger
 // counts we fall back to an algorithm. We need more schemes here
@@ -46,6 +54,8 @@ Workspaces.prototype = {
         this._width = width;
         this._height = height;
         this._workspaces = [];
+        
+        this._clones = [];
 
         let global = Shell.Global.get();
         let windows = global.get_windows();
@@ -118,9 +128,10 @@ Workspaces.prototype = {
                     win.is_override_redirect())
                     continue;
 
-                this._createWindowClone(wswindows[i], workspace,
+                let clone = this._createWindowClone(wswindows[i], workspace,
                                         wswindows.length - windowIndex - 1,
                                         wswindows.length);
+                this._clones.push(clone);
                 windowIndex++;
             }
         }
@@ -140,6 +151,9 @@ Workspaces.prototype = {
 
         this._positionWorkspaces(global, activeWorkspace);
         activeWorkspace.raise_top();
+        
+        this._clones.forEach(function (v, i, a) { if (v.cloneTitle) v.cloneTitle.destroy(); });
+        this._clones = [];
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
@@ -320,6 +334,35 @@ Workspaces.prototype = {
                                        width: global.screen_width,
                                        height: global.screen_height });
     },
+    
+    _addCloneTitle : function (clone, window) {
+         let transformed = clone.get_transformed_size();
+         let icon = window.meta_window.mini_icon;
+         let iconTexture = new Clutter.Texture({ width: 16, height: 16, keep_aspect_ratio: true});
+         Shell.clutter_texture_set_from_pixbuf(iconTexture, icon);
+         let box = new Big.Box({background_color : WINDOWCLONE_BG_COLOR,
+                                y_align: Big.BoxAlignment.CENTER,
+                                corner_radius: 5,
+                                padding: 4,
+                                spacing: 4,
+                                orientation: Big.BoxOrientation.HORIZONTAL});
+         box.append(iconTexture, Big.BoxPackFlags.NONE);
+         let title = new Clutter.Label({color: WINDOWCLONE_TITLE_COLOR,
+                                        font_name: "Sans 14",
+                                        text: window.meta_window.title,
+                                        ellipsize: Pango.EllipsizeMode.END});
+         // Get current width (just the icon), with spacing, plus title
+         let width = box.width + box.spacing + title.width;
+         let maxWidth = transformed[0]; 
+         if (width > transformed[0])
+             width = transformed[0];
+         box.width = width;
+         box.append(title, Big.BoxPackFlags.EXPAND);
+         box.set_position(clone.x, clone.y);
+         let parent = clone.get_parent();
+         clone.cloneTitle = box;
+         parent.add_actor(box);
+    },
 
     // windowIndex == 0 => top in stacking order
     _computeWindowPosition : function(windowIndex, numberOfWindows) {
@@ -379,7 +422,10 @@ Workspaces.prototype = {
                            scale_y: scale,
                            time: Overlay.ANIMATION_TIME,
                            opacity: WINDOW_OPACITY,
-                           transition: "easeOutQuad"
+                           transition: "easeOutQuad",
+                           onComplete: function () {
+                               me._addCloneTitle(clone, w);
+                           }                               
                          });
 
         clone.connect("button-press-event",
@@ -387,6 +433,7 @@ Workspaces.prototype = {
                           clone.raise_top();
                           me._activateWindow(w, event.get_time());
                       });
+        return clone;
     },
 
     _activateWindow : function(w, time) {
