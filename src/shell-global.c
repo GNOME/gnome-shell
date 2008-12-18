@@ -5,6 +5,9 @@
 
 #include "display.h"
 #include <clutter/x11/clutter-x11.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
 
 struct _ShellGlobal {
   GObject parent;
@@ -334,4 +337,39 @@ shell_global_ungrab_keyboard (ShellGlobal *global)
   XUngrabKeyboard (xdisplay, CurrentTime);
 
   global->keyboard_grabbed = FALSE;
+}
+
+/**
+ * shell_global_reexec_self:
+ * @global: A #ShellGlobal
+ * 
+ * Restart the current process.  Only intended for development purposes. 
+ */
+void 
+shell_global_reexec_self (ShellGlobal *global)
+{
+  GPtrArray *arr;
+  gsize len;
+  char *buf;
+  char *buf_p;
+  char *buf_end;
+  GError *error = NULL;
+  
+  /* Linux specific (I think, anyways). */
+  if (!g_file_get_contents ("/proc/self/cmdline", &buf, &len, &error))
+    {
+      g_warning ("failed to get /proc/self/cmdline: %s", error->message);
+      return;
+    }
+      
+  buf_end = buf+len;
+  arr = g_ptr_array_new ();
+  /* The cmdline file is NUL-separated */
+  for (buf_p = buf; buf_p < buf_end; buf_p = buf_p + strlen (buf_p) + 1)
+    g_ptr_array_add (arr, buf_p);
+  
+  g_ptr_array_add (arr, NULL); 
+  execvp (arr->pdata[0], (char**)arr->pdata);
+  g_warning ("failed to reexec: %s", g_strerror (errno));
+  g_ptr_array_free (arr, TRUE);
 }

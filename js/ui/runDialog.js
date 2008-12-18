@@ -78,7 +78,10 @@ RunDialog.prototype = {
     },
 
     _run : function(command) {
-        if (command) {
+        if (command == 'restart') {
+            let global = Shell.Global.get();
+            global.reexec_self();
+        } else if (command) {
             var p = new Shell.Process({'args' : [command]});
             try {
                 p.run();
