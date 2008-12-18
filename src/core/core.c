@@ -145,6 +145,13 @@ meta_core_get (Display *xdisplay,
             case META_WINDOW_DOCK:
             case META_WINDOW_TOOLBAR:
             case META_WINDOW_SPLASHSCREEN:
+	    case META_WINDOW_DROPDOWN_MENU:
+	    case META_WINDOW_POPUP_MENU:
+	    case META_WINDOW_TOOLTIP:
+	    case META_WINDOW_NOTIFICATION:
+	    case META_WINDOW_COMBO:
+	    case META_WINDOW_DND:
+	    case META_WINDOW_OVERRIDE_OTHER:
               /* No frame */
               base_type = META_FRAME_TYPE_LAST;
               break;

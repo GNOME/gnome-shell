@@ -913,7 +913,7 @@ window_has_shadow (MetaCompWindow *cw)
   }
 
   if (cw->type == META_COMP_WINDOW_MENU || 
-      cw->type == META_COMP_WINDOW_DROP_DOWN_MENU) {
+      cw->type == META_COMP_WINDOW_DROPDOWN_MENU) {
     meta_verbose ("Window has shadow as it is a menu\n");
     return TRUE;
   }
@@ -1778,7 +1778,7 @@ get_window_type (MetaDisplay    *display,
   else if (type_atom == compositor->atom_net_wm_window_type_menu)
     cw->type = META_COMP_WINDOW_MENU;
   else if (type_atom == compositor->atom_net_wm_window_type_dropdown_menu)
-    cw->type = META_COMP_WINDOW_DROP_DOWN_MENU;
+    cw->type = META_COMP_WINDOW_DROPDOWN_MENU;
   else if (type_atom == compositor->atom_net_wm_window_type_tooltip)
     cw->type = META_COMP_WINDOW_TOOLTIP;
   else

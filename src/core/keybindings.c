@@ -792,7 +792,8 @@ meta_window_grab_keys (MetaWindow  *window)
   if (window->all_keys_grabbed)
     return;
 
-  if (window->type == META_WINDOW_DOCK)
+  if (window->type == META_WINDOW_DOCK
+      || window->override_redirect)
     {
       if (window->keys_grabbed)
         ungrab_all_keys (window->display, window->xwindow);

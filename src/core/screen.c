@@ -790,20 +790,6 @@ meta_screen_manage_all_windows (MetaScreen *screen)
 
       window = meta_window_new_with_attrs (screen->display, info->xwindow, TRUE,
                                            &info->attrs);
-      if (info->xwindow == screen->no_focus_window ||
-          info->xwindow == screen->flash_window ||
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-          info->xwindow == screen->wm_cm_selection_window ||
-	  info->xwindow == screen->guard_window ||
-#endif
-          info->xwindow == screen->wm_sn_selection_window) {
-        meta_verbose ("Not managing our own windows\n");
-        continue;
-      }
-
-      if (screen->display->compositor)
-        meta_compositor_add_window (screen->display->compositor, window,
-                                    info->xwindow, &info->attrs);
     }
   meta_stack_thaw (screen->stack);
 
@@ -818,38 +804,20 @@ meta_screen_composite_all_windows (MetaScreen *screen)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaDisplay *display;
-  GList *windows, *list;
+  GSList *windows, *tmp;
 
   display = screen->display;
   if (!display->compositor)
     return;
 
-  windows = list_windows (screen);
-
+  windows = meta_display_list_windows (display);
+  for (tmp = windows; tmp != NULL; tmp = tmp->next)
+    meta_compositor_add_window (display->compositor, tmp->data);
+  g_slist_free (windows);
+  
+  /* trigger a stack_sync_to_server: */
   meta_stack_freeze (screen->stack);
-
-  for (list = windows; list != NULL; list = list->next)
-    {
-      WindowInfo *info = list->data;
-
-      if (info->xwindow == screen->no_focus_window ||
-          info->xwindow == screen->flash_window ||
-          info->xwindow == screen->wm_sn_selection_window ||
-          info->xwindow == screen->wm_cm_selection_window) {
-        meta_verbose ("Not managing our own windows\n");
-        continue;
-      }
-
-      meta_compositor_add_window (display->compositor,
-                                  meta_display_lookup_x_window (display,
-                                                                info->xwindow),
-				  info->xwindow, &info->attrs);
-    }
-
   meta_stack_thaw (screen->stack);
-
-  g_list_foreach (windows, (GFunc)g_free, NULL);
-  g_list_free (windows);
 #endif
 }
 
@@ -2385,6 +2353,10 @@ meta_screen_resize (MetaScreen *screen,
   reload_xinerama_infos (screen);
   set_desktop_geometry_hint (screen);
   
+  if (screen->display->compositor)
+    meta_compositor_sync_screen_size (screen->display->compositor,
+				      screen, width, height);
+
   /* Queue a resize on all the windows */
   meta_screen_foreach_window (screen, meta_screen_resize_func, 0);
 }
