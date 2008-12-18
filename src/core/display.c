@@ -168,7 +168,6 @@ MetaGroup*     get_focussed_group (MetaDisplay *display);
 static void
 meta_display_class_init (MetaDisplayClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 }
 
 /**
