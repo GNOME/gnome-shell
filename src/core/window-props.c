@@ -384,6 +384,8 @@ set_window_title (MetaWindow *window,
     meta_ui_set_frame_title (window->screen->ui,
                              window->frame->xwindow,
                              window->title);
+  if (modified)
+    g_object_notify (G_OBJECT (window), "title");  
 }
 
 static void

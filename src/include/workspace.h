@@ -53,6 +53,17 @@ typedef enum
   META_MOTION_DOWN_RIGHT = -8
 } MetaMotionDirection;
 
+#define META_TYPE_WORKSPACE            (meta_workspace_get_type ())
+#define META_WORKSPACE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WORKSPACE, MetaWorkspace))
+#define META_WORKSPACE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_WORKSPACE, MetaWorkspaceClass))
+#define META_IS_WORKSPACE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_WORKSPACE_TYPE))
+#define META_IS_WORKSPACE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_WORKSPACE))
+#define META_WORKSPACE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_WORKSPACE, MetaWorkspaceClass))
+
+typedef struct _MetaWorkspaceClass   MetaWorkspaceClass;
+
+GType meta_workspace_get_type (void);
+
 int  meta_workspace_index (MetaWorkspace *workspace);
 MetaScreen *meta_workspace_get_screen (MetaWorkspace *workspace);
 void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,

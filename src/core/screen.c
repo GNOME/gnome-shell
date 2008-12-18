@@ -69,6 +69,82 @@ static void meta_screen_sn_event   (SnMonitorEvent *event,
                                     void           *user_data);
 #endif
 
+enum
+{
+  PROP_N_WORKSPACES = 1
+};
+
+G_DEFINE_TYPE (MetaScreen, meta_screen, G_TYPE_OBJECT);
+
+static void
+meta_screen_set_property (GObject      *object,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
+{
+#if 0
+  MetaScreen *screen = META_SCREEN (object);
+#endif
+
+  switch (prop_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+meta_screen_get_property (GObject      *object,
+                          guint         prop_id,
+                          GValue       *value,
+                          GParamSpec   *pspec)
+{
+  MetaScreen *screen = META_SCREEN (object);
+
+  switch (prop_id)
+    {
+    case PROP_N_WORKSPACES:
+      g_value_set_int (value, meta_screen_get_n_workspaces (screen));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+meta_screen_finalize (GObject *object)
+{
+  /* Actual freeing done in meta_screen_free() for now */
+}
+
+static void
+meta_screen_class_init (MetaScreenClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec   *pspec;
+
+  object_class->get_property = meta_screen_get_property;
+  object_class->set_property = meta_screen_set_property;
+  object_class->finalize = meta_screen_finalize;
+
+  pspec = g_param_spec_int ("n-workspaces",
+                            "N Workspaces",
+                            "Number of workspaces",
+                            1, G_MAXINT, 1,
+                            G_PARAM_READABLE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_N_WORKSPACES,
+                                   pspec);
+}
+
+static void
+meta_screen_init (MetaScreen *screen)
+{
+}
+
 static int
 set_wm_check_hint (MetaScreen *screen)
 {
@@ -488,7 +564,7 @@ meta_screen_new (MetaDisplay *display,
       return NULL;
     }
   
-  screen = g_new (MetaScreen, 1);
+  screen = g_object_new (META_TYPE_SCREEN, NULL);
   screen->closing = 0;
   
   screen->display = display;
@@ -718,7 +794,8 @@ meta_screen_free (MetaScreen *screen,
     g_free (screen->xinerama_infos);
   
   g_free (screen->screen_name);
-  g_free (screen);
+
+  g_object_unref (screen);
 
   XFlush (display->xdisplay);
   meta_display_ungrab (display);
@@ -1110,11 +1187,13 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
     meta_workspace_activate (neighbour, timestamp);
 
   /* This also removes the workspace from the screens list */
-  meta_workspace_free (workspace);
+  meta_workspace_remove (workspace);
 
   set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
 
   meta_screen_queue_workarea_recalc (screen);
+
+  g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
 
 MetaWorkspace *
@@ -1135,6 +1214,8 @@ meta_screen_append_new_workspace (MetaScreen *screen, gboolean activate,
   set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
 
   meta_screen_queue_workarea_recalc (screen);
+
+  g_object_notify (G_OBJECT (screen), "n-workspaces");
 
   return w;
 }
@@ -1204,7 +1285,7 @@ update_num_workspaces (MetaScreen *screen,
       MetaWorkspace *w = tmp->data;
 
       g_assert (w->windows == NULL);
-      meta_workspace_free (w);
+      meta_workspace_remove (w);
       
       tmp = tmp->next;
     }
@@ -1220,6 +1301,8 @@ update_num_workspaces (MetaScreen *screen,
   set_number_of_spaces_hint (screen, new_num);
 
   meta_screen_queue_workarea_recalc (screen);
+
+  g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
 
 static void

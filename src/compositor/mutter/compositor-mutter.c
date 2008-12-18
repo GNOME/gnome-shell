@@ -60,7 +60,7 @@
 	       __FILE__, __LINE__); }
 
 /* #define DEBUG_TRACE g_print */
-#define DEBUG_TRACE(X) 
+#define DEBUG_TRACE(X)
 
 /*
  * Register GType wrapper for XWindowAttributes, so we do not have to
@@ -245,10 +245,11 @@ mutter_window_class_init (MutterWindowClass *klass)
   object_class->get_property = mutter_window_get_property;
   object_class->constructed  = mutter_window_constructed;
 
-  pspec = g_param_spec_pointer ("meta-window",
-				"MetaWindow",
-				"MetaWindow",
-				G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
+  pspec = g_param_spec_object ("meta-window",
+                               "MetaWindow",
+                               "The displayed MetaWindow",
+                               META_TYPE_WINDOW,
+                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
 
   g_object_class_install_property (object_class,
                                    PROP_MCW_META_WINDOW,
@@ -425,7 +426,7 @@ mutter_window_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_MCW_META_WINDOW:
-      priv->window = g_value_get_pointer (value);
+      priv->window = g_value_get_object (value);
       break;
     case PROP_MCW_META_SCREEN:
       priv->screen = g_value_get_pointer (value);
@@ -453,7 +454,7 @@ mutter_window_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_MCW_META_WINDOW:
-      g_value_set_pointer (value, priv->window);
+      g_value_set_object (value, priv->window);
       break;
     case PROP_MCW_META_SCREEN:
       g_value_set_pointer (value, priv->screen);
@@ -783,7 +784,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
   MetaScreen          *screen = priv->screen;
   MetaCompScreen      *info   = meta_screen_get_compositor_data (screen);
   ClutterActor        *actor  = CLUTTER_ACTOR (cw);
-  
+
   /* NB: Keep in mind that when effects get completed it possible
    * that the corresponding MetaWindow may have be been destroyed.
    * In this case priv->window will == NULL */
@@ -904,7 +905,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
   default:
     break;
   }
-  
+
   switch (event)
   {
   case MUTTER_PLUGIN_MINIMIZE:
@@ -968,7 +969,7 @@ destroy_win (MutterWindow *cw)
   MetaWindow	      *window;
   MetaCompScreen      *info;
   MutterWindowPrivate *priv;
-  
+
   priv = cw->priv;
 
   window = priv->window;
@@ -1009,7 +1010,7 @@ destroy_win (MutterWindow *cw)
 					   MUTTER_PLUGIN_DESTROY))
     {
       priv->destroy_in_progress--;
-      
+
       if (priv->minimize_in_progress ||
           priv->maximize_in_progress ||
 	  priv->unmaximize_in_progress ||
@@ -1054,7 +1055,7 @@ map_win (MutterWindow *cw)
 {
   MutterWindowPrivate *priv;
   MetaCompScreen      *info;
-  
+
   if (!cw)
     return;
 
@@ -1108,7 +1109,7 @@ unmap_win (MutterWindow *cw)
 {
   MutterWindowPrivate *priv;
   MetaCompScreen      *info;
-  
+
   if (!cw)
     return;
 
@@ -1164,7 +1165,7 @@ add_win (MetaWindow *window)
   MetaFrame		*frame;
   Window		 top_window;
   XWindowAttributes	 attrs;
-  
+
   g_return_if_fail (info != NULL);
 
   frame = meta_window_get_frame (window);
@@ -1608,7 +1609,7 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   /* Check if the screen is already managed */
   if (meta_screen_get_compositor_data (screen))
     return;
-  
+
   meta_error_trap_push_with_return (display);
   XCompositeRedirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
   XSync (xdisplay, FALSE);
@@ -1712,7 +1713,7 @@ clutter_cmp_remove_window (MetaCompositor *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MutterWindow         *cw     = NULL;
-  
+
   DEBUG_TRACE ("clutter_cmp_remove_window\n");
   cw = meta_window_get_compositor_private (window);
   if (!cw)
@@ -1844,7 +1845,7 @@ clutter_cmp_map_window (MetaCompositor *compositor, MetaWindow *window)
   DEBUG_TRACE ("clutter_cmp_map_window\n");
   if (!cw)
     return;
-  
+
   map_win (cw);
 #endif
 }
@@ -2005,6 +2006,10 @@ clutter_cmp_update_workspace_geometry (MetaCompositor *compositor,
 				       MetaWorkspace  *workspace)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+#if 0
+  /* FIXME -- should do away with this function in favour of MetaWorkspace
+   * signal.
+   */
   MetaScreen     *screen = meta_workspace_get_screen (workspace);
   MetaCompScreen *info;
   MutterPluginManager *mgr;
@@ -2017,6 +2022,7 @@ clutter_cmp_update_workspace_geometry (MetaCompositor *compositor,
     return;
 
   mutter_plugin_manager_update_workspace (mgr, workspace);
+#endif
 #endif
 }
 
@@ -2105,7 +2111,7 @@ static void
 sync_actor_stacking (GList *windows)
 {
   GList *tmp;
-  
+
   /* NB: The first entry in the list is stacked the lowest */
 
   for (tmp = g_list_last (windows); tmp != NULL; tmp = tmp->prev)
@@ -2191,7 +2197,7 @@ clutter_cmp_sync_window_geometry (MetaCompositor *compositor,
     return;
 
   sync_actor_position (cw);
-  
+
 #endif
 }
 
@@ -2208,7 +2214,7 @@ clutter_cmp_sync_screen_size (MetaCompositor *compositor,
   g_return_if_fail (info);
 
   clutter_actor_set_size (info->stage, width, height);
-  
+
   meta_verbose ("Changed size for stage on screen %d to %dx%d\n",
 		meta_screen_get_screen_number (screen),
 		width, height);

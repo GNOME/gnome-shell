@@ -26,215 +26,52 @@
 #include "prefs.h"
 #include "errors.h"
 #include "workspace.h"
+#include "mutter-module.h"
 
-#include <gmodule.h>
 #include <string.h>
-#include <X11/Xlib.h>
-#include <X11/extensions/Xfixes.h>
-#include <X11/extensions/shape.h>
-#include <clutter/x11/clutter-x11.h>
 
-static gboolean mutter_plugin_manager_reload (
-		      MutterPluginManager *plugin_mgr);
+/*
+ * There is only one instace of each module per the process.
+ */
+static GHashTable *plugin_modules = NULL;
+
+static gboolean mutter_plugin_manager_reload (MutterPluginManager *plugin_mgr);
 
 struct MutterPluginManager
 {
   MetaScreen   *screen;
 
-  GList        *plugins; /* TODO -- maybe use hash table */
+  GList        *plugins;
   GList        *unload;  /* Plugins that are disabled and pending unload */
 
   guint         idle_unload_id;
 };
 
-typedef struct MutterPluginPrivate
-{
-  char				     *name;
-  MutterPluginManager *self;
-  GModule                            *module;
-  gulong			      features;
-  /* We use this to track the number of effects currently being managed
-   * by a plugin. Currently this is used to block unloading while effects
-   * are in progress. */
-  gint				      running;
-
-  gboolean disabled : 1;
-} MutterPluginPrivate;
-
-
-static void
-free_plugin_workspaces (MutterPlugin *plugin)
-{
-  GList *l;
-
-  l = plugin->work_areas;
-
-  while (l)
-    {
-      g_free (l->data);
-      l = l->next;
-    }
-
-  if (plugin->work_areas)
-    g_list_free (plugin->work_areas);
-
-  plugin->work_areas = NULL;
-}
-
-/*
- * Gets work area geometry and stores it in list in the plugin.
- *
- * If the plugin list is already populated, we simply replace it (we are
- * dealing with a small number of items in the list and unfrequent changes).
- */
-static void
-update_plugin_workspaces (MetaScreen                  *screen,
-                          MutterPlugin *plugin)
-{
-  GList *l, *l2 = NULL;
-
-  l = meta_screen_get_workspaces (screen);
-
-  while (l)
-    {
-      MetaWorkspace  *w = l->data;
-      MetaRectangle *r;
-
-      r = g_new0 (MetaRectangle, 1);
-
-      meta_workspace_get_work_area_all_xineramas (w, (MetaRectangle*)r);
-
-      l2 = g_list_append (l2, r);
-
-      l = l->next;
-    }
-
-  free_plugin_workspaces (plugin);
-
-  plugin->work_areas = l2;
-}
-
-/**
- * parse_disable_params:
- * @params: as read from gconf, a ':' seperated list of plugin options
- * @features: The mask of features the plugin advertises
- *
- * This function returns a new mask of features removing anything that
- * the user has disabled.
- */
-static gulong
-parse_disable_params (const char *params, MutterPlugin *plugin)
-{
-  char  *p;
-  gulong features = 0;
-
-/*
- * Feature flags: identify events that the plugin can handle; a plugin can
- * handle one or more events.
- */
-  if (plugin->minimize)
-    features |= MUTTER_PLUGIN_MINIMIZE;
-
-  if (plugin->maximize)
-    features |= MUTTER_PLUGIN_MAXIMIZE;
-
-  if (plugin->unmaximize)
-    features |= MUTTER_PLUGIN_UNMAXIMIZE;
-
-  if (plugin->map)
-    features |= MUTTER_PLUGIN_MAP;
-
-  if (plugin->destroy)
-    features |= MUTTER_PLUGIN_DESTROY;
-
-  if (plugin->switch_workspace)
-    features |= MUTTER_PLUGIN_SWITCH_WORKSPACE;
-
-  if (!params)
-    return features;
-
-  if ((p = strstr (params, "disable:")))
-    {
-      gchar *d = g_strdup (p+8);
-
-      p = strchr (d, ';');
-
-      if (p)
-	*p = 0;
-
-      if (strstr (d, "minimize"))
-	features &= ~ MUTTER_PLUGIN_MINIMIZE;
-
-      if (strstr (d, "maximize"))
-	features &= ~ MUTTER_PLUGIN_MAXIMIZE;
-
-      if (strstr (d, "unmaximize"))
-	features &= ~ MUTTER_PLUGIN_UNMAXIMIZE;
-
-      if (strstr (d, "map"))
-	features &= ~ MUTTER_PLUGIN_MAP;
-
-      if (strstr (d, "destroy"))
-	features &= ~ MUTTER_PLUGIN_DESTROY;
-
-      if (strstr (d, "switch-workspace"))
-	features &= ~MUTTER_PLUGIN_SWITCH_WORKSPACE;
-
-      g_free (d);
-    }
-  return features;
-}
 
 /*
  * Checks that the plugin is compatible with the WM and sets up the plugin
  * struct.
  */
 static MutterPlugin *
-mutter_plugin_load (MutterPluginManager *plugin_mgr,
-                    GModule             *module,
+mutter_plugin_load (MutterPluginManager *mgr,
+                    MutterModule        *module,
                     const gchar         *params)
 {
-  MutterPlugin *plugin;
+  MutterPlugin *plugin = NULL;
+  GType         plugin_type = mutter_module_get_plugin_type (module);
 
-  if (g_module_symbol (module, "mutter_plugin", (gpointer *)&plugin))
+  if (!plugin_type)
     {
-      if (plugin->version_api == METACITY_CLUTTER_PLUGIN_API_VERSION)
-        {
-          MutterPluginPrivate *priv;
-
-          priv		= g_new0 (MutterPluginPrivate, 1);
-	  priv->name	= _(plugin->name);
-          priv->module  = module;
-          priv->self	= plugin_mgr;
-
-	  /* FIXME: instead of hanging private data of the plugin descriptor
-	   * we could make the descriptor const if we were to hang it off
-	   * a plugin manager structure */
-          plugin->manager_private = priv;
-
-          update_plugin_workspaces (plugin_mgr->screen, plugin);
-
-	  priv->features = parse_disable_params (params, plugin);
-
-          /*
-           * Check for and run the plugin init function.
-           */
-          if (!plugin->do_init || !(plugin->do_init (params)))
-            {
-              g_free (priv);
-
-              free_plugin_workspaces (plugin);
-
-              return NULL;
-            }
-
-          meta_verbose ("Loaded plugin [%s]\n", priv->name);
-
-          return plugin;
-        }
+      g_warning ("Plugin type not registered !!!");
+      return NULL;
     }
 
-  return NULL;
+  plugin = g_object_new (plugin_type,
+                         "screen", mgr->screen,
+                         "params", params,
+                         NULL);
+
+  return plugin;
 }
 
 /*
@@ -245,22 +82,13 @@ mutter_plugin_load (MutterPluginManager *plugin_mgr,
 static gboolean
 mutter_plugin_unload (MutterPlugin *plugin)
 {
-  MutterPluginPrivate *priv;
-  GModule *module;
-
-  priv = plugin->manager_private;
-  module = priv->module;
-
-  if (priv->running)
+  if (mutter_plugin_running (plugin))
     {
-      priv->disabled = TRUE;
+      g_object_set (plugin, "disabled", TRUE, NULL);
       return FALSE;
     }
 
-  g_free (priv);
-  plugin->manager_private = NULL;
-
-  g_module_close (module);
+  g_object_unref (plugin);
 
   return TRUE;
 }
@@ -353,10 +181,20 @@ prefs_changed_callback (MetaPreference pref,
     {
       mutter_plugin_manager_reload (plugin_mgr);
     }
-  else if (pref == META_PREF_NUM_WORKSPACES)
+}
+
+static MutterModule *
+mutter_plugin_manager_get_module (const gchar *path)
+{
+  MutterModule *module = g_hash_table_lookup (plugin_modules, path);
+
+  if (!module &&
+      (module = g_object_new (MUTTER_TYPE_MODULE, "path", path, NULL)))
     {
-      mutter_plugin_manager_update_workspaces (plugin_mgr);
+      g_hash_table_insert (plugin_modules, g_strdup (path), module);
     }
+
+  return module;
 }
 
 /*
@@ -388,8 +226,8 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
 
       if (plugin_string)
         {
-          GModule *plugin;
-          gchar   *path;
+          MutterModule *module;
+          gchar        *path;
 
           params = strchr (plugin_string, ':');
 
@@ -404,20 +242,35 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
           else
             path = g_strconcat (dpath, plugin_string, ".so", NULL);
 
-          if ((plugin = g_module_open (path, G_MODULE_BIND_LOCAL)))
+          module = mutter_plugin_manager_get_module (path);
+
+          if (module)
             {
               MutterPlugin *p;
 
-              if ((p = mutter_plugin_load (plugin_mgr, plugin, params)))
-                plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, p);
+              /*
+               * This dlopens the module and registers the plugin type with the
+               * GType system, if the module is not already loaded.  When we
+               * create a plugin, the type system also calls g_type_module_use()
+               * to guarantee the module will not be unloaded during the plugin
+               * life time. Consequently we can unuse() the module again.
+               */
+              g_type_module_use (G_TYPE_MODULE (module));
+
+              if ((p = mutter_plugin_load (plugin_mgr, module, params)))
+                {
+                  plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, p);
+                }
               else
                 {
-                  g_message ("Plugin load for [%s] failed", path);
-                  g_module_close (plugin);
+                  g_warning ("Plugin load for [%s] failed", path);
                 }
+
+              g_type_module_unuse (G_TYPE_MODULE (module));
             }
           else
-            g_message ("Unable to load plugin [%s]: %s", path, g_module_error());
+            g_warning ("Unable to load plugin module [%s]: %s",
+                       path, g_module_error());
 
           g_free (path);
           g_free (plugin_string);
@@ -459,56 +312,16 @@ mutter_plugin_manager_init (MutterPluginManager *plugin_mgr)
   return mutter_plugin_manager_load (plugin_mgr);
 }
 
-void
-mutter_plugin_manager_update_workspace (MutterPluginManager *plugin_mgr,
-                                        MetaWorkspace *workspace)
-{
-  GList *l;
-  gint   index;
-
-  index = meta_workspace_index (workspace);
-  l = plugin_mgr->plugins;
-
-  while (l)
-    {
-      MutterPlugin *plugin = l->data;
-      MetaRectangle *rect = g_list_nth_data (plugin->work_areas, index);
-
-      if (rect)
-        {
-          meta_workspace_get_work_area_all_xineramas (workspace, rect);
-        }
-      else
-        {
-          /* Something not entirely right; redo the whole thing */
-          update_plugin_workspaces (plugin_mgr->screen, plugin);
-          return;
-        }
-
-      l = l->next;
-    }
-}
-
-void
-mutter_plugin_manager_update_workspaces (MutterPluginManager *plugin_mgr)
-{
-  GList *l;
-
-  l = plugin_mgr->plugins;
-  while (l)
-    {
-      MutterPlugin *plugin = l->data;
-
-      update_plugin_workspaces (plugin_mgr->screen, plugin);
-
-      l = l->next;
-    }
-}
-
 MutterPluginManager *
 mutter_plugin_manager_new (MetaScreen *screen)
 {
   MutterPluginManager *plugin_mgr;
+
+  if (!plugin_modules)
+    {
+      plugin_modules = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
+                                              NULL);
+    }
 
   plugin_mgr = g_new0 (MutterPluginManager, 1);
 
@@ -533,12 +346,12 @@ mutter_plugin_manager_kill_effect (MutterPluginManager *plugin_mgr,
   while (l)
     {
       MutterPlugin        *plugin = l->data;
-      MutterPluginPrivate *priv = plugin->manager_private;
+      MutterPluginClass   *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
 
-      if (!priv->disabled
-	  && (priv->features & events)
-	  && plugin->kill_effect)
-        plugin->kill_effect (actor, events);
+      if (!mutter_plugin_disabled (plugin)
+	  && (mutter_plugin_features (plugin) & events)
+	  && klass->kill_effect)
+        klass->kill_effect (plugin, actor, events);
 
       l = l->next;
     }
@@ -567,43 +380,41 @@ mutter_plugin_manager_event_simple (MutterPluginManager *plugin_mgr,
   while (l)
     {
       MutterPlugin        *plugin = l->data;
-      MutterPluginPrivate *priv = plugin->manager_private;
+      MutterPluginClass   *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
 
-      if (!priv->disabled && (priv->features & event))
+      if (!mutter_plugin_disabled (plugin) &&
+          (mutter_plugin_features (plugin) & event))
         {
           retval = TRUE;
 
           switch (event)
             {
             case MUTTER_PLUGIN_MINIMIZE:
-              if (plugin->minimize)
+              if (klass->minimize)
                 {
                   mutter_plugin_manager_kill_effect (
 		      plugin_mgr,
 		      actor,
 		      ALL_BUT_SWITCH);
 
-		  priv->running++;
-                  plugin->minimize (actor);
+                  klass->minimize (plugin, actor);
                 }
               break;
             case MUTTER_PLUGIN_MAP:
-              if (plugin->map)
+              if (klass->map)
                 {
                   mutter_plugin_manager_kill_effect (
 		      plugin_mgr,
 		      actor,
 		      ALL_BUT_SWITCH);
 
-		  priv->running++;
-                  plugin->map (actor);
+                  klass->map (plugin, actor);
                 }
               break;
             case MUTTER_PLUGIN_DESTROY:
-              if (plugin->destroy)
+              if (klass->destroy)
                 {
-		  priv->running++;
-                  plugin->destroy (actor);
+                  klass->destroy (plugin, actor);
                 }
               break;
             default:
@@ -641,37 +452,38 @@ mutter_plugin_manager_event_maximize (MutterPluginManager *plugin_mgr,
   while (l)
     {
       MutterPlugin        *plugin = l->data;
-      MutterPluginPrivate *priv = plugin->manager_private;
+      MutterPluginClass   *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
 
-      if (!priv->disabled && (priv->features & event))
+      if (!mutter_plugin_disabled (plugin) &&
+          (mutter_plugin_features (plugin) & event))
         {
           retval = TRUE;
 
           switch (event)
             {
             case MUTTER_PLUGIN_MAXIMIZE:
-              if (plugin->maximize)
+              if (klass->maximize)
                 {
                   mutter_plugin_manager_kill_effect (
 		      plugin_mgr,
 		      actor,
 		      ALL_BUT_SWITCH);
 
-                  plugin->maximize (actor,
-                                 target_x, target_y,
-                                 target_width, target_height);
+                  klass->maximize (plugin, actor,
+                                   target_x, target_y,
+                                   target_width, target_height);
                 }
               break;
             case MUTTER_PLUGIN_UNMAXIMIZE:
-              if (plugin->unmaximize)
+              if (klass->unmaximize)
                 {
                   mutter_plugin_manager_kill_effect (
 		      plugin_mgr,
 		      actor,
 		      ALL_BUT_SWITCH);
-                  plugin->unmaximize (actor,
-                                   target_x, target_y,
-                                   target_width, target_height);
+                  klass->unmaximize (plugin, actor,
+                                     target_x, target_y,
+                                     target_width, target_height);
                 }
               break;
             default:
@@ -706,13 +518,13 @@ mutter_plugin_manager_switch_workspace (MutterPluginManager *plugin_mgr,
   while (l)
     {
       MutterPlugin        *plugin = l->data;
-      MutterPluginPrivate *priv = plugin->manager_private;
+      MutterPluginClass   *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
 
-      if (!priv->disabled &&
-          (priv->features & MUTTER_PLUGIN_SWITCH_WORKSPACE) &&
+      if (!mutter_plugin_disabled (plugin) &&
+          (mutter_plugin_features (plugin) & MUTTER_PLUGIN_SWITCH_WORKSPACE) &&
           (actors && *actors))
         {
-          if (plugin->switch_workspace)
+          if (klass->switch_workspace)
             {
               retval = TRUE;
               mutter_plugin_manager_kill_effect (
@@ -720,7 +532,7 @@ mutter_plugin_manager_switch_workspace (MutterPluginManager *plugin_mgr,
 		  MUTTER_WINDOW ((*actors)->data),
 		  MUTTER_PLUGIN_SWITCH_WORKSPACE);
 
-              plugin->switch_workspace (actors, from, to, direction);
+              klass->switch_workspace (plugin, actors, from, to, direction);
             }
         }
 
@@ -751,11 +563,12 @@ mutter_plugin_manager_xevent_filter (MutterPluginManager *plugin_mgr,
 
   while (l)
     {
-      MutterPlugin *plugin = l->data;
+      MutterPlugin      *plugin = l->data;
+      MutterPluginClass *klass = MUTTER_PLUGIN_GET_CLASS (plugin);
 
-      if (plugin->xevent_filter)
+      if (klass->xevent_filter)
         {
-          if (plugin->xevent_filter (xev) == TRUE)
+          if (klass->xevent_filter (plugin, xev) == TRUE)
             return TRUE;
         }
 
@@ -763,178 +576,5 @@ mutter_plugin_manager_xevent_filter (MutterPluginManager *plugin_mgr,
     }
 
   return FALSE;
-}
-
-/*
- * Public accessors for plugins, exposed from mutter-plugin.h
- */
-ClutterActor *
-mutter_plugin_get_overlay_group (MutterPlugin *plugin)
-{
-  MutterPluginPrivate *priv = plugin->manager_private;
-  MutterPluginManager *plugin_mgr = priv->self;
-
-  return mutter_get_overlay_group_for_screen (plugin_mgr->screen);
-}
-
-ClutterActor *
-mutter_plugin_get_stage (MutterPlugin *plugin)
-{
-  MutterPluginPrivate *priv = plugin->manager_private;
-  MutterPluginManager *plugin_mgr  = priv->self;
-
-  return mutter_get_stage_for_screen (plugin_mgr->screen);
-}
-
-ClutterActor *
-mutter_plugin_get_window_group (MutterPlugin *plugin)
-{
-  MutterPluginPrivate *priv = plugin->manager_private;
-  MutterPluginManager *plugin_mgr  = priv->self;
-
-  return mutter_get_window_group_for_screen (plugin_mgr->screen);
-}
-
-void
-mutter_plugin_effect_completed (MutterPlugin *plugin,
-                                MutterWindow *actor,
-                                unsigned long event)
-{
-  MutterPluginPrivate *priv = plugin->manager_private;
-
-  priv->running--;
-
-  if (!actor)
-    {
-      g_warning ("Plugin [%s] passed NULL for actor!",
-                 (plugin && plugin->name) ? plugin->name : "unknown");
-    }
-
-  mutter_window_effect_completed (actor, event);
-}
-
-void
-mutter_plugin_query_screen_size (MutterPlugin *plugin,
-                                 int          *width,
-                                 int          *height)
-{
-  MutterPluginPrivate *priv = plugin->manager_private;
-  MutterPluginManager *plugin_mgr  = priv->self;
-
-  meta_screen_get_size (plugin_mgr->screen, width, height);
-}
-
-void
-mutter_plugin_set_stage_reactive (MutterPlugin *plugin,
-                                  gboolean      reactive)
-{
-  MutterPluginPrivate *priv = plugin->manager_private;
-  MutterPluginManager *mgr  = priv->self;
-  MetaDisplay *display = meta_screen_get_display (mgr->screen);
-  Display     *xdpy    = meta_display_get_xdisplay (display);
-  Window       xstage, xoverlay;
-  ClutterActor *stage;
-
-  stage = mutter_get_stage_for_screen (mgr->screen);
-  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-  xoverlay = mutter_get_overlay_window (mgr->screen);
-
-  static XserverRegion region = None;
-
-  if (region == None)
-    region = XFixesCreateRegion (xdpy, NULL, 0);
-
-  if (reactive)
-    {
-      XFixesSetWindowShapeRegion (xdpy, xstage,
-                                  ShapeInput, 0, 0, None);
-      XFixesSetWindowShapeRegion (xdpy, xoverlay,
-                                  ShapeInput, 0, 0, None);
-    }
-  else
-    {
-      XFixesSetWindowShapeRegion (xdpy, xstage,
-                                  ShapeInput, 0, 0, region);
-      XFixesSetWindowShapeRegion (xdpy, xoverlay,
-                                  ShapeInput, 0, 0, region);
-    }
-}
-
-void
-mutter_plugin_set_stage_input_area (MutterPlugin *plugin,
-                                    gint x, gint y, gint width, gint height)
-{
-  MutterPluginPrivate *priv = plugin->manager_private;
-  MutterPluginManager *mgr  = priv->self;
-  MetaDisplay  *display = meta_screen_get_display (mgr->screen);
-  Display      *xdpy    = meta_display_get_xdisplay (display);
-  Window        xstage, xoverlay;
-  ClutterActor *stage;
-  XRectangle    rect;
-  XserverRegion region;
-
-  stage = mutter_get_stage_for_screen (mgr->screen);
-  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-  xoverlay = mutter_get_overlay_window (mgr->screen);
-
-  rect.x = x;
-  rect.y = y;
-  rect.width = width;
-  rect.height = height;
-
-  region = XFixesCreateRegion (xdpy, &rect, 1);
-
-  XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
-  XFixesSetWindowShapeRegion (xdpy, xoverlay, ShapeInput, 0, 0, region);
-
-  XFixesDestroyRegion (xdpy, region);
-}
-
-void
-mutter_plugin_set_stage_input_region (MutterPlugin *plugin,
-                                      XserverRegion region)
-{
-  MutterPluginPrivate *priv = plugin->manager_private;
-  MutterPluginManager *mgr  = priv->self;
-  MetaDisplay  *display = meta_screen_get_display (mgr->screen);
-  Display      *xdpy    = meta_display_get_xdisplay (display);
-  Window        xstage, xoverlay;
-  ClutterActor *stage;
-
-  stage = mutter_get_stage_for_screen (mgr->screen);
-  xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
-  xoverlay = mutter_get_overlay_window (mgr->screen);
-
-  XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
-  XFixesSetWindowShapeRegion (xdpy, xoverlay, ShapeInput, 0, 0, region);
-}
-
-GList *
-mutter_plugin_get_windows (MutterPlugin *plugin)
-{
-  MutterPluginPrivate *priv = plugin->manager_private;
-  MutterPluginManager *plugin_mgr  = priv->self;
-
-  return mutter_get_windows (plugin_mgr->screen);
-}
-
-Display *
-mutter_plugin_get_xdisplay (MutterPlugin *plugin)
-{
-  MutterPluginPrivate *priv    = plugin->manager_private;
-  MutterPluginManager *mgr     = priv->self;
-  MetaDisplay         *display = meta_screen_get_display (mgr->screen);
-  Display             *xdpy    = meta_display_get_xdisplay (display);
-
-  return xdpy;
-}
-
-MetaScreen *
-mutter_plugin_get_screen (MutterPlugin *plugin)
-{
-  MutterPluginPrivate *priv    = plugin->manager_private;
-  MutterPluginManager *mgr     = priv->self;
-
-  return mgr->screen;
 }
 

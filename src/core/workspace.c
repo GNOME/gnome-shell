@@ -45,6 +45,27 @@ static void free_this                    (gpointer candidate,
                                           gpointer dummy);
 static void workspace_free_struts        (MetaWorkspace *workspace);
 
+G_DEFINE_TYPE (MetaWorkspace, meta_workspace, G_TYPE_OBJECT);
+
+static void
+meta_workspace_finalize (GObject *object)
+{
+  /* Actual freeing done in meta_workspace_remove() for now */
+}
+
+static void
+meta_workspace_class_init (MetaWorkspaceClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_workspace_finalize;
+}
+
+static void
+meta_workspace_init (MetaWorkspace *workspace)
+{
+}
+
 static void
 maybe_add_to_list (MetaScreen *screen, MetaWindow *window, gpointer data)
 {
@@ -59,7 +80,7 @@ meta_workspace_new (MetaScreen *screen)
 {
   MetaWorkspace *workspace;
 
-  workspace = g_new (MetaWorkspace, 1);
+  workspace = g_object_new (META_TYPE_WORKSPACE, NULL);
 
   workspace->screen = screen;
   workspace->screen->workspaces =
@@ -112,7 +133,7 @@ workspace_free_struts (MetaWorkspace *workspace)
 }
 
 void
-meta_workspace_free (MetaWorkspace *workspace)
+meta_workspace_remove (MetaWorkspace *workspace)
 {
   GList *tmp;
   MetaScreen *screen;
@@ -168,7 +189,7 @@ meta_workspace_free (MetaWorkspace *workspace)
       meta_rectangle_free_list_and_elements (workspace->xinerama_edges);
     }
 
-  g_free (workspace);
+  g_object_unref (workspace);
 
   /* don't bother to reset names, pagers can just ignore
    * extra ones
