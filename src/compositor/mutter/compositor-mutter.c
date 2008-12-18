@@ -527,7 +527,7 @@ static void
 mutter_window_query_window_type (MutterWindow *self)
 {
   MutterWindowPrivate *priv = self->priv;
-  priv->type = (MetaCompWindowType) meta_window_get_type (priv->window);
+  priv->type = (MetaCompWindowType) meta_window_get_window_type (priv->window);
 }
 
 static gboolean
