@@ -34,7 +34,7 @@
 #ifndef __META_ACCEL_LABEL_H__
 #define __META_ACCEL_LABEL_H__
 
-#include <gtk/gtklabel.h>
+#include <gtk/gtk.h>
 #include "common.h"
 
 #ifdef __cplusplus

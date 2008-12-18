@@ -851,7 +851,7 @@ meta_ui_parse_modifier (const char          *accel,
   
   *mask = 0;
 
-  if (strcmp (accel, "disabled") == 0)
+  if (accel == NULL || strcmp (accel, "disabled") == 0)
     return TRUE;
   
   meta_ui_accelerator_parse (accel, &gdk_sym, &gdk_code, &gdk_mask);
@@ -997,17 +997,4 @@ meta_ui_get_pixbuf_from_pixmap (Pixmap   pmap)
   g_object_unref (gpmap);
 
   return pixbuf;
-}
-  
-void
-meta_ui_get_fallback_icons (GdkPixbuf **fallback_icon_p,
-                            GdkPixbuf **fallback_mini_icon_p)
-{
-  MetaTheme *theme = meta_theme_get_current ();
-
-  if (fallback_icon_p)
-    *fallback_icon_p = theme->fallback_icon;
-
-  if (fallback_mini_icon_p)
-    *fallback_mini_icon_p = theme->fallback_mini_icon;  
 }

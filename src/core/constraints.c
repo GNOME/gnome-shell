@@ -392,7 +392,27 @@ setup_constraint_info (ConstraintInfo      *info,
   meta_window_get_work_area_for_xinerama (window,
                                           xinerama_info->number,
                                           &info->work_area_xinerama);
-  info->entire_xinerama = xinerama_info->rect;
+
+  if (!window->fullscreen || window->fullscreen_monitors[0] == -1)
+    {
+      info->entire_xinerama = xinerama_info->rect;
+    }
+  else
+    {
+      int i = 0;
+      long monitor;
+
+      monitor = window->fullscreen_monitors[i];
+      info->entire_xinerama =
+        window->screen->xinerama_infos[monitor].rect;
+      for (i = 1; i <= 3; i++)
+        {
+          monitor = window->fullscreen_monitors[i];
+          meta_rectangle_union (&info->entire_xinerama,
+                                &window->screen->xinerama_infos[monitor].rect,
+                                &info->entire_xinerama);
+        }
+    }
 
   cur_workspace = window->screen->active_workspace;
   info->usable_screen_region   = 
@@ -784,7 +804,9 @@ constrain_fullscreen (MetaWindow         *window,
   /* Determine whether constraint applies; exit if it doesn't */
   if (!window->fullscreen)
     return TRUE;
+
   xinerama = info->entire_xinerama;
+
   get_size_limits (window, info->fgeom, FALSE, &min_size, &max_size);
   too_big =   !meta_rectangle_could_fit_rect (&xinerama, &min_size);
   too_small = !meta_rectangle_could_fit_rect (&max_size, &xinerama);

@@ -249,7 +249,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   gulong existing_wm_state;
   gulong event_mask;
   MetaMoveResizeFlags flags;
-#define N_INITIAL_PROPS 18
+#define N_INITIAL_PROPS 19
   Atom initial_props[N_INITIAL_PROPS];
   int i;
   gboolean has_shape;
@@ -471,6 +471,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->maximize_vertically_after_placement = FALSE;
   window->minimize_after_placement = FALSE;
   window->fullscreen = FALSE;
+  window->fullscreen_monitors[0] = -1;
   window->require_fully_onscreen = TRUE;
   window->require_on_single_xinerama = TRUE;
   window->require_titlebar_visible = TRUE;
@@ -604,6 +605,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   initial_props[i++] = display->atom__MOTIF_WM_HINTS;
   initial_props[i++] = XA_WM_TRANSIENT_FOR;
   initial_props[i++] = display->atom__NET_WM_USER_TIME_WINDOW;
+  initial_props[i++] = display->atom__NET_WM_FULLSCREEN_MONITORS;
   g_assert (N_INITIAL_PROPS == i);
   
   meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
@@ -1128,6 +1130,9 @@ meta_window_free (MetaWindow  *window,
       XDeleteProperty (window->display->xdisplay,
                        window->xwindow,
                        window->display->atom__NET_WM_STATE);
+      XDeleteProperty (window->display->xdisplay,
+                       window->xwindow,
+                       window->display->atom__NET_WM_FULLSCREEN_MONITORS);
       set_wm_state (window, WithdrawnState);
       meta_error_trap_pop (window->display, FALSE);
     }
@@ -1241,7 +1246,7 @@ static void
 set_net_wm_state (MetaWindow *window)
 {
   int i;
-  unsigned long data[11];
+  unsigned long data[12];
   
   i = 0;
   if (window->shaded)
@@ -1299,6 +1304,11 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom__NET_WM_STATE_DEMANDS_ATTENTION;
       ++i;
     }
+  if (window->on_all_workspaces)
+    {
+      data[i] = window->display->atom__NET_WM_STATE_STICKY;
+      ++i;
+    }
 
   meta_verbose ("Setting _NET_WM_STATE with %d atoms\n", i);
   
@@ -1308,6 +1318,23 @@ set_net_wm_state (MetaWindow *window)
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) data, i);
   meta_error_trap_pop (window->display, FALSE);
+
+  if (window->fullscreen)
+    {
+      data[0] = window->fullscreen_monitors[0];
+      data[1] = window->fullscreen_monitors[1];
+      data[2] = window->fullscreen_monitors[2];
+      data[3] = window->fullscreen_monitors[3];
+
+      meta_verbose ("Setting _NET_WM_FULLSCREEN_MONITORS\n");
+      meta_error_trap_push (window->display);
+      XChangeProperty (window->display->xdisplay,
+                       window->xwindow,
+                       window->display->atom__NET_WM_FULLSCREEN_MONITORS,
+                       XA_CARDINAL, 32, PropModeReplace,
+                       (guchar*) data, 4);
+      meta_error_trap_pop (window->display, FALSE);
+    }
 }
 
 gboolean
@@ -2890,6 +2917,34 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       
       recalc_window_features (window);
       set_net_wm_state (window);
+    }
+}
+
+void
+meta_window_update_fullscreen_monitors (MetaWindow    *window,
+                                        unsigned long  top,
+                                        unsigned long  bottom,
+                                        unsigned long  left,
+                                        unsigned long  right)
+{
+  if ((int)top < window->screen->n_xinerama_infos &&
+      (int)bottom < window->screen->n_xinerama_infos &&
+      (int)left < window->screen->n_xinerama_infos &&
+      (int)right < window->screen->n_xinerama_infos)
+    {
+      window->fullscreen_monitors[0] = top;
+      window->fullscreen_monitors[1] = bottom;
+      window->fullscreen_monitors[2] = left;
+      window->fullscreen_monitors[3] = right;
+    }
+  else
+    {
+      window->fullscreen_monitors[0] = -1;
+    }
+
+  if (window->fullscreen)
+    {
+      meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
     }
 }
 
@@ -5072,9 +5127,19 @@ meta_window_client_message (MetaWindow *window,
         {
           if ((action == _NET_WM_STATE_ADD) ||
               (action == _NET_WM_STATE_TOGGLE && !window->wm_state_demands_attention))
-            meta_window_set_demands_attention(window);
+            meta_window_set_demands_attention (window);
           else
-            meta_window_unset_demands_attention(window);
+            meta_window_unset_demands_attention (window);
+        }
+      
+       if (first == display->atom__NET_WM_STATE_STICKY ||
+          second == display->atom__NET_WM_STATE_STICKY)
+        {
+          if ((action == _NET_WM_STATE_ADD) ||
+              (action == _NET_WM_STATE_TOGGLE && !window->on_all_workspaces))
+            meta_window_stick (window);
+          else
+            meta_window_unstick (window);
         }
       
       return TRUE;
@@ -5272,6 +5337,23 @@ meta_window_client_message (MetaWindow *window,
 
       window_activate (window, timestamp, source_indication, NULL);
       return TRUE;
+    }
+  else if (event->xclient.message_type ==
+           display->atom__NET_WM_FULLSCREEN_MONITORS)
+    {
+      MetaClientType source_indication;
+      gulong top, bottom, left, right;
+
+      meta_verbose ("_NET_WM_FULLSCREEN_MONITORS request for window '%s'\n",
+                    window->desc);
+
+      top = event->xclient.data.l[0];
+      bottom = event->xclient.data.l[1];
+      left = event->xclient.data.l[2];
+      right = event->xclient.data.l[3];
+      source_indication = event->xclient.data.l[4];
+
+      meta_window_update_fullscreen_monitors (window, top, bottom, left, right);
     }
   
   return FALSE;
@@ -8206,6 +8288,10 @@ meta_window_set_demands_attention (MetaWindow *window)
       /* windows on other workspaces are necessarily obscured */
       obscured = TRUE;
     }
+  else if (window->minimized)
+    {
+      obscured = TRUE;
+    }
   else
     {
       meta_window_get_outer_rect (window, &candidate_rect);
@@ -8230,21 +8316,26 @@ meta_window_set_demands_attention (MetaWindow *window)
                 }
             }
         }
-      /* If the window's in full view, there's no point setting the flag. */
-  
-      meta_topic (META_DEBUG_WINDOW_OPS,
-          "Not marking %s as needing attention because it's in full view\n",
-          window->desc);
-      return;
     }
-    
-  /* Otherwise, go ahead and set the flag. */
-  
-  meta_topic (META_DEBUG_WINDOW_OPS,
-      "Marking %s as needing attention\n", window->desc);
 
-  window->wm_state_demands_attention = TRUE;
-  set_net_wm_state (window);
+  if (obscured)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Marking %s as needing attention\n",
+                  window->desc);
+
+      window->wm_state_demands_attention = TRUE;
+      set_net_wm_state (window);
+    }
+  else
+    {
+      /* If the window's in full view, there's no point setting the flag. */
+
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                 "Not marking %s as needing attention because "
+                 "it's in full view\n",
+                 window->desc);
+    }
 }
 
 void

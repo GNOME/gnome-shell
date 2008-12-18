@@ -1,18 +1,17 @@
-# Catalan translation of Metacity.
-# Copyright © 2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
+# Valencian (southern Catalan) translation of Metacity.
+# Copyright © 2002, 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 # Softcatala <info@softcatala.org>, 2002.
 # Jesús Moreno <jmmolas@wanadoo.es>, 2002.
-# Jordi Mallach <jordi@sindominio.net>, 2003, 2004, 2005, 2006, 2007, 2008.
-# David Planella <david.planella@gmail.com>, 2008.
+# Jordi Mallach <jordi@sindominio.net>, 2003, 2004, 2005, 2006, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.24\n"
+"Project-Id-Version: metacity 2.18\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-27 18:26+0200\n"
 "PO-Revision-Date: 2008-09-27 18:27+0200\n"
-"Last-Translator: David Planella <david.planella@gmail.com>\n"
+"Last-Translator: Robert Millan <rmh@aybabtu.com>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,17 +109,17 @@ msgstr ""
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "S'ha produït un error en executar el metacity-dialog per a mostrar un error "
-"quant a una ordre: %s\n"
+"quant a una orde: %s\n"
 
 #: ../src/core/keybindings.c:2668
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr "No s'ha definit cap ordre %d.\n"
+msgstr "No s'ha definit cap orde %d.\n"
 
 #: ../src/core/keybindings.c:3705
 #, c-format
 msgid "No terminal command has been defined.\n"
-msgstr "No s'ha definit cap ordre de terminal.\n"
+msgstr "No s'ha definit cap orde de terminal.\n"
 
 #: ../src/core/main.c:116
 #, c-format
@@ -156,7 +155,7 @@ msgstr "Visualització X per a usar"
 
 #: ../src/core/main.c:276
 msgid "Initialize session from savefile"
-msgstr "Inicialitza la sessió des del fitxer desat"
+msgstr "Inicialitza la sessió des del fitxer alçat"
 
 #: ../src/core/main.c:282
 msgid "Print version"
@@ -164,7 +163,7 @@ msgstr "Escriu versió"
 
 #: ../src/core/main.c:288
 msgid "Make X calls synchronous"
-msgstr "Fes que les crides a l'X siguin síncrones"
+msgstr "Fes que les crides a l'X siguen síncrones"
 
 #: ../src/core/main.c:294
 msgid "Turn compositing on"
@@ -184,7 +183,7 @@ msgstr "No s'ha pogut analitzar el directori de temes: %s\n"
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
-"No s'ha trobat cap tema. Assegureu-vos que %s existeix i conté els temes "
+"No s'ha trobat cap tema. Assegureu-vos que %s existix i conté els temes "
 "habituals.\n"
 
 #: ../src/core/main.c:526
@@ -319,7 +318,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/core/session.c:837 ../src/core/session.c:844
 #, c-format
@@ -345,12 +344,12 @@ msgstr "S'ha produït un error en tancar el fitxer de sessió «%s»: %s\n"
 #: ../src/core/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "No s'ha pogut llegir el fitxer de sessió «%s» desat: %s\n"
+msgstr "No s'ha pogut llegir el fitxer de sessió «%s» alçat: %s\n"
 
 #: ../src/core/session.c:1132
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "No s'ha pogut analitzar el fitxer de sessió desat: %s\n"
+msgstr "No s'ha pogut analitzar el fitxer de sessió alçat: %s\n"
 
 #: ../src/core/session.c:1181
 #, c-format
@@ -525,7 +524,7 @@ msgstr "Redimensiona la finestra"
 
 #: ../src/core/window-bindings.h:131 ../src/metacity.schemas.in.h:197
 msgid "Toggle window on all workspaces"
-msgstr "Commuta que la finestra estigui en tots els espais de treball"
+msgstr "Commuta que la finestra estiga en tots els espais de treball"
 
 #: ../src/core/window-bindings.h:132
 msgid ""
@@ -816,7 +815,7 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"La finestra %s estableix SM_CLIENT_ID en ella mateixa, en comptes del "
+"La finestra %s establix SM_CLIENT_ID en ella mateixa, en comptes del "
 "WM_CLIENT_LEADER, tal i com s'especifica a ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
@@ -832,8 +831,8 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"La finestra %s estableix un consell MWM que indica que no és "
-"redimensionable, però estableix una mida mínima %d x %d i una mida màxima %d "
+"La finestra %s establix un consell MWM que indica que no és "
+"redimensionable, però establix una grandària mínima %d x %d i una grandària màxima %d "
 "x %d; açò no té massa sentit.\n"
 
 #: ../src/core/window-props.c:206
@@ -864,7 +863,7 @@ msgstr ""
 "La finestra 0x%lx té la propietat %s\n"
 "que s'esperava tingués el tipus %s format %d\n"
 "i actualment té el tipus %s format %d n elements %d.\n"
-"És molt possible que sigui un error en l'aplicació, no un error del gestor "
+"És molt possible que siga un error en l'aplicació, no un error del gestor "
 "de finestres.\n"
 "La finestra té el títol=«%s» classe=«%s» nom=«%s»\n"
 "\n"
@@ -899,8 +898,8 @@ msgid ""
 "option is set to true."
 msgstr ""
 "Una cadena de descripció de tipus de lletra per a les barres de títol de les "
-"finestres. La mida de la descripció només s'utilitzarà si l'opció "
-"titlebar_font_size està establerta a 0. A més a més, aquesta opció està "
+"finestres. La grandària de la descripció només s'utilitzarà si l'opció "
+"titlebar_font_size està establerta a 0. A més a més, esta opció està "
 "inhabilitada si titlebar_uses_desktop_font està establert és cert."
 
 #: ../src/metacity.schemas.in.h:3
@@ -933,7 +932,7 @@ msgstr ""
 "cadena, com ara «menu:minimize,maximize,spacer,close»; els dos punts separen "
 "la cantonada esquerra de la finestra de la dreta, i els noms dels botons se "
 "separen amb comes. No es permeten botons duplicats. Els botons desconeguts "
-"es descartaran sense cap notificació, de manera que es puguin afegir botons "
+"es descartaran sense cap notificació, de manera que es puguen afegir botons "
 "en futures versions del Metacity sense trencar les versions antigues. Es pot "
 "afegir una etiqueta especial d'espaiament («spacer») per a insertar una "
 "determinada quantitat d'espai entre dos botons adjacents."
@@ -949,14 +948,14 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
-"Si es fa clic en una finestra mentre es manté aquesta tecla modificadora "
+"Si es fa clic en una finestra mentre es manté esta tecla modificadora "
 "premuda, es mourà la finestra (botó esquerre), redimensionarà la finestra "
 "(botó central) o mostrarà el menú de la finestra (botó dret). El modificador "
 "s'expresa com «&lt;Alt;&gt;» o «&lt;Super&gt;», per exemple."
 
 #: ../src/metacity.schemas.in.h:12
 msgid "Commands to run in response to keybindings"
-msgstr "Ordres a executar en resposta a vinculacions de tecles"
+msgstr "Ordes a executar en resposta a vinculacions de tecles"
 
 #: ../src/metacity.schemas.in.h:13
 msgid "Compositing Manager"
@@ -1067,10 +1066,10 @@ msgid ""
 "bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 msgstr ""
 "Hi ha moltes accions (p.ex. fer clic a l'àrea del client, moure o canviar la "
-"mida de la finestra) que normalment alcen la finestra com a efecte "
-"secundari. Si establiu aquesta opció com a falsa (cosa gens recomanable), "
+"grandària de la finestra) que normalment alcen la finestra com a efecte "
+"secundari. Si establiu esta opció com a falsa (cosa gens recomanable), "
 "l'alçament es desvincularà de les altres accions de l'usuari i s'ignoraran "
-"les sol·licituds d'alçament generades per les aplicacions. Vegeu aquest "
+"les sol·licituds d'alçament generades per les aplicacions. Vegeu este "
 "informe d'error: http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:33
@@ -1079,23 +1078,23 @@ msgstr "Modificador a usar per a les accions modificades de clic en finestra"
 
 #: ../src/metacity.schemas.in.h:34
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Mou cap enrere entre quadres i l'escriptori immediatament"
+msgstr "Mou cap arrere entre quadres i l'escriptori immediatament"
 
 #: ../src/metacity.schemas.in.h:35
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "Mou cap enrere entre quadres i l'escriptori amb un diàleg emergent"
+msgstr "Mou cap arrere entre quadres i l'escriptori amb un diàleg emergent"
 
 #: ../src/metacity.schemas.in.h:36
 msgid "Move backwards between windows immediately"
-msgstr "Mou cap enrere entre finestres immediatament"
+msgstr "Mou cap arrere entre finestres immediatament"
 
 #: ../src/metacity.schemas.in.h:37
 msgid "Move backwards between windows of an application immediately"
-msgstr "Mou cap enrere entre finestres d'una aplicació immediatament"
+msgstr "Mou cap arrere entre finestres d'una aplicació immediatament"
 
 #: ../src/metacity.schemas.in.h:38
 msgid "Move backwards between windows of an application with popup"
-msgstr "Mou cap enrere entre finestres d'una aplicació amb un diàleg emergent"
+msgstr "Mou cap arrere entre finestres d'una aplicació amb un diàleg emergent"
 
 #: ../src/metacity.schemas.in.h:39
 msgid "Move between panels and the desktop immediately"
@@ -1123,7 +1122,7 @@ msgstr "Mou entre finestres amb un diàleg emergent"
 
 #: ../src/metacity.schemas.in.h:45
 msgid "Move focus backwards between windows using popup display"
-msgstr "Mou el focus cap enrere entre finestres utilitzant un diàleg emergent"
+msgstr "Mou el focus cap arrere entre finestres utilitzant un diàleg emergent"
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Name of workspace"
@@ -1145,7 +1144,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:78
 msgid "Run a defined command"
-msgstr "Executa una ordre definida"
+msgstr "Executa una orde definida"
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Run a terminal"
@@ -1167,9 +1166,9 @@ msgid ""
 "run any misbehaving applications."
 msgstr ""
 "Algunes aplicacions no fan cas de les especificacions que poden fer que el "
-"gestor de finestri no respongui correctament. Aquesta opció fa que el "
+"gestor de finestri no respongui correctament. Esta opció fa que el "
 "Metaciti es posi en un mode rogorosament correcte, que proporciona una "
-"interfície d'usuari més consistent, sempre que no s'hagin d'executar "
+"interfície d'usuari més consistent, sempre que no s'hagen d'executar "
 "aplicacions que no actuin correctament."
 
 #: ../src/metacity.schemas.in.h:83
@@ -1222,11 +1221,11 @@ msgstr "Canvia a l'espai de treball 9"
 
 #: ../src/metacity.schemas.in.h:95
 msgid "Switch to workspace above this one"
-msgstr "Canvia a l'espai de treball damunt d'aquest"
+msgstr "Canvia a l'espai de treball damunt d'este"
 
 #: ../src/metacity.schemas.in.h:96
 msgid "Switch to workspace below this one"
-msgstr "Canvia a l'espai de treball sota aquest"
+msgstr "Canvia a l'espai de treball sota este"
 
 #: ../src/metacity.schemas.in.h:97
 msgid "Switch to workspace on the left"
@@ -1274,7 +1273,7 @@ msgid ""
 "will execute command_N."
 msgstr ""
 "Les claus /apps/metacity/global_keybindings/run_command_N estableixen "
-"vinculacions de tecles que corresponen a aquestes ordres. Si es prem la "
+"vinculacions de tecles que corresponen a estes ordes. Si es prem la "
 "vinculació per a run_command_N, s'executarà command_N."
 
 #: ../src/metacity.schemas.in.h:104
@@ -1282,9 +1281,9 @@ msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"La clau /apps/metacity/global_keybindings/run_command_screenshot estableix "
-"una vinculació de tecles que fa que s'invoqui l'ordre especificada en "
-"aquesta configuració."
+"La clau /apps/metacity/global_keybindings/run_command_screenshot establix "
+"una vinculació de tecles que fa que s'invoqui l'orde especificada en "
+"esta configuració."
 
 #: ../src/metacity.schemas.in.h:105
 msgid ""
@@ -1293,8 +1292,8 @@ msgid ""
 "be invoked."
 msgstr ""
 "La clau /apps/metacity/global_keybindings/run_command_window_screenshot "
-"estableix una vinculació de tecles que fa que s'invoqui l'ordre especificada "
-"en aquesta configuració."
+"establix una vinculació de tecles que fa que s'invoqui l'orde especificada "
+"en esta configuració."
 
 #: ../src/metacity.schemas.in.h:106
 msgid ""
@@ -1305,12 +1304,12 @@ msgid ""
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
 msgstr ""
-"La vinculació de tecles que executa l'ordre amb la numeració corresponent a /"
+"La vinculació de tecles que executa l'orde amb la numeració corresponent a /"
 "apps/metacity/keybinding_commands. El format és semblant a «&lt;Control&gt;a» "
 "o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
 "minúscules i majúscules, i també abreviacions com ara «&lt;Ctl&gt;» o «&lt;"
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
-"cap vinculació per a aquesta acció."
+"cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:107
 msgid ""
@@ -1325,7 +1324,7 @@ msgstr ""
 "de treball actual. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
 "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
 "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:108
 msgid ""
@@ -1340,7 +1339,7 @@ msgstr ""
 "treball actual. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
 "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
 "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:109
 msgid ""
@@ -1355,7 +1354,7 @@ msgstr ""
 "l'espai de treball actual. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
 "Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, "
 "i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:110
 msgid ""
@@ -1370,7 +1369,7 @@ msgstr ""
 "l'espai de treball actual. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
 "Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, "
 "i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:111
 msgid ""
@@ -1384,7 +1383,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:112
 msgid ""
@@ -1398,7 +1397,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:113
 msgid ""
@@ -1412,7 +1411,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:114
 msgid ""
@@ -1426,7 +1425,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:115
 msgid ""
@@ -1440,7 +1439,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:116
 msgid ""
@@ -1454,7 +1453,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:117
 msgid ""
@@ -1468,7 +1467,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:118
 msgid ""
@@ -1482,7 +1481,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:119
 msgid ""
@@ -1496,7 +1495,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:120
 msgid ""
@@ -1510,7 +1509,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:121
 msgid ""
@@ -1524,7 +1523,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:122
 msgid ""
@@ -1538,7 +1537,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:123
 msgid ""
@@ -1552,7 +1551,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:124
 msgid ""
@@ -1566,7 +1565,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:125
 msgid ""
@@ -1582,7 +1581,7 @@ msgstr ""
 "&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
 "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
-"per a aquesta acció."
+"per a esta acció."
 
 #: ../src/metacity.schemas.in.h:126
 msgid ""
@@ -1598,7 +1597,7 @@ msgstr ""
 "a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
 "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
-"cap vinculació per a aquesta acció."
+"cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:127
 msgid ""
@@ -1614,7 +1613,7 @@ msgstr ""
 "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
 "i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
-"per a aquesta acció."
+"per a esta acció."
 
 #: ../src/metacity.schemas.in.h:128
 msgid ""
@@ -1628,7 +1627,7 @@ msgstr ""
 "a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou "
 "flexible i permet minúscules i majúscules, i també abreviacions com «&lt;"
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"«disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:129
 msgid ""
@@ -1642,7 +1641,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:130
 msgid ""
@@ -1657,7 +1656,7 @@ msgstr ""
 "avall. El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:131
 msgid ""
@@ -1672,7 +1671,7 @@ msgstr ""
 "l'esquerra. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
 "Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, "
 "i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:132
 msgid ""
@@ -1687,7 +1686,7 @@ msgstr ""
 "dreta. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
 "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
 "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:133
 msgid ""
@@ -1701,7 +1700,7 @@ msgstr ""
 "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:134
 msgid ""
@@ -1715,7 +1714,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:135
 msgid ""
@@ -1729,7 +1728,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:136
 msgid ""
@@ -1743,7 +1742,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:137
 msgid ""
@@ -1757,7 +1756,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:138
 msgid ""
@@ -1771,7 +1770,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:139
 msgid ""
@@ -1785,7 +1784,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:140
 msgid ""
@@ -1799,7 +1798,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:141
 msgid ""
@@ -1813,7 +1812,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:142
 msgid ""
@@ -1827,7 +1826,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:143
 msgid ""
@@ -1841,7 +1840,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:144
 msgid ""
@@ -1855,7 +1854,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:145
 msgid ""
@@ -1869,7 +1868,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:146
 msgid ""
@@ -1880,12 +1879,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"La vinculació de tecles que mou el focus cap enrere entre els quadres i "
+"La vinculació de tecles que mou el focus cap arrere entre els quadres i "
 "l'escriptori, utilitzant una finestra emergent. El format és semblant a «&lt;"
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:147
 msgid ""
@@ -1896,12 +1895,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"La vinculació de tecles que mou el focus cap enrere entre els quadres i "
+"La vinculació de tecles que mou el focus cap arrere entre els quadres i "
 "l'escriptori, sense utilitzar una finestra emergent. El format és semblant a "
 "«&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou "
 "flexible i permet minúscules i majúscules, i també abreviacions com «&lt;"
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"«disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:148
 msgid ""
@@ -1913,13 +1912,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"La vinculació de tecles que mou el focus cap enrere entre finestres d'una "
+"La vinculació de tecles que mou el focus cap arrere entre finestres d'una "
 "aplicació, sense utilitzar una finestra emergent. Mantenint premuda la techa "
-"de «majúscules» juntament amb aquesta convinació de tecles, fa que es vagi "
-"enrere. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
+"de «majúscules» juntament amb esta convinació de tecles, fa que es vagi "
+"arrere. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
 "F1». L'analitzador és força flexible i permet minúscules i majúscules, i "
 "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:149
 msgid ""
@@ -1931,13 +1930,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"La vinculació de tecles que mou el focus cap enrere entre finestres d'una "
+"La vinculació de tecles que mou el focus cap arrere entre finestres d'una "
 "mateixa aplicació, utilitzant una finestra emergent. Prement la tecla de "
-"majúscules aquesta vinculació fa que la direcció sigui cap enrere. El format "
+"majúscules esta vinculació fa que la direcció siga cap arrere. El format "
 "és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
 "és prou flexible i permet minúscules i majúscules, i també abreviacions com "
 "«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled» (inhabilitat), no hi haurà cap vinculació per a aquesta acció."
+"«disabled» (inhabilitat), no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:150
 msgid ""
@@ -1949,12 +1948,12 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"La vinculació de tecles que mou el focus cap enrere entre finestres, sense "
+"La vinculació de tecles que mou el focus cap arrere entre finestres, sense "
 "utilitzar una finestra emergent. El format és semblant a «&lt;Control&gt;a» o "
 "«&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
 "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
-"cap vinculació per a aquesta acció."
+"cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:151
 msgid ""
@@ -1966,12 +1965,12 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"La vinculació de tecles que mou el focus cap enrere entre finestres, "
+"La vinculació de tecles que mou el focus cap arrere entre finestres, "
 "utilitzant una finestra emergent. El format és semblant a «&lt;Control&gt;a» "
 "o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
 "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
-"cap vinculació per a aquesta acció."
+"cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:152
 msgid ""
@@ -1987,7 +1986,7 @@ msgstr ""
 "o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
 "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
-"cap vinculació per a aquesta acció."
+"cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:153
 msgid ""
@@ -2003,7 +2002,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:154
 msgid ""
@@ -2017,11 +2016,11 @@ msgid ""
 msgstr ""
 "La vinculació de tecles que mou el focus entre finestres d'una aplicació, "
 "sense utilitzar una finestra emergent. Prement la tecla de majúscules "
-"aquesta vinculació fa que la direcció sigui cap enrere. El format és "
+"esta vinculació fa que la direcció siga cap arrere. El format és "
 "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és "
 "prou flexible i permet minúscules i majúscules, i també abreviacions com «&lt;"
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"«disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:155
 msgid ""
@@ -2035,11 +2034,11 @@ msgid ""
 msgstr ""
 "La vinculació de tecles que mou el focus entre finestres d'una aplicació, "
 "utilitzant una finestra emergent. (Tradicionalment &lt;Alt&gt;F6) Prement la "
-"tecla de majúscules aquesta vinculació fa que la direcció sigui al revés.  "
+"tecla de majúscules esta vinculació fa que la direcció siga al revés.  "
 "El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:156
 msgid ""
@@ -2056,7 +2055,7 @@ msgstr ""
 "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
 "i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
-"per a aquesta acció."
+"per a esta acció."
 
 #: ../src/metacity.schemas.in.h:157
 msgid ""
@@ -2073,7 +2072,7 @@ msgstr ""
 "&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
 "majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
-"per a aquesta acció."
+"per a esta acció."
 
 #: ../src/metacity.schemas.in.h:158
 msgid ""
@@ -2090,7 +2089,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:159
 msgid ""
@@ -2104,7 +2103,7 @@ msgstr ""
 "sencera. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
 "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
 "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:160
 msgid ""
@@ -2118,7 +2117,7 @@ msgstr ""
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:161
 msgid ""
@@ -2132,7 +2131,7 @@ msgstr ""
 "El format és «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
 "és prou flexible i permet minúscules i majúscules, i també abreviacions com "
 "«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"«disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:162
 msgid ""
@@ -2148,7 +2147,7 @@ msgstr ""
 "«&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
 "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
-"cap vinculació per a aquesta acció."
+"cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:163
 msgid ""
@@ -2162,7 +2161,7 @@ msgstr ""
 "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és "
 "prou flexible i permet minúscules i majúscules, i també abreviacions com «&lt;"
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"«disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:164
 msgid ""
@@ -2177,7 +2176,7 @@ msgstr ""
 "quadre. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
 "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
 "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:165
 msgid ""
@@ -2191,7 +2190,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:166
 msgid ""
@@ -2207,7 +2206,7 @@ msgstr ""
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:167
 msgid ""
@@ -2222,7 +2221,7 @@ msgstr ""
 "quadre. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;"
 "F1». L'analitzador és prou flexible i permet minúscules i majúscules, i "
 "també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:168
 msgid ""
@@ -2236,7 +2235,7 @@ msgstr ""
 "és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
 "és prou flexible i permet minúscules i majúscules, i també abreviacions com "
 "«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"«disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:169
 msgid "The name of a workspace."
@@ -2244,7 +2243,7 @@ msgstr "El nom d'un espai de treball."
 
 #: ../src/metacity.schemas.in.h:170
 msgid "The screenshot command"
-msgstr "L'ordre de captura de pantalla"
+msgstr "L'orde de captura de pantalla"
 
 #: ../src/metacity.schemas.in.h:171
 msgid ""
@@ -2279,7 +2278,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:174
 msgid "The window screenshot command"
-msgstr "L'ordre de captura de finestra"
+msgstr "L'orde de captura de finestra"
 
 #: ../src/metacity.schemas.in.h:175
 msgid ""
@@ -2292,14 +2291,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles canvia si una finestra és per damunt o per sota "
+"Esta vinculació de tecles canvia si una finestra és per damunt o per sota "
 "d'altres finestres. Si la finestra està coberta per una altra finestra, "
 "s'alça la finestra per damunt de les altres, quedant totalment visible, i "
 "posa a sota les altres. El format és semblant a «&lt;Control&gt;a» o «&lt;"
 "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
 "i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
-"per a aquesta acció."
+"per a esta acció."
 
 #: ../src/metacity.schemas.in.h:176
 msgid ""
@@ -2309,11 +2308,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles fica una finestra sota les altres. El format és "
+"Esta vinculació de tecles fica una finestra sota les altres. El format és "
 "semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és "
 "prou flexible i permet minúscules i majúscules, i també abreviacions com «&lt;"
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"«disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:177
 msgid ""
@@ -2324,11 +2323,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles mou una finestra cap a la part nord (superior) "
+"Esta vinculació de tecles mou una finestra cap a la part nord (superior) "
 "de la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
 "Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, "
 "i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:178
 #, fuzzy
@@ -2340,12 +2339,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles mou una finestra cap a la part l'oest "
+"Esta vinculació de tecles mou una finestra cap a la part l'oest "
 "(esquerra) de la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;"
 "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
 "i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
-"per a aquesta acció."
+"per a esta acció."
 
 #: ../src/metacity.schemas.in.h:179
 msgid ""
@@ -2356,11 +2355,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles mou una finestra cap a la part est (dreta) de "
+"Esta vinculació de tecles mou una finestra cap a la part est (dreta) de "
 "la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
 "Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, "
 "i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:180
 msgid ""
@@ -2371,12 +2370,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles mou una finestra cap a la part nord-est "
+"Esta vinculació de tecles mou una finestra cap a la part nord-est "
 "(superior a la dreta) de la pantalla. El format és semblant a «&lt;Control&gt;"
 "a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
 "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
-"cap vinculació per a aquesta acció."
+"cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:181
 msgid ""
@@ -2387,12 +2386,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles mou una finestra cap a la part nord-oest "
+"Esta vinculació de tecles mou una finestra cap a la part nord-oest "
 "(superior a l'esquerra) de la pantalla. El format és semblant a «&lt;"
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:182
 msgid ""
@@ -2403,12 +2402,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles mou una finestra cap a la part del sud "
+"Esta vinculació de tecles mou una finestra cap a la part del sud "
 "(inferior) de la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;"
 "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
 "i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
-"per a aquesta acció."
+"per a esta acció."
 
 #: ../src/metacity.schemas.in.h:183
 msgid ""
@@ -2419,11 +2418,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles mou una finestra cap a la part sud-est de la "
+"Esta vinculació de tecles mou una finestra cap a la part sud-est de la "
 "pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
 "Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, "
 "i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a "
-"la cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"la cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:184
 msgid ""
@@ -2434,12 +2433,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles mou una finestra cap a la part sud-oest "
+"Esta vinculació de tecles mou una finestra cap a la part sud-oest "
 "(inferior a l'esquerra) de la pantalla. El format és semblant a «&lt;"
 "Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
 "i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
-"haurà cap vinculació per a aquesta acció."
+"haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:185
 msgid ""
@@ -2450,12 +2449,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles mou una finestra cap a la part l'oest "
+"Esta vinculació de tecles mou una finestra cap a la part l'oest "
 "(esquerra) de la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;"
 "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
 "i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
-"per a aquesta acció."
+"per a esta acció."
 
 #: ../src/metacity.schemas.in.h:186
 msgid ""
@@ -2465,11 +2464,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles eleva la finestra per damunt de les altres. El "
+"Esta vinculació de tecles eleva la finestra per damunt de les altres. El "
 "format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». "
 "L'analitzador és prou flexible i permet minúscules i majúscules, i també "
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
-"cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
+"cadena especial «disabled», no hi haurà cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:187
 msgid ""
@@ -2480,12 +2479,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles redimensiona una finestra per a que plene tot "
+"Esta vinculació de tecles redimensiona una finestra per a que plene tot "
 "l'espai horitzontal disponible. El format és semblant a «&lt;Control&gt;a» o "
 "«&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
 "minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
-"cap vinculació per a aquesta acció."
+"cap vinculació per a esta acció."
 
 #: ../src/metacity.schemas.in.h:188
 msgid ""
@@ -2496,12 +2495,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles redimensiona una finestra per a que plene tot "
+"Esta vinculació de tecles redimensiona una finestra per a que plene tot "
 "l'espai vertical disponible. El format és semblant a «&lt;Control&gt;a» o «&lt;"
 "Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
 "i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
-"per a aquesta acció."
+"per a esta acció."
 
 #: ../src/metacity.schemas.in.h:189
 msgid ""
@@ -2514,7 +2513,7 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"Aquesta opció determina l'efecte de l'acció de doble clic a la barra de "
+"Esta opció determina l'efecte de l'acció de doble clic a la barra de "
 "títol. Els valors permesos són «toggle_shade» (commuta l'estat de persiana), "
 "que commutarà l'estat d'ombrejat de la finestra, «toggle_maximize» (commuta "
 "la maximització), que en commutarà l'estat de maximització, "
@@ -2537,7 +2536,7 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"Aquesta opció determina l'efecte de l'acció de fer clic amb el botó del mig "
+"Esta opció determina l'efecte de l'acció de fer clic amb el botó del mig "
 "a la barra de títol. Els valors permesos són «toggle_shade» (commuta l'estat "
 "de persiana), que commutarà l'estat d'ombrejat de la finestra, "
 "«toggle_maximize» (commuta la maximització), que en commutarà l'estat de "
@@ -2560,7 +2559,7 @@ msgid ""
 "will display the window menu, 'lower' which will put the window behind all "
 "the others, and 'none' which will not do anything."
 msgstr ""
-"Aquesta opció determina l'efecte de l'acció de fer clic amb el botó "
+"Esta opció determina l'efecte de l'acció de fer clic amb el botó "
 "secundari a la barra de títol. Els valors permesos són "
 "«toggle_shade» (commuta l'estat de persiana), que commutarà l'estat "
 "d'ombrejat de la finestra, «toggle_maximize» (commuta la maximització), que "
@@ -2579,10 +2578,10 @@ msgid ""
 "mode, and \"strict\" results in windows started from a terminal not being "
 "given focus."
 msgstr ""
-"Aquesta opció proporciona control adicional sobre com les finestres noves "
+"Esta opció proporciona control adicional sobre com les finestres noves "
 "obtenen el focus. Té dos valors possibles: «smart», que aplica el focus "
 "normal d'usuari, i «strict», que fa que no es doni el focus a les finestres "
-"que s'iniciïn des d'un terminal."
+"que s'inicien des d'un terminal."
 
 #: ../src/metacity.schemas.in.h:198
 msgid ""
@@ -2867,7 +2866,7 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Podeu esperar un poc per a que continue o forçar la sortida completa de "
+"Podeu esperar un poc per a que continue o forçar l'eixida completa de "
 "l'aplicació."
 
 #: ../src/ui/metacity-dialog.c:107
@@ -2876,7 +2875,7 @@ msgstr "_Espera"
 
 #: ../src/ui/metacity-dialog.c:109
 msgid "_Force Quit"
-msgstr "_Força'n la sortida"
+msgstr "_Força'n l'eixida"
 
 #: ../src/ui/metacity-dialog.c:206
 msgid "Title"
@@ -2891,7 +2890,7 @@ msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Aquestes finestres no suporten «desa la configuració actual» i s'hauran de "
+"Estes finestres no suporten «alça la configuració actual» i es tindran que "
 "reiniciar manualment la pròxima vegada que entreu."
 
 #: ../src/ui/metacity-dialog.c:310
@@ -2942,7 +2941,7 @@ msgstr "El ràtio d'aspecte dels botons %g no és raonable"
 #: ../src/ui/theme.c:357
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
-msgstr "La geometria del marc no especifica la mida dels botons"
+msgstr "La geometria del marc no especifica la grandària dels botons"
 
 #: ../src/ui/theme.c:1022
 #, c-format
@@ -3044,7 +3043,7 @@ msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
-"L'expressió coordinada conté un operador desconegut a l'inici d'aquest text: "
+"L'expressió coordinada conté un operador desconegut a l'inici d'este text: "
 "«%s»"
 
 #: ../src/ui/theme.c:1804
@@ -3101,7 +3100,7 @@ msgstr "L'expressió coordinada té una variable o constant desconeguda «%s»"
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr ""
-"L'analitzador d'expressions de coordinades ha desbordat la seva memòria "
+"L'analitzador d'expressions de coordinades ha desbordat la seua memòria "
 "intermèdia."
 
 #: ../src/ui/theme.c:2321
@@ -3131,7 +3130,7 @@ msgid ""
 "specified for this frame style"
 msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"qualsevol\"/> s'ha "
-"d'especificar per a aquest estil de marc"
+"d'especificar per a este estil de marc"
 
 #: ../src/ui/theme.c:4633 ../src/ui/theme.c:4658
 #, c-format
@@ -3187,7 +3186,7 @@ msgstr "S'ha repetit l'atribut «%s» dues vegades en el mateix element <%s>"
 #: ../src/ui/theme-parser.c:414 ../src/ui/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "L'atribut «%s» no és vàlid per a l'element <%s> en aquest context"
+msgstr "L'atribut «%s» no és vàlid per a l'element <%s> en este context"
 
 #: ../src/ui/theme-parser.c:500
 #, c-format
@@ -3227,7 +3226,7 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Escala de títol no vàlida «%s» (ha de ser una d'aquestes: xx-small,x-small,"
+"Escala de títol no vàlida «%s» (ha de ser una d'estes: xx-small,x-small,"
 "small,medium,large,x-large,xx-large)\n"
 
 #: ../src/ui/theme-parser.c:795 ../src/ui/theme-parser.c:803
@@ -3265,7 +3264,7 @@ msgstr ""
 
 #: ../src/ui/theme-parser.c:1112
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "El valor alfa requereix que també s'especifiqui un fons de pantalla"
+msgstr "El valor alfa requerix que també s'especifiqui un fons de pantalla"
 
 #: ../src/ui/theme-parser.c:1203
 #, c-format
@@ -3502,7 +3501,7 @@ msgstr "No s'ha definit cap <draw_ops> amb el nom «%s»"
 #: ../src/ui/theme-parser.c:3132 ../src/ui/theme-parser.c:3249
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "La inclusió de draw_ops «%s» aquí crearà una referència circular"
+msgstr "La inclusió de draw_ops «%s» ací crearà una referència circular"
 
 #: ../src/ui/theme-parser.c:3314
 #, c-format
@@ -3548,7 +3547,7 @@ msgstr "Funció «%s» desconeguda per al botó"
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr ""
-"La funció de botó «%s» no existeix en aquesta versió (%d, es necessita %d)"
+"La funció de botó «%s» no existix en esta versió (%d, es necessita %d)"
 
 #: ../src/ui/theme-parser.c:3471
 #, c-format
@@ -3699,23 +3698,23 @@ msgstr "No es permet cap text dins de l'element <%s>"
 
 #: ../src/ui/theme-parser.c:4325
 msgid "<name> specified twice for this theme"
-msgstr "S'ha especificat <name> dues vegades per a aquest tema"
+msgstr "S'ha especificat <name> dues vegades per a este tema"
 
 #: ../src/ui/theme-parser.c:4336
 msgid "<author> specified twice for this theme"
-msgstr "S'ha especificat <author> dues vegades per a aquest tema"
+msgstr "S'ha especificat <author> dues vegades per a este tema"
 
 #: ../src/ui/theme-parser.c:4347
 msgid "<copyright> specified twice for this theme"
-msgstr "S'ha especificat <copyright> dues vegades per a aquest tema"
+msgstr "S'ha especificat <copyright> dues vegades per a este tema"
 
 #: ../src/ui/theme-parser.c:4358
 msgid "<date> specified twice for this theme"
-msgstr "S'ha especificat <date> dues vegades per a aquest tema"
+msgstr "S'ha especificat <date> dues vegades per a este tema"
 
 #: ../src/ui/theme-parser.c:4369
 msgid "<description> specified twice for this theme"
-msgstr "S'ha especificat <description> dues vegades per a aquest tema"
+msgstr "S'ha especificat <description> dues vegades per a este tema"
 
 #: ../src/ui/theme-parser.c:4636
 #, c-format
@@ -3777,19 +3776,19 @@ msgstr "/Finestres/_Escriptori"
 
 #: ../src/ui/theme-viewer.c:135
 msgid "Open another one of these windows"
-msgstr "Obre una altra d'aquestes finestres"
+msgstr "Obri una altra d'estes finestres"
 
 #: ../src/ui/theme-viewer.c:142
 msgid "This is a demo button with an 'open' icon"
-msgstr "Aquest és un botó de prova amb una icona «obre»"
+msgstr "Este és un botó de prova amb una icona «obri»"
 
 #: ../src/ui/theme-viewer.c:149
 msgid "This is a demo button with a 'quit' icon"
-msgstr "Aquest és un botó de prova amb una icona de «surt»"
+msgstr "Este és un botó de prova amb una icona de «ix»"
 
 #: ../src/ui/theme-viewer.c:242
 msgid "This is a sample message in a sample dialog"
-msgstr "Aquest és un exemple de missatge en un diàleg d'exemple"
+msgstr "Este és un exemple de missatge en un diàleg d'exemple"
 
 #: ../src/ui/theme-viewer.c:325
 #, c-format
@@ -3875,7 +3874,7 @@ msgstr "Test de referència"
 
 #: ../src/ui/theme-viewer.c:921
 msgid "Window Title Goes Here"
-msgstr "El títol de la finestra va aquí"
+msgstr "El títol de la finestra va ací"
 
 #: ../src/ui/theme-viewer.c:1025
 #, c-format

@@ -22,7 +22,7 @@
  */
 
 #include "theme.h"
-#include <gtk/gtkmisc.h>
+#include <gtk/gtk.h>
 
 #ifndef META_THEME_WIDGET_H
 #define META_THEME_WIDGET_H

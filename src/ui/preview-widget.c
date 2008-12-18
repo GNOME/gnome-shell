@@ -25,7 +25,7 @@
 #define _XOPEN_SOURCE 600 /* for the maths routines over floats */
 
 #include <math.h>
-#include <gtk/gtkicontheme.h>
+#include <gtk/gtk.h>
 #include "preview-widget.h"
 
 static void     meta_preview_class_init    (MetaPreviewClass *klass);

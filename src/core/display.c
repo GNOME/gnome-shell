@@ -3264,9 +3264,10 @@ meta_display_begin_grab_op (MetaDisplay *display,
   
   if (display->grab_op != META_GRAB_OP_NONE)
     {
-      meta_warning ("Attempt to perform window operation %u on window %s when operation %u on %s already in effect\n",
-                    op, window ? window->desc : "none", display->grab_op,
-                    display->grab_window ? display->grab_window->desc : "none");
+      if (window)
+        meta_warning ("Attempt to perform window operation %u on window %s when operation %u on %s already in effect\n",
+                      op, window->desc, display->grab_op,
+                      display->grab_window ? display->grab_window->desc : "none");
       return FALSE;
     }
 

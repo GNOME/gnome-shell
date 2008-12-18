@@ -36,6 +36,7 @@
 #include "place.h"
 #include "prefs.h"
 #include "effects.h"
+#include "util.h"
 
 #include <X11/keysym.h>
 #include <string.h>
@@ -55,25 +56,15 @@ typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
                                      MetaKeyBinding *binding);
 
 /* Prototypes for handlers */
-#define item(name, suffix, param, short, long, stroke) \
+#define keybind(name, handler, param, flags, stroke, description) \
 static void \
-handle_##name (MetaDisplay    *display,\
-               MetaScreen     *screen,\
-               MetaWindow     *window,\
-               XEvent         *event,\
-               MetaKeyBinding *binding);
-#include "window-bindings.h"
-#undef item
-
-#define item(name, suffix, param, can_reverse, short, long, stroke) \
-static void \
-handle_##name (MetaDisplay    *display,\
-               MetaScreen     *screen,\
-               MetaWindow     *window,\
-               XEvent         *event,\
-               MetaKeyBinding *binding);
-#include "screen-bindings.h"
-#undef item
+handler (MetaDisplay    *display,\
+         MetaScreen     *screen,\
+         MetaWindow     *window,\
+         XEvent         *event,\
+         MetaKeyBinding *binding);
+#include "all-keybindings.h"
+#undef keybind
 
 /* These can't be bound to anything, but they are used to handle
  * various other events.  TODO: Possibly we should include them as event
@@ -114,8 +105,7 @@ static gboolean process_workspace_switch_grab (MetaDisplay *display,
                                                XEvent      *event,
                                                KeySym       keysym);
 
-static void regrab_screen_bindings         (MetaDisplay *display);
-static void regrab_window_bindings         (MetaDisplay *display);
+static void regrab_key_bindings         (MetaDisplay *display);
 
 typedef struct
 {
@@ -134,27 +124,13 @@ struct _MetaKeyBinding
   const MetaKeyHandler *handler;
 };
 
-static const MetaKeyHandler screen_handlers[] = {
-#define item(name, suffix, param, flags, short, long, stroke) \
-   { #name suffix, handle_##name, param, flags },
-#include "screen-bindings.h"
-#undef item
-  { NULL, NULL, 0, 0 }
-};
-  
-static const MetaKeyHandler window_handlers[] = {
-/* FIXME: The flags=1 thing is pretty ugly here, but it'll really have
- * to wait until and if we merge the window and screen binding files.
- *
- * TODO: Are window bindings only ever called on non-null windows?
- * If so, we can remove the check from all of them.
- */
-#define item(name, suffix, param, short, long, stroke) \
-  { #name suffix, handle_##name, param, 1 },
-#include "window-bindings.h"
-#undef item
+#define keybind(name, handler, param, flags, stroke, description) \
+   { #name, handler, param, flags },
+static const MetaKeyHandler key_handlers[] = {
+#include "all-keybindings.h"
    { NULL, NULL, 0, 0 }
 };
+#undef keybind
 
 static void
 reload_keymap (MetaDisplay *display)
@@ -278,32 +254,17 @@ reload_keycodes (MetaDisplay *display)
 {
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Reloading keycodes for binding tables\n");
-  
-  if (display->screen_bindings)
-    {
-      int i;
-      
-      i = 0;
-      while (i < display->n_screen_bindings)
-        {
-          if (display->screen_bindings[i].keycode == 0)
-              display->screen_bindings[i].keycode = XKeysymToKeycode (
-                      display->xdisplay, display->screen_bindings[i].keysym);
-          
-          ++i;
-        }
-    }
 
-  if (display->window_bindings)
+  if (display->key_bindings)
     {
       int i;
       
       i = 0;
-      while (i < display->n_window_bindings)
+      while (i < display->n_key_bindings)
         {
-          if (display->window_bindings[i].keycode == 0)
-              display->window_bindings[i].keycode = XKeysymToKeycode (
-                      display->xdisplay, display->window_bindings[i].keysym);
+          if (display->key_bindings[i].keycode == 0)
+              display->key_bindings[i].keycode = XKeysymToKeycode (
+                      display->xdisplay, display->key_bindings[i].keysym);
           
           ++i;
         }
@@ -316,48 +277,28 @@ reload_modifiers (MetaDisplay *display)
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Reloading keycodes for binding tables\n");
   
-  if (display->screen_bindings)
+  if (display->key_bindings)
     {
       int i;
       
       i = 0;
-      while (i < display->n_screen_bindings)
+      while (i < display->n_key_bindings)
         {
           meta_display_devirtualize_modifiers (display,
-                                               display->screen_bindings[i].modifiers,
-                                               &display->screen_bindings[i].mask);
+                                               display->key_bindings[i].modifiers,
+                                               &display->key_bindings[i].mask);
 
           meta_topic (META_DEBUG_KEYBINDINGS,
                       " Devirtualized mods 0x%x -> 0x%x (%s)\n",
-                      display->screen_bindings[i].modifiers,
-                      display->screen_bindings[i].mask,
-                      display->screen_bindings[i].name);          
-          
-          ++i;
-        }
-    }
-
-  if (display->window_bindings)
-    {
-      int i;
-      
-      i = 0;
-      while (i < display->n_window_bindings)
-        {
-          meta_display_devirtualize_modifiers (display,
-                                               display->window_bindings[i].modifiers,
-                                               &display->window_bindings[i].mask);
-
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      " Devirtualized mods 0x%x -> 0x%x (%s)\n",
-                      display->window_bindings[i].modifiers,
-                      display->window_bindings[i].mask,
-                      display->window_bindings[i].name);
+                      display->key_bindings[i].modifiers,
+                      display->key_bindings[i].mask,
+                      display->key_bindings[i].name);          
           
           ++i;
         }
     }
 }
+
 
 static int
 count_bindings (const MetaKeyPref *prefs,
@@ -394,6 +335,25 @@ count_bindings (const MetaKeyPref *prefs,
   return count;
 }
 
+/* FIXME: replace this with a temporary hash */
+static const MetaKeyHandler*
+find_handler (const MetaKeyHandler *handlers,
+              const char           *name)
+{
+  const MetaKeyHandler *iter;
+
+  iter = handlers;
+  while (iter->name)
+    {
+      if (strcmp (iter->name, name) == 0)
+        return iter;
+
+      ++iter;
+    }
+
+  return NULL;
+}
+
 static void
 rebuild_binding_table (MetaDisplay        *display,
                        MetaKeyBinding    **bindings_p,
@@ -420,7 +380,10 @@ rebuild_binding_table (MetaDisplay        *display,
 
           if (combo && (combo->keysym != None || combo->keycode != 0))
             {
+              const MetaKeyHandler *handler = find_handler (key_handlers, prefs[src].name);
+
               (*bindings_p)[dest].name = prefs[src].name;
+              (*bindings_p)[dest].handler = handler;
               (*bindings_p)[dest].keysym = combo->keysym;
               (*bindings_p)[dest].keycode = combo->keycode;
               (*bindings_p)[dest].modifiers = combo->modifiers;
@@ -436,6 +399,7 @@ rebuild_binding_table (MetaDisplay        *display,
                                prefs[src].name);
               
                   (*bindings_p)[dest].name = prefs[src].name;
+                  (*bindings_p)[dest].handler = handler;
                   (*bindings_p)[dest].keysym = combo->keysym;
                   (*bindings_p)[dest].keycode = combo->keycode;
                   (*bindings_p)[dest].modifiers = combo->modifiers |
@@ -462,41 +426,26 @@ rebuild_binding_table (MetaDisplay        *display,
 }
 
 static void
-rebuild_screen_binding_table (MetaDisplay *display)
+rebuild_key_binding_table (MetaDisplay *display)
 {
   const MetaKeyPref *prefs;
   int n_prefs;
   
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Rebuilding screen binding table from preferences\n");
+              "Rebuilding key binding table from preferences\n");
   
-  meta_prefs_get_screen_bindings (&prefs, &n_prefs);
+  meta_prefs_get_key_bindings (&prefs, &n_prefs);
   rebuild_binding_table (display,
-                         &display->screen_bindings,
-                         &display->n_screen_bindings,
+                         &display->key_bindings,
+                         &display->n_key_bindings,
                          prefs, n_prefs);
 }
 
 static void
-rebuild_window_binding_table (MetaDisplay *display)
-{
-  const MetaKeyPref *prefs;
-  int n_prefs;
-  
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Rebuilding window binding table from preferences\n");
-  
-  meta_prefs_get_window_bindings (&prefs, &n_prefs);
-  rebuild_binding_table (display,
-                         &display->window_bindings,
-                         &display->n_window_bindings,
-                         prefs, n_prefs);
-}
-
-static void
-regrab_screen_bindings (MetaDisplay *display)
+regrab_key_bindings (MetaDisplay *display)
 {
   GSList *tmp;
+  GSList *windows;
 
   meta_error_trap_push (display); /* for efficiency push outer trap */
   
@@ -511,18 +460,7 @@ regrab_screen_bindings (MetaDisplay *display)
       tmp = tmp->next;
     }
 
-  meta_error_trap_pop (display, FALSE);
-}
-
-static void
-regrab_window_bindings (MetaDisplay *display)
-{
-  GSList *windows;
-  GSList *tmp;
-
   windows = meta_display_list_windows (display);
-
-  meta_error_trap_push (display); /* for efficiency push outer trap */
   tmp = windows;
   while (tmp != NULL)
     {
@@ -546,14 +484,14 @@ display_get_keybinding_action (MetaDisplay  *display,
 {
   int i;
 
-  i = display->n_screen_bindings - 1;
+  i = display->n_key_bindings - 1;
   while (i >= 0)
     {
-      if (display->screen_bindings[i].keysym == keysym &&
-          display->screen_bindings[i].keycode == keycode &&
-          display->screen_bindings[i].mask == mask)
+      if (display->key_bindings[i].keysym == keysym &&
+          display->key_bindings[i].keycode == keycode &&
+          display->key_bindings[i].mask == mask)
         {
-          return meta_prefs_get_keybinding_action (display->screen_bindings[i].name);
+          return meta_prefs_get_keybinding_action (display->key_bindings[i].name);
         }
       
       --i;
@@ -575,8 +513,7 @@ meta_display_process_mapping_event (MetaDisplay *display,
 
       reload_modifiers (display);
       
-      regrab_screen_bindings (display);
-      regrab_window_bindings (display);
+      regrab_key_bindings (display);
     }
   else if (event->xmapping.request == MappingKeyboard)
     {
@@ -588,8 +525,7 @@ meta_display_process_mapping_event (MetaDisplay *display,
       
       reload_keycodes (display);
 
-      regrab_screen_bindings (display);
-      regrab_window_bindings (display);
+      regrab_key_bindings (display);
     }
 }
 
@@ -603,17 +539,11 @@ bindings_changed_callback (MetaPreference pref,
   
   switch (pref)
     {
-    case META_PREF_SCREEN_KEYBINDINGS:
-      rebuild_screen_binding_table (display);
+    case META_PREF_KEYBINDINGS:
+      rebuild_key_binding_table (display);
       reload_keycodes (display);
       reload_modifiers (display);
-      regrab_screen_bindings (display);
-      break;
-    case META_PREF_WINDOW_KEYBINDINGS:
-      rebuild_window_binding_table (display);
-      reload_keycodes (display);
-      reload_modifiers (display);
-      regrab_window_bindings (display);
+      regrab_key_bindings (display);
       break;
     default:
       break;
@@ -636,10 +566,8 @@ meta_display_init_keys (MetaDisplay *display)
   display->hyper_mask = 0;
   display->super_mask = 0;
   display->meta_mask = 0;
-  display->screen_bindings = NULL;
-  display->n_screen_bindings = 0;
-  display->window_bindings = NULL;
-  display->n_window_bindings = 0;
+  display->key_bindings = NULL;
+  display->n_key_bindings = 0;
 
   XDisplayKeycodes (display->xdisplay,
                     &display->min_keycode,
@@ -653,8 +581,7 @@ meta_display_init_keys (MetaDisplay *display)
   reload_keymap (display);
   reload_modmap (display);
 
-  rebuild_window_binding_table (display);
-  rebuild_screen_binding_table (display);
+  rebuild_key_binding_table (display);
 
   reload_keycodes (display);
   reload_modifiers (display);
@@ -676,8 +603,7 @@ meta_display_shutdown_keys (MetaDisplay *display)
   
   if (display->modmap)
     XFreeModifiermap (display->modmap);
-  g_free (display->screen_bindings);
-  g_free (display->window_bindings);
+  g_free (display->key_bindings);
 }
 
 static const char*
@@ -779,7 +705,8 @@ static void
 grab_keys (MetaKeyBinding *bindings,
            int             n_bindings,
            MetaDisplay    *display,
-           Window          xwindow)
+           Window          xwindow,
+           gboolean        binding_per_window)
 {
   int i;
 
@@ -790,7 +717,9 @@ grab_keys (MetaKeyBinding *bindings,
   i = 0;
   while (i < n_bindings)
     {
-      if (bindings[i].keycode != 0)
+      if (!!binding_per_window ==
+          !!(bindings[i].handler->flags & BINDING_PER_WINDOW) &&
+          bindings[i].keycode != 0)
         {
           meta_grab_key (display, xwindow,
                          bindings[i].keysym,
@@ -839,9 +768,10 @@ meta_screen_grab_keys (MetaScreen *screen)
   if (screen->keys_grabbed)
     return;
 
-  grab_keys (screen->display->screen_bindings,
-             screen->display->n_screen_bindings,
-             screen->display, screen->xroot);
+  grab_keys (screen->display->key_bindings,
+             screen->display->n_key_bindings,
+             screen->display, screen->xroot,
+             FALSE);
 
   screen->keys_grabbed = TRUE;
 }
@@ -881,10 +811,11 @@ meta_window_grab_keys (MetaWindow  *window)
         return; /* already all good */
     }
   
-  grab_keys (window->display->window_bindings,
-             window->display->n_window_bindings,
+  grab_keys (window->display->key_bindings,
+             window->display->n_key_bindings,
              window->display,
-             window->frame ? window->frame->xwindow : window->xwindow);
+             window->frame ? window->frame->xwindow : window->xwindow,
+             TRUE);
 
   window->keys_grabbed = TRUE;
   window->grab_on_frame = window->frame != NULL;
@@ -1228,83 +1159,67 @@ primary_modifier_still_pressed (MetaDisplay *display,
     return TRUE;
 }
 
-static const MetaKeyHandler*
-find_handler (const MetaKeyHandler *handlers,
-              const char           *name)
-{
-  const MetaKeyHandler *iter;
-
-  iter = handlers;
-  while (iter->name)
-    {
-      if (strcmp (iter->name,
-                  name) == 0)
-        return iter;
-
-      ++iter;
-    }
-
-  return NULL;
-}               
-
+/* now called from only one place, may be worth merging */
 static gboolean
 process_event (MetaKeyBinding       *bindings,
                int                   n_bindings,
-               const MetaKeyHandler *handlers,
                MetaDisplay          *display,
                MetaScreen           *screen,
                MetaWindow           *window,
                XEvent               *event,
-               KeySym                keysym)
+               KeySym                keysym,
+               gboolean              on_window)
 {
   int i;
 
   /* we used to have release-based bindings but no longer. */
   if (event->type == KeyRelease)
     return FALSE;
-  
-  i = 0;
-  while (i < n_bindings)
+
+  /*
+   * TODO: This would be better done with a hash table;
+   * it doesn't suit to use O(n) for such a common operation.
+   */
+  for (i=0; i<n_bindings; i++)
     {
-      if (bindings[i].keycode == event->xkey.keycode && 
-          ((event->xkey.state & 0xff & ~(display->ignored_modifier_mask)) ==
-           bindings[i].mask) &&
-          event->type == KeyPress)
-        {
-          const MetaKeyHandler *handler;
+      const MetaKeyHandler *handler = bindings[i].handler;
 
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Binding keycode 0x%x mask 0x%x matches event 0x%x state 0x%x\n",
-                      bindings[i].keycode, bindings[i].mask,
-                      event->xkey.keycode, event->xkey.state);
+      if ((!on_window && handler->flags & BINDING_PER_WINDOW) ||
+          event->type != KeyPress ||
+          bindings[i].keycode != event->xkey.keycode ||
+          ((event->xkey.state & 0xff & ~(display->ignored_modifier_mask)) !=
+           bindings[i].mask))
+        continue;
+        
+      /*
+       * window must be non-NULL for on_window to be true,
+       * and so also window must be non-NULL if we get here and
+       * this is a BINDING_PER_WINDOW binding.
+       */
+
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Binding keycode 0x%x mask 0x%x matches event 0x%x state 0x%x\n",
+                  bindings[i].keycode, bindings[i].mask,
+                  event->xkey.keycode, event->xkey.state);
+
+      if (handler == NULL)
+        meta_bug ("Binding %s has no handler\n", bindings[i].name);
+      else
+        meta_topic (META_DEBUG_KEYBINDINGS,
+                    "Running handler for %s\n",
+                    bindings[i].name);
           
-          if (bindings[i].handler)
-            handler = bindings[i].handler;
-          else
-            {
-              handler = find_handler (handlers, bindings[i].name);
-              bindings[i].handler = handler; /* cache */
-            }
+      /* Global keybindings count as a let-the-terminal-lose-focus
+       * due to new window mapping until the user starts
+       * interacting with the terminal again.
+       */
+      display->allow_terminal_deactivation = TRUE;
 
-          if (handler == NULL)
-            meta_bug ("Binding %s has no handler\n", bindings[i].name);
-          else
-            meta_topic (META_DEBUG_KEYBINDINGS,
-                        "Running handler for %s\n",
-                        bindings[i].name);
-          
-          /* Global keybindings count as a let-the-terminal-lose-focus
-           * due to new window mapping until the user starts
-           * interacting with the terminal again.
-           */
-          display->allow_terminal_deactivation = TRUE;
-
-          (* handler->func) (display, screen, window, event,
-                             &bindings[i]);
-          return TRUE;
-        }
-      
-      ++i;
+      (* handler->func) (display, screen,
+                         bindings[i].handler->flags & BINDING_PER_WINDOW? window: NULL,
+                         event,
+                         &bindings[i]);
+      return TRUE;
     }
 
   meta_topic (META_DEBUG_KEYBINDINGS,
@@ -1329,12 +1244,11 @@ meta_display_process_key_event (MetaDisplay *display,
                                 XEvent      *event)
 {
   KeySym keysym;
-  gboolean handled;
   gboolean keep_grab;
   gboolean all_keys_grabbed;
   const char *str;
   MetaScreen *screen;
-  
+
   XAllowEvents (display->xdisplay,
                 all_bindings_disabled ? ReplayKeyboard : AsyncKeyboard,
                 event->xkey.time);
@@ -1363,6 +1277,7 @@ meta_display_process_key_event (MetaDisplay *display,
 
   str = XKeysymToString (keysym);
   
+  /* was topic */
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Processing key %s event, keysym: %s state: 0x%x window: %s\n",
               event->type == KeyPress ? "press" : "release",
@@ -1455,16 +1370,10 @@ meta_display_process_key_event (MetaDisplay *display,
         }
       }
   /* Do the normal keybindings */
-  handled = process_event (display->screen_bindings,
-                           display->n_screen_bindings,
-                           screen_handlers,
-                           display, screen, NULL, event, keysym);
- 
-  if (!all_keys_grabbed && !handled && window)
-    handled = process_event (display->window_bindings,
-                             display->n_window_bindings,
-                             window_handlers,
-                             display, screen, window, event, keysym);
+  process_event (display->key_bindings,
+                 display->n_key_bindings,
+                 display, screen, window, event, keysym,
+                 !all_keys_grabbed && window);
 }
 
 static gboolean
@@ -2358,81 +2267,52 @@ handle_switch_to_workspace (MetaDisplay    *display,
 }
 
 static void
-error_on_generic_command (const char *key,
-                          const char *command,
-                          const char *message,
-                          int         screen_number,
-                          guint32     timestamp)
-{
-  GError *err;
-  char *argv[10];
-  char numbuf[32];
-  char timestampbuf[32];
-  
-  sprintf (numbuf, "%d", screen_number);
-  sprintf (timestampbuf, "%u", timestamp);
-  
-  argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
-  argv[1] = "--screen";
-  argv[2] = numbuf;
-  argv[3] = "--timestamp";
-  argv[4] = timestampbuf;
-  argv[5] = "--command-failed-error";
-  argv[6] = (char *)key;
-  argv[7] = (char*) (command ? command : "");
-  argv[8] = (char*) message;
-  argv[9] = NULL;
-  
-  err = NULL;
-  if (!g_spawn_async_with_pipes ("/",
-                                 argv,
-                                 NULL,
-                                 0,
-                                 NULL, NULL,
-                                 NULL,
-                                 NULL,
-                                 NULL,
-                                 NULL,
-                                 &err))
-    {
-      meta_warning (_("Error launching metacity-dialog to print an error about a command: %s\n"),
-                    err->message);
-      g_error_free (err);
-    }
-}
-
-static void
 error_on_command (int         command_index,
                   const char *command,
                   const char *message,
                   int         screen_number,
                   guint32     timestamp)
 {
-  char *key;
-  
-  meta_warning ("Error on command %d \"%s\": %s\n",
-                command_index, command, message);  
+  if (command_index < 0)
+    meta_warning ("Error on terminal command \"%s\": %s\n", command, message);  
+  else
+    meta_warning ("Error on command %d \"%s\": %s\n",
+                  command_index, command, message);  
 
-  key = meta_prefs_get_gconf_key_for_command (command_index);
+  /*
+    metacity-dialog said:
+        
+    FIXME offer to change the value of the command's gconf key
+  */
 
-  error_on_generic_command (key, command, message, screen_number, timestamp);
-  
-  g_free (key);
-}
+  if (command && strcmp(command, "")!=0)
+    {
+      char *text = g_strdup_printf (
+                                    /* Displayed when a keybinding which is
+                                     * supposed to launch a program fails.
+                                     */
+                                    _("There was an error running "
+                                      "<tt>%s</tt>:\n\n%s"),
+                                    command,
+                                    message);
 
-static void
-error_on_terminal_command (const char *command,
-                           const char *message,
-                           int         screen_number,
-                           guint32     timestamp)
-{
-  const char *key;
-  
-  meta_warning ("Error on terminal command \"%s\": %s\n", command, message);  
+      meta_show_dialog ("--error",
+                        text,
+                        NULL,
+                        screen_number,
+                        NULL, NULL);
 
-  key = meta_prefs_get_gconf_key_for_terminal_command ();
+      g_free (text);
 
-  error_on_generic_command (key, command, message, screen_number, timestamp);
+    }
+  else
+    {
+      meta_show_dialog ("--error",
+                        message,
+                        NULL,
+                        screen_number,
+                        NULL, NULL);
+    }
 }
 
 static void
@@ -2523,7 +2403,7 @@ handle_maximize_vertically (MetaDisplay    *display,
                       XEvent         *event,
                       MetaKeyBinding *binding)
 {
-  if (window && window->has_resize_func)
+  if (window->has_resize_func)
     {
       if (window->maximized_vertically)
         meta_window_unmaximize (window, META_MAXIMIZE_VERTICAL);
@@ -2539,7 +2419,7 @@ handle_maximize_horizontally (MetaDisplay    *display,
                        XEvent         *event,
                        MetaKeyBinding *binding)
 {
-  if (window && window->has_resize_func)
+  if (window->has_resize_func)
     {
       if (window->maximized_horizontally)
         meta_window_unmaximize (window, META_MAXIMIZE_HORIZONTAL);
@@ -2607,10 +2487,7 @@ handle_move_to_corner_nw  (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, FALSE);
-    }
+  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, FALSE);
 }
 
 static void
@@ -2620,10 +2497,7 @@ handle_move_to_corner_ne  (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, FALSE);
-    }
+  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, FALSE);
 }
 
 static void
@@ -2633,10 +2507,7 @@ handle_move_to_corner_sw  (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, TRUE);
-    }
+  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, TRUE);
 }
 
 static void
@@ -2646,10 +2517,7 @@ handle_move_to_corner_se  (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, TRUE);
-    }
+  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, TRUE);
 }
 
 static void
@@ -2659,10 +2527,7 @@ handle_move_to_side_n     (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, FALSE);
-    }
+  handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, FALSE);
 }
 
 static void
@@ -2672,10 +2537,7 @@ handle_move_to_side_s     (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, TRUE);
-    }
+  handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, TRUE);
 }
 
 static void
@@ -2685,10 +2547,7 @@ handle_move_to_side_e     (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, TRUE, FALSE);
-    }
+  handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, TRUE, FALSE);
 }
 
 static void
@@ -2698,10 +2557,7 @@ handle_move_to_side_w     (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, FALSE, FALSE);
-    }
+  handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, FALSE, FALSE);
 }
 
 static void
@@ -2715,9 +2571,6 @@ handle_move_to_center  (MetaDisplay    *display,
   MetaRectangle outer;
   int orig_x, orig_y;
   int frame_width, frame_height;
-
-  if (!window)
-    return;
 
   meta_window_get_work_area_all_xineramas (window, &work_area);
   meta_window_get_outer_rect (window, &outer);
@@ -3117,13 +2970,10 @@ handle_toggle_fullscreen  (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      if (window->fullscreen)
-        meta_window_unmake_fullscreen (window);
-      else if (window->has_fullscreen_func)
-        meta_window_make_fullscreen (window);
-    }
+  if (window->fullscreen)
+    meta_window_unmake_fullscreen (window);
+  else if (window->has_fullscreen_func)
+    meta_window_make_fullscreen (window);
 }
 
 static void
@@ -3133,13 +2983,10 @@ handle_toggle_above       (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      if (window->wm_state_above)
-        meta_window_unmake_above (window);
-      else
-        meta_window_make_above (window);
-    }
+  if (window->wm_state_above)
+    meta_window_unmake_above (window);
+  else
+    meta_window_make_above (window);
 }
 
 static void
@@ -3149,17 +2996,14 @@ handle_toggle_maximized    (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      if (META_WINDOW_MAXIMIZED (window))
-        meta_window_unmaximize (window,
-                                META_MAXIMIZE_HORIZONTAL |
-                                META_MAXIMIZE_VERTICAL);
-      else if (window->has_maximize_func)
-        meta_window_maximize (window,
-                              META_MAXIMIZE_HORIZONTAL |
-                              META_MAXIMIZE_VERTICAL);
-    }
+  if (META_WINDOW_MAXIMIZED (window))
+    meta_window_unmaximize (window,
+                            META_MAXIMIZE_HORIZONTAL |
+                            META_MAXIMIZE_VERTICAL);
+  else if (window->has_maximize_func)
+    meta_window_maximize (window,
+                          META_MAXIMIZE_HORIZONTAL |
+                          META_MAXIMIZE_VERTICAL);
 }
 
 static void
@@ -3169,13 +3013,10 @@ handle_maximize           (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      if (window->has_maximize_func)
-        meta_window_maximize (window,
-                              META_MAXIMIZE_HORIZONTAL |
-                              META_MAXIMIZE_VERTICAL);
-    }
+  if (window->has_maximize_func)
+    meta_window_maximize (window,
+                          META_MAXIMIZE_HORIZONTAL |
+                          META_MAXIMIZE_VERTICAL);
 }
 
 static void
@@ -3185,13 +3026,10 @@ handle_unmaximize         (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      if (window->maximized_vertically || window->maximized_horizontally)
-        meta_window_unmaximize (window,
-                                META_MAXIMIZE_HORIZONTAL |
-                                META_MAXIMIZE_VERTICAL);
-    }
+  if (window->maximized_vertically || window->maximized_horizontally)
+    meta_window_unmaximize (window,
+                            META_MAXIMIZE_HORIZONTAL |
+                            META_MAXIMIZE_VERTICAL);
 }
 
 static void
@@ -3201,13 +3039,10 @@ handle_toggle_shaded      (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      if (window->shaded)
-        meta_window_unshade (window, event->xkey.time);
-      else if (window->has_shade_func)
-        meta_window_shade (window, event->xkey.time);
-    }
+  if (window->shaded)
+    meta_window_unshade (window, event->xkey.time);
+  else if (window->has_shade_func)
+    meta_window_shade (window, event->xkey.time);
 }
 
 static void
@@ -3217,9 +3052,8 @@ handle_close              (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-     if (window->has_close_func)
-       meta_window_delete (window, event->xkey.time);
+  if (window->has_close_func)
+    meta_window_delete (window, event->xkey.time);
 }
 
 static void
@@ -3229,9 +3063,8 @@ handle_minimize        (MetaDisplay    *display,
                         XEvent         *event,
                         MetaKeyBinding *binding)
 {
-  if (window)
-     if (window->has_minimize_func)
-       meta_window_minimize (window);
+  if (window->has_minimize_func)
+    meta_window_minimize (window);
 }
 
 static void
@@ -3241,7 +3074,7 @@ handle_begin_move         (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window && window->has_move_func)
+  if (window->has_move_func)
     {
       meta_window_begin_grab_op (window,
                                  META_GRAB_OP_KEYBOARD_MOVING,
@@ -3257,7 +3090,7 @@ handle_begin_resize       (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window && window->has_resize_func)
+  if (window->has_resize_func)
     {
       meta_window_begin_grab_op (window,
                                  META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
@@ -3273,13 +3106,10 @@ handle_toggle_on_all_workspaces (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      if (window->on_all_workspaces)
-        meta_window_unstick (window);
-      else
-        meta_window_stick (window);
-    }
+  if (window->on_all_workspaces)
+    meta_window_unstick (window);
+  else
+    meta_window_stick (window);
 }
 
 static void
@@ -3301,7 +3131,7 @@ handle_move_to_workspace  (MetaDisplay    *display,
    * all of whose members are negative.  Such a change is called a flip.
    */
 
-  if (window == NULL || window->always_sticky)
+  if (window->always_sticky)
     return;
   
   workspace = NULL;
@@ -3345,44 +3175,41 @@ handle_raise_or_lower (MetaDisplay    *display,
 {
   /* Get window at pointer */
   
-  if (window)
+  MetaWindow *above = NULL;
+      
+  /* Check if top */
+  if (meta_stack_get_top (window->screen->stack) == window)
     {
-      MetaWindow *above = NULL;
-      
-      /* Check if top */
-      if (meta_stack_get_top (window->screen->stack) == window)
-	{
-	  meta_window_lower (window);
-	  return;
-	}
-      
-      /* else check if windows in same layer are intersecting it */
-      
-      above = meta_stack_get_above (window->screen->stack, window, TRUE); 
-
-      while (above)
-	{
-	  MetaRectangle tmp, win_rect, above_rect;
-
-          if (above->mapped)
-            {
-              meta_window_get_outer_rect (window, &win_rect);
-              meta_window_get_outer_rect (above, &above_rect);
-              
-              /* Check if obscured */
-              if (meta_rectangle_intersect (&win_rect, &above_rect, &tmp))
-                {
-                  meta_window_raise (window);
-                  return;
-                }
-            }
-	  
-	  above = meta_stack_get_above (window->screen->stack, above, TRUE); 
-	}
-
-      /* window is not obscured */
       meta_window_lower (window);
+      return;
     }
+      
+  /* else check if windows in same layer are intersecting it */
+  
+  above = meta_stack_get_above (window->screen->stack, window, TRUE); 
+
+  while (above)
+    {
+      MetaRectangle tmp, win_rect, above_rect;
+      
+      if (above->mapped)
+        {
+          meta_window_get_outer_rect (window, &win_rect);
+          meta_window_get_outer_rect (above, &above_rect);
+          
+          /* Check if obscured */
+          if (meta_rectangle_intersect (&win_rect, &above_rect, &tmp))
+            {
+              meta_window_raise (window);
+              return;
+            }
+        }
+	  
+      above = meta_stack_get_above (window->screen->stack, above, TRUE); 
+    }
+
+  /* window is not obscured */
+  meta_window_lower (window);
 }
 
 static void
@@ -3392,10 +3219,7 @@ handle_raise (MetaDisplay    *display,
               XEvent         *event,
               MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      meta_window_raise (window);
-    }
+  meta_window_raise (window);
 }
 
 static void
@@ -3405,10 +3229,7 @@ handle_lower (MetaDisplay    *display,
               XEvent         *event,
               MetaKeyBinding *binding)
 {
-  if (window)
-    {
-      meta_window_lower (window);
-    }
+  meta_window_lower (window);
 }
 
 static void
@@ -3512,7 +3333,7 @@ handle_run_terminal (MetaDisplay    *display,
 		  "keybinding press\n");
       
       s = g_strdup_printf (_("No terminal command has been defined.\n"));
-      error_on_terminal_command (NULL, s, screen->number, event->xkey.time);
+      error_on_command (-1, NULL, s, screen->number, event->xkey.time);
       g_free (s);
       
       return;
@@ -3521,8 +3342,8 @@ handle_run_terminal (MetaDisplay    *display,
   err = NULL;
   if (!meta_spawn_command_line_async_on_screen (command, screen, &err))
     {
-      error_on_terminal_command (command, err->message, screen->number,
-		      		 event->xkey.time);
+      error_on_command (-1, command, err->message, screen->number,
+                        event->xkey.time);
       
       g_error_free (err);
     }

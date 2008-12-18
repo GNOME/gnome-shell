@@ -23,7 +23,7 @@
  */
 
 #define _GNU_SOURCE
-#define _POSIX_C_SOURCE /* for fdopen() */
+#define _POSIX_C_SOURCE 200112L /* for fdopen() */
 
 #include <config.h>
 #include "util.h"
@@ -537,3 +537,75 @@ meta_gravity_to_string (int gravity)
       break;
     }
 }
+
+void
+meta_show_dialog (const char *type,
+                  const char *message,
+                  const char *timeout,
+                  const gint screen_number,
+                  const char **columns,
+                  const char **entries)
+{
+  GError *error = NULL;
+  char *screen_number_text = g_strdup_printf("%d", screen_number);
+
+  /*
+  We want:
+  
+zenity --display X --screen S --title Metacity --error --text "There was an error running <tt>terminal</tt>:\n\nYour computer is on fire."
+  ** with no pipes
+  
+zenity --display X --screen S --title Metacity --question --text "<big><b><tt>%s</tt> is not responding.</b></big>\n\n<i>You may choose to wait a short while for it to continue or force the application to quit entirely.</i>"
+
+zenity --display X --screen S --title Metacity --list --timeout 240 --text "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in." --column "Window" --column "Class" "Firefox" "foo" "Duke Nukem Forever" "bar"
+  */
+
+  const char **argvl;
+  int i=0;
+  GPid child_pid;
+
+  argvl = g_malloc(sizeof (char*) *
+                   (9 + (timeout?2:0))
+                   );
+
+  argvl[i++] = "zenity";
+  argvl[i++] = type;
+  argvl[i++] = "--screen";
+  argvl[i++] = screen_number_text;
+  argvl[i++] = "--title";
+  /* Translators: This is the title used on dialog boxes */
+  argvl[i++] = _("Metacity");
+  argvl[i++] = "--text";
+  argvl[i++] = message;
+  
+  if (timeout)
+    {
+      argvl[i++] = "--timeout";
+      argvl[i++] = timeout;
+    }
+
+  argvl[i] = NULL;
+
+  g_spawn_async_with_pipes (
+                            "/",
+                            (char**) argvl, /* ugh */
+                            NULL,
+                            G_SPAWN_SEARCH_PATH,
+                            NULL, NULL,
+                            &child_pid,
+                            NULL, NULL, NULL,
+                            &error
+                            );
+
+  g_free (argvl);
+  g_free (screen_number_text);
+
+  if (error)
+    {
+      meta_warning ("%s\n", error->message);
+      g_error_free (error);
+    }
+}
+
+/* eof util.c */
+

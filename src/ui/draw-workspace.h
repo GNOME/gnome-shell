@@ -28,9 +28,9 @@
 #ifndef WNCK_DRAW_WORKSPACE_H
 #define WNCK_DRAW_WORKSPACE_H
 
-#include <gdk/gdkdrawable.h>
+#include <gdk/gdk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 
 typedef struct
 {

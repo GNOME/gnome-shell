@@ -68,7 +68,7 @@ get_size (Display *d, Drawable draw,
           int *xp, int *yp, int *widthp, int *heightp)
 {
   int x, y;
-  unsigned int width, height, border, depth;
+  unsigned int width=0, height=0, border=0, depth=0;
   Window root;
   
   XGetGeometry (d, draw, &root, &x, &y, &width, &height, &border, &depth);

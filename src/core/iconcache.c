@@ -225,11 +225,12 @@ read_rgb_icon (MetaDisplay   *display,
   gulong nitems;
   gulong bytes_after;
   int result, err;
-  gulong *data;
+  guchar *data;
   gulong *best;
   int w, h;
   gulong *best_mini;
   int mini_w, mini_h;
+  gulong *data_as_long;
 
   meta_error_trap_push_with_return (display);
   type = None;
@@ -239,8 +240,7 @@ read_rgb_icon (MetaDisplay   *display,
                                display->atom__NET_WM_ICON,
 			       0, G_MAXLONG,
 			       False, XA_CARDINAL, &type, &format, &nitems,
-			       &bytes_after, ((guchar **)&data));
-
+			       &bytes_after, &data);
   err = meta_error_trap_pop_with_return (display, TRUE);
 
   if (err != Success ||
@@ -253,7 +253,9 @@ read_rgb_icon (MetaDisplay   *display,
       return FALSE;
     }
 
-  if (!find_best_size (data, nitems,
+  data_as_long = (gulong *)data;
+
+  if (!find_best_size (data_as_long, nitems,
                        ideal_width, ideal_height,
                        &w, &h, &best))
     {
@@ -261,7 +263,7 @@ read_rgb_icon (MetaDisplay   *display,
       return FALSE;
     }
 
-  if (!find_best_size (data, nitems,
+  if (!find_best_size (data_as_long, nitems,
                        ideal_mini_width, ideal_mini_height,
                        &mini_w, &mini_h, &best_mini))
     {
@@ -464,6 +466,7 @@ get_kwm_win_icon (MetaDisplay *display,
   int format;
   gulong nitems;
   gulong bytes_after;
+  guchar *data;
   Pixmap *icons;
   int err, result;
 
@@ -478,7 +481,8 @@ get_kwm_win_icon (MetaDisplay *display,
 			       False,
                                display->atom__KWM_WIN_ICON,
 			       &type, &format, &nitems,
-			       &bytes_after, (guchar **)&icons);
+			       &bytes_after, &data);
+  icons = (Pixmap *)data;
 
   err = meta_error_trap_pop_with_return (display, TRUE);
   if (err != Success ||
@@ -817,30 +821,14 @@ meta_read_icons (MetaScreen     *screen,
   if (icon_cache->want_fallback &&
       icon_cache->origin < USING_FALLBACK_ICON)
     {
-      GdkPixbuf *fallback_icon;
-      GdkPixbuf *fallback_mini_icon;
-      
-      fallback_icon = NULL;
-      fallback_mini_icon = NULL;
+      get_fallback_icons (screen,
+                          iconp,
+                          ideal_width,
+                          ideal_height,
+                          mini_iconp,
+                          ideal_mini_width,
+                          ideal_mini_height);
 
-      meta_ui_get_fallback_icons(&fallback_icon, &fallback_mini_icon);
-
-      if (fallback_icon == NULL || fallback_mini_icon == NULL)
-        {
-          get_fallback_icons (screen,
-                              iconp,
-                              ideal_width,
-                              ideal_height,
-                              mini_iconp,
-                              ideal_mini_width,
-                              ideal_mini_height);
-        }
-
-      if (fallback_icon != NULL)
-        *iconp = fallback_icon;
-      if (fallback_mini_icon != NULL)
-        *mini_iconp = fallback_mini_icon;
-      
       replace_cache (icon_cache, USING_FALLBACK_ICON,
                      *iconp, *mini_iconp);
       

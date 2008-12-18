@@ -100,7 +100,8 @@ metacity_SOURCES= 				\
 	ui/theme.h				\
 	ui/themewidget.c			\
 	ui/themewidget.h			\
-	ui/ui.c
+	ui/ui.c					\
+	include/all-keybindings.h
 
 if WITH_CLUTTER
 metacity_SOURCES += 					\
@@ -163,6 +164,15 @@ metacity_theme_viewer_SOURCES=  \
 metacity_dialog_SOURCES= 	\
 	ui/metacity-dialog.c
 
+schema_bindings_SOURCES =       \
+        core/schema-bindings.c			\
+	metacity.schemas.in.in
+
+schema_bindings_LDADD = @METACITY_LIBS@
+metacity.schemas.in: schema_bindings ${srcdir}/metacity.schemas.in.in
+	@echo Generating keybinding schemas... ${srcdir}/metacity.schemas.in.in
+	${builddir}/schema_bindings ${srcdir}/metacity.schemas.in.in ${builddir}/metacity.schemas.in
+
 bin_PROGRAMS=metacity metacity-theme-viewer
 libexec_PROGRAMS=metacity-dialog
 
@@ -176,7 +186,7 @@ testboxes_SOURCES=include/util.h core/util.c include/boxes.h core/boxes.c core/t
 testgradient_SOURCES=ui/gradient.h ui/gradient.c ui/testgradient.c
 testasyncgetprop_SOURCES=core/async-getprop.h core/async-getprop.c core/testasyncgetprop.c
 
-noinst_PROGRAMS=testboxes testgradient testasyncgetprop
+noinst_PROGRAMS=testboxes testgradient testasyncgetprop schema_bindings
 
 testboxes_LDADD= @METACITY_LIBS@
 testgradient_LDADD= @METACITY_LIBS@
@@ -219,7 +229,7 @@ VARIABLES=stock_maximize_data $(srcdir)/stock_maximize.png \
           stock_delete_data $(srcdir)/stock_delete.png
 
 BUILT_SOURCES = inlinepixbufs.h
-CLEANFILES = inlinepixbufs.h metacity.desktop metacity-wm.desktop metacity.schemas 50-metacity-desktop-key.xml 50-metacity-key.xml
+CLEANFILES = inlinepixbufs.h metacity.desktop metacity-wm.desktop metacity.schemas metacity.schemas.in 50-metacity-desktop-key.xml 50-metacity-key.xml
 
 inlinepixbufs.h: $(IMAGES)
 	$(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
