@@ -247,6 +247,7 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
           if (module)
             {
               MutterPlugin *p;
+              gboolean      use_succeeded;
 
               /*
                * This dlopens the module and registers the plugin type with the
@@ -255,7 +256,7 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
                * to guarantee the module will not be unloaded during the plugin
                * life time. Consequently we can unuse() the module again.
                */
-              g_type_module_use (G_TYPE_MODULE (module));
+              use_succeeded = g_type_module_use (G_TYPE_MODULE (module));
 
               if ((p = mutter_plugin_load (plugin_mgr, module, params)))
                 {
@@ -266,7 +267,8 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
                   g_warning ("Plugin load for [%s] failed", path);
                 }
 
-              g_type_module_unuse (G_TYPE_MODULE (module));
+              if (use_succeeded)
+                g_type_module_unuse (G_TYPE_MODULE (module));
             }
           else
             g_warning ("Unable to load plugin module [%s]: %s",
