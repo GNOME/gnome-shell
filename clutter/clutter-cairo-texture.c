@@ -554,7 +554,7 @@ intersect_rectangles (ClutterCairoTextureRectangle *a,
 
 /**
  * clutter_cairo_texture_create_region:
- * @cairo: a #ClutterCairoTexture
+ * @self: a #ClutterCairoTexture
  * @x_offset: offset of the region on the X axis
  * @y_offset: offset of the region on the Y axis
  * @width: width of the region, or -1 for the full surface width
@@ -563,8 +563,12 @@ intersect_rectangles (ClutterCairoTextureRectangle *a,
  * Creates a new Cairo context that will updat the region defined
  * by @x_offset, @y_offset, @width and @height.
  *
+ * <warning><para>Do not call this function within the paint virtual
+ * function or from a callback to the #ClutterActor::paint
+ * signal.</para></warning>
+ *
  * Return value: a newly created Cairo context. Use cairo_destroy()
- *   to upload the contents of the context when done drawing.
+ *   to upload the contents of the context when done drawing
  *
  * Since: 1.0
  */
@@ -634,15 +638,19 @@ clutter_cairo_texture_create_region (ClutterCairoTexture *self,
 
 /**
  * clutter_cairo_texture_create:
- * @cairo: a #ClutterCairoTexture
+ * @self: a #ClutterCairoTexture
  *
  * Creates a new Cairo context for the @cairo texture. It is
  * similar to using clutter_cairo_texture_create_region() with @x_offset
  * and @y_offset of 0, @width equal to the @cairo texture surface width
  * and @height equal to the @cairo texture surface height.
  *
+ * <warning><para>Do not call this function within the paint virtual
+ * function or from a callback to the #ClutterActor::paint
+ * signal.</para></warning>
+ *
  * Return value: a newly created Cairo context. Use cairo_destroy()
- *   to upload the contents of the context when done drawing.
+ *   to upload the contents of the context when done drawing
  *
  * Since: 1.0
  */
@@ -687,7 +695,7 @@ clutter_cairo_set_source_color (cairo_t            *cr,
 }
 
 /**
- * clutter_cairo_texture_surface_set_size:
+ * clutter_cairo_texture_set_surface_size:
  * @self: a #ClutterCairoTexture
  * @width: the new width of the surface
  * @height: the new height of the surface
