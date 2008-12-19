@@ -204,7 +204,7 @@ void         clutter_path_clear                (ClutterPath           *path);
 void         clutter_path_to_cairo_path        (ClutterPath           *path,
                                                 cairo_t               *cr);
 guint        clutter_path_get_position         (ClutterPath           *path,
-                                                gdouble                factor,
+                                                gdouble                progress,
                                                 ClutterKnot           *position);
 guint        clutter_path_get_length           (ClutterPath           *path);
 

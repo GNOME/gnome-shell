@@ -875,7 +875,7 @@ clutter_path_get_n_nodes (ClutterPath *path)
 /**
  * clutter_path_get_node:
  * @path: a #ClutterPath
- * @index: the node number to retrieve
+ * @index_: the node number to retrieve
  * @node: a location to store a copy of the node
  *
  * Retrieves the node of the path indexed by @index.
@@ -883,8 +883,8 @@ clutter_path_get_n_nodes (ClutterPath *path)
  * Since: 1.0
  */
 void
-clutter_path_get_node (ClutterPath *path,
-                       guint index,
+clutter_path_get_node (ClutterPath     *path,
+                       guint            index_,
                        ClutterPathNode *node)
 {
   ClutterPathNodeFull *node_full;
@@ -894,7 +894,7 @@ clutter_path_get_node (ClutterPath *path,
 
   priv = path->priv;
 
-  node_full = g_slist_nth_data (priv->nodes, index);
+  node_full = g_slist_nth_data (priv->nodes, index_);
 
   g_return_if_fail (node_full != NULL);
 
@@ -954,17 +954,17 @@ clutter_path_foreach (ClutterPath *path,
 /**
  * clutter_path_insert_node:
  * @path: a #ClutterPath
- * @index: offset of where to insert the node
+ * @index_: offset of where to insert the node
  * @node: the node to insert
  *
  * Inserts @node into the path before the node at the given offset. If
- * @index is negative it will append the node to the end of the path.
+ * @index_ is negative it will append the node to the end of the path.
  *
  * Since: 1.0
  */
 void
-clutter_path_insert_node (ClutterPath *path,
-                          gint index,
+clutter_path_insert_node (ClutterPath           *path,
+                          gint                   index_,
                           const ClutterPathNode *node)
 {
   ClutterPathPrivate *priv;
@@ -979,7 +979,7 @@ clutter_path_insert_node (ClutterPath *path,
   node_full = clutter_path_node_full_new ();
   node_full->k = *node;
 
-  priv->nodes = g_slist_insert (priv->nodes, node_full, index);
+  priv->nodes = g_slist_insert (priv->nodes, node_full, index_);
 
   if (priv->nodes_tail == NULL)
     priv->nodes_tail = priv->nodes;
@@ -992,7 +992,7 @@ clutter_path_insert_node (ClutterPath *path,
 /**
  * clutter_path_remove_node:
  * @path: a #ClutterPath
- * @index: index of the node to remove
+ * @index_: index of the node to remove
  *
  * Removes the node at the given offset from the path.
  *
@@ -1000,7 +1000,7 @@ clutter_path_insert_node (ClutterPath *path,
  */
 void
 clutter_path_remove_node (ClutterPath *path,
-                          guint index)
+                          guint        index_)
 {
   ClutterPathPrivate *priv;
   GSList *node, *prev = NULL;
@@ -1009,7 +1009,7 @@ clutter_path_remove_node (ClutterPath *path,
 
   priv = path->priv;
 
-  for (node = priv->nodes; node && index--; node = node->next)
+  for (node = priv->nodes; node && index_--; node = node->next)
     prev = node;
 
   if (node)
@@ -1033,16 +1033,16 @@ clutter_path_remove_node (ClutterPath *path,
 /**
  * clutter_path_replace_node:
  * @path: a #ClutterPath
- * @index: index to the existing node
+ * @index_: index to the existing node
  * @node: the replacement node
  *
- * Replaces the node at offset @index with @node.
+ * Replaces the node at offset @index_ with @node.
  *
  * Since: 1.0
  */
 void
-clutter_path_replace_node (ClutterPath *path,
-                           guint index,
+clutter_path_replace_node (ClutterPath           *path,
+                           guint                  index_,
                            const ClutterPathNode *node)
 {
   ClutterPathPrivate *priv;
@@ -1054,7 +1054,7 @@ clutter_path_replace_node (ClutterPath *path,
 
   priv = path->priv;
 
-  if ((node_full = g_slist_nth_data (priv->nodes, index)))
+  if ((node_full = g_slist_nth_data (priv->nodes, index_)))
     {
       node_full->k = *node;
 
