@@ -722,6 +722,23 @@ ClutterPathNode
 clutter_path_node_copy
 clutter_path_node_free
 clutter_path_node_equal
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_PATH
+CLUTTER_TYPE_PATH_NODE
+CLUTTER_PATH
+CLUTTER_PATH_CLASS
+CLUTTER_IS_PATH
+CLUTTER_IS_PATH_CLASS
+CLUTTER_PATH_GET_CLASS
+CLUTTER_BEZIER_MAX_LENGTH
+CLUTTER_PATH_RELATIVE
+
+<SUBSECTION Private>
+ClutterBezier
+ClutterPathPrivate
+clutter_path_get_type
+clutter_path_node_get_type
 </SECTION>
 
 <SECTION>
