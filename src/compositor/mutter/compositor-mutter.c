@@ -1057,6 +1057,7 @@ sync_actor_position (MutterWindow *cw)
 
   if (priv->maximize_in_progress   ||
       priv->unmaximize_in_progress ||
+      priv->minimize_in_progress ||
       priv->map_in_progress)
     return;
 
