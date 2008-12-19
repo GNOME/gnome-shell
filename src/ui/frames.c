@@ -1388,6 +1388,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
       event->button == 1 &&
       event->type == GDK_2BUTTON_PRESS)
     {
+      meta_core_end_grab_op (gdk_display, event->time);
       return meta_frame_double_click_event (frame, event);
     }
 
