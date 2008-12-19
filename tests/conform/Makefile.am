@@ -37,7 +37,7 @@ wrappers: test-conformance$(EXEEXT)
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "GEN $$unit"; \
-		( echo "#!/bin/sh" ; echo "./test-launcher.sh '$$i'" ) > $$unit$(EXEEXT) ; \
+		( echo "#!/bin/sh" ; echo "$(top_srcdir)/tests/conform/test-launcher.sh '$$i'" ) > $$unit$(EXEEXT) ; \
 		chmod +x $$unit$(EXEEXT); \
 	done
 

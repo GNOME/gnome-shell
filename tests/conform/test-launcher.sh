@@ -11,7 +11,7 @@ UNIT_TEST=`basename ${UNIT_TEST_PATH}`
 
 echo "Running: gtester -p ${UNIT_TEST_PATH} ./test-conformance"
 echo ""
-gtester -p ${UNIT_TEST_PATH} ./test-conformance
+gtester -p ${UNIT_TEST_PATH} -m slow --verbose ./test-conformance
 
 echo ""
 echo "NOTE: For debugging purposes, you can run this single test as follows:"
