@@ -1,4 +1,5 @@
 #include <clutter/clutter.h>
+#include <cairo/cairo.h>
 #include <string.h>
 #include <math.h>
 
@@ -26,16 +27,19 @@ struct _CallbackData
 };
 
 static const char path_desc[] =
-  "M 21 22 m 23 24 "
-  "L 25 26 l 27 28 "
-  "C 29 30 31 32 33 34 c 35 36 37 38 39 40 "
+  "M 21 22 "
+  "L 25 26 "
+  "C 29 30 31 32 33 34 "
+  "m 23 24 "
+  "l 27 28 "
+  "c 35 36 37 38 39 40 "
   "z";
 static const ClutterPathNode path_nodes[] =
   { { CLUTTER_PATH_MOVE_TO,      { { 21, 22 }, { 0,  0 },  { 0,  0 } } },
-    { CLUTTER_PATH_REL_MOVE_TO,  { { 23, 24 }, { 0,  0 },  { 0,  0 } } },
     { CLUTTER_PATH_LINE_TO,      { { 25, 26 }, { 0,  0 },  { 0,  0 } } },
-    { CLUTTER_PATH_REL_LINE_TO,  { { 27, 28 }, { 0,  0 },  { 0,  0 } } },
     { CLUTTER_PATH_CURVE_TO,     { { 29, 30 }, { 31, 32 }, { 33, 34 } } },
+    { CLUTTER_PATH_REL_MOVE_TO,  { { 23, 24 }, { 0,  0 },  { 0,  0 } } },
+    { CLUTTER_PATH_REL_LINE_TO,  { { 27, 28 }, { 0,  0 },  { 0,  0 } } },
     { CLUTTER_PATH_REL_CURVE_TO, { { 35, 36 }, { 37, 38 }, { 39, 40 } } },
     { CLUTTER_PATH_CLOSE,        { { 0,  0 },  { 0,  0 },  { 0,  0 } } } };
 
@@ -392,6 +396,95 @@ path_test_get_description (CallbackData *data)
 }
 
 static gboolean
+path_test_convert_to_cairo_path (CallbackData *data)
+{
+  cairo_surface_t *surface;
+  cairo_t *cr;
+  cairo_path_t *cpath;
+  guint i, j;
+  ClutterKnot path_start = { 0, 0 }, last_point = { 0, 0 };
+
+  /* Create a temporary image surface and context to hold the cairo
+     path */
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 10, 10);
+  cr = cairo_create (surface);
+
+  /* Convert to a cairo path */
+  clutter_path_to_cairo_path (data->path, cr);
+
+  /* Get a copy of the cairo path data */
+  cpath = cairo_copy_path (cr);
+
+  /* Convert back to a clutter path */
+  clutter_path_clear (data->path);
+  clutter_path_add_cairo_path (data->path, cpath);
+
+  /* The relative nodes will have been converted to absolute so we
+     need to reflect this in the node array for comparison */
+  for (i = 0; i < data->n_nodes; i++)
+    {
+      switch (data->nodes[i].type)
+        {
+        case CLUTTER_PATH_MOVE_TO:
+          path_start = last_point = data->nodes[i].points[0];
+          break;
+
+        case CLUTTER_PATH_LINE_TO:
+          last_point = data->nodes[i].points[0];
+          break;
+
+        case CLUTTER_PATH_CURVE_TO:
+          last_point = data->nodes[i].points[2];
+          break;
+
+        case CLUTTER_PATH_REL_MOVE_TO:
+          last_point.x += data->nodes[i].points[0].x;
+          last_point.y += data->nodes[i].points[0].y;
+          data->nodes[i].points[0] = last_point;
+          data->nodes[i].type = CLUTTER_PATH_MOVE_TO;
+          path_start = last_point;
+          break;
+
+        case CLUTTER_PATH_REL_LINE_TO:
+          last_point.x += data->nodes[i].points[0].x;
+          last_point.y += data->nodes[i].points[0].y;
+          data->nodes[i].points[0] = last_point;
+          data->nodes[i].type = CLUTTER_PATH_LINE_TO;
+          break;
+
+        case CLUTTER_PATH_REL_CURVE_TO:
+          for (j = 0; j < 3; j++)
+            {
+              data->nodes[i].points[j].x += last_point.x;
+              data->nodes[i].points[j].y += last_point.y;
+            }
+          last_point = data->nodes[i].points[2];
+          data->nodes[i].type = CLUTTER_PATH_CURVE_TO;
+          break;
+
+        case CLUTTER_PATH_CLOSE:
+          last_point = path_start;
+
+          /* Cairo always adds a move to after every close so we need
+             to insert one here */
+          memmove (data->nodes + i + 2, data->nodes + i + 1,
+                   (data->n_nodes - i - 1) * sizeof (ClutterPathNode));
+          data->nodes[i + 1].type = CLUTTER_PATH_MOVE_TO;
+          data->nodes[i + 1].points[0] = last_point;
+          data->n_nodes++;
+          break;
+        }
+    }
+
+  /* Free the cairo resources */
+  cairo_path_destroy (cpath);
+  cairo_destroy (cr);
+  cairo_surface_destroy (surface);
+
+  return TRUE;
+}
+
+static gboolean
 float_fuzzy_equals (float fa, float fb)
 {
   return fabs (fa - fb) <= FLOAT_FUZZ_AMOUNT;
@@ -523,6 +616,7 @@ path_tests[] =
     { "Replace a node", path_test_replace },
     { "Set description", path_test_set_description },
     { "Get description", path_test_get_description },
+    { "Convert to cairo path and back", path_test_convert_to_cairo_path },
     { "Clear", path_test_clear },
     { "Get position", path_test_get_position },
     { "Check node boxed type", path_test_boxed_type },

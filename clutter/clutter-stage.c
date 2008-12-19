@@ -213,8 +213,6 @@ clutter_stage_paint (ClutterActor *self)
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
   CoglColor stage_color;
 
-  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_PAINT);
-
   CLUTTER_NOTE (PAINT, "Initializing stage paint");
 
   cogl_color_set_from_4ub (&stage_color,
@@ -234,8 +232,6 @@ clutter_stage_paint (ClutterActor *self)
 
   CLUTTER_NOTE (PAINT, "Proxying the paint to the stage implementation");
   clutter_actor_paint (priv->impl);
-
-  CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_PAINT);
 
   /* this will take care of painting every child */
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
