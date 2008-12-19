@@ -1616,7 +1616,7 @@ ClutterBindingActionFunc
 
 <SUBSECTION>
 clutter_binding_pool_new
-clutter_binding_pool_get_from_class
+clutter_binding_pool_get_for_class
 clutter_binding_pool_find
 
 <SUBSECTION>
