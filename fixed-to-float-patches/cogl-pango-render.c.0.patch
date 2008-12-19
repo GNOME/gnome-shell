@@ -1,0 +1,24 @@
+diff --git a/clutter/pango/cogl-pango-render.c b/clutter/pango/cogl-pango-render.c
+index 9d1da77..12dfe72 100644
+--- a/clutter/pango/cogl-pango-render.c
++++ b/clutter/pango/cogl-pango-render.c
+@@ -58,8 +58,6 @@ struct _CoglPangoRendererClass
+   PangoRendererClass class_instance;
+ };
+ 
+-#define COGL_PANGO_UNIT_TO_FIXED(x) ((x) << (COGL_FIXED_Q - 10))
+-
+ static void cogl_pango_renderer_finalize (GObject *object);
+ static void cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
+                                              PangoFont        *font,
+@@ -393,8 +391,8 @@ cogl_pango_renderer_get_device_units (PangoRenderer *renderer,
+     }
+   else
+     {
+-      *xout = COGL_PANGO_UNIT_TO_FIXED (xin);
+-      *yout = COGL_PANGO_UNIT_TO_FIXED (yin);
++      *xout = PANGO_PIXELS (xin);
++      *yout = PANGO_PIXELS (yin);
+     }
+ }
+ 

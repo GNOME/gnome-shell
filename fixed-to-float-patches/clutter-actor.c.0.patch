@@ -1,0 +1,40 @@
+diff --git a/clutter/clutter-actor.c b/clutter/clutter-actor.c
+index ac9a2f6..42da2a5 100644
+--- a/clutter/clutter-actor.c
++++ b/clutter/clutter-actor.c
+@@ -866,8 +866,11 @@ clutter_actor_transform_point (ClutterActor *actor,
+ /* Help macros to scale from OpenGL <-1,1> coordinates system to our
+  * X-window based <0,window-size> coordinates
+  */
+-#define MTX_GL_SCALE_X(x,w,v1,v2) (CLUTTER_FIXED_MUL (((CLUTTER_FIXED_DIV ((x), (w)) + 1.0) >> 1), (v1)) + (v2))
+-#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - CLUTTER_FIXED_MUL (((CLUTTER_FIXED_DIV ((y), (w)) + 1.0) >> 1), (v1)) + (v2))
++#define MTX_GL_SCALE_X(x,w,v1,v2) \
++  (CLUTTER_FIXED_MUL (((CLUTTER_FIXED_DIV ((x), (w)) + 1.0) / 2), (v1)) + (v2))
++#define MTX_GL_SCALE_Y(y,w,v1,v2) \
++  ((v1) - CLUTTER_FIXED_MUL (((CLUTTER_FIXED_DIV ((y), (w)) + 1.0) / 2), \
++                             (v1)) + (v2))
+ #define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
+ 
+ /**
+@@ -3213,8 +3214,8 @@ clutter_actor_get_preferred_width (ClutterActor *self,
+ 
+       if (natural_width < min_width)
+         {
+-          g_warning ("Actor of type %s reported a natural width of %d (%d px) "
+-                     "lower than min width %d (%d px)",
++          g_warning ("Actor of type %s reported a natural width of %f (%d px) "
++                     "lower than min width %f (%d px)",
+                      G_OBJECT_TYPE_NAME (self),
+                      natural_width, CLUTTER_UNITS_TO_DEVICE (natural_width),
+                      min_width, CLUTTER_UNITS_TO_DEVICE (min_width));
+@@ -3283,8 +3284,8 @@ clutter_actor_get_preferred_height (ClutterActor *self,
+ 
+       if (natural_height < min_height)
+         {
+-          g_warning ("Actor of type %s reported a natural height of %d "
+-                     "(%d px) lower than min height %d (%d px)",
++          g_warning ("Actor of type %s reported a natural height of %f "
++                     "(%d px) lower than min height %f (%d px)",
+                      G_OBJECT_TYPE_NAME (self),
+                      natural_height, CLUTTER_UNITS_TO_DEVICE (natural_height),
+                      min_height, CLUTTER_UNITS_TO_DEVICE (min_height));

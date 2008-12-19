@@ -1,0 +1,30 @@
+diff --git a/clutter/cogl/gl/cogl-texture.c b/clutter/cogl/gl/cogl-texture.c
+index 1bbaaa4..612c417 100644
+--- a/clutter/cogl/gl/cogl-texture.c
++++ b/clutter/cogl/gl/cogl-texture.c
+@@ -37,6 +37,7 @@
+ 
+ #include <string.h>
+ #include <stdlib.h>
++#include <math.h>
+ 
+ /*
+ #define COGL_DEBUG 1
+@@ -555,7 +556,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
+               guint wx, wy;
+ 
+               src = source_bmp->data
+-                  + (src_y +  (y_iter.intersect_start)
++                  + (src_y +  ((int)y_iter.intersect_start)
+                      - dst_y)
+                   * source_bmp->rowstride
+                   + (src_x + x_span->start + x_span->size - x_span->waste
+@@ -600,7 +601,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
+               guint copy_width;
+ 
+               src = source_bmp->data
+-                  + (src_x +  (x_iter.intersect_start)
++                  + (src_x +  ((int)x_iter.intersect_start)
+                      - dst_x)
+                   * bpp
+                   + (src_y + y_span->start + y_span->size - y_span->waste
