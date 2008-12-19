@@ -170,6 +170,9 @@ clutter_smoothstep_inc_func
 clutter_smoothstep_dec_func
 clutter_exp_inc_func
 clutter_exp_dec_func
+clutter_exp_in_func
+clutter_exp_out_func
+clutter_exp_in_out_func
 clutter_ease_in_func
 clutter_ease_out_func
 clutter_ease_in_out_func
@@ -1634,6 +1637,10 @@ clutter_interval_get_final_value
 clutter_interval_peek_final_value
 clutter_interval_set_interval
 clutter_interval_get_interval
+
+<SUBSECTION>
+clutter_interval_validate
+clutter_interval_compute_value
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_INTERVAL
