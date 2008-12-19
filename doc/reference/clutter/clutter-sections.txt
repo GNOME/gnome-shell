@@ -438,6 +438,8 @@ clutter_actor_get_reactive
 clutter_actor_set_shader
 clutter_actor_get_shader
 clutter_actor_set_shader_param
+clutter_actor_set_shader_param_float
+clutter_actor_set_shader_param_int
 
 <SUBSECTION>
 clutter_actor_set_depthu
@@ -1535,6 +1537,20 @@ clutter_shader_get_cogl_program
 clutter_shader_get_cogl_fragment_shader
 clutter_shader_get_cogl_vertex_shader
 
+<SUBSECTION>
+CLUTTER_VALUE_HOLDS_SHADER_FLOAT
+ClutterShaderFloat
+clutter_value_set_shader_float
+clutter_value_get_shader_float
+CLUTTER_VALUE_HOLDS_SHADER_INT
+ClutterShaderInt
+clutter_value_set_shader_int
+clutter_value_get_shader_int
+CLUTTER_VALUE_HOLDS_SHADER_MATRIX
+ClutterShaderMatrix
+clutter_value_set_shader_matrix
+clutter_value_get_shader_matrix
+
 <SUBSECTION Standard>
 CLUTTER_IS_SHADER
 CLUTTER_IS_SHADER_CLASS
@@ -1543,9 +1559,16 @@ CLUTTER_SHADER_CLASS
 CLUTTER_SHADER_ERROR
 CLUTTER_SHADER_GET_CLASS
 CLUTTER_TYPE_SHADER
+CLUTTER_TYPE_SHADER_FLOAT
+CLUTTER_TYPE_SHADER_INT
+CLUTTER_TYPE_SHADER_MATRIX
+
 <SUBSECTION Private>
 ClutterShaderPrivate
 clutter_shader_get_type
+clutter_shader_float_get_type
+clutter_shader_int_get_type
+clutter_shader_matrix_get_type
 clutter_shader_error_quark
 </SECTION>
 
