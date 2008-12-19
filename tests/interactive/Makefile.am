@@ -20,7 +20,8 @@ UNIT_TESTS = \
 	test-fullscreen.c \
 	test-shader.c \
 	test-unproject.c \
-	test-viewport test-fbo.c \
+	test-viewport.c \
+	test-fbo.c \
 	test-opacity.c \
 	test-multistage.c \
 	test-cogl-primitives.c \
