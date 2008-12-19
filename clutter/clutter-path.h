@@ -161,19 +161,19 @@ void         clutter_path_add_rel_line_to      (ClutterPath           *path,
                                                 gint                   x,
                                                 gint                   y);
 void         clutter_path_add_curve_to         (ClutterPath           *path,
-                                                gint                   x1,
-                                                gint                   y1,
-                                                gint                   x2,
-                                                gint                   y2,
-                                                gint                   x3,
-                                                gint                   y3);
+                                                gint                   x_1,
+                                                gint                   y_1,
+                                                gint                   x_2,
+                                                gint                   y_2,
+                                                gint                   x_3,
+                                                gint                   y_3);
 void         clutter_path_add_rel_curve_to     (ClutterPath           *path,
-                                                gint                   x1,
-                                                gint                   y1,
-                                                gint                   x2,
-                                                gint                   y2,
-                                                gint                   x3,
-                                                gint                   y3);
+                                                gint                   x_1,
+                                                gint                   y_1,
+                                                gint                   x_2,
+                                                gint                   y_2,
+                                                gint                   x_3,
+                                                gint                   y_3);
 void         clutter_path_add_close            (ClutterPath           *path);
 gboolean     clutter_path_add_string           (ClutterPath           *path,
                                                 const gchar           *str);

@@ -419,43 +419,45 @@ clutter_path_add_rel_line_to (ClutterPath *path,
 /**
  * clutter_path_add_curve_to:
  * @path: a #ClutterPath
- * @x1: the x coordinate of the first control point
- * @y1: the y coordinate of the first control point
- * @x2: the x coordinate of the second control point
- * @y2: the y coordinate of the second control point
- * @x3: the x coordinate of the third control point
- * @y3: the y coordinate of the third control point
+ * @x_1: the x coordinate of the first control point
+ * @y_1: the y coordinate of the first control point
+ * @x_2: the x coordinate of the second control point
+ * @y_2: the y coordinate of the second control point
+ * @x_3: the x coordinate of the third control point
+ * @y_3: the y coordinate of the third control point
  *
  * Adds a #CLUTTER_PATH_CURVE_TO type node to the path. This causes
- * the actor to follow a bezier from the last node to (x3,y3) using
- * (x1,y1) and (x2,y2) as control points.
+ * the actor to follow a bezier from the last node to (@x_3, @y_3) using
+ * (@x_1, @y_1) and (@x_2,@y_2) as control points.
  *
  * Since: 1.0
  */
 void
 clutter_path_add_curve_to (ClutterPath *path,
-                           gint         x1,
-                           gint         y1,
-                           gint         x2,
-                           gint         y2,
-                           gint         x3,
-                           gint         y3)
+                           gint         x_1,
+                           gint         y_1,
+                           gint         x_2,
+                           gint         y_2,
+                           gint         x_3,
+                           gint         y_3)
 {
   g_return_if_fail (CLUTTER_IS_PATH (path));
 
   clutter_path_add_node_helper (path, CLUTTER_PATH_CURVE_TO, 3,
-                                x1, y1, x2, y2, x3, y3);
+                                x_1, y_1,
+                                x_2, y_2,
+                                x_3, y_3);
 }
 
 /**
  * clutter_path_add_rel_curve_to:
  * @path: a #ClutterPath
- * @x1: the x coordinate of the first control point
- * @y1: the y coordinate of the first control point
- * @x2: the x coordinate of the second control point
- * @y2: the y coordinate of the second control point
- * @x3: the x coordinate of the third control point
- * @y3: the y coordinate of the third control point
+ * @x_1: the x coordinate of the first control point
+ * @y_1: the y coordinate of the first control point
+ * @x_2: the x coordinate of the second control point
+ * @y_2: the y coordinate of the second control point
+ * @x_3: the x coordinate of the third control point
+ * @y_3: the y coordinate of the third control point
  *
  * Same as clutter_path_add_curve_to() except the coordinates are
  * relative to the previous node.
@@ -464,17 +466,19 @@ clutter_path_add_curve_to (ClutterPath *path,
  */
 void
 clutter_path_add_rel_curve_to (ClutterPath *path,
-                               gint         x1,
-                               gint         y1,
-                               gint         x2,
-                               gint         y2,
-                               gint         x3,
-                               gint         y3)
+                               gint         x_1,
+                               gint         y_1,
+                               gint         x_2,
+                               gint         y_2,
+                               gint         x_3,
+                               gint         y_3)
 {
   g_return_if_fail (CLUTTER_IS_PATH (path));
 
   clutter_path_add_node_helper (path, CLUTTER_PATH_REL_CURVE_TO, 3,
-                                x1, y1, x2, y2, x3, y3);
+                                x_1, y_1,
+                                x_2, y_2,
+                                x_3, y_3);
 }
 
 /**
