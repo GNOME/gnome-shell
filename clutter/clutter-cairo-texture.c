@@ -228,6 +228,12 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
     {
       cairo_surface_t *surface = priv->cr_surface;
 
+      /* If the surface is already the right size then don't bother
+         doing anything */
+      if (priv->width == cairo_image_surface_get_width (priv->cr_surface)
+          && priv->height == cairo_image_surface_get_height (priv->cr_surface))
+        return;
+
       cairo_surface_finish (surface);
       cairo_surface_set_user_data (surface,
                                    &clutter_cairo_texture_surface_key,
@@ -291,14 +297,24 @@ clutter_cairo_texture_surface_resize_internal (ClutterCairoTexture *cairo)
 }
 
 static void
-clutter_cairo_texture_constructed (GObject *gobject)
+clutter_cairo_texture_notify (GObject    *object,
+                              GParamSpec *pspec)
 {
-  ClutterCairoTexture *cairo = CLUTTER_CAIRO_TEXTURE (gobject);
+  /* When the surface width or height changes then resize the cairo
+     surface. This is done here instead of directly in set_property so
+     that if both the width and height properties are set using a
+     single call to g_object_set then the surface will only be resized
+     once because the notifications will be frozen in between */
+  if (!strcmp ("surface-width", pspec->name)
+      || !strcmp ("surface-height", pspec->name))
+    {
+      ClutterCairoTexture *cairo = CLUTTER_CAIRO_TEXTURE (object);
 
-  clutter_cairo_texture_surface_resize_internal (cairo);
+      clutter_cairo_texture_surface_resize_internal (cairo);
+    }
 
-  if (G_OBJECT_CLASS (clutter_cairo_texture_parent_class)->constructed)
-    G_OBJECT_CLASS (clutter_cairo_texture_parent_class)->constructed (gobject);
+  if (G_OBJECT_CLASS (clutter_cairo_texture_parent_class)->notify)
+    G_OBJECT_CLASS (clutter_cairo_texture_parent_class)->notify (object, pspec);
 }
 
 static void
@@ -340,7 +356,7 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
   gobject_class->finalize     = clutter_cairo_texture_finalize;
   gobject_class->set_property = clutter_cairo_texture_set_property;
   gobject_class->get_property = clutter_cairo_texture_get_property;
-  gobject_class->constructed  = clutter_cairo_texture_constructed;
+  gobject_class->notify       = clutter_cairo_texture_notify;
 
   actor_class->get_preferred_width =
     clutter_cairo_texture_get_preferred_width;
@@ -364,7 +380,6 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
                                                       "Surface Width",
                                                       0, G_MAXUINT,
                                                       0,
-                                                      G_PARAM_CONSTRUCT_ONLY |
                                                       CLUTTER_PARAM_READWRITE));
   /**
    * ClutterCairoTexture:surface-height:
@@ -381,7 +396,6 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
                                                       "Surface Height",
                                                       0, G_MAXUINT,
                                                       0,
-                                                      G_PARAM_CONSTRUCT_ONLY |
                                                       CLUTTER_PARAM_READWRITE));
 }
 
