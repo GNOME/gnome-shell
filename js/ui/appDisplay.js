@@ -3,13 +3,10 @@
 const Signals = imports.signals;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
-const Pango = imports.gi.Pango;
 const Gtk = imports.gi.Gtk;
-
-const Tidy = imports.gi.Tidy;
-const Big = imports.gi.Big;
-const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
+
+const GenericDisplay = imports.ui.genericDisplay;
 
 // TODO - move this into GConf once we're not a plugin anymore
 // but have taken over metacity
@@ -37,45 +34,29 @@ const DEFAULT_APPLICATIONS = [
     'vncviewer.desktop'
 ];
 
-const APPDISPLAY_NAME_COLOR = new Clutter.Color();
-APPDISPLAY_NAME_COLOR.from_pixel(0xffffffff);
-const APPDISPLAY_COMMENT_COLOR = new Clutter.Color();
-APPDISPLAY_COMMENT_COLOR.from_pixel(0xffffffbb);
-const APPDISPLAY_BACKGROUND_COLOR = new Clutter.Color();
-APPDISPLAY_BACKGROUND_COLOR.from_pixel(0x000000ff);
-const APPDISPLAY_SELECTED_BACKGROUND_COLOR = new Clutter.Color();
-APPDISPLAY_SELECTED_BACKGROUND_COLOR.from_pixel(0x00ff0055);
-
-const APPDISPLAY_HEIGHT = 50;
-const APPDISPLAY_PADDING = 4;
-
-function AppDisplayItem(node, width) {
-    this._init(node, width);
+/* This class represents a single display item containing information about an application.
+ *
+ * appInfo - GAppInfo object containing information about the application
+ * availableWidth - total width available for the item
+ */
+function AppDisplayItem(appInfo, availableWidth) {
+    this._init(appInfo, availableWidth);
 }
 
 AppDisplayItem.prototype = {
-    _init: function(appInfo, width) {
-        let me = this;
+    __proto__:  GenericDisplay.GenericDisplayItem.prototype,
+
+    _init : function(appInfo, availableWidth) {
+        GenericDisplay.GenericDisplayItem.prototype._init.call(this, availableWidth); 
         this._appInfo = appInfo;
 
         let name = appInfo.get_name();
 
+        let description = appInfo.get_description();
+
         let iconTheme = Gtk.IconTheme.get_default();
 
-        this._group = new Clutter.Group({reactive: true,
-                                         width: width,
-                                         height: APPDISPLAY_HEIGHT});
-        this._group.connect('button-press-event', function(group, e) {
-            me.emit('activate');
-            return true;
-        });
-        this._bg = new Big.Box({ background_color: APPDISPLAY_BACKGROUND_COLOR,
-                                 corner_radius: 4,
-                                 x: 0, y: 0,
-                                 width: width, height: APPDISPLAY_HEIGHT });
-        this._group.add_actor(this._bg);
-
-        this._icon = new Clutter.Texture({ width: 48, height: 48, x: 0, y: 0 });
+        let icon = new Clutter.Texture({ width: 48, height: 48});
         let gicon = appInfo.get_icon();
         let path = null;
         if (gicon != null) {
@@ -84,266 +65,129 @@ AppDisplayItem.prototype = {
                 path = iconinfo.get_filename();
         }
 
-        if (path)
-            this._icon.set_from_file(path);
-        this._group.add_actor(this._icon);
+        if (path) {
+            try {
+                icon.set_from_file(path);
+            } catch (e) {
+                // we can get an error here if the file path doesn't exist on the system
+                log('Error loading AppDisplayItem icon ' + e);
+            }
+        }
+        this._setItemInfo(name, description, icon); 
+    },
 
-        let comment = appInfo.get_description();
-        let text_width = width - (me._icon.width + 4);
-        this._name = new Clutter.Label({ color: APPDISPLAY_NAME_COLOR,
-                                     font_name: "Sans 14px",
-                                     width: text_width,
-                                     ellipsize: Pango.EllipsizeMode.END,
-                                     text: name,
-                                     x: this._icon.width + 4,
-                                     y: 0});
-        this._group.add_actor(this._name);
-        this._comment = new Clutter.Label({ color: APPDISPLAY_COMMENT_COLOR,
-                                             font_name: "Sans 12px",
-                                             width: text_width,
-                                             ellipsize: Pango.EllipsizeMode.END,
-                                             text: comment,
-                                             x: this._name.x,
-                                             y: this._name.height + 4})
-        this._group.add_actor(this._comment);
-        this.actor = this._group;
-    },
-    launch: function() {
-        this._appInfo.launch([], null);
-    },
-    appInfo: function () {
+    //// Public methods ////
+
+    // Returns the application info associated with this display item.
+    getAppInfo : function () {
         return this._appInfo;
     },
-    markSelected: function(isSelected) {
-       let color;
-       if (isSelected)
-           color = APPDISPLAY_SELECTED_BACKGROUND_COLOR;
-       else
-           color = APPDISPLAY_BACKGROUND_COLOR;
-       this._bg.background_color = color;
+
+    //// Public method overrides ////
+
+    // Opens an application represented by this display item.
+    launch : function() {
+        this._appInfo.launch([], null);
     }
+
 };
 
-Signals.addSignalMethods(AppDisplayItem.prototype);
-
+/* This class represents a display containing a collection of application items.
+ * The applications are sorted based on their popularity by default, and based on
+ * their name if some search filter is applied.
+ *
+ * width - width available for the display
+ * height - height available for the display
+ */
 function AppDisplay(width, height) {
     this._init(width, height);
 }
 
 AppDisplay.prototype = {
+    __proto__:  GenericDisplay.GenericDisplay.prototype,
+
     _init : function(width, height) {
+        GenericDisplay.GenericDisplay.prototype._init.call(this, width, height);  
         let me = this;
-        let global = Shell.Global.get();
-        this._search = '';
-        this._width = width;
-        this._height = height;
         this._appMonitor = new Shell.AppMonitor();
         this._appsStale = true;
         this._appMonitor.connect('changed', function(mon) {
             me._appsStale = true;
+            // We still need to determine what events other than search can trigger
+            // a change in the set of applications that are being shown while the
+            // user in in the overlay mode, however let's redisplay just in case.
+            me._redisplay(); 
         });
-        this._grid = new Tidy.Grid({width: width, height: height});
-        this._appSet = {}; // Map<appId, appInfo>
-        this._displayed = {}; // Map<appId, AppDisplay>
-        this._selectedIndex = -1;
-        this._maxItems = this._height / (APPDISPLAY_HEIGHT + APPDISPLAY_PADDING);
-        this.actor = this._grid;
     },
 
-    _refreshCache: function() {
-        let me = this;
+    //// Protected method overrides //// 
 
+    // Gets information about all applications by calling Gio.app_info_get_all().
+    _refreshCache : function() {
+        let me = this;
         if (!this._appsStale)
             return;
-        for (id in this._displayed)
-            this._displayed[id].destroy();
-        this._appSet = {};
-        this._displayed = {};
-        this._selectedIndex = -1;
+        this._allItems = {};
         let apps = Gio.app_info_get_all();
         for (let i = 0; i < apps.length; i++) {
             let appInfo = apps[i];
             let appId = appInfo.get_id();
-            this._appSet[appId] = appInfo;
+            this._allItems[appId] = appInfo;
         }
         this._appsStale = false;
     },
 
-    _removeItem: function(appId) {
-        let item = this._displayed[appId];
-        let group = item.actor;
-        group.destroy();
-        delete this._displayed[appId];
-    },
-
-    _removeAll: function() {
-        for (appId in this._displayed)
-            this._removeItem(appId);
-     },
-
-    _setDefaultList: function() {
-        this._removeAll();
+    // Sets the list of the displayed items based on the list of DEFAULT_APPLICATIONS.
+    _setDefaultList : function() {
+        this._removeAllDisplayItems();
         let added = 0;
         for (let i = 0; i < DEFAULT_APPLICATIONS.length && added < this._maxItems; i++) {
             let appId = DEFAULT_APPLICATIONS[i];
-            let appInfo = this._appSet[appId];
+            let appInfo = this._allItems[appId];
             if (appInfo) {
-              this._filterAdd(appId);
-              added += 1;
+                this._addDisplayItem(appId);
+                added += 1;
             }
         }
     },
 
-    _getNDisplayed: function() {
-        // Is there a better way to do .size() ?
-        let c = 0; for (i in this._displayed) { c += 1; };
-        return c;
-    },
-
-    _filterAdd: function(appId) {
+    // Sorts the list of item ids in-place based on the alphabetical order of the names of 
+    // the items associated with the ids.
+    _sortItems : function(itemIds) {
         let me = this;
-
-        let appInfo = this._appSet[appId];
-
-        let appDisplayItem = new AppDisplayItem(appInfo, this._width);
-        appDisplayItem.connect('activate', function() {
-            appDisplayItem.launch();
-            me.emit('activated');
+        itemIds.sort(function (a,b) {
+            let appA = me._allItems[a];
+            let appB = me._allItems[b];
+            return appA.get_name().localeCompare(appB.get_name());
         });
-        let group = appDisplayItem.actor;
-        this._grid.add_actor(group);
-        this._displayed[appId] = appDisplayItem;
     },
 
-    _filterRemove: function(appId) {
-        // In the future, do some sort of fade out or other effect here
-        let item = this._displayed[appId];
-        this._removeItem(item);
-    },
-
-    _appInfoMatches: function(appInfo, search) {
+    // Checks if the item info can be a match for the search string by checking
+    // the name, description, and execution command for the application. 
+    // Item info is expected to be GAppInfo.
+    // Returns a boolean flag indicating if itemInfo is a match.
+    _isInfoMatching : function(itemInfo, search) {
         if (search == null || search == '')
             return true;
-        let name = appInfo.get_name().toLowerCase();
+        let name = itemInfo.get_name().toLowerCase();
         if (name.indexOf(search) >= 0)
             return true;
-        let description = appInfo.get_description();
+        let description = itemInfo.get_description();
         if (description) {
             description = description.toLowerCase();
             if (description.indexOf(search) >= 0)
                 return true;
         }
-        let exec = appInfo.get_executable().toLowerCase();
+        let exec = itemInfo.get_executable().toLowerCase();
         if (exec.indexOf(search) >= 0)
             return true;
         return false;
     },
 
-    _sortApps: function(appIds) {
-        let me = this;
-        return appIds.sort(function (a,b) {
-            let appA = me._appSet[a];
-            let appB = me._appSet[b];
-            return appA.get_name().localeCompare(appB.get_name());
-        });
-    },
-
-    _doSearchFilter: function() {
-        this._removeAll();
-        let matchedApps = [];
-        for (appId in this._appSet) {
-            if (matchedApps.length >= this._maxItems)
-                break;
-            if (this._displayed[appId])
-                continue;
-            let app = this._appSet[appId];
-            if (this._appInfoMatches(app, this._search))
-                matchedApps.push(appId);
-        }
-        this._sortApps(matchedApps);
-        for (let i = 0; i < matchedApps.length; i++) {
-            this._filterAdd(matchedApps[i]);
-        }
-    },
-
-    _redisplay: function() {
-        this._refreshCache();
-        if (!this._search)
-            this._setDefaultList();
-        else
-            this._doSearchFilter();
-    },
-
-    setSearch: function(text) {
-        this._search = text.toLowerCase();
-        this._redisplay();
-    },
-
-    _findDisplayedByIndex: function(index) {
-        let displayedActors = this._grid.get_children();
-        let actor = displayedActors[index];
-        return this._findDisplayedByActor(actor);
-    },
-
-    _findDisplayedByActor: function(actor) {
-        for (appId in this._displayed) {
-            let item = this._displayed[appId];
-            if (item.actor == actor) {
-                return item;
-            }
-        }
-        return null;
-    },
-
-    searchActivate: function() {
-        if (this._selectedIndex != -1) {
-            let selected = this._findDisplayedByIndex(this._selectedIndex);
-            selected.launch();
-            this.emit('activated');
-            return;
-        }
-        let displayedActors = this._grid.get_children();
-        if (displayedActors.length != 1)
-            return;
-        let selectedActor = displayedActors[0];
-        let selectedMenuItem = this._findDisplayedByActor(selectedActor);
-        selectedMenuItem.launch();
-        this.emit('activated');
-    },
-
-    _selectIndex: function(index) {
-        if (this._selectedIndex != -1) {
-            let prev = this._findDisplayedByIndex(this._selectedIndex);
-            prev.markSelected(false);
-        }
-        this._selectedIndex = index;
-        let item = this._findDisplayedByIndex(index);
-        item.markSelected(true);
-    },
-
-    selectUp: function() {
-        let prev = this._selectedIndex-1;
-        if (prev < 0)
-            return;
-        this._selectIndex(prev);
-    },
-
-    selectDown: function() {
-        let next = this._selectedIndex+1;
-        let nDisplayed = this._getNDisplayed();
-        if (next >= nDisplayed)
-            return;
-        this._selectIndex(next);
-    },
-
-    show: function() {
-        this._redisplay();
-        this._grid.show();
-    },
-
-    hide: function() {
-        this._grid.hide();
-    }
+    // Creates an AppDisplayItem based on itemInfo, which is expected be a GAppInfo object.
+    _createDisplayItem: function(itemInfo) {
+        return new AppDisplayItem(itemInfo, this._width);
+    } 
 };
 
 Signals.addSignalMethods(AppDisplay.prototype);

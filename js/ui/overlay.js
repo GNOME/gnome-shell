@@ -10,16 +10,19 @@ const Gtk = imports.gi.Gtk;
 const Workspaces = imports.ui.workspaces;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
-const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Big = imports.gi.Big;
 const AppDisplay = imports.ui.appDisplay;
+const DocDisplay = imports.ui.docDisplay;
 
 const OVERLAY_BACKGROUND_COLOR = new Clutter.Color();
 OVERLAY_BACKGROUND_COLOR.from_pixel(0x000000ff);
 
 const SIDESHOW_PAD = 6;
+const SIDESHOW_PAD_BOTTOM = 60;
 const SIDESHOW_MIN_WIDTH = 250;
+const SIDESHOW_SECTION_PAD = 10;
+const SIDESHOW_SECTION_LABEL_PAD_BOTTOM = 6;
 const SIDESHOW_SEARCH_BG_COLOR = new Clutter.Color();
 SIDESHOW_SEARCH_BG_COLOR.from_pixel(0xffffffff);
 const SIDESHOW_TEXT_COLOR = new Clutter.Color();
@@ -57,15 +60,18 @@ Sideshow.prototype = {
         searchIconTexture.set_from_file(searchIconPath);
         this.actor.add_actor(searchIconTexture);
 
+        // We need to initialize the text for the entry to have the cursor displayed 
+        // in it. See http://bugzilla.openedhand.com/show_bug.cgi?id=1365
         this._searchEntry = new Clutter.Entry({
                                              font_name: "Sans 14px",
                                              x: searchIconTexture.x
                                                  + searchIconTexture.width + 4,
                                              y: searchIconTexture.y,
                                              width: rect.width - (searchIconTexture.x),
-                                             height: searchIconTexture.height});
+                                             height: searchIconTexture.height, 
+                                             text: ""});
         this.actor.add_actor(this._searchEntry);
-        global.stage.set_key_focus(this._searchEntry);
+        global.stage.set_key_focus(this._searchEntry); 
         this._searchQueued = false;
         this._searchActive = false;
         this._searchEntry.connect('notify::text', function (se, prop) {
@@ -76,12 +82,15 @@ Sideshow.prototype = {
                 me._searchQueued = false;
                 me._searchActive = text != '';
                 me._appDisplay.setSearch(text);
+                me._docDisplay.setSearch(text);
                 return false;
             });
         });
         this._searchEntry.connect('activate', function (se) {
-            me._searchEntry.text = '';
-            me._appDisplay.searchActivate();
+            // only one of the displays will have an item selected, so it's ok to
+            // call activateSelected() on both of them
+            me._appDisplay.activateSelected();
+            me._docDisplay.activateSelected();
             return true;
         });
         this._searchEntry.connect('key-press-event', function (se, e) {
@@ -90,10 +99,26 @@ Sideshow.prototype = {
                 me._searchEntry.text = '';
                 return true;
             } else if (code == 111) {
-                me._appDisplay.selectUp();
+                // selectUp and selectDown wrap around in their respective displays
+                // too, but there doesn't seem to be any flickering if we first select 
+                // something in one display, but then unset the selection, and move
+                // it to the other display, so it's ok to do that.
+                if (me._appDisplay.hasSelected() && !me._appDisplay.selectUp() && me._docDisplay.hasItems()) {
+                    me._appDisplay.unsetSelected();
+                    me._docDisplay.selectLastItem();
+                } else if (me._docDisplay.hasSelected() && !me._docDisplay.selectUp() && me._appDisplay.hasItems()) {
+                    me._docDisplay.unsetSelected();
+                    me._appDisplay.selectLastItem();
+                }
                 return true;
             } else if (code == 116) {
-                me._appDisplay.selectDown();
+                if (me._appDisplay.hasSelected() && !me._appDisplay.selectDown() && me._docDisplay.hasItems()) {
+                    me._appDisplay.unsetSelected();
+                    me._docDisplay.selectFirstItem();
+                } else if (me._docDisplay.hasSelected() && !me._docDisplay.selectDown() && me._appDisplay.hasItems()) {
+                    me._docDisplay.unsetSelected();
+                    me._appDisplay.selectFirstItem();
+                }
                 return true;
             }
             return false;
@@ -103,24 +128,75 @@ Sideshow.prototype = {
                                            font_name: "Sans Bold 14px",
                                            text: "Applications",
                                            x: SIDESHOW_PAD,
-                                           y: this._searchEntry.y + this._searchEntry.height + 10,
+                                           y: this._searchEntry.y + this._searchEntry.height + SIDESHOW_SECTION_PAD,
                                            height: 16});
         this.actor.add_actor(appsText);
 
-        let menuY = appsText.y + appsText.height + 6;
-        this._appDisplay = new AppDisplay.AppDisplay(width, global.screen_height - menuY);
+        let sectionLabelHeight = appsText.height + SIDESHOW_SECTION_LABEL_PAD_BOTTOM
+        let menuY = appsText.y + sectionLabelHeight;
+
+        let itemDisplayHeight = global.screen_height - menuY - SIDESHOW_SECTION_PAD - sectionLabelHeight - SIDESHOW_PAD_BOTTOM;
+        this._appDisplay = new AppDisplay.AppDisplay(width, itemDisplayHeight / 2);
         this._appDisplay.actor.x = SIDESHOW_PAD;
         this._appDisplay.actor.y = menuY;
         this.actor.add_actor(this._appDisplay.actor);
 
-        /* Proxy the activated signal */
+        let docsText = new Clutter.Label({ color: SIDESHOW_TEXT_COLOR,
+                                           font_name: "Sans Bold 14px",
+                                           text: "Recent Documents",
+                                           x: SIDESHOW_PAD,
+                                           y: menuY + (itemDisplayHeight / 2) + SIDESHOW_SECTION_PAD,
+                                           height: 16});
+        this.actor.add_actor(docsText);
+
+        this._docDisplay = new DocDisplay.DocDisplay(width, itemDisplayHeight / 2);
+        this._docDisplay.actor.x = SIDESHOW_PAD;
+        this._docDisplay.actor.y = docsText.y + docsText.height + 6;
+        this.actor.add_actor(this._docDisplay.actor);
+
+        /* Proxy the activated signals */
         this._appDisplay.connect('activated', function(appDisplay) {
-          me.emit('activated');
+            me._searchEntry.text = '';
+            // we allow clicking on an item to launch it, and this unsets the selection
+            // so that we can move it to the item that was clicked on
+            me._appDisplay.unsetSelected(); 
+            me._docDisplay.unsetSelected();
+            me._appDisplay.doActivate();
+            me.emit('activated');
+        });
+        this._docDisplay.connect('activated', function(docDisplay) {
+            me._searchEntry.text = '';
+            // we allow clicking on an item to launch it, and this unsets the selection
+            // so that we can move it to the item that was clicked on
+            me._appDisplay.unsetSelected(); 
+            me._docDisplay.unsetSelected();
+            me._docDisplay.doActivate();
+            me.emit('activated');
+        });
+        this._appDisplay.connect('redisplayed', function(appDisplay) {
+            // This can be applicable if app display previously had the selection,
+            // but it got updated and now has no items, so we can try to move
+            // the selection to the doc display. 
+            if (!me._appDisplay.hasSelected() && !me._docDisplay.hasSelected())
+                me._docDisplay.selectFirstItem();    
+        });
+        this._docDisplay.connect('redisplayed', function(docDisplay) {
+            if (!me._docDisplay.hasSelected() && !me._appDisplay.hasSelected())
+                me._appDisplay.selectFirstItem();
         });
     },
 
     show: function() {
-          this._appDisplay.show();
+        this._appDisplay.selectFirstItem();   
+        if (!this._appDisplay.hasSelected())
+            this._docDisplay.selectFirstItem();
+        else
+            this._docDisplay.unsetSelected();
+        this._appDisplay.show(); 
+        this._docDisplay.show();
+    },
+
+    hide: function() {
     }
 };
 Signals.addSignalMethods(Sideshow.prototype);
