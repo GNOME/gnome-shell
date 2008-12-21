@@ -158,5 +158,9 @@ stamp-h1
 /clutter/x11/stamp-clutter-x11-enum-types.h
 /po/Makefile.in.in
 /po/POTFILES
+*.swn
+*.swo
 *.swp
 *~
+*.orig
+*.rej
