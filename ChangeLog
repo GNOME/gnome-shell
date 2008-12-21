@@ -1,3 +1,10 @@
+2008-12-21  Colin Walters  <walters@verbum.org>
+
+	* src/core/window.c: windows which attempt to present themselves
+          but are offscreen end up demanding attention, unless they
+          are transient, when they move to the current workspace
+          as before.  Closes #482354.
+
 2008-12-19  Thomas Thurman  <tthurman@gnome.org>
 
 	* src/ui/frames.c: when the user double-clicks the title bar,

@@ -2952,8 +2952,23 @@ window_activate (MetaWindow     *window,
   /* Get window on current or given workspace */
   if (workspace == NULL)
     workspace = window->screen->active_workspace;
-  if (!meta_window_located_on_workspace (window, workspace))
-    meta_window_change_workspace (window, workspace);
+
+  /* For non-transient windows, we just set up a pulsing indicator, 
+     rather than move windows or workspaces.
+     See http://bugzilla.gnome.org/show_bug.cgi?id=482354 */
+  if (window->xtransient_for == None && 
+      !meta_window_located_on_workspace (window, workspace))
+    {
+      meta_window_set_demands_attention (window);
+      /* We've marked it as demanding, don't need to do anything else. */
+      return;
+    }
+  else if (window->xtransient_for != None)
+    {
+      /* Move transients to current workspace - preference dialogs should appear over 
+         the source window.  */
+      meta_window_change_workspace (window, workspace);
+    }
   
   if (window->shaded)
     meta_window_unshade (window, timestamp);
