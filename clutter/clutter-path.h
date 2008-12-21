@@ -30,7 +30,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-types.h>
-#include <cairo/cairo.h>
+#include <cairo.h>
 
 G_BEGIN_DECLS
 

@@ -34,7 +34,7 @@
 #define __CLUTTER_CAIRO_TEXTURE_H__
 
 #include <clutter/clutter-texture.h>
-#include <cairo/cairo.h>
+#include <cairo.h>
 
 G_BEGIN_DECLS
 
