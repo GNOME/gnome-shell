@@ -293,3 +293,14 @@ cogl_mesh_draw_range_elements
 cogl_mesh_submit
 </SECTION>
 
+<SECTION>
+<FILE>cogl-matrix</FILE>
+<TITLE>Matrices</TITLE>
+CoglMatrix
+cogl_matrix_init_identity
+cogl_matrix_multiply
+cogl_matrix_rotate
+cogl_matrix_translate
+cogl_matrix_scale
+</SECTION>
+
