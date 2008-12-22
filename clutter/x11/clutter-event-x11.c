@@ -843,8 +843,13 @@ events_queue (ClutterBackend *backend)
  * This function processes a single X event; it can be used to hook
  * into external X event retrieval (for example that done by GDK).
  *
- * Return value: #ClutterX11FilterReturn indicating what the caller
- *   should do with the original event.
+ * Return value: #ClutterX11FilterReturn. %CLUTTER_X11_FILTER_REMOVE
+ *  indicates that Clutter has internally handled the event and the
+ *  caller should do no further processing. %CLUTTER_X11_FILTER_CONTINUE
+ *  indicates that Clutter is either not interested in the event,
+ *  or has used the event to update internal state without taking
+ *  any exclusive action. %CLUTTER_X11_FILTER_TRANSLATE will not
+ *  occur.
  *
  * Since:  0.8
  */
@@ -854,6 +859,18 @@ clutter_x11_handle_event (XEvent *xevent)
   ClutterBackend      *backend;
   ClutterEvent        *event;
   ClutterMainContext  *clutter_context;
+  ClutterX11FilterReturn result;
+
+  /* The return values here are someone approximate; we return
+   * CLUTTER_X11_FILTER_REMOVE if and only if a clutter event is
+   * generated for the event. This mostly, but not entirely,
+   * corresponds to whether other event processing should be
+   * excluded. As long as the stage window is not shared with another
+   * toolkit it should be safe, and never return
+   * %CLUTTER_X11_FILTER_REMOVE when more processing is needed.
+   */
+
+  result = CLUTTER_X11_FILTER_CONTINUE;
 
   clutter_threads_enter ();
 
@@ -865,11 +882,13 @@ clutter_x11_handle_event (XEvent *xevent)
   if (event_translate (backend, event, xevent))
     {
       /* push directly here to avoid copy of queue_put */
+      result = CLUTTER_X11_FILTER_REMOVE;
       g_queue_push_head (clutter_context->events_queue, event);
     }
   else
     {
       clutter_event_free (event);
+      goto out;
     }
 
   event = clutter_event_get ();
@@ -881,9 +900,10 @@ clutter_x11_handle_event (XEvent *xevent)
       clutter_event_free (event);
     }
 
+ out:
   clutter_threads_leave ();
 
-  return CLUTTER_X11_FILTER_CONTINUE;
+  return result;
 }
 
 static gboolean
