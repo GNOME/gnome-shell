@@ -3,6 +3,7 @@
 const Tweener = imports.tweener.tweener;
 const Clutter = imports.gi.Clutter;
 const Pango = imports.gi.Pango;
+const Lang = imports.lang;
 
 const Main = imports.ui.main;
 const Overlay = imports.ui.overlay;
@@ -10,6 +11,7 @@ const Panel = imports.ui.panel;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Big = imports.gi.Big;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 
 // Windows are slightly translucent in the overlay mode
 const WINDOW_OPACITY = 0.9 * 255;
@@ -86,6 +88,66 @@ Workspace.prototype = {
                 this._windows.push(clone);
             }
         }
+
+        this._removeButton = null;
+        this._visible = false;
+    },
+
+    // Checks if the workspace is empty (ie, contains only a desktop window)
+    isEmpty : function() {
+        return this._windows.length == 1;
+    },
+
+    // Change Workspace's removability.
+    setRemovable : function(removable, buttonSize) {
+        let global = Shell.Global.get();
+
+        if (removable) {
+            if (this._removeButton)
+                return;
+
+            this._removeButton = new Clutter.Texture({ width: buttonSize,
+                                                       height: buttonSize,
+                                                       reactive: true
+                                                     });
+            this._removeButton.set_from_file(global.imagedir + "remove-workspace.svg");
+            this._removeButton.connect('button-press-event', Lang.bind(this, this._removeSelf));
+
+            this.actor.add_actor(this._removeButton);
+
+            if (this._visible) {
+                this._removeButton.set_position(
+                    this.gridX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
+                    this.gridY + (this._desktop.height * this.scale - this._removeButton.height) / 2);
+                this._removeButton.set_opacity(0);
+                Tweener.addTween(this._removeButton,
+                                 { opacity: 255,
+                                   time: Overlay.ANIMATION_TIME,
+                                   transition: "easeOutQuad"
+                                 });
+            }
+        } else {
+            if (!this._removeButton)
+                return;
+
+            if (this._visible) {
+                Tweener.addTween(this._removeButton,
+                                 { opacity: 0,
+                                   time: Overlay.ANIMATION_TIME,
+                                   transition: "easeOutQuad",
+                                   onComplete: this._removeRemoveButton,
+                                   onCompleteScope: this
+                                 });
+            } else {
+                this._removeButton.destroy();
+                this._removeButton = null;
+            }
+        }
+    },
+
+    _removeRemoveButton : function() {
+        this._removeButton.destroy();
+        this._removeButton = null;
     },
 
     // Animate the full-screen to overlay transition.
@@ -136,6 +198,23 @@ Workspace.prototype = {
                                onCompleteScope: this
                              });
         }
+
+        // If the workspace is removable, animate in its removeButton
+        if (this._removeButton) {
+            this._removeButton.set_position(
+                this.fullSizeX + (this._desktop.width - this._removeButton.width) / 2,
+                this.fullSizeY + (this._desktop.height - this._removeButton.height) / 2);
+            this._removeButton.set_opacity(0);
+            Tweener.addTween(this._removeButton,
+                             { x: this.gridX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
+                               y: this.gridY + (this._desktop.height * this.scale - this._removeButton.height) / 2,
+                               opacity: 255,
+                               time: Overlay.ANIMATION_TIME,
+                               transition: "easeOutQuad"
+                             });
+        }
+        
+        this._visible = true;
     },
 
     // Animates the return from overlay mode
@@ -154,6 +233,18 @@ Workspace.prototype = {
                                transition: "easeOutQuad"
                              });
         }
+
+        if (this._removeButton) {
+            Tweener.addTween(this._removeButton,
+                             { x: this.fullSizeX + (this._desktop.width - this._removeButton.width) / 2,
+                               y: this.fullSizeY + (this._desktop.height - this._removeButton.height) / 2,
+                               opacity: 0,
+                               time: Overlay.ANIMATION_TIME,
+                               transition: "easeOutQuad"
+                             });
+        }
+        
+        this._visible = false;
     },
 
     // Animates grid shrinking/expanding when a row or column
@@ -177,6 +268,17 @@ Workspace.prototype = {
             this._adjustCloneTitle(this._windows[i], newX, newY,
                                    newWindowScale);
         }
+
+        if (this._removeButton) {
+            // This gets layered on top of any already-running fade-out
+            // animation from setRemovable
+            Tweener.addTween(this._removeButton,
+                             { x: this.gridX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
+                               y: this.gridY + (this._desktop.height * this.scale - this._removeButton.height) / 2,
+                               time: Overlay.ANIMATION_TIME,
+                               transition: "easeOutQuad"
+                             });
+        }
     },
     
     // Animates the addition of a new (empty) workspace
@@ -198,6 +300,22 @@ Workspace.prototype = {
                            time: Overlay.ANIMATION_TIME,
                            transition: "easeOutQuad"
                          });
+
+        if (this._removeButton) {
+            this._removeButton.set_position(
+                this._desktop.x + (this._desktop.width * oldScale - this._removeButton.width) / 2,
+                this._desktop.y + (this._desktop.height * oldScale - this._removeButton.height) / 2);
+            this._removeButton.set_opacity(0);
+            Tweener.addTween(this._removeButton,
+                             { x: this.gridX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
+                               y: this.gridY + (this._desktop.height * this.scale - this._removeButton.height) / 2,
+                               opacity: 255,
+                               time: Overlay.ANIMATION_TIME,
+                               transition: "easeOutQuad"
+                             });
+        }
+
+        this._visible = true;
     },
     
     // Animates the removal of a workspace
@@ -218,6 +336,19 @@ Workspace.prototype = {
                            transition: "easeOutQuad",
                            onComplete: onComplete
                          });
+
+        if (this._removeButton) {
+            // This gets layered on top of any already-running fade-out
+            // animation from setRemovable()
+            Tweener.addTween(this._removeButton,
+                             { x: destX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
+                               y: destY + (this._desktop.height * this.scale - this._removeButton.height) / 2,
+                               time: Overlay.ANIMATION_TIME,
+                               transition: "easeOutQuad"
+                             });
+        }
+
+        this._visible = false;
     },
     
     destroy : function() {
@@ -345,6 +476,14 @@ Workspace.prototype = {
         } else
             w.get_meta_window().activate(time);
         Main.hide_overlay();
+    },
+
+    _removeSelf : function(actor, event) {
+        let global = Shell.Global.get();
+        let screen = global.screen;
+        let workspace = screen.get_workspace_by_index(this._workspaceNum);
+
+        screen.remove_workspace(workspace, event.get_time());
     }
 };
 
@@ -402,6 +541,26 @@ Workspaces.prototype = {
                            transition: "easeOutQuad"
                          });
 
+        // Create (+) and (-) buttons
+        let bottomHeight = screenHeight - this._height - this._y;
+        this._buttonSize = Math.floor(bottomHeight * 3/5);
+        let plusX = this._x + this._width - this._buttonSize;
+        let plusY = screenHeight - Math.floor(bottomHeight * 4/5);
+
+        let plus = new Clutter.Texture({ x: plusX,
+                                         y: plusY,
+                                         width: this._buttonSize,
+                                         height: this._buttonSize,
+                                         reactive: true
+                                       });
+        plus.set_from_file(global.imagedir + "add-workspace.svg");
+        plus.connect('button-press-event', this._addWorkspace);
+        this.actor.add_actor(plus);
+        plus.lower_bottom();
+
+        let lastWorkspace = this._workspaces[this._workspaces.length - 1];
+        if (lastWorkspace.isEmpty())
+            lastWorkspace.setRemovable(true, this._buttonSize);
 
         // Position/scale the desktop windows and their children
         for (let w = 0; w < this._workspaces.length; w++)
@@ -443,7 +602,8 @@ Workspaces.prototype = {
             this._workspaces[w].destroy();
         this._workspaces = [];
 
-        this._backdrop.destroy();
+        this.actor.destroy();
+        this.actor = null;
         this._backdrop = null;
 
         global.screen.disconnect(this._nWorkspacesNotifyId);
@@ -529,18 +689,27 @@ Workspaces.prototype = {
         let oldGridHeight = Math.ceil(oldNumWorkspaces / oldGridWidth);
         let lostWorkspaces = [];
 
+        // The old last workspace is no longer removable.
+        this._workspaces[oldNumWorkspaces - 1].setRemovable(false);
+
         if (newNumWorkspaces > oldNumWorkspaces) {
             // Create new workspace groups
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 this._workspaces[w] = new Workspace(w);
                 this.actor.add_actor(this._workspaces[w].actor);
             }
+
         } else {
             // Truncate the list of workspaces
             // FIXME: assumes that the workspaces are being removed from
             // the end of the list, not the start/middle
             lostWorkspaces = this._workspaces.splice(newNumWorkspaces);
         }
+
+        // The new last workspace may be removable
+        let newLastWorkspace = this._workspaces[this._workspaces.length - 1];
+        if (newLastWorkspace.isEmpty())
+            newLastWorkspace.setRemovable(true, this._buttonSize);
 
         // Figure out the new layout
         this._positionWorkspaces(global);
@@ -568,5 +737,11 @@ Workspaces.prototype = {
 
             // FIXME: deal with windows on the lost workspaces
         }
+    },
+
+    _addWorkspace : function(actor, event) {
+        let global = Shell.Global.get();
+
+        global.screen.append_new_workspace(false, event.get_time());
     }
 };
