@@ -76,7 +76,8 @@ test_text_empty (TestConformSimpleFixture *fixture,
 {
   ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
 
-  g_assert (clutter_text_get_text (text) == NULL);
+  g_assert_cmpstr (clutter_text_get_text (text), ==, "");
+  g_assert_cmpint (*clutter_text_get_text (text), ==, '\0');
   g_assert_cmpint (clutter_text_get_cursor_position (text), ==, -1);
 
   clutter_actor_destroy (CLUTTER_ACTOR (text));

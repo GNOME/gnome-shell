@@ -1519,7 +1519,7 @@ clutter_text_class_init (ClutterTextClass *klass)
   pspec = g_param_spec_string ("text",
                                "Text",
                                "The text to render",
-                               NULL,
+                               "",
                                CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
@@ -1981,7 +1981,11 @@ clutter_text_init (ClutterText *self)
   for (i = 0; i < N_CACHED_LAYOUTS; i++)
     priv->cached_layouts[i].layout = NULL;
 
-  priv->text = NULL;
+  /* default to "" so that clutter_text_get_text() will
+   * return a valid string and we can safely call strlen()
+   * or strcmp() on it
+   */
+  priv->text = g_strdup ("");
 
   priv->text_color = default_text_color;
   priv->cursor_color = default_cursor_color;
@@ -2640,7 +2644,9 @@ clutter_text_get_text (ClutterText *self)
  * @self: a #ClutterText
  * @text: the text to set
  *
- * Sets the contents of a #ClutterText actor.
+ * Sets the contents of a #ClutterText actor. The @text string
+ * must not be %NULL; to unset the current contents of the
+ * #ClutterText actor simply pass "" (an empty string).
  *
  * Since: 1.0
  */
