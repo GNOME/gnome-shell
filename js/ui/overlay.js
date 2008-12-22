@@ -34,6 +34,9 @@ const ANIMATION_TIME = 0.5;
 // How much of the screen the workspace grid takes up
 const WORKSPACE_GRID_SCALE = 0.75;
 
+// Padding around workspace grid / Spacing between Sideshow and Workspaces
+const WORKSPACE_GRID_PADDING = 10;
+
 function Sideshow(parent, width) {
     this._init(parent, width);
 }
@@ -226,27 +229,16 @@ Overlay.prototype = {
         global.overlay_group.add_actor(this._group);
 
         // TODO - recalculate everything when desktop size changes
-        this._recalculateSize();
-
-        this._sideshow = new Sideshow(this._group, this._workspaceGridX - 10);
+        let screenWidth = global.screen_width;
+        let sideshowWidth = screenWidth - (screenWidth * WORKSPACE_GRID_SCALE) -
+            2 * WORKSPACE_GRID_PADDING;
+        this._sideshow = new Sideshow(this._group, sideshowWidth);
         this._sideshow.connect('activated', function(sideshow) {
             // TODO - have some sort of animation/effect while
             // transitioning to the new app.  We definitely need
             // startup-notification integration at least.
             me._deactivate();
         });
-    },
-
-    _recalculateSize: function() {
-        let global = Shell.Global.get();
-        let screenWidth = global.screen_width;
-        let screenHeight = global.screen_height;
-
-        // The area allocated for the workspace grid
-        this._workspaceGridWidth = screenWidth * WORKSPACE_GRID_SCALE;
-        this._workspaceGridHeight = screenHeight * WORKSPACE_GRID_SCALE;
-        this._workspaceGridX = screenWidth - this._workspaceGridWidth - 10;
-        this._workspaceGridY = Panel.PANEL_HEIGHT + (screenHeight - this._workspaceGridHeight - Panel.PANEL_HEIGHT) / 2;
     },
 
     show : function() {
@@ -257,13 +249,9 @@ Overlay.prototype = {
 
         let global = Shell.Global.get();
 
-        this._recalculateSize();
-
         this._sideshow.show();
 
-        this._workspaces = new Workspaces.Workspaces(
-            this._workspaceGridX, this._workspaceGridY,
-            this._workspaceGridWidth, this._workspaceGridHeight);
+        this._workspaces = new Workspaces.Workspaces();
         this._group.add_actor(this._workspaces.actor);
         this._workspaces.actor.raise_top();
 

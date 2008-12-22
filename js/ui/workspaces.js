@@ -38,25 +38,29 @@ const POSITIONS = {
 // metaphor-breaking, but the alternatives are also weird.
 const GRID_SPACING = 15;
 
-function Workspaces(x, y, width, height) {
-    this._init(x, y, width, height);
+function Workspaces() {
+    this._init();
 }
 
 Workspaces.prototype = {
-    _init : function(x, y, width, height) {
+    _init : function() {
         let me = this;
+        let global = Shell.Global.get();
 
         this.actor = new Clutter.Group();
 
-        this._x = x;
-        this._y = y;
-        this._width = width;
-        this._height = height;
+        let screenWidth = global.screen_width;
+        let screenHeight = global.screen_height;
+
+        this._width = screenWidth * Overlay.WORKSPACE_GRID_SCALE;
+        this._height = screenHeight * Overlay.WORKSPACE_GRID_SCALE;
+        this._x = screenWidth - this._width - Overlay.WORKSPACE_GRID_PADDING;
+        this._y = Panel.PANEL_HEIGHT + (screenHeight - this._height - Panel.PANEL_HEIGHT) / 2;
+
         this._workspaces = [];
         
         this._clones = [];
 
-        let global = Shell.Global.get();
         let windows = global.get_windows();
         let activeWorkspaceIndex = global.screen.get_active_workspace_index();
         let activeWorkspace;
