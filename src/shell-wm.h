@@ -29,6 +29,39 @@ ShellWM *shell_wm_new                         (MutterPlugin *plugin);
 GList   *shell_wm_get_switch_workspace_actors (ShellWM      *wm);
 void     shell_wm_completed_switch_workspace  (ShellWM      *wm);
 
+
+/* These forward along the different effects from GnomeShellPlugin */
+
+#ifdef NOT_YET
+void _shell_wm_minimize   (ShellWM      *wm,
+			   MutterWindow *actor);
+void _shell_wm_maximize   (ShellWM      *wm,
+			   MutterWindow *actor,
+			   gint          x,
+			   gint          y,
+			   gint          width,
+			   gint          height);
+void _shell_wm_unmaximize (ShellWM      *wm,
+			   MutterWindow *actor,
+			   gint          x,
+			   gint          y,
+			   gint          width,
+			   gint          height);
+void _shell_wm_map        (ShellWM      *wm,
+			   MutterWindow *actor);
+void _shell_wm_destroy    (ShellWM      *wm,
+			   MutterWindow *actor);
+#endif
+
+void _shell_wm_switch_workspace (ShellWM              *wm,
+				 const GList         **actors,
+				 gint                  from,
+				 gint                  to,
+				 MetaMotionDirection   direction);
+void _shell_wm_kill_effect      (ShellWM              *wm,
+				 MutterWindow         *actor,
+				 gulong                events);
+
 G_END_DECLS
 
 #endif /* __SHELL_WM_H__ */

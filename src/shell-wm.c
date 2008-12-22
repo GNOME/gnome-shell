@@ -80,28 +80,13 @@ shell_wm_class_init (ShellWMClass *klass)
 		  G_TYPE_NONE, 0);
 }
 
-static ShellWM *
-shell_wm_get (void)
+void
+_shell_wm_switch_workspace (ShellWM      *wm,
+                            const GList **actors,
+                            gint          from,
+                            gint          to,
+                            MetaMotionDirection direction)
 {
-  ShellWM *wm;
-
-  g_object_get (shell_global_get (),
-                "window-manager", &wm,
-                NULL);
-  /* drop extra ref added by g_object_get */
-  g_object_unref (wm);
-
-  return wm;
-}
-
-static void
-shell_wm_switch_workspace (const GList **actors,
-                           gint          from,
-                           gint          to,
-                           MetaMotionDirection direction)
-{
-  ShellWM *wm = shell_wm_get ();
-
   shell_wm_set_switch_workspace_actors (wm, (GList *)*actors);
   g_signal_emit (wm, shell_wm_signals[SWITCH_WORKSPACE], 0,
                  from, to, direction);
@@ -164,12 +149,11 @@ shell_wm_completed_switch_workspace (ShellWM *wm)
 }
 
 
-static void
-shell_wm_kill_effect (MutterWindow *actor,
-                      gulong        events)
+void
+_shell_wm_kill_effect (ShellWM      *wm,
+                       MutterWindow *actor,
+                       gulong        events)
 {
-  ShellWM *wm = shell_wm_get ();
-
 #ifdef NOT_YET
   if (events & MUTTER_PLUGIN_MINIMIZE)
     g_signal_emit (wm, shell_wm_signals[KILL_MINIMIZE], 0);
@@ -202,16 +186,6 @@ shell_wm_new (MutterPlugin *plugin)
 
   wm = g_object_new (SHELL_TYPE_WM, NULL);
   wm->plugin = plugin;
-
-#ifdef NOT_YET
-  plugin->minimize         = shell_wm_minimize;
-  plugin->maximize         = shell_wm_maximize;
-  plugin->unmaximize       = shell_wm_unmaximize;
-  plugin->map              = shell_wm_map;
-  plugin->destroy          = shell_wm_destroy;
-#endif
-  plugin->switch_workspace = shell_wm_switch_workspace;
-  plugin->kill_effect      = shell_wm_kill_effect;
 
   return wm;
 }

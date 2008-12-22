@@ -40,67 +40,113 @@
 #include "display.h"
 
 #include "shell-global.h"
+#include "shell-wm.h"
 
-static gboolean do_init (const char *params);
-static gboolean reload  (const char *params);
+static void gnome_shell_plugin_constructed (GObject *object);
+static void gnome_shell_plugin_dispose     (GObject *object);
+static void gnome_shell_plugin_finalize    (GObject *object);
 
-static gboolean xevent_filter (XEvent *xev);
+#ifdef NOT_YET
+static void     gnome_shell_plugin_minimize         (MutterPlugin         *plugin,
+                                                     MutterWindow         *actor);
+static void     gnome_shell_plugin_maximize         (MutterPlugin         *plugin,
+                                                     MutterWindow         *actor,
+                                                     gint                  x,
+                                                     gint                  y,
+                                                     gint                  width,
+                                                     gint                  height);
+static void     gnome_shell_plugin_unmaximize       (MutterPlugin         *plugin,
+                                                     MutterWindow         *actor,
+                                                     gint                  x,
+                                                     gint                  y,
+                                                     gint                  width,
+                                                     gint                  height);
+static void     gnome_shell_plugin_map              (MutterPlugin         *plugin,
+                                                     MutterWindow         *actor);
+static void     gnome_shell_plugin_destroy          (MutterPlugin         *plugin,
+                                                     MutterWindow         *actor);
+#endif
+
+static void     gnome_shell_plugin_switch_workspace (MutterPlugin         *plugin,
+                                                     const GList         **actors,
+                                                     gint                  from,
+                                                     gint                  to,
+                                                     MetaMotionDirection   direction);
+static void     gnome_shell_plugin_kill_effect      (MutterPlugin         *plugin,
+                                                     MutterWindow         *actor,
+                                                     gulong                events);
+
+static gboolean                gnome_shell_plugin_xevent_filter (MutterPlugin *plugin,
+                                                                 XEvent       *event);
+static const MutterPluginInfo *gnome_shell_plugin_plugin_info   (MutterPlugin *plugin);
+
+#define GNOME_TYPE_SHELL_PLUGIN            (gnome_shell_plugin_get_type ())
+#define GNOME_SHELL_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GNOME_TYPE_SHELL_PLUGIN, GnomeShellPlugin))
+#define GNOME_SHELL_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GNOME_TYPE_SHELL_PLUGIN, GnomeShellPluginClass))
+#define GNOME_IS_SHELL_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GNOME_SHELL_PLUGIN_TYPE))
+#define GNOME_IS_SHELL_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  GNOME_TYPE_SHELL_PLUGIN))
+#define GNOME_SHELL_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  GNOME_TYPE_SHELL_PLUGIN, GnomeShellPluginClass))
+
+typedef struct _GnomeShellPlugin        GnomeShellPlugin;
+typedef struct _GnomeShellPluginClass   GnomeShellPluginClass;
+
+struct _GnomeShellPlugin
+{
+  MutterPlugin parent;
+
+  GjsContext *gjs_context;
+  Atom panel_action;
+  Atom panel_action_run_dialog;
+  Atom panel_action_main_menu;
+};
+
+struct _GnomeShellPluginClass
+{
+  MutterPluginClass parent_class;
+};
 
 /*
  * Create the plugin struct; function pointers initialized in
  * g_module_check_init().
  */
-MUTTER_DECLARE_PLUGIN();
+MUTTER_PLUGIN_DECLARE(GnomeShellPlugin, gnome_shell_plugin);
 
-/*
- * Plugin private data that we store in the .plugin_private member.
- */
-typedef struct _PluginState
+static void
+gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
 {
-  gboolean               debug_mode : 1;
-  GjsContext            *gjs_context;
-  Atom panel_action;
-  Atom panel_action_run_dialog;
-  Atom panel_action_main_menu;
-} PluginState;
+  GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
+  MutterPluginClass *plugin_class  = MUTTER_PLUGIN_CLASS (klass);
 
+  gobject_class->constructed     = gnome_shell_plugin_constructed;
+  gobject_class->dispose         = gnome_shell_plugin_dispose;
+  gobject_class->finalize        = gnome_shell_plugin_finalize;
 
-static PluginState *plugin_state;
+#ifdef NOT_YET
+  plugin_class->map              = gnome_shell_plugin_map;
+  plugin_class->minimize         = gnome_shell_plugin_minimize;
+  plugin_class->maximize         = gnome_shell_plugin_maximize;
+  plugin_class->unmaximize       = gnome_shell_plugin_unmaximize;
+  plugin_class->destroy          = gnome_shell_plugin_destroy;
+#endif
 
-const gchar * g_module_check_init (GModule *module);
-const gchar *
-g_module_check_init (GModule *module)
-{
-  MutterPlugin *plugin = mutter_get_plugin ();
+  plugin_class->switch_workspace = gnome_shell_plugin_switch_workspace;
+  plugin_class->kill_effect      = gnome_shell_plugin_kill_effect;
 
-  /* Human readable name (for use in UI) */
-  plugin->name = "GNOME Shell";
-
-  /* Plugin load time initialiser */
-  plugin->do_init = do_init;
-
-  /* The reload handler */
-  plugin->reload = reload;
-
-  /* Event handling */
-  plugin->xevent_filter = xevent_filter;
-
-  /* This will also create the ShellWM, which will set the appropriate
-   * window management callbacks in plugin.
-   */
-  _shell_global_set_plugin (shell_global_get(), plugin);
-
-  return NULL;
+  plugin_class->xevent_filter    = gnome_shell_plugin_xevent_filter;
+  plugin_class->plugin_info      = gnome_shell_plugin_plugin_info;
 }
 
-/*
- * Core of the plugin init function, called for initial initialization and
- * by the reload() function. Returns TRUE on success.
- */
-static gboolean
-do_init (const char *params)
+static void
+gnome_shell_plugin_init (GnomeShellPlugin *shell_plugin)
 {
-  MutterPlugin *plugin = mutter_get_plugin();
+  _shell_global_set_plugin (shell_global_get(), MUTTER_PLUGIN(shell_plugin));
+}
+
+static void
+gnome_shell_plugin_constructed (GObject *object)
+{
+  MutterPlugin *plugin = MUTTER_PLUGIN (object);
+  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (object);
   MetaScreen *screen;
   MetaDisplay *display;
   GError *error = NULL;
@@ -111,18 +157,6 @@ do_init (const char *params)
   screen = mutter_plugin_get_screen (plugin);
   display = meta_screen_get_display (screen);
 
-  plugin_state = g_new0 (PluginState, 1);
-
-  if (params)
-    {
-      if (strstr (params, "debug"))
-        {
-          g_debug ("%s: Entering debug mode.", mutter_get_plugin()->name);
-
-          plugin_state->debug_mode = TRUE;
-        }
-    }
-
   g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
 
   shell_js = g_getenv("GNOME_SHELL_JS");
@@ -130,17 +164,17 @@ do_init (const char *params)
     shell_js = JSDIR;
 
   search_path = g_strsplit(shell_js, ":", -1);
-  plugin_state->gjs_context = gjs_context_new_with_search_path(search_path);
+  shell_plugin->gjs_context = gjs_context_new_with_search_path(search_path);
   g_strfreev(search_path);
 
-  plugin_state->panel_action = XInternAtom (meta_display_get_xdisplay (display),
+  shell_plugin->panel_action = XInternAtom (meta_display_get_xdisplay (display),
                                             "_GNOME_PANEL_ACTION", FALSE);
-  plugin_state->panel_action_run_dialog = XInternAtom (meta_display_get_xdisplay (display),
+  shell_plugin->panel_action_run_dialog = XInternAtom (meta_display_get_xdisplay (display),
                                                        "_GNOME_PANEL_ACTION_RUN_DIALOG", FALSE);
-  plugin_state->panel_action_main_menu = XInternAtom (meta_display_get_xdisplay (display),
+  shell_plugin->panel_action_main_menu = XInternAtom (meta_display_get_xdisplay (display),
                                                       "_GNOME_PANEL_ACTION_MAIN_MENU", FALSE);
 
-  if (!gjs_context_eval (plugin_state->gjs_context,
+  if (!gjs_context_eval (shell_plugin->gjs_context,
                          "const Main = imports.ui.main; Main.start();",
                          -1,
                          "<main>",
@@ -150,54 +184,65 @@ do_init (const char *params)
       g_warning ("Evaling main.js failed: %s", error->message);
       g_error_free (error);
     }
-
-  return TRUE;
 }
 
 static void
-free_plugin_private (PluginState *state)
+gnome_shell_plugin_dispose (GObject *object)
 {
-  if (!state)
-    return;
-
-  g_free (state);
+  G_OBJECT_CLASS(gnome_shell_plugin_parent_class)->dispose (object);
 }
 
-/*
- * Called by the plugin manager when we stuff like the command line parameters
- * changed.
- */
-static gboolean
-reload (const char *params)
+static void
+gnome_shell_plugin_finalize (GObject *object)
 {
-  PluginState *state;
+  G_OBJECT_CLASS(gnome_shell_plugin_parent_class)->finalize (object);
+}
 
-  state = plugin_state;
+static ShellWM *
+get_shell_wm (void)
+{
+  ShellWM *wm;
 
-  if (do_init (params))
-    {
-      /* Success; free the old state */
-      free_plugin_private (plugin_state);
-      return TRUE;
-    }
-  else
-    {
-      /* Fail -- fall back to the old state. */
-      plugin_state = state;
-    }
+  g_object_get (shell_global_get (),
+                "window-manager", &wm,
+                NULL);
+  /* drop extra ref added by g_object_get */
+  g_object_unref (wm);
 
-  return FALSE;
+  return wm;
+}
+
+static void
+gnome_shell_plugin_switch_workspace (MutterPlugin         *plugin,
+                                     const GList         **actors,
+                                     gint                  from,
+                                     gint                  to,
+                                     MetaMotionDirection   direction)
+{
+  _shell_wm_switch_workspace (get_shell_wm(),
+                              actors, from, to, direction);
+}
+
+static void
+gnome_shell_plugin_kill_effect (MutterPlugin         *plugin,
+                                MutterWindow         *actor,
+                                gulong                events)
+{
+  _shell_wm_kill_effect (get_shell_wm(),
+                         actor, events);
 }
 
 static gboolean
-handle_panel_event (XEvent *xev)
+handle_panel_event (GnomeShellPlugin *shell_plugin,
+                    XEvent           *xev)
 {
+  MutterPlugin *plugin = MUTTER_PLUGIN (shell_plugin);
   MetaScreen *screen;
   MetaDisplay *display;
   XClientMessageEvent *xev_client;
   Window root;
 
-  screen = mutter_plugin_get_screen (mutter_get_plugin ());
+  screen = mutter_plugin_get_screen (plugin);
   display = meta_screen_get_display (screen);
 
   if (xev->type != ClientMessage)
@@ -207,14 +252,14 @@ handle_panel_event (XEvent *xev)
 
   xev_client = (XClientMessageEvent*) xev;
   if (!(xev_client->window == root &&
-        xev_client->message_type == plugin_state->panel_action &&
+        xev_client->message_type == shell_plugin->panel_action &&
         xev_client->format == 32))
     return FALSE;
 
-  if (xev_client->data.l[0] == plugin_state->panel_action_run_dialog)
+  if (xev_client->data.l[0] == shell_plugin->panel_action_run_dialog)
     g_signal_emit_by_name (shell_global_get (), "panel-run-dialog",
                            (guint32) xev_client->data.l[1]);
-  else if (xev_client->data.l[0] == plugin_state->panel_action_main_menu)
+  else if (xev_client->data.l[0] == shell_plugin->panel_action_main_menu)
     g_signal_emit_by_name (shell_global_get (), "panel-main-menu",
                            (guint32) xev_client->data.l[1]);
 
@@ -222,20 +267,26 @@ handle_panel_event (XEvent *xev)
 }
 
 static gboolean
-xevent_filter (XEvent *xev)
+gnome_shell_plugin_xevent_filter (MutterPlugin *plugin,
+                                  XEvent       *xev)
 {
-  if (handle_panel_event (xev))
+  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
+
+  if (handle_panel_event (shell_plugin, xev))
     return TRUE;
   return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
 }
 
-/*
- * GModule unload function -- do any cleanup required.
- */
-G_MODULE_EXPORT void g_module_unload (GModule *module);
-G_MODULE_EXPORT void
-g_module_unload (GModule *module)
+static const
+MutterPluginInfo *gnome_shell_plugin_plugin_info (MutterPlugin *plugin)
 {
-  free_plugin_private (plugin_state);
-}
+  static const MutterPluginInfo info = {
+    .name = "GNOME Shell",
+    .version = "0.1",
+    .author = "Various",
+    .license = "GPLv2+",
+    .description = "Provides GNOME Shell core functionality"
+  };
 
+  return &info;
+}
