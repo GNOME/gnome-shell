@@ -53,5 +53,6 @@ AC_SUBST(metacity)
 
 AC_OUTPUT([
   Makefile
+  data/Makefile
   src/Makefile
 ])

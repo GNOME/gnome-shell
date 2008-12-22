@@ -12,6 +12,7 @@ gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
 	-Itray					\
 	-DGETTEXT_PACKAGE=gnome-shell		\
+	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
 	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\" \
 	-DJSDIR=\"$(pkgdatadir)/js\"
 

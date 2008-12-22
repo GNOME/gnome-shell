@@ -32,6 +32,7 @@ class Launcher:
         top_dir = os.path.dirname(scripts_dir)
         self.plugin_dir = os.path.join(top_dir, "src")
         self.js_dir = os.path.join(top_dir, "js")
+        self.data_dir = os.path.join(top_dir, "data")
 
         parser = OptionParser()
         parser.add_option("-g", "--debug", action="store_true",
@@ -89,9 +90,10 @@ class Launcher:
 
         # Now launch metacity-clutter with our plugin
         env=dict(os.environ)
-        env.update({'GNOME_SHELL_JS'  : self.js_dir,
-                    'GI_TYPELIB_PATH' : self.plugin_dir,
-                    'LD_LIBRARY_PATH' : os.environ.get('LD_LIBRARY_PATH', '') + ':' + self.plugin_dir,
+        env.update({'GNOME_SHELL_JS'      : self.js_dir,
+                    'GNOME_SHELL_DATADIR' : self.data_dir,
+                    'GI_TYPELIB_PATH'     : self.plugin_dir,
+                    'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + self.plugin_dir,
                     'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 
         if force_indirect:

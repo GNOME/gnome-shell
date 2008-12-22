@@ -15,6 +15,7 @@ struct _ShellGlobal {
   MutterPlugin *plugin;
   ShellWM *wm;
   gboolean keyboard_grabbed;
+  const char *imagedir;
 };
 
 enum {
@@ -26,7 +27,8 @@ enum {
   PROP_SCREEN_HEIGHT,
   PROP_STAGE,
   PROP_WINDOW_GROUP,
-  PROP_WINDOW_MANAGER
+  PROP_WINDOW_MANAGER,
+  PROP_IMAGEDIR
 };
 
 /* Signals */
@@ -96,6 +98,9 @@ shell_global_get_property(GObject         *object,
     case PROP_WINDOW_MANAGER:
       g_value_set_object (value, global->wm);
       break;
+    case PROP_IMAGEDIR:
+      g_value_set_string (value, global->imagedir);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -103,8 +108,26 @@ shell_global_get_property(GObject         *object,
 }
 
 static void
-shell_global_init(ShellGlobal *global)
+shell_global_init (ShellGlobal *global)
 {
+  const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
+  char *imagedir;
+
+  if (!datadir)
+    datadir = GNOME_SHELL_DATADIR;
+
+  /* We make sure imagedir ends with a '/', since the JS won't have
+   * access to g_build_filename() and so will end up just
+   * concatenating global.imagedir to a filename.
+   */
+  imagedir = g_build_filename (datadir, "images/", NULL);
+  if (g_file_test (imagedir, G_FILE_TEST_IS_DIR))
+    global->imagedir = imagedir;
+  else
+    {
+      g_free (imagedir);
+      global->imagedir = g_strdup_printf ("%s/", datadir);
+    }
 }
 
 static void
@@ -182,6 +205,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Window Manager",
                                                         "Window management interface",
                                                         SHELL_TYPE_WM,
+                                                        G_PARAM_READABLE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_IMAGEDIR,
+                                   g_param_spec_string ("imagedir",
+                                                        "Image directory",
+                                                        "Directory containing gnome-shell image files",
+                                                        NULL,
                                                         G_PARAM_READABLE));
 }
 
