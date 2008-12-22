@@ -38,6 +38,8 @@
 
 #include <glib.h>
 
+#include "pango/cogl-pango.h"
+
 #include "clutter-backend.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
@@ -45,7 +47,6 @@
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
 #include "clutter-stage.h"
-#include "pango/cogl-pango.h"
 
 G_BEGIN_DECLS
 

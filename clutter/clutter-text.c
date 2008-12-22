@@ -54,10 +54,8 @@
 #include "clutter-enum-types.h"
 #include "clutter-keysyms.h"
 #include "clutter-main.h"
-#include "clutter-private.h"
+#include "clutter-private.h"    /* includes pango/cogl-pango.h */
 #include "clutter-units.h"
-
-#include "cogl-pango.h"
 
 #define DEFAULT_FONT_NAME	"Sans 10"
 
