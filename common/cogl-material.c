@@ -29,10 +29,10 @@ cogl_material_new (void)
   GLfloat *diffuse = material->diffuse;
   GLfloat *specular = material->specular;
   GLfloat *emission = material->emission;
-  
+
   material->ref_count = 1;
   COGL_HANDLE_DEBUG_NEW (material, material);
-  
+
   /* Use the same defaults as the GL spec... */
   ambient[0] = 0.2; ambient[1] = 0.2; ambient[2] = 0.2; ambient[3] = 1.0;
   diffuse[0] = 0.8; diffuse[1] = 0.8; diffuse[2] = 0.8; diffuse[3] = 1.0;
@@ -42,7 +42,7 @@ cogl_material_new (void)
   /* Use the same defaults as the GL spec... */
   material->alpha_func = COGL_MATERIAL_ALPHA_FUNC_ALWAYS;
   material->alpha_func_reference = 0.0;
-  
+
   /* Not the same as the GL default, but seems saner... */
   material->blend_src_factor = COGL_MATERIAL_BLEND_FACTOR_SRC_ALPHA;
   material->blend_dst_factor = COGL_MATERIAL_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
@@ -69,9 +69,9 @@ cogl_material_set_ambient (CoglHandle handle,
 {
   CoglMaterial *material;
   GLfloat      *ambient;
-  
+
   g_return_if_fail (cogl_is_material (handle));
-  
+
   material = _cogl_material_pointer_from_handle (handle);
 
   ambient = material->ambient;
@@ -88,9 +88,9 @@ cogl_material_set_diffuse (CoglHandle handle,
 {
   CoglMaterial *material;
   GLfloat      *diffuse;
-  
+
   g_return_if_fail (cogl_is_material (handle));
-  
+
   material = _cogl_material_pointer_from_handle (handle);
 
   diffuse = material->diffuse;
@@ -115,9 +115,9 @@ cogl_material_set_specular (CoglHandle handle,
 {
   CoglMaterial *material;
   GLfloat      *specular;
-  
+
   g_return_if_fail (cogl_is_material (handle));
-  
+
   material = _cogl_material_pointer_from_handle (handle);
 
   specular = material->specular;
@@ -133,13 +133,13 @@ cogl_material_set_shininess (CoglHandle handle,
 			     float shininess)
 {
   CoglMaterial *material;
-  
+
   g_return_if_fail (cogl_is_material (handle));
 
   if (shininess < 0.0 || shininess > 1.0)
     g_warning ("Out of range shininess %f supplied for material\n",
 	       shininess);
-  
+
   material = _cogl_material_pointer_from_handle (handle);
 
   material->shininess = (GLfloat)shininess * 128.0;
@@ -151,9 +151,9 @@ cogl_material_set_emission (CoglHandle handle,
 {
   CoglMaterial *material;
   GLfloat      *emission;
-  
+
   g_return_if_fail (cogl_is_material (handle));
-  
+
   material = _cogl_material_pointer_from_handle (handle);
 
   emission = material->emission;
@@ -169,9 +169,9 @@ void
 cogl_set_source (CoglHandle material_handle)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   g_return_if_fail (cogl_is_material (material_handle));
-  
+
   if (ctx->source_material)
     cogl_material_unref (ctx->source_material);
 
@@ -180,28 +180,28 @@ cogl_set_source (CoglHandle material_handle)
 }
 
 void
-cogl_material_set_alpha_test_func (CoglHandle handle,
-				   CoglMaterialAlphaFunc alpha_func,
-				   float alpha_reference)
+cogl_material_set_alpha_test_function (CoglHandle handle,
+				       CoglMaterialAlphaFunc alpha_func,
+				       float alpha_reference)
 {
   CoglMaterial *material;
 
   g_return_if_fail (cogl_is_material (handle));
-  
+
   material = _cogl_material_pointer_from_handle (handle);
   material->alpha_func = alpha_func;
   material->alpha_func_reference = (GLfloat)alpha_reference;
 }
 
 void
-cogl_material_set_blend_function (CoglHandle handle,
-				  CoglMaterialBlendFactor src_factor,
-				  CoglMaterialBlendFactor dst_factor)
+cogl_material_set_blend_factors (CoglHandle handle,
+				 CoglMaterialBlendFactor src_factor,
+				 CoglMaterialBlendFactor dst_factor)
 {
   CoglMaterial *material;
 
   g_return_if_fail (cogl_is_material (handle));
-  
+
   material = _cogl_material_pointer_from_handle (handle);
   material->blend_src_factor = src_factor;
   material->blend_dst_factor = dst_factor;
@@ -243,7 +243,7 @@ _cogl_material_get_layer (CoglMaterial *material,
   layer->index = index;
   layer->texture = COGL_INVALID_HANDLE;
 
-  /* Choose the same default combine mode as OpenGL: 
+  /* Choose the same default combine mode as OpenGL:
    * MODULATE(PREVIOUS[RGBA],TEXTURE[RGBA]) */
   layer->texture_combine_rgb_func = COGL_MATERIAL_LAYER_COMBINE_FUNC_MODULATE;
   layer->texture_combine_rgb_src[0] = COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS;
@@ -283,7 +283,7 @@ cogl_material_set_layer (CoglHandle material_handle,
 
   material = _cogl_material_pointer_from_handle (material_handle);
   layer = _cogl_material_get_layer (material_handle, layer_index, TRUE);
-  
+
   /* XXX: If we expose manual control over ENABLE_BLEND, we'll add
    * a flag to know when it's user configured, so we don't trash it */
   if (cogl_texture_get_format (texture_handle) & COGL_A_BIT)
@@ -313,7 +313,7 @@ cogl_material_set_layer (CoglHandle material_handle,
 }
 
 void
-cogl_material_set_layer_combine_func (
+cogl_material_set_layer_combine_function (
 				  CoglHandle handle,
 				  gint layer_index,
 				  CoglMaterialLayerCombineChannels channels,
@@ -323,7 +323,7 @@ cogl_material_set_layer_combine_func (
   CoglMaterialLayer *layer;
   gboolean set_alpha_func = FALSE;
   gboolean set_rgb_func = FALSE;
-  
+
   g_return_if_fail (cogl_is_material (handle));
 
   material = _cogl_material_pointer_from_handle (handle);
@@ -356,7 +356,7 @@ cogl_material_set_layer_combine_arg_src (
   CoglMaterialLayer *layer;
   gboolean set_arg_alpha_src = FALSE;
   gboolean set_arg_rgb_src = FALSE;
-  
+
   g_return_if_fail (cogl_is_material (handle));
   g_return_if_fail (argument >=0 && argument <= 3);
 
@@ -371,7 +371,7 @@ cogl_material_set_layer_combine_arg_src (
     set_arg_rgb_src = TRUE;
   else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA)
     set_arg_alpha_src = TRUE;
-  
+
   if (set_arg_rgb_src)
     layer->texture_combine_rgb_src[argument] = src;
   if (set_arg_alpha_src)
@@ -390,7 +390,7 @@ cogl_material_set_layer_combine_arg_op (
   CoglMaterialLayer *layer;
   gboolean set_arg_alpha_op = FALSE;
   gboolean set_arg_rgb_op = FALSE;
-  
+
   g_return_if_fail (cogl_is_material (material_handle));
   g_return_if_fail (argument >=0 && argument <= 3);
 
@@ -405,7 +405,7 @@ cogl_material_set_layer_combine_arg_op (
     set_arg_rgb_op = TRUE;
   else if (channels == COGL_MATERIAL_LAYER_COMBINE_CHANNELS_ALPHA)
     set_arg_alpha_op = TRUE;
-  
+
   if (set_arg_rgb_op)
     layer->texture_combine_rgb_op[argument] = op;
   if (set_arg_alpha_op)
@@ -419,7 +419,7 @@ cogl_material_set_layer_matrix (CoglHandle material_handle,
 {
   CoglMaterial *material;
   CoglMaterialLayer *layer;
-  
+
   g_return_if_fail (cogl_is_material (material_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
@@ -500,7 +500,7 @@ cogl_material_flush_gl_material_state (CoglHandle material_handle)
   g_return_if_fail (cogl_is_material (material_handle));
 
   material = _cogl_material_pointer_from_handle (material_handle);
-  
+
   GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, material->ambient));
   GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, material->diffuse));
   GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, material->specular));
@@ -619,9 +619,9 @@ cogl_material_layer_flush_gl_sampler_state (CoglHandle layer_handle)
   GE (glTexEnvi (GL_TEXTURE_ENV,
 		 GL_COMBINE_ALPHA,
 		 layer->texture_combine_alpha_func));
-  
-  /* 
-   * Setup the function arguments... 
+
+  /*
+   * Setup the function arguments...
    */
 
   /* For the RGB components... */
