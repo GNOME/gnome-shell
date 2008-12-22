@@ -399,6 +399,7 @@ mutter_plugin_manager_event_simple (MutterPluginManager *plugin_mgr,
 		      actor,
 		      ALL_BUT_SWITCH);
 
+                  _mutter_plugin_effect_started (plugin);
                   klass->minimize (plugin, actor);
                 }
               break;
@@ -410,12 +411,14 @@ mutter_plugin_manager_event_simple (MutterPluginManager *plugin_mgr,
 		      actor,
 		      ALL_BUT_SWITCH);
 
+                  _mutter_plugin_effect_started (plugin);
                   klass->map (plugin, actor);
                 }
               break;
             case MUTTER_PLUGIN_DESTROY:
               if (klass->destroy)
                 {
+                  _mutter_plugin_effect_started (plugin);
                   klass->destroy (plugin, actor);
                 }
               break;
@@ -471,6 +474,7 @@ mutter_plugin_manager_event_maximize (MutterPluginManager *plugin_mgr,
 		      actor,
 		      ALL_BUT_SWITCH);
 
+                  _mutter_plugin_effect_started (plugin);
                   klass->maximize (plugin, actor,
                                    target_x, target_y,
                                    target_width, target_height);
@@ -483,6 +487,8 @@ mutter_plugin_manager_event_maximize (MutterPluginManager *plugin_mgr,
 		      plugin_mgr,
 		      actor,
 		      ALL_BUT_SWITCH);
+
+                  _mutter_plugin_effect_started (plugin);
                   klass->unmaximize (plugin, actor,
                                      target_x, target_y,
                                      target_width, target_height);
@@ -534,6 +540,7 @@ mutter_plugin_manager_switch_workspace (MutterPluginManager *plugin_mgr,
 		  MUTTER_WINDOW ((*actors)->data),
 		  MUTTER_PLUGIN_SWITCH_WORKSPACE);
 
+              _mutter_plugin_effect_started (plugin);
               klass->switch_workspace (plugin, actors, from, to, direction);
             }
         }

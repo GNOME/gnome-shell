@@ -218,90 +218,16 @@ mutter_plugin_get_property (GObject    *object,
     }
 }
 
-static void
-mutter_plugin_real_minimize (MutterPlugin *plugin, MutterWindow *actor)
-{
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
-
-  priv->running++;
-}
-
-static void
-mutter_plugin_real_maximize (MutterPlugin       *plugin,
-                             MutterWindow       *actor,
-                             gint                x,
-                             gint                y,
-                             gint                width,
-                             gint                height)
-{
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
-
-  priv->running++;
-}
-
-
-static void
-mutter_plugin_real_unmaximize (MutterPlugin       *plugin,
-                               MutterWindow       *actor,
-                               gint                x,
-                               gint                y,
-                               gint                width,
-                               gint                height)
-{
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
-
-  priv->running++;
-}
-
-
-static void
-mutter_plugin_real_map (MutterPlugin *plugin, MutterWindow *actor)
-{
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
-
-  priv->running++;
-}
-
-
-static void
-mutter_plugin_real_destroy (MutterPlugin *plugin, MutterWindow *actor)
-{
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
-
-  priv->running++;
-}
-
-
-static void
-mutter_plugin_real_switch_workspace (MutterPlugin       *plugin,
-                                     const GList       **actors,
-                                     gint                from,
-                                     gint                to,
-                                     MetaMotionDirection direction)
-{
-  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
-
-  priv->running++;
-}
-
 
 static void
 mutter_plugin_class_init (MutterPluginClass *klass)
 {
   GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
-  MutterPluginClass *plugin_class  = MUTTER_PLUGIN_CLASS (klass);
 
   gobject_class->finalize        = mutter_plugin_finalize;
   gobject_class->dispose         = mutter_plugin_dispose;
   gobject_class->set_property    = mutter_plugin_set_property;
   gobject_class->get_property    = mutter_plugin_get_property;
-
-  plugin_class->map              = mutter_plugin_real_map;
-  plugin_class->minimize         = mutter_plugin_real_minimize;
-  plugin_class->maximize         = mutter_plugin_real_maximize;
-  plugin_class->unmaximize       = mutter_plugin_real_unmaximize;
-  plugin_class->destroy          = mutter_plugin_real_destroy;
-  plugin_class->switch_workspace = mutter_plugin_real_switch_workspace;
 
   g_object_class_install_property (gobject_class,
                                    PROP_SCREEN,
@@ -421,6 +347,21 @@ mutter_plugin_get_window_group (MutterPlugin *plugin)
   MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
 
   return mutter_get_window_group_for_screen (priv->screen);
+}
+
+/**
+ * _mutter_plugin_effect_started:
+ * @plugin: the plugin
+ *
+ * Mark that an effect has started for the plugin. This is called
+ * internally by MutterPluginManager.
+ */
+void
+_mutter_plugin_effect_started (MutterPlugin *plugin)
+{
+  MutterPluginPrivate *priv = MUTTER_PLUGIN (plugin)->priv;
+
+  priv->running++;
 }
 
 void

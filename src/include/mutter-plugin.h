@@ -264,4 +264,7 @@ mutter_plugin_get_xdisplay (MutterPlugin *plugin);
 MetaScreen *
 mutter_plugin_get_screen (MutterPlugin *plugin);
 
+void
+_mutter_plugin_effect_started (MutterPlugin *plugin);
+
 #endif /* MUTTER_PLUGIN_H_ */

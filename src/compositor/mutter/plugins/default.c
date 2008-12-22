@@ -361,10 +361,6 @@ switch_workspace (MutterPlugin *plugin,
   MetaScreen   *screen = mutter_plugin_get_screen (plugin);
   SwitchWorkspaceData *sw_data = g_new (SwitchWorkspaceData, 1);
 
-  /* Must chain up first */
-  MUTTER_PLUGIN_CLASS (mutter_default_plugin_parent_class)->
-    switch_workspace (plugin, actors, from, to, direction);
-
   sw_data->plugin = plugin;
   sw_data->actors = actors;
 
@@ -494,10 +490,6 @@ minimize (MutterPlugin *plugin, MutterWindow *mc_window)
   MetaCompWindowType          type;
   ClutterActor               *actor  = CLUTTER_ACTOR (mc_window);
 
-  /* Must chain up first */
-  MUTTER_PLUGIN_CLASS (mutter_default_plugin_parent_class)->
-    minimize (plugin, mc_window);
-
   type = mutter_window_get_window_type (mc_window);
 
   if (type == META_COMP_WINDOW_NORMAL)
@@ -570,10 +562,6 @@ maximize (MutterPlugin *plugin,
   gint     anchor_x   = 0;
   gint     anchor_y   = 0;
 
-  /* Must chain up first */
-  MUTTER_PLUGIN_CLASS (mutter_default_plugin_parent_class)->
-    maximize (plugin, mc_window, end_x, end_y, end_width, end_height);
-
   type = mutter_window_get_window_type (mc_window);
 
   if (type == META_COMP_WINDOW_NORMAL)
@@ -629,10 +617,6 @@ unmaximize (MutterPlugin *plugin,
 {
   MetaCompWindowType type = mutter_window_get_window_type (mc_window);
 
-  /* Must chain up first */
-  MUTTER_PLUGIN_CLASS (mutter_default_plugin_parent_class)->
-    unmaximize (plugin, mc_window, end_x, end_y, end_width, end_height);
-
   if (type == META_COMP_WINDOW_NORMAL)
     {
       ActorPrivate *apriv = get_actor_private (mc_window);
@@ -674,10 +658,6 @@ map (MutterPlugin *plugin, MutterWindow *mc_window)
   MutterDefaultPluginPrivate *priv = MUTTER_DEFAULT_PLUGIN (plugin)->priv;
   MetaCompWindowType  type;
   ClutterActor       *actor = CLUTTER_ACTOR (mc_window);
-
-  /* Must chain up first */
-  MUTTER_PLUGIN_CLASS (mutter_default_plugin_parent_class)->
-    map (plugin, mc_window);
 
   type = mutter_window_get_window_type (mc_window);
 
@@ -733,10 +713,6 @@ destroy (MutterPlugin *plugin, MutterWindow *mc_window)
   MutterDefaultPluginPrivate *priv = MUTTER_DEFAULT_PLUGIN (plugin)->priv;
   MetaCompWindowType   type;
   ClutterActor	      *actor = CLUTTER_ACTOR (mc_window);
-
-  /* Must chain up first */
-  MUTTER_PLUGIN_CLASS (mutter_default_plugin_parent_class)->
-    destroy (plugin, mc_window);
 
   type = mutter_window_get_window_type (mc_window);
 
