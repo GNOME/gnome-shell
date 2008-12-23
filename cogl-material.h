@@ -153,20 +153,6 @@ void cogl_material_set_emission (CoglHandle       material,
 				 const CoglColor *emission);
 
 /**
- * cogl_set_source:
- * @material: A CoglMaterial object
- *
- * This function sets the source material that will be used to fill
- * subsequent geometry emitted via the cogl API.
- *
- * XXX: This doesn't really belong to the cogl-material API, it should
- * move to cogl.h
- *
- * Since 1.0
- */
-void cogl_set_source (CoglHandle material);
-
-/**
  * CoglMaterialAlphaFunc:
  * @COGL_MATERIAL_ALPHA_FUNC_NEVER: Never let the fragment through.
  * @COGL_MATERIAL_ALPHA_FUNC_LESS: Let the fragment through if the incoming
@@ -586,33 +572,9 @@ void cogl_material_set_layer_matrix (CoglHandle  material,
  * Note: This API is hopfully just a stop-gap solution. Ideally
  * cogl_enable will be replaced.
  */
+/* TODO: find a nicer solution! */
 gulong
 cogl_material_get_cogl_enable_flags (CoglHandle handle);
-
-/**
- * cogl_material_flush_gl_material_state:
- * @material: A CoglMaterial object
- *
- * This commits the glMaterial state to the OpenGL driver. Normally you
- * shouldn't need to use this function directly, since Cogl will do this
- * internally, but if you are developing custom primitives directly with
- * OpenGL you may want to use this.
- */
-void cogl_material_flush_gl_material_state (CoglHandle material_handle);
-
-/**
- * cogl_material_flush_gl_alpha_func:
- * @material: A CoglMaterial object
- *
- */
-void cogl_material_flush_gl_alpha_func (CoglHandle material_handle);
-
-/**
- * cogl_material_flush_gl_blend_func:
- * @material: A CoglMaterial object
- *
- */
-void cogl_material_flush_gl_blend_func (CoglHandle material_handle);
 
 /**
  * cogl_material_get_layers:
@@ -690,6 +652,38 @@ CoglHandle cogl_material_layer_get_texture (CoglHandle layer_handle);
  * by calling glActiveTexture ();
  */
 void cogl_material_layer_flush_gl_sampler_state (CoglHandle layer_handle);
+
+/**
+ * cogl_set_source:
+ * @material: A CoglMaterial object
+ *
+ * This function sets the source material that will be used to fill
+ * subsequent geometry emitted via the cogl API.
+ *
+ * Note: in the future we may add the ability to set a front facing
+ * material, and a back facing material, in which case this function
+ * will set both to the same.
+ *
+ * Since 1.0
+ */
+/* XXX: This doesn't really belong to the cogl-material API, it should
+ * move to cogl.h */
+void cogl_set_source (CoglHandle material);
+
+/**
+ * cogl_flush_material_gl_state:
+ *
+ * This function commits all the state of the source CoglMaterial - not
+ * including the per-layer state - to the OpenGL[ES] driver.
+ *
+ * Normally you shouldn't need to use this function directly, but if you
+ * are developing a custom primitive using raw OpenGL that works with
+ * CoglMaterials, then you may want to use this function.
+ *
+ * Since 1.0
+ */
+/* XXX: This should be moved with cogl_set_source to cogl.h */
+void cogl_flush_material_gl_state (void);
 
 G_END_DECLS
 

@@ -79,7 +79,8 @@ cogl_material_set_ambient (CoglHandle handle,
   ambient[1] = cogl_color_get_green_float (ambient_color);
   ambient[2] = cogl_color_get_blue_float (ambient_color);
   ambient[3] = cogl_color_get_alpha_float (ambient_color);
-  /* material->ambient = *ambient_color; */
+
+  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
 }
 
 void
@@ -98,7 +99,8 @@ cogl_material_set_diffuse (CoglHandle handle,
   diffuse[1] = cogl_color_get_green_float (diffuse_color);
   diffuse[2] = cogl_color_get_blue_float (diffuse_color);
   diffuse[3] = cogl_color_get_alpha_float (diffuse_color);
-  /* material->diffuse = *diffuse_color; */
+
+  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
 }
 
 void
@@ -125,7 +127,8 @@ cogl_material_set_specular (CoglHandle handle,
   specular[1] = cogl_color_get_green_float (specular_color);
   specular[2] = cogl_color_get_blue_float (specular_color);
   specular[3] = cogl_color_get_alpha_float (specular_color);
-  /* material->specular = *specular_color; */
+
+  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
 }
 
 void
@@ -143,6 +146,8 @@ cogl_material_set_shininess (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
 
   material->shininess = (GLfloat)shininess * 128.0;
+
+  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
 }
 
 void
@@ -161,22 +166,8 @@ cogl_material_set_emission (CoglHandle handle,
   emission[1] = cogl_color_get_green_float (emission_color);
   emission[2] = cogl_color_get_blue_float (emission_color);
   emission[3] = cogl_color_get_alpha_float (emission_color);
-  /* material->emission = *emission_color; */
-}
 
-/* TODO: Should go in cogl.c */
-void
-cogl_set_source (CoglHandle material_handle)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  g_return_if_fail (cogl_is_material (material_handle));
-
-  if (ctx->source_material)
-    cogl_material_unref (ctx->source_material);
-
-  cogl_material_ref (material_handle);
-  ctx->source_material = material_handle;
+  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
 }
 
 void
@@ -191,6 +182,8 @@ cogl_material_set_alpha_test_function (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
   material->alpha_func = alpha_func;
   material->alpha_func_reference = (GLfloat)alpha_reference;
+
+  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
 }
 
 void
@@ -205,6 +198,8 @@ cogl_material_set_blend_factors (CoglHandle handle,
   material = _cogl_material_pointer_from_handle (handle);
   material->blend_src_factor = src_factor;
   material->blend_dst_factor = dst_factor;
+
+  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
 }
 
 /* Asserts that a layer corresponding to the given index exists. If no
@@ -492,44 +487,6 @@ cogl_material_get_cogl_enable_flags (CoglHandle material_handle)
   return enable_flags;
 }
 
-void
-cogl_material_flush_gl_material_state (CoglHandle material_handle)
-{
-  CoglMaterial	*material;
-
-  g_return_if_fail (cogl_is_material (material_handle));
-
-  material = _cogl_material_pointer_from_handle (material_handle);
-
-  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, material->ambient));
-  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, material->diffuse));
-  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, material->specular));
-  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION, material->emission));
-  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, &material->shininess));
-}
-
-void
-cogl_material_flush_gl_alpha_func (CoglHandle material_handle)
-{
-  CoglMaterial	*material;
-
-  g_return_if_fail (cogl_is_material (material_handle));
-
-  material = _cogl_material_pointer_from_handle (material_handle);
-
-  /* NB: Currently the Cogl defines are compatible with the GL ones: */
-  GE (glAlphaFunc (material->alpha_func, material->alpha_func_reference));
-}
-
-void
-cogl_material_flush_gl_blend_func (CoglHandle material_handle)
-{
-  CoglMaterial	*material;
-
-  g_return_if_fail (cogl_is_material (material_handle));
-  GE (glBlendFunc (material->blend_src_factor, material->blend_dst_factor));
-}
-
 /* It's a bit out of the ordinary to return a const GList *, but it's
  * probably sensible to try and avoid list manipulation for every
  * primitive emitted in a scene, every frame.
@@ -676,5 +633,52 @@ cogl_material_layer_flush_gl_sampler_state (CoglHandle layer_handle)
       GE (glLoadMatrixf ((GLfloat *)&layer->matrix));
       GE (glMatrixMode (GL_MODELVIEW));
     }
+}
+
+/* TODO: Should go in cogl.c, but that implies duplication which is also
+ * not ideal. */
+void
+cogl_set_source (CoglHandle material_handle)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  g_return_if_fail (cogl_is_material (material_handle));
+
+  if (ctx->source_material == material_handle)
+    return;
+
+  if (ctx->source_material)
+    cogl_material_unref (ctx->source_material);
+
+  cogl_material_ref (material_handle);
+  ctx->source_material = material_handle;
+}
+/* TODO: add cogl_set_front_source (), and cogl_set_back_source () */
+
+void
+cogl_flush_material_gl_state (void)
+{
+  CoglMaterial *material;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  material = _cogl_material_pointer_from_handle (ctx->source_material);
+
+  if (ctx->source_material == ctx->current_material
+      && !(material->flags & COGL_MATERIAL_FLAG_DIRTY))
+    return;
+
+  /* FIXME - we only need to set these if lighting is enabled... */
+  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, material->ambient));
+  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, material->diffuse));
+  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, material->specular));
+  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION, material->emission));
+  GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, &material->shininess));
+
+  /* NB: Currently the Cogl defines are compatible with the GL ones: */
+  GE (glAlphaFunc (material->alpha_func, material->alpha_func_reference));
+
+  GE (glBlendFunc (material->blend_src_factor, material->blend_dst_factor));
+
+  ctx->current_material = ctx->source_material;
 }
 
