@@ -31,6 +31,8 @@
 /* clutter-actor.h */
 
 #include <glib-object.h>
+#include <pango/pango.h>
+
 #include <clutter/clutter-color.h>
 #include <clutter/clutter-fixed.h>
 #include <clutter/clutter-types.h>
@@ -562,6 +564,8 @@ void clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
 gboolean clutter_actor_get_paint_visibility           (ClutterActor *self);
 
 void clutter_actor_grab_key_focus (ClutterActor *self);
+
+PangoContext *clutter_actor_get_pango_context    (ClutterActor *self);
 
 G_END_DECLS
 

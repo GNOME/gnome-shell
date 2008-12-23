@@ -221,7 +221,9 @@ struct _ClutterActorPrivate
   /* cached allocation is invalid (request has changed, probably) */
   guint needs_allocation     : 1;
 
-  guint           has_clip : 1;
+  guint show_on_set_parent   : 1;
+  guint has_clip             : 1;
+
   ClutterUnit     clip[4];
 
   /* Rotation angles */
@@ -260,7 +262,7 @@ struct _ClutterActorPrivate
 
   ShaderData     *shader_data;
 
-  gboolean        show_on_set_parent;
+  PangoContext   *pango_context;
 };
 
 enum
@@ -7588,4 +7590,23 @@ clutter_actor_grab_key_focus (ClutterActor *self)
   parent = clutter_actor_get_stage (self);
   if (parent && CLUTTER_IS_STAGE (parent))
     clutter_stage_set_key_focus (CLUTTER_STAGE (parent), self);
+}
+
+PangoContext *
+clutter_actor_get_pango_context (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+  ClutterMainContext *ctx;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  priv = self->priv;
+
+  if (priv->pango_context)
+    return priv->pango_context;
+
+  ctx = CLUTTER_CONTEXT ();
+  priv->pango_context = _clutter_context_create_pango_context (ctx);
+
+  return priv->pango_context;
 }
