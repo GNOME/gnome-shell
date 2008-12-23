@@ -77,6 +77,10 @@ struct _ClutterBackendClass
                                             ClutterStage    *stage);
   void                (* ensure_context)   (ClutterBackend  *backend,
                                             ClutterStage    *stage);
+
+  /* signals */
+  void (* resolution_changed) (ClutterBackend *backend);
+  void (* font_changed)       (ClutterBackend *backend);
 };
 
 GType clutter_backend_get_type    (void) G_GNUC_CONST;

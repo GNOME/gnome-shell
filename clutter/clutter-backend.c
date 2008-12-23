@@ -44,6 +44,7 @@
 #include "clutter-backend.h"
 #include "clutter-debug.h"
 #include "clutter-fixed.h"
+#include "clutter-marshal.h"
 #include "clutter-private.h"
 
 G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
@@ -61,6 +62,16 @@ struct _ClutterBackendPrivate
 
   cairo_font_options_t *font_options;
 };
+
+enum
+{
+  RESOLUTION_CHANGED,
+  FONT_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint backend_signals[LAST_SIGNAL] = { 0, };
 
 static void
 clutter_backend_dispose (GObject *gobject)
@@ -89,6 +100,24 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   gobject_class->dispose = clutter_backend_dispose;
 
   g_type_class_add_private (gobject_class, sizeof (ClutterBackendPrivate));
+
+  backend_signals[RESOLUTION_CHANGED] =
+    g_signal_new (I_("resolution-changed"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterBackendClass, resolution_changed),
+                  NULL, NULL,
+                  clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  backend_signals[FONT_CHANGED] =
+    g_signal_new (I_("font-changed"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterBackendClass, font_changed),
+                  NULL, NULL,
+                  clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -388,8 +417,9 @@ clutter_backend_set_resolution (ClutterBackend *backend,
     priv->resolution = fixed_dpi;
 
   if (CLUTTER_CONTEXT ()->font_map)
-    cogl_pango_font_map_set_resolution (CLUTTER_CONTEXT ()->font_map,
-					COGL_FIXED_TO_FLOAT (fixed_dpi));
+    cogl_pango_font_map_set_resolution (CLUTTER_CONTEXT ()->font_map, dpi);
+
+  g_signal_emit (backend, backend_signals[RESOLUTION_CHANGED], 0);
 }
 
 /**
@@ -445,6 +475,8 @@ clutter_backend_set_font_options (ClutterBackend       *backend,
         priv->font_options = cairo_font_options_copy (options);
       else
         priv->font_options = NULL;
+
+      g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
     }
 }
 
