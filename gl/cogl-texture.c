@@ -2411,6 +2411,7 @@ cogl_material_rectangle (CoglFixed   x1,
 			 CoglFixed   y1,
 			 CoglFixed   x2,
 			 CoglFixed   y2,
+                         gint        user_tex_coords_len,
 			 CoglFixed  *user_tex_coords)
 {
   CoglHandle	 material;
@@ -2424,7 +2425,6 @@ cogl_material_rectangle (CoglFixed   x1,
   GLfloat	*tex_coords_buff;
   GLfloat	 quad_coords[8];
   gulong	 enable_flags = 0;
-  GLfloat	 values[4];
 
   /* FIXME - currently cogl deals with enabling texturing via enable flags,
    * but that can't scale to n texture units. Currently we have to be carefull
@@ -2443,7 +2443,7 @@ cogl_material_rectangle (CoglFixed   x1,
     {
       CoglHandle layer = tmp->data;
       CoglHandle texture = cogl_material_layer_get_texture (layer);
-      
+
       if (cogl_material_layer_get_type (layer)
 	  != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
 	continue;
@@ -2466,7 +2466,18 @@ cogl_material_rectangle (CoglFixed   x1,
       if (n_valid_layers >= CGL_MAX_COMBINED_TEXTURE_IMAGE_UNITS)
 	break;
     }
-  
+
+  /* We at least support slicing as much as cogl_texture_rectangle... */
+  if (n_valid_layers == 1 && handle_slicing)
+    {
+      CoglHandle texture = cogl_material_layer_get_texture (valid_layers[0]);
+      cogl_texture_rectangle (texture,
+                              x1, y1, x2, y2,
+                              user_tex_coords[0], user_tex_coords[1],
+                              user_tex_coords[2], user_tex_coords[3]);
+      return;
+    }
+
   /* NB: It could be that no valid texture layers were found, but
    * we will still submit a non-textured rectangle in that case. */
   if (n_valid_layers)
@@ -2476,34 +2487,61 @@ cogl_material_rectangle (CoglFixed   x1,
     {
       CoglHandle layer = valid_layers[i];
       CoglHandle texture = cogl_material_layer_get_texture (layer);
-      CoglFixed *in_tex_coords = &user_tex_coords[i * 4];
+      CoglFixed *in_tex_coords;
       GLfloat *out_tex_coords = &tex_coords_buff[i * 8];
       GLuint gl_tex_handle;
 
 #define CFX_F COGL_FIXED_TO_FLOAT
       /* IN LAYOUT: [ tx1:0, ty1:1, tx2:2, ty2:3 ]  */
-      out_tex_coords[0] = CFX_F (in_tex_coords[0]); /* tx1 */
-      out_tex_coords[1] = CFX_F (in_tex_coords[1]); /* ty1 */
-      out_tex_coords[2] = CFX_F (in_tex_coords[2]); /* tx2 */
-      out_tex_coords[3] = CFX_F (in_tex_coords[1]); /* ty1 */
-      out_tex_coords[4] = CFX_F (in_tex_coords[0]); /* tx1 */
-      out_tex_coords[5] = CFX_F (in_tex_coords[3]); /* ty2 */
-      out_tex_coords[6] = CFX_F (in_tex_coords[2]); /* tx2 */
-      out_tex_coords[7] = CFX_F (in_tex_coords[3]); /* ty2 */
+      if (i < (user_tex_coords_len / 4))
+        {
+          in_tex_coords = &user_tex_coords[i * 4];
+          /* FIXME: don't include waste in the texture coordinates */
+          out_tex_coords[0] = CFX_F (in_tex_coords[0]); /* tx1 */
+          out_tex_coords[1] = CFX_F (in_tex_coords[1]); /* ty1 */
+          out_tex_coords[2] = CFX_F (in_tex_coords[2]); /* tx2 */
+          out_tex_coords[3] = CFX_F (in_tex_coords[1]); /* ty1 */
+          out_tex_coords[4] = CFX_F (in_tex_coords[0]); /* tx1 */
+          out_tex_coords[5] = CFX_F (in_tex_coords[3]); /* ty2 */
+          out_tex_coords[6] = CFX_F (in_tex_coords[2]); /* tx2 */
+          out_tex_coords[7] = CFX_F (in_tex_coords[3]); /* ty2 */
+        }
+      else
+        {
+          out_tex_coords[0] = 0.0; /* tx1 */
+          out_tex_coords[1] = 0.0; /* ty1 */
+          out_tex_coords[2] = 1.0; /* tx2 */
+          out_tex_coords[3] = 0.0; /* ty1 */
+          out_tex_coords[4] = 0.0; /* tx1 */
+          out_tex_coords[5] = 1.0; /* ty2 */
+          out_tex_coords[6] = 1.0; /* tx2 */
+          out_tex_coords[7] = 1.0; /* ty2 */
+        }
 #undef CFX_F
 
       /* TODO - support sliced textures */
       cogl_texture_get_gl_texture (texture, &gl_tex_handle, NULL);
-      //gl_tex_handle = g_array_index (layer->tex->slice_gl_handles, GLuint, 0);
 
       GE (glActiveTexture (GL_TEXTURE0 + i));
       cogl_material_layer_flush_gl_sampler_state (layer);
-      GE (glBindTexture (GL_TEXTURE_2D, gl_tex_handle));
-      /* GE (glEnable (GL_TEXTURE_2D)); */
+        {
+          /* FIXME - we should avoid redundant calls to glBindTexture.
+           * Profiling test-actors, I've seen ~ 10% of the time spent in
+           * _mesa_UpdateTexEnvProgram, which the following simple test can
+           * show is as a result of these redundant glBindTexture calls.
+           */
+#if 0
+          static int debug = 0;
+          if (!debug)
+            GE (glBindTexture (GL_TEXTURE_2D, gl_tex_handle));
+          debug = 1;
+#else
+          GE (glBindTexture (GL_TEXTURE_2D, gl_tex_handle));
+#endif
+        }
 
       GE (glClientActiveTexture (GL_TEXTURE0 + i));
       GE (glTexCoordPointer (2, GL_FLOAT, 0, out_tex_coords));
-      /* GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY)); */
 
       /* FIXME - cogl only knows about one texture unit a.t.m
        * (Also see cleanup note below) */
@@ -2538,12 +2576,28 @@ cogl_material_rectangle (CoglFixed   x1,
   enable_flags |= cogl_material_get_cogl_enable_flags (material);
 
   /* FIXME - cogl only knows about one texture unit so assumes that unit 0
-   * is always active...*/
-  GE (glActiveTexture (GL_TEXTURE0));
-  GE (glClientActiveTexture (GL_TEXTURE0));
+   * is always active... */
+  if (n_valid_layers > 1)
+    {
+      GE (glActiveTexture (GL_TEXTURE0));
+      GE (glClientActiveTexture (GL_TEXTURE0));
+    }
   cogl_enable (enable_flags);
   glDrawArrays (GL_TRIANGLE_STRIP, 0, 4);
 
+  /* FIXME - cogl doesn't currently have a way of caching the
+   * enable states for more than one texture unit so for now,
+   * we just disable anything relating to additional units once
+   * we are done with them. */
+  for (i = 1; i < n_valid_layers; i++)
+    {
+      GE (glActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisable (GL_TEXTURE_2D));
+    }
+
+  /* XXX: a bit over precautious. For one we don't support lighting yet
+   * so there's no real need to reset the material properties. */
+#if 0
   /* FIXME - cogl doesn't currently have a way of caching the
    * enable states for more than one texture unit so for now,
    * we just disable anything relating to additional units once
@@ -2556,7 +2610,7 @@ cogl_material_rectangle (CoglFixed   x1,
       GE (glDisable (GL_TEXTURE_2D));
       GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
     }
-  
+
   /* FIXME - CoglMaterials aren't yet used pervasively throughout
    * the cogl API, so we currently need to cleanup material state
    * that will confuse other parts of the API.
@@ -2572,5 +2626,6 @@ cogl_material_rectangle (CoglFixed   x1,
   GE (glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION, values));
   values[0] = 0;
   GE (glMaterialfv (GL_FRONT_AND_BACK, GL_SHININESS, values));
+#endif
 }
 

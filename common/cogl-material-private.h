@@ -22,8 +22,8 @@ struct _CoglMaterialLayer
   gulong       flags;
   CoglHandle   texture;	/*!< The texture for this layer, or COGL_INVALID_HANDLE
 			     for an empty layer */
-  
-  /* Determines how the color of individual texture fragments 
+
+  /* Determines how the color of individual texture fragments
    * are calculated. */
   CoglMaterialLayerCombineFunc texture_combine_rgb_func;
   CoglMaterialLayerCombineSrc texture_combine_rgb_src[3];
@@ -32,7 +32,7 @@ struct _CoglMaterialLayer
   CoglMaterialLayerCombineFunc texture_combine_alpha_func;
   CoglMaterialLayerCombineSrc texture_combine_alpha_src[3];
   CoglMaterialLayerCombineOp texture_combine_alpha_op[3];
-  
+
   /* TODO: Support purely GLSL based material layers */
 
   CoglMatrix matrix;
@@ -41,7 +41,8 @@ struct _CoglMaterialLayer
 typedef enum _CoglMaterialFlags
 {
   COGL_MATERIAL_FLAG_ENABLE_BLEND	    = 1L<<0,
-  COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING  = 1L<<1
+  COGL_MATERIAL_FLAG_SHOWN_SAMPLER_WARNING  = 1L<<1,
+  COGL_MATERIAL_FLAG_DIRTY	            = 1L<<2
 } CoglMaterialFlags;
 
 struct _CoglMaterial
@@ -50,13 +51,16 @@ struct _CoglMaterial
 
   gulong    flags;
 
+  /* If no lighting is enabled; this is the basic material color */
+  GLfloat   unlit[4];
+
   /* Standard OpenGL lighting model attributes */
   GLfloat   ambient[4];
   GLfloat   diffuse[4];
   GLfloat   specular[4];
   GLfloat   emission[4];
   GLfloat   shininess;
-  
+
   /* Determines what fragments are discarded based on their alpha */
   CoglMaterialAlphaFunc alpha_func;
   GLfloat		alpha_func_reference;
