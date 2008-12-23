@@ -401,12 +401,27 @@ _clutter_do_pick (ClutterStage   *stage,
   return clutter_get_actor_by_gid (id);
 }
 
+static void
+update_pango_context (ClutterBackend     *backend,
+                      ClutterMainContext *main_context)
+{
+  PangoContext *context = main_context->pango_context;
+  cairo_font_options_t *font_options;
+  gdouble resolution;
+
+  font_options = clutter_backend_get_font_options (backend);
+  resolution = clutter_backend_get_resolution (backend);
+  if (resolution < 0)
+    resolution = 96.0; /* fall back */
+
+  pango_cairo_context_set_font_options (context, font_options);
+  pango_cairo_context_set_resolution (context, resolution);
+}
+
 PangoContext *
 _clutter_context_create_pango_context (ClutterMainContext *self)
 {
   PangoContext *context;
-  gdouble resolution;
-  cairo_font_options_t *font_options;
 
   if (G_LIKELY (self->pango_context != NULL))
     context = self->pango_context;
@@ -416,13 +431,14 @@ _clutter_context_create_pango_context (ClutterMainContext *self)
       self->pango_context = context;
     }
 
-  font_options = clutter_backend_get_font_options (self->backend);
-  resolution = clutter_backend_get_resolution (self->backend);
-  if (resolution < 0)
-    resolution = 96.0; /* fall back */
+  g_signal_connect (self->backend, "resolution-changed",
+                    G_CALLBACK (update_pango_context),
+                    self);
+  g_signal_connect (self->backend, "font-changed",
+                    G_CALLBACK (update_pango_context),
+                    self);
 
-  pango_cairo_context_set_font_options (context, font_options);
-  pango_cairo_context_set_resolution (context, resolution);
+  update_pango_context (self->backend, self);
 
   return context;
 }
