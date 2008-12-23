@@ -57,8 +57,6 @@
 #include "clutter-private.h"    /* includes pango/cogl-pango.h */
 #include "clutter-units.h"
 
-#define DEFAULT_FONT_NAME	"Sans 10"
-
 /* cursor width in pixels */
 #define DEFAULT_CURSOR_SIZE     2
 
@@ -1962,6 +1960,7 @@ static void
 clutter_text_init (ClutterText *self)
 {
   ClutterTextPrivate *priv;
+  const gchar *font_name;
   int i;
 
   self->priv = priv = CLUTTER_TEXT_GET_PRIVATE (self);
@@ -1986,8 +1985,10 @@ clutter_text_init (ClutterText *self)
   priv->text_color = default_text_color;
   priv->cursor_color = default_cursor_color;
 
-  priv->font_name = g_strdup (DEFAULT_FONT_NAME);
-  priv->font_desc = pango_font_description_from_string (priv->font_name);
+  /* get the default font name from the context */
+  font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
+  priv->font_name = g_strdup (font_name);
+  priv->font_desc = pango_font_description_from_string (font_name);
 
   priv->position = -1;
   priv->selection_bound = -1;
@@ -2549,11 +2550,13 @@ clutter_text_get_font_name (ClutterText *text)
 /**
  * clutter_text_set_font_name:
  * @self: a #ClutterText
- * @font_name: a font name
+ * @font_name: a font name, or %NULL to set the default font name
  *
  * Sets the font used by a #ClutterText. The @font_name string
- * must be something that can be parsed by the
- * pango_font_description_from_string() function, like:
+ * must either be %NULL, which means that the font name from the
+ * default #ClutterBackend will be used; or be something that can
+ * be parsed by the pango_font_description_from_string() function,
+ * like:
  *
  * |[
  *   clutter_text_set_font_name (text, "Sans 10pt");
@@ -2572,8 +2575,9 @@ clutter_text_set_font_name (ClutterText *self,
 
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
+  /* get the default font name from the backend */
   if (!font_name || font_name[0] == '\0')
-    font_name = DEFAULT_FONT_NAME;
+    font_name = clutter_backend_get_font_name (clutter_get_default_backend ());
 
   priv = self->priv;
 
