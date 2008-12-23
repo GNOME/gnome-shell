@@ -229,6 +229,7 @@ clutter_clone_texture_paint (ClutterActor *self)
   cogl_material_rectangle (0, 0,
                            COGL_FIXED_FROM_INT (x_2 - x_1),
 			   COGL_FIXED_FROM_INT (y_2 - y_1),
+                           0,
                            tex_coords);
 #else
   /* Parent paint translated us into position */

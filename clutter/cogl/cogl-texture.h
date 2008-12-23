@@ -386,66 +386,35 @@ void            cogl_texture_polygon          (CoglHandle          handle,
                                                gboolean            use_color);
 
 /**
- * cogl_muti_texture_new:
- *
- * Creates a multi layered texture object. When first created it has
- * zero layers. You must use cogl_multi_texture_layer_set_texture to
- * define new layers.
- */
-CoglHandle	cogl_multi_texture_new	      (void);
-
-/**
- * cogl_multi_texture_layer_set_texture:
- * @multi_texture_handle: a @CoglHandle
- * @layer: The index of the layer you want a handle for.
- *
- * A layer is implicitly created once you set a texture for a certain
- * layer_index. The texture layers are blended together starting with
- * the lowest index so the order is significant. It doesn't matter what
- * order you create the layers in and you may use sparsely generated index
- * values, it is only the relative index order that matters.
- */
-void	    cogl_multi_texture_layer_set_texture (CoglHandle  multi_texture_handle,
-						  guint	      layer_index,
-						  CoglHandle  texture_handle);
-
-/**
- * cogl_multi_texture_layer_remove:
- * @multi_texture_handle: a @CoglHandle
- * @index: The index of the layer you want to remove.
- *
- * Removes a single texture layer.
- */
-void	      cogl_multi_texture_layer_remove (CoglHandle multi_texture_handle,
-					       guint	  layer_index);
-
-/**
- * cogl_multi_texture_rectangle:
- * @handle: a @CoglHandle
+ * cogl_material_rectangle:
  * @x1: x coordinate upper left on screen.
  * @y1: y coordinate upper left on screen.
  * @x2: x coordinate lower right on screen.
  * @y2: y coordinate lower right on screen.
- * @texcoords: A multidimensional array containing sets of 4 texture
- * coordinates - one set for each texture layer that has been created.
+ * @tex_coords_len: The length of the tex_coords array. (e.g. for one layer
+ *                  and one group of texture coordinates, this would be 4)
+ * @tex_coords: An array containing groups of 4 CoglFixed values:
+ *   [tx1, ty1, tx2, ty2] that are interpreted as two texture coordinates; one
+ *   for the upper left texel, and one for the lower right texel. Each value
+ *   should be between 0.0 and 1.0, where the coordinate (0.0, 0.0) represents
+ *   the top left of the texture, and (1.0, 1.0) the bottom right.
  *
- * Draw a rectangle combining multiple texture layers together
- * where each layer can use different texture data and different texture
+ * This function draws a rectangle using the current source material to
+ * texture or fill with. Since a material may contain multiple texture
+ * layers the interface lets you supply corresponding sets of texture
  * coordinates.
  *
- * The texture coordinates are supplied as a contiguous array of
- * CoglFixed items containing groups of [tx1, ty1, tx2, ty2] values
- * that are interpreted in the same way as the corresponding arguments
- * to cogl_texture_rectangle. The first group of coordinates are for the
- * first layer (with the smallest layer_index) you _must_ supply as many
- * groups of texture coordinates as you have layers.
+ * The first pair of coordinates are for the first layer (with the smallest
+ * layer index) and if you supply less texture coordinates than there are
+ * layers in the current source material then default texture coordinates
+ * [0.0, 0.0, 1.0, 1.0] are generated.
  */
-void  cogl_multi_texture_rectangle  (CoglHandle	handle,
-				     CoglFixed  x1,
-				     CoglFixed  y1,
-				     CoglFixed  x2,
-				     CoglFixed  y2,
-				     CoglFixed *tex_coords);
+void cogl_material_rectangle (CoglFixed   x1,
+                              CoglFixed   y1,
+                              CoglFixed   x2,
+                              CoglFixed   y2,
+                              gint        tex_coords_len,
+                              CoglFixed  *tex_coords);
 
 G_END_DECLS
 

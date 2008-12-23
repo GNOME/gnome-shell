@@ -49,6 +49,7 @@ material_rectangle_paint (ClutterActor *actor, gpointer data)
 			   CLUTTER_INT_TO_FIXED(0),
 			   CLUTTER_INT_TO_FIXED(TIMELINE_FRAME_COUNT),
 			   CLUTTER_INT_TO_FIXED(TIMELINE_FRAME_COUNT),
+                           12,
 			   state->tex_coords);
 }
 
