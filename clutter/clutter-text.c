@@ -75,9 +75,6 @@
 
 typedef struct _LayoutCache     LayoutCache;
 
-/* Probably move into main */
-static PangoContext *_context = NULL;
-
 static const ClutterColor default_cursor_color = {   0,   0,   0, 255 };
 static const ClutterColor default_text_color   = {   0,   0,   0, 255 };
 
@@ -248,9 +245,11 @@ clutter_text_create_layout_no_cache (ClutterText *text,
                                      ClutterUnit  allocation_width)
 {
   ClutterTextPrivate *priv = text->priv;
+  PangoContext *context;
   PangoLayout *layout;
 
-  layout = pango_layout_new (_context);
+  context = clutter_actor_get_pango_context (CLUTTER_ACTOR (text));
+  layout = pango_layout_new (context);
 
   pango_layout_set_font_description (layout, priv->font_desc);
 
@@ -1964,9 +1963,6 @@ clutter_text_init (ClutterText *self)
 {
   ClutterTextPrivate *priv;
   int i;
-
-  if (G_UNLIKELY (_context == NULL))
-    _context = _clutter_context_create_pango_context (CLUTTER_CONTEXT ());
 
   self->priv = priv = CLUTTER_TEXT_GET_PRIVATE (self);
 
