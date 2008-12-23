@@ -521,6 +521,18 @@ clutter_backend_get_font_options (ClutterBackend *backend)
   return priv->font_options;
 }
 
+/**
+ * clutter_backend_set_font_name:
+ * @backend: a #ClutterBackend
+ * @font_name: the name of the font
+ *
+ * Sets the default font to be used by Clutter. The @font_name string
+ * must either be %NULL, which means that the font name from the
+ * default #ClutterBackend will be used; or be something that can
+ * be parsed by the pango_font_description_from_string() function.
+ *
+ * Since: 1.0
+ */
 void
 clutter_backend_set_font_name (ClutterBackend *backend,
                                const gchar    *font_name)
@@ -541,6 +553,18 @@ clutter_backend_set_font_name (ClutterBackend *backend,
   g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
 }
 
+/**
+ * clutter_backend_get_font_name:
+ * @backend: a #ClutterBackend
+ *
+ * Retrieves the default font name as set by
+ * clutter_backend_set_font_name().
+ *
+ * Return value: the font name for the backend. The returned string is
+ *   owned by the #ClutterBackend and should never be modified or freed
+ *
+ * Since: 1.0
+ */
 G_CONST_RETURN gchar *
 clutter_backend_get_font_name (ClutterBackend *backend)
 {

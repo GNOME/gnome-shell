@@ -478,6 +478,7 @@ clutter_actor_get_rotationx
 
 <SUBSECTION>
 clutter_actor_grab_key_focus
+clutter_actor_get_pango_context
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
@@ -872,14 +873,16 @@ clutter_behaviour_ellipse_get_type
 <FILE>clutter-backend</FILE>
 <TITLE>ClutterBackend</TITLE>
 clutter_get_default_backend
-clutter_backend_get_resolution
 clutter_backend_set_resolution
-clutter_backend_get_double_click_time
+clutter_backend_get_resolution
 clutter_backend_set_double_click_time
-clutter_backend_get_double_click_distance
+clutter_backend_get_double_click_time
 clutter_backend_set_double_click_distance
+clutter_backend_get_double_click_distance
 clutter_backend_set_font_options
 clutter_backend_get_font_options
+clutter_backend_set_font_name
+clutter_backend_get_font_name
 <SUBSECTION Standard>
 CLUTTER_BACKEND
 CLUTTER_IS_BACKEND

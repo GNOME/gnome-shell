@@ -7598,6 +7598,27 @@ clutter_actor_grab_key_focus (ClutterActor *self)
     clutter_stage_set_key_focus (CLUTTER_STAGE (parent), self);
 }
 
+/**
+ * clutter_actor_get_pango_context:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the #PangoContext for @self. The actor's #PangoContext
+ * is already configured using the appropriate font map, resolution
+ * and font options.
+ *
+ * The returned #PangoContext will be updated each time the options
+ * stored by the default #ClutterBackend change.
+ *
+ * You can use the returned #PangoContext to create a #PangoLayout
+ * and render text using cogl_pango_render_layout() to reuse the
+ * glyphs cache also used by Clutter.
+ *
+ * Return value: the #PangoContext for a #ClutterActor. The returned
+ *   #PangoContext is owned by the actor and should not be unreferenced
+ *   by the application code
+ *
+ * Since: 1.0
+ */
 PangoContext *
 clutter_actor_get_pango_context (ClutterActor *self)
 {
