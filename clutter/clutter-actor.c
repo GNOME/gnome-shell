@@ -1937,6 +1937,12 @@ clutter_actor_dispose (GObject *object)
 
   destroy_shader_data (self);
 
+  if (priv->pango_context)
+    {
+      g_object_unref (priv->pango_context);
+      priv->pango_context = NULL;
+    }
+
   g_signal_emit (self, actor_signals[DESTROY], 0);
 
   G_OBJECT_CLASS (clutter_actor_parent_class)->dispose (object);
