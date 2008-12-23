@@ -53,21 +53,23 @@
 #include "pango/cogl-pango.h"
 
 /* main context */
-static ClutterMainContext *ClutterCntx  = NULL;
+static ClutterMainContext *ClutterCntx       = NULL;
 
 /* main lock and locking/unlocking functions */
-static GMutex *clutter_threads_mutex    = NULL;
-static GCallback clutter_threads_lock   = NULL;
-static GCallback clutter_threads_unlock = NULL;
+static GMutex *clutter_threads_mutex         = NULL;
+static GCallback clutter_threads_lock        = NULL;
+static GCallback clutter_threads_unlock      = NULL;
 
-static gboolean clutter_is_initialized  = FALSE;
-static gboolean clutter_show_fps        = FALSE;
-static gboolean clutter_fatal_warnings  = FALSE;
+static gboolean clutter_is_initialized       = FALSE;
+static gboolean clutter_show_fps             = FALSE;
+static gboolean clutter_fatal_warnings       = FALSE;
 
-static guint clutter_default_fps        = 60;
+static guint clutter_default_fps             = 60;
 
-static guint clutter_main_loop_level    = 0;
-static GSList *main_loops               = NULL;
+static guint clutter_main_loop_level         = 0;
+static GSList *main_loops                    = NULL;
+
+static PangoDirection clutter_text_direction = PANGO_DIRECTION_LTR;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
 
@@ -401,21 +403,51 @@ _clutter_do_pick (ClutterStage   *stage,
   return clutter_get_actor_by_gid (id);
 }
 
+static PangoDirection
+clutter_get_text_direction (void)
+{
+  const gchar *direction;
+  PangoDirection dir = PANGO_DIRECTION_LTR;
+
+  direction = g_getenv ("CLUTTER_TEXT_DIRECTION");
+  if (direction && *direction != '\0')
+    {
+      if (strcmp (direction, "rtl") == 0)
+        dir = PANGO_DIRECTION_RTL;
+      else
+        dir = PANGO_DIRECTION_LTR;
+    }
+  else
+    dir = PANGO_DIRECTION_LTR;
+
+  return dir;
+}
+
 static void
 update_pango_context (ClutterBackend     *backend,
                       ClutterMainContext *main_context)
 {
   PangoContext *context = main_context->pango_context;
+  PangoFontDescription *font_desc;
   cairo_font_options_t *font_options;
+  const gchar *font_name;
   gdouble resolution;
 
+  font_name = clutter_backend_get_font_name (backend);
+  font_desc = pango_font_description_from_string (font_name);
+
   font_options = clutter_backend_get_font_options (backend);
+
   resolution = clutter_backend_get_resolution (backend);
   if (resolution < 0)
     resolution = 96.0; /* fall back */
 
+  pango_context_set_font_description (context, font_desc);
+  pango_context_set_base_dir (context, clutter_text_direction);
   pango_cairo_context_set_font_options (context, font_options);
   pango_cairo_context_set_resolution (context, resolution);
+
+  pango_font_description_free (font_desc);
 }
 
 PangoContext *
@@ -1025,6 +1057,17 @@ clutter_get_timestamp (void)
 #endif
 }
 
+static gboolean
+clutter_arg_direction_cb (const char *key,
+                          const char *value,
+                          gpointer    user_data)
+{
+  clutter_text_direction =
+    (strcmp (value, "rtl") == 0) ? PANGO_DIRECTION_RTL
+                                 : PANGO_DIRECTION_LTR;
+
+  return TRUE;
+}
 
 #ifdef CLUTTER_ENABLE_DEBUG
 static gboolean
@@ -1098,6 +1141,8 @@ clutter_init_real (GError **error)
   cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
   cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
 
+  clutter_text_direction = clutter_get_text_direction ();
+
   /* Stage will give us a GL Context etc */
   stage = clutter_stage_get_default ();
   if (!stage)
@@ -1168,6 +1213,9 @@ static GOptionEntry clutter_args[] = {
     "Default frame rate", "FPS" },
   { "g-fatal-warnings", 0, 0, G_OPTION_ARG_NONE, &clutter_fatal_warnings,
     "Make all warnings fatal", NULL },
+  { "clutter-text-direction", 0, 0, G_OPTION_ARG_CALLBACK,
+    clutter_arg_direction_cb,
+    "Direction for the text", "DIRECTION" },
 #ifdef CLUTTER_ENABLE_DEBUG
   { "clutter-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_debug_cb,
     "Clutter debugging flags to set", "FLAGS" },
