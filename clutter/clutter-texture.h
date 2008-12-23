@@ -33,6 +33,8 @@
 
 G_BEGIN_DECLS
 
+#define USE_COGL_MATERIAL 1
+
 #define CLUTTER_TYPE_TEXTURE            (clutter_texture_get_type ())
 #define CLUTTER_TEXTURE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_TEXTURE, ClutterTexture))
 #define CLUTTER_TEXTURE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_TEXTURE, ClutterTextureClass))
@@ -41,6 +43,9 @@ G_BEGIN_DECLS
 #define CLUTTER_TEXTURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_TEXTURE, ClutterTextureClass))
 
 #define CLUTTER_TYPE_TEXTURE_HANDLE     (clutter_texture_handle_get_type ())
+#if USE_COGL_MATERIAL
+#define CLUTTER_TYPE_MATERIAL_HANDLE    (clutter_material_handle_get_type ())
+#endif
 
 /**
  * ClutterTextureError:
@@ -135,6 +140,9 @@ typedef enum { /*< prefix=CLUTTER_TEXTURE_QUALITY >*/
 
 GType clutter_texture_get_type (void) G_GNUC_CONST;
 GType clutter_texture_handle_get_type (void) G_GNUC_CONST;
+#if USE_COGL_MATERIAL
+GType clutter_material_handle_get_type (void) G_GNUC_CONST;
+#endif
 
 ClutterActor *       clutter_texture_new                    (void);
 ClutterActor *       clutter_texture_new_from_file          (const gchar            *filename,
@@ -181,6 +189,11 @@ gint                  clutter_texture_get_max_tile_waste    (ClutterTexture     
 CoglHandle            clutter_texture_get_cogl_texture      (ClutterTexture         *texture);
 void                  clutter_texture_set_cogl_texture      (ClutterTexture         *texture,
                                                              CoglHandle              cogl_tex);
+#if USE_COGL_MATERIAL
+CoglHandle            clutter_texture_get_cogl_material     (ClutterTexture         *texture);
+void                  clutter_texture_set_cogl_material     (ClutterTexture         *texture,
+                                                             CoglHandle              cogl_material);
+#endif
 
 G_END_DECLS
 
