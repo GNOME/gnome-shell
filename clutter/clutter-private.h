@@ -126,10 +126,11 @@ struct _ClutterMainContext
   gint fb_r_mask, fb_g_mask, fb_b_mask;
   gint fb_r_mask_used, fb_g_mask_used, fb_b_mask_used;
 
-  CoglPangoFontMap *font_map;       /* Global font map */
+  PangoContext     *pango_context;      /* Global Pango context */
+  CoglPangoFontMap *font_map;           /* Global font map */
 
-  GSList              *input_devices; /* For extra input devices, i.e
-                                         MultiTouch */
+  GSList              *input_devices;   /* For extra input devices, i.e
+                                           MultiTouch */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())

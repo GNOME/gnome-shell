@@ -408,16 +408,21 @@ _clutter_context_create_pango_context (ClutterMainContext *self)
   gdouble resolution;
   cairo_font_options_t *font_options;
 
+  if (G_LIKELY (self->pango_context != NULL))
+    context = self->pango_context;
+  else
+    {
+      context = cogl_pango_font_map_create_context (self->font_map);
+      self->pango_context = context;
+    }
+
+  font_options = clutter_backend_get_font_options (self->backend);
   resolution = clutter_backend_get_resolution (self->backend);
   if (resolution < 0)
     resolution = 96.0; /* fall back */
 
-  context = cogl_pango_font_map_create_context (self->font_map);
-
-  pango_cairo_context_set_resolution (context, resolution);
-
-  font_options = clutter_backend_get_font_options (self->backend);
   pango_cairo_context_set_font_options (context, font_options);
+  pango_cairo_context_set_resolution (context, resolution);
 
   return context;
 }

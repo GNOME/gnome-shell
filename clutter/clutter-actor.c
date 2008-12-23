@@ -7613,6 +7613,7 @@ clutter_actor_get_pango_context (ClutterActor *self)
 
   ctx = CLUTTER_CONTEXT ();
   priv->pango_context = _clutter_context_create_pango_context (ctx);
+  g_object_ref (priv->pango_context);
 
   return priv->pango_context;
 }
