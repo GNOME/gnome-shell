@@ -70,6 +70,7 @@ typedef struct
   GArray           *material_handles;
   GArray           *material_layer_handles;
   CoglHandle	    source_material;
+  CoglHandle	    current_material;
 
   /* Framebuffer objects */
   GArray           *fbo_handles;

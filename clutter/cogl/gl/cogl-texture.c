@@ -2531,9 +2531,8 @@ cogl_material_rectangle (CoglFixed   x1,
   GE( glVertexPointer (2, GL_FLOAT, 0, quad_coords));
 
   /* Setup the remaining GL state according to this material... */
-  cogl_material_flush_gl_material_state (material);
-  cogl_material_flush_gl_alpha_func (material);
-  cogl_material_flush_gl_blend_func (material);
+  cogl_flush_material_gl_state ();
+
   /* FIXME: This api is a bit yukky, ideally it will be removed if we
    * re-work the cogl_enable mechanism */
   enable_flags |= cogl_material_get_cogl_enable_flags (material);
