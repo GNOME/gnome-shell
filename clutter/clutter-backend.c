@@ -49,6 +49,8 @@
 
 G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
 
+#define DEFAULT_FONT_NAME       "Sans 10"
+
 #define CLUTTER_BACKEND_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BACKEND, ClutterBackendPrivate))
 
@@ -61,6 +63,8 @@ struct _ClutterBackendPrivate
   ClutterFixed resolution;
 
   cairo_font_options_t *font_options;
+
+  gchar *font_name;
 };
 
 enum
@@ -76,6 +80,7 @@ static guint backend_signals[LAST_SIGNAL] = { 0, };
 static void
 clutter_backend_dispose (GObject *gobject)
 {
+  ClutterBackendPrivate *priv = CLUTTER_BACKEND (gobject)->priv;
   ClutterMainContext *clutter_context;
 
   clutter_context = clutter_context_get_default ();
@@ -86,6 +91,8 @@ clutter_backend_dispose (GObject *gobject)
       g_queue_free (clutter_context->events_queue);
       clutter_context->events_queue = NULL;
     }
+
+  g_free (priv->font_name);
 
   clutter_backend_set_font_options (CLUTTER_BACKEND (gobject), NULL);
 
@@ -514,3 +521,30 @@ clutter_backend_get_font_options (ClutterBackend *backend)
   return priv->font_options;
 }
 
+void
+clutter_backend_set_font_name (ClutterBackend *backend,
+                               const gchar    *font_name)
+{
+  ClutterBackendPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+
+  priv = backend->priv;
+
+  g_free (priv->font_name);
+
+  if (font_name == NULL || *font_name == '\0')
+    priv->font_name = g_strdup (DEFAULT_FONT_NAME);
+  else
+    priv->font_name = g_strdup (font_name);
+
+  g_signal_emit (backend, backend_signals[FONT_CHANGED], 0);
+}
+
+G_CONST_RETURN gchar *
+clutter_backend_get_font_name (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), NULL);
+
+  return backend->priv->font_name;
+}
