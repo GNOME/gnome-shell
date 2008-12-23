@@ -544,7 +544,16 @@ clutter_backend_set_font_name (ClutterBackend *backend,
 G_CONST_RETURN gchar *
 clutter_backend_get_font_name (ClutterBackend *backend)
 {
+  ClutterBackendPrivate *priv;
+
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), NULL);
 
-  return backend->priv->font_name;
+  priv = backend->priv;
+
+  if (G_LIKELY (priv->font_name))
+    return priv->font_name;
+
+  priv->font_name = g_strdup (DEFAULT_FONT_NAME);
+
+  return priv->font_name;
 }
