@@ -148,7 +148,7 @@ gboolean        cogl_is_texture               (CoglHandle          handle);
 /**
  * cogl_texture_get_width:
  * @handle: a #CoglHandle for a texture.
- * 
+ *
  * Query the width of a cogl texture.
  *
  * Returns: the width of the GPU side texture in pixels:
@@ -158,7 +158,7 @@ guint           cogl_texture_get_width        (CoglHandle          handle);
 /**
  * cogl_texture_get_height:
  * @handle: a #CoglHandle for a texture.
- * 
+ *
  * Query the height of a cogl texture.
  *
  * Returns: the height of the GPU side texture in pixels:
@@ -168,7 +168,7 @@ guint           cogl_texture_get_height       (CoglHandle          handle);
 /**
  * cogl_texture_get_format:
  * @handle: a #CoglHandle for a texture.
- * 
+ *
  * Query the #CoglPixelFormat of a cogl texture.
  *
  * Returns: the #CoglPixelFormat of the GPU side texture.
@@ -179,7 +179,7 @@ CoglPixelFormat cogl_texture_get_format       (CoglHandle          handle);
 /**
  * cogl_texture_get_rowstride:
  * @handle: a #CoglHandle for a texture.
- * 
+ *
  * Query the rowstride of a cogl texture.
  *
  * Returns: the offset in bytes between each consequetive row of pixels.
@@ -189,7 +189,7 @@ guint           cogl_texture_get_rowstride    (CoglHandle          handle);
 /**
  * cogl_texture_get_max_waste:
  * @handle: a #CoglHandle for a texture.
- * 
+ *
  * Query the maximum wasted (unused) pixels in one dimension of a GPU side
  * texture.
  *
@@ -200,7 +200,7 @@ gint            cogl_texture_get_max_waste    (CoglHandle          handle);
 /**
  * cogl_texture_get_min_filter:
  * @handle: a #CoglHandle for a texture.
- * 
+ *
  * Query the currently set downscaling filter for a cogl texture.
  *
  * Returns: the current downscaling filter for a cogl texture.
@@ -210,7 +210,7 @@ COGLenum        cogl_texture_get_min_filter   (CoglHandle          handle);
 /**
  * cogl_texture_get_mag_filter:
  * @handle: a #CoglHandle for a texture.
- * 
+ *
  * Query the currently set downscaling filter for a cogl texture.
  *
  * Returns: the current downscaling filter for a cogl texture.
@@ -220,7 +220,7 @@ COGLenum        cogl_texture_get_mag_filter   (CoglHandle          handle);
 /**
  * cogl_texture_is_sliced:
  * @handle: a #CoglHandle for a texture.
- * 
+ *
  * Query if a texture is sliced (stored as multiple GPU side tecture
  * objects).
  *
@@ -235,7 +235,7 @@ gboolean        cogl_texture_is_sliced        (CoglHandle          handle);
  * @out_gl_handle: pointer to return location for the textures GL handle, or
  * NULL.
  * @out_gl_target: pointer to return location for the GL target type, or NULL.
- * 
+ *
  * Query the GL handles for a GPU side texture through it's #CoglHandle,
  * if the texture is spliced the data for the first sub texture will be
  * queried.
@@ -255,7 +255,7 @@ gboolean        cogl_texture_get_gl_texture   (CoglHandle         handle,
  * specified.
  * @data: memory location to write contents of buffer, or %NULL if we're
  * only querying the data size through the return value.
- * 
+ *
  * Copy the pixel data from a cogl texture to system memory.
  *
  * Returns: the size of the texture data in bytes (or 0 if the texture
@@ -271,7 +271,7 @@ gint            cogl_texture_get_data         (CoglHandle          handle,
  * @handle: a #CoglHandle.
  * @min_filter: the filter used when scaling the texture down.
  * @mag_filter: the filter used when magnifying the texture.
- * 
+ *
  * Changes the decimation and interpolation filters used when the texture is
  * drawn at other scales than 100%.
  */
@@ -297,7 +297,7 @@ void            cogl_texture_set_filters      (CoglHandle          handle,
  * @data: the actual pixel data.
  *
  * Sets the pixels in a rectangular subregion of @handle from an in-memory
- * buffer containing pixel data. 
+ * buffer containing pixel data.
  *
  * Returns: %TRUE if the subregion upload was successful, otherwise %FALSE.
  */
