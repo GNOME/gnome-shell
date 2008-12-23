@@ -53,6 +53,19 @@ CoglHandle cogl_material_ref (CoglHandle handle);
 void cogl_material_unref (CoglHandle handle);
 
 /**
+ * cogl_material_set_color:
+ * @material: A CoglMaterial object
+ * @color: The components of the color
+ *
+ * This is the basic color of the material, used when no lighting is enabled.
+ *
+ * The default value is (1.0, 1.0, 1.0, 1.0)
+ *
+ * Since 1.0
+ */
+void cogl_material_set_color (CoglHandle material, const CoglColor *color);
+
+/**
  * cogl_material_set_ambient:
  * @material: A CoglMaterial object
  * @ambient: The components of the desired ambient color

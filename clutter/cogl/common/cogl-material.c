@@ -11,6 +11,7 @@
 #include "cogl-material-private.h"
 
 #include <glib.h>
+#include <string.h>
 
 static void _cogl_material_free (CoglMaterial *tex);
 static void _cogl_material_layer_free (CoglMaterialLayer *layer);
@@ -25,6 +26,7 @@ cogl_material_new (void)
 {
   /* Create new - blank - material */
   CoglMaterial *material = g_new0 (CoglMaterial, 1);
+  GLfloat *unlit = material->unlit;
   GLfloat *ambient = material->ambient;
   GLfloat *diffuse = material->diffuse;
   GLfloat *specular = material->specular;
@@ -32,6 +34,9 @@ cogl_material_new (void)
 
   material->ref_count = 1;
   COGL_HANDLE_DEBUG_NEW (material, material);
+
+  /* Use the same defaults as the GL spec... */
+  unlit[0] = 1.0; unlit[1] = 1.0; unlit[2] = 1.0; unlit[3] = 1.0;
 
   /* Use the same defaults as the GL spec... */
   ambient[0] = 0.2; ambient[1] = 0.2; ambient[2] = 0.2; ambient[3] = 1.0;
@@ -61,6 +66,29 @@ _cogl_material_free (CoglMaterial *material)
   g_list_foreach (material->layers,
 		  (GFunc)cogl_material_layer_unref, NULL);
   g_free (material);
+}
+
+void
+cogl_material_set_color (CoglHandle handle,
+			 const CoglColor *unlit_color)
+{
+  CoglMaterial *material;
+  GLfloat       unlit[4];
+
+  g_return_if_fail (cogl_is_material (handle));
+
+  material = _cogl_material_pointer_from_handle (handle);
+
+  unlit[0] = cogl_color_get_red_float (unlit_color);
+  unlit[1] = cogl_color_get_green_float (unlit_color);
+  unlit[2] = cogl_color_get_blue_float (unlit_color);
+  unlit[3] = cogl_color_get_alpha_float (unlit_color);
+  if (memcmp (unlit, material->unlit, sizeof (unlit)) == 0)
+    return;
+
+  memcpy (material->unlit, unlit, sizeof (unlit));
+
+  material->flags |= COGL_MATERIAL_FLAG_DIRTY;
 }
 
 void
@@ -666,6 +694,8 @@ cogl_flush_material_gl_state (void)
   if (ctx->source_material == ctx->current_material
       && !(material->flags & COGL_MATERIAL_FLAG_DIRTY))
     return;
+
+  GE (glColor4fv (material->unlit));
 
   /* FIXME - we only need to set these if lighting is enabled... */
   GE (glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT, material->ambient));
