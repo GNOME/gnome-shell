@@ -362,7 +362,7 @@ keybind (move_to_corner_ne, handle_move_to_corner_ne, 0,
 keybind (move_to_corner_sw, handle_move_to_corner_sw, 0,
         BINDING_PER_WINDOW, NULL,
         _("Move window to south-west (bottom left) corner"))
-keybind (move_to_corner_nw, handle_move_to_corner_se, 0,
+keybind (move_to_corner_se, handle_move_to_corner_se, 0,
         BINDING_PER_WINDOW, NULL,
         _("Move window to south-east (bottom right) corner"))
 

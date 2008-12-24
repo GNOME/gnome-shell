@@ -1,3 +1,7 @@
+2008-12-24  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/include/all-keybindings.h: fix move_to_corner_se
+
 2008-12-21  Colin Walters  <walters@verbum.org>
 
 	* src/core/window.c: windows which attempt to present themselves
