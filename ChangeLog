@@ -1,3 +1,9 @@
+2008-12-24  Yanko Kaneti  <yaneti@declera.com>
+
+	* src/metacity.schemas.in.in: add screenshot commands which had
+          mistakenly been removed; closes #564343, Launchpad bug 298463,
+          Red Hat bug 474635, and probably others.
+
 2008-12-24  Thomas Thurman  <tthurman@gnome.org>
 
 	* src/include/all-keybindings.h: fix move_to_corner_se
