@@ -260,9 +260,9 @@ on_activate (KeyGroup     *key_group,
              ClutterActor *child,
              gpointer      data)
 {
-  gint index = GPOINTER_TO_INT (data);
+  gint _index = GPOINTER_TO_INT (data);
 
-  g_assert_cmpint (key_group->selected_index, ==, index);
+  g_assert_cmpint (key_group->selected_index, ==, _index);
 }
 
 void

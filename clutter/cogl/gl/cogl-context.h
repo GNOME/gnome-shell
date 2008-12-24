@@ -41,7 +41,7 @@ typedef struct
   /* Features cache */
   CoglFeatureFlags  feature_flags;
   gboolean          features_cached;
-  
+
   /* Enable cache */
   gulong            enable_flags;
   guint8            color_alpha;
@@ -49,7 +49,7 @@ typedef struct
   COGLenum          blend_dst_factor;
 
   gboolean          enable_backface_culling;
-  
+
   /* Primitives */
   CoglFixedVec2     path_start;
   CoglFixedVec2     path_pen;
@@ -60,12 +60,12 @@ typedef struct
 
   /* Cache of inverse projection matrix */
   GLfloat           inverse_projection[16];
-  
+
   /* Textures */
   GArray	      *texture_handles;
   CoglTextureGLVertex *texture_vertices;
   gulong               texture_vertices_size;
-  
+
   /* Materials */
   GArray           *material_handles;
   GArray           *material_layer_handles;
@@ -83,10 +83,10 @@ typedef struct
 
   /* Clip stack */
   CoglClipStackState clip;
-  
+
   /* Mesh */
   GArray           *mesh_handles;
-  
+
   /* Relying on glext.h to define these */
   COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
   COGL_PFNGLDELETERENDERBUFFERSEXTPROC             pf_glDeleteRenderbuffersEXT;
@@ -100,7 +100,7 @@ typedef struct
   COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC              pf_glDeleteFramebuffersEXT;
   COGL_PFNGLBLITFRAMEBUFFEREXTPROC                 pf_glBlitFramebufferEXT;
   COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC  pf_glRenderbufferStorageMultisampleEXT;
-  
+
   COGL_PFNGLCREATEPROGRAMOBJECTARBPROC             pf_glCreateProgramObjectARB;
   COGL_PFNGLCREATESHADEROBJECTARBPROC              pf_glCreateShaderObjectARB;
   COGL_PFNGLSHADERSOURCEARBPROC                    pf_glShaderSourceARB;
@@ -156,6 +156,6 @@ _cogl_context_get_default ();
 CoglContext *ctxvar = _cogl_context_get_default (); \
 if (ctxvar == NULL) return retval;
 
-#define NO_RETVAL 
+#define NO_RETVAL
 
 #endif /* __COGL_CONTEXT_H */

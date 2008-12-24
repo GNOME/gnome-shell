@@ -80,8 +80,8 @@ struct _ClutterTextureClass
 {
   ClutterActorClass parent_class;
 
-  void (*size_change)   (ClutterTexture *texture, 
-		         gint            width, 
+  void (*size_change)   (ClutterTexture *texture,
+		         gint            width,
 		         gint            height);
   void (*pixbuf_change) (ClutterTexture *texture);
 
