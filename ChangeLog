@@ -1,3 +1,8 @@
+2008-12-25  Frederic Peters  <fpeters@0d.be>
+
+	* src/core/main.c: (main): added call to g_thread_init(), as ORBit2
+	stopped doing it and Metacity is using gconf; closes #565517.
+
 2008-12-24  Yanko Kaneti  <yaneti@declera.com>
 
 	* src/metacity.schemas.in.in: add screenshot commands which had
