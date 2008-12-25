@@ -258,14 +258,14 @@ keybind (activate_window_menu, handle_activate_window_menu, 0,
 keybind (toggle_fullscreen, handle_toggle_fullscreen, 0, BINDING_PER_WINDOW,
         NULL,
         _("Toggle fullscreen mode"))
-keybind (toggle_maximized, handle_toggle_maximized, 0, BINDING_PER_WINDOW, NULL,
+keybind (toggle_maximized, handle_toggle_maximized, 0, BINDING_PER_WINDOW, "<Alt>F10",
         _("Toggle maximization state"))
 keybind (toggle_above, handle_toggle_above, 0, BINDING_PER_WINDOW, NULL,
         _("Toggle whether a window will always be visible over other windows"))
-keybind (maximize, handle_maximize, 0, BINDING_PER_WINDOW, "<Alt>F10",
+keybind (maximize, handle_maximize, 0, BINDING_PER_WINDOW, NULL,
         _("Maximize window"))
 keybind (unmaximize, handle_unmaximize, 0, BINDING_PER_WINDOW, "<Alt>F5",
-        _("Unmaximize window"))
+        _("Restore window"))
 keybind (toggle_shaded, handle_toggle_shaded, 0, BINDING_PER_WINDOW, NULL,
         _("Toggle shaded state"))
 keybind (minimize, handle_minimize, 0, BINDING_PER_WINDOW, "<Alt>F9",

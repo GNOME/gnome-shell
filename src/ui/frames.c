@@ -1086,7 +1086,7 @@ show_tip_now (MetaFrames *frames)
       tiptext = _("Maximize Window");
       break;
     case META_FRAME_CONTROL_UNMAXIMIZE:
-      tiptext = _("Unmaximize Window");
+      tiptext = _("Restore Window");
       break;
     case META_FRAME_CONTROL_SHADE:
       tiptext = _("Roll Up Window");

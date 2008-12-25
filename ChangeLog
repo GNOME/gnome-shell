@@ -1,3 +1,10 @@
+2008-12-25  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/include/all-keybindings.h: alt-F10 toggles maximisation,
+          alt-F5 only restores.  Also rename "unmaximize" to "restore".
+	* src/ui/frames.c: Rename "unmaximize" to "restore".
+          Closes #343824.
+
 2008-12-25  Frederic Peters  <fpeters@0d.be>
 
 	* src/core/main.c: (main): added call to g_thread_init(), as ORBit2
