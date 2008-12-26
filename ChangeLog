@@ -1,5 +1,9 @@
 2008-12-26  Thomas Thurman  <tthurman@gnome.org>
 
+        * configure.in: Post-release bump to 2.25.144.
+
+2008-12-26  Thomas Thurman  <tthurman@gnome.org>
+
         * NEWS: 2.25.89 release.
 
 2008-12-25  Thomas Thurman  <tthurman@gnome.org>
