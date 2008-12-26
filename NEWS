@@ -1,3 +1,21 @@
+2.25.89
+=======
+
+Thanks to Yanko Kaneti, Frederic Peters, Thomas Thurman, and Colin Walters for
+improvements in this version.
+
+  - The maximisation key is a toggle. (Thomas) (#343824)
+  - "Unmaximise" is now called "restore". (Thomas) (#343824)
+  - New thread handling call for gconf (Frederic) (#565517)
+  - Add screenshot commands back which had been removed (Yanko) (#565343)
+  - move_to_corner_se keybinding fixed (Thomas)
+  - Windows on other workspaces which attempt to present themselves
+    are marked as needing attention (Colin) (#482354)
+  - End the grab op when the user clicks the titlebar (Thomas) (#401028)
+
+Translations
+  Jorge González (es)
+
 2.25.55
 =======
 
