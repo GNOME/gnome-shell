@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=metacity&amp;component=general\n"
-"POT-Creation-Date: 2008-11-23 21:55+0000\n"
-"PO-Revision-Date: 2008-11-23 23:23+0100\n"
+"POT-Creation-Date: 2008-12-25 16:53+0000\n"
+"PO-Revision-Date: 2008-12-26 12:44+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -182,12 +182,12 @@ msgstr "Activar la composición"
 msgid "Turn compositing off"
 msgstr "Desactivar la composición"
 
-#: ../src/core/main.c:475
+#: ../src/core/main.c:478
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falló al inspeccionar el directorio de temas: %s\n"
 
-#: ../src/core/main.c:491
+#: ../src/core/main.c:494
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -195,7 +195,7 @@ msgstr ""
 "No se ha podido encontrar un tema. Asegúrese de que %s existe y contiene los "
 "temas usuales.\n"
 
-#: ../src/core/main.c:547
+#: ../src/core/main.c:550
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "No se pudo reiniciar: %s\n"
@@ -468,7 +468,7 @@ msgid "Metacity"
 msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5728
+#: ../src/core/window.c:5743
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -484,7 +484,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6293
+#: ../src/core/window.c:6308
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -697,8 +697,8 @@ msgid "Maximize window"
 msgstr "Maximizar la ventana"
 
 #: ../src/include/all-keybindings.h:268
-msgid "Unmaximize window"
-msgstr "Desmaximizar la ventana"
+msgid "Restore window"
+msgstr "Restablecer la ventana"
 
 #: ../src/include/all-keybindings.h:270
 msgid "Toggle shaded state"
@@ -1139,6 +1139,25 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.in.h:34
 msgid ""
+"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
+"keybinding which causes the command specified by this setting to be invoked."
+msgstr ""
+"La clave /apps/metacity/global_keybindings/run_command_screenshot define una "
+"combinación de teclas que hace que el comando especificado por esta "
+"configuración se invoque."
+
+#: ../src/metacity.schemas.in.in.h:35
+msgid ""
+"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+"defines a keybinding which causes the command specified by this setting to "
+"be invoked."
+msgstr ""
+"La clave /apps/metacity/global_keybindings/run_command_window_screenshot "
+"define una combinación de teclas que hace que el comando especificado por "
+"esta configuración se invoque."
+
+#: ../src/metacity.schemas.in.in.h:36
+msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
@@ -1153,11 +1172,15 @@ msgstr ""
 "Ctl&gt;» y «&lt;Ctrl&gt;». Si configura esta opción con la cadena especial "
 "«disabled» entonces no habrá combinación de teclas para esa acción."
 
-#: ../src/metacity.schemas.in.in.h:35
+#: ../src/metacity.schemas.in.in.h:37
 msgid "The name of a workspace."
 msgstr "El nombre de un área de trabajo."
 
-#: ../src/metacity.schemas.in.in.h:36
+#: ../src/metacity.schemas.in.in.h:38
+msgid "The screenshot command"
+msgstr "El comando de captura de pantalla"
+
+#: ../src/metacity.schemas.in.in.h:39
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
@@ -1165,7 +1188,7 @@ msgstr ""
 "El tema determina la apariencia de los bordes de la ventana, el título y "
 "demás."
 
-#: ../src/metacity.schemas.in.in.h:37
+#: ../src/metacity.schemas.in.in.h:40
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1173,7 +1196,7 @@ msgstr ""
 "El retardo antes de desplegar una ventana si «auto_rise» está configurado "
 "como verdadero. El retardo está especificado en milésimas de segundo."
 
-#: ../src/metacity.schemas.in.in.h:38
+#: ../src/metacity.schemas.in.in.h:41
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1188,7 +1211,11 @@ msgstr ""
 "foco cuando el ratón entra en la ventana y lo pierden cuando el ratón sale "
 "de la ventana."
 
-#: ../src/metacity.schemas.in.in.h:39
+#: ../src/metacity.schemas.in.in.h:42
+msgid "The window screenshot command"
+msgstr "El comando de captura de una ventana"
+
+#: ../src/metacity.schemas.in.in.h:43
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1208,7 +1235,7 @@ msgstr ""
 "muestra la ventana de menú, «lower» que pone la ventana detrás de todas las "
 "demás y «none» que no hará nada."
 
-#: ../src/metacity.schemas.in.in.h:40
+#: ../src/metacity.schemas.in.in.h:44
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1228,7 +1255,7 @@ msgstr ""
 "muestra la ventana de menú, «lower» que pone la ventana detrás de todas las "
 "demás y «none» que no hará nada."
 
-#: ../src/metacity.schemas.in.in.h:41
+#: ../src/metacity.schemas.in.in.h:45
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1248,7 +1275,7 @@ msgstr ""
 "muestra la ventana de menú, «lower» que pone la ventana detrás de todas las "
 "demás y «none» que no hará nada."
 
-#: ../src/metacity.schemas.in.in.h:42
+#: ../src/metacity.schemas.in.in.h:46
 msgid ""
 "This option provides additional control over how newly created windows get "
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
@@ -1260,7 +1287,7 @@ msgstr ""
 "aplica el modo de foco normal del usuario, y «strict» hace que las ventanas "
 "iniciadas desde un terminal no se les dé el foco."
 
-#: ../src/metacity.schemas.in.in.h:43
+#: ../src/metacity.schemas.in.in.h:47
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -1270,25 +1297,25 @@ msgstr ""
 "«campanada» o un «bip» ; es muy útil para los ambientes ruidosos y para las "
 "personas con dificultades auditivas."
 
-#: ../src/metacity.schemas.in.in.h:44
+#: ../src/metacity.schemas.in.in.h:48
 msgid "Use standard system font in window titles"
 msgstr "Usar tipografía estándar del sistema en los títulos de la ventana"
 
-#: ../src/metacity.schemas.in.in.h:45
+#: ../src/metacity.schemas.in.in.h:49
 msgid "Visual Bell Type"
 msgstr "Tipo de campana visual"
 
-#: ../src/metacity.schemas.in.in.h:46
+#: ../src/metacity.schemas.in.in.h:50
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr ""
 "Indica si elevar debe ser un efecto lateral de otras interacciones del "
 "usuario"
 
-#: ../src/metacity.schemas.in.in.h:47
+#: ../src/metacity.schemas.in.in.h:51
 msgid "Window focus mode"
 msgstr "Modo de foco de la ventana"
 
-#: ../src/metacity.schemas.in.in.h:48
+#: ../src/metacity.schemas.in.in.h:52
 msgid "Window title font"
 msgstr "Tipografía del título de la ventana"
 
@@ -1314,8 +1341,8 @@ msgid "Maximize Window"
 msgstr "Maximizar la ventana"
 
 #: ../src/ui/frames.c:1089
-msgid "Unmaximize Window"
-msgstr "Desmaximizar la ventana"
+msgid "Restore Window"
+msgstr "Restablecer la ventana"
 
 #: ../src/ui/frames.c:1092
 msgid "Roll Up Window"
@@ -2444,6 +2471,12 @@ msgstr ""
 "%d expresiones de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
 
+#~ msgid "Unmaximize window"
+#~ msgstr "Desmaximizar la ventana"
+
+#~ msgid "Unmaximize Window"
+#~ msgstr "Desmaximizar la ventana"
+
 #~ msgid ""
 #~ "Many actions (e.g. clicking in the client area, moving or resizing the "
 #~ "window) normally raise the window as a side-effect. Setting this option "
@@ -2472,24 +2505,6 @@ msgstr ""
 
 #~ msgid "Unknown attribute %s on <geometry> element"
 #~ msgstr "Atributo desconocido %s en el elemento <geometry>"
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
-#~ "a keybinding which causes the command specified by this setting to be "
-#~ "invoked."
-#~ msgstr ""
-#~ "La clave /apps/metacity/global_keybindings/run_command_screenshot define "
-#~ "una combinación de teclas que hace que el comando especificado por esta "
-#~ "configuración se invoque."
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-#~ "defines a keybinding which causes the command specified by this setting "
-#~ "to be invoked."
-#~ msgstr ""
-#~ "La clave /apps/metacity/global_keybindings/run_command_window_screenshot "
-#~ "define una combinación de teclas que hace que el comando especificado por "
-#~ "esta configuración se invoque."
 
 #~ msgid ""
 #~ "The keybinding that switches to the workspace above the current "
@@ -3445,12 +3460,6 @@ msgstr ""
 #~ "minúsculas además de abreviaturas como por ejemplo «&lt;Ctl&gt;» y «&lt;"
 #~ "Ctrl&gt;». Si configura esta opción con la cadena especial «disabled» "
 #~ "entonces no habrá combinación de teclas para esta acción."
-
-#~ msgid "The screenshot command"
-#~ msgstr "El comando de captura de pantalla"
-
-#~ msgid "The window screenshot command"
-#~ msgstr "El comando de captura de una ventana"
 
 #~ msgid ""
 #~ "This keybinding changes whether a window is above or below other windows. "
