@@ -27,12 +27,22 @@ GType    shell_wm_get_type                    (void) G_GNUC_CONST;
 ShellWM *shell_wm_new                         (MutterPlugin *plugin);
 
 GList   *shell_wm_get_switch_workspace_actors (ShellWM      *wm);
+
+void     shell_wm_completed_minimize          (ShellWM      *wm,
+                                               MutterWindow *actor);
+void     shell_wm_completed_maximize          (ShellWM      *wm,
+                                               MutterWindow *actor);
+void     shell_wm_completed_unmaximize        (ShellWM      *wm,
+                                               MutterWindow *actor);
+void     shell_wm_completed_map               (ShellWM      *wm,
+                                               MutterWindow *actor);
+void     shell_wm_completed_destroy           (ShellWM      *wm,
+                                               MutterWindow *actor);
 void     shell_wm_completed_switch_workspace  (ShellWM      *wm);
 
 
 /* These forward along the different effects from GnomeShellPlugin */
 
-#ifdef NOT_YET
 void _shell_wm_minimize   (ShellWM      *wm,
 			   MutterWindow *actor);
 void _shell_wm_maximize   (ShellWM      *wm,
@@ -51,7 +61,6 @@ void _shell_wm_map        (ShellWM      *wm,
 			   MutterWindow *actor);
 void _shell_wm_destroy    (ShellWM      *wm,
 			   MutterWindow *actor);
-#endif
 
 void _shell_wm_switch_workspace (ShellWM              *wm,
 				 const GList         **actors,

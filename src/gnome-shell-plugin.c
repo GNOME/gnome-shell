@@ -46,7 +46,6 @@ static void gnome_shell_plugin_constructed (GObject *object);
 static void gnome_shell_plugin_dispose     (GObject *object);
 static void gnome_shell_plugin_finalize    (GObject *object);
 
-#ifdef NOT_YET
 static void     gnome_shell_plugin_minimize         (MutterPlugin         *plugin,
                                                      MutterWindow         *actor);
 static void     gnome_shell_plugin_maximize         (MutterPlugin         *plugin,
@@ -65,7 +64,6 @@ static void     gnome_shell_plugin_map              (MutterPlugin         *plugi
                                                      MutterWindow         *actor);
 static void     gnome_shell_plugin_destroy          (MutterPlugin         *plugin,
                                                      MutterWindow         *actor);
-#endif
 
 static void     gnome_shell_plugin_switch_workspace (MutterPlugin         *plugin,
                                                      const GList         **actors,
@@ -121,13 +119,11 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   gobject_class->dispose         = gnome_shell_plugin_dispose;
   gobject_class->finalize        = gnome_shell_plugin_finalize;
 
-#ifdef NOT_YET
   plugin_class->map              = gnome_shell_plugin_map;
   plugin_class->minimize         = gnome_shell_plugin_minimize;
   plugin_class->maximize         = gnome_shell_plugin_maximize;
   plugin_class->unmaximize       = gnome_shell_plugin_unmaximize;
   plugin_class->destroy          = gnome_shell_plugin_destroy;
-#endif
 
   plugin_class->switch_workspace = gnome_shell_plugin_switch_workspace;
   plugin_class->kill_effect      = gnome_shell_plugin_kill_effect;
@@ -210,6 +206,55 @@ get_shell_wm (void)
   g_object_unref (wm);
 
   return wm;
+}
+
+static void
+gnome_shell_plugin_minimize (MutterPlugin         *plugin,
+			     MutterWindow         *actor)
+{
+  _shell_wm_minimize (get_shell_wm (),
+                      actor);
+
+}
+
+static void
+gnome_shell_plugin_maximize (MutterPlugin         *plugin,
+                             MutterWindow         *actor,
+                             gint                  x,
+                             gint                  y,
+                             gint                  width,
+                             gint                  height)
+{
+  _shell_wm_maximize (get_shell_wm (),
+                      actor, x, y, width, height);
+}
+
+static void
+gnome_shell_plugin_unmaximize (MutterPlugin         *plugin,
+                               MutterWindow         *actor,
+                               gint                  x,
+                               gint                  y,
+                               gint                  width,
+                               gint                  height)
+{
+  _shell_wm_unmaximize (get_shell_wm (),
+                        actor, x, y, width, height);
+}
+
+static void
+gnome_shell_plugin_map (MutterPlugin         *plugin,
+                        MutterWindow         *actor)
+{
+  _shell_wm_map (get_shell_wm (),
+                 actor);
+}
+
+static void
+gnome_shell_plugin_destroy (MutterPlugin         *plugin,
+                            MutterWindow         *actor)
+{
+  _shell_wm_destroy (get_shell_wm (),
+                     actor);
 }
 
 static void

@@ -8,6 +8,7 @@ const Tweener = imports.tweener.tweener;
 
 const Main = imports.ui.main;
 
+const WINDOW_ANIMATION_TIME = 0.25;
 const SWITCH_ANIMATION_TIME = 0.5;
 
 function WindowManager() {
@@ -20,20 +21,219 @@ WindowManager.prototype = {
 
         this._global = Shell.Global.get();
         this._shellwm = this._global.window_manager;
+        this._minimizing = [];
+        this._maximizing = [];
+        this._unmaximizing = [];
+        this._mapping = [];
+        this._destroying = [];
 
         this._switchData = null;
         this._shellwm.connect('switch-workspace',
             function(o, from, to, direction) {
                 let actors = me._shellwm.get_switch_workspace_actors();
-                me.switchWorkspace(actors, from, to, direction);
+                me._switchWorkspace(actors, from, to, direction);
             });
         this._shellwm.connect('kill-switch-workspace',
             function(o) {
-                me.switchWorkspaceDone();
+                me._switchWorkspaceDone();
+            });
+        this._shellwm.connect('minimize',
+            function(o, actor) {
+                me._minimizeWindow(actor);
+            });
+        this._shellwm.connect('kill-minimize',
+            function(o, actor) {
+                me._minimizeWindowDone(actor);
+            });
+        this._shellwm.connect('maximize',
+            function(o, actor, tx, ty, tw, th) {
+                me._maximizeWindow(actor, tx, ty, tw, th);
+            });
+        this._shellwm.connect('kill-maximize',
+            function(o, actor) {
+                me._maximizeWindowDone(actor);
+            });
+        this._shellwm.connect('unmaximize',
+            function(o, actor, tx, ty, tw, th) {
+                me._unmaximizeWindow(actor, tx, ty, tw, th);
+            });
+        this._shellwm.connect('kill-unmaximize',
+            function(o, actor) {
+                me._unmaximizeWindowDone(actor);
+            });
+        this._shellwm.connect('map',
+            function(o, actor) {
+                me._mapWindow(actor);
+            });
+        this._shellwm.connect('kill-map',
+            function(o, actor) {
+                me._mapWindowDone(actor);
+            });
+        this._shellwm.connect('destroy',
+            function(o, actor) {
+                me._destroyWindow(actor);
+            });
+        this._shellwm.connect('kill-destroy',
+            function(o, actor) {
+                me._destroyWindowDone(actor);
             });
     },
 
-    switchWorkspace : function(windows, from, to, direction) {
+
+    _minimizeWindow : function(actor) {
+        if (actor.get_window_type() != Meta.CompWindowType.NORMAL) {
+            this._shellwm.completed_minimize(actor);
+            return;
+        }
+
+        actor.set_scale(1.0, 1.0);
+        actor.move_anchor_point_from_gravity(Clutter.Gravity.CENTER);
+
+        /* scale window down to 0x0.
+         * maybe TODO: get icon geometry passed through and move the window towards it?
+         */
+        this._minimizing.push(actor);
+        Tweener.addTween(actor,
+                         { scale_x: 0.0,
+                           scale_y: 0.0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: "easeOutQuad",
+                           onComplete: this._minimizeWindowDone,
+                           onCompleteScope: this,
+                           onCompleteParams: [actor]
+                         });
+    },
+
+    _minimizeWindowDone : function(actor) {
+        let idx = this._minimizing.indexOf(actor);
+        if (idx != -1) {
+            Tweener.removeTweens(actor);
+            actor.set_scale(1.0, 1.0);
+            actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
+            this._shellwm.completed_minimize(actor);
+
+            this._minimizing.splice(idx, 1);
+        }
+    },
+    
+    _maximizeWindow : function(actor, target_x, target_y, target_width, target_height) {
+        if (actor.get_window_type() != Meta.CompWindowType.NORMAL) {
+            this._shellwm.completed_maximize(actor);
+            return;
+        }
+
+        /* this doesn't work very well, as simply scaling up the existing
+         * window contents doesn't produce anything like the same results as
+         * actually maximizing the window.
+         */
+        let scale_x = target_width / actor.width;
+        let scale_y = target_height / actor.height;
+        let anchor_x = (actor.x - target_x) * actor.width/(target_width - actor.width);
+        let anchor_y = (actor.y - target_y) * actor.height/(target_height - actor.height);
+        
+        actor.move_anchor_point(anchor_x, anchor_y);
+
+        this._maximizing.push(actor);
+        Tweener.addTween(actor,
+                         { scale_x: scale_x,
+                           scale_y: scale_y,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: "easeOutQuad",
+                           onComplete: this._maximizeWindowDone,
+                           onCompleteScope: this,
+                           onCompleteParams: [actor]
+                         });
+    },
+
+    _maximizeWindowDone : function(actor) {
+        let idx = this._maximizing.indexOf(actor);
+        if (idx != -1) {
+            Tweener.removeTweens(actor);
+            actor.set_scale(1.0, 1.0);
+            actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
+            this._shellwm.completed_maximize(actor);
+            
+            this._maximizing.splice(idx, 1);
+        }
+    },
+
+    _unmaximizeWindow : function(actor, target_x, target_y, target_width, target_height) {
+        this._shellwm.completed_unmaximize(actor);
+    },
+
+    _unmaximizeWindowDone : function(actor) {
+    },
+
+
+    _mapWindow : function(actor) {
+        if (actor.get_window_type() != Meta.CompWindowType.NORMAL) {
+            this._shellwm.completed_map(actor);
+            return;
+        }
+
+        actor.move_anchor_point_from_gravity(Clutter.Gravity.CENTER);
+        actor.set_scale(0.0, 0.0);
+        actor.show();
+        
+        /* scale window up from 0x0 to normal size */
+        this._mapping.push(actor);
+        Tweener.addTween(actor,
+                         { scale_x: 1.0,
+                           scale_y: 1.0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: "easeOutQuad",
+                           onComplete: this._mapWindowDone,
+                           onCompleteScope: this,
+                           onCompleteParams: [actor]
+                         });
+    },
+
+    _mapWindowDone : function(actor) {
+        let idx = this._mapping.indexOf(actor);
+        if (idx != -1) {
+            Tweener.removeTweens(actor);
+            actor.set_scale(1.0, 1.0);
+            actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
+            this._shellwm.completed_map(actor);
+            
+            this._mapping.splice(idx, 1);
+        }
+    },
+
+    _destroyWindow : function(actor) {
+        if (actor.get_window_type() != Meta.CompWindowType.NORMAL) {
+            this._shellwm.completed_destroy(actor);
+            return;
+        }
+
+        actor.move_anchor_point_from_gravity(Clutter.Gravity.CENTER);
+        
+        /* anachronistic 'tv-like' effect - squash on y axis, leave x alone */
+        this._destroying.push(actor);
+        Tweener.addTween(actor,
+                         { scale_x: 1.0,
+                           scale_y: 0.0,
+                           time: WINDOW_ANIMATION_TIME,
+                           transition: "easeOutQuad",
+                           onComplete: this._destroyWindowDone,
+                           onCompleteScope: this,
+                           onCompleteParams: [actor]
+                         });
+    },
+    
+    _destroyWindowDone : function(actor) {
+        let idx = this._destroying.indexOf(actor);
+        if (idx != -1) {
+            this._shellwm.completed_destroy(actor);
+            Tweener.removeTweens(actor);
+            actor.set_scale(1.0, 1.0);
+            
+            this._mapping.splice(idx, 1);
+        }
+    },
+
+
+    _switchWorkspace : function(windows, from, to, direction) {
         // If the overlay is active, it will do the transition itself
         if (Main.overlayActive) {
             this._shellwm.completed_switch_workspace();
@@ -96,7 +296,7 @@ WindowManager.prototype = {
                            y: yDest,
                            time: SWITCH_ANIMATION_TIME,
                            transition: "easeOutBack",
-                           onComplete: this.switchWorkspaceDone
+                           onComplete: this._switchWorkspaceDone
                          });
         Tweener.addTween(switchData.inGroup,
                          { x: 0,
@@ -106,7 +306,7 @@ WindowManager.prototype = {
                          });
     },
 
-    switchWorkspaceDone : function() {
+    _switchWorkspaceDone : function() {
         let switchData = this._switchData;
         if (!switchData)
             return;
