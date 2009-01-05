@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&amp;component=general\n"
 "POT-Creation-Date: 2008-12-25 16:53+0000\n"
-"PO-Revision-Date: 2009-01-05 14:21+0800\n"
+"PO-Revision-Date: 2009-01-05 20:29+0700\n"
 "Last-Translator: 甘露(Gan Lu) <rhythm.gan@gmail.com>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -92,7 +92,7 @@ msgstr ""
 #: ../src/core/errors.c:279
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "严重的 IO 错误 %d (%1$s) 出现在显示“%2$s”上。\n"
+msgstr "严重的 IO 错误 %d (%s) 出现在显示“%s”上。\n"
 
 #: ../src/core/keybindings.c:680
 #, c-format
@@ -281,7 +281,7 @@ msgstr "无法获得显示“%2$s”上的屏幕 %1$d 的窗口管理器选定�
 #: ../src/core/screen.c:451
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "显示 \"%s\" 上的屏幕 %d 已经有一个窗口管理器\n"
+msgstr "在显示 \"%2$s\" 上的 %1$d 屏幕已经有一个窗口管理器\n"
 
 #: ../src/core/screen.c:661
 #, c-format
