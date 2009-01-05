@@ -422,6 +422,8 @@ void                  clutter_actor_set_opacity               (ClutterActor     
                                                                guint8                 opacity);
 guint8                clutter_actor_get_opacity               (ClutterActor          *self);
 guint8                clutter_actor_get_paint_opacity         (ClutterActor          *self);
+gboolean              clutter_actor_get_paint_visibility      (ClutterActor          *self);
+
 
 void                  clutter_actor_set_name                  (ClutterActor          *self,
                                                                const gchar           *name);
@@ -547,25 +549,24 @@ gboolean clutter_actor_is_rotated                     (ClutterActor   *self);
 gboolean clutter_actor_is_scaled                      (ClutterActor   *self);
 gboolean clutter_actor_should_pick_paint              (ClutterActor   *self);
 
-void     clutter_actor_box_get_from_vertices          (ClutterVertex    vtx[4],
-				                       ClutterActorBox *box);
+void     clutter_actor_box_get_from_vertices          (ClutterVertex        vtx[4],
+				                       ClutterActorBox     *box);
 
-void clutter_actor_get_abs_allocation_vertices       (ClutterActor  *self,
-                                                      ClutterVertex  verts[4]);
+void clutter_actor_get_abs_allocation_vertices        (ClutterActor        *self,
+                                                       ClutterVertex        verts[4]);
 
-void clutter_actor_apply_transform_to_point          (ClutterActor        *self,
-                                                      const ClutterVertex *point,
-                                                      ClutterVertex       *vertex);
-void clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
-                                                      ClutterActor        *ancestor,
-                                                      const ClutterVertex *point,
-                                                      ClutterVertex       *vertex);
+void clutter_actor_apply_transform_to_point           (ClutterActor        *self,
+                                                       const ClutterVertex *point,
+                                                       ClutterVertex       *vertex);
+void clutter_actor_apply_relative_transform_to_point  (ClutterActor        *self,
+                                                       ClutterActor        *ancestor,
+                                                       const ClutterVertex *point,
+                                                       ClutterVertex       *vertex);
 
-gboolean clutter_actor_get_paint_visibility           (ClutterActor *self);
+void          clutter_actor_grab_key_focus            (ClutterActor        *self);
 
-void clutter_actor_grab_key_focus (ClutterActor *self);
-
-PangoContext *clutter_actor_get_pango_context    (ClutterActor *self);
+PangoContext *clutter_actor_get_pango_context         (ClutterActor        *self);
+PangoContext *clutter_actor_create_pango_context      (ClutterActor        *self);
 
 G_END_DECLS
 

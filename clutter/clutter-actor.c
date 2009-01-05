@@ -7606,8 +7606,9 @@ clutter_actor_grab_key_focus (ClutterActor *self)
  * is already configured using the appropriate font map, resolution
  * and font options.
  *
- * The returned #PangoContext will be updated each time the options
- * stored by the default #ClutterBackend change.
+ * Unlike clutter_actor_create_pango_context(), this context is owend
+ * by the #ClutterActor and it will be updated each time the options
+ * stored by the #ClutterBackend change.
  *
  * You can use the returned #PangoContext to create a #PangoLayout
  * and render text using cogl_pango_render_layout() to reuse the
@@ -7633,8 +7634,37 @@ clutter_actor_get_pango_context (ClutterActor *self)
     return priv->pango_context;
 
   ctx = CLUTTER_CONTEXT ();
-  priv->pango_context = _clutter_context_create_pango_context (ctx);
+  priv->pango_context = _clutter_context_get_pango_context (ctx);
   g_object_ref (priv->pango_context);
 
   return priv->pango_context;
+}
+
+/**
+ * clutter_actor_create_pango_context:
+ * @self: a #ClutterActor
+ *
+ * Creates a #PangoContext for the given actor. The #PangoContext
+ * is already configured using the appropriate font map, resolution
+ * and font options.
+ *
+ * See also clutter_actor_get_pango_context().
+ *
+ * Return value: the newly created #PangoContext. Use g_object_ref()
+ *   on the returned value to deallocate its resources
+ *
+ * Since: 1.0
+ */
+PangoContext *
+clutter_actor_create_pango_context (ClutterActor *self)
+{
+  ClutterMainContext *ctx;
+  PangoContext *retval;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  ctx = CLUTTER_CONTEXT ();
+  retval = _clutter_context_create_pango_context (ctx);
+
+  return retval;
 }
