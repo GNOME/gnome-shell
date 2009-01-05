@@ -432,6 +432,10 @@ update_pango_context (ClutterBackend *backend,
   const gchar *font_name;
   gdouble resolution;
 
+  /* update the text direction */
+  pango_context_set_base_dir (context, clutter_text_direction);
+
+  /* get the configuration for the PangoContext from the backend */
   font_name = clutter_backend_get_font_name (backend);
   font_options = clutter_backend_get_font_options (backend);
   resolution = clutter_backend_get_resolution (backend);
@@ -442,7 +446,6 @@ update_pango_context (ClutterBackend *backend,
     resolution = 96.0; /* fall back */
 
   pango_context_set_font_description (context, font_desc);
-  pango_context_set_base_dir (context, clutter_text_direction);
   pango_cairo_context_set_font_options (context, font_options);
   pango_cairo_context_set_resolution (context, resolution);
 
