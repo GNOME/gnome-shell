@@ -650,6 +650,7 @@ clutter_binding_pool_remove_action (ClutterBindingPool  *pool,
                                     ClutterModifierType  modifiers)
 {
   ClutterBindingEntry remove_entry = { 0, };
+  GSList *l;
 
   g_return_if_fail (pool != NULL);
   g_return_if_fail (key_val != 0);
@@ -658,6 +659,18 @@ clutter_binding_pool_remove_action (ClutterBindingPool  *pool,
 
   remove_entry.key_val = key_val;
   remove_entry.modifiers = modifiers;
+
+  for (l = pool->entries; l != NULL; l = l->data)
+    {
+      ClutterBindingEntry *e = l->data;
+
+      if (e->key_val == remove_entry.key_val &&
+          e->modifiers == remove_entry.modifiers)
+        {
+          pool->entries = g_slist_remove_link (pool->entries, l);
+          break;
+        }
+    }
 
   g_hash_table_remove (pool->entries_hash, &remove_entry);
 }
