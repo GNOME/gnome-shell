@@ -38,8 +38,7 @@
  * #ClutterText is available since Clutter 1.0
  */
 
-/* TODO: undo/redo hooks?
- */
+/* TODO: undo/redo hooks? */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -67,7 +66,7 @@
  * be regenerated at a different width to get the height for the
  * actual allocated width
  */
-#define N_CACHED_LAYOUTS 3
+#define N_CACHED_LAYOUTS        3
 
 #define CLUTTER_TEXT_GET_PRIVATE(obj)   (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXT, ClutterTextPrivate))
 
@@ -866,7 +865,6 @@ cursor_paint (ClutterText *self)
                 }
 
               g_free (ranges);
-
             }
         }
     }
