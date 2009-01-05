@@ -601,12 +601,6 @@ clutter_binding_pool_override_closure (ClutterBindingPool  *pool,
     }
 }
 
-gchar **
-clutter_binding_pool_list_actions (ClutterBindingPool *pool)
-{
-  return NULL;
-}
-
 /**
  * clutter_binding_pool_find_action:
  * @pool: a #ClutterBindingPool

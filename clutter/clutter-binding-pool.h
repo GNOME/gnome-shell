@@ -83,7 +83,6 @@ void                  clutter_binding_pool_override_closure (ClutterBindingPool 
                                                              ClutterModifierType  modifiers,
                                                              GClosure            *closure);
 
-gchar **              clutter_binding_pool_list_actions     (ClutterBindingPool  *pool);
 G_CONST_RETURN gchar *clutter_binding_pool_find_action      (ClutterBindingPool  *pool,
                                                              guint                key_val,
                                                              ClutterModifierType  modifiers);
