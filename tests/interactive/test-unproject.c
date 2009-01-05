@@ -5,12 +5,14 @@
 #include <string.h>
 #include <gmodule.h>
 
-ClutterActor *label;
-
 #define RECT_L 200
 #define RECT_T 150
 #define RECT_W 320
 #define RECT_H 240
+
+static ClutterActor *test_rectangle = NULL;
+static ClutterActor *label = NULL;
+
 
 static gboolean
 on_event (ClutterStage *stage,
@@ -29,15 +31,14 @@ on_event (ClutterStage *stage,
 
 	actor = clutter_stage_get_actor_at_pos (stage, x, y);
 
-
 	if (clutter_actor_transform_stage_point (actor,
-						CLUTTER_UNITS_FROM_DEVICE (x),
-						CLUTTER_UNITS_FROM_DEVICE (y),
-						&xu2, &yu2))
+                                                 CLUTTER_UNITS_FROM_DEVICE (x),
+                                                 CLUTTER_UNITS_FROM_DEVICE (y),
+                                                 &xu2, &yu2))
 	  {
 	    gchar *txt;
 
-	    if (actor != CLUTTER_ACTOR (stage))
+	    if (actor == test_rectangle)
 	      txt = g_strdup_printf ("Click on rectangle\n"
 				     "Screen coords: [%d, %d]\n"
 				     "Local coords : [%d, %d]",
@@ -117,6 +118,7 @@ test_unproject_main (int argc, char *argv[])
   clutter_actor_set_rotation (rect, CLUTTER_Y_AXIS, rotate_y, 0, 0, 0);
   clutter_actor_set_rotation (rect, CLUTTER_Z_AXIS, rotate_z, 0, 0, 0);
   clutter_group_add (CLUTTER_GROUP (stage), rect);
+  test_rectangle = rect;
 
   txt = g_strdup_printf ("Rectangle: L %d, R %d, T %d, B %d\n"
 			 "Rotation : x %d, y %d, z %d",
@@ -145,6 +147,9 @@ test_unproject_main (int argc, char *argv[])
   g_signal_connect (stage, "event", G_CALLBACK (on_event), NULL);
 
   clutter_main();
+
+  test_rectangle = NULL;
+  label = NULL;
 
   return EXIT_SUCCESS;
 }
