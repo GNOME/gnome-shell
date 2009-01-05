@@ -1380,6 +1380,18 @@ clutter_text_real_line_end (ClutterText         *self,
 }
 
 static gboolean
+clutter_text_real_select_all (ClutterText         *self,
+                              const gchar         *action,
+                              guint                keyval,
+                              ClutterModifierType  modifiers)
+{
+  clutter_text_set_cursor_position (self, 0);
+  clutter_text_set_selection_bound (self, self->priv->n_chars);
+
+  return TRUE;
+}
+
+static gboolean
 clutter_text_real_del_next (ClutterText         *self,
                             const gchar         *action,
                             guint                keyval,
@@ -1928,6 +1940,11 @@ clutter_text_class_init (ClutterTextClass *klass)
   clutter_text_add_move_binding (binding_pool, "line-end",
                                  CLUTTER_KP_End,
                                  G_CALLBACK (clutter_text_real_line_end));
+
+  clutter_binding_pool_install_action (binding_pool, "select-all",
+                                       CLUTTER_a, CLUTTER_CONTROL_MASK,
+                                       G_CALLBACK (clutter_text_real_select_all),
+                                       NULL, NULL);
 
   clutter_binding_pool_install_action (binding_pool, "delete-next",
                                        CLUTTER_Delete, 0,
