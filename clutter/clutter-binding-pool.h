@@ -56,40 +56,50 @@ typedef gboolean (* ClutterBindingActionFunc) (GObject             *gobject,
                                                guint                key_val,
                                                ClutterModifierType  modifiers);
 
-ClutterBindingPool *  clutter_binding_pool_new             (const gchar         *name);
-ClutterBindingPool *  clutter_binding_pool_get_for_class   (gpointer             klass);
-ClutterBindingPool *  clutter_binding_pool_find            (const gchar         *name);
+ClutterBindingPool *  clutter_binding_pool_new              (const gchar         *name);
+ClutterBindingPool *  clutter_binding_pool_get_for_class    (gpointer             klass);
+ClutterBindingPool *  clutter_binding_pool_find             (const gchar         *name);
 
-void                  clutter_binding_pool_install_action  (ClutterBindingPool  *pool,
-                                                            const gchar         *action_name,
-                                                            guint                key_val,
-                                                            ClutterModifierType  modifiers,
-                                                            GCallback            callback,
-                                                            gpointer             data,
-                                                            GDestroyNotify       notify);
-void                  clutter_binding_pool_install_closure (ClutterBindingPool  *pool,
-                                                            const gchar         *action_name,
-                                                            guint                key_val,
-                                                            ClutterModifierType  modifiers,
-                                                            GClosure            *closure);
+void                  clutter_binding_pool_install_action   (ClutterBindingPool  *pool,
+                                                             const gchar         *action_name,
+                                                             guint                key_val,
+                                                             ClutterModifierType  modifiers,
+                                                             GCallback            callback,
+                                                             gpointer             data,
+                                                             GDestroyNotify       notify);
+void                  clutter_binding_pool_install_closure  (ClutterBindingPool  *pool,
+                                                             const gchar         *action_name,
+                                                             guint                key_val,
+                                                             ClutterModifierType  modifiers,
+                                                             GClosure            *closure);
+void                  clutter_binding_pool_override_action  (ClutterBindingPool  *pool,
+                                                             guint                key_val,
+                                                             ClutterModifierType  modifiers,
+                                                             GCallback            callback,
+                                                             gpointer             data,
+                                                             GDestroyNotify       notify);
+void                  clutter_binding_pool_override_closure (ClutterBindingPool  *pool,
+                                                             guint                key_val,
+                                                             ClutterModifierType  modifiers,
+                                                             GClosure            *closure);
 
-gchar **              clutter_binding_pool_list_actions    (ClutterBindingPool  *pool);
-G_CONST_RETURN gchar *clutter_binding_pool_find_action     (ClutterBindingPool  *pool,
-                                                            guint                key_val,
-                                                            ClutterModifierType  modifiers);
-void                  clutter_binding_pool_remove_action   (ClutterBindingPool  *pool,
-                                                            guint                key_val,
-                                                            ClutterModifierType  modifiers);
+gchar **              clutter_binding_pool_list_actions     (ClutterBindingPool  *pool);
+G_CONST_RETURN gchar *clutter_binding_pool_find_action      (ClutterBindingPool  *pool,
+                                                             guint                key_val,
+                                                             ClutterModifierType  modifiers);
+void                  clutter_binding_pool_remove_action    (ClutterBindingPool  *pool,
+                                                             guint                key_val,
+                                                             ClutterModifierType  modifiers);
 
-gboolean              clutter_binding_pool_activate        (ClutterBindingPool  *pool,
-                                                            guint                key_val,
-                                                            ClutterModifierType  modifiers,
-                                                            GObject             *gobject);
+gboolean              clutter_binding_pool_activate         (ClutterBindingPool  *pool,
+                                                             guint                key_val,
+                                                             ClutterModifierType  modifiers,
+                                                             GObject             *gobject);
 
-void                  clutter_binding_pool_block_action    (ClutterBindingPool  *pool,
-                                                            const gchar         *action_name);
-void                  clutter_binding_pool_unblock_action  (ClutterBindingPool  *pool,
-                                                            const gchar         *action_name);
+void                  clutter_binding_pool_block_action     (ClutterBindingPool  *pool,
+                                                             const gchar         *action_name);
+void                  clutter_binding_pool_unblock_action   (ClutterBindingPool  *pool,
+                                                             const gchar         *action_name);
 
 G_END_DECLS
 

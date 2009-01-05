@@ -476,6 +476,131 @@ clutter_binding_pool_install_closure (ClutterBindingPool  *pool,
   g_hash_table_insert (pool->entries_hash, entry, entry);
 }
 
+/**
+ * clutter_binding_pool_override_action:
+ * @pool: a #ClutterBindingPool
+ * @key_val: key symbol
+ * @modifiers: bitmask of modifiers
+ * @callback: function to be called when the action is activated
+ * @data: data to be passed to @callback
+ * @notify: function to be called when the action is removed
+ *   from the pool
+ *
+ * Allows overriding the action for @key_val and @modifiers inside a
+ * #ClutterBindingPool. See clutter_binding_pool_install_action().
+ *
+ * When an action has been activated using clutter_binding_pool_activate()
+ * the passed @callback will be invoked (with @data).
+ *
+ * Actions can be blocked with clutter_binding_pool_block_action()
+ * and then unblocked using clutter_binding_pool_unblock_action().
+ *
+ * Since: 1.0
+ */
+void
+clutter_binding_pool_override_action (ClutterBindingPool  *pool,
+                                      guint                key_val,
+                                      ClutterModifierType  modifiers,
+                                      GCallback            callback,
+                                      gpointer             data,
+                                      GDestroyNotify       notify)
+{
+  ClutterBindingEntry *entry;
+  GClosure *closure;
+
+  g_return_if_fail (pool != NULL);
+  g_return_if_fail (key_val != 0);
+  g_return_if_fail (callback != NULL);
+
+  entry = binding_pool_lookup_entry (pool, key_val, modifiers);
+  if (G_UNLIKELY (entry == NULL))
+    {
+      g_warning ("There is no action for the given key symbol "
+                 "of %d (modifiers: %d) installed inside the "
+                 "binding pool.",
+                 key_val, modifiers);
+      return;
+    }
+
+  if (entry->closure)
+    {
+      g_closure_unref (entry->closure);
+      entry->closure = NULL;
+    }
+
+  closure = g_cclosure_new (callback, data, (GClosureNotify) notify);
+  entry->closure = g_closure_ref (closure);
+  g_closure_sink (closure);
+
+  if (G_CLOSURE_NEEDS_MARSHAL (closure))
+    {
+      GClosureMarshal marshal;
+
+      marshal = clutter_marshal_BOOLEAN__STRING_UINT_ENUM;
+      g_closure_set_marshal (closure, marshal);
+    }
+}
+
+/**
+ * clutter_binding_pool_override_action:
+ * @pool: a #ClutterBindingPool
+ * @key_val: key symbol
+ * @modifiers: bitmask of modifiers
+ * @closure: a #GClosure
+ *
+ * A #GClosure variant of clutter_binding_pool_override_action().
+ *
+ * Allows overriding the action for @key_val and @modifiers inside a
+ * #ClutterBindingPool. See clutter_binding_pool_install_closure().
+ *
+ * When an action has been activated using clutter_binding_pool_activate()
+ * the passed @callback will be invoked (with @data).
+ *
+ * Actions can be blocked with clutter_binding_pool_block_action()
+ * and then unblocked using clutter_binding_pool_unblock_action().
+ *
+ * Since: 1.0
+ */
+void
+clutter_binding_pool_override_closure (ClutterBindingPool  *pool,
+                                       guint                key_val,
+                                       ClutterModifierType  modifiers,
+                                       GClosure            *closure)
+{
+  ClutterBindingEntry *entry;
+
+  g_return_if_fail (pool != NULL);
+  g_return_if_fail (key_val != 0);
+  g_return_if_fail (closure != NULL);
+
+  entry = binding_pool_lookup_entry (pool, key_val, modifiers);
+  if (G_UNLIKELY (entry == NULL))
+    {
+      g_warning ("There is no action for the given key symbol "
+                 "of %d (modifiers: %d) installed inside the "
+                 "binding pool.",
+                 key_val, modifiers);
+      return;
+    }
+
+  if (entry->closure)
+    {
+      g_closure_unref (entry->closure);
+      entry->closure = NULL;
+    }
+
+  entry->closure = g_closure_ref (closure);
+  g_closure_sink (closure);
+
+  if (G_CLOSURE_NEEDS_MARSHAL (closure))
+    {
+      GClosureMarshal marshal;
+
+      marshal = clutter_marshal_BOOLEAN__STRING_UINT_ENUM;
+      g_closure_set_marshal (closure, marshal);
+    }
+}
+
 gchar **
 clutter_binding_pool_list_actions (ClutterBindingPool *pool)
 {
