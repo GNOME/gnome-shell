@@ -192,6 +192,7 @@ struct _MutterWindowPrivate
   guint		    argb32                 : 1;
   guint		    disposed               : 1;
   guint		    is_minimized           : 1;
+  guint		    hide_after_effect      : 1;
 
   /* Desktop switching flags */
   guint		    needs_map              : 1;
@@ -787,6 +788,16 @@ mutter_finish_workspace_switch (MetaCompScreen *info)
 
 }
 
+static gboolean
+effect_in_progress (MutterWindow *cw, gboolean include_destroy)
+{
+  return (cw->priv->minimize_in_progress ||
+	  cw->priv->maximize_in_progress ||
+	  cw->priv->unmaximize_in_progress ||
+	  cw->priv->map_in_progress ||
+	  (include_destroy && cw->priv->destroy_in_progress));
+}
+
 void
 mutter_window_effect_completed (MutterWindow *cw, gulong event)
 {
@@ -794,6 +805,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
   MetaScreen          *screen = priv->screen;
   MetaCompScreen      *info   = meta_screen_get_compositor_data (screen);
   ClutterActor        *actor  = CLUTTER_ACTOR (cw);
+  gboolean             effect_done = FALSE;
 
   /* NB: Keep in mind that when effects get completed it possible
    * that the corresponding MetaWindow may have be been destroyed.
@@ -828,6 +840,8 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 	   * made visible for sake of live previews.
 	   */
 	  clutter_actor_show (a);
+
+	  effect_done = TRUE;
 	}
     }
     break;
@@ -852,6 +866,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 	clutter_actor_set_anchor_point (actor, 0, 0);
 	clutter_actor_set_position (actor, rect.x, rect.y);
 	clutter_actor_show_all (actor);
+	effect_done = TRUE;
       }
     break;
   case MUTTER_PLUGIN_DESTROY:
@@ -864,7 +879,10 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
       }
 
     if (!priv->destroy_in_progress)
-      priv->needs_destroy = TRUE;
+      {
+	priv->needs_destroy = TRUE;
+	effect_done = TRUE;
+      }
     break;
   case MUTTER_PLUGIN_UNMAXIMIZE:
     priv->unmaximize_in_progress--;
@@ -881,6 +899,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 	clutter_actor_set_position (actor, rect.x, rect.y);
 	mutter_window_detach (cw);
 	repair_win (cw);
+        effect_done = TRUE;
       }
     break;
   case MUTTER_PLUGIN_MAXIMIZE:
@@ -898,6 +917,7 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
 	clutter_actor_set_position (actor, rect.x, rect.y);
 	mutter_window_detach (cw);
 	repair_win (cw);
+        effect_done = TRUE;
       }
     break;
   case MUTTER_PLUGIN_SWITCH_WORKSPACE:
@@ -923,23 +943,25 @@ mutter_window_effect_completed (MutterWindow *cw, gulong event)
   case MUTTER_PLUGIN_DESTROY:
   case MUTTER_PLUGIN_UNMAXIMIZE:
   case MUTTER_PLUGIN_MAXIMIZE:
-    if (priv->needs_destroy)
+
+    if (effect_done &&
+	priv->hide_after_effect &&
+	effect_in_progress (cw, TRUE) == FALSE)
       {
-	if (priv->minimize_in_progress ||
-	    priv->maximize_in_progress ||
-	    priv->unmaximize_in_progress ||
-	    priv->map_in_progress ||
-	    priv->destroy_in_progress)
+	if (clutter_actor_get_parent (CLUTTER_ACTOR (cw)) != info->hidden_group)
 	  {
-	    /* wait until last effect finished */
-	    break;
+	    clutter_actor_reparent (CLUTTER_ACTOR (cw),
+				    info->hidden_group);
 	  }
-	else
-	  {
-	    clutter_actor_destroy (CLUTTER_ACTOR (cw));
-	    return;
-	  }
+	priv->hide_after_effect = FALSE;
       }
+
+    if (priv->needs_destroy && effect_in_progress (cw, TRUE) == FALSE)
+      {
+	clutter_actor_destroy (CLUTTER_ACTOR (cw));
+	return;
+      }
+
   default:
     break;
   }
@@ -1021,10 +1043,7 @@ destroy_win (MutterWindow *cw)
     {
       priv->destroy_in_progress--;
 
-      if (priv->minimize_in_progress ||
-          priv->maximize_in_progress ||
-	  priv->unmaximize_in_progress ||
-	  priv->map_in_progress)
+      if (effect_in_progress (cw, FALSE))
 	{
 	  priv->needs_destroy = TRUE;
 	}
@@ -1051,10 +1070,7 @@ sync_actor_position (MutterWindow *cw)
   priv->attrs.x = window_rect.x;
   priv->attrs.y = window_rect.y;
 
-  if (priv->maximize_in_progress   ||
-      priv->unmaximize_in_progress ||
-      priv->minimize_in_progress ||
-      priv->map_in_progress)
+  if (effect_in_progress (cw, FALSE))
     return;
 
   clutter_actor_set_position (CLUTTER_ACTOR (cw),
@@ -2194,6 +2210,7 @@ clutter_cmp_set_window_hidden (MetaCompositor *compositor,
 			       gboolean	       hidden)
 {
   MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
+  MutterWindowPrivate *priv = cw->priv;
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
   DEBUG_TRACE ("clutter_cmp_set_window_hidden\n");
@@ -2202,14 +2219,22 @@ clutter_cmp_set_window_hidden (MetaCompositor *compositor,
 
   if (hidden)
     {
-      /* FIXME: There needs to be a way to queue this if there is an effect
-       * in progress for this window */
-      if (clutter_actor_get_parent (CLUTTER_ACTOR (cw)) != info->hidden_group)
-	clutter_actor_reparent (CLUTTER_ACTOR (cw),
-				info->hidden_group);
+      if (effect_in_progress (cw, TRUE))
+	{
+	  priv->hide_after_effect = TRUE;
+	}
+      else
+	{
+	  if (clutter_actor_get_parent (CLUTTER_ACTOR (cw)) != info->hidden_group)
+	    {
+	      clutter_actor_reparent (CLUTTER_ACTOR (cw),
+				      info->hidden_group);
+	    }
+	}
     }
   else
     {
+      priv->hide_after_effect = FALSE;
       if (clutter_actor_get_parent (CLUTTER_ACTOR (cw)) != info->window_group)
 	clutter_actor_reparent (CLUTTER_ACTOR (cw),
 				info->window_group);
