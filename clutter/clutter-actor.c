@@ -7224,11 +7224,11 @@ clutter_actor_set_shader (ClutterActor  *self,
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
   g_return_val_if_fail (shader == NULL || CLUTTER_IS_SHADER (shader), FALSE);
 
-  /* if shader passed in is NULL we destroy the shader */
-  if (shader == NULL)
-    {
-      destroy_shader_data (self);
-    }
+  if (shader)
+    g_object_ref (shader);
+  else
+    /* if shader passed in is NULL we destroy the shader */
+    destroy_shader_data (self);
 
   actor_priv = self->priv;
   shader_data = actor_priv->shader_data;
@@ -7242,15 +7242,9 @@ clutter_actor_set_shader (ClutterActor  *self,
                                shader_value_free);
     }
   if (shader_data->shader)
-    {
-      g_object_unref (shader_data->shader);
-      shader_data->shader = NULL;
-    }
+    g_object_unref (shader_data->shader);
 
-  if (shader)
-    {
-      shader_data->shader = g_object_ref (shader);
-    }
+  shader_data->shader = shader;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);

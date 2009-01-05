@@ -221,6 +221,9 @@ set_parent_texture (ClutterCloneTexture *ctexture,
   ClutterActor *actor = CLUTTER_ACTOR (ctexture);
   gboolean was_visible = CLUTTER_ACTOR_IS_VISIBLE (ctexture);
 
+  if (priv->parent_texture == texture)
+    return;
+
   if (priv->parent_texture)
     {
       g_object_unref (priv->parent_texture);

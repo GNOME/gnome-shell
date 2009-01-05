@@ -395,6 +395,9 @@ clutter_alpha_set_timeline (ClutterAlpha    *alpha,
   
   priv = alpha->priv;
 
+  if (priv->timeline == timeline)
+    return;
+
   if (priv->timeline)
     {
       g_signal_handlers_disconnect_by_func (priv->timeline,
