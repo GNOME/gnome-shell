@@ -780,12 +780,11 @@ clutter_animation_get_actor (ClutterAnimation *animation)
 }
 
 static inline void
-clutter_animation_set_mode_internal (ClutterAnimation *animation)
+clutter_animation_set_mode_internal (ClutterAnimation *animation,
+                                     ClutterAlpha     *alpha)
 {
   ClutterAnimationPrivate *priv = animation->priv;
-  ClutterAlpha *alpha;
 
-  alpha = clutter_animation_get_alpha (animation);
   if (alpha)
     clutter_alpha_set_mode (alpha, priv->mode);
 }
@@ -810,7 +809,7 @@ clutter_animation_set_mode (ClutterAnimation     *animation,
   priv = animation->priv;
 
   priv->mode = mode;
-  clutter_animation_set_mode_internal (animation);
+  clutter_animation_set_mode_internal (animation, priv->alpha);
 
   g_object_notify (G_OBJECT (animation), "mode");
 }
@@ -1066,7 +1065,7 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
 
       alpha = clutter_alpha_new ();
       clutter_alpha_set_timeline (alpha, timeline);
-      clutter_animation_set_mode_internal (animation);
+      clutter_animation_set_mode_internal (animation, alpha);
     }
 
   priv->alpha = g_object_ref_sink (alpha);
