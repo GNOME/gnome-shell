@@ -452,7 +452,7 @@ update_pango_context (ClutterBackend *backend,
 PangoContext *
 _clutter_context_get_pango_context (ClutterMainContext *self)
 {
-  if (G_LIKELY (self->pango_context))
+  if (G_UNLIKELY (self->pango_context == NULL))
     {
       PangoContext *context;
 
