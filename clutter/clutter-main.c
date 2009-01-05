@@ -424,21 +424,20 @@ clutter_get_text_direction (void)
 }
 
 static void
-update_pango_context (ClutterBackend     *backend,
-                      ClutterMainContext *main_context)
+update_pango_context (ClutterBackend *backend,
+                      PangoContext   *context)
 {
-  PangoContext *context = main_context->pango_context;
   PangoFontDescription *font_desc;
   cairo_font_options_t *font_options;
   const gchar *font_name;
   gdouble resolution;
 
   font_name = clutter_backend_get_font_name (backend);
+  font_options = clutter_backend_get_font_options (backend);
+  resolution = clutter_backend_get_resolution (backend);
+
   font_desc = pango_font_description_from_string (font_name);
 
-  font_options = clutter_backend_get_font_options (backend);
-
-  resolution = clutter_backend_get_resolution (backend);
   if (resolution < 0)
     resolution = 96.0; /* fall back */
 
@@ -451,25 +450,34 @@ update_pango_context (ClutterBackend     *backend,
 }
 
 PangoContext *
+_clutter_context_get_pango_context (ClutterMainContext *self)
+{
+  if (G_LIKELY (self->pango_context))
+    {
+      PangoContext *context;
+
+      context = cogl_pango_font_map_create_context (self->font_map);
+      self->pango_context = context;
+
+      g_signal_connect (self->backend, "resolution-changed",
+                        G_CALLBACK (update_pango_context),
+                        self->pango_context);
+      g_signal_connect (self->backend, "font-changed",
+                        G_CALLBACK (update_pango_context),
+                        self->pango_context);
+    }
+
+  update_pango_context (self->backend, self->pango_context);
+
+  return self->pango_context;
+}
+
+PangoContext *
 _clutter_context_create_pango_context (ClutterMainContext *self)
 {
   PangoContext *context;
 
-  if (G_LIKELY (self->pango_context != NULL))
-    context = self->pango_context;
-  else
-    {
-      context = cogl_pango_font_map_create_context (self->font_map);
-      self->pango_context = context;
-    }
-
-  g_signal_connect (self->backend, "resolution-changed",
-                    G_CALLBACK (update_pango_context),
-                    self);
-  g_signal_connect (self->backend, "font-changed",
-                    G_CALLBACK (update_pango_context),
-                    self);
-
+  context = cogl_pango_font_map_create_context (self->font_map);
   update_pango_context (self->backend, self);
 
   return context;
