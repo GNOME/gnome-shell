@@ -478,7 +478,7 @@ _clutter_context_create_pango_context (ClutterMainContext *self)
   PangoContext *context;
 
   context = cogl_pango_font_map_create_context (self->font_map);
-  update_pango_context (self->backend, self);
+  update_pango_context (self->backend, context);
 
   return context;
 }
