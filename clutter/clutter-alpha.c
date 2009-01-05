@@ -565,12 +565,12 @@ clutter_alpha_set_mode (ClutterAlpha      *alpha,
 
   priv = alpha->priv;
 
-  priv->mode = mode;
-
   /* sanity check to avoid getting an out of sync enum/function mapping */
   g_assert (animation_modes[mode].mode == mode);
   if (G_LIKELY (animation_modes[mode].func != NULL))
     clutter_alpha_set_func (alpha, animation_modes[mode].func, NULL, NULL);
+
+  priv->mode = mode;
 
   g_object_notify (G_OBJECT (alpha), "mode");
 }
