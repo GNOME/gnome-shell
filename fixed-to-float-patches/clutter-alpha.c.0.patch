@@ -1,5 +1,5 @@
 diff --git a/clutter/clutter-alpha.c b/clutter/clutter-alpha.c
-index 3e4df4d..74a5c7a 100644
+index 3e4df4d..d508631 100644
 --- a/clutter/clutter-alpha.c
 +++ b/clutter/clutter-alpha.c
 @@ -694,6 +694,11 @@ clutter_ramp_func (ClutterAlpha *alpha,
@@ -44,7 +44,7 @@ index 3e4df4d..74a5c7a 100644
  
    CLUTTER_NOTE (ALPHA, "sine: %2f\n", CLUTTER_FIXED_TO_DOUBLE (sine));
  
-@@ -803,9 +803,25 @@ guint32
+@@ -803,9 +803,28 @@ guint32
  clutter_sine_func (ClutterAlpha *alpha,
                     gpointer      dummy)
  {
@@ -62,9 +62,12 @@ index 3e4df4d..74a5c7a 100644
 +  radians = ((float)current_frame_num / n_frames) * (2.0 * G_PI);
 +  sine = sinf (radians);
 +
++  /* shift from range [-1, 1] -> [0, 1] */
++  sine = (sine + 1.0) / 2.0;
++
 +  CLUTTER_NOTE (ALPHA, "sine: %2f\n", sine);
 +
-+  return COGL_FLOAT_TO_INT ((sine * CLUTTER_ALPHA_MAX_ALPHA));
++  return sine * CLUTTER_ALPHA_MAX_ALPHA;
 +#elif 0
      return sinc_func (alpha, 2.0, 1.0);
 -#else
@@ -72,7 +75,7 @@ index 3e4df4d..74a5c7a 100644
      /* 2.0 above represents full circle */
      return sincx1024_func (alpha, 1024, 1.0);
  #endif
-@@ -839,18 +855,17 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
+@@ -839,18 +858,17 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
    ClutterTimeline * timeline;
    gint              frame;
    gint              n_frames;
@@ -86,17 +89,17 @@ index 3e4df4d..74a5c7a 100644
    n_frames = clutter_timeline_get_n_frames (timeline);
  
 -  x = 256 * frame / n_frames;
--
--  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
 +  radians = ((float)frame / n_frames) * (G_PI / 2);
 +  sine = sinf (radians);
  
+-  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
+-
 -  return ((guint32) sine) >> COGL_FIXED_Q;
 +  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
  }
  
  /**
-@@ -881,18 +896,17 @@ clutter_sine_dec_func (ClutterAlpha *alpha,
+@@ -881,18 +899,17 @@ clutter_sine_dec_func (ClutterAlpha *alpha,
    ClutterTimeline * timeline;
    gint              frame;
    gint              n_frames;
@@ -120,7 +123,7 @@ index 3e4df4d..74a5c7a 100644
  }
  
  /**
-@@ -923,18 +937,17 @@ clutter_sine_half_func (ClutterAlpha *alpha,
+@@ -923,18 +940,17 @@ clutter_sine_half_func (ClutterAlpha *alpha,
    ClutterTimeline *timeline;
    gint             frame;
    gint             n_frames;
@@ -134,17 +137,17 @@ index 3e4df4d..74a5c7a 100644
    n_frames = clutter_timeline_get_n_frames (timeline);
  
 -  x = 512 * frame / n_frames;
+-
+-  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
 +  radians = ((float)frame / n_frames) * G_PI;
 +  sine = sinf (radians);
  
--  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
--
 -  return ((guint32) sine) >> COGL_FIXED_Q;
 +  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
  }
  
  /**
-@@ -959,19 +972,17 @@ clutter_sine_in_func (ClutterAlpha *alpha,
+@@ -959,19 +975,20 @@ clutter_sine_in_func (ClutterAlpha *alpha,
    ClutterTimeline *timeline;
    gint             frame;
    gint             n_frames;
@@ -159,17 +162,19 @@ index 3e4df4d..74a5c7a 100644
  
 -  /* XXX- if we use 768 we overflow */
 -  x = 256 * frame / n_frames + 767;
--
--  sine = (sinf (x) + 1) * CLUTTER_ALPHA_MAX_ALPHA;
 +  radians = ((float)frame / n_frames) * (G_PI / 2);
-+  sine = sinf (radians - (G_PI / 2)) + 1.0;
++  sine = sinf (radians - (G_PI / 2));
+ 
+-  sine = (sinf (x) + 1) * CLUTTER_ALPHA_MAX_ALPHA;
++  /* shift from range [-1, 0] -> [0, 1] */
++  sine = sine + 1.0;
  
 -  return ((guint32) sine) >> COGL_FIXED_Q;
 +  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
  }
  
  /**
-@@ -995,18 +1006,17 @@ clutter_sine_out_func (ClutterAlpha *alpha,
+@@ -995,18 +1012,17 @@ clutter_sine_out_func (ClutterAlpha *alpha,
    ClutterTimeline *timeline;
    gint             frame;
    gint             n_frames;
@@ -183,17 +188,17 @@ index 3e4df4d..74a5c7a 100644
    n_frames = clutter_timeline_get_n_frames (timeline);
  
 -  x = 256 * frame / n_frames;
--
--  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
 +  radians = ((float)frame / n_frames) * (G_PI / 2);
 +  sine = sinf (radians);
  
+-  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
+-
 -  return ((guint32) sine) >> COGL_FIXED_Q;
 +  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
  }
  
  /**
-@@ -1031,18 +1041,17 @@ clutter_sine_in_out_func (ClutterAlpha *alpha,
+@@ -1031,18 +1047,20 @@ clutter_sine_in_out_func (ClutterAlpha *alpha,
    ClutterTimeline *timeline;
    gint             frame;
    gint             n_frames;
@@ -208,16 +213,18 @@ index 3e4df4d..74a5c7a 100644
  
 -  x = -256 * frame / n_frames + 256;
 +  radians = ((float)frame / n_frames) * G_PI;
-+  sine = (sinf (radians - (G_PI / 2)) + 1.0) / 2.0;
++  sine = sinf (radians - (G_PI / 2));
  
 -  sine = (sinf (x) + 1) / 2 * CLUTTER_ALPHA_MAX_ALPHA;
--
++  /* shift from range [-1, 1] -> [0, 1] */
++  sine = (sine + 1.0) / 2.0;
+ 
 -  return ((guint32) sine) >> COGL_FIXED_Q;
 +  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
  }
  
  /**
-@@ -1201,9 +1210,9 @@ clutter_exp_inc_func (ClutterAlpha *alpha,
+@@ -1201,9 +1219,9 @@ clutter_exp_inc_func (ClutterAlpha *alpha,
     * 
     *   (2^x_alpha_max) - 1 == CLUTTER_ALPHA_MAX_ALPHA
     */
@@ -230,7 +237,7 @@ index 3e4df4d..74a5c7a 100644
    
    timeline = clutter_alpha_get_timeline (alpha);
    frame    = clutter_timeline_get_current_frame (timeline);
-@@ -1211,7 +1220,7 @@ clutter_exp_inc_func (ClutterAlpha *alpha,
+@@ -1211,7 +1229,7 @@ clutter_exp_inc_func (ClutterAlpha *alpha,
  
    x =  x_alpha_max * frame / n_frames;
  
@@ -239,7 +246,7 @@ index 3e4df4d..74a5c7a 100644
  
    return result;
  }
-@@ -1252,9 +1261,9 @@ clutter_exp_dec_func (ClutterAlpha *alpha,
+@@ -1252,9 +1270,9 @@ clutter_exp_dec_func (ClutterAlpha *alpha,
     * 
     *   (2^x_alpha_max) - 1 == CLUTTER_ALPHA_MAX_ALPHA
     */
@@ -252,7 +259,7 @@ index 3e4df4d..74a5c7a 100644
    
    timeline = clutter_alpha_get_timeline (alpha);
    frame    = clutter_timeline_get_current_frame (timeline);
-@@ -1262,7 +1271,7 @@ clutter_exp_dec_func (ClutterAlpha *alpha,
+@@ -1262,7 +1280,7 @@ clutter_exp_dec_func (ClutterAlpha *alpha,
  
    x =  (x_alpha_max * (n_frames - frame)) / n_frames;
  
