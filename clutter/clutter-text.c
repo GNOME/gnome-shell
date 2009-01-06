@@ -1388,16 +1388,12 @@ clutter_text_real_del_next (ClutterText         *self,
     return TRUE;
 
   pos = priv->position;
-  len = g_utf8_strlen (priv->text, -1);
+  len = priv->n_chars;
 
   if (len && pos != -1 && pos < len)
-    {
-      clutter_text_delete_text (self, pos, pos + 1);
+    clutter_text_delete_text (self, pos, pos + 1);
 
-      return TRUE;
-    }
-
-  return FALSE;
+  return TRUE;
 }
 
 static gboolean
@@ -1414,7 +1410,7 @@ clutter_text_real_del_prev (ClutterText         *self,
     return TRUE;
 
   pos = priv->position;
-  len = g_utf8_strlen (priv->text, -1);
+  len = priv->n_chars;
 
   if (pos != 0 && len != 0)
     {
@@ -1422,19 +1418,19 @@ clutter_text_real_del_prev (ClutterText         *self,
         {
           clutter_text_set_cursor_position (self, len - 1);
           clutter_text_set_selection_bound (self, len - 1);
+
+          clutter_text_delete_text (self, len - 1, len);
         }
       else
         {
           clutter_text_set_cursor_position (self, pos - 1);
           clutter_text_set_selection_bound (self, pos - 1);
+
+          clutter_text_delete_text (self, pos - 1, pos);
         }
-
-      clutter_text_delete_text (self, pos - 1, pos);
-
-      return TRUE;
     }
 
-  return FALSE;
+  return TRUE;
 }
 
 static gboolean
@@ -3480,18 +3476,15 @@ clutter_text_delete_text (ClutterText *self,
   if (!priv->text)
     return;
 
-  if (end_pos == -1)
-    {
-      start_bytes = offset_to_bytes (priv->text,
-                                     g_utf8_strlen (priv->text, -1) - 1);
-      end_bytes = offset_to_bytes (priv->text,
-                                   g_utf8_strlen (priv->text, -1));
-    }
+  if (start_pos == 0)
+    start_bytes = 0;
   else
-    {
-      start_bytes = offset_to_bytes (priv->text, start_pos);
-      end_bytes = offset_to_bytes (priv->text, end_pos);
-    }
+    start_bytes = offset_to_bytes (priv->text, start_pos);
+
+  if (end_pos == -1)
+    end_bytes = offset_to_bytes (priv->text, priv->n_chars);
+  else
+    end_bytes = offset_to_bytes (priv->text, end_pos);
 
   new = g_string_new (priv->text);
   new = g_string_erase (new, start_bytes, end_bytes - start_bytes);
