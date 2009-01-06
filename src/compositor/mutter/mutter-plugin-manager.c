@@ -258,7 +258,8 @@ mutter_plugin_manager_load (MutterPluginManager *plugin_mgr)
                */
               use_succeeded = g_type_module_use (G_TYPE_MODULE (module));
 
-              if ((p = mutter_plugin_load (plugin_mgr, module, params)))
+              if (use_succeeded &&
+                  (p = mutter_plugin_load (plugin_mgr, module, params)))
                 {
                   plugin_mgr->plugins = g_list_prepend (plugin_mgr->plugins, p);
                 }
