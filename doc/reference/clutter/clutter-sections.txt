@@ -1626,8 +1626,8 @@ clutter_text_set_ellipsize
 clutter_text_get_ellipsize
 clutter_text_set_font_name
 clutter_text_get_font_name
-clutter_text_set_invisible_char
-clutter_text_get_invisible_char
+clutter_text_set_password_char
+clutter_text_get_password_char
 clutter_text_set_justify
 clutter_text_get_justify
 clutter_text_get_layout
@@ -1643,8 +1643,6 @@ clutter_text_set_selection
 clutter_text_get_selection
 clutter_text_set_selection_bound
 clutter_text_get_selection_bound
-clutter_text_set_text_visible
-clutter_text_get_text_visible
 clutter_text_set_use_markup
 clutter_text_get_use_markup
 
