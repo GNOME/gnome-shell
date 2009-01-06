@@ -1142,16 +1142,16 @@ clutter_init_real (GError **error)
 
 static GOptionEntry clutter_args[] = {
   { "clutter-show-fps", 0, 0, G_OPTION_ARG_NONE, &clutter_show_fps,
-    "Show frames per second", NULL },
+    N_("Show frames per second"), NULL },
   { "clutter-default-fps", 0, 0, G_OPTION_ARG_INT, &clutter_default_fps,
-    "Default frame rate", "FPS" },
+    N_("Default frame rate"), "FPS" },
   { "g-fatal-warnings", 0, 0, G_OPTION_ARG_NONE, &clutter_fatal_warnings,
-    "Make all warnings fatal", NULL },
+    N_("Make all warnings fatal"), NULL },
 #ifdef CLUTTER_ENABLE_DEBUG
   { "clutter-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_debug_cb,
-    "Clutter debugging flags to set", "FLAGS" },
+    N_("Clutter debugging flags to set"), "FLAGS" },
   { "clutter-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_no_debug_cb,
-    "Clutter debugging flags to unset", "FLAGS" },
+    N_("Clutter debugging flags to unset"), "FLAGS" },
 #endif /* CLUTTER_ENABLE_DEBUG */
   { NULL, },
 };
@@ -1294,13 +1294,14 @@ clutter_get_option_group (void)
   context = clutter_context_get_default ();
 
   group = g_option_group_new ("clutter",
-                              "Clutter Options",
-                              "Show Clutter Options",
+                              _("Clutter Options"),
+                              _("Show Clutter Options"),
                               NULL,
                               NULL);
 
   g_option_group_set_parse_hooks (group, pre_parse_hook, post_parse_hook);
   g_option_group_add_entries (group, clutter_args);
+  g_option_group_set_translation_domain (group, GETTEXT_PACKAGE);
 
   /* add backend-specific options */
   _clutter_backend_add_options (context->backend, group);
@@ -2117,6 +2118,9 @@ clutter_base_init (void)
       GType foo; /* Quiet gcc */
 
       initialised = TRUE;
+
+      bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+      bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
       /* initialise GLib type system */
       g_type_init ();

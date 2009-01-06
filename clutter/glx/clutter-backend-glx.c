@@ -29,6 +29,8 @@
 #include <unistd.h>
 #endif
 
+#include <glib/gi18n-lib.h>
+
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <fcntl.h>
@@ -150,7 +152,7 @@ static const GOptionEntry entries[] =
   { "vblank", 0, 
     0, 
     G_OPTION_ARG_STRING, &clutter_vblank_name,
-    "VBlank method to be used (none, dri or glx)", "METHOD" 
+    N_("VBlank method to be used (none, dri or glx)"), "METHOD"
   },
   { NULL }
 };
