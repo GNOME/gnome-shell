@@ -406,19 +406,34 @@ _clutter_do_pick (ClutterStage   *stage,
 static PangoDirection
 clutter_get_text_direction (void)
 {
-  const gchar *direction;
   PangoDirection dir = PANGO_DIRECTION_LTR;
+  const gchar *direction;
 
   direction = g_getenv ("CLUTTER_TEXT_DIRECTION");
   if (direction && *direction != '\0')
     {
       if (strcmp (direction, "rtl") == 0)
         dir = PANGO_DIRECTION_RTL;
-      else
+      else if (strcmp (direction, "ltr") == 0)
         dir = PANGO_DIRECTION_LTR;
     }
   else
-    dir = PANGO_DIRECTION_LTR;
+    {
+      /* Translate to default:RTL if you want your widgets
+       * to be RTL, otherwise translate to default:LTR.
+       *
+       * Do *not* translate it to "predefinito:LTR": if it
+       * it isn't default:LTR or default:RTL it will not work
+       */
+      char *e = _("default:LTR");
+
+      if (strcmp (e, "default:RTL") == 0)
+        dir = PANGO_DIRECTION_RTL;
+      else if (strcmp (e, "default:LTR") == 0)
+        dir = PANGO_DIRECTION_LTR;
+      else
+        g_warning ("Whoever translated default:LTR did so wrongly.");
+    }
 
   return dir;
 }
