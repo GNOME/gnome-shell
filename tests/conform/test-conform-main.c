@@ -82,6 +82,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/text", test_text_event);
   TEST_CONFORM_SIMPLE ("/text", test_text_get_chars);
   TEST_CONFORM_SIMPLE ("/text", test_text_cache);
+  TEST_CONFORM_SIMPLE ("/text", test_text_password_char);
 
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_size);
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_color);

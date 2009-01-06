@@ -301,6 +301,25 @@ test_text_delete_text (TestConformSimpleFixture *fixture,
   clutter_actor_destroy (CLUTTER_ACTOR (text));
 }
 
+void
+test_text_password_char (TestConformSimpleFixture *fixture,
+                         gconstpointer data)
+{
+  ClutterText *text = CLUTTER_TEXT (clutter_text_new ());
+
+  g_assert_cmpint (clutter_text_get_password_char (text), ==, 0);
+
+  clutter_text_set_text (text, "hello");
+  g_assert_cmpstr (clutter_text_get_text (text), ==, "hello");
+
+  clutter_text_set_password_char (text, '*');
+  g_assert_cmpint (clutter_text_get_password_char (text), ==, '*');
+
+  g_assert_cmpstr (clutter_text_get_text (text), ==, "hello");
+
+  clutter_actor_destroy (CLUTTER_ACTOR (text));
+}
+
 static void
 init_event (ClutterKeyEvent *event)
 {
