@@ -181,12 +181,9 @@ void                  clutter_text_set_selection       (ClutterText        *self
                                                         gssize              start_pos,
                                                         gssize              end_pos);
 gchar *               clutter_text_get_selection       (ClutterText        *self);
-void                  clutter_text_set_text_visible    (ClutterText        *self,
-                                                        gboolean            visible);
-gboolean              clutter_text_get_text_visible    (ClutterText        *self);
-void                  clutter_text_set_invisible_char  (ClutterText        *self,
+void                  clutter_text_set_password_char   (ClutterText        *self,
                                                         gunichar            wc);
-gunichar              clutter_text_get_invisible_char  (ClutterText        *self);
+gunichar              clutter_text_get_password_char   (ClutterText        *self);
 void                  clutter_text_set_max_length      (ClutterText        *self,
                                                         gint                max);
 gint                  clutter_text_get_max_length      (ClutterText        *self);

@@ -123,7 +123,6 @@ struct _ClutterTextPrivate
   guint selectable       : 1;
   guint in_select_drag   : 1;
   guint cursor_color_set : 1;
-  guint text_visible     : 1;
 
   /* current cursor position */
   gint position;
@@ -149,7 +148,7 @@ struct _ClutterTextPrivate
 
   gint max_length;
 
-  gunichar priv_char;
+  gunichar password_char;
 };
 
 enum
@@ -175,8 +174,7 @@ enum
   PROP_EDITABLE,
   PROP_SELECTABLE,
   PROP_ACTIVATABLE,
-  PROP_TEXT_VISIBLE,
-  PROP_INVISIBLE_CHAR,
+  PROP_PASSWORD_CHAR,
   PROP_MAX_LENGTH
 };
 
@@ -261,7 +259,7 @@ clutter_text_create_layout_no_cache (ClutterText *text,
     {
       if (!priv->use_markup)
         {
-          if (priv->text_visible)
+          if (G_LIKELY (priv->password_char == 0))
             pango_layout_set_text (layout, priv->text, priv->n_bytes);
           else
             {
@@ -270,10 +268,7 @@ clutter_text_create_layout_no_cache (ClutterText *text,
               gchar buf[7];
               gint char_len, i;
 
-              if (priv->priv_char != 0)
-                invisible_char = priv->priv_char;
-              else
-                invisible_char = ' ';
+              invisible_char = priv->password_char;
 
               /* we need to convert the string built of invisible
                * characters into UTF-8 for it to be fed to the Pango
@@ -459,20 +454,18 @@ clutter_text_position_to_coords (ClutterText *self,
 {
   ClutterTextPrivate *priv = self->priv;
   PangoRectangle rect;
-  gint priv_char_bytes;
+  gint password_char_bytes = 1;
   gint index_;
 
-  if (!priv->text_visible && priv->priv_char)
-    priv_char_bytes = g_unichar_to_utf8 (priv->priv_char, NULL);
-  else
-    priv_char_bytes = 1;
+  if (priv->password_char != 0)
+    password_char_bytes = g_unichar_to_utf8 (priv->password_char, NULL);
 
   if (position == -1)
     {
-      if (priv->text_visible)
+      if (priv->password_char == 0)
         index_ = priv->n_bytes;
       else
-        index_ = priv->n_chars * priv_char_bytes;
+        index_ = priv->n_chars * password_char_bytes;
     }
   else if (position == 0)
     {
@@ -480,10 +473,10 @@ clutter_text_position_to_coords (ClutterText *self,
     }
   else
     {
-      if (priv->text_visible)
+      if (priv->password_char == 0)
         index_ = offset_to_bytes (priv->text, position);
       else
-        index_ = priv->position * priv_char_bytes;
+        index_ = priv->position * password_char_bytes;
     }
 
   pango_layout_get_cursor_pos (clutter_text_get_layout (self), index_,
@@ -634,12 +627,8 @@ clutter_text_set_property (GObject      *gobject,
       clutter_text_set_selectable (self, g_value_get_boolean (value));
       break;
 
-    case PROP_TEXT_VISIBLE:
-      clutter_text_set_text_visible (self, g_value_get_boolean (value));
-      break;
-
-    case PROP_INVISIBLE_CHAR:
-      clutter_text_set_invisible_char (self, g_value_get_uint (value));
+    case PROP_PASSWORD_CHAR:
+      clutter_text_set_password_char (self, g_value_get_uint (value));
       break;
 
     case PROP_MAX_LENGTH:
@@ -709,12 +698,8 @@ clutter_text_get_property (GObject    *gobject,
       g_value_set_boolean (value, priv->activatable);
       break;
 
-    case PROP_TEXT_VISIBLE:
-      g_value_set_boolean (value, priv->text_visible);
-      break;
-
-    case PROP_INVISIBLE_CHAR:
-      g_value_set_uint (value, priv->priv_char);
+    case PROP_PASSWORD_CHAR:
+      g_value_set_uint (value, priv->password_char);
       break;
 
     case PROP_MAX_LENGTH:
@@ -1791,38 +1776,20 @@ clutter_text_class_init (ClutterTextClass *klass)
   g_object_class_install_property (gobject_class, PROP_JUSTIFY, pspec);
 
   /**
-   * ClutterText:text-visible:
+   * ClutterText:password-char:
    *
-   * Whether the contents of the #ClutterText actor should be visible
-   * or substituted by a Unicode character, like in password text fields.
-   * The Unicode character is set using #ClutterText:invisible-char.
-   *
-   * Since: 1.0
-   */
-  pspec = g_param_spec_boolean ("text-visible",
-                                "Text Visible",
-                                "Whether the text should be visible "
-                                "or subsituted with an invisible "
-                                "Unicode character",
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_TEXT_VISIBLE, pspec);
-
-  /**
-   * ClutterText:invisible-char:
-   *
-   * The Unicode character used to render the contents of the #ClutterText
-   * actor if #ClutterText:text-invisible is set to %TRUE.
+   * If non-zero, the character that should be used in place of
+   * the actual text in a password text actor.
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_unichar ("invisible-char",
-                                "Invisible Character",
-                                "The Unicode character used when the "
-                                "text is set as not visible",
-                                '*',
+  pspec = g_param_spec_unichar ("password-char",
+                                "Password Character",
+                                "If non-zero, use this character to "
+                                "display the actor's contents",
+                                0,
                                 CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_INVISIBLE_CHAR, pspec);
+  g_object_class_install_property (gobject_class, PROP_PASSWORD_CHAR, pspec);
 
   /**
    * ClutterText:max-length:
@@ -2015,8 +1982,7 @@ clutter_text_init (ClutterText *self)
 
   priv->cursor_color_set = FALSE;
 
-  priv->text_visible = TRUE;
-  priv->priv_char = '*';
+  priv->password_char = 0;
 
   priv->max_length = 0;
 
@@ -3290,23 +3256,21 @@ clutter_text_get_cursor_size (ClutterText *self)
 }
 
 /**
- * clutter_text_set_text_visible:
+ * clutter_text_set_password_char:
  * @self: a #ClutterText
- * @visible: %TRUE if the contents of the actor are displayed as plain text.
+ * @wc: a Unicode character, or 0
  *
- * Sets whether the contents of the text actor are visible or not. When
- * visibility is set to %FALSE, characters are displayed as the invisible
- * char, and will also appear that way when the text in the text actor is
- * copied elsewhere.
+ * Sets the character to use in place of the actual text in a
+ * password text actor.
  *
- * The default invisible char is the asterisk '*', but it can be changed with
- * clutter_text_set_invisible_char().
+ * If @wc is 0 the text will be displayed as it is entered in the
+ * #ClutterText actor.
  *
  * Since: 1.0
  */
 void
-clutter_text_set_text_visible (ClutterText *self,
-                               gboolean     visible)
+clutter_text_set_password_char (ClutterText *self,
+                                gunichar     wc)
 {
   ClutterTextPrivate *priv;
 
@@ -3314,88 +3278,35 @@ clutter_text_set_text_visible (ClutterText *self,
 
   priv = self->priv;
 
-  if (priv->text_visible != visible)
+  if (priv->password_char != wc)
     {
-      priv->text_visible = visible;
+      priv->password_char = wc;
 
       clutter_text_dirty_cache (self);
-
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "text-visible");
+      g_object_notify (G_OBJECT (self), "password-char");
     }
 }
 
 /**
- * clutter_text_get_text_visible:
+ * clutter_text_get_password_char:
  * @self: a #ClutterText
  *
- * Retrieves the actor's text visibility.
+ * Retrieves the character to use in place of the actual text
+ * as set by clutter_text_set_password_char().
  *
- * Return value: %TRUE if the contents of the actor are displayed as plaintext
- *
- * Since: 1.0
- */
-gboolean
-clutter_text_get_text_visible (ClutterText *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_TEXT (self), TRUE);
-
-  return self->priv->text_visible;
-}
-
-/**
- * clutter_text_set_invisible_char:
- * @self: a #ClutterText
- * @wc: a Unicode character
- *
- * Sets the character to use in place of the actual text when
- * clutter_text_set_text_visible() has been called to set text visibility
- * to %FALSE. i.e. this is the character used in "password mode" to show the
- * user how many characters have been typed. The default invisible char is an
- * asterisk ('*'). If you set the invisible char to 0, then the user will get
- * no feedback at all: there will be no text on the screen as they type.
- *
- * Since: 1.0
- */
-void
-clutter_text_set_invisible_char (ClutterText *self,
-                                 gunichar     wc)
-{
-  ClutterTextPrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_TEXT (self));
-
-  priv = self->priv;
-
-  priv->priv_char = wc;
-
-  if (priv->text_visible)
-    {
-      clutter_text_dirty_cache (self);
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
-    }
-
-  g_object_notify (G_OBJECT (self), "invisible-char");
-}
-
-/**
- * clutter_text_get_invisible_char:
- * @self: a #ClutterText
- *
- * Returns the character to use in place of the actual text when
- * the #ClutterText:text-visibility property is set to %FALSE.
- *
- * Return value: a Unicode character
+ * Return value: a Unicode character or 0 if the password
+ *   character is not set
  *
  * Since: 1.0
  */
 gunichar
-clutter_text_get_invisible_char (ClutterText *self)
+clutter_text_get_password_char (ClutterText *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_TEXT (self), '*');
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), 0);
 
-  return self->priv->priv_char;
+  return self->priv->password_char;
 }
 
 /**
