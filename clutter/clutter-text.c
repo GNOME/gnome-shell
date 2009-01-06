@@ -1143,7 +1143,7 @@ clutter_text_real_move_left (ClutterText         *self,
   gint pos = priv->position;
   gint len;
 
-  len = g_utf8_strlen (priv->text, -1);
+  len = priv->n_chars;
 
   if (pos != 0 && len !=0)
     {
@@ -1169,7 +1169,7 @@ clutter_text_real_move_right (ClutterText         *self,
   gint pos = priv->position;
   gint len;
 
-  len = g_utf8_strlen (priv->text, -1);
+  len = priv->n_chars;
 
   if (pos != -1 && len !=0)
     {
@@ -3190,7 +3190,7 @@ clutter_text_set_cursor_position (ClutterText *self,
 
   priv = self->priv;
 
-  len = g_utf8_strlen (priv->text, -1);
+  len = priv->n_chars;
 
   if (position < 0 || position >= len)
     priv->position = -1;
@@ -3335,7 +3335,7 @@ clutter_text_set_max_length (ClutterText *self,
   if (priv->max_length != max)
     {
       if (max < 0)
-        max = g_utf8_strlen (priv->text, -1);
+        max = priv->n_chars;
 
       priv->max_length = max;
 
@@ -3528,7 +3528,7 @@ clutter_text_delete_chars (ClutterText *self,
   if (!priv->text)
     return;
 
-  len = g_utf8_strlen (priv->text, -1);
+  len = priv->n_chars;
   new = g_string_new (priv->text);
 
   if (priv->position == -1)
