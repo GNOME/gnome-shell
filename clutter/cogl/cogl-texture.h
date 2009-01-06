@@ -409,12 +409,12 @@ void            cogl_texture_polygon          (CoglHandle          handle,
  * layers in the current source material then default texture coordinates
  * [0.0, 0.0, 1.0, 1.0] are generated.
  */
-void cogl_material_rectangle (CoglFixed   x1,
-                              CoglFixed   y1,
-                              CoglFixed   x2,
-                              CoglFixed   y2,
-                              gint        tex_coords_len,
-                              CoglFixed  *tex_coords);
+void cogl_material_rectangle (CoglFixed        x1,
+                              CoglFixed        y1,
+                              CoglFixed        x2,
+                              CoglFixed        y2,
+                              gint             tex_coords_len,
+                              const CoglFixed *tex_coords);
 
 G_END_DECLS
 

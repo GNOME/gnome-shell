@@ -2407,12 +2407,12 @@ cogl_texture_polygon (CoglHandle         handle,
 }
 
 void
-cogl_material_rectangle (CoglFixed   x1,
-			 CoglFixed   y1,
-			 CoglFixed   x2,
-			 CoglFixed   y2,
-                         gint        user_tex_coords_len,
-			 CoglFixed  *user_tex_coords)
+cogl_material_rectangle (CoglFixed        x1,
+			 CoglFixed        y1,
+			 CoglFixed        x2,
+			 CoglFixed        y2,
+                         gint             user_tex_coords_len,
+			 const CoglFixed *user_tex_coords)
 {
   CoglHandle	 material;
   const GList	*layers;
@@ -2487,7 +2487,7 @@ cogl_material_rectangle (CoglFixed   x1,
     {
       CoglHandle layer = valid_layers[i];
       CoglHandle texture = cogl_material_layer_get_texture (layer);
-      CoglFixed *in_tex_coords;
+      const CoglFixed *in_tex_coords;
       GLfloat *out_tex_coords = &tex_coords_buff[i * 8];
       GLuint gl_tex_handle;
 
