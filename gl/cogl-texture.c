@@ -2595,6 +2595,10 @@ cogl_material_rectangle (CoglFixed        x1,
       GE (glDisable (GL_TEXTURE_2D));
     }
 
+  /* The rest of Cogl expects the texture mode to be GL_MODULATE so we
+     need to restore that */
+  GE( glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) );
+
   /* XXX: a bit over precautious. For one we don't support lighting yet
    * so there's no real need to reset the material properties. */
 #if 0
