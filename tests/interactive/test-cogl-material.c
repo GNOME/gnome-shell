@@ -39,7 +39,7 @@ frame_cb (ClutterTimeline  *timeline,
   cogl_material_set_layer_matrix (state->material, 2, &state->tex_matrix);
 }
 
-static gboolean
+static void
 material_rectangle_paint (ClutterActor *actor, gpointer data)
 {
   TestMultiLayerMaterialState *state = data;
