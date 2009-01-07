@@ -29,7 +29,7 @@ set_next_gravity (ClutterActor *actor)
 
   eclass = g_type_class_ref (CLUTTER_TYPE_GRAVITY);
   evalue = g_enum_get_value (eclass, gravity);
-  clutter_label_set_text (CLUTTER_LABEL (label), evalue->value_nick);
+  clutter_text_set_text (CLUTTER_TEXT (label), evalue->value_nick);
   g_type_class_unref (eclass);
 
   if (++gindex >= G_N_ELEMENTS (gravities))
@@ -59,8 +59,8 @@ test_scale_main (int argc, char *argv[])
 
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
-  label = clutter_label_new_with_text ("Sans 20px", "");
-  clutter_label_set_color (CLUTTER_LABEL (label),
+  label = clutter_text_new_with_text ("Sans 20px", "");
+  clutter_text_set_color (CLUTTER_TEXT (label),
                            &(ClutterColor) { 0xff, 0xff, 0xff, 0xff });
   clutter_actor_set_position (label,
                               clutter_actor_get_x (rect),
