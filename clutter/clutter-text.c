@@ -262,7 +262,9 @@ clutter_text_create_layout_no_cache (ClutterText *text,
 
   if (priv->text)
     {
-      if (!priv->use_markup)
+      if (priv->use_markup && !priv->editable)
+        pango_layout_set_markup (layout, priv->text, -1);
+      else
         {
           if (G_LIKELY (priv->password_char == 0))
             pango_layout_set_text (layout, priv->text, priv->n_bytes);
@@ -290,8 +292,6 @@ clutter_text_create_layout_no_cache (ClutterText *text,
               g_string_free (str, TRUE);
             }
         }
-      else
-        pango_layout_set_markup (layout, priv->text, -1);
     }
 
   if (allocation_width > 0 &&
@@ -3144,6 +3144,9 @@ clutter_text_get_alignment (ClutterText *self)
  *
  * Sets whether the contents of the #ClutterText actor contains markup
  * in <link linkend="PangoMarkupFormat">Pango's text markup language</link>.
+ *
+ * Calling this function on an editable #ClutterText will not cause
+ * the actor to parse any markup.
  *
  * Since: 1.0
  */
