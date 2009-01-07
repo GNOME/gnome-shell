@@ -51,9 +51,11 @@ find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_1/1.0/g' {} \;
 find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_0_5/0.5/g' {} \;
 find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_PI/G_PI/g' {} \;
 
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_angle_cos/cosf/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_angle_sin/sinf/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_angle_tan/tanf/g' {} \;
+find ./clutter -iname '*.[ch]' -exec sed -i -r 's/COGL_ANGLE_FROM_DEG \((.*)\),/\1,/g' {} \;
+
+find ./clutter -iname '*.[ch]' -exec perl -p -i -e "s|cogl_angle_cos \((.*?)\)|cosf (\1 * (G_PI/180.0))|;" {} \;
+find ./clutter -iname '*.[ch]' -exec perl -p -i -e "s|cogl_angle_sin \((.*?)\)|sinf (\1 * (G_PI/180.0))|;" {} \;
+find ./clutter -iname '*.[ch]' -exec perl -p -i -e "s|cogl_angle_tan \((.*?)\)|tanf (\1 * (G_PI/180.0))|;" {} \;
 
 #XXX: NB: cogl_fixed_div must be done before mul since there is a case were they
 #are nested which would otherwise break the assumption used here that the last
@@ -103,6 +105,15 @@ sed -i 's/CoglFixed/float/g' ./clutter/cogl/cogl.h.in
 sed -i 's/float:/CoglFixed:/g' clutter/cogl/cogl-types.h
 sed -i 's/gint32 float/gint32 CoglFixed/g' clutter/cogl/cogl-types.h
 git-checkout clutter/cogl/cogl-fixed.h clutter/cogl/common/cogl-fixed.c
+
+find ./clutter -iname '*.[ch]' -exec sed -i 's/CoglAngle/float/g' {} \;
+
+# maintain the existing CoglAngle code as utility code for applications:
+sed -i 's/float:/CoglAngle:/g' clutter/cogl/cogl-types.h
+sed -i 's/gint32 float/gint32 CoglAngle/g' clutter/cogl/cogl-types.h
+git-checkout clutter/cogl/cogl-fixed.h clutter/cogl/common/cogl-fixed.c
+
+find ./clutter -iname '*.[ch]' ! -iname 'clutter-fixed.h' -exec sed -i 's/ClutterAngle/float/g' {} \;
 
 echo "Cogl API to remove/replace with float versions:"
 find ./clutter/ -iname '*.c' -exec grep '^cogl_[a-zA-Z_]*x ' {} \; | cut -d' ' -f1|grep -v 'box$'|grep -v 'matrix$'
