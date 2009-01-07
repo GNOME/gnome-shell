@@ -187,6 +187,10 @@ gunichar              clutter_text_get_password_char   (ClutterText        *self
 void                  clutter_text_set_max_length      (ClutterText        *self,
                                                         gint                max);
 gint                  clutter_text_get_max_length      (ClutterText        *self);
+void                  clutter_text_set_single_line_mode (ClutterText *self,
+                                                         gboolean single_line);
+gboolean              clutter_text_get_single_line_mode (ClutterText *self);
+
 gboolean              clutter_text_activate            (ClutterText        *self);
 
 G_END_DECLS

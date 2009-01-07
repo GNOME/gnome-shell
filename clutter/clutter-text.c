@@ -135,6 +135,8 @@ struct _ClutterTextPrivate
    */
   gint x_pos;
 
+  gint text_x;
+
   /* the length of the text, in bytes */
   gint n_bytes;
 
@@ -175,7 +177,8 @@ enum
   PROP_SELECTABLE,
   PROP_ACTIVATABLE,
   PROP_PASSWORD_CHAR,
-  PROP_MAX_LENGTH
+  PROP_MAX_LENGTH,
+  PROP_SINGLE_LINE_MODE
 };
 
 enum
@@ -635,6 +638,10 @@ clutter_text_set_property (GObject      *gobject,
       clutter_text_set_max_length (self, g_value_get_int (value));
       break;
 
+    case PROP_SINGLE_LINE_MODE:
+      clutter_text_set_single_line_mode (self, g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
     }
@@ -706,6 +713,10 @@ clutter_text_get_property (GObject    *gobject,
       g_value_set_int (value, priv->max_length);
       break;
 
+    case PROP_SINGLE_LINE_MODE:
+      g_value_set_boolean (value, priv->single_line_mode);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
     }
@@ -768,8 +779,6 @@ cursor_paint (ClutterText *self)
                                     priv->text_color.blue,
                                     real_opacity);
         }
-
-      clutter_text_ensure_cursor_position (self);
 
       if (priv->position == 0)
         priv->cursor_pos.x -= 2;
@@ -997,6 +1006,8 @@ clutter_text_key_press (ClutterActor    *actor,
   return FALSE;
 }
 
+#define TEXT_PADDING    2
+
 static void
 clutter_text_paint (ClutterActor *self)
 {
@@ -1006,6 +1017,8 @@ clutter_text_paint (ClutterActor *self)
   ClutterActorBox alloc = { 0, };
   CoglColor color = { 0, };
   guint8 real_opacity;
+  gint text_x = priv->text_x;
+  gboolean clip_set = FALSE;
 
   if (priv->font_desc == NULL || priv->text == NULL)
     {
@@ -1015,23 +1028,81 @@ clutter_text_paint (ClutterActor *self)
       return;
     }
 
-  cursor_paint (text);
-
-  CLUTTER_NOTE (PAINT, "painting text (text:`%s')", priv->text);
+  clutter_text_ensure_cursor_position (text);
 
   clutter_actor_get_allocation_box (self, &alloc);
   layout = clutter_text_create_layout (text, alloc.x2 - alloc.x1);
 
+  if (priv->single_line_mode)
+    {
+      PangoRectangle logical_rect = { 0, };
+      gint actor_width, text_width;
+
+      pango_layout_get_extents (layout, NULL, &logical_rect);
+
+      cogl_clip_set (0, 0,
+                     CLUTTER_UNITS_TO_FIXED (alloc.x2 - alloc.x1),
+                     CLUTTER_UNITS_TO_FIXED (alloc.y2 - alloc.y1));
+      clip_set = TRUE;
+
+      actor_width = (CLUTTER_UNITS_TO_DEVICE (alloc.x2 - alloc.x1))
+                  - 2 * TEXT_PADDING;
+      text_width  = logical_rect.width / PANGO_SCALE;
+
+      if (actor_width < text_width)
+        {
+          gint cursor_x = priv->cursor_pos.x;
+
+          if (priv->position == -1)
+            {
+              text_x = actor_width - text_width;
+              priv->cursor_pos.x += text_x + TEXT_PADDING;
+            }
+          else if (priv->position == 0)
+            {
+              text_x = 0;
+            }
+          else
+            {
+              if (text_x <= 0)
+                {
+                  gint diff = -1 * text_x;
+
+                  if (cursor_x < diff)
+                    text_x += diff - cursor_x;
+                  else if (cursor_x > (diff + actor_width))
+                    text_x -= cursor_x - (diff - actor_width);
+                }
+            }
+        }
+      else
+        {
+          text_x = 0;
+          priv->cursor_pos.x += text_x + TEXT_PADDING;
+        }
+    }
+  else
+    text_x = 0;
+
+  cursor_paint (text);
+
   real_opacity = clutter_actor_get_paint_opacity (self)
                * priv->text_color.alpha
                / 255;
+
+  CLUTTER_NOTE (PAINT, "painting text (text:`%s')", priv->text);
 
   cogl_color_set_from_4ub (&color,
                            priv->text_color.red,
                            priv->text_color.green,
                            priv->text_color.blue,
                            real_opacity);
-  cogl_pango_render_layout (layout, 0, 0, &color, 0);
+  cogl_pango_render_layout (layout, text_x, 0, &color, 0);
+
+  if (clip_set)
+    cogl_clip_unset ();
+
+  priv->text_x = text_x;
 }
 
 static void
@@ -1800,6 +1871,26 @@ clutter_text_class_init (ClutterTextClass *klass)
                             -1, G_MAXINT, 0,
                             CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_MAX_LENGTH, pspec);
+
+  /**
+   * ClutterText:single-line-mode:
+   *
+   * Whether the #ClutterText actor should be in single line mode
+   * or not. A single line #ClutterText actor will only contain a
+   * single line of text, scrolling it in case its length is bigger
+   * than the allocated size.
+   *
+   * Setting this property will also set the #ClutterText:activatable
+   * property as a side-effect.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_boolean ("single-line-mode",
+                                "Single Line Mode",
+                                "Whether the text should be a single line",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_SINGLE_LINE_MODE, pspec);
 
   /**
    * ClutterText::text-changed:
@@ -3587,4 +3678,74 @@ clutter_text_get_chars (ClutterText *self,
               - priv->text;
 
   return g_strndup (priv->text + start_index, end_index - start_index);
+}
+
+/**
+ * clutter_text_set_single_line_mode:
+ * @self: a #ClutterText
+ * @single_line: whether to enable single line mode
+ *
+ * Sets whether a #ClutterText actor should be in single line mode
+ * or not.
+ *
+ * A text actor in single line mode will not wrap text and will clip
+ * the the visible area to the predefined size. The contents of the
+ * text actor will scroll to display the end of the text if its length
+ * is bigger than the allocated width.
+ *
+ * When setting the single line mode the #ClutterText:activatable
+ * property is also set as a side effect. Instead of entering a new
+ * line character, the text actor will emit the #ClutterText::activate
+ * signal.
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_single_line_mode (ClutterText *self,
+                                   gboolean     single_line)
+{
+  ClutterTextPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  priv = self->priv;
+
+  if (priv->single_line_mode != single_line)
+    {
+      g_object_freeze_notify (G_OBJECT (self));
+
+      priv->single_line_mode = single_line;
+
+      if (priv->single_line_mode)
+        {
+          priv->activatable = TRUE;
+
+          g_object_notify (G_OBJECT (self), "activatable");
+        }
+
+      clutter_text_dirty_cache (self);
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+
+      g_object_notify (G_OBJECT (self), "single-line-mode");
+
+      g_object_thaw_notify (G_OBJECT (self));
+    }
+}
+
+/**
+ * clutter_text_get_single_line_mode:
+ * @self: a #ClutterText
+ *
+ * Retrieves whether the #ClutterText actor is in single line mode.
+ *
+ * Return value: %TRUE if the #ClutterText actor is in single line mode
+ *
+ * Since: 1.0
+ */
+gboolean
+clutter_text_get_single_line_mode (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
+
+  return self->priv->single_line_mode;
 }
