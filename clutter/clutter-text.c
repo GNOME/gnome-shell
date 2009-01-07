@@ -1030,12 +1030,13 @@ clutter_text_paint (ClutterActor *self)
       return;
     }
 
-  clutter_text_ensure_cursor_position (text);
-
   clutter_actor_get_allocation_box (self, &alloc);
   layout = clutter_text_create_layout (text, alloc.x2 - alloc.x1);
 
-  if (priv->single_line_mode)
+  if (priv->editable && priv->cursor_visible)
+    clutter_text_ensure_cursor_position (text);
+
+  if (priv->editable && priv->single_line_mode)
     {
       PangoRectangle logical_rect = { 0, };
       gint actor_width, text_width;
