@@ -148,3 +148,34 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
       dstdata += dst->rowstride;
     }
 }
+
+CoglBitmap *
+cogl_bitmap_new_from_file (const gchar    *filename,
+                           GError        **error)
+{
+  CoglBitmap   bmp;
+  
+  g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
+
+  /* Try loading with imaging backend */
+  if (!_cogl_bitmap_from_file (&bmp, filename, error))
+    {
+      /* Try fallback */
+      if (!_cogl_bitmap_fallback_from_file (&bmp, filename))
+	return NULL;
+      else if (error && *error)
+	{
+	  g_error_free (*error);
+	  *error = NULL;
+	}
+    }
+  
+  return (CoglBitmap *) g_memdup (&bmp, sizeof (CoglBitmap));
+}
+
+void
+cogl_bitmap_free (CoglBitmap *bmp)
+{
+  g_free (bmp->data);
+  g_free (bmp);
+}

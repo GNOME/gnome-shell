@@ -96,6 +96,13 @@ struct _ClutterTexturePrivate
   guint                        repeat_y : 1;
   guint                        in_dispose : 1;
   guint                        keep_aspect_ratio : 1;
+  guint                        load_async : 1;
+  
+  GThread                     *load_thread;
+  gchar                       *load_filename;
+  CoglBitmap                  *load_bitmap;
+  GError                      *load_error;
+  guint                        load_source;
 };
 
 enum
@@ -110,13 +117,17 @@ enum
   PROP_FILTER_QUALITY,
   PROP_COGL_TEXTURE,
   PROP_FILENAME,
-  PROP_KEEP_ASPECT_RATIO
+  PROP_KEEP_ASPECT_RATIO,
+  PROP_LOAD_ASYNC
 };
 
 enum
 {
   SIZE_CHANGE,
   PIXBUF_CHANGE,
+  LOAD_SUCCESS,
+  LOAD_FINISHED,
+  
   LAST_SIGNAL
 };
 
@@ -602,6 +613,35 @@ clutter_texture_paint (ClutterActor *self)
 }
 
 static void
+clutter_texture_thread_cancel (ClutterTexture *texture)
+{
+  ClutterTexturePrivate *priv = texture->priv;
+
+  if (priv->load_thread)
+    {
+      g_thread_join (priv->load_thread);
+      priv->load_thread = NULL;
+    }
+  
+  if (priv->load_source)
+    {
+      g_source_remove (priv->load_source);
+      priv->load_source = 0;
+      
+      if (priv->load_error)
+        {
+          g_error_free (priv->load_error);
+          priv->load_error = NULL;
+        }
+      else
+        {
+          cogl_bitmap_free (priv->load_bitmap);
+          priv->load_bitmap = NULL;
+        }
+    }
+}
+
+static void
 clutter_texture_dispose (GObject *object)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (object);
@@ -625,7 +665,9 @@ clutter_texture_dispose (GObject *object)
       g_free (priv->local_data);
       priv->local_data = NULL;
     }
-
+  
+  clutter_texture_thread_cancel (texture);
+  
   G_OBJECT_CLASS (clutter_texture_parent_class)->dispose (object);
 }
 
@@ -686,6 +728,11 @@ clutter_texture_set_property (GObject      *object,
     case PROP_KEEP_ASPECT_RATIO:
       priv->keep_aspect_ratio = g_value_get_boolean (value);
       break;
+    case PROP_LOAD_ASYNC:
+      priv->load_async = g_value_get_boolean (value);
+      if (priv->load_async && !g_thread_supported())
+        priv->load_async = FALSE;
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -735,6 +782,9 @@ clutter_texture_get_property (GObject    *object,
       break;
     case PROP_KEEP_ASPECT_RATIO:
       g_value_set_boolean (value, priv->keep_aspect_ratio);
+      break;
+    case PROP_LOAD_ASYNC:
+      g_value_set_boolean (value, priv->load_async);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -861,6 +911,15 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   FALSE,
 			   CLUTTER_PARAM_READWRITE));
 
+  g_object_class_install_property
+    (gobject_class, PROP_LOAD_ASYNC,
+     g_param_spec_boolean ("load-async",
+			   "Load asynchronously",
+			   "Load files inside a thread to avoid blocking when "
+                           "loading images.",
+			   FALSE,
+			   CLUTTER_PARAM_READWRITE));
+
   /**
    * ClutterTexture::size-change:
    * @texture: the texture which received the signal
@@ -896,6 +955,25 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE,
 		  0);
+  /**
+   * ClutterTexture::load-finished:
+   * @texture: the texture which received the signal
+   * @error: A set error, or %NULL
+   *
+   * The ::load-finished signal is emitted when asynchronous texture 
+   * load has completed. If there was an error during loading, @error will 
+   * be set.
+   */
+  texture_signals[LOAD_FINISHED] =
+    g_signal_new ("load-finished",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterTextureClass, load_finished),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__POINTER,
+		  G_TYPE_NONE,
+		  1,
+                  G_TYPE_POINTER);
 }
 
 static ClutterScriptableIface *parent_scriptable_iface = NULL;
@@ -1301,6 +1379,65 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 					error);
 }
 
+static gboolean
+clutter_texture_thread_cb (ClutterTexture *self)
+{
+  ClutterTexturePrivate *priv = self->priv;
+  
+  priv->load_source = 0;
+  
+  if (priv->load_thread)
+    {
+      g_thread_join (priv->load_thread);
+      priv->load_thread = NULL;
+    }
+  else
+    return FALSE;
+  
+  if (!priv->load_error)
+    {
+      CoglHandle handle;
+      
+      handle = cogl_texture_new_from_bitmap (priv->load_bitmap,
+                                             priv->no_slice ?
+                                               -1 : priv->max_tile_waste,
+                                             priv->filter_quality ==
+                                             CLUTTER_TEXTURE_QUALITY_HIGH,
+                                             COGL_PIXEL_FORMAT_ANY);
+      clutter_texture_set_cogl_texture (self, handle);
+      cogl_texture_unref (handle);
+      
+      cogl_bitmap_free (priv->load_bitmap);
+      priv->load_bitmap = NULL;
+    }
+  
+  g_signal_emit (self, texture_signals[LOAD_FINISHED], 0, priv->load_error);
+  
+  if (priv->load_error)
+    {
+      g_error_free (priv->load_error);
+      priv->load_error = NULL;
+    }
+  
+  return FALSE;
+}
+
+static gpointer
+clutter_texture_thread_func (ClutterTexture *self)
+{
+  ClutterTexturePrivate *priv = self->priv;
+  
+  /* Try loading with imaging backend */
+  priv->load_bitmap = cogl_bitmap_new_from_file (priv->load_filename,
+                                                 &priv->load_error);
+  g_free (priv->load_filename);
+  priv->load_filename = NULL;
+  
+  clutter_threads_add_idle ((GSourceFunc)clutter_texture_thread_cb, self);
+  
+  return NULL;
+}
+
 /**
  * clutter_texture_set_from_file:
  * @texture: A #ClutterTexture
@@ -1325,6 +1462,17 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   priv = texture->priv;
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  if (priv->load_async)
+    {
+      clutter_texture_thread_cancel (texture);
+      
+      priv->load_filename = g_strdup (filename);
+      priv->load_thread = g_thread_create ((GThreadFunc)
+                                           clutter_texture_thread_func,
+                                           texture, TRUE, error);
+      return priv->load_thread ? TRUE : FALSE;
+    }
 
   if ((new_texture = cogl_texture_new_from_file
                           (filename,
