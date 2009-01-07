@@ -18,7 +18,7 @@ index 3e4df4d..d508631 100644
  
    x -= (512 * 512 / angle);
    
--  sine = ((sinf (x) + offset) / 2)
+-  sine = ((sinf (x * (G_PI/180.0)) + offset) / 2)
 +  sine = ((cogl_angle_sin (x) + offset) / 2)
         * CLUTTER_ALPHA_MAX_ALPHA;
  
@@ -79,7 +79,7 @@ index 3e4df4d..d508631 100644
    ClutterTimeline * timeline;
    gint              frame;
    gint              n_frames;
--  ClutterAngle      x;
+-  float      x;
 -  ClutterFixed      sine;
 +  float             radians;
 +  float             sine;
@@ -92,7 +92,7 @@ index 3e4df4d..d508631 100644
 +  radians = ((float)frame / n_frames) * (G_PI / 2);
 +  sine = sinf (radians);
  
--  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
+-  sine = sinf (x * (G_PI/180.0)) * CLUTTER_ALPHA_MAX_ALPHA;
 -
 -  return ((guint32) sine) >> COGL_FIXED_Q;
 +  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
@@ -103,7 +103,7 @@ index 3e4df4d..d508631 100644
    ClutterTimeline * timeline;
    gint              frame;
    gint              n_frames;
--  ClutterAngle      x;
+-  float      x;
 -  ClutterFixed      sine;
 +  float             radians;
 +  float             sine;
@@ -114,7 +114,7 @@ index 3e4df4d..d508631 100644
  
 -  x = 256 * frame / n_frames + 256;
 -
--  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
+-  sine = sinf (x * (G_PI/180.0)) * CLUTTER_ALPHA_MAX_ALPHA;
 +  radians = ((float)frame / n_frames) * (G_PI / 2);
 +  sine = sinf (radians + (G_PI / 2));
  
@@ -127,7 +127,7 @@ index 3e4df4d..d508631 100644
    ClutterTimeline *timeline;
    gint             frame;
    gint             n_frames;
--  ClutterAngle     x;
+-  float     x;
 -  ClutterFixed     sine;
 +  float            radians;
 +  float            sine;
@@ -138,7 +138,7 @@ index 3e4df4d..d508631 100644
  
 -  x = 512 * frame / n_frames;
 -
--  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
+-  sine = sinf (x * (G_PI/180.0)) * CLUTTER_ALPHA_MAX_ALPHA;
 +  radians = ((float)frame / n_frames) * G_PI;
 +  sine = sinf (radians);
  
@@ -151,7 +151,7 @@ index 3e4df4d..d508631 100644
    ClutterTimeline *timeline;
    gint             frame;
    gint             n_frames;
--  ClutterAngle     x;
+-  float     x;
 -  ClutterFixed     sine;
 +  float            radians;
 +  float            sine;
@@ -165,7 +165,7 @@ index 3e4df4d..d508631 100644
 +  radians = ((float)frame / n_frames) * (G_PI / 2);
 +  sine = sinf (radians - (G_PI / 2));
  
--  sine = (sinf (x) + 1) * CLUTTER_ALPHA_MAX_ALPHA;
+-  sine = (sinf (x * (G_PI/180.0)) + 1) * CLUTTER_ALPHA_MAX_ALPHA;
 +  /* shift from range [-1, 0] -> [0, 1] */
 +  sine = sine + 1.0;
  
@@ -178,7 +178,7 @@ index 3e4df4d..d508631 100644
    ClutterTimeline *timeline;
    gint             frame;
    gint             n_frames;
--  ClutterAngle     x;
+-  float     x;
 -  ClutterFixed     sine;
 +  float            radians;
 +  float            sine;
@@ -191,7 +191,7 @@ index 3e4df4d..d508631 100644
 +  radians = ((float)frame / n_frames) * (G_PI / 2);
 +  sine = sinf (radians);
  
--  sine = sinf (x) * CLUTTER_ALPHA_MAX_ALPHA;
+-  sine = sinf (x * (G_PI/180.0)) * CLUTTER_ALPHA_MAX_ALPHA;
 -
 -  return ((guint32) sine) >> COGL_FIXED_Q;
 +  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
@@ -202,7 +202,7 @@ index 3e4df4d..d508631 100644
    ClutterTimeline *timeline;
    gint             frame;
    gint             n_frames;
--  ClutterAngle     x;
+-  float     x;
 -  ClutterFixed     sine;
 +  float            radians;
 +  float            sine;
@@ -215,7 +215,7 @@ index 3e4df4d..d508631 100644
 +  radians = ((float)frame / n_frames) * G_PI;
 +  sine = sinf (radians - (G_PI / 2));
  
--  sine = (sinf (x) + 1) / 2 * CLUTTER_ALPHA_MAX_ALPHA;
+-  sine = (sinf (x * (G_PI/180.0)) + 1) / 2 * CLUTTER_ALPHA_MAX_ALPHA;
 +  /* shift from range [-1, 1] -> [0, 1] */
 +  sine = (sine + 1.0) / 2.0;
  
