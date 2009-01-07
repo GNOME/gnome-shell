@@ -29,6 +29,13 @@
 G_BEGIN_DECLS
 
 /**
+ * CoglBitmap:
+ *
+ * Type used for storing image data.
+ */
+typedef struct _CoglBitmap CoglBitmap;
+
+/**
  * CoglHandle:
  *
  * Type used for storing references to cogl objects, the CoglHandle is

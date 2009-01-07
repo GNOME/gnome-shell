@@ -28,8 +28,6 @@
 
 #include <glib.h>
 
-typedef struct _CoglBitmap CoglBitmap;
-
 struct _CoglBitmap
 {
   guchar          *data;
