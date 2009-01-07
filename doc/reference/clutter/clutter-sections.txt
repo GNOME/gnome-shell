@@ -437,6 +437,7 @@ clutter_actor_get_rotationx
 <SUBSECTION>
 clutter_actor_grab_key_focus
 clutter_actor_get_pango_context
+clutter_actor_create_pango_context
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
@@ -702,11 +703,9 @@ CLUTTER_PATH_CLASS
 CLUTTER_IS_PATH
 CLUTTER_IS_PATH_CLASS
 CLUTTER_PATH_GET_CLASS
-CLUTTER_BEZIER_MAX_LENGTH
 CLUTTER_PATH_RELATIVE
 
 <SUBSECTION Private>
-ClutterBezier
 ClutterPathPrivate
 clutter_path_get_type
 clutter_path_node_get_type
@@ -1479,20 +1478,6 @@ CLUTTER_VALUE_HOLDS_SHADER_MATRIX
 clutter_value_set_shader_matrix
 clutter_value_get_shader_matrix
 
-<SUBSECTION>
-CLUTTER_VALUE_HOLDS_SHADER_FLOAT
-ClutterShaderFloat
-clutter_value_set_shader_float
-clutter_value_get_shader_float
-CLUTTER_VALUE_HOLDS_SHADER_INT
-ClutterShaderInt
-clutter_value_set_shader_int
-clutter_value_get_shader_int
-CLUTTER_VALUE_HOLDS_SHADER_MATRIX
-ClutterShaderMatrix
-clutter_value_set_shader_matrix
-clutter_value_get_shader_matrix
-
 <SUBSECTION Standard>
 CLUTTER_IS_SHADER
 CLUTTER_IS_SHADER_CLASS
@@ -1623,8 +1608,8 @@ clutter_binding_pool_activate
 </SECTION>
 
 <SECTION>
-<TITLE>ClutterCairoTexture</TITLE>
 <FILE>clutter-cairo-texture</FILE>
+<TITLE>ClutterCairoTexture</TITLE>
 ClutterCairoTexture
 ClutterCairoTextureClass
 clutter_cairo_texture_new

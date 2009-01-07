@@ -542,7 +542,7 @@ clutter_binding_pool_override_action (ClutterBindingPool  *pool,
 }
 
 /**
- * clutter_binding_pool_override_action:
+ * clutter_binding_pool_override_closure:
  * @pool: a #ClutterBindingPool
  * @key_val: key symbol
  * @modifiers: bitmask of modifiers
