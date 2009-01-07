@@ -21,7 +21,6 @@ UNIT_TESTS = \
 	test-unproject.c \
 	test-viewport.c \
 	test-fbo.c \
-	test-opacity.c \
 	test-multistage.c \
 	test-cogl-primitives.c \
 	test-cogl-tex-tile.c \
