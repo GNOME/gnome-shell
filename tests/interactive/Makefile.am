@@ -37,7 +37,8 @@ UNIT_TESTS = \
         test-animation.c \
         test-easing.c \
         test-binding-pool.c \
-        test-text.c
+        test-text.c \
+        test-text-field.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
