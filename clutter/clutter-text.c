@@ -826,7 +826,7 @@ cursor_paint (ClutterText *self)
               gint n_ranges;
               gint *ranges;
               gint i;
-              gint index;
+              gint index_;
               gint maxindex;
               ClutterUnit y, height;
 
@@ -838,10 +838,10 @@ cursor_paint (ClutterText *self)
               pango_layout_line_get_x_ranges (line, start_index, end_index,
                                               &ranges,
                                               &n_ranges);
-              pango_layout_line_x_to_index (line, 0, &index, NULL);
+              pango_layout_line_x_to_index (line, 0, &index_, NULL);
 
               clutter_text_position_to_coords (self,
-                                               bytes_to_offset (utf8, index),
+                                               bytes_to_offset (utf8, index_),
                                                NULL, &y, &height);
 
               for (i = 0; i < n_ranges; i++)
