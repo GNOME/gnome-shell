@@ -124,16 +124,11 @@ function start() {
     
     let display = global.screen.get_display();
     display.connect('overlay-key', function(display) {
-        // Queue an idle for this, because we're getting called
-        // out of a metacity event handler, and doing a lot of
-        // work from inside there is...iffy.
-        Mainloop.idle_add(function () {
-            if (overlay.visible) {
-                hide_overlay();
-            } else {
-                show_overlay();
-            }
-        });
+        if (overlay.visible) {
+            hide_overlay();
+        } else {
+            show_overlay();
+        }
     });
 }
 
