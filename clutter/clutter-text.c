@@ -514,7 +514,7 @@ clutter_text_ensure_cursor_position (ClutterText *self)
   priv->cursor_pos.x      = CLUTTER_UNITS_TO_DEVICE (x);
   priv->cursor_pos.y      = CLUTTER_UNITS_TO_DEVICE (y);
   priv->cursor_pos.width  = priv->cursor_size;
-  priv->cursor_pos.height = CLUTTER_UNITS_TO_DEVICE (cursor_height);
+  priv->cursor_pos.height = CLUTTER_UNITS_TO_DEVICE (cursor_height) - 2;
 
   g_signal_emit (self, text_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
 }
@@ -783,7 +783,7 @@ cursor_paint (ClutterText *self)
         }
 
       if (priv->position == 0)
-        priv->cursor_pos.x -= 2;
+        priv->cursor_pos.x -= priv->cursor_size;
 
       if (priv->position == priv->selection_bound)
         {
