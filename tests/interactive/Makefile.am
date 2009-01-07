@@ -15,7 +15,6 @@ UNIT_TESTS = \
 	test-script.c \
 	test-model.c \
 	test-grab.c \
-	test-effects.c \
 	test-fullscreen.c \
 	test-shader.c \
 	test-unproject.c \

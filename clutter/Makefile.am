@@ -64,7 +64,6 @@ source_h =					\
 	$(srcdir)/clutter-color.h		\
         $(srcdir)/clutter-container.h		\
         $(srcdir)/clutter-deprecated.h		\
-	$(srcdir)/clutter-effect.h 		\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
@@ -155,7 +154,6 @@ source_c = \
 	clutter-clone-texture.c 	\
 	clutter-color.c 		\
 	clutter-container.c		\
-	clutter-effect.c      		\
 	clutter-enum-types.c		\
         clutter-event.c 		\
 	clutter-feature.c 		\

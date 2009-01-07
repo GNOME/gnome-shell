@@ -1218,39 +1218,6 @@ CLUTTER_NO_FPU
 </SECTION>
 
 <SECTION>
-<FILE>clutter-effect</FILE>
-<TITLE>Clutter Effects</TITLE>
-ClutterEffectTemplate
-ClutterEffectTemplateClass
-clutter_effect_template_new
-clutter_effect_template_new_full
-clutter_effect_template_new_for_duration
-clutter_effect_template_construct
-clutter_effect_template_get_timeline_clone
-clutter_effect_template_set_timeline_clone
-
-<SUBSECTION>
-ClutterEffectCompleteFunc
-clutter_effect_fade
-clutter_effect_move
-clutter_effect_path
-clutter_effect_scale
-clutter_effect_depth
-clutter_effect_rotate
-
-<SUBSECTION Standard>
-CLUTTER_TYPE_EFFECT_TEMPLATE
-CLUTTER_EFFECT_TEMPLATE
-CLUTTER_IS_EFFECT_TEMPLATE
-CLUTTER_EFFECT_TEMPLATE_CLASS
-CLUTTER_IS_EFFECT_TEMPLATE_CLASS
-CLUTTER_EFFECT_TEMPLATE_GET_CLASS
-<SUBSECTION Private>
-ClutterEffectTemplatePrivate
-clutter_effect_template_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-behaviour-depth</FILE>
 <TITLE>ClutterBehaviourDepth</TITLE>
 ClutterBehaviourDepth
