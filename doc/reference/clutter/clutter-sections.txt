@@ -1643,6 +1643,8 @@ clutter_text_set_selection
 clutter_text_get_selection
 clutter_text_set_selection_bound
 clutter_text_get_selection_bound
+clutter_text_set_single_line_mode
+clutter_text_get_single_line_mode
 clutter_text_set_use_markup
 clutter_text_get_use_markup
 
