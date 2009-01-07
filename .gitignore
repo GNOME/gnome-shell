@@ -111,6 +111,7 @@ stamp-h1
 /tests/interactive/test-easing
 /tests/interactive/test-interactive
 /tests/interactive/test-binding-pool
+/tests/interactive/test-text-field
 /tests/interactive/redhand.png
 /tests/interactive/test-script.json
 /tests/conform/test-conformance
@@ -171,5 +172,6 @@ stamp-h1
 /clutter/x11/stamp-clutter-x11-enum-types.h
 /po/Makefile.in.in
 /po/POTFILES
+/po/*.pot
 *.swp
 *~
