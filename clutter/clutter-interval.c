@@ -172,13 +172,14 @@ clutter_interval_real_validate (ClutterInterval *interval,
   return TRUE;
 }
 
-static void
+static gboolean
 clutter_interval_real_compute_value (ClutterInterval *interval,
                                      gdouble          factor,
                                      GValue          *value)
 {
   GValue *initial, *final;
   GType value_type;
+  gboolean retval = FALSE;
 
   initial = clutter_interval_peek_initial_value (interval);
   final = clutter_interval_peek_final_value (interval);
@@ -197,6 +198,8 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
         res = (factor * (ib - ia)) + ia;
 
         g_value_set_int (value, res);
+
+        retval = TRUE;
       }
       break;
 
@@ -210,6 +213,8 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
         res = (factor * (ib - (gdouble) ia)) + ia;
 
         g_value_set_uint (value, res);
+
+        retval = TRUE;
       }
       break;
 
@@ -223,6 +228,8 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
         res = (factor * (ib - (gdouble) ia)) + ia;
 
         g_value_set_uchar (value, res);
+
+        retval = TRUE;
       }
       break;
 
@@ -240,6 +247,8 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
           g_value_set_double (value, res);
         else
           g_value_set_float (value, res);
+
+        retval = TRUE;
       }
       break;
 
@@ -248,6 +257,8 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
         g_value_set_boolean (value, TRUE);
       else
         g_value_set_boolean (value, FALSE);
+
+      retval = TRUE;
       break;
 
     case G_TYPE_BOXED:
@@ -265,12 +276,16 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
           res.alpha = (factor * (ib->alpha - (gdouble) ia->alpha)) + ia->alpha;
 
           clutter_value_set_color (value, &res);
+
+          retval = TRUE;
         }
       break;
 
     default:
       break;
     }
+
+  return retval;
 }
 
 static void
@@ -837,19 +852,21 @@ clutter_interval_validate (ClutterInterval *interval,
  * Computes the value between the @interval boundaries given the
  * progress @factor and puts it into @value.
  *
+ * Return value: %TRUE if the operation was successful
+ *
  * Since: 1.0
  */
-void
+gboolean
 clutter_interval_compute_value (ClutterInterval *interval,
                                 gdouble          factor,
                                 GValue          *value)
 {
-  g_return_if_fail (CLUTTER_IS_INTERVAL (interval));
-  g_return_if_fail (value != NULL);
+  g_return_val_if_fail (CLUTTER_IS_INTERVAL (interval), FALSE);
+  g_return_val_if_fail (value != NULL, FALSE);
 
   factor = CLAMP (factor, 0.0, 1.0);
 
-  CLUTTER_INTERVAL_GET_CLASS (interval)->compute_value (interval,
-                                                        factor,
-                                                        value);
+  return CLUTTER_INTERVAL_GET_CLASS (interval)->compute_value (interval,
+                                                               factor,
+                                                               value);
 }

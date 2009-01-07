@@ -683,9 +683,9 @@ on_alpha_notify (GObject          *gobject,
       g_value_init (&value, clutter_interval_get_value_type (interval));
 
       factor = (gdouble) alpha_value / CLUTTER_ALPHA_MAX_ALPHA;
-      clutter_interval_compute_value (interval, factor, &value);
 
-      g_object_set_property (G_OBJECT (priv->actor), p_name, &value);
+      if (clutter_interval_compute_value (interval, factor, &value))
+        g_object_set_property (G_OBJECT (priv->actor), p_name, &value);
 
       g_value_unset (&value);
     }

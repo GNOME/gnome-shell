@@ -79,7 +79,7 @@ struct _ClutterIntervalClass
   /*< public >*/
   gboolean (* validate)      (ClutterInterval *interval,
                               GParamSpec      *pspec);
-  void     (* compute_value) (ClutterInterval *interval,
+  gboolean (* compute_value) (ClutterInterval *interval,
                               gdouble          factor,
                               GValue          *value);
 
@@ -122,7 +122,7 @@ void             clutter_interval_get_interval       (ClutterInterval *interval,
 
 gboolean         clutter_interval_validate           (ClutterInterval *interval,
                                                       GParamSpec      *pspec);
-void             clutter_interval_compute_value      (ClutterInterval *interval,
+gboolean         clutter_interval_compute_value      (ClutterInterval *interval,
                                                       gdouble          factor,
                                                       GValue          *value);
 
