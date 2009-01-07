@@ -130,11 +130,15 @@ struct _ClutterTextPrivate
   /* current 'other end of selection' position */
   gint selection_bound;
 
-  /* the x position in the pangolayout, used to
+  /* the x position in the PangoLayout, used to
    * avoid drifting when repeatedly moving up|down
    */
   gint x_pos;
 
+  /* the x position of the PangoLayout when in
+   * single line mode, to scroll the contents of the
+   * text actor
+   */
   gint text_x;
 
   /* the length of the text, in bytes */
@@ -192,8 +196,7 @@ enum
 
 static guint text_signals[LAST_SIGNAL] = { 0, };
 
-#define offset_real(t,p)                        \
-  ((p) == -1 ? g_utf8_strlen ((t), -1) : (p))
+#define offset_real(t,p)        ((p) == -1 ? g_utf8_strlen ((t), -1) : (p))
 
 static gint
 offset_to_bytes (const gchar *text,
@@ -226,8 +229,7 @@ offset_to_bytes (const gchar *text,
   return i;
 }
 
-#define bytes_to_offset(t,p)                    \
-  (g_utf8_pointer_to_offset ((t), (t) + (p)))
+#define bytes_to_offset(t,p)    (g_utf8_pointer_to_offset ((t), (t) + (p)))
 
 
 static inline void
@@ -419,8 +421,8 @@ clutter_text_create_layout (ClutterText *text,
 
 static gint
 clutter_text_coords_to_position (ClutterText *text,
-                                 gint      x,
-                                 gint      y)
+                                 gint         x,
+                                 gint         y)
 {
   gint index_;
   gint px, py;
@@ -1020,7 +1022,7 @@ clutter_text_paint (ClutterActor *self)
   gint text_x = priv->text_x;
   gboolean clip_set = FALSE;
 
-  if (priv->font_desc == NULL || priv->text == NULL)
+  if (G_UNLIKELY (priv->font_desc == NULL || priv->text == NULL))
     {
       CLUTTER_NOTE (ACTOR, "desc: %p, text %p",
 		    priv->font_desc ? priv->font_desc : 0x0,
@@ -3345,7 +3347,7 @@ clutter_text_get_cursor_size (ClutterText *self)
 /**
  * clutter_text_set_password_char:
  * @self: a #ClutterText
- * @wc: a Unicode character, or 0
+ * @wc: a Unicode character, or 0 to unset the password character
  *
  * Sets the character to use in place of the actual text in a
  * password text actor.
