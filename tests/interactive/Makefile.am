@@ -6,7 +6,6 @@ UNIT_TESTS = \
 	test-scale.c \
         test-actors.c \
 	test-behave.c \
-	test-entry.c \
 	test-project.c \
 	test-perspective.c \
 	test-rotate.c \
@@ -39,7 +38,9 @@ UNIT_TESTS = \
 	test-layout.c \
         test-animation.c \
         test-easing.c \
-        test-binding-pool.c
+        test-binding-pool.c \
+        test-text.c \
+        test-text-field.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c

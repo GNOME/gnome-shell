@@ -221,7 +221,9 @@ struct _ClutterActorPrivate
   /* cached allocation is invalid (request has changed, probably) */
   guint needs_allocation     : 1;
 
-  guint           has_clip : 1;
+  guint show_on_set_parent   : 1;
+  guint has_clip             : 1;
+
   ClutterUnit     clip[4];
 
   /* Rotation angles */
@@ -260,7 +262,7 @@ struct _ClutterActorPrivate
 
   ShaderData     *shader_data;
 
-  gboolean        show_on_set_parent;
+  PangoContext   *pango_context;
 };
 
 enum
@@ -1956,6 +1958,12 @@ clutter_actor_dispose (GObject *object)
   clutter_actor_unrealize (self);
 
   destroy_shader_data (self);
+
+  if (priv->pango_context)
+    {
+      g_object_unref (priv->pango_context);
+      priv->pango_context = NULL;
+    }
 
   g_signal_emit (self, actor_signals[DESTROY], 0);
 
@@ -7590,4 +7598,100 @@ clutter_actor_allocate_preferred_size (ClutterActor *self,
   actor_box.y2 = actor_box.y1 + natural_height;
 
   clutter_actor_allocate (self, &actor_box, absolute_origin_changed);
+}
+
+/**
+ * clutter_actor_grab_key_focus:
+ * @self: a #ClutterActor
+ *
+ * Sets the key focus of the #ClutterStage including @self
+ * to this #ClutterActor.
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_grab_key_focus (ClutterActor *self)
+{
+  ClutterActor *parent;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  parent = clutter_actor_get_parent (self);
+  if (!parent)
+    return;
+
+  parent = clutter_actor_get_stage (self);
+  if (parent && CLUTTER_IS_STAGE (parent))
+    clutter_stage_set_key_focus (CLUTTER_STAGE (parent), self);
+}
+
+/**
+ * clutter_actor_get_pango_context:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the #PangoContext for @self. The actor's #PangoContext
+ * is already configured using the appropriate font map, resolution
+ * and font options.
+ *
+ * Unlike clutter_actor_create_pango_context(), this context is owend
+ * by the #ClutterActor and it will be updated each time the options
+ * stored by the #ClutterBackend change.
+ *
+ * You can use the returned #PangoContext to create a #PangoLayout
+ * and render text using cogl_pango_render_layout() to reuse the
+ * glyphs cache also used by Clutter.
+ *
+ * Return value: the #PangoContext for a #ClutterActor. The returned
+ *   #PangoContext is owned by the actor and should not be unreferenced
+ *   by the application code
+ *
+ * Since: 1.0
+ */
+PangoContext *
+clutter_actor_get_pango_context (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+  ClutterMainContext *ctx;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  priv = self->priv;
+
+  if (priv->pango_context)
+    return priv->pango_context;
+
+  ctx = CLUTTER_CONTEXT ();
+  priv->pango_context = _clutter_context_get_pango_context (ctx);
+  g_object_ref (priv->pango_context);
+
+  return priv->pango_context;
+}
+
+/**
+ * clutter_actor_create_pango_context:
+ * @self: a #ClutterActor
+ *
+ * Creates a #PangoContext for the given actor. The #PangoContext
+ * is already configured using the appropriate font map, resolution
+ * and font options.
+ *
+ * See also clutter_actor_get_pango_context().
+ *
+ * Return value: the newly created #PangoContext. Use g_object_ref()
+ *   on the returned value to deallocate its resources
+ *
+ * Since: 1.0
+ */
+PangoContext *
+clutter_actor_create_pango_context (ClutterActor *self)
+{
+  ClutterMainContext *ctx;
+  PangoContext *retval;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  ctx = CLUTTER_CONTEXT ();
+  retval = _clutter_context_create_pango_context (ctx);
+
+  return retval;
 }

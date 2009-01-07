@@ -787,7 +787,7 @@ test_layout_main (int argc, char *argv[])
 
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
 
-  instructions = clutter_label_new_with_text ("Sans 14", 
+  instructions = clutter_text_new_with_text ("Sans 14",
                                               "<b>Instructions:</b>\n"
                                               "a - add a new item\n"
                                               "d - remove last item\n"
@@ -799,7 +799,7 @@ test_layout_main (int argc, char *argv[])
                                               "s - use transformed box\n"
                                               "q - quit");
 
-  clutter_label_set_use_markup (CLUTTER_LABEL (instructions), TRUE);
+  clutter_text_set_use_markup (CLUTTER_TEXT (instructions), TRUE);
   clutter_actor_set_position (instructions, 450, 10);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), instructions);
 

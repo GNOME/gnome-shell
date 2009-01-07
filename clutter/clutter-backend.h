@@ -30,6 +30,8 @@
 
 #include <cairo.h>
 #include <glib-object.h>
+#include <pango/pango.h>
+
 #include <clutter/clutter-actor.h>
 #include <clutter/clutter-stage.h>
 #include <clutter/clutter-event.h>
@@ -77,6 +79,10 @@ struct _ClutterBackendClass
                                             ClutterStage    *stage);
   void                (* ensure_context)   (ClutterBackend  *backend,
                                             ClutterStage    *stage);
+
+  /* signals */
+  void (* resolution_changed) (ClutterBackend *backend);
+  void (* font_changed)       (ClutterBackend *backend);
 };
 
 GType clutter_backend_get_type    (void) G_GNUC_CONST;
@@ -95,6 +101,9 @@ guint                 clutter_backend_get_double_click_distance (ClutterBackend 
 void                  clutter_backend_set_font_options          (ClutterBackend       *backend,
                                                                  cairo_font_options_t *options);
 cairo_font_options_t *clutter_backend_get_font_options          (ClutterBackend       *backend);
+void                  clutter_backend_set_font_name             (ClutterBackend       *backend,
+                                                                 const gchar          *font_name);
+G_CONST_RETURN gchar *clutter_backend_get_font_name             (ClutterBackend       *backend);
 
 G_END_DECLS
 
