@@ -23,14 +23,14 @@ make_label (void)
   gchar *text;
   gchar *argv[] = { "ls", "--help", NULL };
 
-  label = clutter_label_new ();
-  clutter_label_set_font_name (CLUTTER_LABEL (label), "Sans 10");
+  label = clutter_text_new ();
+  clutter_text_set_font_name (CLUTTER_TEXT (label), "Sans 10");
 
   if (g_spawn_sync (NULL, argv, NULL,
 		    G_SPAWN_STDERR_TO_DEV_NULL | G_SPAWN_SEARCH_PATH,
 		    NULL, NULL, &text, NULL, NULL, NULL))
     {
-      clutter_label_set_text (CLUTTER_LABEL (label), text);
+      clutter_text_set_text (CLUTTER_TEXT (label), text);
       g_free (text);
     }
 

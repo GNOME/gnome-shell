@@ -739,6 +739,8 @@ clutter_animation_set_actor (ClutterAnimation *animation,
 
   priv = animation->priv;
 
+  g_object_ref (actor);
+
   if (priv->actor)
     {
       g_object_weak_unref (G_OBJECT (animation),
@@ -750,7 +752,7 @@ clutter_animation_set_actor (ClutterAnimation *animation,
       g_object_unref (priv->actor);
     }
 
-  priv->actor = g_object_ref (actor);
+  priv->actor = actor;
   g_object_weak_ref (G_OBJECT (animation),
                      on_animation_weak_notify,
                      priv->actor);
@@ -780,12 +782,11 @@ clutter_animation_get_actor (ClutterAnimation *animation)
 }
 
 static inline void
-clutter_animation_set_mode_internal (ClutterAnimation *animation)
+clutter_animation_set_mode_internal (ClutterAnimation *animation,
+                                     ClutterAlpha     *alpha)
 {
   ClutterAnimationPrivate *priv = animation->priv;
-  ClutterAlpha *alpha;
 
-  alpha = clutter_animation_get_alpha (animation);
   if (alpha)
     clutter_alpha_set_mode (alpha, priv->mode);
 }
@@ -810,7 +811,7 @@ clutter_animation_set_mode (ClutterAnimation     *animation,
   priv = animation->priv;
 
   priv->mode = mode;
-  clutter_animation_set_mode_internal (animation);
+  clutter_animation_set_mode_internal (animation, priv->alpha);
 
   g_object_notify (G_OBJECT (animation), "mode");
 }
@@ -968,6 +969,9 @@ clutter_animation_set_timeline (ClutterAnimation *animation,
 
   priv = animation->priv;
 
+  if (timeline && priv->timeline == timeline)
+    return;
+
   g_object_freeze_notify (G_OBJECT (animation));
 
   if (priv->timeline)
@@ -1048,6 +1052,19 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
 
   priv = animation->priv;
 
+  if (!alpha)
+    {
+      ClutterTimeline *timeline;
+
+      timeline = clutter_animation_get_timeline (animation);
+
+      alpha = clutter_alpha_new ();
+      clutter_alpha_set_timeline (alpha, timeline);
+      clutter_animation_set_mode_internal (animation, alpha);
+    }
+
+  g_object_ref_sink (alpha);
+
   if (priv->alpha)
     {
       if (priv->alpha_notify_id)
@@ -1058,18 +1075,7 @@ clutter_animation_set_alpha (ClutterAnimation *animation,
       priv->alpha = NULL;
     }
 
-  if (!alpha)
-    {
-      ClutterTimeline *timeline;
-
-      timeline = clutter_animation_get_timeline (animation);
-
-      alpha = clutter_alpha_new ();
-      clutter_alpha_set_timeline (alpha, timeline);
-      clutter_animation_set_mode_internal (animation);
-    }
-
-  priv->alpha = g_object_ref_sink (alpha);
+  priv->alpha = alpha;
 
   priv->alpha_notify_id =
     g_signal_connect (alpha, "notify::alpha",

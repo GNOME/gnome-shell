@@ -570,6 +570,9 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
 
   priv = behave->priv;
 
+  if (alpha)
+    g_object_ref_sink (alpha);
+
   if (priv->notify_id)
     {
       CLUTTER_NOTE (BEHAVIOUR, "removing previous notify-id (%d)",
@@ -590,7 +593,6 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
   if (alpha)
     {
       priv->alpha = alpha;
-      g_object_ref_sink (priv->alpha);
 
       priv->notify_id = g_signal_connect (priv->alpha, "notify::alpha",
                                           G_CALLBACK(notify_cb),

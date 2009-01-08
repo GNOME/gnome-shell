@@ -619,7 +619,7 @@ clutter_behaviour_rotate_get_boundsx (ClutterBehaviourRotate *rotate,
 
   priv = rotate->priv;
 
-  if (angle_start);
+  if (angle_start)
     *angle_start = priv->angle_start;
 
   if (angle_end)

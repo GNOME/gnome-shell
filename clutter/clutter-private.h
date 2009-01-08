@@ -38,6 +38,8 @@
 
 #include <glib.h>
 
+#include "pango/cogl-pango.h"
+
 #include "clutter-backend.h"
 #include "clutter-event.h"
 #include "clutter-feature.h"
@@ -45,7 +47,6 @@
 #include "clutter-stage-manager.h"
 #include "clutter-stage-window.h"
 #include "clutter-stage.h"
-#include "pango/cogl-pango.h"
 
 G_BEGIN_DECLS
 
@@ -125,15 +126,17 @@ struct _ClutterMainContext
   gint fb_r_mask, fb_g_mask, fb_b_mask;
   gint fb_r_mask_used, fb_g_mask_used, fb_b_mask_used;
 
-  CoglPangoFontMap *font_map;       /* Global font map */
+  PangoContext     *pango_context;      /* Global Pango context */
+  CoglPangoFontMap *font_map;           /* Global font map */
 
-  GSList              *input_devices; /* For extra input devices, i.e
-                                         MultiTouch */
+  GSList              *input_devices;   /* For extra input devices, i.e
+                                           MultiTouch */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
 ClutterMainContext *clutter_context_get_default (void);
 PangoContext *_clutter_context_create_pango_context (ClutterMainContext *self);
+PangoContext *_clutter_context_get_pango_context    (ClutterMainContext *self);
 
 #define CLUTTER_PRIVATE_FLAGS(a)	 (((ClutterActor *) (a))->private_flags)
 #define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 (CLUTTER_PRIVATE_FLAGS (a) |= (f))

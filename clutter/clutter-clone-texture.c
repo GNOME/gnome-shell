@@ -25,7 +25,7 @@
 
 /**
  * SECTION:clutter-clone-texture
- * @short_description: Actor for cloning existing textures in an 
+ * @short_description: Actor for cloning existing textures in an
  * efficient way.
  *
  * #ClutterCloneTexture allows the cloning of existing #ClutterTexture based
@@ -39,7 +39,7 @@
 #include "clutter-main.h"
 #include "clutter-feature.h"
 #include "clutter-actor.h"
-#include "clutter-util.h" 
+#include "clutter-util.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
@@ -157,16 +157,16 @@ clutter_clone_texture_paint (ClutterActor *self)
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
 
-  /* parent texture may have been hidden, there for need to make sure its 
-   * realised with resources available.  
+  /* parent texture may have been hidden, there for need to make sure its
+   * realised with resources available.
   */
   parent_texture = CLUTTER_ACTOR (priv->parent_texture);
   if (!CLUTTER_ACTOR_IS_REALIZED (parent_texture))
     clutter_actor_realize (parent_texture);
 
-   /* If 'parent' texture isn't visible we run its paint to be sure it 
-    * updates. Needed for TFP and likely FBOs. 
-    * Potentially could cause issues 
+   /* If 'parent' texture isn't visible we run its paint to be sure it
+    * updates. Needed for TFP and likely FBOs.
+    * Potentially could cause issues
     */
   if (!clutter_actor_get_paint_visibility(parent_texture))
     {
@@ -221,6 +221,9 @@ set_parent_texture (ClutterCloneTexture *ctexture,
   ClutterActor *actor = CLUTTER_ACTOR (ctexture);
   gboolean was_visible = CLUTTER_ACTOR_IS_VISIBLE (ctexture);
 
+  if (priv->parent_texture == texture)
+    return;
+
   if (priv->parent_texture)
     {
       g_object_unref (priv->parent_texture);
@@ -230,7 +233,7 @@ set_parent_texture (ClutterCloneTexture *ctexture,
         clutter_actor_hide (actor);
     }
 
-  if (texture) 
+  if (texture)
     {
       priv->parent_texture = g_object_ref (texture);
 
@@ -244,14 +247,14 @@ set_parent_texture (ClutterCloneTexture *ctexture,
 
       clutter_actor_queue_relayout (actor);
     }
-      
+
 }
 
-static void 
+static void
 clutter_clone_texture_dispose (GObject *object)
 {
   ClutterCloneTexture         *self = CLUTTER_CLONE_TEXTURE(object);
-  ClutterCloneTexturePrivate  *priv = self->priv;  
+  ClutterCloneTexturePrivate  *priv = self->priv;
 
   if (priv->parent_texture)
     g_object_unref (priv->parent_texture);
@@ -261,7 +264,7 @@ clutter_clone_texture_dispose (GObject *object)
   G_OBJECT_CLASS (clutter_clone_texture_parent_class)->dispose (object);
 }
 
-static void 
+static void
 clutter_clone_texture_finalize (GObject *object)
 {
   G_OBJECT_CLASS (clutter_clone_texture_parent_class)->finalize (object);
@@ -391,7 +394,7 @@ clutter_clone_texture_init (ClutterCloneTexture *self)
  * clutter_clone_texture_new:
  * @texture: a #ClutterTexture, or %NULL
  *
- * Creates an efficient 'clone' of a pre-existing texture with which it 
+ * Creates an efficient 'clone' of a pre-existing texture with which it
  * shares the underlying pixbuf data.
  *
  * You can use clutter_clone_texture_set_parent_texture() to change the
@@ -412,7 +415,7 @@ clutter_clone_texture_new (ClutterTexture *texture)
 /**
  * clutter_clone_texture_get_parent_texture:
  * @clone: a #ClutterCloneTexture
- * 
+ *
  * Retrieves the parent #ClutterTexture used by @clone.
  *
  * Return value: a #ClutterTexture actor, or %NULL

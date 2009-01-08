@@ -252,8 +252,8 @@ clutter_texture_realize (ClutterActor *actor)
       if (priv->texture != COGL_INVALID_HANDLE)
 	cogl_texture_unref (priv->texture);
 
-      priv->texture 
-            = cogl_texture_new_with_size 
+      priv->texture
+            = cogl_texture_new_with_size
                           (priv->width,
                            priv->height,
                            priv->no_slice ? -1 : priv->max_tile_waste,
@@ -376,12 +376,12 @@ clutter_texture_get_preferred_height (ClutterActor *self,
             {
               /* Set the natural height so as to preserve the aspect ratio */
               ClutterFixed ratio, width;
-              
+
               ratio = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (priv->height),
                                       COGL_FIXED_FROM_INT (priv->width));
 
               width = CLUTTER_UNITS_TO_FIXED (for_width);
-              
+
               *natural_height_p =
                 CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL (ratio, width));
             }
@@ -417,7 +417,8 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
   ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
   ClutterVertex verts[4];
   ClutterFixed viewport[4];
-  ClutterFixed  x_min, x_max, y_min, y_max;
+  ClutterUnit x_min, x_max, y_min, y_max;
+  ClutterFixed tx_min, tx_max, ty_min, ty_max;
   ClutterPerspective perspective;
   ClutterStage *stage;
   ClutterFixed tan_angle, near_size;
@@ -450,21 +451,26 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
 
   /* Convert the coordinates back to [-1,1] range */
   cogl_get_viewport (viewport);
-  x_min = COGL_FIXED_DIV (x_min, viewport[2]) * 2 - COGL_FIXED_1;
-  x_max = COGL_FIXED_DIV (x_max, viewport[2]) * 2 - COGL_FIXED_1;
-  y_min = COGL_FIXED_DIV (y_min, viewport[3]) * 2 - COGL_FIXED_1;
-  y_max = COGL_FIXED_DIV (y_max, viewport[3]) * 2 - COGL_FIXED_1;
+
+  tx_min = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_min), viewport[2])
+         * 2 - COGL_FIXED_1;
+  tx_max = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_max), viewport[2])
+         * 2 - COGL_FIXED_1;
+  ty_min = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_min), viewport[3])
+         * 2 - COGL_FIXED_1;
+  ty_max = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_max), viewport[3])
+         * 2 - COGL_FIXED_1;
 
   /* Set up a projection matrix so that the actor will be projected as
      if it was drawn at its original location */
-  tan_angle = clutter_tani (CLUTTER_ANGLE_FROM_DEGX (perspective.fovy / 2));
+  tan_angle = cogl_angle_tan (COGL_ANGLE_FROM_DEGX (perspective.fovy / 2));
   near_size = COGL_FIXED_MUL (perspective.z_near, tan_angle);
 
-  cogl_frustum (COGL_FIXED_MUL (x_min, near_size),
-		COGL_FIXED_MUL (x_max, near_size),
-		COGL_FIXED_MUL (-y_min, near_size),
-		COGL_FIXED_MUL (-y_max, near_size),
-		perspective.z_near, perspective.z_far);
+  cogl_frustum (COGL_FIXED_MUL (tx_min, near_size),
+                COGL_FIXED_MUL (tx_max, near_size),
+                COGL_FIXED_MUL (-ty_min, near_size),
+                COGL_FIXED_MUL (-ty_max, near_size),
+                perspective.z_near, perspective.z_far);
 }
 
 static void
@@ -544,8 +550,10 @@ clutter_texture_paint (ClutterActor *self)
 
       /* Restore the perspective matrix using cogl_perspective so that
 	 the inverse matrix will be right */
-      cogl_perspective (perspective.fovy, perspective.aspect,
-			perspective.z_near, perspective.z_far);
+      cogl_perspective (perspective.fovy,
+                        perspective.aspect,
+                        perspective.z_near,
+                        perspective.z_far);
 
       /* If there is a shader on top of the shader stack, turn it back on. */
       if (shader)
@@ -588,9 +596,9 @@ clutter_texture_paint (ClutterActor *self)
 
   /* Paint will have translated us */
   cogl_texture_rectangle (priv->texture, 0, 0,
-			  COGL_FIXED_FROM_INT (x_2 - x_1),
-			  COGL_FIXED_FROM_INT (y_2 - y_1),
-			  0, 0, t_w, t_h);
+                          COGL_FIXED_FROM_INT (x_2 - x_1),
+                          COGL_FIXED_FROM_INT (y_2 - y_1),
+                          0, 0, t_w, t_h);
 }
 
 static void
@@ -938,7 +946,7 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
   parent_scriptable_iface = g_type_interface_peek_parent (iface);
 
   if (!parent_scriptable_iface)
-    parent_scriptable_iface = g_type_default_interface_peek 
+    parent_scriptable_iface = g_type_default_interface_peek
                                           (CLUTTER_TYPE_SCRIPTABLE);
 
   iface->set_custom_property = clutter_texture_set_custom_property;
@@ -1028,7 +1036,7 @@ clutter_texture_load_from_local_data (ClutterTexture *texture)
 				     priv->local_data_rowstride,
 				     priv->local_data_has_alpha ? 4: 3,
 				     0, NULL);
-				     
+
   g_free (priv->local_data);
   priv->local_data = NULL;
 }
@@ -1136,7 +1144,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
   priv = texture->priv;
 
-  if ((new_texture = cogl_texture_new_from_data 
+  if ((new_texture = cogl_texture_new_from_data
                           (width, height,
                            priv->no_slice ? -1 : priv->max_tile_waste,
                            priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
@@ -1171,7 +1179,7 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
  * @width: Width in pixels of image data.
  * @height: Height in pixels of image data
  * @rowstride: Distance in bytes between row starts.
- * @bpp: bytes per pixel (Currently only 3 and 4 supported, 
+ * @bpp: bytes per pixel (Currently only 3 and 4 supported,
  *                        depending on @has_alpha)
  * @flags: #ClutterTextureFlags
  * @error: return location for a #GError, or %NULL.
@@ -1318,7 +1326,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if ((new_texture = cogl_texture_new_from_file 
+  if ((new_texture = cogl_texture_new_from_file
                           (filename,
                            priv->no_slice ? -1 : priv->max_tile_waste,
                            priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
@@ -1577,7 +1585,7 @@ clutter_texture_get_base_size (ClutterTexture *texture,
  * @width: Width in pixels of region to update.
  * @height: Height in pixels of region to update.
  * @rowstride: Distance in bytes between row starts on source buffer.
- * @bpp: bytes per pixel (Currently only 3 and 4 supported, 
+ * @bpp: bytes per pixel (Currently only 3 and 4 supported,
  *                        depending on @has_alpha)
  * @flags: #ClutterTextureFlags
  * @error: return location for a #GError, or %NULL
@@ -1736,7 +1744,7 @@ on_fbo_parent_change (ClutterActor        *actor,
  *
  * Note this function is intented as a utility call for uniformly applying
  * shaders to groups and other potential visual effects. It requires that
- * the %CLUTTER_FEATURE_OFFSCREEN feature is supported by the current backend 
+ * the %CLUTTER_FEATURE_OFFSCREEN feature is supported by the current backend
  * and the target system.
  *
  * Some tips on usage:
@@ -1829,7 +1837,7 @@ clutter_texture_new_from_actor (ClutterActor *actor)
     return NULL;
 
   /* Hopefully now were good.. */
-  texture = g_object_new (CLUTTER_TYPE_TEXTURE, 
+  texture = g_object_new (CLUTTER_TYPE_TEXTURE,
                           "disable-slicing", TRUE,
                           NULL);
 

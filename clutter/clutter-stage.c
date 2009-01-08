@@ -1201,7 +1201,7 @@ clutter_stage_read_pixels (ClutterStage *stage,
 
   /* The y co-ordinate should be given in OpenGL's coordinate system
      so 0 is the bottom row */
-  y = stage_height - 1 - y - height;
+  y = stage_height - y - height;
 
   glFinish ();
 

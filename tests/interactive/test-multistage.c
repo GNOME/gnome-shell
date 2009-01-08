@@ -50,10 +50,10 @@ on_button_press (ClutterActor *actor,
   clutter_container_add_actor (CLUTTER_CONTAINER (new_stage), tex);
 
   stage_label = g_strdup_printf ("<b>Stage: %d</b>", ++n_stages); 
-  label = clutter_label_new_with_text ("Mono 12", stage_label);
+  label = clutter_text_new_with_text ("Mono 12", stage_label);
 
-  clutter_label_set_color (CLUTTER_LABEL (label), &white);
-  clutter_label_set_use_markup (CLUTTER_LABEL (label), TRUE);
+  clutter_text_set_color (CLUTTER_TEXT (label), &white);
+  clutter_text_set_use_markup (CLUTTER_TEXT (label), TRUE);
   width = (clutter_actor_get_width (new_stage) 
            - clutter_actor_get_width (label)) / 2;
   height = (clutter_actor_get_height (new_stage) 
@@ -110,7 +110,7 @@ test_multistage_main (int argc, char *argv[])
                     G_CALLBACK (on_button_press),
                     NULL);
 
-  label = clutter_label_new_with_text ("Mono 16", "Default stage");
+  label = clutter_text_new_with_text ("Mono 16", "Default stage");
   width = (clutter_actor_get_width (stage_default) 
            - clutter_actor_get_width (label))
              / 2;

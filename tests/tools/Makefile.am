@@ -10,6 +10,12 @@ libdisable_npots_la_SOURCES = disable-npots.c
 
 libdisable_npots_la_LIBADD = -ldl
 
+INCLUDES = \
+	-I$(top_srcdir)/clutter	                        \
+	-I$(top_builddir)/clutter                       \
+	$(CLUTTER_CFLAGS)                               \
+	-D_GNU_SOURCE
+
 all-local : disable-npots.sh
 
 clean-local :

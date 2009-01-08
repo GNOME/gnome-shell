@@ -23,6 +23,8 @@
 #include "config.h"
 #endif
 
+#include <glib/gi18n-lib.h>
+
 #include <string.h>
 #include <sys/types.h>
 #ifdef HAVE_UNISTD_H
@@ -235,18 +237,18 @@ static const GOptionEntry entries[] =
     "display", 0,
     G_OPTION_FLAG_IN_MAIN,
     G_OPTION_ARG_STRING, &clutter_display_name,
-    "X display to use", "DISPLAY"
+    N_("X display to use"), "DISPLAY"
   },
   {
     "screen", 0,
     G_OPTION_FLAG_IN_MAIN,
     G_OPTION_ARG_INT, &clutter_screen,
-    "X screen to use", "SCREEN"
+    N_("X screen to use"), "SCREEN"
   },
   { "synch", 0,
     0,
     G_OPTION_ARG_NONE, &clutter_synchronise,
-    "Make X calls synchronous", NULL,
+    N_("Make X calls synchronous"), NULL,
   },
   { NULL }
 };

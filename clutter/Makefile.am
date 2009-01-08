@@ -64,7 +64,6 @@ source_h =					\
         $(srcdir)/clutter-container.h		\
         $(srcdir)/clutter-deprecated.h		\
 	$(srcdir)/clutter-effect.h 		\
-        $(srcdir)/clutter-entry.h               \
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
@@ -72,7 +71,6 @@ source_h =					\
 	$(srcdir)/clutter-group.h 		\
         $(srcdir)/clutter-interval.h            \
 	$(srcdir)/clutter-keysyms.h 		\
-	$(srcdir)/clutter-label.h 		\
 	$(srcdir)/clutter-list-model.h		\
 	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
@@ -87,6 +85,7 @@ source_h =					\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-stage-manager.h	\
 	$(srcdir)/clutter-texture.h 		\
+        $(srcdir)/clutter-text.h                \
 	$(srcdir)/clutter-timeline.h 		\
 	$(srcdir)/clutter-timeout-pool.h 	\
 	$(srcdir)/clutter-types.h		\
@@ -155,7 +154,6 @@ source_c = \
 	clutter-color.c 		\
 	clutter-container.c		\
 	clutter-effect.c      		\
-        clutter-entry.c                 \
 	clutter-enum-types.c		\
         clutter-event.c 		\
 	clutter-feature.c 		\
@@ -164,7 +162,6 @@ source_c = \
 	clutter-group.c 		\
 	clutter-id-pool.c 		\
         clutter-interval.c              \
-	clutter-label.c 		\
 	clutter-list-model.c		\
 	clutter-main.c 			\
 	clutter-marshal.c		\
@@ -182,6 +179,7 @@ source_c = \
 	clutter-stage-manager.c		\
 	clutter-stage-window.c		\
 	clutter-texture.c 		\
+        clutter-text.c                  \
 	clutter-timeline.c 		\
 	clutter-timeout-pool.c		\
 	clutter-units.c			\

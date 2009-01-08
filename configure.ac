@@ -580,7 +580,7 @@ AC_ARG_ENABLE([maintainer-flags],
               enable_maintainer_flags=maintainer_flags_default)
 
 if test "x$enable_maintainer_flags" = "xyes"; then
-  CPPFLAGS="$CPPFLAGS -Werror -Wall -Wshadow -Wcast-align -Wno-uninitialized"
+  CPPFLAGS="$CPPFLAGS -Werror -Wall -Wshadow -Wcast-align -Wno-uninitialized -Wempty-body -Wformat-security -Winit-self"
 fi
 
 
@@ -637,6 +637,7 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
 
 ALL_LINGUAS=""
 AM_GLIB_GNU_GETTEXT
+GLIB_DEFINE_LOCALEDIR(LOCALEDIR)
 
 AC_CONFIG_FILES([
         Makefile

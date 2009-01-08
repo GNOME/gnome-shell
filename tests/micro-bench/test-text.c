@@ -80,14 +80,14 @@ main (int argc, char *argv[])
               scale = 1.0;
             }
 
-          label = clutter_label_new_with_text (font_name, text);
-          clutter_label_set_color (CLUTTER_LABEL (label), &label_color);
+          label = clutter_text_new_with_text (font_name, text);
+          clutter_text_set_color (CLUTTER_TEXT (label), &label_color);
           clutter_actor_set_position (label, (1.0*STAGE_WIDTH/COLS)*col,
                                              (1.0*STAGE_HEIGHT/ROWS)*row);
           /*clutter_actor_set_clip (label, 0,0, (1.0*STAGE_WIDTH/COLS),
                                               (1.0*STAGE_HEIGHT/ROWS));*/
           clutter_actor_set_scale (label, scale, scale);
-          clutter_label_set_line_wrap (CLUTTER_LABEL (label), FALSE);
+          clutter_text_set_line_wrap (CLUTTER_TEXT (label), FALSE);
           clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
         }
   }

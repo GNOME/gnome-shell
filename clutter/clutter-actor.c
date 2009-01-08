@@ -221,7 +221,9 @@ struct _ClutterActorPrivate
   /* cached allocation is invalid (request has changed, probably) */
   guint needs_allocation     : 1;
 
-  guint           has_clip : 1;
+  guint show_on_set_parent   : 1;
+  guint has_clip             : 1;
+
   ClutterUnit     clip[4];
 
   /* Rotation angles */
@@ -260,7 +262,7 @@ struct _ClutterActorPrivate
 
   ShaderData     *shader_data;
 
-  gboolean        show_on_set_parent;
+  PangoContext   *pango_context;
 };
 
 enum
@@ -772,6 +774,24 @@ clutter_actor_real_allocate (ClutterActor          *self,
   g_object_thaw_notify (G_OBJECT (self));
 }
 
+/* like ClutterVertex, but using CoglFixed and with a w component */
+typedef struct {
+  CoglFixed x;
+  CoglFixed y;
+  CoglFixed z;
+  CoglFixed w;
+} fixed_vertex_t;
+
+/* copies a fixed vertex into a ClutterVertex */
+static inline void
+fixed_vertex_to_units (const fixed_vertex_t *f,
+                       ClutterVertex        *u)
+{
+  u->x = CLUTTER_UNITS_FROM_FIXED (f->x);
+  u->y = CLUTTER_UNITS_FROM_FIXED (f->y);
+  u->z = CLUTTER_UNITS_FROM_FIXED (f->z);
+}
+
 /*
  * Utility functions for manipulating transformation matrix
  *
@@ -779,49 +799,114 @@ clutter_actor_real_allocate (ClutterActor          *self,
  */
 #define M(m,row,col)  (m)[(col) * 4 + (row)]
 
-/* Transform point (x,y,z) by matrix */
-static void
-mtx_transform (ClutterFixed m[16],
-	       ClutterFixed *x, ClutterFixed *y, ClutterFixed *z,
-	       ClutterFixed *w)
+/* Transforms a vertex using the passed matrix; vertex is
+ * an in-out parameter
+ */
+static inline void
+mtx_transform (const ClutterFixed  m[],
+               fixed_vertex_t     *vertex)
 {
-    ClutterFixed _x, _y, _z, _w;
-    _x = *x;
-    _y = *y;
-    _z = *z;
-    _w = *w;
+  ClutterFixed _x, _y, _z, _w;
 
-    /* We care lot about precision here, so have to use QMUL */
-    *x = COGL_FIXED_MUL (M (m, 0, 0), _x)
-       + COGL_FIXED_MUL (M (m, 0, 1), _y)
-       + COGL_FIXED_MUL (M (m, 0, 2), _z)
-       + COGL_FIXED_MUL (M (m, 0, 3), _w);
+  _x = vertex->x;
+  _y = vertex->y;
+  _z = vertex->z;
+  _w = vertex->w;
 
-    *y = COGL_FIXED_MUL (M (m, 1, 0), _x)
-       + COGL_FIXED_MUL (M (m, 1, 1), _y)
-       + COGL_FIXED_MUL (M (m, 1, 2), _z)
-       + COGL_FIXED_MUL (M (m, 1, 3), _w);
+  /* We care lot about precision here, so have to use MUL instead
+   * of FAST_MUL
+   */
+  vertex->x = COGL_FIXED_MUL (M (m, 0, 0), _x)
+            + COGL_FIXED_MUL (M (m, 0, 1), _y)
+            + COGL_FIXED_MUL (M (m, 0, 2), _z)
+            + COGL_FIXED_MUL (M (m, 0, 3), _w);
 
-    *z = COGL_FIXED_MUL (M (m, 2, 0), _x)
-       + COGL_FIXED_MUL (M (m, 2, 1), _y)
-       + COGL_FIXED_MUL (M (m, 2, 2), _z)
-       + COGL_FIXED_MUL (M (m, 2, 3), _w);
+  vertex->y = COGL_FIXED_MUL (M (m, 1, 0), _x)
+            + COGL_FIXED_MUL (M (m, 1, 1), _y)
+            + COGL_FIXED_MUL (M (m, 1, 2), _z)
+            + COGL_FIXED_MUL (M (m, 1, 3), _w);
 
-    *w = COGL_FIXED_MUL (M (m, 3, 0), _x)
-       + COGL_FIXED_MUL (M (m, 3, 1), _y)
-       + COGL_FIXED_MUL (M (m, 3, 2), _z)
-       + COGL_FIXED_MUL (M (m, 3, 3), _w);
+  vertex->z = COGL_FIXED_MUL (M (m, 2, 0), _x)
+            + COGL_FIXED_MUL (M (m, 2, 1), _y)
+            + COGL_FIXED_MUL (M (m, 2, 2), _z)
+            + COGL_FIXED_MUL (M (m, 2, 3), _w);
 
-    /* Specially for Matthew: was going to put a comment here, but could not
-     * think of anything at all to say ;)
-     */
+  vertex->w = COGL_FIXED_MUL (M (m, 3, 0), _x)
+            + COGL_FIXED_MUL (M (m, 3, 1), _y)
+            + COGL_FIXED_MUL (M (m, 3, 2), _z)
+            + COGL_FIXED_MUL (M (m, 3, 3), _w);
+
+  /* Specially for Matthew: was going to put a comment here, but could not
+   * think of anything at all to say ;)
+   */
 }
 
 #undef M
 
+/* Help macros to scale from OpenGL <-1,1> coordinates system to our
+ * X-window based <0,window-size> coordinates
+ */
+#define MTX_GL_SCALE_X(x,w,v1,v2) (COGL_FIXED_MUL (((COGL_FIXED_DIV ((x), (w)) + COGL_FIXED_1) >> 1), (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - COGL_FIXED_MUL (((COGL_FIXED_DIV ((y), (w)) + COGL_FIXED_1) >> 1), (v1)) + (v2))
+#define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
+
+/* transforms a 4-tuple of coordinates using @matrix and
+ * places the result into a fixed @vertex
+ */
+static inline void
+fixed_vertex_transform (const ClutterFixed  matrix[],
+                        ClutterFixed        x,
+                        ClutterFixed        y,
+                        ClutterFixed        z,
+                        ClutterFixed        w,
+                        fixed_vertex_t     *vertex)
+{
+  fixed_vertex_t tmp = { 0, };
+
+  tmp.x = x;
+  tmp.y = y;
+  tmp.z = z;
+  tmp.w = w;
+
+  mtx_transform (matrix, &tmp);
+
+  *vertex = tmp;
+}
+
+/* scales a fixed @vertex using @matrix and @viewport, and
+ * transforms the result into ClutterUnits, filling @vertex_p
+ */
+static inline void
+fixed_vertex_scale (const ClutterFixed    matrix[],
+                    const fixed_vertex_t *vertex,
+                    const ClutterFixed    viewport[],
+                    ClutterVertex        *vertex_p)
+{
+  ClutterFixed v_x, v_y, v_width, v_height;
+  fixed_vertex_t tmp = { 0, };
+
+  tmp = *vertex;
+
+  mtx_transform (matrix, &tmp);
+
+  v_x      = viewport[0];
+  v_y      = viewport[1];
+  v_width  = viewport[2];
+  v_height = viewport[3];
+
+  tmp.x = MTX_GL_SCALE_X (tmp.x, tmp.w, v_width, v_x);
+  tmp.y = MTX_GL_SCALE_Y (tmp.y, tmp.w, v_height, v_y);
+  tmp.z = MTX_GL_SCALE_Z (tmp.z, tmp.w, v_width, v_x);
+  tmp.w = 0;
+
+  fixed_vertex_to_units (&tmp, vertex_p);
+}
+
 /* Applies the transforms associated with this actor and its ancestors,
  * retrieves the resulting OpenGL modelview matrix, and uses the matrix
  * to transform the supplied point
+ *
+ * The point coordinates are in-out parameters
  */
 static void
 clutter_actor_transform_point_relative (ClutterActor *actor,
@@ -832,14 +917,33 @@ clutter_actor_transform_point_relative (ClutterActor *actor,
 					ClutterUnit  *w)
 {
   ClutterFixed mtx[16];
+  fixed_vertex_t vertex = { 0, };
+
+  vertex.x = (x != NULL) ? CLUTTER_UNITS_TO_FIXED (*x) : 0;
+  vertex.y = (y != NULL) ? CLUTTER_UNITS_TO_FIXED (*y) : 0;
+  vertex.z = (z != NULL) ? CLUTTER_UNITS_TO_FIXED (*z) : 0;
+  vertex.w = (w != NULL) ? CLUTTER_UNITS_TO_FIXED (*w) : 0;
 
   cogl_push_matrix();
 
   _clutter_actor_apply_modelview_transform_recursive (actor, ancestor);
+
   cogl_get_modelview_matrix (mtx);
-  mtx_transform (mtx, x, y, z, w);
+  mtx_transform (mtx, &vertex);
 
   cogl_pop_matrix();
+
+  if (x)
+    *x = CLUTTER_UNITS_FROM_FIXED (vertex.x);
+
+  if (y)
+    *y = CLUTTER_UNITS_FROM_FIXED (vertex.y);
+
+  if (z)
+    *z = CLUTTER_UNITS_FROM_FIXED (vertex.z);
+
+  if (w)
+    *w = CLUTTER_UNITS_FROM_FIXED (vertex.w);
 }
 
 /* Applies the transforms associated with this actor and its ancestors,
@@ -854,22 +958,34 @@ clutter_actor_transform_point (ClutterActor *actor,
 			       ClutterUnit  *w)
 {
   ClutterFixed mtx[16];
+  fixed_vertex_t vertex = { 0, };
+
+  vertex.x = (x != NULL) ? CLUTTER_UNITS_TO_FIXED (*x) : 0;
+  vertex.y = (y != NULL) ? CLUTTER_UNITS_TO_FIXED (*y) : 0;
+  vertex.z = (z != NULL) ? CLUTTER_UNITS_TO_FIXED (*z) : 0;
+  vertex.w = (w != NULL) ? CLUTTER_UNITS_TO_FIXED (*w) : 0;
 
   cogl_push_matrix();
 
   _clutter_actor_apply_modelview_transform_recursive (actor, NULL);
+
   cogl_get_modelview_matrix (mtx);
-  mtx_transform (mtx, x, y, z, w);
+  mtx_transform (mtx, &vertex);
 
   cogl_pop_matrix();
-}
 
-/* Help macros to scale from OpenGL <-1,1> coordinates system to our
- * X-window based <0,window-size> coordinates
- */
-#define MTX_GL_SCALE_X(x,w,v1,v2) (COGL_FIXED_MUL (((COGL_FIXED_DIV ((x), (w)) + COGL_FIXED_1) >> 1), (v1)) + (v2))
-#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - COGL_FIXED_MUL (((COGL_FIXED_DIV ((y), (w)) + COGL_FIXED_1) >> 1), (v1)) + (v2))
-#define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
+  if (x)
+    *x = CLUTTER_UNITS_FROM_FIXED (vertex.x);
+
+  if (y)
+    *y = CLUTTER_UNITS_FROM_FIXED (vertex.y);
+
+  if (z)
+    *z = CLUTTER_UNITS_FROM_FIXED (vertex.z);
+
+  if (w)
+    *w = CLUTTER_UNITS_FROM_FIXED (vertex.w);
+}
 
 /**
  * clutter_actor_apply_relative_transform_to_point:
@@ -896,21 +1012,22 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
 						 const ClutterVertex *point,
 						 ClutterVertex       *vertex)
 {
-  ClutterVertex tmp = { 0, };
   ClutterFixed v[4];
-  ClutterFixed w = COGL_FIXED_1;
+  ClutterFixed x, y, z, w;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
   g_return_if_fail (point != NULL);
   g_return_if_fail (vertex != NULL);
 
-  tmp = *point;
+  x = CLUTTER_UNITS_TO_FIXED (vertex->x);
+  y = CLUTTER_UNITS_TO_FIXED (vertex->y);
+  z = CLUTTER_UNITS_TO_FIXED (vertex->z);
+  w = COGL_FIXED_1;
 
   /* First we tranform the point using the OpenGL modelview matrix */
   clutter_actor_transform_point_relative (self, ancestor,
-					  &tmp.x, &tmp.y, &tmp.z,
-					  &w);
+					  &x, &y, &z, &w);
 
   cogl_get_viewport (v);
 
@@ -918,9 +1035,12 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
    * The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
    * we would have to divide the original verts with it.
    */
-  vertex->x = COGL_FIXED_MUL ((tmp.x + COGL_FIXED_0_5), v[2]);
-  vertex->y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - tmp.y), v[3]);
-  vertex->z = COGL_FIXED_MUL ((tmp.z + COGL_FIXED_0_5), v[2]);
+  vertex->x =
+    CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL ((x + COGL_FIXED_0_5), v[2]));
+  vertex->y =
+    CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL ((COGL_FIXED_0_5 - y), v[3]));
+  vertex->z =
+    CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL ((z + COGL_FIXED_0_5), v[2]));
 }
 
 /**
@@ -940,30 +1060,35 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
                                         const ClutterVertex *point,
                                         ClutterVertex       *vertex)
 {
-  ClutterVertex tmp = { 0, };
   ClutterFixed mtx_p[16];
   ClutterFixed v[4];
-  ClutterFixed w = COGL_FIXED_1;
+  fixed_vertex_t tmp = { 0, };
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (point != NULL);
   g_return_if_fail (vertex != NULL);
 
-  tmp = *point;
+  tmp.x = CLUTTER_UNITS_TO_FIXED (vertex->x);
+  tmp.y = CLUTTER_UNITS_TO_FIXED (vertex->y);
+  tmp.z = CLUTTER_UNITS_TO_FIXED (vertex->z);
+  tmp.w = COGL_FIXED_1;
 
   /* First we tranform the point using the OpenGL modelview matrix */
-  clutter_actor_transform_point (self, &tmp.x, &tmp.y, &tmp.z, &w);
+  clutter_actor_transform_point (self, &tmp.x, &tmp.y, &tmp.z, &tmp.w);
 
   cogl_get_projection_matrix (mtx_p);
   cogl_get_viewport (v);
 
   /* Now, transform it again with the projection matrix */
-  mtx_transform (mtx_p, &tmp.x, &tmp.y, &tmp.z, &w);
+  mtx_transform (mtx_p, &tmp);
 
   /* Finaly translate from OpenGL coords to window coords */
-  vertex->x = MTX_GL_SCALE_X (tmp.x, w, v[2], v[0]);
-  vertex->y = MTX_GL_SCALE_Y (tmp.y, w, v[3], v[1]);
-  vertex->z = MTX_GL_SCALE_Z (tmp.z, w, v[2], v[0]);
+  vertex->x =
+    CLUTTER_UNITS_FROM_FIXED (MTX_GL_SCALE_X (tmp.x, tmp.w, v[2], v[0]));
+  vertex->y =
+    CLUTTER_UNITS_FROM_FIXED (MTX_GL_SCALE_Y (tmp.y, tmp.w, v[3], v[1]));
+  vertex->z =
+    CLUTTER_UNITS_FROM_FIXED (MTX_GL_SCALE_Z (tmp.z, tmp.w, v[2], v[0]));
 }
 
 /* Recursively tranform supplied vertices with the tranform for the current
@@ -971,66 +1096,27 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
  * for all the vertices in one go).
  */
 static void
-clutter_actor_transform_vertices_relative (ClutterActor  *self,
-					   ClutterActor  *ancestor,
-					   ClutterVertex  verts[4],
-					   ClutterFixed   w[4])
+clutter_actor_transform_vertices_relative (ClutterActor   *self,
+					   ClutterActor   *ancestor,
+                                           fixed_vertex_t  vertices[])
 {
-  ClutterFixed    mtx[16];
-  ClutterFixed    _x, _y, _z, _w;
+  ClutterActorPrivate *priv = self->priv;
+  ClutterFixed mtx[16];
+  ClutterFixed width, height;
+
+  width  = CLUTTER_UNITS_TO_FIXED (priv->allocation.x2 - priv->allocation.x1);
+  height = CLUTTER_UNITS_TO_FIXED (priv->allocation.y2 - priv->allocation.y1);
 
   cogl_push_matrix();
 
   _clutter_actor_apply_modelview_transform_recursive (self, ancestor);
+
   cogl_get_modelview_matrix (mtx);
 
-  _x = 0;
-  _y = 0;
-  _z = 0;
-  _w = COGL_FIXED_1;
-
-  mtx_transform (mtx, &_x, &_y, &_z, &_w);
-
-  verts[0].x = _x;
-  verts[0].y = _y;
-  verts[0].z = _z;
-  w[0] = _w;
-
-  _x = self->priv->allocation.x2 - self->priv->allocation.x1;
-  _y = 0;
-  _z = 0;
-  _w = COGL_FIXED_1;
-
-  mtx_transform (mtx, &_x, &_y, &_z, &_w);
-
-  verts[1].x = _x;
-  verts[1].y = _y;
-  verts[1].z = _z;
-  w[1] = _w;
-
-  _x = 0;
-  _y = self->priv->allocation.y2 - self->priv->allocation.y1;
-  _z = 0;
-  _w = COGL_FIXED_1;
-
-  mtx_transform (mtx, &_x, &_y, &_z, &_w);
-
-  verts[2].x = _x;
-  verts[2].y = _y;
-  verts[2].z = _z;
-  w[2] = _w;
-
-  _x = self->priv->allocation.x2 - self->priv->allocation.x1;
-  _y = self->priv->allocation.y2 - self->priv->allocation.y1;
-  _z = 0;
-  _w = COGL_FIXED_1;
-
-  mtx_transform (mtx, &_x, &_y, &_z, &_w);
-
-  verts[3].x = _x;
-  verts[3].y = _y;
-  verts[3].z = _z;
-  w[3] = _w;
+  fixed_vertex_transform (mtx, 0,     0,      0, COGL_FIXED_1, &vertices[0]);
+  fixed_vertex_transform (mtx, width, 0,      0, COGL_FIXED_1, &vertices[1]);
+  fixed_vertex_transform (mtx, 0,     height, 0, COGL_FIXED_1, &vertices[2]);
+  fixed_vertex_transform (mtx, width, height, 0, COGL_FIXED_1, &vertices[3]);
 
   cogl_pop_matrix();
 }
@@ -1045,12 +1131,15 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
 					 const ClutterActorBox *box,
 					 ClutterVertex          verts[4])
 {
-  ClutterActor          *stage;
-  ClutterFixed           mtx[16];
-  ClutterFixed           mtx_p[16];
-  ClutterFixed           _x, _y, _z, _w;
-  ClutterFixed           w[4];
-  ClutterFixed           v[4];
+  ClutterActor *stage;
+  ClutterFixed mtx[16];
+  ClutterFixed mtx_p[16];
+  ClutterFixed v[4];
+  ClutterFixed width, height;
+  fixed_vertex_t vertices[4];
+
+  width = CLUTTER_UNITS_TO_FIXED (box->x2 - box->x1);
+  height = CLUTTER_UNITS_TO_FIXED (box->y2 - box->y1);
 
   /* We essentially have to dupe some code from clutter_redraw() here
    * to make sure GL Matrices etc are initialised if we're called and we
@@ -1071,102 +1160,25 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
   _clutter_stage_maybe_setup_viewport (CLUTTER_STAGE (stage));
 
   cogl_push_matrix();
+
   _clutter_actor_apply_modelview_transform_recursive (self, NULL);
 
   cogl_get_modelview_matrix (mtx);
 
-  _x = 0;
-  _y = 0;
-  _z = 0;
-  _w = COGL_FIXED_1;
-
-  mtx_transform (mtx, &_x, &_y, &_z, &_w);
-
-  verts[0].x = _x;
-  verts[0].y = _y;
-  verts[0].z = _z;
-  w[0] = _w;
-
-  _x = box->x2 - box->x1;
-  _y = 0;
-  _z = 0;
-  _w = COGL_FIXED_1;
-
-  mtx_transform (mtx, &_x, &_y, &_z, &_w);
-
-  verts[1].x = _x;
-  verts[1].y = _y;
-  verts[1].z = _z;
-  w[1] = _w;
-
-  _x = 0;
-  _y = box->y2 - box->y1;
-  _z = 0;
-  _w = COGL_FIXED_1;
-
-  mtx_transform (mtx, &_x, &_y, &_z, &_w);
-
-  verts[2].x = _x;
-  verts[2].y = _y;
-  verts[2].z = _z;
-  w[2] = _w;
-
-  _x = box->x2 - box->x1;
-  _y = box->y2 - box->y1;
-  _z = 0;
-  _w = COGL_FIXED_1;
-
-  mtx_transform (mtx, &_x, &_y, &_z, &_w);
-
-  verts[3].x = _x;
-  verts[3].y = _y;
-  verts[3].z = _z;
-  w[3] = _w;
+  fixed_vertex_transform (mtx, 0,     0,      0, COGL_FIXED_1, &vertices[0]);
+  fixed_vertex_transform (mtx, width, 0,      0, COGL_FIXED_1, &vertices[1]);
+  fixed_vertex_transform (mtx, 0,     height, 0, COGL_FIXED_1, &vertices[2]);
+  fixed_vertex_transform (mtx, width, height, 0, COGL_FIXED_1, &vertices[3]);
 
   cogl_pop_matrix();
 
   cogl_get_projection_matrix (mtx_p);
   cogl_get_viewport (v);
 
-  mtx_transform (mtx_p,
-		 &verts[0].x,
-		 &verts[0].y,
-		 &verts[0].z,
-		 &w[0]);
-
-  verts[0].x = MTX_GL_SCALE_X (verts[0].x, w[0], v[2], v[0]);
-  verts[0].y = MTX_GL_SCALE_Y (verts[0].y, w[0], v[3], v[1]);
-  verts[0].z = MTX_GL_SCALE_Z (verts[0].z, w[0], v[2], v[0]);
-
-  mtx_transform (mtx_p,
-		 &verts[1].x,
-		 &verts[1].y,
-		 &verts[1].z,
-		 &w[1]);
-
-  verts[1].x = MTX_GL_SCALE_X (verts[1].x, w[1], v[2], v[0]);
-  verts[1].y = MTX_GL_SCALE_Y (verts[1].y, w[1], v[3], v[1]);
-  verts[1].z = MTX_GL_SCALE_Z (verts[1].z, w[1], v[2], v[0]);
-
-  mtx_transform (mtx_p,
-		 &verts[2].x,
-		 &verts[2].y,
-		 &verts[2].z,
-		 &w[2]);
-
-  verts[2].x = MTX_GL_SCALE_X (verts[2].x, w[2], v[2], v[0]);
-  verts[2].y = MTX_GL_SCALE_Y (verts[2].y, w[2], v[3], v[1]);
-  verts[2].z = MTX_GL_SCALE_Z (verts[2].z, w[2], v[2], v[0]);
-
-  mtx_transform (mtx_p,
-		 &verts[3].x,
-		 &verts[3].y,
-		 &verts[3].z,
-		 &w[3]);
-
-  verts[3].x = MTX_GL_SCALE_X (verts[3].x, w[3], v[2], v[0]);
-  verts[3].y = MTX_GL_SCALE_Y (verts[3].y, w[3], v[3], v[1]);
-  verts[3].z = MTX_GL_SCALE_Z (verts[3].z, w[3], v[2], v[0]);
+  fixed_vertex_scale (mtx_p, &vertices[0], v, &verts[0]);
+  fixed_vertex_scale (mtx_p, &vertices[1], v, &verts[1]);
+  fixed_vertex_scale (mtx_p, &vertices[2], v, &verts[2]);
+  fixed_vertex_scale (mtx_p, &vertices[3], v, &verts[3]);
 }
 
 /**
@@ -1181,10 +1193,10 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
  * actor in the plane of @ancestor. The returned vertices relate to
  * the #ClutterActorBox coordinates as follows:
  * <itemizedlist>
- *   <listitem><para>v[0] contains (x1, y1)</para></listitem>
- *   <listitem><para>v[1] contains (x2, y1)</para></listitem>
- *   <listitem><para>v[2] contains (x1, y2)</para></listitem>
- *   <listitem><para>v[3] contains (x2, y2)</para></listitem>
+ *   <listitem><para>@verts[0] contains (x1, y1)</para></listitem>
+ *   <listitem><para>@verts[1] contains (x2, y1)</para></listitem>
+ *   <listitem><para>@verts[2] contains (x1, y2)</para></listitem>
+ *   <listitem><para>@verts[3] contains (x2, y2)</para></listitem>
  * </itemizedlist>
  *
  * If @ancestor is %NULL the ancestor will be the #ClutterStage. In
@@ -1197,12 +1209,13 @@ clutter_actor_transform_and_project_box (ClutterActor          *self,
 void
 clutter_actor_get_allocation_vertices (ClutterActor  *self,
                                        ClutterActor  *ancestor,
-                                       ClutterVertex  verts[4])
+                                       ClutterVertex  verts[])
 {
-  ClutterFixed           v[4];
-  ClutterFixed           w[4];
-  ClutterActorPrivate   *priv;
-  ClutterActor          *stage;
+  ClutterActorPrivate *priv;
+  ClutterActor *stage;
+  ClutterFixed v[4];
+  fixed_vertex_t vertices[4];
+  fixed_vertex_t tmp = { 0, };
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
@@ -1234,28 +1247,33 @@ clutter_actor_get_allocation_vertices (ClutterActor  *self,
   if (priv->needs_allocation)
     _clutter_stage_maybe_relayout (stage);
 
-  clutter_actor_transform_vertices_relative (self, ancestor, verts, w);
+  clutter_actor_transform_vertices_relative (self, ancestor, vertices);
+
   cogl_get_viewport (v);
 
   /*
-   * The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
-   * we would have to devide the original verts with it.
+   * The w[3] parameter should always be 1.0 here, so we ignore it;
+   * otherwise we would have to divide the original verts with it.
    */
-  verts[0].x = COGL_FIXED_MUL ((verts[0].x + COGL_FIXED_0_5), v[2]);
-  verts[0].y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - verts[0].y), v[3]);
-  verts[0].z = COGL_FIXED_MUL ((verts[0].z + COGL_FIXED_0_5), v[2]);
+  tmp.x = COGL_FIXED_MUL ((vertices[0].x + COGL_FIXED_0_5), v[2]);
+  tmp.y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - vertices[0].y), v[3]);
+  tmp.z = COGL_FIXED_MUL ((vertices[0].z + COGL_FIXED_0_5), v[2]);
+  fixed_vertex_to_units (&tmp, &verts[0]);
 
-  verts[1].x = COGL_FIXED_MUL ((verts[1].x + COGL_FIXED_0_5), v[2]);
-  verts[1].y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - verts[1].y), v[3]);
-  verts[1].z = COGL_FIXED_MUL ((verts[1].z + COGL_FIXED_0_5), v[2]);
+  tmp.x = COGL_FIXED_MUL ((vertices[1].x + COGL_FIXED_0_5), v[2]);
+  tmp.y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - vertices[1].y), v[3]);
+  tmp.z = COGL_FIXED_MUL ((vertices[1].z + COGL_FIXED_0_5), v[2]);
+  fixed_vertex_to_units (&tmp, &verts[1]);
 
-  verts[2].x = COGL_FIXED_MUL ((verts[2].x + COGL_FIXED_0_5), v[2]);
-  verts[2].y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - verts[2].y), v[3]);
-  verts[2].z = COGL_FIXED_MUL ((verts[2].z + COGL_FIXED_0_5), v[2]);
+  tmp.x = COGL_FIXED_MUL ((vertices[2].x + COGL_FIXED_0_5), v[2]);
+  tmp.y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - vertices[2].y), v[3]);
+  tmp.z = COGL_FIXED_MUL ((vertices[2].z + COGL_FIXED_0_5), v[2]);
+  fixed_vertex_to_units (&tmp, &verts[2]);
 
-  verts[3].x = COGL_FIXED_MUL ((verts[3].x + COGL_FIXED_0_5), v[2]);
-  verts[3].y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - verts[3].y), v[3]);
-  verts[3].z = COGL_FIXED_MUL ((verts[3].z + COGL_FIXED_0_5), v[2]);
+  tmp.x = COGL_FIXED_MUL ((vertices[3].x + COGL_FIXED_0_5), v[2]);
+  tmp.y = COGL_FIXED_MUL ((COGL_FIXED_0_5 - vertices[3].y), v[3]);
+  tmp.z = COGL_FIXED_MUL ((vertices[3].z + COGL_FIXED_0_5), v[2]);
+  fixed_vertex_to_units (&tmp, &verts[3]);
 }
 
 /**
@@ -1940,6 +1958,12 @@ clutter_actor_dispose (GObject *object)
   clutter_actor_unrealize (self);
 
   destroy_shader_data (self);
+
+  if (priv->pango_context)
+    {
+      g_object_unref (priv->pango_context);
+      priv->pango_context = NULL;
+    }
 
   g_signal_emit (self, actor_signals[DESTROY], 0);
 
@@ -6842,17 +6866,18 @@ clutter_scriptable_iface_init (ClutterScriptableIface *iface)
  * Since: 0.6
  */
 gboolean
-clutter_actor_transform_stage_point (ClutterActor  *self,
-				     ClutterUnit    x,
-				     ClutterUnit    y,
-				     ClutterUnit   *x_out,
-				     ClutterUnit   *y_out)
+clutter_actor_transform_stage_point (ClutterActor *self,
+				     ClutterUnit   x,
+				     ClutterUnit   y,
+				     ClutterUnit  *x_out,
+				     ClutterUnit  *y_out)
 {
   ClutterVertex v[4];
   ClutterFixed  ST[3][3];
   ClutterFixed  RQ[3][3];
   int du, dv, xi, yi;
-  ClutterFixed xf, yf, wf, px, py, det;
+  ClutterUnit px, py;
+  ClutterFixed xf, yf, wf, det;
   ClutterActorPrivate *priv;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
@@ -6865,11 +6890,12 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
    *
    * http://www.cs.cmu.edu/~ph/texfund/texfund.pdf
    *
-   * and the sample implementaion at http://www.cs.cmu.edu/~ph/src/texfund/.
+   * and the sample implementation at http://www.cs.cmu.edu/~ph/src/texfund/.
    *
-   * Our texture is a rectangle with origin [0,0], so we are mapping from quad
-   * to rectangle only, which significantly simplifies things; the function
-   * calls have been unrolled, and most of the math is done in fixed point.
+   * Our texture is a rectangle with origin [0, 0], so we are mapping from
+   * quad to rectangle only, which significantly simplifies things; the
+   * function calls have been unrolled, and most of the math is done in fixed
+   * point.
    */
 
   clutter_actor_get_abs_allocation_vertices (self, v);
@@ -6886,9 +6912,11 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
 
 #define FP2FX COGL_FIXED_FROM_FLOAT
 #define FX2FP COGL_FIXED_TO_DOUBLE
+#define UX2FP CLUTTER_UNITS_TO_FLOAT
+#define UX2FX CLUTTER_UNITS_TO_FIXED
 #define FP2INT CLUTTER_FLOAT_TO_INT
-#define DET2X(a,b,c,d)  (COGL_FIXED_MUL (a, d) - COGL_FIXED_MUL (b, c))
-#define DET2FP(a,b,c,d) (a*d - b*c)
+#define DET2X(a,b,c,d)  (COGL_FIXED_MUL ((a), (d)) - COGL_FIXED_MUL ((b), (c)))
+#define DET2FP(a,b,c,d) ((a) * (d) - (b) * (c))
 
   /*
    * First, find mapping from unit uv square to xy quadrilateral; this
@@ -6900,20 +6928,21 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
   py = v[0].y - v[1].y + v[3].y - v[2].y;
 
   if (!px && !py)
-    { /* affine transform */
-      RQ[0][0] = v[1].x - v[0].x;
-      RQ[1][0] = v[3].x - v[1].x;
-      RQ[2][0] = v[0].x;
-      RQ[0][1] = v[1].y - v[0].y;
-      RQ[1][1] = v[3].y - v[1].y;
-      RQ[2][1] = v[0].y;
+    {
+      /* affine transform */
+      RQ[0][0] = UX2FX (v[1].x - v[0].x);
+      RQ[1][0] = UX2FX (v[3].x - v[1].x);
+      RQ[2][0] = UX2FX (v[0].x);
+      RQ[0][1] = UX2FX (v[1].y - v[0].y);
+      RQ[1][1] = UX2FX (v[3].y - v[1].y);
+      RQ[2][1] = UX2FX (v[0].y);
       RQ[0][2] = 0;
       RQ[1][2] = 0;
       RQ[2][2] = COGL_FIXED_1;
     }
   else
-    { /*
-       * projective transform
+    {
+      /* projective transform
        *
        * Must do this in floating point, as the del value can overflow the
        * range of ClutterFixed for large actors.
@@ -6923,13 +6952,12 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
        */
       double dx1, dx2, dy1, dy2, del;
 
-      dx1 = FX2FP (v[1].x - v[3].x);
-      dx2 = FX2FP (v[2].x - v[3].x);
-      dy1 = FX2FP (v[1].y - v[3].y);
-      dy2 = FX2FP (v[2].y - v[3].y);
+      dx1 = UX2FP (v[1].x - v[3].x);
+      dx2 = UX2FP (v[2].x - v[3].x);
+      dy1 = UX2FP (v[1].y - v[3].y);
+      dy2 = UX2FP (v[2].y - v[3].y);
 
-      del = DET2FP (dx1,dx2, dy1,dy2);
-
+      del = DET2FP (dx1, dx2, dy1, dy2);
       if (!del)
 	return FALSE;
 
@@ -6937,16 +6965,20 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
        * The division here needs to be done in floating point for
        * precisions reasons.
        */
-      RQ[0][2] = FP2FX (DET2FP (FX2FP(px),dx2, FX2FP(py),dy2) / del);
-      RQ[1][2] = FP2FX (DET2FP (dx1,FX2FP(px), dy1,FX2FP(py)) / del);
-      RQ[1][2] = FP2FX (DET2FP(dx1,FX2FP(px), dy1,FX2FP(py))/del);
+      RQ[0][2] = FP2FX (DET2FP (UX2FP (px), dx2, UX2FP (py), dy2) / del);
+      RQ[1][2] = FP2FX (DET2FP (dx1, UX2FP (px), dy1, UX2FP (py)) / del);
+      RQ[1][2] = FP2FX (DET2FP (dx1, UX2FP (px), dy1, UX2FP (py)) / del);
       RQ[2][2] = COGL_FIXED_1;
-      RQ[0][0] = v[1].x - v[0].x + COGL_FIXED_MUL (RQ[0][2], v[1].x);
-      RQ[1][0] = v[2].x - v[0].x + COGL_FIXED_MUL (RQ[1][2], v[2].x);
-      RQ[2][0] = v[0].x;
-      RQ[0][1] = v[1].y - v[0].y + COGL_FIXED_MUL (RQ[0][2], v[1].y);
-      RQ[1][1] = v[2].y - v[0].y + COGL_FIXED_MUL (RQ[1][2], v[2].y);
-      RQ[2][1] = v[0].y;
+      RQ[0][0] = UX2FX (v[1].x - v[0].x)
+               + COGL_FIXED_MUL (RQ[0][2], UX2FX (v[1].x));
+      RQ[1][0] = UX2FX (v[2].x - v[0].x)
+               + COGL_FIXED_MUL (RQ[1][2], UX2FX (v[2].x));
+      RQ[2][0] = UX2FX (v[0].x);
+      RQ[0][1] = UX2FX (v[1].y - v[0].y)
+               + COGL_FIXED_MUL (RQ[0][2], UX2FX (v[1].y));
+      RQ[1][1] = UX2FX (v[2].y - v[0].y)
+               + COGL_FIXED_MUL (RQ[1][2], UX2FX (v[2].y));
+      RQ[2][1] = UX2FX (v[0].y);
     }
 
   /*
@@ -6985,24 +7017,27 @@ clutter_actor_transform_stage_point (ClutterActor  *self,
     return FALSE;
 
   /*
-   * Now transform our point with the ST matrix; the notional w coordiance
-   * is 1, hence the last part is simply added.
+   * Now transform our point with the ST matrix; the notional w
+   * coordinate is 1, hence the last part is simply added.
    */
   xi = CLUTTER_UNITS_TO_DEVICE (x);
   yi = CLUTTER_UNITS_TO_DEVICE (y);
 
-  xf = xi*ST[0][0] + yi*ST[1][0] + ST[2][0];
-  yf = xi*ST[0][1] + yi*ST[1][1] + ST[2][1];
-  wf = xi*ST[0][2] + yi*ST[1][2] + ST[2][2];
+  xf = xi * ST[0][0] + yi * ST[1][0] + ST[2][0];
+  yf = xi * ST[0][1] + yi * ST[1][1] + ST[2][1];
+  wf = xi * ST[0][2] + yi * ST[1][2] + ST[2][2];
 
   /*
    * The division needs to be done in floating point for precision reasons.
    */
   if (x_out)
     *x_out = CLUTTER_UNITS_FROM_FLOAT (FX2FP (xf) / FX2FP (wf));
+
   if (y_out)
     *y_out = CLUTTER_UNITS_FROM_FLOAT (FX2FP (yf) / FX2FP (wf));
 
+#undef UX2FX
+#undef UX2FP
 #undef FP2FX
 #undef FX2FP
 #undef FP2INT
@@ -7197,11 +7232,11 @@ clutter_actor_set_shader (ClutterActor  *self,
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
   g_return_val_if_fail (shader == NULL || CLUTTER_IS_SHADER (shader), FALSE);
 
-  /* if shader passed in is NULL we destroy the shader */
-  if (shader == NULL)
-    {
-      destroy_shader_data (self);
-    }
+  if (shader)
+    g_object_ref (shader);
+  else
+    /* if shader passed in is NULL we destroy the shader */
+    destroy_shader_data (self);
 
   actor_priv = self->priv;
   shader_data = actor_priv->shader_data;
@@ -7215,15 +7250,9 @@ clutter_actor_set_shader (ClutterActor  *self,
                                shader_value_free);
     }
   if (shader_data->shader)
-    {
-      g_object_unref (shader_data->shader);
-      shader_data->shader = NULL;
-    }
+    g_object_unref (shader_data->shader);
 
-  if (shader)
-    {
-      shader_data->shader = g_object_ref (shader);
-    }
+  shader_data->shader = shader;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);
@@ -7569,4 +7598,100 @@ clutter_actor_allocate_preferred_size (ClutterActor *self,
   actor_box.y2 = actor_box.y1 + natural_height;
 
   clutter_actor_allocate (self, &actor_box, absolute_origin_changed);
+}
+
+/**
+ * clutter_actor_grab_key_focus:
+ * @self: a #ClutterActor
+ *
+ * Sets the key focus of the #ClutterStage including @self
+ * to this #ClutterActor.
+ *
+ * Since: 1.0
+ */
+void
+clutter_actor_grab_key_focus (ClutterActor *self)
+{
+  ClutterActor *parent;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  parent = clutter_actor_get_parent (self);
+  if (!parent)
+    return;
+
+  parent = clutter_actor_get_stage (self);
+  if (parent && CLUTTER_IS_STAGE (parent))
+    clutter_stage_set_key_focus (CLUTTER_STAGE (parent), self);
+}
+
+/**
+ * clutter_actor_get_pango_context:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the #PangoContext for @self. The actor's #PangoContext
+ * is already configured using the appropriate font map, resolution
+ * and font options.
+ *
+ * Unlike clutter_actor_create_pango_context(), this context is owend
+ * by the #ClutterActor and it will be updated each time the options
+ * stored by the #ClutterBackend change.
+ *
+ * You can use the returned #PangoContext to create a #PangoLayout
+ * and render text using cogl_pango_render_layout() to reuse the
+ * glyphs cache also used by Clutter.
+ *
+ * Return value: the #PangoContext for a #ClutterActor. The returned
+ *   #PangoContext is owned by the actor and should not be unreferenced
+ *   by the application code
+ *
+ * Since: 1.0
+ */
+PangoContext *
+clutter_actor_get_pango_context (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+  ClutterMainContext *ctx;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  priv = self->priv;
+
+  if (priv->pango_context)
+    return priv->pango_context;
+
+  ctx = CLUTTER_CONTEXT ();
+  priv->pango_context = _clutter_context_get_pango_context (ctx);
+  g_object_ref (priv->pango_context);
+
+  return priv->pango_context;
+}
+
+/**
+ * clutter_actor_create_pango_context:
+ * @self: a #ClutterActor
+ *
+ * Creates a #PangoContext for the given actor. The #PangoContext
+ * is already configured using the appropriate font map, resolution
+ * and font options.
+ *
+ * See also clutter_actor_get_pango_context().
+ *
+ * Return value: the newly created #PangoContext. Use g_object_ref()
+ *   on the returned value to deallocate its resources
+ *
+ * Since: 1.0
+ */
+PangoContext *
+clutter_actor_create_pango_context (ClutterActor *self)
+{
+  ClutterMainContext *ctx;
+  PangoContext *retval;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  ctx = CLUTTER_CONTEXT ();
+  retval = _clutter_context_create_pango_context (ctx);
+
+  return retval;
 }

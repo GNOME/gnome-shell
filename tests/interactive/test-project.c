@@ -224,8 +224,8 @@ test_project_main (int argc, char *argv[])
   clutter_actor_set_rotation (rect, CLUTTER_Y_AXIS, 60, 0, 0, 0);
   clutter_group_add (CLUTTER_GROUP (main_stage), rect);
 
-  label = clutter_label_new_with_text ("Mono 8pt", "Drag the blue rectangles");
-  clutter_label_set_color (CLUTTER_LABEL (label), &white);
+  label = clutter_text_new_with_text ("Mono 8pt", "Drag the blue rectangles");
+  clutter_text_set_color (CLUTTER_TEXT (label), &white);
   
   clutter_actor_set_position (label, 10, 10);
   clutter_group_add (CLUTTER_GROUP (main_stage), label);
