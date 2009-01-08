@@ -31,6 +31,8 @@ find ./clutter -iname '*.[ch]' -exec sed -i -r 's|COGL_FIXED_DIV (.*),|\1 /|g' {
 # A fix due to the assumptions used above
 sed -i 's/#define DET2X(a,b,c,d).*/#define DET2X(a,b,c,d)   ((a * d) - (b * c))/g' ./clutter/clutter-actor.c
 
+find ./clutter/cogl/gles -iname '*.[ch]' -exec sed -i 's/GLfixed/GLfloat/g' {} \;
+
 #we get some redundant brackets like this, but C's automatic type promotion
 #works out fine for most cases...
 find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_TO_INT//g' {} \;
@@ -144,6 +146,10 @@ patch -p1<fixed-to-float-patches/gl-cogl.c
 patch -p1<fixed-to-float-patches/cogl-pango-render.c.0.patch
 patch -p1<fixed-to-float-patches/cogl-primitives.c.0.patch
 patch -p1<fixed-to-float-patches/gl-cogl-primitives.c.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl.c.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl-gles2-wrapper.h.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl-primitives.c.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl-texture.c.0.patch
 
 #XXX: COGL_PANGO_UNIT_TO_FIXED
 
