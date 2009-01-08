@@ -1641,10 +1641,12 @@ process_shape (Mutter	    *compositor,
 {
   MutterWindow *cw = find_window_in_display (compositor->display,
                                              event->window);
-  MutterWindowPrivate *priv = cw->priv;
+  MutterWindowPrivate *priv;
 
   if (cw == NULL)
     return;
+
+  priv = cw->priv;
 
   if (event->kind == ShapeBounding)
     {
