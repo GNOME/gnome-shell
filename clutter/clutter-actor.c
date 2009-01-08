@@ -1013,7 +1013,8 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
 						 ClutterVertex       *vertex)
 {
   ClutterFixed v[4];
-  ClutterFixed x, y, z, w;
+  ClutterUnit x, y, z, w;
+  fixed_vertex_t tmp;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (ancestor == NULL || CLUTTER_IS_ACTOR (ancestor));
@@ -1026,8 +1027,7 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
   w = COGL_FIXED_1;
 
   /* First we tranform the point using the OpenGL modelview matrix */
-  clutter_actor_transform_point_relative (self, ancestor,
-					  &x, &y, &z, &w);
+  clutter_actor_transform_point_relative (self, ancestor, &x, &y, &z, &w);
 
   cogl_get_viewport (v);
 
@@ -1035,12 +1035,12 @@ clutter_actor_apply_relative_transform_to_point (ClutterActor        *self,
    * The w[3] parameter should always be 1.0 here, so we ignore it; otherwise
    * we would have to divide the original verts with it.
    */
-  vertex->x =
-    CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL ((x + COGL_FIXED_0_5), v[2]));
-  vertex->y =
-    CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL ((COGL_FIXED_0_5 - y), v[3]));
-  vertex->z =
-    CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL ((z + COGL_FIXED_0_5), v[2]));
+  tmp.x = COGL_FIXED_MUL (CLUTTER_UNITS_TO_FIXED (x) + COGL_FIXED_0_5, v[2]);
+  tmp.y = COGL_FIXED_MUL (COGL_FIXED_0_5 - CLUTTER_UNITS_TO_FIXED (y), v[3]);
+  tmp.z = COGL_FIXED_MUL (CLUTTER_UNITS_TO_FIXED (z) + COGL_FIXED_0_5, v[2]);
+  tmp.w = 0;
+
+  fixed_vertex_to_units (&tmp, vertex);
 }
 
 /**
@@ -1060,6 +1060,7 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
                                         const ClutterVertex *point,
                                         ClutterVertex       *vertex)
 {
+  ClutterUnit x, y, z, w;
   ClutterFixed mtx_p[16];
   ClutterFixed v[4];
   fixed_vertex_t tmp = { 0, };
@@ -1068,13 +1069,18 @@ clutter_actor_apply_transform_to_point (ClutterActor        *self,
   g_return_if_fail (point != NULL);
   g_return_if_fail (vertex != NULL);
 
-  tmp.x = CLUTTER_UNITS_TO_FIXED (vertex->x);
-  tmp.y = CLUTTER_UNITS_TO_FIXED (vertex->y);
-  tmp.z = CLUTTER_UNITS_TO_FIXED (vertex->z);
-  tmp.w = COGL_FIXED_1;
+  x = point->x;
+  y = point->y;
+  z = point->z;
+  w = CLUTTER_UNITS_FROM_INT (1);
 
   /* First we tranform the point using the OpenGL modelview matrix */
-  clutter_actor_transform_point (self, &tmp.x, &tmp.y, &tmp.z, &tmp.w);
+  clutter_actor_transform_point (self, &x, &y, &z, &w);
+
+  tmp.x = CLUTTER_UNITS_TO_FIXED (x);
+  tmp.y = CLUTTER_UNITS_TO_FIXED (y);
+  tmp.z = CLUTTER_UNITS_TO_FIXED (z);
+  tmp.w = CLUTTER_UNITS_TO_FIXED (w);
 
   cogl_get_projection_matrix (mtx_p);
   cogl_get_viewport (v);
@@ -3244,8 +3250,9 @@ clutter_actor_get_preferred_width (ClutterActor *self,
 
       if (natural_width < min_width)
         {
-          g_warning ("Actor of type %s reported a natural width of %d (%d px) "
-                     "lower than min width %d (%d px)",
+          g_warning ("Actor of type %s reported a natural width "
+                     "of %" CLUTTER_UNITS_FORMAT " (%d px) lower "
+                     "than min width %" CLUTTER_UNITS_FORMAT " (%d px)",
                      G_OBJECT_TYPE_NAME (self),
                      natural_width, CLUTTER_UNITS_TO_DEVICE (natural_width),
                      min_width, CLUTTER_UNITS_TO_DEVICE (min_width));
@@ -3314,8 +3321,9 @@ clutter_actor_get_preferred_height (ClutterActor *self,
 
       if (natural_height < min_height)
         {
-          g_warning ("Actor of type %s reported a natural height of %d "
-                     "(%d px) lower than min height %d (%d px)",
+          g_warning ("Actor of type %s reported a natural height "
+                     "of %" CLUTTER_UNITS_FORMAT " (%d px) lower than "
+                     "min height %" CLUTTER_UNITS_FORMAT " (%d px)",
                      G_OBJECT_TYPE_NAME (self),
                      natural_height, CLUTTER_UNITS_TO_DEVICE (natural_height),
                      min_height, CLUTTER_UNITS_TO_DEVICE (min_height));
