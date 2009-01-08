@@ -35,6 +35,7 @@ sed -i 's/#define DET2X(a,b,c,d).*/#define DET2X(a,b,c,d)   ((a * d) - (b * c))/
 #works out fine for most cases...
 find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_TO_INT//g' {} \;
 find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_FROM_INT /(float)/g' {} \;
+find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_FROM_INT/(float)/g' {} \;
 find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_TO_FLOAT//g' {} \;
 find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_FROM_FLOAT//g' {} \;
 find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_TO_DOUBLE /(double)/g' {} \;
