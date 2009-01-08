@@ -1,8 +1,8 @@
 diff --git a/clutter/clutter-path.c b/clutter/clutter-path.c
-index 973d861..d3eff11 100644
+index 6f93402..c459cdf 100644
 --- a/clutter/clutter-path.c
 +++ b/clutter/clutter-path.c
-@@ -1081,11 +1081,11 @@ clutter_path_node_distance (const ClutterKnot *start,
+@@ -1217,11 +1217,11 @@ clutter_path_node_distance (const ClutterKnot *start,
     * If we are using limited precision sqrti implementation, fallback on
     * clib sqrt if the precission would be less than 10%
     */

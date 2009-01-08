@@ -1,8 +1,17 @@
 diff --git a/clutter/clutter-actor.c b/clutter/clutter-actor.c
-index ac9a2f6..42da2a5 100644
+index 8db8206..f4cec66 100644
 --- a/clutter/clutter-actor.c
 +++ b/clutter/clutter-actor.c
-@@ -866,8 +866,11 @@ clutter_actor_transform_point (ClutterActor *actor,
+@@ -806,7 +806,7 @@ static inline void
+ mtx_transform (const ClutterFixed  m[],
+                fixed_vertex_t     *vertex)
+ {
+-  ClutterFixed _x, _y, _z, _w;
++  float _x, _y, _z, _w;
+ 
+   _x = vertex->x;
+   _y = vertex->y;
+@@ -846,8 +846,11 @@ mtx_transform (const ClutterFixed  m[],
  /* Help macros to scale from OpenGL <-1,1> coordinates system to our
   * X-window based <0,window-size> coordinates
   */
@@ -15,8 +24,8 @@ index ac9a2f6..42da2a5 100644
 +                             (v1)) + (v2))
  #define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
  
- /**
-@@ -3213,8 +3214,8 @@ clutter_actor_get_preferred_width (ClutterActor *self,
+ /* transforms a 4-tuple of coordinates using @matrix and
+@@ -3244,8 +3247,8 @@ clutter_actor_get_preferred_width (ClutterActor *self,
  
        if (natural_width < min_width)
          {
@@ -27,7 +36,7 @@ index ac9a2f6..42da2a5 100644
                       G_OBJECT_TYPE_NAME (self),
                       natural_width, CLUTTER_UNITS_TO_DEVICE (natural_width),
                       min_width, CLUTTER_UNITS_TO_DEVICE (min_width));
-@@ -3283,8 +3284,8 @@ clutter_actor_get_preferred_height (ClutterActor *self,
+@@ -3314,8 +3317,8 @@ clutter_actor_get_preferred_height (ClutterActor *self,
  
        if (natural_height < min_height)
          {
