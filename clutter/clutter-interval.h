@@ -45,6 +45,34 @@ typedef struct _ClutterIntervalPrivate          ClutterIntervalPrivate;
 typedef struct _ClutterIntervalClass            ClutterIntervalClass;
 
 /**
+ * ClutterProgressFunc:
+ * @a: the initial value of an interval
+ * @b: the final value of an interval
+ * @progress: the progress factor, between 0 and 1
+ * @retval: the value used to store the progress
+ *
+ * Prototype of the progress function used to compute the value
+ * between the two ends @a and @b of an interval depending on
+ * the value of @progress.
+ *
+ * The #GValue in @retval is already initialized with the same
+ * type as @a and @b.
+ *
+ * This function will be called by #ClutterInterval if the
+ * type of the values of the interval was registered using
+ * clutter_interval_register_progress_func().
+ *
+ * Return value: %TRUE if the function successfully computed
+ *   the value and stored it inside @retval
+ *
+ * Since: 1.0
+ */
+typedef gboolean (* ClutterProgressFunc) (const GValue *a,
+                                          const GValue *b,
+                                          gdouble       progress,
+                                          GValue       *retval);
+
+/**
  * ClutterInterval:
  *
  * The #ClutterInterval structure contains only private data and should
@@ -125,6 +153,9 @@ gboolean         clutter_interval_validate           (ClutterInterval *interval,
 gboolean         clutter_interval_compute_value      (ClutterInterval *interval,
                                                       gdouble          factor,
                                                       GValue          *value);
+
+void clutter_interval_register_progress_func (GType               value_type,
+                                              ClutterProgressFunc func);
 
 G_END_DECLS
 
