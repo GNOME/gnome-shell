@@ -688,11 +688,11 @@ clutter_text_get_property (GObject    *gobject,
       break;
 
     case PROP_POSITION:
-      g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->position));
+      g_value_set_int (value, priv->position);
       break;
 
     case PROP_SELECTION_BOUND:
-      g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->selection_bound));
+      g_value_set_int (value, priv->selection_bound);
       break;
 
     case PROP_EDITABLE:
@@ -717,6 +717,30 @@ clutter_text_get_property (GObject    *gobject,
 
     case PROP_SINGLE_LINE_MODE:
       g_value_set_boolean (value, priv->single_line_mode);
+      break;
+
+    case PROP_ELLIPSIZE:
+      g_value_set_enum (value, priv->ellipsize);
+      break;
+
+    case PROP_LINE_WRAP:
+      g_value_set_boolean (value, priv->wrap);
+      break;
+
+    case PROP_LINE_WRAP_MODE:
+      g_value_set_enum (value, priv->wrap_mode);
+      break;
+
+    case PROP_ALIGNMENT:
+      g_value_set_enum (value, priv->alignment);
+      break;
+
+    case PROP_JUSTIFY:
+      g_value_set_boolean (value, priv->justify);
+      break;
+
+    case PROP_ATTRIBUTES:
+      g_value_set_boxed (value, priv->attrs);
       break;
 
     default:
