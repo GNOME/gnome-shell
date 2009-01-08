@@ -39,7 +39,8 @@ UNIT_TESTS = \
         test-easing.c \
         test-binding-pool.c \
         test-text.c \
-        test-text-field.c
+        test-text-field.c \
+	test-clutter-cairo-flowers.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c
