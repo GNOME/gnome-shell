@@ -211,6 +211,35 @@ clutter_clone_texture_get_type
 </SECTION>
 
 <SECTION>
+<FILE>clutter-cairo-texture</FILE>
+<TITLE>ClutterCairoTexture</TITLE>
+ClutterCairoTexture
+ClutterCairoTextureClass
+clutter_cairo_texture_new
+clutter_cairo_texture_set_surface_size
+clutter_cairo_texture_get_surface_size
+
+<SUBSECTION>
+clutter_cairo_texture_create
+clutter_cairo_texture_create_region
+
+<SUBSECTION>
+clutter_cairo_set_source_color
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_CAIRO_TEXTURE
+CLUTTER_CAIRO_TEXTURE
+CLUTTER_IS_CAIRO_TEXTURE
+CLUTTER_CAIRO_TEXTURE_CLASS
+CLUTTER_IS_CAIRO_TEXTURE_CLASS
+CLUTTER_CAIRO_TEXTURE_GET_CLASS
+
+<SUBSECTION Private>
+ClutterCairoTexturePrivate
+clutter_cairo_texture_get_type
+</SECTION>
+
+<SECTION>
 <FILE>clutter-group</FILE>
 <TITLE>ClutterGroup</TITLE>
 ClutterGroup
@@ -1641,6 +1670,10 @@ clutter_interval_get_interval
 clutter_interval_validate
 clutter_interval_compute_value
 
+<SUBSECTION>
+ClutterProgressFunc
+clutter_interval_register_progress_func
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_INTERVAL
 CLUTTER_INTERVAL
@@ -1652,6 +1685,23 @@ CLUTTER_INTERVAL_GET_CLASS
 <SUBSECTION Private>
 ClutterIntervalPrivate
 clutter_interval_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-animatable</FILE>
+<TITLE>ClutterAnimatable</TITLE>
+ClutterAnimatable
+ClutterAnimatableIface
+clutter_animatable_animate_property
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_ANIMATABLE
+CLUTTER_ANIMATABLE
+CLUTTER_IS_ANIMATABLE
+CLUTTER_ANIMATABLE_GET_IFACE
+
+<SUBSECTION Private>
+clutter_animatable_get_type
 </SECTION>
 
 <SECTION>
@@ -1676,33 +1726,4 @@ clutter_binding_pool_unblock_action
 
 <SUBSECTION>
 clutter_binding_pool_activate
-</SECTION>
-
-<SECTION>
-<TITLE>ClutterCairoTexture</TITLE>
-<FILE>clutter-cairo-texture</FILE>
-ClutterCairoTexture
-ClutterCairoTextureClass
-clutter_cairo_texture_new
-clutter_cairo_texture_set_surface_size
-clutter_cairo_texture_get_surface_size
-
-<SUBSECTION>
-clutter_cairo_texture_create
-clutter_cairo_texture_create_region
-
-<SUBSECTION>
-clutter_cairo_set_source_color
-
-<SUBSECTION Standard>
-CLUTTER_TYPE_CAIRO_TEXTURE
-CLUTTER_CAIRO_TEXTURE
-CLUTTER_IS_CAIRO_TEXTURE
-CLUTTER_CAIRO_TEXTURE_CLASS
-CLUTTER_IS_CAIRO_TEXTURE_CLASS
-CLUTTER_CAIRO_TEXTURE_GET_CLASS
-
-<SUBSECTION Private>
-ClutterCairoTexturePrivate
-clutter_cairo_texture_get_type
 </SECTION>

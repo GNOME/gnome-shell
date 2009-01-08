@@ -50,6 +50,7 @@
 #include <gobject/gvaluecollector.h>
 
 #include "clutter-alpha.h"
+#include "clutter-animatable.h"
 #include "clutter-animation.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -662,8 +663,16 @@ on_alpha_notify (GObject          *gobject,
   ClutterAnimationPrivate *priv = animation->priv;
   GList *properties, *p;
   guint32 alpha_value;
+  gboolean is_animatable = FALSE;
+  ClutterAnimatable *animatable = NULL;
 
   alpha_value = clutter_alpha_get_alpha (CLUTTER_ALPHA (gobject));
+
+  if (CLUTTER_IS_ANIMATABLE (priv->object))
+    {
+      animatable = CLUTTER_ANIMATABLE (priv->object);
+      is_animatable = TRUE;
+    }
 
   g_object_freeze_notify (priv->object);
 
@@ -682,8 +691,29 @@ on_alpha_notify (GObject          *gobject,
 
       factor = (gdouble) alpha_value / CLUTTER_ALPHA_MAX_ALPHA;
 
-      if (clutter_interval_compute_value (interval, factor, &value))
-        g_object_set_property (priv->object, p_name, &value);
+      if (is_animatable)
+        {
+          const GValue *initial, *final;
+
+          initial = clutter_interval_peek_initial_value (interval);
+          final   = clutter_interval_peek_final_value (interval);
+
+          CLUTTER_NOTE (ANIMATION, "Animatable property `%s'", p_name);
+          clutter_animatable_animate_property (animatable, animation,
+                                               p_name,
+                                               initial, final,
+                                               factor,
+                                               &value);
+
+          g_object_set_property (priv->object, p_name, &value);
+        }
+      else
+        {
+          CLUTTER_NOTE (ANIMATION, "Standard property `%s'", p_name);
+
+          if (clutter_interval_compute_value (interval, factor, &value))
+            g_object_set_property (priv->object, p_name, &value);
+        }
 
       g_value_unset (&value);
     }
