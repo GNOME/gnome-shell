@@ -296,7 +296,8 @@ WindowManager.prototype = {
                            y: yDest,
                            time: SWITCH_ANIMATION_TIME,
                            transition: "easeOutBack",
-                           onComplete: this._switchWorkspaceDone
+                           onComplete: this._switchWorkspaceDone,
+                           onCompleteScope: this
                          });
         Tweener.addTween(switchData.inGroup,
                          { x: 0,
