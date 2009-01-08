@@ -121,9 +121,9 @@ DocDisplay.prototype = {
         // properties are returned during the iteration in the same order in which they were
         // defined, but it is not a guarantee according to this 
         // https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Statements/for...in
-        // So while this._allItems associative array seems to always be ordered by last visited,
+        // While this._allItems associative array seems to always be ordered by last added,
         // as the results of this._recentManager.get_items() based on which it is constructed are,
-        // we should do the sorting manually anyway.
+        // we should do the sorting manually because we want the order to be based on last visited.
         // TODO: would it be better to store an additional array of doc ids as they are 
         // returned by this._recentManager.get_items() to avoid having to do this sorting?
         // This function is called each time the search string is set back to '', so we are
@@ -152,9 +152,12 @@ DocDisplay.prototype = {
         itemIds.sort(function (a,b) {
             let docA = me._allItems[a];
             let docB = me._allItems[b];
-            if (docA.get_visited() > docB.get_visited())
+            // We actually used get_modified() instead of get_visited() here, as GtkRecentInfo
+            // doesn't updated get_visited() correctly.
+            // See http://bugzilla.gnome.org/show_bug.cgi?id=567094
+            if (docA.get_modified() > docB.get_modified())
                 return -1;
-            else if (docA.get_visited() < docB.get_visited())
+            else if (docA.get_modified() < docB.get_modified())
                 return 1;
             else 
                 return 0;
@@ -165,8 +168,12 @@ DocDisplay.prototype = {
     // the name of the document. Item info is expected to be GtkRecentInfo.
     // Returns a boolean flag indicating if itemInfo is a match.
     _isInfoMatching : function(itemInfo, search) {
+        if (!itemInfo.exists())
+            return false;
+ 
         if (search == null || search == '')
             return true;
+
         let name = itemInfo.get_display_name().toLowerCase();
         if (name.indexOf(search) >= 0)
             return true;
