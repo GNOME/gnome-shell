@@ -1581,8 +1581,8 @@ ClutterAnimation
 ClutterAnimationClass
 ClutterAnimationMode
 clutter_animation_new
-clutter_animation_set_actor
-clutter_animation_get_actor
+clutter_animation_set_object
+clutter_animation_get_object
 clutter_animation_set_mode
 clutter_animation_get_mode
 clutter_animation_set_duration
