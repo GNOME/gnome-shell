@@ -41,27 +41,29 @@ cogl_create_context ()
 {
   if (_context != NULL)
     return FALSE;
-  
+
   /* Allocate context memory */
   _context = (CoglContext*) g_malloc (sizeof (CoglContext));
-  
+
   /* Init default values */
   _context->feature_flags = 0;
   _context->features_cached = FALSE;
-  
+
   _context->enable_flags = 0;
   _context->color_alpha = 255;
-  
+
   _context->path_nodes = g_array_new (FALSE, FALSE, sizeof (CoglPathNode));
   _context->last_path = 0;
-  
+
   _context->texture_handles = NULL;
-  _context->texture_vertices_size = 0;
-  _context->texture_vertices = NULL;
-  
+  _context->texture_vertices = g_array_new (FALSE, FALSE,
+                                            sizeof (CoglTextureGLVertex));
+  _context->texture_indices = g_array_new (FALSE, FALSE,
+                                           sizeof (GLushort));
+
   _context->fbo_handles = NULL;
   _context->draw_buffer = COGL_WINDOW_BUFFER;
-  
+
   _context->blend_src_factor = CGL_SRC_ALPHA;
   _context->blend_dst_factor = CGL_ONE_MINUS_SRC_ALPHA;
 
@@ -70,7 +72,7 @@ cogl_create_context ()
   _context->program_handles = NULL;
 
   _context->mesh_handles = NULL;
-  
+
   _context->pf_glGenRenderbuffersEXT = NULL;
   _context->pf_glBindRenderbufferEXT = NULL;
   _context->pf_glRenderbufferStorageEXT = NULL;
@@ -82,7 +84,7 @@ cogl_create_context ()
   _context->pf_glDeleteFramebuffersEXT = NULL;
   _context->pf_glBlitFramebufferEXT = NULL;
   _context->pf_glRenderbufferStorageMultisampleEXT = NULL;
-  
+
   _context->pf_glCreateProgramObjectARB = NULL;
   _context->pf_glCreateShaderObjectARB = NULL;
   _context->pf_glShaderSourceARB = NULL;
@@ -115,7 +117,7 @@ cogl_create_context ()
   _context->pf_glUniformMatrix4fvARB = NULL;
 
   _context->pf_glDrawRangeElements = NULL;
-  
+
   /* Init OpenGL state */
   GE( glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) );
   GE( glColorMask (TRUE, TRUE, TRUE, FALSE) );
@@ -124,7 +126,7 @@ cogl_create_context ()
 
   /* Initialise the clip stack */
   _cogl_clip_stack_state_init ();
-  
+
   return TRUE;
 }
 
@@ -147,7 +149,12 @@ cogl_destroy_context ()
     g_array_free (_context->shader_handles, TRUE);
   if (_context->program_handles)
     g_array_free (_context->program_handles, TRUE);
-  
+
+  if (_context->texture_vertices)
+    g_array_free (_context->texture_vertices, TRUE);
+  if (_context->texture_indices)
+    g_array_free (_context->texture_indices, TRUE);
+
   g_free (_context);
 }
 
@@ -157,6 +164,6 @@ _cogl_context_get_default ()
   /* Create if doesn't exist yet */
   if (_context == NULL)
     cogl_create_context ();
-  
+
   return _context;
 }
