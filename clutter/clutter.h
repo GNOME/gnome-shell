@@ -30,6 +30,7 @@
 
 #include "clutter-actor.h"
 #include "clutter-alpha.h"
+#include "clutter-animatable.h"
 #include "clutter-animation.h"
 #include "clutter-backend.h"
 #include "clutter-behaviour-depth.h"

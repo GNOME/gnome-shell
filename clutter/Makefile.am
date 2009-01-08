@@ -47,6 +47,7 @@ BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 source_h =					\
 	$(srcdir)/clutter-actor.h		\
 	$(srcdir)/clutter-alpha.h		\
+	$(srcdir)/clutter-animatable.h          \
 	$(srcdir)/clutter-animation.h           \
 	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-behaviour.h     	\
@@ -138,6 +139,7 @@ CLEANFILES = $(STAMPFILES)
 source_c = \
         clutter-actor.c			\
 	clutter-alpha.c 		\
+	clutter-animatable.c            \
 	clutter-animation.c             \
 	clutter-backend.c		\
         clutter-behaviour.c 		\
