@@ -209,6 +209,8 @@ COGL_HANDLE_DEFINE (Mesh, mesh, mesh_handles);
  *
  * This creates a Cogl handle for a new mesh that you can then start to add
  * attributes too.
+ *
+ * Return value: a new #CoglHandle
  */
 CoglHandle
 cogl_mesh_new (guint n_vertices)
