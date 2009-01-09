@@ -20,6 +20,10 @@ PKG_CHECK_MODULES(MUTTER_PLUGIN, gtk+-2.0 metacity-plugins gjs-gi-1.0)
 PKG_CHECK_MODULES(TIDY, clutter-0.8)
 PKG_CHECK_MODULES(BIG, clutter-cairo-0.8 gtk+-2.0 librsvg-2.0)
 PKG_CHECK_MODULES(TRAY, gtk+-2.0)
+# We require libgnomeui for generating thumbnails for recent files with GnomeThumbnailFactory.
+# We'll switch to using GnomeDesktopThumbnailFactory once the branch of gnome-desktop that contains
+# it becomes stable.
+PKG_CHECK_MODULES(LIBGNOMEUI, libgnomeui-2.0)
 
 # Sets GLIB_GENMARSHAL and GLIB_MKENUMS
 AM_PATH_GLIB_2_0()

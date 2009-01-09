@@ -56,11 +56,11 @@ AppDisplayItem.prototype = {
 
         let iconTheme = Gtk.IconTheme.get_default();
 
-        let icon = new Clutter.Texture({ width: 48, height: 48});
+        let icon = new Clutter.Texture({ width: GenericDisplay.ITEM_DISPLAY_ICON_SIZE, height: GenericDisplay.ITEM_DISPLAY_ICON_SIZE});
         let gicon = appInfo.get_icon();
         let path = null;
         if (gicon != null) {
-            let iconinfo = iconTheme.lookup_by_gicon(gicon, 48, Gtk.IconLookupFlags.NO_SVG);
+            let iconinfo = iconTheme.lookup_by_gicon(gicon, GenericDisplay.ITEM_DISPLAY_ICON_SIZE, Gtk.IconLookupFlags.NO_SVG);
             if (iconinfo)
                 path = iconinfo.get_filename();
         }
@@ -68,6 +68,8 @@ AppDisplayItem.prototype = {
         if (path) {
             try {
                 icon.set_from_file(path);
+                icon.x = GenericDisplay.ITEM_DISPLAY_PADDING;
+                icon.y = GenericDisplay.ITEM_DISPLAY_PADDING;
             } catch (e) {
                 // we can get an error here if the file path doesn't exist on the system
                 log('Error loading AppDisplayItem icon ' + e);

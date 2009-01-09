@@ -9,6 +9,8 @@ const Shell = imports.gi.Shell;
 
 const GenericDisplay = imports.ui.genericDisplay;
 
+const ITEM_DISPLAY_ICON_MARGIN = 2;
+
 /* This class represents a single display item containing information about a document.
  *
  * docInfo - GtkRecentInfo object containing information about the document
@@ -30,9 +32,24 @@ DocDisplayItem.prototype = {
         // we can possibly display tags in the space for description in the future
         let description = ""; 
 
-        let icon = new Clutter.Texture({width: 48, height: 48});
-        Shell.clutter_texture_set_from_pixbuf(icon, docInfo.get_icon(48));
-
+        let icon = new Clutter.Texture();
+        let pixbuf = Shell.get_thumbnail_for_recent_info(docInfo);
+        if (pixbuf) {
+            // We calculate the width and height of the texture so as to preserve the aspect ratio of the thumbnail.
+            // Because the images generated based on thumbnails don't have an internal padding like system icons do,
+            // we create a slightly smaller texture and then use extra margin when positioning it. 
+            let scalingFactor = (GenericDisplay.ITEM_DISPLAY_ICON_SIZE - ITEM_DISPLAY_ICON_MARGIN * 2) / Math.max(pixbuf.get_width(), pixbuf.get_height());
+            icon.set_width(Math.ceil(pixbuf.get_width() * scalingFactor));
+            icon.set_height(Math.ceil(pixbuf.get_height() * scalingFactor));
+            Shell.clutter_texture_set_from_pixbuf(icon, pixbuf);
+            icon.x = GenericDisplay.ITEM_DISPLAY_PADDING + ITEM_DISPLAY_ICON_MARGIN;
+            icon.y = GenericDisplay.ITEM_DISPLAY_PADDING + ITEM_DISPLAY_ICON_MARGIN;
+        } else {
+            Shell.clutter_texture_set_from_pixbuf(icon, docInfo.get_icon(GenericDisplay.ITEM_DISPLAY_ICON_SIZE));
+            icon.x = GenericDisplay.ITEM_DISPLAY_PADDING;
+            icon.y = GenericDisplay.ITEM_DISPLAY_PADDING;
+        } 
+  
         this._setItemInfo(name, description, icon); 
     },
 
@@ -124,10 +141,13 @@ DocDisplay.prototype = {
         // While this._allItems associative array seems to always be ordered by last added,
         // as the results of this._recentManager.get_items() based on which it is constructed are,
         // we should do the sorting manually because we want the order to be based on last visited.
-        // TODO: would it be better to store an additional array of doc ids as they are 
-        // returned by this._recentManager.get_items() to avoid having to do this sorting?
-        // This function is called each time the search string is set back to '', so we are
-        // doing the sorting over the same items multiple times. 
+        //
+        // This function is called each time the search string is set back to '' or we display
+        // the overlay, so we are doing the sorting over the same items multiple times if the list
+        // of recent items didn't change. We could store an additional array of doc ids and sort
+        // them once when they are returned by this._recentManager.get_items() to avoid having to do 
+        // this sorting each time, but the sorting seems to be very fast anyway, so there is no need
+        // to introduce an additional class variable.
         let docIds = [];
         for (docId in this._allItems) {
             docIds.push(docId);

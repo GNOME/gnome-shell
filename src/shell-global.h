@@ -5,6 +5,7 @@
 #include <clutter/clutter.h>
 #include <glib-object.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
@@ -30,9 +31,10 @@ struct _ShellGlobalClass
 
 GType            shell_global_get_type            (void) G_GNUC_CONST;
 
-gboolean
-shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
-                                       GdkPixbuf      *pixbuf);
+gboolean shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
+                                                GdkPixbuf      *pixbuf);
+
+GdkPixbuf *shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info);
 
 ShellGlobal *shell_global_get (void);
 

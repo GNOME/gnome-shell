@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <math.h>
+#include <libgnomeui-2.0/libgnomeui/gnome-thumbnail.h>
 
 struct _ShellGlobal {
   GObject parent;
@@ -238,6 +240,57 @@ shell_clutter_texture_set_from_pixbuf (ClutterTexture *texture,
                                               gdk_pixbuf_get_has_alpha (pixbuf)
                                               ? 4 : 3,
                                               0, NULL);
+}
+
+static GnomeThumbnailFactory *thumbnail_factory;
+
+/**
+ * shell_get_thumbnail_for_recent_info:
+ *
+ * @recent_info: #GtkRecentInfo for which to return a thumbnail
+ *
+ * Return value: #GdkPixbuf containing a thumbnail for the file described by #GtkRecentInfo 
+ *               if the thumbnail exists or can be generated, %NULL otherwise
+ */
+GdkPixbuf *
+shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info)
+{
+    char *existing_thumbnail;
+    GdkPixbuf *pixbuf = NULL;
+    const gchar *uri = gtk_recent_info_get_uri (recent_info);
+    time_t mtime = gtk_recent_info_get_modified (recent_info);
+    const gchar *mime_type = gtk_recent_info_get_mime_type (recent_info);
+    GError *error = NULL;
+    
+    if (thumbnail_factory == NULL)
+       thumbnail_factory = gnome_thumbnail_factory_new (GNOME_THUMBNAIL_SIZE_NORMAL);
+
+    existing_thumbnail = gnome_thumbnail_factory_lookup (thumbnail_factory, uri, mtime);
+
+    if (existing_thumbnail != NULL)
+      {
+        pixbuf = gdk_pixbuf_new_from_file(existing_thumbnail, &error);
+        if (error != NULL) 
+          {
+            g_warning("Could not generate a pixbuf from file %s: %s", existing_thumbnail, error->message);
+            g_clear_error (&error);
+          }
+      }
+    else if (gnome_thumbnail_factory_can_thumbnail (thumbnail_factory, uri, mime_type, mtime)) 
+      {
+        pixbuf = gnome_thumbnail_factory_generate_thumbnail (thumbnail_factory, uri, mime_type);
+        if (pixbuf == NULL) 
+          {
+            g_warning ("Could not generate thumbnail for %s", uri);
+          }          
+        else 
+          {
+            // we need to save the thumbnail so that we don't need to generate it again in the future
+            gnome_thumbnail_factory_save_thumbnail (thumbnail_factory, pixbuf, uri, mtime);
+          }
+      }
+
+    return pixbuf;   
 }
 
 /**

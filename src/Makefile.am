@@ -10,6 +10,7 @@ include Makefile-tray.am
 
 gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
+        $(LIBGNOMEUI_CFLAGS)                    \
 	-Itray					\
 	-DGETTEXT_PACKAGE=gnome-shell		\
 	-DGNOME_SHELL_DATADIR=\"$(pkgdatadir)\"	\
@@ -65,6 +66,7 @@ shell-marshal.c: Makefile shell-marshal.list
 libgnome_shell_la_LDFLAGS = -avoid-version -module
 libgnome_shell_la_LIBADD =	\
 	$(MUTTER_PLUGIN_LIBS)	\
+        $(LIBGNOMEUI_LIBS)      \
 	libbig-1.0.la		\
 	libtidy-1.0.la		\
 	libtray.la

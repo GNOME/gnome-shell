@@ -20,7 +20,9 @@ const ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR = new Clutter.Color();
 ITEM_DISPLAY_SELECTED_BACKGROUND_COLOR.from_pixel(0x00ff0055);
 
 const ITEM_DISPLAY_HEIGHT = 50;
-const ITEM_DISPLAY_PADDING = 4;
+const ITEM_DISPLAY_ICON_SIZE = 48;
+const ITEM_DISPLAY_PADDING = 1;
+const ITEM_DISPLAY_MARGIN = 4;
 
 /* This is a virtual class that represents a single display item containing
  * a name, a description, and an icon. It allows selecting an item and represents 
@@ -106,18 +108,16 @@ GenericDisplayItem.prototype = {
         } 
 
         this._icon = iconActor;
-        this._icon.x = 0;
-        this._icon.y = 0;
         this._group.add_actor(this._icon);
 
-        let text_width = this._availableWidth - (this._icon.width + 4);
+        let text_width = this._availableWidth - (ITEM_DISPLAY_ICON_SIZE + 4);
         this._name = new Clutter.Label({ color: ITEM_DISPLAY_NAME_COLOR,
                                      font_name: "Sans 14px",
                                      width: text_width,
                                      ellipsize: Pango.EllipsizeMode.END,
                                      text: nameText,
-                                     x: this._icon.width + 4,
-                                     y: 0});
+                                     x: ITEM_DISPLAY_ICON_SIZE + 4,
+                                     y: ITEM_DISPLAY_PADDING});
         this._group.add_actor(this._name);
         this._description = new Clutter.Label({ color: ITEM_DISPLAY_DESCRIPTION_COLOR,
                                              font_name: "Sans 12px",
@@ -157,7 +157,8 @@ GenericDisplay.prototype = {
         this._activatedItem = null;
         this._selectedIndex = -1;
         this._keepDisplayCurrent = false;
-        this._maxItems = this._height / (ITEM_DISPLAY_HEIGHT + ITEM_DISPLAY_PADDING);
+        // TODO: this should be Math.floor, but right now we get too few items if we apply it
+        this._maxItems = this._height / (ITEM_DISPLAY_HEIGHT + ITEM_DISPLAY_MARGIN);
         this.actor = this._grid;
     },
 
