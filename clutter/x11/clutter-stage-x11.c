@@ -282,13 +282,30 @@ clutter_stage_x11_allocate (ClutterActor          *self,
 	 queue. Handling the first event will undo the work of setting
 	 the second property which will cause it to keep generating
 	 events in an infinite loop. See bug #810 */
-      if (stage_x11->xwin != None
-	  && !stage_x11->is_foreign_xwin
-	  && !stage_x11->handling_configure)
-        XResizeWindow (stage_x11->xdpy,
-                       stage_x11->xwin,
-                       stage_x11->xwin_width,
-                       stage_x11->xwin_height);
+      if (stage_x11->xwin != None &&
+	  !stage_x11->is_foreign_xwin &&
+	  !stage_x11->handling_configure)
+        {
+          XResizeWindow (stage_x11->xdpy,
+                         stage_x11->xwin,
+                         stage_x11->xwin_width,
+                         stage_x11->xwin_height);
+
+          /* resizing is an asynchronous process; to avoid races
+           * with the window manager, we flag the wrapper as being
+           * "in resize", so that the SYNC_MATRICES flag will not
+           * cause a call to cogl_get_viewport().
+           *
+           * the flag is unset inside clutter-event-x11.c, after
+           * we receive a ConfigureNotify event. XXX - need to
+           * check what happens when running without a window manager
+           */
+          CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
+                                     CLUTTER_STAGE_IN_RESIZE);
+        }
+
+      CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
+                                 CLUTTER_ACTOR_SYNC_MATRICES);
 
       clutter_stage_x11_fix_window_size (stage_x11);
 
@@ -298,9 +315,6 @@ clutter_stage_x11_allocate (ClutterActor          *self,
           clutter_actor_unrealize (self);
           clutter_actor_realize (self);
         }
-
-      CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
-                                 CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
   /* chain up to fill in actor->priv->allocation */
@@ -769,4 +783,3 @@ clutter_stage_x11_unmap (ClutterStageX11 *stage_x11)
   CLUTTER_ACTOR_UNSET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
   CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_MAPPED);
 }
-

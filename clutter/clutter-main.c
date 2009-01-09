@@ -147,7 +147,8 @@ _clutter_stage_maybe_relayout (ClutterActor *stage)
 void
 _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
 {
-  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
+  if ((CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES) &&
+      !(CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_STAGE_IN_RESIZE))
     {
       ClutterPerspective perspective;
       guint width, height;

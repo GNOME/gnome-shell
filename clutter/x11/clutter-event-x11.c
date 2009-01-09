@@ -438,6 +438,12 @@ event_translate (ClutterBackend *backend,
 				  xevent->xconfigure.height);
 
 	  stage_x11->handling_configure = FALSE;
+
+          /* the resize process is complete, so we can remove the
+           * in-resize flag and allow the viewport to be resized
+           */
+          CLUTTER_UNSET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
+                                       CLUTTER_STAGE_IN_RESIZE);
         }
       res = FALSE;
       break;
