@@ -1112,6 +1112,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
 {
   GList         *l;
   MetaWorkspace *neighbour = NULL;
+  GList         *next = NULL;
 
   l = screen->workspaces;
   while (l)
@@ -1120,6 +1121,9 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
 
       if (w == workspace)
         {
+          if (l->next)
+            next = l->next;
+
           if (l->prev)
             neighbour = l->prev->data;
           else if (l->next)
@@ -1145,6 +1149,16 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
   meta_workspace_free (workspace);
 
   set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
+
+  l = next;
+  while (l)
+    {
+      MetaWorkspace *w = l->data;
+
+      meta_workspace_update_window_hints (w);
+
+      l = l->next;
+    }
 
   meta_screen_queue_workarea_recalc (screen);
 }
