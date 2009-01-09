@@ -56,11 +56,14 @@ clutter_scriptable_get_type (void)
 {
   static GType scriptable_type = 0;
 
-  if (!scriptable_type)
-    scriptable_type =
-      g_type_register_static_simple (G_TYPE_INTERFACE, "ClutterScriptable",
-                                     sizeof (ClutterScriptableIface),
-                                     NULL, 0, NULL, 0);
+  if (G_UNLIKELY (scriptable_type == 0))
+    {
+      scriptable_type =
+        g_type_register_static_simple (G_TYPE_INTERFACE,
+                                       I_("ClutterScriptable"),
+                                       sizeof (ClutterScriptableIface),
+                                       NULL, 0, NULL, 0);
+    }
 
   return scriptable_type;
 }
