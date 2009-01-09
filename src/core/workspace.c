@@ -498,6 +498,20 @@ meta_workspace_index (MetaWorkspace *workspace)
   return ret;
 }
 
+void
+meta_workspace_update_window_hints (MetaWorkspace *workspace)
+{
+  GList *l = workspace->windows;
+  while (l)
+    {
+      MetaWindow *win = l->data;
+
+      meta_window_set_current_workspace_hint (win);
+
+      l = l->next;
+    }
+}
+
 /* get windows contained on workspace, including workspace->windows
  * and also sticky windows.
  */
