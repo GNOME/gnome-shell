@@ -1838,18 +1838,26 @@ get_output_window (MetaScreen *screen)
   MetaDisplay *display = meta_screen_get_display (screen);
   Display     *xdisplay = meta_display_get_xdisplay (display);
   Window       output, xroot;
+  XWindowAttributes attr;
+  long         event_mask;
 
   xroot = meta_screen_get_xroot (screen);
 
+  event_mask = FocusChangeMask |
+               ExposureMask |
+	       PointerMotionMask |
+               PropertyChangeMask |
+               ButtonPressMask | ButtonReleaseMask |
+               KeyPressMask | KeyReleaseMask;
+
   output = XCompositeGetOverlayWindow (xdisplay, xroot);
-  XSelectInput (xdisplay,
-                output,
-                FocusChangeMask |
-                ExposureMask |
-		PointerMotionMask |
-                PropertyChangeMask |
-                ButtonPressMask | ButtonReleaseMask |
-                KeyPressMask | KeyReleaseMask);
+
+  if (XGetWindowAttributes (xdisplay, output, &attr))
+      {
+        event_mask |= attr.your_event_mask;
+      }
+
+  XSelectInput (xdisplay, output, event_mask);
 
   return output;
 }
@@ -1910,6 +1918,8 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
   Window          xroot         = meta_screen_get_xroot (screen);
   Window          xwin;
   gint            width, height;
+  XWindowAttributes attr;
+  long            event_mask;
 
   /* Check if the screen is already managed */
   if (meta_screen_get_compositor_data (screen))
@@ -1951,14 +1961,19 @@ clutter_cmp_manage_screen (MetaCompositor *compositor,
 
   XReparentWindow (xdisplay, xwin, info->output, 0, 0);
 
-  XSelectInput (xdisplay,
-                xwin,
-                FocusChangeMask |
-                ExposureMask |
-		PointerMotionMask |
-                PropertyChangeMask |
-                ButtonPressMask | ButtonReleaseMask |
-                KeyPressMask | KeyReleaseMask);
+  event_mask = FocusChangeMask |
+               ExposureMask |
+               PointerMotionMask |
+               PropertyChangeMask |
+               ButtonPressMask | ButtonReleaseMask |
+               KeyPressMask | KeyReleaseMask;
+
+  if (XGetWindowAttributes (xdisplay, xwin, &attr))
+      {
+        event_mask |= attr.your_event_mask;
+      }
+
+  XSelectInput (xdisplay, xwin, event_mask);
 
   info->window_group = clutter_group_new ();
 #if 0
