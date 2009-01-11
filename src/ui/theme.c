@@ -5085,6 +5085,64 @@ meta_theme_draw_frame (MetaTheme              *theme,
 }
 
 void
+meta_theme_draw_frame_by_name (MetaTheme              *theme,
+                               GtkWidget              *widget,
+                               GdkDrawable            *drawable,
+                               const GdkRectangle     *clip,
+                               int                     x_offset,
+                               int                     y_offset,
+                               const gchar             *style_name,
+                               MetaFrameFlags          flags,
+                               int                     client_width,
+                               int                     client_height,
+                               PangoLayout            *title_layout,
+                               int                     text_height,
+                               const MetaButtonLayout *button_layout,
+                               MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
+                               GdkPixbuf              *mini_icon,
+                               GdkPixbuf              *icon)
+{
+  MetaFrameGeometry fgeom;
+  MetaFrameStyle *style;
+
+  style = meta_theme_lookup_style (theme, style_name);
+  
+  /* Parser is not supposed to allow this currently */
+  if (style == NULL)
+    return;
+  
+  meta_frame_layout_calc_geometry (style->layout,
+                                   text_height,
+                                   flags,
+                                   client_width, client_height,
+                                   button_layout,
+                                   &fgeom,
+                                   theme);  
+
+  meta_frame_style_draw (style,
+                         widget,
+                         drawable,
+                         x_offset, y_offset,
+                         clip,
+                         &fgeom,
+                         client_width, client_height,
+                         title_layout,
+                         text_height,
+                         button_states,
+                         mini_icon, icon);
+}
+
+
+
+
+
+
+
+
+
+
+
+void
 meta_theme_get_frame_borders (MetaTheme      *theme,
                               MetaFrameType   type,
                               int             text_height,
