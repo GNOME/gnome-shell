@@ -880,7 +880,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       "smaller values less texture memory.",
 		       -1,
 		       G_MAXINT,
-		       64,
+		       63,
 		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
@@ -1061,7 +1061,7 @@ clutter_texture_init (ClutterTexture *self)
 
   self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
-  priv->max_tile_waste    = 64;
+  priv->max_tile_waste    = 63;
   priv->filter_quality    = CLUTTER_TEXTURE_QUALITY_MEDIUM;
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;
