@@ -683,7 +683,7 @@ mutter_window_get_window_type (MutterWindow *mcw)
 gboolean
 mutter_window_is_override_redirect (MutterWindow *mcw)
 {
-  if (!mcw->priv->window)
+  if (mcw->priv->window->override_redirect)
     return TRUE;
 
   return FALSE;
