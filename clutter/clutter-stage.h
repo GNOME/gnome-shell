@@ -106,6 +106,8 @@ struct _ClutterStageClass
   void (* activate)     (ClutterStage *stage);
   void (* deactivate)   (ClutterStage *stage);
 
+  void (* queue_redraw) (ClutterStage *stage);
+
   /*< private >*/
   /* padding for future expansion */
   gpointer _padding_dummy[32];
