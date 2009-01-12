@@ -149,6 +149,14 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
     }
 }
 
+gboolean
+cogl_bitmap_get_size_from_file (const gchar *filename,
+                                gint        *width,
+                                gint        *height)
+{
+  return _cogl_bitmap_get_size_from_file (filename, width, height);
+}
+
 CoglBitmap *
 cogl_bitmap_new_from_file (const gchar    *filename,
                            GError        **error)
