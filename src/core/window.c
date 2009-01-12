@@ -2468,6 +2468,11 @@ meta_window_show (MetaWindow *window)
 
 	  window->was_minimized = FALSE;
 	}
+      else
+        {
+          if (window->display->compositor)
+	    meta_compositor_map_window (window->display->compositor, window);
+        }
 
       if (window->iconic)
         {
