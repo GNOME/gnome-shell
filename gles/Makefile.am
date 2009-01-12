@@ -20,6 +20,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/cogl/$(CLUTTER_COGL) \
 	-I$(top_builddir)/clutter \
 	-I$(top_builddir)/clutter/cogl \
+        -DG_LOG_DOMAIN=\"Cogl-GLES\" \
         -DCLUTTER_COMPILATION \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS) \
