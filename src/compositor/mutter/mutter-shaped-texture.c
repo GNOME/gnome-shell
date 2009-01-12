@@ -365,6 +365,15 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   GLfloat vertex_coords[8], paint_tex_coords[8];
   ClutterActorBox alloc;
   static const ClutterColor white = { 0xff, 0xff, 0xff, 0xff };
+#if 1 /* please see comment below about workaround */
+  guint depth;
+  GLint orig_gl_tex_env_mode;
+  GLint orig_gl_combine_alpha;
+  GLint orig_gl_src0_alpha;
+  GLfloat orig_gl_tex_env_color[4];
+  gboolean need_to_restore_tex_env = FALSE;
+  const GLfloat const_alpha[4] = { 0.0, 0.0, 0.0, 1.0 }; 
+#endif
 
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (stex)))
     clutter_actor_realize (CLUTTER_ACTOR (stex));
@@ -430,6 +439,36 @@ mutter_shaped_texture_paint (ClutterActor *actor)
                                    &paint_gl_width,
                                    &paint_gl_height);
 
+#if 1
+  /* This was added as a workaround. It seems that with the intel drivers when
+   * multi-texturing using an RGB TFP texture, the texture is actually
+   * setup internally as an RGBA texture, where the alpha channel is mostly
+   * 0.0 so you only see a shimmer of the window. This workaround forcibly
+   * defines the alpha channel as 1.0. Maybe there is some clutter/cogl state
+   * that is interacting with this that is being overlooked, but for now this
+   * seems to work. */
+  g_object_get (G_OBJECT (stex), "pixmap-depth", &depth, NULL);
+  if (depth == 24)
+    {
+      glGetTexEnviv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,
+                     &orig_gl_tex_env_mode);
+      glGetTexEnviv (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, &orig_gl_combine_alpha);
+      glGetTexEnviv (GL_TEXTURE_ENV, GL_SRC0_ALPHA, &orig_gl_src0_alpha);
+      glGetTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR,
+                     orig_gl_tex_env_color);
+      need_to_restore_tex_env = TRUE;
+
+      glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
+      glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA, GL_CONSTANT);
+      glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, const_alpha);
+
+      /* Replace the RGB in the second texture with that of the first
+         texture */
+      glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
+      glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_RGB, GL_PREVIOUS);
+    }
+#endif
+
   /* Put the mask texture in the second texture unit */
   tst_active_texture (GL_TEXTURE1);
   tst_client_active_texture (GL_TEXTURE1);
@@ -442,10 +481,32 @@ mutter_shaped_texture_paint (ClutterActor *actor)
 
   glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
 
+#if 1 /* see workaround notes above */
+  if (depth == 24)
+    {
+      /* NOTE: This should be redundant, since we already explicitly forced an
+       * an alhpa value of 1.0 for texture unit 0, but this workaround only
+       * seems to help if we explicitly force the alpha values for both texture
+       * units. */
+      /* XXX - we should also save/restore the values for this texture unit too
+       */
+      glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
+      glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA, GL_TEXTURE);
+      glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA, GL_CONSTANT);
+      glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, const_alpha);
+    }
+  else
+    {
+#endif
+
   /* Multiply the alpha by the alpha in the second texture */
   glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_MODULATE);
   glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA, GL_TEXTURE);
   glTexEnvi (GL_TEXTURE_ENV, GL_SRC1_ALPHA, GL_PREVIOUS);
+
+#if 1 /* see workaround notes above */
+    }
+#endif
 
   /* Replace the RGB in the second texture with that of the first
      texture */
@@ -497,6 +558,15 @@ mutter_shaped_texture_paint (ClutterActor *actor)
     glDisableClientState (GL_TEXTURE_COORD_ARRAY);
   if (color_array_was_enabled)
     glEnableClientState (GL_COLOR_ARRAY);
+#if 1 /* see note about workaround above */
+  if (need_to_restore_tex_env)
+    {
+      glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, orig_gl_tex_env_mode);
+      glTexEnvi (GL_TEXTURE_ENV, GL_COMBINE_ALPHA, orig_gl_combine_alpha);
+      glTexEnvi (GL_TEXTURE_ENV, GL_SRC0_ALPHA, orig_gl_src0_alpha);
+      glTexEnvfv (GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, orig_gl_tex_env_color);
+    }
+#endif
 }
 
 static void
