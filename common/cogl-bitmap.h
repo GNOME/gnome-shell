@@ -90,4 +90,9 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     gint        width,
 			     gint        height);
 
+gboolean
+_cogl_bitmap_get_size_from_file (const gchar *filename,
+                                 gint        *width,
+                                 gint        *height);
+
 #endif /* __COGL_BITMAP_H */

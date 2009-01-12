@@ -415,9 +415,26 @@ void            cogl_texture_polygon          (CoglHandle          handle,
  *
  * Returns: A #CoglBitmap to the new loaded image data, or %NULL if loading 
  * the image failed.
+ *
+ * Since: 1.0
  */
 CoglBitmap *    cogl_bitmap_new_from_file     (const gchar    *filename,
                                                GError        **error);
+
+/**
+ * cogl_bitmap_get_size_from_file:
+ * @filename: the file to check
+ * @width: return location for the bitmap width
+ * @height: return location for the bitmap height
+ *
+ * Parses an image file enough to extract the width and height
+ * of the bitmap.
+ *
+ * Since: 1.0
+ */
+gboolean        cogl_bitmap_get_size_from_file (const gchar   *filename,
+                                                gint          *width,
+                                                gint          *height);
 
 /**
  * cogl_bitmap_free:
