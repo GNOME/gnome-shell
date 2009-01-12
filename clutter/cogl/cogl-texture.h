@@ -427,6 +427,29 @@ CoglBitmap *    cogl_bitmap_new_from_file     (const gchar    *filename,
  */
 void            cogl_bitmap_free              (CoglBitmap     *bmp);
 
+/**
+ * cogl_texture_multiple_rectangles:
+ * @handle: a @CoglHandle.
+ * @verts: an array of vertices
+ * @n_rects: number of rectangles to draw
+ *
+ * Draws a series of rectangles in the same way that
+ * cogl_texture_rectangle() does. In some situations it can give a
+ * significant performance boost to use this function rather than
+ * calling cogl_texture_rectangle() separately for each rectangle.
+ *
+ * @verts should point to an array of #CoglFixed<!-- -->s with
+ * @n_rects * 8 elements. Each group of 8 values corresponds to the
+ * parameters x1, y1, x2, y2, tx1, ty1, tx2 and ty2 and have the same
+ * meaning as in cogl_texture_rectangle().
+ *
+ * Since: 1.0
+ */
+void            cogl_texture_multiple_rectangles
+                                              (CoglHandle          handle,
+                                               const CoglFixed    *verts,
+                                               guint               n_rects);
+
 G_END_DECLS
 
 #endif /* __COGL_TEXTURE_H__ */

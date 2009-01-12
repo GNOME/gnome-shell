@@ -688,11 +688,11 @@ clutter_text_get_property (GObject    *gobject,
       break;
 
     case PROP_POSITION:
-      g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->position));
+      g_value_set_int (value, priv->position);
       break;
 
     case PROP_SELECTION_BOUND:
-      g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->selection_bound));
+      g_value_set_int (value, priv->selection_bound);
       break;
 
     case PROP_EDITABLE:
@@ -717,6 +717,30 @@ clutter_text_get_property (GObject    *gobject,
 
     case PROP_SINGLE_LINE_MODE:
       g_value_set_boolean (value, priv->single_line_mode);
+      break;
+
+    case PROP_ELLIPSIZE:
+      g_value_set_enum (value, priv->ellipsize);
+      break;
+
+    case PROP_LINE_WRAP:
+      g_value_set_boolean (value, priv->wrap);
+      break;
+
+    case PROP_LINE_WRAP_MODE:
+      g_value_set_enum (value, priv->wrap_mode);
+      break;
+
+    case PROP_ALIGNMENT:
+      g_value_set_enum (value, priv->alignment);
+      break;
+
+    case PROP_JUSTIFY:
+      g_value_set_boolean (value, priv->justify);
+      break;
+
+    case PROP_ATTRIBUTES:
+      g_value_set_boxed (value, priv->attrs);
       break;
 
     default:
@@ -826,7 +850,7 @@ cursor_paint (ClutterText *self)
               gint n_ranges;
               gint *ranges;
               gint i;
-              gint index;
+              gint index_;
               gint maxindex;
               ClutterUnit y, height;
 
@@ -838,10 +862,10 @@ cursor_paint (ClutterText *self)
               pango_layout_line_get_x_ranges (line, start_index, end_index,
                                               &ranges,
                                               &n_ranges);
-              pango_layout_line_x_to_index (line, 0, &index, NULL);
+              pango_layout_line_x_to_index (line, 0, &index_, NULL);
 
               clutter_text_position_to_coords (self,
-                                               bytes_to_offset (utf8, index),
+                                               bytes_to_offset (utf8, index_),
                                                NULL, &y, &height);
 
               for (i = 0; i < n_ranges; i++)

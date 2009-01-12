@@ -28,6 +28,7 @@ clutter_media_get_type
 <FILE>clutter-units</FILE>
 <TITLE>Unit conversion</TITLE>
 ClutterUnit
+CLUTTER_UNITS_FORMAT
 CLUTTER_UNITS_FROM_DEVICE
 CLUTTER_UNITS_TO_DEVICE
 CLUTTER_UNITS_FROM_FIXED
@@ -1497,9 +1498,6 @@ clutter_shader_float_get_type
 clutter_shader_int_get_type
 clutter_shader_matrix_get_type
 clutter_shader_error_quark
-clutter_shader_float_get_type
-clutter_shader_int_get_type
-clutter_shader_matrix_get_type
 </SECTION>
 
 <SECTION>
@@ -1583,31 +1581,6 @@ clutter_interval_get_type
 </SECTION>
 
 <SECTION>
-<TITLE>Key Bindings</TITLE>
-<FILE>clutter-binding-pool</FILE>
-ClutterBindingPool
-ClutterBindingActionFunc
-
-<SUBSECTION>
-clutter_binding_pool_new
-clutter_binding_pool_get_for_class
-clutter_binding_pool_find
-
-<SUBSECTION>
-clutter_binding_pool_install_action
-clutter_binding_pool_install_closure
-clutter_binding_pool_override_action
-clutter_binding_pool_override_closure
-clutter_binding_pool_find_action
-clutter_binding_pool_remove_action
-clutter_binding_pool_block_action
-clutter_binding_pool_unblock_action
-
-<SUBSECTION>
-clutter_binding_pool_activate
-</SECTION>
-
-<SECTION>
 <FILE>clutter-cairo-texture</FILE>
 <TITLE>ClutterCairoTexture</TITLE>
 ClutterCairoTexture
@@ -1634,6 +1607,7 @@ CLUTTER_CAIRO_TEXTURE_GET_CLASS
 <SUBSECTION Private>
 ClutterCairoTexturePrivate
 clutter_cairo_texture_get_type
+</SECTION>
 
 <SECTION>
 <TITLE>ClutterText</TITLE>
@@ -1712,4 +1686,29 @@ CLUTTER_TYPE_TEXT
 <SUBSECTION Private>
 ClutterTextPrivate
 clutter_text_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>Key Bindings</TITLE>
+<FILE>clutter-binding-pool</FILE>
+ClutterBindingPool
+ClutterBindingActionFunc
+
+<SUBSECTION>
+clutter_binding_pool_new
+clutter_binding_pool_get_for_class
+clutter_binding_pool_find
+
+<SUBSECTION>
+clutter_binding_pool_install_action
+clutter_binding_pool_install_closure
+clutter_binding_pool_override_action
+clutter_binding_pool_override_closure
+clutter_binding_pool_find_action
+clutter_binding_pool_remove_action
+clutter_binding_pool_block_action
+clutter_binding_pool_unblock_action
+
+<SUBSECTION>
+clutter_binding_pool_activate
 </SECTION>
