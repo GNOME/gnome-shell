@@ -433,17 +433,23 @@ event_translate (ClutterBackend *backend,
 	     it from trying to resize the window again */
 	  stage_x11->handling_configure = TRUE;
 
+          CLUTTER_NOTE (BACKEND, "%s: ConfigureNotify[%x] (%d, %d)",
+                        G_STRLOC,
+                        (unsigned int) stage_x11->xwin,
+                        xevent->xconfigure.width,
+                        xevent->xconfigure.height);
+
 	  clutter_actor_set_size (CLUTTER_ACTOR (stage),
 				  xevent->xconfigure.width,
 				  xevent->xconfigure.height);
 
 	  stage_x11->handling_configure = FALSE;
 
-          /* the resize process is complete, so we can remove the
-           * in-resize flag and allow the viewport to be resized
+          /* the resize process is complete, so we can ask the stage
+           * to set up the GL viewport with the new size
            */
-          CLUTTER_UNSET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
-                                       CLUTTER_STAGE_IN_RESIZE);
+          CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
+                                     CLUTTER_ACTOR_SYNC_MATRICES);
         }
       res = FALSE;
       break;

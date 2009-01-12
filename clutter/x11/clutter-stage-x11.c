@@ -286,26 +286,17 @@ clutter_stage_x11_allocate (ClutterActor          *self,
 	  !stage_x11->is_foreign_xwin &&
 	  !stage_x11->handling_configure)
         {
+          CLUTTER_NOTE (BACKEND, "%s: XResizeWindow[%x] (%d, %d)",
+                        G_STRLOC,
+                        (unsigned int) stage_x11->xwin,
+                        stage_x11->xwin_width,
+                        stage_x11->xwin_height);
+
           XResizeWindow (stage_x11->xdpy,
                          stage_x11->xwin,
                          stage_x11->xwin_width,
                          stage_x11->xwin_height);
-
-          /* resizing is an asynchronous process; to avoid races
-           * with the window manager, we flag the wrapper as being
-           * "in resize", so that the SYNC_MATRICES flag will not
-           * cause a call to cogl_get_viewport().
-           *
-           * the flag is unset inside clutter-event-x11.c, after
-           * we receive a ConfigureNotify event. XXX - need to
-           * check what happens when running without a window manager
-           */
-          CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
-                                     CLUTTER_STAGE_IN_RESIZE);
         }
-
-      CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
-                                 CLUTTER_ACTOR_SYNC_MATRICES);
 
       clutter_stage_x11_fix_window_size (stage_x11);
 
@@ -411,6 +402,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
   if (!stage)
     return;
 
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+
   if (is_fullscreen)
     {
       int width, height;
@@ -493,8 +486,6 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
           stage_x11->fullscreen_on_map = FALSE;
         }
     }
-
-  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void
@@ -753,6 +744,8 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
 
   clutter_actor_set_geometry (actor, &geom);
   clutter_actor_realize (actor);
+
+  CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
 
   return TRUE;
 }

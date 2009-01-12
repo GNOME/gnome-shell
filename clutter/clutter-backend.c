@@ -251,9 +251,6 @@ _clutter_backend_ensure_context (ClutterBackend *backend,
        * potential issue of GL calls with no context)
        */
       current_context_stage = stage;
-      
-      if (stage)
-        CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
     }
   else
     CLUTTER_NOTE (MULTISTAGE, "Stage is the same");

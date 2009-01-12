@@ -62,8 +62,7 @@ typedef enum {
                                           */
   CLUTTER_ACTOR_IN_PAINT         = 1 << 4, /* Used to avoid recursion */
   CLUTTER_ACTOR_IN_RELAYOUT      = 1 << 5, /* Used to avoid recursion */
-  CLUTTER_TEXTURE_IN_CLONE_PAINT = 1 << 6, /* Used for safety in clones */
-  CLUTTER_STAGE_IN_RESIZE        = 1 << 7  /* Used to mark stage resizes */
+  CLUTTER_TEXTURE_IN_CLONE_PAINT = 1 << 6  /* Used for safety in clones */
 } ClutterPrivateFlags;
 
 typedef enum {
