@@ -8665,3 +8665,12 @@ meta_window_set_compositor_private (MetaWindow *window, void *priv)
   window->compositor_private = priv;
 }
 
+const char *
+meta_window_get_role (MetaWindow *window)
+{
+  if (!window)
+    return NULL;
+
+  return window->role;
+}
+
