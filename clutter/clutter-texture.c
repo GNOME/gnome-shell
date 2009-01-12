@@ -1440,6 +1440,8 @@ clutter_texture_async_load_complete (ClutterTexture *self,
     }
 
   g_signal_emit (self, texture_signals[LOAD_FINISHED], 0, error);
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 static gboolean
@@ -1560,7 +1562,10 @@ clutter_texture_async_load (ClutterTexture  *self,
       return FALSE;
     }
   else
-    clutter_actor_set_size (CLUTTER_ACTOR (self), width, height);
+    {
+      priv->width = width;
+      priv->height = height;
+    }
 
   if (g_thread_supported ())
     {
@@ -1588,6 +1593,12 @@ clutter_texture_async_load (ClutterTexture  *self,
  *
  * Sets the #ClutterTexture image data from an image file. In case of
  * failure, %FALSE is returned and @error is set.
+ *
+ * If #ClutterTexture:load-async is set to %TRUE, this function
+ * will return as soon as possible, and the actual image loading
+ * from disk will be performed asynchronously. #ClutterTexture::load-finished
+ * will be emitted when the image has been loaded or if an error
+ * occurred.
  *
  * Return value: %TRUE if the image was successfully loaded and set
  *
