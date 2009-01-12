@@ -1,5 +1,5 @@
 diff --git a/clutter/cogl/gl/cogl.c b/clutter/cogl/gl/cogl.c
-index 7b61b63..dcded98 100644
+index 7b61b63..5100a08 100644
 --- a/clutter/cogl/gl/cogl.c
 +++ b/clutter/cogl/gl/cogl.c
 @@ -211,17 +211,17 @@ cogl_pop_matrix (void)
@@ -25,9 +25,12 @@ index 7b61b63..dcded98 100644
  }
  
  void
-@@ -233,10 +233,10 @@ cogl_translate (gint x, gint y, gint z)
+@@ -231,12 +231,12 @@ cogl_translate (gint x, gint y, gint z)
+ }
+ 
  void
- cogl_rotatex (float angle, gint x, gint y, gint z)
+-cogl_rotatex (float angle, gint x, gint y, gint z)
++cogl_rotatex (float angle, float x, float y, float z)
  {
 -  glRotated ((double)(angle),
 -	     (double)(x),
