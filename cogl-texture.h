@@ -401,7 +401,7 @@ void            cogl_texture_polygon          (CoglHandle          handle,
  * parameters x1, y1, x2, y2, tx1, ty1, tx2 and ty2 and have the same
  * meaning as in cogl_texture_rectangle().
  *
- * Since: 1.0
+ * Since: 0.8.6
  */
 void            cogl_texture_multiple_rectangles
                                               (CoglHandle          handle,
