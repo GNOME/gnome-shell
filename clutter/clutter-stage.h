@@ -229,6 +229,7 @@ ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
 void                  clutter_stage_ensure_current     (ClutterStage *stage);
 void                  clutter_stage_queue_redraw       (ClutterStage *stage);
 gboolean              clutter_stage_is_default         (ClutterStage *stage);
+void                  clutter_stage_ensure_viewport    (ClutterStage *stage);
 
 /* Commodity macro */
 #define clutter_stage_add(stage,actor)                  G_STMT_START {  \

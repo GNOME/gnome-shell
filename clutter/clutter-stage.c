@@ -1801,6 +1801,31 @@ clutter_stage_ensure_current (ClutterStage *stage)
   _clutter_backend_ensure_context (ctx->backend, stage);
 }
 
+/**
+ * clutter_stage_ensure_viewport:
+ * @stage: a #ClutterStage
+ *
+ * Ensures that the GL viewport is updated with the current
+ * stage window size.
+ *
+ * This function will queue a redraw of @stage.
+ *
+ * This function should not be called by applications; it is used
+ * when embedding a #ClutterStage into a toolkit with another
+ * windowing system, like GTK+.
+ *
+ * Since: 1.0
+ */
+void
+clutter_stage_ensure_viewport (ClutterStage *stage)
+{
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+
+  clutter_stage_queue_redraw (stage);
+}
+
 static gboolean
 redraw_update_idle (gpointer user_data)
 {
