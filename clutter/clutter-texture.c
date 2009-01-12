@@ -263,8 +263,8 @@ clutter_texture_realize (ClutterActor *actor)
       if (priv->texture != COGL_INVALID_HANDLE)
 	cogl_texture_unref (priv->texture);
 
-      priv->texture
-            = cogl_texture_new_with_size
+      priv->texture =
+        cogl_texture_new_with_size
                           (priv->width,
                            priv->height,
                            priv->no_slice ? -1 : priv->max_tile_waste,
@@ -2026,7 +2026,7 @@ on_fbo_source_size_change (GObject          *object,
           return;
         }
 
-      clutter_actor_set_size (CLUTTER_ACTOR(texture), w, h);
+      clutter_actor_set_size (CLUTTER_ACTOR (texture), w, h);
     }
 }
 
@@ -2201,9 +2201,9 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   priv->width        = w;
   priv->height       = h;
 
-  clutter_actor_set_size (CLUTTER_ACTOR(texture), priv->width, priv->height);
+  clutter_actor_set_size (CLUTTER_ACTOR (texture), priv->width, priv->height);
 
-  return CLUTTER_ACTOR(texture);
+  return CLUTTER_ACTOR (texture);
 }
 
 static void
