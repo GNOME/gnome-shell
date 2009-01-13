@@ -12,16 +12,16 @@ const GenericDisplay = imports.ui.genericDisplay;
 // but have taken over metacity
 // This list is taken from GNOME Online popular applications
 // http://online.gnome.org/applications
-// but with nautilus removed
+// but with nautilus removed (since it should already be running)
+// and evince, totem, and gnome-file-roller removed (since they're
+// usually started by opening documents, not by opening the app
+// directly)
 const DEFAULT_APPLICATIONS = [
     'mozilla-firefox.desktop',
     'gnome-terminal.desktop',
     'evolution.desktop',
-    'evince.desktop',
     'gedit.desktop',
     'mozilla-thunderbird.desktop',
-    'totem.desktop',
-    'gnome-file-roller.desktop',
     'rhythmbox.desktop',
     'epiphany.desktop',
     'xchat.desktop',
