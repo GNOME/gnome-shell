@@ -1017,7 +1017,9 @@ clutter_text_key_press (ClutterActor    *actor,
       if (key_unichar == '\r')
         key_unichar = '\n';
 
-      if (g_unichar_validate (key_unichar))
+      if (key_unichar == '\n' ||
+          (g_unichar_validate (key_unichar) &&
+           !g_unichar_iscntrl (key_unichar)))
         {
           /* truncate the eventual selection so that the
            * Unicode character can replace it
