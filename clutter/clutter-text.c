@@ -202,31 +202,16 @@ static gint
 offset_to_bytes (const gchar *text,
                  gint         pos)
 {
-  gchar *c = NULL;
-  gint i, j, len;
+  const gchar *ptr;
 
   if (pos < 0)
     return strlen (text);
 
-  c = g_utf8_next_char (text);
-  j = 1;
-  len = strlen (text);
+  /* Loop over each character in the string until we either reach the
+     end or the requested position */
+  for (ptr = text; *ptr && pos-- > 0; ptr = g_utf8_next_char (ptr));
 
-  for (i = 0; i < len; i++)
-    {
-      if (&text[i] == c)
-        {
-          if (j == pos)
-            break;
-          else
-            {
-              c = g_utf8_next_char (c);
-              j++;
-            }
-        }
-    }
-
-  return i;
+  return ptr - text;
 }
 
 #define bytes_to_offset(t,p)    (g_utf8_pointer_to_offset ((t), (t) + (p)))
