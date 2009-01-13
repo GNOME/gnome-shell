@@ -120,6 +120,10 @@ AppDisplay.prototype = {
             // user in in the overlay mode, however let's redisplay just in case.
             me._redisplay(); 
         });
+
+        // Load the GAppInfos now so it doesn't slow down the first
+        // transition into the overlay
+        this._refreshCache();
     },
 
     //// Protected method overrides //// 
