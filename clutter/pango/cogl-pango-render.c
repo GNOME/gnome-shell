@@ -51,12 +51,56 @@ struct _CoglPangoRenderer
   CoglPangoGlyphCache *mipmapped_glyph_cache;
 
   gboolean use_mipmapping;
+
+  /* Array of rectangles to draw from the current texture */
+  GArray *glyph_rectangles;
+  CoglHandle glyph_texture;
 };
 
 struct _CoglPangoRendererClass
 {
   PangoRendererClass class_instance;
 };
+
+static void
+cogl_pango_renderer_glyphs_end (CoglPangoRenderer *priv)
+{
+  if (priv->glyph_rectangles->len > 0)
+    {
+      CoglFixed *rectangles = (CoglFixed *) priv->glyph_rectangles->data;
+      cogl_texture_multiple_rectangles (priv->glyph_texture, rectangles,
+                                        priv->glyph_rectangles->len / 8);
+      g_array_set_size (priv->glyph_rectangles, 0);
+    }
+}
+
+static void
+cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
+                                CoglPangoGlyphCacheValue *cache_value,
+                                CoglFixed                 x1,
+                                CoglFixed                 y1)
+{
+  CoglFixed x2, y2;
+  CoglFixed *p;
+
+  if (priv->glyph_rectangles->len > 0
+      && priv->glyph_texture != cache_value->texture)
+    cogl_pango_renderer_glyphs_end (priv);
+
+  priv->glyph_texture = cache_value->texture;
+
+  x2 = x1 + CLUTTER_INT_TO_FIXED (cache_value->draw_width);
+  y2 = y1 + CLUTTER_INT_TO_FIXED (cache_value->draw_height);
+
+  g_array_set_size (priv->glyph_rectangles, priv->glyph_rectangles->len + 8);
+  p = &g_array_index (priv->glyph_rectangles, CoglFixed,
+                      priv->glyph_rectangles->len - 8);
+
+  *(p++) = x1;               *(p++) = y1;
+  *(p++) = x2;               *(p++) = y2;
+  *(p++) = cache_value->tx1; *(p++) = cache_value->ty1;
+  *(p++) = cache_value->tx2; *(p++) = cache_value->ty2;
+}
 
 #define COGL_PANGO_UNIT_TO_FIXED(x) ((x) << (COGL_FIXED_Q - 10))
 
@@ -89,6 +133,7 @@ cogl_pango_renderer_init (CoglPangoRenderer *priv)
   priv->glyph_cache = cogl_pango_glyph_cache_new (FALSE);
   priv->mipmapped_glyph_cache = cogl_pango_glyph_cache_new (TRUE);
   priv->use_mipmapping = FALSE;
+  priv->glyph_rectangles = g_array_new (FALSE, FALSE, sizeof (CoglFixed));
 }
 
 static void
@@ -111,6 +156,7 @@ cogl_pango_renderer_finalize (GObject *object)
 
   cogl_pango_glyph_cache_free (priv->mipmapped_glyph_cache);
   cogl_pango_glyph_cache_free (priv->glyph_cache);
+  g_array_free (priv->glyph_rectangles, TRUE);
 
   G_OBJECT_CLASS (cogl_pango_renderer_parent_class)->finalize (object);
 }
@@ -376,10 +422,10 @@ cogl_pango_renderer_draw_box (int x,     int y,
 
 static void
 cogl_pango_renderer_get_device_units (PangoRenderer *renderer,
-					 int            xin,
-					 int            yin,
-					 CoglFixed     *xout,
-					 CoglFixed     *yout)
+                                      int            xin,
+                                      int            yin,
+                                      CoglFixed     *xout,
+                                      CoglFixed     *yout)
 {
   const PangoMatrix *matrix;
 
@@ -454,6 +500,7 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
 				 int               xi,
 				 int               yi)
 {
+  CoglPangoRenderer *priv = (CoglPangoRenderer *) renderer;
   CoglPangoGlyphCacheValue *cache_value;
   int i;
 
@@ -473,6 +520,8 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
       if ((gi->glyph & PANGO_GLYPH_UNKNOWN_FLAG))
 	{
 	  PangoFontMetrics *metrics;
+
+          cogl_pango_renderer_glyphs_end (priv);
 
 	  if (font == NULL ||
               (metrics = pango_font_get_metrics (font, NULL)) == NULL)
@@ -503,10 +552,14 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
                                                   gi->glyph);
 
 	  if (cache_value == NULL)
-	    cogl_pango_renderer_draw_box (COGL_FIXED_TO_INT (x),
-					  COGL_FIXED_TO_INT (y),
-					  PANGO_UNKNOWN_GLYPH_WIDTH,
-					  PANGO_UNKNOWN_GLYPH_HEIGHT);
+            {
+              cogl_pango_renderer_glyphs_end (priv);
+
+              cogl_pango_renderer_draw_box (COGL_FIXED_TO_INT (x),
+                                            COGL_FIXED_TO_INT (y),
+                                            PANGO_UNKNOWN_GLYPH_WIDTH,
+                                            PANGO_UNKNOWN_GLYPH_HEIGHT);
+            }
 	  else
 	    {
               CoglFixed width, height;
@@ -517,15 +570,12 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
               width = x + COGL_FIXED_FROM_INT (cache_value->draw_width);
               height = y + COGL_FIXED_FROM_INT (cache_value->draw_height);
 
-	      /* Render the glyph from the texture */
-	      cogl_texture_rectangle (cache_value->texture,
-                                      x, y,
-                                      width, height,
-				      cache_value->tx1, cache_value->ty1,
-				      cache_value->tx2, cache_value->ty2);
+              cogl_pango_renderer_draw_glyph (priv, cache_value, x, y);
 	    }
 	}
 
       xi += gi->geometry.width;
     }
+
+  cogl_pango_renderer_glyphs_end (priv);
 }

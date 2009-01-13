@@ -354,7 +354,7 @@ test_shader_main (gint argc, gchar *argv[])
       if (!child2)
 	g_error("pixbuf load failed: %s", error ? error->message : "Unknown");
       child3 = clutter_rectangle_new ();
-      child4 = clutter_label_new_with_text ("Sans 20px", "Shady stuff");
+      child4 = clutter_text_new_with_text ("Sans 20px", "Shady stuff");
 
       clutter_rectangle_set_color (child3, &color);
       clutter_actor_set_size (child3, 50, 50);

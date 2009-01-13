@@ -17,15 +17,15 @@ test_conformance_SOURCES = 		\
 	test-mesh-mutability.c 		\
 	test-path.c 			\
 	test-pick.c 			\
-	test-label-cache.c 		\
-	test-clutter-entry.c 		\
 	test-clutter-rectangle.c 	\
 	test-clutter-fixed.c 		\
 	test-actor-invariants.c 	\
 	test-paint-opacity.c 		\
 	test-backface-culling.c 	\
 	test-binding-pool.c		\
-	$(NULL)
+        test-clutter-text.c             \
+        test-text-cache.c               \
+        $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
 .PHONY: wrappers clean-wrappers

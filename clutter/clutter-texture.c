@@ -434,7 +434,8 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
   ClutterTexturePrivate *priv = CLUTTER_TEXTURE (self)->priv;
   ClutterVertex verts[4];
   ClutterFixed viewport[4];
-  ClutterFixed  x_min, x_max, y_min, y_max;
+  ClutterUnit x_min, x_max, y_min, y_max;
+  ClutterFixed tx_min, tx_max, ty_min, ty_max;
   ClutterPerspective perspective;
   ClutterStage *stage;
   ClutterFixed tan_angle, near_size;
@@ -467,21 +468,26 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
 
   /* Convert the coordinates back to [-1,1] range */
   cogl_get_viewport (viewport);
-  x_min = COGL_FIXED_DIV (x_min, viewport[2]) * 2 - COGL_FIXED_1;
-  x_max = COGL_FIXED_DIV (x_max, viewport[2]) * 2 - COGL_FIXED_1;
-  y_min = COGL_FIXED_DIV (y_min, viewport[3]) * 2 - COGL_FIXED_1;
-  y_max = COGL_FIXED_DIV (y_max, viewport[3]) * 2 - COGL_FIXED_1;
+
+  tx_min = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_min), viewport[2])
+         * 2 - COGL_FIXED_1;
+  tx_max = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_max), viewport[2])
+         * 2 - COGL_FIXED_1;
+  ty_min = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_min), viewport[3])
+         * 2 - COGL_FIXED_1;
+  ty_max = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_max), viewport[3])
+         * 2 - COGL_FIXED_1;
 
   /* Set up a projection matrix so that the actor will be projected as
      if it was drawn at its original location */
-  tan_angle = clutter_tani (CLUTTER_ANGLE_FROM_DEGX (perspective.fovy / 2));
+  tan_angle = cogl_angle_tan (COGL_ANGLE_FROM_DEGX (perspective.fovy / 2));
   near_size = COGL_FIXED_MUL (perspective.z_near, tan_angle);
 
-  cogl_frustum (COGL_FIXED_MUL (x_min, near_size),
-		COGL_FIXED_MUL (x_max, near_size),
-		COGL_FIXED_MUL (-y_min, near_size),
-		COGL_FIXED_MUL (-y_max, near_size),
-		perspective.z_near, perspective.z_far);
+  cogl_frustum (COGL_FIXED_MUL (tx_min, near_size),
+                COGL_FIXED_MUL (tx_max, near_size),
+                COGL_FIXED_MUL (-ty_min, near_size),
+                COGL_FIXED_MUL (-ty_max, near_size),
+                perspective.z_near, perspective.z_far);
 }
 
 static void
@@ -564,8 +570,10 @@ clutter_texture_paint (ClutterActor *self)
 
       /* Restore the perspective matrix using cogl_perspective so that
 	 the inverse matrix will be right */
-      cogl_perspective (perspective.fovy, perspective.aspect,
-			perspective.z_near, perspective.z_far);
+      cogl_perspective (perspective.fovy,
+                        perspective.aspect,
+                        perspective.z_near,
+                        perspective.z_far);
 
       /* If there is a shader on top of the shader stack, turn it back on. */
       if (shader)

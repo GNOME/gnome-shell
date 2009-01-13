@@ -14,12 +14,12 @@ test_label_opacity (TestConformSimpleFixture *fixture,
 
   stage = clutter_stage_get_default ();
 
-  label = clutter_label_new_with_text ("Sans 18px", "Label, 50% opacity");
-  clutter_label_set_color (CLUTTER_LABEL (label), &label_color);
+  label = clutter_text_new_with_text ("Sans 18px", "Label, 50% opacity");
+  clutter_text_set_color (CLUTTER_TEXT (label), &label_color);
 
   if (g_test_verbose ())
     g_print ("label 50%%.get_color()/1\n");
-  clutter_label_get_color (CLUTTER_LABEL (label), &color_check);
+  clutter_text_get_color (CLUTTER_TEXT (label), &color_check);
   g_assert (color_check.alpha == label_color.alpha);
 
   clutter_container_add (CLUTTER_CONTAINER (stage), label, NULL);
@@ -27,12 +27,16 @@ test_label_opacity (TestConformSimpleFixture *fixture,
 
   if (g_test_verbose ())
     g_print ("label 50%%.get_color()/2\n");
-  clutter_label_get_color (CLUTTER_LABEL (label), &color_check);
+  clutter_text_get_color (CLUTTER_TEXT (label), &color_check);
   g_assert (color_check.alpha == label_color.alpha);
 
   if (g_test_verbose ())
-    g_print ("label 50%%.get_paint_opacity() = %d\n",
-             clutter_actor_get_paint_opacity (label));
+    g_print ("label 50%%.get_paint_opacity()/1\n");
+  g_assert (clutter_actor_get_paint_opacity (label) == 255);
+
+  if (g_test_verbose ())
+    g_print ("label 50%%.get_paint_opacity()/2\n");
+  clutter_actor_set_opacity (label, 128);
   g_assert (clutter_actor_get_paint_opacity (label) == 128);
 
   clutter_actor_destroy (label);
@@ -66,8 +70,7 @@ test_rectangle_opacity (TestConformSimpleFixture *fixture,
   g_assert (color_check.alpha == rect_color.alpha);
 
   if (g_test_verbose ())
-    g_print ("rect 100%%.get_paint_opacity() = %d\n",
-             clutter_actor_get_paint_opacity (rect));
+    g_print ("rect 100%%.get_paint_opacity()\n");
   g_assert (clutter_actor_get_paint_opacity (rect) == 255);
 
   clutter_actor_destroy (rect);
@@ -91,25 +94,24 @@ test_paint_opacity (TestConformSimpleFixture *fixture,
   clutter_actor_set_position (group1, 10, 30);
   clutter_actor_show (group1);
 
-  label = clutter_label_new_with_text ("Sans 18px", "Label+Group, 25% opacity");
-  clutter_label_set_color (CLUTTER_LABEL (label), &label_color);
+  label = clutter_text_new_with_text ("Sans 18px", "Label+Group, 25% opacity");
+  clutter_text_set_color (CLUTTER_TEXT (label), &label_color);
 
   if (g_test_verbose ())
     g_print ("label 50%% + group 50%%.get_color()/1\n");
-  clutter_label_get_color (CLUTTER_LABEL (label), &color_check);
+  clutter_text_get_color (CLUTTER_TEXT (label), &color_check);
   g_assert (color_check.alpha == label_color.alpha);
 
   clutter_container_add (CLUTTER_CONTAINER (group1), label, NULL);
 
   if (g_test_verbose ())
     g_print ("label 50%% + group 50%%.get_color()/2\n");
-  clutter_label_get_color (CLUTTER_LABEL (label), &color_check);
+  clutter_text_get_color (CLUTTER_TEXT (label), &color_check);
   g_assert (color_check.alpha == label_color.alpha);
 
   if (g_test_verbose ())
-    g_print ("label 50%% + group 50%%.get_paint_opacity() = %d\n",
-             clutter_actor_get_paint_opacity (label));
-  g_assert (clutter_actor_get_paint_opacity (label) == 64);
+    g_print ("label 50%% + group 50%%.get_paint_opacity() = 128\n");
+  g_assert (clutter_actor_get_paint_opacity (label) == 128);
 
   clutter_actor_destroy (label);
 
@@ -133,9 +135,7 @@ test_paint_opacity (TestConformSimpleFixture *fixture,
   g_assert (color_check.alpha == rect_color.alpha);
 
   if (g_test_verbose ())
-    g_print ("rect 100%%.get_paint_opacity() = %d\n",
-             clutter_actor_get_paint_opacity (rect));
-
+    g_print ("rect 100%%.get_paint_opacity()\n");
   g_assert (clutter_actor_get_paint_opacity (rect) == 128);
 
   clutter_actor_destroy (rect);

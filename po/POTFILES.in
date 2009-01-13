@@ -1,0 +1,14 @@
+clutter/clutter-actor.c
+clutter/clutter-behaviour.c
+clutter/clutter-color.c
+clutter/clutter-container.c
+clutter/clutter-event.c
+clutter/clutter-fixed.c
+clutter/clutter-fixed.h
+clutter/clutter-main.c
+clutter/clutter-stage-window.c
+clutter/clutter-stage.c
+clutter/clutter-texture.c
+clutter/clutter-units.c
+clutter/glx/clutter-backend-glx.c
+clutter/x11/clutter-backend-x11.c

@@ -43,9 +43,9 @@ make_source(void)
 
   clutter_group_add (source, actor);
 
-  actor = clutter_label_new_with_text ("Sans Bold 50px", "Clutter");
+  actor = clutter_text_new_with_text ("Sans Bold 50px", "Clutter");
 
-  clutter_label_set_color (CLUTTER_LABEL (actor), &yellow);
+  clutter_text_set_color (CLUTTER_TEXT (actor), &yellow);
   clutter_actor_set_y (actor, clutter_actor_get_height(source) + 5);
   clutter_group_add (source, actor);
 

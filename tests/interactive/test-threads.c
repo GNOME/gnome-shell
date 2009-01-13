@@ -42,7 +42,7 @@ test_thread_done_idle (gpointer user_data)
 
   g_print ("Thread completed\n");
 
-  clutter_label_set_text (CLUTTER_LABEL (data->label), "Completed");
+  clutter_text_set_text (CLUTTER_TEXT (data->label), "Completed");
   clutter_timeline_stop (data->timeline);
 
   test_thread_data_free (data);
@@ -67,7 +67,7 @@ update_label_idle (gpointer data)
 
   text = g_strdup_printf ("Count to %d", update->count);
 
-  clutter_label_set_text (CLUTTER_LABEL (update->thread_data->label), text);
+  clutter_text_set_text (CLUTTER_TEXT (update->thread_data->label), text);
   clutter_actor_set_width (update->thread_data->label, -1);
 
   if (update->count == 0)
@@ -151,7 +151,7 @@ on_key_press_event (ClutterStage    *stage,
   switch (clutter_key_event_symbol (event))
     {
     case CLUTTER_s:
-      clutter_label_set_text (CLUTTER_LABEL (help_label), "Press 'q' to quit");
+      clutter_text_set_text (CLUTTER_TEXT (help_label), "Press 'q' to quit");
 
       clutter_timeline_start (timeline);
       
@@ -191,10 +191,10 @@ test_threads_main (int argc, char *argv[])
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
   clutter_actor_set_size (stage, 600, 300);
   
-  count_label = clutter_label_new_with_text ("Mono 12", "Counter");
+  count_label = clutter_text_new_with_text ("Mono 12", "Counter");
   clutter_actor_set_position (count_label, 350, 50);
 
-  help_label = clutter_label_new_with_text ("Mono 12", "Press 's' to start");
+  help_label = clutter_text_new_with_text ("Mono 12", "Press 's' to start");
   clutter_actor_set_position (help_label, 50, 50);
 
   rect = clutter_rectangle_new_with_color (&rect_color);

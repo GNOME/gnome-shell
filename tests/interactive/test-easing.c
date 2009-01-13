@@ -41,7 +41,7 @@ on_button_press (ClutterActor       *actor,
                           current_mode + 1,
                           n_easing_modes);
 
-  clutter_label_set_text (CLUTTER_LABEL (easing_mode_label), text);
+  clutter_text_set_text (CLUTTER_TEXT (easing_mode_label), text);
   g_free (text);
 
   clutter_actor_get_size (main_stage, &stage_width, &stage_height);
@@ -97,10 +97,10 @@ test_easing_main (int argc, char *argv[])
                           current_mode + 1,
                           n_easing_modes);
 
-  label = clutter_label_new ();
+  label = clutter_text_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
-  clutter_label_set_font_name (CLUTTER_LABEL (label), "Sans 18px");
-  clutter_label_set_text (CLUTTER_LABEL (label), text);
+  clutter_text_set_font_name (CLUTTER_TEXT (label), "Sans 18px");
+  clutter_text_set_text (CLUTTER_TEXT (label), text);
   clutter_actor_get_size (label, &label_width, &label_height);
   clutter_actor_set_position (label,
                               stage_width - label_width - 10,

@@ -120,6 +120,7 @@ cogl_texture_set_region
 cogl_texture_ref
 cogl_texture_unref
 cogl_texture_rectangle
+cogl_texture_multiple_rectangles
 cogl_texture_polygon
 </SECTION>
 

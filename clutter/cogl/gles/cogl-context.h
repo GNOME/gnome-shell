@@ -65,9 +65,14 @@ typedef struct
 
   /* Textures */
   GArray              *texture_handles;
-  CoglTextureGLVertex *texture_vertices;
-  gulong               texture_vertices_size;
-  
+  GArray              *texture_vertices;
+  GArray              *texture_indices;
+  /* The gl texture number that the above vertices apply to. This to
+     detect when a different slice is encountered so that the vertices
+     can be flushed */
+  GLuint               texture_current;
+  GLenum               texture_target;
+
   /* Materials */
   GArray	      *material_handles;
   GArray	      *material_layer_handles;

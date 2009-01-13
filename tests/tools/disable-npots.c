@@ -4,12 +4,21 @@
  * overrides glGetString and removes the extension strings.
  */
 
-#include <GL/gl.h>
+/* This is just included to get the right GL header */
+#include <cogl/cogl.h>
+
 #include <dlfcn.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
+
+/* If RTLD_NEXT isn't available then try just using NULL */
+#ifdef  RTLD_NEXT
+#define LIB_HANDLE    RTLD_NEXT
+#else
+#define LIB_HANDLE    NULL
+#endif
 
 typedef const GLubyte * (* GetStringFunc) (GLenum name);
 
@@ -23,16 +32,14 @@ const GLubyte *
 glGetString (GLenum name)
 {
   const GLubyte *ret = NULL;
-  static void *gl_lib = NULL;
   static GetStringFunc func = NULL;
   static GLubyte *extensions = NULL;
 
-  if (gl_lib == NULL
-      && (gl_lib = dlopen ("libGL.so", RTLD_LAZY)) == NULL)
-    fprintf (stderr, "dlopen: %s\n", dlerror ());
-  else if (func == NULL
-	   && (func = (GetStringFunc) dlsym (gl_lib, "glGetString")) == NULL)
+  if (func == NULL
+      && (func = (GetStringFunc) dlsym (LIB_HANDLE, "glGetString")) == NULL)
     fprintf (stderr, "dlsym: %s\n", dlerror ());
+  else if (func == glGetString)
+    fprintf (stderr, "dlsym returned the wrapper of glGetString\n");
   else
     {
       ret = (* func) (name);

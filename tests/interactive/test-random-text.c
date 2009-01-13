@@ -45,7 +45,7 @@ on_idle (gpointer data)
 	       font_names[rand () % FONT_NAME_COUNT],
 	       rand () % (MAX_FONT_SIZE - MIN_FONT_SIZE) + MIN_FONT_SIZE);
 
-      label = clutter_label_new_with_text (font_name, text);
+      label = clutter_text_new_with_text (font_name, text);
 
       if (clutter_actor_get_height (label) > line_height)
 	line_height = clutter_actor_get_height (label);
