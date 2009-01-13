@@ -64,8 +64,18 @@ ClutterFrameTicker.prototype = {
         // So by dynamically adjusting the value of FRAME_RATE we can trick
         // it into dealing with dropped frames.
 
-        let delta = frame - this._frame;
-        if (delta == 0)
+        // If there is a lot of setup to start the animation, then
+        // first frame number we get from clutter might be a long ways
+        // into the animation (or the animation might even be done).
+        // That looks bad, so we always start one frame into the
+        // animation then only do frame dropping from there.
+        let delta;
+        if (this._frame == 0)
+            delta = 1;
+        else
+            delta = frame - this._frame;
+
+        if (delta == 0) // protect against divide-by-0 if we get a frame twice
             this.FRAME_RATE = this.TARGET_FRAME_RATE;
         else
             this.FRAME_RATE = this.TARGET_FRAME_RATE / delta;
