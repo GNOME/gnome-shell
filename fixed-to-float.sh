@@ -142,7 +142,7 @@ patch -p1<fixed-to-float-patches/cogl-fixed.c.0.patch
 patch -p1<fixed-to-float-patches/test-cogl-tex-tile.c.0.patch
 patch -p1<fixed-to-float-patches/clutter-texture.c.0.patch
 patch -p1<fixed-to-float-patches/clutter-fixed.c.0.patch
-patch -p1<fixed-to-float-patches/gl-cogl.c
+patch -p1<fixed-to-float-patches/gl-cogl.c.0.patch
 patch -p1<fixed-to-float-patches/cogl-pango-render.c.0.patch
 patch -p1<fixed-to-float-patches/cogl-primitives.c.0.patch
 patch -p1<fixed-to-float-patches/gl-cogl-primitives.c.0.patch
@@ -151,6 +151,12 @@ patch -p1<fixed-to-float-patches/gles-cogl-gles2-wrapper.h.0.patch
 patch -p1<fixed-to-float-patches/gles-cogl-primitives.c.0.patch
 patch -p1<fixed-to-float-patches/gles-cogl-texture.c.0.patch
 patch -p1<fixed-to-float-patches/cogl.h.in.0.patch
+
+# Finally remove any cogl_blahx Cogl interfaces that used to take CoglFixed
+# params. The corresponding interfaces that take integer params are also
+# patched to take floats instead:
+patch -p1<fixed-to-float-patches/remove_cogl_apis_taking_fixed_params.0.patch
+patch -p1<fixed-to-float-patches/remove_cogl_apis_taking_fixed_params.1.patch
 
 #XXX: COGL_PANGO_UNIT_TO_FIXED
 

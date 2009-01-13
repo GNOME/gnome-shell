@@ -1,0 +1,52 @@
+diff --git a/clutter/cogl/gles/cogl-primitives.c b/clutter/cogl/gles/cogl-primitives.c
+index cf305a8..1a58805 100644
+--- a/clutter/cogl/gles/cogl-primitives.c
++++ b/clutter/cogl/gles/cogl-primitives.c
+@@ -214,12 +214,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
+       GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+       GE( cogl_wrap_glPushMatrix () );
+       GE( cogl_wrap_glLoadIdentity () );
+-      cogl_rectanglex (-1.0, -1.0,
+-		       (float)(2),
+-		       (float)(2));
+-      cogl_rectanglex (-1.0, -1.0,
+-		       (float)(2),
+-		       (float)(2));
++      cogl_rectangle (-1.0, -1.0, 2, 2);
++      cogl_rectangle (-1.0, -1.0, 2, 2);
+       GE( cogl_wrap_glPopMatrix () );
+       GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+       GE( cogl_wrap_glPopMatrix () );
+diff --git a/clutter/cogl/gles/cogl.c b/clutter/cogl/gles/cogl.c
+index dc2c339..9065eb2 100644
+--- a/clutter/cogl/gles/cogl.c
++++ b/clutter/cogl/gles/cogl.c
+@@ -437,7 +437,7 @@ _cogl_add_stencil_clip (float x_offset,
+       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
+ 
+-      cogl_rectanglex (x_offset, y_offset, width, height);
++      cogl_rectangle (x_offset, y_offset, width, height);
+     }
+   else
+     {
+@@ -445,7 +445,7 @@ _cogl_add_stencil_clip (float x_offset,
+ 	 rectangle */
+       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
+       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+-      cogl_rectanglex (x_offset, y_offset, width, height);
++      cogl_rectangle (x_offset, y_offset, width, height);
+ 
+       /* Subtract one from all pixels in the stencil buffer so that
+ 	 only pixels where both the original stencil buffer and the
+@@ -456,9 +456,7 @@ _cogl_add_stencil_clip (float x_offset,
+       GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+       GE( cogl_wrap_glPushMatrix () );
+       GE( cogl_wrap_glLoadIdentity () );
+-      cogl_rectanglex (-1.0, -1.0,
+-		       (float)(2),
+-		       (float)(2));
++      cogl_rectangle (-1.0, -1.0, 2, 2);
+       GE( cogl_wrap_glPopMatrix () );
+       GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+       GE( cogl_wrap_glPopMatrix () );
