@@ -68,6 +68,8 @@ typedef gboolean (* ClutterBindingActionFunc) (GObject             *gobject,
                                                guint                key_val,
                                                ClutterModifierType  modifiers);
 
+GType clutter_binding_pool_get_type (void) G_GNUC_CONST;
+
 ClutterBindingPool *  clutter_binding_pool_new              (const gchar         *name);
 ClutterBindingPool *  clutter_binding_pool_get_for_class    (gpointer             klass);
 ClutterBindingPool *  clutter_binding_pool_find             (const gchar         *name);
