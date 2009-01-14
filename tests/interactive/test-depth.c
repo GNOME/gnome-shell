@@ -26,7 +26,7 @@ raise_top (gpointer ignored)
 static ClutterActor *
 clone_box (ClutterTexture *original)
 {
-  gint width, height;
+  guint width, height;
   ClutterActor *group;
   ClutterActor *clone;
 
