@@ -320,7 +320,7 @@ create_cogl_texture (ClutterTexture *texture,
   CoglHandle      handle;
   gboolean        using_rectangle;
   GLint           gl_format;
-  CoglPixelFormat cogl_format;
+  CoglPixelFormat cogl_format = COGL_PIXEL_FORMAT_RGBA_8888;
   guint           depth;
 
   g_object_get (G_OBJECT (texture_glx), "pixmap-depth", &depth, NULL);
