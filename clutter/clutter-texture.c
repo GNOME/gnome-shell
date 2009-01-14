@@ -1270,6 +1270,8 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 
   cogl_texture_unref (new_texture);
 
+  g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, error);
+
   return TRUE;
 }
 
