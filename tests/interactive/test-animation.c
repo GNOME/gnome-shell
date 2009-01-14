@@ -23,13 +23,12 @@ on_button_press (ClutterActor       *actor,
   ClutterAnimation *animation;
   gint old_x, old_y, new_x, new_y;
   guint old_width, old_height, new_width, new_height;
-  guint8 old_op, new_op;
   gdouble new_angle;
   ClutterVertex vertex = { 0, };
+  ClutterColor new_color = { 0, };
 
   clutter_actor_get_position (actor, &old_x, &old_y);
   clutter_actor_get_size (actor, &old_width, &old_height);
-  old_op = clutter_actor_get_opacity (actor);
 
   /* determine the final state of the animation depending on
    * the state of the actor
@@ -40,8 +39,12 @@ on_button_press (ClutterActor       *actor,
       new_y = old_y - 100;
       new_width = old_width + 200;
       new_height = old_height + 200;
-      new_op = 255;
       new_angle = 360.0;
+
+      new_color.red = 0xdd;
+      new_color.green = 0x44;
+      new_color.blue = 0xdd;
+      new_color.alpha = 0xff;
     }
   else
     {
@@ -49,8 +52,12 @@ on_button_press (ClutterActor       *actor,
       new_y = old_y + 100;
       new_width = old_width - 200;
       new_height = old_height - 200;
-      new_op = 128;
       new_angle = 0.0;
+
+      new_color.red = 0x44;
+      new_color.green = 0xdd;
+      new_color.blue = 0x44;
+      new_color.alpha = 0x88;
     }
 
   vertex.x = CLUTTER_UNITS_FROM_FLOAT ((float) new_width / 2);
@@ -62,7 +69,7 @@ on_button_press (ClutterActor       *actor,
                            "y", new_y,
                            "width", new_width,
                            "height", new_height,
-                           "opacity", new_op,
+                           "color", &new_color,
                            "rotation-angle-z", new_angle,
                            "fixed::rotation-center-z", &vertex,
                            "fixed::reactive", FALSE,
