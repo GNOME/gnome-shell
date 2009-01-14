@@ -47,7 +47,6 @@ struct _ClutterStageX11
 
   guint        is_foreign_xwin    : 1;
   guint        fullscreen_on_map  : 1;
-  guint        handling_configure : 1;
   guint        is_cursor_visible  : 1;
 
   Display     *xdpy;

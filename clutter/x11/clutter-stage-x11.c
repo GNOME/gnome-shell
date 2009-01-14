@@ -270,21 +270,8 @@ clutter_stage_x11_allocate (ClutterActor          *self,
       stage_x11->xwin_width  = new_width;
       stage_x11->xwin_height = new_height;
 
-      /* The 'handling_configure' flag below is used to prevent the
-	 window from being resized again in response to a
-	 ConfigureNotify event. Normally this will not be a problem
-	 because the window will be resized to xwin_width and
-	 xwin_height so the above test will prevent it from resizing
-	 the window a second time. However if the stage is resized
-	 multiple times without the events being processed in between
-	 (eg, when calling g_object_set to set both width and height)
-	 then there will be multiple ConfigureNotify events in the
-	 queue. Handling the first event will undo the work of setting
-	 the second property which will cause it to keep generating
-	 events in an infinite loop. See bug #810 */
       if (stage_x11->xwin != None &&
-	  !stage_x11->is_foreign_xwin &&
-	  !stage_x11->handling_configure)
+	  !stage_x11->is_foreign_xwin)
         {
           CLUTTER_NOTE (BACKEND, "%s: XResizeWindow[%x] (%d, %d)",
                         G_STRLOC,
@@ -577,7 +564,6 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
 
   stage->is_foreign_xwin = FALSE;
   stage->fullscreen_on_map = FALSE;
-  stage->handling_configure = FALSE;
   stage->is_cursor_visible = TRUE;
 
   stage->title = NULL;
