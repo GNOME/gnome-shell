@@ -547,6 +547,7 @@ clutter_stage_show_cursor
 clutter_stage_hide_cursor
 clutter_stage_get_actor_at_pos
 clutter_stage_ensure_current
+clutter_stage_ensure_viewport
 clutter_stage_queue_redraw
 clutter_stage_event
 clutter_stage_set_key_focus
@@ -1761,4 +1762,12 @@ clutter_binding_pool_unblock_action
 
 <SUBSECTION>
 clutter_binding_pool_activate
+
+<SUBSECTION Standard>
+CLUTTER_BINDING_POOL
+CLUTTER_IS_BINDING_POOL
+CLUTTER_TYPE_BINDING_POOL
+
+<SUBSECTION Private>
+clutter_binding_pool_get_type
 </SECTION>
