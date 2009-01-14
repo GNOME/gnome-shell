@@ -1278,7 +1278,7 @@ clutter_text_real_move_up (ClutterText         *self,
   PangoLayoutLine *layout_line;
   PangoLayout *layout;
   gint line_no;
-  gint index_;
+  gint index_, trailing;
   gint x;
 
   layout = clutter_text_get_layout (self);
@@ -1298,20 +1298,22 @@ clutter_text_real_move_up (ClutterText         *self,
 
   if (priv->x_pos != -1)
     x = priv->x_pos;
-  else
-    priv->x_pos = x;
 
   layout_line = pango_layout_get_line_readonly (layout, line_no);
   if (!layout_line)
     return FALSE;
 
-  pango_layout_line_x_to_index (layout_line, x, &index_, NULL);
+  pango_layout_line_x_to_index (layout_line, x, &index_, &trailing);
 
   {
     gint pos = bytes_to_offset (priv->text, index_);
 
-    clutter_text_set_cursor_position (self, pos);
+    clutter_text_set_cursor_position (self, pos + trailing);
   }
+
+  /* Store the target x position to avoid drifting left and right when
+     moving the cursor up and down */
+  priv->x_pos = x;
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
@@ -1329,7 +1331,7 @@ clutter_text_real_move_down (ClutterText         *self,
   PangoLayoutLine *layout_line;
   PangoLayout *layout;
   gint line_no;
-  gint index_;
+  gint index_, trailing;
   gint x;
 
   layout = clutter_text_get_layout (self);
@@ -1345,20 +1347,22 @@ clutter_text_real_move_down (ClutterText         *self,
 
   if (priv->x_pos != -1)
     x = priv->x_pos;
-  else
-    priv->x_pos = x;
 
   layout_line = pango_layout_get_line_readonly (layout, line_no + 1);
   if (!layout_line)
     return FALSE;
 
-  pango_layout_line_x_to_index (layout_line, x, &index_, NULL);
+  pango_layout_line_x_to_index (layout_line, x, &index_, &trailing);
 
   {
     gint pos = bytes_to_offset (priv->text, index_);
 
-    clutter_text_set_cursor_position (self, pos);
+    clutter_text_set_cursor_position (self, pos + trailing);
   }
+
+  /* Store the target x position to avoid drifting left and right when
+     moving the cursor up and down */
+  priv->x_pos = x;
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
@@ -3300,6 +3304,10 @@ clutter_text_set_cursor_position (ClutterText *self,
     priv->position = -1;
   else
     priv->position = position;
+
+  /* Forget the target x position so that it will be recalculated next
+     time the cursor is moved up or down */
+  priv->x_pos = -1;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
