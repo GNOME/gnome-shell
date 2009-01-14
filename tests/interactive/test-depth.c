@@ -40,7 +40,7 @@ clone_box (ClutterTexture *original)
   clone = clutter_clone_texture_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 180, width/2, 0, 0);
-  clutter_actor_set_depth (clone, -width/2);
+  clutter_actor_set_depth (clone, -(gint)width/2);
 
   clone = clutter_clone_texture_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
@@ -57,13 +57,13 @@ clone_box (ClutterTexture *original)
   clone = clutter_clone_texture_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_X_AXIS, 90, 0, 0, 0);
-  clutter_actor_set_depth (clone, -width/2);
+  clutter_actor_set_depth (clone, -(gint)width/2);
   clutter_actor_set_position (clone, 0, height);
 
   clone = clutter_clone_texture_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_X_AXIS, 90, 0, 0, 0);
-  clutter_actor_set_depth (clone, -width/2);
+  clutter_actor_set_depth (clone, -(gint)width/2);
   clutter_actor_set_position (clone, 0, 0);
 
   clutter_actor_show_all (group);
