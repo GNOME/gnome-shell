@@ -1,8 +1,40 @@
 diff --git a/clutter/cogl/gles/cogl-gles2-wrapper.c b/clutter/cogl/gles/cogl-gles2-wrapper.c
-index b2e19eb..9435131 100644
+index b2e19eb..a7800c5 100644
 --- a/clutter/cogl/gles/cogl-gles2-wrapper.c
 +++ b/clutter/cogl/gles/cogl-gles2-wrapper.c
-@@ -1158,15 +1158,6 @@ cogl_wrap_glClipPlanex (GLenum plane, GLfloat *equation)
+@@ -515,15 +515,6 @@ cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper, GLenum matrix_num)
+ }
+ 
+ void
+-cogl_wrap_glClearColorx (GLclampx r, GLclampx g, GLclampx b, GLclampx a)
+-{
+-  glClearColor ( (r),
+-		 (g),
+-		 (b),
+-		 (a));
+-}
+-
+-void
+ cogl_wrap_glPushMatrix ()
+ {
+   const float *src;
+@@ -1143,13 +1134,9 @@ cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref)
+ }
+ 
+ void
+-cogl_wrap_glColor4x (GLclampx r, GLclampx g, GLclampx b, GLclampx a)
++cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a)
+ {
+-  glVertexAttrib4f (COGL_GLES2_WRAPPER_COLOR_ATTRIB,
+-		     (r),
+-		     (g),
+-		     (b),
+-		     (a));
++  glVertexAttrib4f (COGL_GLES2_WRAPPER_COLOR_ATTRIB, r, g, b, a);
+ }
+ 
+ void
+@@ -1158,15 +1145,6 @@ cogl_wrap_glClipPlanex (GLenum plane, GLfloat *equation)
    /* FIXME */
  }
  
@@ -18,7 +50,7 @@ index b2e19eb..9435131 100644
  void
  cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
  {
-@@ -1185,31 +1176,24 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
+@@ -1185,31 +1163,24 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
  }
  
  void

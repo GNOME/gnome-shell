@@ -1,5 +1,5 @@
 diff --git a/clutter/cogl/gles/cogl.c b/clutter/cogl/gles/cogl.c
-index 422d8b6..aa4e4fc 100644
+index 422d8b6..cb7aa8e 100644
 --- a/clutter/cogl/gles/cogl.c
 +++ b/clutter/cogl/gles/cogl.c
 @@ -37,6 +37,7 @@
@@ -10,6 +10,30 @@ index 422d8b6..aa4e4fc 100644
  
  /* GL error to string conversion */
  #if COGL_DEBUG
+@@ -92,10 +93,10 @@ cogl_paint_init (const CoglColor *color)
+   fprintf(stderr, "\n ============== Paint Start ================ \n");
+ #endif
+ 
+-  cogl_wrap_glClearColorx (cogl_color_get_red (color),
+-			   cogl_color_get_green (color),
+-			   cogl_color_get_blue (color),
+-			   0);
++  glClearColor (cogl_color_get_red (color),
++                cogl_color_get_green (color),
++                cogl_color_get_blue (color),
++                0);
+ 
+   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+   cogl_wrap_glDisable (GL_LIGHTING);
+@@ -315,7 +316,7 @@ cogl_set_source_color (const CoglColor *color)
+ 
+ #else
+   /* conversion can cause issues with picking on some gles implementations */
+-  GE( cogl_wrap_glColor4x (cogl_color_get_red (color),
++  GE( cogl_wrap_glColor4f (cogl_color_get_red (color),
+                            cogl_color_get_green (color),
+                            cogl_color_get_blue (color),
+                            cogl_color_get_alpha (color)) );
 @@ -365,9 +366,8 @@ set_clip_plane (GLint plane_num,
  
    /* Calculate the angle between the axes and the line crossing the
