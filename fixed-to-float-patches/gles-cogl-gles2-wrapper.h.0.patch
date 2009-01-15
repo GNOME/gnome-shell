@@ -1,13 +1,22 @@
 diff --git a/clutter/cogl/gles/cogl-gles2-wrapper.h b/clutter/cogl/gles/cogl-gles2-wrapper.h
-index 265da78..2e61121 100644
+index 265da78..2493b81 100644
 --- a/clutter/cogl/gles/cogl-gles2-wrapper.h
 +++ b/clutter/cogl/gles/cogl-gles2-wrapper.h
+@@ -244,7 +244,7 @@ void cogl_wrap_glColor4x (GLclampx r, GLclampx g, GLclampx b, GLclampx a);
+ void cogl_wrap_glClipPlanex (GLenum plane, GLfloat *equation);
+ 
+ void cogl_wrap_glGetIntegerv (GLenum pname, GLint *params);
+-void cogl_wrap_glGetFixedv (GLenum pname, GLfloat *params);
++void cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params);
+ 
+ void cogl_wrap_glFogx (GLenum pname, GLfloat param);
+ void cogl_wrap_glFogxv (GLenum pname, const GLfloat *params);
 @@ -297,7 +297,7 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
  #define cogl_wrap_glColor4x            glColor4f
  #define cogl_wrap_glClipPlanex         glClipPlanef
  #define cogl_wrap_glGetIntegerv        glGetIntegerv
 -#define cogl_wrap_glGetFixedv          glGetFixedv
-+#define cogl_wrap_glGetFixedv          glGetFloatv
++#define cogl_wrap_glGetFloatv          glGetFloatv
  #define cogl_wrap_glFogx               glFogf
  #define cogl_wrap_glFogxv              glFogfv
  #define cogl_wrap_glTexParameteri      glTexParameteri

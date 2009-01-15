@@ -148,6 +148,7 @@ patch -p1<fixed-to-float-patches/cogl-primitives.c.0.patch
 patch -p1<fixed-to-float-patches/gl-cogl-primitives.c.0.patch
 patch -p1<fixed-to-float-patches/gles-cogl.c.0.patch
 patch -p1<fixed-to-float-patches/gles-cogl-gles2-wrapper.h.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl-gles2-wrapper.c.0.patch
 patch -p1<fixed-to-float-patches/gles-cogl-primitives.c.0.patch
 patch -p1<fixed-to-float-patches/gles-cogl-texture.c.0.patch
 patch -p1<fixed-to-float-patches/cogl.h.in.0.patch

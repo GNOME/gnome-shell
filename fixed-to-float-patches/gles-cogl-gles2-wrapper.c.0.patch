@@ -1,0 +1,58 @@
+diff --git a/clutter/cogl/gles/cogl-gles2-wrapper.c b/clutter/cogl/gles/cogl-gles2-wrapper.c
+index 859c895..8a2fd24 100644
+--- a/clutter/cogl/gles/cogl-gles2-wrapper.c
++++ b/clutter/cogl/gles/cogl-gles2-wrapper.c
+@@ -1142,15 +1142,6 @@ cogl_wrap_glClipPlanex (GLenum plane, GLfloat *equation)
+   /* FIXME */
+ }
+ 
+-static void
+-cogl_gles2_float_array_to_fixed (int            size,
+-                                 const GLfloat *floats,
+-				 GLfloat       *fixeds)
+-{
+-  while (size-- > 0)
+-    *(fixeds++) =  (*(floats++));
+-}
+-
+ void
+ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
+ {
+@@ -1169,31 +1160,24 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
+ }
+ 
+ void
+-cogl_wrap_glGetFixedv (GLenum pname, GLfloat *params)
++cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params)
+ {
+   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+ 
+   switch (pname)
+     {
+     case GL_MODELVIEW_MATRIX:
+-      cogl_gles2_float_array_to_fixed (16, w->modelview_stack
+-				       + w->modelview_stack_pos * 16,
+-				       params);
++      memcpy (params, w->modelview_stack + w->modelview_stack_pos * 16,
++              sizeof (GLfloat) * 16);
+       break;
+ 
+     case GL_PROJECTION_MATRIX:
+-      cogl_gles2_float_array_to_fixed (16, w->projection_stack
+-				       + w->projection_stack_pos * 16,
+-				       params);
++      memcpy (params, w->projection_stack + w->projection_stack_pos * 16,
++              sizeof (GLfloat) * 16);
+       break;
+ 
+     case GL_VIEWPORT:
+-      {
+-	GLfloat v[4];
+-
+-	glGetFloatv (GL_VIEWPORT, v);
+-	cogl_gles2_float_array_to_fixed (4, v, params);
+-      }
++      glGetFloatv (GL_VIEWPORT, params);
+       break;
+     }
+ }

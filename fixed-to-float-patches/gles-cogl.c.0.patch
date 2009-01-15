@@ -1,5 +1,5 @@
 diff --git a/clutter/cogl/gles/cogl.c b/clutter/cogl/gles/cogl.c
-index 422d8b6..16cf666 100644
+index 422d8b6..aa4e4fc 100644
 --- a/clutter/cogl/gles/cogl.c
 +++ b/clutter/cogl/gles/cogl.c
 @@ -37,6 +37,7 @@
@@ -22,6 +22,17 @@ index 422d8b6..16cf666 100644
  
    GE( cogl_wrap_glPushMatrix () );
    /* Load the identity matrix and multiply by the reverse of the
+@@ -405,8 +405,8 @@ _cogl_set_clip_planes (float x_offset,
+   float vertex_br[4] = { x_offset + width, y_offset + height,
+ 				0, 1.0 };
+ 
+-  GE( cogl_wrap_glGetFixedv (GL_MODELVIEW_MATRIX, modelview) );
+-  GE( cogl_wrap_glGetFixedv (GL_PROJECTION_MATRIX, projection) );
++  GE( cogl_wrap_glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
++  GE( cogl_wrap_glGetFloatv (GL_PROJECTION_MATRIX, projection) );
+ 
+   project_vertex (modelview, projection, vertex_tl);
+   project_vertex (modelview, projection, vertex_tr);
 @@ -558,15 +558,13 @@ cogl_perspective (float fovy,
     * 2) When working with small numbers, we can are loosing significant
     * precision
@@ -58,3 +69,19 @@ index 422d8b6..16cf666 100644
  
    GE( cogl_wrap_glScalex ( 1.0 / width,
                            -1.0 / height,
+@@ -737,13 +735,13 @@ cogl_features_available (CoglFeatureFlags features)
+ void
+ cogl_get_modelview_matrix (float m[16])
+ {
+-  cogl_wrap_glGetFixedv(GL_MODELVIEW_MATRIX, &m[0]);
++  cogl_wrap_glGetFloatv (GL_MODELVIEW_MATRIX, m);
+ }
+ 
+ void
+ cogl_get_projection_matrix (float m[16])
+ {
+-  cogl_wrap_glGetFixedv(GL_PROJECTION_MATRIX, &m[0]);
++  cogl_wrap_glGetFloatv (GL_PROJECTION_MATRIX, m);
+ }
+ 
+ void
