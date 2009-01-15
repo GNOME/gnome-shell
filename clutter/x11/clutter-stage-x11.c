@@ -270,25 +270,20 @@ clutter_stage_x11_allocate (ClutterActor          *self,
       stage_x11->xwin_width  = new_width;
       stage_x11->xwin_height = new_height;
 
-      /* The 'handling_configure' flag below is used to prevent the
-	 window from being resized again in response to a
-	 ConfigureNotify event. Normally this will not be a problem
-	 because the window will be resized to xwin_width and
-	 xwin_height so the above test will prevent it from resizing
-	 the window a second time. However if the stage is resized
-	 multiple times without the events being processed in between
-	 (eg, when calling g_object_set to set both width and height)
-	 then there will be multiple ConfigureNotify events in the
-	 queue. Handling the first event will undo the work of setting
-	 the second property which will cause it to keep generating
-	 events in an infinite loop. See bug #810 */
-      if (stage_x11->xwin != None
-	  && !stage_x11->is_foreign_xwin
-	  && !stage_x11->handling_configure)
-        XResizeWindow (stage_x11->xdpy,
-                       stage_x11->xwin,
-                       stage_x11->xwin_width,
-                       stage_x11->xwin_height);
+      if (stage_x11->xwin != None &&
+	  !stage_x11->is_foreign_xwin)
+        {
+          CLUTTER_NOTE (BACKEND, "%s: XResizeWindow[%x] (%d, %d)",
+                        G_STRLOC,
+                        (unsigned int) stage_x11->xwin,
+                        stage_x11->xwin_width,
+                        stage_x11->xwin_height);
+
+          XResizeWindow (stage_x11->xdpy,
+                         stage_x11->xwin,
+                         stage_x11->xwin_width,
+                         stage_x11->xwin_height);
+        }
 
       clutter_stage_x11_fix_window_size (stage_x11);
 
@@ -298,9 +293,6 @@ clutter_stage_x11_allocate (ClutterActor          *self,
           clutter_actor_unrealize (self);
           clutter_actor_realize (self);
         }
-
-      CLUTTER_SET_PRIVATE_FLAGS (CLUTTER_ACTOR (stage_x11->wrapper),
-                                 CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
   /* chain up to fill in actor->priv->allocation */
@@ -397,6 +389,8 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
   if (!stage)
     return;
 
+  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
+
   if (is_fullscreen)
     {
       int width, height;
@@ -479,8 +473,6 @@ clutter_stage_x11_set_fullscreen (ClutterStageWindow *stage_window,
           stage_x11->fullscreen_on_map = FALSE;
         }
     }
-
-  CLUTTER_SET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void
@@ -572,7 +564,6 @@ clutter_stage_x11_init (ClutterStageX11 *stage)
 
   stage->is_foreign_xwin = FALSE;
   stage->fullscreen_on_map = FALSE;
-  stage->handling_configure = FALSE;
   stage->is_cursor_visible = TRUE;
 
   stage->title = NULL;
@@ -740,6 +731,8 @@ clutter_x11_set_stage_foreign (ClutterStage *stage,
   clutter_actor_set_geometry (actor, &geom);
   clutter_actor_realize (actor);
 
+  CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
+
   return TRUE;
 }
 
@@ -769,4 +762,3 @@ clutter_stage_x11_unmap (ClutterStageX11 *stage_x11)
   CLUTTER_ACTOR_UNSET_FLAGS (stage_x11, CLUTTER_ACTOR_MAPPED);
   CLUTTER_ACTOR_UNSET_FLAGS (stage_x11->wrapper, CLUTTER_ACTOR_MAPPED);
 }
-

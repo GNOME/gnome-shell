@@ -202,31 +202,16 @@ static gint
 offset_to_bytes (const gchar *text,
                  gint         pos)
 {
-  gchar *c = NULL;
-  gint i, j, len;
+  const gchar *ptr;
 
   if (pos < 0)
     return strlen (text);
 
-  c = g_utf8_next_char (text);
-  j = 1;
-  len = strlen (text);
+  /* Loop over each character in the string until we either reach the
+     end or the requested position */
+  for (ptr = text; *ptr && pos-- > 0; ptr = g_utf8_next_char (ptr));
 
-  for (i = 0; i < len; i++)
-    {
-      if (&text[i] == c)
-        {
-          if (j == pos)
-            break;
-          else
-            {
-              c = g_utf8_next_char (c);
-              j++;
-            }
-        }
-    }
-
-  return i;
+  return ptr - text;
 }
 
 #define bytes_to_offset(t,p)    (g_utf8_pointer_to_offset ((t), (t) + (p)))
@@ -688,11 +673,11 @@ clutter_text_get_property (GObject    *gobject,
       break;
 
     case PROP_POSITION:
-      g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->position));
+      g_value_set_int (value, priv->position);
       break;
 
     case PROP_SELECTION_BOUND:
-      g_value_set_int (value, CLUTTER_FIXED_TO_FLOAT (priv->selection_bound));
+      g_value_set_int (value, priv->selection_bound);
       break;
 
     case PROP_EDITABLE:
@@ -717,6 +702,30 @@ clutter_text_get_property (GObject    *gobject,
 
     case PROP_SINGLE_LINE_MODE:
       g_value_set_boolean (value, priv->single_line_mode);
+      break;
+
+    case PROP_ELLIPSIZE:
+      g_value_set_enum (value, priv->ellipsize);
+      break;
+
+    case PROP_LINE_WRAP:
+      g_value_set_boolean (value, priv->wrap);
+      break;
+
+    case PROP_LINE_WRAP_MODE:
+      g_value_set_enum (value, priv->wrap_mode);
+      break;
+
+    case PROP_ALIGNMENT:
+      g_value_set_enum (value, priv->alignment);
+      break;
+
+    case PROP_JUSTIFY:
+      g_value_set_boolean (value, priv->justify);
+      break;
+
+    case PROP_ATTRIBUTES:
+      g_value_set_boxed (value, priv->attrs);
       break;
 
     default:
@@ -993,7 +1002,9 @@ clutter_text_key_press (ClutterActor    *actor,
       if (key_unichar == '\r')
         key_unichar = '\n';
 
-      if (g_unichar_validate (key_unichar))
+      if (key_unichar == '\n' ||
+          (g_unichar_validate (key_unichar) &&
+           !g_unichar_iscntrl (key_unichar)))
         {
           /* truncate the eventual selection so that the
            * Unicode character can replace it
@@ -1267,7 +1278,7 @@ clutter_text_real_move_up (ClutterText         *self,
   PangoLayoutLine *layout_line;
   PangoLayout *layout;
   gint line_no;
-  gint index_;
+  gint index_, trailing;
   gint x;
 
   layout = clutter_text_get_layout (self);
@@ -1287,20 +1298,22 @@ clutter_text_real_move_up (ClutterText         *self,
 
   if (priv->x_pos != -1)
     x = priv->x_pos;
-  else
-    priv->x_pos = x;
 
   layout_line = pango_layout_get_line_readonly (layout, line_no);
   if (!layout_line)
     return FALSE;
 
-  pango_layout_line_x_to_index (layout_line, x, &index_, NULL);
+  pango_layout_line_x_to_index (layout_line, x, &index_, &trailing);
 
   {
     gint pos = bytes_to_offset (priv->text, index_);
 
-    clutter_text_set_cursor_position (self, pos);
+    clutter_text_set_cursor_position (self, pos + trailing);
   }
+
+  /* Store the target x position to avoid drifting left and right when
+     moving the cursor up and down */
+  priv->x_pos = x;
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
@@ -1318,7 +1331,7 @@ clutter_text_real_move_down (ClutterText         *self,
   PangoLayoutLine *layout_line;
   PangoLayout *layout;
   gint line_no;
-  gint index_;
+  gint index_, trailing;
   gint x;
 
   layout = clutter_text_get_layout (self);
@@ -1334,20 +1347,22 @@ clutter_text_real_move_down (ClutterText         *self,
 
   if (priv->x_pos != -1)
     x = priv->x_pos;
-  else
-    priv->x_pos = x;
 
   layout_line = pango_layout_get_line_readonly (layout, line_no + 1);
   if (!layout_line)
     return FALSE;
 
-  pango_layout_line_x_to_index (layout_line, x, &index_, NULL);
+  pango_layout_line_x_to_index (layout_line, x, &index_, &trailing);
 
   {
     gint pos = bytes_to_offset (priv->text, index_);
 
-    clutter_text_set_cursor_position (self, pos);
+    clutter_text_set_cursor_position (self, pos + trailing);
   }
+
+  /* Store the target x position to avoid drifting left and right when
+     moving the cursor up and down */
+  priv->x_pos = x;
 
   if (!(priv->selectable && (modifiers & CLUTTER_SHIFT_MASK)))
     clutter_text_clear_selection (self);
@@ -3289,6 +3304,10 @@ clutter_text_set_cursor_position (ClutterText *self,
     priv->position = -1;
   else
     priv->position = position;
+
+  /* Forget the target x position so that it will be recalculated next
+     time the cursor is moved up or down */
+  priv->x_pos = -1;
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (self));

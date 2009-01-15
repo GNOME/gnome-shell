@@ -1,8 +1,8 @@
 diff --git a/clutter/clutter-actor.c b/clutter/clutter-actor.c
-index f4cec66..a8fc882 100644
+index 9cbee04..e0903fe 100644
 --- a/clutter/clutter-actor.c
 +++ b/clutter/clutter-actor.c
-@@ -1342,8 +1342,8 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
+@@ -1348,8 +1348,8 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
    gboolean             is_stage = CLUTTER_IS_STAGE (self);
  
    if (!is_stage)
@@ -13,7 +13,7 @@ index f4cec66..a8fc882 100644
  		     0);
  
    /*
-@@ -1357,50 +1357,50 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
+@@ -1363,50 +1363,50 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
  
     if (priv->rzang)
      {
@@ -345,7 +345,7 @@ index 8a0843d..e445657 100644
    _COGL_GET_CONTEXT (ctx, NO_RETVAL);
  
 diff --git a/clutter/cogl/gl/cogl.c b/clutter/cogl/gl/cogl.c
-index 5100a08..bef567f 100644
+index d815e3b..aa0ec78 100644
 --- a/clutter/cogl/gl/cogl.c
 +++ b/clutter/cogl/gl/cogl.c
 @@ -217,32 +217,15 @@ cogl_scale (float x, float y)
@@ -512,7 +512,7 @@ index d8fe121..cf305a8 100644
    _COGL_GET_CONTEXT (ctx, NO_RETVAL);
  
 diff --git a/clutter/cogl/gles/cogl.c b/clutter/cogl/gles/cogl.c
-index 16cf666..dc2c339 100644
+index aa4e4fc..e835085 100644
 --- a/clutter/cogl/gles/cogl.c
 +++ b/clutter/cogl/gles/cogl.c
 @@ -123,35 +123,15 @@ cogl_scale (float x, float y)

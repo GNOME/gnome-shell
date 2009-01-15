@@ -1,5 +1,5 @@
 diff --git a/clutter/clutter-units.h b/clutter/clutter-units.h
-index 8337d19..2a8ef65 100644
+index b85375a..1084095 100644
 --- a/clutter/clutter-units.h
 +++ b/clutter/clutter-units.h
 @@ -42,7 +42,7 @@ G_BEGIN_DECLS
@@ -11,7 +11,7 @@ index 8337d19..2a8ef65 100644
  
  /*
   * Currently CLUTTER_UNIT maps directly onto ClutterFixed. Nevertheless, the
-@@ -50,11 +50,11 @@ typedef gint32 ClutterUnit;
+@@ -50,16 +50,16 @@ typedef gint32 ClutterUnit;
   * decide to change this relationship in the future.
   */
  
@@ -27,7 +27,13 @@ index 8337d19..2a8ef65 100644
  
  #define CLUTTER_UNITS_FROM_FIXED(x)      (x)
  #define CLUTTER_UNITS_TO_FIXED(x)        (x)
-@@ -90,7 +90,7 @@ typedef gint32 ClutterUnit;
+ 
+-#define CLUTTER_UNITS_FORMAT            "d"
++#define CLUTTER_UNITS_FORMAT             "f"
+ 
+ /**
+  * CLUTTER_UNITS_FROM_DEVICE:
+@@ -92,7 +92,7 @@ typedef gint32 ClutterUnit;
   *
   * Since: 0.6
   */
@@ -36,7 +42,7 @@ index 8337d19..2a8ef65 100644
  
  /**
   * CLUTTER_UNITS_TO_PANGO_UNIT:
-@@ -100,7 +100,7 @@ typedef gint32 ClutterUnit;
+@@ -102,7 +102,7 @@ typedef gint32 ClutterUnit;
   *
   * Since: 0.6
   */
@@ -45,7 +51,7 @@ index 8337d19..2a8ef65 100644
  
  #define CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE(x) \
    ((clutter_actor_get_widthu (clutter_stage_get_default ()) * x) / 100)
-@@ -125,8 +125,7 @@ typedef gint32 ClutterUnit;
+@@ -127,8 +127,7 @@ typedef gint32 ClutterUnit;
  #define CLUTTER_UNITS_FROM_MM(x) \
    (CLUTTER_UNITS_FROM_FLOAT ((((x) * clutter_stage_get_resolution ((ClutterStage *) clutter_stage_get_default ())) / 25.4)))
  
@@ -55,7 +61,7 @@ index 8337d19..2a8ef65 100644
  
  /**
   * CLUTTER_UNITS_FROM_POINTS:
-@@ -139,9 +138,6 @@ typedef gint32 ClutterUnit;
+@@ -141,9 +140,6 @@ typedef gint32 ClutterUnit;
  #define CLUTTER_UNITS_FROM_POINTS(x) \
    CLUTTER_UNITS_FROM_FLOAT ((((x) * clutter_stage_get_resolution ((ClutterStage *) clutter_stage_get_default ())) / 72.0))
  
@@ -65,7 +71,7 @@ index 8337d19..2a8ef65 100644
  #define CLUTTER_TYPE_UNIT                 (clutter_unit_get_type ())
  #define CLUTTER_TYPE_PARAM_UNIT           (clutter_param_unit_get_type ())
  #define CLUTTER_PARAM_SPEC_UNIT(pspec)    (G_TYPE_CHECK_INSTANCE_CAST ((pspec), CLUTTER_TYPE_PARAM_UNIT, ClutterParamSpecUnit))
-@@ -154,7 +150,7 @@ typedef gint32 ClutterUnit;
+@@ -156,7 +152,7 @@ typedef gint32 ClutterUnit;
   *
   * Since: 0.8
   */
@@ -74,7 +80,7 @@ index 8337d19..2a8ef65 100644
  
  /**
   * CLUTTER_MINUNIT:
-@@ -163,7 +159,7 @@ typedef gint32 ClutterUnit;
+@@ -165,7 +161,7 @@ typedef gint32 ClutterUnit;
   *
   * Since: 0.8
   */

@@ -104,6 +104,10 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
+#define CLUTTER_BINDING_POOL_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST ((k), CLUTTER_TYPE_BINDING_POOL, ClutterBindingPoolClass))
+#define CLUTTER_IS_BINDING_POOL_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), CLUTTER_TYPE_BINDING_POOL))
+#define CLUTTER_BINDING_POOL_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), CLUTTER_TYPE_BINDING_POOL, ClutterBindingPoolClass))
+
 #define BINDING_MOD_MASK        ((CLUTTER_SHIFT_MASK   | \
                                   CLUTTER_CONTROL_MASK | \
                                   CLUTTER_MOD1_MASK    | \
@@ -111,17 +115,25 @@
                                   CLUTTER_HYPER_MASK   | \
                                   CLUTTER_META_MASK)   | CLUTTER_RELEASE_MASK)
 
-typedef struct _ClutterBindingEntry ClutterBindingEntry;
+typedef struct _ClutterBindingPoolClass ClutterBindingPoolClass;
+typedef struct _ClutterBindingEntry     ClutterBindingEntry;
 
-static GSList *binding_pools = NULL;
+static GSList *clutter_binding_pools = NULL;
 static GQuark  key_class_bindings = 0;
 
 struct _ClutterBindingPool
 {
+  GObject parent_instance;
+
   gchar *name; /* interned string, do not free */
 
   GSList *entries;
   GHashTable *entries_hash;
+};
+
+struct _ClutterBindingPoolClass
+{
+  GObjectClass parent_class;
 };
 
 struct _ClutterBindingEntry
@@ -135,6 +147,15 @@ struct _ClutterBindingEntry
 
   guint is_blocked  : 1;
 };
+
+enum
+{
+  PROP_0,
+
+  PROP_NAME
+};
+
+G_DEFINE_TYPE (ClutterBindingPool, clutter_binding_pool, G_TYPE_OBJECT);
 
 static guint
 binding_entry_hash (gconstpointer v)
@@ -204,22 +225,110 @@ binding_entry_free (gpointer data)
 }
 
 static void
-binding_pool_free (gpointer data)
+clutter_binding_pool_finalize (GObject *gobject)
 {
-  if (G_LIKELY (data))
+  ClutterBindingPool *pool = CLUTTER_BINDING_POOL (gobject);
+
+  /* remove from the pools */
+  clutter_binding_pools = g_slist_remove (clutter_binding_pools, pool);
+
+  g_hash_table_destroy (pool->entries_hash);
+
+  g_slist_foreach (pool->entries, (GFunc) binding_entry_free, NULL);
+  g_slist_free (pool->entries);
+
+  G_OBJECT_CLASS (clutter_binding_pool_parent_class)->finalize (gobject);
+}
+
+static void
+clutter_binding_pool_set_property (GObject      *gobject,
+                                   guint         prop_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec)
+{
+  ClutterBindingPool *pool = CLUTTER_BINDING_POOL (gobject);
+
+  switch (prop_id)
     {
-      ClutterBindingPool *pool = data;
+    case PROP_NAME:
+      pool->name = (gchar *) g_intern_string (g_value_get_string (value));
+      break;
 
-      /* remove from the pools */
-      binding_pools = g_slist_remove (binding_pools, pool);
-
-      g_hash_table_destroy (pool->entries_hash);
-
-      g_slist_foreach (pool->entries, (GFunc) binding_entry_free, NULL);
-      g_slist_free (pool->entries);
-
-      g_slice_free (ClutterBindingPool, pool);
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
     }
+}
+
+static void
+clutter_binding_pool_get_property (GObject    *gobject,
+                                   guint       prop_id,
+                                   GValue     *value,
+                                   GParamSpec *pspec)
+{
+  ClutterBindingPool *pool = CLUTTER_BINDING_POOL (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_NAME:
+      g_value_set_string (value, pool->name);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_binding_pool_constructed (GObject *gobject)
+{
+  ClutterBindingPool *pool = CLUTTER_BINDING_POOL (gobject);
+
+  /* bad monkey! bad, bad monkey! */
+  if (G_UNLIKELY (pool->name == NULL))
+    g_critical ("No name set for ClutterBindingPool %p", pool);
+
+  if (G_OBJECT_CLASS (clutter_binding_pool_parent_class)->constructed)
+    G_OBJECT_CLASS (clutter_binding_pool_parent_class)->constructed (gobject);
+}
+
+static void
+clutter_binding_pool_class_init (ClutterBindingPoolClass *klass)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec = NULL;
+
+  gobject_class->constructed = clutter_binding_pool_constructed;
+  gobject_class->set_property = clutter_binding_pool_set_property;
+  gobject_class->get_property = clutter_binding_pool_get_property;
+  gobject_class->finalize = clutter_binding_pool_finalize;
+
+  /**
+   * ClutterBindingPool:name:
+   *
+   * The unique name of the #ClutterBindingPool.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_string ("name",
+                               "Name",
+                               "The unique name of the binding pool",
+                               NULL,
+                               CLUTTER_PARAM_READWRITE |
+                               G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (gobject_class, PROP_NAME, pspec);
+}
+
+static void
+clutter_binding_pool_init (ClutterBindingPool *pool)
+{
+  pool->name = NULL;
+  pool->entries = NULL;
+  pool->entries_hash = g_hash_table_new (binding_entry_hash,
+                                         binding_entry_compare);
+
+  clutter_binding_pools = g_slist_prepend (clutter_binding_pools, pool);
 }
 
 /**
@@ -232,8 +341,7 @@ binding_pool_free (gpointer data)
  * be able to return the correct binding pool.
  *
  * Return value: the newly created binding pool with the given
- *   name. The binding pool is owned by Clutter and should not
- *   be freed directly
+ *   name. Use g_object_unref() when done.
  *
  * Since: 1.0
  */
@@ -253,15 +361,7 @@ clutter_binding_pool_new (const gchar *name)
       return NULL;
     }
 
-  pool = g_slice_new (ClutterBindingPool);
-  pool->name = (gchar *) g_intern_string (name);
-  pool->entries = NULL;
-  pool->entries_hash = g_hash_table_new (binding_entry_hash,
-                                         binding_entry_compare);
-
-  binding_pools = g_slist_prepend (binding_pools, pool);
-
-  return pool;
+  return g_object_new (CLUTTER_TYPE_BINDING_POOL, "name", name, NULL);
 }
 
 /**
@@ -306,7 +406,7 @@ clutter_binding_pool_get_for_class (gpointer klass)
   pool = clutter_binding_pool_new (G_OBJECT_CLASS_NAME (klass));
   g_dataset_id_set_data_full (klass, key_class_bindings,
                               pool,
-                              binding_pool_free);
+                              g_object_unref);
 
   return pool;
 }
@@ -328,7 +428,7 @@ clutter_binding_pool_find (const gchar *name)
 
   g_return_val_if_fail (name != NULL, NULL);
 
-  for (l = binding_pools; l != NULL; l = l->next)
+  for (l = clutter_binding_pools; l != NULL; l = l->next)
     {
       ClutterBindingPool *pool = l->data;
 

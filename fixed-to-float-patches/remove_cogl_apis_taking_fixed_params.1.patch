@@ -18,7 +18,7 @@ index cf305a8..1a58805 100644
        GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
        GE( cogl_wrap_glPopMatrix () );
 diff --git a/clutter/cogl/gles/cogl.c b/clutter/cogl/gles/cogl.c
-index dc2c339..9065eb2 100644
+index e835085..fc73e44 100644
 --- a/clutter/cogl/gles/cogl.c
 +++ b/clutter/cogl/gles/cogl.c
 @@ -437,7 +437,7 @@ _cogl_add_stencil_clip (float x_offset,

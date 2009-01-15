@@ -47,6 +47,7 @@ BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 source_h =					\
 	$(srcdir)/clutter-actor.h		\
 	$(srcdir)/clutter-alpha.h		\
+	$(srcdir)/clutter-animatable.h          \
 	$(srcdir)/clutter-animation.h           \
 	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-behaviour.h     	\
@@ -63,7 +64,6 @@ source_h =					\
 	$(srcdir)/clutter-color.h		\
         $(srcdir)/clutter-container.h		\
         $(srcdir)/clutter-deprecated.h		\
-	$(srcdir)/clutter-effect.h 		\
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
@@ -137,6 +137,7 @@ CLEANFILES = $(STAMPFILES)
 source_c = \
         clutter-actor.c			\
 	clutter-alpha.c 		\
+	clutter-animatable.c            \
 	clutter-animation.c             \
 	clutter-backend.c		\
         clutter-behaviour.c 		\
@@ -153,7 +154,6 @@ source_c = \
 	clutter-clone-texture.c 	\
 	clutter-color.c 		\
 	clutter-container.c		\
-	clutter-effect.c      		\
 	clutter-enum-types.c		\
         clutter-event.c 		\
 	clutter-feature.c 		\

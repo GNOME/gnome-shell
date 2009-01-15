@@ -28,6 +28,7 @@ clutter_media_get_type
 <FILE>clutter-units</FILE>
 <TITLE>Unit conversion</TITLE>
 ClutterUnit
+CLUTTER_UNITS_FORMAT
 CLUTTER_UNITS_FROM_DEVICE
 CLUTTER_UNITS_TO_DEVICE
 CLUTTER_UNITS_FROM_FIXED
@@ -166,6 +167,35 @@ CLUTTER_CLONE_TEXTURE_GET_CLASS
 <SUBSECTION Private>
 ClutterCloneTexturePrivate
 clutter_clone_texture_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-cairo-texture</FILE>
+<TITLE>ClutterCairoTexture</TITLE>
+ClutterCairoTexture
+ClutterCairoTextureClass
+clutter_cairo_texture_new
+clutter_cairo_texture_set_surface_size
+clutter_cairo_texture_get_surface_size
+
+<SUBSECTION>
+clutter_cairo_texture_create
+clutter_cairo_texture_create_region
+
+<SUBSECTION>
+clutter_cairo_set_source_color
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_CAIRO_TEXTURE
+CLUTTER_CAIRO_TEXTURE
+CLUTTER_IS_CAIRO_TEXTURE
+CLUTTER_CAIRO_TEXTURE_CLASS
+CLUTTER_IS_CAIRO_TEXTURE_CLASS
+CLUTTER_CAIRO_TEXTURE_GET_CLASS
+
+<SUBSECTION Private>
+ClutterCairoTexturePrivate
+clutter_cairo_texture_get_type
 </SECTION>
 
 <SECTION>
@@ -517,6 +547,7 @@ clutter_stage_show_cursor
 clutter_stage_hide_cursor
 clutter_stage_get_actor_at_pos
 clutter_stage_ensure_current
+clutter_stage_ensure_viewport
 clutter_stage_queue_redraw
 clutter_stage_event
 clutter_stage_set_key_focus
@@ -1187,39 +1218,6 @@ CLUTTER_NO_FPU
 </SECTION>
 
 <SECTION>
-<FILE>clutter-effect</FILE>
-<TITLE>Clutter Effects</TITLE>
-ClutterEffectTemplate
-ClutterEffectTemplateClass
-clutter_effect_template_new
-clutter_effect_template_new_full
-clutter_effect_template_new_for_duration
-clutter_effect_template_construct
-clutter_effect_template_get_timeline_clone
-clutter_effect_template_set_timeline_clone
-
-<SUBSECTION>
-ClutterEffectCompleteFunc
-clutter_effect_fade
-clutter_effect_move
-clutter_effect_path
-clutter_effect_scale
-clutter_effect_depth
-clutter_effect_rotate
-
-<SUBSECTION Standard>
-CLUTTER_TYPE_EFFECT_TEMPLATE
-CLUTTER_EFFECT_TEMPLATE
-CLUTTER_IS_EFFECT_TEMPLATE
-CLUTTER_EFFECT_TEMPLATE_CLASS
-CLUTTER_IS_EFFECT_TEMPLATE_CLASS
-CLUTTER_EFFECT_TEMPLATE_GET_CLASS
-<SUBSECTION Private>
-ClutterEffectTemplatePrivate
-clutter_effect_template_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-behaviour-depth</FILE>
 <TITLE>ClutterBehaviourDepth</TITLE>
 ClutterBehaviourDepth
@@ -1497,9 +1495,6 @@ clutter_shader_float_get_type
 clutter_shader_int_get_type
 clutter_shader_matrix_get_type
 clutter_shader_error_quark
-clutter_shader_float_get_type
-clutter_shader_int_get_type
-clutter_shader_matrix_get_type
 </SECTION>
 
 <SECTION>
@@ -1509,8 +1504,8 @@ ClutterAnimation
 ClutterAnimationClass
 ClutterAnimationMode
 clutter_animation_new
-clutter_animation_set_actor
-clutter_animation_get_actor
+clutter_animation_set_object
+clutter_animation_get_object
 clutter_animation_set_mode
 clutter_animation_get_mode
 clutter_animation_set_duration
@@ -1569,6 +1564,10 @@ clutter_interval_get_interval
 clutter_interval_compute_value
 clutter_interval_validate
 
+<SUBSECTION>
+ClutterProgressFunc
+clutter_interval_register_progress_func
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_INTERVAL
 CLUTTER_INTERVAL
@@ -1580,31 +1579,6 @@ CLUTTER_INTERVAL_GET_CLASS
 <SUBSECTION Private>
 ClutterIntervalPrivate
 clutter_interval_get_type
-</SECTION>
-
-<SECTION>
-<TITLE>Key Bindings</TITLE>
-<FILE>clutter-binding-pool</FILE>
-ClutterBindingPool
-ClutterBindingActionFunc
-
-<SUBSECTION>
-clutter_binding_pool_new
-clutter_binding_pool_get_for_class
-clutter_binding_pool_find
-
-<SUBSECTION>
-clutter_binding_pool_install_action
-clutter_binding_pool_install_closure
-clutter_binding_pool_override_action
-clutter_binding_pool_override_closure
-clutter_binding_pool_find_action
-clutter_binding_pool_remove_action
-clutter_binding_pool_block_action
-clutter_binding_pool_unblock_action
-
-<SUBSECTION>
-clutter_binding_pool_activate
 </SECTION>
 
 <SECTION>
@@ -1634,6 +1608,7 @@ CLUTTER_CAIRO_TEXTURE_GET_CLASS
 <SUBSECTION Private>
 ClutterCairoTexturePrivate
 clutter_cairo_texture_get_type
+</SECTION>
 
 <SECTION>
 <TITLE>ClutterText</TITLE>
@@ -1712,4 +1687,54 @@ CLUTTER_TYPE_TEXT
 <SUBSECTION Private>
 ClutterTextPrivate
 clutter_text_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-animatable</FILE>
+<TITLE>ClutterAnimatable</TITLE>
+ClutterAnimatable
+ClutterAnimatableIface
+clutter_animatable_animate_property
+
+<SUBSECTION Standard>
+CLUTTER_TYPE_ANIMATABLE
+CLUTTER_ANIMATABLE
+CLUTTER_IS_ANIMATABLE
+CLUTTER_ANIMATABLE_GET_IFACE
+
+<SUBSECTION Private>
+clutter_animatable_get_type
+</SECTION>
+
+<SECTION>
+<TITLE>Key Bindings</TITLE>
+<FILE>clutter-binding-pool</FILE>
+ClutterBindingPool
+ClutterBindingActionFunc
+
+<SUBSECTION>
+clutter_binding_pool_new
+clutter_binding_pool_get_for_class
+clutter_binding_pool_find
+
+<SUBSECTION>
+clutter_binding_pool_install_action
+clutter_binding_pool_install_closure
+clutter_binding_pool_override_action
+clutter_binding_pool_override_closure
+clutter_binding_pool_find_action
+clutter_binding_pool_remove_action
+clutter_binding_pool_block_action
+clutter_binding_pool_unblock_action
+
+<SUBSECTION>
+clutter_binding_pool_activate
+
+<SUBSECTION Standard>
+CLUTTER_BINDING_POOL
+CLUTTER_IS_BINDING_POOL
+CLUTTER_TYPE_BINDING_POOL
+
+<SUBSECTION Private>
+clutter_binding_pool_get_type
 </SECTION>

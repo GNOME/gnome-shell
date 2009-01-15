@@ -1,5 +1,5 @@
 diff --git a/clutter/cogl/common/cogl-primitives.c b/clutter/cogl/common/cogl-primitives.c
-index 7dfc78e..c9578db 100644
+index 27e0e36..27834f7 100644
 --- a/clutter/cogl/common/cogl-primitives.c
 +++ b/clutter/cogl/common/cogl-primitives.c
 @@ -33,6 +33,7 @@

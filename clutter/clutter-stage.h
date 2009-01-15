@@ -106,6 +106,8 @@ struct _ClutterStageClass
   void (* activate)     (ClutterStage *stage);
   void (* deactivate)   (ClutterStage *stage);
 
+  void (* queue_redraw) (ClutterStage *stage);
+
   /*< private >*/
   /* padding for future expansion */
   gpointer _padding_dummy[32];
@@ -229,6 +231,7 @@ ClutterActor *        clutter_stage_get_key_focus      (ClutterStage *stage);
 void                  clutter_stage_ensure_current     (ClutterStage *stage);
 void                  clutter_stage_queue_redraw       (ClutterStage *stage);
 gboolean              clutter_stage_is_default         (ClutterStage *stage);
+void                  clutter_stage_ensure_viewport    (ClutterStage *stage);
 
 /* Commodity macro */
 #define clutter_stage_add(stage,actor)                  G_STMT_START {  \

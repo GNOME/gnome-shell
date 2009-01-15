@@ -1,5 +1,5 @@
 diff --git a/clutter/cogl/gles/cogl-texture.c b/clutter/cogl/gles/cogl-texture.c
-index fb628b0..85bfc2b 100644
+index ca48a33..e054d84 100644
 --- a/clutter/cogl/gles/cogl-texture.c
 +++ b/clutter/cogl/gles/cogl-texture.c
 @@ -39,6 +39,7 @@
@@ -10,7 +10,7 @@ index fb628b0..85bfc2b 100644
  
  #define glVertexPointer cogl_wrap_glVertexPointer
  #define glTexCoordPointer cogl_wrap_glTexCoordPointer
-@@ -767,7 +768,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
+@@ -768,7 +769,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
                guint wx, wy;
  
                src = source_bmp->data
@@ -19,7 +19,7 @@ index fb628b0..85bfc2b 100644
                       - dst_y)
                    * source_bmp->rowstride
                    + (src_x + x_span->start + x_span->size - x_span->waste
-@@ -812,7 +813,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
+@@ -813,7 +814,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
                guint copy_width;
  
                src = source_bmp->data

@@ -59,6 +59,8 @@ typedef gint32 ClutterUnit;
 #define CLUTTER_UNITS_FROM_FIXED(x)      (x)
 #define CLUTTER_UNITS_TO_FIXED(x)        (x)
 
+#define CLUTTER_UNITS_FORMAT            "d"
+
 /**
  * CLUTTER_UNITS_FROM_DEVICE:
  * @x: value in pixels

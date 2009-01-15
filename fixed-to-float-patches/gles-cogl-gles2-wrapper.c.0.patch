@@ -1,8 +1,8 @@
 diff --git a/clutter/cogl/gles/cogl-gles2-wrapper.c b/clutter/cogl/gles/cogl-gles2-wrapper.c
-index 859c895..8a2fd24 100644
+index b2e19eb..9435131 100644
 --- a/clutter/cogl/gles/cogl-gles2-wrapper.c
 +++ b/clutter/cogl/gles/cogl-gles2-wrapper.c
-@@ -1142,15 +1142,6 @@ cogl_wrap_glClipPlanex (GLenum plane, GLfloat *equation)
+@@ -1158,15 +1158,6 @@ cogl_wrap_glClipPlanex (GLenum plane, GLfloat *equation)
    /* FIXME */
  }
  
@@ -18,7 +18,7 @@ index 859c895..8a2fd24 100644
  void
  cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
  {
-@@ -1169,31 +1160,24 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
+@@ -1185,31 +1176,24 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
  }
  
  void

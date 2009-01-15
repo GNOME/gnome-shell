@@ -1,5 +1,5 @@
 diff --git a/clutter/clutter-fixed.c b/clutter/clutter-fixed.c
-index 89f43c2..6d5bf01 100644
+index 3027a75..315fe32 100644
 --- a/clutter/clutter-fixed.c
 +++ b/clutter/clutter-fixed.c
 @@ -251,8 +251,8 @@ param_fixed_init (GParamSpec *pspec)

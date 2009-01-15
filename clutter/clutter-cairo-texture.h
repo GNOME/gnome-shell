@@ -49,6 +49,13 @@ typedef struct _ClutterCairoTexture             ClutterCairoTexture;
 typedef struct _ClutterCairoTextureClass        ClutterCairoTextureClass;
 typedef struct _ClutterCairoTexturePrivate      ClutterCairoTexturePrivate;
 
+/**
+ * ClutterCairoTexture:
+ *
+ * The #ClutterCairoTexture struct contains only private data.
+ *
+ * Since: 1.0
+ */
 struct _ClutterCairoTexture
 {
   /*< private >*/
@@ -57,6 +64,13 @@ struct _ClutterCairoTexture
   ClutterCairoTexturePrivate *priv;
 };
 
+/**
+ * ClutterCairoTextureClass:
+ *
+ * The #ClutterCairoTextureClass struct contains only private data.
+ *
+ * Since: 1.0
+ */
 struct _ClutterCairoTextureClass
 {
   /*< private >*/

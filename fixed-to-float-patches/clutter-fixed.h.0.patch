@@ -1,5 +1,5 @@
 diff --git a/clutter/clutter-fixed.h b/clutter/clutter-fixed.h
-index 3ae0916..5d150da 100644
+index 3ae0916..61e2fd4 100644
 --- a/clutter/clutter-fixed.h
 +++ b/clutter/clutter-fixed.h
 @@ -39,126 +39,118 @@ G_BEGIN_DECLS

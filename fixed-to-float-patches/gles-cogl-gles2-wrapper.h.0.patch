@@ -1,5 +1,5 @@
 diff --git a/clutter/cogl/gles/cogl-gles2-wrapper.h b/clutter/cogl/gles/cogl-gles2-wrapper.h
-index 265da78..2493b81 100644
+index 8cb9e8b..a194157 100644
 --- a/clutter/cogl/gles/cogl-gles2-wrapper.h
 +++ b/clutter/cogl/gles/cogl-gles2-wrapper.h
 @@ -244,7 +244,7 @@ void cogl_wrap_glColor4x (GLclampx r, GLclampx g, GLclampx b, GLclampx a);
@@ -11,7 +11,7 @@ index 265da78..2493b81 100644
  
  void cogl_wrap_glFogx (GLenum pname, GLfloat param);
  void cogl_wrap_glFogxv (GLenum pname, const GLfloat *params);
-@@ -297,7 +297,7 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
+@@ -299,7 +299,7 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
  #define cogl_wrap_glColor4x            glColor4f
  #define cogl_wrap_glClipPlanex         glClipPlanef
  #define cogl_wrap_glGetIntegerv        glGetIntegerv

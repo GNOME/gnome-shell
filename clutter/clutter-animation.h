@@ -97,9 +97,9 @@ GType                clutter_animation_get_type        (void) G_GNUC_CONST;
 
 ClutterAnimation *   clutter_animation_new             (void);
 
-void                 clutter_animation_set_actor       (ClutterAnimation     *animation,
-                                                        ClutterActor         *actor);
-ClutterActor *       clutter_animation_get_actor       (ClutterAnimation     *animation);
+void                 clutter_animation_set_object      (ClutterAnimation     *animation,
+                                                        GObject              *object);
+GObject *            clutter_animation_get_object      (ClutterAnimation     *animation);
 void                 clutter_animation_set_mode        (ClutterAnimation     *animation,
                                                         ClutterAnimationMode  mode);
 ClutterAnimationMode clutter_animation_get_mode        (ClutterAnimation     *animation);

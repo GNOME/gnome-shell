@@ -1,8 +1,8 @@
 diff --git a/clutter/clutter-texture.c b/clutter/clutter-texture.c
-index 42be677..7273946 100644
+index b0b46e4..8a306e9 100644
 --- a/clutter/clutter-texture.c
 +++ b/clutter/clutter-texture.c
-@@ -463,7 +463,7 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
+@@ -474,7 +474,7 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
  
    /* Set up a projection matrix so that the actor will be projected as
       if it was drawn at its original location */

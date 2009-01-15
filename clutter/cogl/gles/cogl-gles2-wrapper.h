@@ -250,7 +250,8 @@ void cogl_wrap_glFogx (GLenum pname, GLfixed param);
 void cogl_wrap_glFogxv (GLenum pname, const GLfixed *params);
 
 void cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count);
-
+void cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
+                               const GLvoid *indices);
 void cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param);
 
 void cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
@@ -274,6 +275,7 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 
 #define cogl_wrap_glClearColorx        glClearColor
 #define cogl_wrap_glDrawArrays         glDrawArrays
+#define cogl_wrap_glDrawElements       glDrawElements
 #define cogl_wrap_glPushMatrix         glPushMatrix
 #define cogl_wrap_glPopMatrix          glPopMatrix
 #define cogl_wrap_glMatrixMode         glMatrixMode

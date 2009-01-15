@@ -44,6 +44,7 @@
 #define glTexCoordPointer cogl_wrap_glTexCoordPointer
 #define glColorPointer cogl_wrap_glColorPointer
 #define glDrawArrays cogl_wrap_glDrawArrays
+#define glDrawElements cogl_wrap_glDrawElements
 #define glTexParameteri cogl_wrap_glTexParameteri
 
 /*
@@ -1446,30 +1447,13 @@ cogl_texture_new_from_data (guint              width,
 }
 
 CoglHandle
-cogl_texture_new_from_file (const gchar     *filename,
-			    gint             max_waste,
-                            gboolean         auto_mipmap,
-			    CoglPixelFormat  internal_format,
-			    GError         **error)
+cogl_texture_new_from_bitmap (CoglBitmap      *bmp,
+                              gint             max_waste,
+                              gboolean         auto_mipmap,
+                              CoglPixelFormat  internal_format)
 {
-  CoglBitmap   bmp;
   CoglTexture *tex;
-  
-  g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
-  /* Try loading with imaging backend */
-  if (!_cogl_bitmap_from_file (&bmp, filename, error))
-    {
-      /* Try fallback */
-      if (!_cogl_bitmap_fallback_from_file (&bmp, filename))
-	return COGL_INVALID_HANDLE;
-      else if (error && *error)
-	{
-	  g_error_free (*error);
-	  *error = NULL;
-	}
-    }
-  
   /* Create new texture and fill with loaded data */
   tex = (CoglTexture*) g_malloc ( sizeof (CoglTexture));
   
@@ -1479,8 +1463,9 @@ cogl_texture_new_from_file (const gchar     *filename,
   tex->is_foreign = FALSE;
   tex->auto_mipmap = auto_mipmap;
 
-  tex->bitmap = bmp;
+  tex->bitmap = *bmp;
   tex->bitmap_owner = TRUE;
+  bmp->data = NULL;
   
   tex->slice_x_spans = NULL;
   tex->slice_y_spans = NULL;
@@ -1519,6 +1504,30 @@ cogl_texture_new_from_file (const gchar     *filename,
   _cogl_texture_bitmap_free (tex);
   
   return _cogl_texture_handle_new (tex);
+}
+
+CoglHandle
+cogl_texture_new_from_file (const gchar     *filename,
+			    gint             max_waste,
+                            gboolean         auto_mipmap,
+			    CoglPixelFormat  internal_format,
+			    GError         **error)
+{
+  CoglBitmap  *bmp;
+  CoglHandle   handle;
+  
+  g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
+
+  if (!(bmp = cogl_bitmap_new_from_file (filename, error)))
+    return COGL_INVALID_HANDLE;
+
+  handle = cogl_texture_new_from_bitmap (bmp,
+                                         max_waste,
+                                         auto_mipmap,
+                                         internal_format);
+  cogl_bitmap_free (bmp);
+
+  return handle;
 }
 
 CoglHandle
@@ -2094,7 +2103,9 @@ _cogl_texture_flush_vertices (void)
       GE( glTexCoordPointer (2, GL_FLOAT,
                              sizeof (CoglTextureGLVertex), p->t ) );
 
-      GE( glBindTexture (ctx->texture_target, ctx->texture_current) );
+      GE( cogl_gles2_wrapper_bind_texture (ctx->texture_target,
+                                           ctx->texture_current,
+                                           ctx->texture_format) );
       GE( glDrawElements (GL_TRIANGLES,
                           needed_indices,
                           GL_UNSIGNED_SHORT,
@@ -2284,6 +2295,7 @@ _cogl_texture_quad_sw (CoglTexture *tex,
             _cogl_texture_flush_vertices ();
           ctx->texture_target = tex->gl_target;
           ctx->texture_current = gl_handle;
+          ctx->texture_format = tex->gl_intformat;
 
           _cogl_texture_add_quad_vertices (COGL_FIXED_TO_FLOAT (slice_qx1),
                                            COGL_FIXED_TO_FLOAT (slice_qy1),
@@ -2328,6 +2340,7 @@ _cogl_texture_quad_hw (CoglTexture *tex,
     _cogl_texture_flush_vertices ();
   ctx->texture_target = tex->gl_target;
   ctx->texture_current = gl_handle;
+  ctx->texture_format = tex->gl_intformat;
 
   /* Don't include the waste in the texture coordinates */
   x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
