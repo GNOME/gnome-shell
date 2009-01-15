@@ -43,7 +43,6 @@
 #include <X11/Xutil.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-typedef struct _MetaGroup MetaGroup;
 typedef struct _MetaWindowQueue MetaWindowQueue;
 
 typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,

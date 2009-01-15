@@ -26,6 +26,7 @@
 #include "util.h"
 #include "group-private.h"
 #include "group-props.h"
+#include "window-private.h"
 #include "window.h"
 
 static MetaGroup*

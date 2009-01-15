@@ -47,7 +47,7 @@ metacity_SOURCES= 				\
 	core/group-props.c			\
 	core/group-props.h			\
 	core/group.c				\
-	core/group.h				\
+	include/group.h				\
 	core/iconcache.c			\
 	core/iconcache.h			\
 	core/keybindings.c			\
@@ -159,6 +159,7 @@ libmetacityinclude_HEADERS =			\
 	include/types.h				\
 	include/screen.h			\
 	include/display.h			\
+	include/group.h				\
 	include/mutter-plugin.h
 
 metacity_theme_viewer_SOURCES=  \

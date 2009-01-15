@@ -24,7 +24,9 @@
 #ifndef META_GROUP_H
 #define META_GROUP_H
 
-#include "window-private.h"
+#include <X11/Xlib.h>
+#include <glib.h>
+#include "types.h"
 
 /* note, can return NULL */
 MetaGroup* meta_window_get_group       (MetaWindow *window);
