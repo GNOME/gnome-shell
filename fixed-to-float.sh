@@ -130,7 +130,6 @@ find ./clutter/ -iname '*.c' -exec grep '^clutter_[a-zA-Z_]*x ' {} \; | cut -d' 
 git-commit -a -m "[By fixed-to-float.sh] Fixed to Float automatic changes" --no-verify
 
 patch -p1<fixed-to-float-patches/gl-cogl-texture.c.0.patch
-patch -p1<fixed-to-float-patches/mtx_transform.0.patch
 patch -p1<fixed-to-float-patches/clutter-actor.c.0.patch
 patch -p1<fixed-to-float-patches/clutter-alpha.c.0.patch
 patch -p1<fixed-to-float-patches/clutter-alpha.h.0.patch
