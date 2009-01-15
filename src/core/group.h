@@ -43,6 +43,8 @@ void       meta_group_update_layers    (MetaGroup *group);
 
 const char* meta_group_get_startup_id  (MetaGroup *group);
 
+int        meta_group_get_size         (MetaGroup *group);
+
 gboolean meta_group_property_notify   (MetaGroup  *group,
                                        XEvent     *event);
 
