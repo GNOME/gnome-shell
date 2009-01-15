@@ -9,10 +9,9 @@
 #define COLS 18
 #define ROWS 20
 
-gboolean idle (gpointer data)
+static void
+on_paint (ClutterActor *actor, gconstpointer *data)
 {
-  ClutterActor *stage = CLUTTER_ACTOR (data);
-  
   static GTimer *timer = NULL;
   static int fps = 0;
   
@@ -29,8 +28,13 @@ gboolean idle (gpointer data)
       fps = 0;
     }
   
-  clutter_actor_paint (stage);
   ++fps;
+}
+
+static gboolean
+queue_redraw (gpointer stage)
+{
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 
   return TRUE;
 }
@@ -41,12 +45,23 @@ main (int argc, char *argv[])
   ClutterActor    *stage;
   ClutterColor     stage_color = { 0x00, 0x00, 0x00, 0xff };
   ClutterColor     label_color = { 0xff, 0xff, 0xff, 0xff };
+  ClutterActor    *group;
+
+  setenv ("CLUTTER_VBLANK", "none", 0);
 
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, STAGE_WIDTH, STAGE_HEIGHT);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
+
+  group = clutter_group_new ();
+  clutter_actor_set_size (group, STAGE_WIDTH, STAGE_WIDTH);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
+
+  g_idle_add (queue_redraw, stage);
+
+  g_signal_connect (group, "paint", G_CALLBACK (on_paint), NULL);
 
   {
     gint row, col;
@@ -88,15 +103,13 @@ main (int argc, char *argv[])
                                               (1.0*STAGE_HEIGHT/ROWS));*/
           clutter_actor_set_scale (label, scale, scale);
           clutter_text_set_line_wrap (CLUTTER_TEXT (label), FALSE);
-          clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
+          clutter_container_add_actor (CLUTTER_CONTAINER (group), label);
         }
   }
   clutter_actor_show_all (stage);
 
   g_signal_connect (stage, "key-press-event",
 		    G_CALLBACK (clutter_main_quit), NULL);
-  
-  g_idle_add (idle, (gpointer) stage);
 
   clutter_main();
 
