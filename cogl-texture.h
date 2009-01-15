@@ -135,6 +135,26 @@ CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
                                                CoglPixelFormat     format);
 
 /**
+ * cogl_texture_new_from_bitmap:
+ * @handle: handle of the preloaded texture.
+ * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
+ * texture fit GPU limitations.
+ * @auto_mipmap: enable or disable automatic generation of mipmap pyramid
+ * from the base level image whenever it is updated.
+ * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
+ * texture.
+ *
+ * Create a cogl texture from a #CoglBitmap.
+ *
+ * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
+ * if creating the texture failed.
+ */
+CoglHandle      cogl_texture_new_from_bitmap (CoglBitmap     *bitmap,
+                                              gint            max_waste,
+                                              gboolean        auto_mipmap,
+                                              CoglPixelFormat internal_format);
+
+/**
  * cogl_is_texture:
  * @handle: A CoglHandle
  *
@@ -386,6 +406,45 @@ void            cogl_texture_polygon          (CoglHandle          handle,
                                                gboolean            use_color);
 
 /**
+ * cogl_bitmap_new_from_file:
+ * @filename: the file to load.
+ * @error: a #GError or %NULL.
+ *
+ * Load an image file from disk. This function can be safely called from 
+ * within a thread.
+ *
+ * Returns: A #CoglBitmap to the new loaded image data, or %NULL if loading 
+ * the image failed.
+ *
+ * Since: 1.0
+ */
+CoglBitmap *    cogl_bitmap_new_from_file     (const gchar    *filename,
+                                               GError        **error);
+
+/**
+ * cogl_bitmap_get_size_from_file:
+ * @filename: the file to check
+ * @width: return location for the bitmap width
+ * @height: return location for the bitmap height
+ *
+ * Parses an image file enough to extract the width and height
+ * of the bitmap.
+ *
+ * Since: 1.0
+ */
+gboolean        cogl_bitmap_get_size_from_file (const gchar   *filename,
+                                                gint          *width,
+                                                gint          *height);
+
+/**
+ * cogl_bitmap_free:
+ * @bmp: a #CoglBitmap.
+ *
+ * Frees a #CoglBitmap.
+ */
+void            cogl_bitmap_free              (CoglBitmap     *bmp);
+
+/**
  * cogl_texture_multiple_rectangles:
  * @handle: a @CoglHandle.
  * @verts: an array of vertices
@@ -401,7 +460,7 @@ void            cogl_texture_polygon          (CoglHandle          handle,
  * parameters x1, y1, x2, y2, tx1, ty1, tx2 and ty2 and have the same
  * meaning as in cogl_texture_rectangle().
  *
- * Since: 1.0
+ * Since: 0.8.6
  */
 void            cogl_texture_multiple_rectangles
                                               (CoglHandle          handle,
