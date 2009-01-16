@@ -104,6 +104,7 @@ Tidy-1.0.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la libtidy-1.0.la Makef
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(tidy_source_h)			\
 		$(tidy_source_c)			\
+		tidy-enum-types.h			\
 		$(tidy_cflags)				\
 		-o $@
 CLEANFILES += Tidy-1.0.gir
@@ -121,6 +122,7 @@ Big-1.0.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la libbig-1.0.la Makefil
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
 		$(big_source_h)			\
 		$(big_source_c)			\
+		big-enum-types.h		\
 		$(big_cflags)				\
 		-o $@
 CLEANFILES += Big-1.0.gir
