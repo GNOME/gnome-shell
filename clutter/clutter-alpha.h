@@ -31,7 +31,6 @@
 #ifndef __CLUTTER_ALPHA_H__
 #define __CLUTTER_ALPHA_H__
 
-#include <clutter/clutter-fixed.h>
 #include <clutter/clutter-timeline.h>
 #include <clutter/clutter-types.h>
 
@@ -110,27 +109,31 @@ struct _ClutterAlphaClass
 
 GType clutter_alpha_get_type (void) G_GNUC_CONST;
 
-ClutterAlpha *        clutter_alpha_new          (void);
-ClutterAlpha *        clutter_alpha_new_full     (ClutterTimeline      *timeline,
-                                                  ClutterAlphaFunc      func,
-                                                  gpointer              data,
-                                                  GDestroyNotify        destroy);
+ClutterAlpha *   clutter_alpha_new              (void);
+ClutterAlpha *   clutter_alpha_new_full         (ClutterTimeline  *timeline,
+                                                 gulong            mode);
+ClutterAlpha *   clutter_alpha_new_with_func    (ClutterTimeline  *timeline,
+                                                 ClutterAlphaFunc  func,
+                                                 gpointer          data,
+                                                 GDestroyNotify    destroy);
 
-ClutterAlpha *        clutter_alpha_new_for_mode (ClutterAnimationMode  mode);
+guint32          clutter_alpha_get_alpha        (ClutterAlpha     *alpha);
+void             clutter_alpha_set_func         (ClutterAlpha     *alpha,
+                                                 ClutterAlphaFunc  func,
+                                                 gpointer          data,
+                                                 GDestroyNotify    destroy);
+void             clutter_alpha_set_closure      (ClutterAlpha     *alpha,
+                                                 GClosure         *closure);
+void             clutter_alpha_set_timeline     (ClutterAlpha     *alpha,
+                                                 ClutterTimeline  *timeline);
+ClutterTimeline *clutter_alpha_get_timeline     (ClutterAlpha     *alpha);
+void             clutter_alpha_set_mode         (ClutterAlpha     *alpha,
+                                                 gulong            mode);
+gulong           clutter_alpha_get_mode         (ClutterAlpha     *alpha);
 
-guint32               clutter_alpha_get_alpha    (ClutterAlpha         *alpha);
-void                  clutter_alpha_set_func     (ClutterAlpha         *alpha,
-                                                  ClutterAlphaFunc      func,
-                                                  gpointer              data,
-                                                  GDestroyNotify        destroy);
-void                  clutter_alpha_set_closure  (ClutterAlpha         *alpha,
-                                                  GClosure             *closure);
-void                  clutter_alpha_set_timeline (ClutterAlpha         *alpha,
-                                                  ClutterTimeline      *timeline);
-ClutterTimeline *     clutter_alpha_get_timeline (ClutterAlpha         *alpha);
-void                  clutter_alpha_set_mode     (ClutterAlpha         *alpha,
-                                                  ClutterAnimationMode  mode);
-ClutterAnimationMode  clutter_alpha_get_mode     (ClutterAlpha         *alpha);
+gulong           clutter_alpha_register_func    (ClutterAlphaFunc  func,
+                                                 gpointer          data);
+gulong           clutter_alpha_register_closure (GClosure         *closure);
 
 /* convenience functions */
 guint32             clutter_ramp_inc_func       (ClutterAlpha     *alpha,

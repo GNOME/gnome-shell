@@ -748,6 +748,7 @@ G_MODULE_EXPORT int
 test_layout_main (int argc, char *argv[])
 {
   ClutterActor *stage, *instructions;
+  ClutterAlpha *alpha;
   gint i;
   GError *error = NULL;
 
@@ -764,10 +765,8 @@ test_layout_main (int argc, char *argv[])
                     G_CALLBACK (relayout_on_frame),
                     NULL);
 
-  behaviour = clutter_behaviour_scale_new (clutter_alpha_new_full (main_timeline,
-                                                                   clutter_sine_func,
-                                                                   NULL, NULL),
-                                           1.0, 1.0, 2.0, 2.0);
+  alpha = clutter_alpha_new_full (main_timeline, CLUTTER_SINE_IN_OUT);
+  behaviour = clutter_behaviour_scale_new (alpha, 1.0, 1.0, 2.0, 2.0);
 
   box = my_thing_new (10, 10);
 

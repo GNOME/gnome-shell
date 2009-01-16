@@ -81,8 +81,7 @@ test_texture_quality_main (int argc, char *argv[])
                     "completed", G_CALLBACK (timeline_completed),
                     NULL);
 
-  alpha = clutter_alpha_new_for_mode (CLUTTER_LINEAR);
-  clutter_alpha_set_timeline (alpha, timeline);
+  alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
   depth_behavior = clutter_behaviour_depth_new (alpha, -2500, 400);
   clutter_behaviour_apply (depth_behavior, image);
 

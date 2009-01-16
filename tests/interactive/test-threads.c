@@ -213,16 +213,15 @@ test_threads_main (int argc, char *argv[])
 
   timeline = clutter_timeline_new (150, 50);
   clutter_timeline_set_loop (timeline, TRUE);
-  r_behaviour = clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
-                                                                      clutter_ramp_inc_func,
-                                                                      NULL, NULL),
+
+  alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
+  r_behaviour = clutter_behaviour_rotate_new (alpha,
                                               CLUTTER_Z_AXIS,
                                               CLUTTER_ROTATE_CW,
                                               0.0, 360.0);
   clutter_behaviour_apply (r_behaviour, rect);
 
-  alpha = clutter_alpha_new_full (timeline, clutter_ramp_inc_func,
-                                  NULL, NULL);
+  alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
   p_behaviour = clutter_behaviour_path_new_with_knots (alpha,
                                                        knots,
                                                        G_N_ELEMENTS (knots));

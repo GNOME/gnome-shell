@@ -40,8 +40,7 @@ test_viewport_main (int argc, char *argv[])
   clutter_timeline_set_loop (timeline, TRUE);
 
   /* Set an alpha func to power behaviour */
-  alpha = clutter_alpha_new_for_mode (CLUTTER_LINEAR);
-  clutter_alpha_set_timeline (alpha, timeline);
+  alpha = clutter_alpha_new_full (timeline, CLUTTER_LINEAR);
 
   /* Create a behaviour for that alpha */
   r_behave = clutter_behaviour_rotate_new (alpha,

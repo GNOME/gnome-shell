@@ -159,10 +159,10 @@ test_depth_main (int argc, char *argv[])
                     "completed", G_CALLBACK (timeline_completed),
                     NULL);
 
-  d_behave = clutter_behaviour_depth_new (clutter_alpha_new_full (timeline,
-                                                                  clutter_ramp_inc_func,
-                                                                  NULL, NULL),
-                                          -100, 100);
+  d_behave =
+    clutter_behaviour_depth_new (clutter_alpha_new_full (timeline,
+                                                         CLUTTER_LINEAR),
+                                 -100, 100);
   clutter_behaviour_apply (d_behave, label);
 
   /* add two faced actor */
@@ -170,12 +170,12 @@ test_depth_main (int argc, char *argv[])
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), janus);
   clutter_actor_set_position (janus, 300, 350);
 
-  r_behave = clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
-                                                                  clutter_ramp_inc_func,
-                                                                  NULL, NULL),
-                                          CLUTTER_Y_AXIS,
-                                          CLUTTER_ROTATE_CW,
-                                          0, 360);
+  r_behave =
+    clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
+                                                          CLUTTER_LINEAR),
+                                  CLUTTER_Y_AXIS,
+                                  CLUTTER_ROTATE_CW,
+                                  0, 360);
   clutter_behaviour_apply (r_behave, janus);
 
 
@@ -187,12 +187,12 @@ test_depth_main (int argc, char *argv[])
   clutter_actor_set_rotation (box, CLUTTER_X_AXIS, 45, 0, 0, 0);
   clutter_actor_set_opacity (box, 0x44);
 
-  r_behave = clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
-                                                                  clutter_ramp_inc_func,
-                                                                  NULL, NULL),
-                                          CLUTTER_Y_AXIS,
-                                          CLUTTER_ROTATE_CW,
-                                          0, 360);
+  r_behave =
+    clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
+                                                          CLUTTER_LINEAR),
+                                  CLUTTER_Y_AXIS,
+                                  CLUTTER_ROTATE_CW,
+                                  0, 360);
   clutter_behaviour_apply (r_behave, box);
 
 

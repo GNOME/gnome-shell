@@ -102,7 +102,7 @@ ClutterAlpha
 ClutterAlphaClass
 clutter_alpha_new
 clutter_alpha_new_full
-clutter_alpha_new_for_mode
+clutter_alpha_new_with_func
 clutter_alpha_get_alpha
 CLUTTER_ALPHA_MAX_ALPHA
 ClutterAlphaFunc
@@ -112,6 +112,10 @@ clutter_alpha_set_timeline
 clutter_alpha_get_timeline
 clutter_alpha_set_mode
 clutter_alpha_get_mode
+
+<SUBSECTION>
+clutter_alpha_register_closure
+clutter_alpha_register_func
 
 <SUBSECTION>
 clutter_ramp_inc_func
