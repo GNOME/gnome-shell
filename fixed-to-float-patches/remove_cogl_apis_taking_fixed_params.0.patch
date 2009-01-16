@@ -84,6 +84,55 @@ index 9cbee04..e0903fe 100644
  }
  
  /* Recursively applies the transforms associated with this actor and
+diff --git a/clutter/cogl/cogl-color.h b/clutter/cogl/cogl-color.h
+index 6cdf52b..05650d3 100644
+--- a/clutter/cogl/cogl-color.h
++++ b/clutter/cogl/cogl-color.h
+@@ -68,7 +68,7 @@ void cogl_color_set_from_4d  (CoglColor *dest,
+                               gdouble alpha);
+ 
+ /**
+- * cogl_color_set_from_4x:
++ * cogl_color_set_from_4f:
+  * @dest: return location for a #CoglColor
+  * @red: value of the red channel, between 0 and %1.0
+  * @green: value of the green channel, between 0 and %1.0
+@@ -79,7 +79,7 @@ void cogl_color_set_from_4d  (CoglColor *dest,
+  *
+  * Since: 1.0
+  */
+-void cogl_color_set_from_4x (CoglColor *dest,
++void cogl_color_set_from_4f (CoglColor *dest,
+                              float  red,
+                              float  green,
+                              float  blue,
+@@ -248,7 +248,7 @@ float     cogl_color_get_alpha       (const CoglColor *color);
+  * Sets the source color using normalized values for each component.
+  * This color will be used for any subsequent drawing operation.
+  *
+- * See also cogl_set_source_color4ub() and cogl_set_source_color4x()
++ * See also cogl_set_source_color4ub() and cogl_set_source_color4f()
+  * if you already have the color components.
+  *
+  * Since: 1.0
+@@ -276,7 +276,7 @@ void cogl_set_source_color4ub (guint8 red,
+                                guint8 alpha);
+ 
+ /**
+- * cogl_set_source_color4x:
++ * cogl_set_source_color4f:
+  * @red: value of the red channel, between 0 and %1.0
+  * @green: value of the green channel, between 0 and %1.0
+  * @blue: value of the blue channel, between 0 and %1.0
+@@ -291,7 +291,7 @@ void cogl_set_source_color4ub (guint8 red,
+  *
+  * Since: 1.0
+  */
+-void cogl_set_source_color4x (float red,
++void cogl_set_source_color4f (float red,
+                               float green,
+                               float blue,
+                               float alpha);
 diff --git a/clutter/cogl/cogl-path.h b/clutter/cogl/cogl-path.h
 index 0d29829..aa37864 100644
 --- a/clutter/cogl/cogl-path.h
@@ -192,6 +241,35 @@ index f37d54d..f8d5745 100644
  
  /**
   * cogl_get_modelview_matrix:
+diff --git a/clutter/cogl/common/cogl-color.c b/clutter/cogl/common/cogl-color.c
+index dac3584..e4b74c6 100644
+--- a/clutter/cogl/common/cogl-color.c
++++ b/clutter/cogl/common/cogl-color.c
+@@ -58,7 +58,7 @@ cogl_color_set_from_4d (CoglColor *dest,
+ }
+ 
+ void
+-cogl_color_set_from_4x (CoglColor *dest,
++cogl_color_set_from_4f (CoglColor *dest,
+                         float  red,
+                         float  green,
+                         float  blue,
+@@ -157,13 +157,13 @@ cogl_set_source_color4ub (guint8 red,
+ }
+ 
+ void
+-cogl_set_source_color4x (float red,
++cogl_set_source_color4f (float red,
+                          float green,
+                          float blue,
+                          float alpha)
+ {
+   CoglColor c = { 0, };
+ 
+-  cogl_color_set_from_4x (&c, red, green, blue, alpha);
++  cogl_color_set_from_4f (&c, red, green, blue, alpha);
+   cogl_set_source_color (&c);
+ }
 diff --git a/clutter/cogl/common/cogl-primitives.c b/clutter/cogl/common/cogl-primitives.c
 index 27834f7..7e9b1b9 100644
 --- a/clutter/cogl/common/cogl-primitives.c
@@ -611,3 +689,48 @@ index 3e23309..3cafc81 100644
  }
  
  static void
+diff --git a/doc/reference/cogl/cogl-sections.txt b/doc/reference/cogl/cogl-sections.txt
+index dcd7c93..db4e16a 100644
+--- a/doc/reference/cogl/cogl-sections.txt
++++ b/doc/reference/cogl/cogl-sections.txt
+@@ -89,7 +89,7 @@ cogl_path_stroke
+ cogl_path_stroke_preserve
+ cogl_set_source_color
+ cogl_set_source_color4ub
+-cogl_set_source_color4x
++cogl_set_source_color4f
+ 
+ <SUBSECTION>
+ cogl_rectangle
+@@ -257,7 +257,7 @@ cogl_color_copy
+ cogl_color_free
+ cogl_color_set_from_4ub
+ cogl_color_set_from_4d
+-cogl_color_set_from_4x
++cogl_color_set_from_4f
+ 
+ <SUBSECTION>
+ cogl_color_get_red
+diff --git a/tests/conform/test-backface-culling.c b/tests/conform/test-backface-culling.c
+index 3b7948e..b22228b 100644
+--- a/tests/conform/test-backface-culling.c
++++ b/tests/conform/test-backface-culling.c
+@@ -121,8 +121,7 @@ on_paint (ClutterActor *actor, TestState *state)
+ 
+       /* Set the color to white so that all the textures will be drawn
+          at their own color */
+-      cogl_set_source_color4x (COGL_FIXED_1, COGL_FIXED_1,
+-                               COGL_FIXED_1, COGL_FIXED_1);
++      cogl_set_source_color4f (1.0f, 1.0f, 1.0f, 1.0f);
+ 
+       x2 = x1 + COGL_FIXED_FROM_INT (TEXTURE_SIZE);
+ 
+@@ -173,7 +172,7 @@ on_paint (ClutterActor *actor, TestState *state)
+       x2 = x1 + COGL_FIXED_FROM_INT (TEXTURE_SIZE);
+ 
+       /* Draw a regular rectangle (this should always show) */
+-      cogl_set_source_color4x (COGL_FIXED_1, 0, 0, COGL_FIXED_1);
++      cogl_set_source_color4f (1.0f, 0.0f, 0.0f, 1.0f);
+       cogl_rectangle (COGL_FIXED_TO_INT (x1), COGL_FIXED_TO_INT (y1),
+                       COGL_FIXED_TO_INT (x2 - x1), COGL_FIXED_TO_INT (y2 - y1));
+ 
