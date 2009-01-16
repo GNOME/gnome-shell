@@ -386,7 +386,7 @@ index d815e3b..aa0ec78 100644
  
  static inline gboolean
 diff --git a/clutter/cogl/gles/cogl-primitives.c b/clutter/cogl/gles/cogl-primitives.c
-index d8fe121..cf305a8 100644
+index d8fe121..1a58805 100644
 --- a/clutter/cogl/gles/cogl-primitives.c
 +++ b/clutter/cogl/gles/cogl-primitives.c
 @@ -39,55 +39,26 @@
@@ -496,7 +496,22 @@ index d8fe121..cf305a8 100644
  
    _cogl_path_get_bounds (nodes_min, nodes_max,
                           &bounds_x, &bounds_y, &bounds_w, &bounds_h);
-@@ -436,10 +405,10 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
+@@ -245,12 +214,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
+       GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+       GE( cogl_wrap_glPushMatrix () );
+       GE( cogl_wrap_glLoadIdentity () );
+-      cogl_rectanglex (-1.0, -1.0,
+-		       (float)(2),
+-		       (float)(2));
+-      cogl_rectanglex (-1.0, -1.0,
+-		       (float)(2),
+-		       (float)(2));
++      cogl_rectangle (-1.0, -1.0, 2, 2);
++      cogl_rectangle (-1.0, -1.0, 2, 2);
+       GE( cogl_wrap_glPopMatrix () );
+       GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+       GE( cogl_wrap_glPopMatrix () );
+@@ -436,10 +401,10 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
  void
  _cogl_path_fill_nodes ()
  {
@@ -512,7 +527,7 @@ index d8fe121..cf305a8 100644
    _COGL_GET_CONTEXT (ctx, NO_RETVAL);
  
 diff --git a/clutter/cogl/gles/cogl.c b/clutter/cogl/gles/cogl.c
-index aa4e4fc..e835085 100644
+index f8c5413..997f24a 100644
 --- a/clutter/cogl/gles/cogl.c
 +++ b/clutter/cogl/gles/cogl.c
 @@ -123,35 +123,15 @@ cogl_scale (float x, float y)
@@ -554,6 +569,35 @@ index aa4e4fc..e835085 100644
  }
  
  static inline gboolean
+@@ -457,7 +437,7 @@ _cogl_add_stencil_clip (float x_offset,
+       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
+ 
+-      cogl_rectanglex (x_offset, y_offset, width, height);
++      cogl_rectangle (x_offset, y_offset, width, height);
+     }
+   else
+     {
+@@ -465,7 +445,7 @@ _cogl_add_stencil_clip (float x_offset,
+ 	 rectangle */
+       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
+       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+-      cogl_rectanglex (x_offset, y_offset, width, height);
++      cogl_rectangle (x_offset, y_offset, width, height);
+ 
+       /* Subtract one from all pixels in the stencil buffer so that
+ 	 only pixels where both the original stencil buffer and the
+@@ -476,9 +456,7 @@ _cogl_add_stencil_clip (float x_offset,
+       GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+       GE( cogl_wrap_glPushMatrix () );
+       GE( cogl_wrap_glLoadIdentity () );
+-      cogl_rectanglex (-1.0, -1.0,
+-		       (float)(2),
+-		       (float)(2));
++      cogl_rectangle (-1.0, -1.0, 2, 2);
+       GE( cogl_wrap_glPopMatrix () );
+       GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+       GE( cogl_wrap_glPopMatrix () );
 diff --git a/clutter/pango/cogl-pango-render.c b/clutter/pango/cogl-pango-render.c
 index 3e23309..3cafc81 100644
 --- a/clutter/pango/cogl-pango-render.c

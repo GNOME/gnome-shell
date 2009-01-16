@@ -163,7 +163,6 @@ patch -p1<fixed-to-float-patches/cogl.h.in.0.patch
 # params. The corresponding interfaces that take integer params are also
 # patched to take floats instead:
 patch -p1<fixed-to-float-patches/remove_cogl_apis_taking_fixed_params.0.patch
-patch -p1<fixed-to-float-patches/remove_cogl_apis_taking_fixed_params.1.patch
 
 #XXX: COGL_PANGO_UNIT_TO_FIXED
 
