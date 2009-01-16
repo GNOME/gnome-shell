@@ -522,14 +522,14 @@ index aa4e4fc..e835085 100644
 -cogl_translatex (float x, float y, float z)
 +cogl_translate (float x, float y, float z)
  {
-   GE( cogl_wrap_glTranslatex (x, y, z) );
+   GE( cogl_wrap_glTranslatef (x, y, z) );
  }
  
  void
 -cogl_translate (gint x, gint y, gint z)
 +cogl_rotate (float angle, float x, float y, float z)
  {
--  GE( cogl_wrap_glTranslatex ((float)(x), 
+-  GE( cogl_wrap_glTranslatef ((float)(x), 
 -			      (float)(y), 
 -			      (float)(z)) );
 -}
@@ -540,17 +540,17 @@ index aa4e4fc..e835085 100644
 -	      float y, 
 -	      float z)
 -{
--  GE( cogl_wrap_glRotatex (angle,x,y,z) );
+-  GE( cogl_wrap_glRotatef (angle,x,y,z) );
 -}
 -
 -void
 -cogl_rotate (gint angle, gint x, gint y, gint z)
 -{
--  GE( cogl_wrap_glRotatex ((float)(angle),
+-  GE( cogl_wrap_glRotatef ((float)(angle),
 -		 (float)(x), 
 -		 (float)(y), 
 -		 (float)(z)) );
-+  GE( cogl_wrap_glRotatex (angle, x, y, z) );
++  GE( cogl_wrap_glRotatef (angle, x, y, z) );
  }
  
  static inline gboolean

@@ -118,6 +118,13 @@ git-checkout clutter/cogl/cogl-fixed.h clutter/cogl/common/cogl-fixed.c
 
 find ./clutter -iname '*.[ch]' ! -iname 'clutter-fixed.h' -exec sed -i 's/ClutterAngle/float/g' {} \;
 
+# use the floating point names for GL ES functions instead of the
+# fixed. These get #define'd to the float versions in one of the
+# patches anyway but the names should be fixed up to avoid confusion
+find ./clutter/cogl -iname '*.[ch]' -exec perl -p -i -e \
+'s/\b(cogl_wrap_(?:glMultMatrix|glFrustum|glScale|glTranslate
+|glRotate|glOrtho|glTexEnv|glClipPlane|glFog|glColor4))x(v?)\b/$1f$2/gx' {} \;
+
 echo "Cogl API to remove/replace with float versions:"
 find ./clutter/ -iname '*.c' -exec grep '^cogl_[a-zA-Z_]*x ' {} \; | cut -d' ' -f1|grep -v 'box$'|grep -v 'matrix$'
 echo "Clutter API to remove/replace with float versions:"

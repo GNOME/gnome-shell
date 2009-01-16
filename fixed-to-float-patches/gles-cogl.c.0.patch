@@ -25,15 +25,6 @@ index 422d8b6..cb7aa8e 100644
  
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
    cogl_wrap_glDisable (GL_LIGHTING);
-@@ -315,7 +316,7 @@ cogl_set_source_color (const CoglColor *color)
- 
- #else
-   /* conversion can cause issues with picking on some gles implementations */
--  GE( cogl_wrap_glColor4x (cogl_color_get_red (color),
-+  GE( cogl_wrap_glColor4f (cogl_color_get_red (color),
-                            cogl_color_get_green (color),
-                            cogl_color_get_blue (color),
-                            cogl_color_get_alpha (color)) );
 @@ -365,9 +366,8 @@ set_clip_plane (GLint plane_num,
  
    /* Calculate the angle between the axes and the line crossing the
@@ -87,11 +78,11 @@ index 422d8b6..cb7aa8e 100644
      }
    
  
--  GE( cogl_wrap_glTranslatex (-1 << 15, -1 << 15, -z_camera) );
+-  GE( cogl_wrap_glTranslatef (-1 << 15, -1 << 15, -z_camera) );
 +
-+  GE( cogl_wrap_glTranslatex (-0.5f, -0.5f, -z_camera) );
++  GE( cogl_wrap_glTranslatef (-0.5f, -0.5f, -z_camera) );
  
-   GE( cogl_wrap_glScalex ( 1.0 / width,
+   GE( cogl_wrap_glScalef ( 1.0 / width,
                            -1.0 / height,
 @@ -737,13 +735,13 @@ cogl_features_available (CoglFeatureFlags features)
  void

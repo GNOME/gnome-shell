@@ -22,7 +22,7 @@ index b2e19eb..a7800c5 100644
  }
  
  void
--cogl_wrap_glColor4x (GLclampx r, GLclampx g, GLclampx b, GLclampx a)
+-cogl_wrap_glColor4f (GLclampx r, GLclampx g, GLclampx b, GLclampx a)
 +cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a)
  {
 -  glVertexAttrib4f (COGL_GLES2_WRAPPER_COLOR_ATTRIB,
