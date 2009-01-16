@@ -4,29 +4,34 @@
 # CoglFixed type + macros using fixed point so now we convert all uses of
 # the Cogl fixed point macros within Clutter proper to use the ClutterFixed
 # macros instead.
-find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i 's/COGL_FIXED_MUL/CLUTTER_FIXED_MUL/g' {} \;
-find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i 's/COGL_FIXED_DIV/CLUTTER_FIXED_DIV/g' {} \;
-find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i 's/COGL_FIXED_FAST_MUL/CLUTTER_FIXED_MUL/g' {} \;
-find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i 's/COGL_FIXED_FAST_DIV/CLUTTER_FIXED_DIV/g' {} \;
-find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i 's/COGL_FIXED_FROM_FLOAT/CLUTTER_FLOAT_TO_FIXED/g' {} \;
-find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i 's/COGL_FIXED_TO_FLOAT/CLUTTER_FIXED_TO_FLOAT/g' {} \;
-find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i 's/COGL_FIXED_TO_DOUBLE/CLUTTER_FIXED_TO_DOUBLE/g' {} \;
-find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i 's/COGL_FIXED_PI/CFX_PI/g' {} \;
+find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i \
+-e 's/COGL_FIXED_MUL/CLUTTER_FIXED_MUL/g' \
+-e 's/COGL_FIXED_DIV/CLUTTER_FIXED_DIV/g' \
+-e 's/COGL_FIXED_FAST_MUL/CLUTTER_FIXED_MUL/g' \
+-e 's/COGL_FIXED_FAST_DIV/CLUTTER_FIXED_DIV/g' \
+-e 's/COGL_FIXED_FROM_FLOAT/CLUTTER_FLOAT_TO_FIXED/g' \
+-e 's/COGL_FIXED_TO_FLOAT/CLUTTER_FIXED_TO_FLOAT/g' \
+-e 's/COGL_FIXED_TO_DOUBLE/CLUTTER_FIXED_TO_DOUBLE/g' \
+-e 's/COGL_FIXED_PI/CFX_PI/g' \
+{} \;
 
 # All remaining uses of the Cogl fixed point API now get expanded out to simply
 # use float calculations... (we will restore the cogl-fixed code itself later)
 
-# XXX: This assumes that no nested function - with multiple arguments - is ever
-# found as the RHS argument to COGL_FIXED_MUL. This is because we simply replace
-# the last ',' with the * operator. If you want to double check that's still true:
+# XXX: The following three assume that no nested function - with
+# multiple arguments - is ever found as the RHS argument to
+# COGL_FIXED_MUL. This is because we simply replace the last ',' with
+# the * operator. If you want to double check that's still true:
 # $ grep -r --include=*.c COGL_FIXED_MUL *|less
-find ./clutter -iname '*.[ch]' -exec sed -i -r 's/COGL_FIXED_MUL (.*),/\1 */g' {} \;
-# XXX: We use the same assumption here...
-find ./clutter -iname '*.[ch]' -exec sed -i -r 's|COGL_FIXED_FAST_DIV (.*),|\1 /|g' {} \;
-# XXX: And again here. (Note in this case there were examples of COGL_FIXED_MUL
-# being used as the RHS argument, but since we have already replaced instances
-# of COGL_FIXED_MUL, that works out ok.
-find ./clutter -iname '*.[ch]' -exec sed -i -r 's|COGL_FIXED_DIV (.*),|\1 /|g' {} \;
+#
+# XXX: (Note in the third regexp there were examples of COGL_FIXED_MUL
+# being used as the RHS argument, but since we have already replaced
+# instances of COGL_FIXED_MUL, that works out ok.
+find ./clutter -iname '*.[ch]' -exec sed -i -r \
+-e 's/COGL_FIXED_MUL (.*),/\1 */g' \
+-e 's|COGL_FIXED_FAST_DIV (.*),|\1 /|g' \
+-e 's|COGL_FIXED_DIV (.*),|\1 /|g' \
+{} \;
 
 # A fix due to the assumptions used above
 sed -i 's/#define DET2X(a,b,c,d).*/#define DET2X(a,b,c,d)   ((a * d) - (b * c))/g' ./clutter/clutter-actor.c
@@ -35,45 +40,51 @@ find ./clutter/cogl/gles -iname '*.[ch]' -exec sed -i 's/GLfixed/GLfloat/g' {} \
 
 #we get some redundant brackets like this, but C's automatic type promotion
 #works out fine for most cases...
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_TO_INT//g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_FROM_INT /(float)/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_FROM_INT/(float)/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_TO_FLOAT//g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_FROM_FLOAT//g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_TO_DOUBLE /(double)/g' {} \;
-
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_FLOOR/floorf/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_CEIL/ceilf/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_360/360.0/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_240/240.0/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_255/255.0/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_180/180.0/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_120/120.0/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_60/60.0/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_1/1.0/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_0_5/0.5/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/COGL_FIXED_PI/G_PI/g' {} \;
-
-find ./clutter -iname '*.[ch]' -exec sed -i -r 's/COGL_ANGLE_FROM_DEG \((.*)\),/\1,/g' {} \;
-
-find ./clutter -iname '*.[ch]' -exec perl -p -i -e "s|cogl_angle_cos \((.*?)\)|cosf (\1 * (G_PI/180.0))|;" {} \;
-find ./clutter -iname '*.[ch]' -exec perl -p -i -e "s|cogl_angle_sin \((.*?)\)|sinf (\1 * (G_PI/180.0))|;" {} \;
-find ./clutter -iname '*.[ch]' -exec perl -p -i -e "s|cogl_angle_tan \((.*?)\)|tanf (\1 * (G_PI/180.0))|;" {} \;
+find ./clutter -iname '*.[ch]' -exec sed -r -i \
+-e 's/COGL_FIXED_TO_INT//g' \
+-e 's/COGL_FIXED_FROM_INT /(float)/g' \
+-e 's/COGL_FIXED_FROM_INT/(float)/g' \
+-e 's/COGL_FIXED_TO_FLOAT//g' \
+-e 's/COGL_FIXED_FROM_FLOAT//g' \
+-e 's/COGL_FIXED_TO_DOUBLE /(double)/g' \
+\
+-e 's/COGL_FIXED_FLOOR/floorf/g' \
+-e 's/COGL_FIXED_CEIL/ceilf/g' \
+-e 's/COGL_FIXED_360/360.0/g' \
+-e 's/COGL_FIXED_240/240.0/g' \
+-e 's/COGL_FIXED_255/255.0/g' \
+-e 's/COGL_FIXED_180/180.0/g' \
+-e 's/COGL_FIXED_120/120.0/g' \
+-e 's/COGL_FIXED_60/60.0/g' \
+-e 's/COGL_FIXED_1/1.0/g' \
+-e 's/COGL_FIXED_0_5/0.5/g' \
+-e 's/COGL_FIXED_PI/G_PI/g' \
+\
+-e 's/COGL_ANGLE_FROM_DEG \((.*)\),/\1,/g' \
+{} \; \
+\
+-exec perl -p -i \
+-e "s|cogl_angle_cos \((.*?)\)|cosf (\1 * (G_PI/180.0))|;" \
+-e "s|cogl_angle_sin \((.*?)\)|sinf (\1 * (G_PI/180.0))|;" \
+-e "s|cogl_angle_tan \((.*?)\)|tanf (\1 * (G_PI/180.0))|;" \
+{} \;
 
 #XXX: NB: cogl_fixed_div must be done before mul since there is a case were they
 #are nested which would otherwise break the assumption used here that the last
 #coma of the line can simply be replaced with the corresponding operator
-find ./clutter -iname '*.[ch]' -exec sed -i -r 's|cogl_fixed_div (.*),|\1 /|g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i -r 's|cogl_fixed_mul (.*),|\1 *|g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_fixed_pow2/pow2f/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_fixed_pow/powf/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_fixed_log2/log2f/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_fixed_sqrt/sqrtf/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_fixed_cos/cosf/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_fixed_sin/sinf/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_fixed_atan2/atan2f/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_fixed_atan/atanf/g' {} \;
-find ./clutter -iname '*.[ch]' -exec sed -i 's/cogl_fixed_tan/tanf/g' {} \;
+find ./clutter -iname '*.[ch]' -exec sed -i -r \
+-e 's|cogl_fixed_div (.*),|\1 /|g' \
+-e 's|cogl_fixed_mul (.*),|\1 *|g' \
+-e 's/cogl_fixed_pow2/pow2f/g' \
+-e 's/cogl_fixed_pow/powf/g' \
+-e 's/cogl_fixed_log2/log2f/g' \
+-e 's/cogl_fixed_sqrt/sqrtf/g' \
+-e 's/cogl_fixed_cos/cosf/g' \
+-e 's/cogl_fixed_sin/sinf/g' \
+-e 's/cogl_fixed_atan2/atan2f/g' \
+-e 's/cogl_fixed_atan/atanf/g' \
+-e 's/cogl_fixed_tan/tanf/g' \
+{} \;
 
 #TODO: fixup gles/cogl.c set_clip_plane
 
@@ -94,8 +105,8 @@ mv ./tmp clutter/cogl/common/cogl-primitives.c
 #find ./clutter -iname '*.[ch]' -exec sed -i 's|>> 1|/ 2|g' {} \;
 #find ./clutter -iname '*.[ch]' -exec sed -i 's|<< 1|* 2|g' {} \;
 
-sed -i 's|>> 1|/ 2|g' ./clutter/cogl/common/cogl-primitives.c
-sed -i 's|<< 1|* 2|g' ./clutter/cogl/common/cogl-primitives.c
+sed -i -e 's|>> 1|/ 2|g' -e 's|<< 1|* 2|g' \
+    ./clutter/cogl/common/cogl-primitives.c
 #find ./clutter -iname '*.[ch]' -exec sed -i 's|<< 1|* 2|g' {} \;
 
 
