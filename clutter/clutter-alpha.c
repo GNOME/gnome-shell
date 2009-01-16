@@ -325,9 +325,8 @@ clutter_alpha_get_alpha (ClutterAlpha *alpha)
  * @alpha: A #ClutterAlpha
  * @closure: A #GClosure
  *
- * Sets the #GClosure used to compute
- * the alpha value at each frame of the #ClutterTimeline
- * bound to @alpha.
+ * Sets the #GClosure used to compute the alpha value at each
+ * frame of the #ClutterTimeline bound to @alpha.
  *
  * Since: 0.8
  */
@@ -369,6 +368,8 @@ clutter_alpha_set_closure (ClutterAlpha *alpha,
  * Sets the #ClutterAlphaFunc function used to compute
  * the alpha value at each frame of the #ClutterTimeline
  * bound to @alpha.
+ *
+ * This function will not register @func as a global alpha function.
  *
  * Since: 0.2
  */
@@ -483,7 +484,7 @@ clutter_alpha_new (void)
  *
  * Return Value: the newly created #ClutterAlpha
  *
- * Since: 0.2
+ * Since: 1.0
  */
 ClutterAlpha *
 clutter_alpha_new_full (ClutterTimeline *timeline,
@@ -507,6 +508,10 @@ clutter_alpha_new_full (ClutterTimeline *timeline,
  *
  * Creates a new #ClutterAlpha instances and sets the timeline
  * and the alpha function.
+ *
+ * This function will not register @func as a global alpha function.
+ *
+ * See also clutter_alpha_set_timeline() and clutter_alpha_set_func().
  *
  * Return value: the newly created #ClutterAlpha
  *
