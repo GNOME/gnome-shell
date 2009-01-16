@@ -101,8 +101,8 @@ void                 clutter_animation_set_object      (ClutterAnimation     *an
                                                         GObject              *object);
 GObject *            clutter_animation_get_object      (ClutterAnimation     *animation);
 void                 clutter_animation_set_mode        (ClutterAnimation     *animation,
-                                                        ClutterAnimationMode  mode);
-ClutterAnimationMode clutter_animation_get_mode        (ClutterAnimation     *animation);
+                                                        gulong                mode);
+gulong               clutter_animation_get_mode        (ClutterAnimation     *animation);
 void                 clutter_animation_set_duration    (ClutterAnimation     *animation,
                                                         gint                  msecs);
 guint                clutter_animation_get_duration    (ClutterAnimation     *animation);
@@ -130,12 +130,12 @@ ClutterInterval     *clutter_animation_get_interval    (ClutterAnimation     *an
                                                         const gchar          *property_name);
 
 ClutterAnimation *   clutter_actor_animate               (ClutterActor         *actor,
-                                                          ClutterAnimationMode  mode,
+                                                          gulong                mode,
                                                           guint                 duration,
                                                           const gchar          *first_property_name,
                                                           ...) G_GNUC_NULL_TERMINATED;
 ClutterAnimation *   clutter_actor_animate_with_timeline (ClutterActor         *actor,
-                                                          ClutterAnimationMode  mode,
+                                                          gulong                mode,
                                                           ClutterTimeline      *timeline,
                                                           const gchar          *first_property_name,
                                                           ...) G_GNUC_NULL_TERMINATED;

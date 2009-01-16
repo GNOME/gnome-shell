@@ -84,7 +84,7 @@ struct _ClutterAnimationPrivate
 
   GHashTable *properties;
 
-  ClutterAnimationMode mode;
+  gulong mode;
 
   guint loop : 1;
   guint duration;
@@ -172,7 +172,7 @@ clutter_animation_set_property (GObject      *gobject,
       break;
 
     case PROP_MODE:
-      clutter_animation_set_mode (animation, g_value_get_enum (value));
+      clutter_animation_set_mode (animation, g_value_get_ulong (value));
       break;
 
     case PROP_DURATION:
@@ -212,7 +212,7 @@ clutter_animation_get_property (GObject    *gobject,
       break;
 
     case PROP_MODE:
-      g_value_set_enum (value, priv->mode);
+      g_value_set_ulong (value, priv->mode);
       break;
 
     case PROP_DURATION:
@@ -281,16 +281,18 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
   /**
    * ClutterAnimation:mode:
    *
-   * The animation mode.
+   * The animation mode, either a value from #ClutterAnimationMode
+   * or a value returned by clutter_alpha_register_func(). The
+   * default value is %CLUTTER_LINEAR.
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_enum ("mode",
-                             "Mode",
-                             "The mode of the animation",
-                             CLUTTER_TYPE_ANIMATION_MODE,
-                             CLUTTER_LINEAR,
-                             CLUTTER_PARAM_READWRITE);
+  pspec = g_param_spec_ulong ("mode",
+                              "Mode",
+                              "The mode of the animation",
+                              0, G_MAXULONG,
+                              CLUTTER_LINEAR,
+                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_MODE, pspec);
 
   /**
@@ -820,15 +822,15 @@ clutter_animation_set_mode_internal (ClutterAnimation *animation,
 /**
  * clutter_animation_set_mode:
  * @animation: a #ClutterAnimation
- * @mode: a #ClutterAnimationMode
+ * @mode: an animation mode logical id
  *
  * Sets the animation @mode of @animation.
  *
  * Since: 1.0
  */
 void
-clutter_animation_set_mode (ClutterAnimation     *animation,
-                            ClutterAnimationMode  mode)
+clutter_animation_set_mode (ClutterAnimation *animation,
+                            gulong            mode)
 {
   ClutterAnimationPrivate *priv;
 
@@ -848,11 +850,11 @@ clutter_animation_set_mode (ClutterAnimation     *animation,
  *
  * Retrieves the animation mode of @animation.
  *
- * Return value: the #ClutterAnimationMode for the animation
+ * Return value: the mode for the animation
  *
  * Since: 1.0
  */
-ClutterAnimationMode
+gulong
 clutter_animation_get_mode (ClutterAnimation *animation)
 {
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), CLUTTER_LINEAR);
@@ -1301,7 +1303,7 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
 /**
  * clutter_actor_animate_with_timeline:
  * @actor: a #ClutterActor
- * @mode: a #ClutterAnimationMode value
+ * @mode: an animation mode logical id
  * @timeline: a #ClutterTimeline
  * @first_property_name: the name of a property
  * @VarArgs: a %NULL terminated list of property names and
@@ -1322,10 +1324,10 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
  * Since: 1.0
  */
 ClutterAnimation *
-clutter_actor_animate_with_timeline (ClutterActor         *actor,
-                                     ClutterAnimationMode  mode,
-                                     ClutterTimeline      *timeline,
-                                     const gchar          *first_property_name,
+clutter_actor_animate_with_timeline (ClutterActor    *actor,
+                                     gulong           mode,
+                                     ClutterTimeline *timeline,
+                                     const gchar     *first_property_name,
                                      ...)
 {
   ClutterAnimation *animation;
@@ -1359,7 +1361,7 @@ clutter_actor_animate_with_timeline (ClutterActor         *actor,
 /**
  * clutter_actor_animate:
  * @actor: a #ClutterActor
- * @mode: a #ClutterAnimationMode value
+ * @mode: an animation mode logical id
  * @duration: duration of the animation, in milliseconds
  * @first_property_name: the name of a property
  * @VarArgs: a %NULL terminated list of property names and
@@ -1416,10 +1418,10 @@ clutter_actor_animate_with_timeline (ClutterActor         *actor,
  * Since: 1.0
  */
 ClutterAnimation *
-clutter_actor_animate (ClutterActor         *actor,
-                       ClutterAnimationMode  mode,
-                       guint                 duration,
-                       const gchar          *first_property_name,
+clutter_actor_animate (ClutterActor *actor,
+                       gulong        mode,
+                       guint         duration,
+                       const gchar  *first_property_name,
                        ...)
 {
   ClutterAnimation *animation;
