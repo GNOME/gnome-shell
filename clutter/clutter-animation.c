@@ -824,7 +824,9 @@ clutter_animation_set_mode_internal (ClutterAnimation *animation,
  * @animation: a #ClutterAnimation
  * @mode: an animation mode logical id
  *
- * Sets the animation @mode of @animation.
+ * Sets the animation @mode of @animation. The animation @mode is
+ * a logical id, either coming from the #ClutterAnimationMode enumeration
+ * or the return value of clutter_alpha_register_func().
  *
  * Since: 1.0
  */
@@ -848,7 +850,8 @@ clutter_animation_set_mode (ClutterAnimation *animation,
  * clutter_animation_get_mode:
  * @animation: a #ClutterAnimation
  *
- * Retrieves the animation mode of @animation.
+ * Retrieves the animation mode of @animation, as set by
+ * clutter_animation_set_mode().
  *
  * Return value: the mode for the animation
  *
@@ -1382,6 +1385,9 @@ clutter_actor_animate_with_timeline (ClutterActor    *actor,
  *
  * will make width and height properties of the #ClutterActor "rectangle"
  * grow linearly between the current value and 100 pixels, in 250 milliseconds.
+ *
+ * The animation @mode is a logical id, either from the #ClutterAnimationMode
+ * enumeration of from clutter_alpha_register_func().
  *
  * All the properties specified will be animated between the current value
  * and the final value. If a property should be set at the beginning of
