@@ -4,7 +4,7 @@
 # CoglFixed type + macros using fixed point so now we convert all uses of
 # the Cogl fixed point macros within Clutter proper to use the ClutterFixed
 # macros instead.
-find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i \
+find ./clutter ./tests -maxdepth 1 -iname '*.c' -exec sed -i \
 -e 's/COGL_FIXED_MUL/CLUTTER_FIXED_MUL/g' \
 -e 's/COGL_FIXED_DIV/CLUTTER_FIXED_DIV/g' \
 -e 's/COGL_FIXED_FAST_MUL/CLUTTER_FIXED_MUL/g' \
@@ -27,7 +27,7 @@ find ./clutter -maxdepth 1 -iname '*.c' -exec sed -i \
 # XXX: (Note in the third regexp there were examples of COGL_FIXED_MUL
 # being used as the RHS argument, but since we have already replaced
 # instances of COGL_FIXED_MUL, that works out ok.
-find ./clutter -iname '*.[ch]' -exec sed -i -r \
+find ./clutter ./tests -iname '*.[ch]' -exec sed -i -r \
 -e 's/COGL_FIXED_MUL (.*),/\1 */g' \
 -e 's|COGL_FIXED_FAST_DIV (.*),|\1 /|g' \
 -e 's|COGL_FIXED_DIV (.*),|\1 /|g' \
@@ -40,7 +40,7 @@ find ./clutter/cogl/gles -iname '*.[ch]' -exec sed -i 's/GLfixed/GLfloat/g' {} \
 
 #we get some redundant brackets like this, but C's automatic type promotion
 #works out fine for most cases...
-find ./clutter -iname '*.[ch]' -exec sed -r -i \
+find ./clutter ./tests -iname '*.[ch]' -exec sed -r -i \
 -e 's/COGL_FIXED_TO_INT//g' \
 -e 's/COGL_FIXED_FROM_INT /(float)/g' \
 -e 's/COGL_FIXED_FROM_INT/(float)/g' \
@@ -72,7 +72,7 @@ find ./clutter -iname '*.[ch]' -exec sed -r -i \
 #XXX: NB: cogl_fixed_div must be done before mul since there is a case were they
 #are nested which would otherwise break the assumption used here that the last
 #coma of the line can simply be replaced with the corresponding operator
-find ./clutter -iname '*.[ch]' -exec sed -i -r \
+find ./clutter ./tests -iname '*.[ch]' -exec sed -i -r \
 -e 's|cogl_fixed_div (.*),|\1 /|g' \
 -e 's|cogl_fixed_mul (.*),|\1 *|g' \
 -e 's/cogl_fixed_pow2/pow2f/g' \
@@ -110,9 +110,11 @@ sed -i -e 's|>> 1|/ 2|g' -e 's|<< 1|* 2|g' \
 #find ./clutter -iname '*.[ch]' -exec sed -i 's|<< 1|* 2|g' {} \;
 
 
-find ./clutter -iname '*.[ch]' -exec sed -i 's/CoglFixed/float/g' {} \;
+find ./clutter ./tests -iname '*.[ch]' \
+-exec sed -i 's/CoglFixed/float/g' {} \;
 #XXX: This might need changing later...
-find ./clutter -iname '*.[ch]' -exec sed -i 's/CoglFixedVec2/CoglVec2/g' {} \;
+find ./clutter ./tests -iname '*.[ch]' \
+-exec sed -i 's/CoglFixedVec2/CoglVec2/g' {} \;
 sed -i 's/CoglFixed/float/g' ./clutter/cogl/cogl.h.in
 
 # maintain the existing CoglFixed code as utility code for applications:
@@ -120,14 +122,15 @@ sed -i 's/float:/CoglFixed:/g' clutter/cogl/cogl-types.h
 sed -i 's/gint32 float/gint32 CoglFixed/g' clutter/cogl/cogl-types.h
 git-checkout clutter/cogl/cogl-fixed.h clutter/cogl/common/cogl-fixed.c
 
-find ./clutter -iname '*.[ch]' -exec sed -i 's/CoglAngle/float/g' {} \;
+find ./clutter ./tests -iname '*.[ch]' -exec sed -i 's/CoglAngle/float/g' {} \;
 
 # maintain the existing CoglAngle code as utility code for applications:
 sed -i 's/float:/CoglAngle:/g' clutter/cogl/cogl-types.h
 sed -i 's/gint32 float/gint32 CoglAngle/g' clutter/cogl/cogl-types.h
 git-checkout clutter/cogl/cogl-fixed.h clutter/cogl/common/cogl-fixed.c
 
-find ./clutter -iname '*.[ch]' ! -iname 'clutter-fixed.h' -exec sed -i 's/ClutterAngle/float/g' {} \;
+find ./clutter ./tests -iname '*.[ch]' ! -iname 'clutter-fixed.h' \
+-exec sed -i 's/ClutterAngle/float/g' {} \;
 
 # use the floating point names for GL ES functions instead of the
 # fixed. These get #define'd to the float versions in one of the
@@ -137,9 +140,9 @@ find ./clutter/cogl -iname '*.[ch]' -exec perl -p -i -e \
 |glRotate|glOrtho|glTexEnv|glClipPlane|glFog|glColor4))x(v?)\b/$1f$2/gx' {} \;
 
 echo "Cogl API to remove/replace with float versions:"
-find ./clutter/ -iname '*.c' -exec grep '^cogl_[a-zA-Z_]*x ' {} \; | cut -d' ' -f1|grep -v 'box$'|grep -v 'matrix$'
+find ./clutter/ ./tests -iname '*.c' -exec grep '^cogl_[a-zA-Z_]*x ' {} \; | cut -d' ' -f1|grep -v 'box$'|grep -v 'matrix$'
 echo "Clutter API to remove/replace with float versions:"
-find ./clutter/ -iname '*.c' -exec grep '^clutter_[a-zA-Z_]*x ' {} \; | cut -d' ' -f1|grep -v 'box$'|grep -v 'matrix$'|grep -v '_x$'
+find ./clutter/ ./tests -iname '*.c' -exec grep '^clutter_[a-zA-Z_]*x ' {} \; | cut -d' ' -f1|grep -v 'box$'|grep -v 'matrix$'|grep -v '_x$'
 
 #
 # Now the last mile is dealt with manually with a bunch of patches...
