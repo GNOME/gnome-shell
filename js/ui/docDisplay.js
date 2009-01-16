@@ -65,11 +65,7 @@ DocDisplayItem.prototype = {
     // Opens a document represented by this display item.
     launch : function() {
         let appName = this._docInfo.last_application();
-        let appData = this._docInfo.get_application_info(appName);
-        let success = appData[0]; 
-        let appExec = appData[1];
-        let count = appData[2];
-        let time = appData[3];
+        let [success, appExec, count, time] = this._docInfo.get_application_info(appName);
         if (success) {
             log("Will open a document with the following command: " + appExec);
             // TODO: Change this once better support for creating GAppInfo is added to 
