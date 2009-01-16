@@ -199,6 +199,12 @@ clutter_stage_egl_realize (ClutterActor *actor)
           CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
           return;
         }
+
+      /* since we only have one size and it cannot change, we
+       * just need to update the GL viewport now that we have
+       * been realized
+       */
+      CLUTTER_SET_PRIVATE_FLAGS (actor, CLUTTER_ACTOR_SYNC_MATRICES);
     }
   else
     {
