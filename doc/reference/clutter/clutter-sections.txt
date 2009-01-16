@@ -2,17 +2,17 @@
 <FILE>clutter-media</FILE>
 <TITLE>ClutterMedia</TITLE>
 ClutterMedia
-ClutterMediaInterface
+ClutterMediaIface
 clutter_media_set_uri
 clutter_media_get_uri
 clutter_media_set_playing
 clutter_media_get_playing
-clutter_media_set_position
-clutter_media_get_position
-clutter_media_set_volume
-clutter_media_get_volume
+clutter_media_set_progress
+clutter_media_get_progress
+clutter_media_set_audio_volume
+clutter_media_get_audio_volume
 clutter_media_get_can_seek
-clutter_media_get_buffer_percent
+clutter_media_get_buffer_fill
 clutter_media_get_duration
 clutter_media_set_filename
 <SUBSECTION Standard>
