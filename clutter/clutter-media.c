@@ -3,9 +3,11 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
+ * Authored By: Matthew Allum  <mallum@openedhand.com>
+ *              Emmanuele Bassi <ebassi@linux.intel.com>
  *
  * Copyright (C) 2006 OpenedHand
+ * Copyright (C) 2009 Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,22 +20,20 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
  * SECTION:clutter-media
- * @short_description: An interface for controlling playback of media data.
+ * @short_description: An interface for controlling playback of media data
  *
  * #ClutterMedia is an interface for controlling playback of media sources.
  *
- * It is not implemented inside Clutter, but other integration libraries
- * like Clutter-GStreamer, implement it to offer a uniform API for
- * applications.
+ * Clutter core does not provide an implementation of this interface, but
+ * other integration libraries like Clutter-GStreamer implement it to offer
+ * a uniform API for applications.
  *
- * ClutterMedia is available since Clutter 0.2
+ * #ClutterMedia is available since Clutter 0.2
  */
 
 #ifdef HAVE_CONFIG_H
@@ -53,118 +53,119 @@ enum
   LAST_SIGNAL
 };
 
-static void clutter_media_base_init (gpointer g_class);
-
 static guint media_signals[LAST_SIGNAL] = { 0, };
-
-GType
-clutter_media_get_type (void)
-{
-  static GType media_type = 0;
-
-  if (!media_type)
-    {
-      static const GTypeInfo media_info =
-      {
-	sizeof (ClutterMediaInterface),
-	clutter_media_base_init,
-	NULL,
-      };
-
-      media_type = g_type_register_static (G_TYPE_INTERFACE, "ClutterMedia",
-					   &media_info, 0);
-    }
-
-  return media_type;
-}
 
 static void
 clutter_media_base_init (gpointer g_iface)
 {
-  static gboolean initialized = FALSE;
+  static gboolean was_initialized = FALSE;
 
-  if (G_UNLIKELY (!initialized))
+  if (G_UNLIKELY (!was_initialized))
     {
-      initialized = TRUE;
+      GParamSpec *pspec = NULL;
 
-      /* props */
+      was_initialized = TRUE;
 
-      g_object_interface_install_property
-	(g_iface,
-	 g_param_spec_string
-	 ("uri",
-	  "URI",
-	  "The loaded URI.",
-	  NULL,
-	  G_PARAM_READWRITE |
-	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
-	  G_PARAM_STATIC_BLURB));
+      /**
+       * ClutterMedia:uri:
+       *
+       * The location of a media file, expressed as a valid URI.
+       *
+       * Since: 0.2
+       */
+      pspec = g_param_spec_string ("uri",
+                                   "URI",
+                                   "URI of a media file",
+                                   NULL,
+                                   CLUTTER_PARAM_READWRITE);
+      g_object_interface_install_property (g_iface, pspec);
 
-      g_object_interface_install_property
-	(g_iface,
-	 g_param_spec_boolean
-	 ("playing",
-	  "Playing",
-	  "TRUE if playing.",
-	  FALSE,
-	  G_PARAM_READWRITE |
-	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
-	  G_PARAM_STATIC_BLURB));
+      /**
+       * ClutterMedia:playing:
+       *
+       * Whether the #ClutterMedia actor is playing.
+       *
+       * Since: 0.2
+       */
+      pspec = g_param_spec_boolean ("playing",
+                                    "Playing",
+                                    "Wheter the actor is playing",
+                                    FALSE,
+                                    CLUTTER_PARAM_READWRITE);
+      g_object_interface_install_property (g_iface, pspec);
 
-      g_object_interface_install_property
-	(g_iface,
-	 g_param_spec_int
-	 ("position",
-	  "Position",
-	  "The position in the current stream in seconds.",
-	  0, G_MAXINT, 0,
-	  G_PARAM_READWRITE |
-	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
-	  G_PARAM_STATIC_BLURB));
+      /**
+       * ClutterMedia:progress:
+       *
+       * The current progress of the playback, as a normalized
+       * value between 0.0 and 1.0.
+       *
+       * Since: 1.0
+       */
+      pspec = g_param_spec_double ("progress",
+                                   "Progress",
+                                   "Current progress of the playback",
+                                   0.0, 1.0, 0.0,
+                                   CLUTTER_PARAM_READWRITE);
+      g_object_interface_install_property (g_iface, pspec);
 
-      g_object_interface_install_property
-	(g_iface,
-	 g_param_spec_double
-	 ("volume",
-	  "Volume",
-	  "The audio volume.",
-	  0, 100, 50,
-	  G_PARAM_READWRITE |
-	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
-	  G_PARAM_STATIC_BLURB));
+      /**
+       * ClutterMedia:audio-volume:
+       *
+       * The volume of the audio, as a normalized value between
+       * 0.0 and 1.0.
+       *
+       * Since: 1.0
+       */
+      pspec = g_param_spec_double ("audio-volume",
+                                   "Audio Volume",
+                                   "The volume of the audio",
+                                   0.0, 1.0, 0.5,
+                                   CLUTTER_PARAM_READWRITE);
+      g_object_interface_install_property (g_iface, pspec);
 
-      g_object_interface_install_property
-	(g_iface,
-	 g_param_spec_boolean
-	 ("can-seek",
-	  "Can seek",
-	  "TRUE if the current stream is seekable.",
-	  FALSE,
-	  G_PARAM_READABLE |
-	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
-	  G_PARAM_STATIC_BLURB));
+      /**
+       * ClutterMedia:can-seek:
+       *
+       * Whether the current stream is seekable.
+       *
+       * Since: 0.2
+       */
+      pspec = g_param_spec_boolean ("can-seek",
+                                    "Can Seek",
+                                    "Whether the current stream is seekable",
+                                    FALSE,
+                                    CLUTTER_PARAM_READABLE);
+      g_object_interface_install_property (g_iface, pspec);
 
-      g_object_interface_install_property
-	(g_iface,
-	 g_param_spec_int
-	 ("buffer-percent",
-	  "Buffer percent",
-	  "The percentage the current stream buffer is filled.",
-	  0, 100, 0,
-	  G_PARAM_READABLE |
-	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
-	  G_PARAM_STATIC_BLURB));
+      /**
+       * ClutterMedia:buffer-fill:
+       *
+       * The fill level of the buffer for the current stream,
+       * as a value between 0.0 and 1.0.
+       *
+       * Since: 1.0
+       */
+      pspec = g_param_spec_double ("buffer-fill",
+                                   "Buffer Fill",
+                                   "The fill level of the buffer",
+                                   0.0, 1.0, 0.0,
+                                   CLUTTER_PARAM_READABLE);
+      g_object_interface_install_property (g_iface, pspec);
 
-      g_object_interface_install_property
-	(g_iface,
-	 g_param_spec_int
-	 ("duration",
-	  "Duration",
-	  "The duration of the current stream in seconds.",
-	  0, G_MAXINT, 0,
-	  G_PARAM_READABLE |
-	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
-	  G_PARAM_STATIC_BLURB));
+      /**
+       * ClutterMedia:duration:
+       *
+       * The duration of the current stream, in seconds
+       *
+       * Since: 0.2
+       */
+      pspec = g_param_spec_uint ("duration",
+                                 "Duration",
+                                 "The duration of the stream, in seconds",
+                                 0, G_MAXUINT, 0,
+                                 CLUTTER_PARAM_READABLE);
+      g_object_interface_install_property (g_iface, pspec);
 
       /**
        * ClutterMedia::eos:
@@ -178,7 +179,7 @@ clutter_media_base_init (gpointer g_iface)
         g_signal_new ("eos",
                       CLUTTER_TYPE_MEDIA,
                       G_SIGNAL_RUN_LAST,
-                      G_STRUCT_OFFSET (ClutterMediaInterface, eos),
+                      G_STRUCT_OFFSET (ClutterMediaIface, eos),
                       NULL, NULL,
                       g_cclosure_marshal_VOID__VOID,
                       G_TYPE_NONE, 0);
@@ -195,7 +196,7 @@ clutter_media_base_init (gpointer g_iface)
         g_signal_new ("error",
                       CLUTTER_TYPE_MEDIA,
                       G_SIGNAL_RUN_LAST,
-                      G_STRUCT_OFFSET (ClutterMediaInterface, error),
+                      G_STRUCT_OFFSET (ClutterMediaIface, error),
                       NULL, NULL,
                       g_cclosure_marshal_VOID__POINTER,
                       G_TYPE_NONE, 1,
@@ -203,10 +204,32 @@ clutter_media_base_init (gpointer g_iface)
     }
 }
 
+
+GType
+clutter_media_get_type (void)
+{
+  static GType media_type = 0;
+
+  if (G_UNLIKELY (media_type == 0))
+    {
+      const GTypeInfo media_info = {
+        sizeof (ClutterMediaIface),     /* class size */
+        clutter_media_base_init,        /* base_init */
+        NULL,                           /* base_finalize */
+      };
+
+      media_type = g_type_register_static (G_TYPE_INTERFACE,
+                                           I_("ClutterMedia"),
+                                           &media_info, 0);
+    }
+
+  return media_type;
+}
+
 /**
  * clutter_media_set_uri:
- * @media: #ClutterMedia object
- * @uri: URI
+ * @media: a #ClutterMedia
+ * @uri: the URI of the media stream
  *
  * Sets the URI of @media to @uri.
  *
@@ -214,37 +237,42 @@ clutter_media_base_init (gpointer g_iface)
  */
 void
 clutter_media_set_uri (ClutterMedia *media,
-		       const char   *uri)
+		       const gchar  *uri)
 {
   g_return_if_fail (CLUTTER_IS_MEDIA(media));
 
-  CLUTTER_MEDIA_GET_INTERFACE (media)->set_uri (media, uri);
+  g_object_set (G_OBJECT (media), "uri", uri, NULL);
 }
 
 /**
  * clutter_media_get_uri:
- * @media: A #ClutterMedia object
+ * @media: a #ClutterMedia
  *
  * Retrieves the URI from @media.
  *
- * Return value: The URI as a string.
+ * Return value: the URI of the media stream. Use g_free()
+ *   to free the returned string
  *
  * Since: 0.2
  */
-const char*
+gchar *
 clutter_media_get_uri (ClutterMedia *media)
 {
+  gchar *retval = NULL;
+
   g_return_val_if_fail (CLUTTER_IS_MEDIA(media), NULL);
 
-  return CLUTTER_MEDIA_GET_INTERFACE (media)->get_uri (media);
+  g_object_get (G_OBJECT (media), "uri", &retval, NULL);
+
+  return retval;
 }
 
 /**
  * clutter_media_set_playing:
- * @media: A #ClutterMedia object
- * @playing: TRUE to start playing, FALSE to stop.
+ * @media: a #ClutterMedia
+ * @playing: %TRUE to start playing
  *
- * Starts or stops @media playing.
+ * Starts or stops playing of @media.
  *
  * Since: 0.2
  */
@@ -254,7 +282,7 @@ clutter_media_set_playing (ClutterMedia *media,
 {
   g_return_if_fail (CLUTTER_IS_MEDIA(media));
 
-  CLUTTER_MEDIA_GET_INTERFACE (media)->set_playing (media, playing);
+  g_object_set (G_OBJECT (media), "playing", playing, NULL);
 }
 
 /**
@@ -270,86 +298,99 @@ clutter_media_set_playing (ClutterMedia *media,
 gboolean
 clutter_media_get_playing (ClutterMedia *media)
 {
-  g_return_val_if_fail (CLUTTER_IS_MEDIA(media), FALSE);
+  gboolean is_playing = FALSE;
 
-  return CLUTTER_MEDIA_GET_INTERFACE (media)->get_playing (media);
+  g_return_val_if_fail (CLUTTER_IS_MEDIA (media), FALSE);
+
+  g_object_get (G_OBJECT (media), "playing", &is_playing, NULL);
+
+  return is_playing;
 }
 
 /**
- * clutter_media_set_position:
- * @media: A #ClutterMedia object
- * @position: The desired position.
+ * clutter_media_set_progress:
+ * @media: a #ClutterMedia
+ * @progress: the progress of the playback, between 0.0 and 1.0
  *
- * Sets the playback position of @media to @position.
+ * Sets the playback progress of @media. The @progress is
+ * a normalized value between 0.0 (begin) and 1.0 (end).
  *
- * Since: 0.2
+ * Since: 1.0
  */
 void
-clutter_media_set_position (ClutterMedia *media,
-			    int           position)
+clutter_media_set_progress (ClutterMedia *media,
+			    gdouble       progress)
 {
-  g_return_if_fail (CLUTTER_IS_MEDIA(media));
+  g_return_if_fail (CLUTTER_IS_MEDIA (media));
 
-  CLUTTER_MEDIA_GET_INTERFACE (media)->set_position (media, position);
+  g_object_set (G_OBJECT (media), "progress", progress, NULL);
 }
 
 /**
- * clutter_media_get_position:
- * @media: A #ClutterMedia object
+ * clutter_media_get_progress:
+ * @media: a #ClutterMedia
  *
- * Retrieves the position of @media.
+ * Retrieves the playback progress of @media.
  *
- * Return value: The playback position.
+ * Return value: the playback progress, between 0.0 and 1.0
  *
- * Since: 0.2
+ * Since: 1.0
  */
-int
-clutter_media_get_position (ClutterMedia *media)
+gdouble
+clutter_media_get_progress (ClutterMedia *media)
 {
-  g_return_val_if_fail (CLUTTER_IS_MEDIA(media), 0);
+  gdouble retval = 0.0;
 
-  return CLUTTER_MEDIA_GET_INTERFACE (media)->get_position (media);
+  g_return_val_if_fail (CLUTTER_IS_MEDIA (media), 0);
+
+  g_object_get (G_OBJECT (media), "progress", &retval, NULL);
+
+  return retval;
 }
 
 /**
- * clutter_media_set_volume:
- * @media: A #ClutterMedia object
- * @volume: The volume as a double between 0.0 and 1.0
+ * clutter_media_set_audio_volume:
+ * @media: a #ClutterMedia
+ * @volume: the volume as a double between 0.0 and 1.0
  *
  * Sets the playback volume of @media to @volume.
  *
- * Since: 0.2
+ * Since: 1.0
  */
 void
-clutter_media_set_volume (ClutterMedia *media,
-			  double        volume)
+clutter_media_set_audio_volume (ClutterMedia *media,
+			        gdouble       volume)
 {
   g_return_if_fail (CLUTTER_IS_MEDIA(media));
 
-  CLUTTER_MEDIA_GET_INTERFACE (media)->set_volume (media, volume);
+  g_object_set (G_OBJECT (media), "audio-volume", volume, NULL);
 }
 
 /**
- * clutter_media_get_volume:
- * @media: A #ClutterMedia object
+ * clutter_media_get_audio_volume:
+ * @media: a #ClutterMedia
  *
  * Retrieves the playback volume of @media.
  *
  * Return value: The playback volume between 0.0 and 1.0
  *
- * Since: 0.2
+ * Since: 1.0
  */
-double
-clutter_media_get_volume (ClutterMedia *media)
+gdouble
+clutter_media_get_audio_volume (ClutterMedia *media)
 {
-  g_return_val_if_fail (CLUTTER_IS_MEDIA(media), 0.0);
+  gdouble retval = 0.0;
 
-  return CLUTTER_MEDIA_GET_INTERFACE (media)->get_volume (media);
+  g_return_val_if_fail (CLUTTER_IS_MEDIA (media), 0.0);
+
+  g_object_get (G_OBJECT (media), "audio-volume", &retval, NULL);
+
+  return retval;
 }
 
 /**
  * clutter_media_get_can_seek:
- * @media: A #ClutterMedia object
+ * @media: a #ClutterMedia
  *
  * Retrieves whether @media is seekable or not.
  *
@@ -360,55 +401,67 @@ clutter_media_get_volume (ClutterMedia *media)
 gboolean
 clutter_media_get_can_seek (ClutterMedia *media)
 {
-  g_return_val_if_fail (CLUTTER_IS_MEDIA(media), FALSE);
+  gboolean retval = FALSE;
 
-  return CLUTTER_MEDIA_GET_INTERFACE (media)->can_seek (media);
+  g_return_val_if_fail (CLUTTER_IS_MEDIA (media), FALSE);
+
+  g_object_get (G_OBJECT (media), "can-seek", &retval, NULL);
+
+  return retval;
 }
 
 /**
- * clutter_media_get_buffer_percent:
- * @media: A #ClutterMedia object
+ * clutter_media_get_buffer_fill:
+ * @media: a #ClutterMedia
  *
  * Retrieves the amount of the stream that is buffered.
  *
- * Return value: percentage value
+ * Return value: the fill level, between 0.0 and 1.0
  *
- * Since: 0.2
+ * Since: 1.0
  */
-int
-clutter_media_get_buffer_percent (ClutterMedia *media)
+gdouble
+clutter_media_get_buffer_fill (ClutterMedia *media)
 {
-  g_return_val_if_fail (CLUTTER_IS_MEDIA(media), 0);
+  gdouble retval = 0.0;
 
-  return CLUTTER_MEDIA_GET_INTERFACE (media)->get_buffer_percent (media);
+  g_return_val_if_fail (CLUTTER_IS_MEDIA (media), 0);
+
+  g_object_get (G_OBJECT (media), "buffer-fill", &retval, NULL);
+
+  return retval;
 }
 
 /**
  * clutter_media_get_duration:
- * @media: A #ClutterMedia object
+ * @media: a #ClutterMedia
  *
  * Retrieves the duration of the media stream that @media represents.
  *
- * Return value: The length of the media stream.
+ * Return value: the duration of the media stream, in seconds
  *
  * Since: 0.2
  */
-int
+guint
 clutter_media_get_duration (ClutterMedia *media)
 {
+  guint retval = 0;
+
   g_return_val_if_fail (CLUTTER_IS_MEDIA(media), 0);
 
-  return CLUTTER_MEDIA_GET_INTERFACE (media)->get_duration (media);
+  g_object_get (G_OBJECT (media), "duration", &retval, NULL);
+
+  return retval;
 }
 
 /* helper funcs */
 
 /**
  * clutter_media_set_filename:
- * @media: A #ClutterMedia object
- * @filename: A filename to media file.
+ * @media: a #ClutterMedia
+ * @filename: A filename
  *
- * Sets the filename of the media source.
+ * Sets the source of @media using a file path.
  *
  * Since: 0.2
  */
