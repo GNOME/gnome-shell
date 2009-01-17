@@ -70,7 +70,13 @@ DocDisplayItem.prototype = {
             log("Will open a document with the following command: " + appExec);
             // TODO: Change this once better support for creating GAppInfo is added to 
             // GtkRecentInfo, as right now this relies on the fact that the file uri is
-            // already a part of appExec, so we don't supply any files to appInfo.launch().   
+            // already a part of appExec, so we don't supply any files to appInfo.launch().
+
+            // The 'command line' passed to create_from_command_line is allowed to contain
+            // '%<something>' macros that are exapnded to file name / icon name, etc,
+            // so we need to escape % as %%
+            appExec = appExec.replace(/%/g, "%%");
+
             let appInfo = Gio.app_info_create_from_commandline(appExec, null, 0, null);
             appInfo.launch([], null, null);
         } else {
