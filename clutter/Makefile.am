@@ -46,6 +46,7 @@ BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 # please, keep this sorted alphabetically
 source_h =					\
 	$(srcdir)/clutter-actor.h		\
+	$(srcdir)/clutter-actor-clone.h		\
 	$(srcdir)/clutter-alpha.h		\
 	$(srcdir)/clutter-animatable.h          \
 	$(srcdir)/clutter-animation.h           \
@@ -136,6 +137,7 @@ CLEANFILES = $(STAMPFILES)
 # please, keep this sorted alphabetically
 source_c = \
         clutter-actor.c			\
+        clutter-actor-clone.c	        \
 	clutter-alpha.c 		\
 	clutter-animatable.c            \
 	clutter-animation.c             \

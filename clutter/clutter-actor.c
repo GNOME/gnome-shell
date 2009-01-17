@@ -263,6 +263,9 @@ struct _ClutterActorPrivate
   ShaderData     *shader_data;
 
   PangoContext   *pango_context;
+
+  ClutterActor   *opacity_parent;
+  gboolean        enable_model_view_transform;
 };
 
 enum
@@ -1482,7 +1485,8 @@ clutter_actor_paint (ClutterActor *self)
 
   cogl_push_matrix();
 
-  _clutter_actor_apply_modelview_transform (self);
+  if (priv->enable_model_view_transform)
+    _clutter_actor_apply_modelview_transform (self);
 
   if (priv->has_clip)
     {
@@ -3028,6 +3032,9 @@ clutter_actor_init (ClutterActor *self)
   priv->needs_width_request  = TRUE;
   priv->needs_height_request = TRUE;
   priv->needs_allocation     = TRUE;
+
+  priv->opacity_parent = NULL;
+  priv->enable_model_view_transform = TRUE;
 
   memset (priv->clip, 0, sizeof (ClutterUnit) * 4);
 }
@@ -5016,7 +5023,10 @@ clutter_actor_get_paint_opacity (ClutterActor *self)
 
   priv = self->priv;
 
-  parent = priv->parent_actor;
+  if (priv->opacity_parent)
+    parent = priv->opacity_parent;
+  else
+    parent = priv->parent_actor;
 
   /* Factor in the actual actors opacity with parents */
   if (G_LIKELY (parent))
@@ -7703,3 +7713,26 @@ clutter_actor_create_pango_context (ClutterActor *self)
 
   return retval;
 }
+
+/* Allows overriding the parent traversed when querying an actors paint
+ * opacity. Used by ClutterActorClone. */
+void
+_clutter_actor_set_opacity_parent (ClutterActor *self,
+                                   ClutterActor *parent)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  self->priv->opacity_parent = parent;
+}
+
+/* Allows you to disable applying the actors model view transform during
+ * a paint. Used by ClutterActorClone. */
+void
+_clutter_actor_set_enable_model_view_transform (ClutterActor *self,
+                                                gboolean      enable)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  self->priv->enable_model_view_transform = enable;
+}
+
