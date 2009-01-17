@@ -9,7 +9,7 @@
 #include <errno.h>
 #include <string.h>
 #include <math.h>
-#include <libgnomeui-2.0/libgnomeui/gnome-thumbnail.h>
+#include <libgnomeui/gnome-thumbnail.h>
 
 struct _ShellGlobal {
   GObject parent;
