@@ -41,73 +41,77 @@ G_BEGIN_DECLS
  * cogl_texture_new_with_size:
  * @width: width of texture in pixels.
  * @height: height of texture in pixels.
- * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
- * texture fit GPU limitations.
- * @auto_mipmap: enable or disable automatic generation of mipmap pyramid
- * from the base level image whenever it is updated.
+ * @max_waste: maximum extra horizontal and|or vertical margin pixels
+ *    to make the texture fit GPU limitations
+ * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
- * texture.
+ *    texture.
  *
- * Create a new texture with specified dimensions and pixel format.
+ * Creates a new COGL texture with the specified dimensions and pixel format.
  *
- * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
- * if texture creation failed.
+ * Return value: a #CoglHandle to the newly created texture or
+ *   %COGL_INVALID_HANDLE on failure
+ *
+ * Since: 0.8
  */
-CoglHandle      cogl_texture_new_with_size    (guint           width,
-                                               guint           height,
-                                               gint            max_waste,
-                                               gboolean        auto_mipmap,
-                                               CoglPixelFormat internal_format);
+CoglHandle      cogl_texture_new_with_size    (guint            width,
+                                               guint            height,
+                                               gint             max_waste,
+                                               CoglTextureFlags flags,
+                                               CoglPixelFormat  internal_format);
 
 /**
  * cogl_texture_new_from_file:
  * @filename: the file to load
- * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
- * texture fit GPU limitations.
- * @auto_mipmap: enable or disable automatic generation of mipmap pyramid
- * from the base level image whenever it is updated.
+ * @max_waste: maximum extra horizontal and|or vertical margin pixels
+ *    to make the texture fit GPU limitations
+ * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
- * texture.
- * @error: a #GError or NULL.
+ *    texture
+ * @error: return location for a #GError or %NULL
  *
- * Load an image file from disk.
+ * Creates a COGL texture from an image file.
  *
- * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
- * if creating the texture failed.
+ * Return value: a #CoglHandle to the newly created texture or
+ *    %COGL_INVALID_HANDLE on failure
+ *
+ * Since: 0.8
  */
-CoglHandle      cogl_texture_new_from_file    (const gchar    *filename,
-                                               gint            max_waste,
-                                               gboolean        auto_mipmap,
-                                               CoglPixelFormat internal_format,
-                                               GError        **error);
+CoglHandle      cogl_texture_new_from_file    (const gchar       *filename,
+                                               gint               max_waste,
+                                               CoglTextureFlags   flags,
+                                               CoglPixelFormat    internal_format,
+                                               GError           **error);
 
 /**
  * cogl_texture_new_from_data:
- * @width: width of texture in pixels.
- * @height: height of texture in pixels.
- * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
- * @auto_mipmap: enable or disable automatic generation of mipmap pyramid
- * from the base level image whenever it is updated.
+ * @width: width of texture in pixels
+ * @height: height of texture in pixels
+ * @max_waste: maximum extra horizontal and|or vertical margin pixels
+ *    to make the texture fit GPU limitations
+ * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @format: the #CoglPixelFormat the buffer is stored in in RAM
- * @internal_format: the #CoglPixelFormat that will be used for storing the
- * buffer on the GPU.
- * @rowstride: the memory offset in bytes between the starts of scanlines in
- * @data.
- * @data: pointer the memory region where the source buffer resides.
+ * @internal_format: the #CoglPixelFormat that will be used for storing
+ *    the buffer on the GPU
+ * @rowstride: the memory offset in bytes between the starts of
+ *    scanlines in @data
+ * @data: pointer the memory region where the source buffer resides
  *
- * Create a new cogl texture based on data residing in memory.
+ * Creates a new COGL texture based on data residing in memory.
  *
- * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
- * if creating the texture failed.
+ * Return value: a #CoglHandle to the newly created texture or
+ *   %COGL_INVALID_HANDLE on failure
+ *
+ * Since: 0.8
  */
-CoglHandle      cogl_texture_new_from_data    (guint            width,
-                                               guint            height,
-                                               gint             max_waste,
-                                               gboolean         auto_mipmap,
-                                               CoglPixelFormat  format,
-                                               CoglPixelFormat  internal_format,
-                                               guint            rowstride,
-                                               const guchar    *data);
+CoglHandle      cogl_texture_new_from_data    (guint             width,
+                                               guint             height,
+                                               gint              max_waste,
+                                               CoglTextureFlags  flags,
+                                               CoglPixelFormat   format,
+                                               CoglPixelFormat   internal_format,
+                                               guint             rowstride,
+                                               const guchar     *data);
 
 /**
  * cogl_texture_new_from_foreign:
@@ -119,12 +123,14 @@ CoglHandle      cogl_texture_new_from_data    (guint            width,
  * @y_pot_waste: maximum vertical waste.
  * @format: format of the foreign texture.
  *
- * Create a cogl texture based on an existing OpenGL texture, the width, height
- * and format are passed along since it is not possible to query this from a
- * handle with GLES 1.0.
+ * Creates a COGL texture based on an existing OpenGL texture; the
+ * width, height and format are passed along since it is not possible
+ * to query this from a handle with GLES 1.0.
  *
- * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
- * if creating the texture failed.
+ * Return value: a #CoglHandle to the newly created texture or
+ *   %COGL_INVALID_HANDLE on failure
+ *
+ * Since: 0.8
  */
 CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
                                                GLenum              gl_target,
@@ -136,23 +142,24 @@ CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
 
 /**
  * cogl_texture_new_from_bitmap:
- * @handle: handle of the preloaded texture.
- * @max_waste: maximum extra horizontal and|or vertical margin pixels to make
- * texture fit GPU limitations.
- * @auto_mipmap: enable or disable automatic generation of mipmap pyramid
- * from the base level image whenever it is updated.
+ * @handle: handle of the preloaded texture
+ * @max_waste: maximum extra horizontal and|or vertical margin pixels
+ *    to make the texture fit GPU limitations
+ * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE
  * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
- * texture.
+ * texture
  *
- * Create a cogl texture from a #CoglBitmap.
+ * Creates a COGL texture from a #CoglBitmap.
  *
- * Returns: a #CoglHandle to the newly created texture or COGL_INVALID_HANDLE
- * if creating the texture failed.
+ * Return value: a #CoglHandle to the newly created texture or
+ *   %COGL_INVALID_HANDLE on failure
+ *
+ * Since: 1.0
  */
-CoglHandle      cogl_texture_new_from_bitmap (CoglBitmap     *bitmap,
-                                              gint            max_waste,
-                                              gboolean        auto_mipmap,
-                                              CoglPixelFormat internal_format);
+CoglHandle      cogl_texture_new_from_bitmap (CoglBitmap       *bitmap,
+                                              gint              max_waste,
+                                              CoglTextureFlags  flags,
+                                              CoglPixelFormat   internal_format);
 
 /**
  * cogl_is_texture:

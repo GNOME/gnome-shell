@@ -272,6 +272,7 @@ cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
 	   texture = texture->next);
       if (texture == NULL)
 	{
+          CoglTextureFlags flags = COGL_TEXTURE_NONE;
 	  guchar *clear_data;
 
 	  /* Allocate a new texture that is the nearest power of two
@@ -280,19 +281,27 @@ cogl_pango_glyph_cache_set (CoglPangoGlyphCache *cache,
 	  texture = g_slice_new (CoglPangoGlyphCacheTexture);
 
 	  texture->texture_size = MIN_TEXTURE_SIZE;
-	  while (texture->texture_size < band_height
-		 || texture->texture_size < width)
-	    texture->texture_size *= 2;
+	  while (texture->texture_size < band_height ||
+                 texture->texture_size < width)
+            {
+	      texture->texture_size *= 2;
+            }
 
 	  /* Allocate an empty buffer to clear the texture */
-	  clear_data = g_malloc0 (texture->texture_size
-				  * texture->texture_size);
+	  clear_data =
+            g_malloc0 (texture->texture_size * texture->texture_size);
 
-	  texture->texture = cogl_texture_new_from_data
-	    (texture->texture_size, texture->texture_size,
-	     32, cache->use_mipmapping,
-	     COGL_PIXEL_FORMAT_A_8, COGL_PIXEL_FORMAT_A_8,
-	     texture->texture_size, clear_data);
+          if (cache->use_mipmapping)
+            flags |= COGL_TEXTURE_AUTO_MIPMAP;
+
+	  texture->texture =
+            cogl_texture_new_from_data (texture->texture_size,
+                                        texture->texture_size,
+                                        32, flags,
+                                        COGL_PIXEL_FORMAT_A_8,
+                                        COGL_PIXEL_FORMAT_A_8,
+                                        texture->texture_size,
+                                        clear_data);
 
 	  g_free (clear_data);
 

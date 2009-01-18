@@ -1313,11 +1313,11 @@ _cogl_texture_free (CoglTexture *tex)
 }
 
 CoglHandle
-cogl_texture_new_with_size (guint           width,
-			    guint           height,
-			    gint            max_waste,
-                            gboolean        auto_mipmap,
-			    CoglPixelFormat internal_format)
+cogl_texture_new_with_size (guint            width,
+			    guint            height,
+			    gint             max_waste,
+                            CoglTextureFlags flags,
+			    CoglPixelFormat  internal_format)
 {
   CoglTexture *tex;
   gint         bpp;
@@ -1338,7 +1338,7 @@ cogl_texture_new_with_size (guint           width,
   COGL_HANDLE_DEBUG_NEW (texture, tex);
 
   tex->is_foreign = FALSE;
-  tex->auto_mipmap = auto_mipmap;
+  tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
   
   tex->bitmap.width = width;
   tex->bitmap.height = height;
@@ -1373,14 +1373,14 @@ cogl_texture_new_with_size (guint           width,
 }
 
 CoglHandle
-cogl_texture_new_from_data (guint              width,
-			    guint              height,
-			    gint               max_waste,
-                            gboolean           auto_mipmap,
-			    CoglPixelFormat    format,
-			    CoglPixelFormat    internal_format,
-			    guint              rowstride,
-			    const guchar      *data)
+cogl_texture_new_from_data (guint             width,
+			    guint             height,
+			    gint              max_waste,
+                            CoglTextureFlags  flags,
+			    CoglPixelFormat   format,
+			    CoglPixelFormat   internal_format,
+			    guint             rowstride,
+			    const guchar     *data)
 {
   CoglTexture *tex;
   gint         bpp;
@@ -1402,7 +1402,7 @@ cogl_texture_new_from_data (guint              width,
   COGL_HANDLE_DEBUG_NEW (texture, tex);
 
   tex->is_foreign = FALSE;
-  tex->auto_mipmap = auto_mipmap;
+  tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
 
   tex->bitmap.width = width;
   tex->bitmap.height = height;
@@ -1448,10 +1448,10 @@ cogl_texture_new_from_data (guint              width,
 }
 
 CoglHandle
-cogl_texture_new_from_bitmap (CoglBitmap      *bmp,
-                              gint             max_waste,
-                              gboolean         auto_mipmap,
-                              CoglPixelFormat  internal_format)
+cogl_texture_new_from_bitmap (CoglBitmap       *bmp,
+                              gint              max_waste,
+                              CoglTextureFlags  flags,
+                              CoglPixelFormat   internal_format)
 {
   CoglTexture *tex;
 
@@ -1462,7 +1462,7 @@ cogl_texture_new_from_bitmap (CoglBitmap      *bmp,
   COGL_HANDLE_DEBUG_NEW (texture, tex);
   
   tex->is_foreign = FALSE;
-  tex->auto_mipmap = auto_mipmap;
+  tex->auto_mipmap = ((flags & COGL_TEXTURE_AUTO_MIPMAP) != 0);
 
   tex->bitmap = *bmp;
   tex->bitmap_owner = TRUE;
@@ -1508,11 +1508,11 @@ cogl_texture_new_from_bitmap (CoglBitmap      *bmp,
 }
 
 CoglHandle
-cogl_texture_new_from_file (const gchar     *filename,
-			    gint             max_waste,
-                            gboolean         auto_mipmap,
-			    CoglPixelFormat  internal_format,
-			    GError         **error)
+cogl_texture_new_from_file (const gchar       *filename,
+			    gint               max_waste,
+                            CoglTextureFlags   flags,
+			    CoglPixelFormat    internal_format,
+			    GError           **error)
 {
   CoglBitmap  *bmp;
   CoglHandle   handle;
@@ -1524,7 +1524,7 @@ cogl_texture_new_from_file (const gchar     *filename,
 
   handle = cogl_texture_new_from_bitmap (bmp,
                                          max_waste,
-                                         auto_mipmap,
+                                         flags,
                                          internal_format);
   cogl_bitmap_free (bmp);
 

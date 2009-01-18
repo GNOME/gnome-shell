@@ -258,18 +258,25 @@ clutter_texture_realize (ClutterActor *actor)
 
   if (priv->fbo_source)
     {
+      CoglTextureFlags flags = COGL_TEXTURE_NONE;
+      gint max_waste = -1;
+
       /* Handle FBO's */
 
       if (priv->texture != COGL_INVALID_HANDLE)
 	cogl_texture_unref (priv->texture);
 
+      if (!priv->no_slice)
+        max_waste = priv->max_tile_waste;
+
+      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+        flags |= COGL_TEXTURE_AUTO_MIPMAP;
+
       priv->texture =
-        cogl_texture_new_with_size
-                          (priv->width,
-                           priv->height,
-                           priv->no_slice ? -1 : priv->max_tile_waste,
-                          priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
-                          COGL_PIXEL_FORMAT_RGBA_8888);
+        cogl_texture_new_with_size (priv->width,
+                                    priv->height,
+                                    max_waste, flags,
+                                    COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_texture_set_filters (priv->texture,
             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
@@ -1241,19 +1248,25 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 			       gint                bpp,
 			       GError            **error)
 {
-  CoglHandle              new_texture;
-  ClutterTexturePrivate  *priv;
+  ClutterTexturePrivate *priv = texture->priv;
+  CoglHandle new_texture = COGL_INVALID_HANDLE;
+  CoglTextureFlags flags = COGL_TEXTURE_NONE;
+  gint max_waste = -1;
 
-  priv = texture->priv;
+  if (!priv->no_slice)
+    max_waste = priv->max_tile_waste;
 
-  if ((new_texture = cogl_texture_new_from_data
-                          (width, height,
-                           priv->no_slice ? -1 : priv->max_tile_waste,
-                           priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
-                           source_format,
-                           COGL_PIXEL_FORMAT_ANY,
-                           rowstride,
-                           data)) == COGL_INVALID_HANDLE)
+  if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+    flags |= COGL_TEXTURE_AUTO_MIPMAP;
+
+  new_texture = cogl_texture_new_from_data (width, height,
+                                            max_waste, flags,
+                                            source_format,
+                                            COGL_PIXEL_FORMAT_ANY,
+                                            rowstride,
+                                            data);
+
+  if (G_UNLIKELY (new_texture == COGL_INVALID_HANDLE))
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
@@ -1420,7 +1433,7 @@ clutter_texture_async_load_complete (ClutterTexture *self,
 {
   ClutterTexturePrivate *priv = self->priv;
   CoglHandle handle;
-  gboolean enable_mipmap = FALSE;
+  CoglTextureFlags flags = COGL_TEXTURE_NONE;
   gint waste = -1;
 
   if (error == NULL)
@@ -1429,11 +1442,11 @@ clutter_texture_async_load_complete (ClutterTexture *self,
         waste = priv->max_tile_waste;
 
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-        enable_mipmap = TRUE;
+        flags != COGL_TEXTURE_AUTO_MIPMAP;
 
       handle = cogl_texture_new_from_bitmap (priv->load_bitmap,
-                                             waste, enable_mipmap,
-                                            COGL_PIXEL_FORMAT_ANY);
+                                             waste, flags,
+                                             COGL_PIXEL_FORMAT_ANY);
       clutter_texture_set_cogl_texture (self, handle);
       cogl_texture_unref (handle);
       
@@ -1614,7 +1627,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   ClutterTexturePrivate *priv;
   CoglHandle new_texture = COGL_INVALID_HANDLE;
   GError *internal_error = NULL;
-  gboolean enable_mipmap = FALSE;
+  CoglTextureFlags flags = COGL_TEXTURE_NONE;
   gint max_waste = -1;
 
   priv = texture->priv;
@@ -1634,10 +1647,10 @@ clutter_texture_set_from_file (ClutterTexture *texture,
     max_waste = priv->max_tile_waste;
 
   if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-    enable_mipmap = TRUE;
+    flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
   new_texture = cogl_texture_new_from_file (filename,
-                                            max_waste, enable_mipmap,
+                                            max_waste, flags,
                                             COGL_PIXEL_FORMAT_ANY,
                                             &internal_error);
   if (new_texture == COGL_INVALID_HANDLE)
@@ -2000,18 +2013,23 @@ on_fbo_source_size_change (GObject          *object,
 
   if (w != priv->width || h != priv->height)
     {
+      CoglTextureFlags flags = COGL_TEXTURE_NONE;
+
       /* tear down the FBO */
       cogl_offscreen_unref (priv->fbo_handle);
 
       texture_free_gl_resources (texture);
 
-      priv->width        = w;
-      priv->height       = h;
+      priv->width = w;
+      priv->height = h;
+
+      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+        flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
       priv->texture = cogl_texture_new_with_size (MAX (priv->width, 1),
 						  MAX (priv->height, 1),
 						  -1,
-                          priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
+                                                  flags,
 						  COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_texture_set_filters (priv->texture,
