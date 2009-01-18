@@ -1,3 +1,10 @@
+2009-01-17  Thomas Thurman  <tthurman@gnome.org>
+
+	* ig.po: Added Igbo translation by Sylvester Onye.
+	* yo.po Added Yoruba translation by Sunday Ayo Fajuyitan.
+	* ha.po: Added Hausa translation by Saudat Mohammed.
+	* LINGUAS: added Igbo, Yoruba and Hausa.
+	
 2009-01-17  Gabor Kelemen  <kelemeng@gnome.hu>
 
 	* hu.po: Translation updated.
