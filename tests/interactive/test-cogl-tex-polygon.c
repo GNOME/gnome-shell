@@ -248,21 +248,37 @@ test_coglbox_init (TestCoglbox *self)
   priv->use_linear_filtering = FALSE;
   priv->use_sliced = FALSE;
   
-  priv->sliced_tex = cogl_texture_new_from_file
-    ("redhand.png", 10, FALSE, COGL_PIXEL_FORMAT_ANY, &error);
-  if (priv->sliced_tex == NULL)
+  priv->sliced_tex =
+    cogl_texture_new_from_file  ("redhand.png", 10,
+                                 COGL_TEXTURE_NONE,
+                                 COGL_PIXEL_FORMAT_ANY,
+                                 &error);
+  if (priv->sliced_tex == COGL_INVALID_HANDLE)
     {
-      g_warning ("Texture loading failed: %s", error->message);
-      g_error_free (error);
-      error = NULL;
+      if (error)
+        {
+          g_warning ("Texture loading failed: %s", error->message);
+          g_error_free (error);
+          error = NULL;
+        }
+      else
+        g_warning ("Texture loading failed: <unknown>");
     }
 
-  priv->not_sliced_tex = cogl_texture_new_from_file
-    ("redhand.png", -1, FALSE, COGL_PIXEL_FORMAT_ANY, &error);
-  if (priv->not_sliced_tex == NULL)
+  priv->not_sliced_tex =
+    cogl_texture_new_from_file ("redhand.png", -1,
+                                COGL_TEXTURE_NONE,
+                                COGL_PIXEL_FORMAT_ANY,
+                                &error);
+  if (priv->not_sliced_tex == COGL_INVALID_HANDLE)
     {
-      g_warning ("Texture loading failed: %s", error->message);
-      g_error_free (error);
+      if (error)
+        {
+          g_warning ("Texture loading failed: %s", error->message);
+          g_error_free (error);
+        }
+      else
+        g_warning ("Texture loading failed: <unknown>");
     }
 }
 

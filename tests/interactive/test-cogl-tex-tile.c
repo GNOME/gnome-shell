@@ -150,7 +150,8 @@ test_coglbox_init (TestCoglbox *self)
   TestCoglboxPrivate *priv;
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
   
-  priv->cogl_tex_id = cogl_texture_new_from_file ("redhand.png", 0, FALSE,
+  priv->cogl_tex_id = cogl_texture_new_from_file ("redhand.png", 0,
+                                                  COGL_TEXTURE_NONE,
                                                   COGL_PIXEL_FORMAT_ANY,
                                                   NULL);
   
