@@ -269,6 +269,21 @@ struct _CoglTextureVertex
   CoglColor color;
 };
 
+/**
+ * CoglTextureFlags:
+ * @COGL_TEXTURE_NONE: No flags specified
+ * @COGL_TEXTURE_AUTO_MIPMAP: Enables the automatic generation of the
+ *   mipmap pyramid from the base level image whenever it is updated
+ *
+ * Flags to pass to the cogl_texture_new_* family of functions.
+ *
+ * Since: 1.0
+ */
+typedef enum {
+  COGL_TEXTURE_NONE        = 0,
+  COGL_TEXTURE_AUTO_MIPMAP = 1 << 0
+} CoglTextureFlags;
+
 G_END_DECLS
 
 #endif /* __COGL_TYPES_H__ */
