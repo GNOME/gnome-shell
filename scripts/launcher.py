@@ -93,6 +93,7 @@ class Launcher:
         env.update({'GNOME_SHELL_JS'      : self.js_dir,
                     'GNOME_SHELL_DATADIR' : self.data_dir,
                     'GI_TYPELIB_PATH'     : self.plugin_dir,
+                    'PATH'                : os.environ.get('PATH', '') + ':' + self.plugin_dir,
                     'LD_LIBRARY_PATH'     : os.environ.get('LD_LIBRARY_PATH', '') + ':' + self.plugin_dir,
                     'GNOME_DISABLE_CRASH_DIALOG' : '1'})
 

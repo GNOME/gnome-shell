@@ -18,10 +18,12 @@ on_name_owner_changed (DBusGProxy *proxy,
 }
 
 static void
-monitor_main_shell ()
+monitor_main_shell (const char *shell_name)
 {
   DBusGConnection *session;
   DBusGProxy *driver;
+  GError *error = NULL;
+  gboolean have_shell;
   
   session = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
   
@@ -29,6 +31,19 @@ monitor_main_shell ()
                                       DBUS_SERVICE_DBUS,
                                       DBUS_PATH_DBUS,
                                       DBUS_INTERFACE_DBUS);
+  
+  if (!dbus_g_proxy_call (driver, "NameHasOwner", &error, G_TYPE_STRING,
+                          shell_name, G_TYPE_INVALID, G_TYPE_BOOLEAN,
+                          &have_shell, G_TYPE_INVALID)) 
+    {
+      /* Shouldn't happen */
+      exit (1);
+    }
+  if (!have_shell)
+    {
+      /* Shell doesn't exist; either crashed or was restarted.  Just abort. */      
+      exit (0);
+    }
 
   dbus_g_proxy_add_signal (driver,
                            "NameOwnerChanged",
@@ -53,7 +68,12 @@ main (int argc, char **argv)
   
   gtk_init (&argc, &argv);
   
-  monitor_main_shell ();
+  if (argc != 2) {
+    g_printerr ("Usage: gnomeshell-taskpanel [PARENT_DBUS_SERVICE]\n");
+    exit (1);
+  }
+  
+  monitor_main_shell (argv[1]);
   
   panel = shell_panel_window_new ();
   

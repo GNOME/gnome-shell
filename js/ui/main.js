@@ -98,8 +98,8 @@ Signals.addSignalMethods(ClutterFrameTicker.prototype);
 function start() {
     let global = Shell.Global.get();
     
-    // Here we grab our DBus name, etc.
-    global.late_init();
+    global.grab_dbus_service();
+    global.start_task_panel();
 
     Tweener.setFrameTicker(new ClutterFrameTicker());
 

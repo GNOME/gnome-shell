@@ -10,16 +10,7 @@ enum {
 
 };
 
-static void shell_panel_window_dispose (GObject *object);
 static void shell_panel_window_finalize (GObject *object);
-static void shell_panel_window_set_property ( GObject *object,
-                                       guint property_id,
-                                       const GValue *value,
-                                       GParamSpec *pspec );
-static void shell_panel_window_get_property( GObject *object,
-                                      guint property_id,
-                                      GValue *value,
-                                      GParamSpec *pspec );
 static void shell_panel_window_size_request (GtkWidget *self, GtkRequisition *req);
 static void shell_panel_window_size_allocate (GtkWidget *self, GtkAllocation *allocation);
 static void shell_panel_window_realize (GtkWidget *self);
@@ -36,6 +27,8 @@ G_DEFINE_TYPE(ShellPanelWindow, shell_panel_window, GTK_TYPE_WINDOW);
 struct ShellPanelWindowPrivate {
   GtkAllocation workarea;
   guint width;
+  guint height;
+  Atom workarea_atom;
 };
 
 static void
@@ -44,11 +37,8 @@ shell_panel_window_class_init(ShellPanelWindowClass *klass)
     GObjectClass *gobject_class = (GObjectClass *)klass;
     GtkWidgetClass *widget_class = (GtkWidgetClass *)klass;
 
-    gobject_class->dispose = shell_panel_window_dispose;
     gobject_class->finalize = shell_panel_window_finalize;
-    gobject_class->set_property = shell_panel_window_set_property;
-    gobject_class->get_property = shell_panel_window_get_property;
-
+    
     widget_class->realize = shell_panel_window_realize;
     widget_class->size_request = shell_panel_window_size_request;    
     widget_class->size_allocate = shell_panel_window_size_allocate;
@@ -59,16 +49,11 @@ static void shell_panel_window_init (ShellPanelWindow *self)
 {
   self->priv = g_new0 (ShellPanelWindowPrivate, 1);
 
+  self->priv->workarea_atom = gdk_x11_get_xatom_by_name_for_display (gdk_display_get_default (), "_NET_WORKAREA");
+  
   gtk_window_set_type_hint (GTK_WINDOW (self), GDK_WINDOW_TYPE_HINT_DOCK);
   gtk_window_set_focus_on_map (GTK_WINDOW (self), FALSE);
   gdk_window_add_filter (NULL, filter_func, self);
-}
-
-static void shell_panel_window_dispose (GObject *object)
-{
-    ShellPanelWindow *self = (ShellPanelWindow*)object;
-
-    G_OBJECT_CLASS (shell_panel_window_parent_class)->dispose(object);
 }
 
 static void shell_panel_window_finalize (GObject *object)
@@ -80,53 +65,24 @@ static void shell_panel_window_finalize (GObject *object)
     G_OBJECT_CLASS (shell_panel_window_parent_class)->finalize(object);
 }
 
-static void shell_panel_window_set_property ( GObject *object,
-                                         guint property_id,
-                                         const GValue *value,
-                                         GParamSpec *pspec ) 
-{
-   ShellPanelWindow* self = SHELL_PANEL_WINDOW(object);
-    switch (property_id) {
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
-}
-
-
-static void shell_panel_window_get_property ( GObject *object,
-                                         guint property_id,
-                                         GValue *value,
-                                         GParamSpec *pspec ) 
-{
-   ShellPanelWindow* self = SHELL_PANEL_WINDOW(object);
-    switch (property_id) {
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-        break;
-    }
-}
-
-ShellPanelWindow* shell_panel_window_new(void)
-{
+ShellPanelWindow* shell_panel_window_new(void) {
     return (ShellPanelWindow*) g_object_new(SHELL_TYPE_PANEL_WINDOW, 
         "type", GTK_WINDOW_TOPLEVEL, NULL);
 }
-
 
 static void
 set_strut (ShellPanelWindow *self)
 {
   long *buf;
-  int x, y;
   int strut_size;
 
   strut_size = GTK_WIDGET (self)->allocation.height;
 
-  gtk_window_get_position (GTK_WINDOW (self), &x, &y);
-  
-  buf = g_new0(long, 4);
-  buf[3] = strut_size;
+  buf = g_new0 (long, 4);
+  buf[0] = 0; /* left */
+  buf[1] = 0; /* right */
+  buf[2] = 0; /* top */
+  buf[3] = strut_size; /* bottom */
   gdk_property_change (GTK_WIDGET (self)->window, gdk_atom_intern_static_string ("_NET_WM_STRUT"),
 		       gdk_atom_intern_static_string ("CARDINAL"), 32,
 		       GDK_PROP_MODE_REPLACE,
@@ -171,26 +127,44 @@ shell_panel_window_show (GtkWidget *widget)
 static void
 handle_new_workarea (ShellPanelWindow *self)
 {
-  int monitor;
   GtkRequisition requisition;
-  GdkRectangle monitor_geometry;
   int x, y;
   int width;
+  int height;
+  int x_target, y_target;
 
-  monitor = gdk_screen_get_monitor_at_point (gdk_screen_get_default (),
-					     self->priv->workarea.x,
-					     self->priv->workarea.y);
-  gdk_screen_get_monitor_geometry (gdk_screen_get_default (),
-				   monitor, &monitor_geometry);
   gtk_widget_size_request (GTK_WIDGET (self), &requisition);
 
-  x = self->priv->workarea.x;
-  y = monitor_geometry.y + monitor_geometry.height - requisition.height;
-  width = monitor_geometry.width - x;
+  /* If we don't have a workarea, just use monitor */
+  if (self->priv->workarea.width == 0) 
+    {
+      int monitor;
+      GdkRectangle monitor_geometry;      
+      
+      monitor = gdk_screen_get_monitor_at_point (gdk_screen_get_default (),
+                                                 0, 0);
+      gdk_screen_get_monitor_geometry (gdk_screen_get_default (),
+                                       monitor, &monitor_geometry);      
+      x = monitor_geometry.x;
+      y = monitor_geometry.y;
+      width = monitor_geometry.width;
+      height = monitor_geometry.height;
+    }
+  else
+    {
+      x = self->priv->workarea.x;
+      y = self->priv->workarea.y;
+      width = self->priv->workarea.width;
+      height = self->priv->workarea.height;
+    }
+  
+  x_target = x;
+  y_target = y + height - requisition.height;
 
   self->priv->width = width;
-  gtk_widget_set_size_request (GTK_WIDGET (self), width, PANEL_HEIGHT);
-  gtk_window_move (GTK_WINDOW (self), x, y);
+  self->priv->height = height;
+  gtk_widget_set_size_request (GTK_WIDGET (self), width - x_target, PANEL_HEIGHT);
+  gtk_window_move (GTK_WINDOW (self), x_target, y_target);
 }
 
 static void
@@ -207,31 +181,38 @@ on_workarea_changed (ShellPanelWindow *self)
 		      workarea,
 		      0, 4, FALSE, workarea,
 		      &type, &format, &nitems, &bytes_after, &data);
-  if ((format == 32) && (nitems == 4) && (bytes_after == 0)) {
-    int x, y, width, height;
-    data32 = (long*)data;
-    x = data32[0]; y = data32[1];
-    width = data32[2]; height = data32[3];
-    if (x == self->priv->workarea.x &&
-	y == self->priv->workarea.y &&
-	width == self->priv->workarea.width &&
-	height == self->priv->workarea.height)
-      return;
+  if ((format == 32) && (nitems == 4) && (bytes_after == 0))
+    {
+      int x, y, width, height;
+      data32 = (long*) data;
+      x = data32[0];
+      y = data32[1];
+      width = data32[2];
+      height = data32[3];
+      if (x == self->priv->workarea.x && y == self->priv->workarea.y 
+          && width == self->priv->workarea.width 
+          && height == self->priv->workarea.height)
+        return;
 
-    self->priv->workarea.x = x;
-    self->priv->workarea.y = y;
-    self->priv->workarea.width = width;
-    self->priv->workarea.height = height;
+      self->priv->workarea.x = x;
+      self->priv->workarea.y = y;
+      self->priv->workarea.width = width;
+      self->priv->workarea.height = height;
 
-    handle_new_workarea (self);
-  } else if (nitems == 0) {
-    self->priv->workarea.x = self->priv->workarea.y = 0;
-    self->priv->workarea.width = self->priv->workarea.height = -1;
-    handle_new_workarea (self);
-  } else {
-    g_printerr ("unexpected return from XGetWindowProperty: %d %ld %ld\n",
-		format, nitems, bytes_after);
-  }
+      handle_new_workarea (self);
+    }
+  else if (nitems == 0)
+    {
+      /* We have no workarea set; assume there are no other panels at this time */
+      self->priv->workarea.x = self->priv->workarea.y = 0;
+      self->priv->workarea.width = self->priv->workarea.height = 0;
+      handle_new_workarea (self);
+    }
+  else
+    {
+      g_printerr ("unexpected return from XGetWindowProperty: %d %ld %ld\n",
+          format, nitems, bytes_after);
+    }
 }
 
 static GdkFilterReturn
@@ -242,14 +223,13 @@ filter_func (GdkXEvent *gdk_xevent,
   ShellPanelWindow *self = SHELL_PANEL_WINDOW (data);
   GdkFilterReturn ret = GDK_FILTER_CONTINUE;
   XEvent *xevent = (XEvent *) event;
-  Atom workarea = gdk_x11_get_xatom_by_name_for_display (gdk_display_get_default (), "_NET_WORKAREA");
 
-  switch (xevent->type) {
+  switch (xevent->type) 
+  {
   case PropertyNotify:
     {
-      if (xevent->xproperty.atom != workarea)
+      if (xevent->xproperty.atom != self->priv->workarea_atom)
 	break;
-
       on_workarea_changed (self);
     }
     break;
