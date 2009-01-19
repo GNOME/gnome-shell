@@ -15,6 +15,7 @@ const GdkPixbuf = imports.gi.GdkPixbuf;
 
 // Windows are slightly translucent in the overlay mode
 const WINDOW_OPACITY = 0.9 * 255;
+const FOCUS_ANIMATION_TIME = 0.15;
 
 const WINDOWCLONE_BG_COLOR = new Clutter.Color();
 WINDOWCLONE_BG_COLOR.from_pixel(0x000000f0);
@@ -78,17 +79,24 @@ Workspace.prototype = {
         this._windows = [this._desktop];
         for (let i = 0; i < windows.length; i++) {
             if (this._isOverlayWindow(windows[i])) {
-                let clone = this._makeClone(windows[i]);
+                let clone = this._makeClone(windows[i], i);
                 clone.connect("button-press-event",
                               function(clone, event) {
                                   clone.raise_top();
                                   me._activateWindow(clone.realWindow, event.get_time());
                               });
+                clone.connect('enter-event', function (a, e) {
+                    me._cloneEnter(clone, e);
+                });
+                clone.connect('leave-event', function (a, e) {
+                    me._cloneLeave(clone, e);
+                });
                 this.actor.add_actor(clone);
                 this._windows.push(clone);
             }
         }
 
+        this._overlappedMode = !((this._windows.length-1) in POSITIONS);
         this._removeButton = null;
         this._visible = false;
     },
@@ -191,11 +199,7 @@ Workspace.prototype = {
                                scale_y: scale,
                                time: Overlay.ANIMATION_TIME,
                                opacity: WINDOW_OPACITY,
-                               transition: "easeOutQuad",
-                               onComplete: function () {
-                                   this._addCloneTitle(window);
-                               },
-                               onCompleteScope: this
+                               transition: "easeOutQuad"
                              });
         }
 
@@ -222,7 +226,7 @@ Workspace.prototype = {
         for (let i = 0; i < this._windows.length; i++) {
             let window = this._windows[i];
             if (window.cloneTitle)
-                window.cloneTitle.destroy();
+                window.cloneTitle.hide();
             Tweener.addTween(window,
                              { x: this.fullSizeX + window.origX,
                                y: this.fullSizeY + window.origY,
@@ -250,6 +254,7 @@ Workspace.prototype = {
     // Animates grid shrinking/expanding when a row or column
     // of workspaces is added or removed
     resizeToGrid : function (oldScale) {
+        let me = this;
         let rescale = this.scale / oldScale;
 
         for (let i = 0; i < this._windows.length; i++) {
@@ -263,10 +268,12 @@ Workspace.prototype = {
                                scale_x: newWindowScale,
                                scale_y: newWindowScale,
                                time: Overlay.ANIMATION_TIME,
-                               transition: "easeOutQuad"
+                               transition: "easeOutQuad",
+                               onComplete: function () {
+                                   me._adjustCloneTitle(me._windows[i]);
+                               }
                              });
-            this._adjustCloneTitle(this._windows[i], newX, newY,
-                                   newWindowScale);
+
         }
 
         if (this._removeButton) {
@@ -364,12 +371,15 @@ Workspace.prototype = {
 
     // Tests if @win should be shown in the overlay
     _isOverlayWindow : function (win) {
-        return win.get_window_type() != Meta.WindowType.DESKTOP &&
-            !win.is_override_redirect();
+        let wintype = win.get_window_type();
+        if (wintype == Meta.WindowType.DESKTOP || 
+            wintype == Meta.WindowType.DOCK)
+            return false;
+        return !win.is_override_redirect();
     },
 
     // Create a clone of a window to use in the overlay.
-    _makeClone : function(window) {
+    _makeClone : function(window, index) {
         let clone = new Clutter.CloneTexture({ parent_texture: window.get_texture(),
                                                reactive: true,
                                                x: window.x,
@@ -377,6 +387,7 @@ Workspace.prototype = {
         clone.realWindow = window;
         clone.origX = window.x;
         clone.origY = window.y;
+        clone.index = index;
         return clone;
     },
 
@@ -422,47 +433,68 @@ Workspace.prototype = {
 
         return [xCenter, yCenter, fraction];
     },
+    
+    _cloneEnter: function (clone, event) {
+        if (!clone.cloneTitle)
+            this._createCloneTitle(clone);
+    	clone.cloneTitle.show();            
+        this._adjustCloneTitle(clone)
+    	if (!this._overlappedMode)
+    	    return;
+    	if (clone.index != this._windows.length-1) {
+    	    clone.raise_top();
+    	    clone.cloneTitle.raise(clone);
+    	}
+    },
+    
+    _cloneLeave: function (clone, event) {
+        clone.cloneTitle.hide();
+    	if (!this._overlappedMode)
+    	    return;    	
+    	if (clone.index != this._windows.length-1) {
+    	    clone.lower(this._windows[clone.index+1]);
+    	    clone.cloneTitle.raise(clone);    	    
+    	}
+    },
 
-    _addCloneTitle : function (clone) {
-        let transformed = clone.get_transformed_size();
+    _createCloneTitle : function (clone) {
+        let me = this;
         let window = clone.realWindow;
-        let icon = window.meta_window.mini_icon;
-        let iconTexture = new Clutter.Texture({ width: 16, height: 16, keep_aspect_ratio: true});
-        Shell.clutter_texture_set_from_pixbuf(iconTexture, icon);
+        
         let box = new Big.Box({background_color : WINDOWCLONE_BG_COLOR,
                                y_align: Big.BoxAlignment.CENTER,
                                corner_radius: 5,
                                padding: 4,
                                spacing: 4,
-                               orientation: Big.BoxOrientation.HORIZONTAL});
+                               orientation: Big.BoxOrientation.HORIZONTAL});        
+        
+        let icon = window.meta_window.mini_icon;
+        let iconTexture = new Clutter.Texture({ x: clone.x,
+                                                y: clone.y + clone.height - 16,
+                                                width: 16, height: 16, keep_aspect_ratio: true});
+        Shell.clutter_texture_set_from_pixbuf(iconTexture, icon);
         box.append(iconTexture, Big.BoxPackFlags.NONE);
+        
         let title = new Clutter.Label({color: WINDOWCLONE_TITLE_COLOR,
-                                       font_name: "Sans 14",
+                                       font_name: "Sans 12",
                                        text: window.meta_window.title,
                                        ellipsize: Pango.EllipsizeMode.END});
-        // Get current width (just the icon), with spacing, plus title
-        box.fullWidth = box.width + box.spacing + title.width;
-        box.width = Math.min(box.fullWidth, transformed[0]);
-        box.append(title, Big.BoxPackFlags.EXPAND);
-        box.set_position(clone.x, clone.y);
-        let parent = clone.get_parent();
-        clone.cloneTitle = box;
+        box.append(title, Big.BoxPackFlags.EXPAND);                                       
+        // Get and cache the expected width (just the icon), with spacing, plus title
+        box.fullWidth = box.width;
+        box.hide(); // Hidden by default, show on mouseover
+        clone.cloneTitle = box;        
+        
+        let parent = clone.get_parent();        
         parent.add_actor(box);
     },
 
-    _adjustCloneTitle : function (clone, newX, newY, newScale) {
-        let title = clone.cloneTitle;
-        if (!title)
-            return;
-
-        let newWidth = Math.min(title.fullWidth, clone.width * newScale);
-        Tweener.addTween(title,
-                         { x: newX,
-                           y: newY,
-                           width: newWidth,
-                           time: Overlay.ANIMATION_TIME,
-                           transition: "easeOutQuad"
-                         });
+    _adjustCloneTitle : function (clone) {
+        let transformed = clone.get_transformed_size();
+        let title = clone.cloneTitle;    
+        title.width = Math.min(title.fullWidth, transformed[0]);
+        let xoff = (transformed[0] - title.width)/2;
+        title.set_position(clone.x+xoff, clone.y);
     },
 
     _activateWindow : function(w, time) {

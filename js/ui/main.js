@@ -97,6 +97,9 @@ Signals.addSignalMethods(ClutterFrameTicker.prototype);
 
 function start() {
     let global = Shell.Global.get();
+    
+    // Here we grab our DBus name, etc.
+    global.late_init();
 
     Tweener.setFrameTicker(new ClutterFrameTicker());
 

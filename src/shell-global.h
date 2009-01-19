@@ -38,6 +38,8 @@ GdkPixbuf *shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info);
 
 ShellGlobal *shell_global_get (void);
 
+void shell_global_late_init (ShellGlobal *global);
+
 void shell_global_set_stage_input_area (ShellGlobal *global,
 					int          x,
 					int          y,

@@ -7,8 +7,11 @@
 #include <clutter/x11/clutter-x11.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <libgnomeui-2.0/libgnomeui/gnome-thumbnail.h>
+#include <dbus/dbus-glib.h>
 #include <libgnomeui/gnome-thumbnail.h>
 
 struct _ShellGlobal {
@@ -455,4 +458,50 @@ shell_global_reexec_self (ShellGlobal *global)
   execvp (arr->pdata[0], (char**)arr->pdata);
   g_warning ("failed to reexec: %s", g_strerror (errno));
   g_ptr_array_free (arr, TRUE);
+}
+
+/**
+ * shell_global_late_init
+ * 
+ * Perform once-only global initialization; currently this executes
+ * the external tasklist process and grabs the org.gnome.Shell DBus name.
+ */
+void 
+shell_global_late_init (ShellGlobal *global)
+{
+  static gboolean initialized = FALSE;
+  GError *error = NULL;
+  DBusGConnection *session;
+  DBusGProxy *bus;
+  guint32 request_name_result;
+  const char* panel_args[] = {"gnomeshell-taskpanel", NULL};
+  
+  if (initialized)
+    return;
+  initialized = TRUE;
+  
+  session = dbus_g_bus_get (DBUS_BUS_SESSION, NULL);
+  
+  bus = dbus_g_proxy_new_for_name (session,
+                                   DBUS_SERVICE_DBUS,
+                                   DBUS_PATH_DBUS,
+                                   DBUS_INTERFACE_DBUS);
+  
+  if (!dbus_g_proxy_call (bus, "RequestName", &error,
+                          G_TYPE_STRING, "org.gnome.Shell",
+                          G_TYPE_UINT, 0,
+                          G_TYPE_INVALID,
+                          G_TYPE_UINT, &request_name_result,
+                          G_TYPE_INVALID)) {
+    g_print ("failed to acquire org.gnome.Shell: %s\n", error->message);
+    exit (0);  
+  }
+  
+  if (!g_spawn_async (NULL, &panel_args, NULL, G_SPAWN_SEARCH_PATH, NULL,
+                      NULL, NULL, &error)) {
+    g_critical ("failed to execute %s: %s", panel_args[0], error->message);
+    g_clear_error (&error);
+  }
+  
+  g_object_unref (bus);
 }

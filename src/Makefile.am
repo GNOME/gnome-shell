@@ -2,11 +2,13 @@ NULL =
 BUILT_SOURCES =
 CLEANFILES =
 EXTRA_DIST = 
+bin_PROGRAMS =
 noinst_LTLIBRARIES = 
 
 include Makefile-tidy.am
 include Makefile-big.am
 include Makefile-tray.am
+include Makefile-taskpanel.am
 
 gnome_shell_cflags =				\
 	$(MUTTER_PLUGIN_CFLAGS)			\
