@@ -124,7 +124,7 @@ frame_cb (ClutterTimeline *timeline,
 }
 
 G_MODULE_EXPORT int
-test_actors2_main (int argc, char *argv[])
+test_actor_clone_main (int argc, char *argv[])
 {
   ClutterTimeline *timeline;
   ClutterAlpha     *alpha;
@@ -187,11 +187,13 @@ test_actors2_main (int argc, char *argv[])
       g_error ("image load failed: %s", error->message);
       exit (1);
     }
+  clutter_actor_set_size (tmp, 300, 500);
   real_hand = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (real_hand), tmp);
   tmp = clutter_rectangle_new_with_color (&clr);
   clutter_actor_set_size (tmp, 100, 100);
   clutter_container_add_actor (CLUTTER_CONTAINER (real_hand), tmp);
+  clutter_actor_set_scale (real_hand, 0.5, 0.5);
 
   /* Now stick the group we want to clone into another group with a custom
    * opacity to verify that the clones don't traverse this parent when
@@ -211,6 +213,7 @@ test_actors2_main (int argc, char *argv[])
 
       /* Create a texture from file, then clone in to same resources */
       oh->hand[i] = clutter_actor_clone_new (real_hand);
+      clutter_actor_set_size (oh->hand[i], 200, 213);
 
       /* Place around a circle */
       w = clutter_actor_get_width (oh->hand[0]);

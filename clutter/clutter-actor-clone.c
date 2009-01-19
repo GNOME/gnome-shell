@@ -99,10 +99,6 @@ clutter_actor_clone_paint (ClutterActor *self)
   ClutterGeometry           clone_source_geom;
   float                     x_scale;
   float                     y_scale;
-  ClutterActor             *stage;
-  ClutterPerspective        perspective;
-  guint                     stage_width;
-  guint                     stage_height;
 
   CLUTTER_NOTE (PAINT,
                 "painting clone actor '%s'",
@@ -115,40 +111,11 @@ clutter_actor_clone_paint (ClutterActor *self)
 
   /* We need to scale what the clone-source actor paints to fill our own
    * allocation... */
-  x_scale = geom.width / clone_source_geom.width;
-  y_scale = geom.height / clone_source_geom.height;
 
-  /* Once we have calculated the scale factors it's a case of pushing
-   * the scale factors to the bottom of the current model view stack...
-   */
-  if (x_scale != 1.0 || y_scale != 1.0)
-    {
-      /*
-       * FIXME - this is quite expensive, it would be good it clutter kept
-       * the model view matrix changes made by cogl_setup_viewport seperate
-       * from those made while painting actors so we could simply replace the
-       * later by multiplying it with the scale avoiding the call to
-       * _clutter_actor_apply_modelview_transform_recursive.
-       */
+  x_scale = (float)geom.width / clone_source_geom.width;
+  y_scale = (float)geom.height / clone_source_geom.height;
 
-      stage = clutter_actor_get_stage (self);
-      if (!stage)
-        return;
-
-      clutter_actor_get_size (stage, &stage_width, &stage_height);
-      clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
-
-      cogl_setup_viewport (stage_width, stage_height,
-                           perspective.fovy,
-                           perspective.aspect,
-                           perspective.z_near,
-                           perspective.z_far);
-
-      cogl_scale (COGL_FIXED_FROM_FLOAT (x_scale),
-                  COGL_FIXED_FROM_FLOAT (y_scale));
-
-      _clutter_actor_apply_modelview_transform_recursive (self, NULL);
-    }
+  cogl_scale (COGL_FIXED_FROM_FLOAT (x_scale), COGL_FIXED_FROM_FLOAT (y_scale));
 
   /* The final bits of magic:
    * - We need to make sure that when the clone-source actor's paint method
