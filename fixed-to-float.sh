@@ -148,7 +148,34 @@ find ./clutter/ ./tests -iname '*.c' -exec grep '^clutter_[a-zA-Z_]*x ' {} \; | 
 # Now the last mile is dealt with manually with a bunch of patches...
 #
 
-git-commit -a -m "[By fixed-to-float.sh] Fixed to Float automatic changes" --no-verify
+cat > log_message <<EOF
+[Automatic fixed-to-float.sh change] Applies all scripted changes
+
+This is the result of running a number of sed and perl scripts over the code to
+do 90% of the work in converting from 16.16 fixed to single precision floating
+point.
+
+Note: A pristine cogl-fixed.c has been maintained as a standalone utility API
+      so that applications may still take advantage of fixed point if they
+      desire for certain optimisations where lower precision may be acceptable.
+
+Note: no API changes were made in Clutter, only in Cogl.
+
+Overview of changes:
+- Within clutter/* all usage of the COGL_FIXED_ macros have been changed to use
+the CLUTTER_FIXED_ macros.
+
+- Within cogl/* all usage of the COGL_FIXED_ macros have been completly stripped
+and expanded into code that works with single precision floats instead.
+
+- Uses of cogl_fixed_* have been replaced with single precision math.h
+alternatives.
+
+- Uses of COGL_ANGLE_* and cogl_angle_* have been replaced so we use a float for
+angles and math.h replacements.
+
+EOF
+git-commit -a -F log_message --no-verify
 
 patch -p1<fixed-to-float-patches/gl-cogl-texture.c.0.patch
 patch -p1<fixed-to-float-patches/clutter-actor.c.0.patch
@@ -180,7 +207,15 @@ patch -p1<fixed-to-float-patches/remove_cogl_apis_taking_fixed_params.0.patch
 
 #XXX: COGL_PANGO_UNIT_TO_FIXED
 
-git-commit -a -m "[By fixed-to-float.sh] Fixed to Float patches" --no-verify
+cat > log_message <<EOF
+[Automatic fixed-to-float.sh change] Applies a number fixed to float patches
+
+To deal with all the corner cases that couldn't be scripted a number of patches
+were written for the remaining 10% of the effort.
+
+Note: again no API changes were made in Clutter, only in Cogl.
+EOF
+git-commit -a -F log_message --no-verify
 
 # The fixes in these files are entirely handcoded, so to avoid clashes with the
 # automatic stuff above the patches below are based against the pristine
@@ -191,5 +226,14 @@ git-checkout HEAD~2 clutter/clutter-units.h
 patch -p1<fixed-to-float-patches/clutter-fixed.h.0.patch
 patch -p1<fixed-to-float-patches/clutter-units.h.0.patch
 
-git-commit -a -m "[By fixed-to-float.sh] clutter-fixed.h and clutter-units.h changes" --no-verify
+cat > log_message <<EOF
+[Automatic fixed-to-float.sh change] Hand coded changes for clutter-{fixed,units}
+
+To avoid clashing with all the scripted changes, clutter-fixed.h and
+clutter-units.h were manually converted to internally use floats instead of
+16.16 fixed numbers.
+
+Note: again no API changes were made in Clutter.
+EOF
+git-commit -a -F log_message --no-verify
 
