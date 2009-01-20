@@ -37,10 +37,10 @@ struct _CoglPangoGlyphCacheValue
 {
   CoglHandle texture;
 
-  CoglFixed  tx1;
-  CoglFixed  ty1;
-  CoglFixed  tx2;
-  CoglFixed  ty2;
+  float  tx1;
+  float  ty1;
+  float  tx2;
+  float  ty2;
 
   int        draw_x;
   int        draw_y;

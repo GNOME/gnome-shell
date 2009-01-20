@@ -368,14 +368,14 @@ void            cogl_texture_unref            (CoglHandle          handle);
  * texture pass in @tx1=0.0 @ty1=0.0 @tx2=1.0 @ty2=1.0.
  */
 void            cogl_texture_rectangle        (CoglHandle          handle,
-                                               CoglFixed        x1,
-                                               CoglFixed        y1,
-                                               CoglFixed        x2,
-                                               CoglFixed        y2,
-                                               CoglFixed        tx1,
-                                               CoglFixed        ty1,
-                                               CoglFixed        tx2,
-                                               CoglFixed        ty2);
+                                               float        x1,
+                                               float        y1,
+                                               float        x2,
+                                               float        y2,
+                                               float        tx1,
+                                               float        ty1,
+                                               float        tx2,
+                                               float        ty2);
 
 /**
  * cogl_texture_polygon:
@@ -455,7 +455,7 @@ void            cogl_bitmap_free              (CoglBitmap     *bmp);
  * significant performance boost to use this function rather than
  * calling cogl_texture_rectangle() separately for each rectangle.
  *
- * @verts should point to an array of #CoglFixed<!-- -->s with
+ * @verts should point to an array of #float<!-- -->s with
  * @n_rects * 8 elements. Each group of 8 values corresponds to the
  * parameters x1, y1, x2, y2, tx1, ty1, tx2 and ty2 and have the same
  * meaning as in cogl_texture_rectangle().
@@ -464,7 +464,7 @@ void            cogl_bitmap_free              (CoglBitmap     *bmp);
  */
 void            cogl_texture_multiple_rectangles
                                               (CoglHandle          handle,
-                                               const CoglFixed    *verts,
+                                               const float    *verts,
                                                guint               n_rects);
 
 G_END_DECLS

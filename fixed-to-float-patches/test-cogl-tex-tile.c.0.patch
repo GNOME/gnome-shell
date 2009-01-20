@@ -1,0 +1,24 @@
+diff --git a/tests/interactive/test-cogl-tex-tile.c b/tests/interactive/test-cogl-tex-tile.c
+index 5063dff..177d60e 100644
+--- a/tests/interactive/test-cogl-tex-tile.c
++++ b/tests/interactive/test-cogl-tex-tile.c
+@@ -90,14 +90,14 @@ test_coglbox_paint(ClutterActor *self)
+   ClutterFixed sin_frame, cos_frame;
+   ClutterFixed frac_frame;
+   gint t;
+-  sin_frame = clutter_sini (CLUTTER_ANGLE_FROM_DEG (priv->frame));
+-  cos_frame = clutter_cosi (CLUTTER_ANGLE_FROM_DEG (priv->frame));
++  sin_frame = clutter_sinx (priv->frame);
++  cos_frame = clutter_cosx (priv->frame);
+   
+   pingpong_frame = (priv->frame <= 180 ? priv->frame : 360 - priv->frame);
+   frac_frame = (CLUTTER_INT_TO_FIXED (pingpong_frame) /
+-                               CLUTTER_INT_TO_FIXED (180));
+-  frac_frame += (1.0 >> 1);
+-  frac_frame <<= 1;
++                CLUTTER_INT_TO_FIXED (180));
++  frac_frame += 0.5;
++  frac_frame *= 2;
+   
+   for (t=0; t<4; t+=2)
+     {

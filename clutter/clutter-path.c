@@ -1217,11 +1217,11 @@ clutter_path_node_distance (const ClutterKnot *start,
    * If we are using limited precision sqrti implementation, fallback on
    * clib sqrt if the precission would be less than 10%
    */
-#if INT_MAX > CLUTTER_SQRTI_ARG_10_PERCENT
+#if INT_MAX > COGL_SQRTI_ARG_10_PERCENT
   if (t <= COGL_SQRTI_ARG_10_PERCENT)
     return cogl_sqrti (t);
   else
-    return COGL_FLOAT_TO_INT (sqrt(t));
+    return COGL_FLOAT_TO_INT (sqrtf(t));
 #else
   return cogl_sqrti (t);
 #endif

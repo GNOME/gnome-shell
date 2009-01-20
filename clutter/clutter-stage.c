@@ -815,15 +815,15 @@ clutter_stage_init (ClutterStage *self)
 
   priv->color = default_stage_color;
 
-  priv->perspective.fovy   = COGL_FIXED_60; /* 60 Degrees */
-  priv->perspective.aspect = COGL_FIXED_1;
-  priv->perspective.z_near = COGL_FIXED_FROM_FLOAT (0.1);
-  priv->perspective.z_far  = COGL_FIXED_FROM_FLOAT (100.0);
+  priv->perspective.fovy   = 60.0; /* 60 Degrees */
+  priv->perspective.aspect = 1.0;
+  priv->perspective.z_near = CLUTTER_FLOAT_TO_FIXED (0.1);
+  priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED (100.0);
 
   /* depth cueing */
-  priv->fog.density = COGL_FIXED_FROM_FLOAT (0.1);
-  priv->fog.z_near  = COGL_FIXED_FROM_FLOAT (1.0);
-  priv->fog.z_far   = COGL_FIXED_FROM_FLOAT (2.0);
+  priv->fog.density = CLUTTER_FLOAT_TO_FIXED (0.1);
+  priv->fog.z_near  = CLUTTER_FLOAT_TO_FIXED (1.0);
+  priv->fog.z_far   = CLUTTER_FLOAT_TO_FIXED (2.0);
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
   clutter_stage_set_key_focus (self, NULL);
@@ -979,10 +979,10 @@ clutter_stage_set_perspective (ClutterStage *stage,
 
   priv = stage->priv;
 
-  priv->perspective.fovy   = COGL_FIXED_FROM_FLOAT (fovy);
-  priv->perspective.aspect = COGL_FIXED_FROM_FLOAT (aspect);
-  priv->perspective.z_near = COGL_FIXED_FROM_FLOAT (z_near);
-  priv->perspective.z_far  = COGL_FIXED_FROM_FLOAT (z_far);
+  priv->perspective.fovy   = CLUTTER_FLOAT_TO_FIXED (fovy);
+  priv->perspective.aspect = CLUTTER_FLOAT_TO_FIXED (aspect);
+  priv->perspective.z_near = CLUTTER_FLOAT_TO_FIXED (z_near);
+  priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED (z_far);
 
   /* this will cause the viewport to be reset; see
    * clutter_maybe_setup_viewport() inside clutter-main.c
@@ -1018,16 +1018,16 @@ clutter_stage_get_perspective (ClutterStage       *stage,
   priv = stage->priv;
 
   if (fovy)
-    *fovy   = COGL_FIXED_TO_FLOAT (priv->perspective.fovy);
+    *fovy   = CLUTTER_FIXED_TO_FLOAT (priv->perspective.fovy);
 
   if (aspect)
-    *aspect = COGL_FIXED_TO_FLOAT (priv->perspective.aspect);
+    *aspect = CLUTTER_FIXED_TO_FLOAT (priv->perspective.aspect);
 
   if (z_near)
-    *z_near = COGL_FIXED_TO_FLOAT (priv->perspective.z_near);
+    *z_near = CLUTTER_FIXED_TO_FLOAT (priv->perspective.z_near);
 
   if (z_far)
-    *z_far  = COGL_FIXED_TO_FLOAT (priv->perspective.z_far);
+    *z_far  = CLUTTER_FIXED_TO_FLOAT (priv->perspective.z_far);
 }
 
 /**
@@ -1627,11 +1627,11 @@ clutter_stage_get_fog (ClutterStage *stage,
   priv = stage->priv;
 
   if (density)
-    *density = COGL_FIXED_TO_FLOAT (priv->fog.density);
+    *density = CLUTTER_FIXED_TO_FLOAT (priv->fog.density);
   if (z_near)
-    *z_near = COGL_FIXED_TO_FLOAT (priv->fog.z_near);
+    *z_near = CLUTTER_FIXED_TO_FLOAT (priv->fog.z_near);
   if (z_far)
-    *z_far = COGL_FIXED_TO_FLOAT (priv->fog.z_far);
+    *z_far = CLUTTER_FIXED_TO_FLOAT (priv->fog.z_far);
 }
 
 /**
@@ -1663,9 +1663,9 @@ clutter_stage_set_fog (ClutterStage *stage,
 
   priv = stage->priv;
 
-  priv->fog.density = COGL_FIXED_FROM_FLOAT (density);
-  priv->fog.z_near  = COGL_FIXED_FROM_FLOAT (z_near);
-  priv->fog.z_far   = COGL_FIXED_FROM_FLOAT (z_far);
+  priv->fog.density = CLUTTER_FLOAT_TO_FIXED (density);
+  priv->fog.z_near  = CLUTTER_FLOAT_TO_FIXED (z_near);
+  priv->fog.z_far   = CLUTTER_FLOAT_TO_FIXED (z_far);
 
   if (priv->use_fog && CLUTTER_ACTOR_IS_VISIBLE (stage))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
@@ -1761,7 +1761,7 @@ clutter_stage_get_resolutionx (ClutterStage *stage)
 
   res = clutter_backend_get_resolution (context->backend);
 
-  return COGL_FIXED_FROM_FLOAT (res);
+  return CLUTTER_FLOAT_TO_FIXED (res);
 }
 
 /*** Perspective boxed type ******/

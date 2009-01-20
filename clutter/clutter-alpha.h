@@ -105,7 +105,7 @@ struct _ClutterAlphaClass
  *
  * Since: 0.2
  */
-#define CLUTTER_ALPHA_MAX_ALPHA (0xffff)
+#define CLUTTER_ALPHA_MAX_ALPHA (65535.0f)
 
 GType clutter_alpha_get_type (void) G_GNUC_CONST;
 

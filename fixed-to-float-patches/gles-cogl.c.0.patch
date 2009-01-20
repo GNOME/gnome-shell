@@ -1,0 +1,102 @@
+diff --git a/clutter/cogl/gles/cogl.c b/clutter/cogl/gles/cogl.c
+index 422d8b6..cb7aa8e 100644
+--- a/clutter/cogl/gles/cogl.c
++++ b/clutter/cogl/gles/cogl.c
+@@ -37,6 +37,7 @@
+ #include "cogl-context.h"
+ 
+ #include "cogl-gles2-wrapper.h"
++#include <math.h>
+ 
+ /* GL error to string conversion */
+ #if COGL_DEBUG
+@@ -92,10 +93,10 @@ cogl_paint_init (const CoglColor *color)
+   fprintf(stderr, "\n ============== Paint Start ================ \n");
+ #endif
+ 
+-  cogl_wrap_glClearColorx (cogl_color_get_red (color),
+-			   cogl_color_get_green (color),
+-			   cogl_color_get_blue (color),
+-			   0);
++  glClearColor (cogl_color_get_red (color),
++                cogl_color_get_green (color),
++                cogl_color_get_blue (color),
++                0);
+ 
+   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+   cogl_wrap_glDisable (GL_LIGHTING);
+@@ -365,9 +366,8 @@ set_clip_plane (GLint plane_num,
+ 
+   /* Calculate the angle between the axes and the line crossing the
+      two points */
+-  angle = (atan2f (vertex_b[1] - vertex_a[1] *
+-                                            vertex_b[0] - vertex_a[0]),
+-		          COGL_RADIANS_TO_DEGREES);
++  angle = atan2f (vertex_b[1] - vertex_a[1],
++                  vertex_b[0] - vertex_a[0]) * (180.0/G_PI);
+ 
+   GE( cogl_wrap_glPushMatrix () );
+   /* Load the identity matrix and multiply by the reverse of the
+@@ -405,8 +405,8 @@ _cogl_set_clip_planes (float x_offset,
+   float vertex_br[4] = { x_offset + width, y_offset + height,
+ 				0, 1.0 };
+ 
+-  GE( cogl_wrap_glGetFixedv (GL_MODELVIEW_MATRIX, modelview) );
+-  GE( cogl_wrap_glGetFixedv (GL_PROJECTION_MATRIX, projection) );
++  GE( cogl_wrap_glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
++  GE( cogl_wrap_glGetFloatv (GL_PROJECTION_MATRIX, projection) );
+ 
+   project_vertex (modelview, projection, vertex_tl);
+   project_vertex (modelview, projection, vertex_tr);
+@@ -558,15 +558,13 @@ cogl_perspective (float fovy,
+    * 2) When working with small numbers, we can are loosing significant
+    * precision
+    */
+-  ymax = (zNear *
+-                         (sinf (fovy_rad_half) /
+-                                         cosf (fovy_rad_half)));
++  ymax = (zNear * (sinf (fovy_rad_half) / cosf (fovy_rad_half)));
+   xmax = (ymax * aspect);
+ 
+   x = (zNear / xmax);
+   y = (zNear / ymax);
+   c = (-(zFar + zNear) / ( zFar - zNear));
+-  d = (-((2 * zFar * zNear)) / (zFar - zNear));
++  d = (-(2 * zFar) * zNear) / (zFar - zNear);
+ 
+ #define M(row,col)  m[col*4+row]
+   M(0,0) = x;
+@@ -671,13 +669,13 @@ cogl_setup_viewport (guint        w,
+   if (fovy != 60.0)
+     {
+       float fovy_rad = (fovy * G_PI) / 180;
+-  
+-      z_camera = (sinf (fovy_rad) /
+-                                 cosf (fovy_rad)) >> 1;
++
++      z_camera = (sinf (fovy_rad) / cosf (fovy_rad)) / 2;
+     }
+   
+ 
+-  GE( cogl_wrap_glTranslatef (-1 << 15, -1 << 15, -z_camera) );
++
++  GE( cogl_wrap_glTranslatef (-0.5f, -0.5f, -z_camera) );
+ 
+   GE( cogl_wrap_glScalef ( 1.0 / width,
+                           -1.0 / height,
+@@ -737,13 +735,13 @@ cogl_features_available (CoglFeatureFlags features)
+ void
+ cogl_get_modelview_matrix (float m[16])
+ {
+-  cogl_wrap_glGetFixedv(GL_MODELVIEW_MATRIX, &m[0]);
++  cogl_wrap_glGetFloatv (GL_MODELVIEW_MATRIX, m);
+ }
+ 
+ void
+ cogl_get_projection_matrix (float m[16])
+ {
+-  cogl_wrap_glGetFixedv(GL_PROJECTION_MATRIX, &m[0]);
++  cogl_wrap_glGetFloatv (GL_PROJECTION_MATRIX, m);
+ }
+ 
+ void

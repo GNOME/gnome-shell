@@ -416,7 +416,7 @@ clutter_backend_set_resolution (ClutterBackend *backend,
 
   priv = backend->priv;
 
-  fixed_dpi = COGL_FIXED_FROM_FLOAT (dpi);
+  fixed_dpi = CLUTTER_FLOAT_TO_FIXED (dpi);
   if (priv->resolution != fixed_dpi)
     priv->resolution = fixed_dpi;
 
@@ -443,7 +443,7 @@ clutter_backend_get_resolution (ClutterBackend *backend)
 {
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1.0);
 
-  return COGL_FIXED_TO_FLOAT (backend->priv->resolution);
+  return CLUTTER_FIXED_TO_FLOAT (backend->priv->resolution);
 }
 
 /**

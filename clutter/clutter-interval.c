@@ -280,7 +280,7 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
       break;
 
     case G_TYPE_BOOLEAN:
-      if (COGL_FIXED_FROM_FLOAT (factor) > COGL_FIXED_0_5)
+      if (CLUTTER_FLOAT_TO_FIXED (factor) > 0.5)
         g_value_set_boolean (value, TRUE);
       else
         g_value_set_boolean (value, FALSE);

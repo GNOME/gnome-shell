@@ -1,0 +1,239 @@
+#!/bin/sh
+
+# The ClutterFixed type and macros now use floats, but we are keeping the
+# CoglFixed type + macros using fixed point so now we convert all uses of
+# the Cogl fixed point macros within Clutter proper to use the ClutterFixed
+# macros instead.
+find ./clutter ./tests -maxdepth 1 -iname '*.c' -exec sed -i \
+-e 's/COGL_FIXED_MUL/CLUTTER_FIXED_MUL/g' \
+-e 's/COGL_FIXED_DIV/CLUTTER_FIXED_DIV/g' \
+-e 's/COGL_FIXED_FAST_MUL/CLUTTER_FIXED_MUL/g' \
+-e 's/COGL_FIXED_FAST_DIV/CLUTTER_FIXED_DIV/g' \
+-e 's/COGL_FIXED_FROM_FLOAT/CLUTTER_FLOAT_TO_FIXED/g' \
+-e 's/COGL_FIXED_TO_FLOAT/CLUTTER_FIXED_TO_FLOAT/g' \
+-e 's/COGL_FIXED_TO_DOUBLE/CLUTTER_FIXED_TO_DOUBLE/g' \
+-e 's/COGL_FIXED_PI/CFX_PI/g' \
+{} \;
+
+# All remaining uses of the Cogl fixed point API now get expanded out to simply
+# use float calculations... (we will restore the cogl-fixed code itself later)
+
+# XXX: The following three assume that no nested function - with
+# multiple arguments - is ever found as the RHS argument to
+# COGL_FIXED_MUL. This is because we simply replace the last ',' with
+# the * operator. If you want to double check that's still true:
+# $ grep -r --include=*.c COGL_FIXED_MUL *|less
+#
+# XXX: (Note in the third regexp there were examples of COGL_FIXED_MUL
+# being used as the RHS argument, but since we have already replaced
+# instances of COGL_FIXED_MUL, that works out ok.
+find ./clutter ./tests -iname '*.[ch]' -exec sed -i -r \
+-e 's/COGL_FIXED_MUL (.*),/\1 */g' \
+-e 's|COGL_FIXED_FAST_DIV (.*),|\1 /|g' \
+-e 's|COGL_FIXED_DIV (.*),|\1 /|g' \
+{} \;
+
+# A fix due to the assumptions used above
+sed -i 's/#define DET2X(a,b,c,d).*/#define DET2X(a,b,c,d)   ((a * d) - (b * c))/g' ./clutter/clutter-actor.c
+
+find ./clutter/cogl/gles -iname '*.[ch]' -exec sed -i 's/GLfixed/GLfloat/g' {} \;
+
+#we get some redundant brackets like this, but C's automatic type promotion
+#works out fine for most cases...
+find ./clutter ./tests -iname '*.[ch]' -exec sed -r -i \
+-e 's/COGL_FIXED_TO_INT//g' \
+-e 's/COGL_FIXED_FROM_INT /(float)/g' \
+-e 's/COGL_FIXED_FROM_INT/(float)/g' \
+-e 's/COGL_FIXED_TO_FLOAT//g' \
+-e 's/COGL_FIXED_FROM_FLOAT//g' \
+-e 's/COGL_FIXED_TO_DOUBLE /(double)/g' \
+\
+-e 's/COGL_FIXED_FLOOR/floorf/g' \
+-e 's/COGL_FIXED_CEIL/ceilf/g' \
+-e 's/COGL_FIXED_360/360.0/g' \
+-e 's/COGL_FIXED_240/240.0/g' \
+-e 's/COGL_FIXED_255/255.0/g' \
+-e 's/COGL_FIXED_180/180.0/g' \
+-e 's/COGL_FIXED_120/120.0/g' \
+-e 's/COGL_FIXED_60/60.0/g' \
+-e 's/COGL_FIXED_1/1.0/g' \
+-e 's/COGL_FIXED_0_5/0.5/g' \
+-e 's/COGL_FIXED_PI/G_PI/g' \
+\
+-e 's/COGL_ANGLE_FROM_DEG \((.*)\),/\1,/g' \
+{} \; \
+\
+-exec perl -p -i \
+-e "s|cogl_angle_cos \((.*?)\)|cosf (\1 * (G_PI/180.0))|;" \
+-e "s|cogl_angle_sin \((.*?)\)|sinf (\1 * (G_PI/180.0))|;" \
+-e "s|cogl_angle_tan \((.*?)\)|tanf (\1 * (G_PI/180.0))|;" \
+{} \;
+
+#XXX: NB: cogl_fixed_div must be done before mul since there is a case were they
+#are nested which would otherwise break the assumption used here that the last
+#coma of the line can simply be replaced with the corresponding operator
+find ./clutter ./tests -iname '*.[ch]' -exec sed -i -r \
+-e 's|cogl_fixed_div (.*),|\1 /|g' \
+-e 's|cogl_fixed_mul (.*),|\1 *|g' \
+-e 's/cogl_fixed_pow2/pow2f/g' \
+-e 's/cogl_fixed_pow/powf/g' \
+-e 's/cogl_fixed_log2/log2f/g' \
+-e 's/cogl_fixed_sqrt/sqrtf/g' \
+-e 's/cogl_fixed_cos/cosf/g' \
+-e 's/cogl_fixed_sin/sinf/g' \
+-e 's/cogl_fixed_atan2/atan2f/g' \
+-e 's/cogl_fixed_atan/atanf/g' \
+-e 's/cogl_fixed_tan/tanf/g' \
+{} \;
+
+#TODO: fixup gles/cogl.c set_clip_plane
+
+cat clutter/cogl/common/cogl-primitives.c| \
+    grep -v '#define CFX_MUL2'| \
+    grep -v '#undef CFX_MUL2'| \
+    grep -v '#define CFX_MUL3'| \
+    grep -v '#undef CFX_MUL3'| \
+    grep -v '#define CFX_SQ'| \
+    grep -v '#undef CFX_SQ'| \
+    sed -r 's/CFX_MUL2 \((.{7})\)/(\1 * 2)/g' | \
+    sed -r 's/CFX_MUL3 \((.{7})\)/(\1 * 3)/g' | \
+    sed -r 's/CFX_SQ \((.{7})\)/(\1 * \1)/g' \
+    >./tmp
+mv ./tmp clutter/cogl/common/cogl-primitives.c
+
+#this has too many false positives...
+#find ./clutter -iname '*.[ch]' -exec sed -i 's|>> 1|/ 2|g' {} \;
+#find ./clutter -iname '*.[ch]' -exec sed -i 's|<< 1|* 2|g' {} \;
+
+sed -i -e 's|>> 1|/ 2|g' -e 's|<< 1|* 2|g' \
+    ./clutter/cogl/common/cogl-primitives.c
+#find ./clutter -iname '*.[ch]' -exec sed -i 's|<< 1|* 2|g' {} \;
+
+
+find ./clutter ./tests -iname '*.[ch]' \
+-exec sed -i 's/CoglFixed/float/g' {} \;
+#XXX: This might need changing later...
+find ./clutter ./tests -iname '*.[ch]' \
+-exec sed -i 's/CoglFixedVec2/CoglVec2/g' {} \;
+sed -i 's/CoglFixed/float/g' ./clutter/cogl/cogl.h.in
+
+# maintain the existing CoglFixed code as utility code for applications:
+sed -i 's/float:/CoglFixed:/g' clutter/cogl/cogl-types.h
+sed -i 's/gint32 float/gint32 CoglFixed/g' clutter/cogl/cogl-types.h
+git-checkout clutter/cogl/cogl-fixed.h clutter/cogl/common/cogl-fixed.c
+
+find ./clutter ./tests -iname '*.[ch]' -exec sed -i 's/CoglAngle/float/g' {} \;
+
+# maintain the existing CoglAngle code as utility code for applications:
+sed -i 's/float:/CoglAngle:/g' clutter/cogl/cogl-types.h
+sed -i 's/gint32 float/gint32 CoglAngle/g' clutter/cogl/cogl-types.h
+git-checkout clutter/cogl/cogl-fixed.h clutter/cogl/common/cogl-fixed.c
+
+find ./clutter ./tests -iname '*.[ch]' ! -iname 'clutter-fixed.h' \
+-exec sed -i 's/ClutterAngle/float/g' {} \;
+
+# use the floating point names for GL ES functions instead of the
+# fixed. These get #define'd to the float versions in one of the
+# patches anyway but the names should be fixed up to avoid confusion
+find ./clutter/cogl -iname '*.[ch]' -exec perl -p -i -e \
+'s/\b(cogl_wrap_(?:glMultMatrix|glFrustum|glScale|glTranslate
+|glRotate|glOrtho|glTexEnv|glClipPlane|glFog|glColor4))x(v?)\b/$1f$2/gx' {} \;
+
+echo "Cogl API to remove/replace with float versions:"
+find ./clutter/ ./tests -iname '*.c' -exec grep '^cogl_[a-zA-Z_]*x ' {} \; | cut -d' ' -f1|grep -v 'box$'|grep -v 'matrix$'
+echo "Clutter API to remove/replace with float versions:"
+find ./clutter/ ./tests -iname '*.c' -exec grep '^clutter_[a-zA-Z_]*x ' {} \; | cut -d' ' -f1|grep -v 'box$'|grep -v 'matrix$'|grep -v '_x$'
+
+#
+# Now the last mile is dealt with manually with a bunch of patches...
+#
+
+cat > log_message <<EOF
+[Automatic fixed-to-float.sh change] Applies all scripted changes
+
+This is the result of running a number of sed and perl scripts over the code to
+do 90% of the work in converting from 16.16 fixed to single precision floating
+point.
+
+Note: A pristine cogl-fixed.c has been maintained as a standalone utility API
+      so that applications may still take advantage of fixed point if they
+      desire for certain optimisations where lower precision may be acceptable.
+
+Note: no API changes were made in Clutter, only in Cogl.
+
+Overview of changes:
+- Within clutter/* all usage of the COGL_FIXED_ macros have been changed to use
+the CLUTTER_FIXED_ macros.
+
+- Within cogl/* all usage of the COGL_FIXED_ macros have been completly stripped
+and expanded into code that works with single precision floats instead.
+
+- Uses of cogl_fixed_* have been replaced with single precision math.h
+alternatives.
+
+- Uses of COGL_ANGLE_* and cogl_angle_* have been replaced so we use a float for
+angles and math.h replacements.
+
+EOF
+git-commit -a -F log_message --no-verify
+
+patch -p1<fixed-to-float-patches/gl-cogl-texture.c.0.patch
+patch -p1<fixed-to-float-patches/clutter-actor.c.0.patch
+patch -p1<fixed-to-float-patches/clutter-alpha.c.0.patch
+patch -p1<fixed-to-float-patches/clutter-alpha.h.0.patch
+patch -p1<fixed-to-float-patches/clutter-behaviour-ellipse.c.0.patch
+patch -p1<fixed-to-float-patches/clutter-bezier.c.0.patch
+patch -p1<fixed-to-float-patches/clutter-path.c.0.patch
+patch -p1<fixed-to-float-patches/cogl-fixed.h.0.patch
+patch -p1<fixed-to-float-patches/cogl-fixed.c.0.patch
+patch -p1<fixed-to-float-patches/test-cogl-tex-tile.c.0.patch
+patch -p1<fixed-to-float-patches/clutter-texture.c.0.patch
+patch -p1<fixed-to-float-patches/clutter-fixed.c.0.patch
+patch -p1<fixed-to-float-patches/gl-cogl.c.0.patch
+patch -p1<fixed-to-float-patches/cogl-pango-render.c.0.patch
+patch -p1<fixed-to-float-patches/cogl-primitives.c.0.patch
+patch -p1<fixed-to-float-patches/gl-cogl-primitives.c.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl.c.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl-gles2-wrapper.h.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl-gles2-wrapper.c.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl-primitives.c.0.patch
+patch -p1<fixed-to-float-patches/gles-cogl-texture.c.0.patch
+patch -p1<fixed-to-float-patches/cogl.h.in.0.patch
+
+# Finally remove any cogl_blahx Cogl interfaces that used to take CoglFixed
+# params. The corresponding interfaces that take integer params are also
+# patched to take floats instead:
+patch -p1<fixed-to-float-patches/remove_cogl_apis_taking_fixed_params.0.patch
+
+#XXX: COGL_PANGO_UNIT_TO_FIXED
+
+cat > log_message <<EOF
+[Automatic fixed-to-float.sh change] Applies a number fixed to float patches
+
+To deal with all the corner cases that couldn't be scripted a number of patches
+were written for the remaining 10% of the effort.
+
+Note: again no API changes were made in Clutter, only in Cogl.
+EOF
+git-commit -a -F log_message --no-verify
+
+# The fixes in these files are entirely handcoded, so to avoid clashes with the
+# automatic stuff above the patches below are based against the pristine
+# versions, and we don't want to commit any of the automatic changes here.
+git-checkout HEAD~2 clutter/clutter-fixed.h
+git-checkout HEAD~2 clutter/clutter-units.h
+
+patch -p1<fixed-to-float-patches/clutter-fixed.h.0.patch
+patch -p1<fixed-to-float-patches/clutter-units.h.0.patch
+
+cat > log_message <<EOF
+[Automatic fixed-to-float.sh change] Hand coded changes for clutter-{fixed,units}
+
+To avoid clashing with all the scripted changes, clutter-fixed.h and
+clutter-units.h were manually converted to internally use floats instead of
+16.16 fixed numbers.
+
+Note: again no API changes were made in Clutter.
+EOF
+git-commit -a -F log_message --no-verify
+

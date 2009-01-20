@@ -1,0 +1,735 @@
+diff --git a/clutter/clutter-actor.c b/clutter/clutter-actor.c
+index 9cbee04..e0903fe 100644
+--- a/clutter/clutter-actor.c
++++ b/clutter/clutter-actor.c
+@@ -1348,8 +1348,8 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
+   gboolean             is_stage = CLUTTER_IS_STAGE (self);
+ 
+   if (!is_stage)
+-    cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->allocation.x1),
+-		     CLUTTER_UNITS_TO_FIXED (priv->allocation.y1),
++    cogl_translate (CLUTTER_UNITS_TO_FLOAT (priv->allocation.x1),
++		     CLUTTER_UNITS_TO_FLOAT (priv->allocation.y1),
+ 		     0);
+ 
+   /*
+@@ -1363,50 +1363,50 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
+ 
+    if (priv->rzang)
+     {
+-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->rzx),
+-		       CLUTTER_UNITS_TO_FIXED (priv->rzy),
++      cogl_translate (CLUTTER_UNITS_TO_FLOAT (priv->rzx),
++		       CLUTTER_UNITS_TO_FLOAT (priv->rzy),
+ 		       0);
+ 
+-      cogl_rotatex (priv->rzang, 0, 0, 1.0);
++      cogl_rotate (priv->rzang, 0, 0, 1.0);
+ 
+-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->rzx),
+-		       CLUTTER_UNITS_TO_FIXED (-priv->rzy),
++      cogl_translate (CLUTTER_UNITS_TO_FLOAT (-priv->rzx),
++		       CLUTTER_UNITS_TO_FLOAT (-priv->rzy),
+ 		       0);
+     }
+ 
+   if (priv->ryang)
+     {
+-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->ryx),
++      cogl_translate (CLUTTER_UNITS_TO_FLOAT (priv->ryx),
+ 		       0,
+-		       CLUTTER_UNITS_TO_FIXED (priv->z + priv->ryz));
++		       CLUTTER_UNITS_TO_FLOAT (priv->z + priv->ryz));
+ 
+-      cogl_rotatex (priv->ryang, 0, 1.0, 0);
++      cogl_rotate (priv->ryang, 0, 1.0, 0);
+ 
+-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->ryx),
++      cogl_translate (CLUTTER_UNITS_TO_FLOAT (-priv->ryx),
+ 		       0,
+-		       CLUTTER_UNITS_TO_FIXED (-(priv->z + priv->ryz)));
++		       CLUTTER_UNITS_TO_FLOAT (-(priv->z + priv->ryz)));
+     }
+ 
+   if (priv->rxang)
+     {
+-      cogl_translatex (0,
+-		       CLUTTER_UNITS_TO_FIXED (priv->rxy),
+-		       CLUTTER_UNITS_TO_FIXED (priv->z + priv->rxz));
++      cogl_translate (0,
++		       CLUTTER_UNITS_TO_FLOAT (priv->rxy),
++		       CLUTTER_UNITS_TO_FLOAT (priv->z + priv->rxz));
+ 
+-      cogl_rotatex (priv->rxang, 1.0, 0, 0);
++      cogl_rotate (priv->rxang, 1.0, 0, 0);
+ 
+-      cogl_translatex (0,
+-		       CLUTTER_UNITS_TO_FIXED (-priv->rxy),
+-		       CLUTTER_UNITS_TO_FIXED (-(priv->z + priv->rxz)));
++      cogl_translate (0,
++		       CLUTTER_UNITS_TO_FLOAT (-priv->rxy),
++		       CLUTTER_UNITS_TO_FLOAT (-(priv->z + priv->rxz)));
+     }
+ 
+   if (!is_stage && (priv->anchor_x || priv->anchor_y))
+-    cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->anchor_x),
+-		     CLUTTER_UNITS_TO_FIXED (-priv->anchor_y),
++    cogl_translate (CLUTTER_UNITS_TO_FLOAT (-priv->anchor_x),
++		     CLUTTER_UNITS_TO_FLOAT (-priv->anchor_y),
+ 		     0);
+ 
+   if (priv->z)
+-    cogl_translatex (0, 0, priv->z);
++    cogl_translate (0, 0, priv->z);
+ }
+ 
+ /* Recursively applies the transforms associated with this actor and
+diff --git a/clutter/cogl/cogl-color.h b/clutter/cogl/cogl-color.h
+index 6cdf52b..05650d3 100644
+--- a/clutter/cogl/cogl-color.h
++++ b/clutter/cogl/cogl-color.h
+@@ -68,7 +68,7 @@ void cogl_color_set_from_4d  (CoglColor *dest,
+                               gdouble alpha);
+ 
+ /**
+- * cogl_color_set_from_4x:
++ * cogl_color_set_from_4f:
+  * @dest: return location for a #CoglColor
+  * @red: value of the red channel, between 0 and %1.0
+  * @green: value of the green channel, between 0 and %1.0
+@@ -79,7 +79,7 @@ void cogl_color_set_from_4d  (CoglColor *dest,
+  *
+  * Since: 1.0
+  */
+-void cogl_color_set_from_4x (CoglColor *dest,
++void cogl_color_set_from_4f (CoglColor *dest,
+                              float  red,
+                              float  green,
+                              float  blue,
+@@ -248,7 +248,7 @@ float     cogl_color_get_alpha       (const CoglColor *color);
+  * Sets the source color using normalized values for each component.
+  * This color will be used for any subsequent drawing operation.
+  *
+- * See also cogl_set_source_color4ub() and cogl_set_source_color4x()
++ * See also cogl_set_source_color4ub() and cogl_set_source_color4f()
+  * if you already have the color components.
+  *
+  * Since: 1.0
+@@ -276,7 +276,7 @@ void cogl_set_source_color4ub (guint8 red,
+                                guint8 alpha);
+ 
+ /**
+- * cogl_set_source_color4x:
++ * cogl_set_source_color4f:
+  * @red: value of the red channel, between 0 and %1.0
+  * @green: value of the green channel, between 0 and %1.0
+  * @blue: value of the blue channel, between 0 and %1.0
+@@ -291,7 +291,7 @@ void cogl_set_source_color4ub (guint8 red,
+  *
+  * Since: 1.0
+  */
+-void cogl_set_source_color4x (float red,
++void cogl_set_source_color4f (float red,
+                               float green,
+                               float blue,
+                               float alpha);
+diff --git a/clutter/cogl/cogl-path.h b/clutter/cogl/cogl-path.h
+index 0d29829..aa37864 100644
+--- a/clutter/cogl/cogl-path.h
++++ b/clutter/cogl/cogl-path.h
+@@ -60,24 +60,10 @@ G_BEGIN_DECLS
+  * Fills a rectangle at the given coordinates with the current
+  * drawing color in a highly optimizied fashion.
+  **/
+-void            cogl_rectangle                (gint                x,
+-                                               gint                y,
+-                                               guint               width,
+-                                               guint               height);
+-
+-/**
+- * cogl_rectanglex:
+- * @x: X coordinate of the top-left corner
+- * @y: Y coordinate of the top-left corner
+- * @width: Width of the rectangle
+- * @height: Height of the rectangle
+- *
+- * A fixed-point version of cogl_fast_fill_rectangle.
+- **/
+-void            cogl_rectanglex               (float        x,
+-                                               float        y,
+-                                               float        width,
+-                                               float        height);
++void            cogl_rectangle                (float               x,
++                                               float               y,
++                                               float               width,
++                                               float               height);
+ 
+ /**
+  * cogl_path_fill:
+diff --git a/clutter/cogl/cogl.h.in b/clutter/cogl/cogl.h.in
+index f37d54d..f8d5745 100644
+--- a/clutter/cogl/cogl.h.in
++++ b/clutter/cogl/cogl.h.in
+@@ -231,7 +231,7 @@ void            cogl_scale                    (float        x,
+                                                float        y);
+ 
+ /**
+- * cogl_translatex:
++ * cogl_translate:
+  * @x: Distance to translate along the x-axis
+  * @y: Distance to translate along the y-axis
+  * @z: Distance to translate along the z-axis
+@@ -239,26 +239,12 @@ void            cogl_scale                    (float        x,
+  * Multiplies the current model-view matrix by one that translates the
+  * model along all three axes according to the given values.
+  */
+-void            cogl_translatex               (float        x,
+-                                               float        y,
+-                                               float        z);
+-
+-/**
+- * cogl_translate:
+- * @x: Distance to translate along the x-axis
+- * @y: Distance to translate along the y-axis
+- * @z: Distance to translate along the z-axis
+- *
+- * Integer version of cogl_translatex(). Multiplies the current
+- * model-view matrix by one that translates the model along all three
+- * axes according to the given values.
+- */
+-void            cogl_translate                (gint                x,
+-                                               gint                y,
+-                                               gint                z);
++void            cogl_translate                (float                x,
++                                               float                y,
++                                               float                z);
+ 
+ /**
+- * cogl_rotatex:
++ * cogl_rotate:
+  * @angle: Angle in degrees to rotate.
+  * @x: X-component of vertex to rotate around.
+  * @y: Y-component of vertex to rotate around.
+@@ -270,26 +256,10 @@ void            cogl_translate                (gint                x,
+  * degrees about the vertex (0, 0, 1) causes a small counter-clockwise
+  * rotation.
+  */
+-void            cogl_rotatex                  (float        angle,
+-                                               float        x,
+-                                               float        y,
+-                                               float        z);
+-
+-/**
+- * cogl_rotate:
+- * @angle: Angle in degrees to rotate.
+- * @x: X-component of vertex to rotate around.
+- * @y: Y-component of vertex to rotate around.
+- * @z: Z-component of vertex to rotate around.
+- *
+- * Integer version of cogl_rotatex(). Multiplies the current
+- * model-view matrix by one that rotates the model around the vertex
+- * specified by @x, @y and @z.
+- */
+-void            cogl_rotate                   (gint                angle,
+-                                               gint                x,
+-                                               gint                y,
+-                                               gint                z);
++void            cogl_rotate                   (float                angle,
++                                               float                x,
++                                               float                y,
++                                               float                z);
+ 
+ /**
+  * cogl_get_modelview_matrix:
+diff --git a/clutter/cogl/common/cogl-color.c b/clutter/cogl/common/cogl-color.c
+index dac3584..e4b74c6 100644
+--- a/clutter/cogl/common/cogl-color.c
++++ b/clutter/cogl/common/cogl-color.c
+@@ -58,7 +58,7 @@ cogl_color_set_from_4d (CoglColor *dest,
+ }
+ 
+ void
+-cogl_color_set_from_4x (CoglColor *dest,
++cogl_color_set_from_4f (CoglColor *dest,
+                         float  red,
+                         float  green,
+                         float  blue,
+@@ -157,13 +157,13 @@ cogl_set_source_color4ub (guint8 red,
+ }
+ 
+ void
+-cogl_set_source_color4x (float red,
++cogl_set_source_color4f (float red,
+                          float green,
+                          float blue,
+                          float alpha)
+ {
+   CoglColor c = { 0, };
+ 
+-  cogl_color_set_from_4x (&c, red, green, blue, alpha);
++  cogl_color_set_from_4f (&c, red, green, blue, alpha);
+   cogl_set_source_color (&c);
+ }
+diff --git a/clutter/cogl/common/cogl-primitives.c b/clutter/cogl/common/cogl-primitives.c
+index 27834f7..7e9b1b9 100644
+--- a/clutter/cogl/common/cogl-primitives.c
++++ b/clutter/cogl/common/cogl-primitives.c
+@@ -43,19 +43,15 @@ void _cogl_path_add_node    (gboolean new_sub_path,
+                              float y);
+ void _cogl_path_fill_nodes    ();
+ void _cogl_path_stroke_nodes  ();
+-void _cogl_rectangle (gint x,
+-                      gint y,
+-                      guint width,
+-                      guint height);
+-void _cogl_rectanglex (float x,
+-                       float y,
+-                       float width,
+-                       float height);
++void _cogl_rectangle (float x,
++                      float y,
++                      float width,
++                      float height);
+ void
+-cogl_rectangle (gint x,
+-                gint y,
+-                guint width,
+-                guint height)
++cogl_rectangle (float x,
++                float y,
++                float width,
++                float height)
+ {
+   cogl_clip_ensure ();
+ 
+@@ -63,18 +59,6 @@ cogl_rectangle (gint x,
+ }
+ 
+ void
+-cogl_rectanglex (float x,
+-                 float y,
+-                 float width,
+-                 float height)
+-{
+-  cogl_clip_ensure ();
+-
+-  _cogl_rectanglex (x, y, width, height);
+-}
+-
+-
+-void
+ cogl_path_fill (void)
+ {
+   cogl_path_fill_preserve ();
+diff --git a/clutter/cogl/gl/cogl-primitives.c b/clutter/cogl/gl/cogl-primitives.c
+index 8a0843d..e445657 100644
+--- a/clutter/cogl/gl/cogl-primitives.c
++++ b/clutter/cogl/gl/cogl-primitives.c
+@@ -39,35 +39,17 @@
+ #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
+ 
+ void
+-_cogl_rectangle (gint x,
+-                 gint y,
+-                 guint width,
+-                 guint height)
++_cogl_rectangle (float x,
++                 float y,
++                 float width,
++                 float height)
+ {
+   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+   
+   cogl_enable (ctx->color_alpha < 255
+ 	       ? COGL_ENABLE_BLEND : 0);
+   
+-  GE( glRecti (x, y, x + width, y + height) );
+-}
+-
+-
+-void
+-_cogl_rectanglex (float x,
+-                  float y,
+-                  float width,
+-                  float height)
+-{
+-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+-  
+-  cogl_enable (ctx->color_alpha < 255
+-	       ? COGL_ENABLE_BLEND : 0);
+-  
+-  GE( glRectf ( (x),
+-	        (y),
+-	        (x + width),
+-	        (y + height)) );
++  GE( glRectf (x, y, x + width, y + height) );
+ }
+ 
+ void
+@@ -132,17 +114,15 @@ _cogl_path_stroke_nodes ()
+ static void
+ _cogl_path_get_bounds (floatVec2 nodes_min,
+                        floatVec2 nodes_max,
+-                       gint *bounds_x,
+-                       gint *bounds_y,
+-                       guint *bounds_w,
+-                       guint *bounds_h)
++                       float *bounds_x,
++                       float *bounds_y,
++                       float *bounds_w,
++                       float *bounds_h)
+ {
+-  *bounds_x = floorf (nodes_min.x);
+-  *bounds_y = floorf (nodes_min.y);
+-  *bounds_w = ceilf (nodes_max.x
+-                               - (float)(*bounds_x));
+-  *bounds_h = ceilf (nodes_max.y
+-                               - (float)(*bounds_y));
++  *bounds_x = nodes_min.x;
++  *bounds_y = nodes_min.y;
++  *bounds_w = nodes_max.x - *bounds_x;
++  *bounds_h = nodes_max.y - *bounds_y;
+ }
+ 
+ void
+@@ -154,10 +134,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
+ {
+   guint path_start = 0;
+   guint sub_path_num = 0;
+-  gint bounds_x;
+-  gint bounds_y;
+-  guint bounds_w;
+-  guint bounds_h;
++  float bounds_x;
++  float bounds_y;
++  float bounds_w;
++  float bounds_h;
+ 
+   _cogl_path_get_bounds (nodes_min, nodes_max,
+                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
+@@ -239,10 +219,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
+ void
+ _cogl_path_fill_nodes ()
+ {
+-  gint bounds_x;
+-  gint bounds_y;
+-  guint bounds_w;
+-  guint bounds_h;
++  float bounds_x;
++  float bounds_y;
++  float bounds_w;
++  float bounds_h;
+ 
+   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+ 
+diff --git a/clutter/cogl/gl/cogl.c b/clutter/cogl/gl/cogl.c
+index d815e3b..aa0ec78 100644
+--- a/clutter/cogl/gl/cogl.c
++++ b/clutter/cogl/gl/cogl.c
+@@ -217,32 +217,15 @@ cogl_scale (float x, float y)
+ }
+ 
+ void
+-cogl_translatex (float x, float y, float z)
++cogl_translate (float x, float y, float z)
+ {
+-  glTranslatef ((float)(x),
+-		(float)(y),
+-		(float)(z));
++  glTranslatef (x, y, z);
+ }
+ 
+ void
+-cogl_translate (gint x, gint y, gint z)
++cogl_rotate (float angle, float x, float y, float z)
+ {
+-  glTranslatef ((float)x, (float)y, (float)z);
+-}
+-
+-void
+-cogl_rotatex (float angle, float x, float y, float z)
+-{
+-  glRotatef ((float)(angle),
+-	     (float)(x),
+-	     (float)(y),
+-	     (float)(z));
+-}
+-
+-void
+-cogl_rotate (gint angle, gint x, gint y, gint z)
+-{
+-  glRotatef ((float)angle, (float)x, (float)y, (float)z);
++  glRotatef (angle, x, y, z);
+ }
+ 
+ static inline gboolean
+diff --git a/clutter/cogl/gles/cogl-primitives.c b/clutter/cogl/gles/cogl-primitives.c
+index d8fe121..1a58805 100644
+--- a/clutter/cogl/gles/cogl-primitives.c
++++ b/clutter/cogl/gles/cogl-primitives.c
+@@ -39,55 +39,26 @@
+ #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
+ 
+ void
+-_cogl_rectangle (gint x,
+-                 gint y,
+-                 guint width,
+-                 guint height)
++_cogl_rectangle (float x,
++                 float y,
++                 float width,
++                 float height)
+ {
+-  /* 32-bit integers are not supported as coord types
+-     in GLES . Fixed type has got 16 bits left of the
+-     point which is equal to short anyway. */
+-  
+-  GLshort rect_verts[8] = {
+-    (GLshort)  x,          (GLshort)  y,
+-    (GLshort) (x + width), (GLshort)  y,
+-    (GLshort)  x,          (GLshort) (y + height),
+-    (GLshort) (x + width), (GLshort) (y + height)
++  GLfloat rect_verts[8] = {
++    (GLfloat)  x,          (GLfloat)  y,
++    (GLfloat) (x + width), (GLfloat)  y,
++    (GLfloat)  x,          (GLfloat) (y + height),
++    (GLfloat) (x + width), (GLfloat) (y + height)
+   };
+ 
+   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+   
+   cogl_enable (COGL_ENABLE_VERTEX_ARRAY
+               | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
+-  GE ( cogl_wrap_glVertexPointer (2, GL_SHORT, 0, rect_verts ) );
++  GE ( cogl_wrap_glVertexPointer (2, GL_FLOAT, 0, rect_verts ) );
+   GE ( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
+ }
+ 
+-
+-void
+-_cogl_rectanglex (float x,
+-                  float y,
+-                  float width,
+-                  float height)
+-{
+-  GLfloat rect_verts[8] = {
+-    x,         y,
+-    x + width, y,
+-    x,         y + height,
+-    x + width, y + height
+-  };
+-   
+-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+-  
+-  cogl_enable (COGL_ENABLE_VERTEX_ARRAY
+-	       | (ctx->color_alpha < 255
+-		  ? COGL_ENABLE_BLEND : 0));
+-  
+-  GE( cogl_wrap_glVertexPointer (2, GL_FIXED, 0, rect_verts) );
+-  GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
+-
+-}
+-
+ void
+ _cogl_path_add_node (gboolean new_sub_path,
+                      float x,
+@@ -150,17 +121,15 @@ _cogl_path_stroke_nodes ()
+ static void
+ _cogl_path_get_bounds (floatVec2 nodes_min,
+                        floatVec2 nodes_max,
+-                       gint *bounds_x,
+-                       gint *bounds_y,
+-                       guint *bounds_w,
+-                       guint *bounds_h)
++                       float *bounds_x,
++                       float *bounds_y,
++                       float *bounds_w,
++                       float *bounds_h)
+ {
+-  *bounds_x = floorf (nodes_min.x);
+-  *bounds_y = floorf (nodes_min.y);
+-  *bounds_w = ceilf (nodes_max.x
+-                               - (float)(*bounds_x));
+-  *bounds_h = ceilf (nodes_max.y
+-                               - (float)(*bounds_y));
++  *bounds_x = nodes_min.x;
++  *bounds_y = nodes_min.y;
++  *bounds_w = nodes_max.x - *bounds_x;
++  *bounds_h = nodes_max.y - *bounds_y;
+ }
+ 
+ static gint compare_ints (gconstpointer a,
+@@ -178,10 +147,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
+ {
+   guint path_start = 0;
+   guint sub_path_num = 0;
+-  gint bounds_x;
+-  gint bounds_y;
+-  guint bounds_w;
+-  guint bounds_h;
++  float bounds_x;
++  float bounds_y;
++  float bounds_w;
++  float bounds_h;
+ 
+   _cogl_path_get_bounds (nodes_min, nodes_max,
+                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
+@@ -245,12 +214,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
+       GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+       GE( cogl_wrap_glPushMatrix () );
+       GE( cogl_wrap_glLoadIdentity () );
+-      cogl_rectanglex (-1.0, -1.0,
+-		       (float)(2),
+-		       (float)(2));
+-      cogl_rectanglex (-1.0, -1.0,
+-		       (float)(2),
+-		       (float)(2));
++      cogl_rectangle (-1.0, -1.0, 2, 2);
++      cogl_rectangle (-1.0, -1.0, 2, 2);
+       GE( cogl_wrap_glPopMatrix () );
+       GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+       GE( cogl_wrap_glPopMatrix () );
+@@ -436,10 +401,10 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
+ void
+ _cogl_path_fill_nodes ()
+ {
+-  gint bounds_x;
+-  gint bounds_y;
+-  guint bounds_w;
+-  guint bounds_h;
++  float bounds_x;
++  float bounds_y;
++  float bounds_w;
++  float bounds_h;
+ 
+   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+ 
+diff --git a/clutter/cogl/gles/cogl.c b/clutter/cogl/gles/cogl.c
+index f8c5413..997f24a 100644
+--- a/clutter/cogl/gles/cogl.c
++++ b/clutter/cogl/gles/cogl.c
+@@ -123,35 +123,15 @@ cogl_scale (float x, float y)
+ }
+ 
+ void
+-cogl_translatex (float x, float y, float z)
++cogl_translate (float x, float y, float z)
+ {
+   GE( cogl_wrap_glTranslatef (x, y, z) );
+ }
+ 
+ void
+-cogl_translate (gint x, gint y, gint z)
++cogl_rotate (float angle, float x, float y, float z)
+ {
+-  GE( cogl_wrap_glTranslatef ((float)(x), 
+-			      (float)(y), 
+-			      (float)(z)) );
+-}
+-
+-void
+-cogl_rotatex (float angle, 
+-	      float x, 
+-	      float y, 
+-	      float z)
+-{
+-  GE( cogl_wrap_glRotatef (angle,x,y,z) );
+-}
+-
+-void
+-cogl_rotate (gint angle, gint x, gint y, gint z)
+-{
+-  GE( cogl_wrap_glRotatef ((float)(angle),
+-		 (float)(x), 
+-		 (float)(y), 
+-		 (float)(z)) );
++  GE( cogl_wrap_glRotatef (angle, x, y, z) );
+ }
+ 
+ static inline gboolean
+@@ -457,7 +437,7 @@ _cogl_add_stencil_clip (float x_offset,
+       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
+ 
+-      cogl_rectanglex (x_offset, y_offset, width, height);
++      cogl_rectangle (x_offset, y_offset, width, height);
+     }
+   else
+     {
+@@ -465,7 +445,7 @@ _cogl_add_stencil_clip (float x_offset,
+ 	 rectangle */
+       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
+       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+-      cogl_rectanglex (x_offset, y_offset, width, height);
++      cogl_rectangle (x_offset, y_offset, width, height);
+ 
+       /* Subtract one from all pixels in the stencil buffer so that
+ 	 only pixels where both the original stencil buffer and the
+@@ -476,9 +456,7 @@ _cogl_add_stencil_clip (float x_offset,
+       GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
+       GE( cogl_wrap_glPushMatrix () );
+       GE( cogl_wrap_glLoadIdentity () );
+-      cogl_rectanglex (-1.0, -1.0,
+-		       (float)(2),
+-		       (float)(2));
++      cogl_rectangle (-1.0, -1.0, 2, 2);
+       GE( cogl_wrap_glPopMatrix () );
+       GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+       GE( cogl_wrap_glPopMatrix () );
+diff --git a/clutter/pango/cogl-pango-render.c b/clutter/pango/cogl-pango-render.c
+index 3e23309..3cafc81 100644
+--- a/clutter/pango/cogl-pango-render.c
++++ b/clutter/pango/cogl-pango-render.c
+@@ -461,7 +461,7 @@ cogl_pango_renderer_draw_rectangle (PangoRenderer   *renderer,
+                                         x + width, y + height,
+                                         &x2, &y2);
+ 
+-  cogl_rectanglex (x1, y1, x2 - x1, y2 - y1);
++  cogl_rectangle (x1, y1, x2 - x1, y2 - y1);
+ }
+ 
+ static void
+diff --git a/doc/reference/cogl/cogl-sections.txt b/doc/reference/cogl/cogl-sections.txt
+index dcd7c93..db4e16a 100644
+--- a/doc/reference/cogl/cogl-sections.txt
++++ b/doc/reference/cogl/cogl-sections.txt
+@@ -89,7 +89,7 @@ cogl_path_stroke
+ cogl_path_stroke_preserve
+ cogl_set_source_color
+ cogl_set_source_color4ub
+-cogl_set_source_color4x
++cogl_set_source_color4f
+ 
+ <SUBSECTION>
+ cogl_rectangle
+@@ -257,7 +257,7 @@ cogl_color_copy
+ cogl_color_free
+ cogl_color_set_from_4ub
+ cogl_color_set_from_4d
+-cogl_color_set_from_4x
++cogl_color_set_from_4f
+ 
+ <SUBSECTION>
+ cogl_color_get_red
+diff --git a/tests/conform/test-backface-culling.c b/tests/conform/test-backface-culling.c
+index 50c19fd..6303949 100644
+--- a/tests/conform/test-backface-culling.c
++++ b/tests/conform/test-backface-culling.c
+@@ -121,7 +121,7 @@ on_paint (ClutterActor *actor, TestState *state)
+ 
+       /* Set the color to white so that all the textures will be drawn
+          at their own color */
+-      cogl_set_source_color4x (1.0, 1.0,
++      cogl_set_source_color4f (1.0, 1.0,
+                                1.0, 1.0);
+ 
+       x2 = x1 + (float)(TEXTURE_SIZE);
+@@ -173,7 +173,7 @@ on_paint (ClutterActor *actor, TestState *state)
+       x2 = x1 + (float)(TEXTURE_SIZE);
+ 
+       /* Draw a regular rectangle (this should always show) */
+-      cogl_set_source_color4x (1.0, 0, 0, 1.0);
++      cogl_set_source_color4f (1.0, 0, 0, 1.0);
+       cogl_rectangle ( (x1),  (y1),
+                        (x2 - x1),  (y2 - y1));
+ 

@@ -343,13 +343,13 @@ clutter_texture_get_preferred_width (ClutterActor *self,
               /* Set the natural width so as to preserve the aspect ratio */
               ClutterFixed ratio, height;
 
-              ratio = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (priv->width),
-                                      COGL_FIXED_FROM_INT (priv->height));
+              ratio = CLUTTER_FIXED_DIV ((float)(priv->width),
+                                      (float)(priv->height));
 
               height = CLUTTER_UNITS_TO_FIXED (for_height);
 
               *natural_width_p =
-                CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL (ratio, height));
+                CLUTTER_UNITS_FROM_FIXED (CLUTTER_FIXED_MUL (ratio, height));
             }
         }
     }
@@ -388,13 +388,13 @@ clutter_texture_get_preferred_height (ClutterActor *self,
               /* Set the natural height so as to preserve the aspect ratio */
               ClutterFixed ratio, width;
 
-              ratio = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (priv->height),
-                                      COGL_FIXED_FROM_INT (priv->width));
+              ratio = CLUTTER_FIXED_DIV ((float)(priv->height),
+                                      (float)(priv->width));
 
               width = CLUTTER_UNITS_TO_FIXED (for_width);
 
               *natural_height_p =
-                CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL (ratio, width));
+                CLUTTER_UNITS_FROM_FIXED (CLUTTER_FIXED_MUL (ratio, width));
             }
         }
     }
@@ -463,24 +463,24 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
   /* Convert the coordinates back to [-1,1] range */
   cogl_get_viewport (viewport);
 
-  tx_min = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_min), viewport[2])
-         * 2 - COGL_FIXED_1;
-  tx_max = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_max), viewport[2])
-         * 2 - COGL_FIXED_1;
-  ty_min = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_min), viewport[3])
-         * 2 - COGL_FIXED_1;
-  ty_max = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_max), viewport[3])
-         * 2 - COGL_FIXED_1;
+  tx_min = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_min), viewport[2])
+         * 2 - 1.0;
+  tx_max = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_max), viewport[2])
+         * 2 - 1.0;
+  ty_min = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_min), viewport[3])
+         * 2 - 1.0;
+  ty_max = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_max), viewport[3])
+         * 2 - 1.0;
 
   /* Set up a projection matrix so that the actor will be projected as
      if it was drawn at its original location */
-  tan_angle = cogl_angle_tan (COGL_ANGLE_FROM_DEGX (perspective.fovy / 2));
-  near_size = COGL_FIXED_MUL (perspective.z_near, tan_angle);
+  tan_angle = tanf ((perspective.fovy / 2) * (G_PI/180.0));
+  near_size = CLUTTER_FIXED_MUL (perspective.z_near, tan_angle);
 
-  cogl_frustum (COGL_FIXED_MUL (tx_min, near_size),
-                COGL_FIXED_MUL (tx_max, near_size),
-                COGL_FIXED_MUL (-ty_min, near_size),
-                COGL_FIXED_MUL (-ty_max, near_size),
+  cogl_frustum (CLUTTER_FIXED_MUL (tx_min, near_size),
+                CLUTTER_FIXED_MUL (tx_max, near_size),
+                CLUTTER_FIXED_MUL (-ty_min, near_size),
+                CLUTTER_FIXED_MUL (-ty_max, near_size),
                 perspective.z_near, perspective.z_far);
 }
 
@@ -594,21 +594,21 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_opacity (self));
 
   if (priv->repeat_x && priv->width > 0)
-    t_w = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (x_2 - x_1),
-		          COGL_FIXED_FROM_INT (priv->width));
+    t_w = CLUTTER_FIXED_DIV ((float)(x_2 - x_1),
+		          (float)(priv->width));
   else
-    t_w = COGL_FIXED_1;
+    t_w = 1.0;
 
   if (priv->repeat_y && priv->height > 0)
-    t_h = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (y_2 - y_1),
-                          COGL_FIXED_FROM_INT (priv->height));
+    t_h = CLUTTER_FIXED_DIV ((float)(y_2 - y_1),
+                          (float)(priv->height));
   else
-    t_h = COGL_FIXED_1;
+    t_h = 1.0;
 
   /* Paint will have translated us */
   cogl_texture_rectangle (priv->texture, 0, 0,
-                          COGL_FIXED_FROM_INT (x_2 - x_1),
-                          COGL_FIXED_FROM_INT (y_2 - y_1),
+                          (float)(x_2 - x_1),
+                          (float)(y_2 - y_1),
                           0, 0, t_w, t_h);
 }
 

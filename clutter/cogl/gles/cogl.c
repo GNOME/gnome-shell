@@ -37,6 +37,7 @@
 #include "cogl-context.h"
 
 #include "cogl-gles2-wrapper.h"
+#include <math.h>
 
 /* GL error to string conversion */
 #if COGL_DEBUG
@@ -92,10 +93,10 @@ cogl_paint_init (const CoglColor *color)
   fprintf(stderr, "\n ============== Paint Start ================ \n");
 #endif
 
-  cogl_wrap_glClearColorx (cogl_color_get_red (color),
-			   cogl_color_get_green (color),
-			   cogl_color_get_blue (color),
-			   0);
+  glClearColor (cogl_color_get_red (color),
+                cogl_color_get_green (color),
+                cogl_color_get_blue (color),
+                0);
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   cogl_wrap_glDisable (GL_LIGHTING);
@@ -116,41 +117,21 @@ cogl_pop_matrix (void)
 }
 
 void
-cogl_scale (CoglFixed x, CoglFixed y)
+cogl_scale (float x, float y)
 {
-  GE( cogl_wrap_glScalex (x, y, COGL_FIXED_1) );
+  GE( cogl_wrap_glScalef (x, y, 1.0) );
 }
 
 void
-cogl_translatex (CoglFixed x, CoglFixed y, CoglFixed z)
+cogl_translate (float x, float y, float z)
 {
-  GE( cogl_wrap_glTranslatex (x, y, z) );
+  GE( cogl_wrap_glTranslatef (x, y, z) );
 }
 
 void
-cogl_translate (gint x, gint y, gint z)
+cogl_rotate (float angle, float x, float y, float z)
 {
-  GE( cogl_wrap_glTranslatex (COGL_FIXED_FROM_INT(x), 
-			      COGL_FIXED_FROM_INT(y), 
-			      COGL_FIXED_FROM_INT(z)) );
-}
-
-void
-cogl_rotatex (CoglFixed angle, 
-	      CoglFixed x, 
-	      CoglFixed y, 
-	      CoglFixed z)
-{
-  GE( cogl_wrap_glRotatex (angle,x,y,z) );
-}
-
-void
-cogl_rotate (gint angle, gint x, gint y, gint z)
-{
-  GE( cogl_wrap_glRotatex (COGL_FIXED_FROM_INT(angle),
-		 COGL_FIXED_FROM_INT(x), 
-		 COGL_FIXED_FROM_INT(y), 
-		 COGL_FIXED_FROM_INT(z)) );
+  GE( cogl_wrap_glRotatef (angle, x, y, z) );
 }
 
 static inline gboolean
@@ -315,7 +296,7 @@ cogl_set_source_color (const CoglColor *color)
 
 #else
   /* conversion can cause issues with picking on some gles implementations */
-  GE( cogl_wrap_glColor4x (cogl_color_get_red (color),
+  GE( cogl_wrap_glColor4f (cogl_color_get_red (color),
                            cogl_color_get_green (color),
                            cogl_color_get_blue (color),
                            cogl_color_get_alpha (color)) );
@@ -326,22 +307,22 @@ cogl_set_source_color (const CoglColor *color)
 }
 
 static void
-apply_matrix (const CoglFixed *matrix, CoglFixed *vertex)
+apply_matrix (const float *matrix, float *vertex)
 {
   int x, y;
-  CoglFixed vertex_out[4] = { 0 };
+  float vertex_out[4] = { 0 };
 
   for (y = 0; y < 4; y++)
     for (x = 0; x < 4; x++)
-      vertex_out[y] += cogl_fixed_mul (vertex[x], matrix[y + x * 4]);
+      vertex_out[y] += (vertex[x] * matrix[y + x * 4]);
 
   memcpy (vertex, vertex_out, sizeof (vertex_out));
 }
 
 static void
-project_vertex (CoglFixed *modelview,
-		CoglFixed *project,
-		CoglFixed *vertex)
+project_vertex (float *modelview,
+		float *project,
+		float *vertex)
 {
   int i;
 
@@ -351,62 +332,61 @@ project_vertex (CoglFixed *modelview,
   apply_matrix (project, vertex);
   /* Convert from homogenized coordinates */
   for (i = 0; i < 4; i++)
-    vertex[i] = cogl_fixed_div (vertex[i], vertex[3]);
+    vertex[i] = (vertex[i] / vertex[3]);
 }
 
 static void
 set_clip_plane (GLint plane_num,
-		const CoglFixed *vertex_a,
-		const CoglFixed *vertex_b)
+		const float *vertex_a,
+		const float *vertex_b)
 {
-  GLfixed plane[4];
-  GLfixed angle;
+  GLfloat plane[4];
+  GLfloat angle;
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Calculate the angle between the axes and the line crossing the
      two points */
-  angle = cogl_fixed_mul (cogl_fixed_atan2 (vertex_b[1] - vertex_a[1],
-                                            vertex_b[0] - vertex_a[0]),
-		          COGL_RADIANS_TO_DEGREES);
+  angle = atan2f (vertex_b[1] - vertex_a[1],
+                  vertex_b[0] - vertex_a[0]) * (180.0/G_PI);
 
   GE( cogl_wrap_glPushMatrix () );
   /* Load the identity matrix and multiply by the reverse of the
      projection matrix so we can specify the plane in screen
      coordinates */
   GE( cogl_wrap_glLoadIdentity () );
-  GE( cogl_wrap_glMultMatrixx ((GLfixed *) ctx->inverse_projection) );
+  GE( cogl_wrap_glMultMatrixf ((GLfloat *) ctx->inverse_projection) );
   /* Rotate about point a */
-  GE( cogl_wrap_glTranslatex (vertex_a[0], vertex_a[1], vertex_a[2]) );
+  GE( cogl_wrap_glTranslatef (vertex_a[0], vertex_a[1], vertex_a[2]) );
   /* Rotate the plane by the calculated angle so that it will connect
      the two points */
-  GE( cogl_wrap_glRotatex (angle, 0.0f, 0.0f, 1.0f) );
-  GE( cogl_wrap_glTranslatex (-vertex_a[0], -vertex_a[1], -vertex_a[2]) );
+  GE( cogl_wrap_glRotatef (angle, 0.0f, 0.0f, 1.0f) );
+  GE( cogl_wrap_glTranslatef (-vertex_a[0], -vertex_a[1], -vertex_a[2]) );
 
   plane[0] = 0;
-  plane[1] = -COGL_FIXED_1;
+  plane[1] = -1.0;
   plane[2] = 0;
   plane[3] = vertex_a[1];
-  GE( cogl_wrap_glClipPlanex (plane_num, plane) );
+  GE( cogl_wrap_glClipPlanef (plane_num, plane) );
 
   GE( cogl_wrap_glPopMatrix () );
 }
 
 void
-_cogl_set_clip_planes (CoglFixed x_offset,
-		       CoglFixed y_offset,
-		       CoglFixed width,
-		       CoglFixed height)
+_cogl_set_clip_planes (float x_offset,
+		       float y_offset,
+		       float width,
+		       float height)
 {
-  GLfixed modelview[16], projection[16];
+  GLfloat modelview[16], projection[16];
 
-  CoglFixed vertex_tl[4] = { x_offset, y_offset, 0, COGL_FIXED_1 };
-  CoglFixed vertex_tr[4] = { x_offset + width, y_offset, 0, COGL_FIXED_1 };
-  CoglFixed vertex_bl[4] = { x_offset, y_offset + height, 0, COGL_FIXED_1 };
-  CoglFixed vertex_br[4] = { x_offset + width, y_offset + height,
-				0, COGL_FIXED_1 };
+  float vertex_tl[4] = { x_offset, y_offset, 0, 1.0 };
+  float vertex_tr[4] = { x_offset + width, y_offset, 0, 1.0 };
+  float vertex_bl[4] = { x_offset, y_offset + height, 0, 1.0 };
+  float vertex_br[4] = { x_offset + width, y_offset + height,
+				0, 1.0 };
 
-  GE( cogl_wrap_glGetFixedv (GL_MODELVIEW_MATRIX, modelview) );
-  GE( cogl_wrap_glGetFixedv (GL_PROJECTION_MATRIX, projection) );
+  GE( cogl_wrap_glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
+  GE( cogl_wrap_glGetFloatv (GL_PROJECTION_MATRIX, projection) );
 
   project_vertex (modelview, projection, vertex_tl);
   project_vertex (modelview, projection, vertex_tr);
@@ -421,7 +401,7 @@ _cogl_set_clip_planes (CoglFixed x_offset,
   if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
       != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
     {
-      CoglFixed temp[4];
+      float temp[4];
       memcpy (temp, vertex_tl, sizeof (temp));
       memcpy (vertex_tl, vertex_tr, sizeof (temp));
       memcpy (vertex_tr, temp, sizeof (temp));
@@ -437,10 +417,10 @@ _cogl_set_clip_planes (CoglFixed x_offset,
 }
 
 void
-_cogl_add_stencil_clip (CoglFixed x_offset,
-			CoglFixed y_offset,
-			CoglFixed width,
-			CoglFixed height,
+_cogl_add_stencil_clip (float x_offset,
+			float y_offset,
+			float width,
+			float height,
 			gboolean first)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -457,7 +437,7 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
 
-      cogl_rectanglex (x_offset, y_offset, width, height);
+      cogl_rectangle (x_offset, y_offset, width, height);
     }
   else
     {
@@ -465,7 +445,7 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
 	 rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
-      cogl_rectanglex (x_offset, y_offset, width, height);
+      cogl_rectangle (x_offset, y_offset, width, height);
 
       /* Subtract one from all pixels in the stencil buffer so that
 	 only pixels where both the original stencil buffer and the
@@ -476,9 +456,7 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
       GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
       GE( cogl_wrap_glPushMatrix () );
       GE( cogl_wrap_glLoadIdentity () );
-      cogl_rectanglex (-COGL_FIXED_1, -COGL_FIXED_1,
-		       COGL_FIXED_FROM_INT (2),
-		       COGL_FIXED_FROM_INT (2));
+      cogl_rectangle (-1.0, -1.0, 2, 2);
       GE( cogl_wrap_glPopMatrix () );
       GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
       GE( cogl_wrap_glPopMatrix () );
@@ -490,10 +468,10 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
 }
 
 void
-_cogl_set_matrix (const CoglFixed *matrix)
+_cogl_set_matrix (const float *matrix)
 {
   GE( cogl_wrap_glLoadIdentity () );
-  GE( cogl_wrap_glMultMatrixx (matrix) );
+  GE( cogl_wrap_glMultMatrixf (matrix) );
 }
 
 void
@@ -522,25 +500,25 @@ _cogl_disable_clip_planes (void)
 
 void
 cogl_alpha_func (COGLenum     func, 
-		 CoglFixed ref)
+		 float ref)
 {
-  GE( cogl_wrap_glAlphaFunc (func, COGL_FIXED_TO_FLOAT(ref)) );
+  GE( cogl_wrap_glAlphaFunc (func, (ref)) );
 }
 
 /*
  * Fixed point implementation of the perspective function
  */
 void
-cogl_perspective (CoglFixed fovy,
-		  CoglFixed aspect,
-		  CoglFixed zNear,
-		  CoglFixed zFar)
+cogl_perspective (float fovy,
+		  float aspect,
+		  float zNear,
+		  float zFar)
 {
-  CoglFixed xmax, ymax;
-  CoglFixed x, y, c, d;
-  CoglFixed fovy_rad_half = cogl_fixed_mul (fovy, COGL_FIXED_PI) / 360;
+  float xmax, ymax;
+  float x, y, c, d;
+  float fovy_rad_half = (fovy * G_PI) / 360;
 
-  GLfixed m[16];
+  GLfloat m[16];
   
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -558,76 +536,74 @@ cogl_perspective (CoglFixed fovy,
    * 2) When working with small numbers, we can are loosing significant
    * precision
    */
-  ymax = cogl_fixed_mul (zNear,
-                         cogl_fixed_div (cogl_fixed_sin (fovy_rad_half),
-                                         cogl_fixed_cos (fovy_rad_half)));
-  xmax = cogl_fixed_mul (ymax, aspect);
+  ymax = (zNear * (sinf (fovy_rad_half) / cosf (fovy_rad_half)));
+  xmax = (ymax * aspect);
 
-  x = cogl_fixed_div (zNear, xmax);
-  y = cogl_fixed_div (zNear, ymax);
-  c = cogl_fixed_div (-(zFar + zNear), ( zFar - zNear));
-  d = cogl_fixed_div (-(cogl_fixed_mul (2 * zFar, zNear)), (zFar - zNear));
+  x = (zNear / xmax);
+  y = (zNear / ymax);
+  c = (-(zFar + zNear) / ( zFar - zNear));
+  d = (-(2 * zFar) * zNear) / (zFar - zNear);
 
 #define M(row,col)  m[col*4+row]
   M(0,0) = x;
   M(1,1) = y;
   M(2,2) = c;
   M(2,3) = d;
-  M(3,2) = -COGL_FIXED_1;
+  M(3,2) = -1.0;
 
-  GE( cogl_wrap_glMultMatrixx (m) );
+  GE( cogl_wrap_glMultMatrixf (m) );
 
   GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (CoglFixed) * 16);
+  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
 
 #define m ctx->inverse_projection
-  M(0, 0) = cogl_fixed_div (COGL_FIXED_1, x);
-  M(1, 1) = cogl_fixed_div (COGL_FIXED_1, y);
-  M(2, 3) = -COGL_FIXED_1;
-  M(3, 2) = cogl_fixed_div (COGL_FIXED_1, d);
-  M(3, 3) = cogl_fixed_div (c, d);
+  M(0, 0) = (1.0 / x);
+  M(1, 1) = (1.0 / y);
+  M(2, 3) = -1.0;
+  M(3, 2) = (1.0 / d);
+  M(3, 3) = (c / d);
 #undef m
 
 #undef M
 }
 
 void
-cogl_frustum (CoglFixed        left,
-	      CoglFixed        right,
-	      CoglFixed        bottom,
-	      CoglFixed        top,
-	      CoglFixed        z_near,
-	      CoglFixed        z_far)
+cogl_frustum (float        left,
+	      float        right,
+	      float        bottom,
+	      float        top,
+	      float        z_near,
+	      float        z_far)
 {
-  CoglFixed c, d;
+  float c, d;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
   GE( cogl_wrap_glLoadIdentity () );
 
-  GE( cogl_wrap_glFrustumx (left, right,
+  GE( cogl_wrap_glFrustumf (left, right,
 			    bottom, top,
 			    z_near, z_far) );
 
   GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (CoglFixed) * 16);
+  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
 
-  c = -cogl_fixed_div (z_far + z_near, z_far - z_near);
-  d = -cogl_fixed_div (2 * cogl_fixed_mul (z_far, z_near), z_far - z_near);
+  c = -(z_far + z_near / z_far - z_near);
+  d = -(2 * (z_far * z_near) / z_far - z_near);
 
 #define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) = cogl_fixed_div (right - left, 2 * z_near);
-  M(0,3) = cogl_fixed_div (right + left, 2 * z_near);
-  M(1,1) = cogl_fixed_div (top - bottom, 2 * z_near);
-  M(1,3) = cogl_fixed_div (top + bottom, 2 * z_near);
-  M(2,3) = -COGL_FIXED_1;
-  M(3,2) = cogl_fixed_div (COGL_FIXED_1, d);
-  M(3,3) = cogl_fixed_div (c, d);
+  M(0,0) = (right - left / 2 * z_near);
+  M(0,3) = (right + left / 2 * z_near);
+  M(1,1) = (top - bottom / 2 * z_near);
+  M(1,3) = (top + bottom / 2 * z_near);
+  M(2,3) = -1.0;
+  M(3,2) = (1.0 / d);
+  M(3,3) = (c / d);
 #undef M  
 }
 
@@ -641,19 +617,19 @@ cogl_viewport (guint width,
 void
 cogl_setup_viewport (guint        w,
 		     guint        h,
-		     CoglFixed fovy,
-		     CoglFixed aspect,
-		     CoglFixed z_near,
-		     CoglFixed z_far)
+		     float fovy,
+		     float aspect,
+		     float z_near,
+		     float z_far)
 {
   gint width = (gint) w;
   gint height = (gint) h;
-  CoglFixed z_camera;
+  float z_camera;
   
   GE( glViewport (0, 0, width, height) );
 
   /* For Ortho projection.
-   * cogl_wrap_glOrthox (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
+   * cogl_wrap_glOrthof (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
   */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
@@ -666,24 +642,24 @@ cogl_setup_viewport (guint        w,
    * See comments in ../gl/cogl.c
    */
 #define DEFAULT_Z_CAMERA 0.869f
-  z_camera = COGL_FIXED_FROM_FLOAT (DEFAULT_Z_CAMERA);
+  z_camera =  (DEFAULT_Z_CAMERA);
 
-  if (fovy != COGL_FIXED_60)
+  if (fovy != 60.0)
     {
-      CoglFixed fovy_rad = cogl_fixed_mul (fovy, COGL_FIXED_PI) / 180;
-  
-      z_camera = cogl_fixed_div (cogl_fixed_sin (fovy_rad),
-                                 cogl_fixed_cos (fovy_rad)) >> 1;
+      float fovy_rad = (fovy * G_PI) / 180;
+
+      z_camera = (sinf (fovy_rad) / cosf (fovy_rad)) / 2;
     }
   
 
-  GE( cogl_wrap_glTranslatex (-1 << 15, -1 << 15, -z_camera) );
 
-  GE( cogl_wrap_glScalex ( COGL_FIXED_1 / width,
-                          -COGL_FIXED_1 / height,
-                           COGL_FIXED_1 / width) );
+  GE( cogl_wrap_glTranslatef (-0.5f, -0.5f, -z_camera) );
 
-  GE( cogl_wrap_glTranslatex (0, -COGL_FIXED_1 * height, 0) );
+  GE( cogl_wrap_glScalef ( 1.0 / width,
+                          -1.0 / height,
+                           1.0 / width) );
+
+  GE( cogl_wrap_glTranslatef (0, -1.0 * height, 0) );
 }
 
 static void
@@ -735,19 +711,19 @@ cogl_features_available (CoglFeatureFlags features)
 }
 
 void
-cogl_get_modelview_matrix (CoglFixed m[16])
+cogl_get_modelview_matrix (float m[16])
 {
-  cogl_wrap_glGetFixedv(GL_MODELVIEW_MATRIX, &m[0]);
+  cogl_wrap_glGetFloatv (GL_MODELVIEW_MATRIX, m);
 }
 
 void
-cogl_get_projection_matrix (CoglFixed m[16])
+cogl_get_projection_matrix (float m[16])
 {
-  cogl_wrap_glGetFixedv(GL_PROJECTION_MATRIX, &m[0]);
+  cogl_wrap_glGetFloatv (GL_PROJECTION_MATRIX, m);
 }
 
 void
-cogl_get_viewport (CoglFixed v[4])
+cogl_get_viewport (float v[4])
 {
   GLint viewport[4];
   int i;
@@ -755,7 +731,7 @@ cogl_get_viewport (CoglFixed v[4])
   cogl_wrap_glGetIntegerv (GL_VIEWPORT, viewport);
 
   for (i = 0; i < 4; i++)
-    v[i] = COGL_FIXED_FROM_INT (viewport[i]);
+    v[i] = (float)(viewport[i]);
 }
 
 void
@@ -773,11 +749,11 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 
 void
 cogl_fog_set (const CoglColor *fog_color,
-              CoglFixed        density,
-              CoglFixed        z_near,
-              CoglFixed        z_far)
+              float        density,
+              float        z_near,
+              float        z_far)
 {
-  GLfixed fogColor[4];
+  GLfloat fogColor[4];
 
   fogColor[0] = cogl_color_get_red (fog_color);
   fogColor[1] = cogl_color_get_green (fog_color);
@@ -786,12 +762,12 @@ cogl_fog_set (const CoglColor *fog_color,
 
   cogl_wrap_glEnable (GL_FOG);
 
-  cogl_wrap_glFogxv (GL_FOG_COLOR, fogColor);
+  cogl_wrap_glFogfv (GL_FOG_COLOR, fogColor);
 
-  cogl_wrap_glFogx (GL_FOG_MODE, GL_LINEAR);
+  cogl_wrap_glFogf (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
-  cogl_wrap_glFogx (GL_FOG_DENSITY, (GLfixed) density);
-  cogl_wrap_glFogx (GL_FOG_START, (GLfixed) z_near);
-  cogl_wrap_glFogx (GL_FOG_END, (GLfixed) z_far);
+  cogl_wrap_glFogf (GL_FOG_DENSITY, (GLfloat) density);
+  cogl_wrap_glFogf (GL_FOG_START, (GLfloat) z_near);
+  cogl_wrap_glFogf (GL_FOG_END, (GLfloat) z_far);
 }

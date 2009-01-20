@@ -35,24 +35,24 @@
 
 /* These are defined in the particular backend (float in GL vs fixed
    in GL ES) */
-void _cogl_set_clip_planes (CoglFixed x,
-			    CoglFixed y,
-			    CoglFixed width,
-			    CoglFixed height);
-void _cogl_add_stencil_clip (CoglFixed x,
-			     CoglFixed y,
-			     CoglFixed width,
-			     CoglFixed height,
+void _cogl_set_clip_planes (float x,
+			    float y,
+			    float width,
+			    float height);
+void _cogl_add_stencil_clip (float x,
+			     float y,
+			     float width,
+			     float height,
 			     gboolean     first);
-void _cogl_add_path_to_stencil_buffer (CoglFixedVec2 nodes_min,
-                                       CoglFixedVec2 nodes_max,
+void _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
+                                       floatVec2 nodes_max,
                                        guint         path_size,
                                        CoglPathNode *path,
                                        gboolean      merge);
 void _cogl_enable_clip_planes (void);
 void _cogl_disable_clip_planes (void);
 void _cogl_disable_stencil_buffer (void);
-void _cogl_set_matrix (const CoglFixed *matrix);
+void _cogl_set_matrix (const float *matrix);
 
 typedef struct _CoglClipStack CoglClipStack;
 
@@ -75,13 +75,13 @@ struct _CoglClipStackEntryRect
   CoglClipStackEntryType     type;
 
   /* The rectangle for this clip */
-  CoglFixed                  x_offset;
-  CoglFixed                  y_offset;
-  CoglFixed                  width;
-  CoglFixed                  height;
+  float                  x_offset;
+  float                  y_offset;
+  float                  width;
+  float                  height;
 
   /* The matrix that was current when the clip was set */
-  CoglFixed                  matrix[16];
+  float                  matrix[16];
 };
 
 struct _CoglClipStackEntryPath
@@ -89,20 +89,20 @@ struct _CoglClipStackEntryPath
   CoglClipStackEntryType     type;
 
   /* The matrix that was current when the clip was set */
-  CoglFixed                  matrix[16];
+  float                  matrix[16];
 
-  CoglFixedVec2              path_nodes_min;
-  CoglFixedVec2              path_nodes_max;
+  floatVec2              path_nodes_min;
+  floatVec2              path_nodes_max;
 
   guint                      path_size;
   CoglPathNode               path[1];
 };
 
 void
-cogl_clip_set (CoglFixed x_offset,
-	       CoglFixed y_offset,
-	       CoglFixed width,
-	       CoglFixed height)
+cogl_clip_set (float x_offset,
+	       float y_offset,
+	       float width,
+	       float height)
 {
   CoglClipStackEntryRect *entry;
   CoglClipStack *stack;

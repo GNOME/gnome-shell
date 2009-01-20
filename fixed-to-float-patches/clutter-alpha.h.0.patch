@@ -1,0 +1,13 @@
+diff --git a/clutter/clutter-alpha.h b/clutter/clutter-alpha.h
+index eba9e3f..e409d77 100644
+--- a/clutter/clutter-alpha.h
++++ b/clutter/clutter-alpha.h
+@@ -106,7 +106,7 @@ struct _ClutterAlphaClass
+  *
+  * Since: 0.2
+  */
+-#define CLUTTER_ALPHA_MAX_ALPHA (0xffff)
++#define CLUTTER_ALPHA_MAX_ALPHA (65535.0f)
+ 
+ GType clutter_alpha_get_type (void) G_GNUC_CONST;
+ 

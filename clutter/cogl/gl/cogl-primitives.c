@@ -34,52 +34,35 @@
 
 #include <string.h>
 #include <gmodule.h>
+#include <math.h>
 
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
 void
-_cogl_rectangle (gint x,
-                 gint y,
-                 guint width,
-                 guint height)
+_cogl_rectangle (float x,
+                 float y,
+                 float width,
+                 float height)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   cogl_enable (ctx->color_alpha < 255
 	       ? COGL_ENABLE_BLEND : 0);
   
-  GE( glRecti (x, y, x + width, y + height) );
-}
-
-
-void
-_cogl_rectanglex (CoglFixed x,
-                  CoglFixed y,
-                  CoglFixed width,
-                  CoglFixed height)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  cogl_enable (ctx->color_alpha < 255
-	       ? COGL_ENABLE_BLEND : 0);
-  
-  GE( glRectf (COGL_FIXED_TO_FLOAT (x),
-	       COGL_FIXED_TO_FLOAT (y),
-	       COGL_FIXED_TO_FLOAT (x + width),
-	       COGL_FIXED_TO_FLOAT (y + height)) );
+  GE( glRectf (x, y, x + width, y + height) );
 }
 
 void
 _cogl_path_add_node (gboolean new_sub_path,
-		     CoglFixed x,
-		     CoglFixed y)
+		     float x,
+		     float y)
 {
   CoglPathNode new_node;
   
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  new_node.x = COGL_FIXED_TO_FLOAT (x);
-  new_node.y = COGL_FIXED_TO_FLOAT (y);
+  new_node.x =  (x);
+  new_node.y =  (y);
   new_node.path_size = 0;
 
   if (new_sub_path || ctx->path_nodes->len == 0)
@@ -129,34 +112,32 @@ _cogl_path_stroke_nodes ()
 }
 
 static void
-_cogl_path_get_bounds (CoglFixedVec2 nodes_min,
-                       CoglFixedVec2 nodes_max,
-                       gint *bounds_x,
-                       gint *bounds_y,
-                       guint *bounds_w,
-                       guint *bounds_h)
+_cogl_path_get_bounds (floatVec2 nodes_min,
+                       floatVec2 nodes_max,
+                       float *bounds_x,
+                       float *bounds_y,
+                       float *bounds_w,
+                       float *bounds_h)
 {
-  *bounds_x = COGL_FIXED_FLOOR (nodes_min.x);
-  *bounds_y = COGL_FIXED_FLOOR (nodes_min.y);
-  *bounds_w = COGL_FIXED_CEIL (nodes_max.x
-                               - COGL_FIXED_FROM_INT (*bounds_x));
-  *bounds_h = COGL_FIXED_CEIL (nodes_max.y
-                               - COGL_FIXED_FROM_INT (*bounds_y));
+  *bounds_x = nodes_min.x;
+  *bounds_y = nodes_min.y;
+  *bounds_w = nodes_max.x - *bounds_x;
+  *bounds_h = nodes_max.y - *bounds_y;
 }
 
 void
-_cogl_add_path_to_stencil_buffer (CoglFixedVec2 nodes_min,
-                                  CoglFixedVec2 nodes_max,
+_cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
+                                  floatVec2 nodes_max,
                                   guint         path_size,
                                   CoglPathNode *path,
                                   gboolean      merge)
 {
   guint path_start = 0;
   guint sub_path_num = 0;
-  gint bounds_x;
-  gint bounds_y;
-  guint bounds_w;
-  guint bounds_h;
+  float bounds_x;
+  float bounds_y;
+  float bounds_w;
+  float bounds_h;
 
   _cogl_path_get_bounds (nodes_min, nodes_max,
                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
@@ -238,10 +219,10 @@ _cogl_add_path_to_stencil_buffer (CoglFixedVec2 nodes_min,
 void
 _cogl_path_fill_nodes ()
 {
-  gint bounds_x;
-  gint bounds_y;
-  guint bounds_w;
-  guint bounds_h;
+  float bounds_x;
+  float bounds_y;
+  float bounds_w;
+  float bounds_h;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
