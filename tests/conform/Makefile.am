@@ -12,9 +12,9 @@ test_conformance_SOURCES = 		\
 	test-timeline-rewind.c 		\
 	test-timeline-smoothness.c 	\
 	test-timeline.c 		\
-	test-mesh-contiguous.c 		\
-	test-mesh-interleved.c 		\
-	test-mesh-mutability.c 		\
+	test-vertex-buffer-contiguous.c \
+	test-vertex-buffer-interleved.c \
+	test-vertex-buffer-mutability.c \
 	test-path.c 			\
 	test-pick.c 			\
 	test-clutter-rectangle.c 	\

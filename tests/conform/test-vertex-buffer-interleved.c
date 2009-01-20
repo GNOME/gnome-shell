@@ -4,9 +4,9 @@
 
 #include "test-conform-common.h"
 
-/* This test verifies that interleved attributes work with the mesh API.
- * We add (x,y) GLfloat vertices, interleved with RGBA GLubyte color
- * attributes to a mesh object, submit and draw.
+/* This test verifies that interleved attributes work with the vertex buffer
+ * API. We add (x,y) GLfloat vertices, interleved with RGBA GLubyte color
+ * attributes to a buffer, submit and draw.
  *
  * If you want visual feedback of what this test paints for debugging purposes,
  * then remove the call to clutter_main_quit() in validate_result.
@@ -14,7 +14,7 @@
 
 typedef struct _TestState
 {
-  CoglHandle mesh;
+  CoglHandle buffer;
   ClutterGeometry stage_geom;
   guint frame;
 } TestState;
@@ -51,11 +51,11 @@ validate_result (TestState *state)
   if (g_test_verbose ())
     g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] == 0 && pixel[GREEN] == 0 && pixel[BLUE] != 0);
-   
+
 #undef RED
 #undef GREEN
 #undef BLUE
-  
+
   /* Comment this out if you want visual feedback of what this test
    * paints.
    */
@@ -66,10 +66,10 @@ static void
 on_paint (ClutterActor *actor, TestState *state)
 {
   /* Draw a faded blue triangle */
-  cogl_mesh_draw_arrays (state->mesh,
-			 GL_TRIANGLE_STRIP, /* mode */
-			 0, /* first */
-			 3); /* count */
+  cogl_vertex_buffer_draw (state->buffer,
+			   GL_TRIANGLE_STRIP, /* mode */
+			   0, /* first */
+			   3); /* count */
 
   /* XXX: Experiments have shown that for some buggy drivers, when using
    * glReadPixels there is some kind of race, so we delay our test for a
@@ -79,7 +79,7 @@ on_paint (ClutterActor *actor, TestState *state)
     validate_result (state);
   else
     g_usleep (G_USEC_PER_SEC);
-  
+
   state->frame++;
 }
 
@@ -92,8 +92,8 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_mesh_interleved (TestConformSimpleFixture *fixture,
-		      gconstpointer data)
+test_vertex_buffer_interleved (TestConformSimpleFixture *fixture,
+		               gconstpointer data)
 {
   TestState state;
   ClutterActor *stage;
@@ -120,7 +120,7 @@ test_mesh_interleved (TestConformSimpleFixture *fixture,
   idle_source = g_idle_add (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
-  
+
   {
     InterlevedVertex verts[3] =
       {
@@ -141,29 +141,29 @@ test_mesh_interleved (TestConformSimpleFixture *fixture,
      */
     g_assert (sizeof (InterlevedVertex) == 12);
 
-    state.mesh = cogl_mesh_new (3 /* n vertices */);
-    cogl_mesh_add_attribute (state.mesh,
-			     "gl_Vertex",
-			     2, /* n components */
-			     GL_FLOAT,
-			     FALSE, /* normalized */
-			     12, /* stride */
-			     &verts[0].x);
-    cogl_mesh_add_attribute (state.mesh,
-			     "gl_Color",
-			     4, /* n components */
-			     GL_UNSIGNED_BYTE,
-			     FALSE, /* normalized */
-			     12, /* stride */
-			     &verts[0].r);
-    cogl_mesh_submit (state.mesh);
+    state.buffer = cogl_vertex_buffer_new (3 /* n vertices */);
+    cogl_vertex_buffer_add (state.buffer,
+			    "gl_Vertex",
+			    2, /* n components */
+			    GL_FLOAT,
+			    FALSE, /* normalized */
+                            12, /* stride */
+			    &verts[0].x);
+    cogl_vertex_buffer_add (state.buffer,
+                            "gl_Color",
+			    4, /* n components */
+			    GL_UNSIGNED_BYTE,
+			    FALSE, /* normalized */
+			    12, /* stride */
+			    &verts[0].r);
+    cogl_vertex_buffer_submit (state.buffer);
   }
 
   clutter_actor_show_all (stage);
 
   clutter_main ();
 
-  cogl_mesh_unref (state.mesh);
+  cogl_vertex_buffer_unref (state.buffer);
 
   g_source_remove (idle_source);
 

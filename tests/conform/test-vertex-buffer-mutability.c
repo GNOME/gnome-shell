@@ -4,12 +4,8 @@
 
 #include "test-conform-common.h"
 
-/* This test verifies that the simplest usage of the mesh API, where we add
- * contiguous (x,y) GLfloat vertices, and RGBA GLubyte color attributes to a
- * mesh object, submit, and draw.
- *
- * It also tries to verify that the enable/disable attribute APIs are working
- * too.
+/* This test verifies that modifying a vertex buffer works, by updating
+ * vertex positions, and deleting and re-adding different color attributes.
  *
  * If you want visual feedback of what this test paints for debugging purposes,
  * then remove the call to clutter_main_quit() in validate_result.
@@ -17,7 +13,7 @@
 
 typedef struct _TestState
 {
-  CoglHandle mesh;
+  CoglHandle buffer;
   ClutterGeometry stage_geom;
   guint frame;
 } TestState;
@@ -27,10 +23,7 @@ validate_result (TestState *state)
 {
   GLubyte pixel[4];
   GLint y_off = state->stage_geom.height - 90;
-
   /* NB: glReadPixels is done in GL screen space so y = 0 is at the bottom */
-  if (g_test_verbose ())
-    g_print ("y_off = %d\n", y_off);
 
   /* NB: We ignore the alpha, since we don't know if our render target is
    * RGB or RGBA */
@@ -39,28 +32,22 @@ validate_result (TestState *state)
 #define GREEN 1
 #define BLUE 2
 
-  /* Should see a blue pixel */
-  glReadPixels (10, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
-  if (g_test_verbose ())
-    g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
-  g_assert (pixel[RED] == 0 && pixel[GREEN] == 0 && pixel[BLUE] != 0);
-  
   /* Should see a red pixel */
   glReadPixels (110, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
   if (g_test_verbose ())
-    g_print ("pixel 1 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
+    g_print ("pixel 0 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
   g_assert (pixel[RED] != 0 && pixel[GREEN] == 0 && pixel[BLUE] == 0);
 
-  /* Should see a blue pixel */
+  /* Should see a green pixel */
   glReadPixels (210, y_off, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &pixel);
   if (g_test_verbose ())
-    g_print ("pixel 2 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
-  g_assert (pixel[RED] == 0 && pixel[GREEN] == 0 && pixel[BLUE] != 0);
-  
+    g_print ("pixel 1 = %x, %x, %x\n", pixel[RED], pixel[GREEN], pixel[BLUE]);
+  g_assert (pixel[RED] == 0 && pixel[GREEN] != 0 && pixel[BLUE] == 0);
+
 #undef RED
 #undef GREEN
 #undef BLUE
-  
+
   /* Comment this out if you want visual feedback of what this test
    * paints.
    */
@@ -70,36 +57,60 @@ validate_result (TestState *state)
 static void
 on_paint (ClutterActor *actor, TestState *state)
 {
-  /* Draw a faded blue triangle */
-  cogl_mesh_enable_attribute (state->mesh, "gl_Color::blue");
-  cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
-  cogl_mesh_draw_arrays (state->mesh,
-			 GL_TRIANGLE_STRIP, /* mode */
-			 0, /* first */
-			 3); /* count */
-  
-  /* Draw a red triangle */
-  /* Here we are testing that the disable attribute works; if it doesn't
-   * the triangle will remain faded blue */
-  cogl_translate (100, 0, 0);
-  cogl_mesh_disable_attribute (state->mesh, "gl_Color::blue");
-  cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
-  cogl_mesh_draw_arrays (state->mesh,
-			 GL_TRIANGLE_STRIP, /* mode */
-			 0, /* first */
-			 3); /* count */
+  GLfloat triangle_verts[3][2] =
+    {
+      {100.0, 0.0},
+      {200.0, 100.0},
+      {100.0, 100.0}
+    };
+  GLbyte triangle_colors[3][4] =
+    {
+      {0x00, 0xff, 0x00, 0xff}, /* blue */
+      {0x00, 0xff, 0x00, 0x00}, /* transparent blue */
+      {0x00, 0xff, 0x00, 0x00}  /* transparent blue */
+    };
 
-  /* Draw a faded blue triangle */
-  /* Here we are testing that the re-enable works; if it doesn't
-   * the triangle will remain red */
-  cogl_translate (100, 0, 0);
-  cogl_mesh_enable_attribute (state->mesh, "gl_Color::blue");
+  /*
+   * Draw a red triangle
+   */
+
   cogl_set_source_color4ub (0xff, 0x00, 0x00, 0xff);
-  cogl_mesh_draw_arrays (state->mesh,
-			 GL_TRIANGLE_STRIP, /* mode */
-			 0, /* first */
-			 3); /* count */
-  
+
+  cogl_vertex_buffer_add (state->buffer,
+			  "gl_Vertex",
+			  2, /* n components */
+			  GL_FLOAT,
+			  FALSE, /* normalized */
+			  0, /* stride */
+			  triangle_verts);
+  cogl_vertex_buffer_delete (state->buffer, "gl_Color");
+  cogl_vertex_buffer_submit (state->buffer);
+
+  cogl_vertex_buffer_draw (state->buffer,
+			   GL_TRIANGLE_STRIP, /* mode */
+			   0, /* first */
+			   3); /* count */
+
+  /*
+   * Draw a faded green triangle
+   */
+
+  cogl_vertex_buffer_add (state->buffer,
+			  "gl_Color",
+			  4, /* n components */
+			  GL_UNSIGNED_BYTE,
+			  FALSE, /* normalized */
+			  0, /* stride */
+			  triangle_colors);
+  cogl_vertex_buffer_submit (state->buffer);
+
+  cogl_translate (100, 0, 0);
+  cogl_vertex_buffer_draw (state->buffer,
+			   GL_TRIANGLE_STRIP, /* mode */
+			   0, /* first */
+			   3); /* count */
+
+
   /* XXX: Experiments have shown that for some buggy drivers, when using
    * glReadPixels there is some kind of race, so we delay our test for a
    * few frames and a few seconds:
@@ -108,7 +119,7 @@ on_paint (ClutterActor *actor, TestState *state)
     validate_result (state);
   else
     g_usleep (G_USEC_PER_SEC);
-  
+
   state->frame++;
 }
 
@@ -121,8 +132,8 @@ queue_redraw (gpointer stage)
 }
 
 void
-test_mesh_contiguous (TestConformSimpleFixture *fixture,
-		      gconstpointer data)
+test_vertex_buffer_mutability (TestConformSimpleFixture *fixture,
+		               gconstpointer data)
 {
   TestState state;
   ClutterActor *stage;
@@ -149,7 +160,7 @@ test_mesh_contiguous (TestConformSimpleFixture *fixture,
   idle_source = g_idle_add (queue_redraw, stage);
 
   g_signal_connect (group, "paint", G_CALLBACK (on_paint), &state);
-  
+
   {
     GLfloat triangle_verts[3][2] =
       {
@@ -163,29 +174,29 @@ test_mesh_contiguous (TestConformSimpleFixture *fixture,
 	{0x00, 0x00, 0xff, 0x00}, /* transparent blue */
 	{0x00, 0x00, 0xff, 0x00}  /* transparent blue */
       };
-    state.mesh = cogl_mesh_new (3 /* n vertices */);
-    cogl_mesh_add_attribute (state.mesh,
-			     "gl_Vertex",
-			     2, /* n components */
-			     GL_FLOAT,
-			     FALSE, /* normalized */
-			     0, /* stride */
-			     triangle_verts);
-    cogl_mesh_add_attribute (state.mesh,
-			     "gl_Color::blue",
-			     4, /* n components */
-			     GL_UNSIGNED_BYTE,
-			     FALSE, /* normalized */
-			     0, /* stride */
-			     triangle_colors);
-    cogl_mesh_submit (state.mesh);
+    state.buffer = cogl_vertex_buffer_new (3 /* n vertices */);
+    cogl_vertex_buffer_add (state.buffer,
+			    "gl_Vertex",
+			    2, /* n components */
+			    GL_FLOAT,
+			    FALSE, /* normalized */
+			    0, /* stride */
+			    triangle_verts);
+    cogl_vertex_buffer_add (state.buffer,
+			    "gl_Color",
+			    4, /* n components */
+			    GL_UNSIGNED_BYTE,
+			    FALSE, /* normalized */
+			    0, /* stride */
+			    triangle_colors);
+    cogl_vertex_buffer_submit (state.buffer);
   }
 
   clutter_actor_show_all (stage);
 
   clutter_main ();
 
-  cogl_mesh_unref (state.mesh);
+  cogl_vertex_buffer_unref (state.buffer);
 
   g_source_remove (idle_source);
 

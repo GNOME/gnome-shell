@@ -82,8 +82,8 @@ typedef struct
   GArray              *program_handles;
   GArray              *shader_handles;
 
-  /* Mesh */
-  GArray           *mesh_handles;
+  /* Vertex buffers */
+  GArray              *vertex_buffer_handles;
 
   /* Clip stack */
   CoglClipStackState   clip;
