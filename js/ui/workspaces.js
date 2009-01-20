@@ -439,7 +439,7 @@ Workspace.prototype = {
         if (!clone.cloneTitle)
             this._createCloneTitle(clone);
     	clone.cloneTitle.show();            
-        this._adjustCloneTitle(clone)
+        this._adjustCloneTitle(clone);
     	if (!this._overlappedMode)
     	    return;
     	if (clone.index != this._windows.length-1) {
