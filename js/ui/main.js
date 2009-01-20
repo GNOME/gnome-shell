@@ -37,13 +37,14 @@ function ClutterFrameTicker() {
 }
 
 ClutterFrameTicker.prototype = {
-    TARGET_FRAME_RATE : 60,
+    FRAME_RATE : 60,
 
     _init : function() {
         // We don't have a finite duration; tweener will tell us to stop
         // when we need to stop, so use 1000 seconds as "infinity"
-        this._timeline = new Clutter.Timeline({ fps: this.TARGET_FRAME_RATE,
+        this._timeline = new Clutter.Timeline({ fps: this.FRAME_RATE,
                                                 duration: 1000*1000 });
+        this._currentTime = 0;
         this._frame = 0;
 
         let me = this;
@@ -76,11 +77,16 @@ ClutterFrameTicker.prototype = {
             delta = frame - this._frame;
 
         if (delta == 0) // protect against divide-by-0 if we get a frame twice
-            this.FRAME_RATE = this.TARGET_FRAME_RATE;
-        else
-            this.FRAME_RATE = this.TARGET_FRAME_RATE / delta;
+            delta = 1;
+
+        // currentTime is in milliseconds
+        this._currentTime += (1000 * delta) / this.FRAME_RATE;
         this._frame = frame;
         this.emit('prepare-frame');
+    },
+
+    getTime : function() {
+        return this._currentTime;
     },
 
     start : function() {
@@ -90,6 +96,7 @@ ClutterFrameTicker.prototype = {
     stop : function() {
         this._timeline.stop();
         this._frame = 0;
+        this._currentTime = 0;
     }
 };
 
