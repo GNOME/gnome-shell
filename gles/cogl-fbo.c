@@ -227,12 +227,12 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 
       /* Setup new viewport and matrices */
       GE( glViewport (0, 0, fbo->width, fbo->height) );
-      GE( cogl_wrap_glTranslatex (-COGL_FIXED_1, -COGL_FIXED_1, 0) );
-      GE( cogl_wrap_glScalex (COGL_FIXED_DIV (COGL_FIXED_FROM_INT (2),
-                                COGL_FIXED_FROM_INT (fbo->width)),
-			      COGL_FIXED_DIV (COGL_FIXED_FROM_INT (2),
-                                COGL_FIXED_FROM_INT (fbo->height)),
-			      COGL_FIXED_1) );
+      GE( cogl_wrap_glTranslatef (-1.0, -1.0, 0) );
+      GE( cogl_wrap_glScalef (((float)(2) /
+                                (float)(fbo->width)),
+			      ((float)(2) /
+                                (float)(fbo->height)),
+			      1.0) );
 
       /* Bind offscreen framebuffer object */
       GE( glBindFramebuffer (GL_FRAMEBUFFER, fbo->gl_handle) );

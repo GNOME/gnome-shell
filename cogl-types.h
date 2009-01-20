@@ -264,8 +264,8 @@ struct _CoglColor
  */
 struct _CoglTextureVertex
 {
-  CoglFixed x, y, z;
-  CoglFixed tx, ty;
+  float x, y, z;
+  float tx, ty;
   CoglColor color;
 };
 
