@@ -189,39 +189,127 @@ typedef enum {
 /**
  * ClutterAnimationMode:
  * @CLUTTER_CUSTOM_MODE: custom progress function
- * @CLUTTER_LINEAR: linear progress
- * @CLUTTER_SINE_IN: sine-in progress
- * @CLUTTER_SINE_OUT: sine-out progress
- * @CLUTTER_SINE_IN_OUT: sine-in-out progress
- * @CLUTTER_EASE_IN: ease-in progress
- * @CLUTTER_EASE_OUT: ease-out progress
- * @CLUTTER_EASE_IN_OUT: ease-in-out progress
- * @CLUTTER_EXPO_IN: exponential in progress
- * @CLUTTER_EXPO_OUT: exponential out progress
- * @CLUTTER_EXPO_IN_OUT: exponential in-out progress
- * @CLUTTER_SMOOTH_IN_OUT: smoothstep in-out progress
- * @CLUTTER_ANIMATION_LAST: last animation mode
+ * @CLUTTER_LINEAR: linear tweening
+ * @CLUTTER_EASE_IN_QUAD: quadratic tweening
+ * @CLUTTER_EASE_OUT_QUAD: quadratic tweening, inverse of
+ *    %CLUTTER_EASE_IN_QUAD
+ * @CLUTTER_EASE_IN_OUT_QUAD: quadratic tweening, combininig
+ *    %CLUTTER_EASE_IN_QUAD and %CLUTTER_EASE_OUT_QUAD
+ * @CLUTTER_EASE_IN_CUBIC: cubic tweening
+ * @CLUTTER_EASE_OUT_CUBIC: cubic tweening, invers of
+ *    %CLUTTER_EASE_IN_CUBIC
+ * @CLUTTER_EASE_IN_OUT_CUBIC: cubic tweening, combining
+ *    %CLUTTER_EASE_IN_CUBIC and %CLUTTER_EASE_OUT_CUBIC
+ * @CLUTTER_EASE_IN_QUART: quartic tweening
+ * @CLUTTER_EASE_OUT_QUART: quartic tweening, inverse of
+ *    %CLUTTER_EASE_IN_QUART
+ * @CLUTTER_EASE_IN_OUT_QUART: quartic tweening, combining
+ *    %CLUTTER_EASE_IN_QUART and %CLUTTER_EASE_OUT_QUART
+ * @CLUTTER_EASE_IN_QUINT: quintic tweening
+ * @CLUTTER_EASE_OUT_QUINT: quintic tweening, inverse of
+ *    %CLUTTER_EASE_IN_QUINT
+ * @CLUTTER_EASE_IN_OUT_QUINT: fifth power tweening, combining
+ *    %CLUTTER_EASE_IN_QUINT and %CLUTTER_EASE_OUT_QUINT
+ * @CLUTTER_EASE_IN_SINE: sinusoidal tweening
+ * @CLUTTER_EASE_OUT_SINE: sinusoidal tweening, inverse of
+ *    %CLUTTER_EASE_IN_SINE
+ * @CLUTTER_EASE_IN_OUT_SINE: sine wave tweening, combining
+ *    %CLUTTER_EASE_IN_SINE and %CLUTTER_EASE_OUT_SINE
+ * @CLUTTER_EASE_IN_EXPO: exponential tweening
+ * @CLUTTER_EASE_OUT_EXPO: exponential tweening, inverse of
+ *    %CLUTTER_EASE_IN_EXPO
+ * @CLUTTER_EASE_IN_OUT_EXPO: exponential tweening, combining
+ *    %CLUTTER_EASE_IN_EXPO and %CLUTTER_EASE_OUT_EXPO
+ * @CLUTTER_EASE_IN_CIRC: circular tweening
+ * @CLUTTER_EASE_OUT_CIRC: circular tweening, inverse of
+ *    %CLUTTER_EASE_IN_CIRC
+ * @CLUTTER_EASE_IN_OUT_CIRC: circular tweening, combining
+ *    %CLUTTER_EASE_IN_CIRC and %CLUTTER_EASE_OUT_CIRC
+ * @CLUTTER_EASE_IN_ELASTIC: elastic tweening, with offshoot on start
+ * @CLUTTER_EASE_OUT_ELASTIC: elastic tweening, with offshoot on end
+ * @CLUTTER_EASE_IN_OUT_ELASTIC: elastic tweening with offshoot on both ends
+ * @CLUTTER_EASE_IN_BACK: overshooting cubic tweening, with
+ *   backtracking on start
+ * @CLUTTER_EASE_OUT_BACK: overshooting cubic tweening, with
+ *   backtracking on end
+ * @CLUTTER_EASE_IN_OUT_BACK: overshooting cubic tweening, with
+ *   backtracking on both ends
+ * @CLUTTER_EASE_IN_BOUNCE: exponentially decaying parabolic (bounce)
+ *   tweening, with bounce on start
+ * @CLUTTER_EASE_OUT_BOUNCE: exponentially decaying parabolic (bounce)
+ *   tweening, with bounce on end
+ * @CLUTTER_EASE_IN_OUT_BOUNCE: exponentially decaying parabolic (bounce)
+ *   tweening, with bounce on both ends
+ * @CLUTTER_ANIMATION_LAST: last animation mode, used as a guard for
+ *   registered global alpha functions
  *
  * The animation modes used by #ClutterAlpha and #ClutterAnimation. This
- * enumeration can be expanded in later versions of Clutter.
+ * enumeration can be expanded in later versions of Clutter. See the
+ * #ClutterAlpha documentation for a graph of all the animation modes.
+ *
+ * Every global alpha function registered using clutter_alpha_register_func()
+ * or clutter_alpha_register_closure() will have a logical id greater than
+ * %CLUTTER_ANIMATION_LAST.
  *
  * Since: 1.0
  */
 typedef enum {
   CLUTTER_CUSTOM_MODE = 0,
 
+  /* linear */
   CLUTTER_LINEAR,
-  CLUTTER_SINE_IN,
-  CLUTTER_SINE_OUT,
-  CLUTTER_SINE_IN_OUT,
-  CLUTTER_EASE_IN,
-  CLUTTER_EASE_OUT,
-  CLUTTER_EASE_IN_OUT,
-  CLUTTER_EXPO_IN,
-  CLUTTER_EXPO_OUT,
-  CLUTTER_EXPO_IN_OUT,
-  CLUTTER_SMOOTH_IN_OUT,
 
+  /* quadratic */
+  CLUTTER_EASE_IN_QUAD,
+  CLUTTER_EASE_OUT_QUAD,
+  CLUTTER_EASE_IN_OUT_QUAD,
+
+  /* cubic */
+  CLUTTER_EASE_IN_CUBIC,
+  CLUTTER_EASE_OUT_CUBIC,
+  CLUTTER_EASE_IN_OUT_CUBIC,
+
+  /* quartic */
+  CLUTTER_EASE_IN_QUART,
+  CLUTTER_EASE_OUT_QUART,
+  CLUTTER_EASE_IN_OUT_QUART,
+
+  /* quintic */
+  CLUTTER_EASE_IN_QUINT,
+  CLUTTER_EASE_OUT_QUINT,
+  CLUTTER_EASE_IN_OUT_QUINT,
+
+  /* sinusoidal */
+  CLUTTER_EASE_IN_SINE,
+  CLUTTER_EASE_OUT_SINE,
+  CLUTTER_EASE_IN_OUT_SINE,
+
+  /* exponential */
+  CLUTTER_EASE_IN_EXPO,
+  CLUTTER_EASE_OUT_EXPO,
+  CLUTTER_EASE_IN_OUT_EXPO,
+
+  /* circular */
+  CLUTTER_EASE_IN_CIRC,
+  CLUTTER_EASE_OUT_CIRC,
+  CLUTTER_EASE_IN_OUT_CIRC,
+
+  /* elastic */
+  CLUTTER_EASE_IN_ELASTIC,
+  CLUTTER_EASE_OUT_ELASTIC,
+  CLUTTER_EASE_IN_OUT_ELASTIC,
+
+  /* overshooting cubic */
+  CLUTTER_EASE_IN_BACK,
+  CLUTTER_EASE_OUT_BACK,
+  CLUTTER_EASE_IN_OUT_BACK,
+
+  /* exponentially decaying parabolic */
+  CLUTTER_EASE_IN_BOUNCE,
+  CLUTTER_EASE_OUT_BOUNCE,
+  CLUTTER_EASE_IN_OUT_BOUNCE,
+
+  /* guard, before registered alpha functions */
   CLUTTER_ANIMATION_LAST
 } ClutterAnimationMode;
 

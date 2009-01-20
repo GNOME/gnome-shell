@@ -64,7 +64,7 @@ on_button_press (ClutterActor       *actor,
   vertex.y = CLUTTER_UNITS_FROM_FLOAT ((float) new_height / 2);
 
   animation =
-    clutter_actor_animate (actor, CLUTTER_EASE_IN, 2000,
+    clutter_actor_animate (actor, CLUTTER_EASE_IN_EXPO, 2000,
                            "x", new_x,
                            "y", new_y,
                            "width", new_width,
