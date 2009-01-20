@@ -142,6 +142,15 @@ enum {
   PROP_MINI_ICON,
 };
 
+enum
+{
+  WORKSPACE_CHANGED,
+
+  LAST_SIGNAL
+};
+
+static guint window_signals[LAST_SIGNAL] = { 0 };
+
 static void
 meta_window_finalize (GObject *object)
 {
@@ -237,6 +246,16 @@ meta_window_class_init (MetaWindowClass *klass)
                                                         "16 pixel sized icon",
                                                         GDK_TYPE_PIXBUF,
                                                         G_PARAM_READABLE));
+
+  window_signals[WORKSPACE_CHANGED] =
+    g_signal_new ("workspace-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MetaWindowClass, workspace_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__INT,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_INT);
 }
 
 static void
@@ -4448,8 +4467,15 @@ static void
 meta_window_change_workspace_without_transients (MetaWindow    *window,
                                                  MetaWorkspace *workspace)
 {
+  int old_workspace = -1;
+
   meta_verbose ("Changing window %s to workspace %d\n",
                 window->desc, meta_workspace_index (workspace));
+
+  if (!window->on_all_workspaces)
+    {
+      old_workspace = meta_workspace_index (window->workspace);
+    }
 
   /* unstick if stuck. meta_window_unstick would call
    * meta_window_change_workspace recursively if the window
@@ -4463,6 +4489,8 @@ meta_window_change_workspace_without_transients (MetaWindow    *window,
     {
       meta_workspace_remove_window (window->workspace, window);
       meta_workspace_add_window (workspace, window);
+      g_signal_emit (window, window_signals[WORKSPACE_CHANGED], 0,
+                     old_workspace);
     }
 }
 
