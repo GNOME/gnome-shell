@@ -114,33 +114,33 @@ on_paint (ClutterActor *actor, TestState *state)
      the first */
   for (i = 0; i < 2; i++)
     {
-      CoglFixed x1 = 0, x2, y1 = 0, y2 = COGL_FIXED_FROM_INT (TEXTURE_SIZE);
+      float x1 = 0, x2, y1 = 0, y2 = (float)(TEXTURE_SIZE);
       CoglTextureVertex verts[4];
 
       memset (verts, 0, sizeof (verts));
 
       /* Set the color to white so that all the textures will be drawn
          at their own color */
-      cogl_set_source_color4x (COGL_FIXED_1, COGL_FIXED_1,
-                               COGL_FIXED_1, COGL_FIXED_1);
+      cogl_set_source_color4x (1.0, 1.0,
+                               1.0, 1.0);
 
-      x2 = x1 + COGL_FIXED_FROM_INT (TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a front-facing texture */
       cogl_texture_rectangle (state->texture,
                               x1, y1, x2, y2,
-                              0, 0, COGL_FIXED_1, COGL_FIXED_1);
+                              0, 0, 1.0, 1.0);
 
       x1 = x2;
-      x2 = x1 + COGL_FIXED_FROM_INT (TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a back-facing texture */
       cogl_texture_rectangle (state->texture,
                               x2, y1, x1, y2,
-                              0, 0, COGL_FIXED_1, COGL_FIXED_1);
+                              0, 0, 1.0, 1.0);
 
       x1 = x2;
-      x2 = x1 + COGL_FIXED_FROM_INT (TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a front-facing texture polygon */
       verts[0].x = x1;             verts[0].y = y2;
@@ -148,14 +148,14 @@ on_paint (ClutterActor *actor, TestState *state)
       verts[2].x = x2;             verts[2].y = y1;
       verts[3].x = x1;             verts[3].y = y1;
       verts[0].tx = 0;             verts[0].ty = 0;
-      verts[1].tx = COGL_FIXED_1;  verts[1].ty = 0;
-      verts[2].tx = COGL_FIXED_1;  verts[2].ty = COGL_FIXED_1;
-      verts[3].tx = 0;             verts[3].ty = COGL_FIXED_1;
+      verts[1].tx = 1.0;  verts[1].ty = 0;
+      verts[2].tx = 1.0;  verts[2].ty = 1.0;
+      verts[3].tx = 0;             verts[3].ty = 1.0;
       cogl_texture_polygon (state->texture, 4,
                             verts, FALSE);
 
       x1 = x2;
-      x2 = x1 + COGL_FIXED_FROM_INT (TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a back-facing texture polygon */
       verts[0].x = x1;             verts[0].y = y1;
@@ -163,19 +163,19 @@ on_paint (ClutterActor *actor, TestState *state)
       verts[2].x = x2;             verts[2].y = y2;
       verts[3].x = x1;             verts[3].y = y2;
       verts[0].tx = 0;             verts[0].ty = 0;
-      verts[1].tx = COGL_FIXED_1;  verts[1].ty = 0;
-      verts[2].tx = COGL_FIXED_1;  verts[2].ty = COGL_FIXED_1;
-      verts[3].tx = 0;             verts[3].ty = COGL_FIXED_1;
+      verts[1].tx = 1.0;  verts[1].ty = 0;
+      verts[2].tx = 1.0;  verts[2].ty = 1.0;
+      verts[3].tx = 0;             verts[3].ty = 1.0;
       cogl_texture_polygon (state->texture, 4,
                             verts, FALSE);
 
       x1 = x2;
-      x2 = x1 + COGL_FIXED_FROM_INT (TEXTURE_SIZE);
+      x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a regular rectangle (this should always show) */
-      cogl_set_source_color4x (COGL_FIXED_1, 0, 0, COGL_FIXED_1);
-      cogl_rectangle (COGL_FIXED_TO_INT (x1), COGL_FIXED_TO_INT (y1),
-                      COGL_FIXED_TO_INT (x2 - x1), COGL_FIXED_TO_INT (y2 - y1));
+      cogl_set_source_color4x (1.0, 0, 0, 1.0);
+      cogl_rectangle ( (x1),  (y1),
+                       (x2 - x1),  (y2 - y1));
 
       /* The second time round draw beneath the first with backface
          culling disabled */

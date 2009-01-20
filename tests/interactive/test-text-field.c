@@ -19,7 +19,7 @@ on_entry_paint (ClutterActor *actor,
   cogl_path_round_rectangle (0, 0,
                              CLUTTER_UNITS_TO_FIXED (width),
                              CLUTTER_UNITS_TO_FIXED (height),
-                             COGL_FIXED_FROM_INT (4),
+                             (float)(4),
                              COGL_ANGLE_FROM_DEG (1.0));
   cogl_path_stroke ();
 }

@@ -86,11 +86,11 @@ struct _ClutterBehaviourEllipsePrivate
   gint         a;
   gint         b;
 
-  ClutterAngle angle_start;
-  ClutterAngle angle_end;
-  ClutterAngle angle_tilt_x;
-  ClutterAngle angle_tilt_y;
-  ClutterAngle angle_tilt_z;
+  float angle_start;
+  float angle_end;
+  float angle_tilt_x;
+  float angle_tilt_y;
+  float angle_tilt_z;
 
   ClutterRotateDirection direction;
 };
@@ -104,14 +104,14 @@ typedef struct _knot3d
 
 static void
 clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
-                                   ClutterAngle             angle,
+                                   float             angle,
                                    knot3d                  *knot)
 {
   ClutterBehaviourEllipsePrivate *priv = e->priv;
   gint x, y, z;
 
-  x = COGL_FIXED_TO_INT (priv->a * cogl_angle_cos (angle));
-  y = COGL_FIXED_TO_INT (priv->b * cogl_angle_sin (angle));
+  x =  (priv->a * cosf (angle * (G_PI/180.0)));
+  y =  (priv->b * sinf (angle * (G_PI/180.0)));
   z = 0;
 
   if (priv->angle_tilt_z)
@@ -126,40 +126,40 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
        */
       ClutterFixed x2, y2;
 
-      x2 = x * cogl_angle_cos (priv->angle_tilt_z)
-         - y * cogl_angle_sin (priv->angle_tilt_z);
+      x2 = x * cosf (priv->angle_tilt_z * (G_PI/180.0))
+         - y * sinf (priv->angle_tilt_z * (G_PI/180.0));
 
-      y2 = y * cogl_angle_cos (priv->angle_tilt_z)
-         + x * cogl_angle_sin (priv->angle_tilt_z);
+      y2 = y * cosf (priv->angle_tilt_z * (G_PI/180.0))
+         + x * sinf (priv->angle_tilt_z * (G_PI/180.0));
 
-      x = COGL_FIXED_TO_INT (x2);
-      y = COGL_FIXED_TO_INT (y2);
+      x =  (x2);
+      y =  (y2);
     }
 
   if (priv->angle_tilt_x)
     {
       ClutterFixed z2, y2;
 
-      z2 = - y * cogl_angle_sin (priv->angle_tilt_x);
+      z2 = - y * sinf (priv->angle_tilt_x * (G_PI/180.0));
 
-      y2 = y * cogl_angle_cos (priv->angle_tilt_x);
+      y2 = y * cosf (priv->angle_tilt_x * (G_PI/180.0));
 
-      z = COGL_FIXED_TO_INT (z2);
-      y = COGL_FIXED_TO_INT (y2);
+      z =  (z2);
+      y =  (y2);
     }
 
   if (priv->angle_tilt_y)
     {
       ClutterFixed x2, z2;
 
-      x2 = x * cogl_angle_cos (priv->angle_tilt_y)
-         - z * cogl_angle_sin (priv->angle_tilt_y);
+      x2 = x * cosf (priv->angle_tilt_y * (G_PI/180.0))
+         - z * sinf (priv->angle_tilt_y * (G_PI/180.0));
 
-      z2 = z * cogl_angle_cos (priv->angle_tilt_y)
-         + x * cogl_angle_sin (priv->angle_tilt_y);
+      z2 = z * cosf (priv->angle_tilt_y * (G_PI/180.0))
+         + x * sinf (priv->angle_tilt_y * (G_PI/180.0));
 
-      x = COGL_FIXED_TO_INT (x2);
-      z = COGL_FIXED_TO_INT (z2);
+      x =  (x2);
+      z =  (z2);
     }
 
   knot->x = x;
@@ -187,10 +187,10 @@ actor_apply_knot_foreach (ClutterBehaviour *behave,
     clutter_actor_set_depth (actor, knot->z);
 }
 
-static inline ClutterAngle
-clamp_angle (ClutterAngle a)
+static inline float
+clamp_angle (float a)
 {
-  ClutterAngle a1, a2;
+  float a1, a2;
   gint rounds;
 
   /* Need to add the 256 offset here, since the user space 0 maps to our
@@ -209,9 +209,9 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
 {
   ClutterBehaviourEllipse *self = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
   ClutterBehaviourEllipsePrivate *priv = self->priv;
-  ClutterAngle start, end;
+  float start, end;
   knot3d knot;
-  ClutterAngle angle = 0;
+  float angle = 0;
 
   start = priv->angle_start;
   end   = priv->angle_end;
@@ -783,7 +783,7 @@ clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   clutter_behaviour_ellipse_set_angle_startx (self,
-                                              COGL_FIXED_FROM_FLOAT (angle_start));
+                                              CLUTTER_FLOAT_TO_FIXED (angle_start));
 }
 
 /**
@@ -802,7 +802,7 @@ clutter_behaviour_ellipse_set_angle_startx (ClutterBehaviourEllipse *self,
                                             ClutterFixed             angle_start)
 {
   ClutterBehaviourEllipsePrivate *priv;
-  ClutterAngle new_angle;
+  float new_angle;
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   new_angle = clamp_angle (COGL_ANGLE_FROM_DEGX (angle_start) - 256);
@@ -868,7 +868,7 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
   clutter_behaviour_ellipse_set_angle_endx (self,
-                                            COGL_FIXED_FROM_FLOAT (angle_end));
+                                            CLUTTER_FLOAT_TO_FIXED (angle_end));
 }
 
 /**
@@ -887,7 +887,7 @@ clutter_behaviour_ellipse_set_angle_endx (ClutterBehaviourEllipse *self,
                                           ClutterFixed             angle_end)
 {
   ClutterBehaviourEllipsePrivate *priv;
-  ClutterAngle new_angle;
+  float new_angle;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
@@ -959,7 +959,7 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
 
   clutter_behaviour_ellipse_set_angle_tiltx (self,
                                              axis,
-                                             COGL_FIXED_FROM_FLOAT (angle_tilt));
+                                             CLUTTER_FLOAT_TO_FIXED (angle_tilt));
 }
 
 /**
@@ -979,7 +979,7 @@ clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse *self,
                                            ClutterFixed             angle_tilt)
 {
   ClutterBehaviourEllipsePrivate *priv;
-  ClutterAngle new_angle;
+  float new_angle;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
@@ -1096,7 +1096,7 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
                                     gdouble                  angle_tilt_z)
 {
   ClutterBehaviourEllipsePrivate *priv;
-  ClutterAngle new_angle_x, new_angle_y, new_angle_z;
+  float new_angle_x, new_angle_y, new_angle_z;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
@@ -1150,7 +1150,7 @@ clutter_behaviour_ellipse_set_tiltx (ClutterBehaviourEllipse *self,
                                      ClutterFixed             angle_tilt_z)
 {
   ClutterBehaviourEllipsePrivate *priv;
-  ClutterAngle new_angle_x, new_angle_y, new_angle_z;
+  float new_angle_x, new_angle_y, new_angle_z;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 

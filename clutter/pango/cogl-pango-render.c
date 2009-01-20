@@ -67,7 +67,7 @@ cogl_pango_renderer_glyphs_end (CoglPangoRenderer *priv)
 {
   if (priv->glyph_rectangles->len > 0)
     {
-      CoglFixed *rectangles = (CoglFixed *) priv->glyph_rectangles->data;
+      float *rectangles = (float *) priv->glyph_rectangles->data;
       cogl_texture_multiple_rectangles (priv->glyph_texture, rectangles,
                                         priv->glyph_rectangles->len / 8);
       g_array_set_size (priv->glyph_rectangles, 0);
@@ -77,11 +77,11 @@ cogl_pango_renderer_glyphs_end (CoglPangoRenderer *priv)
 static void
 cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
                                 CoglPangoGlyphCacheValue *cache_value,
-                                CoglFixed                 x1,
-                                CoglFixed                 y1)
+                                float                 x1,
+                                float                 y1)
 {
-  CoglFixed x2, y2;
-  CoglFixed *p;
+  float x2, y2;
+  float *p;
 
   if (priv->glyph_rectangles->len > 0
       && priv->glyph_texture != cache_value->texture)
@@ -93,7 +93,7 @@ cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
   y2 = y1 + CLUTTER_INT_TO_FIXED (cache_value->draw_height);
 
   g_array_set_size (priv->glyph_rectangles, priv->glyph_rectangles->len + 8);
-  p = &g_array_index (priv->glyph_rectangles, CoglFixed,
+  p = &g_array_index (priv->glyph_rectangles, float,
                       priv->glyph_rectangles->len - 8);
 
   *(p++) = x1;               *(p++) = y1;
@@ -133,7 +133,7 @@ cogl_pango_renderer_init (CoglPangoRenderer *priv)
   priv->glyph_cache = cogl_pango_glyph_cache_new (FALSE);
   priv->mipmapped_glyph_cache = cogl_pango_glyph_cache_new (TRUE);
   priv->use_mipmapping = FALSE;
-  priv->glyph_rectangles = g_array_new (FALSE, FALSE, sizeof (CoglFixed));
+  priv->glyph_rectangles = g_array_new (FALSE, FALSE, sizeof (float));
 }
 
 static void
@@ -413,10 +413,10 @@ static void
 cogl_pango_renderer_draw_box (int x,     int y,
                               int width, int height)
 {
-  cogl_path_rectangle (COGL_FIXED_FROM_INT (x),
-		       COGL_FIXED_FROM_INT (y - height),
-		       COGL_FIXED_FROM_INT (width),
-		       COGL_FIXED_FROM_INT (height));
+  cogl_path_rectangle ((float)(x),
+		       (float)(y - height),
+		       (float)(width),
+		       (float)(height));
   cogl_path_stroke ();
 }
 
@@ -424,17 +424,17 @@ static void
 cogl_pango_renderer_get_device_units (PangoRenderer *renderer,
                                       int            xin,
                                       int            yin,
-                                      CoglFixed     *xout,
-                                      CoglFixed     *yout)
+                                      float     *xout,
+                                      float     *yout)
 {
   const PangoMatrix *matrix;
 
   if ((matrix = pango_renderer_get_matrix (renderer)))
     {
       /* Convert user-space coords to device coords */
-      *xout = COGL_FIXED_FROM_FLOAT ((xin * matrix->xx + yin * matrix->xy)
+      *xout =  ((xin * matrix->xx + yin * matrix->xy)
 				     / PANGO_SCALE + matrix->x0);
-      *yout = COGL_FIXED_FROM_FLOAT ((yin * matrix->yy + xin * matrix->yx)
+      *yout =  ((yin * matrix->yy + xin * matrix->yx)
 				     / PANGO_SCALE + matrix->y0);
     }
   else
@@ -452,7 +452,7 @@ cogl_pango_renderer_draw_rectangle (PangoRenderer   *renderer,
                                     int              width,
                                     int              height)
 {
-  CoglFixed x1, x2, y1, y2;
+  float x1, x2, y1, y2;
 
   cogl_pango_renderer_set_color_for_part (renderer, part);
 
@@ -476,15 +476,15 @@ cogl_pango_renderer_draw_trapezoid (PangoRenderer   *renderer,
 				    double           x12,
 				    double           x22)
 {
-  CoglFixed points[8];
+  float points[8];
 
-  points[0] = COGL_FIXED_FROM_FLOAT (x11);
-  points[1] = COGL_FIXED_FROM_FLOAT (y1);
-  points[2] = COGL_FIXED_FROM_FLOAT (x12);
-  points[3] = COGL_FIXED_FROM_FLOAT (y2);
-  points[4] = COGL_FIXED_FROM_FLOAT (x22);
+  points[0] =  (x11);
+  points[1] =  (y1);
+  points[2] =  (x12);
+  points[3] =  (y2);
+  points[4] =  (x22);
   points[5] = points[3];
-  points[6] = COGL_FIXED_FROM_FLOAT (x21);
+  points[6] =  (x21);
   points[7] = points[1];
 
   cogl_pango_renderer_set_color_for_part (renderer, part);
@@ -510,7 +510,7 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
   for (i = 0; i < glyphs->num_glyphs; i++)
     {
       PangoGlyphInfo *gi = glyphs->glyphs + i;
-      CoglFixed x, y;
+      float x, y;
 
       cogl_pango_renderer_get_device_units (renderer,
 					    xi + gi->geometry.x_offset,
@@ -526,15 +526,15 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
 	  if (font == NULL ||
               (metrics = pango_font_get_metrics (font, NULL)) == NULL)
             {
-	      cogl_pango_renderer_draw_box (COGL_FIXED_TO_INT (x),
-                                            COGL_FIXED_TO_INT (y),
+	      cogl_pango_renderer_draw_box ( (x),
+                                             (y),
                                             PANGO_UNKNOWN_GLYPH_WIDTH,
                                             PANGO_UNKNOWN_GLYPH_HEIGHT);
             }
 	  else
 	    {
-	      cogl_pango_renderer_draw_box (COGL_FIXED_TO_INT (x),
-					    COGL_FIXED_TO_INT (y),
+	      cogl_pango_renderer_draw_box ( (x),
+					     (y),
 					    metrics->approximate_char_width
 					    / PANGO_SCALE,
 					    metrics->ascent / PANGO_SCALE);
@@ -555,20 +555,20 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
             {
               cogl_pango_renderer_glyphs_end (priv);
 
-              cogl_pango_renderer_draw_box (COGL_FIXED_TO_INT (x),
-                                            COGL_FIXED_TO_INT (y),
+              cogl_pango_renderer_draw_box ( (x),
+                                             (y),
                                             PANGO_UNKNOWN_GLYPH_WIDTH,
                                             PANGO_UNKNOWN_GLYPH_HEIGHT);
             }
 	  else
 	    {
-              CoglFixed width, height;
+              float width, height;
 
-	      x += COGL_FIXED_FROM_INT (cache_value->draw_x);
-	      y += COGL_FIXED_FROM_INT (cache_value->draw_y);
+	      x += (float)(cache_value->draw_x);
+	      y += (float)(cache_value->draw_y);
 
-              width = x + COGL_FIXED_FROM_INT (cache_value->draw_width);
-              height = y + COGL_FIXED_FROM_INT (cache_value->draw_height);
+              width = x + (float)(cache_value->draw_width);
+              height = y + (float)(cache_value->draw_height);
 
               cogl_pango_renderer_draw_glyph (priv, cache_value, x, y);
 	    }

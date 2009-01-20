@@ -209,19 +209,19 @@ cogl_pop_matrix (void)
 }
 
 void
-cogl_scale (CoglFixed x, CoglFixed y)
+cogl_scale (float x, float y)
 {
-  glScaled (COGL_FIXED_TO_DOUBLE (x),
-	    COGL_FIXED_TO_DOUBLE (y),
+  glScaled ((double)(x),
+	    (double)(y),
 	    1.0);
 }
 
 void
-cogl_translatex (CoglFixed x, CoglFixed y, CoglFixed z)
+cogl_translatex (float x, float y, float z)
 {
-  glTranslated (COGL_FIXED_TO_DOUBLE (x),
-		COGL_FIXED_TO_DOUBLE (y),
-		COGL_FIXED_TO_DOUBLE (z));
+  glTranslated ((double)(x),
+		(double)(y),
+		(double)(z));
 }
 
 void
@@ -231,12 +231,12 @@ cogl_translate (gint x, gint y, gint z)
 }
 
 void
-cogl_rotatex (CoglFixed angle, gint x, gint y, gint z)
+cogl_rotatex (float angle, gint x, gint y, gint z)
 {
-  glRotated (COGL_FIXED_TO_DOUBLE (angle),
-	     COGL_FIXED_TO_DOUBLE (x),
-	     COGL_FIXED_TO_DOUBLE (y),
-	     COGL_FIXED_TO_DOUBLE (z));
+  glRotated ((double)(angle),
+	     (double)(x),
+	     (double)(y),
+	     (double)(z));
 }
 
 void
@@ -466,24 +466,24 @@ set_clip_plane (GLint plane_num,
 }
 
 void
-_cogl_set_clip_planes (CoglFixed x_offset,
-		       CoglFixed y_offset,
-		       CoglFixed width,
-		       CoglFixed height)
+_cogl_set_clip_planes (float x_offset,
+		       float y_offset,
+		       float width,
+		       float height)
 {
   GLfloat modelview[16], projection[16];
 
-  GLfloat vertex_tl[4] = { COGL_FIXED_TO_FLOAT (x_offset),
-			   COGL_FIXED_TO_FLOAT (y_offset),
+  GLfloat vertex_tl[4] = {  (x_offset),
+			    (y_offset),
 			   0.0f, 1.0f };
-  GLfloat vertex_tr[4] = { COGL_FIXED_TO_FLOAT (x_offset + width),
-			   COGL_FIXED_TO_FLOAT (y_offset),
+  GLfloat vertex_tr[4] = {  (x_offset + width),
+			    (y_offset),
 			   0.0f, 1.0f };
-  GLfloat vertex_bl[4] = { COGL_FIXED_TO_FLOAT (x_offset),
-			   COGL_FIXED_TO_FLOAT (y_offset + height),
+  GLfloat vertex_bl[4] = {  (x_offset),
+			    (y_offset + height),
 			   0.0f, 1.0f };
-  GLfloat vertex_br[4] = { COGL_FIXED_TO_FLOAT (x_offset + width),
-			   COGL_FIXED_TO_FLOAT (y_offset + height),
+  GLfloat vertex_br[4] = {  (x_offset + width),
+			    (y_offset + height),
 			   0.0f, 1.0f };
 
   GE( glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
@@ -518,10 +518,10 @@ _cogl_set_clip_planes (CoglFixed x_offset,
 }
 
 void
-_cogl_add_stencil_clip (CoglFixed x_offset,
-			CoglFixed y_offset,
-			CoglFixed width,
-			CoglFixed height,
+_cogl_add_stencil_clip (float x_offset,
+			float y_offset,
+			float width,
+			float height,
 			gboolean first)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
@@ -537,10 +537,10 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
       /* Punch out a hole to allow the rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
-      GE( glRectf (COGL_FIXED_TO_FLOAT (x_offset),
-		   COGL_FIXED_TO_FLOAT (y_offset),
-		   COGL_FIXED_TO_FLOAT (x_offset + width),
-		   COGL_FIXED_TO_FLOAT (y_offset + height)) );
+      GE( glRectf ( (x_offset),
+		    (y_offset),
+		    (x_offset + width),
+		    (y_offset + height)) );
     }
   else
     {
@@ -548,10 +548,10 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
 	 rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
-      GE( glRectf (COGL_FIXED_TO_FLOAT (x_offset),
-		   COGL_FIXED_TO_FLOAT (y_offset),
-		   COGL_FIXED_TO_FLOAT (x_offset + width),
-		   COGL_FIXED_TO_FLOAT (y_offset + height)) );
+      GE( glRectf ( (x_offset),
+		    (y_offset),
+		    (x_offset + width),
+		    (y_offset + height)) );
 
       /* Subtract one from all pixels in the stencil buffer so that
 	 only pixels where both the original stencil buffer and the
@@ -574,13 +574,13 @@ _cogl_add_stencil_clip (CoglFixed x_offset,
 }
 
 void
-_cogl_set_matrix (const CoglFixed *matrix)
+_cogl_set_matrix (const float *matrix)
 {
   float float_matrix[16];
   int i;
 
   for (i = 0; i < 16; i++)
-    float_matrix[i] = COGL_FIXED_TO_FLOAT (matrix[i]);
+    float_matrix[i] =  (matrix[i]);
 
   GE( glLoadIdentity () );
   GE( glMultMatrixf (float_matrix) );
@@ -612,20 +612,20 @@ _cogl_disable_clip_planes (void)
 
 void
 cogl_alpha_func (COGLenum     func,
-		 CoglFixed ref)
+		 float ref)
 {
-  GE( glAlphaFunc (func, COGL_FIXED_TO_FLOAT(ref)) );
+  GE( glAlphaFunc (func, (ref)) );
 }
 
 void
-cogl_perspective (CoglFixed fovy,
-		  CoglFixed aspect,
-		  CoglFixed zNear,
-		  CoglFixed zFar)
+cogl_perspective (float fovy,
+		  float aspect,
+		  float zNear,
+		  float zFar)
 {
-  CoglFixed xmax, ymax;
-  CoglFixed x, y, c, d;
-  CoglFixed fovy_rad_half = COGL_FIXED_MUL (fovy, COGL_FIXED_PI) / 360;
+  float xmax, ymax;
+  float x, y, c, d;
+  float fovy_rad_half = (fovy * G_PI) / 360;
 
   GLfloat m[16];
 
@@ -646,22 +646,22 @@ cogl_perspective (CoglFixed fovy,
    * precision
    */
   ymax =
-    COGL_FIXED_MUL (zNear,
-                    COGL_FIXED_FAST_DIV (cogl_fixed_sin (fovy_rad_half),
-                                         cogl_fixed_cos (fovy_rad_half)));
+    (zNear *
+                    (sinf (fovy_rad_half) /
+                                         cosf (fovy_rad_half)));
 
-  xmax = COGL_FIXED_MUL (ymax, aspect);
+  xmax = (ymax * aspect);
 
-  x = COGL_FIXED_FAST_DIV (zNear, xmax);
-  y = COGL_FIXED_FAST_DIV (zNear, ymax);
-  c = COGL_FIXED_FAST_DIV (-(zFar + zNear), ( zFar - zNear));
+  x = (zNear / xmax);
+  y = (zNear / ymax);
+  c = (-(zFar + zNear) / ( zFar - zNear));
   d = cogl_fixed_mul_div (-(2 * zFar), zNear, (zFar - zNear));
 
 #define M(row,col)  m[col*4+row]
-  M(0,0) = COGL_FIXED_TO_FLOAT (x);
-  M(1,1) = COGL_FIXED_TO_FLOAT (y);
-  M(2,2) = COGL_FIXED_TO_FLOAT (c);
-  M(2,3) = COGL_FIXED_TO_FLOAT (d);
+  M(0,0) =  (x);
+  M(1,1) =  (y);
+  M(2,2) =  (c);
+  M(2,3) =  (d);
   M(3,2) = -1.0F;
 
   GE( glMultMatrixf (m) );
@@ -672,22 +672,22 @@ cogl_perspective (CoglFixed fovy,
   memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
 
 #define m ctx->inverse_projection
-  M(0, 0) = 1.0f / COGL_FIXED_TO_FLOAT (x);
-  M(1, 1) = 1.0f / COGL_FIXED_TO_FLOAT (y);
+  M(0, 0) = 1.0f /  (x);
+  M(1, 1) = 1.0f /  (y);
   M(2, 3) = -1.0f;
-  M(3, 2) = 1.0f / COGL_FIXED_TO_FLOAT (d);
-  M(3, 3) = COGL_FIXED_TO_FLOAT (c) / COGL_FIXED_TO_FLOAT (d);
+  M(3, 2) = 1.0f /  (d);
+  M(3, 3) =  (c) /  (d);
 #undef m
 #undef M
 }
 
 void
-cogl_frustum (CoglFixed        left,
-	      CoglFixed        right,
-	      CoglFixed        bottom,
-	      CoglFixed        top,
-	      CoglFixed        z_near,
-	      CoglFixed        z_far)
+cogl_frustum (float        left,
+	      float        right,
+	      float        bottom,
+	      float        top,
+	      float        z_near,
+	      float        z_far)
 {
   GLfloat c, d;
 
@@ -696,32 +696,32 @@ cogl_frustum (CoglFixed        left,
   GE( glMatrixMode (GL_PROJECTION) );
   GE( glLoadIdentity () );
 
-  GE( glFrustum (COGL_FIXED_TO_DOUBLE (left),
-		 COGL_FIXED_TO_DOUBLE (right),
-		 COGL_FIXED_TO_DOUBLE (bottom),
-		 COGL_FIXED_TO_DOUBLE (top),
-		 COGL_FIXED_TO_DOUBLE (z_near),
-		 COGL_FIXED_TO_DOUBLE (z_far)) );
+  GE( glFrustum ((double)(left),
+		 (double)(right),
+		 (double)(bottom),
+		 (double)(top),
+		 (double)(z_near),
+		 (double)(z_far)) );
 
   GE( glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
   memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
 
-  c = -COGL_FIXED_TO_FLOAT (z_far + z_near)
-    / COGL_FIXED_TO_FLOAT (z_far - z_near);
-  d = -COGL_FIXED_TO_FLOAT (2 * COGL_FIXED_MUL (z_far, z_near))
-    / COGL_FIXED_TO_FLOAT (z_far - z_near);
+  c = - (z_far + z_near)
+    /  (z_far - z_near);
+  d = - (2 * (z_far * z_near))
+    /  (z_far - z_near);
 
 #define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) = COGL_FIXED_TO_FLOAT (right - left)
-    / COGL_FIXED_TO_FLOAT (2 * z_near);
-  M(0,3) = COGL_FIXED_TO_FLOAT (right + left)
-    / COGL_FIXED_TO_FLOAT (2 * z_near);
-  M(1,1) = COGL_FIXED_TO_FLOAT (top - bottom)
-    / COGL_FIXED_TO_FLOAT (2 * z_near);
-  M(1,3) = COGL_FIXED_TO_FLOAT (top + bottom)
-    / COGL_FIXED_TO_FLOAT (2 * z_near);
+  M(0,0) =  (right - left)
+    /  (2 * z_near);
+  M(0,3) =  (right + left)
+    /  (2 * z_near);
+  M(1,1) =  (top - bottom)
+    /  (2 * z_near);
+  M(1,3) =  (top + bottom)
+    /  (2 * z_near);
   M(2,3) = -1.0f;
   M(3,2) = 1.0f / d;
   M(3,3) = c / d;
@@ -738,10 +738,10 @@ cogl_viewport (guint width,
 void
 cogl_setup_viewport (guint        width,
 		     guint        height,
-		     CoglFixed fovy,
-		     CoglFixed aspect,
-		     CoglFixed z_near,
-		     CoglFixed z_far)
+		     float fovy,
+		     float aspect,
+		     float z_near,
+		     float z_far)
 {
   GLfloat z_camera;
 
@@ -769,13 +769,13 @@ cogl_setup_viewport (guint        width,
   z_camera = DEFAULT_Z_CAMERA;
 
 
-  if (fovy != COGL_FIXED_60)
+  if (fovy != 60.0)
   {
-    CoglFixed fovy_rad = COGL_FIXED_MUL (fovy, COGL_FIXED_PI) / 180;
+    float fovy_rad = (fovy * G_PI) / 180;
 
     z_camera =
-      COGL_FIXED_TO_FLOAT (COGL_FIXED_DIV (cogl_fixed_sin (fovy_rad),
-				           cogl_fixed_cos (fovy_rad)) >> 1);
+       ((sinf (fovy_rad) /
+				           cosf (fovy_rad)) >> 1);
   }
 
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
@@ -1164,75 +1164,75 @@ cogl_features_available (CoglFeatureFlags features)
 }
 
 void
-cogl_get_modelview_matrix (CoglFixed m[16])
+cogl_get_modelview_matrix (float m[16])
 {
   GLdouble md[16];
 
   glGetDoublev(GL_MODELVIEW_MATRIX, &md[0]);
 
 #define M(m,row,col)  m[col*4+row]
-  M(m,0,0) = COGL_FIXED_FROM_FLOAT (M(md,0,0));
-  M(m,0,1) = COGL_FIXED_FROM_FLOAT (M(md,0,1));
-  M(m,0,2) = COGL_FIXED_FROM_FLOAT (M(md,0,2));
-  M(m,0,3) = COGL_FIXED_FROM_FLOAT (M(md,0,3));
+  M(m,0,0) =  (M(md,0,0));
+  M(m,0,1) =  (M(md,0,1));
+  M(m,0,2) =  (M(md,0,2));
+  M(m,0,3) =  (M(md,0,3));
 
-  M(m,1,0) = COGL_FIXED_FROM_FLOAT (M(md,1,0));
-  M(m,1,1) = COGL_FIXED_FROM_FLOAT (M(md,1,1));
-  M(m,1,2) = COGL_FIXED_FROM_FLOAT (M(md,1,2));
-  M(m,1,3) = COGL_FIXED_FROM_FLOAT (M(md,1,3));
+  M(m,1,0) =  (M(md,1,0));
+  M(m,1,1) =  (M(md,1,1));
+  M(m,1,2) =  (M(md,1,2));
+  M(m,1,3) =  (M(md,1,3));
 
-  M(m,2,0) = COGL_FIXED_FROM_FLOAT (M(md,2,0));
-  M(m,2,1) = COGL_FIXED_FROM_FLOAT (M(md,2,1));
-  M(m,2,2) = COGL_FIXED_FROM_FLOAT (M(md,2,2));
-  M(m,2,3) = COGL_FIXED_FROM_FLOAT (M(md,2,3));
+  M(m,2,0) =  (M(md,2,0));
+  M(m,2,1) =  (M(md,2,1));
+  M(m,2,2) =  (M(md,2,2));
+  M(m,2,3) =  (M(md,2,3));
 
-  M(m,3,0) = COGL_FIXED_FROM_FLOAT (M(md,3,0));
-  M(m,3,1) = COGL_FIXED_FROM_FLOAT (M(md,3,1));
-  M(m,3,2) = COGL_FIXED_FROM_FLOAT (M(md,3,2));
-  M(m,3,3) = COGL_FIXED_FROM_FLOAT (M(md,3,3));
+  M(m,3,0) =  (M(md,3,0));
+  M(m,3,1) =  (M(md,3,1));
+  M(m,3,2) =  (M(md,3,2));
+  M(m,3,3) =  (M(md,3,3));
 #undef M
 }
 
 void
-cogl_get_projection_matrix (CoglFixed m[16])
+cogl_get_projection_matrix (float m[16])
 {
   GLdouble md[16];
 
   glGetDoublev(GL_PROJECTION_MATRIX, &md[0]);
 
 #define M(m,row,col)  m[col*4+row]
-  M(m,0,0) = COGL_FIXED_FROM_FLOAT (M(md,0,0));
-  M(m,0,1) = COGL_FIXED_FROM_FLOAT (M(md,0,1));
-  M(m,0,2) = COGL_FIXED_FROM_FLOAT (M(md,0,2));
-  M(m,0,3) = COGL_FIXED_FROM_FLOAT (M(md,0,3));
+  M(m,0,0) =  (M(md,0,0));
+  M(m,0,1) =  (M(md,0,1));
+  M(m,0,2) =  (M(md,0,2));
+  M(m,0,3) =  (M(md,0,3));
 
-  M(m,1,0) = COGL_FIXED_FROM_FLOAT (M(md,1,0));
-  M(m,1,1) = COGL_FIXED_FROM_FLOAT (M(md,1,1));
-  M(m,1,2) = COGL_FIXED_FROM_FLOAT (M(md,1,2));
-  M(m,1,3) = COGL_FIXED_FROM_FLOAT (M(md,1,3));
+  M(m,1,0) =  (M(md,1,0));
+  M(m,1,1) =  (M(md,1,1));
+  M(m,1,2) =  (M(md,1,2));
+  M(m,1,3) =  (M(md,1,3));
 
-  M(m,2,0) = COGL_FIXED_FROM_FLOAT (M(md,2,0));
-  M(m,2,1) = COGL_FIXED_FROM_FLOAT (M(md,2,1));
-  M(m,2,2) = COGL_FIXED_FROM_FLOAT (M(md,2,2));
-  M(m,2,3) = COGL_FIXED_FROM_FLOAT (M(md,2,3));
+  M(m,2,0) =  (M(md,2,0));
+  M(m,2,1) =  (M(md,2,1));
+  M(m,2,2) =  (M(md,2,2));
+  M(m,2,3) =  (M(md,2,3));
 
-  M(m,3,0) = COGL_FIXED_FROM_FLOAT (M(md,3,0));
-  M(m,3,1) = COGL_FIXED_FROM_FLOAT (M(md,3,1));
-  M(m,3,2) = COGL_FIXED_FROM_FLOAT (M(md,3,2));
-  M(m,3,3) = COGL_FIXED_FROM_FLOAT (M(md,3,3));
+  M(m,3,0) =  (M(md,3,0));
+  M(m,3,1) =  (M(md,3,1));
+  M(m,3,2) =  (M(md,3,2));
+  M(m,3,3) =  (M(md,3,3));
 #undef M
 }
 
 void
-cogl_get_viewport (CoglFixed v[4])
+cogl_get_viewport (float v[4])
 {
   GLdouble vd[4];
   glGetDoublev(GL_VIEWPORT, &vd[0]);
 
-  v[0] = COGL_FIXED_FROM_FLOAT (vd[0]);
-  v[1] = COGL_FIXED_FROM_FLOAT (vd[1]);
-  v[2] = COGL_FIXED_FROM_FLOAT (vd[2]);
-  v[3] = COGL_FIXED_FROM_FLOAT (vd[3]);
+  v[0] =  (vd[0]);
+  v[1] =  (vd[1]);
+  v[2] =  (vd[2]);
+  v[3] =  (vd[3]);
 }
 
 void
@@ -1263,9 +1263,9 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 
 void
 cogl_fog_set (const CoglColor *fog_color,
-              CoglFixed        density,
-              CoglFixed        start,
-              CoglFixed        stop)
+              float        density,
+              float        start,
+              float        stop)
 {
   GLfloat fogColor[4];
 
@@ -1281,8 +1281,8 @@ cogl_fog_set (const CoglColor *fog_color,
   glFogi (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
-  glFogf (GL_FOG_DENSITY, COGL_FIXED_TO_FLOAT (density));
-  glFogf (GL_FOG_START, COGL_FIXED_TO_FLOAT (start));
-  glFogf (GL_FOG_END, COGL_FIXED_TO_FLOAT (stop));
+  glFogf (GL_FOG_DENSITY,  (density));
+  glFogf (GL_FOG_START,  (start));
+  glFogf (GL_FOG_END,  (stop));
 }
 

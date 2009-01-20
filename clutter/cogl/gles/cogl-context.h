@@ -53,15 +53,15 @@ typedef struct
   gboolean             enable_backface_culling;
   
   /* Primitives */
-  CoglFixedVec2        path_start;
-  CoglFixedVec2        path_pen;
+  floatVec2        path_start;
+  floatVec2        path_pen;
   GArray              *path_nodes;
   guint                last_path;
-  CoglFixedVec2        path_nodes_min;
-  CoglFixedVec2        path_nodes_max;
+  floatVec2        path_nodes_min;
+  floatVec2        path_nodes_max;
   
   /* Cache of inverse projection matrix */
-  CoglFixed            inverse_projection[16];
+  float            inverse_projection[16];
 
   /* Textures */
   GArray              *texture_handles;

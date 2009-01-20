@@ -83,9 +83,9 @@ clutter_behaviour_depth_alpha_notify (ClutterBehaviour *behaviour,
   priv = CLUTTER_BEHAVIOUR_DEPTH (behaviour)->priv;
 
   /* Need to create factor as to avoid borking signedness */
-  factor = COGL_FIXED_FROM_INT (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
+  factor = (float)(alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
   depth  = priv->depth_start
-         + COGL_FIXED_TO_INT (factor * (priv->depth_end - priv->depth_start));
+         +  (factor * (priv->depth_end - priv->depth_start));
 
   CLUTTER_NOTE (BEHAVIOUR, "alpha: %d, depth: %d", alpha_value, depth);
 

@@ -64,12 +64,12 @@ _cogl_rectangle (gint x,
 
 
 void
-_cogl_rectanglex (CoglFixed x,
-                  CoglFixed y,
-                  CoglFixed width,
-                  CoglFixed height)
+_cogl_rectanglex (float x,
+                  float y,
+                  float width,
+                  float height)
 {
-  GLfixed rect_verts[8] = {
+  GLfloat rect_verts[8] = {
     x,         y,
     x + width, y,
     x,         y + height,
@@ -89,8 +89,8 @@ _cogl_rectanglex (CoglFixed x,
 
 void
 _cogl_path_add_node (gboolean new_sub_path,
-                     CoglFixed x,
-		     CoglFixed y)
+                     float x,
+		     float y)
 {
   CoglPathNode new_node;
 
@@ -147,19 +147,19 @@ _cogl_path_stroke_nodes ()
 }
 
 static void
-_cogl_path_get_bounds (CoglFixedVec2 nodes_min,
-                       CoglFixedVec2 nodes_max,
+_cogl_path_get_bounds (floatVec2 nodes_min,
+                       floatVec2 nodes_max,
                        gint *bounds_x,
                        gint *bounds_y,
                        guint *bounds_w,
                        guint *bounds_h)
 {
-  *bounds_x = COGL_FIXED_FLOOR (nodes_min.x);
-  *bounds_y = COGL_FIXED_FLOOR (nodes_min.y);
-  *bounds_w = COGL_FIXED_CEIL (nodes_max.x
-                               - COGL_FIXED_FROM_INT (*bounds_x));
-  *bounds_h = COGL_FIXED_CEIL (nodes_max.y
-                               - COGL_FIXED_FROM_INT (*bounds_y));
+  *bounds_x = floorf (nodes_min.x);
+  *bounds_y = floorf (nodes_min.y);
+  *bounds_w = ceilf (nodes_max.x
+                               - (float)(*bounds_x));
+  *bounds_h = ceilf (nodes_max.y
+                               - (float)(*bounds_y));
 }
 
 static gint compare_ints (gconstpointer a,
@@ -169,8 +169,8 @@ static gint compare_ints (gconstpointer a,
 }
 
 void
-_cogl_add_path_to_stencil_buffer (CoglFixedVec2 nodes_min,
-                                  CoglFixedVec2 nodes_max,
+_cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
+                                  floatVec2 nodes_max,
                                   guint         path_size,
                                   CoglPathNode *path,
                                   gboolean      merge)
@@ -244,12 +244,12 @@ _cogl_add_path_to_stencil_buffer (CoglFixedVec2 nodes_min,
       GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
       GE( cogl_wrap_glPushMatrix () );
       GE( cogl_wrap_glLoadIdentity () );
-      cogl_rectanglex (-COGL_FIXED_1, -COGL_FIXED_1,
-		       COGL_FIXED_FROM_INT (2),
-		       COGL_FIXED_FROM_INT (2));
-      cogl_rectanglex (-COGL_FIXED_1, -COGL_FIXED_1,
-		       COGL_FIXED_FROM_INT (2),
-		       COGL_FIXED_FROM_INT (2));
+      cogl_rectanglex (-1.0, -1.0,
+		       (float)(2),
+		       (float)(2));
+      cogl_rectanglex (-1.0, -1.0,
+		       (float)(2),
+		       (float)(2));
       GE( cogl_wrap_glPopMatrix () );
       GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
       GE( cogl_wrap_glPopMatrix () );
@@ -292,14 +292,14 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
   for (i=0; i < bounds_h; i++) 
     scanlines[i]=NULL;
 
-  first_x = prev_x = COGL_FIXED_TO_INT (path->x);
-  first_y = prev_y = COGL_FIXED_TO_INT (path->y);
+  first_x = prev_x =  (path->x);
+  first_y = prev_y =  (path->y);
 
   /* create scanline intersection list */
   for (i=1; i < path_size; i++)
     {
-      gint dest_x = COGL_FIXED_TO_INT (path[i].x);
-      gint dest_y = COGL_FIXED_TO_INT (path[i].y);
+      gint dest_x =  (path[i].x);
+      gint dest_y =  (path[i].y);
       gint ydir;
       gint dx;
       gint dy;
@@ -362,7 +362,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
   {
     gint spans = 0;
     gint span_no;
-    GLfixed *coords;
+    GLfloat *coords;
 
     /* count number of spans */
     for (i=0; i < bounds_h; i++)
@@ -380,7 +380,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
             iter = next->next;
           }
       }
-    coords = g_malloc0 (spans * sizeof (GLfixed) * 3 * 2 * 2);
+    coords = g_malloc0 (spans * sizeof (GLfloat) * 3 * 2 * 2);
 
     span_no = 0;
     /* build list of triangles */
@@ -390,15 +390,15 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
         while (iter)
           {
             GSList *next = iter->next;
-            GLfixed x0, x1;
-            GLfixed y0, y1;
+            GLfloat x0, x1;
+            GLfloat y0, y1;
             if (!next)
               break;
 
-            x0 = COGL_FIXED_FROM_INT (GPOINTER_TO_INT (iter->data));
-            x1 = COGL_FIXED_FROM_INT (GPOINTER_TO_INT (next->data));
-            y0 = COGL_FIXED_FROM_INT (bounds_y + i);
-            y1 = COGL_FIXED_FROM_INT (bounds_y + i + 1) + 2048;
+            x0 = (float)(GPOINTER_TO_INT (iter->data));
+            x1 = (float)(GPOINTER_TO_INT (next->data));
+            y0 = (float)(bounds_y + i);
+            y1 = (float)(bounds_y + i + 1) + 2048;
             /* render scanlines 1.0625 high to avoid gaps when
                transformed */
 

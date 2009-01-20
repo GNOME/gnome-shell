@@ -74,10 +74,10 @@ void            cogl_rectangle                (gint                x,
  *
  * A fixed-point version of cogl_fast_fill_rectangle.
  **/
-void            cogl_rectanglex               (CoglFixed        x,
-                                               CoglFixed        y,
-                                               CoglFixed        width,
-                                               CoglFixed        height);
+void            cogl_rectanglex               (float        x,
+                                               float        y,
+                                               float        width,
+                                               float        height);
 
 /**
  * cogl_path_fill:
@@ -136,8 +136,8 @@ void            cogl_path_new                 (void);
  * Moves the pen to the given location. If there is an existing path
  * this will start a new disjoint subpath.
   **/
-void            cogl_path_move_to        (CoglFixed        x,
-                                          CoglFixed        y);
+void            cogl_path_move_to        (float        x,
+                                          float        y);
 
 
 /**
@@ -149,8 +149,8 @@ void            cogl_path_move_to        (CoglFixed        x,
  * location. If there is an existing path this will start a new
  * disjoint subpath.
  **/
-void            cogl_path_rel_move_to    (CoglFixed        x,
-                                          CoglFixed        y);
+void            cogl_path_rel_move_to    (float        x,
+                                          float        y);
 
 /**
  * cogl_path_line_to:
@@ -160,8 +160,8 @@ void            cogl_path_rel_move_to    (CoglFixed        x,
  * Adds a straight line segment to the current path that ends at the
  * given coordinates.
  **/
-void            cogl_path_line_to        (CoglFixed        x,
-                                          CoglFixed        y);
+void            cogl_path_line_to        (float        x,
+                                          float        y);
 
 /**
  * cogl_path_rel_line_to:
@@ -171,8 +171,8 @@ void            cogl_path_line_to        (CoglFixed        x,
  * Adds a straight line segment to the current path that ends at the
  * given coordinates relative to the current pen location.
  **/
-void            cogl_path_rel_line_to    (CoglFixed        x,
-                                          CoglFixed        y);
+void            cogl_path_rel_line_to    (float        x,
+                                          float        y);
 
 
 /**
@@ -189,12 +189,12 @@ void            cogl_path_rel_line_to    (CoglFixed        x,
  * of the arc. If you perform a move_to to the arcs start just before
  * drawing it you create a free standing arc.
  **/
-void            cogl_path_arc                 (CoglFixed        center_x,
-                                               CoglFixed        center_y,
-                                               CoglFixed        radius_x,
-                                               CoglFixed        radius_y,
-                                               CoglAngle        angle_1,
-                                               CoglAngle        angle_2);
+void            cogl_path_arc                 (float        center_x,
+                                               float        center_y,
+                                               float        radius_x,
+                                               float        radius_y,
+                                               float        angle_1,
+                                               float        angle_2);
 
 
 
@@ -211,12 +211,12 @@ void            cogl_path_arc                 (CoglFixed        center_x,
  * second, third and fourth control points and using current pen location
  * as the first control point.
  **/
-void            cogl_path_curve_to            (CoglFixed        x1,
-                                               CoglFixed        y1,
-                                               CoglFixed        x2,
-                                               CoglFixed        y2,
-                                               CoglFixed        x3,
-                                               CoglFixed        y3);
+void            cogl_path_curve_to            (float        x1,
+                                               float        y1,
+                                               float        x2,
+                                               float        y2,
+                                               float        x3,
+                                               float        y3);
 
 /**
  * cogl_path_rel_curve_to:
@@ -232,12 +232,12 @@ void            cogl_path_curve_to            (CoglFixed        x1,
  * as the first control point. The given coordinates are relative to the
  * current pen location.
  */
-void            cogl_path_rel_curve_to        (CoglFixed        x1,
-                                               CoglFixed        y1,
-                                               CoglFixed        x2,
-                                               CoglFixed        y2,
-                                               CoglFixed        x3,
-                                               CoglFixed        y3);
+void            cogl_path_rel_curve_to        (float        x1,
+                                               float        y1,
+                                               float        x2,
+                                               float        y2,
+                                               float        x3,
+                                               float        y3);
 
 /**
  * cogl_path_close:
@@ -258,10 +258,10 @@ void            cogl_path_close               (void);
  * coordinates. If there is an existing path this will start a new
  * disjoint sub-path.
  **/
-void            cogl_path_line                (CoglFixed        x1,
-                                               CoglFixed        y1,
-                                               CoglFixed        x2,
-                                               CoglFixed        y2);
+void            cogl_path_line                (float        x1,
+                                               float        y1,
+                                               float        x2,
+                                               float        y2);
 
 /**
  * cogl_path_polyline:
@@ -281,7 +281,7 @@ void            cogl_path_line                (CoglFixed        x1,
  * fashion for the rest of the vertices. (num_points - 1) segments will
  * be constructed.
  **/
-void            cogl_path_polyline            (CoglFixed       *coords,
+void            cogl_path_polyline            (float       *coords,
                                                gint             num_points);
 
 
@@ -299,7 +299,7 @@ void            cogl_path_polyline            (CoglFixed       *coords,
  * represents the Y coordinate of the first vertex, continuing in the same
  * fashion for the rest of the vertices.
  **/
-void            cogl_path_polygon             (CoglFixed       *coords,
+void            cogl_path_polygon             (float       *coords,
                                                gint             num_points);
 
 
@@ -313,10 +313,10 @@ void            cogl_path_polygon             (CoglFixed       *coords,
  * Constructs a rectangular shape at the given coordinates. If there
  * is an existing path this will start a new disjoint sub-path.
  **/
-void            cogl_path_rectangle           (CoglFixed        x,
-                                               CoglFixed        y,
-                                               CoglFixed        width,
-                                               CoglFixed        height);
+void            cogl_path_rectangle           (float        x,
+                                               float        y,
+                                               float        width,
+                                               float        height);
 
 /**
  * cogl_path_ellipse:
@@ -328,10 +328,10 @@ void            cogl_path_rectangle           (CoglFixed        x,
  * Constructs an ellipse shape. If there is an existing path this will
  * start a new disjoint sub-path.
  **/
-void            cogl_path_ellipse             (CoglFixed        center_x,
-                                               CoglFixed        center_y,
-                                               CoglFixed        radius_x,
-                                               CoglFixed        radius_y);
+void            cogl_path_ellipse             (float        center_x,
+                                               float        center_y,
+                                               float        radius_x,
+                                               float        radius_y);
 
 /**
  * cogl_path_round_rectangle:
@@ -346,12 +346,12 @@ void            cogl_path_ellipse             (CoglFixed        center_x,
  * Constructs a rectangular shape with rounded corners. If there is an
  * existing path this will start a new disjoint sub-path.
   **/
-void            cogl_path_round_rectangle     (CoglFixed        x,
-                                               CoglFixed        y,
-                                               CoglFixed        width,
-                                               CoglFixed        height,
-                                               CoglFixed        radius,
-                                               CoglAngle        arc_step);
+void            cogl_path_round_rectangle     (float        x,
+                                               float        y,
+                                               float        width,
+                                               float        height,
+                                               float        radius,
+                                               float        arc_step);
 
 G_END_DECLS
 

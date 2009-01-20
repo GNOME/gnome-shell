@@ -26,15 +26,15 @@
 #ifndef __COGL_PRIMITIVES_H
 #define __COGL_PRIMITIVES_H
 
-typedef struct _CoglFixedVec2    CoglFixedVec2;
+typedef struct _floatVec2    floatVec2;
 typedef struct _CoglBezQuad      CoglBezQuad;
 typedef struct _CoglBezCubic     CoglBezCubic;
 typedef struct _CoglPathNode     CoglPathNode;
 
-struct _CoglFixedVec2
+struct _floatVec2
 {
-  CoglFixed x;
-  CoglFixed y;
+  float x;
+  float y;
 };
 
 #ifdef CLUTTER_COGL_HAS_GL
@@ -67,17 +67,17 @@ struct _CoglPathNode
 
 struct _CoglBezQuad
 {
-  CoglFixedVec2 p1;
-  CoglFixedVec2 p2;
-  CoglFixedVec2 p3;
+  floatVec2 p1;
+  floatVec2 p2;
+  floatVec2 p3;
 };
 
 struct _CoglBezCubic
 {
-  CoglFixedVec2 p1;
-  CoglFixedVec2 p2;
-  CoglFixedVec2 p3;
-  CoglFixedVec2 p4;
+  floatVec2 p1;
+  floatVec2 p2;
+  floatVec2 p3;
+  floatVec2 p4;
 };
 
 #endif /* __COGL_PRIMITIVES_H */

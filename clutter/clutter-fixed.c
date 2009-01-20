@@ -130,42 +130,42 @@ static void
 clutter_value_transform_fixed_int (const GValue *src,
                                    GValue       *dest)
 {
-  dest->data[0].v_int = COGL_FIXED_TO_INT (src->data[0].v_int);
+  dest->data[0].v_int =  (src->data[0].v_int);
 }
 
 static void
 clutter_value_transform_fixed_double (const GValue *src,
                                       GValue       *dest)
 {
-  dest->data[0].v_double = COGL_FIXED_TO_DOUBLE (src->data[0].v_int);
+  dest->data[0].v_double = CLUTTER_FIXED_TO_DOUBLE (src->data[0].v_int);
 }
 
 static void
 clutter_value_transform_fixed_float (const GValue *src,
                                      GValue       *dest)
 {
-  dest->data[0].v_float = COGL_FIXED_TO_FLOAT (src->data[0].v_int);
+  dest->data[0].v_float = CLUTTER_FIXED_TO_FLOAT (src->data[0].v_int);
 }
 
 static void
 clutter_value_transform_int_fixed (const GValue *src,
                                    GValue       *dest)
 {
-  dest->data[0].v_int = COGL_FIXED_FROM_INT (src->data[0].v_int);
+  dest->data[0].v_int = (float)(src->data[0].v_int);
 }
 
 static void
 clutter_value_transform_double_fixed (const GValue *src,
                                       GValue       *dest)
 {
-  dest->data[0].v_int = COGL_FIXED_FROM_FLOAT (src->data[0].v_double);
+  dest->data[0].v_int = CLUTTER_FLOAT_TO_FIXED (src->data[0].v_double);
 }
 
 static void
 clutter_value_transform_float_fixed (const GValue *src,
                                      GValue       *dest)
 {
-  dest->data[0].v_int = COGL_FIXED_FROM_FLOAT (src->data[0].v_float);
+  dest->data[0].v_int = CLUTTER_FLOAT_TO_FIXED (src->data[0].v_float);
 }
 
 
@@ -268,7 +268,7 @@ param_fixed_validate (GParamSpec *pspec,
                       GValue     *value)
 {
   ClutterParamSpecFixed *fspec = CLUTTER_PARAM_SPEC_FIXED (pspec);
-  gint oval = COGL_FIXED_TO_INT (value->data[0].v_int);
+  gint oval =  (value->data[0].v_int);
   gint min, max, val;
 
   g_assert (CLUTTER_IS_PARAM_SPEC_FIXED (pspec));
@@ -279,7 +279,7 @@ param_fixed_validate (GParamSpec *pspec,
 
   min = fspec->minimum;
   max = fspec->maximum;
-  val = COGL_FIXED_TO_INT (value->data[0].v_int);
+  val =  (value->data[0].v_int);
 
   val = CLAMP (val, min, max);
   if (val != oval)
