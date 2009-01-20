@@ -58,7 +58,7 @@ cogl_color_set_from_4d (CoglColor *dest,
 }
 
 void
-cogl_color_set_from_4x (CoglColor *dest,
+cogl_color_set_from_4f (CoglColor *dest,
                         float  red,
                         float  green,
                         float  blue,
@@ -157,13 +157,13 @@ cogl_set_source_color4ub (guint8 red,
 }
 
 void
-cogl_set_source_color4x (float red,
+cogl_set_source_color4f (float red,
                          float green,
                          float blue,
                          float alpha)
 {
   CoglColor c = { 0, };
 
-  cogl_color_set_from_4x (&c, red, green, blue, alpha);
+  cogl_color_set_from_4f (&c, red, green, blue, alpha);
   cogl_set_source_color (&c);
 }

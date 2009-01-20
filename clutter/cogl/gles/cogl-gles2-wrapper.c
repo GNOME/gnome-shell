@@ -515,15 +515,6 @@ cogl_gles2_wrapper_update_matrix (CoglGles2Wrapper *wrapper, GLenum matrix_num)
 }
 
 void
-cogl_wrap_glClearColorx (GLclampx r, GLclampx g, GLclampx b, GLclampx a)
-{
-  glClearColor ( (r),
-		 (g),
-		 (b),
-		 (a));
-}
-
-void
 cogl_wrap_glPushMatrix ()
 {
   const float *src;
@@ -1143,28 +1134,15 @@ cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref)
 }
 
 void
-cogl_wrap_glColor4f (GLclampx r, GLclampx g, GLclampx b, GLclampx a)
+cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a)
 {
-  glVertexAttrib4f (COGL_GLES2_WRAPPER_COLOR_ATTRIB,
-		     (r),
-		     (g),
-		     (b),
-		     (a));
+  glVertexAttrib4f (COGL_GLES2_WRAPPER_COLOR_ATTRIB, r, g, b, a);
 }
 
 void
 cogl_wrap_glClipPlanef (GLenum plane, GLfloat *equation)
 {
   /* FIXME */
-}
-
-static void
-cogl_gles2_float_array_to_fixed (int            size,
-                                 const GLfloat *floats,
-				 GLfloat       *fixeds)
-{
-  while (size-- > 0)
-    *(fixeds++) =  (*(floats++));
 }
 
 void
@@ -1185,31 +1163,24 @@ cogl_wrap_glGetIntegerv (GLenum pname, GLint *params)
 }
 
 void
-cogl_wrap_glGetFixedv (GLenum pname, GLfloat *params)
+cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params)
 {
   _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
 
   switch (pname)
     {
     case GL_MODELVIEW_MATRIX:
-      cogl_gles2_float_array_to_fixed (16, w->modelview_stack
-				       + w->modelview_stack_pos * 16,
-				       params);
+      memcpy (params, w->modelview_stack + w->modelview_stack_pos * 16,
+              sizeof (GLfloat) * 16);
       break;
 
     case GL_PROJECTION_MATRIX:
-      cogl_gles2_float_array_to_fixed (16, w->projection_stack
-				       + w->projection_stack_pos * 16,
-				       params);
+      memcpy (params, w->projection_stack + w->projection_stack_pos * 16,
+              sizeof (GLfloat) * 16);
       break;
 
     case GL_VIEWPORT:
-      {
-	GLfloat v[4];
-
-	glGetFloatv (GL_VIEWPORT, v);
-	cogl_gles2_float_array_to_fixed (4, v, params);
-      }
+      glGetFloatv (GL_VIEWPORT, params);
       break;
     }
 }

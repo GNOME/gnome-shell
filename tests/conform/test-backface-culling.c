@@ -121,7 +121,7 @@ on_paint (ClutterActor *actor, TestState *state)
 
       /* Set the color to white so that all the textures will be drawn
          at their own color */
-      cogl_set_source_color4x (1.0, 1.0,
+      cogl_set_source_color4f (1.0, 1.0,
                                1.0, 1.0);
 
       x2 = x1 + (float)(TEXTURE_SIZE);
@@ -173,7 +173,7 @@ on_paint (ClutterActor *actor, TestState *state)
       x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a regular rectangle (this should always show) */
-      cogl_set_source_color4x (1.0, 0, 0, 1.0);
+      cogl_set_source_color4f (1.0, 0, 0, 1.0);
       cogl_rectangle ( (x1),  (y1),
                        (x2 - x1),  (y2 - y1));
 

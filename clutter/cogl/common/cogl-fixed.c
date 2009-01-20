@@ -482,6 +482,12 @@ cogl_angle_sin (CoglAngle angle)
 }
 
 CoglFixed
+cogl_fixed_tan (CoglFixed angle)
+{
+  return cogl_angle_tan (COGL_ANGLE_FROM_DEGX (angle));
+}
+
+CoglFixed
 cogl_angle_tan (CoglAngle angle)
 {
   int sign = 1;

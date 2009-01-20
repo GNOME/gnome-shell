@@ -102,8 +102,6 @@ cogl_pango_renderer_draw_glyph (CoglPangoRenderer        *priv,
   *(p++) = cache_value->tx2; *(p++) = cache_value->ty2;
 }
 
-#define COGL_PANGO_UNIT_TO_FIXED(x) ((x) << (COGL_FIXED_Q - 10))
-
 static void cogl_pango_renderer_finalize (GObject *object);
 static void cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
                                              PangoFont        *font,
@@ -439,8 +437,8 @@ cogl_pango_renderer_get_device_units (PangoRenderer *renderer,
     }
   else
     {
-      *xout = COGL_PANGO_UNIT_TO_FIXED (xin);
-      *yout = COGL_PANGO_UNIT_TO_FIXED (yin);
+      *xout = PANGO_PIXELS (xin);
+      *yout = PANGO_PIXELS (yin);
     }
 }
 
@@ -463,7 +461,7 @@ cogl_pango_renderer_draw_rectangle (PangoRenderer   *renderer,
                                         x + width, y + height,
                                         &x2, &y2);
 
-  cogl_rectanglex (x1, y1, x2 - x1, y2 - y1);
+  cogl_rectangle (x1, y1, x2 - x1, y2 - y1);
 }
 
 static void

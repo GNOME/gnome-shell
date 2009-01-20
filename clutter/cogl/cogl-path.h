@@ -60,24 +60,10 @@ G_BEGIN_DECLS
  * Fills a rectangle at the given coordinates with the current
  * drawing color in a highly optimizied fashion.
  **/
-void            cogl_rectangle                (gint                x,
-                                               gint                y,
-                                               guint               width,
-                                               guint               height);
-
-/**
- * cogl_rectanglex:
- * @x: X coordinate of the top-left corner
- * @y: Y coordinate of the top-left corner
- * @width: Width of the rectangle
- * @height: Height of the rectangle
- *
- * A fixed-point version of cogl_fast_fill_rectangle.
- **/
-void            cogl_rectanglex               (float        x,
-                                               float        y,
-                                               float        width,
-                                               float        height);
+void            cogl_rectangle                (float               x,
+                                               float               y,
+                                               float               width,
+                                               float               height);
 
 /**
  * cogl_path_fill:

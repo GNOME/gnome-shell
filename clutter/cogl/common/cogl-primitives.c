@@ -33,6 +33,7 @@
 
 #include <string.h>
 #include <gmodule.h>
+#include <math.h>
 
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
@@ -42,36 +43,20 @@ void _cogl_path_add_node    (gboolean new_sub_path,
                              float y);
 void _cogl_path_fill_nodes    ();
 void _cogl_path_stroke_nodes  ();
-void _cogl_rectangle (gint x,
-                      gint y,
-                      guint width,
-                      guint height);
-void _cogl_rectanglex (float x,
-                       float y,
-                       float width,
-                       float height);
+void _cogl_rectangle (float x,
+                      float y,
+                      float width,
+                      float height);
 void
-cogl_rectangle (gint x,
-                gint y,
-                guint width,
-                guint height)
+cogl_rectangle (float x,
+                float y,
+                float width,
+                float height)
 {
   cogl_clip_ensure ();
 
   _cogl_rectangle (x, y, width, height);
 }
-
-void
-cogl_rectanglex (float x,
-                 float y,
-                 float width,
-                 float height)
-{
-  cogl_clip_ensure ();
-
-  _cogl_rectanglex (x, y, width, height);
-}
-
 
 void
 cogl_path_fill (void)

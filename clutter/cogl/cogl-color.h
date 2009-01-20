@@ -68,7 +68,7 @@ void cogl_color_set_from_4d  (CoglColor *dest,
                               gdouble alpha);
 
 /**
- * cogl_color_set_from_4x:
+ * cogl_color_set_from_4f:
  * @dest: return location for a #CoglColor
  * @red: value of the red channel, between 0 and %1.0
  * @green: value of the green channel, between 0 and %1.0
@@ -79,7 +79,7 @@ void cogl_color_set_from_4d  (CoglColor *dest,
  *
  * Since: 1.0
  */
-void cogl_color_set_from_4x (CoglColor *dest,
+void cogl_color_set_from_4f (CoglColor *dest,
                              float  red,
                              float  green,
                              float  blue,
@@ -248,7 +248,7 @@ float     cogl_color_get_alpha       (const CoglColor *color);
  * Sets the source color using normalized values for each component.
  * This color will be used for any subsequent drawing operation.
  *
- * See also cogl_set_source_color4ub() and cogl_set_source_color4x()
+ * See also cogl_set_source_color4ub() and cogl_set_source_color4f()
  * if you already have the color components.
  *
  * Since: 1.0
@@ -276,7 +276,7 @@ void cogl_set_source_color4ub (guint8 red,
                                guint8 alpha);
 
 /**
- * cogl_set_source_color4x:
+ * cogl_set_source_color4f:
  * @red: value of the red channel, between 0 and %1.0
  * @green: value of the green channel, between 0 and %1.0
  * @blue: value of the blue channel, between 0 and %1.0
@@ -291,7 +291,7 @@ void cogl_set_source_color4ub (guint8 red,
  *
  * Since: 1.0
  */
-void cogl_set_source_color4x (float red,
+void cogl_set_source_color4f (float red,
                               float green,
                               float blue,
                               float alpha);

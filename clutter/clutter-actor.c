@@ -806,7 +806,7 @@ static inline void
 mtx_transform (const ClutterFixed  m[],
                fixed_vertex_t     *vertex)
 {
-  ClutterFixed _x, _y, _z, _w;
+  float _x, _y, _z, _w;
 
   _x = vertex->x;
   _y = vertex->y;
@@ -846,8 +846,11 @@ mtx_transform (const ClutterFixed  m[],
 /* Help macros to scale from OpenGL <-1,1> coordinates system to our
  * X-window based <0,window-size> coordinates
  */
-#define MTX_GL_SCALE_X(x,w,v1,v2) (CLUTTER_FIXED_MUL (((CLUTTER_FIXED_DIV ((x), (w)) + 1.0) >> 1), (v1)) + (v2))
-#define MTX_GL_SCALE_Y(y,w,v1,v2) ((v1) - CLUTTER_FIXED_MUL (((CLUTTER_FIXED_DIV ((y), (w)) + 1.0) >> 1), (v1)) + (v2))
+#define MTX_GL_SCALE_X(x,w,v1,v2) \
+  (CLUTTER_FIXED_MUL (((CLUTTER_FIXED_DIV ((x), (w)) + 1.0) / 2), (v1)) + (v2))
+#define MTX_GL_SCALE_Y(y,w,v1,v2) \
+  ((v1) - CLUTTER_FIXED_MUL (((CLUTTER_FIXED_DIV ((y), (w)) + 1.0) / 2), \
+                             (v1)) + (v2))
 #define MTX_GL_SCALE_Z(z,w,v1,v2) (MTX_GL_SCALE_X ((z), (w), (v1), (v2)))
 
 /* transforms a 4-tuple of coordinates using @matrix and
@@ -1345,8 +1348,8 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
   gboolean             is_stage = CLUTTER_IS_STAGE (self);
 
   if (!is_stage)
-    cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->allocation.x1),
-		     CLUTTER_UNITS_TO_FIXED (priv->allocation.y1),
+    cogl_translate (CLUTTER_UNITS_TO_FLOAT (priv->allocation.x1),
+		     CLUTTER_UNITS_TO_FLOAT (priv->allocation.y1),
 		     0);
 
   /*
@@ -1360,50 +1363,50 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
 
    if (priv->rzang)
     {
-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->rzx),
-		       CLUTTER_UNITS_TO_FIXED (priv->rzy),
+      cogl_translate (CLUTTER_UNITS_TO_FLOAT (priv->rzx),
+		       CLUTTER_UNITS_TO_FLOAT (priv->rzy),
 		       0);
 
-      cogl_rotatex (priv->rzang, 0, 0, 1.0);
+      cogl_rotate (priv->rzang, 0, 0, 1.0);
 
-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->rzx),
-		       CLUTTER_UNITS_TO_FIXED (-priv->rzy),
+      cogl_translate (CLUTTER_UNITS_TO_FLOAT (-priv->rzx),
+		       CLUTTER_UNITS_TO_FLOAT (-priv->rzy),
 		       0);
     }
 
   if (priv->ryang)
     {
-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (priv->ryx),
+      cogl_translate (CLUTTER_UNITS_TO_FLOAT (priv->ryx),
 		       0,
-		       CLUTTER_UNITS_TO_FIXED (priv->z + priv->ryz));
+		       CLUTTER_UNITS_TO_FLOAT (priv->z + priv->ryz));
 
-      cogl_rotatex (priv->ryang, 0, 1.0, 0);
+      cogl_rotate (priv->ryang, 0, 1.0, 0);
 
-      cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->ryx),
+      cogl_translate (CLUTTER_UNITS_TO_FLOAT (-priv->ryx),
 		       0,
-		       CLUTTER_UNITS_TO_FIXED (-(priv->z + priv->ryz)));
+		       CLUTTER_UNITS_TO_FLOAT (-(priv->z + priv->ryz)));
     }
 
   if (priv->rxang)
     {
-      cogl_translatex (0,
-		       CLUTTER_UNITS_TO_FIXED (priv->rxy),
-		       CLUTTER_UNITS_TO_FIXED (priv->z + priv->rxz));
+      cogl_translate (0,
+		       CLUTTER_UNITS_TO_FLOAT (priv->rxy),
+		       CLUTTER_UNITS_TO_FLOAT (priv->z + priv->rxz));
 
-      cogl_rotatex (priv->rxang, 1.0, 0, 0);
+      cogl_rotate (priv->rxang, 1.0, 0, 0);
 
-      cogl_translatex (0,
-		       CLUTTER_UNITS_TO_FIXED (-priv->rxy),
-		       CLUTTER_UNITS_TO_FIXED (-(priv->z + priv->rxz)));
+      cogl_translate (0,
+		       CLUTTER_UNITS_TO_FLOAT (-priv->rxy),
+		       CLUTTER_UNITS_TO_FLOAT (-(priv->z + priv->rxz)));
     }
 
   if (!is_stage && (priv->anchor_x || priv->anchor_y))
-    cogl_translatex (CLUTTER_UNITS_TO_FIXED (-priv->anchor_x),
-		     CLUTTER_UNITS_TO_FIXED (-priv->anchor_y),
+    cogl_translate (CLUTTER_UNITS_TO_FLOAT (-priv->anchor_x),
+		     CLUTTER_UNITS_TO_FLOAT (-priv->anchor_y),
 		     0);
 
   if (priv->z)
-    cogl_translatex (0, 0, priv->z);
+    cogl_translate (0, 0, priv->z);
 }
 
 /* Recursively applies the transforms associated with this actor and
