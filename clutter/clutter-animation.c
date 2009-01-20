@@ -664,7 +664,7 @@ on_alpha_notify (GObject          *gobject,
 {
   ClutterAnimationPrivate *priv = animation->priv;
   GList *properties, *p;
-  guint32 alpha_value;
+  gdouble alpha_value;
   gboolean is_animatable = FALSE;
   ClutterAnimatable *animatable = NULL;
 
@@ -683,15 +683,12 @@ on_alpha_notify (GObject          *gobject,
     {
       const gchar *p_name = p->data;
       ClutterInterval *interval;
-      gdouble factor;
       GValue value = { 0, };
 
       interval = g_hash_table_lookup (priv->properties, p_name);
       g_assert (CLUTTER_IS_INTERVAL (interval));
 
       g_value_init (&value, clutter_interval_get_value_type (interval));
-
-      factor = (gdouble) alpha_value / CLUTTER_ALPHA_MAX_ALPHA;
 
       if (is_animatable)
         {
@@ -704,7 +701,7 @@ on_alpha_notify (GObject          *gobject,
           clutter_animatable_animate_property (animatable, animation,
                                                p_name,
                                                initial, final,
-                                               factor,
+                                               alpha_value,
                                                &value);
 
           g_object_set_property (priv->object, p_name, &value);
@@ -713,7 +710,7 @@ on_alpha_notify (GObject          *gobject,
         {
           CLUTTER_NOTE (ANIMATION, "Standard property `%s'", p_name);
 
-          if (clutter_interval_compute_value (interval, factor, &value))
+          if (clutter_interval_compute_value (interval, alpha_value, &value))
             g_object_set_property (priv->object, p_name, &value);
         }
 

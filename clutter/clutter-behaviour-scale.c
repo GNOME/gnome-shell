@@ -90,7 +90,7 @@ scale_frame_foreach (ClutterBehaviour *behaviour,
 
 static void
 clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
-                                      guint32           alpha_value)
+                                      gdouble           alpha_value)
 {
   ClutterBehaviourScalePrivate *priv;
   ClutterFixed scale_x, scale_y;
@@ -101,7 +101,7 @@ clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
   /* Fix the start/end values, avoids potential rounding errors on large
    * values. 
   */
-  if (alpha_value == CLUTTER_ALPHA_MAX_ALPHA)
+  if (alpha_value == 1.0)
     {
       scale_x = priv->x_scale_end;
       scale_y = priv->y_scale_end;
@@ -115,7 +115,7 @@ clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
     {
       ClutterFixed factor;
 
-      factor = COGL_FIXED_FROM_INT (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
+      factor = COGL_FIXED_FROM_FLOAT (alpha_value);
 
       scale_x =
         COGL_FIXED_FAST_MUL (factor, (priv->x_scale_end - priv->x_scale_start));

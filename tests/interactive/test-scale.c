@@ -36,6 +36,15 @@ set_next_gravity (ClutterActor *actor)
     gindex = 0;
 }
 
+static gdouble
+my_ramp_func (ClutterAlpha *alpha,
+              gpointer      unused)
+{
+  ClutterTimeline *timeline = clutter_alpha_get_timeline (alpha);
+
+  return clutter_timeline_get_progress (timeline);
+}
+
 G_MODULE_EXPORT int
 test_scale_main (int argc, char *argv[])
 {
@@ -79,7 +88,7 @@ test_scale_main (int argc, char *argv[])
 
   timeline = clutter_timeline_new_for_duration (750);
   alpha    = clutter_alpha_new_with_func (timeline,
-				          clutter_ramp_func,
+				          my_ramp_func,
 				          NULL, NULL);
 
   behave = clutter_behaviour_scale_new (alpha,

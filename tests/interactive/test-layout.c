@@ -765,7 +765,7 @@ test_layout_main (int argc, char *argv[])
                     G_CALLBACK (relayout_on_frame),
                     NULL);
 
-  alpha = clutter_alpha_new_full (main_timeline, CLUTTER_SINE_IN_OUT);
+  alpha = clutter_alpha_new_full (main_timeline, CLUTTER_LINEAR);
   behaviour = clutter_behaviour_scale_new (alpha, 1.0, 1.0, 2.0, 2.0);
 
   box = my_thing_new (10, 10);

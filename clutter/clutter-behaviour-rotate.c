@@ -117,7 +117,7 @@ ClutterFixed clamp_angle (ClutterFixed a)
 
 static void
 clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
-                                       guint32           alpha_value)
+                                       gdouble           alpha_value)
 {
   ClutterFixed factor, angle, start, end;
   ClutterBehaviourRotate *rotate_behaviour;
@@ -126,7 +126,7 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
   rotate_behaviour = CLUTTER_BEHAVIOUR_ROTATE (behaviour);
   priv = rotate_behaviour->priv;
 
-  factor = COGL_FIXED_FROM_INT (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
+  factor = COGL_FIXED_FROM_FLOAT (alpha_value);
   angle = 0;
 
   start = priv->angle_start;

@@ -74,7 +74,7 @@ alpha_notify_foreach (ClutterBehaviour *behaviour,
 
 static void
 clutter_behaviour_depth_alpha_notify (ClutterBehaviour *behaviour,
-                                      guint32           alpha_value)
+                                      gdouble           alpha_value)
 {
   ClutterFixed factor;
   ClutterBehaviourDepthPrivate *priv;
@@ -83,11 +83,11 @@ clutter_behaviour_depth_alpha_notify (ClutterBehaviour *behaviour,
   priv = CLUTTER_BEHAVIOUR_DEPTH (behaviour)->priv;
 
   /* Need to create factor as to avoid borking signedness */
-  factor = COGL_FIXED_FROM_INT (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
+  factor = COGL_FIXED_FROM_FLOAT (alpha_value);
   depth  = priv->depth_start
          + COGL_FIXED_TO_INT (factor * (priv->depth_end - priv->depth_start));
 
-  CLUTTER_NOTE (BEHAVIOUR, "alpha: %d, depth: %d", alpha_value, depth);
+  CLUTTER_NOTE (BEHAVIOUR, "alpha: %.4f, depth: %d", alpha_value, depth);
 
   clutter_behaviour_actors_foreach (behaviour,
                                     alpha_notify_foreach,

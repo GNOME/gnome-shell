@@ -240,7 +240,7 @@ clutter_behaviour_get_property (GObject    *object,
 
 static void
 clutter_behaviour_alpha_notify_unimplemented (ClutterBehaviour *behaviour,
-                                              guint32           alpha_value)
+                                              gdouble           alpha_value)
 {
   g_warning ("ClutterBehaviourClass::alpha_notify not implemented for `%s'",
              g_type_name (G_TYPE_FROM_INSTANCE (behaviour)));
@@ -533,11 +533,9 @@ notify_cb (GObject          *object,
 
   if (klass->alpha_notify)
     {
-      guint32 alpha_value;
+      gdouble alpha_value = clutter_alpha_get_alpha (behave->priv->alpha);
 
-      alpha_value = clutter_alpha_get_alpha (behave->priv->alpha);
-
-      CLUTTER_NOTE (BEHAVIOUR, "calling %s::alpha_notify (%p, %d)",
+      CLUTTER_NOTE (BEHAVIOUR, "calling %s::alpha_notify (%p, %.4f)",
                     g_type_name (G_TYPE_FROM_CLASS (klass)),
                     behave, alpha_value);
 

@@ -205,7 +205,7 @@ clamp_angle (ClutterAngle a)
 
 static void
 clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
-                                        guint32           alpha)
+                                        gdouble           alpha)
 {
   ClutterBehaviourEllipse *self = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
   ClutterBehaviourEllipsePrivate *priv = self->priv;
@@ -225,7 +225,7 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
       end -= 1024;
     }
 
-  angle = (end - start) * alpha / CLUTTER_ALPHA_MAX_ALPHA + start;
+  angle = (end - start) * alpha + start;
 
   clutter_behaviour_ellipse_advance (self, angle, &knot);
 

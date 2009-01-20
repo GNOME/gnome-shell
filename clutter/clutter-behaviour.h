@@ -113,7 +113,7 @@ struct _ClutterBehaviourClass
   /*< public >*/
   /* vfunc, not signal */
   void (*alpha_notify) (ClutterBehaviour *behave,
-                        guint32           alpha_value);
+                        gdouble           alpha_value);
 
   /* signals */
   void (*applied)  (ClutterBehaviour *behave,
