@@ -262,7 +262,8 @@ Workspace.prototype = {
             let newY = this.gridY + (this._windows[i].y - this._desktop.y) * rescale;
             let newWindowScale = this._windows[i].scale_x * rescale;
 
-            Tweener.addTween(this._windows[i],
+            let window = this._windows[i];
+            Tweener.addTween(window,
                              { x: newX,
                                y: newY,
                                scale_x: newWindowScale,
@@ -270,7 +271,7 @@ Workspace.prototype = {
                                time: Overlay.ANIMATION_TIME,
                                transition: "easeOutQuad",
                                onComplete: function () {
-                                   me._adjustCloneTitle(me._windows[i]);
+                                   me._adjustCloneTitle(window);
                                }
                              });
 
@@ -491,7 +492,9 @@ Workspace.prototype = {
 
     _adjustCloneTitle : function (clone) {
         let transformed = clone.get_transformed_size();
-        let title = clone.cloneTitle;    
+        let title = clone.cloneTitle;
+        if (!title)
+            return;    
         title.width = Math.min(title.fullWidth, transformed[0]);
         let xoff = (transformed[0] - title.width)/2;
         title.set_position(clone.x+xoff, clone.y);
