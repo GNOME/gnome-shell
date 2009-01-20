@@ -143,10 +143,10 @@ void            cogl_get_bitmasks             (gint               *red,
  * Replaces the current projection matrix with a perspective matrix
  * based on the provided values.
  */
-void            cogl_perspective              (CoglFixed        fovy,
-                                               CoglFixed        aspect,
-                                               CoglFixed        z_near,
-                                               CoglFixed        z_far);
+void            cogl_perspective              (float        fovy,
+                                               float        aspect,
+                                               float        z_near,
+                                               float        z_far);
 
 /**
  * cogl_frustum:
@@ -162,12 +162,12 @@ void            cogl_perspective              (CoglFixed        fovy,
  *
  * Since: 0.8.2
  */
-void            cogl_frustum                  (CoglFixed        left,
-					       CoglFixed        right,
-					       CoglFixed        bottom,
-					       CoglFixed        top,
-                                               CoglFixed        z_near,
-                                               CoglFixed        z_far);
+void            cogl_frustum                  (float        left,
+					       float        right,
+					       float        bottom,
+					       float        top,
+                                               float        z_near,
+                                               float        z_far);
 
 /**
  * cogl_setup_viewport:
@@ -187,10 +187,10 @@ void            cogl_frustum                  (CoglFixed        left,
  */
 void            cogl_setup_viewport           (guint               width,
                                                guint               height,
-                                               CoglFixed        fovy,
-                                               CoglFixed        aspect,
-                                               CoglFixed        z_near,
-                                               CoglFixed        z_far);
+                                               float        fovy,
+                                               float        aspect,
+                                               float        z_near,
+                                               float        z_far);
 
 /**
  * cogl_viewport:
@@ -227,8 +227,8 @@ void            cogl_pop_matrix               (void);
  * Multiplies the current model-view matrix by one that scales the x
  * and y axes by the given values.
  */
-void            cogl_scale                    (CoglFixed        x,
-                                               CoglFixed        y);
+void            cogl_scale                    (float        x,
+                                               float        y);
 
 /**
  * cogl_translatex:
@@ -239,9 +239,9 @@ void            cogl_scale                    (CoglFixed        x,
  * Multiplies the current model-view matrix by one that translates the
  * model along all three axes according to the given values.
  */
-void            cogl_translatex               (CoglFixed        x,
-                                               CoglFixed        y,
-                                               CoglFixed        z);
+void            cogl_translatex               (float        x,
+                                               float        y,
+                                               float        z);
 
 /**
  * cogl_translate:
@@ -270,7 +270,7 @@ void            cogl_translate                (gint                x,
  * degrees about the vertex (0, 0, 1) causes a small counter-clockwise
  * rotation.
  */
-void            cogl_rotatex                  (CoglFixed        angle,
+void            cogl_rotatex                  (float        angle,
                                                gint                x,
                                                gint                y,
                                                gint                z);
@@ -293,32 +293,32 @@ void            cogl_rotate                   (gint                angle,
 
 /**
  * cogl_get_modelview_matrix:
- * @m: pointer to a 4x4 array of #CoglFixed<!-- -->s to receive the matrix
+ * @m: pointer to a 4x4 array of #float<!-- -->s to receive the matrix
  *
  * Stores the current model-view matrix in @m. The matrix is in
  * column-major order.
  */
-void            cogl_get_modelview_matrix     (CoglFixed        m[16]);
+void            cogl_get_modelview_matrix     (float        m[16]);
 
 /**
  * cogl_get_projection_matrix:
- * @m: pointer to a 4x4 array of #CoglFixed<!-- -->s to receive the matrix
+ * @m: pointer to a 4x4 array of #float<!-- -->s to receive the matrix
  *
  * Stores the current projection matrix in @m. The matrix is in
  * column-major order.
  */
-void            cogl_get_projection_matrix    (CoglFixed        m[16]);
+void            cogl_get_projection_matrix    (float        m[16]);
 
 /**
  * cogl_get_viewport:
- * @v: pointer to a 4 element array of #CoglFixed<!-- -->s to
+ * @v: pointer to a 4 element array of #float<!-- -->s to
  * receive the viewport dimensions.
  *
  * Stores the current viewport in @v. @v[0] and @v[1] get the x and y
  * position of the viewport and @v[2] and @v[3] get the width and
  * height.
  */
-void            cogl_get_viewport             (CoglFixed        v[4]);
+void            cogl_get_viewport             (float        v[4]);
 
 /**
  * cogl_clip_set:
@@ -336,10 +336,10 @@ void            cogl_get_viewport             (CoglFixed        v[4]);
  * The rectangle is intersected with the current clip region. To undo
  * the effect of this function, call cogl_clip_unset().
  */
-void            cogl_clip_set                 (CoglFixed        x_offset,
-                                               CoglFixed        y_offset,
-                                               CoglFixed        width,
-                                               CoglFixed        height);
+void            cogl_clip_set                 (float        x_offset,
+                                               float        y_offset,
+                                               float        width,
+                                               float        height);
 
 /**
  * cogl_clip_set_from_path:
@@ -443,7 +443,7 @@ void            cogl_enable_backface_culling  (gboolean            setting);
  * initial reference value is 1.0.
  */
 void            cogl_alpha_func               (COGLenum            func, 
-                                               CoglFixed        ref);
+                                               float        ref);
 
 /**
  * cogl_fog_set:
@@ -460,9 +460,9 @@ void            cogl_alpha_func               (COGLenum            func,
  * cogl_paint_init().
  */
 void            cogl_fog_set                  (const CoglColor *fog_color,
-                                               CoglFixed        density,
-                                               CoglFixed        z_near,
-                                               CoglFixed        z_far);
+                                               float        density,
+                                               float        z_near,
+                                               float        z_far);
 
 /**
  * cogl_paint_init:

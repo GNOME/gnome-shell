@@ -70,20 +70,20 @@ void cogl_color_set_from_4d  (CoglColor *dest,
 /**
  * cogl_color_set_from_4x:
  * @dest: return location for a #CoglColor
- * @red: value of the red channel, between 0 and %COGL_FIXED_1
- * @green: value of the green channel, between 0 and %COGL_FIXED_1
- * @blue: value of the blue channel, between 0 and %COGL_FIXED_1
- * @alpha: value of the alpha channel, between 0 and %COGL_FIXED_1
+ * @red: value of the red channel, between 0 and %1.0
+ * @green: value of the green channel, between 0 and %1.0
+ * @blue: value of the blue channel, between 0 and %1.0
+ * @alpha: value of the alpha channel, between 0 and %1.0
  *
  * Sets the values of the passed channels into a #CoglColor
  *
  * Since: 1.0
  */
 void cogl_color_set_from_4x (CoglColor *dest,
-                             CoglFixed  red,
-                             CoglFixed  green,
-                             CoglFixed  blue,
-                             CoglFixed  alpha);
+                             float  red,
+                             float  green,
+                             float  blue,
+                             float  alpha);
 
 /**
  * cogl_color_get_red_byte:
@@ -194,52 +194,52 @@ float         cogl_color_get_alpha_float (const CoglColor *color);
  * @color: a #CoglColor
  *
  * Retrieves the red channel of @color as a fixed point
- * value between 0 and %COGL_FIXED_1.
+ * value between 0 and %1.0.
  *
  * Return value: the red channel of the passed color
  *
  * Since: 1.0
  */
-CoglFixed     cogl_color_get_red         (const CoglColor *color);
+float     cogl_color_get_red         (const CoglColor *color);
 
 /**
  * cogl_color_get_green:
  * @color: a #CoglColor
  *
  * Retrieves the green channel of @color as a fixed point
- * value between 0 and %COGL_FIXED_1.
+ * value between 0 and %1.0.
  *
  * Return value: the green channel of the passed color
  *
  * Since: 1.0
  */
-CoglFixed     cogl_color_get_green       (const CoglColor *color);
+float     cogl_color_get_green       (const CoglColor *color);
 
 /**
  * cogl_color_get_blue:
  * @color: a #CoglColor
  *
  * Retrieves the blue channel of @color as a fixed point
- * value between 0 and %COGL_FIXED_1.
+ * value between 0 and %1.0.
  *
  * Return value: the blue channel of the passed color
  *
  * Since: 1.0
  */
-CoglFixed     cogl_color_get_blue        (const CoglColor *color);
+float     cogl_color_get_blue        (const CoglColor *color);
 
 /**
  * cogl_color_get_alpha:
  * @color: a #CoglColor
  *
  * Retrieves the alpha channel of @color as a fixed point
- * value between 0 and %COGL_FIXED_1.
+ * value between 0 and %1.0.
  *
  * Return value: the alpha channel of the passed color
  *
  * Since: 1.0
  */
-CoglFixed     cogl_color_get_alpha       (const CoglColor *color);
+float     cogl_color_get_alpha       (const CoglColor *color);
 
 /**
  * cogl_set_source_color:
@@ -277,24 +277,24 @@ void cogl_set_source_color4ub (guint8 red,
 
 /**
  * cogl_set_source_color4x:
- * @red: value of the red channel, between 0 and %COGL_FIXED_1
- * @green: value of the green channel, between 0 and %COGL_FIXED_1
- * @blue: value of the blue channel, between 0 and %COGL_FIXED_1
- * @alpha: value of the alpha channel, between 0 and %COGL_FIXED_1
+ * @red: value of the red channel, between 0 and %1.0
+ * @green: value of the green channel, between 0 and %1.0
+ * @blue: value of the blue channel, between 0 and %1.0
+ * @alpha: value of the alpha channel, between 0 and %1.0
  *
  * Sets the source color using normalized values for each component.
  * This color will be used for any subsequent drawing operation.
  *
  * The value for each component is a fixed point number in the range
- * between 0 and %COGL_FIXED_1. If the values passed in are outside that
+ * between 0 and %1.0. If the values passed in are outside that
  * range, they will be clamped.
  *
  * Since: 1.0
  */
-void cogl_set_source_color4x (CoglFixed red,
-                              CoglFixed green,
-                              CoglFixed blue,
-                              CoglFixed alpha);
+void cogl_set_source_color4x (float red,
+                              float green,
+                              float blue,
+                              float alpha);
 
 G_END_DECLS
 
