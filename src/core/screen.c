@@ -1185,6 +1185,9 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
       l = l->next;
     }
 
+  if (!neighbour)
+    return;
+
   meta_workspace_relocate_windows (workspace, neighbour);
 
   if (workspace == screen->active_workspace)
