@@ -89,7 +89,7 @@ cogl_path_stroke
 cogl_path_stroke_preserve
 cogl_set_source_color
 cogl_set_source_color4ub
-cogl_set_source_color4x
+cogl_set_source_color4f
 
 <SUBSECTION>
 cogl_rectangle
@@ -257,7 +257,7 @@ cogl_color_copy
 cogl_color_free
 cogl_color_set_from_4ub
 cogl_color_set_from_4d
-cogl_color_set_from_4x
+cogl_color_set_from_4f
 
 <SUBSECTION>
 cogl_color_get_red

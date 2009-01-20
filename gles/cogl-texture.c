@@ -39,6 +39,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define glVertexPointer cogl_wrap_glVertexPointer
 #define glTexCoordPointer cogl_wrap_glTexCoordPointer
@@ -768,7 +769,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
               guint wx, wy;
 
               src = source_bmp->data
-                  + (src_y +  (y_iter.intersect_start)
+                  + (src_y +  ((int)y_iter.intersect_start)
                      - dst_y)
                   * source_bmp->rowstride
                   + (src_x + x_span->start + x_span->size - x_span->waste
@@ -813,7 +814,7 @@ _cogl_texture_upload_subregion_to_gl (CoglTexture *tex,
               guint copy_width;
 
               src = source_bmp->data
-                  + (src_x +  (x_iter.intersect_start)
+                  + (src_x +  ((int)x_iter.intersect_start)
                      - dst_x)
                   * bpp
                   + (src_y + y_span->start + y_span->size - y_span->waste

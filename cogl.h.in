@@ -231,7 +231,7 @@ void            cogl_scale                    (float        x,
                                                float        y);
 
 /**
- * cogl_translatex:
+ * cogl_translate:
  * @x: Distance to translate along the x-axis
  * @y: Distance to translate along the y-axis
  * @z: Distance to translate along the z-axis
@@ -239,26 +239,12 @@ void            cogl_scale                    (float        x,
  * Multiplies the current model-view matrix by one that translates the
  * model along all three axes according to the given values.
  */
-void            cogl_translatex               (float        x,
-                                               float        y,
-                                               float        z);
+void            cogl_translate                (float                x,
+                                               float                y,
+                                               float                z);
 
 /**
- * cogl_translate:
- * @x: Distance to translate along the x-axis
- * @y: Distance to translate along the y-axis
- * @z: Distance to translate along the z-axis
- *
- * Integer version of cogl_translatex(). Multiplies the current
- * model-view matrix by one that translates the model along all three
- * axes according to the given values.
- */
-void            cogl_translate                (gint                x,
-                                               gint                y,
-                                               gint                z);
-
-/**
- * cogl_rotatex:
+ * cogl_rotate:
  * @angle: Angle in degrees to rotate.
  * @x: X-component of vertex to rotate around.
  * @y: Y-component of vertex to rotate around.
@@ -270,26 +256,10 @@ void            cogl_translate                (gint                x,
  * degrees about the vertex (0, 0, 1) causes a small counter-clockwise
  * rotation.
  */
-void            cogl_rotatex                  (float        angle,
-                                               gint                x,
-                                               gint                y,
-                                               gint                z);
-
-/**
- * cogl_rotate:
- * @angle: Angle in degrees to rotate.
- * @x: X-component of vertex to rotate around.
- * @y: Y-component of vertex to rotate around.
- * @z: Z-component of vertex to rotate around.
- *
- * Integer version of cogl_rotatex(). Multiplies the current
- * model-view matrix by one that rotates the model around the vertex
- * specified by @x, @y and @z.
- */
-void            cogl_rotate                   (gint                angle,
-                                               gint                x,
-                                               gint                y,
-                                               gint                z);
+void            cogl_rotate                   (float                angle,
+                                               float                x,
+                                               float                y,
+                                               float                z);
 
 /**
  * cogl_get_modelview_matrix:
@@ -442,7 +412,7 @@ void            cogl_enable_backface_culling  (gboolean            setting);
  * comparing with the value in @ref. The default function is CGL_ALWAYS the
  * initial reference value is 1.0.
  */
-void            cogl_alpha_func               (COGLenum            func, 
+void            cogl_alpha_func               (COGLenum            func,
                                                float        ref);
 
 /**

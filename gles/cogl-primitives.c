@@ -34,57 +34,29 @@
 
 #include <string.h>
 #include <gmodule.h>
+#include <math.h>
 
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
 void
-_cogl_rectangle (gint x,
-                 gint y,
-                 guint width,
-                 guint height)
+_cogl_rectangle (float x,
+                 float y,
+                 float width,
+                 float height)
 {
-  /* 32-bit integers are not supported as coord types
-     in GLES . Fixed type has got 16 bits left of the
-     point which is equal to short anyway. */
-  
-  GLshort rect_verts[8] = {
-    (GLshort)  x,          (GLshort)  y,
-    (GLshort) (x + width), (GLshort)  y,
-    (GLshort)  x,          (GLshort) (y + height),
-    (GLshort) (x + width), (GLshort) (y + height)
+  GLfloat rect_verts[8] = {
+    (GLfloat)  x,          (GLfloat)  y,
+    (GLfloat) (x + width), (GLfloat)  y,
+    (GLfloat)  x,          (GLfloat) (y + height),
+    (GLfloat) (x + width), (GLfloat) (y + height)
   };
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
   cogl_enable (COGL_ENABLE_VERTEX_ARRAY
               | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
-  GE ( cogl_wrap_glVertexPointer (2, GL_SHORT, 0, rect_verts ) );
+  GE ( cogl_wrap_glVertexPointer (2, GL_FLOAT, 0, rect_verts ) );
   GE ( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
-}
-
-
-void
-_cogl_rectanglex (float x,
-                  float y,
-                  float width,
-                  float height)
-{
-  GLfloat rect_verts[8] = {
-    x,         y,
-    x + width, y,
-    x,         y + height,
-    x + width, y + height
-  };
-   
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  cogl_enable (COGL_ENABLE_VERTEX_ARRAY
-	       | (ctx->color_alpha < 255
-		  ? COGL_ENABLE_BLEND : 0));
-  
-  GE( cogl_wrap_glVertexPointer (2, GL_FIXED, 0, rect_verts) );
-  GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
-
 }
 
 void
@@ -149,17 +121,15 @@ _cogl_path_stroke_nodes ()
 static void
 _cogl_path_get_bounds (floatVec2 nodes_min,
                        floatVec2 nodes_max,
-                       gint *bounds_x,
-                       gint *bounds_y,
-                       guint *bounds_w,
-                       guint *bounds_h)
+                       float *bounds_x,
+                       float *bounds_y,
+                       float *bounds_w,
+                       float *bounds_h)
 {
-  *bounds_x = floorf (nodes_min.x);
-  *bounds_y = floorf (nodes_min.y);
-  *bounds_w = ceilf (nodes_max.x
-                               - (float)(*bounds_x));
-  *bounds_h = ceilf (nodes_max.y
-                               - (float)(*bounds_y));
+  *bounds_x = nodes_min.x;
+  *bounds_y = nodes_min.y;
+  *bounds_w = nodes_max.x - *bounds_x;
+  *bounds_h = nodes_max.y - *bounds_y;
 }
 
 static gint compare_ints (gconstpointer a,
@@ -177,10 +147,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
 {
   guint path_start = 0;
   guint sub_path_num = 0;
-  gint bounds_x;
-  gint bounds_y;
-  guint bounds_w;
-  guint bounds_h;
+  float bounds_x;
+  float bounds_y;
+  float bounds_w;
+  float bounds_h;
 
   _cogl_path_get_bounds (nodes_min, nodes_max,
                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
@@ -244,12 +214,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
       GE( cogl_wrap_glPushMatrix () );
       GE( cogl_wrap_glLoadIdentity () );
-      cogl_rectanglex (-1.0, -1.0,
-		       (float)(2),
-		       (float)(2));
-      cogl_rectanglex (-1.0, -1.0,
-		       (float)(2),
-		       (float)(2));
+      cogl_rectangle (-1.0, -1.0, 2, 2);
+      cogl_rectangle (-1.0, -1.0, 2, 2);
       GE( cogl_wrap_glPopMatrix () );
       GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
       GE( cogl_wrap_glPopMatrix () );
@@ -435,10 +401,10 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
 void
 _cogl_path_fill_nodes ()
 {
-  gint bounds_x;
-  gint bounds_y;
-  guint bounds_w;
-  guint bounds_h;
+  float bounds_x;
+  float bounds_y;
+  float bounds_w;
+  float bounds_h;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 

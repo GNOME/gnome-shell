@@ -211,38 +211,21 @@ cogl_pop_matrix (void)
 void
 cogl_scale (float x, float y)
 {
-  glScaled ((double)(x),
-	    (double)(y),
+  glScalef ((float)(x),
+	    (float)(y),
 	    1.0);
 }
 
 void
-cogl_translatex (float x, float y, float z)
+cogl_translate (float x, float y, float z)
 {
-  glTranslated ((double)(x),
-		(double)(y),
-		(double)(z));
+  glTranslatef (x, y, z);
 }
 
 void
-cogl_translate (gint x, gint y, gint z)
+cogl_rotate (float angle, float x, float y, float z)
 {
-  glTranslatef ((float)x, (float)y, (float)z);
-}
-
-void
-cogl_rotatex (float angle, gint x, gint y, gint z)
-{
-  glRotated ((double)(angle),
-	     (double)(x),
-	     (double)(y),
-	     (double)(z));
-}
-
-void
-cogl_rotate (gint angle, gint x, gint y, gint z)
-{
-  glRotatef ((float)angle, (float)x, (float)y, (float)z);
+  glRotatef (angle, x, y, z);
 }
 
 static inline gboolean
@@ -645,17 +628,13 @@ cogl_perspective (float fovy,
    * 2) When working with small numbers, we are loosing significant
    * precision
    */
-  ymax =
-    (zNear *
-                    (sinf (fovy_rad_half) /
-                                         cosf (fovy_rad_half)));
-
+  ymax = (zNear * (sinf (fovy_rad_half) / cosf (fovy_rad_half)));
   xmax = (ymax * aspect);
 
   x = (zNear / xmax);
   y = (zNear / ymax);
   c = (-(zFar + zNear) / ( zFar - zNear));
-  d = cogl_fixed_mul_div (-(2 * zFar), zNear, (zFar - zNear));
+  d = (-(2 * zFar) * zNear) / (zFar - zNear);
 
 #define M(row,col)  m[col*4+row]
   M(0,0) =  (x);
@@ -696,12 +675,12 @@ cogl_frustum (float        left,
   GE( glMatrixMode (GL_PROJECTION) );
   GE( glLoadIdentity () );
 
-  GE( glFrustum ((double)(left),
-		 (double)(right),
-		 (double)(bottom),
-		 (double)(top),
-		 (double)(z_near),
-		 (double)(z_far)) );
+  GE( glFrustum ((GLdouble)(left),
+		 (GLdouble)(right),
+		 (GLdouble)(bottom),
+		 (GLdouble)(top),
+		 (GLdouble)(z_near),
+		 (GLdouble)(z_far)) );
 
   GE( glMatrixMode (GL_MODELVIEW) );
 
@@ -773,9 +752,7 @@ cogl_setup_viewport (guint        width,
   {
     float fovy_rad = (fovy * G_PI) / 180;
 
-    z_camera =
-       ((sinf (fovy_rad) /
-				           cosf (fovy_rad)) >> 1);
+    z_camera = ((sinf (fovy_rad) / cosf (fovy_rad)) / 2);
   }
 
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
@@ -1166,73 +1143,19 @@ cogl_features_available (CoglFeatureFlags features)
 void
 cogl_get_modelview_matrix (float m[16])
 {
-  GLdouble md[16];
-
-  glGetDoublev(GL_MODELVIEW_MATRIX, &md[0]);
-
-#define M(m,row,col)  m[col*4+row]
-  M(m,0,0) =  (M(md,0,0));
-  M(m,0,1) =  (M(md,0,1));
-  M(m,0,2) =  (M(md,0,2));
-  M(m,0,3) =  (M(md,0,3));
-
-  M(m,1,0) =  (M(md,1,0));
-  M(m,1,1) =  (M(md,1,1));
-  M(m,1,2) =  (M(md,1,2));
-  M(m,1,3) =  (M(md,1,3));
-
-  M(m,2,0) =  (M(md,2,0));
-  M(m,2,1) =  (M(md,2,1));
-  M(m,2,2) =  (M(md,2,2));
-  M(m,2,3) =  (M(md,2,3));
-
-  M(m,3,0) =  (M(md,3,0));
-  M(m,3,1) =  (M(md,3,1));
-  M(m,3,2) =  (M(md,3,2));
-  M(m,3,3) =  (M(md,3,3));
-#undef M
+  glGetFloatv (GL_MODELVIEW_MATRIX, m);
 }
 
 void
 cogl_get_projection_matrix (float m[16])
 {
-  GLdouble md[16];
-
-  glGetDoublev(GL_PROJECTION_MATRIX, &md[0]);
-
-#define M(m,row,col)  m[col*4+row]
-  M(m,0,0) =  (M(md,0,0));
-  M(m,0,1) =  (M(md,0,1));
-  M(m,0,2) =  (M(md,0,2));
-  M(m,0,3) =  (M(md,0,3));
-
-  M(m,1,0) =  (M(md,1,0));
-  M(m,1,1) =  (M(md,1,1));
-  M(m,1,2) =  (M(md,1,2));
-  M(m,1,3) =  (M(md,1,3));
-
-  M(m,2,0) =  (M(md,2,0));
-  M(m,2,1) =  (M(md,2,1));
-  M(m,2,2) =  (M(md,2,2));
-  M(m,2,3) =  (M(md,2,3));
-
-  M(m,3,0) =  (M(md,3,0));
-  M(m,3,1) =  (M(md,3,1));
-  M(m,3,2) =  (M(md,3,2));
-  M(m,3,3) =  (M(md,3,3));
-#undef M
+  glGetFloatv (GL_PROJECTION_MATRIX, m);
 }
 
 void
 cogl_get_viewport (float v[4])
 {
-  GLdouble vd[4];
-  glGetDoublev(GL_VIEWPORT, &vd[0]);
-
-  v[0] =  (vd[0]);
-  v[1] =  (vd[1]);
-  v[2] =  (vd[2]);
-  v[3] =  (vd[3]);
+  glGetFloatv (GL_VIEWPORT, v);
 }
 
 void
