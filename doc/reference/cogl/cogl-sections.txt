@@ -279,18 +279,17 @@ cogl_color_get_alpha_float
 </SECTION>
 
 <SECTION>
-<FILE>cogl-mesh</FILE>
-<TITLE>Mesh API</TITLE>
-cogl_mesh_new
-cogl_mesh_ref
-cogl_mesh_unref
-CoglMeshAttributeFlags
-cogl_mesh_add_attribute
-cogl_mesh_delete_attribute
-cogl_mesh_enable_attribute
-cogl_mesh_disable_attribute
-cogl_mesh_draw_arrays
-cogl_mesh_draw_range_elements
-cogl_mesh_submit
+<FILE>cogl-attributes-buffer</FILE>
+<TITLE>Attributes Buffer API</TITLE>
+cogl_attributes_buffer_new
+cogl_attributes_buffer_ref
+cogl_attributes_buffer_unref
+cogl_attributes_buffer_add
+cogl_attributes_buffer_delete
+cogl_attributes_buffer_enable
+cogl_attributes_buffer_disable
+cogl_attributes_buffer_submit
+cogl_attributes_buffer_draw
+cogl_attributes_buffer_draw_range_elements
 </SECTION>
 

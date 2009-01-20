@@ -85,8 +85,8 @@ typedef struct
   /* Clip stack */
   CoglClipStackState clip;
 
-  /* Mesh */
-  GArray           *mesh_handles;
+  /* Vertex buffers */
+  GArray           *vertex_buffer_handles;
 
   /* Relying on glext.h to define these */
   COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;
