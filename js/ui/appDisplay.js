@@ -109,7 +109,11 @@ AppDisplay.prototype = {
     __proto__:  GenericDisplay.GenericDisplay.prototype,
 
     _init : function(width, height) {
-        GenericDisplay.GenericDisplay.prototype._init.call(this, width, height);  
+        GenericDisplay.GenericDisplay.prototype._init.call(this, width, height);
+
+        // map<itemId, array of category names>
+        this._categories = {};
+  
         let me = this;
         this._appMonitor = new Shell.AppMonitor();
         this._appsStale = true;
@@ -134,11 +138,15 @@ AppDisplay.prototype = {
         if (!this._appsStale)
             return;
         this._allItems = {};
+        this._categories = {}; 
         let apps = Gio.app_info_get_all();
         for (let i = 0; i < apps.length; i++) {
             let appInfo = apps[i];
             let appId = appInfo.get_id();
             this._allItems[appId] = appInfo;
+            // [] is returned if we could not get the categories or the list of categories was empty
+            let categories = Shell.get_categories_for_desktop_file(appId);
+            this._categories[appId] = categories;
         }
         this._appsStale = false;
     },
@@ -169,24 +177,36 @@ AppDisplay.prototype = {
     },
 
     // Checks if the item info can be a match for the search string by checking
-    // the name, description, and execution command for the application. 
+    // the name, description, execution command, and categories for the application. 
     // Item info is expected to be GAppInfo.
     // Returns a boolean flag indicating if itemInfo is a match.
     _isInfoMatching : function(itemInfo, search) {
         if (search == null || search == '')
             return true;
+
         let name = itemInfo.get_name().toLowerCase();
         if (name.indexOf(search) >= 0)
             return true;
+
         let description = itemInfo.get_description();
         if (description) {
             description = description.toLowerCase();
             if (description.indexOf(search) >= 0)
                 return true;
         }
+
         let exec = itemInfo.get_executable().toLowerCase();
         if (exec.indexOf(search) >= 0)
             return true;
+        
+        // we expect this._categories.hasOwnProperty(itemInfo.get_id()) to always be true here     
+        let categories = this._categories[itemInfo.get_id()]; 
+        for (let i = 0; i < categories.length; i++) {
+            let category = categories[i].toLowerCase();
+            if (category.indexOf(search) >= 0)
+                return true;
+        }
+       
         return false;
     },
 

@@ -9,8 +9,6 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include <libgnomeui-2.0/libgnomeui/gnome-thumbnail.h>
 #include <dbus/dbus-glib.h>
 #include <libgnomeui/gnome-thumbnail.h>
 
@@ -223,6 +221,49 @@ shell_global_class_init (ShellGlobalClass *klass)
 }
 
 /**
+ * search_path_init:
+ *
+ * search_path_init and get_applications_search_path below were copied from glib/gio/gdesktopappinfo.c
+ * copyright Red Hat, Inc., written by Alex Larsson, licensed under the LGPL
+ *
+ * Return value: location of an array with user and system application directories.
+ */ 
+static gpointer
+search_path_init (gpointer data)
+{ 	
+    char **args = NULL;
+    const char * const *data_dirs;
+    const char *user_data_dir;
+    int i, length, j;
+ 	 
+    data_dirs = g_get_system_data_dirs ();
+    length = g_strv_length ((char **)data_dirs);
+ 	
+    args = g_new (char *, length + 2);
+ 	
+    j = 0;
+    user_data_dir = g_get_user_data_dir ();
+    args[j++] = g_build_filename (user_data_dir, "applications", NULL);
+    for (i = 0; i < length; i++)
+      args[j++] = g_build_filename (data_dirs[i],
+ 	                            "applications", NULL);
+    args[j++] = NULL;
+ 	 	
+    return args;
+}
+/**
+ * get_applications_search_path:
+ *
+ * Return value: location of an array with user and system application directories.
+ */
+static const char * const *
+get_applications_search_path (void)
+{
+    static GOnce once_init = G_ONCE_INIT;
+    return g_once (&once_init, search_path_init, NULL);
+} 
+
+/**
  * shell_clutter_texture_set_from_pixbuf: 
  * texture: #ClutterTexture to be modified
  * pixbuf: #GdkPixbuf to set as an image for #ClutterTexture
@@ -268,7 +309,7 @@ shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info)
     GError *error = NULL;
     
     if (thumbnail_factory == NULL)
-       thumbnail_factory = gnome_thumbnail_factory_new (GNOME_THUMBNAIL_SIZE_NORMAL);
+      thumbnail_factory = gnome_thumbnail_factory_new (GNOME_THUMBNAIL_SIZE_NORMAL);
 
     existing_thumbnail = gnome_thumbnail_factory_lookup (thumbnail_factory, uri, mtime);
 
@@ -296,6 +337,68 @@ shell_get_thumbnail_for_recent_info(GtkRecentInfo  *recent_info)
       }
 
     return pixbuf;   
+}
+
+/**
+ * shell_get_categories_for_desktop_file:
+ *
+ * @desktop_file_name: name of the desktop file for which to retrieve categories
+ *
+ * Return value: (element-type char*) (transfer full): List of categories
+ *
+ */
+GSList *
+shell_get_categories_for_desktop_file(const char *desktop_file_name)
+{
+    GKeyFile *key_file;
+    const char * const *search_dirs;
+    char **categories = NULL;
+    GSList *categories_list = NULL; 
+    char *full_path = NULL;   
+    GError *error = NULL;
+    gsize len;  
+    int i; 
+
+    key_file = g_key_file_new (); 
+    search_dirs = get_applications_search_path();
+   
+    g_key_file_load_from_dirs (key_file, desktop_file_name, (const char **)search_dirs, &full_path, 0, &error);
+
+    if (error != NULL) 
+      {
+        g_warning ("Error when loading a key file for %s: %s", desktop_file_name, error->message);
+        g_clear_error (&error);
+      }
+    else 
+      {
+        categories = g_key_file_get_string_list (key_file,
+                                                 "Desktop Entry",
+                                                 "Categories",
+                                                 &len,
+                                                 &error);
+        if (error != NULL)
+          {
+            g_warning ("Error when getting 'Categories' from a key file %s: %s", desktop_file_name, error->message);
+            g_clear_error (&error);
+          } 
+      }
+
+    g_key_file_free (key_file);
+ 
+    if (categories == NULL)
+      return NULL;
+
+    // gjs currently does not support returning arrays (other than a NULL value for an array), so we need 
+    // to convert the array we are returning to GSList, returning which gjs supports. 
+    // See http://bugzilla.gnome.org/show_bug.cgi?id=560567 for more info on gjs array support.
+    for (i = 0; categories[i]; i++)
+      {
+        categories_list = g_slist_prepend (categories_list, g_strdup (categories[i])); 
+      }
+
+    g_strfreev (categories);
+
+    return categories_list;
 }
 
 /**
@@ -500,7 +603,7 @@ shell_global_start_task_panel (ShellGlobal *global)
   const char* panel_args[] = {"gnomeshell-taskpanel", SHELL_DBUS_SERVICE, NULL};
   GError *error = NULL;
 
-  if (!g_spawn_async (NULL, (char**) panel_args, NULL, G_SPAWN_SEARCH_PATH, NULL,
+  if (!g_spawn_async (NULL, (char**)panel_args, NULL, G_SPAWN_SEARCH_PATH, NULL,
                       NULL, NULL, &error)) 
     {
       g_critical ("failed to execute %s: %s", panel_args[0], error->message);
