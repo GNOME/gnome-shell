@@ -264,8 +264,8 @@ struct _ClutterKeyEvent
  * @flags: event flags
  * @stage: event source stage
  * @source: event source actor
- * @x: event X coordinate
- * @y: event Y coordinate
+ * @x: event X coordinate, relative to the stage
+ * @y: event Y coordinate, relative to the stage
  * @modifier_state: button modifiers
  * @button: event button
  * @click_count: number of button presses within the default time
@@ -273,7 +273,11 @@ struct _ClutterKeyEvent
  * @axes: reserved for future use
  * @device: reserved for future use
  *
- * Button event
+ * Button event.
+ *
+ * The event coordinates are relative to the stage that received the
+ * event, and can be transformed into actor-relative coordinates by
+ * using clutter_actor_transform_stage_point().
  *
  * Since: 0.2
  */
@@ -447,7 +451,7 @@ ClutterModifierType clutter_event_get_state     (ClutterEvent       *event);
 void                clutter_event_get_coords    (ClutterEvent       *event,
                                                  gint               *x,
                                                  gint               *y);
-gint                clutter_event_get_device_id (ClutterEvent *event);
+gint                clutter_event_get_device_id (ClutterEvent       *event);
 ClutterActor*       clutter_event_get_source    (ClutterEvent       *event);
 
 guint               clutter_key_event_symbol    (ClutterKeyEvent    *keyev);
@@ -458,7 +462,7 @@ guint32             clutter_button_event_button (ClutterButtonEvent *buttev);
 
 guint32             clutter_keysym_to_unicode   (guint               keyval);
 
-ClutterStage*       clutter_event_get_stage     (ClutterEvent *event);
+ClutterStage*       clutter_event_get_stage     (ClutterEvent       *event);
 
 G_END_DECLS
 
