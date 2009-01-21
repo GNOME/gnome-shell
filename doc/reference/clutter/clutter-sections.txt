@@ -48,7 +48,6 @@ CLUTTER_UNITS_FROM_PARENT_HEIGHT_PERCENTAGE
 CLUTTER_UNITS_FROM_MM
 CLUTTER_UNITS_FROM_MMX
 CLUTTER_UNITS_FROM_POINTS
-CLUTTER_UNITS_FROM_POINTSX
 
 <SUBSECTION>
 CLUTTER_MAXUNIT
@@ -923,7 +922,6 @@ clutter_feature_get_all
 <FILE>clutter-fixed</FILE>
 <TITLE>Fixed Point Support</TITLE>
 ClutterFixed
-CFX_Q
 CFX_ONE
 CFX_HALF
 CFX_MAX
@@ -957,23 +955,13 @@ CLUTTER_ANGLE_TO_DEG
 CLUTTER_ANGLE_TO_DEGX
 CLUTTER_ANGLE_MAX_DEG
 CFX_RADIANS_TO_DEGREES
-clutter_cosi
 clutter_cosx
-clutter_sini
 clutter_sinx
-CLUTTER_SQRTI_ARG_10_PERCENT
-CLUTTER_SQRTI_ARG_5_PERCENT
-CLUTTER_SQRTI_ARG_MAX
-clutter_sqrti
-clutter_sqrtx
-clutter_log2x
-clutter_pow2x
-clutter_powx
+clutter_tanx
+clutter_atanx
+clutter_atan2x
 clutter_qmulx
 clutter_qdivx
-clutter_tani
-clutter_atani
-clutter_atan2i
 
 <SUBSECTION>
 CLUTTER_MAXFIXED
