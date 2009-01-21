@@ -261,8 +261,8 @@ cogl_vertex_buffer_draw (CoglHandle handle,
  * @min_index: Specifies the minimum vertex index contained in indices
  * @max_index: Specifies the maximum vertex index contained in indices
  * @count: Specifies the number of vertices you want to draw.
- * @indices_typetype: Specifies the data type used for the indices, and must be
- *	              one of:
+ * @indices_type: Specifies the data type used for the indices, and must be
+ *	          one of:
  *	  <itemizedlist>
  *	  <listitem>GL_UNSIGNED_BYTE</listitem>
  *	  <listitem>GL_UNSIGNED_SHORT</listitem>

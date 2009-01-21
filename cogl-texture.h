@@ -142,7 +142,7 @@ CoglHandle      cogl_texture_new_from_foreign (GLuint              gl_handle,
 
 /**
  * cogl_texture_new_from_bitmap:
- * @handle: handle of the preloaded texture
+ * @bitmap: a #CoglBitmap
  * @max_waste: maximum extra horizontal and|or vertical margin pixels
  *    to make the texture fit GPU limitations
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE

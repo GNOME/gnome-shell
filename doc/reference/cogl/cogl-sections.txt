@@ -23,11 +23,10 @@ cogl_get_viewport
 cogl_push_matrix
 cogl_pop_matrix
 cogl_scale
-cogl_translatex
 cogl_translate
-cogl_rotatex
 cogl_rotate
 <SUBSECTION>
+CoglClipStackState
 cogl_clip_set
 cogl_clip_set_from_path
 cogl_clip_set_from_path_preserve
@@ -90,10 +89,10 @@ cogl_path_stroke_preserve
 cogl_set_source_color
 cogl_set_source_color4ub
 cogl_set_source_color4f
+cogl_color
 
 <SUBSECTION>
 cogl_rectangle
-cogl_rectanglex
 </SECTION>
 
 <SECTION>
@@ -105,7 +104,12 @@ cogl_texture_new_with_size
 cogl_texture_new_from_file
 cogl_texture_new_from_data
 cogl_texture_new_from_foreign
+cogl_texture_new_from_bitmap
 cogl_is_texture
+cogl_texture_ref
+cogl_texture_unref
+
+<SUBSECTION>
 cogl_texture_get_width
 cogl_texture_get_height
 cogl_texture_get_format
@@ -118,11 +122,18 @@ cogl_texture_get_gl_texture
 cogl_texture_get_data
 cogl_texture_set_filters
 cogl_texture_set_region
-cogl_texture_ref
-cogl_texture_unref
+
+<SUBSECTION>
 cogl_texture_rectangle
 cogl_texture_multiple_rectangles
 cogl_texture_polygon
+
+<SUBSECTION>
+CoglBitmap
+cogl_bitmap_new_from_file
+cogl_bitmap_free
+cogl_bitmap_get_size_from_file
+
 </SECTION>
 
 <SECTION>
@@ -146,6 +157,7 @@ cogl_program_link
 cogl_program_use
 cogl_program_get_uniform_location
 cogl_program_uniform_1f
+cogl_program_uniform_1i
 cogl_program_uniform_float
 cogl_program_uniform_int
 cogl_program_uniform_matrix
@@ -229,6 +241,7 @@ cogl_fixed_pow
 cogl_fixed_pow2
 cogl_fixed_sin
 cogl_fixed_sqrt
+cogl_fixed_tan
 
 <SUBSECTION>
 CoglAngle
@@ -280,17 +293,20 @@ cogl_color_get_alpha_float
 </SECTION>
 
 <SECTION>
-<FILE>cogl-attributes-buffer</FILE>
-<TITLE>Attributes Buffer API</TITLE>
-cogl_attributes_buffer_new
-cogl_attributes_buffer_ref
-cogl_attributes_buffer_unref
-cogl_attributes_buffer_add
-cogl_attributes_buffer_delete
-cogl_attributes_buffer_enable
-cogl_attributes_buffer_disable
-cogl_attributes_buffer_submit
-cogl_attributes_buffer_draw
-cogl_attributes_buffer_draw_range_elements
+<FILE>cogl-vertex-buffer</FILE>
+<TITLE>Vertex Buffers</TITLE>
+CoglVertexBufferAttribFlags
+COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK
+COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK
+cogl_vertex_buffer_new
+cogl_vertex_buffer_ref
+cogl_vertex_buffer_unref
+cogl_vertex_buffer_add
+cogl_vertex_buffer_delete
+cogl_vertex_buffer_enable
+cogl_vertex_buffer_disable
+cogl_vertex_buffer_submit
+cogl_vertex_buffer_draw
+cogl_vertex_buffer_draw_range_elements
 </SECTION>
 
