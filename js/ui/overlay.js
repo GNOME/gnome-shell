@@ -99,7 +99,11 @@ Sideshow.prototype = {
         this._searchEntry.connect('key-press-event', function (se, e) {
             let code = e.get_code();
             if (code == 9) {
-                me._searchEntry.text = '';
+                // A single escape clears the entry, two of them hides the overlay
+                if (me._searchEntry.text == '')
+                    me.emit('activated');
+                else
+                    me._searchEntry.text = '';
                 return true;
             } else if (code == 111) {
                 // selectUp and selectDown wrap around in their respective displays
