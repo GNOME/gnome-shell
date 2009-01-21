@@ -21,6 +21,8 @@ const WINDOWCLONE_BG_COLOR = new Clutter.Color();
 WINDOWCLONE_BG_COLOR.from_pixel(0x000000f0);
 const WINDOWCLONE_TITLE_COLOR = new Clutter.Color();
 WINDOWCLONE_TITLE_COLOR.from_pixel(0xffffffff);
+const FRAME_COLOR = new Clutter.Color();
+FRAME_COLOR.from_pixel(0xffffffff);
 
 // Define a layout scheme for small window counts. For larger
 // counts we fall back to an algorithm. We need more schemes here
@@ -40,6 +42,7 @@ const POSITIONS = {
 // in both zoomed-in and zoomed-out views; this is slightly
 // metaphor-breaking, but the alternatives are also weird.
 const GRID_SPACING = 15;
+const FRAME_SIZE = GRID_SPACING / 3;
 
 function Workspace(workspaceNum) {
     this._init(workspaceNum);
@@ -52,6 +55,7 @@ Workspace.prototype = {
 
         this._workspaceNum = workspaceNum;
         this.actor = new Clutter.Group();
+        this.scale = 1.0;
 
         let windows = global.get_windows().filter(this._isMyWindow, this);
 
@@ -99,6 +103,8 @@ Workspace.prototype = {
         this._overlappedMode = !((this._windows.length-1) in POSITIONS);
         this._removeButton = null;
         this._visible = false;
+
+        this._frame = null;
     },
 
     // Checks if the workspace is empty (ie, contains only a desktop window)
@@ -162,6 +168,43 @@ Workspace.prototype = {
         this._removeButton.destroy();
         this._removeButton = null;
         this.actor.disconnect(this._adjustRemoveButtonId);
+    },
+
+    // Mark the workspace selected/not-selected
+    setSelected : function(selected) {
+        if (selected) {
+            if (this._frame)
+                return;
+
+            // FIXME: do something cooler-looking using clutter-cairo
+            this._frame = new Clutter.Rectangle({ color: FRAME_COLOR });
+            this.actor.add_actor(this._frame);
+            this._frame.set_position(this._desktop.x - FRAME_SIZE / this.actor.scale_x,
+                                     this._desktop.y - FRAME_SIZE / this.actor.scale_y);
+            this._frame.set_size(this._desktop.width + 2 * FRAME_SIZE / this.actor.scale_x,
+                                 this._desktop.height + 2 * FRAME_SIZE / this.actor.scale_y);
+            this._frame.lower_bottom();
+
+            this._framePosHandler = this.actor.connect('notify::x', Lang.bind(this, this._updateFramePosition));
+            this._frameSizeHandler = this.actor.connect('notify::scale-x', Lang.bind(this, this._updateFrameSize));
+        } else {
+            if (!this._frame)
+                return;
+            this.actor.disconnect(this._framePosHandler);
+            this.actor.disconnect(this._frameSizeHandler);
+            this._frame.destroy();
+            this._frame = null;
+        }
+    },
+
+    _updateFramePosition : function() {
+        this._frame.set_position(this._desktop.x - FRAME_SIZE / this.actor.scale_x,
+                                 this._desktop.y - FRAME_SIZE / this.actor.scale_y);
+    },
+
+    _updateFrameSize : function() {
+        this._frame.set_size(this._desktop.width + 2 * FRAME_SIZE / this.actor.scale_x,
+                             this._desktop.height + 2 * FRAME_SIZE / this.actor.scale_y);
     },
 
     // Animate the full-screen to overlay transition.
@@ -474,7 +517,6 @@ function Workspaces() {
 
 Workspaces.prototype = {
     _init : function() {
-        let me = this;
         let global = Shell.Global.get();
 
         this.actor = new Clutter.Group();
@@ -495,8 +537,10 @@ Workspaces.prototype = {
         // Create and position workspace objects
         for (let w = 0; w < global.screen.n_workspaces; w++) {
             this._workspaces[w] = new Workspace(w);
-            if (w == activeWorkspaceIndex)
+            if (w == activeWorkspaceIndex) {
                 activeWorkspace = this._workspaces[w];
+                activeWorkspace.setSelected(true);
+            }
             this.actor.add_actor(this._workspaces[w].actor);
         }
         activeWorkspace.actor.raise_top();
@@ -550,9 +594,10 @@ Workspaces.prototype = {
         // Track changes to the number of workspaces
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
-                                  function() {
-                                      me._workspacesChanged();
-                                  });
+                                  Lang.bind(this, this._workspacesChanged));
+        this._switchWorkspaceNotifyId =
+            global.window_manager.connect('switch-workspace',
+                                          Lang.bind(this, this._activeWorkspaceChanged));
     },
 
     hide : function() {
@@ -588,6 +633,7 @@ Workspaces.prototype = {
         this._backdrop = null;
 
         global.screen.disconnect(this._nWorkspacesNotifyId);
+        global.window_manager.disconnect(this._switchWorkspaceNotifyId);
     },
 
     // Assign grid positions to workspaces. We can't just do a simple
@@ -718,6 +764,11 @@ Workspaces.prototype = {
 
             // FIXME: deal with windows on the lost workspaces
         }
+    },
+
+    _activeWorkspaceChanged : function(wm, from, to, direction) {
+        this._workspaces[from].setSelected(false);
+        this._workspaces[to].setSelected(true);
     },
 
     _addWorkspace : function(actor, event) {
