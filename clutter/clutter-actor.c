@@ -6524,6 +6524,8 @@ parse_units (ClutterActor   *self,
 
       if (end[0] == '%' && end[1] == '\0')
         {
+          ClutterActor *stage;
+
           if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
             {
               g_warning ("Unable to set percentage of %s on a top-level "
@@ -6536,12 +6538,20 @@ parse_units (ClutterActor   *self,
               goto out;
             }
 
+          stage = clutter_actor_get_stage (self);
+          if (stage == NULL)
+            stage = clutter_stage_get_default ();
+
           if (dimension == PARSE_X ||
               dimension == PARSE_WIDTH ||
               dimension == PARSE_ANCHOR_X)
-            retval = CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE (val);
+            {
+              retval = clutter_actor_get_widthu (stage) * val;
+            }
           else
-            retval = CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE (val);
+            {
+              retval = clutter_actor_get_heightu (stage) * val;
+            }
 
           goto out;
         }
@@ -6556,7 +6566,12 @@ parse_units (ClutterActor   *self,
     }
   else if (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE))
     {
-      gint val;
+      ClutterActor *stage;
+      gdouble val;
+
+      stage = clutter_actor_get_stage (self);
+      if (stage == NULL)
+        stage = clutter_stage_get_default ();
 
       if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
         {
@@ -6569,14 +6584,18 @@ parse_units (ClutterActor   *self,
           goto out;
         }
 
-      val = CLAMP (g_value_get_double (&value) * 100, 0, 100);
+      val = g_value_get_double (&value);
 
       if (dimension == PARSE_X ||
           dimension == PARSE_WIDTH ||
           dimension == PARSE_ANCHOR_X)
-        retval = CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE (val);
+        {
+          retval = clutter_actor_get_widthu (stage) * val;
+        }
       else
-        retval = CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE (val);
+        {
+          retval = clutter_actor_get_heightu (stage) * val;
+        }
     }
   else
     {

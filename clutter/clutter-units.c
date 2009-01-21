@@ -101,6 +101,58 @@
 #include "clutter-units.h"
 #include "clutter-private.h"
 
+#define DPI_FALLBACK    96.0
+
+/**
+ * clutter_units_mm:
+ * @mm: millimeters to convert
+ *
+ * Converts a value in millimeters to #ClutterUnit<!-- -->s at
+ * the current DPI.
+ *
+ * Return value: the value in units
+ *
+ * Since: 1.0
+ */
+ClutterUnit
+clutter_units_mm (gdouble mm)
+{
+  ClutterBackend *backend;
+  gdouble dpi;
+
+  backend = clutter_get_default_backend ();
+  dpi = clutter_backend_get_resolution (backend);
+  if (dpi < 0)
+    dpi = DPI_FALLBACK;
+
+  return mm * dpi / 25.4;
+}
+
+/**
+ * clutter_units_pt:
+ * @pt: typographic points to convert
+ *
+ * Converts a value in typographic points to #ClutterUnit<!-- -->s
+ * at the current DPI.
+ *
+ * Return value: the value in units
+ *
+ * Since: 1.0
+ */
+ClutterUnit
+clutter_units_pt (gdouble pt)
+{
+  ClutterBackend *backend;
+  gdouble dpi;
+
+  backend = clutter_get_default_backend ();
+  dpi = clutter_backend_get_resolution (backend);
+  if (dpi < 0)
+    dpi = DPI_FALLBACK;
+
+  return pt * dpi / 72.0;
+}
+
 static GTypeInfo _info = {
  0,
  NULL,
