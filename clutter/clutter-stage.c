@@ -258,6 +258,11 @@ clutter_stage_realize (ClutterActor *self)
 
   CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_REALIZED);
 
+  /* Make sure the viewport and projection matrix are valid for the
+     first paint (which will likely occur before the ConfigureNotify
+     is received) */
+  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_SYNC_MATRICES);
+
   g_assert (priv->impl != NULL);
   CLUTTER_ACTOR_GET_CLASS (priv->impl)->realize (priv->impl);
 
