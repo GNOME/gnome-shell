@@ -524,7 +524,8 @@ Workspaces.prototype = {
         let screenWidth = global.screen_width;
         let screenHeight = global.screen_height;
 
-        this._width = screenWidth * Overlay.WORKSPACE_GRID_SCALE;
+        this._width = screenWidth * Overlay.WORKSPACE_GRID_SCALE -
+            2 * Overlay.WORKSPACE_GRID_PADDING;
         this._height = screenHeight * Overlay.WORKSPACE_GRID_SCALE;
         this._x = screenWidth - this._width - Overlay.WORKSPACE_GRID_PADDING;
         this._y = Panel.PANEL_HEIGHT + (screenHeight - this._height - Panel.PANEL_HEIGHT) / 2;
