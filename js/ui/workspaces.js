@@ -122,11 +122,10 @@ Workspace.prototype = {
             this._removeButton.connect('button-press-event', Lang.bind(this, this._removeSelf));
 
             this.actor.add_actor(this._removeButton);
+            this._adjustRemoveButton();
+            this._adjustRemoveButtonId = this.actor.connect('notify::scale-x', Lang.bind(this, this._adjustRemoveButton));
 
             if (this._visible) {
-                this._removeButton.set_position(
-                    this.gridX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
-                    this.gridY + (this._desktop.height * this.scale - this._removeButton.height) / 2);
                 this._removeButton.set_opacity(0);
                 Tweener.addTween(this._removeButton,
                                  { opacity: 255,
@@ -146,25 +145,32 @@ Workspace.prototype = {
                                    onComplete: this._removeRemoveButton,
                                    onCompleteScope: this
                                  });
-            } else {
-                this._removeButton.destroy();
-                this._removeButton = null;
-            }
+            } else
+                this._removeRemoveButton();
         }
+    },
+
+    _adjustRemoveButton : function() {
+        this._removeButton.set_scale(1.0 / this.actor.scale_x,
+                                     1.0 / this.actor.scale_y);
+        this._removeButton.set_position(
+            (this.actor.width - this._removeButton.width / this.actor.scale_x) / 2,
+            (this.actor.height - this._removeButton.height / this.actor.scale_y) / 2);
     },
 
     _removeRemoveButton : function() {
         this._removeButton.destroy();
         this._removeButton = null;
+        this.actor.disconnect(this._adjustRemoveButtonId);
     },
 
     // Animate the full-screen to overlay transition.
     zoomToOverlay : function() {
         let global = Shell.Global.get();
 
-        // Move the desktop into size/position
-        this._desktop.set_position(this.fullSizeX, this.fullSizeY);
-        Tweener.addTween(this._desktop,
+        // Move the workspace into size/position
+        this.actor.set_position(this.fullSizeX, this.fullSizeY);
+        Tweener.addTween(this.actor,
                          { x: this.gridX,
                            y: this.gridY,
                            scale_x: this.scale,
@@ -173,120 +179,74 @@ Workspace.prototype = {
                            transition: "easeOutQuad"
                          });
 
-        // Likewise for each of the windows in the workspace. This
-        // would be easier if we just positioned and scaled the entire
-        // workspace group rather than going each window individually,
-        // but if we do that then the windows of the active workspace
-        // will trace out a curved path as they move into place, which
-        // looks odd. Positioning everything independently lets us
-        // move them in a straight line to their final destination.
+        // Likewise for each of the windows in the workspace.
         for (let i = 1; i < this._windows.length; i++) {
             let window = this._windows[i];
 
             let [xCenter, yCenter, fraction] = this._computeWindowPosition(i);
-            xCenter = this.gridX + this.scale * (xCenter * global.screen_width);
-            yCenter = this.gridY + this.scale * (yCenter * global.screen_height);
+            xCenter = xCenter * global.screen_width;
+            yCenter = yCenter * global.screen_height;
 
             let size = Math.max(window.width, window.height);
             let desiredSize = global.screen_width * fraction;
-            let scale = Math.min(desiredSize / size, 1.0) * this.scale;
+            let scale = Math.min(desiredSize / size, 1.0);
 
-            window.set_position(this.fullSizeX + window.origX, this.fullSizeY + window.origY);
             Tweener.addTween(window,
                              { x: xCenter - 0.5 * scale * window.width,
                                y: yCenter - 0.5 * scale * window.height,
                                scale_x: scale,
                                scale_y: scale,
+                               workspace_relative: this,
                                time: Overlay.ANIMATION_TIME,
                                opacity: WINDOW_OPACITY,
                                transition: "easeOutQuad"
                              });
         }
 
-        // If the workspace is removable, animate in its removeButton
-        if (this._removeButton) {
-            this._removeButton.set_position(
-                this.fullSizeX + (this._desktop.width - this._removeButton.width) / 2,
-                this.fullSizeY + (this._desktop.height - this._removeButton.height) / 2);
-            this._removeButton.set_opacity(0);
-            Tweener.addTween(this._removeButton,
-                             { x: this.gridX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
-                               y: this.gridY + (this._desktop.height * this.scale - this._removeButton.height) / 2,
-                               opacity: 255,
-                               time: Overlay.ANIMATION_TIME,
-                               transition: "easeOutQuad"
-                             });
-        }
-        
         this._visible = true;
     },
 
     // Animates the return from overlay mode
     zoomFromOverlay : function() {
-        for (let i = 0; i < this._windows.length; i++) {
+        Tweener.addTween(this.actor,
+                         { x: this.fullSizeX,
+                           y: this.fullSizeY,
+                           scale_x: 1.0,
+                           scale_y: 1.0,
+                           time: Overlay.ANIMATION_TIME,
+                           transition: "easeOutQuad"
+                         });
+
+        for (let i = 1; i < this._windows.length; i++) {
             let window = this._windows[i];
             if (window.cloneTitle)
                 window.cloneTitle.hide();
             Tweener.addTween(window,
-                             { x: this.fullSizeX + window.origX,
-                               y: this.fullSizeY + window.origY,
+                             { x: window.origX,
+                               y: window.origY,
                                scale_x: 1.0,
                                scale_y: 1.0,
+                               workspace_relative: this,
                                time: Overlay.ANIMATION_TIME,
                                opacity: 255,
                                transition: "easeOutQuad"
                              });
         }
 
-        if (this._removeButton) {
-            Tweener.addTween(this._removeButton,
-                             { x: this.fullSizeX + (this._desktop.width - this._removeButton.width) / 2,
-                               y: this.fullSizeY + (this._desktop.height - this._removeButton.height) / 2,
-                               opacity: 0,
-                               time: Overlay.ANIMATION_TIME,
-                               transition: "easeOutQuad"
-                             });
-        }
-        
         this._visible = false;
     },
 
     // Animates grid shrinking/expanding when a row or column
     // of workspaces is added or removed
     resizeToGrid : function (oldScale) {
-        let me = this;
-        let rescale = this.scale / oldScale;
-
-        for (let i = 0; i < this._windows.length; i++) {
-            let newX = this.gridX + (this._windows[i].x - this._desktop.x) * rescale;
-            let newY = this.gridY + (this._windows[i].y - this._desktop.y) * rescale;
-            let newWindowScale = this._windows[i].scale_x * rescale;
-
-            let window = this._windows[i];
-            Tweener.addTween(window,
-                             { x: newX,
-                               y: newY,
-                               scale_x: newWindowScale,
-                               scale_y: newWindowScale,
-                               time: Overlay.ANIMATION_TIME,
-                               transition: "easeOutQuad",
-                               onComplete: function () {
-                                   me._adjustCloneTitle(window);
-                               }
-                             });
-
-        }
-
-        if (this._removeButton) {
-            // This gets layered on top of any already-running fade-out
-            // animation from setRemovable
-            Tweener.addTween(this._removeButton,
-                             { x: this.gridX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
-                               y: this.gridY + (this._desktop.height * this.scale - this._removeButton.height) / 2,
-                               time: Overlay.ANIMATION_TIME,
-                               transition: "easeOutQuad"
-                             });
-        }
+        Tweener.addTween(this.actor,
+                         { x: this.gridX,
+                           y: this.gridY,
+                           scale_x: this.scale,
+                           scale_y: this.scale,
+                           time: Overlay.ANIMATION_TIME,
+                           transition: "easeOutQuad"
+                         });
     },
     
     // Animates the addition of a new (empty) workspace
@@ -294,13 +254,13 @@ Workspace.prototype = {
         let global = Shell.Global.get();
 
         if (this.gridCol > this.gridRow) {
-            this._desktop.set_position(global.screen_width, this.gridY);
-            this._desktop.set_scale(oldScale, oldScale);
+            this.actor.set_position(global.screen_width, this.gridY);
+            this.actor.set_scale(oldScale, oldScale);
         } else {
-            this._desktop.set_position(this.gridX, global.screen_height);
-            this._desktop.set_scale(this.scale, this.scale);
+            this.actor.set_position(this.gridX, global.screen_height);
+            this.actor.set_scale(this.scale, this.scale);
         }
-        Tweener.addTween(this._desktop,
+        Tweener.addTween(this.actor,
                          { x: this.gridX,
                            y: this.gridY,
                            scale_x: this.scale,
@@ -309,33 +269,19 @@ Workspace.prototype = {
                            transition: "easeOutQuad"
                          });
 
-        if (this._removeButton) {
-            this._removeButton.set_position(
-                this._desktop.x + (this._desktop.width * oldScale - this._removeButton.width) / 2,
-                this._desktop.y + (this._desktop.height * oldScale - this._removeButton.height) / 2);
-            this._removeButton.set_opacity(0);
-            Tweener.addTween(this._removeButton,
-                             { x: this.gridX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
-                               y: this.gridY + (this._desktop.height * this.scale - this._removeButton.height) / 2,
-                               opacity: 255,
-                               time: Overlay.ANIMATION_TIME,
-                               transition: "easeOutQuad"
-                             });
-        }
-
         this._visible = true;
     },
     
     // Animates the removal of a workspace
     slideOut : function(onComplete) {
         let global = Shell.Global.get();
-        let destX = this._desktop.x, destY = this._desktop.y;
+        let destX = this.actor.x, destY = this.actor.y;
 
         if (this.gridCol > this.gridRow)
             destX = global.screen_width;
         else
             destY = global.screen_height;
-        Tweener.addTween(this._desktop,
+        Tweener.addTween(this.actor,
                          { x: destX,
                            y: destY,
                            scale_x: this.scale,
@@ -344,17 +290,6 @@ Workspace.prototype = {
                            transition: "easeOutQuad",
                            onComplete: onComplete
                          });
-
-        if (this._removeButton) {
-            // This gets layered on top of any already-running fade-out
-            // animation from setRemovable()
-            Tweener.addTween(this._removeButton,
-                             { x: destX + (this._desktop.width * this.scale - this._removeButton.width) / 2,
-                               y: destY + (this._desktop.height * this.scale - this._removeButton.height) / 2,
-                               time: Overlay.ANIMATION_TIME,
-                               transition: "easeOutQuad"
-                             });
-        }
 
         this._visible = false;
     },
@@ -436,10 +371,13 @@ Workspace.prototype = {
     },
     
     _cloneEnter: function (clone, event) {
+        if (Tweener.getTweenCount(this.actor))
+            return;
+
         if (!clone.cloneTitle)
             this._createCloneTitle(clone);
-    	clone.cloneTitle.show();            
         this._adjustCloneTitle(clone);
+    	clone.cloneTitle.show();            
     	if (!this._overlappedMode)
     	    return;
     	if (clone.index != this._windows.length-1) {
@@ -449,6 +387,8 @@ Workspace.prototype = {
     },
     
     _cloneLeave: function (clone, event) {
+        if (!clone.cloneTitle)
+            return;
         clone.cloneTitle.hide();
     	if (!this._overlappedMode)
     	    return;    	
@@ -467,7 +407,7 @@ Workspace.prototype = {
                                corner_radius: 5,
                                padding: 4,
                                spacing: 4,
-                               orientation: Big.BoxOrientation.HORIZONTAL});        
+                               orientation: Big.BoxOrientation.HORIZONTAL});
         
         let icon = window.meta_window.mini_icon;
         let iconTexture = new Clutter.Texture({ x: clone.x,
@@ -480,24 +420,30 @@ Workspace.prototype = {
                                        font_name: "Sans 12",
                                        text: window.meta_window.title,
                                        ellipsize: Pango.EllipsizeMode.END});
-        box.append(title, Big.BoxPackFlags.EXPAND);                                       
+        box.append(title, Big.BoxPackFlags.EXPAND);
         // Get and cache the expected width (just the icon), with spacing, plus title
         box.fullWidth = box.width;
         box.hide(); // Hidden by default, show on mouseover
         clone.cloneTitle = box;        
         
-        let parent = clone.get_parent();        
-        parent.add_actor(box);
+        this.actor.add_actor(box);
     },
 
     _adjustCloneTitle : function (clone) {
-        let transformed = clone.get_transformed_size();
         let title = clone.cloneTitle;
         if (!title)
             return;    
-        title.width = Math.min(title.fullWidth, transformed[0]);
-        let xoff = (transformed[0] - title.width)/2;
-        title.set_position(clone.x+xoff, clone.y);
+
+        let transformed = clone.get_transformed_size();
+        let cloneWidth = transformed[0];
+
+        // Set the title scale to the inverse of this.actor's scale;
+        // this means its scale is 1.0 with respect to the stage
+        // (and thus, in the same units as cloneWidth).
+        title.set_scale(1.0 / this.scale, 1.0 / this.scale);
+        title.width = Math.min(title.fullWidth, cloneWidth);
+        let xoff = ((cloneWidth - title.width) / 2) / this.scale;
+        title.set_position(clone.x + xoff, clone.y);
     },
 
     _activateWindow : function(w, time) {
@@ -780,3 +726,32 @@ Workspaces.prototype = {
         global.screen.append_new_workspace(false, event.get_time());
     }
 };
+
+// Create a SpecialPropertyModifier to let us move windows in a
+// straight line on the screen even though their containing workspace
+// is also moving.
+Tweener.registerSpecialPropertyModifier("workspace_relative", _workspace_relative_modifier, _workspace_relative_get);
+
+function _workspace_relative_modifier(workspace) {
+    let endX, endY;
+
+    if (workspace.actor.x == workspace.fullSizeX) {
+        endX = workspace.gridX;
+        endY = workspace.gridY;
+    } else {
+        endX = workspace.fullSizeX;
+        endY = workspace.fullSizeY;
+    }
+
+    return [ { name: "x",
+               parameters: { begin: workspace.actor.x, end: endX,
+                             cur: function() { return workspace.actor.x; } } },
+             { name: "y",
+               parameters: { begin: workspace.actor.y, end: endY,
+                             cur: function() { return workspace.actor.y; } } }
+           ];
+}
+
+function _workspace_relative_get(begin, end, time, params) {
+    return (begin + params.begin) + time * (end + params.end - (begin + params.begin)) - params.cur();
+}
