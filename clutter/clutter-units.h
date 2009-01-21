@@ -131,8 +131,19 @@ typedef float ClutterUnit;
  */
 #define CLUTTER_UNITS_FROM_POINTS(x)    (clutter_units_pt (x))
 
+/**
+ * CLUTTER_UNITS_FROM_EM:
+ * @x: a value in em
+ *
+ * Converts a value in em into #ClutterUnit<!-- -->s
+ *
+ * Since: 1.0
+ */
+#define CLUTTER_UNITS_FROM_EM(x)        (clutter_units_em (x))
+
 ClutterUnit clutter_units_mm (gdouble mm);
 ClutterUnit clutter_units_pt (gdouble pt);
+ClutterUnit clutter_units_em (gdouble em);
 
 #define CLUTTER_TYPE_UNIT                 (clutter_unit_get_type ())
 #define CLUTTER_TYPE_PARAM_UNIT           (clutter_param_unit_get_type ())

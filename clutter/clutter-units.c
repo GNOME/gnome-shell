@@ -153,6 +153,56 @@ clutter_units_pt (gdouble pt)
   return pt * dpi / 72.0;
 }
 
+/**
+ * clutter_units_em:
+ * @em: em to convert
+ *
+ * Converts a value in em to #ClutterUnit<!-- -->s at the
+ * current DPI.
+ *
+ * Return value: the value in units
+ *
+ * Since: 1.0
+ */
+ClutterUnit
+clutter_units_em (gdouble em)
+{
+  ClutterBackend *backend;
+  const gchar *font_name;
+  gdouble dpi;
+  ClutterUnit retval = 0;
+
+  backend = clutter_get_default_backend ();
+
+  dpi = clutter_backend_get_resolution (backend);
+  font_name = clutter_backend_get_font_name (backend);
+  if (G_LIKELY ((font_name && *font_name != '\0')))
+    {
+      PangoFontDescription *font_desc;
+      gdouble font_size = 0;
+
+      font_desc = pango_font_description_from_string (font_name);
+      if (G_LIKELY (font_desc != NULL))
+        {
+          gint pango_size;
+          gboolean is_absolute;
+
+          pango_size = pango_font_description_get_size (font_desc);
+          is_absolute =
+            pango_font_description_get_size_is_absolute (font_desc);
+          if (!is_absolute)
+            font_size = ((gdouble) font_size) / PANGO_SCALE;
+
+          pango_font_description_free (font_desc);
+        }
+
+      /* 10 points at 96 DPI is 12 pixels */
+      retval = 1.2 * font_size * dpi / 96.0;
+    }
+
+  return retval;
+}
+
 static GTypeInfo _info = {
  0,
  NULL,
