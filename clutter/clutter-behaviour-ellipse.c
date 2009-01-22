@@ -104,7 +104,7 @@ typedef struct _knot3d
 
 static void
 clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
-                                   float             angle,
+                                   float                    angle,
                                    knot3d                  *knot)
 {
   ClutterBehaviourEllipsePrivate *priv = e->priv;
@@ -166,7 +166,7 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
   knot->y = y;
   knot->z = z;
 
-  CLUTTER_NOTE (BEHAVIOUR, "advancing to angle %d [%d, %d] (a: %d, b: %d)",
+  CLUTTER_NOTE (BEHAVIOUR, "advancing to angle %.2f [%d, %d] (a: %d, b: %d)",
                 angle,
                 knot->x, knot->y,
                 priv->a, priv->b);
