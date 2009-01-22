@@ -1442,7 +1442,7 @@ clutter_texture_async_load_complete (ClutterTexture *self,
         waste = priv->max_tile_waste;
 
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
-        flags != COGL_TEXTURE_AUTO_MIPMAP;
+        flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
       handle = cogl_texture_new_from_bitmap (priv->load_bitmap,
                                              waste, flags,
