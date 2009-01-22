@@ -3082,6 +3082,9 @@ clutter_actor_destroy (ClutterActor *self)
  *
  * Applications rarely need to call this, as redraws are handled
  * automatically by modification functions.
+ *
+ * This function will not do anything if @self is not visible, or
+ * if the actor is inside an invisible part of the scenegraph.
  */
 void
 clutter_actor_queue_redraw (ClutterActor *self)
@@ -3090,7 +3093,16 @@ clutter_actor_queue_redraw (ClutterActor *self)
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  /* FIXME: should we check we're visible here? */
+  /* short-circuit the trivial case */
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    return;
+
+  /* check if any part of the scenegraph we're in
+   * is not visible
+   */
+  if (!clutter_actor_get_paint_visibility (self))
+    return;
+
   if ((stage = clutter_actor_get_stage (self)) != NULL)
     clutter_stage_queue_redraw (CLUTTER_STAGE (stage));
 }
