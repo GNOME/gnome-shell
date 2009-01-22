@@ -142,6 +142,10 @@ AppDisplay.prototype = {
         let apps = Gio.app_info_get_all();
         for (let i = 0; i < apps.length; i++) {
             let appInfo = apps[i];
+            
+            if (!appInfo.should_show())
+                continue;
+            
             let appId = appInfo.get_id();
             this._allItems[appId] = appInfo;
             // [] is returned if we could not get the categories or the list of categories was empty
@@ -195,10 +199,14 @@ AppDisplay.prototype = {
                 return true;
         }
 
-        let exec = itemInfo.get_executable().toLowerCase();
-        if (exec.indexOf(search) >= 0)
-            return true;
-        
+        if (itemInfo.get_executable() == null) {
+            log("Missing an executable for " + itemInfo.get_name());
+        } else {
+            let exec = itemInfo.get_executable().toLowerCase();
+            if (exec.indexOf(search) >= 0)
+                return true;
+        }
+
         // we expect this._categories.hasOwnProperty(itemInfo.get_id()) to always be true here     
         let categories = this._categories[itemInfo.get_id()]; 
         for (let i = 0; i < categories.length; i++) {

@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Shell = imports.gi.Shell;
+const Gio = imports.gi.Gio;
 const Signals = imports.signals;
 const Mainloop = imports.mainloop;
 const Tweener = imports.tweener.tweener;
@@ -104,7 +105,9 @@ Signals.addSignalMethods(ClutterFrameTicker.prototype);
 
 function start() {
     let global = Shell.Global.get();
-    
+
+    Gio.DesktopAppInfo.set_desktop_env("GNOME");
+
     global.grab_dbus_service();
     global.start_task_panel();
 

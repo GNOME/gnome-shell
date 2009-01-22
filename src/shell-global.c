@@ -378,7 +378,7 @@ shell_get_categories_for_desktop_file(const char *desktop_file_name)
                                                  &error);
         if (error != NULL)
           {
-            g_warning ("Error when getting 'Categories' from a key file %s: %s", desktop_file_name, error->message);
+            // "Categories" is not a required key in the desktop files, so it's ok if we didn't find it
             g_clear_error (&error);
           } 
       }
