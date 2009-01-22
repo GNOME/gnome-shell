@@ -225,7 +225,7 @@ make_texture (void)
   tex = cogl_texture_new_from_data (TEXTURE_SIZE,
                                     TEXTURE_SIZE,
                                     8,
-                                    FALSE,
+                                    COGL_TEXTURE_NONE,
                                     COGL_PIXEL_FORMAT_RGBA_8888,
                                     COGL_PIXEL_FORMAT_ANY,
                                     TEXTURE_SIZE * 4,
