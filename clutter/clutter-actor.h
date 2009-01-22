@@ -526,6 +526,7 @@ void     clutter_actor_move_anchor_point              (ClutterActor   *self,
 void     clutter_actor_get_anchor_point               (ClutterActor   *self,
                                                        gint           *anchor_x,
                                                        gint           *anchor_y);
+ClutterGravity clutter_actor_get_anchor_point_gravity (ClutterActor   *self);
 void     clutter_actor_set_anchor_pointu              (ClutterActor   *self,
                                                        ClutterUnit     anchor_x,
                                                        ClutterUnit     anchor_y);

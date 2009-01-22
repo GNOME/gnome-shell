@@ -183,9 +183,32 @@
 #include "cogl/cogl.h"
 
 typedef struct _ShaderData ShaderData;
+typedef struct _AnchorCoord AnchorCoord;
 
 #define CLUTTER_ACTOR_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ACTOR, ClutterActorPrivate))
+
+/* Internal helper struct to represent a point that can be stored in
+   either direct pixel coordinates or as a fraction of the actor's
+   size. It is used for the anchor point, scale center and rotation
+   centers. */
+struct _AnchorCoord
+{
+  gboolean is_fractional;
+
+  union
+  {
+    /* Used when is_fractional == TRUE */
+    struct
+    {
+      gdouble x;
+      gdouble y;
+    } fraction;
+
+    /* Use when is_fractional == FALSE */
+    ClutterVertex units;
+  } v;
+};
 
 struct _ClutterActorPrivate
 {
@@ -244,8 +267,7 @@ struct _ClutterActorPrivate
   ClutterUnit     rzy;
 
   /* Anchor point coordinates */
-  ClutterUnit     anchor_x;
-  ClutterUnit     anchor_y;
+  AnchorCoord     anchor;
 
   /* depth */
   ClutterUnit     z;
@@ -329,6 +351,7 @@ enum
 
   PROP_ANCHOR_X,
   PROP_ANCHOR_Y,
+  PROP_ANCHOR_GRAVITY,
 
   PROP_SHOW_ON_SET_PARENT
 };
@@ -394,6 +417,38 @@ static void clutter_actor_set_natural_height_set (ClutterActor *self,
                                                   gboolean  use_natural_height);
 static void clutter_actor_set_request_mode       (ClutterActor *self,
                                                   ClutterRequestMode mode);
+
+/* Helper routines for managing anchor coords */
+static void clutter_anchor_coord_get_units (ClutterActor *self,
+                                            const AnchorCoord *coord,
+                                            ClutterUnit *x,
+                                            ClutterUnit *y,
+                                            ClutterUnit *z);
+static void clutter_anchor_coord_set_units (AnchorCoord *coord,
+                                            ClutterUnit x,
+                                            ClutterUnit y,
+                                            ClutterUnit z);
+static ClutterGravity clutter_anchor_coord_get_gravity (AnchorCoord *coord);
+static void clutter_anchor_coord_set_gravity (AnchorCoord *coord,
+                                              ClutterGravity gravity);
+static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
+
+/* Helper macro which translates by the anchor coord, applies the
+   given transformation and then translates back */
+#define TRANSFORM_ABOUT_ANCHOR_COORD(actor, coord, transform)   \
+  do                                                            \
+    {                                                           \
+      ClutterUnit __tx, __ty, __tz;                             \
+      clutter_anchor_coord_get_units ((actor), (coord),         \
+                                      &__tx, &__ty, &__tz);     \
+      cogl_translate (CLUTTER_UNITS_TO_FLOAT (__tx),            \
+                      CLUTTER_UNITS_TO_FLOAT (__ty),            \
+                      CLUTTER_UNITS_TO_FLOAT (__tz));           \
+      (transform);                                              \
+      cogl_translate (-CLUTTER_UNITS_TO_FLOAT (__tx),           \
+                      -CLUTTER_UNITS_TO_FLOAT (__ty),           \
+                      -CLUTTER_UNITS_TO_FLOAT (__tz));          \
+    } while (0)
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   clutter_actor,
@@ -1410,10 +1465,12 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
 		       CLUTTER_UNITS_TO_FLOAT (-(priv->z + priv->rxz)));
     }
 
-  if (!is_stage && (priv->anchor_x || priv->anchor_y))
-    cogl_translate (CLUTTER_UNITS_TO_FLOAT (-priv->anchor_x),
-		     CLUTTER_UNITS_TO_FLOAT (-priv->anchor_y),
-		     0);
+  if (!is_stage && !clutter_anchor_coord_is_zero (&priv->anchor))
+    {
+      ClutterUnit x, y, z;
+      clutter_anchor_coord_get_units (self, &priv->anchor, &x, &y, &z);
+      cogl_translate (-x, -y, -z);
+    }
 
   if (priv->z)
     cogl_translate (0, 0, priv->z);
@@ -1776,18 +1833,30 @@ clutter_actor_set_property (GObject      *object,
     case PROP_ANCHOR_X:
       {
 	int anchor_x = g_value_get_int (value);
+        ClutterUnit anchor_y;
+
+        clutter_anchor_coord_get_units (actor, &priv->anchor,
+                                        NULL, &anchor_y, NULL);
 	clutter_actor_set_anchor_pointu (actor,
 					 CLUTTER_UNITS_FROM_DEVICE (anchor_x),
-					 priv->anchor_y);
+					 anchor_y);
       }
       break;
     case PROP_ANCHOR_Y:
       {
-	int anchor_y = g_value_get_int (value);
+	ClutterUnit anchor_x;
+        int anchor_y = g_value_get_int (value);
+
+        clutter_anchor_coord_get_units (actor, &priv->anchor,
+                                        &anchor_x, NULL, NULL);
 	clutter_actor_set_anchor_pointu (actor,
-					 priv->anchor_x,
+					 anchor_x,
 					 CLUTTER_UNITS_FROM_DEVICE (anchor_y));
       }
+      break;
+    case PROP_ANCHOR_GRAVITY:
+      clutter_actor_set_anchor_point_from_gravity (actor,
+                                                   g_value_get_enum (value));
       break;
     case PROP_SHOW_ON_SET_PARENT:
       priv->show_on_set_parent = g_value_get_boolean (value);
@@ -1940,10 +2009,23 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
     case PROP_ANCHOR_X:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE (priv->anchor_x));
+      {
+        ClutterUnit anchor_x;
+        clutter_anchor_coord_get_units (actor, &priv->anchor,
+                                        &anchor_x, NULL, NULL);
+        g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE (anchor_x));
+      }
       break;
     case PROP_ANCHOR_Y:
-      g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE (priv->anchor_y));
+      {
+        ClutterUnit anchor_y;
+        clutter_anchor_coord_get_units (actor, &priv->anchor,
+                                        NULL, &anchor_y, NULL);
+        g_value_set_int (value, CLUTTER_UNITS_TO_DEVICE (anchor_y));
+      }
+      break;
+    case PROP_ANCHOR_GRAVITY:
+      g_value_set_enum (value, clutter_actor_get_anchor_point_gravity (actor));
       break;
     case PROP_SHOW_ON_SET_PARENT:
       g_value_set_boolean (value, priv->show_on_set_parent);
@@ -2010,6 +2092,7 @@ static void
 clutter_actor_class_init (ClutterActorClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
   object_class->set_property = clutter_actor_set_property;
   object_class->get_property = clutter_actor_get_property;
@@ -2600,6 +2683,22 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					  -G_MAXINT, G_MAXINT,
                                           0,
 					  CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterActor:anchor-gravity:
+   *
+   * The anchor point expressed as a #ClutterGravity.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_enum ("anchor-gravity",
+                             "Anchor-Gravity",
+                             "The anchor point as a ClutterGravity",
+                             CLUTTER_TYPE_GRAVITY,
+                             CLUTTER_GRAVITY_NONE,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class,
+                                   PROP_ANCHOR_GRAVITY, pspec);
 
   /**
    * ClutterActor:show-on-set-parent:
@@ -6241,24 +6340,11 @@ clutter_actor_move_anchor_point (ClutterActor *self,
 				 gint          anchor_x,
 				 gint          anchor_y)
 {
-  ClutterActorPrivate *priv;
-  ClutterUnit ax = CLUTTER_UNITS_FROM_DEVICE (anchor_x);
-  ClutterUnit ay = CLUTTER_UNITS_FROM_DEVICE (anchor_y);
-  ClutterUnit dx;
-  ClutterUnit dy;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
-
-  dx = ax - priv->anchor_x;
-  dy = ay - priv->anchor_y;
-
-  priv->anchor_x = ax;
-  priv->anchor_y = ay;
-
-  if (priv->position_set)
-    clutter_actor_move_byu (self, dx, dy);
+  clutter_actor_move_anchor_pointu (self,
+                                    CLUTTER_UNITS_FROM_DEVICE (anchor_x),
+                                    CLUTTER_UNITS_FROM_DEVICE (anchor_y));
 }
 
 /**
@@ -6277,16 +6363,19 @@ clutter_actor_get_anchor_point (ClutterActor *self,
                                 gint         *anchor_y)
 {
   ClutterActorPrivate *priv;
+  ClutterUnit xu, yu;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
 
+  clutter_anchor_coord_get_units (self, &priv->anchor, &xu, &yu, NULL);
+
   if (anchor_x)
-    *anchor_x = CLUTTER_UNITS_TO_DEVICE (priv->anchor_x);
+    *anchor_x = CLUTTER_UNITS_TO_DEVICE (xu);
 
   if (anchor_y)
-    *anchor_y = CLUTTER_UNITS_TO_DEVICE (priv->anchor_y);
+    *anchor_y = CLUTTER_UNITS_TO_DEVICE (yu);
 }
 
 /**
@@ -6309,6 +6398,7 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
 {
   ClutterActorPrivate *priv;
   gboolean changed = FALSE;
+  ClutterUnit old_anchor_x, old_anchor_y;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -6316,24 +6406,42 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
 
   g_object_freeze_notify (G_OBJECT (self));
 
-  if (priv->anchor_x != anchor_x)
+  clutter_anchor_coord_get_units (self, &priv->anchor,
+                                  &old_anchor_x, &old_anchor_y, NULL);
+
+  if (priv->anchor.is_fractional)
+    g_object_notify (G_OBJECT (self), "anchor-gravity");
+
+  if (old_anchor_x != anchor_x)
     {
-      priv->anchor_x = anchor_x;
       g_object_notify (G_OBJECT (self), "anchor-x");
       changed = TRUE;
     }
 
-  if (priv->anchor_y != anchor_y)
+  if (old_anchor_y != anchor_y)
     {
-      priv->anchor_y = anchor_y;
       g_object_notify (G_OBJECT (self), "anchor-y");
       changed = TRUE;
     }
+
+  clutter_anchor_coord_set_units (&priv->anchor, anchor_x, anchor_y, 0);
 
   g_object_thaw_notify (G_OBJECT (self));
 
   if (changed && CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);
+}
+
+ClutterGravity
+clutter_actor_get_anchor_point_gravity (ClutterActor *self)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_GRAVITY_NONE);
+
+  priv = self->priv;
+
+  return clutter_anchor_coord_get_gravity (&priv->anchor);
 }
 
 /**
@@ -6353,21 +6461,25 @@ clutter_actor_move_anchor_pointu (ClutterActor *self,
 				  ClutterUnit   anchor_y)
 {
   ClutterActorPrivate *priv;
-  ClutterUnit dx;
-  ClutterUnit dy;
+  ClutterUnit old_anchor_x, old_anchor_y;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
 
-  dx = anchor_x - priv->anchor_x;
-  dy = anchor_y - priv->anchor_y;
+  clutter_anchor_coord_get_units (self, &priv->anchor,
+                                  &old_anchor_x, &old_anchor_y, NULL);
 
-  priv->anchor_x = anchor_x;
-  priv->anchor_y = anchor_y;
+  g_object_freeze_notify (G_OBJECT (self));
+
+  clutter_actor_set_anchor_point (self, anchor_x, anchor_y);
 
   if (priv->position_set)
-    clutter_actor_move_byu (self, dx, dy);
+    clutter_actor_move_byu (self,
+                            anchor_x - old_anchor_x,
+                            anchor_y - old_anchor_y);
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -6391,11 +6503,8 @@ clutter_actor_get_anchor_pointu (ClutterActor *self,
 
   priv = self->priv;
 
-  if (anchor_x)
-    *anchor_x = priv->anchor_x;
-
-  if (anchor_y)
-    *anchor_y = priv->anchor_y;
+  clutter_anchor_coord_get_units (self, &priv->anchor,
+                                  anchor_x, anchor_y, NULL);
 }
 
 /**
@@ -6419,25 +6528,27 @@ void
 clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
 					      ClutterGravity  gravity)
 {
-  ClutterUnit ax, ay, dx, dy;
+  ClutterUnit old_anchor_x, old_anchor_y, new_anchor_x, new_anchor_y;
   ClutterActorPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
 
-  ax = priv->anchor_x;
-  ay = priv->anchor_y;
+  g_object_freeze_notify (G_OBJECT (self));
 
+  clutter_anchor_coord_get_units (self, &priv->anchor,
+                                  &old_anchor_x, &old_anchor_y, NULL);
   clutter_actor_set_anchor_point_from_gravity (self, gravity);
-
-  dx = priv->anchor_x - ax;
-  dy = priv->anchor_y - ay;
+  clutter_anchor_coord_get_units (self, &priv->anchor,
+                                  &new_anchor_x, &new_anchor_y, NULL);
 
   if (priv->position_set)
-    {
-      clutter_actor_move_byu (self, dx, dy);
-    }
+    clutter_actor_move_byu (self,
+                            new_anchor_x - old_anchor_x,
+                            new_anchor_y - old_anchor_y);
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -6460,53 +6571,18 @@ void
 clutter_actor_set_anchor_point_from_gravity (ClutterActor   *self,
 					     ClutterGravity  gravity)
 {
-  ClutterActorPrivate *priv;
-  ClutterUnit w, h, x, y;
-
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  priv = self->priv;
-
-  x = 0;
-  y = 0;
-  clutter_actor_get_sizeu (self, &w, &h);
-
-  switch (gravity)
+  if (gravity == CLUTTER_GRAVITY_NONE)
+    clutter_actor_set_anchor_point (self, 0, 0);
+  else
     {
-    case CLUTTER_GRAVITY_NORTH:
-      x = w / 2;
-      break;
-    case CLUTTER_GRAVITY_SOUTH:
-      x = w / 2;
-      y = h;
-      break;
-    case CLUTTER_GRAVITY_EAST:
-      x = w;
-      y = h / 2;
-      break;
-    case CLUTTER_GRAVITY_NORTH_EAST:
-      x = w;
-      break;
-    case CLUTTER_GRAVITY_SOUTH_EAST:
-      x = w;
-      y = h;
-      break;
-    case CLUTTER_GRAVITY_SOUTH_WEST:
-      y = h;
-      break;
-    case CLUTTER_GRAVITY_WEST:
-      y = h / 2;
-      break;
-    case CLUTTER_GRAVITY_CENTER:
-      x = w / 2;
-      y = h / 2;
-      break;
-    case CLUTTER_GRAVITY_NONE:
-    case CLUTTER_GRAVITY_NORTH_WEST:
-      break;
-    }
+      clutter_anchor_coord_set_gravity (&self->priv->anchor, gravity);
 
-  clutter_actor_set_anchor_pointu (self, x, y);
+      g_object_notify (G_OBJECT (self), "anchor-gravity");
+      g_object_notify (G_OBJECT (self), "anchor-x");
+      g_object_notify (G_OBJECT (self), "anchor-y");
+    }
 }
 
 typedef enum
@@ -7776,4 +7852,163 @@ clutter_actor_create_pango_context (ClutterActor *self)
   retval = _clutter_context_create_pango_context (ctx);
 
   return retval;
+}
+
+static void
+clutter_anchor_coord_get_units (ClutterActor      *self,
+                                const AnchorCoord *coord,
+                                ClutterUnit       *x,
+                                ClutterUnit       *y,
+                                ClutterUnit       *z)
+{
+  if (G_UNLIKELY (coord->is_fractional))
+    {
+      ClutterUnit actor_width, actor_height;
+
+      clutter_actor_get_sizeu (self, &actor_width, &actor_height);
+
+      if (x)
+        *x = actor_width * coord->v.fraction.x;
+      if (y)
+        *y = actor_height * coord->v.fraction.y;
+      if (z)
+        *z = 0;
+    }
+  else
+    {
+      if (x)
+        *x = coord->v.units.x;
+      if (y)
+        *y = coord->v.units.y;
+      if (z)
+        *z = coord->v.units.z;
+    }
+}
+
+static void
+clutter_anchor_coord_set_units (AnchorCoord            *coord,
+                                ClutterUnit             x,
+                                ClutterUnit             y,
+                                ClutterUnit             z)
+{
+  coord->is_fractional = FALSE;
+  coord->v.units.x = x;
+  coord->v.units.y = y;
+  coord->v.units.z = z;
+}
+
+static ClutterGravity
+clutter_anchor_coord_get_gravity (AnchorCoord *coord)
+{
+  if (coord->is_fractional)
+    {
+      if (coord->v.fraction.x == 0.0)
+        {
+          if (coord->v.fraction.y == 0.0)
+            return CLUTTER_GRAVITY_NORTH_WEST;
+          else if (coord->v.fraction.y == 0.5)
+            return CLUTTER_GRAVITY_WEST;
+          else if (coord->v.fraction.y == 1.0)
+            return CLUTTER_GRAVITY_SOUTH_WEST;
+          else
+            return CLUTTER_GRAVITY_NONE;
+        }
+      else if (coord->v.fraction.x == 0.5)
+        {
+          if (coord->v.fraction.y == 0.0)
+            return CLUTTER_GRAVITY_NORTH;
+          else if (coord->v.fraction.y == 0.5)
+            return CLUTTER_GRAVITY_CENTER;
+          else if (coord->v.fraction.y == 1.0)
+            return CLUTTER_GRAVITY_SOUTH;
+          else
+            return CLUTTER_GRAVITY_NONE;
+        }
+      else if (coord->v.fraction.x == 1.0)
+        {
+          if (coord->v.fraction.y == 0.0)
+            return CLUTTER_GRAVITY_NORTH_EAST;
+          else if (coord->v.fraction.y == 0.5)
+            return CLUTTER_GRAVITY_EAST;
+          else if (coord->v.fraction.y == 1.0)
+            return CLUTTER_GRAVITY_SOUTH_EAST;
+          else
+            return CLUTTER_GRAVITY_NONE;
+        }
+      else
+        return CLUTTER_GRAVITY_NONE;
+    }
+  else
+    return CLUTTER_GRAVITY_NONE;
+}
+
+static void
+clutter_anchor_coord_set_gravity (AnchorCoord *coord,
+                                  ClutterGravity gravity)
+{
+  switch (gravity)
+    {
+    case CLUTTER_GRAVITY_NORTH:
+      coord->v.fraction.x = 0.5;
+      coord->v.fraction.y = 0.0;
+      break;
+
+    case CLUTTER_GRAVITY_NORTH_EAST:
+      coord->v.fraction.x = 1.0;
+      coord->v.fraction.y = 0.0;
+      break;
+
+    case CLUTTER_GRAVITY_EAST:
+      coord->v.fraction.x = 1.0;
+      coord->v.fraction.y = 0.5;
+      break;
+
+    case CLUTTER_GRAVITY_SOUTH_EAST:
+      coord->v.fraction.x = 1.0;
+      coord->v.fraction.y = 1.0;
+      break;
+
+    case CLUTTER_GRAVITY_SOUTH:
+      coord->v.fraction.x = 0.5;
+      coord->v.fraction.y = 1.0;
+      break;
+
+    case CLUTTER_GRAVITY_SOUTH_WEST:
+      coord->v.fraction.x = 0.0;
+      coord->v.fraction.y = 1.0;
+      break;
+
+    case CLUTTER_GRAVITY_WEST:
+      coord->v.fraction.x = 0.0;
+      coord->v.fraction.y = 0.5;
+      break;
+
+    case CLUTTER_GRAVITY_NORTH_WEST:
+      coord->v.fraction.x = 0.0;
+      coord->v.fraction.y = 0.0;
+      break;
+
+    case CLUTTER_GRAVITY_CENTER:
+      coord->v.fraction.x = 0.5;
+      coord->v.fraction.y = 0.5;
+      break;
+
+    default:
+      coord->v.fraction.x = 0.0;
+      coord->v.fraction.y = 0.0;
+      break;
+    }
+
+  coord->is_fractional = TRUE;
+}
+
+static gboolean
+clutter_anchor_coord_is_zero (const AnchorCoord *coord)
+{
+  if (coord->is_fractional)
+    return coord->v.fraction.x == 0.0 && coord->v.fraction.y == 0.0;
+  else
+    return (coord->v.units.x == 0.0
+            && coord->v.units.y == 0.0
+            && coord->v.units.z == 0.0);
 }
