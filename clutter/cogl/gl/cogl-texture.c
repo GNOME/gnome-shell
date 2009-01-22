@@ -2072,8 +2072,8 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   tw = (float)(tex->bitmap.width);
   th = (float)(tex->bitmap.height);
 
-  tqx = (x2 - x1 / (tw * (tx2 - tx1)));
-  tqy = (y2 - y1 / (th * (ty2 - ty1)));
+  tqx = (x2 - x1) / (tw * (tx2 - tx1));
+  tqy = (y2 - y1) / (th * (ty2 - ty1));
 
   /* Integral texture coordinate for first tile */
   first_tx = (float)(floorf (tx1));
@@ -2088,8 +2088,8 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   ty2 = (ty2 * th);
 
   /* Quad coordinate of the first tile */
-  first_qx = x1 - (tx1 - first_tx * tqx);
-  first_qy = y1 - (ty1 - first_ty * tqy);
+  first_qx = x1 - (tx1 - first_tx) * tqx;
+  first_qy = y1 - (ty1 - first_ty) * tqy;
 
 
   /* Iterate until whole quad height covered */
@@ -2102,11 +2102,9 @@ _cogl_texture_quad_sw (CoglTexture *tex,
       if (!iter_y.intersects) continue;
 
       /* Span-quad intersection in quad coordinates */
-      slice_qy1 = first_qy +
-	(iter_y.intersect_start - first_ty * tqy);
+      slice_qy1 = first_qy + (iter_y.intersect_start - first_ty) * tqy;
 
-      slice_qy2 = first_qy +
-	(iter_y.intersect_end - first_ty * tqy);
+      slice_qy2 = first_qy + (iter_y.intersect_end - first_ty) * tqy;
 
       /* Localize slice texture coordinates */
       slice_ty1 = iter_y.intersect_start - iter_y.pos;
@@ -2130,11 +2128,9 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 	  if (!iter_x.intersects) continue;
 
 	  /* Span-quad intersection in quad coordinates */
-	  slice_qx1 = first_qx +
-	    (iter_x.intersect_start - first_tx * tqx);
+	  slice_qx1 = first_qx + (iter_x.intersect_start - first_tx) * tqx;
 
-	  slice_qx2 = first_qx +
-	    (iter_x.intersect_end - first_tx * tqx);
+	  slice_qx2 = first_qx + (iter_x.intersect_end - first_tx) * tqx;
 
 	  /* Localize slice texture coordinates */
 	  slice_tx1 = iter_x.intersect_start - iter_x.pos;
