@@ -615,8 +615,8 @@ cogl_viewport (guint width,
 }
 
 void
-cogl_setup_viewport (guint        w,
-		     guint        h,
+cogl_setup_viewport (guint w,
+		     guint h,
 		     float fovy,
 		     float aspect,
 		     float z_near,
@@ -625,6 +625,7 @@ cogl_setup_viewport (guint        w,
   gint width = (gint) w;
   gint height = (gint) h;
   float z_camera;
+  float projection_matrix[16];
   
   GE( glViewport (0, 0, width, height) );
 
@@ -634,24 +635,16 @@ cogl_setup_viewport (guint        w,
 
   cogl_perspective (fovy, aspect, z_near, z_far);
   
-  GE( cogl_wrap_glLoadIdentity () );
-
   /*
-   * camera distance from screen, 0.5 * tan (FOV)
+   * camera distance from screen
    *
    * See comments in ../gl/cogl.c
    */
-#define DEFAULT_Z_CAMERA 0.869f
-  z_camera =  (DEFAULT_Z_CAMERA);
 
-  if (fovy != 60.0)
-    {
-      float fovy_rad = (fovy * G_PI) / 180;
+  cogl_get_projection_matrix (projection_matrix);
+  z_camera = 0.5 * projection_matrix[0];
 
-      z_camera = (sinf (fovy_rad) / cosf (fovy_rad)) / 2;
-    }
-  
-
+  GE( cogl_wrap_glLoadIdentity () );
 
   GE( cogl_wrap_glTranslatef (-0.5f, -0.5f, -z_camera) );
 
