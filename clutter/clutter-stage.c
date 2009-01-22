@@ -769,7 +769,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   stage_signals[QUEUE_REDRAW] =
     g_signal_new (I_("queue-redraw"),
 		  G_TYPE_FROM_CLASS (gobject_class),
-		  G_SIGNAL_RUN_FIRST,
+		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterStageClass, queue_redraw),
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
