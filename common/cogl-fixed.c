@@ -10,10 +10,12 @@
  *
  * Currently contains 257 entries.
  *
- * The current error (compared to system sin) is about
- * 0.5% for values near the start of the table where the
- * curve is steep, but improving rapidly. If this precision
- * is not enough, we can increase the size of the table
+ * The current maximum absolute error is about 1.9e-0.5
+ * and is greatest around pi/2 where the second derivative
+ * of sin(x) is greatest. If greater accuracy is needed,
+ * modestly increasing the table size, or maybe using
+ * quadratic interpolation would drop the interpolation
+ * error below the precision limits of CoglFixed.
  */
 static const CoglFixed sin_tbl[] =
 {
@@ -270,7 +272,7 @@ static const CoglFixed sqrt_tbl[] =
 /* the difference of the angle for two adjacent values in the
  * sin_tbl table, expressed as CoglFixed number
  */
-#define COGL_SIN_STEP 0x00000192
+static const gint sin_tbl_size = G_N_ELEMENTS (sin_tbl) - 1;
 
 static const double _magic = 68719476736.0 * 1.5;
 
@@ -363,7 +365,9 @@ CoglFixed
 cogl_fixed_sin (CoglFixed angle)
 {
   int sign = 1, indx1, indx2;
-  CoglFixed low, high, d1, d2;
+  CoglFixed low, high;
+  CoglFixed p1, p2;
+  CoglFixed d1, d2;
 
   /* convert negative angle to positive + sign */
   if ((int) angle < 0)
@@ -401,14 +405,17 @@ cogl_fixed_sin (CoglFixed angle)
     }
 
   /* Calculate indices of the two nearest values in our table
-   * and return weighted average
+   * and return weighted average.
+   *
+   * We multiple first than divide to preserve precision. Since
+   * angle is in the first quadrant, angle * SIN_TBL_SIZE (=256)
+   * can't overflow.
    *
    * Handle the end of the table gracefully
    */
-  indx1 = COGL_FIXED_DIV (angle, COGL_SIN_STEP);
-  indx1 = COGL_FIXED_TO_INT (indx1);
+  indx1 = (angle * sin_tbl_size) / COGL_FIXED_PI_2;
 
-  if (indx1 == (G_N_ELEMENTS (sin_tbl) - 1))
+  if (indx1 == sin_tbl_size)
     {
       indx2 = indx1;
       indx1 = indx2 - 1;
@@ -421,10 +428,13 @@ cogl_fixed_sin (CoglFixed angle)
   low  = sin_tbl[indx1];
   high = sin_tbl[indx2];
 
-  d1 = angle - indx1 * COGL_SIN_STEP;
-  d2 = indx2 * COGL_SIN_STEP - angle;
+  /* Again multiply the divide; no danger of overflow */
+  p1 = (indx1 * COGL_FIXED_PI_2) / sin_tbl_size;
+  p2 = (indx2 * COGL_FIXED_PI_2) / sin_tbl_size;
+  d1 = angle - p1;
+  d2 = p2 - angle;
 
-  angle = ((low * d2 + high * d1) / (COGL_SIN_STEP));
+  angle = ((low * d2 + high * d1) / (p2 - p1));
 
   if (sign < 0)
     angle = -angle;
