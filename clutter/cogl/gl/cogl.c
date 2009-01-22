@@ -723,37 +723,55 @@ cogl_setup_viewport (guint        width,
 		     float z_far)
 {
   GLfloat z_camera;
+  GLfloat projection_matrix[16];
 
   GE( glViewport (0, 0, width, height) );
 
   cogl_perspective (fovy, aspect, z_near, z_far);
 
-  GE( glLoadIdentity () );
-
   /*
-   * camera distance from screen, 0.5 * tan (FOV)
+   * In theory, we can compute the camera distance from screen as:
    *
-   * We have been having some problems with this; the theoretically correct
-   * value of 0.866025404f for the default 60 deg fovy angle happens to be
-   * touch to small in reality, which on full-screen stage with an actor of
-   * the same size results in about 1px on the left and top edges of the
-   * actor being offscreen. Perhaps more significantly, it also causes
-   * hinting artifacts when rendering text.
+   *   0.5 * tan (FOV)
    *
-   * So for the default 60 deg angle we worked out that the value of 0.869
-   * is giving correct stretch and no noticeable artifacts on text. Seems
-   * good on all drivers too.
+   * However, it's better to compute the z_camera from our projection
+   * matrix so that we get a 1:1 mapping at the screen distance. Consider
+   * the upper-left corner of the screen. It has object coordinates
+   * (0,0,0), so by the transform below, ends up with eye coordinate
+   *
+   *   x_eye = x_object / width - 0.5 = - 0.5
+   *   y_eye = (height - y_object) / width - 0.5 = 0.5
+   *   z_eye = z_object / width - z_camera = - z_camera
+   *
+   * From cogl_perspective(), we know that the projection matrix has
+   * the form:
+   *
+   *  (x, 0,  0, 0)
+   *  (0, y,  0, 0)
+   *  (0, 0,  c, d)
+   *  (0, 0, -1, 0)
+   *
+   * Applied to the above, we get clip coordinates of
+   *
+   *  x_clip = x * (- 0.5)
+   *  y_clip = y * 0.5
+   *  w_clip = - 1 * (- z_camera) = z_camera
+   *
+   * Dividing through by w to get normalized device coordinates, we
+   * have, x_nd = x * 0.5 / z_camera, y_nd = - y * 0.5 / z_camera.
+   * The upper left corner of the screen has normalized device coordinates,
+   * (-1, 1), so to have the correct 1:1 mapping, we have to have:
+   *
+   *   z_camera = 0.5 * x = 0.5 * y
+   *
+   * If x != y, then we have a non-uniform aspect ration, and a 1:1 mapping
+   * doesn't make sense.
    */
-#define DEFAULT_Z_CAMERA 0.869f
-  z_camera = DEFAULT_Z_CAMERA;
 
+  cogl_get_projection_matrix (projection_matrix);
+  z_camera = 0.5 * projection_matrix[0];
 
-  if (fovy != 60.0)
-  {
-    float fovy_rad = (fovy * G_PI) / 180;
-
-    z_camera = ((sinf (fovy_rad) / cosf (fovy_rad)) / 2);
-  }
+  GE( glLoadIdentity () );
 
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
   GE( glScalef ( 1.0f / width,
