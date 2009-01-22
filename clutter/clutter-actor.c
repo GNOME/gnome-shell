@@ -610,13 +610,20 @@ clutter_actor_real_pick (ClutterActor       *self,
    */
   if (clutter_actor_should_pick_paint (self))
     {
+      ClutterActorBox box = { 0, };
+      float width, height;
+
+      clutter_actor_get_allocation_box (self, &box);
+
+      width = CLUTTER_UNITS_TO_FLOAT (box.x2 - box.x1);
+      height = CLUTTER_UNITS_TO_FLOAT (box.y2 - box.y1);
+
       cogl_set_source_color4ub (color->red,
                                 color->green,
                                 color->blue,
                                 color->alpha);
-      cogl_rectangle (0, 0,
-                      clutter_actor_get_width (self),
-                      clutter_actor_get_height (self));
+
+      cogl_rectangle (0, 0, width, height);
     }
 }
 
