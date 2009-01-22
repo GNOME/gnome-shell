@@ -101,7 +101,9 @@
 #include "clutter-units.h"
 #include "clutter-private.h"
 
-#define DPI_FALLBACK    96.0
+#define DPI_FALLBACK    (96.0)
+
+#define FLOAT_EPSILON   (1e-30)
 
 /**
  * clutter_units_mm:
@@ -192,14 +194,14 @@ static GTypeFundamentalInfo _finfo = { 0, };
 static void
 clutter_value_init_unit (GValue *value)
 {
-  value->data[0].v_int = 0;
+  value->data[0].v_float = 0.0;
 }
 
 static void
 clutter_value_copy_unit (const GValue *src,
                          GValue       *dest)
 {
-  dest->data[0].v_int = src->data[0].v_int;
+  dest->data[0].v_float = src->data[0].v_float;
 }
 
 static gchar *
@@ -208,7 +210,7 @@ clutter_value_collect_unit (GValue      *value,
                             GTypeCValue *collect_values,
                             guint        collect_flags)
 {
-  value->data[0].v_int = collect_values[0].v_int;
+  value->data[0].v_float = collect_values[0].v_double;
 
   return NULL;
 }
@@ -219,13 +221,13 @@ clutter_value_lcopy_unit (const GValue *value,
                           GTypeCValue  *collect_values,
                           guint         collect_flags)
 {
-  gint32 *units_p = collect_values[0].v_pointer;
+  gfloat *units_p = collect_values[0].v_pointer;
 
   if (!units_p)
     return g_strdup_printf ("value location for `%s' passed as NULL",
                             G_VALUE_TYPE_NAME (value));
 
-  *units_p = value->data[0].v_int;
+  *units_p = value->data[0].v_float;
 
   return NULL;
 }
@@ -234,14 +236,14 @@ static void
 clutter_value_transform_unit_int (const GValue *src,
                                   GValue       *dest)
 {
-  dest->data[0].v_int = CLUTTER_UNITS_TO_INT (src->data[0].v_int);
+  dest->data[0].v_int = CLUTTER_UNITS_TO_INT (src->data[0].v_float);
 }
 
 static void
 clutter_value_transform_int_unit (const GValue *src,
                                   GValue       *dest)
 {
-  dest->data[0].v_int = CLUTTER_UNITS_FROM_INT (src->data[0].v_int);
+  dest->data[0].v_float = CLUTTER_UNITS_FROM_INT (src->data[0].v_int);
 }
 
 static const GTypeValueTable _clutter_unit_value_table = {
@@ -249,7 +251,7 @@ static const GTypeValueTable _clutter_unit_value_table = {
   NULL,
   clutter_value_copy_unit,
   NULL,
-  "i",
+  "d",
   clutter_value_collect_unit,
   "p",
   clutter_value_lcopy_unit
@@ -292,7 +294,7 @@ clutter_value_set_unit (GValue      *value,
 {
   g_return_if_fail (CLUTTER_VALUE_HOLDS_UNIT (value));
 
-  value->data[0].v_int = units;
+  value->data[0].v_float = units;
 }
 
 /**
@@ -310,7 +312,7 @@ clutter_value_get_unit (const GValue *value)
 {
   g_return_val_if_fail (CLUTTER_VALUE_HOLDS_UNIT (value), 0);
 
-  return value->data[0].v_int;
+  return value->data[0].v_float;
 }
 
 static void
@@ -327,7 +329,7 @@ static void
 param_unit_set_default (GParamSpec *pspec,
                         GValue     *value)
 {
-  value->data[0].v_int = CLUTTER_PARAM_SPEC_UNIT (pspec)->default_value;
+  value->data[0].v_float = CLUTTER_PARAM_SPEC_UNIT (pspec)->default_value;
 }
 
 static gboolean
@@ -335,26 +337,15 @@ param_unit_validate (GParamSpec *pspec,
                      GValue     *value)
 {
   ClutterParamSpecUnit *uspec = CLUTTER_PARAM_SPEC_UNIT (pspec);
-  gint oval = CLUTTER_UNITS_TO_INT (value->data[0].v_int);
-  gint min, max, val;
+  gfloat oval = value->data[0].v_float;
 
   g_assert (CLUTTER_IS_PARAM_SPEC_UNIT (pspec));
 
-  /* we compare the integer part of the value because the minimum
-   * and maximum values cover just that part of the representation
-   */
-  min = uspec->minimum; 
-  max = uspec->maximum;
-  val = CLUTTER_UNITS_TO_INT (value->data[0].v_int);
+  value->data[0].v_float = CLAMP (value->data[0].v_float,
+                                  uspec->minimum,
+                                  uspec->maximum);
 
-  val = CLAMP (val, min, max);
-  if (val != oval)
-    {
-      value->data[0].v_int = val;
-      return TRUE;
-    }
-
-  return FALSE;
+  return value->data[0].v_float != oval;
 }
 
 static gint
@@ -362,10 +353,12 @@ param_unit_values_cmp (GParamSpec   *pspec,
                        const GValue *value1,
                        const GValue *value2)
 {
-  if (value1->data[0].v_int < value2->data[0].v_int)
-    return -1;
+  gfloat epsilon = FLOAT_EPSILON;
+
+  if (value1->data[0].v_float < value2->data[0].v_float)
+    return - (value2->data[0].v_float - value1->data[0].v_float > epsilon);
   else
-    return value1->data[0].v_int > value2->data[0].v_int;
+    return value1->data[0].v_float - value2->data[0].v_float > epsilon;
 }
 
 GType
