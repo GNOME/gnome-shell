@@ -19,6 +19,7 @@ libcoglpango_la_SOURCES = \
 INCLUDES = \
 	@GCC_FLAGS@ @CLUTTER_CFLAGS@ 			\
 	$(CLUTTER_DEBUG_CFLAGS)				\
+	$(MAINTAINER_CFLAGS)				\
 	-DCLUTTER_COMPILATION                           \
 	-I$(top_srcdir)	                 		\
 	-I$(top_srcdir)/clutter				\

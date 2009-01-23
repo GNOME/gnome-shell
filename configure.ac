@@ -580,8 +580,9 @@ AC_ARG_ENABLE([maintainer-flags],
               enable_maintainer_flags=maintainer_flags_default)
 
 if test "x$enable_maintainer_flags" = "xyes"; then
-  CPPFLAGS="$CPPFLAGS -Werror -Wall -Wshadow -Wcast-align -Wno-uninitialized -Wempty-body -Wformat-security -Winit-self"
+  MAINTAINER_CFLAGS="-Werror -Wall -Wshadow -Wcast-align -Wno-uninitialized -Wempty-body -Wformat-security -Winit-self"
 fi
+AC_SUBST(MAINTAINER_CFLAGS)
 
 
 dnl = GTK Doc check ========================================================
@@ -699,7 +700,7 @@ echo "                  GL Headers:   ${CLUTTER_GL_HEADER}"
 echo "               Image backend:   ${imagebackend}"
 echo "              Target library:   ${clutterbackendlib}"
 echo "                 Debug level:   ${enable_debug}"
-echo "              Compiler flags:   ${CPPFLAGS}"
+echo "              Compiler flags:   ${CPPFLAGS} ${MAINTAINER_CFLAGS}"
 echo "     Build API Documentation:   ${enable_gtk_doc}"
 echo "  Build Manual Documentation:   ${enable_manual}"
 echo ""

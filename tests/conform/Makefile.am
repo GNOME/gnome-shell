@@ -60,7 +60,9 @@ test_conformance_CFLAGS = \
 	-I$(top_srcdir)/ \
 	-I$(top_srcdir)/clutter \
 	-I$(top_builddir)/clutter \
-	$(CLUTTER_CFLAGS)
+	$(CLUTTER_CFLAGS) \
+	$(MAINTAINER_CFLAGS)
+
 test_conformance_LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
 
 .PHONY: test
@@ -101,11 +103,12 @@ full-report-disable-npots:
 	      | sed 's/>GTester Unit Test Report</>GTester Unit Test Report (no NPOTs)</' \
 	      > test-conformance-results-dn.html )
 
-REPORTS = test-conformance-results.html
+XML_REPORTS = test-conformance-results.xml
+HTML_REPORTS = test-conformance-results.html
 
 if HAVE_LIBDL
-
-REPORTS += test-conformance-results-dn.html
+XML_REPORTS += test-conformance-results-dn.xml
+HTML_REPORTS += test-conformance-results-dn.html
 full-report-generate: full-report-normal full-report-disable-npots
 
 else
@@ -114,8 +117,10 @@ full-report-generate: full-report-normal
 endif
 
 full-report: full-report-generate
-	@for x in $(REPORTS); do \
+	@for x in $(HTML_REPORTS); do \
 		gnome-open "$$x"; \
 	done
 
-EXTRA_DIST = ADDING_NEW_TESTS test-wrapper.sh
+EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh
+
+CLEANFILES = $(XML_REPORTS) $(HTML_REPORTS)

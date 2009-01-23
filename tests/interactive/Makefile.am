@@ -66,7 +66,7 @@ BUILT_SOURCES = wrappers redhand.png test-script.json
 
 INCLUDES = -I$(top_srcdir)/ -I$(top_srcdir)/clutter -I$(top_builddir)/clutter
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
-AM_CFLAGS = $(CLUTTER_CFLAGS)
+AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 AM_LDFLAGS = $(CLUTTER_LIBS)
 
 noinst_PROGRAMS = test-interactive

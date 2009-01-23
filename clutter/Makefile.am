@@ -32,6 +32,7 @@ INCLUDES = \
 	$(GCC_FLAGS) 					\
 	$(CLUTTER_CFLAGS) 				\
 	$(CLUTTER_DEBUG_CFLAGS)				\
+	$(MAINTAINER_CFLAGS)				\
 	$(NULL)
 
 LDADD = \
