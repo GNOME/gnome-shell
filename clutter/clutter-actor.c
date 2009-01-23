@@ -342,6 +342,7 @@ enum
   FOCUS_IN,
   FOCUS_OUT,
   PAINT,
+  PICK,
   REALIZE,
   UNREALIZE,
 
@@ -642,8 +643,10 @@ clutter_actor_real_pick (ClutterActor       *self,
  * silhouette. Containers should always recursively call pick for
  * each child.
  *
+ * This function will emit the #ClutterActor::pick signal.
+ *
  * Since: 0.4
- **/
+ */
 void
 clutter_actor_pick (ClutterActor       *self,
 		    const ClutterColor *color)
@@ -651,7 +654,7 @@ clutter_actor_pick (ClutterActor       *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (color != NULL);
 
-  CLUTTER_ACTOR_GET_CLASS (self)->pick (self, color);
+  g_signal_emit (self, actor_signals[PICK], 0, color);
 }
 
 /**
@@ -1463,6 +1466,8 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor *self,
  *
  * This function should not be called directly by applications.
  * Call clutter_actor_queue_redraw() to queue paints, instead.
+ *
+ * This function will emit the #ClutterActor::paint signal.
  */
 void
 clutter_actor_paint (ClutterActor *self)
@@ -1514,7 +1519,7 @@ clutter_actor_paint (ClutterActor *self)
        * color.  See clutter_stage_get_actor_at_pos() for where
        * picking is enabled.
        */
-      clutter_actor_pick (self, &col);
+      g_signal_emit (self, actor_signals[PICK], 0, &col);
     }
   else
     {
@@ -3008,6 +3013,34 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   NULL, NULL,
                   clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  /**
+   * ClutterActor::pick:
+   * @actor: the #ClutterActor that received the signal
+   * @color: the #ClutterColor to be used when picking
+   *
+   * The ::pick signal is emitted each time an actor is being painted
+   * in "pick mode". The pick mode is used to identify the actor during
+   * the event handling phase, or by clutter_stage_get_actor_at_pos().
+   * The actor should paint its shape using the passed @pick_color.
+   *
+   * Subclasses of #ClutterActor should override the class signal handler
+   * and paint themselves in that function.
+   *
+   * It is possible to connect a handler to the ::pick signal in order
+   * to set up some custom aspect of a paint in pick mode.
+   *
+   * Since: 1.0
+   */
+  actor_signals[PICK] =
+    g_signal_new (I_("pick"),
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterActorClass, pick),
+                  NULL, NULL,
+                  clutter_marshal_VOID__BOXED,
+                  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_COLOR);
 
   klass->show = clutter_actor_real_show;
   klass->show_all = clutter_actor_show;
