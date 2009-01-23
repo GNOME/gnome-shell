@@ -891,8 +891,6 @@ clutter_interval_compute_value (ClutterInterval *interval,
   g_return_val_if_fail (CLUTTER_IS_INTERVAL (interval), FALSE);
   g_return_val_if_fail (value != NULL, FALSE);
 
-  factor = CLAMP (factor, 0.0, 1.0);
-
   return CLUTTER_INTERVAL_GET_CLASS (interval)->compute_value (interval,
                                                                factor,
                                                                value);

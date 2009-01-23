@@ -87,7 +87,7 @@ alpha_notify_foreach (ClutterBehaviour *behaviour,
 
 static void
 clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
-                                guint32           alpha_value)
+                                gdouble           alpha_value)
 {
   ClutterBehaviourOpacityPrivate *priv;
   guint8 opacity;
@@ -96,10 +96,9 @@ clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
 
   opacity = alpha_value
             * (priv->opacity_end - priv->opacity_start)
-            / CLUTTER_ALPHA_MAX_ALPHA
             + priv->opacity_start;
 
-  CLUTTER_NOTE (BEHAVIOUR, "alpha: %u, opacity: %u",
+  CLUTTER_NOTE (BEHAVIOUR, "alpha: %.4f, opacity: %u",
                 alpha_value,
                 opacity);
 

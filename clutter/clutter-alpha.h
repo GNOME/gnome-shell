@@ -8,7 +8,8 @@
  *             Emmanuele Bassi  <ebassi@openedhand.com>
  *             Tomas Frydrych <tf@openedhand.com>
  *
- * Copyright (C) 2006, 2007 OpenedHand
+ * Copyright (C) 2006, 2007, 2008 OpenedHand
+ * Copyright (C) 2009 Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -52,15 +53,14 @@ typedef struct _ClutterAlphaPrivate     ClutterAlphaPrivate;
  * @alpha: a #ClutterAlpha
  * @user_data: user data passed to the function
  *
- * A function of time, which returns a value between 0 and
- * %CLUTTER_ALPHA_MAX_ALPHA.
+ * A function returning a value depending on the position of
+ * the #ClutterTimeline bound to @alpha.
  *
- * Return value: an unsigned integer value, between 0 and
- * %CLUTTER_ALPHA_MAX_ALPHA.
+ * Return value: a floating point value
  *
  * Since: 0.2
  */
-typedef guint32 (*ClutterAlphaFunc) (ClutterAlpha *alpha,
+typedef gdouble (*ClutterAlphaFunc) (ClutterAlpha *alpha,
                                      gpointer      user_data); 
 
 /**
@@ -76,6 +76,7 @@ struct _ClutterAlpha
 {
   /*< private >*/
   GInitiallyUnowned parent;
+
   ClutterAlphaPrivate *priv;
 };
 
@@ -98,15 +99,6 @@ struct _ClutterAlphaClass
   void (*_clutter_alpha_5) (void);
 }; 
 
-/**
- * CLUTTER_ALPHA_MAX_ALPHA:
- *
- * Maximum value returned by #ClutterAlphaFunc
- *
- * Since: 0.2
- */
-#define CLUTTER_ALPHA_MAX_ALPHA (65535.0f)
-
 GType clutter_alpha_get_type (void) G_GNUC_CONST;
 
 ClutterAlpha *   clutter_alpha_new              (void);
@@ -117,7 +109,7 @@ ClutterAlpha *   clutter_alpha_new_with_func    (ClutterTimeline  *timeline,
                                                  gpointer          data,
                                                  GDestroyNotify    destroy);
 
-guint32          clutter_alpha_get_alpha        (ClutterAlpha     *alpha);
+gdouble          clutter_alpha_get_alpha        (ClutterAlpha     *alpha);
 void             clutter_alpha_set_func         (ClutterAlpha     *alpha,
                                                  ClutterAlphaFunc  func,
                                                  gpointer          data,
@@ -134,56 +126,6 @@ gulong           clutter_alpha_get_mode         (ClutterAlpha     *alpha);
 gulong           clutter_alpha_register_func    (ClutterAlphaFunc  func,
                                                  gpointer          data);
 gulong           clutter_alpha_register_closure (GClosure         *closure);
-
-/* convenience functions */
-guint32             clutter_ramp_inc_func       (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-guint32             clutter_ramp_dec_func       (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-guint32             clutter_ramp_func           (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-
-guint32             clutter_sine_func           (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-guint32             clutter_sine_inc_func       (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-guint32             clutter_sine_dec_func       (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-guint32             clutter_sine_half_func      (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-guint32             clutter_sine_in_func        (ClutterAlpha     *alpha,
-                                                 gpointer          dummy);
-guint32             clutter_sine_out_func       (ClutterAlpha     *alpha,
-                                                 gpointer          dummy);
-guint32             clutter_sine_in_out_func    (ClutterAlpha     *alpha,
-                                                 gpointer          dummy);
-
-guint32             clutter_square_func         (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-
-guint32             clutter_smoothstep_inc_func (ClutterAlpha     *alpha,
-			                         gpointer          dummy);
-guint32             clutter_smoothstep_dec_func (ClutterAlpha     *alpha,
-			                         gpointer          dummy);
-
-guint32             clutter_exp_inc_func        (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-guint32             clutter_exp_dec_func        (ClutterAlpha     *alpha,
-						 gpointer          dummy);
-
-guint32             clutter_ease_in_func        (ClutterAlpha     *alpha,
-                                                 gpointer          dummy);
-guint32             clutter_ease_out_func       (ClutterAlpha     *alpha,
-                                                 gpointer          dummy);
-guint32             clutter_ease_in_out_func    (ClutterAlpha     *alpha,
-                                                 gpointer          dummy);
-
-guint32             clutter_exp_in_func         (ClutterAlpha     *alpha,
-                                                 gpointer          dummy);
-guint32             clutter_exp_out_func        (ClutterAlpha     *alpha,
-                                                 gpointer          dummy);
-guint32             clutter_exp_in_out_func     (ClutterAlpha     *alpha,
-                                                 gpointer          dummy);
 
 G_END_DECLS
 

@@ -123,7 +123,7 @@ actor_apply_knot_foreach (ClutterBehaviour *behaviour,
 
 static void
 clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave,
-                                     guint32           alpha_value)
+                                     gdouble           alpha_value)
 {
   ClutterBehaviourPath *pathb = CLUTTER_BEHAVIOUR_PATH (behave);
   ClutterBehaviourPathPrivate *priv = pathb->priv;
@@ -131,10 +131,7 @@ clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave,
   guint knot_num;
 
   if (priv->path)
-    knot_num = clutter_path_get_position (priv->path,
-                                          alpha_value
-                                          / (gdouble) CLUTTER_ALPHA_MAX_ALPHA,
-                                          &position);
+    knot_num = clutter_path_get_position (priv->path, alpha_value, &position);
   else
     {
       memset (&position, 0, sizeof (position));

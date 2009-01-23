@@ -184,6 +184,7 @@
 #include "clutter-script-private.h"
 #include "clutter-scriptable.h"
 
+#include "clutter-enum-types.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
@@ -517,62 +518,76 @@ construct_timeline (ClutterScript *script,
   return retval;
 }
 
-/* ugh. if g_module_open() fails (*cough* python *cough*) we need a fallback
- * for finding at least our own functions. keep the nick in sync with the
- * ClutterAnimationMode enumeration
+/* define the names of the animation modes to match the ones
+ * that developers might be more accustomed to
  */
 static const struct
 {
   const gchar *name;
-  const gchar *short_name;
-  ClutterAlphaFunc symbol;
-} clutter_alphas[] = {
-#define ALPHA_FUNC(func,nick)   { #func, nick, func }
-  ALPHA_FUNC (clutter_ramp_inc_func,       "ramp-inc"),
-  ALPHA_FUNC (clutter_ramp_dec_func,       "ramp-dec"),
-  ALPHA_FUNC (clutter_ramp_func,           "ramp"),
-  ALPHA_FUNC (clutter_sine_inc_func,       "sine-inc"),
-  ALPHA_FUNC (clutter_sine_dec_func,       "sine-dec"),
-  ALPHA_FUNC (clutter_sine_half_func,      "sine-half"),
-  ALPHA_FUNC (clutter_sine_in_func,        "sine-in"),
-  ALPHA_FUNC (clutter_sine_out_func,       "sine-out"),
-  ALPHA_FUNC (clutter_sine_in_out_func,    "sine-in-out"),
-  ALPHA_FUNC (clutter_sine_func,           "sine"),
-  ALPHA_FUNC (clutter_square_func,         "square"),
-  ALPHA_FUNC (clutter_smoothstep_inc_func, "smoothstep-inc"),
-  ALPHA_FUNC (clutter_smoothstep_dec_func, "smoothstep-dec"),
-  ALPHA_FUNC (clutter_exp_inc_func,        "exp-inc"),
-  ALPHA_FUNC (clutter_exp_dec_func,        "exp-dec"),
-  ALPHA_FUNC (clutter_ramp_inc_func,       "linear"),
-  ALPHA_FUNC (clutter_ease_in_func,        "ease-in"),
-  ALPHA_FUNC (clutter_ease_out_func,       "ease-out"),
-  ALPHA_FUNC (clutter_ease_in_out_func,    "ease-in-out"),
-  ALPHA_FUNC (clutter_exp_in_func,         "exp-in"),
-  ALPHA_FUNC (clutter_exp_out_func,        "exp-out"),
-  ALPHA_FUNC (clutter_exp_in_out_func,     "exp-in-out"),
-  ALPHA_FUNC (clutter_smoothstep_inc_func, "smooth-in-out")
-#undef ALPHA_FUNC
+  ClutterAnimationMode mode;
+} animation_modes[] = {
+  { "linear", CLUTTER_LINEAR },
+  { "easeInQuad", CLUTTER_EASE_IN_QUAD },
+  { "easeOutQuad", CLUTTER_EASE_OUT_QUAD },
+  { "easeInOutQuad", CLUTTER_EASE_IN_OUT_QUAD },
+  { "easeInCubic", CLUTTER_EASE_IN_CUBIC },
+  { "easeOutCubic", CLUTTER_EASE_OUT_CUBIC },
+  { "easeInOutCubic", CLUTTER_EASE_IN_OUT_CUBIC },
+  { "easeInQuart", CLUTTER_EASE_IN_QUART },
+  { "easeOutQuart", CLUTTER_EASE_OUT_QUART },
+  { "easeInOutQuart", CLUTTER_EASE_IN_OUT_QUART },
+  { "easeInQuint", CLUTTER_EASE_IN_QUINT },
+  { "easeOutQuint", CLUTTER_EASE_OUT_QUINT },
+  { "easeInOutQuint", CLUTTER_EASE_IN_OUT_QUINT },
+  { "easeInSine", CLUTTER_EASE_IN_SINE },
+  { "easeOutSine", CLUTTER_EASE_OUT_SINE },
+  { "easeInOutSine", CLUTTER_EASE_IN_OUT_SINE },
+  { "easeInExpo", CLUTTER_EASE_IN_EXPO },
+  { "easeOutExpo", CLUTTER_EASE_OUT_EXPO },
+  { "easeInOutExpo", CLUTTER_EASE_IN_OUT_EXPO },
+  { "easeInCirc", CLUTTER_EASE_IN_CIRC },
+  { "easeOutCirc", CLUTTER_EASE_OUT_CIRC },
+  { "easeInOutCirc", CLUTTER_EASE_IN_OUT_CIRC },
+  { "easeInElastic", CLUTTER_EASE_IN_ELASTIC },
+  { "easeOutElastic", CLUTTER_EASE_OUT_ELASTIC },
+  { "easeInOutElastic", CLUTTER_EASE_IN_OUT_ELASTIC },
+  { "easeInBack", CLUTTER_EASE_IN_BACK },
+  { "easeOutBack", CLUTTER_EASE_OUT_BACK },
+  { "easeInOutBack", CLUTTER_EASE_IN_OUT_BACK },
+  { "easeInBounce", CLUTTER_EASE_IN_BOUNCE },
+  { "easeOutBounce", CLUTTER_EASE_OUT_BOUNCE },
+  { "easeInOutBounce", CLUTTER_EASE_IN_OUT_BOUNCE },
 };
 
-static const gint n_clutter_alphas = G_N_ELEMENTS (clutter_alphas);
+static const gint n_animation_modes = G_N_ELEMENTS (animation_modes);
+
+static ClutterAnimationMode
+resolve_animation_mode (const gchar *name)
+{
+  gint i, res = 0;
+
+  for (i = 0; i < n_animation_modes; i++)
+    {
+      if (strcmp (animation_modes[i].name, name) == 0)
+        return animation_modes[i].mode;
+    }
+
+  if (clutter_script_enum_from_string (CLUTTER_TYPE_ANIMATION_MODE,
+                                       name, &res))
+    return res;
+
+  g_warning ("Unable to find the animation mode '%s'", name);
+
+  return CLUTTER_CUSTOM_MODE;
+}
 
 static ClutterAlphaFunc
 resolve_alpha_func (const gchar *name)
 {
   static GModule *module = NULL;
   ClutterAlphaFunc func;
-  gint i;
 
   CLUTTER_NOTE (SCRIPT, "Looking up `%s' alpha function", name);
-
-  for (i = 0; i < n_clutter_alphas; i++)
-    if (strcmp (name, clutter_alphas[i].name) == 0 ||
-        strcmp (name, clutter_alphas[i].short_name) == 0)
-      {
-        CLUTTER_NOTE (SCRIPT, "Found `%s' alpha function in the whitelist",
-                      name);
-        return clutter_alphas[i].symbol;
-      }
 
   if (G_UNLIKELY (!module))
     module = g_module_open (NULL, G_MODULE_BIND_LAZY);
@@ -595,6 +610,7 @@ clutter_script_parse_alpha (ClutterScript *script,
   JsonObject *object;
   ClutterTimeline *timeline = NULL;
   ClutterAlphaFunc alpha_func = NULL;
+  ClutterAnimationMode mode = CLUTTER_CUSTOM_MODE;
   JsonNode *val;
   gboolean unref_timeline = FALSE;
 
@@ -621,25 +637,39 @@ clutter_script_parse_alpha (ClutterScript *script,
         }
     }
 
-  val = json_object_get_member (object, "function");
+  val = json_object_get_member (object, "mode");
   if (val && json_node_get_string (val) != NULL)
+    mode = resolve_animation_mode (json_node_get_string (val));
+
+  if (mode == CLUTTER_CUSTOM_MODE)
     {
-      alpha_func = resolve_alpha_func (json_node_get_string (val));
-      if (!alpha_func)
+      val = json_object_get_member (object, "function");
+      if (val && json_node_get_string (val) != NULL)
         {
-          g_warning ("Unable to find the function `%s' in the "
-                     "Clutter alpha functions or the symbols table",
-                     json_node_get_string (val));
+          alpha_func = resolve_alpha_func (json_node_get_string (val));
+          if (!alpha_func)
+            {
+              g_warning ("Unable to find the function `%s' in the "
+                         "Clutter alpha functions or the symbols table",
+                         json_node_get_string (val));
+            }
         }
     }
 
-  CLUTTER_NOTE (SCRIPT, "Parsed alpha: %s timeline (%p) and func:%p",
+  CLUTTER_NOTE (SCRIPT, "Parsed alpha: %s timeline (%p) (mode:%d, func:%p)",
                 unref_timeline ? "implicit" : "explicit",
                 timeline ? timeline : 0x0,
+                mode != CLUTTER_CUSTOM_MODE ? mode : 0,
                 alpha_func ? alpha_func : 0x0);
 
   retval = g_object_new (CLUTTER_TYPE_ALPHA, NULL);
-  clutter_alpha_set_func (CLUTTER_ALPHA (retval), alpha_func, NULL, NULL);
+
+  if (mode != CLUTTER_CUSTOM_MODE)
+    clutter_alpha_set_mode (CLUTTER_ALPHA (retval), mode);
+
+  if (alpha_func != NULL)
+    clutter_alpha_set_func (CLUTTER_ALPHA (retval), alpha_func, NULL, NULL);
+
   clutter_alpha_set_timeline (CLUTTER_ALPHA (retval), timeline);
   if (unref_timeline)
     g_object_unref (timeline);

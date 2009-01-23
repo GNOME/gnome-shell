@@ -123,6 +123,16 @@ frame_cb (ClutterTimeline *timeline,
     }
 }
 
+static gdouble
+my_sine_wave (ClutterAlpha *alpha,
+              gpointer      dummy G_GNUC_UNUSED)
+{
+  ClutterTimeline *timeline = clutter_alpha_get_timeline (alpha);
+  gdouble progress = clutter_timeline_get_progress (timeline);
+
+  return sin (progress * G_PI);
+}
+
 G_MODULE_EXPORT int
 test_actors_main (int argc, char *argv[])
 {
@@ -168,8 +178,7 @@ test_actors_main (int argc, char *argv[])
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), oh);
 
   /* Set up some behaviours to handle scaling  */
-  alpha = clutter_alpha_new_with_func (timeline, clutter_sine_func,
-                                       NULL, NULL);
+  alpha = clutter_alpha_new_with_func (timeline, my_sine_wave, NULL, NULL);
 
   scaler_1 = clutter_behaviour_scale_new (alpha,
 					  0.5, 0.5,

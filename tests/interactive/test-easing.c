@@ -7,16 +7,36 @@ const struct {
   ClutterAnimationMode mode;
 } easing_modes[] = {
   { "linear", CLUTTER_LINEAR },
-  { "sine-in", CLUTTER_SINE_IN },
-  { "sine-out", CLUTTER_SINE_OUT },
-  { "sine-in-out", CLUTTER_SINE_IN_OUT },
-  { "ease-in", CLUTTER_EASE_IN },
-  { "ease-out", CLUTTER_EASE_OUT },
-  { "ease-in-out", CLUTTER_EASE_IN_OUT },
-  { "expo-in", CLUTTER_EXPO_IN },
-  { "expo-out", CLUTTER_EXPO_OUT },
-  { "expo-in-out", CLUTTER_EXPO_IN_OUT },
-  { "smooth-in-out", CLUTTER_SMOOTH_IN_OUT }
+  { "easeInQuad", CLUTTER_EASE_IN_QUAD },
+  { "easeOutQuad", CLUTTER_EASE_OUT_QUAD },
+  { "easeInOutQuad", CLUTTER_EASE_IN_OUT_QUAD },
+  { "easeInCubic", CLUTTER_EASE_IN_CUBIC },
+  { "easeOutCubic", CLUTTER_EASE_OUT_CUBIC },
+  { "easeInOutCubic", CLUTTER_EASE_IN_OUT_CUBIC },
+  { "easeInQuart", CLUTTER_EASE_IN_QUART },
+  { "easeOutQuart", CLUTTER_EASE_OUT_QUART },
+  { "easeInOutQuart", CLUTTER_EASE_IN_OUT_QUART },
+  { "easeInQuint", CLUTTER_EASE_IN_QUINT },
+  { "easeOutQuint", CLUTTER_EASE_OUT_QUINT },
+  { "easeInOutQuint", CLUTTER_EASE_IN_OUT_QUINT },
+  { "easeInSine", CLUTTER_EASE_IN_SINE },
+  { "easeOutSine", CLUTTER_EASE_OUT_SINE },
+  { "easeInOutSine", CLUTTER_EASE_IN_OUT_SINE },
+  { "easeInExpo", CLUTTER_EASE_IN_EXPO },
+  { "easeOutExpo", CLUTTER_EASE_OUT_EXPO },
+  { "easeInOutExpo", CLUTTER_EASE_IN_OUT_EXPO },
+  { "easeInCirc", CLUTTER_EASE_IN_CIRC },
+  { "easeOutCirc", CLUTTER_EASE_OUT_CIRC },
+  { "easeInOutCirc", CLUTTER_EASE_IN_OUT_CIRC },
+  { "easeInElastic", CLUTTER_EASE_IN_ELASTIC },
+  { "easeOutElastic", CLUTTER_EASE_OUT_ELASTIC },
+  { "easeInOutElastic", CLUTTER_EASE_IN_OUT_ELASTIC },
+  { "easeInBack", CLUTTER_EASE_IN_BACK },
+  { "easeOutBack", CLUTTER_EASE_OUT_BACK },
+  { "easeInOutBack", CLUTTER_EASE_IN_OUT_BACK },
+  { "easeInBounce", CLUTTER_EASE_IN_BOUNCE },
+  { "easeOutBounce", CLUTTER_EASE_OUT_BOUNCE },
+  { "easeInOutBounce", CLUTTER_EASE_IN_OUT_BOUNCE },
 };
 
 static const gint n_easing_modes = G_N_ELEMENTS (easing_modes);
@@ -30,36 +50,48 @@ on_button_press (ClutterActor       *actor,
                  ClutterButtonEvent *event,
                  ClutterActor       *rectangle)
 {
-  ClutterAnimation *animation;
-  ClutterAnimationMode cur_mode;
-  gchar *text;
-  guint stage_width, stage_height;
-  guint label_width, label_height;
+  if (event->button == 3)
+    {
+      gchar *text;
+      guint stage_width, stage_height;
+      guint label_width, label_height;
 
-  text = g_strdup_printf ("Easing mode: %s (%d of %d)\n",
-                          easing_modes[current_mode].name,
-                          current_mode + 1,
-                          n_easing_modes);
+      current_mode = (current_mode + 1 < n_easing_modes) ? current_mode + 1
+                                                         : 0;
 
-  clutter_text_set_text (CLUTTER_TEXT (easing_mode_label), text);
-  g_free (text);
+      text = g_strdup_printf ("Easing mode: %s (%d of %d)\n"
+                              "Right click to change the easing mode",
+                              easing_modes[current_mode].name,
+                              current_mode + 1,
+                              n_easing_modes);
 
-  clutter_actor_get_size (main_stage, &stage_width, &stage_height);
-  clutter_actor_get_size (easing_mode_label, &label_width, &label_height);
+      clutter_text_set_text (CLUTTER_TEXT (easing_mode_label), text);
+      g_free (text);
 
-  clutter_actor_set_position (easing_mode_label,
-                              stage_width  - label_width  - 10,
-                              stage_height - label_height - 10);
+      clutter_actor_get_size (main_stage,
+                              &stage_width,
+                              &stage_height);
+      clutter_actor_get_size (easing_mode_label,
+                              &label_width,
+                              &label_height);
 
-  cur_mode = easing_modes[current_mode].mode;
+      clutter_actor_set_position (easing_mode_label,
+                                  stage_width  - label_width  - 10,
+                                  stage_height - label_height - 10);
+    }
+  else if (event->button == 1)
+    {
+      ClutterAnimation *animation;
+      ClutterAnimationMode cur_mode;
 
-  animation =
-    clutter_actor_animate (rectangle, cur_mode, 2000,
-                           "x", event->x,
-                           "y", event->y,
-                           NULL);
+      cur_mode = easing_modes[current_mode].mode;
 
-  current_mode = (current_mode + 1 < n_easing_modes) ? current_mode + 1 : 0;
+      animation =
+        clutter_actor_animate (rectangle, cur_mode, 2000,
+                               "x", event->x,
+                               "y", event->y,
+                               NULL);
+    }
 
   return TRUE;
 }
@@ -92,7 +124,8 @@ test_easing_main (int argc, char *argv[])
                     "button-press-event", G_CALLBACK (on_button_press),
                     rect);
 
-  text = g_strdup_printf ("Easing mode: %s (%d of %d)\n",
+  text = g_strdup_printf ("Easing mode: %s (%d of %d)\n"
+                          "Right click to change the easing mode",
                           easing_modes[current_mode].name,
                           current_mode + 1,
                           n_easing_modes);
