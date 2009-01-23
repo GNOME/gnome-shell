@@ -258,12 +258,9 @@ test_timeline (TestConformSimpleFixture *fixture,
 
   clutter_main ();
 
-  if (!check_timeline (timeline_1, &data_1, TRUE))
-    pass = FALSE;
-  if (!check_timeline (timeline_2, &data_2, TRUE))
-    pass = FALSE;
-  if (!check_timeline (timeline_3, &data_3, TRUE))
-    pass = FALSE;
+  g_assert (check_timeline (timeline_1, &data_1, TRUE));
+  g_assert (check_timeline (timeline_2, &data_2, TRUE));
+  g_assert (check_timeline (timeline_3, &data_3, TRUE));
 
   if (g_test_verbose ())
     g_print ("With delay...\n");
@@ -284,12 +281,9 @@ test_timeline (TestConformSimpleFixture *fixture,
 
   clutter_main ();
 
-  if (!check_timeline (timeline_1, &data_1, FALSE))
-    pass = FALSE;
-  if (!check_timeline (timeline_2, &data_2, FALSE))
-    pass = FALSE;
-  if (!check_timeline (timeline_3, &data_3, FALSE))
-    pass = FALSE;
+  g_assert (check_timeline (timeline_1, &data_1, FALSE));
+  g_assert (check_timeline (timeline_2, &data_2, FALSE));
+  g_assert (check_timeline (timeline_3, &data_3, FALSE));
 
   g_object_unref (timeline_1);
   g_object_unref (timeline_2);
@@ -300,9 +294,4 @@ test_timeline (TestConformSimpleFixture *fixture,
   timeline_data_destroy (&data_3);
 
   g_source_remove (delay_tag);
-
-  if (g_test_verbose ())
-    g_print ("Overall result: %s\n", pass == TRUE ? "PASS" : "FAIL");
-
-  g_assert (pass == TRUE);
 }
