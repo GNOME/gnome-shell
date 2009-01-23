@@ -250,21 +250,18 @@ struct _ClutterActorPrivate
   ClutterUnit     clip[4];
 
   /* Rotation angles */
-  ClutterFixed    rxang;
-  ClutterFixed    ryang;
-  ClutterFixed    rzang;
+  gdouble         rxang;
+  gdouble         ryang;
+  gdouble         rzang;
 
   /* Rotation center: X axis */
-  ClutterUnit     rxy;
-  ClutterUnit     rxz;
+  AnchorCoord     rx_center;
 
   /* Rotation center: Y axis */
-  ClutterUnit     ryx;
-  ClutterUnit     ryz;
+  AnchorCoord     ry_center;
 
   /* Rotation center: Z axis */
-  ClutterUnit     rzx;
-  ClutterUnit     rzy;
+  AnchorCoord     rz_center;
 
   /* Anchor point coordinates */
   AnchorCoord     anchor;
@@ -353,6 +350,10 @@ enum
   PROP_ROTATION_CENTER_X,
   PROP_ROTATION_CENTER_Y,
   PROP_ROTATION_CENTER_Z,
+  /* This property only makes sense for the z rotation because the
+     others would depend on the actor having a size along the
+     z-axis */
+  PROP_ROTATION_CENTER_Z_GRAVITY,
 
   PROP_ANCHOR_X,
   PROP_ANCHOR_Y,
@@ -1422,6 +1423,9 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
 		     CLUTTER_UNITS_TO_FLOAT (priv->allocation.y1),
 		     0);
 
+  if (priv->z)
+    cogl_translate (0, 0, priv->z);
+
   /*
    * because the rotation involves translations, we must scale before
    * applying the rotations (if we apply the scale after the rotations,
@@ -1432,44 +1436,20 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
     TRANSFORM_ABOUT_ANCHOR_COORD (self, &priv->scale_center,
                                   cogl_scale (priv->scale_x, priv->scale_y));
 
-   if (priv->rzang)
-    {
-      cogl_translate (CLUTTER_UNITS_TO_FLOAT (priv->rzx),
-		       CLUTTER_UNITS_TO_FLOAT (priv->rzy),
-		       0);
-
-      cogl_rotate (priv->rzang, 0, 0, 1.0);
-
-      cogl_translate (CLUTTER_UNITS_TO_FLOAT (-priv->rzx),
-		       CLUTTER_UNITS_TO_FLOAT (-priv->rzy),
-		       0);
-    }
+  if (priv->rzang)
+    TRANSFORM_ABOUT_ANCHOR_COORD (self, &priv->rz_center,
+                                  cogl_rotate (priv->rzang,
+                                               0, 0, 1.0));
 
   if (priv->ryang)
-    {
-      cogl_translate (CLUTTER_UNITS_TO_FLOAT (priv->ryx),
-		       0,
-		       CLUTTER_UNITS_TO_FLOAT (priv->z + priv->ryz));
-
-      cogl_rotate (priv->ryang, 0, 1.0, 0);
-
-      cogl_translate (CLUTTER_UNITS_TO_FLOAT (-priv->ryx),
-		       0,
-		       CLUTTER_UNITS_TO_FLOAT (-(priv->z + priv->ryz)));
-    }
+    TRANSFORM_ABOUT_ANCHOR_COORD (self, &priv->ry_center,
+                                  cogl_rotate (priv->ryang,
+                                               0, 1.0, 0));
 
   if (priv->rxang)
-    {
-      cogl_translate (0,
-		       CLUTTER_UNITS_TO_FLOAT (priv->rxy),
-		       CLUTTER_UNITS_TO_FLOAT (priv->z + priv->rxz));
-
-      cogl_rotate (priv->rxang, 1.0, 0, 0);
-
-      cogl_translate (0,
-		       CLUTTER_UNITS_TO_FLOAT (-priv->rxy),
-		       CLUTTER_UNITS_TO_FLOAT (-(priv->z + priv->rxz)));
-    }
+    TRANSFORM_ABOUT_ANCHOR_COORD (self, &priv->rx_center,
+                                  cogl_rotate (priv->rxang,
+                                               1.0, 0, 0));
 
   if (!is_stage && !clutter_anchor_coord_is_zero (&priv->anchor))
     {
@@ -1477,9 +1457,6 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
       clutter_anchor_coord_get_units (self, &priv->anchor, &x, &y, &z);
       cogl_translate (-x, -y, -z);
     }
-
-  if (priv->z)
-    cogl_translate (0, 0, priv->z);
 }
 
 /* Recursively applies the transforms associated with this actor and
@@ -1602,17 +1579,13 @@ clutter_actor_paint (ClutterActor *self)
   CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_PAINT);
 }
 
-/* fixed point, unit based rotation setter, to be used by
- * set_property() so that we don't lose precision in the
- * center coordinates by converting them to and from units
+/* internal helper function set the rotation angle without affecting
+   the center point
  */
-static inline void
+static void
 clutter_actor_set_rotation_internal (ClutterActor      *self,
                                      ClutterRotateAxis  axis,
-                                     ClutterFixed       angle,
-                                     ClutterUnit        center_x,
-                                     ClutterUnit        center_y,
-                                     ClutterUnit        center_z)
+                                     gdouble            angle)
 {
   ClutterActorPrivate *priv = self->priv;
 
@@ -1623,26 +1596,17 @@ clutter_actor_set_rotation_internal (ClutterActor      *self,
     {
     case CLUTTER_X_AXIS:
       priv->rxang = angle;
-      priv->rxy = center_y;
-      priv->rxz = center_z;
       g_object_notify (G_OBJECT (self), "rotation-angle-x");
-      g_object_notify (G_OBJECT (self), "rotation-center-x");
       break;
 
     case CLUTTER_Y_AXIS:
       priv->ryang = angle;
-      priv->ryx = center_x;
-      priv->ryz = center_z;
       g_object_notify (G_OBJECT (self), "rotation-angle-y");
-      g_object_notify (G_OBJECT (self), "rotation-center-y");
       break;
 
     case CLUTTER_Z_AXIS:
       priv->rzang = angle;
-      priv->rzx = center_x;
-      priv->rzy = center_y;
       g_object_notify (G_OBJECT (self), "rotation-angle-z");
-      g_object_notify (G_OBJECT (self), "rotation-center-z");
       break;
     }
 
@@ -1788,85 +1752,62 @@ clutter_actor_set_property (GObject      *object,
       clutter_actor_set_reactive (actor, g_value_get_boolean (value));
       break;
     case PROP_ROTATION_ANGLE_X:
-      {
-        ClutterFixed angle;
-
-        angle = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
-        clutter_actor_set_rotation_internal (actor,
-                                             CLUTTER_X_AXIS,
-                                             angle,
-                                             0,
-                                             priv->rxy,
-                                             priv->rxz);
-      }
+      clutter_actor_set_rotation_internal (actor,
+                                           CLUTTER_X_AXIS,
+                                           g_value_get_double (value));
       break;
     case PROP_ROTATION_ANGLE_Y:
-      {
-        ClutterFixed angle;
-
-        angle = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
-        clutter_actor_set_rotation_internal (actor,
-                                             CLUTTER_Y_AXIS,
-                                             angle,
-                                             priv->ryx,
-                                             0,
-                                             priv->ryz);
-      }
+      clutter_actor_set_rotation_internal (actor,
+                                           CLUTTER_Y_AXIS,
+                                           g_value_get_double (value));
       break;
     case PROP_ROTATION_ANGLE_Z:
-      {
-        ClutterFixed angle;
-
-        angle = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
-        clutter_actor_set_rotation_internal (actor,
-                                             CLUTTER_Z_AXIS,
-                                             angle,
-                                             priv->rzx,
-                                             priv->rzy,
-                                             0);
-      }
+      clutter_actor_set_rotation_internal (actor,
+                                           CLUTTER_Z_AXIS,
+                                           g_value_get_double (value));
       break;
     case PROP_ROTATION_CENTER_X:
       {
-        ClutterVertex *center;
+        const ClutterVertex *center;
 
-        center = g_value_get_boxed (value);
-        if (center)
-          clutter_actor_set_rotation_internal (actor,
-                                               CLUTTER_X_AXIS,
-                                               priv->rxang,
-                                               0,
-                                               center->y,
-                                               center->z);
+        if ((center = g_value_get_boxed (value)))
+          clutter_actor_set_rotation (actor,
+                                      CLUTTER_X_AXIS,
+                                      priv->rxang,
+                                      center->x,
+                                      center->y,
+                                      center->z);
       }
       break;
     case PROP_ROTATION_CENTER_Y:
       {
-        ClutterVertex *center;
+        const ClutterVertex *center;
 
-        center = g_value_get_boxed (value);
-        if (center)
-          clutter_actor_set_rotation_internal (actor,
-                                               CLUTTER_Y_AXIS,
-                                               priv->ryang,
-                                               center->x,
-                                               0,
-                                               center->z);
+        if ((center = g_value_get_boxed (value)))
+          clutter_actor_set_rotation (actor,
+                                      CLUTTER_Y_AXIS,
+                                      priv->ryang,
+                                      center->x,
+                                      center->y,
+                                      center->z);
       }
       break;
     case PROP_ROTATION_CENTER_Z:
       {
-        ClutterVertex *center;
+        const ClutterVertex *center;
 
-        center = g_value_get_boxed (value);
-        if (center)
-          clutter_actor_set_rotation_internal (actor,
-                                               CLUTTER_Z_AXIS,
-                                               priv->rzang,
-                                               center->x,
-                                               center->y,
-                                               0);
+        if ((center = g_value_get_boxed (value)))
+          clutter_actor_set_rotation (actor,
+                                      CLUTTER_Z_AXIS,
+                                      priv->rzang,
+                                      center->x,
+                                      center->y,
+                                      center->z);
       }
+      break;
+    case PROP_ROTATION_CENTER_Z_GRAVITY:
+      clutter_actor_set_z_rotation_from_gravity
+        (actor, priv->rzang, g_value_get_enum (value));
       break;
     case PROP_ANCHOR_X:
       {
@@ -2025,43 +1966,46 @@ clutter_actor_get_property (GObject    *object,
       g_value_set_boolean (value, clutter_actor_get_reactive (actor));
       break;
     case PROP_ROTATION_ANGLE_X:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->rxang));
+      g_value_set_double (value, priv->rxang);
       break;
     case PROP_ROTATION_ANGLE_Y:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->ryang));
+      g_value_set_double (value, priv->ryang);
       break;
     case PROP_ROTATION_ANGLE_Z:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->rzang));
+      g_value_set_double (value, priv->rzang);
       break;
     case PROP_ROTATION_CENTER_X:
       {
-        ClutterVertex center = { 0, };
+        ClutterVertex center;
 
-        center.y = priv->rxy;
-        center.z = priv->rxz;
+        clutter_actor_get_rotationu (actor, CLUTTER_X_AXIS,
+                                     &center.x, &center.y, &center.z);
 
         g_value_set_boxed (value, &center);
       }
       break;
     case PROP_ROTATION_CENTER_Y:
       {
-        ClutterVertex center = { 0, };
+        ClutterVertex center;
 
-        center.x = priv->ryx;
-        center.z = priv->ryz;
+        clutter_actor_get_rotationu (actor, CLUTTER_Y_AXIS,
+                                     &center.x, &center.y, &center.z);
 
         g_value_set_boxed (value, &center);
       }
       break;
     case PROP_ROTATION_CENTER_Z:
       {
-        ClutterVertex center = { 0, };
+        ClutterVertex center;
 
-        center.x = priv->rzx;
-        center.y = priv->rzy;
+        clutter_actor_get_rotationu (actor, CLUTTER_Z_AXIS,
+                                     &center.x, &center.y, &center.z);
 
         g_value_set_boxed (value, &center);
       }
+      break;
+    case PROP_ROTATION_CENTER_Z_GRAVITY:
+      g_value_set_enum (value, clutter_actor_get_z_rotation_gravity (actor));
       break;
     case PROP_ANCHOR_X:
       {
@@ -2749,6 +2693,24 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					    "The rotation center on the Z axis",
 					    CLUTTER_TYPE_VERTEX,
 					    CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterActor:rotation-center-z-gravity:
+   *
+   * The rotation center on the Z axis expressed as a #ClutterGravity.
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_enum ("rotation-center-z-gravity",
+                             "Rotation-Center-Z-Gravity",
+                             "Center point for rotation around the Z axis",
+                             CLUTTER_TYPE_GRAVITY,
+                             CLUTTER_GRAVITY_NONE,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class,
+                                   PROP_ROTATION_CENTER_Z_GRAVITY,
+                                   pspec);
+
   /**
    * ClutterActor:anchor-x:
    *
@@ -5538,42 +5500,35 @@ clutter_actor_set_rotationu (ClutterActor      *self,
                              ClutterUnit        y,
                              ClutterUnit        z)
 {
+  ClutterActorPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_rotation_internal (self, axis,
-                                       CLUTTER_FLOAT_TO_FIXED (angle),
-                                       x, y, z);
-}
+  priv = self->priv;
 
-/**
- * clutter_actor_set_rotationx:
- * @self: a #ClutterActor
- * @axis: the axis of rotation
- * @angle: the angle of rotation
- * @x: X coordinate of the rotation center
- * @y: Y coordinate of the rotation center
- * @z: Z coordinate of the rotation center
- *
- * Sets the rotation angle of @self around the given axis.
- *
- * This function is the fixed point variant of clutter_actor_set_rotation().
- *
- * Since: 0.6
- */
-void
-clutter_actor_set_rotationx (ClutterActor      *self,
-                             ClutterRotateAxis  axis,
-                             ClutterFixed       angle,
-                             gint               x,
-                             gint               y,
-                             gint               z)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_object_freeze_notify (G_OBJECT (self));
 
-  clutter_actor_set_rotation_internal (self, axis, angle,
-                                       CLUTTER_UNITS_FROM_DEVICE (x),
-                                       CLUTTER_UNITS_FROM_DEVICE (y),
-                                       CLUTTER_UNITS_FROM_DEVICE (z));
+  clutter_actor_set_rotation_internal (self, axis, angle);
+
+  switch (axis)
+    {
+    case CLUTTER_X_AXIS:
+      clutter_anchor_coord_set_units (&priv->rx_center, x, y, z);
+      g_object_notify (G_OBJECT (self), "rotation-center-x");
+      break;
+    case CLUTTER_Y_AXIS:
+      clutter_anchor_coord_set_units (&priv->ry_center, x, y, z);
+      g_object_notify (G_OBJECT (self), "rotation-center-y");
+      break;
+    case CLUTTER_Z_AXIS:
+      if (priv->rz_center.is_fractional)
+        g_object_notify (G_OBJECT (self), "rotation-center-z-gravity");
+      clutter_anchor_coord_set_units (&priv->rz_center, x, y, z);
+      g_object_notify (G_OBJECT (self), "rotation-center-z");
+      break;
+    }
+
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -5610,9 +5565,37 @@ clutter_actor_set_rotation (ClutterActor      *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_rotationx (self, axis,
-                               CLUTTER_FLOAT_TO_FIXED (angle),
-                               x, y, z);
+  clutter_actor_set_rotationu (self, axis, angle,
+                               CLUTTER_UNITS_FROM_DEVICE (x),
+                               CLUTTER_UNITS_FROM_DEVICE (y),
+                               CLUTTER_UNITS_FROM_DEVICE (z));
+}
+
+void
+clutter_actor_set_z_rotation_from_gravity (ClutterActor      *self,
+                                           gdouble            angle,
+                                           ClutterGravity     gravity)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (gravity == CLUTTER_GRAVITY_NONE)
+    clutter_actor_set_rotation (self, CLUTTER_Z_AXIS, angle, 0, 0, 0);
+  else
+    {
+      priv = self->priv;
+
+      g_object_freeze_notify (G_OBJECT (self));
+
+      clutter_actor_set_rotation_internal (self, CLUTTER_Z_AXIS, angle);
+
+      clutter_anchor_coord_set_gravity (&priv->rz_center, gravity);
+      g_object_notify (G_OBJECT (self), "rotation-center-z-gravity");
+      g_object_notify (G_OBJECT (self), "rotation-center-z");
+
+      g_object_thaw_notify (G_OBJECT (self));
+    }
 }
 
 /**
@@ -5644,6 +5627,7 @@ clutter_actor_get_rotationu (ClutterActor      *self,
 {
   ClutterActorPrivate *priv;
   gdouble retval = 0;
+  AnchorCoord *anchor_coord = NULL;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
@@ -5652,90 +5636,22 @@ clutter_actor_get_rotationu (ClutterActor      *self,
   switch (axis)
     {
     case CLUTTER_X_AXIS:
-      retval = CLUTTER_FIXED_TO_DOUBLE (priv->rxang);
-      if (y)
-        *y = priv->rxy;
-      if (z)
-        *z = priv->rxz;
-      break;
-
-    case CLUTTER_Y_AXIS:
-      retval = CLUTTER_FIXED_TO_DOUBLE (priv->ryang);
-      if (x)
-        *x = priv->ryx;
-      if (z)
-        *z = priv->ryz;
-      break;
-
-    case CLUTTER_Z_AXIS:
-      retval = CLUTTER_FIXED_TO_DOUBLE (priv->rzang);
-      if (x)
-        *x = priv->rzx;
-      if (y)
-        *y = priv->rzy;
-      break;
-    }
-
-  return retval;
-}
-
-/**
- * clutter_actor_get_rotationx:
- * @self: a #ClutterActor
- * @axis: the axis of rotation
- * @x: return value for the X coordinate of the center of rotation
- * @y: return value for the Y coordinate of the center of rotation
- * @z: return value for the Z coordinate of the center of rotation
- *
- * Retrieves the angle and center of rotation on the given axis,
- * set using clutter_actor_set_rotation().
- *
- * This function is the fixed point variant of clutter_actor_get_rotation().
- *
- * Return value: the angle of rotation as a fixed point value.
- *
- * Since: 0.6
- */
-ClutterFixed
-clutter_actor_get_rotationx (ClutterActor      *self,
-                             ClutterRotateAxis  axis,
-                             gint              *x,
-                             gint              *y,
-                             gint              *z)
-{
-  ClutterActorPrivate *priv;
-  ClutterFixed retval = 0;
-
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
-
-  priv = self->priv;
-
-  switch (axis)
-    {
-    case CLUTTER_X_AXIS:
+      anchor_coord = &priv->rx_center;
       retval = priv->rxang;
-      if (y)
-        *y = CLUTTER_UNITS_TO_DEVICE (priv->rxy);
-      if (z)
-        *z = CLUTTER_UNITS_TO_DEVICE (priv->rxz);
       break;
 
     case CLUTTER_Y_AXIS:
+      anchor_coord = &priv->ry_center;
       retval = priv->ryang;
-      if (x)
-        *x = CLUTTER_UNITS_TO_DEVICE (priv->ryx);
-      if (z)
-        *z = CLUTTER_UNITS_TO_DEVICE (priv->ryz);
       break;
 
     case CLUTTER_Z_AXIS:
+      anchor_coord = &priv->rz_center;
       retval = priv->rzang;
-      if (x)
-        *x = CLUTTER_UNITS_TO_DEVICE (priv->rzx);
-      if (y)
-        *y = CLUTTER_UNITS_TO_DEVICE (priv->rzy);
       break;
     }
+
+  clutter_anchor_coord_get_units (self, anchor_coord, x, y, z);
 
   return retval;
 }
@@ -5765,11 +5681,26 @@ clutter_actor_get_rotation (ClutterActor      *self,
                             gint              *y,
                             gint              *z)
 {
+  ClutterUnit xu, yu, zu;
+  gdouble angle;
+
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.0);
 
-  return CLUTTER_FIXED_TO_FLOAT (clutter_actor_get_rotationx (self,
-                                                           axis,
-                                                           x, y, z));
+  angle = clutter_actor_get_rotationu (self, axis, &xu, &yu, &zu);
+
+  *x = CLUTTER_UNITS_TO_DEVICE (xu);
+  *y = CLUTTER_UNITS_TO_DEVICE (yu);
+  *z = CLUTTER_UNITS_TO_DEVICE (zu);
+
+  return angle;
+}
+
+ClutterGravity
+clutter_actor_get_z_rotation_gravity (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.0);
+
+  return clutter_anchor_coord_get_gravity (&self->priv->rz_center);
 }
 
 /**
@@ -6905,7 +6836,7 @@ out:
 typedef struct {
   ClutterRotateAxis axis;
 
-  ClutterFixed angle;
+  gdouble angle;
 
   ClutterUnit center_x;
   ClutterUnit center_y;
@@ -6925,7 +6856,7 @@ parse_rotation_array (ClutterActor *actor,
   /* angle */
   element = json_array_get_element (array, 0);
   if (JSON_NODE_TYPE (element) == JSON_NODE_VALUE)
-    info->angle = CLUTTER_FLOAT_TO_FIXED (json_node_get_double (element));
+    info->angle = json_node_get_double (element);
   else
     return FALSE;
 
@@ -7138,11 +7069,11 @@ clutter_actor_set_custom_property (ClutterScriptable *scriptable,
 
       info = g_value_get_pointer (value);
 
-      clutter_actor_set_rotation_internal (CLUTTER_ACTOR (scriptable),
-                                           info->axis, info->angle,
-                                           info->center_x,
-                                           info->center_y,
-                                           info->center_z);
+      clutter_actor_set_rotationu (CLUTTER_ACTOR (scriptable),
+                                   info->axis, info->angle,
+                                   info->center_x,
+                                   info->center_y,
+                                   info->center_z);
 
       g_slice_free (RotationInfo, info);
     }

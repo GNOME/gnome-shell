@@ -95,11 +95,11 @@ alpha_notify_foreach (ClutterBehaviour *behaviour,
   rotate_behaviour = CLUTTER_BEHAVIOUR_ROTATE (behaviour);
   priv = rotate_behaviour->priv;
 
-  clutter_actor_set_rotationx (actor, priv->axis,
-                               angle,
-                               priv->center_x,
-                               priv->center_y,
-                               priv->center_z);
+  clutter_actor_set_rotation (actor, priv->axis,
+                              CLUTTER_FIXED_TO_DOUBLE (angle),
+                              priv->center_x,
+                              priv->center_y,
+                              priv->center_z);
 }
 
 static inline

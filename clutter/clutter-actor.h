@@ -390,24 +390,16 @@ void                  clutter_actor_set_rotation              (ClutterActor     
                                                                gint                   x,
                                                                gint                   y,
                                                                gint                   z);
-void                  clutter_actor_set_rotationx             (ClutterActor          *self,
-                                                               ClutterRotateAxis      axis,
-                                                               ClutterFixed           angle,
-                                                               gint                   x,
-                                                               gint                   y,
-                                                               gint                   z);
 void                  clutter_actor_set_rotationu             (ClutterActor          *self,
                                                                ClutterRotateAxis      axis,
                                                                gdouble                angle,
                                                                ClutterUnit            x,
                                                                ClutterUnit            y,
                                                                ClutterUnit            z);
+void                  clutter_actor_set_z_rotation_from_gravity (ClutterActor        *self,
+                                                               gdouble                angle,
+                                                               ClutterGravity         gravity);
 gdouble               clutter_actor_get_rotation              (ClutterActor          *self,
-                                                               ClutterRotateAxis      axis,
-                                                               gint                  *x,
-                                                               gint                  *y,
-                                                               gint                  *z);
-ClutterFixed          clutter_actor_get_rotationx             (ClutterActor          *self,
                                                                ClutterRotateAxis      axis,
                                                                gint                  *x,
                                                                gint                  *y,
@@ -417,6 +409,7 @@ gdouble               clutter_actor_get_rotationu             (ClutterActor     
                                                                ClutterUnit           *x,
                                                                ClutterUnit           *y,
                                                                ClutterUnit           *z);
+ClutterGravity        clutter_actor_get_z_rotation_gravity    (ClutterActor          *self);
 
 void                  clutter_actor_set_opacity               (ClutterActor          *self,
                                                                guint8                 opacity);
