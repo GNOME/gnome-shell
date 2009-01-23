@@ -318,8 +318,11 @@ clutter_timeline_finalize (GObject *object)
 {
   ClutterTimelinePrivate *priv = CLUTTER_TIMELINE (object)->priv;
 
-  g_hash_table_destroy (priv->markers_by_frame);
-  g_hash_table_destroy (priv->markers_by_name);
+  if (priv->markers_by_frame)
+    g_hash_table_destroy (priv->markers_by_frame);
+
+  if (priv->markers_by_name)
+    g_hash_table_destroy (priv->markers_by_name);
 
   G_OBJECT_CLASS (clutter_timeline_parent_class)->finalize (object);
 }
@@ -565,18 +568,13 @@ clutter_timeline_init (ClutterTimeline *self)
 {
   ClutterTimelinePrivate *priv;
 
-  self->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                                   CLUTTER_TYPE_TIMELINE,
-                                                   ClutterTimelinePrivate);
+  self->priv = priv =
+    G_TYPE_INSTANCE_GET_PRIVATE (self, CLUTTER_TYPE_TIMELINE,
+                                 ClutterTimelinePrivate);
 
   priv->fps = clutter_get_default_frame_rate ();
   priv->n_frames = 0;
   priv->msecs_delta = 0;
-
-  priv->markers_by_frame = g_hash_table_new (NULL, NULL);
-  priv->markers_by_name = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                 NULL,
-                                                 timeline_marker_free);
 }
 
 static void
@@ -588,12 +586,17 @@ emit_frame_signal (ClutterTimeline *timeline)
   g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
                  priv->current_frame_num);
 
+  if (priv->markers_by_name == NULL ||
+      priv->markers_by_frame == NULL)
+    return;
+
   for (i = priv->skipped_frames; i >= 0; i--)
     {
-      gint frame_num = priv->current_frame_num
-        + (priv->direction == CLUTTER_TIMELINE_FORWARD ? -i : i);
+      gint frame_num;
       GSList *markers, *l;
 
+      frame_num = priv->current_frame_num
+                + (priv->direction == CLUTTER_TIMELINE_FORWARD ? -i : i);
       markers = g_hash_table_lookup (priv->markers_by_frame,
                                      GUINT_TO_POINTER (frame_num));
       for (l = markers; l; l = l->next)
@@ -1485,6 +1488,15 @@ clutter_timeline_add_marker_internal (ClutterTimeline *timeline,
   TimelineMarker *marker;
   GSList *markers;
 
+  if (G_UNLIKELY (priv->markers_by_name == NULL ||
+                  priv->markers_by_frame == NULL))
+    {
+      priv->markers_by_name = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                     NULL,
+                                                     timeline_marker_free);
+      priv->markers_by_frame = g_hash_table_new (NULL, NULL);
+    }
+
   marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
   if (G_UNLIKELY (marker))
     {
@@ -1600,6 +1612,12 @@ clutter_timeline_list_markers (ClutterTimeline *timeline,
 
   priv = timeline->priv;
 
+  if (G_UNLIKELY (priv->markers_by_name == NULL ||
+                  priv->markers_by_frame == NULL))
+    {
+      return NULL;
+    }
+
   if (frame_num < 0)
     {
       GList *markers, *l;
@@ -1651,6 +1669,13 @@ clutter_timeline_advance_to_marker (ClutterTimeline *timeline,
 
   priv = timeline->priv;
 
+  if (G_UNLIKELY (priv->markers_by_name == NULL ||
+                  priv->markers_by_frame == NULL))
+    {
+      g_warning ("No marker named `%s' found.", marker_name);
+      return;
+    }
+
   marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
   if (!marker)
     {
@@ -1682,6 +1707,13 @@ clutter_timeline_remove_marker (ClutterTimeline *timeline,
   g_return_if_fail (marker_name != NULL);
 
   priv = timeline->priv;
+
+  if (G_UNLIKELY (priv->markers_by_name == NULL ||
+                  priv->markers_by_frame == NULL))
+    {
+      g_warning ("No marker named `%s' found.", marker_name);
+      return;
+    }
 
   marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
   if (!marker)
@@ -1736,6 +1768,10 @@ clutter_timeline_has_marker (ClutterTimeline *timeline,
 {
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
   g_return_val_if_fail (marker_name != NULL, FALSE);
+
+  if (G_UNLIKELY (timeline->priv->markers_by_name == NULL ||
+                  timeline->priv->markers_by_frame == NULL))
+    return FALSE;
 
   return NULL != g_hash_table_lookup (timeline->priv->markers_by_name,
                                       marker_name);
