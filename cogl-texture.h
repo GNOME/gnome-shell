@@ -360,90 +360,6 @@ CoglHandle      cogl_texture_ref              (CoglHandle          handle);
 void            cogl_texture_unref            (CoglHandle          handle);
 
 /**
- * cogl_texture_rectangle:
- * @handle: a @CoglHandle.
- * @x1: x coordinate upper left on screen.
- * @y1: y coordinate upper left on screen.
- * @x2: x coordinate lower right on screen.
- * @y2: y coordinate lower right on screen.
- * @tx1: x part of texture coordinate to use for upper left pixel
- * @ty1: y part of texture coordinate to use for upper left pixel
- * @tx2: x part of texture coordinate to use for lower right pixel
- * @ty2: y part of texture coordinate to use for left pixel
- *
- * Draw a rectangle from a texture to the display, to draw the entire
- * texture pass in @tx1=0.0 @ty1=0.0 @tx2=1.0 @ty2=1.0.
- */
-void            cogl_texture_rectangle        (CoglHandle          handle,
-                                               float        x1,
-                                               float        y1,
-                                               float        x2,
-                                               float        y2,
-                                               float        tx1,
-                                               float        ty1,
-                                               float        tx2,
-                                               float        ty2);
-
-/**
- * cogl_texture_polygon:
- * @handle: A CoglHandle for a texture
- * @n_vertices: The length of the vertices array
- * @vertices: An array of #CoglTextureVertex structs
- * @use_color: %TRUE if the color member of #CoglTextureVertex should be used
- *
- * Draws a polygon from a texture with the given model and texture
- * coordinates. This can be used to draw arbitrary shapes textured
- * with a COGL texture. If @use_color is %TRUE then the current COGL
- * color will be changed for each vertex using the value specified in
- * the color member of #CoglTextureVertex. This can be used for
- * example to make the texture fade out by setting the alpha value of
- * the color.
- *
- * All of the texture coordinates must be in the range [0,1] and
- * repeating the texture is not supported.
- *
- * Because of the way this function is implemented it will currently
- * only work if either the texture is not sliced or the backend is not
- * OpenGL ES and the minifying and magnifying functions are both set
- * to CGL_NEAREST.
- */
-void            cogl_texture_polygon          (CoglHandle          handle,
-                                               guint               n_vertices,
-                                               CoglTextureVertex  *vertices,
-                                               gboolean            use_color);
-
-/**
- * cogl_material_rectangle:
- * @x1: x coordinate upper left on screen.
- * @y1: y coordinate upper left on screen.
- * @x2: x coordinate lower right on screen.
- * @y2: y coordinate lower right on screen.
- * @tex_coords_len: The length of the tex_coords array. (e.g. for one layer
- *                  and one group of texture coordinates, this would be 4)
- * @tex_coords: An array containing groups of 4 CoglFixed values:
- *   [tx1, ty1, tx2, ty2] that are interpreted as two texture coordinates; one
- *   for the upper left texel, and one for the lower right texel. Each value
- *   should be between 0.0 and 1.0, where the coordinate (0.0, 0.0) represents
- *   the top left of the texture, and (1.0, 1.0) the bottom right.
- *
- * This function draws a rectangle using the current source material to
- * texture or fill with. Since a material may contain multiple texture
- * layers the interface lets you supply corresponding sets of texture
- * coordinates.
- *
- * The first pair of coordinates are for the first layer (with the smallest
- * layer index) and if you supply less texture coordinates than there are
- * layers in the current source material then default texture coordinates
- * [0.0, 0.0, 1.0, 1.0] are generated.
- */
-void cogl_material_rectangle (CoglFixed        x1,
-                              CoglFixed        y1,
-                              CoglFixed        x2,
-                              CoglFixed        y2,
-                              gint             tex_coords_len,
-                              const CoglFixed *tex_coords);
-
-/**
  * cogl_bitmap_new_from_file:
  * @filename: the file to load.
  * @error: a #GError or %NULL.
@@ -483,27 +399,110 @@ gboolean        cogl_bitmap_get_size_from_file (const gchar   *filename,
 void            cogl_bitmap_free              (CoglBitmap     *bmp);
 
 /**
- * cogl_texture_multiple_rectangles:
- * @handle: a @CoglHandle.
+ * cogl_rectangle_with_texture_coords:
+ * @x1: x coordinate upper left on screen.
+ * @y1: y coordinate upper left on screen.
+ * @x2: x coordinate lower right on screen.
+ * @y2: y coordinate lower right on screen.
+ * @tx1: x part of texture coordinate to use for upper left pixel
+ * @ty1: y part of texture coordinate to use for upper left pixel
+ * @tx2: x part of texture coordinate to use for lower right pixel
+ * @ty2: y part of texture coordinate to use for left pixel
+ *
+ * Draw a rectangle using the current material and supply texture coordinates
+ * to be used for the first texture layer of the material. To draw the entire
+ * texture pass in @tx1=0.0 @ty1=0.0 @tx2=1.0 @ty2=1.0.
+ *
+ * Since 1.0
+ */
+void cogl_rectangle_with_texture_coords (float  x1,
+                                         float  y1,
+                                         float  x2,
+                                         float  y2,
+                                         float  tx1,
+                                         float  ty1,
+                                         float  tx2,
+                                         float  ty2);
+
+/**
+ * cogl_rectangle_with_multitexture_coords:
+ * @x1: x coordinate upper left on screen.
+ * @y1: y coordinate upper left on screen.
+ * @x2: x coordinate lower right on screen.
+ * @y2: y coordinate lower right on screen.
+ * @tex_coords: An array containing groups of 4 float values:
+ *   [tx1, ty1, tx2, ty2] that are interpreted as two texture coordinates; one
+ *   for the upper left texel, and one for the lower right texel. Each value
+ *   should be between 0.0 and 1.0, where the coordinate (0.0, 0.0) represents
+ *   the top left of the texture, and (1.0, 1.0) the bottom right.
+ * @tex_coords_len: The length of the tex_coords array. (e.g. for one layer
+ *                  and one group of texture coordinates, this would be 4)
+ *
+ * This function draws a rectangle using the current source material to
+ * texture or fill with. As a material may contain multiple texture layers
+ * this interface lets you supply texture coordinates for each layer of the
+ * material.
+ *
+ * The first pair of coordinates are for the first layer (with the smallest
+ * layer index) and if you supply less texture coordinates than there are
+ * layers in the current source material then default texture coordinates
+ * (0.0, 0.0, 1.0, 1.0) are generated.
+ *
+ * Since 1.0
+ */
+void cogl_rectangle_with_multitexture_coords (float        x1,
+                                              float        y1,
+                                              float        x2,
+                                              float        y2,
+                                              const float *tex_coords,
+                                              gint         tex_coords_len);
+
+/**
+ * cogl_rectangles_with_texture_coords:
  * @verts: an array of vertices
  * @n_rects: number of rectangles to draw
  *
  * Draws a series of rectangles in the same way that
- * cogl_texture_rectangle() does. In some situations it can give a
+ * cogl_rectangle_with_texture_coords() does. In some situations it can give a
  * significant performance boost to use this function rather than
- * calling cogl_texture_rectangle() separately for each rectangle.
+ * calling cogl_rectangle_with_texture_coords() separately for each rectangle.
  *
  * @verts should point to an array of #float<!-- -->s with
  * @n_rects * 8 elements. Each group of 8 values corresponds to the
  * parameters x1, y1, x2, y2, tx1, ty1, tx2 and ty2 and have the same
- * meaning as in cogl_texture_rectangle().
+ * meaning as in cogl_rectangle_with_texture_coords().
  *
  * Since: 0.8.6
  */
-void            cogl_texture_multiple_rectangles
-                                              (CoglHandle          handle,
-                                               const float    *verts,
-                                               guint               n_rects);
+void  cogl_rectangles_with_texture_coords (const float *verts,
+                                           guint        n_rects);
+
+/**
+ * cogl_polygon:
+ * @vertices: An array of #CoglTextureVertex structs
+ * @n_vertices: The length of the vertices array
+ * @use_color: %TRUE if the color member of #CoglTextureVertex should be used
+ *
+ * Draws a convex polygon using the current source material to fill / texture
+ * with according to the texture coordinates passed.
+ *
+ * If @use_color is %TRUE then the color will be changed for each vertex using
+ * the value specified in the color member of #CoglTextureVertex. This can be
+ * used for example to make the texture fade out by setting the alpha value of
+ * the color.
+ *
+ * All of the texture coordinates must be in the range [0,1] and repeating the
+ * texture is not supported.
+ *
+ * Because of the way this function is implemented it will currently only work
+ * if either the texture is not sliced or the backend is not OpenGL ES and the
+ * minifying and magnifying functions are both set to CGL_NEAREST.
+ *
+ * Since 1.0
+ */
+void cogl_polygon (CoglTextureVertex  *vertices,
+                   guint               n_vertices,
+                   gboolean            use_color);
 
 G_END_DECLS
 
