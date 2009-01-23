@@ -352,7 +352,9 @@ clutter_actor_set_y
 clutter_actor_get_y
 clutter_actor_move_by
 clutter_actor_set_rotation
+clutter_actor_set_z_rotation_from_gravity
 clutter_actor_get_rotation
+clutter_actor_get_z_rotation_gravity
 clutter_actor_is_rotated
 clutter_actor_set_opacity
 clutter_actor_get_opacity
@@ -381,7 +383,11 @@ clutter_actor_get_stage
 clutter_actor_set_depth
 clutter_actor_get_depth
 clutter_actor_set_scale
+clutter_actor_set_scale_full
+clutter_actor_set_scale_with_gravity
 clutter_actor_get_scale
+clutter_actor_get_scale_center
+clutter_actor_get_scale_gravity
 clutter_actor_is_scaled
 clutter_actor_apply_transform_to_point
 clutter_actor_transform_stage_point
@@ -400,6 +406,7 @@ clutter_actor_box_get_from_vertices
 clutter_actor_set_anchor_point
 clutter_actor_get_anchor_point
 clutter_actor_set_anchor_point_from_gravity
+clutter_actor_get_anchor_point_gravity
 clutter_actor_move_anchor_point
 clutter_actor_move_anchor_point_from_gravity
 
@@ -427,6 +434,8 @@ clutter_actor_set_positionu
 clutter_actor_get_positionu
 clutter_actor_set_sizeu
 clutter_actor_get_sizeu
+clutter_actor_set_scale_fullu
+clutter_actor_get_scale_centeru
 clutter_actor_set_anchor_pointu
 clutter_actor_get_anchor_pointu
 clutter_actor_move_anchor_pointu
@@ -437,12 +446,6 @@ clutter_actor_get_rotationu
 clutter_actor_move_byu
 clutter_actor_get_transformed_positionu
 clutter_actor_get_transformed_sizeu
-
-<SUBSECTION>
-clutter_actor_set_scalex
-clutter_actor_get_scalex
-clutter_actor_set_rotationx
-clutter_actor_get_rotationx
 
 <SUBSECTION>
 clutter_actor_grab_key_focus

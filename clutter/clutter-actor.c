@@ -57,13 +57,13 @@
  * the actor settings by the following order of operations:
  * <orderedlist>
  *   <listitem><para>Translation by actor x, y coords,</para></listitem>
+ *   <listitem><para>Translation by actor depth (z),</para></listitem>
  *   <listitem><para>Scaling by scale_x, scale_y,</para></listitem>
- *   <listitem><para>Negative translation by anchor point x,
- *   y,</para></listitem>
  *   <listitem><para>Rotation around z axis,</para></listitem>
  *   <listitem><para>Rotation around y axis,</para></listitem>
  *   <listitem><para>Rotation around x axis,</para></listitem>
- *   <listitem><para>Translation by actor depth (z),</para></listitem>
+ *   <listitem><para>Negative translation by anchor point x,
+ *   y,</para></listitem>
  *   <listitem><para>Rectangular Clip is applied (this is not an operation on
  *   the matrix as such, but it is done as part of the transform set
  *   up).</para></listitem>
@@ -5085,8 +5085,9 @@ clutter_actor_get_yu (ClutterActor *self)
  * @scale_x: double factor to scale actor by horizontally.
  * @scale_y: double factor to scale actor by vertically.
  *
- * Scales an actor with the given factors. The scaling is always
- * relative to the anchor point.
+ * Scales an actor with the given factors. The scaling is relative to
+ * the scale center and the anchor point. The scale center is
+ * unchanged by this function and defaults to 0,0.
  *
  * Since: 0.2
  */
@@ -5114,6 +5115,20 @@ clutter_actor_set_scale (ClutterActor *self,
   g_object_unref (self);
 }
 
+/**
+ * clutter_actor_set_scale_full:
+ * @self: A #ClutterActor
+ * @scale_x: double factor to scale actor by horizontally.
+ * @scale_y: double factor to scale actor by vertically.
+ * @center_x: X coordinate of the center of the scale.
+ * @center_y: Y coordinate of the center of the scale
+ *
+ * Scales an actor with the given factors around the given center
+ * point. The center point is specified in pixels relative to the
+ * anchor point (usually the top left corner of the actor).
+ *
+ * Since: 1.0
+ */
 void
 clutter_actor_set_scale_full (ClutterActor *self,
                               gdouble       scale_x,
@@ -5128,6 +5143,23 @@ clutter_actor_set_scale_full (ClutterActor *self,
                                  CLUTTER_UNITS_FROM_DEVICE (center_y));
 }
 
+/**
+ * clutter_actor_set_scale_fullu:
+ * @self: A #ClutterActor
+ * @scale_x: double factor to scale actor by horizontally.
+ * @scale_y: double factor to scale actor by vertically.
+ * @center_x: X coordinate of the center of the scale.
+ * @center_y: Y coordinate of the center of the scale
+ *
+ * %ClutterUnit version of clutter_actor_set_scale_full().
+ *
+ * Scales an actor with the given factors around the given center
+ * point. The center point is specified in
+ * %ClutterUnit<!-- -->s relative to the anchor point (usually
+ * the top left corner of the actor).
+ *
+ * Since: 1.0
+ */
 void
 clutter_actor_set_scale_fullu (ClutterActor *self,
                                gdouble       scale_x,
@@ -5157,6 +5189,22 @@ clutter_actor_set_scale_fullu (ClutterActor *self,
   g_object_unref (self);
 }
 
+/**
+ * clutter_actor_set_scale_with_gravity:
+ * @self: A #ClutterActor
+ * @scale_x: double factor to scale actor by horizontally.
+ * @scale_y: double factor to scale actor by vertically.
+ * @gravity: the location of the scale center expressed as a compass
+ * direction.
+ *
+ * Scales an actor with the given factors around the given
+ * center point. The center point is specified as one of the compass
+ * directions in #ClutterGravity. For example, setting it to north
+ * will cause the top of the actor to remain unchanged and the rest of
+ * the actor to expand left, right and downwards.
+ *
+ * Since: 1.0
+ */
 void
 clutter_actor_set_scale_with_gravity (ClutterActor   *self,
                                       gdouble         scale_x,
@@ -5213,6 +5261,19 @@ clutter_actor_get_scale (ClutterActor *self,
     *scale_y = CLUTTER_FIXED_TO_FLOAT (self->priv->scale_y);
 }
 
+/**
+ * clutter_actor_get_scale_center:
+ * @self: A #ClutterActor
+ * @center_x: Location to store the X position of the scale center, or %NULL.
+ * @center_y: Location to store the Y position of the scale center, or %NULL.
+ *
+ * Retrieves the scale center coordinate in pixels relative to the top
+ * left corner of the actor. If the scale center was specified using a
+ * #ClutterGravity this will calculate the pixel offset using the
+ * current size of the actor.
+ *
+ * Since: 1.0
+ */
 void
 clutter_actor_get_scale_center (ClutterActor *self,
                                 gint         *center_x,
@@ -5230,6 +5291,21 @@ clutter_actor_get_scale_center (ClutterActor *self,
     *center_y = CLUTTER_UNITS_TO_DEVICE (yu);
 }
 
+/**
+ * clutter_actor_get_scale_centeru:
+ * @self: A #ClutterActor
+ * @center_x: Location to store the X position of the scale center, or %NULL.
+ * @center_y: Location to store the Y position of the scale center, or %NULL.
+ *
+ * ClutterUnit<!-- -->s version of clutter_actor_get_scale_center().
+ *
+ * Retrieves the scale center coordinate in units relative to the top
+ * left corner of the actor. If the scale center was specified using a
+ * #ClutterGravity this will calculate the unit offset using the
+ * current size of the actor.
+ *
+ * Since: 1.0
+ */
 void
 clutter_actor_get_scale_centeru (ClutterActor *self,
                                  ClutterUnit  *center_x,
@@ -5241,6 +5317,18 @@ clutter_actor_get_scale_centeru (ClutterActor *self,
                                   center_x, center_y, NULL);
 }
 
+/**
+ * clutter_actor_get_scale_gravity:
+ * @self: A #ClutterActor
+ *
+ * Retrieves the scale center as a compass direction. If the scale
+ * center was specified in pixels or units this will return
+ * %CLUTTER_GRAVITY_NONE.
+ *
+ * Return value: the scale gravity
+ *
+ * Since: 1.0
+ */
 ClutterGravity
 clutter_actor_get_scale_gravity (ClutterActor *self)
 {
@@ -5571,6 +5659,20 @@ clutter_actor_set_rotation (ClutterActor      *self,
                                CLUTTER_UNITS_FROM_DEVICE (z));
 }
 
+/**
+ * clutter_actor_set_z_rotation_from_gravity:
+ * @self: a #ClutterActor
+ * @angle: the angle of rotation
+ * @gravity: the center point of the rotation
+ *
+ * Sets the rotation angle of @self around the Z axis using the center
+ * point specified as a compass point. For example to rotate such that
+ * the center of the actor remains static you can use
+ * %CLUTTER_GRAVITY_CENTER. If the actor changes size the center point
+ * will move accordingly.
+ *
+ * Since: 1.0
+ */
 void
 clutter_actor_set_z_rotation_from_gravity (ClutterActor      *self,
                                            gdouble            angle,
@@ -5695,6 +5797,18 @@ clutter_actor_get_rotation (ClutterActor      *self,
   return angle;
 }
 
+/**
+ * clutter_actor_get_z_rotation_gravity:
+ * @self: A #ClutterActor
+ *
+ * Retrieves the center for the rotation around the Z axis as a
+ * compass direction. If the center was specified in pixels or units
+ * this will return %CLUTTER_GRAVITY_NONE.
+ *
+ * Return value: the Z rotation center
+ *
+ * Since: 1.0
+ */
 ClutterGravity
 clutter_actor_get_z_rotation_gravity (ClutterActor *self)
 {
@@ -6526,6 +6640,16 @@ clutter_actor_set_anchor_pointu (ClutterActor *self,
     clutter_actor_queue_redraw (self);
 }
 
+/**
+ * clutter_actor_get_anchor_point_gravity:
+ * @self: a #ClutterActor
+ *
+ * Retrieves the anchor position expressed as a #ClutterGravity. If
+ * the anchor point was specified using pixels or units this will
+ * return %CLUTTER_GRAVITY_NONE.
+ *
+ * Since: 1.0
+ */
 ClutterGravity
 clutter_actor_get_anchor_point_gravity (ClutterActor *self)
 {
@@ -6610,11 +6734,11 @@ clutter_actor_get_anchor_pointu (ClutterActor *self,
  * actor postion so that its relative position within its parent remains
  * unchanged.
  *
- * Note that the anchor is still stored as a point and the gravity
- * value is forgotten. For example, if you set the anchor point to
- * %CLUTTER_GRAVITY_SOUTH_EAST and later double the size of the actor,
- * the anchor point will not move to the bottom right and will now be
- * in the center of the actor.
+ * Since version 1.0 the anchor point will be stored as a gravity so
+ * that if the actor changes size then the anchor point will move. For
+ * example, if you set the anchor point to %CLUTTER_GRAVITY_SOUTH_EAST
+ * and later double the size of the actor, the anchor point will move
+ * to the bottom right.
  *
  * Since: 0.6
  */
@@ -6653,11 +6777,11 @@ clutter_actor_move_anchor_point_from_gravity (ClutterActor   *self,
  * Sets an anchor point on the actor, based on the given gravity (this is a
  * convenience function wrapping clutter_actor_set_anchor_point()).
  *
- * Note that the anchor is still stored as a point and the gravity
- * value is forgotten. For example, if you set the anchor point to
- * %CLUTTER_GRAVITY_SOUTH_EAST and later double the size of the actor,
- * the anchor point will not move to the bottom right and will now be
- * in the center of the actor.
+ * Since version 1.0 the anchor point will be stored as a gravity so
+ * that if the actor changes size then the anchor point will move. For
+ * example, if you set the anchor point to %CLUTTER_GRAVITY_SOUTH_EAST
+ * and later double the size of the actor, the anchor point will move
+ * to the bottom right.
  *
  * Since: 0.6
  */
