@@ -351,6 +351,7 @@ static void
 clutter_timeline_class_init (ClutterTimelineClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
 
   timeline_pool_init ();
 
@@ -364,42 +365,45 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
   /**
    * ClutterTimeline:fps:
    *
-   * Timeline frames per second. Because of the nature of the main
-   * loop used by Clutter this is to be considered a best approximation.
+   * Number of frames per second. Because of the nature of the main
+   * loop used by Clutter, we can only accept a granularity of one
+   * frame per millisecond.
+   *
+   * This value is to be considered a best approximation.
    */
-  g_object_class_install_property (object_class,
-                                   PROP_FPS,
-                                   g_param_spec_uint ("fps",
-                                                      "Frames Per Second",
-                                                      "Timeline frames per second",
-                                                      1, G_MAXUINT,
-                                                      60,
-                                                      CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_uint ("fps",
+                             "Frames Per Second",
+                             "Frames per second",
+                             1, 1000,
+                             60,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_FPS, pspec);
+
   /**
    * ClutterTimeline:num-frames:
    *
    * Total number of frames for the timeline.
    */
-  g_object_class_install_property (object_class,
-                                   PROP_NUM_FRAMES,
-                                   g_param_spec_uint ("num-frames",
-                                                      "Total number of frames",
-                                                      "Timelines total number of frames",
-                                                      1, G_MAXUINT,
-                                                      1,
-                                                      CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_uint ("num-frames",
+                             "Total number of frames",
+                             "Total number of frames",
+                             1, G_MAXUINT,
+                             1,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_NUM_FRAMES, pspec);
+
   /**
    * ClutterTimeline:loop:
    *
    * Whether the timeline should automatically rewind and restart.
    */
-  g_object_class_install_property (object_class,
-                                   PROP_LOOP,
-                                   g_param_spec_boolean ("loop",
-                                                         "Loop",
-                                                         "Should the timeline automatically restart",
-                                                         FALSE,
-                                                         CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_boolean ("loop",
+                                "Loop",
+                                "Should the timeline automatically restart",
+                                FALSE,
+                                CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_LOOP, pspec);
+
   /**
    * ClutterTimeline:delay:
    *
@@ -408,14 +412,14 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    *
    * Since: 0.4
    */
-  g_object_class_install_property (object_class,
-                                   PROP_DELAY,
-                                   g_param_spec_uint ("delay",
-                                                      "Delay",
-                                                      "Delay before start",
-                                                      0, G_MAXUINT,
-                                                      0,
-                                                      CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_uint ("delay",
+                             "Delay",
+                             "Delay before start",
+                             0, G_MAXUINT,
+                             0,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_DELAY, pspec);
+
   /**
    * ClutterTimeline:duration:
    *
@@ -424,14 +428,14 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property (object_class,
-                                   PROP_DURATION,
-                                   g_param_spec_uint ("duration",
-                                                      "Duration",
-                                                      "Duration of the timeline in milliseconds",
-                                                      0, G_MAXUINT,
-                                                      1000,
-                                                      CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_uint ("duration",
+                             "Duration",
+                             "Duration of the timeline in milliseconds",
+                             0, G_MAXUINT,
+                             1000,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_DURATION, pspec);
+
   /**
    * ClutterTimeline:direction:
    *
@@ -440,14 +444,13 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    *
    * Since: 0.6
    */
-  g_object_class_install_property (object_class,
-                                   PROP_DIRECTION,
-                                   g_param_spec_enum ("direction",
-                                                      "Direction",
-                                                      "Direction of the timeline",
-                                                      CLUTTER_TYPE_TIMELINE_DIRECTION,
-                                                      CLUTTER_TIMELINE_FORWARD,
-                                                      CLUTTER_PARAM_READWRITE));
+  pspec = g_param_spec_enum ("direction",
+                             "Direction",
+                             "Direction of the timeline",
+                             CLUTTER_TYPE_TIMELINE_DIRECTION,
+                             CLUTTER_TIMELINE_FORWARD,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_DIRECTION, pspec);
 
   /**
    * ClutterTimeline::new-frame:
@@ -547,7 +550,8 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
   timeline_signals[MARKER_REACHED] =
     g_signal_new ("marker-reached",
                   G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE |
+                  G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
                   G_STRUCT_OFFSET (ClutterTimelineClass, marker_reached),
                   NULL, NULL,
                   clutter_marshal_VOID__STRING_INT,
@@ -612,7 +616,7 @@ timeline_timeout_func (gpointer data)
   ClutterTimeline        *timeline = data;
   ClutterTimelinePrivate *priv;
   GTimeVal                timeval;
-  guint                   n_frames;
+  guint                   n_frames, speed;
   gulong                  msecs;
 
   priv = timeline->priv;
@@ -639,7 +643,11 @@ timeline_timeout_func (gpointer data)
   msecs = (timeval.tv_sec - priv->prev_frame_timeval.tv_sec) * 1000;
   msecs += (timeval.tv_usec - priv->prev_frame_timeval.tv_usec) / 1000;
   priv->msecs_delta = msecs;
-  n_frames = msecs / (1000 / priv->fps);
+
+  /* we need to avoid fps > 1000 */
+  speed = MAX (1000 / priv->fps, 1);
+
+  n_frames = msecs / speed;
   if (n_frames == 0)
     n_frames = 1;
 
@@ -1089,10 +1097,11 @@ clutter_timeline_set_n_frames (ClutterTimeline *timeline,
 /**
  * clutter_timeline_set_speed:
  * @timeline: A #ClutterTimeline
- * @fps: New speed of timeline as frames per second
+ * @fps: New speed of timeline as frames per second,
+ *    between 1 and 1000
  *
  * Set the speed in frames per second of the timeline.
- **/
+ */
 void
 clutter_timeline_set_speed (ClutterTimeline *timeline,
                             guint            fps)
@@ -1100,7 +1109,7 @@ clutter_timeline_set_speed (ClutterTimeline *timeline,
   ClutterTimelinePrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
-  g_return_if_fail (fps > 0);
+  g_return_if_fail (fps > 0 && fps <= 1000);
 
   priv = timeline->priv;
 
