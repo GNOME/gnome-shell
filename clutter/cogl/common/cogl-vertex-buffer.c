@@ -134,6 +134,7 @@
 #include "cogl-context.h"
 #include "cogl-handle.h"
 #include "cogl-vertex-buffer-private.h"
+#include "cogl-texture-private.h"
 
 #define PAD_FOR_ALIGNMENT(VAR, TYPE_SIZE) \
   (VAR = TYPE_SIZE + ((VAR - 1) & ~(TYPE_SIZE - 1)))
@@ -1416,12 +1417,15 @@ get_gl_type_from_attribute_flags (CoglVertexBufferAttribFlags flags)
 static void
 enable_state_for_drawing_attributes_buffer (CoglVertexBuffer *buffer)
 {
-  GList *tmp;
-  GLenum gl_type;
-  GLuint generic_index = 0;
-  gulong enable_flags = COGL_ENABLE_BLEND;
-  /* FIXME: I don't think it's appropriate to force enable
-   * GL_BLEND here. */
+  GList       *tmp;
+  GLenum       gl_type;
+  GLuint       generic_index = 0;
+  gulong       enable_flags = 0;
+  guint        max_texcoord_attrib_unit = 0;
+  const GList *layers;
+  guint32      fallback_mask = 0;
+  guint32      disable_mask = ~0;
+  int          i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -1460,17 +1464,16 @@ enable_state_for_drawing_attributes_buffer (CoglVertexBuffer *buffer)
 				   (const GLvoid *)attribute->u.vbo_offset));
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY:
-	      /* FIXME: set the active texture unit */
-	      /* NB: Cogl currently manages unit 0 */
-	      enable_flags |= (COGL_ENABLE_TEXCOORD_ARRAY
-			       | COGL_ENABLE_TEXTURE_2D);
-	      /* FIXME: I don't think it's appropriate to force enable
-	       * GL_TEXTURE_2D here. */
-	      /* GE (glEnableClientState (GL_VERTEX_ARRAY)); */
+              GE (glClientActiveTexture (GL_TEXTURE0 +
+                                         attribute->texture_unit));
+              GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
 	      GE (glTexCoordPointer (attribute->n_components,
 				     gl_type,
 				     attribute->stride,
 				     (const GLvoid *)attribute->u.vbo_offset));
+              if (attribute->texture_unit > max_texcoord_attrib_unit)
+                max_texcoord_attrib_unit = attribute->texture_unit;
+              disable_mask &= ~(1 << attribute->texture_unit);
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
 	      enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
@@ -1505,8 +1508,51 @@ enable_state_for_drawing_attributes_buffer (CoglVertexBuffer *buffer)
 	}
     }
 
-  cogl_enable (enable_flags);
+  layers = cogl_material_get_layers (ctx->source_material);
+  for (tmp = (GList *)layers, i = 0;
+       tmp != NULL && i <= max_texcoord_attrib_unit;
+       tmp = tmp->next, i++)
+    {
+      CoglHandle layer = (CoglHandle)tmp->data;
+      CoglHandle tex_handle = cogl_material_layer_get_texture (layer);
+      CoglTexture *texture =
+        _cogl_texture_pointer_from_handle (tex_handle);
 
+      if (cogl_texture_is_sliced (tex_handle)
+          || _cogl_texture_span_has_waste (texture, 0, 0))
+        {
+          g_warning ("Disabling layer %d of the current source material, "
+                     "because texturing with the vertex buffer API is not "
+                     "currently supported using sliced textures, or textures "
+                     "with waste\n", i);
+
+          /* XXX: maybe we can add a mechanism for users to forcibly use
+           * textures with waste where it would be their responsability to use
+           * texture coords in the range [0,1] such that sampling outside isn't
+           * required. We can then use a texture matrix (or a modification of
+           * the users own matrix) to map 1 to the edge of the texture data.
+           *
+           * Potentially, given the same guarantee as above we could also
+           * support a single sliced layer too. We would have to redraw the
+           * vertices once for each layer, each time with a fiddled texture
+           * matrix.
+           */
+          fallback_mask |= (1 << i);
+        }
+      else if (!(disable_mask & (1 << i)))
+        fallback_mask |= (1 << i);
+    }
+
+  cogl_material_flush_gl_state (ctx->source_material,
+                                COGL_MATERIAL_FLUSH_FALLBACK_MASK,
+                                fallback_mask,
+                                COGL_MATERIAL_FLUSH_DISABLE_MASK,
+                                disable_mask,
+                                NULL);
+
+  enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
+
+  cogl_enable (enable_flags);
 }
 
 static void
@@ -1550,9 +1596,9 @@ disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 	      GE (glDisableClientState (GL_NORMAL_ARRAY));
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY:
-	      /* FIXME: set the active texture unit */
-	      /* NB: Cogl currently manages unit 0 */
-	      /* GE (glDisableClientState (GL_VERTEX_ARRAY)); */
+              GE (glClientActiveTexture (GL_TEXTURE0 +
+                                         attribute->texture_unit));
+	      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
 	      break;
 	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
 	      /* GE (glDisableClientState (GL_VERTEX_ARRAY)); */

@@ -32,7 +32,7 @@
 
 #include <cogl/cogl-defines-@CLUTTER_COGL@.h>
 
-#include <cogl/cogl-mesh.h>
+#include <cogl/cogl-vertex-buffer.h>
 #include <cogl/cogl-matrix.h>
 #include <cogl/cogl-vertex-buffer.h>
 #include <cogl/cogl-fixed.h>

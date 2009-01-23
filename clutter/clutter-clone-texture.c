@@ -195,7 +195,7 @@ clutter_clone_texture_paint (ClutterActor *self)
 
 #if USE_COGL_MATERIAL
   cogl_material = clutter_texture_get_cogl_material (priv->parent_texture);
-  /* FIXME: This is a lazy way of extracting the cogl_texture for the
+  /* This is just a convenient way of extracting the cogl_texture for the
    * the first layer of the above material... */
   cogl_texture = clutter_texture_get_cogl_texture (priv->parent_texture);
 #else
@@ -221,23 +221,14 @@ clutter_clone_texture_paint (ClutterActor *self)
 
 #if USE_COGL_MATERIAL
   cogl_set_source (cogl_material);
-
-  tex_coords[0] = 0;
-  tex_coords[1] = 0;
-  tex_coords[2] = t_w;
-  tex_coords[3] = t_h;
-  cogl_material_rectangle (0, 0,
-                           COGL_FIXED_FROM_INT (x_2 - x_1),
-			   COGL_FIXED_FROM_INT (y_2 - y_1),
-                           0,
-                           tex_coords);
 #else
-  /* Parent paint translated us into position */
-  cogl_texture_rectangle (cogl_texture, 0, 0,
-			  (float)(x_2 - x_1),
-			  (float)(y_2 - y_1),
-			  0, 0, t_w, t_h);
+  cogl_set_source_texture (cogl_texture);
 #endif
+  /* Parent paint translated us into position */
+  cogl_rectangle_with_texture_coords (0, 0,
+			              (float) (x_2 - x_1),
+			              (float) (y_2 - y_1),
+			              0, 0, t_w, t_h);
 }
 
 static void

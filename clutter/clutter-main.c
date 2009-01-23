@@ -1157,18 +1157,6 @@ clutter_init_real (GError **error)
   if (!_clutter_backend_post_parse (backend, error))
     return CLUTTER_INIT_ERROR_BACKEND;
 
-  /*
-   * Resolution requires display to be open, so can only be queried after
-   * the post_parse hooks run.
-   */
-  ctx->font_map = COGL_PANGO_FONT_MAP (cogl_pango_font_map_new ());
-
-  resolution = clutter_backend_get_resolution (ctx->backend);
-  cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
-  cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
-
-  clutter_text_direction = clutter_get_text_direction ();
-
   /* Stage will give us a GL Context etc */
   stage = clutter_stage_get_default ();
   if (!stage)
@@ -1200,6 +1188,21 @@ clutter_init_real (GError **error)
   /* Now we can safely assume we have a valid GL context and can
    * start issueing cogl commands
   */
+
+  /*
+   * Resolution requires display to be open, so can only be queried after
+   * the post_parse hooks run.
+   *
+   * NB: cogl_pango requires a Cogl context.
+   */
+  ctx->font_map = COGL_PANGO_FONT_MAP (cogl_pango_font_map_new ());
+
+  resolution = clutter_backend_get_resolution (ctx->backend);
+  cogl_pango_font_map_set_resolution (ctx->font_map, resolution);
+  cogl_pango_font_map_set_use_mipmapping (ctx->font_map, TRUE);
+
+  clutter_text_direction = clutter_get_text_direction ();
+
 
   /* Figure out framebuffer masks used for pick */
   cogl_get_bitmasks (&ctx->fb_r_mask, &ctx->fb_g_mask, &ctx->fb_b_mask, NULL);

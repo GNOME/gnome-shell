@@ -28,7 +28,7 @@ UNIT_TESTS = \
 	test-cogl-tex-getset.c \
 	test-cogl-offscreen.c \
 	test-cogl-tex-polygon.c \
-	test-cogl-material.c \
+	test-cogl-multitexture.c \
 	test-stage-read-pixels.c \
 	test-random-text.c \
 	test-clip.c \
@@ -40,7 +40,8 @@ UNIT_TESTS = \
         test-binding-pool.c \
         test-text.c \
         test-text-field.c \
-	test-clutter-cairo-flowers.c
+	test-clutter-cairo-flowers.c \
+	test-simple.c
 
 if X11_TESTS
 UNIT_TESTS += test-pixmap.c

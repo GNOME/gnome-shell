@@ -50,33 +50,34 @@ typedef struct
 
   gboolean          enable_backface_culling;
 
-  /* Primitives */
-  floatVec2     path_start;
-  floatVec2     path_pen;
-  GArray           *path_nodes;
-  guint             last_path;
-  floatVec2     path_nodes_min;
-  floatVec2     path_nodes_max;
-
   /* Cache of inverse projection matrix */
   GLfloat           inverse_projection[16];
 
   /* Textures */
-  GArray	      *texture_handles;
-  GArray              *texture_vertices;
-  GArray              *texture_indices;
-  /* The gl texture number that the above vertices apply to. This to
-     detect when a different slice is encountered so that the vertices
-     can be flushed */
-  GLuint               texture_current;
-  GLenum               texture_target;
-  GLenum               texture_wrap_mode;
+  GArray	   *texture_handles;
+  CoglHandle        default_gl_texture_2d_tex;
+  CoglHandle        default_gl_texture_rect_tex;
 
   /* Materials */
   GArray           *material_handles;
   GArray           *material_layer_handles;
+  CoglHandle        default_material;
   CoglHandle	    source_material;
+
+  /* Batching geometry... */
+  /* We journal the texture rectangles we want to submit to OpenGL so
+   * we have an oppertunity to optimise the final order so that we
+   * can batch things together. */
+  GArray           *journal;
+  GArray           *logged_vertices;
+  GArray           *static_indices;
+  GArray           *polygon_vertices;
+
+  /* Some simple caching, to minimize state changes... */
   CoglHandle	    current_material;
+  gulong            current_material_flags;
+  GArray           *current_layers;
+  guint             n_texcoord_arrays_enabled;
 
   /* Framebuffer objects */
   GArray           *fbo_handles;
@@ -93,6 +94,15 @@ typedef struct
 
   /* Vertex buffers */
   GArray           *vertex_buffer_handles;
+
+  /* Primitives */
+  floatVec2         path_start;
+  floatVec2         path_pen;
+  GArray           *path_nodes;
+  guint             last_path;
+  floatVec2         path_nodes_min;
+  floatVec2         path_nodes_max;
+  CoglHandle        stencil_material;
 
   /* Relying on glext.h to define these */
   COGL_PFNGLGENRENDERBUFFERSEXTPROC                pf_glGenRenderbuffersEXT;

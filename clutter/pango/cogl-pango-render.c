@@ -42,8 +42,10 @@ struct _CoglPangoRenderer
 {
   PangoRenderer parent_instance;
 
-  /* The color to draw the glyphs with */
-  CoglColor color;
+  /* The material used to texture from the glyph cache with */
+  CoglHandle glyph_material;
+  /* The material used for solid fills. (boxes, rectangles + trapezoids) */
+  CoglHandle solid_material;
 
   /* Two caches of glyphs as textures, one with mipmapped textures and
      one without */
@@ -68,8 +70,10 @@ cogl_pango_renderer_glyphs_end (CoglPangoRenderer *priv)
   if (priv->glyph_rectangles->len > 0)
     {
       float *rectangles = (float *) priv->glyph_rectangles->data;
-      cogl_texture_multiple_rectangles (priv->glyph_texture, rectangles,
-                                        priv->glyph_rectangles->len / 8);
+      cogl_material_set_layer (priv->glyph_material, 0, priv->glyph_texture);
+      cogl_set_source (priv->glyph_material);
+      cogl_rectangles_with_texture_coords (rectangles,
+                                           priv->glyph_rectangles->len / 8);
       g_array_set_size (priv->glyph_rectangles, 0);
     }
 }
@@ -128,6 +132,38 @@ G_DEFINE_TYPE (CoglPangoRenderer, cogl_pango_renderer, PANGO_TYPE_RENDERER);
 static void
 cogl_pango_renderer_init (CoglPangoRenderer *priv)
 {
+  priv->glyph_material = cogl_material_new ();
+
+  /* The default combine mode of materials is to modulate (A x B) the texture
+   * RGBA channels with the RGBA channels of the previous layer (which in our
+   * case is just the solid font color)
+   *
+   * Since our glyph cache textures are component alpha textures, and so the
+   * RGB channels are defined as (0, 0, 0) we don't want to modulate the RGB
+   * channels, instead we want to simply replace them with our solid font
+   * color...
+   *
+   * XXX: we could really do with a neat string based way for describing
+   * combine modes, like: "REPLACE(PREVIOUS[RGB])"
+   * XXX: potentially materials could have a fuzzy default combine mode
+   * such that they default to this for component alpha textures? This would
+   * give the same semantics as the old-style GL_MODULATE mode but sounds a
+   * bit hacky.
+   */
+  cogl_material_set_layer_combine_function (
+                                    priv->glyph_material,
+                                    0, /* layer */
+                                    COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
+                                    COGL_MATERIAL_LAYER_COMBINE_FUNC_REPLACE);
+  cogl_material_set_layer_combine_arg_src (
+                                    priv->glyph_material,
+                                    0, /* layer */
+                                    0, /* arg */
+                                    COGL_MATERIAL_LAYER_COMBINE_CHANNELS_RGB,
+                                    COGL_MATERIAL_LAYER_COMBINE_SRC_PREVIOUS);
+
+  priv->solid_material = cogl_material_new ();
+
   priv->glyph_cache = cogl_pango_glyph_cache_new (FALSE);
   priv->mipmapped_glyph_cache = cogl_pango_glyph_cache_new (TRUE);
   priv->use_mipmapping = FALSE;
@@ -203,7 +239,8 @@ cogl_pango_render_layout_subpixel (PangoLayout     *layout,
   if (G_UNLIKELY (!priv))
     return;
 
-  priv->color = *color;
+  cogl_material_set_color (priv->glyph_material, color);
+  cogl_material_set_color (priv->solid_material, color);
 
   pango_renderer_draw_layout (PANGO_RENDERER (priv), layout, x, y);
 }
@@ -259,7 +296,8 @@ cogl_pango_render_layout_line (PangoLayoutLine *line,
   if (G_UNLIKELY (!priv))
     return;
 
-  priv->color = *color;
+  cogl_material_set_color (priv->glyph_material, color);
+  cogl_material_set_color (priv->solid_material, color);
 
   pango_renderer_draw_layout_line (PANGO_RENDERER (priv), line, x, y);
 }
@@ -351,12 +389,12 @@ cogl_pango_ensure_glyph_cache_for_layout (PangoLayout *layout)
   PangoContext    *context;
   PangoRenderer   *renderer;
   PangoLayoutIter *iter;
- 
+
   g_return_if_fail (PANGO_IS_LAYOUT (layout));
- 
+
   if ((iter = pango_layout_get_iter (layout)) == NULL)
     return;
- 
+
   context = pango_layout_get_context (layout);
   renderer =
     PANGO_RENDERER (cogl_pango_get_renderer_from_context (context));
@@ -365,19 +403,19 @@ cogl_pango_ensure_glyph_cache_for_layout (PangoLayout *layout)
     {
       PangoLayoutLine *line;
       GSList *l;
- 
+
       line = pango_layout_iter_get_line_readonly (iter);
- 
+
       for (l = line->runs; l; l = l->next)
         {
           PangoLayoutRun *run = l->data;
           PangoGlyphString *glyphs = run->glyphs;
 	  int i;
- 
+
           for (i = 0; i < glyphs->num_glyphs; i++)
             {
               PangoGlyphInfo *gi = &glyphs->glyphs[i];
- 
+
 	      cogl_pango_renderer_get_cached_glyph (renderer,
 						    run->item->analysis.font,
 						    gi->glyph);
@@ -385,7 +423,7 @@ cogl_pango_ensure_glyph_cache_for_layout (PangoLayout *layout)
         }
     }
   while (pango_layout_iter_next_line (iter));
- 
+
   pango_layout_iter_free (iter);
 }
 
@@ -398,19 +436,32 @@ cogl_pango_renderer_set_color_for_part (PangoRenderer   *renderer,
 
   if (pango_color)
     {
-      cogl_set_source_color4ub (pango_color->red >> 8,
-                                pango_color->green >> 8,
-                                pango_color->blue >> 8,
-                                cogl_color_get_alpha_byte (&priv->color));
+      CoglColor color;
+      guint8 red = pango_color->red >> 8;
+      guint8 green = pango_color->green >> 8;
+      guint8 blue = pango_color->blue >> 8;
+      guint8 alpha;
+
+      cogl_material_get_color (priv->solid_material, &color);
+      alpha = cogl_color_get_alpha_byte (&color);
+
+      cogl_material_set_color4ub (priv->solid_material,
+                                  red, green, blue, alpha);
+      cogl_material_set_color4ub (priv->glyph_material,
+                                  red, green, blue, alpha);
     }
-  else
-    cogl_set_source_color (&priv->color);
 }
 
 static void
-cogl_pango_renderer_draw_box (int x,     int y,
-                              int width, int height)
+cogl_pango_renderer_draw_box (PangoRenderer *renderer,
+                              int            x,
+                              int            y,
+                              int            width,
+                              int            height)
 {
+  CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
+
+  cogl_set_source (priv->solid_material);
   cogl_path_rectangle ((float)(x),
 		       (float)(y - height),
 		       (float)(width),
@@ -450,6 +501,7 @@ cogl_pango_renderer_draw_rectangle (PangoRenderer   *renderer,
                                     int              width,
                                     int              height)
 {
+  CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
   float x1, x2, y1, y2;
 
   cogl_pango_renderer_set_color_for_part (renderer, part);
@@ -461,6 +513,7 @@ cogl_pango_renderer_draw_rectangle (PangoRenderer   *renderer,
                                         x + width, y + height,
                                         &x2, &y2);
 
+  cogl_set_source (priv->solid_material);
   cogl_rectangle (x1, y1, x2 - x1, y2 - y1);
 }
 
@@ -474,6 +527,7 @@ cogl_pango_renderer_draw_trapezoid (PangoRenderer   *renderer,
 				    double           x12,
 				    double           x22)
 {
+  CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
   float points[8];
 
   points[0] =  (x11);
@@ -487,6 +541,7 @@ cogl_pango_renderer_draw_trapezoid (PangoRenderer   *renderer,
 
   cogl_pango_renderer_set_color_for_part (renderer, part);
 
+  cogl_set_source (priv->solid_material);
   cogl_path_polygon (points, 4);
   cogl_path_fill ();
 }
@@ -524,15 +579,17 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
 	  if (font == NULL ||
               (metrics = pango_font_get_metrics (font, NULL)) == NULL)
             {
-	      cogl_pango_renderer_draw_box ( (x),
-                                             (y),
+	      cogl_pango_renderer_draw_box (renderer,
+                                            x,
+                                            y,
                                             PANGO_UNKNOWN_GLYPH_WIDTH,
                                             PANGO_UNKNOWN_GLYPH_HEIGHT);
             }
 	  else
 	    {
-	      cogl_pango_renderer_draw_box ( (x),
-					     (y),
+	      cogl_pango_renderer_draw_box (renderer,
+                                            x,
+					    y,
 					    metrics->approximate_char_width
 					    / PANGO_SCALE,
 					    metrics->ascent / PANGO_SCALE);
@@ -553,8 +610,9 @@ cogl_pango_renderer_draw_glyphs (PangoRenderer    *renderer,
             {
               cogl_pango_renderer_glyphs_end (priv);
 
-              cogl_pango_renderer_draw_box ( (x),
-                                             (y),
+              cogl_pango_renderer_draw_box (renderer,
+                                            x,
+                                            y,
                                             PANGO_UNKNOWN_GLYPH_WIDTH,
                                             PANGO_UNKNOWN_GLYPH_HEIGHT);
             }

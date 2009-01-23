@@ -199,6 +199,55 @@ Release Notes for Clutter 1.0
   API. The change removed the private (yet publicly exported) and
   the already deprecated ClutterFixed API.
 
+  Cogl API changes for Clutter 1.0
+  --------------------------------
+
+* All drawing functions now use a source material to determine how geometry is
+  filled. The source material is set via cogl_set_source. Or the convenience
+  functions cogl_set_source_color and cogl_set_source_texture.
+
+  "drawing functions" include: cogl_rectangle, cogl_texture_rectangle,
+  cogl_texture_multiple_rectangles, cogl_texture_polygon (though the
+  cogl_texture_* funcs have been renamed; see below for details),
+  cogl_path_fill/stroke and cogl_vertex_buffer_draw*.
+
+  cogl_texture_rectangle, cogl_texture_multiple_rectangles and
+  cogl_texture_polygon no longer take a texture handle; instead the current
+  source material is referenced. The functions have also been renamed to:
+  cogl_rectangle_with_texture_coords, cogl_rectangles_with_texture_coords
+  and cogl_polygon respectively.
+
+  Most code that previously did:
+    cogl_texture_rectangle (tex_handle, x, y,...);
+  needs to be changed to now do:
+    cogl_set_source_texture (tex_handle);
+    cogl_rectangle_with_texture_coords (x, y,....);
+
+  In the less likely case where you were blending your source texture with a
+  color like:
+    cogl_set_source_color4ub (r,g,b,a); /* (where r,g,b,a isn't just white) */
+    cogl_texture_rectangle (tex_handle, x, y,...);
+  you will need your own material to do that:
+    material = cogl_material_new ();
+    cogl_material_set_color4ub (r,g,b,a);
+    cogl_material_set_layer (material, 0, tex_handle));
+    cogl_set_source_material (material);
+
+  Code that uses the texture coordinates, 0, 0, 1, 1 don't need to use
+  cogl_rectangle_with_texure_coords since these are the coordinates that
+  cogl_rectangle will use.
+
+  For cogl_texture_polygon; as well as dropping the texture handle, the
+  n_vertices and vertices arguments were transposed for consistency. So
+  code previously written as:
+    cogl_texture_polygon (tex_handle, 3, verts, TRUE);
+  need to be written as:
+    cogl_set_source_texture (tex_handle);
+    cogl_polygon (verts, 3, TRUE);
+
+* A CoglMesh type and utility API has been added; this is currently used to
+  support describing texture matrices.
+
 Release Notes for Clutter 0.8
 -------------------------------
 

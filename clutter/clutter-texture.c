@@ -635,22 +635,13 @@ clutter_texture_paint (ClutterActor *self)
   /* Paint will have translated us */
 #if USE_COGL_MATERIAL
   cogl_set_source (priv->material);
-
-  tex_coords[0] = 0;
-  tex_coords[1] = 0;
-  tex_coords[2] = t_w;
-  tex_coords[3] = t_h;
-  cogl_material_rectangle (0, 0,
-                           (float)(x_2 - x_1),
-			   (float)(y_2 - y_1),
-                           4,
-                           tex_coords);
 #else
-  cogl_texture_rectangle (priv->texture, 0, 0,
-                          (float)(x_2 - x_1),
-                          (float)(y_2 - y_1),
-                          0, 0, t_w, t_h);
+  cogl_set_source_texture (priv->texture);
 #endif
+  cogl_rectangle_with_texture_coords (0, 0,
+			              (float) (x_2 - x_1),
+			              (float) (y_2 - y_1),
+			              0, 0, t_w, t_h);
 }
 
 /*
@@ -769,6 +760,7 @@ clutter_texture_set_property (GObject      *object,
 	(texture, (CoglHandle) g_value_get_boxed (value));
       break;
 #if USE_COGL_MATERIAL
+    case PROP_COGL_MATERIAL:
       clutter_texture_set_cogl_material
         (texture, (CoglHandle) g_value_get_boxed (value));
       break;
@@ -2188,7 +2180,7 @@ on_fbo_source_size_change (GObject          *object,
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
         flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
-      priv->fdo_texture =
+      priv->fbo_texture =
         cogl_texture_new_with_size (MAX (priv->width, 1),
 				    MAX (priv->height, 1),
 				    -1,

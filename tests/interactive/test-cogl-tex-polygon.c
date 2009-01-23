@@ -122,7 +122,8 @@ test_coglbox_fade_texture (CoglHandle tex_id,
                                ((i ^ (i >> 1)) & 1) ? 0 : 128);
     }
 
-  cogl_texture_polygon (tex_id, 4, vertices, TRUE);
+  cogl_set_source_texture (tex_id);
+  cogl_polygon (vertices, 4, TRUE);
 
   cogl_set_source_color4ub (255, 255, 255, 255);
 }
@@ -160,7 +161,8 @@ test_coglbox_triangle_texture (CoglHandle tex_id,
   vertices[2].tx = tx3;
   vertices[2].ty = ty3;
 
-  cogl_texture_polygon (tex_id, 3, vertices, FALSE);
+  cogl_set_source_texture (tex_id);
+  cogl_polygon (vertices, 3, FALSE);
 }
 
 static void
@@ -171,8 +173,6 @@ test_coglbox_paint (ClutterActor *self)
                                            : priv->not_sliced_tex;
   int tex_width = cogl_texture_get_width (tex_handle);
   int tex_height = cogl_texture_get_height (tex_handle);
-
-  cogl_set_source_color4ub (255, 255, 255, 255);
 
   cogl_texture_set_filters (tex_handle,
 			    priv->use_linear_filtering
@@ -186,11 +186,11 @@ test_coglbox_paint (ClutterActor *self)
   cogl_translate (-tex_width / 2, 0, 0);
 
   /* Draw a hand and refect it */
-  cogl_texture_rectangle (tex_handle,
-			  0, 0,
-			  CLUTTER_INT_TO_FIXED (tex_width),
-			  CLUTTER_INT_TO_FIXED (tex_height),
-			  0, 0, CFX_ONE, CFX_ONE);
+  cogl_set_source_texture (tex_handle);
+  cogl_rectangle_with_texture_coords (0, 0,
+                                      CLUTTER_INT_TO_FIXED (tex_width),
+                                      CLUTTER_INT_TO_FIXED (tex_height),
+                                      0, 0, CFX_ONE, CFX_ONE);
   test_coglbox_fade_texture (tex_handle,
 			     0, CLUTTER_INT_TO_FIXED (tex_height),
 			     CLUTTER_INT_TO_FIXED (tex_width),

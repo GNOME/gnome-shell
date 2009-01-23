@@ -45,16 +45,17 @@ material_rectangle_paint (ClutterActor *actor, gpointer data)
   TestMultiLayerMaterialState *state = data;
 
   cogl_set_source (state->material);
-  cogl_material_rectangle (CLUTTER_INT_TO_FIXED(0),
-			   CLUTTER_INT_TO_FIXED(0),
-			   CLUTTER_INT_TO_FIXED(TIMELINE_FRAME_COUNT),
-			   CLUTTER_INT_TO_FIXED(TIMELINE_FRAME_COUNT),
-                           12,
-			   state->tex_coords);
+  cogl_rectangle_with_multitexture_coords (
+                                     CLUTTER_INT_TO_FIXED(0),
+                                     CLUTTER_INT_TO_FIXED(0),
+                                     CLUTTER_INT_TO_FIXED(TIMELINE_FRAME_COUNT),
+                                     CLUTTER_INT_TO_FIXED(TIMELINE_FRAME_COUNT),
+                                     state->tex_coords,
+                                     12);
 }
 
 G_MODULE_EXPORT int
-test_cogl_material_main (int argc, char *argv[])
+test_cogl_multitexture_main (int argc, char *argv[])
 {
   ClutterTimeline   *timeline;
   ClutterAlpha	    *alpha;
@@ -130,15 +131,12 @@ test_cogl_material_main (int argc, char *argv[])
 
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), state);
 
-  /* Set an alpha func to power behaviour - ramp is constant rise/fall */
-  alpha = clutter_alpha_new_for_mode (CLUTTER_LINEAR);
-  clutter_alpha_set_timeline (alpha, timeline);
-
-  /* Create a behaviour for that alpha */
-  r_behave = clutter_behaviour_rotate_new (alpha,
-					   CLUTTER_Y_AXIS,
-					   CLUTTER_ROTATE_CW,
-					   0.0, 360.0);
+  r_behave =
+    clutter_behaviour_rotate_new (clutter_alpha_new_full (timeline,
+                                                          CLUTTER_LINEAR),
+				  CLUTTER_Y_AXIS,
+				  CLUTTER_ROTATE_CW,
+				  0.0, 360.0);
 
   /* Apply it to our actor */
   clutter_behaviour_apply (r_behave, state->group);

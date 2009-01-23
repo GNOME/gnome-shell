@@ -180,16 +180,16 @@ cogl_paint_init (const CoglColor *color)
   glDisable (GL_LIGHTING);
   glDisable (GL_FOG);
 
-  /* 
+  /*
    *  Disable the depth test for now as has some strange side effects,
-   *  mainly on x/y axis rotation with multiple layers at same depth 
-   *  (eg rotating text on a bg has very strange effect). Seems no clean  
-   *  100% effective way to fix without other odd issues.. So for now 
+   *  mainly on x/y axis rotation with multiple layers at same depth
+   *  (eg rotating text on a bg has very strange effect). Seems no clean
+   *  100% effective way to fix without other odd issues.. So for now
    *  move to application to handle and add cogl_enable_depth_test()
    *  as for custom actors (i.e groups) to enable if need be.
    *
-   * glEnable (GL_DEPTH_TEST);                                                 
-   * glEnable (GL_ALPHA_TEST)                                                  
+   * glEnable (GL_DEPTH_TEST);
+   * glEnable (GL_ALPHA_TEST)
    * glDepthFunc (GL_LEQUAL);
    * glAlphaFunc (GL_GREATER, 0.1);
    */
@@ -251,7 +251,7 @@ cogl_toggle_flag (CoglContext *ctx,
       GE( glDisable (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
-  
+
   return FALSE;
 }
 
@@ -278,7 +278,7 @@ cogl_toggle_client_flag (CoglContext *ctx,
       GE( glDisableClientState (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
-  
+
   return FALSE;
 }
 
@@ -289,33 +289,19 @@ cogl_enable (gulong flags)
    * hope of lessening number GL traffic.
   */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   cogl_toggle_flag (ctx, flags,
                     COGL_ENABLE_BLEND,
                     GL_BLEND);
-  
-  cogl_toggle_flag (ctx, flags,
-		    COGL_ENABLE_TEXTURE_2D,
-		    GL_TEXTURE_2D);
 
   cogl_toggle_flag (ctx, flags,
                     COGL_ENABLE_BACKFACE_CULLING,
                     GL_CULL_FACE);
 
-#ifdef GL_TEXTURE_RECTANGLE_ARB
-  cogl_toggle_flag (ctx, flags,
-		    COGL_ENABLE_TEXTURE_RECT,
-		    GL_TEXTURE_RECTANGLE_ARB);
-#endif
-
   cogl_toggle_client_flag (ctx, flags,
 			   COGL_ENABLE_VERTEX_ARRAY,
 			   GL_VERTEX_ARRAY);
-  
-  cogl_toggle_client_flag (ctx, flags,
-			   COGL_ENABLE_TEXCOORD_ARRAY,
-			   GL_TEXTURE_COORD_ARRAY);
-  
+
   cogl_toggle_client_flag (ctx, flags,
 			   COGL_ENABLE_COLOR_ARRAY,
 			   GL_COLOR_ARRAY);
@@ -325,7 +311,7 @@ gulong
 cogl_get_enable ()
 {
   _COGL_GET_CONTEXT (ctx, 0);
-  
+
   return ctx->enable_flags;
 }
 
@@ -336,7 +322,7 @@ cogl_blend_func (COGLenum src_factor, COGLenum dst_factor)
    * hope of lessening GL traffic.
    */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   if (ctx->blend_src_factor != src_factor ||
       ctx->blend_dst_factor != dst_factor)
     {
@@ -351,14 +337,14 @@ cogl_enable_depth_test (gboolean setting)
 {
   if (setting)
     {
-      glEnable (GL_DEPTH_TEST);                                               
+      glEnable (GL_DEPTH_TEST);
       glEnable (GL_ALPHA_TEST);
       glDepthFunc (GL_LEQUAL);
       glAlphaFunc (GL_GREATER, 0.1);
     }
   else
     {
-      glDisable (GL_DEPTH_TEST);                                               
+      glDisable (GL_DEPTH_TEST);
       glDisable (GL_ALPHA_TEST);
     }
 }
@@ -375,14 +361,12 @@ void
 cogl_set_source_color (const CoglColor *color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  glColor4ub (cogl_color_get_red_byte (color),
-	      cogl_color_get_green_byte (color),
-	      cogl_color_get_blue_byte (color),
-	      cogl_color_get_alpha_byte (color));
-  
-  /* Store alpha for proper blending enables */
-  ctx->color_alpha = cogl_color_get_alpha_byte (color);
+
+  /* In case cogl_set_source_texture was previously used... */
+  cogl_material_remove_layer (ctx->default_material, 0);
+
+  cogl_material_set_color (ctx->default_material, color);
+  cogl_set_source (ctx->default_material);
 }
 
 static void
@@ -512,7 +496,7 @@ _cogl_add_stencil_clip (float x_offset,
   if (first)
     {
       GE( glEnable (GL_STENCIL_TEST) );
-      
+
       /* Initially disallow everything */
       GE( glClearStencil (0) );
       GE( glClear (GL_STENCIL_BUFFER_BIT) );
@@ -815,7 +799,7 @@ _cogl_features_init ()
   GLint             num_stencil_bits = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
@@ -827,7 +811,7 @@ _cogl_features_init ()
 #endif
         flags |= COGL_FEATURE_TEXTURE_NPOT;
     }
-  
+
 #ifdef GL_YCBCR_MESA
   if (cogl_check_extension ("GL_MESA_ycbcr_texture", gl_extensions))
     {
@@ -842,47 +826,47 @@ _cogl_features_init ()
       ctx->pf_glCreateProgramObjectARB =
 	(COGL_PFNGLCREATEPROGRAMOBJECTARBPROC)
 	cogl_get_proc_address ("glCreateProgramObjectARB");
-      
+
       ctx->pf_glCreateShaderObjectARB =
 	(COGL_PFNGLCREATESHADEROBJECTARBPROC)
 	cogl_get_proc_address ("glCreateShaderObjectARB");
-      
+
       ctx->pf_glShaderSourceARB =
 	(COGL_PFNGLSHADERSOURCEARBPROC)
 	cogl_get_proc_address ("glShaderSourceARB");
-      
+
       ctx->pf_glCompileShaderARB =
 	(COGL_PFNGLCOMPILESHADERARBPROC)
 	cogl_get_proc_address ("glCompileShaderARB");
-      
+
       ctx->pf_glAttachObjectARB =
 	(COGL_PFNGLATTACHOBJECTARBPROC)
 	cogl_get_proc_address ("glAttachObjectARB");
-      
+
       ctx->pf_glLinkProgramARB =
 	(COGL_PFNGLLINKPROGRAMARBPROC)
 	cogl_get_proc_address ("glLinkProgramARB");
-      
+
       ctx->pf_glUseProgramObjectARB =
 	(COGL_PFNGLUSEPROGRAMOBJECTARBPROC)
 	cogl_get_proc_address ("glUseProgramObjectARB");
-      
+
       ctx->pf_glGetUniformLocationARB =
 	(COGL_PFNGLGETUNIFORMLOCATIONARBPROC)
 	cogl_get_proc_address ("glGetUniformLocationARB");
-      
+
       ctx->pf_glDeleteObjectARB =
 	(COGL_PFNGLDELETEOBJECTARBPROC)
 	cogl_get_proc_address ("glDeleteObjectARB");
-      
+
       ctx->pf_glGetInfoLogARB =
 	(COGL_PFNGLGETINFOLOGARBPROC)
 	cogl_get_proc_address ("glGetInfoLogARB");
-      
+
       ctx->pf_glGetObjectParameterivARB =
 	(COGL_PFNGLGETOBJECTPARAMETERIVARBPROC)
 	cogl_get_proc_address ("glGetObjectParameterivARB");
-      
+
       ctx->pf_glUniform1fARB =
 	(COGL_PFNGLUNIFORM1FARBPROC)
 	cogl_get_proc_address ("glUniform1fARB");
@@ -898,7 +882,7 @@ _cogl_features_init ()
       ctx->pf_glDisableVertexAttribArrayARB =
 	(COGL_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC)
 	cogl_get_proc_address ("glDisableVertexAttribArrayARB");
-      
+
       ctx->pf_glUniform2fARB =
 	(COGL_PFNGLUNIFORM2FARBPROC)
 	cogl_get_proc_address ("glUniform2fARB");
@@ -962,7 +946,7 @@ _cogl_features_init ()
       ctx->pf_glUniformMatrix2fvARB =
 	(COGL_PFNGLUNIFORMMATRIX2FVARBPROC)
 	cogl_get_proc_address ("glUniformMatrix2fvARB");
- 
+
       ctx->pf_glUniformMatrix3fvARB =
 	(COGL_PFNGLUNIFORMMATRIX3FVARBPROC)
 	cogl_get_proc_address ("glUniformMatrix3fvARB");
@@ -1006,50 +990,50 @@ _cogl_features_init ()
 	  ctx->pf_glDisableVertexAttribArrayARB)
 	flags |= COGL_FEATURE_SHADERS_GLSL;
     }
-  
+
   if (cogl_check_extension ("GL_EXT_framebuffer_object", gl_extensions) ||
       cogl_check_extension ("GL_ARB_framebuffer_object", gl_extensions))
-    { 
+    {
       ctx->pf_glGenRenderbuffersEXT =
 	(COGL_PFNGLGENRENDERBUFFERSEXTPROC)
 	cogl_get_proc_address ("glGenRenderbuffersEXT");
-      
+
       ctx->pf_glDeleteRenderbuffersEXT =
 	(COGL_PFNGLDELETERENDERBUFFERSEXTPROC)
 	cogl_get_proc_address ("glDeleteRenderbuffersEXT");
-      
+
       ctx->pf_glBindRenderbufferEXT =
 	(COGL_PFNGLBINDRENDERBUFFEREXTPROC)
 	cogl_get_proc_address ("glBindRenderbufferEXT");
-      
+
       ctx->pf_glRenderbufferStorageEXT =
 	(COGL_PFNGLRENDERBUFFERSTORAGEEXTPROC)
 	cogl_get_proc_address ("glRenderbufferStorageEXT");
-      
+
       ctx->pf_glGenFramebuffersEXT =
 	(COGL_PFNGLGENFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glGenFramebuffersEXT");
-      
+
       ctx->pf_glBindFramebufferEXT =
 	(COGL_PFNGLBINDFRAMEBUFFEREXTPROC)
 	cogl_get_proc_address ("glBindFramebufferEXT");
-      
+
       ctx->pf_glFramebufferTexture2DEXT =
 	(COGL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)
 	cogl_get_proc_address ("glFramebufferTexture2DEXT");
-      
+
       ctx->pf_glFramebufferRenderbufferEXT =
 	(COGL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)
 	cogl_get_proc_address ("glFramebufferRenderbufferEXT");
-      
+
       ctx->pf_glCheckFramebufferStatusEXT =
 	(COGL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)
 	cogl_get_proc_address ("glCheckFramebufferStatusEXT");
-      
+
       ctx->pf_glDeleteFramebuffersEXT =
 	(COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glDeleteFramebuffersEXT");
-      
+
       if (ctx->pf_glGenRenderbuffersEXT         &&
 	  ctx->pf_glBindRenderbufferEXT         &&
 	  ctx->pf_glRenderbufferStorageEXT      &&
@@ -1061,23 +1045,23 @@ _cogl_features_init ()
 	  ctx->pf_glDeleteFramebuffersEXT)
 	flags |= COGL_FEATURE_OFFSCREEN;
     }
-  
+
   if (cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
     {
       ctx->pf_glBlitFramebufferEXT =
 	(COGL_PFNGLBLITFRAMEBUFFEREXTPROC)
 	cogl_get_proc_address ("glBlitFramebufferEXT");
-      
+
       if (ctx->pf_glBlitFramebufferEXT)
 	flags |= COGL_FEATURE_OFFSCREEN_BLIT;
     }
-  
+
   if (cogl_check_extension ("GL_EXT_framebuffer_multisample", gl_extensions))
     {
       ctx->pf_glRenderbufferStorageMultisampleEXT =
 	(COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC)
 	cogl_get_proc_address ("glRenderbufferStorageMultisampleEXT");
-      
+
       if (ctx->pf_glRenderbufferStorageMultisampleEXT)
 	flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;
     }
@@ -1140,10 +1124,10 @@ CoglFeatureFlags
 cogl_get_features ()
 {
   _COGL_GET_CONTEXT (ctx, 0);
-  
+
   if (!ctx->features_cached)
     _cogl_features_init ();
-  
+
   return ctx->feature_flags;
 }
 
@@ -1151,10 +1135,10 @@ gboolean
 cogl_features_available (CoglFeatureFlags features)
 {
   _COGL_GET_CONTEXT (ctx, 0);
-  
+
   if (!ctx->features_cached)
     _cogl_features_init ();
-  
+
   return (ctx->feature_flags & features) == features;
 }
 
