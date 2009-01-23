@@ -166,13 +166,13 @@ cogl_path_new (void)
 }
 
 void
-cogl_path_line (float x1,
-	        float y1,
-	        float x2,
-	        float y2)
+cogl_path_line (float x_1,
+	        float y_1,
+	        float x_2,
+	        float y_2)
 {
-  cogl_path_move_to (x1, y1);
-  cogl_path_line_to (x2, y2);
+  cogl_path_move_to (x_1, y_1);
+  cogl_path_line_to (x_2, y_2);
 }
 
 void
@@ -474,12 +474,12 @@ _cogl_path_bezier3_sub (CoglBezCubic *cubic)
 }
 
 void
-cogl_path_curve_to (float x1,
-                    float y1,
-                    float x2,
-                    float y2,
-                    float x3,
-                    float y3)
+cogl_path_curve_to (float x_1,
+                    float y_1,
+                    float x_2,
+                    float y_2,
+                    float x_3,
+                    float y_3)
 {
   CoglBezCubic cubic;
 
@@ -487,12 +487,12 @@ cogl_path_curve_to (float x1,
 
   /* Prepare cubic curve */
   cubic.p1 = ctx->path_pen;
-  cubic.p2.x = x1;
-  cubic.p2.y = y1;
-  cubic.p3.x = x2;
-  cubic.p3.y = y2;
-  cubic.p4.x = x3;
-  cubic.p4.y = y3;
+  cubic.p2.x = x_1;
+  cubic.p2.y = y_1;
+  cubic.p3.x = x_2;
+  cubic.p3.y = y_2;
+  cubic.p4.x = x_3;
+  cubic.p4.y = y_3;
 
   /* Run subdivision */
   _cogl_path_bezier3_sub (&cubic);
@@ -503,21 +503,21 @@ cogl_path_curve_to (float x1,
 }
 
 void
-cogl_path_rel_curve_to (float x1,
-                        float y1,
-                        float x2,
-                        float y2,
-                        float x3,
-                        float y3)
+cogl_path_rel_curve_to (float x_1,
+                        float y_1,
+                        float x_2,
+                        float y_2,
+                        float x_3,
+                        float y_3)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
   
-  cogl_path_curve_to (ctx->path_pen.x + x1,
-                      ctx->path_pen.y + y1,
-                      ctx->path_pen.x + x2,
-                      ctx->path_pen.y + y2,
-                      ctx->path_pen.x + x3,
-                      ctx->path_pen.y + y3);
+  cogl_path_curve_to (ctx->path_pen.x + x_1,
+                      ctx->path_pen.y + y_1,
+                      ctx->path_pen.x + x_2,
+                      ctx->path_pen.y + y_2,
+                      ctx->path_pen.x + x_3,
+                      ctx->path_pen.y + y_3);
 }
 
 
@@ -593,22 +593,22 @@ _cogl_path_bezier2_sub (CoglBezQuad *quad)
 }
 
 void
-cogl_path_curve2_to (float x1,
-                     float y1,
-                     float x2,
-                     float y2)
+cogl_path_curve2_to (float x_1,
+                     float y_1,
+                     float x_2,
+                     float y_2)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   CoglBezQuad quad;
-  
+
   /* Prepare quadratic curve */
   quad.p1 = ctx->path_pen;
-  quad.p2.x = x1;
-  quad.p2.y = y1;
-  quad.p3.x = x2;
-  quad.p3.y = y2;
-  
+  quad.p2.x = x_1;
+  quad.p2.y = y_1;
+  quad.p3.x = x_2;
+  quad.p3.y = y_2;
+
   /* Run subdivision */
   _cogl_path_bezier2_sub (&quad);
   
@@ -618,16 +618,16 @@ cogl_path_curve2_to (float x1,
 }
 
 void
-cogl_rel_curve2_to (float x1,
-                    float y1,
-                    float x2,
-                    float y2)
+cogl_rel_curve2_to (float x_1,
+                    float y_1,
+                    float x_2,
+                    float y_2)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  cogl_path_curve2_to (ctx->path_pen.x + x1,
-                       ctx->path_pen.y + y2,
-                       ctx->path_pen.x + x2,
-                       ctx->path_pen.y + y2);
+
+  cogl_path_curve2_to (ctx->path_pen.x + x_1,
+                       ctx->path_pen.y + y_1,
+                       ctx->path_pen.x + x_2,
+                       ctx->path_pen.y + y_2);
 }
 #endif

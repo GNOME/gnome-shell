@@ -126,7 +126,7 @@ test_paint_polyl ()
 static void
 test_paint_polyg ()
 {
-  gint poly_coords[] = {
+  gfloat poly_coords[] = {
     CLUTTER_INT_TO_FIXED (-50),
     CLUTTER_INT_TO_FIXED (-50),
     CLUTTER_INT_TO_FIXED (+50),

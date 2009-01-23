@@ -76,7 +76,6 @@ static void
 clutter_behaviour_depth_alpha_notify (ClutterBehaviour *behaviour,
                                       gdouble           alpha_value)
 {
-  ClutterFixed factor;
   ClutterBehaviourDepthPrivate *priv;
   gint depth;
 

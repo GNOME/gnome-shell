@@ -1979,10 +1979,14 @@ _cogl_texture_flush_vertices (void)
 }
 
 static void
-_cogl_texture_add_quad_vertices (GLfloat x1, GLfloat y1,
-                                 GLfloat x2, GLfloat y2,
-                                 GLfloat tx1, GLfloat ty1,
-                                 GLfloat tx2, GLfloat ty2)
+_cogl_texture_add_quad_vertices (GLfloat x_1,
+                                 GLfloat y_1,
+                                 GLfloat x_2,
+                                 GLfloat y_2,
+                                 GLfloat tx_1,
+                                 GLfloat ty_1,
+                                 GLfloat tx_2,
+                                 GLfloat ty_2)
 {
   CoglTextureGLVertex *p;
   GLushort first_vert;
@@ -1995,41 +1999,41 @@ _cogl_texture_add_quad_vertices (GLfloat x1, GLfloat y1,
   g_array_set_size (ctx->texture_vertices, first_vert + 4);
   p = &g_array_index (ctx->texture_vertices, CoglTextureGLVertex, first_vert);
 
-  p->v[0] = x1;  p->v[1] = y1;
-  p->t[0] = tx1; p->t[1] = ty1;
+  p->v[0] = x_1;  p->v[1] = y_1;
+  p->t[0] = tx_1; p->t[1] = ty_1;
   p++;
-  p->v[0] = x1;  p->v[1] = y2;
-  p->t[0] = tx1; p->t[1] = ty2;
+  p->v[0] = x_1;  p->v[1] = y_2;
+  p->t[0] = tx_1; p->t[1] = ty_2;
   p++;
-  p->v[0] = x2;  p->v[1] = y2;
-  p->t[0] = tx2; p->t[1] = ty2;
+  p->v[0] = x_2;  p->v[1] = y_2;
+  p->t[0] = tx_2; p->t[1] = ty_2;
   p++;
-  p->v[0] = x2;  p->v[1] = y1;
-  p->t[0] = tx2; p->t[1] = ty1;
+  p->v[0] = x_2;  p->v[1] = y_1;
+  p->t[0] = tx_2; p->t[1] = ty_1;
   p++;
 }
 
 static void
 _cogl_texture_quad_sw (CoglTexture *tex,
-		       float x1,
-		       float y1,
-		       float x2,
-		       float y2,
-		       float tx1,
-		       float ty1,
-		       float tx2,
-		       float ty2)
+		       float        x_1,
+		       float        y_1,
+		       float        x_2,
+		       float        y_2,
+		       float        tx_1,
+		       float        ty_1,
+		       float        tx_2,
+		       float        ty_2)
 {
-  CoglSpanIter    iter_x    ,  iter_y;
-  float       tw        ,  th;
-  float       tqx       ,  tqy;
-  float       first_tx  ,  first_ty;
-  float       first_qx  ,  first_qy;
-  float       slice_tx1 ,  slice_ty1;
-  float       slice_tx2 ,  slice_ty2;
-  float       slice_qx1 ,  slice_qy1;
-  float       slice_qx2 ,  slice_qy2;
-  GLuint          gl_handle;
+  CoglSpanIter iter_x    ,  iter_y;
+  float        tw        ,  th;
+  float        tqx       ,  tqy;
+  float        first_tx  ,  first_ty;
+  float        first_qx  ,  first_qy;
+  float        slice_tx1 ,  slice_ty1;
+  float        slice_tx2 ,  slice_ty2;
+  float        slice_qx1 ,  slice_qy1;
+  float        slice_qx2 ,  slice_qy2;
+  GLuint       gl_handle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -2041,7 +2045,10 @@ _cogl_texture_quad_sw (CoglTexture *tex,
      otherwise it might pull in edge pixels from the other side */
   if (ctx->texture_vertices->len > 0
       && ctx->texture_wrap_mode != GL_CLAMP_TO_EDGE)
-    _cogl_texture_flush_vertices ();
+    {
+      _cogl_texture_flush_vertices ();
+    }
+
   _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_EDGE);
   ctx->texture_wrap_mode = GL_CLAMP_TO_EDGE;
 
@@ -2049,52 +2056,55 @@ _cogl_texture_quad_sw (CoglTexture *tex,
      geometry and texture coordinates so that the texture will be
      flipped but we can still use the same algorithm to iterate the
      slices */
-  if (tx2 < tx1)
+  if (tx_2 < tx_1)
     {
-      float temp = x1;
-      x1 = x2;
-      x2 = temp;
-      temp = tx1;
-      tx1 = tx2;
-      tx2 = temp;
+      float temp = x_1;
+
+      x_1 = x_2;
+      x_2 = temp;
+      temp = tx_1;
+      tx_1 = tx_2;
+      tx_2 = temp;
     }
-  if (ty2 < ty1)
+
+  if (ty_2 < ty_1)
     {
-      float temp = y1;
-      y1 = y2;
-      y2 = temp;
-      temp = ty1;
-      ty1 = ty2;
-      ty2 = temp;
+      float temp = y_1;
+
+      y_1 = y_2;
+      y_2 = temp;
+      temp = ty_1;
+      ty_1 = ty_2;
+      ty_2 = temp;
     }
 
   /* Scale ratio from texture to quad widths */
-  tw = (float)(tex->bitmap.width);
-  th = (float)(tex->bitmap.height);
+  tw = (float) (tex->bitmap.width);
+  th = (float) (tex->bitmap.height);
 
-  tqx = (x2 - x1) / (tw * (tx2 - tx1));
-  tqy = (y2 - y1) / (th * (ty2 - ty1));
+  tqx = (x_2 - x_1) / (tw * (tx_2 - tx_1));
+  tqy = (y_2 - y_1) / (th * (ty_2 - ty_1));
 
   /* Integral texture coordinate for first tile */
-  first_tx = (float)(floorf (tx1));
-  first_ty = (float)(floorf (ty1));
+  first_tx = (float)(floorf (tx_1));
+  first_ty = (float)(floorf (ty_1));
 
   /* Denormalize texture coordinates */
   first_tx = (first_tx * tw);
   first_ty = (first_ty * th);
-  tx1 = (tx1 * tw);
-  ty1 = (ty1 * th);
-  tx2 = (tx2 * tw);
-  ty2 = (ty2 * th);
+  tx_1 = (tx_1 * tw);
+  ty_1 = (ty_1 * th);
+  tx_2 = (tx_2 * tw);
+  ty_2 = (ty_2 * th);
 
   /* Quad coordinate of the first tile */
-  first_qx = x1 - (tx1 - first_tx) * tqx;
-  first_qy = y1 - (ty1 - first_ty) * tqy;
+  first_qx = x_1 - (tx_1 - first_tx) * tqx;
+  first_qy = y_1 - (ty_1 - first_ty) * tqy;
 
 
   /* Iterate until whole quad height covered */
   for (_cogl_span_iter_begin (&iter_y, tex->slice_y_spans,
-			      first_ty, ty1, ty2) ;
+			      first_ty, ty_1, ty_2) ;
        !_cogl_span_iter_end  (&iter_y) ;
        _cogl_span_iter_next  (&iter_y) )
     {
@@ -2120,7 +2130,7 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 
       /* Iterate until whole quad width covered */
       for (_cogl_span_iter_begin (&iter_x, tex->slice_x_spans,
-				  first_tx, tx1, tx2) ;
+				  first_tx, tx_1, tx_2) ;
 	   !_cogl_span_iter_end  (&iter_x) ;
 	   _cogl_span_iter_next  (&iter_x) )
         {
@@ -2165,7 +2175,10 @@ _cogl_texture_quad_sw (CoglTexture *tex,
              then flush the vertices */
           if (ctx->texture_vertices->len > 0
               && gl_handle != ctx->texture_current)
-            _cogl_texture_flush_vertices ();
+            {
+              _cogl_texture_flush_vertices ();
+            }
+
           ctx->texture_target = tex->gl_target;
           ctx->texture_current = gl_handle;
 
@@ -2183,14 +2196,14 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 
 static void
 _cogl_texture_quad_hw (CoglTexture *tex,
-		       float x1,
-		       float y1,
-		       float x2,
-		       float y2,
-		       float tx1,
-		       float ty1,
-		       float tx2,
-		       float ty2)
+		       float        x_1,
+		       float        y_1,
+		       float        x_2,
+		       float        y_2,
+		       float        tx_1,
+		       float        ty_1,
+		       float        tx_2,
+		       float        ty_2)
 {
   GLuint            gl_handle;
   CoglTexSliceSpan *x_span;
@@ -2206,11 +2219,13 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   /* If the texture coords are all in the range [0,1] then we want to
      clamp the coords to the edge otherwise it can pull in edge pixels
      from the wrong side when scaled */
-  if (tx1 >= 0 && tx1 <= 1.0
-      && tx2 >= 0 && tx2 <= 1.0
-      && ty1 >= 0 && ty1 <= 1.0
-      && ty2 >= 0 && ty2 <= 1.0)
-    wrap_mode = GL_CLAMP_TO_EDGE;
+  if (tx_1 >= 0 && tx_1 <= 1.0 &&
+      tx_2 >= 0 && tx_2 <= 1.0 &&
+      ty_1 >= 0 && ty_1 <= 1.0 &&
+      ty_2 >= 0 && ty_2 <= 1.0)
+    {
+      wrap_mode = GL_CLAMP_TO_EDGE;
+    }
   else
     wrap_mode = GL_REPEAT;
 
@@ -2219,10 +2234,13 @@ _cogl_texture_quad_hw (CoglTexture *tex,
 
   /* If we're using a different texture from the one already queued
      then flush the vertices */
-  if (ctx->texture_vertices->len > 0
-      && (gl_handle != ctx->texture_current
-          || ctx->texture_wrap_mode != wrap_mode))
-    _cogl_texture_flush_vertices ();
+  if (ctx->texture_vertices->len > 0 &&
+      (gl_handle != ctx->texture_current ||
+       ctx->texture_wrap_mode != wrap_mode))
+    {
+      _cogl_texture_flush_vertices ();
+    }
+
   ctx->texture_target = tex->gl_target;
   ctx->texture_current = gl_handle;
   ctx->texture_wrap_mode = wrap_mode;
@@ -2234,38 +2252,34 @@ _cogl_texture_quad_hw (CoglTexture *tex,
   y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
 
   /* Don't include the waste in the texture coordinates */
-  tx1 = tx1 * (x_span->size - x_span->waste) / x_span->size;
-  tx2 = tx2 * (x_span->size - x_span->waste) / x_span->size;
-  ty1 = ty1 * (y_span->size - y_span->waste) / y_span->size;
-  ty2 = ty2 * (y_span->size - y_span->waste) / y_span->size;
+  tx_1 = tx_1 * (x_span->size - x_span->waste) / x_span->size;
+  tx_2 = tx_2 * (x_span->size - x_span->waste) / x_span->size;
+  ty_1 = ty_1 * (y_span->size - y_span->waste) / y_span->size;
+  ty_2 = ty_2 * (y_span->size - y_span->waste) / y_span->size;
 
   /* Denormalize texture coordinates for rectangle textures */
   if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
     {
-      tx1 *= x_span->size;
-      tx2 *= x_span->size;
-      ty1 *= y_span->size;
-      ty2 *= y_span->size;
+      tx_1 *= x_span->size;
+      tx_2 *= x_span->size;
+      ty_1 *= y_span->size;
+      ty_2 *= y_span->size;
     }
 
-  _cogl_texture_add_quad_vertices ( (x1),
-                                    (y1),
-                                    (x2),
-                                    (y2),
-                                    (tx1),
-                                    (ty1),
-                                    (tx2),
-                                    (ty2));
+  _cogl_texture_add_quad_vertices (x_1, y_1,
+                                   x_2, y_2,
+                                   tx_1, ty_1,
+                                   tx_2, ty_2);
 }
 
 void
-cogl_texture_multiple_rectangles (CoglHandle       handle,
+cogl_texture_multiple_rectangles (CoglHandle   handle,
                                   const float *verts,
-                                  guint            n_rects)
+                                  guint        n_rects)
 {
-  CoglTexture    *tex;
-  gulong          enable_flags = (COGL_ENABLE_VERTEX_ARRAY
-                                  | COGL_ENABLE_TEXCOORD_ARRAY);
+  CoglTexture *tex;
+  gulong enable_flags = (COGL_ENABLE_VERTEX_ARRAY |
+                         COGL_ENABLE_TEXCOORD_ARRAY);
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -2290,8 +2304,7 @@ cogl_texture_multiple_rectangles (CoglHandle       handle,
   else
     enable_flags |= COGL_ENABLE_TEXTURE_2D;
 
-  if (ctx->color_alpha < 255
-      || tex->bitmap.format & COGL_A_BIT)
+  if (ctx->color_alpha < 255 || tex->bitmap.format & COGL_A_BIT)
     enable_flags |= COGL_ENABLE_BLEND;
 
   if (ctx->enable_backface_culling)
@@ -2329,26 +2342,26 @@ cogl_texture_multiple_rectangles (CoglHandle       handle,
 }
 
 void
-cogl_texture_rectangle (CoglHandle   handle,
-			float x1,
-			float y1,
-			float x2,
-			float y2,
-			float tx1,
-			float ty1,
-			float tx2,
-			float ty2)
+cogl_texture_rectangle (CoglHandle handle,
+			float      x_1,
+			float      y_1,
+			float      x_2,
+			float      y_2,
+			float      tx_1,
+			float      ty_1,
+			float      tx_2,
+			float      ty_2)
 {
   float verts[8];
 
-  verts[0] = x1;
-  verts[1] = y1;
-  verts[2] = x2;
-  verts[3] = y2;
-  verts[4] = tx1;
-  verts[5] = ty1;
-  verts[6] = tx2;
-  verts[7] = ty2;
+  verts[0] = x_1;
+  verts[1] = y_1;
+  verts[2] = x_2;
+  verts[3] = y_2;
+  verts[4] = tx_1;
+  verts[5] = ty_1;
+  verts[6] = tx_2;
+  verts[7] = ty_2;
 
   cogl_texture_multiple_rectangles (handle, verts, 1);
 }

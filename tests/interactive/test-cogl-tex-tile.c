@@ -2,6 +2,7 @@
 #include <glib.h>
 #include <gmodule.h>
 #include <stdlib.h>
+#include <math.h>
 #include <clutter/clutter.h>
 #include <cogl/cogl.h>
 
