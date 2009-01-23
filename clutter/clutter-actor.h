@@ -474,18 +474,33 @@ void                  clutter_actor_set_depthu                (ClutterActor     
                                                                ClutterUnit            depth);
 ClutterUnit           clutter_actor_get_depthu                (ClutterActor          *self);
 
-void                  clutter_actor_set_scalex                (ClutterActor          *self,
-                                                               ClutterFixed           scale_x,
-                                                               ClutterFixed           scale_y);
 void                  clutter_actor_set_scale                 (ClutterActor          *self,
                                                                gdouble                scale_x,
                                                                gdouble                scale_y);
-void                  clutter_actor_get_scalex                (ClutterActor          *self,
-                                                               ClutterFixed          *scale_x,
-                                                               ClutterFixed          *scale_y);
+void                  clutter_actor_set_scale_full            (ClutterActor          *self,
+                                                               gdouble                scale_x,
+                                                               gdouble                scale_y,
+                                                               int                    center_x,
+                                                               int                    center_y);
+void                  clutter_actor_set_scale_fullu           (ClutterActor          *self,
+                                                               gdouble                scale_x,
+                                                               gdouble                scale_y,
+                                                               ClutterUnit            center_x,
+                                                               ClutterUnit            center_y);
+void                  clutter_actor_set_scale_with_gravity    (ClutterActor          *self,
+                                                               gdouble                scale_x,
+                                                               gdouble                scale_y,
+                                                               ClutterGravity         gravity);
 void                  clutter_actor_get_scale                 (ClutterActor          *self,
                                                                gdouble               *scale_x,
                                                                gdouble               *scale_y);
+void                  clutter_actor_get_scale_center          (ClutterActor          *self,
+                                                               gint                  *center_x,
+                                                               gint                  *center_y);
+void                  clutter_actor_get_scale_centeru         (ClutterActor          *self,
+                                                               ClutterUnit           *center_x,
+                                                               ClutterUnit           *center_y);
+ClutterGravity        clutter_actor_get_scale_gravity         (ClutterActor          *self);
 
 void                  clutter_actor_move_by                   (ClutterActor          *self,
                                                                gint                   dx,

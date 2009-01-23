@@ -279,8 +279,10 @@ struct _ClutterActorPrivate
   gchar          *name;
   guint32         id; /* Unique ID */
 
-  ClutterFixed    scale_x;
-  ClutterFixed    scale_y;
+  gdouble         scale_x;
+  gdouble         scale_y;
+
+  AnchorCoord     scale_center;
 
   ShaderData     *shader_data;
 
@@ -341,6 +343,9 @@ enum
 
   PROP_SCALE_X,
   PROP_SCALE_Y,
+  PROP_SCALE_CENTER_X,
+  PROP_SCALE_CENTER_Y,
+  PROP_SCALE_GRAVITY,
 
   PROP_ROTATION_ANGLE_X,
   PROP_ROTATION_ANGLE_Y,
@@ -1424,7 +1429,8 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
    * entire object will move on the screen as a result of rotating it).
    */
   if (priv->scale_x != 1.0 || priv->scale_y != 1.0)
-    cogl_scale (priv->scale_x, priv->scale_y);
+    TRANSFORM_ABOUT_ANCHOR_COORD (self, &priv->scale_center,
+                                  cogl_scale (priv->scale_x, priv->scale_y));
 
    if (priv->rzang)
     {
@@ -1726,16 +1732,48 @@ clutter_actor_set_property (GObject      *object,
 	clutter_actor_hide (actor);
       break;
     case PROP_SCALE_X:
-      clutter_actor_set_scalex
-                         (actor,
-			  CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value)),
-			  priv->scale_y);
+      clutter_actor_set_scale (actor,
+                               g_value_get_double (value),
+                               priv->scale_y);
       break;
     case PROP_SCALE_Y:
-      clutter_actor_set_scalex
-                         (actor,
-			  priv->scale_x,
-			  CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value)));
+      clutter_actor_set_scale (actor,
+                               priv->scale_x,
+                               g_value_get_double (value));
+      break;
+    case PROP_SCALE_CENTER_X:
+      {
+	int center_x = g_value_get_int (value);
+        ClutterUnit center_y;
+
+        clutter_anchor_coord_get_units (actor, &priv->scale_center,
+                                        NULL, &center_y, NULL);
+	clutter_actor_set_scale_fullu (actor,
+                                       priv->scale_x,
+                                       priv->scale_y,
+                                       CLUTTER_UNITS_FROM_DEVICE (center_x),
+                                       center_y);
+      }
+      break;
+    case PROP_SCALE_CENTER_Y:
+      {
+	ClutterUnit center_x;
+        gint center_y = g_value_get_int (value);
+
+        clutter_anchor_coord_get_units (actor, &priv->scale_center,
+                                        &center_x, NULL, NULL);
+	clutter_actor_set_scale_fullu (actor,
+                                       priv->scale_x,
+                                       priv->scale_y,
+                                       center_x,
+                                       CLUTTER_UNITS_FROM_DEVICE (center_y));
+      }
+      break;
+    case PROP_SCALE_GRAVITY:
+      clutter_actor_set_scale_with_gravity (actor,
+                                            priv->scale_x,
+                                            priv->scale_y,
+                                            g_value_get_enum (value));
       break;
     case PROP_CLIP:
       {
@@ -1961,10 +1999,27 @@ clutter_actor_get_property (GObject    *object,
       }
       break;
     case PROP_SCALE_X:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->scale_x));
+      g_value_set_double (value, priv->scale_x);
       break;
     case PROP_SCALE_Y:
-      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->scale_y));
+      g_value_set_double (value, priv->scale_y);
+      break;
+    case PROP_SCALE_CENTER_X:
+      {
+        gint center;
+        clutter_actor_get_scale_center (actor, &center, NULL);
+        g_value_set_int (value, center);
+      }
+      break;
+    case PROP_SCALE_CENTER_Y:
+      {
+        gint center;
+        clutter_actor_get_scale_center (actor, NULL, &center);
+        g_value_set_int (value, center);
+      }
+      break;
+    case PROP_SCALE_GRAVITY:
+      g_value_set_enum (value, clutter_actor_get_scale_gravity (actor));
       break;
     case PROP_REACTIVE:
       g_value_set_boolean (value, clutter_actor_get_reactive (actor));
@@ -2553,6 +2608,51 @@ clutter_actor_class_init (ClutterActorClass *klass)
 					     G_MAXDOUBLE,
 					     1.0,
 					     CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterActor:scale-center-x:
+   *
+   * The horizontal center point for scaling
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_int ("scale-center-x",
+                            "Scale-Center-X",
+                            "Horizontal scale center",
+                            G_MININT, G_MAXINT, 0,
+                            CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_SCALE_CENTER_X, pspec);
+
+  /**
+   * ClutterActor:scale-center-y:
+   *
+   * The vertical center point for scaling
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_int ("scale-center-y",
+                            "Scale-Center-Y",
+                            "Vertical scale center",
+                            G_MININT, G_MAXINT, 0,
+                            CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_SCALE_CENTER_Y, pspec);
+
+  /**
+   * ClutterActor:scale-gravity:
+   *
+   * The center point for scaling expressed as a #ClutterGravity
+   *
+   * Since: 1.0
+   */
+  pspec = g_param_spec_enum ("scale-gravity",
+                             "Scale-Gravity",
+                             "The center of scaling",
+                             CLUTTER_TYPE_GRAVITY,
+                             CLUTTER_GRAVITY_NONE,
+                             CLUTTER_PARAM_READWRITE);
+  g_object_class_install_property (object_class,
+                                   PROP_SCALE_GRAVITY, pspec);
+
   /**
    * ClutterActor:rotation-angle-x:
    *
@@ -5018,20 +5118,20 @@ clutter_actor_get_yu (ClutterActor *self)
 }
 
 /**
- * clutter_actor_set_scalex:
+ * clutter_actor_set_scale:
  * @self: A #ClutterActor
- * @scale_x: #ClutterFixed factor to scale actor by horizontally.
- * @scale_y: #ClutterFixed factor to scale actor by vertically.
- *
- * Fixed point version of clutter_actor_set_scale().
+ * @scale_x: double factor to scale actor by horizontally.
+ * @scale_y: double factor to scale actor by vertically.
  *
  * Scales an actor with the given factors. The scaling is always
  * relative to the anchor point.
+ *
+ * Since: 0.2
  */
 void
-clutter_actor_set_scalex (ClutterActor *self,
-			  ClutterFixed  scale_x,
-			  ClutterFixed  scale_y)
+clutter_actor_set_scale (ClutterActor *self,
+                         gdouble       scale_x,
+                         gdouble       scale_y)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -5045,59 +5145,86 @@ clutter_actor_set_scalex (ClutterActor *self,
   g_object_notify (G_OBJECT (self), "scale-y");
 
   g_object_thaw_notify (G_OBJECT (self));
-  g_object_unref (self);
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);
+
+  g_object_unref (self);
 }
 
-/**
- * clutter_actor_set_scale:
- * @self: A #ClutterActor
- * @scale_x: double factor to scale actor by horizontally.
- * @scale_y: double factor to scale actor by vertically.
- *
- * Scales an actor with the given factors. The scaling is always
- * relative to the anchor point.
- *
- * Since: 0.2
- */
 void
-clutter_actor_set_scale (ClutterActor *self,
-			 gdouble       scale_x,
-			 gdouble       scale_y)
+clutter_actor_set_scale_full (ClutterActor *self,
+                              gdouble       scale_x,
+                              gdouble       scale_y,
+                              int           center_x,
+                              int           center_y)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_set_scalex (self,
-			    CLUTTER_FLOAT_TO_FIXED (scale_x),
-			    CLUTTER_FLOAT_TO_FIXED (scale_y));
+  clutter_actor_set_scale_fullu (self, scale_x, scale_y,
+                                 CLUTTER_UNITS_FROM_DEVICE (center_x),
+                                 CLUTTER_UNITS_FROM_DEVICE (center_y));
 }
 
-/**
- * clutter_actor_get_scalex:
- * @self: A #ClutterActor
- * @scale_x: Location to store horizonal scale factor, or  %NULL.
- * @scale_y: Location to store vertical scale factor, or %NULL.
- *
- * Fixed point version of clutter_actor_get_scale().
- *
- * Retrieves the scale factors of an actor.
- *
- * Since: 0.2
- */
 void
-clutter_actor_get_scalex (ClutterActor *self,
-			  ClutterFixed *scale_x,
-			  ClutterFixed *scale_y)
+clutter_actor_set_scale_fullu (ClutterActor *self,
+                               gdouble       scale_x,
+                               gdouble       scale_y,
+                               ClutterUnit   center_x,
+                               ClutterUnit   center_y)
 {
+  ClutterActorPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  if (scale_x)
-    *scale_x = self->priv->scale_x;
+  priv = self->priv;
 
-  if (scale_y)
-    *scale_y = self->priv->scale_y;
+  g_object_ref (self);
+  g_object_freeze_notify (G_OBJECT (self));
+
+  clutter_actor_set_scale (self, scale_x, scale_y);
+
+  if (priv->scale_center.is_fractional)
+    g_object_notify (G_OBJECT (self), "scale-gravity");
+  g_object_notify (G_OBJECT (self), "scale-center-x");
+  g_object_notify (G_OBJECT (self), "scale-center-y");
+
+  clutter_anchor_coord_set_units (&priv->scale_center, center_x, center_y, 0);
+
+  g_object_thaw_notify (G_OBJECT (self));
+  g_object_unref (self);
+}
+
+void
+clutter_actor_set_scale_with_gravity (ClutterActor   *self,
+                                      gdouble         scale_x,
+                                      gdouble         scale_y,
+                                      ClutterGravity  gravity)
+{
+  ClutterActorPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  if (gravity == CLUTTER_GRAVITY_NONE)
+    clutter_actor_set_scale_full (self, scale_x, scale_y, 0, 0);
+  else
+    {
+      g_object_ref (self);
+      g_object_freeze_notify (G_OBJECT (self));
+
+      clutter_actor_set_scale (self, scale_x, scale_y);
+
+      g_object_notify (G_OBJECT (self), "scale-gravity");
+      g_object_notify (G_OBJECT (self), "scale-center-x");
+      g_object_notify (G_OBJECT (self), "scale-center-y");
+
+      clutter_anchor_coord_set_gravity (&priv->scale_center, gravity);
+
+      g_object_thaw_notify (G_OBJECT (self));
+      g_object_unref (self);
+    }
 }
 
 /**
@@ -5122,6 +5249,42 @@ clutter_actor_get_scale (ClutterActor *self,
 
   if (scale_y)
     *scale_y = CLUTTER_FIXED_TO_FLOAT (self->priv->scale_y);
+}
+
+void
+clutter_actor_get_scale_center (ClutterActor *self,
+                                gint         *center_x,
+                                gint         *center_y)
+{
+  ClutterUnit xu, yu;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_get_scale_centeru (self, &xu, &yu);
+
+  if (center_x)
+    *center_x = CLUTTER_UNITS_TO_DEVICE (xu);
+  if (center_y)
+    *center_y = CLUTTER_UNITS_TO_DEVICE (yu);
+}
+
+void
+clutter_actor_get_scale_centeru (ClutterActor *self,
+                                 ClutterUnit  *center_x,
+                                 ClutterUnit  *center_y)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_anchor_coord_get_units (self, &self->priv->scale_center,
+                                  center_x, center_y, NULL);
+}
+
+ClutterGravity
+clutter_actor_get_scale_gravity (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), CLUTTER_GRAVITY_NONE);
+
+  return clutter_anchor_coord_get_gravity (&self->priv->scale_center);
 }
 
 /**

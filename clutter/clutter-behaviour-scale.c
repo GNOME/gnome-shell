@@ -85,7 +85,9 @@ scale_frame_foreach (ClutterBehaviour *behaviour,
 {
   ScaleFrameClosure *closure = data;
 
-  clutter_actor_set_scalex (actor, closure->scale_x, closure->scale_y);
+  clutter_actor_set_scale (actor,
+                           CLUTTER_FIXED_TO_DOUBLE (closure->scale_x),
+                           CLUTTER_FIXED_TO_DOUBLE (closure->scale_y));
 }
 
 static void
