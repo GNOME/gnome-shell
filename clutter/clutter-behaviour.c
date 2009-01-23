@@ -362,7 +362,7 @@ clutter_behaviour_apply (ClutterBehaviour *behave,
       return;
     }
 
-  priv->actors = g_slist_prepend (priv->actors, g_object_ref (actor));
+  priv->actors = g_slist_append (priv->actors, g_object_ref (actor));
   g_signal_connect (actor, "destroy",
                     G_CALLBACK (remove_actor_on_destroy),
                     behave);
@@ -627,7 +627,7 @@ clutter_behaviour_get_actors (ClutterBehaviour *behave)
   for (l = priv->actors; l != NULL; l = l->next)
     retval = g_slist_prepend (retval, l->data);
 
-  return retval;
+  return g_slist_reverse (retval);
 }
 
 /**
