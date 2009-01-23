@@ -49,9 +49,6 @@ clean-wrappers:
 		rm -f $$unit$(EXEEXT) ; \
 	done
 
-# we override the clean-generic target to clean up the wrappers
-clean-generic: clean-wrappers
-
 # NB: BUILT_SOURCES here a misnomer. We aren't building source, just inserting
 # a phony rule that will generate symlink scripts for running individual tests
 BUILT_SOURCES = wrappers
@@ -123,4 +120,7 @@ full-report: full-report-generate
 
 EXTRA_DIST = ADDING_NEW_TESTS test-launcher.sh
 
-CLEANFILES = $(XML_REPORTS) $(HTML_REPORTS)
+# we override the clean-generic target to clean up the wrappers so
+# we cannot use CLEANFILES
+clean-generic: clean-wrappers
+	rm -f $(XML_REPORTS) $(HTML_REPORTS)
