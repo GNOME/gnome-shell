@@ -1,16 +1,24 @@
 #include <clutter/clutter.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "test-conform-common.h"
 
-#define NOTIFY_ANCHOR_X        1
-#define NOTIFY_ANCHOR_Y        2
-#define NOTIFY_ANCHOR_GRAVITY  4
-#define NOTIFY_SCALE_X         8
-#define NOTIFY_SCALE_Y         16
-#define NOTIFY_SCALE_CENTER_X  32
-#define NOTIFY_SCALE_CENTER_Y  64
-#define NOTIFY_SCALE_GRAVITY   128
+#define NOTIFY_ANCHOR_X                  (1 << 0)
+#define NOTIFY_ANCHOR_Y                  (1 << 1)
+#define NOTIFY_ANCHOR_GRAVITY            (1 << 2)
+#define NOTIFY_SCALE_X                   (1 << 3)
+#define NOTIFY_SCALE_Y                   (1 << 4)
+#define NOTIFY_SCALE_CENTER_X            (1 << 5)
+#define NOTIFY_SCALE_CENTER_Y            (1 << 6)
+#define NOTIFY_SCALE_GRAVITY             (1 << 7)
+#define NOTIFY_ROTATION_ANGLE_X          (1 << 8)
+#define NOTIFY_ROTATION_ANGLE_Y          (1 << 9)
+#define NOTIFY_ROTATION_ANGLE_Z          (1 << 10)
+#define NOTIFY_ROTATION_CENTER_X         (1 << 11)
+#define NOTIFY_ROTATION_CENTER_Y         (1 << 12)
+#define NOTIFY_ROTATION_CENTER_Z         (1 << 13)
+#define NOTIFY_ROTATION_CENTER_Z_GRAVITY (1 << 14)
 
 #define RECT_WIDTH             100
 #define RECT_HEIGHT            80
@@ -42,22 +50,42 @@ static const struct
     { CLUTTER_GRAVITY_CENTER,     RECT_WIDTH / 2, RECT_HEIGHT / 2 }
   };
 
-#define make_notify_cb(func, flag)                              \
-  static void                                                   \
-  func (GObject *object, GParamSpec *pspec, TestState *state)   \
-  {                                                             \
-    g_assert ((state->notifications & (flag)) == 0);            \
-    state->notifications |= (flag);                             \
-  }
+static const char * const
+properties[] =
+  { "anchor-x",
+    "anchor-y",
+    "anchor-gravity",
+    "scale-x",
+    "scale-y",
+    "scale-center-x",
+    "scale-center-y",
+    "scale-gravity",
+    "rotation-angle-x",
+    "rotation-angle-y",
+    "rotation-angle-z",
+    "rotation-center-x",
+    "rotation-center-y",
+    "rotation-center-z",
+    "rotation-center-z-gravity" };
 
-make_notify_cb (anchor_x_cb, NOTIFY_ANCHOR_X);
-make_notify_cb (anchor_y_cb, NOTIFY_ANCHOR_Y);
-make_notify_cb (anchor_gravity_cb, NOTIFY_ANCHOR_GRAVITY);
-make_notify_cb (scale_x_cb, NOTIFY_SCALE_X);
-make_notify_cb (scale_y_cb, NOTIFY_SCALE_Y);
-make_notify_cb (scale_center_x_cb, NOTIFY_SCALE_CENTER_X);
-make_notify_cb (scale_center_y_cb, NOTIFY_SCALE_CENTER_Y);
-make_notify_cb (scale_gravity_cb, NOTIFY_SCALE_GRAVITY);
+static void
+notify_cb (GObject *object, GParamSpec *pspec, TestState *state)
+{
+  int i;
+  int new_flags = 0;
+  int flag = 1;
+
+  for (i = 0; i < G_N_ELEMENTS (properties); i++)
+    {
+      if (!strcmp (properties[i], pspec->name))
+        new_flags |= flag;
+      flag <<= 1;
+    }
+
+  g_assert ((new_flags & state->notifications) == 0);
+
+  state->notifications |= new_flags;
+}
 
 #define assert_notifications(flags)                     \
   do                                                    \
@@ -75,18 +103,33 @@ make_notify_cb (scale_gravity_cb, NOTIFY_SCALE_GRAVITY);
       ClutterVertex verts[4];                                           \
       clutter_actor_get_abs_allocation_vertices ((state)->rect, verts); \
       check_coords ((state), (x_1), (y_1), (x_2), (y_2), verts);        \
-      g_assert (abs ((x_1) - CLUTTER_UNITS_TO_DEVICE (verts[0].x))      \
-                <= POSITION_TOLERANCE);                                 \
-      g_assert (abs ((y_1) - CLUTTER_UNITS_TO_DEVICE (verts[0].y))      \
-                <= POSITION_TOLERANCE);                                 \
-      g_assert (abs ((x_2) - CLUTTER_UNITS_TO_DEVICE (verts[3].x))      \
-                <= POSITION_TOLERANCE);                                 \
-      g_assert (abs ((y_2) - CLUTTER_UNITS_TO_DEVICE (verts[3].y))      \
-                <= POSITION_TOLERANCE);                                 \
+      g_assert (approx_equal ((x_1),                                    \
+                              CLUTTER_UNITS_TO_DEVICE (verts[0].x)));   \
+      g_assert (approx_equal ((y_1),                                    \
+                              CLUTTER_UNITS_TO_DEVICE (verts[0].y)));   \
+      g_assert (approx_equal ((x_2),                                    \
+                              CLUTTER_UNITS_TO_DEVICE (verts[3].x)));   \
+      g_assert (approx_equal ((y_2),                                    \
+                              CLUTTER_UNITS_TO_DEVICE (verts[3].y)));   \
     } while (0)
 
 #define assert_position(state, x, y) \
   assert_coords((state), (x), (y), (x) + RECT_WIDTH, (y) + RECT_HEIGHT)
+
+#define assert_vertex_and_free(v, xc, yc, zc)                           \
+  do                                                                    \
+    {                                                                   \
+      g_assert (approx_equal (CLUTTER_UNITS_TO_DEVICE (v->x), xc)       \
+                && approx_equal (CLUTTER_UNITS_TO_DEVICE (v->y), yc)    \
+                && approx_equal (CLUTTER_UNITS_TO_DEVICE (v->z), zc));  \
+      g_boxed_free (CLUTTER_TYPE_VERTEX, v);                            \
+    } while (0)
+
+static inline gboolean
+approx_equal (int a, int b)
+{
+  return abs (a - b) <= POSITION_TOLERANCE;
+}
 
 static void
 check_coords (TestState *state,
@@ -100,10 +143,10 @@ check_coords (TestState *state,
              CLUTTER_UNITS_TO_DEVICE (verts[0].y),
              CLUTTER_UNITS_TO_DEVICE (verts[3].x),
              CLUTTER_UNITS_TO_DEVICE (verts[3].y),
-             abs (x_1 - verts[0].x) <= POSITION_TOLERANCE
-             && abs (y_1 - verts[0].y) <= POSITION_TOLERANCE
-             && abs (x_2 - verts[3].x) <= POSITION_TOLERANCE
-             && abs (y_2 - verts[3].y) <= POSITION_TOLERANCE
+             approx_equal (x_1, CLUTTER_UNITS_TO_DEVICE (verts[0].x))
+             && approx_equal (y_1, CLUTTER_UNITS_TO_DEVICE (verts[0].y))
+             && approx_equal (x_2, CLUTTER_UNITS_TO_DEVICE (verts[3].x))
+             && approx_equal (y_2, CLUTTER_UNITS_TO_DEVICE (verts[3].y))
              ? "yes" : "NO");
 }
 
@@ -360,6 +403,250 @@ test_scale_center (TestState *state)
   assert_coords (state, 100 + 10 - 10 * 4, 200 + 20 - 20 * 2,
                  100 + 10 + (RECT_WIDTH - 10) * 4,
                  200 + 20 + (RECT_HEIGHT - 20) * 2);
+
+  /* Put the scale back to normal */
+  clutter_actor_set_scale_full (rect, 1, 1, 0, 0);
+  assert_notifications (NOTIFY_SCALE_X | NOTIFY_SCALE_Y
+                        | NOTIFY_SCALE_CENTER_X | NOTIFY_SCALE_CENTER_Y);
+}
+
+static void
+test_rotate_center (TestState *state)
+{
+  ClutterActor *rect = state->rect;
+  gdouble angle_x, angle_y, angle_z;
+  ClutterVertex *center_x, *center_y, *center_z;
+  ClutterGravity z_center_gravity;
+  guint stage_width, stage_height;
+  gint rect_x, rect_y;
+  int i;
+
+  /* Position the rectangle at the center of the stage so that
+     rotations by 90° along the X or Y axis will cause the actor to be
+     appear as a flat line. This makes verifying the transformations
+     easier */
+  clutter_actor_get_size (clutter_actor_get_stage (rect),
+                          &stage_width, &stage_height);
+  rect_x = stage_width / 2;
+  rect_y = stage_height / 2;
+  clutter_actor_set_position (rect, rect_x, rect_y);
+
+  /* Assert the default settings */
+  g_assert (clutter_actor_get_x (rect) == rect_x);
+  g_assert (clutter_actor_get_y (rect) == rect_y);
+  g_assert (clutter_actor_get_width (rect) == RECT_WIDTH);
+  g_assert (clutter_actor_get_height (rect) == RECT_HEIGHT);
+  g_object_get (rect,
+                "rotation-angle-x", &angle_x,
+                "rotation-angle-y", &angle_y,
+                "rotation-angle-z", &angle_z,
+                "rotation-center-x", &center_x,
+                "rotation-center-y", &center_y,
+                "rotation-center-z", &center_z,
+                "rotation-center-z-gravity", &z_center_gravity,
+                NULL);
+  g_assert (angle_x == 0.0);
+  g_assert (angle_y == 0.0);
+  g_assert (angle_z == 0.0);
+  assert_vertex_and_free (center_x, 0, 0, 0);
+  assert_vertex_and_free (center_y, 0, 0, 0);
+  assert_vertex_and_free (center_z, 0, 0, 0);
+  g_assert (z_center_gravity == CLUTTER_GRAVITY_NONE);
+
+  /* Change each of the rotation angles without affecting the center
+     point */
+  for (i = CLUTTER_X_AXIS; i <= CLUTTER_Z_AXIS; i++)
+    {
+      char prop_name[] = "rotation-angle- ";
+      prop_name[sizeof (prop_name) - 2] = i - CLUTTER_X_AXIS + 'x';
+
+      if (g_test_verbose ())
+        g_print ("Setting %s to 90 degrees\n", prop_name);
+
+      g_object_set (rect, prop_name, 90.0, NULL);
+      assert_notifications (NOTIFY_ROTATION_ANGLE_X << (i - CLUTTER_X_AXIS));
+
+      g_assert (clutter_actor_get_x (rect) == rect_x);
+      g_assert (clutter_actor_get_y (rect) == rect_y);
+      g_assert (clutter_actor_get_width (rect) == RECT_WIDTH);
+      g_assert (clutter_actor_get_height (rect) == RECT_HEIGHT);
+      g_object_get (rect,
+                    "rotation-angle-x", &angle_x,
+                    "rotation-angle-y", &angle_y,
+                    "rotation-angle-z", &angle_z,
+                    "rotation-center-x", &center_x,
+                    "rotation-center-y", &center_y,
+                    "rotation-center-z", &center_z,
+                    "rotation-center-z-gravity", &z_center_gravity,
+                    NULL);
+      if (i == CLUTTER_X_AXIS)
+        {
+          g_assert (angle_x == 90.0);
+          assert_coords (state, rect_x, rect_y,
+                         CLUTTER_UNITS_TO_DEVICE (verts[3].x), rect_y);
+        }
+      else
+        g_assert (angle_x == 0.0);
+      if (i == CLUTTER_Y_AXIS)
+        {
+          g_assert (angle_y == 90.0);
+          assert_coords (state, rect_x, rect_y,
+                         rect_x, CLUTTER_UNITS_TO_DEVICE (verts[3].y));
+        }
+      else
+        g_assert (angle_y == 0.0);
+      if (i == CLUTTER_Z_AXIS)
+        {
+          g_assert (angle_z == 90.0);
+          assert_coords (state, rect_x, rect_y,
+                         rect_x - RECT_HEIGHT, rect_y + RECT_WIDTH);
+        }
+      else
+        g_assert (angle_z == 0.0);
+      assert_vertex_and_free (center_x, 0, 0, 0);
+      assert_vertex_and_free (center_y, 0, 0, 0);
+      assert_vertex_and_free (center_z, 0, 0, 0);
+      g_assert (z_center_gravity == CLUTTER_GRAVITY_NONE);
+
+      g_object_set (rect, prop_name, 0.0, NULL);
+      assert_notifications (NOTIFY_ROTATION_ANGLE_X << (i - CLUTTER_X_AXIS));
+    }
+
+  clutter_actor_set_position (rect, rect_x -= 10, rect_y -= 20);
+
+  /* Same test but also change the center position */
+  for (i = CLUTTER_X_AXIS; i <= CLUTTER_Z_AXIS; i++)
+    {
+      char prop_name[] = "rotation-angle- ";
+      prop_name[sizeof (prop_name) - 2] = i - CLUTTER_X_AXIS + 'x';
+
+      if (g_test_verbose ())
+        g_print ("Setting %s to 90 degrees with center 10,20,0\n", prop_name);
+
+      clutter_actor_set_rotation (rect, i, 90.0, 10, 20, 0);
+      assert_notifications ((NOTIFY_ROTATION_ANGLE_X << (i - CLUTTER_X_AXIS))
+                            | (NOTIFY_ROTATION_CENTER_X
+                               << (i - CLUTTER_X_AXIS)));
+
+      g_assert (clutter_actor_get_x (rect) == rect_x);
+      g_assert (clutter_actor_get_y (rect) == rect_y);
+      g_assert (clutter_actor_get_width (rect) == RECT_WIDTH);
+      g_assert (clutter_actor_get_height (rect) == RECT_HEIGHT);
+      g_object_get (rect,
+                    "rotation-angle-x", &angle_x,
+                    "rotation-angle-y", &angle_y,
+                    "rotation-angle-z", &angle_z,
+                    "rotation-center-x", &center_x,
+                    "rotation-center-y", &center_y,
+                    "rotation-center-z", &center_z,
+                    "rotation-center-z-gravity", &z_center_gravity,
+                    NULL);
+      if (i == CLUTTER_X_AXIS)
+        {
+          g_assert (angle_x == 90.0);
+          assert_coords (state,
+                         CLUTTER_UNITS_TO_DEVICE (verts[0].x), rect_y + 20,
+                         CLUTTER_UNITS_TO_DEVICE (verts[3].x), rect_y + 20);
+          assert_vertex_and_free (center_x, 10, 20, 0);
+        }
+      else
+        {
+          g_assert (angle_x == 0.0);
+          assert_vertex_and_free (center_x, 0, 0, 0);
+        }
+      if (i == CLUTTER_Y_AXIS)
+        {
+          g_assert (angle_y == 90.0);
+          assert_coords (state,
+                         rect_x + 10, CLUTTER_UNITS_TO_DEVICE (verts[0].y),
+                         rect_x + 10, CLUTTER_UNITS_TO_DEVICE (verts[3].y));
+          assert_vertex_and_free (center_y, 10, 20, 0);
+        }
+      else
+        {
+          g_assert (angle_y == 0.0);
+          assert_vertex_and_free (center_y, 0, 0, 0);
+        }
+      if (i == CLUTTER_Z_AXIS)
+        {
+          g_assert (angle_z == 90.0);
+          assert_coords (state,
+                         rect_x + 10 + 20,
+                         rect_y + 20 - 10,
+                         rect_x + 10 + 20 - RECT_HEIGHT,
+                         rect_y + 20 + RECT_WIDTH - 10);
+          assert_vertex_and_free (center_z, 10, 20, 0);
+        }
+      else
+        {
+          g_assert (angle_z == 0.0);
+          assert_vertex_and_free (center_z, 0, 0, 0);
+        }
+      g_assert (z_center_gravity == CLUTTER_GRAVITY_NONE);
+
+      clutter_actor_set_rotation (rect, i, 0, 0, 0, 0);
+      assert_notifications ((NOTIFY_ROTATION_ANGLE_X << (i - CLUTTER_X_AXIS))
+                            | (NOTIFY_ROTATION_CENTER_X
+                               << (i - CLUTTER_X_AXIS)));
+
+    }
+
+  /* Try rotating the z with all of the gravities */
+  for (i = 0; i < G_N_ELEMENTS (gravities); i++)
+    {
+      if (g_test_verbose ())
+        {
+          GEnumClass *gravity_class = g_type_class_ref (CLUTTER_TYPE_GRAVITY);
+          GEnumValue *value = g_enum_get_value (gravity_class,
+                                                gravities[i].gravity);
+          g_print ("Setting z rotation to 90 degrees with center at %s\n",
+                   value ? value->value_name : "?");
+          g_type_class_unref (gravity_class);
+        }
+
+      clutter_actor_set_z_rotation_from_gravity (rect, 90,
+                                                 gravities[i].gravity);
+      assert_notifications (NOTIFY_ROTATION_ANGLE_Z
+                            | NOTIFY_ROTATION_CENTER_Z
+                            | NOTIFY_ROTATION_CENTER_Z_GRAVITY);
+
+      g_assert (clutter_actor_get_x (rect) == rect_x);
+      g_assert (clutter_actor_get_y (rect) == rect_y);
+      g_assert (clutter_actor_get_width (rect) == RECT_WIDTH);
+      g_assert (clutter_actor_get_height (rect) == RECT_HEIGHT);
+      g_object_get (rect,
+                    "rotation-angle-x", &angle_x,
+                    "rotation-angle-y", &angle_y,
+                    "rotation-angle-z", &angle_z,
+                    "rotation-center-x", &center_x,
+                    "rotation-center-y", &center_y,
+                    "rotation-center-z", &center_z,
+                    "rotation-center-z-gravity", &z_center_gravity,
+                    NULL);
+      g_assert (angle_x == 0.0);
+      g_assert (angle_y == 0.0);
+      g_assert (angle_z == 90.0);
+      assert_vertex_and_free (center_x, 0, 0, 0);
+      assert_vertex_and_free (center_y, 0, 0, 0);
+      assert_vertex_and_free (center_z,
+                              gravities[i].x_pos, gravities[i].y_pos, 0);
+      assert_coords (state,
+                     rect_x + gravities[i].x_pos + gravities[i].y_pos,
+                     rect_y + gravities[i].y_pos - gravities[i].x_pos,
+                     rect_x + gravities[i].x_pos + gravities[i].y_pos
+                     - RECT_HEIGHT,
+                     rect_y + gravities[i].y_pos + RECT_WIDTH
+                     - gravities[i].x_pos);
+      g_assert (z_center_gravity == gravities[i].gravity);
+      g_assert (clutter_actor_get_z_rotation_gravity (rect)
+                == gravities[i].gravity);
+
+      /* Put the rotation back */
+      clutter_actor_set_z_rotation_from_gravity (rect, 0, CLUTTER_GRAVITY_NONE);
+      assert_notifications (NOTIFY_ROTATION_ANGLE_Z
+                            | NOTIFY_ROTATION_CENTER_Z
+                            | NOTIFY_ROTATION_CENTER_Z_GRAVITY);
+    }
 }
 
 static gboolean
@@ -367,6 +654,7 @@ idle_cb (gpointer data)
 {
   test_anchor_point (data);
   test_scale_center (data);
+  test_rotate_center (data);
 
   clutter_main_quit ();
 
@@ -389,22 +677,8 @@ test_anchors (TestConformSimpleFixture *fixture,
 
   /* Record notifications on the actor properties */
   state.notifications = 0;
-  g_signal_connect (state.rect, "notify::anchor-x",
-                    G_CALLBACK (anchor_x_cb), &state);
-  g_signal_connect (state.rect, "notify::anchor-y",
-                    G_CALLBACK (anchor_y_cb), &state);
-  g_signal_connect (state.rect, "notify::anchor-gravity",
-                    G_CALLBACK (anchor_gravity_cb), &state);
-  g_signal_connect (state.rect, "notify::scale-x",
-                    G_CALLBACK (scale_x_cb), &state);
-  g_signal_connect (state.rect, "notify::scale-y",
-                    G_CALLBACK (scale_y_cb), &state);
-  g_signal_connect (state.rect, "notify::scale-center-x",
-                    G_CALLBACK (scale_center_x_cb), &state);
-  g_signal_connect (state.rect, "notify::scale-center-y",
-                    G_CALLBACK (scale_center_y_cb), &state);
-  g_signal_connect (state.rect, "notify::scale-gravity",
-                    G_CALLBACK (scale_gravity_cb), &state);
+  g_signal_connect (state.rect, "notify",
+                    G_CALLBACK (notify_cb), &state);
 
   /* Run the tests in a low priority idle function so that we can be
      sure the stage is correctly setup */
