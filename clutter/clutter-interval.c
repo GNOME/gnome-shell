@@ -57,9 +57,18 @@
 #include <glib-object.h>
 #include <gobject/gvaluecollector.h>
 
+#include "clutter-color.h"
+#include "clutter-fixed.h"
 #include "clutter-interval.h"
 #include "clutter-units.h"
-#include "clutter-fixed.h"
+
+typedef struct
+{
+  GType value_type;
+  ClutterProgressFunc func;
+} ProgressData;
+
+static GHashTable *progress_funcs = NULL;
 
 enum
 {
@@ -171,18 +180,38 @@ clutter_interval_real_validate (ClutterInterval *interval,
   return TRUE;
 }
 
-static void
+static gboolean
 clutter_interval_real_compute_value (ClutterInterval *interval,
                                      gdouble          factor,
                                      GValue          *value)
 {
   GValue *initial, *final;
   GType value_type;
+  gboolean retval = FALSE;
 
   initial = clutter_interval_peek_initial_value (interval);
   final = clutter_interval_peek_final_value (interval);
 
   value_type = clutter_interval_get_value_type (interval);
+
+  if (G_UNLIKELY (progress_funcs != NULL))
+    {
+      ProgressData *p_data;
+
+      p_data =
+        g_hash_table_lookup (progress_funcs, GUINT_TO_POINTER (value_type));
+
+      /* if we have a progress function, and that function was
+       * successful in computing the progress, then we bail out
+       * as fast as we can
+       */
+      if (p_data != NULL)
+        {
+          retval = p_data->func (initial, final, factor, value);
+          if (retval)
+            return retval;
+        }
+    }
 
   switch (G_TYPE_FUNDAMENTAL (value_type))
     {
@@ -196,6 +225,8 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
         res = (factor * (ib - ia)) + ia;
 
         g_value_set_int (value, res);
+
+        retval = TRUE;
       }
       break;
 
@@ -209,6 +240,8 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
         res = (factor * (ib - (gdouble) ia)) + ia;
 
         g_value_set_uint (value, res);
+
+        retval = TRUE;
       }
       break;
 
@@ -222,6 +255,8 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
         res = (factor * (ib - (gdouble) ia)) + ia;
 
         g_value_set_uchar (value, res);
+
+        retval = TRUE;
       }
       break;
 
@@ -239,19 +274,45 @@ clutter_interval_real_compute_value (ClutterInterval *interval,
           g_value_set_double (value, res);
         else
           g_value_set_float (value, res);
+
+        retval = TRUE;
       }
       break;
 
     case G_TYPE_BOOLEAN:
-      if (COGL_FIXED_FROM_FLOAT (factor) > COGL_FIXED_0_5)
+      if (CLUTTER_FLOAT_TO_FIXED (factor) > 0.5)
         g_value_set_boolean (value, TRUE);
       else
         g_value_set_boolean (value, FALSE);
+
+      retval = TRUE;
+      break;
+
+    case G_TYPE_BOXED:
+      if (value_type == CLUTTER_TYPE_COLOR)
+        {
+          const ClutterColor *ia, *ib;
+          ClutterColor res = { 0, };
+
+          ia = clutter_value_get_color (initial);
+          ib = clutter_value_get_color (final);
+
+          res.red   = (factor * (ib->red   - (gdouble) ia->red))   + ia->red;
+          res.green = (factor * (ib->green - (gdouble) ia->green)) + ia->green;
+          res.blue  = (factor * (ib->blue  - (gdouble) ia->blue))  + ia->blue;
+          res.alpha = (factor * (ib->alpha - (gdouble) ia->alpha)) + ia->alpha;
+
+          clutter_value_set_color (value, &res);
+
+          retval = TRUE;
+        }
       break;
 
     default:
       break;
     }
+
+  return retval;
 }
 
 static void
@@ -818,19 +879,99 @@ clutter_interval_validate (ClutterInterval *interval,
  * Computes the value between the @interval boundaries given the
  * progress @factor and puts it into @value.
  *
+ * Return value: %TRUE if the operation was successful
+ *
  * Since: 1.0
  */
-void
+gboolean
 clutter_interval_compute_value (ClutterInterval *interval,
                                 gdouble          factor,
                                 GValue          *value)
 {
-  g_return_if_fail (CLUTTER_IS_INTERVAL (interval));
-  g_return_if_fail (value != NULL);
+  g_return_val_if_fail (CLUTTER_IS_INTERVAL (interval), FALSE);
+  g_return_val_if_fail (value != NULL, FALSE);
 
   factor = CLAMP (factor, 0.0, 1.0);
 
-  CLUTTER_INTERVAL_GET_CLASS (interval)->compute_value (interval,
-                                                        factor,
-                                                        value);
+  return CLUTTER_INTERVAL_GET_CLASS (interval)->compute_value (interval,
+                                                               factor,
+                                                               value);
+}
+
+/**
+ * clutter_interval_register_progress_func:
+ * @value_type: a #GType
+ * @func: a #ClutterProgressFunc, or %NULL to unset a previously
+ *   set progress function
+ *
+ * Sets the progress function for a given @value_type, like:
+ *
+ * |[
+ *   clutter_interval_register_progress_func (MY_TYPE_FOO,
+ *                                            my_foo_progress);
+ * ]|
+ *
+ * Whenever a #ClutterInterval instance using the default
+ * #ClutterInterval::compute_value implementation is set as an
+ * interval between two #GValue of type @value_type, it will call
+ * @func to establish the value depending on the given progress,
+ * for instance:
+ *
+ * |[
+ *   static gboolean
+ *   my_int_progress (const GValue *a,
+ *                    const GValue *b,
+ *                    gdouble       progress,
+ *                    GValue       *retval)
+ *   {
+ *     gint ia = g_value_get_int (a);
+ *     gint ib = g_value_get_int (b);
+ *     gint res = factor * (ib - ia) + ia;
+ *
+ *     g_value_set_int (retval, res);
+ *
+ *     return TRUE;
+ *   }
+ *
+ *   clutter_interval_register_progress_func (G_TYPE_INT, my_int_progress);
+ * ]|
+ *
+ * To unset a previously set progress function of a #GType, pass %NULL
+ * for @func.
+ *
+ * Since: 1.0
+ */
+void
+clutter_interval_register_progress_func (GType               value_type,
+                                         ClutterProgressFunc func)
+{
+  ProgressData *progress_func;
+
+  g_return_if_fail (value_type != G_TYPE_INVALID);
+
+  if (G_UNLIKELY (progress_funcs == NULL))
+    progress_funcs = g_hash_table_new (NULL, NULL);
+
+  progress_func =
+    g_hash_table_lookup (progress_funcs, GUINT_TO_POINTER (value_type));
+  if (G_UNLIKELY (progress_func))
+    {
+      if (func == NULL)
+        {
+          g_hash_table_remove (progress_funcs, GUINT_TO_POINTER (value_type));
+          g_slice_free (ProgressData, progress_func);
+        }
+      else
+        progress_func->func = func;
+    }
+  else
+    {
+      progress_func = g_slice_new (ProgressData);
+      progress_func->value_type = value_type;
+      progress_func->func = func;
+
+      g_hash_table_replace (progress_funcs,
+                            GUINT_TO_POINTER (value_type),
+                            progress_func);
+    }
 }

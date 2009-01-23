@@ -60,7 +60,8 @@ struct _ClutterBackendPrivate
   guint double_click_time;
   guint double_click_distance;
 
-  ClutterFixed resolution;
+  gdouble resolution;
+  gdouble units_per_em;
 
   cairo_font_options_t *font_options;
 
@@ -87,7 +88,9 @@ clutter_backend_dispose (GObject *gobject)
 
   if (clutter_context && clutter_context->events_queue)
     {
-      g_queue_foreach (clutter_context->events_queue, (GFunc) clutter_event_free, NULL);
+      g_queue_foreach (clutter_context->events_queue,
+                       (GFunc) clutter_event_free,
+                       NULL);
       g_queue_free (clutter_context->events_queue);
       clutter_context->events_queue = NULL;
     }
@@ -97,6 +100,57 @@ clutter_backend_dispose (GObject *gobject)
   clutter_backend_set_font_options (CLUTTER_BACKEND (gobject), NULL);
 
   G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
+}
+
+static inline void
+update_units_per_em (ClutterBackend *backend)
+{
+  ClutterBackendPrivate *priv = backend->priv;
+  const gchar *font_name;
+  gdouble dpi;
+
+  font_name = clutter_backend_get_font_name (backend);
+  dpi = clutter_backend_get_resolution (backend);
+
+  if (G_LIKELY (font_name != NULL && *font_name != '\0'))
+    {
+      PangoFontDescription *font_desc;
+      gdouble font_size = 0;
+
+      font_desc = pango_font_description_from_string (font_name);
+      if (G_LIKELY (font_desc != NULL))
+        {
+          gint pango_size;
+          gboolean is_absolute;
+
+          pango_size = pango_font_description_get_size (font_desc);
+          is_absolute =
+            pango_font_description_get_size_is_absolute (font_desc);
+          if (!is_absolute)
+            font_size = ((gdouble) font_size) / PANGO_SCALE;
+
+          pango_font_description_free (font_desc);
+        }
+
+      /* 10 points at 96 DPI is 12 pixels */
+      priv->units_per_em = 1.2 * font_size
+                         * dpi
+                         / 96.0;
+    }
+  else
+    priv->units_per_em = -1.0;
+}
+
+static void
+clutter_backend_real_resolution_changed (ClutterBackend *backend)
+{
+  update_units_per_em (backend);
+}
+
+static void
+clutter_backend_real_font_changed (ClutterBackend *backend)
+{
+  update_units_per_em (backend);
 }
 
 static void
@@ -111,7 +165,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   backend_signals[RESOLUTION_CHANGED] =
     g_signal_new (I_("resolution-changed"),
                   G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (ClutterBackendClass, resolution_changed),
                   NULL, NULL,
                   clutter_marshal_VOID__VOID,
@@ -120,11 +174,14 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   backend_signals[FONT_CHANGED] =
     g_signal_new (I_("font-changed"),
                   G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_FIRST,
                   G_STRUCT_OFFSET (ClutterBackendClass, font_changed),
                   NULL, NULL,
                   clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  klass->resolution_changed = clutter_backend_real_resolution_changed;
+  klass->font_changed = clutter_backend_real_font_changed;
 }
 
 static void
@@ -132,8 +189,10 @@ clutter_backend_init (ClutterBackend *backend)
 {
   ClutterBackendPrivate *priv;
 
-  priv = backend->priv = CLUTTER_BACKEND_GET_PRIVATE(backend);
+  priv = backend->priv = CLUTTER_BACKEND_GET_PRIVATE (backend);
+
   priv->resolution = -1.0;
+  priv->units_per_em = -1.0;
 }
 
 void
@@ -289,15 +348,30 @@ _clutter_backend_init_events (ClutterBackend *backend)
     klass->init_events (backend);
 }
 
+ClutterUnit
+_clutter_backend_get_units_per_em (ClutterBackend *backend)
+{
+  ClutterBackendPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
+
+  priv = backend->priv;
+
+  if (G_UNLIKELY (priv->units_per_em < 0))
+    update_units_per_em (backend);
+
+  return priv->units_per_em;
+}
 
 /**
  * clutter_get_default_backend:
  *
- * FIXME
+ * Retrieves the default #ClutterBackend used by Clutter. The
+ * #ClutterBackend holds backend-specific configuration options.
  *
  * Return value: the default backend. You should not ref or
- * unref the returned object. Applications should not rarely need
- * to use this.
+ *   unref the returned object. Applications should rarely need
+ *   to use this.
  *
  * Since: 0.4
  */
@@ -406,19 +480,16 @@ void
 clutter_backend_set_resolution (ClutterBackend *backend,
                                 gdouble         dpi)
 {
-  ClutterFixed fixed_dpi;
   ClutterBackendPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
 
+  priv = backend->priv;
+
   if (dpi < 0)
     dpi = -1.0;
 
-  priv = backend->priv;
-
-  fixed_dpi = COGL_FIXED_FROM_FLOAT (dpi);
-  if (priv->resolution != fixed_dpi)
-    priv->resolution = fixed_dpi;
+  priv->resolution = dpi;
 
   if (CLUTTER_CONTEXT ()->font_map)
     cogl_pango_font_map_set_resolution (CLUTTER_CONTEXT ()->font_map, dpi);
@@ -443,7 +514,7 @@ clutter_backend_get_resolution (ClutterBackend *backend)
 {
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1.0);
 
-  return COGL_FIXED_TO_FLOAT (backend->priv->resolution);
+  return backend->priv->resolution;
 }
 
 /**

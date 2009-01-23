@@ -252,7 +252,7 @@ _clutter_bezier_init (ClutterBezier *b,
       int x = _clutter_bezier_t2x (b, t);
       int y = _clutter_bezier_t2y (b, t);
 	
-      guint l = clutter_sqrti ((y - yp)*(y - yp) + (x - xp)*(x - xp));
+      guint l = cogl_sqrti ((y - yp)*(y - yp) + (x - xp)*(x - xp));
 
       l += length[i-1];
 

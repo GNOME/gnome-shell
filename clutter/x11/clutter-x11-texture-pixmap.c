@@ -440,7 +440,7 @@ clutter_x11_texture_pixmap_set_property (GObject      *object,
     {
     case PROP_PIXMAP:
       clutter_x11_texture_pixmap_set_pixmap (texture,
-                                             g_value_get_uint (value));
+                                             g_value_get_ulong (value));
       break;
     case PROP_AUTO:
       clutter_x11_texture_pixmap_set_automatic (texture,
@@ -481,7 +481,7 @@ clutter_x11_texture_pixmap_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_PIXMAP:
-      g_value_set_uint (value, priv->pixmap);
+      g_value_set_ulong (value, priv->pixmap);
       break;
     case PROP_PIXMAP_WIDTH:
       g_value_set_uint (value, priv->pixmap_width);
@@ -557,12 +557,12 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
 
   klass->update_area         = clutter_x11_texture_pixmap_update_area_real;
 
-  pspec = g_param_spec_uint ("pixmap",
-                             "Pixmap",
-                             "The X11 Pixmap to be bound",
-                             0, G_MAXINT,
-                             None,
-                             G_PARAM_READWRITE);
+  pspec = g_param_spec_ulong ("pixmap",
+			      "Pixmap",
+			      "The X11 Pixmap to be bound",
+			      0, G_MAXULONG,
+			      None,
+			      G_PARAM_READWRITE);
 
   g_object_class_install_property (object_class, PROP_PIXMAP, pspec);
 
@@ -605,12 +605,12 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
 
   g_object_class_install_property (object_class, PROP_AUTO, pspec);
 
-  pspec = g_param_spec_uint ("window",
-                             "Window",
-                             "The X11 Window to be bound",
-                             0, G_MAXINT,
-                             None,
-                             G_PARAM_READWRITE);
+  pspec = g_param_spec_ulong ("window",
+			      "Window",
+			      "The X11 Window to be bound",
+			      0, G_MAXULONG,
+			      None,
+			      G_PARAM_READWRITE);
 
   g_object_class_install_property (object_class, PROP_WINDOW, pspec);
 

@@ -84,6 +84,20 @@ cogl_bitmap_error_quark (void)
   return g_quark_from_static_string ("cogl-bitmap-error-quark");
 }
 
+gboolean
+_cogl_bitmap_get_size_from_file (const gchar *filename,
+                                 gint        *width,
+                                 gint        *height)
+{
+  if (width)
+    *width = 0;
+
+  if (height)
+    *height = 0;
+
+  return TRUE;
+}
+
 /* the error does not contain the filename as the caller already has it */
 gboolean
 _cogl_bitmap_from_file (CoglBitmap  *bmp,
@@ -177,9 +191,22 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
 #elif defined(USE_GDKPIXBUF)
 
 gboolean
-_cogl_bitmap_from_file (CoglBitmap  *bmp,
-			const gchar *filename,
-			GError     **error)
+_cogl_bitmap_get_size_from_file (const gchar *filename,
+                                 gint        *width,
+                                 gint        *height)
+{
+  g_return_val_if_fail (filename != NULL, FALSE);
+
+  if (gdk_pixbuf_get_file_info (filename, width, height) != NULL)
+    return TRUE;
+
+  return FALSE;
+}
+
+gboolean
+_cogl_bitmap_from_file (CoglBitmap   *bmp,
+			const gchar  *filename,
+			GError      **error)
 {
   GdkPixbuf        *pixbuf;
   gboolean          has_alpha;
@@ -198,11 +225,13 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
   
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (bmp == NULL) return FALSE;
-  
+  if (bmp == NULL)
+    return FALSE;
+
   /* Load from file using GdkPixbuf */
   pixbuf = gdk_pixbuf_new_from_file (filename, error);
-  if (pixbuf == NULL) return FALSE;
+  if (pixbuf == NULL)
+    return FALSE;
   
   /* Get pixbuf properties */
   has_alpha       = gdk_pixbuf_get_has_alpha (pixbuf);
@@ -279,6 +308,20 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
 #include "stb_image.c"
 
 gboolean
+_cogl_bitmap_get_size_from_file (const gchar *filename,
+                                 gint        *width,
+                                 gint        *height)
+{
+  if (width)
+    *width = 0;
+
+  if (height)
+    *height = 0;
+
+  return TRUE;
+}
+
+gboolean
 _cogl_bitmap_from_file (CoglBitmap  *bmp,
 			const gchar *filename,
 			GError     **error)
@@ -290,11 +333,15 @@ _cogl_bitmap_from_file (CoglBitmap  *bmp,
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if (bmp == NULL) return FALSE;
+  if (bmp == NULL)
+    return FALSE;
   
   /* Load from file using stb */
-  pixels = stbi_load (filename, &width, &height, &stb_pixel_format, STBI_rgb_alpha);
-  if (pixels == NULL) return FALSE;
+  pixels = stbi_load (filename,
+                      &width, &height, &stb_pixel_format,
+                      STBI_rgb_alpha);
+  if (pixels == NULL)
+    return FALSE;
  
   /* Store bitmap info */
   bmp->data = g_memdup (pixels, height * width * 4);

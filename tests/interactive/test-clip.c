@@ -302,8 +302,10 @@ test_clip_main (int argc, char **argv)
   stub_actor = clutter_rectangle_new ();
   clutter_container_add (CLUTTER_CONTAINER (data.stage), stub_actor, NULL);
 
-  data.hand = cogl_texture_new_from_file ("redhand.png", 64, FALSE,
-                                          COGL_PIXEL_FORMAT_ANY, NULL);
+  data.hand = cogl_texture_new_from_file ("redhand.png", 64,
+                                          COGL_TEXTURE_NONE,
+                                          COGL_PIXEL_FORMAT_ANY,
+                                          NULL);
 
   label = clutter_text_new_with_text ("Sans 12px", instructions);
   clutter_text_set_line_wrap (CLUTTER_TEXT (label), TRUE);

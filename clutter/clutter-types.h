@@ -200,6 +200,7 @@ typedef enum {
  * @CLUTTER_EXPO_OUT: exponential out progress
  * @CLUTTER_EXPO_IN_OUT: exponential in-out progress
  * @CLUTTER_SMOOTH_IN_OUT: smoothstep in-out progress
+ * @CLUTTER_ANIMATION_LAST: last animation mode
  *
  * The animation modes used by #ClutterAlpha and #ClutterAnimation. This
  * enumeration can be expanded in later versions of Clutter.
@@ -207,7 +208,7 @@ typedef enum {
  * Since: 1.0
  */
 typedef enum {
-  CLUTTER_CUSTOM_MODE,
+  CLUTTER_CUSTOM_MODE = 0,
 
   CLUTTER_LINEAR,
   CLUTTER_SINE_IN,
@@ -220,6 +221,8 @@ typedef enum {
   CLUTTER_EXPO_OUT,
   CLUTTER_EXPO_IN_OUT,
   CLUTTER_SMOOTH_IN_OUT,
+
+  CLUTTER_ANIMATION_LAST
 } ClutterAnimationMode;
 
 G_END_DECLS

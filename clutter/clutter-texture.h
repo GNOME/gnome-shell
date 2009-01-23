@@ -89,6 +89,8 @@ struct _ClutterTextureClass
 		         gint            width,
 		         gint            height);
   void (*pixbuf_change) (ClutterTexture *texture);
+  void (*load_finished) (ClutterTexture *texture,
+                         GError         *error);
 
   /*< private >*/
   /* padding, for future expansion */
@@ -97,7 +99,6 @@ struct _ClutterTextureClass
   void (*_clutter_texture3) (void);
   void (*_clutter_texture4) (void);
   void (*_clutter_texture5) (void);
-  void (*_clutter_texture6) (void);
 };
 
 /**

@@ -1,1 +1,1 @@
-SUBDIRS = clutter cogl
+SUBDIRS = cogl clutter

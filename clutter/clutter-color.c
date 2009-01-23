@@ -154,9 +154,9 @@ clutter_color_to_hlsx (const ClutterColor *src,
   
   g_return_if_fail (src != NULL);
 
-  red   = COGL_FIXED_FROM_INT (src->red)   / 255;
-  green = COGL_FIXED_FROM_INT (src->green) / 255;
-  blue  = COGL_FIXED_FROM_INT (src->blue)  / 255;
+  red   = (float)(src->red)   / 255;
+  green = (float)(src->green) / 255;
+  blue  = (float)(src->blue)  / 255;
 
   if (red > green)
     {
@@ -189,31 +189,31 @@ clutter_color_to_hlsx (const ClutterColor *src,
 
   if (max != min)
     {
-      if (l <= COGL_FIXED_0_5)
-	s = COGL_FIXED_FAST_DIV ((max - min), (max + min));
+      if (l <= 0.5)
+	s = CLUTTER_FIXED_DIV ((max - min), (max + min));
       else
-	s = COGL_FIXED_FAST_DIV ((max - min),
-                                 (COGL_FIXED_FROM_INT (2) - max - min));
+	s = CLUTTER_FIXED_DIV ((max - min),
+                                 ((float)(2) - max - min));
 
       delta = max - min;
 
       if (red == max)
-	h = COGL_FIXED_FAST_DIV ((green - blue), delta);
+	h = CLUTTER_FIXED_DIV ((green - blue), delta);
       else if (green == max)
         {
-	  h = COGL_FIXED_FROM_INT (2)
-            + COGL_FIXED_FAST_DIV ((blue - red), delta);
+	  h = (float)(2)
+            + CLUTTER_FIXED_DIV ((blue - red), delta);
         }
       else if (blue == max)
         {
-	  h = COGL_FIXED_FROM_INT (4)
-            + COGL_FIXED_FAST_DIV ((red - green), delta);
+	  h = (float)(4)
+            + CLUTTER_FIXED_DIV ((red - green), delta);
         }
 
       h *= 60;
 
       if (h < 0)
-	h += COGL_FIXED_360;
+	h += 360.0;
     }
 
   if (hue)
@@ -251,102 +251,102 @@ clutter_color_from_hlsx (ClutterColor *dest,
   l = luminance;
   s = saturation;
 
-  if (l <= COGL_FIXED_0_5)
-    m2 = COGL_FIXED_FAST_MUL (l, (COGL_FIXED_1 + s));
+  if (l <= 0.5)
+    m2 = CLUTTER_FIXED_MUL (l, (1.0 + s));
   else
-    m2 = l + s - COGL_FIXED_FAST_MUL (l, s);
+    m2 = l + s - CLUTTER_FIXED_MUL (l, s);
 
   m1 = 2 * l - m2;
 
   if (s == 0)
     {
-      dest->red   = (guint8) COGL_FIXED_TO_INT (l * 255);
-      dest->green = (guint8) COGL_FIXED_TO_INT (l * 255);
-      dest->blue  = (guint8) COGL_FIXED_TO_INT (l * 255);
+      dest->red   = (guint8)  (l * 255);
+      dest->green = (guint8)  (l * 255);
+      dest->blue  = (guint8)  (l * 255);
     }
   else
     {
-      h = hue + COGL_FIXED_120;
+      h = hue + 120.0;
 
-      while (h > COGL_FIXED_360)
-	h -= COGL_FIXED_360;
+      while (h > 360.0)
+	h -= 360.0;
 
       while (h < 0)
-	h += COGL_FIXED_360;
+	h += 360.0;
 
-      if (h < COGL_FIXED_60)
+      if (h < 60.0)
         {
-          CoglFixed tmp;
+          float tmp;
 
-          tmp = (m1 + COGL_FIXED_FAST_MUL ((m2 - m1), h) / 60);
-          dest->red = (guint8) COGL_FIXED_TO_INT (tmp * 255);
+          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), h) / 60);
+          dest->red = (guint8)  (tmp * 255);
         }
-      else if (h < COGL_FIXED_180)
-	dest->red = (guint8) COGL_FIXED_TO_INT (m2 * 255);
-      else if (h < COGL_FIXED_240)
+      else if (h < 180.0)
+	dest->red = (guint8)  (m2 * 255);
+      else if (h < 240.0)
         {
-          CoglFixed tmp;
+          float tmp;
 
-          tmp = (m1 + COGL_FIXED_FAST_MUL ((m2 - m1), (COGL_FIXED_240 - h)))
+          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), (240.0 - h)))
               / 60;
-          dest->red = (guint8) COGL_FIXED_TO_INT (tmp * 255);
+          dest->red = (guint8)  (tmp * 255);
         }
       else
-	dest->red = (guint8) COGL_FIXED_TO_INT (m1 * 255);
+	dest->red = (guint8)  (m1 * 255);
 
       h = hue;
-      while (h > COGL_FIXED_360)
-	h -= COGL_FIXED_360;
+      while (h > 360.0)
+	h -= 360.0;
       while (h < 0)
-	h += COGL_FIXED_360;
+	h += 360.0;
 
-      if (h < COGL_FIXED_60)
+      if (h < 60.0)
         {
-          CoglFixed tmp;
+          float tmp;
 
-          tmp = (m1 + COGL_FIXED_FAST_MUL ((m2 - m1), h) / 60);
-          dest->green = (guint8) COGL_FIXED_TO_INT (tmp * 255);
+          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), h) / 60);
+          dest->green = (guint8)  (tmp * 255);
         }
-      else if (h < COGL_FIXED_180)
-        dest->green = (guint8) COGL_FIXED_TO_INT (m2 * 255);
-      else if (h < COGL_FIXED_240)
+      else if (h < 180.0)
+        dest->green = (guint8)  (m2 * 255);
+      else if (h < 240.0)
         {
-          CoglFixed tmp;
+          float tmp;
 
-          tmp = (m1 + COGL_FIXED_FAST_MUL ((m2 - m1) , (COGL_FIXED_240 - h)))
+          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1) , (240.0 - h)))
               / 60;
-          dest->green = (guint8) COGL_FIXED_TO_INT (tmp * 255);
+          dest->green = (guint8)  (tmp * 255);
         }
       else
-	dest->green = (guint8) COGL_FIXED_TO_INT (m1 * 255);
+	dest->green = (guint8)  (m1 * 255);
 
-      h = hue - COGL_FIXED_120;
+      h = hue - 120.0;
 
-      while (h > COGL_FIXED_360)
-	h -= COGL_FIXED_360;
+      while (h > 360.0)
+	h -= 360.0;
 
       while (h < 0)
-	h += COGL_FIXED_360;
+	h += 360.0;
 
-      if (h < COGL_FIXED_60)
+      if (h < 60.0)
         {
-          CoglFixed tmp;
+          float tmp;
 
-          tmp = (m1 + COGL_FIXED_FAST_MUL ((m2 - m1), h) / 60);
-          dest->blue = (guint8) COGL_FIXED_TO_INT (tmp * 255);
+          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), h) / 60);
+          dest->blue = (guint8)  (tmp * 255);
         }
-      else if (h < COGL_FIXED_180)
-	dest->blue = (guint8) COGL_FIXED_TO_INT (m2 * 255);
-      else if (h < COGL_FIXED_240)
+      else if (h < 180.0)
+	dest->blue = (guint8)  (m2 * 255);
+      else if (h < 240.0)
         {
-          CoglFixed tmp;
+          float tmp;
 
-          tmp = (m1 + COGL_FIXED_FAST_MUL ((m2 - m1), (COGL_FIXED_240 - h)))
+          tmp = (m1 + CLUTTER_FIXED_MUL ((m2 - m1), (240.0 - h)))
               / 60;
-          dest->blue = (guint8) COGL_FIXED_TO_INT (tmp * 255);
+          dest->blue = (guint8)  (tmp * 255);
         }
       else
-	dest->blue = (guint8) COGL_FIXED_TO_INT (m1 * 255);
+	dest->blue = (guint8)  (m1 * 255);
     }
 }
 
@@ -371,13 +371,13 @@ clutter_color_to_hls (const ClutterColor *src,
   clutter_color_to_hlsx (src, &h, &l, &s);
   
   if (hue)
-    *hue = (guint8) COGL_FIXED_TO_INT (h * 255) / 360;
+    *hue = (guint8)  (h * 255) / 360;
 
   if (luminance)
-    *luminance = (guint8) COGL_FIXED_TO_INT (l * 255);
+    *luminance = (guint8)  (l * 255);
 
   if (saturation)
-    *saturation = (guint8) COGL_FIXED_TO_INT (s * 255);
+    *saturation = (guint8)  (s * 255);
 }
 
 /**
@@ -399,9 +399,9 @@ clutter_color_from_hls (ClutterColor *dest,
 {
   ClutterFixed h, l, s;
 
-  h = COGL_FIXED_FROM_INT (hue * 360)  / 255;
-  l = COGL_FIXED_FROM_INT (luminance)  / 255;
-  s = COGL_FIXED_FROM_INT (saturation) / 255;
+  h = (float)(hue * 360)  / 255;
+  l = (float)(luminance)  / 255;
+  s = (float)(saturation) / 255;
 
   clutter_color_from_hlsx (dest, h, l, s);
 }
@@ -420,7 +420,7 @@ clutter_color_shade (const ClutterColor *src,
 		     ClutterColor       *dest,
 		     gdouble             shade)
 {
-  clutter_color_shadex (src, dest, COGL_FIXED_FROM_FLOAT (shade));
+  clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (shade));
 }
 
 /**
@@ -448,15 +448,15 @@ clutter_color_shadex (const ClutterColor *src,
   
   clutter_color_to_hlsx (src, &h, &l, &s);
 
-  l = COGL_FIXED_FAST_MUL (l, shade);
-  if (l > COGL_FIXED_1)
-    l = COGL_FIXED_1;
+  l = CLUTTER_FIXED_MUL (l, shade);
+  if (l > 1.0)
+    l = 1.0;
   else if (l < 0)
     l = 0;
 
-  s = COGL_FIXED_FAST_MUL (s, shade);
-  if (s > COGL_FIXED_1)
-    s = COGL_FIXED_1;
+  s = CLUTTER_FIXED_MUL (s, shade);
+  if (s > 1.0)
+    s = 1.0;
   else if (s < 0)
     s = 0;
   

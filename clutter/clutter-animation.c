@@ -27,12 +27,12 @@
  * @short_description: Simple implicit animations
  *
  * #ClutterAnimation is an object providing simple, implicit animations
- * for #ClutterActor<!-- -->s.
+ * for #GObject<!-- -->s.
  *
  * #ClutterAnimation instances will bind a #GObject property belonging
- * to a #ClutterActor to a #ClutterInterval, and will then use a
- * #ClutterTimeline to interpolate the property between the initial
- * and final values of the interval.
+ * to a #GObject to a #ClutterInterval, and will then use a #ClutterTimeline
+ * to interpolate the property between the initial and final values of the
+ * interval.
  *
  * For convenience, it is possible to use the clutter_actor_animate()
  * function call which will take care of setting up and tearing down
@@ -50,6 +50,7 @@
 #include <gobject/gvaluecollector.h>
 
 #include "clutter-alpha.h"
+#include "clutter-animatable.h"
 #include "clutter-animation.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -60,7 +61,7 @@ enum
 {
   PROP_0,
 
-  PROP_ACTOR,
+  PROP_OBJECT,
   PROP_MODE,
   PROP_DURATION,
   PROP_LOOP,
@@ -79,11 +80,11 @@ enum
 
 struct _ClutterAnimationPrivate
 {
-  ClutterActor *actor;
+  GObject *object;
 
   GHashTable *properties;
 
-  ClutterAnimationMode mode;
+  gulong mode;
 
   guint loop : 1;
   guint duration;
@@ -96,7 +97,7 @@ struct _ClutterAnimationPrivate
 
 static guint animation_signals[LAST_SIGNAL] = { 0, };
 
-static GQuark quark_actor_animation = 0;
+static GQuark quark_object_animation = 0;
 
 G_DEFINE_TYPE (ClutterAnimation, clutter_animation, G_TYPE_INITIALLY_UNOWNED);
 
@@ -118,16 +119,14 @@ clutter_animation_dispose (GObject *gobject)
 {
   ClutterAnimationPrivate *priv = CLUTTER_ANIMATION (gobject)->priv;
 
-  if (priv->actor)
+  if (priv->object)
     {
       g_object_weak_unref (G_OBJECT (gobject),
                            on_animation_weak_notify,
-                           priv->actor);
-      g_object_set_qdata (G_OBJECT (priv->actor),
-                          quark_actor_animation,
-                          NULL);
-      g_object_unref (priv->actor);
-      priv->actor = NULL;
+                           priv->object);
+      g_object_set_qdata (priv->object, quark_object_animation, NULL);
+      g_object_unref (priv->object);
+      priv->object = NULL;
     }
 
   if (priv->timeline)
@@ -168,12 +167,12 @@ clutter_animation_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_ACTOR:
-      clutter_animation_set_actor (animation, g_value_get_object (value));
+    case PROP_OBJECT:
+      clutter_animation_set_object (animation, g_value_get_object (value));
       break;
 
     case PROP_MODE:
-      clutter_animation_set_mode (animation, g_value_get_enum (value));
+      clutter_animation_set_mode (animation, g_value_get_ulong (value));
       break;
 
     case PROP_DURATION:
@@ -208,12 +207,12 @@ clutter_animation_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_ACTOR:
-      g_value_set_object (value, priv->actor);
+    case PROP_OBJECT:
+      g_value_set_object (value, priv->object);
       break;
 
     case PROP_MODE:
-      g_value_set_enum (value, priv->mode);
+      g_value_set_ulong (value, priv->mode);
       break;
 
     case PROP_DURATION:
@@ -253,7 +252,7 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   GParamSpec *pspec;
 
-  quark_actor_animation =
+  quark_object_animation =
     g_quark_from_static_string ("clutter-actor-animation");
 
   g_type_class_add_private (klass, sizeof (ClutterAnimationPrivate));
@@ -266,32 +265,34 @@ clutter_animation_class_init (ClutterAnimationClass *klass)
   gobject_class->finalize = clutter_animation_finalize;
 
   /**
-   * ClutterAnimation:actor:
+   * ClutterAnimation:objct:
    *
-   * The actor to which the animation applies.
+   * The #GObject to which the animation applies.
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_object ("actor",
-                               "Actor",
-                               "Actor to which the animation applies",
-                               CLUTTER_TYPE_ACTOR,
+  pspec = g_param_spec_object ("object",
+                               "Object",
+                               "Object to which the animation applies",
+                               G_TYPE_OBJECT,
                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_ACTOR, pspec);
+  g_object_class_install_property (gobject_class, PROP_OBJECT, pspec);
 
   /**
    * ClutterAnimation:mode:
    *
-   * The animation mode.
+   * The animation mode, either a value from #ClutterAnimationMode
+   * or a value returned by clutter_alpha_register_func(). The
+   * default value is %CLUTTER_LINEAR.
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_enum ("mode",
-                             "Mode",
-                             "The mode of the animation",
-                             CLUTTER_TYPE_ANIMATION_MODE,
-                             CLUTTER_LINEAR,
-                             CLUTTER_PARAM_READWRITE);
+  pspec = g_param_spec_ulong ("mode",
+                              "Mode",
+                              "The mode of the animation",
+                              0, G_MAXULONG,
+                              CLUTTER_LINEAR,
+                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_MODE, pspec);
 
   /**
@@ -427,7 +428,7 @@ clutter_animation_update_property_internal (ClutterAnimation *animation,
  * @property_name: the property to control
  * @interval: a #ClutterInterval
  *
- * Binds @interval to the @property_name of the #ClutterActor
+ * Binds @interval to the @property_name of the #GObject
  * attached to @animation. The #ClutterAnimation will take
  * ownership of the passed #ClutterInterval.
  *
@@ -451,10 +452,10 @@ clutter_animation_bind_property (ClutterAnimation *animation,
 
   priv = animation->priv;
 
-  if (G_UNLIKELY (!priv->actor))
+  if (G_UNLIKELY (!priv->object))
     {
       g_warning ("Cannot bind property `%s': the animation has no "
-                 "actor set. You need to call clutter_animation_set_actor() "
+                 "object set. You need to call clutter_animation_set_object() "
                  "first to be able to bind a property",
                  property_name);
       return;
@@ -468,14 +469,14 @@ clutter_animation_bind_property (ClutterAnimation *animation,
       return;
     }
 
-  klass = G_OBJECT_GET_CLASS (priv->actor);
+  klass = G_OBJECT_GET_CLASS (priv->object);
   pspec = g_object_class_find_property (klass, property_name);
   if (!pspec)
     {
-      g_warning ("Cannot bind property `%s': actors of type `%s' have "
+      g_warning ("Cannot bind property `%s': objects of type `%s' have "
                  "no such property",
                  property_name,
-                 g_type_name (G_OBJECT_TYPE (priv->actor)));
+                 g_type_name (G_OBJECT_TYPE (priv->object)));
       return;
     }
 
@@ -592,14 +593,14 @@ clutter_animation_update_property (ClutterAnimation *animation,
       return;
     }
 
-  klass = G_OBJECT_GET_CLASS (priv->actor);
+  klass = G_OBJECT_GET_CLASS (priv->object);
   pspec = g_object_class_find_property (klass, property_name);
   if (!pspec)
     {
-      g_warning ("Cannot bind property `%s': actors of type `%s' have "
+      g_warning ("Cannot bind property `%s': objects of type `%s' have "
                  "no such property",
                  property_name,
-                 g_type_name (G_OBJECT_TYPE (priv->actor)));
+                 g_type_name (G_OBJECT_TYPE (priv->object)));
       return;
     }
 
@@ -664,10 +665,18 @@ on_alpha_notify (GObject          *gobject,
   ClutterAnimationPrivate *priv = animation->priv;
   GList *properties, *p;
   guint32 alpha_value;
+  gboolean is_animatable = FALSE;
+  ClutterAnimatable *animatable = NULL;
 
   alpha_value = clutter_alpha_get_alpha (CLUTTER_ALPHA (gobject));
 
-  g_object_freeze_notify (G_OBJECT (priv->actor));
+  if (CLUTTER_IS_ANIMATABLE (priv->object))
+    {
+      animatable = CLUTTER_ANIMATABLE (priv->object);
+      is_animatable = TRUE;
+    }
+
+  g_object_freeze_notify (priv->object);
 
   properties = g_hash_table_get_keys (priv->properties);
   for (p = properties; p != NULL; p = p->next)
@@ -683,16 +692,37 @@ on_alpha_notify (GObject          *gobject,
       g_value_init (&value, clutter_interval_get_value_type (interval));
 
       factor = (gdouble) alpha_value / CLUTTER_ALPHA_MAX_ALPHA;
-      clutter_interval_compute_value (interval, factor, &value);
 
-      g_object_set_property (G_OBJECT (priv->actor), p_name, &value);
+      if (is_animatable)
+        {
+          const GValue *initial, *final;
+
+          initial = clutter_interval_peek_initial_value (interval);
+          final   = clutter_interval_peek_final_value (interval);
+
+          CLUTTER_NOTE (ANIMATION, "Animatable property `%s'", p_name);
+          clutter_animatable_animate_property (animatable, animation,
+                                               p_name,
+                                               initial, final,
+                                               factor,
+                                               &value);
+
+          g_object_set_property (priv->object, p_name, &value);
+        }
+      else
+        {
+          CLUTTER_NOTE (ANIMATION, "Standard property `%s'", p_name);
+
+          if (clutter_interval_compute_value (interval, factor, &value))
+            g_object_set_property (priv->object, p_name, &value);
+        }
 
       g_value_unset (&value);
     }
 
   g_list_free (properties);
 
-  g_object_thaw_notify (G_OBJECT (priv->actor));
+  g_object_thaw_notify (priv->object);
 }
 
 /*
@@ -709,7 +739,7 @@ on_animation_weak_notify (gpointer  data,
                 clutter_actor_get_gid (CLUTTER_ACTOR (actor)),
                 actor);
 
-  g_object_set_qdata (actor, quark_actor_animation, NULL);
+  g_object_set_qdata (actor, quark_object_animation, NULL);
 }
 
 ClutterAnimation *
@@ -719,66 +749,64 @@ clutter_animation_new (void)
 }
 
 /**
- * clutter_animation_set_actor:
+ * clutter_animation_set_object:
  * @animation: a #ClutterAnimation
- * @actor: a #ClutterActor
+ * @object: a #GObject
  *
- * Attaches @animation to @actor. The #ClutterAnimation will take a
- * reference on @actor.
+ * Attaches @animation to @object. The #ClutterAnimation will take a
+ * reference on @object.
  *
  * Since: 1.0
  */
 void
-clutter_animation_set_actor (ClutterAnimation *animation,
-                             ClutterActor     *actor)
+clutter_animation_set_object (ClutterAnimation *animation,
+                              GObject          *object)
 {
   ClutterAnimationPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ANIMATION (animation));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (G_IS_OBJECT (object));
 
   priv = animation->priv;
 
-  g_object_ref (actor);
+  g_object_ref (object);
 
-  if (priv->actor)
+  if (priv->object)
     {
       g_object_weak_unref (G_OBJECT (animation),
                            on_animation_weak_notify,
-                           priv->actor);
-      g_object_set_qdata (G_OBJECT (priv->actor),
-                          quark_actor_animation,
-                          NULL);
-      g_object_unref (priv->actor);
+                           priv->object);
+      g_object_set_qdata (priv->object, quark_object_animation, NULL);
+      g_object_unref (priv->object);
     }
 
-  priv->actor = actor;
+  priv->object = object;
   g_object_weak_ref (G_OBJECT (animation),
                      on_animation_weak_notify,
-                     priv->actor);
-  g_object_set_qdata (G_OBJECT (priv->actor),
-                      quark_actor_animation,
+                     priv->object);
+  g_object_set_qdata (G_OBJECT (priv->object),
+                      quark_object_animation,
                       animation);
 
-  g_object_notify (G_OBJECT (animation), "actor");
+  g_object_notify (G_OBJECT (animation), "object");
 }
 
 /**
- * clutter_animation_get_actor:
+ * clutter_animation_get_object:
  * @animation: a #ClutterAnimation
  *
- * Retrieves the #ClutterActor attached to @animation.
+ * Retrieves the #GObject attached to @animation.
  *
- * Return value: a #ClutterActor
+ * Return value: a #GObject
  *
  * Since: 1.0
  */
-ClutterActor *
-clutter_animation_get_actor (ClutterAnimation *animation)
+GObject *
+clutter_animation_get_object (ClutterAnimation *animation)
 {
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), NULL);
 
-  return animation->priv->actor;
+  return animation->priv->object;
 }
 
 static inline void
@@ -794,15 +822,17 @@ clutter_animation_set_mode_internal (ClutterAnimation *animation,
 /**
  * clutter_animation_set_mode:
  * @animation: a #ClutterAnimation
- * @mode: a #ClutterAnimationMode
+ * @mode: an animation mode logical id
  *
- * Sets the animation @mode of @animation.
+ * Sets the animation @mode of @animation. The animation @mode is
+ * a logical id, either coming from the #ClutterAnimationMode enumeration
+ * or the return value of clutter_alpha_register_func().
  *
  * Since: 1.0
  */
 void
-clutter_animation_set_mode (ClutterAnimation     *animation,
-                            ClutterAnimationMode  mode)
+clutter_animation_set_mode (ClutterAnimation *animation,
+                            gulong            mode)
 {
   ClutterAnimationPrivate *priv;
 
@@ -820,13 +850,14 @@ clutter_animation_set_mode (ClutterAnimation     *animation,
  * clutter_animation_get_mode:
  * @animation: a #ClutterAnimation
  *
- * Retrieves the animation mode of @animation.
+ * Retrieves the animation mode of @animation, as set by
+ * clutter_animation_set_mode().
  *
- * Return value: the #ClutterAnimationMode for the animation
+ * Return value: the mode for the animation
  *
  * Since: 1.0
  */
-ClutterAnimationMode
+gulong
 clutter_animation_get_mode (ClutterAnimation *animation)
 {
   g_return_val_if_fail (CLUTTER_IS_ANIMATION (animation), CLUTTER_LINEAR);
@@ -1125,7 +1156,7 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
   GObjectClass *klass;
   const gchar *property_name;
 
-  klass = G_OBJECT_GET_CLASS (priv->actor);
+  klass = G_OBJECT_GET_CLASS (priv->object);
 
   property_name = first_property_name;
   while (property_name != NULL)
@@ -1145,10 +1176,10 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
       pspec = g_object_class_find_property (klass, property_name);
       if (!pspec)
         {
-          g_warning ("Cannot bind property `%s': actors of type `%s' do "
+          g_warning ("Cannot bind property `%s': objects of type `%s' do "
                      "not have this property",
                      property_name,
-                     g_type_name (G_OBJECT_TYPE (priv->actor)));
+                     g_type_name (G_OBJECT_TYPE (priv->object)));
           break;
         }
 
@@ -1178,9 +1209,7 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
           GValue initial = { 0, };
 
           g_value_init (&initial, G_PARAM_SPEC_VALUE_TYPE (pspec));
-          g_object_get_property (G_OBJECT (priv->actor),
-                                 property_name,
-                                 &initial);
+          g_object_get_property (priv->object, property_name, &initial);
 
           interval =
             clutter_interval_new_with_values (G_PARAM_SPEC_VALUE_TYPE (pspec),
@@ -1199,7 +1228,7 @@ clutter_animation_setup_valist (ClutterAnimation *animation,
           g_value_unset (&initial);
         }
       else
-        g_object_set_property (G_OBJECT (priv->actor), property_name, &final);
+        g_object_set_property (priv->object, property_name, &final);
 
       g_value_unset (&final);
 
@@ -1254,7 +1283,7 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
       return NULL;
     }
 
-  animation = g_object_get_qdata (G_OBJECT (actor), quark_actor_animation);
+  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
   if (G_LIKELY (!animation))
     {
       animation = clutter_animation_new ();
@@ -1265,7 +1294,7 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
 
   clutter_animation_set_timeline (animation, timeline);
   clutter_animation_set_alpha (animation, alpha);
-  clutter_animation_set_actor (animation, actor);
+  clutter_animation_set_object (animation, G_OBJECT (actor));
 
   va_start (args, first_property_name);
   clutter_animation_setup_valist (animation, first_property_name, args);
@@ -1277,7 +1306,7 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
 /**
  * clutter_actor_animate_with_timeline:
  * @actor: a #ClutterActor
- * @mode: a #ClutterAnimationMode value
+ * @mode: an animation mode logical id
  * @timeline: a #ClutterTimeline
  * @first_property_name: the name of a property
  * @VarArgs: a %NULL terminated list of property names and
@@ -1298,10 +1327,10 @@ clutter_actor_animate_with_alpha (ClutterActor *actor,
  * Since: 1.0
  */
 ClutterAnimation *
-clutter_actor_animate_with_timeline (ClutterActor         *actor,
-                                     ClutterAnimationMode  mode,
-                                     ClutterTimeline      *timeline,
-                                     const gchar          *first_property_name,
+clutter_actor_animate_with_timeline (ClutterActor    *actor,
+                                     gulong           mode,
+                                     ClutterTimeline *timeline,
+                                     const gchar     *first_property_name,
                                      ...)
 {
   ClutterAnimation *animation;
@@ -1311,7 +1340,7 @@ clutter_actor_animate_with_timeline (ClutterActor         *actor,
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
   g_return_val_if_fail (first_property_name != NULL, NULL);
 
-  animation = g_object_get_qdata (G_OBJECT (actor), quark_actor_animation);
+  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
   if (G_LIKELY (!animation))
     {
       animation = clutter_animation_new ();
@@ -1323,7 +1352,7 @@ clutter_actor_animate_with_timeline (ClutterActor         *actor,
   clutter_animation_set_timeline (animation, timeline);
   clutter_animation_set_alpha (animation, NULL);
   clutter_animation_set_mode (animation, mode);
-  clutter_animation_set_actor (animation, actor);
+  clutter_animation_set_object (animation, G_OBJECT (actor));
 
   va_start (args, first_property_name);
   clutter_animation_setup_valist (animation, first_property_name, args);
@@ -1335,7 +1364,7 @@ clutter_actor_animate_with_timeline (ClutterActor         *actor,
 /**
  * clutter_actor_animate:
  * @actor: a #ClutterActor
- * @mode: a #ClutterAnimationMode value
+ * @mode: an animation mode logical id
  * @duration: duration of the animation, in milliseconds
  * @first_property_name: the name of a property
  * @VarArgs: a %NULL terminated list of property names and
@@ -1356,6 +1385,9 @@ clutter_actor_animate_with_timeline (ClutterActor         *actor,
  *
  * will make width and height properties of the #ClutterActor "rectangle"
  * grow linearly between the current value and 100 pixels, in 250 milliseconds.
+ *
+ * The animation @mode is a logical id, either from the #ClutterAnimationMode
+ * enumeration of from clutter_alpha_register_func().
  *
  * All the properties specified will be animated between the current value
  * and the final value. If a property should be set at the beginning of
@@ -1392,10 +1424,10 @@ clutter_actor_animate_with_timeline (ClutterActor         *actor,
  * Since: 1.0
  */
 ClutterAnimation *
-clutter_actor_animate (ClutterActor         *actor,
-                       ClutterAnimationMode  mode,
-                       guint                 duration,
-                       const gchar          *first_property_name,
+clutter_actor_animate (ClutterActor *actor,
+                       gulong        mode,
+                       guint         duration,
+                       const gchar  *first_property_name,
                        ...)
 {
   ClutterAnimation *animation;
@@ -1406,7 +1438,7 @@ clutter_actor_animate (ClutterActor         *actor,
   g_return_val_if_fail (duration > 0, NULL);
   g_return_val_if_fail (first_property_name != NULL, NULL);
 
-  animation = g_object_get_qdata (G_OBJECT (actor), quark_actor_animation);
+  animation = g_object_get_qdata (G_OBJECT (actor), quark_object_animation);
   if (G_LIKELY (!animation))
     {
       /* if there is no animation already attached to the actor,
@@ -1416,7 +1448,7 @@ clutter_actor_animate (ClutterActor         *actor,
       animation = clutter_animation_new ();
       clutter_animation_set_timeline (animation, NULL);
       clutter_animation_set_alpha (animation, NULL);
-      clutter_animation_set_actor (animation, actor);
+      clutter_animation_set_object (animation, G_OBJECT (actor));
 
       CLUTTER_NOTE (ANIMATION, "Created new Animation [%p]", animation);
     }

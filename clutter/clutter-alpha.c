@@ -40,11 +40,15 @@
  * alpha value into something meaningful for a #ClutterActor.
  *
  * You should provide a #ClutterTimeline and bind it to the #ClutterAlpha
- * instance using clutter_alpha_set_timeline(); you should also provide a
- * function returning the alpha value depending on the progress of the
- * timeline, using clutter_alpha_set_func() or clutter_alpha_set_closure().
- * The alpha function will be executed each time a new frame in the
- * #ClutterTimeline is reached.
+ * instance using clutter_alpha_set_timeline(). You should also set an
+ * "animation mode", either by using the #ClutterAnimatioMode values that
+ * Clutter itself provides or by registering custom functions.
+ *
+ * Instead of a #ClutterAnimationMode you may provide a function returning
+ * the alpha value depending on the progress of the timeline, using
+ * clutter_alpha_set_func() or clutter_alpha_set_closure(). The alpha
+ * function will be executed each time a new frame in the #ClutterTimeline
+ * is reached.
  *
  * Since the alpha function is controlled by the timeline instance, you can
  * pause, stop or resume the #ClutterAlpha from calling the alpha function by
@@ -85,7 +89,7 @@ struct _ClutterAlphaPrivate
 
   GClosure *closure;
 
-  ClutterAnimationMode mode;
+  gulong mode;
 };
 
 enum
@@ -126,9 +130,11 @@ clutter_alpha_set_property (GObject      *object,
     case PROP_TIMELINE:
       clutter_alpha_set_timeline (alpha, g_value_get_object (value));
       break;
+
     case PROP_MODE:
-      clutter_alpha_set_mode (alpha, g_value_get_enum (value));
+      clutter_alpha_set_mode (alpha, g_value_get_ulong (value));
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -152,12 +158,15 @@ clutter_alpha_get_property (GObject    *object,
     case PROP_TIMELINE:
       g_value_set_object (value, priv->timeline);
       break;
+
     case PROP_ALPHA:
       g_value_set_uint (value, priv->alpha);
       break;
+
     case PROP_MODE:
-      g_value_set_enum (value, priv->mode);
+      g_value_set_ulong (value, priv->mode);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -231,22 +240,25 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
   /**
    * ClutterAlpha:mode:
    *
-   * The progress function as a #ClutterAnimationMode enumeration
-   * value. If %CLUTTER_CUSTOM_MODE is used then the function set
-   * using clutter_alpha_set_closure() or clutter_alpha_set_func()
+   * The progress function logical id - either a value from the
+   * #ClutterAnimationMode enumeration or a value returned by
+   * clutter_alpha_register_func().
+   *
+   * If %CLUTTER_CUSTOM_MODE is used then the function set using
+   * clutter_alpha_set_closure() or clutter_alpha_set_func()
    * will be used.
    *
    * Since: 1.0
    */
   g_object_class_install_property (object_class,
                                    PROP_MODE,
-                                   g_param_spec_enum ("mode",
-                                                      "Mode",
-                                                      "Progress mode",
-                                                      CLUTTER_TYPE_ANIMATION_MODE,
-                                                      CLUTTER_CUSTOM_MODE,
-                                                      G_PARAM_CONSTRUCT |
-                                                      CLUTTER_PARAM_READWRITE));
+                                   g_param_spec_ulong ("mode",
+                                                       "Mode",
+                                                       "Progress mode",
+                                                       0, G_MAXULONG,
+                                                       CLUTTER_CUSTOM_MODE,
+                                                       G_PARAM_CONSTRUCT |
+                                                       CLUTTER_PARAM_READWRITE));
 }
 
 static void
@@ -313,9 +325,8 @@ clutter_alpha_get_alpha (ClutterAlpha *alpha)
  * @alpha: A #ClutterAlpha
  * @closure: A #GClosure
  *
- * Sets the #GClosure used to compute
- * the alpha value at each frame of the #ClutterTimeline
- * bound to @alpha.
+ * Sets the #GClosure used to compute the alpha value at each
+ * frame of the #ClutterTimeline bound to @alpha.
  *
  * Since: 0.8
  */
@@ -357,6 +368,8 @@ clutter_alpha_set_closure (ClutterAlpha *alpha,
  * Sets the #ClutterAlphaFunc function used to compute
  * the alpha value at each frame of the #ClutterTimeline
  * bound to @alpha.
+ *
+ * This function will not register @func as a global alpha function.
  *
  * Since: 0.2
  */
@@ -462,22 +475,53 @@ clutter_alpha_new (void)
 /**
  * clutter_alpha_new_full:
  * @timeline: #ClutterTimeline timeline
- * @func: #ClutterAlphaFunc alpha function
- * @data: data to be passed to the alpha function
- * @destroy: notify to be called when removing the alpha function
+ * @mode: animation mode
  *
  * Creates a new #ClutterAlpha instance and sets the timeline
- * and alpha function.
+ * and animation mode.
+ *
+ * See also clutter_alpha_set_timeline() and clutter_alpha_set_mode().
  *
  * Return Value: the newly created #ClutterAlpha
  *
- * Since: 0.2
+ * Since: 1.0
  */
 ClutterAlpha *
-clutter_alpha_new_full (ClutterTimeline  *timeline,
-		        ClutterAlphaFunc  func,
-                        gpointer          data,
-                        GDestroyNotify    destroy)
+clutter_alpha_new_full (ClutterTimeline *timeline,
+                        gulong           mode)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
+  g_return_val_if_fail (mode != CLUTTER_ANIMATION_LAST, NULL);
+
+  return g_object_new (CLUTTER_TYPE_ALPHA,
+                       "timeline", timeline,
+                       "mode", mode,
+                       NULL);
+}
+
+/**
+ * clutter_alpha_new_with_func:
+ * @timeline: a #ClutterTimeline
+ * @func: a #ClutterAlphaFunc
+ * @data: data to pass to the function, or %NULL
+ * @destroy: function to call when removing the alpha function, or %NULL
+ *
+ * Creates a new #ClutterAlpha instances and sets the timeline
+ * and the alpha function.
+ *
+ * This function will not register @func as a global alpha function.
+ *
+ * See also clutter_alpha_set_timeline() and clutter_alpha_set_func().
+ *
+ * Return value: the newly created #ClutterAlpha
+ *
+ * Since: 1.0
+ */
+ClutterAlpha *
+clutter_alpha_new_with_func (ClutterTimeline  *timeline,
+                             ClutterAlphaFunc  func,
+                             gpointer          data,
+                             GDestroyNotify    destroy)
 {
   ClutterAlpha *retval;
 
@@ -485,30 +529,10 @@ clutter_alpha_new_full (ClutterTimeline  *timeline,
   g_return_val_if_fail (func != NULL, NULL);
 
   retval = clutter_alpha_new ();
-
   clutter_alpha_set_timeline (retval, timeline);
   clutter_alpha_set_func (retval, func, data, destroy);
 
   return retval;
-}
-
-/**
- * clutter_alpha_new_for_mode:
- * @mode: a #ClutterAnimationMode value
- *
- * Creates a new #ClutterAlpha using @mode to set the
- * progress function using its symbolic name.
- *
- * Return value: the newly created #ClutterAlpha
- *
- * Since: 1.0
- */
-ClutterAlpha *
-clutter_alpha_new_for_mode (ClutterAnimationMode mode)
-{
-  return g_object_new (CLUTTER_TYPE_ALPHA,
-                       "mode", mode,
-                       NULL);
 }
 
 /**
@@ -521,7 +545,7 @@ clutter_alpha_new_for_mode (ClutterAnimationMode mode)
  *
  * Since: 1.0
  */
-ClutterAnimationMode
+gulong
 clutter_alpha_get_mode (ClutterAlpha *alpha)
 {
   g_return_val_if_fail (CLUTTER_IS_ALPHA (alpha), CLUTTER_CUSTOM_MODE);
@@ -529,9 +553,13 @@ clutter_alpha_get_mode (ClutterAlpha *alpha)
   return alpha->priv->mode;
 }
 
-/* XXX - keep in sync with ClutterAnimationMode */
+/* static enum/function mapping table for the animation modes
+ * we provide internally
+ *
+ * XXX - keep in sync with ClutterAnimationMode
+ */
 static const struct {
-  ClutterAnimationMode mode;
+  gulong mode;
   ClutterAlphaFunc func;
 } animation_modes[] = {
   { CLUTTER_CUSTOM_MODE, NULL },
@@ -545,8 +573,20 @@ static const struct {
   { CLUTTER_EXPO_IN, clutter_exp_in_func },
   { CLUTTER_EXPO_OUT, clutter_exp_out_func },
   { CLUTTER_EXPO_IN_OUT, clutter_exp_in_out_func },
-  { CLUTTER_SMOOTH_IN_OUT, clutter_smoothstep_inc_func }
+  { CLUTTER_SMOOTH_IN_OUT, clutter_smoothstep_inc_func },
+  { CLUTTER_ANIMATION_LAST, NULL },
 };
+
+typedef struct _AlphaData {
+  guint closure_set : 1;
+
+  ClutterAlphaFunc func;
+  gpointer data;
+
+  GClosure *closure;
+} AlphaData;
+
+static GPtrArray *clutter_alphas = NULL;
 
 /**
  * clutter_alpha_set_mode:
@@ -554,37 +594,140 @@ static const struct {
  * @mode: a #ClutterAnimationMode
  *
  * Sets the progress function of @alpha using the symbolic value
- * of @mode, as taken by the #ClutterAnimationMode enumeration
+ * of @mode, as taken by the #ClutterAnimationMode enumeration or
+ * using the value returned by clutter_alpha_register_func().
  *
  * Since: 1.0
  */
 void
-clutter_alpha_set_mode (ClutterAlpha      *alpha,
-                        ClutterAnimationMode  mode)
+clutter_alpha_set_mode (ClutterAlpha *alpha,
+                        gulong        mode)
 {
   ClutterAlphaPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_ALPHA (alpha));
+  g_return_if_fail (mode != CLUTTER_ANIMATION_LAST);
 
   priv = alpha->priv;
 
-  /* sanity check to avoid getting an out of sync enum/function mapping */
-  g_assert (animation_modes[mode].mode == mode);
-  if (G_LIKELY (animation_modes[mode].func != NULL))
-    clutter_alpha_set_func (alpha, animation_modes[mode].func, NULL, NULL);
+  if (mode < CLUTTER_ANIMATION_LAST)
+    {
+      /* sanity check to avoid getting an out of sync
+       * enum/function mapping
+       */
+      g_assert (animation_modes[mode].mode == mode);
 
-  priv->mode = mode;
+      if (G_LIKELY (animation_modes[mode].func != NULL))
+        clutter_alpha_set_func (alpha, animation_modes[mode].func, NULL, NULL);
+
+      priv->mode = mode;
+    }
+  else if (mode > CLUTTER_ANIMATION_LAST)
+    {
+      AlphaData *alpha_data = NULL;
+      gulong real_index = 0;
+
+      if (G_UNLIKELY (clutter_alphas == NULL))
+        {
+          g_warning ("No alpha functions defined for ClutterAlpha to use. "
+                     "Use clutter_alpha_register_func() to register an "
+                     "alpha function.");
+          return;
+        }
+
+      real_index = mode - CLUTTER_ANIMATION_LAST - 1;
+
+      alpha_data = g_ptr_array_index (clutter_alphas, real_index);
+      if (G_UNLIKELY (alpha_data == NULL))
+        {
+          g_warning ("No alpha function registered for mode %lu.",
+                     mode);
+          return;
+        }
+
+      if (alpha_data->closure_set)
+        clutter_alpha_set_closure (alpha, alpha_data->closure);
+      else
+        clutter_alpha_set_func (alpha, alpha_data->func,
+                                alpha_data->data,
+                                NULL);
+
+      priv->mode = mode;
+    }
+  else
+    g_assert_not_reached ();
 
   g_object_notify (G_OBJECT (alpha), "mode");
 }
 
 /**
- * CLUTTER_ALPHA_RAMP_INC:
+ * clutter_alpha_register_func:
+ * @func: a #ClutterAlphaFunc
+ * @data: user data to pass to @func, or %NULL
  *
- * Convenience symbol for clutter_ramp_inc_func().
+ * Registers a global alpha function and returns its logical id
+ * to be used by clutter_alpha_set_mode() or by #ClutterAnimation.
  *
- * Since: 0.2
+ * The logical id is always greater than %CLUTTER_ANIMATION_LAST.
+ *
+ * Return value: the logical id of the alpha function
+ *
+ * Since: 1.0
  */
+gulong
+clutter_alpha_register_func (ClutterAlphaFunc func,
+                             gpointer         data)
+{
+  AlphaData *alpha_data;
+
+  g_return_val_if_fail (func != NULL, 0);
+
+  alpha_data = g_slice_new (AlphaData);
+  alpha_data->closure_set = FALSE;
+  alpha_data->func = func;
+  alpha_data->data = data;
+
+  if (G_UNLIKELY (clutter_alphas == NULL))
+    clutter_alphas = g_ptr_array_new ();
+
+  g_ptr_array_add (clutter_alphas, alpha_data);
+
+  return clutter_alphas->len + CLUTTER_ANIMATION_LAST;
+}
+
+/**
+ * clutter_alpha_register_closure:
+ * @closure: a #GClosure
+ *
+ * #GClosure variant of clutter_alpha_register_func().
+ *
+ * Registers a global alpha function and returns its logical id
+ * to be used by clutter_alpha_set_mode() or by #ClutterAnimation.
+ *
+ * The logical id is always greater than %CLUTTER_ANIMATION_LAST.
+ *
+ * Return value: the logical id of the alpha function
+ *
+ * Since: 1.0
+ */
+gulong
+clutter_alpha_register_closure (GClosure *closure)
+{
+  AlphaData *data;
+
+  g_return_val_if_fail (closure != NULL, 0);
+
+  data = g_slice_new (AlphaData);
+  data->closure_set = TRUE;
+  data->closure = closure;
+
+  if (G_UNLIKELY (clutter_alphas == NULL))
+    clutter_alphas = g_ptr_array_new ();
+
+  g_ptr_array_add (clutter_alphas, data);
+
+  return clutter_alphas->len + CLUTTER_ANIMATION_LAST;
+}
 
 /**
  * clutter_ramp_inc_func:
@@ -697,14 +840,19 @@ clutter_ramp_func (ClutterAlpha *alpha,
     }
 }
 
+#if 0
+/*
+ * The following three functions are left in place for reference
+ * purposes.
+ */
 static guint32
 sincx1024_func (ClutterAlpha *alpha, 
-		ClutterAngle  angle,
+		float  angle,
 		ClutterFixed  offset)
 {
   ClutterTimeline *timeline;
   gint current_frame_num, n_frames;
-  ClutterAngle x;
+  float x;
   ClutterFixed sine;
   
   timeline = clutter_alpha_get_timeline (alpha);
@@ -724,11 +872,6 @@ sincx1024_func (ClutterAlpha *alpha,
   return sine;
 }
 
-#if 0
-/*
- * The following two functions are left in place for reference
- * purposes.
- */
 static guint32
 sincx_func (ClutterAlpha *alpha, 
 	    ClutterFixed  angle,
@@ -744,14 +887,14 @@ sincx_func (ClutterAlpha *alpha,
   n_frames = clutter_timeline_get_n_frames (timeline);
 
   x = angle * current_frame_num / n_frames;
-  x = COGL_FIXED_FAST_MUL (x, COGL_FIXED_PI)
-    - COGL_FIXED_FAST_DIV (COGL_FIXED_PI, angle);
+  x = CLUTTER_FIXED_MUL (x, CFX_PI)
+    - CLUTTER_FIXED_DIV (CFX_PI, angle);
 
-  sine = (cogl_fixed_sin (x) + offset) / 2;
+  sine = (cogl_angle_sin (x) + offset) / 2;
 
-  CLUTTER_NOTE (ALPHA, "sine: %2f\n", COGL_FIXED_TO_DOUBLE (sine));
+  CLUTTER_NOTE (ALPHA, "sine: %2f\n", CLUTTER_FIXED_TO_DOUBLE (sine));
 
-  return COGL_FIXED_TO_INT (sine * CLUTTER_ALPHA_MAX_ALPHA);
+  return  (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 /* NB: angle is not in radians but in muliples of PI, i.e., 2.0
@@ -806,11 +949,30 @@ guint32
 clutter_sine_func (ClutterAlpha *alpha,
                    gpointer      dummy)
 {
-#if 0
+#if 1
+  ClutterTimeline *timeline;
+  gint current_frame_num, n_frames;
+  float radians, sine;
+  
+  timeline = clutter_alpha_get_timeline (alpha);
+
+  current_frame_num = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  radians = ((float)current_frame_num / n_frames) * (2.0 * G_PI);
+  sine = sinf (radians);
+
+  /* shift from range [-1, 1] -> [0, 1] */
+  sine = (sine + 1.0) / 2.0;
+
+  CLUTTER_NOTE (ALPHA, "sine: %2f\n", sine);
+
+  return sine * CLUTTER_ALPHA_MAX_ALPHA;
+#elif 0
     return sinc_func (alpha, 2.0, 1.0);
-#else
+#elif 0
     /* 2.0 above represents full circle */
-    return sincx1024_func (alpha, 1024, COGL_FIXED_1);
+    return sincx1024_func (alpha, 1024, 1.0);
 #endif
 }
 
@@ -842,18 +1004,17 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
   ClutterTimeline * timeline;
   gint              frame;
   gint              n_frames;
-  ClutterAngle      x;
-  ClutterFixed      sine;
+  float             radians;
+  float             sine;
   
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
   n_frames = clutter_timeline_get_n_frames (timeline);
 
-  x = 256 * frame / n_frames;
+  radians = ((float)frame / n_frames) * (G_PI / 2);
+  sine = sinf (radians);
 
-  sine = cogl_angle_sin (x) * CLUTTER_ALPHA_MAX_ALPHA;
-
-  return ((guint32) sine) >> COGL_FIXED_Q;
+  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 /**
@@ -884,18 +1045,17 @@ clutter_sine_dec_func (ClutterAlpha *alpha,
   ClutterTimeline * timeline;
   gint              frame;
   gint              n_frames;
-  ClutterAngle      x;
-  ClutterFixed      sine;
+  float             radians;
+  float             sine;
   
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
   n_frames = clutter_timeline_get_n_frames (timeline);
 
-  x = 256 * frame / n_frames + 256;
+  radians = ((float)frame / n_frames) * (G_PI / 2);
+  sine = sinf (radians + (G_PI / 2));
 
-  sine = cogl_angle_sin (x) * CLUTTER_ALPHA_MAX_ALPHA;
-
-  return ((guint32) sine) >> COGL_FIXED_Q;
+  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 /**
@@ -926,18 +1086,17 @@ clutter_sine_half_func (ClutterAlpha *alpha,
   ClutterTimeline *timeline;
   gint             frame;
   gint             n_frames;
-  ClutterAngle     x;
-  ClutterFixed     sine;
+  float            radians;
+  float            sine;
   
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
   n_frames = clutter_timeline_get_n_frames (timeline);
 
-  x = 512 * frame / n_frames;
+  radians = ((float)frame / n_frames) * G_PI;
+  sine = sinf (radians);
 
-  sine = cogl_angle_sin (x) * CLUTTER_ALPHA_MAX_ALPHA;
-
-  return ((guint32) sine) >> COGL_FIXED_Q;
+  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 /**
@@ -962,19 +1121,20 @@ clutter_sine_in_func (ClutterAlpha *alpha,
   ClutterTimeline *timeline;
   gint             frame;
   gint             n_frames;
-  ClutterAngle     x;
-  ClutterFixed     sine;
+  float            radians;
+  float            sine;
 
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
   n_frames = clutter_timeline_get_n_frames (timeline);
 
-  /* XXX- if we use 768 we overflow */
-  x = 256 * frame / n_frames + 767;
+  radians = ((float)frame / n_frames) * (G_PI / 2);
+  sine = sinf (radians - (G_PI / 2));
 
-  sine = (cogl_angle_sin (x) + 1) * CLUTTER_ALPHA_MAX_ALPHA;
+  /* shift from range [-1, 0] -> [0, 1] */
+  sine = sine + 1.0;
 
-  return ((guint32) sine) >> COGL_FIXED_Q;
+  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 /**
@@ -998,18 +1158,17 @@ clutter_sine_out_func (ClutterAlpha *alpha,
   ClutterTimeline *timeline;
   gint             frame;
   gint             n_frames;
-  ClutterAngle     x;
-  ClutterFixed     sine;
+  float            radians;
+  float            sine;
 
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
   n_frames = clutter_timeline_get_n_frames (timeline);
 
-  x = 256 * frame / n_frames;
+  radians = ((float)frame / n_frames) * (G_PI / 2);
+  sine = sinf (radians);
 
-  sine = cogl_angle_sin (x) * CLUTTER_ALPHA_MAX_ALPHA;
-
-  return ((guint32) sine) >> COGL_FIXED_Q;
+  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 /**
@@ -1034,18 +1193,20 @@ clutter_sine_in_out_func (ClutterAlpha *alpha,
   ClutterTimeline *timeline;
   gint             frame;
   gint             n_frames;
-  ClutterAngle     x;
-  ClutterFixed     sine;
+  float            radians;
+  float            sine;
 
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
   n_frames = clutter_timeline_get_n_frames (timeline);
 
-  x = -256 * frame / n_frames + 256;
+  radians = ((float)frame / n_frames) * G_PI;
+  sine = sinf (radians - (G_PI / 2));
 
-  sine = (cogl_angle_sin (x) + 1) / 2 * CLUTTER_ALPHA_MAX_ALPHA;
+  /* shift from range [-1, 1] -> [0, 1] */
+  sine = (sine + 1.0) / 2.0;
 
-  return ((guint32) sine) >> COGL_FIXED_Q;
+  return (guint32) (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 /**
@@ -1113,32 +1274,25 @@ clutter_smoothstep_inc_func (ClutterAlpha  *alpha,
   ClutterTimeline    *timeline;
   gint                frame;
   gint                n_frames;
-  guint32             r; 
-  guint32             x; 
+  float               r;
+  float               x;
 
   /*
    * The smoothstep function uses f(x) = -2x^3 + 3x^2 where x is from <0,1>,
-   * and precission is critical -- we use 8.24 fixed format for this operation.
-   * The earlier operations involve division, which we cannot do in 8.24 for
-   * numbers in <0,1> we use ClutterFixed.
+   * and precission is critical.
    */
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
   n_frames = clutter_timeline_get_n_frames (timeline);
 
-  /*
-   * Convert x to 8.24 for next step.
-   */
-  x = COGL_FIXED_FAST_DIV (frame, n_frames) << 8;
+  x = (float)frame / n_frames;
 
   /*
    * f(x) = -2x^3 + 3x^2
-   * 
-   * Convert result to ClutterFixed to avoid overflow in next step.
    */
-  r = ((x >> 12) * (x >> 12) * 3 - (x >> 15) * (x >> 16) * (x >> 16)) >> 8;
+  r = -2 * x * x * x + 3 * x * x;
 
-  return COGL_FIXED_TO_INT (r * CLUTTER_ALPHA_MAX_ALPHA);
+  return  (r * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 /**
@@ -1204,9 +1358,9 @@ clutter_exp_inc_func (ClutterAlpha *alpha,
    * 
    *   (2^x_alpha_max) - 1 == CLUTTER_ALPHA_MAX_ALPHA
    */
-#if CLUTTER_ALPHA_MAX_ALPHA != 0xffff
-#error Adjust x_alpha_max to match CLUTTER_ALPHA_MAX_ALPHA
-#endif
+  /* XXX: If this fails:
+   * Adjust x_alpha_max to match CLUTTER_ALPHA_MAX_ALPHA */
+  g_assert (CLUTTER_ALPHA_MAX_ALPHA == 65535.0);
   
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
@@ -1214,7 +1368,7 @@ clutter_exp_inc_func (ClutterAlpha *alpha,
 
   x =  x_alpha_max * frame / n_frames;
 
-  result = CLAMP (cogl_fixed_pow2 (x) - 1, 0, CLUTTER_ALPHA_MAX_ALPHA);
+  result = CLAMP (powf (2, x) - 1, 0, CLUTTER_ALPHA_MAX_ALPHA);
 
   return result;
 }
@@ -1255,9 +1409,9 @@ clutter_exp_dec_func (ClutterAlpha *alpha,
    * 
    *   (2^x_alpha_max) - 1 == CLUTTER_ALPHA_MAX_ALPHA
    */
-#if CLUTTER_ALPHA_MAX_ALPHA != 0xffff
-#error Adjust x_alpha_max to match CLUTTER_ALPHA_MAX_ALPHA
-#endif
+  /* XXX: If this fails:
+   * Adjust x_alpha_max to match CLUTTER_ALPHA_MAX_ALPHA */
+  g_assert (CLUTTER_ALPHA_MAX_ALPHA == 65535.0);
   
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
@@ -1265,7 +1419,7 @@ clutter_exp_dec_func (ClutterAlpha *alpha,
 
   x =  (x_alpha_max * (n_frames - frame)) / n_frames;
 
-  result = CLAMP (cogl_fixed_pow2 (x) - 1, 0, CLUTTER_ALPHA_MAX_ALPHA);
+  result = CLAMP (powf (2, x) - 1, 0, CLUTTER_ALPHA_MAX_ALPHA);
 
   return result;
 }

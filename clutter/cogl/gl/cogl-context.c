@@ -76,7 +76,7 @@ cogl_create_context ()
 
   _context->program_handles = NULL;
 
-  _context->mesh_handles = NULL;
+  _context->vertex_buffer_handles = NULL;
 
   _context->pf_glGenRenderbuffersEXT = NULL;
   _context->pf_glBindRenderbufferEXT = NULL;

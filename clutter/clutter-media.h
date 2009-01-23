@@ -3,9 +3,11 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Matthew Allum  <mallum@openedhand.com>
+ * Authored By: Matthew Allum  <mallum@openedhand.com>
+ *              Emmanuele Bassi <ebassi@linux.intel.com>
  *
  * Copyright (C) 2006 OpenedHand
+ * Copyright (C) 2009 Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,79 +39,40 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_MEDIA(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_MEDIA))
 #define CLUTTER_MEDIA_GET_INTERFACE(obj)        (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_MEDIA, ClutterMediaInterface))
 
-typedef struct _ClutterMedia           ClutterMedia; /* dummy typedef */
-typedef struct _ClutterMediaInterface  ClutterMediaInterface;
+typedef struct _ClutterMedia            ClutterMedia; /* dummy typedef */
+typedef struct _ClutterMediaIface       ClutterMediaIface;
 
-struct _ClutterMediaInterface
+struct _ClutterMediaIface
 {
   /*< private >*/
-  GTypeInterface	    base_iface;
-
-  /*< public >*/
-  void (*set_uri)           (ClutterMedia *media,
-			     const char   *uri);
-  const char *(*get_uri)    (ClutterMedia *media);
-  void (*set_playing)       (ClutterMedia *media,
-			     gboolean      playing);
-  gboolean (*get_playing)   (ClutterMedia *media);
-  void (*set_position)      (ClutterMedia *media,
-			     int           position);
-  int (*get_position)       (ClutterMedia *media);
-  void (*set_volume)        (ClutterMedia *media,
-			     double        volume);
-  double (*get_volume)      (ClutterMedia *media);
-  gboolean (*can_seek)      (ClutterMedia *media);
-  int (*get_buffer_percent) (ClutterMedia *media);
-  int (*get_duration)       (ClutterMedia *media);
+  GTypeInterface base_iface;
 
   /* signals */
-  void (* eos)                (ClutterMedia *media);
-  void (* error)              (ClutterMedia *media,
-			       GError       *error);
+  void (* eos)   (ClutterMedia *media);
+  void (* error) (ClutterMedia *media,
+		  const GError *error);
 };
 
+GType clutter_media_get_type (void) G_GNUC_CONST;
 
-GType clutter_media_get_type     (void) G_GNUC_CONST;
+void     clutter_media_set_uri          (ClutterMedia *media,
+                                         const gchar  *uri);
+gchar *  clutter_media_get_uri          (ClutterMedia *media);
+void     clutter_media_set_filename     (ClutterMedia *media,
+                                         const gchar  *filename);
 
-void
-clutter_media_set_uri            (ClutterMedia *media,
-				  const char   *uri);
-const char *
-clutter_media_get_uri            (ClutterMedia *media);
-
-void
-clutter_media_set_playing        (ClutterMedia *media,
-				  gboolean      playing);
-
-gboolean
-clutter_media_get_playing        (ClutterMedia *media);
-
-void
-clutter_media_set_position       (ClutterMedia *media,
-				  int           position);
-
-int
-clutter_media_get_position       (ClutterMedia *media);
-
-void
-clutter_media_set_volume         (ClutterMedia *media,
-				  double        volume);
-
-double
-clutter_media_get_volume         (ClutterMedia *media);
-
-gboolean
-clutter_media_get_can_seek       (ClutterMedia *media);
-
-int
-clutter_media_get_buffer_percent (ClutterMedia *media);
-
-int
-clutter_media_get_duration       (ClutterMedia *media);
-
-void
-clutter_media_set_filename       (ClutterMedia *media, 
-				  const gchar  *filename);
+void     clutter_media_set_playing      (ClutterMedia *media,
+                                         gboolean      playing);
+gboolean clutter_media_get_playing      (ClutterMedia *media);
+void     clutter_media_set_progress     (ClutterMedia *media,
+                                         gdouble       progress);
+gdouble  clutter_media_get_progress     (ClutterMedia *media);
+void     clutter_media_set_audio_volume (ClutterMedia *media,
+                                         gdouble       volume);
+gdouble  clutter_media_get_audio_volume (ClutterMedia *media);
+gboolean clutter_media_get_can_seek     (ClutterMedia *media);
+gdouble  clutter_media_get_buffer_fill  (ClutterMedia *media);
+guint    clutter_media_get_duration     (ClutterMedia *media);
 
 G_END_DECLS
 

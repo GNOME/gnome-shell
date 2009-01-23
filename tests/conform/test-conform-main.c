@@ -46,17 +46,17 @@ main (int argc, char **argv)
 #endif
 
   g_test_init (&argc, &argv, NULL);
-  
+
   g_test_bug_base ("http://bugzilla.openedhand.com/show_bug.cgi?id=%s");
 
   g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
 	    == CLUTTER_INIT_SUCCESS);
-  
+
   /* Initialise the state you need to share with everything.
    */
   shared_state->argc_addr = &argc;
   shared_state->argv_addr = &argv;
-  
+
   TEST_CONFORM_SIMPLE ("/timeline", test_timeline);
   if (g_test_slow ())
     {
@@ -65,7 +65,7 @@ main (int argc, char **argv)
       TEST_CONFORM_SIMPLE ("/timeline", test_timeline_rewind);
       TEST_CONFORM_SIMPLE ("/timeline", test_timeline_smoothness);
     }
-  
+
   TEST_CONFORM_SIMPLE ("/picking", test_pick);
 
   /* ClutterText */
@@ -88,15 +88,15 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/rectangle", test_rect_set_color);
 
   TEST_CONFORM_SIMPLE ("/fixed", test_fixed_constants);
-  
+
   TEST_CONFORM_SIMPLE ("/invariants", test_initial_state);
   TEST_CONFORM_SIMPLE ("/invariants", test_realized);
   TEST_CONFORM_SIMPLE ("/invariants", test_mapped);
   TEST_CONFORM_SIMPLE ("/invariants", test_show_on_set_parent);
 
-  TEST_CONFORM_SIMPLE ("/mesh", test_mesh_contiguous);
-  TEST_CONFORM_SIMPLE ("/mesh", test_mesh_interleved);
-  TEST_CONFORM_SIMPLE ("/mesh", test_mesh_mutability);
+  TEST_CONFORM_SIMPLE ("/vertex-buffer", test_vertex_buffer_contiguous);
+  TEST_CONFORM_SIMPLE ("/vertex-buffer", test_vertex_buffer_interleved);
+  TEST_CONFORM_SIMPLE ("/vertex-buffer", test_vertex_buffer_mutability);
 
   TEST_CONFORM_SIMPLE ("/opacity", test_label_opacity);
   TEST_CONFORM_SIMPLE ("/opacity", test_rectangle_opacity);

@@ -194,6 +194,8 @@ void          _clutter_backend_init_events    (ClutterBackend  *backend);
 
 ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
+ClutterUnit   _clutter_backend_get_units_per_em   (ClutterBackend *backend);
+
 void          _clutter_feature_init (void);
 
 /* Picking code */

@@ -4,9 +4,11 @@
  *
  * An OpenGL based 'interactive canvas' library.
  *
- * Authored By Tomas Frydrych  <tf@openedhand.com>
+ * Authored By: Tomas Frydrych  <tf@openedhand.com>
+ *              Emmanuele Bassu  <ebassi@linux.intel.com>
  *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007, 2008 OpenedHand
+ * Copyright (C) 2009 Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,24 +44,32 @@ G_BEGIN_DECLS
  *
  * Since: 0.4
  */
-typedef gint32 ClutterUnit;
+typedef float ClutterUnit;
 
-/*
- * Currently CLUTTER_UNIT maps directly onto ClutterFixed. Nevertheless, the
- * _FROM_FIXED and _TO_FIXED macros should always be used in case that we
- * decide to change this relationship in the future.
- */
+#define CLUTTER_UNITS_FROM_INT(x)        ((float)(x))
+#define CLUTTER_UNITS_TO_INT(x)          ((int)(x))
 
-#define CLUTTER_UNITS_FROM_INT(x)        (COGL_FIXED_FROM_INT ((x)))
-#define CLUTTER_UNITS_TO_INT(x)          (COGL_FIXED_TO_INT ((x)))
-
-#define CLUTTER_UNITS_FROM_FLOAT(x)      (COGL_FIXED_FROM_FLOAT ((x)))
-#define CLUTTER_UNITS_TO_FLOAT(x)        (COGL_FIXED_TO_FLOAT ((x)))
+#define CLUTTER_UNITS_FROM_FLOAT(x)      (x)
+#define CLUTTER_UNITS_TO_FLOAT(x)        (x)
 
 #define CLUTTER_UNITS_FROM_FIXED(x)      (x)
 #define CLUTTER_UNITS_TO_FIXED(x)        (x)
 
-#define CLUTTER_UNITS_FORMAT            "d"
+/**
+ * CLUTTER_UNITS_FORMAT:
+ *
+ * Format string that should be used for scanning and printing units.
+ * It is a string literal, but it does not include the percent sign to
+ * allow precision and length modifiers between the percent sign and
+ * the format:
+ *
+ * |[
+ *   g_print ("%" CLUTTER_UNITS_FORMAT, units);
+ * ]|
+ *
+ * Since: 1.0
+ */
+#define CLUTTER_UNITS_FORMAT             "f"
 
 /**
  * CLUTTER_UNITS_FROM_DEVICE:
@@ -81,9 +91,6 @@ typedef gint32 ClutterUnit;
  */
 #define CLUTTER_UNITS_TO_DEVICE(x)       CLUTTER_UNITS_TO_INT ((x))
 
-#define CLUTTER_UNITS_TMP_FROM_DEVICE(x) (x)
-#define CLUTTER_UNITS_TMP_TO_DEVICE(x)   (x)
-
 /**
  * CLUTTER_UNITS_FROM_PANGO_UNIT:
  * @x: value in Pango units
@@ -92,7 +99,7 @@ typedef gint32 ClutterUnit;
  *
  * Since: 0.6
  */
-#define CLUTTER_UNITS_FROM_PANGO_UNIT(x) ((x) << 6)
+#define CLUTTER_UNITS_FROM_PANGO_UNIT(x) ((float)((x) / 1024))
 
 /**
  * CLUTTER_UNITS_TO_PANGO_UNIT:
@@ -102,19 +109,7 @@ typedef gint32 ClutterUnit;
  *
  * Since: 0.6
  */
-#define CLUTTER_UNITS_TO_PANGO_UNIT(x)   ((x) >> 6)
-
-#define CLUTTER_UNITS_FROM_STAGE_WIDTH_PERCENTAGE(x) \
-  ((clutter_actor_get_widthu (clutter_stage_get_default ()) * x) / 100)
-
-#define CLUTTER_UNITS_FROM_STAGE_HEIGHT_PERCENTAGE(x) \
-  ((clutter_actor_get_heightu (clutter_stage_get_default ()) * x) / 100)
-
-#define CLUTTER_UNITS_FROM_PARENT_WIDTH_PERCENTAGE(a, x) \
-  ((clutter_actor_get_widthu (clutter_actor_get_parent (a)) * x) / 100)
-
-#define CLUTTER_UNITS_FROM_PARENT_HEIGHT_PERCENTAGE(a, x) \
-  ((clutter_actor_get_heightu (clutter_actor_get_parent (a)) * x) / 100)
+#define CLUTTER_UNITS_TO_PANGO_UNIT(x)   ((int)((x) * 1024))
 
 /**
  * CLUTTER_UNITS_FROM_MM:
@@ -124,11 +119,7 @@ typedef gint32 ClutterUnit;
  *
  * Since: 0.6
  */
-#define CLUTTER_UNITS_FROM_MM(x) \
-  (CLUTTER_UNITS_FROM_FLOAT ((((x) * clutter_stage_get_resolution ((ClutterStage *) clutter_stage_get_default ())) / 25.4)))
-
-#define CLUTTER_UNITS_FROM_MMX(x) \
-  (CFX_DIV (CFX_MUL ((x), clutter_stage_get_resolutionx ((ClutterStage *) clutter_stage_get_default ())), 0x196666))
+#define CLUTTER_UNITS_FROM_MM(x)        (clutter_units_mm (x))
 
 /**
  * CLUTTER_UNITS_FROM_POINTS:
@@ -138,11 +129,21 @@ typedef gint32 ClutterUnit;
  *
  * Since: 0.6
  */
-#define CLUTTER_UNITS_FROM_POINTS(x) \
-  CLUTTER_UNITS_FROM_FLOAT ((((x) * clutter_stage_get_resolution ((ClutterStage *) clutter_stage_get_default ())) / 72.0))
+#define CLUTTER_UNITS_FROM_POINTS(x)    (clutter_units_pt (x))
 
-#define CLUTTER_UNITS_FROM_POINTSX(x) \
-  (CFX_MUL ((x), clutter_stage_get_resolutionx ((ClutterStage *) clutter_stage_get_default ())) / 72)
+/**
+ * CLUTTER_UNITS_FROM_EM:
+ * @x: a value in em
+ *
+ * Converts a value in em into #ClutterUnit<!-- -->s
+ *
+ * Since: 1.0
+ */
+#define CLUTTER_UNITS_FROM_EM(x)        (clutter_units_em (x))
+
+ClutterUnit clutter_units_mm (gdouble mm);
+ClutterUnit clutter_units_pt (gdouble pt);
+ClutterUnit clutter_units_em (gdouble em);
 
 #define CLUTTER_TYPE_UNIT                 (clutter_unit_get_type ())
 #define CLUTTER_TYPE_PARAM_UNIT           (clutter_param_unit_get_type ())
@@ -156,7 +157,7 @@ typedef gint32 ClutterUnit;
  *
  * Since: 0.8
  */
-#define CLUTTER_MAXUNIT         (0x7fffffff)
+#define CLUTTER_MAXUNIT         (G_MAXFLOAT)
 
 /**
  * CLUTTER_MINUNIT:
@@ -165,7 +166,7 @@ typedef gint32 ClutterUnit;
  *
  * Since: 0.8
  */
-#define CLUTTER_MINUNIT         (0x80000000)
+#define CLUTTER_MINUNIT         (-G_MAXFLOAT)
 
 /**
  * CLUTTER_VALUE_HOLDS_UNIT:

@@ -101,6 +101,13 @@ struct _ClutterTexturePrivate
   guint                        repeat_y : 1;
   guint                        in_dispose : 1;
   guint                        keep_aspect_ratio : 1;
+  guint                        load_async : 1;
+  
+  GThread                     *load_thread;
+  guint                        load_idle;
+  gchar                       *load_filename;
+  CoglBitmap                  *load_bitmap;
+  GError                      *load_error;
 };
 
 enum
@@ -118,13 +125,17 @@ enum
   PROP_COGL_MATERIAL,
 #endif
   PROP_FILENAME,
-  PROP_KEEP_ASPECT_RATIO
+  PROP_KEEP_ASPECT_RATIO,
+  PROP_LOAD_ASYNC
 };
 
 enum
 {
   SIZE_CHANGE,
   PIXBUF_CHANGE,
+  LOAD_SUCCESS,
+  LOAD_FINISHED,
+  
   LAST_SIGNAL
 };
 
@@ -264,18 +275,25 @@ clutter_texture_realize (ClutterActor *actor)
 
   if (priv->fbo_source)
     {
+      CoglTextureFlags flags = COGL_TEXTURE_NONE;
+      gint max_waste = -1;
+
       /* Handle FBO's */
 
       if (priv->fbo_texture != COGL_INVALID_HANDLE)
 	cogl_texture_unref (priv->fbo_texture);
 
-      priv->fbo_texture
-            = cogl_texture_new_with_size
-                          (priv->width,
-                           priv->height,
-                           priv->no_slice ? -1 : priv->max_tile_waste,
-                          priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
-                          COGL_PIXEL_FORMAT_RGBA_8888);
+      if (!priv->no_slice)
+        max_waste = priv->max_tile_waste;
+
+      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+        flags |= COGL_TEXTURE_AUTO_MIPMAP;
+
+      priv->fbo_texture =
+        cogl_texture_new_with_size (priv->width,
+                                    priv->height,
+                                    max_waste, flags,
+                                    COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_texture_set_filters (priv->fbo_texture,
             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
@@ -349,13 +367,13 @@ clutter_texture_get_preferred_width (ClutterActor *self,
               /* Set the natural width so as to preserve the aspect ratio */
               ClutterFixed ratio, height;
 
-              ratio = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (priv->width),
-                                      COGL_FIXED_FROM_INT (priv->height));
+              ratio = CLUTTER_FIXED_DIV ((float)(priv->width),
+                                      (float)(priv->height));
 
               height = CLUTTER_UNITS_TO_FIXED (for_height);
 
               *natural_width_p =
-                CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL (ratio, height));
+                CLUTTER_UNITS_FROM_FIXED (CLUTTER_FIXED_MUL (ratio, height));
             }
         }
     }
@@ -394,13 +412,13 @@ clutter_texture_get_preferred_height (ClutterActor *self,
               /* Set the natural height so as to preserve the aspect ratio */
               ClutterFixed ratio, width;
 
-              ratio = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (priv->height),
-                                      COGL_FIXED_FROM_INT (priv->width));
+              ratio = CLUTTER_FIXED_DIV ((float)(priv->height),
+                                      (float)(priv->width));
 
               width = CLUTTER_UNITS_TO_FIXED (for_width);
 
               *natural_height_p =
-                CLUTTER_UNITS_FROM_FIXED (COGL_FIXED_MUL (ratio, width));
+                CLUTTER_UNITS_FROM_FIXED (CLUTTER_FIXED_MUL (ratio, width));
             }
         }
     }
@@ -469,24 +487,24 @@ clutter_texture_set_fbo_projection (ClutterActor *self)
   /* Convert the coordinates back to [-1,1] range */
   cogl_get_viewport (viewport);
 
-  tx_min = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_min), viewport[2])
-         * 2 - COGL_FIXED_1;
-  tx_max = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_max), viewport[2])
-         * 2 - COGL_FIXED_1;
-  ty_min = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_min), viewport[3])
-         * 2 - COGL_FIXED_1;
-  ty_max = COGL_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_max), viewport[3])
-         * 2 - COGL_FIXED_1;
+  tx_min = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_min), viewport[2])
+         * 2 - 1.0;
+  tx_max = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (x_max), viewport[2])
+         * 2 - 1.0;
+  ty_min = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_min), viewport[3])
+         * 2 - 1.0;
+  ty_max = CLUTTER_FIXED_DIV (CLUTTER_UNITS_TO_FIXED (y_max), viewport[3])
+         * 2 - 1.0;
 
   /* Set up a projection matrix so that the actor will be projected as
      if it was drawn at its original location */
-  tan_angle = cogl_angle_tan (COGL_ANGLE_FROM_DEGX (perspective.fovy / 2));
-  near_size = COGL_FIXED_MUL (perspective.z_near, tan_angle);
+  tan_angle = tanf ((perspective.fovy / 2) * (G_PI/180.0));
+  near_size = CLUTTER_FIXED_MUL (perspective.z_near, tan_angle);
 
-  cogl_frustum (COGL_FIXED_MUL (tx_min, near_size),
-                COGL_FIXED_MUL (tx_max, near_size),
-                COGL_FIXED_MUL (-ty_min, near_size),
-                COGL_FIXED_MUL (-ty_max, near_size),
+  cogl_frustum (CLUTTER_FIXED_MUL (tx_min, near_size),
+                CLUTTER_FIXED_MUL (tx_max, near_size),
+                CLUTTER_FIXED_MUL (-ty_min, near_size),
+                CLUTTER_FIXED_MUL (-ty_max, near_size),
                 perspective.z_near, perspective.z_far);
 }
 
@@ -603,16 +621,16 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_opacity (self));
 
   if (priv->repeat_x && priv->width > 0)
-    t_w = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (x_2 - x_1),
-		          COGL_FIXED_FROM_INT (priv->width));
+    t_w = CLUTTER_FIXED_DIV ((float)(x_2 - x_1),
+		          (float)(priv->width));
   else
-    t_w = COGL_FIXED_1;
+    t_w = 1.0;
 
   if (priv->repeat_y && priv->height > 0)
-    t_h = COGL_FIXED_DIV (COGL_FIXED_FROM_INT (y_2 - y_1),
-                          COGL_FIXED_FROM_INT (priv->height));
+    t_h = CLUTTER_FIXED_DIV ((float)(y_2 - y_1),
+                          (float)(priv->height));
   else
-    t_h = COGL_FIXED_1;
+    t_h = 1.0;
 
   /* Paint will have translated us */
 #if USE_COGL_MATERIAL
@@ -623,16 +641,55 @@ clutter_texture_paint (ClutterActor *self)
   tex_coords[2] = t_w;
   tex_coords[3] = t_h;
   cogl_material_rectangle (0, 0,
-                           COGL_FIXED_FROM_INT (x_2 - x_1),
-			   COGL_FIXED_FROM_INT (y_2 - y_1),
+                           (float)(x_2 - x_1),
+			   (float)(y_2 - y_1),
                            4,
                            tex_coords);
 #else
   cogl_texture_rectangle (priv->texture, 0, 0,
-			  COGL_FIXED_FROM_INT (x_2 - x_1),
-			  COGL_FIXED_FROM_INT (y_2 - y_1),
-			  0, 0, t_w, t_h);
+                          (float)(x_2 - x_1),
+                          (float)(y_2 - y_1),
+                          0, 0, t_w, t_h);
 #endif
+}
+
+/*
+ * clutter_texture_async_load_cancel:
+ * @texture: a #ClutterTexture
+ *
+ * Cancels an asynchronous loading operation, whether done
+ * with threads enabled or just using the main loop
+ */
+static void
+clutter_texture_async_load_cancel (ClutterTexture *texture)
+{
+  ClutterTexturePrivate *priv = texture->priv;
+
+  if (priv->load_thread)
+    {
+      g_thread_join (priv->load_thread);
+      priv->load_thread = NULL;
+    }
+
+  if (priv->load_idle)
+    {
+      g_source_remove (priv->load_idle);
+      priv->load_idle = 0;
+    }
+
+  if (priv->load_error)
+    {
+      g_error_free (priv->load_error);
+      priv->load_error = NULL;
+    }
+
+  if (priv->load_bitmap)
+    {
+      cogl_bitmap_free (priv->load_bitmap);
+      priv->load_bitmap = NULL;
+    }
+
+  g_free (priv->load_filename);
 }
 
 static void
@@ -659,7 +716,9 @@ clutter_texture_dispose (GObject *object)
       g_free (priv->local_data);
       priv->local_data = NULL;
     }
-
+  
+  clutter_texture_async_load_cancel (texture);
+  
   G_OBJECT_CLASS (clutter_texture_parent_class)->dispose (object);
 }
 
@@ -725,6 +784,9 @@ clutter_texture_set_property (GObject      *object,
     case PROP_KEEP_ASPECT_RATIO:
       priv->keep_aspect_ratio = g_value_get_boolean (value);
       break;
+    case PROP_LOAD_ASYNC:
+      priv->load_async = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -781,6 +843,9 @@ clutter_texture_get_property (GObject    *object,
       break;
     case PROP_KEEP_ASPECT_RATIO:
       g_value_set_boolean (value, priv->keep_aspect_ratio);
+      break;
+    case PROP_LOAD_ASYNC:
+      g_value_set_boolean (value, priv->load_async);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -868,7 +933,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       "smaller values less texture memory.",
 		       -1,
 		       G_MAXINT,
-		       64,
+		       63,
 		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
@@ -919,6 +984,29 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   CLUTTER_PARAM_READWRITE));
 
   /**
+   * ClutterTexture:load-async:
+   *
+   * Tries to load a texture from a filename by using a local thread
+   * to perform the read operations. Threading is only enabled if
+   * g_thread_init() has been called prior to clutter_init(), otherwise
+   * #ClutterTexture will use the main loop to load the image.
+   *
+   * The upload of the texture data on the GL pipeline is not
+   * asynchronous, as it must be performed from within the same
+   * thread that called clutter_main().
+   *
+   * Since: 1.0
+   */
+  g_object_class_install_property
+    (gobject_class, PROP_LOAD_ASYNC,
+     g_param_spec_boolean ("load-async",
+			   "Load asynchronously",
+			   "Load files inside a thread to avoid blocking when "
+                           "loading images.",
+			   FALSE,
+			   CLUTTER_PARAM_READWRITE));
+
+  /**
    * ClutterTexture::size-change:
    * @texture: the texture which received the signal
    * @width: the width of the new texture
@@ -953,6 +1041,27 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE,
 		  0);
+  /**
+   * ClutterTexture::load-finished:
+   * @texture: the texture which received the signal
+   * @error: A set error, or %NULL
+   *
+   * The ::load-finished signal is emitted when a texture load has
+   * completed. If there was an error during loading, @error will
+   * be set, otherwise it will be %NULL
+   *
+   * Since: 1.0
+   */
+  texture_signals[LOAD_FINISHED] =
+    g_signal_new (I_("load-finished"),
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterTextureClass, load_finished),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__POINTER,
+		  G_TYPE_NONE,
+		  1,
+                  G_TYPE_POINTER);
 }
 
 static ClutterScriptableIface *parent_scriptable_iface = NULL;
@@ -1016,7 +1125,7 @@ clutter_texture_init (ClutterTexture *self)
 
   self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
-  priv->max_tile_waste    = 64;
+  priv->max_tile_waste    = 63;
   priv->filter_quality    = CLUTTER_TEXTURE_QUALITY_MEDIUM;
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;
@@ -1286,19 +1395,25 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
 			       gint                bpp,
 			       GError            **error)
 {
-  CoglHandle              new_texture;
-  ClutterTexturePrivate  *priv;
+  ClutterTexturePrivate *priv = texture->priv;
+  CoglHandle new_texture = COGL_INVALID_HANDLE;
+  CoglTextureFlags flags = COGL_TEXTURE_NONE;
+  gint max_waste = -1;
 
-  priv = texture->priv;
+  if (!priv->no_slice)
+    max_waste = priv->max_tile_waste;
 
-  if ((new_texture = cogl_texture_new_from_data
-                          (width, height,
-                           priv->no_slice ? -1 : priv->max_tile_waste,
-                           priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
-                           source_format,
-                           COGL_PIXEL_FORMAT_ANY,
-                           rowstride,
-                           data)) == COGL_INVALID_HANDLE)
+  if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+    flags |= COGL_TEXTURE_AUTO_MIPMAP;
+
+  new_texture = cogl_texture_new_from_data (width, height,
+                                            max_waste, flags,
+                                            source_format,
+                                            COGL_PIXEL_FORMAT_ANY,
+                                            rowstride,
+                                            data);
+
+  if (G_UNLIKELY (new_texture == COGL_INVALID_HANDLE))
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
                    CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
@@ -1314,6 +1429,8 @@ clutter_texture_set_from_data (ClutterTexture     *texture,
   clutter_texture_set_cogl_texture (texture, new_texture);
 
   cogl_texture_unref (new_texture);
+
+  g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, error);
 
   return TRUE;
 }
@@ -1409,14 +1526,14 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
  * Return value: %TRUE if the texture was successfully updated
  *
  * Since: 0.4
- **/
+ */
 gboolean
-clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
-				     const guchar       *data,
-				     gint                width,
-				     gint                height,
-				     ClutterTextureFlags flags,
-				     GError            **error)
+clutter_texture_set_from_yuv_data (ClutterTexture     *texture,
+				   const guchar       *data,
+				   gint                width,
+				   gint                height,
+				   ClutterTextureFlags flags,
+				   GError            **error)
 {
   ClutterTexturePrivate *priv;
 
@@ -1448,6 +1565,188 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 					error);
 }
 
+/*
+ * clutter_texture_async_load_complete:
+ * @self: a #ClutterTexture
+ * @error: load error
+ *
+ * If @error is %NULL, loads the #CoglBitmap into a #CoglTexture.
+ *
+ * This function emits the ::load-finished signal on @self.
+ */
+static void
+clutter_texture_async_load_complete (ClutterTexture *self,
+                                     const GError   *error)
+{
+  ClutterTexturePrivate *priv = self->priv;
+  CoglHandle handle;
+  CoglTextureFlags flags = COGL_TEXTURE_NONE;
+  gint waste = -1;
+
+  if (error == NULL)
+    {
+      if (priv->no_slice)
+        waste = priv->max_tile_waste;
+
+      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+        flags |= COGL_TEXTURE_AUTO_MIPMAP;
+
+      handle = cogl_texture_new_from_bitmap (priv->load_bitmap,
+                                             waste, flags,
+                                             COGL_PIXEL_FORMAT_ANY);
+      clutter_texture_set_cogl_texture (self, handle);
+      cogl_texture_unref (handle);
+      
+      cogl_bitmap_free (priv->load_bitmap);
+      priv->load_bitmap = NULL;
+    }
+
+  g_signal_emit (self, texture_signals[LOAD_FINISHED], 0, error);
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+}
+
+static gboolean
+clutter_texture_thread_cb (gpointer data)
+{
+  ClutterTexture *self = data;
+  ClutterTexturePrivate *priv = self->priv;
+
+  priv->load_idle = 0;
+
+  if (priv->load_thread)
+    {
+      g_thread_join (priv->load_thread);
+      priv->load_thread = NULL;
+    }
+  else
+    return FALSE;
+
+  clutter_texture_async_load_complete (self, priv->load_error);
+
+  if (priv->load_error)
+    {
+      g_error_free (priv->load_error);
+      priv->load_error = NULL;
+    }
+  
+  return FALSE;
+}
+
+static gpointer
+clutter_texture_thread_func (gpointer data)
+{
+  ClutterTexture *self = data;
+  ClutterTexturePrivate *priv = self->priv;
+
+  /* Try loading with imaging backend */
+  priv->load_bitmap = cogl_bitmap_new_from_file (priv->load_filename,
+                                                 &priv->load_error);
+  g_free (priv->load_filename);
+  priv->load_filename = NULL;
+
+  /* make sure we load the image in the main thread, where we
+   * hold the main Clutter lock
+   */
+  priv->load_idle =
+    clutter_threads_add_idle (clutter_texture_thread_cb, self);
+
+  return NULL;
+}
+
+static gboolean
+clutter_texture_idle_func (gpointer data)
+{
+  ClutterTexture *self = data;
+  ClutterTexturePrivate *priv = self->priv;
+  GError *internal_error;
+
+  internal_error = NULL;
+  priv->load_bitmap = cogl_bitmap_new_from_file (priv->load_filename,
+                                                 &internal_error);
+
+  clutter_texture_async_load_complete (self, internal_error);
+
+  g_free (priv->load_filename);
+  priv->load_filename = NULL;
+
+  if (internal_error)
+    g_error_free (internal_error);
+
+  return FALSE;
+}
+
+/*
+ * clutter_texture_async_load:
+ * @self: a #ClutterTexture
+ * @error: return location for a #GError
+ *
+ * Starts an asynchronous load of the file name stored inside
+ * the load_filename private member.
+ *
+ * If threading is enabled we use a GThread to perform the actual
+ * I/O; if threading is not enabled, we use an idle GSource.
+ *
+ * The I/O is the only bit done in a thread -- uploading the
+ * texture data to the GL pipeline must be done from within the
+ * same thread that called clutter_main(). Threaded upload should
+ * be part of the GL implementation.
+ *
+ * This function will block until we get a size from the file
+ * so that we can effectively get the size the texture actor after
+ * clutter_texture_set_from_file().
+ *
+ * Return value: %TRUE if the asynchronous loading was successfully
+ *   initiated, %FALSE otherwise
+ */
+static gboolean
+clutter_texture_async_load (ClutterTexture  *self,
+                            GError         **error)
+{
+  ClutterTexturePrivate *priv = self->priv;
+  gint width, height;
+  gboolean res;
+
+  g_assert (priv->load_filename != NULL);
+
+  /* ask the file for a size; if we cannot get the size then
+   * there's no point in even continuing the asynchronous
+   * loading, so we just stop there
+   */
+  res = cogl_bitmap_get_size_from_file (priv->load_filename,
+                                        &width,
+                                        &height);
+  if (!res)
+    {
+      g_set_error (error, CLUTTER_TEXTURE_ERROR,
+		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
+		   "Failed to create COGL texture");
+      return FALSE;
+    }
+  else
+    {
+      priv->width = width;
+      priv->height = height;
+    }
+
+  if (g_thread_supported ())
+    {
+      priv->load_thread =
+        g_thread_create ((GThreadFunc) clutter_texture_thread_func,
+                         self, TRUE,
+                         error);
+
+      return priv->load_thread != NULL? TRUE : FALSE;
+    }
+  else
+    {
+      priv->load_idle =
+        clutter_threads_add_idle (clutter_texture_idle_func, self);
+
+      return TRUE;
+    }
+}
+
 /**
  * clutter_texture_set_from_file:
  * @texture: A #ClutterTexture
@@ -1456,6 +1755,12 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
  *
  * Sets the #ClutterTexture image data from an image file. In case of
  * failure, %FALSE is returned and @error is set.
+ *
+ * If #ClutterTexture:load-async is set to %TRUE, this function
+ * will return as soon as possible, and the actual image loading
+ * from disk will be performed asynchronously. #ClutterTexture::load-finished
+ * will be emitted when the image has been loaded or if an error
+ * occurred.
  *
  * Return value: %TRUE if the image was successfully loaded and set
  *
@@ -1466,28 +1771,48 @@ clutter_texture_set_from_file (ClutterTexture *texture,
 			       const gchar    *filename,
 			       GError        **error)
 {
-  CoglHandle              new_texture;
-  ClutterTexturePrivate  *priv;
+  ClutterTexturePrivate *priv;
+  CoglHandle new_texture = COGL_INVALID_HANDLE;
+  GError *internal_error = NULL;
+  CoglTextureFlags flags = COGL_TEXTURE_NONE;
+  gint max_waste = -1;
 
   priv = texture->priv;
 
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  if ((new_texture = cogl_texture_new_from_file
-                          (filename,
-                           priv->no_slice ? -1 : priv->max_tile_waste,
-                           priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
-                           COGL_PIXEL_FORMAT_ANY,
-                           error))
-      == COGL_INVALID_HANDLE)
+  if (priv->load_async)
+    {
+      clutter_texture_async_load_cancel (texture);
+
+      priv->load_filename = g_strdup (filename);
+
+      return clutter_texture_async_load (texture, error);
+    }
+
+  if (priv->no_slice)
+    max_waste = priv->max_tile_waste;
+
+  if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+    flags |= COGL_TEXTURE_AUTO_MIPMAP;
+
+  new_texture = cogl_texture_new_from_file (filename,
+                                            max_waste, flags,
+                                            COGL_PIXEL_FORMAT_ANY,
+                                            &internal_error);
+  if (new_texture == COGL_INVALID_HANDLE)
     {
       /* If COGL didn't give an error then make one up */
-      if (error && *error == NULL)
+      if (internal_error == NULL)
 	{
 	  g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		       CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
 		       "Failed to create COGL texture");
 	}
+      else
+        g_propagate_error (error, internal_error);
+
+      g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, error);
 
       return FALSE;
     }
@@ -1499,6 +1824,8 @@ clutter_texture_set_from_file (ClutterTexture *texture,
   clutter_texture_set_cogl_texture (texture, new_texture);
 
   cogl_texture_unref (new_texture);
+
+  g_signal_emit (texture, texture_signals[LOAD_FINISHED], 0, error);
 
   return TRUE;
 }
@@ -1848,19 +2175,25 @@ on_fbo_source_size_change (GObject          *object,
 
   if (w != priv->width || h != priv->height)
     {
+      CoglTextureFlags flags = COGL_TEXTURE_NONE;
+
       /* tear down the FBO */
       cogl_offscreen_unref (priv->fbo_handle);
 
       texture_free_gl_resources (texture);
 
-      priv->width        = w;
-      priv->height       = h;
+      priv->width = w;
+      priv->height = h;
 
-      priv->fbo_texture = cogl_texture_new_with_size (MAX (priv->width, 1),
-						      MAX (priv->height, 1),
-						      -1,
-                          priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH,
-						  COGL_PIXEL_FORMAT_RGBA_8888);
+      if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
+        flags |= COGL_TEXTURE_AUTO_MIPMAP;
+
+      priv->fdo_texture =
+        cogl_texture_new_with_size (MAX (priv->width, 1),
+				    MAX (priv->height, 1),
+				    -1,
+                                    flags,
+				    COGL_PIXEL_FORMAT_RGBA_8888);
 
       cogl_texture_set_filters (priv->fbo_texture,
             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
@@ -1876,7 +2209,7 @@ on_fbo_source_size_change (GObject          *object,
           return;
         }
 
-      clutter_actor_set_size (CLUTTER_ACTOR(texture), w, h);
+      clutter_actor_set_size (CLUTTER_ACTOR (texture), w, h);
     }
 }
 
@@ -2051,9 +2384,9 @@ clutter_texture_new_from_actor (ClutterActor *actor)
   priv->width        = w;
   priv->height       = h;
 
-  clutter_actor_set_size (CLUTTER_ACTOR(texture), priv->width, priv->height);
+  clutter_actor_set_size (CLUTTER_ACTOR (texture), priv->width, priv->height);
 
-  return CLUTTER_ACTOR(texture);
+  return CLUTTER_ACTOR (texture);
 }
 
 static void
