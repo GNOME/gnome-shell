@@ -47,7 +47,7 @@ main (int argc, char *argv[])
   ClutterColor     label_color = { 0xff, 0xff, 0xff, 0xff };
   ClutterActor    *group;
 
-  setenv ("CLUTTER_VBLANK", "none", 0);
+  g_setenv ("CLUTTER_VBLANK", "none", FALSE);
 
   clutter_init (&argc, &argv);
 
