@@ -1718,52 +1718,6 @@ clutter_stage_get_fogx (ClutterStage *stage,
   *fog = stage->priv->fog;
 }
 
-/**
- * clutter_stage_get_resolution:
- * @stage: the #ClutterStage
- *
- * Retrieves the resolution (in DPI) of the stage from the default
- * backend.
- *
- * Return value: the resolution of the stage
- *
- * Since: 0.6
- */
-gdouble
-clutter_stage_get_resolution (ClutterStage *stage)
-{
-  ClutterMainContext *context;
-
-  context = clutter_context_get_default ();
-  g_assert (context != NULL);
-
-  return clutter_backend_get_resolution (context->backend);
-}
-
-/**
- * clutter_stage_get_resolutionx:
- * @stage: the #ClutterStage
- *
- * Fixed point version of clutter_stage_get_resolution().
- *
- * Return value: the resolution of the stage
- *
- * Since: 0.6
- */
-ClutterFixed
-clutter_stage_get_resolutionx (ClutterStage *stage)
-{
-  ClutterFixed res;
-  ClutterMainContext *context;
-
-  context = clutter_context_get_default ();
-  g_assert (context != NULL);
-
-  res = clutter_backend_get_resolution (context->backend);
-
-  return CLUTTER_FLOAT_TO_FIXED (res);
-}
-
 /*** Perspective boxed type ******/
 
 static ClutterPerspective *

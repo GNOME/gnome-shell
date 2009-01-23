@@ -532,8 +532,6 @@ clutter_stage_queue_redraw
 clutter_stage_event
 clutter_stage_set_key_focus
 clutter_stage_get_key_focus
-clutter_stage_get_resolution
-clutter_stage_get_resolutionx
 clutter_stage_read_pixels
 
 <SUBSECTION>

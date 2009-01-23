@@ -220,8 +220,6 @@ void                  clutter_stage_set_fogx           (ClutterStage *stage,
                                                         ClutterFog   *fog);
 void                  clutter_stage_get_fogx           (ClutterStage *stage,
                                                         ClutterFog   *fog);
-gdouble               clutter_stage_get_resolution     (ClutterStage *stage);
-ClutterFixed          clutter_stage_get_resolutionx    (ClutterStage *stage);
 
 void                  clutter_stage_set_key_focus      (ClutterStage *stage,
                                                         ClutterActor *actor);
