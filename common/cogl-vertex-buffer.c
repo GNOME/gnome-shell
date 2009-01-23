@@ -1,8 +1,13 @@
-/* Mesh API: Handle extensible arrays of vertex attributes
+/*
+ * Cogl.
+ *
+ * An OpenGL/GLES Abstraction/Utility Layer
+ *
+ * Vertex Buffer API: Handle extensible arrays of vertex attributes
  *
  * Copyright (C) 2008  Intel Corporation.
  *
- * Authored by: Robert Bragg <bob@o-hand.com>
+ * Authored by: Robert Bragg <robert@linux.intel.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,14 +24,14 @@
  */
 
 /* XXX: For an overview of the functionality implemented here, please
- * see cogl.h.in, which contains the gtk-doc section overview for the
- * Mesh API.
+ * see cogl-vertex-buffer.h, which contains the gtk-doc section overview
+ * for the Vertex Buffers API.
  */
 
-/* 
+/*
  * TODO: We need to do a better job of minimizing when we call glVertexPointer
- * and pals in enable_state_for_drawing_mesh
- * 
+ * and pals in enable_state_for_drawing_attributes_buffer
+ *
  * We should have an internal 2-tuple cache of (VBO, offset) for each of them
  * so we can avoid some GL calls. We could have cogl wrappers for the
  * gl*Pointer funcs that look like this:
@@ -38,9 +43,9 @@
  * arrays.
  *
  * TODO:
- * Actually hook this up to the cogl shaders infrastructure. The mesh API has
- * been designed to allow adding of arbitrary attributes for use with shaders,
- * but this has yet to be actually plumbed together and tested.
+ * Actually hook this up to the cogl shaders infrastructure. The vertex
+ * buffer API has been designed to allow adding of arbitrary attributes for use
+ * with shaders, but this has yet to be actually plumbed together and tested.
  * The bits we are missing:
  * - cogl_program_use doesn't currently record within ctx-> which program
  *   is currently in use so a.t.m only Clutter knows the current shader.
@@ -48,19 +53,19 @@
  *   (using glGetAttribLocation) so that we can call glEnableVertexAttribArray
  *   with those indices.
  *   (currently we just make up consecutive indices)
- * - some dirty flag meshanims to know when the shader program has changed
- *   so we don't need to re-query it each time we draw a mesh.
- * 
+ * - some dirty flag mechanims to know when the shader program has changed
+ *   so we don't need to re-query it each time we draw a buffer.
+ *
  * TODO:
- * There is currently no API for querying back info about a mesh, E.g.:
- * cogl_mesh_get_n_vertices (mesh_handle);
- * cogl_mesh_attribute_get_n_components (mesh_handle, "attrib_name");
- * cogl_mesh_attribute_get_stride (mesh_handle, "attrib_name");
- * cogl_mesh_attribute_get_normalized (mesh_handle, "attrib_name");
- * cogl_mesh_attribute_map (mesh_handle, "attrib_name");
- * cogl_mesh_attribute_unmap (mesh_handle, "attrib_name");
- * (Realistically I wouldn't expect anyone to use such an API examine the
- *  contents of a mesh for modification, since you'd need to handle too many
+ * There is currently no API for querying back info about a buffer, E.g.:
+ * cogl_vertex_buffer_get_n_vertices (buffer_handle);
+ * cogl_vertex_buffer_get_n_components (buffer_handle, "attrib_name");
+ * cogl_vertex_buffer_get_stride (buffer_handle, "attrib_name");
+ * cogl_vertex_buffer_get_normalized (buffer_handle, "attrib_name");
+ * cogl_vertex_buffer_map (buffer_handle, "attrib_name");
+ * cogl_vertex_buffer_unmap (buffer_handle, "attrib_name");
+ * (Realistically I wouldn't expect anyone to use such an API to examine the
+ *  contents of a buffer for modification, since you'd need to handle too many
  *  possibilities, but never the less there might be other value in these.)
 
  * TODO:
@@ -74,47 +79,45 @@
  * cogl_vbo_set_usage_hint (COGL_VBO_FLAG_DYNAMIC);
  *
  * TODO:
- * Experiment with wider use of the mesh API internally to Cogl.
+ * Experiment with wider use of the vertex buffers API internally to Cogl.
  * - There is potential, I think, for this API to become a work-horse API
  *   within COGL for submitting geometry to the GPU, and could unify some of
  *   the GL/GLES code paths.
  * E.g.:
- * - Try creating a per-context mesh cache for cogl_texture_rectangle to sit
- *   on top of.
- * - Try saving the tesselation of paths/polygons into mesh objects internally.
+ * - Try creating a per-context vertex buffer cache for cogl_texture_rectangle
+ *   to sit on top of.
+ * - Try saving the tesselation of paths/polygons into vertex buffers
+ *   internally.
  *
  * TODO
- * Expose API that lets developers get back a mesh handle for a particular
+ * Expose API that lets developers get back a buffer handle for a particular
  * polygon so they may add custom attributes to them.
- * - It should be possible to query/modify a mesh efficiently, in place,
+ * - It should be possible to query/modify attributes efficiently, in place,
  *   avoiding copies. It would not be acceptable to simply require that
- *   developers must query back the n_vertices of a mesh and then the
- *   n_components, type and stride etc of each component since there
+ *   developers must query back the n_vertices of a buffer and then the
+ *   n_components, type and stride etc of each attribute since there
  *   would be too many combinations to realistically handle.
- * 
+ *
  * - In practice, some cases might be best solved with a higher level
  *   EditableMesh API, (see futher below) but for many cases I think an
  *   API like this might be appropriate:
  *
- * cogl_mesh_foreach_vertex (mesh_handle, (MeshIteratorFunc)callback,
- *			     "gl_Vertex", "gl_Color", NULL);
- * void callback (CoglMeshVertex *vert)
+ * cogl_vertex_buffer_foreach_vertex (buffer_handle,
+ *                                    (AttributesBufferIteratorFunc)callback,
+ *			              "gl_Vertex", "gl_Color", NULL);
+ * static void callback (CoglVertexBufferVertex *vert)
  * {
  *    GLfloat *pos = vert->attrib[0];
  *    GLubyte *color = vert->attrib[1];
  *    GLfloat *new_attrib = buf[vert->index];
- *    
+ *
  *    new_attrib = pos*color;
  * }
  *
  * TODO
- * Think about a higher level EditableMesh API for building/modifying mesh
- * objects. 
- * - E.g. look at Blender for inspiration here. They can build a mesh
- *   from "MVert", "MFace" and "MEdge" primitives. 
- * - It would be possible to bake an EditableMesh into a regular Mesh, and
- *   vica versa 
- *
+ * Think about a higher level Mesh API for building/modifying attribute buffers
+ * - E.g. look at Blender for inspiration here. They can build a mesh from
+ *   "MVert", "MFace" and "MEdge" primitives.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -130,13 +133,13 @@
 #include "cogl-util.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
-#include "cogl-mesh-private.h"
+#include "cogl-vertex-buffer-private.h"
 
 #define PAD_FOR_ALIGNMENT(VAR, TYPE_SIZE) \
   (VAR = TYPE_SIZE + ((VAR - 1) & ~(TYPE_SIZE - 1)))
 
 
-/* 
+/*
  * GL/GLES compatability defines for VBO thingies:
  */
 
@@ -166,7 +169,7 @@
 
 #endif
 
-/* 
+/*
  * GL/GLES compatability defines for shader things:
  */
 
@@ -199,34 +202,27 @@
 
 #endif /* HAVE_COGL_GL */
 
-static void _cogl_mesh_free (CoglMesh *mesh);
+static void _cogl_vertex_buffer_free (CoglVertexBuffer *buffer);
 
-COGL_HANDLE_DEFINE (Mesh, mesh, mesh_handles);
+COGL_HANDLE_DEFINE (VertexBuffer,
+                    vertex_buffer,
+                    vertex_buffer_handles);
 
-/**
- * cogl_mesh_new:
- * @n_vertices: The number of vertices that will make up your mesh.
- *
- * This creates a Cogl handle for a new mesh that you can then start to add
- * attributes too.
- *
- * Return value: a new #CoglHandle
- */
 CoglHandle
-cogl_mesh_new (guint n_vertices)
+cogl_vertex_buffer_new (guint n_vertices)
 {
-  CoglMesh *mesh = g_slice_alloc (sizeof (CoglMesh));
+  CoglVertexBuffer *buffer = g_slice_alloc (sizeof (CoglVertexBuffer));
 
-  mesh->ref_count = 1;
-  COGL_HANDLE_DEBUG_NEW (mesh, mesh);
-   
-  mesh->n_vertices = n_vertices;
-  
-  mesh->submitted_vbos = NULL;
-  mesh->new_attributes = NULL;
+  buffer->ref_count = 1;
+  COGL_HANDLE_DEBUG_NEW (CoglVertexBuffer, buffer);
+
+  buffer->n_vertices = n_vertices;
+
+  buffer->submitted_vbos = NULL;
+  buffer->new_attributes = NULL;
 
   /* return COGL_INVALID_HANDLE; */
-  return _cogl_mesh_handle_new (mesh);
+  return _cogl_vertex_buffer_handle_new (buffer);
 }
 
 /* There are a number of standard OpenGL attributes that we deal with
@@ -234,12 +230,12 @@ cogl_mesh_new (guint n_vertices)
  * so we should catch any typos instead of silently adding a custom
  * attribute.
  */
-static CoglMeshAttributeFlags
+static CoglVertexBufferAttribFlags
 validate_gl_attribute (const char *gl_attribute,
 		       guint8 *n_components,
 		       guint8 *texture_unit)
 {
-  CoglMeshAttributeFlags type;
+  CoglVertexBufferAttribFlags type;
   char *detail_seperator = NULL;
   int name_len;
 
@@ -251,18 +247,18 @@ validate_gl_attribute (const char *gl_attribute,
 
   if (strncmp (gl_attribute, "Vertex", name_len) == 0)
     {
-      type = COGL_MESH_ATTRIBUTE_FLAG_VERTEX_ARRAY;
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY;
     }
   else if (strncmp (gl_attribute, "Color", name_len) == 0)
     {
-      type = COGL_MESH_ATTRIBUTE_FLAG_COLOR_ARRAY;
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY;
     }
   else if (strncmp (gl_attribute,
 		    "MultiTexCoord",
 		    strlen ("MultiTexCoord")) == 0)
     {
       unsigned int unit;
-      
+
       if (sscanf (gl_attribute, "MultiTexCoord%u", &unit) != 1)
 	{
 	  g_warning ("gl_MultiTexCoord attributes should include a\n"
@@ -271,17 +267,17 @@ validate_gl_attribute (const char *gl_attribute,
 	}
       /* FIXME: validate any '::' delimiter for this case */
       *texture_unit = unit;
-      type = COGL_MESH_ATTRIBUTE_FLAG_TEXTURE_COORD_ARRAY;
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY;
     }
   else if (strncmp (gl_attribute, "Normal", name_len) == 0)
     {
       *n_components = 1;
-      type = COGL_MESH_ATTRIBUTE_FLAG_NORMAL_ARRAY;
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY;
     }
   else
     {
       g_warning ("Unknown gl_* attribute name gl_%s\n", gl_attribute);
-      type = COGL_MESH_ATTRIBUTE_FLAG_INVALID;
+      type = COGL_VERTEX_BUFFER_ATTRIB_FLAG_INVALID;
     }
 
   return type;
@@ -290,7 +286,7 @@ validate_gl_attribute (const char *gl_attribute,
 /* This validates that a custom attribute name is a valid GLSL variable name
  *
  * NB: attribute names may have a detail component delimited using '::' E.g.
- * custom_attrib::foo or custom_atrib::bar
+ * custom_attrib::foo or custom_attrib::bar
  *
  * maybe I should hang a compiled regex somewhere to handle this
  */
@@ -311,7 +307,7 @@ validate_custom_attribute_name (const char *attribute_name)
       || !g_ascii_isalpha (attribute_name[0])
       || attribute_name[0] != '_')
     return FALSE;
-  
+
   for (i = 1; i < name_len; i++)
     if (!g_ascii_isalnum (attribute_name[i]) || attribute_name[i] != '_')
       return FALSE;
@@ -319,26 +315,27 @@ validate_custom_attribute_name (const char *attribute_name)
   return TRUE;
 }
 
-/* Iterates the the CoglMeshVBOs of a mesh and create a flat list of all the
- * submitted attributes
+/* Iterates the CoglVertexBufferVBOs of a buffer and creates a flat list
+ * of all the submitted attributes
  *
- * Note: The CoglMeshAttribute structs are deep copied.
+ * Note: The CoglVertexBufferAttrib structs are deep copied.
  */
 static GList *
-copy_submitted_attributes_list (CoglMesh *mesh)
+copy_submitted_attributes_list (CoglVertexBuffer *buffer)
 {
   GList *tmp;
   GList *submitted_attributes = NULL;
 
-  for (tmp = mesh->submitted_vbos; tmp != NULL; tmp = tmp->next)
+  for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshVBO *cogl_vbo = tmp->data;
+      CoglVertexBufferVBO *cogl_vbo = tmp->data;
       GList *tmp2;
-      
+
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *attribute = tmp2->data;
-	  CoglMeshAttribute *copy = g_slice_alloc (sizeof (CoglMeshAttribute));
+	  CoglVertexBufferAttrib *attribute = tmp2->data;
+	  CoglVertexBufferAttrib *copy =
+            g_slice_alloc (sizeof (CoglVertexBufferAttrib));
 	  *copy = *attribute;
 	  submitted_attributes = g_list_prepend (submitted_attributes, copy);
 	}
@@ -346,59 +343,60 @@ copy_submitted_attributes_list (CoglMesh *mesh)
   return submitted_attributes;
 }
 
-static CoglMeshAttributeFlags
+static CoglVertexBufferAttribFlags
 get_attribute_gl_type_flag_from_gl_type (GLenum gl_type)
 {
   switch (gl_type)
   {
     case GL_BYTE:
-      return COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_BYTE;
+      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_BYTE;
     case GL_UNSIGNED_BYTE:
-      return COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_UNSIGNED_BYTE;
+      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_BYTE;
     case GL_SHORT:
-      return COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_SHORT;
+      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_SHORT;
     case GL_UNSIGNED_SHORT:
-      return COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_UNSIGNED_SHORT;
+      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_SHORT;
     case GL_FLOAT:
-      return COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_FLOAT;
+      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_FLOAT;
 #if HAVE_COGL_GL
     case GL_INT:
-      return COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_INT;
+      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_INT;
     case GL_UNSIGNED_INT:
-      return COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_UNSIGNED_INT;
+      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_INT;
     case GL_DOUBLE:
-      return COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_DOUBLE;
+      return COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_DOUBLE;
 #endif
     default:
-      g_warning ("Mesh API: Unrecognised OpenGL type enum 0x%08x\n", gl_type);
+      g_warning ("Attribute Buffers API: "
+                 "Unrecognised OpenGL type enum 0x%08x\n", gl_type);
       return 0;
   }
 }
 
 static gsize
-get_gl_type_size (CoglMeshAttributeFlags flags)
+get_gl_type_size (CoglVertexBufferAttribFlags flags)
 {
-  CoglMeshAttributeFlags gl_type =
-    flags & COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_MASK;
+  CoglVertexBufferAttribFlags gl_type =
+    flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK;
 
   switch (gl_type)
     {
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_BYTE:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_BYTE:
       return sizeof (GLbyte);
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_UNSIGNED_BYTE:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_BYTE:
       return sizeof (GLubyte);
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_SHORT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_SHORT:
       return sizeof (GLshort);
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_UNSIGNED_SHORT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_SHORT:
       return sizeof (GLushort);
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_FLOAT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_FLOAT:
       return sizeof (GLfloat);
 #if HAVE_COGL_GL
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_INT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_INT:
       return sizeof (GLint);
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_UNSIGNED_INT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_INT:
       return sizeof (GLuint);
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_DOUBLE:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_DOUBLE:
       return sizeof (GLdouble);
 #endif
     default:
@@ -408,39 +406,39 @@ get_gl_type_size (CoglMeshAttributeFlags flags)
 }
 
 void
-cogl_mesh_add_attribute (CoglHandle handle,
-		         const char *attribute_name,
-			 guint8 n_components,
-			 GLenum gl_type,
-			 gboolean normalized,
-			 guint16 stride,
-			 const void *pointer)
+cogl_vertex_buffer_add (CoglHandle handle,
+		        const char *attribute_name,
+			guint8 n_components,
+			GLenum gl_type,
+			gboolean normalized,
+			guint16 stride,
+			const void *pointer)
 {
-  CoglMesh *mesh;
+  CoglVertexBuffer *buffer;
   GQuark name_quark = g_quark_from_string (attribute_name);
   gboolean modifying_an_attrib = FALSE;
-  CoglMeshAttribute *attribute;
-  CoglMeshAttributeFlags flags = 0;
+  CoglVertexBufferAttrib *attribute;
+  CoglVertexBufferAttribFlags flags = 0;
   guint8 texture_unit = 0;
   GList *tmp;
 
-  if (!cogl_is_mesh (handle))
+  if (!cogl_is_vertex_buffer (handle))
     return;
 
-  mesh = _cogl_mesh_pointer_from_handle (handle);
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
   /* The submit function works by diffing between submitted_attributes
    * and new_attributes to minimize the upload bandwidth + cost of
    * allocating new VBOs, so if there isn't already a list of new_attributes
    * we create one: */
-  if (!mesh->new_attributes)
-    mesh->new_attributes = copy_submitted_attributes_list (mesh);
-  
+  if (!buffer->new_attributes)
+    buffer->new_attributes = copy_submitted_attributes_list (buffer);
+
   /* Note: we first look for an existing attribute that we are modifying
    * so we may skip needing to validate the name */
-  for (tmp = mesh->new_attributes; tmp != NULL; tmp = tmp->next)
+  for (tmp = buffer->new_attributes; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshAttribute *submitted_attribute = tmp->data;
+      CoglVertexBufferAttrib *submitted_attribute = tmp->data;
       if (submitted_attribute->name == name_quark)
 	{
 	  modifying_an_attrib = TRUE;
@@ -449,7 +447,8 @@ cogl_mesh_add_attribute (CoglHandle handle,
 
 	  /* since we will skip validate_gl_attribute in this case, we need
 	   * to pluck out the attribute type before overwriting the flags: */
-	  flags |= attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_TYPE_MASK;
+	  flags |=
+            attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK;
 	  break;
 	}
     }
@@ -462,81 +461,81 @@ cogl_mesh_add_attribute (CoglHandle handle,
 	  flags |= validate_gl_attribute (attribute_name + 3,
 					 &n_components,
 					 &texture_unit);
-	  if (flags & COGL_MESH_ATTRIBUTE_FLAG_INVALID)
+	  if (flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_INVALID)
 	    return;
 	}
       else
 	{
-	  flags |= COGL_MESH_ATTRIBUTE_FLAG_CUSTOM_ARRAY;
+	  flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_CUSTOM_ARRAY;
 	  if (validate_custom_attribute_name (attribute_name))
 	    return;
 	}
 
-      attribute = g_slice_alloc (sizeof (CoglMeshAttribute));
+      attribute = g_slice_alloc (sizeof (CoglVertexBufferAttrib));
     }
 
   attribute->name = g_quark_from_string (attribute_name);
   attribute->n_components = n_components;
-  attribute->stride = mesh->n_vertices > 1 ? stride : 0;
+  attribute->stride = buffer->n_vertices > 1 ? stride : 0;
   attribute->u.pointer = pointer;
   attribute->texture_unit = texture_unit;
 
   flags |= get_attribute_gl_type_flag_from_gl_type (gl_type);
-  flags |= COGL_MESH_ATTRIBUTE_FLAG_ENABLED;
+  flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED;
 
   /* Note: We currently just assume, if an attribute is *ever* updated
    * then it should be taged as frequently changing. */
   if (modifying_an_attrib)
-    flags |= COGL_MESH_ATTRIBUTE_FLAG_FREQUENT_RESUBMIT;
+    flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_FREQUENT_RESUBMIT;
   else
-    flags |= COGL_MESH_ATTRIBUTE_FLAG_INFREQUENT_RESUBMIT;
+    flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_INFREQUENT_RESUBMIT;
 
   if (normalized)
-    flags |= COGL_MESH_ATTRIBUTE_FLAG_NORMALIZED;
+    flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMALIZED;
   attribute->flags = flags;
-  
+
   /* NB: get_gl_type_size must be called after setting the type
    * flags, above. */
   if (attribute->stride)
-    attribute->span_bytes = mesh->n_vertices * attribute->stride;
+    attribute->span_bytes = buffer->n_vertices * attribute->stride;
   else
-    attribute->span_bytes = mesh->n_vertices
+    attribute->span_bytes = buffer->n_vertices
 			    * attribute->n_components
 			    * get_gl_type_size (attribute->flags);
 
   if (!modifying_an_attrib)
-    mesh->new_attributes =
-      g_list_prepend (mesh->new_attributes, attribute);
+    buffer->new_attributes =
+      g_list_prepend (buffer->new_attributes, attribute);
 }
 
 void
-cogl_mesh_delete_attribute (CoglHandle handle,
-			    const char *attribute_name)
+cogl_vertex_buffer_delete (CoglHandle handle,
+			   const char *attribute_name)
 {
-  CoglMesh *mesh;
+  CoglVertexBuffer *buffer;
   GQuark name = g_quark_from_string (attribute_name);
   GList *tmp;
 
-  if (!cogl_is_mesh (handle))
+  if (!cogl_is_vertex_buffer (handle))
     return;
 
-  mesh = _cogl_mesh_pointer_from_handle (handle);
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
   /* The submit function works by diffing between submitted_attributes
    * and new_attributes to minimize the upload bandwidth + cost of
    * allocating new VBOs, so if there isn't already a list of new_attributes
    * we create one: */
-  if (!mesh->new_attributes)
-    mesh->new_attributes = copy_submitted_attributes_list (mesh);
-  
-  for (tmp = mesh->new_attributes; tmp != NULL; tmp = tmp->next)
+  if (!buffer->new_attributes)
+    buffer->new_attributes = copy_submitted_attributes_list (buffer);
+
+  for (tmp = buffer->new_attributes; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshAttribute *submitted_attribute = tmp->data;
+      CoglVertexBufferAttrib *submitted_attribute = tmp->data;
       if (submitted_attribute->name == name)
 	{
-	  mesh->new_attributes =
-	    g_list_delete_link (mesh->new_attributes, tmp);
-	  g_slice_free (CoglMeshAttribute, submitted_attribute);
+	  buffer->new_attributes =
+	    g_list_delete_link (buffer->new_attributes, tmp);
+	  g_slice_free (CoglVertexBufferAttrib, submitted_attribute);
 	  return;
 	}
     }
@@ -550,46 +549,46 @@ set_attribute_enable (CoglHandle handle,
 		      const char *attribute_name,
 		      gboolean state)
 {
-  CoglMesh *mesh;
+  CoglVertexBuffer *buffer;
   GQuark name_quark = g_quark_from_string (attribute_name);
   GList *tmp;
 
-  if (!cogl_is_mesh (handle))
+  if (!cogl_is_vertex_buffer (handle))
     return;
 
-  mesh = _cogl_mesh_pointer_from_handle (handle);
-  
-  /* NB: If a mesh is currently being edited, then there can be two seperate
-   * lists of attributes; those that are currently submitted and a new
-   * list yet to be submitted, we need to modify both. */
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
 
-  for (tmp = mesh->new_attributes; tmp != NULL; tmp = tmp->next)
+  /* NB: If a buffer is currently being edited, then there can be two seperate
+   * lists of attributes; those that are currently submitted and a new list yet
+   * to be submitted, we need to modify both. */
+
+  for (tmp = buffer->new_attributes; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshAttribute *attribute = tmp->data;
+      CoglVertexBufferAttrib *attribute = tmp->data;
       if (attribute->name == name_quark)
 	{
 	  if (state)
-	    attribute->flags |= COGL_MESH_ATTRIBUTE_FLAG_ENABLED;
+	    attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED;
 	  else
-	    attribute->flags &= ~COGL_MESH_ATTRIBUTE_FLAG_ENABLED;
+	    attribute->flags &= ~COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED;
 	  break;
 	}
     }
- 
-  for (tmp = mesh->submitted_vbos; tmp != NULL; tmp = tmp->next)
+
+  for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshVBO *cogl_vbo = tmp->data;
+      CoglVertexBufferVBO *cogl_vbo = tmp->data;
       GList *tmp2;
 
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *attribute = tmp2->data;
+	  CoglVertexBufferAttrib *attribute = tmp2->data;
 	  if (attribute->name == name_quark)
 	    {
 	      if (state)
-		attribute->flags |= COGL_MESH_ATTRIBUTE_FLAG_ENABLED;
+		attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED;
 	      else
-		attribute->flags &= ~COGL_MESH_ATTRIBUTE_FLAG_ENABLED;
+		attribute->flags &= ~COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED;
 	      return;
 	    }
 	}
@@ -601,23 +600,23 @@ set_attribute_enable (CoglHandle handle,
 }
 
 void
-cogl_mesh_enable_attribute (CoglHandle handle,
-			    const char *attribute_name)
+cogl_vertex_buffer_enable (CoglHandle handle,
+			       const char *attribute_name)
 {
   set_attribute_enable (handle, attribute_name, TRUE);
 }
 
 void
-cogl_mesh_disable_attribute (CoglHandle handle,
-			     const char *attribute_name)
+cogl_vertex_buffer_disable (CoglHandle handle,
+			    const char *attribute_name)
 {
   set_attribute_enable (handle, attribute_name, FALSE);
 }
 
 static void
-free_mesh_attribute (CoglMeshAttribute *attribute)
+cogl_vertex_buffer_attribute_free (CoglVertexBufferAttrib *attribute)
 {
-  g_slice_free (CoglMeshAttribute, attribute);
+  g_slice_free (CoglVertexBufferAttrib, attribute);
 }
 
 /* Given an attribute that we know has already been submitted before, this
@@ -627,7 +626,7 @@ free_mesh_attribute (CoglMeshAttribute *attribute)
  * VBO has been found.
  */
 static void
-filter_already_submitted_attribute (CoglMeshAttribute *attribute,
+filter_already_submitted_attribute (CoglVertexBufferAttrib *attribute,
 				    GList **reuse_vbos,
 				    GList **submitted_vbos)
 {
@@ -637,38 +636,41 @@ filter_already_submitted_attribute (CoglMeshAttribute *attribute,
    * are more likley to get a match here */
   for (tmp = *reuse_vbos; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshVBO *cogl_vbo = tmp->data;
+      CoglVertexBufferVBO *cogl_vbo = tmp->data;
       GList *tmp2;
 
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *vbo_attribute = tmp2->data;
+	  CoglVertexBufferAttrib *vbo_attribute = tmp2->data;
 
 	  if (vbo_attribute->name == attribute->name)
 	    {
-	      vbo_attribute->flags &= ~COGL_MESH_ATTRIBUTE_FLAG_UNUSED;
+	      vbo_attribute->flags &=
+                ~COGL_VERTEX_BUFFER_ATTRIB_FLAG_UNUSED;
 	      /* Note: we don't free the redundant attribute here, since it
-	       * will be freed after all filtering in cogl_mesh_submit */
+	       * will be freed after all filtering in
+               * cogl_vertex_buffer_submit */
 	      return;
 	    }
 	}
     }
-  
+
   for (tmp = *submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshVBO *cogl_vbo = tmp->data;
-      CoglMeshAttribute *reuse_attribute = NULL;
+      CoglVertexBufferVBO *cogl_vbo = tmp->data;
+      CoglVertexBufferAttrib *reuse_attribute = NULL;
       GList *tmp2;
 
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *vbo_attribute = tmp2->data;
+	  CoglVertexBufferAttrib *vbo_attribute = tmp2->data;
 	  if (vbo_attribute->name == attribute->name)
 	    {
 	      reuse_attribute = vbo_attribute;
 	      /* Note: we don't free the redundant attribute here, since it
-	       * will be freed after all filtering in cogl_mesh_submit */
-	      
+	       * will be freed after all filtering in
+               * cogl_vertex_buffer_submit */
+
 	      *submitted_vbos = g_list_remove_link (*submitted_vbos, tmp);
 	      tmp->next = *reuse_vbos;
 	      *reuse_vbos = tmp;
@@ -678,15 +680,15 @@ filter_already_submitted_attribute (CoglMeshAttribute *attribute,
 
       if (!reuse_attribute)
 	continue;
-      
+
       /* Mark all but the matched attribute as UNUSED, so that when we
        * finish filtering all our attributes any attrributes still
        * marked as UNUSED can be removed from the their cogl_vbo */
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *vbo_attribute = tmp2->data;
-	  if (vbo_attribute != reuse_attribute)  
-	    vbo_attribute->flags |= COGL_MESH_ATTRIBUTE_FLAG_UNUSED;
+	  CoglVertexBufferAttrib *vbo_attribute = tmp2->data;
+	  if (vbo_attribute != reuse_attribute)
+	    vbo_attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_UNUSED;
 	}
 
       return;
@@ -696,56 +698,56 @@ filter_already_submitted_attribute (CoglMeshAttribute *attribute,
 	      "attribute that had apparently already been submitted!");
 }
 
-/* When we first mark a CoglMeshVBO to be reused, we mark the attributes
- * as unsed, so that when filtering of attributes into VBOs is done
+/* When we first mark a CoglVertexBufferVBO to be reused, we mark the
+ * attributes as unsed, so that when filtering of attributes into VBOs is done
  * we can then prune the now unsed attributes. */
 static void
-remove_unused_attributes (CoglMeshVBO *cogl_vbo)
+remove_unused_attributes (CoglVertexBufferVBO *cogl_vbo)
 {
   GList *tmp;
   GList *next;
 
   for (tmp = cogl_vbo->attributes; tmp != NULL; tmp = next)
     {
-      CoglMeshAttribute *attribute = tmp->data;
+      CoglVertexBufferAttrib *attribute = tmp->data;
       next = tmp->next;
 
-      if (attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_UNUSED)
+      if (attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_UNUSED)
 	{
 	  cogl_vbo->attributes =
 	    g_list_delete_link (cogl_vbo->attributes, tmp);
-	  g_slice_free (CoglMeshAttribute, attribute);
+	  g_slice_free (CoglVertexBufferAttrib, attribute);
 	}
     }
 }
 
 /* Give a newly added, strided, attribute, this function looks for a
- * CoglMeshVBO that the attribute is interleved with. If it can't find
- * one then a new CoglMeshVBO is allocated and added to the list of
- * new_strided_vbos
+ * CoglVertexBufferVBO that the attribute is interleved with. If it can't
+ * find one then a new CoglVertexBufferVBO is allocated and added to the
+ * list of new_strided_vbos.
  */
 static void
-filter_strided_attribute (CoglMeshAttribute *attribute,
+filter_strided_attribute (CoglVertexBufferAttrib *attribute,
 			  GList **new_vbos)
 {
   GList *tmp;
-  CoglMeshVBO *new_cogl_vbo;
+  CoglVertexBufferVBO *new_cogl_vbo;
 
   for (tmp = *new_vbos; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshVBO *cogl_vbo = tmp->data;
+      CoglVertexBufferVBO *cogl_vbo = tmp->data;
       GList *tmp2;
-      
-      if (!cogl_vbo->flags & COGL_MESH_VBO_FLAG_STRIDED)
+
+      if (!cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED)
 	continue;
 
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *vbo_attribute = tmp2->data;
+	  CoglVertexBufferAttrib *vbo_attribute = tmp2->data;
 	  const char *attribute_start = attribute->u.pointer;
 	  const char *vbo_attribute_start = vbo_attribute->u.pointer;
 
-	  /* NB: All attributes have mesh->n_vertices values which
+	  /* NB: All attributes have buffer->n_vertices values which
 	   * simplifies determining which attributes are interleved
 	   * since we assume they will start no farther than +- a
 	   * stride away from each other:
@@ -758,27 +760,30 @@ filter_strided_attribute (CoglMeshAttribute *attribute,
 	  cogl_vbo->attributes =
 	    g_list_prepend (cogl_vbo->attributes, attribute);
 
-	  if (attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_FREQUENT_RESUBMIT)
+	  if (attribute->flags &
+              COGL_VERTEX_BUFFER_ATTRIB_FLAG_FREQUENT_RESUBMIT)
 	    {
-	      cogl_vbo->flags &= ~COGL_MESH_VBO_FLAG_INFREQUENT_RESUBMIT;
-	      cogl_vbo->flags |= COGL_MESH_VBO_FLAG_FREQUENT_RESUBMIT;
+	      cogl_vbo->flags &=
+                ~COGL_VERTEX_BUFFER_VBO_FLAG_INFREQUENT_RESUBMIT;
+	      cogl_vbo->flags |=
+                COGL_VERTEX_BUFFER_VBO_FLAG_FREQUENT_RESUBMIT;
 	    }
 	      return;
 	}
     }
-  new_cogl_vbo = g_slice_alloc (sizeof (CoglMeshVBO));
+  new_cogl_vbo = g_slice_alloc (sizeof (CoglVertexBufferVBO));
   new_cogl_vbo->vbo_name = 0;
   new_cogl_vbo->attributes = NULL;
   new_cogl_vbo->attributes =
     g_list_prepend (new_cogl_vbo->attributes, attribute);
   /* Any one of the interleved attributes will have the same span_bytes */
   new_cogl_vbo->vbo_bytes = attribute->span_bytes;
-  new_cogl_vbo->flags = COGL_MESH_VBO_FLAG_STRIDED;
-  
-  if (attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_INFREQUENT_RESUBMIT)
-    new_cogl_vbo->flags |= COGL_MESH_VBO_FLAG_INFREQUENT_RESUBMIT;
+  new_cogl_vbo->flags = COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED;
+
+  if (attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_INFREQUENT_RESUBMIT)
+    new_cogl_vbo->flags |= COGL_VERTEX_BUFFER_VBO_FLAG_INFREQUENT_RESUBMIT;
   else
-    new_cogl_vbo->flags |= COGL_MESH_VBO_FLAG_FREQUENT_RESUBMIT;
+    new_cogl_vbo->flags |= COGL_VERTEX_BUFFER_VBO_FLAG_FREQUENT_RESUBMIT;
 
   *new_vbos = g_list_prepend (*new_vbos, new_cogl_vbo);
   return;
@@ -788,21 +793,21 @@ filter_strided_attribute (CoglMeshAttribute *attribute,
  * contains attribute. If found the list *link* is removed and returned */
 static GList *
 unlink_submitted_vbo_containing_attribute (GList **submitted_vbos,
-					   CoglMeshAttribute *attribute)
+					   CoglVertexBufferAttrib *attribute)
 {
   GList *tmp;
   GList *next = NULL;
 
   for (tmp = *submitted_vbos; tmp != NULL; tmp = next)
     {
-      CoglMeshVBO *submitted_vbo = tmp->data;
+      CoglVertexBufferVBO *submitted_vbo = tmp->data;
       GList *tmp2;
 
       next = tmp->next;
 
       for (tmp2 = submitted_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *submitted_attribute = tmp2->data;
+	  CoglVertexBufferAttrib *submitted_attribute = tmp2->data;
 
 	  if (submitted_attribute->name == attribute->name)
 	    {
@@ -818,7 +823,8 @@ unlink_submitted_vbo_containing_attribute (GList **submitted_vbos,
 /* Unlinks all the submitted VBOs that conflict with the new cogl_vbo and
  * returns them as a list. */
 static GList *
-get_submitted_vbo_conflicts (GList **submitted_vbos, CoglMeshVBO *cogl_vbo)
+get_submitted_vbo_conflicts (GList **submitted_vbos,
+                             CoglVertexBufferVBO *cogl_vbo)
 {
   GList *tmp;
   GList *conflicts = NULL;
@@ -840,25 +846,25 @@ get_submitted_vbo_conflicts (GList **submitted_vbos, CoglMeshVBO *cogl_vbo)
 
 /* Any attributes in cogl_vbo gets removed from conflict_vbo */
 static void
-disassociate_conflicting_attributes (CoglMeshVBO *conflict_vbo,
-				     CoglMeshVBO *cogl_vbo)
+disassociate_conflicting_attributes (CoglVertexBufferVBO *conflict_vbo,
+				     CoglVertexBufferVBO *cogl_vbo)
 {
   GList *tmp;
-  
+
   /* NB: The attributes list in conflict_vbo will be shrinking so
    * we iterate those in the inner loop. */
 
   for (tmp = cogl_vbo->attributes; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshAttribute *attribute = tmp->data;
+      CoglVertexBufferAttrib *attribute = tmp->data;
       GList *tmp2;
       for (tmp2 = conflict_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *conflict_attribute = tmp2->data;
+	  CoglVertexBufferAttrib *conflict_attribute = tmp2->data;
 
 	  if (conflict_attribute->name == attribute->name)
 	    {
-	      free_mesh_attribute (conflict_attribute);
+	      cogl_vertex_buffer_attribute_free (conflict_attribute);
 	      conflict_vbo->attributes =
 		g_list_delete_link (conflict_vbo->attributes, tmp2);
 	      break;
@@ -868,7 +874,8 @@ disassociate_conflicting_attributes (CoglMeshVBO *conflict_vbo,
 }
 
 static void
-free_cogl_mesh_vbo (CoglMeshVBO *cogl_vbo, gboolean delete_gl_vbo)
+cogl_vertex_buffer_vbo_free (CoglVertexBufferVBO *cogl_vbo,
+                             gboolean delete_gl_vbo)
 {
   GList *tmp;
 
@@ -876,14 +883,15 @@ free_cogl_mesh_vbo (CoglMeshVBO *cogl_vbo, gboolean delete_gl_vbo)
 
   for (tmp = cogl_vbo->attributes; tmp != NULL; tmp = tmp->next)
     {
-      free_mesh_attribute (tmp->data);
+      cogl_vertex_buffer_attribute_free (tmp->data);
     }
   g_list_free (cogl_vbo->attributes);
 
-  if (delete_gl_vbo && cogl_vbo->flags & COGL_MESH_VBO_FLAG_SUBMITTED)
+  if (delete_gl_vbo && cogl_vbo->flags &
+      COGL_VERTEX_BUFFER_VBO_FLAG_SUBMITTED)
     GE (glDeleteBuffers (1, &cogl_vbo->vbo_name));
 
-  g_slice_free (CoglMeshVBO, cogl_vbo);
+  g_slice_free (CoglVertexBufferVBO, cogl_vbo);
 }
 
 /* This figures out the lowest attribute client pointer. (This pointer is used
@@ -893,33 +901,33 @@ free_cogl_mesh_vbo (CoglMeshVBO *cogl_vbo, gboolean delete_gl_vbo)
  * offset, and marks the attribute as submitted.
  */
 static const void *
-prep_strided_vbo_for_upload (CoglMeshVBO *cogl_vbo)
+prep_strided_vbo_for_upload (CoglVertexBufferVBO *cogl_vbo)
 {
   GList *tmp;
   const char *lowest_pointer = NULL;
 
   for (tmp = cogl_vbo->attributes; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshAttribute *attribute = tmp->data;
+      CoglVertexBufferAttrib *attribute = tmp->data;
       const char *client_pointer = attribute->u.pointer;
 
       if (!lowest_pointer || client_pointer < lowest_pointer)
 	lowest_pointer = client_pointer;
     }
-  
+
   for (tmp = cogl_vbo->attributes; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshAttribute *attribute = tmp->data;
+      CoglVertexBufferAttrib *attribute = tmp->data;
       const char *client_pointer = attribute->u.pointer;
       attribute->u.vbo_offset = client_pointer - lowest_pointer;
-      attribute->flags |= COGL_MESH_ATTRIBUTE_FLAG_SUBMITTED;
+      attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_SUBMITTED;
     }
 
   return lowest_pointer;
 }
 
 static gboolean
-upload_multipack_vbo_via_map_buffer (CoglMeshVBO *cogl_vbo)
+upload_multipack_vbo_via_map_buffer (CoglVertexBufferVBO *cogl_vbo)
 {
 #if HAVE_COGL_GL
   GList *tmp;
@@ -935,7 +943,7 @@ upload_multipack_vbo_via_map_buffer (CoglMeshVBO *cogl_vbo)
 
   for (tmp = cogl_vbo->attributes; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshAttribute *attribute = tmp->data;
+      CoglVertexBufferAttrib *attribute = tmp->data;
       gsize attribute_size = attribute->span_bytes;
       gsize gl_type_size = get_gl_type_size (attribute->flags);
 
@@ -944,7 +952,7 @@ upload_multipack_vbo_via_map_buffer (CoglMeshVBO *cogl_vbo)
       memcpy (buf + offset, attribute->u.pointer, attribute_size);
 
       attribute->u.vbo_offset = offset;
-      attribute->flags |= COGL_MESH_ATTRIBUTE_FLAG_SUBMITTED;
+      attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_SUBMITTED;
       offset += attribute_size;
     }
   glUnmapBuffer (GL_ARRAY_BUFFER);
@@ -956,7 +964,7 @@ upload_multipack_vbo_via_map_buffer (CoglMeshVBO *cogl_vbo)
 }
 
 static void
-upload_multipack_vbo_via_buffer_sub_data (CoglMeshVBO *cogl_vbo)
+upload_multipack_vbo_via_buffer_sub_data (CoglVertexBufferVBO *cogl_vbo)
 {
   GList *tmp;
   guint offset = 0;
@@ -965,7 +973,7 @@ upload_multipack_vbo_via_buffer_sub_data (CoglMeshVBO *cogl_vbo)
 
   for (tmp = cogl_vbo->attributes; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshAttribute *attribute = tmp->data;
+      CoglVertexBufferAttrib *attribute = tmp->data;
       gsize attribute_size = attribute->span_bytes;
       gsize gl_type_size = get_gl_type_size (attribute->flags);
 
@@ -976,13 +984,13 @@ upload_multipack_vbo_via_buffer_sub_data (CoglMeshVBO *cogl_vbo)
 			   attribute_size,
 			   attribute->u.pointer));
       attribute->u.vbo_offset = offset;
-      attribute->flags |= COGL_MESH_ATTRIBUTE_FLAG_SUBMITTED;
+      attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_SUBMITTED;
       offset += attribute_size;
     }
 }
 
 static void
-upload_gl_vbo (CoglMeshVBO *cogl_vbo)
+upload_gl_vbo (CoglVertexBufferVBO *cogl_vbo)
 {
   GLenum usage;
 
@@ -990,14 +998,14 @@ upload_gl_vbo (CoglMeshVBO *cogl_vbo)
 
   g_return_if_fail (cogl_vbo->vbo_name != 0);
 
-  if (cogl_vbo->flags & COGL_MESH_VBO_FLAG_FREQUENT_RESUBMIT)
+  if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_FREQUENT_RESUBMIT)
     usage = GL_DYNAMIC_DRAW;
   else
     usage = GL_STATIC_DRAW;
 
   GE (glBindBuffer (GL_ARRAY_BUFFER, cogl_vbo->vbo_name));
-  
-  if (cogl_vbo->flags & COGL_MESH_VBO_FLAG_STRIDED)
+
+  if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_STRIDED)
     {
       const void *pointer =
 	prep_strided_vbo_for_upload (cogl_vbo);
@@ -1006,7 +1014,7 @@ upload_gl_vbo (CoglMeshVBO *cogl_vbo)
 			pointer,
 			usage));
     }
-  else if (cogl_vbo->flags & COGL_MESH_VBO_FLAG_MULTIPACK)
+  else if (cogl_vbo->flags & COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK)
     {
       /* First we make it obvious to the driver that we want to update the
        * whole buffer (without this, the driver is more likley to block
@@ -1015,9 +1023,9 @@ upload_gl_vbo (CoglMeshVBO *cogl_vbo)
 			cogl_vbo->vbo_bytes,
 			NULL,
 			usage));
-      
-      /* I think it might depend on the specific driver/HW whether its better to
-       * use glMapBuffer here or glBufferSubData here. There is even a good
+
+      /* I think it might depend on the specific driver/HW whether its better
+       * to use glMapBuffer here or glBufferSubData here. There is even a good
        * thread about this topic here:
        * http://www.mail-archive.com/dri-devel@lists.sourceforge.net/msg35004.html
        * For now I have gone with glMapBuffer, but the jury is still out.
@@ -1028,7 +1036,7 @@ upload_gl_vbo (CoglMeshVBO *cogl_vbo)
     }
   else
     {
-      CoglMeshAttribute *attribute = cogl_vbo->attributes->data;
+      CoglVertexBufferAttrib *attribute = cogl_vbo->attributes->data;
       GE (glBufferData (GL_ARRAY_BUFFER,
 			cogl_vbo->vbo_bytes,
 			attribute->u.pointer,
@@ -1036,21 +1044,21 @@ upload_gl_vbo (CoglMeshVBO *cogl_vbo)
       /* We forget this pointer now since the client will be free
        * to re-use this memory */
       attribute->u.pointer = NULL;
-      attribute->flags |= COGL_MESH_ATTRIBUTE_FLAG_SUBMITTED;
+      attribute->flags |= COGL_VERTEX_BUFFER_ATTRIB_FLAG_SUBMITTED;
     }
 
-  cogl_vbo->flags |= COGL_MESH_VBO_FLAG_SUBMITTED;
+  cogl_vbo->flags |= COGL_VERTEX_BUFFER_VBO_FLAG_SUBMITTED;
 
   GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
 }
 
-/* Note: although there ends up being quite a few inner loops involved
- * with resolving buffers, the number of attributes will be low so I
- * don't expect them to cause a problem. */
+/* Note: although there ends up being quite a few inner loops involved with
+ * resolving buffers, the number of attributes will be low so I don't expect
+ * them to cause a problem. */
 static void
-resolve_new_cogl_mesh_vbo (CoglMesh *mesh,
-			   CoglMeshVBO *new_cogl_vbo,
-			   GList **final_vbos)
+cogl_vertex_buffer_vbo_resolve (CoglVertexBuffer *buffer,
+			        CoglVertexBufferVBO *new_cogl_vbo,
+			        GList **final_vbos)
 {
   GList *conflicts;
   GList *tmp;
@@ -1058,16 +1066,16 @@ resolve_new_cogl_mesh_vbo (CoglMesh *mesh,
   gboolean found_target_vbo = FALSE;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   conflicts =
-    get_submitted_vbo_conflicts (&mesh->submitted_vbos, new_cogl_vbo);
+    get_submitted_vbo_conflicts (&buffer->submitted_vbos, new_cogl_vbo);
 
   for (tmp = conflicts; tmp != NULL; tmp = next)
     {
-      CoglMeshVBO *conflict_vbo = tmp->data;
+      CoglVertexBufferVBO *conflict_vbo = tmp->data;
 
       next = tmp->next;
-      
+
       disassociate_conflicting_attributes (conflict_vbo, new_cogl_vbo);
 
       if (!conflict_vbo->attributes)
@@ -1079,22 +1087,22 @@ resolve_new_cogl_mesh_vbo (CoglMesh *mesh,
 	    {
 	      found_target_vbo = TRUE;
 	      new_cogl_vbo->vbo_name = conflict_vbo->vbo_name;
-	      free_cogl_mesh_vbo (conflict_vbo, FALSE);
-	      
+	      cogl_vertex_buffer_vbo_free (conflict_vbo, FALSE);
+
 	      upload_gl_vbo (new_cogl_vbo);
 
 	      *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);
 	    }
 	  else
-	    free_cogl_mesh_vbo (conflict_vbo, TRUE);
+	    cogl_vertex_buffer_vbo_free (conflict_vbo, TRUE);
 	}
       else
 	{
-	  /* Relink the VBO back into mesh->submitted_vbos since it may
+	  /* Relink the VBO back into buffer->submitted_vbos since it may
 	   * be involved in other conflicts later */
-	  tmp->next = mesh->submitted_vbos;
+	  tmp->next = buffer->submitted_vbos;
 	  tmp->prev = NULL;
-	  mesh->submitted_vbos = tmp;
+	  buffer->submitted_vbos = tmp;
 	}
     }
 
@@ -1103,35 +1111,35 @@ resolve_new_cogl_mesh_vbo (CoglMesh *mesh,
       GE (glGenBuffers (1, &new_cogl_vbo->vbo_name));
       /* FIXME: debug */
       g_assert (glGetError() == GL_NO_ERROR);
-	
+
       upload_gl_vbo (new_cogl_vbo);
       *final_vbos = g_list_prepend (*final_vbos, new_cogl_vbo);
     }
 }
 
 void
-cogl_mesh_submit (CoglHandle handle)
+cogl_vertex_buffer_submit (CoglHandle handle)
 {
-  CoglMesh *mesh;
+  CoglVertexBuffer *buffer;
   GList *tmp;
-  CoglMeshVBO *new_multipack_vbo;
+  CoglVertexBufferVBO *new_multipack_vbo;
   GList *new_multipack_vbo_link;
   GList *new_vbos = NULL;
   GList *reuse_vbos = NULL;
   GList *final_vbos = NULL;
-  
-  if (!cogl_is_mesh (handle))
+
+  if (!cogl_is_vertex_buffer (handle))
     return;
-  
-  mesh = _cogl_mesh_pointer_from_handle (handle);
-  
+
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+
   /* The objective now is to copy the attribute data supplied by the client
-   * into buffer objects, but it's important to minimize the amount of memory
-   * bandwidth we waste here.
+   * into buffer objects, but it's important to minimize the number of
+   * redundant data uploads.
    *
-   * We need to group together the attributes that are interleved so that the
-   * driver can use a single continguous memcpy for these. All BOs for
-   * interleved data are created as STATIC_DRAW_ARB.
+   * We obviously aim to group together the attributes that are interleved so
+   * that they can be delivered in one go to the driver.
+   * All BOs for interleved data are created as STATIC_DRAW_ARB.
    *
    * Non interleved attributes tagged as INFREQUENT_RESUBMIT will be grouped
    * together back to back in a single BO created as STATIC_DRAW_ARB
@@ -1139,23 +1147,23 @@ cogl_mesh_submit (CoglHandle handle)
    * Non interleved attributes tagged as FREQUENT_RESUBMIT will be copied into
    * individual buffer objects, and the BO itself created DYNAMIC_DRAW_ARB
    *
-   * If we are modifying an submitted mesh object then we are carefull not
-   * to needlesly delete submitted buffer objects and replace with new ones,
-   * instead we upload new data to the submitted buffers.
+   * If we are modifying a previously submitted CoglVertexBuffer then we are
+   * carefull not to needlesly delete OpenGL buffer objects and replace with
+   * new ones, instead we upload new data to the existing buffers.
    */
-  
+
   /* NB: We must forget attribute->pointer after submitting since the user
    * is free to re-use that memory for other purposes now. */
 
   /* Pseudo code:
-   * 
+   *
    * Broadly speaking we start with a list of unsorted attributes, and filter
-   * those into 'new' and 're-use' CoglMeshVBO (CBO) lists. We then take the
-   * list of new CBO structs and compare with the CBOs that have already been
-   * submitted to the GPU (but ignoring those we already know will be re-used)
-   * to determine what other CBOs can be re-used, due to being superseded, 
-   * and what new GL VBOs need to be created.
-   * 
+   * those into 'new' and 're-use' CoglVertexBufferVBO (CBO) lists. We then
+   * take the list of new CBO structs and compare with the CBOs that have
+   * already been submitted to the GPU (but ignoring those we already know will
+   * be re-used) to determine what other CBOs can be re-used, due to being
+   * superseded, and what new GL VBOs need to be created.
+   *
    * We have three kinds of CBOs:
    * - Unstrided CBOs
    *    These contain a single tightly packed attribute
@@ -1193,7 +1201,7 @@ cogl_mesh_submit (CoglHandle handle)
    *   else
    *     add to the new-multipack-CBO
    * free list of unsorted-attribs
-   * 
+   *
    * Next compare the new list of CBOs with the submitted set and try to
    * minimize the memory bandwidth required to upload the attributes and the
    * overhead of creating new GL-BOs.
@@ -1207,7 +1215,7 @@ cogl_mesh_submit (CoglHandle handle)
    *    (I.e. ones currently submitted to the GPU)
    * - The "final" CBOs
    *	(The result of resolving the differences between the above sets)
-   * 
+   *
    * The re-use CBOs are dealt with first, and we simply delete any remaining
    * attributes in these that are still marked as UNUSED, and move them
    * to the list of final CBOs.
@@ -1220,11 +1228,11 @@ cogl_mesh_submit (CoglHandle handle)
    * based on the matches). If the CBO node is superseded it is freed,
    * if it is modified but may be needed for more descisions later it is
    * relinked back into the submitted list and if it's identical to a new
-   * CBO it will be linked into the final list. 
+   * CBO it will be linked into the final list.
    *
    * At the end the list of submitted CBOs represents the attributes that were
-   * deleted from the mesh.
-   * 
+   * deleted from the buffer.
+   *
    * Iterate re-use-CBOs:
    *   Iterate attribs for each:
    *	 if attrib UNUSED:
@@ -1260,11 +1268,12 @@ cogl_mesh_submit (CoglHandle handle)
    *   delete the submitted GL-BO
    *   free the submitted CBO struct
    */
-  
-  new_multipack_vbo = g_slice_alloc (sizeof (CoglMeshVBO));
+
+  new_multipack_vbo = g_slice_alloc (sizeof (CoglVertexBufferVBO));
   new_multipack_vbo->vbo_name = 0;
-  new_multipack_vbo->flags = COGL_MESH_VBO_FLAG_MULTIPACK
-			     | COGL_MESH_VBO_FLAG_INFREQUENT_RESUBMIT;
+  new_multipack_vbo->flags =
+    COGL_VERTEX_BUFFER_VBO_FLAG_MULTIPACK
+    | COGL_VERTEX_BUFFER_VBO_FLAG_INFREQUENT_RESUBMIT;
   new_multipack_vbo->vbo_bytes = 0;
   new_multipack_vbo->attributes = NULL;
   new_vbos = g_list_prepend (new_vbos, new_multipack_vbo);
@@ -1275,11 +1284,11 @@ cogl_mesh_submit (CoglHandle handle)
   /* Start with a list of unsorted attributes, and filter those into
    * potential new Cogl BO structs
    */
-  for (tmp = mesh->new_attributes; tmp != NULL; tmp = tmp->next)
+  for (tmp = buffer->new_attributes; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshAttribute *attribute = tmp->data;
-      
-      if (attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_SUBMITTED)
+      CoglVertexBufferAttrib *attribute = tmp->data;
+
+      if (attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_SUBMITTED)
 	{
 	  /* If the attribute is already marked as submitted, then we need
 	   * to find the existing VBO that contains it so we dont delete it.
@@ -1289,26 +1298,30 @@ cogl_mesh_submit (CoglHandle handle)
 	   */
 	  filter_already_submitted_attribute (attribute,
 					      &reuse_vbos,
-					      &mesh->submitted_vbos);
+					      &buffer->submitted_vbos);
 	}
       else if (attribute->stride)
 	{
-	  /* look for a CoglMeshVBO that the attribute is interleved with. If
-	   * one can't be found then a new CoglMeshVBO is allocated and added
-	   * to the list of new_vbos: */
+	  /* look for a CoglVertexBufferVBO that the attribute is
+           * interleved with. If one can't be found then a new
+           * CoglVertexBufferVBO is allocated and added to the list of
+           * new_vbos: */
 	  filter_strided_attribute (attribute, &new_vbos);
 	}
-      else if (attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_FREQUENT_RESUBMIT)
+      else if (attribute->flags &
+               COGL_VERTEX_BUFFER_ATTRIB_FLAG_FREQUENT_RESUBMIT)
 	{
-	  CoglMeshVBO *cogl_vbo = g_slice_alloc (sizeof (CoglMeshVBO));
-	  
+	  CoglVertexBufferVBO *cogl_vbo =
+            g_slice_alloc (sizeof (CoglVertexBufferVBO));
+
 	  /* attributes we expect will be frequently resubmitted are placed
 	   * in their own VBO so that updates don't impact other attributes
 	   */
 
 	  cogl_vbo->vbo_name = 0;
-	  cogl_vbo->flags = COGL_MESH_VBO_FLAG_UNSTRIDED
-			    | COGL_MESH_VBO_FLAG_FREQUENT_RESUBMIT;
+	  cogl_vbo->flags =
+            COGL_VERTEX_BUFFER_VBO_FLAG_UNSTRIDED
+	    | COGL_VERTEX_BUFFER_VBO_FLAG_FREQUENT_RESUBMIT;
 	  cogl_vbo->attributes = NULL;
 	  cogl_vbo->attributes = g_list_prepend (cogl_vbo->attributes,
 						 attribute);
@@ -1340,16 +1353,16 @@ cogl_mesh_submit (CoglHandle handle)
 	}
     }
 
-  /* At this point all mesh->new_attributes have been filtered into
-   * CoglMeshVBOs... */
-  g_list_free (mesh->new_attributes);
-  mesh->new_attributes = NULL;
-  
+  /* At this point all buffer->new_attributes have been filtered into
+   * CoglVertexBufferVBOs... */
+  g_list_free (buffer->new_attributes);
+  buffer->new_attributes = NULL;
+
   /* If the multipack vbo wasn't needed: */
   if (new_multipack_vbo->attributes == NULL)
     {
       new_vbos = g_list_delete_link (new_vbos, new_multipack_vbo_link);
-      g_slice_free (CoglMeshVBO, new_multipack_vbo);
+      g_slice_free (CoglVertexBufferVBO, new_multipack_vbo);
     }
 
   for (tmp = reuse_vbos; tmp != NULL; tmp = tmp->next)
@@ -1357,40 +1370,40 @@ cogl_mesh_submit (CoglHandle handle)
   final_vbos = g_list_concat (final_vbos, reuse_vbos);
 
   for (tmp = new_vbos; tmp != NULL; tmp = tmp->next)
-    resolve_new_cogl_mesh_vbo (mesh, tmp->data, &final_vbos);
-  
-  /* Anything left corresponds to deleted attributes: */
-  for (tmp = mesh->submitted_vbos; tmp != NULL; tmp = tmp->next)
-    free_cogl_mesh_vbo (tmp->data, TRUE);
-  g_list_free (mesh->submitted_vbos);
+    cogl_vertex_buffer_vbo_resolve (buffer, tmp->data, &final_vbos);
 
-  mesh->submitted_vbos = final_vbos;
+  /* Anything left corresponds to deleted attributes: */
+  for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
+    cogl_vertex_buffer_vbo_free (tmp->data, TRUE);
+  g_list_free (buffer->submitted_vbos);
+
+  buffer->submitted_vbos = final_vbos;
 }
 
 static GLenum
-get_gl_type_from_attribute_flags (CoglMeshAttributeFlags flags)
+get_gl_type_from_attribute_flags (CoglVertexBufferAttribFlags flags)
 {
-  CoglMeshAttributeFlags gl_type =
-    flags & COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_MASK;
+  CoglVertexBufferAttribFlags gl_type =
+    flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_MASK;
 
   switch (gl_type)
     {
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_BYTE:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_BYTE:
       return GL_BYTE;
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_UNSIGNED_BYTE:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_BYTE:
       return GL_UNSIGNED_BYTE;
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_SHORT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_SHORT:
       return GL_SHORT;
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_UNSIGNED_SHORT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_SHORT:
       return GL_UNSIGNED_SHORT;
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_FLOAT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_FLOAT:
       return GL_FLOAT;
 #if HAVE_COGL_GL
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_INT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_INT:
       return GL_INT;
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_UNSIGNED_INT:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_UNSIGNED_INT:
       return GL_UNSIGNED_INT;
-    case COGL_MESH_ATTRIBUTE_FLAG_GL_TYPE_DOUBLE:
+    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_GL_TYPE_DOUBLE:
       return GL_DOUBLE;
 #endif
     default:
@@ -1401,7 +1414,7 @@ get_gl_type_from_attribute_flags (CoglMeshAttributeFlags flags)
 }
 
 static void
-enable_state_for_drawing_mesh (CoglMesh *mesh)
+enable_state_for_drawing_attributes_buffer (CoglVertexBuffer *buffer)
 {
   GList *tmp;
   GLenum gl_type;
@@ -1412,26 +1425,26 @@ enable_state_for_drawing_mesh (CoglMesh *mesh)
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  for (tmp = mesh->submitted_vbos; tmp != NULL; tmp = tmp->next)
+  for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshVBO *cogl_vbo = tmp->data;
+      CoglVertexBufferVBO *cogl_vbo = tmp->data;
       GList *tmp2;
 
       GE (glBindBuffer (GL_ARRAY_BUFFER, cogl_vbo->vbo_name));
 
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *attribute = tmp2->data;
-	  CoglMeshAttributeFlags type =
-	    attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_TYPE_MASK;
-	  
-	  if (!(attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_ENABLED))
+	  CoglVertexBufferAttrib *attribute = tmp2->data;
+	  CoglVertexBufferAttribFlags type =
+	    attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK;
+
+	  if (!(attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED))
 	    continue;
-	  
+
 	  gl_type = get_gl_type_from_attribute_flags (attribute->flags);
 	  switch (type)
 	    {
-	    case COGL_MESH_ATTRIBUTE_FLAG_COLOR_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY:
 	      /* FIXME: go through cogl cache to enable color array */
 	      GE (glEnableClientState (GL_COLOR_ARRAY));
 	      GE (glColorPointer (attribute->n_components,
@@ -1439,14 +1452,14 @@ enable_state_for_drawing_mesh (CoglMesh *mesh)
 				  attribute->stride,
 				  (const GLvoid *)attribute->u.vbo_offset));
 	      break;
-	    case COGL_MESH_ATTRIBUTE_FLAG_NORMAL_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY:
 	      /* FIXME: go through cogl cache to enable normal array */
 	      GE (glEnableClientState (GL_NORMAL_ARRAY));
 	      GE (glNormalPointer (gl_type,
 				   attribute->stride,
 				   (const GLvoid *)attribute->u.vbo_offset));
 	      break;
-	    case COGL_MESH_ATTRIBUTE_FLAG_TEXTURE_COORD_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY:
 	      /* FIXME: set the active texture unit */
 	      /* NB: Cogl currently manages unit 0 */
 	      enable_flags |= (COGL_ENABLE_TEXCOORD_ARRAY
@@ -1459,7 +1472,7 @@ enable_state_for_drawing_mesh (CoglMesh *mesh)
 				     attribute->stride,
 				     (const GLvoid *)attribute->u.vbo_offset));
 	      break;
-	    case COGL_MESH_ATTRIBUTE_FLAG_VERTEX_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
 	      enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
 	      /* GE (glEnableClientState (GL_VERTEX_ARRAY)); */
 	      GE (glVertexPointer (attribute->n_components,
@@ -1467,15 +1480,16 @@ enable_state_for_drawing_mesh (CoglMesh *mesh)
 				   attribute->stride,
 				   (const GLvoid *)attribute->u.vbo_offset));
 	      break;
-	    case COGL_MESH_ATTRIBUTE_FLAG_CUSTOM_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_CUSTOM_ARRAY:
 	      {
 #ifdef MAY_HAVE_PROGRAMABLE_GL
 		GLboolean normalized = GL_FALSE;
-		if (attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_NORMALIZED)
+		if (attribute->flags &
+                    COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMALIZED)
 		  normalized = GL_TRUE;
 		/* FIXME: go through cogl cache to enable generic array */
 		GE (glEnableVertexAttribArray (generic_index++));
-		GE (glVertexAttribPointer (generic_index, 
+		GE (glVertexAttribPointer (generic_index,
 					   attribute->n_components,
 					   gl_type,
 					   normalized,
@@ -1490,13 +1504,13 @@ enable_state_for_drawing_mesh (CoglMesh *mesh)
 	    }
 	}
     }
-  
+
   cogl_enable (enable_flags);
 
 }
 
 static void
-disable_state_for_drawing_mesh (CoglMesh *mesh)
+disable_state_for_drawing_buffer (CoglVertexBuffer *buffer)
 {
   GList *tmp;
   GLenum gl_type;
@@ -1510,40 +1524,40 @@ disable_state_for_drawing_mesh (CoglMesh *mesh)
   GE (glBindBuffer (GL_ARRAY_BUFFER, 0));
 
   generic_index = 0;
-  for (tmp = mesh->submitted_vbos; tmp != NULL; tmp = tmp->next)
+  for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
     {
-      CoglMeshVBO *cogl_vbo = tmp->data;
+      CoglVertexBufferVBO *cogl_vbo = tmp->data;
       GList *tmp2;
 
       for (tmp2 = cogl_vbo->attributes; tmp2 != NULL; tmp2 = tmp2->next)
 	{
-	  CoglMeshAttribute *attribute = tmp2->data;
-	  CoglMeshAttributeFlags type =
-	    attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_TYPE_MASK;
+	  CoglVertexBufferAttrib *attribute = tmp2->data;
+	  CoglVertexBufferAttribFlags type =
+	    attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_TYPE_MASK;
 
-	  if (!(attribute->flags & COGL_MESH_ATTRIBUTE_FLAG_ENABLED))
+	  if (!(attribute->flags & COGL_VERTEX_BUFFER_ATTRIB_FLAG_ENABLED))
 	    continue;
 
 	  gl_type = get_gl_type_from_attribute_flags(attribute->flags);
 	  switch (type)
 	    {
-	    case COGL_MESH_ATTRIBUTE_FLAG_COLOR_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_COLOR_ARRAY:
 	      /* FIXME: go through cogl cache to enable color array */
 	      GE (glDisableClientState (GL_COLOR_ARRAY));
 	      break;
-	    case COGL_MESH_ATTRIBUTE_FLAG_NORMAL_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_NORMAL_ARRAY:
 	      /* FIXME: go through cogl cache to enable normal array */
 	      GE (glDisableClientState (GL_NORMAL_ARRAY));
 	      break;
-	    case COGL_MESH_ATTRIBUTE_FLAG_TEXTURE_COORD_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_TEXTURE_COORD_ARRAY:
 	      /* FIXME: set the active texture unit */
 	      /* NB: Cogl currently manages unit 0 */
 	      /* GE (glDisableClientState (GL_VERTEX_ARRAY)); */
 	      break;
-	    case COGL_MESH_ATTRIBUTE_FLAG_VERTEX_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_VERTEX_ARRAY:
 	      /* GE (glDisableClientState (GL_VERTEX_ARRAY)); */
 	      break;
-	    case COGL_MESH_ATTRIBUTE_FLAG_CUSTOM_ARRAY:
+	    case COGL_VERTEX_BUFFER_ATTRIB_FLAG_CUSTOM_ARRAY:
 #ifdef MAY_HAVE_PROGRAMABLE_GL
 	      /* FIXME: go through cogl cache to enable generic array */
 	      GE (glDisableVertexAttribArray (generic_index++));
@@ -1557,62 +1571,63 @@ disable_state_for_drawing_mesh (CoglMesh *mesh)
 }
 
 void
-cogl_mesh_draw_arrays (CoglHandle handle,
-		       GLenum mode,
-		       GLint first,
-		       GLsizei count)
+cogl_vertex_buffer_draw (CoglHandle handle,
+		         GLenum mode,
+		         GLint first,
+		         GLsizei count)
 {
-  CoglMesh *mesh;
-  
-  if (!cogl_is_mesh (handle))
+  CoglVertexBuffer *buffer;
+
+  if (!cogl_is_vertex_buffer (handle))
     return;
-  
-  mesh = _cogl_mesh_pointer_from_handle (handle);
-  
-  enable_state_for_drawing_mesh (mesh);
+
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+
+  enable_state_for_drawing_attributes_buffer (buffer);
 
   /* FIXME: flush cogl cache */
   GE (glDrawArrays (mode, first, count));
-  
-  disable_state_for_drawing_mesh (mesh);
+
+  disable_state_for_drawing_buffer (buffer);
 }
 
 void
-cogl_mesh_draw_range_elements (CoglHandle handle,
-			       GLenum mode,
-			       GLuint start,
-			       GLuint end,
-			       GLsizei count,
-			       GLenum type,
-			       const GLvoid *indices)
+cogl_vertex_buffer_draw_elements (CoglHandle handle,
+			          GLenum mode,
+			          GLuint min_index,
+			          GLuint max_index,
+			          GLsizei count,
+			          GLenum indices_type,
+			          const GLvoid *indices)
 {
-  CoglMesh *mesh;
+  CoglVertexBuffer *buffer;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  if (!cogl_is_mesh (handle))
+
+  if (!cogl_is_vertex_buffer (handle))
     return;
-  
-  mesh = _cogl_mesh_pointer_from_handle (handle);
-  
-  enable_state_for_drawing_mesh (mesh);
+
+  buffer = _cogl_vertex_buffer_pointer_from_handle (handle);
+
+  enable_state_for_drawing_attributes_buffer (buffer);
 
   /* FIXME: flush cogl cache */
-  GE (glDrawRangeElements (mode, start, end, count, type, indices));
+  GE (glDrawRangeElements (mode, min_index, max_index,
+                           count, indices_type, indices));
 
-  disable_state_for_drawing_mesh (mesh);
+  disable_state_for_drawing_buffer (buffer);
 }
 
 static void
-_cogl_mesh_free (CoglMesh *mesh)
+_cogl_vertex_buffer_free (CoglVertexBuffer *buffer)
 {
   GList *tmp;
 
-  for (tmp = mesh->submitted_vbos; tmp != NULL; tmp = tmp->next)
-    free_cogl_mesh_vbo (tmp->data, TRUE);
-  for (tmp = mesh->new_attributes; tmp != NULL; tmp = tmp->next)
-    free_mesh_attribute (tmp->data);
+  for (tmp = buffer->submitted_vbos; tmp != NULL; tmp = tmp->next)
+    cogl_vertex_buffer_vbo_free (tmp->data, TRUE);
+  for (tmp = buffer->new_attributes; tmp != NULL; tmp = tmp->next)
+    cogl_vertex_buffer_attribute_free (tmp->data);
 
-  g_slice_free (CoglMesh, mesh);
+  g_slice_free (CoglVertexBuffer, buffer);
 }
 

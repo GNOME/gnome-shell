@@ -62,7 +62,7 @@
     <xi:include href="xml/cogl-offscreen.xml"/>
     <xi:include href="xml/cogl-fixed.xml"/>
     <xi:include href="xml/cogl-color.xml"/>
-    <xi:include href="xml/cogl-mesh.xml"/>
+    <xi:include href="xml/cogl-vertex-buffer.xml"/>
 
   </chapter>
 

@@ -28,8 +28,6 @@
 
 #include <glib.h>
 
-typedef struct _CoglBitmap CoglBitmap;
-
 struct _CoglBitmap
 {
   guchar          *data;
@@ -91,5 +89,10 @@ _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     gint        dst_y,
 			     gint        width,
 			     gint        height);
+
+gboolean
+_cogl_bitmap_get_size_from_file (const gchar *filename,
+                                 gint        *width,
+                                 gint        *height);
 
 #endif /* __COGL_BITMAP_H */

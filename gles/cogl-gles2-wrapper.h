@@ -264,22 +264,20 @@ struct _CoglGles2WrapperShader
 void cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper);
 void cogl_gles2_wrapper_deinit (CoglGles2Wrapper *wrapper);
 
-void cogl_wrap_glClearColorx (GLclampx r, GLclampx g, GLclampx b, GLclampx a);
-
 void cogl_wrap_glPushMatrix ();
 void cogl_wrap_glPopMatrix ();
 void cogl_wrap_glMatrixMode (GLenum mode);
 void cogl_wrap_glLoadIdentity ();
-void cogl_wrap_glMultMatrixx (const GLfixed *m);
-void cogl_wrap_glFrustumx (GLfixed left, GLfixed right,
-			   GLfixed bottom, GLfixed top,
-			   GLfixed z_near, GLfixed z_far);
-void cogl_wrap_glScalex (GLfixed x, GLfixed y, GLfixed z);
-void cogl_wrap_glTranslatex (GLfixed x, GLfixed y, GLfixed z);
-void cogl_wrap_glRotatex (GLfixed angle, GLfixed x, GLfixed y, GLfixed z);
-void cogl_wrap_glOrthox (GLfixed left, GLfixed right,
-			 GLfixed bottom, GLfixed top,
-			 GLfixed near, GLfixed far);
+void cogl_wrap_glMultMatrixf (const GLfloat *m);
+void cogl_wrap_glFrustumf (GLfloat left, GLfloat right,
+			   GLfloat bottom, GLfloat top,
+			   GLfloat z_near, GLfloat z_far);
+void cogl_wrap_glScalef (GLfloat x, GLfloat y, GLfloat z);
+void cogl_wrap_glTranslatef (GLfloat x, GLfloat y, GLfloat z);
+void cogl_wrap_glRotatef (GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
+void cogl_wrap_glOrthof (GLfloat left, GLfloat right,
+			 GLfloat bottom, GLfloat top,
+			 GLfloat near, GLfloat far);
 
 void cogl_wrap_glEnable (GLenum cap);
 void cogl_wrap_glDisable (GLenum cap);
@@ -293,7 +291,7 @@ void cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
 void cogl_wrap_glNormalPointer (GLenum type, GLsizei stride,
 				const GLvoid *pointer);
 
-void cogl_wrap_glTexEnvx (GLenum target, GLenum pname, GLfixed param);
+void cogl_wrap_glTexEnvf (GLenum target, GLenum pname, GLfloat param);
 
 void cogl_wrap_glClientActiveTexture (GLenum texture);
 void cogl_wrap_glActiveTexture (GLenum texture);
@@ -303,18 +301,19 @@ void cogl_wrap_glDisableClientState (GLenum array);
 
 void cogl_wrap_glAlphaFunc (GLenum func, GLclampf ref);
 
-void cogl_wrap_glColor4x (GLclampx r, GLclampx g, GLclampx b, GLclampx a);
+void cogl_wrap_glColor4f (GLclampf r, GLclampf g, GLclampf b, GLclampf a);
 
-void cogl_wrap_glClipPlanex (GLenum plane, GLfixed *equation);
+void cogl_wrap_glClipPlanef (GLenum plane, GLfloat *equation);
 
 void cogl_wrap_glGetIntegerv (GLenum pname, GLint *params);
-void cogl_wrap_glGetFixedv (GLenum pname, GLfixed *params);
+void cogl_wrap_glGetFloatv (GLenum pname, GLfloat *params);
 
-void cogl_wrap_glFogx (GLenum pname, GLfixed param);
-void cogl_wrap_glFogxv (GLenum pname, const GLfixed *params);
+void cogl_wrap_glFogf (GLenum pname, GLfloat param);
+void cogl_wrap_glFogfv (GLenum pname, const GLfloat *params);
 
 void cogl_wrap_glDrawArrays (GLenum mode, GLint first, GLsizei count);
-
+void cogl_wrap_glDrawElements (GLenum mode, GLsizei count, GLenum type,
+                               const GLvoid *indices);
 void cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param);
 
 void cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
@@ -330,35 +329,35 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 /* If we're not using GL ES 2 then just use the GL functions
    directly */
 
-#define cogl_wrap_glClearColorx        glClearColorx
 #define cogl_wrap_glDrawArrays         glDrawArrays
+#define cogl_wrap_glDrawElements       glDrawElements
 #define cogl_wrap_glPushMatrix         glPushMatrix
 #define cogl_wrap_glPopMatrix          glPopMatrix
 #define cogl_wrap_glMatrixMode         glMatrixMode
 #define cogl_wrap_glLoadIdentity       glLoadIdentity
-#define cogl_wrap_glMultMatrixx        glMultMatrixx
-#define cogl_wrap_glFrustumx           glFrustumx
-#define cogl_wrap_glScalex             glScalex
-#define cogl_wrap_glTranslatex         glTranslatex
-#define cogl_wrap_glRotatex            glRotatex
-#define cogl_wrap_glOrthox             glOrthox
+#define cogl_wrap_glMultMatrixf        glMultMatrixf
+#define cogl_wrap_glFrustumf           glFrustumf
+#define cogl_wrap_glScalef             glScalef
+#define cogl_wrap_glTranslatef         glTranslatef
+#define cogl_wrap_glRotatef            glRotatef
+#define cogl_wrap_glOrthof             glOrthof
 #define cogl_wrap_glEnable             glEnable
 #define cogl_wrap_glDisable            glDisable
 #define cogl_wrap_glTexCoordPointer    glTexCoordPointer
 #define cogl_wrap_glVertexPointer      glVertexPointer
 #define cogl_wrap_glColorPointer       glColorPointer
 #define cogl_wrap_glNormalPointer      glNormalPointer
-#define cogl_wrap_glTexEnvx            glTexEnvx
+#define cogl_wrap_glTexEnvf            glTexEnvf
 #define cogl_wrap_glActiveTexture      glActiveTexture
 #define cogl_wrap_glEnableClientState  glEnableClientState
 #define cogl_wrap_glDisableClientState glDisableClientState
 #define cogl_wrap_glAlphaFunc          glAlphaFunc
-#define cogl_wrap_glColor4x            glColor4x
-#define cogl_wrap_glClipPlanex         glClipPlanex
+#define cogl_wrap_glColor4f            glColor4f
+#define cogl_wrap_glClipPlanef         glClipPlanef
 #define cogl_wrap_glGetIntegerv        glGetIntegerv
-#define cogl_wrap_glGetFixedv          glGetFixedv
-#define cogl_wrap_glFogx               glFogx
-#define cogl_wrap_glFogxv              glFogxv
+#define cogl_wrap_glGetFloatv          glGetFloatv
+#define cogl_wrap_glFogf               glFogf
+#define cogl_wrap_glFogfv              glFogfv
 #define cogl_wrap_glTexParameteri      glTexParameteri
 
 /* The extra third parameter of the bind texture wrapper isn't needed

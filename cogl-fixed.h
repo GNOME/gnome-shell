@@ -456,6 +456,18 @@ G_BEGIN_DECLS
 CoglFixed cogl_fixed_sin    (CoglFixed angle);
 
 /**
+ * cogl_fixed_tan:
+ * @angle: a #CoglFixed number
+ *
+ * Computes the tangent of @angle.
+ *
+ * Return value: the tangent of the passed angle, in fixed point notation
+ *
+ * Since: 1.0
+ */
+CoglFixed cogl_fixed_tan    (CoglFixed angle);
+
+/**
  * cogl_fixed_cos:
  * @angle: a #CoglFixed number
  *
