@@ -45,8 +45,6 @@ typedef struct
   /* Enable cache */
   gulong            enable_flags;
   guint8            color_alpha;
-  COGLenum          blend_src_factor;
-  COGLenum          blend_dst_factor;
 
   gboolean          enable_backface_culling;
 

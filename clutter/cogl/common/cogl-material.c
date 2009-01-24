@@ -13,6 +13,14 @@
 #include <glib.h>
 #include <string.h>
 
+/*
+ * GL/GLES compatability defines for material thingies:
+ */
+
+#ifdef HAVE_COGL_GLES2
+#define glAlphaFunc cogl_wrap_glAlphaFunc
+#endif
+
 static void _cogl_material_free (CoglMaterial *tex);
 static void _cogl_material_layer_free (CoglMaterialLayer *layer);
 

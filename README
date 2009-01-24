@@ -248,6 +248,9 @@ Release Notes for Clutter 1.0
 * A CoglMesh type and utility API has been added; this is currently used to
   support describing texture matrices.
 
+* cogl_alpha_func has been removed, since this is now controlled using the
+  material API via cogl_material_set_alpha_test_function ()
+
 Release Notes for Clutter 0.8
 -------------------------------
 
