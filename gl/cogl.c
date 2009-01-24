@@ -316,23 +316,6 @@ cogl_get_enable ()
 }
 
 void
-cogl_blend_func (COGLenum src_factor, COGLenum dst_factor)
-{
-  /* This function caches the blending setup in the
-   * hope of lessening GL traffic.
-   */
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (ctx->blend_src_factor != src_factor ||
-      ctx->blend_dst_factor != dst_factor)
-    {
-      glBlendFunc (src_factor, dst_factor);
-      ctx->blend_src_factor = src_factor;
-      ctx->blend_dst_factor = dst_factor;
-    }
-}
-
-void
 cogl_enable_depth_test (gboolean setting)
 {
   if (setting)
@@ -575,13 +558,6 @@ _cogl_disable_clip_planes (void)
   GE( glDisable (GL_CLIP_PLANE2) );
   GE( glDisable (GL_CLIP_PLANE1) );
   GE( glDisable (GL_CLIP_PLANE0) );
-}
-
-void
-cogl_alpha_func (COGLenum     func,
-		 float ref)
-{
-  GE( glAlphaFunc (func, (ref)) );
 }
 
 void
