@@ -73,14 +73,13 @@ _cogl_error_string(GLenum errorCode)
 }
 #endif
 
-
 CoglFuncPtr
 cogl_get_proc_address (const gchar* name)
 {
   return NULL;
 }
 
-gboolean 
+gboolean
 cogl_check_extension (const gchar *name, const gchar *ext)
 {
   return FALSE;
@@ -99,39 +98,53 @@ cogl_paint_init (const CoglColor *color)
                 0);
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  cogl_wrap_glDisable (GL_LIGHTING);
-  cogl_wrap_glDisable (GL_FOG);
+  glDisable (GL_LIGHTING);
+  glDisable (GL_FOG);
+
+  /*
+   *  Disable the depth test for now as has some strange side effects,
+   *  mainly on x/y axis rotation with multiple layers at same depth
+   *  (eg rotating text on a bg has very strange effect). Seems no clean
+   *  100% effective way to fix without other odd issues.. So for now
+   *  move to application to handle and add cogl_enable_depth_test()
+   *  as for custom actors (i.e groups) to enable if need be.
+   *
+   * glEnable (GL_DEPTH_TEST);
+   * glEnable (GL_ALPHA_TEST)
+   * glDepthFunc (GL_LEQUAL);
+   * glAlphaFunc (GL_GREATER, 0.1);
+   */
 }
 
 /* FIXME: inline most of these  */
 void
 cogl_push_matrix (void)
 {
-  GE( cogl_wrap_glPushMatrix() );
+  GE( glPushMatrix() );
 }
 
 void
 cogl_pop_matrix (void)
 {
-  GE( cogl_wrap_glPopMatrix() );
+  GE( glPopMatrix() );
 }
 
 void
 cogl_scale (float x, float y)
 {
-  GE( cogl_wrap_glScalef (x, y, 1.0) );
+  GE( glScalef (x, y, 1.0) );
 }
 
 void
 cogl_translate (float x, float y, float z)
 {
-  GE( cogl_wrap_glTranslatef (x, y, z) );
+  GE( glTranslatef (x, y, z) );
 }
 
 void
 cogl_rotate (float angle, float x, float y, float z)
 {
-  GE( cogl_wrap_glRotatef (angle, x, y, z) );
+  GE( glRotatef (angle, x, y, z) );
 }
 
 static inline gboolean
@@ -147,17 +160,17 @@ cogl_toggle_flag (CoglContext *ctx,
     {
       if (!(ctx->enable_flags & flag))
 	{
-	  GE( cogl_wrap_glEnable (gl_flag) );
+	  GE( glEnable (gl_flag) );
 	  ctx->enable_flags |= flag;
 	  return TRUE;
 	}
     }
   else if (ctx->enable_flags & flag)
     {
-      GE( cogl_wrap_glDisable (gl_flag) );
+      GE( glDisable (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
-  
+
   return FALSE;
 }
 
@@ -174,17 +187,17 @@ cogl_toggle_client_flag (CoglContext *ctx,
     {
       if (!(ctx->enable_flags & flag))
 	{
-	  GE( cogl_wrap_glEnableClientState (gl_flag) );
+	  GE( glEnableClientState (gl_flag) );
 	  ctx->enable_flags |= flag;
 	  return TRUE;
 	}
     }
   else if (ctx->enable_flags & flag)
     {
-      GE( cogl_wrap_glDisableClientState (gl_flag) );
+      GE( glDisableClientState (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
-  
+
   return FALSE;
 }
 
@@ -195,11 +208,11 @@ cogl_enable (gulong flags)
    * hope of lessening number GL traffic.
   */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   cogl_toggle_flag (ctx, flags,
                     COGL_ENABLE_BLEND,
                     GL_BLEND);
-  
+
   cogl_toggle_flag (ctx, flags,
 		    COGL_ENABLE_TEXTURE_2D,
 		    GL_TEXTURE_2D);
@@ -211,7 +224,7 @@ cogl_enable (gulong flags)
   cogl_toggle_client_flag (ctx, flags,
 			   COGL_ENABLE_VERTEX_ARRAY,
 			   GL_VERTEX_ARRAY);
-  
+
   cogl_toggle_client_flag (ctx, flags,
 			   COGL_ENABLE_TEXCOORD_ARRAY,
 			   GL_TEXTURE_COORD_ARRAY);
@@ -225,7 +238,7 @@ gulong
 cogl_get_enable ()
 {
   _COGL_GET_CONTEXT (ctx, 0);
-  
+
   return ctx->enable_flags;
 }
 
@@ -234,15 +247,15 @@ cogl_enable_depth_test (gboolean setting)
 {
   if (setting)
     {
-      cogl_wrap_glEnable (GL_DEPTH_TEST);
-      cogl_wrap_glEnable (GL_ALPHA_TEST);
+      glEnable (GL_DEPTH_TEST);
+      glEnable (GL_ALPHA_TEST);
       glDepthFunc (GL_LEQUAL);
-      cogl_wrap_glAlphaFunc (GL_GREATER, 0.1);
+      glAlphaFunc (GL_GREATER, 0.1);
     }
   else
     {
-      cogl_wrap_glDisable (GL_DEPTH_TEST);
-      cogl_wrap_glDisable (GL_ALPHA_TEST);
+      glDisable (GL_DEPTH_TEST);
+      glDisable (GL_ALPHA_TEST);
     }
 }
 
@@ -258,14 +271,14 @@ void
 cogl_set_source_color (const CoglColor *color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
 #if 0 /*HAVE_GLES_COLOR4UB*/
 
-  /* NOTE: seems SDK_OGLES-1.1_LINUX_PCEMULATION_2.02.22.0756 has this call 
-   * but is broken - see #857. Therefor disabling. 
+  /* NOTE: seems SDK_OGLES-1.1_LINUX_PCEMULATION_2.02.22.0756 has this call
+   * but is broken - see #857. Therefor disabling.
   */
 
-  /* 
+  /*
    * GLES 1.1 does actually have this function, it's in the header file but
    * missing in the reference manual (and SDK):
    *
@@ -279,12 +292,12 @@ cogl_set_source_color (const CoglColor *color)
 
 #else
   /* conversion can cause issues with picking on some gles implementations */
-  GE( cogl_wrap_glColor4f (cogl_color_get_red (color),
+  GE( glColor4f (cogl_color_get_red (color),
                            cogl_color_get_green (color),
                            cogl_color_get_blue (color),
                            cogl_color_get_alpha (color)) );
 #endif
-  
+
   /* Store alpha for proper blending enables */
   ctx->color_alpha = cogl_color_get_alpha_byte (color);
 }
@@ -297,7 +310,7 @@ apply_matrix (const float *matrix, float *vertex)
 
   for (y = 0; y < 4; y++)
     for (x = 0; x < 4; x++)
-      vertex_out[y] += (vertex[x] * matrix[y + x * 4]);
+      vertex_out[y] += vertex[x] * matrix[y + x * 4];
 
   memcpy (vertex, vertex_out, sizeof (vertex_out));
 }
@@ -315,7 +328,7 @@ project_vertex (float *modelview,
   apply_matrix (project, vertex);
   /* Convert from homogenized coordinates */
   for (i = 0; i < 4; i++)
-    vertex[i] = (vertex[i] / vertex[3]);
+    vertex[i] /= vertex[3];
 }
 
 static void
@@ -332,26 +345,26 @@ set_clip_plane (GLint plane_num,
   angle = atan2f (vertex_b[1] - vertex_a[1],
                   vertex_b[0] - vertex_a[0]) * (180.0/G_PI);
 
-  GE( cogl_wrap_glPushMatrix () );
+  GE( glPushMatrix () );
   /* Load the identity matrix and multiply by the reverse of the
      projection matrix so we can specify the plane in screen
      coordinates */
-  GE( cogl_wrap_glLoadIdentity () );
-  GE( cogl_wrap_glMultMatrixf ((GLfloat *) ctx->inverse_projection) );
+  GE( glLoadIdentity () );
+  GE( glMultMatrixf ((GLfloat *) ctx->inverse_projection) );
   /* Rotate about point a */
-  GE( cogl_wrap_glTranslatef (vertex_a[0], vertex_a[1], vertex_a[2]) );
+  GE( glTranslatef (vertex_a[0], vertex_a[1], vertex_a[2]) );
   /* Rotate the plane by the calculated angle so that it will connect
      the two points */
-  GE( cogl_wrap_glRotatef (angle, 0.0f, 0.0f, 1.0f) );
-  GE( cogl_wrap_glTranslatef (-vertex_a[0], -vertex_a[1], -vertex_a[2]) );
+  GE( glRotatef (angle, 0.0f, 0.0f, 1.0f) );
+  GE( glTranslatef (-vertex_a[0], -vertex_a[1], -vertex_a[2]) );
 
   plane[0] = 0;
   plane[1] = -1.0;
   plane[2] = 0;
   plane[3] = vertex_a[1];
-  GE( cogl_wrap_glClipPlanef (plane_num, plane) );
+  GE( glClipPlanef (plane_num, plane) );
 
-  GE( cogl_wrap_glPopMatrix () );
+  GE( glPopMatrix () );
 }
 
 void
@@ -366,21 +379,21 @@ _cogl_set_clip_planes (float x_offset,
   float vertex_tr[4] = { x_offset + width, y_offset, 0, 1.0 };
   float vertex_bl[4] = { x_offset, y_offset + height, 0, 1.0 };
   float vertex_br[4] = { x_offset + width, y_offset + height,
-				0, 1.0 };
+                        0, 1.0 };
 
-  GE( cogl_wrap_glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
-  GE( cogl_wrap_glGetFloatv (GL_PROJECTION_MATRIX, projection) );
+  GE( glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
+  GE( glGetFloatv (GL_PROJECTION_MATRIX, projection) );
 
   project_vertex (modelview, projection, vertex_tl);
   project_vertex (modelview, projection, vertex_tr);
   project_vertex (modelview, projection, vertex_bl);
   project_vertex (modelview, projection, vertex_br);
 
-  /* If the order of the top and bottom lines is different from
-     the order of the left and right lines then the clip rect must
-     have been transformed so that the back is visible. We
-     therefore need to swap one pair of vertices otherwise all of
-     the planes will be the wrong way around */
+  /* If the order of the top and bottom lines is different from the
+     order of the left and right lines then the clip rect must have
+     been transformed so that the back is visible. We therefore need
+     to swap one pair of vertices otherwise all of the planes will be
+     the wrong way around */
   if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
       != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
     {
@@ -410,8 +423,8 @@ _cogl_add_stencil_clip (float x_offset,
 
   if (first)
     {
-      GE( cogl_wrap_glEnable (GL_STENCIL_TEST) );
-      
+      GE( glEnable (GL_STENCIL_TEST) );
+
       /* Initially disallow everything */
       GE( glClearStencil (0) );
       GE( glClear (GL_STENCIL_BUFFER_BIT) );
@@ -434,15 +447,15 @@ _cogl_add_stencil_clip (float x_offset,
 	 only pixels where both the original stencil buffer and the
 	 rectangle are set will be valid */
       GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
-      GE( cogl_wrap_glPushMatrix () );
-      GE( cogl_wrap_glLoadIdentity () );
-      GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
-      GE( cogl_wrap_glPushMatrix () );
-      GE( cogl_wrap_glLoadIdentity () );
+      GE( glPushMatrix () );
+      GE( glLoadIdentity () );
+      GE( glMatrixMode (GL_PROJECTION) );
+      GE( glPushMatrix () );
+      GE( glLoadIdentity () );
       cogl_rectangle (-1.0, -1.0, 2, 2);
-      GE( cogl_wrap_glPopMatrix () );
-      GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
-      GE( cogl_wrap_glPopMatrix () );
+      GE( glPopMatrix () );
+      GE( glMatrixMode (GL_MODELVIEW) );
+      GE( glPopMatrix () );
     }
 
   /* Restore the stencil mode */
@@ -453,37 +466,34 @@ _cogl_add_stencil_clip (float x_offset,
 void
 _cogl_set_matrix (const float *matrix)
 {
-  GE( cogl_wrap_glLoadIdentity () );
-  GE( cogl_wrap_glMultMatrixf (matrix) );
+  GE( glLoadIdentity () );
+  GE( glMultMatrixf (matrix) );
 }
 
 void
 _cogl_disable_stencil_buffer (void)
 {
-  GE( cogl_wrap_glDisable (GL_STENCIL_TEST) );
+  GE( glDisable (GL_STENCIL_TEST) );
 }
 
 void
 _cogl_enable_clip_planes (void)
 {
-  GE( cogl_wrap_glEnable (GL_CLIP_PLANE0) );
-  GE( cogl_wrap_glEnable (GL_CLIP_PLANE1) );
-  GE( cogl_wrap_glEnable (GL_CLIP_PLANE2) );
-  GE( cogl_wrap_glEnable (GL_CLIP_PLANE3) );
+  GE( glEnable (GL_CLIP_PLANE0) );
+  GE( glEnable (GL_CLIP_PLANE1) );
+  GE( glEnable (GL_CLIP_PLANE2) );
+  GE( glEnable (GL_CLIP_PLANE3) );
 }
 
 void
 _cogl_disable_clip_planes (void)
 {
-  GE( cogl_wrap_glDisable (GL_CLIP_PLANE3) );
-  GE( cogl_wrap_glDisable (GL_CLIP_PLANE2) );
-  GE( cogl_wrap_glDisable (GL_CLIP_PLANE1) );
-  GE( cogl_wrap_glDisable (GL_CLIP_PLANE0) );
+  GE( glDisable (GL_CLIP_PLANE3) );
+  GE( glDisable (GL_CLIP_PLANE2) );
+  GE( glDisable (GL_CLIP_PLANE1) );
+  GE( glDisable (GL_CLIP_PLANE0) );
 }
 
-/*
- * Fixed point implementation of the perspective function
- */
 void
 cogl_perspective (float fovy,
 		  float aspect,
@@ -495,21 +505,21 @@ cogl_perspective (float fovy,
   float fovy_rad_half = (fovy * G_PI) / 360;
 
   GLfloat m[16];
-  
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   memset (&m[0], 0, sizeof (m));
 
-  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
-  GE( cogl_wrap_glLoadIdentity () );
+  GE( glMatrixMode (GL_PROJECTION) );
+  GE( glLoadIdentity () );
 
- /*
+  /*
    * Based on the original algorithm in perspective():
-   * 
+   *
    * 1) xmin = -xmax => xmax + xmin == 0 && xmax - xmin == 2 * xmax
    * same true for y, hence: a == 0 && b == 0;
    *
-   * 2) When working with small numbers, we can are loosing significant
+   * 2) When working with small numbers, we are loosing significant
    * precision
    */
   ymax = (zNear * (sinf (fovy_rad_half) / cosf (fovy_rad_half)));
@@ -527,9 +537,9 @@ cogl_perspective (float fovy,
   M(2,3) = d;
   M(3,2) = -1.0;
 
-  GE( cogl_wrap_glMultMatrixf (m) );
+  GE( glMultMatrixf (m) );
 
-  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+  GE( glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
   memset (ctx->inverse_projection, 0, sizeof (float) * 16);
@@ -557,30 +567,33 @@ cogl_frustum (float        left,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
-  GE( cogl_wrap_glLoadIdentity () );
+  GE( glMatrixMode (GL_PROJECTION) );
+  GE( glLoadIdentity () );
 
-  GE( cogl_wrap_glFrustumf (left, right,
-			    bottom, top,
-			    z_near, z_far) );
+  GE( glFrustumf (left,
+                  right,
+		  bottom,
+                  top,
+		  z_near,
+                  z_far) );
 
-  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
+  GE( glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
   memset (ctx->inverse_projection, 0, sizeof (float) * 16);
 
-  c = -(z_far + z_near / z_far - z_near);
-  d = -(2 * (z_far * z_near) / z_far - z_near);
+  c = - (z_far + z_near) /  (z_far - z_near);
+  d = - (2 * (z_far * z_near)) /  (z_far - z_near);
 
 #define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) = (right - left / 2 * z_near);
-  M(0,3) = (right + left / 2 * z_near);
-  M(1,1) = (top - bottom / 2 * z_near);
-  M(1,3) = (top + bottom / 2 * z_near);
+  M(0,0) =  (right - left) /  (2 * z_near);
+  M(0,3) =  (right + left) /  (2 * z_near);
+  M(1,1) =  (top - bottom) /  (2 * z_near);
+  M(1,3) =  (top + bottom) /  (2 * z_near);
   M(2,3) = -1.0;
-  M(3,2) = (1.0 / d);
-  M(3,3) = (c / d);
-#undef M  
+  M(3,2) = 1.0 / d;
+  M(3,3) = c / d;
+#undef M
 }
 
 void
@@ -591,26 +604,24 @@ cogl_viewport (guint width,
 }
 
 void
-cogl_setup_viewport (guint w,
-		     guint h,
+cogl_setup_viewport (guint width,
+		     guint height,
 		     float fovy,
 		     float aspect,
 		     float z_near,
 		     float z_far)
 {
-  gint width = (gint) w;
-  gint height = (gint) h;
   float z_camera;
   float projection_matrix[16];
-  
+
   GE( glViewport (0, 0, width, height) );
 
   /* For Ortho projection.
-   * cogl_wrap_glOrthof (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
+   * glOrthof (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
   */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
-  
+
   /*
    * camera distance from screen
    *
@@ -620,15 +631,13 @@ cogl_setup_viewport (guint w,
   cogl_get_projection_matrix (projection_matrix);
   z_camera = 0.5 * projection_matrix[0];
 
-  GE( cogl_wrap_glLoadIdentity () );
+  GE( glLoadIdentity () );
 
-  GE( cogl_wrap_glTranslatef (-0.5f, -0.5f, -z_camera) );
+  GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
 
-  GE( cogl_wrap_glScalef ( 1.0 / width,
-                          -1.0 / height,
-                           1.0 / width) );
+  GE( glScalef (1.0f / width, -1.0f / height, 1.0f / width) );
 
-  GE( cogl_wrap_glTranslatef (0, -1.0 * height, 0) );
+  GE( glTranslatef (0.0f, -1.0 * height, 0.0f) );
 }
 
 static void
@@ -640,12 +649,12 @@ _cogl_features_init ()
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  GE( cogl_wrap_glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
+  GE( glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
   /* We need at least three stencil bits to combine clips */
   if (num_stencil_bits > 2)
     flags |= COGL_FEATURE_STENCIL_BUFFER;
 
-  GE( cogl_wrap_glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
+  GE( glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
   if (max_clip_planes >= 4)
     flags |= COGL_FEATURE_FOUR_CLIP_PLANES;
 
@@ -653,6 +662,7 @@ _cogl_features_init ()
   flags |= COGL_FEATURE_SHADERS_GLSL | COGL_FEATURE_OFFSCREEN;
 #endif
 
+  /* Cache features */
   ctx->feature_flags = flags;
   ctx->features_cached = TRUE;
 }
@@ -661,10 +671,10 @@ CoglFeatureFlags
 cogl_get_features ()
 {
   _COGL_GET_CONTEXT (ctx, 0);
-  
+
   if (!ctx->features_cached)
     _cogl_features_init ();
-  
+
   return ctx->feature_flags;
 }
 
@@ -672,23 +682,23 @@ gboolean
 cogl_features_available (CoglFeatureFlags features)
 {
   _COGL_GET_CONTEXT (ctx, 0);
-  
+
   if (!ctx->features_cached)
     _cogl_features_init ();
-  
+
   return (ctx->feature_flags & features) == features;
 }
 
 void
 cogl_get_modelview_matrix (float m[16])
 {
-  cogl_wrap_glGetFloatv (GL_MODELVIEW_MATRIX, m);
+  glGetFloatv (GL_MODELVIEW_MATRIX, m);
 }
 
 void
 cogl_get_projection_matrix (float m[16])
 {
-  cogl_wrap_glGetFloatv (GL_PROJECTION_MATRIX, m);
+  glGetFloatv (GL_PROJECTION_MATRIX, m);
 }
 
 void
@@ -697,7 +707,7 @@ cogl_get_viewport (float v[4])
   GLint viewport[4];
   int i;
 
-  cogl_wrap_glGetIntegerv (GL_VIEWPORT, viewport);
+  glGetIntegerv (GL_VIEWPORT, viewport);
 
   for (i = 0; i < 4; i++)
     v[i] = (float)(viewport[i]);
@@ -706,14 +716,27 @@ cogl_get_viewport (float v[4])
 void
 cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 {
+  GLint value;
   if (red)
-    GE( cogl_wrap_glGetIntegerv(GL_RED_BITS, red) );
+    {
+      GE( glGetIntegerv(GL_RED_BITS, &value) );
+      *red = value;
+    }
   if (green)
-    GE( cogl_wrap_glGetIntegerv(GL_GREEN_BITS, green) );
+    {
+      GE( glGetIntegerv(GL_GREEN_BITS, &value) );
+      *green = value;
+    }
   if (blue)
-    GE( cogl_wrap_glGetIntegerv(GL_BLUE_BITS, blue) );
+    {
+      GE( glGetIntegerv(GL_BLUE_BITS, &value) );
+      *blue = value;
+    }
   if (alpha)
-    GE( cogl_wrap_glGetIntegerv(GL_ALPHA_BITS, alpha ) );
+    {
+      GE( glGetIntegerv(GL_ALPHA_BITS, &value ) );
+      *alpha = value;
+    }
 }
 
 void
@@ -724,19 +747,20 @@ cogl_fog_set (const CoglColor *fog_color,
 {
   GLfloat fogColor[4];
 
-  fogColor[0] = cogl_color_get_red (fog_color);
-  fogColor[1] = cogl_color_get_green (fog_color);
-  fogColor[2] = cogl_color_get_blue (fog_color);
-  fogColor[3] = cogl_color_get_alpha (fog_color);
+  fogColor[0] = cogl_color_get_red_float (fog_color);
+  fogColor[1] = cogl_color_get_green_float (fog_color);
+  fogColor[2] = cogl_color_get_blue_float (fog_color);
+  fogColor[3] = cogl_color_get_alpha_float (fog_color);
 
-  cogl_wrap_glEnable (GL_FOG);
+  glEnable (GL_FOG);
 
-  cogl_wrap_glFogfv (GL_FOG_COLOR, fogColor);
+  glFogfv (GL_FOG_COLOR, fogColor);
 
-  cogl_wrap_glFogf (GL_FOG_MODE, GL_LINEAR);
+  glFogf (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
-  cogl_wrap_glFogf (GL_FOG_DENSITY, (GLfloat) density);
-  cogl_wrap_glFogf (GL_FOG_START, (GLfloat) z_near);
-  cogl_wrap_glFogf (GL_FOG_END, (GLfloat) z_far);
+  glFogf (GL_FOG_DENSITY, (GLfloat) density);
+  glFogf (GL_FOG_START, (GLfloat) z_near);
+  glFogf (GL_FOG_END, (GLfloat) z_far);
 }
+

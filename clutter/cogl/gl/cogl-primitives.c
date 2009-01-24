@@ -47,8 +47,8 @@ _cogl_path_add_node (gboolean new_sub_path,
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  new_node.x =  (x);
-  new_node.y =  (y);
+  new_node.x = x;
+  new_node.y = y;
   new_node.path_size = 0;
 
   if (new_sub_path || ctx->path_nodes->len == 0)
@@ -123,14 +123,22 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
                                   CoglPathNode *path,
                                   gboolean      merge)
 {
-  guint path_start = 0;
-  guint sub_path_num = 0;
-  float bounds_x;
-  float bounds_y;
-  float bounds_w;
-  float bounds_h;
+  guint   path_start = 0;
+  guint   sub_path_num = 0;
+  float   bounds_x;
+  float   bounds_y;
+  float   bounds_w;
+  float   bounds_h;
+  gulong  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Just setup a simple material that doesn't use texturing... */
+  cogl_material_flush_gl_state (ctx->stencil_material, NULL);
+
+  enable_flags |=
+    cogl_material_get_cogl_enable_flags (ctx->source_material);
+  cogl_enable (enable_flags);
 
   _cogl_path_get_bounds (nodes_min, nodes_max,
                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
@@ -155,15 +163,6 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
 
   while (path_start < path_size)
     {
-      gulong      enable_flags = COGL_ENABLE_VERTEX_ARRAY;
-
-      /* Just setup a simple material that doesn't use texturing... */
-      cogl_material_flush_gl_state (ctx->stencil_material, NULL);
-
-      enable_flags |=
-        cogl_material_get_cogl_enable_flags (ctx->source_material);
-      cogl_enable (enable_flags);
-
       GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
                            (guchar *) path
                            + G_STRUCT_OFFSET (CoglPathNode, x)) );
@@ -201,8 +200,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       GE( glMatrixMode (GL_PROJECTION) );
       GE( glPushMatrix () );
       GE( glLoadIdentity () );
-      GE( glRecti (-1, 1, 1, -1) );
-      GE( glRecti (-1, 1, 1, -1) );
+      cogl_rectangle (-1.0, -1.0, 2, 2);
+      cogl_rectangle (-1.0, -1.0, 2, 2);
       GE( glPopMatrix () );
       GE( glMatrixMode (GL_MODELVIEW) );
       GE( glPopMatrix () );
@@ -226,15 +225,15 @@ _cogl_path_fill_nodes ()
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  _cogl_path_get_bounds (ctx->path_nodes_min, ctx->path_nodes_max,
+                         &bounds_x, &bounds_y, &bounds_w, &bounds_h);
+
   _cogl_add_path_to_stencil_buffer (ctx->path_nodes_min,
                                     ctx->path_nodes_max,
                                     ctx->path_nodes->len,
                                     &g_array_index (ctx->path_nodes,
                                                     CoglPathNode, 0),
                                     ctx->clip.stencil_used);
-
-  _cogl_path_get_bounds (ctx->path_nodes_min, ctx->path_nodes_max,
-                         &bounds_x, &bounds_y, &bounds_w, &bounds_h);
 
   cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
 

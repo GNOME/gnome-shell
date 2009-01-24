@@ -171,6 +171,10 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 void
 cogl_paint_init (const CoglColor *color)
 {
+#if COGL_DEBUG
+  fprintf(stderr, "\n ============== Paint Start ================ \n");
+#endif
+
   GE( glClearColor (cogl_color_get_red_float (color),
                     cogl_color_get_green_float (color),
                     cogl_color_get_blue_float (color),
@@ -199,33 +203,31 @@ cogl_paint_init (const CoglColor *color)
 void
 cogl_push_matrix (void)
 {
-  glPushMatrix();
+  GE( glPushMatrix() );
 }
 
 void
 cogl_pop_matrix (void)
 {
-  glPopMatrix();
+  GE( glPopMatrix() );
 }
 
 void
 cogl_scale (float x, float y)
 {
-  glScalef ((float)(x),
-	    (float)(y),
-	    1.0);
+  GE( glScalef (x, y, 1.0) );
 }
 
 void
 cogl_translate (float x, float y, float z)
 {
-  glTranslatef (x, y, z);
+  GE( glTranslatef (x, y, z) );
 }
 
 void
 cogl_rotate (float angle, float x, float y, float z)
 {
-  glRotatef (angle, x, y, z);
+  GE( glRotatef (angle, x, y, z) );
 }
 
 static inline gboolean
@@ -353,10 +355,10 @@ cogl_set_source_color (const CoglColor *color)
 }
 
 static void
-apply_matrix (const GLfloat *matrix, GLfloat *vertex)
+apply_matrix (const float *matrix, float *vertex)
 {
   int x, y;
-  GLfloat vertex_out[4] = { 0 };
+  float vertex_out[4] = { 0 };
 
   for (y = 0; y < 4; y++)
     for (x = 0; x < 4; x++)
@@ -366,7 +368,9 @@ apply_matrix (const GLfloat *matrix, GLfloat *vertex)
 }
 
 static void
-project_vertex (GLfloat *modelview, GLfloat *project, GLfloat *vertex)
+project_vertex (float *modelview,
+		float *project,
+		float *vertex)
 {
   int i;
 
@@ -381,8 +385,8 @@ project_vertex (GLfloat *modelview, GLfloat *project, GLfloat *vertex)
 
 static void
 set_clip_plane (GLint plane_num,
-		const GLfloat *vertex_a,
-		const GLfloat *vertex_b)
+		const float *vertex_a,
+		const float *vertex_b)
 {
   GLdouble plane[4];
   GLfloat angle;
@@ -390,15 +394,15 @@ set_clip_plane (GLint plane_num,
 
   /* Calculate the angle between the axes and the line crossing the
      two points */
-  angle = atan2f ((vertex_b[1] - vertex_a[1]),
-		  (vertex_b[0] - vertex_a[0])) * 180.0f / G_PI;
+  angle = atan2f (vertex_b[1] - vertex_a[1],
+                  vertex_b[0] - vertex_a[0]) * (180.0/G_PI);
 
   GE( glPushMatrix () );
   /* Load the identity matrix and multiply by the reverse of the
      projection matrix so we can specify the plane in screen
      coordinates */
   GE( glLoadIdentity () );
-  GE( glMultMatrixf (ctx->inverse_projection) );
+  GE( glMultMatrixf ((GLfloat *) ctx->inverse_projection) );
   /* Rotate about point a */
   GE( glTranslatef (vertex_a[0], vertex_a[1], vertex_a[2]) );
   /* Rotate the plane by the calculated angle so that it will connect
@@ -406,9 +410,9 @@ set_clip_plane (GLint plane_num,
   GE( glRotatef (angle, 0.0f, 0.0f, 1.0f) );
   GE( glTranslatef (-vertex_a[0], -vertex_a[1], -vertex_a[2]) );
 
-  plane[0] = 0.0f;
-  plane[1] = -1.0f;
-  plane[2] = 0.0f;
+  plane[0] = 0;
+  plane[1] = -1.0;
+  plane[2] = 0;
   plane[3] = vertex_a[1];
   GE( glClipPlane (plane_num, plane) );
 
@@ -423,18 +427,11 @@ _cogl_set_clip_planes (float x_offset,
 {
   GLfloat modelview[16], projection[16];
 
-  GLfloat vertex_tl[4] = {  (x_offset),
-			    (y_offset),
-			   0.0f, 1.0f };
-  GLfloat vertex_tr[4] = {  (x_offset + width),
-			    (y_offset),
-			   0.0f, 1.0f };
-  GLfloat vertex_bl[4] = {  (x_offset),
-			    (y_offset + height),
-			   0.0f, 1.0f };
-  GLfloat vertex_br[4] = {  (x_offset + width),
-			    (y_offset + height),
-			   0.0f, 1.0f };
+  float vertex_tl[4] = { x_offset, y_offset, 0, 1.0 };
+  float vertex_tr[4] = { x_offset + width, y_offset, 0, 1.0 };
+  float vertex_bl[4] = { x_offset, y_offset + height, 0, 1.0 };
+  float vertex_br[4] = { x_offset + width, y_offset + height,
+                        0, 1.0 };
 
   GE( glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
   GE( glGetFloatv (GL_PROJECTION_MATRIX, projection) );
@@ -452,7 +449,7 @@ _cogl_set_clip_planes (float x_offset,
   if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
       != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
     {
-      GLfloat temp[4];
+      float temp[4];
       memcpy (temp, vertex_tl, sizeof (temp));
       memcpy (vertex_tl, vertex_tr, sizeof (temp));
       memcpy (vertex_tr, temp, sizeof (temp));
@@ -512,7 +509,7 @@ _cogl_add_stencil_clip (float x_offset,
       GE( glMatrixMode (GL_PROJECTION) );
       GE( glPushMatrix () );
       GE( glLoadIdentity () );
-      GE( glRecti (-1, 1, 1, -1) );
+      GE( glRectf (-1, 1, 1, -1) );
       GE( glPopMatrix () );
       GE( glMatrixMode (GL_MODELVIEW) );
       GE( glPopMatrix () );
@@ -526,14 +523,8 @@ _cogl_add_stencil_clip (float x_offset,
 void
 _cogl_set_matrix (const float *matrix)
 {
-  float float_matrix[16];
-  int i;
-
-  for (i = 0; i < 16; i++)
-    float_matrix[i] =  (matrix[i]);
-
   GE( glLoadIdentity () );
-  GE( glMultMatrixf (float_matrix) );
+  GE( glMultMatrixf (matrix) );
 }
 
 void
@@ -597,26 +588,27 @@ cogl_perspective (float fovy,
   d = (-(2 * zFar) * zNear) / (zFar - zNear);
 
 #define M(row,col)  m[col*4+row]
-  M(0,0) =  (x);
-  M(1,1) =  (y);
-  M(2,2) =  (c);
-  M(2,3) =  (d);
-  M(3,2) = -1.0F;
+  M(0,0) = x;
+  M(1,1) = y;
+  M(2,2) = c;
+  M(2,3) = d;
+  M(3,2) = -1.0;
 
   GE( glMultMatrixf (m) );
 
   GE( glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
+  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
 
 #define m ctx->inverse_projection
-  M(0, 0) = 1.0f /  (x);
-  M(1, 1) = 1.0f /  (y);
-  M(2, 3) = -1.0f;
-  M(3, 2) = 1.0f /  (d);
-  M(3, 3) =  (c) /  (d);
+  M(0, 0) = (1.0 / x);
+  M(1, 1) = (1.0 / y);
+  M(2, 3) = -1.0;
+  M(3, 2) = (1.0 / d);
+  M(3, 3) = (c / d);
 #undef m
+
 #undef M
 }
 
@@ -628,7 +620,7 @@ cogl_frustum (float        left,
 	      float        z_near,
 	      float        z_far)
 {
-  GLfloat c, d;
+  float c, d;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -645,24 +637,18 @@ cogl_frustum (float        left,
   GE( glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
+  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
 
-  c = - (z_far + z_near)
-    /  (z_far - z_near);
-  d = - (2 * (z_far * z_near))
-    /  (z_far - z_near);
+  c = - (z_far + z_near) /  (z_far - z_near);
+  d = - (2 * (z_far * z_near)) /  (z_far - z_near);
 
 #define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) =  (right - left)
-    /  (2 * z_near);
-  M(0,3) =  (right + left)
-    /  (2 * z_near);
-  M(1,1) =  (top - bottom)
-    /  (2 * z_near);
-  M(1,3) =  (top + bottom)
-    /  (2 * z_near);
-  M(2,3) = -1.0f;
-  M(3,2) = 1.0f / d;
+  M(0,0) =  (right - left) /  (2 * z_near);
+  M(0,3) =  (right + left) /  (2 * z_near);
+  M(1,1) =  (top - bottom) /  (2 * z_near);
+  M(1,3) =  (top + bottom) /  (2 * z_near);
+  M(2,3) = -1.0;
+  M(3,2) = 1.0 / d;
   M(3,3) = c / d;
 #undef M
 }
@@ -675,17 +661,21 @@ cogl_viewport (guint width,
 }
 
 void
-cogl_setup_viewport (guint        width,
-		     guint        height,
+cogl_setup_viewport (guint width,
+		     guint height,
 		     float fovy,
 		     float aspect,
 		     float z_near,
 		     float z_far)
 {
-  GLfloat z_camera;
-  GLfloat projection_matrix[16];
+  float z_camera;
+  float projection_matrix[16];
 
   GE( glViewport (0, 0, width, height) );
+
+  /* For Ortho projection.
+   * glOrthof (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
+  */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
 
@@ -734,9 +724,7 @@ cogl_setup_viewport (guint        width,
   GE( glLoadIdentity () );
 
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
-  GE( glScalef ( 1.0f / width,
- 	    -1.0f / height,
-		 1.0f / width) );
+  GE( glScalef (1.0f / width, -1.0f / height, 1.0f / width) );
   GE( glTranslatef (0.0f, -1.0 * height, 0.0f) );
 }
 
@@ -1165,8 +1153,8 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 void
 cogl_fog_set (const CoglColor *fog_color,
               float        density,
-              float        start,
-              float        stop)
+              float        z_near,
+              float        z_far)
 {
   GLfloat fogColor[4];
 
@@ -1182,8 +1170,8 @@ cogl_fog_set (const CoglColor *fog_color,
   glFogi (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
-  glFogf (GL_FOG_DENSITY,  (density));
-  glFogf (GL_FOG_START,  (start));
-  glFogf (GL_FOG_END,  (stop));
+  glFogf (GL_FOG_DENSITY, (GLfloat) density);
+  glFogf (GL_FOG_START, (GLfloat) z_near);
+  glFogf (GL_FOG_END, (GLfloat) z_far);
 }
 

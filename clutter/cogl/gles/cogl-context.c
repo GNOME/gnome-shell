@@ -84,7 +84,7 @@ cogl_create_context ()
 #endif
   
   /* Init OpenGL state */
-  GE( cogl_wrap_glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) );
+  GE( glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE) );
   GE( glColorMask (TRUE, TRUE, TRUE, FALSE) );
   GE( glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
   cogl_enable (0);
