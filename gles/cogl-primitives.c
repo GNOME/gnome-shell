@@ -109,7 +109,7 @@ _cogl_path_stroke_nodes ()
       CoglPathNode *path = &g_array_index (ctx->path_nodes, CoglPathNode,
                                            path_start);
 
-      GE( cogl_wrap_glVertexPointer (2, GL_FIXED, sizeof (CoglPathNode),
+      GE( cogl_wrap_glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
                                      (guchar *) path
                                      + G_STRUCT_OFFSET (CoglPathNode, x)) );
       GE( cogl_wrap_glDrawArrays (GL_LINE_STRIP, 0, path->path_size) );
@@ -177,7 +177,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
     {
       cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
 
-      GE( cogl_wrap_glVertexPointer (2, GL_FIXED, sizeof (CoglPathNode),
+      GE( cogl_wrap_glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
                                      (guchar *) path
                                      + G_STRUCT_OFFSET (CoglPathNode, x)) );
       GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_FAN, 0, path->path_size) );
@@ -361,10 +361,10 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
             if (!next)
               break;
 
-            x0 = (float)(GPOINTER_TO_INT (iter->data));
-            x1 = (float)(GPOINTER_TO_INT (next->data));
-            y0 = (float)(bounds_y + i);
-            y1 = (float)(bounds_y + i + 1) + 2048;
+            x0 = GPOINTER_TO_INT (iter->data);
+            x1 = GPOINTER_TO_INT (next->data);
+            y0 = bounds_y + i;
+            y1 = bounds_y + i + 1.0625f;
             /* render scanlines 1.0625 high to avoid gaps when
                transformed */
 
@@ -392,7 +392,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
     /* render triangles */
     cogl_enable (COGL_ENABLE_VERTEX_ARRAY
                  | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
-    GE ( cogl_wrap_glVertexPointer (2, GL_FIXED, 0, coords ) );
+    GE ( cogl_wrap_glVertexPointer (2, GL_FLOAT, 0, coords ) );
     GE ( cogl_wrap_glDrawArrays (GL_TRIANGLES, 0, spans * 2 * 3));
     g_free (coords);
   }
