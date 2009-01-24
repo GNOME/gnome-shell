@@ -37,33 +37,12 @@ struct _floatVec2
   float y;
 };
 
-#ifdef CLUTTER_COGL_HAS_GL
-
-typedef struct _CoglFloatVec2    CoglFloatVec2;
-
-struct _CoglFloatVec2
-{
-  GLfloat x;
-  GLfloat y;
-};
-
 struct _CoglPathNode
 {
   GLfloat x;
   GLfloat y;
   guint   path_size;
 };
-
-#else /* CLUTTER_COGL_HAS_GL */
-
-struct _CoglPathNode
-{
-  GLfixed x;
-  GLfixed y;
-  guint   path_size;
-};
-
-#endif /* CLUTTER_COGL_HAS_GL */
 
 struct _CoglBezQuad
 {
