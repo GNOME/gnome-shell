@@ -4762,6 +4762,7 @@ meta_window_property_notify (MetaWindow *window,
 #define _NET_WM_MOVERESIZE_MOVE              8
 #define _NET_WM_MOVERESIZE_SIZE_KEYBOARD     9
 #define _NET_WM_MOVERESIZE_MOVE_KEYBOARD    10
+#define _NET_WM_MOVERESIZE_CANCEL           11
 
 gboolean
 meta_window_client_message (MetaWindow *window,
@@ -5094,11 +5095,18 @@ meta_window_client_message (MetaWindow *window,
         case _NET_WM_MOVERESIZE_MOVE_KEYBOARD:
           op = META_GRAB_OP_KEYBOARD_MOVING;
           break;
+        case _NET_WM_MOVERESIZE_CANCEL:
+          /* handled below */
+          break;
         default:
           break;
         }
 
-      if (op != META_GRAB_OP_NONE &&
+      if (action == _NET_WM_MOVERESIZE_CANCEL)
+        {
+          meta_display_end_grab_op (window->display, timestamp);
+        }
+      else if (op != META_GRAB_OP_NONE &&
           ((window->has_move_func && op == META_GRAB_OP_KEYBOARD_MOVING) ||
            (window->has_resize_func && op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN)))
         {

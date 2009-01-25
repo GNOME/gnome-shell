@@ -1,3 +1,7 @@
+2009-01-25  Elijah Newren  <newren gmail com>
+
+	* src/core/window.c: add support for _NET_WM_MOVERESIZE_CANCEL.
+
 2009-01-10  Thomas Thurman  <tthurman@gnome.org>
 
 	* src/ui/theme.[ch]: add meta_theme_draw_frame_by_name, which
