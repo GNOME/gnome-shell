@@ -55,7 +55,7 @@ input_cb (ClutterActor *stage,
 
       e = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage), x, y);
 
-      if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE_TEXTURE (e)))
+      if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE (e)))
         {
 	  clutter_actor_hide (e);
           return TRUE;
@@ -212,7 +212,7 @@ test_actor_clone_main (int argc, char *argv[])
       gint x, y, w, h;
 
       /* Create a texture from file, then clone in to same resources */
-      oh->hand[i] = clutter_actor_clone_new (real_hand);
+      oh->hand[i] = clutter_clone_new (real_hand);
       clutter_actor_set_size (oh->hand[i], 200, 213);
 
       /* Place around a circle */

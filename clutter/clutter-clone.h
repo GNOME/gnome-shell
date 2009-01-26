@@ -25,35 +25,33 @@
 #error "Only <clutter/clutter.h> can be included directly."
 #endif
 
-#ifndef __CLUTTER_ACTOR_CLONE_H__
-#define __CLUTTER_ACTOR_CLONE_H__
+#ifndef __CLUTTER_CLONE_H__
+#define __CLUTTER_CLONE_H__
 
-#include <glib-object.h>
 #include <clutter/clutter-actor.h>
-#include <clutter/clutter-color.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_ACTOR_CLONE                  (clutter_actor_clone_get_type())
-#define CLUTTER_ACTOR_CLONE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_ACTOR_CLONE, ClutterActorClone))
-#define CLUTTER_ACTOR_CLONE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_ACTOR_CLONE, ClutterActorCloneClass))
-#define CLUTTER_IS_ACTOR_CLONE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_ACTOR_CLONE))
-#define CLUTTER_IS_ACTOR_CLONE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_ACTOR_CLONE))
-#define CLUTTER_ACTOR_CLONE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ACTOR_CLONE, ClutterActorCloneClass))
+#define CLUTTER_TYPE_CLONE              (clutter_clone_get_type())
+#define CLUTTER_CLONE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_CLONE, ClutterClone))
+#define CLUTTER_CLONE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_CLONE, ClutterCloneClass))
+#define CLUTTER_IS_CLONE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_CLONE))
+#define CLUTTER_IS_CLONE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_CLONE))
+#define CLUTTER_CLONE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_CLONE, ClutterCloneClass))
 
-typedef struct _ClutterActorClone        ClutterActorClone;
-typedef struct _ClutterActorCloneClass   ClutterActorCloneClass;
-typedef struct _ClutterActorClonePrivate ClutterActorClonePrivate;
+typedef struct _ClutterClone            ClutterClone;
+typedef struct _ClutterCloneClass       ClutterCloneClass;
+typedef struct _ClutterClonePrivate     ClutterClonePrivate;
 
-struct _ClutterActorClone
+struct _ClutterClone
 {
   /*< private >*/
-  ClutterActor              parent;
+  ClutterActor parent_instance;
 
-  ClutterActorClonePrivate *priv;
+  ClutterClonePrivate *priv;
 };
 
-struct _ClutterActorCloneClass
+struct _ClutterCloneClass
 {
   /*< private >*/
   ClutterActorClass parent_class;
@@ -65,12 +63,13 @@ struct _ClutterActorCloneClass
   void (*_clutter_actor_clone4) (void);
 };
 
-GType clutter_actor_clone_get_type (void) G_GNUC_CONST;
+GType clutter_clone_get_type (void) G_GNUC_CONST;
 
-ClutterActor *clutter_actor_clone_new (ClutterActor *clone_source);
-
-ClutterActor *clutter_actor_clone_get_clone_source (ClutterActorClone *clone);
+ClutterActor *clutter_clone_new        (ClutterActor *source);
+void          clutter_clone_set_source (ClutterClone *clone,
+                                        ClutterActor *source);
+ClutterActor *clutter_clone_get_source (ClutterClone *clone);
 
 G_END_DECLS
 
-#endif /* __CLUTTER_ACTOR_CLONE_H__ */
+#endif /* __CLUTTER_CLONE_H__ */
