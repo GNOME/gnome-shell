@@ -61,11 +61,11 @@ G_DEFINE_TYPE (ClutterCloneTexture,
 #define CLUTTER_CLONE_TEXTURE_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CLONE_TEXTURE, ClutterCloneTexturePrivate))
 
-#define USE_COGL_MATERIAL 1
 
 struct _ClutterCloneTexturePrivate
 {
   ClutterTexture      *parent_texture;
+  CoglHandle           material;
   guint                repeat_x : 1;
   guint                repeat_y : 1;
 };
@@ -147,10 +147,7 @@ clutter_clone_texture_paint (ClutterActor *self)
   CoglHandle                   cogl_texture;
   ClutterFixed                 t_w, t_h;
   guint                        tex_width, tex_height;
-#if USE_COGL_MATERIAL
   CoglHandle                   cogl_material;
-  CoglFixed                    tex_coords[4];
-#endif
 
   priv = CLUTTER_CLONE_TEXTURE (self)->priv;
 
@@ -183,8 +180,8 @@ clutter_clone_texture_paint (ClutterActor *self)
                                   CLUTTER_TEXTURE_IN_CLONE_PAINT);
     }
 
-  cogl_set_source_color4ub (255, 255, 255,
-                            clutter_actor_get_paint_opacity (self));
+  cogl_material_set_color4ub (priv->material, 0xff, 0xff, 0xff,
+                              clutter_actor_get_paint_opacity (self));
 
   clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
 
@@ -193,14 +190,7 @@ clutter_clone_texture_paint (ClutterActor *self)
 		x_1, y_1, x_2, y_2,
 		clutter_actor_get_opacity (self));
 
-#if USE_COGL_MATERIAL
-  cogl_material = clutter_texture_get_cogl_material (priv->parent_texture);
-  /* This is just a convenient way of extracting the cogl_texture for the
-   * the first layer of the above material... */
   cogl_texture = clutter_texture_get_cogl_texture (priv->parent_texture);
-#else
-  cogl_texture = clutter_texture_get_cogl_texture (priv->parent_texture);
-#endif
 
   if (cogl_texture == COGL_INVALID_HANDLE)
     return;
@@ -219,11 +209,8 @@ clutter_clone_texture_paint (ClutterActor *self)
   else
     t_h = 1.0;
 
-#if USE_COGL_MATERIAL
-  cogl_set_source (cogl_material);
-#else
-  cogl_set_source_texture (cogl_texture);
-#endif
+  cogl_material_set_layer (priv->material, 0, cogl_texture);
+  cogl_set_source (priv->material);
   /* Parent paint translated us into position */
   cogl_rectangle_with_texture_coords (0, 0,
 			              (float) (x_2 - x_1),
@@ -406,6 +393,7 @@ clutter_clone_texture_init (ClutterCloneTexture *self)
 
   self->priv = priv = CLUTTER_CLONE_TEXTURE_GET_PRIVATE (self);
   priv->parent_texture = NULL;
+  priv->material = cogl_material_new ();
 }
 
 /**
