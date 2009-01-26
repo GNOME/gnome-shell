@@ -92,10 +92,10 @@ cogl_paint_init (const CoglColor *color)
   fprintf(stderr, "\n ============== Paint Start ================ \n");
 #endif
 
-  glClearColor (cogl_color_get_red (color),
-                cogl_color_get_green (color),
-                cogl_color_get_blue (color),
-                0);
+  GE( glClearColor (cogl_color_get_red_float (color),
+                    cogl_color_get_green_float (color),
+                    cogl_color_get_blue_float (color),
+                    0.0) );
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
   glDisable (GL_LIGHTING);
@@ -214,20 +214,12 @@ cogl_enable (gulong flags)
                     GL_BLEND);
 
   cogl_toggle_flag (ctx, flags,
-		    COGL_ENABLE_TEXTURE_2D,
-		    GL_TEXTURE_2D);
-
-  cogl_toggle_flag (ctx, flags,
                     COGL_ENABLE_BACKFACE_CULLING,
                     GL_CULL_FACE);
 
   cogl_toggle_client_flag (ctx, flags,
 			   COGL_ENABLE_VERTEX_ARRAY,
 			   GL_VERTEX_ARRAY);
-
-  cogl_toggle_client_flag (ctx, flags,
-			   COGL_ENABLE_TEXCOORD_ARRAY,
-			   GL_TEXTURE_COORD_ARRAY);
 
   cogl_toggle_client_flag (ctx, flags,
 			   COGL_ENABLE_COLOR_ARRAY,
@@ -272,34 +264,11 @@ cogl_set_source_color (const CoglColor *color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-#if 0 /*HAVE_GLES_COLOR4UB*/
+  /* In case cogl_set_source_texture was previously used... */
+  cogl_material_remove_layer (ctx->default_material, 0);
 
-  /* NOTE: seems SDK_OGLES-1.1_LINUX_PCEMULATION_2.02.22.0756 has this call
-   * but is broken - see #857. Therefor disabling.
-  */
-
-  /*
-   * GLES 1.1 does actually have this function, it's in the header file but
-   * missing in the reference manual (and SDK):
-   *
-   * http://www.khronos.org/egl/headers/1_1/gl.h
-   */
-  GE( glColor4ub (color->red,
-		  color->green,
-		  color->blue,
-		  color->alpha) );
-
-
-#else
-  /* conversion can cause issues with picking on some gles implementations */
-  GE( glColor4f (cogl_color_get_red (color),
-                           cogl_color_get_green (color),
-                           cogl_color_get_blue (color),
-                           cogl_color_get_alpha (color)) );
-#endif
-
-  /* Store alpha for proper blending enables */
-  ctx->color_alpha = cogl_color_get_alpha_byte (color);
+  cogl_material_set_color (ctx->default_material, color);
+  cogl_set_source (ctx->default_material);
 }
 
 static void
@@ -420,6 +389,8 @@ _cogl_add_stencil_clip (float x_offset,
 			gboolean first)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  cogl_material_flush_gl_state (ctx->stencil_material);
 
   if (first)
     {
