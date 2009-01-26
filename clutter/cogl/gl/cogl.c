@@ -213,9 +213,9 @@ cogl_pop_matrix (void)
 }
 
 void
-cogl_scale (float x, float y)
+cogl_scale (float x, float y, float z)
 {
-  GE( glScalef (x, y, 1.0) );
+  GE( glScalef (x, y, z) );
 }
 
 void

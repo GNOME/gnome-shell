@@ -251,6 +251,8 @@ Release Notes for Clutter 1.0
 * cogl_alpha_func has been removed, since this is now controlled using the
   material API via cogl_material_set_alpha_test_function ()
 
+* cogl_scale now supports scaling on the z axis
+
 Release Notes for Clutter 0.8
 -------------------------------
 

@@ -1369,7 +1369,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor *self)
    * entire object will move on the screen as a result of rotating it).
    */
   if (priv->scale_x != 1.0 || priv->scale_y != 1.0)
-    cogl_scale (priv->scale_x, priv->scale_y);
+    cogl_scale (priv->scale_x, priv->scale_y, 1.0);
 
    if (priv->rzang)
     {

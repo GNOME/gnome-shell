@@ -226,12 +226,14 @@ void            cogl_pop_matrix               (void);
  * cogl_scale:
  * @x: Amount to scale along the x-axis
  * @y: Amount to scale along the y-axis
+ * @z: Amount to scale along the z-axis
  *
- * Multiplies the current model-view matrix by one that scales the x
- * and y axes by the given values.
+ * Multiplies the current model-view matrix by one that scales the x,
+ * y and z axes by the given values.
  */
 void            cogl_scale                    (float        x,
-                                               float        y);
+                                               float        y,
+                                               float        z);
 
 /**
  * cogl_translate:
