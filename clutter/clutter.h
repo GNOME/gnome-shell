@@ -29,7 +29,6 @@
 #define __CLUTTER_H_INSIDE__
 
 #include "clutter-actor.h"
-#include "clutter-actor-clone.h"
 #include "clutter-alpha.h"
 #include "clutter-animatable.h"
 #include "clutter-animation.h"
@@ -45,6 +44,7 @@
 #include "clutter-cairo-texture.h"
 #include "clutter-child-meta.h"
 #include "clutter-clone-texture.h"
+#include "clutter-clone.h"
 #include "clutter-color.h"
 #include "clutter-container.h"
 #include "clutter-deprecated.h"

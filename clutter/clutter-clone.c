@@ -34,10 +34,10 @@
 #endif
 
 #include "clutter-color.h"
+#include "clutter-clone.h"
 #include "clutter-debug.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
-#include "clutter-actor-clone.h"
 
 #include "cogl/cogl.h"
 
