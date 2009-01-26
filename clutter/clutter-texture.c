@@ -1225,7 +1225,8 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
                      priv->width,
                      priv->height);
 
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
+      if (priv->sync_actor_size)
+        clutter_actor_queue_relayout (CLUTTER_ACTOR (texture));
     }
 
   /* rename signal */
