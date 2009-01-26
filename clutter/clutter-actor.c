@@ -5539,6 +5539,13 @@ clutter_actor_set_clipu (ClutterActor *self,
 
   priv = self->priv;
 
+  if (priv->has_clip &&
+      priv->clip[0] == xoff &&
+      priv->clip[1] == yoff &&
+      priv->clip[2] == width &&
+      priv->clip[3] == height)
+    return;
+
   priv->clip[0] = xoff;
   priv->clip[1] = yoff;
   priv->clip[2] = width;
@@ -5590,6 +5597,9 @@ void
 clutter_actor_remove_clip (ClutterActor *self)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (!self->priv->has_clip)
+    return;
 
   self->priv->has_clip = FALSE;
 
