@@ -41,57 +41,69 @@ typedef struct
 typedef struct
 {
   /* Features cache */
-  CoglFeatureFlags     feature_flags;
-  gboolean             features_cached;
-  
-  /* Enable cache */
-  gulong               enable_flags;
-  guint8               color_alpha;
-  COGLenum             blend_src_factor;
-  COGLenum             blend_dst_factor;
+  CoglFeatureFlags  feature_flags;
+  gboolean          features_cached;
 
-  gboolean             enable_backface_culling;
-  
-  /* Primitives */
-  floatVec2        path_start;
-  floatVec2        path_pen;
-  GArray              *path_nodes;
-  guint                last_path;
-  floatVec2        path_nodes_min;
-  floatVec2        path_nodes_max;
-  
+  /* Enable cache */
+  gulong            enable_flags;
+  guint8            color_alpha;
+
+  gboolean          enable_backface_culling;
+
   /* Cache of inverse projection matrix */
   float            inverse_projection[16];
 
-  /* Textures */
-  GArray              *texture_handles;
-  GArray              *texture_vertices;
-  GArray              *texture_indices;
-  /* The gl texture number that the above vertices apply to. This to
-     detect when a different slice is encountered so that the vertices
-     can be flushed */
-  GLuint               texture_current;
-  GLenum               texture_target;
-  GLenum               texture_format;
-
   /* Materials */
-  GArray	      *material_handles;
-  GArray	      *material_layer_handles;
-  CoglHandle	       source_material;
+  GArray           *material_handles;
+  GArray           *material_layer_handles;
+  CoglHandle        default_material;
+  CoglHandle	    source_material;
+
+  /* Textures */
+  GArray	   *texture_handles;
+  CoglHandle        default_gl_texture_2d_tex;
+  CoglHandle        default_gl_texture_rect_tex;
+  CoglHandle        texture_download_material;
+
+  /* Batching geometry... */
+  /* We journal the texture rectangles we want to submit to OpenGL so
+   * we have an oppertunity to optimise the final order so that we
+   * can batch things together. */
+  GArray           *journal;
+  GArray           *logged_vertices;
+  GArray           *static_indices;
+  GArray           *polygon_vertices;
+
+  /* Some simple caching, to minimize state changes... */
+  CoglHandle	    current_material;
+  gulong            current_material_flags;
+  GArray           *current_layers;
+  guint             n_texcoord_arrays_enabled;
 
   /* Framebuffer objects */
-  GArray              *fbo_handles;
-  CoglBufferTarget     draw_buffer;
+  GArray           *fbo_handles;
+  CoglBufferTarget  draw_buffer;
 
   /* Shaders */
-  GArray              *program_handles;
-  GArray              *shader_handles;
+  GArray           *shader_handles;
 
-  /* Vertex buffers */
-  GArray              *vertex_buffer_handles;
+  /* Programs */
+  GArray           *program_handles;
 
   /* Clip stack */
-  CoglClipStackState   clip;
+  CoglClipStackState clip;
+
+  /* Vertex buffers */
+  GArray           *vertex_buffer_handles;
+
+  /* Primitives */
+  floatVec2         path_start;
+  floatVec2         path_pen;
+  GArray           *path_nodes;
+  guint             last_path;
+  floatVec2         path_nodes_min;
+  floatVec2         path_nodes_max;
+  CoglHandle        stencil_material;
 
 #ifdef HAVE_COGL_GLES2
   CoglGles2Wrapper     gles2;
@@ -100,7 +112,7 @@ typedef struct
      supported */
   GLint                viewport_store[4];
 #endif
-  
+
 } CoglContext;
 
 CoglContext *
@@ -111,6 +123,6 @@ _cogl_context_get_default ();
 CoglContext *ctxvar = _cogl_context_get_default (); \
 if (ctxvar == NULL) return retval;
 
-#define NO_RETVAL 
+#define NO_RETVAL
 
 #endif /* __COGL_CONTEXT_H */

@@ -369,6 +369,11 @@ void _cogl_gles2_clear_cache_for_program (CoglHandle program);
    glGenerateMipmap doesn't need to do anything */
 #define cogl_wrap_glGenerateMipmap(x) ((void) 0)
 
+/* GLES doesn't have glDrawRangeElements, so we simply pretend it does
+ * but that it makes no use of the start, end constraints: */
+#define glDrawRangeElements(mode, start, end, count, type, indices) \
+  glDrawElements (mode, count, type, indices)
+
 #endif /* HAVE_COGL_GLES2 */
 
 G_END_DECLS

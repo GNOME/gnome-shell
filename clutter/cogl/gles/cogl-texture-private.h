@@ -28,11 +28,9 @@
 
 #include "cogl-bitmap.h"
 
-typedef struct _CoglTexture         CoglTexture;
-typedef struct _CoglTexSliceSpan    CoglTexSliceSpan;
-typedef struct _CoglSpanIter        CoglSpanIter;
-typedef struct _CoglMultiTexture      CoglMultiTexture;
-typedef struct _CoglMultiTextureLayer CoglMultiTextureLayer;
+typedef struct _CoglTexture       CoglTexture;
+typedef struct _CoglTexSliceSpan  CoglTexSliceSpan;
+typedef struct _CoglSpanIter      CoglSpanIter;
 
 struct _CoglTexSliceSpan
 {
@@ -61,26 +59,23 @@ struct _CoglTexture
   gboolean           auto_mipmap;
 };
 
-struct _CoglMultiTextureLayer
+/* To improve batching of geometry when submitting vertices to OpenGL we
+ * log the texture rectangles we want to draw to a journal, so when we
+ * later flush the journal we aim to batch data, and gl draw calls. */
+typedef struct _CoglJournalEntry
 {
-  guint	       ref_count;
-  guint	       index;	/*!< lowest index is blended first then others
-			     on top */
-  CoglTexture *tex;	/*!< The texture for this layer, or NULL
-			     for an empty layer */
-
-  /* TODO: Add more control over the texture environment for each texture
-   * unit. For example we should support dot3 normal mapping. */
-};
-
-struct _CoglMultiTexture
-{
-  guint	   ref_count;
-  GList	  *layers;
-};
+  CoglHandle     material;
+  gint           n_layers;
+  guint32        fallback_mask;
+  GLuint         layer0_override_texture;
+} CoglJournalEntry;
 
 CoglTexture*
 _cogl_texture_pointer_from_handle (CoglHandle handle);
 
-#endif /* __COGL_TEXTURE_H */
+gboolean
+_cogl_texture_span_has_waste (CoglTexture *tex,
+                              gint x_span_index,
+                              gint y_span_index);
 
+#endif /* __COGL_TEXTURE_H */

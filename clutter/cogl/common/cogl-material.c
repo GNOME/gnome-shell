@@ -886,8 +886,12 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
         _cogl_material_layer_pointer_from_handle (layer_handle);
       CoglLayerInfo     *gl_layer_info = NULL;
       CoglLayerInfo      new_gl_layer_info;
+      CoglHandle         tex_handle;
       GLuint             gl_texture;
       GLenum             gl_target;
+#ifdef HAVE_COGL_GLES2
+      GLenum             gl_internal_format;
+#endif
 
       new_gl_layer_info.layer0_overridden =
         layer0_override_texture ? TRUE : FALSE;
@@ -912,18 +916,19 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
             continue;
         }
 
-      cogl_texture_get_gl_texture (layer->texture, &gl_texture, &gl_target);
+      tex_handle = layer->texture;
+      cogl_texture_get_gl_texture (tex_handle, &gl_texture, &gl_target);
 
       if (new_gl_layer_info.layer0_overridden)
         gl_texture = layer0_override_texture;
       else if (new_gl_layer_info.fallback)
         {
-          CoglHandle tex_handle;
-
           if (gl_target == GL_TEXTURE_2D)
             tex_handle = ctx->default_gl_texture_2d_tex;
+#ifdef HAVE_COGL_GL
           else if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
             tex_handle = ctx->default_gl_texture_rect_tex;
+#endif
           else
             {
               g_warning ("We don't have a default texture we can use to fill "
@@ -935,12 +940,28 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
           cogl_texture_get_gl_texture (tex_handle, &gl_texture, NULL);
         }
 
+#ifdef HAVE_COGL_GLES2
+      {
+        CoglTexture *tex =
+          _cogl_texture_pointer_from_handle (tex_handle);
+        gl_internal_format = tex->gl_intformat;
+      }
+#endif
+
       GE (glActiveTexture (GL_TEXTURE0 + i));
 
       if (!gl_layer_info
           || gl_layer_info->gl_target != gl_target
           || gl_layer_info->gl_texture != gl_texture)
-        GE (glBindTexture (gl_target, gl_texture));
+        {
+#ifdef HAVE_COGL_GLES2
+          cogl_gles2_wrapper_bind_texture (gl_target,
+                                           gl_texture,
+                                           gl_internal_format);
+#else
+          GE (glBindTexture (gl_target, gl_texture));
+#endif
+        }
 
       /* Disable the previous target if it was different */
       if (gl_layer_info &&
@@ -1007,7 +1028,11 @@ _cogl_material_flush_base_gl_state (CoglMaterial *material)
   if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR
         && material->flags & COGL_MATERIAL_FLAG_DEFAULT_COLOR))
     {
-      GE (glColor4fv (material->unlit));
+      /* GLES doesn't have glColor4fv... */
+      GE (glColor4f (material->unlit[0],
+                     material->unlit[1],
+                     material->unlit[2],
+                     material->unlit[3]));
     }
 
   if (!(ctx->current_material_flags & COGL_MATERIAL_FLAG_DEFAULT_GL_MATERIAL

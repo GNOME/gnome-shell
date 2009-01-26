@@ -51,6 +51,13 @@
     printf("err: 0x%x\n", err); \
 } */
 
+#ifdef HAVE_COGL_GL
+#ifdef glDrawRangeElements
+#undef glDrawRangeElements
+#endif
+#define glDrawRangeElements ctx->pf_glDrawRangeElements
+#endif
+
 static void _cogl_journal_flush (void);
 
 static void _cogl_texture_free (CoglTexture *tex);
@@ -2040,10 +2047,10 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
   GE (glVertexPointer (2, GL_FLOAT, stride, vertex_pointer));
 
   GE (ctx->pf_glDrawRangeElements (GL_TRIANGLES,
-                                   0, ctx->static_indices->len - 1,
-                                   6 * batch_len,
-                                   GL_UNSIGNED_SHORT,
-                                   ctx->static_indices->data));
+                           0, ctx->static_indices->len - 1,
+                           6 * batch_len,
+                           GL_UNSIGNED_SHORT,
+                           ctx->static_indices->data));
 }
 
 static void
@@ -2970,6 +2977,16 @@ cogl_polygon (CoglTextureVertex *vertices,
 
       if (i == 0 && cogl_texture_is_sliced (tex_handle))
         {
+#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
+          {
+            static gboolean shown_gles_slicing_warning = FALSE;
+            if (!shown_gles_slicing_warning)
+              g_warning ("cogl_polygon does not work for sliced textures "
+                         "on GL ES");
+            shown_gles_slicing_warning = TRUE;
+            return;
+          }
+#endif
           if (n_layers > 1)
             {
               static gboolean shown_slicing_warning = FALSE;
