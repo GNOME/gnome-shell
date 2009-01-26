@@ -22,7 +22,7 @@
 #ifndef META_WINDOW_H
 #define META_WINDOW_H
 
-#include <glib.h>
+#include <glib-object.h>
 #include <X11/Xlib.h>
 
 #include "boxes.h"
@@ -39,6 +39,15 @@ typedef enum
   META_WINDOW_MENU,
   META_WINDOW_UTILITY,
   META_WINDOW_SPLASHSCREEN,
+
+  /* override redirect window types: */
+  META_WINDOW_DROPDOWN_MENU,
+  META_WINDOW_POPUP_MENU,
+  META_WINDOW_TOOLTIP,
+  META_WINDOW_NOTIFICATION,
+  META_WINDOW_COMBO,
+  META_WINDOW_DND,
+  META_WINDOW_OVERRIDE_OTHER
 } MetaWindowType;
 
 typedef enum
@@ -47,6 +56,17 @@ typedef enum
   META_MAXIMIZE_VERTICAL   = 1 << 1
 } MetaMaximizeFlags;
 
+#define META_TYPE_WINDOW            (meta_window_get_type ())
+#define META_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WINDOW, MetaWindow))
+#define META_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_WINDOW, MetaWindowClass))
+#define META_IS_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_WINDOW_TYPE))
+#define META_IS_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_WINDOW))
+#define META_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_WINDOW, MetaWindowClass))
+
+typedef struct _MetaWindowClass   MetaWindowClass;
+
+GType meta_window_get_type (void);
+
 MetaFrame *meta_window_get_frame (MetaWindow *window);
 gboolean meta_window_has_focus (MetaWindow *window);
 gboolean meta_window_is_shaded (MetaWindow *window);
@@ -54,8 +74,8 @@ MetaRectangle *meta_window_get_rect (MetaWindow *window);
 MetaScreen *meta_window_get_screen (MetaWindow *window);
 MetaDisplay *meta_window_get_display (MetaWindow *window);
 Window meta_window_get_xwindow (MetaWindow *window);
-MetaWindowType meta_window_get_type (MetaWindow *window);
-Atom meta_window_get_type_atom (MetaWindow *window);
+MetaWindowType meta_window_get_window_type (MetaWindow *window);
+Atom meta_window_get_window_type_atom (MetaWindow *window);
 MetaWorkspace *meta_window_get_workspace (MetaWindow *window);
 gboolean meta_window_is_on_all_workspaces (MetaWindow *window);
 gboolean meta_window_is_hidden (MetaWindow *window);
@@ -72,4 +92,9 @@ void meta_window_change_workspace_by_index (MetaWindow *window,
                                             gint        space_index,
                                             gboolean    append,
                                             guint32     timestamp);
+void *meta_window_get_compositor_private (MetaWindow *window);
+void meta_window_set_compositor_private (MetaWindow *window, void *priv);
+void meta_window_configure_notify (MetaWindow *window, XConfigureEvent *event);
+const char *meta_window_get_role (MetaWindow *window);
+
 #endif

@@ -1,3 +1,479 @@
+2008-12-16  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.55 release.
+
+2008-12-15  Erwann Chenede  <erwann.chenede@sun.com>
+
+	* configure.in: fix build on Solaris.  Closes #564123.
+
+2008-12-02  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.25.55.
+
+2008-12-02  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.34 release.
+
+2008-12-02  Matt Kraai  <kraai@ftbfs.org>
+
+	* src/core/iconcache.c: patches to fixes for -Wall.  Closes #562939.
+
+2008-12-01  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.25.34.
+
+2008-12-01  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.21 release.
+
+2008-12-01  Thomas Thurman  <tthurman@gnome.org>
+
+	* configure.in: gnome-doc-tools version doesn't need to be so high.
+	* src/compositor/compositor-xrender.c: disable the entire file if the
+          compositor is disabled.
+	* src/core/async-getprop.[ch]: fixes for -Wall
+	* src/core/iconcache.c: fixes for -Wall
+	* src/core/testasyncgetprop.c: fixes for -Wall
+	* src/core/xprops.c: fixes for -Wall
+
+2008-11-26  Thomas Thurman  <tthurman@gnome.org>
+
+	* tools/announce-wrangler.py: linked language codes to po files
+	* tools/commit-wrangler.py: print revision url
+
+2008-11-26  Thomas Thurman  <tthurman@gnome.org>
+
+	* tools/announce-wrangler.py: renamed ini file
+	* tools/commit-wrangler.py: rewriting in terms of moap
+
+2008-11-25  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.25.21.
+
+2008-11-25  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.13 release.
+
+2008-11-26  Thomas Thurman  <tthurman@gnome.org>
+
+	* tools/announce-wrangler.py (added): script to produce announcements
+
+2008-11-26  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/xprops.c: add casts (#562106)
+
+2008-11-25  Thomas Thurman  <tthurman@gnome.org>
+
+	* metacity.doap: change to standard description.
+
+2008-11-23  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.25.13.
+
+2008-11-23  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.8 release.
+
+2008-11-23  Thomas Thurman  <tthurman@gnome.org>
+
+        * po/POTFILES.in: add new bindings file
+
+2008-11-23  Daniel Macks  <dmacks@netspace.org>
+
+	reviewed by: Thomas Thurman
+
+	* src/Makefile.am: reorder compiler flags so local includes come last.
+	  Closes #562033.
+
+2008-11-23  Daniel Macks  <dmacks@netspace.org>
+
+	reviewed by: Thomas Thurman
+
+	* configure.in: only accept --enable-compositor if we find we can
+	  actually composite.  Closes #560990.
+
+2008-11-23  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/display.c: remove apparently spurious warnings about
+	operations on window "none"
+
+2008-11-23  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/util.c: Set _POSIX_C_SOURCE to 200112L as it should always
+	have been, in an attempt to close #561962.
+
+2008-11-22  Thomas Thurman  <tthurman@gnome.org>
+
+	* configure.in: Set -ansi so people stop complaining about C99.
+
+2008-11-22  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/prefs.c: fix stupid infinite loop when GConf is turned off.
+
+2008-11-22  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/core/prefs.c: fix two places where there was a warning
+	if GConf was turned off.
+
+2008-11-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/all-keybindings.h: "backward", not "backwards" throughout.
+
+2008-11-20  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: turned on -Wall and -Werror in order to
+          trap as many problems as possible.
+        * src/ui/resizepopup.c: added correct #include.
+        * src/ui/theme-viewer.c: initialised variable.
+        * src/core/xprops.c: corrected cast.
+        * src/core/main.c: added warning if chdir() fails.
+        * src/core/schema-bindings.c: checking the return
+          result of fgets().
+
+2008-11-20  Thomas Thurman  <tthurman@gnome.org>
+
+        Merged screen and window keybinding tables so that
+	we can use just one file for the both.  Also incidentally
+	closes #528337.  Further efficiencies of scale to come.
+
+	* src/include/prefs.h: replace META_PREF_*_KEYBINDINGS
+	  with META_PREF_KEYBINDINGS
+	* src/core/keybindings.c: replace *_bindings with key_bindings
+	  and similar throughout; all window-based functions are now
+	  guaranteed to receive a window so don't need to check for
+	  themselves
+	  (find_handler): moved so it can also be called from
+			  rebuild_binding_table
+        * src/core/display-private.h: replace *_bindings with key_bindings
+        * src/core/prefs.c: update_*_binding becomes update_key_binding;
+          (change_notify): tidy up references to "enormous if statement"
+			   since it's almost entirely gone now
+        * src/core/all-keybindings.h: new merged version of
+			   screen-bindings.h and window-bindings.h.
+
+2008-11-16  David Trowbridge  <trowbrds@gmail.com>
+ 
+ 	This change adds support for the new _NET_WM_FULLSCREEN_MONITORS
+ 	property and client message.  This allows client applications to request
+ 	that a fullscreen window cover more than one monitor.
+ 
+ 	* src/include/boxes.h:
+	* src/core/boxes.c: Add meta_rectangle_union
+ 
+ 	* src/core/window-private.h:
+	* src/core/window.c:
+ 	(meta_window_new_with_attrs, meta_window_free, set_net_wm_state,
+ 	meta_window_update_fullscreen_monitors, meta_window_client_message): Add
+ 	MetaWindow property to store fullscreen monitors field, update
+ 	_NET_WM_FULLSCREEN_MONITORS property on windows, and handle client
+ 	message.
+ 
+ 	* src/core/atomnames.h: Add _NET_WM_FULLSCREEN_MONITORS atom.
+ 
+ 	* src/core/constraints.c (setup_constraint_info): If
+ 	_NET_WM_FULLSCREEN_MONITORS is interesting, use the data stored in
+ 	MetaWindow::fullscreen_monitors to determine the fullscreen area instead
+ 	of the basic xinerama_info area.
+ 
+2008-11-11  Thomas Thurman  <tthurman@gnome.org>
+
+        Removed deprecated calls.  Closes #560445.
+
+	* src/core/delete.c: remove deprecated g_strcasecmp.
+	* src/include/main.h: no actual deprecated call, but
+	  a mention of one which was out of date.
+
+2008-11-11  Maxim Ermilov  <zaspire@rambler.ru>
+
+        Clean up #includes according to the GNOME Goal.
+	Closes #560449.  Patch is 122467.
+
+	* src/core/place.c:
+	* src/ui/draw-workspace.h:
+	* src/ui/gradient.h:
+	* src/ui/metaaccellabel.c:
+	* src/ui/metaaccellabel.h:
+	* src/ui/preview-widget.c:
+	* src/ui/preview-widget.h:
+	* src/ui/resizepopup.c:
+	* src/ui/theme.c:
+	* src/ui/theme.h:
+	* src/ui/themewidget.h:
+
+2008-11-10  Elijah Newren  <newren gmail com> 
+
+	* src/metacity.schemas.in.in: updated description of
+	  raise_on_click:
+	  http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6
+
+2008-11-08  Thomas Thurman  <tthurman@gnome.org>
+
+	* configure.in: added dependency on Zenity
+	* src/core/keybindings.c: remove error_on_generic_command() and
+	  error_on_terminal_command(); rewrite error_on_command
+	  in terms of meta_show_dialog()
+	* src/core/util.c: add meta_show_dialog() to call Zenity
+	* src/include/util.h: ditto
+
+2008-11-03  Olav Vitters  <olav@bkor.dhs.org>
+
+	* src/ui/theme-parser.c: Fix build by readding accidentally removed
+	'}'.
+
+2008-10-29  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/ui/theme-parser.c: variable names in messages should be
+	  double-quoted.  Closes #558309.
+
+2008-10-28  Thomas Thurman  <tthurman@gnome.org>
+
+	* src/include/screen-bindings.h: fix accidental name change of
+	  run_command_terminal.  Closes #557943.
+
+2008-10-27  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/prefs.c (titlebar_handler, handle_preference_update_enum):
+        Add initialisation which I missed on the previous checkin.  Also
+        an extra comment.
+
+2008-10-27  Brian Cameron  <brian.cameron@sun.com>
+
+        Fix some crashes with the new GDM 2.24.  Closes #558058.
+
+        * src/ui/ui.c (meta_ui_parse_modifier): another null check
+        * src/core/prefs.c (titlebar_handler, button_layout_handler):
+          more null checks.
+
+2008-10-26  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/prefs.c (mouse_button_mods_handler): Ignore values
+          of .../mouse_button_modifier key if the key's missing.
+          Closes Launchpad bug #258054, Launchpad bug #266929.
+
+2008-10-23  Frederic Peters  <fpeters@0d.be>
+
+	* doc/creating_themes/C/creating-metacity-themes.xml: added missing @id
+	on <book> top element.
+
+2008-10-23  Frederic Peters  <fpeters@0d.be>
+
+	* doc/creating_themes/Makefile.am:
+	* doc/creating_themes/C/creating_metacity_themes.xml: renamed document
+	to creating-metacity-themes to match other manuals usage of dashes.
+
+2008-10-23  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.25.8.
+
+2008-10-23  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.5 release.
+
+2008-10-23  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/schema-bindings.c: fix stupid thinko which
+          caused defaults to be incorrect
+        * src/include/window-bindings.h: "space" needs to be
+          lowercase
+
+2008-10-23  Thomas Thurman  <tthurman@gnome.org>
+
+        Support _NET_WM_STATE_STICKY (i.e. allow third-party apps to decide
+        whether a window is on all workspaces).  Bug found by Ka-Hing
+        Cheung.  Closes #557536.
+
+        * src/core/window.c (set_net_wm_state): report it
+        * src/core/window.c (meta_window_client_message): set sticky
+          if we receive it
+        * src/core/window-props.c: set sticky if we find it
+        * src/core/atomnames.h: add _NET_WM_STATE_STICKY
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * src/core/schema-bindings.c: support builds outside tree properly.
+	* src/Makefile.am: ditto.
+	* po/POTFILES.skip: ditto.
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: Post-release bump to 2.25.5.
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.3 release.
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * configure.in: bump to 2.25.3 (thought the release script
+          had already done this)
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        Fixes to make distcheck work again.
+
+        * src/Makefile.am: include *-binding.h, and make the schema
+          building work when builddir != srcdir
+        * po/POTFILES.in (src/core/keybindings.): include *-binding.h
+
+2008-10-22  Götz Waschk  <waschk@mandriva.org>
+
+        * configure.in: add libm reference.  Closes #557357.
+
+2008-10-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* doc/creating_themes/C/creating_metacity_themes.xml:
+	Fixed various tags to make this validate.
+	Bug #557337
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.2 release.
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.2 release.
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.2 release.
+
+2008-10-22  Joe Marcus Clarke  <marcus@freebsd.org>
+
+        * src/core/main.c (meta_finalize, sigterm_handler): new functions
+        * src/core/main.c (main): add sigterm_handler in case we receive
+          a SIGTERM.  Closes #553980.
+
+2008-10-22  Matthew Martin  <mtt.martin@gmail.com>
+
+        * src/core/window.c (meta_window_set_demands_attention): minimised
+          windows are necessarily obscured.  Closes #528927.
+
+2008-10-22  Thomas Thurman  <tthurman@gnome.org>
+
+        Slight transformation of the x-macros used in keybindings
+        to make them clearer: write handler names out in full
+        because the old suffix system was confusing to people
+        skim-reading, and switched the order of the last two
+        parameters so more would generally fit on a screen.
+
+        * src/core/keybindings.c, src/core/schema-bindings.c
+          src/core/prefs.c: sympathy changes
+        * src/core/window-bindings.h, src/core/screen-bindings.h:
+          transformation as above
+
+2008-10-21   Christian Persch  <chpe@gnome.org>
+
+        * src/Makefile.am: fix build when schemas are not installed.
+        Closes #557335.
+
+2008-10-21  Tomas Frydrych  <tf@linux.intel.com>
+
+       * src/core/screen-bindings.h: Fix off-by-one error.
+       * src/core/window-bindings.h: Fix off-by-one error.
+       Closes #557201.
+
+2008-10-18  Thomas Thurman  <tthurman@gnome.org>
+
+        During a discussion with Rodney Dawes about making life easier
+        for the translators, he pointed out that the short and long
+        forms of almost all the keybindings say much the same thing
+        in different words.  I believe this is an unconscionable burden
+        to place on translators, and have therefore merged the short
+        and long descriptions into the short description.  The long
+        is now a general explanation of the format, plus possibly a
+        notice about reversibility.  Closes #469361, and should solve
+        the l10n issue previously mentioned.
+
+        * src/core/keybindings.c: reflect changes in *-bindings.h
+        * src/core/schema-bindings.c: reflect changes in *-bindings.h
+        * src/core/prefs.c: reflect changes in *-bindings.h
+        * src/core/window-bindings.h: Add flags field, always the same
+          currently, so that it's the same as screen-bindings.h.
+          Also, lose ONLY_BOUND_BY_DEFAULT, since we already had a
+          rather more elegant way to perform the same effect.
+          And merge the long and short descriptions.
+        * src/core/screen-bindings.h (, item): Merge the long and
+          short descriptions.
+
+2008-10-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Call GNOME_DOC_INIT() so we can use the gnome-doc-utils 
+	variables in our Makefile.am:
+	* doc/Makefile.am:
+	* doc/creating_themes/Makefile.am
+	* doc/creating_themes/C/creating_metacity_themes.xml:
+	Added this new DocBook document, converted from the HTML here
+	http://blogs.gnome.org/metacity/2008/05/30/themes/
+	This will be installed for yelp and can be translated and hosted on 
+	library.gnome.org.
+
+2008-10-15  Thomas Thurman  <tthurman@gnome.org>
+
+        Since Patrick Niklaus's checkin of 2008-08-14 dealt with windows with
+        no icons not using fallback icons, we don't need fallback icons.
+
+        * src/ui/theme.h: remove fallback icons from struct.
+        * src/core/iconcache.c (meta_read_icons): don't look for fallbacks.
+        * src/*/ui.[ch] (meta_ui_get_fallback_icons): removed
+        * src/ui/theme-parser.c (typedef, parse_toplevel_element): don't
+          parse fallback specifications.
+
+2008-10-13  Thomas Thurman  <tthurman@gnome.org>
+
+        * po/POTFILES.in: add screen-bindings.h
+
+2008-10-13  Thomas Thurman  <tthurman@gnome.org>
+
+        * po/POTFILES.in: raw schemas is now .in.in
+        * po/LINGUAS: add Latin
+
+2008-10-12  Thomas Thurman  <tthurman@gnome.org>
+
+        Make the bindings in src/core/*-bindings.h generate
+        GConf schemas too.  Note that there's an i18n issue
+        (documented in schema-bindings.c) which will be fixed
+        next checkin.
+
+        * src/core/schema-bindings.c: major fixup to make it
+          ready for use as part of the actual build process.
+        * src/Makefile.am: added magic to make it call schema-bindings
+          after it builds it.
+        * src/core/window-bindings.h: added comments;
+          also, window menu was listed variously as alt-Space
+          and alt-Print; it should have been alt-Space.
+        * src/metacity.schemas.in.in: renamed from s/\.in$//,
+          sentinel added for the generated bindings,
+          warning at the top now untrue, and removed.
+
+2008-10-12  Thomas Thurman  <tthurman@gnome.org>
+
+        Fix annoying bug where alt-tab and friends would jump
+        backwards a space on initial movement.
+
+        * src/core/screen-bindings.h: although reversed bindings
+        are necessarily reversible, don't set both bits in the
+        constant, or when we test for them we'll get confused.
+
+2008-10-12  Thomas Thurman  <tthurman@gnome.org>
+
+        An attempt to make life a little easier for our beloved translators;
+        this has the same behaviour as before, but removes over thirty
+        translation strings.
+
+        * src/core/session.c (start_element_handler): all "attribute not found
+          on element" strings are identical
+        * src/ui/theme-parser.c (locate_attributes): allow attribute names to
+          be preceded with "!" (in the code) to show they're required.
+          (parse_aspect_ratio, parse_distance, parse_toplevel_element,
+           parse_style_element, parse_gradient_element, static, parse_border,
+           parse_style_set_element, parse_draw_op_element): use the new "!"
+           prefix for locate_attributes(), or in some cases just the identical
+           constant, for generating this error.
+        * src/ui/theme.c (check_state, meta_theme_validate): add
+          translator comments
+        * src/ui/resizepopup.c (update_size_window): add
+          translator comments
+
 2008-10-06  William Lachance  <wrlach@gmail.com>
 
         Pass modified mouse button events down to panel windows

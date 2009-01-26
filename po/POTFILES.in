@@ -13,12 +13,12 @@ src/core/screen.c
 src/core/schema-bindings.c
 src/core/session.c
 src/core/util.c
-src/core/window-bindings.h
 src/core/window.c
 src/core/window-props.c
 src/core/xprops.c
+src/include/all-keybindings.h
 src/metacity.desktop.in
-src/metacity.schemas.in
+src/metacity.schemas.in.in
 src/metacity-wm.desktop.in
 src/tools/metacity-message.c
 src/ui/frames.c

@@ -127,6 +127,8 @@ typedef struct
   Window xwindow;
 } MetaAutoRaiseData;
 
+G_DEFINE_TYPE(MetaDisplay, meta_display, G_TYPE_OBJECT);
+
 /**
  * The display we're managing.  This is a singleton object.  (Historically,
  * this was a list of displays, but there was never any way to add more
@@ -162,6 +164,11 @@ static void    sanity_check_timestamps   (MetaDisplay *display,
                                           guint32      known_good_timestamp);
 
 MetaGroup*     get_focussed_group (MetaDisplay *display);
+
+static void
+meta_display_class_init (MetaDisplayClass *klass)
+{
+}
 
 /**
  * Destructor for MetaPingData structs. Will destroy the
@@ -298,6 +305,13 @@ disable_compositor (MetaDisplay *display)
   display->compositor = NULL;
 }
 
+static void
+meta_display_init (MetaDisplay *disp)
+{
+  /* Some stuff could go in here that's currently in _open,
+   * but it doesn't really matter. */
+}
+
 /**
  * Opens a new display, sets it up, initialises all the X extensions
  * we will need, and adds it to the list of displays.
@@ -340,7 +354,7 @@ meta_display_open (void)
     XSynchronize (xdisplay, True);
   
   g_assert (the_display == NULL);
-  the_display = g_new (MetaDisplay, 1);
+  the_display = g_object_new (META_TYPE_DISPLAY, NULL);
 
   the_display->closing = 0;
   
@@ -903,7 +917,7 @@ meta_display_close (MetaDisplay *display,
     }
 #endif
   
-  /* Must be after all calls to meta_window_free() since they
+  /* Must be after all calls to meta_window_unmanage() since they
    * unregister windows
    */
   g_hash_table_destroy (display->window_ids);
@@ -1992,7 +2006,7 @@ event_callback (XEvent   *event,
           else
             {
               /* Unmanage destroyed window */
-              meta_window_free (window, timestamp);
+              meta_window_unmanage (window, timestamp);
               window = NULL;
             }
         }
@@ -2020,11 +2034,12 @@ event_callback (XEvent   *event,
                               "Window %s withdrawn\n",
                               window->desc);
 
-                  meta_effect_run_close (window, NULL, NULL);
+		  if (!window->override_redirect)
+		    meta_effect_run_close (window, NULL, NULL);
 
                   /* Unmanage withdrawn window */		  
                   window->withdrawn = TRUE;
-                  meta_window_free (window, timestamp);
+                  meta_window_unmanage (window, timestamp);
                   window = NULL;
                 }
               else
@@ -2045,6 +2060,15 @@ event_callback (XEvent   *event,
         }
       break;
     case MapNotify:
+      /* NB: override redirect windows wont cause a map request so we
+       * watch out for map notifies against any root windows too if a
+       * compositor is enabled: */
+      if (display->compositor && window == NULL
+	  && meta_display_screen_for_root (display, event->xmap.event))
+        {
+          window = meta_window_new (display, event->xmap.window,
+                                    FALSE);
+        }
       break;
     case MapRequest:
       if (window == NULL)
@@ -2073,29 +2097,32 @@ event_callback (XEvent   *event,
     case ReparentNotify:
       break;
     case ConfigureNotify:
-      /* Handle screen resize */
-      {
-	MetaScreen *screen;
+      if (window && window->override_redirect)
+	meta_window_configure_notify (window, &event->xconfigure);
+      else
+	/* Handle screen resize */
+	{
+	  MetaScreen *screen;
 
-        screen = meta_display_screen_for_root (display,
-                                               event->xconfigure.window);
+	  screen = meta_display_screen_for_root (display,
+						 event->xconfigure.window);
 
-	if (screen != NULL)
-          {
+	  if (screen != NULL)
+	    {
 #ifdef HAVE_RANDR
-            /* do the resize the official way */
-            XRRUpdateConfiguration (event);
+	      /* do the resize the official way */
+	      XRRUpdateConfiguration (event);
 #else
-            /* poke around in Xlib */
-            screen->xscreen->width   = event->xconfigure.width;
-            screen->xscreen->height  = event->xconfigure.height;
+	      /* poke around in Xlib */
+	      screen->xscreen->width   = event->xconfigure.width;
+	      screen->xscreen->height  = event->xconfigure.height;
 #endif
-            
-            meta_screen_resize (screen, 
-                                event->xconfigure.width,
-                                event->xconfigure.height);
-          }
-      }
+	      
+	      meta_screen_resize (screen, 
+				  event->xconfigure.width,
+				  event->xconfigure.height);
+	    }
+	}
       break;
     case ConfigureRequest:
       /* This comment and code is found in both twm and fvwm */
@@ -2397,9 +2424,10 @@ event_callback (XEvent   *event,
 
   if (display->compositor)
     {
-      meta_compositor_process_event (display->compositor,
-				     event,
-				     window);
+      if (meta_compositor_process_event (display->compositor,
+                                         event,
+                                         window))
+        filter_out_event = TRUE;
     }
   
   display->current_time = CurrentTime;
@@ -3264,9 +3292,10 @@ meta_display_begin_grab_op (MetaDisplay *display,
   
   if (display->grab_op != META_GRAB_OP_NONE)
     {
-      meta_warning ("Attempt to perform window operation %u on window %s when operation %u on %s already in effect\n",
-                    op, window ? window->desc : "none", display->grab_op,
-                    display->grab_window ? display->grab_window->desc : "none");
+      if (window)
+        meta_warning ("Attempt to perform window operation %u on window %s when operation %u on %s already in effect\n",
+                      op, window->desc, display->grab_op,
+                      display->grab_window ? display->grab_window->desc : "none");
       return FALSE;
     }
 
@@ -4814,7 +4843,7 @@ meta_display_unmanage_windows_for_screen (MetaDisplay *display,
   tmp = winlist;
   while (tmp != NULL)
     {
-      meta_window_free (tmp->data, timestamp);
+      meta_window_unmanage (tmp->data, timestamp);
       
       tmp = tmp->next;
     }

@@ -69,6 +69,8 @@ typedef enum
 
 struct _MetaScreen
 {
+  GObject parent_instance;
+
   MetaDisplay *display;
   int number;
   char *screen_name;
@@ -137,6 +139,11 @@ struct _MetaScreen
    * and restack them below a guard window. When using a compositor
    * this allows us to provide live previews of unmapped windows */
   Window guard_window;
+};
+
+struct _MetaScreenClass
+{
+  GObjectClass parent_class;
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,

@@ -43,7 +43,6 @@
 #include <X11/Xutil.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-typedef struct _MetaGroup MetaGroup;
 typedef struct _MetaWindowQueue MetaWindowQueue;
 
 typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
@@ -66,6 +65,8 @@ typedef enum {
 
 struct _MetaWindow
 {
+  GObject parent_instance;
+  
   MetaDisplay *display;
   MetaScreen *screen;
   MetaWorkspace *workspace;
@@ -110,6 +111,9 @@ struct _MetaWindow
   /* Initial timestamp property */
   guint32 initial_timestamp;  
   
+  /* Whether this is an override redirect window or not */
+  guint override_redirect : 1;
+
   /* Whether we're maximized */
   guint maximized_horizontally : 1;
   guint maximized_vertically : 1;
@@ -124,6 +128,12 @@ struct _MetaWindow
 
   /* Whether we're fullscreen */
   guint fullscreen : 1;
+
+  /* Area to cover when in fullscreen mode.  If _NET_WM_FULLSCREEN_MONITORS has
+   * been overridden (via a client message), the window will cover the union of
+   * these monitors.  If not, this is the single monitor which the window's
+   * origin is on. */
+  long fullscreen_monitors[4];
   
   /* Whether we're trying to constrain the window to be fully onscreen */
   guint require_fully_onscreen : 1;
@@ -233,7 +243,7 @@ struct _MetaWindow
   /* Has this window not ever been shown yet? */
   guint showing_for_first_time : 1;
 
-  /* Are we in meta_window_free()? */
+  /* Are we in meta_window_unmanage()? */
   guint unmanaging : 1;
 
   /* Are we in meta_window_new()? */
@@ -354,6 +364,13 @@ struct _MetaWindow
 #endif
 };
 
+struct _MetaWindowClass
+{
+  GObjectClass parent_class;
+
+  void (*workspace_changed) (MetaWindow *window, int  old_workspace);
+};
+
 /* These differ from window->has_foo_func in that they consider
  * the dynamic window state such as "maximized", not just the
  * window's type
@@ -377,7 +394,7 @@ MetaWindow* meta_window_new_with_attrs     (MetaDisplay *display,
                                             Window       xwindow,
                                             gboolean     must_be_viewable,
                                             XWindowAttributes *attrs);
-void        meta_window_free               (MetaWindow  *window,
+void        meta_window_unmanage           (MetaWindow  *window,
                                             guint32      timestamp);
 void        meta_window_calc_showing       (MetaWindow  *window);
 void        meta_window_queue              (MetaWindow  *window,
@@ -405,6 +422,11 @@ void        meta_window_unstick            (MetaWindow  *window);
 void        meta_window_make_fullscreen_internal (MetaWindow    *window);
 void        meta_window_make_fullscreen    (MetaWindow  *window);
 void        meta_window_unmake_fullscreen  (MetaWindow  *window);
+void        meta_window_update_fullscreen_monitors (MetaWindow    *window,
+                                                    unsigned long  top,
+                                                    unsigned long  bottom,
+                                                    unsigned long  left,
+                                                    unsigned long  right);
 
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,

@@ -384,6 +384,8 @@ set_window_title (MetaWindow *window,
     meta_ui_set_frame_title (window->screen->ui,
                              window->frame->xwindow,
                              window->title);
+  if (modified)
+    g_object_notify (G_OBJECT (window), "title");  
 }
 
 static void
@@ -580,6 +582,8 @@ reload_net_wm_state (MetaWindow    *window,
         window->wm_state_below = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_DEMANDS_ATTENTION)
         window->wm_state_demands_attention = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom__NET_WM_STATE_STICKY)
+        window->on_all_workspaces = TRUE;
 
       ++i;
     }

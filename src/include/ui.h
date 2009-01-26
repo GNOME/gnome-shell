@@ -204,9 +204,6 @@ MetaUIDirection meta_ui_get_direction (void);
 
 GdkPixbuf *meta_ui_get_pixbuf_from_pixmap (Pixmap   pmap);
 
-void meta_ui_get_fallback_icons (GdkPixbuf **fallback_icon_p,
-                                 GdkPixbuf **fallback_mini_icon_p);
-
 #include "tabpopup.h"
 
 #endif

@@ -22,10 +22,21 @@
 #ifndef META_DISPLAY_H
 #define META_DISPLAY_H
 
-#include <glib.h>
+#include <glib-object.h>
 #include <X11/Xlib.h>
 
 #include "types.h"
+
+typedef struct _MetaDisplayClass MetaDisplayClass;
+
+#define META_TYPE_DISPLAY              (meta_display_get_type ())
+#define META_DISPLAY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), META_TYPE_DISPLAY, MetaDisplay))
+#define META_DISPLAY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), META_TYPE_DISPLAY, MetaDisplayClass))
+#define META_IS_DISPLAY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), META_TYPE_DISPLAY))
+#define META_IS_DISPLAY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), META_TYPE_DISPLAY))
+#define META_DISPLAY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), META_TYPE_DISPLAY, MetaDisplayClass))
+
+GType meta_display_get_type (void) G_GNUC_CONST;
 
 #define meta_XFree(p) do { if ((p)) XFree ((p)); } while (0)
 

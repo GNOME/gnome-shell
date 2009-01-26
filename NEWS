@@ -1,3 +1,134 @@
+2.25.55
+=======
+
+Thanks to Erwann Chenede for improvements in this version.
+
+  - Fix build on Solaris (Erwann) (#564123)
+
+Translations
+  Mattias Põldaru (et), Luca Ferretti (it)
+
+2.25.34
+=======
+
+Thanks to Matt Kraai for improvements in this version.
+
+  - Fixes to Thomas's earlier fixes (Matt) (#562939)
+
+Translations
+  None
+
+2.25.21
+=======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Fixes to allow building without compositor again (Thomas)
+  - Fixes for -Wall problems (Thomas)
+  - Various tool updates (Thomas)
+
+Translations: none
+
+
+2.25.13
+=======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Add casts to fix failure to build from source on 64bit hosts (Thomas) (#562106)
+  - Added script to produce annoucements (Thomas)
+
+Translations
+  Jorge González (es)
+
+2.25.8
+======
+
+Thanks to Brian Cameron, Maxim Ermilov, Daniel Macks, Elijah Newren, Frederic
+Peters, Thomas Thurman, David Trowbridge, and Olav Vitters for improvements in
+this version.
+
+  - Reorder compiler flags (Daniel) (#562033)
+  - Fix compositor switch (Daniel) (#560990)
+  - Remove spurious warnings about operations on window "none" (Thomas)
+  - Fix _POSIX_C_SOURCE which was breaking OS X builds (Thomas) (#561962)
+  - -Werror -Wall and -ansi are now standard compile flags (Thomas)
+  - Merge screen and window keybindings files; fix minor alt-tab bug
+    in the process (Thomas) (#528337)
+  - Support _NET_WM_FULLSCREEN_MONITORS (David)
+  - Remove some deprecated calls (Thomas) (#560445)
+  - Clean up #includes (Maxim) (#560449)
+  - Update description of raise_on_click (Elijah)
+  - First dialogue delegated to zenity (Thomas)
+  - fix theme-parser typo (Olav)
+  - double-quote variable names in messages (Thomas) (#558309)
+  - fix accidental renaming of run_command_terminal (Thomas) (#557943)
+  - some null checks; problems exposed by new GDM (Brian) (#558058)
+  - ignore mouse button modifier if it's missing (Thomas) (Launchpad 258054, Launchpad 266929)
+  - fix docbook markup (Frederic)
+
+Translations
+  Astur (ast), Jorge González (es), Thomas Thurman (la), Leonardo Ferreira
+  Fontenelle (pt_BR), Daniel Nylander (sv)
+
+2.25.5
+======
+
+Thanks to Thomas Thurman for improvements in this version.
+
+  - Allow third-party apps to decide whether a window appears
+    on all workspaces (Thomas) (#557536)
+  - Fixed keybindings script (again) (Thomas)
+
+Translations
+  David Planella (ca), Robert Millan (ca@valencia)
+
+2.25.3
+======
+
+Brown paper bag release which fixes numerous build problems from last night's
+release of 2.25.2.  Apologies.
+
+Thanks to Murray Cumming, Thomas Thurman, and Götz Waschk for improvements
+in this version.
+
+  - Fix distcheck (Thomas) (#557356)
+  - add libm reference (Götz) (#557357)
+  - fix docbook tags (Murray) (#557337)
+
+Translations
+  Yavor Doganov (bg), David Planella (ca), Robert Millan (ca@valencia), Kenneth
+  Nielsen (da), Hendrik Richter (de), Ivar Smolin (et), Claude Paroz (fr), Seán de
+  Búrca (ga), Launchpad Translations Administrators (hr), Gabor Kelemen (hu),
+  Thomas Thurman (la), Žygimantas Beručka (lt), Kjartan Maraas (nb), Duarte
+  Loreto (pt), Djavan Fagundes (pt_BR), Mugurel Tudor (ro), Pavol Šimo (sk),
+  Laurent Dhima (sq), Горан Ракић (sr), Theppitak Karoonboonyanan (th),
+  Funda Wang (zh_CN)
+
+2.25.2
+======
+
+Thanks to Joe Marcus Clarke, Murray Cumming, Tomas Frydrych, William Lachance,
+Matthew Martin, Christian Persch, Thomas Thurman, and Vincent Untz for
+improvements in this version.
+
+  - Add handler for SIGTERM (Joe) (#553980)
+  - Minimised windows are necessarily obscured (Matthew) (#528927)
+  - Build fixes with the above (Christian, Tomas, Thomas) (#557335)
+    (#557201) (#469361)
+  - Changed keybindings to be in a single place (Thomas) (#469361)
+  - Add new document about themes (Murray)
+  - Remove obsolete support for fallback icons (Thomas)
+  - Pass modified mouse events to panels (William) (#554428)
+  - Change where desktop files should go (Vincent) (#549479)
+
+Translations
+  Yavor Doganov (bg), David Planella (ca), Kenneth Nielsen (da), Hendrik
+  Richter (de), Ivar Smolin (et), Claude Paroz (fr), Seán de Búrca (ga), Launchpad
+  Translations Administrators (hr), Gabor Kelemen (hu), Thomas Thurman (la),
+  Žygimantas Beručka (lt), Kjartan Maraas (nb), Duarte Loreto (pt), Djavan
+  Fagundes (pt_BR), Mugurel Tudor (ro), Pavol Šimo (sk), Laurent Dhima (sq),
+  Горан Ракић (sr), Theppitak Karoonboonyanan (th), Funda Wang (zh_CN)
 2.25.1
 ======
 

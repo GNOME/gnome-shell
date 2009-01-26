@@ -33,20 +33,8 @@
 #include <gmodule.h>
 
 /*
- * This file defines the plugin API.
- *
- * Effects plugin is shared library loaded via g_module_open(); it is
- * recommended that the GModule API is used (otherwise you are on your own to
- * do proper plugin clean up when the module is unloaded).
- *
- * The plugin interface is exported via the MutterPlugin struct.
- */
-
-typedef struct MutterPlugin MutterPlugin;
-
-/*
- * Effect flags: identify events that the plugin can handle, used by kill_effect
- * function.
+ * FIXME -- move these to a private include
+ * Required by plugin manager.
  */
 #define MUTTER_PLUGIN_MINIMIZE         (1<<0)
 #define MUTTER_PLUGIN_MAXIMIZE         (1<<1)
@@ -57,19 +45,96 @@ typedef struct MutterPlugin MutterPlugin;
 
 #define MUTTER_PLUGIN_ALL_EFFECTS      (~0)
 
-#define MUTTER_DECLARE_PLUGIN() G_MODULE_EXPORT MutterPlugin mutter_plugin = \
-    {                                                                   \
-      METACITY_MAJOR_VERSION,                                           \
-      METACITY_MINOR_VERSION,                                           \
-      METACITY_MICRO_VERSION,                                           \
-      METACITY_CLUTTER_PLUGIN_API_VERSION                               \
-    };                                                                  \
-  static inline MutterPlugin * mutter_get_plugin ()                     \
-  {                                                                     \
-    return &mutter_plugin;                                              \
-  }
+#define MUTTER_TYPE_PLUGIN            (mutter_plugin_get_type ())
+#define MUTTER_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MUTTER_TYPE_PLUGIN, MutterPlugin))
+#define MUTTER_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  MUTTER_TYPE_PLUGIN, MutterPluginClass))
+#define MUTTER_IS_PLUGIN(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MUTTER_PLUGIN_TYPE))
+#define MUTTER_IS_PLUGIN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  MUTTER_TYPE_PLUGIN))
+#define MUTTER_PLUGIN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  MUTTER_TYPE_PLUGIN, MutterPluginClass))
 
-struct MutterPlugin
+typedef struct _MutterPlugin        MutterPlugin;
+typedef struct _MutterPluginClass   MutterPluginClass;
+typedef struct _MutterPluginVersion MutterPluginVersion;
+typedef struct _MutterPluginInfo    MutterPluginInfo;
+typedef struct _MutterPluginPrivate MutterPluginPrivate;
+
+struct _MutterPlugin
+{
+  GObject parent;
+
+  MutterPluginPrivate *priv;
+};
+
+struct _MutterPluginClass
+{
+  GObjectClass parent_class;
+
+  void (*minimize)         (MutterPlugin       *plugin,
+                            MutterWindow       *actor);
+
+  void (*maximize)         (MutterPlugin       *plugin,
+                            MutterWindow       *actor,
+                            gint                x,
+                            gint                y,
+                            gint                width,
+                            gint                height);
+
+  void (*unmaximize)       (MutterPlugin       *plugin,
+                            MutterWindow       *actor,
+                            gint                x,
+                            gint                y,
+                            gint                width,
+                            gint                height);
+
+  void (*map)              (MutterPlugin       *plugin,
+                            MutterWindow       *actor);
+
+  void (*destroy)          (MutterPlugin       *plugin,
+                            MutterWindow       *actor);
+
+  void (*switch_workspace) (MutterPlugin       *plugin,
+                            const GList       **actors,
+                            gint                from,
+                            gint                to,
+                            MetaMotionDirection direction);
+
+  /*
+   * Called if an effect should be killed prematurely; the plugin must
+   * call the completed() callback as if the effect terminated naturally.
+   * The events parameter is a bitmask indicating which effects are to be
+   * killed.
+   */
+  void (*kill_effect)      (MutterPlugin     *plugin,
+                            MutterWindow     *actor,
+                            gulong            events);
+
+  /* General XEvent filter. This is fired *before* metacity itself handles
+   * an event. Return TRUE to block any further processing.
+   */
+  gboolean (*xevent_filter) (MutterPlugin       *plugin,
+                             XEvent             *event);
+
+  const MutterPluginInfo * (*plugin_info) (MutterPlugin *plugin);
+};
+
+struct _MutterPluginInfo
+{
+  const gchar *name;
+  const gchar *version;
+  const gchar *author;
+  const gchar *license;
+  const gchar *description;
+};
+
+GType mutter_plugin_get_type (void);
+
+gulong        mutter_plugin_features            (MutterPlugin *plugin);
+gboolean      mutter_plugin_disabled            (MutterPlugin *plugin);
+gboolean      mutter_plugin_running             (MutterPlugin *plugin);
+gboolean      mutter_plugin_debug_mode          (MutterPlugin *plugin);
+const MutterPluginInfo * mutter_plugin_get_info (MutterPlugin *plugin);
+
+struct _MutterPluginVersion
 {
   /*
    * Version information; the first three numbers match the Metacity version
@@ -83,134 +148,81 @@ struct MutterPlugin
   /*
    * Version of the plugin API; this is unrelated to the matacity version
    * per se. The API version is checked by the plugin manager and must match
-   * the one used by it (see clutter-plugins/simple.c for sample code).
+   * the one used by it (see clutter-plugins/default.c for sample code).
    */
   guint version_api;
-
-#ifndef MUTTER_BUILDING_PLUGIN
-  const
-#endif
-  gchar   *name;     /* Human-readable name for UI */
-
-  /*
-   * This function is called once the plugin has been loaded.
-   *
-   * @params is a string containing additional parameters for the plugin and is
-   * specified after the plugin name in the gconf database, separated by a
-   * colon.
-   *
-   * The following parameter tokens need to be handled by all
-   * plugins:
-   *
-   *   'debug'
-   *             Indicates running in debug mode; the plugin
-   *             might want to print useful debug info, or
-   *             extend effect duration, etc.
-   *
-   *   'disable: ...;'
-   *
-   *             The disable token indicates that the effects
-   *             listed after the colon should be disabled.
-   *
-   *             The list is comma-separated, terminated by a
-   *             semicolon and consisting of the following
-   *             tokens:
-   *
-   *                minimize
-   *                maximize
-   *                unmaximize
-   *                map
-   *                destroy
-   *                switch-workspace
-   *
-   *   FIXME: ^^^ Instead of configuring in terms of what should be
-   *   disabled, and needing a mechanism for coping with the user
-   *   mistakenly not disabling the right things, it might be neater
-   *   if plugins were enabled on a per effect basis in the first
-   *   place. I.e. in gconf we could have effect:plugin key value
-   *   pairs.
-   */
-
-  gboolean (*do_init) (const char *params);
-
-  /*
-   * Event handlers
-   *
-   * Plugins must not make any special assumptions about the nature of
-   * ClutterActor, as the implementation details can change.
-   *
-   * Plugins must restore actor properties on completion (i.e., fade effects
-   * must restore opacity back to the original value, scale effects scale,
-   * etc.).
-   *
-   * On completion, each event handler must call the manager completed()
-   * callback function.
-   */
-  void (*minimize)         (MutterWindow     *actor);
-
-  void (*maximize)         (MutterWindow     *actor,
-                            gint                x,
-                            gint                y,
-                            gint                width,
-                            gint                height);
-
-  void (*unmaximize)       (MutterWindow     *actor,
-                            gint                x,
-                            gint                y,
-                            gint                width,
-                            gint                height);
-
-  void (*map)              (MutterWindow     *actor);
-
-  void (*destroy)          (MutterWindow     *actor);
-
-  /*
-   * Each actor in the list has a workspace number attached to it using
-   * g_object_set_data() with key MUTTER_PLUGIN_WORKSPACE_KEY;
-   * workspace < 0 indicates the window is sticky (i.e., on all desktops).
-   * TODO: Add accessor for sticky bit in new MutterWindow structure
-   */
-  void (*switch_workspace) (const GList       **actors,
-                            gint                from,
-                            gint                to,
-                            MetaMotionDirection direction);
-
-  /*
-   * Called if an effect should be killed prematurely; the plugin must
-   * call the completed() callback as if the effect terminated naturally.
-   * The events parameter is a bitmask indicating which effects are to be
-   * killed.
-   */
-  void (*kill_effect)      (MutterWindow     *actor,
-                            gulong            events);
-
-  /*
-   * The plugin manager will call this function when module should be reloaded.
-   * This happens, for example, when the parameters for the plugin changed.
-   */
-  gboolean (*reload) (const char *params);
-
-  /* General XEvent filter. This is fired *before* metacity itself handles
-   * an event. Return TRUE to block any further processing.
-   */
-  gboolean (*xevent_filter) (XEvent *event);
-
-  /* List of PluginWorkspaceRectangles defining the geometry of individual
-   * workspaces. */
-  GList *work_areas;
-
-  void  *plugin_private; /* Plugin private data go here; use the plugin init
-                          * function to allocate and initialize any private
-                          * data.
-                          */
-
-  /* Private; manager private data. */
-  void *manager_private;
 };
 
-#ifndef MUTTER_PLUGIN_FROM_MANAGER_
-static inline MutterPlugin *mutter_get_plugin ();
-#endif
+/*
+ * Convenience macro to set up the plugin type. Based on GEdit.
+ */
+#define MUTTER_PLUGIN_DECLARE(ObjectName, object_name)                  \
+  G_MODULE_EXPORT MutterPluginVersion mutter_plugin_version =           \
+    {                                                                   \
+      METACITY_MAJOR_VERSION,                                           \
+      METACITY_MINOR_VERSION,                                           \
+      METACITY_MICRO_VERSION,                                           \
+      METACITY_CLUTTER_PLUGIN_API_VERSION                               \
+    };                                                                  \
+                                                                        \
+  static GType g_define_type_id = 0;                                    \
+                                                                        \
+  /* Prototypes */                                                      \
+  G_MODULE_EXPORT                                                       \
+  GType object_name##_get_type (void);                                  \
+                                                                        \
+  G_MODULE_EXPORT                                                       \
+  GType object_name##_register_type (GTypeModule *type_module);         \
+                                                                        \
+  G_MODULE_EXPORT                                                       \
+  GType mutter_plugin_register_type (GTypeModule *type_module);         \
+                                                                        \
+  GType                                                                 \
+  object_name##_get_type ()                                             \
+  {                                                                     \
+    return g_define_type_id;                                            \
+  }                                                                     \
+                                                                        \
+  static void object_name##_init (ObjectName *self);                    \
+  static void object_name##_class_init (ObjectName##Class *klass);      \
+  static gpointer object_name##_parent_class = NULL;                    \
+  static void object_name##_class_intern_init (gpointer klass)          \
+  {                                                                     \
+    object_name##_parent_class = g_type_class_peek_parent (klass);      \
+    object_name##_class_init ((ObjectName##Class *) klass);             \
+  }                                                                     \
+                                                                        \
+  GType                                                                 \
+  object_name##_register_type (GTypeModule *type_module)                \
+  {                                                                     \
+    static const GTypeInfo our_info =                                   \
+      {                                                                 \
+        sizeof (ObjectName##Class),                                     \
+        NULL, /* base_init */                                           \
+        NULL, /* base_finalize */                                       \
+        (GClassInitFunc) object_name##_class_intern_init,               \
+        NULL,                                                           \
+        NULL, /* class_data */                                          \
+        sizeof (ObjectName),                                            \
+        0, /* n_preallocs */                                            \
+        (GInstanceInitFunc) object_name##_init                          \
+      };                                                                \
+                                                                        \
+    g_define_type_id = g_type_module_register_type (type_module,        \
+                                                    MUTTER_TYPE_PLUGIN, \
+                                                    #ObjectName,        \
+                                                    &our_info,          \
+                                                    0);                 \
+                                                                        \
+                                                                        \
+    return g_define_type_id;                                            \
+  }                                                                     \
+                                                                        \
+  G_MODULE_EXPORT GType                                                 \
+  mutter_plugin_register_type (GTypeModule *type_module)                \
+  {                                                                     \
+    return object_name##_register_type (type_module);                   \
+  }                                                                     \
 
 void
 mutter_plugin_effect_completed (MutterPlugin  *plugin,
@@ -251,5 +263,8 @@ mutter_plugin_get_xdisplay (MutterPlugin *plugin);
 
 MetaScreen *
 mutter_plugin_get_screen (MutterPlugin *plugin);
+
+void
+_mutter_plugin_effect_started (MutterPlugin *plugin);
 
 #endif /* MUTTER_PLUGIN_H_ */

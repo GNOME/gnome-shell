@@ -26,6 +26,8 @@
 
 #include <config.h>
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -911,7 +913,7 @@ window_has_shadow (MetaCompWindow *cw)
   }
 
   if (cw->type == META_COMP_WINDOW_MENU || 
-      cw->type == META_COMP_WINDOW_DROP_DOWN_MENU) {
+      cw->type == META_COMP_WINDOW_DROPDOWN_MENU) {
     meta_verbose ("Window has shadow as it is a menu\n");
     return TRUE;
   }
@@ -1776,7 +1778,7 @@ get_window_type (MetaDisplay    *display,
   else if (type_atom == compositor->atom_net_wm_window_type_menu)
     cw->type = META_COMP_WINDOW_MENU;
   else if (type_atom == compositor->atom_net_wm_window_type_dropdown_menu)
-    cw->type = META_COMP_WINDOW_DROP_DOWN_MENU;
+    cw->type = META_COMP_WINDOW_DROPDOWN_MENU;
   else if (type_atom == compositor->atom_net_wm_window_type_tooltip)
     cw->type = META_COMP_WINDOW_TOOLTIP;
   else
@@ -2389,14 +2391,14 @@ process_destroy (MetaCompositorXRender *compositor,
   destroy_win (compositor->display, event->window, FALSE);
 }
 
-static void
+static gboolean
 process_damage (MetaCompositorXRender *compositor,
                 XDamageNotifyEvent    *event)
 {
   MetaCompWindow *cw = find_window_in_display (compositor->display,
                                                event->drawable);
   if (cw == NULL)
-    return;
+    return FALSE;
 
   repair_win (cw);
 
@@ -2404,6 +2406,8 @@ process_damage (MetaCompositorXRender *compositor,
   if (event->more == FALSE)
     add_repair (compositor->display);
 #endif
+
+  return TRUE;
 }
   
 static void
@@ -2441,23 +2445,21 @@ timeout_debug (MetaCompositorXRender *compositor)
 
 static void
 xrender_add_window (MetaCompositor    *compositor,
-                    MetaWindow        *window,
-                    Window             xwindow,
-                    XWindowAttributes *attrs)
+                    MetaWindow        *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaCompositorXRender *xrc = (MetaCompositorXRender *) compositor;
-  MetaScreen *screen = meta_screen_for_x_screen (attrs->screen);
+  MetaScreen *screen = meta_window_get_screen (window);
 
   meta_error_trap_push (xrc->display);
-  add_win (screen, window, xwindow);
+  add_win (screen, window, meta_window_get_xwindow (window));
   meta_error_trap_pop (xrc->display, FALSE);
 #endif
 }
 
 static void
 xrender_remove_window (MetaCompositor *compositor,
-                       Window          xwindow)
+                       MetaWindow     *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 #endif
@@ -2737,7 +2739,7 @@ xrender_free_window (MetaCompositor *compositor,
 }
 #endif /* 0 */
 
-static void
+static gboolean
 xrender_process_event (MetaCompositor *compositor,
                        XEvent         *event,
                        MetaWindow     *window)
@@ -2798,7 +2800,7 @@ xrender_process_event (MetaCompositor *compositor,
       else 
         {
           meta_error_trap_pop (xrc->display, FALSE);
-          return;
+          return FALSE;
         }
       break;
     }
@@ -2808,7 +2810,7 @@ xrender_process_event (MetaCompositor *compositor,
   repair_display (xrc->display);
 #endif
   
-  return;
+  return FALSE;
 #endif
 }
 
@@ -3060,3 +3062,6 @@ meta_compositor_xrender_new (MetaDisplay *display)
   return NULL;
 #endif
 }
+
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+

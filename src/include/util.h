@@ -97,6 +97,13 @@ char* meta_g_utf8_strndup (const gchar *src, gsize n);
 
 void  meta_free_gslist_and_elements (GSList *list_to_deep_free);
 
+void meta_show_dialog (const char *type,
+                       const char *title,
+                       const char *message,
+                       gint timeout,
+                       const char **columns,
+                       const char **entries);
+
 /* To disable verbose mode, we make these functions into no-ops */
 #ifdef WITH_VERBOSE_MODE
 

@@ -27,7 +27,7 @@
 #include "boxes.h"
 #include "gradient.h"
 #include "common.h"
-#include <gtk/gtkrc.h>
+#include <gtk/gtk.h>
 
 typedef struct _MetaFrameStyle MetaFrameStyle;
 typedef struct _MetaFrameStyleSet MetaFrameStyleSet;
@@ -804,8 +804,6 @@ struct _MetaTheme
   GHashTable *styles_by_name;
   GHashTable *style_sets_by_name;
   MetaFrameStyleSet *style_sets_by_type[META_FRAME_TYPE_LAST];
-
-  GdkPixbuf *fallback_icon, *fallback_mini_icon;
 
   GQuark quark_width;
   GQuark quark_height;

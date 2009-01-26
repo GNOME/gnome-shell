@@ -24,7 +24,9 @@
 #ifndef META_GROUP_H
 #define META_GROUP_H
 
-#include "window-private.h"
+#include <X11/Xlib.h>
+#include <glib.h>
+#include "types.h"
 
 /* note, can return NULL */
 MetaGroup* meta_window_get_group       (MetaWindow *window);
@@ -42,6 +44,8 @@ GSList*    meta_group_list_windows     (MetaGroup *group);
 void       meta_group_update_layers    (MetaGroup *group);
 
 const char* meta_group_get_startup_id  (MetaGroup *group);
+
+int        meta_group_get_size         (MetaGroup *group);
 
 gboolean meta_group_property_notify   (MetaGroup  *group,
                                        XEvent     *event);

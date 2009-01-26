@@ -33,60 +33,58 @@ struct _MetaCompositor
   void (*unmanage_screen) (MetaCompositor *compositor,
                            MetaScreen     *screen);
   void (*add_window) (MetaCompositor    *compositor,
-                      MetaWindow        *window,
-                      Window             xwindow,
-                      XWindowAttributes *attrs);
+                      MetaWindow        *window);
   void (*remove_window) (MetaCompositor *compositor,
-                         Window          xwindow);
+                         MetaWindow     *window);
   void (*set_updates) (MetaCompositor *compositor,
                        MetaWindow     *window,
                        gboolean        update);
-  void (*process_event) (MetaCompositor *compositor,
-                         XEvent         *event,
-                         MetaWindow     *window);
+  gboolean (*process_event) (MetaCompositor *compositor,
+                             XEvent         *event,
+                             MetaWindow     *window);
   Pixmap (*get_window_pixmap) (MetaCompositor *compositor,
                                MetaWindow     *window);
   void (*set_active_window) (MetaCompositor *compositor,
                              MetaScreen     *screen,
                              MetaWindow     *window);
-  /* local additions */
-  void (*destroy_window) (MetaCompositor *compositor,
-                          MetaWindow     *window);
-
+  void (*map_window) (MetaCompositor *compositor,
+                      MetaWindow     *window);
+  void (*unmap_window) (MetaCompositor *compositor,
+			MetaWindow     *window);
   void (*minimize_window) (MetaCompositor *compositor,
-                           MetaWindow     *window);
-
+                           MetaWindow     *window,
+			   MetaRectangle  *window_rect,
+			   MetaRectangle  *icon_rect);
+  void (*unminimize_window) (MetaCompositor *compositor,
+			     MetaWindow     *window,
+			     MetaRectangle  *window_rect,
+			     MetaRectangle  *icon_rect);
   void (*maximize_window) (MetaCompositor    *compositor,
                            MetaWindow        *window,
-                           int                x,
-                           int                y,
-                           int                width,
-                           int                height);
-
+			   MetaRectangle     *window_rect);
   void (*unmaximize_window) (MetaCompositor    *compositor,
                              MetaWindow        *window,
-                             int                x,
-                             int                y,
-                             int                width,
-                             int                height);
-
+			     MetaRectangle     *window_rect);
   void (*update_workspace_geometry) (MetaCompositor *compositor,
                                      MetaWorkspace   *workspace);
-
   void (*switch_workspace) (MetaCompositor     *compositor,
                             MetaScreen         *screen,
                             MetaWorkspace      *from,
                             MetaWorkspace      *to,
                             MetaMotionDirection direction);
-
   void (*sync_stack) (MetaCompositor *compositor,
 		      MetaScreen     *screen,
 		      GList	     *stack);
-  
   void (*set_window_hidden) (MetaCompositor *compositor,
 			     MetaScreen	    *screen,
 			     MetaWindow	    *window,
 			     gboolean	     hidden);
+  void (*sync_window_geometry) (MetaCompositor	*compositor,
+				MetaWindow	*window);
+  void (*sync_screen_size) (MetaCompositor *compositor,
+			    MetaScreen	   *screen,
+			    guint	    width,
+			    guint	    height);
 };
 
 #endif

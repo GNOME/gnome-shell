@@ -32,23 +32,26 @@
 
 typedef enum _MetaCompWindowType
 {
-  /*
-   * Types shared with MetaWindow
-   */
-  META_COMP_WINDOW_NORMAL  = META_WINDOW_NORMAL,
-  META_COMP_WINDOW_DESKTOP = META_WINDOW_DESKTOP,
-  META_COMP_WINDOW_DOCK    = META_WINDOW_DOCK,
-  META_COMP_WINDOW_MENU    = META_WINDOW_MENU,
+  META_COMP_WINDOW_NORMAL = META_WINDOW_NORMAL,
+  META_COMP_WINDOW_DESKTOP =  META_WINDOW_DESKTOP,
+  META_COMP_WINDOW_DOCK = META_WINDOW_DOCK,
+  META_COMP_WINDOW_DIALOG = META_WINDOW_DIALOG,
+  META_COMP_WINDOW_MODAL_DIALOG = META_WINDOW_MODAL_DIALOG,
+  META_COMP_WINDOW_TOOLBAR = META_WINDOW_TOOLBAR,
+  META_COMP_WINDOW_MENU = META_WINDOW_MENU,
+  META_COMP_WINDOW_UTILITY = META_WINDOW_UTILITY,
+  META_COMP_WINDOW_SPLASHSCREEN = META_WINDOW_SPLASHSCREEN,
 
-  /*
-   * Extended types that WM does not care about, but we do.
-   */
-  META_COMP_WINDOW_TOOLTIP = 0xf000,
-  META_COMP_WINDOW_DROP_DOWN_MENU,
-  META_COMP_WINDOW_DND,
-  META_COMP_WINDOW_OVERRIDE,
+  /* override redirect window types, */
+  META_COMP_WINDOW_DROPDOWN_MENU = META_WINDOW_DROPDOWN_MENU,
+  META_COMP_WINDOW_POPUP_MENU = META_WINDOW_POPUP_MENU,
+  META_COMP_WINDOW_TOOLTIP = META_WINDOW_TOOLTIP,
+  META_COMP_WINDOW_NOTIFICATION = META_WINDOW_NOTIFICATION,
+  META_COMP_WINDOW_COMBO = META_WINDOW_COMBO,
+  META_COMP_WINDOW_DND = META_WINDOW_DND,
+  META_COMP_WINDOW_OVERRIDE_OTHER = META_WINDOW_OVERRIDE_OTHER
+
 } MetaCompWindowType;
-
 
 #ifdef WITH_CLUTTER
 extern int meta_compositor_can_use_clutter__;
@@ -62,19 +65,17 @@ void meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                       MetaScreen     *screen);
 
 void meta_compositor_add_window (MetaCompositor    *compositor,
-                                 MetaWindow        *window,
-                                 Window             xwindow,
-                                 XWindowAttributes *attrs);
+                                 MetaWindow        *window);
 void meta_compositor_remove_window (MetaCompositor *compositor,
-                                    Window          xwindow);
+                                    MetaWindow     *window);
 
 void meta_compositor_set_updates (MetaCompositor *compositor,
                                   MetaWindow     *window,
                                   gboolean        updates);
 
-void meta_compositor_process_event (MetaCompositor *compositor,
-                                    XEvent         *event,
-                                    MetaWindow     *window);
+gboolean meta_compositor_process_event (MetaCompositor *compositor,
+                                        XEvent         *event,
+                                        MetaWindow     *window);
 Pixmap meta_compositor_get_window_pixmap (MetaCompositor *compositor,
                                           MetaWindow     *window);
 void meta_compositor_set_active_window (MetaCompositor *compositor,
@@ -94,28 +95,34 @@ void meta_compositor_free_window (MetaCompositor *compositor,
                                   MetaWindow *window);
 
 void
-meta_compositor_destroy_window (MetaCompositor *compositor,
-                                MetaWindow     *window);
+meta_compositor_map_window (MetaCompositor *compositor,
+			    MetaWindow	   *window);
+
+void
+meta_compositor_unmap_window (MetaCompositor *compositor,
+			      MetaWindow     *window);
 
 void
 meta_compositor_minimize_window (MetaCompositor *compositor,
-                                 MetaWindow     *window);
+                                 MetaWindow     *window,
+				 MetaRectangle	*window_rect,
+				 MetaRectangle  *icon_rect);
+
+void
+meta_compositor_unminimize_window (MetaCompositor *compositor,
+				   MetaWindow     *window,
+				   MetaRectangle  *window_rect,
+				   MetaRectangle  *icon_rect);
 
 void
 meta_compositor_maximize_window (MetaCompositor    *compositor,
                                  MetaWindow        *window,
-                                 int                x,
-                                 int                y,
-                                 int                width,
-                                 int                height);
+				 MetaRectangle	   *window_rect);
 
 void
 meta_compositor_unmaximize_window (MetaCompositor    *compositor,
                                    MetaWindow        *window,
-                                   int                x,
-                                   int                y,
-                                   int                width,
-                                   int                height);
+				   MetaRectangle     *window_rect);
 
 void
 meta_compositor_update_workspace_geometry (MetaCompositor *compositor,
@@ -139,6 +146,14 @@ meta_compositor_set_window_hidden (MetaCompositor *compositor,
 				   MetaWindow	  *window,
 				   gboolean	   hidden);
 
+void
+meta_compositor_sync_window_geometry (MetaCompositor *compositor,
+				      MetaWindow     *window);
+void
+meta_compositor_sync_screen_size (MetaCompositor  *compositor,
+				  MetaScreen	  *screen,
+				  guint		   width,
+				  guint		   height);
 #endif
 
 

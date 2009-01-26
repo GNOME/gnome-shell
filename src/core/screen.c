@@ -69,6 +69,82 @@ static void meta_screen_sn_event   (SnMonitorEvent *event,
                                     void           *user_data);
 #endif
 
+enum
+{
+  PROP_N_WORKSPACES = 1
+};
+
+G_DEFINE_TYPE (MetaScreen, meta_screen, G_TYPE_OBJECT);
+
+static void
+meta_screen_set_property (GObject      *object,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
+{
+#if 0
+  MetaScreen *screen = META_SCREEN (object);
+#endif
+
+  switch (prop_id)
+    {
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+meta_screen_get_property (GObject      *object,
+                          guint         prop_id,
+                          GValue       *value,
+                          GParamSpec   *pspec)
+{
+  MetaScreen *screen = META_SCREEN (object);
+
+  switch (prop_id)
+    {
+    case PROP_N_WORKSPACES:
+      g_value_set_int (value, meta_screen_get_n_workspaces (screen));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+meta_screen_finalize (GObject *object)
+{
+  /* Actual freeing done in meta_screen_free() for now */
+}
+
+static void
+meta_screen_class_init (MetaScreenClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec   *pspec;
+
+  object_class->get_property = meta_screen_get_property;
+  object_class->set_property = meta_screen_set_property;
+  object_class->finalize = meta_screen_finalize;
+
+  pspec = g_param_spec_int ("n-workspaces",
+                            "N Workspaces",
+                            "Number of workspaces",
+                            1, G_MAXINT, 1,
+                            G_PARAM_READABLE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_N_WORKSPACES,
+                                   pspec);
+}
+
+static void
+meta_screen_init (MetaScreen *screen)
+{
+}
+
 static int
 set_wm_check_hint (MetaScreen *screen)
 {
@@ -488,7 +564,7 @@ meta_screen_new (MetaDisplay *display,
       return NULL;
     }
   
-  screen = g_new (MetaScreen, 1);
+  screen = g_object_new (META_TYPE_SCREEN, NULL);
   screen->closing = 0;
   
   screen->display = display;
@@ -718,7 +794,8 @@ meta_screen_free (MetaScreen *screen,
     g_free (screen->xinerama_infos);
   
   g_free (screen->screen_name);
-  g_free (screen);
+
+  g_object_unref (screen);
 
   XFlush (display->xdisplay);
   meta_display_ungrab (display);
@@ -790,20 +867,6 @@ meta_screen_manage_all_windows (MetaScreen *screen)
 
       window = meta_window_new_with_attrs (screen->display, info->xwindow, TRUE,
                                            &info->attrs);
-      if (info->xwindow == screen->no_focus_window ||
-          info->xwindow == screen->flash_window ||
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-          info->xwindow == screen->wm_cm_selection_window ||
-	  info->xwindow == screen->guard_window ||
-#endif
-          info->xwindow == screen->wm_sn_selection_window) {
-        meta_verbose ("Not managing our own windows\n");
-        continue;
-      }
-
-      if (screen->display->compositor)
-        meta_compositor_add_window (screen->display->compositor, window,
-                                    info->xwindow, &info->attrs);
     }
   meta_stack_thaw (screen->stack);
 
@@ -818,38 +881,20 @@ meta_screen_composite_all_windows (MetaScreen *screen)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaDisplay *display;
-  GList *windows, *list;
+  GSList *windows, *tmp;
 
   display = screen->display;
   if (!display->compositor)
     return;
 
-  windows = list_windows (screen);
-
+  windows = meta_display_list_windows (display);
+  for (tmp = windows; tmp != NULL; tmp = tmp->next)
+    meta_compositor_add_window (display->compositor, tmp->data);
+  g_slist_free (windows);
+  
+  /* trigger a stack_sync_to_server: */
   meta_stack_freeze (screen->stack);
-
-  for (list = windows; list != NULL; list = list->next)
-    {
-      WindowInfo *info = list->data;
-
-      if (info->xwindow == screen->no_focus_window ||
-          info->xwindow == screen->flash_window ||
-          info->xwindow == screen->wm_sn_selection_window ||
-          info->xwindow == screen->wm_cm_selection_window) {
-        meta_verbose ("Not managing our own windows\n");
-        continue;
-      }
-
-      meta_compositor_add_window (display->compositor,
-                                  meta_display_lookup_x_window (display,
-                                                                info->xwindow),
-				  info->xwindow, &info->attrs);
-    }
-
   meta_stack_thaw (screen->stack);
-
-  g_list_foreach (windows, (GFunc)g_free, NULL);
-  g_list_free (windows);
 #endif
 }
 
@@ -1140,13 +1185,16 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
       l = l->next;
     }
 
+  if (!neighbour)
+    return;
+
   meta_workspace_relocate_windows (workspace, neighbour);
 
   if (workspace == screen->active_workspace)
     meta_workspace_activate (neighbour, timestamp);
 
   /* This also removes the workspace from the screens list */
-  meta_workspace_free (workspace);
+  meta_workspace_remove (workspace);
 
   set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
 
@@ -1161,6 +1209,8 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
     }
 
   meta_screen_queue_workarea_recalc (screen);
+
+  g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
 
 MetaWorkspace *
@@ -1181,6 +1231,8 @@ meta_screen_append_new_workspace (MetaScreen *screen, gboolean activate,
   set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
 
   meta_screen_queue_workarea_recalc (screen);
+
+  g_object_notify (G_OBJECT (screen), "n-workspaces");
 
   return w;
 }
@@ -1250,7 +1302,7 @@ update_num_workspaces (MetaScreen *screen,
       MetaWorkspace *w = tmp->data;
 
       g_assert (w->windows == NULL);
-      meta_workspace_free (w);
+      meta_workspace_remove (w);
       
       tmp = tmp->next;
     }
@@ -1266,6 +1318,8 @@ update_num_workspaces (MetaScreen *screen,
   set_number_of_spaces_hint (screen, new_num);
 
   meta_screen_queue_workarea_recalc (screen);
+
+  g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
 
 static void
@@ -2399,6 +2453,10 @@ meta_screen_resize (MetaScreen *screen,
   reload_xinerama_infos (screen);
   set_desktop_geometry_hint (screen);
   
+  if (screen->display->compositor)
+    meta_compositor_sync_screen_size (screen->display->compositor,
+				      screen, width, height);
+
   /* Queue a resize on all the windows */
   meta_screen_foreach_window (screen, meta_screen_resize_func, 0);
 }

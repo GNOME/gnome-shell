@@ -57,9 +57,7 @@
 #include "theme-parser.h"
 #include "util.h"
 #include "gradient.h"
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtkicontheme.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -4628,6 +4626,10 @@ check_state  (MetaFrameStyleSet *style_set,
       if (get_style (style_set, state,
                      META_FRAME_RESIZE_NONE, i) == NULL)
         {
+          /* Translators: This error occurs when a <frame> tag is missing
+           * in theme XML.  The "<frame ...>" is intended as a noun phrase,
+           * and the "missing" qualifies it.  You should translate "whatever".
+           */
           g_set_error (error, META_THEME_ERROR,
                        META_THEME_ERROR_FAILED,
                        _("Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"),
@@ -4824,6 +4826,10 @@ meta_theme_validate (MetaTheme *theme,
   
   if (theme->readable_name == NULL)
     {
+      /* Translators: This error means that a necessary XML tag (whose name
+       * is given in angle brackets) was not found in a given theme (whose
+       * name is given second, in quotation marks).
+       */
       g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
                    _("No <%s> set for theme \"%s\""), "name", theme->name);
       return FALSE;

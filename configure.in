@@ -4,12 +4,12 @@ m4_define([metacity_major_version], [2])
 m4_define([metacity_minor_version], [25])
 # Fibonacci sequence for micro version numbering:
 # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987
-m4_define([metacity_micro_version], [2])
+m4_define([metacity_micro_version], [55])
 
 m4_define([metacity_version],
           [metacity_major_version.metacity_minor_version.metacity_micro_version])
 
-m4_define([metacity_clutter_plugin_api_version], [1])
+m4_define([metacity_clutter_plugin_api_version], [2])
 
 AC_INIT([metacity], [metacity_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=metacity])
@@ -231,17 +231,8 @@ fi
 have_xrender=no
 
 XCOMPOSITE_VERSION=0.2
-AC_MSG_CHECKING([Xcomposite >= $XCOMPOSITE_VERSION])
-if $PKG_CONFIG --atleast-version $XCOMPOSITE_VERSION xcomposite; then
-   have_xcomposite=yes
-else
-   have_xcomposite=no
-fi
-AC_MSG_RESULT($have_xcomposite)
-
 if test x$enable_compositor = xyes; then
    have_xcomposite=yes
-   echo "CompositeExt support forced on"
 elif test x$enable_compositor = xauto; then
    echo "Building compositing manager by default now."
    have_xcomposite=yes
@@ -262,9 +253,18 @@ fi
 AM_CONDITIONAL(WITH_CLUTTER, test "$have_clutter" = "yes")
 
 if test x$have_xcomposite = xyes; then
-  echo "Building with CompositeExt"
+   AC_MSG_CHECKING([Xcomposite >= $XCOMPOSITE_VERSION])
+   if $PKG_CONFIG --atleast-version $XCOMPOSITE_VERSION xcomposite; then
+      AC_MSG_RESULT([yes])
+   else
+      AC_MSG_ERROR([no. Use --disable-compositor to disable.])
+   fi
+fi
+
+if test x$have_xcomposite = xyes; then
   METACITY_PC_MODULES="$METACITY_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender xdamage"
-  AC_DEFINE(HAVE_COMPOSITE_EXTENSIONS, , [Building with compositing manager support])
+  AC_DEFINE(HAVE_COMPOSITE_EXTENSIONS, 1, [Building with compositing manager support])
+  echo "Building with compositing manager"
 
   ## force on render also
   have_xrender=yes
@@ -466,7 +466,7 @@ if test "x$found_xsync" = "xyes"; then
    AC_DEFINE(HAVE_XSYNC, , [Have the Xsync extension library])
 fi
 
-METACITY_LIBS="$METACITY_LIBS $XSYNC_LIBS $RANDR_LIBS $SHAPE_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
+METACITY_LIBS="$METACITY_LIBS $XSYNC_LIBS $RANDR_LIBS $SHAPE_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS -lm"
 METACITY_MESSAGE_LIBS="$METACITY_MESSAGE_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
 METACITY_WINDOW_DEMO_LIBS="$METACITY_WINDOW_DEMO_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
 METACITY_PROPS_LIBS="$METACITY_PROPS_LIBS $X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
@@ -524,16 +524,30 @@ else
   GCONF_SCHEMAS_INSTALL_FALSE=
 fi
 
+AC_PATH_PROG(ZENITY, zenity, no)
+if test x"$ZENITY" = xno; then
+  AC_MSG_ERROR([zenity not found in your path - needed for dialogs])
+fi
+
 AC_ARG_ENABLE(debug,
 	[  --enable-debug		enable debugging],,
 	enable_debug=no)
 if test "x$enable_debug" = "xyes"; then
-	CFLAGS="$CFLAGS -g -O -Wall"
+	CFLAGS="$CFLAGS -g -O"
 fi
+
+# Warnings are there for a reason
+if test "x$GCC" = "xyes"; then
+  CFLAGS="$CFLAGS -Wall -Werror -ansi"
+fi
+
+# Use gnome-doc-utils:
+GNOME_DOC_INIT([0.8.0])
 
 AC_CONFIG_FILES([
 Makefile
 doc/Makefile
+doc/creating_themes/Makefile
 doc/man/Makefile
 src/Makefile
 src/wm-tester/Makefile

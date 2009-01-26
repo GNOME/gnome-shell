@@ -33,8 +33,7 @@
 
 #include <config.h>
 #include "metaaccellabel.h"
-#include <gtk/gtkmain.h>
-#include <gtk/gtkaccelmap.h>
+#include <gtk/gtk.h>
 #include <string.h>
 #include "util.h"
 

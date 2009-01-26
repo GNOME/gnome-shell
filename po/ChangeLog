@@ -1,3 +1,89 @@
+2008-12-12  Luca Ferretti  <elle.uca@libero.it>
+
+	* it.po: Imported updated translation from gnome-2-24 branch.
+
+2008-12-08  Priit Laes  <plaes at svn dot gnome dot org>
+
+	* et.po: Translation updated by Mattias Põldaru
+
+2008-11-23  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation
+
+2008-11-14  Thomas Thurman  <tthurman@gnome.org>
+
+	* la.po: Updated Latin translation
+
+2008-11-14  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation
+
+2008-11-09  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation
+
+2008-11-08  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+
+	* es.po: Updated Spanish translation
+
+2008-11-03  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
+
+	* pt_BR.po: Merged from branch gnome-2-24. Minor capitalization fix in
+	the Brazilian Portuguese translation.
+
+2008-10-27 Og Maciel <ogmaciel@gnome.org>
+
+	* pt_BR.po: Updated Brazilian Portuguese translation by
+	Og Maciel.
+
+2008-10-27  Daniel Nylander <po@danielnylander.se>
+
+	* sv.po: Updated Swedish translation.
+
+2008-10-23  Gil Forcada  <gforcada@gnome.org>
+
+	* LINGUAS: Added ast.
+	* ast.po: Added Asturian translation on behalf of Mikel González.
+
+2008-10-22  Jordi Mallach  <jordi@sindominio.net>
+
+	* ca@valencia.po: New Valencian (Southern Catalan) translation
+	based on the Catalan file.
+	* LINGUAS: Added Valencian (Southern Catalan) (ca@valencia).
+
+2008-10-22  Jordi Mallach  <jordi@sindominio.net>
+
+	* ca.po: Apply Catalan fixes from Robert Millan.
+
+2008-10-17  Thomas Thurman  <tthurman@gnome.org>
+
+	* la.po: Updated Latin translation.
+
+2008-10-16  Marcel Telka  <marcel@telka.sk>
+
+	* sk.po: Updated Slovak translation by Pavol Šimo.
+
+2008-10-15  Thomas Thurman  <tthurman@gnome.org>
+
+	* la.po: Updated Latin translation.
+
+2008-10-15  Thomas Thurman  <tthurman@gnome.org>
+
+	* la.po: Updated Latin translation.
+
+2008-10-12  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* nb.po: Updated Norwegian bokmål translation.
+
+2008-10-12  Theppitak Karoonboonyanan  <thep@linux.thai.net>
+
+	* th.po: Updated Thai translation (merged from gnome-2-24 branch).
+
+2008-10-11  Claude Paroz  <claude@2xlibre.net>
+
+	* fr.po: Fixed minimize/unmaximize French translation (sync with 2.24) and
+	complete some other translations.
+
 2008-09-30 Og Maciel <ogmaciel@gnome.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation by Vladimir Melo.

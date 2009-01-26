@@ -44,8 +44,7 @@ typedef enum
   META_PREF_TITLEBAR_FONT,
   META_PREF_NUM_WORKSPACES,
   META_PREF_APPLICATION_BASED,
-  META_PREF_WINDOW_KEYBINDINGS,
-  META_PREF_SCREEN_KEYBINDINGS,
+  META_PREF_KEYBINDINGS,
   META_PREF_DISABLE_WORKAROUNDS,
   META_PREF_COMMANDS,
   META_PREF_TERMINAL_COMMAND,
@@ -216,7 +215,8 @@ typedef struct
 typedef struct
 {
   const char   *name;
-  /* a list of MetaKeyCombos. Each of them is bound to
+  /**
+   * A list of MetaKeyCombos. Each of them is bound to
    * this keypref. If one has keysym==modifiers==0, it is
    * ignored. For historical reasons, the first entry is
    * governed by the pref FOO and the remainder are
@@ -224,14 +224,15 @@ typedef struct
    */
   GSList *bindings;
 
-  /* for keybindings that can have shift or not like Alt+Tab */
-  gboolean      add_shift;
+  /** for keybindings that can have shift or not like Alt+Tab */
+  gboolean      add_shift:1;
+
+  /** for keybindings that apply only to a window */
+  gboolean      per_window:1;
 } MetaKeyPref;
 
-void meta_prefs_get_screen_bindings (const MetaKeyPref **bindings,
-                                     int                *n_bindings);
-void meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
-                                     int                *n_bindings);
+void meta_prefs_get_key_bindings (const MetaKeyPref **bindings,
+                                  int                *n_bindings);
 
 MetaKeyBindingAction meta_prefs_get_keybinding_action (const char *name);
 

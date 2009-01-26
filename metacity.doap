@@ -17,7 +17,7 @@
  <created>2001-05-30</created>
 
  <shortdesc xml:lang="en">
-A simple GTK+ window manager that tries not to get in your way.
+   Metacity is a simple compositing window manager that integrates nicely with GNOME 2.
 </shortdesc>
  <description xml:lang="en">
 A window manager for GNOME, with a focus on simplicity and usability
