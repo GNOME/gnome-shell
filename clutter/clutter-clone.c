@@ -317,7 +317,7 @@ clutter_clone_set_source (ClutterClone *clone,
  * Since: 1.0
  */
 ClutterActor *
-clutter_clone_get_clone_source (ClutterClone *clone)
+clutter_clone_get_source (ClutterClone *clone)
 {
   g_return_val_if_fail (CLUTTER_IS_CLONE (clone), NULL);
 
