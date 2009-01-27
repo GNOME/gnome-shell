@@ -61,9 +61,11 @@ G_DEFINE_TYPE (ClutterCloneTexture,
 #define CLUTTER_CLONE_TEXTURE_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CLONE_TEXTURE, ClutterCloneTexturePrivate))
 
+
 struct _ClutterCloneTexturePrivate
 {
   ClutterTexture      *parent_texture;
+  CoglHandle           material;
   guint                repeat_x : 1;
   guint                repeat_y : 1;
 };
@@ -145,6 +147,7 @@ clutter_clone_texture_paint (ClutterActor *self)
   CoglHandle                   cogl_texture;
   ClutterFixed                 t_w, t_h;
   guint                        tex_width, tex_height;
+  CoglHandle                   cogl_material;
 
   priv = CLUTTER_CLONE_TEXTURE (self)->priv;
 
@@ -177,8 +180,8 @@ clutter_clone_texture_paint (ClutterActor *self)
                                   CLUTTER_TEXTURE_IN_CLONE_PAINT);
     }
 
-  cogl_set_source_color4ub (255, 255, 255,
-                            clutter_actor_get_paint_opacity (self));
+  cogl_material_set_color4ub (priv->material, 0xff, 0xff, 0xff,
+                              clutter_actor_get_paint_opacity (self));
 
   clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
 
@@ -206,11 +209,13 @@ clutter_clone_texture_paint (ClutterActor *self)
   else
     t_h = 1.0;
 
+  cogl_material_set_layer (priv->material, 0, cogl_texture);
+  cogl_set_source (priv->material);
   /* Parent paint translated us into position */
-  cogl_texture_rectangle (cogl_texture, 0, 0,
-			  (float)(x_2 - x_1),
-			  (float)(y_2 - y_1),
-			  0, 0, t_w, t_h);
+  cogl_rectangle_with_texture_coords (0, 0,
+			              (float) (x_2 - x_1),
+			              (float) (y_2 - y_1),
+			              0, 0, t_w, t_h);
 }
 
 static void
@@ -388,6 +393,7 @@ clutter_clone_texture_init (ClutterCloneTexture *self)
 
   self->priv = priv = CLUTTER_CLONE_TEXTURE_GET_PRIVATE (self);
   priv->parent_texture = NULL;
+  priv->material = cogl_material_new ();
 }
 
 /**

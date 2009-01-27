@@ -79,7 +79,8 @@ struct _ClutterTexturePrivate
   gint                         height;
   gint                         max_tile_waste;
   ClutterTextureQuality        filter_quality;
-  CoglHandle                   texture;
+  CoglHandle                   material;
+  CoglHandle                   fbo_texture;
   gboolean                     no_slice;
 
   ClutterActor                *fbo_source;
@@ -116,6 +117,9 @@ enum
   PROP_REPEAT_X,
   PROP_FILTER_QUALITY,
   PROP_COGL_TEXTURE,
+#if EXPOSE_COGL_MATERIAL_PROP
+  PROP_COGL_MATERIAL,
+#endif
   PROP_FILENAME,
   PROP_KEEP_ASPECT_RATIO,
   PROP_LOAD_ASYNC
@@ -186,11 +190,7 @@ texture_free_gl_resources (ClutterTexture *texture)
 
   CLUTTER_MARK();
 
-  if (priv->texture != COGL_INVALID_HANDLE)
-    {
-      cogl_texture_unref (priv->texture);
-      priv->texture = COGL_INVALID_HANDLE;
-    }
+  cogl_material_remove_layer (priv->material, 0);
 }
 
 static void
@@ -202,7 +202,7 @@ clutter_texture_unrealize (ClutterActor *actor)
   texture = CLUTTER_TEXTURE(actor);
   priv = texture->priv;
 
-  if (priv->texture == COGL_INVALID_HANDLE)
+  if (priv->material == COGL_INVALID_HANDLE)
     return;
 
   /* there's no need to read the pixels back when unrealizing inside
@@ -263,8 +263,8 @@ clutter_texture_realize (ClutterActor *actor)
 
       /* Handle FBO's */
 
-      if (priv->texture != COGL_INVALID_HANDLE)
-	cogl_texture_unref (priv->texture);
+      if (priv->fbo_texture != COGL_INVALID_HANDLE)
+	cogl_texture_unref (priv->fbo_texture);
 
       if (!priv->no_slice)
         max_waste = priv->max_tile_waste;
@@ -272,17 +272,17 @@ clutter_texture_realize (ClutterActor *actor)
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
         flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
-      priv->texture =
+      priv->fbo_texture =
         cogl_texture_new_with_size (priv->width,
                                     priv->height,
                                     max_waste, flags,
                                     COGL_PIXEL_FORMAT_RGBA_8888);
 
-      cogl_texture_set_filters (priv->texture,
+      cogl_texture_set_filters (priv->fbo_texture,
             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
             clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
 
-      priv->fbo_handle = cogl_offscreen_new_to_texture (priv->texture);
+      priv->fbo_handle = cogl_offscreen_new_to_texture (priv->fbo_texture);
 
       if (priv->fbo_handle == COGL_INVALID_HANDLE)
         {
@@ -590,8 +590,8 @@ clutter_texture_paint (ClutterActor *self)
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
 
-  cogl_set_source_color4ub (255, 255, 255,
-                            clutter_actor_get_paint_opacity (self));
+  cogl_material_set_color4ub (priv->material, 0xff, 0xff, 0xff,
+                              clutter_actor_get_paint_opacity (self));
 
   clutter_actor_get_allocation_coords (self, &x_1, &y_1, &x_2, &y_2);
 
@@ -613,10 +613,11 @@ clutter_texture_paint (ClutterActor *self)
     t_h = 1.0;
 
   /* Paint will have translated us */
-  cogl_texture_rectangle (priv->texture, 0, 0,
-                          (float)(x_2 - x_1),
-                          (float)(y_2 - y_1),
-                          0, 0, t_w, t_h);
+  cogl_set_source (priv->material);
+  cogl_rectangle_with_texture_coords (0, 0,
+			              (float) (x_2 - x_1),
+			              (float) (y_2 - y_1),
+			              0, 0, t_w, t_h);
 }
 
 /*
@@ -734,6 +735,12 @@ clutter_texture_set_property (GObject      *object,
       clutter_texture_set_cogl_texture
 	(texture, (CoglHandle) g_value_get_boxed (value));
       break;
+#if EXPOSE_COGL_MATERIAL_PROP
+    case PROP_COGL_MATERIAL:
+      clutter_texture_set_cogl_material
+        (texture, (CoglHandle) g_value_get_boxed (value));
+      break;
+#endif
     case PROP_FILENAME:
       clutter_texture_set_from_file (texture,
                                      g_value_get_string (value),
@@ -762,6 +769,7 @@ clutter_texture_get_property (GObject    *object,
 {
   ClutterTexture        *texture;
   ClutterTexturePrivate *priv;
+  CoglHandle             cogl_texture;
 
   texture = CLUTTER_TEXTURE(object);
   priv = texture->priv;
@@ -772,10 +780,11 @@ clutter_texture_get_property (GObject    *object,
       g_value_set_int (value, clutter_texture_get_max_tile_waste (texture));
       break;
     case PROP_PIXEL_FORMAT:
-      if (priv->texture == COGL_INVALID_HANDLE)
+      cogl_texture = clutter_texture_get_cogl_texture (texture);
+      if (cogl_texture == COGL_INVALID_HANDLE)
 	g_value_set_int (value, COGL_PIXEL_FORMAT_ANY);
       else
-	g_value_set_int (value, cogl_texture_get_format (priv->texture));
+	g_value_set_int (value, cogl_texture_get_format (cogl_texture));
       break;
     case PROP_SYNC_SIZE:
       g_value_set_boolean (value, priv->sync_actor_size);
@@ -792,6 +801,11 @@ clutter_texture_get_property (GObject    *object,
     case PROP_COGL_TEXTURE:
       g_value_set_boxed (value, clutter_texture_get_cogl_texture (texture));
       break;
+#if EXPOSE_COGL_MATERIAL_PROP
+    case PROP_COGL_MATERIAL:
+      g_value_set_boxed (value, clutter_texture_get_cogl_material (texture));
+      break;
+#endif
     case PROP_NO_SLICE:
       g_value_set_boolean (value, priv->no_slice);
       break;
@@ -908,6 +922,17 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			 "this actor",
 			 CLUTTER_TYPE_TEXTURE_HANDLE,
 			 G_PARAM_READWRITE));
+
+#if EXPOSE_COGL_MATERIAL_PROP
+  g_object_class_install_property
+    (gobject_class, PROP_COGL_MATERIAL,
+     g_param_spec_boxed ("cogl-material",
+			 "COGL Material",
+			 "The underlying COGL material handle used to draw "
+			 "this actor",
+			 CLUTTER_TYPE_MATERIAL_HANDLE,
+			 G_PARAM_READWRITE));
+#endif
 
   g_object_class_install_property
     (gobject_class, PROP_FILENAME,
@@ -1073,7 +1098,8 @@ clutter_texture_init (ClutterTexture *self)
   priv->repeat_x          = FALSE;
   priv->repeat_y          = FALSE;
   priv->sync_actor_size   = TRUE;
-  priv->texture           = COGL_INVALID_HANDLE;
+  priv->material          = cogl_material_new ();
+  priv->fbo_texture       = COGL_INVALID_HANDLE;
   priv->fbo_handle        = COGL_INVALID_HANDLE;
   priv->local_data        = NULL;
   priv->keep_aspect_ratio = FALSE;
@@ -1085,6 +1111,7 @@ clutter_texture_save_to_local_data (ClutterTexture *texture)
   ClutterTexturePrivate *priv;
   int                    bpp;
   CoglPixelFormat        pixel_format;
+  CoglHandle             cogl_texture;
 
   priv = texture->priv;
 
@@ -1094,12 +1121,14 @@ clutter_texture_save_to_local_data (ClutterTexture *texture)
       priv->local_data = NULL;
     }
 
-  if (priv->texture == COGL_INVALID_HANDLE)
+  if (priv->material == COGL_INVALID_HANDLE)
     return;
 
-  priv->local_data_width = cogl_texture_get_width (priv->texture);
-  priv->local_data_height = cogl_texture_get_height (priv->texture);
-  pixel_format = cogl_texture_get_format (priv->texture);
+  cogl_texture = clutter_texture_get_cogl_texture (texture);
+
+  priv->local_data_width = cogl_texture_get_width (cogl_texture);
+  priv->local_data_height = cogl_texture_get_height (cogl_texture);
+  pixel_format = cogl_texture_get_format (cogl_texture);
   priv->local_data_has_alpha = pixel_format & COGL_A_BIT;
   bpp = priv->local_data_has_alpha ? 4 : 3;
 
@@ -1115,7 +1144,7 @@ clutter_texture_save_to_local_data (ClutterTexture *texture)
   priv->local_data = g_malloc (priv->local_data_rowstride
 			       * priv->local_data_height);
 
-  if (cogl_texture_get_data (priv->texture,
+  if (cogl_texture_get_data (cogl_texture,
 			     priv->local_data_has_alpha
 			     ? COGL_PIXEL_FORMAT_RGBA_8888
 			     : COGL_PIXEL_FORMAT_RGB_888,
@@ -1150,6 +1179,58 @@ clutter_texture_load_from_local_data (ClutterTexture *texture)
   priv->local_data = NULL;
 }
 
+#if EXPOSE_COGL_MATERIAL_PROP
+/**
+ * clutter_texture_get_cogl_material:
+ * @texture: A #ClutterTexture
+ *
+ * Returns a handle to the underlying COGL material used for drawing
+ * the actor. No extra reference is taken so if you need to keep the
+ * handle then you should call cogl_material_ref on it.
+ *
+ * Since: 1.0
+ *
+ * Return value: COGL material handle
+ */
+CoglHandle
+clutter_texture_get_cogl_material (ClutterTexture *texture)
+{
+  return texture->priv->material;
+}
+
+/**
+ * clutter_texture_set_cogl_material:
+ * @texture: A #ClutterTexture
+ * @cogl_material: A CoglHandle for a material
+ *
+ * Replaces the underlying COGL texture drawn by this actor with
+ * @cogl_tex. A reference to the texture is taken so if the handle is
+ * no longer needed it should be deref'd with cogl_texture_unref.
+ *
+ * Since: 0.8
+ *
+ */
+void
+clutter_texture_set_cogl_material (ClutterTexture *texture,
+                                   CoglHandle cogl_material)
+{
+  CoglHandle cogl_texture;
+
+  /* This */
+  if (texture->priv->material)
+    cogl_material_unref (texture->priv->material);
+
+  texture->priv->material = cogl_material;
+
+  /* XXX: We are re-asserting the first layer of the new material to ensure the
+   * priv state is in sync with the contents of the material. */
+  cogl_texture = clutter_texture_get_cogl_texture (texture);
+  clutter_texture_set_cogl_texture (texture, cogl_texture);
+  /* XXX: If we add support for more material layers, this will need
+   * extending */
+}
+#endif
+
 /**
  * clutter_texture_get_cogl_texture
  * @texture: A #ClutterTexture
@@ -1165,9 +1246,17 @@ clutter_texture_load_from_local_data (ClutterTexture *texture)
 CoglHandle
 clutter_texture_get_cogl_texture (ClutterTexture *texture)
 {
+  const GList *layers;
+  int n_layers;
+
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), COGL_INVALID_HANDLE);
 
-  return texture->priv->texture;
+  layers = cogl_material_get_layers (texture->priv->material);
+  n_layers = g_list_length ((GList *)layers);
+  if (n_layers == 0)
+    return COGL_INVALID_HANDLE;
+
+  return cogl_material_layer_get_texture (layers->data);
 }
 
 /**
@@ -1207,7 +1296,8 @@ clutter_texture_set_cogl_texture (ClutterTexture  *texture,
   /* Remove old texture */
   texture_free_gl_resources (texture);
   /* Use the new texture */
-  priv->texture = cogl_tex;
+
+  cogl_material_set_layer (priv->material, 0, cogl_tex);
 
   size_change      = width != priv->width || height != priv->height;
   priv->width      = width;
@@ -1715,11 +1805,12 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
 
   if (filter_quality != old_quality)
     {
+      CoglHandle cogl_texture = clutter_texture_get_cogl_texture (texture);
       priv->filter_quality = filter_quality;
 
       /* Is this actually needed - causes problems with TFP mipmaps */
-      if (priv->texture != COGL_INVALID_HANDLE)
-	cogl_texture_set_filters (priv->texture,
+      if (cogl_texture != COGL_INVALID_HANDLE)
+	cogl_texture_set_filters (cogl_texture,
              clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
              clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
 
@@ -1787,15 +1878,17 @@ clutter_texture_set_max_tile_waste (ClutterTexture *texture,
 				    gint            max_tile_waste)
 {
   ClutterTexturePrivate *priv;
+  CoglHandle cogl_texture;
 
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
 
   priv = texture->priv;
+  cogl_texture = clutter_texture_get_cogl_texture (texture);
 
   /* There's no point in changing the max_tile_waste if the texture
      has already been created because it will be overridden with the
      value from the texture handle */
-  if (priv->texture == COGL_INVALID_HANDLE)
+  if (cogl_texture == COGL_INVALID_HANDLE)
     priv->max_tile_waste = max_tile_waste;
 }
 
@@ -1815,17 +1908,19 @@ gint
 clutter_texture_get_max_tile_waste (ClutterTexture *texture)
 {
   ClutterTexturePrivate *priv;
+  CoglHandle             cogl_texture;
 
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), 0);
 
   priv = texture->priv;
+  cogl_texture = clutter_texture_get_cogl_texture (texture);
 
-  if (priv->texture == COGL_INVALID_HANDLE)
+  if (cogl_texture == COGL_INVALID_HANDLE)
     return texture->priv->max_tile_waste;
   else
     /* If we have a valid texture handle then use the value from that
        instead */
-    return cogl_texture_get_max_waste (texture->priv->texture);
+    return cogl_texture_get_max_waste (cogl_texture);
 }
 
 /**
@@ -1939,6 +2034,7 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
 {
   ClutterTexturePrivate *priv;
   CoglPixelFormat        source_format;
+  CoglHandle             cogl_texture;
 
   priv = texture->priv;
 
@@ -1971,7 +2067,8 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
 
   clutter_actor_realize (CLUTTER_ACTOR (texture));
 
-  if (priv->texture == COGL_INVALID_HANDLE)
+  cogl_texture = clutter_texture_get_cogl_texture (texture);
+  if (cogl_texture == COGL_INVALID_HANDLE)
     {
       g_set_error (error, CLUTTER_TEXTURE_ERROR,
 		   CLUTTER_TEXTURE_ERROR_BAD_FORMAT,
@@ -1979,7 +2076,7 @@ clutter_texture_set_area_from_rgb_data (ClutterTexture     *texture,
       return FALSE;
     }
 
-  if (!cogl_texture_set_region (priv->texture,
+  if (!cogl_texture_set_region (cogl_texture,
 				0, 0,
 				x, y, width, height,
 				width, height,
@@ -2027,17 +2124,18 @@ on_fbo_source_size_change (GObject          *object,
       if (priv->filter_quality == CLUTTER_TEXTURE_QUALITY_HIGH)
         flags |= COGL_TEXTURE_AUTO_MIPMAP;
 
-      priv->texture = cogl_texture_new_with_size (MAX (priv->width, 1),
-						  MAX (priv->height, 1),
-						  -1,
-                                                  flags,
-						  COGL_PIXEL_FORMAT_RGBA_8888);
+      priv->fbo_texture =
+        cogl_texture_new_with_size (MAX (priv->width, 1),
+				    MAX (priv->height, 1),
+				    -1,
+                                    flags,
+				    COGL_PIXEL_FORMAT_RGBA_8888);
 
-      cogl_texture_set_filters (priv->texture,
+      cogl_texture_set_filters (priv->fbo_texture,
             clutter_texture_quality_to_cogl_min_filter (priv->filter_quality),
             clutter_texture_quality_to_cogl_mag_filter (priv->filter_quality));
 
-      priv->fbo_handle = cogl_offscreen_new_to_texture (priv->texture);
+      priv->fbo_handle = cogl_offscreen_new_to_texture (priv->fbo_texture);
 
       if (priv->fbo_handle == COGL_INVALID_HANDLE)
         {
@@ -2281,3 +2379,22 @@ clutter_texture_handle_get_type (void)
 
   return our_type;
 }
+
+#if EXPOSE_COGL_MATERIAL_PROP
+GType
+clutter_material_handle_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (G_UNLIKELY (!our_type))
+    {
+      our_type =
+	g_boxed_type_register_static (I_("ClutterMaterialHandle"),
+				      (GBoxedCopyFunc) cogl_material_ref,
+				      (GBoxedFreeFunc) cogl_material_unref);
+    }
+
+  return our_type;
+}
+#endif
+

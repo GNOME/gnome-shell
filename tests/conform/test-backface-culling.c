@@ -127,47 +127,45 @@ on_paint (ClutterActor *actor, TestState *state)
       x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a front-facing texture */
-      cogl_texture_rectangle (state->texture,
-                              x1, y1, x2, y2,
-                              0, 0, 1.0, 1.0);
+      cogl_set_source_texture (state->texture);
+      cogl_rectangle (x1, y1, x2, y2);
 
       x1 = x2;
       x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a back-facing texture */
-      cogl_texture_rectangle (state->texture,
-                              x2, y1, x1, y2,
-                              0, 0, 1.0, 1.0);
+      cogl_set_source_texture (state->texture);
+      cogl_rectangle (x2, y1, x1, y2);
 
       x1 = x2;
       x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a front-facing texture polygon */
-      verts[0].x = x1;             verts[0].y = y2;
-      verts[1].x = x2;             verts[1].y = y2;
-      verts[2].x = x2;             verts[2].y = y1;
-      verts[3].x = x1;             verts[3].y = y1;
-      verts[0].tx = 0;             verts[0].ty = 0;
+      verts[0].x = x1;    verts[0].y = y2;
+      verts[1].x = x2;    verts[1].y = y2;
+      verts[2].x = x2;    verts[2].y = y1;
+      verts[3].x = x1;    verts[3].y = y1;
+      verts[0].tx = 0;    verts[0].ty = 0;
       verts[1].tx = 1.0;  verts[1].ty = 0;
       verts[2].tx = 1.0;  verts[2].ty = 1.0;
-      verts[3].tx = 0;             verts[3].ty = 1.0;
-      cogl_texture_polygon (state->texture, 4,
-                            verts, FALSE);
+      verts[3].tx = 0;    verts[3].ty = 1.0;
+      cogl_set_source_texture (state->texture);
+      cogl_polygon (verts, 4, FALSE);
 
       x1 = x2;
       x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a back-facing texture polygon */
-      verts[0].x = x1;             verts[0].y = y1;
-      verts[1].x = x2;             verts[1].y = y1;
-      verts[2].x = x2;             verts[2].y = y2;
-      verts[3].x = x1;             verts[3].y = y2;
-      verts[0].tx = 0;             verts[0].ty = 0;
+      verts[0].x = x1;    verts[0].y = y1;
+      verts[1].x = x2;    verts[1].y = y1;
+      verts[2].x = x2;    verts[2].y = y2;
+      verts[3].x = x1;    verts[3].y = y2;
+      verts[0].tx = 0;    verts[0].ty = 0;
       verts[1].tx = 1.0;  verts[1].ty = 0;
       verts[2].tx = 1.0;  verts[2].ty = 1.0;
-      verts[3].tx = 0;             verts[3].ty = 1.0;
-      cogl_texture_polygon (state->texture, 4,
-                            verts, FALSE);
+      verts[3].tx = 0;    verts[3].ty = 1.0;
+      cogl_set_source_texture (state->texture);
+      cogl_polygon (verts, 4, FALSE);
 
       x1 = x2;
       x2 = x1 + (float)(TEXTURE_SIZE);

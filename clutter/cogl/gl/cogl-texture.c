@@ -32,6 +32,7 @@
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
 #include "cogl-texture-private.h"
+#include "cogl-material.h"
 #include "cogl-context.h"
 #include "cogl-handle.h"
 
@@ -50,6 +51,19 @@
     printf("err: 0x%x\n", err); \
 } */
 
+#ifdef HAVE_COGL_GL
+#ifdef glDrawRangeElements
+#undef glDrawRangeElements
+#endif
+#define glDrawRangeElements ctx->pf_glDrawRangeElements
+#endif
+
+static void _cogl_journal_flush (void);
+
+static void _cogl_texture_free (CoglTexture *tex);
+
+COGL_HANDLE_DEFINE (Texture, texture, texture_handles);
+
 struct _CoglSpanIter
 {
   gint              index;
@@ -66,11 +80,6 @@ struct _CoglSpanIter
   float      intersect_end_local;
   gboolean          intersects;
 };
-
-static void _cogl_texture_free (CoglTexture *tex);
-
-COGL_HANDLE_DEFINE (Texture, texture, texture_handles);
-
 
 static void
 _cogl_texture_bitmap_free (CoglTexture *tex)
@@ -774,6 +783,10 @@ _cogl_texture_set_wrap_mode_parameter (CoglTexture *tex,
     {
       int i;
 
+      /* Any queued texture rectangles may be depending on the previous
+       * wrap mode... */
+      _cogl_journal_flush ();
+
       for (i = 0; i < tex->slice_gl_handles->len; i++)
         {
           GLuint texnum = g_array_index (tex->slice_gl_handles, GLuint, i);
@@ -988,6 +1001,20 @@ _cogl_texture_slices_free (CoglTexture *tex)
 
       g_array_free (tex->slice_gl_handles, TRUE);
     }
+}
+
+gboolean
+_cogl_texture_span_has_waste (CoglTexture *tex,
+                              gint x_span_index,
+                              gint y_span_index)
+{
+  CoglTexSliceSpan *x_span;
+  CoglTexSliceSpan *y_span;
+
+  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, x_span_index);
+  y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, y_span_index);
+
+  return (x_span->waste || y_span->waste) ? TRUE : FALSE;
 }
 
 static gboolean
@@ -1392,12 +1419,12 @@ cogl_texture_new_from_file (const gchar       *filename,
 {
   CoglBitmap  *bmp;
   CoglHandle   handle;
-  
+
   g_return_val_if_fail (error == NULL || *error == NULL, COGL_INVALID_HANDLE);
 
   if (!(bmp = cogl_bitmap_new_from_file (filename, error)))
     return COGL_INVALID_HANDLE;
-    
+
   handle = cogl_texture_new_from_bitmap (bmp,
                                          max_waste,
                                          flags,
@@ -1920,137 +1947,307 @@ cogl_texture_get_data (CoglHandle       handle,
   return byte_size;
 }
 
+
+/******************************************************************************
+ * XXX: Here ends the code that strictly implements "CoglTextures".
+ *
+ * The following consists of code for rendering rectangles and polygons. It
+ * might be neater to move this code somewhere else. I think everything below
+ * here should be implementable without access to CoglTexture internals, but
+ * that will at least mean exposing the cogl_span_iter_* funcs.
+ */
+
 static void
-_cogl_texture_flush_vertices (void)
+_cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
+                                gint              batch_len,
+                                GLfloat          *vertex_pointer)
 {
+  int     needed_indices;
+  gsize   stride;
+  int     i;
+  gulong  enable_flags = 0;
+  guint32 disable_mask;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if (ctx->texture_vertices->len > 0)
+  /* The indices are always the same sequence regardless of the vertices so we
+   * only need to change it if there are more vertices than ever before. */
+  needed_indices = batch_len * 6;
+  if (needed_indices > ctx->static_indices->len)
     {
-      int needed_indices;
-      CoglTextureGLVertex *p
-        = (CoglTextureGLVertex *) ctx->texture_vertices->data;
+      int old_len = ctx->static_indices->len;
+      int vert_num = old_len / 6 * 4;
+      GLushort *q;
 
-      /* The indices are always the same sequence regardless of the
-         vertices so we only need to change it if there are more
-         vertices than ever before */
-      needed_indices = ctx->texture_vertices->len / 4 * 6;
-      if (needed_indices > ctx->texture_indices->len)
+      /* Add two triangles for each quad to the list of
+         indices. That makes six new indices but two of the
+         vertices in the triangles are shared. */
+      g_array_set_size (ctx->static_indices, needed_indices);
+      q = &g_array_index (ctx->static_indices, GLushort, old_len);
+
+      for (i = old_len;
+           i < ctx->static_indices->len;
+           i += 6, vert_num += 4)
         {
-          int old_len = ctx->texture_indices->len;
-          int vert_num = old_len / 6 * 4;
-          int i;
-          GLushort *q;
+          *(q++) = vert_num + 0;
+          *(q++) = vert_num + 1;
+          *(q++) = vert_num + 3;
 
-          /* Add two triangles for each quad to the list of
-             indices. That makes six new indices but two of the
-             vertices in the triangles are shared. */
-          g_array_set_size (ctx->texture_indices, needed_indices);
-          q = &g_array_index (ctx->texture_indices, GLushort, old_len);
+          *(q++) = vert_num + 1;
+          *(q++) = vert_num + 2;
+          *(q++) = vert_num + 3;
+        }
+    }
 
-          for (i = old_len;
-               i < ctx->texture_indices->len;
-               i += 6, vert_num += 4)
-            {
-              *(q++) = vert_num + 0;
-              *(q++) = vert_num + 1;
-              *(q++) = vert_num + 3;
+  /* XXX NB:
+   * Our vertex data is arranged as follows:
+   * 4 vertices per quad: 2 GLfloats per position,
+   *                      2 GLfloats per tex coord * n_layers
+   */
+  stride = 2 + 2 * batch_start->n_layers;
+  stride *= sizeof (GLfloat);
 
-              *(q++) = vert_num + 1;
-              *(q++) = vert_num + 2;
-              *(q++) = vert_num + 3;
-            }
+  disable_mask = (1 << batch_start->n_layers) - 1;
+  disable_mask = ~disable_mask;
+
+  cogl_material_flush_gl_state (ctx->source_material,
+                                COGL_MATERIAL_FLUSH_FALLBACK_MASK,
+                                batch_start->fallback_mask,
+                                COGL_MATERIAL_FLUSH_DISABLE_MASK,
+                                disable_mask,
+                                /* Redundant when dealing with unsliced
+                                 * textures but does no harm... */
+                                COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
+                                batch_start->layer0_override_texture,
+                                NULL);
+
+  for (i = 0; i < batch_start->n_layers; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
+      GE (glTexCoordPointer (2, GL_FLOAT, stride, vertex_pointer + 2 + 2 * i));
+    }
+  for (; i < ctx->n_texcoord_arrays_enabled; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
+    }
+  ctx->n_texcoord_arrays_enabled = 0;
+
+  /* FIXME: This api is a bit yukky, ideally it will be removed if we
+   * re-work the cogl_enable mechanism */
+  enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
+
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
+  enable_flags |= COGL_ENABLE_VERTEX_ARRAY;
+  cogl_enable (enable_flags);
+
+  GE (glVertexPointer (2, GL_FLOAT, stride, vertex_pointer));
+
+  GE (ctx->pf_glDrawRangeElements (GL_TRIANGLES,
+                           0, ctx->static_indices->len - 1,
+                           6 * batch_len,
+                           GL_UNSIGNED_SHORT,
+                           ctx->static_indices->data));
+}
+
+static void
+_cogl_journal_flush (void)
+{
+  GLfloat          *current_vertex_pointer;
+  GLfloat          *batch_vertex_pointer;
+  CoglJournalEntry *batch_start;
+  guint             batch_len;
+  int               i;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if (ctx->journal->len == 0)
+    return;
+
+  /* Current non-variables / constraints:
+   *
+   * - We don't have to worry about much GL state changing between journal
+   *   entries since currently the journal never out lasts a single call to
+   *   _cogl_multitexture_multiple_rectangles. So the user doesn't get the
+   *   chance to fiddle with anything. (XXX: later this will be extended at
+   *   which point we can start logging certain state changes)
+   *
+   * - Implied from above: all entries will refer to the same material.
+   *
+   * - Although _cogl_multitexture_multiple_rectangles can cause the wrap mode
+   *   of textures to be modified, the journal is flushed if a wrap mode is
+   *   changed so we don't currently have to log wrap mode changes.
+   *
+   * - XXX - others?
+   */
+
+  /* TODO: "compile" the journal to find ways of batching draw calls and vertex
+   * data.
+   *
+   * Simple E.g. given current constraints...
+   * pass 0 - load all data into a single CoglVertexBuffer
+   * pass 1 - batch gl draw calls according to entries that use the same
+   *          textures.
+   *
+   * We will be able to do cooler stuff here when we extend the life of
+   * journals beyond _cogl_multitexture_multiple_rectangles.
+   */
+
+  batch_vertex_pointer = (GLfloat *)ctx->logged_vertices->data;
+  batch_start = (CoglJournalEntry *)ctx->journal->data;
+  batch_len = 1;
+
+  current_vertex_pointer = batch_vertex_pointer;
+
+  for (i = 1; i < ctx->journal->len; i++)
+    {
+      CoglJournalEntry *prev_entry =
+        &g_array_index (ctx->journal, CoglJournalEntry, i - 1);
+      CoglJournalEntry *current_entry = prev_entry + 1;
+      gsize             stride;
+
+      /* Progress the vertex pointer */
+      stride = 2 + current_entry->n_layers * 2;
+      current_vertex_pointer += stride;
+
+      /* batch rectangles using the same textures */
+      if (current_entry->material == prev_entry->material &&
+          current_entry->n_layers == prev_entry->n_layers &&
+          current_entry->fallback_mask == prev_entry->fallback_mask &&
+          current_entry->layer0_override_texture
+          == prev_entry->layer0_override_texture)
+        {
+          batch_len++;
+          continue;
         }
 
-      GE( glVertexPointer (2, GL_FLOAT,
-                           sizeof (CoglTextureGLVertex), p->v ) );
-      GE( glTexCoordPointer (2, GL_FLOAT,
-                             sizeof (CoglTextureGLVertex), p->t ) );
+      _cogl_journal_flush_quad_batch (batch_start,
+                                      batch_len,
+                                      batch_vertex_pointer);
 
-      GE( glBindTexture (ctx->texture_target, ctx->texture_current) );
-      GE( ctx->pf_glDrawRangeElements (GL_TRIANGLES,
-                                       0, ctx->texture_vertices->len - 1,
-                                       needed_indices,
-                                       GL_UNSIGNED_SHORT,
-                                       ctx->texture_indices->data) );
-
-      g_array_set_size (ctx->texture_vertices, 0);
+      batch_start = current_entry;
+      batch_len = 1;
+      batch_vertex_pointer = current_vertex_pointer;
     }
+
+  /* The last batch... */
+  _cogl_journal_flush_quad_batch (batch_start,
+                                  batch_len,
+                                  batch_vertex_pointer);
+
+
+  g_array_set_size (ctx->journal, 0);
+  g_array_set_size (ctx->logged_vertices, 0);
 }
 
 static void
-_cogl_texture_add_quad_vertices (GLfloat x_1,
-                                 GLfloat y_1,
-                                 GLfloat x_2,
-                                 GLfloat y_2,
-                                 GLfloat tx_1,
-                                 GLfloat ty_1,
-                                 GLfloat tx_2,
-                                 GLfloat ty_2)
+_cogl_journal_log_quad (float       x_1,
+                        float       y_1,
+                        float       x_2,
+                        float       y_2,
+                        CoglHandle  material,
+                        gint        n_layers,
+                        guint32     fallback_mask,
+                        GLuint      layer0_override_texture,
+                        float      *tex_coords,
+                        guint       tex_coords_len)
 {
-  CoglTextureGLVertex *p;
-  GLushort first_vert;
+  int               stride;
+  int               next_vert;
+  GLfloat          *v;
+  int               i;
+  int               next_entry;
+  CoglJournalEntry *entry;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Add the four vertices of the quad to the list of queued
-     vertices */
-  first_vert = ctx->texture_vertices->len;
-  g_array_set_size (ctx->texture_vertices, first_vert + 4);
-  p = &g_array_index (ctx->texture_vertices, CoglTextureGLVertex, first_vert);
+  /* The vertex data is logged into a seperate array in a layout that can be
+   * directly passed to OpenGL
+   */
 
-  p->v[0] = x_1;  p->v[1] = y_1;
-  p->t[0] = tx_1; p->t[1] = ty_1;
-  p++;
-  p->v[0] = x_1;  p->v[1] = y_2;
-  p->t[0] = tx_1; p->t[1] = ty_2;
-  p++;
-  p->v[0] = x_2;  p->v[1] = y_2;
-  p->t[0] = tx_2; p->t[1] = ty_2;
-  p++;
-  p->v[0] = x_2;  p->v[1] = y_1;
-  p->t[0] = tx_2; p->t[1] = ty_1;
-  p++;
+  /* We pack the vertex data as 2 (x,y) GLfloats folowed by 2 (tx,ty) GLfloats
+   * for each texture being used, E.g.:
+   *  [X, Y, TX0, TY0, TX1, TY1, X, Y, TX0, TY0, X, Y, ...]
+   */
+  stride = 2 + n_layers * 2;
+
+  next_vert = ctx->logged_vertices->len;
+  g_array_set_size (ctx->logged_vertices, next_vert + 4 * stride);
+  v = &g_array_index (ctx->logged_vertices, GLfloat, next_vert);
+
+  /* XXX: All the jumping around to fill in this strided buffer doesn't
+   * seem ideal. */
+
+  /* XXX: we could defer expanding the vertex data for GL until we come
+   * to flushing the journal. */
+
+  v[0] = x_1; v[1] = y_1;
+  v += stride;
+  v[0] = x_1; v[1] = y_2;
+  v += stride;
+  v[0] = x_2; v[1] = y_2;
+  v += stride;
+  v[0] = x_2; v[1] = y_1;
+
+  for (i = 0; i < n_layers; i++)
+    {
+      GLfloat *t =
+        &g_array_index (ctx->logged_vertices, GLfloat, next_vert + 2 + 2 * i);
+
+      t[0] = tex_coords[0]; t[1] = tex_coords[1];
+      t += stride;
+      t[0] = tex_coords[0]; t[1] = tex_coords[3];
+      t += stride;
+      t[0] = tex_coords[2]; t[1] = tex_coords[3];
+      t += stride;
+      t[0] = tex_coords[2]; t[1] = tex_coords[1];
+    }
+
+  next_entry = ctx->journal->len;
+  g_array_set_size (ctx->journal, next_entry + 1);
+  entry = &g_array_index (ctx->journal, CoglJournalEntry, next_entry);
+
+  entry->material = material;
+  entry->n_layers = n_layers;
+  entry->fallback_mask = fallback_mask;
+  entry->layer0_override_texture = layer0_override_texture;
 }
 
 static void
-_cogl_texture_quad_sw (CoglTexture *tex,
-		       float        x_1,
-		       float        y_1,
-		       float        x_2,
-		       float        y_2,
-		       float        tx_1,
-		       float        ty_1,
-		       float        tx_2,
-		       float        ty_2)
+_cogl_texture_sliced_quad (CoglTexture *tex,
+                           CoglHandle   material,
+		           float        x_1,
+		           float        y_1,
+		           float        x_2,
+		           float        y_2,
+		           float        tx_1,
+		           float        ty_1,
+		           float        tx_2,
+		           float        ty_2)
 {
-  CoglSpanIter iter_x    ,  iter_y;
-  float        tw        ,  th;
-  float        tqx       ,  tqy;
-  float        first_tx  ,  first_ty;
-  float        first_qx  ,  first_qy;
-  float        slice_tx1 ,  slice_ty1;
-  float        slice_tx2 ,  slice_ty2;
-  float        slice_qx1 ,  slice_qy1;
-  float        slice_qx2 ,  slice_qy2;
-  GLuint       gl_handle;
+  CoglSpanIter  iter_x    ,  iter_y;
+  float         tw        ,  th;
+  float         tqx       ,  tqy;
+  float         first_tx  ,  first_ty;
+  float         first_qx  ,  first_qy;
+  float         slice_tx1 ,  slice_ty1;
+  float         slice_tx2 ,  slice_ty2;
+  float         slice_qx1 ,  slice_qy1;
+  float         slice_qx2 ,  slice_qy2;
+  GLuint        gl_handle;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
 #if COGL_DEBUG
-  printf("=== Drawing Tex Quad (Software Tiling Mode) ===\n");
+  printf("=== Drawing Tex Quad (Sliced Mode) ===\n");
 #endif
 
   /* We can't use hardware repeat so we need to set clamp to edge
      otherwise it might pull in edge pixels from the other side */
-  if (ctx->texture_vertices->len > 0
-      && ctx->texture_wrap_mode != GL_CLAMP_TO_EDGE)
-    {
-      _cogl_texture_flush_vertices ();
-    }
-
   _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_EDGE);
-  ctx->texture_wrap_mode = GL_CLAMP_TO_EDGE;
 
   /* If the texture coordinates are backwards then swap both the
      geometry and texture coordinates so that the texture will be
@@ -2059,18 +2256,15 @@ _cogl_texture_quad_sw (CoglTexture *tex,
   if (tx_2 < tx_1)
     {
       float temp = x_1;
-
       x_1 = x_2;
       x_2 = temp;
       temp = tx_1;
       tx_1 = tx_2;
       tx_2 = temp;
     }
-
   if (ty_2 < ty_1)
     {
       float temp = y_1;
-
       y_1 = y_2;
       y_2 = temp;
       temp = ty_1;
@@ -2079,8 +2273,8 @@ _cogl_texture_quad_sw (CoglTexture *tex,
     }
 
   /* Scale ratio from texture to quad widths */
-  tw = (float) (tex->bitmap.width);
-  th = (float) (tex->bitmap.height);
+  tw = (float)(tex->bitmap.width);
+  th = (float)(tex->bitmap.height);
 
   tqx = (x_2 - x_1) / (tw * (tx_2 - tx_1));
   tqy = (y_2 - y_1) / (th * (ty_2 - ty_1));
@@ -2108,6 +2302,8 @@ _cogl_texture_quad_sw (CoglTexture *tex,
        !_cogl_span_iter_end  (&iter_y) ;
        _cogl_span_iter_next  (&iter_y) )
     {
+      float tex_coords[4];
+
       /* Discard slices out of quad early */
       if (!iter_y.intersects) continue;
 
@@ -2171,186 +2367,358 @@ _cogl_texture_quad_sw (CoglTexture *tex,
 				     iter_y.index * iter_x.array->len +
 				     iter_x.index);
 
-          /* If we're using a different texture from the one already queued
-             then flush the vertices */
-          if (ctx->texture_vertices->len > 0
-              && gl_handle != ctx->texture_current)
-            {
-              _cogl_texture_flush_vertices ();
-            }
-
-          ctx->texture_target = tex->gl_target;
-          ctx->texture_current = gl_handle;
-
-          _cogl_texture_add_quad_vertices ( (slice_qx1),
-                                            (slice_qy1),
-                                            (slice_qx2),
-                                            (slice_qy2),
-                                            (slice_tx1),
-                                            (slice_ty1),
-                                            (slice_tx2),
-                                            (slice_ty2));
+          tex_coords[0] = slice_tx1;
+          tex_coords[1] = slice_ty1;
+          tex_coords[2] = slice_tx2;
+          tex_coords[3] = slice_ty2;
+          _cogl_journal_log_quad (slice_qx1,
+                                  slice_qy1,
+                                  slice_qx2,
+                                  slice_qy2,
+                                  material,
+                                  1, /* one layer */
+                                  0, /* don't need to use fallbacks */
+                                  gl_handle, /* replace the layer0 texture */
+                                  tex_coords,
+                                  4);
 	}
     }
 }
 
-static void
-_cogl_texture_quad_hw (CoglTexture *tex,
-		       float        x_1,
-		       float        y_1,
-		       float        x_2,
-		       float        y_2,
-		       float        tx_1,
-		       float        ty_1,
-		       float        tx_2,
-		       float        ty_2)
+static gboolean
+_cogl_multitexture_unsliced_quad (float        x_1,
+                                  float        y_1,
+                                  float        x_2,
+                                  float        y_2,
+                                  CoglHandle   material,
+                                  gint         n_layers,
+                                  guint32      fallback_mask,
+                                  const float *user_tex_coords,
+                                  gint         user_tex_coords_len)
 {
-  GLuint            gl_handle;
-  CoglTexSliceSpan *x_span;
-  CoglTexSliceSpan *y_span;
-  GLenum            wrap_mode;
+  float   *final_tex_coords = alloca (sizeof (float) * 4 * n_layers);
+  const GList *layers;
+  GList       *tmp;
+  int          i;
 
-#if COGL_DEBUG
-  printf("=== Drawing Tex Quad (Hardware Tiling Mode) ===\n");
-#endif
+  _COGL_GET_CONTEXT (ctx, FALSE);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* If the texture coords are all in the range [0,1] then we want to
-     clamp the coords to the edge otherwise it can pull in edge pixels
-     from the wrong side when scaled */
-  if (tx_1 >= 0 && tx_1 <= 1.0 &&
-      tx_2 >= 0 && tx_2 <= 1.0 &&
-      ty_1 >= 0 && ty_1 <= 1.0 &&
-      ty_2 >= 0 && ty_2 <= 1.0)
+  /*
+   * Validate the texture coordinates for this rectangle.
+   */
+  layers = cogl_material_get_layers (material);
+  for (tmp = (GList *)layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
-      wrap_mode = GL_CLAMP_TO_EDGE;
+      CoglHandle         layer = (CoglHandle)tmp->data;
+      /* CoglLayerInfo   *layer_info; */
+      CoglHandle         tex_handle;
+      CoglTexture       *tex;
+      const float       *in_tex_coords;
+      float             *out_tex_coords;
+      CoglTexSliceSpan  *x_span;
+      CoglTexSliceSpan  *y_span;
+
+      /* layer_info = &layers[i]; */
+
+      /* FIXME - we shouldn't be checking this stuff if layer_info->gl_texture
+       * already == 0 */
+
+      tex_handle = cogl_material_layer_get_texture (layer);
+      tex = _cogl_texture_pointer_from_handle (tex_handle);
+
+      in_tex_coords = &user_tex_coords[i * 4];
+      out_tex_coords = &final_tex_coords[i * 4];
+
+
+      /* If the texture has waste or we are using GL_TEXTURE_RECT we
+       * can't handle texture repeating so we check that the texture
+       * coords lie in the range [0,1].
+       *
+       * NB: We already know that no texture matrix is being used
+       * if the texture has waste since we validated that early on.
+       * TODO: check for a texture matrix in the GL_TEXTURE_RECT
+       * case.
+       */
+      if ((tex->gl_target == GL_TEXTURE_RECTANGLE_ARB
+           || _cogl_texture_span_has_waste (tex, 0, 0))
+          && (in_tex_coords[0] < 0 || in_tex_coords[0] > 1.0
+              || in_tex_coords[1] < 0 || in_tex_coords[1] > 1.0
+              || in_tex_coords[2] < 0 || in_tex_coords[2] > 1.0
+              || in_tex_coords[3] < 0 || in_tex_coords[3] > 1.0))
+        {
+          if (i == 0)
+            {
+              if (n_layers > 1)
+                {
+                  g_warning ("Skipping layers 1..n of your material since the "
+                             "first layer has waste and you supplied texture "
+                             "coordinates outside the range [0,1]. We don't "
+                             "currently support any multi-texturing using "
+                             "textures with waste when repeating is "
+                             "necissary so we are falling back to sliced "
+                             "textures assuming layer 0 is the most "
+                             "important one keep");
+                }
+              return FALSE;
+            }
+          else
+            {
+              g_warning ("Skipping layer %d of your material "
+                         "consisting of a texture with waste since "
+                         "you have supplied texture coords outside "
+                         "the range [0,1] (unsupported when "
+                         "multi-texturing)", i);
+
+              /* NB: marking for fallback will replace the layer with
+               * a default transparent texture */
+              fallback_mask |= (1 << i);
+            }
+        }
+
+
+      /*
+       * Setup the texture unit...
+       */
+
+      /* NB: The user might not have supplied texture coordinates for all
+       * layers... */
+      if (i < (user_tex_coords_len / 4))
+        {
+          GLenum wrap_mode;
+
+          /* If the texture coords are all in the range [0,1] then we want to
+             clamp the coords to the edge otherwise it can pull in edge pixels
+             from the wrong side when scaled */
+          if (in_tex_coords[0] >= 0 && in_tex_coords[0] <= 1.0
+              && in_tex_coords[1] >= 0 && in_tex_coords[1] <= 1.0
+              && in_tex_coords[2] >= 0 && in_tex_coords[2] <= 1.0
+              && in_tex_coords[3] >= 0 && in_tex_coords[3] <= 1.0)
+            wrap_mode = GL_CLAMP_TO_EDGE;
+          else
+            wrap_mode = GL_REPEAT;
+
+          _cogl_texture_set_wrap_mode_parameter (tex, wrap_mode);
+        }
+      else
+        {
+          out_tex_coords[0] = 0; /* tx_1 */
+          out_tex_coords[1] = 0; /* ty_1 */
+          out_tex_coords[2] = 1.0; /* tx_2 */
+          out_tex_coords[3] = 1.0; /* ty_2 */
+
+          _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_EDGE);
+        }
+
+      /* Don't include the waste in the texture coordinates */
+      x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
+      y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
+
+      out_tex_coords[0] =
+        in_tex_coords[0] * (x_span->size - x_span->waste) / x_span->size;
+      out_tex_coords[1] =
+        in_tex_coords[1] * (x_span->size - x_span->waste) / x_span->size;
+      out_tex_coords[2] =
+        in_tex_coords[2] * (y_span->size - y_span->waste) / y_span->size;
+      out_tex_coords[3] =
+        in_tex_coords[3] * (y_span->size - y_span->waste) / y_span->size;
+
+      /* Denormalize texture coordinates for rectangle textures */
+      if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
+        {
+          out_tex_coords[0] *= x_span->size;
+          out_tex_coords[1] *= x_span->size;
+          out_tex_coords[2] *= y_span->size;
+          out_tex_coords[3] *= y_span->size;
+        }
     }
-  else
-    wrap_mode = GL_REPEAT;
 
-  /* Pick and bind opengl texture object */
-  gl_handle = g_array_index (tex->slice_gl_handles, GLuint, 0);
+  _cogl_journal_log_quad (x_1,
+                          y_1,
+                          x_2,
+                          y_2,
+                          material,
+                          n_layers,
+                          fallback_mask,
+                          0, /* don't replace the layer0 texture */
+                          final_tex_coords,
+                          n_layers * 4);
 
-  /* If we're using a different texture from the one already queued
-     then flush the vertices */
-  if (ctx->texture_vertices->len > 0 &&
-      (gl_handle != ctx->texture_current ||
-       ctx->texture_wrap_mode != wrap_mode))
-    {
-      _cogl_texture_flush_vertices ();
-    }
-
-  ctx->texture_target = tex->gl_target;
-  ctx->texture_current = gl_handle;
-  ctx->texture_wrap_mode = wrap_mode;
-
-  _cogl_texture_set_wrap_mode_parameter (tex, wrap_mode);
-
-  /* Don't include the waste in the texture coordinates */
-  x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
-  y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
-
-  /* Don't include the waste in the texture coordinates */
-  tx_1 = tx_1 * (x_span->size - x_span->waste) / x_span->size;
-  tx_2 = tx_2 * (x_span->size - x_span->waste) / x_span->size;
-  ty_1 = ty_1 * (y_span->size - y_span->waste) / y_span->size;
-  ty_2 = ty_2 * (y_span->size - y_span->waste) / y_span->size;
-
-  /* Denormalize texture coordinates for rectangle textures */
-  if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
-    {
-      tx_1 *= x_span->size;
-      tx_2 *= x_span->size;
-      ty_1 *= y_span->size;
-      ty_2 *= y_span->size;
-    }
-
-  _cogl_texture_add_quad_vertices (x_1, y_1,
-                                   x_2, y_2,
-                                   tx_1, ty_1,
-                                   tx_2, ty_2);
+  return TRUE;
 }
 
-void
-cogl_texture_multiple_rectangles (CoglHandle   handle,
-                                  const float *verts,
-                                  guint        n_rects)
+struct _CoglMutiTexturedRect
 {
-  CoglTexture *tex;
-  gulong enable_flags = (COGL_ENABLE_VERTEX_ARRAY |
-                         COGL_ENABLE_TEXCOORD_ARRAY);
+  float        x_1;
+  float        y_1;
+  float        x_2;
+  float        y_2;
+  const float *tex_coords;
+  gint             tex_coords_len;
+};
+
+static void
+_cogl_rectangles_with_multitexture_coords (
+                                        struct _CoglMutiTexturedRect *rects,
+                                        gint                          n_rects)
+{
+  CoglHandle	 material;
+  const GList	*layers;
+  int		 n_layers;
+  const GList	*tmp;
+  guint32        fallback_mask = 0;
+  gboolean	 all_use_sliced_quad_fallback = FALSE;
+  int		 i;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* Check if valid texture */
-  if (!cogl_is_texture (handle))
-    return;
 
   cogl_clip_ensure ();
 
-  tex = _cogl_texture_pointer_from_handle (handle);
+  material = ctx->source_material;
 
-  /* Make sure we got stuff to draw */
-  if (tex->slice_gl_handles == NULL)
-    return;
+  layers = cogl_material_get_layers (material);
+  n_layers = g_list_length ((GList *)layers);
 
-  if (tex->slice_gl_handles->len == 0)
-    return;
+  /*
+   * Validate all the layers of the current source material...
+   */
 
-  /* Prepare GL state */
-  if (tex->gl_target == CGL_TEXTURE_RECTANGLE_ARB)
-    enable_flags |= COGL_ENABLE_TEXTURE_RECT;
-  else
-    enable_flags |= COGL_ENABLE_TEXTURE_2D;
-
-  if (ctx->color_alpha < 255 || tex->bitmap.format & COGL_A_BIT)
-    enable_flags |= COGL_ENABLE_BLEND;
-
-  if (ctx->enable_backface_culling)
-    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
-
-  cogl_enable (enable_flags);
-
-  g_array_set_size (ctx->texture_vertices, 0);
-
-  while (n_rects-- > 0)
+  for (tmp = layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
     {
-      if (verts[4] != verts[6] && verts[5] != verts[7])
-        {
-          /* If there is only one GL texture and either the texture is
-             NPOT (no waste) or all of the coordinates are in the
-             range [0,1] then we can use hardware tiling */
-          if (tex->slice_gl_handles->len == 1
-              && ((cogl_features_available (COGL_FEATURE_TEXTURE_NPOT)
-                   && tex->gl_target == GL_TEXTURE_2D)
-                  || (verts[4] >= 0 && verts[4] <= 1.0
-                      && verts[6] >= 0 && verts[6] <= 1.0
-                      && verts[5] >= 0 && verts[5] <= 1.0
-                      && verts[7] >= 0 && verts[7] <= 1.0)))
-            _cogl_texture_quad_hw (tex, verts[0],verts[1], verts[2],verts[3],
-                                   verts[4],verts[5], verts[6],verts[7]);
-          else
-            _cogl_texture_quad_sw (tex, verts[0],verts[1], verts[2],verts[3],
-                                   verts[4],verts[5], verts[6],verts[7]);
-        }
+      CoglHandle     layer = tmp->data;
+      CoglHandle     tex_handle = cogl_material_layer_get_texture (layer);
+      CoglTexture   *texture = _cogl_texture_pointer_from_handle (tex_handle);
+      gulong         flags;
 
-      verts += 8;
+      if (cogl_material_layer_get_type (layer)
+	  != COGL_MATERIAL_LAYER_TYPE_TEXTURE)
+	continue;
+
+      /* XXX:
+       * For now, if the first layer is sliced then all other layers are
+       * ignored since we currently don't support multi-texturing with
+       * sliced textures. If the first layer is not sliced then any other
+       * layers found to be sliced will be skipped. (with a warning)
+       *
+       * TODO: Add support for multi-texturing rectangles with sliced
+       * textures if no texture matrices are in use.
+       */
+      if (cogl_texture_is_sliced (tex_handle))
+	{
+	  if (i == 0)
+	    {
+              fallback_mask = ~1; /* fallback all except the first layer */
+	      all_use_sliced_quad_fallback = TRUE;
+              if (tmp->next)
+                {
+                  g_warning ("Skipping layers 1..n of your material since the "
+                             "first layer is sliced. We don't currently "
+                             "support any multi-texturing with sliced "
+                             "textures but assume layer 0 is the most "
+                             "important to keep");
+                }
+	      break;
+	    }
+          else
+            {
+              g_warning ("Skipping layer %d of your material consisting of a "
+                         "sliced texture (unsuported for multi texturing)",
+                         i);
+
+              /* NB: marking for fallback will replace the layer with
+               * a default transparent texture */
+              fallback_mask |= (1 << i);
+	      continue;
+            }
+	}
+
+      /* We don't support multi texturing using textures with any waste if the
+       * user has supplied a custom texture matrix, since we don't know if
+       * the result will end up trying to texture from the waste area. */
+      flags = cogl_material_layer_get_flags (layer);
+      if (flags & COGL_MATERIAL_LAYER_FLAG_HAS_USER_MATRIX
+          && _cogl_texture_span_has_waste (texture, 0, 0))
+        {
+          g_warning ("Skipping layer %d of your material consisting of a "
+                     "texture with waste since you have supplied a custom "
+                     "texture matrix and the result may try to sample from "
+                     "the waste area of your texture.", i);
+
+          /* NB: marking for fallback will replace the layer with
+           * a default transparent texture */
+          fallback_mask |= (1 << i);
+          continue;
+        }
     }
 
-  _cogl_texture_flush_vertices ();
+  /*
+   * Emit geometry for each of the rectangles...
+   */
+
+  for (i = 0; i < n_rects; i++)
+    {
+      if (all_use_sliced_quad_fallback
+          || !_cogl_multitexture_unsliced_quad (rects[i].x_1, rects[i].y_1,
+                                                rects[i].x_2, rects[i].y_2,
+                                                material,
+                                                n_layers,
+                                                fallback_mask,
+                                                rects[i].tex_coords,
+                                                rects[i].tex_coords_len))
+        {
+          const GList *layers;
+          CoglHandle   tex_handle;
+          CoglTexture *texture;
+
+          layers = cogl_material_get_layers (material);
+          tex_handle =
+            cogl_material_layer_get_texture ((CoglHandle)layers->data);
+          texture = _cogl_texture_pointer_from_handle (tex_handle);
+          _cogl_texture_sliced_quad (texture,
+                                     material,
+                                     rects[i].x_1, rects[i].y_1,
+                                     rects[i].x_2, rects[i].y_2,
+                                     rects[i].tex_coords[0],
+                                     rects[i].tex_coords[1],
+                                     rects[i].tex_coords[2],
+                                     rects[i].tex_coords[3]);
+        }
+    }
+
+  _cogl_journal_flush ();
 }
 
 void
-cogl_texture_rectangle (CoglHandle handle,
-			float      x_1,
-			float      y_1,
-			float      x_2,
-			float      y_2,
-			float      tx_1,
-			float      ty_1,
-			float      tx_2,
-			float      ty_2)
+cogl_rectangles_with_texture_coords (const float *verts,
+                                     guint            n_rects)
+{
+  struct _CoglMutiTexturedRect rects[n_rects];
+  int i;
+
+  for (i = 0; i < n_rects; i++)
+    {
+      rects[i].x_1 = verts[i * 8];
+      rects[i].y_1 = verts[i * 8 + 1];
+      rects[i].x_2 = verts[i * 8 + 2];
+      rects[i].y_2 = verts[i * 8 + 3];
+      /* FIXME: rect should be defined to have a const float *geom;
+       * instead, to avoid this copy
+       * rect[i].geom = &verts[n_rects * 8]; */
+      rects[i].tex_coords = &verts[i * 8 + 4];
+      rects[i].tex_coords_len = 4;
+    }
+
+  _cogl_rectangles_with_multitexture_coords (rects, n_rects);
+}
+
+void
+cogl_rectangle_with_texture_coords (float x_1,
+			            float y_1,
+			            float x_2,
+			            float y_2,
+			            float tx_1,
+			            float ty_1,
+			            float tx_2,
+			            float ty_2)
 {
   float verts[8];
 
@@ -2363,92 +2731,76 @@ cogl_texture_rectangle (CoglHandle handle,
   verts[6] = tx_2;
   verts[7] = ty_2;
 
-  cogl_texture_multiple_rectangles (handle, verts, 1);
+  cogl_rectangles_with_texture_coords (verts, 1);
 }
 
 void
-cogl_texture_polygon (CoglHandle         handle,
-		      guint              n_vertices,
-		      CoglTextureVertex *vertices,
-		      gboolean           use_color)
+cogl_rectangle_with_multitexture_coords (float        x_1,
+			                 float        y_1,
+			                 float        x_2,
+			                 float        y_2,
+			                 const float *user_tex_coords,
+                                         gint         user_tex_coords_len)
 {
-  CoglTexture      *tex;
-  int               i, x, y, tex_num;
-  GLuint            gl_handle;
-  CoglTexSliceSpan *y_span, *x_span;
-  gulong            enable_flags;
-  CoglTextureGLVertex *p;
+  struct _CoglMutiTexturedRect rect;
+
+  rect.x_1 = x_1;
+  rect.y_1 = y_1;
+  rect.x_2 = x_2;
+  rect.y_2 = y_2;
+  rect.tex_coords = user_tex_coords;
+  rect.tex_coords_len = user_tex_coords_len;
+
+  _cogl_rectangles_with_multitexture_coords (&rect, 1);
+}
+
+static void
+_cogl_texture_sliced_polygon (CoglTextureVertex *vertices,
+                              guint              n_vertices,
+                              guint              stride,
+                              gboolean           use_color)
+{
+  const GList         *layers;
+  CoglHandle           layer0;
+  CoglHandle           tex_handle;
+  CoglTexture         *tex;
+  CoglTexSliceSpan    *y_span, *x_span;
+  int                  x, y, tex_num, i;
+  GLuint               gl_handle;
+  GLfloat             *v;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  /* Check if valid texture */
-  if (!cogl_is_texture (handle))
-    return;
+  /* We can assume in this case that we have at least one layer in the
+   * material that corresponds to a sliced cogl texture */
+  layers = cogl_material_get_layers (ctx->source_material);
+  layer0 = (CoglHandle)layers->data;
+  tex_handle = cogl_material_layer_get_texture (layer0);
+  tex = _cogl_texture_pointer_from_handle (tex_handle);
 
-  cogl_clip_ensure ();
-
-  tex = _cogl_texture_pointer_from_handle (handle);
-
-  /* The polygon will have artifacts where the slices join if the wrap
-     mode is GL_LINEAR because the filtering will pull in pixels from
-     the transparent border. To make it clear that the function
-     shouldn't be used in these circumstances we just bail out and
-     draw nothing */
-  if (tex->slice_gl_handles->len != 1
-      && (tex->min_filter != GL_NEAREST || tex->mag_filter != GL_NEAREST))
+  v = (GLfloat *)ctx->logged_vertices->data;
+  for (i = 0; i < n_vertices; i++)
     {
-      static gboolean shown_warning = FALSE;
+      GLfloat *c;
 
-      if (!shown_warning)
-	{
-	  g_warning ("cogl_texture_polygon does not work for sliced textures "
-		     "when the minification and magnification filters are not "
-		     "CGL_NEAREST");
-	  shown_warning = TRUE;
-	}
-      return;
+      v[0] = vertices[i].x;
+      v[1] = vertices[i].y;
+      v[2] = vertices[i].z;
+
+      /* NB: [X,Y,Z,TX,TY,R,G,B,A,...] */
+      c = v + 5;
+      c[0] = cogl_color_get_red_byte (&vertices[i].color);
+      c[1] = cogl_color_get_green_byte (&vertices[i].color);
+      c[2] = cogl_color_get_blue_byte (&vertices[i].color);
+      c[3] = cogl_color_get_alpha_byte (&vertices[i].color);
+
+      v += stride;
     }
-
-  /* Make sure there is enough space in the global texture vertex
-     array. This is used so we can render the polygon with a single
-     call to OpenGL but still support any number of vertices */
-  g_array_set_size (ctx->texture_vertices, n_vertices);
-  p = (CoglTextureGLVertex *) ctx->texture_vertices->data;
-
-  /* Prepare GL state */
-  enable_flags = (COGL_ENABLE_VERTEX_ARRAY
-		  | COGL_ENABLE_TEXCOORD_ARRAY
-		  | COGL_ENABLE_BLEND);
-
-  if (tex->gl_target == CGL_TEXTURE_RECTANGLE_ARB)
-    enable_flags |= COGL_ENABLE_TEXTURE_RECT;
-  else
-    enable_flags |= COGL_ENABLE_TEXTURE_2D;
-
-  if (ctx->enable_backface_culling)
-    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
-
-  if (use_color)
-    {
-      enable_flags |= COGL_ENABLE_COLOR_ARRAY;
-      GE( glColorPointer (4, GL_UNSIGNED_BYTE,
-                          sizeof (CoglTextureGLVertex), p->c) );
-    }
-
-  GE( glVertexPointer (3, GL_FLOAT, sizeof (CoglTextureGLVertex), p->v ) );
-  GE( glTexCoordPointer (2, GL_FLOAT, sizeof (CoglTextureGLVertex), p->t ) );
-
-  cogl_enable (enable_flags);
-
-  /* Temporarily change the wrapping mode on all of the slices to use
-     a transparent border */
-  _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_BORDER);
-
-  tex_num = 0;
 
   /* Render all of the slices with the full geometry but use a
      transparent border color so that any part of the texture not
      covered by the slice will be ignored */
+  tex_num = 0;
   for (y = 0; y < tex->slice_y_spans->len; y++)
     {
       y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, y);
@@ -2459,15 +2811,13 @@ cogl_texture_polygon (CoglHandle         handle,
 
 	  gl_handle = g_array_index (tex->slice_gl_handles, GLuint, tex_num++);
 
-          p = (CoglTextureGLVertex *) ctx->texture_vertices->data;
-
 	  /* Convert the vertices into an array of GLfloats ready to pass to
 	     OpenGL */
-	  for (i = 0; i < n_vertices; i++, p++)
+          v = (GLfloat *)ctx->logged_vertices->data;
+	  for (i = 0; i < n_vertices; i++)
 	    {
-              float tx, ty;
-
-#define CFX_F 
+              GLfloat *t;
+              float    tx, ty;
 
               tx = ((vertices[i].tx
                      - ((float)(x_span->start)
@@ -2485,22 +2835,258 @@ cogl_texture_polygon (CoglHandle         handle,
                   ty *= y_span->size;
                 }
 
-	      p->v[0] = CFX_F(vertices[i].x);
-	      p->v[1] = CFX_F(vertices[i].y);
-	      p->v[2] = CFX_F(vertices[i].z);
-	      p->t[0] = CFX_F(tx);
-	      p->t[1] = CFX_F(ty);
-	      p->c[0] = cogl_color_get_red_byte(&vertices[i].color);
-	      p->c[1] = cogl_color_get_green_byte(&vertices[i].color);
-	      p->c[2] = cogl_color_get_blue_byte(&vertices[i].color);
-	      p->c[3] = cogl_color_get_alpha_byte(&vertices[i].color);
+              /* NB: [X,Y,Z,TX,TY,R,G,B,A,...] */
+              t = v + 3;
+	      t[0] = tx;
+	      t[1] = ty;
 
-#undef CFX_F
+              v += stride;
 	    }
 
-	  GE( glBindTexture (tex->gl_target, gl_handle) );
+          cogl_material_flush_gl_state (ctx->source_material,
+                                        COGL_MATERIAL_FLUSH_DISABLE_MASK,
+                                        (guint32)~1, /* disable all except the
+                                                        first layer */
+                                        COGL_MATERIAL_FLUSH_LAYER0_OVERRIDE,
+                                        gl_handle,
+                                        NULL);
 
 	  GE( glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices) );
 	}
     }
 }
+
+
+static void
+_cogl_multitexture_unsliced_polygon (CoglTextureVertex *vertices,
+                                     guint              n_vertices,
+                                     guint              n_layers,
+                                     guint              stride,
+                                     gboolean           use_color,
+                                     guint32            fallback_mask)
+{
+  CoglHandle           material;
+  const GList         *layers;
+  int                  i;
+  GList               *tmp;
+  CoglTexSliceSpan    *y_span, *x_span;
+  GLfloat             *v;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+
+  material = ctx->source_material;
+  layers = cogl_material_get_layers (material);
+
+  /* Convert the vertices into an array of GLfloats ready to pass to
+     OpenGL */
+  for (v = (GLfloat *)ctx->logged_vertices->data, i = 0;
+       i < n_vertices;
+       v += stride, i++)
+    {
+      GLfloat *c;
+      int      j;
+
+      /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
+      v[0] = vertices[i].x;
+      v[1] = vertices[i].y;
+      v[2] = vertices[i].z;
+
+      for (tmp = (GList *)layers, j = 0; tmp != NULL; tmp = tmp->next, j++)
+        {
+          CoglHandle   layer = (CoglHandle)tmp->data;
+          CoglHandle   tex_handle;
+          CoglTexture *tex;
+          GLfloat     *t;
+          float        tx, ty;
+
+          tex_handle = cogl_material_layer_get_texture (layer);
+          tex = _cogl_texture_pointer_from_handle (tex_handle);
+
+          y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
+          x_span = &g_array_index (tex->slice_x_spans, CoglTexSliceSpan, 0);
+
+          tx = ((vertices[i].tx
+                 - ((float)(x_span->start)
+                    / tex->bitmap.width))
+                * tex->bitmap.width / x_span->size);
+          ty = ((vertices[i].ty
+                 - ((float)(y_span->start)
+                    / tex->bitmap.height))
+                * tex->bitmap.height / y_span->size);
+
+          /* Scale the coordinates up for rectangle textures */
+          if (tex->gl_target == CGL_TEXTURE_RECTANGLE_ARB)
+            {
+              tx *= x_span->size;
+              ty *= y_span->size;
+            }
+
+          /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
+          t = v + 3 + 2 * j;
+          t[0] = tx;
+          t[1] = ty;
+        }
+
+      /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
+      c = v + 3 + 2 * n_layers;
+      c[0] = cogl_color_get_red_float (&vertices[i].color);
+      c[1] = cogl_color_get_green_float (&vertices[i].color);
+      c[2] = cogl_color_get_blue_float (&vertices[i].color);
+      c[3] = cogl_color_get_alpha_float (&vertices[i].color);
+    }
+
+  cogl_material_flush_gl_state (ctx->source_material,
+                                COGL_MATERIAL_FLUSH_FALLBACK_MASK,
+                                fallback_mask,
+                                NULL);
+
+  GE (glDrawArrays (GL_TRIANGLE_FAN, 0, n_vertices));
+}
+
+void
+cogl_polygon (CoglTextureVertex *vertices,
+              guint              n_vertices,
+	      gboolean           use_color)
+{
+  CoglHandle           material;
+  const GList         *layers;
+  int                  n_layers;
+  GList               *tmp;
+  gboolean	       use_sliced_polygon_fallback = FALSE;
+  guint32              fallback_mask = 0;
+  int                  i;
+  gulong               enable_flags;
+  guint                stride;
+  gsize                stride_bytes;
+  GLfloat             *v;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  cogl_clip_ensure ();
+
+  material = ctx->source_material;
+  layers = cogl_material_get_layers (ctx->source_material);
+  n_layers = g_list_length ((GList *)layers);
+
+  for (tmp = (GList *)layers, i = 0; tmp != NULL; tmp = tmp->next, i++)
+    {
+      CoglHandle   layer = (CoglHandle)tmp->data;
+      CoglHandle   tex_handle = cogl_material_layer_get_texture (layer);
+      CoglTexture *tex = _cogl_texture_pointer_from_handle (tex_handle);
+
+      if (i == 0 && cogl_texture_is_sliced (tex_handle))
+        {
+#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
+          {
+            static gboolean shown_gles_slicing_warning = FALSE;
+            if (!shown_gles_slicing_warning)
+              g_warning ("cogl_polygon does not work for sliced textures "
+                         "on GL ES");
+            shown_gles_slicing_warning = TRUE;
+            return;
+          }
+#endif
+          if (n_layers > 1)
+            {
+              static gboolean shown_slicing_warning = FALSE;
+              if (!shown_slicing_warning)
+                {
+                  g_warning ("Disabling layers 1..n since multi-texturing with "
+                             "cogl_polygon isn't supported when using sliced "
+                             "textures\n");
+                  shown_slicing_warning = TRUE;
+                }
+            }
+          use_sliced_polygon_fallback = TRUE;
+          n_layers = 1;
+
+          if (tex->min_filter != GL_NEAREST || tex->mag_filter != GL_NEAREST)
+            {
+              static gboolean shown_filter_warning = FALSE;
+              if (!shown_filter_warning)
+                {
+                  g_warning ("cogl_texture_polygon does not work for sliced textures "
+                             "when the minification and magnification filters are not "
+                             "CGL_NEAREST");
+                  shown_filter_warning = TRUE;
+                }
+              return;
+            }
+
+          /* Temporarily change the wrapping mode on all of the slices to use
+           * a transparent border
+           * XXX: it's doesn't look like we save/restore this, like the comment
+           * implies? */
+          _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_BORDER);
+
+          break;
+        }
+
+      if (cogl_texture_is_sliced (tex_handle))
+        {
+          g_warning ("Disabling layer %d of the current source material, "
+                     "because texturing with the vertex buffer API is not "
+                     "currently supported using sliced textures, or textures "
+                     "with waste\n", i);
+
+          fallback_mask |= (1 << i);
+          continue;
+        }
+    }
+
+  /* Our data is arranged like:
+   * [X, Y, Z, TX0, TY0, TX1, TY1..., R, G, B, A,...] */
+  stride = 3 + (2 * n_layers) + (use_color ? 4 : 0);
+  stride_bytes = stride * sizeof (GLfloat);
+
+  /* Make sure there is enough space in the global vertex
+     array. This is used so we can render the polygon with a single
+     call to OpenGL but still support any number of vertices */
+  g_array_set_size (ctx->logged_vertices, n_vertices * stride);
+  v = (GLfloat *)ctx->logged_vertices->data;
+
+  /* Prepare GL state */
+  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
+  enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
+
+  if (ctx->enable_backface_culling)
+    enable_flags |= COGL_ENABLE_BACKFACE_CULLING;
+
+  if (use_color)
+    {
+      enable_flags |= COGL_ENABLE_COLOR_ARRAY;
+      GE( glColorPointer (4, GL_FLOAT,
+                          stride_bytes,
+                          /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
+                          v + 3 + 2 * n_layers) );
+    }
+
+  cogl_enable (enable_flags);
+
+  GE (glVertexPointer (3, GL_FLOAT, stride_bytes, v));
+
+  for (i = 0; i < n_layers; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
+      GE (glTexCoordPointer (2, GL_FLOAT,
+                             stride_bytes,
+                             /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
+                             v + 3 + 2 * i));
+    }
+
+  if (use_sliced_polygon_fallback)
+    _cogl_texture_sliced_polygon (vertices,
+                                  n_vertices,
+                                  stride,
+                                  use_color);
+  else
+    _cogl_multitexture_unsliced_polygon (vertices,
+                                         n_vertices,
+                                         n_layers,
+                                         stride,
+                                         use_color,
+                                         fallback_mask);
+}
+

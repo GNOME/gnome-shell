@@ -39,29 +39,8 @@
 #define _COGL_MAX_BEZ_RECURSE_DEPTH 16
 
 void
-_cogl_rectangle (float x,
-                 float y,
-                 float width,
-                 float height)
-{
-  GLfloat rect_verts[8] = {
-    (GLfloat)  x,          (GLfloat)  y,
-    (GLfloat) (x + width), (GLfloat)  y,
-    (GLfloat)  x,          (GLfloat) (y + height),
-    (GLfloat) (x + width), (GLfloat) (y + height)
-  };
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  cogl_enable (COGL_ENABLE_VERTEX_ARRAY
-              | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
-  GE ( cogl_wrap_glVertexPointer (2, GL_FLOAT, 0, rect_verts ) );
-  GE ( cogl_wrap_glDrawArrays (GL_TRIANGLE_STRIP, 0, 4) );
-}
-
-void
 _cogl_path_add_node (gboolean new_sub_path,
-                     float x,
+		     float x,
 		     float y)
 {
   CoglPathNode new_node;
@@ -96,23 +75,28 @@ _cogl_path_add_node (gboolean new_sub_path,
 void
 _cogl_path_stroke_nodes ()
 {
-  guint path_start = 0;
+  guint   path_start = 0;
+  gulong  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_enable (COGL_ENABLE_VERTEX_ARRAY
-	       | (ctx->color_alpha < 255
-		  ? COGL_ENABLE_BLEND : 0));
+  enable_flags |= cogl_material_get_cogl_enable_flags (ctx->source_material);
+  cogl_enable (enable_flags);
+
+  cogl_material_flush_gl_state (ctx->source_material,
+                                COGL_MATERIAL_FLUSH_DISABLE_MASK,
+                                (guint32)~0, /* disable all texture layers */
+                                NULL);
 
   while (path_start < ctx->path_nodes->len)
     {
       CoglPathNode *path = &g_array_index (ctx->path_nodes, CoglPathNode,
                                            path_start);
 
-      GE( cogl_wrap_glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
-                                     (guchar *) path
-                                     + G_STRUCT_OFFSET (CoglPathNode, x)) );
-      GE( cogl_wrap_glDrawArrays (GL_LINE_STRIP, 0, path->path_size) );
+      GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
+                           (guchar *) path
+                           + G_STRUCT_OFFSET (CoglPathNode, x)) );
+      GE( glDrawArrays (GL_LINE_STRIP, 0, path->path_size) );
 
       path_start += path->path_size;
     }
@@ -145,12 +129,22 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
                                   CoglPathNode *path,
                                   gboolean      merge)
 {
-  guint path_start = 0;
-  guint sub_path_num = 0;
-  float bounds_x;
-  float bounds_y;
-  float bounds_w;
-  float bounds_h;
+  guint   path_start = 0;
+  guint   sub_path_num = 0;
+  float   bounds_x;
+  float   bounds_y;
+  float   bounds_w;
+  float   bounds_h;
+  gulong  enable_flags = COGL_ENABLE_VERTEX_ARRAY;
+
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  /* Just setup a simple material that doesn't use texturing... */
+  cogl_material_flush_gl_state (ctx->stencil_material, NULL);
+
+  enable_flags |=
+    cogl_material_get_cogl_enable_flags (ctx->source_material);
+  cogl_enable (enable_flags);
 
   _cogl_path_get_bounds (nodes_min, nodes_max,
                          &bounds_x, &bounds_y, &bounds_w, &bounds_h);
@@ -167,7 +161,7 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       GE( glStencilFunc (GL_LEQUAL, 0x1, 0x3) );
     }
 
-  GE( cogl_wrap_glEnable (GL_STENCIL_TEST) );
+  GE( glEnable (GL_STENCIL_TEST) );
   GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
 
   GE( glColorMask (FALSE, FALSE, FALSE, FALSE) );
@@ -175,12 +169,10 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
 
   while (path_start < path_size)
     {
-      cogl_enable (COGL_ENABLE_VERTEX_ARRAY);
-
-      GE( cogl_wrap_glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
-                                     (guchar *) path
-                                     + G_STRUCT_OFFSET (CoglPathNode, x)) );
-      GE( cogl_wrap_glDrawArrays (GL_TRIANGLE_FAN, 0, path->path_size) );
+      GE( glVertexPointer (2, GL_FLOAT, sizeof (CoglPathNode),
+                           (guchar *) path
+                           + G_STRUCT_OFFSET (CoglPathNode, x)) );
+      GE( glDrawArrays (GL_TRIANGLE_FAN, 0, path->path_size) );
 
       if (sub_path_num > 0)
         {
@@ -209,16 +201,16 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       GE( glStencilOp (GL_DECR, GL_DECR, GL_DECR) );
       /* Decrement all of the bits twice so that only pixels where the
          value is 3 will remain */
-      GE( cogl_wrap_glPushMatrix () );
-      GE( cogl_wrap_glLoadIdentity () );
-      GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
-      GE( cogl_wrap_glPushMatrix () );
-      GE( cogl_wrap_glLoadIdentity () );
+      GE( glPushMatrix () );
+      GE( glLoadIdentity () );
+      GE( glMatrixMode (GL_PROJECTION) );
+      GE( glPushMatrix () );
+      GE( glLoadIdentity () );
       cogl_rectangle (-1.0, -1.0, 2, 2);
       cogl_rectangle (-1.0, -1.0, 2, 2);
-      GE( cogl_wrap_glPopMatrix () );
-      GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
-      GE( cogl_wrap_glPopMatrix () );
+      GE( glPopMatrix () );
+      GE( glMatrixMode (GL_MODELVIEW) );
+      GE( glPopMatrix () );
     }
 
   GE( glStencilMask (~(GLuint) 0) );
@@ -255,7 +247,7 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* clear scanline intersection lists */
-  for (i=0; i < bounds_h; i++) 
+  for (i=0; i < bounds_h; i++)
     scanlines[i]=NULL;
 
   first_x = prev_x =  (path->x);
@@ -392,8 +384,8 @@ _cogl_path_fill_nodes_scanlines (CoglPathNode *path,
     /* render triangles */
     cogl_enable (COGL_ENABLE_VERTEX_ARRAY
                  | (ctx->color_alpha < 255 ? COGL_ENABLE_BLEND : 0));
-    GE ( cogl_wrap_glVertexPointer (2, GL_FLOAT, 0, coords ) );
-    GE ( cogl_wrap_glDrawArrays (GL_TRIANGLES, 0, spans * 2 * 3));
+    GE ( glVertexPointer (2, GL_FLOAT, 0, coords ) );
+    GE ( glDrawArrays (GL_TRIANGLES, 0, spans * 2 * 3));
     g_free (coords);
   }
 }
@@ -444,4 +436,3 @@ _cogl_path_fill_nodes ()
         }
     }
 }
-

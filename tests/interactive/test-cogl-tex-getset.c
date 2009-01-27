@@ -91,17 +91,15 @@ test_coglbox_paint(ClutterActor *self)
   cogl_set_source_color4ub (0x66, 0x66, 0xdd, 0xff);
   cogl_rectangle (0, 0, 400, 400);
 
-  cogl_set_source_color4ub (0xff, 0xff, 0xff, 0xff);
-
   cogl_push_matrix ();
 
   cogl_translate (100, 100, 0);
-  cogl_texture_rectangle (priv->cogl_tex_id[1],
-			  0, 0,
-			  CLUTTER_INT_TO_FIXED (200),
-			  CLUTTER_INT_TO_FIXED (213),
-			  texcoords[0], texcoords[1],
-			  texcoords[2], texcoords[3]);
+  cogl_set_source_texture (priv->cogl_tex_id[1]);
+  cogl_rectangle_with_texture_coords (0, 0,
+                                      CLUTTER_INT_TO_FIXED (200),
+                                      CLUTTER_INT_TO_FIXED (213),
+                                      texcoords[0], texcoords[1],
+                                      texcoords[2], texcoords[3]);
   
   cogl_pop_matrix();
 }

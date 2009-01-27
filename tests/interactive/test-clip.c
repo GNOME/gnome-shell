@@ -165,12 +165,12 @@ on_paint (ClutterActor *actor, CallbackData *data)
 
       cogl_set_source_color4ub (0xff, 0xff, 0xff, 0xff);
 
-      cogl_texture_rectangle (data->hand,
-                              CLUTTER_INT_TO_FIXED (-hand_width / 2),
-                              CLUTTER_INT_TO_FIXED (-hand_height / 2),
-                              CLUTTER_INT_TO_FIXED (hand_width / 2),
-                              CLUTTER_INT_TO_FIXED (hand_height / 2),
-                              0, 0, CFX_ONE, CFX_ONE);
+      cogl_set_source_texture (data->hand);
+      cogl_rectangle_with_texture_coords (CLUTTER_INT_TO_FIXED (-hand_width / 2),
+                                          CLUTTER_INT_TO_FIXED (-hand_height / 2),
+                                          CLUTTER_INT_TO_FIXED (hand_width / 2),
+                                          CLUTTER_INT_TO_FIXED (hand_height / 2),
+                                          0, 0, CFX_ONE, CFX_ONE);
 
       cogl_pop_matrix ();
     }
