@@ -595,7 +595,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   initial_props[i++] = display->atom__NET_WM_FULLSCREEN_MONITORS;
   g_assert (N_INITIAL_PROPS == i);
   
-  meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
+  meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS, TRUE);
   
   update_sm_hints (window); /* must come after transient_for */
   update_role (window);
@@ -5431,17 +5431,7 @@ static gboolean
 process_property_notify (MetaWindow     *window,
                          XPropertyEvent *event)
 {
-  /* First, property notifies to ignore because we shouldn't honor
-   * new values
-   */
-  if (event->atom == window->display->atom__NET_WM_STATE)
-    {
-      meta_verbose ("Property notify on %s for _NET_WM_STATE, ignoring (we should be the one who set the property in the first place)\n",
-                    window->desc);
-      return TRUE;
-    }
-
-  /* Second, property notifies we want to use.
+  /* Property notifies we want to use.
    * FIXME once we move entirely to the window-props.h framework, we
    * can just call reload on the property in the event and get rid of
    * this if-else chain.
@@ -5457,64 +5447,7 @@ process_property_notify (MetaWindow     *window,
       XFree (property_name);
     }
  
-  if (event->atom == XA_WM_NAME)
-    {
-      /* don't bother reloading WM_NAME if using _NET_WM_NAME already */
-      if (!window->using_net_wm_name)
-        meta_window_reload_property (window, XA_WM_NAME);
-    }
-  else if (event->atom == window->display->atom__NET_WM_NAME)
-    {
-      meta_window_reload_property (window, window->display->atom__NET_WM_NAME);
-      
-      /* if _NET_WM_NAME was unset, reload WM_NAME */
-      if (!window->using_net_wm_name)
-        meta_window_reload_property (window, XA_WM_NAME);      
-    }
-  else if (event->atom == XA_WM_ICON_NAME)
-    {
-      /* don't bother reloading WM_ICON_NAME if using _NET_WM_ICON_NAME already */
-      if (!window->using_net_wm_icon_name)
-        meta_window_reload_property (window, XA_WM_ICON_NAME);
-    }
-  else if (event->atom == window->display->atom__NET_WM_ICON_NAME)
-    {
-      meta_window_reload_property (window, window->display->atom__NET_WM_ICON_NAME);
-      
-      /* if _NET_WM_ICON_NAME was unset, reload WM_ICON_NAME */
-      if (!window->using_net_wm_icon_name)
-        meta_window_reload_property (window, XA_WM_ICON_NAME);
-    }  
-  else if (event->atom == XA_WM_NORMAL_HINTS)
-    {
-      meta_window_reload_property (window, XA_WM_NORMAL_HINTS);
-      
-      /* See if we need to constrain current size */
-      meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
-    }
-  else if (event->atom == window->display->atom_WM_PROTOCOLS)
-    {
-      meta_window_reload_property (window, window->display->atom_WM_PROTOCOLS);
-    }
-  else if (event->atom == XA_WM_HINTS)
-    {
-      meta_window_reload_property (window, XA_WM_HINTS);
-    }
-  else if (event->atom == window->display->atom__MOTIF_WM_HINTS)
-    {
-      meta_window_reload_property (window,
-                                   window->display->atom__MOTIF_WM_HINTS);
-    }
-  else if (event->atom == XA_WM_CLASS)
-    {
-      meta_window_reload_property (window, XA_WM_CLASS);
-    }
-  else if (event->atom == XA_WM_TRANSIENT_FOR)
-    {
-      meta_window_reload_property (window, XA_WM_TRANSIENT_FOR);
-    }
-  else if (event->atom ==
-           window->display->atom_WM_WINDOW_ROLE)
+  if (event->atom == window->display->atom_WM_WINDOW_ROLE)
     {
       update_role (window);
     }
@@ -5524,6 +5457,11 @@ process_property_notify (MetaWindow     *window,
            window->display->atom_SM_CLIENT_ID)
     {
       meta_warning ("Broken client! Window %s changed client leader window or SM client ID\n", window->desc);
+    }
+  else if (event->atom ==
+           window->display->atom__NET_WM_STATE)
+    {
+      meta_verbose ("Ignoring _NET_WM_STATE: we should be the one who set the property in the first place\n");
     }
   else if (event->atom ==
            window->display->atom__NET_WM_WINDOW_TYPE)
@@ -5549,16 +5487,6 @@ process_property_notify (MetaWindow     *window,
     {
       meta_window_update_struts (window);
     }
-  else if (event->atom == window->display->atom__NET_STARTUP_ID)
-    {
-      meta_window_reload_property (window,
-                                   window->display->atom__NET_STARTUP_ID);
-    }
-  else if (event->atom == window->display->atom__NET_WM_SYNC_REQUEST_COUNTER)
-    {
-      meta_window_reload_property (window,
-                                   window->display->atom__NET_WM_SYNC_REQUEST_COUNTER);
-    }
   else if (event->atom == window->display->atom__NET_WM_USER_TIME)
     {
       Window xid;
@@ -5571,8 +5499,10 @@ process_property_notify (MetaWindow     *window,
         xid = window->xwindow;
       meta_window_reload_property_from_xwindow (window,
                                                 xid,
-                                                atom__NET_WM_USER_TIME);
+                                                atom__NET_WM_USER_TIME, FALSE);
     }
+  else
+    meta_window_reload_property (window, event->atom, FALSE);
 
   return TRUE;
 }

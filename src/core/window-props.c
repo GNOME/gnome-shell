@@ -54,7 +54,8 @@ typedef void (* InitValueFunc)   (MetaDisplay   *display,
                                   Atom           property,
                                   MetaPropValue *value);
 typedef void (* ReloadValueFunc) (MetaWindow    *window,
-                                  MetaPropValue *value);
+                                  MetaPropValue *value,
+                                  gboolean       initial);
 
 struct _MetaWindowPropHooks
 {
@@ -67,42 +68,49 @@ static void init_prop_value            (MetaDisplay   *display,
                                         Atom           property,
                                         MetaPropValue *value);
 static void reload_prop_value          (MetaWindow    *window,
-                                        MetaPropValue *value);
+                                        MetaPropValue *value,
+                                        gboolean       initial);
 static MetaWindowPropHooks* find_hooks (MetaDisplay *display,
                                         Atom         property);
 
 
 void
 meta_window_reload_property (MetaWindow *window,
-                             Atom        property)
+                             Atom        property,
+                             gboolean    initial)
 {
-  meta_window_reload_properties (window, &property, 1);
+  meta_window_reload_properties (window, &property, 1, initial);
 }
 
 void
 meta_window_reload_properties (MetaWindow *window,
                                const Atom *properties,
-                               int         n_properties)
+                               int         n_properties,
+                               gboolean    initial)
 {
   meta_window_reload_properties_from_xwindow (window,
                                               window->xwindow,
                                               properties,
-                                              n_properties);
+                                              n_properties,
+                                              initial);
 }
 
 void
 meta_window_reload_property_from_xwindow (MetaWindow *window,
                                           Window      xwindow,
-                                          Atom        property)
+                                          Atom        property,
+                                          gboolean    initial)
 {
-  meta_window_reload_properties_from_xwindow (window, xwindow, &property, 1);
+  meta_window_reload_properties_from_xwindow (window, xwindow, &property, 1,
+                                              initial);
 }
 
 void
 meta_window_reload_properties_from_xwindow (MetaWindow *window,
                                             Window      xwindow,
                                             const Atom *properties,
-                                            int         n_properties)
+                                            int         n_properties,
+                                            gboolean    initial)
 {
   int i;
   MetaPropValue *values;
@@ -125,7 +133,7 @@ meta_window_reload_properties_from_xwindow (MetaWindow *window,
   i = 0;
   while (i < n_properties)
     {
-      reload_prop_value (window, &values[i]);
+      reload_prop_value (window, &values[i], initial);
       
       ++i;
     }
@@ -153,13 +161,14 @@ init_prop_value (MetaDisplay   *display,
 
 static void
 reload_prop_value (MetaWindow    *window,
-                   MetaPropValue *value)
+                   MetaPropValue *value,
+                   gboolean       initial)
 {
   MetaWindowPropHooks *hooks;  
   
   hooks = find_hooks (window->display, value->atom);
   if (hooks && hooks->reload_func != NULL)
-    (* hooks->reload_func) (window, value);
+    (* hooks->reload_func) (window, value, initial);
 }
 
 static void
@@ -173,7 +182,8 @@ init_wm_client_machine (MetaDisplay   *display,
 
 static void
 reload_wm_client_machine (MetaWindow    *window,
-                          MetaPropValue *value)
+                          MetaPropValue *value,
+                          gboolean       initial)
 {
   g_free (window->wm_client_machine);
   window->wm_client_machine = NULL;
@@ -196,7 +206,8 @@ init_net_wm_pid (MetaDisplay   *display,
 
 static void
 reload_net_wm_pid (MetaWindow    *window,
-                   MetaPropValue *value)
+                   MetaPropValue *value,
+                   gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -225,7 +236,8 @@ init_net_wm_user_time (MetaDisplay   *display,
 
 static void
 reload_net_wm_user_time (MetaWindow    *window,
-                         MetaPropValue *value)
+                         MetaPropValue *value,
+                         gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -245,7 +257,8 @@ init_net_wm_user_time_window (MetaDisplay   *display,
 
 static void
 reload_net_wm_user_time_window (MetaWindow    *window,
-                                MetaPropValue *value)
+                                MetaPropValue *value,
+                                gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -293,7 +306,8 @@ reload_net_wm_user_time_window (MetaWindow    *window,
           meta_window_reload_property_from_xwindow (
             window,
             window->user_time_window,
-            window->display->atom__NET_WM_USER_TIME);
+            window->display->atom__NET_WM_USER_TIME,
+            initial);
         }
     }
 }
@@ -397,7 +411,8 @@ init_net_wm_name (MetaDisplay   *display,
 
 static void
 reload_net_wm_name (MetaWindow    *window,
-                    MetaPropValue *value)
+                    MetaPropValue *value,
+                    gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -411,6 +426,8 @@ reload_net_wm_name (MetaWindow    *window,
     {
       set_window_title (window, NULL);
       window->using_net_wm_name = FALSE;
+      if (!initial)
+        meta_window_reload_property (window, XA_WM_NAME, FALSE);
     }
 }
 
@@ -426,7 +443,8 @@ init_wm_name (MetaDisplay   *display,
 
 static void
 reload_wm_name (MetaWindow    *window,
-                MetaPropValue *value)
+                MetaPropValue *value,
+                gboolean       initial)
 {
   if (window->using_net_wm_name)
     {
@@ -472,7 +490,8 @@ init_net_wm_icon_name (MetaDisplay   *display,
 
 static void
 reload_net_wm_icon_name (MetaWindow    *window,
-                    MetaPropValue *value)
+                         MetaPropValue *value,
+                         gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -486,6 +505,8 @@ reload_net_wm_icon_name (MetaWindow    *window,
     {
       set_icon_title (window, NULL);
       window->using_net_wm_icon_name = FALSE;
+      if (!initial)
+        meta_window_reload_property (window, XA_WM_ICON_NAME, FALSE);
     }
 }
 
@@ -501,7 +522,8 @@ init_wm_icon_name (MetaDisplay   *display,
 
 static void
 reload_wm_icon_name (MetaWindow    *window,
-                     MetaPropValue *value)
+                     MetaPropValue *value,
+                     gboolean       initial)
 {
   if (window->using_net_wm_icon_name)
     {
@@ -534,7 +556,8 @@ init_net_wm_state (MetaDisplay    *display,
 
 static void
 reload_net_wm_state (MetaWindow    *window,
-                     MetaPropValue *value)
+                     MetaPropValue *value,
+                     gboolean       initial)
 {
   int i;
 
@@ -603,7 +626,8 @@ init_mwm_hints (MetaDisplay    *display,
 
 static void
 reload_mwm_hints (MetaWindow    *window,
-                  MetaPropValue *value)
+                  MetaPropValue *value,
+                  gboolean       initial)
 {
   MotifWmHints *hints;
 
@@ -736,7 +760,8 @@ init_wm_class (MetaDisplay    *display,
 
 static void
 reload_wm_class (MetaWindow    *window,
-                 MetaPropValue *value)
+                 MetaPropValue *value,
+                 gboolean       initial)
 {
   if (window->res_class)
     g_free (window->res_class);
@@ -772,7 +797,8 @@ init_net_wm_desktop (MetaDisplay   *display,
 
 static void
 reload_net_wm_desktop (MetaWindow    *window,
-                       MetaPropValue *value)
+                       MetaPropValue *value,
+                       gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -795,7 +821,8 @@ init_net_startup_id (MetaDisplay   *display,
 
 static void
 reload_net_startup_id (MetaWindow    *window,
-                       MetaPropValue *value)
+                       MetaPropValue *value,
+                       gboolean       initial)
 {
   guint32 timestamp = window->net_wm_user_time;
   MetaWorkspace *workspace = NULL;
@@ -841,7 +868,8 @@ init_update_counter (MetaDisplay   *display,
 
 static void
 reload_update_counter (MetaWindow    *window,
-                       MetaPropValue *value)
+                       MetaPropValue *value,
+                       gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -1270,7 +1298,8 @@ meta_set_normal_hints (MetaWindow *window,
 
 static void
 reload_normal_hints (MetaWindow    *window,
-                     MetaPropValue *value)
+                     MetaPropValue *value,
+                     gboolean       initial)
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
@@ -1285,6 +1314,9 @@ reload_normal_hints (MetaWindow    *window,
       spew_size_hints_differences (&old_hints, &window->size_hints);
       
       meta_window_recalc_features (window);
+
+      if (!initial)
+        meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
     }
 }
 
@@ -1300,7 +1332,8 @@ init_wm_protocols (MetaDisplay   *display,
 
 static void
 reload_wm_protocols (MetaWindow    *window,
-                     MetaPropValue *value)
+                     MetaPropValue *value,
+                     gboolean       initial)
 {
   int i;
   
@@ -1342,7 +1375,8 @@ init_wm_hints (MetaDisplay   *display,
 
 static void
 reload_wm_hints (MetaWindow    *window,
-                 MetaPropValue *value)
+                 MetaPropValue *value,
+                 gboolean       initial)
 {
   Window old_group_leader;
   
@@ -1407,7 +1441,8 @@ init_transient_for (MetaDisplay   *display,
 
 static void
 reload_transient_for (MetaWindow    *window,
-                      MetaPropValue *value)
+                      MetaPropValue *value,
+                      gboolean       initial)
 {
   window->xtransient_for = None;
   

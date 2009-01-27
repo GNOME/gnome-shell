@@ -1,3 +1,18 @@
+2009-01-26  Thomas Thurman  <tthurman@gnome.org>
+
+        More of the window properties are checked using simple
+        window property handlers.  The ones which remain don't
+        actually look up the new value in the ordinary way, and
+        so are a little trickier to merge.  Added an "initial"
+        flag to be on the safe side that the behaviour is the
+        same as before (so we don't do things when a window's
+        first mapped that we only used to do when a property
+        changed).  Partial fix for bug #549886.
+
+	* src/core/window-props.c:
+	* src/core/window-props.h:
+	* src/core/window.c:
+
 2009-01-25  Elijah Newren  <newren gmail com>
 
 	* src/core/window.c: add support for _NET_WM_MOVERESIZE_CANCEL.
