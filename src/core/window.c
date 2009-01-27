@@ -57,8 +57,6 @@ static int destroying_windows_disallowed = 0;
 
 
 static void     update_sm_hints           (MetaWindow     *window);
-static void     update_role               (MetaWindow     *window);
-static void     update_net_wm_type        (MetaWindow     *window);
 static void     update_net_frame_extents  (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
@@ -598,8 +596,8 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS, TRUE);
   
   update_sm_hints (window); /* must come after transient_for */
-  update_role (window);
-  update_net_wm_type (window);
+  meta_window_update_role (window);
+  meta_window_update_net_wm_type (window);
   meta_window_update_icon_now (window);
 
   if (window->initially_iconic)
@@ -5431,11 +5429,7 @@ static gboolean
 process_property_notify (MetaWindow     *window,
                          XPropertyEvent *event)
 {
-  /* Property notifies we want to use.
-   * FIXME once we move entirely to the window-props.h framework, we
-   * can just call reload on the property in the event and get rid of
-   * this if-else chain.
-   */
+  Window xid = window->xwindow;
 
   if (meta_is_verbose ()) /* avoid looking up the name if we don't have to */
     {
@@ -5447,62 +5441,13 @@ process_property_notify (MetaWindow     *window,
       XFree (property_name);
     }
  
-  if (event->atom == window->display->atom_WM_WINDOW_ROLE)
+  if (event->atom == window->display->atom__NET_WM_USER_TIME &&
+      window->user_time_window)
     {
-      update_role (window);
+      xid = window->user_time_window;
     }
-  else if (event->atom ==
-           window->display->atom_WM_CLIENT_LEADER ||
-           event->atom ==
-           window->display->atom_SM_CLIENT_ID)
-    {
-      meta_warning ("Broken client! Window %s changed client leader window or SM client ID\n", window->desc);
-    }
-  else if (event->atom ==
-           window->display->atom__NET_WM_STATE)
-    {
-      meta_verbose ("Ignoring _NET_WM_STATE: we should be the one who set the property in the first place\n");
-    }
-  else if (event->atom ==
-           window->display->atom__NET_WM_WINDOW_TYPE)
-    {
-      update_net_wm_type (window);
-    }
-  else if (event->atom == window->display->atom__NET_WM_ICON)
-    {
-      meta_icon_cache_property_changed (&window->icon_cache,
-                                        window->display,
-                                        event->atom);
-      meta_window_queue(window, META_QUEUE_UPDATE_ICON);
-    }
-  else if (event->atom == window->display->atom__KWM_WIN_ICON)
-    {
-      meta_icon_cache_property_changed (&window->icon_cache,
-                                        window->display,
-                                        event->atom);
-      meta_window_queue(window, META_QUEUE_UPDATE_ICON);
-    }
-  else if ((event->atom == window->display->atom__NET_WM_STRUT) ||
-	   (event->atom == window->display->atom__NET_WM_STRUT_PARTIAL))
-    {
-      meta_window_update_struts (window);
-    }
-  else if (event->atom == window->display->atom__NET_WM_USER_TIME)
-    {
-      Window xid;
-      Atom atom__NET_WM_USER_TIME;
 
-      atom__NET_WM_USER_TIME = window->display->atom__NET_WM_USER_TIME;
-      if (window->user_time_window)
-        xid = window->user_time_window;
-      else
-        xid = window->xwindow;
-      meta_window_reload_property_from_xwindow (window,
-                                                xid,
-                                                atom__NET_WM_USER_TIME, FALSE);
-    }
-  else
-    meta_window_reload_property (window, event->atom, FALSE);
+  meta_window_reload_property (window, event->atom, FALSE);
 
   return TRUE;
 }
@@ -5692,8 +5637,8 @@ update_sm_hints (MetaWindow *window)
                 window->sm_client_id ? window->sm_client_id : "none");
 }
 
-static void
-update_role (MetaWindow *window)
+void
+meta_window_update_role (MetaWindow *window)
 {
   char *str;
   
@@ -5713,8 +5658,8 @@ update_role (MetaWindow *window)
                 window->desc, window->role ? window->role : "null");
 }
 
-static void
-update_net_wm_type (MetaWindow *window)
+void
+meta_window_update_net_wm_type (MetaWindow *window)
 {
   int n_atoms;
   Atom *atoms;
@@ -5771,7 +5716,7 @@ update_net_wm_type (MetaWindow *window)
         meta_XFree (str);
     }
   
-  recalc_window_type (window);
+  meta_window_recalc_window_type (window);
 }
 
 static void

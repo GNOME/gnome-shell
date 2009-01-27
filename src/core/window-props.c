@@ -196,6 +196,65 @@ reload_wm_client_machine (MetaWindow    *window,
 }
 
 static void
+complain_about_broken_client (MetaWindow    *window,
+                              MetaPropValue *value,
+                              gboolean       initial)
+{
+  meta_warning ("Broken client! Window %s changed client leader window or SM client ID\n",
+                window->desc);
+}
+
+static void
+reload_net_wm_window_type (MetaWindow    *window,
+                           MetaPropValue *value,
+                           gboolean       initial)
+{
+  meta_window_update_net_wm_type (window);
+}
+
+static void
+reload_icon (MetaWindow    *window,
+             Atom           atom)
+{
+  meta_icon_cache_property_changed (&window->icon_cache,
+                                    window->display,
+                                    atom);
+  meta_window_queue(window, META_QUEUE_UPDATE_ICON);
+}
+
+static void
+reload_net_wm_icon (MetaWindow    *window,
+                    MetaPropValue *value,
+                    gboolean       initial)
+{
+  reload_icon (window, window->display->atom__NET_WM_ICON);
+}
+
+static void
+reload_kwm_win_icon (MetaWindow    *window,
+                     MetaPropValue *value,
+                     gboolean       initial)
+{
+  reload_icon (window, window->display->atom__KWM_WIN_ICON);
+}
+
+static void
+reload_struts (MetaWindow    *window,
+               MetaPropValue *value,
+               gboolean       initial)
+{
+  meta_window_update_struts (window);
+}
+
+static void
+reload_wm_window_role (MetaWindow    *window,
+                       MetaPropValue *value,
+                       gboolean       initial)
+{
+  meta_window_update_role (window);
+}
+
+static void
 init_net_wm_pid (MetaDisplay   *display,
                  Atom           property,
                  MetaPropValue *value)
@@ -564,6 +623,13 @@ reload_net_wm_state (MetaWindow    *window,
   /* We know this is only an initial window creation,
    * clients don't change the property.
    */
+
+  if (!initial) {
+    /* no, they DON'T change the property */
+    meta_verbose ("Ignoring _NET_WM_STATE: we should be the one who set "
+                  "the property in the first place\n");
+    return;
+  }
 
   window->shaded = FALSE;
   window->maximized_horizontally = FALSE;
@@ -1488,7 +1554,7 @@ reload_transient_for (MetaWindow    *window,
     meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 }
 
-#define N_HOOKS 26
+#define N_HOOKS 28
 
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
@@ -1533,6 +1599,16 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].reload_func = reload_wm_name;
   ++i;
 
+  hooks[i].property = display->atom__NET_WM_ICON;
+  hooks[i].init_func = NULL;
+  hooks[i].reload_func = reload_net_wm_icon;
+  ++i;
+
+  hooks[i].property = display->atom__KWM_WIN_ICON;
+  hooks[i].init_func = NULL;
+  hooks[i].reload_func = reload_kwm_win_icon;
+  ++i;
+
   hooks[i].property = display->atom__NET_WM_ICON_NAME;
   hooks[i].init_func = init_net_wm_icon_name;
   hooks[i].reload_func = reload_net_wm_icon_name;
@@ -1565,22 +1641,22 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
 
   hooks[i].property = display->atom_WM_CLIENT_LEADER;
   hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].reload_func = complain_about_broken_client;
   ++i;
 
   hooks[i].property = display->atom_SM_CLIENT_ID;
   hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].reload_func = complain_about_broken_client;
   ++i;
 
   hooks[i].property = display->atom_WM_WINDOW_ROLE;
   hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].reload_func = reload_wm_window_role;
   ++i;
 
   hooks[i].property = display->atom__NET_WM_WINDOW_TYPE;
   hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].reload_func = reload_net_wm_window_type;
   ++i;
 
   hooks[i].property = display->atom__NET_WM_DESKTOP;
@@ -1590,12 +1666,12 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
 
   hooks[i].property = display->atom__NET_WM_STRUT;
   hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].reload_func = reload_struts;
   ++i;
 
   hooks[i].property = display->atom__NET_WM_STRUT_PARTIAL;
   hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].reload_func = reload_struts;
   ++i;
 
   hooks[i].property = display->atom__NET_STARTUP_ID;

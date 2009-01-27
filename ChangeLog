@@ -1,3 +1,12 @@
+2009-01-27  Thomas Thurman  <tthurman@gnome.org>
+
+        All the window properties are now handled using simple
+        window property handlers.  Closes #549886.
+
+	* src/core/window-private.h:
+	* src/core/window-props.c:
+	* src/core/window.c:
+
 2009-01-26  Thomas Thurman  <tthurman@gnome.org>
 
         More of the window properties are checked using simple
