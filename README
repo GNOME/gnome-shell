@@ -199,6 +199,14 @@ Release Notes for Clutter 1.0
   API. The change removed the private (yet publicly exported) and
   the already deprecated ClutterFixed API.
 
+* ClutterLabel and ClutterEntry have been removed from the API, as
+  both have been superceded by the ClutterText actor.
+
+* ClutterCloneTexture has been removed from the API; in its place,
+  there is a generic ClutterClone actor which allows to "clone"
+  any existing actors -- even composite ones -- without using
+  frame buffer objects (FBOs).
+
   Cogl API changes for Clutter 1.0
   --------------------------------
 
