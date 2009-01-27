@@ -1,24 +1,27 @@
 #include <clutter/clutter.h>
 
-#if defined (_MSC_VER) && !defined (_USE_MATH_DEFINES)
-#define _USE_MATH_DEFINES
-#endif
-
 #include <math.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <glib.h>
 #include <gmodule.h>
 
-#define TRAILS  0
 #define NHANDS  6
-#define RADIUS  ((CLUTTER_STAGE_WIDTH()+CLUTTER_STAGE_HEIGHT())/NHANDS)
 
 typedef struct SuperOH
 {
-  ClutterActor   **hand, *bgtex;
-  ClutterActor    *group;
+  ClutterActor **hand, *bgtex;
+  ClutterActor  *real_hand;
+  ClutterActor  *group;
+  ClutterActor  *stage;
 
+  gint stage_width;
+  gint stage_height;
+  gfloat radius;
+
+  ClutterBehaviour *scaler_1;
+  ClutterBehaviour *scaler_2;
+  ClutterTimeline *timeline;
 } SuperOH;
 
 static gint n_hands = NHANDS;
@@ -50,12 +53,14 @@ input_cb (ClutterActor *stage,
       clutter_event_get_coords (event, &x, &y);
 
       button_event = (ClutterButtonEvent *) event;
-      g_print ("*** button press event (button:%d) ***\n",
-	       button_event->button);
+      g_print ("*** button press event (button:%d) at %d, %d ***\n",
+	       button_event->button,
+               x, y);
 
       e = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage), x, y);
 
-      if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE (e)))
+      /* only allow hiding the clones */
+      if (e && CLUTTER_IS_CLONE (e))
         {
 	  clutter_actor_hide (e);
           return TRUE;
@@ -80,6 +85,8 @@ input_cb (ClutterActor *stage,
           for (i = 0; i < n_hands; i++)
             clutter_actor_show (oh->hand[i]);
 
+          clutter_actor_show (oh->real_hand);
+
           return TRUE;
         }
     }
@@ -95,15 +102,15 @@ frame_cb (ClutterTimeline *timeline,
 	  gpointer         data)
 {
   SuperOH *oh = data;
-  gint     i;
+  gint i;
 
   /* Rotate everything clockwise about stage center*/
 
-  clutter_actor_set_rotation (CLUTTER_ACTOR (oh->group),
+  clutter_actor_set_rotation (oh->group,
                               CLUTTER_Z_AXIS,
                               frame_num,
-			      CLUTTER_STAGE_WIDTH () / 2,
-                              CLUTTER_STAGE_HEIGHT () / 2,
+			      oh->stage_width / 2,
+                              oh->stage_height / 2,
 			      0);
 
   for (i = 0; i < n_hands; i++)
@@ -114,28 +121,25 @@ frame_cb (ClutterTimeline *timeline,
 
       /* Rotate each hand around there centers - to get this we need
        * to take into account any scaling.
-       *
-       * FIXME: scaling causes drift so disabled for now. Need rotation
-       * unit based functions to fix.
        */
-      clutter_actor_set_rotation (oh->hand[i], CLUTTER_Z_AXIS,
-				  - 6.0 * frame_num, 0, 0, 0);
+      clutter_actor_set_rotation (oh->hand[i],
+                                  CLUTTER_Z_AXIS,
+                                  -6.0 * frame_num,
+                                  0, 0, 0);
     }
 }
 
 G_MODULE_EXPORT int
 test_actor_clone_main (int argc, char *argv[])
 {
-  ClutterTimeline *timeline;
   ClutterAlpha     *alpha;
-  ClutterBehaviour *scaler_1, *scaler_2;
   ClutterActor    *stage;
   ClutterColor     stage_color = { 0x61, 0x64, 0x8c, 0xff };
   SuperOH         *oh;
   gint             i;
   GError          *error;
   ClutterActor    *real_hand, *tmp;
-  ClutterColor     clr= {0xff, 0xff, 0x00, 0xff};
+  ClutterColor     clr = { 0xff, 0xff, 0x00, 0xff };
 
   error = NULL;
 
@@ -150,50 +154,47 @@ test_actor_clone_main (int argc, char *argv[])
                  error->message);
       g_error_free (error);
 
-      exit (1);
+      return EXIT_FAILURE;
     }
 
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 800, 600);
 
-  clutter_stage_set_title (CLUTTER_STAGE (stage), "Actors Test");
-  clutter_stage_set_color (CLUTTER_STAGE (stage),
-		           &stage_color);
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "Clone Test");
+  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
-  oh = g_new(SuperOH, 1);
+  oh = g_new (SuperOH, 1);
 
   /* Create a timeline to manage animation */
-  timeline = clutter_timeline_new (360, 60); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
+  oh->timeline = clutter_timeline_new (360, 60);
+  clutter_timeline_set_loop (oh->timeline, TRUE);
 
   /* fire a callback for frame change */
-  g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), oh);
+  g_signal_connect (oh->timeline, "new-frame", G_CALLBACK (frame_cb), oh);
 
   /* Set up some behaviours to handle scaling  */
-  alpha = clutter_alpha_new_with_func (timeline, clutter_sine_func,
+  alpha = clutter_alpha_new_with_func (oh->timeline, clutter_sine_func,
                                        NULL, NULL);
 
-  scaler_1 = clutter_behaviour_scale_new (alpha,
-					  0.5, 0.5,
-					  1.0, 1.0);
-
-  scaler_2 = clutter_behaviour_scale_new (alpha,
-					  1.0, 1.0,
-					  0.5, 0.5);
+  oh->scaler_1 = clutter_behaviour_scale_new (alpha, 0.5, 0.5, 1.0, 1.0);
+  oh->scaler_2 = clutter_behaviour_scale_new (alpha, 1.0, 1.0, 0.5, 0.5);
 
   tmp = clutter_texture_new_from_file ("redhand.png", &error);
-  if (tmp  == NULL)
+  if (tmp == NULL)
     {
       g_error ("image load failed: %s", error->message);
-      exit (1);
+      return EXIT_FAILURE;
     }
+
   clutter_actor_set_size (tmp, 300, 500);
+
   real_hand = clutter_group_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (real_hand), tmp);
   tmp = clutter_rectangle_new_with_color (&clr);
   clutter_actor_set_size (tmp, 100, 100);
   clutter_container_add_actor (CLUTTER_CONTAINER (real_hand), tmp);
   clutter_actor_set_scale (real_hand, 0.5, 0.5);
+  oh->real_hand = real_hand;
 
   /* Now stick the group we want to clone into another group with a custom
    * opacity to verify that the clones don't traverse this parent when
@@ -207,6 +208,12 @@ test_actor_clone_main (int argc, char *argv[])
   oh->group = clutter_group_new();
 
   oh->hand = g_new (ClutterActor*, n_hands);
+
+  oh->stage_width = clutter_actor_get_width (stage);
+  oh->stage_height = clutter_actor_get_height (stage);
+  oh->radius = (oh->stage_width + oh->stage_height)
+             / n_hands;
+
   for (i = 0; i < n_hands; i++)
     {
       gint x, y, w, h;
@@ -219,14 +226,14 @@ test_actor_clone_main (int argc, char *argv[])
       w = clutter_actor_get_width (oh->hand[0]);
       h = clutter_actor_get_height (oh->hand[0]);
 
-      x = CLUTTER_STAGE_WIDTH () / 2
-	+ RADIUS
-	* cos (i * M_PI / (n_hands / 2))
+      x = oh->stage_width / 2
+	+ oh->radius
+	* cos (i * G_PI / (n_hands / 2))
 	- w / 2;
 
-      y = CLUTTER_STAGE_HEIGHT () / 2
-	+ RADIUS
-	* sin (i * M_PI / (n_hands / 2))
+      y = oh->stage_height / 2
+	+ oh->radius
+	* sin (i * G_PI / (n_hands / 2))
 	- h / 2;
 
       clutter_actor_set_position (oh->hand[i], x, y);
@@ -237,21 +244,17 @@ test_actor_clone_main (int argc, char *argv[])
       /* Add to our group group */
       clutter_container_add_actor (CLUTTER_CONTAINER (oh->group), oh->hand[i]);
 
-#if 1 /* FIXME: disabled as causes drift? - see comment above */
       if (i % 2)
-	clutter_behaviour_apply (scaler_1, oh->hand[i]);
+	clutter_behaviour_apply (oh->scaler_1, oh->hand[i]);
       else
-	clutter_behaviour_apply (scaler_2, oh->hand[i]);
-#endif
+	clutter_behaviour_apply (oh->scaler_2, oh->hand[i]);
     }
 
   /* Add the group to the stage */
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
-                               CLUTTER_ACTOR (oh->group));
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), oh->group);
 
-  /* Show everying ( and map window ) */
+  /* Show everying */
   clutter_actor_show (stage);
-
 
   g_signal_connect (stage, "button-press-event",
 		    G_CALLBACK (input_cb),
@@ -261,12 +264,16 @@ test_actor_clone_main (int argc, char *argv[])
 		    oh);
 
   /* and start it */
-  clutter_timeline_start (timeline);
+  clutter_timeline_start (oh->timeline);
 
   clutter_main ();
 
+  /* clean up */
+  g_object_unref (oh->scaler_1);
+  g_object_unref (oh->scaler_2);
+  g_object_unref (oh->timeline);
   g_free (oh->hand);
   g_free (oh);
 
-  return 0;
+  return EXIT_SUCCESS;
 }
