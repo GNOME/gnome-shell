@@ -4,7 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
-const Tidy = imports.gi.Tidy;
+const Big = imports.gi.Big;
 
 const Button = imports.ui.button;
 const Main = imports.ui.main;
@@ -13,6 +13,8 @@ const PANEL_HEIGHT = 32;
 const TRAY_HEIGHT = 24;
 const PANEL_BACKGROUND_COLOR = new Clutter.Color();
 PANEL_BACKGROUND_COLOR.from_pixel(0xeeddccff);
+const PANEL_BORDER_COLOR = new Clutter.Color();
+PANEL_BORDER_COLOR.from_pixel(0x000000ff);
 const PRESSED_BUTTON_BACKGROUND_COLOR = new Clutter.Color();
 PRESSED_BUTTON_BACKGROUND_COLOR.from_pixel(0xccbbaaff);
 
@@ -22,53 +24,44 @@ function Panel() {
 
 Panel.prototype = {
     _init : function() {
+        let me = this;
         let global = Shell.Global.get();
 
-        this._group = new Clutter.Group();
+        this._box = new Big.Box({ background_color: PANEL_BACKGROUND_COLOR,
+                                  x: 0,
+                                  y: 0,
+                                  height: PANEL_HEIGHT + 1,
+                                  width: global.screen_width,
+                                  orientation: Big.BoxOrientation.HORIZONTAL,
+                                  spacing: 4,
+                                  border_bottom: 1,
+                                  border_color: PANEL_BORDER_COLOR });
 
-        let background = new Clutter.Rectangle({ color: PANEL_BACKGROUND_COLOR,
-                                                 reactive: true,
-                                                 width: global.screen_width+2,
-                                                 height: PANEL_HEIGHT+1,
-                                                 border_width: 1});
-        background.set_position(-1, -1);
-        this._group.add_actor(background);
+        this.button = new Button.Button("Activities", PANEL_BACKGROUND_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR, true, null, PANEL_HEIGHT);
 
-        this.button = new Button.Button("Activities", PANEL_BACKGROUND_COLOR, PRESSED_BUTTON_BACKGROUND_COLOR, true, null, PANEL_HEIGHT-1);
-
-        this._group.add_actor(this.button.button);
-
-        this._grid = new Tidy.Grid({ height: TRAY_HEIGHT,
-                                     valign: 0.5,
-                                     end_align: true,
-                                     column_gap: 2 })
-        this._group.add_actor(this._grid);
+        this._box.append(this.button.button, Big.BoxPackFlags.NONE);
 
         this._clock = new Clutter.Label({ font_name: "Sans Bold 16px",
                                           text: "" });
-        this._grid.add_actor(this._clock);
-
-        // Setting the anchor point at top right (north east) makes that portion of the
-        // grid positioned at the position specified below.
-        this._grid.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
-        this._grid.set_position(global.screen_width - 2, (PANEL_HEIGHT - TRAY_HEIGHT) / 2);
+        let pad = (PANEL_HEIGHT - this._clock.height) / 2;
+        let clockbox = new Big.Box({ padding_top: pad,
+                                     padding_bottom: pad,
+                                     padding_right: 4 });
+        clockbox.append(this._clock, Big.BoxPackFlags.NONE);
+        this._box.append(clockbox, Big.BoxPackFlags.END);
 
         this._traymanager = new Shell.TrayManager({ bg_color: PANEL_BACKGROUND_COLOR });
-        let me = this;
-        // the anchor point needs to be updated each time the height/width of the content might have changed, because
-        // it doesn't get updated on its own
         this._traymanager.connect('tray-icon-added',
             function(o, icon) {
-                me._grid.add_actor(icon);
-                /* bump the clock back to the end */
-                me._grid.remove_actor(me._clock);
-                me._grid.add_actor(me._clock);
-                me._grid.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+                let pad = (PANEL_HEIGHT - icon.height) / 2;
+                icon._panel_box = new Big.Box({ padding_top: pad,
+                                                padding_bottom: pad });
+                icon._panel_box.append(icon, Big.BoxPackFlags.NONE);
+                me._box.append(icon._panel_box, Big.BoxPackFlags.END);
             });
         this._traymanager.connect('tray-icon-removed',
             function(o, icon) {
-                me._grid.remove_actor(icon);
-                me._grid.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+                me._box.remove_actor(icon._panel_box);
             });
         this._traymanager.manage_stage(global.stage);
 
@@ -92,7 +85,7 @@ Panel.prototype = {
                 me._setStruts();
             });
 
-        global.stage.add_actor(this._group);
+        global.stage.add_actor(this._box);
 
         // Start the clock
         this._updateClock();
