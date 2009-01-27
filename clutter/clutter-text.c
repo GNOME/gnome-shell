@@ -155,6 +155,9 @@ struct _ClutterTextPrivate
   gint max_length;
 
   gunichar password_char;
+
+  /* Signal handler for when the backend changes its font settings */
+  guint font_changed_id;
 };
 
 enum
@@ -195,6 +198,8 @@ enum
 };
 
 static guint text_signals[LAST_SIGNAL] = { 0, };
+
+static void clutter_text_font_changed_cb (ClutterText *text);
 
 #define offset_real(t,p)        ((p) == -1 ? g_utf8_strlen ((t), -1) : (p))
 
@@ -335,6 +340,13 @@ clutter_text_dirty_cache (ClutterText *text)
 	g_object_unref (priv->cached_layouts[i].layout);
 	priv->cached_layouts[i].layout = NULL;
       }
+}
+
+static void
+clutter_text_font_changed_cb (ClutterText *text)
+{
+  clutter_text_dirty_cache (text);
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (text));
 }
 
 /*
@@ -737,9 +749,17 @@ static void
 clutter_text_dispose (GObject *gobject)
 {
   ClutterText *self = CLUTTER_TEXT (gobject);
+  ClutterTextPrivate *priv = self->priv;
 
   /* get rid of the entire cache */
   clutter_text_dirty_cache (self);
+
+  if (priv->font_changed_id)
+    {
+      g_signal_handler_disconnect (clutter_get_default_backend (),
+                                   priv->font_changed_id);
+      priv->font_changed_id = 0;
+    }
 
   G_OBJECT_CLASS (clutter_text_parent_class)->dispose (gobject);
 }
@@ -2092,6 +2112,12 @@ clutter_text_init (ClutterText *self)
   priv->max_length = 0;
 
   priv->cursor_size = DEFAULT_CURSOR_SIZE;
+
+  priv->font_changed_id
+    = g_signal_connect_swapped (clutter_get_default_backend (),
+                                "font-changed",
+                                G_CALLBACK (clutter_text_font_changed_cb),
+                                self);
 }
 
 /**
