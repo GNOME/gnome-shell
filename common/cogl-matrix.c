@@ -53,14 +53,16 @@ cogl_matrix_multiply (CoglMatrix *result,
 
 /**
  * cogl_3dmatrix_rotate:
- * matrix: A 3D Affine transformation matrix
- * angle: The angle in degrees you want to rotate by
- * x: The X component of your rotation vector
- * y: The Y component of your rotation vector
- * z: The Z component of your rotation vector
+ * @matrix: A 3D Affine transformation matrix
+ * @angle: The angle in degrees you want to rotate by
+ * @x: The X component of your rotation vector
+ * @y: The Y component of your rotation vector
+ * @z: The Z component of your rotation vector
  *
  * The matrix is multiplied with a rotation matrix representing a rotation
  * of angle degress around the vector (x,y,z)
+ *
+ * Since: 1.0
  */
 void
 cogl_matrix_rotate (CoglMatrix *matrix,
