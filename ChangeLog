@@ -1,5 +1,17 @@
 2009-01-27  Thomas Thurman  <tthurman@gnome.org>
 
+        Added a gconf key to swap the meanings of the right and
+        middle buttons when the modifier key is held down.
+        Closes #437910.  Thanks to Matt Kraai for looking over
+        the patch.
+
+	* src/core/display.c:
+	* src/core/prefs.c:
+	* src/include/prefs.h:
+	* src/metacity.schemas.in.in:
+
+2009-01-27  Thomas Thurman  <tthurman@gnome.org>
+
         All the window properties are now handled using simple
         window property handlers.  Closes #549886.
 

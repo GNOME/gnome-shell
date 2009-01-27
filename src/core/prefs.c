@@ -94,6 +94,7 @@ static gboolean gnome_animations = TRUE;
 static char *cursor_theme = NULL;
 static int   cursor_size = 24;
 static gboolean compositing_manager = FALSE;
+static gboolean resize_with_right_button = FALSE;
 
 static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_FULLSCREEN_FLASH;
 static MetaButtonLayout button_layout;
@@ -401,6 +402,11 @@ static MetaBoolPreference preferences_bool[] =
     { "/apps/metacity/general/compositing_manager",
       META_PREF_COMPOSITING_MANAGER,
       &compositing_manager,
+      FALSE,
+    },
+    { "/apps/metacity/general/resize_with_right_button",
+      META_PREF_RESIZE_WITH_RIGHT_BUTTON,
+      &resize_with_right_button,
       FALSE,
     },
     { NULL, 0, NULL, FALSE },
@@ -1740,6 +1746,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_COMPOSITING_MANAGER:
       return "COMPOSITING_MANAGER";
+
+    case META_PREF_RESIZE_WITH_RIGHT_BUTTON:
+      return "RESIZE_WITH_RIGHT_BUTTON";
     }
 
   return "(unknown)";
@@ -2712,6 +2721,18 @@ gboolean
 meta_prefs_get_compositing_manager (void)
 {
   return compositing_manager;
+}
+
+guint
+meta_prefs_get_mouse_button_resize (void)
+{
+  return resize_with_right_button ? 3: 2;
+}
+
+guint
+meta_prefs_get_mouse_button_menu (void)
+{
+  return resize_with_right_button ? 2: 3;
 }
 
 void
