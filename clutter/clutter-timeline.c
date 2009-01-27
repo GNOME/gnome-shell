@@ -1258,7 +1258,7 @@ clutter_timeline_new (guint n_frames,
 		      guint fps)
 {
   g_return_val_if_fail (n_frames > 0, NULL);
-  g_return_val_if_fail (fps > 0, NULL);
+  g_return_val_if_fail (fps > 0 && fps <= 1000, NULL);
 
   return g_object_new (CLUTTER_TYPE_TIMELINE,
 		       "fps", fps,
