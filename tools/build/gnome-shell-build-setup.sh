@@ -47,7 +47,12 @@ if test "x`echo $PATH | grep $HOME/bin`" = x; then
     echo
 fi
 
-system=`lsb_release -is`
+if which lsb_release > /dev/null 2>&1; then
+  system=`lsb_release -is`
+elif [ -f /etc/fedora-release ] ; then
+  system=Fedora
+fi
+
 if test x$system = xUbuntu -o x$system = xDebian ; then
   reqd=""
   for pkg in build-essential automake gnome-common flex bison curl \
@@ -61,6 +66,20 @@ if test x$system = xUbuntu -o x$system = xDebian ; then
   if test ! "x$reqd" = x; then
     echo "Please run 'sudo apt-get install $reqd' before building gnome-shell."
     echo
+  fi
+fi
+
+if test x$system = xFedora ; then
+  reqd=""
+  for pkg in libffi-devel libXdamage-devel gnome-doc-utils xulrunner-devel \
+    librsvg2-devel libgnomeui-devel xterm xorg-x11-apps xorg-x11-server-Xephyr \
+    libwnck-devel; do
+      if ! rpm -q $pkg > /dev/null 2>&1; then
+        reqd="$pkg $reqd"
+      fi
+  done
+  if test ! "x$reqd" = x; then
+    gpk-install-package-name $reqd
   fi
 fi
 
