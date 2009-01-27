@@ -453,7 +453,6 @@ update_pango_context (ClutterBackend *backend,
   /* get the configuration for the PangoContext from the backend */
   font_name = clutter_backend_get_font_name (backend);
   font_options = clutter_backend_get_font_options (backend);
-  font_options = cairo_font_options_copy (font_options);
   resolution = clutter_backend_get_resolution (backend);
 
   font_desc = pango_font_description_from_string (font_name);
@@ -461,13 +460,8 @@ update_pango_context (ClutterBackend *backend,
   if (resolution < 0)
     resolution = 96.0; /* fall back */
 
-  if (CLUTTER_CONTEXT ()->user_font_options)
-    cairo_font_options_merge (font_options,
-                              CLUTTER_CONTEXT ()->user_font_options);
-
   pango_context_set_font_description (context, font_desc);
   pango_cairo_context_set_font_options (context, font_options);
-  cairo_font_options_destroy (font_options);
   pango_cairo_context_set_resolution (context, resolution);
 
   pango_font_description_free (font_desc);
@@ -2610,10 +2604,7 @@ clutter_clear_glyph_cache (void)
  * text but will use more texture memory.
  *
  * Enabling hinting improves text quality for static text but may
- * introduce some artifacts if the text is animated. Changing the
- * hinting flag will only effect newly created PangoLayouts. So
- * #ClutterText actors will not show the change until a property which
- * causes it to recreate the layout is also changed.
+ * introduce some artifacts if the text is animated.
  *
  * Since: 1.0
  */
@@ -2621,6 +2612,7 @@ void
 clutter_set_font_flags (ClutterFontFlags flags)
 {
   ClutterFontFlags old_flags, changed_flags;
+  cairo_font_options_t *font_options;
 
   if (CLUTTER_CONTEXT ()->font_map)
     cogl_pango_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
@@ -2629,18 +2621,22 @@ clutter_set_font_flags (ClutterFontFlags flags)
 
   old_flags = clutter_get_font_flags ();
 
-  if (CLUTTER_CONTEXT ()->user_font_options == NULL)
-    CLUTTER_CONTEXT ()->user_font_options = cairo_font_options_create ();
+  font_options = clutter_backend_get_font_options (CLUTTER_CONTEXT ()->backend);
+  font_options = cairo_font_options_copy (font_options);
 
   /* Only set the font options that have actually changed so we don't
      override a detailed setting from the backend */
   changed_flags = old_flags ^ flags;
 
   if ((changed_flags & CLUTTER_FONT_HINTING))
-    cairo_font_options_set_hint_style (CLUTTER_CONTEXT ()->user_font_options,
+    cairo_font_options_set_hint_style (font_options,
                                        (flags & CLUTTER_FONT_HINTING)
                                        ? CAIRO_HINT_STYLE_FULL
                                        : CAIRO_HINT_STYLE_NONE);
+
+  clutter_backend_set_font_options (CLUTTER_CONTEXT ()->backend, font_options);
+
+  cairo_font_options_destroy (font_options);
 
   if (CLUTTER_CONTEXT ()->pango_context)
     update_pango_context (CLUTTER_CONTEXT ()->backend,
@@ -2672,18 +2668,12 @@ clutter_get_font_flags (void)
     flags |= CLUTTER_FONT_MIPMAPPING;
 
   font_options = clutter_backend_get_font_options (ctxt->backend);
-  font_options = cairo_font_options_copy (font_options);
-
-  if (ctxt->user_font_options)
-    cairo_font_options_merge (font_options, ctxt->user_font_options);
 
   if ((cairo_font_options_get_hint_style (font_options)
        != CAIRO_HINT_STYLE_DEFAULT)
       && (cairo_font_options_get_hint_style (font_options)
           != CAIRO_HINT_STYLE_NONE))
     flags |= CLUTTER_FONT_HINTING;
-
-  cairo_font_options_destroy (font_options);
 
   return flags;
 }
