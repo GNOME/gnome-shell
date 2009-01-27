@@ -24,43 +24,43 @@ raise_top (gpointer ignored)
 }
 
 static ClutterActor *
-clone_box (ClutterTexture *original)
+clone_box (ClutterActor *original)
 {
   guint width, height;
   ClutterActor *group;
   ClutterActor *clone;
 
-  clutter_actor_get_size (CLUTTER_ACTOR (original), &width, &height);
+  clutter_actor_get_size (original, &width, &height);
 
   group = clutter_group_new ();
-  clone = clutter_clone_texture_new (original);
+  clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_depth (clone, width/2);
 
-  clone = clutter_clone_texture_new (original);
+  clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 180, width/2, 0, 0);
   clutter_actor_set_depth (clone, -(gint)width/2);
 
-  clone = clutter_clone_texture_new (original);
+  clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 90, 0, 0, 0);
   clutter_actor_set_depth (clone, width/2);
   clutter_actor_set_position (clone, 0, 0);
 
-  clone = clutter_clone_texture_new (original);
+  clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_Y_AXIS, 90, 0, 0, 0);
   clutter_actor_set_depth (clone, width/2);
   clutter_actor_set_position (clone, width, 0);
 
-  clone = clutter_clone_texture_new (original);
+  clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_X_AXIS, 90, 0, 0, 0);
   clutter_actor_set_depth (clone, -(gint)width/2);
   clutter_actor_set_position (clone, 0, height);
 
-  clone = clutter_clone_texture_new (original);
+  clone = clutter_clone_new (original);
   clutter_container_add_actor (CLUTTER_CONTAINER (group), clone);
   clutter_actor_set_rotation (clone, CLUTTER_X_AXIS, 90, 0, 0, 0);
   clutter_actor_set_depth (clone, -(gint)width/2);
@@ -178,9 +178,8 @@ test_depth_main (int argc, char *argv[])
                                   0, 360);
   clutter_behaviour_apply (r_behave, janus);
 
-
   /* add hand box */
-  box = clone_box (CLUTTER_TEXTURE (hand));
+  box = clone_box (hand);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), box);
   clutter_actor_set_position (box, 200, 250);
   clutter_actor_set_scale (box, 0.5, 0.5);

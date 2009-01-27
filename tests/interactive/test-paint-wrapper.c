@@ -61,7 +61,7 @@ input_cb (ClutterStage *stage,
 
       e = clutter_stage_get_actor_at_pos (stage, x, y);
 
-      if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE_TEXTURE (e)))
+      if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE (e)))
         {
 	  clutter_actor_hide (e);
           return TRUE;
@@ -235,7 +235,7 @@ test_paint_wrapper_main (int argc, char *argv[])
 	    }
 	}
       else
-	oh->hand[i] = clutter_clone_texture_new (CLUTTER_TEXTURE(oh->hand[0]));
+	oh->hand[i] = clutter_clone_new (oh->hand[0]);
 
       /* paint something before each hand */
       g_signal_connect (oh->hand[i],
