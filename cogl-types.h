@@ -248,6 +248,12 @@ struct _CoglColor
   guint8 blue;
 
   guint8 alpha;
+
+  /* padding in case we want to change to floats at
+   * some point */
+  guint32 padding0;
+  guint32 padding1;
+  guint32 padding2;
 };
 
 /**
