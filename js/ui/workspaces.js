@@ -323,7 +323,7 @@ Workspace.prototype = {
                                time: Overlay.ANIMATION_TIME,
                                opacity: 255,
                                transition: "easeOutQuad",
-                               onComplete: this._onCloneAnimComplete,
+                               onComplete: this._onCloneAnimationComplete,
                                onCompleteScope: this,
                                onCompleteParams: [window]
                              });
@@ -552,6 +552,13 @@ Workspace.prototype = {
                                    onCompleteScope: this,
                                    onCompleteParams: [clone]
                                  });
+                // Most likely, the clone is going to move away from the
+                // pointer now. But that won't cause a leave-event, so
+                // do this by hand. Of course, if the window only snaps
+                // back a short distance, this might be wrong, but it's
+                // better to have the label mysteriously missing than
+                // mysteriously present
+                clone._havePointer = false;
                 clone._animationCount++;
             }
         } else {
