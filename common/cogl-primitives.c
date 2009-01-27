@@ -43,19 +43,18 @@ void _cogl_path_add_node    (gboolean new_sub_path,
                              float y);
 void _cogl_path_fill_nodes    ();
 void _cogl_path_stroke_nodes  ();
-void _cogl_rectangle (float x,
-                      float y,
-                      float width,
-                      float height);
+
 void
 cogl_rectangle (float x,
                 float y,
                 float width,
                 float height)
 {
-  cogl_clip_ensure ();
-
-  _cogl_rectangle (x, y, width, height);
+  cogl_rectangle_with_multitexture_coords (x, y,
+                                           x+width,
+                                           y+height,
+                                           NULL,
+                                           0);
 }
 
 void

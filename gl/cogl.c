@@ -171,6 +171,10 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 void
 cogl_paint_init (const CoglColor *color)
 {
+#if COGL_DEBUG
+  fprintf(stderr, "\n ============== Paint Start ================ \n");
+#endif
+
   GE( glClearColor (cogl_color_get_red_float (color),
                     cogl_color_get_green_float (color),
                     cogl_color_get_blue_float (color),
@@ -180,16 +184,16 @@ cogl_paint_init (const CoglColor *color)
   glDisable (GL_LIGHTING);
   glDisable (GL_FOG);
 
-  /* 
+  /*
    *  Disable the depth test for now as has some strange side effects,
-   *  mainly on x/y axis rotation with multiple layers at same depth 
-   *  (eg rotating text on a bg has very strange effect). Seems no clean  
-   *  100% effective way to fix without other odd issues.. So for now 
+   *  mainly on x/y axis rotation with multiple layers at same depth
+   *  (eg rotating text on a bg has very strange effect). Seems no clean
+   *  100% effective way to fix without other odd issues.. So for now
    *  move to application to handle and add cogl_enable_depth_test()
    *  as for custom actors (i.e groups) to enable if need be.
    *
-   * glEnable (GL_DEPTH_TEST);                                                 
-   * glEnable (GL_ALPHA_TEST)                                                  
+   * glEnable (GL_DEPTH_TEST);
+   * glEnable (GL_ALPHA_TEST)
    * glDepthFunc (GL_LEQUAL);
    * glAlphaFunc (GL_GREATER, 0.1);
    */
@@ -199,33 +203,31 @@ cogl_paint_init (const CoglColor *color)
 void
 cogl_push_matrix (void)
 {
-  glPushMatrix();
+  GE( glPushMatrix() );
 }
 
 void
 cogl_pop_matrix (void)
 {
-  glPopMatrix();
+  GE( glPopMatrix() );
 }
 
 void
 cogl_scale (float x, float y)
 {
-  glScalef ((float)(x),
-	    (float)(y),
-	    1.0);
+  GE( glScalef (x, y, 1.0) );
 }
 
 void
 cogl_translate (float x, float y, float z)
 {
-  glTranslatef (x, y, z);
+  GE( glTranslatef (x, y, z) );
 }
 
 void
 cogl_rotate (float angle, float x, float y, float z)
 {
-  glRotatef (angle, x, y, z);
+  GE( glRotatef (angle, x, y, z) );
 }
 
 static inline gboolean
@@ -251,7 +253,7 @@ cogl_toggle_flag (CoglContext *ctx,
       GE( glDisable (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
-  
+
   return FALSE;
 }
 
@@ -278,7 +280,7 @@ cogl_toggle_client_flag (CoglContext *ctx,
       GE( glDisableClientState (gl_flag) );
       ctx->enable_flags &= ~flag;
     }
-  
+
   return FALSE;
 }
 
@@ -289,33 +291,19 @@ cogl_enable (gulong flags)
    * hope of lessening number GL traffic.
   */
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   cogl_toggle_flag (ctx, flags,
                     COGL_ENABLE_BLEND,
                     GL_BLEND);
-  
-  cogl_toggle_flag (ctx, flags,
-		    COGL_ENABLE_TEXTURE_2D,
-		    GL_TEXTURE_2D);
 
   cogl_toggle_flag (ctx, flags,
                     COGL_ENABLE_BACKFACE_CULLING,
                     GL_CULL_FACE);
 
-#ifdef GL_TEXTURE_RECTANGLE_ARB
-  cogl_toggle_flag (ctx, flags,
-		    COGL_ENABLE_TEXTURE_RECT,
-		    GL_TEXTURE_RECTANGLE_ARB);
-#endif
-
   cogl_toggle_client_flag (ctx, flags,
 			   COGL_ENABLE_VERTEX_ARRAY,
 			   GL_VERTEX_ARRAY);
-  
-  cogl_toggle_client_flag (ctx, flags,
-			   COGL_ENABLE_TEXCOORD_ARRAY,
-			   GL_TEXTURE_COORD_ARRAY);
-  
+
   cogl_toggle_client_flag (ctx, flags,
 			   COGL_ENABLE_COLOR_ARRAY,
 			   GL_COLOR_ARRAY);
@@ -325,25 +313,8 @@ gulong
 cogl_get_enable ()
 {
   _COGL_GET_CONTEXT (ctx, 0);
-  
-  return ctx->enable_flags;
-}
 
-void
-cogl_blend_func (COGLenum src_factor, COGLenum dst_factor)
-{
-  /* This function caches the blending setup in the
-   * hope of lessening GL traffic.
-   */
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  if (ctx->blend_src_factor != src_factor ||
-      ctx->blend_dst_factor != dst_factor)
-    {
-      glBlendFunc (src_factor, dst_factor);
-      ctx->blend_src_factor = src_factor;
-      ctx->blend_dst_factor = dst_factor;
-    }
+  return ctx->enable_flags;
 }
 
 void
@@ -351,14 +322,14 @@ cogl_enable_depth_test (gboolean setting)
 {
   if (setting)
     {
-      glEnable (GL_DEPTH_TEST);                                               
+      glEnable (GL_DEPTH_TEST);
       glEnable (GL_ALPHA_TEST);
       glDepthFunc (GL_LEQUAL);
       glAlphaFunc (GL_GREATER, 0.1);
     }
   else
     {
-      glDisable (GL_DEPTH_TEST);                                               
+      glDisable (GL_DEPTH_TEST);
       glDisable (GL_ALPHA_TEST);
     }
 }
@@ -375,21 +346,19 @@ void
 cogl_set_source_color (const CoglColor *color)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
-  glColor4ub (cogl_color_get_red_byte (color),
-	      cogl_color_get_green_byte (color),
-	      cogl_color_get_blue_byte (color),
-	      cogl_color_get_alpha_byte (color));
-  
-  /* Store alpha for proper blending enables */
-  ctx->color_alpha = cogl_color_get_alpha_byte (color);
+
+  /* In case cogl_set_source_texture was previously used... */
+  cogl_material_remove_layer (ctx->default_material, 0);
+
+  cogl_material_set_color (ctx->default_material, color);
+  cogl_set_source (ctx->default_material);
 }
 
 static void
-apply_matrix (const GLfloat *matrix, GLfloat *vertex)
+apply_matrix (const float *matrix, float *vertex)
 {
   int x, y;
-  GLfloat vertex_out[4] = { 0 };
+  float vertex_out[4] = { 0 };
 
   for (y = 0; y < 4; y++)
     for (x = 0; x < 4; x++)
@@ -399,7 +368,9 @@ apply_matrix (const GLfloat *matrix, GLfloat *vertex)
 }
 
 static void
-project_vertex (GLfloat *modelview, GLfloat *project, GLfloat *vertex)
+project_vertex (float *modelview,
+		float *project,
+		float *vertex)
 {
   int i;
 
@@ -414,8 +385,8 @@ project_vertex (GLfloat *modelview, GLfloat *project, GLfloat *vertex)
 
 static void
 set_clip_plane (GLint plane_num,
-		const GLfloat *vertex_a,
-		const GLfloat *vertex_b)
+		const float *vertex_a,
+		const float *vertex_b)
 {
   GLdouble plane[4];
   GLfloat angle;
@@ -423,15 +394,15 @@ set_clip_plane (GLint plane_num,
 
   /* Calculate the angle between the axes and the line crossing the
      two points */
-  angle = atan2f ((vertex_b[1] - vertex_a[1]),
-		  (vertex_b[0] - vertex_a[0])) * 180.0f / G_PI;
+  angle = atan2f (vertex_b[1] - vertex_a[1],
+                  vertex_b[0] - vertex_a[0]) * (180.0/G_PI);
 
   GE( glPushMatrix () );
   /* Load the identity matrix and multiply by the reverse of the
      projection matrix so we can specify the plane in screen
      coordinates */
   GE( glLoadIdentity () );
-  GE( glMultMatrixf (ctx->inverse_projection) );
+  GE( glMultMatrixf ((GLfloat *) ctx->inverse_projection) );
   /* Rotate about point a */
   GE( glTranslatef (vertex_a[0], vertex_a[1], vertex_a[2]) );
   /* Rotate the plane by the calculated angle so that it will connect
@@ -439,9 +410,9 @@ set_clip_plane (GLint plane_num,
   GE( glRotatef (angle, 0.0f, 0.0f, 1.0f) );
   GE( glTranslatef (-vertex_a[0], -vertex_a[1], -vertex_a[2]) );
 
-  plane[0] = 0.0f;
-  plane[1] = -1.0f;
-  plane[2] = 0.0f;
+  plane[0] = 0;
+  plane[1] = -1.0;
+  plane[2] = 0;
   plane[3] = vertex_a[1];
   GE( glClipPlane (plane_num, plane) );
 
@@ -456,18 +427,11 @@ _cogl_set_clip_planes (float x_offset,
 {
   GLfloat modelview[16], projection[16];
 
-  GLfloat vertex_tl[4] = {  (x_offset),
-			    (y_offset),
-			   0.0f, 1.0f };
-  GLfloat vertex_tr[4] = {  (x_offset + width),
-			    (y_offset),
-			   0.0f, 1.0f };
-  GLfloat vertex_bl[4] = {  (x_offset),
-			    (y_offset + height),
-			   0.0f, 1.0f };
-  GLfloat vertex_br[4] = {  (x_offset + width),
-			    (y_offset + height),
-			   0.0f, 1.0f };
+  float vertex_tl[4] = { x_offset, y_offset, 0, 1.0 };
+  float vertex_tr[4] = { x_offset + width, y_offset, 0, 1.0 };
+  float vertex_bl[4] = { x_offset, y_offset + height, 0, 1.0 };
+  float vertex_br[4] = { x_offset + width, y_offset + height,
+                        0, 1.0 };
 
   GE( glGetFloatv (GL_MODELVIEW_MATRIX, modelview) );
   GE( glGetFloatv (GL_PROJECTION_MATRIX, projection) );
@@ -485,7 +449,7 @@ _cogl_set_clip_planes (float x_offset,
   if ((vertex_tl[0] < vertex_tr[0] ? 1 : 0)
       != (vertex_bl[1] < vertex_tl[1] ? 1 : 0))
     {
-      GLfloat temp[4];
+      float temp[4];
       memcpy (temp, vertex_tl, sizeof (temp));
       memcpy (vertex_tl, vertex_tr, sizeof (temp));
       memcpy (vertex_tr, temp, sizeof (temp));
@@ -512,7 +476,7 @@ _cogl_add_stencil_clip (float x_offset,
   if (first)
     {
       GE( glEnable (GL_STENCIL_TEST) );
-      
+
       /* Initially disallow everything */
       GE( glClearStencil (0) );
       GE( glClear (GL_STENCIL_BUFFER_BIT) );
@@ -545,7 +509,7 @@ _cogl_add_stencil_clip (float x_offset,
       GE( glMatrixMode (GL_PROJECTION) );
       GE( glPushMatrix () );
       GE( glLoadIdentity () );
-      GE( glRecti (-1, 1, 1, -1) );
+      GE( glRectf (-1, 1, 1, -1) );
       GE( glPopMatrix () );
       GE( glMatrixMode (GL_MODELVIEW) );
       GE( glPopMatrix () );
@@ -559,14 +523,8 @@ _cogl_add_stencil_clip (float x_offset,
 void
 _cogl_set_matrix (const float *matrix)
 {
-  float float_matrix[16];
-  int i;
-
-  for (i = 0; i < 16; i++)
-    float_matrix[i] =  (matrix[i]);
-
   GE( glLoadIdentity () );
-  GE( glMultMatrixf (float_matrix) );
+  GE( glMultMatrixf (matrix) );
 }
 
 void
@@ -591,13 +549,6 @@ _cogl_disable_clip_planes (void)
   GE( glDisable (GL_CLIP_PLANE2) );
   GE( glDisable (GL_CLIP_PLANE1) );
   GE( glDisable (GL_CLIP_PLANE0) );
-}
-
-void
-cogl_alpha_func (COGLenum     func,
-		 float ref)
-{
-  GE( glAlphaFunc (func, (ref)) );
 }
 
 void
@@ -637,26 +588,27 @@ cogl_perspective (float fovy,
   d = (-(2 * zFar) * zNear) / (zFar - zNear);
 
 #define M(row,col)  m[col*4+row]
-  M(0,0) =  (x);
-  M(1,1) =  (y);
-  M(2,2) =  (c);
-  M(2,3) =  (d);
-  M(3,2) = -1.0F;
+  M(0,0) = x;
+  M(1,1) = y;
+  M(2,2) = c;
+  M(2,3) = d;
+  M(3,2) = -1.0;
 
   GE( glMultMatrixf (m) );
 
   GE( glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
+  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
 
 #define m ctx->inverse_projection
-  M(0, 0) = 1.0f /  (x);
-  M(1, 1) = 1.0f /  (y);
-  M(2, 3) = -1.0f;
-  M(3, 2) = 1.0f /  (d);
-  M(3, 3) =  (c) /  (d);
+  M(0, 0) = (1.0 / x);
+  M(1, 1) = (1.0 / y);
+  M(2, 3) = -1.0;
+  M(3, 2) = (1.0 / d);
+  M(3, 3) = (c / d);
 #undef m
+
 #undef M
 }
 
@@ -668,7 +620,7 @@ cogl_frustum (float        left,
 	      float        z_near,
 	      float        z_far)
 {
-  GLfloat c, d;
+  float c, d;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -685,24 +637,18 @@ cogl_frustum (float        left,
   GE( glMatrixMode (GL_MODELVIEW) );
 
   /* Calculate and store the inverse of the matrix */
-  memset (ctx->inverse_projection, 0, sizeof (GLfloat) * 16);
+  memset (ctx->inverse_projection, 0, sizeof (float) * 16);
 
-  c = - (z_far + z_near)
-    /  (z_far - z_near);
-  d = - (2 * (z_far * z_near))
-    /  (z_far - z_near);
+  c = - (z_far + z_near) /  (z_far - z_near);
+  d = - (2 * (z_far * z_near)) /  (z_far - z_near);
 
 #define M(row,col)  ctx->inverse_projection[col*4+row]
-  M(0,0) =  (right - left)
-    /  (2 * z_near);
-  M(0,3) =  (right + left)
-    /  (2 * z_near);
-  M(1,1) =  (top - bottom)
-    /  (2 * z_near);
-  M(1,3) =  (top + bottom)
-    /  (2 * z_near);
-  M(2,3) = -1.0f;
-  M(3,2) = 1.0f / d;
+  M(0,0) =  (right - left) /  (2 * z_near);
+  M(0,3) =  (right + left) /  (2 * z_near);
+  M(1,1) =  (top - bottom) /  (2 * z_near);
+  M(1,3) =  (top + bottom) /  (2 * z_near);
+  M(2,3) = -1.0;
+  M(3,2) = 1.0 / d;
   M(3,3) = c / d;
 #undef M
 }
@@ -715,17 +661,21 @@ cogl_viewport (guint width,
 }
 
 void
-cogl_setup_viewport (guint        width,
-		     guint        height,
+cogl_setup_viewport (guint width,
+		     guint height,
 		     float fovy,
 		     float aspect,
 		     float z_near,
 		     float z_far)
 {
-  GLfloat z_camera;
-  GLfloat projection_matrix[16];
+  float z_camera;
+  float projection_matrix[16];
 
   GE( glViewport (0, 0, width, height) );
+
+  /* For Ortho projection.
+   * glOrthof (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
+  */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
 
@@ -774,9 +724,7 @@ cogl_setup_viewport (guint        width,
   GE( glLoadIdentity () );
 
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
-  GE( glScalef ( 1.0f / width,
- 	    -1.0f / height,
-		 1.0f / width) );
+  GE( glScalef (1.0f / width, -1.0f / height, 1.0f / width) );
   GE( glTranslatef (0.0f, -1.0 * height, 0.0f) );
 }
 
@@ -815,7 +763,7 @@ _cogl_features_init ()
   GLint             num_stencil_bits = 0;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  
+
   flags = COGL_FEATURE_TEXTURE_READ_PIXELS;
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
@@ -827,7 +775,7 @@ _cogl_features_init ()
 #endif
         flags |= COGL_FEATURE_TEXTURE_NPOT;
     }
-  
+
 #ifdef GL_YCBCR_MESA
   if (cogl_check_extension ("GL_MESA_ycbcr_texture", gl_extensions))
     {
@@ -842,47 +790,47 @@ _cogl_features_init ()
       ctx->pf_glCreateProgramObjectARB =
 	(COGL_PFNGLCREATEPROGRAMOBJECTARBPROC)
 	cogl_get_proc_address ("glCreateProgramObjectARB");
-      
+
       ctx->pf_glCreateShaderObjectARB =
 	(COGL_PFNGLCREATESHADEROBJECTARBPROC)
 	cogl_get_proc_address ("glCreateShaderObjectARB");
-      
+
       ctx->pf_glShaderSourceARB =
 	(COGL_PFNGLSHADERSOURCEARBPROC)
 	cogl_get_proc_address ("glShaderSourceARB");
-      
+
       ctx->pf_glCompileShaderARB =
 	(COGL_PFNGLCOMPILESHADERARBPROC)
 	cogl_get_proc_address ("glCompileShaderARB");
-      
+
       ctx->pf_glAttachObjectARB =
 	(COGL_PFNGLATTACHOBJECTARBPROC)
 	cogl_get_proc_address ("glAttachObjectARB");
-      
+
       ctx->pf_glLinkProgramARB =
 	(COGL_PFNGLLINKPROGRAMARBPROC)
 	cogl_get_proc_address ("glLinkProgramARB");
-      
+
       ctx->pf_glUseProgramObjectARB =
 	(COGL_PFNGLUSEPROGRAMOBJECTARBPROC)
 	cogl_get_proc_address ("glUseProgramObjectARB");
-      
+
       ctx->pf_glGetUniformLocationARB =
 	(COGL_PFNGLGETUNIFORMLOCATIONARBPROC)
 	cogl_get_proc_address ("glGetUniformLocationARB");
-      
+
       ctx->pf_glDeleteObjectARB =
 	(COGL_PFNGLDELETEOBJECTARBPROC)
 	cogl_get_proc_address ("glDeleteObjectARB");
-      
+
       ctx->pf_glGetInfoLogARB =
 	(COGL_PFNGLGETINFOLOGARBPROC)
 	cogl_get_proc_address ("glGetInfoLogARB");
-      
+
       ctx->pf_glGetObjectParameterivARB =
 	(COGL_PFNGLGETOBJECTPARAMETERIVARBPROC)
 	cogl_get_proc_address ("glGetObjectParameterivARB");
-      
+
       ctx->pf_glUniform1fARB =
 	(COGL_PFNGLUNIFORM1FARBPROC)
 	cogl_get_proc_address ("glUniform1fARB");
@@ -898,7 +846,7 @@ _cogl_features_init ()
       ctx->pf_glDisableVertexAttribArrayARB =
 	(COGL_PFNGLDISABLEVERTEXATTRIBARRAYARBPROC)
 	cogl_get_proc_address ("glDisableVertexAttribArrayARB");
-      
+
       ctx->pf_glUniform2fARB =
 	(COGL_PFNGLUNIFORM2FARBPROC)
 	cogl_get_proc_address ("glUniform2fARB");
@@ -962,7 +910,7 @@ _cogl_features_init ()
       ctx->pf_glUniformMatrix2fvARB =
 	(COGL_PFNGLUNIFORMMATRIX2FVARBPROC)
 	cogl_get_proc_address ("glUniformMatrix2fvARB");
- 
+
       ctx->pf_glUniformMatrix3fvARB =
 	(COGL_PFNGLUNIFORMMATRIX3FVARBPROC)
 	cogl_get_proc_address ("glUniformMatrix3fvARB");
@@ -1006,50 +954,50 @@ _cogl_features_init ()
 	  ctx->pf_glDisableVertexAttribArrayARB)
 	flags |= COGL_FEATURE_SHADERS_GLSL;
     }
-  
+
   if (cogl_check_extension ("GL_EXT_framebuffer_object", gl_extensions) ||
       cogl_check_extension ("GL_ARB_framebuffer_object", gl_extensions))
-    { 
+    {
       ctx->pf_glGenRenderbuffersEXT =
 	(COGL_PFNGLGENRENDERBUFFERSEXTPROC)
 	cogl_get_proc_address ("glGenRenderbuffersEXT");
-      
+
       ctx->pf_glDeleteRenderbuffersEXT =
 	(COGL_PFNGLDELETERENDERBUFFERSEXTPROC)
 	cogl_get_proc_address ("glDeleteRenderbuffersEXT");
-      
+
       ctx->pf_glBindRenderbufferEXT =
 	(COGL_PFNGLBINDRENDERBUFFEREXTPROC)
 	cogl_get_proc_address ("glBindRenderbufferEXT");
-      
+
       ctx->pf_glRenderbufferStorageEXT =
 	(COGL_PFNGLRENDERBUFFERSTORAGEEXTPROC)
 	cogl_get_proc_address ("glRenderbufferStorageEXT");
-      
+
       ctx->pf_glGenFramebuffersEXT =
 	(COGL_PFNGLGENFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glGenFramebuffersEXT");
-      
+
       ctx->pf_glBindFramebufferEXT =
 	(COGL_PFNGLBINDFRAMEBUFFEREXTPROC)
 	cogl_get_proc_address ("glBindFramebufferEXT");
-      
+
       ctx->pf_glFramebufferTexture2DEXT =
 	(COGL_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)
 	cogl_get_proc_address ("glFramebufferTexture2DEXT");
-      
+
       ctx->pf_glFramebufferRenderbufferEXT =
 	(COGL_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)
 	cogl_get_proc_address ("glFramebufferRenderbufferEXT");
-      
+
       ctx->pf_glCheckFramebufferStatusEXT =
 	(COGL_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)
 	cogl_get_proc_address ("glCheckFramebufferStatusEXT");
-      
+
       ctx->pf_glDeleteFramebuffersEXT =
 	(COGL_PFNGLDELETEFRAMEBUFFERSEXTPROC)
 	cogl_get_proc_address ("glDeleteFramebuffersEXT");
-      
+
       if (ctx->pf_glGenRenderbuffersEXT         &&
 	  ctx->pf_glBindRenderbufferEXT         &&
 	  ctx->pf_glRenderbufferStorageEXT      &&
@@ -1061,23 +1009,23 @@ _cogl_features_init ()
 	  ctx->pf_glDeleteFramebuffersEXT)
 	flags |= COGL_FEATURE_OFFSCREEN;
     }
-  
+
   if (cogl_check_extension ("GL_EXT_framebuffer_blit", gl_extensions))
     {
       ctx->pf_glBlitFramebufferEXT =
 	(COGL_PFNGLBLITFRAMEBUFFEREXTPROC)
 	cogl_get_proc_address ("glBlitFramebufferEXT");
-      
+
       if (ctx->pf_glBlitFramebufferEXT)
 	flags |= COGL_FEATURE_OFFSCREEN_BLIT;
     }
-  
+
   if (cogl_check_extension ("GL_EXT_framebuffer_multisample", gl_extensions))
     {
       ctx->pf_glRenderbufferStorageMultisampleEXT =
 	(COGL_PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC)
 	cogl_get_proc_address ("glRenderbufferStorageMultisampleEXT");
-      
+
       if (ctx->pf_glRenderbufferStorageMultisampleEXT)
 	flags |= COGL_FEATURE_OFFSCREEN_MULTISAMPLE;
     }
@@ -1140,10 +1088,10 @@ CoglFeatureFlags
 cogl_get_features ()
 {
   _COGL_GET_CONTEXT (ctx, 0);
-  
+
   if (!ctx->features_cached)
     _cogl_features_init ();
-  
+
   return ctx->feature_flags;
 }
 
@@ -1151,10 +1099,10 @@ gboolean
 cogl_features_available (CoglFeatureFlags features)
 {
   _COGL_GET_CONTEXT (ctx, 0);
-  
+
   if (!ctx->features_cached)
     _cogl_features_init ();
-  
+
   return (ctx->feature_flags & features) == features;
 }
 
@@ -1205,8 +1153,8 @@ cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 void
 cogl_fog_set (const CoglColor *fog_color,
               float        density,
-              float        start,
-              float        stop)
+              float        z_near,
+              float        z_far)
 {
   GLfloat fogColor[4];
 
@@ -1222,8 +1170,8 @@ cogl_fog_set (const CoglColor *fog_color,
   glFogi (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
-  glFogf (GL_FOG_DENSITY,  (density));
-  glFogf (GL_FOG_START,  (start));
-  glFogf (GL_FOG_END,  (stop));
+  glFogf (GL_FOG_DENSITY, (GLfloat) density);
+  glFogf (GL_FOG_START, (GLfloat) z_near);
+  glFogf (GL_FOG_END, (GLfloat) z_far);
 }
 

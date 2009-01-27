@@ -1,34 +1,41 @@
-/*** cogl_fixed_vertex_shader_start ***/
+/*** cogl_fixed_vertex_shader_per_vertex_attribs ***/
 
 /* Per vertex attributes */
 attribute vec4     vertex_attrib;
-attribute vec4     tex_coord_attrib;
 attribute vec4     color_attrib;
+
+/*** cogl_fixed_vertex_shader_transform_matrices ***/
 
 /* Transformation matrices */
 uniform mat4       modelview_matrix;
 uniform mat4       mvp_matrix; /* combined modelview and projection matrix */
-uniform mat4       texture_matrix;
+
+/*** cogl_fixed_vertex_shader_output_variables ***/
 
 /* Outputs to the fragment shader */
 varying vec4       frag_color;
-varying vec2       tex_coord;
 varying float      fog_amount;
+
+/*** cogl_fixed_vertex_shader_fogging_options ***/
 
 /* Fogging options */
 uniform float      fog_density;
 uniform float      fog_start;
 uniform float      fog_end;
 
+/*** cogl_fixed_vertex_shader_main_start ***/
+
 void
 main (void)
 {
+  vec4 transformed_tex_coord;
+
   /* Calculate the transformed position */
   gl_Position = mvp_matrix * vertex_attrib;
 
   /* Calculate the transformed texture coordinate */
-  vec4 transformed_tex_coord = texture_matrix * tex_coord_attrib;
-  tex_coord = transformed_tex_coord.st / transformed_tex_coord.q;
+
+  /*** cogl_fixed_vertex_shader_frag_color_start ***/
 
   /* Pass the interpolated vertex color on to the fragment shader */
   frag_color = color_attrib;

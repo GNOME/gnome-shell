@@ -206,29 +206,29 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
              from a non-screen buffer */
 	  GE( glGetIntegerv (GL_VIEWPORT, ctx->viewport_store) );
 
-	  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
-	  GE( cogl_wrap_glPushMatrix () );
-	  GE( cogl_wrap_glLoadIdentity () );
+	  GE( glMatrixMode (GL_PROJECTION) );
+	  GE( glPushMatrix () );
+	  GE( glLoadIdentity () );
 
-	  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
-	  GE( cogl_wrap_glPushMatrix () );
-	  GE( cogl_wrap_glLoadIdentity () );
+	  GE( glMatrixMode (GL_MODELVIEW) );
+	  GE( glPushMatrix () );
+	  GE( glLoadIdentity () );
 	}
       else
 	{
 	  /* Override viewport and matrix setup if redirecting
              from another offscreen buffer */
-	  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
-	  GE( cogl_wrap_glLoadIdentity () );
+	  GE( glMatrixMode (GL_PROJECTION) );
+	  GE( glLoadIdentity () );
 
-	  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
-	  GE( cogl_wrap_glLoadIdentity () );
+	  GE( glMatrixMode (GL_MODELVIEW) );
+	  GE( glLoadIdentity () );
 	}
 
       /* Setup new viewport and matrices */
       GE( glViewport (0, 0, fbo->width, fbo->height) );
-      GE( cogl_wrap_glTranslatef (-1.0, -1.0, 0) );
-      GE( cogl_wrap_glScalef (((float)(2) /
+      GE( glTranslatef (-1.0, -1.0, 0) );
+      GE( glScalef (((float)(2) /
                                 (float)(fbo->width)),
 			      ((float)(2) /
                                 (float)(fbo->height)),
@@ -265,11 +265,11 @@ cogl_draw_buffer (CoglBufferTarget target, CoglHandle offscreen)
 	  GE( glViewport (ctx->viewport_store[0], ctx->viewport_store[1],
 			  ctx->viewport_store[2], ctx->viewport_store[3]) );
 
-	  GE( cogl_wrap_glMatrixMode (GL_PROJECTION) );
-	  GE( cogl_wrap_glPopMatrix () );
+	  GE( glMatrixMode (GL_PROJECTION) );
+	  GE( glPopMatrix () );
 
-	  GE( cogl_wrap_glMatrixMode (GL_MODELVIEW) );
-	  GE( cogl_wrap_glPopMatrix () );
+	  GE( glMatrixMode (GL_MODELVIEW) );
+	  GE( glPopMatrix () );
 	}
 
       /* Bind window framebuffer object */

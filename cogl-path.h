@@ -57,8 +57,7 @@ G_BEGIN_DECLS
  * @width: Width of the rectangle
  * @height: Height of the rectangle
  *
- * Fills a rectangle at the given coordinates with the current
- * drawing color in a highly optimizied fashion.
+ * Fills a rectangle at the given coordinates with the current source material
  **/
 void            cogl_rectangle                (float               x,
                                                float               y,

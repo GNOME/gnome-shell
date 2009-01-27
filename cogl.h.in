@@ -33,9 +33,12 @@
 #include <cogl/cogl-defines-@CLUTTER_COGL@.h>
 
 #include <cogl/cogl-vertex-buffer.h>
+#include <cogl/cogl-matrix.h>
+#include <cogl/cogl-vertex-buffer.h>
 #include <cogl/cogl-fixed.h>
 #include <cogl/cogl-color.h>
 #include <cogl/cogl-offscreen.h>
+#include <cogl/cogl-material.h>
 #include <cogl/cogl-path.h>
 #include <cogl/cogl-shader.h>
 #include <cogl/cogl-texture.h>
@@ -401,19 +404,6 @@ void            cogl_enable_depth_test        (gboolean            setting);
  * affected. Backface culling is disabled by default.
  */
 void            cogl_enable_backface_culling  (gboolean            setting);
-
-/**
- * cogl_alpha_func:
- * @func: the comparison function to use, one of CGL_NEVER, CGL_LESS,
- * CGL_EQUAL, CGL_LEQUAL, CGL_GREATER, CGL_NOTEQUAL, CGL_GEQUAL and GL_ALWAYS.
- * @ref: reference value.
- *
- * Changes the alpha test to use the specified function specified in @func,
- * comparing with the value in @ref. The default function is CGL_ALWAYS the
- * initial reference value is 1.0.
- */
-void            cogl_alpha_func               (COGLenum            func,
-                                               float        ref);
 
 /**
  * cogl_fog_set:
