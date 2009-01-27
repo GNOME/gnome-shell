@@ -490,6 +490,8 @@ clutter_texture_get_max_tile_waste
 clutter_texture_set_max_tile_waste
 clutter_texture_get_cogl_texture
 clutter_texture_set_cogl_texture
+clutter_texture_get_cogl_material
+clutter_texture_set_cogl_material
 
 <SUBSECTION Standard>
 CLUTTER_TEXTURE
@@ -499,12 +501,14 @@ CLUTTER_TEXTURE_CLASS
 CLUTTER_IS_TEXTURE_CLASS
 CLUTTER_TEXTURE_GET_CLASS
 CLUTTER_TYPE_TEXTURE_HANDLE
+CLUTTER_TYPE_MATERIAL_HANDLE
 
 <SUBSECTION Private>
 ClutterTexturePrivate
 clutter_texture_error_quark
 clutter_texture_get_type
 clutter_texture_handle_get_type
+clutter_material_handle_get_type
 </SECTION>
 
 <SECTION>

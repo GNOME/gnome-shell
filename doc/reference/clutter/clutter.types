@@ -5,7 +5,7 @@ clutter_group_get_type
 clutter_stage_get_type
 clutter_rectangle_get_type
 clutter_texture_get_type
-clutter_clone_texture_get_type
+clutter_clone_get_type
 clutter_timeline_get_type
 clutter_media_get_type
 clutter_behaviour_get_type
