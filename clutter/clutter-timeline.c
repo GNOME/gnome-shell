@@ -1679,6 +1679,11 @@ clutter_timeline_list_markers (ClutterTimeline *timeline,
  *
  * Advances @timeline to the frame of the given @marker_name.
  *
+ * <note><para>Like clutter_timeline_advance(), this function will not
+ * emit the #ClutterTimeline::new-frame for the frame where @marker_name
+ * is set, nor it will emit #ClutterTimeline::marker-reached for
+ * @marker_name.</para></note>
+ *
  * Since: 0.8
  */
 void
