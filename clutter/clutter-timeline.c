@@ -477,7 +477,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    * timeline is reached.
    */
   timeline_signals[NEW_FRAME] =
-    g_signal_new ("new-frame",
+    g_signal_new (I_("new-frame"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, new_frame),
@@ -493,7 +493,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    * number of frames specified by the ClutterTimeline:num-frames property.
    */
   timeline_signals[COMPLETED] =
-    g_signal_new ("completed",
+    g_signal_new (I_("completed"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, completed),
@@ -510,7 +510,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    * expired.
    */
   timeline_signals[STARTED] =
-    g_signal_new ("started",
+    g_signal_new (I_("started"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, started),
@@ -524,7 +524,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    * The ::paused signal is emitted when clutter_timeline_pause() is invoked.
    */
   timeline_signals[PAUSED] =
-    g_signal_new ("paused",
+    g_signal_new (I_("paused"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, paused),
@@ -563,7 +563,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
    * Since: 0.8
    */
   timeline_signals[MARKER_REACHED] =
-    g_signal_new ("marker-reached",
+    g_signal_new (I_("marker-reached"),
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE |
                   G_SIGNAL_DETAILED | G_SIGNAL_NO_HOOKS,
