@@ -111,7 +111,7 @@ struct _ClutterTimelinePrivate
   gint skipped_frames;
 
   GTimeVal prev_frame_timeval;
-  guint  msecs_delta;
+  guint msecs_delta;
 
   GHashTable *markers_by_frame;
   GHashTable *markers_by_name;
@@ -148,9 +148,9 @@ enum
   LAST_SIGNAL
 };
 
-static guint               timeline_signals[LAST_SIGNAL] = { 0 };
-static gint                timeline_use_pool = -1;
-static ClutterTimeoutPool *timeline_pool = NULL;
+static guint               timeline_signals[LAST_SIGNAL] = { 0, };
+static gint                timeline_use_pool             = -1;
+static ClutterTimeoutPool *timeline_pool                 = NULL;
 
 static inline void
 timeline_pool_init (void)
@@ -254,21 +254,27 @@ clutter_timeline_set_property (GObject      *object,
     case PROP_FPS:
       clutter_timeline_set_speed (timeline, g_value_get_uint (value));
       break;
+
     case PROP_NUM_FRAMES:
       clutter_timeline_set_n_frames (timeline, g_value_get_uint (value));
       break;
+
     case PROP_LOOP:
       priv->loop = g_value_get_boolean (value);
       break;
+
     case PROP_DELAY:
       priv->delay = g_value_get_uint (value);
       break;
+
     case PROP_DURATION:
       clutter_timeline_set_duration (timeline, g_value_get_uint (value));
       break;
+
     case PROP_DIRECTION:
       clutter_timeline_set_direction (timeline, g_value_get_enum (value));
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -292,21 +298,27 @@ clutter_timeline_get_property (GObject    *object,
     case PROP_FPS:
       g_value_set_uint (value, priv->fps);
       break;
+
     case PROP_NUM_FRAMES:
       g_value_set_uint (value, priv->n_frames);
       break;
+
     case PROP_LOOP:
       g_value_set_boolean (value, priv->loop);
       break;
+
     case PROP_DELAY:
       g_value_set_uint (value, priv->delay);
       break;
+
     case PROP_DURATION:
       g_value_set_uint (value, clutter_timeline_get_duration (timeline));
       break;
+
     case PROP_DIRECTION:
       g_value_set_enum (value, priv->direction);
       break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -796,10 +808,10 @@ timeline_timeout_func (gpointer data)
 
 static guint
 timeline_timeout_add (ClutterTimeline *timeline,
-                      guint          interval,
-                      GSourceFunc    func,
-                      gpointer       data,
-                      GDestroyNotify notify)
+                      guint            interval,
+                      GSourceFunc      func,
+                      gpointer         data,
+                      GDestroyNotify   notify)
 {
   ClutterTimelinePrivate *priv;
   GTimeVal timeval;
@@ -811,6 +823,7 @@ timeline_timeout_add (ClutterTimeline *timeline,
       g_get_current_time (&timeval);
       priv->prev_frame_timeval = timeval;
     }
+
   priv->skipped_frames   = 0;
   priv->msecs_delta      = 0;
 
