@@ -1089,8 +1089,9 @@ clutter_get_motion_events_enabled
 clutter_set_motion_events_frequency
 clutter_get_motion_events_frequency
 clutter_clear_glyph_cache
-clutter_set_use_mipmapped_text
-clutter_get_use_mipmapped_text
+ClutterFontFlags
+clutter_set_font_flags
+clutter_get_font_flags
 clutter_get_font_map
 
 <SUBSECTION>

@@ -55,4 +55,7 @@
 #define clutter_stage_get_resolution    clutter_backend_get_resolution
 #define clutter_stage_get_resolutionx   clutter_backend_get_resolution
 
+#define clutter_set_use_mipmapped_text               clutter_actor_set_use_mipmapped_text_REPLACED_BY_clutter_set_font_flags
+#define clutter_get_use_mipmapped_text               clutter_actor_get_use_mipmapped_text_REPLACED_BY_clutter_get_font_flags
+
 #endif /* CLUTTER_DEPRECATED_H */

@@ -453,6 +453,7 @@ update_pango_context (ClutterBackend *backend,
   /* get the configuration for the PangoContext from the backend */
   font_name = clutter_backend_get_font_name (backend);
   font_options = clutter_backend_get_font_options (backend);
+  font_options = cairo_font_options_copy (font_options);
   resolution = clutter_backend_get_resolution (backend);
 
   font_desc = pango_font_description_from_string (font_name);
@@ -460,8 +461,13 @@ update_pango_context (ClutterBackend *backend,
   if (resolution < 0)
     resolution = 96.0; /* fall back */
 
+  if (CLUTTER_CONTEXT ()->user_font_options)
+    cairo_font_options_merge (font_options,
+                              CLUTTER_CONTEXT ()->user_font_options);
+
   pango_context_set_font_description (context, font_desc);
   pango_cairo_context_set_font_options (context, font_options);
+  cairo_font_options_destroy (font_options);
   pango_cairo_context_set_resolution (context, resolution);
 
   pango_font_description_free (font_desc);
@@ -2591,45 +2597,92 @@ clutter_clear_glyph_cache (void)
 }
 
 /**
- * clutter_set_use_mipmapped_text:
- * @value: %TRUE to enable mipmapping or %FALSE to disable.
+ * clutter_set_font_flags:
+ * @flags: The new flags
  *
- * Sets whether subsequent text rendering operations will use
- * mipmapped textures or not. Using mipmapped textures will improve
- * the quality for scaled down text but will use more texture memory.
+ * Sets the font quality options for subsequent text rendering
+ * operations.
  *
- * Since: 0.8
+ * Using mipmapped textures will improve the quality for scaled down
+ * text but will use more texture memory.
+ *
+ * Enabling hinting improves text quality for static text but may
+ * introduce some artifacts if the text is animated. Changing the
+ * hinting flag will only effect newly created PangoLayouts. So
+ * #ClutterText actors will not show the change until a property which
+ * causes it to recreate the layout is also changed.
+ *
+ * Since: 1.0
  */
 void
-clutter_set_use_mipmapped_text (gboolean value)
+clutter_set_font_flags (ClutterFontFlags flags)
 {
+  ClutterFontFlags old_flags, changed_flags;
+
   if (CLUTTER_CONTEXT ()->font_map)
     cogl_pango_font_map_set_use_mipmapping (CLUTTER_CONTEXT ()->font_map,
-					    value);
+					    (flags
+                                             & CLUTTER_FONT_MIPMAPPING) != 0);
+
+  old_flags = clutter_get_font_flags ();
+
+  if (CLUTTER_CONTEXT ()->user_font_options == NULL)
+    CLUTTER_CONTEXT ()->user_font_options = cairo_font_options_create ();
+
+  /* Only set the font options that have actually changed so we don't
+     override a detailed setting from the backend */
+  changed_flags = old_flags ^ flags;
+
+  if ((changed_flags & CLUTTER_FONT_HINTING))
+    cairo_font_options_set_hint_style (CLUTTER_CONTEXT ()->user_font_options,
+                                       (flags & CLUTTER_FONT_HINTING)
+                                       ? CAIRO_HINT_STYLE_FULL
+                                       : CAIRO_HINT_STYLE_NONE);
+
+  if (CLUTTER_CONTEXT ()->pango_context)
+    update_pango_context (CLUTTER_CONTEXT ()->backend,
+                          CLUTTER_CONTEXT ()->pango_context);
 }
 
 /**
- * clutter_get_use_mipmapped_text:
+ * clutter_get_font_flags:
  *
- * Gets whether mipmapped textures are used in text operations.
- * See clutter_set_use_mipmapped_text().
+ * Gets the current font flags for rendering text. See
+ * clutter_set_font_flags().
  *
- * Return value: %TRUE if text operations should use mipmapped
- *   textures
+ * Return value: The font flags
  *
- * Since: 0.8
+ * Since: 1.0
  */
-gboolean
-clutter_get_use_mipmapped_text (void)
+ClutterFontFlags
+clutter_get_font_flags (void)
 {
+  ClutterMainContext *ctxt = CLUTTER_CONTEXT ();
   CoglPangoFontMap *font_map = NULL;
+  cairo_font_options_t *font_options;
+  ClutterFontFlags flags = 0;
 
   font_map = CLUTTER_CONTEXT ()->font_map;
 
-  if (G_LIKELY (font_map))
-    return cogl_pango_font_map_get_use_mipmapping (font_map);
+  if (G_LIKELY (font_map)
+      && cogl_pango_font_map_get_use_mipmapping (font_map))
+    flags |= CLUTTER_FONT_MIPMAPPING;
 
-  return FALSE;
+  font_options = clutter_backend_get_font_options (ctxt->backend);
+  font_options = cairo_font_options_copy (font_options);
+
+  if (ctxt->user_font_options)
+    cairo_font_options_merge (font_options, ctxt->user_font_options);
+
+  if ((cairo_font_options_get_hint_style (font_options)
+       != CAIRO_HINT_STYLE_DEFAULT)
+      && (cairo_font_options_get_hint_style (font_options)
+          != CAIRO_HINT_STYLE_NONE))
+    flags |= CLUTTER_FONT_HINTING;
+
+  cairo_font_options_destroy (font_options);
+
+  return flags;
 }
 
 /**

@@ -129,6 +129,9 @@ struct _ClutterMainContext
   PangoContext     *pango_context;      /* Global Pango context */
   CoglPangoFontMap *font_map;           /* Global font map */
 
+  /* Font options set by clutter_set_font_flags */
+  cairo_font_options_t *user_font_options;
+
   GSList              *input_devices;   /* For extra input devices, i.e
                                            MultiTouch */
 };

@@ -313,6 +313,22 @@ typedef enum {
   CLUTTER_ANIMATION_LAST
 } ClutterAnimationMode;
 
+/**
+ * ClutterFontFlags:
+ * @CLUTTER_FONT_MIPMAPPING: Set to use mipmaps for the glyph cache textures.
+ * @CLUTTER_FONT_HINTING: Set to enable hinting on the glyphs.
+ *
+ * Runtime flags to change the font quality. To be used with
+ * clutter_set_font_flags().
+ *
+ * Since: 1.0
+ */
+typedef enum
+{
+  CLUTTER_FONT_MIPMAPPING = (1 << 0),
+  CLUTTER_FONT_HINTING    = (1 << 1),
+} ClutterFontFlags;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TYPES_H__ */
