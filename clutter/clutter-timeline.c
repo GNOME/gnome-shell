@@ -40,33 +40,34 @@
  * your application.
  *
  * One way to visualise a timeline is as a path with marks along its length.
- * When creating a timeline of @n_frames via clutter_timeline_new(), then the
- * number of frames can be seen as the paths length, and each unit of length
- * (each frame) is delimited by a mark.
+ * When creating a timeline of N frames via clutter_timeline_new(), then the
+ * number of frames can be seen as the paths length, and each unit of
+ * length (each frame) is delimited by a mark.
  *
- * For a non looping timeline there will be (n_frames + 1) marks along its
+ * For a non looping timeline there will be (N frames + 1) marks along its
  * length. For a looping timeline, the two ends are joined with one mark.
  * Technically this mark represents two discrete frame numbers, but for a
  * looping timeline the start and end frame numbers are considered equivalent.
  *
- * When you create a timeline it starts with
- * clutter_timeline_get_current_frame() == 0.
+ * When you create a timeline it will be initialized so that the current
+ * frame, as returned by clutter_timeline_get_current_frame(), will be 0.
  *
- * After starting a timeline, the first timeout is for current_frame_num == 1
- * (Notably it isn't 0 since there is a delay before the first timeout signals
- * so re-asserting the starting frame (0) wouldn't make sense.)
- * Notably, this implies that actors you intend to be affected by the
- * timeline's progress, should be manually primed/positioned for frame 0 which
- * will be displayed before the first timeout. (If you are not careful about
+ * After starting a timeline, the first timeout is for frame number
+ * one (notably it isn't zero since there is a delay before the first
+ * #ClutterTimeline::new-frame signal, so re-asserting the frame number
+ * zero wouldn't make sense).
+ *
+ * This implies that actors you intend to be affected by the timeline's
+ * progress should be manually primed or positioned for frame zero which
+ * will be displayed before the first timeout (if you are not careful about
  * this point you will likely see flashes of incorrect actor state in your
- * program)
+ * program).
  *
- * For a non looping timeline the last timeout would be for
- * current_frame_num == @n_frames
+ * For a non looping timeline the last timeout would be for the number
+ * of frames in the timeline, as returned by clutter_timeline_get_n_frames().
  *
- * For a looping timeline the timeout for current_frame_num == @n_frames would
- * be followed by a timeout for current_frame_num == 1 (remember frame 0 is
- * considered == frame (@n_frames)).
+ * For a looping timeline the timeout for the last frame would be followed
+ * by a timeout for frame number 1.
  *
  * There may be times when a system is not able to meet the frame rate
  * requested for a timeline, and in this case the frame number will be
@@ -74,9 +75,8 @@
  * the time that the timeline was started, not from the time of the last
  * timeout, so a given timeline should basically elapse in the same - real
  * world - time on any given system. An invariable here though is that
- * current_frame_num == @n_frames will always be signaled, but notably frame 1
- * can be interpolated past and so never signaled.
- *
+ * the last frame will always be signaled, but notably frame number 1 can
+ * be interpolated past and thus never signaled.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -586,6 +586,7 @@ emit_frame_signal (ClutterTimeline *timeline)
   g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
                  priv->current_frame_num);
 
+  /* shortcircuit here if we don't have any marker installed */
   if (priv->markers_by_name == NULL ||
       priv->markers_by_frame == NULL)
     return;
@@ -739,7 +740,7 @@ timeline_timeout_func (gpointer data)
           /* We remove the timeout now, so that the completed signal handler
            * may choose to re-start the timeline
            *
-           * ** Perhaps we should remove this earlier, and regardless
+           * XXX Perhaps we should remove this earlier, and regardless
            * of priv->loop. Are we limiting the things that could be done in
            * the above new-frame signal handler */
           timeout_remove (priv->timeout_id);
@@ -960,9 +961,9 @@ clutter_timeline_get_loop (ClutterTimeline *timeline)
  * @timeline: A #ClutterTimeline
  *
  * Rewinds #ClutterTimeline to the first frame if its direction is
- * CLUTTER_TIMELINE_FORWARD and the last frame if it is
- * CLUTTER_TIMELINE_BACKWARD.
- **/
+ * %CLUTTER_TIMELINE_FORWARD and the last frame if it is
+ * %CLUTTER_TIMELINE_BACKWARD.
+ */
 void
 clutter_timeline_rewind (ClutterTimeline *timeline)
 {
@@ -983,8 +984,8 @@ clutter_timeline_rewind (ClutterTimeline *timeline)
  * @timeline: A #ClutterTimeline
  * @n_frames: Number of frames to skip
  *
- * Advance timeline by requested number of frames.
- **/
+ * Advance timeline by the requested number of frames.
+ */
 void
 clutter_timeline_skip (ClutterTimeline *timeline,
                        guint            n_frames)
@@ -1016,8 +1017,8 @@ clutter_timeline_skip (ClutterTimeline *timeline,
  * @timeline: A #ClutterTimeline
  * @frame_num: Frame number to advance to
  *
- * Advance timeline to requested frame number
- **/
+ * Advance timeline to the requested frame number
+ */
 void
 clutter_timeline_advance (ClutterTimeline *timeline,
                           guint            frame_num)
@@ -1037,8 +1038,8 @@ clutter_timeline_advance (ClutterTimeline *timeline,
  *
  * Request the current frame number of the timeline.
  *
- * Return Value: current frame number
- **/
+ * Return value: current frame number
+ */
 gint
 clutter_timeline_get_current_frame (ClutterTimeline *timeline)
 {
@@ -1053,8 +1054,8 @@ clutter_timeline_get_current_frame (ClutterTimeline *timeline)
  *
  * Request the total number of frames for the #ClutterTimeline.
  *
- * Return Value: Number of frames for this #ClutterTimeline.
- **/
+ * Return value: the number of frames
+ */
 guint
 clutter_timeline_get_n_frames (ClutterTimeline *timeline)
 {
@@ -1103,7 +1104,7 @@ clutter_timeline_set_n_frames (ClutterTimeline *timeline,
  * @fps: New speed of timeline as frames per second,
  *    between 1 and 1000
  *
- * Set the speed in frames per second of the timeline.
+ * Sets the speed of @timeline in frames per second.
  */
 void
 clutter_timeline_set_speed (ClutterTimeline *timeline,
@@ -1164,9 +1165,9 @@ clutter_timeline_get_speed (ClutterTimeline *timeline)
  * clutter_timeline_is_playing:
  * @timeline: A #ClutterTimeline
  *
- * Query state of a #ClutterTimeline instance.
+ * Queries state of a #ClutterTimeline.
  *
- * Return Value: TRUE if timeline is currently playing, FALSE if not.
+ * Return value: %TRUE if timeline is currently playing
  */
 gboolean
 clutter_timeline_is_playing (ClutterTimeline *timeline)
@@ -1341,6 +1342,7 @@ clutter_timeline_set_duration (ClutterTimeline *timeline,
   if (n_frames < 1)
     n_frames = 1;
 
+  /* this will notify :duration as well */
   clutter_timeline_set_n_frames (timeline, n_frames);
 }
 
@@ -1488,6 +1490,7 @@ clutter_timeline_add_marker_internal (ClutterTimeline *timeline,
   TimelineMarker *marker;
   GSList *markers;
 
+  /* create the hash tables that will hold the markers */
   if (G_UNLIKELY (priv->markers_by_name == NULL ||
                   priv->markers_by_frame == NULL))
     {
