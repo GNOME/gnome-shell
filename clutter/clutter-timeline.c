@@ -1036,7 +1036,12 @@ clutter_timeline_skip (ClutterTimeline *timeline,
  * @timeline: A #ClutterTimeline
  * @frame_num: Frame number to advance to
  *
- * Advance timeline to the requested frame number
+ * Advance timeline to the requested frame number.
+ *
+ * <note><para>The @timeline will not emit the #ClutterTimeline::new-frame
+ * signal for @frame_num. The first ::new-frame signal after the call to
+ * clutter_timeline_advance() will be emitted for a frame following
+ * @frame_num.</para></note>
  */
 void
 clutter_timeline_advance (ClutterTimeline *timeline,
