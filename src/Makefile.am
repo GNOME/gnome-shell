@@ -36,6 +36,8 @@ libgnome_shell_la_SOURCES =			\
 	gnome-shell-plugin.c			\
 	shell-app-monitor.c			\
 	shell-app-monitor.h			\
+	shell-gtkwindow-actor.c			\
+	shell-gtkwindow-actor.h			\
 	shell-process.c				\
 	shell-process.h				\
 	shell-global.c				\
@@ -44,6 +46,11 @@ libgnome_shell_la_SOURCES =			\
 	shell-tray-manager.h			\
 	shell-wm.c				\
 	shell-wm.h
+
+# ClutterGLXTexturePixmap is currently not wrapped
+non_gir_sources = shell-gtkwindow-actor.h
+libgnome_shell_la_gir_sources = \
+	$(filter-out $(non_gir_sources), $(libgnome_shell_la_SOURCES))
 
 shell-marshal.h: stamp-shell-marshal.h
 	@true
@@ -86,7 +93,7 @@ Shell-0.1.gir: $(metacity) $(G_IR_SCANNER) libgnome-shell.la Makefile
 		--include=Meta-2.25			\
 		--program=metacity			\
 	        --program-arg=--mutter-plugins=$$(pwd)/libgnome-shell.la \
-		$(libgnome_shell_la_SOURCES)		\
+		$(libgnome_shell_la_gir_sources)	\
 		$(libgnome_shell_la_CPPFLAGS)		\
 		-o $@
 CLEANFILES += Shell-1.0.gir

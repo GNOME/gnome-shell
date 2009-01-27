@@ -1,12 +1,13 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 #include <clutter/clutter.h>
-#include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gtk/gtk.h>
 
 #include "shell-tray-manager.h"
 #include "na-tray-manager.h"
+
+#include "shell-gtkwindow-actor.h"
 
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
@@ -204,30 +205,6 @@ shell_tray_manager_manage_stage (ShellTrayManager *manager,
                                  gdk_drawable_get_screen (GDK_DRAWABLE (manager->priv->stage_window)));
 }
 
-static void
-actor_moved (GObject *object, GParamSpec *param, gpointer user_data)
-{
-  ShellTrayManagerChild *child = user_data;
-  ClutterActor *actor = child->actor;
-  int wx = 0, wy = 0, x, y, ax, ay;
-
-  /* Find the actor's new coordinates in terms of the stage (which is
-   * child->window's parent window.
-   */
-  while (actor)
-    {
-      clutter_actor_get_position (actor, &x, &y);
-      clutter_actor_get_anchor_point (actor, &ax, &ay);
-
-      wx += x - ax;
-      wy += y - ay;
-
-      actor = clutter_actor_get_parent (actor);
-    }
-
-  gtk_window_move (GTK_WINDOW (child->window), wx, wy);
-}
-
 static GdkPixmap *
 create_bg_pixmap (GdkColormap  *colormap,
                   ClutterColor *color)
@@ -291,15 +268,9 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   gdk_window_reparent (win->window, manager->priv->stage_window, 0, 0);
   gtk_widget_show_all (win);
 
-  icon = clutter_glx_texture_pixmap_new ();
-  /* Here automatic=FALSE  means to use CompositeRedirectManual - that is,
-   * the X server shouldn't draw the window onto the screen */
-  clutter_x11_texture_pixmap_set_window (CLUTTER_X11_TEXTURE_PIXMAP (icon),
-                                         GDK_WINDOW_XWINDOW (win->window),
-                                         FALSE);
-  /* Here automatic has a different meaning - whether ClutterX11TexturePixmap
-   * should process damage update and refresh the pixmap itself */
-  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (icon), TRUE);
+  icon = shell_gtk_window_actor_new (win);
+
+  /* Move to ShellGtkWindowActor? FIXME */
   clutter_actor_set_size (icon, 24, 24);
 
   child = g_slice_new (ShellTrayManagerChild);
@@ -307,11 +278,6 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
   child->socket = socket;
   child->actor = g_object_ref (icon);
   g_hash_table_insert (manager->priv->icons, socket, child);
-
-  g_signal_connect (child->actor, "notify::x",
-                    G_CALLBACK (actor_moved), child);
-  g_signal_connect (child->actor, "notify::y",
-                    G_CALLBACK (actor_moved), child);
 
   g_signal_emit (manager,
                  shell_tray_manager_signals[TRAY_ICON_ADDED], 0,
