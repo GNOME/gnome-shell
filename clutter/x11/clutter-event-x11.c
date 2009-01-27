@@ -864,6 +864,7 @@ clutter_x11_handle_event (XEvent *xevent)
   ClutterEvent        *event;
   ClutterMainContext  *clutter_context;
   ClutterX11FilterReturn result;
+  gint                 spin = 1;
 
   /* The return values here are someone approximate; we return
    * CLUTTER_X11_FILTER_REMOVE if and only if a clutter event is
@@ -895,13 +896,21 @@ clutter_x11_handle_event (XEvent *xevent)
       goto out;
     }
 
-  event = clutter_event_get ();
+  /*
+   * Motion events can generate synthetic enter and leave events, so if we
+   * are processing a motion event, we need to spin the event loop at least
+   * two extra times to pump the enter/leave events through (otherwise they
+   * just get pushed down the queue and never processed).
+   */
+  if (event->type == CLUTTER_MOTION)
+    spin += 2;
 
-  if (event)
+  while (spin > 0 && (event = clutter_event_get ()))
     {
       /* forward the event into clutter for emission etc. */
       clutter_do_event (event);
       clutter_event_free (event);
+      --spin;
     }
 
  out:
