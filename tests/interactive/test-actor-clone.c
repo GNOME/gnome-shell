@@ -60,7 +60,7 @@ input_cb (ClutterActor *stage,
       e = clutter_stage_get_actor_at_pos (CLUTTER_STAGE (stage), x, y);
 
       /* only allow hiding the clones */
-      if (e && (CLUTTER_IS_TEXTURE (e) || CLUTTER_IS_CLONE (e)))
+      if (e && CLUTTER_IS_CLONE (e))
         {
 	  clutter_actor_hide (e);
           return TRUE;
@@ -84,6 +84,8 @@ input_cb (ClutterActor *stage,
 
           for (i = 0; i < n_hands; i++)
             clutter_actor_show (oh->hand[i]);
+
+          clutter_actor_show (oh->real_hand);
 
           return TRUE;
         }
@@ -113,6 +115,10 @@ frame_cb (ClutterTimeline *timeline,
 
   for (i = 0; i < n_hands; i++)
     {
+      gdouble scale_x, scale_y;
+
+      clutter_actor_get_scale (oh->hand[i], &scale_x, &scale_y);
+
       /* Rotate each hand around there centers - to get this we need
        * to take into account any scaling.
        */
@@ -134,15 +140,16 @@ my_sine_wave (ClutterAlpha *alpha,
 }
 
 G_MODULE_EXPORT int
-test_actors_main (int argc, char *argv[])
+test_actor_clone_main (int argc, char *argv[])
 {
-  ClutterAlpha *alpha;
-  ClutterActor *stage;
-  ClutterColor  stage_color = { 0x61, 0x64, 0x8c, 0xff };
-  SuperOH      *oh;
-  gint          i;
-  GError       *error;
-  ClutterActor *real_hand;
+  ClutterAlpha     *alpha;
+  ClutterActor    *stage;
+  ClutterColor     stage_color = { 0x61, 0x64, 0x8c, 0xff };
+  SuperOH         *oh;
+  gint             i;
+  GError          *error;
+  ClutterActor    *real_hand, *tmp;
+  ClutterColor     clr = { 0xff, 0xff, 0x00, 0xff };
 
   error = NULL;
 
@@ -167,7 +174,6 @@ test_actors_main (int argc, char *argv[])
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
   oh = g_new (SuperOH, 1);
-  oh->stage = stage;
 
   /* Create a timeline to manage animation */
   oh->timeline = clutter_timeline_new (360, 60);
@@ -182,12 +188,30 @@ test_actors_main (int argc, char *argv[])
   oh->scaler_1 = clutter_behaviour_scale_new (alpha, 0.5, 0.5, 1.0, 1.0);
   oh->scaler_2 = clutter_behaviour_scale_new (alpha, 1.0, 1.0, 0.5, 0.5);
 
-  real_hand = clutter_texture_new_from_file ("redhand.png", &error);
-  if (real_hand == NULL)
+  tmp = clutter_texture_new_from_file ("redhand.png", &error);
+  if (tmp == NULL)
     {
       g_error ("image load failed: %s", error->message);
       return EXIT_FAILURE;
     }
+
+  clutter_actor_set_size (tmp, 300, 500);
+
+  real_hand = clutter_group_new ();
+  clutter_container_add_actor (CLUTTER_CONTAINER (real_hand), tmp);
+  tmp = clutter_rectangle_new_with_color (&clr);
+  clutter_actor_set_size (tmp, 100, 100);
+  clutter_container_add_actor (CLUTTER_CONTAINER (real_hand), tmp);
+  clutter_actor_set_scale (real_hand, 0.5, 0.5);
+  oh->real_hand = real_hand;
+
+  /* Now stick the group we want to clone into another group with a custom
+   * opacity to verify that the clones don't traverse this parent when
+   * calculating their opacity. */
+  tmp = clutter_group_new ();
+  clutter_actor_set_opacity (tmp, 0x80);
+  clutter_container_add_actor (CLUTTER_CONTAINER (tmp), real_hand);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), tmp);
 
   /* create a new group to hold multiple actors in a group */
   oh->group = clutter_group_new();
@@ -203,16 +227,13 @@ test_actors_main (int argc, char *argv[])
     {
       gint x, y, w, h;
 
-      if (i == 0)
-        oh->hand[i] = real_hand;
-      else
-        oh->hand[i] = clutter_clone_new (real_hand);
-
+      /* Create a texture from file, then clone in to same resources */
+      oh->hand[i] = clutter_clone_new (real_hand);
       clutter_actor_set_size (oh->hand[i], 200, 213);
 
       /* Place around a circle */
-      w = clutter_actor_get_width (oh->hand[i]);
-      h = clutter_actor_get_height (oh->hand[i]);
+      w = clutter_actor_get_width (oh->hand[0]);
+      h = clutter_actor_get_height (oh->hand[0]);
 
       x = oh->stage_width / 2
 	+ oh->radius

@@ -5,6 +5,7 @@ UNIT_TESTS = \
 	test-offscreen.c \
 	test-scale.c \
         test-actors.c \
+        test-actor-clone.c \
 	test-behave.c \
 	test-project.c \
 	test-perspective.c \

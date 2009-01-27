@@ -149,7 +149,7 @@ test_fbo_main (gint argc, gchar *argv[])
 				  1.0f / clutter_util_next_p2 (fbo_height));
 
   /* Third from cloning the fbo texture */
-  clone = clutter_clone_texture_new (CLUTTER_TEXTURE(fbo));
+  clone = clutter_clone_new (fbo);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), clone);
   clutter_actor_set_position (clone, padx*2, 0);
 

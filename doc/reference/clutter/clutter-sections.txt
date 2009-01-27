@@ -130,23 +130,23 @@ clutter_alpha_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-clone-texture</FILE>
-<TITLE>ClutterCloneTexture</TITLE>
-ClutterCloneTexture
-ClutterCloneTextureClass
-clutter_clone_texture_new
-clutter_clone_texture_get_parent_texture
-clutter_clone_texture_set_parent_texture
+<FILE>clutter-clone</FILE>
+<TITLE>ClutterClone</TITLE>
+ClutterClone
+ClutterCloneClass
+clutter_clone_new
+clutter_clone_set_source
+clutter_clone_get_source
 <SUBSECTION Standard>
-CLUTTER_CLONE_TEXTURE
-CLUTTER_IS_CLONE_TEXTURE
-CLUTTER_TYPE_CLONE_TEXTURE
-CLUTTER_CLONE_TEXTURE_CLASS
-CLUTTER_IS_CLONE_TEXTURE_CLASS
-CLUTTER_CLONE_TEXTURE_GET_CLASS
+CLUTTER_CLONE
+CLUTTER_IS_CLONE
+CLUTTER_TYPE_CLONE
+CLUTTER_CLONE_CLASS
+CLUTTER_IS_CLONE_CLASS
+CLUTTER_CLONE_GET_CLASS
 <SUBSECTION Private>
-ClutterCloneTexturePrivate
-clutter_clone_texture_get_type
+ClutterClonePrivate
+clutter_clone_get_type
 </SECTION>
 
 <SECTION>

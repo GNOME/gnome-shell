@@ -43,7 +43,7 @@
 #include "clutter-binding-pool.h"
 #include "clutter-cairo-texture.h"
 #include "clutter-child-meta.h"
-#include "clutter-clone-texture.h"
+#include "clutter-clone.h"
 #include "clutter-color.h"
 #include "clutter-container.h"
 #include "clutter-deprecated.h"

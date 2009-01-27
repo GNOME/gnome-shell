@@ -61,7 +61,7 @@ source_h =					\
 	$(srcdir)/clutter-binding-pool.h 	\
 	$(srcdir)/clutter-cairo-texture.h	\
 	$(srcdir)/clutter-child-meta.h		\
-	$(srcdir)/clutter-clone-texture.h 	\
+	$(srcdir)/clutter-clone.h		\
 	$(srcdir)/clutter-color.h		\
         $(srcdir)/clutter-container.h		\
         $(srcdir)/clutter-deprecated.h		\
@@ -152,7 +152,7 @@ source_c = \
 	clutter-binding-pool.c	        \
 	clutter-cairo-texture.c         \
 	clutter-child-meta.c		\
-	clutter-clone-texture.c 	\
+        clutter-clone.c			\
 	clutter-color.c 		\
 	clutter-container.c		\
 	clutter-enum-types.c		\

@@ -625,8 +625,7 @@ decrease_property_value (ClutterActor *actor,
 static ClutterActor *
 create_item (void)
 {
-  ClutterActor *clone = 
-    clutter_clone_texture_new (CLUTTER_TEXTURE (icon));
+  ClutterActor *clone = clutter_clone_new (icon);
   
   gint32 size = g_random_int_range (MIN_SIZE, MAX_SIZE);
   
