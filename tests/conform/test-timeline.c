@@ -184,7 +184,6 @@ test_timeline (TestConformSimpleFixture *fixture,
   TimelineData data_3;
   gchar **markers;
   gsize n_markers;
-  gboolean pass = TRUE;
   guint delay_tag;
 
   timeline_data_init (&data_1, 1);
