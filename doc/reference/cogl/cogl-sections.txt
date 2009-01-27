@@ -37,7 +37,6 @@ cogl_clip_ensure
 <SUBSECTION>
 cogl_enable_depth_test
 cogl_enable_backface_culling
-cogl_alpha_func
 cogl_fog_set
 </SECTION>
 
@@ -89,10 +88,15 @@ cogl_path_stroke_preserve
 cogl_set_source_color
 cogl_set_source_color4ub
 cogl_set_source_color4f
+cogl_set_source_texture
 cogl_color
 
 <SUBSECTION>
 cogl_rectangle
+cogl_polygon
+cogl_rectangle_with_multitexture_coords
+cogl_rectangle_with_texture_coords
+cogl_rectangles_with_texture_coords
 </SECTION>
 
 <SECTION>
@@ -122,11 +126,6 @@ cogl_texture_get_gl_texture
 cogl_texture_get_data
 cogl_texture_set_filters
 cogl_texture_set_region
-
-<SUBSECTION>
-cogl_texture_rectangle
-cogl_texture_multiple_rectangles
-cogl_texture_polygon
 
 <SUBSECTION>
 CoglBitmap
@@ -324,20 +323,31 @@ cogl_matrix_scale
 <SECTION>
 <FILE>cogl-material</FILE>
 <TITLE>Materials</TITLE>
+CoglMaterial
+CoglMaterialFlags
 cogl_material_new
 cogl_material_ref
 cogl_material_unref
-cogl_material_set_diffuse
 cogl_material_set_ambient
+cogl_material_get_ambient
 cogl_material_set_ambient_and_diffuse
-cogl_material_set_specular
-cogl_material_set_shininess
+cogl_material_set_color
+cogl_material_set_color4ub
+cogl_material_get_color
+cogl_material_set_diffuse
+cogl_material_get_diffuse
 cogl_material_set_emission
+cogl_material_get_emission
+cogl_material_set_specular
+cogl_material_get_specular
+cogl_material_set_shininess
+cogl_material_get_shininess
 cogl_set_source
 CoglMaterialAlphaFunc
 cogl_material_set_alpha_test_function
 CoglMaterialBlendFactor
 cogl_material_set_blend_factors
+CoglMaterialLayer
 cogl_material_set_layer
 cogl_material_remove_layer
 CoglMaterialLayerCombineFunc
@@ -348,14 +358,23 @@ cogl_material_set_layer_combine_arg_src
 CoglMaterialLayerCombineOp
 cogl_material_set_layer_combine_arg_op
 cogl_material_set_layer_matrix
+cogl_material_set_layer_alpha_combine
+cogl_material_set_layer_rgb_combine
 cogl_material_get_cogl_enable_flags
+CoglMaterialFlushOption
 cogl_material_flush_gl_material_state
 cogl_material_flush_gl_alpha_func
 cogl_material_flush_gl_blend_func
+cogl_material_flush_gl_state
 cogl_material_get_layers
 CoglMaterialLayerType
 cogl_material_layer_get_type
+CoglMaterialLayerFlags
+cogl_material_layer_get_flags
 cogl_material_layer_get_texture
 cogl_material_layer_flush_gl_sampler_state
+
+<SUBSECTION Private>
+CoglMaterialLayerPrivFlags
 </SECTION>
 
