@@ -49,23 +49,6 @@ void cogl_color_set_from_4ub (CoglColor *dest,
                               guint8 green,
                               guint8 blue,
                               guint8 alpha);
-/**
- * cogl_color_set_from_4d:
- * @dest: return location for a #CoglColor
- * @red: value of the red channel, between 0 and 1
- * @green: value of the green channel, between 0 and 1
- * @blue: value of the blue channel, between 0 and 1
- * @alpha: value of the alpha channel, between 0 and 1
- *
- * Sets the values of the passed channels into a #CoglColor.
- *
- * Since: 1.0
- */
-void cogl_color_set_from_4d  (CoglColor *dest,
-                              gdouble red,
-                              gdouble green,
-                              gdouble blue,
-                              gdouble alpha);
 
 /**
  * cogl_color_set_from_4f:

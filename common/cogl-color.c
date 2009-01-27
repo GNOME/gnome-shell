@@ -43,21 +43,6 @@ cogl_color_set_from_4ub (CoglColor *dest,
 }
 
 void
-cogl_color_set_from_4d (CoglColor *dest,
-                        gdouble    red,
-                        gdouble    green,
-                        gdouble    blue,
-                        gdouble    alpha)
-{
-  g_return_if_fail (dest != NULL);
-
-  dest->red   = 255 * red;
-  dest->green = 255 * green;
-  dest->blue  = 255 * blue;
-  dest->alpha = 255 * alpha;
-}
-
-void
 cogl_color_set_from_4f (CoglColor *dest,
                         float  red,
                         float  green,
