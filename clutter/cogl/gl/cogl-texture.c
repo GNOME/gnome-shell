@@ -2665,13 +2665,11 @@ _cogl_rectangles_with_multitexture_coords (
                                                 rects[i].tex_coords,
                                                 rects[i].tex_coords_len))
         {
-          const GList *layers;
-          CoglHandle   tex_handle;
+          CoglHandle   first_layer, tex_handle;
           CoglTexture *texture;
 
-          layers = cogl_material_get_layers (material);
-          tex_handle =
-            cogl_material_layer_get_texture ((CoglHandle)layers->data);
+          first_layer = cogl_material_get_layers (material)->data;
+          tex_handle = cogl_material_layer_get_texture (first_layer);
           texture = _cogl_texture_pointer_from_handle (tex_handle);
           _cogl_texture_sliced_quad (texture,
                                      material,

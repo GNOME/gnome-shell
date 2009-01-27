@@ -58,7 +58,6 @@ G_MODULE_EXPORT int
 test_cogl_multitexture_main (int argc, char *argv[])
 {
   ClutterTimeline   *timeline;
-  ClutterAlpha	    *alpha;
   ClutterBehaviour  *r_behave;
   ClutterActor	    *stage;
   ClutterColor       stage_color = { 0x61, 0x56, 0x56, 0xff };

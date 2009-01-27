@@ -147,7 +147,6 @@ clutter_clone_texture_paint (ClutterActor *self)
   CoglHandle                   cogl_texture;
   ClutterFixed                 t_w, t_h;
   guint                        tex_width, tex_height;
-  CoglHandle                   cogl_material;
 
   priv = CLUTTER_CLONE_TEXTURE (self)->priv;
 
@@ -171,7 +170,7 @@ clutter_clone_texture_paint (ClutterActor *self)
     * updates. Needed for TFP and likely FBOs.
     * Potentially could cause issues
     */
-  if (!clutter_actor_get_paint_visibility(parent_texture))
+  if (!clutter_actor_get_paint_visibility (parent_texture))
     {
       CLUTTER_SET_PRIVATE_FLAGS(parent_texture,
                                 CLUTTER_TEXTURE_IN_CLONE_PAINT);

@@ -373,8 +373,8 @@ cogl_material_set_blend_factors (CoglHandle handle,
  */
 static CoglMaterialLayer *
 _cogl_material_get_layer (CoglMaterial *material,
-			  gint index,
-			  gboolean create_if_not_found)
+			  gint          index_,
+			  gboolean      create_if_not_found)
 {
   CoglMaterialLayer *layer;
   GList		    *tmp;
@@ -384,12 +384,12 @@ _cogl_material_get_layer (CoglMaterial *material,
     {
       layer =
 	_cogl_material_layer_pointer_from_handle ((CoglHandle)tmp->data);
-      if (layer->index == index)
+      if (layer->index == index_)
 	return layer;
 
       /* The layers are always sorted, so at this point we know this layer
        * doesn't exist */
-      if (layer->index > index)
+      if (layer->index > index_)
 	break;
     }
   /* NB: if we now insert a new layer before tmp, that will maintain order.
@@ -401,7 +401,7 @@ _cogl_material_get_layer (CoglMaterial *material,
   layer = g_new0 (CoglMaterialLayer, 1);
 
   layer->ref_count = 1;
-  layer->index = index;
+  layer->index = index_;
   layer->flags = COGL_MATERIAL_LAYER_FLAG_DEFAULT_COMBINE;
   layer->texture = COGL_INVALID_HANDLE;
 
@@ -630,8 +630,7 @@ cogl_material_remove_layer (CoglHandle material_handle,
       layer = tmp->data;
       if (layer->index == layer_index)
 	{
-	  CoglHandle handle =
-	    _cogl_material_layer_handle_from_pointer (layer);
+	  CoglHandle handle = (CoglHandle) layer;
 	  cogl_material_layer_unref (handle);
 	  material->layers = g_list_remove (material->layers, layer);
 	  continue;
