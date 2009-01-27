@@ -627,6 +627,17 @@ emit_frame_signal (ClutterTimeline *timeline)
 }
 
 static gboolean
+is_complete (ClutterTimeline *timeline)
+{
+  ClutterTimelinePrivate *priv = timeline->priv;
+
+  return ((priv->direction == CLUTTER_TIMELINE_FORWARD) &&
+          (priv->current_frame_num >= priv->n_frames)) ||
+         ((priv->direction == CLUTTER_TIMELINE_BACKWARD) &&
+          (priv->current_frame_num <= 0));
+}
+
+static gboolean
 timeline_timeout_func (gpointer data)
 {
   ClutterTimeline        *timeline = data;
@@ -684,12 +695,7 @@ timeline_timeout_func (gpointer data)
     priv->current_frame_num -= n_frames;
 
   /* If we have not reached the end of the timeline: */
-  if (!(
-      ((priv->direction == CLUTTER_TIMELINE_FORWARD) &&
-       (priv->current_frame_num >= priv->n_frames)) ||
-      ((priv->direction == CLUTTER_TIMELINE_BACKWARD) &&
-       (priv->current_frame_num <= 0))
-       ))
+  if (!is_complete (timeline))
     {
       /* Emit the signal */
       emit_frame_signal (timeline);
@@ -1097,8 +1103,6 @@ clutter_timeline_set_n_frames (ClutterTimeline *timeline,
 
   if (priv->n_frames != n_frames)
     {
-      g_object_ref (timeline);
-
       g_object_freeze_notify (G_OBJECT (timeline));
 
       priv->n_frames = n_frames;
@@ -1107,7 +1111,6 @@ clutter_timeline_set_n_frames (ClutterTimeline *timeline,
       g_object_notify (G_OBJECT (timeline), "duration");
 
       g_object_thaw_notify (G_OBJECT (timeline));
-      g_object_unref (timeline);
     }
 }
 
