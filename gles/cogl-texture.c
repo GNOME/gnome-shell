@@ -2784,14 +2784,21 @@ _cogl_rectangles_with_multitexture_coords (
           tex_handle =
             cogl_material_layer_get_texture ((CoglHandle)layers->data);
           texture = _cogl_texture_pointer_from_handle (tex_handle);
-          _cogl_texture_sliced_quad (texture,
-                                     material,
-                                     rects[i].x1, rects[i].y1,
-                                     rects[i].x2, rects[i].y2,
-                                     rects[i].tex_coords[0],
-                                     rects[i].tex_coords[1],
-                                     rects[i].tex_coords[2],
-                                     rects[i].tex_coords[3]);
+          if (rects[i].tex_coords)
+            _cogl_texture_sliced_quad (texture,
+                                       material,
+                                       rects[i].x1, rects[i].y1,
+                                       rects[i].x2, rects[i].y2,
+                                       rects[i].tex_coords[0],
+                                       rects[i].tex_coords[1],
+                                       rects[i].tex_coords[2],
+                                       rects[i].tex_coords[3]);
+          else
+            _cogl_texture_sliced_quad (texture,
+                                       material,
+                                       rects[i].x1, rects[i].y1,
+                                       rects[i].x2, rects[i].y2,
+                                       0.0f, 0.0f, 1.0f, 1.0f);
         }
     }
 
