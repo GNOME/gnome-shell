@@ -45,6 +45,10 @@ typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 #include "cogl-util.h"
 #include "cogl-context.h"
 
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
+#include "cogl-gles2-wrapper.h"
+#endif
+
 /* GL error to string conversion */
 #if COGL_DEBUG
 struct token_string
@@ -388,7 +392,11 @@ set_clip_plane (GLint plane_num,
 		const float *vertex_a,
 		const float *vertex_b)
 {
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
+  GLfloat plane[4];
+#else
   GLdouble plane[4];
+#endif
   GLfloat angle;
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -414,7 +422,11 @@ set_clip_plane (GLint plane_num,
   plane[1] = -1.0;
   plane[2] = 0;
   plane[3] = vertex_a[1];
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
+  GE( glClipPlanef (plane_num, plane) );
+#else
   GE( glClipPlane (plane_num, plane) );
+#endif
 
   GE( glPopMatrix () );
 }
@@ -473,6 +485,8 @@ _cogl_add_stencil_clip (float x_offset,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
+  cogl_material_flush_gl_state (ctx->stencil_material);
+
   if (first)
     {
       GE( glEnable (GL_STENCIL_TEST) );
@@ -484,10 +498,9 @@ _cogl_add_stencil_clip (float x_offset,
       /* Punch out a hole to allow the rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
-      GE( glRectf ( (x_offset),
-		    (y_offset),
-		    (x_offset + width),
-		    (y_offset + height)) );
+
+      cogl_rectangle (x_offset, y_offset,
+                      x_offset + width, y_offset + height);
     }
   else
     {
@@ -495,10 +508,8 @@ _cogl_add_stencil_clip (float x_offset,
 	 rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
-      GE( glRectf ( (x_offset),
-		    (y_offset),
-		    (x_offset + width),
-		    (y_offset + height)) );
+      cogl_rectangle (x_offset, y_offset,
+                      x_offset + width, y_offset + height);
 
       /* Subtract one from all pixels in the stencil buffer so that
 	 only pixels where both the original stencil buffer and the
@@ -509,7 +520,7 @@ _cogl_add_stencil_clip (float x_offset,
       GE( glMatrixMode (GL_PROJECTION) );
       GE( glPushMatrix () );
       GE( glLoadIdentity () );
-      GE( glRectf (-1, 1, 1, -1) );
+      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
       GE( glPopMatrix () );
       GE( glMatrixMode (GL_MODELVIEW) );
       GE( glPopMatrix () );
@@ -1121,7 +1132,18 @@ cogl_get_projection_matrix (float m[16])
 void
 cogl_get_viewport (float v[4])
 {
+  /* FIXME: cogl_get_viewport should return a gint vec */
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
+  GLint viewport[4];
+  int i;
+
+  glGetIntegerv (GL_VIEWPORT, viewport);
+
+  for (i = 0; i < 4; i++)
+    v[i] = (float)(viewport[i]);
+#else
   glGetFloatv (GL_VIEWPORT, v);
+#endif
 }
 
 void
@@ -1167,7 +1189,8 @@ cogl_fog_set (const CoglColor *fog_color,
 
   glFogfv (GL_FOG_COLOR, fogColor);
 
-  glFogi (GL_FOG_MODE, GL_LINEAR);
+  /* NB: GLES doesn't have glFogi */
+  glFogf (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
   glFogf (GL_FOG_DENSITY, (GLfloat) density);

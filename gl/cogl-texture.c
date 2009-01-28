@@ -52,10 +52,16 @@
 } */
 
 #ifdef HAVE_COGL_GL
-#ifdef glDrawRangeElements
-#undef glDrawRangeElements
-#endif
+
 #define glDrawRangeElements ctx->pf_glDrawRangeElements
+
+#else
+
+/* GLES doesn't have glDrawRangeElements, so we simply pretend it does
+ * but that it makes no use of the start, end constraints: */
+#define glDrawRangeElements(mode, start, end, count, type, indices) \
+  glDrawElements (mode, count, type, indices)
+
 #endif
 
 static void _cogl_journal_flush (void);
@@ -1967,6 +1973,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
   int     i;
   gulong  enable_flags = 0;
   guint32 disable_mask;
+  int     prev_n_texcoord_arrays_enabled;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -2027,12 +2034,14 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
       GE (glEnableClientState (GL_TEXTURE_COORD_ARRAY));
       GE (glTexCoordPointer (2, GL_FLOAT, stride, vertex_pointer + 2 + 2 * i));
     }
-  for (; i < ctx->n_texcoord_arrays_enabled; i++)
+  prev_n_texcoord_arrays_enabled =
+    ctx->n_texcoord_arrays_enabled;
+  ctx->n_texcoord_arrays_enabled = i + 1;
+  for (; i < prev_n_texcoord_arrays_enabled; i++)
     {
       GE (glClientActiveTexture (GL_TEXTURE0 + i));
       GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
     }
-  ctx->n_texcoord_arrays_enabled = 0;
 
   /* FIXME: This api is a bit yukky, ideally it will be removed if we
    * re-work the cogl_enable mechanism */
@@ -2046,7 +2055,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
 
   GE (glVertexPointer (2, GL_FLOAT, stride, vertex_pointer));
 
-  GE (ctx->pf_glDrawRangeElements (GL_TRIANGLES,
+  GE (glDrawRangeElements (GL_TRIANGLES,
                            0, ctx->static_indices->len - 1,
                            6 * batch_len,
                            GL_UNSIGNED_SHORT,
@@ -2995,6 +3004,7 @@ cogl_polygon (CoglTextureVertex *vertices,
   guint                stride;
   gsize                stride_bytes;
   GLfloat             *v;
+  int                  prev_n_texcoord_arrays_enabled;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -3049,12 +3059,13 @@ cogl_polygon (CoglTextureVertex *vertices,
               return;
             }
 
+#ifdef HAVE_COGL_GL
           /* Temporarily change the wrapping mode on all of the slices to use
            * a transparent border
            * XXX: it's doesn't look like we save/restore this, like the comment
            * implies? */
           _cogl_texture_set_wrap_mode_parameter (tex, GL_CLAMP_TO_BORDER);
-
+#endif
           break;
         }
 
@@ -3109,6 +3120,14 @@ cogl_polygon (CoglTextureVertex *vertices,
                              stride_bytes,
                              /* NB: [X,Y,Z,TX,TY...,R,G,B,A,...] */
                              v + 3 + 2 * i));
+    }
+  prev_n_texcoord_arrays_enabled =
+    ctx->n_texcoord_arrays_enabled;
+  ctx->n_texcoord_arrays_enabled = i + 1;
+  for (; i < prev_n_texcoord_arrays_enabled; i++)
+    {
+      GE (glClientActiveTexture (GL_TEXTURE0 + i));
+      GE (glDisableClientState (GL_TEXTURE_COORD_ARRAY));
     }
 
   if (use_sliced_polygon_fallback)

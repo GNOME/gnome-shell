@@ -49,18 +49,19 @@ typedef struct
   gboolean          enable_backface_culling;
 
   /* Cache of inverse projection matrix */
-  GLfloat           inverse_projection[16];
-
-  /* Textures */
-  GArray	   *texture_handles;
-  CoglHandle        default_gl_texture_2d_tex;
-  CoglHandle        default_gl_texture_rect_tex;
+  float            inverse_projection[16];
 
   /* Materials */
   GArray           *material_handles;
   GArray           *material_layer_handles;
   CoglHandle        default_material;
   CoglHandle	    source_material;
+
+  /* Textures */
+  GArray	   *texture_handles;
+  CoglHandle        default_gl_texture_2d_tex;
+  CoglHandle        default_gl_texture_rect_tex;
+
 
   /* Batching geometry... */
   /* We journal the texture rectangles we want to submit to OpenGL so
