@@ -442,7 +442,7 @@ static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
 #define TRANSFORM_ABOUT_ANCHOR_COORD(actor, coord, transform)   \
-  do                                                            \
+  G_STMT_START                                                  \
     {                                                           \
       ClutterUnit __tx, __ty, __tz;                             \
       clutter_anchor_coord_get_units ((actor), (coord),         \
@@ -454,7 +454,8 @@ static gboolean clutter_anchor_coord_is_zero (const AnchorCoord *coord);
       cogl_translate (-CLUTTER_UNITS_TO_FLOAT (__tx),           \
                       -CLUTTER_UNITS_TO_FLOAT (__ty),           \
                       -CLUTTER_UNITS_TO_FLOAT (__tz));          \
-    } while (0)
+    }                                                           \
+  G_STMT_END
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
                                   clutter_actor,
