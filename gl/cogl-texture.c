@@ -2441,6 +2441,7 @@ _cogl_multitexture_unsliced_quad (float        x_1,
        */
       if ((tex->gl_target == GL_TEXTURE_RECTANGLE_ARB
            || _cogl_texture_span_has_waste (tex, 0, 0))
+          && i < user_tex_coords_len / 4
           && (in_tex_coords[0] < 0 || in_tex_coords[0] > 1.0
               || in_tex_coords[1] < 0 || in_tex_coords[1] > 1.0
               || in_tex_coords[2] < 0 || in_tex_coords[2] > 1.0
@@ -2497,6 +2498,8 @@ _cogl_multitexture_unsliced_quad (float        x_1,
           else
             wrap_mode = GL_REPEAT;
 
+          memcpy (out_tex_coords, in_tex_coords, sizeof (GLfloat) * 4);
+
           _cogl_texture_set_wrap_mode_parameter (tex, wrap_mode);
         }
       else
@@ -2514,13 +2517,13 @@ _cogl_multitexture_unsliced_quad (float        x_1,
       y_span = &g_array_index (tex->slice_y_spans, CoglTexSliceSpan, 0);
 
       out_tex_coords[0] =
-        in_tex_coords[0] * (x_span->size - x_span->waste) / x_span->size;
+        out_tex_coords[0] * (x_span->size - x_span->waste) / x_span->size;
       out_tex_coords[1] =
-        in_tex_coords[1] * (x_span->size - x_span->waste) / x_span->size;
+        out_tex_coords[1] * (x_span->size - x_span->waste) / x_span->size;
       out_tex_coords[2] =
-        in_tex_coords[2] * (y_span->size - y_span->waste) / y_span->size;
+        out_tex_coords[2] * (y_span->size - y_span->waste) / y_span->size;
       out_tex_coords[3] =
-        in_tex_coords[3] * (y_span->size - y_span->waste) / y_span->size;
+        out_tex_coords[3] * (y_span->size - y_span->waste) / y_span->size;
 
       /* Denormalize texture coordinates for rectangle textures */
       if (tex->gl_target == GL_TEXTURE_RECTANGLE_ARB)
