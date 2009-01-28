@@ -52,17 +52,17 @@ G_BEGIN_DECLS
 
 /**
  * cogl_rectangle:
- * @x: X coordinate of the top-left corner
- * @y: Y coordinate of the top-left corner
- * @width: Width of the rectangle
- * @height: Height of the rectangle
+ * @x1: X coordinate of the top-left corner
+ * @y1: Y coordinate of the top-left corner
+ * @x2: X coordinate of the bottom-right corner
+ * @y2: Y coordinate of the bottom-right corner
  *
  * Fills a rectangle at the given coordinates with the current source material
  **/
-void            cogl_rectangle                (float               x,
-                                               float               y,
-                                               float               width,
-                                               float               height);
+void            cogl_rectangle                (float               x1,
+                                               float               y1,
+                                               float               x2,
+                                               float               y2);
 
 /**
  * cogl_path_fill:

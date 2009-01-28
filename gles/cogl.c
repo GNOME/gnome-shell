@@ -404,7 +404,8 @@ _cogl_add_stencil_clip (float x_offset,
       GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
       GE( glStencilOp (GL_REPLACE, GL_REPLACE, GL_REPLACE) );
 
-      cogl_rectangle (x_offset, y_offset, width, height);
+      cogl_rectangle (x_offset, y_offset,
+                      x_offset + width, y_offset + height);
     }
   else
     {
@@ -412,7 +413,8 @@ _cogl_add_stencil_clip (float x_offset,
 	 rectangle */
       GE( glStencilFunc (GL_NEVER, 0x1, 0x3) );
       GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
-      cogl_rectangle (x_offset, y_offset, width, height);
+      cogl_rectangle (x_offset, y_offset,
+                      x_offset + width, y_offset + height);
 
       /* Subtract one from all pixels in the stencil buffer so that
 	 only pixels where both the original stencil buffer and the
@@ -423,7 +425,7 @@ _cogl_add_stencil_clip (float x_offset,
       GE( glMatrixMode (GL_PROJECTION) );
       GE( glPushMatrix () );
       GE( glLoadIdentity () );
-      cogl_rectangle (-1.0, -1.0, 2, 2);
+      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
       GE( glPopMatrix () );
       GE( glMatrixMode (GL_MODELVIEW) );
       GE( glPopMatrix () );
