@@ -177,6 +177,7 @@ if test "x$have_x11" = "xno"; then
     AC_MSG_RESULT([found])
   fi
 else
+  BACKEND_PC_FILES="$BACKEND_PC_FILES x11"
   AC_MSG_RESULT([found])
 fi
 
@@ -185,6 +186,7 @@ PKG_CHECK_EXISTS([xfixes >= 3], [have_xfixes=yes], [have_xfixes=no])
 if test "x$have_xfixes" = "xyes"; then
   AC_DEFINE(HAVE_XFIXES, 1, [Define to 1 if we have the XFIXES X extension])
   X11_LIBS="$X11_LIBS -lXfixes"
+  BACKEND_PC_FILES="$BACKEND_PC_FILES xfixes"
   AC_MSG_RESULT([found])
 else
   AC_MSG_RESULT([not found])
@@ -195,6 +197,7 @@ PKG_CHECK_EXISTS([xdamage], [have_xdamage=yes], [have_xdamage=no])
 if test "x$have_xdamage" = "xyes"; then
   AC_DEFINE(HAVE_XDAMAGE, 1, [Define to 1 if we have the XDAMAGE X extension])
   X11_LIBS="$X11_LIBS -lXdamage"
+  BACKEND_PC_FILES="$BACKEND_PC_FILES xdamage"
   AC_MSG_RESULT([found])
 else
   AC_MSG_RESULT([not found])
@@ -205,6 +208,7 @@ PKG_CHECK_EXISTS([xcomposite >= 0.4], [have_xcomposite=yes], [have_xcomposite=no
 if test "x$have_xcomposite" = "xyes"; then
   AC_DEFINE(HAVE_XCOMPOSITE, 1, [Define to 1 if we have the XCOMPOSITE X extension])
   X11_LIBS="$X11_LIBS -lXcomposite"
+  BACKEND_PC_FILES="$BACKEND_PC_FILES xcomposite"
   AC_MSG_RESULT([found])
 else
   AC_MSG_RESULT([not found])
@@ -240,6 +244,7 @@ AC_ARG_ENABLE(xinput,
 if test "x$xinput" = "xyes"; then
       AC_DEFINE(USE_XINPUT, 1, Use the XINPUT X extension)
       X11_LIBS="$X11_LIBS -lXi"
+      BACKEND_PC_FILES="$BACKEND_PC_FILES xi"
 fi
 
 dnl This is only used to decide whether to build
@@ -370,6 +375,8 @@ case $clutterbackend in
     CLUTTER_STAGE_TYPE="CLUTTER_TYPE_STAGE_GLX"
     AC_DEFINE([HAVE_CLUTTER_GLX], 1, [Have the GLX backend])
 
+    PKG_CHECK_EXISTS([gl], [have_gl_pc=yes], [have_gl_pc=no])
+
     CLUTTER_COGL="gl"
     AC_DEFINE([HAVE_COGL_GL], 1, [Have GL for rendering])
 
@@ -388,6 +395,11 @@ case $clutterbackend in
     GLX_CFLAGS="$X11_CFLAGS"
     backendextra=x11
     backendextralib="x11/libclutter-x11.la"
+
+    # Mesa 7.3 added a GL pkg-config file, finally
+    if test "x$have_gl_pc" = "xyes"; then
+      BACKEND_PC_FILES="$BACKEND_PC_FILES gl"
+    fi
     ;;
 
   eglx)
@@ -533,10 +545,8 @@ AC_SUBST(CLUTTER_REQUIRES)
 # prefixes for fixing gtk-doc references
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 PANGO_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
-GDKPIXBUF_PREFIX="`$PKG_CONFIG --variable=prefix gdk-pixbuf-2.0`"
 AC_SUBST(GLIB_PREFIX)
 AC_SUBST(PANGO_PREFIX)
-AC_SUBST(GDKPIXBUF_PREFIX)
 
 dnl ========================================================================
 
