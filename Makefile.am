@@ -30,7 +30,12 @@ pkgconfigdir   = $(libdir)/pkgconfig
 
 DEFAULT_FLAVOUR = @CLUTTER_FLAVOUR@
 
-EXTRA_DIST = clutter.pc.in HACKING HACKING.backends CODING_STYLE
+EXTRA_DIST = 			\
+	ChangeLog.SVN		\
+	clutter.pc.in 		\
+	HACKING 		\
+	HACKING.backends 	\
+	CODING_STYLE
 
 CLEANFILES = $(pcfiles)
 
