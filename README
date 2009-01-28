@@ -207,6 +207,13 @@ Release Notes for Clutter 1.0
   any existing actors -- even composite ones -- without using
   frame buffer objects (FBOs).
 
+* The ClutterEffectTemplate and clutter_effect_* functions have been
+  superceded by ClutterAnimation and thus removed from the public API.
+
+* The ClutterBehaviourBspline has been superceded by the usage of
+  ClutterPath inside ClutterBehaviourPath, and thus removed from the
+  public API.
+
   Cogl API changes for Clutter 1.0
   --------------------------------
 
