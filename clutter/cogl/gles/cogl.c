@@ -30,14 +30,24 @@
 #include "cogl.h"
 
 #include <string.h>
+#include <gmodule.h>
+#include <math.h>
 #include <stdlib.h>
+
+#ifdef HAVE_CLUTTER_GLX
+#include <dlfcn.h>
+#include <GL/glx.h>
+
+typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
+#endif
 
 #include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context.h"
 
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
 #include "cogl-gles2-wrapper.h"
-#include <math.h>
+#endif
 
 /* GL error to string conversion */
 #if COGL_DEBUG
@@ -305,7 +315,11 @@ set_clip_plane (GLint plane_num,
 		const float *vertex_a,
 		const float *vertex_b)
 {
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
   GLfloat plane[4];
+#else
+  GLdouble plane[4];
+#endif
   GLfloat angle;
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -331,7 +345,11 @@ set_clip_plane (GLint plane_num,
   plane[1] = -1.0;
   plane[2] = 0;
   plane[3] = vertex_a[1];
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
   GE( glClipPlanef (plane_num, plane) );
+#else
+  GE( glClipPlane (plane_num, plane) );
+#endif
 
   GE( glPopMatrix () );
 }
@@ -677,6 +695,8 @@ cogl_get_projection_matrix (float m[16])
 void
 cogl_get_viewport (float v[4])
 {
+  /* FIXME: cogl_get_viewport should return a gint vec */
+#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GLES)
   GLint viewport[4];
   int i;
 
@@ -684,6 +704,9 @@ cogl_get_viewport (float v[4])
 
   for (i = 0; i < 4; i++)
     v[i] = (float)(viewport[i]);
+#else
+  glGetFloatv (GL_VIEWPORT, v);
+#endif
 }
 
 void
@@ -729,6 +752,7 @@ cogl_fog_set (const CoglColor *fog_color,
 
   glFogfv (GL_FOG_COLOR, fogColor);
 
+  /* NB: GLES doesn't have glFogi */
   glFogf (GL_FOG_MODE, GL_LINEAR);
   glHint (GL_FOG_HINT, GL_NICEST);
 
