@@ -671,10 +671,12 @@ meta_text_property_to_utf8 (Display             *xdisplay,
                                           &list);
 
   if (count == 0)
-    return NULL;
-
-  retval = list[0];
-  list[0] = g_strdup (""); /* something to free */
+    retval = NULL;
+  else
+    {
+      retval = list[0];
+      list[0] = g_strdup (""); /* something to free */
+    }
   
   g_strfreev (list);
 

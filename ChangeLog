@@ -1,3 +1,8 @@
+2009-01-27  Matthias Claesen <mclasen@redhat.com>
+
+	* src/ui/ui.c: free the result of gdk_text_property_to_utf8_list()
+          even when it returns no data.
+
 2009-01-27  Owen Taylor  <otaylor@redhat.com>
 
        GtkStyle is specific to a particular colormap. Metacity
