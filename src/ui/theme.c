@@ -3457,6 +3457,7 @@ fill_env (MetaPositionExprEnv *env,
 
 static void
 meta_draw_op_draw_with_env (const MetaDrawOp    *op,
+                            GtkStyle            *style_gtk,
                             GtkWidget           *widget,
                             GdkDrawable         *drawable,
                             const GdkRectangle  *clip,
@@ -3649,7 +3650,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.gtk_arrow.width, env);
         rheight = parse_size_unchecked (op->data.gtk_arrow.height, env);
 
-        gtk_paint_arrow (widget->style,
+        gtk_paint_arrow (style_gtk,
                          drawable,
                          op->data.gtk_arrow.state,
                          op->data.gtk_arrow.shadow,
@@ -3671,7 +3672,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         rwidth = parse_size_unchecked (op->data.gtk_box.width, env);
         rheight = parse_size_unchecked (op->data.gtk_box.height, env);
 
-        gtk_paint_box (widget->style,
+        gtk_paint_box (style_gtk,
                        drawable,
                        op->data.gtk_box.state,
                        op->data.gtk_box.shadow,
@@ -3690,7 +3691,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         ry1 = parse_y_position_unchecked (op->data.gtk_vline.y1, env);
         ry2 = parse_y_position_unchecked (op->data.gtk_vline.y2, env);
         
-        gtk_paint_vline (widget->style,
+        gtk_paint_vline (style_gtk,
                          drawable,
                          op->data.gtk_vline.state,
                          (GdkRectangle*) clip,
@@ -3752,9 +3753,9 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
         d_rect.width = parse_size_unchecked (op->data.op_list.width, env);
         d_rect.height = parse_size_unchecked (op->data.op_list.height, env);
 
-        meta_draw_op_list_draw (op->data.op_list.op_list,
-                                widget, drawable, clip, info,
-                                d_rect);
+        meta_draw_op_list_draw_with_style (op->data.op_list.op_list,
+                                           style_gtk, widget, drawable, clip, info,
+                                           d_rect);
       }
       break;
 
@@ -3794,9 +3795,9 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
                 tile.y = ry - tile_yoffset;
                 while (tile.y < (ry + rheight))
                   {
-                    meta_draw_op_list_draw (op->data.tile.op_list,
-                                            widget, drawable, &new_clip, info,
-                                            tile);
+                    meta_draw_op_list_draw_with_style (op->data.tile.op_list,
+                                                       style_gtk, widget, drawable, &new_clip, info,
+                                                       tile);
 
                     tile.y += tile.height;
                   }
@@ -3810,6 +3811,27 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 }
 
 void
+meta_draw_op_draw_with_style (const MetaDrawOp    *op,
+                              GtkStyle            *style_gtk,
+                              GtkWidget           *widget,
+                              GdkDrawable         *drawable,
+                              const GdkRectangle  *clip,
+                              const MetaDrawInfo  *info,
+                              MetaRectangle        logical_region)
+{
+  MetaPositionExprEnv env;
+
+  g_return_if_fail (style_gtk->colormap == gdk_drawable_get_colormap (drawable));
+
+  fill_env (&env, info, logical_region);
+
+  meta_draw_op_draw_with_env (op, style_gtk, widget, drawable, clip,
+                              info, logical_region,
+                              &env);
+
+}
+
+void
 meta_draw_op_draw (const MetaDrawOp    *op,
                    GtkWidget           *widget,
                    GdkDrawable         *drawable,
@@ -3817,14 +3839,8 @@ meta_draw_op_draw (const MetaDrawOp    *op,
                    const MetaDrawInfo  *info,
                    MetaRectangle        logical_region)
 {
-  MetaPositionExprEnv env;
-
-  fill_env (&env, info, logical_region);
-
-  meta_draw_op_draw_with_env (op, widget, drawable, clip,
-                              info, logical_region,
-                              &env);
-
+  meta_draw_op_draw_with_style (op, widget->style, widget,
+                                drawable, clip, info, logical_region);
 }
 
 MetaDrawOpList*
@@ -3875,17 +3891,20 @@ meta_draw_op_list_unref (MetaDrawOpList *op_list)
 }
 
 void
-meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
-                         GtkWidget            *widget,
-                         GdkDrawable          *drawable,
-                         const GdkRectangle   *clip,
-                         const MetaDrawInfo   *info,
-                         MetaRectangle         rect)
+meta_draw_op_list_draw_with_style  (const MetaDrawOpList *op_list,
+                                    GtkStyle             *style_gtk,
+                                    GtkWidget            *widget,
+                                    GdkDrawable          *drawable,
+                                    const GdkRectangle   *clip,
+                                    const MetaDrawInfo   *info,
+                                    MetaRectangle         rect)
 {
   int i;
   GdkRectangle active_clip;
   GdkRectangle orig_clip;
   MetaPositionExprEnv env;
+
+  g_return_if_fail (style_gtk->colormap == gdk_drawable_get_colormap (drawable));
 
   if (op_list->n_ops == 0)
     return;
@@ -3934,11 +3953,24 @@ meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
                active_clip.height > 0)
         {
           meta_draw_op_draw_with_env (op,
-                                      widget, drawable, &active_clip, info,
+                                      style_gtk, widget, drawable, &active_clip, info,
                                       rect,
                                       &env);
         }
     }
+}
+
+void
+meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
+                         GtkWidget            *widget,
+                         GdkDrawable          *drawable,
+                         const GdkRectangle   *clip,
+                         const MetaDrawInfo   *info,
+                         MetaRectangle         rect)
+
+{
+  meta_draw_op_list_draw_with_style (op_list, widget->style, widget,
+                                     drawable, clip, info, rect);
 }
 
 void
@@ -4243,20 +4275,21 @@ button_rect (MetaButtonType           type,
 }
 
 void
-meta_frame_style_draw (MetaFrameStyle          *style,
-                       GtkWidget               *widget,
-                       GdkDrawable             *drawable,
-                       int                      x_offset,
-                       int                      y_offset,
-                       const GdkRectangle      *clip,
-                       const MetaFrameGeometry *fgeom,
-                       int                      client_width,
-                       int                      client_height,
-                       PangoLayout             *title_layout,
-                       int                      text_height,
-                       MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
-                       GdkPixbuf               *mini_icon,
-                       GdkPixbuf               *icon)
+meta_frame_style_draw_with_style (MetaFrameStyle          *style,
+                                  GtkStyle                *style_gtk,
+                                  GtkWidget               *widget,
+                                  GdkDrawable             *drawable,
+                                  int                      x_offset,
+                                  int                      y_offset,
+                                  const GdkRectangle      *clip,
+                                  const MetaFrameGeometry *fgeom,
+                                  int                      client_width,
+                                  int                      client_height,
+                                  PangoLayout             *title_layout,
+                                  int                      text_height,
+                                  MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
+                                  GdkPixbuf               *mini_icon,
+                                  GdkPixbuf               *icon)
 {
   int i, j;
   GdkRectangle titlebar_rect;
@@ -4268,6 +4301,8 @@ meta_frame_style_draw (MetaFrameStyle          *style,
   PangoRectangle extents;
   MetaDrawInfo draw_info;
   
+  g_return_if_fail (style_gtk->colormap == gdk_drawable_get_colormap (drawable));
+
   titlebar_rect.x = 0;
   titlebar_rect.y = 0;
   titlebar_rect.width = fgeom->width;
@@ -4418,12 +4453,13 @@ meta_frame_style_draw (MetaFrameStyle          *style,
             {
               MetaRectangle m_rect;
               m_rect = meta_rect (rect.x, rect.y, rect.width, rect.height);
-              meta_draw_op_list_draw (op_list,
-                                      widget,
-                                      drawable,
-                                      &combined_clip,
-                                      &draw_info,
-                                      m_rect);
+              meta_draw_op_list_draw_with_style (op_list,
+                                                 style_gtk,
+                                                 widget,
+                                                 drawable,
+                                                 &combined_clip,
+                                                 &draw_info,
+                                                 m_rect);
             }
         }
 
@@ -4460,12 +4496,13 @@ meta_frame_style_draw (MetaFrameStyle          *style,
                       MetaRectangle m_rect;
                       m_rect = meta_rect (rect.x, rect.y,
                                           rect.width, rect.height);
-                      meta_draw_op_list_draw (op_list,
-                                              widget,
-                                              drawable,
-                                              &combined_clip,
-                                              &draw_info,
-                                              m_rect);
+                      meta_draw_op_list_draw_with_style (op_list,
+                                                         style_gtk,
+                                                         widget,
+                                                         drawable,
+                                                         &combined_clip,
+                                                         &draw_info,
+                                                         m_rect);
                     }
                 }
 
@@ -4486,6 +4523,29 @@ meta_frame_style_draw (MetaFrameStyle          *style,
       
       ++i;
     }
+}
+
+void
+meta_frame_style_draw (MetaFrameStyle          *style,
+                       GtkWidget               *widget,
+                       GdkDrawable             *drawable,
+                       int                      x_offset,
+                       int                      y_offset,
+                       const GdkRectangle      *clip,
+                       const MetaFrameGeometry *fgeom,
+                       int                      client_width,
+                       int                      client_height,
+                       PangoLayout             *title_layout,
+                       int                      text_height,
+                       MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
+                       GdkPixbuf               *mini_icon,
+                       GdkPixbuf               *icon)
+{
+  meta_frame_style_draw_with_style (style, widget->style, widget,
+                                    drawable, x_offset, y_offset,
+                                    clip, fgeom, client_width, client_height,
+                                    title_layout, text_height,
+                                    button_states, mini_icon, icon);
 }
 
 MetaFrameStyleSet*
@@ -5035,22 +5095,23 @@ meta_theme_get_title_scale (MetaTheme     *theme,
 }
 
 void
-meta_theme_draw_frame (MetaTheme              *theme,
-                       GtkWidget              *widget,
-                       GdkDrawable            *drawable,
-                       const GdkRectangle     *clip,
-                       int                     x_offset,
-                       int                     y_offset,
-                       MetaFrameType           type,
-                       MetaFrameFlags          flags,
-                       int                     client_width,
-                       int                     client_height,
-                       PangoLayout            *title_layout,
-                       int                     text_height,
-                       const MetaButtonLayout *button_layout,
-                       MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
-                       GdkPixbuf              *mini_icon,
-                       GdkPixbuf              *icon)
+meta_theme_draw_frame_with_style (MetaTheme              *theme,
+                                  GtkStyle               *style_gtk,
+                                  GtkWidget              *widget,
+                                  GdkDrawable            *drawable,
+                                  const GdkRectangle     *clip,
+                                  int                     x_offset,
+                                  int                     y_offset,
+                                  MetaFrameType           type,
+                                  MetaFrameFlags          flags,
+                                  int                     client_width,
+                                  int                     client_height,
+                                  PangoLayout            *title_layout,
+                                  int                     text_height,
+                                  const MetaButtonLayout *button_layout,
+                                  MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
+                                  GdkPixbuf              *mini_icon,
+                                  GdkPixbuf              *icon)
 {
   MetaFrameGeometry fgeom;
   MetaFrameStyle *style;
@@ -5071,17 +5132,44 @@ meta_theme_draw_frame (MetaTheme              *theme,
                                    &fgeom,
                                    theme);  
 
-  meta_frame_style_draw (style,
-                         widget,
-                         drawable,
-                         x_offset, y_offset,
-                         clip,
-                         &fgeom,
-                         client_width, client_height,
-                         title_layout,
-                         text_height,
-                         button_states,
-                         mini_icon, icon);
+  meta_frame_style_draw_with_style (style,
+                                    style_gtk,
+                                    widget,
+                                    drawable,
+                                    x_offset, y_offset,
+                                    clip,
+                                    &fgeom,
+                                    client_width, client_height,
+                                    title_layout,
+                                    text_height,
+                                    button_states,
+                                    mini_icon, icon);
+}
+
+void
+meta_theme_draw_frame (MetaTheme              *theme,
+                       GtkWidget              *widget,
+                       GdkDrawable            *drawable,
+                       const GdkRectangle     *clip,
+                       int                     x_offset,
+                       int                     y_offset,
+                       MetaFrameType           type,
+                       MetaFrameFlags          flags,
+                       int                     client_width,
+                       int                     client_height,
+                       PangoLayout            *title_layout,
+                       int                     text_height,
+                       const MetaButtonLayout *button_layout,
+                       MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
+                       GdkPixbuf              *mini_icon,
+                       GdkPixbuf              *icon)
+{
+  meta_theme_draw_frame_with_style (theme, widget->style, widget,
+                                    drawable, clip, x_offset, y_offset, type,flags,
+                                    client_width, client_height,
+                                    title_layout, text_height,
+                                    button_layout, button_states,
+                                    mini_icon, icon);
 }
 
 void

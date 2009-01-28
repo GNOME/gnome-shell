@@ -901,6 +901,15 @@ void           meta_draw_op_draw (const MetaDrawOp    *op,
                                   /* logical region being drawn */
                                   MetaRectangle        logical_region);
 
+void           meta_draw_op_draw_with_style (const MetaDrawOp    *op,
+                                             GtkStyle            *style_gtk,
+                                             GtkWidget           *widget,
+                                             GdkDrawable         *drawable,
+                                             const GdkRectangle  *clip,
+                                             const MetaDrawInfo  *info,
+                                             /* logical region being drawn */
+                                             MetaRectangle        logical_region);
+
 MetaDrawOpList* meta_draw_op_list_new   (int                   n_preallocs);
 void            meta_draw_op_list_ref   (MetaDrawOpList       *op_list);
 void            meta_draw_op_list_unref (MetaDrawOpList       *op_list);
@@ -910,6 +919,13 @@ void            meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
                                          const GdkRectangle   *clip,
                                          const MetaDrawInfo   *info,
                                          MetaRectangle         rect);
+void            meta_draw_op_list_draw_with_style  (const MetaDrawOpList *op_list,
+                                                    GtkStyle             *style_gtk,
+                                                    GtkWidget            *widget,
+                                                    GdkDrawable          *drawable,
+                                                    const GdkRectangle   *clip,
+                                                    const MetaDrawInfo   *info,
+                                                    MetaRectangle         rect);
 void           meta_draw_op_list_append (MetaDrawOpList       *op_list,
                                          MetaDrawOp           *op);
 gboolean       meta_draw_op_list_validate (MetaDrawOpList    *op_list,
@@ -949,6 +965,23 @@ void meta_frame_style_draw (MetaFrameStyle          *style,
                             MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
                             GdkPixbuf               *mini_icon,
                             GdkPixbuf               *icon);
+
+
+void meta_frame_style_draw_with_style (MetaFrameStyle          *style,
+                                       GtkStyle                *style_gtk,
+                                       GtkWidget               *widget,
+                                       GdkDrawable             *drawable,
+                                       int                      x_offset,
+                                       int                      y_offset,
+                                       const GdkRectangle      *clip,
+                                       const MetaFrameGeometry *fgeom,
+                                       int                      client_width,
+                                       int                      client_height,
+                                       PangoLayout             *title_layout,
+                                       int                      text_height,
+                                       MetaButtonState          button_states[META_BUTTON_TYPE_LAST],
+                                       GdkPixbuf               *mini_icon,
+                                       GdkPixbuf               *icon);
 
 
 gboolean       meta_frame_style_validate (MetaFrameStyle    *style,
@@ -1016,6 +1049,24 @@ void meta_theme_draw_frame_by_name (MetaTheme              *theme,
                                     MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
                                     GdkPixbuf              *mini_icon,
                                     GdkPixbuf              *icon);
+
+void meta_theme_draw_frame_with_style (MetaTheme              *theme,
+                                       GtkStyle               *style_gtk,
+                                       GtkWidget              *widget,
+                                       GdkDrawable            *drawable,
+                                       const GdkRectangle     *clip,
+                                       int                     x_offset,
+                                       int                     y_offset,
+                                       MetaFrameType           type,
+                                       MetaFrameFlags          flags,
+                                       int                     client_width,
+                                       int                     client_height,
+                                       PangoLayout            *title_layout,
+                                       int                     text_height,
+                                       const MetaButtonLayout *button_layout,
+                                       MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
+                                       GdkPixbuf              *mini_icon,
+                                       GdkPixbuf              *icon);
 
 void meta_theme_get_frame_borders (MetaTheme         *theme,
                                    MetaFrameType      type,

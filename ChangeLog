@@ -1,3 +1,21 @@
+2009-01-27  Owen Taylor  <otaylor@redhat.com>
+
+       GtkStyle is specific to a particular colormap. Metacity
+       uses different colormaps for windows with different
+       visuals, so it must specialize the GtkStyle.
+
+       Closes #568365 and #513944.
+
+       * src/ui/frames.[ch]: Keep a GtkStyle for each MetaUIFrame, which is
+         obtained by calling gtk_style_attach() on the style for the
+         MetaFrames. When the style of the MetaFrames changes, reattach
+         everything. When we call gtk_style_set_background() pass in the
+         right style.
+
+       * src/ui/themes.[ch]: Create a _with_style() variant of functions that
+         previously took the style from widget->style passed in, so we
+         can draw with the right style for the colormap.
+
 2009-01-27  Thomas Thurman  <tthurman@gnome.org>
 
         Added a gconf key to swap the meanings of the right and

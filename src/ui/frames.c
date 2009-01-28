@@ -68,6 +68,9 @@ static gboolean meta_frames_enter_notify_event    (GtkWidget           *widget,
 static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
                                                    GdkEventCrossing    *event);
 
+static void meta_frames_attach_style (MetaFrames  *frames,
+                                      MetaUIFrame *frame);
+
 static void meta_frames_paint_to_drawable (MetaFrames   *frames,
                                            MetaUIFrame  *frame,
                                            GdkDrawable  *drawable,
@@ -421,6 +424,18 @@ meta_frames_button_layout_changed (MetaFrames *frames)
 }
 
 static void
+reattach_style_func (gpointer key, gpointer value, gpointer data)
+{
+  MetaUIFrame *frame;
+  MetaFrames *frames;
+
+  frames = META_FRAMES (data);
+  frame = value;
+
+  meta_frames_attach_style (frames, frame);
+}
+
+static void
 meta_frames_style_set  (GtkWidget *widget,
                         GtkStyle  *prev_style)
 {
@@ -429,6 +444,9 @@ meta_frames_style_set  (GtkWidget *widget,
   frames = META_FRAMES (widget);
 
   meta_frames_font_changed (frames);
+
+  g_hash_table_foreach (frames->frames,
+                        reattach_style_func, frames);
 
   GTK_WIDGET_CLASS (parent_class)->style_set (widget, prev_style);
 }
@@ -561,6 +579,24 @@ meta_frames_new (int screen_number)
                        NULL);  
 }
 
+/* In order to use a style with a window it has to be attached to that
+ * window. Actually, the colormaps just have to match, but since GTK+
+ * already takes care of making sure that its cheap to attach a style
+ * to multiple windows with the same colormap, we can just go ahead
+ * and attach separately for each window.
+ */
+static void
+meta_frames_attach_style (MetaFrames  *frames,
+                          MetaUIFrame *frame)
+{
+  if (frame->style != NULL)
+    gtk_style_detach (frame->style);
+
+  /* Weirdly, gtk_style_attach() steals a reference count from the style passed in */
+  gtk_style_ref (GTK_WIDGET (frames)->style);
+  frame->style = gtk_style_attach (GTK_WIDGET (frames)->style, frame->window);
+}
+
 void
 meta_frames_manage_window (MetaFrames *frames,
                            Window      xwindow,
@@ -575,6 +611,9 @@ meta_frames_manage_window (MetaFrames *frames,
   frame->window = window;
 
   gdk_window_set_user_data (frame->window, frames);
+
+  frame->style = NULL;
+  meta_frames_attach_style (frames, frame);
 
   /* Don't set event mask here, it's in frame.c */
   
@@ -625,6 +664,8 @@ meta_frames_unmanage_window (MetaFrames *frames,
         frames->last_motion_frame = NULL;
       
       g_hash_table_remove (frames->frames, &frame->xwindow);
+
+      gtk_style_detach (frame->style);
 
       gdk_window_destroy (frame->window);
 
@@ -2435,7 +2476,8 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 
           gdk_window_begin_paint_rect (drawable, &areas[i]);
 
-          meta_theme_draw_frame (meta_theme_get_current (),
+          meta_theme_draw_frame_with_style (meta_theme_get_current (),
+            frame->style,
             widget,
             drawable,
             NULL, /* &areas[i], */
@@ -2460,19 +2502,20 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
     {
       /* Not a window; happens about 1/3 of the time */
 
-      meta_theme_draw_frame (meta_theme_get_current (),
-                             widget,
-                             drawable,
-                             NULL,
-                             x_offset, y_offset,
-                             type,
-                             flags,
-                             w, h,
-                             frame->layout,
-                             frame->text_height,
-                             &button_layout,
-                             button_states,
-                             mini_icon, icon);
+      meta_theme_draw_frame_with_style (meta_theme_get_current (),
+                                        frame->style,
+                                        widget,
+                                        drawable,
+                                        NULL,
+                                        x_offset, y_offset,
+                                        type,
+                                        flags,
+                                        w, h,
+                                        frame->layout,
+                                        frame->text_height,
+                                        &button_layout,
+                                        button_states,
+                                        mini_icon, icon);
     }
 
 }
@@ -2525,7 +2568,7 @@ meta_frames_set_window_background (MetaFrames   *frames,
     }
   else
     {
-      gtk_style_set_background (GTK_WIDGET (frames)->style,
+      gtk_style_set_background (frame->style,
                                 frame->window, GTK_STATE_NORMAL);
     }
  }
