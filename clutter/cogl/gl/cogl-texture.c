@@ -2668,7 +2668,7 @@ _cogl_rectangles_with_multitexture_coords (
           CoglHandle   first_layer, tex_handle;
           CoglTexture *texture;
 
-          first_layer = cogl_material_get_layers (material)->data;
+          first_layer = layers->data;
           tex_handle = cogl_material_layer_get_texture (first_layer);
           texture = _cogl_texture_pointer_from_handle (tex_handle);
           _cogl_texture_sliced_quad (texture,
@@ -2687,7 +2687,7 @@ _cogl_rectangles_with_multitexture_coords (
 
 void
 cogl_rectangles_with_texture_coords (const float *verts,
-                                     guint            n_rects)
+                                     guint        n_rects)
 {
   struct _CoglMutiTexturedRect rects[n_rects];
   int i;
