@@ -1,4 +1,140 @@
-Clutter 0.8.2 (xx/09/2008)
+Clutter 0.9.0 (xx/01/2009)
+===============================================================================
+
+ * List of changes between 0.8.6 and 0.9.0
+
+   o ClutterText is a new actor allowing text display, text editing
+     both in multi-line and single-line modes, and text selection using
+     the pointer devices and the keyboard. ClutterText supercedes both
+     ClutterLabel and ClutterEntry.
+   o ClutterClone is a new actor that allows cloning of other actors,
+     both simple and composite. ClutterClone supercedes ClutterCloneTexture.
+   o ClutterBindingPool is a new API that allows to easily add key bindings
+     to an actor.
+   o ClutterAnimation is a new API for implicit animations, similar to
+     the tweening API used in toolkits like jQuery, Tween and Flash. This
+     new API supercedes the ClutterEffect API.
+   o ClutterAlpha uses "animation modes" instead of raw function
+     pointers; it is still possible to pass alpha functions. The alpha
+     functions provided by Clutter have been removed from the public
+     API. It is possible to register global alpha functions and use
+     them though a logical id.
+   o The interval of the ClutterAlpha:alpha property has been changed
+     to a floating point value in the [ -1.0, 2.0 ] range; this allowed
+     the addition of "overshooting" easing modes.
+   o COGL now supports backface culling.
+   o The COGL-based Pango renderer is public API and it is accessible
+     to developers. It is also possible to access the PangoContext used
+     by Clutter in order to create PangoLayouts to render text.
+   o The ClutterFixed API has been moved to COGL.
+   o COGL does not depend on Clutter data types anymore.
+   o The ClutterMedia interface has been overhauled: implementations
+     now must only override the interface properties. The ranges of
+     some properties have been changed to normalized values.
+   o COGL now exposes only floating point entry points, and reserves
+     the eventual conversion to fixed point only when needed. The
+     fixed point type and macros are publicly available for developers
+     concerned about floating point operations.
+   o COGL has a new Vertex Attribues API that allows submitting an
+     extensible number of vertex attributes to OpenGL in a way that
+     does not require format conversions and allows fast re-use.
+   o COGL has a new Material API that decouples paths from fills; it
+     is possible to create an arbitrary path and fill it with a COGL
+     texture. The Material API also allows setting multiple texture
+     layers and defining the blend modes and colors.
+   o ClutterTexture has the ability to use a worker thread to asynchronously
+     load an image from a file, as long as the GLib threading support has
+     been enabled prior to calling clutter_init().
+   o Clutter now supports localization of the help output, and it
+     also supports globally setting the text direction for non left to
+     right locales.
+   o ClutterCairoTexture is a new actor that allows using Cairo
+     to draw on a ClutterTexture; since Cairo does not have an OpenGL
+     backend, the drawing is not hardware accelerated.
+   o Clutter has a unit testing suite, based on the GLib unit test
+     framework, which can be used to track regressions.
+   o A ClutterPath object has been added, and it is used by the
+     BehaviourPath. The Path object allows defining paths using a set
+     of coordinates and operations. A Path can be "painted" either using
+     COGL primitives or using Cairo primitives, allowing an easier way
+     to paint non-rectangular shaped actors.
+   o ClutterInterval is a simple object, used by ClutterAnimation, that
+     describes an interval between two values, and interpolates between
+     the initial and final values of the interval.
+
+ * List of bugs fixed since 0.8.6
+
+   o #835 - Optimize clutter_actor_real_pick()
+   o #851 - setting anchor point causes picking problem
+   o #883 - Outstanding COGL merge issues
+   o #1003 - Add clutter_actor_take_key_focus
+   o #1014 - Clutter Animation API Improvements.
+   o #1049 - Clutter doesn't support most GLSL uniforms
+   o #1051 - WebKit/Clutter product/component?
+   o #1058 - Build clutter-box2d with Clutter 0.8
+   o #1066 - Clipping regression in 0.8
+   o #1086 - virtualize stage_queue_redraw
+   o #1105 - low level access to PangoClutter
+   o #1106 - ClutterText instead of ClutterLabel and ClutterEntry
+   o #1108 - Enter/Leave events logics wrt. skipped motion events
+   o #1109 - clutter-0.8.0 fails to compile
+   o #1123 - Crash when FBO actor is used and the stage is MINIMIZED
+   o #1144 - Provide an option to load images asynchronously in ClutterTexture
+   o #1162 - Add unit testing for Clutter
+   o #1164 - Mesh API
+   o #1172 - Disjoint paths and clip to path
+   o #1189 - Backface culling
+   o #1209 - Move fixed point API in COGL
+   o #1210 - Add CoglColor API
+   o #1211 - Drop ClutterFeatureFlags usage from COGL
+   o #1212 - Allow only a single include file for Clutter
+   o #1215 - Move the Pango renderer to the public API
+   o #1219 - Clean up cogl.h
+   o #1231 - Build fails in gles flavour in revision 3442
+   o #1233 - CLUTTER_ALPHA_SINE_INC is broken in trunk
+   o #1251 - Merge the Cairo texture actor in core
+   o #1252 - Merge ClutterBehaviourPath and ClutterBehaviourBspline
+   o #1261 - [patch] Minimize differences between gl/cogl-texture.c and
+     gles/cogl-texture.c
+   o #1269 - mingw32 building failed at clutter-media.c
+   o #1270 - Update to mingw-cross-compile.sh
+   o #1271 - mingw compiling failed:  undefined reference to
+     `_glDrawRangeElements@24'
+   o #1284 - Return something reasonable from clutter_x11_handle_event()
+   o #1300 - clutter_score_remove and clutter_score_remove_all  are different
+     in object remove
+   o #1310 - font rendering problem
+   o #1313 - Fix computation of camera distance
+   o #1314 - clutter_sinx() is more inaccurate than it needs to be
+   o #1321 - Get Matrix in float
+   o #1323 - ClutterBehaviorDepth conflicts with other behaviors
+   o #1325 - ClutterPath to cairo_path_t conversion functions
+   o #1330 - We should not queue redraw for non-visible actors
+   o #1334 - Default value for ClutterLabel::text should be "" instead of NULL
+   o #1344 - clutter_actor_transform_stage_point gives invalid coordinates
+     for big actors
+   o #1352 - Weird cogl-pango.h includes in clutter-[entry|label].c
+   o #1354 - Floating point exception when set fps>1000 and start timeline
+   o #1361 - Unused ClutterStage::get_resolution() methods
+   o #1365 - ClutterEntry doesn't get the cursor when it should
+   o #1366 - disable-npots fails to build on mac
+   o #1380 - Return booleans from CLUTTER_ACTOR_IS_* macros
+   o #1386 - Wrong clipping dimensions for larger actors
+   o #1387 - Clarify new-frame signal emission with advance()
+   o #1388 - Clarify signal emission for advance_to_marker()
+   o #1395 - behaviour_apply and behaviour_get_nth_actor are opposite on
+     actors sequence
+   o #1397 - clutter command line is not localized.
+   o #1402 - Change default tile-waste from 64 to 63
+   o #1403 - ClutterMedia::get_uri() should return allocated string
+   o #1404 - ClutterMedia issues
+   o #1405 - Fix properties that have X11 types to be 'long'
+   o #1409 - Use G_SIGNAL_RUN_LAST with ::queue-redraw signal
+   o #1410 - [patch] Implements a generic ClutterActorClone class without fbos
+   o #1414 - avoid relayout of ClutterTexture if not syncing size
+   o #1415 - short-circuit setting same clip again
+
+Clutter 0.8.2 (25/09/2008)
 ===============================================================================
 
  * List of changes between 0.8.0 and 0.8.2
