@@ -1333,6 +1333,8 @@ theme_name_handler (MetaPreference pref,
                     const gchar *string_value,
                     gboolean *inform_listeners)
 {
+  g_free (current_theme);
+
   /* Fallback crackrock */
   if (string_value == NULL)
     current_theme = g_strdup ("Atlanta");

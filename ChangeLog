@@ -1,5 +1,10 @@
 2009-01-27  Matthias Claesen <mclasen@redhat.com>
 
+	* src/core/prefs.c: Free name of old theme when new theme
+          is loaded.
+
+2009-01-27  Matthias Claesen <mclasen@redhat.com>
+
 	* src/ui/ui.c: free the result of gdk_text_property_to_utf8_list()
           even when it returns no data.
 
