@@ -409,7 +409,7 @@ _cogl_texture_draw_and_read (CoglTexture *tex,
   CoglBitmap  rect_bmp;
   CoglHandle  handle;
 
-  handle = _cogl_texture_handle_from_pointer (tex);
+  handle = (CoglHandle) tex;
   bpp = _cogl_get_format_bpp (COGL_PIXEL_FORMAT_RGBA_8888);
 
   ry1 = 0; ry2 = 0;
