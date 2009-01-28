@@ -290,67 +290,14 @@ main (int argc, char *argv[])
   </para>
   <para>
 
-  A ClutterAlpha is simply a 'function of time' (not a pixel alpha!). It
-  is created by referencing a source timeline and a function which
-  produces a value between 0 and %CLUTTER_ALPHA_MAX dependant on the
-  timeline position. Various prebuilt alpha functions are included
-  with Clutter these include
+  A ClutterAlpha is simply a 'function of time' (not a pixel alpha channel!).
+  It is created by referencing a source timeline and an "easing mode" which
+  produces a value between -1 and 2 depending on the progress of the
+  timeline. Clutter provides various easing modes, as described by
+  the #ClutterAnimationMode enumeration. It is also possible to register
+  a new animation mode using clutter_alpha_register_func() or to provide
+  a custom #ClutterAlphaFunc for a specific #ClutterAlpha instance.
 
-  </para>
-  <para>
-
-    <variablelist>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_RAMP_INC</term>
-        <listitem><simpara>Increasing ramp function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_RAMP_DEC</term>
-        <listitem><simpara>Decreasing ramp function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_RAMP</term>
-        <listitem><simpara>Full ramp function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_SINE_INC</term>
-        <listitem><simpara>Increasing sine function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_SINE_DEC</term>
-        <listitem><simpara>Decreasing sine function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_SINE_HALF</term>
-        <listitem><simpara>Half sine function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_SINE</term>
-        <listitem><simpara>Full sine function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_SQUARE</term>
-        <listitem><simpara>Square waveform ("step") function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_SMOOTHSTEP_INC</term>
-        <listitem><simpara>Increasing smooth transition step
-        function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_SMOOTHSTEP_DEC</term>
-        <listitem><simpara>Decreasing smooth transition step
-        function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_EXP_INC</term>
-        <listitem><simpara>Increasing exponential function</simpara></listitem>
-      </varlistentry>
-      <varlistentry>
-        <term>%CLUTTER_ALPHA_EXP_DEC</term>
-        <listitem><simpara>Decreasing exponential function</simpara></listitem>
-      </varlistentry>
-    </variablelist>
   </para>
   <para>
 
@@ -369,10 +316,7 @@ main (int argc, char *argv[])
   feature of the actor dependant on the Alpha's value. For example a
   path based behaviour applied to an actor will alter its position
   along the path dependant on the current alpha value over time. The
-  actual motion will depend on the chosen #ClutterAlphaFunc - a
-  #CLUTTER_ALPHA_RAMP_INC making it to move at constant speed along the
-  path, a #CLUTTER_ALPHA_SINE making it alternate from one end of the
-  path to the other with non constant speed.
+  actual motion will depend on the chosen "easing mode".
 
   </para>
   <para>
@@ -393,9 +337,9 @@ main (int argc, char *argv[])
     <blockquote>
     The actors position between the path's end points directly correlates
     to the #ClutterAlpha's current alpha value driving the behaviour. With
-    the #ClutterAlpha's function set to %CLUTTER_ALPHA_RAMP_INC the actor
+    the #ClutterAlpha's animation mode set to %CLUTTER_LINEAR the actor
     will follow the path at a constant velocity, but when changing to
-    %CLUTTER_ALPHA_SINE_INC the actor initially accelerates before quickly
+    %CLUTTER_EASE_SINE_IN_OUT the actor initially accelerates before quickly
     decelerating.
     </blockquote>
   </figure>
@@ -468,9 +412,7 @@ main (int argc, char *argv[])
   clutter_timeline_set_loop (timeline, TRUE);
 
   /* Set an alpha func to power the behaviour */
-  alpha = clutter_alpha_new_full (timeline,
-                                  CLUTTER_ALPHA_SINE,
-                                  NULL, NULL);
+  alpha = clutter_alpha_new_full (timeline, CLUTTER_EASE_SINE_IN_OUT);
 
   behave = clutter_behaviour_ellipse_new (alpha, 
 					  200,               /* center x */
@@ -576,7 +518,7 @@ main (int argc, char *argv[])
                      ClutterButtonEvent *event,
                      gpointer            user_data)
     {
-      clutter_actor_animate (actor, CLUTTER_SINE_IN_OUT, 500,
+      clutter_actor_animate (actor, CLUTTER_EASE_SINE_OUT, 500,
                              "x", event-&gt;x,
                              "y", event-&gt;y,
                              NULL);
