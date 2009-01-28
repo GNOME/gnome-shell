@@ -822,7 +822,7 @@ _cogl_material_layer_flush_gl_sampler_state (CoglMaterialLayer  *layer,
     }
 }
 
-/**
+/*
  * _cogl_material_flush_layers_gl_state:
  * @fallback_mask: is a bitmask of the material layers that need to be
  *    replaced with the default, fallback textures. The fallback textures are
