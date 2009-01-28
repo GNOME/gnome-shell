@@ -818,8 +818,8 @@ cursor_paint (ClutterText *self)
         {
           cogl_rectangle (priv->cursor_pos.x,
                           priv->cursor_pos.y,
-                          priv->cursor_pos.width,
-                          priv->cursor_pos.height);
+                          priv->cursor_pos.x + priv->cursor_pos.width,
+                          priv->cursor_pos.y + priv->cursor_pos.height);
         }
       else
         {
@@ -885,8 +885,9 @@ cursor_paint (ClutterText *self)
 
                   cogl_rectangle (range_x,
                                   CLUTTER_UNITS_TO_DEVICE (y),
-                                  range_width,
-                                  CLUTTER_UNITS_TO_DEVICE (height));
+                                  range_x + range_width,
+                                  CLUTTER_UNITS_TO_DEVICE (y)
+                                  + CLUTTER_UNITS_TO_DEVICE (height));
                 }
 
               g_free (ranges);

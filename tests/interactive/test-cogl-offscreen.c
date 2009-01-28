@@ -9,7 +9,7 @@
  *--------------------------------------------------*/
 
 G_BEGIN_DECLS
-  
+
 #define TEST_TYPE_COGLBOX test_coglbox_get_type()
 
 #define TEST_COGLBOX(obj) \
@@ -44,7 +44,7 @@ struct _TestCoglbox
   TestCoglboxPrivate *priv;
 };
 
-struct _TestCoglboxClass 
+struct _TestCoglboxClass
 {
   ClutterActorClass parent_class;
 
@@ -88,7 +88,7 @@ test_coglbox_paint(ClutterActor *self)
     CLUTTER_FLOAT_TO_FIXED (1.0f)
     };
   CoglHandle material;
-  
+
   priv = TEST_COGLBOX_GET_PRIVATE (self);
 
   cogl_set_source_color4ub (0x66, 0x66, 0xdd, 0xff);
@@ -101,15 +101,15 @@ test_coglbox_paint(ClutterActor *self)
                                       0, 0,
                                       CLUTTER_INT_TO_FIXED (6),
                                       CLUTTER_INT_TO_FIXED (6));
-  
+
   cogl_draw_buffer (COGL_OFFSCREEN_BUFFER, priv->offscreen_id);
-  
+
   cogl_set_source_color4ub (0xff, 0, 0, 0xff);
-  cogl_rectangle (20, 20, 100, 100);
+  cogl_rectangle (20, 20, 20 + 100, 20 + 100);
 
   cogl_set_source_color4ub (0, 0xff, 0, 0xff);
-  cogl_rectangle (80, 80, 100, 100);
-  
+  cogl_rectangle (80, 80, 80 + 100, 80 + 100);
+
   cogl_draw_buffer (COGL_WINDOW_BUFFER, 0);
 
   material = cogl_material_new ();
@@ -136,12 +136,12 @@ static void
 test_coglbox_dispose (GObject *object)
 {
   TestCoglboxPrivate *priv;
-  
+
   priv = TEST_COGLBOX_GET_PRIVATE (object);
-  
+
   cogl_texture_unref (priv->texture_id);
   cogl_offscreen_unref (priv->offscreen_id);
-  
+
   G_OBJECT_CLASS (test_coglbox_parent_class)->dispose (object);
 }
 
@@ -150,24 +150,24 @@ test_coglbox_init (TestCoglbox *self)
 {
   TestCoglboxPrivate *priv;
   self->priv = priv = TEST_COGLBOX_GET_PRIVATE(self);
-  
+
   printf ("Loading redhand.png\n");
   priv->texhand_id = cogl_texture_new_from_file ("redhand.png", 0,
                                                  COGL_TEXTURE_NONE,
 						 COGL_PIXEL_FORMAT_ANY,
                                                  NULL);
-  
+
   printf ("Creating texture with size\n");
   priv->texture_id = cogl_texture_new_with_size (200, 200, 0,
                                                  COGL_TEXTURE_NONE,
 						 COGL_PIXEL_FORMAT_RGB_888);
-  
+
   if (priv->texture_id == COGL_INVALID_HANDLE)
     printf ("Failed creating texture with size!\n");
-  
+
   printf ("Creating offscreen\n");
   priv->offscreen_id = cogl_offscreen_new_to_texture (priv->texture_id);
-  
+
   if (priv->offscreen_id == COGL_INVALID_HANDLE)
     printf ("Failed creating offscreen to texture!\n");
 }
@@ -179,9 +179,9 @@ test_coglbox_class_init (TestCoglboxClass *klass)
   ClutterActorClass *actor_class   = CLUTTER_ACTOR_CLASS (klass);
 
   gobject_class->finalize     = test_coglbox_finalize;
-  gobject_class->dispose      = test_coglbox_dispose;  
+  gobject_class->dispose      = test_coglbox_dispose;
   actor_class->paint          = test_coglbox_paint;
-  
+
   g_type_class_add_private (gobject_class, sizeof (TestCoglboxPrivate));
 }
 
@@ -196,21 +196,21 @@ test_cogl_offscreen_main (int argc, char *argv[])
 {
   ClutterActor     *stage;
   ClutterActor     *coglbox;
-  
+
   clutter_init(&argc, &argv);
-  
+
   /* Stage */
   stage = clutter_stage_get_default ();
   clutter_actor_set_size (stage, 400, 400);
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Cogl Test");
-  
+
   /* Cogl Box */
   coglbox = test_coglbox_new ();
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), coglbox);
-  
+
   clutter_actor_show_all (stage);
-  
+
   clutter_main ();
-  
+
   return 0;
 }

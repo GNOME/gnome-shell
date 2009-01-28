@@ -162,8 +162,8 @@ key_group_paint (ClutterActor *actor)
           cogl_set_source_color4ub (255, 255, 0, 224);
           cogl_rectangle (CLUTTER_UNITS_TO_DEVICE (box.x1),
                           CLUTTER_UNITS_TO_DEVICE (box.y1),
-                          CLUTTER_UNITS_TO_DEVICE (box.x2 - box.x1),
-                          CLUTTER_UNITS_TO_DEVICE (box.y2 - box.y1));
+                          CLUTTER_UNITS_TO_DEVICE (box.x2),
+                          CLUTTER_UNITS_TO_DEVICE (box.y2));
         }
 
       if (CLUTTER_ACTOR_IS_VISIBLE (child))

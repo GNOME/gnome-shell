@@ -514,7 +514,7 @@ cogl_pango_renderer_draw_rectangle (PangoRenderer   *renderer,
                                         &x2, &y2);
 
   cogl_set_source (priv->solid_material);
-  cogl_rectangle (x1, y1, x2 - x1, y2 - y1);
+  cogl_rectangle (x1, y1, x2, y2);
 }
 
 static void

@@ -155,7 +155,7 @@ hand_post_paint (ClutterActor *actor,
   clutter_actor_get_size (actor, &w, &h);
 
   cogl_set_source_color4ub (0, 255, 0, 128);
-  cogl_rectangle (w / 2, h / 2, w / 2, h / 2);
+  cogl_rectangle (w / 2, h / 2, w, h);
 
   oh->paint_guards[actor_num] = FALSE;
 }

@@ -180,7 +180,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
              significant bit */
           GE( glStencilMask (merge ? 6 : 3) );
           GE( glStencilOp (GL_ZERO, GL_REPLACE, GL_REPLACE) );
-          cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
+          cogl_rectangle (bounds_x, bounds_y,
+                          bounds_x + bounds_w, bounds_y + bounds_h);
 
           GE( glStencilOp (GL_INVERT, GL_INVERT, GL_INVERT) );
         }
@@ -206,8 +207,8 @@ _cogl_add_path_to_stencil_buffer (floatVec2 nodes_min,
       GE( glMatrixMode (GL_PROJECTION) );
       GE( glPushMatrix () );
       GE( glLoadIdentity () );
-      cogl_rectangle (-1.0, -1.0, 2, 2);
-      cogl_rectangle (-1.0, -1.0, 2, 2);
+      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
+      cogl_rectangle (-1.0, -1.0, 1.0, 1.0);
       GE( glPopMatrix () );
       GE( glMatrixMode (GL_MODELVIEW) );
       GE( glPopMatrix () );
@@ -412,7 +413,8 @@ _cogl_path_fill_nodes ()
                                                         CoglPathNode, 0),
                                         ctx->clip.stencil_used);
 
-      cogl_rectangle (bounds_x, bounds_y, bounds_w, bounds_h);
+      cogl_rectangle (bounds_x, bounds_y,
+                      bounds_x + bounds_w, bounds_y + bounds_h);
 
       /* The stencil buffer now contains garbage so the clip area needs to
          be rebuilt */
