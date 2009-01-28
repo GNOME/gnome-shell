@@ -108,5 +108,7 @@ main (int argc, char **argv)
 
   TEST_CONFORM_SIMPLE ("/binding-pool", test_binding_pool);
 
+  TEST_CONFORM_SIMPLE ("/actor", test_anchors);
+
   return g_test_run ();
 }

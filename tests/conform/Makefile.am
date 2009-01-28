@@ -25,6 +25,7 @@ test_conformance_SOURCES = 		\
 	test-binding-pool.c		\
         test-clutter-text.c             \
         test-text-cache.c               \
+	test-anchors.c                  \
         $(NULL)
 
 # For convenience, this provides a way to easily run individual unit tests:
