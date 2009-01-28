@@ -3096,5 +3096,9 @@ cogl_polygon (CoglTextureVertex *vertices,
                                          stride,
                                          use_color,
                                          fallback_mask);
+
+  /* Reset the size of the logged vertex array because rendering
+     rectangles expects it to start at 0 */
+  g_array_set_size (ctx->logged_vertices, 0);
 }
 
