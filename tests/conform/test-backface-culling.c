@@ -128,14 +128,14 @@ on_paint (ClutterActor *actor, TestState *state)
 
       /* Draw a front-facing texture */
       cogl_set_source_texture (state->texture);
-      cogl_rectangle (x1, y1, x2, y2);
+      cogl_rectangle (x1, y1, x2 - x1, y2 - y1);
 
       x1 = x2;
       x2 = x1 + (float)(TEXTURE_SIZE);
 
       /* Draw a back-facing texture */
       cogl_set_source_texture (state->texture);
-      cogl_rectangle (x2, y1, x1, y2);
+      cogl_rectangle (x2, y1, x1 - x2, y2 - y1);
 
       x1 = x2;
       x2 = x1 + (float)(TEXTURE_SIZE);
@@ -172,8 +172,7 @@ on_paint (ClutterActor *actor, TestState *state)
 
       /* Draw a regular rectangle (this should always show) */
       cogl_set_source_color4f (1.0, 0, 0, 1.0);
-      cogl_rectangle ( (x1),  (y1),
-                       (x2 - x1),  (y2 - y1));
+      cogl_rectangle (x1, y1, x2 - x1, y2 - y1);
 
       /* The second time round draw beneath the first with backface
          culling disabled */
