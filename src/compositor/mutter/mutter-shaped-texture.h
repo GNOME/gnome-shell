@@ -26,8 +26,7 @@
 #ifndef __MUTTER_SHAPED_TEXTURE_H__
 #define __MUTTER_SHAPED_TEXTURE_H__
 
-#include <clutter/clutter-texture.h>
-#include <clutter/x11/clutter-x11.h>
+#include <clutter/clutter.h>
 #ifdef HAVE_GLX_TEXTURE_PIXMAP
 #include <clutter/glx/clutter-glx.h>
 #endif /* HAVE_GLX_TEXTURE_PIXMAP */

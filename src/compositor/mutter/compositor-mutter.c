@@ -34,11 +34,7 @@
 #include <X11/extensions/Xrender.h>
 
 #include <clutter/clutter.h>
-#include <clutter/clutter-group.h>
 #include <clutter/x11/clutter-x11.h>
-#ifdef HAVE_GLX_TEXTURE_PIXMAP
-#include <clutter/glx/clutter-glx.h>
-#endif /* HAVE_GLX_TEXTURE_PIXMAP */
 
 #include <cogl/cogl.h>
 #define SHADOW_RADIUS 8

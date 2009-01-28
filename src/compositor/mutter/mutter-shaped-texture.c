@@ -25,15 +25,12 @@
 
 #include <config.h>
 
-#include <clutter/clutter-texture.h>
-#include <clutter/x11/clutter-x11.h>
-#ifdef HAVE_GLX_TEXTURE_PIXMAP
-#include <clutter/glx/clutter-glx.h>
-#endif /* HAVE_GLX_TEXTURE_PIXMAP */
+#include "mutter-shaped-texture.h"
+
+#include <clutter/clutter.h>
 #include <cogl/cogl.h>
 #include <string.h>
 
-#include "mutter-shaped-texture.h"
 
 static void mutter_shaped_texture_dispose (GObject *object);
 static void mutter_shaped_texture_finalize (GObject *object);
@@ -364,7 +361,6 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   guint paint_gl_width, paint_gl_height;
   GLfloat vertex_coords[8], paint_tex_coords[8];
   ClutterActorBox alloc;
-  static const ClutterColor white = { 0xff, 0xff, 0xff, 0xff };
 #if 1 /* please see comment below about workaround */
   guint depth;
   GLint orig_gl_tex_env_mode;
@@ -427,7 +423,7 @@ mutter_shaped_texture_paint (ClutterActor *actor)
   glDisableClientState (GL_COLOR_ARRAY);
   glVertexPointer (2, GL_FLOAT, 0, vertex_coords);
   glTexCoordPointer (2, GL_FLOAT, 0, paint_tex_coords);
-  cogl_color (&white);
+  cogl_set_source_color4ub (0xff, 0xff, 0xff, 0xff);
 
   /* Put the main painting texture in the first texture unit */
   glBindTexture (paint_target, paint_gl_tex);
@@ -600,16 +596,17 @@ mutter_shaped_texture_pick (ClutterActor *actor,
 
       mutter_shaped_texture_ensure_mask (stex);
 
-      cogl_color (color);
+      cogl_set_source_color4ub (color->red, color->green, color->blue,
+                                 color->alpha);
 
       clutter_actor_get_allocation_box (actor, &alloc);
 
       /* Paint the mask rectangle in the given color */
-      cogl_texture_rectangle (priv->mask_texture,
-                              0, 0,
-                              CLUTTER_UNITS_TO_FIXED (alloc.x2 - alloc.x1),
-                              CLUTTER_UNITS_TO_FIXED (alloc.y2 - alloc.y1),
-                              0, 0, CFX_ONE, CFX_ONE);
+      cogl_set_source_texture (priv->mask_texture);
+      cogl_rectangle_with_texture_coords (0, 0,
+                                          CLUTTER_UNITS_TO_FIXED (alloc.x2 - alloc.x1),
+                                          CLUTTER_UNITS_TO_FIXED (alloc.y2 - alloc.y1),
+                                          0, 0, CFX_ONE, CFX_ONE);
     }
 }
 
