@@ -1,7 +1,13 @@
 2009-01-27  Matthias Claesen <mclasen@redhat.com>
 
+	* src/core/edge-resistance.c: some lists failed to keep track
+          of their contents and therefore didn't free correctly.
+          Closes #552303.
+
+2009-01-27  Matthias Claesen <mclasen@redhat.com>
+
 	* src/core/prefs.c: Free name of old theme when new theme
-          is loaded.
+          is loaded.  Closes #552973.
 
 2009-01-27  Matthias Claesen <mclasen@redhat.com>
 

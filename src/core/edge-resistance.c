@@ -985,8 +985,8 @@ meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
       cur_window_iter = cur_window_iter->next;
     }
   /* Put 'em in bottom to top order */
-  rem_windows       = g_slist_reverse (obscuring_windows);
-  rem_win_stacking  = g_slist_reverse (window_stacking);
+  rem_windows = obscuring_windows = g_slist_reverse (obscuring_windows);
+  rem_win_stacking = window_stacking = g_slist_reverse (window_stacking);
 
   /*
    * 3rd: loop over the windows again, this time getting the edges from
