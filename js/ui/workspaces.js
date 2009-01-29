@@ -47,6 +47,311 @@ const POSITIONS = {
 const GRID_SPACING = 15;
 const FRAME_SIZE = GRID_SPACING / 3;
 
+function WindowClone(realWindow) {
+    this._init(realWindow);
+}
+
+WindowClone.prototype = {
+    _init : function(realWindow) {
+        this.actor = new Clutter.CloneTexture({ parent_texture: realWindow.get_texture(),
+                                                reactive: true,
+                                                x: realWindow.x,
+                                                y: realWindow.y });
+        this.realWindow = realWindow;
+        this.origX = realWindow.x;
+        this.origY = realWindow.y;
+
+        this.actor.connect('button-press-event',
+                           Lang.bind(this, this._onButtonPress));
+        this.actor.connect('button-release-event',
+                           Lang.bind(this, this._onButtonRelease));
+        this.actor.connect('enter-event',
+                           Lang.bind(this, this._onEnter));
+        this.actor.connect('leave-event',
+                           Lang.bind(this, this._onLeave));
+        this.actor.connect('motion-event',
+                           Lang.bind(this, this._onMotion));
+
+        this._havePointer = false;
+        this._inDrag = false;
+        this._buttonDown = false;
+
+        // We track the number of animations we are doing for the clone so we can
+        // hide the floating title while animating. It seems like it should be
+        // possible to use Tweener.getTweenCount(clone), but that annoyingly only
+        // updates after onComplete is called.
+        this._animationCount = 0;
+    },
+
+    destroy: function () {
+        this.actor.destroy();
+        if (this._title)
+            this._title.destroy();
+    },
+    
+    addTween: function (params) {
+        this._animationCount++;
+        this._updateTitle();
+
+        if (params.onComplete) {
+            let oldOnComplete = params.onComplete;
+            let oldOnCompleteScope = params.onCompleteScope;
+            let oldOnCompleteParams = params.onCompleteParams;
+            let eventScope = oldOnCompleteScope ? oldOnCompleteScope : this.actor;
+
+            params.onComplete = function () {
+                oldOnComplete.apply(eventScope, oldOnCompleteParams);
+                this._onAnimationComplete();
+            };
+        } else
+            params.onComplete = this._onAnimationComplete;
+        params.onCompleteScope = this;
+
+        Tweener.addTween(this.actor, params);
+    },
+
+    _onEnter: function (actor, event) {
+        // If the user drags faster than we can follow, he'll end up
+        // leaving the window temporarily and then re-entering it
+        if (this._inDrag)
+            return;
+
+        this._havePointer = true;
+
+        actor.raise_top();
+        this._updateTitle();
+    },
+
+    _onLeave: function (actor, event) {
+        // If the user drags faster than we can follow, he'll end up
+        // leaving the window temporarily and then re-entering it
+        if (this._inDrag)
+            return;
+
+        this._havePointer = false;
+
+        if (this._animationCount)
+            return;
+
+    	actor.raise(this.stackAbove);
+        this._updateTitle();
+    },
+
+    _onButtonPress : function (actor, event) {
+        if (this._animationCount)
+            return;
+
+        actor.raise_top();
+
+        let [stageX, stageY] = event.get_coords();
+
+        this._buttonDown = true;
+        this._dragStartX = stageX;
+        this._dragStartY = stageY;
+
+        Clutter.grab_pointer(actor);
+
+        this._updateTitle();
+    },
+
+    _onMotion : function (actor, event) {
+        if (!this._buttonDown)
+            return;
+
+        let [stageX, stageY] = event.get_coords();
+
+        // If we haven't begun a drag, see if the user has moved the mouse enough
+        // to trigger a drag
+        let dragThreshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
+        if (!this._inDrag &&
+            (Math.abs(stageX - this._dragStartX) > dragThreshold ||
+             Math.abs(stageY - this._dragStartY) > dragThreshold)) {
+            this._inDrag = true;
+            
+            this._dragOrigParent = actor.get_parent();
+            this._dragOrigX = actor.x;
+            this._dragOrigY = actor.y;
+            this._dragOrigScale = actor.scale_x;
+
+            let [cloneStageX, cloneStageY] = actor.get_transformed_position();
+            this._dragOffsetX = cloneStageX - this._dragStartX;
+            this._dragOffsetY = cloneStageY - this._dragStartY;
+
+            // Reparent the clone onto the stage, but keeping the same scale.
+            // (the set_position call below will take care of position.)
+            let [scaledWidth, scaledHeight] = actor.get_transformed_size();
+            actor.reparent(actor.get_stage());
+            actor.raise_top();
+            actor.set_scale(scaledWidth / actor.width,
+                            scaledHeight / actor.height);
+        }
+
+        // If we are dragging, update the position
+        if (this._inDrag) {
+            actor.set_position(stageX + this._dragOffsetX,
+                               stageY + this._dragOffsetY);
+        }
+    },
+
+    _onButtonRelease : function (actor, event) {
+        Clutter.ungrab_pointer();
+
+        let inDrag = this._inDrag;
+        this._buttonDown = false;
+        this._inDrag = false;
+
+        if (inDrag) {
+            let [stageX, stageY] = event.get_coords();
+
+            let origWorkspace = this.realWindow.get_workspace();
+            this.emit('dragged', stageX, stageY, event.get_time());
+            if (this.realWindow.get_workspace() == origWorkspace) {
+                // Didn't get moved elsewhere, restore position
+                this.addTween({ x: this._dragStartX + this._dragOffsetX,
+                                y: this._dragStartY + this._dragOffsetY,
+                                time: SNAP_BACK_ANIMATION_TIME,
+                                transition: "easeOutQuad",
+                                onComplete: this._onSnapBackComplete,
+                                onCompleteScope: this
+                              });
+                // Most likely, the clone is going to move away from the
+                // pointer now. But that won't cause a leave-event, so
+                // do this by hand. Of course, if the window only snaps
+                // back a short distance, this might be wrong, but it's
+                // better to have the label mysteriously missing than
+                // mysteriously present
+                this._havePointer = false;
+            }
+        } else
+            this.emit('selected', event.get_time());
+    },
+
+    _onSnapBackComplete : function () {
+        this.actor.reparent(this._dragOrigParent);
+        this.actor.set_scale(this._dragOrigScale, this._dragOrigScale);
+        this.actor.set_position(this._dragOrigX, this._dragOrigY);
+    },
+
+    _onAnimationComplete : function () {
+        this._animationCount--;
+        if (this._animationCount == 0) {
+            this._updateTitle();
+    	    this.actor.raise(this.stackAbove);
+        }
+    },
+
+    _createTitle : function () {
+        let window = this.realWindow;
+        
+        let box = new Big.Box({ background_color : WINDOWCLONE_BG_COLOR,
+                                y_align: Big.BoxAlignment.CENTER,
+                                corner_radius: 5,
+                                padding: 4,
+                                spacing: 4,
+                                orientation: Big.BoxOrientation.HORIZONTAL });
+        
+        let icon = window.meta_window.mini_icon;
+        let iconTexture = new Clutter.Texture({ x: this.actor.x,
+                                                y: this.actor.y + this.actor.height - 16,
+                                                width: 16,
+                                                height: 16,
+                                                keep_aspect_ratio: true });
+        Shell.clutter_texture_set_from_pixbuf(iconTexture, icon);
+        box.append(iconTexture, Big.BoxPackFlags.NONE);
+        
+        let title = new Clutter.Label({ color: WINDOWCLONE_TITLE_COLOR,
+                                        font_name: "Sans 12",
+                                        text: window.meta_window.title,
+                                        ellipsize: Pango.EllipsizeMode.END
+                                      });
+        box.append(title, Big.BoxPackFlags.EXPAND);
+        // Get and cache the expected width (just the icon), with spacing, plus title
+        box.fullWidth = box.width;
+        box.hide(); // Hidden by default, show on mouseover
+        this._title = box;        
+
+        // Make the title a sibling of the window
+        this.actor.get_parent().add_actor(box);
+    },
+
+    _adjustTitle : function () {
+        let title = this._title;
+        if (!title)
+            return;    
+
+        let [cloneScreenWidth, cloneScreenHeight] = this.actor.get_transformed_size();
+        let [titleScreenWidth, titleScreenHeight] = title.get_transformed_size();
+
+        // Titles are supposed to be "full-size", so adjust its
+        // scale to counteract the scaling of its ancestor actors.
+        title.set_scale(title.width / titleScreenWidth * title.scale_x,
+                        title.height / titleScreenHeight * title.scale_y);
+
+        title.width = Math.min(title.fullWidth, cloneScreenWidth);
+        let xoff = ((cloneScreenWidth - title.width) / 2) * title.scale_x;
+        title.set_position(this.actor.x + xoff, this.actor.y);
+    },
+
+    _showTitle : function () {
+        if (!this._title)
+            this._createTitle();
+
+        this._adjustTitle();
+        this._title.show();
+        this._title.raise(this.actor);
+    },
+
+    _hideTitle : function () {
+        if (!this._title)
+            return;
+
+        this._title.hide();
+    },
+
+    _updateTitle : function () {
+        let shouldShow = (this._havePointer &&
+                          !this._buttonDown &&
+                          this._animationCount == 0);
+
+        if (shouldShow)
+            this._showTitle();
+        else
+            this._hideTitle();
+    }
+};
+
+Signals.addSignalMethods(WindowClone.prototype);
+
+
+function DesktopClone(window) {
+    this._init(window);
+}
+
+DesktopClone.prototype = {
+    _init : function(window) {
+        if (window) {
+            this.actor = new Clutter.CloneTexture({ parent_texture: window.get_texture(),
+                                                    reactive: true });
+        } else {
+            let global = Shell.Global.get();
+            this.actor = new Clutter.Rectangle({ color: global.stage.color,
+                                                 reactive: true,
+                                                 width: global.screen_width,
+                                                 height: global.screen_height });
+        }
+
+        this.actor.connect('button-release-event',
+                           Lang.bind(this, this._onButtonRelease));
+    },
+
+    _onButtonRelease : function (actor, event) {
+        this.emit('selected', event.get_time());
+    }
+};
+
+Signals.addSignalMethods(DesktopClone.prototype);
+
+
 function Workspace(workspaceNum) {
     this._init(workspaceNum);
 }
@@ -65,21 +370,21 @@ Workspace.prototype = {
         // Find the desktop window
         for (let i = 0; i < windows.length; i++) {
             if (windows[i].get_window_type() == Meta.WindowType.DESKTOP) {
-                this._desktop = this._makeClone(windows[i]);
+                this._desktop = new DesktopClone(windows[i]);
                 break;
             }
         }
         // If there wasn't one, fake it
         if (!this._desktop)
-            this._desktop = this._makeDesktopRectangle();
+            this._desktop = new DesktopClone();
 
         let metaWorkspace = global.screen.get_workspace_by_index(workspaceNum);
-        this._desktop.connect('button-press-event',
-                              function(actor, event) {
-                                  metaWorkspace.activate(event.get_time());
+        this._desktop.connect('selected',
+                              function(clone, time) {
+                                  metaWorkspace.activate(time);
                                   Main.hide_overlay();
                               });
-        this.actor.add_actor(this._desktop);
+        this.actor.add_actor(this._desktop.actor);
 
         // Create clones for remaining windows that should be
         // visible in the overlay
@@ -168,10 +473,10 @@ Workspace.prototype = {
             // FIXME: do something cooler-looking using clutter-cairo
             this._frame = new Clutter.Rectangle({ color: FRAME_COLOR });
             this.actor.add_actor(this._frame);
-            this._frame.set_position(this._desktop.x - FRAME_SIZE / this.actor.scale_x,
-                                     this._desktop.y - FRAME_SIZE / this.actor.scale_y);
-            this._frame.set_size(this._desktop.width + 2 * FRAME_SIZE / this.actor.scale_x,
-                                 this._desktop.height + 2 * FRAME_SIZE / this.actor.scale_y);
+            this._frame.set_position(this._desktop.actor.x - FRAME_SIZE / this.actor.scale_x,
+                                     this._desktop.actor.y - FRAME_SIZE / this.actor.scale_y);
+            this._frame.set_size(this._desktop.actor.width + 2 * FRAME_SIZE / this.actor.scale_x,
+                                 this._desktop.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
             this._frame.lower_bottom();
 
             this._framePosHandler = this.actor.connect('notify::x', Lang.bind(this, this._updateFramePosition));
@@ -187,13 +492,13 @@ Workspace.prototype = {
     },
 
     _updateFramePosition : function() {
-        this._frame.set_position(this._desktop.x - FRAME_SIZE / this.actor.scale_x,
-                                 this._desktop.y - FRAME_SIZE / this.actor.scale_y);
+        this._frame.set_position(this._desktop.actor.x - FRAME_SIZE / this.actor.scale_x,
+                                 this._desktop.actor.y - FRAME_SIZE / this.actor.scale_y);
     },
 
     _updateFrameSize : function() {
-        this._frame.set_size(this._desktop.width + 2 * FRAME_SIZE / this.actor.scale_x,
-                             this._desktop.height + 2 * FRAME_SIZE / this.actor.scale_y);
+        this._frame.set_size(this._desktop.actor.width + 2 * FRAME_SIZE / this.actor.scale_x,
+                             this._desktop.actor.height + 2 * FRAME_SIZE / this.actor.scale_y);
     },
 
     // Reposition all windows in their zoomed-to-overlay position. if workspaceZooming
@@ -202,37 +507,33 @@ Workspace.prototype = {
     _positionWindows : function(workspaceZooming) {
         let global = Shell.Global.get();
 
-        this._overlappedMode = !((this._windows.length-1) in POSITIONS);
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
+            clone.stackAbove = this._windows[i - 1].actor;
 
             let [xCenter, yCenter, fraction] = this._computeWindowPosition(i);
             xCenter = xCenter * global.screen_width;
             yCenter = yCenter * global.screen_height;
 
-            let size = Math.max(clone.width, clone.height);
+            let size = Math.max(clone.actor.width, clone.actor.height);
             let desiredSize = global.screen_width * fraction;
             let scale = Math.min(desiredSize / size, 1.0);
 
             let tweenProperties = {
-                x: xCenter - 0.5 * scale * clone.width,
-                y: yCenter - 0.5 * scale * clone.height,
+                x: xCenter - 0.5 * scale * clone.actor.width,
+                y: yCenter - 0.5 * scale * clone.actor.height,
                 scale_x: scale,
                 scale_y: scale,
                 time: Overlay.ANIMATION_TIME,
                 opacity: WINDOW_OPACITY,
-                transition: "easeOutQuad",
-                onComplete: this._onCloneAnimationComplete,
-                onCompleteScope: this,
-                onCompleteParams: [clone]
+                transition: "easeOutQuad"
             };
 
             // workspace_relative assumes that the workspace is zooming in our out
             if (workspaceZooming)
                 tweenProperties['workspace_relative'] = this;
 
-            Tweener.addTween(clone, tweenProperties);
-            clone._animationCount++;
+            clone.addTween(tweenProperties);
         }
     },
 
@@ -254,13 +555,6 @@ Workspace.prototype = {
         let clone = this._windows[index];
         this._windows.splice(index, 1);
         clone.destroy();
-        if (clone.cloneTitle)
-            clone.cloneTitle.destroy();
-
-        // Adjust the index property for later windows
-        for (let j = index; j < this._windows.length; j++) {
-            this._windows[j].index--;
-        }
 
         this._positionWindows();
     },
@@ -272,10 +566,8 @@ Workspace.prototype = {
     // animated to the final location.
     addWindow : function(win, x, y, scale) {
         let clone = this._addWindowClone(win);
-        clone.x = x;
-        clone.y = y;
-        clone.scale_x = scale;
-        clone.scale_y = scale;
+        clone.actor.set_position (x, y);
+        clone.actor.set_scale (scale, scale);
         
         this._positionWindows();
     },
@@ -311,23 +603,16 @@ Workspace.prototype = {
                          });
 
         for (let i = 1; i < this._windows.length; i++) {
-            let window = this._windows[i];
-            if (window.cloneTitle)
-                window.cloneTitle.hide();
-            Tweener.addTween(window,
-                             { x: window.origX,
-                               y: window.origY,
-                               scale_x: 1.0,
-                               scale_y: 1.0,
-                               workspace_relative: this,
-                               time: Overlay.ANIMATION_TIME,
-                               opacity: 255,
-                               transition: "easeOutQuad",
-                               onComplete: this._onCloneAnimationComplete,
-                               onCompleteScope: this,
-                               onCompleteParams: [window]
-                             });
-            window._animationCount++;
+            let clone = this._windows[i];
+            clone.addTween({ x: clone.origX,
+                             y: clone.origY,
+                             scale_x: 1.0,
+                             scale_y: 1.0,
+                             workspace_relative: this,
+                             time: Overlay.ANIMATION_TIME,
+                             opacity: 255,
+                             transition: "easeOutQuad"
+                           });
         }
 
         this._visible = false;
@@ -411,43 +696,15 @@ Workspace.prototype = {
         return !win.is_override_redirect();
     },
 
-    // Create a clone of a window to use in the overlay.
-    _makeClone : function(window) {
-        let clone = new Clutter.CloneTexture({ parent_texture: window.get_texture(),
-                                               reactive: true,
-                                               x: window.x,
-                                               y: window.y });
-        clone.realWindow = window;
-        clone.origX = window.x;
-        clone.origY = window.y;
-        return clone;
-    },
-
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone : function(win) {
-        let clone = this._makeClone(win);
-        clone.connect('button-press-event',
-                      Lang.bind(this, this._onCloneButtonPress));
-        clone.connect('button-release-event',
-                      Lang.bind(this, this._onCloneButtonRelease));
-        clone.connect('enter-event',
-                      Lang.bind(this, this._onCloneEnter));
-        clone.connect('leave-event',
-                      Lang.bind(this, this._onCloneLeave));
-        clone.connect('motion-event',
-                      Lang.bind(this, this._onCloneMotion));
+        let clone = new WindowClone(win);
+        clone.connect('selected',
+                      Lang.bind(this, this._onCloneSelected));
+        clone.connect('dragged',
+                      Lang.bind(this, this._onCloneDragged));
 
-        clone._havePointer = false;
-        clone._inDrag = false;
-        clone._buttonDown = false;
-        clone.index = this._windows.length;
-        // We track the number of animations we are doing for the clone so we can
-        // hide the floating title while animating. It seems like it should be
-        // possible to use Tweener.getTweenCount(clone), but that annoyingly only
-        // updates after onComplete is called.
-        clone._animationCount = 0;
-
-        this.actor.add_actor(clone);
+        this.actor.add_actor(clone.actor);
         this._windows.push(clone);
 
         return clone;
@@ -463,14 +720,11 @@ Workspace.prototype = {
         // height of the panel, so we should not subtract the height
         // of the panel from global.screen_height here either to have
         // them show up identically.
-        let desktop = new Clutter.Rectangle({ color: global.stage.color,
-                                              reactive: true,
-                                              x: 0,
-                                              y: 0,
-                                              width: global.screen_width,
-                                              height: global.screen_height });
-        desktop.origX = desktop.origY = 0;
-        return desktop;
+        return new Clutter.Rectangle({ color: global.stage.color,
+                                       x: 0,
+                                       y: 0,
+                                       width: global.screen_width,
+                                       height: global.screen_height });
     },
 
     _computeWindowPosition : function(index) {
@@ -496,206 +750,14 @@ Workspace.prototype = {
         return [xCenter, yCenter, fraction];
     },
 
-    _onCloneEnter: function (clone, event) {
-        clone._havePointer = true;
-
-        if (this._overlappedMode && clone.index != this._windows.length - 1)
-    	    clone.raise_top();
-
-        this._updateCloneTitle(clone);
+    _onCloneDragged : function (clone, stageX, stageY, time) {
+        this.emit('window-dragged', clone, stageX, stageY, time);
     },
 
-    _onCloneLeave: function (clone, event) {
-        clone._havePointer = false;
-
-        if (this._overlappedMode && clone.index != this._windows.length - 1)
-    	    clone.lower(this._windows[clone.index+1]);
-
-        this._updateCloneTitle(clone);
-    },
-
-    _onCloneButtonPress : function (clone, event) {
-        if (clone._animationCount)
-            return;
-
-        clone.raise_top();
-
-        let [stageX, stageY] = event.get_coords();
-
-        clone._buttonDown = true;
-        clone._dragStartX = stageX;
-        clone._dragStartY = stageY;
-
-        Clutter.grab_pointer(clone);
-
-        this._updateCloneTitle(clone);
-    },
-
-    _onCloneButtonRelease : function (clone, event) {
-        Clutter.ungrab_pointer();
-        let inDrag = clone._inDrag;
-        clone._buttonDown = false;
-        clone._inDrag = false;
-
-        if (inDrag) {
-            let [stageX, stageY] = event.get_coords();
-
-            this.emit('window-dragged', clone, stageX, stageY, event.get_time());
-            if (clone.realWindow.get_workspace() == this.workspaceNum) {
-                // Didn't get moved elsewhere, restore position
-                Tweener.addTween(clone,
-                                 { x: clone._dragStartX + clone._dragOffsetX,
-                                   y: clone._dragStartY + clone._dragOffsetY,
-                                   time: SNAP_BACK_ANIMATION_TIME,
-                                   transition: "easeOutQuad",
-                                   onComplete: this._onCloneSnapBackComplete,
-                                   onCompleteScope: this,
-                                   onCompleteParams: [clone]
-                                 });
-                // Most likely, the clone is going to move away from the
-                // pointer now. But that won't cause a leave-event, so
-                // do this by hand. Of course, if the window only snaps
-                // back a short distance, this might be wrong, but it's
-                // better to have the label mysteriously missing than
-                // mysteriously present
-                clone._havePointer = false;
-                clone._animationCount++;
-            }
-        } else {
-            this._activateWindow(clone.realWindow, event.get_time());
-        }
-    },
-
-    _onCloneSnapBackComplete : function (clone) {
-        clone.reparent(clone._dragOrigParent);
-        clone.set_scale(clone._dragOrigScale, clone._dragOrigScale);
-        clone.set_position(clone._dragOrigX, clone._dragOrigY);
-        this._onCloneAnimationComplete(clone);
-    },
-
-    _onCloneMotion : function (clone, event) {
-        if (!clone._buttonDown)
-            return;
-
-        let [stageX, stageY] = event.get_coords();
-
-        // If we haven't begun a drag, see if the user has moved the mouse enough
-        // to trigger a drag
-        let dragThreshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
-        if (!clone._inDrag &&
-            (Math.abs(stageX - clone._dragStartX) > dragThreshold ||
-             Math.abs(stageY - clone._dragStartY) > dragThreshold)) {
-            clone._inDrag = true;
-            
-            clone._dragOrigParent = clone.get_parent();
-            clone._dragOrigX = clone.x;
-            clone._dragOrigY = clone.y;
-            clone._dragOrigScale = clone.scale_x;
-
-            let [cloneStageX, cloneStageY] = clone.get_transformed_position();
-            clone._dragOffsetX = cloneStageX - clone._dragStartX;
-            clone._dragOffsetY = cloneStageY - clone._dragStartY;
-
-            // Reparent the clone onto the stage, but keeping the same scale.
-            // (the set_position call below will take care of position.)
-            let [scaledWidth, scaledHeight] = clone.get_transformed_size();
-            clone.reparent(clone.get_stage());
-            clone.raise_top();
-            clone.set_scale(scaledWidth / clone.width,
-                            scaledHeight / clone.height);
-        }
-
-        // If we are dragging, update the position
-        if (clone._inDrag) {
-            clone.set_position(stageX + clone._dragOffsetX,
-                               stageY + clone._dragOffsetY);
-        }
-    },
-
-    _onCloneAnimationComplete : function (clone) {
-        clone._animationCount--;
-        if (clone._animationCount == 0)
-            this._updateCloneTitle(clone);
-    },
-
-    _createCloneTitle : function (clone) {
-        let me = this;
-        let window = clone.realWindow;
-        
-        let box = new Big.Box({background_color : WINDOWCLONE_BG_COLOR,
-                               y_align: Big.BoxAlignment.CENTER,
-                               corner_radius: 5,
-                               padding: 4,
-                               spacing: 4,
-                               orientation: Big.BoxOrientation.HORIZONTAL});
-        
-        let icon = window.meta_window.mini_icon;
-        let iconTexture = new Clutter.Texture({ x: clone.x,
-                                                y: clone.y + clone.height - 16,
-                                                width: 16, height: 16, keep_aspect_ratio: true});
-        Shell.clutter_texture_set_from_pixbuf(iconTexture, icon);
-        box.append(iconTexture, Big.BoxPackFlags.NONE);
-        
-        let title = new Clutter.Label({color: WINDOWCLONE_TITLE_COLOR,
-                                       font_name: "Sans 12",
-                                       text: window.meta_window.title,
-                                       ellipsize: Pango.EllipsizeMode.END});
-        box.append(title, Big.BoxPackFlags.EXPAND);
-        // Get and cache the expected width (just the icon), with spacing, plus title
-        box.fullWidth = box.width;
-        box.hide(); // Hidden by default, show on mouseover
-        clone.cloneTitle = box;        
-        
-        this.actor.add_actor(box);
-    },
-
-    _adjustCloneTitle : function (clone) {
-        let title = clone.cloneTitle;
-        if (!title)
-            return;    
-
-        let transformed = clone.get_transformed_size();
-        let cloneWidth = transformed[0];
-
-        // Set the title scale to the inverse of this.actor's scale;
-        // this means its scale is 1.0 with respect to the stage
-        // (and thus, in the same units as cloneWidth).
-        title.set_scale(1.0 / this.scale, 1.0 / this.scale);
-        title.width = Math.min(title.fullWidth, cloneWidth);
-        let xoff = ((cloneWidth - title.width) / 2) / this.scale;
-        title.set_position(clone.x + xoff, clone.y);
-    },
-
-    _showCloneTitle : function (clone) {
-        if (!clone.cloneTitle)
-            this._createCloneTitle(clone);
-
-        this._adjustCloneTitle(clone);
-        clone.cloneTitle.show();
-        clone.cloneTitle.raise(clone);
-    },
-
-    _hideCloneTitle : function (clone) {
-        if (!clone.cloneTitle)
-            return;
-
-        clone.cloneTitle.hide();
-    },
-
-    _updateCloneTitle : function (clone) {
-        let shouldShow = (clone._havePointer &&
-                          !clone._buttonDown &&
-                          clone._animationCount == 0);
-
-        if (shouldShow)
-            this._showCloneTitle(clone);
-        else
-            this._hideCloneTitle(clone);
-    },
-
-    _activateWindow : function(w, time) {
+    _onCloneSelected : function (clone, time) {
         let global = Shell.Global.get();
         let activeWorkspace = global.screen.get_active_workspace_index();
+        let w = clone.realWindow;
         let windowWorkspace = w.get_workspace();
 
         if (windowWorkspace != activeWorkspace) {
@@ -995,7 +1057,7 @@ Workspaces.prototype = {
 
         // Positions in stage coordinates
         let [myX, myY] = this.actor.get_transformed_position();
-        let [windowX, windowY] = clone.get_transformed_position();
+        let [windowX, windowY] = clone.actor.get_transformed_position();
 
         let targetWorkspace = null;
         let targetX, targetY, targetScale;
@@ -1022,7 +1084,7 @@ Workspaces.prototype = {
         // Window position and scale relative to the new workspace
         targetX = (windowX - myX - targetWorkspace.gridX) / targetWorkspace.scale;
         targetY = (windowY - myY - targetWorkspace.gridY) / targetWorkspace.scale;
-        targetScale = clone.scale_x / targetWorkspace.scale;
+        targetScale = clone.actor.scale_x / targetWorkspace.scale;
 
         let metaWindow = clone.realWindow.get_meta_window();
         metaWindow.change_workspace_by_index(targetWorkspace.workspaceNum,
