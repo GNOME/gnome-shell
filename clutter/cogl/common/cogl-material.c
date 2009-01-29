@@ -9,6 +9,7 @@
 #include "cogl-handle.h"
 
 #include "cogl-material-private.h"
+#include "cogl-texture-private.h"
 
 #include <glib.h>
 #include <string.h>
@@ -18,7 +19,7 @@
  */
 
 #ifdef HAVE_COGL_GLES2
-#define glAlphaFunc cogl_wrap_glAlphaFunc
+#include "../gles/cogl-gles2-wrapper.h"
 #endif
 
 static void _cogl_material_free (CoglMaterial *tex);

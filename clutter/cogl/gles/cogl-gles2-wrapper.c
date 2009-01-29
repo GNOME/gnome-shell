@@ -31,6 +31,11 @@
 #include <string.h>
 #include <math.h>
 
+/* We don't want to get the remaps from the gl* functions to the
+   cogl_wrap_gl* functions in this file because we need to be able to
+   call the base version */
+#define COGL_GLES2_WRAPPER_NO_REMAP 1
+
 #include "cogl.h"
 #include "cogl-gles2-wrapper.h"
 #include "cogl-fixed-vertex-shader.h"
@@ -803,13 +808,21 @@ cogl_wrap_glMultMatrix (const float *m)
 void
 cogl_wrap_glMultMatrixf (const GLfloat *m)
 {
-  float new_matrix[16];
-  int i;
+  cogl_wrap_glMultMatrix (m);
+}
 
-  for (i = 0; i < 16; i++)
-    new_matrix[i] =  (m[i]);
+void
+cogl_wrap_glLoadMatrixf (const GLfloat *m)
+{
+  float *old_matrix;
 
-  cogl_wrap_glMultMatrix (new_matrix);
+  _COGL_GET_GLES2_WRAPPER (w, NO_RETVAL);
+
+  old_matrix = cogl_gles2_get_matrix_stack_top (w);
+
+  memcpy (old_matrix, m, sizeof (float) * 16);
+
+  cogl_gles2_wrapper_update_matrix (w, w->matrix_mode);
 }
 
 void
@@ -1275,7 +1288,7 @@ cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
 }
 
 void
-cogl_wrap_glTexEnvf (GLenum target, GLenum pname, GLfloat param)
+cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLfloat param)
 {
   /* This function is only used to set the texture mode once to
      GL_MODULATE. The shader is hard-coded to modulate the texture so
@@ -1589,6 +1602,13 @@ cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param)
 {
   if (pname != GL_GENERATE_MIPMAP)
     glTexParameteri (target, pname, param);
+}
+
+void
+cogl_wrap_glMaterialfv (GLenum face, GLenum pname, const GLfloat *params)
+{
+  /* FIXME: the GLES 2 backend doesn't yet support lighting so this
+     function can't do anything */
 }
 
 void

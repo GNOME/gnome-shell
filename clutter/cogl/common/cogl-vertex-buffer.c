@@ -159,14 +159,7 @@
 
 #elif defined (HAVE_COGL_GLES2)
 
-#define glVertexPointer cogl_wrap_glVertexPointer
-#define glNormalPointer cogl_wrap_glNormalPointer
-#define glTexCoordPointer cogl_wrap_glTexCoordPointer
-#define glColorPointer cogl_wrap_glColorPointer
-#define glDrawArrays cogl_wrap_glDrawArrays
-
-#define glEnableClientState cogl_wrap_glEnableClientState
-#define glDisableClientState cogl_wrap_glDisableClientState
+#include "../gles/cogl-gles2-wrapper.h"
 
 #endif
 
