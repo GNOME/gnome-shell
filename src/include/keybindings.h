@@ -56,4 +56,11 @@ gboolean meta_keybindings_set_custom_handler (const gchar        *name,
 					      MetaKeyHandlerFunc  handler,
 					      gpointer            user_data,
 					      MetaKeyHandlerDataFreeFunc free_data);
+
+void meta_keybindings_switch_window (MetaDisplay    *display,
+				     MetaScreen     *screen,
+				     MetaWindow     *event_window,
+				     XEvent         *event,
+				     MetaKeyBinding *binding);
+
 #endif
