@@ -260,13 +260,22 @@ Release Notes for Clutter 1.0
     cogl_set_source_texture (tex_handle);
     cogl_polygon (verts, 3, TRUE);
 
-* A CoglMesh type and utility API has been added; this is currently used to
+* The arguments to cogl_rectangle have been changed - for consistency - from
+  x1, y2, width, height, to x1, y1, x2, y2.
+
+* A CoglMatrix type and utility API has been added; this is currently used to
   support describing texture matrices.
 
 * cogl_alpha_func has been removed, since this is now controlled using the
   material API via cogl_material_set_alpha_test_function ()
 
+* A Cogl Vertex Buffer API has been added that allows you to efficiently
+  manage arrays of vertex attributes in buffers that may be stored on
+  the GPU. These allow you to avoid the costs of repeatedy validating
+  vertex data and mapping it into the GPU.
+
 * cogl_scale now supports scaling on the z axis
+
 
 Release Notes for Clutter 0.8
 -------------------------------
