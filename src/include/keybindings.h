@@ -48,7 +48,7 @@ struct _MetaKeyBinding
   KeyCode keycode;
   unsigned int mask;
   MetaVirtualModifier modifiers;
-  const MetaKeyHandler *handler;
+  MetaKeyHandler *handler;
 };
 
 
