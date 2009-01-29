@@ -1,6 +1,7 @@
 /* tidy-texture-frame.h: Expandible texture actor
  *
- * Copyright (C) 2007 OpenedHand
+ * Copyright (C) 2007, 2008 OpenedHand Ltd
+ * Copyright (C) 2009 Intel Corp.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,43 +26,28 @@
 
 G_BEGIN_DECLS
 
-#define TIDY_TYPE_TEXTURE_FRAME (tidy_texture_frame_get_type ())
+#define TIDY_TYPE_TEXTURE_FRAME                 (tidy_texture_frame_get_type ())
+#define TIDY_TEXTURE_FRAME(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), TIDY_TYPE_TEXTURE_FRAME, TidyTextureFrame))
+#define TIDY_TEXTURE_FRAME_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), TIDY_TYPE_TEXTURE_FRAME, TidyTextureFrameClass))
+#define TIDY_IS_TEXTURE_FRAME(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TIDY_TYPE_TEXTURE_FRAME))
+#define TIDY_IS_TEXTURE_FRAME_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), TIDY_TYPE_TEXTURE_FRAME))
+#define TIDY_TEXTURE_FRAME_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), TIDY_TYPE_TEXTURE_FRAME, TidyTextureFrameClass))
 
-#define TIDY_TEXTURE_FRAME(obj) \
-  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-  TIDY_TYPE_TEXTURE_FRAME, TidyTextureFrame))
-
-#define TIDY_TEXTURE_FRAME_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_CAST ((klass), \
-  TIDY_TYPE_TEXTURE_FRAME, TidyTextureFrameClass))
-
-#define TIDY_IS_TEXTURE_FRAME(obj) \
-  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-  TIDY_TYPE_TEXTURE_FRAME))
-
-#define TIDY_IS_TEXTURE_FRAME_CLASS(klass) \
-  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-  TIDY_TYPE_TEXTURE_FRAME))
-
-#define TIDY_TEXTURE_FRAME_GET_CLASS(obj) \
-  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-  TIDY_TYPE_TEXTURE_FRAME, TidyTextureFrameClass))
-
-typedef struct _TidyTextureFrame        TidyTextureFrame;
-typedef struct _TidyTextureFramePrivate TidyTextureFramePrivate;
-typedef struct _TidyTextureFrameClass   TidyTextureFrameClass;
+typedef struct _TidyTextureFrame                TidyTextureFrame;
+typedef struct _TidyTextureFramePrivate         TidyTextureFramePrivate;
+typedef struct _TidyTextureFrameClass           TidyTextureFrameClass;
 
 struct _TidyTextureFrame
 {
-  ClutterCloneTexture              parent;
-
-  /*< priv >*/
+  /*< private >*/
+  ClutterActor parent_instance;
+  
   TidyTextureFramePrivate    *priv;
 };
 
 struct _TidyTextureFrameClass
 {
-  ClutterCloneTextureClass parent_class;
+  ClutterActorClass parent_class;
 
   /* padding for future expansion */
   void (*_clutter_box_1) (void);
@@ -70,13 +56,26 @@ struct _TidyTextureFrameClass
   void (*_clutter_box_4) (void);
 };
 
-GType         tidy_texture_frame_get_type (void) G_GNUC_CONST;
-ClutterActor *tidy_texture_frame_new      (ClutterTexture *texture,
-                                           gint            left,
-                                           gint            top,
-                                           gint            right,
-                                           gint            bottom);
-                                           
+GType           tidy_texture_frame_get_type           (void) G_GNUC_CONST;
+ClutterActor *  tidy_texture_frame_new                (ClutterTexture   *texture,
+                                                       gfloat            top,
+                                                       gfloat            right,
+                                                       gfloat            bottom,
+                                                       gfloat            left);
+void            tidy_texture_frame_set_parent_texture (TidyTextureFrame *frame,
+                                                       ClutterTexture   *texture);
+ClutterTexture *tidy_texture_frame_get_parent_texture (TidyTextureFrame *frame);
+void            tidy_texture_frame_set_frame          (TidyTextureFrame *frame,
+                                                       gfloat            top,
+                                                       gfloat            right,
+                                                       gfloat            bottom,
+                                                       gfloat            left);
+void            tidy_texture_frame_get_frame          (TidyTextureFrame *frame,
+                                                       gfloat           *top,
+                                                       gfloat           *right,
+                                                       gfloat           *bottom,
+                                                       gfloat           *left);
+
 G_END_DECLS
 
 #endif /* _HAVE_TIDY_TEXTURE_FRAME_H */
