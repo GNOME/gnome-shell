@@ -32,7 +32,7 @@
 #include "errors.h"
 #include "workspace-private.h"
 #include "stack.h"
-#include "keybindings.h"
+#include "keybindings-private.h"
 #include "ui.h"
 #include "place.h"
 #include "session.h"

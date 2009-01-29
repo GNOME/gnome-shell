@@ -27,7 +27,7 @@
 #define _SVID_SOURCE /* for putenv() */
 
 #include <config.h>
-#include "keybindings.h"
+#include "keybindings-private.h"
 #include "workspace-private.h"
 #include "errors.h"
 #include "edge-resistance.h"
