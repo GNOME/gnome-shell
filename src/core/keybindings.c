@@ -49,12 +49,6 @@
 
 static gboolean all_bindings_disabled = FALSE;
 
-typedef void (* MetaKeyHandlerFunc) (MetaDisplay    *display,
-                                     MetaScreen     *screen,
-                                     MetaWindow     *window,
-                                     XEvent         *event,
-                                     MetaKeyBinding *binding);
-
 /* Prototypes for handlers */
 #define keybind(name, handler, param, flags, stroke, description) \
 static void \
@@ -62,7 +56,8 @@ handler (MetaDisplay    *display,\
          MetaScreen     *screen,\
          MetaWindow     *window,\
          XEvent         *event,\
-         MetaKeyBinding *binding);
+         MetaKeyBinding *binding,               \
+         gpointer        user_data);
 #include "all-keybindings.h"
 #undef keybind
 
@@ -75,7 +70,8 @@ static void handle_workspace_switch  (MetaDisplay    *display,
                                       MetaScreen     *screen,
                                       MetaWindow     *window,
                                       XEvent         *event,
-                                      MetaKeyBinding *binding);
+                                      MetaKeyBinding *binding,
+                                      gpointer        dummy);
 
 static gboolean process_mouse_move_resize_grab (MetaDisplay *display,
                                                 MetaScreen  *screen,
@@ -107,28 +103,12 @@ static gboolean process_workspace_switch_grab (MetaDisplay *display,
 
 static void regrab_key_bindings         (MetaDisplay *display);
 
-typedef struct
-{
-  const char *name;
-  MetaKeyHandlerFunc func;
-  gint data, flags;
-} MetaKeyHandler;
-
-struct _MetaKeyBinding
-{
-  const char *name;
-  KeySym keysym;
-  KeyCode keycode;
-  unsigned int mask;
-  MetaVirtualModifier modifiers;
-  const MetaKeyHandler *handler;
-};
 
 #define keybind(name, handler, param, flags, stroke, description) \
-   { #name, handler, param, flags },
+  { #name, handler, param, flags, NULL, NULL },
 static const MetaKeyHandler key_handlers[] = {
 #include "all-keybindings.h"
-   { NULL, NULL, 0, 0 }
+  { NULL, NULL, 0, 0, NULL, NULL }
 };
 #undef keybind
 
@@ -1219,7 +1199,8 @@ process_event (MetaKeyBinding       *bindings,
       (* handler->func) (display, screen,
                          bindings[i].handler->flags & BINDING_PER_WINDOW? window: NULL,
                          event,
-                         &bindings[i]);
+                         &bindings[i],
+                         handler->user_data);
       return TRUE;
     }
 
@@ -2234,7 +2215,8 @@ handle_switch_to_workspace (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *event_window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   gint which = binding->handler->data;
   MetaWorkspace *workspace;
@@ -2251,7 +2233,8 @@ handle_switch_to_workspace (MetaDisplay    *display,
        * Note that we're the only caller of that function, so perhaps
        * we should merge with it.
        */
-      handle_workspace_switch (display, screen, event_window, event, binding);
+      handle_workspace_switch (display, screen, event_window, event, binding,
+                               dummy);
       return;
     }
 
@@ -2363,7 +2346,8 @@ handle_run_command (MetaDisplay    *display,
                     MetaScreen     *screen,
                     MetaWindow     *window,
                     XEvent         *event,
-                    MetaKeyBinding *binding)
+                    MetaKeyBinding *binding,
+                    gpointer        dummy)
 {
   gint which = binding->handler->data;
   const char *command;
@@ -2402,7 +2386,8 @@ handle_maximize_vertically (MetaDisplay    *display,
                       MetaScreen     *screen,
                       MetaWindow     *window,
                       XEvent         *event,
-                      MetaKeyBinding *binding)
+                      MetaKeyBinding *binding,
+                      gpointer        dummy)
 {
   if (window->has_resize_func)
     {
@@ -2418,7 +2403,8 @@ handle_maximize_horizontally (MetaDisplay    *display,
                        MetaScreen     *screen,
                        MetaWindow     *window,
                        XEvent         *event,
-                       MetaKeyBinding *binding)
+                       MetaKeyBinding *binding,
+                       gpointer        dummy)
 {
   if (window->has_resize_func)
     {
@@ -2442,7 +2428,8 @@ handle_move_to_corner_backend (MetaDisplay    *display,
            gboolean        xchange,
            gboolean        ychange,
            gboolean        to_right,
-           gboolean        to_bottom)
+           gboolean        to_bottom,
+           gpointer        dummy)
 {
   MetaRectangle work_area;
   MetaRectangle outer;
@@ -2486,9 +2473,10 @@ handle_move_to_corner_nw  (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, FALSE);
+  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, FALSE, dummy);
 }
 
 static void
@@ -2496,9 +2484,10 @@ handle_move_to_corner_ne  (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, FALSE);
+  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, FALSE, dummy);
 }
 
 static void
@@ -2506,9 +2495,10 @@ handle_move_to_corner_sw  (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, TRUE);
+  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, TRUE, dummy);
 }
 
 static void
@@ -2516,9 +2506,10 @@ handle_move_to_corner_se  (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, TRUE);
+  handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, TRUE, dummy);
 }
 
 static void
@@ -2526,9 +2517,10 @@ handle_move_to_side_n     (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, FALSE);
+  handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, FALSE, dummy);
 }
 
 static void
@@ -2536,9 +2528,10 @@ handle_move_to_side_s     (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, TRUE);
+  handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, TRUE, dummy);
 }
 
 static void
@@ -2546,9 +2539,10 @@ handle_move_to_side_e     (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, TRUE, FALSE);
+  handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, TRUE, FALSE, dummy);
 }
 
 static void
@@ -2556,9 +2550,10 @@ handle_move_to_side_w     (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
-  handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, FALSE, FALSE);
+  handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, FALSE, FALSE, dummy);
 }
 
 static void
@@ -2566,7 +2561,8 @@ handle_move_to_center  (MetaDisplay    *display,
                         MetaScreen     *screen,
                         MetaWindow     *window,
                         XEvent         *event,
-                        MetaKeyBinding *binding)
+                        MetaKeyBinding *binding,
+                        gpointer        dummy)
 {
   MetaRectangle work_area;
   MetaRectangle outer;
@@ -2714,7 +2710,8 @@ handle_show_desktop (MetaDisplay    *display,
                        MetaScreen     *screen,
                        MetaWindow     *window,
                        XEvent         *event,
-                       MetaKeyBinding *binding)
+                       MetaKeyBinding *binding,
+                       gpointer        dummy)
 {
   if (screen->active_workspace->showing_desktop)
     {
@@ -2732,7 +2729,8 @@ handle_panel (MetaDisplay    *display,
                          MetaScreen     *screen,
                          MetaWindow     *window,
                          XEvent         *event,
-                         MetaKeyBinding *binding)
+                         MetaKeyBinding *binding,
+                         gpointer        dummy)
 {
   MetaKeyBindingAction action = binding->handler->data;
   Atom action_atom;
@@ -2783,7 +2781,8 @@ handle_activate_window_menu (MetaDisplay    *display,
                       MetaScreen     *screen,
                       MetaWindow     *event_window,
                       XEvent         *event,
-                      MetaKeyBinding *binding)
+                      MetaKeyBinding *binding,
+                      gpointer        dummy)
 {
   if (display->focus_window)
     {
@@ -2942,7 +2941,8 @@ handle_switch (MetaDisplay    *display,
                     MetaScreen     *screen,
                     MetaWindow     *event_window,
                     XEvent         *event,
-                    MetaKeyBinding *binding)
+                    MetaKeyBinding *binding,
+                    gpointer        dummy)
 {
   gint backwards = binding->handler->flags & BINDING_IS_REVERSED;
 
@@ -2955,7 +2955,8 @@ handle_cycle (MetaDisplay    *display,
                     MetaScreen     *screen,
                     MetaWindow     *event_window,
                     XEvent         *event,
-                    MetaKeyBinding *binding)
+                    MetaKeyBinding *binding,
+                    gpointer        dummy)
 {
   gint backwards = binding->handler->flags & BINDING_IS_REVERSED;
 
@@ -2969,7 +2970,8 @@ handle_toggle_fullscreen  (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (window->fullscreen)
     meta_window_unmake_fullscreen (window);
@@ -2982,7 +2984,8 @@ handle_toggle_above       (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (window->wm_state_above)
     meta_window_unmake_above (window);
@@ -2995,7 +2998,8 @@ handle_toggle_maximized    (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (META_WINDOW_MAXIMIZED (window))
     meta_window_unmaximize (window,
@@ -3012,7 +3016,8 @@ handle_maximize           (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (window->has_maximize_func)
     meta_window_maximize (window,
@@ -3025,7 +3030,8 @@ handle_unmaximize         (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (window->maximized_vertically || window->maximized_horizontally)
     meta_window_unmaximize (window,
@@ -3038,7 +3044,8 @@ handle_toggle_shaded      (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (window->shaded)
     meta_window_unshade (window, event->xkey.time);
@@ -3051,7 +3058,8 @@ handle_close              (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (window->has_close_func)
     meta_window_delete (window, event->xkey.time);
@@ -3062,7 +3070,8 @@ handle_minimize        (MetaDisplay    *display,
                         MetaScreen     *screen,
                         MetaWindow     *window,
                         XEvent         *event,
-                        MetaKeyBinding *binding)
+                        MetaKeyBinding *binding,
+                        gpointer        dummy)
 {
   if (window->has_minimize_func)
     meta_window_minimize (window);
@@ -3073,7 +3082,8 @@ handle_begin_move         (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (window->has_move_func)
     {
@@ -3089,7 +3099,8 @@ handle_begin_resize       (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (window->has_resize_func)
     {
@@ -3105,7 +3116,8 @@ handle_toggle_on_all_workspaces (MetaDisplay    *display,
                            MetaScreen     *screen,
                            MetaWindow     *window,
                            XEvent         *event,
-                           MetaKeyBinding *binding)
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   if (window->on_all_workspaces)
     meta_window_unstick (window);
@@ -3115,10 +3127,11 @@ handle_toggle_on_all_workspaces (MetaDisplay    *display,
 
 static void
 handle_move_to_workspace  (MetaDisplay    *display,
-                              MetaScreen     *screen,
-                              MetaWindow     *window,
-                              XEvent         *event,
-                              MetaKeyBinding *binding)
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding,
+                           gpointer        dummy)
 {
   gint which = binding->handler->data;
   gboolean flip = (which < 0);
@@ -3172,7 +3185,8 @@ handle_raise_or_lower (MetaDisplay    *display,
                        MetaScreen     *screen,
 		       MetaWindow     *window,
 		       XEvent         *event,
-		       MetaKeyBinding *binding)
+		       MetaKeyBinding *binding,
+                       gpointer        dummy)
 {
   /* Get window at pointer */
   
@@ -3218,7 +3232,8 @@ handle_raise (MetaDisplay    *display,
               MetaScreen     *screen,
               MetaWindow     *window,
               XEvent         *event,
-              MetaKeyBinding *binding)
+              MetaKeyBinding *binding,
+              gpointer        dummy)
 {
   meta_window_raise (window);
 }
@@ -3228,7 +3243,8 @@ handle_lower (MetaDisplay    *display,
               MetaScreen     *screen,
               MetaWindow     *window,
               XEvent         *event,
-              MetaKeyBinding *binding)
+              MetaKeyBinding *binding,
+              gpointer        dummy)
 {
   meta_window_lower (window);
 }
@@ -3238,7 +3254,8 @@ handle_workspace_switch  (MetaDisplay    *display,
                           MetaScreen     *screen,
                           MetaWindow     *window,
                           XEvent         *event,
-                          MetaKeyBinding *binding)
+                          MetaKeyBinding *binding,
+                          gpointer        dummy)
 {
   gint motion = binding->handler->data;
   unsigned int grab_mask;
@@ -3297,10 +3314,11 @@ handle_workspace_switch  (MetaDisplay    *display,
 
 static void
 handle_set_spew_mark (MetaDisplay    *display,
-                  MetaScreen     *screen,
-                  MetaWindow     *window,
-                  XEvent         *event,
-                  MetaKeyBinding *binding)
+                      MetaScreen     *screen,
+                      MetaWindow     *window,
+                      XEvent         *event,
+                      MetaKeyBinding *binding,
+                      gpointer        dummy)
 {
   meta_verbose ("-- MARK MARK MARK MARK --\n");
 }
@@ -3318,7 +3336,8 @@ handle_run_terminal (MetaDisplay    *display,
                      MetaScreen     *screen,
                      MetaWindow     *window,
                      XEvent         *event,
-                     MetaKeyBinding *binding)
+                     MetaKeyBinding *binding,
+                     gpointer        dummy)
 {
   const char *command;
   GError *err;

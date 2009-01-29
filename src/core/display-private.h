@@ -37,6 +37,7 @@
 #include "common.h"
 #include "boxes.h"
 #include "display.h"
+#include "keybindings-private.h"
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 #include <libsn/sn.h>
@@ -46,7 +47,6 @@
 #include <X11/extensions/sync.h>
 #endif
 
-typedef struct _MetaKeyBinding MetaKeyBinding;
 typedef struct _MetaStack      MetaStack;
 typedef struct _MetaUISlave    MetaUISlave;
 

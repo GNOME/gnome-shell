@@ -26,11 +26,10 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_KEYBINDINGS_H
-#define META_KEYBINDINGS_H
+#ifndef META_KEYBINDINGS_PRIVATE_H
+#define META_KEYBINDINGS_PRIVATE_H
 
-#include "display-private.h"
-#include "window.h"
+#include "keybindings.h"
 
 void     meta_display_init_keys             (MetaDisplay *display);
 void     meta_display_shutdown_keys         (MetaDisplay *display);
