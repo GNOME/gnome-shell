@@ -90,7 +90,6 @@ Workspace.prototype = {
             }
         }
 
-        this._overlappedMode = !((this._windows.length-1) in POSITIONS);
         this._removeButton = null;
         this._visible = false;
 
@@ -203,6 +202,7 @@ Workspace.prototype = {
     _positionWindows : function(workspaceZooming) {
         let global = Shell.Global.get();
 
+        this._overlappedMode = !((this._windows.length-1) in POSITIONS);
         for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
 
@@ -515,6 +515,9 @@ Workspace.prototype = {
     },
 
     _onCloneButtonPress : function (clone, event) {
+        if (clone._animationCount)
+            return;
+
         this.actor.raise_top();
         clone.raise_top();
 
