@@ -59,6 +59,8 @@ MAINTAINERCLEANFILES = \
 	missing \
 	$(NULL)
 
+MAINTAINERCLEANFILES += $(srcdir)/ChangeLog
+
 PREV_RELEASE=$(CLUTTER_MAJOR_VERSION).$$(echo "$(CLUTTER_MINOR_VERSION)-1" | bc)
 
 CHANGELOGS = ChangeLog
@@ -70,8 +72,8 @@ dist-hook: changelogs
 	changelogs="$(CHANGELOGS)"; \
 	for changelog in $$changelogs; \
 	do \
-		cp $(srcdir)/$$changelog $(distdir)/ 2>/dev/null || \
-		cp $$changelog $(distdir)/; \
+		cp -f $(srcdir)/$$changelog $(distdir)/ 2>/dev/null || \
+		cp -f $$changelog $(distdir)/; \
 	done
 
 $(srcdir)/ChangeLog:
