@@ -448,7 +448,7 @@ clutter_x11_texture_pixmap_set_property (GObject      *object,
       break;
     case PROP_WINDOW:
       clutter_x11_texture_pixmap_set_window (texture,
-                                             g_value_get_uint (value),
+                                             g_value_get_ulong (value),
                                              priv->window_redirect_automatic);
       break;
     case PROP_WINDOW_REDIRECT_AUTOMATIC:
@@ -496,7 +496,7 @@ clutter_x11_texture_pixmap_get_property (GObject      *object,
       g_value_set_boolean (value, priv->automatic_updates);
       break;
     case PROP_WINDOW:
-      g_value_set_uint (value, priv->window);
+      g_value_set_ulong (value, priv->window);
       break;
     case PROP_WINDOW_REDIRECT_AUTOMATIC:
       g_value_set_boolean (value, priv->window_redirect_automatic);
