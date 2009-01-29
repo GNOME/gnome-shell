@@ -106,6 +106,8 @@ ClutterActor *        clutter_text_new_with_text        (const gchar        *fon
 G_CONST_RETURN gchar *clutter_text_get_text             (ClutterText        *self);
 void                  clutter_text_set_text             (ClutterText        *self,
                                                          const gchar        *text);
+void                  clutter_text_set_markup           (ClutterText        *self,
+                                                         const gchar        *markup);
 PangoLayout *         clutter_text_get_layout           (ClutterText        *self);
 void                  clutter_text_set_color            (ClutterText        *self,
                                                          const ClutterColor *color);

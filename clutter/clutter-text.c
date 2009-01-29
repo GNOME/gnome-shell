@@ -221,7 +221,6 @@ offset_to_bytes (const gchar *text,
 
 #define bytes_to_offset(t,p)    (g_utf8_pointer_to_offset ((t), (t) + (p)))
 
-
 static inline void
 clutter_text_clear_selection (ClutterText *self)
 {
@@ -243,46 +242,41 @@ clutter_text_create_layout_no_cache (ClutterText *text,
 
   pango_layout_set_font_description (layout, priv->font_desc);
 
-  if (priv->effective_attrs)
+  if (priv->text)
+    {
+      if (G_LIKELY (priv->password_char == 0))
+        pango_layout_set_text (layout, priv->text, priv->n_bytes);
+      else
+        {
+          GString *str = g_string_sized_new (priv->n_bytes);
+          gunichar invisible_char;
+          gchar buf[7];
+          gint char_len, i;
+
+          invisible_char = priv->password_char;
+
+          /* we need to convert the string built of invisible
+           * characters into UTF-8 for it to be fed to the Pango
+           * layout
+           */
+          memset (buf, 0, sizeof (buf));
+          char_len = g_unichar_to_utf8 (invisible_char, buf);
+
+          for (i = 0; i < priv->n_chars; i++)
+            g_string_append_len (str, buf, char_len);
+
+          pango_layout_set_text (layout, str->str, str->len);
+
+          g_string_free (str, TRUE);
+        }
+    }
+
+  if (!priv->editable && priv->effective_attrs)
     pango_layout_set_attributes (layout, priv->effective_attrs);
 
   pango_layout_set_alignment (layout, priv->alignment);
   pango_layout_set_single_paragraph_mode (layout, priv->single_line_mode);
   pango_layout_set_justify (layout, priv->justify);
-
-  if (priv->text)
-    {
-      if (priv->use_markup && !priv->editable)
-        pango_layout_set_markup (layout, priv->text, -1);
-      else
-        {
-          if (G_LIKELY (priv->password_char == 0))
-            pango_layout_set_text (layout, priv->text, priv->n_bytes);
-          else
-            {
-              GString *str = g_string_sized_new (priv->n_bytes);
-              gunichar invisible_char;
-              gchar buf[7];
-              gint char_len, i;
-
-              invisible_char = priv->password_char;
-
-              /* we need to convert the string built of invisible
-               * characters into UTF-8 for it to be fed to the Pango
-               * layout
-               */
-              memset (buf, 0, sizeof (buf));
-              char_len = g_unichar_to_utf8 (invisible_char, buf);
-
-              for (i = 0; i < priv->n_chars; i++)
-                g_string_append_len (str, buf, char_len);
-
-              pango_layout_set_text (layout, str->str, str->len);
-
-              g_string_free (str, TRUE);
-            }
-        }
-    }
 
   if (allocation_width > 0 &&
       (priv->ellipsize != PANGO_ELLIPSIZE_NONE || priv->wrap))
@@ -2114,11 +2108,44 @@ clutter_text_init (ClutterText *self)
 
   priv->cursor_size = DEFAULT_CURSOR_SIZE;
 
-  priv->font_changed_id
-    = g_signal_connect_swapped (clutter_get_default_backend (),
-                                "font-changed",
-                                G_CALLBACK (clutter_text_font_changed_cb),
-                                self);
+  priv->font_changed_id =
+    g_signal_connect_swapped (clutter_get_default_backend (),
+                              "font-changed",
+                              G_CALLBACK (clutter_text_font_changed_cb),
+                              self);
+}
+
+static void
+clutter_text_merge_attributes (ClutterText *self)
+{
+  ClutterTextPrivate *priv = self->priv;
+  PangoAttrIterator *iter;
+  GSList *attributes, *l;
+
+  if (!priv->attrs)
+    return;
+
+  if (!priv->effective_attrs)
+    {
+      priv->effective_attrs = pango_attr_list_ref (priv->attrs);
+      return;
+    }
+
+  iter = pango_attr_list_get_iterator (priv->attrs);
+  do
+    {
+      attributes = pango_attr_iterator_get_attrs (iter);
+
+      for (l = attributes; l != NULL; l = l->next)
+        {
+          PangoAttribute *attr = l->data;
+
+          pango_attr_list_insert (priv->effective_attrs, attr);
+        }
+
+      g_slist_free (attributes);
+    }
+  while (pango_attr_iterator_next (iter));
 }
 
 /**
@@ -2752,27 +2779,25 @@ clutter_text_get_text (ClutterText *self)
   return self->priv->text;
 }
 
-/**
- * clutter_text_set_text:
- * @self: a #ClutterText
- * @text: the text to set
- *
- * Sets the contents of a #ClutterText actor. The @text string
- * must not be %NULL; to unset the current contents of the
- * #ClutterText actor simply pass "" (an empty string).
- *
- * Since: 1.0
- */
-void
-clutter_text_set_text (ClutterText *self,
-                       const gchar *text)
+static inline void
+clutter_text_set_use_markup_internal (ClutterText *self,
+                                      gboolean     use_markup)
 {
-  ClutterTextPrivate *priv;
+  ClutterTextPrivate *priv = self->priv;
 
-  g_return_if_fail (CLUTTER_IS_TEXT (self));
-  g_return_if_fail (text != NULL);
+  if (priv->use_markup != use_markup)
+    {
+      priv->use_markup = use_markup;
 
-  priv = self->priv;
+      g_object_notify (G_OBJECT (self), "use-markup");
+    }
+}
+
+static inline void
+clutter_text_set_text_internal (ClutterText *self,
+                                const gchar *text)
+{
+  ClutterTextPrivate *priv = self->priv;
 
   if (priv->max_length > 0)
     {
@@ -2808,13 +2833,115 @@ clutter_text_set_text (ClutterText *self,
       priv->n_chars = g_utf8_strlen (text, -1);
     }
 
+  g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
+  g_object_notify (G_OBJECT (self), "text");
+}
+
+static inline void
+clutter_text_set_markup_internal (ClutterText *self,
+                                  const gchar *str)
+{
+  ClutterTextPrivate *priv = self->priv;
+  GError *error;
+  gchar *text = NULL;
+  PangoAttrList *attrs = NULL;
+  gboolean res;
+
+  error = NULL;
+  res = pango_parse_markup (str, -1, 0,
+                            &attrs,
+                            &text,
+                            NULL,
+                            &error);
+  if (!res)
+    {
+      if (G_LIKELY (error))
+        {
+          g_warning ("Failed to set the markup of the actor of class `%s': %s",
+                     G_OBJECT_TYPE_NAME (self),
+                     error->message);
+          g_error_free (error);
+        }
+      else
+        g_warning ("Failed to set the markup of the actor of class `%s'",
+                   G_OBJECT_TYPE_NAME (self));
+
+      return;
+    }
+
+  if (text)
+    {
+      clutter_text_set_text_internal (self, text);
+      g_free (text);
+    }
+
+  if (attrs)
+    {
+      if (priv->effective_attrs)
+        pango_attr_list_ref (priv->effective_attrs);
+
+      priv->effective_attrs = attrs;
+    }
+
+  clutter_text_merge_attributes (self);
+}
+
+/**
+ * clutter_text_set_text:
+ * @self: a #ClutterText
+ * @text: the text to set
+ *
+ * Sets the contents of a #ClutterText actor. The @text string
+ * must not be %NULL; to unset the current contents of the
+ * #ClutterText actor simply pass "" (an empty string).
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_text (ClutterText *self,
+                       const gchar *text)
+{
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+  g_return_if_fail (text != NULL);
+
+  clutter_text_set_use_markup_internal (self, FALSE);
+  clutter_text_set_text_internal (self, text);
+
   clutter_text_dirty_cache (self);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+}
 
-  g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
+/**
+ * clutter_text_set_markup:
+ * @self: a #ClutterText
+ * @markup: a string containing Pango markup
+ *
+ * Sets @markup as the contents of a #ClutterText.
+ *
+ * This is a convenience function for setting a string containing
+ * Pango markup, and it is logically equivalent to:
+ *
+ * |[
+ *   clutter_text_set_use_markup (CLUTTER_TEXT (actor), TRUE);
+ *   clutter_text_set_text (CLUTTER_TEXT (actor), markup);
+ * ]|
+ *
+ * Since: 1.0
+ */
+void
+clutter_text_set_markup (ClutterText *self,
+                         const gchar *markup)
+{
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+  g_return_if_fail (markup != NULL);
 
-  g_object_notify (G_OBJECT (self), "text");
+  clutter_text_set_use_markup_internal (self, TRUE);
+  clutter_text_set_markup_internal (self, markup);
+
+  clutter_text_dirty_cache (self);
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 /**
@@ -3060,9 +3187,7 @@ clutter_text_get_line_wrap_mode (ClutterText *self)
  * @attrs: a #PangoAttrList or %NULL to unset the attributes
  *
  * Sets the attributes list that are going to be applied to the
- * #ClutterText contents. The attributes set with this function
- * will be ignored if the #ClutterText:use_markup property is
- * set to %TRUE.
+ * #ClutterText contents.
  *
  * The #ClutterText actor will take a reference on the #PangoAttrList
  * passed to this function.
@@ -3085,6 +3210,8 @@ clutter_text_set_attributes (ClutterText   *self,
   if (priv->attrs)
     pango_attr_list_unref (priv->attrs);
 
+  priv->attrs = attrs;
+
   if (!priv->use_markup)
     {
       if (attrs)
@@ -3095,8 +3222,8 @@ clutter_text_set_attributes (ClutterText   *self,
 
       priv->effective_attrs = attrs;
     }
-
-  priv->attrs = attrs;
+  else
+    clutter_text_set_markup_internal (self, priv->text);
 
   clutter_text_dirty_cache (self);
 
@@ -3187,8 +3314,8 @@ clutter_text_get_alignment (ClutterText *self)
  * Sets whether the contents of the #ClutterText actor contains markup
  * in <link linkend="PangoMarkupFormat">Pango's text markup language</link>.
  *
- * Calling this function on an editable #ClutterText will not cause
- * the actor to parse any markup.
+ * Setting #ClutterText:use-markup on an editable #ClutterText will
+ * make the actor discard any markup.
  *
  * Since: 1.0
  */
@@ -3196,22 +3323,14 @@ void
 clutter_text_set_use_markup (ClutterText *self,
 			     gboolean     setting)
 {
-  ClutterTextPrivate *priv;
-
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  priv = self->priv;
+  clutter_text_set_use_markup_internal (self, setting);
+  clutter_text_set_markup_internal (self, self->priv->text);
 
-  if (priv->use_markup != setting)
-    {
-      priv->use_markup = setting;
+  clutter_text_dirty_cache (self);
 
-      clutter_text_dirty_cache (self);
-
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
-
-      g_object_notify (G_OBJECT (self), "use-markup");
-    }
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 }
 
 /**
