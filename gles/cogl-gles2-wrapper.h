@@ -259,6 +259,36 @@ struct _CoglGles2WrapperShader
 #define GL_EXP                 0x8000
 #define GL_EXP2                0x8001
 
+#define GL_ADD                 CGL_ADD
+#define GL_ADD_SIGNED          CGL_ADD_SIGNED
+#define GL_INTERPOLATE         CGL_INTERPOLATE
+#define GL_SUBTRACT            CGL_SUBTRACT
+#define GL_DOT3_RGB            CGL_DOT3_RGB
+#define GL_DOT3_RGBA           CGL_DOT3_RGBA
+#define GL_CONSTANT            CGL_CONSTANT
+#define GL_PRIMARY_COLOR       CGL_PRIMARY_COLOR
+#define GL_PREVIOUS            CGL_PREVIOUS
+#define GL_COMBINE             CGL_COMBINE
+#define GL_COMBINE_RGB         CGL_COMBINE_RGB
+#define GL_COMBINE_ALPHA       CGL_COMBINE_ALPHA
+#define GL_SRC0_RGB            CGL_SRC0_RGB
+#define GL_OPERAND0_RGB        CGL_OPERAND0_RGB
+#define GL_SRC1_RGB            CGL_SRC1_RGB
+#define GL_OPERAND1_RGB        CGL_OPERAND1_RGB
+#define GL_SRC2_RGB            CGL_SRC2_RGB
+#define GL_OPERAND2_RGB        CGL_OPERAND2_RGB
+#define GL_SRC0_ALPHA          CGL_SRC0_ALPHA
+#define GL_OPERAND0_ALPHA      CGL_OPERAND0_ALPHA
+#define GL_SRC1_ALPHA          CGL_SRC1_ALPHA
+#define GL_OPERAND1_ALPHA      CGL_OPERAND1_ALPHA
+#define GL_SRC2_ALPHA          CGL_SRC2_ALPHA
+#define GL_OPERAND2_ALPHA      CGL_OPERAND2_ALPHA
+#define GL_AMBIENT             CGL_AMBIENT
+#define GL_DIFFUSE             CGL_DIFFUSE
+#define GL_SPECULAR            CGL_SPECULAR
+#define GL_EMISSION            CGL_EMISSION
+#define GL_SHININESS           CGL_SHININESS
+
 #endif /* GL_MODELVIEW */
 
 void cogl_gles2_wrapper_init (CoglGles2Wrapper *wrapper);
@@ -269,6 +299,7 @@ void cogl_wrap_glPopMatrix ();
 void cogl_wrap_glMatrixMode (GLenum mode);
 void cogl_wrap_glLoadIdentity ();
 void cogl_wrap_glMultMatrixf (const GLfloat *m);
+void cogl_wrap_glLoadMatrixf (const GLfloat *m);
 void cogl_wrap_glFrustumf (GLfloat left, GLfloat right,
 			   GLfloat bottom, GLfloat top,
 			   GLfloat z_near, GLfloat z_far);
@@ -291,7 +322,7 @@ void cogl_wrap_glColorPointer (GLint size, GLenum type, GLsizei stride,
 void cogl_wrap_glNormalPointer (GLenum type, GLsizei stride,
 				const GLvoid *pointer);
 
-void cogl_wrap_glTexEnvf (GLenum target, GLenum pname, GLfloat param);
+void cogl_wrap_glTexEnvi (GLenum target, GLenum pname, GLfloat param);
 
 void cogl_wrap_glClientActiveTexture (GLenum texture);
 void cogl_wrap_glActiveTexture (GLenum texture);
@@ -319,46 +350,51 @@ void cogl_wrap_glTexParameteri (GLenum target, GLenum pname, GLfloat param);
 void cogl_gles2_wrapper_bind_texture (GLenum target, GLuint texture,
 				      GLenum internal_format);
 
+void cogl_wrap_glMaterialfv (GLenum face, GLenum pname, const GLfloat *params);
+
 /* This function is only available on GLES 2 */
 #define cogl_wrap_glGenerateMipmap glGenerateMipmap
 
 void _cogl_gles2_clear_cache_for_program (CoglHandle program);
 
+/* Remap the missing GL functions to use the wrappers */
+#ifndef COGL_GLES2_WRAPPER_NO_REMAP
+#define glDrawArrays                 cogl_wrap_glDrawArrays
+#define glDrawElements               cogl_wrap_glDrawElements
+#define glPushMatrix                 cogl_wrap_glPushMatrix
+#define glPopMatrix                  cogl_wrap_glPopMatrix
+#define glMatrixMode                 cogl_wrap_glMatrixMode
+#define glLoadIdentity               cogl_wrap_glLoadIdentity
+#define glMultMatrixf                cogl_wrap_glMultMatrixf
+#define glLoadMatrixf                cogl_wrap_glLoadMatrixf
+#define glFrustumf                   cogl_wrap_glFrustumf
+#define glScalef                     cogl_wrap_glScalef
+#define glTranslatef                 cogl_wrap_glTranslatef
+#define glRotatef                    cogl_wrap_glRotatef
+#define glOrthof                     cogl_wrap_glOrthof
+#define glEnable                     cogl_wrap_glEnable
+#define glDisable                    cogl_wrap_glDisable
+#define glTexCoordPointer            cogl_wrap_glTexCoordPointer
+#define glVertexPointer              cogl_wrap_glVertexPointer
+#define glColorPointer               cogl_wrap_glColorPointer
+#define glNormalPointer              cogl_wrap_glNormalPointer
+#define glTexEnvi                    cogl_wrap_glTexEnvi
+#define glActiveTexture              cogl_wrap_glActiveTexture
+#define glClientActiveTexture        cogl_wrap_glClientActiveTexture
+#define glEnableClientState          cogl_wrap_glEnableClientState
+#define glDisableClientState         cogl_wrap_glDisableClientState
+#define glAlphaFunc                  cogl_wrap_glAlphaFunc
+#define glColor4f                    cogl_wrap_glColor4f
+#define glClipPlanef                 cogl_wrap_glClipPlanef
+#define glGetIntegerv                cogl_wrap_glGetIntegerv
+#define glGetFloatv                  cogl_wrap_glGetFloatv
+#define glFogf                       cogl_wrap_glFogf
+#define glFogfv                      cogl_wrap_glFogfv
+#define glTexParameteri              cogl_wrap_glTexParameteri
+#define glMaterialfv                 cogl_wrap_glMaterialfv
+#endif /* COGL_GLES2_WRAPPER_NO_REMAP */
+
 #else /* HAVE_COGL_GLES2 */
-
-/* If we're not using GL ES 2 then just use the GL functions
-   directly */
-
-#define cogl_wrap_glDrawArrays         glDrawArrays
-#define cogl_wrap_glDrawElements       glDrawElements
-#define cogl_wrap_glPushMatrix         glPushMatrix
-#define cogl_wrap_glPopMatrix          glPopMatrix
-#define cogl_wrap_glMatrixMode         glMatrixMode
-#define cogl_wrap_glLoadIdentity       glLoadIdentity
-#define cogl_wrap_glMultMatrixf        glMultMatrixf
-#define cogl_wrap_glFrustumf           glFrustumf
-#define cogl_wrap_glScalef             glScalef
-#define cogl_wrap_glTranslatef         glTranslatef
-#define cogl_wrap_glRotatef            glRotatef
-#define cogl_wrap_glOrthof             glOrthof
-#define cogl_wrap_glEnable             glEnable
-#define cogl_wrap_glDisable            glDisable
-#define cogl_wrap_glTexCoordPointer    glTexCoordPointer
-#define cogl_wrap_glVertexPointer      glVertexPointer
-#define cogl_wrap_glColorPointer       glColorPointer
-#define cogl_wrap_glNormalPointer      glNormalPointer
-#define cogl_wrap_glTexEnvf            glTexEnvf
-#define cogl_wrap_glActiveTexture      glActiveTexture
-#define cogl_wrap_glEnableClientState  glEnableClientState
-#define cogl_wrap_glDisableClientState glDisableClientState
-#define cogl_wrap_glAlphaFunc          glAlphaFunc
-#define cogl_wrap_glColor4f            glColor4f
-#define cogl_wrap_glClipPlanef         glClipPlanef
-#define cogl_wrap_glGetIntegerv        glGetIntegerv
-#define cogl_wrap_glGetFloatv          glGetFloatv
-#define cogl_wrap_glFogf               glFogf
-#define cogl_wrap_glFogfv              glFogfv
-#define cogl_wrap_glTexParameteri      glTexParameteri
 
 /* The extra third parameter of the bind texture wrapper isn't needed
    so we can just directly call glBindTexture */

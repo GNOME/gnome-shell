@@ -263,9 +263,6 @@ G_BEGIN_DECLS
 #define CGL_LIGHT_MODEL_TWO_SIDE GL_LIGHT_MODEL_TWO_SIDE
 
 /* LightParameter */
-#define CGL_AMBIENT GL_AMBIENT
-#define CGL_DIFFUSE GL_DIFFUSE
-#define CGL_SPECULAR GL_SPECULAR
 #define CGL_POSITION GL_POSITION
 #define CGL_SPOT_DIRECTION GL_SPOT_DIRECTION
 #define CGL_SPOT_EXPONENT GL_SPOT_EXPONENT
@@ -301,8 +298,6 @@ G_BEGIN_DECLS
 #define CGL_SET GL_SET
 
 /* MaterialParameter */
-#define CGL_EMISSION GL_EMISSION
-#define CGL_SHININESS GL_SHININESS
 #define CGL_AMBIENT_AND_DIFFUSE GL_AMBIENT_AND_DIFFUSE
 
 /* MatrixMode */
@@ -354,9 +349,7 @@ G_BEGIN_DECLS
 #define CGL_EXTENSIONS GL_EXTENSIONS
 
 /* TextureEnvMode */
-#define CGL_MODULATE GL_MODULATE
 #define CGL_DECAL GL_DECAL
-#define CGL_ADD GL_ADD
 /*      GL_BLEND */
 /*      GL_REPLACE */
 
@@ -410,16 +403,7 @@ G_BEGIN_DECLS
 #define CGL_BUFFER_SIZE GL_BUFFER_SIZE
 #define CGL_BUFFER_USAGE GL_BUFFER_USAGE
 #define CGL_BUFFER_ACCESS GL_BUFFER_ACCESS
-#define CGL_SUBTRACT GL_SUBTRACT
-#define CGL_COMBINE GL_COMBINE
-#define CGL_COMBINE_RGB GL_COMBINE_RGB
-#define CGL_COMBINE_ALPHA GL_COMBINE_ALPHA
 #define CGL_RGB_SCALE GL_RGB_SCALE
-#define CGL_ADD_SIGNED GL_ADD_SIGNED
-#define CGL_INTERPOLATE GL_INTERPOLATE
-#define CGL_CONSTANT GL_CONSTANT
-#define CGL_PRIMARY_COLOR GL_PRIMARY_COLOR
-#define CGL_PREVIOUS GL_PREVIOUS
 #define CGL_ALPHA_SCALE GL_ALPHA_SCALE
 #define CGL_POINT_SPRITE_OES GL_POINT_SPRITE_OES
 #define CGL_COORD_REPLACE_OES GL_COORD_REPLACE_OES
@@ -477,6 +461,189 @@ typedef GLuint COGLuint;
 #endif
 
 #define CLUTTER_COGL_HAS_GLES 1
+
+/* These aren't always defined under GLES 2 but if they are then we
+   should probably use the GL_* macro instead of assuming the
+   number */
+#ifdef GL_MODULATE
+#define CGL_MODULATE GL_MODULATE
+#else
+#define CGL_MODULATE 0x2100
+#endif
+
+#ifdef GL_ADD
+#define CGL_ADD GL_ADD
+#else
+#define CGL_ADD 0x0104
+#endif
+
+#ifdef GL_ADD_SIGNED
+#define CGL_ADD_SIGNED GL_ADD_SIGNED
+#else
+#define CGL_ADD_SIGNED 0x8574
+#endif
+
+#ifdef GL_INTERPOLATE
+#define CGL_INTERPOLATE GL_INTERPOLATE
+#else
+#define CGL_INTERPOLATE 0x8575
+#endif
+
+#ifdef GL_SUBTRACT
+#define CGL_SUBTRACT GL_SUBTRACT
+#else
+#define CGL_SUBTRACT 0x84e7
+#endif
+
+#ifdef GL_DOT3_RGB
+#define CGL_DOT3_RGB GL_DOT3_RGB
+#else
+#define CGL_DOT3_RGB 0x86ae
+#endif
+
+#ifdef GL_DOT3_RGBA
+#define CGL_DOT3_RGBA GL_DOT3_RGBA
+#else
+#define CGL_DOT3_RGBA 0x86af
+#endif
+
+#ifdef GL_CONSTANT
+#define CGL_CONSTANT GL_CONSTANT
+#else
+#define CGL_CONSTANT 0x8576
+#endif
+
+#ifdef GL_PRIMARY_COLOR
+#define CGL_PRIMARY_COLOR GL_PRIMARY_COLOR
+#else
+#define CGL_PRIMARY_COLOR 0x8577
+#endif
+
+#ifdef GL_PREVIOUS
+#define CGL_PREVIOUS GL_PREVIOUS
+#else
+#define CGL_PREVIOUS 0x8578
+#endif
+
+#ifdef GL_COMBINE
+#define CGL_COMBINE GL_COMBINE
+#else
+#define CGL_COMBINE 0x8570
+#endif
+
+#ifdef GL_COMBINE_RGB
+#define CGL_COMBINE_RGB GL_COMBINE_RGB
+#else
+#define CGL_COMBINE_RGB 0x8571
+#endif
+
+#ifdef GL_COMBINE_ALPHA
+#define CGL_COMBINE_ALPHA GL_COMBINE_ALPHA
+#else
+#define CGL_COMBINE_ALPHA 0x8572
+#endif
+
+#ifdef GL_SRC0_RGB
+#define CGL_SRC0_RGB GL_SRC0_RGB
+#else
+#define CGL_SRC0_RGB 0x8580
+#endif
+
+#ifdef GL_OPERAND0_RGB
+#define CGL_OPERAND0_RGB GL_OPERAND0_RGB
+#else
+#define CGL_OPERAND0_RGB 0x8590
+#endif
+
+#ifdef GL_SRC1_RGB
+#define CGL_SRC1_RGB GL_SRC1_RGB
+#else
+#define CGL_SRC1_RGB 0x8581
+#endif
+
+#ifdef GL_OPERAND1_RGB
+#define CGL_OPERAND1_RGB GL_OPERAND1_RGB
+#else
+#define CGL_OPERAND1_RGB 0x8591
+#endif
+
+#ifdef GL_SRC2_RGB
+#define CGL_SRC2_RGB GL_SRC2_RGB
+#else
+#define CGL_SRC2_RGB 0x8582
+#endif
+
+#ifdef GL_OPERAND2_RGB
+#define CGL_OPERAND2_RGB GL_OPERAND2_RGB
+#else
+#define CGL_OPERAND2_RGB 0x8592
+#endif
+
+#ifdef GL_SRC0_ALPHA
+#define CGL_SRC0_ALPHA GL_SRC0_ALPHA
+#else
+#define CGL_SRC0_ALPHA 0x8588
+#endif
+
+#ifdef GL_OPERAND0_ALPHA
+#define CGL_OPERAND0_ALPHA GL_OPERAND0_ALPHA
+#else
+#define CGL_OPERAND0_ALPHA 0x8598
+#endif
+
+#ifdef GL_SRC1_ALPHA
+#define CGL_SRC1_ALPHA GL_SRC1_ALPHA
+#else
+#define CGL_SRC1_ALPHA 0x8589
+#endif
+
+#ifdef GL_OPERAND1_ALPHA
+#define CGL_OPERAND1_ALPHA GL_OPERAND1_ALPHA
+#else
+#define CGL_OPERAND1_ALPHA 0x8599
+#endif
+
+#ifdef GL_SRC2_ALPHA
+#define CGL_SRC2_ALPHA GL_SRC2_ALPHA
+#else
+#define CGL_SRC2_ALPHA 0x858a
+#endif
+
+#ifdef GL_OPERAND2_ALPHA
+#define CGL_OPERAND2_ALPHA GL_OPERAND2_ALPHA
+#else
+#define CGL_OPERAND2_ALPHA 0x859a
+#endif
+
+#ifdef GL_AMBIENT
+#define CGL_AMBIENT GL_AMBIENT
+#else
+#define CGL_AMBIENT 0x1200
+#endif
+
+#ifdef GL_DIFFUSE
+#define CGL_DIFFUSE GL_DIFFUSE
+#else
+#define CGL_DIFFUSE 0x1201
+#endif
+
+#ifdef GL_SPECULAR
+#define CGL_SPECULAR GL_SPECULAR
+#else
+#define CGL_SPECULAR 0x1202
+#endif
+
+#ifdef GL_EMISSION
+#define CGL_EMISSION GL_EMISSION
+#else
+#define CGL_EMISSION 0x1600
+#endif
+
+#ifdef GL_SHININESS
+#define CGL_SHININESS GL_SHININESS
+#else
+#define CGL_SHININESS 0x1601
+#endif
 
 G_END_DECLS
 
