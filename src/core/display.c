@@ -40,7 +40,7 @@
 #include "group-props.h"
 #include "frame-private.h"
 #include "errors.h"
-#include "keybindings.h"
+#include "keybindings-private.h"
 #include "prefs.h"
 #include "resizepopup.h"
 #include "xprops.h"

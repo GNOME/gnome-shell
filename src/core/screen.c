@@ -34,7 +34,7 @@
 #include "frame-private.h"
 #include "prefs.h"
 #include "workspace-private.h"
-#include "keybindings.h"
+#include "keybindings-private.h"
 #include "stack.h"
 #include "xprops.h"
 #include "compositor.h"

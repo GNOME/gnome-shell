@@ -27,7 +27,7 @@
 #include "frame-private.h"
 #include "bell.h"
 #include "errors.h"
-#include "keybindings.h"
+#include "keybindings-private.h"
 
 #ifdef HAVE_RENDER
 #include <X11/extensions/Xrender.h>
