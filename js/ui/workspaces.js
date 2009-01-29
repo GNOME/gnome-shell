@@ -518,7 +518,6 @@ Workspace.prototype = {
         if (clone._animationCount)
             return;
 
-        this.actor.raise_top();
         clone.raise_top();
 
         let [stageX, stageY] = event.get_coords();
@@ -526,8 +525,6 @@ Workspace.prototype = {
         clone._buttonDown = true;
         clone._dragStartX = stageX;
         clone._dragStartY = stageY;
-        clone._dragStartActorX = clone.x;
-        clone._dragStartActorY = clone.y;
 
         Clutter.grab_pointer(clone);
 
@@ -547,11 +544,11 @@ Workspace.prototype = {
             if (clone.realWindow.get_workspace() == this.workspaceNum) {
                 // Didn't get moved elsewhere, restore position
                 Tweener.addTween(clone,
-                                 { x: clone._dragStartActorX,
-                                   y: clone._dragStartActorY,
+                                 { x: clone._dragStartX + clone._dragOffsetX,
+                                   y: clone._dragStartY + clone._dragOffsetY,
                                    time: SNAP_BACK_ANIMATION_TIME,
                                    transition: "easeOutQuad",
-                                   onComplete: this._onCloneAnimationComplete,
+                                   onComplete: this._onCloneSnapBackComplete,
                                    onCompleteScope: this,
                                    onCompleteParams: [clone]
                                  });
@@ -569,29 +566,51 @@ Workspace.prototype = {
         }
     },
 
+    _onCloneSnapBackComplete : function (clone) {
+        clone.reparent(clone._dragOrigParent);
+        clone.set_scale(clone._dragOrigScale, clone._dragOrigScale);
+        clone.set_position(clone._dragOrigX, clone._dragOrigY);
+        this._onCloneAnimationComplete(clone);
+    },
+
     _onCloneMotion : function (clone, event) {
         if (!clone._buttonDown)
             return;
 
         let [stageX, stageY] = event.get_coords();
 
-        // If we are already dragging, update the position
-        if (clone._inDrag) {
-            clone.x = clone._dragStartActorX + (stageX - clone._dragStartX) / this.scale;
-            clone.y = clone._dragStartActorY + (stageY - clone._dragStartY) / this.scale;
-
-            return;
-        }
-
         // If we haven't begun a drag, see if the user has moved the mouse enough
         // to trigger a drag
         let dragThreshold = Gtk.Settings.get_default().gtk_dnd_drag_threshold;
-        if (Math.abs(stageX - clone._dragStartX) > dragThreshold ||
-            Math.abs(stageY - clone._dragStartY) > dragThreshold) {
+        if (!clone._inDrag &&
+            (Math.abs(stageX - clone._dragStartX) > dragThreshold ||
+             Math.abs(stageY - clone._dragStartY) > dragThreshold)) {
             clone._inDrag = true;
+            
+            clone._dragOrigParent = clone.get_parent();
+            clone._dragOrigX = clone.x;
+            clone._dragOrigY = clone.y;
+            clone._dragOrigScale = clone.scale_x;
+
+            let [cloneStageX, cloneStageY] = clone.get_transformed_position();
+            clone._dragOffsetX = cloneStageX - clone._dragStartX;
+            clone._dragOffsetY = cloneStageY - clone._dragStartY;
+
+            // Reparent the clone onto the stage, but keeping the same scale.
+            // (the set_position call below will take care of position.)
+            let [scaledWidth, scaledHeight] = clone.get_transformed_size();
+            clone.reparent(clone.get_stage());
+            clone.raise_top();
+            clone.set_scale(scaledWidth / clone.width,
+                            scaledHeight / clone.height);
+        }
+
+        // If we are dragging, update the position
+        if (clone._inDrag) {
+            clone.set_position(stageX + clone._dragOffsetX,
+                               stageY + clone._dragOffsetY);
         }
     },
-
 
     _onCloneAnimationComplete : function (clone) {
         clone._animationCount--;
@@ -979,7 +998,7 @@ Workspaces.prototype = {
         let [windowX, windowY] = clone.get_transformed_position();
 
         let targetWorkspace = null;
-        let targetX, targetY;
+        let targetX, targetY, targetScale;
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
@@ -1000,16 +1019,17 @@ Workspaces.prototype = {
         if (targetWorkspace == null || targetWorkspace == sourceWorkspace)
             return;
 
-        // Window position relative to the new workspace
+        // Window position and scale relative to the new workspace
         targetX = (windowX - myX - targetWorkspace.gridX) / targetWorkspace.scale;
         targetY = (windowY - myY - targetWorkspace.gridY) / targetWorkspace.scale;
+        targetScale = clone.scale_x / targetWorkspace.scale;
 
         let metaWindow = clone.realWindow.get_meta_window();
         metaWindow.change_workspace_by_index(targetWorkspace.workspaceNum,
                                              false, // don't create workspace
                                              time);
         sourceWorkspace.removeWindow(clone.realWindow);
-        targetWorkspace.addWindow(clone.realWindow, targetX, targetY, clone.scale_x);
+        targetWorkspace.addWindow(clone.realWindow, targetX, targetY, targetScale);
     }
 };
 
