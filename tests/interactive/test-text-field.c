@@ -35,8 +35,11 @@ static ClutterActor *
 create_label (const ClutterColor *color,
               const gchar        *text)
 {
-  ClutterActor *retval = clutter_text_new_full (FONT, text, color);
+  ClutterActor *retval = clutter_text_new ();
 
+  clutter_text_set_font_name (CLUTTER_TEXT (retval), FONT);
+  clutter_text_set_color (CLUTTER_TEXT (retval), color);
+  clutter_text_set_markup (CLUTTER_TEXT (retval), text);
   clutter_text_set_editable (CLUTTER_TEXT (retval), FALSE);
   clutter_text_set_selectable (CLUTTER_TEXT (retval), FALSE);
 
@@ -91,17 +94,17 @@ test_text_field_main (gint    argc,
   stage = clutter_stage_get_default ();
   clutter_stage_set_color (CLUTTER_STAGE (stage), &background_color);
 
-  text = create_label (&label_color, "Input field:    ");
+  text = create_label (&label_color, "<b>Input field:</b>    ");
   clutter_actor_set_position (text, 10, 10);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
   height = clutter_actor_get_height (text);
 
-  text = create_entry (&entry_color, "some text", 0, 0);
+  text = create_entry (&entry_color, "<i>some</i> text", 0, 0);
   clutter_actor_set_position (text, 200, 10);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
-  text = create_label (&label_color, "Password field: ");
+  text = create_label (&label_color, "<i>Password field</i>: ");
   clutter_actor_set_position (text, 10, height + 12);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), text);
 
