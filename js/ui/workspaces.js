@@ -710,23 +710,6 @@ Workspace.prototype = {
         return clone;
     },
 
-    // Create a texture for the desktop background, used in the case
-    // where there is no desktop window
-    _makeDesktopRectangle : function() {
-        let global = Shell.Global.get();
-
-        // In the case when we have a desktop window from the file
-        // manager, its height is full-screen, i.e. it includes the
-        // height of the panel, so we should not subtract the height
-        // of the panel from global.screen_height here either to have
-        // them show up identically.
-        return new Clutter.Rectangle({ color: global.stage.color,
-                                       x: 0,
-                                       y: 0,
-                                       width: global.screen_width,
-                                       height: global.screen_height });
-    },
-
     _computeWindowPosition : function(index) {
         // ignore this._windows[0], which is the desktop
         let windowIndex = index - 1;
