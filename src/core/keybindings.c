@@ -3127,9 +3127,9 @@ handle_toggle_on_all_workspaces (MetaDisplay    *display,
 
 static void
 handle_move_to_workspace  (MetaDisplay    *display,
-                           MetaScreen     *screen,
-                           MetaWindow     *window,
-                           XEvent         *event,
+                              MetaScreen     *screen,
+                              MetaWindow     *window,
+                              XEvent         *event,
                            MetaKeyBinding *binding,
                            gpointer        dummy)
 {
@@ -3314,9 +3314,9 @@ handle_workspace_switch  (MetaDisplay    *display,
 
 static void
 handle_set_spew_mark (MetaDisplay    *display,
-                      MetaScreen     *screen,
-                      MetaWindow     *window,
-                      XEvent         *event,
+                  MetaScreen     *screen,
+                  MetaWindow     *window,
+                  XEvent         *event,
                       MetaKeyBinding *binding,
                       gpointer        dummy)
 {
@@ -3368,3 +3368,40 @@ handle_run_terminal (MetaDisplay    *display,
       g_error_free (err);
     }
 }
+
+gboolean
+meta_keybindings_set_custom_handler (const gchar        *name,
+                                     MetaKeyHandlerFunc  handler,
+                                     gpointer            user_data,
+                                     MetaKeyHandlerDataFreeFunc free_data)
+{
+  MetaKeyHandler *key_handler = NULL;
+  guint i;
+
+  /*
+   * FIXME -- the bindings should be in a hashtable or at least sorted somehow.
+   */
+  for (i = 0; i < G_N_ELEMENTS (key_handlers); ++i)
+    {
+      if (!g_strcmp0 (key_handlers[i].name, name))
+        {
+          key_handler = (MetaKeyHandler*)&key_handlers[i];
+          break;
+        }
+    }
+
+  if (!key_handler)
+    return FALSE;
+
+  if (key_handler->user_data_free_func && key_handler->user_data)
+    {
+      key_handler->user_data_free_func (key_handler->user_data);
+    }
+
+  key_handler->func = handler;
+  key_handler->user_data = user_data;
+  key_handler->user_data_free_func = free_data;
+
+  return TRUE;
+}
+

@@ -52,9 +52,8 @@ struct _MetaKeyBinding
 };
 
 
-void
-meta_keybindings_set_custom_hander (const gchar        *name,
-				    MetaKeyHandlerFunc  handler,
-				    gpointer            user_data,
-				    MetaKeyHandlerDataFreeFunc free_data);
+gboolean meta_keybindings_set_custom_handler (const gchar        *name,
+					      MetaKeyHandlerFunc  handler,
+					      gpointer            user_data,
+					      MetaKeyHandlerDataFreeFunc free_data);
 #endif
