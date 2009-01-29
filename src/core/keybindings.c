@@ -3390,3 +3390,16 @@ meta_keybindings_set_custom_handler (const gchar        *name,
   return TRUE;
 }
 
+void
+meta_keybindings_switch_window (MetaDisplay    *display,
+                                MetaScreen     *screen,
+                                MetaWindow     *event_window,
+                                XEvent         *event,
+                                MetaKeyBinding *binding)
+{
+  gint backwards = binding->handler->flags & BINDING_IS_REVERSED;
+
+  do_choose_window (display, screen, event_window, event, binding,
+                    backwards, FALSE);
+}
+
