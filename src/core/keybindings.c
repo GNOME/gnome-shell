@@ -106,7 +106,7 @@ static void regrab_key_bindings         (MetaDisplay *display);
 
 #define keybind(name, handler, param, flags, stroke, description) \
   { #name, handler, param, flags, NULL, NULL },
-static const MetaKeyHandler key_handlers[] = {
+static MetaKeyHandler key_handlers[] = {
 #include "all-keybindings.h"
   { NULL, NULL, 0, 0, NULL, NULL }
 };
@@ -316,11 +316,11 @@ count_bindings (const MetaKeyPref *prefs,
 }
 
 /* FIXME: replace this with a temporary hash */
-static const MetaKeyHandler*
-find_handler (const MetaKeyHandler *handlers,
+static MetaKeyHandler*
+find_handler (MetaKeyHandler *handlers,
               const char           *name)
 {
-  const MetaKeyHandler *iter;
+  MetaKeyHandler *iter;
 
   iter = handlers;
   while (iter->name)
@@ -360,7 +360,7 @@ rebuild_binding_table (MetaDisplay        *display,
 
           if (combo && (combo->keysym != None || combo->keycode != 0))
             {
-              const MetaKeyHandler *handler = find_handler (key_handlers, prefs[src].name);
+              MetaKeyHandler *handler = find_handler (key_handlers, prefs[src].name);
 
               (*bindings_p)[dest].name = prefs[src].name;
               (*bindings_p)[dest].handler = handler;
@@ -1163,7 +1163,7 @@ process_event (MetaKeyBinding       *bindings,
    */
   for (i=0; i<n_bindings; i++)
     {
-      const MetaKeyHandler *handler = bindings[i].handler;
+      MetaKeyHandler *handler = bindings[i].handler;
 
       if ((!on_window && handler->flags & BINDING_PER_WINDOW) ||
           event->type != KeyPress ||
@@ -3375,28 +3375,13 @@ meta_keybindings_set_custom_handler (const gchar        *name,
                                      gpointer            user_data,
                                      MetaKeyHandlerDataFreeFunc free_data)
 {
-  MetaKeyHandler *key_handler = NULL;
-  guint i;
-
-  /*
-   * FIXME -- the bindings should be in a hashtable or at least sorted somehow.
-   */
-  for (i = 0; i < G_N_ELEMENTS (key_handlers); ++i)
-    {
-      if (!g_strcmp0 (key_handlers[i].name, name))
-        {
-          key_handler = (MetaKeyHandler*)&key_handlers[i];
-          break;
-        }
-    }
+  MetaKeyHandler *key_handler = find_handler (key_handlers, name);
 
   if (!key_handler)
     return FALSE;
 
   if (key_handler->user_data_free_func && key_handler->user_data)
-    {
-      key_handler->user_data_free_func (key_handler->user_data);
-    }
+    key_handler->user_data_free_func (key_handler->user_data);
 
   key_handler->func = handler;
   key_handler->user_data = user_data;
