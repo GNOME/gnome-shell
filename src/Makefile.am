@@ -51,7 +51,7 @@ metacity_SOURCES= 				\
 	core/iconcache.c			\
 	core/iconcache.h			\
 	core/keybindings.c			\
-	core/keybindings.h			\
+	core/keybindings-private.h		\
 	core/main.c				\
 	include/main.h				\
 	core/metacity-Xatomtype.h		\
@@ -160,6 +160,7 @@ libmetacityinclude_HEADERS =			\
 	include/screen.h			\
 	include/display.h			\
 	include/group.h				\
+	include/keybindings.h			\
 	include/mutter-plugin.h
 
 metacity_theme_viewer_SOURCES=  \
