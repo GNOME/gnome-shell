@@ -485,7 +485,7 @@ _cogl_add_stencil_clip (float x_offset,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_material_flush_gl_state (ctx->stencil_material);
+  cogl_material_flush_gl_state (ctx->stencil_material, NULL);
 
   if (first)
     {
