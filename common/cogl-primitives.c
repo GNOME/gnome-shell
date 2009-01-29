@@ -45,15 +45,14 @@ void _cogl_path_fill_nodes    ();
 void _cogl_path_stroke_nodes  ();
 
 void
-cogl_rectangle (float x1,
-                float y1,
-                float x2,
-                float y2)
+cogl_rectangle (float x_1,
+                float y_1,
+                float x_2,
+                float y_2)
 {
-  cogl_rectangle_with_multitexture_coords (x1, y1,
-                                           x2, y2,
-                                           NULL,
-                                           0);
+  cogl_rectangle_with_multitexture_coords (x_1, y_1,
+                                           x_2, y_2,
+                                           NULL, 0);
 }
 
 void
