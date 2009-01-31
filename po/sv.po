@@ -1,14 +1,14 @@
 # Swedish messages for metacity.
 # Copyright (C) 2001-2009 Free Software Foundation, Inc.
-# Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008, 2009.
 # Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004, 2005.
+# Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-08 01:40+0100\n"
-"PO-Revision-Date: 2009-01-09 02:34+0100\n"
+"POT-Creation-Date: 2009-01-31 02:25+0100\n"
+"PO-Revision-Date: 2009-01-31 02:29+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -196,68 +196,68 @@ msgstr "Misslyckades med att starta om: %s\n"
 #. * (Empty comment follows so the translators don't see this.)
 #.
 #.
-#: ../src/core/prefs.c:499
-#: ../src/core/prefs.c:654
+#: ../src/core/prefs.c:505
+#: ../src/core/prefs.c:660
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nyckeln \"%s\" är satt till ett ogiltigt värde\n"
 
-#: ../src/core/prefs.c:580
-#: ../src/core/prefs.c:823
+#: ../src/core/prefs.c:586
+#: ../src/core/prefs.c:829
 #, c-format
 msgid "%d stored in GConf key %s is out of range %d to %d\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte i intervallet %d till %d\n"
 
 # SUN CHANGED MESSAGE
-#: ../src/core/prefs.c:624
-#: ../src/core/prefs.c:701
-#: ../src/core/prefs.c:749
-#: ../src/core/prefs.c:813
-#: ../src/core/prefs.c:1106
-#: ../src/core/prefs.c:1122
-#: ../src/core/prefs.c:1139
-#: ../src/core/prefs.c:1155
+#: ../src/core/prefs.c:630
+#: ../src/core/prefs.c:707
+#: ../src/core/prefs.c:755
+#: ../src/core/prefs.c:819
+#: ../src/core/prefs.c:1112
+#: ../src/core/prefs.c:1128
+#: ../src/core/prefs.c:1145
+#: ../src/core/prefs.c:1161
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
 
-#: ../src/core/prefs.c:1225
+#: ../src/core/prefs.c:1231
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Fixar för trasiga program är inaktiverade. En del program fungerar kanske inte korrekt.\n"
 
-#: ../src/core/prefs.c:1296
+#: ../src/core/prefs.c:1302
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunde inte tolka typsnittsbeskrivningen \"%s\" från GConf-nyckeln %s\n"
 
-#: ../src/core/prefs.c:1356
+#: ../src/core/prefs.c:1364
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för musknappsmodifierare\n"
 
-#: ../src/core/prefs.c:1771
+#: ../src/core/prefs.c:1782
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fel vid inställning av antalet arbetsytor till %d: %s\n"
 
-#: ../src/core/prefs.c:1960
-#: ../src/core/prefs.c:2463
+#: ../src/core/prefs.c:1971
+#: ../src/core/prefs.c:2474
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
 
-#: ../src/core/prefs.c:1990
-#: ../src/core/prefs.c:2168
+#: ../src/core/prefs.c:2001
+#: ../src/core/prefs.c:2179
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för tangentbindningen \"%s\"\n"
 
-#: ../src/core/prefs.c:2544
+#: ../src/core/prefs.c:2555
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fel vid inställning av namnet på arbetsyta %d till \"%s\": %s\n"
 
-#: ../src/core/prefs.c:2730
+#: ../src/core/prefs.c:2753
 #, c-format
 msgid "Error setting compositor status: %s\n"
 msgstr "Fel vid inställning av status för compositor: %s\n"
@@ -423,7 +423,7 @@ msgid "Metacity"
 msgstr "Metacity"
 
 #. first time through
-#: ../src/core/window.c:5743
+#: ../src/core/window.c:5626
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Fönstret %s ställer in SM_CLIENT_ID på sig själv, istället för på WM_CLIENT_LEADER-fönstret som är angivet i ICCCM.\n"
@@ -435,22 +435,22 @@ msgstr "Fönstret %s ställer in SM_CLIENT_ID på sig själv, istället för på
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6308
+#: ../src/core/window.c:6191
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Fönstret %s ställer in ett MWM-tips som anger att det inte går att ändra storlek på, men ställer in minsta storleken %d × %d och största storleken %d × %d; detta verkar inte vettigt.\n"
 
-#: ../src/core/window-props.c:206
+#: ../src/core/window-props.c:260
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:338
+#: ../src/core/window-props.c:377
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1422
+#: ../src/core/window-props.c:1358
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ogiltigt WM_TRANSIENT_FOR-fönster 0x%lx angivet för %s.\n"
@@ -817,8 +817,8 @@ msgid "Automatically raises the focused window"
 msgstr "Höjer automatiskt det fokuserade fönstret"
 
 #: ../src/metacity.schemas.in.in.h:9
-msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
-msgstr "Att klicka ett fönster samtidigt som denna modifierartangent hålls ned kommer att flytta fönstret (vänsterklick), ändra storlek på fönstret (mittklick), eller visa fönstermenyn (högerklick). Modifierare uttrycks som till exempel \"&lt;Alt&gt;\" eller \"&lt;Super&gt;\"."
+msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). The left and right operations may be swapped using the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
+msgstr "Att klicka ett fönster samtidigt som denna modifierartangent hålls ned kommer att flytta fönstret (vänsterklick), ändra storlek på fönstret (mittklick), eller visa fönstermenyn (högerklick). Vänster- och högeråtgärder kan växlas med nyckeln \"mouse_button_resize\". Modifierare uttrycks som till exempel \"&lt;Alt&gt;\" eller \"&lt;Super&gt;\"."
 
 #: ../src/metacity.schemas.in.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -899,99 +899,107 @@ msgid "Run a defined command"
 msgstr "Kör ett angivet kommando"
 
 #: ../src/metacity.schemas.in.in.h:29
+msgid "Set this to true to resize with the right button and show a menu with the middle button while holding down the key given in \"mouse_button_modifier\"; set it to false to make it work the opposite way around."
+msgstr "Ställ in detta till sant för att ändra storlek med högerknappen och visa en meny med mittenknappen när tangenten, som angivits i \"mouse_button_modifier\", hålls ner; ställ in till falskt för att göra det motsatta."
+
+#: ../src/metacity.schemas.in.in.h:30
 msgid "Setting this option to false can lead to buggy behavior, so users are strongly discouraged from changing it from the default of true. Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Setting this option to false, which is strongly discouraged, will decouple raising from other user actions, and ignore raise requests generated by applications. See http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages from pagers, such as activation requests from tasklist applets. This option is currently disabled in click-to-focus mode. Note that the list of ways to raise windows when raise_on_click is false does not include programmatic requests from applications to raise windows; such requests will be ignored regardless of the reason for the request. If you are an application developer and have a user complaining that your application does not work with this setting disabled, tell them it is _their_ fault for breaking their window manager and that they need to change this option back to true or live with the \"bug\" they requested."
 msgstr "Ställa in detta alternativ till falskt kan leda till ett felaktigt beteende, så därför rekommenderas användarna att inte ändra det från standardvärdet, vilket är sant. Många åtgärder (t.ex. klicka i klientområdet, flytta eller ändra storlek på fönstret) höjer normalt sett fönstret som en sidoeffekt. Ställa in detta alternativ till falskt, vilket inte rekommenderas, kan koppla loss höjningen från andra användaråtgärder och ignorera höjningsbegäran som genereras av program. Se http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Även när detta alternativ är falskt kan fönster fortfarande höjas genom Alt-vänster-klick någonstans i fönstret, ett vanligt klick på fönstrets dekoration eller genom speciella meddelanden från visare, såsom en aktiveringsbegäran från panelprogram. Detta alternativ är för närvarande inaktiverat i klicka-för-fokus-läget. Observera att listan över sätt att höja fönster när raise_on_click är falskt inte inkluderar programmatiska begäran från program för att höja fönster; sådana begäran kommer att ignoreras oavsett anledningen till begäran. Om du är en programutvecklare och har en användare som klagar på att ditt program inte fungerar med denna inställning inaktiverad så kan du informera dem om att det är _deras_ fel att deras fönsterhanterare är trasig och att de behöver ändra detta alternativ till sant eller leva med \"felet\" som de begärde."
 
-#: ../src/metacity.schemas.in.in.h:30
+#: ../src/metacity.schemas.in.in.h:31
 msgid "Some applications disregard specifications in ways that result in window manager misfeatures. This option puts Metacity in a rigorously correct mode, which gives a more consistent user interface, provided one does not need to run any misbehaving applications."
 msgstr "Vissa program bortser från specifikationerna vilket resulterar i att fönsterhanteraren inte fungerar som den ska. Detta alternativ försätter Metacity i ett mycket korrekt läge, vilket ger ett mer konsistent användargränssnitt, om man inte behöver köra några program som inte sköter sig."
 
-#: ../src/metacity.schemas.in.in.h:31
+#: ../src/metacity.schemas.in.in.h:32
 msgid "System Bell is Audible"
 msgstr "Systemsignalen är ljudlig"
 
-#: ../src/metacity.schemas.in.in.h:32
+#: ../src/metacity.schemas.in.in.h:33
 msgid "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
 msgstr "Talar om för Metacity hur den synliga indikeringen att systemsignalen eller en annan programsignal har ljudit ska implementeras. För tillfället finns det två giltiga värden, \"fullscreen\", som genererar en svartvit blinkning i helskärmsformat, och \"frame_flash\" som gör att titelraden på programmet som skickade signalen blinkar. Om programmet som skickade signalen är okänd (vilket normalt är fallet för \"standardsystempipet\"), blinkas titelraden på det för tillfället fokuserade fönstret."
 
-#: ../src/metacity.schemas.in.in.h:33
+#: ../src/metacity.schemas.in.in.h:34
 msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
 msgstr "Nycklarna /apps/metacity/global_keybindings/run_command_N anger tangentbindningar som motsvarar dessa kommandon. Att trycka tangentbindningen för run_command_N kommer att köra command_N."
 
-#: ../src/metacity.schemas.in.in.h:34
+#: ../src/metacity.schemas.in.in.h:35
 msgid "The /apps/metacity/global_keybindings/run_command_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
 msgstr "Nyckeln /apps/metacity/global_keybindings/run_command_screenshot anger en tangentbindning som gör att kommandot som anges av denna inställning anropas."
 
-#: ../src/metacity.schemas.in.in.h:35
+#: ../src/metacity.schemas.in.in.h:36
 msgid "The /apps/metacity/global_keybindings/run_command_window_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
 msgstr "Nyckeln /apps/metacity/global_keybindings/run_command_window_screenshot anger en tangentbindning som gör att kommandot som anges av denna inställning anropas."
 
-#: ../src/metacity.schemas.in.in.h:36
+#: ../src/metacity.schemas.in.in.h:37
 msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Tangentbindningen som kör det på motsvarande sätt numrerade kommandot i /apps/metacity/keybinding_commands. Formatet ser ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och tillåter gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till specialsträngen \"disabled\" kommer det inte att finnas en tangentbindning för denna åtgärd."
 
-#: ../src/metacity.schemas.in.in.h:37
+#: ../src/metacity.schemas.in.in.h:38
 msgid "The name of a workspace."
 msgstr "Namnet på en arbetsyta."
 
-#: ../src/metacity.schemas.in.in.h:38
+#: ../src/metacity.schemas.in.in.h:39
 msgid "The screenshot command"
 msgstr "Kommando för att fånga skärmbild"
 
-#: ../src/metacity.schemas.in.in.h:39
+#: ../src/metacity.schemas.in.in.h:40
 msgid "The theme determines the appearance of window borders, titlebar, and so forth."
 msgstr "Temat avgör utseendet på fönsterramar, titelrader, och så vidare."
 
-#: ../src/metacity.schemas.in.in.h:40
+#: ../src/metacity.schemas.in.in.h:41
 msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
 msgstr "Tidsfördröjningen innan ett fönster höjs om auto_raise är sant. Fördröjningen ges i tusendelar av en sekund."
 
 # SUN CHANGED MESSAGE
-#: ../src/metacity.schemas.in.in.h:41
+#: ../src/metacity.schemas.in.in.h:42
 msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
 msgstr "Fönsterfokusläget anger hur fönster ska aktiveras. Det har tre möjliga värden; \"click\" betyder att fönster måste klickas på för att de ska få fokus, \"sloppy\" betyder att fönster fokuseras då muspekaren hamnar i fönstret, och \"mouse\" betyder att fönster fokuseras då muspekaren hamnar i fönstret och förlorar fokus då muspekaren lämnar fönstret."
 
-#: ../src/metacity.schemas.in.in.h:42
+#: ../src/metacity.schemas.in.in.h:43
 msgid "The window screenshot command"
 msgstr "Kommando för att fånga skärmbild av ett fönster"
 
-#: ../src/metacity.schemas.in.in.h:43
+#: ../src/metacity.schemas.in.in.h:44
 msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
 msgstr "Detta alternativ bestämmer effekterna av dubbelklick på titelraden. Aktuella giltiga alternativ är \"toggle_shade\" som kommer att rulla upp/rulla ned fönstret, \"toggle_maximize\" som kommer att maximera/avmaximera fönstret, \"toggle_maximize_horizontally\" och \"toggle_maximize_vertically\" som kommer att maximera/avmaximera fönstret endast i den riktningen, \"minimize\" kommer kommer att minimera fönstret, \"shade\" kommer att rulla upp fönstret, \"menu\" kommer att visa fönstermenyn, \"lower\" som kommer att lägga fönstret bakom alla andra, samt \"none\" som inte gör något."
 
-#: ../src/metacity.schemas.in.in.h:44
+#: ../src/metacity.schemas.in.in.h:45
 msgid "This option determines the effects of middle-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
 msgstr "Detta alternativ bestämmer effekterna av mittenklick på titellisten. Aktuella giltiga alternativ är \"toggle_shade\" som kommer att rulla upp/rulla ned fönstret, \"toggle_maximize\" som kommer att maximera/avmaximera fönstret, \"toggle_maximize_horizontally\" och \"toggle_maximize_vertically\" som kommer att maximera/avmaximera fönstret endast i den riktningen, \"minimize\" kommer kommer att minimera fönstret, \"shade\" kommer att rulla upp fönstret, \"menu\" kommer att visa fönstermenyn, \"lower\" som kommer att lägga fönstret bakom alla andra, samt \"none\" som inte gör något."
 
-#: ../src/metacity.schemas.in.in.h:45
+#: ../src/metacity.schemas.in.in.h:46
 msgid "This option determines the effects of right-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will maximize/unmaximize the window in that direction only, 'minimize' which will minimize the window, 'shade' which will roll the window up, 'menu' which will display the window menu, 'lower' which will put the window behind all the others, and 'none' which will not do anything."
 msgstr "Detta alternativ bestämmer effekterna av högerklick på titellisten. Aktuella giltiga alternativ är \"toggle_shade\" som kommer att rulla upp/rulla ned fönstret, \"toggle_maximize\" som kommer att maximera/avmaximera fönstret, \"toggle_maximize_horizontally\" och \"toggle_maximize_vertically\" som kommer att maximera/avmaximera fönstret endast i den riktningen, \"minimize\" kommer kommer att minimera fönstret, \"shade\" kommer att rulla upp fönstret, \"menu\" kommer att visa fönstermenyn, \"lower\" som kommer att lägga fönstret bakom alla andra, samt \"none\" som inte gör något."
 
-#: ../src/metacity.schemas.in.in.h:46
+#: ../src/metacity.schemas.in.in.h:47
 msgid "This option provides additional control over how newly created windows get focus. It has two possible values; \"smart\" applies the user's normal focus mode, and \"strict\" results in windows started from a terminal not being given focus."
 msgstr "Detta alternativ tillhandahåller ytterligare kontroll över hur nyligen skapade fönster får fokus. Det har två möjliga värden; \"smart\" som verkställer användarens normala fokusläge, och \"strict\" som resulterar i att fönster som startar från en terminal inte ges fokus."
 
-#: ../src/metacity.schemas.in.in.h:47
+#: ../src/metacity.schemas.in.in.h:48
 msgid "Turns on a visual indication when an application or the system issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy environments."
 msgstr "Slår på en synlig indikering då ett program eller systemet sänder ut en signal eller \"pip\". Användbart för hörselskadade eller för användning i bullriga miljöer."
 
-#: ../src/metacity.schemas.in.in.h:48
+#: ../src/metacity.schemas.in.in.h:49
 msgid "Use standard system font in window titles"
 msgstr "Använd standardsystemtypsnitt i fönstertitlar"
 
-#: ../src/metacity.schemas.in.in.h:49
+#: ../src/metacity.schemas.in.in.h:50
 msgid "Visual Bell Type"
 msgstr "Typ av visuell signal"
 
-#: ../src/metacity.schemas.in.in.h:50
+#: ../src/metacity.schemas.in.in.h:51
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "Huruvida höjning ska vara en sidoeffekt av andra användarinteraktioner"
 
-#: ../src/metacity.schemas.in.in.h:51
+#: ../src/metacity.schemas.in.in.h:52
+msgid "Whether to resize with the right button"
+msgstr "Huruvida högerknappen ändrar storlek"
+
+#: ../src/metacity.schemas.in.in.h:53
 msgid "Window focus mode"
 msgstr "Fönsterfokusläge"
 
-#: ../src/metacity.schemas.in.in.h:52
+#: ../src/metacity.schemas.in.in.h:54
 msgid "Window title font"
 msgstr "Typsnitt för fönstertitel"
 
@@ -1000,47 +1008,47 @@ msgstr "Typsnitt för fönstertitel"
 msgid "Usage: %s\n"
 msgstr "Användning: %s\n"
 
-#: ../src/ui/frames.c:1077
+#: ../src/ui/frames.c:1118
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: ../src/ui/frames.c:1080
+#: ../src/ui/frames.c:1121
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: ../src/ui/frames.c:1083
+#: ../src/ui/frames.c:1124
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: ../src/ui/frames.c:1086
+#: ../src/ui/frames.c:1127
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: ../src/ui/frames.c:1089
+#: ../src/ui/frames.c:1130
 msgid "Restore Window"
 msgstr "Återställ fönster"
 
-#: ../src/ui/frames.c:1092
+#: ../src/ui/frames.c:1133
 msgid "Roll Up Window"
 msgstr "Rulla upp fönstret"
 
-#: ../src/ui/frames.c:1095
+#: ../src/ui/frames.c:1136
 msgid "Unroll Window"
 msgstr "Rulla tillbaka fönstret"
 
-#: ../src/ui/frames.c:1098
+#: ../src/ui/frames.c:1139
 msgid "Keep Window On Top"
 msgstr "Behåll fönstret överst"
 
-#: ../src/ui/frames.c:1101
+#: ../src/ui/frames.c:1142
 msgid "Remove Window From Top"
 msgstr "Ta bort överliggande fönster"
 
-#: ../src/ui/frames.c:1104
+#: ../src/ui/frames.c:1145
 msgid "Always On Visible Workspace"
 msgstr "Alltid på synlig arbetsyta"
 
-#: ../src/ui/frames.c:1107
+#: ../src/ui/frames.c:1148
 msgid "Put Window On Only One Workspace"
 msgstr "Placera fönstret på endast en arbetsyta"
 
@@ -1468,46 +1476,46 @@ msgstr "Koordinatuttrycket verkar inte ha några operatorer eller operander"
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Temat innehöll ett uttryck som resulterade i ett fel: %s\n"
 
-#: ../src/ui/theme.c:4155
+#: ../src/ui/theme.c:4187
 #, c-format
 msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
 msgstr "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> måste anges för denna ramtyp"
 
-#: ../src/ui/theme.c:4635
-#: ../src/ui/theme.c:4660
+#: ../src/ui/theme.c:4695
+#: ../src/ui/theme.c:4720
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> saknas"
 
-#: ../src/ui/theme.c:4704
+#: ../src/ui/theme.c:4764
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Misslyckades med att läsa in temat \"%s\": %s\n"
 
-#: ../src/ui/theme.c:4834
-#: ../src/ui/theme.c:4841
-#: ../src/ui/theme.c:4848
-#: ../src/ui/theme.c:4855
-#: ../src/ui/theme.c:4862
+#: ../src/ui/theme.c:4894
+#: ../src/ui/theme.c:4901
+#: ../src/ui/theme.c:4908
+#: ../src/ui/theme.c:4915
+#: ../src/ui/theme.c:4922
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Inget <%s> angivet för temat \"%s\""
 
-#: ../src/ui/theme.c:4870
+#: ../src/ui/theme.c:4930
 #, c-format
 msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
 msgstr "Ingen ramstil angiven för fönstertypen \"%s\" i temat \"%s\", lägg till ett <window type=\"%s\" style_set=\"whatever\"/>-element"
 
-#: ../src/ui/theme.c:5237
-#: ../src/ui/theme.c:5299
-#: ../src/ui/theme.c:5362
+#: ../src/ui/theme.c:5383
+#: ../src/ui/theme.c:5445
+#: ../src/ui/theme.c:5508
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Användardefinierade konstanter måste börja med en stor bokstav; \"%s\" gör det inte"
 
-#: ../src/ui/theme.c:5245
-#: ../src/ui/theme.c:5307
-#: ../src/ui/theme.c:5370
+#: ../src/ui/theme.c:5391
+#: ../src/ui/theme.c:5453
+#: ../src/ui/theme.c:5516
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanten \"%s\" har redan definierats"
