@@ -1463,10 +1463,10 @@ void
 meta_display_free_window_prop_hooks (MetaDisplay *display)
 {
   g_hash_table_unref (display->prop_hooks);
-  display->prop_hooks_table = NULL;
+  display->prop_hooks = NULL;
 
   g_free (display->prop_hooks_table);
-  display->prop_hooks = NULL;
+  display->prop_hooks_table = NULL;
 }
 
 static MetaWindowPropHooks*

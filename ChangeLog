@@ -1,3 +1,9 @@
+2009-02-01  Matt Kraai  <kraai@ftbfs.org>
+
+        Set prop_hooks_table to NULL after freeing it.
+
+	* src/core/window-props.c:
+
 2009-01-29  Thomas Thurman  <tthurman@gnome.org>
 
         Window properties are looked up in a hash table rather than
