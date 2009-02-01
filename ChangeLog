@@ -1,3 +1,7 @@
+2009-02-01  Thomas Thurman  <tthurman@gnome.org>
+
+        * NEWS: 2.25.144 release.
+
 2009-02-01  Matt Kraai  <kraai@ftbfs.org>
 
         Set prop_hooks_table to NULL after freeing it.

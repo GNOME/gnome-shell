@@ -1,3 +1,23 @@
+2.25.144
+========
+
+Thanks to Matthias Claesen, Matt Kraai, Elijah Newren, Owen Taylor, and Thomas
+Thurman for improvements in this version.
+
+  - Optimise window property lookup (Thomas) (#549886)
+  - Fix slip in the above (Matt)
+  - Several memory leaks fixed (Matthias) (#552303, #552973, #552307)
+  - Fix longstanding crasher about colourmaps (Owen) (#568365)
+  - Alt+middle/right buttons can be switched (Thomas) (#437910)
+  - Support _NET_WM_MOVERESIZE_CANCEL (Elijah)
+  - minor fix paving the way for a theme editor (Thomas)
+
+Translations
+  David Planella (ca), Jorge González (es), Mattias Põldaru (et), saudat
+  mohammed (ha), Yuval Tanny\n (he), Gabor Kelemen (hu), Onye, Sylvester (ig),
+  Changwoo Ryu (ko), Raivis Dejus (lv), Kjartan Maraas (nb), Daniel Nylander (sv),
+  Fajuyitan, Sunday Ayo (yo), 甘露 (Gan Lu) (zh_CN)
+
 2.25.89
 =======
 
