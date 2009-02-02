@@ -369,6 +369,7 @@ struct _MetaWindowClass
   GObjectClass parent_class;
 
   void (*workspace_changed) (MetaWindow *window, int  old_workspace);
+  void (*focus)             (MetaWindow *window);
 };
 
 /* These differ from window->has_foo_func in that they consider

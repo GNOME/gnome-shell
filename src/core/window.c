@@ -145,6 +145,7 @@ enum {
 enum
 {
   WORKSPACE_CHANGED,
+  FOCUS,
 
   LAST_SIGNAL
 };
@@ -256,6 +257,15 @@ meta_window_class_init (MetaWindowClass *klass)
                   g_cclosure_marshal_VOID__INT,
                   G_TYPE_NONE, 1,
                   G_TYPE_INT);
+
+  window_signals[FOCUS] =
+    g_signal_new ("focus",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MetaWindowClass, focus),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -5705,6 +5715,9 @@ meta_window_notify_focus (MetaWindow *window,
           if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK ||
               !meta_prefs_get_raise_on_click())
             meta_display_ungrab_focus_window_button (window->display, window);
+
+          g_signal_emit (window, window_signals[FOCUS], 0);
+
         }
     }
   else if (event->type == FocusOut ||
