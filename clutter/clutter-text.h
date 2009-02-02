@@ -133,9 +133,9 @@ PangoAttrList *       clutter_text_get_attributes       (ClutterText        *sel
 void                  clutter_text_set_use_markup       (ClutterText        *self,
                                                          gboolean            setting);
 gboolean              clutter_text_get_use_markup       (ClutterText        *self);
-void                  clutter_text_set_alignment        (ClutterText        *self,
+void                  clutter_text_set_line_alignment   (ClutterText        *self,
                                                          PangoAlignment      alignment);
-PangoAlignment        clutter_text_get_alignment        (ClutterText        *self);
+PangoAlignment        clutter_text_get_line_alignment   (ClutterText        *self);
 void                  clutter_text_set_justify          (ClutterText        *self,
                                                          gboolean            justify);
 gboolean              clutter_text_get_justify          (ClutterText        *self);

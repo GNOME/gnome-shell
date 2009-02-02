@@ -218,7 +218,8 @@ do_tests (CallbackData *data)
   g_assert (check_result (data, "Enable justify", TRUE) == FALSE);
 
   /* TEST 13: change alignment */
-  clutter_text_set_alignment (CLUTTER_TEXT (data->label), PANGO_ALIGN_RIGHT);
+  clutter_text_set_line_alignment (CLUTTER_TEXT (data->label),
+                                   PANGO_ALIGN_RIGHT);
   pango_layout_set_alignment (data->test_layout, PANGO_ALIGN_RIGHT);
   g_assert (check_result (data, "Change alignment", TRUE) == FALSE);
 

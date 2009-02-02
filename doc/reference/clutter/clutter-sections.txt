@@ -1601,8 +1601,6 @@ clutter_text_set_markup
 clutter_text_get_text
 clutter_text_set_activatable
 clutter_text_get_activatable
-clutter_text_set_alignment
-clutter_text_get_alignment
 clutter_text_set_attributes
 clutter_text_get_attributes
 clutter_text_set_color
@@ -1616,6 +1614,8 @@ clutter_text_get_password_char
 clutter_text_set_justify
 clutter_text_get_justify
 clutter_text_get_layout
+clutter_text_set_line_alignment
+clutter_text_get_line_alignment
 clutter_text_set_line_wrap
 clutter_text_get_line_wrap
 clutter_text_set_line_wrap_mode

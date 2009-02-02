@@ -169,7 +169,7 @@ enum
   PROP_COLOR,
   PROP_USE_MARKUP,
   PROP_ATTRIBUTES,
-  PROP_ALIGNMENT,
+  PROP_LINE_ALIGNMENT,
   PROP_LINE_WRAP,
   PROP_LINE_WRAP_MODE,
   PROP_JUSTIFY,
@@ -568,8 +568,8 @@ clutter_text_set_property (GObject      *gobject,
       clutter_text_set_attributes (self, g_value_get_boxed (value));
       break;
 
-    case PROP_ALIGNMENT:
-      clutter_text_set_alignment (self, g_value_get_enum (value));
+    case PROP_LINE_ALIGNMENT:
+      clutter_text_set_line_alignment (self, g_value_get_enum (value));
       break;
 
     case PROP_LINE_WRAP:
@@ -719,7 +719,7 @@ clutter_text_get_property (GObject    *gobject,
       g_value_set_enum (value, priv->wrap_mode);
       break;
 
-    case PROP_ALIGNMENT:
+    case PROP_LINE_ALIGNMENT:
       g_value_set_enum (value, priv->alignment);
       break;
 
@@ -1841,21 +1841,21 @@ clutter_text_class_init (ClutterTextClass *klass)
   g_object_class_install_property (gobject_class, PROP_ELLIPSIZE, pspec);
 
   /**
-   * ClutterText:alignment:
+   * ClutterText:line-alignment:
    *
    * The preferred alignment for the text. This property controls
    * the alignment of multi-line paragraphs.
    *
    * Since: 1.0
    */
-  pspec = g_param_spec_enum ("alignment",
-                             "Alignment",
+  pspec = g_param_spec_enum ("line-alignment",
+                             "Line Alignment",
                              "The preferred alignment for the string, "
                              "for multi-line text",
                              PANGO_TYPE_ALIGNMENT,
                              PANGO_ALIGN_LEFT,
                              CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_ALIGNMENT, pspec);
+  g_object_class_install_property (gobject_class, PROP_LINE_ALIGNMENT, pspec);
 
   /**
    * ClutterText:justify:
@@ -3251,21 +3251,22 @@ clutter_text_get_attributes (ClutterText *self)
 }
 
 /**
- * clutter_text_set_alignment:
+ * clutter_text_set_line_alignment:
  * @self: a #ClutterText
  * @alignment: A #PangoAlignment
  *
- * Sets text alignment of the #ClutterText actor.
+ * Sets the way that the lines of a wrapped label are aligned with
+ * respect to each other. This does not affect the overall alignment
+ * of the label within its allocated or specified width.
  *
- * The alignment will only be used when the contents of the
- * #ClutterText actor are enough to wrap, and the #ClutterText:line-wrap
- * property is set to %TRUE.
+ * To align a #ClutterText actor you should add it to a container
+ * that supports alignment, or use the anchor point.
  *
  * Since: 1.0
  */
 void
-clutter_text_set_alignment (ClutterText    *self,
-                            PangoAlignment  alignment)
+clutter_text_set_line_alignment (ClutterText    *self,
+                                 PangoAlignment  alignment)
 {
   ClutterTextPrivate *priv;
 
@@ -3281,22 +3282,23 @@ clutter_text_set_alignment (ClutterText    *self,
 
       clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
-      g_object_notify (G_OBJECT (self), "alignment");
+      g_object_notify (G_OBJECT (self), "line-alignment");
     }
 }
 
 /**
- * clutter_text_get_alignment:
+ * clutter_text_get_line_alignment:
  * @self: a #ClutterText
  *
- * Retrieves the alignment of @self.
+ * Retrieves the alignment of a #ClutterText, as set by
+ * clutter_text_set_line_alignment().
  *
  * Return value: a #PangoAlignment
  *
  * Since 1.0
  */
 PangoAlignment
-clutter_text_get_alignment (ClutterText *self)
+clutter_text_get_line_alignment (ClutterText *self)
 {
   g_return_val_if_fail (CLUTTER_IS_TEXT (self), PANGO_ALIGN_LEFT);
 

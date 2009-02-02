@@ -33,8 +33,11 @@ test_rotate_main (int argc, char *argv[])
   clutter_actor_show (hand);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), hand);
 
-  label = clutter_text_new_with_text ("Mono 16", "The Wonder of the Spinning Hand");
-  clutter_text_set_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_CENTER);
+  label = clutter_text_new_with_text ("Mono 16",
+                                      "The Wonder\n"
+                                      "of the\n"
+                                      "Spinning Hand");
+  clutter_text_set_line_alignment (CLUTTER_TEXT (label), PANGO_ALIGN_CENTER);
   clutter_actor_set_position (label, 150, 150);
   clutter_actor_set_size (label, 500, 100);
   clutter_actor_show (label);
