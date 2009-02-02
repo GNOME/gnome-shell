@@ -53,6 +53,16 @@ static void workspace_free_struts        (MetaWorkspace *workspace);
 
 G_DEFINE_TYPE (MetaWorkspace, meta_workspace, G_TYPE_OBJECT);
 
+enum
+{
+  WINDOW_ADDED,
+  WINDOW_REMOVED,
+
+  LAST_SIGNAL
+};
+
+static guint signals [LAST_SIGNAL] = { 0 };
+
 static void
 meta_workspace_finalize (GObject *object)
 {
@@ -102,10 +112,26 @@ meta_workspace_class_init (MetaWorkspaceClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GParamSpec   *pspec;
 
-
   object_class->finalize     = meta_workspace_finalize;
   object_class->get_property = meta_workspace_get_property;
   object_class->set_property = meta_workspace_set_property;
+
+  signals[WINDOW_ADDED] = g_signal_new ("window-added",
+                                        G_TYPE_FROM_CLASS (klass),
+                                        G_SIGNAL_RUN_LAST,
+                                        0,
+                                        NULL, NULL,
+                                        g_cclosure_marshal_VOID__OBJECT,
+                                        G_TYPE_NONE, 1,
+                                        META_TYPE_WINDOW);
+  signals[WINDOW_REMOVED] = g_signal_new ("window-removed",
+                                          G_TYPE_FROM_CLASS (klass),
+                                          G_SIGNAL_RUN_LAST,
+                                          0,
+                                          NULL, NULL,
+                                          g_cclosure_marshal_VOID__OBJECT,
+                                          G_TYPE_NONE, 1,
+                                          META_TYPE_WINDOW);
 
   pspec = g_param_spec_uint ("n-windows",
                              "N Windows",
@@ -302,6 +328,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
    */
   meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
 
+  g_signal_emit (workspace, signals[WINDOW_ADDED], 0, window);
   g_object_notify (G_OBJECT (workspace), "n-windows");
 }
 
@@ -350,6 +377,7 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
    */
   meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
 
+  g_signal_emit (workspace, signals[WINDOW_REMOVED], 0, window);
   g_object_notify (G_OBJECT (workspace), "n-windows");
 }
 
