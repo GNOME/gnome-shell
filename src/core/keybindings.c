@@ -2918,16 +2918,25 @@ do_choose_window (MetaDisplay    *display,
             }
           else
             {
-              meta_ui_tab_popup_select (screen->tab_popup,
-                                        (MetaTabEntryKey) initial_selection->xwindow);
-              
-              if (show_popup)
-                meta_ui_tab_popup_set_showing (screen->tab_popup,
-                                               TRUE);
+              if (!meta_prefs_get_no_tab_popup ())
+                {
+                  meta_ui_tab_popup_select (screen->tab_popup,
+                                (MetaTabEntryKey) initial_selection->xwindow);
+
+                  if (show_popup)
+                    meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
+                  else
+                    {
+                      meta_window_raise (initial_selection);
+                      initial_selection->tab_unminimized =
+                        initial_selection->minimized;
+                      meta_window_unminimize (initial_selection);
+                    }
+                }
               else
                 {
                   meta_window_raise (initial_selection);
-                  initial_selection->tab_unminimized = 
+                  initial_selection->tab_unminimized =
                     initial_selection->minimized;
                   meta_window_unminimize (initial_selection);
                 }

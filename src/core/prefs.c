@@ -70,6 +70,8 @@
 
 #define KEY_LIVE_HIDDEN_WINDOWS "/apps/metacity/general/live_hidden_windows"
 
+#define KEY_NO_TAB_POPUP "/apps/metacity/general/no_tab_popup"
+
 #ifdef HAVE_GCONF
 static GConfClient *default_client = NULL;
 static GList *changes = NULL;
@@ -118,6 +120,8 @@ static GSList *clutter_plugins = NULL;
 #endif
 
 static gboolean live_hidden_windows = FALSE;
+
+static gboolean no_tab_popup = FALSE;
 
 #ifdef HAVE_GCONF
 static gboolean handle_preference_update_enum (const gchar *key, GConfValue *value);
@@ -427,6 +431,11 @@ static MetaBoolPreference preferences_bool[] =
     { "/apps/metacity/general/live_hidden_windows",
       META_PREF_LIVE_HIDDEN_WINDOWS,
       &live_hidden_windows,
+      FALSE,
+    },
+    { "/apps/metacity/general/no_tab_popup",
+      META_PREF_NO_TAB_POPUP,
+      &no_tab_popup,
       FALSE,
     },
     { NULL, 0, NULL, FALSE },
@@ -1801,6 +1810,8 @@ meta_preference_to_string (MetaPreference pref)
 #endif
     case META_PREF_LIVE_HIDDEN_WINDOWS:
       return "LIVE_HIDDEN_WINDOWS";
+    case META_PREF_NO_TAB_POPUP:
+      return "NO_TAB_POPUP";
     }
 
   return "(unknown)";
@@ -2896,6 +2907,40 @@ meta_prefs_set_live_hidden_windows (gboolean whether)
 #else
   live_hidden_windows = whether;
 #endif
+}
+
+gboolean
+meta_prefs_get_no_tab_popup (void)
+{
+  return no_tab_popup;
+}
+
+void
+meta_prefs_set_no_tab_popup (gboolean whether)
+{
+#ifdef HAVE_GCONF
+  GError *err = NULL;
+
+  gconf_client_set_bool (default_client,
+                         KEY_NO_TAB_POPUP,
+                         whether,
+                         &err);
+
+  if (err)
+    {
+      meta_warning (_("Error setting no tab popup status: %s\n"),
+                    err->message);
+      g_error_free (err);
+    }
+#else
+  no_tab_popup = whether;
+#endif
+}
+
+void
+meta_prefs_override_no_tab_popup (gboolean whether)
+{
+  no_tab_popup = whether;
 }
 
 #ifndef HAVE_GCONF

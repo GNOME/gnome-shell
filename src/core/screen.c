@@ -1525,7 +1525,7 @@ meta_screen_ensure_tab_popup (MetaScreen      *screen,
                                              screen->number,
                                              len,
                                              5, /* FIXME */
-                                             TRUE);
+                                             !meta_prefs_get_no_tab_popup ());
 
   for (i = 0; i < len; i++) 
     g_object_unref (entries[i].icon);
