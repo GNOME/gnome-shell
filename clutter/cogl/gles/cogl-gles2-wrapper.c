@@ -347,9 +347,6 @@ cogl_gles2_get_fragment_shader (const CoglGles2WrapperSettings *settings)
 		  i, i);
 	}
     }
-  /* FIXME */
-  g_string_append (shader_source, "gl_FragColor.r = 1.0;\n");
-  g_string_append (shader_source, "gl_FragColor.g = 1.0;\n");
   if (i == 0)
     g_string_append (shader_source, "gl_FragColor = frag_color;\n");
 
