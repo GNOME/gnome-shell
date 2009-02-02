@@ -949,18 +949,20 @@ _cogl_material_flush_layers_gl_state (CoglMaterial *material,
 
       GE (glActiveTexture (GL_TEXTURE0 + i));
 
-      if (!gl_layer_info
-          || gl_layer_info->gl_target != gl_target
-          || gl_layer_info->gl_texture != gl_texture)
-        {
+      /* FIXME: We could be more clever here and only bind the texture
+         if it is different from gl_layer_info->gl_texture to avoid
+         redundant GL calls. However a few other places in Cogl and
+         Clutter call glBindTexture such as ClutterGLXTexturePixmap so
+         we'd need to ensure they affect the cache. Also deleting a
+         texture should clear it from the cache in case a new texture
+         is generated with the same number */
 #ifdef HAVE_COGL_GLES2
-          cogl_gles2_wrapper_bind_texture (gl_target,
-                                           gl_texture,
-                                           gl_internal_format);
+      cogl_gles2_wrapper_bind_texture (gl_target,
+                                       gl_texture,
+                                       gl_internal_format);
 #else
-          GE (glBindTexture (gl_target, gl_texture));
+      GE (glBindTexture (gl_target, gl_texture));
 #endif
-        }
 
       /* Disable the previous target if it was different */
       if (gl_layer_info &&
