@@ -2149,7 +2149,7 @@ _cogl_journal_flush_quad_batch (CoglJournalEntry *batch_start,
     }
   prev_n_texcoord_arrays_enabled =
     ctx->n_texcoord_arrays_enabled;
-  ctx->n_texcoord_arrays_enabled = i + 1;
+  ctx->n_texcoord_arrays_enabled = i;
   for (; i < prev_n_texcoord_arrays_enabled; i++)
     {
       GE (glClientActiveTexture (GL_TEXTURE0 + i));
