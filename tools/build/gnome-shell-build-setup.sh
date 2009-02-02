@@ -12,6 +12,18 @@
 SOURCE=$HOME/Source
 BASEURL=http://svn.gnome.org/svn/gnome-shell/trunk/tools/build
 
+if ! which curl > /dev/null 2>&1; then
+	cat <<EOF
+This script requires the curl program to run
+For Debian-based systems run:
+	apt-get install curl
+
+For Red Hat-based systems run:
+	yum install curl
+EOF
+	exit 1
+fi
+
 if [ -d $SOURCE ] ; then : ; else
     mkdir $SOURCE
     echo "Created $SOURCE"
@@ -58,7 +70,7 @@ if test x$system = xUbuntu -o x$system = xDebian ; then
   for pkg in build-essential automake gnome-common flex bison curl \
     git-core subversion gtk-doc-tools mesa-common-dev xulrunner-1.9-dev \
     libdbus-glib-1-dev libffi-dev libgconf2-dev libgtk2.0-dev libgl1-mesa-dev \
-    libgstreamer-plugins-base0.10-dev python2.5-dev; do
+    libgstreamer-plugins-base0.10-dev python2.5-dev libwnck-dev libreadline5-dev librsvg2-dev libgnomeui-dev; do
       if ! dpkg --status $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
       fi
@@ -73,7 +85,7 @@ if test x$system = xFedora ; then
   reqd=""
   for pkg in libffi-devel libXdamage-devel gnome-doc-utils xulrunner-devel \
     librsvg2-devel libgnomeui-devel xterm xorg-x11-apps xorg-x11-server-Xephyr \
-    libwnck-devel; do
+    libwnck-devel GConf2-devel readline-devel; do
       if ! rpm -q $pkg > /dev/null 2>&1; then
         reqd="$pkg $reqd"
       fi
