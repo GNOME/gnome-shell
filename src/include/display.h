@@ -27,6 +27,19 @@
 
 #include "types.h"
 
+typedef enum
+{
+  META_TAB_LIST_NORMAL,
+  META_TAB_LIST_DOCKS,
+  META_TAB_LIST_GROUP
+} MetaTabList;
+
+typedef enum
+{
+  META_TAB_SHOW_ICON,      /* Alt-Tab mode */
+  META_TAB_SHOW_INSTANTLY  /* Alt-Esc mode */
+} MetaTabShowType;
+
 typedef struct _MetaDisplayClass MetaDisplayClass;
 
 #define META_TYPE_DISPLAY              (meta_display_get_type ())
@@ -67,4 +80,20 @@ Atom meta_display_get_atom (MetaDisplay *display, MetaAtom meta_atom);
 guint32 meta_display_get_current_time (MetaDisplay *display);
 guint32 meta_display_get_current_time_roundtrip (MetaDisplay *display);
 
+GList* meta_display_get_tab_list (MetaDisplay   *display,
+                                  MetaTabList    type,
+                                  MetaScreen    *screen,
+                                  MetaWorkspace *workspace);
+
+MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
+                                       MetaTabList    type,
+				       MetaScreen    *screen,
+                                       MetaWorkspace *workspace,
+                                       MetaWindow    *window,
+                                       gboolean       backward);
+
+MetaWindow* meta_display_get_tab_current (MetaDisplay   *display,
+                                          MetaTabList    type,
+                                          MetaScreen    *screen,
+                                          MetaWorkspace *workspace);
 #endif

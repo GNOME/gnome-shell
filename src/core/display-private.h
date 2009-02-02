@@ -431,36 +431,6 @@ void meta_display_ping_window      (MetaDisplay        *display,
 gboolean meta_display_window_has_pending_pings (MetaDisplay        *display,
 						MetaWindow         *window);
 
-typedef enum
-{
-  META_TAB_LIST_NORMAL,
-  META_TAB_LIST_DOCKS,
-  META_TAB_LIST_GROUP
-} MetaTabList;
-
-typedef enum
-{
-  META_TAB_SHOW_ICON,      /* Alt-Tab mode */
-  META_TAB_SHOW_INSTANTLY  /* Alt-Esc mode */
-} MetaTabShowType;
-
-GList* meta_display_get_tab_list (MetaDisplay   *display,
-                                  MetaTabList    type,
-                                  MetaScreen    *screen,
-                                  MetaWorkspace *workspace);
-
-MetaWindow* meta_display_get_tab_next (MetaDisplay   *display,
-                                       MetaTabList    type,
-				       MetaScreen    *screen,
-                                       MetaWorkspace *workspace,
-                                       MetaWindow    *window,
-                                       gboolean       backward);
-
-MetaWindow* meta_display_get_tab_current (MetaDisplay   *display,
-                                          MetaTabList    type,
-                                          MetaScreen    *screen,
-                                          MetaWorkspace *workspace);
-
 int meta_resize_gravity_from_grab_op (MetaGrabOp op);
 
 gboolean meta_grab_op_is_moving   (MetaGrabOp op);
