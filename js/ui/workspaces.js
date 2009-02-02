@@ -419,7 +419,7 @@ Workspace.prototype = {
                                                        reactive: true
                                                      });
             this._removeButton.set_from_file(global.imagedir + "remove-workspace.svg");
-            this._removeButton.connect('button-press-event', Lang.bind(this, this._removeSelf));
+            this._removeButton.connect('button-release-event', Lang.bind(this, this._removeSelf));
 
             this.actor.add_actor(this._removeButton);
             this._adjustRemoveButton();
@@ -674,6 +674,10 @@ Workspace.prototype = {
                          });
 
         this._visible = false;
+
+        // Don't let the user try to select this workspace as it's
+        // making its exit.
+        this._desktop.reactive = false;
     },
     
     destroy : function() {
@@ -757,6 +761,7 @@ Workspace.prototype = {
         let workspace = screen.get_workspace_by_index(this.workspaceNum);
 
         screen.remove_workspace(workspace, event.get_time());
+        return true;
     }
 };
 
@@ -830,7 +835,7 @@ Workspaces.prototype = {
                                          reactive: true
                                        });
         plus.set_from_file(global.imagedir + "add-workspace.svg");
-        plus.connect('button-press-event', this._appendNewWorkspace);
+        plus.connect('button-release-event', this._appendNewWorkspace);
         this.actor.add_actor(plus);
         plus.lower_bottom();
 
