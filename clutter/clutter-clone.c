@@ -118,8 +118,8 @@ clutter_clone_paint (ClutterActor *self)
 {
   ClutterClone *clone = CLUTTER_CLONE (self);
   ClutterClonePrivate *priv = clone->priv;
-  ClutterGeometry geom;
-  ClutterGeometry clone_source_geom;
+  ClutterActor *parent;
+  ClutterGeometry geom, clone_geom;
   gfloat x_scale, y_scale;
 
   if (G_UNLIKELY (priv->clone_source == NULL))
@@ -130,15 +130,17 @@ clutter_clone_paint (ClutterActor *self)
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
 
+  /* get our allocated size */
   clutter_actor_get_allocation_geometry (self, &geom);
-  clutter_actor_get_allocation_geometry (priv->clone_source,
-                                         &clone_source_geom);
+
+  /* and get the allocated size of the source */
+  clutter_actor_get_allocation_geometry (priv->clone_source, &clone_geom);
 
   /* We need to scale what the clone-source actor paints to fill our own
-   * allocation... */
-
-  x_scale = (gfloat) geom.width  / clone_source_geom.width;
-  y_scale = (gfloat) geom.height / clone_source_geom.height;
+   * allocation...
+   */
+  x_scale = (gfloat) geom.width  / clone_geom.width;
+  y_scale = (gfloat) geom.height / clone_geom.height;
 
   cogl_scale (x_scale, y_scale, 1.0);
 
@@ -149,14 +151,43 @@ clutter_clone_paint (ClutterActor *self)
    * - We need to stop clutter_actor_paint applying the model view matrix of
    *   the clone source actor.
    */
-  _clutter_actor_set_opacity_parent (priv->clone_source,
-                                     clutter_actor_get_parent (self));
+  parent = clutter_actor_get_parent (self);
+  _clutter_actor_set_opacity_parent (priv->clone_source, parent);
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, FALSE);
 
   clutter_actor_paint (priv->clone_source);
 
   _clutter_actor_set_enable_model_view_transform (priv->clone_source, TRUE);
   _clutter_actor_set_opacity_parent (priv->clone_source, NULL);
+}
+
+static void
+clutter_clone_allocate (ClutterActor *self,
+                        const ClutterActorBox *box,
+                        gboolean               origin_changed)
+{
+  ClutterClonePrivate *priv = CLUTTER_CLONE (self)->priv;
+  ClutterActorClass *parent_class;
+
+  /* chain up */
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_clone_parent_class);
+  parent_class->allocate (self, box, origin_changed);
+
+  if (G_UNLIKELY (priv->clone_source == NULL))
+    return;
+
+  /* we act like a "foster parent" for the source we are cloning;
+   * if the source has not been parented we have to force an
+   * allocation on it, so that we can paint it correctly from
+   * within out paint() implementation. since the actor does not
+   * have a parent, and thus it won't be painted by the usual
+   * paint cycle, we can safely give it as much size as it requires
+   */
+  if (clutter_actor_get_parent (priv->clone_source) == NULL)
+    {
+      clutter_actor_allocate_preferred_size (priv->clone_source,
+                                             origin_changed);
+    }
 }
 
 static void
@@ -225,6 +256,7 @@ clutter_clone_class_init (ClutterCloneClass *klass)
   actor_class->paint                = clutter_clone_paint;
   actor_class->get_preferred_width  = clutter_clone_get_preferred_width;
   actor_class->get_preferred_height = clutter_clone_get_preferred_height;
+  actor_class->allocate             = clutter_clone_allocate;
 
   gobject_class->dispose      = clutter_clone_dispose;
   gobject_class->set_property = clutter_clone_set_property;
