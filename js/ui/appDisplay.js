@@ -1,10 +1,10 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Signals = imports.signals;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 
 const GenericDisplay = imports.ui.genericDisplay;
 

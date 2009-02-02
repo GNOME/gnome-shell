@@ -1,8 +1,8 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Signals = imports.signals;
-const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
+const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 
 const Main = imports.ui.main;
 

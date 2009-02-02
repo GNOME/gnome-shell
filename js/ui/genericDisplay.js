@@ -1,14 +1,13 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Signals = imports.signals;
+const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
-const Pango = imports.gi.Pango;
 const Gtk = imports.gi.Gtk;
-
-const Tidy = imports.gi.Tidy;
-const Big = imports.gi.Big;
+const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
+const Tidy = imports.gi.Tidy;
 
 const ITEM_DISPLAY_NAME_COLOR = new Clutter.Color();
 ITEM_DISPLAY_NAME_COLOR.from_pixel(0xffffffff);

@@ -1,19 +1,19 @@
-/* -*- mode: js2; js2-basic-offset: 4; tab-width: 4; indent-tabs-mode: nil -*- */
+/* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Tweener = imports.tweener.tweener;
+const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
+const Shell = imports.gi.Shell;
 const Signals = imports.signals;
+const Tweener = imports.tweener.tweener;
 
 const Main = imports.ui.main;
 const Overlay = imports.ui.overlay;
 const Panel = imports.ui.panel;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const Big = imports.gi.Big;
-const GdkPixbuf = imports.gi.GdkPixbuf;
 
 // Windows are slightly translucent in the overlay mode
 const WINDOW_OPACITY = 0.9 * 255;

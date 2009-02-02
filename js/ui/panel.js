@@ -1,10 +1,10 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
+const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
-const Big = imports.gi.Big;
 
 const Button = imports.ui.button;
 const Main = imports.ui.main;

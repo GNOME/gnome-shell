@@ -1,14 +1,14 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
 const Clutter = imports.gi.Clutter;
-const Shell = imports.gi.Shell;
 const Gio = imports.gi.Gio;
-const Signals = imports.signals;
 const Mainloop = imports.mainloop;
+const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 const Tweener = imports.tweener.tweener;
 
-const Panel = imports.ui.panel;
 const Overlay = imports.ui.overlay;
+const Panel = imports.ui.panel;
 const RunDialog = imports.ui.runDialog;
 const WindowManager = imports.ui.windowManager;
 

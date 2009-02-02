@@ -1,19 +1,19 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 
-const Signals = imports.signals;
-const Mainloop = imports.mainloop;
-const Tweener = imports.tweener.tweener;
+const Big = imports.gi.Big;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
-
-const Workspaces = imports.ui.workspaces;
-const Main = imports.ui.main;
-const Panel = imports.ui.panel;
+const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
-const Big = imports.gi.Big;
+const Signals = imports.signals;
+const Tweener = imports.tweener.tweener;
+
 const AppDisplay = imports.ui.appDisplay;
 const DocDisplay = imports.ui.docDisplay;
+const Main = imports.ui.main;
+const Panel = imports.ui.panel;
+const Workspaces = imports.ui.workspaces;
 
 const OVERLAY_BACKGROUND_COLOR = new Clutter.Color();
 OVERLAY_BACKGROUND_COLOR.from_pixel(0x000000ff);
