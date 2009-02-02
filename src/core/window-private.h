@@ -360,7 +360,7 @@ struct _MetaWindow
   MetaGroup *group;
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  void *compositor_private;
+  GObject *compositor_private;
 #endif
 };
 
