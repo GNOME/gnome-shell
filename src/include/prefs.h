@@ -64,6 +64,7 @@ typedef enum
   META_PREF_CLUTTER_PLUGINS,
 #endif
   META_PREF_LIVE_HIDDEN_WINDOWS,
+  META_PREF_NO_TAB_POPUP,
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -151,6 +152,9 @@ void meta_prefs_override_clutter_plugins (GSList *list);
 gboolean meta_prefs_get_live_hidden_windows (void);
 void     meta_prefs_set_live_hidden_windows (gboolean whether);
 
+gboolean meta_prefs_get_no_tab_popup (void);
+void     meta_prefs_set_no_tab_popup (gboolean whether);
+void     meta_prefs_override_no_tab_popup (gboolean whether);
 
 /* XXX FIXME This should be x-macroed, but isn't yet because it would be
  * difficult (or perhaps impossible) to add the suffixes using the current

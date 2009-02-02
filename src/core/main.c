@@ -227,6 +227,7 @@ typedef struct
   gboolean sync;
   gboolean composite;
   gboolean no_composite;
+  gboolean no_tab_popup;
 } MetaArguments;
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -316,6 +317,12 @@ meta_parse_options (int *argc, char ***argv,
       "PLUGINS"
     },
 #endif
+    {
+      "no-tab-popup", 0, 0, G_OPTION_ARG_NONE,
+      &my_args.no_tab_popup,
+      N_("Whether window popup/frame should be shown when cycling windows."),
+      NULL
+    },
     {NULL}
   };
   GOptionContext *ctx;
@@ -648,6 +655,11 @@ main (int argc, char **argv)
       g_strfreev (plugins);
     }
 #endif
+
+  if (meta_args.no_tab_popup)
+    {
+      meta_prefs_override_no_tab_popup (TRUE);
+    }
 
   if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);
