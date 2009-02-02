@@ -451,6 +451,7 @@ clutter_actor_get_transformed_sizeu
 clutter_actor_grab_key_focus
 clutter_actor_get_pango_context
 clutter_actor_create_pango_context
+clutter_actor_create_pango_layout
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY

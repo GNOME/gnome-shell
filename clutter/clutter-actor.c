@@ -8095,6 +8095,44 @@ clutter_actor_create_pango_context (ClutterActor *self)
   return retval;
 }
 
+/**
+ * clutter_actor_create_pango_layout:
+ * @self: a #ClutterActor
+ * @text: the text to set on the #PangoLayout, or %NULL
+ *
+ * Creates a new #PangoLayout from the same #PangoContext used
+ * by the #ClutterActor. The #PangoLayout is already configured
+ * with the font map, resolution and font options, and the
+ * given @text.
+ *
+ * If you want to keep around a #PangoLayout created by this
+ * function you will have to connect to the #ClutterBackend::font-changed
+ * and #ClutterBackend::resolution-changed signals, and call
+ * pango_layout_context_changed() in response to them.
+ *
+ * Return value: the newly created #PangoLayout. Use g_object_unref()
+ *   when done
+ *
+ * Since: 1.0
+ */
+PangoLayout *
+clutter_actor_create_pango_layout (ClutterActor *self,
+                                   const gchar  *text)
+{
+  PangoContext *context;
+  PangoLayout *layout;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+
+  context = clutter_actor_get_pango_context (self);
+  layout = pango_layout_new (context);
+
+  if (text)
+    pango_layout_set_text (layout, text, -1);
+
+  return layout;
+}
+
 /* Allows overriding the parent traversed when querying an actors paint
  * opacity. Used by ClutterClone. */
 void

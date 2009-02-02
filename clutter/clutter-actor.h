@@ -576,6 +576,8 @@ void          clutter_actor_grab_key_focus            (ClutterActor        *self
 
 PangoContext *clutter_actor_get_pango_context         (ClutterActor        *self);
 PangoContext *clutter_actor_create_pango_context      (ClutterActor        *self);
+PangoLayout * clutter_actor_create_pango_layout       (ClutterActor        *self,
+                                                       const gchar         *text);
 
 G_END_DECLS
 
