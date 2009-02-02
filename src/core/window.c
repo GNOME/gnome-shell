@@ -146,6 +146,7 @@ enum
 {
   WORKSPACE_CHANGED,
   FOCUS,
+  RAISED,
 
   LAST_SIGNAL
 };
@@ -263,6 +264,15 @@ meta_window_class_init (MetaWindowClass *klass)
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (MetaWindowClass, focus),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  window_signals[RAISED] =
+    g_signal_new ("raised",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (MetaWindowClass, raised),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
@@ -4757,6 +4767,8 @@ meta_window_raise (MetaWindow  *window)
    */
   if (window != ancestor)
     meta_stack_raise (window->screen->stack, window);
+
+  g_signal_emit (window, window_signals[RAISED], 0);
 }
 
 void
