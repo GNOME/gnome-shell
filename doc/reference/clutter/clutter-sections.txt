@@ -1597,6 +1597,7 @@ clutter_text_new_with_text
 
 <SUBSECTION>
 clutter_text_set_text
+clutter_text_set_markup
 clutter_text_get_text
 clutter_text_set_activatable
 clutter_text_get_activatable
