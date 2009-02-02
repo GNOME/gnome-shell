@@ -1521,11 +1521,12 @@ meta_screen_ensure_tab_popup (MetaScreen      *screen,
       tmp = tmp->next;
     }
 
-  screen->tab_popup = meta_ui_tab_popup_new (entries, 
-                                             screen->number,
-                                             len,
-                                             5, /* FIXME */
-                                             !meta_prefs_get_no_tab_popup ());
+  if (!meta_prefs_get_no_tab_popup ())
+    screen->tab_popup = meta_ui_tab_popup_new (entries,
+                                               screen->number,
+                                               len,
+                                               5, /* FIXME */
+                                               TRUE);
 
   for (i = 0; i < len; i++) 
     g_object_unref (entries[i].icon);
@@ -1547,7 +1548,7 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
   int n_workspaces;
   int current_workspace;
   
-  if (screen->tab_popup)
+  if (screen->tab_popup || meta_prefs_get_no_tab_popup ())
     return;
 
   current_workspace = meta_workspace_index (screen->active_workspace);

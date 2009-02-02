@@ -1979,10 +1979,8 @@ process_tab_grab (MetaDisplay *display,
   Window      prev_xwindow;
   MetaWindow *prev_window;
 
-  if (screen != display->grab_screen)
+  if (screen != display->grab_screen || !screen->tab_popup)
     return FALSE;
-
-  g_return_val_if_fail (screen->tab_popup != NULL, FALSE);
 
   if (event->type == KeyRelease &&
       end_keyboard_grab (display, event->xkey.keycode))
@@ -2592,10 +2590,8 @@ process_workspace_switch_grab (MetaDisplay *display,
 {
   MetaWorkspace *workspace;
 
-  if (screen != display->grab_screen)
+  if (screen != display->grab_screen || !screen->tab_popup)
     return FALSE;
-
-  g_return_val_if_fail (screen->tab_popup != NULL, FALSE);
 
   if (event->type == KeyRelease &&
       end_keyboard_grab (display, event->xkey.keycode))
@@ -2887,7 +2883,9 @@ do_choose_window (MetaDisplay    *display,
           display->mouse_mode = FALSE;
           meta_window_activate (initial_selection, event->xkey.time);
         }
-      else if (meta_display_begin_grab_op (display,
+      else if (!meta_prefs_get_no_tab_popup ())
+        {
+          if (meta_display_begin_grab_op (display,
                                            screen,
                                            NULL,
                                            show_popup ?
@@ -2918,21 +2916,11 @@ do_choose_window (MetaDisplay    *display,
             }
           else
             {
-              if (!meta_prefs_get_no_tab_popup ())
-                {
-                  meta_ui_tab_popup_select (screen->tab_popup,
-                                (MetaTabEntryKey) initial_selection->xwindow);
+              meta_ui_tab_popup_select (screen->tab_popup,
+                                        (MetaTabEntryKey) initial_selection->xwindow);
 
-                  if (show_popup)
+              if (show_popup)
                     meta_ui_tab_popup_set_showing (screen->tab_popup, TRUE);
-                  else
-                    {
-                      meta_window_raise (initial_selection);
-                      initial_selection->tab_unminimized =
-                        initial_selection->minimized;
-                      meta_window_unminimize (initial_selection);
-                    }
-                }
               else
                 {
                   meta_window_raise (initial_selection);
@@ -2942,6 +2930,7 @@ do_choose_window (MetaDisplay    *display,
                 }
             }
         }
+    }
     }
 }
 
@@ -3311,7 +3300,7 @@ handle_workspace_switch  (MetaDisplay    *display,
       
       meta_workspace_activate (next, event->xkey.time);
 
-      if (grabbed_before_release)
+      if (grabbed_before_release && !meta_prefs_get_no_tab_popup ())
         {
           meta_ui_tab_popup_select (screen->tab_popup, (MetaTabEntryKey) next);
           
