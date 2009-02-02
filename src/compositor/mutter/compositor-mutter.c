@@ -1221,7 +1221,7 @@ add_win (MetaWindow *window)
   meta_verbose ("added 0x%x (%p) type:", (guint)top_window, cw);
 
   /* Hang our compositor window state off the MetaWindow for fast retrieval */
-  meta_window_set_compositor_private (window, cw);
+  meta_window_set_compositor_private (window, G_OBJECT (cw));
 
   /*
    * Add this to the list at the top of the stack before it is mapped so that
@@ -1745,7 +1745,7 @@ clutter_cmp_remove_window (MetaCompositor *compositor,
   MutterWindow         *cw     = NULL;
 
   DEBUG_TRACE ("clutter_cmp_remove_window\n");
-  cw = meta_window_get_compositor_private (window);
+  cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   if (!cw)
     return;
 
@@ -1874,7 +1874,7 @@ static void
 clutter_cmp_map_window (MetaCompositor *compositor, MetaWindow *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MutterWindow *cw = meta_window_get_compositor_private (window);
+  MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   DEBUG_TRACE ("clutter_cmp_map_window\n");
   if (!cw)
     return;
@@ -1887,7 +1887,7 @@ static void
 clutter_cmp_unmap_window (MetaCompositor *compositor, MetaWindow *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MutterWindow *cw = meta_window_get_compositor_private (window);
+  MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   DEBUG_TRACE ("clutter_cmp_unmap_window\n");
   if (!cw)
     return;
@@ -1903,7 +1903,7 @@ clutter_cmp_minimize_window (MetaCompositor *compositor,
 			     MetaRectangle  *icon_rect)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MutterWindow	 *cw = meta_window_get_compositor_private (window);
+  MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaScreen	 *screen = meta_window_get_screen (window);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
@@ -1939,7 +1939,7 @@ clutter_cmp_unminimize_window (MetaCompositor *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 #if 0
-  MutterWindow	 *cw = meta_window_get_compositor_private (window);
+  MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaScreen	 *screen = meta_window_get_screen (window);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
@@ -1963,7 +1963,7 @@ clutter_cmp_unminimize_window (MetaCompositor *compositor,
       cw->priv->minimize_in_progress--;
     }
 #else
-  MutterWindow	 *cw = meta_window_get_compositor_private (window);
+  MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   DEBUG_TRACE ("clutter_cmp_unminimize_window\n");
   if (!cw)
     return;
@@ -1980,7 +1980,7 @@ clutter_cmp_maximize_window (MetaCompositor *compositor,
 			     MetaRectangle  *rect)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MutterWindow	 *cw = meta_window_get_compositor_private (window);
+  MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaScreen	 *screen = meta_window_get_screen (window);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
@@ -2010,7 +2010,7 @@ clutter_cmp_unmaximize_window (MetaCompositor *compositor,
 			       MetaRectangle  *rect)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MutterWindow	 *cw = meta_window_get_compositor_private (window);
+  MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaScreen	 *screen = meta_window_get_screen (window);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
@@ -2169,7 +2169,7 @@ clutter_cmp_sync_stack (MetaCompositor *compositor,
   for (tmp = stack; tmp != NULL; tmp = tmp->next)
     {
       MetaWindow    *window = tmp->data;
-      MutterWindow  *cw = window->compositor_private;
+      MutterWindow  *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
 
       if (!cw)
 	{
@@ -2191,7 +2191,7 @@ clutter_cmp_set_window_hidden (MetaCompositor *compositor,
 			       MetaWindow     *window,
 			       gboolean	       hidden)
 {
-  MutterWindow *cw = window->compositor_private;
+  MutterWindow *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 
   DEBUG_TRACE ("clutter_cmp_set_window_hidden\n");
@@ -2219,7 +2219,7 @@ clutter_cmp_sync_window_geometry (MetaCompositor *compositor,
 				  MetaWindow *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MutterWindow	 *cw = meta_window_get_compositor_private (window);
+  MutterWindow	 *cw = MUTTER_WINDOW (meta_window_get_compositor_private (window));
   MetaScreen	 *screen = meta_window_get_screen (window);
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
 

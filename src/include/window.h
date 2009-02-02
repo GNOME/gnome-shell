@@ -92,8 +92,8 @@ void meta_window_change_workspace_by_index (MetaWindow *window,
                                             gint        space_index,
                                             gboolean    append,
                                             guint32     timestamp);
-void *meta_window_get_compositor_private (MetaWindow *window);
-void meta_window_set_compositor_private (MetaWindow *window, void *priv);
+GObject *meta_window_get_compositor_private (MetaWindow *window);
+void meta_window_set_compositor_private (MetaWindow *window, GObject *priv);
 void meta_window_configure_notify (MetaWindow *window, XConfigureEvent *event);
 const char *meta_window_get_role (MetaWindow *window);
 

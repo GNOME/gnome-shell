@@ -8707,7 +8707,15 @@ meta_window_get_description (MetaWindow *window)
   return window->desc;
 }
 
-void *
+/**
+ * meta_window_get_compositor_private:
+ * @window: a #MetaWindow
+ *
+ * Gets the compositor's wrapper object for @window.
+ *
+ * Return value: (transfer none): the wrapper object.
+ **/
+GObject *
 meta_window_get_compositor_private (MetaWindow *window)
 {
   if (!window)
@@ -8716,7 +8724,7 @@ meta_window_get_compositor_private (MetaWindow *window)
 }
 
 void
-meta_window_set_compositor_private (MetaWindow *window, void *priv)
+meta_window_set_compositor_private (MetaWindow *window, GObject *priv)
 {
   if (!window)
     return;
