@@ -422,6 +422,12 @@ void
 meta_ui_tab_popup_free (MetaTabPopup *popup)
 {
   meta_verbose ("Destroying tab popup window\n");
+
+  if (!popup)
+    {
+      meta_warning ("NULL passed to meta_ui_tab_popup_free\n");
+      return;
+    }
   
   if (popup->outline)
     {
